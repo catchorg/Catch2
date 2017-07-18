@@ -217,7 +217,7 @@ namespace Catch {
                 if ( itMessage == messages.end() )
                     return;
 
-                // using messages.end() directly yields compilation error:
+                // using messages.end() directly yields (or auto) compilation error:
                 std::vector<MessageInfo>::const_iterator itEnd = messages.end();
                 const std::size_t N = static_cast<std::size_t>( std::distance( itMessage, itEnd ) );
 

@@ -167,7 +167,7 @@ namespace TestCaseTracking {
         }
 
         virtual ITrackerPtr findChild( NameAndLocation const& nameAndLocation ) override {
-            Children::const_iterator it = std::find_if( m_children.begin(), m_children.end(), TrackerHasName( nameAndLocation ) );
+            auto it = std::find_if( m_children.begin(), m_children.end(), TrackerHasName( nameAndLocation ) );
             return( it != m_children.end() )
                 ? *it
                 : nullptr;

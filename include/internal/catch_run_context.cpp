@@ -277,7 +277,7 @@ namespace Catch {
     void RunContext::handleUnfinishedSections() {
         // If sections ended prematurely due to an exception we stored their
         // infos here so we can tear them down outside the unwind process.
-        for (std::vector<SectionEndInfo>::const_reverse_iterator it = m_unfinishedSections.rbegin(),
+        for (auto it = m_unfinishedSections.rbegin(),
              itEnd = m_unfinishedSections.rend();
              it != itEnd;
              ++it)

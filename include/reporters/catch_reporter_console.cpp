@@ -274,7 +274,7 @@ namespace Catch {
             if( m_sectionStack.size() > 1 ) {
                 Colour colourGuard( Colour::Headers );
 
-                std::vector<SectionInfo>::const_iterator
+                auto
                     it = m_sectionStack.begin()+1, // Skip first section (test case)
                     itEnd = m_sectionStack.end();
                 for( ; it != itEnd; ++it )

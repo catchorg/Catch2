@@ -120,7 +120,7 @@ namespace Catch {
             node = m_rootSection;
         } else {
             SectionNode& parentNode = *m_sectionStack.back();
-            SectionNode::ChildSections::const_iterator it =
+            auto it =
                 std::find_if(parentNode.childSections.begin(),
                              parentNode.childSections.end(),
                              BySectionInfo(sectionInfo));

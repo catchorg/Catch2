@@ -16,7 +16,7 @@ namespace Catch {
     TagAliasRegistry::~TagAliasRegistry() {}
 
     Option<TagAlias> TagAliasRegistry::find( std::string const& alias ) const {
-        std::map<std::string, TagAlias>::const_iterator it = m_registry.find( alias );
+        auto it = m_registry.find( alias );
         if( it != m_registry.end() )
             return it->second;
         else
