@@ -50,12 +50,10 @@ namespace Catch {
 
     Totals runTests( std::shared_ptr<Config> const& config ) {
 
-        IConfigPtr iconfig = config;
-
         IStreamingReporterPtr reporter = makeReporter( config );
-        addListeners( reporter, iconfig );
+        addListeners( reporter, config );
 
-        RunContext context( iconfig, std::move( reporter ) );
+        RunContext context( config, std::move( reporter ) );
 
         Totals totals;
 
@@ -65,15 +63,15 @@ namespace Catch {
         if( !testSpec.hasFilters() )
             testSpec = TestSpecParser( ITagAliasRegistry::get() ).parse( "~[.]" ).testSpec(); // All not hidden tests
 
-        std::vector<TestCase> const& allTestCases = getAllTestCasesSorted( *iconfig );
+        std::vector<TestCase> const& allTestCases = getAllTestCasesSorted( *config );
         for( auto const& testCase : allTestCases ) {
-            if( !context.aborting() && matchTest( testCase, testSpec, *iconfig ) )
+            if( !context.aborting() && matchTest( testCase, testSpec, *config ) )
                 totals += context.runTest( testCase );
             else
                 context.reporter().skipTest( testCase );
         }
 
-        context.testGroupEnded( iconfig->name(), totals, 1, 1 );
+        context.testGroupEnded( config->name(), totals, 1, 1 );
         return totals;
     }
 
@@ -96,6 +94,7 @@ namespace Catch {
         }
     }
 
+
     class Session : NonCopyable {
         static const int MaxExitCode;
     public:
@@ -112,10 +111,10 @@ namespace Catch {
         }
 
         void showHelp() {
-            Catch::cout() << "\nCatch v" << libraryVersion() << "\n";
-
-            Catch::cout() << m_cli << std::endl;
-            Catch::cout() << "For more detailed usage please see the project docs\n" << std::endl;
+            Catch::cout()
+                    << "\nCatch v" << libraryVersion() << "\n"
+                    << m_cli << std::endl
+                    << "For more detailed usage please see the project docs\n" << std::endl;
         }
 
         int applyCommandLine( int argc, char* argv[] ) {
@@ -138,8 +137,8 @@ namespace Catch {
             return 0;
         }
 
-        void useConfigData( ConfigData const& _configData ) {
-            m_configData = _configData;
+        void useConfigData( ConfigData const& configData ) {
+            m_configData = configData;
             m_config.reset();
         }
 
