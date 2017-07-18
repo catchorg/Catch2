@@ -23,6 +23,8 @@
 
 namespace Catch {
 
+    using namespace clara::TextFlow;
+
     struct TeamCityReporter : StreamingReporterBase {
         TeamCityReporter( ReporterConfig const& _config )
         :   StreamingReporterBase( _config )
@@ -194,9 +196,9 @@ namespace Catch {
                 i+=2;
             else
                 i = 0;
-            os << Text( _string, TextAttributes()
-                           .setIndent( indent+i)
-                           .setInitialIndent( indent ) ) << "\n";
+            os << Column( _string )
+                           .indent( indent+i)
+                           .initialIndent( indent ) << "\n";
         }
     private:
         bool m_headerPrintedForThisSection = false;

@@ -14,7 +14,6 @@
 #include "internal/catch_run_context.hpp"
 #include "internal/catch_test_spec.hpp"
 #include "internal/catch_version.h"
-#include "internal/catch_text.h"
 #include "internal/catch_interfaces_reporter.h"
 #include "internal/catch_startup_exception_registry.h"
 
@@ -23,6 +22,8 @@
 #include <limits>
 
 namespace Catch {
+
+    using namespace clara::TextFlow;
 
     IStreamingReporterPtr createReporter( std::string const& reporterName, IConfigPtr const& config ) {
         auto reporter = getRegistryHub().getReporterRegistry().create( reporterName, config );
@@ -120,13 +121,12 @@ namespace Catch {
         int applyCommandLine( int argc, char* argv[] ) {
             auto result = m_cli.parse( clara::Args( argc, argv ) );
             if( !result ) {
-                {
-                    Colour colourGuard( Colour::Red );
-                    Catch::cerr()
-                        << "\nError(s) in input:\n"
-                        << Text( result.errorMessage(), TextAttributes().setIndent(2) )
-                        << "\n\n";
-                }
+                Catch::cerr()
+                    << Colour( Colour::Red )
+                    << "\nError(s) in input:\n"
+                    << Column( result.errorMessage() ).indent( 2 )
+                    << "\n\n";
+
                 Catch::cerr() << m_cli << std::endl;
                 return MaxExitCode;
             }

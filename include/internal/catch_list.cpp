@@ -12,7 +12,8 @@
 #include "catch_interfaces_reporter.h"
 #include "catch_interfaces_testcase.h"
 
-#include "catch_text.h"
+#include "catch_clara.h" // For TextFlow
+
 #include "catch_console_colour.hpp"
 #include "catch_test_spec_parser.hpp"
 
@@ -21,6 +22,8 @@
 #include <iomanip>
 
 namespace Catch {
+
+    using namespace clara::TextFlow;
 
     std::size_t listTests( Config const& config ) {
         TestSpec testSpec = config.testSpec();
@@ -31,37 +34,31 @@ namespace Catch {
             testSpec = TestSpecParser( ITagAliasRegistry::get() ).parse( "*" ).testSpec();
         }
 
-        std::size_t matchedTests = 0;
-        TextAttributes nameAttr, descAttr, tagsAttr;
-        nameAttr.setInitialIndent( 2 ).setIndent( 4 );
-        descAttr.setIndent( 4 );
-        tagsAttr.setIndent( 6 );
-
-        std::vector<TestCase> matchedTestCases = filterTests( getAllTestCasesSorted( config ), testSpec, config );
+        auto matchedTestCases = filterTests( getAllTestCasesSorted( config ), testSpec, config );
         for( auto const& testCaseInfo : matchedTestCases ) {
-            matchedTests++;
             Colour::Code colour = testCaseInfo.isHidden()
                 ? Colour::SecondaryText
                 : Colour::None;
             Colour colourGuard( colour );
 
-            Catch::cout() << Text( testCaseInfo.name, nameAttr ) << std::endl;
+            Catch::cout() << Column( testCaseInfo.name ).initialIndent( 2 ).indent( 4 ) << "\n";
             if( config.verbosity() >= Verbosity::High ) {
-                Catch::cout() << "    " << testCaseInfo.lineInfo << std::endl;
-                std::string description = testCaseInfo.description;
-                if( description == "" )
-                    description = "(NO DESCRIPTION)";
-                Catch::cout() << Text( description, descAttr ) << std::endl;
+                std::string description = testCaseInfo.description.empty()
+                    ? std::string( "(NO DESCRIPTION)" )
+                    : testCaseInfo.description;
+                Catch::cout()
+                    << "    " << testCaseInfo.lineInfo << "\n"
+                    << Column( description ).indent( 4 ) << "\n";
             }
             if( !testCaseInfo.tags.empty() )
-                Catch::cout() << Text( testCaseInfo.tagsAsString, tagsAttr ) << std::endl;
+                Catch::cout() << Column( testCaseInfo.tagsAsString ).indent( 6 ) << "\n";
         }
 
         if( !config.testSpec().hasFilters() )
-            Catch::cout() << pluralise( matchedTests, "test case" ) << '\n' << std::endl;
+            Catch::cout() << pluralise( matchedTestCases.size(), "test case" ) << '\n' << std::endl;
         else
-            Catch::cout() << pluralise( matchedTests, "matching test case" ) << '\n' << std::endl;
-        return matchedTests;
+            Catch::cout() << pluralise( matchedTestCases.size(), "matching test case" ) << '\n' << std::endl;
+        return matchedTestCases.size();
     }
 
     std::size_t listTestsNamesOnly( Config const& config ) {
@@ -120,10 +117,10 @@ namespace Catch {
         for( auto const& tagCount : tagCounts ) {
             std::ostringstream oss;
             oss << "  " << std::setw(2) << tagCount.second.count << "  ";
-            Text wrapper( tagCount.second.all(), TextAttributes()
-                                                    .setInitialIndent( 0 )
-                                                    .setIndent( oss.str().size() )
-                                                    .setWidth( CATCH_CONFIG_CONSOLE_WIDTH-10 ) );
+            auto wrapper = Column( tagCount.second.all() )
+                                                    .initialIndent( 0 )
+                                                    .indent( oss.str().size() )
+                                                    .width( CATCH_CONFIG_CONSOLE_WIDTH-10 );
             Catch::cout() << oss.str() << wrapper << '\n';
         }
         Catch::cout() << pluralise( tagCounts.size(), "tag" ) << '\n' << std::endl;
@@ -138,11 +135,12 @@ namespace Catch {
             maxNameLen = (std::max)( maxNameLen, factoryKvp.first.size() );
 
         for( auto const& factoryKvp : getRegistryHub().getReporterRegistry().getFactories() ) {
-            Text wrapper( factoryKvp.second->getDescription(), TextAttributes()
-                                                        .setInitialIndent( 0 )
-                                                        .setIndent( 7+maxNameLen )
-                                                        .setWidth( CATCH_CONFIG_CONSOLE_WIDTH - maxNameLen-8 ) );
-            Catch::cout() << "  "
+            auto wrapper = Column( factoryKvp.second->getDescription() )
+                                                        .initialIndent( 0 )
+                                                        .indent( 7+maxNameLen )
+                                                        .width( CATCH_CONFIG_CONSOLE_WIDTH - maxNameLen-8 );
+            Catch::cout()
+                    << "  "
                     << factoryKvp.first
                     << ':'
                     << std::string( maxNameLen - factoryKvp.first.size() + 2, ' ' )
