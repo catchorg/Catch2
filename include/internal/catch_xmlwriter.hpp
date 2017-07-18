@@ -165,9 +165,10 @@ namespace Catch {
 
         template<typename T>
         XmlWriter& writeAttribute( std::string const& name, T const& attribute ) {
-            std::ostringstream oss;
-            oss << attribute;
-            return writeAttribute( name, oss.str() );
+            m_oss.clear();
+            m_oss.str(std::string());
+            m_oss << attribute;
+            return writeAttribute( name, m_oss.str() );
         }
 
         XmlWriter& writeText( std::string const& text, bool indent = true ) {
@@ -226,6 +227,7 @@ namespace Catch {
         std::vector<std::string> m_tags;
         std::string m_indent;
         std::ostream& m_os;
+        std::ostringstream m_oss;
     };
 
 }
