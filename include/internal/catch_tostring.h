@@ -35,6 +35,9 @@ namespace Catch {
     using ::operator<<;
 
     namespace Detail {
+
+        extern const std::string unprintableString;
+
         std::string rawMemoryToString( const void *object, std::size_t size );
 
         template<typename T>
@@ -64,7 +67,7 @@ namespace Catch {
         static
         typename std::enable_if<::Catch::Detail::IsStreamInsertable<Fake>::value, std::string>::type
             convert(const Fake& t) {
-                std::stringstream sstr;
+                std::ostringstream sstr;
                 sstr << t;
                 return sstr.str();
         }
@@ -73,13 +76,11 @@ namespace Catch {
         static
         typename std::enable_if<!::Catch::Detail::IsStreamInsertable<Fake>::value, std::string>::type
             convert(const Fake&) {
-                return "{?}";
+                return Detail::unprintableString;
         }
     };
 
     namespace Detail {
-
-        extern const std::string unprintableString;
 
         // This function dispatches all stringification requests inside of Catch.
         // Should be preferably called fully qualified, like ::Catch::Detail::stringify
