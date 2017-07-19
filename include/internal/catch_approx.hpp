@@ -20,18 +20,9 @@ namespace Detail {
 
     class Approx {
     public:
-        explicit Approx ( double value )
-        :   m_epsilon( std::numeric_limits<float>::epsilon()*100 ),
-            m_margin( 0.0 ),
-            m_scale( 1.0 ),
-            m_value( value )
-        {}
+        explicit Approx ( double value );
 
-        Approx( Approx const& other ) = default;
-
-        static Approx custom() {
-            return Approx( 0 );
-        }
+        static Approx custom();
 
         template <typename T, typename = typename std::enable_if<std::is_constructible<double, T>::value>::type>
         Approx operator()( T value ) {
@@ -111,12 +102,7 @@ namespace Detail {
             return *this;
         }
 
-
-        std::string toString() const {
-            std::ostringstream oss;
-            oss << "Approx( " << ::Catch::Detail::stringify( m_value ) << " )";
-            return oss.str();
-        }
+        std::string toString() const;
 
     private:
         double m_epsilon;
@@ -128,9 +114,7 @@ namespace Detail {
 
 template<>
 struct StringMaker<Catch::Detail::Approx> {
-    static std::string convert(Catch::Detail::Approx const& value) {
-        return value.toString();
-    }
+    static std::string convert(Catch::Detail::Approx const& value);
 };
 
 } // end namespace Catch

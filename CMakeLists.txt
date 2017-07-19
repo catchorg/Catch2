@@ -193,6 +193,7 @@ set(INTERNAL_HEADERS
         ${HEADER_DIR}/internal/catch_xmlwriter.hpp
         )
 set(IMPL_SOURCES
+        ${HEADER_DIR}/internal/catch_approx.cpp
         ${HEADER_DIR}/internal/catch_assertionresult.cpp
         ${HEADER_DIR}/internal/catch_commandline.cpp
         ${HEADER_DIR}/internal/catch_common.cpp
