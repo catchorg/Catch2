@@ -16,7 +16,6 @@ namespace Catch {
     {
     public:
         NotImplementedException( SourceLineInfo const& lineInfo );
-        NotImplementedException( NotImplementedException const& ) {}
 
         virtual ~NotImplementedException() CATCH_NOEXCEPT {}
 
