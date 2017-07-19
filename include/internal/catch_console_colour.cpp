@@ -17,7 +17,7 @@ namespace Catch {
     namespace {
 
         struct IColourImpl {
-            virtual ~IColourImpl() {}
+            virtual ~IColourImpl() = default;
             virtual void use( Colour::Code _colourCode ) = 0;
         };
 
@@ -178,8 +178,14 @@ namespace Catch {
 
 namespace Catch {
 
-    Colour::Colour( Code _colourCode ) : m_moved( false ) { use( _colourCode ); }
-    Colour::Colour( Colour const& _other ) : m_moved( false ) { const_cast<Colour&>( _other ).m_moved = true; }
+    Colour::Colour( Code _colourCode ) { use( _colourCode ); }
+    Colour::Colour( Colour&& _other ) { const_cast<Colour&>( _other ).m_moved = true; }
+    Colour& Colour::operator=( Colour&& _other ) {
+        m_moved = false;
+        const_cast<Colour&>( _other ).m_moved = true;
+        return *this;
+    }
+    
     Colour::~Colour(){ if( !m_moved ) use( None ); }
 
     void Colour::use( Code _colourCode ) {

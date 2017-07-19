@@ -61,8 +61,9 @@ namespace Catch {
     private:
         size_t counter = 0;
         class AssertionPrinter {
-            void operator= ( AssertionPrinter const& );
         public:
+            AssertionPrinter& operator= ( AssertionPrinter const& ) = delete;
+            AssertionPrinter( AssertionPrinter const& ) = delete;
             AssertionPrinter( std::ostream& _stream, AssertionStats const& _stats, size_t counter )
             : stream( _stream )
             , stats( _stats )

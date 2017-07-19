@@ -38,7 +38,8 @@ namespace Catch {
         public:
             ScopedElement( XmlWriter* writer );
 
-            ScopedElement( ScopedElement const& other );
+            ScopedElement( ScopedElement&& other );
+            ScopedElement& operator=( ScopedElement&& other );
 
             ~ScopedElement();
 
@@ -51,7 +52,7 @@ namespace Catch {
             }
 
         private:
-            mutable XmlWriter* m_writer;
+            mutable XmlWriter* m_writer = nullptr;
         };
 
         XmlWriter( std::ostream& os = Catch::cout() );

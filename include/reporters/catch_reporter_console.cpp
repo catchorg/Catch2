@@ -97,8 +97,9 @@ namespace Catch {
     private:
 
         class AssertionPrinter {
-            void operator= ( AssertionPrinter const& );
         public:
+            AssertionPrinter& operator= ( AssertionPrinter const& ) = delete;
+            AssertionPrinter( AssertionPrinter const& ) = delete;
             AssertionPrinter( std::ostream& _stream, AssertionStats const& _stats, bool _printInfoMessages )
             :   stream( _stream ),
                 stats( _stats ),

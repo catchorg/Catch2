@@ -20,14 +20,14 @@ namespace Catch {
 
     class TestSpecParser {
         enum Mode{ None, Name, QuotedName, Tag, EscapedName };
-        Mode m_mode;
-        bool m_exclusion;
-        std::size_t m_start, m_pos;
+        Mode m_mode = None;
+        bool m_exclusion = false;
+        std::size_t m_start = std::string::npos, m_pos = 0;
         std::string m_arg;
         std::vector<std::size_t> m_escapeChars;
         TestSpec::Filter m_currentFilter;
         TestSpec m_testSpec;
-        ITagAliasRegistry const* m_tagAliases;
+        ITagAliasRegistry const* m_tagAliases = nullptr;
 
     public:
         TestSpecParser( ITagAliasRegistry const& tagAliases );

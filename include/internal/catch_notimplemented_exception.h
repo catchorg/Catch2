@@ -16,9 +16,8 @@ namespace Catch {
     {
     public:
         NotImplementedException( SourceLineInfo const& lineInfo );
-        NotImplementedException( NotImplementedException const& ) {}
 
-        virtual ~NotImplementedException() noexcept {}
+        virtual ~NotImplementedException() noexcept = default;
 
         virtual const char* what() const noexcept;
 

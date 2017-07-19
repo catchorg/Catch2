@@ -206,6 +206,7 @@ set(IMPL_SOURCES
         ${HEADER_DIR}/internal/catch_fatal_condition.cpp
         ${HEADER_DIR}/internal/catch_list.cpp
         ${HEADER_DIR}/internal/catch_leak_detector.cpp
+        ${HEADER_DIR}/internal/catch_matchers.cpp
         ${HEADER_DIR}/internal/catch_matchers_string.cpp
         ${HEADER_DIR}/internal/catch_message.cpp
         ${HEADER_DIR}/internal/catch_notimplemented_exception.cpp

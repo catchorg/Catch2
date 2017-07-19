@@ -48,7 +48,7 @@ namespace Catch {
         char const * macroName = nullptr;
         SourceLineInfo lineInfo;
         char const * capturedExpression = nullptr;
-        ResultDisposition::Flags resultDisposition;
+        ResultDisposition::Flags resultDisposition = ResultDisposition::Normal;
     };
 
     struct AssertionResultData

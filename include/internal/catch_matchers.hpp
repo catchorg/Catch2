@@ -22,18 +22,15 @@ namespace Matchers {
 
         class MatcherUntypedBase {
         public:
-            std::string toString() const {
-                if( m_cachedToString.empty() )
-                    m_cachedToString = describe();
-                return m_cachedToString;
-            }
+            MatcherUntypedBase() = default;
+            MatcherUntypedBase ( MatcherUntypedBase const& ) = default;
+            MatcherUntypedBase& operator = ( MatcherUntypedBase const& ) = delete;
+            std::string toString() const;
 
         protected:
-            virtual ~MatcherUntypedBase();
+            virtual ~MatcherUntypedBase() = default;
             virtual std::string describe() const = 0;
             mutable std::string m_cachedToString;
-        private:
-            MatcherUntypedBase& operator = ( MatcherUntypedBase const& );
         };
 
         template<typename ObjectT>
