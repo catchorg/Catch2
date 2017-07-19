@@ -11,8 +11,6 @@
 #include "catch_common.h"
 
 #include <sstream>
-#include <iomanip>
-#include <limits>
 #include <vector>
 #include <cstddef>
 

@@ -10,6 +10,8 @@
 #include "catch_interfaces_config.h"
 #include "catch_context.h"
 
+#include <iomanip>
+
 namespace Catch {
 
 namespace Detail {
