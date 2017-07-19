@@ -41,7 +41,7 @@ bool templated_tests(T t) {
     REQUIRE(a == t);
     CHECK(a == t);
     REQUIRE_THROWS(throws_int(true));
-    CHECK_THROWS_AS(throws_int(true), const int&);
+    CHECK_THROWS_AS(throws_int(true), int);
     REQUIRE_NOTHROW(throws_int(false));
     REQUIRE_THAT("aaa", Catch::EndsWith("aaa"));
     return true;

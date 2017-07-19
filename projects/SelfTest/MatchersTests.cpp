@@ -205,21 +205,21 @@ public:
 
 
 TEST_CASE( "Exception matchers that succeed", "[matchers][exceptions][!throws]" ) {
-    CHECK_THROWS_MATCHES(throws(1), SpecialException const&, ExceptionMatcher{ 1 });
-    REQUIRE_THROWS_MATCHES(throws(2), SpecialException const&, ExceptionMatcher{ 2 });
+    CHECK_THROWS_MATCHES(throws(1), SpecialException, ExceptionMatcher{ 1 });
+    REQUIRE_THROWS_MATCHES(throws(2), SpecialException, ExceptionMatcher{ 2 });
 }
 
 TEST_CASE("Exception matchers that fail", "[matchers][exceptions][!throws][.failing]") {
     SECTION("No exception") {
-        CHECK_THROWS_MATCHES(doesNotThrow(), SpecialException const&, ExceptionMatcher{ 1 });
-        REQUIRE_THROWS_MATCHES(doesNotThrow(), SpecialException const&, ExceptionMatcher{ 1 });
+        CHECK_THROWS_MATCHES(doesNotThrow(), SpecialException, ExceptionMatcher{ 1 });
+        REQUIRE_THROWS_MATCHES(doesNotThrow(), SpecialException, ExceptionMatcher{ 1 });
     }
     SECTION("Type mismatch") {
-        CHECK_THROWS_MATCHES(throwsAsInt(1), SpecialException const&, ExceptionMatcher{ 1 });
-        REQUIRE_THROWS_MATCHES(throwsAsInt(1), SpecialException const&, ExceptionMatcher{ 1 });
+        CHECK_THROWS_MATCHES(throwsAsInt(1), SpecialException, ExceptionMatcher{ 1 });
+        REQUIRE_THROWS_MATCHES(throwsAsInt(1), SpecialException, ExceptionMatcher{ 1 });
     }
     SECTION("Contents are wrong") {
-        CHECK_THROWS_MATCHES(throws(3), SpecialException const&, ExceptionMatcher{ 1 });
-        REQUIRE_THROWS_MATCHES(throws(4), SpecialException const&, ExceptionMatcher{ 1 });
+        CHECK_THROWS_MATCHES(throws(3), SpecialException, ExceptionMatcher{ 1 });
+        REQUIRE_THROWS_MATCHES(throws(4), SpecialException, ExceptionMatcher{ 1 });
     }
 }
