@@ -88,7 +88,7 @@ PASSED:
 
 CompilationTests.cpp:<line number>:
 PASSED:
-  CHECK_THROWS_AS( throws_int(true), const int& )
+  CHECK_THROWS_AS( throws_int(true), int )
 
 CompilationTests.cpp:<line number>:
 PASSED:

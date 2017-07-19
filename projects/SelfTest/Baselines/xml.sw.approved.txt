@@ -85,10 +85,10 @@
       </Expression>
       <Expression success="true" type="CHECK_THROWS_AS" filename="projects/<exe-name>/CompilationTests.cpp" >
         <Original>
-          throws_int(true), const int&amp;
+          throws_int(true), int
         </Original>
         <Expanded>
-          throws_int(true), const int&amp;
+          throws_int(true), int
         </Expanded>
       </Expression>
       <Expression success="true" type="REQUIRE_NOTHROW" filename="projects/<exe-name>/CompilationTests.cpp" >
@@ -1558,18 +1558,18 @@
       <Section name="No exception" filename="projects/<exe-name>/MatchersTests.cpp" >
         <Expression success="false" type="CHECK_THROWS_MATCHES" filename="projects/<exe-name>/MatchersTests.cpp" >
           <Original>
-            doesNotThrow(), SpecialException const&amp;, ExceptionMatcher{ 1 }
+            doesNotThrow(), SpecialException, ExceptionMatcher{ 1 }
           </Original>
           <Expanded>
-            doesNotThrow(), SpecialException const&amp;, ExceptionMatcher{ 1 }
+            doesNotThrow(), SpecialException, ExceptionMatcher{ 1 }
           </Expanded>
         </Expression>
         <Expression success="false" type="REQUIRE_THROWS_MATCHES" filename="projects/<exe-name>/MatchersTests.cpp" >
           <Original>
-            doesNotThrow(), SpecialException const&amp;, ExceptionMatcher{ 1 }
+            doesNotThrow(), SpecialException, ExceptionMatcher{ 1 }
           </Original>
           <Expanded>
-            doesNotThrow(), SpecialException const&amp;, ExceptionMatcher{ 1 }
+            doesNotThrow(), SpecialException, ExceptionMatcher{ 1 }
           </Expanded>
         </Expression>
         <OverallResults successes="0" failures="2" expectedFailures="0"/>
@@ -1577,10 +1577,10 @@
       <Section name="Type mismatch" filename="projects/<exe-name>/MatchersTests.cpp" >
         <Expression success="false" type="CHECK_THROWS_MATCHES" filename="projects/<exe-name>/MatchersTests.cpp" >
           <Original>
-            throwsAsInt(1), SpecialException const&amp;, ExceptionMatcher{ 1 }
+            throwsAsInt(1), SpecialException, ExceptionMatcher{ 1 }
           </Original>
           <Expanded>
-            throwsAsInt(1), SpecialException const&amp;, ExceptionMatcher{ 1 }
+            throwsAsInt(1), SpecialException, ExceptionMatcher{ 1 }
           </Expanded>
           <Exception filename="projects/<exe-name>/MatchersTests.cpp" >
             Unknown exception
@@ -1588,10 +1588,10 @@
         </Expression>
         <Expression success="false" type="REQUIRE_THROWS_MATCHES" filename="projects/<exe-name>/MatchersTests.cpp" >
           <Original>
-            throwsAsInt(1), SpecialException const&amp;, ExceptionMatcher{ 1 }
+            throwsAsInt(1), SpecialException, ExceptionMatcher{ 1 }
           </Original>
           <Expanded>
-            throwsAsInt(1), SpecialException const&amp;, ExceptionMatcher{ 1 }
+            throwsAsInt(1), SpecialException, ExceptionMatcher{ 1 }
           </Expanded>
           <Exception filename="projects/<exe-name>/MatchersTests.cpp" >
             Unknown exception
@@ -1602,7 +1602,7 @@
       <Section name="Contents are wrong" filename="projects/<exe-name>/MatchersTests.cpp" >
         <Expression success="false" type="CHECK_THROWS_MATCHES" filename="projects/<exe-name>/MatchersTests.cpp" >
           <Original>
-            throws(3), SpecialException const&amp;, ExceptionMatcher{ 1 }
+            throws(3), SpecialException, ExceptionMatcher{ 1 }
           </Original>
           <Expanded>
             {?} special exception has value of 1
@@ -1610,7 +1610,7 @@
         </Expression>
         <Expression success="false" type="REQUIRE_THROWS_MATCHES" filename="projects/<exe-name>/MatchersTests.cpp" >
           <Original>
-            throws(4), SpecialException const&amp;, ExceptionMatcher{ 1 }
+            throws(4), SpecialException, ExceptionMatcher{ 1 }
           </Original>
           <Expanded>
             {?} special exception has value of 1
@@ -1623,7 +1623,7 @@
     <TestCase name="Exception matchers that succeed" tags="[!throws][exceptions][matchers]" filename="projects/<exe-name>/MatchersTests.cpp" >
       <Expression success="true" type="CHECK_THROWS_MATCHES" filename="projects/<exe-name>/MatchersTests.cpp" >
         <Original>
-          throws(1), SpecialException const&amp;, ExceptionMatcher{ 1 }
+          throws(1), SpecialException, ExceptionMatcher{ 1 }
         </Original>
         <Expanded>
           {?} special exception has value of 1
@@ -1631,7 +1631,7 @@
       </Expression>
       <Expression success="true" type="REQUIRE_THROWS_MATCHES" filename="projects/<exe-name>/MatchersTests.cpp" >
         <Original>
-          throws(2), SpecialException const&amp;, ExceptionMatcher{ 2 }
+          throws(2), SpecialException, ExceptionMatcher{ 2 }
         </Original>
         <Expanded>
           {?} special exception has value of 2

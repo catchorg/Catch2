@@ -194,19 +194,19 @@ MatchersTests.cpp:<line number>
       </failure>
     </testcase>
     <testcase classname="<exe-name>.global" name="Exception matchers that fail/No exception" time="{duration}">
-      <failure message="doesNotThrow(), SpecialException const&amp;, ExceptionMatcher{ 1 }" type="CHECK_THROWS_MATCHES">
+      <failure message="doesNotThrow(), SpecialException, ExceptionMatcher{ 1 }" type="CHECK_THROWS_MATCHES">
 MatchersTests.cpp:<line number>
       </failure>
-      <failure message="doesNotThrow(), SpecialException const&amp;, ExceptionMatcher{ 1 }" type="REQUIRE_THROWS_MATCHES">
+      <failure message="doesNotThrow(), SpecialException, ExceptionMatcher{ 1 }" type="REQUIRE_THROWS_MATCHES">
 MatchersTests.cpp:<line number>
       </failure>
     </testcase>
     <testcase classname="<exe-name>.global" name="Exception matchers that fail/Type mismatch" time="{duration}">
-      <error message="throwsAsInt(1), SpecialException const&amp;, ExceptionMatcher{ 1 }" type="CHECK_THROWS_MATCHES">
+      <error message="throwsAsInt(1), SpecialException, ExceptionMatcher{ 1 }" type="CHECK_THROWS_MATCHES">
 Unknown exception
 MatchersTests.cpp:<line number>
       </error>
-      <error message="throwsAsInt(1), SpecialException const&amp;, ExceptionMatcher{ 1 }" type="REQUIRE_THROWS_MATCHES">
+      <error message="throwsAsInt(1), SpecialException, ExceptionMatcher{ 1 }" type="REQUIRE_THROWS_MATCHES">
 Unknown exception
 MatchersTests.cpp:<line number>
       </error>

@@ -282,11 +282,11 @@ MatchersTests.cpp:<line number>
 ...............................................................................
 
 MatchersTests.cpp:<line number>: FAILED:
-  CHECK_THROWS_MATCHES( doesNotThrow(), SpecialException const&, ExceptionMatcher{ 1 } )
+  CHECK_THROWS_MATCHES( doesNotThrow(), SpecialException, ExceptionMatcher{ 1 } )
 because no exception was thrown where one was expected:
 
 MatchersTests.cpp:<line number>: FAILED:
-  REQUIRE_THROWS_MATCHES( doesNotThrow(), SpecialException const&, ExceptionMatcher{ 1 } )
+  REQUIRE_THROWS_MATCHES( doesNotThrow(), SpecialException, ExceptionMatcher{ 1 } )
 because no exception was thrown where one was expected:
 
 -------------------------------------------------------------------------------
@@ -297,12 +297,12 @@ MatchersTests.cpp:<line number>
 ...............................................................................
 
 MatchersTests.cpp:<line number>: FAILED:
-  CHECK_THROWS_MATCHES( throwsAsInt(1), SpecialException const&, ExceptionMatcher{ 1 } )
+  CHECK_THROWS_MATCHES( throwsAsInt(1), SpecialException, ExceptionMatcher{ 1 } )
 due to unexpected exception with message:
   Unknown exception
 
 MatchersTests.cpp:<line number>: FAILED:
-  REQUIRE_THROWS_MATCHES( throwsAsInt(1), SpecialException const&, ExceptionMatcher{ 1 } )
+  REQUIRE_THROWS_MATCHES( throwsAsInt(1), SpecialException, ExceptionMatcher{ 1 } )
 due to unexpected exception with message:
   Unknown exception
 
@@ -314,12 +314,12 @@ MatchersTests.cpp:<line number>
 ...............................................................................
 
 MatchersTests.cpp:<line number>: FAILED:
-  CHECK_THROWS_MATCHES( throws(3), SpecialException const&, ExceptionMatcher{ 1 } )
+  CHECK_THROWS_MATCHES( throws(3), SpecialException, ExceptionMatcher{ 1 } )
 with expansion:
   {?} special exception has value of 1
 
 MatchersTests.cpp:<line number>: FAILED:
-  REQUIRE_THROWS_MATCHES( throws(4), SpecialException const&, ExceptionMatcher{ 1 } )
+  REQUIRE_THROWS_MATCHES( throws(4), SpecialException, ExceptionMatcher{ 1 } )
 with expansion:
   {?} special exception has value of 1
 
