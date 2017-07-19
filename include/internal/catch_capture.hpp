@@ -130,7 +130,7 @@
                 static_cast<void>(expr); \
                 __catchResult.captureResult( Catch::ResultWas::DidntThrowException ); \
             } \
-            catch( exceptionType ) { \
+            catch( exceptionType const& ) { \
                 __catchResult.captureResult( Catch::ResultWas::Ok ); \
             } \
             catch( ... ) { \
@@ -194,7 +194,7 @@
                 static_cast<void>(expr); \
                 __catchResult.captureResult( Catch::ResultWas::DidntThrowException ); \
             } \
-            catch( exceptionType ex ) { \
+            catch( exceptionType const& ex ) { \
                 __catchResult.captureMatch( ex, matcher, #matcher ); \
             } \
             catch( ... ) { \
