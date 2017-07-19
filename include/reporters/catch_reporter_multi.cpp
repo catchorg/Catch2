@@ -18,7 +18,7 @@ namespace Catch {
         return m_reporters[0]->getPreferences();
     }
 
-    std::set<Verbosity> getSupportedVerbosities() {
+    std::set<Verbosity> MultipleReporters::getSupportedVerbosities() {
         return { };
     }
 
