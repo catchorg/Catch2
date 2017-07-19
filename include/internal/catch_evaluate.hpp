@@ -37,7 +37,7 @@ namespace Internal {
     template<> struct OperatorTraits<IsGreaterThanOrEqualTo>{ static const char* getName(){ return ">="; } };
 
     template<typename T>
-    inline T& opCast(T const& t) { return const_cast<T&>(t); }
+    T& opCast(T const& t) { return const_cast<T&>(t); }
 
     // nullptr_t support based on pull request #154 from Konstantin Baumann
     inline std::nullptr_t opCast(std::nullptr_t) { return nullptr; }
