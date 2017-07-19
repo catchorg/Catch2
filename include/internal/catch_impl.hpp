@@ -55,7 +55,6 @@ namespace Catch {
     IMutableRegistryHub::~IMutableRegistryHub() {}
     IExceptionTranslator::~IExceptionTranslator() {}
     IExceptionTranslatorRegistry::~IExceptionTranslatorRegistry() {}
-
     IRunner::~IRunner() {}
     IMutableContext::~IMutableContext() {}
     IConfig::~IConfig() {}

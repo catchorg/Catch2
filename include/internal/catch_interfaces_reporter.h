@@ -22,6 +22,7 @@
 #include <string>
 #include <iosfwd>
 #include <map>
+#include <set>
 #include <memory>
 
 namespace Catch {
@@ -162,8 +163,9 @@ namespace Catch {
     struct IStreamingReporter {
         virtual ~IStreamingReporter() = default;
 
-        // Implementing class must also provide the following static method:
+        // Implementing class must also provide the following static methods:
         // static std::string getDescription();
+        // static std::set<Verbosity> getSupportedVerbosities()
 
         virtual ReporterPreferences getPreferences() const = 0;
 

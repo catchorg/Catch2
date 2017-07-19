@@ -14,7 +14,7 @@
 #include "../internal/catch_timer.h"
 
 namespace Catch {
-    class XmlReporter : public StreamingReporterBase {
+    class XmlReporter : public StreamingReporterBase<XmlReporter> {
     public:
         XmlReporter( ReporterConfig const& _config )
         :   StreamingReporterBase( _config ),

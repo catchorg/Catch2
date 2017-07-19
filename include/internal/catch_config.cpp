@@ -30,8 +30,6 @@ namespace Catch {
     bool Config::listTags() const           { return m_data.listTags; }
     bool Config::listReporters() const      { return m_data.listReporters; }
 
-    Verbosity Config::verbosity() const     { return m_data.verbosity; }
-
     std::string Config::getProcessName() const { return m_data.processName; }
 
     std::vector<std::string> const& Config::getReporterNames() const { return m_data.reporterNames; }
@@ -54,6 +52,7 @@ namespace Catch {
     bool Config::shouldDebugBreak() const              { return m_data.shouldDebugBreak; }
     int Config::abortAfter() const                     { return m_data.abortAfter; }
     bool Config::showInvisibles() const                { return m_data.showInvisibles; }
+    Verbosity Config::verbosity() const                { return m_data.verbosity; }
 
     IStream const* Config::openStream() {
         if( m_data.outputFilename.empty() )

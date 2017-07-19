@@ -18,6 +18,11 @@ namespace Catch {
         return m_reporters[0]->getPreferences();
     }
 
+    std::set<Verbosity> getSupportedVerbosities() {
+        return { };
+    }
+
+    
     void MultipleReporters::noMatchingTestCases( std::string const& spec ) {
         for( auto const& reporter : m_reporters )
             reporter->noMatchingTestCases( spec );

@@ -70,8 +70,6 @@ namespace Catch {
         bool listTags() const;
         bool listReporters() const;
 
-        Verbosity verbosity() const;
-
         std::string getProcessName() const;
 
         std::vector<std::string> const& getReporterNames() const;
@@ -94,6 +92,7 @@ namespace Catch {
         virtual bool shouldDebugBreak() const override;
         virtual int abortAfter() const override;
         virtual bool showInvisibles() const override;
+        virtual Verbosity verbosity() const override;
 
     private:
 

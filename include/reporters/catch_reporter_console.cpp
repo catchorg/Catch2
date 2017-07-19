@@ -18,7 +18,7 @@
 
 namespace Catch {
 
-    struct ConsoleReporter : StreamingReporterBase {
+    struct ConsoleReporter : StreamingReporterBase<ConsoleReporter> {
         using StreamingReporterBase::StreamingReporterBase;
 
 

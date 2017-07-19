@@ -12,6 +12,8 @@
 #include "catch_interfaces_reporter.h"
 #include "catch_interfaces_testcase.h"
 
+#include "catch_text.h"
+
 #include "catch_clara.h" // For TextFlow
 
 #include "catch_console_colour.hpp"
@@ -43,12 +45,13 @@ namespace Catch {
 
             Catch::cout() << Column( testCaseInfo.name ).initialIndent( 2 ).indent( 4 ) << "\n";
             if( config.verbosity() >= Verbosity::High ) {
-                std::string description = testCaseInfo.description.empty()
-                    ? std::string( "(NO DESCRIPTION)" )
-                    : testCaseInfo.description;
-                Catch::cout()
-                    << "    " << testCaseInfo.lineInfo << "\n"
-                    << Column( description ).indent( 4 ) << "\n";
+                TextAttributes descAttr;
+                descAttr.setIndent( 4 );
+                Catch::cout() << Text( testCaseInfo.lineInfo, descAttr ) << std::endl;
+                std::string description = testCaseInfo.description;
+                if( description == "" )
+                    description = "(NO DESCRIPTION)";
+                Catch::cout() << Text( description, descAttr ) << std::endl;
             }
             if( !testCaseInfo.tags.empty() )
                 Catch::cout() << Column( testCaseInfo.tagsAsString ).indent( 6 ) << "\n";
