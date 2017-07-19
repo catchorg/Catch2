@@ -95,7 +95,6 @@ namespace Catch {
     private:
 
         void runCurrentTest(std::string& redirectedCout, std::string& redirectedCerr);
-
         void invokeActiveTestCase();
 
     private:
@@ -108,7 +107,6 @@ namespace Catch {
         IMutableContext& m_context;
         TestCase const* m_activeTestCase = nullptr;
         ITracker* m_testCaseTracker;
-        ITracker* m_currentSectionTracker;
         AssertionResult m_lastResult;
 
         IConfigPtr m_config;
