@@ -22,7 +22,6 @@
 #include "catch_result_builder.h"
 #include "catch_fatal_condition.h"
 
-#include <set>
 #include <string>
 
 namespace Catch {

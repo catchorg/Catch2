@@ -11,6 +11,10 @@
 namespace Catch {
 
 
+    bool DecomposedExpression::isBinaryExpression() const {
+        return false;
+    }
+
     AssertionInfo::AssertionInfo(   char const * _macroName,
                                     SourceLineInfo const& _lineInfo,
                                     char const * _capturedExpression,
@@ -20,6 +24,30 @@ namespace Catch {
         capturedExpression( _capturedExpression ),
         resultDisposition( _resultDisposition )
     {}
+
+    void AssertionResultData::negate( bool parenthesize ) {
+        negated = !negated;
+        parenthesized = parenthesize;
+        if( resultType == ResultWas::Ok )
+            resultType = ResultWas::ExpressionFailed;
+        else if( resultType == ResultWas::ExpressionFailed )
+            resultType = ResultWas::Ok;
+    }
+
+    std::string const& AssertionResultData::reconstructExpression() const {
+        if( decomposedExpression != nullptr ) {
+            decomposedExpression->reconstructExpression( reconstructedExpression );
+            if( parenthesized ) {
+                reconstructedExpression.insert( 0, 1, '(' );
+                reconstructedExpression.append( 1, ')' );
+            }
+            if( negated ) {
+                reconstructedExpression.insert( 0, 1, '!' );
+            }
+            decomposedExpression = nullptr;
+        }
+        return reconstructedExpression;
+    }
 
     AssertionResult::AssertionResult() {}
 

@@ -19,6 +19,16 @@
 
 namespace Catch {
 
+    CopyableStream::CopyableStream( CopyableStream const& other ) {
+        oss << other.oss.str();
+    }
+    CopyableStream& CopyableStream::operator=( CopyableStream const& other ) {
+        oss.str(std::string());
+        oss << other.oss.str();
+        return *this;
+    }
+
+
     ResultBuilder::ResultBuilder(   char const* macroName,
                                     SourceLineInfo const& lineInfo,
                                     char const* capturedExpression,

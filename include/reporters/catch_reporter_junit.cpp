@@ -15,6 +15,8 @@
 
 #include <assert.h>
 
+#include <ctime>
+
 namespace Catch {
 
     namespace {

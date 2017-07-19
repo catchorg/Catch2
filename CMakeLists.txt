@@ -197,6 +197,7 @@ set(IMPL_SOURCES
         ${HEADER_DIR}/internal/catch_assertionresult.cpp
         ${HEADER_DIR}/internal/catch_commandline.cpp
         ${HEADER_DIR}/internal/catch_common.cpp
+        ${HEADER_DIR}/internal/catch_config.cpp
         ${HEADER_DIR}/internal/catch_console_colour.cpp
         ${HEADER_DIR}/internal/catch_context.cpp
         ${HEADER_DIR}/internal/catch_debugger.cpp
@@ -209,6 +210,7 @@ set(IMPL_SOURCES
         ${HEADER_DIR}/internal/catch_message.cpp
         ${HEADER_DIR}/internal/catch_notimplemented_exception.cpp
         ${HEADER_DIR}/internal/catch_registry_hub.cpp
+        ${HEADER_DIR}/internal/catch_interfaces_reporter.cpp
         ${HEADER_DIR}/internal/catch_result_builder.cpp
         ${HEADER_DIR}/internal/catch_result_type.cpp
         ${HEADER_DIR}/internal/catch_run_context.cpp
@@ -221,9 +223,15 @@ set(IMPL_SOURCES
         ${HEADER_DIR}/internal/catch_stringref.cpp
         ${HEADER_DIR}/internal/catch_tag_alias_registry.cpp
         ${HEADER_DIR}/internal/catch_test_case_info.cpp
+        ${HEADER_DIR}/internal/catch_test_case_tracker.cpp
+        ${HEADER_DIR}/internal/catch_test_spec.cpp
+        ${HEADER_DIR}/internal/catch_test_spec_parser.cpp
         ${HEADER_DIR}/internal/catch_timer.cpp
         ${HEADER_DIR}/internal/catch_tostring.cpp
+        ${HEADER_DIR}/internal/catch_totals.cpp
         ${HEADER_DIR}/internal/catch_version.cpp
+        ${HEADER_DIR}/internal/catch_wildcard_pattern.cpp
+        ${HEADER_DIR}/internal/catch_xmlwriter.cpp
         )
 set(INTERNAL_FILES ${IMPL_SOURCES} ${INTERNAL_HEADERS})
 CheckFileList(INTERNAL_FILES ${HEADER_DIR}/internal)
@@ -232,6 +240,7 @@ CheckFileList(INTERNAL_FILES ${HEADER_DIR}/internal)
 set(REPORTER_HEADERS
         ${HEADER_DIR}/reporters/catch_reporter_automake.hpp
         ${HEADER_DIR}/reporters/catch_reporter_bases.hpp
+        ${HEADER_DIR}/reporters/catch_reporter_multi.h
         ${HEADER_DIR}/reporters/catch_reporter_tap.hpp
         ${HEADER_DIR}/reporters/catch_reporter_teamcity.hpp
         )

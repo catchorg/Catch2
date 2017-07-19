@@ -30,69 +30,17 @@ namespace Catch {
         ITagAliasRegistry const* m_tagAliases;
 
     public:
-        TestSpecParser( ITagAliasRegistry const& tagAliases ) : m_tagAliases( &tagAliases ) {}
+        TestSpecParser( ITagAliasRegistry const& tagAliases );
 
-        TestSpecParser& parse( std::string const& arg ) {
-            m_mode = None;
-            m_exclusion = false;
-            m_start = std::string::npos;
-            m_arg = m_tagAliases->expandAliases( arg );
-            m_escapeChars.clear();
-            for( m_pos = 0; m_pos < m_arg.size(); ++m_pos )
-                visitChar( m_arg[m_pos] );
-            if( m_mode == Name )
-                addPattern<TestSpec::NamePattern>();
-            return *this;
-        }
-        TestSpec testSpec() {
-            addFilter();
-            return m_testSpec;
-        }
+        TestSpecParser& parse( std::string const& arg );
+        TestSpec testSpec();
+
     private:
-        void visitChar( char c ) {
-            if( m_mode == None ) {
-                switch( c ) {
-                case ' ': return;
-                case '~': m_exclusion = true; return;
-                case '[': return startNewMode( Tag, ++m_pos );
-                case '"': return startNewMode( QuotedName, ++m_pos );
-                case '\\': return escape();
-                default: startNewMode( Name, m_pos ); break;
-                }
-            }
-            if( m_mode == Name ) {
-                if( c == ',' ) {
-                    addPattern<TestSpec::NamePattern>();
-                    addFilter();
-                }
-                else if( c == '[' ) {
-                    if( subString() == "exclude:" )
-                        m_exclusion = true;
-                    else
-                        addPattern<TestSpec::NamePattern>();
-                    startNewMode( Tag, ++m_pos );
-                }
-                else if( c == '\\' )
-                    escape();
-            }
-            else if( m_mode == EscapedName )
-                m_mode = Name;
-            else if( m_mode == QuotedName && c == '"' )
-                addPattern<TestSpec::NamePattern>();
-            else if( m_mode == Tag && c == ']' )
-                addPattern<TestSpec::TagPattern>();
-        }
-        void startNewMode( Mode mode, std::size_t start ) {
-            m_mode = mode;
-            m_start = start;
-        }
-        void escape() {
-            if( m_mode == None )
-                m_start = m_pos;
-            m_mode = EscapedName;
-            m_escapeChars.push_back( m_pos );
-        }
-        std::string subString() const { return m_arg.substr( m_start, m_pos - m_start ); }
+        void visitChar( char c );
+        void startNewMode( Mode mode, std::size_t start );
+        void escape();
+        std::string subString() const;
+
         template<typename T>
         void addPattern() {
             std::string token = subString();
@@ -112,16 +60,10 @@ namespace Catch {
             m_exclusion = false;
             m_mode = None;
         }
-        void addFilter() {
-            if( !m_currentFilter.m_patterns.empty() ) {
-                m_testSpec.m_filters.push_back( m_currentFilter );
-                m_currentFilter = TestSpec::Filter();
-            }
-        }
+
+        void addFilter();
     };
-    inline TestSpec parseTestSpec( std::string const& arg ) {
-        return TestSpecParser( ITagAliasRegistry::get() ).parse( arg ).testSpec();
-    }
+    TestSpec parseTestSpec( std::string const& arg );
 
 } // namespace Catch
 

@@ -55,33 +55,13 @@ namespace Catch {
     IMutableRegistryHub::~IMutableRegistryHub() {}
     IExceptionTranslator::~IExceptionTranslator() {}
     IExceptionTranslatorRegistry::~IExceptionTranslatorRegistry() {}
-    IReporterFactory::~IReporterFactory() {}
-    IReporterRegistry::~IReporterRegistry() {}
-    IStreamingReporter::~IStreamingReporter() {}
-    AssertionStats::~AssertionStats() {}
-    SectionStats::~SectionStats() {}
-    TestCaseStats::~TestCaseStats() {}
-    TestGroupStats::~TestGroupStats() {}
-    TestRunStats::~TestRunStats() {}
 
     IRunner::~IRunner() {}
     IMutableContext::~IMutableContext() {}
     IConfig::~IConfig() {}
-    WildcardPattern::~WildcardPattern() {}
-    TestSpec::Pattern::~Pattern() {}
-    TestSpec::NamePattern::~NamePattern() {}
-    TestSpec::TagPattern::~TagPattern() {}
-    TestSpec::ExcludedPattern::~ExcludedPattern() {}
     Matchers::Impl::MatcherUntypedBase::~MatcherUntypedBase() {}
 
     void Config::dummy() {}
-
-    namespace TestCaseTracking {
-        ITracker::~ITracker() {}
-        TrackerBase::~TrackerBase() {}
-        SectionTracker::~SectionTracker() {}
-        IndexTracker::~IndexTracker() {}
-    }
 }
 
 #ifdef __clang__

@@ -24,40 +24,34 @@ namespace Catch {
 
     class TestSpec {
         struct Pattern {
-            virtual ~Pattern();
+            virtual ~Pattern() = default;
             virtual bool matches( TestCaseInfo const& testCase ) const = 0;
         };
         using PatternPtr = std::shared_ptr<Pattern>;
 
         class NamePattern : public Pattern {
         public:
-            NamePattern( std::string const& name )
-            : m_wildcardPattern( toLower( name ), CaseSensitive::No )
-            {}
-            virtual ~NamePattern();
-            virtual bool matches( TestCaseInfo const& testCase ) const {
-                return m_wildcardPattern.matches( toLower( testCase.name ) );
-            }
+            NamePattern( std::string const& name );
+            virtual ~NamePattern() = default;
+            virtual bool matches( TestCaseInfo const& testCase ) const;
         private:
             WildcardPattern m_wildcardPattern;
         };
 
         class TagPattern : public Pattern {
         public:
-            TagPattern( std::string const& tag ) : m_tag( toLower( tag ) ) {}
-            virtual ~TagPattern();
-            virtual bool matches( TestCaseInfo const& testCase ) const {
-                return testCase.lcaseTags.find( m_tag ) != testCase.lcaseTags.end();
-            }
+            TagPattern( std::string const& tag );
+            virtual ~TagPattern() = default;
+            virtual bool matches( TestCaseInfo const& testCase ) const;
         private:
             std::string m_tag;
         };
 
         class ExcludedPattern : public Pattern {
         public:
-            ExcludedPattern( PatternPtr const& underlyingPattern ) : m_underlyingPattern( underlyingPattern ) {}
-            virtual ~ExcludedPattern();
-            virtual bool matches( TestCaseInfo const& testCase ) const { return !m_underlyingPattern->matches( testCase ); }
+            ExcludedPattern( PatternPtr const& underlyingPattern );
+            virtual ~ExcludedPattern() = default;
+            virtual bool matches( TestCaseInfo const& testCase ) const;
         private:
             PatternPtr m_underlyingPattern;
         };
@@ -65,27 +59,12 @@ namespace Catch {
         struct Filter {
             std::vector<PatternPtr> m_patterns;
 
-            bool matches( TestCaseInfo const& testCase ) const {
-                // All patterns in a filter must match for the filter to be a match
-                for( auto const& pattern : m_patterns ) {
-                    if( !pattern->matches( testCase ) )
-                        return false;
-                }
-                return true;
-            }
+            bool matches( TestCaseInfo const& testCase ) const;
         };
 
     public:
-        bool hasFilters() const {
-            return !m_filters.empty();
-        }
-        bool matches( TestCaseInfo const& testCase ) const {
-            // A TestSpec matches if any filter matches
-            for( auto const& filter : m_filters )
-                if( filter.matches( testCase ) )
-                    return true;
-            return false;
-        }
+        bool hasFilters() const;
+        bool matches( TestCaseInfo const& testCase ) const;
 
     private:
         std::vector<Filter> m_filters;

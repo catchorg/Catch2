@@ -18,10 +18,12 @@ namespace Catch {
 
     struct DecomposedExpression
     {
-        virtual ~DecomposedExpression() {}
-        virtual bool isBinaryExpression() const {
-            return false;
-        }
+        DecomposedExpression() = default;
+        DecomposedExpression( DecomposedExpression const& ) = default;
+        DecomposedExpression& operator = ( DecomposedExpression const& ) = delete;
+
+        virtual ~DecomposedExpression() = default;
+        virtual bool isBinaryExpression() const;
         virtual void reconstructExpression( std::string& dest ) const = 0;
 
         // Only simple binary comparisons can be decomposed.
@@ -33,50 +35,26 @@ namespace Catch {
         template<typename T> STATIC_ASSERT_Expression_Too_Complex_Please_Rewrite_As_Binary_Comparison& operator % ( T const& );
         template<typename T> STATIC_ASSERT_Expression_Too_Complex_Please_Rewrite_As_Binary_Comparison& operator && ( T const& );
         template<typename T> STATIC_ASSERT_Expression_Too_Complex_Please_Rewrite_As_Binary_Comparison& operator || ( T const& );
-
-    private:
-        DecomposedExpression& operator = (DecomposedExpression const&);
     };
 
     struct AssertionInfo
     {
-        AssertionInfo() {}
+        AssertionInfo() = default;
         AssertionInfo(  char const * _macroName,
                         SourceLineInfo const& _lineInfo,
                         char const * _capturedExpression,
                         ResultDisposition::Flags _resultDisposition);
 
-        char const * macroName;
+        char const * macroName = nullptr;
         SourceLineInfo lineInfo;
-        char const * capturedExpression;
+        char const * capturedExpression = nullptr;
         ResultDisposition::Flags resultDisposition;
     };
 
     struct AssertionResultData
     {
-        void negate( bool parenthesize ) {
-            negated = !negated;
-            parenthesized = parenthesize;
-            if( resultType == ResultWas::Ok )
-                resultType = ResultWas::ExpressionFailed;
-            else if( resultType == ResultWas::ExpressionFailed )
-                resultType = ResultWas::Ok;
-        }
-
-        std::string const& reconstructExpression() const {
-            if( decomposedExpression != nullptr ) {
-                decomposedExpression->reconstructExpression( reconstructedExpression );
-                if( parenthesized ) {
-                    reconstructedExpression.insert( 0, 1, '(' );
-                    reconstructedExpression.append( 1, ')' );
-                }
-                if( negated ) {
-                    reconstructedExpression.insert( 0, 1, '!' );
-                }
-                decomposedExpression = nullptr;
-            }
-            return reconstructedExpression;
-        }
+        void negate( bool parenthesize );
+        std::string const& reconstructExpression() const;
 
         mutable DecomposedExpression const* decomposedExpression = nullptr;
         mutable std::string reconstructedExpression;

@@ -16,7 +16,6 @@
 #include <memory>
 #include <vector>
 #include <string>
-#include <stdexcept>
 
 #ifndef CATCH_CONFIG_CONSOLE_WIDTH
 #define CATCH_CONFIG_CONSOLE_WIDTH 80
@@ -60,71 +59,45 @@ namespace Catch {
         virtual void dummy();
     public:
 
-        Config()
-        {}
+        Config() = default;
+        Config( ConfigData const& data );
+        virtual ~Config() = default;
 
-        Config( ConfigData const& data )
-        :   m_data( data ),
-            m_stream( openStream() )
-        {
-            if( !data.testsOrTags.empty() ) {
-                TestSpecParser parser( ITagAliasRegistry::get() );
-                for( auto const& testOrTags : data.testsOrTags )
-                    parser.parse( testOrTags );
-                m_testSpec = parser.testSpec();
-            }
-        }
+        std::string const& getFilename() const;
 
-        virtual ~Config() {}
+        bool listTests() const;
+        bool listTestNamesOnly() const;
+        bool listTags() const;
+        bool listReporters() const;
 
-        std::string const& getFilename() const {
-            return m_data.outputFilename ;
-        }
+        Verbosity verbosity() const;
 
-        bool listTests() const          { return m_data.listTests; }
-        bool listTestNamesOnly() const  { return m_data.listTestNamesOnly; }
-        bool listTags() const           { return m_data.listTags; }
-        bool listReporters() const      { return m_data.listReporters; }
+        std::string getProcessName() const;
 
-        Verbosity verbosity() const     { return m_data.verbosity; }
+        std::vector<std::string> const& getReporterNames() const;
+        std::vector<std::string> const& getSectionsToRun() const override;
 
-        std::string getProcessName() const { return m_data.processName; }
+        virtual TestSpec const& testSpec() const override;
 
-        std::vector<std::string> const& getReporterNames() const { return m_data.reporterNames; }
-        std::vector<std::string> const& getSectionsToRun() const override { return m_data.sectionsToRun; }
-
-        virtual TestSpec const& testSpec() const override { return m_testSpec; }
-
-        bool showHelp() const { return m_data.showHelp; }
+        bool showHelp() const;
 
         // IConfig interface
-        virtual bool allowThrows() const override                   { return !m_data.noThrow; }
-        virtual std::ostream& stream() const override               { return m_stream->stream(); }
-        virtual std::string name() const override                   { return m_data.name.empty() ? m_data.processName : m_data.name; }
-        virtual bool includeSuccessfulResults() const override      { return m_data.showSuccessfulTests; }
-        virtual bool warnAboutMissingAssertions() const override    { return m_data.warnings & WarnAbout::NoAssertions; }
-        virtual ShowDurations::OrNot showDurations() const override { return m_data.showDurations; }
-        virtual RunTests::InWhatOrder runOrder() const override     { return m_data.runOrder; }
-        virtual unsigned int rngSeed() const override               { return m_data.rngSeed; }
-        virtual UseColour::YesOrNo useColour() const override       { return m_data.useColour; }
-        virtual bool shouldDebugBreak() const override              { return m_data.shouldDebugBreak; }
-        virtual int abortAfter() const override                     { return m_data.abortAfter; }
-        virtual bool showInvisibles() const override                { return m_data.showInvisibles; }
+        virtual bool allowThrows() const override;
+        virtual std::ostream& stream() const override;
+        virtual std::string name() const override;
+        virtual bool includeSuccessfulResults() const override;
+        virtual bool warnAboutMissingAssertions() const override;
+        virtual ShowDurations::OrNot showDurations() const override;
+        virtual RunTests::InWhatOrder runOrder() const override;
+        virtual unsigned int rngSeed() const override;
+        virtual UseColour::YesOrNo useColour() const override;
+        virtual bool shouldDebugBreak() const override;
+        virtual int abortAfter() const override;
+        virtual bool showInvisibles() const override;
 
     private:
 
-        IStream const* openStream() {
-            if( m_data.outputFilename.empty() )
-                return new CoutStream();
-            else if( m_data.outputFilename[0] == '%' ) {
-                if( m_data.outputFilename == "%debug" )
-                    return new DebugOutStream();
-                else
-                    CATCH_ERROR( "Unrecognised stream: '" << m_data.outputFilename << "'" );
-            }
-            else
-                return new FileStream( m_data.outputFilename );
-        }
+        IStream const* openStream();
         ConfigData m_data;
 
         std::unique_ptr<IStream const> m_stream;

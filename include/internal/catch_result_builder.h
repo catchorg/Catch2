@@ -21,14 +21,9 @@ namespace Catch {
 
     struct CopyableStream {
         CopyableStream() = default;
-        CopyableStream( CopyableStream const& other ) {
-            oss << other.oss.str();
-        }
-        CopyableStream& operator=( CopyableStream const& other ) {
-            oss.str(std::string());
-            oss << other.oss.str();
-            return *this;
-        }
+        CopyableStream( CopyableStream const& other );
+        CopyableStream& operator=( CopyableStream const& other );
+
         std::ostringstream oss;
     };
 

@@ -13,29 +13,12 @@
 namespace Catch {
 
     struct Counts {
-        Counts operator - ( Counts const& other ) const {
-            Counts diff;
-            diff.passed = passed - other.passed;
-            diff.failed = failed - other.failed;
-            diff.failedButOk = failedButOk - other.failedButOk;
-            return diff;
-        }
-        Counts& operator += ( Counts const& other ) {
-            passed += other.passed;
-            failed += other.failed;
-            failedButOk += other.failedButOk;
-            return *this;
-        }
+        Counts operator - ( Counts const& other ) const;
+        Counts& operator += ( Counts const& other );
 
-        std::size_t total() const {
-            return passed + failed + failedButOk;
-        }
-        bool allPassed() const {
-            return failed == 0 && failedButOk == 0;
-        }
-        bool allOk() const {
-            return failed == 0;
-        }
+        std::size_t total() const;
+        bool allPassed() const;
+        bool allOk() const;
 
         std::size_t passed = 0;
         std::size_t failed = 0;
@@ -44,29 +27,11 @@ namespace Catch {
 
     struct Totals {
 
-        Totals operator - ( Totals const& other ) const {
-            Totals diff;
-            diff.assertions = assertions - other.assertions;
-            diff.testCases = testCases - other.testCases;
-            return diff;
-        }
+        Totals operator - ( Totals const& other ) const;
+        Totals& operator += ( Totals const& other );
 
-        Totals delta( Totals const& prevTotals ) const {
-            Totals diff = *this - prevTotals;
-            if( diff.assertions.failed > 0 )
-                ++diff.testCases.failed;
-            else if( diff.assertions.failedButOk > 0 )
-                ++diff.testCases.failedButOk;
-            else
-                ++diff.testCases.passed;
-            return diff;
-        }
+        Totals delta( Totals const& prevTotals ) const;
 
-        Totals& operator += ( Totals const& other ) {
-            assertions += other.assertions;
-            testCases += other.testCases;
-            return *this;
-        }
 
         Counts assertions;
         Counts testCases;

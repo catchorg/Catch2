@@ -11,11 +11,8 @@
 #include "catch_compiler_capabilities.h"
 #include "catch_common.h"
 
-#include <algorithm>
 #include <string>
-#include <assert.h>
 #include <vector>
-#include <stdexcept>
 #include <memory>
 
 CATCH_INTERNAL_SUPPRESS_ETD_WARNINGS
@@ -27,10 +24,7 @@ namespace TestCaseTracking {
         std::string name;
         SourceLineInfo location;
 
-        NameAndLocation( std::string const& _name, SourceLineInfo const& _location )
-        :   name( _name ),
-            location( _location )
-        {}
+        NameAndLocation( std::string const& _name, SourceLineInfo const& _location );
     };
 
     struct ITracker;
@@ -38,7 +32,7 @@ namespace TestCaseTracking {
     using ITrackerPtr = std::shared_ptr<ITracker>;
 
     struct ITracker {
-        virtual ~ITracker();
+        virtual ~ITracker() = default;
 
         // static queries
         virtual NameAndLocation const& nameAndLocation() const = 0;
@@ -79,36 +73,17 @@ namespace TestCaseTracking {
 
     public:
 
-        static TrackerContext& instance() {
-            static TrackerContext s_instance;
-            return s_instance;
-        }
+        static TrackerContext& instance();
 
         ITracker& startRun();
+        void endRun();
 
-        void endRun() {
-            m_rootTracker.reset();
-            m_currentTracker = nullptr;
-            m_runState = NotStarted;
-        }
+        void startCycle();
+        void completeCycle();
 
-        void startCycle() {
-            m_currentTracker = m_rootTracker.get();
-            m_runState = Executing;
-        }
-        void completeCycle() {
-            m_runState = CompletedCycle;
-        }
-
-        bool completedCycle() const {
-            return m_runState == CompletedCycle;
-        }
-        ITracker& currentTracker() {
-            return *m_currentTracker;
-        }
-        void setCurrentTracker( ITracker* tracker ) {
-            m_currentTracker = tracker;
-        }
+        bool completedCycle() const;
+        ITracker& currentTracker();
+        void setCurrentTracker( ITracker* tracker );
     };
 
     class TrackerBase : public ITracker {
@@ -121,238 +96,86 @@ namespace TestCaseTracking {
             CompletedSuccessfully,
             Failed
         };
+
         class TrackerHasName {
             NameAndLocation m_nameAndLocation;
         public:
-            TrackerHasName( NameAndLocation const& nameAndLocation ) : m_nameAndLocation( nameAndLocation ) {}
-            bool operator ()( ITrackerPtr const& tracker ) {
-                return
-                    tracker->nameAndLocation().name == m_nameAndLocation.name &&
-                    tracker->nameAndLocation().location == m_nameAndLocation.location;
-            }
+            TrackerHasName( NameAndLocation const& nameAndLocation );
+            bool operator ()( ITrackerPtr const& tracker );
         };
+
         typedef std::vector<ITrackerPtr> Children;
         NameAndLocation m_nameAndLocation;
         TrackerContext& m_ctx;
         ITracker* m_parent;
         Children m_children;
         CycleState m_runState = NotStarted;
+
     public:
-        TrackerBase( NameAndLocation const& nameAndLocation, TrackerContext& ctx, ITracker* parent )
-        :   m_nameAndLocation( nameAndLocation ),
-            m_ctx( ctx ),
-            m_parent( parent )
-        {}
-        virtual ~TrackerBase();
+        TrackerBase( NameAndLocation const& nameAndLocation, TrackerContext& ctx, ITracker* parent );
+        virtual ~TrackerBase() = default;
 
-        virtual NameAndLocation const& nameAndLocation() const override {
-            return m_nameAndLocation;
-        }
-        virtual bool isComplete() const override {
-            return m_runState == CompletedSuccessfully || m_runState == Failed;
-        }
-        virtual bool isSuccessfullyCompleted() const override {
-            return m_runState == CompletedSuccessfully;
-        }
-        virtual bool isOpen() const override {
-            return m_runState != NotStarted && !isComplete();
-        }
-        virtual bool hasChildren() const override {
-            return !m_children.empty();
-        }
+        virtual NameAndLocation const& nameAndLocation() const override;
+        virtual bool isComplete() const override;
+        virtual bool isSuccessfullyCompleted() const override;
+        virtual bool isOpen() const override;
+        virtual bool hasChildren() const override;
 
 
-        virtual void addChild( ITrackerPtr const& child ) override {
-            m_children.push_back( child );
-        }
+        virtual void addChild( ITrackerPtr const& child ) override;
 
-        virtual ITrackerPtr findChild( NameAndLocation const& nameAndLocation ) override {
-            auto it = std::find_if( m_children.begin(), m_children.end(), TrackerHasName( nameAndLocation ) );
-            return( it != m_children.end() )
-                ? *it
-                : nullptr;
-        }
-        virtual ITracker& parent() override {
-            assert( m_parent ); // Should always be non-null except for root
-            return *m_parent;
-        }
+        virtual ITrackerPtr findChild( NameAndLocation const& nameAndLocation ) override;
+        virtual ITracker& parent() override;
 
-        virtual void openChild() override {
-            if( m_runState != ExecutingChildren ) {
-                m_runState = ExecutingChildren;
-                if( m_parent )
-                    m_parent->openChild();
-            }
-        }
+        virtual void openChild() override;
 
-        virtual bool isSectionTracker() const override { return false; }
-        virtual bool isIndexTracker() const override { return false; }
+        virtual bool isSectionTracker() const override;
+        virtual bool isIndexTracker() const override;
 
-        void open() {
-            m_runState = Executing;
-            moveToThis();
-            if( m_parent )
-                m_parent->openChild();
-        }
+        void open();
 
-        virtual void close() override {
+        virtual void close() override;
+        virtual void fail() override;
+        virtual void markAsNeedingAnotherRun() override;
 
-            // Close any still open children (e.g. generators)
-            while( &m_ctx.currentTracker() != this )
-                m_ctx.currentTracker().close();
-
-            switch( m_runState ) {
-                case NeedsAnotherRun:
-                    break;;
-
-                case Executing:
-                    m_runState = CompletedSuccessfully;
-                    break;
-                case ExecutingChildren:
-                    if( m_children.empty() || m_children.back()->isComplete() )
-                        m_runState = CompletedSuccessfully;
-                    break;
-
-                case NotStarted:
-                case CompletedSuccessfully:
-                case Failed:
-                    CATCH_INTERNAL_ERROR( "Illogical state: " << m_runState );
-
-                default:
-                    CATCH_INTERNAL_ERROR( "Unknown state: " << m_runState );
-            }
-            moveToParent();
-            m_ctx.completeCycle();
-        }
-        virtual void fail() override {
-            m_runState = Failed;
-            if( m_parent )
-                m_parent->markAsNeedingAnotherRun();
-            moveToParent();
-            m_ctx.completeCycle();
-        }
-        virtual void markAsNeedingAnotherRun() override {
-            m_runState = NeedsAnotherRun;
-        }
     private:
-        void moveToParent() {
-            assert( m_parent );
-            m_ctx.setCurrentTracker( m_parent );
-        }
-        void moveToThis() {
-            m_ctx.setCurrentTracker( this );
-        }
+        void moveToParent();
+        void moveToThis();
     };
 
     class SectionTracker : public TrackerBase {
         std::vector<std::string> m_filters;
     public:
-        SectionTracker( NameAndLocation const& nameAndLocation, TrackerContext& ctx, ITracker* parent )
-        :   TrackerBase( nameAndLocation, ctx, parent )
-        {
-            if( parent ) {
-                while( !parent->isSectionTracker() )
-                    parent = &parent->parent();
+        SectionTracker( NameAndLocation const& nameAndLocation, TrackerContext& ctx, ITracker* parent );
+        virtual ~SectionTracker() = default;
 
-                SectionTracker& parentSection = static_cast<SectionTracker&>( *parent );
-                addNextFilters( parentSection.m_filters );
-            }
-        }
-        virtual ~SectionTracker();
+        virtual bool isSectionTracker() const override;
 
-        virtual bool isSectionTracker() const override { return true; }
+        static SectionTracker& acquire( TrackerContext& ctx, NameAndLocation const& nameAndLocation );
 
-        static SectionTracker& acquire( TrackerContext& ctx, NameAndLocation const& nameAndLocation ) {
-            std::shared_ptr<SectionTracker> section;
+        void tryOpen();
 
-            ITracker& currentTracker = ctx.currentTracker();
-            if( ITrackerPtr childTracker = currentTracker.findChild( nameAndLocation ) ) {
-                assert( childTracker );
-                assert( childTracker->isSectionTracker() );
-                section = std::static_pointer_cast<SectionTracker>( childTracker );
-            }
-            else {
-                section = std::make_shared<SectionTracker>( nameAndLocation, ctx, &currentTracker );
-                currentTracker.addChild( section );
-            }
-            if( !ctx.completedCycle() )
-                section->tryOpen();
-            return *section;
-        }
-
-        void tryOpen() {
-            if( !isComplete() && (m_filters.empty() || m_filters[0].empty() ||  m_filters[0] == m_nameAndLocation.name ) )
-                open();
-        }
-
-        void addInitialFilters( std::vector<std::string> const& filters ) {
-            if( !filters.empty() ) {
-                m_filters.push_back(""); // Root - should never be consulted
-                m_filters.push_back(""); // Test Case - not a section filter
-                m_filters.insert( m_filters.end(), filters.begin(), filters.end() );
-            }
-        }
-        void addNextFilters( std::vector<std::string> const& filters ) {
-            if( filters.size() > 1 )
-                m_filters.insert( m_filters.end(), ++filters.begin(), filters.end() );
-        }
+        void addInitialFilters( std::vector<std::string> const& filters );
+        void addNextFilters( std::vector<std::string> const& filters );
     };
 
     class IndexTracker : public TrackerBase {
         int m_size;
         int m_index = -1;
     public:
-        IndexTracker( NameAndLocation const& nameAndLocation, TrackerContext& ctx, ITracker* parent, int size )
-        :   TrackerBase( nameAndLocation, ctx, parent ),
-            m_size( size )
-        {}
-        virtual ~IndexTracker();
+        IndexTracker( NameAndLocation const& nameAndLocation, TrackerContext& ctx, ITracker* parent, int size );
+        virtual ~IndexTracker() = default;
 
-        virtual bool isIndexTracker() const override { return true; }
+        virtual bool isIndexTracker() const override;
 
-        static IndexTracker& acquire( TrackerContext& ctx, NameAndLocation const& nameAndLocation, int size ) {
-            std::shared_ptr<IndexTracker> tracker;
+        static IndexTracker& acquire( TrackerContext& ctx, NameAndLocation const& nameAndLocation, int size );
 
-            ITracker& currentTracker = ctx.currentTracker();
-            if( ITrackerPtr childTracker = currentTracker.findChild( nameAndLocation ) ) {
-                assert( childTracker );
-                assert( childTracker->isIndexTracker() );
-                tracker = std::static_pointer_cast<IndexTracker>( childTracker );
-            }
-            else {
-                tracker = std::make_shared<IndexTracker>( nameAndLocation, ctx, &currentTracker, size );
-                currentTracker.addChild( tracker );
-            }
+        int index() const;
 
-            if( !ctx.completedCycle() && !tracker->isComplete() ) {
-                if( tracker->m_runState != ExecutingChildren && tracker->m_runState != NeedsAnotherRun )
-                    tracker->moveNext();
-                tracker->open();
-            }
+        void moveNext();
 
-            return *tracker;
-        }
-
-        int index() const { return m_index; }
-
-        void moveNext() {
-            m_index++;
-            m_children.clear();
-        }
-
-        virtual void close() override {
-            TrackerBase::close();
-            if( m_runState == CompletedSuccessfully && m_index < m_size-1 )
-                m_runState = Executing;
-        }
+        virtual void close() override;
     };
-
-    inline ITracker& TrackerContext::startRun() {
-        m_rootTracker = std::make_shared<SectionTracker>( NameAndLocation( "{root}", CATCH_INTERNAL_LINEINFO ), *this, nullptr );
-        m_currentTracker = nullptr;
-        m_runState = Executing;
-        return *m_rootTracker;
-    }
 
 } // namespace TestCaseTracking
 

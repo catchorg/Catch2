@@ -6,119 +6,86 @@
  *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  */
 
-#include "../internal/catch_interfaces_reporter.h"
-
+ #include "catch_reporter_multi.h"
+ 
 namespace Catch {
 
-class MultipleReporters : public IStreamingReporter {
-    typedef std::vector<IStreamingReporterPtr> Reporters;
-    Reporters m_reporters;
-
-public:
-    void add( IStreamingReporterPtr&& reporter ) {
+    void MultipleReporters::add( IStreamingReporterPtr&& reporter ) {
         m_reporters.push_back( std::move( reporter ) );
     }
 
-public: // IStreamingReporter
-
-    virtual ReporterPreferences getPreferences() const override {
+    ReporterPreferences MultipleReporters::getPreferences() const {
         return m_reporters[0]->getPreferences();
     }
 
-    virtual void noMatchingTestCases( std::string const& spec ) override {
+    void MultipleReporters::noMatchingTestCases( std::string const& spec ) {
         for( auto const& reporter : m_reporters )
             reporter->noMatchingTestCases( spec );
     }
 
 
-    virtual void testRunStarting( TestRunInfo const& testRunInfo ) override {
+    void MultipleReporters::testRunStarting( TestRunInfo const& testRunInfo ) {
         for( auto const& reporter : m_reporters )
             reporter->testRunStarting( testRunInfo );
     }
 
-    virtual void testGroupStarting( GroupInfo const& groupInfo ) override {
+    void MultipleReporters::testGroupStarting( GroupInfo const& groupInfo ) {
         for( auto const& reporter : m_reporters )
             reporter->testGroupStarting( groupInfo );
     }
 
 
-    virtual void testCaseStarting( TestCaseInfo const& testInfo ) override {
+    void MultipleReporters::testCaseStarting( TestCaseInfo const& testInfo ) {
         for( auto const& reporter : m_reporters )
             reporter->testCaseStarting( testInfo );
     }
 
-    virtual void sectionStarting( SectionInfo const& sectionInfo ) override {
+    void MultipleReporters::sectionStarting( SectionInfo const& sectionInfo ) {
         for( auto const& reporter : m_reporters )
             reporter->sectionStarting( sectionInfo );
     }
 
-
-    virtual void assertionStarting( AssertionInfo const& assertionInfo ) override {
+    void MultipleReporters::assertionStarting( AssertionInfo const& assertionInfo ) {
         for( auto const& reporter : m_reporters )
             reporter->assertionStarting( assertionInfo );
     }
 
-
     // The return value indicates if the messages buffer should be cleared:
-    virtual bool assertionEnded( AssertionStats const& assertionStats ) override {
+    bool MultipleReporters::assertionEnded( AssertionStats const& assertionStats ) {
         bool clearBuffer = false;
         for( auto const& reporter : m_reporters )
             clearBuffer |= reporter->assertionEnded( assertionStats );
         return clearBuffer;
     }
 
-    virtual void sectionEnded( SectionStats const& sectionStats ) override {
+    void MultipleReporters::sectionEnded( SectionStats const& sectionStats ) {
         for( auto const& reporter : m_reporters )
             reporter->sectionEnded( sectionStats );
     }
 
-    virtual void testCaseEnded( TestCaseStats const& testCaseStats ) override {
+    void MultipleReporters::testCaseEnded( TestCaseStats const& testCaseStats ) {
         for( auto const& reporter : m_reporters )
             reporter->testCaseEnded( testCaseStats );
     }
 
-    virtual void testGroupEnded( TestGroupStats const& testGroupStats ) override {
+    void MultipleReporters::testGroupEnded( TestGroupStats const& testGroupStats ) {
         for( auto const& reporter : m_reporters )
             reporter->testGroupEnded( testGroupStats );
     }
 
-    virtual void testRunEnded( TestRunStats const& testRunStats ) override {
+    void MultipleReporters::testRunEnded( TestRunStats const& testRunStats ) {
         for( auto const& reporter : m_reporters )
             reporter->testRunEnded( testRunStats );
     }
 
 
-    virtual void skipTest( TestCaseInfo const& testInfo ) override {
+    void MultipleReporters::skipTest( TestCaseInfo const& testInfo ) {
         for( auto const& reporter : m_reporters )
             reporter->skipTest( testInfo );
     }
 
-    virtual bool isMulti() const override {
+    bool MultipleReporters::isMulti() const {
         return true;
     }
-
-};
-
-void addReporter( IStreamingReporterPtr& existingReporter, IStreamingReporterPtr&& additionalReporter ) {
-
-    if( !existingReporter ) {
-        existingReporter = std::move( additionalReporter );
-        return;
-    }
-
-    MultipleReporters* multi = nullptr;
-
-    if( existingReporter->isMulti() ) {
-        multi = static_cast<MultipleReporters*>( existingReporter.get() );
-    }
-    else {
-        auto newMulti = std::unique_ptr<MultipleReporters>( new MultipleReporters );
-        newMulti->add( std::move( existingReporter ) );
-        multi = newMulti.get();
-        existingReporter = std::move( newMulti );
-    }
-    multi->add( std::move( additionalReporter ) );
-}
-
 
 } // end namespace Catch

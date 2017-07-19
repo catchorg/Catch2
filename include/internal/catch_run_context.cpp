@@ -1,5 +1,7 @@
 #include "catch_run_context.hpp"
 
+#include <cassert>
+
 namespace Catch {
 
     StreamRedirect::StreamRedirect(std::ostream& stream, std::string& targetString)
