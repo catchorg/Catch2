@@ -133,16 +133,15 @@ namespace Catch {
             maxNameLen = (std::max)( maxNameLen, factoryKvp.first.size() );
 
         for( auto const& factoryKvp : getRegistryHub().getReporterRegistry().getFactories() ) {
-            auto wrapper = Column( factoryKvp.second->getDescription() )
-                                                        .initialIndent( 0 )
-                                                        .indent( 7+maxNameLen )
-                                                        .width( CATCH_CONFIG_CONSOLE_WIDTH - maxNameLen-8 );
             Catch::cout()
-                    << "  "
-                    << factoryKvp.first
-                    << ':'
-                    << std::string( maxNameLen - factoryKvp.first.size() + 2, ' ' )
-                    << wrapper << '\n';
+                    << Column( factoryKvp.first + ":" )
+                            .indent(2)
+                            .width( 5+maxNameLen )
+                    +  Column( factoryKvp.second->getDescription() )
+                            .initialIndent(0)
+                            .indent(2)
+                            .width( CATCH_CONFIG_CONSOLE_WIDTH - maxNameLen-8 )
+                    << "\n";
         }
         Catch::cout() << std::endl;
         return factories.size();
