@@ -16,11 +16,10 @@
 namespace Catch {
 
     ExceptionTranslatorRegistry::~ExceptionTranslatorRegistry() {
-        deleteAll( m_translators );
     }
 
     void ExceptionTranslatorRegistry::registerTranslator( const IExceptionTranslator* translator ) {
-        m_translators.push_back( translator );
+        m_translators.push_back( std::unique_ptr<const IExceptionTranslator>( translator ) );
     }
 
     std::string ExceptionTranslatorRegistry::translateActiveException() const {

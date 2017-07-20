@@ -45,16 +45,6 @@ namespace Catch {
         virtual ~NonCopyable();
     };
 
-    template<typename ContainerT>
-    void deleteAll( ContainerT& container ) {
-        for( auto p : container )
-            delete p;
-    }
-    template<typename AssociativeContainerT>
-    void deleteAllValues( AssociativeContainerT& container ) {
-        for( auto const& kvp : container )
-            delete kvp.second;
-    }
 
     bool startsWith( std::string const& s, std::string const& prefix );
     bool startsWith( std::string const& s, char prefix );

@@ -18,7 +18,7 @@ namespace Catch {
     typedef std::string(*exceptionTranslateFunction)();
 
     struct IExceptionTranslator;
-    typedef std::vector<const IExceptionTranslator*> ExceptionTranslators;
+    typedef std::vector<std::unique_ptr<IExceptionTranslator const>> ExceptionTranslators;
 
     struct IExceptionTranslator {
         virtual ~IExceptionTranslator();
@@ -40,7 +40,7 @@ namespace Catch {
             : m_translateFunction( translateFunction )
             {}
 
-            virtual std::string translate( ExceptionTranslators::const_iterator it, ExceptionTranslators::const_iterator itEnd ) const override {
+            std::string translate( ExceptionTranslators::const_iterator it, ExceptionTranslators::const_iterator itEnd ) const override {
                 try {
                     if( it == itEnd )
                         throw;

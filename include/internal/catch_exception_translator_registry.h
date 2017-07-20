@@ -11,6 +11,7 @@
 #include "catch_interfaces_exception.h"
 #include <vector>
 #include <string>
+#include <memory>
 
 namespace Catch {
 
@@ -22,7 +23,7 @@ namespace Catch {
         std::string tryTranslators() const;
 
     private:
-        std::vector<const IExceptionTranslator*> m_translators;
+        std::vector<std::unique_ptr<IExceptionTranslator const>> m_translators;
     };
 }
 
