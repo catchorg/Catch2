@@ -35,8 +35,7 @@
 #endif
 
 
-namespace Catch { namespace clara { namespace TextFlow
-{
+namespace Catch { namespace clara { namespace TextFlow {
 
     inline auto isWhitespace( char c ) -> bool {
         static std::string chars = " \t\n\r";
@@ -68,6 +67,7 @@ namespace Catch { namespace clara { namespace TextFlow
             size_t m_pos = 0;
 
             size_t m_len = 0;
+            size_t m_end = 0;
             bool m_suffix = false;
 
             iterator( Column const& column, size_t stringIndex )
@@ -92,8 +92,12 @@ namespace Catch { namespace clara { namespace TextFlow
 
                 m_suffix = false;
                 auto width = m_column.m_width-indent();
-                if( line().size() < m_pos + width ) {
-                    m_len = line().size() - m_pos;
+                m_end = m_pos;
+                while( m_end < line().size() && line()[m_end] != '\n' )
+                    ++m_end;
+
+                if( m_end < m_pos + width ) {
+                    m_len = m_end - m_pos;
                 }
                 else {
                     size_t len = width;
@@ -131,15 +135,18 @@ namespace Catch { namespace clara { namespace TextFlow
 
             auto operator *() const -> std::string {
                 assert( m_stringIndex < m_column.m_strings.size() );
-                assert( m_pos < line().size() );
-                if( m_pos + m_column.m_width < line().size() )
+                assert( m_pos < m_end );
+                if( m_pos + m_column.m_width < m_end )
                     return addIndentAndSuffix(line().substr(m_pos, m_len));
                 else
-                    return addIndentAndSuffix(line().substr(m_pos));
+                    return addIndentAndSuffix(line().substr(m_pos, m_end - m_pos));
             }
 
             auto operator ++() -> iterator& {
                 m_pos += m_len;
+                if( m_pos < line().size() && line()[m_pos] == '\n' )
+                    m_pos += 1;
+
                 while( m_pos < line().size() && isWhitespace( line()[m_pos] ) )
                     ++m_pos;
 
