@@ -114,7 +114,6 @@ CheckFileList(TOP_LEVEL_HEADERS ${HEADER_DIR})
 # Please keep these ordered alphabetically
 set(EXTERNAL_HEADERS
         ${HEADER_DIR}/external/clara.hpp
-        ${HEADER_DIR}/external/tbc_text_format.h
         )
 CheckFileList(EXTERNAL_HEADERS ${HEADER_DIR}/external)
 
