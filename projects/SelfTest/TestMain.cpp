@@ -465,17 +465,6 @@ TEST_CASE( "Text can be formatted using the Text class" ) {
     CHECK( Text( "hi there", narrow ).toString() == "hi\nthere" );
 }
 
-TEST_CASE( "Long text is truncated", "[Text][Truncated]" ) {
-
-    std::string longLine( 90, '*' );
-
-    std::ostringstream oss;
-    for(int i = 0; i < 600; ++i )
-        oss << longLine << longLine << "\n";
-    Text t( oss.str() );
-    CHECK_THAT( t.toString(), EndsWith( "... message truncated due to excessive size" ) );
-
-}
 
 inline void manuallyRegisteredTestFunction() {
     SUCCEED( "was called" );

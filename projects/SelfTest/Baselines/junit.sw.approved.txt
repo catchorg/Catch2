@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuitesspanner>
-  <testsuite name="<exe-name>" errors="15" failures="84" tests="942" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
+  <testsuite name="<exe-name>" errors="15" failures="84" tests="941" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
     <testcase classname="<exe-name>.global" name="# A test name that starts with a #" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="#748 - captures with unexpected exceptions/outside assertions" time="{duration}">
       <error type="TEST_CASE">
@@ -309,7 +309,6 @@ ConditionTests.cpp:<line number>
     <testcase classname="<exe-name>.global" name="Long strings can be wrapped/With wrap-before/ after characters/No wrapping" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Long strings can be wrapped/With wrap-before/ after characters/Wrap before" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Long strings can be wrapped/With wrap-before/ after characters/Wrap after" time="{duration}"/>
-    <testcase classname="<exe-name>.global" name="Long text is truncated" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="ManuallyRegistered" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Matchers can be (AllOf) composed with the &amp;&amp; operator" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Matchers can be (AnyOf) composed with the || operator" time="{duration}"/>
