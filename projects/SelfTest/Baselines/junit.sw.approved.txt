@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuitesspanner>
-  <testsuite name="<exe-name>" errors="15" failures="84" tests="941" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
+  <testsuite name="<exe-name>" errors="15" failures="84" tests="899" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
     <testcase classname="<exe-name>.global" name="# A test name that starts with a #" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="#748 - captures with unexpected exceptions/outside assertions" time="{duration}">
       <error type="TEST_CASE">
@@ -295,20 +295,6 @@ ConditionTests.cpp:<line number>
     </testcase>
     <testcase classname="<exe-name>.global" name="Inequality checks that should succeed" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Less-than inequalities with different epsilons" time="{duration}"/>
-    <testcase classname="<exe-name>.global" name="Long strings can be wrapped/plain string/No wrapping" time="{duration}"/>
-    <testcase classname="<exe-name>.global" name="Long strings can be wrapped/plain string/Wrapped once" time="{duration}"/>
-    <testcase classname="<exe-name>.global" name="Long strings can be wrapped/plain string/Wrapped twice" time="{duration}"/>
-    <testcase classname="<exe-name>.global" name="Long strings can be wrapped/plain string/Wrapped three times" time="{duration}"/>
-    <testcase classname="<exe-name>.global" name="Long strings can be wrapped/plain string/Short wrap" time="{duration}"/>
-    <testcase classname="<exe-name>.global" name="Long strings can be wrapped/plain string/As container" time="{duration}"/>
-    <testcase classname="<exe-name>.global" name="Long strings can be wrapped/plain string/Indent first line differently" time="{duration}"/>
-    <testcase classname="<exe-name>.global" name="Long strings can be wrapped/With newlines/No wrapping" time="{duration}"/>
-    <testcase classname="<exe-name>.global" name="Long strings can be wrapped/With newlines/Trailing newline" time="{duration}"/>
-    <testcase classname="<exe-name>.global" name="Long strings can be wrapped/With newlines/Wrapped once" time="{duration}"/>
-    <testcase classname="<exe-name>.global" name="Long strings can be wrapped/With newlines/Wrapped twice" time="{duration}"/>
-    <testcase classname="<exe-name>.global" name="Long strings can be wrapped/With wrap-before/ after characters/No wrapping" time="{duration}"/>
-    <testcase classname="<exe-name>.global" name="Long strings can be wrapped/With wrap-before/ after characters/Wrap before" time="{duration}"/>
-    <testcase classname="<exe-name>.global" name="Long strings can be wrapped/With wrap-before/ after characters/Wrap after" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="ManuallyRegistered" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Matchers can be (AllOf) composed with the &amp;&amp; operator" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Matchers can be (AnyOf) composed with the || operator" time="{duration}"/>
@@ -533,12 +519,6 @@ MatchersTests.cpp:<line number>
     <testcase classname="<exe-name>.global" name="StringRef/Comparisons" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="StringRef/From string/Copied" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="StringRef/From string/Moved" time="{duration}"/>
-    <testcase classname="<exe-name>.global" name="Strings can be rendered with colour" time="{duration}">
-      <system-out>
-hello
-hello
-      </system-out>
-    </testcase>
     <testcase classname="<exe-name>.global" name="Tabs and newlines show in output" time="{duration}">
       <failure message="&quot;if ($b == 10) {
 		$a	= 20;
@@ -555,7 +535,6 @@ MiscTests.cpp:<line number>
     <testcase classname="<exe-name>.global" name="Tag alias can be registered against tag patterns/Tag aliases must be of the form [@name]" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Test case with one argument" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Test enum bit values" time="{duration}"/>
-    <testcase classname="<exe-name>.global" name="Text can be formatted using the Text class" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="The NO_FAIL macro reports a failure but does not fail the test" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="This test 'should' fail but doesn't" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Tracker" time="{duration}"/>
@@ -810,8 +789,6 @@ EnumToString.cpp:<line number>
 A string sent directly to stdout
 Message from section one
 Message from section two
-hello
-hello
     </system-out>
     <system-err>
 A string sent directly to stderr

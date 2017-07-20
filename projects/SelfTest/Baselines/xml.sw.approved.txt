@@ -2089,599 +2089,6 @@
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="Long strings can be wrapped" tags="[wrap]" filename="projects/<exe-name>/TestMain.cpp" >
-      <Section name="plain string" filename="projects/<exe-name>/TestMain.cpp" >
-        <Section name="No wrapping" filename="projects/<exe-name>/TestMain.cpp" >
-          <Expression success="true" type="CHECK" filename="projects/<exe-name>/TestMain.cpp" >
-            <Original>
-              Text( testString, TextAttributes().setWidth( 80 ) ).toString() == testString
-            </Original>
-            <Expanded>
-              "one two three four"
-==
-"one two three four"
-            </Expanded>
-          </Expression>
-          <Expression success="true" type="CHECK" filename="projects/<exe-name>/TestMain.cpp" >
-            <Original>
-              Text( testString, TextAttributes().setWidth( 18 ) ).toString() == testString
-            </Original>
-            <Expanded>
-              "one two three four"
-==
-"one two three four"
-            </Expanded>
-          </Expression>
-          <OverallResults successes="2" failures="0" expectedFailures="0"/>
-        </Section>
-        <OverallResults successes="2" failures="0" expectedFailures="0"/>
-      </Section>
-      <Section name="plain string" filename="projects/<exe-name>/TestMain.cpp" >
-        <Section name="Wrapped once" filename="projects/<exe-name>/TestMain.cpp" >
-          <Expression success="true" type="CHECK" filename="projects/<exe-name>/TestMain.cpp" >
-            <Original>
-              Text( testString, TextAttributes().setWidth( 17 ) ).toString() == "one two three\nfour"
-            </Original>
-            <Expanded>
-              "one two three
-four"
-==
-"one two three
-four"
-            </Expanded>
-          </Expression>
-          <Expression success="true" type="CHECK" filename="projects/<exe-name>/TestMain.cpp" >
-            <Original>
-              Text( testString, TextAttributes().setWidth( 16 ) ).toString() == "one two three\nfour"
-            </Original>
-            <Expanded>
-              "one two three
-four"
-==
-"one two three
-four"
-            </Expanded>
-          </Expression>
-          <Expression success="true" type="CHECK" filename="projects/<exe-name>/TestMain.cpp" >
-            <Original>
-              Text( testString, TextAttributes().setWidth( 14 ) ).toString() == "one two three\nfour"
-            </Original>
-            <Expanded>
-              "one two three
-four"
-==
-"one two three
-four"
-            </Expanded>
-          </Expression>
-          <Expression success="true" type="CHECK" filename="projects/<exe-name>/TestMain.cpp" >
-            <Original>
-              Text( testString, TextAttributes().setWidth( 13 ) ).toString() == "one two three\nfour"
-            </Original>
-            <Expanded>
-              "one two three
-four"
-==
-"one two three
-four"
-            </Expanded>
-          </Expression>
-          <Expression success="true" type="CHECK" filename="projects/<exe-name>/TestMain.cpp" >
-            <Original>
-              Text( testString, TextAttributes().setWidth( 12 ) ).toString() == "one two\nthree four"
-            </Original>
-            <Expanded>
-              "one two
-three four"
-==
-"one two
-three four"
-            </Expanded>
-          </Expression>
-          <OverallResults successes="5" failures="0" expectedFailures="0"/>
-        </Section>
-        <OverallResults successes="5" failures="0" expectedFailures="0"/>
-      </Section>
-      <Section name="plain string" filename="projects/<exe-name>/TestMain.cpp" >
-        <Section name="Wrapped twice" filename="projects/<exe-name>/TestMain.cpp" >
-          <Expression success="true" type="CHECK" filename="projects/<exe-name>/TestMain.cpp" >
-            <Original>
-              Text( testString, TextAttributes().setWidth( 9 ) ).toString() == "one two\nthree\nfour"
-            </Original>
-            <Expanded>
-              "one two
-three
-four"
-==
-"one two
-three
-four"
-            </Expanded>
-          </Expression>
-          <Expression success="true" type="CHECK" filename="projects/<exe-name>/TestMain.cpp" >
-            <Original>
-              Text( testString, TextAttributes().setWidth( 8 ) ).toString() == "one two\nthree\nfour"
-            </Original>
-            <Expanded>
-              "one two
-three
-four"
-==
-"one two
-three
-four"
-            </Expanded>
-          </Expression>
-          <Expression success="true" type="CHECK" filename="projects/<exe-name>/TestMain.cpp" >
-            <Original>
-              Text( testString, TextAttributes().setWidth( 7 ) ).toString() == "one two\nthree\nfour"
-            </Original>
-            <Expanded>
-              "one two
-three
-four"
-==
-"one two
-three
-four"
-            </Expanded>
-          </Expression>
-          <OverallResults successes="3" failures="0" expectedFailures="0"/>
-        </Section>
-        <OverallResults successes="3" failures="0" expectedFailures="0"/>
-      </Section>
-      <Section name="plain string" filename="projects/<exe-name>/TestMain.cpp" >
-        <Section name="Wrapped three times" filename="projects/<exe-name>/TestMain.cpp" >
-          <Expression success="true" type="CHECK" filename="projects/<exe-name>/TestMain.cpp" >
-            <Original>
-              Text( testString, TextAttributes().setWidth( 6 ) ).toString() == "one\ntwo\nthree\nfour"
-            </Original>
-            <Expanded>
-              "one
-two
-three
-four"
-==
-"one
-two
-three
-four"
-            </Expanded>
-          </Expression>
-          <Expression success="true" type="CHECK" filename="projects/<exe-name>/TestMain.cpp" >
-            <Original>
-              Text( testString, TextAttributes().setWidth( 5 ) ).toString() == "one\ntwo\nthree\nfour"
-            </Original>
-            <Expanded>
-              "one
-two
-three
-four"
-==
-"one
-two
-three
-four"
-            </Expanded>
-          </Expression>
-          <OverallResults successes="2" failures="0" expectedFailures="0"/>
-        </Section>
-        <OverallResults successes="2" failures="0" expectedFailures="0"/>
-      </Section>
-      <Section name="plain string" filename="projects/<exe-name>/TestMain.cpp" >
-        <Section name="Short wrap" filename="projects/<exe-name>/TestMain.cpp" >
-          <Expression success="true" type="CHECK" filename="projects/<exe-name>/TestMain.cpp" >
-            <Original>
-              Text( "abcdef", TextAttributes().setWidth( 4 ) ).toString() == "abc-\ndef"
-            </Original>
-            <Expanded>
-              "abc-
-def"
-==
-"abc-
-def"
-            </Expanded>
-          </Expression>
-          <Expression success="true" type="CHECK" filename="projects/<exe-name>/TestMain.cpp" >
-            <Original>
-              Text( "abcdefg", TextAttributes().setWidth( 4 ) ).toString() == "abc-\ndefg"
-            </Original>
-            <Expanded>
-              "abc-
-defg"
-==
-"abc-
-defg"
-            </Expanded>
-          </Expression>
-          <Expression success="true" type="CHECK" filename="projects/<exe-name>/TestMain.cpp" >
-            <Original>
-              Text( "abcdefgh", TextAttributes().setWidth( 4 ) ).toString() == "abc-\ndef-\ngh"
-            </Original>
-            <Expanded>
-              "abc-
-def-
-gh"
-==
-"abc-
-def-
-gh"
-            </Expanded>
-          </Expression>
-          <Expression success="true" type="CHECK" filename="projects/<exe-name>/TestMain.cpp" >
-            <Original>
-              Text( testString, TextAttributes().setWidth( 4 ) ).toString() == "one\ntwo\nthr-\nee\nfour"
-            </Original>
-            <Expanded>
-              "one
-two
-thr-
-ee
-four"
-==
-"one
-two
-thr-
-ee
-four"
-            </Expanded>
-          </Expression>
-          <Expression success="true" type="CHECK" filename="projects/<exe-name>/TestMain.cpp" >
-            <Original>
-              Text( testString, TextAttributes().setWidth( 3 ) ).toString() == "one\ntwo\nth-\nree\nfo-\nur"
-            </Original>
-            <Expanded>
-              "one
-two
-th-
-ree
-fo-
-ur"
-==
-"one
-two
-th-
-ree
-fo-
-ur"
-            </Expanded>
-          </Expression>
-          <OverallResults successes="5" failures="0" expectedFailures="0"/>
-        </Section>
-        <OverallResults successes="5" failures="0" expectedFailures="0"/>
-      </Section>
-      <Section name="plain string" filename="projects/<exe-name>/TestMain.cpp" >
-        <Section name="As container" filename="projects/<exe-name>/TestMain.cpp" >
-          <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/TestMain.cpp" >
-            <Original>
-              text.size() == 4
-            </Original>
-            <Expanded>
-              4 == 4
-            </Expanded>
-          </Expression>
-          <Expression success="true" type="CHECK" filename="projects/<exe-name>/TestMain.cpp" >
-            <Original>
-              text[0] == "one"
-            </Original>
-            <Expanded>
-              "one" == "one"
-            </Expanded>
-          </Expression>
-          <Expression success="true" type="CHECK" filename="projects/<exe-name>/TestMain.cpp" >
-            <Original>
-              text[1] == "two"
-            </Original>
-            <Expanded>
-              "two" == "two"
-            </Expanded>
-          </Expression>
-          <Expression success="true" type="CHECK" filename="projects/<exe-name>/TestMain.cpp" >
-            <Original>
-              text[2] == "three"
-            </Original>
-            <Expanded>
-              "three" == "three"
-            </Expanded>
-          </Expression>
-          <Expression success="true" type="CHECK" filename="projects/<exe-name>/TestMain.cpp" >
-            <Original>
-              text[3] == "four"
-            </Original>
-            <Expanded>
-              "four" == "four"
-            </Expanded>
-          </Expression>
-          <OverallResults successes="5" failures="0" expectedFailures="0"/>
-        </Section>
-        <OverallResults successes="5" failures="0" expectedFailures="0"/>
-      </Section>
-      <Section name="plain string" filename="projects/<exe-name>/TestMain.cpp" >
-        <Section name="Indent first line differently" filename="projects/<exe-name>/TestMain.cpp" >
-          <Expression success="true" type="CHECK" filename="projects/<exe-name>/TestMain.cpp" >
-            <Original>
-              text.toString() == " one two\n    three\n    four"
-            </Original>
-            <Expanded>
-              " one two
-    three
-    four"
-==
-" one two
-    three
-    four"
-            </Expanded>
-          </Expression>
-          <OverallResults successes="1" failures="0" expectedFailures="0"/>
-        </Section>
-        <OverallResults successes="1" failures="0" expectedFailures="0"/>
-      </Section>
-      <Section name="With newlines" filename="projects/<exe-name>/TestMain.cpp" >
-        <Section name="No wrapping" filename="projects/<exe-name>/TestMain.cpp" >
-          <Expression success="true" type="CHECK" filename="projects/<exe-name>/TestMain.cpp" >
-            <Original>
-              Text( testString, TextAttributes().setWidth( 80 ) ).toString() == testString
-            </Original>
-            <Expanded>
-              "one two
-three four"
-==
-"one two
-three four"
-            </Expanded>
-          </Expression>
-          <Expression success="true" type="CHECK" filename="projects/<exe-name>/TestMain.cpp" >
-            <Original>
-              Text( testString, TextAttributes().setWidth( 18 ) ).toString() == testString
-            </Original>
-            <Expanded>
-              "one two
-three four"
-==
-"one two
-three four"
-            </Expanded>
-          </Expression>
-          <Expression success="true" type="CHECK" filename="projects/<exe-name>/TestMain.cpp" >
-            <Original>
-              Text( testString, TextAttributes().setWidth( 10 ) ).toString() == testString
-            </Original>
-            <Expanded>
-              "one two
-three four"
-==
-"one two
-three four"
-            </Expanded>
-          </Expression>
-          <OverallResults successes="3" failures="0" expectedFailures="0"/>
-        </Section>
-        <OverallResults successes="3" failures="0" expectedFailures="0"/>
-      </Section>
-      <Section name="With newlines" filename="projects/<exe-name>/TestMain.cpp" >
-        <Section name="Trailing newline" filename="projects/<exe-name>/TestMain.cpp" >
-          <Expression success="true" type="CHECK" filename="projects/<exe-name>/TestMain.cpp" >
-            <Original>
-              Text( "abcdef\n", TextAttributes().setWidth( 10 ) ).toString() == "abcdef"
-            </Original>
-            <Expanded>
-              "abcdef" == "abcdef"
-            </Expanded>
-          </Expression>
-          <Expression success="true" type="CHECK" filename="projects/<exe-name>/TestMain.cpp" >
-            <Original>
-              Text( "abcdef", TextAttributes().setWidth( 6 ) ).toString() == "abcdef"
-            </Original>
-            <Expanded>
-              "abcdef" == "abcdef"
-            </Expanded>
-          </Expression>
-          <Expression success="true" type="CHECK" filename="projects/<exe-name>/TestMain.cpp" >
-            <Original>
-              Text( "abcdef\n", TextAttributes().setWidth( 6 ) ).toString() == "abcdef"
-            </Original>
-            <Expanded>
-              "abcdef" == "abcdef"
-            </Expanded>
-          </Expression>
-          <Expression success="true" type="CHECK" filename="projects/<exe-name>/TestMain.cpp" >
-            <Original>
-              Text( "abcdef\n", TextAttributes().setWidth( 5 ) ).toString() == "abcd-\nef"
-            </Original>
-            <Expanded>
-              "abcd-
-ef"
-==
-"abcd-
-ef"
-            </Expanded>
-          </Expression>
-          <OverallResults successes="4" failures="0" expectedFailures="0"/>
-        </Section>
-        <OverallResults successes="4" failures="0" expectedFailures="0"/>
-      </Section>
-      <Section name="With newlines" filename="projects/<exe-name>/TestMain.cpp" >
-        <Section name="Wrapped once" filename="projects/<exe-name>/TestMain.cpp" >
-          <Expression success="true" type="CHECK" filename="projects/<exe-name>/TestMain.cpp" >
-            <Original>
-              Text( testString, TextAttributes().setWidth( 9 ) ).toString() == "one two\nthree\nfour"
-            </Original>
-            <Expanded>
-              "one two
-three
-four"
-==
-"one two
-three
-four"
-            </Expanded>
-          </Expression>
-          <Expression success="true" type="CHECK" filename="projects/<exe-name>/TestMain.cpp" >
-            <Original>
-              Text( testString, TextAttributes().setWidth( 8 ) ).toString() == "one two\nthree\nfour"
-            </Original>
-            <Expanded>
-              "one two
-three
-four"
-==
-"one two
-three
-four"
-            </Expanded>
-          </Expression>
-          <Expression success="true" type="CHECK" filename="projects/<exe-name>/TestMain.cpp" >
-            <Original>
-              Text( testString, TextAttributes().setWidth( 7 ) ).toString() == "one two\nthree\nfour"
-            </Original>
-            <Expanded>
-              "one two
-three
-four"
-==
-"one two
-three
-four"
-            </Expanded>
-          </Expression>
-          <OverallResults successes="3" failures="0" expectedFailures="0"/>
-        </Section>
-        <OverallResults successes="3" failures="0" expectedFailures="0"/>
-      </Section>
-      <Section name="With newlines" filename="projects/<exe-name>/TestMain.cpp" >
-        <Section name="Wrapped twice" filename="projects/<exe-name>/TestMain.cpp" >
-          <Expression success="true" type="CHECK" filename="projects/<exe-name>/TestMain.cpp" >
-            <Original>
-              Text( testString, TextAttributes().setWidth( 6 ) ).toString() == "one\ntwo\nthree\nfour"
-            </Original>
-            <Expanded>
-              "one
-two
-three
-four"
-==
-"one
-two
-three
-four"
-            </Expanded>
-          </Expression>
-          <OverallResults successes="1" failures="0" expectedFailures="0"/>
-        </Section>
-        <OverallResults successes="1" failures="0" expectedFailures="0"/>
-      </Section>
-      <Section name="With wrap-before/ after characters" filename="projects/<exe-name>/TestMain.cpp" >
-        <Section name="No wrapping" filename="projects/<exe-name>/TestMain.cpp" >
-          <Expression success="true" type="CHECK" filename="projects/<exe-name>/TestMain.cpp" >
-            <Original>
-              Text( testString, TextAttributes().setWidth( 80 ) ).toString() == testString
-            </Original>
-            <Expanded>
-              "one,two(three) &lt;here>"
-==
-"one,two(three) &lt;here>"
-            </Expanded>
-          </Expression>
-          <Expression success="true" type="CHECK" filename="projects/<exe-name>/TestMain.cpp" >
-            <Original>
-              Text( testString, TextAttributes().setWidth( 24 ) ).toString() == testString
-            </Original>
-            <Expanded>
-              "one,two(three) &lt;here>"
-==
-"one,two(three) &lt;here>"
-            </Expanded>
-          </Expression>
-          <OverallResults successes="2" failures="0" expectedFailures="0"/>
-        </Section>
-        <OverallResults successes="2" failures="0" expectedFailures="0"/>
-      </Section>
-      <Section name="With wrap-before/ after characters" filename="projects/<exe-name>/TestMain.cpp" >
-        <Section name="Wrap before" filename="projects/<exe-name>/TestMain.cpp" >
-          <Expression success="true" type="CHECK" filename="projects/<exe-name>/TestMain.cpp" >
-            <Original>
-              Text( testString, TextAttributes().setWidth( 11 ) ).toString() == "one,two\n(three)\n&lt;here>"
-            </Original>
-            <Expanded>
-              "one,two
-(three)
-&lt;here>"
-==
-"one,two
-(three)
-&lt;here>"
-            </Expanded>
-          </Expression>
-          <OverallResults successes="1" failures="0" expectedFailures="0"/>
-        </Section>
-        <OverallResults successes="1" failures="0" expectedFailures="0"/>
-      </Section>
-      <Section name="With wrap-before/ after characters" filename="projects/<exe-name>/TestMain.cpp" >
-        <Section name="Wrap after" filename="projects/<exe-name>/TestMain.cpp" >
-          <Expression success="true" type="CHECK" filename="projects/<exe-name>/TestMain.cpp" >
-            <Original>
-              Text( testString, TextAttributes().setWidth( 6 ) ).toString() == "one,\ntwo\n(thre-\ne)\n&lt;here>"
-            </Original>
-            <Expanded>
-              "one,
-two
-(thre-
-e)
-&lt;here>"
-==
-"one,
-two
-(thre-
-e)
-&lt;here>"
-            </Expanded>
-          </Expression>
-          <Expression success="true" type="CHECK" filename="projects/<exe-name>/TestMain.cpp" >
-            <Original>
-              Text( testString, TextAttributes().setWidth( 5 ) ).toString() == "one,\ntwo\n(thr-\nee)\n&lt;her-\ne>"
-            </Original>
-            <Expanded>
-              "one,
-two
-(thr-
-ee)
-&lt;her-
-e>"
-==
-"one,
-two
-(thr-
-ee)
-&lt;her-
-e>"
-            </Expanded>
-          </Expression>
-          <Expression success="true" type="CHECK" filename="projects/<exe-name>/TestMain.cpp" >
-            <Original>
-              Text( testString, TextAttributes().setWidth( 4 ) ).toString() == "one,\ntwo\n(th-\nree)\n&lt;he-\nre>"
-            </Original>
-            <Expanded>
-              "one,
-two
-(th-
-ree)
-&lt;he-
-re>"
-==
-"one,
-two
-(th-
-ree)
-&lt;he-
-re>"
-            </Expanded>
-          </Expression>
-          <OverallResults successes="3" failures="0" expectedFailures="0"/>
-        </Section>
-        <OverallResults successes="3" failures="0" expectedFailures="0"/>
-      </Section>
-      <OverallResult success="true"/>
-    </TestCase>
     <TestCase name="ManuallyRegistered" filename="projects/<exe-name>/TestMain.cpp" >
       <OverallResult success="true"/>
     </TestCase>
@@ -6084,14 +5491,6 @@ Message from section two
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="Strings can be rendered with colour" tags="[.][.colour][hide]" filename="projects/<exe-name>/TestMain.cpp" >
-      <OverallResult success="true">
-        <StdOut>
-hello
-hello
-        </StdOut>
-      </OverallResult>
-    </TestCase>
     <TestCase name="Tabs and newlines show in output" tags="[.][failing][hide][whitespace]" filename="projects/<exe-name>/MiscTests.cpp" >
       <Expression success="false" type="CHECK" filename="projects/<exe-name>/MiscTests.cpp" >
         <Original>
@@ -6201,29 +5600,6 @@ hello
         </Original>
         <Expanded>
           3221225472 (0x<hex digits>) == 3221225472
-        </Expanded>
-      </Expression>
-      <OverallResult success="true"/>
-    </TestCase>
-    <TestCase name="Text can be formatted using the Text class" filename="projects/<exe-name>/TestMain.cpp" >
-      <Expression success="true" type="CHECK" filename="projects/<exe-name>/TestMain.cpp" >
-        <Original>
-          Text( "hi there" ).toString() == "hi there"
-        </Original>
-        <Expanded>
-          "hi there" == "hi there"
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CHECK" filename="projects/<exe-name>/TestMain.cpp" >
-        <Original>
-          Text( "hi there", narrow ).toString() == "hi\nthere"
-        </Original>
-        <Expanded>
-          "hi
-there"
-==
-"hi
-there"
         </Expanded>
       </Expression>
       <OverallResult success="true"/>
@@ -8316,7 +7692,7 @@ spanner      <OverallResult success="true"/>
       <Section name="replace single char" filename="projects/<exe-name>/TestMain.cpp" >
         <Expression success="true" type="CHECK" filename="projects/<exe-name>/TestMain.cpp" >
           <Original>
-            replaceInPlace( letters, "b", "z" )
+            Catch::replaceInPlace( letters, "b", "z" )
           </Original>
           <Expanded>
             true
@@ -8335,7 +7711,7 @@ spanner      <OverallResult success="true"/>
       <Section name="replace two chars" filename="projects/<exe-name>/TestMain.cpp" >
         <Expression success="true" type="CHECK" filename="projects/<exe-name>/TestMain.cpp" >
           <Original>
-            replaceInPlace( letters, "c", "z" )
+            Catch::replaceInPlace( letters, "c", "z" )
           </Original>
           <Expanded>
             true
@@ -8354,7 +7730,7 @@ spanner      <OverallResult success="true"/>
       <Section name="replace first char" filename="projects/<exe-name>/TestMain.cpp" >
         <Expression success="true" type="CHECK" filename="projects/<exe-name>/TestMain.cpp" >
           <Original>
-            replaceInPlace( letters, "a", "z" )
+            Catch::replaceInPlace( letters, "a", "z" )
           </Original>
           <Expanded>
             true
@@ -8373,7 +7749,7 @@ spanner      <OverallResult success="true"/>
       <Section name="replace last char" filename="projects/<exe-name>/TestMain.cpp" >
         <Expression success="true" type="CHECK" filename="projects/<exe-name>/TestMain.cpp" >
           <Original>
-            replaceInPlace( letters, "g", "z" )
+            Catch::replaceInPlace( letters, "g", "z" )
           </Original>
           <Expanded>
             true
@@ -8392,7 +7768,7 @@ spanner      <OverallResult success="true"/>
       <Section name="replace all chars" filename="projects/<exe-name>/TestMain.cpp" >
         <Expression success="true" type="CHECK" filename="projects/<exe-name>/TestMain.cpp" >
           <Original>
-            replaceInPlace( letters, letters, "replaced" )
+            Catch::replaceInPlace( letters, letters, "replaced" )
           </Original>
           <Expanded>
             true
@@ -8411,7 +7787,7 @@ spanner      <OverallResult success="true"/>
       <Section name="replace no chars" filename="projects/<exe-name>/TestMain.cpp" >
         <Expression success="true" type="CHECK_FALSE" filename="projects/<exe-name>/TestMain.cpp" >
           <Original>
-            !replaceInPlace( letters, "x", "z" )
+            !Catch::replaceInPlace( letters, "x", "z" )
           </Original>
           <Expanded>
             !false
@@ -8430,7 +7806,7 @@ spanner      <OverallResult success="true"/>
       <Section name="escape '" filename="projects/<exe-name>/TestMain.cpp" >
         <Expression success="true" type="CHECK" filename="projects/<exe-name>/TestMain.cpp" >
           <Original>
-            replaceInPlace( s, "'", "|'" )
+            Catch::replaceInPlace( s, "'", "|'" )
           </Original>
           <Expanded>
             true
@@ -9065,7 +8441,7 @@ spanner      <OverallResult success="true"/>
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="821" failures="99" expectedFailures="21"/>
+    <OverallResults successes="779" failures="99" expectedFailures="21"/>
   </Group>
-  <OverallResults successes="821" failures="98" expectedFailures="21"/>
+  <OverallResults successes="779" failures="98" expectedFailures="21"/>
 </Catch>
