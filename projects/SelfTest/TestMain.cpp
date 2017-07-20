@@ -8,7 +8,6 @@
 
 #define CATCH_CONFIG_MAIN
 #include "catch.hpp"
-#include "internal/catch_text.h" // temporarily
 #include "../include/reporters/catch_reporter_teamcity.hpp"
 #include "../include/reporters/catch_reporter_tap.hpp"
 #include "../include/reporters/catch_reporter_automake.hpp"

@@ -11,12 +11,14 @@
 #include "../internal/catch_reporter_registrars.hpp"
 #include "../internal/catch_console_colour.hpp"
 #include "../internal/catch_version.h"
-#include "../internal/catch_text.h"
+#include "../internal/catch_clara.h" // For TextFlow
 
 #include <cfloat>
 #include <cstdio>
 
 namespace Catch {
+
+    using namespace clara::TextFlow;
 
     struct ConsoleReporter : StreamingReporterBase<ConsoleReporter> {
         using StreamingReporterBase::StreamingReporterBase;
@@ -209,7 +211,7 @@ namespace Catch {
                 if( result.hasExpandedExpression() ) {
                     stream << "with expansion:\n";
                     Colour colourGuard( Colour::ReconstructedExpression );
-                    stream << Text( result.getExpandedExpression(), TextAttributes().setIndent(2) ) << '\n';
+                    stream << Column( result.getExpandedExpression() ).indent(2) << '\n';
                 }
             }
             void printMessage() const {
@@ -218,7 +220,7 @@ namespace Catch {
                 for( auto const& msg : messages ) {
                     // If this assertion is a warning ignore any INFO messages
                     if( printInfoMessages || msg.type != ResultWas::Info )
-                        stream << Text( msg.message, TextAttributes().setIndent(2) ) << '\n';
+                        stream << Column( msg.message ).indent(2) << '\n';
                 }
             }
             void printSourceInfo() const {
@@ -311,9 +313,7 @@ namespace Catch {
                 i+=2;
             else
                 i = 0;
-            stream << Text( _string, TextAttributes()
-                                        .setIndent( indent+i)
-                                        .setInitialIndent( indent ) ) << '\n';
+            stream << Column( _string ).indent( indent+i ).initialIndent( indent ) << '\n';
         }
 
         struct SummaryColumn {
