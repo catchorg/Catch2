@@ -144,9 +144,9 @@ namespace clara { namespace TextFlow {
                 m_pos += m_len;
                 if( m_pos < line().size() && line()[m_pos] == '\n' )
                     m_pos += 1;
-
-                while( m_pos < line().size() && isWhitespace( line()[m_pos] ) )
-                    ++m_pos;
+                else
+                    while( m_pos < line().size() && isWhitespace( line()[m_pos] ) )
+                        ++m_pos;
 
                 if( m_pos == line().size() ) {
                     m_pos = 0;
