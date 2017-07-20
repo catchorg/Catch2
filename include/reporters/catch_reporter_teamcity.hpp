@@ -23,8 +23,6 @@
 
 namespace Catch {
 
-    using namespace clara::TextFlow;
-
     struct TeamCityReporter : StreamingReporterBase<TeamCityReporter> {
         TeamCityReporter( ReporterConfig const& _config )
         :   StreamingReporterBase( _config )

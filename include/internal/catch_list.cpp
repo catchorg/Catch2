@@ -12,7 +12,7 @@
 #include "catch_interfaces_reporter.h"
 #include "catch_interfaces_testcase.h"
 
-#include "catch_clara.h" // For TextFlow
+#include "internal/catch_text.h"
 
 #include "catch_console_colour.hpp"
 #include "catch_test_spec_parser.hpp"
@@ -23,8 +23,6 @@
 #include <iomanip>
 
 namespace Catch {
-
-    using namespace clara::TextFlow;
 
     std::size_t listTests( Config const& config ) {
         TestSpec testSpec = config.testSpec();

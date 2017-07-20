@@ -11,14 +11,12 @@
 #include "../internal/catch_reporter_registrars.hpp"
 #include "../internal/catch_console_colour.hpp"
 #include "../internal/catch_version.h"
-#include "../internal/catch_clara.h" // For TextFlow
+#include "../internal/catch_text.h"
 
 #include <cfloat>
 #include <cstdio>
 
 namespace Catch {
-
-    using namespace clara::TextFlow;
 
     struct ConsoleReporter : StreamingReporterBase<ConsoleReporter> {
         using StreamingReporterBase::StreamingReporterBase;

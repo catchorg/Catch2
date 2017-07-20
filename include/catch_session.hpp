@@ -16,14 +16,13 @@
 #include "internal/catch_version.h"
 #include "internal/catch_interfaces_reporter.h"
 #include "internal/catch_startup_exception_registry.h"
+#include "internal/catch_text.h"
 
 #include <fstream>
 #include <cstdlib>
 #include <limits>
 
 namespace Catch {
-
-    using namespace clara::TextFlow;
 
     IStreamingReporterPtr createReporter( std::string const& reporterName, IConfigPtr const& config ) {
         auto reporter = getRegistryHub().getReporterRegistry().create( reporterName, config );
