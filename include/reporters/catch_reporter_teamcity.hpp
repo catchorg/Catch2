@@ -42,33 +42,32 @@ namespace Catch {
             replaceInPlace( escaped, "]", "|]" );
             return escaped;
         }
-        virtual ~TeamCityReporter() override;
+        ~TeamCityReporter() override;
 
         static std::string getDescription() {
             return "Reports test results as TeamCity service messages";
         }
 
-        virtual void skipTest( TestCaseInfo const& /* testInfo */ ) override {
+        void skipTest( TestCaseInfo const& /* testInfo */ ) override {
         }
 
-        virtual void noMatchingTestCases( std::string const& /* spec */ ) override {}
+        void noMatchingTestCases( std::string const& /* spec */ ) override {}
 
-        virtual void testGroupStarting( GroupInfo const& groupInfo ) override {
+        void testGroupStarting( GroupInfo const& groupInfo ) override {
             StreamingReporterBase::testGroupStarting( groupInfo );
             stream << "##teamcity[testSuiteStarted name='"
                 << escape( groupInfo.name ) << "']\n";
         }
-        virtual void testGroupEnded( TestGroupStats const& testGroupStats ) override {
+        void testGroupEnded( TestGroupStats const& testGroupStats ) override {
             StreamingReporterBase::testGroupEnded( testGroupStats );
             stream << "##teamcity[testSuiteFinished name='"
                 << escape( testGroupStats.groupInfo.name ) << "']\n";
         }
 
 
-        virtual void assertionStarting( AssertionInfo const& ) override {
-        }
+        void assertionStarting( AssertionInfo const& ) override {}
 
-        virtual bool assertionEnded( AssertionStats const& assertionStats ) override {
+        bool assertionEnded( AssertionStats const& assertionStats ) override {
             AssertionResult const& result = assertionStats.assertionResult;
             if( !result.isOk() ) {
 
@@ -139,19 +138,19 @@ namespace Catch {
             return true;
         }
 
-        virtual void sectionStarting( SectionInfo const& sectionInfo ) override {
+        void sectionStarting( SectionInfo const& sectionInfo ) override {
             m_headerPrintedForThisSection = false;
             StreamingReporterBase::sectionStarting( sectionInfo );
         }
 
-        virtual void testCaseStarting( TestCaseInfo const& testInfo ) override {
+        void testCaseStarting( TestCaseInfo const& testInfo ) override {
             m_testTimer.start();
             StreamingReporterBase::testCaseStarting( testInfo );
             stream << "##teamcity[testStarted name='"
                 << escape( testInfo.name ) << "']\n";
         }
 
-        virtual void testCaseEnded( TestCaseStats const& testCaseStats ) override {
+        void testCaseEnded( TestCaseStats const& testCaseStats ) override {
             StreamingReporterBase::testCaseEnded( testCaseStats );
             if( !testCaseStats.stdOut.empty() )
                 stream << "##teamcity[testStdOut name='"

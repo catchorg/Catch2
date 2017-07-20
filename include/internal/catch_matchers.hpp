@@ -53,14 +53,14 @@ namespace Matchers {
 
         template<typename ArgT>
         struct MatchAllOf : MatcherBase<ArgT> {
-            virtual bool match( ArgT const& arg ) const override {
+            bool match( ArgT const& arg ) const override {
                 for( auto matcher : m_matchers ) {
                     if (!matcher->match(arg))
                         return false;
                 }
                 return true;
             }
-            virtual std::string describe() const override {
+            std::string describe() const override {
                 std::string description;
                 description.reserve( 4 + m_matchers.size()*32 );
                 description += "( ";
@@ -86,14 +86,14 @@ namespace Matchers {
         template<typename ArgT>
         struct MatchAnyOf : MatcherBase<ArgT> {
 
-            virtual bool match( ArgT const& arg ) const override {
+            bool match( ArgT const& arg ) const override {
                 for( auto matcher : m_matchers ) {
                     if (matcher->match(arg))
                         return true;
                 }
                 return false;
             }
-            virtual std::string describe() const override {
+            std::string describe() const override {
                 std::string description;
                 description.reserve( 4 + m_matchers.size()*32 );
                 description += "( ";
@@ -122,11 +122,11 @@ namespace Matchers {
 
             MatchNotOf( MatcherBase<ArgT> const& underlyingMatcher ) : m_underlyingMatcher( underlyingMatcher ) {}
 
-            virtual bool match( ArgT const& arg ) const override {
+            bool match( ArgT const& arg ) const override {
                 return !m_underlyingMatcher.match( arg );
             }
 
-            virtual std::string describe() const override {
+            std::string describe() const override {
                 return "not " + m_underlyingMatcher.toString();
             }
             MatcherBase<ArgT> const& m_underlyingMatcher;

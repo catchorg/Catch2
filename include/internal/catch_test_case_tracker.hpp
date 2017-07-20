@@ -59,7 +59,7 @@ namespace TestCaseTracking {
         virtual bool isIndexTracker() const = 0;
     };
 
-    class  TrackerContext {
+    class TrackerContext {
 
         enum RunState {
             NotStarted,
@@ -113,30 +113,29 @@ namespace TestCaseTracking {
 
     public:
         TrackerBase( NameAndLocation const& nameAndLocation, TrackerContext& ctx, ITracker* parent );
-        virtual ~TrackerBase() = default;
 
-        virtual NameAndLocation const& nameAndLocation() const override;
-        virtual bool isComplete() const override;
-        virtual bool isSuccessfullyCompleted() const override;
-        virtual bool isOpen() const override;
-        virtual bool hasChildren() const override;
+        NameAndLocation const& nameAndLocation() const override;
+        bool isComplete() const override;
+        bool isSuccessfullyCompleted() const override;
+        bool isOpen() const override;
+        bool hasChildren() const override;
 
 
-        virtual void addChild( ITrackerPtr const& child ) override;
+        void addChild( ITrackerPtr const& child ) override;
 
-        virtual ITrackerPtr findChild( NameAndLocation const& nameAndLocation ) override;
-        virtual ITracker& parent() override;
+        ITrackerPtr findChild( NameAndLocation const& nameAndLocation ) override;
+        ITracker& parent() override;
 
-        virtual void openChild() override;
+        void openChild() override;
 
-        virtual bool isSectionTracker() const override;
-        virtual bool isIndexTracker() const override;
+        bool isSectionTracker() const override;
+        bool isIndexTracker() const override;
 
         void open();
 
-        virtual void close() override;
-        virtual void fail() override;
-        virtual void markAsNeedingAnotherRun() override;
+        void close() override;
+        void fail() override;
+        void markAsNeedingAnotherRun() override;
 
     private:
         void moveToParent();
@@ -147,9 +146,8 @@ namespace TestCaseTracking {
         std::vector<std::string> m_filters;
     public:
         SectionTracker( NameAndLocation const& nameAndLocation, TrackerContext& ctx, ITracker* parent );
-        virtual ~SectionTracker() = default;
 
-        virtual bool isSectionTracker() const override;
+        bool isSectionTracker() const override;
 
         static SectionTracker& acquire( TrackerContext& ctx, NameAndLocation const& nameAndLocation );
 
@@ -164,17 +162,15 @@ namespace TestCaseTracking {
         int m_index = -1;
     public:
         IndexTracker( NameAndLocation const& nameAndLocation, TrackerContext& ctx, ITracker* parent, int size );
-        virtual ~IndexTracker() = default;
 
-        virtual bool isIndexTracker() const override;
+        bool isIndexTracker() const override;
+        void close() override;
 
         static IndexTracker& acquire( TrackerContext& ctx, NameAndLocation const& nameAndLocation, int size );
 
         int index() const;
 
         void moveNext();
-
-        virtual void close() override;
     };
 
 } // namespace TestCaseTracking

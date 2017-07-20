@@ -80,19 +80,19 @@ namespace Catch {
         bool showHelp() const;
 
         // IConfig interface
-        virtual bool allowThrows() const override;
-        virtual std::ostream& stream() const override;
-        virtual std::string name() const override;
-        virtual bool includeSuccessfulResults() const override;
-        virtual bool warnAboutMissingAssertions() const override;
-        virtual ShowDurations::OrNot showDurations() const override;
-        virtual RunTests::InWhatOrder runOrder() const override;
-        virtual unsigned int rngSeed() const override;
-        virtual UseColour::YesOrNo useColour() const override;
-        virtual bool shouldDebugBreak() const override;
-        virtual int abortAfter() const override;
-        virtual bool showInvisibles() const override;
-        virtual Verbosity verbosity() const override;
+        bool allowThrows() const override;
+        std::ostream& stream() const override;
+        std::string name() const override;
+        bool includeSuccessfulResults() const override;
+        bool warnAboutMissingAssertions() const override;
+        ShowDurations::OrNot showDurations() const override;
+        RunTests::InWhatOrder runOrder() const override;
+        unsigned int rngSeed() const override;
+        UseColour::YesOrNo useColour() const override;
+        bool shouldDebugBreak() const override;
+        int abortAfter() const override;
+        bool showInvisibles() const override;
+        Verbosity verbosity() const override;
 
     private:
 

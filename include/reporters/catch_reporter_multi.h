@@ -18,40 +18,27 @@ namespace Catch {
 
     public: // IStreamingReporter
 
-        virtual ReporterPreferences getPreferences() const override;
+        ReporterPreferences getPreferences() const override;
 
-        virtual void noMatchingTestCases( std::string const& spec ) override;
+        void noMatchingTestCases( std::string const& spec ) override;
 
     static std::set<Verbosity> getSupportedVerbosities();
 
-        virtual void testRunStarting( TestRunInfo const& testRunInfo ) override;
-
-        virtual void testGroupStarting( GroupInfo const& groupInfo ) override;
-
-
-        virtual void testCaseStarting( TestCaseInfo const& testInfo ) override;
-
-        virtual void sectionStarting( SectionInfo const& sectionInfo ) override;
-
-
-        virtual void assertionStarting( AssertionInfo const& assertionInfo ) override;
-
+        void testRunStarting( TestRunInfo const& testRunInfo ) override;
+        void testGroupStarting( GroupInfo const& groupInfo ) override;
+        void testCaseStarting( TestCaseInfo const& testInfo ) override;
+        void sectionStarting( SectionInfo const& sectionInfo ) override;
+        void assertionStarting( AssertionInfo const& assertionInfo ) override;
 
         // The return value indicates if the messages buffer should be cleared:
-        virtual bool assertionEnded( AssertionStats const& assertionStats ) override;
+        bool assertionEnded( AssertionStats const& assertionStats ) override;
+        void sectionEnded( SectionStats const& sectionStats ) override;
+        void testCaseEnded( TestCaseStats const& testCaseStats ) override;
+        void testGroupEnded( TestGroupStats const& testGroupStats ) override;
+        void testRunEnded( TestRunStats const& testRunStats ) override;
 
-        virtual void sectionEnded( SectionStats const& sectionStats ) override;
-
-        virtual void testCaseEnded( TestCaseStats const& testCaseStats ) override;
-
-        virtual void testGroupEnded( TestGroupStats const& testGroupStats ) override;
-
-        virtual void testRunEnded( TestRunStats const& testRunStats ) override;
-
-
-        virtual void skipTest( TestCaseInfo const& testInfo ) override;
-
-        virtual bool isMulti() const override;
+        void skipTest( TestCaseInfo const& testInfo ) override;
+        bool isMulti() const override;
 
     };
 

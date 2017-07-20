@@ -96,10 +96,10 @@ namespace Catch {
             m_functions.push_back( testCase );
         }
 
-        virtual std::vector<TestCase> const& getAllTests() const {
+        std::vector<TestCase> const& getAllTests() const override {
             return m_functions;
         }
-        virtual std::vector<TestCase> const& getAllTestsSorted( IConfig const& config ) const {
+        std::vector<TestCase> const& getAllTestsSorted( IConfig const& config ) const override {
             if( m_sortedFunctions.empty() )
                 enforceNoDuplicateTestCases( m_functions );
 

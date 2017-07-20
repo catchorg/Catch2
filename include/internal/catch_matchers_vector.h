@@ -24,7 +24,7 @@ namespace Matchers {
                 return std::find(v.begin(), v.end(), m_comparator) != v.end();
             }
 
-            virtual std::string describe() const override {
+            std::string describe() const override {
                 return "Contains: " + ::Catch::Detail::stringify( m_comparator );
             }
 
@@ -45,7 +45,7 @@ namespace Matchers {
                         return false;
                 return true;
             }
-            virtual std::string describe() const override {
+            std::string describe() const override {
                 return "Contains: " + ::Catch::Detail::stringify( m_comparator );
             }
 
@@ -69,7 +69,7 @@ namespace Matchers {
                         return false;
                 return true;
             }
-            virtual std::string describe() const override {
+            std::string describe() const override {
                 return "Equals: " + ::Catch::Detail::stringify( m_comparator );
             }
             std::vector<T> const& m_comparator;

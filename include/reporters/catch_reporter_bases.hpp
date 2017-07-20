@@ -32,7 +32,7 @@ namespace Catch {
             CATCH_ENFORCE( DerivedT::getSupportedVerbosities().count( m_config->verbosity() ), "Verbosity level not supported by this reporter" );
         }
 
-        virtual ReporterPreferences getPreferences() const override {
+        ReporterPreferences getPreferences() const override {
             return m_reporterPrefs;
         }
 
@@ -40,40 +40,40 @@ namespace Catch {
             return { Verbosity::Normal };
         }
 
-        virtual ~StreamingReporterBase() override = default;
+        ~StreamingReporterBase() override = default;
 
-        virtual void noMatchingTestCases(std::string const&) override {}
+        void noMatchingTestCases(std::string const&) override {}
 
-        virtual void testRunStarting(TestRunInfo const& _testRunInfo) override {
+        void testRunStarting(TestRunInfo const& _testRunInfo) override {
             currentTestRunInfo = _testRunInfo;
         }
-        virtual void testGroupStarting(GroupInfo const& _groupInfo) override {
+        void testGroupStarting(GroupInfo const& _groupInfo) override {
             currentGroupInfo = _groupInfo;
         }
 
-        virtual void testCaseStarting(TestCaseInfo const& _testInfo) override  {
+        void testCaseStarting(TestCaseInfo const& _testInfo) override  {
             currentTestCaseInfo = _testInfo;
         }
-        virtual void sectionStarting(SectionInfo const& _sectionInfo) override {
+        void sectionStarting(SectionInfo const& _sectionInfo) override {
             m_sectionStack.push_back(_sectionInfo);
         }
 
-        virtual void sectionEnded(SectionStats const& /* _sectionStats */) override {
+        void sectionEnded(SectionStats const& /* _sectionStats */) override {
             m_sectionStack.pop_back();
         }
-        virtual void testCaseEnded(TestCaseStats const& /* _testCaseStats */) override {
+        void testCaseEnded(TestCaseStats const& /* _testCaseStats */) override {
             currentTestCaseInfo.reset();
         }
-        virtual void testGroupEnded(TestGroupStats const& /* _testGroupStats */) override {
+        void testGroupEnded(TestGroupStats const& /* _testGroupStats */) override {
             currentGroupInfo.reset();
         }
-        virtual void testRunEnded(TestRunStats const& /* _testRunStats */) override {
+        void testRunEnded(TestRunStats const& /* _testRunStats */) override {
             currentTestCaseInfo.reset();
             currentGroupInfo.reset();
             currentTestRunInfo.reset();
         }
 
-        virtual void skipTest(TestCaseInfo const&) override {
+        void skipTest(TestCaseInfo const&) override {
             // Don't do anything with this by default.
             // It can optionally be overridden in the derived class.
         }
@@ -144,9 +144,9 @@ namespace Catch {
             m_reporterPrefs.shouldRedirectStdOut = false;
             CATCH_ENFORCE( DerivedT::getSupportedVerbosities().count( m_config->verbosity() ), "Verbosity level not supported by this reporter" );
         }
-        virtual ~CumulativeReporterBase() = default;
+        ~CumulativeReporterBase() override = default;
 
-        virtual ReporterPreferences getPreferences() const override {
+        ReporterPreferences getPreferences() const override {
             return m_reporterPrefs;
         }
 
@@ -154,12 +154,12 @@ namespace Catch {
             return { Verbosity::Normal };
         }
 
-        virtual void testRunStarting( TestRunInfo const& ) override {}
-        virtual void testGroupStarting( GroupInfo const& ) override {}
+        void testRunStarting( TestRunInfo const& ) override {}
+        void testGroupStarting( GroupInfo const& ) override {}
 
-        virtual void testCaseStarting( TestCaseInfo const& ) override {}
+        void testCaseStarting( TestCaseInfo const& ) override {}
 
-        virtual void sectionStarting( SectionInfo const& sectionInfo ) override {
+        void sectionStarting( SectionInfo const& sectionInfo ) override {
             SectionStats incompleteStats( sectionInfo, Counts(), 0, false );
             std::shared_ptr<SectionNode> node;
             if( m_sectionStack.empty() ) {
@@ -184,9 +184,9 @@ namespace Catch {
             m_deepestSection = node;
         }
 
-        virtual void assertionStarting(AssertionInfo const&) override {}
+        void assertionStarting(AssertionInfo const&) override {}
 
-        virtual bool assertionEnded(AssertionStats const& assertionStats) override {
+        bool assertionEnded(AssertionStats const& assertionStats) override {
             assert(!m_sectionStack.empty());
             SectionNode& sectionNode = *m_sectionStack.back();
             sectionNode.assertions.push_back(assertionStats);
@@ -198,13 +198,13 @@ namespace Catch {
             prepareExpandedExpression(sectionNode.assertions.back().assertionResult);
             return true;
         }
-        virtual void sectionEnded(SectionStats const& sectionStats) override {
+        void sectionEnded(SectionStats const& sectionStats) override {
             assert(!m_sectionStack.empty());
             SectionNode& node = *m_sectionStack.back();
             node.stats = sectionStats;
             m_sectionStack.pop_back();
         }
-        virtual void testCaseEnded(TestCaseStats const& testCaseStats) override {
+        void testCaseEnded(TestCaseStats const& testCaseStats) override {
             auto node = std::make_shared<TestCaseNode>(testCaseStats);
             assert(m_sectionStack.size() == 0);
             node->children.push_back(m_rootSection);
@@ -215,12 +215,12 @@ namespace Catch {
             m_deepestSection->stdOut = testCaseStats.stdOut;
             m_deepestSection->stdErr = testCaseStats.stdErr;
         }
-        virtual void testGroupEnded(TestGroupStats const& testGroupStats) override {
+        void testGroupEnded(TestGroupStats const& testGroupStats) override {
             auto node = std::make_shared<TestGroupNode>(testGroupStats);
             node->children.swap(m_testCases);
             m_testGroups.push_back(node);
         }
-        virtual void testRunEnded(TestRunStats const& testRunStats) override {
+        void testRunEnded(TestRunStats const& testRunStats) override {
             auto node = std::make_shared<TestRunNode>(testRunStats);
             node->children.swap(m_testGroups);
             m_testRuns.push_back(node);
@@ -228,9 +228,9 @@ namespace Catch {
         }
         virtual void testRunEndedCumulative() = 0;
 
-        virtual void skipTest(TestCaseInfo const&) override {}
+        void skipTest(TestCaseInfo const&) override {}
 
-        virtual void prepareExpandedExpression(AssertionResult& result) const {
+        void prepareExpandedExpression(AssertionResult& result) const {
             if (result.isOk())
                 result.discardDecomposedExpression();
             else
@@ -266,8 +266,8 @@ namespace Catch {
     struct TestEventListenerBase : StreamingReporterBase<TestEventListenerBase> {
         TestEventListenerBase( ReporterConfig const& _config );
 
-        virtual void assertionStarting(AssertionInfo const&) override;
-        virtual bool assertionEnded(AssertionStats const&) override;
+        void assertionStarting(AssertionInfo const&) override;
+        bool assertionEnded(AssertionStats const&) override;
     };
 
 } // end namespace Catch

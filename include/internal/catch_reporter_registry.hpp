@@ -18,9 +18,9 @@ namespace Catch {
 
     public:
 
-        virtual ~ReporterRegistry() override {}
+        ~ReporterRegistry() override {}
 
-        virtual IStreamingReporterPtr create( std::string const& name, IConfigPtr const& config ) const override {
+        IStreamingReporterPtr create( std::string const& name, IConfigPtr const& config ) const override {
             FactoryMap::const_iterator it =  m_factories.find( name );
             if( it == m_factories.end() )
                 return nullptr;
@@ -34,10 +34,10 @@ namespace Catch {
             m_listeners.push_back( factory );
         }
 
-        virtual FactoryMap const& getFactories() const override {
+        FactoryMap const& getFactories() const override {
             return m_factories;
         }
-        virtual Listeners const& getListeners() const override {
+        Listeners const& getListeners() const override {
             return m_listeners;
         }
 

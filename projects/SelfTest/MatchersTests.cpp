@@ -192,11 +192,11 @@ class ExceptionMatcher : public Catch::MatcherBase<SpecialException> {
     int m_expected;
 public:
     ExceptionMatcher(int i):m_expected(i) {}
-    virtual bool match(SpecialException const& se) const override {
+    bool match(SpecialException const& se) const override {
         return se.i == m_expected;
     }
 
-    virtual std::string describe() const override {
+    std::string describe() const override {
         std::ostringstream ss;
         ss << "special exception has value of " << m_expected;
         return ss.str();

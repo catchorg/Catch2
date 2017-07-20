@@ -17,7 +17,7 @@ namespace Catch {
 
         using StreamingReporterBase::StreamingReporterBase;
 
-        virtual ~CompactReporter();
+        ~CompactReporter() override;
 
         static std::string getDescription() {
             return "Reports test results on a single line, suitable for IDEs";
@@ -54,7 +54,7 @@ namespace Catch {
             return true;
         }
 
-        virtual void sectionEnded(SectionStats const& _sectionStats) override {
+        void sectionEnded(SectionStats const& _sectionStats) override {
             if (m_config->showDurations() == ShowDurations::Always) {
                 stream << getFormattedDuration(_sectionStats.durationInSeconds) << " s: " << _sectionStats.sectionInfo.name << std::endl;
             }
@@ -73,7 +73,6 @@ namespace Catch {
             AssertionPrinter( AssertionPrinter const& ) = delete;
             AssertionPrinter( std::ostream& _stream, AssertionStats const& _stats, bool _printInfoMessages )
             : stream( _stream )
-            , stats( _stats )
             , result( _stats.assertionResult )
             , messages( _stats.infoMessages )
             , itMessage( _stats.infoMessages.begin() )
@@ -241,7 +240,6 @@ namespace Catch {
 
         private:
             std::ostream& stream;
-            AssertionStats const& stats;
             AssertionResult const& result;
             std::vector<MessageInfo> messages;
             std::vector<MessageInfo>::const_iterator itMessage;

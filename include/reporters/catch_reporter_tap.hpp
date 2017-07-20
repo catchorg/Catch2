@@ -23,25 +23,25 @@ namespace Catch {
 
         using StreamingReporterBase::StreamingReporterBase;
 
-        virtual ~TAPReporter();
+        ~TAPReporter() override;
 
         static std::string getDescription() {
             return "Reports test results in TAP format, suitable for test harneses";
         }
 
-        virtual ReporterPreferences getPreferences() const {
+        ReporterPreferences getPreferences() const override {
             ReporterPreferences prefs;
             prefs.shouldRedirectStdOut = false;
             return prefs;
         }
 
-        virtual void noMatchingTestCases( std::string const& spec ) {
+        void noMatchingTestCases( std::string const& spec ) override {
             stream << "# No test cases matched '" << spec << "'" << std::endl;
         }
 
-        virtual void assertionStarting( AssertionInfo const& ) {}
+        void assertionStarting( AssertionInfo const& ) override {}
 
-        virtual bool assertionEnded( AssertionStats const& _assertionStats ) {
+        bool assertionEnded( AssertionStats const& _assertionStats ) override {
             ++counter;
 
             AssertionPrinter printer( stream, _assertionStats, counter );
@@ -52,7 +52,7 @@ namespace Catch {
             return true;
         }
 
-        virtual void testRunEnded( TestRunStats const& _testRunStats ) {
+        void testRunEnded( TestRunStats const& _testRunStats ) override {
             printTotals( _testRunStats.totals );
             stream << "\n" << std::endl;
             StreamingReporterBase::testRunEnded( _testRunStats );
@@ -66,7 +66,6 @@ namespace Catch {
             AssertionPrinter( AssertionPrinter const& ) = delete;
             AssertionPrinter( std::ostream& _stream, AssertionStats const& _stats, size_t counter )
             : stream( _stream )
-            , stats( _stats )
             , result( _stats.assertionResult )
             , messages( _stats.infoMessages )
             , itMessage( _stats.infoMessages.begin() )
@@ -229,7 +228,6 @@ namespace Catch {
 
         private:
             std::ostream& stream;
-            AssertionStats const& stats;
             AssertionResult const& result;
             std::vector<MessageInfo> messages;
             std::vector<MessageInfo>::const_iterator itMessage;

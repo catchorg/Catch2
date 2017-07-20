@@ -112,7 +112,7 @@ namespace Catch {
                     arcSafeRelease( m_substr );
                 }
 
-                virtual bool match( NSString* arg ) const override {
+                bool match( NSString* arg ) const override {
                     return false;
                 }
 
@@ -122,12 +122,12 @@ namespace Catch {
             struct Equals : StringHolder {
                 Equals( NSString* substr ) : StringHolder( substr ){}
 
-                virtual bool match( NSString* str ) const override {
+                bool match( NSString* str ) const override {
                     return  (str != nil || m_substr == nil ) &&
                             [str isEqualToString:m_substr];
                 }
 
-                virtual std::string describe() const override {
+                std::string describe() const override {
                     return "equals string: " + Catch::toString( m_substr );
                 }
             };
@@ -135,12 +135,12 @@ namespace Catch {
             struct Contains : StringHolder {
                 Contains( NSString* substr ) : StringHolder( substr ){}
 
-                virtual bool match( NSString* str ) const {
+                bool match( NSString* str ) const {
                     return  (str != nil || m_substr == nil ) &&
                             [str rangeOfString:m_substr].location != NSNotFound;
                 }
 
-                virtual std::string describe() const override {
+                std::string describe() const override {
                     return "contains string: " + Catch::toString( m_substr );
                 }
             };
@@ -148,24 +148,24 @@ namespace Catch {
             struct StartsWith : StringHolder {
                 StartsWith( NSString* substr ) : StringHolder( substr ){}
 
-                virtual bool match( NSString* str ) const {
+                bool match( NSString* str ) const override {
                     return  (str != nil || m_substr == nil ) &&
                             [str rangeOfString:m_substr].location == 0;
                 }
 
-                virtual std::string describe() const override {
+                std::string describe() const override {
                     return "starts with: " + Catch::toString( m_substr );
                 }
             };
             struct EndsWith : StringHolder {
                 EndsWith( NSString* substr ) : StringHolder( substr ){}
 
-                virtual bool match( NSString* str ) const {
+                bool match( NSString* str ) const override {
                     return  (str != nil || m_substr == nil ) &&
                             [str rangeOfString:m_substr].location == [str length] - [m_substr length];
                 }
 
-                virtual std::string describe() const override {
+                std::string describe() const override {
                     return "ends with: " + Catch::toString( m_substr );
                 }
             };

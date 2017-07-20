@@ -24,39 +24,39 @@ namespace Catch {
         public: // IRegistryHub
             RegistryHub() {
             }
-            virtual IReporterRegistry const& getReporterRegistry() const override {
+            IReporterRegistry const& getReporterRegistry() const override {
                 return m_reporterRegistry;
             }
-            virtual ITestCaseRegistry const& getTestCaseRegistry() const override {
+            ITestCaseRegistry const& getTestCaseRegistry() const override {
                 return m_testCaseRegistry;
             }
-            virtual IExceptionTranslatorRegistry& getExceptionTranslatorRegistry() override {
+            IExceptionTranslatorRegistry& getExceptionTranslatorRegistry() override {
                 return m_exceptionTranslatorRegistry;
             }
-            virtual ITagAliasRegistry const& getTagAliasRegistry() const override {
+            ITagAliasRegistry const& getTagAliasRegistry() const override {
                 return m_tagAliasRegistry;
             }
-            virtual StartupExceptionRegistry const& getStartupExceptionRegistry() const override {
+            StartupExceptionRegistry const& getStartupExceptionRegistry() const override {
                 return m_exceptionRegistry;
             }
 
         public: // IMutableRegistryHub
-            virtual void registerReporter( std::string const& name, IReporterFactoryPtr const& factory ) override {
+            void registerReporter( std::string const& name, IReporterFactoryPtr const& factory ) override {
                 m_reporterRegistry.registerReporter( name, factory );
             }
-            virtual void registerListener( IReporterFactoryPtr const& factory ) override {
+            void registerListener( IReporterFactoryPtr const& factory ) override {
                 m_reporterRegistry.registerListener( factory );
             }
-            virtual void registerTest( TestCase const& testInfo ) override {
+            void registerTest( TestCase const& testInfo ) override {
                 m_testCaseRegistry.registerTest( testInfo );
             }
-            virtual void registerTranslator( const IExceptionTranslator* translator ) override {
+            void registerTranslator( const IExceptionTranslator* translator ) override {
                 m_exceptionTranslatorRegistry.registerTranslator( translator );
             }
-            virtual void registerTagAlias( std::string const& alias, std::string const& tag, SourceLineInfo const& lineInfo ) override {
+            void registerTagAlias( std::string const& alias, std::string const& tag, SourceLineInfo const& lineInfo ) override {
                 m_tagAliasRegistry.add( alias, tag, lineInfo );
             }
-            virtual void registerStartupException( std::exception_ptr const& exception ) noexcept override {
+            void registerStartupException( std::exception_ptr const& exception ) noexcept override {
                 m_exceptionRegistry.add(exception);
             }
 
