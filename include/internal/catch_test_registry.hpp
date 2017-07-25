@@ -35,16 +35,14 @@ auto makeTestInvoker( void (C::*testAsMethod)() ) noexcept -> ITestInvoker* {
 }
 
 struct NameAndTags {
-
-    NameAndTags( StringRef name_ = "", StringRef tags_ = "" ) noexcept : name( name_ ), tags( tags_ ) {}
-
+    NameAndTags( StringRef name_ = "", StringRef tags_ = "" ) noexcept;
     StringRef name;
     StringRef tags;
 };
 
 struct AutoReg : NonCopyable {
     AutoReg( ITestInvoker* invoker, SourceLineInfo const& lineInfo, StringRef classOrMethod, NameAndTags const& nameAndTags ) noexcept;
-    ~AutoReg();
+    ~AutoReg() = default;
 };
 
 } // end namespace Catch

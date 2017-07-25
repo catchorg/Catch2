@@ -225,7 +225,9 @@ set(IMPL_SOURCES
         ${HEADER_DIR}/internal/catch_tag_alias.cpp
         ${HEADER_DIR}/internal/catch_tag_alias_registry.cpp
         ${HEADER_DIR}/internal/catch_test_case_info.cpp
+        ${HEADER_DIR}/internal/catch_test_case_registry_impl.cpp
         ${HEADER_DIR}/internal/catch_test_case_tracker.cpp
+        ${HEADER_DIR}/internal/catch_test_registry.cpp
         ${HEADER_DIR}/internal/catch_test_spec.cpp
         ${HEADER_DIR}/internal/catch_test_spec_parser.cpp
         ${HEADER_DIR}/internal/catch_timer.cpp
