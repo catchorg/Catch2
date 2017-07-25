@@ -65,11 +65,11 @@ namespace Catch {
     :   m_writer( writer )
     {}
 
-    XmlWriter::ScopedElement::ScopedElement( ScopedElement&& other )
+    XmlWriter::ScopedElement::ScopedElement( ScopedElement&& other ) noexcept
     :   m_writer( other.m_writer ){
         other.m_writer = nullptr;
     }
-    XmlWriter::ScopedElement& XmlWriter::ScopedElement::operator=( ScopedElement&& other ) {
+    XmlWriter::ScopedElement& XmlWriter::ScopedElement::operator=( ScopedElement&& other ) noexcept {
         if ( m_writer ) {
             m_writer->endElement();
         }

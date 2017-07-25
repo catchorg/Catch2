@@ -32,7 +32,7 @@ namespace Catch {
     {
         m_data->addRef();
     }
-    String::String( String&& other )
+    String::String( String&& other ) noexcept
     : m_data( other.m_data )
     {
         other.m_data = StringData::getEmpty();

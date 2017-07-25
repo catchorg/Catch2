@@ -11,6 +11,25 @@
 #include "../internal/catch_reporter_registrars.hpp"
 #include "../internal/catch_console_colour.hpp"
 
+namespace {
+
+#ifdef CATCH_PLATFORM_MAC
+    const char* failedString() { return "FAILED"; }
+    const char* passedString() { return "PASSED"; }
+#else
+    const char* failedString() { return "failed"; }
+    const char* passedString() { return "passed"; }
+#endif
+
+    // Colour::LightGrey
+    Catch::Colour::Code dimColour() { return Catch::Colour::FileName; }
+
+    std::string bothOrAll( std::size_t count ) {
+        return count == 1 ? std::string() :
+               count == 2 ? "both " : "all " ;
+    }
+}
+
 namespace Catch {
 
     struct CompactReporter : StreamingReporterBase<CompactReporter> {
@@ -148,18 +167,6 @@ namespace Catch {
             }
 
         private:
-            // Colour::LightGrey
-
-            static Colour::Code dimColour() { return Colour::FileName; }
-
-#ifdef CATCH_PLATFORM_MAC
-            static const char* failedString() { return "FAILED"; }
-            static const char* passedString() { return "PASSED"; }
-#else
-            static const char* failedString() { return "failed"; }
-            static const char* passedString() { return "passed"; }
-#endif
-
             void printSourceInfo() const {
                 Colour colourGuard( Colour::FileName );
                 stream << result.getSourceInfo() << ':';
@@ -252,10 +259,6 @@ namespace Catch {
         // - white: Passed [both/all] N test cases (no assertions).
         // -   red: Failed N tests cases, failed M assertions.
         // - green: Passed [both/all] N tests cases with M assertions.
-
-        std::string bothOrAll( std::size_t count ) const {
-            return count == 1 ? std::string() : count == 2 ? "both " : "all " ;
-        }
 
         void printTotals( const Totals& totals ) const {
             if( totals.testCases.total() == 0 ) {

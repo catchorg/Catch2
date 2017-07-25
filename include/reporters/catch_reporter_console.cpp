@@ -16,6 +16,22 @@
 #include <cfloat>
 #include <cstdio>
 
+namespace {
+    std::size_t makeRatio( std::size_t number, std::size_t total ) {
+        std::size_t ratio = total > 0 ? CATCH_CONFIG_CONSOLE_WIDTH * number/ total : 0;
+        return ( ratio == 0 && number > 0 ) ? 1 : ratio;
+    }
+
+    std::size_t& findMax( std::size_t& i, std::size_t& j, std::size_t& k ) {
+        if( i > j && i > k )
+            return i;
+        else if( j > k )
+            return j;
+        else
+            return k;
+    }
+}
+
 namespace Catch {
 
     struct ConsoleReporter : StreamingReporterBase<ConsoleReporter> {
@@ -388,19 +404,6 @@ namespace Catch {
                 }
             }
             stream << '\n';
-        }
-
-        static std::size_t makeRatio( std::size_t number, std::size_t total ) {
-            std::size_t ratio = total > 0 ? CATCH_CONFIG_CONSOLE_WIDTH * number/ total : 0;
-            return ( ratio == 0 && number > 0 ) ? 1 : ratio;
-        }
-        static std::size_t& findMax( std::size_t& i, std::size_t& j, std::size_t& k ) {
-            if( i > j && i > k )
-                return i;
-            else if( j > k )
-                return j;
-            else
-                return k;
         }
 
         void printTotalsDivider( Totals const& totals ) {

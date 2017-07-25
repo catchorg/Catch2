@@ -187,7 +187,7 @@ namespace Catch {
 
         // if string has a : in first line will set indent to follow it on
         // subsequent lines
-        void printHeaderString( std::ostream& os, std::string const& _string, std::size_t indent = 0 ) {
+        static void printHeaderString( std::ostream& os, std::string const& _string, std::size_t indent = 0 ) {
             std::size_t i = _string.find( ": " );
             if( i != std::string::npos )
                 i+=2;

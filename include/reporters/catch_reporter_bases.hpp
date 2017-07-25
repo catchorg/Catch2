@@ -17,6 +17,7 @@
 #include <memory>
 
 namespace Catch {
+    void prepareExpandedExpression(AssertionResult& result);
 
     // Returns double formatted as %.3f (format expected on output)
     std::string getFormattedDuration( double duration );
@@ -229,13 +230,6 @@ namespace Catch {
         virtual void testRunEndedCumulative() = 0;
 
         void skipTest(TestCaseInfo const&) override {}
-
-        void prepareExpandedExpression(AssertionResult& result) const {
-            if (result.isOk())
-                result.discardDecomposedExpression();
-            else
-                result.expandDecomposedExpression();
-        }
 
         IConfigPtr m_config;
         std::ostream& stream;

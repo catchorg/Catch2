@@ -63,33 +63,30 @@ namespace Catch {
     private: // IResultCapture
 
 
-        virtual void assertionEnded(AssertionResult const& result);
+        virtual void assertionEnded(AssertionResult const& result) override;
 
-        virtual bool sectionStarted(
-            SectionInfo const& sectionInfo,
-            Counts& assertions
-        );
+        virtual bool sectionStarted( SectionInfo const& sectionInfo, Counts& assertions ) override;
         bool testForMissingAssertions(Counts& assertions);
 
-        virtual void sectionEnded(SectionEndInfo const& endInfo);
+        virtual void sectionEnded(SectionEndInfo const& endInfo) override;
 
-        virtual void sectionEndedEarly(SectionEndInfo const& endInfo);
+        virtual void sectionEndedEarly(SectionEndInfo const& endInfo) override;
 
-        virtual void pushScopedMessage(MessageInfo const& message);
+        virtual void pushScopedMessage(MessageInfo const& message) override;
 
-        virtual void popScopedMessage(MessageInfo const& message);
+        virtual void popScopedMessage(MessageInfo const& message) override;
 
-        virtual std::string getCurrentTestName() const;
+        virtual std::string getCurrentTestName() const override;
 
-        virtual const AssertionResult* getLastResult() const;
+        virtual const AssertionResult* getLastResult() const override;
 
-        virtual void exceptionEarlyReported();
+        virtual void exceptionEarlyReported() override;
 
-        virtual void handleFatalErrorCondition(std::string const& message);
+        virtual void handleFatalErrorCondition(std::string const& message) override;
 
     public:
         // !TBD We need to do this another way!
-        bool aborting() const;
+        bool aborting() const override;
 
     private:
 

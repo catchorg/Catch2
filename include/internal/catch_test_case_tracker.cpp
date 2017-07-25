@@ -63,7 +63,7 @@ namespace TestCaseTracking {
 
 
     TrackerBase::TrackerHasName::TrackerHasName( NameAndLocation const& nameAndLocation ) : m_nameAndLocation( nameAndLocation ) {}
-    bool TrackerBase::TrackerHasName::operator ()( ITrackerPtr const& tracker ) {
+    bool TrackerBase::TrackerHasName::operator ()( ITrackerPtr const& tracker ) const {
         return
             tracker->nameAndLocation().name == m_nameAndLocation.name &&
             tracker->nameAndLocation().location == m_nameAndLocation.location;
@@ -133,7 +133,7 @@ namespace TestCaseTracking {
 
         switch( m_runState ) {
             case NeedsAnotherRun:
-                break;;
+                break;
 
             case Executing:
                 m_runState = CompletedSuccessfully;

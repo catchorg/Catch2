@@ -38,8 +38,8 @@ namespace Catch {
         public:
             ScopedElement( XmlWriter* writer );
 
-            ScopedElement( ScopedElement&& other );
-            ScopedElement& operator=( ScopedElement&& other );
+            ScopedElement( ScopedElement&& other ) noexcept;
+            ScopedElement& operator=( ScopedElement&& other ) noexcept;
 
             ~ScopedElement();
 

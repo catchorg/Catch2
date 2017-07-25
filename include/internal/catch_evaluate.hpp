@@ -46,7 +46,7 @@ namespace Internal {
     // So the compare overloads can be operator agnostic we convey the operator as a template
     // enum, which is used to specialise an Evaluator for doing the comparison.
     template<typename T1, typename T2, Operator Op>
-    class Evaluator{};
+    struct Evaluator{};
 
     template<typename T1, typename T2>
     struct Evaluator<T1, T2, IsEqualTo> {

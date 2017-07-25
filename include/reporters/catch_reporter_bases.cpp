@@ -17,6 +17,12 @@
 #include <memory>
 
 namespace Catch {
+    void prepareExpandedExpression(AssertionResult& result) {
+        if (result.isOk())
+            result.discardDecomposedExpression();
+        else
+            result.expandDecomposedExpression();
+    }
 
     // Because formatting using c++ streams is stateful, drop down to C is required
     // Alternatively we could use stringstream, but its performance is... not good.

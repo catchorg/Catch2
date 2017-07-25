@@ -55,7 +55,7 @@ namespace Catch {
     {
         size_type rawSize = rawChars == nullptr ? 0 : static_cast<size_type>( std::strlen( rawChars ) );
         if( rawSize < size )
-            size = rawSize;
+            m_size = rawSize;
     }
     
     StringRef::StringRef( String const& other ) noexcept

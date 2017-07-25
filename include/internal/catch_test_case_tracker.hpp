@@ -101,7 +101,7 @@ namespace TestCaseTracking {
             NameAndLocation m_nameAndLocation;
         public:
             TrackerHasName( NameAndLocation const& nameAndLocation );
-            bool operator ()( ITrackerPtr const& tracker );
+            bool operator ()( ITrackerPtr const& tracker ) const;
         };
 
         typedef std::vector<ITrackerPtr> Children;

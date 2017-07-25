@@ -59,7 +59,7 @@ namespace {
             originalBackgroundAttributes = csbiInfo.wAttributes & ~( FOREGROUND_GREEN | FOREGROUND_RED | FOREGROUND_BLUE | FOREGROUND_INTENSITY );
         }
 
-        virtual void use( Colour::Code _colourCode ) {
+        virtual void use( Colour::Code _colourCode ) override {
             switch( _colourCode ) {
                 case Colour::None:      return setTextAttribute( originalForegroundAttributes );
                 case Colour::White:     return setTextAttribute( FOREGROUND_GREEN | FOREGROUND_RED | FOREGROUND_BLUE );
@@ -118,7 +118,7 @@ namespace {
     // https://github.com/philsquared/Catch/pull/131
     class PosixColourImpl : public IColourImpl {
     public:
-        virtual void use( Colour::Code _colourCode ) {
+        virtual void use( Colour::Code _colourCode ) override {
             switch( _colourCode ) {
                 case Colour::None:
                 case Colour::White:     return setColour( "[0m" );
@@ -179,10 +179,13 @@ namespace Catch {
 namespace Catch {
 
     Colour::Colour( Code _colourCode ) { use( _colourCode ); }
-    Colour::Colour( Colour&& _other ) { const_cast<Colour&>( _other ).m_moved = true; }
-    Colour& Colour::operator=( Colour&& _other ) {
-        m_moved = false;
-        const_cast<Colour&>( _other ).m_moved = true;
+    Colour::Colour( Colour&& rhs ) noexcept { 
+        m_moved = rhs.m_moved;
+        rhs.m_moved = true;
+    }
+    Colour& Colour::operator=( Colour&& rhs ) noexcept {
+        m_moved = rhs.m_moved;
+        rhs.m_moved  = true;
         return *this;
     }
     

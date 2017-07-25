@@ -50,8 +50,8 @@ namespace Catch {
 
         // Use constructed object for RAII guard
         Colour( Code _colourCode );
-        Colour( Colour&& other );
-        Colour& operator=( Colour&& other );
+        Colour( Colour&& other ) noexcept;
+        Colour& operator=( Colour&& other ) noexcept;
         ~Colour();
 
         // Use static method for one-shot changes

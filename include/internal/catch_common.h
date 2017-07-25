@@ -98,7 +98,7 @@ namespace Catch {
     // as well as
     //    >> stuff +StreamEndStop
     struct StreamEndStop {
-        std::string operator+() {
+        std::string operator+() const {
             return std::string();
         }
     };

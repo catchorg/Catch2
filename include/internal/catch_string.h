@@ -28,7 +28,7 @@ namespace Catch {
         String( StringRef const& stringRef );
         String( char const* rawString );
         String( String const& other );
-        String( String&& other );
+        String( String&& other ) noexcept;
         String( StringBuilder&& stringBuf );
         
         ~String() noexcept;

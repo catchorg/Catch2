@@ -110,7 +110,7 @@ namespace Catch {
             Catch::cleanUp();
         }
 
-        void showHelp() {
+        void showHelp() const {
             Catch::cout()
                     << "\nCatch v" << libraryVersion() << "\n"
                     << m_cli << std::endl
