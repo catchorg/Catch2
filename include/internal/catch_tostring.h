@@ -8,21 +8,18 @@
 #ifndef TWOBLUECUBES_CATCH_TOSTRING_H_INCLUDED
 #define TWOBLUECUBES_CATCH_TOSTRING_H_INCLUDED
 
-#include "catch_common.h"
 
 #include <sstream>
 #include <vector>
 #include <cstddef>
+#include <tuple>
+#include <type_traits>
+#include <string>
 
 #ifdef __OBJC__
 #include "catch_objc_arc.hpp"
 #endif
 
-#include <tuple>
-
-#include <type_traits>
-
-#include <string>
 
 // We need a dummy global operator<< so we can bring it into Catch namespace later
 struct Catch_global_namespace_dummy;

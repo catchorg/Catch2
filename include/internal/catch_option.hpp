@@ -8,8 +8,6 @@
 #ifndef TWOBLUECUBES_CATCH_OPTION_HPP_INCLUDED
 #define TWOBLUECUBES_CATCH_OPTION_HPP_INCLUDED
 
-#include "catch_common.h"
-
 namespace Catch {
 
     // An optional type

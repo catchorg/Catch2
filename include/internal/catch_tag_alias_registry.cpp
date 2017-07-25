@@ -53,13 +53,4 @@ namespace Catch {
         return getRegistryHub().getTagAliasRegistry();
     }
 
-    RegistrarForTagAliases::RegistrarForTagAliases( char const* alias, char const* tag, SourceLineInfo const& lineInfo ) {
-        try {
-            getMutableRegistryHub().registerTagAlias(alias, tag, lineInfo);
-        } catch (...) {
-            // Do not throw when constructing global objects, instead register the exception to be processed later
-            getMutableRegistryHub().registerStartupException(std::current_exception());
-        }
-    }
-
 } // end namespace Catch

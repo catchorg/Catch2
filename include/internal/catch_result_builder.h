@@ -75,11 +75,7 @@ namespace Catch {
         AssertionInfo m_assertionInfo;
         AssertionResultData m_data;
 
-        static CopyableStream &m_stream()
-        {
-            static CopyableStream s;
-            return s;
-        }
+        static CopyableStream& m_stream();
 
         bool m_shouldDebugBreak = false;
         bool m_shouldThrow = false;

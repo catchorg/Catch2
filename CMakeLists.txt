@@ -222,6 +222,7 @@ set(IMPL_SOURCES
         ${HEADER_DIR}/internal/catch_stringdata.cpp
         ${HEADER_DIR}/internal/catch_stringref.cpp
         ${HEADER_DIR}/internal/catch_string_manip.cpp
+        ${HEADER_DIR}/internal/catch_tag_alias.cpp
         ${HEADER_DIR}/internal/catch_tag_alias_registry.cpp
         ${HEADER_DIR}/internal/catch_test_case_info.cpp
         ${HEADER_DIR}/internal/catch_test_case_tracker.cpp

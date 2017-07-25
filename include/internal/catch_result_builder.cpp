@@ -168,4 +168,10 @@ namespace Catch {
         m_guardException = false;
     }
 
+    CopyableStream& ResultBuilder::m_stream() {
+        static CopyableStream s;
+        return s;
+    }
+
+
 } // end namespace Catch

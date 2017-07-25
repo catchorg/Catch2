@@ -9,7 +9,6 @@
 #include "catch_test_spec.hpp"
 #include "catch_test_case_info.h"
 #include "catch_interfaces_testcase.h"
-#include "catch_common.h"
 #include "catch_string_manip.h"
 
 #include <cctype>
