@@ -10,6 +10,7 @@
 
 #include "../internal/catch_interfaces_reporter.h"
 
+#include <algorithm>
 #include <cstring>
 #include <cfloat>
 #include <cstdio>

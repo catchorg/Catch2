@@ -10,6 +10,8 @@
 
 #include "catch_matchers.hpp"
 
+#include <algorithm>
+
 namespace Catch {
 namespace Matchers {
 

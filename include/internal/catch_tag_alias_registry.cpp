@@ -10,6 +10,7 @@
 #include "catch_console_colour.hpp"
 #include "catch_interfaces_registry_hub.h"
 #include "catch_stream.h"
+#include "catch_string_manip.h"
 
 namespace Catch {
 

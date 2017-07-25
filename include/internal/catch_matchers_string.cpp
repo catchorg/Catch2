@@ -7,6 +7,7 @@
  */
 
 #include "catch_matchers_string.h"
+#include "catch_string_manip.h"
 
 namespace Catch {
 namespace Matchers {

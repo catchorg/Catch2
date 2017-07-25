@@ -6,6 +6,7 @@
  */
 
 #include "catch_test_spec.hpp"
+#include "catch_string_manip.h"
 
 #include <string>
 #include <vector>

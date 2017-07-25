@@ -13,6 +13,7 @@
 #include "catch_test_spec.hpp"
 #include "catch_context.h"
 #include "catch_interfaces_config.h"
+#include "catch_string_manip.h"
 
 #include <vector>
 #include <set>

@@ -6,6 +6,7 @@
  */
 
 #include "catch_wildcard_pattern.hpp"
+#include "catch_string_manip.h"
 
 
 namespace Catch {

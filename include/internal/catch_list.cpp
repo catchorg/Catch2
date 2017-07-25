@@ -12,11 +12,12 @@
 #include "catch_interfaces_reporter.h"
 #include "catch_interfaces_testcase.h"
 
-#include "internal/catch_text.h"
+#include "catch_text.h"
 
 #include "catch_console_colour.hpp"
 #include "catch_test_spec_parser.hpp"
 #include "catch_tostring.h"
+#include "catch_string_manip.h"
 
 #include <limits>
 #include <algorithm>

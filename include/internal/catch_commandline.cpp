@@ -9,6 +9,7 @@
 #include "catch_commandline.hpp"
 
 #include "catch_common.h"
+#include "catch_string_manip.h"
 
 #include <fstream>
 #include <ctime>

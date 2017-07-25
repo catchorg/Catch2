@@ -1,6 +1,7 @@
 #include "catch_run_context.hpp"
 
 #include <cassert>
+#include <algorithm>
 
 namespace Catch {
 
