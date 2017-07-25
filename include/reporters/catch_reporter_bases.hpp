@@ -181,7 +181,7 @@ namespace Catch {
                     node = *it;
             }
             m_sectionStack.push_back( node );
-            m_deepestSection = node;
+            m_deepestSection = std::move(node);
         }
 
         void assertionStarting(AssertionInfo const&) override {}

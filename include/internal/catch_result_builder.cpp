@@ -91,7 +91,7 @@ namespace Catch {
         std::string actualMessage = Catch::translateActiveException();
         if( !matcher.match( actualMessage ) ) {
             data.resultType = ResultWas::ExpressionFailed;
-            data.reconstructedExpression = actualMessage;
+            data.reconstructedExpression = std::move(actualMessage);
         }
         AssertionResult result( m_assertionInfo, data );
         handleResult( result );

@@ -30,12 +30,12 @@ namespace Catch {
 
         void addRef() const noexcept {
             if( m_refs > 0 )
-                m_refs++;
+                ++m_refs;
         }
         void release() const noexcept {
             unsigned int refs = m_refs;
             if( refs > 1 )
-                m_refs--;
+                --m_refs;
             else if( refs == 1 )
                 delete[] reinterpret_cast<char const*>( this );
         }

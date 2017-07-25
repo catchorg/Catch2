@@ -44,7 +44,7 @@ namespace Catch {
             if( config.verbosity() >= Verbosity::High ) {
                 Catch::cout() << Column( Catch::Detail::stringify( testCaseInfo.lineInfo ) ).indent(4) << std::endl;
                 std::string description = testCaseInfo.description;
-                if( description == "" )
+                if( description.empty() )
                     description = "(NO DESCRIPTION)";
                 Catch::cout() << Column( description ).indent(4) << std::endl;
             }
@@ -129,10 +129,10 @@ namespace Catch {
         Catch::cout() << "Available reporters:\n";
         IReporterRegistry::FactoryMap const& factories = getRegistryHub().getReporterRegistry().getFactories();
         std::size_t maxNameLen = 0;
-        for( auto const& factoryKvp : getRegistryHub().getReporterRegistry().getFactories() )
+        for( auto const& factoryKvp : factories )
             maxNameLen = (std::max)( maxNameLen, factoryKvp.first.size() );
 
-        for( auto const& factoryKvp : getRegistryHub().getReporterRegistry().getFactories() ) {
+        for( auto const& factoryKvp : factories ) {
             Catch::cout()
                     << Column( factoryKvp.first + ":" )
                             .indent(2)
