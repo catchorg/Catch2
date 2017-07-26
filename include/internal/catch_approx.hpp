@@ -11,7 +11,6 @@
 #include "catch_tostring.h"
 
 #include <cmath>
-#include <limits>
 
 #include <type_traits>
 
