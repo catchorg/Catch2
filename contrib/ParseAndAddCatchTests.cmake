@@ -36,6 +36,9 @@
 cmake_minimum_required(VERSION 2.8.8)
 
 option(PARSE_CATCH_TESTS_VERBOSE "Print Catch to CTest parser debug messages" OFF)
+option(PARSE_CATCH_TESTS_NO_HIDDEN_TESTS "Exclude tests with [!hide] tag" OFF)
+option(PARSE_CATCH_TESTS_ADD_FIXTURE_IN_TEST_NAME "Add fixture class name to the test name" ON)
+option(PARSE_CATCH_TESTS_ADD_TARGET_IN_TEST_NAME "Add target name to the test name" ON)
 
 function(PrintDebugMessage)
     if(PARSE_CATCH_TESTS_VERBOSE)
@@ -103,12 +106,14 @@ function(ParseFile SourceFile TestTarget)
         if("${TestType}" STREQUAL "SCENARIO")
             set(Name "Scenario: ${Name}")
         endif()
-        if(TestFixture)
+        if(PARSE_CATCH_TESTS_ADD_FIXTURE_IN_TEST_NAME AND TestFixture)
             set(CTestName "${TestFixture}:${Name}")
         else()
             set(CTestName "${Name}")
         endif()
-        set(CTestName "${TestTarget}:${CTestName}")
+        if(PARSE_CATCH_TESTS_ADD_TARGET_IN_TEST_NAME)
+            set(CTestName "${TestTarget}:${CTestName}")
+        endif()
         # add target to labels to enable running all tests added from this target
         set(Labels ${TestTarget})
         if(TestStringsLength EQUAL 2)
@@ -124,15 +129,20 @@ function(ParseFile SourceFile TestTarget)
 
         list(APPEND Labels ${Tags})
 
-        PrintDebugMessage("Adding test \"${CTestName}\"")
-        if(Labels)
-            PrintDebugMessage("Setting labels to ${Labels}")
-        endif()
+        list(FIND Labels "!hide" IndexOfHideLabel)
+        if(PARSE_CATCH_TESTS_NO_HIDDEN_TESTS AND ${IndexOfHideLabel} GREATER -1)
+            PrintDebugMessage("Skipping test \"${CTestName}\" as it has !hide label")
+        else()
+            PrintDebugMessage("Adding test \"${CTestName}\"")
+            if(Labels)
+                PrintDebugMessage("Setting labels to ${Labels}")
+            endif()
 
-        # Add the test and set its properties
-        add_test(NAME "\"${CTestName}\"" COMMAND ${TestTarget} ${Name} ${AdditionalCatchParameters})
-        set_tests_properties("\"${CTestName}\"" PROPERTIES FAIL_REGULAR_EXPRESSION "No tests ran"
-                                                LABELS "${Labels}")
+            # Add the test and set its properties
+            add_test(NAME "\"${CTestName}\"" COMMAND ${TestTarget} ${Name} ${AdditionalCatchParameters})
+            set_tests_properties("\"${CTestName}\"" PROPERTIES FAIL_REGULAR_EXPRESSION "No tests ran"
+                                                    LABELS "${Labels}")
+        endif()
 
     endforeach()
 endfunction()
