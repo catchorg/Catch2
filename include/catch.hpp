@@ -29,6 +29,7 @@
 #endif
 
 #include "internal/catch_context.h"
+#include "internal/catch_tag_alias_autoregistrar.h"
 #include "internal/catch_test_registry.hpp"
 #include "internal/catch_capture.hpp"
 #include "internal/catch_section.h"

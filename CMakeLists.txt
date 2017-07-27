@@ -176,6 +176,7 @@ set(INTERNAL_HEADERS
         ${HEADER_DIR}/internal/catch_string_manip.h
         ${HEADER_DIR}/internal/catch_suppress_warnings.h
         ${HEADER_DIR}/internal/catch_tag_alias.h
+        ${HEADER_DIR}/internal/catch_tag_alias_autoregistrar.h
         ${HEADER_DIR}/internal/catch_tag_alias_registry.h
         ${HEADER_DIR}/internal/catch_test_case_info.h
         ${HEADER_DIR}/internal/catch_test_case_registry_impl.hpp
@@ -223,6 +224,7 @@ set(IMPL_SOURCES
         ${HEADER_DIR}/internal/catch_stringref.cpp
         ${HEADER_DIR}/internal/catch_string_manip.cpp
         ${HEADER_DIR}/internal/catch_tag_alias.cpp
+        ${HEADER_DIR}/internal/catch_tag_alias_autoregistrar.cpp
         ${HEADER_DIR}/internal/catch_tag_alias_registry.cpp
         ${HEADER_DIR}/internal/catch_test_case_info.cpp
         ${HEADER_DIR}/internal/catch_test_case_registry_impl.cpp
