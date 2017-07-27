@@ -14,10 +14,10 @@ from releaseCommon import Version
 
 
 includesParser = re.compile( r'\s*#\s*include\s*"(.*)"' )
-guardParser = re.compile( r'\s*#.*TWOBLUECUBES_CATCH_.*_INCLUDED')
-defineParser = re.compile( r'\s*#define')
-ifParser = re.compile( r'\s*#ifndef TWOBLUECUBES_CATCH_.*_INCLUDED')
-endIfParser = re.compile( r'\s*#endif // TWOBLUECUBES_CATCH_.*_INCLUDED')
+guardParser = re.compile( r'\s*#.*(TWOBLUECUBES_)?CATCH_.*_INCLUDED')
+defineParser = re.compile( r'\s*#define\s+(TWOBLUECUBES_)?CATCH_.*_INCLUDED')
+ifParser = re.compile( r'\s*#ifndef (TWOBLUECUBES_)?CATCH_.*_INCLUDED')
+endIfParser = re.compile( r'\s*#endif // (TWOBLUECUBES_)?CATCH_.*_INCLUDED')
 ifImplParser = re.compile( r'\s*#ifdef CATCH_CONFIG_RUNNER' )
 commentParser1 = re.compile( r'^\s*/\*')
 commentParser2 = re.compile( r'^ \*')
@@ -70,7 +70,7 @@ def parseFile( path, filename ):
     for line in f:
         if '// ~*~* CATCH_CPP_STITCH_PLACE *~*~' in line:
             insertCpps()
-        if ifParser.match( line ):
+        elif ifParser.match( line ):
             ifdefs = ifdefs + 1
         elif endIfParser.match( line ):
             ifdefs = ifdefs - 1
@@ -99,8 +99,9 @@ def parseFile( path, filename ):
                     blanks = blanks + 1
                 else:
                     blanks = 0
-                if blanks < 2:
+                if blanks < 2 and not defineParser.match(line):
                     write( line.rstrip() + "\n" )
+    write( '// end {}\n'.format(filename) )
 
 
 v = Version()
@@ -109,7 +110,7 @@ out.write( " *  Catch v{0}\n".format( v.getVersionString() ) )
 out.write( " *  Generated: {0}\n".format( datetime.datetime.now() ) )
 out.write( " *  ----------------------------------------------------------\n" )
 out.write( " *  This file has been merged from multiple headers. Please don't edit it directly\n" )
-out.write( " *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.\n" )
+out.write( " *  Copyright (c) {} Two Blue Cubes Ltd. All rights reserved.\n".format( datetime.date.today().year ) )
 out.write( " *\n" )
 out.write( " *  Distributed under the Boost Software License, Version 1.0. (See accompanying\n" )
 out.write( " *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)\n" )
