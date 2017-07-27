@@ -46,7 +46,7 @@ namespace Catch {
         virtual void registerTest( TestCase const& testInfo ) = 0;
         virtual void registerTranslator( const IExceptionTranslator* translator ) = 0;
         virtual void registerTagAlias( std::string const& alias, std::string const& tag, SourceLineInfo const& lineInfo ) = 0;
-        virtual void registerStartupException( std::exception_ptr const& exception ) noexcept = 0;
+        virtual void registerStartupException() noexcept = 0;
     };
 
     IRegistryHub& getRegistryHub();

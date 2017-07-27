@@ -8,7 +8,7 @@ namespace Catch {
             getMutableRegistryHub().registerTagAlias(alias, tag, lineInfo);
         } catch (...) {
             // Do not throw when constructing global objects, instead register the exception to be processed later
-            getMutableRegistryHub().registerStartupException(std::current_exception());
+            getMutableRegistryHub().registerStartupException();
         }
     }
 
