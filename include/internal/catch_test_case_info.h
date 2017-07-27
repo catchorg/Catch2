@@ -9,7 +9,7 @@
 #define TWOBLUECUBES_CATCH_TEST_CASE_INFO_H_INCLUDED
 
 #include <string>
-#include <set>
+#include <vector>
 #include <memory>
 
 #ifdef __clang__
@@ -34,22 +34,23 @@ namespace Catch {
         TestCaseInfo(   std::string const& _name,
                         std::string const& _className,
                         std::string const& _description,
-                        std::set<std::string> const& _tags,
+                        std::vector<std::string> const& _tags,
                         SourceLineInfo const& _lineInfo );
 
-        friend void setTags( TestCaseInfo& testCaseInfo, std::set<std::string> const& tags );
+        friend void setTags( TestCaseInfo& testCaseInfo, std::vector<std::string> tags );
 
         bool isHidden() const;
         bool throws() const;
         bool okToFail() const;
         bool expectedToFail() const;
 
+        std::string tagsAsString() const;
+
         std::string name;
         std::string className;
         std::string description;
-        std::set<std::string> tags;
-        std::set<std::string> lcaseTags;
-        std::string tagsAsString;
+        std::vector<std::string> tags;
+        std::vector<std::string> lcaseTags;
         SourceLineInfo lineInfo;
         SpecialProperties properties;
     };

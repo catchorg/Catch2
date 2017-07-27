@@ -66,7 +66,7 @@ namespace Catch {
             m_xml.startElement( "TestCase" )
                 .writeAttribute( "name", trim( testInfo.name ) )
                 .writeAttribute( "description", testInfo.description )
-                .writeAttribute( "tags", testInfo.tagsAsString );
+                .writeAttribute( "tags", testInfo.tagsAsString() );
 
             writeSourceInfo( testInfo.lineInfo );
 

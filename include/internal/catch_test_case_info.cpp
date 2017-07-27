@@ -13,6 +13,7 @@
 
 #include <cctype>
 #include <exception>
+#include <algorithm>
 
 namespace Catch {
 
@@ -51,7 +52,7 @@ namespace Catch {
         bool isHidden( startsWith( _name, "./" ) ); // Legacy support
 
         // Parse out tags
-        std::set<std::string> tags;
+        std::vector<std::string> tags;
         std::string desc, tag;
         bool inTag = false;
         for( std::size_t i = 0; i < _descOrTags.size(); ++i ) {
@@ -70,7 +71,7 @@ namespace Catch {
                     else if( prop == TestCaseInfo::None )
                         enforceNotReservedTag( tag, _lineInfo );
 
-                    tags.insert( tag );
+                    tags.push_back( tag );
                     tag.clear();
                     inTag = false;
                 }
@@ -79,33 +80,31 @@ namespace Catch {
             }
         }
         if( isHidden ) {
-            tags.insert( "hide" );
-            tags.insert( "." );
+            tags.push_back( "hide" );
+            tags.push_back( "." );
         }
 
         TestCaseInfo info( _name, _className, desc, tags, _lineInfo );
         return TestCase( _testCase, info );
     }
 
-    void setTags( TestCaseInfo& testCaseInfo, std::set<std::string> const& tags )
-    {
-        testCaseInfo.tags = tags;
+    void setTags( TestCaseInfo& testCaseInfo, std::vector<std::string> tags ) {
+        std::sort(begin(tags), end(tags));
+        tags.erase(std::unique(begin(tags), end(tags)), end(tags));
         testCaseInfo.lcaseTags.clear();
 
-        std::ostringstream oss;
         for( auto const& tag : tags ) {
-            oss << '[' << tag << ']';
             std::string lcaseTag = toLower( tag );
             testCaseInfo.properties = static_cast<TestCaseInfo::SpecialProperties>( testCaseInfo.properties | parseSpecialTag( lcaseTag ) );
-            testCaseInfo.lcaseTags.insert( lcaseTag );
+            testCaseInfo.lcaseTags.push_back( lcaseTag );
         }
-        testCaseInfo.tagsAsString = oss.str();
+        testCaseInfo.tags = std::move(tags);
     }
 
     TestCaseInfo::TestCaseInfo( std::string const& _name,
                                 std::string const& _className,
                                 std::string const& _description,
-                                std::set<std::string> const& _tags,
+                                std::vector<std::string> const& _tags,
                                 SourceLineInfo const& _lineInfo )
     :   name( _name ),
         className( _className ),
@@ -127,6 +126,23 @@ namespace Catch {
     }
     bool TestCaseInfo::expectedToFail() const {
         return ( properties & (ShouldFail ) ) != 0;
+    }
+
+    std::string TestCaseInfo::tagsAsString() const {
+        std::string ret;
+        // '[' and ']' per tag
+        size_t full_size = 2 * tags.size();
+        for (const auto& tag : tags) {
+            full_size += tag.size();
+        }
+        ret.reserve(full_size);
+        for (const auto& tag : tags) {
+            ret.push_back('[');
+            ret.append(tag);
+            ret.push_back(']');
+        }
+
+        return ret;
     }
 
 

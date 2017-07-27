@@ -16,6 +16,7 @@
 #include <assert.h>
 
 #include <ctime>
+#include <algorithm>
 
 namespace Catch {
 
@@ -46,6 +47,14 @@ namespace Catch {
             return std::string(timeStamp);
         }
 
+        std::string fileNameTag(const std::vector<std::string> &tags) {
+            auto it = std::find_if(begin(tags),
+                                   end(tags),
+                                   [] (std::string const& tag) {return tag.front() == '#'; });
+            if (it != tags.end())
+                return it->substr(1);
+            return std::string();
+        }
     }
 
     class JunitReporter : public CumulativeReporterBase<JunitReporter> {
@@ -123,13 +132,6 @@ namespace Catch {
 
             xml.scopedElement( "system-out" ).writeText( trim( stdOutForSuite.str() ), false );
             xml.scopedElement( "system-err" ).writeText( trim( stdErrForSuite.str() ), false );
-        }
-
-        static std::string fileNameTag( const std::set<std::string> &tags ) {
-            std::set<std::string>::const_iterator it = tags.lower_bound("#");
-            if( it != tags.end() && !it->empty() && it->front() == '#' )
-                return it->substr(1);
-            return std::string();
         }
 
         void writeTestCase( TestCaseNode const& testCaseNode ) {

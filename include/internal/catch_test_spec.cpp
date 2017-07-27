@@ -8,6 +8,7 @@
 #include "catch_test_spec.hpp"
 #include "catch_string_manip.h"
 
+#include <algorithm>
 #include <string>
 #include <vector>
 #include <memory>
@@ -23,7 +24,9 @@ namespace Catch {
 
     TestSpec::TagPattern::TagPattern( std::string const& tag ) : m_tag( toLower( tag ) ) {}
     bool TestSpec::TagPattern::matches( TestCaseInfo const& testCase ) const {
-        return testCase.lcaseTags.find( m_tag ) != testCase.lcaseTags.end();
+        return std::find(begin(testCase.lcaseTags),
+                         end(testCase.lcaseTags),
+                         m_tag) != end(testCase.lcaseTags);
     }
 
     TestSpec::ExcludedPattern::ExcludedPattern( PatternPtr const& underlyingPattern ) : m_underlyingPattern( underlyingPattern ) {}

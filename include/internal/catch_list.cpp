@@ -50,7 +50,7 @@ namespace Catch {
                 Catch::cout() << Column( description ).indent(4) << std::endl;
             }
             if( !testCaseInfo.tags.empty() )
-                Catch::cout() << Column( testCaseInfo.tagsAsString ).indent( 6 ) << "\n";
+                Catch::cout() << Column( testCaseInfo.tagsAsString() ).indent( 6 ) << "\n";
         }
 
         if( !config.testSpec().hasFilters() )

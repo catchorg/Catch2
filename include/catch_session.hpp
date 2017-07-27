@@ -78,7 +78,7 @@ namespace Catch {
     void applyFilenamesAsTags( IConfig const& config ) {
         auto& tests = const_cast<std::vector<TestCase>&>( getAllTestCasesSorted( config ) );
         for( auto& testCase : tests ) {
-            std::set<std::string> tags = testCase.tags;
+            auto tags = testCase.tags;
 
             std::string filename = testCase.lineInfo.file;
             std::string::size_type lastSlash = filename.find_last_of( "\\/" );
@@ -89,7 +89,7 @@ namespace Catch {
             if( lastDot != std::string::npos )
                 filename = filename.substr( 0, lastDot );
 
-            tags.insert( "#" + filename );
+            tags.push_back( "#" + filename );
             setTags( testCase, tags );
         }
     }

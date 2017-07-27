@@ -11,6 +11,8 @@
 #include "catch_option.hpp"
 #include "catch_config.hpp"
 
+#include <set>
+
 namespace Catch {
 
     std::size_t listTests( Config const& config );
