@@ -14,11 +14,10 @@
 #include "catch_interfaces_registry_hub.h"
 
 namespace Catch {
-
-    typedef std::string(*exceptionTranslateFunction)();
+    using exceptionTranslateFunction = std::string(*)();
 
     struct IExceptionTranslator;
-    typedef std::vector<std::unique_ptr<IExceptionTranslator const>> ExceptionTranslators;
+    using ExceptionTranslators = std::vector<std::unique_ptr<IExceptionTranslator const>>;
 
     struct IExceptionTranslator {
         virtual ~IExceptionTranslator();

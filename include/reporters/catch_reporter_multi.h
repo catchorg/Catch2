@@ -10,7 +10,7 @@
 namespace Catch {
 
     class MultipleReporters : public IStreamingReporter {
-        typedef std::vector<IStreamingReporterPtr> Reporters;
+        using Reporters = std::vector<IStreamingReporterPtr>;
         Reporters m_reporters;
 
     public:

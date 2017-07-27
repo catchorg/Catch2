@@ -104,7 +104,7 @@ namespace TestCaseTracking {
             bool operator ()( ITrackerPtr const& tracker ) const;
         };
 
-        typedef std::vector<ITrackerPtr> Children;
+        using Children = std::vector<ITrackerPtr>;
         NameAndLocation m_nameAndLocation;
         TrackerContext& m_ctx;
         ITracker* m_parent;
