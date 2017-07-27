@@ -124,6 +124,18 @@ namespace Catch {
     auto StringRef::operator != ( StringRef const& other ) const noexcept -> bool {
         return !operator==( other );
     }
+
+    auto StringRef::operator[](size_type index) const noexcept -> char {
+        return m_start[index];
+    }
+
+    auto StringRef::empty() const noexcept -> bool {
+        return m_size == 0;
+    }
+
+    auto StringRef::size() const noexcept -> size_type {
+        return m_size;
+    }
         
     auto operator + ( StringRef const& lhs, StringRef const& rhs ) -> String {
         StringBuilder buf;

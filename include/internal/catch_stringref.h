@@ -51,17 +51,11 @@ namespace Catch {
         auto operator == ( StringRef const& other ) const noexcept -> bool;
         auto operator != ( StringRef const& other ) const noexcept -> bool;
         
-        auto operator[] ( size_type index ) const noexcept -> char {
-            return m_start[index];
-        }
+        auto operator[] ( size_type index ) const noexcept -> char;
         
     public: // named queries
-        auto empty() const noexcept -> bool {
-            return m_size == 0;
-        }
-        auto size() const noexcept -> size_type {
-            return m_size;
-        }
+        auto empty() const noexcept -> bool;
+        auto size() const noexcept -> size_type;
         auto c_str() const -> char const*;
         
     public: // substrings and searches
