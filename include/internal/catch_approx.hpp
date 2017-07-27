@@ -24,7 +24,7 @@ namespace Detail {
         static Approx custom();
 
         template <typename T, typename = typename std::enable_if<std::is_constructible<double, T>::value>::type>
-        Approx operator()( T value ) {
+        Approx operator()( T const& value ) {
             Approx approx( static_cast<double>(value) );
             approx.epsilon( m_epsilon );
             approx.margin( m_margin );
@@ -33,14 +33,14 @@ namespace Detail {
         }
 
         template <typename T, typename = typename std::enable_if<std::is_constructible<double, T>::value>::type>
-        explicit Approx( T value ): Approx(static_cast<double>(value))
+        explicit Approx( T const& value ): Approx(static_cast<double>(value))
         {}
 
 
         template <typename T, typename = typename std::enable_if<std::is_constructible<double, T>::value>::type>
         friend bool operator == ( const T& lhs, Approx const& rhs ) {
             // Thanks to Richard Harris for his help refining this formula
-            auto lhs_v = double(lhs);
+            auto lhs_v = static_cast<double>(lhs);
             bool relativeOK = std::fabs(lhs_v - rhs.m_value) < rhs.m_epsilon * (rhs.m_scale + (std::max)(std::fabs(lhs_v), std::fabs(rhs.m_value)));
             if (relativeOK) {
                 return true;
@@ -54,50 +54,50 @@ namespace Detail {
         }
 
         template <typename T, typename = typename std::enable_if<std::is_constructible<double, T>::value>::type>
-        friend bool operator != ( T lhs, Approx const& rhs ) {
+        friend bool operator != ( T const& lhs, Approx const& rhs ) {
             return !operator==( lhs, rhs );
         }
 
         template <typename T, typename = typename std::enable_if<std::is_constructible<double, T>::value>::type>
-        friend bool operator != ( Approx const& lhs, T rhs ) {
+        friend bool operator != ( Approx const& lhs, T const& rhs ) {
             return !operator==( rhs, lhs );
         }
 
         template <typename T, typename = typename std::enable_if<std::is_constructible<double, T>::value>::type>
-        friend bool operator <= ( T lhs, Approx const& rhs ) {
-            return double(lhs) < rhs.m_value || lhs == rhs;
+        friend bool operator <= ( T const& lhs, Approx const& rhs ) {
+            return static_cast<double>(lhs) < rhs.m_value || lhs == rhs;
         }
 
         template <typename T, typename = typename std::enable_if<std::is_constructible<double, T>::value>::type>
-        friend bool operator <= ( Approx const& lhs, T rhs ) {
-            return lhs.m_value < double(rhs) || lhs == rhs;
+        friend bool operator <= ( Approx const& lhs, T const& rhs ) {
+            return lhs.m_value < static_cast<double>(rhs) || lhs == rhs;
         }
 
         template <typename T, typename = typename std::enable_if<std::is_constructible<double, T>::value>::type>
-        friend bool operator >= ( T lhs, Approx const& rhs ) {
-            return double(lhs) > rhs.m_value || lhs == rhs;
+        friend bool operator >= ( T const& lhs, Approx const& rhs ) {
+            return static_cast<double>(lhs) > rhs.m_value || lhs == rhs;
         }
 
         template <typename T, typename = typename std::enable_if<std::is_constructible<double, T>::value>::type>
-        friend bool operator >= ( Approx const& lhs, T rhs ) {
-            return lhs.m_value > double(rhs) || lhs == rhs;
+        friend bool operator >= ( Approx const& lhs, T const& rhs ) {
+            return lhs.m_value > static_cast<double>(rhs) || lhs == rhs;
         }
 
         template <typename T, typename = typename std::enable_if<std::is_constructible<double, T>::value>::type>
-        Approx& epsilon( T newEpsilon ) {
-            m_epsilon = double(newEpsilon);
+        Approx& epsilon( T const& newEpsilon ) {
+            m_epsilon = static_cast<double>(newEpsilon);
             return *this;
         }
 
         template <typename T, typename = typename std::enable_if<std::is_constructible<double, T>::value>::type>
-        Approx& margin( T newMargin ) {
-            m_margin = double(newMargin);
+        Approx& margin( T const& newMargin ) {
+            m_margin = static_cast<double>(newMargin);
             return *this;
         }
 
         template <typename T, typename = typename std::enable_if<std::is_constructible<double, T>::value>::type>
-        Approx& scale( T newScale ) {
-            m_scale = double(newScale);
+        Approx& scale( T const& newScale ) {
+            m_scale = static_cast<double>(newScale);
             return *this;
         }
 
