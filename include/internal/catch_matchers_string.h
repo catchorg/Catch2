@@ -8,6 +8,8 @@
 #ifndef TWOBLUECUBES_CATCH_MATCHERS_STRING_H_INCLUDED
 #define TWOBLUECUBES_CATCH_MATCHERS_STRING_H_INCLUDED
 
+#if defined(CATCH_CONFIG_DISABLE_MATCHERS)
+
 #include "catch_matchers.hpp"
 
 #include <string>
@@ -65,5 +67,7 @@ namespace Matchers {
 
 } // namespace Matchers
 } // namespace Catch
+
+#endif // CATCH_CONFIG_DISABLE_MATCHERS
 
 #endif // TWOBLUECUBES_CATCH_MATCHERS_STRING_H_INCLUDED

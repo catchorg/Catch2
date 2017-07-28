@@ -101,6 +101,8 @@ namespace Catch {
         return noTestMethods;
     }
 
+#if defined(CATCH_CONFIG_DISABLE_MATCHERS)
+
     namespace Matchers {
         namespace Impl {
         namespace NSStringMatchers {
@@ -188,6 +190,8 @@ namespace Catch {
     } // namespace Matchers
 
     using namespace Matchers;
+
+#endif // CATCH_CONFIG_DISABLE_MATCHERS
 
 } // namespace Catch
 

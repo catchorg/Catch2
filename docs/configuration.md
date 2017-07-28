@@ -57,6 +57,7 @@ This can be useful on certain platforms that do not provide ```std::cout``` and 
     CATCH_CONFIG_COUNTER                    // Use __COUNTER__ to generate unique names for test cases
     CATCH_CONFIG_WINDOWS_SEH                // Enable SEH handling on Windows
     CATCH_CONFIG_FAST_COMPILE               // Sacrifices some (rather minor) features for compilation speed
+    CATCH_CONFIG_DISABLE_MATCHERS           // Do not compile Matchers in this compilation unit
     CATCH_CONFIG_POSIX_SIGNALS              // Enable handling POSIX signals
     CATCH_CONFIG_WINDOWS_CRTDBG             // Enable leak checking using Windows's CRT Debug Heap
 
@@ -74,6 +75,13 @@ Defining this flag speeds up compilation of test files by ~20%, by making 2 chan
 * The `REQUIRE` family of macros (`REQUIRE`, `REQUIRE_FALSE` and `REQUIRE_THAT`) no longer uses local try-catch block. This disables exception translation, but should not lead to false negatives.
 
 `CATCH_CONFIG_FAST_COMPILE` has to be either defined, or not defined, in all translation units that are linked into single test binary, or the behaviour of setting `-b` flag and throwing unexpected exceptions will be unpredictable.
+
+
+## `CATCH_CONFIG_DISABLE_MATCHERS`
+When `CATCH_CONFIG_DISABLE_MATCHERS` is defined, all mentions of Catch's Matchers are ifdef-ed away from the translation unit. Doing so will speed up compilation of that TU.
+
+_Note: If you define `CATCH_CONFIG_DISABLE_MATCHERS` in the same file as Catch's main is implemented, your test executable will fail to link if you use Matchers anywhere._
+
 
 # Windows header clutter
 

@@ -72,7 +72,7 @@ namespace Catch {
         setResultType( resultType );
         captureExpression();
     }
-
+#if defined(CATCH_CONFIG_DISABLE_MATCHERS)
     void ResultBuilder::captureExpectedException( std::string const& expectedMessage ) {
         if( expectedMessage.empty() )
             captureExpectedException( Matchers::Impl::MatchAllOf<std::string>() );
@@ -96,7 +96,7 @@ namespace Catch {
         AssertionResult result( m_assertionInfo, data );
         handleResult( result );
     }
-
+#endif // CATCH_CONFIG_DISABLE_MATCHERS
     void ResultBuilder::captureExpression() {
         AssertionResult result = build();
         handleResult( result );

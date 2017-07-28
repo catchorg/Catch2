@@ -6,6 +6,8 @@
  * file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  */
 
+#if defined(CATCH_CONFIG_DISABLE_MATCHERS)
+
 #include "catch_matchers_string.h"
 #include "catch_string_manip.h"
 
@@ -92,3 +94,5 @@ namespace Matchers {
 
 } // namespace Matchers
 } // namespace Catch
+
+#endif // CATCH_CONFIG_DISABLE_MATCHERS
