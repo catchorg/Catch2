@@ -10,8 +10,6 @@
 
 #include "catch_matchers.hpp"
 
-#include <algorithm>
-
 namespace Catch {
 namespace Matchers {
 
@@ -23,7 +21,12 @@ namespace Matchers {
             ContainsElementMatcher(T const &comparator) : m_comparator( comparator) {}
 
             bool match(std::vector<T> const &v) const override {
-                return std::find(v.begin(), v.end(), m_comparator) != v.end();
+                for (auto const& el : v) {
+                    if (el == m_comparator) {
+                        return true;
+                    }
+                }
+                return false;
             }
 
             std::string describe() const override {
@@ -42,9 +45,18 @@ namespace Matchers {
                 // !TBD: see note in EqualsMatcher
                 if (m_comparator.size() > v.size())
                     return false;
-                for ( auto const& comparator : m_comparator )
-                    if (std::find(v.begin(), v.end(), comparator) == v.end())
+                for (auto const& comparator : m_comparator) {
+                    auto present = false;
+                    for (const auto& el : v) {
+                        if (el == comparator) {
+                            present = true;
+                            break;
+                        }
+                    }
+                    if (!present) {
                         return false;
+                    }
+                }
                 return true;
             }
             std::string describe() const override {
