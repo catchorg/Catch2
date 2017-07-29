@@ -58,7 +58,7 @@ namespace Catch {
         void useActiveException( ResultDisposition::Flags resultDisposition = ResultDisposition::Normal );
         void captureResult( ResultWas::OfType resultType );
         void captureExpression();
-#if defined(CATCH_CONFIG_DISABLE_MATCHERS)
+#if !defined(CATCH_CONFIG_DISABLE_MATCHERS)
         void captureExpectedException( std::string const& expectedMessage );
         void captureExpectedException( Matchers::Impl::MatcherBase<std::string> const& matcher );
 #endif // CATCH_CONFIG_DISABLE_MATCHERS
