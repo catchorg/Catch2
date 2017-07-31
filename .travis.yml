@@ -11,25 +11,25 @@ matrix:
         apt:
           sources: ['llvm-toolchain-precise', 'ubuntu-toolchain-r-test']
           packages: ['clang']
-      env: COMPILER='clang++' BUILD_TYPE='Release' CPP11=0
+      env: COMPILER='clang++' BUILD_TYPE='Release'
 
     - os: linux
       compiler: clang
       addons: *clang34
-      env: COMPILER='clang++' BUILD_TYPE='Debug' CPP11=0
-      
+      env: COMPILER='clang++' BUILD_TYPE='Debug'
+
     - os: linux
       compiler: clang
       addons: &clang35
         apt:
           sources: ['llvm-toolchain-precise-3.5', 'ubuntu-toolchain-r-test']
           packages: ['clang-3.5']
-      env: COMPILER='clang++-3.5' BUILD_TYPE='Release' CPP11=0
+      env: COMPILER='clang++-3.5' BUILD_TYPE='Release'
 
     - os: linux
       compiler: clang
       addons: *clang35
-      env: COMPILER='clang++-3.5' BUILD_TYPE='Debug' CPP11=0
+      env: COMPILER='clang++-3.5' BUILD_TYPE='Debug'
 
 
     - os: linux
@@ -38,12 +38,12 @@ matrix:
         apt:
           sources: ['llvm-toolchain-precise-3.6', 'ubuntu-toolchain-r-test']
           packages: ['clang-3.6']
-      env: COMPILER='clang++-3.6' BUILD_TYPE='Release' CPP11=0
+      env: COMPILER='clang++-3.6' BUILD_TYPE='Release'
 
     - os: linux
       compiler: clang
       addons: *clang36
-      env: COMPILER='clang++-3.6' BUILD_TYPE='Debug' CPP11=0
+      env: COMPILER='clang++-3.6' BUILD_TYPE='Debug'
 
 
     - os: linux
@@ -52,12 +52,12 @@ matrix:
         apt:
           sources: ['llvm-toolchain-precise-3.7', 'ubuntu-toolchain-r-test']
           packages: ['clang-3.7']
-      env: COMPILER='clang++-3.7' BUILD_TYPE='Release' CPP11=0
+      env: COMPILER='clang++-3.7' BUILD_TYPE='Release'
 
     - os: linux
       compiler: clang
       addons: *clang37
-      env: COMPILER='clang++-3.7' BUILD_TYPE='Debug' CPP11=0
+      env: COMPILER='clang++-3.7' BUILD_TYPE='Debug'
 
 
     - os: linux
@@ -66,12 +66,12 @@ matrix:
         apt:
           sources: ['llvm-toolchain-precise-3.8', 'ubuntu-toolchain-r-test']
           packages: ['clang-3.8']
-      env: COMPILER='clang++-3.8' BUILD_TYPE='Release' CPP11=0
+      env: COMPILER='clang++-3.8' BUILD_TYPE='Release'
 
     - os: linux
       compiler: clang
       addons: *clang38
-      env: COMPILER='clang++-3.8' BUILD_TYPE='Debug' CPP11=0
+      env: COMPILER='clang++-3.8' BUILD_TYPE='Debug'
 
 
     # 2/ Linux GCC Builds
@@ -81,12 +81,12 @@ matrix:
         apt:
          sources: ['ubuntu-toolchain-r-test']
          packages: ['g++-4.4']
-      env: COMPILER='g++-4.4' BUILD_TYPE='Release' CPP11=0
+      env: COMPILER='g++-4.4' BUILD_TYPE='Release'
 
     - os: linux
       compiler: gcc
       addons: *gcc44
-      env: COMPILER='g++-4.4' BUILD_TYPE='Debug' CPP11=0
+      env: COMPILER='g++-4.4' BUILD_TYPE='Debug'
 
 
     - os: linux
@@ -95,12 +95,12 @@ matrix:
         apt:
          sources: ['ubuntu-toolchain-r-test']
          packages: ['g++-4.7']
-      env: COMPILER='g++-4.7' BUILD_TYPE='Release' CPP11=0
+      env: COMPILER='g++-4.7' BUILD_TYPE='Release'
 
     - os: linux
       compiler: gcc
       addons: *gcc47
-      env: COMPILER='g++-4.7' BUILD_TYPE='Debug' CPP11=0
+      env: COMPILER='g++-4.7' BUILD_TYPE='Debug'
 
 
     - os: linux
@@ -109,12 +109,12 @@ matrix:
         apt:
          sources: ['ubuntu-toolchain-r-test']
          packages: ['g++-4.8']
-      env: COMPILER='g++-4.8' BUILD_TYPE='Release' CPP11=0
+      env: COMPILER='g++-4.8' BUILD_TYPE='Release'
 
     - os: linux
       compiler: gcc
       addons: *gcc48
-      env: COMPILER='g++-4.8' BUILD_TYPE='Debug' CPP11=0
+      env: COMPILER='g++-4.8' BUILD_TYPE='Debug'
 
 
     - os: linux
@@ -123,12 +123,12 @@ matrix:
         apt:
           sources: ['ubuntu-toolchain-r-test']
           packages: ['g++-4.9']
-      env: COMPILER='g++-4.9' BUILD_TYPE='Release' CPP11=0
+      env: COMPILER='g++-4.9' BUILD_TYPE='Release'
 
     - os: linux
       compiler: gcc
       addons: *gcc49
-      env: COMPILER='g++-4.9' BUILD_TYPE='Debug' CPP11=0
+      env: COMPILER='g++-4.9' BUILD_TYPE='Debug'
 
 
     - os: linux
@@ -137,12 +137,12 @@ matrix:
         apt:
           sources: ['ubuntu-toolchain-r-test']
           packages: ['g++-5']
-      env: COMPILER='g++-5' BUILD_TYPE='Release' CPP11=0
+      env: COMPILER='g++-5' BUILD_TYPE='Release'
 
     - os: linux
       compiler: gcc
       addons: *gcc5
-      env: COMPILER='g++-5' BUILD_TYPE='Debug' CPP11=0
+      env: COMPILER='g++-5' BUILD_TYPE='Debug'
 
 
     - os: linux
@@ -151,20 +151,17 @@ matrix:
         apt:
           sources: ['ubuntu-toolchain-r-test']
           packages: ['g++-6']
-      env: COMPILER='g++-6' BUILD_TYPE='Release' CPP11=0
+      env: COMPILER='g++-6' BUILD_TYPE='Release'
 
     - os: linux
       compiler: gcc
       addons: *gcc6
-      env: COMPILER='g++-6' BUILD_TYPE='Debug' CPP11=0
+      env: COMPILER='g++-6' BUILD_TYPE='Debug'
 
     # 3a/ Linux C++11 GCC builds
     - os: linux
       compiler: gcc
-      addons: &gcc48
-        apt:
-         sources: ['ubuntu-toolchain-r-test']
-         packages: ['g++-4.8']
+      addons: *gcc48
       env: COMPILER='g++-4.8' BUILD_TYPE='Release' CPP11=1
 
     - os: linux
@@ -175,10 +172,7 @@ matrix:
     # 3b/ Linux C++11 Clang builds
     - os: linux
       compiler: clang
-      addons: &clang38
-        apt:
-          sources: ['llvm-toolchain-precise-3.8', 'ubuntu-toolchain-r-test']
-          packages: ['clang-3.8']
+      addons: *clang38
       env: COMPILER='clang++-3.8' BUILD_TYPE='Release' CPP11=1
 
     - os: linux
@@ -186,27 +180,69 @@ matrix:
       addons: *clang38
       env: COMPILER='clang++-3.8' BUILD_TYPE='Debug' CPP11=1
 
+    # 4a/ Linux C++14 GCC builds
+    - os: linux
+      compiler: gcc
+      addons: *gcc6
+      env: COMPILER='g++-6' BUILD_TYPE='Release' CPP14=1
 
-    # 4/ OSX Clang Builds
+    - os: linux
+      compiler: gcc
+      addons: *gcc6
+      env: COMPILER='g++-6' BUILD_TYPE='Debug' CPP14=1
+
+    # 4b/ Linux C++14 Clang builds
+#    - os: linux
+#      compiler: clang
+#      addons: *clang38
+#      env: COMPILER='clang++-3.8' BUILD_TYPE='Release' CPP14=1
+#
+#    - os: linux
+#      compiler: clang
+#      addons: *clang38
+#      env: COMPILER='clang++-3.8' BUILD_TYPE='Debug' CPP14=1
+
+
+    # 5/ OSX Clang Builds
     - os: osx
       osx_image: xcode7.3
       compiler: clang
-      env: COMPILER='clang++' BUILD_TYPE='Debug' CPP11=0
+      env: COMPILER='clang++' BUILD_TYPE='Debug'
 
     - os: osx
       osx_image: xcode7.3
       compiler: clang
-      env: COMPILER='clang++' BUILD_TYPE='Release' CPP11=0
+      env: COMPILER='clang++' BUILD_TYPE='Release'
 
     - os: osx
       osx_image: xcode8
       compiler: clang
-      env: COMPILER='clang++' BUILD_TYPE='Debug' CPP11=0
+      env: COMPILER='clang++' BUILD_TYPE='Debug'
 
     - os: osx
       osx_image: xcode8
       compiler: clang
-      env: COMPILER='clang++' BUILD_TYPE='Release' CPP11=0
+      env: COMPILER='clang++' BUILD_TYPE='Release'
+
+    - os: osx
+      osx_image: xcode8
+      compiler: clang
+      env: COMPILER='clang++' BUILD_TYPE='Debug' USE_CPP11=1
+
+    - os: osx
+      osx_image: xcode8
+      compiler: clang
+      env: COMPILER='clang++' BUILD_TYPE='Release' USE_CPP11=1
+
+    - os: osx
+      osx_image: xcode8
+      compiler: clang
+      env: COMPILER='clang++' BUILD_TYPE='Debug' USE_CPP14=1
+
+    - os: osx
+      osx_image: xcode8
+      compiler: clang
+      env: COMPILER='clang++' BUILD_TYPE='Release' USE_CPP14=1
 
 
 install:
@@ -218,13 +254,13 @@ install:
       mkdir cmake && travis_retry wget --no-check-certificate --quiet -O - ${CMAKE_URL} | tar --strip-components=1 -xz -C cmake
       export PATH=${DEPS_DIR}/cmake/bin:${PATH}
     elif [[ "${TRAVIS_OS_NAME}" == "osx" ]]; then
-      which cmake || brew install cmake 
+      which cmake || brew install cmake
     fi
 
 before_script:
   - export CXX=${COMPILER}
   - cd ${TRAVIS_BUILD_DIR}
-  - cmake -H. -BBuild -DCMAKE_BUILD_TYPE=${BUILD_TYPE} -Wdev -DUSE_CPP11=${CPP11}
+  - cmake -H. -BBuild -DCMAKE_BUILD_TYPE=${BUILD_TYPE} -Wdev -DUSE_CPP11=${CPP11} -DUSE_CPP14=${CPP14}
   - cd Build
 
 script:

@@ -37,8 +37,7 @@ namespace Catch {
             stream << "No test cases matched '" << spec << '\'' << std::endl;
         }
 
-        virtual void assertionStarting( AssertionInfo const& ) {
-        }
+        virtual void assertionStarting( AssertionInfo const& ) {}
 
         virtual bool assertionEnded( AssertionStats const& _assertionStats ) {
             AssertionResult const& result = _assertionStats.assertionResult;
@@ -57,6 +56,12 @@ namespace Catch {
 
             stream << std::endl;
             return true;
+        }
+
+        virtual void sectionEnded(SectionStats const& _sectionStats) CATCH_OVERRIDE {
+            if (m_config->showDurations() == ShowDurations::Always) {
+                stream << getFormattedDuration(_sectionStats.durationInSeconds) << " s: " << _sectionStats.sectionInfo.name << std::endl;
+            }
         }
 
         virtual void testRunEnded( TestRunStats const& _testRunStats ) {
@@ -164,7 +169,7 @@ namespace Catch {
                 stream << result.getSourceInfo() << ':';
             }
 
-            void printResultType( Colour::Code colour, std::string passOrFail ) const {
+            void printResultType( Colour::Code colour, std::string const& passOrFail ) const {
                 if( !passOrFail.empty() ) {
                     {
                         Colour colourGuard( colour );
@@ -174,7 +179,7 @@ namespace Catch {
                 }
             }
 
-            void printIssue( std::string issue ) const {
+            void printIssue( std::string const& issue ) const {
                 stream << ' ' << issue;
             }
 

@@ -26,9 +26,9 @@ namespace Catch{
     #if defined(__ppc64__) || defined(__ppc__)
         #define CATCH_TRAP() \
                 __asm__("li r0, 20\nsc\nnop\nli r0, 37\nli r4, 2\nsc\nnop\n" \
-                : : : "memory","r0","r3","r4" )
+                : : : "memory","r0","r3","r4" ) /* NOLINT */
     #else
-        #define CATCH_TRAP() __asm__("int $3\n" : : )
+        #define CATCH_TRAP() __asm__("int $3\n" : : /* NOLINT */ )
     #endif
 
 #elif defined(CATCH_PLATFORM_LINUX)
@@ -36,7 +36,7 @@ namespace Catch{
     // directly at the location of the failing check instead of breaking inside
     // raise() called from it, i.e. one stack frame below.
     #if defined(__GNUC__) && (defined(__i386) || defined(__x86_64))
-        #define CATCH_TRAP() asm volatile ("int $3")
+        #define CATCH_TRAP() asm volatile ("int $3") /* NOLINT */
     #else // Fall back to the generic way.
         #include <signal.h>
 

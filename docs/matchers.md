@@ -34,9 +34,10 @@ REQUIRE_THAT( str,
 ```
 
 ## Built in matchers
-Currently only a few string matchers are built-in: `StartsWith`, `EndsWith`, and `Contains` and `Equals`.
-These each take an optional second argument for case sensitivity (defaulting to case sensitive).
-More matchers will be coming - for example for testing elements in a vector.
+Currently Catch has some string matchers and some vector matchers.
+The string matchers are `StartsWith`, `EndsWith`, `Contains` and `Equals`. Each of them also takes an optional second argument, that decides case sensitivity (by-default, they are case sensitive).
+The vector matchers are `Contains`, `VectorContains` and `Equals`. `VectorContains` looks for a single element in the matched vector, `Contains` looks for a set (vector) of elements inside the matched vector.
+
 
 ## Custom matchers
 It's easy to provide your own matchers to extend Catch or just to work with your own types.

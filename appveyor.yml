@@ -1,14 +1,30 @@
 # version string format -- This will be overwritten later anyway
 version: "{build}"
 
-# Disable the dead branch for v2 development
-branches:
-    except:
-        - develop-v2
-
 os:
-  - Visual Studio 2013
+  - Visual Studio 2017
   - Visual Studio 2015
+  - Visual Studio 2013
+
+environment:
+    matrix:
+        - additional_flags: "/permissive- /std:c++latest"
+          wmain: 0
+
+        - additional_flags: ""
+          wmain: 0
+
+        - additional_flags: "/D_UNICODE /DUNICODE"
+          wmain: 1
+
+matrix:
+    exclude:
+        -
+            additional_flags: "/permissive- /std:c++latest"
+            os: Visual Studio 2015
+        -
+            additional_flags: "/permissive- /std:c++latest"
+            os: Visual Studio 2013
 
 init:
   - git config --global core.autocrlf input
@@ -31,8 +47,8 @@ configuration:
 
 #Cmake will autodetect the compiler, but we set the arch
 before_build:
-  - echo Running cmake...
-  - cmake -H. -BBuild -A%PLATFORM%
+  - set CXXFLAGS=%additional_flags%
+  - cmake -H. -BBuild -A%PLATFORM% -DUSE_WMAIN=%wmain%
 
 # build with MSBuild
 build:

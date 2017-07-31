@@ -4,39 +4,47 @@
     <TestCase name="# A test name that starts with a #" filename="projects/<exe-name>/MiscTests.cpp" >
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="#542" filename="projects/<exe-name>/CompilationTests.cpp" >
-      <Expression success="true" type="CHECK_THROWS_AS" filename="projects/<exe-name>/CompilationTests.cpp" >
-        <Original>
-          throws_int(true), int
-        </Original>
-        <Expanded>
-          throws_int(true), int
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CHECK_THROWS_AS" filename="projects/<exe-name>/CompilationTests.cpp" >
-        <Original>
-          throws_int(true), int&amp;
-        </Original>
-        <Expanded>
-          throws_int(true), int&amp;
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CHECK_THROWS_AS" filename="projects/<exe-name>/CompilationTests.cpp" >
-        <Original>
-          throws_int(true), const int
-        </Original>
-        <Expanded>
-          throws_int(true), const int
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CHECK_THROWS_AS" filename="projects/<exe-name>/CompilationTests.cpp" >
-        <Original>
-          throws_int(true), const int&amp;
-        </Original>
-        <Expanded>
-          throws_int(true), const int&amp;
-        </Expanded>
-      </Expression>
+    <TestCase name="#748 - captures with unexpected exceptions" tags="[!shouldfail][!throws]" filename="projects/<exe-name>/ExceptionTests.cpp" >
+      <Section name="outside assertions" filename="projects/<exe-name>/ExceptionTests.cpp" >
+        <Info>
+          answer := 42
+        </Info>
+        <Exception filename="projects/<exe-name>/ExceptionTests.cpp" >
+          expected exception
+        </Exception>
+        <OverallResults successes="0" failures="1" expectedFailures="0"/>
+      </Section>
+      <Section name="inside REQUIRE_NOTHROW" filename="projects/<exe-name>/ExceptionTests.cpp" >
+        <Info>
+          answer := 42
+        </Info>
+        <Expression success="false" type="REQUIRE_NOTHROW" filename="projects/<exe-name>/ExceptionTests.cpp" >
+          <Original>
+            thisThrows()
+          </Original>
+          <Expanded>
+            thisThrows()
+          </Expanded>
+          <Exception filename="projects/<exe-name>/ExceptionTests.cpp" >
+            expected exception
+          </Exception>
+        </Expression>
+        <OverallResults successes="0" failures="1" expectedFailures="0"/>
+      </Section>
+      <Section name="inside REQUIRE_THROWS" filename="projects/<exe-name>/ExceptionTests.cpp" >
+        <Info>
+          answer := 42
+        </Info>
+        <Expression success="true" type="REQUIRE_THROWS" filename="projects/<exe-name>/ExceptionTests.cpp" >
+          <Original>
+            thisThrows()
+          </Original>
+          <Expanded>
+            thisThrows()
+          </Expanded>
+        </Expression>
+        <OverallResults successes="1" failures="0" expectedFailures="0"/>
+      </Section>
       <OverallResult success="true"/>
     </TestCase>
     <TestCase name="#809" filename="projects/<exe-name>/CompilationTests.cpp" >
@@ -46,6 +54,84 @@
         </Original>
         <Expanded>
           42 == {?}
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="#833" filename="projects/<exe-name>/CompilationTests.cpp" >
+      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/CompilationTests.cpp" >
+        <Original>
+          a == t
+        </Original>
+        <Expanded>
+          3 == 3
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="projects/<exe-name>/CompilationTests.cpp" >
+        <Original>
+          a == t
+        </Original>
+        <Expanded>
+          3 == 3
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE_THROWS" filename="projects/<exe-name>/CompilationTests.cpp" >
+        <Original>
+          throws_int(true)
+        </Original>
+        <Expanded>
+          throws_int(true)
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK_THROWS_AS" filename="projects/<exe-name>/CompilationTests.cpp" >
+        <Original>
+          throws_int(true), const int&amp;
+        </Original>
+        <Expanded>
+          throws_int(true), const int&amp;
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE_NOTHROW" filename="projects/<exe-name>/CompilationTests.cpp" >
+        <Original>
+          throws_int(false)
+        </Original>
+        <Expanded>
+          throws_int(false)
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE_THAT" filename="projects/<exe-name>/CompilationTests.cpp" >
+        <Original>
+          "aaa", Catch::EndsWith("aaa")
+        </Original>
+        <Expanded>
+          "aaa" ends with: "aaa"
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/CompilationTests.cpp" >
+        <Original>
+          templated_tests&lt;int>(3)
+        </Original>
+        <Expanded>
+          true
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="#835 -- errno should not be touched by Catch" tags="[!shouldfail]" filename="projects/<exe-name>/MiscTests.cpp" >
+      <Expression success="false" type="CHECK" filename="projects/<exe-name>/MiscTests.cpp" >
+        <Original>
+          f() == 0
+        </Original>
+        <Expanded>
+          1 == 0
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/MiscTests.cpp" >
+        <Original>
+          errno == 1
+        </Original>
+        <Expanded>
+          1 == 1
         </Expanded>
       </Expression>
       <OverallResult success="true"/>
@@ -341,8 +427,51 @@
       </Expression>
       <OverallResult success="false"/>
     </TestCase>
-    <TestCase name="AllOf matcher" tags="[matchers]" filename="projects/<exe-name>/MiscTests.cpp" >
-      <Expression success="true" type="CHECK_THAT" filename="projects/<exe-name>/MiscTests.cpp" >
+    <TestCase name="Absolute margin" tags="[Approx]" filename="projects/<exe-name>/ApproxTests.cpp" >
+      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/ApproxTests.cpp" >
+        <Original>
+          104.0 != Approx(100.0)
+        </Original>
+        <Expanded>
+          104.0 != Approx( 100.0 )
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/ApproxTests.cpp" >
+        <Original>
+          104.0 == Approx(100.0).margin(5)
+        </Original>
+        <Expanded>
+          104.0 == Approx( 100.0 )
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/ApproxTests.cpp" >
+        <Original>
+          104.0 != Approx(100.0).margin(3)
+        </Original>
+        <Expanded>
+          104.0 != Approx( 100.0 )
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/ApproxTests.cpp" >
+        <Original>
+          100.3 != Approx(100.0)
+        </Original>
+        <Expanded>
+          100.3 != Approx( 100.0 )
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/ApproxTests.cpp" >
+        <Original>
+          100.3 == Approx(100.0).margin(0.5)
+        </Original>
+        <Expanded>
+          100.3 == Approx( 100.0 )
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="AllOf matcher" tags="[matchers]" filename="projects/<exe-name>/MatchersTests.cpp" >
+      <Expression success="true" type="CHECK_THAT" filename="projects/<exe-name>/MatchersTests.cpp" >
         <Original>
           testStringForMatching(), AllOf( Catch::Contains( "string" ), Catch::Contains( "abc" ) )
         </Original>
@@ -399,8 +528,8 @@
     <TestCase name="Anonymous test case 1" filename="projects/<exe-name>/VariadicMacrosTests.cpp" >
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="AnyOf matcher" tags="[matchers]" filename="projects/<exe-name>/MiscTests.cpp" >
-      <Expression success="true" type="CHECK_THAT" filename="projects/<exe-name>/MiscTests.cpp" >
+    <TestCase name="AnyOf matcher" tags="[matchers]" filename="projects/<exe-name>/MatchersTests.cpp" >
+      <Expression success="true" type="CHECK_THAT" filename="projects/<exe-name>/MatchersTests.cpp" >
         <Original>
           testStringForMatching(), AnyOf( Catch::Contains( "string" ), Catch::Contains( "not there" ) )
         </Original>
@@ -408,7 +537,7 @@
           "this string contains 'abc' as a substring" ( contains: "string" or contains: "not there" )
         </Expanded>
       </Expression>
-      <Expression success="true" type="CHECK_THAT" filename="projects/<exe-name>/MiscTests.cpp" >
+      <Expression success="true" type="CHECK_THAT" filename="projects/<exe-name>/MatchersTests.cpp" >
         <Original>
           testStringForMatching(), AnyOf( Catch::Contains( "not there" ), Catch::Contains( "string" ) )
         </Original>
@@ -600,6 +729,37 @@
       </Section>
       <OverallResult success="true"/>
     </TestCase>
+    <TestCase name="Capture and info messages" filename="projects/<exe-name>/ToStringGeneralTests.cpp" >
+      <Section name="Capture should stringify like assertions" filename="projects/<exe-name>/ToStringGeneralTests.cpp" >
+        <Info>
+          i := 2
+        </Info>
+        <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/ToStringGeneralTests.cpp" >
+          <Original>
+            true
+          </Original>
+          <Expanded>
+            true
+          </Expanded>
+        </Expression>
+        <OverallResults successes="1" failures="0" expectedFailures="0"/>
+      </Section>
+      <Section name="Info should NOT stringify the way assertions do" filename="projects/<exe-name>/ToStringGeneralTests.cpp" >
+        <Info>
+          3
+        </Info>
+        <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/ToStringGeneralTests.cpp" >
+          <Original>
+            true
+          </Original>
+          <Expanded>
+            true
+          </Expanded>
+        </Expression>
+        <OverallResults successes="1" failures="0" expectedFailures="0"/>
+      </Section>
+      <OverallResult success="true"/>
+    </TestCase>
     <TestCase name="Character pretty printing" filename="projects/<exe-name>/ToStringGeneralTests.cpp" >
       <Section name="Specifically escaped" filename="projects/<exe-name>/ToStringGeneralTests.cpp" >
         <Expression success="true" type="CHECK" filename="projects/<exe-name>/ToStringGeneralTests.cpp" >
@@ -730,7 +890,7 @@
           a
         </Original>
         <Expanded>
-          true
+          0x<hex digits>
         </Expanded>
       </Expression>
       <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/TrickyTests.cpp" >
@@ -927,8 +1087,8 @@
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="Contains string matcher" tags="[.][failing][hide][matchers]" filename="projects/<exe-name>/MiscTests.cpp" >
-      <Expression success="false" type="CHECK_THAT" filename="projects/<exe-name>/MiscTests.cpp" >
+    <TestCase name="Contains string matcher" tags="[.][failing][hide][matchers]" filename="projects/<exe-name>/MatchersTests.cpp" >
+      <Expression success="false" type="CHECK_THAT" filename="projects/<exe-name>/MatchersTests.cpp" >
         <Original>
           testStringForMatching(), Contains( "not there" )
         </Original>
@@ -983,8 +1143,8 @@
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="EndsWith string matcher" tags="[.][failing][hide][matchers]" filename="projects/<exe-name>/MiscTests.cpp" >
-      <Expression success="false" type="CHECK_THAT" filename="projects/<exe-name>/MiscTests.cpp" >
+    <TestCase name="EndsWith string matcher" tags="[.][failing][hide][matchers]" filename="projects/<exe-name>/MatchersTests.cpp" >
+      <Expression success="false" type="CHECK_THAT" filename="projects/<exe-name>/MatchersTests.cpp" >
         <Original>
           testStringForMatching(), EndsWith( "this" )
         </Original>
@@ -1160,8 +1320,8 @@
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="Equals" tags="[matchers]" filename="projects/<exe-name>/MiscTests.cpp" >
-      <Expression success="true" type="CHECK_THAT" filename="projects/<exe-name>/MiscTests.cpp" >
+    <TestCase name="Equals" tags="[matchers]" filename="projects/<exe-name>/MatchersTests.cpp" >
+      <Expression success="true" type="CHECK_THAT" filename="projects/<exe-name>/MatchersTests.cpp" >
         <Original>
           testStringForMatching(), Equals( "this string contains 'abc' as a substring" )
         </Original>
@@ -1171,8 +1331,8 @@
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="Equals string matcher" tags="[.][failing][hide][matchers]" filename="projects/<exe-name>/MiscTests.cpp" >
-      <Expression success="false" type="CHECK_THAT" filename="projects/<exe-name>/MiscTests.cpp" >
+    <TestCase name="Equals string matcher" tags="[.][failing][hide][matchers]" filename="projects/<exe-name>/MatchersTests.cpp" >
+      <Expression success="false" type="CHECK_THAT" filename="projects/<exe-name>/MatchersTests.cpp" >
         <Original>
           testStringForMatching(), Equals( "something else" )
         </Original>
@@ -1283,6 +1443,15 @@
     </TestCase>
     <TestCase name="FAIL does not require an argument" tags="[.][failing][hide][messages]" filename="projects/<exe-name>/MessageTests.cpp" >
       <Failure filename="projects/<exe-name>/MessageTests.cpp" />
+      <OverallResult success="false"/>
+    </TestCase>
+    <TestCase name="FAIL_CHECK does not abort the test" tags="[.][failing][hide][messages]" filename="projects/<exe-name>/MessageTests.cpp" >
+      <Failure filename="projects/<exe-name>/MessageTests.cpp" >
+        This is a failure
+      </Failure>
+      <Warning>
+        This message appears in the output
+      </Warning>
       <OverallResult success="false"/>
     </TestCase>
     <TestCase name="Factorials are computed" tags="[factorial]" filename="projects/<exe-name>/MiscTests.cpp" >
@@ -2564,6 +2733,9 @@
       <OverallResult success="false"/>
     </TestCase>
     <TestCase name="INFO gets logged on failure, even if captured before successful assertions" tags="[.][failing][hide][messages]" filename="projects/<exe-name>/MessageTests.cpp" >
+      <Info>
+        this message may be logged later
+      </Info>
       <Expression success="true" type="CHECK" filename="projects/<exe-name>/MessageTests.cpp" >
         <Original>
           a == 2
@@ -2572,6 +2744,9 @@
           2 == 2
         </Expanded>
       </Expression>
+      <Info>
+        this message may be logged later
+      </Info>
       <Info>
         this message should be logged
       </Info>
@@ -2584,6 +2759,12 @@
         </Expanded>
       </Expression>
       <Info>
+        this message may be logged later
+      </Info>
+      <Info>
+        this message should be logged
+      </Info>
+      <Info>
         and this, but later
       </Info>
       <Expression success="false" type="CHECK" filename="projects/<exe-name>/MessageTests.cpp" >
@@ -2594,6 +2775,18 @@
           2 == 0
         </Expanded>
       </Expression>
+      <Info>
+        this message may be logged later
+      </Info>
+      <Info>
+        this message should be logged
+      </Info>
+      <Info>
+        and this, but later
+      </Info>
+      <Info>
+        but not this
+      </Info>
       <Expression success="true" type="CHECK" filename="projects/<exe-name>/MessageTests.cpp" >
         <Original>
           a == 2
@@ -3366,7 +3559,7 @@ re>"
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="Long text is truncted" tags="[Text][Truncated]" filename="projects/<exe-name>/TestMain.cpp" >
+    <TestCase name="Long text is truncated" tags="[Text][Truncated]" filename="projects/<exe-name>/TestMain.cpp" >
       <Expression success="true" type="CHECK_THAT" filename="projects/<exe-name>/TestMain.cpp" >
         <Original>
           t.toString(), EndsWith( "... message truncated due to excessive size" )
@@ -4380,8 +4573,8 @@ re>"
     <TestCase name="ManuallyRegistered" filename="projects/<exe-name>/TestMain.cpp" >
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="Matchers can be (AllOf) composed with the &amp;&amp; operator" tags="[matchers][operator&amp;&amp;][operators]" filename="projects/<exe-name>/MiscTests.cpp" >
-      <Expression success="true" type="CHECK_THAT" filename="projects/<exe-name>/MiscTests.cpp" >
+    <TestCase name="Matchers can be (AllOf) composed with the &amp;&amp; operator" tags="[matchers][operator&amp;&amp;][operators]" filename="projects/<exe-name>/MatchersTests.cpp" >
+      <Expression success="true" type="CHECK_THAT" filename="projects/<exe-name>/MatchersTests.cpp" >
         <Original>
           testStringForMatching(), Contains( "string" ) &amp;&amp; Contains( "abc" ) &amp;&amp; Contains( "substring" ) &amp;&amp; Contains( "contains" )
         </Original>
@@ -4391,8 +4584,8 @@ re>"
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="Matchers can be (AnyOf) composed with the || operator" tags="[matchers][operators][operator||]" filename="projects/<exe-name>/MiscTests.cpp" >
-      <Expression success="true" type="CHECK_THAT" filename="projects/<exe-name>/MiscTests.cpp" >
+    <TestCase name="Matchers can be (AnyOf) composed with the || operator" tags="[matchers][operators][operator||]" filename="projects/<exe-name>/MatchersTests.cpp" >
+      <Expression success="true" type="CHECK_THAT" filename="projects/<exe-name>/MatchersTests.cpp" >
         <Original>
           testStringForMatching(), Contains( "string" ) || Contains( "different" ) || Contains( "random" )
         </Original>
@@ -4400,7 +4593,7 @@ re>"
           "this string contains 'abc' as a substring" ( contains: "string" or contains: "different" or contains: "random" )
         </Expanded>
       </Expression>
-      <Expression success="true" type="CHECK_THAT" filename="projects/<exe-name>/MiscTests.cpp" >
+      <Expression success="true" type="CHECK_THAT" filename="projects/<exe-name>/MatchersTests.cpp" >
         <Original>
           testStringForMatching2(), Contains( "string" ) || Contains( "different" ) || Contains( "random" )
         </Original>
@@ -4410,8 +4603,8 @@ re>"
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="Matchers can be composed with both &amp;&amp; and ||" tags="[matchers][operator&amp;&amp;][operators][operator||]" filename="projects/<exe-name>/MiscTests.cpp" >
-      <Expression success="true" type="CHECK_THAT" filename="projects/<exe-name>/MiscTests.cpp" >
+    <TestCase name="Matchers can be composed with both &amp;&amp; and ||" tags="[matchers][operator&amp;&amp;][operators][operator||]" filename="projects/<exe-name>/MatchersTests.cpp" >
+      <Expression success="true" type="CHECK_THAT" filename="projects/<exe-name>/MatchersTests.cpp" >
         <Original>
           testStringForMatching(), ( Contains( "string" ) || Contains( "different" ) ) &amp;&amp; Contains( "substring" )
         </Original>
@@ -4421,8 +4614,8 @@ re>"
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="Matchers can be composed with both &amp;&amp; and || - failing" tags="[.][.failing][hide][matchers][operator&amp;&amp;][operators][operator||]" filename="projects/<exe-name>/MiscTests.cpp" >
-      <Expression success="false" type="CHECK_THAT" filename="projects/<exe-name>/MiscTests.cpp" >
+    <TestCase name="Matchers can be composed with both &amp;&amp; and || - failing" tags="[.][.failing][hide][matchers][operator&amp;&amp;][operators][operator||]" filename="projects/<exe-name>/MatchersTests.cpp" >
+      <Expression success="false" type="CHECK_THAT" filename="projects/<exe-name>/MatchersTests.cpp" >
         <Original>
           testStringForMatching(), ( Contains( "string" ) || Contains( "different" ) ) &amp;&amp; Contains( "random" )
         </Original>
@@ -4432,8 +4625,8 @@ re>"
       </Expression>
       <OverallResult success="false"/>
     </TestCase>
-    <TestCase name="Matchers can be negated (Not) with the ! operator" tags="[matchers][not][operators]" filename="projects/<exe-name>/MiscTests.cpp" >
-      <Expression success="true" type="CHECK_THAT" filename="projects/<exe-name>/MiscTests.cpp" >
+    <TestCase name="Matchers can be negated (Not) with the ! operator" tags="[matchers][not][operators]" filename="projects/<exe-name>/MatchersTests.cpp" >
+      <Expression success="true" type="CHECK_THAT" filename="projects/<exe-name>/MatchersTests.cpp" >
         <Original>
           testStringForMatching(), !Contains( "different" )
         </Original>
@@ -4443,8 +4636,8 @@ re>"
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="Matchers can be negated (Not) with the ! operator - failing" tags="[.][.failing][hide][matchers][not][operators]" filename="projects/<exe-name>/MiscTests.cpp" >
-      <Expression success="false" type="CHECK_THAT" filename="projects/<exe-name>/MiscTests.cpp" >
+    <TestCase name="Matchers can be negated (Not) with the ! operator - failing" tags="[.][.failing][hide][matchers][not][operators]" filename="projects/<exe-name>/MatchersTests.cpp" >
+      <Expression success="false" type="CHECK_THAT" filename="projects/<exe-name>/MatchersTests.cpp" >
         <Original>
           testStringForMatching(), !Contains( "substring" )
         </Original>
@@ -4502,7 +4695,7 @@ re>"
           True
         </Original>
         <Expanded>
-          true
+          1
         </Expanded>
       </Expression>
       <Expression success="true" type="CHECK" filename="projects/<exe-name>/TrickyTests.cpp" >
@@ -4518,7 +4711,7 @@ re>"
           !False
         </Original>
         <Expanded>
-          !false
+          !0
         </Expanded>
       </Expression>
       <OverallResult success="true"/>
@@ -6107,6 +6300,25 @@ re>"
       <OverallResult success="true"/>
     </TestCase>
     <TestCase name="Process can be configured on command line" tags="[command-line][config]" filename="projects/<exe-name>/TestMain.cpp" >
+      <Section name="empty args don't cause a crash" filename="projects/<exe-name>/TestMain.cpp" >
+        <Expression success="true" type="CHECK_NOTHROW" filename="projects/<exe-name>/TestMain.cpp" >
+          <Original>
+            parser.parseInto( std::vector&lt;std::string>(), config )
+          </Original>
+          <Expanded>
+            parser.parseInto( std::vector&lt;std::string>(), config )
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="CHECK" filename="projects/<exe-name>/TestMain.cpp" >
+          <Original>
+            config.processName == ""
+          </Original>
+          <Expanded>
+            "" == ""
+          </Expanded>
+        </Expression>
+        <OverallResults successes="2" failures="0" expectedFailures="0"/>
+      </Section>
       <Section name="default - no arguments" filename="projects/<exe-name>/TestMain.cpp" >
         <Expression success="true" type="CHECK_NOTHROW" filename="projects/<exe-name>/TestMain.cpp" >
           <Original>
@@ -6114,6 +6326,14 @@ re>"
           </Original>
           <Expanded>
             parseIntoConfig( argv, config )
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="CHECK" filename="projects/<exe-name>/TestMain.cpp" >
+          <Original>
+            config.processName == "test"
+          </Original>
+          <Expanded>
+            "test" == "test"
           </Expanded>
         </Expression>
         <Expression success="true" type="CHECK" filename="projects/<exe-name>/TestMain.cpp" >
@@ -6148,7 +6368,7 @@ re>"
             true
           </Expanded>
         </Expression>
-        <OverallResults successes="5" failures="0" expectedFailures="0"/>
+        <OverallResults successes="6" failures="0" expectedFailures="0"/>
       </Section>
       <Section name="test lists" filename="projects/<exe-name>/TestMain.cpp" >
         <Section name="1 test" description="Specify one test case using" filename="projects/<exe-name>/TestMain.cpp" >
@@ -6692,7 +6912,24 @@ re>"
       </Section>
       <OverallResult success="true"/>
     </TestCase>
+    <TestCase name="Reconstruction should be based on stringification: #914" tags="[.][Decomposition][failing][hide]" filename="projects/<exe-name>/DecompositionTests.cpp" >
+      <Expression success="false" type="CHECK" filename="projects/<exe-name>/DecompositionTests.cpp" >
+        <Original>
+          truthy(false)
+        </Original>
+        <Expanded>
+          Hey, its truthy!
+        </Expanded>
+      </Expression>
+      <OverallResult success="false"/>
+    </TestCase>
     <TestCase name="SCOPED_INFO is reset for each loop" tags="[.][failing][hide][messages]" filename="projects/<exe-name>/MessageTests.cpp" >
+      <Info>
+        current counter 0
+      </Info>
+      <Info>
+        i := 0
+      </Info>
       <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/MessageTests.cpp" >
         <Original>
           i &lt; 10
@@ -6701,6 +6938,12 @@ re>"
           0 &lt; 10
         </Expanded>
       </Expression>
+      <Info>
+        current counter 1
+      </Info>
+      <Info>
+        i := 1
+      </Info>
       <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/MessageTests.cpp" >
         <Original>
           i &lt; 10
@@ -6709,6 +6952,12 @@ re>"
           1 &lt; 10
         </Expanded>
       </Expression>
+      <Info>
+        current counter 2
+      </Info>
+      <Info>
+        i := 2
+      </Info>
       <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/MessageTests.cpp" >
         <Original>
           i &lt; 10
@@ -6717,6 +6966,12 @@ re>"
           2 &lt; 10
         </Expanded>
       </Expression>
+      <Info>
+        current counter 3
+      </Info>
+      <Info>
+        i := 3
+      </Info>
       <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/MessageTests.cpp" >
         <Original>
           i &lt; 10
@@ -6725,6 +6980,12 @@ re>"
           3 &lt; 10
         </Expanded>
       </Expression>
+      <Info>
+        current counter 4
+      </Info>
+      <Info>
+        i := 4
+      </Info>
       <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/MessageTests.cpp" >
         <Original>
           i &lt; 10
@@ -6733,6 +6994,12 @@ re>"
           4 &lt; 10
         </Expanded>
       </Expression>
+      <Info>
+        current counter 5
+      </Info>
+      <Info>
+        i := 5
+      </Info>
       <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/MessageTests.cpp" >
         <Original>
           i &lt; 10
@@ -6741,6 +7008,12 @@ re>"
           5 &lt; 10
         </Expanded>
       </Expression>
+      <Info>
+        current counter 6
+      </Info>
+      <Info>
+        i := 6
+      </Info>
       <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/MessageTests.cpp" >
         <Original>
           i &lt; 10
@@ -6749,6 +7022,12 @@ re>"
           6 &lt; 10
         </Expanded>
       </Expression>
+      <Info>
+        current counter 7
+      </Info>
+      <Info>
+        i := 7
+      </Info>
       <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/MessageTests.cpp" >
         <Original>
           i &lt; 10
@@ -6757,6 +7036,12 @@ re>"
           7 &lt; 10
         </Expanded>
       </Expression>
+      <Info>
+        current counter 8
+      </Info>
+      <Info>
+        i := 8
+      </Info>
       <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/MessageTests.cpp" >
         <Original>
           i &lt; 10
@@ -6765,6 +7050,12 @@ re>"
           8 &lt; 10
         </Expanded>
       </Expression>
+      <Info>
+        current counter 9
+      </Info>
+      <Info>
+        i := 9
+      </Info>
       <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/MessageTests.cpp" >
         <Original>
           i &lt; 10
@@ -7032,8 +7323,8 @@ Message from section two
         </StdOut>
       </OverallResult>
     </TestCase>
-    <TestCase name="StartsWith string matcher" tags="[.][failing][hide][matchers]" filename="projects/<exe-name>/MiscTests.cpp" >
-      <Expression success="false" type="CHECK_THAT" filename="projects/<exe-name>/MiscTests.cpp" >
+    <TestCase name="StartsWith string matcher" tags="[.][failing][hide][matchers]" filename="projects/<exe-name>/MatchersTests.cpp" >
+      <Expression success="false" type="CHECK_THAT" filename="projects/<exe-name>/MatchersTests.cpp" >
         <Original>
           testStringForMatching(), StartsWith( "string" )
         </Original>
@@ -7043,8 +7334,8 @@ Message from section two
       </Expression>
       <OverallResult success="false"/>
     </TestCase>
-    <TestCase name="String matchers" tags="[matchers]" filename="projects/<exe-name>/MiscTests.cpp" >
-      <Expression success="true" type="REQUIRE_THAT" filename="projects/<exe-name>/MiscTests.cpp" >
+    <TestCase name="String matchers" tags="[matchers]" filename="projects/<exe-name>/MatchersTests.cpp" >
+      <Expression success="true" type="REQUIRE_THAT" filename="projects/<exe-name>/MatchersTests.cpp" >
         <Original>
           testStringForMatching(), Contains( "string" )
         </Original>
@@ -7052,7 +7343,7 @@ Message from section two
           "this string contains 'abc' as a substring" contains: "string"
         </Expanded>
       </Expression>
-      <Expression success="true" type="CHECK_THAT" filename="projects/<exe-name>/MiscTests.cpp" >
+      <Expression success="true" type="CHECK_THAT" filename="projects/<exe-name>/MatchersTests.cpp" >
         <Original>
           testStringForMatching(), Contains( "abc" )
         </Original>
@@ -7060,7 +7351,7 @@ Message from section two
           "this string contains 'abc' as a substring" contains: "abc"
         </Expanded>
       </Expression>
-      <Expression success="true" type="CHECK_THAT" filename="projects/<exe-name>/MiscTests.cpp" >
+      <Expression success="true" type="CHECK_THAT" filename="projects/<exe-name>/MatchersTests.cpp" >
         <Original>
           testStringForMatching(), StartsWith( "this" )
         </Original>
@@ -7068,7 +7359,7 @@ Message from section two
           "this string contains 'abc' as a substring" starts with: "this"
         </Expanded>
       </Expression>
-      <Expression success="true" type="CHECK_THAT" filename="projects/<exe-name>/MiscTests.cpp" >
+      <Expression success="true" type="CHECK_THAT" filename="projects/<exe-name>/MatchersTests.cpp" >
         <Original>
           testStringForMatching(), EndsWith( "substring" )
         </Original>
@@ -7113,7 +7404,8 @@ hello
           <Expanded>
             "error: tag alias, "[@zzz]" already registered.
 	First seen at file:2
-	Redefined at file:10" contains: "[@zzz]"
+	Redefined at file:10
+" contains: "[@zzz]"
           </Expanded>
         </Expression>
         <Expression success="true" type="CHECK_THAT" filename="projects/<exe-name>/TagAliasTests.cpp" >
@@ -7123,7 +7415,8 @@ hello
           <Expanded>
             "error: tag alias, "[@zzz]" already registered.
 	First seen at file:2
-	Redefined at file:10" contains: "file"
+	Redefined at file:10
+" contains: "file"
           </Expanded>
         </Expression>
         <Expression success="true" type="CHECK_THAT" filename="projects/<exe-name>/TagAliasTests.cpp" >
@@ -7133,7 +7426,8 @@ hello
           <Expanded>
             "error: tag alias, "[@zzz]" already registered.
 	First seen at file:2
-	Redefined at file:10" contains: "2"
+	Redefined at file:10
+" contains: "2"
           </Expanded>
         </Expression>
         <Expression success="true" type="CHECK_THAT" filename="projects/<exe-name>/TagAliasTests.cpp" >
@@ -7143,7 +7437,8 @@ hello
           <Expanded>
             "error: tag alias, "[@zzz]" already registered.
 	First seen at file:2
-	Redefined at file:10" contains: "10"
+	Redefined at file:10
+" contains: "10"
           </Expanded>
         </Expression>
         <OverallResults successes="4" failures="0" expectedFailures="0"/>
@@ -8421,6 +8716,166 @@ there"
       </Section>
       <OverallResult success="true"/>
     </TestCase>
+    <TestCase name="Vector matchers" tags="[matchers][vector]" filename="projects/<exe-name>/MatchersTests.cpp" >
+      <Section name="Contains (element)" filename="projects/<exe-name>/MatchersTests.cpp" >
+        <Expression success="true" type="CHECK_THAT" filename="projects/<exe-name>/MatchersTests.cpp" >
+          <Original>
+            v, VectorContains( 1 )
+          </Original>
+          <Expanded>
+            { 1, 2, 3 } Contains: 1
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="CHECK_THAT" filename="projects/<exe-name>/MatchersTests.cpp" >
+          <Original>
+            v, VectorContains( 2 )
+          </Original>
+          <Expanded>
+            { 1, 2, 3 } Contains: 2
+          </Expanded>
+        </Expression>
+        <OverallResults successes="2" failures="0" expectedFailures="0"/>
+      </Section>
+      <Section name="Contains (vector)" filename="projects/<exe-name>/MatchersTests.cpp" >
+        <Expression success="true" type="CHECK_THAT" filename="projects/<exe-name>/MatchersTests.cpp" >
+          <Original>
+            v, Contains( v2 )
+          </Original>
+          <Expanded>
+            { 1, 2, 3 } Contains: { 1, 2 }
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="CHECK_THAT" filename="projects/<exe-name>/MatchersTests.cpp" >
+          <Original>
+            v, Contains( v2 )
+          </Original>
+          <Expanded>
+            { 1, 2, 3 } Contains: { 1, 2, 3 }
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="CHECK_THAT" filename="projects/<exe-name>/MatchersTests.cpp" >
+          <Original>
+            v, Contains( empty)
+          </Original>
+          <Expanded>
+            { 1, 2, 3 } Contains: {  }
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="CHECK_THAT" filename="projects/<exe-name>/MatchersTests.cpp" >
+          <Original>
+            empty, Contains( empty)
+          </Original>
+          <Expanded>
+            {  } Contains: {  }
+          </Expanded>
+        </Expression>
+        <OverallResults successes="4" failures="0" expectedFailures="0"/>
+      </Section>
+      <Section name="Equals" filename="projects/<exe-name>/MatchersTests.cpp" >
+        <Expression success="true" type="CHECK_THAT" filename="projects/<exe-name>/MatchersTests.cpp" >
+          <Original>
+            v, Equals( v )
+          </Original>
+          <Expanded>
+            { 1, 2, 3 } Equals: { 1, 2, 3 }
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="CHECK_THAT" filename="projects/<exe-name>/MatchersTests.cpp" >
+          <Original>
+            empty, Equals( empty )
+          </Original>
+          <Expanded>
+            {  } Equals: {  }
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="CHECK_THAT" filename="projects/<exe-name>/MatchersTests.cpp" >
+          <Original>
+            v, Equals( v2 )
+          </Original>
+          <Expanded>
+            { 1, 2, 3 } Equals: { 1, 2, 3 }
+          </Expanded>
+        </Expression>
+        <OverallResults successes="3" failures="0" expectedFailures="0"/>
+      </Section>
+      <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="Vector matchers that fail" tags="[.][failing][hide][matchers][vector]" filename="projects/<exe-name>/MatchersTests.cpp" >
+      <Section name="Contains (element)" filename="projects/<exe-name>/MatchersTests.cpp" >
+        <Expression success="false" type="CHECK_THAT" filename="projects/<exe-name>/MatchersTests.cpp" >
+          <Original>
+            v, VectorContains( -1 )
+          </Original>
+          <Expanded>
+            { 1, 2, 3 } Contains: -1
+          </Expanded>
+        </Expression>
+        <Expression success="false" type="CHECK_THAT" filename="projects/<exe-name>/MatchersTests.cpp" >
+          <Original>
+            empty, VectorContains( 1 )
+          </Original>
+          <Expanded>
+            {  } Contains: 1
+          </Expanded>
+        </Expression>
+        <OverallResults successes="0" failures="2" expectedFailures="0"/>
+      </Section>
+      <Section name="Contains (vector)" filename="projects/<exe-name>/MatchersTests.cpp" >
+        <Expression success="false" type="CHECK_THAT" filename="projects/<exe-name>/MatchersTests.cpp" >
+          <Original>
+            empty, Contains( v)
+          </Original>
+          <Expanded>
+            {  } Contains: { 1, 2, 3 }
+          </Expanded>
+        </Expression>
+        <Expression success="false" type="CHECK_THAT" filename="projects/<exe-name>/MatchersTests.cpp" >
+          <Original>
+            v, Contains( v2 )
+          </Original>
+          <Expanded>
+            { 1, 2, 3 } Contains: { 1, 2, 4 }
+          </Expanded>
+        </Expression>
+        <OverallResults successes="0" failures="2" expectedFailures="0"/>
+      </Section>
+      <Section name="Equals" filename="projects/<exe-name>/MatchersTests.cpp" >
+        <Expression success="false" type="CHECK_THAT" filename="projects/<exe-name>/MatchersTests.cpp" >
+          <Original>
+            v, Equals( v2 )
+          </Original>
+          <Expanded>
+            { 1, 2, 3 } Equals: { 1, 2 }
+          </Expanded>
+        </Expression>
+        <Expression success="false" type="CHECK_THAT" filename="projects/<exe-name>/MatchersTests.cpp" >
+          <Original>
+            v2, Equals( v )
+          </Original>
+          <Expanded>
+            { 1, 2 } Equals: { 1, 2, 3 }
+          </Expanded>
+        </Expression>
+        <Expression success="false" type="CHECK_THAT" filename="projects/<exe-name>/MatchersTests.cpp" >
+          <Original>
+            empty, Equals( v )
+          </Original>
+          <Expanded>
+            {  } Equals: { 1, 2, 3 }
+          </Expanded>
+        </Expression>
+        <Expression success="false" type="CHECK_THAT" filename="projects/<exe-name>/MatchersTests.cpp" >
+          <Original>
+            v, Equals( empty )
+          </Original>
+          <Expanded>
+            { 1, 2, 3 } Equals: {  }
+          </Expanded>
+        </Expression>
+        <OverallResults successes="0" failures="4" expectedFailures="0"/>
+      </Section>
+      <OverallResult success="false"/>
+    </TestCase>
     <TestCase name="When checked exceptions are thrown they can be expected or unexpected" tags="[!throws]" filename="projects/<exe-name>/ExceptionTests.cpp" >
       <Expression success="true" type="REQUIRE_THROWS_AS" filename="projects/<exe-name>/ExceptionTests.cpp" >
         <Original>
@@ -8883,6 +9338,9 @@ spanner      <OverallResult success="true"/>
           1 == 0
         </Expanded>
       </Expression>
+      <Info>
+        Testing if fib[2] (2) is even
+      </Info>
       <Expression success="true" type="CHECK" filename="projects/<exe-name>/MiscTests.cpp" >
         <Original>
           ( fib[i] % 2 ) == 0
@@ -8913,6 +9371,9 @@ spanner      <OverallResult success="true"/>
           1 == 0
         </Expanded>
       </Expression>
+      <Info>
+        Testing if fib[5] (8) is even
+      </Info>
       <Expression success="true" type="CHECK" filename="projects/<exe-name>/MiscTests.cpp" >
         <Original>
           ( fib[i] % 2 ) == 0
@@ -9682,7 +10143,7 @@ spanner      <OverallResult success="true"/>
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="835" failures="81" expectedFailures="18"/>
+    <OverallResults successes="859" failures="91" expectedFailures="21"/>
   </Group>
-  <OverallResults successes="835" failures="80" expectedFailures="18"/>
+  <OverallResults successes="859" failures="90" expectedFailures="21"/>
 </Catch>

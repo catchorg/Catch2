@@ -141,6 +141,16 @@ TEST_CASE( "Approximate PI", "[Approx][PI]" )
     REQUIRE( divide( 22, 7 ) != Approx( 3.141 ).epsilon( 0.0001 ) );
 }
 
+///////////////////////////////////////////////////////////////////////////////
+
+TEST_CASE( "Absolute margin", "[Approx]" ) {
+    REQUIRE( 104.0 != Approx(100.0) );
+    REQUIRE( 104.0 == Approx(100.0).margin(5) );
+    REQUIRE( 104.0 != Approx(100.0).margin(3) );
+    REQUIRE( 100.3 != Approx(100.0) );
+    REQUIRE( 100.3 == Approx(100.0).margin(0.5) );
+}
+
 ////////////////////////////////////////////////////////////////////////////////
 
 #if defined(CATCH_CONFIG_CPP11_TYPE_TRAITS)

@@ -7,10 +7,12 @@ import string
 
 from scriptCommon import catchPath
 
-versionParser = re.compile( r'(\s*Version\slibraryVersion)\s*\(\s*(.*)\s*,\s*(.*)\s*,\s*(.*)\s*,\s*\"(.*)\"\s*,\s*(.*)\s*\).*' )
+versionParser = re.compile( r'(\s*static\sVersion\sversion)\s*\(\s*(.*)\s*,\s*(.*)\s*,\s*(.*)\s*,\s*\"(.*)\"\s*,\s*(.*)\s*\).*' )
 rootPath = os.path.join( catchPath, 'include/' )
 versionPath = os.path.join( rootPath, "internal/catch_version.hpp" )
 readmePath = os.path.join( catchPath, "README.md" )
+conanPath = os.path.join(catchPath, 'conanfile.py')
+conanTestPath = os.path.join(catchPath, 'test_package', 'conanfile.py')
 
 class Version:
     def __init__(self):
@@ -75,7 +77,6 @@ class Version:
             f.write( line + "\n" )
 
     def updateReadmeFile(self):
-        versionParser = re.compile( r'\*v\d+\.\d+\.\d+\*' )
         downloadParser = re.compile( r'<a href=\"https://github.com/philsquared/Catch/releases/download/v\d+\.\d+\.\d+/catch.hpp\">' )
         f = open( readmePath, 'r' )
         lines = []
@@ -84,7 +85,35 @@ class Version:
         f.close()
         f = open( readmePath, 'w' )
         for line in lines:
-            line = versionParser.sub( '*v{0}*'.format(self.getVersionString()), line)
             line = downloadParser.sub( r'<a href="https://github.com/philsquared/Catch/releases/download/v{0}/catch.hpp">'.format(self.getVersionString()) , line)
             f.write( line + "\n" )
 
+    def updateConanFile(self):
+        conanParser = re.compile( r'    version = "\d+\.\d+\.\d+.*"')
+        f = open( conanPath, 'r' )
+        lines = []
+        for line in f:
+            m = conanParser.match( line )
+            if m:
+                lines.append( '    version = "{0}"'.format(format(self.getVersionString())) )
+            else:
+                lines.append( line.rstrip() )
+        f.close()
+        f = open( conanPath, 'w' )
+        for line in lines:
+            f.write( line + "\n" )
+
+    def updateConanTestFile(self):
+        conanParser = re.compile( r'    requires = \"Catch\/\d+\.\d+\.\d+.*@%s\/%s\" % \(username, channel\)')
+        f = open( conanTestPath, 'r' )
+        lines = []
+        for line in f:
+            m = conanParser.match( line )
+            if m:
+                lines.append( '    requires = "Catch/{0}@%s/%s" % (username, channel)'.format(format(self.getVersionString())) )
+            else:
+                lines.append( line.rstrip() )
+        f.close()
+        f = open( conanTestPath, 'w' )
+        for line in lines:
+            f.write( line + "\n" )

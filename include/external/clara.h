@@ -41,6 +41,7 @@
 #include <vector>
 #include <sstream>
 #include <algorithm>
+#include <cctype>
 
 // Use optional outer namespace
 #ifdef STITCH_TBC_TEXT_FORMAT_OUTER_NAMESPACE
@@ -150,7 +151,7 @@ namespace Tbc {
             return oss.str();
         }
 
-        inline friend std::ostream& operator << ( std::ostream& _stream, Text const& _text ) {
+        friend std::ostream& operator << ( std::ostream& _stream, Text const& _text ) {
             for( Text::const_iterator it = _text.begin(), itEnd = _text.end();
                 it != itEnd; ++it ) {
                 if( it != _text.begin() )
@@ -397,7 +398,7 @@ namespace Clara {
             _dest = _source;
         }
         char toLowerCh(char c) {
-            return static_cast<char>( ::tolower( c ) );
+            return static_cast<char>( std::tolower( c ) );
         }
         inline void convertInto( std::string const& _source, bool& _dest ) {
             std::string sourceLC = _source;
@@ -553,12 +554,13 @@ namespace Clara {
         }
 
         void parseIntoTokens( std::string const& arg, std::vector<Token>& tokens ) {
-            for( std::size_t i = 0; i <= arg.size(); ++i ) {
+            for( std::size_t i = 0; i < arg.size(); ++i ) {
                 char c = arg[i];
                 if( c == '"' )
                     inQuotes = !inQuotes;
                 mode = handleMode( i, c, arg, tokens );
             }
+            mode = handleMode( arg.size(), '\0', arg, tokens );
         }
         Mode handleMode( std::size_t i, char c, std::string const& arg, std::vector<Token>& tokens ) {
             switch( mode ) {
@@ -591,6 +593,7 @@ namespace Clara {
                 default: from = i; return ShortOpt;
             }
         }
+
         Mode handleOpt( std::size_t i, char c, std::string const& arg, std::vector<Token>& tokens ) {
             if( std::string( ":=\0", 3 ).find( c ) == std::string::npos )
                 return mode;
@@ -924,7 +927,7 @@ namespace Clara {
         }
 
         std::vector<Parser::Token> parseInto( std::vector<std::string> const& args, ConfigT& config ) const {
-            std::string processName = args[0];
+            std::string processName = args.empty() ? std::string() : args[0];
             std::size_t lastSlash = processName.find_last_of( "/\\" );
             if( lastSlash != std::string::npos )
                 processName = processName.substr( lastSlash+1 );

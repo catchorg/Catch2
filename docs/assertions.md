@@ -53,13 +53,32 @@ Catch provides a way to perform tolerant comparisons of floating point values th
 REQUIRE( performComputation() == Approx( 2.1 ) );
 ```
 
-By default a small epsilon value is used that covers many simple cases of rounding errors. When this is insufficent the epsilon value (the amount within which a difference either way is ignored) can be specified by calling the ```epsilon()``` method on the ```Approx``` instance. e.g.:
+This way `Approx` is constructed with reasonable defaults, covering most simple cases of rounding errors. If these are insufficient, each `Approx` instance has 3 tuning knobs, that can be used to customize it for your computation.
 
-```
-REQUIRE( 22/7 == Approx( 3.141 ).epsilon( 0.01 ) );
+* __epsilon__ - epsilon serves to set the percentage by which a result can be erroneous, before it is rejected. By default set to `std::numeric_limits<float>::epsilon()*100`.
+* __margin__ - margin serves to set the the absolute value by which a result can be erroneous before it is rejected. By default set to `0.0`.
+* __scale__ - scale serves to adjust the base for comparison used by epsilon, can be used when  By default set to `1.0`.
+
+#### epsilon example
+```cpp
+Approx target = Approx(100).epsilon(0.01);
+100.0 == target; // Obviously true
+200.0 == target; // Obviously still false
+100.5 == target; // True, because we set target to allow up to 1% error
 ```
 
-When dealing with very large or very small numbers it can be useful to specify a scale, which can be achieved by calling the ```scale()``` method on the ```Approx``` instance.
+#### margin example
+_Margin check is used only if the relative (epsilon and scale based) check fails._
+```cpp
+Approx target = Approx(100).margin(5);
+100.0 == target; // Obviously true
+200.0 == target; // Obviously still false
+104.0 == target; // True, because we set target to allow absolute error up to 5
+```
+
+#### scale
+Scale can be useful if the computation leading to the result worked on different scale, than is used by the results (and thus expected errors are on a different scale than would be expected based on the results alone).
+
 
 ## Exceptions
 
@@ -76,7 +95,7 @@ Expects that an exception (of any type) is be thrown during evaluation of the ex
 * **REQUIRE_THROWS_AS(** _expression_, _exception type_ **)** and  
 * **CHECK_THROWS_AS(** _expression_, _exception type_ **)**
 
-Expects that an exception of the _specified type_ is thrown during evaluation of the expression.
+Expects that an exception of the _specified type_ is thrown during evaluation of the expression. Note that the _exception type_ is used verbatim and you should include (const) reference.
 
 * **REQUIRE_THROWS_WITH(** _expression_, _string or string matcher_ **)** and  
 * **CHECK_THROWS_WITH(** _expression_, _string or string matcher_ **)**
@@ -111,6 +130,11 @@ To support Matchers a slightly different form is used. Matchers have [their own 
 * **CHECK_THAT(** _lhs_, _matcher expression_ **)**  
 
 Matchers can be composed using `&&`, `||` and `!` operators.
+
+## Thread Safety
+
+Currently assertions in Catch are not thread safe.
+For more details, along with workarounds, see the section on [the limitations page](limitations.md#thread-safe-assertions).
 
 ---
 

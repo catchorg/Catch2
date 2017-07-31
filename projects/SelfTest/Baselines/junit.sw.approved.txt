@@ -1,9 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuitesspanner>
-  <testsuite name="<exe-name>" errors="13" failures="68" tests="934" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
+  <testsuite name="<exe-name>" errors="13" failures="78" tests="971" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
     <testcase classname="global" name="# A test name that starts with a #" time="{duration}"/>
-    <testcase classname="global" name="#542" time="{duration}"/>
+    <testcase classname="#748 - captures with unexpected exceptions" name="outside assertions" time="{duration}">
+      <error type="TEST_CASE">
+expected exception
+answer := 42
+ExceptionTests.cpp:<line number>
+      </error>
+    </testcase>
+    <testcase classname="#748 - captures with unexpected exceptions" name="inside REQUIRE_NOTHROW" time="{duration}">
+      <error message="thisThrows()" type="REQUIRE_NOTHROW">
+expected exception
+answer := 42
+ExceptionTests.cpp:<line number>
+      </error>
+    </testcase>
+    <testcase classname="#748 - captures with unexpected exceptions" name="inside REQUIRE_THROWS" time="{duration}"/>
     <testcase classname="global" name="#809" time="{duration}"/>
+    <testcase classname="global" name="#833" time="{duration}"/>
+    <testcase classname="global" name="#835 -- errno should not be touched by Catch" time="{duration}">
+      <failure message="1 == 0" type="CHECK">
+MiscTests.cpp:<line number>
+      </failure>
+    </testcase>
     <testcase classname="global" name="'Not' checks that should fail" time="{duration}">
       <failure message="false != false" type="CHECK">
 ConditionTests.cpp:<line number>
@@ -63,6 +83,7 @@ TrickyTests.cpp:<line number>
 TrickyTests.cpp:<line number>
       </failure>
     </testcase>
+    <testcase classname="global" name="Absolute margin" time="{duration}"/>
     <testcase classname="global" name="AllOf matcher" time="{duration}"/>
     <testcase classname="global" name="An expression with side-effects should only be evaluated once" time="{duration}"/>
     <testcase classname="global" name="An unchecked exception reports the line of the last assertion" time="{duration}">
@@ -82,6 +103,8 @@ ExceptionTests.cpp:<line number>
     <testcase classname="Assertions then sections" name="A section" time="{duration}"/>
     <testcase classname="Assertions then sections" name="A section/Another section" time="{duration}"/>
     <testcase classname="Assertions then sections" name="A section/Another other section" time="{duration}"/>
+    <testcase classname="Capture and info messages" name="Capture should stringify like assertions" time="{duration}"/>
+    <testcase classname="Capture and info messages" name="Info should NOT stringify the way assertions do" time="{duration}"/>
     <testcase classname="Character pretty printing" name="Specifically escaped" time="{duration}"/>
     <testcase classname="Character pretty printing" name="General chars" time="{duration}"/>
     <testcase classname="Character pretty printing" name="Low ASCII" time="{duration}"/>
@@ -92,7 +115,7 @@ ExceptionTests.cpp:<line number>
     <testcase classname="global" name="Comparisons with int literals don't warn when mixing signed/ unsigned" time="{duration}"/>
     <testcase classname="global" name="Contains string matcher" time="{duration}">
       <failure message="&quot;this string contains 'abc' as a substring&quot; contains: &quot;not there&quot;" type="CHECK_THAT">
-MiscTests.cpp:<line number>
+MatchersTests.cpp:<line number>
       </failure>
     </testcase>
     <testcase classname="global" name="Custom exceptions can be translated when testing for nothrow" time="{duration}">
@@ -116,7 +139,7 @@ ExceptionTests.cpp:<line number>
     <testcase classname="global" name="Demonstrate that a non-const == is not used" time="{duration}"/>
     <testcase classname="global" name="EndsWith string matcher" time="{duration}">
       <failure message="&quot;this string contains 'abc' as a substring&quot; ends with: &quot;this&quot;" type="CHECK_THAT">
-MiscTests.cpp:<line number>
+MatchersTests.cpp:<line number>
       </failure>
     </testcase>
     <testcase classname="global" name="Equality checks that should fail" time="{duration}">
@@ -164,7 +187,7 @@ ConditionTests.cpp:<line number>
     <testcase classname="global" name="Equals" time="{duration}"/>
     <testcase classname="global" name="Equals string matcher" time="{duration}">
       <failure message="&quot;this string contains 'abc' as a substring&quot; equals: &quot;something else&quot;" type="CHECK_THAT">
-MiscTests.cpp:<line number>
+MatchersTests.cpp:<line number>
       </failure>
     </testcase>
     <testcase classname="Exception messages can be tested for" name="exact match" time="{duration}"/>
@@ -194,6 +217,12 @@ MessageTests.cpp:<line number>
 MessageTests.cpp:<line number>
       </failure>
     </testcase>
+    <testcase classname="global" name="FAIL_CHECK does not abort the test" time="{duration}">
+      <failure type="FAIL_CHECK">
+This is a failure
+MessageTests.cpp:<line number>
+      </failure>
+    </testcase>
     <testcase classname="global" name="Factorials are computed" time="{duration}"/>
     <testcase classname="global" name="Generator over a range of pairs" time="{duration}"/>
     <testcase classname="global" name="Generators over two ranges" time="{duration}"/>
@@ -208,10 +237,13 @@ MessageTests.cpp:<line number>
     </testcase>
     <testcase classname="global" name="INFO gets logged on failure, even if captured before successful assertions" time="{duration}">
       <failure message="2 == 1" type="CHECK">
+this message may be logged later
 this message should be logged
 MessageTests.cpp:<line number>
       </failure>
       <failure message="2 == 0" type="CHECK">
+this message may be logged later
+this message should be logged
 and this, but later
 MessageTests.cpp:<line number>
       </failure>
@@ -249,20 +281,20 @@ ConditionTests.cpp:<line number>
     <testcase classname="Long strings can be wrapped" name="With wrap-before/ after characters/No wrapping" time="{duration}"/>
     <testcase classname="Long strings can be wrapped" name="With wrap-before/ after characters/Wrap before" time="{duration}"/>
     <testcase classname="Long strings can be wrapped" name="With wrap-before/ after characters/Wrap after" time="{duration}"/>
-    <testcase classname="global" name="Long text is truncted" time="{duration}"/>
+    <testcase classname="global" name="Long text is truncated" time="{duration}"/>
     <testcase classname="global" name="ManuallyRegistered" time="{duration}"/>
     <testcase classname="global" name="Matchers can be (AllOf) composed with the &amp;&amp; operator" time="{duration}"/>
     <testcase classname="global" name="Matchers can be (AnyOf) composed with the || operator" time="{duration}"/>
     <testcase classname="global" name="Matchers can be composed with both &amp;&amp; and ||" time="{duration}"/>
     <testcase classname="global" name="Matchers can be composed with both &amp;&amp; and || - failing" time="{duration}">
       <failure message="&quot;this string contains 'abc' as a substring&quot; ( ( contains: &quot;string&quot; or contains: &quot;different&quot; ) and contains: &quot;random&quot; )" type="CHECK_THAT">
-MiscTests.cpp:<line number>
+MatchersTests.cpp:<line number>
       </failure>
     </testcase>
     <testcase classname="global" name="Matchers can be negated (Not) with the ! operator" time="{duration}"/>
     <testcase classname="global" name="Matchers can be negated (Not) with the ! operator - failing" time="{duration}">
       <failure message="&quot;this string contains 'abc' as a substring&quot; not contains: &quot;substring&quot;" type="CHECK_THAT">
-MiscTests.cpp:<line number>
+MatchersTests.cpp:<line number>
       </failure>
     </testcase>
     <testcase classname="global" name="Mismatching exception messages failing the test" time="{duration}">
@@ -386,6 +418,7 @@ MessageTests.cpp:<line number>
     <testcase classname="global" name="Parsing a std::pair" time="{duration}"/>
     <testcase classname="global" name="Pointers can be compared to null" time="{duration}"/>
     <testcase classname="global" name="Pointers can be converted to strings" time="{duration}"/>
+    <testcase classname="Process can be configured on command line" name="empty args don't cause a crash" time="{duration}"/>
     <testcase classname="Process can be configured on command line" name="default - no arguments" time="{duration}"/>
     <testcase classname="Process can be configured on command line" name="test lists/1 test" time="{duration}"/>
     <testcase classname="Process can be configured on command line" name="test lists/Specify one test case exclusion using exclude:" time="{duration}"/>
@@ -410,6 +443,11 @@ MessageTests.cpp:<line number>
     <testcase classname="Process can be configured on command line" name="use-colour/yes" time="{duration}"/>
     <testcase classname="Process can be configured on command line" name="use-colour/no" time="{duration}"/>
     <testcase classname="Process can be configured on command line" name="use-colour/error" time="{duration}"/>
+    <testcase classname="global" name="Reconstruction should be based on stringification: #914" time="{duration}">
+      <failure message="Hey, its truthy!" type="CHECK">
+DecompositionTests.cpp:<line number>
+      </failure>
+    </testcase>
     <testcase classname="global" name="SCOPED_INFO is reset for each loop" time="{duration}">
       <failure message="10 &lt; 10" type="REQUIRE">
 current counter 10
@@ -445,7 +483,7 @@ Message from section two
     </testcase>
     <testcase classname="global" name="StartsWith string matcher" time="{duration}">
       <failure message="&quot;this string contains 'abc' as a substring&quot; starts with: &quot;string&quot;" type="CHECK_THAT">
-MiscTests.cpp:<line number>
+MatchersTests.cpp:<line number>
       </failure>
     </testcase>
     <testcase classname="global" name="String matchers" time="{duration}"/>
@@ -499,6 +537,39 @@ ExceptionTests.cpp:<line number>
     </testcase>
     <testcase classname="global" name="Use a custom approx" time="{duration}"/>
     <testcase classname="Variadic macros" name="Section with one argument" time="{duration}"/>
+    <testcase classname="Vector matchers" name="Contains (element)" time="{duration}"/>
+    <testcase classname="Vector matchers" name="Contains (vector)" time="{duration}"/>
+    <testcase classname="Vector matchers" name="Equals" time="{duration}"/>
+    <testcase classname="Vector matchers that fail" name="Contains (element)" time="{duration}">
+      <failure message="{ 1, 2, 3 } Contains: -1" type="CHECK_THAT">
+MatchersTests.cpp:<line number>
+      </failure>
+      <failure message="{  } Contains: 1" type="CHECK_THAT">
+MatchersTests.cpp:<line number>
+      </failure>
+    </testcase>
+    <testcase classname="Vector matchers that fail" name="Contains (vector)" time="{duration}">
+      <failure message="{  } Contains: { 1, 2, 3 }" type="CHECK_THAT">
+MatchersTests.cpp:<line number>
+      </failure>
+      <failure message="{ 1, 2, 3 } Contains: { 1, 2, 4 }" type="CHECK_THAT">
+MatchersTests.cpp:<line number>
+      </failure>
+    </testcase>
+    <testcase classname="Vector matchers that fail" name="Equals" time="{duration}">
+      <failure message="{ 1, 2, 3 } Equals: { 1, 2 }" type="CHECK_THAT">
+MatchersTests.cpp:<line number>
+      </failure>
+      <failure message="{ 1, 2 } Equals: { 1, 2, 3 }" type="CHECK_THAT">
+MatchersTests.cpp:<line number>
+      </failure>
+      <failure message="{  } Equals: { 1, 2, 3 }" type="CHECK_THAT">
+MatchersTests.cpp:<line number>
+      </failure>
+      <failure message="{ 1, 2, 3 } Equals: {  }" type="CHECK_THAT">
+MatchersTests.cpp:<line number>
+      </failure>
+    </testcase>
     <testcase classname="global" name="When checked exceptions are thrown they can be expected or unexpected" time="{duration}"/>
     <testcase classname="global" name="When unchecked exceptions are thrown directly they are always failures" time="{duration}">
       <error type="TEST_CASE">

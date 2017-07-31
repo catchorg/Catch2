@@ -12,7 +12,7 @@ from scriptCommon import catchPath
 from releaseCommon import Version
 
 
-includesParser = re.compile( r'\s*#include\s*"(.*)"' )
+includesParser = re.compile( r'\s*#\s*include\s*"(.*)"' )
 guardParser = re.compile( r'\s*#.*TWOBLUECUBES_CATCH_.*_INCLUDED')
 defineParser = re.compile( r'\s*#define')
 ifParser = re.compile( r'\s*#ifndef TWOBLUECUBES_CATCH_.*_INCLUDED')

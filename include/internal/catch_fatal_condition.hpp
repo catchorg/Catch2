@@ -28,7 +28,7 @@ namespace Catch {
 
 namespace Catch {
     struct FatalConditionHandler {
-        void reset() {}        
+        void reset() {}
     };
 }
 
@@ -53,7 +53,6 @@ namespace Catch {
         static LONG CALLBACK handleVectoredException(PEXCEPTION_POINTERS ExceptionInfo) {
             for (int i = 0; i < sizeof(signalDefs) / sizeof(SignalDefs); ++i) {
                 if (ExceptionInfo->ExceptionRecord->ExceptionCode == signalDefs[i].id) {
-                    reset();
                     reportFatal(signalDefs[i].name);
                 }
             }
@@ -107,7 +106,7 @@ namespace Catch {
 
 namespace Catch {
     struct FatalConditionHandler {
-        void reset() {}        
+        void reset() {}
     };
 }
 

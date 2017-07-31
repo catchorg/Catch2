@@ -248,15 +248,6 @@ TEST_CASE( "Comparisons between unsigned ints and negative signed ints match c++
     CHECK( minInt > 2u );
 }
 
-template<typename T>
-struct Ex
-{
-    Ex( T ){}
-
-    bool operator == ( const T& ) const { return true; }
-    T operator * ( const T& ) const { return T(); }
-};
-
 TEST_CASE( "Comparisons between ints where one side is computed", "" )
 {
      CHECK( 54 == 6*9 );

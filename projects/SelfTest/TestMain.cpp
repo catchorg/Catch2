@@ -9,6 +9,9 @@
 #define CATCH_CONFIG_MAIN
 #include "catch.hpp"
 #include "../include/reporters/catch_reporter_teamcity.hpp"
+#include "../include/reporters/catch_reporter_tap.hpp"
+#include "../include/reporters/catch_reporter_automake.hpp"
+
 
 // Some example tag aliases
 CATCH_REGISTER_TAG_ALIAS( "[@nhf]", "[failing]~[.]" )
@@ -48,10 +51,18 @@ TEST_CASE( "Process can be configured on command line", "[config][command-line]"
 
     Catch::ConfigData config;
 
+    SECTION( "empty args don't cause a crash" ) {
+        Catch::Clara::CommandLine<Catch::ConfigData> parser = Catch::makeCommandLineParser();
+        CHECK_NOTHROW( parser.parseInto( std::vector<std::string>(), config ) );
+
+        CHECK( config.processName == "" );
+    }
+
     SECTION( "default - no arguments", "" ) {
         const char* argv[] = { "test" };
         CHECK_NOTHROW( parseIntoConfig( argv, config ) );
 
+        CHECK( config.processName == "test" );
         CHECK( config.shouldDebugBreak == false );
         CHECK( config.abortAfter == -1 );
         CHECK( config.noThrow == false );
@@ -468,7 +479,7 @@ TEST_CASE( "Text can be formatted using the Text class", "" ) {
     CHECK( Text( "hi there", narrow ).toString() == "hi\nthere" );
 }
 
-TEST_CASE( "Long text is truncted", "[Text][Truncated]" ) {
+TEST_CASE( "Long text is truncated", "[Text][Truncated]" ) {
 
     std::string longLine( 90, '*' );
 

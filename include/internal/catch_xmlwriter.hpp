@@ -10,7 +10,6 @@
 
 #include "catch_stream.h"
 #include "catch_compiler_capabilities.h"
-#include "catch_suppress_warnings.h"
 
 #include <sstream>
 #include <string>
@@ -241,6 +240,5 @@ namespace Catch {
     };
 
 }
-#include "catch_reenable_warnings.h"
 
 #endif // TWOBLUECUBES_CATCH_XMLWRITER_HPP_INCLUDED

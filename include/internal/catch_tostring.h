@@ -63,7 +63,7 @@ std::string toString( std::nullptr_t );
 
 #ifdef __OBJC__
     std::string toString( NSString const * const& nsstring );
-    std::string toString( NSString * CATCH_ARC_STRONG const& nsstring );
+    std::string toString( NSString * CATCH_ARC_STRONG & nsstring );
     std::string toString( NSObject* const& nsObject );
 #endif
 
@@ -72,6 +72,7 @@ namespace Detail {
 
     extern const std::string unprintableString;
 
+ #if !defined(CATCH_CONFIG_CPP11_STREAM_INSERTABLE_CHECK)
     struct BorgType {
         template<typename T> BorgType( T const& );
     };
@@ -90,6 +91,20 @@ namespace Detail {
         static T  const&t;
         enum { value = sizeof( testStreamable(s << t) ) == sizeof( TrueType ) };
     };
+#else
+    template<typename T>
+    class IsStreamInsertable {
+        template<typename SS, typename TT>
+        static auto test(int)
+        -> decltype( std::declval<SS&>() << std::declval<TT>(), std::true_type() );
+
+        template<typename, typename>
+        static auto test(...) -> std::false_type;
+
+    public:
+        static const bool value = decltype(test<std::ostream,const T&>(0))::value;
+    };
+#endif
 
 #if defined(CATCH_CONFIG_CPP11_IS_ENUM)
     template<typename T,
@@ -138,7 +153,7 @@ namespace Detail {
     std::string rawMemoryToString( const void *object, std::size_t size );
 
     template<typename T>
-    inline std::string rawMemoryToString( const T& object ) {
+    std::string rawMemoryToString( const T& object ) {
       return rawMemoryToString( &object, sizeof(object) );
     }
 

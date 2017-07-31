@@ -27,20 +27,29 @@ namespace Matchers {
             }
 
         protected:
+            virtual ~MatcherUntypedBase();
             virtual std::string describe() const = 0;
             mutable std::string m_cachedToString;
-		private:
-			MatcherUntypedBase& operator = (MatcherUntypedBase const&);
+        private:
+            MatcherUntypedBase& operator = ( MatcherUntypedBase const& );
         };
 
-        template<typename ArgT>
-        struct MatcherBase : MatcherUntypedBase {
+        template<typename ObjectT>
+        struct MatcherMethod {
+            virtual bool match( ObjectT const& arg ) const = 0;
+        };
+        template<typename PtrT>
+        struct MatcherMethod<PtrT*> {
+            virtual bool match( PtrT* arg ) const = 0;
+        };
 
-            virtual bool match( ArgT const& arg ) const = 0;
+        template<typename ObjectT, typename ComparatorT = ObjectT>
+        struct MatcherBase : MatcherUntypedBase, MatcherMethod<ObjectT> {
 
-            MatchAllOf<ArgT> operator && ( MatcherBase const& other ) const;
-            MatchAnyOf<ArgT> operator || ( MatcherBase const& other ) const;
-            MatchNotOf<ArgT> operator ! () const;
+
+            MatchAllOf<ComparatorT> operator && ( MatcherBase const& other ) const;
+            MatchAnyOf<ComparatorT> operator || ( MatcherBase const& other ) const;
+            MatchNotOf<ComparatorT> operator ! () const;
         };
 
         template<typename ArgT>
@@ -118,17 +127,17 @@ namespace Matchers {
             MatcherBase<ArgT> const& m_underlyingMatcher;
         };
 
-        template<typename ArgT>
-        MatchAllOf<ArgT> MatcherBase<ArgT>::operator && ( MatcherBase const& other ) const {
-            return MatchAllOf<ArgT>() && *this && other;
+        template<typename ObjectT, typename ComparatorT>
+        MatchAllOf<ComparatorT> MatcherBase<ObjectT, ComparatorT>::operator && ( MatcherBase const& other ) const {
+            return MatchAllOf<ComparatorT>() && *this && other;
         }
-        template<typename ArgT>
-        MatchAnyOf<ArgT> MatcherBase<ArgT>::operator || ( MatcherBase const& other ) const {
-            return MatchAnyOf<ArgT>() || *this || other;
+        template<typename ObjectT, typename ComparatorT>
+        MatchAnyOf<ComparatorT> MatcherBase<ObjectT, ComparatorT>::operator || ( MatcherBase const& other ) const {
+            return MatchAnyOf<ComparatorT>() || *this || other;
         }
-        template<typename ArgT>
-        MatchNotOf<ArgT> MatcherBase<ArgT>::operator ! () const {
-            return MatchNotOf<ArgT>( *this );
+        template<typename ObjectT, typename ComparatorT>
+        MatchNotOf<ComparatorT> MatcherBase<ObjectT, ComparatorT>::operator ! () const {
+            return MatchNotOf<ComparatorT>( *this );
         }
 
     } // namespace Impl
@@ -138,23 +147,23 @@ namespace Matchers {
     // This allows the types to be inferred
     // - deprecated: prefer ||, && and !
     template<typename T>
-    inline Impl::MatchNotOf<T> Not( Impl::MatcherBase<T> const& underlyingMatcher ) {
+    Impl::MatchNotOf<T> Not( Impl::MatcherBase<T> const& underlyingMatcher ) {
         return Impl::MatchNotOf<T>( underlyingMatcher );
     }
     template<typename T>
-    inline Impl::MatchAllOf<T> AllOf( Impl::MatcherBase<T> const& m1, Impl::MatcherBase<T> const& m2 ) {
+    Impl::MatchAllOf<T> AllOf( Impl::MatcherBase<T> const& m1, Impl::MatcherBase<T> const& m2 ) {
         return Impl::MatchAllOf<T>() && m1 && m2;
     }
     template<typename T>
-    inline Impl::MatchAllOf<T> AllOf( Impl::MatcherBase<T> const& m1, Impl::MatcherBase<T> const& m2, Impl::MatcherBase<T> const& m3 ) {
+    Impl::MatchAllOf<T> AllOf( Impl::MatcherBase<T> const& m1, Impl::MatcherBase<T> const& m2, Impl::MatcherBase<T> const& m3 ) {
         return Impl::MatchAllOf<T>() && m1 && m2 && m3;
     }
     template<typename T>
-    inline Impl::MatchAnyOf<T> AnyOf( Impl::MatcherBase<T> const& m1, Impl::MatcherBase<T> const& m2 ) {
+    Impl::MatchAnyOf<T> AnyOf( Impl::MatcherBase<T> const& m1, Impl::MatcherBase<T> const& m2 ) {
         return Impl::MatchAnyOf<T>() || m1 || m2;
     }
     template<typename T>
-    inline Impl::MatchAnyOf<T> AnyOf( Impl::MatcherBase<T> const& m1, Impl::MatcherBase<T> const& m2, Impl::MatcherBase<T> const& m3 ) {
+    Impl::MatchAnyOf<T> AnyOf( Impl::MatcherBase<T> const& m1, Impl::MatcherBase<T> const& m2, Impl::MatcherBase<T> const& m3 ) {
         return Impl::MatchAnyOf<T>() || m1 || m2 || m3;
     }
 
