@@ -8,11 +8,17 @@
 #ifndef TWOBLUECUBES_CATCH_WINDOWS_H_PROXY_H_INCLUDED
 #define TWOBLUECUBES_CATCH_WINDOWS_H_PROXY_H_INCLUDED
 
-#ifdef CATCH_DEFINES_NOMINMAX
-#  define NOMINMAX
-#endif
-#ifdef CATCH_DEFINES_WIN32_LEAN_AND_MEAN
-#  define WIN32_LEAN_AND_MEAN
+#include "catch_platform.h"
+
+#if defined(CATCH_PLATFORM_WINDOWS)
+#  if !defined(NOMINMAX) && !defined(CATCH_CONFIG_NO_NOMINMAX)
+#    define CATCH_DEFINED_NOMINMAX
+#    define NOMINMAX
+#  endif
+#  if !defined(WIN32_LEAN_AND_MEAN) && !defined(CATCH_CONFIG_NO_WIN32_LEAN_AND_MEAN)
+#    define CATCH_DEFINED_WIN32_LEAN_AND_MEAN
+#    define WIN32_LEAN_AND_MEAN
+#  endif
 #endif
 
 #ifdef __AFXDLL
@@ -21,10 +27,10 @@
 #include <windows.h>
 #endif
 
-#ifdef CATCH_DEFINES_NOMINMAX
+#ifdef CATCH_DEFINED_NOMINMAX
 #  undef NOMINMAX
 #endif
-#ifdef CATCH_DEFINES_WIN32_LEAN_AND_MEAN
+#ifdef CATCH_DEFINED_WIN32_LEAN_AND_MEAN
 #  undef WIN32_LEAN_AND_MEAN
 #endif
 
