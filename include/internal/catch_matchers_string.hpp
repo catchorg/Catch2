@@ -29,7 +29,7 @@ namespace Matchers {
         }
 
 
-        StringMatcherBase::StringMatcherBase( std::string operation, CasedString const& comparator )
+        StringMatcherBase::StringMatcherBase( std::string const& operation, CasedString const& comparator )
         : m_comparator( comparator ),
           m_operation( operation ) {
         }

@@ -10,6 +10,7 @@
 #define TWOBLUECUBES_CATCH_DEBUGGER_HPP_INCLUDED
 
 #include "catch_debugger.h"
+#include "catch_errno_guard.hpp"
 
 #ifdef CATCH_PLATFORM_MAC
 
@@ -72,6 +73,9 @@
         // be strace, for example) in /proc/$PID/status, so just get it from
         // there instead.
         bool isDebuggerActive(){
+            // Libstdc++ has a bug, where std::ifstream sets errno to 0
+            // This way our users can properly assert over errno values
+            ErrnoGuard guard;
             std::ifstream in("/proc/self/status");
             for( std::string line; std::getline(in, line); ) {
                 static const int PREFIX_LEN = 11;

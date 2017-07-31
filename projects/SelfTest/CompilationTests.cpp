@@ -23,20 +23,50 @@ TEST_CASE("#809") {
     REQUIRE(42 == f);
 }
 
-// ------------------------------------------------------------------
-// REQUIRE_THROWS_AS was changed to catch exceptions by const&
-// using type traits. This means that this should compile cleanly
 
-// Provides indirection to prevent unreachable-code warnings
+// ------------------------------------------------------------------
+// Changes to REQUIRE_THROWS_AS made it stop working in a template in
+// an unfixable way (as long as C++03 compatibility is being kept).
+// To prevent these from happening in the future, this needs to compile
+
 void throws_int(bool b) {
     if (b) {
         throw 1;
     }
 }
 
-TEST_CASE("#542") {
-    CHECK_THROWS_AS(throws_int(true), int);
-    CHECK_THROWS_AS(throws_int(true), int&);
-    CHECK_THROWS_AS(throws_int(true), const int);
+template <typename T>
+bool templated_tests(T t) {
+    int a = 3;
+    REQUIRE(a == t);
+    CHECK(a == t);
+    REQUIRE_THROWS(throws_int(true));
     CHECK_THROWS_AS(throws_int(true), const int&);
+    REQUIRE_NOTHROW(throws_int(false));
+    REQUIRE_THAT("aaa", Catch::EndsWith("aaa"));
+    return true;
 }
+
+TEST_CASE("#833") {
+    REQUIRE(templated_tests<int>(3));
+}
+
+// Test containing example where original stream insertable check breaks compilation
+#if defined (CATCH_CONFIG_CPP11_STREAM_INSERTABLE_CHECK)
+namespace {
+    struct A {};
+    std::ostream& operator<< (std::ostream &o, const A &) { return o << 0; }
+
+    struct B : private A {
+        bool operator== (int) const { return true; }
+    };
+
+    B f ();
+    std::ostream g ();
+}
+
+TEST_CASE( "#872" ) {
+    B x;
+    REQUIRE (x == 4);
+}
+#endif

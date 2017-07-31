@@ -81,7 +81,7 @@ public:
     }
 
     virtual void reconstructExpression( std::string& dest ) const CATCH_OVERRIDE {
-        dest = Catch::toString( m_truthy );
+        dest = Catch::toString( m_lhs );
     }
 
 private:

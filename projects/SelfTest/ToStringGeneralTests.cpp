@@ -9,7 +9,6 @@
 
 
 TEST_CASE( "Character pretty printing" ){
-    // 
     SECTION("Specifically escaped"){
         char tab = '\t';
         char newline = '\n';
@@ -36,5 +35,19 @@ TEST_CASE( "Character pretty printing" ){
             char c = static_cast<char>(i);
             REQUIRE(c == i);
         }
-    }    
+    }
+}
+
+
+TEST_CASE( "Capture and info messages" ) {
+    SECTION("Capture should stringify like assertions") {
+        int i = 2;
+        CAPTURE(i);
+        REQUIRE(true);
+    }
+    SECTION("Info should NOT stringify the way assertions do") {
+        int i = 3;
+        INFO(i);
+        REQUIRE(true);
+    }
 }

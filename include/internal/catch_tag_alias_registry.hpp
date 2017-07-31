@@ -10,6 +10,8 @@
 
 #include "catch_tag_alias_registry.h"
 #include "catch_console_colour.hpp"
+#include "catch_interfaces_registry_hub.h"
+#include "catch_stream.h"
 
 namespace Catch {
 
@@ -38,41 +40,36 @@ namespace Catch {
         return expandedTestSpec;
     }
 
-    void TagAliasRegistry::add( char const* alias, char const* tag, SourceLineInfo const& lineInfo ) {
+    void TagAliasRegistry::add( std::string const& alias, std::string const& tag, SourceLineInfo const& lineInfo ) {
 
         if( !startsWith( alias, "[@" ) || !endsWith( alias, ']' ) ) {
             std::ostringstream oss;
-            oss << "error: tag alias, \"" << alias << "\" is not of the form [@alias name].\n" << lineInfo;
+            oss << Colour( Colour::Red )
+                << "error: tag alias, \"" << alias << "\" is not of the form [@alias name].\n"
+                << Colour( Colour::FileName )
+                << lineInfo << '\n';
             throw std::domain_error( oss.str().c_str() );
         }
         if( !m_registry.insert( std::make_pair( alias, TagAlias( tag, lineInfo ) ) ).second ) {
             std::ostringstream oss;
-            oss << "error: tag alias, \"" << alias << "\" already registered.\n"
-                << "\tFirst seen at " << find(alias)->lineInfo << '\n'
-                << "\tRedefined at " << lineInfo;
+            oss << Colour( Colour::Red )
+                << "error: tag alias, \"" << alias << "\" already registered.\n"
+                << "\tFirst seen at "
+                << Colour( Colour::Red ) << find(alias)->lineInfo << '\n'
+                << Colour( Colour::Red ) << "\tRedefined at "
+                << Colour( Colour::FileName) << lineInfo << '\n';
             throw std::domain_error( oss.str().c_str() );
         }
     }
 
-    TagAliasRegistry& TagAliasRegistry::get() {
-        static TagAliasRegistry instance;
-        return instance;
+    ITagAliasRegistry::~ITagAliasRegistry() {}
 
+    ITagAliasRegistry const& ITagAliasRegistry::get() {
+        return getRegistryHub().getTagAliasRegistry();
     }
 
-    ITagAliasRegistry::~ITagAliasRegistry() {}
-    ITagAliasRegistry const& ITagAliasRegistry::get() { return TagAliasRegistry::get(); }
-
-
     RegistrarForTagAliases::RegistrarForTagAliases( char const* alias, char const* tag, SourceLineInfo const& lineInfo ) {
-        try {
-            TagAliasRegistry::get().add( alias, tag, lineInfo );
-        }
-        catch( std::exception& ex ) {
-            Colour colourGuard( Colour::Red );
-            Catch::cerr() << ex.what() << std::endl;
-            exit(1);
-        }
+        getMutableRegistryHub().registerTagAlias( alias, tag, lineInfo );
     }
 
 } // end namespace Catch

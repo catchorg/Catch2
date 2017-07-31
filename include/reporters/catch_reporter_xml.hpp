@@ -92,73 +92,77 @@ namespace Catch {
         virtual void assertionStarting( AssertionInfo const& ) CATCH_OVERRIDE { }
 
         virtual bool assertionEnded( AssertionStats const& assertionStats ) CATCH_OVERRIDE {
-            const AssertionResult& assertionResult = assertionStats.assertionResult;
 
-            // Print any info messages in <Info> tags.
-            if( assertionStats.assertionResult.getResultType() != ResultWas::Ok ) {
+            AssertionResult const& result = assertionStats.assertionResult;
+
+            bool includeResults = m_config->includeSuccessfulResults() || !result.isOk();
+
+            if( includeResults ) {
+                // Print any info messages in <Info> tags.
                 for( std::vector<MessageInfo>::const_iterator it = assertionStats.infoMessages.begin(), itEnd = assertionStats.infoMessages.end();
-                        it != itEnd;
-                        ++it ) {
+                     it != itEnd;
+                     ++it ) {
                     if( it->type == ResultWas::Info ) {
                         m_xml.scopedElement( "Info" )
-                            .writeText( it->message );
+                                .writeText( it->message );
                     } else if ( it->type == ResultWas::Warning ) {
                         m_xml.scopedElement( "Warning" )
-                            .writeText( it->message );
+                                .writeText( it->message );
                     }
                 }
             }
 
             // Drop out if result was successful but we're not printing them.
-            if( !m_config->includeSuccessfulResults() && isOk(assertionResult.getResultType()) )
+            if( !includeResults && result.getResultType() != ResultWas::Warning )
                 return true;
 
-            // Print the expression if there is one.
-            if( assertionResult.hasExpression() ) {
-                m_xml.startElement( "Expression" )
-                    .writeAttribute( "success", assertionResult.succeeded() )
-                    .writeAttribute( "type", assertionResult.getTestMacroName() );
 
-                writeSourceInfo( assertionResult.getSourceInfo() );
+            // Print the expression if there is one.
+            if( result.hasExpression() ) {
+                m_xml.startElement( "Expression" )
+                    .writeAttribute( "success", result.succeeded() )
+                    .writeAttribute( "type", result.getTestMacroName() );
+
+                writeSourceInfo( result.getSourceInfo() );
 
                 m_xml.scopedElement( "Original" )
-                    .writeText( assertionResult.getExpression() );
+                    .writeText( result.getExpression() );
                 m_xml.scopedElement( "Expanded" )
-                    .writeText( assertionResult.getExpandedExpression() );
+                    .writeText( result.getExpandedExpression() );
             }
 
             // And... Print a result applicable to each result type.
-            switch( assertionResult.getResultType() ) {
+            switch( result.getResultType() ) {
                 case ResultWas::ThrewException:
                     m_xml.startElement( "Exception" );
-                    writeSourceInfo( assertionResult.getSourceInfo() );
-                    m_xml.writeText( assertionResult.getMessage() );
+                    writeSourceInfo( result.getSourceInfo() );
+                    m_xml.writeText( result.getMessage() );
                     m_xml.endElement();
                     break;
                 case ResultWas::FatalErrorCondition:
                     m_xml.startElement( "FatalErrorCondition" );
-                    writeSourceInfo( assertionResult.getSourceInfo() );
-                    m_xml.writeText( assertionResult.getMessage() );
+                    writeSourceInfo( result.getSourceInfo() );
+                    m_xml.writeText( result.getMessage() );
                     m_xml.endElement();
                     break;
                 case ResultWas::Info:
                     m_xml.scopedElement( "Info" )
-                        .writeText( assertionResult.getMessage() );
+                        .writeText( result.getMessage() );
                     break;
                 case ResultWas::Warning:
                     // Warning will already have been written
                     break;
                 case ResultWas::ExplicitFailure:
                     m_xml.startElement( "Failure" );
-                    writeSourceInfo( assertionResult.getSourceInfo() );
-                    m_xml.writeText( assertionResult.getMessage() );
+                    writeSourceInfo( result.getSourceInfo() );
+                    m_xml.writeText( result.getMessage() );
                     m_xml.endElement();
                     break;
                 default:
                     break;
             }
 
-            if( assertionResult.hasExpression() )
+            if( result.hasExpression() )
                 m_xml.endElement();
 
             return true;

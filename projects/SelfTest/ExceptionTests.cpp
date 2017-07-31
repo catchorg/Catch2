@@ -11,6 +11,10 @@
 #include <string>
 #include <stdexcept>
 
+#ifdef _MSC_VER
+#pragma warning(disable:4702) // Unreachable code -- MSVC 19 (VS 2015) sees right through the indirection
+#endif
+
 namespace
 {
     inline int thisThrows()
@@ -204,4 +208,19 @@ TEST_CASE( "Mismatching exception messages failing the test", "[.][failing][!thr
     REQUIRE_THROWS_WITH( thisThrows(), "expected exception" );
     REQUIRE_THROWS_WITH( thisThrows(), "should fail" );
     REQUIRE_THROWS_WITH( thisThrows(), "expected exception" );
+}
+
+TEST_CASE( "#748 - captures with unexpected exceptions", "[!shouldfail][!throws]" ) {
+    int answer = 42;
+    CAPTURE( answer );
+    // the message should be printed on the first two sections but not on the third
+    SECTION( "outside assertions" ) {
+        thisThrows();
+    }
+    SECTION( "inside REQUIRE_NOTHROW" ) {
+        REQUIRE_NOTHROW( thisThrows() );
+    }
+    SECTION( "inside REQUIRE_THROWS" ) {
+        REQUIRE_THROWS( thisThrows() );
+    }
 }

@@ -15,26 +15,42 @@ with message:
   yay
 
 -------------------------------------------------------------------------------
-#542
+#748 - captures with unexpected exceptions
+  outside assertions
 -------------------------------------------------------------------------------
-CompilationTests.cpp:<line number>
+ExceptionTests.cpp:<line number>
 ...............................................................................
 
-CompilationTests.cpp:<line number>:
-PASSED:
-  CHECK_THROWS_AS( throws_int(true), int )
+ExceptionTests.cpp:<line number>: FAILED:
+due to unexpected exception with messages:
+  answer := 42
+  expected exception
 
-CompilationTests.cpp:<line number>:
-PASSED:
-  CHECK_THROWS_AS( throws_int(true), int& )
+-------------------------------------------------------------------------------
+#748 - captures with unexpected exceptions
+  inside REQUIRE_NOTHROW
+-------------------------------------------------------------------------------
+ExceptionTests.cpp:<line number>
+...............................................................................
 
-CompilationTests.cpp:<line number>:
-PASSED:
-  CHECK_THROWS_AS( throws_int(true), const int )
+ExceptionTests.cpp:<line number>: FAILED:
+  REQUIRE_NOTHROW( thisThrows() )
+due to unexpected exception with messages:
+  answer := 42
+  expected exception
 
-CompilationTests.cpp:<line number>:
+-------------------------------------------------------------------------------
+#748 - captures with unexpected exceptions
+  inside REQUIRE_THROWS
+-------------------------------------------------------------------------------
+ExceptionTests.cpp:<line number>
+...............................................................................
+
+ExceptionTests.cpp:<line number>:
 PASSED:
-  CHECK_THROWS_AS( throws_int(true), const int& )
+  REQUIRE_THROWS( thisThrows() )
+with message:
+  answer := 42
 
 -------------------------------------------------------------------------------
 #809
@@ -47,6 +63,65 @@ PASSED:
   REQUIRE( 42 == f )
 with expansion:
   42 == {?}
+
+-------------------------------------------------------------------------------
+#833
+-------------------------------------------------------------------------------
+CompilationTests.cpp:<line number>
+...............................................................................
+
+CompilationTests.cpp:<line number>:
+PASSED:
+  REQUIRE( a == t )
+with expansion:
+  3 == 3
+
+CompilationTests.cpp:<line number>:
+PASSED:
+  CHECK( a == t )
+with expansion:
+  3 == 3
+
+CompilationTests.cpp:<line number>:
+PASSED:
+  REQUIRE_THROWS( throws_int(true) )
+
+CompilationTests.cpp:<line number>:
+PASSED:
+  CHECK_THROWS_AS( throws_int(true), const int& )
+
+CompilationTests.cpp:<line number>:
+PASSED:
+  REQUIRE_NOTHROW( throws_int(false) )
+
+CompilationTests.cpp:<line number>:
+PASSED:
+  REQUIRE_THAT( "aaa", Catch::EndsWith("aaa") )
+with expansion:
+  "aaa" ends with: "aaa"
+
+CompilationTests.cpp:<line number>:
+PASSED:
+  REQUIRE( templated_tests<int>(3) )
+with expansion:
+  true
+
+-------------------------------------------------------------------------------
+#835 -- errno should not be touched by Catch
+-------------------------------------------------------------------------------
+MiscTests.cpp:<line number>
+...............................................................................
+
+MiscTests.cpp:<line number>: FAILED:
+  CHECK( f() == 0 )
+with expansion:
+  1 == 0
+
+MiscTests.cpp:<line number>:
+PASSED:
+  REQUIRE( errno == 1 )
+with expansion:
+  1 == 1
 
 -------------------------------------------------------------------------------
 'Not' checks that should fail
@@ -305,12 +380,48 @@ with expansion:
   {?} == {?}
 
 -------------------------------------------------------------------------------
-AllOf matcher
+Absolute margin
 -------------------------------------------------------------------------------
-MiscTests.cpp:<line number>
+ApproxTests.cpp:<line number>
 ...............................................................................
 
-MiscTests.cpp:<line number>:
+ApproxTests.cpp:<line number>:
+PASSED:
+  REQUIRE( 104.0 != Approx(100.0) )
+with expansion:
+  104.0 != Approx( 100.0 )
+
+ApproxTests.cpp:<line number>:
+PASSED:
+  REQUIRE( 104.0 == Approx(100.0).margin(5) )
+with expansion:
+  104.0 == Approx( 100.0 )
+
+ApproxTests.cpp:<line number>:
+PASSED:
+  REQUIRE( 104.0 != Approx(100.0).margin(3) )
+with expansion:
+  104.0 != Approx( 100.0 )
+
+ApproxTests.cpp:<line number>:
+PASSED:
+  REQUIRE( 100.3 != Approx(100.0) )
+with expansion:
+  100.3 != Approx( 100.0 )
+
+ApproxTests.cpp:<line number>:
+PASSED:
+  REQUIRE( 100.3 == Approx(100.0).margin(0.5) )
+with expansion:
+  100.3 == Approx( 100.0 )
+
+-------------------------------------------------------------------------------
+AllOf matcher
+-------------------------------------------------------------------------------
+MatchersTests.cpp:<line number>
+...............................................................................
+
+MatchersTests.cpp:<line number>:
 PASSED:
   CHECK_THAT( testStringForMatching(), AllOf( Catch::Contains( "string" ), Catch::Contains( "abc" ) ) )
 with expansion:
@@ -364,17 +475,17 @@ with message:
 -------------------------------------------------------------------------------
 AnyOf matcher
 -------------------------------------------------------------------------------
-MiscTests.cpp:<line number>
+MatchersTests.cpp:<line number>
 ...............................................................................
 
-MiscTests.cpp:<line number>:
+MatchersTests.cpp:<line number>:
 PASSED:
   CHECK_THAT( testStringForMatching(), AnyOf( Catch::Contains( "string" ), Catch::Contains( "not there" ) ) )
 with expansion:
   "this string contains 'abc' as a substring" ( contains: "string" or contains:
   "not there" )
 
-MiscTests.cpp:<line number>:
+MatchersTests.cpp:<line number>:
 PASSED:
   CHECK_THAT( testStringForMatching(), AnyOf( Catch::Contains( "not there" ), Catch::Contains( "string" ) ) )
 with expansion:
@@ -568,6 +679,32 @@ with expansion:
   true
 
 -------------------------------------------------------------------------------
+Capture and info messages
+  Capture should stringify like assertions
+-------------------------------------------------------------------------------
+ToStringGeneralTests.cpp:<line number>
+...............................................................................
+
+ToStringGeneralTests.cpp:<line number>:
+PASSED:
+  REQUIRE( true )
+with message:
+  i := 2
+
+-------------------------------------------------------------------------------
+Capture and info messages
+  Info should NOT stringify the way assertions do
+-------------------------------------------------------------------------------
+ToStringGeneralTests.cpp:<line number>
+...............................................................................
+
+ToStringGeneralTests.cpp:<line number>:
+PASSED:
+  REQUIRE( true )
+with message:
+  3
+
+-------------------------------------------------------------------------------
 Character pretty printing
   Specifically escaped
 -------------------------------------------------------------------------------
@@ -682,7 +819,7 @@ TrickyTests.cpp:<line number>:
 PASSED:
   REQUIRE( a )
 with expansion:
-  true
+  0x<hex digits>
 
 TrickyTests.cpp:<line number>:
 PASSED:
@@ -848,10 +985,10 @@ with expansion:
 -------------------------------------------------------------------------------
 Contains string matcher
 -------------------------------------------------------------------------------
-MiscTests.cpp:<line number>
+MatchersTests.cpp:<line number>
 ...............................................................................
 
-MiscTests.cpp:<line number>: FAILED:
+MatchersTests.cpp:<line number>: FAILED:
   CHECK_THAT( testStringForMatching(), Contains( "not there" ) )
 with expansion:
   "this string contains 'abc' as a substring" contains: "not there"
@@ -903,10 +1040,10 @@ with expansion:
 -------------------------------------------------------------------------------
 EndsWith string matcher
 -------------------------------------------------------------------------------
-MiscTests.cpp:<line number>
+MatchersTests.cpp:<line number>
 ...............................................................................
 
-MiscTests.cpp:<line number>: FAILED:
+MatchersTests.cpp:<line number>: FAILED:
   CHECK_THAT( testStringForMatching(), EndsWith( "this" ) )
 with expansion:
   "this string contains 'abc' as a substring" ends with: "this"
@@ -1033,10 +1170,10 @@ with expansion:
 -------------------------------------------------------------------------------
 Equals
 -------------------------------------------------------------------------------
-MiscTests.cpp:<line number>
+MatchersTests.cpp:<line number>
 ...............................................................................
 
-MiscTests.cpp:<line number>:
+MatchersTests.cpp:<line number>:
 PASSED:
   CHECK_THAT( testStringForMatching(), Equals( "this string contains 'abc' as a substring" ) )
 with expansion:
@@ -1046,10 +1183,10 @@ with expansion:
 -------------------------------------------------------------------------------
 Equals string matcher
 -------------------------------------------------------------------------------
-MiscTests.cpp:<line number>
+MatchersTests.cpp:<line number>
 ...............................................................................
 
-MiscTests.cpp:<line number>: FAILED:
+MatchersTests.cpp:<line number>: FAILED:
   CHECK_THAT( testStringForMatching(), Equals( "something else" ) )
 with expansion:
   "this string contains 'abc' as a substring" equals: "something else"
@@ -1136,6 +1273,20 @@ MessageTests.cpp:<line number>
 ...............................................................................
 
 MessageTests.cpp:<line number>: FAILED:
+
+-------------------------------------------------------------------------------
+FAIL_CHECK does not abort the test
+-------------------------------------------------------------------------------
+MessageTests.cpp:<line number>
+...............................................................................
+
+MessageTests.cpp:<line number>: FAILED:
+explicitly with message:
+  This is a failure
+
+MessageTests.cpp:<line number>:
+warning:
+  This message appears in the output
 
 -------------------------------------------------------------------------------
 Factorials are computed
@@ -2566,14 +2717,17 @@ MessageTests.cpp:<line number>: FAILED:
   CHECK( a == 1 )
 with expansion:
   2 == 1
-with message:
+with messages:
+  this message may be logged later
   this message should be logged
 
 MessageTests.cpp:<line number>: FAILED:
   CHECK( a == 0 )
 with expansion:
   2 == 0
-with message:
+with messages:
+  this message may be logged later
+  this message should be logged
   and this, but later
 
 MessageTests.cpp:<line number>:
@@ -2581,7 +2735,10 @@ PASSED:
   CHECK( a == 2 )
 with expansion:
   2 == 2
-with message:
+with messages:
+  this message may be logged later
+  this message should be logged
+  and this, but later
   but not this
 
 -------------------------------------------------------------------------------
@@ -3256,7 +3413,7 @@ with expansion:
   re>"
 
 -------------------------------------------------------------------------------
-Long text is truncted
+Long text is truncated
 -------------------------------------------------------------------------------
 TestMain.cpp:<line number>
 ...............................................................................
@@ -4281,10 +4438,10 @@ with message:
 -------------------------------------------------------------------------------
 Matchers can be (AllOf) composed with the && operator
 -------------------------------------------------------------------------------
-MiscTests.cpp:<line number>
+MatchersTests.cpp:<line number>
 ...............................................................................
 
-MiscTests.cpp:<line number>:
+MatchersTests.cpp:<line number>:
 PASSED:
   CHECK_THAT( testStringForMatching(), Contains( "string" ) && Contains( "abc" ) && Contains( "substring" ) && Contains( "contains" ) )
 with expansion:
@@ -4294,17 +4451,17 @@ with expansion:
 -------------------------------------------------------------------------------
 Matchers can be (AnyOf) composed with the || operator
 -------------------------------------------------------------------------------
-MiscTests.cpp:<line number>
+MatchersTests.cpp:<line number>
 ...............................................................................
 
-MiscTests.cpp:<line number>:
+MatchersTests.cpp:<line number>:
 PASSED:
   CHECK_THAT( testStringForMatching(), Contains( "string" ) || Contains( "different" ) || Contains( "random" ) )
 with expansion:
   "this string contains 'abc' as a substring" ( contains: "string" or contains:
   "different" or contains: "random" )
 
-MiscTests.cpp:<line number>:
+MatchersTests.cpp:<line number>:
 PASSED:
   CHECK_THAT( testStringForMatching2(), Contains( "string" ) || Contains( "different" ) || Contains( "random" ) )
 with expansion:
@@ -4314,10 +4471,10 @@ with expansion:
 -------------------------------------------------------------------------------
 Matchers can be composed with both && and ||
 -------------------------------------------------------------------------------
-MiscTests.cpp:<line number>
+MatchersTests.cpp:<line number>
 ...............................................................................
 
-MiscTests.cpp:<line number>:
+MatchersTests.cpp:<line number>:
 PASSED:
   CHECK_THAT( testStringForMatching(), ( Contains( "string" ) || Contains( "different" ) ) && Contains( "substring" ) )
 with expansion:
@@ -4327,10 +4484,10 @@ with expansion:
 -------------------------------------------------------------------------------
 Matchers can be composed with both && and || - failing
 -------------------------------------------------------------------------------
-MiscTests.cpp:<line number>
+MatchersTests.cpp:<line number>
 ...............................................................................
 
-MiscTests.cpp:<line number>: FAILED:
+MatchersTests.cpp:<line number>: FAILED:
   CHECK_THAT( testStringForMatching(), ( Contains( "string" ) || Contains( "different" ) ) && Contains( "random" ) )
 with expansion:
   "this string contains 'abc' as a substring" ( ( contains: "string" or
@@ -4339,10 +4496,10 @@ with expansion:
 -------------------------------------------------------------------------------
 Matchers can be negated (Not) with the ! operator
 -------------------------------------------------------------------------------
-MiscTests.cpp:<line number>
+MatchersTests.cpp:<line number>
 ...............................................................................
 
-MiscTests.cpp:<line number>:
+MatchersTests.cpp:<line number>:
 PASSED:
   CHECK_THAT( testStringForMatching(), !Contains( "different" ) )
 with expansion:
@@ -4351,10 +4508,10 @@ with expansion:
 -------------------------------------------------------------------------------
 Matchers can be negated (Not) with the ! operator - failing
 -------------------------------------------------------------------------------
-MiscTests.cpp:<line number>
+MatchersTests.cpp:<line number>
 ...............................................................................
 
-MiscTests.cpp:<line number>: FAILED:
+MatchersTests.cpp:<line number>: FAILED:
   CHECK_THAT( testStringForMatching(), !Contains( "substring" ) )
 with expansion:
   "this string contains 'abc' as a substring" not contains: "substring"
@@ -4414,7 +4571,7 @@ TrickyTests.cpp:<line number>:
 PASSED:
   CHECK( True )
 with expansion:
-  true
+  1
 
 TrickyTests.cpp:<line number>:
 PASSED:
@@ -4426,7 +4583,7 @@ TrickyTests.cpp:<line number>:
 PASSED:
   CHECK_FALSE( False )
 with expansion:
-  !false
+  !0
 
 -------------------------------------------------------------------------------
 Operators at different namespace levels not hijacked by Koenig lookup
@@ -5780,6 +5937,23 @@ warning:
 
 -------------------------------------------------------------------------------
 Process can be configured on command line
+  empty args don't cause a crash
+-------------------------------------------------------------------------------
+TestMain.cpp:<line number>
+...............................................................................
+
+TestMain.cpp:<line number>:
+PASSED:
+  CHECK_NOTHROW( parser.parseInto( std::vector<std::string>(), config ) )
+
+TestMain.cpp:<line number>:
+PASSED:
+  CHECK( config.processName == "" )
+with expansion:
+  "" == ""
+
+-------------------------------------------------------------------------------
+Process can be configured on command line
   default - no arguments
 -------------------------------------------------------------------------------
 TestMain.cpp:<line number>
@@ -5788,6 +5962,12 @@ TestMain.cpp:<line number>
 TestMain.cpp:<line number>:
 PASSED:
   CHECK_NOTHROW( parseIntoConfig( argv, config ) )
+
+TestMain.cpp:<line number>:
+PASSED:
+  CHECK( config.processName == "test" )
+with expansion:
+  "test" == "test"
 
 TestMain.cpp:<line number>:
 PASSED:
@@ -6258,6 +6438,17 @@ PASSED:
   REQUIRE_THROWS_WITH( parseIntoConfig( argv, config ), Contains( "colour mode must be one of" ) )
 
 -------------------------------------------------------------------------------
+Reconstruction should be based on stringification: #914
+-------------------------------------------------------------------------------
+DecompositionTests.cpp:<line number>
+...............................................................................
+
+DecompositionTests.cpp:<line number>: FAILED:
+  CHECK( truthy(false) )
+with expansion:
+  Hey, its truthy!
+
+-------------------------------------------------------------------------------
 SCOPED_INFO is reset for each loop
 -------------------------------------------------------------------------------
 MessageTests.cpp:<line number>
@@ -6620,10 +6811,10 @@ No assertions in section 'two'
 -------------------------------------------------------------------------------
 StartsWith string matcher
 -------------------------------------------------------------------------------
-MiscTests.cpp:<line number>
+MatchersTests.cpp:<line number>
 ...............................................................................
 
-MiscTests.cpp:<line number>: FAILED:
+MatchersTests.cpp:<line number>: FAILED:
   CHECK_THAT( testStringForMatching(), StartsWith( "string" ) )
 with expansion:
   "this string contains 'abc' as a substring" starts with: "string"
@@ -6631,28 +6822,28 @@ with expansion:
 -------------------------------------------------------------------------------
 String matchers
 -------------------------------------------------------------------------------
-MiscTests.cpp:<line number>
+MatchersTests.cpp:<line number>
 ...............................................................................
 
-MiscTests.cpp:<line number>:
+MatchersTests.cpp:<line number>:
 PASSED:
   REQUIRE_THAT( testStringForMatching(), Contains( "string" ) )
 with expansion:
   "this string contains 'abc' as a substring" contains: "string"
 
-MiscTests.cpp:<line number>:
+MatchersTests.cpp:<line number>:
 PASSED:
   CHECK_THAT( testStringForMatching(), Contains( "abc" ) )
 with expansion:
   "this string contains 'abc' as a substring" contains: "abc"
 
-MiscTests.cpp:<line number>:
+MatchersTests.cpp:<line number>:
 PASSED:
   CHECK_THAT( testStringForMatching(), StartsWith( "this" ) )
 with expansion:
   "this string contains 'abc' as a substring" starts with: "this"
 
-MiscTests.cpp:<line number>:
+MatchersTests.cpp:<line number>:
 PASSED:
   CHECK_THAT( testStringForMatching(), EndsWith( "substring" ) )
 with expansion:
@@ -6691,7 +6882,8 @@ PASSED:
 with expansion:
   "error: tag alias, "[@zzz]" already registered.
   	First seen at file:2
-  	Redefined at file:10" contains: "[@zzz]"
+  	Redefined at file:10
+  " contains: "[@zzz]"
 
 TagAliasTests.cpp:<line number>:
 PASSED:
@@ -6699,7 +6891,8 @@ PASSED:
 with expansion:
   "error: tag alias, "[@zzz]" already registered.
   	First seen at file:2
-  	Redefined at file:10" contains: "file"
+  	Redefined at file:10
+  " contains: "file"
 
 TagAliasTests.cpp:<line number>:
 PASSED:
@@ -6707,7 +6900,8 @@ PASSED:
 with expansion:
   "error: tag alias, "[@zzz]" already registered.
   	First seen at file:2
-  	Redefined at file:10" contains: "2"
+  	Redefined at file:10
+  " contains: "2"
 
 TagAliasTests.cpp:<line number>:
 PASSED:
@@ -6715,7 +6909,8 @@ PASSED:
 with expansion:
   "error: tag alias, "[@zzz]" already registered.
   	First seen at file:2
-  	Redefined at file:10" contains: "10"
+  	Redefined at file:10
+  " contains: "10"
 
 -------------------------------------------------------------------------------
 Tag alias can be registered against tag patterns
@@ -7879,6 +8074,142 @@ VariadicMacrosTests.cpp:<line number>:
 PASSED:
 with message:
   no assertions
+
+-------------------------------------------------------------------------------
+Vector matchers
+  Contains (element)
+-------------------------------------------------------------------------------
+MatchersTests.cpp:<line number>
+...............................................................................
+
+MatchersTests.cpp:<line number>:
+PASSED:
+  CHECK_THAT( v, VectorContains( 1 ) )
+with expansion:
+  { 1, 2, 3 } Contains: 1
+
+MatchersTests.cpp:<line number>:
+PASSED:
+  CHECK_THAT( v, VectorContains( 2 ) )
+with expansion:
+  { 1, 2, 3 } Contains: 2
+
+-------------------------------------------------------------------------------
+Vector matchers
+  Contains (vector)
+-------------------------------------------------------------------------------
+MatchersTests.cpp:<line number>
+...............................................................................
+
+MatchersTests.cpp:<line number>:
+PASSED:
+  CHECK_THAT( v, Contains( v2 ) )
+with expansion:
+  { 1, 2, 3 } Contains: { 1, 2 }
+
+MatchersTests.cpp:<line number>:
+PASSED:
+  CHECK_THAT( v, Contains( v2 ) )
+with expansion:
+  { 1, 2, 3 } Contains: { 1, 2, 3 }
+
+MatchersTests.cpp:<line number>:
+PASSED:
+  CHECK_THAT( v, Contains( empty) )
+with expansion:
+  { 1, 2, 3 } Contains: {  }
+
+MatchersTests.cpp:<line number>:
+PASSED:
+  CHECK_THAT( empty, Contains( empty) )
+with expansion:
+  {  } Contains: {  }
+
+-------------------------------------------------------------------------------
+Vector matchers
+  Equals
+-------------------------------------------------------------------------------
+MatchersTests.cpp:<line number>
+...............................................................................
+
+MatchersTests.cpp:<line number>:
+PASSED:
+  CHECK_THAT( v, Equals( v ) )
+with expansion:
+  { 1, 2, 3 } Equals: { 1, 2, 3 }
+
+MatchersTests.cpp:<line number>:
+PASSED:
+  CHECK_THAT( empty, Equals( empty ) )
+with expansion:
+  {  } Equals: {  }
+
+MatchersTests.cpp:<line number>:
+PASSED:
+  CHECK_THAT( v, Equals( v2 ) )
+with expansion:
+  { 1, 2, 3 } Equals: { 1, 2, 3 }
+
+-------------------------------------------------------------------------------
+Vector matchers that fail
+  Contains (element)
+-------------------------------------------------------------------------------
+MatchersTests.cpp:<line number>
+...............................................................................
+
+MatchersTests.cpp:<line number>: FAILED:
+  CHECK_THAT( v, VectorContains( -1 ) )
+with expansion:
+  { 1, 2, 3 } Contains: -1
+
+MatchersTests.cpp:<line number>: FAILED:
+  CHECK_THAT( empty, VectorContains( 1 ) )
+with expansion:
+  {  } Contains: 1
+
+-------------------------------------------------------------------------------
+Vector matchers that fail
+  Contains (vector)
+-------------------------------------------------------------------------------
+MatchersTests.cpp:<line number>
+...............................................................................
+
+MatchersTests.cpp:<line number>: FAILED:
+  CHECK_THAT( empty, Contains( v) )
+with expansion:
+  {  } Contains: { 1, 2, 3 }
+
+MatchersTests.cpp:<line number>: FAILED:
+  CHECK_THAT( v, Contains( v2 ) )
+with expansion:
+  { 1, 2, 3 } Contains: { 1, 2, 4 }
+
+-------------------------------------------------------------------------------
+Vector matchers that fail
+  Equals
+-------------------------------------------------------------------------------
+MatchersTests.cpp:<line number>
+...............................................................................
+
+MatchersTests.cpp:<line number>: FAILED:
+  CHECK_THAT( v, Equals( v2 ) )
+with expansion:
+  { 1, 2, 3 } Equals: { 1, 2 }
+
+MatchersTests.cpp:<line number>: FAILED:
+  CHECK_THAT( v2, Equals( v ) )
+with expansion:
+  { 1, 2 } Equals: { 1, 2, 3 }
+
+MatchersTests.cpp:<line number>: FAILED:
+  CHECK_THAT( empty, Equals( v ) )
+with expansion:
+  {  } Equals: { 1, 2, 3 }
+
+MatchersTests.cpp:<line number>: FAILED:
+  CHECK_THAT( v, Equals( empty ) )
+with expansion:
+  { 1, 2, 3 } Equals: {  }
 
 -------------------------------------------------------------------------------
 When checked exceptions are thrown they can be expected or unexpected
@@ -9152,6 +9483,6 @@ MiscTests.cpp:<line number>:
 PASSED:
 
 ===============================================================================
-test cases: 160 | 115 passed | 43 failed |  2 failed as expected
-assertions: 933 | 835 passed | 80 failed | 18 failed as expected
+test cases: 168 | 118 passed | 46 failed |  4 failed as expected
+assertions: 970 | 859 passed | 90 failed | 21 failed as expected
 

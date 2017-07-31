@@ -19,6 +19,10 @@ elseif(USE_CPP14)
     set(CMAKE_CXX_FLAGS "-std=c++14 ${CMAKE_CXX_FLAGS}")
 endif()
 
+if(USE_WMAIN)
+    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /ENTRY:wmainCRTStartup")
+endif()
+
 #checks that the given hard-coded list contains all headers + sources in the given folder
 function(CheckFileList LIST_VAR FOLDER)
   set(MESSAGE " should be added to the variable ${LIST_VAR}")
@@ -55,6 +59,7 @@ set(TEST_SOURCES
         ${SELF_TEST_DIR}/CmdLineTests.cpp
         ${SELF_TEST_DIR}/CompilationTests.cpp
         ${SELF_TEST_DIR}/ConditionTests.cpp
+        ${SELF_TEST_DIR}/DecompositionTests.cpp
         ${SELF_TEST_DIR}/EnumToString.cpp
         ${SELF_TEST_DIR}/ExceptionTests.cpp
         ${SELF_TEST_DIR}/GeneratorTests.cpp
@@ -70,6 +75,7 @@ set(TEST_SOURCES
         ${SELF_TEST_DIR}/ToStringWhich.cpp
         ${SELF_TEST_DIR}/TrickyTests.cpp
         ${SELF_TEST_DIR}/VariadicMacrosTests.cpp
+        ${SELF_TEST_DIR}/MatchersTests.cpp
         )
 CheckFileList(TEST_SOURCES ${SELF_TEST_DIR})
 
@@ -134,6 +140,7 @@ set(INTERNAL_HEADERS
         ${HEADER_DIR}/internal/catch_debugger.h
         ${HEADER_DIR}/internal/catch_debugger.hpp
         ${HEADER_DIR}/internal/catch_default_main.hpp
+        ${HEADER_DIR}/internal/catch_errno_guard.hpp
         ${HEADER_DIR}/internal/catch_evaluate.hpp
         ${HEADER_DIR}/internal/catch_exception_translator_registry.hpp
         ${HEADER_DIR}/internal/catch_expression_lhs.hpp
@@ -156,6 +163,7 @@ set(INTERNAL_HEADERS
         ${HEADER_DIR}/internal/catch_matchers.hpp
         ${HEADER_DIR}/internal/catch_matchers_string.h
         ${HEADER_DIR}/internal/catch_matchers_string.hpp
+        ${HEADER_DIR}/internal/catch_matchers_vector.h
         ${HEADER_DIR}/internal/catch_message.h
         ${HEADER_DIR}/internal/catch_message.hpp
         ${HEADER_DIR}/internal/catch_notimplemented_exception.h
@@ -208,11 +216,13 @@ CheckFileList(INTERNAL_HEADERS ${HEADER_DIR}/internal)
 
 # Please keep these ordered alphabetically
 set(REPORTER_HEADERS
+        ${HEADER_DIR}/reporters/catch_reporter_automake.hpp
         ${HEADER_DIR}/reporters/catch_reporter_bases.hpp
         ${HEADER_DIR}/reporters/catch_reporter_compact.hpp
         ${HEADER_DIR}/reporters/catch_reporter_console.hpp
         ${HEADER_DIR}/reporters/catch_reporter_junit.hpp
         ${HEADER_DIR}/reporters/catch_reporter_multi.hpp
+        ${HEADER_DIR}/reporters/catch_reporter_tap.hpp
         ${HEADER_DIR}/reporters/catch_reporter_teamcity.hpp
         ${HEADER_DIR}/reporters/catch_reporter_xml.hpp
         )
@@ -240,28 +250,35 @@ SOURCE_GROUP("Benchmarks" FILES ${BENCH_SOURCES})
 
 # configure the executable
 include_directories(${HEADER_DIR})
-add_executable(SelfTest ${TEST_SOURCES} ${IMPL_SOURCES} ${HEADERS})
-add_executable(Benchmark ${BENCH_SOURCES} ${HEADERS})
 
-# Add desired warnings
-if ( CMAKE_CXX_COMPILER_ID MATCHES "Clang|AppleClang|GNU" )
-    target_compile_options( SelfTest PRIVATE -Wall -Wextra )
-    target_compile_options( Benchmark PRIVATE -Wall -Wextra )
-endif()
-if ( CMAKE_CXX_COMPILER_ID MATCHES "MSVC" )
-    target_compile_options( SelfTest PRIVATE /W4 )
-    target_compile_options( Benchmark PRIVATE /W4 )
-endif()
+# Projects consuming Catch via ExternalProject_Add might want to use install step
+# without building all of our selftests.
+if (NOT NO_SELFTEST)
+    add_executable(SelfTest ${TEST_SOURCES} ${IMPL_SOURCES} ${HEADERS})
+    add_executable(Benchmark ${BENCH_SOURCES} ${HEADERS})
+
+    # Add desired warnings
+    if ( CMAKE_CXX_COMPILER_ID MATCHES "Clang|AppleClang|GNU" )
+        target_compile_options( SelfTest PRIVATE -Wall -Wextra )
+        target_compile_options( Benchmark PRIVATE -Wall -Wextra )
+    endif()
+    if ( CMAKE_CXX_COMPILER_ID MATCHES "MSVC" )
+        target_compile_options( SelfTest PRIVATE /W4 /w44265 /WX )
+        target_compile_options( Benchmark PRIVATE /W4 )
+    endif()
 
 
-# configure unit tests via CTest
-enable_testing()
-add_test(NAME RunTests COMMAND SelfTest)
+    # configure unit tests via CTest
+    enable_testing()
+    add_test(NAME RunTests COMMAND SelfTest)
 
-add_test(NAME ListTests COMMAND SelfTest --list-tests)
-set_tests_properties(ListTests PROPERTIES PASS_REGULAR_EXPRESSION "[0-9]+ test cases")
+    add_test(NAME ListTests COMMAND SelfTest --list-tests)
+    set_tests_properties(ListTests PROPERTIES PASS_REGULAR_EXPRESSION "[0-9]+ test cases")
 
-add_test(NAME ListTags COMMAND SelfTest --list-tags)
-set_tests_properties(ListTags PROPERTIES PASS_REGULAR_EXPRESSION "[0-9]+ tags")
+    add_test(NAME ListTags COMMAND SelfTest --list-tags)
+    set_tests_properties(ListTags PROPERTIES PASS_REGULAR_EXPRESSION "[0-9]+ tags")
 
-install(DIRECTORY "single_include/" DESTINATION "include/catch/")
+endif() # !NO_SELFTEST
+
+
+install(DIRECTORY "single_include/" DESTINATION "include/catch")

@@ -11,12 +11,13 @@
 #include "catch_compiler_capabilities.h"
 #include "catch_ptr.hpp"
 
-#include <map>
+#include <algorithm>
 #include <string>
 #include <assert.h>
 #include <vector>
-#include <iterator>
 #include <stdexcept>
+
+CATCH_INTERNAL_SUPPRESS_ETD_WARNINGS
 
 namespace Catch {
 namespace TestCaseTracking {
@@ -290,12 +291,12 @@ namespace TestCaseTracking {
             if( !filters.empty() ) {
                 m_filters.push_back(""); // Root - should never be consulted
                 m_filters.push_back(""); // Test Case - not a section filter
-                std::copy( filters.begin(), filters.end(), std::back_inserter( m_filters ) );
+                m_filters.insert( m_filters.end(), filters.begin(), filters.end() );
             }
         }
         void addNextFilters( std::vector<std::string> const& filters ) {
             if( filters.size() > 1 )
-                std::copy( filters.begin()+1, filters.end(), std::back_inserter( m_filters ) );
+                m_filters.insert( m_filters.end(), ++filters.begin(), filters.end() );
         }
     };
 
@@ -364,5 +365,7 @@ using TestCaseTracking::SectionTracker;
 using TestCaseTracking::IndexTracker;
 
 } // namespace Catch
+
+CATCH_INTERNAL_UNSUPPRESS_ETD_WARNINGS
 
 #endif // TWOBLUECUBES_CATCH_TEST_CASE_TRACKER_HPP_INCLUDED

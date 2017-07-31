@@ -31,6 +31,7 @@ namespace Catch {
             listTags( false ),
             listReporters( false ),
             listTestNamesOnly( false ),
+            listExtraInfo( false ),
             showSuccessfulTests( false ),
             shouldDebugBreak( false ),
             noThrow( false ),
@@ -50,6 +51,7 @@ namespace Catch {
         bool listTags;
         bool listReporters;
         bool listTestNamesOnly;
+        bool listExtraInfo;
 
         bool showSuccessfulTests;
         bool shouldDebugBreak;
@@ -109,6 +111,7 @@ namespace Catch {
         bool listTestNamesOnly() const { return m_data.listTestNamesOnly; }
         bool listTags() const { return m_data.listTags; }
         bool listReporters() const { return m_data.listReporters; }
+        bool listExtraInfo() const { return m_data.listExtraInfo; }
 
         std::string getProcessName() const { return m_data.processName; }
 

@@ -1,10 +1,10 @@
 ![catch logo](catch-logo-small.png)
 
-*v1.7.2*
+[![Github Releases](https://img.shields.io/github/release/philsquared/catch.svg)](https://github.com/philsquared/catch/releases)
+[![Build Status](https://travis-ci.org/philsquared/Catch.svg?branch=master)](https://travis-ci.org/philsquared/Catch)
+[![Build status](https://ci.appveyor.com/api/projects/status/hrtk60hv6tw6fght/branch/master?svg=true)](https://ci.appveyor.com/project/philsquared/catch/branch/master)
 
-Build status (on Travis CI) [![Build Status](https://travis-ci.org/philsquared/Catch.svg?branch=master)](https://travis-ci.org/philsquared/Catch)
-
-<a href="https://github.com/philsquared/Catch/releases/download/v1.7.2/catch.hpp">The latest, single header, version can be downloaded directly using this link</a>
+<a href="https://github.com/philsquared/Catch/releases/download/v1.9.6/catch.hpp">The latest, single header, version can be downloaded directly using this link</a>
 
 ## What's the Catch?
 
@@ -21,3 +21,7 @@ This documentation comprises these three parts:
 * Issues and bugs can be raised on the [Issue tracker on GitHub](https://github.com/philsquared/Catch/issues)
 * For discussion or questions please use [the dedicated Google Groups forum](https://groups.google.com/forum/?fromgroups#!forum/catch-forum)
 * See [who else is using Catch](docs/opensource-users.md)
+
+## Help us out
+We're currently running [a survey](https://www.surveymonkey.co.uk/r/TLLYQJW) to help us shape the future of Catch.
+Please take a few moments to fill it out (there's only ten questions).

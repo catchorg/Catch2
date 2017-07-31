@@ -39,6 +39,7 @@ namespace Catch {
                         char const* capturedExpression,
                         ResultDisposition::Flags resultDisposition,
                         char const* secondArg = "" );
+        ~ResultBuilder();
 
         template<typename T>
         ExpressionLhs<T const&> operator <= ( T const& operand );
@@ -46,7 +47,7 @@ namespace Catch {
 
         template<typename T>
         ResultBuilder& operator << ( T const& value ) {
-            m_stream.oss << value;
+            stream().oss << value;
             return *this;
         }
 
@@ -73,13 +74,33 @@ namespace Catch {
         template<typename ArgT, typename MatcherT>
         void captureMatch( ArgT const& arg, MatcherT const& matcher, char const* matcherString );
 
+        void setExceptionGuard();
+        void unsetExceptionGuard();
+
     private:
         AssertionInfo m_assertionInfo;
         AssertionResultData m_data;
-        CopyableStream m_stream;
+
+        CopyableStream &stream()
+        {
+            if(!m_usedStream)
+            {
+                m_usedStream = true;
+                m_stream().oss.str("");
+            }
+            return m_stream();
+        }
+
+        static CopyableStream &m_stream()
+        {
+            static CopyableStream s;
+            return s;
+        }
 
         bool m_shouldDebugBreak;
         bool m_shouldThrow;
+        bool m_guardException;
+        bool m_usedStream;
     };
 
 } // namespace Catch
@@ -90,7 +111,7 @@ namespace Catch {
 namespace Catch {
 
     template<typename T>
-    inline ExpressionLhs<T const&> ResultBuilder::operator <= ( T const& operand ) {
+    ExpressionLhs<T const&> ResultBuilder::operator <= ( T const& operand ) {
         return ExpressionLhs<T const&>( *this, operand );
     }
 
@@ -99,7 +120,7 @@ namespace Catch {
     }
 
     template<typename ArgT, typename MatcherT>
-    inline void ResultBuilder::captureMatch( ArgT const& arg, MatcherT const& matcher,
+    void ResultBuilder::captureMatch( ArgT const& arg, MatcherT const& matcher,
                                              char const* matcherString ) {
         MatchExpression<ArgT const&, MatcherT const&> expr( arg, matcher, matcherString );
         setResultType( matcher.match( arg ) );

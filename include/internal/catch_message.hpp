@@ -38,7 +38,9 @@ namespace Catch {
     {}
 
     ScopedMessage::~ScopedMessage() {
-        getResultCapture().popScopedMessage( m_info );
+        if ( !std::uncaught_exception() ){
+            getResultCapture().popScopedMessage(m_info);
+        }
     }
 
 

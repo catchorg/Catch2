@@ -7,5 +7,7 @@ v = Version()
 v.incrementPatchNumber()
 v.updateVersionFile()
 v.updateReadmeFile()
+v.updateConanFile()
+v.updateConanTestFile()
 
-print( "Updated Version.hpp and README to v{0}".format( v.getVersionString() ) )
+print( "Updated Version.hpp, README and Conan to v{0}".format( v.getVersionString() ) )
