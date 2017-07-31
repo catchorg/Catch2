@@ -30,7 +30,7 @@ namespace Catch {
         ITagAliasRegistry const* m_tagAliases;
 
     public:
-        TestSpecParser( ITagAliasRegistry const& tagAliases ) : m_tagAliases( &tagAliases ) {}
+        TestSpecParser( ITagAliasRegistry const& tagAliases ) :m_mode(None), m_exclusion(false), m_start(0), m_pos(0), m_tagAliases( &tagAliases ) {}
 
         TestSpecParser& parse( std::string const& arg ) {
             m_mode = None;
