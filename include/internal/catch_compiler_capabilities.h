@@ -61,6 +61,10 @@
 
 #endif
 
+#ifdef __OS400__
+#       define CATCH_INTERNAL_CONFIG_NO_POSIX_SIGNALS
+#       define CATCH_CONFIG_COLOUR_NONE
+#endif
 
 ////////////////////////////////////////////////////////////////////////////////
 // Cygwin
