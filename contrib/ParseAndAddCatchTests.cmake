@@ -30,13 +30,19 @@
 #                                                                                                  #
 #    PARSE_CATCH_TESTS_VERBOSE (Default OFF)                                                       #
 #    -- enables debug messages                                                                     #
+#    PARSE_CATCH_TESTS_NO_HIDDEN_TESTS (Default OFF)                                               #
+#    -- excludes tests marked with [!hide], [.] or [.foo] tags                                     #
+#    PARSE_CATCH_TESTS_ADD_FIXTURE_IN_TEST_NAME (Default ON)                                       #
+#    -- adds fixture class name to the test name                                                   #
+#    PARSE_CATCH_TESTS_ADD_TARGET_IN_TEST_NAME (Default ON)                                        #
+#    -- adds cmake target name to the test name                                                    #
 #                                                                                                  #
 #==================================================================================================#
 
 cmake_minimum_required(VERSION 2.8.8)
 
 option(PARSE_CATCH_TESTS_VERBOSE "Print Catch to CTest parser debug messages" OFF)
-option(PARSE_CATCH_TESTS_NO_HIDDEN_TESTS "Exclude tests with [!hide] tag" OFF)
+option(PARSE_CATCH_TESTS_NO_HIDDEN_TESTS "Exclude tests with [!hide], [.] or [.foo] tags" OFF)
 option(PARSE_CATCH_TESTS_ADD_FIXTURE_IN_TEST_NAME "Add fixture class name to the test name" ON)
 option(PARSE_CATCH_TESTS_ADD_TARGET_IN_TEST_NAME "Add target name to the test name" ON)
 
@@ -130,8 +136,16 @@ function(ParseFile SourceFile TestTarget)
         list(APPEND Labels ${Tags})
 
         list(FIND Labels "!hide" IndexOfHideLabel)
-        if(PARSE_CATCH_TESTS_NO_HIDDEN_TESTS AND ${IndexOfHideLabel} GREATER -1)
-            PrintDebugMessage("Skipping test \"${CTestName}\" as it has !hide label")
+        set(HiddenTagFound OFF)
+        foreach(label ${Labels})
+            string(REGEX MATCH "^!hide|^\\." result ${label})
+            if(result)
+                set(HiddenTagFound ON)
+                break()
+            endif(result)
+        endforeach(label)
+        if(PARSE_CATCH_TESTS_NO_HIDDEN_TESTS AND ${HiddenTagFound})
+            PrintDebugMessage("Skipping test \"${CTestName}\" as it has [!hide], [.] or [.foo] label")
         else()
             PrintDebugMessage("Adding test \"${CTestName}\"")
             if(Labels)
