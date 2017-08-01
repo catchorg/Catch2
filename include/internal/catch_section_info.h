@@ -27,9 +27,7 @@ namespace Catch {
     };
 
     struct SectionEndInfo {
-        SectionEndInfo( SectionInfo const& _sectionInfo, Counts const& _prevAssertions, double _durationInSeconds )
-        : sectionInfo( _sectionInfo ), prevAssertions( _prevAssertions ), durationInSeconds( _durationInSeconds )
-        {}
+        SectionEndInfo( SectionInfo const& _sectionInfo, Counts const& _prevAssertions, double _durationInSeconds );
 
         SectionInfo sectionInfo;
         Counts prevAssertions;

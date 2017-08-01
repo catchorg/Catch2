@@ -12,15 +12,6 @@
 
 namespace Catch {
 
-    SectionInfo::SectionInfo
-        (   SourceLineInfo const& _lineInfo,
-            std::string const& _name,
-            std::string const& _description )
-    :   name( _name ),
-        description( _description ),
-        lineInfo( _lineInfo )
-    {}
-
     Section::Section( SectionInfo const& info )
     :   m_info( info ),
         m_sectionIncluded( getResultCapture().sectionStarted( m_info, m_assertions ) )
