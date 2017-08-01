@@ -13,7 +13,7 @@
 namespace Catch {
 
 
-    AssertionInfo::AssertionInfo():macroName(""), capturedExpression(""), resultDisposition(ResultDisposition::Flags::Normal), secondArg(""){}
+    AssertionInfo::AssertionInfo():macroName(""), capturedExpression(""), resultDisposition(ResultDisposition::Normal), secondArg(""){}
 
     AssertionInfo::AssertionInfo(   char const * _macroName,
                                     SourceLineInfo const& _lineInfo,
