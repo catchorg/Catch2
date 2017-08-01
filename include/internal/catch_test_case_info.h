@@ -8,6 +8,8 @@
 #ifndef TWOBLUECUBES_CATCH_TEST_CASE_INFO_H_INCLUDED
 #define TWOBLUECUBES_CATCH_TEST_CASE_INFO_H_INCLUDED
 
+#include "catch_common.h"
+
 #include <string>
 #include <vector>
 #include <memory>

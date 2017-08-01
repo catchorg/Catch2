@@ -7,6 +7,8 @@
 
 #include "catch_test_case_tracker.hpp"
 
+#include "catch_enforce.h"
+
 #include <algorithm>
 #include <assert.h>
 #include <stdexcept>

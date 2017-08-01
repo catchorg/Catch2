@@ -9,6 +9,7 @@
 #define TWOBLUECUBES_CATCH_MESSAGE_H_INCLUDED
 
 #include <string>
+#include <sstream>
 #include "catch_result_type.h"
 #include "catch_common.h"
 

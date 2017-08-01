@@ -6,6 +6,7 @@
  */
 
 #include "catch_config.hpp"
+#include "catch_enforce.h"
 
 namespace Catch {
 

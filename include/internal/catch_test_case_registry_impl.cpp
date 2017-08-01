@@ -8,6 +8,7 @@
 #include "catch_test_case_registry_impl.hpp"
 
 #include "catch_context.h"
+#include "catch_enforce.h"
 #include "catch_interfaces_registry_hub.h"
 #include "catch_string_manip.h"
 #include "catch_test_case_info.h"

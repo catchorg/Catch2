@@ -1,4 +1,5 @@
 #include "catch_run_context.hpp"
+#include "catch_enforce.h"
 
 #include <cassert>
 #include <algorithm>

@@ -12,6 +12,7 @@
 
 #include "catch_common.h"
 
+#include <string>
 #include <vector>
 
 namespace Catch {

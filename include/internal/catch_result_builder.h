@@ -13,6 +13,8 @@
 #include "catch_common.h"
 #include "catch_matchers.hpp"
 
+#include <sstream>
+
 namespace Catch {
 
     struct TestFailureException{};

@@ -6,8 +6,9 @@
  *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  */
 
-#include "catch_test_spec.hpp"
 #include "catch_test_case_info.h"
+#include "catch_enforce.h"
+#include "catch_test_spec.hpp"
 #include "catch_interfaces_testcase.h"
 #include "catch_string_manip.h"
 

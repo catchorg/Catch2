@@ -10,6 +10,7 @@
 
 #include "internal/catch_commandline.hpp"
 #include "internal/catch_console_colour.hpp"
+#include "internal/catch_enforce.h"
 #include "internal/catch_list.h"
 #include "internal/catch_run_context.hpp"
 #include "internal/catch_test_spec.hpp"

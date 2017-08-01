@@ -11,6 +11,7 @@
 #include "catch_interfaces_config.h"
 
 #include <cstring>
+#include <ostream>
 
 namespace Catch {
 

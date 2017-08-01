@@ -7,6 +7,7 @@
  */
 
 #include "catch_console_colour.hpp"
+#include "catch_enforce.h"
 #include "catch_errno_guard.h"
 #include "catch_interfaces_config.h"
 #include "catch_stream.h"

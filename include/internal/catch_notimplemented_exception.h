@@ -10,6 +10,8 @@
 
 #include "catch_common.h"
 
+#include <exception>
+
 namespace Catch {
 
     class NotImplementedException : public std::exception
