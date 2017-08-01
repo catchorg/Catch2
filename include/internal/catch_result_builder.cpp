@@ -157,7 +157,7 @@ namespace Catch {
         AssertionResultData data = m_data;
 
         if(m_usedStream)
-            data.message = m_stream().oss.str();
+            data.message = s_stream().oss.str();
         data.decomposedExpression = &expr; // for lazy reconstruction
         return AssertionResult( m_assertionInfo, data );
     }
