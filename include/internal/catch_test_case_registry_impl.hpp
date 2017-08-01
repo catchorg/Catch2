@@ -20,7 +20,7 @@
 namespace Catch {
 
     class TestCase;
-    class IConfig;
+    struct IConfig;
 
     struct RandomNumberGenerator {
         using result_type = std::ptrdiff_t;
