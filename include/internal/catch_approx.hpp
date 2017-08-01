@@ -10,6 +10,7 @@
 
 #include "catch_tostring.h"
 
+#include <algorithm>
 #include <cmath>
 
 #include <type_traits>
