@@ -134,7 +134,7 @@ public:
                    // 1 for negation (conditionally added later)
         dest = lhs;
         dest += delim;
-        dest += Internal::OperatorTraits<Op>::getName();
+        dest += Internal::operatorName(Op);
         dest += delim;
         dest += rhs;
     }

@@ -28,19 +28,11 @@ namespace Internal {
         IsGreaterThanOrEqualTo
     };
 
-    template<Operator Op> struct OperatorTraits             { static const char* getName(){ return "*error*"; } };
-    template<> struct OperatorTraits<IsEqualTo>             { static const char* getName(){ return "=="; } };
-    template<> struct OperatorTraits<IsNotEqualTo>          { static const char* getName(){ return "!="; } };
-    template<> struct OperatorTraits<IsLessThan>            { static const char* getName(){ return "<"; } };
-    template<> struct OperatorTraits<IsGreaterThan>         { static const char* getName(){ return ">"; } };
-    template<> struct OperatorTraits<IsLessThanOrEqualTo>   { static const char* getName(){ return "<="; } };
-    template<> struct OperatorTraits<IsGreaterThanOrEqualTo>{ static const char* getName(){ return ">="; } };
+    const char* operatorName(Operator op);
 
     template<typename T>
     T& opCast(T const& t) { return const_cast<T&>(t); }
-
-    // nullptr_t support based on pull request #154 from Konstantin Baumann
-    inline std::nullptr_t opCast(std::nullptr_t) { return nullptr; }
+    std::nullptr_t opCast(std::nullptr_t);
 
 
     // So the compare overloads can be operator agnostic we convey the operator as a template
