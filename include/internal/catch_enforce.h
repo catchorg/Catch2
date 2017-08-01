@@ -10,7 +10,7 @@
 #include "catch_common.h"
 
 #include <sstream>
-#include <exception>
+#include <stdexcept>
 
 #define CATCH_PREPARE_EXCEPTION( type, msg ) \
     type( static_cast<std::ostringstream&&>( std::ostringstream() << msg ).str() )
