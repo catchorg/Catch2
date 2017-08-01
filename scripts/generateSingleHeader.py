@@ -67,6 +67,7 @@ def parseFile( path, filename ):
 
     f = open( os.path.join(path, filename), 'r' )
     blanks = 0
+    write( "// start {0}\n".format( filename ) )
     for line in f:
         if '// ~*~* CATCH_CPP_STITCH_PLACE *~*~' in line:
             insertCpps()
@@ -83,7 +84,6 @@ def parseFile( path, filename ):
             if not headerFile in seenHeaders:
                 if headerFile != "tbc_text_format.h" and headerFile != "clara.h":
                     seenHeaders.add( headerFile )
-                write( "// #included from: {0}\n".format( header ) )
                 if headerPath == "internal" and path.endswith("internal/"):
                     headerPath = ""
                     sep = ""
