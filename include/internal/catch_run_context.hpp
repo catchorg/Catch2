@@ -63,32 +63,32 @@ namespace Catch {
     private: // IResultCapture
 
 
-        virtual void assertionEnded(AssertionResult const& result) override;
+        void assertionEnded(AssertionResult const& result) override;
 
-        virtual bool sectionStarted( SectionInfo const& sectionInfo, Counts& assertions ) override;
+        bool sectionStarted( SectionInfo const& sectionInfo, Counts& assertions ) override;
         bool testForMissingAssertions(Counts& assertions);
 
-        virtual void sectionEnded(SectionEndInfo const& endInfo) override;
+        void sectionEnded(SectionEndInfo const& endInfo) override;
 
-        virtual void sectionEndedEarly(SectionEndInfo const& endInfo) override;
+        void sectionEndedEarly(SectionEndInfo const& endInfo) override;
 
-        virtual void pushScopedMessage(MessageInfo const& message) override;
+        void pushScopedMessage(MessageInfo const& message) override;
 
-        virtual void popScopedMessage(MessageInfo const& message) override;
+        void popScopedMessage(MessageInfo const& message) override;
 
-        virtual std::string getCurrentTestName() const override;
+        std::string getCurrentTestName() const override;
 
-        virtual const AssertionResult* getLastResult() const override;
+        const AssertionResult* getLastResult() const override;
 
-        virtual void exceptionEarlyReported() override;
+        void exceptionEarlyReported() override;
 
-        virtual void handleFatalErrorCondition(std::string const& message) override;
+        void handleFatalErrorCondition(std::string const& message) override;
 
-        virtual bool lastAssertionPassed() override;
+        bool lastAssertionPassed() override;
 
-        virtual void assertionPassed();
+        void assertionPassed() override;
 
-        virtual void assertionRun();
+        void assertionRun() override;
 
     public:
         // !TBD We need to do this another way!
