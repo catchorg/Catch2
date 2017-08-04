@@ -12,8 +12,8 @@
 
 namespace Catch {
 
-    auto getCurrentMicrosecondsSinceEpoch() -> uint64_t {
-        return std::chrono::duration_cast<std::chrono::microseconds>( std::chrono::high_resolution_clock::now().time_since_epoch() ).count();
+    auto getCurrentNanosecondsSinceEpoch() -> uint64_t {
+        return std::chrono::duration_cast<std::chrono::nanoseconds>( std::chrono::high_resolution_clock::now().time_since_epoch() ).count();
     }
 
 } // namespace Catch
