@@ -13,7 +13,7 @@
 namespace Catch {
 
     auto getCurrentNanosecondsSinceEpoch() -> uint64_t;
-    auto getEstimatedClockResolution() -> double;
+    auto getEstimatedClockResolution() -> uint64_t;
 
     class Timer {
         uint64_t m_nanoseconds = 0;

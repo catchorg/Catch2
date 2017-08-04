@@ -16,7 +16,7 @@ namespace Catch {
         return std::chrono::duration_cast<std::chrono::nanoseconds>( std::chrono::high_resolution_clock::now().time_since_epoch() ).count();
     }
 
-    auto estimateClockResolution() -> double {
+    auto estimateClockResolution() -> uint64_t {
         uint64_t sum = 0;
         static const uint64_t iterations = 1000000;
 
@@ -35,9 +35,9 @@ namespace Catch {
 
         // We're just taking the mean, here. To do better we could take the std. dev and exclude outliers
         // - and potentially do more iterations if there's a high variance.
-        return sum/(double)iterations;
+        return sum/iterations;
     }
-    auto getEstimatedClockResolution() -> double {
+    auto getEstimatedClockResolution() -> uint64_t {
         static auto s_resolution = estimateClockResolution();
         return s_resolution;
     }
