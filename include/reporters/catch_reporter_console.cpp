@@ -30,24 +30,105 @@ namespace {
         else
             return k;
     }
+
+    struct ColumnInfo {
+        enum Justification { Left, Right };
+        std::string name;
+        int width;
+        Justification justification;
+    };
+    struct ColumnBreak {};
+    struct RowBreak {};
+
+    class TablePrinter {
+        std::ostream& m_os;
+        std::vector<ColumnInfo> m_columnInfos;
+        std::ostringstream m_oss;
+        int m_currentColumn = -1;
+        bool m_isOpen = false;
+
+    public:
+        TablePrinter( std::ostream& os, std::vector<ColumnInfo> const& columnInfos )
+        :   m_os( os ),
+            m_columnInfos( columnInfos )
+        {}
+
+        auto columnInfos() const -> std::vector<ColumnInfo> const& {
+            return m_columnInfos;
+        }
+
+        void open() {
+            if( !m_isOpen ) {
+                m_isOpen = true;
+                *this << RowBreak();
+                for( auto const& info : m_columnInfos )
+                    *this << info.name << ColumnBreak();
+                *this << RowBreak();
+            }
+        }
+        void close() {
+            if( m_isOpen ) {
+                *this << RowBreak();
+                m_os << std::endl;
+                m_isOpen = false;
+            }
+        }
+
+        template<typename T>
+        friend TablePrinter& operator << ( TablePrinter& tp, T const& value ) {
+            tp.m_oss << value;
+            return tp;
+        }
+
+        friend TablePrinter& operator << ( TablePrinter& tp, ColumnBreak ) {
+            auto colStr = tp.m_oss.str();
+            tp.m_oss.str("");
+            tp.open();
+            if( tp.m_currentColumn == static_cast<int>(tp.m_columnInfos.size()-1) ) {
+                tp.m_currentColumn = -1;
+                tp.m_os << "\n";
+            }
+            if( tp.m_currentColumn == -1 )
+                tp.m_os << "|";
+            tp.m_currentColumn++;
+
+            auto colInfo = tp.m_columnInfos[tp.m_currentColumn];
+            auto padding = ( colStr.size()+2 < static_cast<size_t>( colInfo.width ) )
+                ? std::string( colInfo.width-(colStr.size()+2), ' ' )
+                : std::string();
+            if( colInfo.justification == ColumnInfo::Left )
+                tp.m_os << " " << colStr << padding << " |";
+            else
+                tp.m_os << " " << padding << colStr << " |";
+            return tp;
+        }
+
+        friend TablePrinter& operator << ( TablePrinter& tp, RowBreak ) {
+            if( tp.m_currentColumn > 0 ) {
+                tp.m_os << "\n";
+                tp.m_currentColumn = -1;
+            }
+            tp.m_os << Catch::getBoxCharsAcross() << "\n";
+            return tp;
+        }
+    };
 }
 
 namespace Catch {
 
-    template<typename T>
-    auto leftPad( const T& value, int width ) -> std::string {
-        // !TBD: could do with being optimised
-        std::ostringstream oss;
-        oss << value;
-        std::string converted = oss.str();
-        return std::string( width - converted.size(), ' ' ) + converted;
-    }
-
-
     struct ConsoleReporter : StreamingReporterBase<ConsoleReporter> {
-        using StreamingReporterBase::StreamingReporterBase;
-        bool m_benchmarkTableOpen = false;
+        TablePrinter m_tablePrinter;
 
+        ConsoleReporter( ReporterConfig const& config )
+        :   StreamingReporterBase( config ),
+            m_tablePrinter( config.stream(),
+                            {
+                                { "benchmark name", CATCH_CONFIG_CONSOLE_WIDTH-38, ColumnInfo::Left },
+                                { "iters", 8, ColumnInfo::Right },
+                                { "elapsed ns", 12, ColumnInfo::Right },
+                                { "average", 12, ColumnInfo::Right }
+                            } )
+        {}
         ~ConsoleReporter() override;
         static std::string getDescription() {
             return "Reports test results as plain lines of text";
@@ -58,7 +139,6 @@ namespace Catch {
         }
 
         void assertionStarting( AssertionInfo const& ) override {
-            closeBenchmarkTable();
         }
 
         bool assertionEnded( AssertionStats const& _assertionStats ) override {
@@ -83,7 +163,7 @@ namespace Catch {
             StreamingReporterBase::sectionStarting( _sectionInfo );
         }
         void sectionEnded( SectionStats const& _sectionStats ) override {
-            closeBenchmarkTable();
+            m_tablePrinter.close();
             if( _sectionStats.missingAssertions ) {
                 lazyPrint();
                 Colour colour( Colour::ResultError );
@@ -102,44 +182,32 @@ namespace Catch {
             StreamingReporterBase::sectionEnded( _sectionStats );
         }
 
+
         void benchmarkStarting( BenchmarkInfo const& info ) override {
-            lazyPrint();
-            auto nameColWidth = CATCH_CONFIG_CONSOLE_WIDTH-40;
-            auto nameCol = Column( info.name ).width( nameColWidth );
-            if( !m_benchmarkTableOpen ) {
-                stream
-                    << getBoxCharsAcross() << "\n"
-                    << "| benchmark name" << std::string( nameColWidth-14, ' ' ) << " |  it'ns | elapsed ns |    average |\n"
-                    << getBoxCharsAcross() << "\n";
-                m_benchmarkTableOpen = true;
-            }
+            lazyPrintWithoutClosingBenchmarkTable();
+
+            auto nameCol = Column( info.name ).width( m_tablePrinter.columnInfos()[0].width-2 );
+
             bool firstLine = true;
             for( auto line : nameCol ) {
                 if( !firstLine )
-                    stream << "        |            |            |" << "\n";
+                    m_tablePrinter << ColumnBreak() << ColumnBreak() << ColumnBreak();
                 else
                     firstLine = false;
 
-                stream << "| " << line << std::string( nameColWidth-line.size(), ' ' ) << " |";
+                m_tablePrinter << line << ColumnBreak();
             }
         }
         void benchmarkEnded( BenchmarkStats const& stats ) override {
             // !TBD: report average times in natural units?
-            stream
-                << " " << leftPad( stats.iterations, 6 )
-                << " | " << leftPad( stats.elapsedTimeInNanoseconds, 10 )
-                << " | " << leftPad( stats.elapsedTimeInNanoseconds/stats.iterations, 7 )
-                << " ns |" << std::endl;
-        }
-        void closeBenchmarkTable() {
-            if( m_benchmarkTableOpen ) {
-                stream << getBoxCharsAcross() << "\n" << std::endl;
-                m_benchmarkTableOpen = false;
-            }
+            m_tablePrinter
+                    << stats.iterations << ColumnBreak()
+                    << stats.elapsedTimeInNanoseconds << ColumnBreak()
+                    << stats.elapsedTimeInNanoseconds/stats.iterations << " ns" << ColumnBreak();
         }
 
         void testCaseEnded( TestCaseStats const& _testCaseStats ) override {
-            closeBenchmarkTable();
+            m_tablePrinter.close();
             StreamingReporterBase::testCaseEnded( _testCaseStats );
             m_headerPrinted = false;
         }
@@ -304,6 +372,12 @@ namespace Catch {
         };
 
         void lazyPrint() {
+
+            m_tablePrinter.close();
+            lazyPrintWithoutClosingBenchmarkTable();
+        }
+
+        void lazyPrintWithoutClosingBenchmarkTable() {
 
             if( !currentTestRunInfo.used )
                 lazyPrintRunInfo();
