@@ -16,4 +16,21 @@ namespace Catch {
         return std::chrono::duration_cast<std::chrono::nanoseconds>( std::chrono::high_resolution_clock::now().time_since_epoch() ).count();
     }
 
+        void Timer::start() {
+           m_nanoseconds = getCurrentNanosecondsSinceEpoch();
+        }
+        auto Timer::getElapsedNanoseconds() const -> unsigned int {
+            return static_cast<unsigned int>(getCurrentNanosecondsSinceEpoch() - m_nanoseconds);
+        }
+        auto Timer::getElapsedMicroseconds() const -> unsigned int {
+            return static_cast<unsigned int>(getElapsedNanoseconds()/1000);
+        }
+        auto Timer::getElapsedMilliseconds() const -> unsigned int {
+            return static_cast<unsigned int>(getElapsedMicroseconds()/1000);
+        }
+        auto Timer::getElapsedSeconds() const -> double {
+            return getElapsedMicroseconds()/1000000.0;
+        }
+
+
 } // namespace Catch

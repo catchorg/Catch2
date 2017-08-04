@@ -17,21 +17,11 @@ namespace Catch {
     class Timer {
         uint64_t m_nanoseconds = 0;
     public:
-        void start() {
-           m_nanoseconds = getCurrentNanosecondsSinceEpoch();
-        }
-        auto getElapsedNanoseconds() const -> unsigned int {
-            return static_cast<unsigned int>(getCurrentNanosecondsSinceEpoch() - m_nanoseconds);
-        }
-        auto getElapsedMicroseconds() const -> unsigned int {
-            return static_cast<unsigned int>(getElapsedNanoseconds()/1000);
-        }
-        auto getElapsedMilliseconds() const -> unsigned int {
-            return static_cast<unsigned int>(getElapsedMicroseconds()/1000);
-        }
-        auto getElapsedSeconds() const -> double {
-            return getElapsedMicroseconds()/1000000.0;
-        }
+        void start();
+        auto getElapsedNanoseconds() const -> unsigned int;
+        auto getElapsedMicroseconds() const -> unsigned int;
+        auto getElapsedMilliseconds() const -> unsigned int;
+        auto getElapsedSeconds() const -> double;
     };
 
 } // namespace Catch
