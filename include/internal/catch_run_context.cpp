@@ -90,6 +90,9 @@ namespace Catch {
         return *m_reporter;
     }
 
+    void RunContext::assertionStarting(AssertionInfo const& info) {
+        m_reporter->assertionStarting( info );
+    }
     void RunContext::assertionEnded(AssertionResult const & result) {
         if (result.getResultType() == ResultWas::Ok) {
             m_totals.assertions.passed++;
@@ -154,6 +157,12 @@ namespace Catch {
         m_activeSections.pop_back();
 
         m_unfinishedSections.push_back(endInfo);
+    }
+    void RunContext::benchmarkStarting( BenchmarkInfo const& info ) {
+        m_reporter->benchmarkStarting( info );
+    }
+    void RunContext::benchmarkEnded( BenchmarkStats const& stats ) {
+        m_reporter->benchmarkEnded( stats );
     }
 
     void RunContext::pushScopedMessage(MessageInfo const & message) {

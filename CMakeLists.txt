@@ -164,6 +164,7 @@ set(INTERNAL_HEADERS
         ${HEADER_DIR}/internal/catch_result_builder.h
         ${HEADER_DIR}/internal/catch_result_type.h
         ${HEADER_DIR}/internal/catch_run_context.hpp
+        ${HEADER_DIR}/internal/catch_benchmark.h
         ${HEADER_DIR}/internal/catch_section.h
         ${HEADER_DIR}/internal/catch_section_info.h
         ${HEADER_DIR}/internal/catch_startup_exception_registry.h
@@ -197,6 +198,7 @@ set(INTERNAL_HEADERS
 set(IMPL_SOURCES
         ${HEADER_DIR}/internal/catch_approx.cpp
         ${HEADER_DIR}/internal/catch_assertionresult.cpp
+        ${HEADER_DIR}/internal/catch_benchmark.cpp
         ${HEADER_DIR}/internal/catch_commandline.cpp
         ${HEADER_DIR}/internal/catch_common.cpp
         ${HEADER_DIR}/internal/catch_config.cpp

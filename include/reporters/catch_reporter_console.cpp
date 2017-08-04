@@ -34,9 +34,19 @@ namespace {
 
 namespace Catch {
 
+    template<typename T>
+    auto leftPad( const T& value, int width ) -> std::string {
+        // !TBD: could do with being optimised
+        std::ostringstream oss;
+        oss << value;
+        std::string converted = oss.str();
+        return std::string( width - converted.size(), ' ' ) + converted;
+    }
+
+
     struct ConsoleReporter : StreamingReporterBase<ConsoleReporter> {
         using StreamingReporterBase::StreamingReporterBase;
-
+        bool m_benchmarkTableOpen = false;
 
         ~ConsoleReporter() override;
         static std::string getDescription() {
@@ -47,7 +57,9 @@ namespace Catch {
             stream << "No test cases matched '" << spec << '\'' << std::endl;
         }
 
-        void assertionStarting( AssertionInfo const& ) override {}
+        void assertionStarting( AssertionInfo const& ) override {
+            closeBenchmarkTable();
+        }
 
         bool assertionEnded( AssertionStats const& _assertionStats ) override {
             AssertionResult const& result = _assertionStats.assertionResult;
@@ -71,6 +83,7 @@ namespace Catch {
             StreamingReporterBase::sectionStarting( _sectionInfo );
         }
         void sectionEnded( SectionStats const& _sectionStats ) override {
+            closeBenchmarkTable();
             if( _sectionStats.missingAssertions ) {
                 lazyPrint();
                 Colour colour( Colour::ResultError );
@@ -89,7 +102,44 @@ namespace Catch {
             StreamingReporterBase::sectionEnded( _sectionStats );
         }
 
+        void benchmarkStarting( BenchmarkInfo const& info ) override {
+            lazyPrint();
+            auto nameColWidth = CATCH_CONFIG_CONSOLE_WIDTH-40;
+            auto nameCol = Column( info.name ).width( nameColWidth );
+            if( !m_benchmarkTableOpen ) {
+                stream
+                    << getBoxCharsAcross() << "\n"
+                    << "| benchmark name" << std::string( nameColWidth-14, ' ' ) << " |  it'ns | elapsed ns |    average |\n"
+                    << getBoxCharsAcross() << "\n";
+                m_benchmarkTableOpen = true;
+            }
+            bool firstLine = true;
+            for( auto line : nameCol ) {
+                if( !firstLine )
+                    stream << "        |            |            |" << "\n";
+                else
+                    firstLine = false;
+
+                stream << "| " << line << std::string( nameColWidth-line.size(), ' ' ) << " |";
+            }
+        }
+        void benchmarkEnded( BenchmarkStats const& stats ) override {
+            // !TBD: report average times in natural units?
+            stream
+                << " " << leftPad( stats.iterations, 6 )
+                << " | " << leftPad( stats.elapsedTimeInNanoseconds, 10 )
+                << " | " << leftPad( stats.elapsedTimeInNanoseconds/stats.iterations, 7 )
+                << " ns |" << std::endl;
+        }
+        void closeBenchmarkTable() {
+            if( m_benchmarkTableOpen ) {
+                stream << getBoxCharsAcross() << "\n" << std::endl;
+                m_benchmarkTableOpen = false;
+            }
+        }
+
         void testCaseEnded( TestCaseStats const& _testCaseStats ) override {
+            closeBenchmarkTable();
             StreamingReporterBase::testCaseEnded( _testCaseStats );
             m_headerPrinted = false;
         }

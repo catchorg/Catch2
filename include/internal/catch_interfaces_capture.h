@@ -11,6 +11,7 @@
 #include <string>
 #include "catch_result_type.h"
 #include "catch_common.h"
+#include "catch_interfaces_reporter.h"
 
 namespace Catch {
 
@@ -27,11 +28,16 @@ namespace Catch {
 
         virtual ~IResultCapture();
 
+        virtual void assertionStarting( AssertionInfo const& info ) = 0;
         virtual void assertionEnded( AssertionResult const& result ) = 0;
         virtual bool sectionStarted(    SectionInfo const& sectionInfo,
                                         Counts& assertions ) = 0;
         virtual void sectionEnded( SectionEndInfo const& endInfo ) = 0;
         virtual void sectionEndedEarly( SectionEndInfo const& endInfo ) = 0;
+
+        virtual void benchmarkStarting( BenchmarkInfo const& info ) = 0;
+        virtual void benchmarkEnded( BenchmarkStats const& stats ) = 0;
+
         virtual void pushScopedMessage( MessageInfo const& message ) = 0;
         virtual void popScopedMessage( MessageInfo const& message ) = 0;
 

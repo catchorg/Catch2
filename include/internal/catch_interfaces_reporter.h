@@ -158,6 +158,14 @@ namespace Catch {
         bool aborting;
     };
 
+    struct BenchmarkInfo {
+        std::string name;
+    };
+    struct BenchmarkStats {
+        BenchmarkInfo info;
+        size_t iterations;
+        uint64_t elapsedTimeInNanoseconds;
+    };
     class MultipleReporters;
 
     struct IStreamingReporter {
@@ -177,10 +185,16 @@ namespace Catch {
         virtual void testCaseStarting( TestCaseInfo const& testInfo ) = 0;
         virtual void sectionStarting( SectionInfo const& sectionInfo ) = 0;
 
+        // *** experimental ***
+        virtual void benchmarkStarting( BenchmarkInfo const& ) {}
+
         virtual void assertionStarting( AssertionInfo const& assertionInfo ) = 0;
 
         // The return value indicates if the messages buffer should be cleared:
         virtual bool assertionEnded( AssertionStats const& assertionStats ) = 0;
+
+        // *** experimental ***
+        virtual void benchmarkEnded( BenchmarkStats const& ) {}
 
         virtual void sectionEnded( SectionStats const& sectionStats ) = 0;
         virtual void testCaseEnded( TestCaseStats const& testCaseStats ) = 0;

@@ -63,17 +63,19 @@ namespace Catch {
     private: // IResultCapture
 
 
+        void assertionStarting(AssertionInfo const& info) override;
         void assertionEnded(AssertionResult const& result) override;
 
         bool sectionStarted( SectionInfo const& sectionInfo, Counts& assertions ) override;
         bool testForMissingAssertions(Counts& assertions);
 
         void sectionEnded(SectionEndInfo const& endInfo) override;
-
         void sectionEndedEarly(SectionEndInfo const& endInfo) override;
 
-        void pushScopedMessage(MessageInfo const& message) override;
+        void benchmarkStarting( BenchmarkInfo const& info ) override;
+        void benchmarkEnded( BenchmarkStats const& stats ) override;
 
+        void pushScopedMessage(MessageInfo const& message) override;
         void popScopedMessage(MessageInfo const& message) override;
 
         std::string getCurrentTestName() const override;

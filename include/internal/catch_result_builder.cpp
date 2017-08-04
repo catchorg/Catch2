@@ -34,7 +34,9 @@ namespace Catch {
                                     char const* capturedExpression,
                                     ResultDisposition::Flags resultDisposition )
     :   m_assertionInfo( macroName, lineInfo, capturedExpression, resultDisposition)
-    {}
+    {
+        getCurrentContext().getResultCapture()->assertionStarting( m_assertionInfo );
+    }
 
     ResultBuilder::~ResultBuilder() {
 #if defined(CATCH_CONFIG_FAST_COMPILE)
