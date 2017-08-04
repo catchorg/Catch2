@@ -12,23 +12,8 @@
 
 namespace Catch {
 
-    namespace {
-        uint64_t getCurrentMicrosecondsSinceEpoch() {
-            return std::chrono::duration_cast<std::chrono::microseconds>( std::chrono::high_resolution_clock::now().time_since_epoch() ).count();
-        }
-    }
-
-    void Timer::start() {
-        m_microSeconds = getCurrentMicrosecondsSinceEpoch();
-    }
-    unsigned int Timer::getElapsedMicroseconds() const {
-        return static_cast<unsigned int>(getCurrentMicrosecondsSinceEpoch() - m_microSeconds);
-    }
-    unsigned int Timer::getElapsedMilliseconds() const {
-        return static_cast<unsigned int>(getElapsedMicroseconds()/1000);
-    }
-    double Timer::getElapsedSeconds() const {
-        return getElapsedMicroseconds()/1000000.0;
+    auto getCurrentMicrosecondsSinceEpoch() -> uint64_t {
+        return std::chrono::duration_cast<std::chrono::microseconds>( std::chrono::high_resolution_clock::now().time_since_epoch() ).count();
     }
 
 } // namespace Catch

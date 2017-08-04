@@ -11,15 +11,24 @@
 #include <stdint.h>
 
 namespace Catch {
-    class Timer {
-    public:
-        void start();
-        unsigned int getElapsedMicroseconds() const;
-        unsigned int getElapsedMilliseconds() const;
-        double getElapsedSeconds() const;
 
-    private:
+    auto getCurrentMicrosecondsSinceEpoch() -> uint64_t;
+
+    class Timer {
         uint64_t m_microSeconds = 0;
+    public:
+        void start() {
+           m_microSeconds = getCurrentMicrosecondsSinceEpoch();
+        }
+        auto getElapsedMicroseconds() const -> unsigned int {
+            return static_cast<unsigned int>(getCurrentMicrosecondsSinceEpoch() - m_microSeconds);
+        }
+        auto getElapsedMilliseconds() const -> unsigned int {
+            return static_cast<unsigned int>(getElapsedMicroseconds()/1000);
+        }
+        auto getElapsedSeconds() const -> double {
+            return getElapsedMicroseconds()/1000000.0;
+        }
     };
 
 } // namespace Catch
