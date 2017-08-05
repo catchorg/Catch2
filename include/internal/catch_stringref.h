@@ -56,6 +56,7 @@ namespace Catch {
     public: // named queries
         auto empty() const noexcept -> bool;
         auto size() const noexcept -> size_type;
+        auto numberOfCharacters() const noexcept -> size_type;
         auto c_str() const -> char const*;
         
     public: // substrings and searches

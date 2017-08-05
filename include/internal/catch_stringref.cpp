@@ -136,7 +136,23 @@ namespace Catch {
     auto StringRef::size() const noexcept -> size_type {
         return m_size;
     }
-        
+    auto StringRef::numberOfCharacters() const noexcept -> size_type {
+        size_type noChars = m_size;
+        // Make adjustments for uft encodings
+        for( size_type i=0; i < m_size; ++i ) {
+            char c = m_start[i];
+            if( ( c & 0b11000000 ) == 0b11000000 ) {
+                if( ( c & 0b11100000 ) == 0b11000000 )
+                    noChars--;
+                else if( ( c & 0b11110000 ) == 0b11100000 )
+                    noChars-=2;
+                else if( ( c & 0b11111000 ) == 0b11110000 )
+                    noChars-=3;
+            }
+        }
+        return noChars;
+    }
+
     auto operator + ( StringRef const& lhs, StringRef const& rhs ) -> String {
         StringBuilder buf;
         buf.reserve( lhs.size() + rhs.size() );

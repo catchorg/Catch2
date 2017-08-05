@@ -40,6 +40,8 @@ namespace Catch {
         
         auto empty() const noexcept -> bool;
         auto size() const noexcept -> size_type;
+        auto numberOfCharacters() const noexcept -> size_type;
+
         auto c_str() const noexcept -> char const*;
     };
     

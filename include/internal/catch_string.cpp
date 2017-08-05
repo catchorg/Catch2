@@ -64,6 +64,9 @@ namespace Catch {
     auto String::size() const noexcept -> size_type {
         return m_data->size;
     }
+    auto String::numberOfCharacters() const noexcept -> size_type {
+        return StringRef( *this ).numberOfCharacters();
+    }
     auto String::c_str() const noexcept -> char const* {
         return m_data->chars;
     }

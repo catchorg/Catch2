@@ -12,6 +12,7 @@
 #include "../internal/catch_console_colour.hpp"
 #include "../internal/catch_version.h"
 #include "../internal/catch_text.h"
+#include "../internal/catch_stringref.h"
 
 #include <cfloat>
 #include <cstdio>
@@ -82,6 +83,8 @@ namespace {
 
         friend TablePrinter& operator << ( TablePrinter& tp, ColumnBreak ) {
             auto colStr = tp.m_oss.str();
+            // This takes account of utf8 encodings
+            auto strSize = Catch::StringRef( colStr.c_str(), colStr.size() ).numberOfCharacters();
             tp.m_oss.str("");
             tp.open();
             if( tp.m_currentColumn == static_cast<int>(tp.m_columnInfos.size()-1) ) {
@@ -93,8 +96,8 @@ namespace {
             tp.m_currentColumn++;
 
             auto colInfo = tp.m_columnInfos[tp.m_currentColumn];
-            auto padding = ( colStr.size()+2 < static_cast<size_t>( colInfo.width ) )
-                ? std::string( colInfo.width-(colStr.size()+2), ' ' )
+            auto padding = ( strSize+2 < static_cast<size_t>( colInfo.width ) )
+                ? std::string( colInfo.width-(strSize+2), ' ' )
                 : std::string();
             if( colInfo.justification == ColumnInfo::Left )
                 tp.m_os << " " << colStr << padding << " |";
@@ -112,6 +115,79 @@ namespace {
             return tp;
         }
     };
+
+    class Duration {
+        enum class Unit {
+            Auto,
+            Nanoseconds,
+            Microseconds,
+            Milliseconds,
+            Seconds,
+            Minutes
+        };
+        static const uint64_t s_nanosecondsInAMicrosecond = 1000;
+        static const uint64_t s_nanosecondsInAMillisecond = 1000*s_nanosecondsInAMicrosecond;
+        static const uint64_t s_nanosecondsInASecond = 1000*s_nanosecondsInAMillisecond;
+        static const uint64_t s_nanosecondsInAMinute = 60*s_nanosecondsInASecond;
+
+        uint64_t m_inNanoseconds;
+        Unit m_units;
+
+    public:
+        Duration( uint64_t inNanoseconds, Unit units = Unit::Auto )
+        :   m_inNanoseconds( inNanoseconds ),
+            m_units( units )
+        {
+            if( m_units == Unit::Auto ) {
+                if( m_inNanoseconds < s_nanosecondsInAMicrosecond )
+                    m_units = Unit::Nanoseconds;
+                else if( m_inNanoseconds < s_nanosecondsInAMillisecond )
+                    m_units = Unit::Microseconds;
+                else if( m_inNanoseconds < s_nanosecondsInASecond )
+                    m_units = Unit::Milliseconds;
+                else if( m_inNanoseconds < s_nanosecondsInAMinute )
+                    m_units = Unit::Seconds;
+                else
+                    m_units = Unit::Minutes;
+            }
+
+        }
+
+        auto value() const -> double {
+            switch( m_units ) {
+                case Unit::Microseconds:
+                    return m_inNanoseconds / static_cast<double>( s_nanosecondsInAMicrosecond );
+                case Unit::Milliseconds:
+                    return m_inNanoseconds / static_cast<double>( s_nanosecondsInAMillisecond );
+                case Unit::Seconds:
+                    return m_inNanoseconds / static_cast<double>( s_nanosecondsInASecond );
+                case Unit::Minutes:
+                    return m_inNanoseconds / static_cast<double>( s_nanosecondsInAMinute );
+                default:
+                    return static_cast<double>( m_inNanoseconds );
+            }
+        }
+        auto unitsAsString() const -> std::string {
+            switch( m_units ) {
+                case Unit::Nanoseconds:
+                    return "ns";
+                case Unit::Microseconds:
+                    return "µs";
+                case Unit::Milliseconds:
+                    return "ms";
+                case Unit::Seconds:
+                    return "s";
+                case Unit::Minutes:
+                    return "m";
+                default:
+                    return "** internal error **";
+            }
+
+        }
+        friend auto operator << ( std::ostream& os, Duration const& duration ) -> std::ostream& {
+            return os << duration.value() << " " << duration.unitsAsString();
+        }
+    };
 }
 
 namespace Catch {
@@ -123,10 +199,10 @@ namespace Catch {
         :   StreamingReporterBase( config ),
             m_tablePrinter( config.stream(),
                             {
-                                { "benchmark name", CATCH_CONFIG_CONSOLE_WIDTH-38, ColumnInfo::Left },
+                                { "benchmark name", CATCH_CONFIG_CONSOLE_WIDTH-42, ColumnInfo::Left },
                                 { "iters", 8, ColumnInfo::Right },
-                                { "elapsed ns", 12, ColumnInfo::Right },
-                                { "average", 12, ColumnInfo::Right }
+                                { "elapsed ns", 14, ColumnInfo::Right },
+                                { "average", 14, ColumnInfo::Right }
                             } )
         {}
         ~ConsoleReporter() override;
@@ -199,11 +275,11 @@ namespace Catch {
             }
         }
         void benchmarkEnded( BenchmarkStats const& stats ) override {
-            // !TBD: report average times in natural units?
+            Duration average( stats.elapsedTimeInNanoseconds/stats.iterations );
             m_tablePrinter
                     << stats.iterations << ColumnBreak()
                     << stats.elapsedTimeInNanoseconds << ColumnBreak()
-                    << stats.elapsedTimeInNanoseconds/stats.iterations << " ns" << ColumnBreak();
+                    << average << ColumnBreak();
         }
 
         void testCaseEnded( TestCaseStats const& _testCaseStats ) override {
