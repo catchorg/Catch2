@@ -69,7 +69,7 @@ namespace Catch {
             else {
                 if( c == ']' ) {
                     TestCaseInfo::SpecialProperties prop = parseSpecialTag( tag );
-                    if( prop == TestCaseInfo::IsHidden )
+                    if( ( prop & TestCaseInfo::IsHidden ) != 0 )
                         isHidden = true;
                     else if( prop == TestCaseInfo::None )
                         enforceNotReservedTag( tag, _lineInfo );
