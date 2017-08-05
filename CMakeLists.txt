@@ -55,6 +55,7 @@ endfunction()
 set(TEST_SOURCES
         ${SELF_TEST_DIR}/ApproxTests.cpp
         ${SELF_TEST_DIR}/BDDTests.cpp
+        ${SELF_TEST_DIR}/Benchmark.tests.cpp
         ${SELF_TEST_DIR}/ClassTests.cpp
         ${SELF_TEST_DIR}/CmdLineTests.cpp
         ${SELF_TEST_DIR}/CompilationTests.cpp
@@ -96,9 +97,9 @@ set(SURROGATE_SOURCES
         ${SELF_TEST_DIR}/SurrogateCpps/catch_option.cpp
         ${SELF_TEST_DIR}/SurrogateCpps/catch_stream.cpp
         ${SELF_TEST_DIR}/SurrogateCpps/catch_streambuf.cpp
+        ${SELF_TEST_DIR}/SurrogateCpps/catch_test_case_tracker.cpp
         ${SELF_TEST_DIR}/SurrogateCpps/catch_test_spec.cpp
         ${SELF_TEST_DIR}/SurrogateCpps/catch_xmlwriter.cpp
-        ${SELF_TEST_DIR}/SurrogateCpps/catch_test_case_tracker.cpp
         )
 CheckFileList(SURROGATE_SOURCES ${SELF_TEST_DIR}/SurrogateCpps)
 

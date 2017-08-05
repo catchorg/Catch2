@@ -7201,6 +7201,41 @@ Message from section two
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
+    <TestCase name="benchmarked" tags="[benchmark]" filename="projects/<exe-name>/String.tests.cpp" >
+      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/String.tests.cpp" >
+        <Original>
+          v.size() == size
+        </Original>
+        <Expanded>
+          100 == 100
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/String.tests.cpp" >
+        <Original>
+          m.size() == size
+        </Original>
+        <Expanded>
+          100 == 100
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/String.tests.cpp" >
+        <Original>
+          v.size() == size
+        </Original>
+        <Expanded>
+          100 == 100
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/String.tests.cpp" >
+        <Original>
+          sum > size
+        </Original>
+        <Expanded>
+          4950 (0x<hex digits>) > 100
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
     <TestCase name="boolean member" tags="[Tricky]" filename="projects/<exe-name>/TrickyTests.cpp" >
       <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/TrickyTests.cpp" >
         <Original>
@@ -8441,7 +8476,7 @@ spanner      <OverallResult success="true"/>
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="779" failures="99" expectedFailures="21"/>
+    <OverallResults successes="783" failures="99" expectedFailures="21"/>
   </Group>
-  <OverallResults successes="779" failures="98" expectedFailures="21"/>
+  <OverallResults successes="783" failures="98" expectedFailures="21"/>
 </Catch>
