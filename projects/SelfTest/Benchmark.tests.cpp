@@ -2,7 +2,7 @@
 
 #include <map>
 
-TEST_CASE( "benchmarked", "[.][benchmark]" ) {
+TEST_CASE( "benchmarked", "[!benchmark]" ) {
 
     static const int size = 100;
 

@@ -31,6 +31,8 @@ namespace Catch {
             return TestCaseInfo::MayFail;
         else if( tag == "!nonportable" )
             return TestCaseInfo::NonPortable;
+        else if( tag == "!benchmark" )
+            return static_cast<TestCaseInfo::SpecialProperties>( TestCaseInfo::Benchmark | TestCaseInfo::IsHidden );
         else
             return TestCaseInfo::None;
     }

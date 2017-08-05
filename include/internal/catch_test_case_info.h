@@ -30,7 +30,8 @@ namespace Catch {
             ShouldFail = 1 << 2,
             MayFail = 1 << 3,
             Throws = 1 << 4,
-            NonPortable = 1 << 5
+            NonPortable = 1 << 5,
+            Benchmark = 1 << 6
         };
 
         TestCaseInfo(   std::string const& _name,
