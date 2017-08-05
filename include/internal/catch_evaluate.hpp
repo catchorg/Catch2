@@ -36,69 +36,65 @@ namespace Internal {
 
     // So the compare overloads can be operator agnostic we convey the operator as a template
     // enum, which is used to specialise an Evaluator for doing the comparison.
-    template<typename T1, typename T2, Operator Op>
+    template<Operator Op>
     struct Evaluator{};
 
-    template<typename T1, typename T2>
-    struct Evaluator<T1, T2, IsEqualTo> {
+    template<>
+    struct Evaluator<IsEqualTo> {
+        template<typename T1, typename T2>
         static bool evaluate( T1 const& lhs, T2 const& rhs) {
             return bool(removeConst(lhs) == removeConst(rhs) );
         }
-    };
-    template<typename T1, typename T2>
-    struct Evaluator<T1, T2, IsNotEqualTo> {
-        static bool evaluate( T1 const& lhs, T2 const& rhs ) {
-            return bool(removeConst(lhs) != removeConst(rhs) );
-        }
-    };
-    template<typename T1, typename T2>
-    struct Evaluator<T1, T2, IsLessThan> {
-        static bool evaluate( T1 const& lhs, T2 const& rhs ) {
-            return bool(removeConst(lhs) < removeConst(rhs) );
-        }
-    };
-    template<typename T1, typename T2>
-    struct Evaluator<T1, T2, IsGreaterThan> {
-        static bool evaluate( T1 const& lhs, T2 const& rhs ) {
-            return bool(removeConst(lhs) > removeConst(rhs) );
-        }
-    };
-    template<typename T1, typename T2>
-    struct Evaluator<T1, T2, IsGreaterThanOrEqualTo> {
-        static bool evaluate( T1 const& lhs, T2 const& rhs ) {
-            return bool(removeConst(lhs) >= removeConst(rhs) );
-        }
-    };
-    template<typename T1, typename T2>
-    struct Evaluator<T1, T2, IsLessThanOrEqualTo> {
-        static bool evaluate( T1 const& lhs, T2 const& rhs ) {
-            return bool(removeConst(lhs) <= removeConst(rhs) );
-        }
-    };
-
-    // Special case for comparing a pointer to an int (deduced for p==0)
-    template<typename T>
-    struct Evaluator<int const&, T* const&, IsEqualTo> {
+        template<typename T>
         static bool evaluate( int lhs, T* rhs) {
             return reinterpret_cast<void const*>( lhs ) ==  rhs;
         }
-    };
-    template<typename T>
-    struct Evaluator<T* const&, int const&, IsEqualTo> {
+        template<typename T>
         static bool evaluate( T* lhs, int rhs) {
             return lhs == reinterpret_cast<void const*>( rhs );
         }
     };
-    template<typename T>
-    struct Evaluator<int const&, T* const&, IsNotEqualTo> {
+    template<>
+    struct Evaluator<IsNotEqualTo> {
+        template<typename T1, typename T2>
+        static bool evaluate( T1 const& lhs, T2 const& rhs ) {
+            return bool(removeConst(lhs) != removeConst(rhs) );
+        }
+        template<typename T>
         static bool evaluate( int lhs, T* rhs) {
             return reinterpret_cast<void const*>( lhs ) !=  rhs;
         }
-    };
-    template<typename T>
-    struct Evaluator<T* const&, int const&, IsNotEqualTo> {
+        template<typename T>
         static bool evaluate( T* lhs, int rhs) {
             return lhs != reinterpret_cast<void const*>( rhs );
+        }
+    };
+    template<>
+    struct Evaluator<IsLessThan> {
+        template<typename T1, typename T2>
+        static bool evaluate( T1 const& lhs, T2 const& rhs ) {
+            return bool(removeConst(lhs) < removeConst(rhs) );
+        }
+    };
+    template<>
+    struct Evaluator<IsGreaterThan> {
+        template<typename T1, typename T2>
+        static bool evaluate( T1 const& lhs, T2 const& rhs ) {
+            return bool(removeConst(lhs) > removeConst(rhs) );
+        }
+    };
+    template<>
+    struct Evaluator<IsGreaterThanOrEqualTo> {
+        template<typename T1, typename T2>
+        static bool evaluate( T1 const& lhs, T2 const& rhs ) {
+            return bool(removeConst(lhs) >= removeConst(rhs) );
+        }
+    };
+    template<>
+    struct Evaluator<IsLessThanOrEqualTo> {
+        template<typename T1, typename T2>
+        static bool evaluate( T1 const& lhs, T2 const& rhs ) {
+            return bool(removeConst(lhs) <= removeConst(rhs) );
         }
     };
 
