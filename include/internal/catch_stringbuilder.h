@@ -9,6 +9,8 @@
 
 #include "catch_stringref.h"
 
+#include <cstddef>
+
 namespace Catch {
 
     class String;
@@ -22,7 +24,7 @@ namespace Catch {
     class StringBuilder {
         friend class String;
     public:
-        using size_type = unsigned long;
+        using size_type = size_t;
         
         StringBuilder();
         StringBuilder( size_type initialCapacity );

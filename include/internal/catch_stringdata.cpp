@@ -21,7 +21,7 @@ namespace Catch {
     auto StringData::create( StringRef const& stringRef ) -> StringData* {
         return create( stringRef, stringRef.size() );
     }
-    auto StringData::create( StringRef const& stringRef, unsigned long capacity ) -> StringData* {
+    auto StringData::create( StringRef const& stringRef, size_t capacity ) -> StringData* {
         if( capacity == 0 ) {
             return getEmpty();
         }
@@ -37,7 +37,7 @@ namespace Catch {
     :   m_refs( initialRef ),
         size( 0 )
     {}
-    StringData::StringData( StringRef const& stringRef, unsigned long capacity )
+    StringData::StringData( StringRef const& stringRef, size_t capacity )
     :   m_refs( 1 ),
         size( capacity)
     {

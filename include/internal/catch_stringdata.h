@@ -8,6 +8,7 @@
 #define CATCH_STRINGDATA_H_INCLUDED
 
 #include <atomic>
+#include <cstddef>
 
 namespace Catch {
     
@@ -16,7 +17,7 @@ namespace Catch {
     class StringData {
         mutable std::atomic<unsigned int> m_refs;
     public:
-        unsigned int size;
+        size_t size;
         union {
             char chars[1];
         };
@@ -26,7 +27,7 @@ namespace Catch {
         }
         static auto getEmpty() -> StringData*;
         static auto create( StringRef const& stringRef ) -> StringData*;
-        static auto create( StringRef const& stringRef, unsigned long capacity ) -> StringData*;
+        static auto create( StringRef const& stringRef, size_t capacity ) -> StringData*;
 
         void addRef() const noexcept {
             if( m_refs > 0 )
@@ -41,7 +42,7 @@ namespace Catch {
         }
     private:
         StringData( unsigned int initialRef = 1 );
-        StringData( StringRef const& stringRef, unsigned long capacity );
+        StringData( StringRef const& stringRef, size_t capacity );
         
         StringData( StringData const& ) = delete;
         StringData& operator=( StringData const& ) = delete;

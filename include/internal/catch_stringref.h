@@ -7,6 +7,8 @@
 #ifndef CATCH_STRINGREF_H_INCLUDED
 #define CATCH_STRINGREF_H_INCLUDED
 
+#include <cstddef>
+
 namespace Catch {
     
     class String;
@@ -24,7 +26,7 @@ namespace Catch {
         friend class StringData;
         friend class StringBuilder;
 
-        using size_type = unsigned long;
+        using size_type = size_t;
         
         char const* m_start;
         size_type m_size;
