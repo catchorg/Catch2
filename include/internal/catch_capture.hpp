@@ -31,28 +31,11 @@
 // macros.
 // This can potentially cause false negative, if the test code catches
 // the exception before it propagates back up to the runner.
-#define INTERNAL_CATCH_TEST_NO_TRY( macroName, resultDisposition, expr ) \
-    do { \
-        Catch::ResultBuilder __catchResult( macroName, CATCH_INTERNAL_LINEINFO, #expr, resultDisposition ); \
-        __catchResult.setExceptionGuard(); \
-        CATCH_INTERNAL_SUPPRESS_PARENTHESES_WARNINGS \
-        ( __catchResult <= expr ).endExpression(); \
-        CATCH_INTERNAL_UNSUPPRESS_PARENTHESES_WARNINGS \
-        __catchResult.unsetExceptionGuard(); \
-        INTERNAL_CATCH_REACT( __catchResult ) \
-    } while( Catch::isTrue( false && static_cast<bool>( !!(expr) ) ) ) // expr here is never evaluated at runtime but it forces the compiler to give it a look
-// The double negation silences MSVC's C4800 warning, the static_cast forces short-circuit evaluation if the type has overloaded &&.
-#if !defined(CATCH_CONFIG_DISABLE_MATCHERS)
-#define INTERNAL_CHECK_THAT_NO_TRY( macroName, matcher, resultDisposition, arg ) \
-    do { \
-        Catch::ResultBuilder __catchResult( macroName, CATCH_INTERNAL_LINEINFO, #arg ", " #matcher, resultDisposition ); \
-        __catchResult.setExceptionGuard(); \
-        __catchResult.captureMatch( arg, matcher, #matcher ); \
-        __catchResult.unsetExceptionGuard(); \
-        INTERNAL_CATCH_REACT( __catchResult ) \
-    } while( Catch::alwaysFalse() )
-#endif // CATCH_CONFIG_DISABLE_MATCHERS
-#else
+#define INTERNAL_CATCH_TRY
+#define INTERNAL_CATCH_CATCH( capturer, disposition )
+
+#else // CATCH_CONFIG_FAST_COMPILE
+
 ///////////////////////////////////////////////////////////////////////////////
 // In the event of a failure works out if the debugger needs to be invoked
 // and/or an exception thrown and takes appropriate action.
@@ -61,21 +44,21 @@
 #define INTERNAL_CATCH_REACT( resultBuilder ) \
     if( resultBuilder.shouldDebugBreak() ) CATCH_BREAK_INTO_DEBUGGER(); \
     resultBuilder.react(); 
-#endif
 
+#define INTERNAL_CATCH_TRY try
+#define INTERNAL_CATCH_CATCH( capturer, disposition ) catch(...) { capturer.useActiveException( disposition ); }
+
+#endif
 
 ///////////////////////////////////////////////////////////////////////////////
 #define INTERNAL_CATCH_TEST( macroName, resultDisposition, ... ) \
     do { \
         Catch::ResultBuilder __catchResult( macroName, CATCH_INTERNAL_LINEINFO, #__VA_ARGS__, resultDisposition ); \
-        try { \
+        INTERNAL_CATCH_TRY { \
             CATCH_INTERNAL_SUPPRESS_PARENTHESES_WARNINGS \
             ( __catchResult <= __VA_ARGS__ ).endExpression(); \
             CATCH_INTERNAL_UNSUPPRESS_PARENTHESES_WARNINGS \
-        } \
-        catch( ... ) { \
-            __catchResult.useActiveException( resultDisposition ); \
-        } \
+        } INTERNAL_CATCH_CATCH( __catchResult, resultDisposition ) \
         INTERNAL_CATCH_REACT( __catchResult ) \
     } while( Catch::isTrue( false && static_cast<bool>( !!(__VA_ARGS__) ) ) ) // the expression here is never evaluated at runtime but it forces the compiler to give it a look
     // The double negation silences MSVC's C4800 warning, the static_cast forces short-circuit evaluation if the type has overloaded &&.
@@ -160,11 +143,9 @@
 #define INTERNAL_CHECK_THAT( macroName, matcher, resultDisposition, arg ) \
     do { \
         Catch::ResultBuilder __catchResult( macroName, CATCH_INTERNAL_LINEINFO, #arg ", " #matcher, resultDisposition ); \
-        try { \
+        INTERNAL_CATCH_TRY { \
             __catchResult.captureMatch( arg, matcher, #matcher ); \
-        } catch( ... ) { \
-            __catchResult.useActiveException( resultDisposition ); \
-        } \
+        } INTERNAL_CATCH_CATCH( __catchResult, resultDisposition ) \
         INTERNAL_CATCH_REACT( __catchResult ) \
     } while( Catch::alwaysFalse() )
 

@@ -14,6 +14,7 @@
 #include "catch_interfaces_registry_hub.h"
 #include "catch_matchers_string.h"
 #include "catch_wildcard_pattern.hpp"
+#include "catch_debugger.h"
 
 #include <cassert>
 
