@@ -54,6 +54,7 @@ namespace Catch {
         void handle( AssertionResultData const& resultData, ITransientExpression const* expr );
 
         auto shouldDebugBreak() const -> bool;
+        auto allowThrows() const -> bool;
         void reactWithDebugBreak() const;
         void reactWithoutDebugBreak() const;
         void useActiveException( ResultDisposition::Flags resultDisposition );

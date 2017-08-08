@@ -112,21 +112,21 @@
 ///////////////////////////////////////////////////////////////////////////////
 #define INTERNAL_CATCH_THROWS_AS( macroName, exceptionType, resultDisposition, expr ) \
     do { \
-        Catch::ResultBuilder __catchResult( macroName, CATCH_INTERNAL_LINEINFO, #expr ", " #exceptionType, resultDisposition ); \
-        if( __catchResult.allowThrows() ) \
+        Catch::AssertionHandler catchAssertionHandler( macroName, CATCH_INTERNAL_LINEINFO, #expr ", " #exceptionType, resultDisposition ); \
+        if( catchAssertionHandler.allowThrows() ) \
             try { \
                 static_cast<void>(expr); \
-                __catchResult.captureResult( Catch::ResultWas::DidntThrowException ); \
+                catchAssertionHandler.handle( Catch::ResultWas::DidntThrowException ); \
             } \
             catch( exceptionType const& ) { \
-                __catchResult.captureResult( Catch::ResultWas::Ok ); \
+                catchAssertionHandler.handle( Catch::ResultWas::Ok ); \
             } \
             catch( ... ) { \
-                __catchResult.useActiveException( resultDisposition ); \
+                catchAssertionHandler.useActiveException(); \
             } \
         else \
-            __catchResult.captureResult( Catch::ResultWas::Ok ); \
-        INTERNAL_CATCH_REACT( __catchResult ) \
+            catchAssertionHandler.handle( Catch::ResultWas::Ok ); \
+        INTERNAL_CATCH_REACT2( catchAssertionHandler ) \
     } while( Catch::alwaysFalse() )
 
 

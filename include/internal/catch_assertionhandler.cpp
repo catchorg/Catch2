@@ -90,6 +90,9 @@ namespace Catch {
     void AssertionHandler::handle( ResultWas::OfType resultType ) {
         handle( resultType, nullptr, false );
     }
+    auto AssertionHandler::allowThrows() const -> bool {
+        return getCurrentContext().getConfig()->allowThrows();
+    }
 
     auto AssertionHandler::shouldDebugBreak() const -> bool {
         return m_shouldDebugBreak;
