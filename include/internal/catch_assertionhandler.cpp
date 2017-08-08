@@ -59,24 +59,17 @@ namespace Catch {
         getCurrentContext().getResultCapture()->assertionStarting( m_assertionInfo );
     }
 
-    void AssertionHandler::handle( ITransientExpression const& expr ) {
+    void AssertionHandler::handle( ResultWas::OfType resultType, ITransientExpression const* expr, bool negated ) {
 
-        bool negated = isFalseTest( m_assertionInfo.resultDisposition );
-        bool result = expr.getResult() != negated;
-
-        AssertionResultData data( result ? ResultWas::Ok : ResultWas::ExpressionFailed, LazyExpression( negated ) );
-
-        // Deprecated
-//        data.negated = negated;
-//        data.parenthesized = negated && expr.isBinaryExpression(); // !TBD: needed?
-//        data.decomposedExpression = nullptr; // !TBD
-//        data.reconstructedExpression = ""; // !TBD
-
+        AssertionResultData data( resultType, LazyExpression( negated ) );
+        handle( data, expr );
+    }
+    void AssertionHandler::handle( AssertionResultData const& resultData, ITransientExpression const* expr ) {
 
         getResultCapture().assertionRun();
 
-        AssertionResult assertionResult{ m_assertionInfo, data };
-        assertionResult.m_resultData.lazyExpression.m_transientExpression = &expr;
+        AssertionResult assertionResult{ m_assertionInfo, resultData };
+        assertionResult.m_resultData.lazyExpression.m_transientExpression = expr;
 
         getResultCapture().assertionEnded( assertionResult );
 
@@ -86,6 +79,16 @@ namespace Catch {
                     getCurrentContext().getRunner()->aborting() ||
                     (m_assertionInfo.resultDisposition & ResultDisposition::Normal);
         }
+    }
+    void AssertionHandler::handle( ITransientExpression const& expr ) {
+
+        bool negated = isFalseTest( m_assertionInfo.resultDisposition );
+        bool result = expr.getResult() != negated;
+
+        handle( result ? ResultWas::Ok : ResultWas::ExpressionFailed, &expr, negated );
+    }
+    void AssertionHandler::handle( ResultWas::OfType resultType ) {
+        handle( resultType, nullptr, false );
     }
 
     auto AssertionHandler::shouldDebugBreak() const -> bool {
@@ -116,20 +119,7 @@ namespace Catch {
         AssertionResultData data( ResultWas::ThrewException, LazyExpression( negated ) );
         data.message = Catch::translateActiveException();
 
-        //data.decomposedExpression = &expr; // for lazy reconstruction
-
-        AssertionResult result( m_assertionInfo, data );
-
-        getResultCapture().assertionEnded( result );
-
-        // !TBD: factor this out? handleResult()?
-        if( !result.isOk() ) {
-            if( getCurrentContext().getConfig()->shouldDebugBreak() )
-                m_shouldDebugBreak = true;
-            if( getCurrentContext().getRunner()->aborting() || (m_assertionInfo.resultDisposition & ResultDisposition::Normal) )
-                m_shouldThrow = true;
-        }
-
+        handle( data, nullptr );
     }
 
 } // namespace Catch

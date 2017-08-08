@@ -51,6 +51,7 @@
 
 #define INTERNAL_CATCH_TRY try
 #define INTERNAL_CATCH_CATCH( capturer, disposition ) catch(...) { capturer.useActiveException( disposition ); }
+#define INTERNAL_CATCH_CATCH2( capturer ) catch(...) { capturer.useActiveException(); }
 
 #endif
 
@@ -62,7 +63,7 @@
             CATCH_INTERNAL_SUPPRESS_PARENTHESES_WARNINGS \
             catchAssertionHandler.handle( Catch::Decomposer() <= __VA_ARGS__ ); \
             CATCH_INTERNAL_UNSUPPRESS_PARENTHESES_WARNINGS \
-        } INTERNAL_CATCH_CATCH( catchAssertionHandler, resultDisposition ) \
+        } INTERNAL_CATCH_CATCH2( catchAssertionHandler ) \
         INTERNAL_CATCH_REACT2( catchAssertionHandler ) \
     } while( Catch::isTrue( false && static_cast<bool>( !!(__VA_ARGS__) ) ) ) // the expression here is never evaluated at runtime but it forces the compiler to give it a look
     // The double negation silences MSVC's C4800 warning, the static_cast forces short-circuit evaluation if the type has overloaded &&.
@@ -80,15 +81,15 @@
 ///////////////////////////////////////////////////////////////////////////////
 #define INTERNAL_CATCH_NO_THROW( macroName, resultDisposition, ... ) \
     do { \
-        Catch::ResultBuilder __catchResult( macroName, CATCH_INTERNAL_LINEINFO, #__VA_ARGS__, resultDisposition ); \
+        Catch::AssertionHandler catchAssertionHandler( macroName, CATCH_INTERNAL_LINEINFO, #__VA_ARGS__, resultDisposition ); \
         try { \
             static_cast<void>(__VA_ARGS__); \
-            __catchResult.captureResult( Catch::ResultWas::Ok ); \
+            catchAssertionHandler.handle( Catch::ResultWas::Ok ); \
         } \
         catch( ... ) { \
-            __catchResult.useActiveException( resultDisposition ); \
+            catchAssertionHandler.useActiveException(); \
         } \
-        INTERNAL_CATCH_REACT( __catchResult ) \
+        INTERNAL_CATCH_REACT2( catchAssertionHandler ) \
     } while( Catch::alwaysFalse() )
 
 ///////////////////////////////////////////////////////////////////////////////

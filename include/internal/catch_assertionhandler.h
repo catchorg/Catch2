@@ -14,6 +14,7 @@
 namespace Catch {
 
     struct TestFailureException{};
+    struct AssertionResultData;
 
     class LazyExpression {
         friend class AssertionHandler;
@@ -48,6 +49,9 @@ namespace Catch {
         void handle( ExprLhs<T> const& expr ) {
             handle( expr.makeUnaryExpr() );
         }
+        void handle( ResultWas::OfType resultType );
+        void handle( ResultWas::OfType resultType, ITransientExpression const* expr, bool negated );
+        void handle( AssertionResultData const& resultData, ITransientExpression const* expr );
 
         auto shouldDebugBreak() const -> bool;
         void reactWithDebugBreak() const;
