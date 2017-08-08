@@ -175,23 +175,23 @@
 
 
 ///////////////////////////////////////////////////////////////////////////////
-#define INTERNAL_CATCH_THROWS_MATCHES( macroName, exceptionType, resultDisposition, matcher, expr ) \
+#define INTERNAL_CATCH_THROWS_MATCHES( macroName, exceptionType, resultDisposition, matcher, ... ) \
     do { \
-        Catch::ResultBuilder __catchResult( macroName, CATCH_INTERNAL_LINEINFO, #expr ", " #exceptionType ", " #matcher, resultDisposition ); \
-        if( __catchResult.allowThrows() ) \
+        Catch::AssertionHandler catchAssertionHandler( macroName, CATCH_INTERNAL_LINEINFO, #__VA_ARGS__ ", " #exceptionType ", " #matcher, resultDisposition ); \
+        if( catchAssertionHandler.allowThrows() ) \
             try { \
-                static_cast<void>(expr); \
-                __catchResult.captureResult( Catch::ResultWas::DidntThrowException ); \
+                static_cast<void>(__VA_ARGS__ ); \
+                catchAssertionHandler.handle( Catch::ResultWas::DidntThrowException ); \
             } \
             catch( exceptionType const& ex ) { \
-                __catchResult.captureMatch( ex, matcher, #matcher ); \
+                catchAssertionHandler.handle( Catch::makeMatchExpr( ex, matcher, #matcher ) ); \
             } \
             catch( ... ) { \
-                __catchResult.useActiveException( resultDisposition ); \
+                catchAssertionHandler.useActiveException(); \
             } \
         else \
-            __catchResult.captureResult( Catch::ResultWas::Ok ); \
-        INTERNAL_CATCH_REACT( __catchResult ) \
+            catchAssertionHandler.handle( Catch::ResultWas::Ok ); \
+        INTERNAL_CATCH_REACT2( catchAssertionHandler ) \
     } while( Catch::alwaysFalse() )
 #endif // CATCH_CONFIG_DISABLE_MATCHERS
 
