@@ -13,6 +13,7 @@
 #include "catch_context.h"
 #include "catch_debugger.h"
 #include "catch_interfaces_registry_hub.h"
+#include "catch_matchers_string.h"
 
 #include <cassert>
 
@@ -140,5 +141,14 @@ namespace Catch {
         m_inExceptionGuard = false;
     }
 
+    using StringMatcher = Matchers::Impl::MatcherBase<std::string>;
+
+    void handleExceptionMatchExpr( AssertionHandler& handler, StringMatcher const& matcher, StringRef matcherString  ) {
+        MatchExpr<std::string, StringMatcher const&> expr( Catch::translateActiveException(), matcher, matcherString );
+        handler.handle( expr );
+    }
+    void handleExceptionMatchExpr( AssertionHandler& handler, std::string const& str, StringRef matcherString  ) {
+        handleExceptionMatchExpr( handler, Matchers::Equals( str ), matcherString );
+    }
 
 } // namespace Catch

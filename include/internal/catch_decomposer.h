@@ -10,6 +10,7 @@
 
 #include "catch_tostring.h"
 #include "catch_stringref.h"
+#include "catch_matchers.hpp" // !TBD: for exception matchers - move this
 
 #include <ostream>
 
@@ -148,7 +149,7 @@ namespace Catch {
     template<typename ArgT, typename MatcherT>
     class MatchExpr : public ITransientExpression {
         ArgT const& m_arg;
-        MatcherT const& m_matcher;
+        MatcherT m_matcher;
         StringRef m_matcherString;
         bool m_result;
     public:
@@ -171,6 +172,7 @@ namespace Catch {
                 os << matcherAsString;
         }
     };
+
     template<typename ArgT, typename MatcherT>
     auto makeMatchExpr( ArgT const& arg, MatcherT const& matcher, StringRef matcherString  ) -> MatchExpr<ArgT, MatcherT> {
         return MatchExpr<ArgT, MatcherT>( arg, matcher, matcherString );

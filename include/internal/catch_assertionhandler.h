@@ -10,6 +10,7 @@
 
 #include "catch_decomposer.h"
 #include "catch_assertioninfo.h"
+#include "catch_matchers_string.h" // !TBD: for exception matchers
 
 namespace Catch {
 
@@ -66,6 +67,11 @@ namespace Catch {
         void setExceptionGuard();
         void unsetExceptionGuard();
     };
+
+    using StringMatcher = Matchers::Impl::MatcherBase<std::string>;
+
+    void handleExceptionMatchExpr( AssertionHandler& handler, StringMatcher const& matcher, StringRef matcherString  );
+    void handleExceptionMatchExpr( AssertionHandler& handler, std::string const& str, StringRef matcherString );
 
 } // namespace Catch
 

@@ -1428,6 +1428,8 @@ ExceptionTests.cpp:<line number>
 ExceptionTests.cpp:<line number>:
 PASSED:
   REQUIRE_THROWS_WITH( thisThrows(), "expected exception" )
+with expansion:
+  "expected exception" equals: "expected exception"
 
 -------------------------------------------------------------------------------
 Exception messages can be tested for
@@ -1439,6 +1441,8 @@ ExceptionTests.cpp:<line number>
 ExceptionTests.cpp:<line number>:
 PASSED:
   REQUIRE_THROWS_WITH( thisThrows(), Equals( "expecteD Exception", Catch::CaseSensitive::No ) )
+with expansion:
+  "expected exception" equals: "expected exception" (case insensitive)
 
 -------------------------------------------------------------------------------
 Exception messages can be tested for
@@ -1450,18 +1454,26 @@ ExceptionTests.cpp:<line number>
 ExceptionTests.cpp:<line number>:
 PASSED:
   REQUIRE_THROWS_WITH( thisThrows(), StartsWith( "expected" ) )
+with expansion:
+  "expected exception" starts with: "expected"
 
 ExceptionTests.cpp:<line number>:
 PASSED:
   REQUIRE_THROWS_WITH( thisThrows(), EndsWith( "exception" ) )
+with expansion:
+  "expected exception" ends with: "exception"
 
 ExceptionTests.cpp:<line number>:
 PASSED:
   REQUIRE_THROWS_WITH( thisThrows(), Contains( "except" ) )
+with expansion:
+  "expected exception" contains: "except"
 
 ExceptionTests.cpp:<line number>:
 PASSED:
   REQUIRE_THROWS_WITH( thisThrows(), Contains( "exCept", Catch::CaseSensitive::No ) )
+with expansion:
+  "expected exception" contains: "except" (case insensitive)
 
 -------------------------------------------------------------------------------
 Expected exceptions that don't throw or unexpected exceptions fail the test
@@ -1882,11 +1894,13 @@ ExceptionTests.cpp:<line number>
 ExceptionTests.cpp:<line number>:
 PASSED:
   REQUIRE_THROWS_WITH( thisThrows(), "expected exception" )
+with expansion:
+  "expected exception" equals: "expected exception"
 
 ExceptionTests.cpp:<line number>: FAILED:
   REQUIRE_THROWS_WITH( thisThrows(), "should fail" )
 with expansion:
-  expected exception
+  "expected exception" equals: "should fail"
 
 -------------------------------------------------------------------------------
 Nice descriptive name
