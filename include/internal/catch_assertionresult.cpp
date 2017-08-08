@@ -24,17 +24,30 @@ namespace Catch {
             resultType = ResultWas::Ok;
     }
 
-    std::string const& AssertionResultData::reconstructExpression() const {
-        if( decomposedExpression != nullptr ) {
-            decomposedExpression->reconstructExpression( reconstructedExpression );
-            if( parenthesized ) {
-                reconstructedExpression.insert( 0, 1, '(' );
-                reconstructedExpression.append( 1, ')' );
+    std::string AssertionResultData::reconstructExpression() const {
+
+        if( reconstructedExpression.empty() ) {
+
+            // Try new LazyExpression first...
+            if( lazyExpression ) {
+                // !TBD Use stringstream for now, but rework above to pass stream in
+                std::ostringstream oss;
+                oss << lazyExpression;
+                reconstructedExpression = oss.str();
             }
-            if( negated ) {
-                reconstructedExpression.insert( 0, 1, '!' );
+
+            // ... if not, fall back to decomposedExpression
+            else if( decomposedExpression != nullptr ) {
+                decomposedExpression->reconstructExpression( reconstructedExpression );
+                if( parenthesized ) {
+                    reconstructedExpression.insert( 0, 1, '(' );
+                    reconstructedExpression.append( 1, ')' );
+                }
+                if( negated ) {
+                    reconstructedExpression.insert( 0, 1, '!' );
+                }
+                decomposedExpression = nullptr;
             }
-            decomposedExpression = nullptr;
         }
         return reconstructedExpression;
     }
@@ -85,7 +98,10 @@ namespace Catch {
     }
 
     std::string AssertionResult::getExpandedExpression() const {
-        return m_resultData.reconstructExpression();
+        std::string expr = m_resultData.reconstructExpression();
+        return expr.empty()
+                ? getExpression()
+                : expr;
     }
 
     std::string AssertionResult::getMessage() const {

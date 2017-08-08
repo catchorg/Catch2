@@ -13,7 +13,6 @@
 #include "catch_interfaces_capture.h"
 #include "catch_interfaces_registry_hub.h"
 #include "catch_matchers_string.h"
-#include "catch_wildcard_pattern.hpp"
 #include "catch_debugger.h"
 
 #include <cassert>
@@ -34,7 +33,8 @@ namespace Catch {
                                     SourceLineInfo const& lineInfo,
                                     StringRef capturedExpression,
                                     ResultDisposition::Flags resultDisposition )
-    :   m_assertionInfo{ macroName, lineInfo, capturedExpression, resultDisposition }
+    :   m_assertionInfo{ macroName, lineInfo, capturedExpression, resultDisposition },
+        m_data( ResultWas::Unknown, LazyExpression( false ) )
     {
         getCurrentContext().getResultCapture()->assertionStarting( m_assertionInfo );
     }

@@ -9,9 +9,11 @@
 #define TWOBLUECUBES_CATCH_ASSERTIONRESULT_H_INCLUDED
 
 #include <string>
+#include "catch_assertioninfo.h"
 #include "catch_result_type.h"
 #include "catch_common.h"
 #include "catch_stringref.h"
+#include "catch_assertionhandler.h"
 
 namespace Catch {
 
@@ -37,28 +39,32 @@ namespace Catch {
         template<typename T> STATIC_ASSERT_Expression_Too_Complex_Please_Rewrite_As_Binary_Comparison& operator && ( T const& );
         template<typename T> STATIC_ASSERT_Expression_Too_Complex_Please_Rewrite_As_Binary_Comparison& operator || ( T const& );
     };
+}
 
-    struct AssertionInfo
-    {
-        StringRef macroName;
-        SourceLineInfo lineInfo;
-        StringRef capturedExpression;
-        ResultDisposition::Flags resultDisposition;
-
-        AssertionInfo() = delete;
-    };
+namespace Catch {
 
     struct AssertionResultData
     {
-        void negate( bool parenthesize );
-        std::string const& reconstructExpression() const;
+        AssertionResultData() = delete;
 
-        mutable DecomposedExpression const* decomposedExpression = nullptr;
-        mutable std::string reconstructedExpression;
-        std::string message;
+        // !TBD We won't need this constructor once the deprecated fields are removed
+        AssertionResultData( ResultWas::OfType _resultType, LazyExpression const& _lazyExpression )
+        :   resultType( _resultType ),
+            lazyExpression( _lazyExpression )
+        {}
+
         ResultWas::OfType resultType = ResultWas::Unknown;
+        std::string message;
+
+        LazyExpression lazyExpression;
+
+        // deprecated:
         bool negated = false;
         bool parenthesized = false;
+        void negate( bool parenthesize );
+        std::string reconstructExpression() const;
+        mutable DecomposedExpression const* decomposedExpression = nullptr;
+        mutable std::string reconstructedExpression;
     };
 
     class AssertionResult {
@@ -81,7 +87,7 @@ namespace Catch {
         void discardDecomposedExpression() const;
         void expandDecomposedExpression() const;
 
-    protected:
+    //protected:
         AssertionInfo m_info;
         AssertionResultData m_resultData;
     };

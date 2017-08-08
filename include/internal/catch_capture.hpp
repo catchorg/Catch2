@@ -8,6 +8,7 @@
 #ifndef TWOBLUECUBES_CATCH_CAPTURE_HPP_INCLUDED
 #define TWOBLUECUBES_CATCH_CAPTURE_HPP_INCLUDED
 
+#include "catch_assertionhandler.h"
 #include "catch_result_builder.h"
 #include "catch_message.h"
 #include "catch_interfaces_capture.h"
@@ -43,7 +44,10 @@
 // source code rather than in Catch library code
 #define INTERNAL_CATCH_REACT( resultBuilder ) \
     if( resultBuilder.shouldDebugBreak() ) CATCH_BREAK_INTO_DEBUGGER(); \
-    resultBuilder.react(); 
+    resultBuilder.react();
+#define INTERNAL_CATCH_REACT2( handler ) \
+    if( handler.shouldDebugBreak() ) CATCH_BREAK_INTO_DEBUGGER(); \
+    handler.reactWithDebugBreak();
 
 #define INTERNAL_CATCH_TRY try
 #define INTERNAL_CATCH_CATCH( capturer, disposition ) catch(...) { capturer.useActiveException( disposition ); }
@@ -53,13 +57,13 @@
 ///////////////////////////////////////////////////////////////////////////////
 #define INTERNAL_CATCH_TEST( macroName, resultDisposition, ... ) \
     do { \
-        Catch::ResultBuilder __catchResult( macroName, CATCH_INTERNAL_LINEINFO, #__VA_ARGS__, resultDisposition ); \
+        Catch::AssertionHandler catchAssertionHandler( macroName, CATCH_INTERNAL_LINEINFO, #__VA_ARGS__, resultDisposition ); \
         INTERNAL_CATCH_TRY { \
             CATCH_INTERNAL_SUPPRESS_PARENTHESES_WARNINGS \
-            ( __catchResult <= __VA_ARGS__ ).endExpression(); \
+            catchAssertionHandler.handle( Catch::Decomposer() <= __VA_ARGS__ ); \
             CATCH_INTERNAL_UNSUPPRESS_PARENTHESES_WARNINGS \
-        } INTERNAL_CATCH_CATCH( __catchResult, resultDisposition ) \
-        INTERNAL_CATCH_REACT( __catchResult ) \
+        } INTERNAL_CATCH_CATCH( catchAssertionHandler, resultDisposition ) \
+        INTERNAL_CATCH_REACT2( catchAssertionHandler ) \
     } while( Catch::isTrue( false && static_cast<bool>( !!(__VA_ARGS__) ) ) ) // the expression here is never evaluated at runtime but it forces the compiler to give it a look
     // The double negation silences MSVC's C4800 warning, the static_cast forces short-circuit evaluation if the type has overloaded &&.
 

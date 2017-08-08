@@ -192,7 +192,7 @@ namespace Catch {
     void RunContext::handleFatalErrorCondition(std::string const & message) {
         // Don't rebuild the result -- the stringification itself can cause more fatal errors
         // Instead, fake a result data.
-        AssertionResultData tempResult;
+        AssertionResultData tempResult( ResultWas::Unknown, { false } );
         tempResult.resultType = ResultWas::FatalErrorCondition;
         tempResult.message = message;
         AssertionResult result(m_lastAssertionInfo, tempResult);

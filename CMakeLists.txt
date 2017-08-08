@@ -122,6 +122,8 @@ CheckFileList(EXTERNAL_HEADERS ${HEADER_DIR}/external)
 # Please keep these ordered alphabetically
 set(INTERNAL_HEADERS
         ${HEADER_DIR}/internal/catch_approx.hpp
+        ${HEADER_DIR}/internal/catch_assertionhandler.h
+        ${HEADER_DIR}/internal/catch_assertioninfo.h
         ${HEADER_DIR}/internal/catch_assertionresult.h
         ${HEADER_DIR}/internal/catch_capture.hpp
         ${HEADER_DIR}/internal/catch_clara.h
@@ -132,6 +134,7 @@ set(INTERNAL_HEADERS
         ${HEADER_DIR}/internal/catch_console_colour.hpp
         ${HEADER_DIR}/internal/catch_context.h
         ${HEADER_DIR}/internal/catch_debugger.h
+        ${HEADER_DIR}/internal/catch_decomposer.h
         ${HEADER_DIR}/internal/catch_default_main.hpp
         ${HEADER_DIR}/internal/catch_enforce.h
         ${HEADER_DIR}/internal/catch_errno_guard.h
@@ -198,6 +201,7 @@ set(INTERNAL_HEADERS
         )
 set(IMPL_SOURCES
         ${HEADER_DIR}/internal/catch_approx.cpp
+        ${HEADER_DIR}/internal/catch_assertionhandler.cpp
         ${HEADER_DIR}/internal/catch_assertionresult.cpp
         ${HEADER_DIR}/internal/catch_benchmark.cpp
         ${HEADER_DIR}/internal/catch_commandline.cpp
@@ -206,6 +210,7 @@ set(IMPL_SOURCES
         ${HEADER_DIR}/internal/catch_console_colour.cpp
         ${HEADER_DIR}/internal/catch_context.cpp
         ${HEADER_DIR}/internal/catch_debugger.cpp
+        ${HEADER_DIR}/internal/catch_decomposer.cpp
         ${HEADER_DIR}/internal/catch_errno_guard.cpp
         ${HEADER_DIR}/internal/catch_evaluate.cpp
         ${HEADER_DIR}/internal/catch_exception_translator_registry.cpp

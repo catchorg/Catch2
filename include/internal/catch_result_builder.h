@@ -8,16 +8,16 @@
 #ifndef TWOBLUECUBES_CATCH_RESULT_BUILDER_H_INCLUDED
 #define TWOBLUECUBES_CATCH_RESULT_BUILDER_H_INCLUDED
 
-#include "catch_result_type.h"
 #include "catch_assertionresult.h"
+#include "catch_decomposer.h"
+
+#include "catch_result_type.h"
 #include "catch_common.h"
 #include "catch_matchers.hpp"
 
 #include <sstream>
 
 namespace Catch {
-
-    struct TestFailureException{};
 
     template<typename T> class ExpressionLhs;
 
