@@ -23,7 +23,7 @@ namespace Catch {
         m_context(getCurrentMutableContext()),
         m_config(_config),
         m_reporter(std::move(reporter)),
-        m_lastAssertionInfo( "", SourceLineInfo("",0), "", ResultDisposition::Normal )
+        m_lastAssertionInfo{ "", SourceLineInfo("",0), "", ResultDisposition::Normal }
     {
         m_context.setRunner(this);
         m_context.setConfig(m_config);
@@ -107,7 +107,7 @@ namespace Catch {
         static_cast<void>(m_reporter->assertionEnded(AssertionStats(result, m_messages, m_totals)));
 
         // Reset working state
-        m_lastAssertionInfo = AssertionInfo("", m_lastAssertionInfo.lineInfo, "{Unknown expression after the reported line}", m_lastAssertionInfo.resultDisposition);
+        m_lastAssertionInfo = { "", m_lastAssertionInfo.lineInfo, "{Unknown expression after the reported line}", m_lastAssertionInfo.resultDisposition };
         m_lastResult = result;
     }
 
@@ -250,7 +250,7 @@ namespace Catch {
         double duration = 0;
         m_shouldReportUnexpected = true;
         try {
-            m_lastAssertionInfo = AssertionInfo("TEST_CASE", testCaseInfo.lineInfo, "", ResultDisposition::Normal);
+            m_lastAssertionInfo = { "TEST_CASE", testCaseInfo.lineInfo, "", ResultDisposition::Normal };
 
             seedRng(*m_config);
 

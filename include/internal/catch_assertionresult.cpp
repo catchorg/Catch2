@@ -14,17 +14,7 @@ namespace Catch {
     bool DecomposedExpression::isBinaryExpression() const {
         return false;
     }
-
-    AssertionInfo::AssertionInfo(   char const * _macroName,
-                                    SourceLineInfo const& _lineInfo,
-                                    char const * _capturedExpression,
-                                    ResultDisposition::Flags _resultDisposition)
-    :   macroName( _macroName ),
-        lineInfo( _lineInfo ),
-        capturedExpression( _capturedExpression ),
-        resultDisposition( _resultDisposition )
-    {}
-
+    
     void AssertionResultData::negate( bool parenthesize ) {
         negated = !negated;
         parenthesized = parenthesize;
@@ -53,8 +43,6 @@ namespace Catch {
     :   m_info( info ),
         m_resultData( data )
     {}
-
-    AssertionResult::~AssertionResult() {}
 
     // Result was a success
     bool AssertionResult::succeeded() const {

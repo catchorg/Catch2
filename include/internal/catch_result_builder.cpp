@@ -34,7 +34,7 @@ namespace Catch {
                                     SourceLineInfo const& lineInfo,
                                     char const* capturedExpression,
                                     ResultDisposition::Flags resultDisposition )
-    :   m_assertionInfo( macroName, lineInfo, capturedExpression, resultDisposition)
+    :   m_assertionInfo{ macroName, lineInfo, capturedExpression, resultDisposition }
     {
         getCurrentContext().getResultCapture()->assertionStarting( m_assertionInfo );
     }

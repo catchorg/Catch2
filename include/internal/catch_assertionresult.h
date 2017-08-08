@@ -39,16 +39,12 @@ namespace Catch {
 
     struct AssertionInfo
     {
-        AssertionInfo() = delete;
-        AssertionInfo(  char const * _macroName,
-                        SourceLineInfo const& _lineInfo,
-                        char const * _capturedExpression,
-                        ResultDisposition::Flags _resultDisposition);
-
-        char const * macroName = nullptr;
+        char const * macroName;
         SourceLineInfo lineInfo;
-        char const * capturedExpression = nullptr;
-        ResultDisposition::Flags resultDisposition = ResultDisposition::Normal;
+        char const * capturedExpression;
+        ResultDisposition::Flags resultDisposition;
+
+        AssertionInfo() = delete;
     };
 
     struct AssertionResultData
@@ -66,13 +62,8 @@ namespace Catch {
 
     class AssertionResult {
     public:
+        AssertionResult() = delete;
         AssertionResult( AssertionInfo const& info, AssertionResultData const& data );
-        ~AssertionResult();
-
-        AssertionResult( AssertionResult const& )              = default;
-        AssertionResult( AssertionResult && )                  = default;
-        AssertionResult& operator = ( AssertionResult const& ) = default;
-        AssertionResult& operator = ( AssertionResult && )     = default;
 
         bool isOk() const;
         bool succeeded() const;
