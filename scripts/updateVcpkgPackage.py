@@ -57,24 +57,21 @@ def update_portfile(path, header_hash, licence_hash):
         for line in f:
             lines.append(line)
     with open(portfile_path, 'w') as f:
-        # Two things we need to change/update
-        # 1) Link and hash of releaseCommon
-        # 2) Link and hash of licence
+        # There are three things we need to change/update
+        # 1) CATCH_VERSION cmake variable
+        # 2) Hash of header
+        # 3) Hash of licence
         # We could assume licence never changes, but where is the fun in that?
-        first_hash = True
         for line in lines:
-            # Check what we are updating
+            # Update the version
+            if 'set(CATCH_VERSION' in line:
+                line = 'set(CATCH_VERSION v{})'.format(v.getVersionString())
+
+            # Determine which file we are updating
             if 'vcpkg_download_distfile' in line:
                 kind = line.split('(')[-1].strip()
-                print(kind)
 
-            # Deal with URLS
-            if 'URLS' in line and kind == 'HEADER':
-                line = '    URLS "https://github.com/philsquared/Catch/releases/download/v{}/catch.hpp"\n'.format(v.getVersionString())
-            if 'URLS' in line and kind == 'LICENSE':
-                line = '    URLS "https://raw.githubusercontent.com/philsquared/Catch/v{}/LICENSE.txt"\n'.format(v.getVersionString())
-
-            # Deal with hashes
+            # Update the hashes
             if 'SHA512' in line and kind == 'HEADER':
                 line = '    SHA512 {}\n'.format(header_hash)
             if 'SHA512' in line and kind == 'LICENSE':
@@ -86,8 +83,6 @@ def git_push(path_to_repo):
     v = Version()
     ver_string = v.getVersionString()
 
-    # Move to the repo dir
-    old_path = os.getcwd()
     os.chdir(path_to_repo)
 
     # Work with git
