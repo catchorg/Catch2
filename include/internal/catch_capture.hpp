@@ -149,11 +149,11 @@
 ///////////////////////////////////////////////////////////////////////////////
 #define INTERNAL_CHECK_THAT( macroName, matcher, resultDisposition, arg ) \
     do { \
-        Catch::ResultBuilder __catchResult( macroName, CATCH_INTERNAL_LINEINFO, #arg ", " #matcher, resultDisposition ); \
-        INTERNAL_CATCH_TRY( __catchResult ) { \
-            __catchResult.captureMatch( arg, matcher, #matcher ); \
-        } INTERNAL_CATCH_CATCH( __catchResult, resultDisposition ) \
-        INTERNAL_CATCH_REACT( __catchResult ) \
+        Catch::AssertionHandler catchAssertionHandler( macroName, CATCH_INTERNAL_LINEINFO, #arg ", " #matcher, resultDisposition ); \
+        INTERNAL_CATCH_TRY( catchAssertionHandler ) { \
+            catchAssertionHandler.handle( Catch::makeMatchExpr( arg, matcher, #matcher ) ); \
+        } INTERNAL_CATCH_CATCH2( catchAssertionHandler ) \
+        INTERNAL_CATCH_REACT2( catchAssertionHandler ) \
     } while( Catch::alwaysFalse() )
 
 ///////////////////////////////////////////////////////////////////////////////
