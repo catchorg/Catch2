@@ -14,7 +14,7 @@
 #include "catch_debugger.h"
 #include "catch_interfaces_registry_hub.h"
 
-#include <iostream> // !TBD
+#include <cassert>
 
 namespace Catch {
 
@@ -57,6 +57,12 @@ namespace Catch {
     :   m_assertionInfo{ macroName, lineInfo, capturedExpression, resultDisposition }
     {
         getCurrentContext().getResultCapture()->assertionStarting( m_assertionInfo );
+    }
+    AssertionHandler::~AssertionHandler() {
+        if ( m_inExceptionGuard ) {
+            handle( ResultWas::ThrewException, "Exception translation was disabled by CATCH_CONFIG_FAST_COMPILE" );
+            getCurrentContext().getResultCapture()->exceptionEarlyReported();
+        }
     }
 
     void AssertionHandler::handle( ITransientExpression const& expr ) {
@@ -124,5 +130,15 @@ namespace Catch {
     void AssertionHandler::useActiveException() {
         handle( ResultWas::ThrewException, Catch::translateActiveException().c_str() );
     }
+
+    void AssertionHandler::setExceptionGuard() {
+        assert( m_inExceptionGuard == false );
+        m_inExceptionGuard = true;
+    }
+    void AssertionHandler::unsetExceptionGuard() {
+        assert( m_inExceptionGuard == true );
+        m_inExceptionGuard = false;
+    }
+
 
 } // namespace Catch

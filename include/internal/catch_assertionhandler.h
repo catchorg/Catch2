@@ -36,12 +36,15 @@ namespace Catch {
         AssertionInfo m_assertionInfo;
         bool m_shouldDebugBreak = false;
         bool m_shouldThrow = false;
+        bool m_inExceptionGuard = false;
+
     public:
         AssertionHandler
             (   StringRef macroName,
                 SourceLineInfo const& lineInfo,
                 StringRef capturedExpression,
                 ResultDisposition::Flags resultDisposition );
+        ~AssertionHandler();
 
         void handle( ITransientExpression const& expr );
 
@@ -60,6 +63,8 @@ namespace Catch {
         void reactWithoutDebugBreak() const;
         void useActiveException( ResultDisposition::Flags resultDisposition );
         void useActiveException();
+        void setExceptionGuard();
+        void unsetExceptionGuard();
     };
 
 } // namespace Catch

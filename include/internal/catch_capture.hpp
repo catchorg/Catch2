@@ -26,14 +26,17 @@
 // macro in each assertion
 #define INTERNAL_CATCH_REACT( resultBuilder ) \
     resultBuilder.react();
+#define INTERNAL_CATCH_REACT2( handler ) \
+    handler.reactWithDebugBreak();
 
 ///////////////////////////////////////////////////////////////////////////////
 // Another way to speed-up compilation is to omit local try-catch for REQUIRE*
 // macros.
 // This can potentially cause false negative, if the test code catches
 // the exception before it propagates back up to the runner.
-#define INTERNAL_CATCH_TRY
-#define INTERNAL_CATCH_CATCH( capturer, disposition )
+#define INTERNAL_CATCH_TRY( capturer ) capturer.setExceptionGuard();
+#define INTERNAL_CATCH_CATCH( capturer, disposition ) capturer.unsetExceptionGuard();
+#define INTERNAL_CATCH_CATCH2( capturer ) capturer.unsetExceptionGuard();
 
 #else // CATCH_CONFIG_FAST_COMPILE
 
@@ -47,9 +50,9 @@
     resultBuilder.react();
 #define INTERNAL_CATCH_REACT2( handler ) \
     if( handler.shouldDebugBreak() ) CATCH_BREAK_INTO_DEBUGGER(); \
-    handler.reactWithDebugBreak();
+    handler.reactWithoutDebugBreak();
 
-#define INTERNAL_CATCH_TRY try
+#define INTERNAL_CATCH_TRY( capturer ) try
 #define INTERNAL_CATCH_CATCH( capturer, disposition ) catch(...) { capturer.useActiveException( disposition ); }
 #define INTERNAL_CATCH_CATCH2( capturer ) catch(...) { capturer.useActiveException(); }
 
@@ -59,7 +62,7 @@
 #define INTERNAL_CATCH_TEST( macroName, resultDisposition, ... ) \
     do { \
         Catch::AssertionHandler catchAssertionHandler( macroName, CATCH_INTERNAL_LINEINFO, #__VA_ARGS__, resultDisposition ); \
-        INTERNAL_CATCH_TRY { \
+        INTERNAL_CATCH_TRY( catchAssertionHandler ) { \
             CATCH_INTERNAL_SUPPRESS_PARENTHESES_WARNINGS \
             catchAssertionHandler.handle( Catch::Decomposer() <= __VA_ARGS__ ); \
             CATCH_INTERNAL_UNSUPPRESS_PARENTHESES_WARNINGS \
@@ -147,7 +150,7 @@
 #define INTERNAL_CHECK_THAT( macroName, matcher, resultDisposition, arg ) \
     do { \
         Catch::ResultBuilder __catchResult( macroName, CATCH_INTERNAL_LINEINFO, #arg ", " #matcher, resultDisposition ); \
-        INTERNAL_CATCH_TRY { \
+        INTERNAL_CATCH_TRY( __catchResult ) { \
             __catchResult.captureMatch( arg, matcher, #matcher ); \
         } INTERNAL_CATCH_CATCH( __catchResult, resultDisposition ) \
         INTERNAL_CATCH_REACT( __catchResult ) \
