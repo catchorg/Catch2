@@ -98,18 +98,18 @@
 ///////////////////////////////////////////////////////////////////////////////
 #define INTERNAL_CATCH_THROWS( macroName, resultDisposition, ... ) \
     do { \
-        Catch::ResultBuilder __catchResult( macroName, CATCH_INTERNAL_LINEINFO, #__VA_ARGS__, resultDisposition); \
-        if( __catchResult.allowThrows() ) \
+        Catch::AssertionHandler catchAssertionHandler( macroName, CATCH_INTERNAL_LINEINFO, #__VA_ARGS__, resultDisposition); \
+        if( catchAssertionHandler.allowThrows() ) \
             try { \
                 static_cast<void>(__VA_ARGS__); \
-                __catchResult.captureResult( Catch::ResultWas::DidntThrowException ); \
+                catchAssertionHandler.handle( Catch::ResultWas::DidntThrowException ); \
             } \
             catch( ... ) { \
-                __catchResult.captureExpectedException( "" ); \
+                catchAssertionHandler.handle( Catch::ResultWas::Ok ); \
             } \
         else \
-            __catchResult.captureResult( Catch::ResultWas::Ok ); \
-        INTERNAL_CATCH_REACT( __catchResult ) \
+            catchAssertionHandler.handle( Catch::ResultWas::Ok ); \
+        INTERNAL_CATCH_REACT2( catchAssertionHandler ) \
     } while( Catch::alwaysFalse() )
 
 ///////////////////////////////////////////////////////////////////////////////
