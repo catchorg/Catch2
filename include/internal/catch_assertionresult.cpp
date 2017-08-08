@@ -14,7 +14,7 @@ namespace Catch {
     bool DecomposedExpression::isBinaryExpression() const {
         return false;
     }
-    
+
     void AssertionResultData::negate( bool parenthesize ) {
         negated = !negated;
         parenthesized = parenthesize;
@@ -68,16 +68,16 @@ namespace Catch {
 
     std::string AssertionResult::getExpression() const {
         if (isFalseTest(m_info.resultDisposition))
-            return '!' + std::string(m_info.capturedExpression);
+            return '!' + std::string(m_info.capturedExpression.c_str());
         else
-            return std::string(m_info.capturedExpression);
+            return std::string(m_info.capturedExpression.c_str());
     }
 
     std::string AssertionResult::getExpressionInMacro() const {
         if( m_info.macroName[0] == 0 )
-            return std::string(m_info.capturedExpression);
+            return std::string(m_info.capturedExpression.c_str());
         else
-            return std::string(m_info.macroName) + "( " + m_info.capturedExpression + " )";
+            return std::string(m_info.macroName.c_str()) + "( " + m_info.capturedExpression.c_str() + " )";
     }
 
     bool AssertionResult::hasExpandedExpression() const {
@@ -96,7 +96,7 @@ namespace Catch {
     }
 
     std::string AssertionResult::getTestMacroName() const {
-        return m_info.macroName;
+        return m_info.macroName.c_str();
     }
 
     void AssertionResult::discardDecomposedExpression() const {

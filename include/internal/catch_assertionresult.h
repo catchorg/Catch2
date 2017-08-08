@@ -11,6 +11,7 @@
 #include <string>
 #include "catch_result_type.h"
 #include "catch_common.h"
+#include "catch_stringref.h"
 
 namespace Catch {
 
@@ -39,9 +40,9 @@ namespace Catch {
 
     struct AssertionInfo
     {
-        char const * macroName;
+        StringRef macroName;
         SourceLineInfo lineInfo;
-        char const * capturedExpression;
+        StringRef capturedExpression;
         ResultDisposition::Flags resultDisposition;
 
         AssertionInfo() = delete;

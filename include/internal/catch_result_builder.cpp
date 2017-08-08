@@ -30,9 +30,9 @@ namespace Catch {
     }
 
 
-    ResultBuilder::ResultBuilder(   char const* macroName,
+    ResultBuilder::ResultBuilder(   StringRef macroName,
                                     SourceLineInfo const& lineInfo,
-                                    char const* capturedExpression,
+                                    StringRef capturedExpression,
                                     ResultDisposition::Flags resultDisposition )
     :   m_assertionInfo{ macroName, lineInfo, capturedExpression, resultDisposition }
     {
@@ -99,7 +99,7 @@ namespace Catch {
         assert( !isFalseTest( m_assertionInfo.resultDisposition ) );
         AssertionResultData data = m_data;
         data.resultType = ResultWas::Ok;
-        data.reconstructedExpression = m_assertionInfo.capturedExpression;
+        data.reconstructedExpression = m_assertionInfo.capturedExpression.c_str();
 
         std::string actualMessage = Catch::translateActiveException();
         if( !matcher.match( actualMessage ) ) {
@@ -166,7 +166,7 @@ namespace Catch {
     }
 
     void ResultBuilder::reconstructExpression( std::string& dest ) const {
-        dest = m_assertionInfo.capturedExpression;
+        dest = m_assertionInfo.capturedExpression.c_str();
     }
 
     void ResultBuilder::setExceptionGuard() {

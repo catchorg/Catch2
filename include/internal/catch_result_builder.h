@@ -31,9 +31,9 @@ namespace Catch {
 
     class ResultBuilder : public DecomposedExpression {
     public:
-        ResultBuilder(  char const* macroName,
+        ResultBuilder(  StringRef macroName,
                         SourceLineInfo const& lineInfo,
-                        char const* capturedExpression,
+                        StringRef capturedExpression,
                         ResultDisposition::Flags resultDisposition);
         ~ResultBuilder();
 
