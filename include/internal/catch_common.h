@@ -47,10 +47,10 @@ namespace Catch {
 
     struct SourceLineInfo {
 
-        SourceLineInfo() noexcept;
+        SourceLineInfo() = delete;
         SourceLineInfo( char const* _file, std::size_t _line ) noexcept;
 
-        SourceLineInfo(SourceLineInfo const& other)          = default;
+        SourceLineInfo( SourceLineInfo const& other )        = default;
         SourceLineInfo( SourceLineInfo && )                  = default;
         SourceLineInfo& operator = ( SourceLineInfo const& ) = default;
         SourceLineInfo& operator = ( SourceLineInfo && )     = default;

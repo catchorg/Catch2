@@ -39,7 +39,7 @@ namespace Catch {
 
     struct AssertionInfo
     {
-        AssertionInfo() = default;
+        AssertionInfo() = delete;
         AssertionInfo(  char const * _macroName,
                         SourceLineInfo const& _lineInfo,
                         char const * _capturedExpression,
@@ -66,7 +66,6 @@ namespace Catch {
 
     class AssertionResult {
     public:
-        AssertionResult();
         AssertionResult( AssertionInfo const& info, AssertionResultData const& data );
         ~AssertionResult();
 

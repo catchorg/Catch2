@@ -111,7 +111,7 @@ namespace Catch {
         IMutableContext& m_context;
         TestCase const* m_activeTestCase = nullptr;
         ITracker* m_testCaseTracker;
-        AssertionResult m_lastResult;
+        Option<AssertionResult> m_lastResult;
 
         IConfigPtr m_config;
         Totals m_totals;

@@ -19,10 +19,12 @@ namespace Catch {
     }
 
     RunContext::RunContext(IConfigPtr const& _config, IStreamingReporterPtr&& reporter)
-        : m_runInfo(_config->name()),
+    :   m_runInfo(_config->name()),
         m_context(getCurrentMutableContext()),
         m_config(_config),
-        m_reporter(std::move(reporter)) {
+        m_reporter(std::move(reporter)),
+        m_lastAssertionInfo( "", SourceLineInfo("",0), "", ResultDisposition::Normal )
+    {
         m_context.setRunner(this);
         m_context.setConfig(m_config);
         m_context.setResultCapture(this);
@@ -180,7 +182,7 @@ namespace Catch {
     }
 
     const AssertionResult * RunContext::getLastResult() const {
-        return &m_lastResult;
+        return &(*m_lastResult);
     }
 
     void RunContext::exceptionEarlyReported() {

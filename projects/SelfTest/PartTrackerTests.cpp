@@ -37,7 +37,7 @@ using namespace Catch;
 //}
 
 Catch::TestCaseTracking::NameAndLocation makeNAL( std::string const& name ) {
-    return Catch::TestCaseTracking::NameAndLocation( name, Catch::SourceLineInfo() );
+    return Catch::TestCaseTracking::NameAndLocation( name, Catch::SourceLineInfo("",0) );
 }
 
 TEST_CASE( "Tracker" ) {

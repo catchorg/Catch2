@@ -49,8 +49,6 @@ namespace Catch {
         return reconstructedExpression;
     }
 
-    AssertionResult::AssertionResult() {}
-
     AssertionResult::AssertionResult( AssertionInfo const& info, AssertionResultData const& data )
     :   m_info( info ),
         m_resultData( data )
