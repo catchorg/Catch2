@@ -133,10 +133,9 @@
 ///////////////////////////////////////////////////////////////////////////////
 #define INTERNAL_CATCH_MSG( macroName, messageType, resultDisposition, ... ) \
     do { \
-        Catch::ResultBuilder __catchResult( macroName, CATCH_INTERNAL_LINEINFO, "", resultDisposition ); \
-        __catchResult << __VA_ARGS__ + ::Catch::StreamEndStop(); \
-        __catchResult.captureResult( messageType ); \
-        INTERNAL_CATCH_REACT( __catchResult ) \
+        Catch::AssertionHandler catchAssertionHandler( macroName, CATCH_INTERNAL_LINEINFO, "", resultDisposition ); \
+        catchAssertionHandler.handle( messageType, ( Catch::MessageStream() << __VA_ARGS__ + ::Catch::StreamEndStop() ).m_stream.str().c_str() ); \
+        INTERNAL_CATCH_REACT2( catchAssertionHandler ) \
     } while( Catch::alwaysFalse() )
 
 ///////////////////////////////////////////////////////////////////////////////

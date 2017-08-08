@@ -50,6 +50,7 @@ namespace Catch {
             handle( expr.makeUnaryExpr() );
         }
         void handle( ResultWas::OfType resultType );
+        void handle( ResultWas::OfType resultType, StringRef const& message );
         void handle( ResultWas::OfType resultType, ITransientExpression const* expr, bool negated );
         void handle( AssertionResultData const& resultData, ITransientExpression const* expr );
 

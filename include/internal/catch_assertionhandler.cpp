@@ -59,8 +59,22 @@ namespace Catch {
         getCurrentContext().getResultCapture()->assertionStarting( m_assertionInfo );
     }
 
-    void AssertionHandler::handle( ResultWas::OfType resultType, ITransientExpression const* expr, bool negated ) {
+    void AssertionHandler::handle( ITransientExpression const& expr ) {
 
+        bool negated = isFalseTest( m_assertionInfo.resultDisposition );
+        bool result = expr.getResult() != negated;
+
+        handle( result ? ResultWas::Ok : ResultWas::ExpressionFailed, &expr, negated );
+    }
+    void AssertionHandler::handle( ResultWas::OfType resultType ) {
+        handle( resultType, nullptr, false );
+    }
+    void AssertionHandler::handle( ResultWas::OfType resultType, StringRef const& message ) {
+        AssertionResultData data( resultType, LazyExpression( false ) );
+        data.message = message.c_str();
+        handle( data, nullptr );
+    }
+    void AssertionHandler::handle( ResultWas::OfType resultType, ITransientExpression const* expr, bool negated ) {
         AssertionResultData data( resultType, LazyExpression( negated ) );
         handle( data, expr );
     }
@@ -80,16 +94,7 @@ namespace Catch {
                     (m_assertionInfo.resultDisposition & ResultDisposition::Normal);
         }
     }
-    void AssertionHandler::handle( ITransientExpression const& expr ) {
 
-        bool negated = isFalseTest( m_assertionInfo.resultDisposition );
-        bool result = expr.getResult() != negated;
-
-        handle( result ? ResultWas::Ok : ResultWas::ExpressionFailed, &expr, negated );
-    }
-    void AssertionHandler::handle( ResultWas::OfType resultType ) {
-        handle( resultType, nullptr, false );
-    }
     auto AssertionHandler::allowThrows() const -> bool {
         return getCurrentContext().getConfig()->allowThrows();
     }
@@ -117,12 +122,7 @@ namespace Catch {
         useActiveException();
     }
     void AssertionHandler::useActiveException() {
-        bool negated = isFalseTest( m_assertionInfo.resultDisposition );
-
-        AssertionResultData data( ResultWas::ThrewException, LazyExpression( negated ) );
-        data.message = Catch::translateActiveException();
-
-        handle( data, nullptr );
+        handle( ResultWas::ThrewException, Catch::translateActiveException().c_str() );
     }
 
 } // namespace Catch
