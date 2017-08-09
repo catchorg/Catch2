@@ -6786,6 +6786,39 @@ PASSED:
 with expansion:
   Approx( 1.23 ) != 1.24
 
+Write to std::cerr
+-------------------------------------------------------------------------------
+Standard error is reported and redirected
+  std::cerr
+-------------------------------------------------------------------------------
+MessageTests.cpp:<line number>
+...............................................................................
+
+
+No assertions in section 'std::cerr'
+
+Write to std::clog
+-------------------------------------------------------------------------------
+Standard error is reported and redirected
+  std::clog
+-------------------------------------------------------------------------------
+MessageTests.cpp:<line number>
+...............................................................................
+
+
+No assertions in section 'std::clog'
+
+Interleaved writes to error streams
+-------------------------------------------------------------------------------
+Standard error is reported and redirected
+  Interleaved writes to cerr and clog
+-------------------------------------------------------------------------------
+MessageTests.cpp:<line number>
+...............................................................................
+
+
+No assertions in section 'Interleaved writes to cerr and clog'
+
 Message from section one
 -------------------------------------------------------------------------------
 Standard output from all sections is reported
@@ -9483,6 +9516,6 @@ MiscTests.cpp:<line number>:
 PASSED:
 
 ===============================================================================
-test cases: 168 | 118 passed | 46 failed |  4 failed as expected
-assertions: 970 | 859 passed | 90 failed | 21 failed as expected
+test cases: 169 | 118 passed | 47 failed |  4 failed as expected
+assertions: 973 | 859 passed | 93 failed | 21 failed as expected
 

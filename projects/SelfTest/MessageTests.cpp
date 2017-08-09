@@ -99,6 +99,23 @@ TEST_CASE( "Standard output from all sections is reported", "[messages][.]" )
     }
 }
 
+TEST_CASE( "Standard error is reported and redirected", "[messages][.]" ) {
+    SECTION( "std::cerr" ) {
+        std::cerr << "Write to std::cerr" << std::endl;
+    }
+    SECTION( "std::clog" ) {
+        std::clog << "Write to std::clog" << std::endl;
+    }
+    SECTION( "Interleaved writes to cerr and clog" ) {
+        std::cerr << "Inter";
+        std::clog << "leaved";
+        std::cerr << ' ';
+        std::clog << "writes";
+        std::cerr << " to error";
+        std::clog << " streams\n";
+    }
+}
+
 TEST_CASE( "SCOPED_INFO is reset for each loop", "[messages][failing][.]" )
 {
     for( int i=0; i<100; i++ )
