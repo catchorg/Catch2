@@ -10,6 +10,7 @@
 #include "catch_assertionresult.h"
 #include "catch_interfaces_capture.h"
 #include "catch_interfaces_runner.h"
+#include "catch_interfaces_config.h"
 #include "catch_context.h"
 #include "catch_debugger.h"
 #include "catch_interfaces_registry_hub.h"

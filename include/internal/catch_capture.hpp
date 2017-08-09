@@ -11,11 +11,6 @@
 #include "catch_assertionhandler.h"
 #include "catch_message.h"
 #include "catch_interfaces_capture.h"
-#include "catch_debugger.h"
-#include "catch_common.h"
-#include "catch_tostring.h"
-#include "catch_interfaces_runner.h"
-#include "catch_compiler_capabilities.h"
 
 
 #if defined(CATCH_CONFIG_FAST_COMPILE)
@@ -38,6 +33,8 @@
 #define INTERNAL_CATCH_CATCH2( capturer ) capturer.unsetExceptionGuard();
 
 #else // CATCH_CONFIG_FAST_COMPILE
+
+#include "catch_debugger.h"
 
 ///////////////////////////////////////////////////////////////////////////////
 // In the event of a failure works out if the debugger needs to be invoked

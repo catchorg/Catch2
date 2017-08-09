@@ -9,9 +9,6 @@
 #define TWOBLUECUBES_CATCH_INTERFACES_CAPTURE_H_INCLUDED
 
 #include <string>
-#include "catch_result_type.h"
-#include "catch_common.h"
-#include "catch_interfaces_reporter.h"
 
 namespace Catch {
 
@@ -23,6 +20,8 @@ namespace Catch {
     struct MessageInfo;
     class ScopedMessageBuilder;
     struct Counts;
+    struct BenchmarkInfo;
+    struct BenchmarkStats;
 
     struct IResultCapture {
 
