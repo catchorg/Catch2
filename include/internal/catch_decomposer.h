@@ -14,12 +14,23 @@
 
 #include <ostream>
 
+#ifdef _MSC_VER
+#pragma warning(push)
+#pragma warning(disable:4389) // '==' : signed/unsigned mismatch
+#pragma warning(disable:4018) // more "signed/unsigned mismatch"
+#pragma warning(disable:4312) // Converting int to T* using reinterpret_cast (issue on x64 platform)
+#endif
+
 namespace Catch {
 
     struct ITransientExpression {
         virtual auto isBinaryExpression() const -> bool = 0;
         virtual auto getResult() const -> bool = 0;
         virtual void streamReconstructedExpression( std::ostream &os ) const = 0;
+
+        // We don't actually need a virtual destructore, but many static analysers
+        // complain if it's not here :-(
+        virtual ~ITransientExpression() = default;
     };
 
     void formatReconstructedExpression( std::ostream &os, std::string const& lhs, std::string const& op, std::string const& rhs );
@@ -179,5 +190,9 @@ namespace Catch {
     }
 
 } // end namespace Catch
+
+#ifdef _MSC_VER
+#pragma warning(pop)
+#endif
 
 #endif // TWOBLUECUBES_CATCH_DECOMPOSER_H_INCLUDED
