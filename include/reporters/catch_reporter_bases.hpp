@@ -259,16 +259,6 @@ namespace Catch {
         }
         return line;
     }
-    inline char const* getBoxCharsAcross() {
-        static char line[CATCH_CONFIG_CONSOLE_WIDTH] = {0};
-        if( !*line ) {
-            std::memset( line, '-', CATCH_CONFIG_CONSOLE_WIDTH-1 );
-            line[CATCH_CONFIG_CONSOLE_WIDTH-1] = 0;
-            line[0] = '+';
-            line[CATCH_CONFIG_CONSOLE_WIDTH-2] = '+';
-        }
-        return line;
-    }
 
 
     struct TestEventListenerBase : StreamingReporterBase<TestEventListenerBase> {

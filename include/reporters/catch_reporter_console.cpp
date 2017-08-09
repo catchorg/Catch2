@@ -65,6 +65,7 @@ namespace {
                 for( auto const& info : m_columnInfos )
                     *this << info.name << ColumnBreak();
                 *this << RowBreak();
+                m_os << Catch::getLineOfChars<'-'>() << "\n";
             }
         }
         void close() {
@@ -91,8 +92,6 @@ namespace {
                 tp.m_currentColumn = -1;
                 tp.m_os << "\n";
             }
-            if( tp.m_currentColumn == -1 )
-                tp.m_os << "|";
             tp.m_currentColumn++;
 
             auto colInfo = tp.m_columnInfos[tp.m_currentColumn];
@@ -100,9 +99,9 @@ namespace {
                 ? std::string( colInfo.width-(strSize+2), ' ' )
                 : std::string();
             if( colInfo.justification == ColumnInfo::Left )
-                tp.m_os << " " << colStr << padding << " |";
+                tp.m_os << colStr << padding << " ";
             else
-                tp.m_os << " " << padding << colStr << " |";
+                tp.m_os << padding << colStr << " ";
             return tp;
         }
 
@@ -111,7 +110,6 @@ namespace {
                 tp.m_os << "\n";
                 tp.m_currentColumn = -1;
             }
-            tp.m_os << Catch::getBoxCharsAcross() << "\n";
             return tp;
         }
     };
@@ -199,7 +197,7 @@ namespace Catch {
         :   StreamingReporterBase( config ),
             m_tablePrinter( config.stream(),
                             {
-                                { "benchmark name", CATCH_CONFIG_CONSOLE_WIDTH-42, ColumnInfo::Left },
+                                { "benchmark name", CATCH_CONFIG_CONSOLE_WIDTH-32, ColumnInfo::Left },
                                 { "iters", 8, ColumnInfo::Right },
                                 { "elapsed ns", 14, ColumnInfo::Right },
                                 { "average", 14, ColumnInfo::Right }
