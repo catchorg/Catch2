@@ -23,11 +23,13 @@ namespace Catch {
         size_t m_iterationsToRun = 1;
         uint64_t m_resolution;
         Timer m_timer;
+
+        static auto getResolution() -> uint64_t;
     public:
         // Keep most of this inline as it's on the code path that is being timed
         BenchmarkLooper( StringRef name )
         :   m_name( name.c_str() ),
-            m_resolution( getEstimatedClockResolution()*10 )
+            m_resolution( getResolution() )
         {
             reportStart();
             m_timer.start();
@@ -43,7 +45,7 @@ namespace Catch {
             ++m_count;
         }
 
-        void reportStart() const;
+        void reportStart();
         auto needsMoreIterations() -> bool;
     };
 

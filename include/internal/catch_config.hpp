@@ -38,6 +38,7 @@ namespace Catch {
 
         int abortAfter = -1;
         unsigned int rngSeed = 0;
+        int benchmarkResolutionMultiple = 10;
 
         Verbosity verbosity = Verbosity::Normal;
         WarnAbout::What warnings = WarnAbout::Nothing;
@@ -88,6 +89,7 @@ namespace Catch {
         ShowDurations::OrNot showDurations() const override;
         RunTests::InWhatOrder runOrder() const override;
         unsigned int rngSeed() const override;
+        int benchmarkResolutionMultiple() const override;
         UseColour::YesOrNo useColour() const override;
         bool shouldDebugBreak() const override;
         int abortAfter() const override;

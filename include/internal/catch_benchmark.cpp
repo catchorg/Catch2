@@ -12,7 +12,11 @@
 
 namespace Catch {
 
-    void BenchmarkLooper::reportStart() const {
+    auto BenchmarkLooper::getResolution() -> uint64_t {
+        return getEstimatedClockResolution() * getCurrentContext().getConfig()->benchmarkResolutionMultiple();
+    }
+
+    void BenchmarkLooper::reportStart() {
         getResultCapture().benchmarkStarting( { m_name } );
     }
     auto BenchmarkLooper::needsMoreIterations() -> bool {

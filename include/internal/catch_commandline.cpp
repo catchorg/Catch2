@@ -153,6 +153,9 @@ namespace Catch {
             + Opt( setColourUsage, "yes|no" )
                 ["--use-colour"]
                 ( "should output be colourised" )
+            + Opt( config.benchmarkResolutionMultiple, "multiplier" )
+                ["--benchmark-resolution-multiple"]
+                ( "multiple of clock resolution to run benchmarks" )
 
             + Arg( config.testsOrTags, "test name|pattern|tags" )
                 ( "which test or tests to use" );
