@@ -103,8 +103,6 @@ namespace Catch {
 
     private:
 
-        ResultBuilder makeUnexpectedResultBuilder() const;
-
         void handleUnfinishedSections();
 
         TestRunInfo m_runInfo;

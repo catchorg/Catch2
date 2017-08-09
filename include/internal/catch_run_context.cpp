@@ -270,7 +270,11 @@ namespace Catch {
             // Under CATCH_CONFIG_FAST_COMPILE, unexpected exceptions under REQUIRE assertions
             // are reported without translation at the point of origin.
             if (m_shouldReportUnexpected) {
-                makeUnexpectedResultBuilder().useActiveException();
+                AssertionHandler
+                    ( m_lastAssertionInfo.macroName,
+                      m_lastAssertionInfo.lineInfo,
+                      m_lastAssertionInfo.capturedExpression,
+                      m_lastAssertionInfo.resultDisposition ).useActiveException();
             }
         }
         m_testCaseTracker->close();
@@ -294,13 +298,6 @@ namespace Catch {
         FatalConditionHandler fatalConditionHandler; // Handle signals
         m_activeTestCase->invoke();
         fatalConditionHandler.reset();
-    }
-
-    ResultBuilder RunContext::makeUnexpectedResultBuilder() const {
-        return ResultBuilder(m_lastAssertionInfo.macroName,
-                             m_lastAssertionInfo.lineInfo,
-                             m_lastAssertionInfo.capturedExpression,
-                             m_lastAssertionInfo.resultDisposition);
     }
 
     void RunContext::handleUnfinishedSections() {
