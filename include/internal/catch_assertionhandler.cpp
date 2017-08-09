@@ -125,10 +125,6 @@ namespace Catch {
             throw Catch::TestFailureException();
     }
 
-    void AssertionHandler::useActiveException( ResultDisposition::Flags resultDisposition ) {
-        m_assertionInfo.resultDisposition = resultDisposition;
-        useActiveException();
-    }
     void AssertionHandler::useActiveException() {
         handle( ResultWas::ThrewException, Catch::translateActiveException().c_str() );
     }

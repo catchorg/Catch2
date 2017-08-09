@@ -18,9 +18,7 @@
 // We can speedup compilation significantly by breaking into debugger lower in
 // the callstack, because then we don't have to expand CATCH_BREAK_INTO_DEBUGGER
 // macro in each assertion
-#define INTERNAL_CATCH_REACT( resultBuilder ) \
-    resultBuilder.react();
-#define INTERNAL_CATCH_REACT2( handler ) \
+#define INTERNAL_CATCH_REACT( handler ) \
     handler.reactWithDebugBreak();
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -29,8 +27,7 @@
 // This can potentially cause false negative, if the test code catches
 // the exception before it propagates back up to the runner.
 #define INTERNAL_CATCH_TRY( capturer ) capturer.setExceptionGuard();
-#define INTERNAL_CATCH_CATCH( capturer, disposition ) capturer.unsetExceptionGuard();
-#define INTERNAL_CATCH_CATCH2( capturer ) capturer.unsetExceptionGuard();
+#define INTERNAL_CATCH_CATCH( capturer ) capturer.unsetExceptionGuard();
 
 #else // CATCH_CONFIG_FAST_COMPILE
 
@@ -41,16 +38,12 @@
 // and/or an exception thrown and takes appropriate action.
 // This needs to be done as a macro so the debugger will stop in the user
 // source code rather than in Catch library code
-#define INTERNAL_CATCH_REACT( resultBuilder ) \
-    if( resultBuilder.shouldDebugBreak() ) CATCH_BREAK_INTO_DEBUGGER(); \
-    resultBuilder.react();
-#define INTERNAL_CATCH_REACT2( handler ) \
+#define INTERNAL_CATCH_REACT( handler ) \
     if( handler.shouldDebugBreak() ) CATCH_BREAK_INTO_DEBUGGER(); \
     handler.reactWithoutDebugBreak();
 
 #define INTERNAL_CATCH_TRY( capturer ) try
-#define INTERNAL_CATCH_CATCH( capturer, disposition ) catch(...) { capturer.useActiveException( disposition ); }
-#define INTERNAL_CATCH_CATCH2( capturer ) catch(...) { capturer.useActiveException(); }
+#define INTERNAL_CATCH_CATCH( capturer ) catch(...) { capturer.useActiveException(); }
 
 #endif
 
@@ -62,8 +55,8 @@
             CATCH_INTERNAL_SUPPRESS_PARENTHESES_WARNINGS \
             catchAssertionHandler.handle( Catch::Decomposer() <= __VA_ARGS__ ); \
             CATCH_INTERNAL_UNSUPPRESS_PARENTHESES_WARNINGS \
-        } INTERNAL_CATCH_CATCH2( catchAssertionHandler ) \
-        INTERNAL_CATCH_REACT2( catchAssertionHandler ) \
+        } INTERNAL_CATCH_CATCH( catchAssertionHandler ) \
+        INTERNAL_CATCH_REACT( catchAssertionHandler ) \
     } while( Catch::isTrue( false && static_cast<bool>( !!(__VA_ARGS__) ) ) ) // the expression here is never evaluated at runtime but it forces the compiler to give it a look
     // The double negation silences MSVC's C4800 warning, the static_cast forces short-circuit evaluation if the type has overloaded &&.
 
@@ -88,7 +81,7 @@
         catch( ... ) { \
             catchAssertionHandler.useActiveException(); \
         } \
-        INTERNAL_CATCH_REACT2( catchAssertionHandler ) \
+        INTERNAL_CATCH_REACT( catchAssertionHandler ) \
     } while( Catch::alwaysFalse() )
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -105,7 +98,7 @@
             } \
         else \
             catchAssertionHandler.handle( Catch::ResultWas::Ok ); \
-        INTERNAL_CATCH_REACT2( catchAssertionHandler ) \
+        INTERNAL_CATCH_REACT( catchAssertionHandler ) \
     } while( Catch::alwaysFalse() )
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -125,7 +118,7 @@
             } \
         else \
             catchAssertionHandler.handle( Catch::ResultWas::Ok ); \
-        INTERNAL_CATCH_REACT2( catchAssertionHandler ) \
+        INTERNAL_CATCH_REACT( catchAssertionHandler ) \
     } while( Catch::alwaysFalse() )
 
 
@@ -134,7 +127,7 @@
     do { \
         Catch::AssertionHandler catchAssertionHandler( macroName, CATCH_INTERNAL_LINEINFO, "", resultDisposition ); \
         catchAssertionHandler.handle( messageType, ( Catch::MessageStream() << __VA_ARGS__ + ::Catch::StreamEndStop() ).m_stream.str().c_str() ); \
-        INTERNAL_CATCH_REACT2( catchAssertionHandler ) \
+        INTERNAL_CATCH_REACT( catchAssertionHandler ) \
     } while( Catch::alwaysFalse() )
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -148,8 +141,8 @@
         Catch::AssertionHandler catchAssertionHandler( macroName, CATCH_INTERNAL_LINEINFO, #arg ", " #matcher, resultDisposition ); \
         INTERNAL_CATCH_TRY( catchAssertionHandler ) { \
             catchAssertionHandler.handle( Catch::makeMatchExpr( arg, matcher, #matcher ) ); \
-        } INTERNAL_CATCH_CATCH2( catchAssertionHandler ) \
-        INTERNAL_CATCH_REACT2( catchAssertionHandler ) \
+        } INTERNAL_CATCH_CATCH( catchAssertionHandler ) \
+        INTERNAL_CATCH_REACT( catchAssertionHandler ) \
     } while( Catch::alwaysFalse() )
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -166,7 +159,7 @@
             } \
         else \
             catchAssertionHandler.handle( Catch::ResultWas::Ok ); \
-        INTERNAL_CATCH_REACT2( catchAssertionHandler ) \
+        INTERNAL_CATCH_REACT( catchAssertionHandler ) \
     } while( Catch::alwaysFalse() )
 
 
@@ -187,7 +180,7 @@
             } \
         else \
             catchAssertionHandler.handle( Catch::ResultWas::Ok ); \
-        INTERNAL_CATCH_REACT2( catchAssertionHandler ) \
+        INTERNAL_CATCH_REACT( catchAssertionHandler ) \
     } while( Catch::alwaysFalse() )
 #endif // CATCH_CONFIG_DISABLE_MATCHERS
 

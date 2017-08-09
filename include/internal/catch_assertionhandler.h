@@ -62,7 +62,6 @@ namespace Catch {
         auto allowThrows() const -> bool;
         void reactWithDebugBreak() const;
         void reactWithoutDebugBreak() const;
-        void useActiveException( ResultDisposition::Flags resultDisposition );
         void useActiveException();
         void setExceptionGuard();
         void unsetExceptionGuard();
