@@ -134,18 +134,8 @@
 #define INTERNAL_CATCH_INFO( macroName, log ) \
     Catch::ScopedMessage INTERNAL_CATCH_UNIQUE_NAME( scopedMessage ) = Catch::MessageBuilder( macroName, CATCH_INTERNAL_LINEINFO, Catch::ResultWas::Info ) << log;
 
-#if !defined(CATCH_CONFIG_DISABLE_MATCHERS)
 ///////////////////////////////////////////////////////////////////////////////
-#define INTERNAL_CHECK_THAT( macroName, matcher, resultDisposition, arg ) \
-    do { \
-        Catch::AssertionHandler catchAssertionHandler( macroName, CATCH_INTERNAL_LINEINFO, #arg ", " #matcher, resultDisposition ); \
-        INTERNAL_CATCH_TRY( catchAssertionHandler ) { \
-            catchAssertionHandler.handle( Catch::makeMatchExpr( arg, matcher, #matcher ) ); \
-        } INTERNAL_CATCH_CATCH( catchAssertionHandler ) \
-        INTERNAL_CATCH_REACT( catchAssertionHandler ) \
-    } while( Catch::alwaysFalse() )
-
-///////////////////////////////////////////////////////////////////////////////
+// Although this is matcher-based, it can be used with just a string
 #define INTERNAL_CATCH_THROWS_STR_MATCHES( macroName, resultDisposition, matcher, ... ) \
     do { \
         Catch::AssertionHandler catchAssertionHandler( macroName, CATCH_INTERNAL_LINEINFO, #__VA_ARGS__ ", " #matcher, resultDisposition ); \
@@ -161,28 +151,6 @@
             catchAssertionHandler.handle( Catch::ResultWas::Ok ); \
         INTERNAL_CATCH_REACT( catchAssertionHandler ) \
     } while( Catch::alwaysFalse() )
-
-
-///////////////////////////////////////////////////////////////////////////////
-#define INTERNAL_CATCH_THROWS_MATCHES( macroName, exceptionType, resultDisposition, matcher, ... ) \
-    do { \
-        Catch::AssertionHandler catchAssertionHandler( macroName, CATCH_INTERNAL_LINEINFO, #__VA_ARGS__ ", " #exceptionType ", " #matcher, resultDisposition ); \
-        if( catchAssertionHandler.allowThrows() ) \
-            try { \
-                static_cast<void>(__VA_ARGS__ ); \
-                catchAssertionHandler.handle( Catch::ResultWas::DidntThrowException ); \
-            } \
-            catch( exceptionType const& ex ) { \
-                catchAssertionHandler.handle( Catch::makeMatchExpr( ex, matcher, #matcher ) ); \
-            } \
-            catch( ... ) { \
-                catchAssertionHandler.useActiveException(); \
-            } \
-        else \
-            catchAssertionHandler.handle( Catch::ResultWas::Ok ); \
-        INTERNAL_CATCH_REACT( catchAssertionHandler ) \
-    } while( Catch::alwaysFalse() )
-#endif // CATCH_CONFIG_DISABLE_MATCHERS
 
 
 #endif // TWOBLUECUBES_CATCH_CAPTURE_HPP_INCLUDED

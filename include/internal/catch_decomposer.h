@@ -10,7 +10,6 @@
 
 #include "catch_tostring.h"
 #include "catch_stringref.h"
-#include "catch_matchers.hpp" // !TBD: for exception matchers - move this
 
 #include <ostream>
 
@@ -155,39 +154,6 @@ namespace Catch {
             return ExprLhs<bool>( value );
         }
     };
-
-    // !TBD: this is just here temporarily
-    template<typename ArgT, typename MatcherT>
-    class MatchExpr : public ITransientExpression {
-        ArgT const& m_arg;
-        MatcherT m_matcher;
-        StringRef m_matcherString;
-        bool m_result;
-    public:
-        MatchExpr( ArgT const& arg, MatcherT const& matcher, StringRef matcherString )
-        :   m_arg( arg ),
-            m_matcher( matcher ),
-            m_matcherString( matcherString ),
-            m_result( matcher.match( arg ) )
-        {}
-
-        auto isBinaryExpression() const -> bool  override { return true; }
-        auto getResult() const -> bool override { return m_result; }
-
-        void streamReconstructedExpression( std::ostream &os ) const override {
-            auto matcherAsString = m_matcher.toString();
-            os << Catch::Detail::stringify( m_arg ) << ' ';
-            if( matcherAsString == Detail::unprintableString )
-                os << m_matcherString.c_str();
-            else
-                os << matcherAsString;
-        }
-    };
-
-    template<typename ArgT, typename MatcherT>
-    auto makeMatchExpr( ArgT const& arg, MatcherT const& matcher, StringRef matcherString  ) -> MatchExpr<ArgT, MatcherT> {
-        return MatchExpr<ArgT, MatcherT>( arg, matcher, matcherString );
-    }
 
 } // end namespace Catch
 

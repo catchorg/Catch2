@@ -43,7 +43,9 @@ bool templated_tests(T t) {
     REQUIRE_THROWS(throws_int(true));
     CHECK_THROWS_AS(throws_int(true), int);
     REQUIRE_NOTHROW(throws_int(false));
+#ifndef CATCH_CONFIG_DISABLE_MATCHERS
     REQUIRE_THAT("aaa", Catch::EndsWith("aaa"));
+#endif
     return true;
 }
 

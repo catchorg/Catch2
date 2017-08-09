@@ -14,7 +14,7 @@
 #include "catch_context.h"
 #include "catch_debugger.h"
 #include "catch_interfaces_registry_hub.h"
-#include "catch_matchers_string.h"
+#include "catch_capture_matchers.h"
 
 #include <cassert>
 
@@ -138,12 +138,8 @@ namespace Catch {
         m_inExceptionGuard = false;
     }
 
-    using StringMatcher = Matchers::Impl::MatcherBase<std::string>;
-
-    void handleExceptionMatchExpr( AssertionHandler& handler, StringMatcher const& matcher, StringRef matcherString  ) {
-        MatchExpr<std::string, StringMatcher const&> expr( Catch::translateActiveException(), matcher, matcherString );
-        handler.handle( expr );
-    }
+    // This is the overload that takes a string and infers the Equals matcher from it
+    // The more general overload, that takes any string matcher, is in catch_capture_matchers.cpp
     void handleExceptionMatchExpr( AssertionHandler& handler, std::string const& str, StringRef matcherString  ) {
         handleExceptionMatchExpr( handler, Matchers::Equals( str ), matcherString );
     }

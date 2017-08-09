@@ -126,6 +126,7 @@ set(INTERNAL_HEADERS
         ${HEADER_DIR}/internal/catch_assertioninfo.h
         ${HEADER_DIR}/internal/catch_assertionresult.h
         ${HEADER_DIR}/internal/catch_capture.hpp
+        ${HEADER_DIR}/internal/catch_capture_matchers.h
         ${HEADER_DIR}/internal/catch_clara.h
         ${HEADER_DIR}/internal/catch_commandline.hpp
         ${HEADER_DIR}/internal/catch_common.h
@@ -201,6 +202,7 @@ set(IMPL_SOURCES
         ${HEADER_DIR}/internal/catch_assertionhandler.cpp
         ${HEADER_DIR}/internal/catch_assertionresult.cpp
         ${HEADER_DIR}/internal/catch_benchmark.cpp
+        ${HEADER_DIR}/internal/catch_capture_matchers.cpp
         ${HEADER_DIR}/internal/catch_commandline.cpp
         ${HEADER_DIR}/internal/catch_common.cpp
         ${HEADER_DIR}/internal/catch_config.cpp
