@@ -9,7 +9,6 @@
 #define TWOBLUECUBES_CATCH_CAPTURE_HPP_INCLUDED
 
 #include "catch_assertionhandler.h"
-#include "catch_result_builder.h"
 #include "catch_message.h"
 #include "catch_interfaces_capture.h"
 #include "catch_debugger.h"

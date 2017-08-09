@@ -10,43 +10,14 @@
 
 namespace Catch {
 
-
-    bool DecomposedExpression::isBinaryExpression() const {
-        return false;
-    }
-
-    void AssertionResultData::negate( bool parenthesize ) {
-        negated = !negated;
-        parenthesized = parenthesize;
-        if( resultType == ResultWas::Ok )
-            resultType = ResultWas::ExpressionFailed;
-        else if( resultType == ResultWas::ExpressionFailed )
-            resultType = ResultWas::Ok;
-    }
-
     std::string AssertionResultData::reconstructExpression() const {
 
         if( reconstructedExpression.empty() ) {
-
-            // Try new LazyExpression first...
             if( lazyExpression ) {
                 // !TBD Use stringstream for now, but rework above to pass stream in
                 std::ostringstream oss;
                 oss << lazyExpression;
                 reconstructedExpression = oss.str();
-            }
-
-            // ... if not, fall back to decomposedExpression
-            else if( decomposedExpression != nullptr ) {
-                decomposedExpression->reconstructExpression( reconstructedExpression );
-                if( parenthesized ) {
-                    reconstructedExpression.insert( 0, 1, '(' );
-                    reconstructedExpression.append( 1, ')' );
-                }
-                if( negated ) {
-                    reconstructedExpression.insert( 0, 1, '!' );
-                }
-                decomposedExpression = nullptr;
             }
         }
         return reconstructedExpression;
@@ -113,14 +84,6 @@ namespace Catch {
 
     std::string AssertionResult::getTestMacroName() const {
         return m_info.macroName.c_str();
-    }
-
-    void AssertionResult::discardDecomposedExpression() const {
-        m_resultData.decomposedExpression = nullptr;
-    }
-
-    void AssertionResult::expandDecomposedExpression() const {
-        m_resultData.reconstructExpression();
     }
 
 } // end namespace Catch

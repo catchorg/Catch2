@@ -17,37 +17,10 @@
 
 namespace Catch {
 
-    struct STATIC_ASSERT_Expression_Too_Complex_Please_Rewrite_As_Binary_Comparison;
-
-    struct DecomposedExpression
-    {
-        DecomposedExpression() = default;
-        DecomposedExpression( DecomposedExpression const& ) = default;
-        DecomposedExpression& operator = ( DecomposedExpression const& ) = delete;
-
-        virtual ~DecomposedExpression() = default;
-        virtual bool isBinaryExpression() const;
-        virtual void reconstructExpression( std::string& dest ) const = 0;
-
-        // Only simple binary comparisons can be decomposed.
-        // If more complex check is required then wrap sub-expressions in parentheses.
-        template<typename T> STATIC_ASSERT_Expression_Too_Complex_Please_Rewrite_As_Binary_Comparison& operator + ( T const& );
-        template<typename T> STATIC_ASSERT_Expression_Too_Complex_Please_Rewrite_As_Binary_Comparison& operator - ( T const& );
-        template<typename T> STATIC_ASSERT_Expression_Too_Complex_Please_Rewrite_As_Binary_Comparison& operator * ( T const& );
-        template<typename T> STATIC_ASSERT_Expression_Too_Complex_Please_Rewrite_As_Binary_Comparison& operator / ( T const& );
-        template<typename T> STATIC_ASSERT_Expression_Too_Complex_Please_Rewrite_As_Binary_Comparison& operator % ( T const& );
-        template<typename T> STATIC_ASSERT_Expression_Too_Complex_Please_Rewrite_As_Binary_Comparison& operator && ( T const& );
-        template<typename T> STATIC_ASSERT_Expression_Too_Complex_Please_Rewrite_As_Binary_Comparison& operator || ( T const& );
-    };
-}
-
-namespace Catch {
-
     struct AssertionResultData
     {
         AssertionResultData() = delete;
 
-        // !TBD We won't need this constructor once the deprecated fields are removed
         AssertionResultData( ResultWas::OfType _resultType, LazyExpression const& _lazyExpression )
         :   resultType( _resultType ),
             lazyExpression( _lazyExpression )
@@ -58,12 +31,7 @@ namespace Catch {
 
         LazyExpression lazyExpression;
 
-        // deprecated:
-        bool negated = false;
-        bool parenthesized = false;
-        void negate( bool parenthesize );
         std::string reconstructExpression() const;
-        mutable DecomposedExpression const* decomposedExpression = nullptr;
         mutable std::string reconstructedExpression;
     };
 
@@ -84,8 +52,6 @@ namespace Catch {
         std::string getMessage() const;
         SourceLineInfo getSourceInfo() const;
         std::string getTestMacroName() const;
-        void discardDecomposedExpression() const;
-        void expandDecomposedExpression() const;
 
     //protected:
         AssertionInfo m_info;

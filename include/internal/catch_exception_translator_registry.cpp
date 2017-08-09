@@ -6,8 +6,8 @@
  *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  */
 
+#include "catch_assertionhandler.h"
 #include "catch_exception_translator_registry.h"
-#include "catch_result_builder.h"
 
 #ifdef __OBJC__
 #import "Foundation/Foundation.h"

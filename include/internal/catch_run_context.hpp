@@ -19,7 +19,7 @@
 #include "catch_test_spec.hpp"
 #include "catch_test_case_tracker.hpp"
 #include "catch_timer.h"
-#include "catch_result_builder.h"
+#include "catch_assertionhandler.h"
 #include "catch_fatal_condition.h"
 
 #include <string>
