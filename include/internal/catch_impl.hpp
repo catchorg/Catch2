@@ -29,7 +29,6 @@
 
 
 #include "../catch_session.hpp"
-#include "catch_stream.hpp"
 #include "catch_test_spec.hpp"
 #include "catch_test_case_tracker.hpp"
 

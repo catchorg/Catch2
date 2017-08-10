@@ -170,7 +170,6 @@ set(INTERNAL_HEADERS
         ${HEADER_DIR}/internal/catch_section_info.h
         ${HEADER_DIR}/internal/catch_startup_exception_registry.h
         ${HEADER_DIR}/internal/catch_stream.h
-        ${HEADER_DIR}/internal/catch_stream.hpp
         ${HEADER_DIR}/internal/catch_streambuf.h
         ${HEADER_DIR}/internal/catch_string.h
         ${HEADER_DIR}/internal/catch_stringbuilder.h
@@ -224,6 +223,7 @@ set(IMPL_SOURCES
         ${HEADER_DIR}/internal/catch_section.cpp
         ${HEADER_DIR}/internal/catch_section_info.cpp
         ${HEADER_DIR}/internal/catch_startup_exception_registry.cpp
+        ${HEADER_DIR}/internal/catch_stream.cpp
         ${HEADER_DIR}/internal/catch_string.cpp
         ${HEADER_DIR}/internal/catch_stringbuilder.cpp
         ${HEADER_DIR}/internal/catch_stringdata.cpp

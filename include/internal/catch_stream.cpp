@@ -6,8 +6,6 @@
  *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  *
  */
-#ifndef TWOBLUECUBES_CATCH_STREAM_HPP_INCLUDED
-#define TWOBLUECUBES_CATCH_STREAM_HPP_INCLUDED
 
 #include "catch_common.h"
 #include "catch_enforce.h"
@@ -106,5 +104,3 @@ namespace Catch {
     }
 #endif
 }
-
-#endif // TWOBLUECUBES_CATCH_STREAM_HPP_INCLUDED
