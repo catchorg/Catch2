@@ -276,6 +276,13 @@ and this, but later
 MessageTests.cpp:<line number>
       </failure>
     </testcase>
+    <testcase classname="<exe-name>.global" name="INFO is reset for each loop" time="{duration}">
+      <failure message="10 &lt; 10" type="REQUIRE">
+current counter 10
+i := 10
+MessageTests.cpp:<line number>
+      </failure>
+    </testcase>
     <testcase classname="<exe-name>.global" name="Inequality checks that should fail" time="{duration}">
       <failure message="7 != 7" type="CHECK">
 ConditionTests.cpp:<line number>
@@ -457,13 +464,6 @@ MessageTests.cpp:<line number>
     <testcase classname="<exe-name>.global" name="Reconstruction should be based on stringification: #914" time="{duration}">
       <failure message="Hey, its truthy!" type="CHECK">
 DecompositionTests.cpp:<line number>
-      </failure>
-    </testcase>
-    <testcase classname="<exe-name>.global" name="SCOPED_INFO is reset for each loop" time="{duration}">
-      <failure message="10 &lt; 10" type="REQUIRE">
-current counter 10
-i := 10
-MessageTests.cpp:<line number>
       </failure>
     </testcase>
     <testcase classname="<exe-name>.global" name="SUCCEED counts as a test pass" time="{duration}"/>

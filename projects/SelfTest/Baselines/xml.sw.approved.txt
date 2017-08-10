@@ -1920,6 +1920,163 @@
       </Expression>
       <OverallResult success="false"/>
     </TestCase>
+    <TestCase name="INFO is reset for each loop" tags="[.][failing][hide][messages]" filename="projects/<exe-name>/MessageTests.cpp" >
+      <Info>
+        current counter 0
+      </Info>
+      <Info>
+        i := 0
+      </Info>
+      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/MessageTests.cpp" >
+        <Original>
+          i &lt; 10
+        </Original>
+        <Expanded>
+          0 &lt; 10
+        </Expanded>
+      </Expression>
+      <Info>
+        current counter 1
+      </Info>
+      <Info>
+        i := 1
+      </Info>
+      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/MessageTests.cpp" >
+        <Original>
+          i &lt; 10
+        </Original>
+        <Expanded>
+          1 &lt; 10
+        </Expanded>
+      </Expression>
+      <Info>
+        current counter 2
+      </Info>
+      <Info>
+        i := 2
+      </Info>
+      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/MessageTests.cpp" >
+        <Original>
+          i &lt; 10
+        </Original>
+        <Expanded>
+          2 &lt; 10
+        </Expanded>
+      </Expression>
+      <Info>
+        current counter 3
+      </Info>
+      <Info>
+        i := 3
+      </Info>
+      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/MessageTests.cpp" >
+        <Original>
+          i &lt; 10
+        </Original>
+        <Expanded>
+          3 &lt; 10
+        </Expanded>
+      </Expression>
+      <Info>
+        current counter 4
+      </Info>
+      <Info>
+        i := 4
+      </Info>
+      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/MessageTests.cpp" >
+        <Original>
+          i &lt; 10
+        </Original>
+        <Expanded>
+          4 &lt; 10
+        </Expanded>
+      </Expression>
+      <Info>
+        current counter 5
+      </Info>
+      <Info>
+        i := 5
+      </Info>
+      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/MessageTests.cpp" >
+        <Original>
+          i &lt; 10
+        </Original>
+        <Expanded>
+          5 &lt; 10
+        </Expanded>
+      </Expression>
+      <Info>
+        current counter 6
+      </Info>
+      <Info>
+        i := 6
+      </Info>
+      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/MessageTests.cpp" >
+        <Original>
+          i &lt; 10
+        </Original>
+        <Expanded>
+          6 &lt; 10
+        </Expanded>
+      </Expression>
+      <Info>
+        current counter 7
+      </Info>
+      <Info>
+        i := 7
+      </Info>
+      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/MessageTests.cpp" >
+        <Original>
+          i &lt; 10
+        </Original>
+        <Expanded>
+          7 &lt; 10
+        </Expanded>
+      </Expression>
+      <Info>
+        current counter 8
+      </Info>
+      <Info>
+        i := 8
+      </Info>
+      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/MessageTests.cpp" >
+        <Original>
+          i &lt; 10
+        </Original>
+        <Expanded>
+          8 &lt; 10
+        </Expanded>
+      </Expression>
+      <Info>
+        current counter 9
+      </Info>
+      <Info>
+        i := 9
+      </Info>
+      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/MessageTests.cpp" >
+        <Original>
+          i &lt; 10
+        </Original>
+        <Expanded>
+          9 &lt; 10
+        </Expanded>
+      </Expression>
+      <Info>
+        current counter 10
+      </Info>
+      <Info>
+        i := 10
+      </Info>
+      <Expression success="false" type="REQUIRE" filename="projects/<exe-name>/MessageTests.cpp" >
+        <Original>
+          i &lt; 10
+        </Original>
+        <Expanded>
+          10 &lt; 10
+        </Expanded>
+      </Expression>
+      <OverallResult success="false"/>
+    </TestCase>
     <TestCase name="Inequality checks that should fail" tags="[!shouldfail][.][failing][hide]" filename="projects/<exe-name>/ConditionTests.cpp" >
       <Expression success="false" type="CHECK" filename="projects/<exe-name>/ConditionTests.cpp" >
         <Original>
@@ -4427,163 +4584,6 @@
         </Original>
         <Expanded>
           Hey, its truthy!
-        </Expanded>
-      </Expression>
-      <OverallResult success="false"/>
-    </TestCase>
-    <TestCase name="SCOPED_INFO is reset for each loop" tags="[.][failing][hide][messages]" filename="projects/<exe-name>/MessageTests.cpp" >
-      <Info>
-        current counter 0
-      </Info>
-      <Info>
-        i := 0
-      </Info>
-      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/MessageTests.cpp" >
-        <Original>
-          i &lt; 10
-        </Original>
-        <Expanded>
-          0 &lt; 10
-        </Expanded>
-      </Expression>
-      <Info>
-        current counter 1
-      </Info>
-      <Info>
-        i := 1
-      </Info>
-      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/MessageTests.cpp" >
-        <Original>
-          i &lt; 10
-        </Original>
-        <Expanded>
-          1 &lt; 10
-        </Expanded>
-      </Expression>
-      <Info>
-        current counter 2
-      </Info>
-      <Info>
-        i := 2
-      </Info>
-      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/MessageTests.cpp" >
-        <Original>
-          i &lt; 10
-        </Original>
-        <Expanded>
-          2 &lt; 10
-        </Expanded>
-      </Expression>
-      <Info>
-        current counter 3
-      </Info>
-      <Info>
-        i := 3
-      </Info>
-      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/MessageTests.cpp" >
-        <Original>
-          i &lt; 10
-        </Original>
-        <Expanded>
-          3 &lt; 10
-        </Expanded>
-      </Expression>
-      <Info>
-        current counter 4
-      </Info>
-      <Info>
-        i := 4
-      </Info>
-      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/MessageTests.cpp" >
-        <Original>
-          i &lt; 10
-        </Original>
-        <Expanded>
-          4 &lt; 10
-        </Expanded>
-      </Expression>
-      <Info>
-        current counter 5
-      </Info>
-      <Info>
-        i := 5
-      </Info>
-      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/MessageTests.cpp" >
-        <Original>
-          i &lt; 10
-        </Original>
-        <Expanded>
-          5 &lt; 10
-        </Expanded>
-      </Expression>
-      <Info>
-        current counter 6
-      </Info>
-      <Info>
-        i := 6
-      </Info>
-      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/MessageTests.cpp" >
-        <Original>
-          i &lt; 10
-        </Original>
-        <Expanded>
-          6 &lt; 10
-        </Expanded>
-      </Expression>
-      <Info>
-        current counter 7
-      </Info>
-      <Info>
-        i := 7
-      </Info>
-      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/MessageTests.cpp" >
-        <Original>
-          i &lt; 10
-        </Original>
-        <Expanded>
-          7 &lt; 10
-        </Expanded>
-      </Expression>
-      <Info>
-        current counter 8
-      </Info>
-      <Info>
-        i := 8
-      </Info>
-      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/MessageTests.cpp" >
-        <Original>
-          i &lt; 10
-        </Original>
-        <Expanded>
-          8 &lt; 10
-        </Expanded>
-      </Expression>
-      <Info>
-        current counter 9
-      </Info>
-      <Info>
-        i := 9
-      </Info>
-      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/MessageTests.cpp" >
-        <Original>
-          i &lt; 10
-        </Original>
-        <Expanded>
-          9 &lt; 10
-        </Expanded>
-      </Expression>
-      <Info>
-        current counter 10
-      </Info>
-      <Info>
-        i := 10
-      </Info>
-      <Expression success="false" type="REQUIRE" filename="projects/<exe-name>/MessageTests.cpp" >
-        <Original>
-          i &lt; 10
-        </Original>
-        <Expanded>
-          10 &lt; 10
         </Expanded>
       </Expression>
       <OverallResult success="false"/>
