@@ -11,8 +11,7 @@
 
 namespace Catch {
 
-    NotImplementedException::NotImplementedException( SourceLineInfo const& lineInfo )
-    :   m_lineInfo( lineInfo ) {
+    NotImplementedException::NotImplementedException( SourceLineInfo const& lineInfo ) {
         std::ostringstream oss;
         oss << lineInfo << ": function ";
         oss << "not implemented";

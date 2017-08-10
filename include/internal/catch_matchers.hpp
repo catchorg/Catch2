@@ -8,8 +8,6 @@
 #ifndef TWOBLUECUBES_CATCH_MATCHERS_HPP_INCLUDED
 #define TWOBLUECUBES_CATCH_MATCHERS_HPP_INCLUDED
 
-#if !defined(CATCH_CONFIG_DISABLE_MATCHERS)
-
 #include "catch_common.h"
 
 #include <string>
@@ -181,7 +179,5 @@ using namespace Matchers;
 using Matchers::Impl::MatcherBase;
 
 } // namespace Catch
-
-#endif // CATCH_CONFIG_DISABLE_MATCHERS
 
 #endif // TWOBLUECUBES_CATCH_MATCHERS_HPP_INCLUDED

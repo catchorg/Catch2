@@ -8,6 +8,7 @@
 
 #include "catch_benchmark.h"
 #include "catch_capture.hpp"
+#include "catch_interfaces_reporter.h"
 
 namespace Catch {
 

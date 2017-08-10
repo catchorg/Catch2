@@ -9,71 +9,36 @@
 #define TWOBLUECUBES_CATCH_ASSERTIONRESULT_H_INCLUDED
 
 #include <string>
+#include "catch_assertioninfo.h"
 #include "catch_result_type.h"
 #include "catch_common.h"
+#include "catch_stringref.h"
+#include "catch_assertionhandler.h"
 
 namespace Catch {
 
-    struct STATIC_ASSERT_Expression_Too_Complex_Please_Rewrite_As_Binary_Comparison;
-
-    struct DecomposedExpression
-    {
-        DecomposedExpression() = default;
-        DecomposedExpression( DecomposedExpression const& ) = default;
-        DecomposedExpression& operator = ( DecomposedExpression const& ) = delete;
-
-        virtual ~DecomposedExpression() = default;
-        virtual bool isBinaryExpression() const;
-        virtual void reconstructExpression( std::string& dest ) const = 0;
-
-        // Only simple binary comparisons can be decomposed.
-        // If more complex check is required then wrap sub-expressions in parentheses.
-        template<typename T> STATIC_ASSERT_Expression_Too_Complex_Please_Rewrite_As_Binary_Comparison& operator + ( T const& );
-        template<typename T> STATIC_ASSERT_Expression_Too_Complex_Please_Rewrite_As_Binary_Comparison& operator - ( T const& );
-        template<typename T> STATIC_ASSERT_Expression_Too_Complex_Please_Rewrite_As_Binary_Comparison& operator * ( T const& );
-        template<typename T> STATIC_ASSERT_Expression_Too_Complex_Please_Rewrite_As_Binary_Comparison& operator / ( T const& );
-        template<typename T> STATIC_ASSERT_Expression_Too_Complex_Please_Rewrite_As_Binary_Comparison& operator % ( T const& );
-        template<typename T> STATIC_ASSERT_Expression_Too_Complex_Please_Rewrite_As_Binary_Comparison& operator && ( T const& );
-        template<typename T> STATIC_ASSERT_Expression_Too_Complex_Please_Rewrite_As_Binary_Comparison& operator || ( T const& );
-    };
-
-    struct AssertionInfo
-    {
-        AssertionInfo() = default;
-        AssertionInfo(  char const * _macroName,
-                        SourceLineInfo const& _lineInfo,
-                        char const * _capturedExpression,
-                        ResultDisposition::Flags _resultDisposition);
-
-        char const * macroName = nullptr;
-        SourceLineInfo lineInfo;
-        char const * capturedExpression = nullptr;
-        ResultDisposition::Flags resultDisposition = ResultDisposition::Normal;
-    };
-
     struct AssertionResultData
     {
-        void negate( bool parenthesize );
-        std::string const& reconstructExpression() const;
+        AssertionResultData() = delete;
 
-        mutable DecomposedExpression const* decomposedExpression = nullptr;
-        mutable std::string reconstructedExpression;
-        std::string message;
+        AssertionResultData( ResultWas::OfType _resultType, LazyExpression const& _lazyExpression )
+        :   resultType( _resultType ),
+            lazyExpression( _lazyExpression )
+        {}
+
         ResultWas::OfType resultType = ResultWas::Unknown;
-        bool negated = false;
-        bool parenthesized = false;
+        std::string message;
+
+        LazyExpression lazyExpression;
+
+        std::string reconstructExpression() const;
+        mutable std::string reconstructedExpression;
     };
 
     class AssertionResult {
     public:
-        AssertionResult();
+        AssertionResult() = delete;
         AssertionResult( AssertionInfo const& info, AssertionResultData const& data );
-        ~AssertionResult();
-
-        AssertionResult( AssertionResult const& )              = default;
-        AssertionResult( AssertionResult && )                  = default;
-        AssertionResult& operator = ( AssertionResult const& ) = default;
-        AssertionResult& operator = ( AssertionResult && )     = default;
 
         bool isOk() const;
         bool succeeded() const;
@@ -87,10 +52,8 @@ namespace Catch {
         std::string getMessage() const;
         SourceLineInfo getSourceInfo() const;
         std::string getTestMacroName() const;
-        void discardDecomposedExpression() const;
-        void expandDecomposedExpression() const;
 
-    protected:
+    //protected:
         AssertionInfo m_info;
         AssertionResultData m_resultData;
     };

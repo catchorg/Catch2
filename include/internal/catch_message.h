@@ -32,7 +32,19 @@ namespace Catch {
         static unsigned int globalCount;
     };
 
-    struct MessageBuilder {
+    struct MessageStream {
+
+        template<typename T>
+        MessageStream& operator << ( T const& value ) {
+            m_stream << value;
+            return *this;
+        }
+
+        // !TBD reuse a global/ thread-local stream
+        std::ostringstream m_stream;
+    };
+
+    struct MessageBuilder : MessageStream {
         MessageBuilder( std::string const& macroName,
                         SourceLineInfo const& lineInfo,
                         ResultWas::OfType type );
@@ -44,7 +56,6 @@ namespace Catch {
         }
 
         MessageInfo m_info;
-        std::ostringstream m_stream;
     };
 
     class ScopedMessage {

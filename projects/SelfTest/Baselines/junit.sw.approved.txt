@@ -311,7 +311,7 @@ MatchersTests.cpp:<line number>
       </failure>
     </testcase>
     <testcase classname="<exe-name>.global" name="Mismatching exception messages failing the test" time="{duration}">
-      <failure message="expected exception" type="REQUIRE_THROWS_WITH">
+      <failure message="&quot;expected exception&quot; equals: &quot;should fail&quot;" type="REQUIRE_THROWS_WITH">
 ExceptionTests.cpp:<line number>
       </failure>
     </testcase>

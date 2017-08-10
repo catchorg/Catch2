@@ -25,7 +25,6 @@ namespace Catch {
 
     private:
         std::string m_what;
-        SourceLineInfo m_lineInfo;
     };
 
 } // end namespace Catch

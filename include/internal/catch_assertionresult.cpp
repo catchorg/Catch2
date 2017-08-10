@@ -10,53 +10,23 @@
 
 namespace Catch {
 
+    std::string AssertionResultData::reconstructExpression() const {
 
-    bool DecomposedExpression::isBinaryExpression() const {
-        return false;
-    }
-
-    AssertionInfo::AssertionInfo(   char const * _macroName,
-                                    SourceLineInfo const& _lineInfo,
-                                    char const * _capturedExpression,
-                                    ResultDisposition::Flags _resultDisposition)
-    :   macroName( _macroName ),
-        lineInfo( _lineInfo ),
-        capturedExpression( _capturedExpression ),
-        resultDisposition( _resultDisposition )
-    {}
-
-    void AssertionResultData::negate( bool parenthesize ) {
-        negated = !negated;
-        parenthesized = parenthesize;
-        if( resultType == ResultWas::Ok )
-            resultType = ResultWas::ExpressionFailed;
-        else if( resultType == ResultWas::ExpressionFailed )
-            resultType = ResultWas::Ok;
-    }
-
-    std::string const& AssertionResultData::reconstructExpression() const {
-        if( decomposedExpression != nullptr ) {
-            decomposedExpression->reconstructExpression( reconstructedExpression );
-            if( parenthesized ) {
-                reconstructedExpression.insert( 0, 1, '(' );
-                reconstructedExpression.append( 1, ')' );
+        if( reconstructedExpression.empty() ) {
+            if( lazyExpression ) {
+                // !TBD Use stringstream for now, but rework above to pass stream in
+                std::ostringstream oss;
+                oss << lazyExpression;
+                reconstructedExpression = oss.str();
             }
-            if( negated ) {
-                reconstructedExpression.insert( 0, 1, '!' );
-            }
-            decomposedExpression = nullptr;
         }
         return reconstructedExpression;
     }
-
-    AssertionResult::AssertionResult() {}
 
     AssertionResult::AssertionResult( AssertionInfo const& info, AssertionResultData const& data )
     :   m_info( info ),
         m_resultData( data )
     {}
-
-    AssertionResult::~AssertionResult() {}
 
     // Result was a success
     bool AssertionResult::succeeded() const {
@@ -82,16 +52,16 @@ namespace Catch {
 
     std::string AssertionResult::getExpression() const {
         if (isFalseTest(m_info.resultDisposition))
-            return '!' + std::string(m_info.capturedExpression);
+            return '!' + std::string(m_info.capturedExpression.c_str());
         else
-            return std::string(m_info.capturedExpression);
+            return std::string(m_info.capturedExpression.c_str());
     }
 
     std::string AssertionResult::getExpressionInMacro() const {
         if( m_info.macroName[0] == 0 )
-            return std::string(m_info.capturedExpression);
+            return std::string(m_info.capturedExpression.c_str());
         else
-            return std::string(m_info.macroName) + "( " + m_info.capturedExpression + " )";
+            return std::string(m_info.macroName.c_str()) + "( " + m_info.capturedExpression.c_str() + " )";
     }
 
     bool AssertionResult::hasExpandedExpression() const {
@@ -99,7 +69,10 @@ namespace Catch {
     }
 
     std::string AssertionResult::getExpandedExpression() const {
-        return m_resultData.reconstructExpression();
+        std::string expr = m_resultData.reconstructExpression();
+        return expr.empty()
+                ? getExpression()
+                : expr;
     }
 
     std::string AssertionResult::getMessage() const {
@@ -110,15 +83,7 @@ namespace Catch {
     }
 
     std::string AssertionResult::getTestMacroName() const {
-        return m_info.macroName;
-    }
-
-    void AssertionResult::discardDecomposedExpression() const {
-        m_resultData.decomposedExpression = nullptr;
-    }
-
-    void AssertionResult::expandDecomposedExpression() const {
-        m_resultData.reconstructExpression();
+        return m_info.macroName.c_str();
     }
 
 } // end namespace Catch

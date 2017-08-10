@@ -8,6 +8,8 @@
 
 #include "catch.hpp"
 
+#ifndef CATCH_CONFIG_DISABLE_MATCHERS
+
 inline const char* testStringForMatching()
 {
     return "this string contains 'abc' as a substring";
@@ -223,3 +225,5 @@ TEST_CASE("Exception matchers that fail", "[matchers][exceptions][!throws][.fail
         REQUIRE_THROWS_MATCHES(throws(4), SpecialException, ExceptionMatcher{ 1 });
     }
 }
+
+#endif // CATCH_CONFIG_DISABLE_MATCHERS

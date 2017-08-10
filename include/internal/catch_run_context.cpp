@@ -32,10 +32,12 @@ namespace Catch {
     }
 
     RunContext::RunContext(IConfigPtr const& _config, IStreamingReporterPtr&& reporter)
-        : m_runInfo(_config->name()),
+    :   m_runInfo(_config->name()),
         m_context(getCurrentMutableContext()),
         m_config(_config),
-        m_reporter(std::move(reporter)) {
+        m_reporter(std::move(reporter)),
+        m_lastAssertionInfo{ "", SourceLineInfo("",0), "", ResultDisposition::Normal }
+    {
         m_context.setRunner(this);
         m_context.setConfig(m_config);
         m_context.setResultCapture(this);
@@ -118,7 +120,7 @@ namespace Catch {
         static_cast<void>(m_reporter->assertionEnded(AssertionStats(result, m_messages, m_totals)));
 
         // Reset working state
-        m_lastAssertionInfo = AssertionInfo("", m_lastAssertionInfo.lineInfo, "{Unknown expression after the reported line}", m_lastAssertionInfo.resultDisposition);
+        m_lastAssertionInfo = { "", m_lastAssertionInfo.lineInfo, "{Unknown expression after the reported line}", m_lastAssertionInfo.resultDisposition };
         m_lastResult = result;
     }
 
@@ -193,7 +195,7 @@ namespace Catch {
     }
 
     const AssertionResult * RunContext::getLastResult() const {
-        return &m_lastResult;
+        return &(*m_lastResult);
     }
 
     void RunContext::exceptionEarlyReported() {
@@ -203,7 +205,7 @@ namespace Catch {
     void RunContext::handleFatalErrorCondition(std::string const & message) {
         // Don't rebuild the result -- the stringification itself can cause more fatal errors
         // Instead, fake a result data.
-        AssertionResultData tempResult;
+        AssertionResultData tempResult( ResultWas::Unknown, { false } );
         tempResult.resultType = ResultWas::FatalErrorCondition;
         tempResult.message = message;
         AssertionResult result(m_lastAssertionInfo, tempResult);
@@ -261,7 +263,7 @@ namespace Catch {
         double duration = 0;
         m_shouldReportUnexpected = true;
         try {
-            m_lastAssertionInfo = AssertionInfo("TEST_CASE", testCaseInfo.lineInfo, "", ResultDisposition::Normal);
+            m_lastAssertionInfo = { "TEST_CASE", testCaseInfo.lineInfo, "", ResultDisposition::Normal };
 
             seedRng(*m_config);
 
@@ -281,7 +283,11 @@ namespace Catch {
             // Under CATCH_CONFIG_FAST_COMPILE, unexpected exceptions under REQUIRE assertions
             // are reported without translation at the point of origin.
             if (m_shouldReportUnexpected) {
-                makeUnexpectedResultBuilder().useActiveException();
+                AssertionHandler
+                    ( m_lastAssertionInfo.macroName,
+                      m_lastAssertionInfo.lineInfo,
+                      m_lastAssertionInfo.capturedExpression,
+                      m_lastAssertionInfo.resultDisposition ).useActiveException();
             }
         }
         m_testCaseTracker->close();
@@ -305,13 +311,6 @@ namespace Catch {
         FatalConditionHandler fatalConditionHandler; // Handle signals
         m_activeTestCase->invoke();
         fatalConditionHandler.reset();
-    }
-
-    ResultBuilder RunContext::makeUnexpectedResultBuilder() const {
-        return ResultBuilder(m_lastAssertionInfo.macroName,
-                             m_lastAssertionInfo.lineInfo,
-                             m_lastAssertionInfo.capturedExpression,
-                             m_lastAssertionInfo.resultDisposition);
     }
 
     void RunContext::handleUnfinishedSections() {

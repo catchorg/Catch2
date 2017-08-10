@@ -122,8 +122,11 @@ CheckFileList(EXTERNAL_HEADERS ${HEADER_DIR}/external)
 # Please keep these ordered alphabetically
 set(INTERNAL_HEADERS
         ${HEADER_DIR}/internal/catch_approx.hpp
+        ${HEADER_DIR}/internal/catch_assertionhandler.h
+        ${HEADER_DIR}/internal/catch_assertioninfo.h
         ${HEADER_DIR}/internal/catch_assertionresult.h
         ${HEADER_DIR}/internal/catch_capture.hpp
+        ${HEADER_DIR}/internal/catch_capture_matchers.h
         ${HEADER_DIR}/internal/catch_clara.h
         ${HEADER_DIR}/internal/catch_commandline.hpp
         ${HEADER_DIR}/internal/catch_common.h
@@ -132,12 +135,11 @@ set(INTERNAL_HEADERS
         ${HEADER_DIR}/internal/catch_console_colour.hpp
         ${HEADER_DIR}/internal/catch_context.h
         ${HEADER_DIR}/internal/catch_debugger.h
+        ${HEADER_DIR}/internal/catch_decomposer.h
         ${HEADER_DIR}/internal/catch_default_main.hpp
         ${HEADER_DIR}/internal/catch_enforce.h
         ${HEADER_DIR}/internal/catch_errno_guard.h
-        ${HEADER_DIR}/internal/catch_evaluate.hpp
         ${HEADER_DIR}/internal/catch_exception_translator_registry.h
-        ${HEADER_DIR}/internal/catch_expression_lhs.hpp
         ${HEADER_DIR}/internal/catch_fatal_condition.h
         ${HEADER_DIR}/internal/catch_impl.hpp
         ${HEADER_DIR}/internal/catch_interfaces_capture.h
@@ -162,7 +164,6 @@ set(INTERNAL_HEADERS
         ${HEADER_DIR}/internal/catch_reenable_warnings.h
         ${HEADER_DIR}/internal/catch_reporter_registrars.hpp
         ${HEADER_DIR}/internal/catch_reporter_registry.hpp
-        ${HEADER_DIR}/internal/catch_result_builder.h
         ${HEADER_DIR}/internal/catch_result_type.h
         ${HEADER_DIR}/internal/catch_run_context.hpp
         ${HEADER_DIR}/internal/catch_benchmark.h
@@ -197,16 +198,18 @@ set(INTERNAL_HEADERS
         )
 set(IMPL_SOURCES
         ${HEADER_DIR}/internal/catch_approx.cpp
+        ${HEADER_DIR}/internal/catch_assertionhandler.cpp
         ${HEADER_DIR}/internal/catch_assertionresult.cpp
         ${HEADER_DIR}/internal/catch_benchmark.cpp
+        ${HEADER_DIR}/internal/catch_capture_matchers.cpp
         ${HEADER_DIR}/internal/catch_commandline.cpp
         ${HEADER_DIR}/internal/catch_common.cpp
         ${HEADER_DIR}/internal/catch_config.cpp
         ${HEADER_DIR}/internal/catch_console_colour.cpp
         ${HEADER_DIR}/internal/catch_context.cpp
         ${HEADER_DIR}/internal/catch_debugger.cpp
+        ${HEADER_DIR}/internal/catch_decomposer.cpp
         ${HEADER_DIR}/internal/catch_errno_guard.cpp
-        ${HEADER_DIR}/internal/catch_evaluate.cpp
         ${HEADER_DIR}/internal/catch_exception_translator_registry.cpp
         ${HEADER_DIR}/internal/catch_fatal_condition.cpp
         ${HEADER_DIR}/internal/catch_list.cpp
@@ -217,7 +220,6 @@ set(IMPL_SOURCES
         ${HEADER_DIR}/internal/catch_notimplemented_exception.cpp
         ${HEADER_DIR}/internal/catch_registry_hub.cpp
         ${HEADER_DIR}/internal/catch_interfaces_reporter.cpp
-        ${HEADER_DIR}/internal/catch_result_builder.cpp
         ${HEADER_DIR}/internal/catch_result_type.cpp
         ${HEADER_DIR}/internal/catch_run_context.cpp
         ${HEADER_DIR}/internal/catch_section.cpp

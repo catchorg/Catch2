@@ -47,7 +47,9 @@ inline Catch::TestCase fakeTestCase( const char* name, const char* desc = "" ){ 
 
 TEST_CASE( "Process can be configured on command line", "[config][command-line]" ) {
 
+#ifndef CATCH_CONFIG_DISABLE_MATCHERS
     using namespace Catch::Matchers;
+#endif
 
     Catch::ConfigData config;
     auto cli = Catch::makeCommandLineParser(config);
@@ -153,7 +155,9 @@ TEST_CASE( "Process can be configured on command line", "[config][command-line]"
             auto result = cli.parse({"test", "-x", "oops"});
             CHECK(!result);
 
+#ifndef CATCH_CONFIG_DISABLE_MATCHERS
             REQUIRE_THAT(result.errorMessage(), Contains("convert") && Contains("oops"));
+#endif
         }
     }
 
@@ -225,7 +229,9 @@ TEST_CASE( "Process can be configured on command line", "[config][command-line]"
         SECTION( "error" ) {
             auto result = cli.parse({"test", "--use-colour", "wrong"});
             CHECK( !result );
+#ifndef CATCH_CONFIG_DISABLE_MATCHERS
             CHECK_THAT( result.errorMessage(), Contains( "colour mode must be one of" ) );
+#endif
         }
     }
 }

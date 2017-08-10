@@ -1646,7 +1646,7 @@
             thisThrows(), "expected exception"
           </Original>
           <Expanded>
-            thisThrows(), "expected exception"
+            "expected exception" equals: "expected exception"
           </Expanded>
         </Expression>
         <OverallResults successes="1" failures="0" expectedFailures="0"/>
@@ -1657,7 +1657,7 @@
             thisThrows(), Equals( "expecteD Exception", Catch::CaseSensitive::No )
           </Original>
           <Expanded>
-            thisThrows(), Equals( "expecteD Exception", Catch::CaseSensitive::No )
+            "expected exception" equals: "expected exception" (case insensitive)
           </Expanded>
         </Expression>
         <OverallResults successes="1" failures="0" expectedFailures="0"/>
@@ -1668,7 +1668,7 @@
             thisThrows(), StartsWith( "expected" )
           </Original>
           <Expanded>
-            thisThrows(), StartsWith( "expected" )
+            "expected exception" starts with: "expected"
           </Expanded>
         </Expression>
         <Expression success="true" type="REQUIRE_THROWS_WITH" filename="projects/<exe-name>/ExceptionTests.cpp" >
@@ -1676,7 +1676,7 @@
             thisThrows(), EndsWith( "exception" )
           </Original>
           <Expanded>
-            thisThrows(), EndsWith( "exception" )
+            "expected exception" ends with: "exception"
           </Expanded>
         </Expression>
         <Expression success="true" type="REQUIRE_THROWS_WITH" filename="projects/<exe-name>/ExceptionTests.cpp" >
@@ -1684,7 +1684,7 @@
             thisThrows(), Contains( "except" )
           </Original>
           <Expanded>
-            thisThrows(), Contains( "except" )
+            "expected exception" contains: "except"
           </Expanded>
         </Expression>
         <Expression success="true" type="REQUIRE_THROWS_WITH" filename="projects/<exe-name>/ExceptionTests.cpp" >
@@ -1692,7 +1692,7 @@
             thisThrows(), Contains( "exCept", Catch::CaseSensitive::No )
           </Original>
           <Expanded>
-            thisThrows(), Contains( "exCept", Catch::CaseSensitive::No )
+            "expected exception" contains: "except" (case insensitive)
           </Expanded>
         </Expression>
         <OverallResults successes="4" failures="0" expectedFailures="0"/>
@@ -2172,7 +2172,7 @@
           thisThrows(), "expected exception"
         </Original>
         <Expanded>
-          thisThrows(), "expected exception"
+          "expected exception" equals: "expected exception"
         </Expanded>
       </Expression>
       <Expression success="false" type="REQUIRE_THROWS_WITH" filename="projects/<exe-name>/ExceptionTests.cpp" >
@@ -2180,7 +2180,7 @@
           thisThrows(), "should fail"
         </Original>
         <Expanded>
-          expected exception
+          "expected exception" equals: "should fail"
         </Expanded>
       </Expression>
       <OverallResult success="false"/>

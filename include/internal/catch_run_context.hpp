@@ -19,7 +19,7 @@
 #include "catch_test_spec.hpp"
 #include "catch_test_case_tracker.hpp"
 #include "catch_timer.h"
-#include "catch_result_builder.h"
+#include "catch_assertionhandler.h"
 #include "catch_fatal_condition.h"
 
 #include <string>
@@ -117,15 +117,13 @@ namespace Catch {
 
     private:
 
-        ResultBuilder makeUnexpectedResultBuilder() const;
-
         void handleUnfinishedSections();
 
         TestRunInfo m_runInfo;
         IMutableContext& m_context;
         TestCase const* m_activeTestCase = nullptr;
         ITracker* m_testCaseTracker;
-        AssertionResult m_lastResult;
+        Option<AssertionResult> m_lastResult;
 
         IConfigPtr m_config;
         Totals m_totals;

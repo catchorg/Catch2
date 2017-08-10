@@ -193,14 +193,14 @@ namespace Catch {
 
         bool assertionEnded(AssertionStats const& assertionStats) override {
             assert(!m_sectionStack.empty());
-            SectionNode& sectionNode = *m_sectionStack.back();
-            sectionNode.assertions.push_back(assertionStats);
             // AssertionResult holds a pointer to a temporary DecomposedExpression,
             // which getExpandedExpression() calls to build the expression string.
             // Our section stack copy of the assertionResult will likely outlive the
             // temporary, so it must be expanded or discarded now to avoid calling
             // a destroyed object later.
-            prepareExpandedExpression(sectionNode.assertions.back().assertionResult);
+            prepareExpandedExpression(const_cast<AssertionResult&>( assertionStats.assertionResult ) );
+            SectionNode& sectionNode = *m_sectionStack.back();
+            sectionNode.assertions.push_back(assertionStats);
             return true;
         }
         void sectionEnded(SectionStats const& sectionStats) override {

@@ -499,7 +499,7 @@ ExceptionTests.cpp:<line number>
 ExceptionTests.cpp:<line number>: FAILED:
   REQUIRE_THROWS_WITH( thisThrows(), "should fail" )
 with expansion:
-  expected exception
+  "expected exception" equals: "should fail"
 
 -------------------------------------------------------------------------------
 Nice descriptive name
