@@ -51,6 +51,12 @@ Catch does not use ```std::cout```, ```std::cerr``` and ```std::clog``` directly
 
 This can be useful on certain platforms that do not provide the standard iostreams, such as certain embedded systems.
 
+# Default reporter
+
+    CATCH_CONFIG_DEFAULT_REPORTER <reporter>
+
+The default reporter (reporter used when no reporters are explicitly specified) can be overriden during compilation time by using the above macro. Note that desired value of the macro is a C string and quotes have to be escaped during compilation: `clang++ test.cpp -DCATCH_CONFIG_DEFAULT_REPORTER=\"xml\"`.
+
 # C++ conformance toggles
 
     CATCH_CONFIG_CPP11_NULLPTR                 // nullptr is supported?
