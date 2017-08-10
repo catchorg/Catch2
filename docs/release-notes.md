@@ -1,3 +1,25 @@
+# 1.9.7
+
+### Fixes
+* Various warnings from clang-tidy, Resharper-C++ and PVS Studio have been addressed (#957)
+* Dynamically generated sections are now properly reported (#963)
+* Writes to `std::clog` are redirected for reporters (#989)
+  * Previously only `std::cerr` writes were redirected
+  * Interleaved writes to `std::cerr` and `std::clog` are combined properly
+* Assertions failed before signals/structured exceptions fails test case are properly reported as failed (#990)
+
+### Improvements
+* Catch's runtime overhead has been decreased further (#940)
+* Added support for IBM i ILE c++ compiler (#976)
+  * This means that AS/400 is now supported.
+* The default reporter can be configured at compile time (#978)
+  * That is, the reporter used if no reporter is explicitly specified
+
+### Other
+* `ParseAndAddCatchTests` cmake script has couple new customization options
+
+
+
 # 1.9.6
 
 ### Improvements
