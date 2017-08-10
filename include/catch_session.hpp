@@ -32,10 +32,14 @@ namespace Catch {
         return reporter;
     }
 
+#ifndef CATCH_CONFIG_DEFAULT_REPORTER
+#define CATCH_CONFIG_DEFAULT_REPORTER "console"
+#endif
+
     IStreamingReporterPtr makeReporter( std::shared_ptr<Config> const& config ) {
         auto const& reporterNames = config->getReporterNames();
         if( reporterNames.empty() )
-            return createReporter( "console", config );
+            return createReporter(CATCH_CONFIG_DEFAULT_REPORTER, config );
 
         IStreamingReporterPtr reporter;
         for( auto const& name : reporterNames )
