@@ -429,3 +429,9 @@ TEST_CASE("Commas in various macros are allowed") {
         CHECK(true);
     }
 }
+
+TEST_CASE( "null deref", "[.][failing][!nonportable]" ) {
+    CHECK( false );
+    int *x = NULL;
+    *x = 1;
+}

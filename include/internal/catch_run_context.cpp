@@ -227,6 +227,7 @@ namespace Catch {
 
         Totals deltaTotals;
         deltaTotals.testCases.failed = 1;
+        deltaTotals.assertions.failed = 1;
         m_reporter->testCaseEnded(TestCaseStats(testInfo,
                                   deltaTotals,
                                   std::string(),
