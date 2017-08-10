@@ -102,11 +102,11 @@ TEST_CASE( "Standard error is reported and redirected", "[messages][.]" ) {
     }
 }
 
-TEST_CASE( "SCOPED_INFO is reset for each loop", "[messages][failing][.]" ) {
+TEST_CASE( "INFO is reset for each loop", "[messages][failing][.]" ) {
     for( int i=0; i<100; i++ )
     {
-        SCOPED_INFO( "current counter " << i );
-        SCOPED_CAPTURE( i );
+        INFO( "current counter " << i );
+        CAPTURE( i );
         REQUIRE( i < 10 );
     }
 }

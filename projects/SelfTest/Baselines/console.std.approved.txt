@@ -423,6 +423,20 @@ with messages:
   and this, but later
 
 -------------------------------------------------------------------------------
+INFO is reset for each loop
+-------------------------------------------------------------------------------
+MessageTests.cpp:<line number>
+...............................................................................
+
+MessageTests.cpp:<line number>: FAILED:
+  REQUIRE( i < 10 )
+with expansion:
+  10 < 10
+with messages:
+  current counter 10
+  i := 10
+
+-------------------------------------------------------------------------------
 Inequality checks that should fail
 -------------------------------------------------------------------------------
 ConditionTests.cpp:<line number>
@@ -654,20 +668,6 @@ DecompositionTests.cpp:<line number>: FAILED:
   CHECK( truthy(false) )
 with expansion:
   Hey, its truthy!
-
--------------------------------------------------------------------------------
-SCOPED_INFO is reset for each loop
--------------------------------------------------------------------------------
-MessageTests.cpp:<line number>
-...............................................................................
-
-MessageTests.cpp:<line number>: FAILED:
-  REQUIRE( i < 10 )
-with expansion:
-  10 < 10
-with messages:
-  current counter 10
-  i := 10
 
 A string sent directly to stdout
 A string sent directly to stderr

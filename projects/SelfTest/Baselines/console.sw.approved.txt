@@ -1649,6 +1649,110 @@ with messages:
   but not this
 
 -------------------------------------------------------------------------------
+INFO is reset for each loop
+-------------------------------------------------------------------------------
+MessageTests.cpp:<line number>
+...............................................................................
+
+MessageTests.cpp:<line number>:
+PASSED:
+  REQUIRE( i < 10 )
+with expansion:
+  0 < 10
+with messages:
+  current counter 0
+  i := 0
+
+MessageTests.cpp:<line number>:
+PASSED:
+  REQUIRE( i < 10 )
+with expansion:
+  1 < 10
+with messages:
+  current counter 1
+  i := 1
+
+MessageTests.cpp:<line number>:
+PASSED:
+  REQUIRE( i < 10 )
+with expansion:
+  2 < 10
+with messages:
+  current counter 2
+  i := 2
+
+MessageTests.cpp:<line number>:
+PASSED:
+  REQUIRE( i < 10 )
+with expansion:
+  3 < 10
+with messages:
+  current counter 3
+  i := 3
+
+MessageTests.cpp:<line number>:
+PASSED:
+  REQUIRE( i < 10 )
+with expansion:
+  4 < 10
+with messages:
+  current counter 4
+  i := 4
+
+MessageTests.cpp:<line number>:
+PASSED:
+  REQUIRE( i < 10 )
+with expansion:
+  5 < 10
+with messages:
+  current counter 5
+  i := 5
+
+MessageTests.cpp:<line number>:
+PASSED:
+  REQUIRE( i < 10 )
+with expansion:
+  6 < 10
+with messages:
+  current counter 6
+  i := 6
+
+MessageTests.cpp:<line number>:
+PASSED:
+  REQUIRE( i < 10 )
+with expansion:
+  7 < 10
+with messages:
+  current counter 7
+  i := 7
+
+MessageTests.cpp:<line number>:
+PASSED:
+  REQUIRE( i < 10 )
+with expansion:
+  8 < 10
+with messages:
+  current counter 8
+  i := 8
+
+MessageTests.cpp:<line number>:
+PASSED:
+  REQUIRE( i < 10 )
+with expansion:
+  9 < 10
+with messages:
+  current counter 9
+  i := 9
+
+MessageTests.cpp:<line number>: FAILED:
+  REQUIRE( i < 10 )
+with expansion:
+  10 < 10
+with messages:
+  current counter 10
+  i := 10
+
+-------------------------------------------------------------------------------
 Inequality checks that should fail
 -------------------------------------------------------------------------------
 ConditionTests.cpp:<line number>
@@ -3838,110 +3942,6 @@ DecompositionTests.cpp:<line number>: FAILED:
   CHECK( truthy(false) )
 with expansion:
   Hey, its truthy!
-
--------------------------------------------------------------------------------
-SCOPED_INFO is reset for each loop
--------------------------------------------------------------------------------
-MessageTests.cpp:<line number>
-...............................................................................
-
-MessageTests.cpp:<line number>:
-PASSED:
-  REQUIRE( i < 10 )
-with expansion:
-  0 < 10
-with messages:
-  current counter 0
-  i := 0
-
-MessageTests.cpp:<line number>:
-PASSED:
-  REQUIRE( i < 10 )
-with expansion:
-  1 < 10
-with messages:
-  current counter 1
-  i := 1
-
-MessageTests.cpp:<line number>:
-PASSED:
-  REQUIRE( i < 10 )
-with expansion:
-  2 < 10
-with messages:
-  current counter 2
-  i := 2
-
-MessageTests.cpp:<line number>:
-PASSED:
-  REQUIRE( i < 10 )
-with expansion:
-  3 < 10
-with messages:
-  current counter 3
-  i := 3
-
-MessageTests.cpp:<line number>:
-PASSED:
-  REQUIRE( i < 10 )
-with expansion:
-  4 < 10
-with messages:
-  current counter 4
-  i := 4
-
-MessageTests.cpp:<line number>:
-PASSED:
-  REQUIRE( i < 10 )
-with expansion:
-  5 < 10
-with messages:
-  current counter 5
-  i := 5
-
-MessageTests.cpp:<line number>:
-PASSED:
-  REQUIRE( i < 10 )
-with expansion:
-  6 < 10
-with messages:
-  current counter 6
-  i := 6
-
-MessageTests.cpp:<line number>:
-PASSED:
-  REQUIRE( i < 10 )
-with expansion:
-  7 < 10
-with messages:
-  current counter 7
-  i := 7
-
-MessageTests.cpp:<line number>:
-PASSED:
-  REQUIRE( i < 10 )
-with expansion:
-  8 < 10
-with messages:
-  current counter 8
-  i := 8
-
-MessageTests.cpp:<line number>:
-PASSED:
-  REQUIRE( i < 10 )
-with expansion:
-  9 < 10
-with messages:
-  current counter 9
-  i := 9
-
-MessageTests.cpp:<line number>: FAILED:
-  REQUIRE( i < 10 )
-with expansion:
-  10 < 10
-with messages:
-  current counter 10
-  i := 10
 
 -------------------------------------------------------------------------------
 SUCCEED counts as a test pass
