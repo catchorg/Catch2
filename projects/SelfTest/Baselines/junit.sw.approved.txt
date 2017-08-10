@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuitesspanner>
-  <testsuite name="<exe-name>" errors="13" failures="81" tests="974" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
+  <testsuite name="<exe-name>" errors="13" failures="81" tests="979" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
     <testcase classname="global" name="# A test name that starts with a #" time="{duration}"/>
     <testcase classname="#748 - captures with unexpected exceptions" name="outside assertions" time="{duration}">
       <error type="TEST_CASE">
@@ -24,6 +24,11 @@ ExceptionTests.cpp:<line number>
 MiscTests.cpp:<line number>
       </failure>
     </testcase>
+    <testcase classname="#961 -- Dynamically created sections should all be reported" name="Looped section 0" time="{duration}"/>
+    <testcase classname="#961 -- Dynamically created sections should all be reported" name="Looped section 1" time="{duration}"/>
+    <testcase classname="#961 -- Dynamically created sections should all be reported" name="Looped section 2" time="{duration}"/>
+    <testcase classname="#961 -- Dynamically created sections should all be reported" name="Looped section 3" time="{duration}"/>
+    <testcase classname="#961 -- Dynamically created sections should all be reported" name="Looped section 4" time="{duration}"/>
     <testcase classname="global" name="'Not' checks that should fail" time="{duration}">
       <failure message="false != false" type="CHECK">
 ConditionTests.cpp:<line number>
