@@ -43,12 +43,13 @@ By default a console width of 80 is assumed but this can be controlled by defini
 
 	CATCH_CONFIG_NOSTDOUT
 
-Catch does not use ```std::cout``` and ```std::cerr``` directly but gets them from ```Catch::cout()``` and ```Catch::cerr()``` respectively. If the above identifier is defined these functions are left unimplemented and you must implement them yourself. Their signatures are:
+Catch does not use ```std::cout```, ```std::cerr``` and ```std::clog``` directly but gets them from ```Catch::cout()```, ```Catch::cerr()``` and ```Catch::clog``` respectively. If the above identifier is defined these functions are left unimplemented and you must implement them yourself. Their signatures are:
 
     std::ostream& cout();
     std::ostream& cerr();
+    std::ostream& clog();
 
-This can be useful on certain platforms that do not provide ```std::cout``` and ```std::cerr```, such as certain embedded systems.
+This can be useful on certain platforms that do not provide the standard iostreams, such as certain embedded systems.
 
 # C++ conformance toggles
 
