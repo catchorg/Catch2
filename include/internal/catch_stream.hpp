@@ -101,6 +101,9 @@ namespace Catch {
     std::ostream& cerr() {
         return std::cerr;
     }
+    std::ostream& clog() {
+        return std::clog;
+    }
 #endif
 }
 

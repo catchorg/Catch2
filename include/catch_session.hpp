@@ -90,7 +90,7 @@ namespace Catch {
             if( lastDot != std::string::npos )
                 filename = filename.substr( 0, lastDot );
 
-            tags.push_back( "#" + filename );
+            tags.push_back( '#' + filename );
             setTags( testCase, tags );
         }
     }

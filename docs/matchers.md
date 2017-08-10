@@ -13,6 +13,7 @@ which consists of either a single matcher or one or more matchers combined using
 For example, to assert that a string ends with a certain substring:
  
  ```c++
+using Catch::Matchers::EndsWith; // or Catch::EndsWith
 std::string str = getStringFromSomewhere();
 REQUIRE_THAT( str, EndsWith( "as a service" ) ); 
  ```
@@ -34,7 +35,7 @@ REQUIRE_THAT( str,
 ```
 
 ## Built in matchers
-Currently Catch has some string matchers and some vector matchers.
+Currently Catch has some string matchers and some vector matchers. They are in the `Catch::Matchers` and `Catch` namespaces.
 The string matchers are `StartsWith`, `EndsWith`, `Contains` and `Equals`. Each of them also takes an optional second argument, that decides case sensitivity (by-default, they are case sensitive).
 The vector matchers are `Contains`, `VectorContains` and `Equals`. `VectorContains` looks for a single element in the matched vector, `Contains` looks for a set (vector) of elements inside the matched vector.
 

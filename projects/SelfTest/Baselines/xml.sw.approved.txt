@@ -4817,6 +4817,24 @@ A string sent directly to stderr
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
+    <TestCase name="Standard error is reported and redirected" tags="[.][hide][messages]" filename="projects/<exe-name>/MessageTests.cpp" >
+      <Section name="std::cerr" filename="projects/<exe-name>/MessageTests.cpp" >
+        <OverallResults successes="0" failures="1" expectedFailures="0"/>
+      </Section>
+      <Section name="std::clog" filename="projects/<exe-name>/MessageTests.cpp" >
+        <OverallResults successes="0" failures="1" expectedFailures="0"/>
+      </Section>
+      <Section name="Interleaved writes to cerr and clog" filename="projects/<exe-name>/MessageTests.cpp" >
+        <OverallResults successes="0" failures="1" expectedFailures="0"/>
+      </Section>
+      <OverallResult success="false">
+        <StdErr>
+Write to std::cerr
+Write to std::clog
+Interleaved writes to error streams
+        </StdErr>
+      </OverallResult>
+    </TestCase>
     <TestCase name="Standard output from all sections is reported" tags="[.][hide][messages]" filename="projects/<exe-name>/MessageTests.cpp" >
       <Section name="one" filename="projects/<exe-name>/MessageTests.cpp" >
         <OverallResults successes="0" failures="1" expectedFailures="0"/>
@@ -8441,7 +8459,7 @@ spanner      <OverallResult success="true"/>
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="779" failures="99" expectedFailures="21"/>
+    <OverallResults successes="779" failures="102" expectedFailures="21"/>
   </Group>
-  <OverallResults successes="779" failures="98" expectedFailures="21"/>
+  <OverallResults successes="779" failures="101" expectedFailures="21"/>
 </Catch>

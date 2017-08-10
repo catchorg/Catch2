@@ -18,6 +18,19 @@ namespace Catch {
         m_stream.rdbuf(m_prevBuf);
     }
 
+    StdErrRedirect::StdErrRedirect(std::string & targetString)
+        :m_cerrBuf(cerr().rdbuf()), m_clogBuf(clog().rdbuf()),
+        m_targetString(targetString) {
+        cerr().rdbuf(m_oss.rdbuf());
+        clog().rdbuf(m_oss.rdbuf());
+    }
+
+    StdErrRedirect::~StdErrRedirect() {
+        m_targetString += m_oss.str();
+        cerr().rdbuf(m_cerrBuf);
+        clog().rdbuf(m_clogBuf);
+    }
+
     RunContext::RunContext(IConfigPtr const& _config, IStreamingReporterPtr&& reporter)
         : m_runInfo(_config->name()),
         m_context(getCurrentMutableContext()),
@@ -256,7 +269,7 @@ namespace Catch {
             timer.start();
             if (m_reporter->getPreferences().shouldRedirectStdOut) {
                 StreamRedirect coutRedir(cout(), redirectedCout);
-                StreamRedirect cerrRedir(cerr(), redirectedCerr);
+                StdErrRedirect errRedir(redirectedCerr);
                 invokeActiveTestCase();
             } else {
                 invokeActiveTestCase();
@@ -318,5 +331,4 @@ namespace Catch {
         else
             CATCH_INTERNAL_ERROR("No result capture instance");
     }
-
 }

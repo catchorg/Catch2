@@ -20,6 +20,7 @@ namespace Catch {
 
     std::ostream& cout();
     std::ostream& cerr();
+    std::ostream& clog();
 
 
     struct IStream {

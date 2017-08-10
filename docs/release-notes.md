@@ -1,3 +1,12 @@
+# 1.9.6
+
+### Improvements
+* Catch's runtime overhead has been significantly decreased (#937, #939)
+* Added `--list-extra-info` cli option (#934).
+  * It lists all tests together with extra information, ie filename, line number and description.
+
+
+
 # 1.9.5
 
 ### Fixes
