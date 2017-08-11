@@ -39,6 +39,9 @@ namespace Internal {
 
     template<typename T>
     T& removeConst(T const &t) { return const_cast<T&>(t); }
+#ifdef CATCH_CONFIG_CPP11_NULLPTR
+    inline std::nullptr_t removeConst(std::nullptr_t) { return nullptr; }
+#endif
 
 
     // So the compare overloads can be operator agnostic we convey the operator as a template
