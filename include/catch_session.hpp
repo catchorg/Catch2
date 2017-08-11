@@ -134,7 +134,7 @@ namespace Catch {
             m_cli.usage( Catch::cout(), processName );
             Catch::cout() << "For more detail usage please see the project docs\n" << std::endl;
         }
-        void libIdentify( std::string const& processName ) {
+        void libIdentify() {
             Catch::cout()
                     << std::left << std::setw(16) << "description: " << "A Catch test executable\n"
                     << std::left << std::setw(16) << "category: " << "testframework\n"
@@ -150,7 +150,7 @@ namespace Catch {
                 if( m_configData.showHelp )
                     showHelp( m_configData.processName );
                 if( m_configData.libIdentify )
-                    libIdentify( m_configData.processName );
+                    libIdentify();
                 m_config.reset();
             }
             catch( std::exception& ex ) {
