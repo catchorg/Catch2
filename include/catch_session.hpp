@@ -22,6 +22,7 @@
 #include <fstream>
 #include <cstdlib>
 #include <limits>
+#include <iomanip>
 
 namespace Catch {
 
@@ -121,6 +122,13 @@ namespace Catch {
                     << m_cli << std::endl
                     << "For more detailed usage please see the project docs\n" << std::endl;
         }
+        void libIdentify() {
+            Catch::cout()
+                    << std::left << std::setw(16) << "description: " << "A Catch test executable\n"
+                    << std::left << std::setw(16) << "category: " << "testframework\n"
+                    << std::left << std::setw(16) << "framework: " << "Catch Test\n"
+                    << std::left << std::setw(16) << "version: " << libraryVersion() << std::endl;
+        }
 
         int applyCommandLine( int argc, char* argv[] ) {
             auto result = m_cli.parse( clara::Args( argc, argv ) );
@@ -137,6 +145,8 @@ namespace Catch {
 
             if( m_configData.showHelp )
                 showHelp();
+            if( m_configData.libIdentify )
+                libIdentify();
             m_config.reset();
             return 0;
         }
@@ -189,9 +199,36 @@ namespace Catch {
             return returnCode;
         }
     #endif
-
         int run() {
-            if( m_configData.showHelp )
+            if( ( m_configData.waitForKeypress & WaitForKeypress::BeforeStart ) != 0 ) {
+                Catch::cout() << "...waiting for enter/ return before starting" << std::endl;
+                std::getchar();
+            }
+            int exitCode = runInternal();
+            if( ( m_configData.waitForKeypress & WaitForKeypress::BeforeExit ) != 0 ) {
+                Catch::cout() << "...waiting for enter/ return before exiting, with code: " << exitCode << std::endl;
+                std::getchar();
+            }
+            return exitCode;
+        }
+
+        clara::Parser const& cli() const {
+            return m_cli;
+        }
+        void cli( clara::Parser const& newParser ) {
+            m_cli = newParser;
+        }
+        ConfigData& configData() {
+            return m_configData;
+        }
+        Config& config() {
+            if( !m_config )
+                m_config = std::make_shared<Config>( m_configData );
+            return *m_config;
+        }
+    private:
+        int runInternal() {
+            if( m_configData.showHelp || m_configData.libIdentify )
                 return 0;
 
             try
@@ -215,21 +252,6 @@ namespace Catch {
             }
         }
 
-        clara::Parser const& cli() const {
-            return m_cli;
-        }
-        void cli( clara::Parser const& newParser ) {
-            m_cli = newParser;
-        }
-        ConfigData& configData() {
-            return m_configData;
-        }
-        Config& config() {
-            if( !m_config )
-                m_config = std::make_shared<Config>( m_configData );
-            return *m_config;
-        }
-    private:
         clara::Parser m_cli;
         ConfigData m_configData;
         std::shared_ptr<Config> m_config;

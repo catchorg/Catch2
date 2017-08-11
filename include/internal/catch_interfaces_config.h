@@ -43,6 +43,12 @@ namespace Catch {
         Yes,
         No
     }; };
+    struct WaitForKeypress { enum When {
+        Never,
+        BeforeStart = 1,
+        BeforeExit = 2,
+        BeforeStartAndExit = BeforeStart | BeforeExit
+    }; };
 
     class TestSpec;
 

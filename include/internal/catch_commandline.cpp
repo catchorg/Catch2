@@ -71,6 +71,18 @@ namespace Catch {
                         return ParserResult::runtimeError( "colour mode must be one of: auto, yes or no. '" + useColour + "' not recognised" );
                 return ParserResult::ok( ParseResultType::Matched );
             };
+        auto const setWaitForKeypress = [&]( std::string const& keypress ) {
+                auto keypressLc = toLower( keypress );
+                if( keypressLc == "start" )
+                    config.waitForKeypress = WaitForKeypress::BeforeStart;
+                else if( keypressLc == "exit" )
+                    config.waitForKeypress = WaitForKeypress::BeforeExit;
+                else if( keypressLc == "both" )
+                    config.waitForKeypress = WaitForKeypress::BeforeStartAndExit;
+                else
+                    return ParserResult::runtimeError( "keypress argument must be one of: start, exit or both. '" + keypress + "' not recognised" );
+            return ParserResult::ok( ParseResultType::Matched );
+            };
         auto const setVerbosity = [&]( std::string const& verbosity ) {
             auto lcVerbosity = toLower( verbosity );
             if( lcVerbosity == "quiet" )
@@ -153,6 +165,12 @@ namespace Catch {
             + Opt( setColourUsage, "yes|no" )
                 ["--use-colour"]
                 ( "should output be colourised" )
+            + Opt( config.libIdentify )
+                ["--libidentify"]
+                ( "report name and version according to libidentify standard" )
+            + Opt( setWaitForKeypress, "start|exit|both" )
+                ["--wait-for-keypress"]
+                ( "waits for a keypress before exiting" )
             + Opt( config.benchmarkResolutionMultiple, "multiplier" )
                 ["--benchmark-resolution-multiple"]
                 ( "multiple of clock resolution to run benchmarks" )
