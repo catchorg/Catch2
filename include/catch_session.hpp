@@ -134,6 +134,14 @@ namespace Catch {
             m_cli.usage( Catch::cout(), processName );
             Catch::cout() << "For more detail usage please see the project docs\n" << std::endl;
         }
+        void libIdentify( std::string const& processName ) {
+            Catch::cout()
+                    << std::left << std::setw(16) << "description: " << "A Catch test executable\n"
+                    << std::left << std::setw(16) << "category: " << "testframework\n"
+                    << std::left << std::setw(16) << "framework: " << "Catch Test\n"
+                    << std::left << std::setw(16) << "version: " << libraryVersion() << std::endl;
+        }
+
 
         int applyCommandLine( int argc, char const* const* const argv, OnUnusedOptions::DoWhat unusedOptionBehaviour = OnUnusedOptions::Fail ) {
             try {
@@ -141,6 +149,8 @@ namespace Catch {
                 m_unusedTokens = m_cli.parseInto( Clara::argsToVector( argc, argv ), m_configData );
                 if( m_configData.showHelp )
                     showHelp( m_configData.processName );
+                if( m_configData.libIdentify )
+                    libIdentify( m_configData.processName );
                 m_config.reset();
             }
             catch( std::exception& ex ) {
@@ -197,7 +207,7 @@ namespace Catch {
     #endif
 
         int run() {
-            if( m_configData.showHelp )
+            if( m_configData.showHelp || m_configData.libIdentify )
                 return 0;
 
             try
