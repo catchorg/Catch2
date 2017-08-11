@@ -353,7 +353,7 @@ static int f() {
     return 1;
 }
 
-TEST_CASE( "#835 -- errno should not be touched by Catch", "[!shouldfail]" ) {
+TEST_CASE( "#835 -- errno should not be touched by Catch", "[.][failing][!shouldfail]" ) {
     errno = 1;
     CHECK(f() == 0);
     REQUIRE(errno == 1); // Check that f() doesn't touch errno.

@@ -396,8 +396,8 @@ TEST_CASE( "X/level/1/b", "[Tricky]" )      { SUCCEED(""); }
 
 TEST_CASE( "has printf" ) {
 
-    // This can cause problems as, currently, stdout itself is not redirect - only the cout (and cerr) buffer
-    printf( "spanner" );
+    // This can cause problems as, currently, stdout itself is not redirected - only the cout (and cerr) buffer
+    printf( "loose text artifact\n" );
 }
 
 TEST_CASE( "assertions with commas are allowed" ) {

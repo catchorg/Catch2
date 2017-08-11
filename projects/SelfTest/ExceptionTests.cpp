@@ -205,7 +205,7 @@ TEST_CASE( "Mismatching exception messages failing the test", "[.][failing][!thr
     REQUIRE_THROWS_WITH( thisThrows(), "expected exception" );
 }
 
-TEST_CASE( "#748 - captures with unexpected exceptions", "[!shouldfail][!throws]" ) {
+TEST_CASE( "#748 - captures with unexpected exceptions", "[.][failing][!throws][!shouldfail]" ) {
     int answer = 42;
     CAPTURE( answer );
     // the message should be printed on the first two sections but not on the third

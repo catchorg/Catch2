@@ -4,7 +4,7 @@
     <TestCase name="# A test name that starts with a #" filename="projects/<exe-name>/MiscTests.cpp" >
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="#748 - captures with unexpected exceptions" tags="[!shouldfail][!throws]" filename="projects/<exe-name>/ExceptionTests.cpp" >
+    <TestCase name="#748 - captures with unexpected exceptions" tags="[!shouldfail][!throws][.][failing][hide]" filename="projects/<exe-name>/ExceptionTests.cpp" >
       <Section name="outside assertions" filename="projects/<exe-name>/ExceptionTests.cpp" >
         <Info>
           answer := 42
@@ -117,7 +117,7 @@
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="#835 -- errno should not be touched by Catch" tags="[!shouldfail]" filename="projects/<exe-name>/MiscTests.cpp" >
+    <TestCase name="#835 -- errno should not be touched by Catch" tags="[!shouldfail][.][failing][hide]" filename="projects/<exe-name>/MiscTests.cpp" >
       <Expression success="false" type="CHECK" filename="projects/<exe-name>/MiscTests.cpp" >
         <Original>
           f() == 0
@@ -7398,7 +7398,8 @@ Message from section two
       <OverallResult success="true"/>
     </TestCase>
     <TestCase name="has printf" filename="projects/<exe-name>/TrickyTests.cpp" >
-spanner      <OverallResult success="true"/>
+loose text artifact
+      <OverallResult success="true"/>
     </TestCase>
     <TestCase name="just failure" tags="[.][fail][hide][isolated info][messages]" filename="projects/<exe-name>/MessageTests.cpp" >
       <Failure filename="projects/<exe-name>/MessageTests.cpp" >
