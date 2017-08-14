@@ -60,8 +60,7 @@ namespace Catch {
     
     StringRef::StringRef( String const& other ) noexcept
     :   m_start( other.c_str() ),
-        m_size( other.size() ),
-        m_data( nullptr )
+        m_size( other.size() )
     {}
     
     StringRef::StringRef( String&& str ) noexcept
@@ -71,7 +70,11 @@ namespace Catch {
     {
         str.m_data = StringData::getEmpty();
     }
-    
+    StringRef::StringRef( std::string const& stdString ) noexcept
+    :   m_start( stdString.c_str() ),
+        m_size( stdString.size() )
+    {}
+
     StringRef::~StringRef() noexcept {
         if( isOwned() )
             m_data->release();
@@ -80,6 +83,9 @@ namespace Catch {
     auto StringRef::operator = ( StringRef other ) noexcept -> StringRef& {
         swap( other );
         return *this;
+    }
+    StringRef::operator std::string() const {
+        return std::string( m_start, m_size );
     }
 
     void StringRef::swap( StringRef& other ) noexcept {

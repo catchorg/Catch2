@@ -8,6 +8,7 @@
 #define CATCH_STRINGREF_H_INCLUDED
 
 #include <cstddef>
+#include <string>
 
 namespace Catch {
     
@@ -43,9 +44,11 @@ namespace Catch {
         StringRef( char const* rawChars, size_type size ) noexcept;
         StringRef( String const& other ) noexcept;
         StringRef( String&& other ) noexcept;
+        StringRef( std::string const& stdString ) noexcept;
         ~StringRef() noexcept;
         
         auto operator = ( StringRef other ) noexcept -> StringRef&;
+        operator std::string() const;
 
         void swap( StringRef& other ) noexcept;
         

@@ -150,4 +150,46 @@ TEST_CASE( "StringRef", "[Strings]" ) {
             REQUIRE( data( copied ) == originalPointer );
         }
     }
+
+    SECTION( "from std::string" ) {
+        std::string stdStr = "a standard string";
+
+        SECTION( "implicitly constructed" ) {
+            StringRef sr = stdStr;
+            REQUIRE( sr == "a standard string" );
+            REQUIRE( sr.size() == stdStr.size() );
+        }
+        SECTION( "explicitly constructed" ) {
+            StringRef sr( stdStr );
+            REQUIRE( sr == "a standard string" );
+            REQUIRE( sr.size() == stdStr.size() );
+        }
+        SECTION( "assigned" ) {
+            StringRef sr;
+            sr = stdStr;
+            REQUIRE( sr == "a standard string" );
+            REQUIRE( sr.size() == stdStr.size() );
+        }
+    }
+
+    SECTION( "to std::string" ) {
+        StringRef sr = "a stringref";
+
+        SECTION( "implicitly constructed" ) {
+            std::string stdStr = sr;
+            REQUIRE( stdStr == "a stringref" );
+            REQUIRE( stdStr.size() == sr.size() );
+        }
+        SECTION( "explicitly constructed" ) {
+            std::string stdStr( sr );
+            REQUIRE( stdStr == "a stringref" );
+            REQUIRE( stdStr.size() == sr.size() );
+        }
+        SECTION( "assigned" ) {
+            std::string stdStr;
+            stdStr = sr;
+            REQUIRE( stdStr == "a stringref" );
+            REQUIRE( stdStr.size() == sr.size() );
+        }
+    }
 }
