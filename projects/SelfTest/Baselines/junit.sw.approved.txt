@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuitesloose text artifact
 >
-  <testsuite name="<exe-name>" errors="15" failures="87" tests="902" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
+  <testsuite name="<exe-name>" errors="15" failures="87" tests="914" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
     <testcase classname="<exe-name>.global" name="# A test name that starts with a #" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="#748 - captures with unexpected exceptions/outside assertions" time="{duration}">
       <error type="TEST_CASE">
@@ -527,6 +527,12 @@ MatchersTests.cpp:<line number>
     <testcase classname="<exe-name>.global" name="StringRef/Comparisons" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="StringRef/From string/Copied" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="StringRef/From string/Moved" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="StringRef/from std::string/implicitly constructed" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="StringRef/from std::string/explicitly constructed" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="StringRef/from std::string/assigned" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="StringRef/to std::string/implicitly constructed" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="StringRef/to std::string/explicitly constructed" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="StringRef/to std::string/assigned" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Tabs and newlines show in output" time="{duration}">
       <failure message="&quot;if ($b == 10) {
 		$a	= 20;

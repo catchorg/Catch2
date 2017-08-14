@@ -4830,6 +4830,126 @@ with expansion:
   "hot potato" == "hot potato"
 
 -------------------------------------------------------------------------------
+StringRef
+  from std::string
+  implicitly constructed
+-------------------------------------------------------------------------------
+StringRef.tests.cpp:<line number>
+...............................................................................
+
+StringRef.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( sr == "a standard string" )
+with expansion:
+  {?} == "a standard string"
+
+StringRef.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( sr.size() == stdStr.size() )
+with expansion:
+  17 == 17
+
+-------------------------------------------------------------------------------
+StringRef
+  from std::string
+  explicitly constructed
+-------------------------------------------------------------------------------
+StringRef.tests.cpp:<line number>
+...............................................................................
+
+StringRef.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( sr == "a standard string" )
+with expansion:
+  {?} == "a standard string"
+
+StringRef.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( sr.size() == stdStr.size() )
+with expansion:
+  17 == 17
+
+-------------------------------------------------------------------------------
+StringRef
+  from std::string
+  assigned
+-------------------------------------------------------------------------------
+StringRef.tests.cpp:<line number>
+...............................................................................
+
+StringRef.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( sr == "a standard string" )
+with expansion:
+  {?} == "a standard string"
+
+StringRef.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( sr.size() == stdStr.size() )
+with expansion:
+  17 == 17
+
+-------------------------------------------------------------------------------
+StringRef
+  to std::string
+  implicitly constructed
+-------------------------------------------------------------------------------
+StringRef.tests.cpp:<line number>
+...............................................................................
+
+StringRef.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( stdStr == "a stringref" )
+with expansion:
+  "a stringref" == "a stringref"
+
+StringRef.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( stdStr.size() == sr.size() )
+with expansion:
+  11 == 11
+
+-------------------------------------------------------------------------------
+StringRef
+  to std::string
+  explicitly constructed
+-------------------------------------------------------------------------------
+StringRef.tests.cpp:<line number>
+...............................................................................
+
+StringRef.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( stdStr == "a stringref" )
+with expansion:
+  "a stringref" == "a stringref"
+
+StringRef.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( stdStr.size() == sr.size() )
+with expansion:
+  11 == 11
+
+-------------------------------------------------------------------------------
+StringRef
+  to std::string
+  assigned
+-------------------------------------------------------------------------------
+StringRef.tests.cpp:<line number>
+...............................................................................
+
+StringRef.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( stdStr == "a stringref" )
+with expansion:
+  "a stringref" == "a stringref"
+
+StringRef.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( stdStr.size() == sr.size() )
+with expansion:
+  11 == 11
+
+-------------------------------------------------------------------------------
 Tabs and newlines show in output
 -------------------------------------------------------------------------------
 MiscTests.cpp:<line number>
@@ -7639,5 +7759,5 @@ PASSED:
 
 ===============================================================================
 test cases: 183 | 130 passed |  49 failed |  4 failed as expected
-assertions: 901 | 779 passed | 101 failed | 21 failed as expected
+assertions: 913 | 791 passed | 101 failed | 21 failed as expected
 

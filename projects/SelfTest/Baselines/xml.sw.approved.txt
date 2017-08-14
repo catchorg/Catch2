@@ -5507,6 +5507,138 @@ Message from section two
         </Section>
         <OverallResults successes="4" failures="0" expectedFailures="0"/>
       </Section>
+      <Section name="from std::string" filename="projects/<exe-name>/StringRef.tests.cpp" >
+        <Section name="implicitly constructed" filename="projects/<exe-name>/StringRef.tests.cpp" >
+          <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/StringRef.tests.cpp" >
+            <Original>
+              sr == "a standard string"
+            </Original>
+            <Expanded>
+              {?} == "a standard string"
+            </Expanded>
+          </Expression>
+          <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/StringRef.tests.cpp" >
+            <Original>
+              sr.size() == stdStr.size()
+            </Original>
+            <Expanded>
+              17 == 17
+            </Expanded>
+          </Expression>
+          <OverallResults successes="2" failures="0" expectedFailures="0"/>
+        </Section>
+        <OverallResults successes="2" failures="0" expectedFailures="0"/>
+      </Section>
+      <Section name="from std::string" filename="projects/<exe-name>/StringRef.tests.cpp" >
+        <Section name="explicitly constructed" filename="projects/<exe-name>/StringRef.tests.cpp" >
+          <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/StringRef.tests.cpp" >
+            <Original>
+              sr == "a standard string"
+            </Original>
+            <Expanded>
+              {?} == "a standard string"
+            </Expanded>
+          </Expression>
+          <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/StringRef.tests.cpp" >
+            <Original>
+              sr.size() == stdStr.size()
+            </Original>
+            <Expanded>
+              17 == 17
+            </Expanded>
+          </Expression>
+          <OverallResults successes="2" failures="0" expectedFailures="0"/>
+        </Section>
+        <OverallResults successes="2" failures="0" expectedFailures="0"/>
+      </Section>
+      <Section name="from std::string" filename="projects/<exe-name>/StringRef.tests.cpp" >
+        <Section name="assigned" filename="projects/<exe-name>/StringRef.tests.cpp" >
+          <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/StringRef.tests.cpp" >
+            <Original>
+              sr == "a standard string"
+            </Original>
+            <Expanded>
+              {?} == "a standard string"
+            </Expanded>
+          </Expression>
+          <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/StringRef.tests.cpp" >
+            <Original>
+              sr.size() == stdStr.size()
+            </Original>
+            <Expanded>
+              17 == 17
+            </Expanded>
+          </Expression>
+          <OverallResults successes="2" failures="0" expectedFailures="0"/>
+        </Section>
+        <OverallResults successes="2" failures="0" expectedFailures="0"/>
+      </Section>
+      <Section name="to std::string" filename="projects/<exe-name>/StringRef.tests.cpp" >
+        <Section name="implicitly constructed" filename="projects/<exe-name>/StringRef.tests.cpp" >
+          <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/StringRef.tests.cpp" >
+            <Original>
+              stdStr == "a stringref"
+            </Original>
+            <Expanded>
+              "a stringref" == "a stringref"
+            </Expanded>
+          </Expression>
+          <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/StringRef.tests.cpp" >
+            <Original>
+              stdStr.size() == sr.size()
+            </Original>
+            <Expanded>
+              11 == 11
+            </Expanded>
+          </Expression>
+          <OverallResults successes="2" failures="0" expectedFailures="0"/>
+        </Section>
+        <OverallResults successes="2" failures="0" expectedFailures="0"/>
+      </Section>
+      <Section name="to std::string" filename="projects/<exe-name>/StringRef.tests.cpp" >
+        <Section name="explicitly constructed" filename="projects/<exe-name>/StringRef.tests.cpp" >
+          <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/StringRef.tests.cpp" >
+            <Original>
+              stdStr == "a stringref"
+            </Original>
+            <Expanded>
+              "a stringref" == "a stringref"
+            </Expanded>
+          </Expression>
+          <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/StringRef.tests.cpp" >
+            <Original>
+              stdStr.size() == sr.size()
+            </Original>
+            <Expanded>
+              11 == 11
+            </Expanded>
+          </Expression>
+          <OverallResults successes="2" failures="0" expectedFailures="0"/>
+        </Section>
+        <OverallResults successes="2" failures="0" expectedFailures="0"/>
+      </Section>
+      <Section name="to std::string" filename="projects/<exe-name>/StringRef.tests.cpp" >
+        <Section name="assigned" filename="projects/<exe-name>/StringRef.tests.cpp" >
+          <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/StringRef.tests.cpp" >
+            <Original>
+              stdStr == "a stringref"
+            </Original>
+            <Expanded>
+              "a stringref" == "a stringref"
+            </Expanded>
+          </Expression>
+          <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/StringRef.tests.cpp" >
+            <Original>
+              stdStr.size() == sr.size()
+            </Original>
+            <Expanded>
+              11 == 11
+            </Expanded>
+          </Expression>
+          <OverallResults successes="2" failures="0" expectedFailures="0"/>
+        </Section>
+        <OverallResults successes="2" failures="0" expectedFailures="0"/>
+      </Section>
       <OverallResult success="true"/>
     </TestCase>
     <TestCase name="Tabs and newlines show in output" tags="[.][failing][hide][whitespace]" filename="projects/<exe-name>/MiscTests.cpp" >
@@ -8460,7 +8592,7 @@ loose text artifact
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="779" failures="102" expectedFailures="21"/>
+    <OverallResults successes="791" failures="102" expectedFailures="21"/>
   </Group>
-  <OverallResults successes="779" failures="101" expectedFailures="21"/>
+  <OverallResults successes="791" failures="101" expectedFailures="21"/>
 </Catch>
