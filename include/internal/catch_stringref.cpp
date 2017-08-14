@@ -11,6 +11,8 @@
 #include <ostream>
 #include <cassert>
 
+#define _CRT_SECURE_NO_WARNINGS // Suppress warnings from MSVC about strncpy not being secure
+
 namespace Catch {
 
     auto getEmptyStringRef() -> StringRef {
