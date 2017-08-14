@@ -9,6 +9,7 @@
 
 #include <cstddef>
 #include <string>
+#include <iosfwd>
 
 namespace Catch {
     
@@ -76,7 +77,9 @@ namespace Catch {
     auto operator + ( StringRef const& lhs, StringRef const& rhs ) -> String;
     auto operator + ( StringRef const& lhs, char const* rhs ) -> String;
     auto operator + ( char const* lhs, StringRef const& rhs ) -> String;
-    
+
+    auto operator << ( std::ostream& os, StringRef const& sr ) -> std::ostream&;
+
 } // namespace Catch
 
 #endif // CATCH_STRINGREF_H_INCLUDED

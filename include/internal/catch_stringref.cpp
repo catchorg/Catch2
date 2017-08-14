@@ -173,7 +173,7 @@ namespace Catch {
         return StringRef( lhs ) + rhs;
     }
 
-    std::ostream& operator << ( std::ostream& os, StringRef const& str ) {
+    auto operator << ( std::ostream& os, StringRef const& str ) -> std::ostream& {
         return os << str.c_str();
     }
         

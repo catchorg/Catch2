@@ -4378,7 +4378,7 @@ StringBuilder.tests.cpp:<line number>:
 PASSED:
   REQUIRE( s == "hello" )
 with expansion:
-  {?} == "hello"
+  hello == "hello"
 
 StringBuilder.tests.cpp:<line number>:
 PASSED:
@@ -4397,7 +4397,7 @@ StringBuilder.tests.cpp:<line number>:
 PASSED:
   REQUIRE( s == "hello world" )
 with expansion:
-  {?} == "hello world"
+  hello world == "hello world"
 
 -------------------------------------------------------------------------------
 StringBuilder
@@ -4410,7 +4410,7 @@ StringBuilder.tests.cpp:<line number>:
 PASSED:
   REQUIRE( s == "hello world" )
 with expansion:
-  {?} == "hello world"
+  hello world == "hello world"
 
 -------------------------------------------------------------------------------
 StringBuilder
@@ -4435,7 +4435,7 @@ StringBuilder.tests.cpp:<line number>:
 PASSED:
   REQUIRE( s == "hello world" )
 with expansion:
-  {?} == "hello world"
+  hello world == "hello world"
 
 -------------------------------------------------------------------------------
 StringBuilder
@@ -4449,7 +4449,7 @@ StringBuilder.tests.cpp:<line number>:
 PASSED:
   REQUIRE( s2 == s )
 with expansion:
-  {?} == {?}
+  hello == hello
 
 StringBuilder.tests.cpp:<line number>:
 PASSED:
@@ -4469,7 +4469,7 @@ StringBuilder.tests.cpp:<line number>:
 PASSED:
   REQUIRE( s2 == "hello" )
 with expansion:
-  {?} == "hello"
+  hello == "hello"
 
 StringBuilder.tests.cpp:<line number>:
 PASSED:
@@ -4489,7 +4489,7 @@ StringBuilder.tests.cpp:<line number>:
 PASSED:
   REQUIRE( s2 == "hello" )
 with expansion:
-  {?} == "hello"
+  hello == "hello"
 
 StringBuilder.tests.cpp:<line number>:
 PASSED:
@@ -4589,32 +4589,11 @@ StringRef.tests.cpp:<line number>
 StringRef.tests.cpp:<line number>:
 PASSED:
   REQUIRE( original == "original" )
-with expansion:
-  {?} == "original"
 
-StringRef.tests.cpp:<line number>:
-PASSED:
+StringRef.tests.cpp:<line number>: FAILED:
   REQUIRE( isSubstring( original ) )
 with expansion:
-  true
-
-StringRef.tests.cpp:<line number>:
-PASSED:
-  REQUIRE( isOwned( original ) == false )
-with expansion:
-  false == false
-
-StringRef.tests.cpp:<line number>:
-PASSED:
-  REQUIRE( isSubstring( original ) == false )
-with expansion:
-  false == false
-
-StringRef.tests.cpp:<line number>:
-PASSED:
-  REQUIRE( isOwned( original ) )
-with expansion:
-  true
+  false
 
 -------------------------------------------------------------------------------
 StringRef
@@ -4646,7 +4625,7 @@ StringRef.tests.cpp:<line number>:
 PASSED:
   REQUIRE( ss == "hello" )
 with expansion:
-  {?} == "hello"
+  hello == "hello"
 
 -------------------------------------------------------------------------------
 StringRef
@@ -4757,13 +4736,13 @@ StringRef.tests.cpp:<line number>:
 PASSED:
   REQUIRE( StringRef("hello") == StringRef("hello") )
 with expansion:
-  {?} == {?}
+  hello == hello
 
 StringRef.tests.cpp:<line number>:
 PASSED:
   REQUIRE( StringRef("hello") != StringRef("cello") )
 with expansion:
-  {?} != {?}
+  hello != cello
 
 -------------------------------------------------------------------------------
 StringRef
@@ -4777,13 +4756,13 @@ StringRef.tests.cpp:<line number>:
 PASSED:
   REQUIRE( copied == "hot potato" )
 with expansion:
-  {?} == "hot potato"
+  hot potato == "hot potato"
 
 StringRef.tests.cpp:<line number>:
 PASSED:
   REQUIRE( str == "hot potato" )
 with expansion:
-  {?} == "hot potato"
+  hot potato == "hot potato"
 
 StringRef.tests.cpp:<line number>:
 PASSED:
@@ -4809,7 +4788,7 @@ StringRef.tests.cpp:<line number>:
 PASSED:
   REQUIRE( copied == "hot potato" )
 with expansion:
-  {?} == "hot potato"
+  hot potato == "hot potato"
 
 StringRef.tests.cpp:<line number>:
 PASSED:
@@ -4841,7 +4820,7 @@ StringRef.tests.cpp:<line number>:
 PASSED:
   REQUIRE( sr == "a standard string" )
 with expansion:
-  {?} == "a standard string"
+  a standard string == "a standard string"
 
 StringRef.tests.cpp:<line number>:
 PASSED:
@@ -4861,7 +4840,7 @@ StringRef.tests.cpp:<line number>:
 PASSED:
   REQUIRE( sr == "a standard string" )
 with expansion:
-  {?} == "a standard string"
+  a standard string == "a standard string"
 
 StringRef.tests.cpp:<line number>:
 PASSED:
@@ -4881,7 +4860,7 @@ StringRef.tests.cpp:<line number>:
 PASSED:
   REQUIRE( sr == "a standard string" )
 with expansion:
-  {?} == "a standard string"
+  a standard string == "a standard string"
 
 StringRef.tests.cpp:<line number>:
 PASSED:
@@ -7758,6 +7737,6 @@ MiscTests.cpp:<line number>:
 PASSED:
 
 ===============================================================================
-test cases: 183 | 130 passed |  49 failed |  4 failed as expected
-assertions: 913 | 791 passed | 101 failed | 21 failed as expected
+test cases: 183 | 129 passed |  50 failed |  4 failed as expected
+assertions: 910 | 787 passed | 102 failed | 21 failed as expected
 

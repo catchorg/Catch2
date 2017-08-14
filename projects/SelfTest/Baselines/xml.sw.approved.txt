@@ -4999,7 +4999,7 @@ Message from section two
             s == "hello"
           </Original>
           <Expanded>
-            {?} == "hello"
+            hello == "hello"
           </Expanded>
         </Expression>
         <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/StringBuilder.tests.cpp" >
@@ -5018,7 +5018,7 @@ Message from section two
             s == "hello world"
           </Original>
           <Expanded>
-            {?} == "hello world"
+            hello world == "hello world"
           </Expanded>
         </Expression>
         <OverallResults successes="1" failures="0" expectedFailures="0"/>
@@ -5029,7 +5029,7 @@ Message from section two
             s == "hello world"
           </Original>
           <Expanded>
-            {?} == "hello world"
+            hello world == "hello world"
           </Expanded>
         </Expression>
         <OverallResults successes="1" failures="0" expectedFailures="0"/>
@@ -5056,7 +5056,7 @@ Message from section two
             s == "hello world"
           </Original>
           <Expanded>
-            {?} == "hello world"
+            hello world == "hello world"
           </Expanded>
         </Expression>
         <OverallResults successes="3" failures="0" expectedFailures="0"/>
@@ -5068,7 +5068,7 @@ Message from section two
               s2 == s
             </Original>
             <Expanded>
-              {?} == {?}
+              hello == hello
             </Expanded>
           </Expression>
           <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/StringBuilder.tests.cpp" >
@@ -5090,7 +5090,7 @@ Message from section two
               s2 == "hello"
             </Original>
             <Expanded>
-              {?} == "hello"
+              hello == "hello"
             </Expanded>
           </Expression>
           <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/StringBuilder.tests.cpp" >
@@ -5112,7 +5112,7 @@ Message from section two
               s2 == "hello"
             </Original>
             <Expanded>
-              {?} == "hello"
+              hello == "hello"
             </Expanded>
           </Expression>
           <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/StringBuilder.tests.cpp" >
@@ -5225,42 +5225,18 @@ Message from section two
             original == "original"
           </Original>
           <Expanded>
-            {?} == "original"
+            original == "original"
           </Expanded>
         </Expression>
-        <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/StringRef.tests.cpp" >
+        <Expression success="false" type="REQUIRE" filename="projects/<exe-name>/StringRef.tests.cpp" >
           <Original>
             isSubstring( original )
           </Original>
           <Expanded>
-            true
+            false
           </Expanded>
         </Expression>
-        <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/StringRef.tests.cpp" >
-          <Original>
-            isOwned( original ) == false
-          </Original>
-          <Expanded>
-            false == false
-          </Expanded>
-        </Expression>
-        <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/StringRef.tests.cpp" >
-          <Original>
-            isSubstring( original ) == false
-          </Original>
-          <Expanded>
-            false == false
-          </Expanded>
-        </Expression>
-        <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/StringRef.tests.cpp" >
-          <Original>
-            isOwned( original )
-          </Original>
-          <Expanded>
-            true
-          </Expanded>
-        </Expression>
-        <OverallResults successes="5" failures="0" expectedFailures="0"/>
+        <OverallResults successes="1" failures="1" expectedFailures="0"/>
       </Section>
       <Section name="Substrings" filename="projects/<exe-name>/StringRef.tests.cpp" >
         <Section name="zero-based substring" filename="projects/<exe-name>/StringRef.tests.cpp" >
@@ -5293,7 +5269,7 @@ Message from section two
               ss == "hello"
             </Original>
             <Expanded>
-              {?} == "hello"
+              hello == "hello"
             </Expanded>
           </Expression>
           <OverallResults successes="4" failures="0" expectedFailures="0"/>
@@ -5418,7 +5394,7 @@ Message from section two
             StringRef("hello") == StringRef("hello")
           </Original>
           <Expanded>
-            {?} == {?}
+            hello == hello
           </Expanded>
         </Expression>
         <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/StringRef.tests.cpp" >
@@ -5426,7 +5402,7 @@ Message from section two
             StringRef("hello") != StringRef("cello")
           </Original>
           <Expanded>
-            {?} != {?}
+            hello != cello
           </Expanded>
         </Expression>
         <OverallResults successes="2" failures="0" expectedFailures="0"/>
@@ -5438,7 +5414,7 @@ Message from section two
               copied == "hot potato"
             </Original>
             <Expanded>
-              {?} == "hot potato"
+              hot potato == "hot potato"
             </Expanded>
           </Expression>
           <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/StringRef.tests.cpp" >
@@ -5446,7 +5422,7 @@ Message from section two
               str == "hot potato"
             </Original>
             <Expanded>
-              {?} == "hot potato"
+              hot potato == "hot potato"
             </Expanded>
           </Expression>
           <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/StringRef.tests.cpp" >
@@ -5476,7 +5452,7 @@ Message from section two
               copied == "hot potato"
             </Original>
             <Expanded>
-              {?} == "hot potato"
+              hot potato == "hot potato"
             </Expanded>
           </Expression>
           <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/StringRef.tests.cpp" >
@@ -5514,7 +5490,7 @@ Message from section two
               sr == "a standard string"
             </Original>
             <Expanded>
-              {?} == "a standard string"
+              a standard string == "a standard string"
             </Expanded>
           </Expression>
           <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/StringRef.tests.cpp" >
@@ -5536,7 +5512,7 @@ Message from section two
               sr == "a standard string"
             </Original>
             <Expanded>
-              {?} == "a standard string"
+              a standard string == "a standard string"
             </Expanded>
           </Expression>
           <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/StringRef.tests.cpp" >
@@ -5558,7 +5534,7 @@ Message from section two
               sr == "a standard string"
             </Original>
             <Expanded>
-              {?} == "a standard string"
+              a standard string == "a standard string"
             </Expanded>
           </Expression>
           <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/StringRef.tests.cpp" >
@@ -5639,7 +5615,7 @@ Message from section two
         </Section>
         <OverallResults successes="2" failures="0" expectedFailures="0"/>
       </Section>
-      <OverallResult success="true"/>
+      <OverallResult success="false"/>
     </TestCase>
     <TestCase name="Tabs and newlines show in output" tags="[.][failing][hide][whitespace]" filename="projects/<exe-name>/MiscTests.cpp" >
       <Expression success="false" type="CHECK" filename="projects/<exe-name>/MiscTests.cpp" >
@@ -8592,7 +8568,7 @@ loose text artifact
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="791" failures="102" expectedFailures="21"/>
+    <OverallResults successes="787" failures="103" expectedFailures="21"/>
   </Group>
-  <OverallResults successes="791" failures="101" expectedFailures="21"/>
+  <OverallResults successes="787" failures="102" expectedFailures="21"/>
 </Catch>
