@@ -42,7 +42,7 @@ namespace Catch {
         if( assertionResult.hasMessage() ) {
             // Copy message into messages list.
             // !TBD This should have been done earlier, somewhere
-            MessageBuilder builder( assertionResult.getTestMacroName().c_str(), assertionResult.getSourceInfo(), assertionResult.getResultType() );
+            MessageBuilder builder( assertionResult.getTestMacroName(), assertionResult.getSourceInfo(), assertionResult.getResultType() );
             builder << assertionResult.getMessage();
             builder.m_info.message = builder.m_stream.str();
 

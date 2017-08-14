@@ -23,9 +23,9 @@ namespace Catch {
                     .registerTest(
                         makeTestCase(
                             invoker,
-                            extractClassName( classOrMethod.c_str() ),
-                            nameAndTags.name.c_str(),
-                            nameAndTags.tags.c_str(),
+                            extractClassName( classOrMethod ),
+                            nameAndTags.name,
+                            nameAndTags.tags,
                             lineInfo));
         } catch (...) {
             // Do not throw when constructing global objects, instead register the exception to be processed later

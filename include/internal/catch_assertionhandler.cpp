@@ -79,7 +79,7 @@ namespace Catch {
     }
     void AssertionHandler::handle( ResultWas::OfType resultType, StringRef const& message ) {
         AssertionResultData data( resultType, LazyExpression( false ) );
-        data.message = message.c_str();
+        data.message = message;
         handle( data, nullptr );
     }
     void AssertionHandler::handle( ResultWas::OfType resultType, ITransientExpression const* expr, bool negated ) {
@@ -126,7 +126,7 @@ namespace Catch {
     }
 
     void AssertionHandler::useActiveException() {
-        handle( ResultWas::ThrewException, Catch::translateActiveException().c_str() );
+        handle( ResultWas::ThrewException, Catch::translateActiveException() );
     }
 
     void AssertionHandler::setExceptionGuard() {

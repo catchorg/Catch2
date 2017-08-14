@@ -53,7 +53,7 @@ namespace Catch {
         BinaryExpr( bool comparisionResult, LhsT lhs, StringRef op, RhsT rhs )
         :   m_result( comparisionResult ),
             m_lhs( lhs ),
-            m_op( op.c_str() ),
+            m_op( op ),
             m_rhs( rhs )
         {}
     };

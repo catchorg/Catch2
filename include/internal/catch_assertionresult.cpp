@@ -52,16 +52,23 @@ namespace Catch {
 
     std::string AssertionResult::getExpression() const {
         if (isFalseTest(m_info.resultDisposition))
-            return '!' + std::string(m_info.capturedExpression.c_str());
+            return '!' + std::string(m_info.capturedExpression);
         else
-            return std::string(m_info.capturedExpression.c_str());
+            return m_info.capturedExpression;
     }
 
     std::string AssertionResult::getExpressionInMacro() const {
+        std::string expr;
         if( m_info.macroName[0] == 0 )
-            return std::string(m_info.capturedExpression.c_str());
-        else
-            return std::string(m_info.macroName.c_str()) + "( " + m_info.capturedExpression.c_str() + " )";
+            expr = m_info.capturedExpression;
+        else {
+            expr.reserve( m_info.macroName.size() + m_info.capturedExpression.size() + 4 );
+            expr += m_info.macroName;
+            expr += "( ";
+            expr += m_info.capturedExpression;
+            expr += " )";
+        }
+        return expr;
     }
 
     bool AssertionResult::hasExpandedExpression() const {
@@ -83,7 +90,7 @@ namespace Catch {
     }
 
     std::string AssertionResult::getTestMacroName() const {
-        return m_info.macroName.c_str();
+        return m_info.macroName;
     }
 
 } // end namespace Catch

@@ -28,7 +28,7 @@ namespace Catch {
     public:
         // Keep most of this inline as it's on the code path that is being timed
         BenchmarkLooper( StringRef name )
-        :   m_name( name.c_str() ),
+        :   m_name( name ),
             m_resolution( getResolution() )
         {
             reportStart();
