@@ -13,7 +13,6 @@
 
 namespace Catch {
     
-    class String;
     class StringData;
 
     /// A non-owning string class (similar to the forthcoming std::string_view)
@@ -26,7 +25,6 @@ namespace Catch {
     class StringRef {
         friend struct StringRefTestAccess;
         friend class StringData;
-        friend class StringBuilder;
 
         using size_type = size_t;
         
@@ -43,8 +41,6 @@ namespace Catch {
         StringRef( StringRef&& other ) noexcept;
         StringRef( char const* rawChars ) noexcept;
         StringRef( char const* rawChars, size_type size ) noexcept;
-        StringRef( String const& other ) noexcept;
-        StringRef( String&& other ) noexcept;
         StringRef( std::string const& stdString ) noexcept;
         ~StringRef() noexcept;
         
@@ -74,9 +70,9 @@ namespace Catch {
         auto data() const noexcept -> char const*;
     };
 
-    auto operator + ( StringRef const& lhs, StringRef const& rhs ) -> String;
-    auto operator + ( StringRef const& lhs, char const* rhs ) -> String;
-    auto operator + ( char const* lhs, StringRef const& rhs ) -> String;
+    auto operator + ( StringRef const& lhs, StringRef const& rhs ) -> std::string;
+    auto operator + ( StringRef const& lhs, char const* rhs ) -> std::string;
+    auto operator + ( char const* lhs, StringRef const& rhs ) -> std::string;
 
     auto operator << ( std::ostream& os, StringRef const& sr ) -> std::ostream&;
 

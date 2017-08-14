@@ -1,5 +1,4 @@
 #include "../include/internal/catch_stringref.h"
-#include "../include/internal/catch_string.h"
 
 #include "catch.hpp"
 
@@ -40,8 +39,7 @@ namespace Catch {
 TEST_CASE( "StringRef", "[Strings]" ) {
     
     using Catch::StringRef;
-    using Catch::String;
-    
+
     SECTION( "Empty string" ) {
         StringRef empty;
         REQUIRE( empty.empty() );
@@ -123,32 +121,6 @@ TEST_CASE( "StringRef", "[Strings]" ) {
     SECTION( "Comparisons" ) {
         REQUIRE( StringRef("hello") == StringRef("hello") );
         REQUIRE( StringRef("hello") != StringRef("cello") );
-    }
-    
-    SECTION( "From string" ) {
-        String str = "hot potato";
-        auto originalPointer = str.c_str();
-        
-        SECTION( "Copied" ) {
-            // After a String is "copied" to a StringRef
-            // It has only copied the pointer and size
-            // - it does not take ownership
-            StringRef copied = str;
-            REQUIRE( copied == "hot potato" );
-            REQUIRE( str == "hot potato" );
-            REQUIRE( isOwned( copied ) == false );
-            REQUIRE( data( copied ) == originalPointer );
-        }
-        SECTION( "Moved" ) {
-            // After a String is *moved* to a StringRef
-            // The StringRef takes ownership of the underlying data
-            // and the String is left in an empty state
-            StringRef copied = std::move( str );
-            REQUIRE( copied == "hot potato" );
-            REQUIRE( isOwned( copied ) );
-            REQUIRE( str.empty() );
-            REQUIRE( data( copied ) == originalPointer );
-        }
     }
 
     SECTION( "from std::string" ) {

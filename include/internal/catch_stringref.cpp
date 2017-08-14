@@ -6,8 +6,6 @@
  */
 
 #include "catch_stringref.h"
-#include "catch_stringbuilder.h"
-#include "catch_string.h"
 #include "catch_stringdata.h"
 
 #include <cstring>
@@ -58,18 +56,6 @@ namespace Catch {
             m_size = rawSize;
     }
     
-    StringRef::StringRef( String const& other ) noexcept
-    :   m_start( other.c_str() ),
-        m_size( other.size() )
-    {}
-    
-    StringRef::StringRef( String&& str ) noexcept
-    :   m_start( str.c_str() ),
-        m_size( str.size() ),
-        m_data( str.m_data )
-    {
-        str.m_data = StringData::getEmpty();
-    }
     StringRef::StringRef( std::string const& stdString ) noexcept
     :   m_start( stdString.c_str() ),
         m_size( stdString.size() )
@@ -112,9 +98,9 @@ namespace Catch {
     
     void StringRef::takeOwnership() {
         if( !isOwned() ) {
-            StringRef temp = String( *this );
-            swap( temp );
-        }        
+            m_data = StringData::create( *this );
+            m_start = m_data->chars;
+        }
     }
     auto StringRef::substr( size_type start, size_type size ) const noexcept -> StringRef {
         if( start < m_size )
@@ -159,18 +145,18 @@ namespace Catch {
         return noChars;
     }
 
-    auto operator + ( StringRef const& lhs, StringRef const& rhs ) -> String {
-        StringBuilder buf;
-        buf.reserve( lhs.size() + rhs.size() );
-        buf.append( lhs );
-        buf.append( rhs );
-        return String( std::move( buf ) );
+    auto operator + ( StringRef const& lhs, StringRef const& rhs ) -> std::string {
+        std::string str;
+        str.reserve( lhs.size() + rhs.size() );
+        str += lhs;
+        str += rhs;
+        return str;
     }
-    auto operator + ( StringRef const& lhs, const char* rhs ) -> String {
-        return lhs + StringRef( rhs );
+    auto operator + ( StringRef const& lhs, const char* rhs ) -> std::string {
+        return std::string( lhs ) + std::string( rhs );
     }
-    auto operator + ( char const* lhs, StringRef const& rhs ) -> String {
-        return StringRef( lhs ) + rhs;
+    auto operator + ( char const* lhs, StringRef const& rhs ) -> std::string {
+        return std::string( lhs ) + std::string( rhs );
     }
 
     auto operator << ( std::ostream& os, StringRef const& str ) -> std::ostream& {
