@@ -6,7 +6,6 @@
  */
 
 #include "catch_stringref.h"
-#include "catch_stringdata.h"
 
 #include <cstring>
 #include <ostream>
@@ -25,12 +24,8 @@ namespace Catch {
     
     StringRef::StringRef( StringRef const& other ) noexcept
     :   m_start( other.m_start ),
-        m_size( other.m_size ),
-        m_data( other.m_data )
-    {
-        if( m_data )
-            m_data->addRef();
-    }
+        m_size( other.m_size )
+    {}
     
     StringRef::StringRef( StringRef&& other ) noexcept
     :   m_start( other.m_start ),
@@ -62,8 +57,7 @@ namespace Catch {
     {}
 
     StringRef::~StringRef() noexcept {
-        if( isOwned() )
-            m_data->release();
+        delete[] m_data;
     }
     
     auto StringRef::operator = ( StringRef other ) noexcept -> StringRef& {
@@ -98,8 +92,10 @@ namespace Catch {
     
     void StringRef::takeOwnership() {
         if( !isOwned() ) {
-            m_data = StringData::create( *this );
-            m_start = m_data->chars;
+            m_data = new char[m_size+1];
+            strncpy( m_data, m_start, m_size );
+            m_data[m_size] = '\0';
+            m_start = m_data;
         }
     }
     auto StringRef::substr( size_type start, size_type size ) const noexcept -> StringRef {

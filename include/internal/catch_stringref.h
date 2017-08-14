@@ -24,14 +24,13 @@ namespace Catch {
     /// threads.
     class StringRef {
         friend struct StringRefTestAccess;
-        friend class StringData;
 
         using size_type = size_t;
         
         char const* m_start;
         size_type m_size;
         
-        StringData const* m_data = nullptr;
+        char* m_data = nullptr;
         
         void takeOwnership();
         
