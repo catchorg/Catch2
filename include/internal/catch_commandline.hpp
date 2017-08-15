@@ -77,7 +77,7 @@ namespace Catch {
             throw std::runtime_error( "colour mode must be one of: auto, yes or no" );
     }
     inline void setWaitForKeypress( ConfigData& config, std::string const& keypress ) {
-        auto keypressLc = toLower( keypress );
+        std::string keypressLc = toLower( keypress );
         if( keypressLc == "start" )
             config.waitForKeypress = WaitForKeypress::BeforeStart;
         else if( keypressLc == "exit" )
