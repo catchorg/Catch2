@@ -7,11 +7,9 @@
 
 #include "catch_stringref.h"
 
-#include <cstring>
 #include <ostream>
 #include <cassert>
-
-#define _CRT_SECURE_NO_WARNINGS // Suppress warnings from MSVC about strncpy not being secure
+#include <cstring>
 
 namespace Catch {
 
@@ -95,7 +93,7 @@ namespace Catch {
     void StringRef::takeOwnership() {
         if( !isOwned() ) {
             m_data = new char[m_size+1];
-            strncpy( m_data, m_start, m_size );
+            memcpy( m_data, m_start, m_size );
             m_data[m_size] = '\0';
             m_start = m_data;
         }
