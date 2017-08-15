@@ -39,7 +39,7 @@ namespace Catch {
 
         int abortAfter = -1;
         unsigned int rngSeed = 0;
-        int benchmarkResolutionMultiple = 10;
+        int benchmarkResolutionMultiple = 100;
 
         Verbosity verbosity = Verbosity::Normal;
         WarnAbout::What warnings = WarnAbout::Nothing;

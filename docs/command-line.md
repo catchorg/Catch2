@@ -29,6 +29,7 @@ Click one of the followings links to take you straight to that option - or scrol
 <a href="#rng-seed">                                    `    --rng-seed`</a><br />
 <a href="#libidentify">                                 `    --libidentify`</a><br />
 <a href="#wait-for-keypress">                           `    --wait-for-keypress`</a><br />
+<a href="#benchmark-resolution-multiple">               `    --benchmark-resolution-multiple`</a><br />
 
 </br>
 
@@ -228,6 +229,13 @@ See [The LibIdentify repo for more information and examples](https://github.com/
 Will cause the executable to print a message and wait until the return/ enter key is pressed before continuing -
 either before running any tests, after running all tests - or both, depending on the argument.
 
+<a id="benchmark-resolution-multiple"></a>
+## Specify multiples of clock resolution to run benchmarks for
+<pre>--benchmark-resolution-multiple &lt;multiplier&gt;</pre>
+
+When running benchmarks the clock resolution is estimated. Benchmarks are then run for exponentially increasing
+numbers of iterations until some multiple of the estimated resolution is exceed. By default that multiple is 100, but 
+it can be overriden here.
 
 <a id="usage"></a>
 ## Usage
