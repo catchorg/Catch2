@@ -138,8 +138,7 @@ namespace Catch {
                     << "\nError(s) in input:\n"
                     << Column( result.errorMessage() ).indent( 2 )
                     << "\n\n";
-
-                Catch::cerr() << m_cli << std::endl;
+                Catch::cerr() << "Run with -? for usage\n" << std::endl;
                 return MaxExitCode;
             }
 
