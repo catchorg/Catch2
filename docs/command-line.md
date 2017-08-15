@@ -27,6 +27,8 @@ Click one of the followings links to take you straight to that option - or scrol
 <a href="#listing-available-tests-tags-or-reporters">   `    --list-reporters`</a><br />
 <a href="#order">                                       `    --order`</a><br />
 <a href="#rng-seed">                                    `    --rng-seed`</a><br />
+<a href="#libidentify">                                 `    --libidentify`</a><br />
+<a href="#wait-for-keypress">                           `    --wait-for-keypress`</a><br />
 
 </br>
 
@@ -212,6 +214,20 @@ If a number is provided this is used directly as the seed so the random pattern 
 Alternatively if the keyword ```time``` is provided then the result of calling ```std::time(0)``` is used and so the pattern becomes unpredictable.
 
 In either case the actual value for the seed is printed as part of Catch's output so if an issue is discovered that is sensitive to test ordering the ordering can be reproduced - even if it was originally seeded from ```std::time(0)```.
+
+<a id="libidentify"></a>
+## Identify framework and version according to the libIdentify standard
+<pre>--libidentify</pre>
+
+See [The LibIdentify repo for more information and examples](https://github.com/janwilmans/LibIdentify).
+
+<a id="wait-for-keypress"></a>
+## Wait for key before continuing
+<pre>--wait-for-keypress &lt;start|exit|both&gt;</pre>
+
+Will cause the executable to print a message and wait until the return/ enter key is pressed before continuing -
+either before running any tests, after running all tests - or both, depending on the argument.
+
 
 <a id="usage"></a>
 ## Usage
