@@ -11,6 +11,7 @@
 #include "catch_capture.hpp"
 #include "catch_matchers.hpp"
 #include "catch_matchers_string.h"
+#include "catch_matchers_vector.h"
 
 namespace Catch {
 
