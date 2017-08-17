@@ -55,7 +55,7 @@ namespace Catch {
     AutomakeReporter::~AutomakeReporter() {}
 #endif
 
-    INTERNAL_CATCH_REGISTER_REPORTER( "automake", AutomakeReporter)
+    CATCH_REGISTER_REPORTER( "automake", AutomakeReporter)
 
 } // end namespace Catch
 

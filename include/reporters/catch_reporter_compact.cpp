@@ -299,6 +299,6 @@ namespace Catch {
 
     CompactReporter::~CompactReporter() {}
 
-    INTERNAL_CATCH_REGISTER_REPORTER( "compact", CompactReporter )
+    CATCH_REGISTER_REPORTER( "compact", CompactReporter )
 
 } // end namespace Catch

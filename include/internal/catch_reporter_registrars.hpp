@@ -54,7 +54,7 @@ namespace Catch {
     };
 }
 
-#define INTERNAL_CATCH_REGISTER_REPORTER( name, reporterType ) \
+#define CATCH_REGISTER_REPORTER( name, reporterType ) \
     namespace{ Catch::ReporterRegistrar<reporterType> catch_internal_RegistrarFor##reporterType( name ); }
 
 #define CATCH_REGISTER_LISTENER( listenerType ) \

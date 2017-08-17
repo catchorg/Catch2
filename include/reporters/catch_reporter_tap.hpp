@@ -248,7 +248,7 @@ namespace Catch {
     TAPReporter::~TAPReporter() {}
 #endif
 
-    INTERNAL_CATCH_REGISTER_REPORTER( "tap", TAPReporter )
+    CATCH_REGISTER_REPORTER( "tap", TAPReporter )
 
 } // end namespace Catch
 

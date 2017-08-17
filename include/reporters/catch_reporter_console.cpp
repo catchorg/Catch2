@@ -634,7 +634,7 @@ namespace Catch {
         bool m_headerPrinted = false;
     };
 
-    INTERNAL_CATCH_REGISTER_REPORTER( "console", ConsoleReporter )
+    CATCH_REGISTER_REPORTER( "console", ConsoleReporter )
 
     ConsoleReporter::~ConsoleReporter() {}
 

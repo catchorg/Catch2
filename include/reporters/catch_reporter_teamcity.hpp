@@ -206,7 +206,7 @@ namespace Catch {
     TeamCityReporter::~TeamCityReporter() {}
 #endif
 
-    INTERNAL_CATCH_REGISTER_REPORTER( "teamcity", TeamCityReporter )
+    CATCH_REGISTER_REPORTER( "teamcity", TeamCityReporter )
 
 } // end namespace Catch
 
