@@ -25,6 +25,9 @@ The core part of the Chakra Javascript engine that powers Microsoft Edge
 ### [ChaiScript](https://github.com/ChaiScript/ChaiScript)
 A, header-only, embedded scripting language designed from the ground up to directly target C++ and take advantage of modern C++ development techniques
 
+### [Clara](https://github.com/philsquared/Clara)
+A, single-header-only, type-safe, command line parser - which also prints formatted usage strings.
+
 ### [Couchbase-lite-core](https://github.com/couchbase/couchbase-lite-core)
 The next-generation core storage and query engine for Couchbase Lite/
 
@@ -51,6 +54,9 @@ A C++ client library for Consul. Consul is a distributed tool for discovering an
 
 ### [Reactive-Extensions/ RxCpp](https://github.com/Reactive-Extensions/RxCpp)
 A library of algorithms for values-distributed-in-time
+
+### [TextFlowCpp](https://github.com/philsquared/textflowcpp)
+A small, single-header-only, library for wrapping and composing columns of text
 
 ### [Trompeloeil](https://github.com/rollbear/trompeloeil)
 A thread safe header only mocking framework for C++14
