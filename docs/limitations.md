@@ -2,6 +2,20 @@
 
 Catch has some known limitations, that we are not planning to change. Some of these are caused by our desire to support C++98 compilers, some of these are caused by our desire to keep Catch crossplatform, some exist because their priority is seen as low compared to the development effort they would need and some other yet are compiler/runtime bugs.
 
+## Implementation limits
+### Sections nested in loops
+
+If you are using `SECTION`s inside loops, you have to create them with different name per loop's iteration. The recommended way to do so is to incorporate the loop's counter into section's name, like so
+```cpp
+TEST_CASE( "Looped section" ) {
+    for (char i = '0'; i < '5'; ++i) {
+        SECTION(std::string("Looped section ") + i) {
+            SUCCEED( "Everything is OK" );
+        }
+    }
+}
+```
+
 ## Features
 This section outlines some missing features, what is their status and their possible workarounds.
 
