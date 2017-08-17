@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuitesloose text artifact
 >
-  <testsuite name="<exe-name>" errors="15" failures="88" tests="884" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
+  <testsuite name="<exe-name>" errors="15" failures="88" tests="885" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
     <testcase classname="<exe-name>.global" name="# A test name that starts with a #" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="#748 - captures with unexpected exceptions/outside assertions" time="{duration}">
       <error type="TEST_CASE">
@@ -725,6 +725,7 @@ MiscTests.cpp:<line number>
     <testcase classname="<exe-name>.global" name="nested SECTION tests/s1" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="nested SECTION tests/s1/s2" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="non streamable - with conv. op" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="non-copyable objects" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="not allowed" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="null strings" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="null_ptr" time="{duration}"/>

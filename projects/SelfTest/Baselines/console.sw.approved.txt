@@ -6673,6 +6673,18 @@ with expansion:
   "7" == "7"
 
 -------------------------------------------------------------------------------
+non-copyable objects
+-------------------------------------------------------------------------------
+TrickyTests.cpp:<line number>
+...............................................................................
+
+TrickyTests.cpp:<line number>:
+PASSED:
+  CHECK( ti == typeid(int) )
+with expansion:
+  {?} == {?}
+
+-------------------------------------------------------------------------------
 not allowed
 -------------------------------------------------------------------------------
 MiscTests.cpp:<line number>
@@ -7523,6 +7535,6 @@ MiscTests.cpp:<line number>:
 PASSED:
 
 ===============================================================================
-test cases: 182 | 128 passed |  50 failed |  4 failed as expected
-assertions: 883 | 760 passed | 102 failed | 21 failed as expected
+test cases: 183 | 129 passed |  50 failed |  4 failed as expected
+assertions: 884 | 761 passed | 102 failed | 21 failed as expected
 
