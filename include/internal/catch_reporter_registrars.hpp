@@ -1,3 +1,4 @@
+
 /*
  *  Created by Phil on 31/12/2010.
  *  Copyright 2010 Two Blue Cubes Ltd. All rights reserved.
@@ -39,7 +40,7 @@ namespace Catch {
         class ListenerFactory : public IReporterFactory {
 
             virtual IStreamingReporterPtr create( ReporterConfig const& config ) const override {
-                return std::make_shared<T>( config );
+                return std::unique_ptr<T>( new T( config ) );
             }
             virtual std::string getDescription() const override {
                 return std::string();

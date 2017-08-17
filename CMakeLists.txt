@@ -138,6 +138,7 @@ set(INTERNAL_HEADERS
         ${HEADER_DIR}/internal/catch_enforce.h
         ${HEADER_DIR}/internal/catch_errno_guard.h
         ${HEADER_DIR}/internal/catch_exception_translator_registry.h
+        ${HEADER_DIR}/internal/catch_external_interfaces.h
         ${HEADER_DIR}/internal/catch_fatal_condition.h
         ${HEADER_DIR}/internal/catch_impl.hpp
         ${HEADER_DIR}/internal/catch_interfaces_capture.h

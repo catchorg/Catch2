@@ -19,6 +19,7 @@
 
 #if defined(CATCH_CONFIG_MAIN) || defined(CATCH_CONFIG_RUNNER)
 #  define CATCH_IMPL
+#  define CATCH_CONFIG_EXTERNAL_INTERFACES
 #endif
 
 #ifdef CATCH_IMPL
@@ -50,6 +51,10 @@
 
 #ifdef __OBJC__
 #include "internal/catch_objc.hpp"
+#endif
+
+#ifdef CATCH_CONFIG_EXTERNAL_INTERFACES
+#include "internal/catch_external_interfaces.h"
 #endif
 
 #ifdef CATCH_IMPL
