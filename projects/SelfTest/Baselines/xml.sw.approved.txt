@@ -7433,7 +7433,7 @@ loose text artifact
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="non-copyable objects" tags="[.][hide]" filename="projects/<exe-name>/TrickyTests.cpp" >
+    <TestCase name="non-copyable objects" tags="[.][failing][hide]" filename="projects/<exe-name>/TrickyTests.cpp" >
       <Expression success="true" type="CHECK" filename="projects/<exe-name>/TrickyTests.cpp" >
         <Original>
           ti == typeid(int)
