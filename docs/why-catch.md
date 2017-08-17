@@ -1,12 +1,18 @@
 # Why do we need yet another C++ test framework?
 
-Good question. For C++ there are quite a number of established frameworks, including (but not limited to), [CppUnit](http://sourceforge.net/apps/mediawiki/cppunit/index.php?title=Main_Page), [Google Test](http://code.google.com/p/googletest/), [Boost.Test](http://www.boost.org/doc/libs/1_49_0/libs/test/doc/html/index.html), [Aeryn](https://launchpad.net/aeryn), [Cute](http://r2.ifs.hsr.ch/cute), [Fructose](http://fructose.sourceforge.net/) and [many, many more](http://en.wikipedia.org/wiki/List_of_unit_testing_frameworks#C.2B.2B). Even for Objective-C there are a few, including OCUnit - which now comes bundled with XCode.
+Good question. For C++ there are quite a number of established frameworks,
+including (but not limited to),
+[Google Test](http://code.google.com/p/googletest/),
+[Boost.Test](http://www.boost.org/doc/libs/1_49_0/libs/test/doc/html/index.html),
+[CppUnit](http://sourceforge.net/apps/mediawiki/cppunit/index.php?title=Main_Page),
+[Cute](http://r2.ifs.hsr.ch/cute),
+[many, many more](http://en.wikipedia.org/wiki/List_of_unit_testing_frameworks#C.2B.2B).
 
 So what does Catch bring to the party that differentiates it from these? Apart from a Catchy name, of course.
 
 ## Key Features
 
-* Really easy to get started. Just download catch.hpp, `#include` it and you're away. 
+* Quick and Really easy to get started. Just download catch.hpp, `#include` it and you're away.
 * No external dependencies. As long as you can compile C++11 and have a C++ standard library available.
 * Write test cases as, self-registering, functions (or methods, if you prefer).
 * Divide test cases into sections, each of which is run in isolation (eliminates the need for fixtures).
@@ -27,13 +33,6 @@ So what does Catch bring to the party that differentiates it from these? Apart f
 * Floating point tolerance comparisons are built in using an expressive Approx() syntax.
 * Internal and friendly macros are isolated so name clashes can be managed
 * Matchers
-
-## Objective-C-specific features
-
-* Automatically detects if you are using it from an Objective-C project
-* Works with and without ARC with no additional configuration
-* Implement test fixtures using Obj-C classes too (like OCUnit)
-* Additional built in matchers that work with Obj-C types (e.g. string matchers)
 
 ## Who else is using Catch?
 
