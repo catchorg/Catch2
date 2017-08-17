@@ -8,7 +8,7 @@
 #ifndef TWOBLUECUBES_CATCH_TIMER_H_INCLUDED
 #define TWOBLUECUBES_CATCH_TIMER_H_INCLUDED
 
-#include <stdint.h>
+#include <cstdint>
 
 namespace Catch {
 
