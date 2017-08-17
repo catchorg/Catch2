@@ -436,7 +436,7 @@ TEST_CASE( "null deref", "[.][failing][!nonportable]" ) {
     *x = 1;
 }
 
-TEST_CASE( "non-copyable objects", "[.]" ) {
+TEST_CASE( "non-copyable objects", "[.][failing]" ) {
     // Thanks to Agustin Bergé (@k-ballo on the cpplang Slack) for raising this
     std::type_info const& ti = typeid(int);
     CHECK( ti == typeid(int) );
