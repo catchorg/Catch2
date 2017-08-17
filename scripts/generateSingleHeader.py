@@ -71,6 +71,7 @@ def parseFile( path, filename ):
     for line in f:
         if '// ~*~* CATCH_CPP_STITCH_PLACE *~*~' in line:
             insertCpps()
+            continue
         elif ifParser.match( line ):
             ifdefs = ifdefs + 1
         elif endIfParser.match( line ):
