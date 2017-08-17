@@ -24,25 +24,11 @@ CATCH_REGISTER_TAG_ALIAS( "[@tricky]", "[tricky]~[.]" )
 #   pragma clang diagnostic ignored "-Wc++98-compat"
 #endif
 
+struct TestListener : Catch::TestEventListenerBase {
+    using TestEventListenerBase::TestEventListenerBase; // inherit constructor
+};
+CATCH_REGISTER_LISTENER( TestListener );
 
-//template<size_t size>
-//void parseIntoConfig( const char * (&argv)[size], Catch::ConfigData& config ) {
-//    auto parser = Catch::makeCommandLineParser();
-//    parser.parseInto( Catch::Clara::argsToVector( size, argv ), config );
-//}
-//
-//template<size_t size>
-//std::string parseIntoConfigAndReturnError( const char * (&argv)[size], Catch::ConfigData& config ) {
-//    try {
-//        parseIntoConfig( argv, config );
-//        FAIL( "expected exception" );
-//    }
-//    catch( std::exception& ex ) {
-//        return ex.what();
-//    }
-//    return "";
-//}
-//
 inline Catch::TestCase fakeTestCase( const char* name, const char* desc = "" ){ return Catch::makeTestCase( nullptr, "", name, desc, CATCH_INTERNAL_LINEINFO ); }
 
 TEST_CASE( "Process can be configured on command line", "[config][command-line]" ) {
