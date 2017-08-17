@@ -57,10 +57,6 @@ namespace Catch {
 #define INTERNAL_CATCH_REGISTER_REPORTER( name, reporterType ) \
     namespace{ Catch::ReporterRegistrar<reporterType> catch_internal_RegistrarFor##reporterType( name ); }
 
-// Deprecated - use the form without INTERNAL_
-#define INTERNAL_CATCH_REGISTER_LISTENER( listenerType ) \
-    namespace{ Catch::ListenerRegistrar<listenerType> catch_internal_RegistrarFor##listenerType; }
-
 #define CATCH_REGISTER_LISTENER( listenerType ) \
     namespace{ Catch::ListenerRegistrar<listenerType> catch_internal_RegistrarFor##listenerType; }
 
