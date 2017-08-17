@@ -13,6 +13,13 @@
 namespace Catch {
 namespace Detail {
 
+    double max(double lhs, double rhs) {
+        if (lhs < rhs) {
+            return rhs;
+        }
+        return lhs;
+    }
+
     Approx::Approx ( double value )
     :   m_epsilon( std::numeric_limits<float>::epsilon()*100 ),
         m_margin( 0.0 ),
