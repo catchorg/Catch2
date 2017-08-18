@@ -135,7 +135,7 @@ namespace Catch {
             + Opt( setWarning, "warning name" )
                 ["-w"]["--warn"]
                 ( "enable warnings" )
-            + Opt( [&]( bool ) { config.showDurations = ShowDurations::Always; } )
+            + Opt( [&]( bool flag ) { config.showDurations = flag ? ShowDurations::Always : ShowDurations::Never; }, "yes|no" )
                 ["-d"]["--durations"]
                 ( "show test durations" )
             + Opt( loadTestNamesFromFile, "filename" )
