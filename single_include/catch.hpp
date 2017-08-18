@@ -1,6 +1,6 @@
 /*
- *  Catch v2.0.0-develop.1
- *  Generated: 2017-08-17 08:29:20.059622
+ *  Catch v2.0.0-develop.2
+ *  Generated: 2017-08-18 15:57:31.231591
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2017 Two Blue Cubes Ltd. All rights reserved.
@@ -46,6 +46,7 @@
 // end catch_suppress_warnings.h
 #if defined(CATCH_CONFIG_MAIN) || defined(CATCH_CONFIG_RUNNER)
 #  define CATCH_IMPL
+#  define CATCH_CONFIG_EXTERNAL_INTERFACES
 #endif
 
 #ifdef CATCH_IMPL
@@ -914,14 +915,14 @@ namespace Catch {
 
     // Specialised comparison functions to handle equality comparisons between ints and pointers (NULL deduces as an int)
     template<typename LhsT, typename RhsT>
-    auto compareEqual( LhsT lhs, RhsT&& rhs ) -> bool { return lhs == rhs; };
+    auto compareEqual( LhsT const& lhs, RhsT&& rhs ) -> bool { return const_cast<LhsT&>( lhs ) == rhs; };
     template<typename T>
     auto compareEqual( T* const& lhs, int rhs ) -> bool { return lhs == reinterpret_cast<void const*>( rhs ); };
     template<typename T>
     auto compareEqual( int lhs, T* const& rhs ) -> bool { return reinterpret_cast<void const*>( lhs ) == rhs; };
 
     template<typename LhsT, typename RhsT>
-    auto compareNotEqual( LhsT lhs, RhsT&& rhs ) -> bool { return lhs != rhs; };
+    auto compareNotEqual( LhsT const& lhs, RhsT&& rhs ) -> bool { return const_cast<LhsT&>( lhs ) != rhs; };
     template<typename T>
     auto compareNotEqual( T* const& lhs, int rhs ) -> bool { return lhs != reinterpret_cast<void const*>( rhs ); };
     template<typename T>
@@ -1493,7 +1494,7 @@ namespace Catch {
 // end catch_section_info.h
 // start catch_timer.h
 
-#include <stdint.h>
+#include <cstdint>
 
 namespace Catch {
 
@@ -1701,13 +1702,14 @@ namespace Catch {
 // end catch_interfaces_exception.h
 // start catch_approx.hpp
 
-#include <algorithm>
 #include <cmath>
 
 #include <type_traits>
 
 namespace Catch {
 namespace Detail {
+
+    double max(double lhs, double rhs);
 
     class Approx {
     public:
@@ -1732,7 +1734,7 @@ namespace Detail {
         friend bool operator == ( const T& lhs, Approx const& rhs ) {
             // Thanks to Richard Harris for his help refining this formula
             auto lhs_v = static_cast<double>(lhs);
-            bool relativeOK = std::fabs(lhs_v - rhs.m_value) < rhs.m_epsilon * (rhs.m_scale + (std::max)(std::fabs(lhs_v), std::fabs(rhs.m_value)));
+            bool relativeOK = std::fabs(lhs_v - rhs.m_value) < rhs.m_epsilon * (rhs.m_scale + (max)(std::fabs(lhs_v), std::fabs(rhs.m_value)));
             if (relativeOK) {
                 return true;
             }
@@ -2536,43 +2538,11 @@ return @ desc; \
 // end catch_objc.hpp
 #endif
 
-#ifdef CATCH_IMPL
-// start catch_impl.hpp
+#ifdef CATCH_CONFIG_EXTERNAL_INTERFACES
+// start catch_external_interfaces.h
+#ifndef TWOBLUECUBES_CATCH_EXTERNAL_INTERFACES_H
+#define TWOBLUECUBES_CATCH_EXTERNAL_INTERFACES_H
 
-// Collect all the implementation files together here
-// These are the equivalent of what would usually be cpp files
-
-#ifdef __clang__
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wweak-vtables"
-#endif
-
-// start catch_notimplemented_exception.h
-
-#include <exception>
-
-namespace Catch {
-
-    class NotImplementedException : public std::exception
-    {
-    public:
-        NotImplementedException( SourceLineInfo const& lineInfo );
-
-        virtual ~NotImplementedException() noexcept = default;
-
-        virtual const char* what() const noexcept override;
-
-    private:
-        std::string m_what;
-    };
-
-} // end namespace Catch
-
-///////////////////////////////////////////////////////////////////////////////
-#define CATCH_NOT_IMPLEMENTED throw Catch::NotImplementedException( CATCH_INTERNAL_LINEINFO )
-
-// end catch_notimplemented_exception.h
-// Temporary hack to fix separately provided reporters
 // start catch_reporter_bases.hpp
 
 // start catch_enforce.h
@@ -3596,6 +3566,7 @@ namespace Catch {
 // end catch_reporter_bases.hpp
 // start catch_reporter_registrars.hpp
 
+
 namespace Catch {
 
     template<typename T>
@@ -3625,7 +3596,7 @@ namespace Catch {
         class ListenerFactory : public IReporterFactory {
 
             virtual IStreamingReporterPtr create( ReporterConfig const& config ) const override {
-                return std::make_shared<T>( config );
+                return std::unique_ptr<T>( new T( config ) );
             }
             virtual std::string getDescription() const override {
                 return std::string();
@@ -3640,17 +3611,54 @@ namespace Catch {
     };
 }
 
-#define INTERNAL_CATCH_REGISTER_REPORTER( name, reporterType ) \
+#define CATCH_REGISTER_REPORTER( name, reporterType ) \
     namespace{ Catch::ReporterRegistrar<reporterType> catch_internal_RegistrarFor##reporterType( name ); }
-
-// Deprecated - use the form without INTERNAL_
-#define INTERNAL_CATCH_REGISTER_LISTENER( listenerType ) \
-    namespace{ Catch::ListenerRegistrar<listenerType> catch_internal_RegistrarFor##listenerType; }
 
 #define CATCH_REGISTER_LISTENER( listenerType ) \
     namespace{ Catch::ListenerRegistrar<listenerType> catch_internal_RegistrarFor##listenerType; }
 
 // end catch_reporter_registrars.hpp
+#endif // TWOBLUECUBES_CATCH_EXTERNAL_INTERFACES_H
+// end catch_external_interfaces.h
+#endif
+
+#ifdef CATCH_IMPL
+// start catch_impl.hpp
+
+// Collect all the implementation files together here
+// These are the equivalent of what would usually be cpp files
+
+#ifdef __clang__
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wweak-vtables"
+#endif
+
+// start catch_notimplemented_exception.h
+
+#include <exception>
+
+namespace Catch {
+
+    class NotImplementedException : public std::exception
+    {
+    public:
+        NotImplementedException( SourceLineInfo const& lineInfo );
+
+        virtual ~NotImplementedException() noexcept = default;
+
+        virtual const char* what() const noexcept override;
+
+    private:
+        std::string m_what;
+    };
+
+} // end namespace Catch
+
+///////////////////////////////////////////////////////////////////////////////
+#define CATCH_NOT_IMPLEMENTED throw Catch::NotImplementedException( CATCH_INTERNAL_LINEINFO )
+
+// end catch_notimplemented_exception.h
+// Temporary hack to fix separately provided reporters
 //
 
 // start catch_leak_detector.h
@@ -5696,6 +5704,13 @@ namespace Catch {
 namespace Catch {
 namespace Detail {
 
+    double max(double lhs, double rhs) {
+        if (lhs < rhs) {
+            return rhs;
+        }
+        return lhs;
+    }
+
     Approx::Approx ( double value )
     :   m_epsilon( std::numeric_limits<float>::epsilon()*100 ),
         m_margin( 0.0 ),
@@ -5978,7 +5993,8 @@ namespace Catch {
     // There is another overload, in catch_assertinhandler.h/.cpp, that only takes a string and infers
     // the Equals matcher (so the header does not mention matchers)
     void handleExceptionMatchExpr( AssertionHandler& handler, StringMatcher const& matcher, StringRef matcherString  ) {
-        MatchExpr<std::string, StringMatcher const&> expr( Catch::translateActiveException(), matcher, matcherString );
+        std::string exceptionMessage = Catch::translateActiveException();
+        MatchExpr<std::string, StringMatcher const&> expr( exceptionMessage, matcher, matcherString );
         handler.handle( expr );
     }
 
@@ -6111,7 +6127,7 @@ namespace Catch {
             + Opt( setWarning, "warning name" )
                 ["-w"]["--warn"]
                 ( "enable warnings" )
-            + Opt( [&]( bool ) { config.showDurations = ShowDurations::Always; } )
+            + Opt( [&]( bool flag ) { config.showDurations = flag ? ShowDurations::Always : ShowDurations::Never; }, "yes|no" )
                 ["-d"]["--durations"]
                 ( "show test durations" )
             + Opt( loadTestNamesFromFile, "filename" )
@@ -9484,7 +9500,7 @@ namespace Catch {
     }
 
     Version const& libraryVersion() {
-        static Version version( 2, 0, 0, "develop", 1 );
+        static Version version( 2, 0, 0, "develop", 2 );
         return version;
     }
 
@@ -10143,7 +10159,7 @@ namespace Catch {
 
     CompactReporter::~CompactReporter() {}
 
-    INTERNAL_CATCH_REGISTER_REPORTER( "compact", CompactReporter )
+    CATCH_REGISTER_REPORTER( "compact", CompactReporter )
 
 } // end namespace Catch
 // end catch_reporter_compact.cpp
@@ -10768,7 +10784,7 @@ namespace Catch {
         bool m_headerPrinted = false;
     };
 
-    INTERNAL_CATCH_REGISTER_REPORTER( "console", ConsoleReporter )
+    CATCH_REGISTER_REPORTER( "console", ConsoleReporter )
 
     ConsoleReporter::~ConsoleReporter() {}
 
@@ -11014,7 +11030,7 @@ namespace Catch {
     };
 
     JunitReporter::~JunitReporter() {}
-    INTERNAL_CATCH_REGISTER_REPORTER( "junit", JunitReporter )
+    CATCH_REGISTER_REPORTER( "junit", JunitReporter )
 
 } // end namespace Catch
 // end catch_reporter_junit.cpp
@@ -11311,11 +11327,10 @@ namespace Catch {
     };
 
     XmlReporter::~XmlReporter() {}
-    INTERNAL_CATCH_REGISTER_REPORTER( "xml", XmlReporter )
+    CATCH_REGISTER_REPORTER( "xml", XmlReporter )
 
 } // end namespace Catch
 // end catch_reporter_xml.cpp
-// ~*~* CATCH_CPP_STITCH_PLACE *~*~
 
 namespace Catch {
     LeakDetector leakDetector;
@@ -11443,8 +11458,6 @@ int main (int argc, char * const argv[]) {
 
 #define CATCH_ANON_TEST_CASE() INTERNAL_CATCH_TESTCASE()
 
-#define CATCH_REGISTER_REPORTER( name, reporterType ) INTERNAL_CATCH_REGISTER_REPORTER( name, reporterType )
-
 // "BDD-style" convenience wrappers
 #define CATCH_SCENARIO( ... ) CATCH_TEST_CASE( "Scenario: " __VA_ARGS__ )
 #define CATCH_SCENARIO_METHOD( className, ... ) INTERNAL_CATCH_TEST_CASE_METHOD( className, "Scenario: " __VA_ARGS__ )
@@ -11501,8 +11514,6 @@ int main (int argc, char * const argv[]) {
 #define FAIL_CHECK( ... ) INTERNAL_CATCH_MSG( "FAIL_CHECK", Catch::ResultWas::ExplicitFailure, Catch::ResultDisposition::ContinueOnFailure, __VA_ARGS__ )
 #define SUCCEED( ... ) INTERNAL_CATCH_MSG( "SUCCEED", Catch::ResultWas::Ok, Catch::ResultDisposition::ContinueOnFailure, __VA_ARGS__ )
 #define ANON_TEST_CASE() INTERNAL_CATCH_TESTCASE()
-
-#define REGISTER_REPORTER( name, reporterType ) INTERNAL_CATCH_REGISTER_REPORTER( name, reporterType )
 
 #endif
 
