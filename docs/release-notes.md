@@ -1,3 +1,45 @@
+# 2.0.0 (in progress)
+
+## Breaking changes
+* Removed C++98 support
+* Removed legacy reporter support
+* Removed legacy generator support
+  * Generator support will come back later, reworked
+* Removed `Catch::toString` support
+  * The new stringification machinery uses `Catch::StringMaker` specializations first and `operator<<` overloads second.
+* Removed legacy `SCOPED_MSG` and `SCOPED_INFO` macros
+* Output into debugger is now colourized
+* `*_THROWS_AS(expr, exception_type)` now unconditionally appends `const&` to the exception type.
+* `CATCH_CONFIG_FAST_COMPILE` now affects the `CHECK_` family of assertions as well as `REQUIRE_` family of assertions
+  * This is most noticeable in `CHECK(throws())`, which would previously report failure, properly stringify the exception and continue. Now it will report failure and stop executing current section.
+
+## Improvements
+* Reporters and Listeners can be defined in files different from the main file
+  * The file has to define `CATCH_CONFIG_EXTERNAL_INTERFACES` before including catch.hpp.
+* Errors that happen during set up before main are now caught and properly reported once main is entered
+  * If you are providing your own main, you can access and use these as well.
+* New assertion macros, *_THROWS_WITH(expr, exception_type, matcher) are provided
+  * As the arguments suggest, these allow you to assert that an expression throws desired type of exception and pass the exception to a matcher.
+* JUnit reporter no longer has significantly different output for test cases with and without sections
+* Most assertions now support expressions containing commas (ie `REQUIRE(foo() == std::vector<int>{1, 2, 3});`)
+* Catch now contains experimental micro benchmarking support
+  * See `projects/SelfTest/Benchmark.tests.cpp` for examples
+  * The support being experiment means that it can be changed without prior notice
+* Catch uses new CLI parsing library (Clara)
+  * Users can now easily add new command line options to the final executable
+  * This also leads to some changes in `Catch::Session` interface
+
+## Fixes
+
+
+## Internal changes
+* The development version now uses .cpp files instead of header files containing implementation.
+  * This makes partial rebuilds much faster during development
+* The expression decomposition layer has been rewritten
+* The evaluation layer has been rewritten
+* New library (TextFlow) is used for formatting text to output
+
+
 # 1.9.6
 
 ### Improvements
