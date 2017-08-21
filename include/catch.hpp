@@ -22,6 +22,8 @@
 #  define CATCH_CONFIG_EXTERNAL_INTERFACES
 #endif
 
+#include "internal/catch_platform.h"
+
 #ifdef CATCH_IMPL
 #  ifndef CLARA_CONFIG_MAIN
 #    define CLARA_CONFIG_MAIN_NOT_DEFINED
