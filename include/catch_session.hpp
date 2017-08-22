@@ -208,12 +208,12 @@ namespace Catch {
         int run() {
             if( ( m_configData.waitForKeypress & WaitForKeypress::BeforeStart ) != 0 ) {
                 Catch::cout() << "...waiting for enter/ return before starting" << std::endl;
-                std::getchar();
+                static_cast<void>(std::getchar());
             }
             int exitCode = runInternal();
             if( ( m_configData.waitForKeypress & WaitForKeypress::BeforeExit ) != 0 ) {
                 Catch::cout() << "...waiting for enter/ return before exiting, with code: " << exitCode << std::endl;
-                std::getchar();
+                static_cast<void>(std::getchar());
             }
             return exitCode;
         }
