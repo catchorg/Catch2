@@ -102,4 +102,4 @@ On Windows Catch includes `windows.h`. To minimize global namespace clutter in t
 
 ---
 
-[Home](Readme.md)
+[Home](Readme.md#top)

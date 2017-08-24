@@ -45,4 +45,4 @@ CATCH_TRANSLATE_EXCEPTION( MyType& ex ) {
 
 ---
 
-[Home](Readme.md)
+[Home](Readme.md#top)

@@ -132,7 +132,7 @@ REQUIRE_NOTHROW([&](){
 
 ## Matcher expressions
 
-To support Matchers a slightly different form is used. Matchers have [their own documentation](matchers.md).
+To support Matchers a slightly different form is used. Matchers have [their own documentation](matchers.md#top).
 
 * **REQUIRE_THAT(** _lhs_, _matcher expression_ **)** and  
 * **CHECK_THAT(** _lhs_, _matcher expression_ **)**  
@@ -146,4 +146,4 @@ For more details, along with workarounds, see the section on [the limitations pa
 
 ---
 
-[Home](Readme.md)
+[Home](Readme.md#top)
