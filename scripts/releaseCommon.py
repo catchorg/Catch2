@@ -6,6 +6,8 @@ import re
 import string
 
 from scriptCommon import catchPath
+import generateSingleHeader
+import updateWandbox
 
 versionParser = re.compile( r'(\s*static\sVersion\sversion)\s*\(\s*(.*)\s*,\s*(.*)\s*,\s*(.*)\s*,\s*\"(.*)\"\s*,\s*(.*)\s*\).*' )
 rootPath = os.path.join( catchPath, 'include/' )
@@ -76,44 +78,61 @@ class Version:
         for line in lines:
             f.write( line + "\n" )
 
-    def updateReadmeFile(self):
-        downloadParser = re.compile( r'<a href=\"https://github.com/philsquared/Catch/releases/download/v\d+\.\d+\.\d+/catch.hpp\">' )
-        f = open( readmePath, 'r' )
-        lines = []
-        for line in f:
+def updateReadmeFile(version):
+    downloadParser = re.compile( r'<a href=\"https://github.com/philsquared/Catch/releases/download/v\d+\.\d+\.\d+/catch.hpp\">' )
+    success, wandboxLink = updateWandbox.uploadFiles()
+    if not success:
+        print('Error when uploading to wandbox: {}'.format(wandboxLink))
+        exit(1)
+    f = open( readmePath, 'r' )
+    lines = []
+    for line in f:
+        lines.append( line.rstrip() )
+    f.close()
+    f = open( readmePath, 'w' )
+    for line in lines:
+        line = downloadParser.sub( r'<a href="https://github.com/philsquared/Catch/releases/download/v{0}/catch.hpp">'.format(version.getVersionString()) , line)
+        if '[![Try online](https://img.shields.io/badge/try-online-blue.svg)]' in line:
+            line = '[![Try online](https://img.shields.io/badge/try-online-blue.svg)]({0})'.format(wandboxLink)
+        f.write( line + "\n" )
+
+def updateConanFile(version):
+    conanParser = re.compile( r'    version = "\d+\.\d+\.\d+.*"')
+    f = open( conanPath, 'r' )
+    lines = []
+    for line in f:
+        m = conanParser.match( line )
+        if m:
+            lines.append( '    version = "{0}"'.format(format(version.getVersionString())) )
+        else:
             lines.append( line.rstrip() )
-        f.close()
-        f = open( readmePath, 'w' )
-        for line in lines:
-            line = downloadParser.sub( r'<a href="https://github.com/philsquared/Catch/releases/download/v{0}/catch.hpp">'.format(self.getVersionString()) , line)
-            f.write( line + "\n" )
+    f.close()
+    f = open( conanPath, 'w' )
+    for line in lines:
+        f.write( line + "\n" )
 
-    def updateConanFile(self):
-        conanParser = re.compile( r'    version = "\d+\.\d+\.\d+.*"')
-        f = open( conanPath, 'r' )
-        lines = []
-        for line in f:
-            m = conanParser.match( line )
-            if m:
-                lines.append( '    version = "{0}"'.format(format(self.getVersionString())) )
-            else:
-                lines.append( line.rstrip() )
-        f.close()
-        f = open( conanPath, 'w' )
-        for line in lines:
-            f.write( line + "\n" )
+def updateConanTestFile(version):
+    conanParser = re.compile( r'    requires = \"Catch\/\d+\.\d+\.\d+.*@%s\/%s\" % \(username, channel\)')
+    f = open( conanTestPath, 'r' )
+    lines = []
+    for line in f:
+        m = conanParser.match( line )
+        if m:
+            lines.append( '    requires = "Catch/{0}@%s/%s" % (username, channel)'.format(format(version.getVersionString())) )
+        else:
+            lines.append( line.rstrip() )
+    f.close()
+    f = open( conanTestPath, 'w' )
+    for line in lines:
+        f.write( line + "\n" )
 
-    def updateConanTestFile(self):
-        conanParser = re.compile( r'    requires = \"Catch\/\d+\.\d+\.\d+.*@%s\/%s\" % \(username, channel\)')
-        f = open( conanTestPath, 'r' )
-        lines = []
-        for line in f:
-            m = conanParser.match( line )
-            if m:
-                lines.append( '    requires = "Catch/{0}@%s/%s" % (username, channel)'.format(format(self.getVersionString())) )
-            else:
-                lines.append( line.rstrip() )
-        f.close()
-        f = open( conanTestPath, 'w' )
-        for line in lines:
-            f.write( line + "\n" )
+def performUpdates(version):
+    # First update version file, so we can regenerate single header and
+    # have it ready for upload to wandbox, when updating readme
+    version.updateVersionFile()
+    # ToDo: Regenerate single header
+    generateSingleHeader.generate(version)
+    updateReadmeFile(version)
+
+    updateConanFile(version)
+    updateConanTestFile(version)
