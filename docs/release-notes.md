@@ -1,3 +1,4 @@
+<a id="top"></a>
 # 2.0.0 (in progress)
 
 ## Breaking changes

@@ -1,3 +1,4 @@
+<a id="top"></a>
 # Test cases and sections
 
 While Catch fully supports the traditional, xUnit, style of class-based fixtures containing test case methods this is not the preferred style.

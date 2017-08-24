@@ -1,3 +1,4 @@
+<a id="top"></a>
 # Why do my tests take so long to compile?
 
 Several people have reported that test code written with Catch takes much longer to compile than they would expect. Why is that?

@@ -1,3 +1,4 @@
+<a id="top"></a>
 # String conversions
 
 Catch needs to be able to convert types you use in assertions and logging expressions into strings (for logging and reporting purposes).

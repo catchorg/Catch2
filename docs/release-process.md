@@ -1,3 +1,4 @@
+<a id="top"></a>
 # How to release
 
 When enough changes have accumulated, it is time to release new version of Catch. This document describes the proces in doing so, that no steps are forgotten. Note that all referenced scripts can be found in the `scripts/` directory.

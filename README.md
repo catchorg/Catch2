@@ -1,3 +1,4 @@
+<a id="top"></a>
 ![catch logo](catch-logo-small.png)
 
 [![Github Releases](https://img.shields.io/github/release/philsquared/catch.svg)](https://github.com/philsquared/catch/releases)

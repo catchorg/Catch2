@@ -1,3 +1,4 @@
+<a id="top"></a>
 # Supplying main() yourself
 
 The easiest way to use Catch is to let it supply ```main()``` for you and handle configuring itself from the command line.

@@ -1,3 +1,4 @@
+<a id="top"></a>
 # Assertion Macros
 
 Most test frameworks have a large collection of assertion macros to capture all possible conditional forms (```_EQUALS```, ```_NOTEQUALS```, ```_GREATER_THAN``` etc).

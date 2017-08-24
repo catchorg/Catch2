@@ -1,3 +1,4 @@
+<a id="top"></a>
 # Known limitations
 
 Catch has some known limitations, that we are not planning to change. Some of these are caused by our desire to support C++98 compilers, some of these are caused by our desire to keep Catch crossplatform, some exist because their priority is seen as low compared to the development effort they would need and some other yet are compiler/runtime bugs.
