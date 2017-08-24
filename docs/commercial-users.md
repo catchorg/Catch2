@@ -1,3 +1,4 @@
+<a id="top"></a>
 # Commercial users of Catch
 
 As well as [Open Source](opensource-users.md) users Catch is widely used within proprietary code bases too.

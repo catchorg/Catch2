@@ -1,3 +1,4 @@
+<a id="top"></a>
 To get the most out of Catch, start with the [tutorial](tutorial.md).
 Once you're up and running consider the following reference material.
 

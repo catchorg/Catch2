@@ -1,3 +1,4 @@
+<a id="top"></a>
 # Why do we need yet another C++ test framework?
 
 Good question. For C++ there are quite a number of established frameworks,

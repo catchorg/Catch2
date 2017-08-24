@@ -1,3 +1,4 @@
+<a id="top"></a>
 # Reporters
 
 Catch has a modular reporting system and comes bundled with a handful of useful reporters built in.

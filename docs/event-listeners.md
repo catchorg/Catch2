@@ -1,3 +1,4 @@
+<a id="top"></a>
 # Event Listeners
 
 A `Listener` is a class you can register with Catch that will then be passed events,

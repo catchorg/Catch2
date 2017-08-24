@@ -1,3 +1,4 @@
+<a id="top"></a>
 # Contributing to Catch
 
 So you want to contribute something to Catch? That's great! Whether it's a bug fix, a new feature, support for 
