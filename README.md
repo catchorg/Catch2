@@ -18,11 +18,11 @@ extensions may require additional headers.
 ## How to use it
 This documentation comprises these three parts:
 
-* [Why do we need yet another C++ Test Framework?](docs/why-catch.md)
-* [Tutorial](docs/tutorial.md) - getting started
-* [Reference section](docs/Readme.md) - all the details
+* [Why do we need yet another C++ Test Framework?](docs/why-catch.md#top)
+* [Tutorial](docs/tutorial.md#top) - getting started
+* [Reference section](docs/Readme.md#top) - all the details
 
 ## More
 * Issues and bugs can be raised on the [Issue tracker on GitHub](https://github.com/philsquared/Catch/issues)
 * For discussion or questions please use [the dedicated Google Groups forum](https://groups.google.com/forum/?fromgroups#!forum/catch-forum)
-* See [who else is using Catch](docs/opensource-users.md)
+* See [who else is using Catch](docs/opensource-users.md#top)

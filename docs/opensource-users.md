@@ -84,4 +84,4 @@ Standardese aims to be a nextgen Doxygen
 
 ---
 
-[Home](Readme.md)
+[Home](Readme.md#top)

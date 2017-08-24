@@ -37,10 +37,10 @@ So what does Catch bring to the party that differentiates it from these? Apart f
 
 ## Who else is using Catch?
 
-See the list of [open source projects using Catch](opensource-users.md).
+See the list of [open source projects using Catch](opensource-users.md#top).
 
-See the [tutorial](tutorial.md) to get more of a taste of using Catch in practice 
+See the [tutorial](tutorial.md#top) to get more of a taste of using Catch in practice 
 
 ---
 
-[Home](Readme.md)
+[Home](Readme.md#top)

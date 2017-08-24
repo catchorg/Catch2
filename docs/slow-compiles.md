@@ -19,7 +19,7 @@ Because Catch is implemented *entirely* in headers you might think that the whol
 As a result the main source file *does* compile the whole of Catch every time! So it makes sense to dedicate this file to *only* ```#define```-ing the identifier and ```#include```-ing Catch (and implementing the runner code, if you're doing that). Keep all your test cases in other files. This way you won't pay the recompilation cost for the whole of Catch 
 
 ## Practical example
-Assume you have the `Factorial` function from the [tutorial](tutorial.md) in `factorial.cpp` (with forward declaration in `factorial.h`) and want to test it and keep the compile times down when adding new tests. Then you should have 2 files, `tests-main.cpp` and `tests-factorial.cpp`:
+Assume you have the `Factorial` function from the [tutorial](tutorial.md#top) in `factorial.cpp` (with forward declaration in `factorial.h`) and want to test it and keep the compile times down when adding new tests. Then you should have 2 files, `tests-main.cpp` and `tests-factorial.cpp`:
 
 ```cpp
 // tests-main.cpp
@@ -62,4 +62,4 @@ You can also opt to sacrifice some features in order to speed-up Catch's compila
 
 ---
 
-[Home](Readme.md)
+[Home](Readme.md#top)

@@ -12,7 +12,7 @@ Test cases and sections are very easy to use in practice:
 
 _test name_ and _section name_ are free form, quoted, strings. The optional _tags_ argument is a quoted string containing one or more tags enclosed in square brackets. Tags are discussed below. Test names must be unique within the Catch executable.
 
-For examples see the [Tutorial](tutorial.md)
+For examples see the [Tutorial](tutorial.md#top)
 
 ## Tags
 
@@ -86,4 +86,4 @@ Other than the additional prefixes and the formatting in the console reporter th
 
 ---
 
-[Home](Readme.md)
+[Home](Readme.md#top)

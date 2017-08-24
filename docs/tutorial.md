@@ -40,7 +40,7 @@ TEST_CASE( "Factorials are computed", "[factorial]" ) {
 }
 ```
 
-This will compile to a complete executable which responds to [command line arguments](command-line.md). If you just run it with no arguments it will execute all test cases (in this case there is just one), report any failures, report a summary of how many tests passed and failed and return the number of failed tests (useful for if you just want a yes/ no answer to: "did it work").
+This will compile to a complete executable which responds to [command line arguments](command-line.md#top). If you just run it with no arguments it will execute all test cases (in this case there is just one), report any failures, report a summary of how many tests passed and failed and return the number of failed tests (useful for if you just want a yes/ no answer to: "did it work").
 
 If you run this as written it will pass. Everything is good. Right?
 Well, there is still a bug here. In fact the first version of this tutorial I posted here genuinely had the bug in! So it's not completely contrived (thanks to Daryle Walker (```@CTMacUser```) for pointing this out).
@@ -87,8 +87,8 @@ Of course there are still more issues to deal with. For example we'll hit proble
 
 Although this was a simple test it's been enough to demonstrate a few things about how Catch is used. Let's take moment to consider those before we move on.
 
-1. All we did was ```#define``` one identifier and ```#include``` one header and we got everything - even an implementation of ```main()``` that will [respond to command line arguments](command-line.md). You can only use that ```#define``` in one implementation file, for (hopefully) obvious reasons. Once you have more than one file with unit tests in you'll just ```#include "catch.hpp"``` and go. Usually it's a good idea to have a dedicated implementation file that just has ```#define CATCH_CONFIG_MAIN``` and ```#include "catch.hpp"```. You can also provide your own implementation of main and drive Catch yourself (see [Supplying-your-own-main()](own-main.md)).
-2. We introduce test cases with the ```TEST_CASE``` macro. This macro takes one or two arguments - a free form test name and, optionally, one or more tags (for more see <a href="#test-cases-and-sections">Test cases and Sections</a>, ). The test name must be unique. You can run sets of tests by specifying a wildcarded test name or a tag expression. See the [command line docs](command-line.md) for more information on running tests.
+1. All we did was ```#define``` one identifier and ```#include``` one header and we got everything - even an implementation of ```main()``` that will [respond to command line arguments](command-line.md#top). You can only use that ```#define``` in one implementation file, for (hopefully) obvious reasons. Once you have more than one file with unit tests in you'll just ```#include "catch.hpp"``` and go. Usually it's a good idea to have a dedicated implementation file that just has ```#define CATCH_CONFIG_MAIN``` and ```#include "catch.hpp"```. You can also provide your own implementation of main and drive Catch yourself (see [Supplying-your-own-main()](own-main.md#top)).
+2. We introduce test cases with the ```TEST_CASE``` macro. This macro takes one or two arguments - a free form test name and, optionally, one or more tags (for more see <a href="#test-cases-and-sections">Test cases and Sections</a>, ). The test name must be unique. You can run sets of tests by specifying a wildcarded test name or a tag expression. See the [command line docs](command-line.md#top) for more information on running tests.
 3. The name and tags arguments are just strings. We haven't had to declare a function or method - or explicitly register the test case anywhere. Behind the scenes a function with a generated name is defined for you, and automatically registered using static registry classes. By abstracting the function name away we can name our tests without the constraints of identifier names.
 4. We write our individual test assertions using the ```REQUIRE``` macro. Rather than a separate macro for each type of condition we express the condition naturally using C/C++ syntax. Behind the scenes a simple set of expression templates captures the left-hand-side and right-hand-side of the expression so we can display the values in our test report. As we'll see later there _are_ other assertion macros - but because of this technique the number of them is drastically reduced.
 
@@ -162,7 +162,7 @@ Sections can be nested to an arbitrary depth (limited only by your stack size). 
 
 ## BDD-Style
 
-If you name your test cases and sections appropriately you can achieve a BDD-style specification structure. This became such a useful way of working that first class support has been added to Catch. Scenarios can be specified using ```SCENARIO```, ```GIVEN```, ```WHEN``` and ```THEN``` macros, which map on to ```TEST_CASE```s and ```SECTION```s, respectively. For more details see [Test cases and sections](test-cases-and-sections.md).
+If you name your test cases and sections appropriately you can achieve a BDD-style specification structure. This became such a useful way of working that first class support has been added to Catch. Scenarios can be specified using ```SCENARIO```, ```GIVEN```, ```WHEN``` and ```THEN``` macros, which map on to ```TEST_CASE```s and ```SECTION```s, respectively. For more details see [Test cases and sections](test-cases-and-sections.md#top).
 
 The vector example can be adjusted to use these macros like so:
 
@@ -225,7 +225,7 @@ Scenario: vectors can be sized and resized
 
 To keep the tutorial simple we put all our code in a single file. This is fine to get started - and makes jumping into Catch even quicker and easier. As you write more real-world tests, though, this is not really the best approach.
 
-The requirement is that the following block of code ([or equivalent](own-main.md)):
+The requirement is that the following block of code ([or equivalent](own-main.md#top)):
 
 ```c++
 #define CATCH_CONFIG_MAIN
@@ -234,7 +234,7 @@ The requirement is that the following block of code ([or equivalent](own-main.md
 
 appears in _exactly one_ source file. Use as many additional cpp files (or whatever you call your implementation files) as you need for your tests, partitioned however makes most sense for your way of working. Each additional file need only ```#include "catch.hpp"``` - do not repeat the ```#define```!
 
-In fact it is usually a good idea to put the block with the ```#define``` [in its own source file](slow-compiles.md).
+In fact it is usually a good idea to put the block with the ```#define``` [in its own source file](slow-compiles.md#top).
 
 Do not write your tests in header files!
 
@@ -243,8 +243,8 @@ Do not write your tests in header files!
 
 This has been a brief introduction to get you up and running with Catch, and to point out some of the key differences between Catch and other frameworks you may already be familiar with. This will get you going quite far already and you are now in a position to dive in and write some tests.
 
-Of course there is more to learn - most of which you should be able to page-fault in as you go. Please see the ever-growing [Reference section](Readme.md) for what's available.
+Of course there is more to learn - most of which you should be able to page-fault in as you go. Please see the ever-growing [Reference section](Readme.md#top) for what's available.
 
 ---
 
-[Home](Readme.md)
+[Home](Readme.md#top)
