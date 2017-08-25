@@ -112,7 +112,10 @@ namespace Catch {
         if (result.getResultType() == ResultWas::Ok) {
             m_totals.assertions.passed++;
         } else if (!result.isOk()) {
-            m_totals.assertions.failed++;
+            if( m_activeTestCase->getTestCaseInfo().okToFail() )
+                m_totals.assertions.failedButOk++;
+            else
+                m_totals.assertions.failed++;
         }
 
         // We have no use for the return value (whether messages should be cleared), because messages were made scoped
@@ -297,13 +300,6 @@ namespace Catch {
 
         Counts assertions = m_totals.assertions - prevAssertions;
         bool missingAssertions = testForMissingAssertions(assertions);
-
-        if (testCaseInfo.okToFail()) {
-            std::swap(assertions.failedButOk, assertions.failed);
-            m_totals.assertions.failed -= assertions.failedButOk;
-            m_totals.assertions.failedButOk += assertions.failedButOk;
-        }
-
         SectionStats testCaseSectionStats(testCaseSection, assertions, duration, missingAssertions);
         m_reporter->sectionEnded(testCaseSectionStats);
     }
