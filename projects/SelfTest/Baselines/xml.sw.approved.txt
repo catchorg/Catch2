@@ -12,7 +12,7 @@
         <Exception filename="projects/<exe-name>/ExceptionTests.cpp" >
           expected exception
         </Exception>
-        <OverallResults successes="0" failures="1" expectedFailures="0"/>
+        <OverallResults successes="0" failures="0" expectedFailures="1"/>
       </Section>
       <Section name="inside REQUIRE_NOTHROW" filename="projects/<exe-name>/ExceptionTests.cpp" >
         <Info>
@@ -29,7 +29,7 @@
             expected exception
           </Exception>
         </Expression>
-        <OverallResults successes="0" failures="1" expectedFailures="0"/>
+        <OverallResults successes="0" failures="0" expectedFailures="1"/>
       </Section>
       <Section name="inside REQUIRE_THROWS" filename="projects/<exe-name>/ExceptionTests.cpp" >
         <Info>
