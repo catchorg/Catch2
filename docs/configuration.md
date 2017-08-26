@@ -72,6 +72,7 @@ This can be useful on certain platforms that do not provide the standard iostrea
     CATCH_CONFIG_DISABLE_MATCHERS           // Do not compile Matchers in this compilation unit
     CATCH_CONFIG_POSIX_SIGNALS              // Enable handling POSIX signals
     CATCH_CONFIG_WINDOWS_CRTDBG             // Enable leak checking using Windows's CRT Debug Heap
+    CATCH_CONFIG_DISABLE_STRINGIFICATION    // Disable stringifying the original expression
 
 Currently Catch enables `CATCH_CONFIG_WINDOWS_SEH` only when compiled with MSVC, because some versions of MinGW do not have the necessary Win32 API support.
 
@@ -88,12 +89,13 @@ Defining this flag speeds up compilation of test files by ~20%, by making 2 chan
 
 `CATCH_CONFIG_FAST_COMPILE` has to be either defined, or not defined, in all translation units that are linked into single test binary, or the behaviour of setting `-b` flag and throwing unexpected exceptions will be unpredictable.
 
-
 ## `CATCH_CONFIG_DISABLE_MATCHERS`
 When `CATCH_CONFIG_DISABLE_MATCHERS` is defined, all mentions of Catch's Matchers are ifdef-ed away from the translation unit. Doing so will speed up compilation of that TU.
 
 _Note: If you define `CATCH_CONFIG_DISABLE_MATCHERS` in the same file as Catch's main is implemented, your test executable will fail to link if you use Matchers anywhere._
 
+## `CATCH_CONFIG_DISABLE_STRINGIFICATION`
+This toggle enables a workaround for VS 2017 bug. For details see [known limitations](limitations.md#Visual Studio 2017 -- raw string literal in assert fails to compile)
 
 # Windows header clutter
 
