@@ -1,6 +1,6 @@
 /*
- *  Catch v1.9.7
- *  Generated: 2017-08-10 23:49:15.233907
+ *  Catch v1.10.0
+ *  Generated: 2017-08-26 15:16:46.676990
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -1291,6 +1291,7 @@ namespace Catch {
 #ifdef _MSC_VER
 #pragma warning(push)
 #pragma warning(disable:4389) // '==' : signed/unsigned mismatch
+#pragma warning(disable:4018) // more "signed/unsigned mismatch"
 #pragma warning(disable:4312) // Converting int to T* using reinterpret_cast (issue on x64 platform)
 #endif
 
@@ -1317,12 +1318,10 @@ namespace Internal {
     template<> struct OperatorTraits<IsGreaterThanOrEqualTo>{ static const char* getName(){ return ">="; } };
 
     template<typename T>
-    T& opCast(T const& t) { return const_cast<T&>(t); }
-
-// nullptr_t support based on pull request #154 from Konstantin Baumann
+    T& removeConst(T const &t) { return const_cast<T&>(t); }
 #ifdef CATCH_CONFIG_CPP11_NULLPTR
-    inline std::nullptr_t opCast(std::nullptr_t) { return nullptr; }
-#endif // CATCH_CONFIG_CPP11_NULLPTR
+    inline std::nullptr_t removeConst(std::nullptr_t) { return nullptr; }
+#endif
 
     // So the compare overloads can be operator agnostic we convey the operator as a template
     // enum, which is used to specialise an Evaluator for doing the comparison.
@@ -1332,161 +1331,90 @@ namespace Internal {
     template<typename T1, typename T2>
     struct Evaluator<T1, T2, IsEqualTo> {
         static bool evaluate( T1 const& lhs, T2 const& rhs) {
-            return bool( opCast( lhs ) ==  opCast( rhs ) );
+            return bool(removeConst(lhs) == removeConst(rhs) );
         }
     };
     template<typename T1, typename T2>
     struct Evaluator<T1, T2, IsNotEqualTo> {
         static bool evaluate( T1 const& lhs, T2 const& rhs ) {
-            return bool( opCast( lhs ) != opCast( rhs ) );
+            return bool(removeConst(lhs) != removeConst(rhs) );
         }
     };
     template<typename T1, typename T2>
     struct Evaluator<T1, T2, IsLessThan> {
         static bool evaluate( T1 const& lhs, T2 const& rhs ) {
-            return bool( opCast( lhs ) < opCast( rhs ) );
+            return bool(removeConst(lhs) < removeConst(rhs) );
         }
     };
     template<typename T1, typename T2>
     struct Evaluator<T1, T2, IsGreaterThan> {
         static bool evaluate( T1 const& lhs, T2 const& rhs ) {
-            return bool( opCast( lhs ) > opCast( rhs ) );
+            return bool(removeConst(lhs) > removeConst(rhs) );
         }
     };
     template<typename T1, typename T2>
     struct Evaluator<T1, T2, IsGreaterThanOrEqualTo> {
         static bool evaluate( T1 const& lhs, T2 const& rhs ) {
-            return bool( opCast( lhs ) >= opCast( rhs ) );
+            return bool(removeConst(lhs) >= removeConst(rhs) );
         }
     };
     template<typename T1, typename T2>
     struct Evaluator<T1, T2, IsLessThanOrEqualTo> {
         static bool evaluate( T1 const& lhs, T2 const& rhs ) {
-            return bool( opCast( lhs ) <= opCast( rhs ) );
+            return bool(removeConst(lhs) <= removeConst(rhs) );
         }
     };
 
-    template<Operator Op, typename T1, typename T2>
-    bool applyEvaluator( T1 const& lhs, T2 const& rhs ) {
-        return Evaluator<T1, T2, Op>::evaluate( lhs, rhs );
-    }
+    // Special case for comparing a pointer to an int (deduced for p==0)
+    template<typename T>
+    struct Evaluator<int const&, T* const&, IsEqualTo> {
+        static bool evaluate( int lhs, T* rhs) {
+            return reinterpret_cast<void const*>( lhs ) ==  rhs;
+        }
+    };
+    template<typename T>
+    struct Evaluator<T* const&, int const&, IsEqualTo> {
+        static bool evaluate( T* lhs, int rhs) {
+            return lhs == reinterpret_cast<void const*>( rhs );
+        }
+    };
+    template<typename T>
+    struct Evaluator<int const&, T* const&, IsNotEqualTo> {
+        static bool evaluate( int lhs, T* rhs) {
+            return reinterpret_cast<void const*>( lhs ) !=  rhs;
+        }
+    };
+    template<typename T>
+    struct Evaluator<T* const&, int const&, IsNotEqualTo> {
+        static bool evaluate( T* lhs, int rhs) {
+            return lhs != reinterpret_cast<void const*>( rhs );
+        }
+    };
 
-    // This level of indirection allows us to specialise for integer types
-    // to avoid signed/ unsigned warnings
-
-    // "base" overload
-    template<Operator Op, typename T1, typename T2>
-    bool compare( T1 const& lhs, T2 const& rhs ) {
-        return Evaluator<T1, T2, Op>::evaluate( lhs, rhs );
-    }
-
-    // unsigned X to int
-    template<Operator Op> bool compare( unsigned int lhs, int rhs ) {
-        return applyEvaluator<Op>( lhs, static_cast<unsigned int>( rhs ) );
-    }
-    template<Operator Op> bool compare( unsigned long lhs, int rhs ) {
-        return applyEvaluator<Op>( lhs, static_cast<unsigned int>( rhs ) );
-    }
-    template<Operator Op> bool compare( unsigned char lhs, int rhs ) {
-        return applyEvaluator<Op>( lhs, static_cast<unsigned int>( rhs ) );
-    }
-
-    // unsigned X to long
-    template<Operator Op> bool compare( unsigned int lhs, long rhs ) {
-        return applyEvaluator<Op>( lhs, static_cast<unsigned long>( rhs ) );
-    }
-    template<Operator Op> bool compare( unsigned long lhs, long rhs ) {
-        return applyEvaluator<Op>( lhs, static_cast<unsigned long>( rhs ) );
-    }
-    template<Operator Op> bool compare( unsigned char lhs, long rhs ) {
-        return applyEvaluator<Op>( lhs, static_cast<unsigned long>( rhs ) );
-    }
-
-    // int to unsigned X
-    template<Operator Op> bool compare( int lhs, unsigned int rhs ) {
-        return applyEvaluator<Op>( static_cast<unsigned int>( lhs ), rhs );
-    }
-    template<Operator Op> bool compare( int lhs, unsigned long rhs ) {
-        return applyEvaluator<Op>( static_cast<unsigned int>( lhs ), rhs );
-    }
-    template<Operator Op> bool compare( int lhs, unsigned char rhs ) {
-        return applyEvaluator<Op>( static_cast<unsigned int>( lhs ), rhs );
-    }
-
-    // long to unsigned X
-    template<Operator Op> bool compare( long lhs, unsigned int rhs ) {
-        return applyEvaluator<Op>( static_cast<unsigned long>( lhs ), rhs );
-    }
-    template<Operator Op> bool compare( long lhs, unsigned long rhs ) {
-        return applyEvaluator<Op>( static_cast<unsigned long>( lhs ), rhs );
-    }
-    template<Operator Op> bool compare( long lhs, unsigned char rhs ) {
-        return applyEvaluator<Op>( static_cast<unsigned long>( lhs ), rhs );
-    }
-
-    // pointer to long (when comparing against NULL)
-    template<Operator Op, typename T> bool compare( long lhs, T* rhs ) {
-        return Evaluator<T*, T*, Op>::evaluate( reinterpret_cast<T*>( lhs ), rhs );
-    }
-    template<Operator Op, typename T> bool compare( T* lhs, long rhs ) {
-        return Evaluator<T*, T*, Op>::evaluate( lhs, reinterpret_cast<T*>( rhs ) );
-    }
-
-    // pointer to int (when comparing against NULL)
-    template<Operator Op, typename T> bool compare( int lhs, T* rhs ) {
-        return Evaluator<T*, T*, Op>::evaluate( reinterpret_cast<T*>( lhs ), rhs );
-    }
-    template<Operator Op, typename T> bool compare( T* lhs, int rhs ) {
-        return Evaluator<T*, T*, Op>::evaluate( lhs, reinterpret_cast<T*>( rhs ) );
-    }
-
-#ifdef CATCH_CONFIG_CPP11_LONG_LONG
-    // long long to unsigned X
-    template<Operator Op> bool compare( long long lhs, unsigned int rhs ) {
-        return applyEvaluator<Op>( static_cast<unsigned long>( lhs ), rhs );
-    }
-    template<Operator Op> bool compare( long long lhs, unsigned long rhs ) {
-        return applyEvaluator<Op>( static_cast<unsigned long>( lhs ), rhs );
-    }
-    template<Operator Op> bool compare( long long lhs, unsigned long long rhs ) {
-        return applyEvaluator<Op>( static_cast<unsigned long>( lhs ), rhs );
-    }
-    template<Operator Op> bool compare( long long lhs, unsigned char rhs ) {
-        return applyEvaluator<Op>( static_cast<unsigned long>( lhs ), rhs );
-    }
-
-    // unsigned long long to X
-    template<Operator Op> bool compare( unsigned long long lhs, int rhs ) {
-        return applyEvaluator<Op>( static_cast<long>( lhs ), rhs );
-    }
-    template<Operator Op> bool compare( unsigned long long lhs, long rhs ) {
-        return applyEvaluator<Op>( static_cast<long>( lhs ), rhs );
-    }
-    template<Operator Op> bool compare( unsigned long long lhs, long long rhs ) {
-        return applyEvaluator<Op>( static_cast<long>( lhs ), rhs );
-    }
-    template<Operator Op> bool compare( unsigned long long lhs, char rhs ) {
-        return applyEvaluator<Op>( static_cast<long>( lhs ), rhs );
-    }
-
-    // pointer to long long (when comparing against NULL)
-    template<Operator Op, typename T> bool compare( long long lhs, T* rhs ) {
-        return Evaluator<T*, T*, Op>::evaluate( reinterpret_cast<T*>( lhs ), rhs );
-    }
-    template<Operator Op, typename T> bool compare( T* lhs, long long rhs ) {
-        return Evaluator<T*, T*, Op>::evaluate( lhs, reinterpret_cast<T*>( rhs ) );
-    }
-#endif // CATCH_CONFIG_CPP11_LONG_LONG
-
-#ifdef CATCH_CONFIG_CPP11_NULLPTR
-    // pointer to nullptr_t (when comparing against nullptr)
-    template<Operator Op, typename T> bool compare( std::nullptr_t, T* rhs ) {
-        return Evaluator<T*, T*, Op>::evaluate( nullptr, rhs );
-    }
-    template<Operator Op, typename T> bool compare( T* lhs, std::nullptr_t ) {
-        return Evaluator<T*, T*, Op>::evaluate( lhs, nullptr );
-    }
-#endif // CATCH_CONFIG_CPP11_NULLPTR
+    template<typename T>
+    struct Evaluator<long const&, T* const&, IsEqualTo> {
+        static bool evaluate( long lhs, T* rhs) {
+            return reinterpret_cast<void const*>( lhs ) ==  rhs;
+        }
+    };
+    template<typename T>
+    struct Evaluator<T* const&, long const&, IsEqualTo> {
+        static bool evaluate( T* lhs, long rhs) {
+            return lhs == reinterpret_cast<void const*>( rhs );
+        }
+    };
+    template<typename T>
+    struct Evaluator<long const&, T* const&, IsNotEqualTo> {
+        static bool evaluate( long lhs, T* rhs) {
+            return reinterpret_cast<void const*>( lhs ) !=  rhs;
+        }
+    };
+    template<typename T>
+    struct Evaluator<T* const&, long const&, IsNotEqualTo> {
+        static bool evaluate( T* lhs, long rhs) {
+            return lhs != reinterpret_cast<void const*>( rhs );
+        }
+    };
 
 } // end of namespace Internal
 } // end of namespace Catch
@@ -1907,7 +1835,7 @@ public:
 
     void endExpression() const {
         m_rb
-            .setResultType( Internal::compare<Op>( m_lhs, m_rhs ) )
+            .setResultType(  Internal::Evaluator<LhsT, RhsT, Op>::evaluate( m_lhs, m_rhs ) )
             .endExpression( *this );
     }
 
@@ -2166,6 +2094,12 @@ namespace Catch {
     };
 }
 
+#if !defined(CATCH_CONFIG_DISABLE_STRINGIFICATION)
+# define CATCH_INTERNAL_STRINGIFY(expr) #expr
+#else
+# define CATCH_INTERNAL_STRINGIFY(expr) "Disabled by CATCH_CONFIG_DISABLE_STRINGIFICATION"
+#endif
+
 #if defined(CATCH_CONFIG_FAST_COMPILE)
 ///////////////////////////////////////////////////////////////////////////////
 // We can speedup compilation significantly by breaking into debugger lower in
@@ -2181,7 +2115,7 @@ namespace Catch {
 // the exception before it propagates back up to the runner.
 #define INTERNAL_CATCH_TEST_NO_TRY( macroName, resultDisposition, expr ) \
     do { \
-        Catch::ResultBuilder __catchResult( macroName, CATCH_INTERNAL_LINEINFO, #expr, resultDisposition ); \
+        Catch::ResultBuilder __catchResult( macroName, CATCH_INTERNAL_LINEINFO, CATCH_INTERNAL_STRINGIFY(expr), resultDisposition ); \
         __catchResult.setExceptionGuard(); \
         CATCH_INTERNAL_SUPPRESS_PARENTHESES_WARNINGS \
         ( __catchResult <= expr ).endExpression(); \
@@ -2193,9 +2127,9 @@ namespace Catch {
 
 #define INTERNAL_CHECK_THAT_NO_TRY( macroName, matcher, resultDisposition, arg ) \
     do { \
-        Catch::ResultBuilder __catchResult( macroName, CATCH_INTERNAL_LINEINFO, #arg ", " #matcher, resultDisposition ); \
+        Catch::ResultBuilder __catchResult( macroName, CATCH_INTERNAL_LINEINFO, CATCH_INTERNAL_STRINGIFY(arg) ", " CATCH_INTERNAL_STRINGIFY(matcher), resultDisposition ); \
         __catchResult.setExceptionGuard(); \
-        __catchResult.captureMatch( arg, matcher, #matcher ); \
+        __catchResult.captureMatch( arg, matcher, CATCH_INTERNAL_STRINGIFY(matcher) ); \
         __catchResult.unsetExceptionGuard(); \
         INTERNAL_CATCH_REACT( __catchResult ) \
     } while( Catch::alwaysFalse() )
@@ -2214,7 +2148,7 @@ namespace Catch {
 ///////////////////////////////////////////////////////////////////////////////
 #define INTERNAL_CATCH_TEST( macroName, resultDisposition, expr ) \
     do { \
-        Catch::ResultBuilder __catchResult( macroName, CATCH_INTERNAL_LINEINFO, #expr, resultDisposition ); \
+        Catch::ResultBuilder __catchResult( macroName, CATCH_INTERNAL_LINEINFO, CATCH_INTERNAL_STRINGIFY(expr), resultDisposition ); \
         try { \
             CATCH_INTERNAL_SUPPRESS_PARENTHESES_WARNINGS \
             ( __catchResult <= expr ).endExpression(); \
@@ -2240,7 +2174,7 @@ namespace Catch {
 ///////////////////////////////////////////////////////////////////////////////
 #define INTERNAL_CATCH_NO_THROW( macroName, resultDisposition, expr ) \
     do { \
-        Catch::ResultBuilder __catchResult( macroName, CATCH_INTERNAL_LINEINFO, #expr, resultDisposition ); \
+        Catch::ResultBuilder __catchResult( macroName, CATCH_INTERNAL_LINEINFO, CATCH_INTERNAL_STRINGIFY(expr), resultDisposition ); \
         try { \
             static_cast<void>(expr); \
             __catchResult.captureResult( Catch::ResultWas::Ok ); \
@@ -2254,7 +2188,7 @@ namespace Catch {
 ///////////////////////////////////////////////////////////////////////////////
 #define INTERNAL_CATCH_THROWS( macroName, resultDisposition, matcher, expr ) \
     do { \
-        Catch::ResultBuilder __catchResult( macroName, CATCH_INTERNAL_LINEINFO, #expr, resultDisposition, #matcher ); \
+        Catch::ResultBuilder __catchResult( macroName, CATCH_INTERNAL_LINEINFO, CATCH_INTERNAL_STRINGIFY(expr), resultDisposition, CATCH_INTERNAL_STRINGIFY(matcher) ); \
         if( __catchResult.allowThrows() ) \
             try { \
                 static_cast<void>(expr); \
@@ -2271,7 +2205,7 @@ namespace Catch {
 ///////////////////////////////////////////////////////////////////////////////
 #define INTERNAL_CATCH_THROWS_AS( macroName, exceptionType, resultDisposition, expr ) \
     do { \
-        Catch::ResultBuilder __catchResult( macroName, CATCH_INTERNAL_LINEINFO, #expr ", " #exceptionType, resultDisposition ); \
+        Catch::ResultBuilder __catchResult( macroName, CATCH_INTERNAL_LINEINFO, CATCH_INTERNAL_STRINGIFY(expr) ", " CATCH_INTERNAL_STRINGIFY(exceptionType), resultDisposition ); \
         if( __catchResult.allowThrows() ) \
             try { \
                 static_cast<void>(expr); \
@@ -2314,9 +2248,9 @@ namespace Catch {
 ///////////////////////////////////////////////////////////////////////////////
 #define INTERNAL_CHECK_THAT( macroName, matcher, resultDisposition, arg ) \
     do { \
-        Catch::ResultBuilder __catchResult( macroName, CATCH_INTERNAL_LINEINFO, #arg ", " #matcher, resultDisposition ); \
+        Catch::ResultBuilder __catchResult( macroName, CATCH_INTERNAL_LINEINFO, CATCH_INTERNAL_STRINGIFY(arg) ", " CATCH_INTERNAL_STRINGIFY(matcher), resultDisposition ); \
         try { \
-            __catchResult.captureMatch( arg, matcher, #matcher ); \
+            __catchResult.captureMatch( arg, matcher, CATCH_INTERNAL_STRINGIFY(matcher) ); \
         } catch( ... ) { \
             __catchResult.useActiveException( resultDisposition | Catch::ResultDisposition::ContinueOnFailure ); \
         } \
@@ -3852,6 +3786,12 @@ namespace Catch {
         Yes,
         No
     }; };
+    struct WaitForKeypress { enum When {
+        Never,
+        BeforeStart = 1,
+        BeforeExit = 2,
+        BeforeStartAndExit = BeforeStart | BeforeExit
+    }; };
 
     class TestSpec;
 
@@ -3965,13 +3905,15 @@ namespace Catch {
             showHelp( false ),
             showInvisibles( false ),
             filenamesAsTags( false ),
+            libIdentify( false ),
             abortAfter( -1 ),
             rngSeed( 0 ),
             verbosity( Verbosity::Normal ),
             warnings( WarnAbout::Nothing ),
             showDurations( ShowDurations::DefaultForReporter ),
             runOrder( RunTests::InDeclarationOrder ),
-            useColour( UseColour::Auto )
+            useColour( UseColour::Auto ),
+            waitForKeypress( WaitForKeypress::Never )
         {}
 
         bool listTests;
@@ -3986,6 +3928,7 @@ namespace Catch {
         bool showHelp;
         bool showInvisibles;
         bool filenamesAsTags;
+        bool libIdentify;
 
         int abortAfter;
         unsigned int rngSeed;
@@ -3995,6 +3938,7 @@ namespace Catch {
         ShowDurations::OrNot showDurations;
         RunTests::InWhatOrder runOrder;
         UseColour::YesOrNo useColour;
+        WaitForKeypress::When waitForKeypress;
 
         std::string outputFilename;
         std::string name;
@@ -5188,6 +5132,18 @@ namespace Catch {
         else
             throw std::runtime_error( "colour mode must be one of: auto, yes or no" );
     }
+    inline void setWaitForKeypress( ConfigData& config, std::string const& keypress ) {
+        std::string keypressLc = toLower( keypress );
+        if( keypressLc == "start" )
+            config.waitForKeypress = WaitForKeypress::BeforeStart;
+        else if( keypressLc == "exit" )
+            config.waitForKeypress = WaitForKeypress::BeforeExit;
+        else if( keypressLc == "both" )
+            config.waitForKeypress = WaitForKeypress::BeforeStartAndExit;
+        else
+            throw std::runtime_error( "keypress argument must be one of: start, exit or both. '" + keypress + "' not recognised" );
+    };
+
     inline void forceColour( ConfigData& config ) {
         config.useColour = UseColour::Yes;
     }
@@ -5322,6 +5278,18 @@ namespace Catch {
         cli["--use-colour"]
             .describe( "should output be colourised" )
             .bind( &setUseColour, "yes|no" );
+
+        cli["--use-colour"]
+            .describe( "should output be colourised" )
+            .bind( &setUseColour, "yes|no" );
+
+        cli["--libidentify"]
+            .describe( "report name and version according to libidentify standard" )
+            .bind( &ConfigData::libIdentify );
+
+        cli["--wait-for-keypress"]
+                .describe( "waits for a keypress before exiting" )
+                .bind( &setWaitForKeypress, "start|exit|both" );
 
         return cli;
     }
@@ -6700,7 +6668,10 @@ namespace Catch {
                 m_totals.assertions.passed++;
             }
             else if( !result.isOk() ) {
-                m_totals.assertions.failed++;
+                if( m_activeTestCase->getTestCaseInfo().okToFail() )
+                    m_totals.assertions.failedButOk++;
+                else
+                    m_totals.assertions.failed++;
             }
 
             // We have no use for the return value (whether messages should be cleared), because messages were made scoped
@@ -6888,12 +6859,6 @@ namespace Catch {
 
             Counts assertions = m_totals.assertions - prevAssertions;
             bool missingAssertions = testForMissingAssertions( assertions );
-
-            if( testCaseInfo.okToFail() ) {
-                std::swap( assertions.failedButOk, assertions.failed );
-                m_totals.assertions.failed -= assertions.failedButOk;
-                m_totals.assertions.failedButOk += assertions.failedButOk;
-            }
 
             SectionStats testCaseSectionStats( testCaseSection, assertions, duration, missingAssertions );
             m_reporter->sectionEnded( testCaseSectionStats );
@@ -7101,6 +7066,13 @@ namespace Catch {
             m_cli.usage( Catch::cout(), processName );
             Catch::cout() << "For more detail usage please see the project docs\n" << std::endl;
         }
+        void libIdentify() {
+            Catch::cout()
+                    << std::left << std::setw(16) << "description: " << "A Catch test executable\n"
+                    << std::left << std::setw(16) << "category: " << "testframework\n"
+                    << std::left << std::setw(16) << "framework: " << "Catch Test\n"
+                    << std::left << std::setw(16) << "version: " << libraryVersion() << std::endl;
+        }
 
         int applyCommandLine( int argc, char const* const* const argv, OnUnusedOptions::DoWhat unusedOptionBehaviour = OnUnusedOptions::Fail ) {
             try {
@@ -7108,6 +7080,8 @@ namespace Catch {
                 m_unusedTokens = m_cli.parseInto( Clara::argsToVector( argc, argv ), m_configData );
                 if( m_configData.showHelp )
                     showHelp( m_configData.processName );
+                if( m_configData.libIdentify )
+                    libIdentify();
                 m_config.reset();
             }
             catch( std::exception& ex ) {
@@ -7164,7 +7138,36 @@ namespace Catch {
     #endif
 
         int run() {
-            if( m_configData.showHelp )
+            if( ( m_configData.waitForKeypress & WaitForKeypress::BeforeStart ) != 0 ) {
+                Catch::cout() << "...waiting for enter/ return before starting" << std::endl;
+                static_cast<void>(std::getchar());
+            }
+            int exitCode = runInternal();
+            if( ( m_configData.waitForKeypress & WaitForKeypress::BeforeExit ) != 0 ) {
+                Catch::cout() << "...waiting for enter/ return before exiting, with code: " << exitCode << std::endl;
+                static_cast<void>(std::getchar());
+            }
+            return exitCode;
+        }
+
+        Clara::CommandLine<ConfigData> const& cli() const {
+            return m_cli;
+        }
+        std::vector<Clara::Parser::Token> const& unusedTokens() const {
+            return m_unusedTokens;
+        }
+        ConfigData& configData() {
+            return m_configData;
+        }
+        Config& config() {
+            if( !m_config )
+                m_config = new Config( m_configData );
+            return *m_config;
+        }
+    private:
+
+        int runInternal() {
+            if( m_configData.showHelp || m_configData.libIdentify )
                 return 0;
 
             try
@@ -7188,21 +7191,6 @@ namespace Catch {
             }
         }
 
-        Clara::CommandLine<ConfigData> const& cli() const {
-            return m_cli;
-        }
-        std::vector<Clara::Parser::Token> const& unusedTokens() const {
-            return m_unusedTokens;
-        }
-        ConfigData& configData() {
-            return m_configData;
-        }
-        Config& config() {
-            if( !m_config )
-                m_config = new Config( m_configData );
-            return *m_config;
-        }
-    private:
         Clara::CommandLine<ConfigData> m_cli;
         std::vector<Clara::Parser::Token> m_unusedTokens;
         ConfigData m_configData;
@@ -8406,7 +8394,7 @@ namespace Catch {
     }
 
     inline Version libraryVersion() {
-        static Version version( 1, 9, 7, "", 0 );
+        static Version version( 1, 10, 0, "", 0 );
         return version;
     }
 
