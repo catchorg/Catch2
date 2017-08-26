@@ -14,3 +14,6 @@ class CatchConan(ConanFile):
 
     def package(self):
         self.copy(pattern="catch.hpp", src="single_include", dst="include")
+    
+    def package_id(self):
+            self.info.header_only()
