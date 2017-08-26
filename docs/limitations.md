@@ -50,6 +50,38 @@ Both of these solutions have their problems, but should let you wring parallelis
 ## 3rd party bugs
 This section outlines known bugs in 3rd party components (this means compilers, standard libraries, standard runtimes).
 
+### Visual Studio 2017 -- raw string literal in assert fails to compile
+There is a known bug in Visual Studio 2017 (VC 15), that causes compilation error when preprocessor attempts to stringize a raw string literal (`#` preprocessor is applied to it). This snippet is sufficient to trigger the compilation error:
+```cpp
+#define CATCH_CONFIG_MAIN
+#include "catch.hpp"
+
+TEST_CASE("test") {
+    CHECK(std::string(R"("\)") == "\"\\");
+}
+```
+
+Catch provides a workaround, it is possible to disable stringification of original expressions by defining `CATCH_CONFIG_DISABLE_STRINGIFICATION`:
+```cpp
+#define CATCH_CONFIG_FAST_COMPILE
+#define CATCH_CONFIG_DISABLE_STRINGIFICATION
+#include "catch.hpp"
+
+TEST_CASE("test") {
+    CHECK(std::string(R"("\)") == "\"\\");
+}
+```
+
+_Do note that this changes the output somewhat_
+```
+catchwork\test1.cpp(6):
+PASSED:
+  CHECK( Disabled by CATCH_CONFIG_DISABLE_STRINGIFICATION )
+with expansion:
+  ""\" == ""\"
+```
+
+
 ### Visual Studio 2013 -- do-while loop withing range based for fails to compile (C2059)
 There is a known bug in Visual Studio 2013 (VC 12), that causes compilation error if range based for is followed by an assertion macro, without enclosing the block in braces. This snippet is sufficient to trigger the error
 ```cpp

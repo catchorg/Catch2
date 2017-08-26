@@ -107,6 +107,7 @@ TEST_CASE ("Error in streamable check") {
     CATCH_CONFIG_FAST_COMPILE               // Sacrifices some (rather minor) features for compilation speed
     CATCH_CONFIG_POSIX_SIGNALS              // Enable handling POSIX signals
     CATCH_CONFIG_WINDOWS_CRTDBG             // Enable leak checking using Windows's CRT Debug Heap
+    CATCH_CONFIG_DISABLE_STRINGIFICATION    // Disable stringifying the original expression
 
 Currently Catch enables `CATCH_CONFIG_WINDOWS_SEH` only when compiled with MSVC, because some versions of MinGW do not have the necessary Win32 API support.
 
@@ -122,6 +123,9 @@ Defining this flag speeds up compilation of test files by ~20%, by making 2 chan
 * The `REQUIRE` family of macros (`REQUIRE`, `REQUIRE_FALSE` and `REQUIRE_THAT`) no longer uses local try-catch block. This disables exception translation, but should not lead to false negatives.
 
 `CATCH_CONFIG_FAST_COMPILE` has to be either defined, or not defined, in all translation units that are linked into single test binary, or the behaviour of setting `-b` flag and throwing unexpected exceptions will be unpredictable.
+
+## `CATCH_CONFIG_DISABLE_STRINGIFICATION`
+This toggle enables a workaround for VS 2017 bug. For details see [known limitations](limitations.md#Visual Studio 2017 -- raw string literal in assert fails to compile)
 
 # Windows header clutter
 
