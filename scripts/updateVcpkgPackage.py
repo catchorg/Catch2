@@ -65,7 +65,7 @@ def update_portfile(path, header_hash, licence_hash):
         for line in lines:
             # Update the version
             if 'set(CATCH_VERSION' in line:
-                line = 'set(CATCH_VERSION v{})'.format(v.getVersionString())
+                line = 'set(CATCH_VERSION v{})\n'.format(v.getVersionString())
 
             # Determine which file we are updating
             if 'vcpkg_download_distfile' in line:
