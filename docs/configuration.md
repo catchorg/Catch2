@@ -85,7 +85,7 @@ These toggles can be disabled by using `_NO_` form of the toggle, e.g. `CATCH_CO
 ## `CATCH_CONFIG_FAST_COMPILE`
 Defining this flag speeds up compilation of test files by ~20%, by making 2 changes:
 * The `-b` (`--break`) flag no longer makes Catch break into debugger in the same stack frame as the failed test, but rather in a stack frame *below*.
-* The `REQUIRE` family of macros (`REQUIRE`, `REQUIRE_FALSE` and `REQUIRE_THAT`) no longer uses local try-catch block. This disables exception translation, but should not lead to false negatives.
+* Non-exception family of macros ({`REQUIRE`,`CHECK`}{`_`,`_FALSE`, `_FALSE`}, no longer use local try-cache block. This disables exception translation, but should not lead to false negatives.
 
 `CATCH_CONFIG_FAST_COMPILE` has to be either defined, or not defined, in all translation units that are linked into single test binary, or the behaviour of setting `-b` flag and throwing unexpected exceptions will be unpredictable.
 
