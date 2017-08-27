@@ -49,6 +49,8 @@ All tag names beginning with non-alphanumeric characters are reserved by Catch. 
 
 * `[@<alias>]` - tag aliases all begin with `@` (see below).
 
+* `[!benchmark]` - this test case is actually a benchmark. This is an experimental feature, and currently has no documentation. If you want to try it out, look at `projects/SelfTest/Benchmark.tests.cpp` for details.
+
 ## Tag aliases
 
 Between tag expressions and wildcarded test names (as well as combinations of the two) quite complex patterns can be constructed to direct which test cases are run. If a complex pattern is used often it is convenient to be able to create an alias for the expression. this can be done, in code, using the following form:
