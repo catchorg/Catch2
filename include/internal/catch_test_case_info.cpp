@@ -20,7 +20,6 @@ namespace Catch {
 
     TestCaseInfo::SpecialProperties parseSpecialTag( std::string const& tag ) {
         if( startsWith( tag, '.' ) ||
-            tag == "hide" ||
             tag == "!hide" )
             return TestCaseInfo::IsHidden;
         else if( tag == "!throws" )
@@ -52,7 +51,7 @@ namespace Catch {
                             std::string const& _descOrTags,
                             SourceLineInfo const& _lineInfo )
     {
-        bool isHidden( startsWith( _name, "./" ) ); // Legacy support
+        bool isHidden = false;
 
         // Parse out tags
         std::vector<std::string> tags;
@@ -83,7 +82,6 @@ namespace Catch {
             }
         }
         if( isHidden ) {
-            tags.push_back( "hide" );
             tags.push_back( "." );
         }
 
