@@ -72,6 +72,7 @@
 #  undef CLARA_CONFIG_MAIN
 #endif
 
+#if !defined(CATCH_CONFIG_DISABLE)
 //////
 // If this config identifier is defined then all CATCH macros are prefixed with CATCH_
 #ifdef CATCH_CONFIG_PREFIX_ALL
@@ -195,6 +196,134 @@
 #define AND_THEN( desc ) SECTION( std::string("     And: ") + desc )
 
 using Catch::Detail::Approx;
+
+#else
+//////
+// If this config identifier is defined then all CATCH macros are prefixed with CATCH_
+#ifdef CATCH_CONFIG_PREFIX_ALL
+
+#define CATCH_REQUIRE( ... )        (void)(0)
+#define CATCH_REQUIRE_FALSE( ... )  (void)(0)
+
+#define CATCH_REQUIRE_THROWS( ... ) (void)(0)
+#define CATCH_REQUIRE_THROWS_AS( expr, exceptionType ) (void)(0)
+#define CATCH_REQUIRE_THROWS_WITH( expr, matcher )     (void)(0)
+#if !defined(CATCH_CONFIG_DISABLE_MATCHERS)
+#define CATCH_REQUIRE_THROWS_MATCHES( expr, exceptionType, matcher ) (void)(0)
+#endif// CATCH_CONFIG_DISABLE_MATCHERS
+#define CATCH_REQUIRE_NOTHROW( ... ) (void)(0)
+
+#define CATCH_CHECK( ... )         (void)(0)
+#define CATCH_CHECK_FALSE( ... )   (void)(0)
+#define CATCH_CHECKED_IF( ... )    if (__VA_ARGS__)
+#define CATCH_CHECKED_ELSE( ... )  if (!(__VA_ARGS__))
+#define CATCH_CHECK_NOFAIL( ... )  (void)(0)
+
+#define CATCH_CHECK_THROWS( ... )  (void)(0)
+#define CATCH_CHECK_THROWS_AS( expr, exceptionType ) (void)(0)
+#define CATCH_CHECK_THROWS_WITH( expr, matcher )     (void)(0)
+#if !defined(CATCH_CONFIG_DISABLE_MATCHERS)
+#define CATCH_CHECK_THROWS_MATCHES( expr, exceptionType, matcher ) (void)(0)
+#endif // CATCH_CONFIG_DISABLE_MATCHERS
+#define CATCH_CHECK_NOTHROW( ... ) (void)(0)
+
+#if !defined(CATCH_CONFIG_DISABLE_MATCHERS)
+#define CATCH_CHECK_THAT( arg, matcher )   (void)(0)
+
+#define CATCH_REQUIRE_THAT( arg, matcher ) (void)(0)
+#endif // CATCH_CONFIG_DISABLE_MATCHERS
+
+#define CATCH_INFO( msg )    (void)(0)
+#define CATCH_WARN( msg )    (void)(0)
+#define CATCH_CAPTURE( msg ) (void)(0)
+
+#define CATCH_TEST_CASE( ... ) INTERNAL_CATCH_TESTCASE_NO_REGISTRATION(INTERNAL_CATCH_UNIQUE_NAME( ____C_A_T_C_H____T_E_S_T____ ))
+#define CATCH_TEST_CASE_METHOD( className, ... ) INTERNAL_CATCH_TESTCASE_NO_REGISTRATION(INTERNAL_CATCH_UNIQUE_NAME( ____C_A_T_C_H____T_E_S_T____ ))
+#define CATCH_METHOD_AS_TEST_CASE( method, ... )
+#define CATCH_REGISTER_TEST_CASE( Function, ... ) (void)(0)
+#define CATCH_SECTION( ... )
+#define CATCH_FAIL( ... ) (void)(0)
+#define CATCH_FAIL_CHECK( ... ) (void)(0)
+#define CATCH_SUCCEED( ... ) (void)(0)
+
+#define CATCH_ANON_TEST_CASE() INTERNAL_CATCH_TESTCASE_NO_REGISTRATION(INTERNAL_CATCH_UNIQUE_NAME( ____C_A_T_C_H____T_E_S_T____ ))
+
+// "BDD-style" convenience wrappers
+#define CATCH_SCENARIO( ... ) INTERNAL_CATCH_TESTCASE_NO_REGISTRATION(INTERNAL_CATCH_UNIQUE_NAME( ____C_A_T_C_H____T_E_S_T____ ))
+#define CATCH_SCENARIO_METHOD( className, ... ) INTERNAL_CATCH_TESTCASE_METHOD_NO_REGISTRATION(INTERNAL_CATCH_UNIQUE_NAME( ____C_A_T_C_H____T_E_S_T____ ), className )
+#define CATCH_GIVEN( desc )
+#define CATCH_WHEN( desc )
+#define CATCH_AND_WHEN( desc )
+#define CATCH_THEN( desc )
+#define CATCH_AND_THEN( desc )
+
+// If CATCH_CONFIG_PREFIX_ALL is not defined then the CATCH_ prefix is not required
+#else
+
+#define REQUIRE( ... )       (void)(0)
+#define REQUIRE_FALSE( ... ) (void)(0)
+
+#define REQUIRE_THROWS( ... ) (void)(0)
+#define REQUIRE_THROWS_AS( expr, exceptionType ) (void)(0)
+#define REQUIRE_THROWS_WITH( expr, matcher ) (void)(0)
+#if !defined(CATCH_CONFIG_DISABLE_MATCHERS)
+#define REQUIRE_THROWS_MATCHES( expr, exceptionType, matcher ) (void)(0)
+#endif // CATCH_CONFIG_DISABLE_MATCHERS
+#define REQUIRE_NOTHROW( ... ) (void)(0)
+
+#define CHECK( ... ) (void)(0)
+#define CHECK_FALSE( ... ) (void)(0)
+#define CHECKED_IF( ... ) if (__VA_ARGS__)
+#define CHECKED_ELSE( ... ) if (!(__VA_ARGS__))
+#define CHECK_NOFAIL( ... ) (void)(0)
+
+#define CHECK_THROWS( ... )  (void)(0)
+#define CHECK_THROWS_AS( expr, exceptionType ) (void)(0)
+#define CHECK_THROWS_WITH( expr, matcher ) (void)(0)
+#if !defined(CATCH_CONFIG_DISABLE_MATCHERS)
+#define CHECK_THROWS_MATCHES( expr, exceptionType, matcher ) (void)(0)
+#endif // CATCH_CONFIG_DISABLE_MATCHERS
+#define CHECK_NOTHROW( ... ) (void)(0)
+
+
+#if !defined(CATCH_CONFIG_DISABLE_MATCHERS)
+#define CHECK_THAT( arg, matcher ) (void)(0)
+
+#define REQUIRE_THAT( arg, matcher ) (void)(0)
+#endif // CATCH_CONFIG_DISABLE_MATCHERS
+
+#define INFO( msg ) (void)(0)
+#define WARN( msg ) (void)(0)
+#define CAPTURE( msg ) (void)(0)
+
+#define TEST_CASE( ... )  INTERNAL_CATCH_TESTCASE_NO_REGISTRATION(INTERNAL_CATCH_UNIQUE_NAME( ____C_A_T_C_H____T_E_S_T____ ))
+#define TEST_CASE_METHOD( className, ... ) INTERNAL_CATCH_TESTCASE_NO_REGISTRATION(INTERNAL_CATCH_UNIQUE_NAME( ____C_A_T_C_H____T_E_S_T____ ))
+#define METHOD_AS_TEST_CASE( method, ... )
+#define REGISTER_TEST_CASE( Function, ... ) (void)(0)
+#define SECTION( ... )
+#define FAIL( ... ) (void)(0)
+#define FAIL_CHECK( ... ) (void)(0)
+#define SUCCEED( ... ) (void)(0)
+#define ANON_TEST_CASE() INTERNAL_CATCH_TESTCASE_NO_REGISTRATION(INTERNAL_CATCH_UNIQUE_NAME( ____C_A_T_C_H____T_E_S_T____ ))
+
+#endif
+
+#define CATCH_TRANSLATE_EXCEPTION( signature ) INTERNAL_CATCH_TRANSLATE_EXCEPTION( signature )
+
+// "BDD-style" convenience wrappers
+#define SCENARIO( ... ) INTERNAL_CATCH_TESTCASE_NO_REGISTRATION(INTERNAL_CATCH_UNIQUE_NAME( ____C_A_T_C_H____T_E_S_T____ ) )
+#define SCENARIO_METHOD( className, ... ) INTERNAL_CATCH_TESTCASE_METHOD_NO_REGISTRATION(INTERNAL_CATCH_UNIQUE_NAME( ____C_A_T_C_H____T_E_S_T____ ), className )
+
+#define GIVEN( desc )
+#define WHEN( desc )
+#define AND_WHEN( desc )
+#define THEN( desc )
+#define AND_THEN( desc )
+
+using Catch::Detail::Approx;
+
+
+#endif
 
 #include "internal/catch_reenable_warnings.h"
 

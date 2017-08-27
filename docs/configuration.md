@@ -73,6 +73,7 @@ This can be useful on certain platforms that do not provide the standard iostrea
     CATCH_CONFIG_POSIX_SIGNALS              // Enable handling POSIX signals
     CATCH_CONFIG_WINDOWS_CRTDBG             // Enable leak checking using Windows's CRT Debug Heap
     CATCH_CONFIG_DISABLE_STRINGIFICATION    // Disable stringifying the original expression
+    CATCH_CONFIG_DISABLE                    // Disables assertions and test case registration
 
 Currently Catch enables `CATCH_CONFIG_WINDOWS_SEH` only when compiled with MSVC, because some versions of MinGW do not have the necessary Win32 API support.
 
@@ -96,6 +97,13 @@ _Note: If you define `CATCH_CONFIG_DISABLE_MATCHERS` in the same file as Catch's
 
 ## `CATCH_CONFIG_DISABLE_STRINGIFICATION`
 This toggle enables a workaround for VS 2017 bug. For details see [known limitations](limitations.md#Visual Studio 2017 -- raw string literal in assert fails to compile)
+
+## `CATCH_CONFIG_DISABLE`
+This toggle removes most of Catch from given file. This means that `TEST_CASE`s are not registered and assertions are turned into no-ops. Useful for keeping tests within implementation files (ie for functions with internal linkage), instead of in external files.
+
+This feature is considered experimental and might change at any point.
+
+_Inspired by Doctest's `DOCTEST_CONFIG_DISABLE`_
 
 # Windows header clutter
 

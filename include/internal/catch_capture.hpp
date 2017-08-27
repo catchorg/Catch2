@@ -12,6 +12,8 @@
 #include "catch_message.h"
 #include "catch_interfaces_capture.h"
 
+#if !defined(CATCH_CONFIG_DISABLE)
+
 #if !defined(CATCH_CONFIG_DISABLE_STRINGIFICATION)
   #define CATCH_INTERNAL_STRINGIFY(...) #__VA_ARGS__
 #else
@@ -157,5 +159,6 @@
         INTERNAL_CATCH_REACT( catchAssertionHandler ) \
     } while( Catch::alwaysFalse() )
 
+#endif // CATCH_CONFIG_DISABLE
 
 #endif // TWOBLUECUBES_CATCH_CAPTURE_HPP_INCLUDED

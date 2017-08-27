@@ -47,6 +47,19 @@ struct AutoReg : NonCopyable {
 
 } // end namespace Catch
 
+#if defined(CATCH_CONFIG_DISABLE)
+    #define INTERNAL_CATCH_TESTCASE_NO_REGISTRATION( TestName, ... ) \
+        static void TestName()
+    #define INTERNAL_CATCH_TESTCASE_METHOD_NO_REGISTRATION( TestName, ClassName, ... ) \
+        namespace{                        \
+            struct TestName : ClassName { \
+                void test();              \
+            };                            \
+        }                                 \
+        void TestName::test()
+
+#endif
+
     ///////////////////////////////////////////////////////////////////////////////
     #define INTERNAL_CATCH_TESTCASE2( TestName, ... ) \
         static void TestName(); \

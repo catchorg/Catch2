@@ -9,6 +9,10 @@
 * Removed `Catch::toString` support
   * The new stringification machinery uses `Catch::StringMaker` specializations first and `operator<<` overloads second.
 * Removed legacy `SCOPED_MSG` and `SCOPED_INFO` macros
+* Removed `INTERNAL_CATCH_REGISTER_REPORTER`
+  * `CATCH_REGISTER_REPORTER` should be used to register reporters
+* Removed legacy `[hide]` tag
+  * `[.]`, `[.foo]` and `[!hide]` are still supported
 * Output into debugger is now colourized
 * `*_THROWS_AS(expr, exception_type)` now unconditionally appends `const&` to the exception type.
 * `CATCH_CONFIG_FAST_COMPILE` now affects the `CHECK_` family of assertions as well as `REQUIRE_` family of assertions
@@ -29,6 +33,14 @@
 * Catch uses new CLI parsing library (Clara)
   * Users can now easily add new command line options to the final executable
   * This also leads to some changes in `Catch::Session` interface
+* All parts of matchers can be removed from a TU by defining `CATCH_CONFIG_DISABLE_MATCHERS`
+  * This can be used to somewhat speed up compilation times
+* An experimental implementation of `CATCH_CONFIG_DISABLE` has been added
+  * Speeds up compilation by removing away Catch tests
+    * Currently removes all assertions and prevents `TEST_CASE` registrations
+  * Useful for implementing tests in source files
+    * ie for functions in anonymous namespaces
+  * Inspired by Doctest's `DOCTEST_CONFIG_DISABLE`
 
 ## Fixes
 
