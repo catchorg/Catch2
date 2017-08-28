@@ -1,6 +1,12 @@
 <a id="top"></a>
 # Why do my tests take so long to compile?
 
+**Contents**  
+[Short answer](#short-answer)  
+[Long answer](#long-answer)  
+[Practical example](#practical-example)  
+[Other possible solutions](#other-possible-solutions)  
+
 Several people have reported that test code written with Catch takes much longer to compile than they would expect. Why is that?
 
 Catch is implemented entirely in headers. There is a little overhead due to this - but not as much as you might think - and you can minimise it simply by organising your test code as follows:
