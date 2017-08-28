@@ -5,7 +5,7 @@ Catch is designed to "just work" as much as possible. For most people the only c
 
 Nonetheless there are still some occasions where finer control is needed. For these occasions Catch exposes a set of macros for configuring how it is built.
 
-#  main()/ implementation
+## main()/ implementation
 
 	CATCH_CONFIG_MAIN	// Designates this as implementation file and defines main()
 	CATCH_CONFIG_RUNNER	// Designates this as implementation file
@@ -20,14 +20,14 @@ Brings in various parts of Catch that are required for user defined Reporters an
 
 Implied by both `CATCH_CONFIG_MAIN` and `CATCH_CONFIG_RUNNER`.
 
-#  Prefixing Catch macros
+## Prefixing Catch macros
 
 	CATCH_CONFIG_PREFIX_ALL
 
 To keep test code clean and uncluttered Catch uses short macro names (e.g. ```TEST_CASE``` and ```REQUIRE```). Occasionally these may conflict with identifiers from platform headers or the system under test. In this case the above identifier can be defined. This will cause all the Catch user macros to be prefixed with ```CATCH_``` (e.g. ```CATCH_TEST_CASE``` and ```CATCH_REQUIRE```).
 
 
-#  Terminal colour
+## Terminal colour
 
 	CATCH_CONFIG_COLOUR_NONE	// completely disables all text colouring
 	CATCH_CONFIG_COLOUR_WINDOWS	// forces the Win32 console API to be used
@@ -43,14 +43,14 @@ Note that when ANSI colour codes are used "unistd.h" must be includable - along 
 
 Typically you should place the ```#define``` before #including "catch.hpp" in your main source file - but if you prefer you can define it for your whole project by whatever your IDE or build system provides for you to do so.
 
-#  Console width
+## Console width
 
 	CATCH_CONFIG_CONSOLE_WIDTH = x // where x is a number
 
 Catch formats output intended for the console to fit within a fixed number of characters. This is especially important as indentation is used extensively and uncontrolled line wraps break this.
 By default a console width of 80 is assumed but this can be controlled by defining the above identifier to be a different value.
 
-#  stdout
+## stdout
 
 	CATCH_CONFIG_NOSTDOUT
 
@@ -64,7 +64,7 @@ This can be useful on certain platforms that do not provide the standard iostrea
 
 
 
-# Other toggles
+## Other toggles
 
     CATCH_CONFIG_COUNTER                    // Use __COUNTER__ to generate unique names for test cases
     CATCH_CONFIG_WINDOWS_SEH                // Enable SEH handling on Windows
@@ -83,29 +83,29 @@ Currently Catch enables `CATCH_CONFIG_WINDOWS_SEH` only when compiled with MSVC,
 
 These toggles can be disabled by using `_NO_` form of the toggle, e.g. `CATCH_CONFIG_NO_WINDOWS_SEH`.
 
-## `CATCH_CONFIG_FAST_COMPILE`
+### `CATCH_CONFIG_FAST_COMPILE`
 Defining this flag speeds up compilation of test files by ~20%, by making 2 changes:
 * The `-b` (`--break`) flag no longer makes Catch break into debugger in the same stack frame as the failed test, but rather in a stack frame *below*.
 * Non-exception family of macros ({`REQUIRE`,`CHECK`}{`_`,`_FALSE`, `_FALSE`}, no longer use local try-cache block. This disables exception translation, but should not lead to false negatives.
 
 `CATCH_CONFIG_FAST_COMPILE` has to be either defined, or not defined, in all translation units that are linked into single test binary, or the behaviour of setting `-b` flag and throwing unexpected exceptions will be unpredictable.
 
-## `CATCH_CONFIG_DISABLE_MATCHERS`
+### `CATCH_CONFIG_DISABLE_MATCHERS`
 When `CATCH_CONFIG_DISABLE_MATCHERS` is defined, all mentions of Catch's Matchers are ifdef-ed away from the translation unit. Doing so will speed up compilation of that TU.
 
 _Note: If you define `CATCH_CONFIG_DISABLE_MATCHERS` in the same file as Catch's main is implemented, your test executable will fail to link if you use Matchers anywhere._
 
-## `CATCH_CONFIG_DISABLE_STRINGIFICATION`
+### `CATCH_CONFIG_DISABLE_STRINGIFICATION`
 This toggle enables a workaround for VS 2017 bug. For details see [known limitations](limitations.md#Visual Studio 2017 -- raw string literal in assert fails to compile)
 
-## `CATCH_CONFIG_DISABLE`
+### `CATCH_CONFIG_DISABLE`
 This toggle removes most of Catch from given file. This means that `TEST_CASE`s are not registered and assertions are turned into no-ops. Useful for keeping tests within implementation files (ie for functions with internal linkage), instead of in external files.
 
 This feature is considered experimental and might change at any point.
 
 _Inspired by Doctest's `DOCTEST_CONFIG_DISABLE`_
 
-# Windows header clutter
+## Windows header clutter
 
 On Windows Catch includes `windows.h`. To minimize global namespace clutter in the implementation file, it defines `NOMINMAX` and `WIN32_LEAN_AND_MEAN` before including it. You can control this behaviour via two macros:
 

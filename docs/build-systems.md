@@ -3,13 +3,13 @@
 
 Build Systems may refer to low-level tools, like CMake, or larger systems that run on servers, like Jenkins or TeamCity. This page will talk about both.
 
-# Continuous Integration systems
+## Continuous Integration systems
 
 Probably the most important aspect to using Catch with a build server is the use of different reporters. Catch comes bundled with three reporters that should cover the majority of build servers out there - although adding more for better integration with some is always a possibility (currently we also offer TeamCity, TAP and Automake reporters).
 
 Two of these reporters are built in (XML and JUnit) and the third (TeamCity) is included as a separate header. It's possible that the other two may be split out in the future too - as that would make the core of Catch smaller for those that don't need them.
 
-## XML Reporter
+### XML Reporter
 ```-r xml``` 
 
 The XML Reporter writes in an XML format that is specific to Catch. 
@@ -18,7 +18,7 @@ The advantage of this format is that it corresponds well to the way Catch works 
 
 The disadvantage is that, being specific to Catch, no existing build servers understand the format natively. It can be used as input to an XSLT transformation that could covert it to, say, HTML - although this loses the streaming advantage, of course.
 
-## JUnit Reporter
+### JUnit Reporter
 ```-r junit```
 
 The JUnit Reporter writes in an XML format that mimics the JUnit ANT schema.
@@ -53,9 +53,9 @@ The Automake Reporter writes out the [meta tags](https://www.gnu.org/software/au
 
 Because of the incremental nature of Catch's test suites and ability to run specific tests, our implementation of TAP reporter writes out the number of tests in a suite last.
 
-# Low-level tools
+## Low-level tools
 
-## CMake
+### CMake
 
 In general we recommend "vendoring" Catch's single-include releases inside your own repository. If you do this, the following example shows a minimal CMake project:
 ```CMake
