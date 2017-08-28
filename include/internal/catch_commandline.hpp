@@ -224,10 +224,6 @@ namespace Catch {
             .describe( "should output be colourised" )
             .bind( &setUseColour, "yes|no" );
 
-        cli["--use-colour"]
-            .describe( "should output be colourised" )
-            .bind( &setUseColour, "yes|no" );
-
         cli["--libidentify"]
             .describe( "report name and version according to libidentify standard" )
             .bind( &ConfigData::libIdentify );
