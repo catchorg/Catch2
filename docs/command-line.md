@@ -1,6 +1,30 @@
 <a id="top"></a>
 # Command line
 
+**Contents**  
+[Specifying which tests to run](#specifying-which-tests-to-run)  
+[Choosing a reporter to use](#choosing-a-reporter-to-use)  
+[Breaking into the debugger](#breaking-into-the-debugger)  
+[Showing results for successful tests](#showing-results-for-successful-tests)  
+[Aborting after a certain number of failures](#aborting-after-a-certain-number-of-failures)  
+[Listing available tests, tags or reporters](#listing-available-tests-tags-or-reporters)  
+[Sending output to a file](#sending-output-to-a-file)  
+[Naming a test run](#naming-a-test-run)  
+[Eliding assertions expected to throw](#eliding-assertions-expected-to-throw)  
+[Make whitespace visible](#make-whitespace-visible)  
+[Warnings](#warnings)  
+[Reporting timings](#reporting-timings)  
+[Load test names to run from a file](#load-test-names-to-run-from-a-file)  
+[Just test names](#just-test-names)  
+[Specify the order test cases are run](#specify-the-order-test-cases-are-run)  
+[Specify a seed for the Random Number Generator](#specify-a-seed-for-the-random-number-generator)  
+[Identify framework and version according to the libIdentify standard](#identify-framework-and-version-according-to-the-libidentify-standard)  
+[Wait for key before continuing](#wait-for-key-before-continuing)  
+[Specify multiples of clock resolution to run benchmarks for](#specify-multiples-of-clock-resolution-to-run-benchmarks-for)  
+[Usage](#usage)  
+[Specify the section to run](#specify-the-section-to-run)  
+[Filenames as tags](#filenames-as-tags)  
+
 Catch works quite nicely without any command line options at all - but for those times when you want greater control the following options are available.
 Click one of the followings links to take you straight to that option - or scroll on to browse the available options.
 
