@@ -4,7 +4,7 @@
     <TestCase name="# A test name that starts with a #" filename="projects/<exe-name>/MiscTests.cpp" >
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="#748 - captures with unexpected exceptions" tags="[!shouldfail][!throws][.][failing][hide]" filename="projects/<exe-name>/ExceptionTests.cpp" >
+    <TestCase name="#748 - captures with unexpected exceptions" tags="[!shouldfail][!throws][.][failing]" filename="projects/<exe-name>/ExceptionTests.cpp" >
       <Section name="outside assertions" filename="projects/<exe-name>/ExceptionTests.cpp" >
         <Info>
           answer := 42
@@ -117,7 +117,7 @@
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="#835 -- errno should not be touched by Catch" tags="[!shouldfail][.][failing][hide]" filename="projects/<exe-name>/MiscTests.cpp" >
+    <TestCase name="#835 -- errno should not be touched by Catch" tags="[!shouldfail][.][failing]" filename="projects/<exe-name>/MiscTests.cpp" >
       <Expression success="false" type="CHECK" filename="projects/<exe-name>/MiscTests.cpp" >
         <Original>
           f() == 0
@@ -150,7 +150,7 @@
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="#961 -- Dynamically created sections should all be reported" tags="[.][hide]" filename="projects/<exe-name>/MiscTests.cpp" >
+    <TestCase name="#961 -- Dynamically created sections should all be reported" tags="[.]" filename="projects/<exe-name>/MiscTests.cpp" >
       <Section name="Looped section 0" filename="projects/<exe-name>/MiscTests.cpp" >
         <OverallResults successes="1" failures="0" expectedFailures="0"/>
       </Section>
@@ -168,7 +168,7 @@
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="'Not' checks that should fail" tags="[.][failing][hide]" filename="projects/<exe-name>/ConditionTests.cpp" >
+    <TestCase name="'Not' checks that should fail" tags="[.][failing]" filename="projects/<exe-name>/ConditionTests.cpp" >
       <Expression success="false" type="CHECK" filename="projects/<exe-name>/ConditionTests.cpp" >
         <Original>
           false != false
@@ -384,7 +384,7 @@
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="A METHOD_AS_TEST_CASE based test run that fails" tags="[.][class][failing][hide]" filename="projects/<exe-name>/ClassTests.cpp" >
+    <TestCase name="A METHOD_AS_TEST_CASE based test run that fails" tags="[.][class][failing]" filename="projects/<exe-name>/ClassTests.cpp" >
       <Expression success="false" type="REQUIRE" filename="projects/<exe-name>/ClassTests.cpp" >
         <Original>
           s == "world"
@@ -406,7 +406,7 @@
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="A TEST_CASE_METHOD based test run that fails" tags="[.][class][failing][hide]" filename="projects/<exe-name>/ClassTests.cpp" >
+    <TestCase name="A TEST_CASE_METHOD based test run that fails" tags="[.][class][failing]" filename="projects/<exe-name>/ClassTests.cpp" >
       <Expression success="false" type="REQUIRE" filename="projects/<exe-name>/ClassTests.cpp" >
         <Original>
           m_a == 2
@@ -428,7 +428,7 @@
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="A couple of nested sections followed by a failure" tags="[.][failing][hide]" filename="projects/<exe-name>/MiscTests.cpp" >
+    <TestCase name="A couple of nested sections followed by a failure" tags="[.][failing]" filename="projects/<exe-name>/MiscTests.cpp" >
       <Section name="Outer" filename="projects/<exe-name>/MiscTests.cpp" >
         <Section name="Inner" filename="projects/<exe-name>/MiscTests.cpp" >
           <OverallResults successes="1" failures="0" expectedFailures="0"/>
@@ -440,7 +440,7 @@
       </Failure>
       <OverallResult success="false"/>
     </TestCase>
-    <TestCase name="A failing expression with a non streamable type is still captured" tags="[.][Tricky][failing][hide]" filename="projects/<exe-name>/TrickyTests.cpp" >
+    <TestCase name="A failing expression with a non streamable type is still captured" tags="[.][Tricky][failing]" filename="projects/<exe-name>/TrickyTests.cpp" >
       <Expression success="false" type="CHECK" filename="projects/<exe-name>/TrickyTests.cpp" >
         <Original>
           &amp;o1 == &amp;o2
@@ -535,7 +535,7 @@
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="An unchecked exception reports the line of the last assertion" tags="[!throws][.][failing][hide]" filename="projects/<exe-name>/ExceptionTests.cpp" >
+    <TestCase name="An unchecked exception reports the line of the last assertion" tags="[!throws][.][failing]" filename="projects/<exe-name>/ExceptionTests.cpp" >
       <Expression success="true" type="CHECK" filename="projects/<exe-name>/ExceptionTests.cpp" >
         <Original>
           1 == 1
@@ -1317,7 +1317,7 @@
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="Contains string matcher" tags="[.][failing][hide][matchers]" filename="projects/<exe-name>/MatchersTests.cpp" >
+    <TestCase name="Contains string matcher" tags="[.][failing][matchers]" filename="projects/<exe-name>/MatchersTests.cpp" >
       <Expression success="false" type="CHECK_THAT" filename="projects/<exe-name>/MatchersTests.cpp" >
         <Original>
           testStringForMatching(), Contains( "not there" )
@@ -1328,7 +1328,7 @@
       </Expression>
       <OverallResult success="false"/>
     </TestCase>
-    <TestCase name="Custom exceptions can be translated when testing for nothrow" tags="[!throws][.][failing][hide]" filename="projects/<exe-name>/ExceptionTests.cpp" >
+    <TestCase name="Custom exceptions can be translated when testing for nothrow" tags="[!throws][.][failing]" filename="projects/<exe-name>/ExceptionTests.cpp" >
       <Expression success="false" type="REQUIRE_NOTHROW" filename="projects/<exe-name>/ExceptionTests.cpp" >
         <Original>
           throwCustom()
@@ -1342,7 +1342,7 @@
       </Expression>
       <OverallResult success="false"/>
     </TestCase>
-    <TestCase name="Custom exceptions can be translated when testing for throwing as something else" tags="[!throws][.][failing][hide]" filename="projects/<exe-name>/ExceptionTests.cpp" >
+    <TestCase name="Custom exceptions can be translated when testing for throwing as something else" tags="[!throws][.][failing]" filename="projects/<exe-name>/ExceptionTests.cpp" >
       <Expression success="false" type="REQUIRE_THROWS_AS" filename="projects/<exe-name>/ExceptionTests.cpp" >
         <Original>
           throwCustom(), std::exception
@@ -1356,7 +1356,7 @@
       </Expression>
       <OverallResult success="false"/>
     </TestCase>
-    <TestCase name="Custom std-exceptions can be custom translated" tags="[!throws][.][failing][hide]" filename="projects/<exe-name>/ExceptionTests.cpp" >
+    <TestCase name="Custom std-exceptions can be custom translated" tags="[!throws][.][failing]" filename="projects/<exe-name>/ExceptionTests.cpp" >
       <Exception filename="projects/<exe-name>/ExceptionTests.cpp" >
         custom std exception
       </Exception>
@@ -1373,7 +1373,7 @@
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="EndsWith string matcher" tags="[.][failing][hide][matchers]" filename="projects/<exe-name>/MatchersTests.cpp" >
+    <TestCase name="EndsWith string matcher" tags="[.][failing][matchers]" filename="projects/<exe-name>/MatchersTests.cpp" >
       <Expression success="false" type="CHECK_THAT" filename="projects/<exe-name>/MatchersTests.cpp" >
         <Original>
           testStringForMatching(), EndsWith( "this" )
@@ -1384,7 +1384,7 @@
       </Expression>
       <OverallResult success="false"/>
     </TestCase>
-    <TestCase name="Equality checks that should fail" tags="[!mayfail][.][failing][hide]" filename="projects/<exe-name>/ConditionTests.cpp" >
+    <TestCase name="Equality checks that should fail" tags="[!mayfail][.][failing]" filename="projects/<exe-name>/ConditionTests.cpp" >
       <Expression success="false" type="CHECK" filename="projects/<exe-name>/ConditionTests.cpp" >
         <Original>
           data.int_seven == 6
@@ -1561,7 +1561,7 @@
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="Equals string matcher" tags="[.][failing][hide][matchers]" filename="projects/<exe-name>/MatchersTests.cpp" >
+    <TestCase name="Equals string matcher" tags="[.][failing][matchers]" filename="projects/<exe-name>/MatchersTests.cpp" >
       <Expression success="false" type="CHECK_THAT" filename="projects/<exe-name>/MatchersTests.cpp" >
         <Original>
           testStringForMatching(), Equals( "something else" )
@@ -1572,7 +1572,7 @@
       </Expression>
       <OverallResult success="false"/>
     </TestCase>
-    <TestCase name="Exception matchers that fail" tags="[!throws][.][.failing][exceptions][hide][matchers]" filename="projects/<exe-name>/MatchersTests.cpp" >
+    <TestCase name="Exception matchers that fail" tags="[!throws][.][.failing][exceptions][matchers]" filename="projects/<exe-name>/MatchersTests.cpp" >
       <Section name="No exception" filename="projects/<exe-name>/MatchersTests.cpp" >
         <Expression success="false" type="CHECK_THROWS_MATCHES" filename="projects/<exe-name>/MatchersTests.cpp" >
           <Original>
@@ -1717,7 +1717,7 @@
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="Expected exceptions that don't throw or unexpected exceptions fail the test" tags="[!throws][.][failing][hide]" filename="projects/<exe-name>/ExceptionTests.cpp" >
+    <TestCase name="Expected exceptions that don't throw or unexpected exceptions fail the test" tags="[!throws][.][failing]" filename="projects/<exe-name>/ExceptionTests.cpp" >
       <Expression success="false" type="CHECK_THROWS_AS" filename="projects/<exe-name>/ExceptionTests.cpp" >
         <Original>
           thisThrows(), std::string
@@ -1750,17 +1750,17 @@
       </Expression>
       <OverallResult success="false"/>
     </TestCase>
-    <TestCase name="FAIL aborts the test" tags="[.][failing][hide][messages]" filename="projects/<exe-name>/MessageTests.cpp" >
+    <TestCase name="FAIL aborts the test" tags="[.][failing][messages]" filename="projects/<exe-name>/MessageTests.cpp" >
       <Failure filename="projects/<exe-name>/MessageTests.cpp" >
         This is a failure
       </Failure>
       <OverallResult success="false"/>
     </TestCase>
-    <TestCase name="FAIL does not require an argument" tags="[.][failing][hide][messages]" filename="projects/<exe-name>/MessageTests.cpp" >
+    <TestCase name="FAIL does not require an argument" tags="[.][failing][messages]" filename="projects/<exe-name>/MessageTests.cpp" >
       <Failure filename="projects/<exe-name>/MessageTests.cpp" />
       <OverallResult success="false"/>
     </TestCase>
-    <TestCase name="FAIL_CHECK does not abort the test" tags="[.][failing][hide][messages]" filename="projects/<exe-name>/MessageTests.cpp" >
+    <TestCase name="FAIL_CHECK does not abort the test" tags="[.][failing][messages]" filename="projects/<exe-name>/MessageTests.cpp" >
       <Failure filename="projects/<exe-name>/MessageTests.cpp" >
         This is a failure
       </Failure>
@@ -1847,7 +1847,7 @@
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="INFO and WARN do not abort tests" tags="[.][hide][messages]" filename="projects/<exe-name>/MessageTests.cpp" >
+    <TestCase name="INFO and WARN do not abort tests" tags="[.][messages]" filename="projects/<exe-name>/MessageTests.cpp" >
       <Info>
         this is a message
       </Info>
@@ -1856,7 +1856,7 @@
       </Warning>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="INFO gets logged on failure" tags="[.][failing][hide][messages]" filename="projects/<exe-name>/MessageTests.cpp" >
+    <TestCase name="INFO gets logged on failure" tags="[.][failing][messages]" filename="projects/<exe-name>/MessageTests.cpp" >
       <Info>
         this message should be logged
       </Info>
@@ -1873,7 +1873,7 @@
       </Expression>
       <OverallResult success="false"/>
     </TestCase>
-    <TestCase name="INFO gets logged on failure, even if captured before successful assertions" tags="[.][failing][hide][messages]" filename="projects/<exe-name>/MessageTests.cpp" >
+    <TestCase name="INFO gets logged on failure, even if captured before successful assertions" tags="[.][failing][messages]" filename="projects/<exe-name>/MessageTests.cpp" >
       <Info>
         this message may be logged later
       </Info>
@@ -1938,7 +1938,7 @@
       </Expression>
       <OverallResult success="false"/>
     </TestCase>
-    <TestCase name="INFO is reset for each loop" tags="[.][failing][hide][messages]" filename="projects/<exe-name>/MessageTests.cpp" >
+    <TestCase name="INFO is reset for each loop" tags="[.][failing][messages]" filename="projects/<exe-name>/MessageTests.cpp" >
       <Info>
         current counter 0
       </Info>
@@ -2095,7 +2095,7 @@
       </Expression>
       <OverallResult success="false"/>
     </TestCase>
-    <TestCase name="Inequality checks that should fail" tags="[!shouldfail][.][failing][hide]" filename="projects/<exe-name>/ConditionTests.cpp" >
+    <TestCase name="Inequality checks that should fail" tags="[!shouldfail][.][failing]" filename="projects/<exe-name>/ConditionTests.cpp" >
       <Expression success="false" type="CHECK" filename="projects/<exe-name>/ConditionTests.cpp" >
         <Original>
           data.int_seven != 7
@@ -2308,7 +2308,7 @@
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="Matchers can be composed with both &amp;&amp; and || - failing" tags="[.][.failing][hide][matchers][operator&amp;&amp;][operators][operator||]" filename="projects/<exe-name>/MatchersTests.cpp" >
+    <TestCase name="Matchers can be composed with both &amp;&amp; and || - failing" tags="[.][.failing][matchers][operator&amp;&amp;][operators][operator||]" filename="projects/<exe-name>/MatchersTests.cpp" >
       <Expression success="false" type="CHECK_THAT" filename="projects/<exe-name>/MatchersTests.cpp" >
         <Original>
           testStringForMatching(), ( Contains( "string" ) || Contains( "different" ) ) &amp;&amp; Contains( "random" )
@@ -2330,7 +2330,7 @@
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="Matchers can be negated (Not) with the ! operator - failing" tags="[.][.failing][hide][matchers][not][operators]" filename="projects/<exe-name>/MatchersTests.cpp" >
+    <TestCase name="Matchers can be negated (Not) with the ! operator - failing" tags="[.][.failing][matchers][not][operators]" filename="projects/<exe-name>/MatchersTests.cpp" >
       <Expression success="false" type="CHECK_THAT" filename="projects/<exe-name>/MatchersTests.cpp" >
         <Original>
           testStringForMatching(), !Contains( "substring" )
@@ -2341,7 +2341,7 @@
       </Expression>
       <OverallResult success="false"/>
     </TestCase>
-    <TestCase name="Mismatching exception messages failing the test" tags="[!throws][.][failing][hide]" filename="projects/<exe-name>/ExceptionTests.cpp" >
+    <TestCase name="Mismatching exception messages failing the test" tags="[!throws][.][failing]" filename="projects/<exe-name>/ExceptionTests.cpp" >
       <Expression success="true" type="REQUIRE_THROWS_WITH" filename="projects/<exe-name>/ExceptionTests.cpp" >
         <Original>
           thisThrows(), "expected exception"
@@ -2360,13 +2360,13 @@
       </Expression>
       <OverallResult success="false"/>
     </TestCase>
-    <TestCase name="Nice descriptive name" tags="[.][hide][tag1][tag2][tag3]" filename="projects/<exe-name>/MiscTests.cpp" >
+    <TestCase name="Nice descriptive name" tags="[.][tag1][tag2][tag3]" filename="projects/<exe-name>/MiscTests.cpp" >
       <Warning>
         This one ran
       </Warning>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="Non-std exceptions can be translated" tags="[!throws][.][failing][hide]" filename="projects/<exe-name>/ExceptionTests.cpp" >
+    <TestCase name="Non-std exceptions can be translated" tags="[!throws][.][failing]" filename="projects/<exe-name>/ExceptionTests.cpp" >
       <Exception filename="projects/<exe-name>/ExceptionTests.cpp" >
         custom exception
       </Exception>
@@ -2410,7 +2410,7 @@
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="Ordering comparison checks that should fail" tags="[.][failing][hide]" filename="projects/<exe-name>/ConditionTests.cpp" >
+    <TestCase name="Ordering comparison checks that should fail" tags="[.][failing]" filename="projects/<exe-name>/ConditionTests.cpp" >
       <Expression success="false" type="CHECK" filename="projects/<exe-name>/ConditionTests.cpp" >
         <Original>
           data.int_seven > 7
@@ -2704,7 +2704,7 @@
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="Output from all sections is reported" tags="[.][failing][hide][messages]" filename="projects/<exe-name>/MessageTests.cpp" >
+    <TestCase name="Output from all sections is reported" tags="[.][failing][messages]" filename="projects/<exe-name>/MessageTests.cpp" >
       <Section name="one" filename="projects/<exe-name>/MessageTests.cpp" >
         <Failure filename="projects/<exe-name>/MessageTests.cpp" >
           Message from section one
@@ -3973,7 +3973,7 @@
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="Pointers can be converted to strings" tags="[.][hide][messages]" filename="projects/<exe-name>/MessageTests.cpp" >
+    <TestCase name="Pointers can be converted to strings" tags="[.][messages]" filename="projects/<exe-name>/MessageTests.cpp" >
       <Warning>
         actual address of p: 0x<hex digits>
       </Warning>
@@ -4595,7 +4595,7 @@
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="Reconstruction should be based on stringification: #914" tags="[.][Decomposition][failing][hide]" filename="projects/<exe-name>/DecompositionTests.cpp" >
+    <TestCase name="Reconstruction should be based on stringification: #914" tags="[.][Decomposition][failing]" filename="projects/<exe-name>/DecompositionTests.cpp" >
       <Expression success="false" type="CHECK" filename="projects/<exe-name>/DecompositionTests.cpp" >
         <Original>
           truthy(false)
@@ -4609,7 +4609,7 @@
     <TestCase name="SUCCEED counts as a test pass" tags="[messages]" filename="projects/<exe-name>/MessageTests.cpp" >
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="SUCCESS does not require an argument" tags="[.][hide][messages]" filename="projects/<exe-name>/MessageTests.cpp" >
+    <TestCase name="SUCCESS does not require an argument" tags="[.][messages]" filename="projects/<exe-name>/MessageTests.cpp" >
       <OverallResult success="true"/>
     </TestCase>
     <TestCase name="Scenario: BDD tests requiring Fixtures to provide commonly-accessed data or methods" tags="[bdd][fixtures]" filename="projects/<exe-name>/BDDTests.cpp" >
@@ -4774,7 +4774,7 @@
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="Sends stuff to stdout and stderr" tags="[.][hide]" filename="projects/<exe-name>/MiscTests.cpp" >
+    <TestCase name="Sends stuff to stdout and stderr" tags="[.]" filename="projects/<exe-name>/MiscTests.cpp" >
       <OverallResult success="true">
         <StdOut>
 A string sent directly to stdout
@@ -4835,7 +4835,7 @@ A string sent directly to stderr
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="Standard error is reported and redirected" tags="[.][hide][messages]" filename="projects/<exe-name>/MessageTests.cpp" >
+    <TestCase name="Standard error is reported and redirected" tags="[.][messages]" filename="projects/<exe-name>/MessageTests.cpp" >
       <Section name="std::cerr" filename="projects/<exe-name>/MessageTests.cpp" >
         <OverallResults successes="0" failures="1" expectedFailures="0"/>
       </Section>
@@ -4853,7 +4853,7 @@ Interleaved writes to error streams
         </StdErr>
       </OverallResult>
     </TestCase>
-    <TestCase name="Standard output from all sections is reported" tags="[.][hide][messages]" filename="projects/<exe-name>/MessageTests.cpp" >
+    <TestCase name="Standard output from all sections is reported" tags="[.][messages]" filename="projects/<exe-name>/MessageTests.cpp" >
       <Section name="one" filename="projects/<exe-name>/MessageTests.cpp" >
         <OverallResults successes="0" failures="1" expectedFailures="0"/>
       </Section>
@@ -4867,7 +4867,7 @@ Message from section two
         </StdOut>
       </OverallResult>
     </TestCase>
-    <TestCase name="StartsWith string matcher" tags="[.][failing][hide][matchers]" filename="projects/<exe-name>/MatchersTests.cpp" >
+    <TestCase name="StartsWith string matcher" tags="[.][failing][matchers]" filename="projects/<exe-name>/MatchersTests.cpp" >
       <Expression success="false" type="CHECK_THAT" filename="projects/<exe-name>/MatchersTests.cpp" >
         <Original>
           testStringForMatching(), StartsWith( "string" )
@@ -5325,7 +5325,7 @@ Message from section two
       </Section>
       <OverallResult success="false"/>
     </TestCase>
-    <TestCase name="Tabs and newlines show in output" tags="[.][failing][hide][whitespace]" filename="projects/<exe-name>/MiscTests.cpp" >
+    <TestCase name="Tabs and newlines show in output" tags="[.][failing][whitespace]" filename="projects/<exe-name>/MiscTests.cpp" >
       <Expression success="false" type="CHECK" filename="projects/<exe-name>/MiscTests.cpp" >
         <Original>
           s1 == s2
@@ -5449,7 +5449,7 @@ Message from section two
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="This test 'should' fail but doesn't" tags="[!shouldfail][.][failing][hide]" filename="projects/<exe-name>/MiscTests.cpp" >
+    <TestCase name="This test 'should' fail but doesn't" tags="[!shouldfail][.][failing]" filename="projects/<exe-name>/MiscTests.cpp" >
       <OverallResult success="false"/>
     </TestCase>
     <TestCase name="Tracker" filename="projects/<exe-name>/PartTrackerTests.cpp" >
@@ -6558,7 +6558,7 @@ Message from section two
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="Unexpected exceptions can be translated" tags="[!throws][.][failing][hide]" filename="projects/<exe-name>/ExceptionTests.cpp" >
+    <TestCase name="Unexpected exceptions can be translated" tags="[!throws][.][failing]" filename="projects/<exe-name>/ExceptionTests.cpp" >
       <Exception filename="projects/<exe-name>/ExceptionTests.cpp" >
         3.14
       </Exception>
@@ -6721,7 +6721,7 @@ Message from section two
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="Vector matchers that fail" tags="[.][failing][hide][matchers][vector]" filename="projects/<exe-name>/MatchersTests.cpp" >
+    <TestCase name="Vector matchers that fail" tags="[.][failing][matchers][vector]" filename="projects/<exe-name>/MatchersTests.cpp" >
       <Section name="Contains (element)" filename="projects/<exe-name>/MatchersTests.cpp" >
         <Expression success="false" type="CHECK_THAT" filename="projects/<exe-name>/MatchersTests.cpp" >
           <Original>
@@ -6824,13 +6824,13 @@ Message from section two
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="When unchecked exceptions are thrown directly they are always failures" tags="[!throws][.][failing][hide]" filename="projects/<exe-name>/ExceptionTests.cpp" >
+    <TestCase name="When unchecked exceptions are thrown directly they are always failures" tags="[!throws][.][failing]" filename="projects/<exe-name>/ExceptionTests.cpp" >
       <Exception filename="projects/<exe-name>/ExceptionTests.cpp" >
         unexpected exception
       </Exception>
       <OverallResult success="false"/>
     </TestCase>
-    <TestCase name="When unchecked exceptions are thrown during a CHECK the test should continue" tags="[!throws][.][failing][hide]" filename="projects/<exe-name>/ExceptionTests.cpp" >
+    <TestCase name="When unchecked exceptions are thrown during a CHECK the test should continue" tags="[!throws][.][failing]" filename="projects/<exe-name>/ExceptionTests.cpp" >
       <Expression success="false" type="CHECK" filename="projects/<exe-name>/ExceptionTests.cpp" >
         <Original>
           thisThrows() == 0
@@ -6844,7 +6844,7 @@ Message from section two
       </Expression>
       <OverallResult success="false"/>
     </TestCase>
-    <TestCase name="When unchecked exceptions are thrown during a REQUIRE the test should abort fail" tags="[!throws][.][failing][hide]" filename="projects/<exe-name>/ExceptionTests.cpp" >
+    <TestCase name="When unchecked exceptions are thrown during a REQUIRE the test should abort fail" tags="[!throws][.][failing]" filename="projects/<exe-name>/ExceptionTests.cpp" >
       <Expression success="false" type="REQUIRE" filename="projects/<exe-name>/ExceptionTests.cpp" >
         <Original>
           thisThrows() == 0
@@ -6858,7 +6858,7 @@ Message from section two
       </Expression>
       <OverallResult success="false"/>
     </TestCase>
-    <TestCase name="When unchecked exceptions are thrown from functions they are always failures" tags="[!throws][.][failing][hide]" filename="projects/<exe-name>/ExceptionTests.cpp" >
+    <TestCase name="When unchecked exceptions are thrown from functions they are always failures" tags="[!throws][.][failing]" filename="projects/<exe-name>/ExceptionTests.cpp" >
       <Expression success="false" type="CHECK" filename="projects/<exe-name>/ExceptionTests.cpp" >
         <Original>
           thisThrows() == 0
@@ -6872,7 +6872,7 @@ Message from section two
       </Expression>
       <OverallResult success="false"/>
     </TestCase>
-    <TestCase name="When unchecked exceptions are thrown from sections they are always failures" tags="[!throws][.][failing][hide]" filename="projects/<exe-name>/ExceptionTests.cpp" >
+    <TestCase name="When unchecked exceptions are thrown from sections they are always failures" tags="[!throws][.][failing]" filename="projects/<exe-name>/ExceptionTests.cpp" >
       <Section name="section name" filename="projects/<exe-name>/ExceptionTests.cpp" >
         <Exception filename="projects/<exe-name>/ExceptionTests.cpp" >
           unexpected exception
@@ -6884,13 +6884,13 @@ Message from section two
     <TestCase name="When unchecked exceptions are thrown, but caught, they do not affect the test" tags="[!throws]" filename="projects/<exe-name>/ExceptionTests.cpp" >
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="Where the LHS is not a simple value" tags="[.][Tricky][failing][hide]" filename="projects/<exe-name>/TrickyTests.cpp" >
+    <TestCase name="Where the LHS is not a simple value" tags="[.][Tricky][failing]" filename="projects/<exe-name>/TrickyTests.cpp" >
       <Warning>
         Uncomment the code in this test to check that it gives a sensible compiler error
       </Warning>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="Where there is more to the expression after the RHS" tags="[.][Tricky][failing][hide]" filename="projects/<exe-name>/TrickyTests.cpp" >
+    <TestCase name="Where there is more to the expression after the RHS" tags="[.][Tricky][failing]" filename="projects/<exe-name>/TrickyTests.cpp" >
       <Warning>
         Uncomment the code in this test to check that it gives a sensible compiler error
       </Warning>
@@ -7065,7 +7065,7 @@ Message from section two
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="checkedElse, failing" tags="[.][failing][hide]" filename="projects/<exe-name>/MiscTests.cpp" >
+    <TestCase name="checkedElse, failing" tags="[.][failing]" filename="projects/<exe-name>/MiscTests.cpp" >
       <Expression success="false" type="CHECKED_ELSE" filename="projects/<exe-name>/MiscTests.cpp" >
         <Original>
           flag
@@ -7103,7 +7103,7 @@ Message from section two
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="checkedIf, failing" tags="[.][failing][hide]" filename="projects/<exe-name>/MiscTests.cpp" >
+    <TestCase name="checkedIf, failing" tags="[.][failing]" filename="projects/<exe-name>/MiscTests.cpp" >
       <Expression success="false" type="CHECKED_IF" filename="projects/<exe-name>/MiscTests.cpp" >
         <Original>
           flag
@@ -7217,7 +7217,7 @@ Message from section two
 loose text artifact
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="just failure" tags="[.][fail][hide][isolated info][messages]" filename="projects/<exe-name>/MessageTests.cpp" >
+    <TestCase name="just failure" tags="[.][fail][isolated info][messages]" filename="projects/<exe-name>/MessageTests.cpp" >
       <Failure filename="projects/<exe-name>/MessageTests.cpp" >
         Previous info should not be seen
       </Failure>
@@ -7239,7 +7239,7 @@ loose text artifact
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="looped SECTION tests" tags="[.][failing][hide][sections]" filename="projects/<exe-name>/MiscTests.cpp" >
+    <TestCase name="looped SECTION tests" tags="[.][failing][sections]" filename="projects/<exe-name>/MiscTests.cpp" >
       <Section name="s1" description="b is currently: 0" filename="projects/<exe-name>/MiscTests.cpp" >
         <Expression success="false" type="CHECK" filename="projects/<exe-name>/MiscTests.cpp" >
           <Original>
@@ -7253,7 +7253,7 @@ loose text artifact
       </Section>
       <OverallResult success="false"/>
     </TestCase>
-    <TestCase name="looped tests" tags="[.][failing][hide]" filename="projects/<exe-name>/MiscTests.cpp" >
+    <TestCase name="looped tests" tags="[.][failing]" filename="projects/<exe-name>/MiscTests.cpp" >
       <Info>
         Testing if fib[0] (1) is even
       </Info>
@@ -7344,7 +7344,7 @@ loose text artifact
       </Expression>
       <OverallResult success="false"/>
     </TestCase>
-    <TestCase name="more nested SECTION tests" tags="[.][failing][hide][sections]" filename="projects/<exe-name>/MiscTests.cpp" >
+    <TestCase name="more nested SECTION tests" tags="[.][failing][sections]" filename="projects/<exe-name>/MiscTests.cpp" >
       <Section name="s1" description="doesn't equal" filename="projects/<exe-name>/MiscTests.cpp" >
         <Section name="s2" description="equal" filename="projects/<exe-name>/MiscTests.cpp" >
           <Expression success="false" type="REQUIRE" filename="projects/<exe-name>/MiscTests.cpp" >
@@ -7389,7 +7389,7 @@ loose text artifact
       </Section>
       <OverallResult success="false"/>
     </TestCase>
-    <TestCase name="nested SECTION tests" tags="[.][failing][hide][sections]" filename="projects/<exe-name>/MiscTests.cpp" >
+    <TestCase name="nested SECTION tests" tags="[.][failing][sections]" filename="projects/<exe-name>/MiscTests.cpp" >
       <Section name="s1" description="doesn't equal" filename="projects/<exe-name>/MiscTests.cpp" >
         <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/MiscTests.cpp" >
           <Original>
@@ -7433,7 +7433,7 @@ loose text artifact
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="non-copyable objects" tags="[.][failing][hide]" filename="projects/<exe-name>/TrickyTests.cpp" >
+    <TestCase name="non-copyable objects" tags="[.][failing]" filename="projects/<exe-name>/TrickyTests.cpp" >
       <Expression success="true" type="CHECK" filename="projects/<exe-name>/TrickyTests.cpp" >
         <Original>
           ti == typeid(int)
@@ -7501,7 +7501,7 @@ loose text artifact
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="random SECTION tests" tags="[.][failing][hide][sections]" filename="projects/<exe-name>/MiscTests.cpp" >
+    <TestCase name="random SECTION tests" tags="[.][failing][sections]" filename="projects/<exe-name>/MiscTests.cpp" >
       <Section name="s1" description="doesn't equal" filename="projects/<exe-name>/MiscTests.cpp" >
         <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/MiscTests.cpp" >
           <Original>
@@ -7673,7 +7673,7 @@ loose text artifact
     <TestCase name="second tag" tags="[tag2]" filename="projects/<exe-name>/MiscTests.cpp" >
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="send a single char to INFO" tags="[.][failing][hide]" filename="projects/<exe-name>/MiscTests.cpp" >
+    <TestCase name="send a single char to INFO" tags="[.][failing]" filename="projects/<exe-name>/MiscTests.cpp" >
       <Info>
         3
       </Info>
@@ -7687,7 +7687,7 @@ loose text artifact
       </Expression>
       <OverallResult success="false"/>
     </TestCase>
-    <TestCase name="sends information to INFO" tags="[.][failing][hide]" filename="projects/<exe-name>/MessageTests.cpp" >
+    <TestCase name="sends information to INFO" tags="[.][failing]" filename="projects/<exe-name>/MessageTests.cpp" >
       <Info>
         hi
       </Info>
@@ -7739,7 +7739,7 @@ loose text artifact
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="string literals of different sizes can be compared" tags="[.][Tricky][failing][hide]" filename="projects/<exe-name>/TrickyTests.cpp" >
+    <TestCase name="string literals of different sizes can be compared" tags="[.][Tricky][failing]" filename="projects/<exe-name>/TrickyTests.cpp" >
       <Expression success="false" type="REQUIRE" filename="projects/<exe-name>/TrickyTests.cpp" >
         <Original>
           std::string( "first" ) == "second"
@@ -7763,7 +7763,7 @@ loose text artifact
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="stringify( has_maker_and_toString )" tags="[.][hide][toString]" filename="projects/<exe-name>/ToStringWhich.cpp" >
+    <TestCase name="stringify( has_maker_and_toString )" tags="[.][toString]" filename="projects/<exe-name>/ToStringWhich.cpp" >
       <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/ToStringWhich.cpp" >
         <Original>
           ::Catch::Detail::stringify( item ) == "StringMaker&lt;has_maker_and_operator>"
@@ -7875,7 +7875,7 @@ loose text artifact
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="toString(enum class)" tags="[.][enum][enumClass][hide][toString]" filename="projects/<exe-name>/EnumToString.cpp" >
+    <TestCase name="toString(enum class)" tags="[.][enum][enumClass][toString]" filename="projects/<exe-name>/EnumToString.cpp" >
       <Expression success="false" type="CHECK" filename="projects/<exe-name>/EnumToString.cpp" >
         <Original>
           ::Catch::Detail::stringify(e0) == "0"
