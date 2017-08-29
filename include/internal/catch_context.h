@@ -22,7 +22,7 @@ namespace Catch {
 
     struct IContext
     {
-        virtual ~IContext();
+        virtual ~IContext() = default;
 
         virtual IResultCapture* getResultCapture() = 0;
         virtual IRunner* getRunner() = 0;
@@ -31,7 +31,7 @@ namespace Catch {
 
     struct IMutableContext : IContext
     {
-        virtual ~IMutableContext();
+        virtual ~IMutableContext() = default;
         virtual void setResultCapture( IResultCapture* resultCapture ) = 0;
         virtual void setRunner( IRunner* runner ) = 0;
         virtual void setConfig( IConfigPtr const& config ) = 0;

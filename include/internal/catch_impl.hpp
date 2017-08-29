@@ -46,7 +46,6 @@ namespace Catch {
     CoutStream::~CoutStream() noexcept {}
     DebugOutStream::~DebugOutStream() noexcept {}
     StreamBufBase::~StreamBufBase() noexcept {}
-    IContext::~IContext() {}
     IResultCapture::~IResultCapture() {}
     ITestInvoker::~ITestInvoker() {}
     ITestCaseRegistry::~ITestCaseRegistry() {}
@@ -55,7 +54,6 @@ namespace Catch {
     IExceptionTranslator::~IExceptionTranslator() {}
     IExceptionTranslatorRegistry::~IExceptionTranslatorRegistry() {}
     IRunner::~IRunner() {}
-    IMutableContext::~IMutableContext() {}
     IConfig::~IConfig() {}
 
     void Config::dummy() {}

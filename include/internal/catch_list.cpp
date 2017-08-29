@@ -12,6 +12,7 @@
 #include "catch_interfaces_reporter.h"
 #include "catch_interfaces_testcase.h"
 
+#include "catch_stream.h"
 #include "catch_text.h"
 
 #include "catch_console_colour.hpp"

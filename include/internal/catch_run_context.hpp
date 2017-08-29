@@ -26,6 +26,8 @@
 
 namespace Catch {
 
+    struct IMutableContext;
+
     class StreamRedirect {
 
     public:

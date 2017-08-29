@@ -13,6 +13,7 @@
 #include "internal/catch_enforce.h"
 #include "internal/catch_list.h"
 #include "internal/catch_run_context.hpp"
+#include "internal/catch_stream.h"
 #include "internal/catch_test_spec.hpp"
 #include "internal/catch_version.h"
 #include "internal/catch_interfaces_reporter.h"

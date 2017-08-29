@@ -1,6 +1,7 @@
 #include "catch_run_context.hpp"
 #include "catch_context.h"
 #include "catch_enforce.h"
+#include "catch_stream.h"
 
 #include <cassert>
 #include <algorithm>
