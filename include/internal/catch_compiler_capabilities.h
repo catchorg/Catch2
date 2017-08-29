@@ -86,14 +86,9 @@
 
 ////////////////////////////////////////////////////////////////////////////////
 
-// Use __COUNTER__ if the compiler supports it
-#if ( defined _MSC_VER && _MSC_VER >= 1300 ) || \
-    ( defined __GNUC__  && ( __GNUC__ > 4 || (__GNUC__ == 4 && __GNUC_MINOR__ >= 3 )) ) || \
-    ( defined __clang__ && __clang_major__ >= 3 )
-
+// All supported compilers support COUNTER macro,
+//but user still might want to turn it off
 #define CATCH_INTERNAL_CONFIG_COUNTER
-
-#endif
 
 
 // Now set the actual defines based on the above + anything the user has configured
