@@ -11,12 +11,8 @@
 
 #include "catch_platform.h"
 
-#include <string>
-
-namespace Catch{
-
+namespace Catch {
     bool isDebuggerActive();
-    void writeToDebugConsole( std::string const& text );
 }
 
 #ifdef CATCH_PLATFORM_MAC

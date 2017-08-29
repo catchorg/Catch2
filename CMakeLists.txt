@@ -132,6 +132,7 @@ set(INTERNAL_HEADERS
         ${HEADER_DIR}/internal/catch_config.hpp
         ${HEADER_DIR}/internal/catch_console_colour.hpp
         ${HEADER_DIR}/internal/catch_context.h
+        ${HEADER_DIR}/internal/catch_debug_console.h
         ${HEADER_DIR}/internal/catch_debugger.h
         ${HEADER_DIR}/internal/catch_decomposer.h
         ${HEADER_DIR}/internal/catch_default_main.hpp
@@ -203,6 +204,7 @@ set(IMPL_SOURCES
         ${HEADER_DIR}/internal/catch_config.cpp
         ${HEADER_DIR}/internal/catch_console_colour.cpp
         ${HEADER_DIR}/internal/catch_context.cpp
+        ${HEADER_DIR}/internal/catch_debug_console.cpp
         ${HEADER_DIR}/internal/catch_debugger.cpp
         ${HEADER_DIR}/internal/catch_decomposer.cpp
         ${HEADER_DIR}/internal/catch_errno_guard.cpp
