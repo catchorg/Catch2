@@ -10,8 +10,6 @@
 
 #include "catch_common.h"
 
-#include <stdexcept>
-
 
 namespace Catch
 {

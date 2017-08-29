@@ -174,7 +174,7 @@ namespace Catch {
             }
             else {
                 SectionNode& parentNode = *m_sectionStack.back();
-                typename SectionNode::ChildSections::const_iterator it =
+                auto it =
                     std::find_if(   parentNode.childSections.begin(),
                                     parentNode.childSections.end(),
                                     BySectionInfo( sectionInfo ) );

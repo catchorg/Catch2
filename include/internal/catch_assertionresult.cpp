@@ -9,6 +9,9 @@
 #include "catch_assertionresult.h"
 
 namespace Catch {
+    AssertionResultData::AssertionResultData(ResultWas::OfType _resultType, LazyExpression const & _lazyExpression):
+        resultType(_resultType),
+        lazyExpression(_lazyExpression) {}
 
     std::string AssertionResultData::reconstructExpression() const {
 

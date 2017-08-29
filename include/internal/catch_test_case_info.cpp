@@ -57,8 +57,7 @@ namespace Catch {
         std::vector<std::string> tags;
         std::string desc, tag;
         bool inTag = false;
-        for( std::size_t i = 0; i < _descOrTags.size(); ++i ) {
-            char c = _descOrTags[i];
+        for (char c : _descOrTags) {
             if( !inTag ) {
                 if( c == '[' )
                     inTag = true;

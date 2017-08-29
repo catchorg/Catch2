@@ -21,14 +21,14 @@ namespace Catch {
         ~ReporterRegistry() override {}
 
         IStreamingReporterPtr create( std::string const& name, IConfigPtr const& config ) const override {
-            FactoryMap::const_iterator it =  m_factories.find( name );
+            auto it =  m_factories.find( name );
             if( it == m_factories.end() )
                 return nullptr;
             return it->second->create( ReporterConfig( config ) );
         }
 
         void registerReporter( std::string const& name, IReporterFactoryPtr const& factory ) {
-            m_factories.insert( { name, factory } );
+            m_factories.emplace(name, factory);
         }
         void registerListener( IReporterFactoryPtr const& factory ) {
             m_listeners.push_back( factory );

@@ -47,9 +47,9 @@ namespace Catch {
     };
 
     LONG CALLBACK FatalConditionHandler::handleVectoredException(PEXCEPTION_POINTERS ExceptionInfo) {
-        for (int i = 0; i < sizeof(signalDefs) / sizeof(SignalDefs); ++i) {
-            if (ExceptionInfo->ExceptionRecord->ExceptionCode == signalDefs[i].id) {
-                reportFatal(signalDefs[i].name);
+        for (auto const& def : signalDefs) {
+            if (ExceptionInfo->ExceptionRecord->ExceptionCode == def.id) {
+                reportFatal(def.name);
             }
         }
         // If its not an exception we care about, pass it along.
@@ -123,8 +123,7 @@ namespace Catch {
 
     void FatalConditionHandler::handleSignal( int sig ) {
         std::string name = "<unknown signal>";
-        for (std::size_t i = 0; i < sizeof(signalDefs) / sizeof(SignalDefs); ++i) {
-            SignalDefs &def = signalDefs[i];
+        for (auto const& def : signalDefs) {
             if (sig == def.id) {
                 name = def.name;
                 break;
