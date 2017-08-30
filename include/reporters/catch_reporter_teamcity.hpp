@@ -97,12 +97,12 @@ namespace Catch {
                     case ResultWas::Ok:
                     case ResultWas::Info:
                     case ResultWas::Warning:
-
+                        CATCH_ERROR( "Internal error in TeamCity reporter" );
                     // These cases are here to prevent compiler warnings
                     case ResultWas::Unknown:
                     case ResultWas::FailureBit:
                     case ResultWas::Exception:
-                        CATCH_NOT_IMPLEMENTED;
+                        CATCH_ERROR( "Not implemented" );
                 }
                 if( assertionStats.infoMessages.size() == 1 )
                     msg << " with message:";

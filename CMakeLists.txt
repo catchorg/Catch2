@@ -156,7 +156,6 @@ set(INTERNAL_HEADERS
         ${HEADER_DIR}/internal/catch_matchers_string.h
         ${HEADER_DIR}/internal/catch_matchers_vector.h
         ${HEADER_DIR}/internal/catch_message.h
-        ${HEADER_DIR}/internal/catch_notimplemented_exception.h
         ${HEADER_DIR}/internal/catch_objc.hpp
         ${HEADER_DIR}/internal/catch_objc_arc.hpp
         ${HEADER_DIR}/internal/catch_option.hpp
@@ -216,7 +215,6 @@ set(IMPL_SOURCES
         ${HEADER_DIR}/internal/catch_matchers.cpp
         ${HEADER_DIR}/internal/catch_matchers_string.cpp
         ${HEADER_DIR}/internal/catch_message.cpp
-        ${HEADER_DIR}/internal/catch_notimplemented_exception.cpp
         ${HEADER_DIR}/internal/catch_registry_hub.cpp
         ${HEADER_DIR}/internal/catch_interfaces_reporter.cpp
         ${HEADER_DIR}/internal/catch_random_number_generator.cpp
