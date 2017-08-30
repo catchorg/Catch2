@@ -22,21 +22,6 @@ namespace Catch {
     class TestCase;
     struct IConfig;
 
-    struct RandomNumberGenerator {
-        using result_type = std::ptrdiff_t;
-
-        result_type operator()( result_type n ) const;
-
-        static constexpr result_type min() { return 0; }
-        static constexpr result_type max() { return 1000000; }
-        result_type operator()() const;
-        template<typename V>
-        static void shuffle( V& vector ) {
-            RandomNumberGenerator rng;
-            std::shuffle( vector.begin(), vector.end(), rng );
-        }
-    };
-
     std::vector<TestCase> sortTests( IConfig const& config, std::vector<TestCase> const& unsortedTestCases ); 
     bool matchTest( TestCase const& testCase, TestSpec const& testSpec, IConfig const& config );
 

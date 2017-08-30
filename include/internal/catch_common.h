@@ -67,9 +67,6 @@ namespace Catch {
     bool alwaysTrue();
     bool alwaysFalse();
 
-    void seedRng( IConfig const& config );
-    unsigned int rngSeed();
-
     // Use this in variadic streaming macros to allow
     //    >> +StreamEndStop
     // as well as

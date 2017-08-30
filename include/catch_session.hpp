@@ -17,6 +17,7 @@
 #include "internal/catch_test_spec.hpp"
 #include "internal/catch_version.h"
 #include "internal/catch_interfaces_reporter.h"
+#include "internal/catch_random_number_generator.h"
 #include "internal/catch_startup_exception_registry.h"
 #include "internal/catch_text.h"
 

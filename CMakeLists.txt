@@ -161,6 +161,7 @@ set(INTERNAL_HEADERS
         ${HEADER_DIR}/internal/catch_objc_arc.hpp
         ${HEADER_DIR}/internal/catch_option.hpp
         ${HEADER_DIR}/internal/catch_platform.h
+        ${HEADER_DIR}/internal/catch_random_number_generator.h
         ${HEADER_DIR}/internal/catch_reenable_warnings.h
         ${HEADER_DIR}/internal/catch_reporter_registrars.hpp
         ${HEADER_DIR}/internal/catch_reporter_registry.hpp
@@ -218,6 +219,7 @@ set(IMPL_SOURCES
         ${HEADER_DIR}/internal/catch_notimplemented_exception.cpp
         ${HEADER_DIR}/internal/catch_registry_hub.cpp
         ${HEADER_DIR}/internal/catch_interfaces_reporter.cpp
+        ${HEADER_DIR}/internal/catch_random_number_generator.cpp
         ${HEADER_DIR}/internal/catch_result_type.cpp
         ${HEADER_DIR}/internal/catch_run_context.cpp
         ${HEADER_DIR}/internal/catch_section.cpp

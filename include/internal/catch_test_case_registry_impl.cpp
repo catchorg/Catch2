@@ -10,15 +10,13 @@
 #include "catch_context.h"
 #include "catch_enforce.h"
 #include "catch_interfaces_registry_hub.h"
+#include "catch_random_number_generator.h"
 #include "catch_string_manip.h"
 #include "catch_test_case_info.h"
 
 #include <sstream>
 
 namespace Catch {
-
-    RandomNumberGenerator::result_type RandomNumberGenerator::operator()( result_type n ) const { return std::rand() % n; }
-    RandomNumberGenerator::result_type RandomNumberGenerator::operator()() const { return std::rand() % max(); }
 
     std::vector<TestCase> sortTests( IConfig const& config, std::vector<TestCase> const& unsortedTestCases ) {
 
