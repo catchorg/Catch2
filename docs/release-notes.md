@@ -36,11 +36,14 @@
 * All parts of matchers can be removed from a TU by defining `CATCH_CONFIG_DISABLE_MATCHERS`
   * This can be used to somewhat speed up compilation times
 * An experimental implementation of `CATCH_CONFIG_DISABLE` has been added
-  * Speeds up compilation by removing away Catch tests
-    * Currently removes all assertions and prevents `TEST_CASE` registrations
+  * Inspired by Doctest's `DOCTEST_CONFIG_DISABLE`
   * Useful for implementing tests in source files
     * ie for functions in anonymous namespaces
-  * Inspired by Doctest's `DOCTEST_CONFIG_DISABLE`
+  * Removes all assertions
+  * Prevents `TEST_CASE` registrations
+  * Exception translators are not registered
+  * Reporters are not registered
+  * Listeners are not registered
 
 ## Fixes
 
