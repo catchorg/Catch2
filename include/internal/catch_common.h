@@ -24,8 +24,6 @@
 
 namespace Catch {
 
-    struct IConfig;
-
     struct CaseSensitive { enum Choice {
         Yes,
         No

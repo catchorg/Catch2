@@ -165,7 +165,6 @@ namespace Catch {
         size_t iterations;
         uint64_t elapsedTimeInNanoseconds;
     };
-    class MultipleReporters;
 
     struct IStreamingReporter {
         virtual ~IStreamingReporter() = default;

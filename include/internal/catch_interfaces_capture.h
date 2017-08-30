@@ -12,13 +12,11 @@
 
 namespace Catch {
 
-    class TestCase;
     class AssertionResult;
     struct AssertionInfo;
     struct SectionInfo;
     struct SectionEndInfo;
     struct MessageInfo;
-    class ScopedMessageBuilder;
     struct Counts;
     struct BenchmarkInfo;
     struct BenchmarkStats;

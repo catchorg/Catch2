@@ -50,8 +50,8 @@ namespace Catch {
         }
 
     public:
-        BinaryExpr( bool comparisionResult, LhsT lhs, StringRef op, RhsT rhs )
-        :   m_result( comparisionResult ),
+        BinaryExpr( bool comparisonResult, LhsT lhs, StringRef op, RhsT rhs )
+        :   m_result( comparisonResult ),
             m_lhs( lhs ),
             m_op( op ),
             m_rhs( rhs )
