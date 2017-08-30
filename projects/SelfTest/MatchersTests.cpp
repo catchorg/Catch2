@@ -50,16 +50,6 @@ TEST_CASE("Equals string matcher", "[.][failing][matchers]")
     CHECK_THAT( testStringForMatching(), Equals( "something else" ) );
 }
 
-TEST_CASE("AllOf matcher", "[matchers]")
-{
-    CHECK_THAT( testStringForMatching(), AllOf( Catch::Contains( "string" ), Catch::Contains( "abc" ) ) );
-}
-TEST_CASE("AnyOf matcher", "[matchers]")
-{
-    CHECK_THAT( testStringForMatching(), AnyOf( Catch::Contains( "string" ), Catch::Contains( "not there" ) ) );
-    CHECK_THAT( testStringForMatching(), AnyOf( Catch::Contains( "not there" ), Catch::Contains( "string" ) ) );
-}
-
 TEST_CASE("Equals", "[matchers]")
 {
     CHECK_THAT( testStringForMatching(), Equals( "this string contains 'abc' as a substring" ) );

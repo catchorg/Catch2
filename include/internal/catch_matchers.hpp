@@ -148,31 +148,6 @@ namespace Matchers {
 
     } // namespace Impl
 
-
-    // The following functions create the actual matcher objects.
-    // This allows the types to be inferred
-    // - deprecated: prefer ||, && and !
-    template<typename T>
-    Impl::MatchNotOf<T> Not( Impl::MatcherBase<T> const& underlyingMatcher ) {
-        return Impl::MatchNotOf<T>( underlyingMatcher );
-    }
-    template<typename T>
-    Impl::MatchAllOf<T> AllOf( Impl::MatcherBase<T> const& m1, Impl::MatcherBase<T> const& m2 ) {
-        return Impl::MatchAllOf<T>() && m1 && m2;
-    }
-    template<typename T>
-    Impl::MatchAllOf<T> AllOf( Impl::MatcherBase<T> const& m1, Impl::MatcherBase<T> const& m2, Impl::MatcherBase<T> const& m3 ) {
-        return Impl::MatchAllOf<T>() && m1 && m2 && m3;
-    }
-    template<typename T>
-    Impl::MatchAnyOf<T> AnyOf( Impl::MatcherBase<T> const& m1, Impl::MatcherBase<T> const& m2 ) {
-        return Impl::MatchAnyOf<T>() || m1 || m2;
-    }
-    template<typename T>
-    Impl::MatchAnyOf<T> AnyOf( Impl::MatcherBase<T> const& m1, Impl::MatcherBase<T> const& m2, Impl::MatcherBase<T> const& m3 ) {
-        return Impl::MatchAnyOf<T>() || m1 || m2 || m3;
-    }
-
 } // namespace Matchers
 
 using namespace Matchers;

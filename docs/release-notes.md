@@ -17,6 +17,9 @@
 * `*_THROWS_AS(expr, exception_type)` now unconditionally appends `const&` to the exception type.
 * `CATCH_CONFIG_FAST_COMPILE` now affects the `CHECK_` family of assertions as well as `REQUIRE_` family of assertions
   * This is most noticeable in `CHECK(throws())`, which would previously report failure, properly stringify the exception and continue. Now it will report failure and stop executing current section.
+* Removed deprecated matcher utility functions `Not`, `AllOf` and `AnyOf`.
+  * They are superseded by operators `!`, `&&` and `||`, which are natural and do not have limited arity
+
 
 ## Improvements
 * Reporters and Listeners can be defined in files different from the main file
