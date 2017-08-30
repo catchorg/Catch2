@@ -57,7 +57,8 @@ def generate(v):
         cppFiles = []
         for dir in dirs:
             cppFiles += glob(os.path.join(dir, '*.cpp'))
-        for fname in cppFiles:
+        # To minimize random diffs, sort the files before processing them
+        for fname in sorted(cppFiles):
             dir, name = fname.rsplit(os.path.sep, 1)
             dir += os.path.sep
             parseFile(dir, name)
