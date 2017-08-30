@@ -4,6 +4,25 @@
     <TestCase name="# A test name that starts with a #" filename="projects/<exe-name>/MiscTests.cpp" >
       <OverallResult success="true"/>
     </TestCase>
+    <TestCase name="#1005: Comparing pointer to int and long (NULL can be either on various systems)" tags="[Decomposition]" filename="projects/<exe-name>/DecompositionTests.cpp" >
+      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/DecompositionTests.cpp" >
+        <Original>
+          fptr == 0
+        </Original>
+        <Expanded>
+          0 == 0
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/DecompositionTests.cpp" >
+        <Original>
+          fptr == 0l
+        </Original>
+        <Expanded>
+          0 == 0
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
     <TestCase name="#748 - captures with unexpected exceptions" tags="[!shouldfail][!throws][.][failing]" filename="projects/<exe-name>/ExceptionTests.cpp" >
       <Section name="outside assertions" filename="projects/<exe-name>/ExceptionTests.cpp" >
         <Info>
@@ -8287,7 +8306,7 @@ loose text artifact
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="761" failures="103" expectedFailures="21"/>
+    <OverallResults successes="763" failures="103" expectedFailures="21"/>
   </Group>
-  <OverallResults successes="761" failures="102" expectedFailures="21"/>
+  <OverallResults successes="763" failures="102" expectedFailures="21"/>
 </Catch>

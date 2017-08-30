@@ -7,6 +7,7 @@
  */
 
 #include <iostream>
+#include <cstdio>
 
 struct truthy {
     truthy(bool b):m_value(b){}
@@ -25,4 +26,10 @@ std::ostream& operator<<(std::ostream& o, truthy) {
 
 TEST_CASE( "Reconstruction should be based on stringification: #914" , "[Decomposition][failing][.]") {
     CHECK(truthy(false));
+}
+
+TEST_CASE("#1005: Comparing pointer to int and long (NULL can be either on various systems)", "[Decomposition]") {
+    FILE* fptr = nullptr;
+    REQUIRE(fptr == 0);
+    REQUIRE(fptr == 0l);
 }
