@@ -39,7 +39,6 @@
 #include "internal/catch_interfaces_exception.h"
 #include "internal/catch_approx.hpp"
 #include "internal/catch_compiler_capabilities.h"
-#include "internal/catch_interfaces_tag_alias_registry.h"
 
 #ifndef CATCH_CONFIG_DISABLE_MATCHERS
 #include "internal/catch_capture_matchers.h"
