@@ -135,7 +135,7 @@ namespace Catch { namespace clara { namespace TextFlow {
 
             auto operator *() const -> std::string {
                 assert( m_stringIndex < m_column.m_strings.size() );
-                assert( m_pos < m_end );
+                assert( m_pos <= m_end );
                 if( m_pos + m_column.m_width < m_end )
                     return addIndentAndSuffix(line().substr(m_pos, m_len));
                 else
