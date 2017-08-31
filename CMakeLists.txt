@@ -317,6 +317,8 @@ if (NOT NO_SELFTEST)
     add_test(NAME ListTags COMMAND SelfTest --list-tags)
     set_tests_properties(ListTags PROPERTIES PASS_REGULAR_EXPRESSION "[0-9]+ tags")
 
+    add_test(NAME ApprovalTests COMMAND ../scripts/approvalTests.py ./SelfTest)
+    set_tests_properties(ApprovalTests PROPERTIES FAIL_REGULAR_EXPRESSION "Results differed")
 endif() # !NO_SELFTEST
 
 
