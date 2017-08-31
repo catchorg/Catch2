@@ -22,14 +22,16 @@
 #include <cstdlib>
 #include <iomanip>
 
-static const int MaxExitCode = 255;
 
+namespace {
+    const int MaxExitCode = 255;
+    using Catch::IStreamingReporterPtr;
+    using Catch::IConfigPtr;
+    using Catch::Config;
 
-namespace Catch {
-
-    IStreamingReporterPtr createReporter( std::string const& reporterName, IConfigPtr const& config ) {
-        auto reporter = getRegistryHub().getReporterRegistry().create( reporterName, config );
-        CATCH_ENFORCE( reporter, "No reporter registered with name: '" << reporterName << "'" );
+    IStreamingReporterPtr createReporter(std::string const& reporterName, IConfigPtr const& config) {
+        auto reporter = Catch::getRegistryHub().getReporterRegistry().create(reporterName, config);
+        CATCH_ENFORCE(reporter, "No reporter registered with name: '" << reporterName << "'");
 
         return reporter;
     }
@@ -38,69 +40,79 @@ namespace Catch {
 #define CATCH_CONFIG_DEFAULT_REPORTER "console"
 #endif
 
-    IStreamingReporterPtr makeReporter( std::shared_ptr<Config> const& config ) {
+    IStreamingReporterPtr makeReporter(std::shared_ptr<Config> const& config) {
         auto const& reporterNames = config->getReporterNames();
-        if( reporterNames.empty() )
-            return createReporter(CATCH_CONFIG_DEFAULT_REPORTER, config );
+        if (reporterNames.empty())
+            return createReporter(CATCH_CONFIG_DEFAULT_REPORTER, config);
 
         IStreamingReporterPtr reporter;
-        for( auto const& name : reporterNames )
-            addReporter( reporter, createReporter( name, config ) );
+        for (auto const& name : reporterNames)
+            addReporter(reporter, createReporter(name, config));
         return reporter;
     }
-    void addListeners( IStreamingReporterPtr& reporters, IConfigPtr const& config ) {
-        auto const& listeners = getRegistryHub().getReporterRegistry().getListeners();
-        for( auto const& listener : listeners )
-            addReporter(reporters, listener->create( ReporterConfig( config ) ) );
+
+#undef CATCH_CONFIG_DEFAULT_REPORTER
+
+    void addListeners(IStreamingReporterPtr& reporters, IConfigPtr const& config) {
+        auto const& listeners = Catch::getRegistryHub().getReporterRegistry().getListeners();
+        for (auto const& listener : listeners)
+            addReporter(reporters, listener->create(Catch::ReporterConfig(config)));
     }
 
 
-    Totals runTests( std::shared_ptr<Config> const& config ) {
+    Catch::Totals runTests(std::shared_ptr<Config> const& config) {
+        using namespace Catch;
+        IStreamingReporterPtr reporter = makeReporter(config);
+        addListeners(reporter, config);
 
-        IStreamingReporterPtr reporter = makeReporter( config );
-        addListeners( reporter, config );
-
-        RunContext context( config, std::move( reporter ) );
+        RunContext context(config, std::move(reporter));
 
         Totals totals;
 
-        context.testGroupStarting( config->name(), 1, 1 );
+        context.testGroupStarting(config->name(), 1, 1);
 
         TestSpec testSpec = config->testSpec();
-        if( !testSpec.hasFilters() )
-            testSpec = TestSpecParser( ITagAliasRegistry::get() ).parse( "~[.]" ).testSpec(); // All not hidden tests
+        if (!testSpec.hasFilters())
+            testSpec = TestSpecParser(ITagAliasRegistry::get()).parse("~[.]").testSpec(); // All not hidden tests
 
-        std::vector<TestCase> const& allTestCases = getAllTestCasesSorted( *config );
-        for( auto const& testCase : allTestCases ) {
-            if( !context.aborting() && matchTest( testCase, testSpec, *config ) )
-                totals += context.runTest( testCase );
+        auto const& allTestCases = getAllTestCasesSorted(*config);
+        for (auto const& testCase : allTestCases) {
+            if (!context.aborting() && matchTest(testCase, testSpec, *config))
+                totals += context.runTest(testCase);
             else
-                context.reporter().skipTest( testCase );
+                context.reporter().skipTest(testCase);
         }
 
-        context.testGroupEnded( config->name(), totals, 1, 1 );
+        context.testGroupEnded(config->name(), totals, 1, 1);
         return totals;
     }
 
-    void applyFilenamesAsTags( IConfig const& config ) {
-        auto& tests = const_cast<std::vector<TestCase>&>( getAllTestCasesSorted( config ) );
-        for( auto& testCase : tests ) {
+    void applyFilenamesAsTags(Catch::IConfig const& config) {
+        using namespace Catch;
+        auto& tests = const_cast<std::vector<TestCase>&>(getAllTestCasesSorted(config));
+        for (auto& testCase : tests) {
             auto tags = testCase.tags;
 
             std::string filename = testCase.lineInfo.file;
-            std::string::size_type lastSlash = filename.find_last_of( "\\/" );
-            if( lastSlash != std::string::npos )
-                filename = filename.substr( lastSlash+1 );
+            auto lastSlash = filename.find_last_of("\\/");
+            if (lastSlash != std::string::npos) {
+                filename.erase(0, lastSlash);
+                filename[0] = '#';
+            }
 
-            std::string::size_type lastDot = filename.find_last_of( '.' );
-            if( lastDot != std::string::npos )
-                filename = filename.substr( 0, lastDot );
+            auto lastDot = filename.find_last_of('.');
+            if (lastDot != std::string::npos) {
+                filename.erase(lastDot);
+            }
 
-            tags.push_back( '#' + filename );
-            setTags( testCase, tags );
+            tags.push_back(std::move(filename));
+            setTags(testCase, tags);
         }
     }
 
+}
+
+namespace Catch {
 
     Session::Session() {
         static bool alreadyInstantiated = false;

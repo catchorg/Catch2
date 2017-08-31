@@ -13,12 +13,6 @@
 #include "catch_platform.h"
 #include "catch_compiler_capabilities.h"
 
-namespace Catch {
-
-    // Report the error condition
-    void reportFatal( std::string const& message );
-    
-} // namespace Catch
 
 #if defined ( CATCH_PLATFORM_WINDOWS ) /////////////////////////////////////////
 #include "catch_windows_h_proxy.h"

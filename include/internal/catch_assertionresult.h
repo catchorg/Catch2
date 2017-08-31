@@ -23,7 +23,7 @@ namespace Catch {
 
         AssertionResultData( ResultWas::OfType _resultType, LazyExpression const& _lazyExpression );
 
-        ResultWas::OfType resultType = ResultWas::Unknown;
+        ResultWas::OfType resultType;
         std::string message;
 
         LazyExpression lazyExpression;

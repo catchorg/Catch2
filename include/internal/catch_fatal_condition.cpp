@@ -12,16 +12,12 @@
 #include "catch_context.h"
 #include "catch_interfaces_capture.h"
 
-namespace Catch {
-
+namespace {
     // Report the error condition
-    void reportFatal( std::string const& message ) {
-        IContext& context = Catch::getCurrentContext();
-        IResultCapture* resultCapture = context.getResultCapture();
-        resultCapture->handleFatalErrorCondition( message );
+    void reportFatal( char const * const message ) {
+        Catch::getCurrentContext().getResultCapture()->handleFatalErrorCondition( message );
     }
-
-} // namespace Catch
+}
 
 #if defined ( CATCH_PLATFORM_WINDOWS ) /////////////////////////////////////////
 
@@ -122,7 +118,7 @@ namespace Catch {
 
 
     void FatalConditionHandler::handleSignal( int sig ) {
-        std::string name = "<unknown signal>";
+        char const * name = "<unknown signal>";
         for (auto const& def : signalDefs) {
             if (sig == def.id) {
                 name = def.name;

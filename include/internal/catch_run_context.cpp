@@ -211,8 +211,7 @@ namespace Catch {
     void RunContext::handleFatalErrorCondition(std::string const & message) {
         // Don't rebuild the result -- the stringification itself can cause more fatal errors
         // Instead, fake a result data.
-        AssertionResultData tempResult( ResultWas::Unknown, { false } );
-        tempResult.resultType = ResultWas::FatalErrorCondition;
+        AssertionResultData tempResult( ResultWas::FatalErrorCondition, { false } );
         tempResult.message = message;
         AssertionResult result(m_lastAssertionInfo, tempResult);
 
@@ -221,7 +220,7 @@ namespace Catch {
         handleUnfinishedSections();
 
         // Recreate section for test case (as we will lose the one that was in scope)
-        TestCaseInfo const& testCaseInfo = m_activeTestCase->getTestCaseInfo();
+        auto const& testCaseInfo = m_activeTestCase->getTestCaseInfo();
         SectionInfo testCaseSection(testCaseInfo.lineInfo, testCaseInfo.name, testCaseInfo.description);
 
         Counts assertions;
@@ -229,7 +228,7 @@ namespace Catch {
         SectionStats testCaseSectionStats(testCaseSection, assertions, 0, false);
         m_reporter->sectionEnded(testCaseSectionStats);
 
-        TestCaseInfo testInfo = m_activeTestCase->getTestCaseInfo();
+        auto const& testInfo = m_activeTestCase->getTestCaseInfo();
 
         Totals deltaTotals;
         deltaTotals.testCases.failed = 1;
@@ -263,7 +262,7 @@ namespace Catch {
     }
 
     void RunContext::runCurrentTest(std::string & redirectedCout, std::string & redirectedCerr) {
-        TestCaseInfo const& testCaseInfo = m_activeTestCase->getTestCaseInfo();
+        auto const& testCaseInfo = m_activeTestCase->getTestCaseInfo();
         SectionInfo testCaseSection(testCaseInfo.lineInfo, testCaseInfo.name, testCaseInfo.description);
         m_reporter->sectionStarting(testCaseSection);
         Counts prevAssertions = m_totals.assertions;
@@ -325,7 +324,7 @@ namespace Catch {
     }
 
     IResultCapture& getResultCapture() {
-        if (IResultCapture* capture = getCurrentContext().getResultCapture())
+        if (auto* capture = getCurrentContext().getResultCapture())
             return *capture;
         else
             CATCH_INTERNAL_ERROR("No result capture instance");
