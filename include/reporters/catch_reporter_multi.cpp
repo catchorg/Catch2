@@ -7,7 +7,7 @@
  */
 
  #include "catch_reporter_multi.h"
- 
+
 namespace Catch {
 
     void MultipleReporters::add( IStreamingReporterPtr&& reporter ) {
@@ -19,10 +19,10 @@ namespace Catch {
     }
 
     std::set<Verbosity> MultipleReporters::getSupportedVerbosities() {
-        return { };
+        return std::set<Verbosity>{ };
     }
 
-    
+
     void MultipleReporters::noMatchingTestCases( std::string const& spec ) {
         for( auto const& reporter : m_reporters )
             reporter->noMatchingTestCases( spec );
