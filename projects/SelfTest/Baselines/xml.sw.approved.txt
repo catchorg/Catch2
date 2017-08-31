@@ -521,17 +521,6 @@
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="AllOf matcher" tags="[matchers]" filename="projects/<exe-name>/MatchersTests.cpp" >
-      <Expression success="true" type="CHECK_THAT" filename="projects/<exe-name>/MatchersTests.cpp" >
-        <Original>
-          testStringForMatching(), AllOf( Catch::Contains( "string" ), Catch::Contains( "abc" ) )
-        </Original>
-        <Expanded>
-          "this string contains 'abc' as a substring" ( contains: "string" and contains: "abc" )
-        </Expanded>
-      </Expression>
-      <OverallResult success="true"/>
-    </TestCase>
     <TestCase name="An empty test with no assertions" tags="[empty]" filename="projects/<exe-name>/MiscTests.cpp" >
       <OverallResult success="true"/>
     </TestCase>
@@ -577,25 +566,6 @@
       <OverallResult success="false"/>
     </TestCase>
     <TestCase name="Anonymous test case 1" filename="projects/<exe-name>/VariadicMacrosTests.cpp" >
-      <OverallResult success="true"/>
-    </TestCase>
-    <TestCase name="AnyOf matcher" tags="[matchers]" filename="projects/<exe-name>/MatchersTests.cpp" >
-      <Expression success="true" type="CHECK_THAT" filename="projects/<exe-name>/MatchersTests.cpp" >
-        <Original>
-          testStringForMatching(), AnyOf( Catch::Contains( "string" ), Catch::Contains( "not there" ) )
-        </Original>
-        <Expanded>
-          "this string contains 'abc' as a substring" ( contains: "string" or contains: "not there" )
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="CHECK_THAT" filename="projects/<exe-name>/MatchersTests.cpp" >
-        <Original>
-          testStringForMatching(), AnyOf( Catch::Contains( "not there" ), Catch::Contains( "string" ) )
-        </Original>
-        <Expanded>
-          "this string contains 'abc' as a substring" ( contains: "not there" or contains: "string" )
-        </Expanded>
-      </Expression>
       <OverallResult success="true"/>
     </TestCase>
     <TestCase name="Approximate PI" tags="[Approx][PI]" filename="projects/<exe-name>/ApproxTests.cpp" >
@@ -8306,7 +8276,7 @@ loose text artifact
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="763" failures="103" expectedFailures="21"/>
+    <OverallResults successes="760" failures="103" expectedFailures="21"/>
   </Group>
-  <OverallResults successes="763" failures="102" expectedFailures="21"/>
+  <OverallResults successes="760" failures="102" expectedFailures="21"/>
 </Catch>

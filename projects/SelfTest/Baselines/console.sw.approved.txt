@@ -509,19 +509,6 @@ with expansion:
   100.3 == Approx( 100.0 )
 
 -------------------------------------------------------------------------------
-AllOf matcher
--------------------------------------------------------------------------------
-MatchersTests.cpp:<line number>
-...............................................................................
-
-MatchersTests.cpp:<line number>:
-PASSED:
-  CHECK_THAT( testStringForMatching(), AllOf( Catch::Contains( "string" ), Catch::Contains( "abc" ) ) )
-with expansion:
-  "this string contains 'abc' as a substring" ( contains: "string" and
-  contains: "abc" )
-
--------------------------------------------------------------------------------
 An expression with side-effects should only be evaluated once
 -------------------------------------------------------------------------------
 TrickyTests.cpp:<line number>
@@ -564,26 +551,6 @@ VariadicMacrosTests.cpp:<line number>:
 PASSED:
 with message:
   anonymous test case
-
--------------------------------------------------------------------------------
-AnyOf matcher
--------------------------------------------------------------------------------
-MatchersTests.cpp:<line number>
-...............................................................................
-
-MatchersTests.cpp:<line number>:
-PASSED:
-  CHECK_THAT( testStringForMatching(), AnyOf( Catch::Contains( "string" ), Catch::Contains( "not there" ) ) )
-with expansion:
-  "this string contains 'abc' as a substring" ( contains: "string" or contains:
-  "not there" )
-
-MatchersTests.cpp:<line number>:
-PASSED:
-  CHECK_THAT( testStringForMatching(), AnyOf( Catch::Contains( "not there" ), Catch::Contains( "string" ) ) )
-with expansion:
-  "this string contains 'abc' as a substring" ( contains: "not there" or
-  contains: "string" )
 
 -------------------------------------------------------------------------------
 Approximate PI
@@ -7554,6 +7521,6 @@ MiscTests.cpp:<line number>:
 PASSED:
 
 ===============================================================================
-test cases: 184 | 130 passed |  50 failed |  4 failed as expected
-assertions: 886 | 763 passed | 102 failed | 21 failed as expected
+test cases: 182 | 128 passed |  50 failed |  4 failed as expected
+assertions: 883 | 760 passed | 102 failed | 21 failed as expected
 

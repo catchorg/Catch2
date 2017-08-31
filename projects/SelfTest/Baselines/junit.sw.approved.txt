@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuitesloose text artifact
 >
-  <testsuite name="<exe-name>" errors="15" failures="88" tests="887" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
+  <testsuite name="<exe-name>" errors="15" failures="88" tests="884" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
     <testcase classname="<exe-name>.global" name="# A test name that starts with a #" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="#1005: Comparing pointer to int and long (NULL can be either on various systems)" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="#748 - captures with unexpected exceptions/outside assertions" time="{duration}">
@@ -92,7 +92,6 @@ TrickyTests.cpp:<line number>
       </failure>
     </testcase>
     <testcase classname="<exe-name>.global" name="Absolute margin" time="{duration}"/>
-    <testcase classname="<exe-name>.global" name="AllOf matcher" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="An expression with side-effects should only be evaluated once" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="An unchecked exception reports the line of the last assertion" time="{duration}">
       <error message="{Unknown expression after the reported line}">
@@ -101,7 +100,6 @@ ExceptionTests.cpp:<line number>
       </error>
     </testcase>
     <testcase classname="<exe-name>.global" name="Anonymous test case 1" time="{duration}"/>
-    <testcase classname="<exe-name>.global" name="AnyOf matcher" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Approximate PI" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Approximate comparisons with different epsilons" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Approximate comparisons with floats" time="{duration}"/>
