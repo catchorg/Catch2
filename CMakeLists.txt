@@ -105,7 +105,6 @@ CheckFileList(SURROGATE_SOURCES ${SELF_TEST_DIR}/SurrogateCpps)
 # Please keep these ordered alphabetically
 set(TOP_LEVEL_HEADERS
         ${HEADER_DIR}/catch.hpp
-        ${HEADER_DIR}/catch_session.hpp
         ${HEADER_DIR}/catch_with_main.hpp
         )
 CheckFileList(TOP_LEVEL_HEADERS ${HEADER_DIR})
@@ -169,6 +168,7 @@ set(INTERNAL_HEADERS
         ${HEADER_DIR}/internal/catch_benchmark.h
         ${HEADER_DIR}/internal/catch_section.h
         ${HEADER_DIR}/internal/catch_section_info.h
+        ${HEADER_DIR}/internal/catch_session.h
         ${HEADER_DIR}/internal/catch_startup_exception_registry.h
         ${HEADER_DIR}/internal/catch_stream.h
         ${HEADER_DIR}/internal/catch_streambuf.h
@@ -222,6 +222,7 @@ set(IMPL_SOURCES
         ${HEADER_DIR}/internal/catch_run_context.cpp
         ${HEADER_DIR}/internal/catch_section.cpp
         ${HEADER_DIR}/internal/catch_section_info.cpp
+        ${HEADER_DIR}/internal/catch_session.cpp
         ${HEADER_DIR}/internal/catch_startup_exception_registry.cpp
         ${HEADER_DIR}/internal/catch_stream.cpp
         ${HEADER_DIR}/internal/catch_stringref.cpp

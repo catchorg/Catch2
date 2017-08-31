@@ -8,6 +8,8 @@
 #ifndef TWOBLUECUBES_CATCH_DEFAULT_MAIN_HPP_INCLUDED
 #define TWOBLUECUBES_CATCH_DEFAULT_MAIN_HPP_INCLUDED
 
+#include "catch_session.h"
+
 #ifndef __OBJC__
 
 #if defined(WIN32) && defined(_UNICODE) && !defined(DO_NOT_USE_WMAIN)

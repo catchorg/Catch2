@@ -11,6 +11,9 @@
 #include "catch_test_spec_parser.hpp"
 #include "catch_interfaces_config.h"
 
+// Libstdc++ doesn't like incomplete classes for unique_ptr
+#include "catch_stream.h"
+
 #include <memory>
 #include <vector>
 #include <string>

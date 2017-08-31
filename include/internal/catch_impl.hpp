@@ -17,15 +17,8 @@
 #endif
 
 
-// Temporary hack to fix separately provided reporters
-#include "../reporters/catch_reporter_bases.hpp"
-#include "catch_reporter_registrars.hpp"
-//
-
 #include "internal/catch_leak_detector.h"
 
-
-#include "../catch_session.hpp"
 #include "catch_test_spec.hpp"
 #include "catch_test_case_tracker.hpp"
 
@@ -37,12 +30,6 @@ namespace Catch {
 
     // These are all here to avoid warnings about not having any out of line
     // virtual methods
-    NonCopyable::~NonCopyable() {}
-    IStream::~IStream() noexcept {}
-    FileStream::~FileStream() noexcept {}
-    CoutStream::~CoutStream() noexcept {}
-    DebugOutStream::~DebugOutStream() noexcept {}
-    StreamBufBase::~StreamBufBase() noexcept {}
     IResultCapture::~IResultCapture() {}
     ITestInvoker::~ITestInvoker() {}
     ITestCaseRegistry::~ITestCaseRegistry() {}

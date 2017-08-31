@@ -8,6 +8,7 @@
 #define TWOBLUECUBES_CATCH_EXTERNAL_INTERFACES_H_INCLUDED
 
 #include "../reporters/catch_reporter_bases.hpp"
+#include "catch_console_colour.hpp"
 #include "catch_reporter_registrars.hpp"
 
 #endif // TWOBLUECUBES_CATCH_EXTERNAL_INTERFACES_H_INCLUDED

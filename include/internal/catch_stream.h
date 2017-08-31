@@ -24,7 +24,7 @@ namespace Catch {
 
 
     struct IStream {
-        virtual ~IStream() noexcept;
+        virtual ~IStream() = default;
         virtual std::ostream& stream() const = 0;
     };
 
@@ -32,7 +32,7 @@ namespace Catch {
         mutable std::ofstream m_ofs;
     public:
         FileStream( std::string const& filename );
-        ~FileStream() noexcept override;
+        ~FileStream() override = default;
     public: // IStream
         std::ostream& stream() const override;
     };
@@ -42,7 +42,7 @@ namespace Catch {
         mutable std::ostream m_os;
     public:
         CoutStream();
-        ~CoutStream() noexcept override;
+        ~CoutStream() override = default;
 
     public: // IStream
         std::ostream& stream() const override;
@@ -54,7 +54,7 @@ namespace Catch {
         mutable std::ostream m_os;
     public:
         DebugOutStream();
-        ~DebugOutStream() noexcept override;
+        ~DebugOutStream() override = default;
 
     public: // IStream
         std::ostream& stream() const override;
