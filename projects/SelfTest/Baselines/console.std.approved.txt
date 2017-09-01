@@ -645,20 +645,6 @@ explicitly with message:
   Message from section two
 
 -------------------------------------------------------------------------------
-Pointers can be converted to strings
--------------------------------------------------------------------------------
-MessageTests.cpp:<line number>
-...............................................................................
-
-MessageTests.cpp:<line number>:
-warning:
-  actual address of p: 0x<hex digits>
-
-MessageTests.cpp:<line number>:
-warning:
-  toString(p): 0x<hex digits>
-
--------------------------------------------------------------------------------
 Reconstruction should be based on stringification: #914
 -------------------------------------------------------------------------------
 DecompositionTests.cpp:<line number>
@@ -1020,6 +1006,6 @@ with expansion:
   "{?}" == "1"
 
 ===============================================================================
-test cases: 182 | 131 passed | 47 failed |  4 failed as expected
-assertions: 881 | 764 passed | 96 failed | 21 failed as expected
+test cases: 179 | 128 passed | 47 failed |  4 failed as expected
+assertions: 879 | 762 passed | 96 failed | 21 failed as expected
 

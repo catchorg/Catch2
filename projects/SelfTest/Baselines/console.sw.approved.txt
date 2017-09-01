@@ -956,20 +956,6 @@ with expansion:
   0x<hex digits> == 0x<hex digits>
 
 -------------------------------------------------------------------------------
-Comparing member function pointers
--------------------------------------------------------------------------------
-TrickyTests.cpp:<line number>
-...............................................................................
-
-TrickyTests.cpp:<line number>:
-PASSED:
-  CHECK( m == &S::f )
-with expansion:
-  0x<hex digits>
-  ==
-  0x<hex digits>
-
--------------------------------------------------------------------------------
 Comparison with explicitly convertible types
 -------------------------------------------------------------------------------
 ApproxTests.cpp:<line number>
@@ -1182,11 +1168,9 @@ with expansion:
 
 ConditionTests.cpp:<line number>:
 PASSED:
-  REQUIRE( (std::numeric_limits<unsigned long>::max)() > ul )
+  REQUIRE( (std::numeric_limits<uint32_t>::max)() > ul )
 with expansion:
-  18446744073709551615 (0x<hex digits>)
-  >
-  4
+  4294967295 (0x<hex digits>) > 4
 
 -------------------------------------------------------------------------------
 Contains string matcher
@@ -2095,18 +2079,6 @@ PASSED:
   CHECK_FALSE( False )
 with expansion:
   !{?}
-
--------------------------------------------------------------------------------
-Operators at different namespace levels not hijacked by Koenig lookup
--------------------------------------------------------------------------------
-TrickyTests.cpp:<line number>
-...............................................................................
-
-TrickyTests.cpp:<line number>:
-PASSED:
-  REQUIRE( 0x<hex digits> == o )
-with expansion:
-  3221225472 (0x<hex digits>) == {?}
 
 -------------------------------------------------------------------------------
 Ordering comparison checks that should fail
@@ -3431,20 +3403,6 @@ PASSED:
   REQUIRE( 0 != p )
 with expansion:
   0 != 0x<hex digits>
-
--------------------------------------------------------------------------------
-Pointers can be converted to strings
--------------------------------------------------------------------------------
-MessageTests.cpp:<line number>
-...............................................................................
-
-MessageTests.cpp:<line number>:
-warning:
-  actual address of p: 0x<hex digits>
-
-MessageTests.cpp:<line number>:
-warning:
-  toString(p): 0x<hex digits>
 
 -------------------------------------------------------------------------------
 Process can be configured on command line
@@ -7521,6 +7479,6 @@ MiscTests.cpp:<line number>:
 PASSED:
 
 ===============================================================================
-test cases: 182 | 128 passed |  50 failed |  4 failed as expected
-assertions: 883 | 760 passed | 102 failed | 21 failed as expected
+test cases: 179 | 125 passed |  50 failed |  4 failed as expected
+assertions: 881 | 758 passed | 102 failed | 21 failed as expected
 

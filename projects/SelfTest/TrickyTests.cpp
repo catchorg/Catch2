@@ -175,7 +175,7 @@ namespace ObjectWithConversions
     TEST_CASE
     (
         "Operators at different namespace levels not hijacked by Koenig lookup",
-        "[Tricky]"
+        "[Tricky][approvals]"
     )
     {
         Object o;
@@ -211,9 +211,16 @@ namespace ObjectWithNonConstEqualityOperator
 
 namespace EnumBitFieldTests
 {
-    enum Bits {bit0 = 0x0001, bit1 = 0x0002, bit2 = 0x0004, bit3 = 0x0008, bit1and2 = 0x0006,
-        bit30 = 0x40000000, bit31 = 0x80000000,
-        bit30and31 = 0xc0000000};
+    enum Bits : uint32_t {
+        bit0 = 0x0001,
+        bit1 = 0x0002,
+        bit2 = 0x0004,
+        bit3 = 0x0008,
+        bit1and2 = bit1 | bit2,
+        bit30 = 0x40000000,
+        bit31 = 0x80000000,
+        bit30and31 = bit30 | bit31
+    };
 
     TEST_CASE( "Test enum bit values", "[Tricky]" )
     {
@@ -365,7 +372,7 @@ struct S
 };
 
 
-TEST_CASE( "Comparing member function pointers", "[Tricky][member function pointer]" )
+TEST_CASE( "Comparing member function pointers", "[Tricky][member function pointer][approvals]" )
 {
     typedef void (S::*MF)();
     MF m = &S::f;

@@ -13,6 +13,7 @@
 
 #include <string>
 #include <limits>
+#include <cstdint>
 
 struct TestData {
     int int_seven = 7;
@@ -184,7 +185,7 @@ TEST_CASE( "Comparisons with int literals don't warn when mixing signed/ unsigne
     REQUIRE( 5 == c );
     REQUIRE( 6 == uc );
 
-    REQUIRE( (std::numeric_limits<unsigned long>::max)() > ul );
+    REQUIRE( (std::numeric_limits<uint32_t>::max)() > ul );
 }
 
 // Disable warnings about sign conversions for the next two tests

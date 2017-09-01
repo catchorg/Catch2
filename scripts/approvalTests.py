@@ -41,6 +41,8 @@ errnoParser = re.compile(r'''
     \(\*__errno_location\ \(\)\)
     |
     \(\*__error\(\)\)
+    |
+    \(\*_errno\(\)\)
 ''', re.VERBOSE)
 
 if len(sys.argv) == 2:
@@ -145,15 +147,15 @@ print("Running approvals against executable:")
 print("  " + cmdPath)
 
 # Standard console reporter
-approve("console.std", ["~[!nonportable]~[!benchmark]", "--order", "lex"])
+approve("console.std", ["~[!nonportable]~[!benchmark]~[approvals]", "--order", "lex"])
 # console reporter, include passes, warn about No Assertions
-approve("console.sw", ["~[!nonportable]~[!benchmark]", "-s", "-w", "NoAssertions", "--order", "lex"])
+approve("console.sw", ["~[!nonportable]~[!benchmark]~[approvals]", "-s", "-w", "NoAssertions", "--order", "lex"])
 # console reporter, include passes, warn about No Assertions, limit failures to first 4
-approve("console.swa4", ["~[!nonportable]~[!benchmark]", "-s", "-w", "NoAssertions", "-x", "4", "--order", "lex"])
+approve("console.swa4", ["~[!nonportable]~[!benchmark]~[approvals]", "-s", "-w", "NoAssertions", "-x", "4", "--order", "lex"])
 # junit reporter, include passes, warn about No Assertions
-approve("junit.sw", ["~[!nonportable]~[!benchmark]", "-s", "-w", "NoAssertions", "-r", "junit", "--order", "lex"])
+approve("junit.sw", ["~[!nonportable]~[!benchmark]~[approvals]", "-s", "-w", "NoAssertions", "-r", "junit", "--order", "lex"])
 # xml reporter, include passes, warn about No Assertions
-approve("xml.sw", ["~[!nonportable]~[!benchmark]", "-s", "-w", "NoAssertions", "-r", "xml", "--order", "lex"])
+approve("xml.sw", ["~[!nonportable]~[!benchmark]~[approvals]", "-s", "-w", "NoAssertions", "-r", "xml", "--order", "lex"])
 
 if overallResult != 0:
     print("If these differences are expected, run approve.py to approve new baselines.")

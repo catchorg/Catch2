@@ -317,6 +317,7 @@ if (NOT NO_SELFTEST)
     add_test(NAME ListTags COMMAND SelfTest --list-tags)
     set_tests_properties(ListTags PROPERTIES PASS_REGULAR_EXPRESSION "[0-9]+ tags")
 
+    # AppVeyor has a Python 2.7 in path, but doesn't have .py files as autorunnable
     add_test(NAME ApprovalTests COMMAND python ${CMAKE_CURRENT_SOURCE_DIR}/scripts/approvalTests.py $<TARGET_FILE:SelfTest>)
     set_tests_properties(ApprovalTests PROPERTIES FAIL_REGULAR_EXPRESSION "Results differed")
 endif() # !NO_SELFTEST

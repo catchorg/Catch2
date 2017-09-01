@@ -85,7 +85,7 @@ TEST_CASE( "Standard output from all sections is reported", "[messages][.]" ) {
     }
 }
 
-TEST_CASE( "Standard error is reported and redirected", "[messages][.]" ) {
+TEST_CASE( "Standard error is reported and redirected", "[messages][.][approvals]" ) {
     SECTION( "std::cerr" ) {
         std::cerr << "Write to std::cerr" << std::endl;
     }
@@ -98,7 +98,7 @@ TEST_CASE( "Standard error is reported and redirected", "[messages][.]" ) {
         std::cerr << ' ';
         std::clog << "writes";
         std::cerr << " to error";
-        std::clog << " streams\n";
+        std::clog << " streams" << std::endl;
     }
 }
 
@@ -130,7 +130,7 @@ TEST_CASE( "sends information to INFO", "[.][failing]" ) {
     REQUIRE( false );
 }
 
-TEST_CASE( "Pointers can be converted to strings", "[messages][.]" ) {
+TEST_CASE( "Pointers can be converted to strings", "[messages][.][approvals]" ) {
     int p;
     WARN( "actual address of p: " << &p );
     WARN( "toString(p): " << ::Catch::Detail::stringify( &p ) );

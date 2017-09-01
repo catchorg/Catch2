@@ -1023,19 +1023,6 @@
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="Comparing member function pointers" tags="[Tricky][member function pointer]" filename="projects/<exe-name>/TrickyTests.cpp" >
-      <Expression success="true" type="CHECK" filename="projects/<exe-name>/TrickyTests.cpp" >
-        <Original>
-          m == &amp;S::f
-        </Original>
-        <Expanded>
-          0x<hex digits>
-==
-0x<hex digits>
-        </Expanded>
-      </Expression>
-      <OverallResult success="true"/>
-    </TestCase>
     <TestCase name="Comparison with explicitly convertible types" tags="[Approx]" filename="projects/<exe-name>/ApproxTests.cpp" >
       <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/ApproxTests.cpp" >
         <Original>
@@ -1296,12 +1283,10 @@
       </Expression>
       <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/ConditionTests.cpp" >
         <Original>
-          (std::numeric_limits&lt;unsigned long>::max)() > ul
+          (std::numeric_limits&lt;uint32_t>::max)() > ul
         </Original>
         <Expanded>
-          18446744073709551615 (0x<hex digits>)
->
-4
+          4294967295 (0x<hex digits>) > 4
         </Expanded>
       </Expression>
       <OverallResult success="true"/>
@@ -2384,17 +2369,6 @@
         </Original>
         <Expanded>
           !{?}
-        </Expanded>
-      </Expression>
-      <OverallResult success="true"/>
-    </TestCase>
-    <TestCase name="Operators at different namespace levels not hijacked by Koenig lookup" tags="[Tricky]" filename="projects/<exe-name>/TrickyTests.cpp" >
-      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/TrickyTests.cpp" >
-        <Original>
-          0x<hex digits> == o
-        </Original>
-        <Expanded>
-          3221225472 (0x<hex digits>) == {?}
         </Expanded>
       </Expression>
       <OverallResult success="true"/>
@@ -3962,15 +3936,6 @@
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="Pointers can be converted to strings" tags="[.][messages]" filename="projects/<exe-name>/MessageTests.cpp" >
-      <Warning>
-        actual address of p: 0x<hex digits>
-      </Warning>
-      <Warning>
-        toString(p): 0x<hex digits>
-      </Warning>
-      <OverallResult success="true"/>
-    </TestCase>
     <TestCase name="Process can be configured on command line" tags="[command-line][config]" filename="projects/<exe-name>/TestMain.cpp" >
       <Section name="empty args don't cause a crash" filename="projects/<exe-name>/TestMain.cpp" >
         <Expression success="true" type="CHECK" filename="projects/<exe-name>/TestMain.cpp" >
@@ -4824,7 +4789,7 @@ A string sent directly to stderr
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="Standard error is reported and redirected" tags="[.][messages]" filename="projects/<exe-name>/MessageTests.cpp" >
+    <TestCase name="Standard error is reported and redirected" tags="[.][.approvals][messages]" filename="projects/<exe-name>/MessageTests.cpp" >
       <Section name="std::cerr" filename="projects/<exe-name>/MessageTests.cpp" >
         <OverallResults successes="0" failures="1" expectedFailures="0"/>
       </Section>
@@ -8276,7 +8241,7 @@ loose text artifact
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="760" failures="103" expectedFailures="21"/>
+    <OverallResults successes="758" failures="103" expectedFailures="21"/>
   </Group>
-  <OverallResults successes="760" failures="102" expectedFailures="21"/>
+  <OverallResults successes="758" failures="102" expectedFailures="21"/>
 </Catch>
