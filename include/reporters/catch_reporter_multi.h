@@ -22,7 +22,7 @@ namespace Catch {
 
         void noMatchingTestCases( std::string const& spec ) override;
 
-    static std::set<Verbosity> getSupportedVerbosities();
+        static std::set<Verbosity> getSupportedVerbosities();
 
         void testRunStarting( TestRunInfo const& testRunInfo ) override;
         void testGroupStarting( GroupInfo const& groupInfo ) override;
