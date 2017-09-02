@@ -657,9 +657,6 @@ with expansion:
 
 A string sent directly to stdout
 A string sent directly to stderr
-Write to std::cerr
-Write to std::clog
-Interleaved writes to error streams
 Message from section one
 Message from section two
 -------------------------------------------------------------------------------
@@ -1006,6 +1003,6 @@ with expansion:
   "{?}" == "1"
 
 ===============================================================================
-test cases: 179 | 128 passed | 47 failed |  4 failed as expected
+test cases: 178 | 127 passed | 47 failed |  4 failed as expected
 assertions: 879 | 762 passed | 96 failed | 21 failed as expected
 

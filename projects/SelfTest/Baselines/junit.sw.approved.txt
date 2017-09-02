@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuitesloose text artifact
 >
-  <testsuite name="<exe-name>" errors="15" failures="88" tests="882" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
+  <testsuite name="<exe-name>" errors="15" failures="85" tests="879" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
     <testcase classname="<exe-name>.global" name="# A test name that starts with a #" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="#1005: Comparing pointer to int and long (NULL can be either on various systems)" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="#748 - captures with unexpected exceptions/outside assertions" time="{duration}">
@@ -488,13 +488,6 @@ A string sent directly to stderr
       </system-err>
     </testcase>
     <testcase classname="<exe-name>.global" name="Some simple comparisons between doubles" time="{duration}"/>
-    <testcase classname="<exe-name>.global" name="Standard error is reported and redirected/Interleaved writes to cerr and clog" time="{duration}">
-      <system-err>
-Write to std::cerr
-Write to std::clog
-Interleaved writes to error streams
-      </system-err>
-    </testcase>
     <testcase classname="<exe-name>.global" name="Standard output from all sections is reported/two" time="{duration}">
       <system-out>
 Message from section one
@@ -801,9 +794,6 @@ Message from section two
     </system-out>
     <system-err>
 A string sent directly to stderr
-Write to std::cerr
-Write to std::clog
-Interleaved writes to error streams
     </system-err>
   </testsuite>
 </testsuites>
