@@ -92,17 +92,16 @@
 
 ////////////////////////////////////////////////////////////////////////////////
 
-// All supported compilers support COUNTER macro,
-//but user still might want to turn it off
-#define CATCH_INTERNAL_CONFIG_COUNTER
+// Use of __COUNTER__ is suppressed during code analysis in
+// CLion/AppCode 2017.2.x and former, because __COUNTER__ is not properly
+// handled by it.
+// Otherwise all supported compilers support COUNTER macro,
+// but user still might want to turn it off
+#if ( !defined(__JETBRAINS_IDE__) || __JETBRAINS_IDE__ >= 20170300L )
+    #define CATCH_INTERNAL_CONFIG_COUNTER
+#endif
 
-
-// Now set the actual defines based on the above + anything the user has configured
-
-// Use of __COUNTER__ is suppressed if __JETBRAINS_IDE__ is #defined (meaning we're being parsed by a JetBrains IDE for
-// analytics) because, at time of writing, __COUNTER__ is not properly handled by it.
-// This does not affect compilation
-#if defined(CATCH_INTERNAL_CONFIG_COUNTER) && !defined(CATCH_CONFIG_NO_COUNTER) && !defined(CATCH_CONFIG_COUNTER) && !defined(__JETBRAINS_IDE__)
+#if defined(CATCH_INTERNAL_CONFIG_COUNTER) && !defined(CATCH_CONFIG_NO_COUNTER) && !defined(CATCH_CONFIG_COUNTER)
 #   define CATCH_CONFIG_COUNTER
 #endif
 #if defined(CATCH_INTERNAL_CONFIG_WINDOWS_SEH) && !defined(CATCH_CONFIG_NO_WINDOWS_SEH) && !defined(CATCH_CONFIG_WINDOWS_SEH)
