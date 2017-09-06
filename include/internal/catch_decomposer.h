@@ -32,13 +32,13 @@ namespace Catch {
         virtual ~ITransientExpression() = default;
     };
 
-    void formatReconstructedExpression( std::ostream &os, std::string const& lhs, std::string const& op, std::string const& rhs );
+    void formatReconstructedExpression( std::ostream &os, std::string const& lhs, StringRef op, std::string const& rhs );
 
     template<typename LhsT, typename RhsT>
     class BinaryExpr  : public ITransientExpression {
         bool m_result;
         LhsT m_lhs;
-        std::string m_op;
+        StringRef m_op;
         RhsT m_rhs;
 
         auto isBinaryExpression() const -> bool override { return true; }

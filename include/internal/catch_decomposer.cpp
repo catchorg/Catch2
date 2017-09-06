@@ -11,7 +11,7 @@
 
 namespace Catch {
 
-    void formatReconstructedExpression( std::ostream &os, std::string const& lhs, std::string const& op, std::string const& rhs ) {
+    void formatReconstructedExpression( std::ostream &os, std::string const& lhs, StringRef op, std::string const& rhs ) {
         if( lhs.size() + rhs.size() < 40 &&
                 lhs.find('\n') == std::string::npos &&
                 rhs.find('\n') == std::string::npos )
