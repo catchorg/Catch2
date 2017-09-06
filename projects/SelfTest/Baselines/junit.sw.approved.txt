@@ -27,6 +27,7 @@ MiscTests.cpp:<line number>
       </failure>
     </testcase>
     <testcase classname="<exe-name>.global" name="#872" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="#925: comparing function pointer to function address failed to compile" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="#961 -- Dynamically created sections should all be reported/Looped section 0" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="#961 -- Dynamically created sections should all be reported/Looped section 1" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="#961 -- Dynamically created sections should all be reported/Looped section 2" time="{duration}"/>
@@ -143,7 +144,6 @@ custom std exception
 ExceptionTests.cpp:<line number>
       </error>
     </testcase>
-    <testcase classname="<exe-name>.global" name="Demonstrate that a non-const == is not used" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="EndsWith string matcher" time="{duration}">
       <failure message="&quot;this string contains 'abc' as a substring&quot; ends with: &quot;this&quot;" type="CHECK_THAT">
 MatchersTests.cpp:<line number>

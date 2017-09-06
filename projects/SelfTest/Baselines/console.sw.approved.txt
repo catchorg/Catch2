@@ -157,6 +157,18 @@ with message:
   dummy := 0
 
 -------------------------------------------------------------------------------
+#925: comparing function pointer to function address failed to compile
+-------------------------------------------------------------------------------
+TrickyTests.cpp:<line number>
+...............................................................................
+
+TrickyTests.cpp:<line number>:
+PASSED:
+  REQUIRE( utility::synchronizing_callback != test.testMethod_uponComplete_arg )
+with expansion:
+  1 != 0
+
+-------------------------------------------------------------------------------
 #961 -- Dynamically created sections should all be reported
   Looped section 0
 -------------------------------------------------------------------------------
@@ -1214,18 +1226,6 @@ ExceptionTests.cpp:<line number>
 ExceptionTests.cpp:<line number>: FAILED:
 due to unexpected exception with message:
   custom std exception
-
--------------------------------------------------------------------------------
-Demonstrate that a non-const == is not used
--------------------------------------------------------------------------------
-TrickyTests.cpp:<line number>
-...............................................................................
-
-TrickyTests.cpp:<line number>:
-PASSED:
-  REQUIRE( t == 1u )
-with expansion:
-  {?} == 1
 
 -------------------------------------------------------------------------------
 EndsWith string matcher

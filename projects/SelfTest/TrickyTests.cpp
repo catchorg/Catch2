@@ -183,32 +183,6 @@ namespace ObjectWithConversions
     }
 }
 
-namespace ObjectWithNonConstEqualityOperator
-{
-    struct Test
-    {
-        Test( unsigned int v )
-        : m_value(v)
-        {}
-
-        bool operator==( const Test&rhs )
-        {
-            return (m_value == rhs.m_value);
-        }
-        bool operator==( const Test&rhs ) const
-        {
-            return (m_value != rhs.m_value);
-        }
-        unsigned int m_value;
-    };
-
-    TEST_CASE("Demonstrate that a non-const == is not used", "[Tricky]" )
-    {
-        Test t( 1 );
-        REQUIRE( t == 1u );
-    }
-}
-
 namespace EnumBitFieldTests
 {
     enum Bits : uint32_t {
@@ -447,4 +421,20 @@ TEST_CASE( "non-copyable objects", "[.][failing]" ) {
     // Thanks to Agustin Bergé (@k-ballo on the cpplang Slack) for raising this
     std::type_info const& ti = typeid(int);
     CHECK( ti == typeid(int) );
+}
+
+// #925
+using signal_t = void (*) (void*);
+
+struct TestClass {
+    signal_t testMethod_uponComplete_arg = nullptr;
+};
+
+namespace utility {
+    inline static void synchronizing_callback( void * ) { }
+}
+
+TEST_CASE("#925: comparing function pointer to function address failed to compile") {
+    TestClass test;
+    REQUIRE(utility::synchronizing_callback != test.testMethod_uponComplete_arg);
 }

@@ -76,7 +76,7 @@ namespace Catch {
 
     // Specialised comparison functions to handle equality comparisons between ints and pointers (NULL deduces as an int)
     template<typename LhsT, typename RhsT>
-    auto compareEqual( LhsT const& lhs, RhsT&& rhs ) -> bool { return const_cast<LhsT&>( lhs ) == rhs; };
+    auto compareEqual( LhsT const& lhs, RhsT&& rhs ) -> bool { return lhs == rhs; };
     template<typename T>
     auto compareEqual( T* const& lhs, int rhs ) -> bool { return lhs == reinterpret_cast<void const*>( rhs ); };
     template<typename T>
@@ -87,7 +87,7 @@ namespace Catch {
     auto compareEqual( long lhs, T* const& rhs ) -> bool { return reinterpret_cast<void const*>( lhs ) == rhs; };
 
     template<typename LhsT, typename RhsT>
-    auto compareNotEqual( LhsT const& lhs, RhsT&& rhs ) -> bool { return const_cast<LhsT&>( lhs ) != rhs; };
+    auto compareNotEqual( LhsT const& lhs, RhsT&& rhs ) -> bool { return lhs != rhs; };
     template<typename T>
     auto compareNotEqual( T* const& lhs, int rhs ) -> bool { return lhs != reinterpret_cast<void const*>( rhs ); };
     template<typename T>
@@ -150,10 +150,6 @@ namespace Catch {
     }
 
     struct Decomposer {
-        template<typename T>
-        auto operator <= ( T& lhs ) -> ExprLhs<T&> {
-            return ExprLhs<T&>( lhs );
-        }
         template<typename T>
         auto operator <= ( T const& lhs ) -> ExprLhs<T const&> {
             return ExprLhs<T const&>( lhs );
