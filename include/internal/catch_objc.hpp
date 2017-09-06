@@ -18,6 +18,8 @@
 // in catch.hpp first to make sure they are included by the single
 // header for non obj-usage
 #include "catch_test_case_info.h"
+#include "catch_string_manip.h"
+#include "catch_tostring.h"
 
 ///////////////////////////////////////////////////////////////////////////////
 // This protocol is really only here for (self) documenting purposes, since
@@ -91,7 +93,7 @@ namespace Catch {
                         std::string desc = Detail::getAnnotation( cls, "Description", testCaseName );
                         const char* className = class_getName( cls );
 
-                        getMutableRegistryHub().registerTest( makeTestCase( new OcMethod( cls, selector ), className, name.c_str(), desc.c_str(), SourceLineInfo() ) );
+                        getMutableRegistryHub().registerTest( makeTestCase( new OcMethod( cls, selector ), className, name.c_str(), desc.c_str(), SourceLineInfo("",0) ) );
                         noTestMethods++;
                     }
                 }
@@ -118,7 +120,7 @@ namespace Catch {
                     return false;
                 }
 
-                NSString* m_substr;
+                NSString* CATCH_ARC_STRONG m_substr;
             };
 
             struct Equals : StringHolder {
@@ -130,7 +132,7 @@ namespace Catch {
                 }
 
                 std::string describe() const override {
-                    return "equals string: " + Catch::toString( m_substr );
+                    return "equals string: " + Catch::Detail::stringify( m_substr );
                 }
             };
 
@@ -143,7 +145,7 @@ namespace Catch {
                 }
 
                 std::string describe() const override {
-                    return "contains string: " + Catch::toString( m_substr );
+                    return "contains string: " + Catch::Detail::stringify( m_substr );
                 }
             };
 
@@ -156,7 +158,7 @@ namespace Catch {
                 }
 
                 std::string describe() const override {
-                    return "starts with: " + Catch::toString( m_substr );
+                    return "starts with: " + Catch::Detail::stringify( m_substr );
                 }
             };
             struct EndsWith : StringHolder {
@@ -168,7 +170,7 @@ namespace Catch {
                 }
 
                 std::string describe() const override {
-                    return "ends with: " + Catch::toString( m_substr );
+                    return "ends with: " + Catch::Detail::stringify( m_substr );
                 }
             };
 
@@ -196,15 +198,18 @@ namespace Catch {
 } // namespace Catch
 
 ///////////////////////////////////////////////////////////////////////////////
-#define OC_TEST_CASE( name, desc )\
-+(NSString*) INTERNAL_CATCH_UNIQUE_NAME( Catch_Name_test ) \
-{\
+#define OC_MAKE_UNIQUE_NAME( root, uniqueSuffix ) root##uniqueSuffix
+#define OC_TEST_CASE2( name, desc, uniqueSuffix ) \
++(NSString*) OC_MAKE_UNIQUE_NAME( Catch_Name_test_, uniqueSuffix ) \
+{ \
 return @ name; \
-}\
-+(NSString*) INTERNAL_CATCH_UNIQUE_NAME( Catch_Description_test ) \
+} \
++(NSString*) OC_MAKE_UNIQUE_NAME( Catch_Description_test_, uniqueSuffix ) \
 { \
 return @ desc; \
 } \
--(void) INTERNAL_CATCH_UNIQUE_NAME( Catch_TestCase_test )
+-(void) OC_MAKE_UNIQUE_NAME( Catch_TestCase_test_, uniqueSuffix )
+
+#define OC_TEST_CASE( name, desc ) OC_TEST_CASE2( name, desc, __LINE__ )
 
 #endif // TWOBLUECUBES_CATCH_OBJC_HPP_INCLUDED

@@ -299,17 +299,26 @@ namespace Catch {
 #ifdef __OBJC__
     template<>
     struct StringMaker<NSString*> {
-        static std::string convert(NSString* nsstring);
+        static std::string convert(NSString * nsstring) {
+            if (!nsstring)
+                return "nil";
+            return std::string("@") + [nsstring UTF8String];
+        }
     };
     template<>
-    struct StringMaker<NSString* CATCH_ARC_STRONG> {
-        static std::string convert(NSString * CATCH_ARC_STRONG nsstring);
+    struct StringMaker<NSObject*> {
+        static std::string convert(NSObject* nsObject) {
+            return ::Catch::Detail::stringify([nsObject description]);
+        }
+
     };
-    template<>
-    struct StringMaker<NSObject *> {
-        static std::string convert(NSObject* nsObject);
-    };
-#endif
+    namespace Detail {
+        inline std::string stringify( NSString* nsstring ) {
+            return StringMaker<NSString*>::convert( nsstring );
+        }
+
+    } // namespace Detail
+#endif // __OBJC__
 
 
 } // namespace Catch
