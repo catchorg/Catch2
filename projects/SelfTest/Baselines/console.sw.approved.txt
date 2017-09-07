@@ -157,18 +157,6 @@ with message:
   dummy := 0
 
 -------------------------------------------------------------------------------
-#925: comparing function pointer to function address failed to compile
--------------------------------------------------------------------------------
-TrickyTests.cpp:<line number>
-...............................................................................
-
-TrickyTests.cpp:<line number>:
-PASSED:
-  REQUIRE( utility::synchronizing_callback != test.testMethod_uponComplete_arg )
-with expansion:
-  1 != 0
-
--------------------------------------------------------------------------------
 #961 -- Dynamically created sections should all be reported
   Looped section 0
 -------------------------------------------------------------------------------
@@ -7446,6 +7434,6 @@ MiscTests.cpp:<line number>:
 PASSED:
 
 ===============================================================================
-test cases: 178 | 125 passed | 49 failed |  4 failed as expected
-assertions: 878 | 758 passed | 99 failed | 21 failed as expected
+test cases: 177 | 124 passed | 49 failed |  4 failed as expected
+assertions: 877 | 757 passed | 99 failed | 21 failed as expected
 

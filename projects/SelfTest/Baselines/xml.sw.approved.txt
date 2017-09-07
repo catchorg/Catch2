@@ -169,17 +169,6 @@
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="#925: comparing function pointer to function address failed to compile" filename="projects/<exe-name>/TrickyTests.cpp" >
-      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/TrickyTests.cpp" >
-        <Original>
-          utility::synchronizing_callback != test.testMethod_uponComplete_arg
-        </Original>
-        <Expanded>
-          1 != 0
-        </Expanded>
-      </Expression>
-      <OverallResult success="true"/>
-    </TestCase>
     <TestCase name="#961 -- Dynamically created sections should all be reported" tags="[.]" filename="projects/<exe-name>/MiscTests.cpp" >
       <Section name="Looped section 0" filename="projects/<exe-name>/MiscTests.cpp" >
         <OverallResults successes="1" failures="0" expectedFailures="0"/>
@@ -8223,7 +8212,7 @@ loose text artifact
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="758" failures="100" expectedFailures="21"/>
+    <OverallResults successes="757" failures="100" expectedFailures="21"/>
   </Group>
-  <OverallResults successes="758" failures="99" expectedFailures="21"/>
+  <OverallResults successes="757" failures="99" expectedFailures="21"/>
 </Catch>

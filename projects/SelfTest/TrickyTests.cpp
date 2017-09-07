@@ -434,7 +434,8 @@ namespace utility {
     inline static void synchronizing_callback( void * ) { }
 }
 
-TEST_CASE("#925: comparing function pointer to function address failed to compile") {
+TEST_CASE("#925: comparing function pointer to function address failed to compile", "[!nonportable]" ) {
+
     TestClass test;
     REQUIRE(utility::synchronizing_callback != test.testMethod_uponComplete_arg);
 }
