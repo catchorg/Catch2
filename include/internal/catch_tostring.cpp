@@ -6,6 +6,13 @@
  *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  */
 
+#if defined(__clang__)
+#    pragma clang diagnostic push
+#    pragma clang diagnostic ignored "-Wexit-time-destructors"
+#    pragma clang diagnostic ignored "-Wglobal-constructors"
+#endif
+
+
 #include "catch_tostring.h"
 #include "catch_interfaces_config.h"
 #include "catch_context.h"
@@ -211,3 +218,8 @@ std::string StringMaker<double>::convert(double value) {
 
 
 } // end namespace Catch
+
+#if defined(__clang__)
+#    pragma clang diagnostic pop
+#endif
+

@@ -35,7 +35,7 @@ namespace Catch {
     // There is no 1-1 mapping between signals and windows exceptions.
     // Windows can easily distinguish between SO and SigSegV,
     // but SigInt, SigTerm, etc are handled differently.
-    SignalDefs signalDefs[] = {
+    static SignalDefs signalDefs[] = {
         { EXCEPTION_ILLEGAL_INSTRUCTION,  "SIGILL - Illegal instruction signal" },
         { EXCEPTION_STACK_OVERFLOW, "SIGSEGV - Stack overflow" },
         { EXCEPTION_ACCESS_VIOLATION, "SIGSEGV - Segmentation violation signal" },
@@ -107,7 +107,7 @@ namespace Catch {
         int id;
         const char* name;
     };
-    SignalDefs signalDefs[] = {
+    static SignalDefs signalDefs[] = {
         { SIGINT,  "SIGINT - Terminal interrupt signal" },
         { SIGILL,  "SIGILL - Illegal instruction signal" },
         { SIGFPE,  "SIGFPE - Floating point error signal" },

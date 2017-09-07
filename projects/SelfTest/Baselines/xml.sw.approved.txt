@@ -6946,9 +6946,6 @@ Message from section two
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="assertions with commas are allowed" filename="projects/<exe-name>/TrickyTests.cpp" >
-      <OverallResult success="true"/>
-    </TestCase>
     <TestCase name="atomic if" tags="[0][failing]" filename="projects/<exe-name>/MiscTests.cpp" >
       <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/MiscTests.cpp" >
         <Original>

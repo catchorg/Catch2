@@ -58,11 +58,14 @@ namespace Catch {
 #if !defined(CATCH_CONFIG_DISABLE)
 
 #define CATCH_REGISTER_REPORTER( name, reporterType ) \
-    namespace{ Catch::ReporterRegistrar<reporterType> catch_internal_RegistrarFor##reporterType( name ); }
+    CATCH_INTERNAL_SUPPRESS_GLOBALS_WARNINGS          \
+    namespace{ Catch::ReporterRegistrar<reporterType> catch_internal_RegistrarFor##reporterType( name ); } \
+    CATCH_INTERNAL_UNSUPPRESS_GLOBALS_WARNINGS
 
 #define CATCH_REGISTER_LISTENER( listenerType ) \
-    namespace{ Catch::ListenerRegistrar<listenerType> catch_internal_RegistrarFor##listenerType; }
-
+     CATCH_INTERNAL_SUPPRESS_GLOBALS_WARNINGS   \
+     namespace{ Catch::ListenerRegistrar<listenerType> catch_internal_RegistrarFor##listenerType; } \
+     CATCH_INTERNAL_SUPPRESS_GLOBALS_WARNINGS
 #else // CATCH_CONFIG_DISABLE
 
 #define CATCH_REGISTER_REPORTER(name, reporterType)

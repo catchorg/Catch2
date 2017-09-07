@@ -10,8 +10,8 @@
 
 namespace Catch {
     AssertionResultData::AssertionResultData(ResultWas::OfType _resultType, LazyExpression const & _lazyExpression):
-        resultType(_resultType),
-        lazyExpression(_lazyExpression) {}
+        lazyExpression(_lazyExpression),
+        resultType(_resultType) {}
 
     std::string AssertionResultData::reconstructExpression() const {
 

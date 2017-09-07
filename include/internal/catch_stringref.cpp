@@ -5,11 +5,19 @@
  *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  */
 
+
+#if defined(__clang__)
+#    pragma clang diagnostic push
+#    pragma clang diagnostic ignored "-Wexit-time-destructors"
+#endif
+ 
 #include "catch_stringref.h"
 
 #include <ostream>
 #include <cassert>
 #include <cstring>
+
+
 
 namespace Catch {
 
@@ -160,3 +168,7 @@ namespace Catch {
     }
         
 } // namespace Catch
+
+#if defined(__clang__)
+#    pragma clang diagnostic pop
+#endif

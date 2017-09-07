@@ -17,6 +17,8 @@ namespace Matchers {
             return m_cachedToString;
         }
 
+        MatcherUntypedBase::~MatcherUntypedBase() = default;
+
     } // namespace Impl
 } // namespace Matchers
 

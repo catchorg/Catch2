@@ -8,6 +8,12 @@
 
 #include "catch.hpp"
 
+#ifdef __clang__
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wweak-vtables"
+#pragma clang diagnostic ignored "-Wpadded"
+#endif
+
 #ifndef CATCH_CONFIG_DISABLE_MATCHERS
 
 inline const char* testStringForMatching()
@@ -166,16 +172,18 @@ TEST_CASE( "Vector matchers that fail", "[matchers][vector][.][failing]" ) {
 #include <exception>
 
 struct SpecialException : std::exception {
-    SpecialException(int i):i(i) {}
+    SpecialException(int i_):i(i_) {}
     int i;
 };
 
 void doesNotThrow() {}
 
+[[noreturn]]
 void throws(int i) {
     throw SpecialException{ i };
 }
 
+[[noreturn]]
 void throwsAsInt(int i) {
     throw i;
 }
@@ -217,3 +225,7 @@ TEST_CASE("Exception matchers that fail", "[matchers][exceptions][!throws][.fail
 }
 
 #endif // CATCH_CONFIG_DISABLE_MATCHERS
+
+#ifdef __clang__
+#pragma clang diagnostic pop
+#endif

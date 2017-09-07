@@ -22,8 +22,9 @@
 
 #ifdef _MSC_VER
 #pragma warning(push)
-#pragma warning(disable:4180) // qualifier applied to function type has no meaning
+#pragma warning(disable:4180) // We attempt to stream a function (address) by const&, which MSVC complains about but is harmless
 #endif
+
 
 // We need a dummy global operator<< so we can bring it into Catch namespace later
 struct Catch_global_namespace_dummy;

@@ -64,13 +64,13 @@ namespace Catch {
         public:
             AssertionPrinter& operator= ( AssertionPrinter const& ) = delete;
             AssertionPrinter( AssertionPrinter const& ) = delete;
-            AssertionPrinter( std::ostream& _stream, AssertionStats const& _stats, size_t counter )
+            AssertionPrinter( std::ostream& _stream, AssertionStats const& _stats, size_t _counter )
             : stream( _stream )
             , result( _stats.assertionResult )
             , messages( _stats.infoMessages )
             , itMessage( _stats.infoMessages.begin() )
             , printInfoMessages( true )
-            , counter(counter)
+            , counter(_counter)
             {}
 
             void print() {

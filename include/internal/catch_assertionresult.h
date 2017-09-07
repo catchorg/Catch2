@@ -23,13 +23,12 @@ namespace Catch {
 
         AssertionResultData( ResultWas::OfType _resultType, LazyExpression const& _lazyExpression );
 
-        ResultWas::OfType resultType;
         std::string message;
-
+        mutable std::string reconstructedExpression;
         LazyExpression lazyExpression;
+        ResultWas::OfType resultType;
 
         std::string reconstructExpression() const;
-        mutable std::string reconstructedExpression;
     };
 
     class AssertionResult {

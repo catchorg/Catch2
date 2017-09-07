@@ -15,6 +15,11 @@
 
 namespace Catch {
 
+    TestSpec::Pattern::~Pattern() = default;
+    TestSpec::NamePattern::~NamePattern() = default;
+    TestSpec::TagPattern::~TagPattern() = default;
+    TestSpec::ExcludedPattern::~ExcludedPattern() = default;
+
     TestSpec::NamePattern::NamePattern( std::string const& name )
     : m_wildcardPattern( toLower( name ), CaseSensitive::No )
     {}

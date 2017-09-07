@@ -21,9 +21,9 @@ namespace Catch {
                         ResultWas::OfType _type );
 
         std::string macroName;
+        std::string message;
         SourceLineInfo lineInfo;
         ResultWas::OfType type;
-        std::string message;
         unsigned int sequence;
 
         bool operator == ( MessageInfo const& other ) const;

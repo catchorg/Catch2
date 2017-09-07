@@ -30,7 +30,7 @@ namespace Catch {
 
         // We don't actually need a virtual destructore, but many static analysers
         // complain if it's not here :-(
-        virtual ~ITransientExpression() = default;
+        virtual ~ITransientExpression();
     };
 
     void formatReconstructedExpression( std::ostream &os, std::string const& lhs, StringRef op, std::string const& rhs );
@@ -79,24 +79,24 @@ namespace Catch {
     template<typename LhsT, typename RhsT>
     auto compareEqual( LhsT const& lhs, RhsT&& rhs ) -> bool { return lhs == rhs; };
     template<typename T>
-    auto compareEqual( T* const& lhs, int rhs ) -> bool { return lhs == reinterpret_cast<void const*>( rhs ); };
+    auto compareEqual( T* const& lhs, int rhs ) -> bool { return lhs == reinterpret_cast<void const*>( rhs ); }
     template<typename T>
-    auto compareEqual( T* const& lhs, long rhs ) -> bool { return lhs == reinterpret_cast<void const*>( rhs ); };
+    auto compareEqual( T* const& lhs, long rhs ) -> bool { return lhs == reinterpret_cast<void const*>( rhs ); }
     template<typename T>
-    auto compareEqual( int lhs, T* const& rhs ) -> bool { return reinterpret_cast<void const*>( lhs ) == rhs; };
+    auto compareEqual( int lhs, T* const& rhs ) -> bool { return reinterpret_cast<void const*>( lhs ) == rhs; }
     template<typename T>
-    auto compareEqual( long lhs, T* const& rhs ) -> bool { return reinterpret_cast<void const*>( lhs ) == rhs; };
+    auto compareEqual( long lhs, T* const& rhs ) -> bool { return reinterpret_cast<void const*>( lhs ) == rhs; }
 
     template<typename LhsT, typename RhsT>
     auto compareNotEqual( LhsT const& lhs, RhsT&& rhs ) -> bool { return lhs != rhs; };
     template<typename T>
-    auto compareNotEqual( T* const& lhs, int rhs ) -> bool { return lhs != reinterpret_cast<void const*>( rhs ); };
+    auto compareNotEqual( T* const& lhs, int rhs ) -> bool { return lhs != reinterpret_cast<void const*>( rhs ); }
     template<typename T>
-    auto compareNotEqual( T* const& lhs, long rhs ) -> bool { return lhs != reinterpret_cast<void const*>( rhs ); };
+    auto compareNotEqual( T* const& lhs, long rhs ) -> bool { return lhs != reinterpret_cast<void const*>( rhs ); }
     template<typename T>
-    auto compareNotEqual( int lhs, T* const& rhs ) -> bool { return reinterpret_cast<void const*>( lhs ) != rhs; };
+    auto compareNotEqual( int lhs, T* const& rhs ) -> bool { return reinterpret_cast<void const*>( lhs ) != rhs; }
     template<typename T>
-    auto compareNotEqual( long lhs, T* const& rhs ) -> bool { return reinterpret_cast<void const*>( lhs ) != rhs; };
+    auto compareNotEqual( long lhs, T* const& rhs ) -> bool { return reinterpret_cast<void const*>( lhs ) != rhs; }
 
 
     template<typename LhsT>
@@ -161,9 +161,5 @@ namespace Catch {
     };
 
 } // end namespace Catch
-
-#ifdef _MSC_VER
-#pragma warning(pop)
-#endif
 
 #endif // TWOBLUECUBES_CATCH_DECOMPOSER_H_INCLUDED

@@ -24,7 +24,7 @@ namespace Catch {
 
     class TestSpec {
         struct Pattern {
-            virtual ~Pattern() = default;
+            virtual ~Pattern();
             virtual bool matches( TestCaseInfo const& testCase ) const = 0;
         };
         using PatternPtr = std::shared_ptr<Pattern>;
@@ -32,7 +32,7 @@ namespace Catch {
         class NamePattern : public Pattern {
         public:
             NamePattern( std::string const& name );
-            virtual ~NamePattern() = default;
+            virtual ~NamePattern();
             virtual bool matches( TestCaseInfo const& testCase ) const override;
         private:
             WildcardPattern m_wildcardPattern;
@@ -41,7 +41,7 @@ namespace Catch {
         class TagPattern : public Pattern {
         public:
             TagPattern( std::string const& tag );
-            virtual ~TagPattern() = default;
+            virtual ~TagPattern();
             virtual bool matches( TestCaseInfo const& testCase ) const override;
         private:
             std::string m_tag;
@@ -50,7 +50,7 @@ namespace Catch {
         class ExcludedPattern : public Pattern {
         public:
             ExcludedPattern( PatternPtr const& underlyingPattern );
-            virtual ~ExcludedPattern() = default;
+            virtual ~ExcludedPattern();
             virtual bool matches( TestCaseInfo const& testCase ) const override;
         private:
             PatternPtr m_underlyingPattern;

@@ -15,8 +15,6 @@
 #include <vector>
 #include <memory>
 
-CATCH_INTERNAL_SUPPRESS_ETD_WARNINGS
-
 namespace Catch {
 namespace TestCaseTracking {
 
@@ -32,7 +30,7 @@ namespace TestCaseTracking {
     using ITrackerPtr = std::shared_ptr<ITracker>;
 
     struct ITracker {
-        virtual ~ITracker() = default;
+        virtual ~ITracker();
 
         // static queries
         virtual NameAndLocation const& nameAndLocation() const = 0;
@@ -181,7 +179,5 @@ using TestCaseTracking::SectionTracker;
 using TestCaseTracking::IndexTracker;
 
 } // namespace Catch
-
-CATCH_INTERNAL_UNSUPPRESS_ETD_WARNINGS
 
 #endif // TWOBLUECUBES_CATCH_TEST_CASE_TRACKER_HPP_INCLUDED

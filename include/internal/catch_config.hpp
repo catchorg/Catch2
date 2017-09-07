@@ -62,7 +62,6 @@ namespace Catch {
 
 
     class Config : public IConfig {
-        virtual void dummy();
     public:
 
         Config() = default;

@@ -265,4 +265,4 @@ struct AutoTestReg {
         REGISTER_TEST_CASE( manuallyRegisteredTestFunction, "ManuallyRegistered" );
     }
 };
-AutoTestReg autoTestReg;
+static AutoTestReg autoTestReg;

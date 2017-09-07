@@ -381,12 +381,9 @@ TEST_CASE( "has printf" ) {
     printf( "loose text artifact\n" );
 }
 
-TEST_CASE( "assertions with commas are allowed" ) {
-}
-
 namespace {
     struct constructor_throws {
-        constructor_throws() {
+        [[noreturn]] constructor_throws() {
             throw 1;
         }
     };

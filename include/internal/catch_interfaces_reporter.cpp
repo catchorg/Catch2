@@ -50,6 +50,8 @@ namespace Catch {
         }
     }
 
+     AssertionStats::~AssertionStats() = default;
+
     SectionStats::SectionStats(  SectionInfo const& _sectionInfo,
                                  Counts const& _assertions,
                                  double _durationInSeconds,
@@ -59,6 +61,8 @@ namespace Catch {
         durationInSeconds( _durationInSeconds ),
         missingAssertions( _missingAssertions )
     {}
+
+    SectionStats::~SectionStats() = default;
 
 
     TestCaseStats::TestCaseStats(  TestCaseInfo const& _testInfo,
@@ -72,6 +76,8 @@ namespace Catch {
         stdErr( _stdErr ),
         aborting( _aborting )
     {}
+
+    TestCaseStats::~TestCaseStats() = default;
 
 
     TestGroupStats::TestGroupStats( GroupInfo const& _groupInfo,
@@ -87,6 +93,8 @@ namespace Catch {
         aborting( false )
     {}
 
+    TestGroupStats::~TestGroupStats() = default;
+
     TestRunStats::TestRunStats(   TestRunInfo const& _runInfo,
                     Totals const& _totals,
                     bool _aborting )
@@ -95,8 +103,13 @@ namespace Catch {
         aborting( _aborting )
     {}
 
+    TestRunStats::~TestRunStats() = default;
+
 
     bool IStreamingReporter::isMulti() const { return false; }
+
+    IReporterFactory::~IReporterFactory() = default;
+    IReporterRegistry::~IReporterRegistry() = default;
 
     void addReporter( IStreamingReporterPtr& existingReporter, IStreamingReporterPtr&& additionalReporter ) {
 

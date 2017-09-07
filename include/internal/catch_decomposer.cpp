@@ -11,6 +11,8 @@
 
 namespace Catch {
 
+    ITransientExpression::~ITransientExpression() = default;
+    
     void formatReconstructedExpression( std::ostream &os, std::string const& lhs, StringRef op, std::string const& rhs ) {
         if( lhs.size() + rhs.size() < 40 &&
                 lhs.find('\n') == std::string::npos &&

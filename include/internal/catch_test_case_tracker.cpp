@@ -14,7 +14,10 @@
 #include <stdexcept>
 #include <memory>
 
-CATCH_INTERNAL_SUPPRESS_ETD_WARNINGS
+#if defined(__clang__)
+#    pragma clang diagnostic push
+#    pragma clang diagnostic ignored "-Wexit-time-destructors"
+#endif
 
 namespace Catch {
 namespace TestCaseTracking {
@@ -24,6 +27,8 @@ namespace TestCaseTracking {
         location( _location )
     {}
 
+
+    ITracker::~ITracker() = default;
 
 
     TrackerContext& TrackerContext::instance() {
@@ -276,4 +281,6 @@ using TestCaseTracking::IndexTracker;
 
 } // namespace Catch
 
-CATCH_INTERNAL_UNSUPPRESS_ETD_WARNINGS
+#if defined(__clang__)
+#    pragma clang diagnostic pop
+#endif

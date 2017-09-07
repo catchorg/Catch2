@@ -35,11 +35,11 @@
 
 #ifdef __clang__
 
-
-#       define CATCH_INTERNAL_SUPPRESS_ETD_WARNINGS \
+#       define CATCH_INTERNAL_SUPPRESS_GLOBALS_WARNINGS \
             _Pragma( "clang diagnostic push" ) \
-            _Pragma( "clang diagnostic ignored \"-Wexit-time-destructors\"" )
-#       define CATCH_INTERNAL_UNSUPPRESS_ETD_WARNINGS \
+            _Pragma( "clang diagnostic ignored \"-Wexit-time-destructors\"" ) \
+            _Pragma( "clang diagnostic ignored \"-Wglobal-constructors\"")
+#       define CATCH_INTERNAL_UNSUPPRESS_GLOBALS_WARNINGS \
             _Pragma( "clang diagnostic pop" )
 
 #       define CATCH_INTERNAL_SUPPRESS_PARENTHESES_WARNINGS \
@@ -111,9 +111,9 @@
 #   define CATCH_INTERNAL_SUPPRESS_PARENTHESES_WARNINGS
 #   define CATCH_INTERNAL_UNSUPPRESS_PARENTHESES_WARNINGS
 #endif
-#if !defined(CATCH_INTERNAL_SUPPRESS_ETD_WARNINGS)
-#   define CATCH_INTERNAL_SUPPRESS_ETD_WARNINGS
-#   define CATCH_INTERNAL_UNSUPPRESS_ETD_WARNINGS
+#if !defined(CATCH_INTERNAL_SUPPRESS_GLOBALS_WARNINGS)
+#   define CATCH_INTERNAL_SUPPRESS_GLOBALS_WARNINGS
+#   define CATCH_INTERNAL_UNSUPPRESS_GLOBALS_WARNINGS
 #endif
 
 

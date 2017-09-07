@@ -16,9 +16,18 @@
 #endif
 #define CATCH_CLARA_TEXTFLOW_CONFIG_CONSOLE_WIDTH CATCH_CONFIG_CONSOLE_WIDTH-1
 
+#ifdef __clang__
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wweak-vtables"
+#pragma clang diagnostic ignored "-Wexit-time-destructors"
+#pragma clang diagnostic ignored "-Wshadow"
+#endif
 
 #include "../external/clara.hpp"
 
+#ifdef __clang__
+#pragma clang diagnostic pop
+#endif
 
 // Restore Clara's value for console width, if present
 #ifdef CATCH_TEMP_CLARA_CONFIG_CONSOLE_WIDTH

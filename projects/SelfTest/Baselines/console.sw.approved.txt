@@ -7434,6 +7434,6 @@ MiscTests.cpp:<line number>:
 PASSED:
 
 ===============================================================================
-test cases: 177 | 124 passed | 49 failed |  4 failed as expected
+test cases: 176 | 123 passed | 49 failed |  4 failed as expected
 assertions: 877 | 757 passed | 99 failed | 21 failed as expected
 

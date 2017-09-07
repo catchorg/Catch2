@@ -80,7 +80,7 @@ namespace Catch {
         AssertionStats( AssertionStats && )                  = default;
         AssertionStats& operator = ( AssertionStats const& ) = default;
         AssertionStats& operator = ( AssertionStats && )     = default;
-        virtual ~AssertionStats()                            = default;
+        virtual ~AssertionStats();
 
         AssertionResult assertionResult;
         std::vector<MessageInfo> infoMessages;
@@ -96,7 +96,7 @@ namespace Catch {
         SectionStats( SectionStats && )                  = default;
         SectionStats& operator = ( SectionStats const& ) = default;
         SectionStats& operator = ( SectionStats && )     = default;
-        virtual ~SectionStats()                          = default;
+        virtual ~SectionStats();
 
         SectionInfo sectionInfo;
         Counts assertions;
@@ -115,7 +115,7 @@ namespace Catch {
         TestCaseStats( TestCaseStats && )                  = default;
         TestCaseStats& operator = ( TestCaseStats const& ) = default;
         TestCaseStats& operator = ( TestCaseStats && )     = default;
-        virtual ~TestCaseStats()                           = default;
+        virtual ~TestCaseStats();
 
         TestCaseInfo testInfo;
         Totals totals;
@@ -134,7 +134,7 @@ namespace Catch {
         TestGroupStats( TestGroupStats && )                  = default;
         TestGroupStats& operator = ( TestGroupStats const& ) = default;
         TestGroupStats& operator = ( TestGroupStats && )     = default;
-        virtual ~TestGroupStats()                            = default;
+        virtual ~TestGroupStats();
 
         GroupInfo groupInfo;
         Totals totals;
@@ -150,7 +150,7 @@ namespace Catch {
         TestRunStats( TestRunStats && )                  = default;
         TestRunStats& operator = ( TestRunStats const& ) = default;
         TestRunStats& operator = ( TestRunStats && )     = default;
-        virtual ~TestRunStats()                          = default;
+        virtual ~TestRunStats();
 
         TestRunInfo runInfo;
         Totals totals;
@@ -206,7 +206,7 @@ namespace Catch {
     using IStreamingReporterPtr = std::unique_ptr<IStreamingReporter>;
 
     struct IReporterFactory {
-        virtual ~IReporterFactory() = default;
+        virtual ~IReporterFactory();
         virtual IStreamingReporterPtr create( ReporterConfig const& config ) const = 0;
         virtual std::string getDescription() const = 0;
     };
@@ -216,7 +216,7 @@ namespace Catch {
         using FactoryMap = std::map<std::string, IReporterFactoryPtr>;
         using Listeners = std::vector<IReporterFactoryPtr>;
 
-        virtual ~IReporterRegistry() = default;
+        virtual ~IReporterRegistry();
         virtual IStreamingReporterPtr create( std::string const& name, IConfigPtr const& config ) const = 0;
         virtual FactoryMap const& getFactories() const = 0;
         virtual Listeners const& getListeners() const = 0;

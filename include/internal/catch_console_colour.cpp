@@ -6,6 +6,13 @@
  *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  */
 
+
+#if defined(__clang__)
+#    pragma clang diagnostic push
+#    pragma clang diagnostic ignored "-Wexit-time-destructors"
+#endif
+ 
+ 
 #include "catch_console_colour.h"
 #include "catch_enforce.h"
 #include "catch_errno_guard.h"
@@ -202,3 +209,8 @@ namespace Catch {
     }
 
 } // end namespace Catch
+
+#if defined(__clang__)
+#    pragma clang diagnostic pop
+#endif
+

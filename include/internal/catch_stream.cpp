@@ -57,6 +57,8 @@ namespace Catch {
     ///////////////////////////////////////////////////////////////////////////
 
 
+    Catch::IStream::~IStream() = default;
+
     FileStream::FileStream( std::string const& filename ) {
         m_ofs.open( filename.c_str() );
         CATCH_ENFORCE( !m_ofs.fail(), "Unable to open file: '" << filename << "'" );

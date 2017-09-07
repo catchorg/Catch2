@@ -14,6 +14,10 @@
 #ifdef _MSC_VER
 #pragma warning(disable:4702) // Unreachable code -- MSVC 19 (VS 2015) sees right through the indirection
 #endif
+#ifdef __clang__
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wweak-vtables"
+#endif
 
 namespace
 {
@@ -219,3 +223,7 @@ TEST_CASE( "#748 - captures with unexpected exceptions", "[.][failing][!throws][
         REQUIRE_THROWS( thisThrows() );
     }
 }
+
+#ifdef __clang__
+#pragma clang diagnostic pop
+#endif

@@ -10,7 +10,7 @@
 
 #include "catch_context.h"
 #include "catch_test_case_registry_impl.h"
-#include "catch_reporter_registry.hpp"
+#include "catch_reporter_registry.h"
 #include "catch_exception_translator_registry.h"
 #include "catch_tag_alias_registry.h"
 #include "catch_startup_exception_registry.h"
@@ -23,8 +23,7 @@ namespace Catch {
                             private NonCopyable {
 
         public: // IRegistryHub
-            RegistryHub() {
-            }
+            RegistryHub() = default;
             IReporterRegistry const& getReporterRegistry() const override {
                 return m_reporterRegistry;
             }

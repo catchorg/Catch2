@@ -85,16 +85,9 @@ CheckFileList(TEST_SOURCES ${SELF_TEST_DIR})
 set(SURROGATE_SOURCES
         ${SELF_TEST_DIR}/SurrogateCpps/catch_console_colour.cpp
         ${SELF_TEST_DIR}/SurrogateCpps/catch_debugger.cpp
-        ${SELF_TEST_DIR}/SurrogateCpps/catch_interfaces_capture.cpp
-        ${SELF_TEST_DIR}/SurrogateCpps/catch_interfaces_config.cpp
-        ${SELF_TEST_DIR}/SurrogateCpps/catch_interfaces_exception.cpp
-        ${SELF_TEST_DIR}/SurrogateCpps/catch_interfaces_registry_hub.cpp
         ${SELF_TEST_DIR}/SurrogateCpps/catch_interfaces_reporter.cpp
-        ${SELF_TEST_DIR}/SurrogateCpps/catch_interfaces_runner.cpp
-        ${SELF_TEST_DIR}/SurrogateCpps/catch_interfaces_testcase.cpp
         ${SELF_TEST_DIR}/SurrogateCpps/catch_option.cpp
         ${SELF_TEST_DIR}/SurrogateCpps/catch_stream.cpp
-        ${SELF_TEST_DIR}/SurrogateCpps/catch_streambuf.cpp
         ${SELF_TEST_DIR}/SurrogateCpps/catch_test_case_tracker.cpp
         ${SELF_TEST_DIR}/SurrogateCpps/catch_test_spec.cpp
         ${SELF_TEST_DIR}/SurrogateCpps/catch_xmlwriter.cpp
@@ -162,7 +155,7 @@ set(INTERNAL_HEADERS
         ${HEADER_DIR}/internal/catch_random_number_generator.h
         ${HEADER_DIR}/internal/catch_reenable_warnings.h
         ${HEADER_DIR}/internal/catch_reporter_registrars.hpp
-        ${HEADER_DIR}/internal/catch_reporter_registry.hpp
+        ${HEADER_DIR}/internal/catch_reporter_registry.h
         ${HEADER_DIR}/internal/catch_result_type.h
         ${HEADER_DIR}/internal/catch_run_context.h
         ${HEADER_DIR}/internal/catch_benchmark.h
@@ -210,6 +203,12 @@ set(IMPL_SOURCES
         ${HEADER_DIR}/internal/catch_errno_guard.cpp
         ${HEADER_DIR}/internal/catch_exception_translator_registry.cpp
         ${HEADER_DIR}/internal/catch_fatal_condition.cpp
+        ${HEADER_DIR}/internal/catch_interfaces_capture.cpp
+        ${HEADER_DIR}/internal/catch_interfaces_config.cpp
+        ${HEADER_DIR}/internal/catch_interfaces_exception.cpp
+        ${HEADER_DIR}/internal/catch_interfaces_registry_hub.cpp
+        ${HEADER_DIR}/internal/catch_interfaces_runner.cpp
+        ${HEADER_DIR}/internal/catch_interfaces_testcase.cpp
         ${HEADER_DIR}/internal/catch_list.cpp
         ${HEADER_DIR}/internal/catch_leak_detector.cpp
         ${HEADER_DIR}/internal/catch_matchers.cpp
@@ -218,6 +217,7 @@ set(IMPL_SOURCES
         ${HEADER_DIR}/internal/catch_registry_hub.cpp
         ${HEADER_DIR}/internal/catch_interfaces_reporter.cpp
         ${HEADER_DIR}/internal/catch_random_number_generator.cpp
+        ${HEADER_DIR}/internal/catch_reporter_registry.cpp
         ${HEADER_DIR}/internal/catch_result_type.cpp
         ${HEADER_DIR}/internal/catch_run_context.cpp
         ${HEADER_DIR}/internal/catch_section.cpp
@@ -225,6 +225,7 @@ set(IMPL_SOURCES
         ${HEADER_DIR}/internal/catch_session.cpp
         ${HEADER_DIR}/internal/catch_startup_exception_registry.cpp
         ${HEADER_DIR}/internal/catch_stream.cpp
+        ${HEADER_DIR}/internal/catch_streambuf.cpp
         ${HEADER_DIR}/internal/catch_stringref.cpp
         ${HEADER_DIR}/internal/catch_string_manip.cpp
         ${HEADER_DIR}/internal/catch_tag_alias.cpp
@@ -298,8 +299,13 @@ if (NOT NO_SELFTEST)
 
     # Add desired warnings
     if ( CMAKE_CXX_COMPILER_ID MATCHES "Clang|AppleClang|GNU" )
-        target_compile_options( SelfTest PRIVATE -Wall -Wextra )
-        target_compile_options( Benchmark PRIVATE -Wall -Wextra )
+        target_compile_options( SelfTest PRIVATE -Wall -Wextra -Wunreachable-code )
+        target_compile_options( Benchmark PRIVATE -Wall -Wextra -Wunreachable-code )
+    endif()
+    # Clang specific warning go here
+    if ( CMAKE_CXX_COMPILER_ID MATCHES "Clang" )
+        # Actually keep these
+        target_compile_options( SelfTest PRIVATE -Wweak-vtables -Wexit-time-destructors -Wglobal-constructors -Wmissing-noreturn )
     endif()
     if ( CMAKE_CXX_COMPILER_ID MATCHES "MSVC" )
         target_compile_options( SelfTest PRIVATE /W4 /w44265 /WX )

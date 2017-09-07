@@ -6,7 +6,9 @@
  *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  */
 #ifdef __clang__
+#   pragma clang diagnostic push
 #   pragma clang diagnostic ignored "-Wpadded"
+#   pragma clang diagnostic ignored "-Wdouble-promotion"
 #endif
 
 #include "catch.hpp"
@@ -160,6 +162,11 @@ TEST_CASE( "Ordering comparison checks that should fail", "[.][failing]" )
     CHECK( data.str_hello >= "z" );
     CHECK( data.str_hello <= "a" );
 }
+
+#ifdef __clang__
+#   pragma clang diagnostic pop
+#endif
+
 
 // Comparisons with int literals
 TEST_CASE( "Comparisons with int literals don't warn when mixing signed/ unsigned" )

@@ -24,7 +24,7 @@ namespace Catch {
 
 
     struct IStream {
-        virtual ~IStream() = default;
+        virtual ~IStream();
         virtual std::ostream& stream() const = 0;
     };
 

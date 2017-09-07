@@ -29,7 +29,7 @@ namespace Matchers {
             std::string toString() const;
 
         protected:
-            virtual ~MatcherUntypedBase() = default;
+            virtual ~MatcherUntypedBase();
             virtual std::string describe() const = 0;
             mutable std::string m_cachedToString;
         };

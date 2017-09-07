@@ -24,6 +24,8 @@ namespace Catch {
             return m_config;
         }
 
+        virtual ~Context() override;
+
     public: // IMutableContext
         virtual void setResultCapture( IResultCapture* resultCapture ) override {
             m_resultCapture = resultCapture;
@@ -59,4 +61,7 @@ namespace Catch {
         delete currentContext;
         currentContext = nullptr;
     }
+    IContext::~IContext() = default;
+    IMutableContext::~IMutableContext() = default;
+    Context::~Context() = default;
 }

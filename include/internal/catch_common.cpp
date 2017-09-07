@@ -46,4 +46,7 @@ namespace Catch {
         return std::string();
     }
 
+    NonCopyable::NonCopyable() = default;
+    NonCopyable::~NonCopyable() = default;
+
 }
