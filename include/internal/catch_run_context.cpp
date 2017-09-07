@@ -1,4 +1,4 @@
-#include "catch_run_context.hpp"
+#include "catch_run_context.h"
 #include "catch_context.h"
 #include "catch_enforce.h"
 #include "catch_random_number_generator.h"

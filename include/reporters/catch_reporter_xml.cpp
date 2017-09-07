@@ -10,7 +10,7 @@
 
 #include "../internal/catch_capture.hpp"
 #include "../internal/catch_reporter_registrars.hpp"
-#include "../internal/catch_xmlwriter.hpp"
+#include "internal/catch_xmlwriter.h"
 #include "../internal/catch_timer.h"
 
 namespace Catch {

@@ -6,7 +6,7 @@
  *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  */
 
-#include "catch_commandline.hpp"
+#include "catch_commandline.h"
 
 #include "catch_string_manip.h"
 

@@ -35,12 +35,12 @@
 #endif
 
 #include "internal/catch_tag_alias_autoregistrar.h"
-#include "internal/catch_test_registry.hpp"
+#include "internal/catch_test_registry.h"
 #include "internal/catch_capture.hpp"
 #include "internal/catch_section.h"
 #include "internal/catch_benchmark.h"
 #include "internal/catch_interfaces_exception.h"
-#include "internal/catch_approx.hpp"
+#include "internal/catch_approx.h"
 #include "internal/catch_compiler_capabilities.h"
 #include "internal/catch_string_manip.h"
 

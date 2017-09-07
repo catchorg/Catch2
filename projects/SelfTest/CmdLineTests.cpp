@@ -7,7 +7,7 @@
  */
 
 #include "catch.hpp"
-#include "internal/catch_test_spec_parser.hpp"
+#include "internal/catch_test_spec_parser.h"
 
 #ifdef __clang__
 #   pragma clang diagnostic ignored "-Wc++98-compat"

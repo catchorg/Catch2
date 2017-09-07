@@ -6,13 +6,13 @@
  */
 
 #include "catch_session.h"
-#include "catch_commandline.hpp"
-#include "catch_console_colour.hpp"
+#include "catch_commandline.h"
+#include "catch_console_colour.h"
 #include "catch_enforce.h"
 #include "catch_list.h"
-#include "catch_run_context.hpp"
+#include "catch_run_context.h"
 #include "catch_stream.h"
-#include "catch_test_spec.hpp"
+#include "catch_test_spec.h"
 #include "catch_version.h"
 #include "catch_interfaces_reporter.h"
 #include "catch_random_number_generator.h"

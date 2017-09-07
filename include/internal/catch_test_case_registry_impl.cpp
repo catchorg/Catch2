@@ -5,7 +5,7 @@
  *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  */
 
-#include "catch_test_case_registry_impl.hpp"
+#include "catch_test_case_registry_impl.h"
 
 #include "catch_context.h"
 #include "catch_enforce.h"

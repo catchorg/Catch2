@@ -8,7 +8,7 @@
 #ifndef TWOBLUECUBES_CATCH_MATCHERS_VECTOR_H_INCLUDED
 #define TWOBLUECUBES_CATCH_MATCHERS_VECTOR_H_INCLUDED
 
-#include "catch_matchers.hpp"
+#include "catch_matchers.h"
 
 namespace Catch {
 namespace Matchers {

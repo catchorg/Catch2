@@ -6,7 +6,7 @@
  *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  */
 #include "internal/catch_suppress_warnings.h"
-#include "internal/catch_test_case_tracker.hpp"
+#include "internal/catch_test_case_tracker.h"
 
 
 namespace Catch

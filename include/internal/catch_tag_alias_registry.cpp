@@ -7,7 +7,7 @@
  */
 
 #include "catch_tag_alias_registry.h"
-#include "catch_console_colour.hpp"
+#include "catch_console_colour.h"
 #include "catch_enforce.h"
 #include "catch_interfaces_registry_hub.h"
 #include "catch_stream.h"

@@ -15,8 +15,8 @@
 #include "catch_stream.h"
 #include "catch_text.h"
 
-#include "catch_console_colour.hpp"
-#include "catch_test_spec_parser.hpp"
+#include "catch_console_colour.h"
+#include "catch_test_spec_parser.h"
 #include "catch_tostring.h"
 #include "catch_string_manip.h"
 

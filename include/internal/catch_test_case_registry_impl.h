@@ -8,8 +8,8 @@
 #ifndef TWOBLUECUBES_CATCH_TEST_CASE_REGISTRY_IMPL_HPP_INCLUDED
 #define TWOBLUECUBES_CATCH_TEST_CASE_REGISTRY_IMPL_HPP_INCLUDED
 
-#include "catch_test_registry.hpp"
-#include "catch_test_spec.hpp"
+#include "catch_test_registry.h"
+#include "catch_test_spec.h"
 #include "catch_interfaces_config.h"
 
 #include <vector>

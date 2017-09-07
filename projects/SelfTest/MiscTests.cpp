@@ -13,7 +13,7 @@
 #   pragma clang diagnostic ignored "-Wc++98-compat-pedantic"
 #endif
 
-#include "../include/internal/catch_xmlwriter.hpp"
+#include "internal/catch_xmlwriter.h"
 
 #include <iostream>
 #include <cerrno>

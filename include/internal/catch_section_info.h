@@ -9,7 +9,7 @@
 #define TWOBLUECUBES_CATCH_SECTION_INFO_H_INCLUDED
 
 #include "catch_common.h"
-#include "catch_totals.hpp"
+#include "catch_totals.h"
 
 #include <string>
 

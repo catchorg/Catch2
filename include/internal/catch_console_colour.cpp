@@ -6,7 +6,7 @@
  *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  */
 
-#include "catch_console_colour.hpp"
+#include "catch_console_colour.h"
 #include "catch_enforce.h"
 #include "catch_errno_guard.h"
 #include "catch_interfaces_config.h"
