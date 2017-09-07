@@ -20,6 +20,10 @@
 #include "catch_objc_arc.hpp"
 #endif
 
+#ifdef _MSC_VER
+#pragma warning(push)
+#pragma warning(disable:4180) // qualifier applied to function type has no meaning
+#endif
 
 // We need a dummy global operator<< so we can bring it into Catch namespace later
 struct Catch_global_namespace_dummy;
@@ -320,7 +324,10 @@ namespace Catch {
     } // namespace Detail
 #endif // __OBJC__
 
-
 } // namespace Catch
+
+#ifdef _MSC_VER
+#pragma warning(pop)
+#endif
 
 #endif // TWOBLUECUBES_CATCH_TOSTRING_H_INCLUDED
