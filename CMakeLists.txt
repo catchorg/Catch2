@@ -118,18 +118,18 @@ CheckFileList(EXTERNAL_HEADERS ${HEADER_DIR}/external)
 
 # Please keep these ordered alphabetically
 set(INTERNAL_HEADERS
-        ${HEADER_DIR}/internal/catch_approx.hpp
+        ${HEADER_DIR}/internal/catch_approx.h
         ${HEADER_DIR}/internal/catch_assertionhandler.h
         ${HEADER_DIR}/internal/catch_assertioninfo.h
         ${HEADER_DIR}/internal/catch_assertionresult.h
         ${HEADER_DIR}/internal/catch_capture.hpp
         ${HEADER_DIR}/internal/catch_capture_matchers.h
         ${HEADER_DIR}/internal/catch_clara.h
-        ${HEADER_DIR}/internal/catch_commandline.hpp
+        ${HEADER_DIR}/internal/catch_commandline.h
         ${HEADER_DIR}/internal/catch_common.h
         ${HEADER_DIR}/internal/catch_compiler_capabilities.h
         ${HEADER_DIR}/internal/catch_config.hpp
-        ${HEADER_DIR}/internal/catch_console_colour.hpp
+        ${HEADER_DIR}/internal/catch_console_colour.h
         ${HEADER_DIR}/internal/catch_context.h
         ${HEADER_DIR}/internal/catch_debug_console.h
         ${HEADER_DIR}/internal/catch_debugger.h
@@ -151,7 +151,7 @@ set(INTERNAL_HEADERS
         ${HEADER_DIR}/internal/catch_interfaces_testcase.h
         ${HEADER_DIR}/internal/catch_leak_detector.h
         ${HEADER_DIR}/internal/catch_list.h
-        ${HEADER_DIR}/internal/catch_matchers.hpp
+        ${HEADER_DIR}/internal/catch_matchers.h
         ${HEADER_DIR}/internal/catch_matchers_string.h
         ${HEADER_DIR}/internal/catch_matchers_vector.h
         ${HEADER_DIR}/internal/catch_message.h
@@ -164,7 +164,7 @@ set(INTERNAL_HEADERS
         ${HEADER_DIR}/internal/catch_reporter_registrars.hpp
         ${HEADER_DIR}/internal/catch_reporter_registry.hpp
         ${HEADER_DIR}/internal/catch_result_type.h
-        ${HEADER_DIR}/internal/catch_run_context.hpp
+        ${HEADER_DIR}/internal/catch_run_context.h
         ${HEADER_DIR}/internal/catch_benchmark.h
         ${HEADER_DIR}/internal/catch_section.h
         ${HEADER_DIR}/internal/catch_section_info.h
@@ -179,19 +179,19 @@ set(INTERNAL_HEADERS
         ${HEADER_DIR}/internal/catch_tag_alias_autoregistrar.h
         ${HEADER_DIR}/internal/catch_tag_alias_registry.h
         ${HEADER_DIR}/internal/catch_test_case_info.h
-        ${HEADER_DIR}/internal/catch_test_case_registry_impl.hpp
-        ${HEADER_DIR}/internal/catch_test_case_tracker.hpp
-        ${HEADER_DIR}/internal/catch_test_registry.hpp
-        ${HEADER_DIR}/internal/catch_test_spec.hpp
-        ${HEADER_DIR}/internal/catch_test_spec_parser.hpp
+        ${HEADER_DIR}/internal/catch_test_case_registry_impl.h
+        ${HEADER_DIR}/internal/catch_test_case_tracker.h
+        ${HEADER_DIR}/internal/catch_test_registry.h
+        ${HEADER_DIR}/internal/catch_test_spec.h
+        ${HEADER_DIR}/internal/catch_test_spec_parser.h
         ${HEADER_DIR}/internal/catch_text.h
         ${HEADER_DIR}/internal/catch_timer.h
         ${HEADER_DIR}/internal/catch_tostring.h
-        ${HEADER_DIR}/internal/catch_totals.hpp
+        ${HEADER_DIR}/internal/catch_totals.h
         ${HEADER_DIR}/internal/catch_version.h
-        ${HEADER_DIR}/internal/catch_wildcard_pattern.hpp
+        ${HEADER_DIR}/internal/catch_wildcard_pattern.h
         ${HEADER_DIR}/internal/catch_windows_h_proxy.h
-        ${HEADER_DIR}/internal/catch_xmlwriter.hpp
+        ${HEADER_DIR}/internal/catch_xmlwriter.h
         )
 set(IMPL_SOURCES
         ${HEADER_DIR}/internal/catch_approx.cpp
