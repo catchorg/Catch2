@@ -209,6 +209,9 @@ namespace Catch {
     }
 
     void RunContext::handleFatalErrorCondition(std::string const & message) {
+        // First notify reporter that bad things happened
+        m_reporter->fatalErrorEncountered(message);
+
         // Don't rebuild the result -- the stringification itself can cause more fatal errors
         // Instead, fake a result data.
         AssertionResultData tempResult( ResultWas::FatalErrorCondition, { false } );

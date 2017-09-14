@@ -16,6 +16,7 @@
 #include "catch_assertionresult.h"
 #include "catch_message.h"
 #include "catch_option.hpp"
+#include "catch_stringref.h"
 
 
 #include <string>
@@ -200,6 +201,9 @@ namespace Catch {
         virtual void testRunEnded( TestRunStats const& testRunStats ) = 0;
 
         virtual void skipTest( TestCaseInfo const& testInfo ) = 0;
+
+        // Default empty implementation provided
+        virtual void fatalErrorEncountered( StringRef name );
 
         virtual bool isMulti() const;
     };
