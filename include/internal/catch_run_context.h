@@ -100,7 +100,7 @@ namespace Catch {
 
         void exceptionEarlyReported() override;
 
-        void handleFatalErrorCondition(std::string const& message) override;
+        void handleFatalErrorCondition( StringRef message ) override;
 
         bool lastAssertionPassed() override;
 

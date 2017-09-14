@@ -208,7 +208,7 @@ namespace Catch {
         m_shouldReportUnexpected = false;
     }
 
-    void RunContext::handleFatalErrorCondition(std::string const & message) {
+    void RunContext::handleFatalErrorCondition( StringRef message ) {
         // First notify reporter that bad things happened
         m_reporter->fatalErrorEncountered(message);
 

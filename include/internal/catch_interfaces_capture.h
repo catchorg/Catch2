@@ -10,6 +10,8 @@
 
 #include <string>
 
+#include "catch_stringref.h"
+
 namespace Catch {
 
     class AssertionResult;
@@ -43,7 +45,7 @@ namespace Catch {
 
         virtual void exceptionEarlyReported() = 0;
 
-        virtual void handleFatalErrorCondition( std::string const& message ) = 0;
+        virtual void handleFatalErrorCondition( StringRef message ) = 0;
 
         virtual bool lastAssertionPassed() = 0;
         virtual void assertionPassed() = 0;
