@@ -18,7 +18,7 @@
 
 namespace Catch {
 
-    template<typename WriterF, size_t bufferSize=256>
+    template<typename WriterF, std::size_t bufferSize=256>
     class StreamBufImpl : public StreamBufBase {
         char data[bufferSize];
         WriterF m_writer;

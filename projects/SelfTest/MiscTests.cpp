@@ -96,7 +96,7 @@ TEST_CASE( "looped SECTION tests", "[.][failing][sections]" ) {
 TEST_CASE( "looped tests", "[.][failing]" ) {
     static const int fib[]  = { 1, 1, 2, 3, 5, 8, 13, 21 };
 
-    for( size_t i=0; i < sizeof(fib)/sizeof(int); ++i ) {
+    for( std::size_t i=0; i < sizeof(fib)/sizeof(int); ++i ) {
         INFO( "Testing if fib[" << i << "] (" << fib[i] << ") is even" );
         CHECK( ( fib[i] % 2 ) == 0 );
     }
@@ -163,7 +163,7 @@ TEST_CASE( "send a single char to INFO", "[failing][.]" ) {
 }
 
 TEST_CASE( "atomic if", "[failing][0]") {
-    size_t x = 0;
+    std::size_t x = 0;
 
     if( x )
         REQUIRE(x > 0);

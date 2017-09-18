@@ -135,7 +135,7 @@ namespace Catch {
         std::vector<SectionEndInfo> m_unfinishedSections;
         std::vector<ITracker*> m_activeSections;
         TrackerContext m_trackerContext;
-        size_t m_prevPassed = 0;
+        std::size_t m_prevPassed = 0;
         bool m_shouldReportUnexpected = true;
     };
 

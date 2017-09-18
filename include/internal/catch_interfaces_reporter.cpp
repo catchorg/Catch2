@@ -105,7 +105,7 @@ namespace Catch {
 
     TestRunStats::~TestRunStats() = default;
 
-    void IStreamingReporter::fatalErrorEncountered( StringRef name ) {}
+    void IStreamingReporter::fatalErrorEncountered( StringRef ) {}
     bool IStreamingReporter::isMulti() const { return false; }
 
     IReporterFactory::~IReporterFactory() = default;

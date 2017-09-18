@@ -45,7 +45,7 @@ namespace Catch {
         template<typename T>
         void addPattern() {
             std::string token = subString();
-            for( size_t i = 0; i < m_escapeChars.size(); ++i )
+            for( std::size_t i = 0; i < m_escapeChars.size(); ++i )
                 token = token.substr( 0, m_escapeChars[i]-m_start-i ) + token.substr( m_escapeChars[i]-m_start-i+1 );
             m_escapeChars.clear();
             if( startsWith( token, "exclude:" ) ) {

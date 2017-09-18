@@ -26,7 +26,7 @@ namespace Catch {
             // Also, UTC only, again because of backward compatibility (%z is C++11)
             time_t rawtime;
             std::time(&rawtime);
-            const size_t timeStampSize = sizeof("2017-01-16T17:06:45Z");
+            auto const timeStampSize = sizeof("2017-01-16T17:06:45Z");
 
 #ifdef _MSC_VER
             std::tm timeInfo = {};

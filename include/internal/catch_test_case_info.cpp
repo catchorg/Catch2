@@ -131,7 +131,7 @@ namespace Catch {
     std::string TestCaseInfo::tagsAsString() const {
         std::string ret;
         // '[' and ']' per tag
-        size_t full_size = 2 * tags.size();
+        std::size_t full_size = 2 * tags.size();
         for (const auto& tag : tags) {
             full_size += tag.size();
         }

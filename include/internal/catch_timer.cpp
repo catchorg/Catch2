@@ -20,7 +20,7 @@ namespace Catch {
         uint64_t sum = 0;
         static const uint64_t iterations = 1000000;
 
-        for( size_t i = 0; i < iterations; ++i ) {
+        for( std::size_t i = 0; i < iterations; ++i ) {
 
             uint64_t ticks;
             uint64_t baseTicks = getCurrentNanosecondsSinceEpoch();

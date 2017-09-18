@@ -95,7 +95,7 @@ namespace {
             tp.m_currentColumn++;
 
             auto colInfo = tp.m_columnInfos[tp.m_currentColumn];
-            auto padding = ( strSize+2 < static_cast<size_t>( colInfo.width ) )
+            auto padding = ( strSize+2 < static_cast<std::size_t>( colInfo.width ) )
                 ? std::string( colInfo.width-(strSize+2), ' ' )
                 : std::string();
             if( colInfo.justification == ColumnInfo::Left )

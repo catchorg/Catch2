@@ -72,8 +72,8 @@ namespace Catch {
         }
     }
 
-    inline size_t registerTestMethods() {
-        size_t noTestMethods = 0;
+    inline std::size_t registerTestMethods() {
+        std::size_t noTestMethods = 0;
         int noClasses = objc_getClassList( nullptr, 0 );
 
         Class* classes = (CATCH_UNSAFE_UNRETAINED Class *)malloc( sizeof(Class) * noClasses);

@@ -28,7 +28,7 @@ namespace Catch {
         // + 1 for decimal point
         // + 3 for the 3 decimal places
         // + 1 for null terminator
-        const size_t maxDoubleSize = DBL_MAX_10_EXP + 1 + 1 + 3 + 1;
+        const std::size_t maxDoubleSize = DBL_MAX_10_EXP + 1 + 1 + 3 + 1;
         char buffer[maxDoubleSize];
  
         // Save previous errno, to prevent sprintf from overwriting it

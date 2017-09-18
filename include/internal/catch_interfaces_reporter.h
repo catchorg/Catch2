@@ -163,7 +163,7 @@ namespace Catch {
     };
     struct BenchmarkStats {
         BenchmarkInfo info;
-        size_t iterations;
+        std::size_t iterations;
         uint64_t elapsedTimeInNanoseconds;
     };
 

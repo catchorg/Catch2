@@ -20,7 +20,7 @@
     #include <unistd.h>
     #include <sys/sysctl.h>
 
-    namespace Catch{
+    namespace Catch {
 
         // The following function is taken directly from the following technical note:
         // http://developer.apple.com/library/mac/#qa/qa2004/qa1361.html
@@ -31,7 +31,7 @@
 
             int                 mib[4];
             struct kinfo_proc   info;
-            size_t              size;
+            std::size_t         size;
 
             // Initialize the flags so that, if sysctl fails for some bizarre
             // reason, we get a predictable result.

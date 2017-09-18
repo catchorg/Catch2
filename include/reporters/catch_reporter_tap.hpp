@@ -59,12 +59,12 @@ namespace Catch {
         }
 
     private:
-        size_t counter = 0;
+        std::size_t counter = 0;
         class AssertionPrinter {
         public:
             AssertionPrinter& operator= ( AssertionPrinter const& ) = delete;
             AssertionPrinter( AssertionPrinter const& ) = delete;
-            AssertionPrinter( std::ostream& _stream, AssertionStats const& _stats, size_t _counter )
+            AssertionPrinter( std::ostream& _stream, AssertionStats const& _stats, std::size_t _counter )
             : stream( _stream )
             , result( _stats.assertionResult )
             , messages( _stats.infoMessages )
@@ -232,7 +232,7 @@ namespace Catch {
             std::vector<MessageInfo> messages;
             std::vector<MessageInfo>::const_iterator itMessage;
             bool printInfoMessages;
-            size_t counter;
+            std::size_t counter;
         };
 
         void printTotals( const Totals& totals ) const {

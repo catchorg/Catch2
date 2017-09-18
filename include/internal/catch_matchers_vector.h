@@ -78,7 +78,7 @@ namespace Matchers {
                 // - then just call that directly
                 if (m_comparator.size() != v.size())
                     return false;
-                for (size_t i = 0; i < v.size(); ++i)
+                for (std::size_t i = 0; i < v.size(); ++i)
                     if (m_comparator[i] != v[i])
                         return false;
                 return true;

@@ -19,8 +19,8 @@ namespace Catch {
     class BenchmarkLooper {
 
         std::string m_name;
-        size_t m_count = 0;
-        size_t m_iterationsToRun = 1;
+        std::size_t m_count = 0;
+        std::size_t m_iterationsToRun = 1;
         uint64_t m_resolution;
         Timer m_timer;
 
