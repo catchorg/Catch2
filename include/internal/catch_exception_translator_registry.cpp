@@ -30,7 +30,7 @@ namespace Catch {
                 return tryTranslators();
             }
             @catch (NSException *exception) {
-                return Catch::toString( [exception description] );
+                return Catch::Detail::stringify( [exception description] );
             }
 #else
             return tryTranslators();

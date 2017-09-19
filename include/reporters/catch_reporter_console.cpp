@@ -17,178 +17,178 @@
 #include <cfloat>
 #include <cstdio>
 
-namespace {
-    std::size_t makeRatio( std::size_t number, std::size_t total ) {
-        std::size_t ratio = total > 0 ? CATCH_CONFIG_CONSOLE_WIDTH * number/ total : 0;
-        return ( ratio == 0 && number > 0 ) ? 1 : ratio;
-    }
-
-    std::size_t& findMax( std::size_t& i, std::size_t& j, std::size_t& k ) {
-        if( i > j && i > k )
-            return i;
-        else if( j > k )
-            return j;
-        else
-            return k;
-    }
-
-    struct ColumnInfo {
-        enum Justification { Left, Right };
-        std::string name;
-        int width;
-        Justification justification;
-    };
-    struct ColumnBreak {};
-    struct RowBreak {};
-
-    class TablePrinter {
-        std::ostream& m_os;
-        std::vector<ColumnInfo> m_columnInfos;
-        std::ostringstream m_oss;
-        int m_currentColumn = -1;
-        bool m_isOpen = false;
-
-    public:
-        TablePrinter( std::ostream& os, std::vector<ColumnInfo> const& columnInfos )
-        :   m_os( os ),
-            m_columnInfos( columnInfos )
-        {}
-
-        auto columnInfos() const -> std::vector<ColumnInfo> const& {
-            return m_columnInfos;
-        }
-
-        void open() {
-            if( !m_isOpen ) {
-                m_isOpen = true;
-                *this << RowBreak();
-                for( auto const& info : m_columnInfos )
-                    *this << info.name << ColumnBreak();
-                *this << RowBreak();
-                m_os << Catch::getLineOfChars<'-'>() << "\n";
-            }
-        }
-        void close() {
-            if( m_isOpen ) {
-                *this << RowBreak();
-                m_os << std::endl;
-                m_isOpen = false;
-            }
-        }
-
-        template<typename T>
-        friend TablePrinter& operator << ( TablePrinter& tp, T const& value ) {
-            tp.m_oss << value;
-            return tp;
-        }
-
-        friend TablePrinter& operator << ( TablePrinter& tp, ColumnBreak ) {
-            auto colStr = tp.m_oss.str();
-            // This takes account of utf8 encodings
-            auto strSize = Catch::StringRef( colStr ).numberOfCharacters();
-            tp.m_oss.str("");
-            tp.open();
-            if( tp.m_currentColumn == static_cast<int>(tp.m_columnInfos.size()-1) ) {
-                tp.m_currentColumn = -1;
-                tp.m_os << "\n";
-            }
-            tp.m_currentColumn++;
-
-            auto colInfo = tp.m_columnInfos[tp.m_currentColumn];
-            auto padding = ( strSize+2 < static_cast<std::size_t>( colInfo.width ) )
-                ? std::string( colInfo.width-(strSize+2), ' ' )
-                : std::string();
-            if( colInfo.justification == ColumnInfo::Left )
-                tp.m_os << colStr << padding << " ";
-            else
-                tp.m_os << padding << colStr << " ";
-            return tp;
-        }
-
-        friend TablePrinter& operator << ( TablePrinter& tp, RowBreak ) {
-            if( tp.m_currentColumn > 0 ) {
-                tp.m_os << "\n";
-                tp.m_currentColumn = -1;
-            }
-            return tp;
-        }
-    };
-
-    class Duration {
-        enum class Unit {
-            Auto,
-            Nanoseconds,
-            Microseconds,
-            Milliseconds,
-            Seconds,
-            Minutes
-        };
-        static const uint64_t s_nanosecondsInAMicrosecond = 1000;
-        static const uint64_t s_nanosecondsInAMillisecond = 1000*s_nanosecondsInAMicrosecond;
-        static const uint64_t s_nanosecondsInASecond = 1000*s_nanosecondsInAMillisecond;
-        static const uint64_t s_nanosecondsInAMinute = 60*s_nanosecondsInASecond;
-
-        uint64_t m_inNanoseconds;
-        Unit m_units;
-
-    public:
-        Duration( uint64_t inNanoseconds, Unit units = Unit::Auto )
-        :   m_inNanoseconds( inNanoseconds ),
-            m_units( units )
-        {
-            if( m_units == Unit::Auto ) {
-                if( m_inNanoseconds < s_nanosecondsInAMicrosecond )
-                    m_units = Unit::Nanoseconds;
-                else if( m_inNanoseconds < s_nanosecondsInAMillisecond )
-                    m_units = Unit::Microseconds;
-                else if( m_inNanoseconds < s_nanosecondsInASecond )
-                    m_units = Unit::Milliseconds;
-                else if( m_inNanoseconds < s_nanosecondsInAMinute )
-                    m_units = Unit::Seconds;
-                else
-                    m_units = Unit::Minutes;
-            }
-
-        }
-
-        auto value() const -> double {
-            switch( m_units ) {
-                case Unit::Microseconds:
-                    return m_inNanoseconds / static_cast<double>( s_nanosecondsInAMicrosecond );
-                case Unit::Milliseconds:
-                    return m_inNanoseconds / static_cast<double>( s_nanosecondsInAMillisecond );
-                case Unit::Seconds:
-                    return m_inNanoseconds / static_cast<double>( s_nanosecondsInASecond );
-                case Unit::Minutes:
-                    return m_inNanoseconds / static_cast<double>( s_nanosecondsInAMinute );
-                default:
-                    return static_cast<double>( m_inNanoseconds );
-            }
-        }
-        auto unitsAsString() const -> std::string {
-            switch( m_units ) {
-                case Unit::Nanoseconds:
-                    return "ns";
-                case Unit::Microseconds:
-                    return "µs";
-                case Unit::Milliseconds:
-                    return "ms";
-                case Unit::Seconds:
-                    return "s";
-                case Unit::Minutes:
-                    return "m";
-                default:
-                    return "** internal error **";
-            }
-
-        }
-        friend auto operator << ( std::ostream& os, Duration const& duration ) -> std::ostream& {
-            return os << duration.value() << " " << duration.unitsAsString();
-        }
-    };
-}
-
 namespace Catch {
+
+    namespace {
+        std::size_t makeRatio( std::size_t number, std::size_t total ) {
+            std::size_t ratio = total > 0 ? CATCH_CONFIG_CONSOLE_WIDTH * number/ total : 0;
+            return ( ratio == 0 && number > 0 ) ? 1 : ratio;
+        }
+
+        std::size_t& findMax( std::size_t& i, std::size_t& j, std::size_t& k ) {
+            if( i > j && i > k )
+                return i;
+            else if( j > k )
+                return j;
+            else
+                return k;
+        }
+
+        struct ColumnInfo {
+            enum Justification { Left, Right };
+            std::string name;
+            int width;
+            Justification justification;
+        };
+        struct ColumnBreak {};
+        struct RowBreak {};
+
+        class TablePrinter {
+            std::ostream& m_os;
+            std::vector<ColumnInfo> m_columnInfos;
+            std::ostringstream m_oss;
+            int m_currentColumn = -1;
+            bool m_isOpen = false;
+
+        public:
+            TablePrinter( std::ostream& os, std::vector<ColumnInfo> const& columnInfos )
+            :   m_os( os ),
+                m_columnInfos( columnInfos )
+            {}
+
+            auto columnInfos() const -> std::vector<ColumnInfo> const& {
+                return m_columnInfos;
+            }
+
+            void open() {
+                if( !m_isOpen ) {
+                    m_isOpen = true;
+                    *this << RowBreak();
+                    for( auto const& info : m_columnInfos )
+                        *this << info.name << ColumnBreak();
+                    *this << RowBreak();
+                    m_os << Catch::getLineOfChars<'-'>() << "\n";
+                }
+            }
+            void close() {
+                if( m_isOpen ) {
+                    *this << RowBreak();
+                    m_os << std::endl;
+                    m_isOpen = false;
+                }
+            }
+
+            template<typename T>
+            friend TablePrinter& operator << ( TablePrinter& tp, T const& value ) {
+                tp.m_oss << value;
+                return tp;
+            }
+
+            friend TablePrinter& operator << ( TablePrinter& tp, ColumnBreak ) {
+                auto colStr = tp.m_oss.str();
+                // This takes account of utf8 encodings
+                auto strSize = Catch::StringRef( colStr ).numberOfCharacters();
+                tp.m_oss.str("");
+                tp.open();
+                if( tp.m_currentColumn == static_cast<int>(tp.m_columnInfos.size()-1) ) {
+                    tp.m_currentColumn = -1;
+                    tp.m_os << "\n";
+                }
+                tp.m_currentColumn++;
+
+                auto colInfo = tp.m_columnInfos[tp.m_currentColumn];
+                auto padding = ( strSize+2 < static_cast<std::size_t>( colInfo.width ) )
+                    ? std::string( colInfo.width-(strSize+2), ' ' )
+                    : std::string();
+                if( colInfo.justification == ColumnInfo::Left )
+                    tp.m_os << colStr << padding << " ";
+                else
+                    tp.m_os << padding << colStr << " ";
+                return tp;
+            }
+
+            friend TablePrinter& operator << ( TablePrinter& tp, RowBreak ) {
+                if( tp.m_currentColumn > 0 ) {
+                    tp.m_os << "\n";
+                    tp.m_currentColumn = -1;
+                }
+                return tp;
+            }
+        };
+
+        class Duration {
+            enum class Unit {
+                Auto,
+                Nanoseconds,
+                Microseconds,
+                Milliseconds,
+                Seconds,
+                Minutes
+            };
+            static const uint64_t s_nanosecondsInAMicrosecond = 1000;
+            static const uint64_t s_nanosecondsInAMillisecond = 1000*s_nanosecondsInAMicrosecond;
+            static const uint64_t s_nanosecondsInASecond = 1000*s_nanosecondsInAMillisecond;
+            static const uint64_t s_nanosecondsInAMinute = 60*s_nanosecondsInASecond;
+
+            uint64_t m_inNanoseconds;
+            Unit m_units;
+
+        public:
+            Duration( uint64_t inNanoseconds, Unit units = Unit::Auto )
+            :   m_inNanoseconds( inNanoseconds ),
+                m_units( units )
+            {
+                if( m_units == Unit::Auto ) {
+                    if( m_inNanoseconds < s_nanosecondsInAMicrosecond )
+                        m_units = Unit::Nanoseconds;
+                    else if( m_inNanoseconds < s_nanosecondsInAMillisecond )
+                        m_units = Unit::Microseconds;
+                    else if( m_inNanoseconds < s_nanosecondsInASecond )
+                        m_units = Unit::Milliseconds;
+                    else if( m_inNanoseconds < s_nanosecondsInAMinute )
+                        m_units = Unit::Seconds;
+                    else
+                        m_units = Unit::Minutes;
+                }
+
+            }
+
+            auto value() const -> double {
+                switch( m_units ) {
+                    case Unit::Microseconds:
+                        return m_inNanoseconds / static_cast<double>( s_nanosecondsInAMicrosecond );
+                    case Unit::Milliseconds:
+                        return m_inNanoseconds / static_cast<double>( s_nanosecondsInAMillisecond );
+                    case Unit::Seconds:
+                        return m_inNanoseconds / static_cast<double>( s_nanosecondsInASecond );
+                    case Unit::Minutes:
+                        return m_inNanoseconds / static_cast<double>( s_nanosecondsInAMinute );
+                    default:
+                        return static_cast<double>( m_inNanoseconds );
+                }
+            }
+            auto unitsAsString() const -> std::string {
+                switch( m_units ) {
+                    case Unit::Nanoseconds:
+                        return "ns";
+                    case Unit::Microseconds:
+                        return "µs";
+                    case Unit::Milliseconds:
+                        return "ms";
+                    case Unit::Seconds:
+                        return "s";
+                    case Unit::Minutes:
+                        return "m";
+                    default:
+                        return "** internal error **";
+                }
+
+            }
+            friend auto operator << ( std::ostream& os, Duration const& duration ) -> std::ostream& {
+                return os << duration.value() << " " << duration.unitsAsString();
+            }
+        };
+    } // end anon namespace
 
     struct ConsoleReporter : StreamingReporterBase<ConsoleReporter> {
         TablePrinter m_tablePrinter;
