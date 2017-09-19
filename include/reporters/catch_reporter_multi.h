@@ -4,6 +4,8 @@
  *  Distributed under the Boost Software License, Version 1.0. (See accompanying
  *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  */
+#ifndef TWOBLUECUBES_CATCH_MULTI_REPORTER_H_INCLUDED
+#define TWOBLUECUBES_CATCH_MULTI_REPORTER_H_INCLUDED
 
 #include "../internal/catch_interfaces_reporter.h"
 
@@ -43,3 +45,5 @@ namespace Catch {
     };
 
 } // end namespace Catch
+
+#endif // TWOBLUECUBES_CATCH_MULTI_REPORTER_H_INCLUDED
