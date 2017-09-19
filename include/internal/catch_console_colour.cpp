@@ -20,6 +20,7 @@
 #include "catch_stream.h"
 #include "catch_context.h"
 #include "catch_platform.h"
+#include "catch_debugger.h"
 
 namespace Catch {
     namespace {
@@ -156,6 +157,13 @@ namespace {
         }
     };
 
+    bool useColourOnPlatform() {
+        return
+#ifdef CATCH_PLATFORM_MAC
+            !isDebuggerActive() &&
+#endif
+            isatty(STDOUT_FILENO);
+    }
     IColourImpl* platformColourInstance() {
         ErrnoGuard guard;
         IConfigPtr config = getCurrentContext().getConfig();
@@ -163,7 +171,7 @@ namespace {
             ? config->useColour()
             : UseColour::Auto;
         if( colourMode == UseColour::Auto )
-            colourMode = isatty(STDOUT_FILENO)
+            colourMode = useColourOnPlatform()
                 ? UseColour::Yes
                 : UseColour::No;
         return colourMode == UseColour::Yes
