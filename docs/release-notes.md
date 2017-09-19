@@ -19,6 +19,7 @@
   * This is most noticeable in `CHECK(throws())`, which would previously report failure, properly stringify the exception and continue. Now it will report failure and stop executing current section.
 * Removed deprecated matcher utility functions `Not`, `AllOf` and `AnyOf`.
   * They are superseded by operators `!`, `&&` and `||`, which are natural and do not have limited arity
+* No longer accept non-const comparison operators
 
 
 ## Improvements
@@ -47,9 +48,13 @@
   * Exception translators are not registered
   * Reporters are not registered
   * Listeners are not registered
+* More warnings are silenced
+* Don't use console colour if running in XCode
 
 ## Fixes
-
+* Explicit constructor in reporter base class
+* Many fixes for building in Objective-C context
+* Do not use SEH and console api under UWP
 
 ## Internal changes
 * The development version now uses .cpp files instead of header files containing implementation.
@@ -57,7 +62,6 @@
 * The expression decomposition layer has been rewritten
 * The evaluation layer has been rewritten
 * New library (TextFlow) is used for formatting text to output
-
 
 
 # Older versions
