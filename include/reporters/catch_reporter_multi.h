@@ -26,6 +26,9 @@ namespace Catch {
 
         static std::set<Verbosity> getSupportedVerbosities();
 
+        void benchmarkStarting( BenchmarkInfo const& benchmarkInfo ) override;
+        void benchmarkEnded( BenchmarkStats const& benchmarkStats ) override;
+
         void testRunStarting( TestRunInfo const& testRunInfo ) override;
         void testGroupStarting( GroupInfo const& groupInfo ) override;
         void testCaseStarting( TestCaseInfo const& testInfo ) override;

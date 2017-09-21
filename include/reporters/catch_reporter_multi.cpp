@@ -28,6 +28,14 @@ namespace Catch {
             reporter->noMatchingTestCases( spec );
     }
 
+    void MultipleReporters::benchmarkStarting( BenchmarkInfo const& benchmarkInfo ) {
+        for( auto const& reporter : m_reporters )
+            reporter->benchmarkStarting( benchmarkInfo );
+    }
+    void MultipleReporters::benchmarkEnded( BenchmarkStats const& benchmarkStats ) {
+        for( auto const& reporter : m_reporters )
+            reporter->benchmarkEnded( benchmarkStats );
+    }
 
     void MultipleReporters::testRunStarting( TestRunInfo const& testRunInfo ) {
         for( auto const& reporter : m_reporters )
