@@ -22,27 +22,16 @@ class LineMapper:
         self.idMap = idMap
         self.outerNamespace = outerNamespace
 
-    def replaceId( self, lineNo, id ):
-        if not self.idMap.has_key( id ):
-            raise ValueError( "Unrecognised macro identifier: '{0}' on line: {1}".format( id, lineNo ) )
-        subst = self.idMap[id]
-        if subst == "":
-            return id
-        else:
-            return subst
-
     # TBD:
     #  #if, #ifdef, comments after #else
     def mapLine( self, lineNo, line ):
-        m = ifndefRe.match( line )
-        if m:
-            return "#ifndef " + self.replaceId( lineNo, m.group(1)) + "\n"
-        m = defineRe.match( line )
-        if m:
-            return "#define {0}{1}{2}\n".format( self.replaceId( lineNo, m.group(1)), m.group(2), m.group(3) )
-        m = endifRe.match( line )
-        if m:
-            return "#endif // " + self.replaceId( lineNo, m.group(1)) + "\n"
+        for idFrom, idTo in self.idMap.iteritems():
+            r = re.compile("(.*)" + idFrom + "(.*)")
+
+            m = r.match( line )
+            if m:
+                line = m.group(1) + idTo + m.group(2) + "\n"
+
         m = nsCloseRe.match( line )
         if m:
             originalNs = m.group(3)
@@ -61,6 +50,7 @@ class LineMapper:
             if self.outerNamespace.has_key(originalNs):
                 outerNs, innerNs = self.outerNamespace[originalNs]
                 return "{0}{1} {{ namespace {2}{3}{4}\n".format( m.group(1), outerNs, innerNs, m.group(3), m.group(4) )
+
         return line
 
     def mapFile(self, filenameIn, filenameOut ):
