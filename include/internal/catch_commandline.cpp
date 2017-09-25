@@ -98,84 +98,84 @@ namespace Catch {
 
         auto cli
             = ExeName( config.processName )
-            + Help( config.showHelp )
-            + Opt( config.listTests )
+            | Help( config.showHelp )
+            | Opt( config.listTests )
                 ["-l"]["--list-tests"]
                 ( "list all/matching test cases" )
-            + Opt( config.listTags )
+            | Opt( config.listTags )
                 ["-t"]["--list-tags"]
                 ( "list all/matching tags" )
-            + Opt( config.showSuccessfulTests )
+            | Opt( config.showSuccessfulTests )
                 ["-s"]["--success"]
                 ( "include successful tests in output" )
-            + Opt( config.shouldDebugBreak )
+            | Opt( config.shouldDebugBreak )
                 ["-b"]["--break"]
                 ( "break into debugger on failure" )
-            + Opt( config.noThrow )
+            | Opt( config.noThrow )
                 ["-e"]["--nothrow"]
                 ( "skip exception tests" )
-            + Opt( config.showInvisibles )
+            | Opt( config.showInvisibles )
                 ["-i"]["--invisibles"]
                 ( "show invisibles (tabs, newlines)" )
-            + Opt( config.outputFilename, "filename" )
+            | Opt( config.outputFilename, "filename" )
                 ["-o"]["--out"]
                 ( "output filename" )
-            + Opt( config.reporterNames, "name" )
+            | Opt( config.reporterNames, "name" )
                 ["-r"]["--reporter"]
                 ( "reporter to use (defaults to console)" )
-            + Opt( config.name, "name" )
+            | Opt( config.name, "name" )
                 ["-n"]["--name"]
                 ( "suite name" )
-            + Opt( [&]( bool ){ config.abortAfter = 1; } )
+            | Opt( [&]( bool ){ config.abortAfter = 1; } )
                 ["-a"]["--abort"]
                 ( "abort at first failure" )
-            + Opt( [&]( int x ){ config.abortAfter = x; }, "no. failures" )
+            | Opt( [&]( int x ){ config.abortAfter = x; }, "no. failures" )
                 ["-x"]["--abortx"]
                 ( "abort after x failures" )
-            + Opt( setWarning, "warning name" )
+            | Opt( setWarning, "warning name" )
                 ["-w"]["--warn"]
                 ( "enable warnings" )
-            + Opt( [&]( bool flag ) { config.showDurations = flag ? ShowDurations::Always : ShowDurations::Never; }, "yes|no" )
+            | Opt( [&]( bool flag ) { config.showDurations = flag ? ShowDurations::Always : ShowDurations::Never; }, "yes|no" )
                 ["-d"]["--durations"]
                 ( "show test durations" )
-            + Opt( loadTestNamesFromFile, "filename" )
+            | Opt( loadTestNamesFromFile, "filename" )
                 ["-f"]["--input-file"]
                 ( "load test names to run from a file" )
-            + Opt( config.filenamesAsTags )
+            | Opt( config.filenamesAsTags )
                 ["-#"]["--filenames-as-tags"]
                 ( "adds a tag for the filename" )
-            + Opt( config.sectionsToRun, "section name" )
+            | Opt( config.sectionsToRun, "section name" )
                 ["-c"]["--section"]
                 ( "specify section to run" )
-            + Opt( setVerbosity, "quiet|normal|high" )
+            | Opt( setVerbosity, "quiet|normal|high" )
                 ["-v"]["--verbosity"]
                 ( "set output verbosity" )
-            + Opt( config.listTestNamesOnly )
+            | Opt( config.listTestNamesOnly )
                 ["--list-test-names-only"]
                 ( "list all/matching test cases names only" )
-            + Opt( config.listReporters )
+            | Opt( config.listReporters )
                 ["--list-reporters"]
                 ( "list all reporters" )
-            + Opt( setTestOrder, "decl|lex|rand" )
+            | Opt( setTestOrder, "decl|lex|rand" )
                 ["--order"]
                 ( "test case order (defaults to decl)" )
-            + Opt( setRngSeed, "'time'|number" )
+            | Opt( setRngSeed, "'time'|number" )
                 ["--rng-seed"]
                 ( "set a specific seed for random numbers" )
-            + Opt( setColourUsage, "yes|no" )
+            | Opt( setColourUsage, "yes|no" )
                 ["--use-colour"]
                 ( "should output be colourised" )
-            + Opt( config.libIdentify )
+            | Opt( config.libIdentify )
                 ["--libidentify"]
                 ( "report name and version according to libidentify standard" )
-            + Opt( setWaitForKeypress, "start|exit|both" )
+            | Opt( setWaitForKeypress, "start|exit|both" )
                 ["--wait-for-keypress"]
                 ( "waits for a keypress before exiting" )
-            + Opt( config.benchmarkResolutionMultiple, "multiplier" )
+            | Opt( config.benchmarkResolutionMultiple, "multiplier" )
                 ["--benchmark-resolution-multiple"]
                 ( "multiple of clock resolution to run benchmarks" )
 
-            + Arg( config.testsOrTags, "test name|pattern|tags" )
+            | Arg( config.testsOrTags, "test name|pattern|tags" )
                 ( "which test or tests to use" );
 
         return cli;
