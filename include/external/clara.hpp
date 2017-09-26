@@ -1145,9 +1145,12 @@ namespace detail {
             assert( totalParsers < 512 );
             // ParserInfo parseInfos[totalParsers]; // <-- this is what we really want to do
             ParserInfo parseInfos[512];
-            size_t i = 0;
-            for( auto const& opt : m_options ) parseInfos[i++].parser = &opt;
-            for( auto const& arg : m_args ) parseInfos[i++].parser = &arg;
+
+            {
+                size_t i = 0;
+                for (auto const &opt : m_options) parseInfos[i++].parser = &opt;
+                for (auto const &arg : m_args) parseInfos[i++].parser = &arg;
+            }
 
             m_exeName.set( exeName );
 
