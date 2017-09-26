@@ -1142,7 +1142,9 @@ namespace detail {
                 size_t count = 0;
             };
             const size_t totalParsers = m_options.size() + m_args.size();
-            ParserInfo parseInfos[totalParsers];
+            assert( totalParsers < 512 );
+            // ParserInfo parseInfos[totalParsers]; // <-- this is what we really want to do
+            ParserInfo parseInfos[512];
             size_t i = 0;
             for( auto const& opt : m_options ) parseInfos[i++].parser = &opt;
             for( auto const& arg : m_args ) parseInfos[i++].parser = &arg;
@@ -1153,7 +1155,8 @@ namespace detail {
             while( result.value().remainingTokens() ) {
                 bool tokenParsed = false;
 
-                for( auto& parseInfo : parseInfos ) {
+                for( size_t i = 0; i < totalParsers; ++i ) {
+                    auto&  parseInfo = parseInfos[i];
                     if( parseInfo.parser->cardinality() == 0 || parseInfo.count < parseInfo.parser->cardinality() ) {
                         result = parseInfo.parser->parse(exeName, result.value().remainingTokens());
                         if (!result)
