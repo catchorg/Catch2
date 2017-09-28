@@ -15,6 +15,7 @@
         static std::string translatorName( signature )
 #endif
 
+#include <exception>
 #include <string>
 #include <vector>
 
@@ -47,7 +48,7 @@ namespace Catch {
             std::string translate( ExceptionTranslators::const_iterator it, ExceptionTranslators::const_iterator itEnd ) const override {
                 try {
                     if( it == itEnd )
-                        throw;
+                        std::rethrow_exception(std::current_exception());
                     else
                         return (*it)->translate( it+1, itEnd );
                 }

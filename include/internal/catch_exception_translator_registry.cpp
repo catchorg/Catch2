@@ -37,7 +37,7 @@ namespace Catch {
 #endif
         }
         catch( TestFailureException& ) {
-            throw;
+            std::rethrow_exception(std::current_exception());
         }
         catch( std::exception& ex ) {
             return ex.what();
@@ -55,7 +55,7 @@ namespace Catch {
 
     std::string ExceptionTranslatorRegistry::tryTranslators() const {
         if( m_translators.empty() )
-            throw;
+            std::rethrow_exception(std::current_exception());
         else
             return m_translators[0]->translate( m_translators.begin()+1, m_translators.end() );
     }
