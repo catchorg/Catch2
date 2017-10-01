@@ -61,6 +61,9 @@
 * Swept out `-Wweak-vtables`, `-Wexit-time-destructors`, `-Wglobal-constructors` warnings
 * Compilation for Universal Windows Platform (UWP) is supported
   * SEH handling and colorized output are disabled when compiling for UWP
+* Implemented a workaround for `std::uncaught_exception` issues in libcxxrt
+  * These issues caused incorrect section traversals
+  * The workaround is only partial, user's test can still trigger the issue by using `throw;` to rethrow an exception
 
 ## Internal changes
 * The development version now uses .cpp files instead of header files containing implementation.
