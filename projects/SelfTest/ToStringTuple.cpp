@@ -1,3 +1,4 @@
+#define CATCH_CONFIG_ENABLE_TUPLE_STRINGMAKER
 #include "catch.hpp"
 
 #include <tuple>

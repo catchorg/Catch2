@@ -4614,6 +4614,84 @@ with expansion:
   11 == 11
 
 -------------------------------------------------------------------------------
+Stringifying std::chrono::duration helpers
+-------------------------------------------------------------------------------
+ToStringChrono.cpp:<line number>
+...............................................................................
+
+ToStringChrono.cpp:<line number>:
+PASSED:
+  REQUIRE( minute == seconds )
+with expansion:
+  1 m == 60 s
+
+ToStringChrono.cpp:<line number>:
+PASSED:
+  REQUIRE( hour != seconds )
+with expansion:
+  1 h != 60 s
+
+ToStringChrono.cpp:<line number>:
+PASSED:
+  REQUIRE( micro != milli )
+with expansion:
+  1 us != 1 ms
+
+ToStringChrono.cpp:<line number>:
+PASSED:
+  REQUIRE( nano != micro )
+with expansion:
+  1 ns != 1 us
+
+-------------------------------------------------------------------------------
+Stringifying std::chrono::duration with weird ratios
+-------------------------------------------------------------------------------
+ToStringChrono.cpp:<line number>
+...............................................................................
+
+ToStringChrono.cpp:<line number>:
+PASSED:
+  REQUIRE( half_minute != femto_second )
+with expansion:
+  1 [30/1]s != 1 fs
+
+-------------------------------------------------------------------------------
+Stringifying std::chrono::time_point<Clock>
+-------------------------------------------------------------------------------
+ToStringChrono.cpp:<line number>
+...............................................................................
+
+ToStringChrono.cpp:<line number>:
+PASSED:
+  REQUIRE( now != later )
+with expansion:
+  {iso8601-timestamp}
+  !=
+  {iso8601-timestamp}
+
+ToStringChrono.cpp:<line number>:
+PASSED:
+  REQUIRE( now2 != later2 )
+with expansion:
+  {since-epoch-report}
+  !=
+  {since-epoch-report}
+
+-------------------------------------------------------------------------------
+Stringifying std::chrono::time_point<system_clock>
+-------------------------------------------------------------------------------
+ToStringChrono.cpp:<line number>
+...............................................................................
+
+ToStringChrono.cpp:<line number>:
+PASSED:
+  REQUIRE( now != later )
+with expansion:
+  {iso8601-timestamp}
+  !=
+  {iso8601-timestamp}
+
+-------------------------------------------------------------------------------
 Tabs and newlines show in output
 -------------------------------------------------------------------------------
 MiscTests.cpp:<line number>
@@ -7434,6 +7512,6 @@ MiscTests.cpp:<line number>:
 PASSED:
 
 ===============================================================================
-test cases: 176 | 123 passed | 49 failed |  4 failed as expected
-assertions: 877 | 757 passed | 99 failed | 21 failed as expected
+test cases: 180 | 127 passed | 49 failed |  4 failed as expected
+assertions: 885 | 765 passed | 99 failed | 21 failed as expected
 

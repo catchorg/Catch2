@@ -24,7 +24,7 @@ filelocParser = re.compile(r'''
 lineNumberParser = re.compile(r' line="[0-9]*"')
 hexParser = re.compile(r'\b(0[xX][0-9a-fA-F]+)\b')
 durationsParser = re.compile(r' time="[0-9]*\.[0-9]*"')
-timestampsParser = re.compile(r' timestamp="\d{4}-\d{2}-\d{2}T\d{2}\:\d{2}\:\d{2}Z"')
+timestampsParser = re.compile(r'\d{4}-\d{2}-\d{2}T\d{2}\:\d{2}\:\d{2}Z')
 versionParser = re.compile(r'Catch v[0-9]+\.[0-9]+\.[0-9]+(-develop\.[0-9]+)?')
 nullParser = re.compile(r'\b(__null|nullptr)\b')
 exeNameParser = re.compile(r'''
@@ -44,6 +44,7 @@ errnoParser = re.compile(r'''
     |
     \(\*_errno\(\)\)
 ''', re.VERBOSE)
+sinceEpochParser = re.compile(r'\d+ .+ since epoch')
 
 if len(sys.argv) == 2:
     cmdPath = sys.argv[1]
@@ -97,9 +98,10 @@ def filterLine(line):
 
     # strip durations and timestamps
     line = durationsParser.sub(' time="{duration}"', line)
-    line = timestampsParser.sub(' timestamp="{iso8601-timestamp}"', line)
+    line = timestampsParser.sub('{iso8601-timestamp}', line)
     line = specialCaseParser.sub('file:\g<1>', line)
     line = errnoParser.sub('errno', line)
+    line = sinceEpochParser.sub('{since-epoch-report}', line)
     return line
 
 

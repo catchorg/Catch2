@@ -1,14 +1,15 @@
 <a id="top"></a>
 # Compile-time configuration
 
-**Contents**  
-[main()/ implementation](#main-implementation)  
-[Prefixing Catch macros](#prefixing-catch-macros)  
-[Terminal colour](#terminal-colour)  
-[Console width](#console-width)  
-[stdout](#stdout)  
-[Other toggles](#other-toggles)  
-[Windows header clutter](#windows-header-clutter)  
+**Contents**
+[main()/ implementation](#main-implementation)
+[Prefixing Catch macros](#prefixing-catch-macros)
+[Terminal colour](#terminal-colour)
+[Console width](#console-width)
+[stdout](#stdout)
+[Other toggles](#other-toggles)
+[Windows header clutter](#windows-header-clutter)
+[Enabling stringification](#enabling-stringification)
 
 Catch is designed to "just work" as much as possible. For most people the only configuration needed is telling Catch which source file should host all the implementation code (```CATCH_CONFIG_MAIN```).
 
@@ -120,6 +121,17 @@ On Windows Catch includes `windows.h`. To minimize global namespace clutter in t
 
     CATCH_CONFIG_NO_NOMINMAX            // Stops Catch from using NOMINMAX macro 
     CATCH_CONFIG_NO_WIN32_LEAN_AND_MEAN // Stops Catch from using WIN32_LEAN_AND_MEAN macro
+
+
+## Enabling stringification
+
+By default, Catch does not stringify some types from the standard library. This is done to avoid dragging in various standard library headers by default. However, Catch does contain these and can be configured to provide them, using these macros:
+
+    CATCH_CONFIG_ENABLE_PAIR_STRINGMAKER    // Provide StringMaker specialization for std::pair
+    CATCH_CONFIG_ENABLE_TUPLE_STRINGMAKER   // Provide StringMaker specialization for std::tuple
+    CATCH_CONFIG_ENABLE_CHRONO_STRINGMAKER  // Provide StringMaker specialization for std::chrono::duration, std::chrono::timepoint
+    CATCH_CONFIG_ENABLE_ALL_STRINGMAKERS    // Defines all of the above
+
 
 ---
 

@@ -22,7 +22,9 @@
 * Removed support for non-const comparison operators
   * Non-const comparison operators are an abomination that should not exist
   * They were breaking support for comparing function to function pointer
-
+* `std::pair` and `std::tuple` are no longer stringified by default
+  * This is done to avoid dragging in `<tuple>` and `<utility>` headers in common path
+  * Their stringification can be enabled per-file via new configuration macros
 
 ## Improvements
 * Reporters and Listeners can be defined in files different from the main file
@@ -53,7 +55,8 @@
 * Reporters/Listeners are now notified of fatal errors
   * This means specific signals or structured exceptions
   * The Reporter/Listener interface provides default, empty, implementation to preserve backward compatibility
-
+* Stringification of `std::chrono::duration` and `std::chrono::time_point` is now supported
+  * Needs to be enabled by a per-file compile time configuration option
 
 ## Fixes
 * Don't use console colour if running in XCode

@@ -68,6 +68,7 @@ set(TEST_SOURCES
         ${SELF_TEST_DIR}/PartTrackerTests.cpp
         ${SELF_TEST_DIR}/TagAliasTests.cpp
         ${SELF_TEST_DIR}/TestMain.cpp
+        ${SELF_TEST_DIR}/ToStringChrono.cpp
         ${SELF_TEST_DIR}/ToStringGeneralTests.cpp
         ${SELF_TEST_DIR}/ToStringPair.cpp
         ${SELF_TEST_DIR}/ToStringTuple.cpp
