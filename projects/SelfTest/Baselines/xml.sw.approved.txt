@@ -3853,7 +3853,7 @@
           (std::pair&lt;int, int>( 1, 2 )) == aNicePair
         </Original>
         <Expanded>
-          { 1, 2 } == { 1, 2 }
+          {?} == {?}
         </Expanded>
       </Expression>
       <OverallResult success="true"/>

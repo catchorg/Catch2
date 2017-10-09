@@ -3336,7 +3336,7 @@ TrickyTests.cpp:<line number>:
 PASSED:
   REQUIRE( (std::pair<int, int>( 1, 2 )) == aNicePair )
 with expansion:
-  { 1, 2 } == { 1, 2 }
+  {?} == {?}
 
 -------------------------------------------------------------------------------
 Pointers can be compared to null
