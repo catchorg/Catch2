@@ -347,9 +347,9 @@ namespace Catch {
 
 // Separate std::chrono::duration specialization
 #if defined(CATCH_CONFIG_ENABLE_CHRONO_STRINGMAKER)
-#include <chrono>
-
+#include <ctime>
 #include <ratio>
+#include <chrono>
 
 template <class Ratio>
 struct ratio_string {
