@@ -5296,29 +5296,6 @@ Message from section two
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="Stringifying std::chrono::time_point&lt;Clock>" tags="[chrono][toString]" filename="projects/<exe-name>/ToStringChrono.cpp" >
-      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/ToStringChrono.cpp" >
-        <Original>
-          now != later
-        </Original>
-        <Expanded>
-          {iso8601-timestamp}
-!=
-{iso8601-timestamp}
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/ToStringChrono.cpp" >
-        <Original>
-          now2 != later2
-        </Original>
-        <Expanded>
-          {since-epoch-report}
-!=
-{since-epoch-report}
-        </Expanded>
-      </Expression>
-      <OverallResult success="true"/>
-    </TestCase>
     <TestCase name="Stringifying std::chrono::time_point&lt;system_clock>" tags="[chrono][toString]" filename="projects/<exe-name>/ToStringChrono.cpp" >
       <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/ToStringChrono.cpp" >
         <Original>
@@ -8291,7 +8268,7 @@ loose text artifact
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="765" failures="100" expectedFailures="21"/>
+    <OverallResults successes="763" failures="100" expectedFailures="21"/>
   </Group>
-  <OverallResults successes="765" failures="99" expectedFailures="21"/>
+  <OverallResults successes="763" failures="99" expectedFailures="21"/>
 </Catch>

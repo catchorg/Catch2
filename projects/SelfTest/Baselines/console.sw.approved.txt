@@ -4656,28 +4656,6 @@ with expansion:
   1 [30/1]s != 1 fs
 
 -------------------------------------------------------------------------------
-Stringifying std::chrono::time_point<Clock>
--------------------------------------------------------------------------------
-ToStringChrono.cpp:<line number>
-...............................................................................
-
-ToStringChrono.cpp:<line number>:
-PASSED:
-  REQUIRE( now != later )
-with expansion:
-  {iso8601-timestamp}
-  !=
-  {iso8601-timestamp}
-
-ToStringChrono.cpp:<line number>:
-PASSED:
-  REQUIRE( now2 != later2 )
-with expansion:
-  {since-epoch-report}
-  !=
-  {since-epoch-report}
-
--------------------------------------------------------------------------------
 Stringifying std::chrono::time_point<system_clock>
 -------------------------------------------------------------------------------
 ToStringChrono.cpp:<line number>
@@ -7512,6 +7490,6 @@ MiscTests.cpp:<line number>:
 PASSED:
 
 ===============================================================================
-test cases: 180 | 127 passed | 49 failed |  4 failed as expected
-assertions: 885 | 765 passed | 99 failed | 21 failed as expected
+test cases: 179 | 126 passed | 49 failed |  4 failed as expected
+assertions: 883 | 763 passed | 99 failed | 21 failed as expected
 

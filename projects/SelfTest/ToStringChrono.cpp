@@ -30,7 +30,7 @@ TEST_CASE("Stringifying std::chrono::time_point<system_clock>", "[toString][chro
     REQUIRE(now != later);
 }
 
-TEST_CASE("Stringifying std::chrono::time_point<Clock>", "[toString][chrono]") {
+TEST_CASE("Stringifying std::chrono::time_point<Clock>", "[toString][chrono][!nonportable]") {
     auto now = std::chrono::high_resolution_clock::now();
     auto later = now + std::chrono::minutes(2);
     REQUIRE(now != later);
