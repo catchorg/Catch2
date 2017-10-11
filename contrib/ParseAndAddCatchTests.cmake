@@ -36,6 +36,8 @@
 #    -- adds fixture class name to the test name                                                   #
 #    PARSE_CATCH_TESTS_ADD_TARGET_IN_TEST_NAME (Default ON)                                        #
 #    -- adds cmake target name to the test name                                                    #
+#    PARSE_CATCH_TESTS_ADD_TO_CONFIGURE_DEPENDS (Default OFF)                                      #
+#    -- causes CMake to rerun when file with tests changes so that new tests will be discovered    #
 #                                                                                                  #
 #==================================================================================================#
 
@@ -45,6 +47,7 @@ option(PARSE_CATCH_TESTS_VERBOSE "Print Catch to CTest parser debug messages" OF
 option(PARSE_CATCH_TESTS_NO_HIDDEN_TESTS "Exclude tests with [!hide], [.] or [.foo] tags" OFF)
 option(PARSE_CATCH_TESTS_ADD_FIXTURE_IN_TEST_NAME "Add fixture class name to the test name" ON)
 option(PARSE_CATCH_TESTS_ADD_TARGET_IN_TEST_NAME "Add target name to the test name" ON)
+option(PARSE_CATCH_TESTS_ADD_TO_CONFIGURE_DEPENDS "Add test file to CMAKE_CONFIGURE_DEPENDS property" OFF)
 
 function(PrintDebugMessage)
     if(PARSE_CATCH_TESTS_VERBOSE)
@@ -84,6 +87,15 @@ function(ParseFile SourceFile TestTarget)
 
     # Find definition of test names
     string(REGEX MATCHALL "[ \t]*(CATCH_)?(TEST_CASE_METHOD|SCENARIO|TEST_CASE)[ \t]*\\([^\)]+\\)+[ \t\n]*{+[ \t]*(//[^\n]*[Tt][Ii][Mm][Ee][Oo][Uu][Tt][ \t]*[0-9]+)*" Tests "${Contents}")
+
+    if(PARSE_CATCH_TESTS_ADD_TO_CONFIGURE_DEPENDS AND Tests)
+      PrintDebugMessage("Adding ${SourceFile} to CMAKE_CONFIGURE_DEPENDS property")
+      set_property(
+        DIRECTORY
+        APPEND
+        PROPERTY CMAKE_CONFIGURE_DEPENDS ${SourceFile}
+      )
+    endif()
 
     foreach(TestName ${Tests})
         # Strip newlines
