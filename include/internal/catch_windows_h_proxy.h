@@ -11,14 +11,14 @@
 #include "catch_platform.h"
 
 #if defined(CATCH_PLATFORM_WINDOWS)
-#  if !defined(NOMINMAX) && !defined(CATCH_CONFIG_NO_NOMINMAX)
-#    define CATCH_DEFINED_NOMINMAX
-#    define NOMINMAX
-#  endif
-#  if !defined(WIN32_LEAN_AND_MEAN) && !defined(CATCH_CONFIG_NO_WIN32_LEAN_AND_MEAN)
-#    define CATCH_DEFINED_WIN32_LEAN_AND_MEAN
-#    define WIN32_LEAN_AND_MEAN
-#  endif
+
+#if !defined(NOMINMAX) && !defined(CATCH_CONFIG_NO_NOMINMAX)
+#  define CATCH_DEFINED_NOMINMAX
+#  define NOMINMAX
+#endif
+#if !defined(WIN32_LEAN_AND_MEAN) && !defined(CATCH_CONFIG_NO_WIN32_LEAN_AND_MEAN)
+#  define CATCH_DEFINED_WIN32_LEAN_AND_MEAN
+#  define WIN32_LEAN_AND_MEAN
 #endif
 
 #ifdef __AFXDLL
@@ -34,5 +34,6 @@
 #  undef WIN32_LEAN_AND_MEAN
 #endif
 
+#endif // defined(CATCH_PLATFORM_WINDOWS)
 
 #endif // TWOBLUECUBES_CATCH_WINDOWS_H_PROXY_H_INCLUDED
