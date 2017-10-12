@@ -13,7 +13,7 @@
 namespace Catch {
 namespace Detail {
 
-    double max(double lhs, double rhs) {
+    double dmax(double lhs, double rhs) {
         if (lhs < rhs) {
             return rhs;
         }

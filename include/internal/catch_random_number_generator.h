@@ -22,8 +22,8 @@ namespace Catch {
     struct RandomNumberGenerator {
         using result_type = std::ptrdiff_t;
 
-        static constexpr result_type min() { return 0; }
-        static constexpr result_type max() { return 1000000; }
+        static constexpr result_type (min)() { return 0; }
+        static constexpr result_type (max)() { return 1000000; }
 
         result_type operator()( result_type n ) const;
         result_type operator()() const;

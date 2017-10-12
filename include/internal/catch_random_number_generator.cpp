@@ -25,7 +25,7 @@ namespace Catch {
         return std::rand() % n;
     }
     RandomNumberGenerator::result_type RandomNumberGenerator::operator()() const {
-        return std::rand() % max();
+        return std::rand() % (max)();
     }
 
 }
