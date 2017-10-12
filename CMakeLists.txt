@@ -9,6 +9,7 @@ set(CATCH_DIR ${CMAKE_CURRENT_SOURCE_DIR})
 set(SELF_TEST_DIR ${CATCH_DIR}/projects/SelfTest)
 set(BENCHMARK_DIR ${CATCH_DIR}/projects/Benchmark)
 set(HEADER_DIR ${CATCH_DIR}/include)
+set(CATCH_VERSION_NUMBER 2.0.0)
 
 if(USE_CPP14)
     message(STATUS "Enabling C++14")
@@ -331,3 +332,17 @@ endif() # !NO_SELFTEST
 
 
 install(DIRECTORY "single_include/" DESTINATION "include/catch")
+
+## Provide some pkg-config integration
+# Don't bother on Windows
+if(NOT WIN32 OR NOT CMAKE_HOST_SYSTEM_NAME MATCHES Windows)
+
+    set(PKGCONFIG_INSTALL_DIR
+        "${CMAKE_INSTALL_PREFIX}/share/pkgconfig"
+        CACHE PATH "Path where catch.pc is installed"
+    )
+
+    configure_file(${CMAKE_CURRENT_SOURCE_DIR}/catch.pc.in ${CMAKE_CURRENT_BINARY_DIR}/catch.pc @ONLY)
+    install(FILES ${CMAKE_CURRENT_BINARY_DIR}/catch.pc DESTINATION ${PKGCONFIG_INSTALL_DIR})
+
+endif()
