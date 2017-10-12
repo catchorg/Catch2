@@ -21,6 +21,7 @@
 #include "catch_context.h"
 #include "catch_platform.h"
 #include "catch_debugger.h"
+#include "catch_windows_h_proxy.h"
 
 namespace Catch {
     namespace {
@@ -52,8 +53,6 @@ namespace Catch {
 
 
 #if defined ( CATCH_CONFIG_COLOUR_WINDOWS ) /////////////////////////////////////////
-
-#include "catch_windows_h_proxy.h"
 
 namespace Catch {
 namespace {

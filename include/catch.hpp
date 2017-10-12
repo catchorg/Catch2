@@ -62,7 +62,6 @@
 #endif
 
 #ifdef CATCH_IMPL
-#include "internal/catch_windows_h_proxy.h"
 #include "internal/catch_impl.hpp"
 #endif
 
