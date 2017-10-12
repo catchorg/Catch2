@@ -1103,7 +1103,7 @@ namespace detail {
             size_t consoleWidth = CLARA_CONFIG_CONSOLE_WIDTH;
             size_t optWidth = 0;
             for( auto const &cols : rows )
-                optWidth = std::max(optWidth, cols.left.size() + 2);
+                optWidth = (std::max)(optWidth, cols.left.size() + 2);
 
             for( auto const &cols : rows ) {
                 auto row =
