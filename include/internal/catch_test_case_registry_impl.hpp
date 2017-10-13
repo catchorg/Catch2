@@ -22,7 +22,7 @@
 namespace Catch {
 
     struct RandomNumberGenerator {
-        typedef std::make_unsigned<std::ptrdiff_t>::type result_type;
+        typedef std::uint32_t result_type;
 
         result_type operator()( result_type n ) const { return std::rand() % n; }
 
