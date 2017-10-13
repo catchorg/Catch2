@@ -58,6 +58,8 @@ with expansion:
 
 ConditionTests.cpp:<line number>: FAILED:
   CHECK_FALSE( true )
+with expansion:
+  !true
 
 ConditionTests.cpp:<line number>: FAILED:
   CHECK( !trueValue )
@@ -76,8 +78,6 @@ with expansion:
 
 ConditionTests.cpp:<line number>: FAILED:
   CHECK_FALSE( 1 == 1 )
-with expansion:
-  !(1 == 1)
 
 -------------------------------------------------------------------------------
 A METHOD_AS_TEST_CASE based test run that fails

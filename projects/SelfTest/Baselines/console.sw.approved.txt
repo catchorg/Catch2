@@ -202,6 +202,8 @@ with expansion:
 
 ConditionTests.cpp:<line number>: FAILED:
   CHECK_FALSE( true )
+with expansion:
+  !true
 
 ConditionTests.cpp:<line number>: FAILED:
   CHECK( !trueValue )
@@ -220,8 +222,6 @@ with expansion:
 
 ConditionTests.cpp:<line number>: FAILED:
   CHECK_FALSE( 1 == 1 )
-with expansion:
-  !(1 == 1)
 
 -------------------------------------------------------------------------------
 'Not' checks that should succeed
@@ -246,6 +246,8 @@ with expansion:
 ConditionTests.cpp:<line number>:
 PASSED:
   REQUIRE_FALSE( false )
+with expansion:
+  !false
 
 ConditionTests.cpp:<line number>:
 PASSED:
@@ -268,8 +270,6 @@ with expansion:
 ConditionTests.cpp:<line number>:
 PASSED:
   REQUIRE_FALSE( 1 == 2 )
-with expansion:
-  !(1 == 2)
 
 -------------------------------------------------------------------------------
 (unimplemented) static bools can be evaluated

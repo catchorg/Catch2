@@ -202,6 +202,8 @@ with expansion:
 
 ConditionTests.cpp:<line number>: FAILED:
   CHECK_FALSE( true )
+with expansion:
+  !true
 
 ===============================================================================
 test cases:  7 |  4 passed | 1 failed | 2 failed as expected
