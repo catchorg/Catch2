@@ -1,15 +1,15 @@
 <a id="top"></a>
 # Compile-time configuration
 
-**Contents**
-[main()/ implementation](#main-implementation)
-[Prefixing Catch macros](#prefixing-catch-macros)
-[Terminal colour](#terminal-colour)
-[Console width](#console-width)
-[stdout](#stdout)
-[Other toggles](#other-toggles)
-[Windows header clutter](#windows-header-clutter)
-[Enabling stringification](#enabling-stringification)
+**Contents**<br>
+[main()/ implementation](#main-implementation)<br>
+[Prefixing Catch macros](#prefixing-catch-macros)<br>
+[Terminal colour](#terminal-colour)<br>
+[Console width](#console-width)<br>
+[stdout](#stdout)<br>
+[Other toggles](#other-toggles)<br>
+[Windows header clutter](#windows-header-clutter)<br>
+[Enabling stringification](#enabling-stringification)<br>
 
 Catch is designed to "just work" as much as possible. For most people the only configuration needed is telling Catch which source file should host all the implementation code (```CATCH_CONFIG_MAIN```).
 

@@ -1,14 +1,14 @@
 <a id="top"></a>
 # Tutorial
 
-**Contents**  
-[Getting Catch](#getting-catch)  
-[Where to put it?](#where-to-put-it)  
-[Writing tests](#writing-tests)  
-[Test cases and sections](#test-cases-and-sections)  
-[BDD-Style](#bdd-style)  
-[Scaling up](#scaling-up)  
-[Next steps](#next-steps)  
+**Contents**<br>
+[Getting Catch](#getting-catch)<br>
+[Where to put it?](#where-to-put-it)<br>
+[Writing tests](#writing-tests)<br>
+[Test cases and sections](#test-cases-and-sections)<br>
+[BDD-Style](#bdd-style)<br>
+[Scaling up](#scaling-up)<br>
+[Next steps](#next-steps)<br>
 
 ## Getting Catch
 

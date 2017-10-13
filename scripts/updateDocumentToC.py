@@ -30,7 +30,7 @@ headingExcludeRelease = [2,3,4,5]  # use level 1 headers for release-notes.md
 documentsDefault = os.path.join(os.path.relpath(catchPath), 'docs/*.md')
 releaseNotesName = 'release-notes.md'
 
-contentTitle = '**Contents**  '
+contentTitle = '**Contents**'
 contentLineNo = 4
 contentLineNdx = contentLineNo - 1
 
@@ -210,14 +210,14 @@ def createToc(headlines, hyperlink=True, top_link=False, no_toc_header=False):
     if not no_toc_header:
         if top_link:
             processed.append('<a class="mk-toclify" id="table-of-contents"></a>\n')
-        processed.append(contentTitle)
+        processed.append(contentTitle + '<br>')
 
     for line in headlines:
         if hyperlink:
-            item = '[%s](#%s)  ' % (line[0], line[1])
+            item = '[%s](#%s)' % (line[0], line[1])
         else:
             item = '%s- %s' % ((line[2]-1)*'    ', line[0])
-        processed.append(item)
+        processed.append(item + '<br>')
     processed.append('\n')
     return processed
 
