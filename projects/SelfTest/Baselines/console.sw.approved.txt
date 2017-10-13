@@ -739,6 +739,24 @@ with expansion:
   true
 
 -------------------------------------------------------------------------------
+Bitfields can be captured (#1027)
+-------------------------------------------------------------------------------
+TrickyTests.cpp:<line number>
+...............................................................................
+
+TrickyTests.cpp:<line number>:
+PASSED:
+  REQUIRE( y.v == 0 )
+with expansion:
+  0 == 0
+
+TrickyTests.cpp:<line number>:
+PASSED:
+  REQUIRE( 0 == y.v )
+with expansion:
+  0 == 0
+
+-------------------------------------------------------------------------------
 Capture and info messages
   Capture should stringify like assertions
 -------------------------------------------------------------------------------
@@ -7490,6 +7508,6 @@ MiscTests.cpp:<line number>:
 PASSED:
 
 ===============================================================================
-test cases: 179 | 126 passed | 49 failed |  4 failed as expected
-assertions: 883 | 763 passed | 99 failed | 21 failed as expected
+test cases: 180 | 127 passed | 49 failed |  4 failed as expected
+assertions: 885 | 765 passed | 99 failed | 21 failed as expected
 

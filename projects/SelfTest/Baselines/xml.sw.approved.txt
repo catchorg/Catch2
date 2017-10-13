@@ -750,6 +750,25 @@
       </Section>
       <OverallResult success="true"/>
     </TestCase>
+    <TestCase name="Bitfields can be captured (#1027)" filename="projects/<exe-name>/TrickyTests.cpp" >
+      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/TrickyTests.cpp" >
+        <Original>
+          y.v == 0
+        </Original>
+        <Expanded>
+          0 == 0
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/TrickyTests.cpp" >
+        <Original>
+          0 == y.v
+        </Original>
+        <Expanded>
+          0 == 0
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
     <TestCase name="Capture and info messages" filename="projects/<exe-name>/ToStringGeneralTests.cpp" >
       <Section name="Capture should stringify like assertions" filename="projects/<exe-name>/ToStringGeneralTests.cpp" >
         <Info>
@@ -8268,7 +8287,7 @@ loose text artifact
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="763" failures="100" expectedFailures="21"/>
+    <OverallResults successes="765" failures="100" expectedFailures="21"/>
   </Group>
-  <OverallResults successes="763" failures="99" expectedFailures="21"/>
+  <OverallResults successes="765" failures="99" expectedFailures="21"/>
 </Catch>

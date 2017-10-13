@@ -77,7 +77,7 @@ namespace Catch {
 
     // Specialised comparison functions to handle equality comparisons between ints and pointers (NULL deduces as an int)
     template<typename LhsT, typename RhsT>
-    auto compareEqual( LhsT const& lhs, RhsT&& rhs ) -> bool { return lhs == rhs; };
+    auto compareEqual( LhsT const& lhs, RhsT const& rhs ) -> bool { return lhs == rhs; };
     template<typename T>
     auto compareEqual( T* const& lhs, int rhs ) -> bool { return lhs == reinterpret_cast<void const*>( rhs ); }
     template<typename T>
@@ -106,36 +106,36 @@ namespace Catch {
         ExprLhs( LhsT lhs ) : m_lhs( lhs ) {}
 
         template<typename RhsT>
-        auto operator == ( RhsT&& rhs ) -> BinaryExpr<LhsT, RhsT&> const {
-            return BinaryExpr<LhsT, RhsT&>( compareEqual( m_lhs, rhs ), m_lhs, "==", rhs );
+        auto operator == ( RhsT const& rhs ) -> BinaryExpr<LhsT, RhsT const&> const {
+            return BinaryExpr<LhsT, RhsT const&>( compareEqual( m_lhs, rhs ), m_lhs, "==", rhs );
         }
         auto operator == ( bool rhs ) -> BinaryExpr<LhsT, bool> const {
             return BinaryExpr<LhsT, bool>( m_lhs == rhs, m_lhs, "==", rhs );
         }
 
         template<typename RhsT>
-        auto operator != ( RhsT&& rhs ) -> BinaryExpr<LhsT, RhsT&> const {
-            return BinaryExpr<LhsT, RhsT&>( compareNotEqual( m_lhs, rhs ), m_lhs, "!=", rhs );
+        auto operator != ( RhsT const& rhs ) -> BinaryExpr<LhsT, RhsT const&> const {
+            return BinaryExpr<LhsT, RhsT const&>( compareNotEqual( m_lhs, rhs ), m_lhs, "!=", rhs );
         }
         auto operator != ( bool rhs ) -> BinaryExpr<LhsT, bool> const {
             return BinaryExpr<LhsT, bool>( m_lhs != rhs, m_lhs, "!=", rhs );
         }
 
         template<typename RhsT>
-        auto operator > ( RhsT&& rhs ) -> BinaryExpr<LhsT, RhsT&> const {
-            return BinaryExpr<LhsT, RhsT&>( m_lhs > rhs, m_lhs, ">", rhs );
+        auto operator > ( RhsT const& rhs ) -> BinaryExpr<LhsT, RhsT const&> const {
+            return BinaryExpr<LhsT, RhsT const&>( m_lhs > rhs, m_lhs, ">", rhs );
         }
         template<typename RhsT>
-        auto operator < ( RhsT&& rhs ) -> BinaryExpr<LhsT, RhsT&> const {
-            return BinaryExpr<LhsT, RhsT&>( m_lhs < rhs, m_lhs, "<", rhs );
+        auto operator < ( RhsT const& rhs ) -> BinaryExpr<LhsT, RhsT const&> const {
+            return BinaryExpr<LhsT, RhsT const&>( m_lhs < rhs, m_lhs, "<", rhs );
         }
         template<typename RhsT>
-        auto operator >= ( RhsT&& rhs ) -> BinaryExpr<LhsT, RhsT&> const {
-            return BinaryExpr<LhsT, RhsT&>( m_lhs >= rhs, m_lhs, ">=", rhs );
+        auto operator >= ( RhsT const& rhs ) -> BinaryExpr<LhsT, RhsT const&> const {
+            return BinaryExpr<LhsT, RhsT const&>( m_lhs >= rhs, m_lhs, ">=", rhs );
         }
         template<typename RhsT>
-        auto operator <= ( RhsT&& rhs ) -> BinaryExpr<LhsT, RhsT&> const {
-            return BinaryExpr<LhsT, RhsT&>( m_lhs <= rhs, m_lhs, "<=", rhs );
+        auto operator <= ( RhsT const& rhs ) -> BinaryExpr<LhsT, RhsT const&> const {
+            return BinaryExpr<LhsT, RhsT const&>( m_lhs <= rhs, m_lhs, "<=", rhs );
         }
 
         auto makeUnaryExpr() const -> UnaryExpr<LhsT> {

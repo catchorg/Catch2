@@ -168,7 +168,7 @@ namespace ObjectWithConversions
 {
     struct Object
     {
-        operator unsigned int() {return 0xc0000000;}
+        operator unsigned int() const {return 0xc0000000;}
     };
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -435,4 +435,13 @@ TEST_CASE("#925: comparing function pointer to function address failed to compil
 
     TestClass test;
     REQUIRE(utility::synchronizing_callback != test.testMethod_uponComplete_arg);
+}
+
+TEST_CASE( "Bitfields can be captured (#1027)" ) {
+    struct Y {
+        uint32_t v : 1;
+    };
+    Y y{ 0 };
+    REQUIRE( y.v == 0 );
+    REQUIRE( 0 == y.v );
 }
