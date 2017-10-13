@@ -214,7 +214,7 @@
       </Expression>
       <Expression success="false" type="CHECK_FALSE" filename="projects/<exe-name>/ConditionTests.cpp" >
         <Original>
-          !true
+          !(true)
         </Original>
         <Expanded>
           !true
@@ -230,7 +230,7 @@
       </Expression>
       <Expression success="false" type="CHECK_FALSE" filename="projects/<exe-name>/ConditionTests.cpp" >
         <Original>
-          !trueValue
+          !(trueValue)
         </Original>
         <Expanded>
           !true
@@ -246,7 +246,7 @@
       </Expression>
       <Expression success="false" type="CHECK_FALSE" filename="projects/<exe-name>/ConditionTests.cpp" >
         <Original>
-          !1 == 1
+          !(1 == 1)
         </Original>
         <Expanded>
           !(1 == 1)
@@ -281,7 +281,7 @@
       </Expression>
       <Expression success="true" type="REQUIRE_FALSE" filename="projects/<exe-name>/ConditionTests.cpp" >
         <Original>
-          !false
+          !(false)
         </Original>
         <Expanded>
           !false
@@ -297,7 +297,7 @@
       </Expression>
       <Expression success="true" type="REQUIRE_FALSE" filename="projects/<exe-name>/ConditionTests.cpp" >
         <Original>
-          !falseValue
+          !(falseValue)
         </Original>
         <Expanded>
           !false
@@ -313,7 +313,7 @@
       </Expression>
       <Expression success="true" type="REQUIRE_FALSE" filename="projects/<exe-name>/ConditionTests.cpp" >
         <Original>
-          !1 == 2
+          !(1 == 2)
         </Original>
         <Expanded>
           !(1 == 2)
@@ -393,7 +393,7 @@
         </Expression>
         <Expression success="true" type="REQUIRE_FALSE" filename="projects/<exe-name>/TrickyTests.cpp" >
           <Original>
-            !is_true&lt;false>::value
+            !(is_true&lt;false>::value)
           </Original>
           <Expanded>
             !false
@@ -975,7 +975,7 @@
       </Expression>
       <Expression success="true" type="REQUIRE_FALSE" filename="projects/<exe-name>/TrickyTests.cpp" >
         <Original>
-          !std::vector&lt;int>{1, 2} == std::vector&lt;int>{1, 2, 3}
+          !(std::vector&lt;int>{1, 2} == std::vector&lt;int>{1, 2, 3})
         </Original>
         <Expanded>
           !({ 1, 2 } == { 1, 2, 3 })
@@ -983,7 +983,7 @@
       </Expression>
       <Expression success="true" type="CHECK_FALSE" filename="projects/<exe-name>/TrickyTests.cpp" >
         <Original>
-          !std::vector&lt;int>{1, 2} == std::vector&lt;int>{1, 2, 3}
+          !(std::vector&lt;int>{1, 2} == std::vector&lt;int>{1, 2, 3})
         </Original>
         <Expanded>
           !({ 1, 2 } == { 1, 2, 3 })
@@ -1813,7 +1813,7 @@
       </Expression>
       <Expression success="true" type="REQUIRE_FALSE" filename="projects/<exe-name>/ApproxTests.cpp" >
         <Original>
-          !d >= Approx( 1.24 )
+          !(d >= Approx( 1.24 ))
         </Original>
         <Expanded>
           !(1.23 >= Approx( 1.24 ))
@@ -2230,7 +2230,7 @@
       </Expression>
       <Expression success="true" type="REQUIRE_FALSE" filename="projects/<exe-name>/ApproxTests.cpp" >
         <Original>
-          !d &lt;= Approx( 1.22 )
+          !(d &lt;= Approx( 1.22 ))
         </Original>
         <Expanded>
           !(1.23 &lt;= Approx( 1.22 ))
@@ -2373,7 +2373,7 @@
       </Expression>
       <Expression success="true" type="CHECK_FALSE" filename="projects/<exe-name>/TrickyTests.cpp" >
         <Original>
-          !False
+          !(False)
         </Original>
         <Expanded>
           !{?}
@@ -7633,7 +7633,7 @@ loose text artifact
       <Section name="replace no chars" filename="projects/<exe-name>/TestMain.cpp" >
         <Expression success="true" type="CHECK_FALSE" filename="projects/<exe-name>/TestMain.cpp" >
           <Original>
-            !Catch::replaceInPlace( letters, "x", "z" )
+            !(Catch::replaceInPlace( letters, "x", "z" ))
           </Original>
           <Expanded>
             !false
