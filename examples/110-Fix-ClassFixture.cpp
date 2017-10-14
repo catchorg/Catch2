@@ -26,21 +26,20 @@ public:
 
 class UniqueTestsFixture
 {
-private:
-    static int uniqueID;
-
 protected:
-    DBConnection conn;
-
-public:
     UniqueTestsFixture()
     : conn( DBConnection::createConnection( "myDB" ) )
     {}
 
-protected:
     int getID() {
         return ++uniqueID;
     }
+
+protected:
+    DBConnection conn;
+
+private:
+    static int uniqueID;
 };
 
 int UniqueTestsFixture::uniqueID = 0;
@@ -60,6 +59,6 @@ TEST_CASE_METHOD( UniqueTestsFixture, "Create Employee/Normal", "[create]" ) {
 // Expected compact output (all assertions):
 //
 // prompt> 110-Fix-ClassFixture.exe --reporter compact --success
-// 110-Fix-ClassFixture.cpp:49: passed: conn.executeSQL( "INSERT INTO employee (id, name) VALUES (?, ?)", getID(), "")
-// 110-Fix-ClassFixture.cpp:53: passed: conn.executeSQL( "INSERT INTO employee (id, name) VALUES (?, ?)", getID(), "Joe Bloggs" ) for: true
+// 110-Fix-ClassFixture.cpp:48: passed: conn.executeSQL( "INSERT INTO employee (id, name) VALUES (?, ?)", getID(), "")
+// 110-Fix-ClassFixture.cpp:52: passed: conn.executeSQL( "INSERT INTO employee (id, name) VALUES (?, ?)", getID(), "Joe Bloggs" ) for: true
 // Passed both 2 test cases with 2 assertions.
