@@ -125,7 +125,8 @@ Defining this flag speeds up compilation of test files by ~20%, by making 2 chan
 `CATCH_CONFIG_FAST_COMPILE` has to be either defined, or not defined, in all translation units that are linked into single test binary, or the behaviour of setting `-b` flag and throwing unexpected exceptions will be unpredictable.
 
 ## `CATCH_CONFIG_DISABLE_STRINGIFICATION`
-This toggle enables a workaround for VS 2017 bug. For details see [known limitations](limitations.md#Visual Studio 2017 -- raw string literal in assert fails to compile)
+This toggle enables a workaround for VS 2017 bug. For details see
+[known limitations](limitations.md#visual-studio-2017----raw-string-literal-in-assert-fails-to-compile).
 
 # Windows header clutter
 
