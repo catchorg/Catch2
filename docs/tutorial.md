@@ -19,13 +19,13 @@ The full source for Catch, including test projects, documentation, and other thi
 
 ## Where to put it?
 
-Catch is header only. All you need to do is drop the file(s) somewhere reachable from your project - either in some central location you can set your header search path to find, or directly into your project tree itself! This is a particularly good option for other Open-Source projects that want to use Catch for their test suite. See [this blog entry for more on that](http://www.levelofindirection.com/journal/2011/5/27/unit-testing-in-c-and-objective-c-just-got-ridiculously-easi.html). 
+Catch is header only. All you need to do is drop the file(s) somewhere reachable from your project - either in some central location you can set your header search path to find, or directly into your project tree itself! This is a particularly good option for other Open-Source projects that want to use Catch for their test suite. See [this blog entry for more on that](http://www.levelofindirection.com/journal/2011/5/27/unit-testing-in-c-and-objective-c-just-got-ridiculously-easi.html).
 
 The rest of this tutorial will assume that the Catch single-include header (or the include folder) is available unqualified - but you may need to prefix it with a folder name if necessary.
 
 ## Writing tests
 
-Let's start with a really simple example. Say you have written a function to calculate factorials and now you want to test it (let's leave aside TDD for now). 
+Let's start with a really simple example ([source code](../examples/010-TestCase.cpp)). Say you have written a function to calculate factorials and now you want to test it (let's leave aside TDD for now).
 
 ```c++
 unsigned int Factorial( unsigned int number ) {
@@ -110,37 +110,37 @@ Most test frameworks have a class-based fixture mechanism. That is, test cases m
 
 While Catch fully supports this way of working there are a few problems with the approach. In particular the way your code must be split up, and the blunt granularity of it, may cause problems. You can only have one setup/ teardown pair across a set of methods, but sometimes you want slightly different setup in each method, or you may even want several levels of setup (a concept which we will clarify later on in this tutorial). It was <a href="http://jamesnewkirk.typepad.com/posts/2007/09/why-you-should-.html">problems like these</a> that led James Newkirk, who led the team that built NUnit, to start again from scratch and <a href="http://jamesnewkirk.typepad.com/posts/2007/09/announcing-xuni.html">build xUnit</a>).
 
-Catch takes a different approach (to both NUnit and xUnit) that is a more natural fit for C++ and the C family of languages. This is best explained through an example:
+Catch takes a different approach (to both NUnit and xUnit) that is a more natural fit for C++ and the C family of languages. This is best explained through an example ([source code](../examples/100-Fix-Section.cpp)):
 
 ```c++
 TEST_CASE( "vectors can be sized and resized", "[vector]" ) {
 
     std::vector<int> v( 5 );
-    
+
     REQUIRE( v.size() == 5 );
     REQUIRE( v.capacity() >= 5 );
-    
+
     SECTION( "resizing bigger changes size and capacity" ) {
         v.resize( 10 );
-        
+
         REQUIRE( v.size() == 10 );
         REQUIRE( v.capacity() >= 10 );
     }
     SECTION( "resizing smaller changes size but not capacity" ) {
         v.resize( 0 );
-        
+
         REQUIRE( v.size() == 0 );
         REQUIRE( v.capacity() >= 5 );
     }
     SECTION( "reserving bigger changes capacity but not size" ) {
         v.reserve( 10 );
-        
+
         REQUIRE( v.size() == 5 );
         REQUIRE( v.capacity() >= 10 );
     }
     SECTION( "reserving smaller does not change size or capacity" ) {
         v.reserve( 0 );
-        
+
         REQUIRE( v.size() == 5 );
         REQUIRE( v.capacity() >= 5 );
     }
@@ -157,13 +157,13 @@ The power of sections really shows, however, when we need to execute a sequence 
 ```c++
     SECTION( "reserving bigger changes capacity but not size" ) {
         v.reserve( 10 );
-        
+
         REQUIRE( v.size() == 5 );
         REQUIRE( v.capacity() >= 10 );
-    
+
         SECTION( "reserving smaller again does not change capacity" ) {
             v.reserve( 7 );
-            
+
             REQUIRE( v.capacity() >= 10 );
         }
     }
@@ -175,20 +175,20 @@ Sections can be nested to an arbitrary depth (limited only by your stack size). 
 
 If you name your test cases and sections appropriately you can achieve a BDD-style specification structure. This became such a useful way of working that first class support has been added to Catch. Scenarios can be specified using ```SCENARIO```, ```GIVEN```, ```WHEN``` and ```THEN``` macros, which map on to ```TEST_CASE```s and ```SECTION```s, respectively. For more details see [Test cases and sections](test-cases-and-sections.md#top).
 
-The vector example can be adjusted to use these macros like so:
+The vector example can be adjusted to use these macros like so ([source code](../examples/120-Bdd-ScenarioGivenWhenThen.cpp)):
 
 ```c++
 SCENARIO( "vectors can be sized and resized", "[vector]" ) {
 
     GIVEN( "A vector with some items" ) {
         std::vector<int> v( 5 );
-        
+
         REQUIRE( v.size() == 5 );
         REQUIRE( v.capacity() >= 5 );
-        
+
         WHEN( "the size is increased" ) {
             v.resize( 10 );
-            
+
             THEN( "the size and capacity change" ) {
                 REQUIRE( v.size() == 10 );
                 REQUIRE( v.capacity() >= 10 );
@@ -196,7 +196,7 @@ SCENARIO( "vectors can be sized and resized", "[vector]" ) {
         }
         WHEN( "the size is reduced" ) {
             v.resize( 0 );
-            
+
             THEN( "the size changes but not capacity" ) {
                 REQUIRE( v.size() == 0 );
                 REQUIRE( v.capacity() >= 5 );
@@ -204,7 +204,7 @@ SCENARIO( "vectors can be sized and resized", "[vector]" ) {
         }
         WHEN( "more capacity is reserved" ) {
             v.reserve( 10 );
-            
+
             THEN( "the capacity changes but not the size" ) {
                 REQUIRE( v.size() == 5 );
                 REQUIRE( v.capacity() >= 10 );
@@ -212,7 +212,7 @@ SCENARIO( "vectors can be sized and resized", "[vector]" ) {
         }
         WHEN( "less capacity is reserved" ) {
             v.reserve( 0 );
-            
+
             THEN( "neither size nor capacity are changed" ) {
                 REQUIRE( v.size() == 5 );
                 REQUIRE( v.capacity() >= 5 );
@@ -245,7 +245,7 @@ The requirement is that the following block of code ([or equivalent](own-main.md
 
 appears in _exactly one_ source file. Use as many additional cpp files (or whatever you call your implementation files) as you need for your tests, partitioned however makes most sense for your way of working. Each additional file need only ```#include "catch.hpp"``` - do not repeat the ```#define```!
 
-In fact it is usually a good idea to put the block with the ```#define``` [in its own source file](slow-compiles.md#top).
+In fact it is usually a good idea to put the block with the ```#define``` [in its own source file](slow-compiles.md#top) (see [multi-file example source 1](../examples/020-TestCase-1.cpp), [2](../examples/020-TestCase-1.cpp)).
 
 Do not write your tests in header files!
 
