@@ -1,8 +1,8 @@
 // 110-Fix-ClassFixture.cpp
 
 // Catch has two ways to express fixtures:
-// - Sections (this file)
-// - Traditional class-based fixtures
+// - Sections
+// - Traditional class-based fixtures (this file)
 
 // Let Catch provide main():
 #define CATCH_CONFIG_MAIN
