@@ -127,6 +127,20 @@ def updateConanTestFile(version):
     for line in lines:
         f.write( line + "\n" )
 
+def updateConanTravisFile(version):
+    conanParser = re.compile( r'         CONAN_REFERENCE: Catch\/\d+\.\d+\.\d+')
+    with open(travisPath, "r") as f:
+        lines = []
+        for line in f:
+            m = conanParser.match( line )
+            if m:
+                lines.append( '         CONAN_REFERENCE: Catch/{0}'.format(format(version.getVersionString())) )
+            else:
+                lines.append( line.rstrip() )
+    with open(travisPath, "w") as f:
+        for line in lines:
+            f.write( line + "\n" )
+
 def performUpdates(version):
     # First update version file, so we can regenerate single header and
     # have it ready for upload to wandbox, when updating readme
@@ -137,3 +151,4 @@ def performUpdates(version):
 
     updateConanFile(version)
     updateConanTestFile(version)
+    updateConanTravisFile(version)

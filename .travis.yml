@@ -253,8 +253,9 @@ matrix:
         - docker
       env:
          CONAN_GCC_VERSIONS: 6.3
+         CONAN_ARCHS: x86_64
          CONAN_DOCKER_IMAGE: lasote/conangcc63
-         CONAN_REFERENCE: Catch/1.9.6
+         CONAN_REFERENCE: Catch/1.10.0
          CONAN_UPLOAD_ONLY_WHEN_STABLE: 1
          CONAN_STABLE_BRANCH_PATTERN: v\\d+\\.\\d+\\.\\d+
       install:
