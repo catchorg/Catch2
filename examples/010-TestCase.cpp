@@ -1,4 +1,4 @@
-// 01-TestCase.cpp
+// 010-TestCase.cpp
 
 // Let Catch provide main():
 #define CATCH_CONFIG_MAIN
@@ -22,15 +22,15 @@ TEST_CASE( "Factorials of 1 and higher are computed (pass)", "[single-file]" ) {
 }
 
 // Compile & run:
-// - g++ -std=c++11 -Wall -I$(CATCH_SINGLE_INCLUDE) -o 01-TestCase 01-TestCase.cpp && 01-TestCase --success
-// - cl -EHsc -I%CATCH_SINGLE_INCLUDE% 01-TestCase.cpp && 01-TestCase --success
+// - g++ -std=c++11 -Wall -I$(CATCH_SINGLE_INCLUDE) -o 010-TestCase 010-TestCase.cpp && 010-TestCase --success
+// - cl -EHsc -I%CATCH_SINGLE_INCLUDE% 010-TestCase.cpp && 010-TestCase --success
 
 // Expected compact output (all assertions):
 //
-// prompt> 01-TestCase --reporter compact --success
-// 01-TestCase.cpp:18: failed: Factorial(0) == 1 for: 0 == 1
-// 01-TestCase.cpp:22: passed: Factorial(1) == 1 for: 1 == 1
-// 01-TestCase.cpp:23: passed: Factorial(2) == 2 for: 2 == 2
-// 01-TestCase.cpp:24: passed: Factorial(3) == 6 for: 6 == 6
-// 01-TestCase.cpp:25: passed: Factorial(10) == 3628800 for: 3628800 (0x375f00) == 3628800 (0x375f00)
+// prompt> 010-TestCase --reporter compact --success
+// 010-TestCase.cpp:18: failed: Factorial(0) == 1 for: 0 == 1
+// 010-TestCase.cpp:22: passed: Factorial(1) == 1 for: 1 == 1
+// 010-TestCase.cpp:23: passed: Factorial(2) == 2 for: 2 == 2
+// 010-TestCase.cpp:24: passed: Factorial(3) == 6 for: 6 == 6
+// 010-TestCase.cpp:25: passed: Factorial(10) == 3628800 for: 3628800 (0x375f00) == 3628800 (0x375f00)
 // Failed 1 test case, failed 1 assertion.
