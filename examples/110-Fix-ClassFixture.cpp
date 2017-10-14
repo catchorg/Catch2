@@ -12,15 +12,12 @@
 class DBConnection
 {
 public:
-    static DBConnection createConnection( std::string const & dbName )
-    {
+    static DBConnection createConnection( std::string const & dbName ) {
         return DBConnection();
     }
 
-    bool executeSQL( std::string const & query, int const id, std::string const & arg )
-    {
-        if ( arg.length() == 0 )
-        {
+    bool executeSQL( std::string const & query, int const id, std::string const & arg ) {
+        if ( arg.length() == 0 ) {
             throw std::logic_error("empty SQL query argument");
         }
         return true; // ok
@@ -41,8 +38,7 @@ public:
     {}
 
 protected:
-    int getID()
-    {
+    int getID() {
         return ++uniqueID;
     }
 };
