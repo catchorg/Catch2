@@ -60,6 +60,6 @@ TEST_CASE_METHOD( UniqueTestsFixture, "Create Employee/Normal", "[create]" ) {
 // Expected compact output (all assertions):
 //
 // prompt> 110-Fix-ClassFixture.exe --reporter compact --success
-// 110-Fix-ClassFixture.cpp:53: passed: conn.executeSQL( "INSERT INTO employee (id, name) VALUES (?, ?)", getID(), "")
-// 110-Fix-ClassFixture.cpp:57: passed: conn.executeSQL( "INSERT INTO employee (id, name) VALUES (?, ?)", getID(), "Joe Bloggs" ) for: true
+// 110-Fix-ClassFixture.cpp:49: passed: conn.executeSQL( "INSERT INTO employee (id, name) VALUES (?, ?)", getID(), "")
+// 110-Fix-ClassFixture.cpp:53: passed: conn.executeSQL( "INSERT INTO employee (id, name) VALUES (?, ?)", getID(), "Joe Bloggs" ) for: true
 // Passed both 2 test cases with 2 assertions.
