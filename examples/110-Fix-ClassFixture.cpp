@@ -1,4 +1,4 @@
-// 110-Fix-Fixture.cpp
+// 110-Fix-ClassFixture.cpp
 
 // Catch has two ways to express fixtures:
 // - Sections (this file)
@@ -58,12 +58,12 @@ TEST_CASE_METHOD( UniqueTestsFixture, "Create Employee/Normal", "[create]" ) {
 }
 
 // Compile & run:
-// - g++ -std=c++11 -Wall -I$(CATCH_SINGLE_INCLUDE) -o 110-Fix-Fixture 110-Fix-Fixture.cpp && 110-Fix-Fixture --success
-// - cl -EHsc -I%CATCH_SINGLE_INCLUDE% 110-Fix-Fixture.cpp && 110-Fix-Fixture --success
+// - g++ -std=c++11 -Wall -I$(CATCH_SINGLE_INCLUDE) -o 110-Fix-ClassFixture 110-Fix-ClassFixture.cpp && 110-Fix-ClassFixture --success
+// - cl -EHsc -I%CATCH_SINGLE_INCLUDE% 110-Fix-ClassFixture.cpp && 110-Fix-ClassFixture --success
 
 // Expected compact output (all assertions):
 //
-// prompt> 110-Fix-Fixture.exe --reporter compact --success
-// 110-Fix-Fixture.cpp:53: passed: conn.executeSQL( "INSERT INTO employee (id, name) VALUES (?, ?)", getID(), "")
-// 110-Fix-Fixture.cpp:57: passed: conn.executeSQL( "INSERT INTO employee (id, name) VALUES (?, ?)", getID(), "Joe Bloggs" ) for: true
+// prompt> 110-Fix-ClassFixture.exe --reporter compact --success
+// 110-Fix-ClassFixture.cpp:53: passed: conn.executeSQL( "INSERT INTO employee (id, name) VALUES (?, ?)", getID(), "")
+// 110-Fix-ClassFixture.cpp:57: passed: conn.executeSQL( "INSERT INTO employee (id, name) VALUES (?, ?)", getID(), "Joe Bloggs" ) for: true
 // Passed both 2 test cases with 2 assertions.

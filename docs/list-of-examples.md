@@ -11,7 +11,7 @@ Assertion: [REQUIRE_THROWS_AS](../examples/070-Asn-RequireThrowsAs.cpp)<br>
 Assertion: [REQUIRE_THROWS_WITH](../examples/080-Asn-RequireThrowsWith.cpp)<br>
 Assertion: [REQUIRE_THROWS_MATCHES](../examples/090-Asn-RequireThrowsMatches.cpp)<br>
 Fixture: [Sections](../examples/100-Fix-Section.cpp)<br>
-Fixture: [Traditional fixtures](../examples/110-Fix-Fixture.cpp)<br>
+Fixture: [Class-based fixtures](../examples/110-Fix-ClassFixture.cpp)<br>
 BDD: [SCENARIO, GIVEN, WHEN, THEN](../examples/120-Bdd-ScenarioGivenWhenThen.cpp)<br>
 Floating point: [Approx - Comparisons](../examples/130-Fpt-Approx.cpp)<br>
 Logging: [CAPTURE - Capture expression](../examples/140-Log-Capture.cpp)<br>
