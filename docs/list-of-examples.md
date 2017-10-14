@@ -24,7 +24,7 @@ Report: [Reporter](../examples/200-Rpt-UserDefinedReporter.cpp)<br>
 Listener: [Listeners](../examples/210-Lsn-Listeners.cpp)<br>
 Configuration: [Provide your own main()](../examples/220-Cfg-OwnMain.cpp)<br>
 Configuration: [Compile-time configuration](../examples/230-Cfg-CompileTimeConfiguration.cpp)<br>
-Configuration: [Compile-time configuration](../examples/240-Cfg-RunTimeConfiguration.cpp)<br>
+Configuration: [Run-time configuration](../examples/240-Cfg-RunTimeConfiguration.cpp)<br>
 
 ---
 
