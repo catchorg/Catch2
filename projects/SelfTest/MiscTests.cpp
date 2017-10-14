@@ -405,3 +405,11 @@ TEST_CASE( "#835 -- errno should not be touched by Catch", "[!shouldfail]" ) {
     CHECK(f() == 0);
     REQUIRE(errno == 1); // Check that f() doesn't touch errno.
 }
+
+TEST_CASE( "#961 -- Dynamically created sections should all be reported", "[.]" ) {
+    for (char i = '0'; i < '5'; ++i) {
+        SECTION(std::string("Looped section ") + i) {
+            SUCCEED( "Everything is OK" );
+        }
+    }
+}

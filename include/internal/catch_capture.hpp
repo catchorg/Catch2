@@ -18,6 +18,12 @@
 #include "catch_compiler_capabilities.h"
 
 
+#if !defined(CATCH_CONFIG_DISABLE_STRINGIFICATION)
+# define CATCH_INTERNAL_STRINGIFY(expr) #expr
+#else
+# define CATCH_INTERNAL_STRINGIFY(expr) "Disabled by CATCH_CONFIG_DISABLE_STRINGIFICATION"
+#endif
+
 #if defined(CATCH_CONFIG_FAST_COMPILE)
 ///////////////////////////////////////////////////////////////////////////////
 // We can speedup compilation significantly by breaking into debugger lower in
@@ -33,7 +39,7 @@
 // the exception before it propagates back up to the runner.
 #define INTERNAL_CATCH_TEST_NO_TRY( macroName, resultDisposition, expr ) \
     do { \
-        Catch::ResultBuilder __catchResult( macroName, CATCH_INTERNAL_LINEINFO, #expr, resultDisposition ); \
+        Catch::ResultBuilder __catchResult( macroName, CATCH_INTERNAL_LINEINFO, CATCH_INTERNAL_STRINGIFY(expr), resultDisposition ); \
         __catchResult.setExceptionGuard(); \
         CATCH_INTERNAL_SUPPRESS_PARENTHESES_WARNINGS \
         ( __catchResult <= expr ).endExpression(); \
@@ -45,9 +51,9 @@
 
 #define INTERNAL_CHECK_THAT_NO_TRY( macroName, matcher, resultDisposition, arg ) \
     do { \
-        Catch::ResultBuilder __catchResult( macroName, CATCH_INTERNAL_LINEINFO, #arg ", " #matcher, resultDisposition ); \
+        Catch::ResultBuilder __catchResult( macroName, CATCH_INTERNAL_LINEINFO, CATCH_INTERNAL_STRINGIFY(arg) ", " CATCH_INTERNAL_STRINGIFY(matcher), resultDisposition ); \
         __catchResult.setExceptionGuard(); \
-        __catchResult.captureMatch( arg, matcher, #matcher ); \
+        __catchResult.captureMatch( arg, matcher, CATCH_INTERNAL_STRINGIFY(matcher) ); \
         __catchResult.unsetExceptionGuard(); \
         INTERNAL_CATCH_REACT( __catchResult ) \
     } while( Catch::alwaysFalse() )
@@ -67,7 +73,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 #define INTERNAL_CATCH_TEST( macroName, resultDisposition, expr ) \
     do { \
-        Catch::ResultBuilder __catchResult( macroName, CATCH_INTERNAL_LINEINFO, #expr, resultDisposition ); \
+        Catch::ResultBuilder __catchResult( macroName, CATCH_INTERNAL_LINEINFO, CATCH_INTERNAL_STRINGIFY(expr), resultDisposition ); \
         try { \
             CATCH_INTERNAL_SUPPRESS_PARENTHESES_WARNINGS \
             ( __catchResult <= expr ).endExpression(); \
@@ -83,17 +89,17 @@
 ///////////////////////////////////////////////////////////////////////////////
 #define INTERNAL_CATCH_IF( macroName, resultDisposition, expr ) \
     INTERNAL_CATCH_TEST( macroName, resultDisposition, expr ); \
-    if( Catch::getResultCapture().getLastResult()->succeeded() )
+    if( Catch::getResultCapture().lastAssertionPassed() )
 
 ///////////////////////////////////////////////////////////////////////////////
 #define INTERNAL_CATCH_ELSE( macroName, resultDisposition, expr ) \
     INTERNAL_CATCH_TEST( macroName, resultDisposition, expr ); \
-    if( !Catch::getResultCapture().getLastResult()->succeeded() )
+    if( !Catch::getResultCapture().lastAssertionPassed() )
 
 ///////////////////////////////////////////////////////////////////////////////
 #define INTERNAL_CATCH_NO_THROW( macroName, resultDisposition, expr ) \
     do { \
-        Catch::ResultBuilder __catchResult( macroName, CATCH_INTERNAL_LINEINFO, #expr, resultDisposition ); \
+        Catch::ResultBuilder __catchResult( macroName, CATCH_INTERNAL_LINEINFO, CATCH_INTERNAL_STRINGIFY(expr), resultDisposition ); \
         try { \
             static_cast<void>(expr); \
             __catchResult.captureResult( Catch::ResultWas::Ok ); \
@@ -107,7 +113,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 #define INTERNAL_CATCH_THROWS( macroName, resultDisposition, matcher, expr ) \
     do { \
-        Catch::ResultBuilder __catchResult( macroName, CATCH_INTERNAL_LINEINFO, #expr, resultDisposition, #matcher ); \
+        Catch::ResultBuilder __catchResult( macroName, CATCH_INTERNAL_LINEINFO, CATCH_INTERNAL_STRINGIFY(expr), resultDisposition, CATCH_INTERNAL_STRINGIFY(matcher) ); \
         if( __catchResult.allowThrows() ) \
             try { \
                 static_cast<void>(expr); \
@@ -124,7 +130,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 #define INTERNAL_CATCH_THROWS_AS( macroName, exceptionType, resultDisposition, expr ) \
     do { \
-        Catch::ResultBuilder __catchResult( macroName, CATCH_INTERNAL_LINEINFO, #expr ", " #exceptionType, resultDisposition ); \
+        Catch::ResultBuilder __catchResult( macroName, CATCH_INTERNAL_LINEINFO, CATCH_INTERNAL_STRINGIFY(expr) ", " CATCH_INTERNAL_STRINGIFY(exceptionType), resultDisposition ); \
         if( __catchResult.allowThrows() ) \
             try { \
                 static_cast<void>(expr); \
@@ -168,9 +174,9 @@
 ///////////////////////////////////////////////////////////////////////////////
 #define INTERNAL_CHECK_THAT( macroName, matcher, resultDisposition, arg ) \
     do { \
-        Catch::ResultBuilder __catchResult( macroName, CATCH_INTERNAL_LINEINFO, #arg ", " #matcher, resultDisposition ); \
+        Catch::ResultBuilder __catchResult( macroName, CATCH_INTERNAL_LINEINFO, CATCH_INTERNAL_STRINGIFY(arg) ", " CATCH_INTERNAL_STRINGIFY(matcher), resultDisposition ); \
         try { \
-            __catchResult.captureMatch( arg, matcher, #matcher ); \
+            __catchResult.captureMatch( arg, matcher, CATCH_INTERNAL_STRINGIFY(matcher) ); \
         } catch( ... ) { \
             __catchResult.useActiveException( resultDisposition | Catch::ResultDisposition::ContinueOnFailure ); \
         } \

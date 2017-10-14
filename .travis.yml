@@ -192,15 +192,15 @@ matrix:
       env: COMPILER='g++-6' BUILD_TYPE='Debug' CPP14=1
 
     # 4b/ Linux C++14 Clang builds
-    - os: linux
-      compiler: clang
-      addons: *clang38
-      env: COMPILER='clang++-3.8' BUILD_TYPE='Release' CPP14=1
-
-    - os: linux
-      compiler: clang
-      addons: *clang38
-      env: COMPILER='clang++-3.8' BUILD_TYPE='Debug' CPP14=1
+#    - os: linux
+#      compiler: clang
+#      addons: *clang38
+#      env: COMPILER='clang++-3.8' BUILD_TYPE='Release' CPP14=1
+#
+#    - os: linux
+#      compiler: clang
+#      addons: *clang38
+#      env: COMPILER='clang++-3.8' BUILD_TYPE='Debug' CPP14=1
 
 
     # 5/ OSX Clang Builds

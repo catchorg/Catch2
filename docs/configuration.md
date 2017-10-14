@@ -43,12 +43,19 @@ By default a console width of 80 is assumed but this can be controlled by defini
 
 	CATCH_CONFIG_NOSTDOUT
 
-Catch does not use ```std::cout``` and ```std::cerr``` directly but gets them from ```Catch::cout()``` and ```Catch::cerr()``` respectively. If the above identifier is defined these functions are left unimplemented and you must implement them yourself. Their signatures are:
+Catch does not use ```std::cout```, ```std::cerr``` and ```std::clog``` directly but gets them from ```Catch::cout()```, ```Catch::cerr()``` and ```Catch::clog``` respectively. If the above identifier is defined these functions are left unimplemented and you must implement them yourself. Their signatures are:
 
     std::ostream& cout();
     std::ostream& cerr();
+    std::ostream& clog();
 
-This can be useful on certain platforms that do not provide ```std::cout``` and ```std::cerr```, such as certain embedded systems.
+This can be useful on certain platforms that do not provide the standard iostreams, such as certain embedded systems.
+
+# Default reporter
+
+    CATCH_CONFIG_DEFAULT_REPORTER <reporter>
+
+The default reporter (reporter used when no reporters are explicitly specified) can be overriden during compilation time by using the above macro. Note that desired value of the macro is a C string and quotes have to be escaped during compilation: `clang++ test.cpp -DCATCH_CONFIG_DEFAULT_REPORTER=\"xml\"`.
 
 # C++ conformance toggles
 
@@ -100,6 +107,7 @@ TEST_CASE ("Error in streamable check") {
     CATCH_CONFIG_FAST_COMPILE               // Sacrifices some (rather minor) features for compilation speed
     CATCH_CONFIG_POSIX_SIGNALS              // Enable handling POSIX signals
     CATCH_CONFIG_WINDOWS_CRTDBG             // Enable leak checking using Windows's CRT Debug Heap
+    CATCH_CONFIG_DISABLE_STRINGIFICATION    // Disable stringifying the original expression
 
 Currently Catch enables `CATCH_CONFIG_WINDOWS_SEH` only when compiled with MSVC, because some versions of MinGW do not have the necessary Win32 API support.
 
@@ -115,6 +123,10 @@ Defining this flag speeds up compilation of test files by ~20%, by making 2 chan
 * The `REQUIRE` family of macros (`REQUIRE`, `REQUIRE_FALSE` and `REQUIRE_THAT`) no longer uses local try-catch block. This disables exception translation, but should not lead to false negatives.
 
 `CATCH_CONFIG_FAST_COMPILE` has to be either defined, or not defined, in all translation units that are linked into single test binary, or the behaviour of setting `-b` flag and throwing unexpected exceptions will be unpredictable.
+
+## `CATCH_CONFIG_DISABLE_STRINGIFICATION`
+This toggle enables a workaround for VS 2017 bug. For details see
+[known limitations](limitations.md#visual-studio-2017----raw-string-literal-in-assert-fails-to-compile).
 
 # Windows header clutter
 

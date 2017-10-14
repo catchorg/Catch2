@@ -76,6 +76,19 @@ namespace Catch {
         else
             throw std::runtime_error( "colour mode must be one of: auto, yes or no" );
     }
+    inline void setWaitForKeypress( ConfigData& config, std::string const& keypress ) {
+        std::string keypressLc = toLower( keypress );
+        if( keypressLc == "start" )
+            config.waitForKeypress = WaitForKeypress::BeforeStart;
+        else if( keypressLc == "exit" )
+            config.waitForKeypress = WaitForKeypress::BeforeExit;
+        else if( keypressLc == "both" )
+            config.waitForKeypress = WaitForKeypress::BeforeStartAndExit;
+        else
+            throw std::runtime_error( "keypress argument must be one of: start, exit or both. '" + keypress + "' not recognised" );
+    };
+
+
     inline void forceColour( ConfigData& config ) {
         config.useColour = UseColour::Yes;
     }
@@ -210,6 +223,14 @@ namespace Catch {
         cli["--use-colour"]
             .describe( "should output be colourised" )
             .bind( &setUseColour, "yes|no" );
+
+        cli["--libidentify"]
+            .describe( "report name and version according to libidentify standard" )
+            .bind( &ConfigData::libIdentify );
+
+        cli["--wait-for-keypress"]
+                .describe( "waits for a keypress before exiting" )
+                .bind( &setWaitForKeypress, "start|exit|both" );
 
         return cli;
     }

@@ -124,6 +124,66 @@ with expansion:
   1 == 1
 
 -------------------------------------------------------------------------------
+#961 -- Dynamically created sections should all be reported
+  Looped section 0
+-------------------------------------------------------------------------------
+MiscTests.cpp:<line number>
+...............................................................................
+
+MiscTests.cpp:<line number>:
+PASSED:
+with message:
+  Everything is OK
+
+-------------------------------------------------------------------------------
+#961 -- Dynamically created sections should all be reported
+  Looped section 1
+-------------------------------------------------------------------------------
+MiscTests.cpp:<line number>
+...............................................................................
+
+MiscTests.cpp:<line number>:
+PASSED:
+with message:
+  Everything is OK
+
+-------------------------------------------------------------------------------
+#961 -- Dynamically created sections should all be reported
+  Looped section 2
+-------------------------------------------------------------------------------
+MiscTests.cpp:<line number>
+...............................................................................
+
+MiscTests.cpp:<line number>:
+PASSED:
+with message:
+  Everything is OK
+
+-------------------------------------------------------------------------------
+#961 -- Dynamically created sections should all be reported
+  Looped section 3
+-------------------------------------------------------------------------------
+MiscTests.cpp:<line number>
+...............................................................................
+
+MiscTests.cpp:<line number>:
+PASSED:
+with message:
+  Everything is OK
+
+-------------------------------------------------------------------------------
+#961 -- Dynamically created sections should all be reported
+  Looped section 4
+-------------------------------------------------------------------------------
+MiscTests.cpp:<line number>
+...............................................................................
+
+MiscTests.cpp:<line number>:
+PASSED:
+with message:
+  Everything is OK
+
+-------------------------------------------------------------------------------
 'Not' checks that should fail
 -------------------------------------------------------------------------------
 ConditionTests.cpp:<line number>
@@ -142,8 +202,10 @@ with expansion:
 
 ConditionTests.cpp:<line number>: FAILED:
   CHECK_FALSE( true )
+with expansion:
+  !true
 
 ===============================================================================
-test cases:  6 |  3 passed | 1 failed | 2 failed as expected
-assertions: 18 | 11 passed | 4 failed | 3 failed as expected
+test cases:  7 |  4 passed | 1 failed | 2 failed as expected
+assertions: 23 | 16 passed | 4 failed | 3 failed as expected
 

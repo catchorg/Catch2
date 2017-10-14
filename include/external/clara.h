@@ -151,7 +151,7 @@ namespace Tbc {
             return oss.str();
         }
 
-        inline friend std::ostream& operator << ( std::ostream& _stream, Text const& _text ) {
+        friend std::ostream& operator << ( std::ostream& _stream, Text const& _text ) {
             for( Text::const_iterator it = _text.begin(), itEnd = _text.end();
                 it != itEnd; ++it ) {
                 if( it != _text.begin() )

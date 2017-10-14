@@ -38,13 +38,15 @@ namespace Catch {
             showHelp( false ),
             showInvisibles( false ),
             filenamesAsTags( false ),
+            libIdentify( false ),
             abortAfter( -1 ),
             rngSeed( 0 ),
             verbosity( Verbosity::Normal ),
             warnings( WarnAbout::Nothing ),
             showDurations( ShowDurations::DefaultForReporter ),
             runOrder( RunTests::InDeclarationOrder ),
-            useColour( UseColour::Auto )
+            useColour( UseColour::Auto ),
+            waitForKeypress( WaitForKeypress::Never )
         {}
 
         bool listTests;
@@ -59,6 +61,7 @@ namespace Catch {
         bool showHelp;
         bool showInvisibles;
         bool filenamesAsTags;
+        bool libIdentify;
 
         int abortAfter;
         unsigned int rngSeed;
@@ -68,6 +71,7 @@ namespace Catch {
         ShowDurations::OrNot showDurations;
         RunTests::InWhatOrder runOrder;
         UseColour::YesOrNo useColour;
+        WaitForKeypress::When waitForKeypress;
 
         std::string outputFilename;
         std::string name;

@@ -407,3 +407,9 @@ TEST_CASE( "has printf", "" ) {
     // This can cause problems as, currently, stdout itself is not redirect - only the cout (and cerr) buffer
     printf( "spanner" );
 }
+
+TEST_CASE( "null deref", "[.][failing][!nonportable]" ) {
+    CHECK( false );
+    int *x = NULL;
+    *x = 1;
+}

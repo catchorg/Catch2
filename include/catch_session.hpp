@@ -31,10 +31,14 @@ namespace Catch {
         return reporter;
     }
 
+#if !defined(CATCH_CONFIG_DEFAULT_REPORTER)
+#define CATCH_CONFIG_DEFAULT_REPORTER "console"
+#endif
+
     Ptr<IStreamingReporter> makeReporter( Ptr<Config> const& config ) {
         std::vector<std::string> reporters = config->getReporterNames();
         if( reporters.empty() )
-            reporters.push_back( "console" );
+            reporters.push_back( CATCH_CONFIG_DEFAULT_REPORTER );
 
         Ptr<IStreamingReporter> reporter;
         for( std::vector<std::string>::const_iterator it = reporters.begin(), itEnd = reporters.end();
@@ -95,11 +99,11 @@ namespace Catch {
             if( lastSlash != std::string::npos )
                 filename = filename.substr( lastSlash+1 );
 
-            std::string::size_type lastDot = filename.find_last_of( "." );
+            std::string::size_type lastDot = filename.find_last_of( '.' );
             if( lastDot != std::string::npos )
                 filename = filename.substr( 0, lastDot );
 
-            tags.insert( "#" + filename );
+            tags.insert( '#' + filename );
             setTags( test, tags );
         }
     }
@@ -130,6 +134,13 @@ namespace Catch {
             m_cli.usage( Catch::cout(), processName );
             Catch::cout() << "For more detail usage please see the project docs\n" << std::endl;
         }
+        void libIdentify() {
+            Catch::cout()
+                    << std::left << std::setw(16) << "description: " << "A Catch test executable\n"
+                    << std::left << std::setw(16) << "category: " << "testframework\n"
+                    << std::left << std::setw(16) << "framework: " << "Catch Test\n"
+                    << std::left << std::setw(16) << "version: " << libraryVersion() << std::endl;
+        }
 
         int applyCommandLine( int argc, char const* const* const argv, OnUnusedOptions::DoWhat unusedOptionBehaviour = OnUnusedOptions::Fail ) {
             try {
@@ -137,6 +148,8 @@ namespace Catch {
                 m_unusedTokens = m_cli.parseInto( Clara::argsToVector( argc, argv ), m_configData );
                 if( m_configData.showHelp )
                     showHelp( m_configData.processName );
+                if( m_configData.libIdentify )
+                    libIdentify();
                 m_config.reset();
             }
             catch( std::exception& ex ) {
@@ -193,7 +206,36 @@ namespace Catch {
     #endif
 
         int run() {
-            if( m_configData.showHelp )
+            if( ( m_configData.waitForKeypress & WaitForKeypress::BeforeStart ) != 0 ) {
+                Catch::cout() << "...waiting for enter/ return before starting" << std::endl;
+                static_cast<void>(std::getchar());
+            }
+            int exitCode = runInternal();
+            if( ( m_configData.waitForKeypress & WaitForKeypress::BeforeExit ) != 0 ) {
+                Catch::cout() << "...waiting for enter/ return before exiting, with code: " << exitCode << std::endl;
+                static_cast<void>(std::getchar());
+            }
+            return exitCode;
+        }
+
+        Clara::CommandLine<ConfigData> const& cli() const {
+            return m_cli;
+        }
+        std::vector<Clara::Parser::Token> const& unusedTokens() const {
+            return m_unusedTokens;
+        }
+        ConfigData& configData() {
+            return m_configData;
+        }
+        Config& config() {
+            if( !m_config )
+                m_config = new Config( m_configData );
+            return *m_config;
+        }
+    private:
+
+        int runInternal() {
+            if( m_configData.showHelp || m_configData.libIdentify )
                 return 0;
 
             try
@@ -217,21 +259,6 @@ namespace Catch {
             }
         }
 
-        Clara::CommandLine<ConfigData> const& cli() const {
-            return m_cli;
-        }
-        std::vector<Clara::Parser::Token> const& unusedTokens() const {
-            return m_unusedTokens;
-        }
-        ConfigData& configData() {
-            return m_configData;
-        }
-        Config& config() {
-            if( !m_config )
-                m_config = new Config( m_configData );
-            return *m_config;
-        }
-    private:
         Clara::CommandLine<ConfigData> m_cli;
         std::vector<Clara::Parser::Token> m_unusedTokens;
         ConfigData m_configData;

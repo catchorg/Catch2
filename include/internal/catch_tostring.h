@@ -153,7 +153,7 @@ namespace Detail {
     std::string rawMemoryToString( const void *object, std::size_t size );
 
     template<typename T>
-    inline std::string rawMemoryToString( const T& object ) {
+    std::string rawMemoryToString( const T& object ) {
       return rawMemoryToString( &object, sizeof(object) );
     }
 

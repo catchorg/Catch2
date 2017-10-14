@@ -39,7 +39,7 @@ namespace Catch {
 
     struct AssertionInfo
     {
-        AssertionInfo() {}
+        AssertionInfo();
         AssertionInfo(  char const * _macroName,
                         SourceLineInfo const& _lineInfo,
                         char const * _capturedExpression,

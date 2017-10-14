@@ -22,6 +22,7 @@
 #include "catch_result_builder.h"
 #include "catch_fatal_condition.hpp"
 
+
 #include <set>
 #include <string>
 
@@ -46,6 +47,29 @@ namespace Catch {
     private:
         std::ostream& m_stream;
         std::streambuf* m_prevBuf;
+        std::ostringstream m_oss;
+        std::string& m_targetString;
+    };
+
+    // StdErr has two constituent streams in C++, std::cerr and std::clog
+    // This means that we need to redirect 2 streams into 1 to keep proper
+    // order of writes and cannot use StreamRedirect on its own
+    class StdErrRedirect {
+    public:
+        StdErrRedirect(std::string& targetString)
+        :m_cerrBuf( cerr().rdbuf() ), m_clogBuf(clog().rdbuf()),
+        m_targetString(targetString){
+            cerr().rdbuf(m_oss.rdbuf());
+            clog().rdbuf(m_oss.rdbuf());
+        }
+        ~StdErrRedirect() {
+            m_targetString += m_oss.str();
+            cerr().rdbuf(m_cerrBuf);
+            clog().rdbuf(m_clogBuf);
+        }
+    private:
+        std::streambuf* m_cerrBuf;
+        std::streambuf* m_clogBuf;
         std::ostringstream m_oss;
         std::string& m_targetString;
     };
@@ -142,7 +166,10 @@ namespace Catch {
                 m_totals.assertions.passed++;
             }
             else if( !result.isOk() ) {
-                m_totals.assertions.failed++;
+                if( m_activeTestCase->getTestCaseInfo().okToFail() )
+                    m_totals.assertions.failedButOk++;
+                else
+                    m_totals.assertions.failed++;
             }
 
             // We have no use for the return value (whether messages should be cleared), because messages were made scoped
@@ -152,6 +179,23 @@ namespace Catch {
             // Reset working state
             m_lastAssertionInfo = AssertionInfo( "", m_lastAssertionInfo.lineInfo, "{Unknown expression after the reported line}" , m_lastAssertionInfo.resultDisposition );
             m_lastResult = result;
+        }
+
+        virtual bool lastAssertionPassed()
+        {
+            return m_totals.assertions.passed == (m_prevPassed + 1);
+        }
+
+        virtual void assertionPassed()
+        {
+            m_totals.assertions.passed++;
+            m_lastAssertionInfo.capturedExpression = "{Unknown expression after the reported line}";
+            m_lastAssertionInfo.macroName = "";
+        }
+
+        virtual void assertionRun()
+        {
+            m_prevPassed = m_totals.assertions.passed;
         }
 
         virtual bool sectionStarted (
@@ -254,6 +298,7 @@ namespace Catch {
 
             Totals deltaTotals;
             deltaTotals.testCases.failed = 1;
+            deltaTotals.assertions.failed = 1;
             m_reporter->testCaseEnded( TestCaseStats(   testInfo,
                                                         deltaTotals,
                                                         std::string(),
@@ -288,7 +333,7 @@ namespace Catch {
                 timer.start();
                 if( m_reporter->getPreferences().shouldRedirectStdOut ) {
                     StreamRedirect coutRedir( Catch::cout(), redirectedCout );
-                    StreamRedirect cerrRedir( Catch::cerr(), redirectedCerr );
+                    StdErrRedirect errRedir( redirectedCerr );
                     invokeActiveTestCase();
                 }
                 else {
@@ -312,12 +357,6 @@ namespace Catch {
 
             Counts assertions = m_totals.assertions - prevAssertions;
             bool missingAssertions = testForMissingAssertions( assertions );
-
-            if( testCaseInfo.okToFail() ) {
-                std::swap( assertions.failedButOk, assertions.failed );
-                m_totals.assertions.failed -= assertions.failedButOk;
-                m_totals.assertions.failedButOk += assertions.failedButOk;
-            }
 
             SectionStats testCaseSectionStats( testCaseSection, assertions, duration, missingAssertions );
             m_reporter->sectionEnded( testCaseSectionStats );
@@ -364,6 +403,7 @@ namespace Catch {
         std::vector<SectionEndInfo> m_unfinishedSections;
         std::vector<ITracker*> m_activeSections;
         TrackerContext m_trackerContext;
+        size_t m_prevPassed;
         bool m_shouldReportUnexpected;
     };
 

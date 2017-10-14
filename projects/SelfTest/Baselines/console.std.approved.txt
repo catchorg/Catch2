@@ -58,6 +58,8 @@ with expansion:
 
 ConditionTests.cpp:<line number>: FAILED:
   CHECK_FALSE( true )
+with expansion:
+  !true
 
 ConditionTests.cpp:<line number>: FAILED:
   CHECK( !trueValue )
@@ -76,8 +78,6 @@ with expansion:
 
 ConditionTests.cpp:<line number>: FAILED:
   CHECK_FALSE( 1 == 1 )
-with expansion:
-  !(1 == 1)
 
 -------------------------------------------------------------------------------
 A METHOD_AS_TEST_CASE based test run that fails
@@ -622,6 +622,9 @@ with messages:
 
 A string sent directly to stdout
 A string sent directly to stderr
+Write to std::cerr
+Write to std::clog
+Interleaved writes to error streams
 Message from section one
 Message from section two
 -------------------------------------------------------------------------------
@@ -953,6 +956,6 @@ with expansion:
   "first" == "second"
 
 ===============================================================================
-test cases: 168 | 119 passed | 45 failed |  4 failed as expected
-assertions: 968 | 859 passed | 88 failed | 21 failed as expected
+test cases: 170 | 121 passed | 45 failed |  4 failed as expected
+assertions: 973 | 864 passed | 88 failed | 21 failed as expected
 

@@ -137,7 +137,8 @@ namespace Catch {
             BySectionInfo( SectionInfo const& other ) : m_other( other ) {}
             BySectionInfo( BySectionInfo const& other ) : m_other( other.m_other ) {}
             bool operator() ( Ptr<SectionNode> const& node ) const {
-                return node->stats.sectionInfo.lineInfo == m_other.lineInfo;
+                return ((node->stats.sectionInfo.name == m_other.name) &&
+                        (node->stats.sectionInfo.lineInfo == m_other.lineInfo));
             }
         private:
             void operator=( BySectionInfo const& );

@@ -52,6 +52,7 @@ namespace Catch {
         JunitReporter( ReporterConfig const& _config )
         :   CumulativeReporterBase( _config ),
             xml( _config.stream() ),
+            unexpectedExceptions( 0 ),
             m_okToFail( false )
         {
             m_reporterPrefs.shouldRedirectStdOut = true;
