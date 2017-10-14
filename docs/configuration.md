@@ -106,7 +106,7 @@ When `CATCH_CONFIG_DISABLE_MATCHERS` is defined, all mentions of Catch's Matcher
 _Note: If you define `CATCH_CONFIG_DISABLE_MATCHERS` in the same file as Catch's main is implemented, your test executable will fail to link if you use Matchers anywhere._
 
 ### `CATCH_CONFIG_DISABLE_STRINGIFICATION`
-This toggle enables a workaround for VS 2017 bug. For details see [known limitations](limitations.md#Visual Studio 2017 -- raw string literal in assert fails to compile)
+This toggle enables a workaround for VS 2017 bug. For details see [known limitations](limitations.md#visual-studio-2017----raw-string-literal-in-assert-fails-to-compile).
 
 ### `CATCH_CONFIG_DISABLE`
 This toggle removes most of Catch from given file. This means that `TEST_CASE`s are not registered and assertions are turned into no-ops. Useful for keeping tests within implementation files (ie for functions with internal linkage), instead of in external files.
