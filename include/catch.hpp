@@ -69,7 +69,12 @@ public:
     }
 };
 #else
-class LeakDetector {};
+class LeakDetector {
+    public:
+        ~LeakDetector() {
+            Catch::cleanUp();
+        }
+};
 #endif
 
 LeakDetector leakDetector;
