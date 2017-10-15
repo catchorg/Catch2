@@ -20,7 +20,7 @@ namespace Catch {
     unsigned int rngSeed();
 
     struct RandomNumberGenerator {
-        using result_type = std::ptrdiff_t;
+        using result_type = unsigned int;
 
         static constexpr result_type (min)() { return 0; }
         static constexpr result_type (max)() { return 1000000; }
