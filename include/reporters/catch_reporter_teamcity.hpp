@@ -133,6 +133,7 @@ namespace Catch {
                            << "]\n";
                 }
             }
+            stream.flush();
             return true;
         }
 
@@ -146,6 +147,7 @@ namespace Catch {
             StreamingReporterBase::testCaseStarting( testInfo );
             stream << "##teamcity[testStarted name='"
                 << escape( testInfo.name ) << "']\n";
+            stream.flush();
         }
 
         void testCaseEnded( TestCaseStats const& testCaseStats ) override {
@@ -161,6 +163,7 @@ namespace Catch {
             stream << "##teamcity[testFinished name='"
                     << escape( testCaseStats.testInfo.name ) << "' duration='"
                     << m_testTimer.getElapsedMilliseconds() << "']\n";
+            stream.flush();
         }
 
     private:
