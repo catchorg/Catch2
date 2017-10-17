@@ -1,12 +1,17 @@
 // 210-Evt-EventListeners.cpp
 
+// Contents:
+// 1. Printing of listener data
+// 2. My listener and registration
+// 3. Test cases
+
 // Let Catch provide main():
 #define CATCH_CONFIG_MAIN
 
 #include "catch.hpp"
 
 // -----------------------------------------------------------------------
-// printing of listener data:
+// 1. Printing of listener data:
 //
 
 std::string ws(int const level) {
@@ -284,7 +289,7 @@ void print( std::ostream& os, int const level, std::string const& title, Catch::
 }
 
 // -----------------------------------------------------------------------
-// my listener:
+// 2. My listener and registration:
 //
 
 const std::string dashed_line =
@@ -360,7 +365,7 @@ struct MyListener : Catch::TestEventListenerBase {
 CATCH_REGISTER_LISTENER( MyListener )
 
 // -----------------------------------------------------------------------
-// Test cases:
+// 3. Test cases:
 //
 
 TEST_CASE( "1: Hidden testcase", "[.hidden]" ) {
