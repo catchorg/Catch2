@@ -19,7 +19,7 @@ file that defines `CATCH_CONFIG_EXTERNAL_INTERFACES`.
 
 Then register it using `CATCH_REGISTER_LISTENER`.
 
-For example:
+For example ([complete source code](../examples/210-Evt-EventListeners.cpp)):
 
 ```c++
 #define CATCH_CONFIG_MAIN
