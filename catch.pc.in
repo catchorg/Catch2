@@ -6,5 +6,4 @@ Description: Testing library for C++
 Requires:
 Version: @CATCH_VERSION_NUMBER@
 Libs:
-Cflags: -I${prefix}/@INCLUDE_INSTALL_DIR@
-
+Cflags: -I${prefix}/@INCLUDE_INSTALL_DIR@/include
