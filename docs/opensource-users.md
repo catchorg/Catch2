@@ -1,6 +1,6 @@
 # Open Source projects using Catch
 
-Catch is great for open source. With it's [liberal license](../LICENSE.txt) and single-header, dependency-free, distribution 
+Catch is great for open source. With its [liberal license](../LICENSE.txt) and single-header, dependency-free, distribution 
 it's easy to just drop the header into your project and start writing tests - what's not to like?
 
 As a result Catch is now being used in many Open Source projects, including some quite well known ones.
