@@ -15,7 +15,7 @@ The XML Reporter writes in an XML format that is specific to Catch.
 
 The advantage of this format is that it corresponds well to the way Catch works (especially the more unusual features, such as nested sections) and is a fully streaming format - that is it writes output as it goes, without having to store up all its results before it can start writing.
 
-The disadvantage is that, being specific to Catch, no existing build servers understand the format natively. It can be used as input to an XSLT transformation that could covert it to, say, HTML - although this loses the streaming advantage, of course.
+The disadvantage is that, being specific to Catch, no existing build servers understand the format natively. It can be used as input to an XSLT transformation that could convert it to, say, HTML - although this loses the streaming advantage, of course.
 
 ## JUnit Reporter
 ```-r junit```
