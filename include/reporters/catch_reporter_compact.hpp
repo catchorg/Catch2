@@ -223,7 +223,12 @@ namespace Catch {
 
                 // using messages.end() directly yields compilation error:
                 std::vector<MessageInfo>::const_iterator itEnd = messages.end();
+#               ifdef CATCH_INTERNAL_SUNPRO_CC_NON_COMPLIANT_STL
+                std::size_t N;
+                std::distance( itMessage, itEnd, N );
+#               else
                 const std::size_t N = static_cast<std::size_t>( std::distance( itMessage, itEnd ) );
+#               endif // CATCH_INTERNAL_SUNPRO_CC_NON_COMPLIANT_STL
 
                 {
                     Colour colourGuard( colour );

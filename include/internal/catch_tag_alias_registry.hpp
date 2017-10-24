@@ -50,7 +50,7 @@ namespace Catch {
                 << lineInfo << '\n';
             throw std::domain_error( oss.str().c_str() );
         }
-        if( !m_registry.insert( std::make_pair( alias, TagAlias( tag, lineInfo ) ) ).second ) {
+        if( !m_registry.insert( std::make_pair( std::string(alias), TagAlias( tag, lineInfo ) ) ).second ) {
             std::ostringstream oss;
             oss << Colour( Colour::Red )
                 << "error: tag alias, \"" << alias << "\" already registered.\n"

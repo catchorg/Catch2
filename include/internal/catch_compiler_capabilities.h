@@ -161,6 +161,16 @@
 #endif // _MSC_VER
 
 ////////////////////////////////////////////////////////////////////////////////
+// Oracle Solaris Studio
+#ifdef __SUNPRO_CC
+
+#   if __SUNPRO_CC == 0x5100  // Oracle Solaris Studio version 12.1
+#       define CATCH_INTERNAL_SUNPRO_CC_NON_COMPLIANT_STL
+#   endif
+
+#endif // __SUNPRO_CC
+
+////////////////////////////////////////////////////////////////////////////////
 
 // Use variadic macros if the compiler supports them
 #if ( defined _MSC_VER && _MSC_VER > 1400 && !defined __EDGE__) || \
