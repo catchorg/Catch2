@@ -44,8 +44,9 @@ namespace Detail {
         friend bool operator == ( const T& lhs, Approx const& rhs ) {
             // Thanks to Richard Harris for his help refining this formula
             auto lhs_v = static_cast<double>(lhs);
-            bool relativeOK = std::fabs(lhs_v - rhs.m_value) < rhs.m_epsilon * (rhs.m_scale +
-                    dmax(std::fabs(lhs_v), std::fabs(rhs.m_value)));
+
+            bool relativeOK = std::fabs( lhs_v - rhs.m_value ) < rhs.m_epsilon * (rhs.m_scale + std::fabs(rhs.m_value) );
+
             if (relativeOK) {
                 return true;
             }
@@ -89,7 +90,11 @@ namespace Detail {
 
         template <typename T, typename = typename std::enable_if<std::is_constructible<double, T>::value>::type>
         Approx& epsilon( T const& newEpsilon ) {
-            m_epsilon = static_cast<double>(newEpsilon);
+            double asDouble = static_cast<double>(newEpsilon);
+            CATCH_ENFORCE(asDouble >= 0 && asDouble <= 1.0,
+                          "Invalid Approx::epsilon: " << m_epsilon <<
+                          ", Approx::epsilon has to be between 0 and 1");
+            m_epsilon = asDouble;
             return *this;
         }
 
