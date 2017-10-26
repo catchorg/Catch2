@@ -25,7 +25,7 @@ namespace Detail {
         explicit Approx ( double value )
         :   m_epsilon( std::numeric_limits<float>::epsilon()*100 ),
             m_margin( 0.0 ),
-            m_scale( 1.0 ),
+            m_scale( 0.0 ),
             m_value( value )
         {}
 
@@ -53,7 +53,7 @@ namespace Detail {
         friend bool operator == ( const T& lhs, Approx const& rhs ) {
             // Thanks to Richard Harris for his help refining this formula
             auto lhs_v = double(lhs);
-            bool relativeOK = std::fabs(lhs_v - rhs.m_value) < rhs.m_epsilon * (rhs.m_scale + (std::max)(std::fabs(lhs_v), std::fabs(rhs.m_value)));
+            bool relativeOK = std::fabs( lhs - rhs.m_value ) < rhs.m_epsilon * (rhs.m_scale + std::fabs(rhs.m_value) );
             if (relativeOK) {
                 return true;
             }
@@ -97,6 +97,7 @@ namespace Detail {
 
         template <typename T, typename = typename std::enable_if<std::is_constructible<double, T>::value>::type>
         Approx& epsilon( T newEpsilon ) {
+            assert(newEpsilon >= 0.0f && newEpsilon < = 1.0f); // i.e. check for well-defined newEpsilon
             m_epsilon = double(newEpsilon);
             return *this;
         }
@@ -126,7 +127,7 @@ namespace Detail {
 
         friend bool operator == ( double lhs, Approx const& rhs ) {
             // Thanks to Richard Harris for his help refining this formula
-            bool relativeOK = std::fabs( lhs - rhs.m_value ) < rhs.m_epsilon * (rhs.m_scale + (std::max)( std::fabs(lhs), std::fabs(rhs.m_value) ) );
+            bool relativeOK = std::fabs( lhs - rhs.m_value ) < rhs.m_epsilon * (rhs.m_scale + std::fabs(rhs.m_value) );
             if (relativeOK) {
                 return true;
             }
@@ -162,6 +163,7 @@ namespace Detail {
         }
 
         Approx& epsilon( double newEpsilon ) {
+            assert(newEpsilon >= 0.0f && newEpsilon < = 1.0f); // i.e. check for well-defined newEpsilon
             m_epsilon = newEpsilon;
             return *this;
         }
