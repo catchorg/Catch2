@@ -57,7 +57,7 @@ This way `Approx` is constructed with reasonable defaults, covering most simple 
 
 * __epsilon__ - epsilon serves to set the percentage by which a result can be erroneous, before it is rejected. By default set to `std::numeric_limits<float>::epsilon()*100`.
 * __margin__ - margin serves to set the the absolute value by which a result can be erroneous before it is rejected. By default set to `0.0`.
-* __scale__ - scale serves to adjust the base for comparison used by epsilon, can be used when  By default set to `1.0`.
+* __scale__ - scale serves to adjust the base for comparison used by epsilon. By default set to `1.0`.
 
 #### epsilon example
 ```cpp
@@ -77,7 +77,7 @@ Approx target = Approx(100).margin(5);
 ```
 
 #### scale
-Scale can be useful if the computation leading to the result worked on different scale, than is used by the results (and thus expected errors are on a different scale than would be expected based on the results alone).
+Scale can be useful if the computation leading to the result worked on different scale, than is used by the results (and thus expected errors are on a different scale than would be expected based on the results alone), i.e. an additional not scaling difference will be accepted, because | current - target | < eps_rel + eps_abs (while eps_rel = max(current, target) * epsilon, eps_abs = epsilon * scale) will be checked.
 
 
 ## Exceptions
