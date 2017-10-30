@@ -162,4 +162,8 @@ namespace Catch {
 
 } // end namespace Catch
 
+#ifdef _MSC_VER
+#pragma warning(pop)
+#endif
+
 #endif // TWOBLUECUBES_CATCH_DECOMPOSER_H_INCLUDED

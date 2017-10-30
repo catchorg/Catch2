@@ -82,7 +82,7 @@
 
 // Universal Windows platform does not support SEH
 // Or console colours (or console at all...)
-#  if (WINAPI_FAMILY == WINAPI_FAMILY_APP)
+#  if defined(WINAPI_FAMILY) && (WINAPI_FAMILY == WINAPI_FAMILY_APP)
 #    define CATCH_CONFIG_COLOUR_NONE
 #  else
 #    define CATCH_INTERNAL_CONFIG_WINDOWS_SEH
