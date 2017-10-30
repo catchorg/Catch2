@@ -283,8 +283,6 @@ SOURCE_GROUP("Surrogates" FILES ${SURROGATE_SOURCES})
 # configure the executable
 include_directories(${HEADER_DIR})
 
-add_definitions( -DCATCH_CONFIG_FULL_PROJECT )
-
 # Projects consuming Catch via ExternalProject_Add might want to use install step
 # without building all of our selftests.
 if (NOT NO_SELFTEST)
