@@ -13,6 +13,13 @@
 #include "internal/catch_xmlwriter.h"
 #include "../internal/catch_timer.h"
 
+#if defined(_MSC_VER)
+#pragma warning(push)
+#pragma warning(disable:4061) // Not all labels are EXPLICITLY handled in switch
+                              // Note that 4062 (not all labels are handled
+                              // and default is missing) is enabled
+#endif
+
 namespace Catch {
     class XmlReporter : public StreamingReporterBase<XmlReporter> {
     public:
@@ -223,3 +230,7 @@ namespace Catch {
     CATCH_REGISTER_REPORTER( "xml", XmlReporter )
 
 } // end namespace Catch
+
+#if defined(_MSC_VER)
+#pragma warning(pop)
+#endif

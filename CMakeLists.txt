@@ -310,7 +310,7 @@ if (NOT NO_SELFTEST)
         target_compile_options( SelfTest PRIVATE -Wweak-vtables -Wexit-time-destructors -Wglobal-constructors -Wmissing-noreturn )
     endif()
     if ( CMAKE_CXX_COMPILER_ID MATCHES "MSVC" )
-        target_compile_options( SelfTest PRIVATE /W4 /w44265 /WX )
+        target_compile_options( SelfTest PRIVATE /W4 /w44265 /WX /w44061 /w44062 )
         target_compile_options( Benchmark PRIVATE /W4 )
     endif()
 
