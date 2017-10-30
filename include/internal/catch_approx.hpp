@@ -57,7 +57,8 @@ namespace Detail {
             if (relativeOK) {
                 return true;
             }
-            return std::fabs(lhs_v - rhs.m_value) < rhs.m_margin;
+
+            return std::fabs(lhs_v - rhs.m_value) <= rhs.m_margin;
         }
 
         template <typename T, typename = typename std::enable_if<std::is_constructible<double, T>::value>::type>
@@ -130,7 +131,7 @@ namespace Detail {
             if (relativeOK) {
                 return true;
             }
-            return std::fabs(lhs - rhs.m_value) < rhs.m_margin;
+            return std::fabs(lhs - rhs.m_value) <= rhs.m_margin;
         }
 
         friend bool operator == ( Approx const& lhs, double rhs ) {

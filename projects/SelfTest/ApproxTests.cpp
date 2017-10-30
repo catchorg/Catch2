@@ -24,6 +24,8 @@ TEST_CASE
     REQUIRE( Approx( d ) == 1.23 );
     REQUIRE( Approx( d ) != 1.22 );
     REQUIRE( Approx( d ) != 1.24 );
+
+    REQUIRE( 0 == Approx(0) );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -146,9 +148,20 @@ TEST_CASE( "Approximate PI", "[Approx][PI]" )
 TEST_CASE( "Absolute margin", "[Approx]" ) {
     REQUIRE( 104.0 != Approx(100.0) );
     REQUIRE( 104.0 == Approx(100.0).margin(5) );
+    REQUIRE( 104.0 == Approx(100.0).margin(4) );
     REQUIRE( 104.0 != Approx(100.0).margin(3) );
     REQUIRE( 100.3 != Approx(100.0) );
     REQUIRE( 100.3 == Approx(100.0).margin(0.5) );
+}
+
+TEST_CASE("Approx with exactly-representable margin", "[Approx]") {
+    CHECK( 0.25f == Approx(0.0f).margin(0.25f) );
+
+    CHECK( 0.0f == Approx(0.25f).margin(0.25f) );
+    CHECK( 0.5f == Approx(0.25f).margin(0.25f) );
+
+    CHECK( 245.0f == Approx(245.25f).margin(0.25f) );
+    CHECK( 245.5f == Approx(245.25f).margin(0.25f) );
 }
 
 ////////////////////////////////////////////////////////////////////////////////

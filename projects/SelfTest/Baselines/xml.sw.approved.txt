@@ -464,6 +464,14 @@
       </Expression>
       <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/ApproxTests.cpp" >
         <Original>
+          104.0 == Approx(100.0).margin(4)
+        </Original>
+        <Expanded>
+          104.0 == Approx( 100.0 )
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/ApproxTests.cpp" >
+        <Original>
           104.0 != Approx(100.0).margin(3)
         </Original>
         <Expanded>
@@ -561,6 +569,49 @@
         </Original>
         <Expanded>
           "this string contains 'abc' as a substring" ( contains: "not there" or contains: "string" )
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="Approx with exactly-representable margin" tags="[Approx]" filename="projects/<exe-name>/ApproxTests.cpp" >
+      <Expression success="true" type="CHECK" filename="projects/<exe-name>/ApproxTests.cpp" >
+        <Original>
+          0.25f == Approx(0.0f).margin(0.25f)
+        </Original>
+        <Expanded>
+          0.25f == Approx( 0.0 )
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="projects/<exe-name>/ApproxTests.cpp" >
+        <Original>
+          0.0f == Approx(0.25f).margin(0.25f)
+        </Original>
+        <Expanded>
+          0.0f == Approx( 0.25 )
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="projects/<exe-name>/ApproxTests.cpp" >
+        <Original>
+          0.5f == Approx(0.25f).margin(0.25f)
+        </Original>
+        <Expanded>
+          0.5f == Approx( 0.25 )
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="projects/<exe-name>/ApproxTests.cpp" >
+        <Original>
+          245.0f == Approx(245.25f).margin(0.25f)
+        </Original>
+        <Expanded>
+          245.0f == Approx( 245.25 )
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="projects/<exe-name>/ApproxTests.cpp" >
+        <Original>
+          245.5f == Approx(245.25f).margin(0.25f)
+        </Original>
+        <Expanded>
+          245.5f == Approx( 245.25 )
         </Expanded>
       </Expression>
       <OverallResult success="true"/>
@@ -7325,6 +7376,14 @@ A string sent directly to stderr
           Approx( 1.23 ) != 1.24
         </Expanded>
       </Expression>
+      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/ApproxTests.cpp" >
+        <Original>
+          0 == Approx(0)
+        </Original>
+        <Expanded>
+          0 == Approx( 0.0 )
+        </Expanded>
+      </Expression>
       <OverallResult success="true"/>
     </TestCase>
     <TestCase name="Standard error is reported and redirected" tags="[.][hide][messages]" filename="projects/<exe-name>/MessageTests.cpp" >
@@ -10179,7 +10238,7 @@ spanner      <OverallResult success="true"/>
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="864" failures="94" expectedFailures="21"/>
+    <OverallResults successes="871" failures="94" expectedFailures="21"/>
   </Group>
-  <OverallResults successes="864" failures="93" expectedFailures="21"/>
+  <OverallResults successes="871" failures="93" expectedFailures="21"/>
 </Catch>

@@ -459,6 +459,12 @@ with expansion:
 
 ApproxTests.cpp:<line number>:
 PASSED:
+  REQUIRE( 104.0 == Approx(100.0).margin(4) )
+with expansion:
+  104.0 == Approx( 100.0 )
+
+ApproxTests.cpp:<line number>:
+PASSED:
   REQUIRE( 104.0 != Approx(100.0).margin(3) )
 with expansion:
   104.0 != Approx( 100.0 )
@@ -551,6 +557,42 @@ PASSED:
 with expansion:
   "this string contains 'abc' as a substring" ( contains: "not there" or
   contains: "string" )
+
+-------------------------------------------------------------------------------
+Approx with exactly-representable margin
+-------------------------------------------------------------------------------
+ApproxTests.cpp:<line number>
+...............................................................................
+
+ApproxTests.cpp:<line number>:
+PASSED:
+  CHECK( 0.25f == Approx(0.0f).margin(0.25f) )
+with expansion:
+  0.25f == Approx( 0.0 )
+
+ApproxTests.cpp:<line number>:
+PASSED:
+  CHECK( 0.0f == Approx(0.25f).margin(0.25f) )
+with expansion:
+  0.0f == Approx( 0.25 )
+
+ApproxTests.cpp:<line number>:
+PASSED:
+  CHECK( 0.5f == Approx(0.25f).margin(0.25f) )
+with expansion:
+  0.5f == Approx( 0.25 )
+
+ApproxTests.cpp:<line number>:
+PASSED:
+  CHECK( 245.0f == Approx(245.25f).margin(0.25f) )
+with expansion:
+  245.0f == Approx( 245.25 )
+
+ApproxTests.cpp:<line number>:
+PASSED:
+  CHECK( 245.5f == Approx(245.25f).margin(0.25f) )
+with expansion:
+  245.5f == Approx( 245.25 )
 
 -------------------------------------------------------------------------------
 Approximate PI
@@ -6846,6 +6888,12 @@ PASSED:
 with expansion:
   Approx( 1.23 ) != 1.24
 
+ApproxTests.cpp:<line number>:
+PASSED:
+  REQUIRE( 0 == Approx(0) )
+with expansion:
+  0 == Approx( 0.0 )
+
 Write to std::cerr
 -------------------------------------------------------------------------------
 Standard error is reported and redirected
@@ -9576,6 +9624,6 @@ MiscTests.cpp:<line number>:
 PASSED:
 
 ===============================================================================
-test cases: 170 | 119 passed | 47 failed |  4 failed as expected
-assertions: 978 | 864 passed | 93 failed | 21 failed as expected
+test cases: 171 | 120 passed | 47 failed |  4 failed as expected
+assertions: 985 | 871 passed | 93 failed | 21 failed as expected
 
