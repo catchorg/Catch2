@@ -276,17 +276,9 @@ set(HEADERS
         ${REPORTER_HEADERS}
         )
 
-
-set(BENCH_SOURCES
-        ${BENCHMARK_DIR}/BenchMain.cpp
-        ${BENCHMARK_DIR}/StringificationBench.cpp
-        )
-CheckFileList(BENCH_SOURCES ${BENCHMARK_DIR})
-
 # Provide some groupings for IDEs
 SOURCE_GROUP("Tests" FILES ${TEST_SOURCES})
 SOURCE_GROUP("Surrogates" FILES ${SURROGATE_SOURCES})
-SOURCE_GROUP("Benchmarks" FILES ${BENCH_SOURCES})
 
 # configure the executable
 include_directories(${HEADER_DIR})
@@ -297,12 +289,10 @@ add_definitions( -DCATCH_CONFIG_FULL_PROJECT )
 # without building all of our selftests.
 if (NOT NO_SELFTEST)
     add_executable(SelfTest ${TEST_SOURCES} ${IMPL_SOURCES} ${REPORTER_SOURCES} ${SURROGATE_SOURCES} ${HEADERS})
-    add_executable(Benchmark ${BENCH_SOURCES} ${IMPL_SOURCES} ${REPORTER_SOURCES} ${HEADERS})
 
     # Add desired warnings
     if ( CMAKE_CXX_COMPILER_ID MATCHES "Clang|AppleClang|GNU" )
         target_compile_options( SelfTest PRIVATE -Wall -Wextra -Wunreachable-code )
-        target_compile_options( Benchmark PRIVATE -Wall -Wextra -Wunreachable-code )
     endif()
     # Clang specific warning go here
     if ( CMAKE_CXX_COMPILER_ID MATCHES "Clang" )
@@ -311,7 +301,6 @@ if (NOT NO_SELFTEST)
     endif()
     if ( CMAKE_CXX_COMPILER_ID MATCHES "MSVC" )
         target_compile_options( SelfTest PRIVATE /W4 /w44265 /WX /w44061 /w44062 )
-        target_compile_options( Benchmark PRIVATE /W4 )
     endif()
 
 
