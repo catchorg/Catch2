@@ -492,6 +492,12 @@ with expansion:
 
 ApproxTests.cpp:<line number>:
 PASSED:
+  REQUIRE( 104.0 == Approx(100.0).margin(4) )
+with expansion:
+  104.0 == Approx( 100.0 )
+
+ApproxTests.cpp:<line number>:
+PASSED:
   REQUIRE( 104.0 != Approx(100.0).margin(3) )
 with expansion:
   104.0 != Approx( 100.0 )
@@ -551,6 +557,60 @@ VariadicMacrosTests.cpp:<line number>:
 PASSED:
 with message:
   anonymous test case
+
+-------------------------------------------------------------------------------
+Approx setters validate their arguments
+-------------------------------------------------------------------------------
+ApproxTests.cpp:<line number>
+...............................................................................
+
+ApproxTests.cpp:<line number>:
+PASSED:
+  REQUIRE_NOTHROW( Approx(0).margin(0) )
+
+ApproxTests.cpp:<line number>:
+PASSED:
+  REQUIRE_NOTHROW( Approx(0).margin(1234656) )
+
+ApproxTests.cpp:<line number>:
+PASSED:
+  REQUIRE_THROWS_AS( Approx(0).margin(-2), std::domain_error )
+
+-------------------------------------------------------------------------------
+Approx with exactly-representable margin
+-------------------------------------------------------------------------------
+ApproxTests.cpp:<line number>
+...............................................................................
+
+ApproxTests.cpp:<line number>:
+PASSED:
+  CHECK( 0.25f == Approx(0.0f).margin(0.25f) )
+with expansion:
+  0.25f == Approx( 0.0 )
+
+ApproxTests.cpp:<line number>:
+PASSED:
+  CHECK( 0.0f == Approx(0.25f).margin(0.25f) )
+with expansion:
+  0.0f == Approx( 0.25 )
+
+ApproxTests.cpp:<line number>:
+PASSED:
+  CHECK( 0.5f == Approx(0.25f).margin(0.25f) )
+with expansion:
+  0.5f == Approx( 0.25 )
+
+ApproxTests.cpp:<line number>:
+PASSED:
+  CHECK( 245.0f == Approx(245.25f).margin(0.25f) )
+with expansion:
+  245.0f == Approx( 245.25 )
+
+ApproxTests.cpp:<line number>:
+PASSED:
+  CHECK( 245.5f == Approx(245.25f).margin(0.25f) )
+with expansion:
+  245.5f == Approx( 245.25 )
 
 -------------------------------------------------------------------------------
 Approximate PI
@@ -4201,6 +4261,12 @@ PASSED:
 with expansion:
   Approx( 1.23 ) != 1.24
 
+ApproxTests.cpp:<line number>:
+PASSED:
+  REQUIRE( 0 == Approx(0) )
+with expansion:
+  0 == Approx( 0.0 )
+
 Message from section one
 -------------------------------------------------------------------------------
 Standard output from all sections is reported
@@ -7508,6 +7574,6 @@ MiscTests.cpp:<line number>:
 PASSED:
 
 ===============================================================================
-test cases: 180 | 127 passed | 49 failed |  4 failed as expected
-assertions: 885 | 765 passed | 99 failed | 21 failed as expected
+test cases: 182 | 129 passed | 49 failed |  4 failed as expected
+assertions: 895 | 775 passed | 99 failed | 21 failed as expected
 

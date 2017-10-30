@@ -8,6 +8,7 @@
 #ifndef TWOBLUECUBES_CATCH_APPROX_HPP_INCLUDED
 #define TWOBLUECUBES_CATCH_APPROX_HPP_INCLUDED
 
+#include "catch_enforce.h"
 #include "catch_tostring.h"
 
 #include <cmath>
@@ -48,7 +49,7 @@ namespace Detail {
             if (relativeOK) {
                 return true;
             }
-            return std::fabs(lhs_v - rhs.m_value) < rhs.m_margin;
+            return std::fabs(lhs_v - rhs.m_value) <= rhs.m_margin;
         }
 
         template <typename T, typename = typename std::enable_if<std::is_constructible<double, T>::value>::type>
@@ -95,6 +96,7 @@ namespace Detail {
         template <typename T, typename = typename std::enable_if<std::is_constructible<double, T>::value>::type>
         Approx& margin( T const& newMargin ) {
             m_margin = static_cast<double>(newMargin);
+            CATCH_ENFORCE(m_margin >= 0, "Invalid Approx::margin: " << m_margin << ", Approx::Margin has to be non-negative.");
             return *this;
         }
 

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuitesloose text artifact
 >
-  <testsuite name="<exe-name>" errors="15" failures="85" tests="886" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
+  <testsuite name="<exe-name>" errors="15" failures="85" tests="896" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
     <testcase classname="<exe-name>.global" name="# A test name that starts with a #" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="#1005: Comparing pointer to int and long (NULL can be either on various systems)" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="#748 - captures with unexpected exceptions/outside assertions" time="{duration}">
@@ -100,6 +100,8 @@ ExceptionTests.cpp:<line number>
       </error>
     </testcase>
     <testcase classname="<exe-name>.global" name="Anonymous test case 1" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="Approx setters validate their arguments" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="Approx with exactly-representable margin" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Approximate PI" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Approximate comparisons with different epsilons" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Approximate comparisons with floats" time="{duration}"/>
