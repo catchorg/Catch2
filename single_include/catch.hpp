@@ -1,6 +1,6 @@
 /*
- *  Catch v2.0.0-develop.5
- *  Generated: 2017-10-12 13:05:08.135067
+ *  Catch v2.0.0-develop.6
+ *  Generated: 2017-10-31 15:09:47.277913
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2017 Two Blue Cubes Ltd. All rights reserved.
@@ -155,7 +155,7 @@
 
 // Universal Windows platform does not support SEH
 // Or console colours (or console at all...)
-#  if (WINAPI_FAMILY == WINAPI_FAMILY_APP)
+#  if defined(WINAPI_FAMILY) && (WINAPI_FAMILY == WINAPI_FAMILY_APP)
 #    define CATCH_CONFIG_COLOUR_NONE
 #  else
 #    define CATCH_INTERNAL_CONFIG_WINDOWS_SEH
@@ -165,16 +165,16 @@
 
 ////////////////////////////////////////////////////////////////////////////////
 
-// All supported compilers support COUNTER macro,
-//but user still might want to turn it off
-#define CATCH_INTERNAL_CONFIG_COUNTER
+// Use of __COUNTER__ is suppressed during code analysis in
+// CLion/AppCode 2017.2.x and former, because __COUNTER__ is not properly
+// handled by it.
+// Otherwise all supported compilers support COUNTER macro,
+// but user still might want to turn it off
+#if ( !defined(__JETBRAINS_IDE__) || __JETBRAINS_IDE__ >= 20170300L )
+    #define CATCH_INTERNAL_CONFIG_COUNTER
+#endif
 
-// Now set the actual defines based on the above + anything the user has configured
-
-// Use of __COUNTER__ is suppressed if __JETBRAINS_IDE__ is #defined (meaning we're being parsed by a JetBrains IDE for
-// analytics) because, at time of writing, __COUNTER__ is not properly handled by it.
-// This does not affect compilation
-#if defined(CATCH_INTERNAL_CONFIG_COUNTER) && !defined(CATCH_CONFIG_NO_COUNTER) && !defined(CATCH_CONFIG_COUNTER) && !defined(__JETBRAINS_IDE__)
+#if defined(CATCH_INTERNAL_CONFIG_COUNTER) && !defined(CATCH_CONFIG_NO_COUNTER) && !defined(CATCH_CONFIG_COUNTER)
 #   define CATCH_CONFIG_COUNTER
 #endif
 #if defined(CATCH_INTERNAL_CONFIG_WINDOWS_SEH) && !defined(CATCH_CONFIG_NO_WINDOWS_SEH) && !defined(CATCH_CONFIG_WINDOWS_SEH)
@@ -1037,7 +1037,7 @@ namespace Catch {
 
     // Specialised comparison functions to handle equality comparisons between ints and pointers (NULL deduces as an int)
     template<typename LhsT, typename RhsT>
-    auto compareEqual( LhsT const& lhs, RhsT&& rhs ) -> bool { return lhs == rhs; };
+    auto compareEqual( LhsT const& lhs, RhsT const& rhs ) -> bool { return lhs == rhs; };
     template<typename T>
     auto compareEqual( T* const& lhs, int rhs ) -> bool { return lhs == reinterpret_cast<void const*>( rhs ); }
     template<typename T>
@@ -1065,36 +1065,36 @@ namespace Catch {
         ExprLhs( LhsT lhs ) : m_lhs( lhs ) {}
 
         template<typename RhsT>
-        auto operator == ( RhsT&& rhs ) -> BinaryExpr<LhsT, RhsT&> const {
-            return BinaryExpr<LhsT, RhsT&>( compareEqual( m_lhs, rhs ), m_lhs, "==", rhs );
+        auto operator == ( RhsT const& rhs ) -> BinaryExpr<LhsT, RhsT const&> const {
+            return BinaryExpr<LhsT, RhsT const&>( compareEqual( m_lhs, rhs ), m_lhs, "==", rhs );
         }
         auto operator == ( bool rhs ) -> BinaryExpr<LhsT, bool> const {
             return BinaryExpr<LhsT, bool>( m_lhs == rhs, m_lhs, "==", rhs );
         }
 
         template<typename RhsT>
-        auto operator != ( RhsT&& rhs ) -> BinaryExpr<LhsT, RhsT&> const {
-            return BinaryExpr<LhsT, RhsT&>( compareNotEqual( m_lhs, rhs ), m_lhs, "!=", rhs );
+        auto operator != ( RhsT const& rhs ) -> BinaryExpr<LhsT, RhsT const&> const {
+            return BinaryExpr<LhsT, RhsT const&>( compareNotEqual( m_lhs, rhs ), m_lhs, "!=", rhs );
         }
         auto operator != ( bool rhs ) -> BinaryExpr<LhsT, bool> const {
             return BinaryExpr<LhsT, bool>( m_lhs != rhs, m_lhs, "!=", rhs );
         }
 
         template<typename RhsT>
-        auto operator > ( RhsT&& rhs ) -> BinaryExpr<LhsT, RhsT&> const {
-            return BinaryExpr<LhsT, RhsT&>( m_lhs > rhs, m_lhs, ">", rhs );
+        auto operator > ( RhsT const& rhs ) -> BinaryExpr<LhsT, RhsT const&> const {
+            return BinaryExpr<LhsT, RhsT const&>( m_lhs > rhs, m_lhs, ">", rhs );
         }
         template<typename RhsT>
-        auto operator < ( RhsT&& rhs ) -> BinaryExpr<LhsT, RhsT&> const {
-            return BinaryExpr<LhsT, RhsT&>( m_lhs < rhs, m_lhs, "<", rhs );
+        auto operator < ( RhsT const& rhs ) -> BinaryExpr<LhsT, RhsT const&> const {
+            return BinaryExpr<LhsT, RhsT const&>( m_lhs < rhs, m_lhs, "<", rhs );
         }
         template<typename RhsT>
-        auto operator >= ( RhsT&& rhs ) -> BinaryExpr<LhsT, RhsT&> const {
-            return BinaryExpr<LhsT, RhsT&>( m_lhs >= rhs, m_lhs, ">=", rhs );
+        auto operator >= ( RhsT const& rhs ) -> BinaryExpr<LhsT, RhsT const&> const {
+            return BinaryExpr<LhsT, RhsT const&>( m_lhs >= rhs, m_lhs, ">=", rhs );
         }
         template<typename RhsT>
-        auto operator <= ( RhsT&& rhs ) -> BinaryExpr<LhsT, RhsT&> const {
-            return BinaryExpr<LhsT, RhsT&>( m_lhs <= rhs, m_lhs, "<=", rhs );
+        auto operator <= ( RhsT const& rhs ) -> BinaryExpr<LhsT, RhsT const&> const {
+            return BinaryExpr<LhsT, RhsT const&>( m_lhs <= rhs, m_lhs, "<=", rhs );
         }
 
         auto makeUnaryExpr() const -> UnaryExpr<LhsT> {
@@ -1120,6 +1120,10 @@ namespace Catch {
     };
 
 } // end namespace Catch
+
+#ifdef _MSC_VER
+#pragma warning(pop)
+#endif
 
 // end catch_decomposer.h
 // start catch_assertioninfo.h
@@ -1816,6 +1820,21 @@ namespace Catch {
 // end catch_interfaces_exception.h
 // start catch_approx.h
 
+// start catch_enforce.h
+
+#include <sstream>
+#include <stdexcept>
+
+#define CATCH_PREPARE_EXCEPTION( type, msg ) \
+    type( static_cast<std::ostringstream&&>( std::ostringstream() << msg ).str() )
+#define CATCH_INTERNAL_ERROR( msg ) \
+    throw CATCH_PREPARE_EXCEPTION( std::logic_error, CATCH_INTERNAL_LINEINFO << ": Internal Catch error: " << msg);
+#define CATCH_ERROR( msg ) \
+    throw CATCH_PREPARE_EXCEPTION( std::domain_error, msg )
+#define CATCH_ENFORCE( condition, msg ) \
+    do{ if( !(condition) ) CATCH_ERROR( msg ); } while(false)
+
+// end catch_enforce.h
 #include <cmath>
 
 #include <type_traits>
@@ -1823,7 +1842,7 @@ namespace Catch {
 namespace Catch {
 namespace Detail {
 
-    double max(double lhs, double rhs);
+    double dmax(double lhs, double rhs);
 
     class Approx {
     public:
@@ -1848,11 +1867,12 @@ namespace Detail {
         friend bool operator == ( const T& lhs, Approx const& rhs ) {
             // Thanks to Richard Harris for his help refining this formula
             auto lhs_v = static_cast<double>(lhs);
-            bool relativeOK = std::fabs(lhs_v - rhs.m_value) < rhs.m_epsilon * (rhs.m_scale + (max)(std::fabs(lhs_v), std::fabs(rhs.m_value)));
+            bool relativeOK = std::fabs(lhs_v - rhs.m_value) < rhs.m_epsilon * (rhs.m_scale +
+                    dmax(std::fabs(lhs_v), std::fabs(rhs.m_value)));
             if (relativeOK) {
                 return true;
             }
-            return std::fabs(lhs_v - rhs.m_value) < rhs.m_margin;
+            return std::fabs(lhs_v - rhs.m_value) <= rhs.m_margin;
         }
 
         template <typename T, typename = typename std::enable_if<std::is_constructible<double, T>::value>::type>
@@ -1899,6 +1919,7 @@ namespace Detail {
         template <typename T, typename = typename std::enable_if<std::is_constructible<double, T>::value>::type>
         Approx& margin( T const& newMargin ) {
             m_margin = static_cast<double>(newMargin);
+            CATCH_ENFORCE(m_margin >= 0, "Invalid Approx::margin: " << m_margin << ", Approx::Margin has to be non-negative.");
             return *this;
         }
 
@@ -2643,21 +2664,6 @@ return @ desc; \
 
 // start catch_reporter_bases.hpp
 
-// start catch_enforce.h
-
-#include <sstream>
-#include <stdexcept>
-
-#define CATCH_PREPARE_EXCEPTION( type, msg ) \
-    type( static_cast<std::ostringstream&&>( std::ostringstream() << msg ).str() )
-#define CATCH_INTERNAL_ERROR( msg ) \
-    throw CATCH_PREPARE_EXCEPTION( std::logic_error, CATCH_INTERNAL_LINEINFO << ": Internal Catch error: " << msg);
-#define CATCH_ERROR( msg ) \
-    throw CATCH_PREPARE_EXCEPTION( std::domain_error, msg )
-#define CATCH_ENFORCE( condition, msg ) \
-    do{ if( !(condition) ) CATCH_ERROR( msg ); } while(false)
-
-// end catch_enforce.h
 // start catch_interfaces_reporter.h
 
 // start catch_config.hpp
@@ -3979,7 +3985,7 @@ namespace Catch {
 namespace Catch {
 namespace Detail {
 
-    double max(double lhs, double rhs) {
+    double dmax(double lhs, double rhs) {
         if (lhs < rhs) {
             return rhs;
         }
@@ -4226,8 +4232,8 @@ namespace Catch {
     }
 
     std::string AssertionResult::getExpression() const {
-        if (isFalseTest(m_info.resultDisposition))
-            return '!' + std::string(m_info.capturedExpression);
+        if( isFalseTest( m_info.resultDisposition ) )
+            return "!(" + std::string(m_info.capturedExpression) + ")";
         else
             return m_info.capturedExpression;
     }
@@ -4334,7 +4340,7 @@ namespace Catch {
 #endif
 
 // start clara.hpp
-// v1.0
+// v1.0-develop.2
 // See https://github.com/philsquared/Clara
 
 
@@ -4737,6 +4743,14 @@ namespace detail {
         std::string token;
     };
 
+    inline auto isOptPrefix( char c ) -> bool {
+        return c == '-'
+#ifdef CATCH_PLATFORM_WINDOWS
+            || c == '/'
+#endif
+        ;
+    }
+
     // Abstracts iterators into args as a stream of tokens, with option arguments uniformly handled
     class TokenStream {
         using Iterator = std::vector<std::string>::const_iterator;
@@ -4753,7 +4767,7 @@ namespace detail {
 
             if( it != itEnd ) {
                 auto const &next = *it;
-                if( next[0] == '-' || next[0] == '/' ) {
+                if( isOptPrefix( next[0] ) ) {
                     auto delimiterPos = next.find_first_of( " :=" );
                     if( delimiterPos != std::string::npos ) {
                         m_tokenBuffer.push_back( { TokenType::Option, next.substr( 0, delimiterPos ) } );
@@ -5241,9 +5255,11 @@ namespace detail {
     };
 
     inline auto normaliseOpt( std::string const &optName ) -> std::string {
+#ifdef CATCH_PLATFORM_WINDOWS
         if( optName[0] == '/' )
             return "-" + optName.substr( 1 );
         else
+#endif
             return optName;
     }
 
@@ -5284,11 +5300,7 @@ namespace detail {
         }
 
         auto isMatch( std::string const &optToken ) const -> bool {
-#ifdef CATCH_PLATFORM_WINDOWS
             auto normalisedToken = normaliseOpt( optToken );
-#else
-            auto const &normalisedToken = optToken;
-#endif
             for( auto const &name : m_optNames ) {
                 if( normaliseOpt( name ) == normalisedToken )
                     return true;
@@ -5338,8 +5350,13 @@ namespace detail {
             for( auto const &name : m_optNames ) {
                 if( name.empty() )
                     return Result::logicError( "Option name cannot be empty" );
+#ifdef CATCH_PLATFORM_WINDOWS
                 if( name[0] != '-' && name[0] != '/' )
                     return Result::logicError( "Option name must begin with '-' or '/'" );
+#else
+                if( name[0] != '-' )
+                    return Result::logicError( "Option name must begin with '-'" );
+#endif
             }
             return ParserRefImpl::validate();
         }
@@ -5428,7 +5445,7 @@ namespace detail {
             size_t consoleWidth = CATCH_CLARA_CONFIG_CONSOLE_WIDTH;
             size_t optWidth = 0;
             for( auto const &cols : rows )
-                optWidth = std::max(optWidth, cols.left.size() + 2);
+                optWidth = (std::max)(optWidth, cols.left.size() + 2);
 
             for( auto const &cols : rows ) {
                 auto row =
@@ -7188,10 +7205,10 @@ namespace Catch {
     unsigned int rngSeed();
 
     struct RandomNumberGenerator {
-        using result_type = std::ptrdiff_t;
+        using result_type = unsigned int;
 
-        static constexpr result_type min() { return 0; }
-        static constexpr result_type max() { return 1000000; }
+        static constexpr result_type (min)() { return 0; }
+        static constexpr result_type (max)() { return 1000000; }
 
         result_type operator()( result_type n ) const;
         result_type operator()() const;
@@ -7222,7 +7239,7 @@ namespace Catch {
         return std::rand() % n;
     }
     RandomNumberGenerator::result_type RandomNumberGenerator::operator()() const {
-        return std::rand() % max();
+        return std::rand() % (max)();
     }
 
 }
@@ -9785,7 +9802,7 @@ namespace Catch {
     }
 
     Version const& libraryVersion() {
-        static Version version( 2, 0, 0, "develop", 5 );
+        static Version version( 2, 0, 0, "develop", 6 );
         return version;
     }
 
@@ -10453,6 +10470,13 @@ namespace Catch {
 #include <cfloat>
 #include <cstdio>
 
+#if defined(_MSC_VER)
+#pragma warning(push)
+#pragma warning(disable:4061) // Not all labels are EXPLICITLY handled in switch
+                              // Note that 4062 (not all labels are handled
+                              // and default is missing) is enabled
+#endif
+
 namespace Catch {
 
     namespace {
@@ -11074,6 +11098,10 @@ namespace Catch {
     ConsoleReporter::~ConsoleReporter() {}
 
 } // end namespace Catch
+
+#if defined(_MSC_VER)
+#pragma warning(pop)
+#endif
 // end catch_reporter_console.cpp
 // start catch_reporter_junit.cpp
 
@@ -11415,6 +11443,13 @@ namespace Catch {
 // end catch_reporter_multi.cpp
 // start catch_reporter_xml.cpp
 
+#if defined(_MSC_VER)
+#pragma warning(push)
+#pragma warning(disable:4061) // Not all labels are EXPLICITLY handled in switch
+                              // Note that 4062 (not all labels are handled
+                              // and default is missing) is enabled
+#endif
+
 namespace Catch {
     class XmlReporter : public StreamingReporterBase<XmlReporter> {
     public:
@@ -11624,6 +11659,10 @@ namespace Catch {
     CATCH_REGISTER_REPORTER( "xml", XmlReporter )
 
 } // end namespace Catch
+
+#if defined(_MSC_VER)
+#pragma warning(pop)
+#endif
 // end catch_reporter_xml.cpp
 
 namespace Catch {

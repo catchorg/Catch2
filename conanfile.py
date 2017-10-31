@@ -4,7 +4,7 @@ from conans import ConanFile
 
 class CatchConan(ConanFile):
     name = "Catch"
-    version = "2.0.0-develop.5"
+    version = "2.0.0-develop.6"
     description = "A modern, C++-native, header-only, framework for unit-tests, TDD and BDD"
     author = "philsquared"
     generators = "cmake"
@@ -14,6 +14,6 @@ class CatchConan(ConanFile):
 
     def package(self):
         self.copy(pattern="catch.hpp", src="single_include", dst="include")
-    
+
     def package_id(self):
             self.info.header_only()

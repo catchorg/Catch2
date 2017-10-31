@@ -57,6 +57,8 @@
   * The Reporter/Listener interface provides default, empty, implementation to preserve backward compatibility
 * Stringification of `std::chrono::duration` and `std::chrono::time_point` is now supported
   * Needs to be enabled by a per-file compile time configuration option
+* Add `pkg-config` support to CMake install command
+
 
 ## Fixes
 * Don't use console colour if running in XCode
@@ -67,6 +69,8 @@
 * Implemented a workaround for `std::uncaught_exception` issues in libcxxrt
   * These issues caused incorrect section traversals
   * The workaround is only partial, user's test can still trigger the issue by using `throw;` to rethrow an exception
+* Suppressed C4061 warning under MSVC
+
 
 ## Internal changes
 * The development version now uses .cpp files instead of header files containing implementation.
