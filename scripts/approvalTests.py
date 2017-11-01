@@ -45,6 +45,11 @@ errnoParser = re.compile(r'''
     \(\*_errno\(\)\)
 ''', re.VERBOSE)
 sinceEpochParser = re.compile(r'\d+ .+ since epoch')
+infParser = re.compile(r'''
+    \(\(float\)\(1e\+300\ \*\ 1e\+300\)\) # MSVC INFINITY macro
+    |
+    \(__builtin_inff\(\)\)         # Clang INFINITY macro
+''', re.VERBOSE)
 
 if len(sys.argv) == 2:
     cmdPath = sys.argv[1]
@@ -102,6 +107,7 @@ def filterLine(line):
     line = specialCaseParser.sub('file:\g<1>', line)
     line = errnoParser.sub('errno', line)
     line = sinceEpochParser.sub('{since-epoch-report}', line)
+    line = infParser.sub('INFINITY', line)
     return line
 
 

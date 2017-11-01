@@ -8,17 +8,21 @@
 
 #include "catch_approx.h"
 
+#include <cmath>
 #include <limits>
+
+namespace {
+
+// Performs equivalent check of std::fabs(lhs - rhs) <= margin
+// But without the subtraction to allow for INFINITY in comparison
+bool marginComparison(double lhs, double rhs, double margin) {
+    return (lhs + margin >= rhs) && (rhs + margin >= lhs);
+}
+
+}
 
 namespace Catch {
 namespace Detail {
-
-    double dmax(double lhs, double rhs) {
-        if (lhs < rhs) {
-            return rhs;
-        }
-        return lhs;
-    }
 
     Approx::Approx ( double value )
     :   m_epsilon( std::numeric_limits<float>::epsilon()*100 ),
@@ -35,6 +39,12 @@ namespace Detail {
         std::ostringstream oss;
         oss << "Approx( " << ::Catch::Detail::stringify( m_value ) << " )";
         return oss.str();
+    }
+
+    bool Approx::equalityComparisonImpl(const double other) const {
+        // First try with fixed margin, then compute margin based on epsilon, scale and Approx's value
+        // Thanks to Richard Harris for his help refining the scaled margin value
+        return marginComparison(m_value, other, m_margin) || marginComparison(m_value, other, m_epsilon * (m_scale + std::fabs(m_value)));
     }
 
 } // end namespace Detail

@@ -601,6 +601,38 @@
           Approx(0).margin(-2), std::domain_error
         </Expanded>
       </Expression>
+      <Expression success="true" type="REQUIRE_NOTHROW" filename="projects/<exe-name>/ApproxTests.cpp" >
+        <Original>
+          Approx(0).epsilon(0)
+        </Original>
+        <Expanded>
+          Approx(0).epsilon(0)
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE_NOTHROW" filename="projects/<exe-name>/ApproxTests.cpp" >
+        <Original>
+          Approx(0).epsilon(1)
+        </Original>
+        <Expanded>
+          Approx(0).epsilon(1)
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE_THROWS_AS" filename="projects/<exe-name>/ApproxTests.cpp" >
+        <Original>
+          Approx(0).epsilon(-0.001), std::domain_error
+        </Original>
+        <Expanded>
+          Approx(0).epsilon(-0.001), std::domain_error
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE_THROWS_AS" filename="projects/<exe-name>/ApproxTests.cpp" >
+        <Original>
+          Approx(0).epsilon(1.0001), std::domain_error
+        </Original>
+        <Expanded>
+          Approx(0).epsilon(1.0001), std::domain_error
+        </Expanded>
+      </Expression>
       <OverallResult success="true"/>
     </TestCase>
     <TestCase name="Approx with exactly-representable margin" tags="[Approx]" filename="projects/<exe-name>/ApproxTests.cpp" >
@@ -741,7 +773,7 @@
       </Expression>
       <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/ApproxTests.cpp" >
         <Original>
-          0 == Approx( dSmall ).epsilon( 0.001 )
+          0 == Approx( dSmall ).margin( 0.001 )
         </Original>
         <Expanded>
           0 == Approx( 0.00001 )
@@ -826,6 +858,17 @@
         </Section>
         <OverallResults successes="2" failures="0" expectedFailures="0"/>
       </Section>
+      <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="Assorted miscellaneous tests" tags="[Approx]" filename="projects/<exe-name>/ApproxTests.cpp" >
+      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/ApproxTests.cpp" >
+        <Original>
+          INFINITY == Approx(INFINITY)
+        </Original>
+        <Expanded>
+          inff == Approx( inf )
+        </Expanded>
+      </Expression>
       <OverallResult success="true"/>
     </TestCase>
     <TestCase name="Bitfields can be captured (#1027)" filename="projects/<exe-name>/TrickyTests.cpp" >
@@ -1433,6 +1476,25 @@
       </Exception>
       <OverallResult success="false"/>
     </TestCase>
+    <TestCase name="Default scale is invisible to comparison" tags="[Approx]" filename="projects/<exe-name>/ApproxTests.cpp" >
+      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/ApproxTests.cpp" >
+        <Original>
+          101.000001 != Approx(100).epsilon(0.01)
+        </Original>
+        <Expanded>
+          101.000001 != Approx( 100.0 )
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/ApproxTests.cpp" >
+        <Original>
+          std::pow(10, -5) != Approx(std::pow(10, -7))
+        </Original>
+        <Expanded>
+          0.00001 != Approx( 0.0000001 )
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
     <TestCase name="EndsWith string matcher" tags="[.][failing][matchers]" filename="projects/<exe-name>/MatchersTests.cpp" >
       <Expression success="false" type="CHECK_THAT" filename="projects/<exe-name>/MatchersTests.cpp" >
         <Original>
@@ -1443,6 +1505,17 @@
         </Expanded>
       </Expression>
       <OverallResult success="false"/>
+    </TestCase>
+    <TestCase name="Epsilon only applies to Approx's value" tags="[Approx]" filename="projects/<exe-name>/ApproxTests.cpp" >
+      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/ApproxTests.cpp" >
+        <Original>
+          101.01 != Approx(100).epsilon(0.01)
+        </Original>
+        <Expanded>
+          101.01 != Approx( 100.0 )
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
     </TestCase>
     <TestCase name="Equality checks that should fail" tags="[!mayfail][.][failing]" filename="projects/<exe-name>/ConditionTests.cpp" >
       <Expression success="false" type="CHECK" filename="projects/<exe-name>/ConditionTests.cpp" >
@@ -4875,10 +4948,10 @@ A string sent directly to stderr
       </Expression>
       <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/ApproxTests.cpp" >
         <Original>
-          0 == Approx(0)
+          INFINITY == Approx(INFINITY)
         </Original>
         <Expanded>
-          0 == Approx( 0.0 )
+          inff == Approx( inf )
         </Expanded>
       </Expression>
       <OverallResult success="true"/>
@@ -8373,7 +8446,7 @@ loose text artifact
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="775" failures="100" expectedFailures="21"/>
+    <OverallResults successes="783" failures="100" expectedFailures="21"/>
   </Group>
-  <OverallResults successes="775" failures="99" expectedFailures="21"/>
+  <OverallResults successes="783" failures="99" expectedFailures="21"/>
 </Catch>

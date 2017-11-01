@@ -8,6 +8,8 @@
 
 #include "catch.hpp"
 
+#include <cmath>
+
 ///////////////////////////////////////////////////////////////////////////////
 TEST_CASE
 (
@@ -25,7 +27,7 @@ TEST_CASE
     REQUIRE( Approx( d ) != 1.22 );
     REQUIRE( Approx( d ) != 1.24 );
 
-    REQUIRE( 0 == Approx(0) );
+    REQUIRE(INFINITY == Approx(INFINITY));
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -106,7 +108,7 @@ TEST_CASE
 
     REQUIRE( 1.0f == Approx( 1 ) );
     REQUIRE( 0 == Approx( dZero) );
-    REQUIRE( 0 == Approx( dSmall ).epsilon( 0.001 ) );
+    REQUIRE( 0 == Approx( dSmall ).margin( 0.001 ) );
     REQUIRE( 1.234f == Approx( dMedium ) );
     REQUIRE( dMedium == Approx( 1.234f ) );
 }
@@ -120,7 +122,7 @@ TEST_CASE
 {
     double d = 1.23;
 
-    Approx approx = Approx::custom().epsilon( 0.005 );
+    Approx approx = Approx::custom().epsilon( 0.01 );
 
     REQUIRE( d == approx( 1.23 ) );
     REQUIRE( d == approx( 1.22 ) );
@@ -169,9 +171,26 @@ TEST_CASE("Approx setters validate their arguments", "[Approx]") {
     REQUIRE_NOTHROW(Approx(0).margin(1234656));
 
     REQUIRE_THROWS_AS(Approx(0).margin(-2), std::domain_error);
+
+    REQUIRE_NOTHROW(Approx(0).epsilon(0));
+    REQUIRE_NOTHROW(Approx(0).epsilon(1));
+
+    REQUIRE_THROWS_AS(Approx(0).epsilon(-0.001), std::domain_error);
+    REQUIRE_THROWS_AS(Approx(0).epsilon(1.0001), std::domain_error);
 }
 
-////////////////////////////////////////////////////////////////////////////////
+TEST_CASE("Default scale is invisible to comparison", "[Approx]") {
+    REQUIRE(101.000001 != Approx(100).epsilon(0.01));
+    REQUIRE(std::pow(10, -5) != Approx(std::pow(10, -7)));
+}
+
+TEST_CASE("Epsilon only applies to Approx's value", "[Approx]") {
+    REQUIRE(101.01 != Approx(100).epsilon(0.01));
+}
+
+TEST_CASE("Assorted miscellaneous tests", "[Approx]") {
+    REQUIRE(INFINITY == Approx(INFINITY));
+}
 
 class StrongDoubleTypedef
 {
@@ -207,5 +226,3 @@ TEST_CASE( "Comparison with explicitly convertible types", "[Approx]" )
   REQUIRE(Approx(11.0) >= td);
 
 }
-
-////////////////////////////////////////////////////////////////////////////////

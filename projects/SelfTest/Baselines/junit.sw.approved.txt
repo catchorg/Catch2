@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuitesloose text artifact
 >
-  <testsuite name="<exe-name>" errors="15" failures="85" tests="896" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
+  <testsuite name="<exe-name>" errors="15" failures="85" tests="904" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
     <testcase classname="<exe-name>.global" name="# A test name that starts with a #" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="#1005: Comparing pointer to int and long (NULL can be either on various systems)" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="#748 - captures with unexpected exceptions/outside assertions" time="{duration}">
@@ -111,6 +111,7 @@ ExceptionTests.cpp:<line number>
     <testcase classname="<exe-name>.global" name="Assertions then sections/A section" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Assertions then sections/A section/Another section" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Assertions then sections/A section/Another other section" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="Assorted miscellaneous tests" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Bitfields can be captured (#1027)" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Capture and info messages/Capture should stringify like assertions" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Capture and info messages/Info should NOT stringify the way assertions do" time="{duration}"/>
@@ -146,11 +147,13 @@ custom std exception
 ExceptionTests.cpp:<line number>
       </error>
     </testcase>
+    <testcase classname="<exe-name>.global" name="Default scale is invisible to comparison" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="EndsWith string matcher" time="{duration}">
       <failure message="&quot;this string contains 'abc' as a substring&quot; ends with: &quot;this&quot;" type="CHECK_THAT">
 MatchersTests.cpp:<line number>
       </failure>
     </testcase>
+    <testcase classname="<exe-name>.global" name="Epsilon only applies to Approx's value" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Equality checks that should fail" time="{duration}">
       <failure message="7 == 6" type="CHECK">
 ConditionTests.cpp:<line number>

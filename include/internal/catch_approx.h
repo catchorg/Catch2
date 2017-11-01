@@ -11,16 +11,15 @@
 #include "catch_enforce.h"
 #include "catch_tostring.h"
 
-#include <cmath>
-
 #include <type_traits>
 
 namespace Catch {
 namespace Detail {
 
-    double dmax(double lhs, double rhs);
-
     class Approx {
+    private:
+        bool equalityComparisonImpl(double other) const;
+
     public:
         explicit Approx ( double value );
 
@@ -42,15 +41,8 @@ namespace Detail {
 
         template <typename T, typename = typename std::enable_if<std::is_constructible<double, T>::value>::type>
         friend bool operator == ( const T& lhs, Approx const& rhs ) {
-            // Thanks to Richard Harris for his help refining this formula
             auto lhs_v = static_cast<double>(lhs);
-
-            bool relativeOK = std::fabs( lhs_v - rhs.m_value ) < rhs.m_epsilon * (rhs.m_scale + std::fabs(rhs.m_value) );
-
-            if (relativeOK) {
-                return true;
-            }
-            return std::fabs(lhs_v - rhs.m_value) <= rhs.m_margin;
+            return rhs.equalityComparisonImpl(lhs_v);
         }
 
         template <typename T, typename = typename std::enable_if<std::is_constructible<double, T>::value>::type>
@@ -90,18 +82,21 @@ namespace Detail {
 
         template <typename T, typename = typename std::enable_if<std::is_constructible<double, T>::value>::type>
         Approx& epsilon( T const& newEpsilon ) {
-            double asDouble = static_cast<double>(newEpsilon);
-            CATCH_ENFORCE(asDouble >= 0 && asDouble <= 1.0,
-                          "Invalid Approx::epsilon: " << m_epsilon <<
-                          ", Approx::epsilon has to be between 0 and 1");
-            m_epsilon = asDouble;
+            double epsilonAsDouble = static_cast<double>(newEpsilon);
+            CATCH_ENFORCE(epsilonAsDouble >= 0 && epsilonAsDouble <= 1.0,
+                          "Invalid Approx::epsilon: " << epsilonAsDouble
+                          << ", Approx::epsilon has to be between 0 and 1");
+            m_epsilon = epsilonAsDouble;
             return *this;
         }
 
         template <typename T, typename = typename std::enable_if<std::is_constructible<double, T>::value>::type>
         Approx& margin( T const& newMargin ) {
-            m_margin = static_cast<double>(newMargin);
-            CATCH_ENFORCE(m_margin >= 0, "Invalid Approx::margin: " << m_margin << ", Approx::Margin has to be non-negative.");
+            double marginAsDouble = static_cast<double>(newMargin);
+            CATCH_ENFORCE(marginAsDouble >= 0,
+                          "Invalid Approx::margin: " << marginAsDouble
+                          << ", Approx::Margin has to be non-negative.");
+            m_margin = marginAsDouble;
             return *this;
         }
 

@@ -576,6 +576,22 @@ ApproxTests.cpp:<line number>:
 PASSED:
   REQUIRE_THROWS_AS( Approx(0).margin(-2), std::domain_error )
 
+ApproxTests.cpp:<line number>:
+PASSED:
+  REQUIRE_NOTHROW( Approx(0).epsilon(0) )
+
+ApproxTests.cpp:<line number>:
+PASSED:
+  REQUIRE_NOTHROW( Approx(0).epsilon(1) )
+
+ApproxTests.cpp:<line number>:
+PASSED:
+  REQUIRE_THROWS_AS( Approx(0).epsilon(-0.001), std::domain_error )
+
+ApproxTests.cpp:<line number>:
+PASSED:
+  REQUIRE_THROWS_AS( Approx(0).epsilon(1.0001), std::domain_error )
+
 -------------------------------------------------------------------------------
 Approx with exactly-representable margin
 -------------------------------------------------------------------------------
@@ -704,7 +720,7 @@ with expansion:
 
 ApproxTests.cpp:<line number>:
 PASSED:
-  REQUIRE( 0 == Approx( dSmall ).epsilon( 0.001 ) )
+  REQUIRE( 0 == Approx( dSmall ).margin( 0.001 ) )
 with expansion:
   0 == Approx( 0.00001 )
 
@@ -797,6 +813,18 @@ PASSED:
   REQUIRE( Catch::alwaysTrue() )
 with expansion:
   true
+
+-------------------------------------------------------------------------------
+Assorted miscellaneous tests
+-------------------------------------------------------------------------------
+ApproxTests.cpp:<line number>
+...............................................................................
+
+ApproxTests.cpp:<line number>:
+PASSED:
+  REQUIRE( INFINITY == Approx(INFINITY) )
+with expansion:
+  inff == Approx( inf )
 
 -------------------------------------------------------------------------------
 Bitfields can be captured (#1027)
@@ -1294,6 +1322,24 @@ due to unexpected exception with message:
   custom std exception
 
 -------------------------------------------------------------------------------
+Default scale is invisible to comparison
+-------------------------------------------------------------------------------
+ApproxTests.cpp:<line number>
+...............................................................................
+
+ApproxTests.cpp:<line number>:
+PASSED:
+  REQUIRE( 101.000001 != Approx(100).epsilon(0.01) )
+with expansion:
+  101.000001 != Approx( 100.0 )
+
+ApproxTests.cpp:<line number>:
+PASSED:
+  REQUIRE( std::pow(10, -5) != Approx(std::pow(10, -7)) )
+with expansion:
+  0.00001 != Approx( 0.0000001 )
+
+-------------------------------------------------------------------------------
 EndsWith string matcher
 -------------------------------------------------------------------------------
 MatchersTests.cpp:<line number>
@@ -1303,6 +1349,18 @@ MatchersTests.cpp:<line number>: FAILED:
   CHECK_THAT( testStringForMatching(), EndsWith( "this" ) )
 with expansion:
   "this string contains 'abc' as a substring" ends with: "this"
+
+-------------------------------------------------------------------------------
+Epsilon only applies to Approx's value
+-------------------------------------------------------------------------------
+ApproxTests.cpp:<line number>
+...............................................................................
+
+ApproxTests.cpp:<line number>:
+PASSED:
+  REQUIRE( 101.01 != Approx(100).epsilon(0.01) )
+with expansion:
+  101.01 != Approx( 100.0 )
 
 -------------------------------------------------------------------------------
 Equality checks that should fail
@@ -4263,9 +4321,9 @@ with expansion:
 
 ApproxTests.cpp:<line number>:
 PASSED:
-  REQUIRE( 0 == Approx(0) )
+  REQUIRE( INFINITY == Approx(INFINITY) )
 with expansion:
-  0 == Approx( 0.0 )
+  inff == Approx( inf )
 
 Message from section one
 -------------------------------------------------------------------------------
@@ -7574,6 +7632,6 @@ MiscTests.cpp:<line number>:
 PASSED:
 
 ===============================================================================
-test cases: 182 | 129 passed | 49 failed |  4 failed as expected
-assertions: 895 | 775 passed | 99 failed | 21 failed as expected
+test cases: 185 | 132 passed | 49 failed |  4 failed as expected
+assertions: 903 | 783 passed | 99 failed | 21 failed as expected
 
