@@ -48,7 +48,9 @@ sinceEpochParser = re.compile(r'\d+ .+ since epoch')
 infParser = re.compile(r'''
     \(\(float\)\(1e\+300\ \*\ 1e\+300\)\) # MSVC INFINITY macro
     |
-    \(__builtin_inff\(\)\)         # Clang INFINITY macro
+    \(__builtin_inff\(\)\)                # Linux (ubuntu) INFINITY macro
+    |
+    __builtin_huge_valf\(\)               # OSX macro
 ''', re.VERBOSE)
 
 if len(sys.argv) == 2:
