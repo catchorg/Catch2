@@ -25,6 +25,11 @@
 * `std::pair` and `std::tuple` are no longer stringified by default
   * This is done to avoid dragging in `<tuple>` and `<utility>` headers in common path
   * Their stringification can be enabled per-file via new configuration macros
+* `Approx` is subtly different and hopefully behaves more as users would expect
+  * `Approx::scale` defaults to `0.0`
+  * `Approx::epsilon` no longer applies to the larger of the two compared values, but only to the `Approx`'s value
+  * `INFINITY == Approx(INFINITY)` returns true
+
 
 ## Improvements
 * Reporters and Listeners can be defined in files different from the main file
