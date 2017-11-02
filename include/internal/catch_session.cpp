@@ -116,8 +116,26 @@ namespace Catch {
 
     Session::Session() {
         static bool alreadyInstantiated = false;
-        if( alreadyInstantiated )
-            CATCH_INTERNAL_ERROR( "Only one instance of Catch::Session can ever be used" );
+        if( alreadyInstantiated ) {
+            try         { CATCH_INTERNAL_ERROR( "Only one instance of Catch::Session can ever be used" ); }
+            catch(...)  { getMutableRegistryHub().registerStartupException(); }
+        }
+
+        const auto& exceptions = getRegistryHub().getStartupExceptionRegistry().getExceptions();
+        if ( !exceptions.empty() ) {
+            m_startupExceptions = true;
+            Colour colourGuard( Colour::Red );
+            Catch::cerr() << "Errors occured during startup!" << '\n';
+            // iterate over all exceptions and notify user
+            for ( const auto& ex_ptr : exceptions ) {
+                try {
+                    std::rethrow_exception(ex_ptr);
+                } catch ( std::exception const& ex ) {
+                    Catch::cerr() << Column( ex.what() ).indent(2) << '\n';
+                }
+            }
+        }
+
         alreadyInstantiated = true;
         m_cli = makeCommandLineParser( m_configData );
     }
@@ -140,6 +158,9 @@ namespace Catch {
     }
 
     int Session::applyCommandLine( int argc, char* argv[] ) {
+        if( m_startupExceptions )
+            return 1;
+
         auto result = m_cli.parse( clara::Args( argc, argv ) );
         if( !result ) {
             Catch::cerr()
@@ -165,19 +186,8 @@ namespace Catch {
     }
 
     int Session::run( int argc, char* argv[] ) {
-        const auto& exceptions = getRegistryHub().getStartupExceptionRegistry().getExceptions();
-        if ( !exceptions.empty() ) {
-            Catch::cerr() << "Errors occured during startup!" << '\n';
-            // iterate over all exceptions and notify user
-            for ( const auto& ex_ptr : exceptions ) {
-                try {
-                    std::rethrow_exception(ex_ptr);
-                } catch ( std::exception const& ex ) {
-                    Catch::cerr() << ex.what() << '\n';
-                }
-            }
+        if( m_startupExceptions )
             return 1;
-        }
         int returnCode = applyCommandLine( argc, argv );
         if( returnCode == 0 )
             returnCode = run();
@@ -236,6 +246,9 @@ namespace Catch {
     }
 
     int Session::runInternal() {
+        if( m_startupExceptions )
+            return 1;
+
         if( m_configData.showHelp || m_configData.libIdentify )
             return 0;
 
