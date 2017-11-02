@@ -66,7 +66,44 @@ To take full control of the config simply omit the call to ```applyCommandLine()
 
 ## Adding your own command line options
 
-Catch embeds a powerful command line parser which you can also use to parse your own options out. This capability is still in active development but will be documented here when it is ready.
+Catch embeds a powerful command line parser called [Clara](https://github.com/philsquared/Clara). 
+As of Catch2 (and Clara 1.0) Clara allows you to write _composable_ option and argument parsers, 
+so extending Catch's own command line options is now easy.
+
+```c++
+#define CATCH_CONFIG_RUNNER
+#include "catch.hpp"
+
+int main( int argc, char* argv[] )
+{
+  Catch::Session session; // There must be exactly one instance
+  
+  int height = 0; // Some user variable you want to be able to set
+  
+  // Build a new parser on top of Catch's
+  auto cli 
+    = session.cli() // Get Catch's composite command line parser
+    | Opt( height, "height" ) // bind variable to a new option, with a hint string
+        ["-g"]["--height"]    // the option names it will respond to
+        ("how high?");        // description string for the help output
+        
+  // Now pass the new composite back to Catch so it uses that
+  session.cli( cli ); 
+  
+  // Let Catch (using Clara) parse the command line
+  int returnCode = session.applyCommandLine( argc, argv );
+  if( returnCode != 0 ) // Indicates a command line error
+  	return returnCode;
+
+  // if set on the command line then 'height' is now set at this point
+  if( height > 0 )
+      std::cout << "height: " << height << std::endl;
+
+  return session.run();
+}
+```
+
+See the [Clara documentation](https://github.com/philsquared/Clara/blob/master/README.md) for more details.
 
 ---
 
