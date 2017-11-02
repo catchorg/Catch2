@@ -1,0 +1,23 @@
+{
+  "name": "@bchociej/catch",
+  "version": "1.5.6-npm.5",
+  "description": "catch C++ unit test framework",
+  "main": "include_dirs.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/philsquared/Catch.git"
+  },
+  "author": "philsquared",
+  "contributors": [
+     "sam mikes",
+     "Ben Chociej <ben@chociej.io>"
+  ],
+  "license": "Boost",
+  "bugs": {
+    "url": "https://github.com/philsquared/Catch/issues"
+  },
+  "homepage": "https://github.com/philsquared/Catch"
+}
