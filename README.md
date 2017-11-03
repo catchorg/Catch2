@@ -7,6 +7,12 @@
 
 <a href="https://github.com/catchorg/Catch2/releases/download/v2.0.1/catch.hpp">The latest version of the single header can be downloaded directly using this link</a>
 
+## Catch2 is released!
+
+If you've been using an earlier version of Catch, please see the 
+[Breaking Changes section of the release notes](https://github.com/catchorg/Catch2/blob/master/docs/release-notes.md#breaking-changes)
+before moving to Catch2.
+
 ## What's the Catch?
 
 Catch2 stands for C++ Automated Test Cases in a Header and is a
