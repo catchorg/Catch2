@@ -14,6 +14,10 @@
 #ifdef _MSC_VER
 #pragma warning(disable:4702) // Unreachable code -- MSVC 19 (VS 2015) sees right through the indirection
 #endif
+#ifdef __clang__
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wweak-vtables"
+#endif
 
 namespace
 {
@@ -59,7 +63,7 @@ TEST_CASE( "An unchecked exception reports the line of the last assertion", "[.]
 
 TEST_CASE( "When unchecked exceptions are thrown from sections they are always failures", "[.][failing][!throws]" )
 {
-    SECTION( "section name", "" )
+    SECTION( "section name" )
     {
         if( Catch::alwaysTrue() )
             throw std::domain_error( "unexpected exception" );
@@ -120,7 +124,7 @@ public:
     CustomStdException( const std::string& msg )
     : m_msg( msg )
     {}
-    ~CustomStdException() CATCH_NOEXCEPT {}
+    ~CustomStdException() noexcept {}
 
     std::string getMessage() const
     {
@@ -144,7 +148,7 @@ CATCH_TRANSLATE_EXCEPTION( CustomStdException& ex )
 
 CATCH_TRANSLATE_EXCEPTION( double& ex )
 {
-    return Catch::toString( ex );
+    return Catch::Detail::stringify( ex );
 }
 
 TEST_CASE("Non-std exceptions can be translated", "[.][failing][!throws]" )
@@ -181,14 +185,7 @@ TEST_CASE( "Unexpected exceptions can be translated", "[.][failing][!throws]"  )
         throw double( 3.14 );
 }
 
-inline int thisFunctionNotImplemented( int ) {
-    CATCH_NOT_IMPLEMENTED;
-}
-
-TEST_CASE( "NotImplemented exception", "[!throws]" )
-{
-    REQUIRE_THROWS( thisFunctionNotImplemented( 7 ) );
-}
+#ifndef CATCH_CONFIG_DISABLE_MATCHERS
 
 TEST_CASE( "Exception messages can be tested for", "[!throws]" ) {
     using namespace Catch::Matchers;
@@ -204,13 +201,15 @@ TEST_CASE( "Exception messages can be tested for", "[!throws]" ) {
     }
 }
 
+#endif
+
 TEST_CASE( "Mismatching exception messages failing the test", "[.][failing][!throws]" ) {
     REQUIRE_THROWS_WITH( thisThrows(), "expected exception" );
     REQUIRE_THROWS_WITH( thisThrows(), "should fail" );
     REQUIRE_THROWS_WITH( thisThrows(), "expected exception" );
 }
 
-TEST_CASE( "#748 - captures with unexpected exceptions", "[!shouldfail][!throws]" ) {
+TEST_CASE( "#748 - captures with unexpected exceptions", "[.][failing][!throws][!shouldfail]" ) {
     int answer = 42;
     CAPTURE( answer );
     // the message should be printed on the first two sections but not on the third
@@ -224,3 +223,7 @@ TEST_CASE( "#748 - captures with unexpected exceptions", "[!shouldfail][!throws]
         REQUIRE_THROWS( thisThrows() );
     }
 }
+
+#ifdef __clang__
+#pragma clang diagnostic pop
+#endif

@@ -1,4 +1,11 @@
+<a id="top"></a>
 # Assertion Macros
+
+**Contents**<br>
+[Natural Expressions](#natural-expressions)<br>
+[Exceptions](#exceptions)<br>
+[Matcher expressions](#matcher-expressions)<br>
+[Thread Safety](#thread-safety)<br>
 
 Most test frameworks have a large collection of assertion macros to capture all possible conditional forms (```_EQUALS```, ```_NOTEQUALS```, ```_GREATER_THAN``` etc).
 
@@ -57,7 +64,7 @@ This way `Approx` is constructed with reasonable defaults, covering most simple 
 
 * __epsilon__ - epsilon serves to set the percentage by which a result can be erroneous, before it is rejected. By default set to `std::numeric_limits<float>::epsilon()*100`.
 * __margin__ - margin serves to set the the absolute value by which a result can be erroneous before it is rejected. By default set to `0.0`.
-* __scale__ - scale serves to adjust the base for comparison used by epsilon. By default set to `1.0`.
+* __scale__ - scale serves to adjust the epsilon's multiplicator. By default set to `0.0`.
 
 #### epsilon example
 ```cpp
@@ -77,7 +84,12 @@ Approx target = Approx(100).margin(5);
 ```
 
 #### scale
-Scale can be useful if the computation leading to the result worked on different scale, than is used by the results (and thus expected errors are on a different scale than would be expected based on the results alone), i.e. an additional not scaling difference will be accepted, because | current - target | < eps_rel + eps_abs (while eps_rel = max(current, target) * epsilon, eps_abs = epsilon * scale) will be checked.
+Scale can be useful if the computation leading to the result worked
+on different scale than is used by the results. Since allowed difference
+between Approx's value and compared value is based primarily on Approx's value
+(the allowed difference is computed as
+`(Approx::scale + Approx::value) * epsilon`), the resulting comparison could
+need rescaling to be correct.
 
 
 ## Exceptions
@@ -95,7 +107,7 @@ Expects that an exception (of any type) is be thrown during evaluation of the ex
 * **REQUIRE_THROWS_AS(** _expression_, _exception type_ **)** and  
 * **CHECK_THROWS_AS(** _expression_, _exception type_ **)**
 
-Expects that an exception of the _specified type_ is thrown during evaluation of the expression. Note that the _exception type_ is used verbatim and you should include (const) reference.
+Expects that an exception of the _specified type_ is thrown during evaluation of the expression. Note that the _exception type_ is extended with `const&` and you should not include it yourself.
 
 * **REQUIRE_THROWS_WITH(** _expression_, _string or string matcher_ **)** and  
 * **CHECK_THROWS_WITH(** _expression_, _string or string matcher_ **)**
@@ -108,8 +120,13 @@ REQUIRE_THROWS_WITH( openThePodBayDoors(), Contains( "afraid" ) && Contains( "ca
 REQUIRE_THROWS_WITH( dismantleHal(), "My mind is going" );
 ```
 
+* **REQUIRE_THROWS_MATCHES(** _expression_, _exception type_, _matcher for given exception type_ **)** and
+* **CHECK_THROWS_MATCHES(** _expression_, _exception type_, _matcher for given exception type_ **)**
 
-Please note that the `THROW` family of assertions expects to be passed a single expression, not a statement or series of statements. If you want to check a more complicated sequence of operations, you can use a C++11 lambda function.
+Expects that exception of _exception type_ is thrown and it matches provided matcher (see next section for Matchers).
+
+
+_Please note that the `THROW` family of assertions expects to be passed a single expression, not a statement or series of statements. If you want to check a more complicated sequence of operations, you can use a C++11 lambda function._
 
 ```cpp
 REQUIRE_NOTHROW([&](){
@@ -122,9 +139,11 @@ REQUIRE_NOTHROW([&](){
 }());
 ```
 
+
+
 ## Matcher expressions
 
-To support Matchers a slightly different form is used. Matchers have [their own documentation](matchers.md).
+To support Matchers a slightly different form is used. Matchers have [their own documentation](matchers.md#top).
 
 * **REQUIRE_THAT(** _lhs_, _matcher expression_ **)** and  
 * **CHECK_THAT(** _lhs_, _matcher expression_ **)**  
@@ -138,4 +157,4 @@ For more details, along with workarounds, see the section on [the limitations pa
 
 ---
 
-[Home](Readme.md)
+[Home](Readme.md#top)

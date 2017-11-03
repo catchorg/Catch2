@@ -15,6 +15,25 @@ with message:
   yay
 
 -------------------------------------------------------------------------------
+#1005: Comparing pointer to int and long (NULL can be either on various
+       systems)
+-------------------------------------------------------------------------------
+DecompositionTests.cpp:<line number>
+...............................................................................
+
+DecompositionTests.cpp:<line number>:
+PASSED:
+  REQUIRE( fptr == 0 )
+with expansion:
+  0 == 0
+
+DecompositionTests.cpp:<line number>:
+PASSED:
+  REQUIRE( fptr == 0l )
+with expansion:
+  0 == 0
+
+-------------------------------------------------------------------------------
 #748 - captures with unexpected exceptions
   outside assertions
 -------------------------------------------------------------------------------
@@ -88,7 +107,7 @@ PASSED:
 
 CompilationTests.cpp:<line number>:
 PASSED:
-  CHECK_THROWS_AS( throws_int(true), const int& )
+  CHECK_THROWS_AS( throws_int(true), int )
 
 CompilationTests.cpp:<line number>:
 PASSED:
@@ -122,6 +141,20 @@ PASSED:
   REQUIRE( errno == 1 )
 with expansion:
   1 == 1
+
+-------------------------------------------------------------------------------
+#872
+-------------------------------------------------------------------------------
+CompilationTests.cpp:<line number>
+...............................................................................
+
+CompilationTests.cpp:<line number>:
+PASSED:
+  REQUIRE( x == 4 )
+with expansion:
+  {?} == 4
+with message:
+  dummy := 0
 
 -------------------------------------------------------------------------------
 #961 -- Dynamically created sections should all be reported
@@ -482,19 +515,6 @@ with expansion:
   100.3 == Approx( 100.0 )
 
 -------------------------------------------------------------------------------
-AllOf matcher
--------------------------------------------------------------------------------
-MatchersTests.cpp:<line number>
-...............................................................................
-
-MatchersTests.cpp:<line number>:
-PASSED:
-  CHECK_THAT( testStringForMatching(), AllOf( Catch::Contains( "string" ), Catch::Contains( "abc" ) ) )
-with expansion:
-  "this string contains 'abc' as a substring" ( contains: "string" and
-  contains: "abc" )
-
--------------------------------------------------------------------------------
 An expression with side-effects should only be evaluated once
 -------------------------------------------------------------------------------
 TrickyTests.cpp:<line number>
@@ -539,24 +559,38 @@ with message:
   anonymous test case
 
 -------------------------------------------------------------------------------
-AnyOf matcher
+Approx setters validate their arguments
 -------------------------------------------------------------------------------
-MatchersTests.cpp:<line number>
+ApproxTests.cpp:<line number>
 ...............................................................................
 
-MatchersTests.cpp:<line number>:
+ApproxTests.cpp:<line number>:
 PASSED:
-  CHECK_THAT( testStringForMatching(), AnyOf( Catch::Contains( "string" ), Catch::Contains( "not there" ) ) )
-with expansion:
-  "this string contains 'abc' as a substring" ( contains: "string" or contains:
-  "not there" )
+  REQUIRE_NOTHROW( Approx(0).margin(0) )
 
-MatchersTests.cpp:<line number>:
+ApproxTests.cpp:<line number>:
 PASSED:
-  CHECK_THAT( testStringForMatching(), AnyOf( Catch::Contains( "not there" ), Catch::Contains( "string" ) ) )
-with expansion:
-  "this string contains 'abc' as a substring" ( contains: "not there" or
-  contains: "string" )
+  REQUIRE_NOTHROW( Approx(0).margin(1234656) )
+
+ApproxTests.cpp:<line number>:
+PASSED:
+  REQUIRE_THROWS_AS( Approx(0).margin(-2), std::domain_error )
+
+ApproxTests.cpp:<line number>:
+PASSED:
+  REQUIRE_NOTHROW( Approx(0).epsilon(0) )
+
+ApproxTests.cpp:<line number>:
+PASSED:
+  REQUIRE_NOTHROW( Approx(0).epsilon(1) )
+
+ApproxTests.cpp:<line number>:
+PASSED:
+  REQUIRE_THROWS_AS( Approx(0).epsilon(-0.001), std::domain_error )
+
+ApproxTests.cpp:<line number>:
+PASSED:
+  REQUIRE_THROWS_AS( Approx(0).epsilon(1.0001), std::domain_error )
 
 -------------------------------------------------------------------------------
 Approx with exactly-representable margin
@@ -686,7 +720,7 @@ with expansion:
 
 ApproxTests.cpp:<line number>:
 PASSED:
-  REQUIRE( 0 == Approx( dSmall ).epsilon( 0.001 ) )
+  REQUIRE( 0 == Approx( dSmall ).margin( 0.001 ) )
 with expansion:
   0 == Approx( 0.00001 )
 
@@ -779,6 +813,36 @@ PASSED:
   REQUIRE( Catch::alwaysTrue() )
 with expansion:
   true
+
+-------------------------------------------------------------------------------
+Assorted miscellaneous tests
+-------------------------------------------------------------------------------
+ApproxTests.cpp:<line number>
+...............................................................................
+
+ApproxTests.cpp:<line number>:
+PASSED:
+  REQUIRE( INFINITY == Approx(INFINITY) )
+with expansion:
+  inff == Approx( inf )
+
+-------------------------------------------------------------------------------
+Bitfields can be captured (#1027)
+-------------------------------------------------------------------------------
+TrickyTests.cpp:<line number>
+...............................................................................
+
+TrickyTests.cpp:<line number>:
+PASSED:
+  REQUIRE( y.v == 0 )
+with expansion:
+  0 == 0
+
+TrickyTests.cpp:<line number>:
+PASSED:
+  REQUIRE( 0 == y.v )
+with expansion:
+  0 == 0
 
 -------------------------------------------------------------------------------
 Capture and info messages
@@ -912,6 +976,74 @@ with expansion:
   5 == 5
 
 -------------------------------------------------------------------------------
+Commas in various macros are allowed
+-------------------------------------------------------------------------------
+TrickyTests.cpp:<line number>
+...............................................................................
+
+TrickyTests.cpp:<line number>:
+PASSED:
+  REQUIRE_THROWS( std::vector<constructor_throws>{constructor_throws{}, constructor_throws{}} )
+
+TrickyTests.cpp:<line number>:
+PASSED:
+  CHECK_THROWS( std::vector<constructor_throws>{constructor_throws{}, constructor_throws{}} )
+
+TrickyTests.cpp:<line number>:
+PASSED:
+  REQUIRE_NOTHROW( std::vector<int>{1, 2, 3} == std::vector<int>{1, 2, 3} )
+
+TrickyTests.cpp:<line number>:
+PASSED:
+  CHECK_NOTHROW( std::vector<int>{1, 2, 3} == std::vector<int>{1, 2, 3} )
+
+TrickyTests.cpp:<line number>:
+PASSED:
+  REQUIRE( std::vector<int>{1, 2} == std::vector<int>{1, 2} )
+with expansion:
+  { 1, 2 } == { 1, 2 }
+
+TrickyTests.cpp:<line number>:
+PASSED:
+  CHECK( std::vector<int>{1, 2} == std::vector<int>{1, 2} )
+with expansion:
+  { 1, 2 } == { 1, 2 }
+
+TrickyTests.cpp:<line number>:
+PASSED:
+  REQUIRE_FALSE( std::vector<int>{1, 2} == std::vector<int>{1, 2, 3} )
+with expansion:
+  !({ 1, 2 } == { 1, 2, 3 })
+
+TrickyTests.cpp:<line number>:
+PASSED:
+  CHECK_FALSE( std::vector<int>{1, 2} == std::vector<int>{1, 2, 3} )
+with expansion:
+  !({ 1, 2 } == { 1, 2, 3 })
+
+TrickyTests.cpp:<line number>:
+PASSED:
+  CHECK_NOFAIL( std::vector<int>{1, 2} == std::vector<int>{1, 2} )
+with expansion:
+  { 1, 2 } == { 1, 2 }
+
+TrickyTests.cpp:<line number>:
+PASSED:
+  CHECKED_IF( std::vector<int>{1, 2} == std::vector<int>{1, 2} )
+with expansion:
+  { 1, 2 } == { 1, 2 }
+
+TrickyTests.cpp:<line number>:
+PASSED:
+  REQUIRE( true )
+
+TrickyTests.cpp:<line number>:
+PASSED:
+  CHECKED_ELSE( std::vector<int>{1, 2} == std::vector<int>{1, 2} )
+with expansion:
+  { 1, 2 } == { 1, 2 }
+
+-------------------------------------------------------------------------------
 Comparing function pointers
 -------------------------------------------------------------------------------
 TrickyTests.cpp:<line number>
@@ -930,18 +1062,82 @@ with expansion:
   0x<hex digits> == 0x<hex digits>
 
 -------------------------------------------------------------------------------
-Comparing member function pointers
+Comparison with explicitly convertible types
 -------------------------------------------------------------------------------
-TrickyTests.cpp:<line number>
+ApproxTests.cpp:<line number>
 ...............................................................................
 
-TrickyTests.cpp:<line number>:
+ApproxTests.cpp:<line number>:
 PASSED:
-  CHECK( m == &S::f )
+  REQUIRE( td == Approx(10.0) )
 with expansion:
-  0x<hex digits>
-  ==
-  0x<hex digits>
+  StrongDoubleTypedef(10) == Approx( 10.0 )
+
+ApproxTests.cpp:<line number>:
+PASSED:
+  REQUIRE( Approx(10.0) == td )
+with expansion:
+  Approx( 10.0 ) == StrongDoubleTypedef(10)
+
+ApproxTests.cpp:<line number>:
+PASSED:
+  REQUIRE( td != Approx(11.0) )
+with expansion:
+  StrongDoubleTypedef(10) != Approx( 11.0 )
+
+ApproxTests.cpp:<line number>:
+PASSED:
+  REQUIRE( Approx(11.0) != td )
+with expansion:
+  Approx( 11.0 ) != StrongDoubleTypedef(10)
+
+ApproxTests.cpp:<line number>:
+PASSED:
+  REQUIRE( td <= Approx(10.0) )
+with expansion:
+  StrongDoubleTypedef(10) <= Approx( 10.0 )
+
+ApproxTests.cpp:<line number>:
+PASSED:
+  REQUIRE( td <= Approx(11.0) )
+with expansion:
+  StrongDoubleTypedef(10) <= Approx( 11.0 )
+
+ApproxTests.cpp:<line number>:
+PASSED:
+  REQUIRE( Approx(10.0) <= td )
+with expansion:
+  Approx( 10.0 ) <= StrongDoubleTypedef(10)
+
+ApproxTests.cpp:<line number>:
+PASSED:
+  REQUIRE( Approx(9.0) <= td )
+with expansion:
+  Approx( 9.0 ) <= StrongDoubleTypedef(10)
+
+ApproxTests.cpp:<line number>:
+PASSED:
+  REQUIRE( td >= Approx(9.0) )
+with expansion:
+  StrongDoubleTypedef(10) >= Approx( 9.0 )
+
+ApproxTests.cpp:<line number>:
+PASSED:
+  REQUIRE( td >= Approx(10.0) )
+with expansion:
+  StrongDoubleTypedef(10) >= Approx( 10.0 )
+
+ApproxTests.cpp:<line number>:
+PASSED:
+  REQUIRE( Approx(10.0) >= td )
+with expansion:
+  Approx( 10.0 ) >= StrongDoubleTypedef(10)
+
+ApproxTests.cpp:<line number>:
+PASSED:
+  REQUIRE( Approx(11.0) >= td )
+with expansion:
+  Approx( 11.0 ) >= StrongDoubleTypedef(10)
 
 -------------------------------------------------------------------------------
 Comparisons between ints where one side is computed
@@ -1078,11 +1274,9 @@ with expansion:
 
 ConditionTests.cpp:<line number>:
 PASSED:
-  REQUIRE( (std::numeric_limits<unsigned long>::max)() > ul )
+  REQUIRE( (std::numeric_limits<uint32_t>::max)() > ul )
 with expansion:
-  18446744073709551615 (0x<hex digits>)
-  >
-  4
+  4294967295 (0x<hex digits>) > 4
 
 -------------------------------------------------------------------------------
 Contains string matcher
@@ -1128,16 +1322,22 @@ due to unexpected exception with message:
   custom std exception
 
 -------------------------------------------------------------------------------
-Demonstrate that a non-const == is not used
+Default scale is invisible to comparison
 -------------------------------------------------------------------------------
-TrickyTests.cpp:<line number>
+ApproxTests.cpp:<line number>
 ...............................................................................
 
-TrickyTests.cpp:<line number>:
+ApproxTests.cpp:<line number>:
 PASSED:
-  REQUIRE( t == 1u )
+  REQUIRE( 101.000001 != Approx(100).epsilon(0.01) )
 with expansion:
-  {?} == 1
+  101.000001 != Approx( 100.0 )
+
+ApproxTests.cpp:<line number>:
+PASSED:
+  REQUIRE( std::pow(10, -5) != Approx(std::pow(10, -7)) )
+with expansion:
+  0.00001 != Approx( 0.0000001 )
 
 -------------------------------------------------------------------------------
 EndsWith string matcher
@@ -1149,6 +1349,18 @@ MatchersTests.cpp:<line number>: FAILED:
   CHECK_THAT( testStringForMatching(), EndsWith( "this" ) )
 with expansion:
   "this string contains 'abc' as a substring" ends with: "this"
+
+-------------------------------------------------------------------------------
+Epsilon only applies to Approx's value
+-------------------------------------------------------------------------------
+ApproxTests.cpp:<line number>
+...............................................................................
+
+ApproxTests.cpp:<line number>:
+PASSED:
+  REQUIRE( 101.01 != Approx(100).epsilon(0.01) )
+with expansion:
+  101.01 != Approx( 100.0 )
 
 -------------------------------------------------------------------------------
 Equality checks that should fail
@@ -1294,6 +1506,73 @@ with expansion:
   "this string contains 'abc' as a substring" equals: "something else"
 
 -------------------------------------------------------------------------------
+Exception matchers that fail
+  No exception
+-------------------------------------------------------------------------------
+MatchersTests.cpp:<line number>
+...............................................................................
+
+MatchersTests.cpp:<line number>: FAILED:
+  CHECK_THROWS_MATCHES( doesNotThrow(), SpecialException, ExceptionMatcher{ 1 } )
+because no exception was thrown where one was expected:
+
+MatchersTests.cpp:<line number>: FAILED:
+  REQUIRE_THROWS_MATCHES( doesNotThrow(), SpecialException, ExceptionMatcher{ 1 } )
+because no exception was thrown where one was expected:
+
+-------------------------------------------------------------------------------
+Exception matchers that fail
+  Type mismatch
+-------------------------------------------------------------------------------
+MatchersTests.cpp:<line number>
+...............................................................................
+
+MatchersTests.cpp:<line number>: FAILED:
+  CHECK_THROWS_MATCHES( throwsAsInt(1), SpecialException, ExceptionMatcher{ 1 } )
+due to unexpected exception with message:
+  Unknown exception
+
+MatchersTests.cpp:<line number>: FAILED:
+  REQUIRE_THROWS_MATCHES( throwsAsInt(1), SpecialException, ExceptionMatcher{ 1 } )
+due to unexpected exception with message:
+  Unknown exception
+
+-------------------------------------------------------------------------------
+Exception matchers that fail
+  Contents are wrong
+-------------------------------------------------------------------------------
+MatchersTests.cpp:<line number>
+...............................................................................
+
+MatchersTests.cpp:<line number>: FAILED:
+  CHECK_THROWS_MATCHES( throws(3), SpecialException, ExceptionMatcher{ 1 } )
+with expansion:
+  {?} special exception has value of 1
+
+MatchersTests.cpp:<line number>: FAILED:
+  REQUIRE_THROWS_MATCHES( throws(4), SpecialException, ExceptionMatcher{ 1 } )
+with expansion:
+  {?} special exception has value of 1
+
+-------------------------------------------------------------------------------
+Exception matchers that succeed
+-------------------------------------------------------------------------------
+MatchersTests.cpp:<line number>
+...............................................................................
+
+MatchersTests.cpp:<line number>:
+PASSED:
+  CHECK_THROWS_MATCHES( throws(1), SpecialException, ExceptionMatcher{ 1 } )
+with expansion:
+  {?} special exception has value of 1
+
+MatchersTests.cpp:<line number>:
+PASSED:
+  REQUIRE_THROWS_MATCHES( throws(2), SpecialException, ExceptionMatcher{ 2 } )
+with expansion:
+  {?} special exception has value of 2
+
+-------------------------------------------------------------------------------
 Exception messages can be tested for
   exact match
 -------------------------------------------------------------------------------
@@ -1303,6 +1582,8 @@ ExceptionTests.cpp:<line number>
 ExceptionTests.cpp:<line number>:
 PASSED:
   REQUIRE_THROWS_WITH( thisThrows(), "expected exception" )
+with expansion:
+  "expected exception" equals: "expected exception"
 
 -------------------------------------------------------------------------------
 Exception messages can be tested for
@@ -1314,6 +1595,8 @@ ExceptionTests.cpp:<line number>
 ExceptionTests.cpp:<line number>:
 PASSED:
   REQUIRE_THROWS_WITH( thisThrows(), Equals( "expecteD Exception", Catch::CaseSensitive::No ) )
+with expansion:
+  "expected exception" equals: "expected exception" (case insensitive)
 
 -------------------------------------------------------------------------------
 Exception messages can be tested for
@@ -1325,18 +1608,26 @@ ExceptionTests.cpp:<line number>
 ExceptionTests.cpp:<line number>:
 PASSED:
   REQUIRE_THROWS_WITH( thisThrows(), StartsWith( "expected" ) )
+with expansion:
+  "expected exception" starts with: "expected"
 
 ExceptionTests.cpp:<line number>:
 PASSED:
   REQUIRE_THROWS_WITH( thisThrows(), EndsWith( "exception" ) )
+with expansion:
+  "expected exception" ends with: "exception"
 
 ExceptionTests.cpp:<line number>:
 PASSED:
   REQUIRE_THROWS_WITH( thisThrows(), Contains( "except" ) )
+with expansion:
+  "expected exception" contains: "except"
 
 ExceptionTests.cpp:<line number>:
 PASSED:
   REQUIRE_THROWS_WITH( thisThrows(), Contains( "exCept", Catch::CaseSensitive::No ) )
+with expansion:
+  "expected exception" contains: "except" (case insensitive)
 
 -------------------------------------------------------------------------------
 Expected exceptions that don't throw or unexpected exceptions fail the test
@@ -1425,1326 +1716,6 @@ PASSED:
   REQUIRE( Factorial(10) == 3628800 )
 with expansion:
   3628800 (0x<hex digits>) == 3628800 (0x<hex digits>)
-
--------------------------------------------------------------------------------
-Generator over a range of pairs
--------------------------------------------------------------------------------
-GeneratorTests.cpp:<line number>
-...............................................................................
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( i->first == i->second-1 )
-with expansion:
-  0 == 0
-
--------------------------------------------------------------------------------
-Generator over a range of pairs
--------------------------------------------------------------------------------
-GeneratorTests.cpp:<line number>
-...............................................................................
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( i->first == i->second-1 )
-with expansion:
-  2 == 2
-
--------------------------------------------------------------------------------
-Generators over two ranges
--------------------------------------------------------------------------------
-GeneratorTests.cpp:<line number>
-...............................................................................
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
-with expansion:
-  2 == 2
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
-with expansion:
-  200 == 200
-
--------------------------------------------------------------------------------
-Generators over two ranges
--------------------------------------------------------------------------------
-GeneratorTests.cpp:<line number>
-...............................................................................
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
-with expansion:
-  4 == 4
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
-with expansion:
-  200 == 200
-
--------------------------------------------------------------------------------
-Generators over two ranges
--------------------------------------------------------------------------------
-GeneratorTests.cpp:<line number>
-...............................................................................
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
-with expansion:
-  6 == 6
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
-with expansion:
-  200 == 200
-
--------------------------------------------------------------------------------
-Generators over two ranges
--------------------------------------------------------------------------------
-GeneratorTests.cpp:<line number>
-...............................................................................
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
-with expansion:
-  8 == 8
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
-with expansion:
-  200 == 200
-
--------------------------------------------------------------------------------
-Generators over two ranges
--------------------------------------------------------------------------------
-GeneratorTests.cpp:<line number>
-...............................................................................
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
-with expansion:
-  10 == 10
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
-with expansion:
-  200 == 200
-
--------------------------------------------------------------------------------
-Generators over two ranges
--------------------------------------------------------------------------------
-GeneratorTests.cpp:<line number>
-...............................................................................
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
-with expansion:
-  30 == 30
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
-with expansion:
-  200 == 200
-
--------------------------------------------------------------------------------
-Generators over two ranges
--------------------------------------------------------------------------------
-GeneratorTests.cpp:<line number>
-...............................................................................
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
-with expansion:
-  40 == 40
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
-with expansion:
-  200 == 200
-
--------------------------------------------------------------------------------
-Generators over two ranges
--------------------------------------------------------------------------------
-GeneratorTests.cpp:<line number>
-...............................................................................
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
-with expansion:
-  42 == 42
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
-with expansion:
-  200 == 200
-
--------------------------------------------------------------------------------
-Generators over two ranges
--------------------------------------------------------------------------------
-GeneratorTests.cpp:<line number>
-...............................................................................
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
-with expansion:
-  72 == 72
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
-with expansion:
-  200 == 200
-
--------------------------------------------------------------------------------
-Generators over two ranges
--------------------------------------------------------------------------------
-GeneratorTests.cpp:<line number>
-...............................................................................
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
-with expansion:
-  2 == 2
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
-with expansion:
-  202 == 202
-
--------------------------------------------------------------------------------
-Generators over two ranges
--------------------------------------------------------------------------------
-GeneratorTests.cpp:<line number>
-...............................................................................
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
-with expansion:
-  4 == 4
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
-with expansion:
-  202 == 202
-
--------------------------------------------------------------------------------
-Generators over two ranges
--------------------------------------------------------------------------------
-GeneratorTests.cpp:<line number>
-...............................................................................
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
-with expansion:
-  6 == 6
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
-with expansion:
-  202 == 202
-
--------------------------------------------------------------------------------
-Generators over two ranges
--------------------------------------------------------------------------------
-GeneratorTests.cpp:<line number>
-...............................................................................
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
-with expansion:
-  8 == 8
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
-with expansion:
-  202 == 202
-
--------------------------------------------------------------------------------
-Generators over two ranges
--------------------------------------------------------------------------------
-GeneratorTests.cpp:<line number>
-...............................................................................
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
-with expansion:
-  10 == 10
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
-with expansion:
-  202 == 202
-
--------------------------------------------------------------------------------
-Generators over two ranges
--------------------------------------------------------------------------------
-GeneratorTests.cpp:<line number>
-...............................................................................
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
-with expansion:
-  30 == 30
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
-with expansion:
-  202 == 202
-
--------------------------------------------------------------------------------
-Generators over two ranges
--------------------------------------------------------------------------------
-GeneratorTests.cpp:<line number>
-...............................................................................
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
-with expansion:
-  40 == 40
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
-with expansion:
-  202 == 202
-
--------------------------------------------------------------------------------
-Generators over two ranges
--------------------------------------------------------------------------------
-GeneratorTests.cpp:<line number>
-...............................................................................
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
-with expansion:
-  42 == 42
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
-with expansion:
-  202 == 202
-
--------------------------------------------------------------------------------
-Generators over two ranges
--------------------------------------------------------------------------------
-GeneratorTests.cpp:<line number>
-...............................................................................
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
-with expansion:
-  72 == 72
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
-with expansion:
-  202 == 202
-
--------------------------------------------------------------------------------
-Generators over two ranges
--------------------------------------------------------------------------------
-GeneratorTests.cpp:<line number>
-...............................................................................
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
-with expansion:
-  2 == 2
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
-with expansion:
-  204 == 204
-
--------------------------------------------------------------------------------
-Generators over two ranges
--------------------------------------------------------------------------------
-GeneratorTests.cpp:<line number>
-...............................................................................
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
-with expansion:
-  4 == 4
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
-with expansion:
-  204 == 204
-
--------------------------------------------------------------------------------
-Generators over two ranges
--------------------------------------------------------------------------------
-GeneratorTests.cpp:<line number>
-...............................................................................
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
-with expansion:
-  6 == 6
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
-with expansion:
-  204 == 204
-
--------------------------------------------------------------------------------
-Generators over two ranges
--------------------------------------------------------------------------------
-GeneratorTests.cpp:<line number>
-...............................................................................
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
-with expansion:
-  8 == 8
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
-with expansion:
-  204 == 204
-
--------------------------------------------------------------------------------
-Generators over two ranges
--------------------------------------------------------------------------------
-GeneratorTests.cpp:<line number>
-...............................................................................
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
-with expansion:
-  10 == 10
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
-with expansion:
-  204 == 204
-
--------------------------------------------------------------------------------
-Generators over two ranges
--------------------------------------------------------------------------------
-GeneratorTests.cpp:<line number>
-...............................................................................
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
-with expansion:
-  30 == 30
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
-with expansion:
-  204 == 204
-
--------------------------------------------------------------------------------
-Generators over two ranges
--------------------------------------------------------------------------------
-GeneratorTests.cpp:<line number>
-...............................................................................
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
-with expansion:
-  40 == 40
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
-with expansion:
-  204 == 204
-
--------------------------------------------------------------------------------
-Generators over two ranges
--------------------------------------------------------------------------------
-GeneratorTests.cpp:<line number>
-...............................................................................
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
-with expansion:
-  42 == 42
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
-with expansion:
-  204 == 204
-
--------------------------------------------------------------------------------
-Generators over two ranges
--------------------------------------------------------------------------------
-GeneratorTests.cpp:<line number>
-...............................................................................
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
-with expansion:
-  72 == 72
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
-with expansion:
-  204 == 204
-
--------------------------------------------------------------------------------
-Generators over two ranges
--------------------------------------------------------------------------------
-GeneratorTests.cpp:<line number>
-...............................................................................
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
-with expansion:
-  2 == 2
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
-with expansion:
-  206 == 206
-
--------------------------------------------------------------------------------
-Generators over two ranges
--------------------------------------------------------------------------------
-GeneratorTests.cpp:<line number>
-...............................................................................
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
-with expansion:
-  4 == 4
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
-with expansion:
-  206 == 206
-
--------------------------------------------------------------------------------
-Generators over two ranges
--------------------------------------------------------------------------------
-GeneratorTests.cpp:<line number>
-...............................................................................
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
-with expansion:
-  6 == 6
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
-with expansion:
-  206 == 206
-
--------------------------------------------------------------------------------
-Generators over two ranges
--------------------------------------------------------------------------------
-GeneratorTests.cpp:<line number>
-...............................................................................
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
-with expansion:
-  8 == 8
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
-with expansion:
-  206 == 206
-
--------------------------------------------------------------------------------
-Generators over two ranges
--------------------------------------------------------------------------------
-GeneratorTests.cpp:<line number>
-...............................................................................
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
-with expansion:
-  10 == 10
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
-with expansion:
-  206 == 206
-
--------------------------------------------------------------------------------
-Generators over two ranges
--------------------------------------------------------------------------------
-GeneratorTests.cpp:<line number>
-...............................................................................
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
-with expansion:
-  30 == 30
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
-with expansion:
-  206 == 206
-
--------------------------------------------------------------------------------
-Generators over two ranges
--------------------------------------------------------------------------------
-GeneratorTests.cpp:<line number>
-...............................................................................
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
-with expansion:
-  40 == 40
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
-with expansion:
-  206 == 206
-
--------------------------------------------------------------------------------
-Generators over two ranges
--------------------------------------------------------------------------------
-GeneratorTests.cpp:<line number>
-...............................................................................
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
-with expansion:
-  42 == 42
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
-with expansion:
-  206 == 206
-
--------------------------------------------------------------------------------
-Generators over two ranges
--------------------------------------------------------------------------------
-GeneratorTests.cpp:<line number>
-...............................................................................
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
-with expansion:
-  72 == 72
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
-with expansion:
-  206 == 206
-
--------------------------------------------------------------------------------
-Generators over two ranges
--------------------------------------------------------------------------------
-GeneratorTests.cpp:<line number>
-...............................................................................
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
-with expansion:
-  2 == 2
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
-with expansion:
-  208 == 208
-
--------------------------------------------------------------------------------
-Generators over two ranges
--------------------------------------------------------------------------------
-GeneratorTests.cpp:<line number>
-...............................................................................
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
-with expansion:
-  4 == 4
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
-with expansion:
-  208 == 208
-
--------------------------------------------------------------------------------
-Generators over two ranges
--------------------------------------------------------------------------------
-GeneratorTests.cpp:<line number>
-...............................................................................
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
-with expansion:
-  6 == 6
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
-with expansion:
-  208 == 208
-
--------------------------------------------------------------------------------
-Generators over two ranges
--------------------------------------------------------------------------------
-GeneratorTests.cpp:<line number>
-...............................................................................
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
-with expansion:
-  8 == 8
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
-with expansion:
-  208 == 208
-
--------------------------------------------------------------------------------
-Generators over two ranges
--------------------------------------------------------------------------------
-GeneratorTests.cpp:<line number>
-...............................................................................
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
-with expansion:
-  10 == 10
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
-with expansion:
-  208 == 208
-
--------------------------------------------------------------------------------
-Generators over two ranges
--------------------------------------------------------------------------------
-GeneratorTests.cpp:<line number>
-...............................................................................
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
-with expansion:
-  30 == 30
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
-with expansion:
-  208 == 208
-
--------------------------------------------------------------------------------
-Generators over two ranges
--------------------------------------------------------------------------------
-GeneratorTests.cpp:<line number>
-...............................................................................
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
-with expansion:
-  40 == 40
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
-with expansion:
-  208 == 208
-
--------------------------------------------------------------------------------
-Generators over two ranges
--------------------------------------------------------------------------------
-GeneratorTests.cpp:<line number>
-...............................................................................
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
-with expansion:
-  42 == 42
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
-with expansion:
-  208 == 208
-
--------------------------------------------------------------------------------
-Generators over two ranges
--------------------------------------------------------------------------------
-GeneratorTests.cpp:<line number>
-...............................................................................
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
-with expansion:
-  72 == 72
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
-with expansion:
-  208 == 208
-
--------------------------------------------------------------------------------
-Generators over two ranges
--------------------------------------------------------------------------------
-GeneratorTests.cpp:<line number>
-...............................................................................
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
-with expansion:
-  2 == 2
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
-with expansion:
-  210 == 210
-
--------------------------------------------------------------------------------
-Generators over two ranges
--------------------------------------------------------------------------------
-GeneratorTests.cpp:<line number>
-...............................................................................
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
-with expansion:
-  4 == 4
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
-with expansion:
-  210 == 210
-
--------------------------------------------------------------------------------
-Generators over two ranges
--------------------------------------------------------------------------------
-GeneratorTests.cpp:<line number>
-...............................................................................
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
-with expansion:
-  6 == 6
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
-with expansion:
-  210 == 210
-
--------------------------------------------------------------------------------
-Generators over two ranges
--------------------------------------------------------------------------------
-GeneratorTests.cpp:<line number>
-...............................................................................
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
-with expansion:
-  8 == 8
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
-with expansion:
-  210 == 210
-
--------------------------------------------------------------------------------
-Generators over two ranges
--------------------------------------------------------------------------------
-GeneratorTests.cpp:<line number>
-...............................................................................
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
-with expansion:
-  10 == 10
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
-with expansion:
-  210 == 210
-
--------------------------------------------------------------------------------
-Generators over two ranges
--------------------------------------------------------------------------------
-GeneratorTests.cpp:<line number>
-...............................................................................
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
-with expansion:
-  30 == 30
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
-with expansion:
-  210 == 210
-
--------------------------------------------------------------------------------
-Generators over two ranges
--------------------------------------------------------------------------------
-GeneratorTests.cpp:<line number>
-...............................................................................
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
-with expansion:
-  40 == 40
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
-with expansion:
-  210 == 210
-
--------------------------------------------------------------------------------
-Generators over two ranges
--------------------------------------------------------------------------------
-GeneratorTests.cpp:<line number>
-...............................................................................
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
-with expansion:
-  42 == 42
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
-with expansion:
-  210 == 210
-
--------------------------------------------------------------------------------
-Generators over two ranges
--------------------------------------------------------------------------------
-GeneratorTests.cpp:<line number>
-...............................................................................
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
-with expansion:
-  72 == 72
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
-with expansion:
-  210 == 210
-
--------------------------------------------------------------------------------
-Generators over two ranges
--------------------------------------------------------------------------------
-GeneratorTests.cpp:<line number>
-...............................................................................
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
-with expansion:
-  2 == 2
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
-with expansion:
-  212 == 212
-
--------------------------------------------------------------------------------
-Generators over two ranges
--------------------------------------------------------------------------------
-GeneratorTests.cpp:<line number>
-...............................................................................
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
-with expansion:
-  4 == 4
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
-with expansion:
-  212 == 212
-
--------------------------------------------------------------------------------
-Generators over two ranges
--------------------------------------------------------------------------------
-GeneratorTests.cpp:<line number>
-...............................................................................
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
-with expansion:
-  6 == 6
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
-with expansion:
-  212 == 212
-
--------------------------------------------------------------------------------
-Generators over two ranges
--------------------------------------------------------------------------------
-GeneratorTests.cpp:<line number>
-...............................................................................
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
-with expansion:
-  8 == 8
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
-with expansion:
-  212 == 212
-
--------------------------------------------------------------------------------
-Generators over two ranges
--------------------------------------------------------------------------------
-GeneratorTests.cpp:<line number>
-...............................................................................
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
-with expansion:
-  10 == 10
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
-with expansion:
-  212 == 212
-
--------------------------------------------------------------------------------
-Generators over two ranges
--------------------------------------------------------------------------------
-GeneratorTests.cpp:<line number>
-...............................................................................
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
-with expansion:
-  30 == 30
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
-with expansion:
-  212 == 212
-
--------------------------------------------------------------------------------
-Generators over two ranges
--------------------------------------------------------------------------------
-GeneratorTests.cpp:<line number>
-...............................................................................
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
-with expansion:
-  40 == 40
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
-with expansion:
-  212 == 212
-
--------------------------------------------------------------------------------
-Generators over two ranges
--------------------------------------------------------------------------------
-GeneratorTests.cpp:<line number>
-...............................................................................
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
-with expansion:
-  42 == 42
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
-with expansion:
-  212 == 212
-
--------------------------------------------------------------------------------
-Generators over two ranges
--------------------------------------------------------------------------------
-GeneratorTests.cpp:<line number>
-...............................................................................
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
-with expansion:
-  72 == 72
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
-with expansion:
-  212 == 212
-
--------------------------------------------------------------------------------
-Generators over two ranges
--------------------------------------------------------------------------------
-GeneratorTests.cpp:<line number>
-...............................................................................
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
-with expansion:
-  2 == 2
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
-with expansion:
-  214 == 214
-
--------------------------------------------------------------------------------
-Generators over two ranges
--------------------------------------------------------------------------------
-GeneratorTests.cpp:<line number>
-...............................................................................
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
-with expansion:
-  4 == 4
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
-with expansion:
-  214 == 214
-
--------------------------------------------------------------------------------
-Generators over two ranges
--------------------------------------------------------------------------------
-GeneratorTests.cpp:<line number>
-...............................................................................
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
-with expansion:
-  6 == 6
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
-with expansion:
-  214 == 214
-
--------------------------------------------------------------------------------
-Generators over two ranges
--------------------------------------------------------------------------------
-GeneratorTests.cpp:<line number>
-...............................................................................
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
-with expansion:
-  8 == 8
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
-with expansion:
-  214 == 214
-
--------------------------------------------------------------------------------
-Generators over two ranges
--------------------------------------------------------------------------------
-GeneratorTests.cpp:<line number>
-...............................................................................
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
-with expansion:
-  10 == 10
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
-with expansion:
-  214 == 214
-
--------------------------------------------------------------------------------
-Generators over two ranges
--------------------------------------------------------------------------------
-GeneratorTests.cpp:<line number>
-...............................................................................
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
-with expansion:
-  30 == 30
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
-with expansion:
-  214 == 214
-
--------------------------------------------------------------------------------
-Generators over two ranges
--------------------------------------------------------------------------------
-GeneratorTests.cpp:<line number>
-...............................................................................
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
-with expansion:
-  40 == 40
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
-with expansion:
-  214 == 214
-
--------------------------------------------------------------------------------
-Generators over two ranges
--------------------------------------------------------------------------------
-GeneratorTests.cpp:<line number>
-...............................................................................
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
-with expansion:
-  42 == 42
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
-with expansion:
-  214 == 214
-
--------------------------------------------------------------------------------
-Generators over two ranges
--------------------------------------------------------------------------------
-GeneratorTests.cpp:<line number>
-...............................................................................
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( i, 2 ) == i*2 )
-with expansion:
-  72 == 72
-
-GeneratorTests.cpp:<line number>:
-PASSED:
-  CATCH_REQUIRE( multiply( j, 2 ) == j*2 )
-with expansion:
-  214 == 214
 
 -------------------------------------------------------------------------------
 Greater-than inequalities with different epsilons
@@ -2842,6 +1813,110 @@ with messages:
   this message should be logged
   and this, but later
   but not this
+
+-------------------------------------------------------------------------------
+INFO is reset for each loop
+-------------------------------------------------------------------------------
+MessageTests.cpp:<line number>
+...............................................................................
+
+MessageTests.cpp:<line number>:
+PASSED:
+  REQUIRE( i < 10 )
+with expansion:
+  0 < 10
+with messages:
+  current counter 0
+  i := 0
+
+MessageTests.cpp:<line number>:
+PASSED:
+  REQUIRE( i < 10 )
+with expansion:
+  1 < 10
+with messages:
+  current counter 1
+  i := 1
+
+MessageTests.cpp:<line number>:
+PASSED:
+  REQUIRE( i < 10 )
+with expansion:
+  2 < 10
+with messages:
+  current counter 2
+  i := 2
+
+MessageTests.cpp:<line number>:
+PASSED:
+  REQUIRE( i < 10 )
+with expansion:
+  3 < 10
+with messages:
+  current counter 3
+  i := 3
+
+MessageTests.cpp:<line number>:
+PASSED:
+  REQUIRE( i < 10 )
+with expansion:
+  4 < 10
+with messages:
+  current counter 4
+  i := 4
+
+MessageTests.cpp:<line number>:
+PASSED:
+  REQUIRE( i < 10 )
+with expansion:
+  5 < 10
+with messages:
+  current counter 5
+  i := 5
+
+MessageTests.cpp:<line number>:
+PASSED:
+  REQUIRE( i < 10 )
+with expansion:
+  6 < 10
+with messages:
+  current counter 6
+  i := 6
+
+MessageTests.cpp:<line number>:
+PASSED:
+  REQUIRE( i < 10 )
+with expansion:
+  7 < 10
+with messages:
+  current counter 7
+  i := 7
+
+MessageTests.cpp:<line number>:
+PASSED:
+  REQUIRE( i < 10 )
+with expansion:
+  8 < 10
+with messages:
+  current counter 8
+  i := 8
+
+MessageTests.cpp:<line number>:
+PASSED:
+  REQUIRE( i < 10 )
+with expansion:
+  9 < 10
+with messages:
+  current counter 9
+  i := 9
+
+MessageTests.cpp:<line number>: FAILED:
+  REQUIRE( i < 10 )
+with expansion:
+  10 < 10
+with messages:
+  current counter 10
+  i := 10
 
 -------------------------------------------------------------------------------
 Inequality checks that should fail
@@ -2977,1556 +2052,6 @@ with expansion:
   1.23 <= Approx( 1.22 )
 
 -------------------------------------------------------------------------------
-Long strings can be wrapped
-  plain string
-  No wrapping
--------------------------------------------------------------------------------
-TestMain.cpp:<line number>
-...............................................................................
-
-TestMain.cpp:<line number>:
-PASSED:
-  CHECK( Text( testString, TextAttributes().setWidth( 80 ) ).toString() == testString )
-with expansion:
-  "one two three four"
-  ==
-  "one two three four"
-
-TestMain.cpp:<line number>:
-PASSED:
-  CHECK( Text( testString, TextAttributes().setWidth( 18 ) ).toString() == testString )
-with expansion:
-  "one two three four"
-  ==
-  "one two three four"
-
--------------------------------------------------------------------------------
-Long strings can be wrapped
-  plain string
-  Wrapped once
--------------------------------------------------------------------------------
-TestMain.cpp:<line number>
-...............................................................................
-
-TestMain.cpp:<line number>:
-PASSED:
-  CHECK( Text( testString, TextAttributes().setWidth( 17 ) ).toString() == "one two three\nfour" )
-with expansion:
-  "one two three
-  four"
-  ==
-  "one two three
-  four"
-
-TestMain.cpp:<line number>:
-PASSED:
-  CHECK( Text( testString, TextAttributes().setWidth( 16 ) ).toString() == "one two three\nfour" )
-with expansion:
-  "one two three
-  four"
-  ==
-  "one two three
-  four"
-
-TestMain.cpp:<line number>:
-PASSED:
-  CHECK( Text( testString, TextAttributes().setWidth( 14 ) ).toString() == "one two three\nfour" )
-with expansion:
-  "one two three
-  four"
-  ==
-  "one two three
-  four"
-
-TestMain.cpp:<line number>:
-PASSED:
-  CHECK( Text( testString, TextAttributes().setWidth( 13 ) ).toString() == "one two three\nfour" )
-with expansion:
-  "one two three
-  four"
-  ==
-  "one two three
-  four"
-
-TestMain.cpp:<line number>:
-PASSED:
-  CHECK( Text( testString, TextAttributes().setWidth( 12 ) ).toString() == "one two\nthree four" )
-with expansion:
-  "one two
-  three four"
-  ==
-  "one two
-  three four"
-
--------------------------------------------------------------------------------
-Long strings can be wrapped
-  plain string
-  Wrapped twice
--------------------------------------------------------------------------------
-TestMain.cpp:<line number>
-...............................................................................
-
-TestMain.cpp:<line number>:
-PASSED:
-  CHECK( Text( testString, TextAttributes().setWidth( 9 ) ).toString() == "one two\nthree\nfour" )
-with expansion:
-  "one two
-  three
-  four"
-  ==
-  "one two
-  three
-  four"
-
-TestMain.cpp:<line number>:
-PASSED:
-  CHECK( Text( testString, TextAttributes().setWidth( 8 ) ).toString() == "one two\nthree\nfour" )
-with expansion:
-  "one two
-  three
-  four"
-  ==
-  "one two
-  three
-  four"
-
-TestMain.cpp:<line number>:
-PASSED:
-  CHECK( Text( testString, TextAttributes().setWidth( 7 ) ).toString() == "one two\nthree\nfour" )
-with expansion:
-  "one two
-  three
-  four"
-  ==
-  "one two
-  three
-  four"
-
--------------------------------------------------------------------------------
-Long strings can be wrapped
-  plain string
-  Wrapped three times
--------------------------------------------------------------------------------
-TestMain.cpp:<line number>
-...............................................................................
-
-TestMain.cpp:<line number>:
-PASSED:
-  CHECK( Text( testString, TextAttributes().setWidth( 6 ) ).toString() == "one\ntwo\nthree\nfour" )
-with expansion:
-  "one
-  two
-  three
-  four"
-  ==
-  "one
-  two
-  three
-  four"
-
-TestMain.cpp:<line number>:
-PASSED:
-  CHECK( Text( testString, TextAttributes().setWidth( 5 ) ).toString() == "one\ntwo\nthree\nfour" )
-with expansion:
-  "one
-  two
-  three
-  four"
-  ==
-  "one
-  two
-  three
-  four"
-
--------------------------------------------------------------------------------
-Long strings can be wrapped
-  plain string
-  Short wrap
--------------------------------------------------------------------------------
-TestMain.cpp:<line number>
-...............................................................................
-
-TestMain.cpp:<line number>:
-PASSED:
-  CHECK( Text( "abcdef", TextAttributes().setWidth( 4 ) ).toString() == "abc-\ndef" )
-with expansion:
-  "abc-
-  def"
-  ==
-  "abc-
-  def"
-
-TestMain.cpp:<line number>:
-PASSED:
-  CHECK( Text( "abcdefg", TextAttributes().setWidth( 4 ) ).toString() == "abc-\ndefg" )
-with expansion:
-  "abc-
-  defg"
-  ==
-  "abc-
-  defg"
-
-TestMain.cpp:<line number>:
-PASSED:
-  CHECK( Text( "abcdefgh", TextAttributes().setWidth( 4 ) ).toString() == "abc-\ndef-\ngh" )
-with expansion:
-  "abc-
-  def-
-  gh"
-  ==
-  "abc-
-  def-
-  gh"
-
-TestMain.cpp:<line number>:
-PASSED:
-  CHECK( Text( testString, TextAttributes().setWidth( 4 ) ).toString() == "one\ntwo\nthr-\nee\nfour" )
-with expansion:
-  "one
-  two
-  thr-
-  ee
-  four"
-  ==
-  "one
-  two
-  thr-
-  ee
-  four"
-
-TestMain.cpp:<line number>:
-PASSED:
-  CHECK( Text( testString, TextAttributes().setWidth( 3 ) ).toString() == "one\ntwo\nth-\nree\nfo-\nur" )
-with expansion:
-  "one
-  two
-  th-
-  ree
-  fo-
-  ur"
-  ==
-  "one
-  two
-  th-
-  ree
-  fo-
-  ur"
-
--------------------------------------------------------------------------------
-Long strings can be wrapped
-  plain string
-  As container
--------------------------------------------------------------------------------
-TestMain.cpp:<line number>
-...............................................................................
-
-TestMain.cpp:<line number>:
-PASSED:
-  REQUIRE( text.size() == 4 )
-with expansion:
-  4 == 4
-
-TestMain.cpp:<line number>:
-PASSED:
-  CHECK( text[0] == "one" )
-with expansion:
-  "one" == "one"
-
-TestMain.cpp:<line number>:
-PASSED:
-  CHECK( text[1] == "two" )
-with expansion:
-  "two" == "two"
-
-TestMain.cpp:<line number>:
-PASSED:
-  CHECK( text[2] == "three" )
-with expansion:
-  "three" == "three"
-
-TestMain.cpp:<line number>:
-PASSED:
-  CHECK( text[3] == "four" )
-with expansion:
-  "four" == "four"
-
--------------------------------------------------------------------------------
-Long strings can be wrapped
-  plain string
-  Indent first line differently
--------------------------------------------------------------------------------
-TestMain.cpp:<line number>
-...............................................................................
-
-TestMain.cpp:<line number>:
-PASSED:
-  CHECK( text.toString() == " one two\n    three\n    four" )
-with expansion:
-  " one two
-      three
-      four"
-  ==
-  " one two
-      three
-      four"
-
--------------------------------------------------------------------------------
-Long strings can be wrapped
-  With newlines
-  No wrapping
--------------------------------------------------------------------------------
-TestMain.cpp:<line number>
-...............................................................................
-
-TestMain.cpp:<line number>:
-PASSED:
-  CHECK( Text( testString, TextAttributes().setWidth( 80 ) ).toString() == testString )
-with expansion:
-  "one two
-  three four"
-  ==
-  "one two
-  three four"
-
-TestMain.cpp:<line number>:
-PASSED:
-  CHECK( Text( testString, TextAttributes().setWidth( 18 ) ).toString() == testString )
-with expansion:
-  "one two
-  three four"
-  ==
-  "one two
-  three four"
-
-TestMain.cpp:<line number>:
-PASSED:
-  CHECK( Text( testString, TextAttributes().setWidth( 10 ) ).toString() == testString )
-with expansion:
-  "one two
-  three four"
-  ==
-  "one two
-  three four"
-
--------------------------------------------------------------------------------
-Long strings can be wrapped
-  With newlines
-  Trailing newline
--------------------------------------------------------------------------------
-TestMain.cpp:<line number>
-...............................................................................
-
-TestMain.cpp:<line number>:
-PASSED:
-  CHECK( Text( "abcdef\n", TextAttributes().setWidth( 10 ) ).toString() == "abcdef" )
-with expansion:
-  "abcdef" == "abcdef"
-
-TestMain.cpp:<line number>:
-PASSED:
-  CHECK( Text( "abcdef", TextAttributes().setWidth( 6 ) ).toString() == "abcdef" )
-with expansion:
-  "abcdef" == "abcdef"
-
-TestMain.cpp:<line number>:
-PASSED:
-  CHECK( Text( "abcdef\n", TextAttributes().setWidth( 6 ) ).toString() == "abcdef" )
-with expansion:
-  "abcdef" == "abcdef"
-
-TestMain.cpp:<line number>:
-PASSED:
-  CHECK( Text( "abcdef\n", TextAttributes().setWidth( 5 ) ).toString() == "abcd-\nef" )
-with expansion:
-  "abcd-
-  ef"
-  ==
-  "abcd-
-  ef"
-
--------------------------------------------------------------------------------
-Long strings can be wrapped
-  With newlines
-  Wrapped once
--------------------------------------------------------------------------------
-TestMain.cpp:<line number>
-...............................................................................
-
-TestMain.cpp:<line number>:
-PASSED:
-  CHECK( Text( testString, TextAttributes().setWidth( 9 ) ).toString() == "one two\nthree\nfour" )
-with expansion:
-  "one two
-  three
-  four"
-  ==
-  "one two
-  three
-  four"
-
-TestMain.cpp:<line number>:
-PASSED:
-  CHECK( Text( testString, TextAttributes().setWidth( 8 ) ).toString() == "one two\nthree\nfour" )
-with expansion:
-  "one two
-  three
-  four"
-  ==
-  "one two
-  three
-  four"
-
-TestMain.cpp:<line number>:
-PASSED:
-  CHECK( Text( testString, TextAttributes().setWidth( 7 ) ).toString() == "one two\nthree\nfour" )
-with expansion:
-  "one two
-  three
-  four"
-  ==
-  "one two
-  three
-  four"
-
--------------------------------------------------------------------------------
-Long strings can be wrapped
-  With newlines
-  Wrapped twice
--------------------------------------------------------------------------------
-TestMain.cpp:<line number>
-...............................................................................
-
-TestMain.cpp:<line number>:
-PASSED:
-  CHECK( Text( testString, TextAttributes().setWidth( 6 ) ).toString() == "one\ntwo\nthree\nfour" )
-with expansion:
-  "one
-  two
-  three
-  four"
-  ==
-  "one
-  two
-  three
-  four"
-
--------------------------------------------------------------------------------
-Long strings can be wrapped
-  With wrap-before/ after characters
-  No wrapping
--------------------------------------------------------------------------------
-TestMain.cpp:<line number>
-...............................................................................
-
-TestMain.cpp:<line number>:
-PASSED:
-  CHECK( Text( testString, TextAttributes().setWidth( 80 ) ).toString() == testString )
-with expansion:
-  "one,two(three) <here>"
-  ==
-  "one,two(three) <here>"
-
-TestMain.cpp:<line number>:
-PASSED:
-  CHECK( Text( testString, TextAttributes().setWidth( 24 ) ).toString() == testString )
-with expansion:
-  "one,two(three) <here>"
-  ==
-  "one,two(three) <here>"
-
--------------------------------------------------------------------------------
-Long strings can be wrapped
-  With wrap-before/ after characters
-  Wrap before
--------------------------------------------------------------------------------
-TestMain.cpp:<line number>
-...............................................................................
-
-TestMain.cpp:<line number>:
-PASSED:
-  CHECK( Text( testString, TextAttributes().setWidth( 11 ) ).toString() == "one,two\n(three)\n<here>" )
-with expansion:
-  "one,two
-  (three)
-  <here>"
-  ==
-  "one,two
-  (three)
-  <here>"
-
--------------------------------------------------------------------------------
-Long strings can be wrapped
-  With wrap-before/ after characters
-  Wrap after
--------------------------------------------------------------------------------
-TestMain.cpp:<line number>
-...............................................................................
-
-TestMain.cpp:<line number>:
-PASSED:
-  CHECK( Text( testString, TextAttributes().setWidth( 6 ) ).toString() == "one,\ntwo\n(thre-\ne)\n<here>" )
-with expansion:
-  "one,
-  two
-  (thre-
-  e)
-  <here>"
-  ==
-  "one,
-  two
-  (thre-
-  e)
-  <here>"
-
-TestMain.cpp:<line number>:
-PASSED:
-  CHECK( Text( testString, TextAttributes().setWidth( 5 ) ).toString() == "one,\ntwo\n(thr-\nee)\n<her-\ne>" )
-with expansion:
-  "one,
-  two
-  (thr-
-  ee)
-  <her-
-  e>"
-  ==
-  "one,
-  two
-  (thr-
-  ee)
-  <her-
-  e>"
-
-TestMain.cpp:<line number>:
-PASSED:
-  CHECK( Text( testString, TextAttributes().setWidth( 4 ) ).toString() == "one,\ntwo\n(th-\nree)\n<he-\nre>" )
-with expansion:
-  "one,
-  two
-  (th-
-  ree)
-  <he-
-  re>"
-  ==
-  "one,
-  two
-  (th-
-  ree)
-  <he-
-  re>"
-
--------------------------------------------------------------------------------
-Long text is truncated
--------------------------------------------------------------------------------
-TestMain.cpp:<line number>
-...............................................................................
-
-TestMain.cpp:<line number>:
-PASSED:
-  CHECK_THAT( t.toString(), EndsWith( "... message truncated due to excessive size" ) )
-with expansion:
-  "***************************************************************************-
-  ***-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-  ****************************************************************************-
-  **-
-  ****************************************************************************-
-  **-
-  ************************
-... message truncated due to excessive size
-
--------------------------------------------------------------------------------
 ManuallyRegistered
 -------------------------------------------------------------------------------
 TestMain.cpp:<line number>
@@ -4627,11 +2152,13 @@ ExceptionTests.cpp:<line number>
 ExceptionTests.cpp:<line number>:
 PASSED:
   REQUIRE_THROWS_WITH( thisThrows(), "expected exception" )
+with expansion:
+  "expected exception" equals: "expected exception"
 
 ExceptionTests.cpp:<line number>: FAILED:
   REQUIRE_THROWS_WITH( thisThrows(), "should fail" )
 with expansion:
-  expected exception
+  "expected exception" equals: "should fail"
 
 -------------------------------------------------------------------------------
 Nice descriptive name
@@ -4654,16 +2181,6 @@ due to unexpected exception with message:
   custom exception
 
 -------------------------------------------------------------------------------
-NotImplemented exception
--------------------------------------------------------------------------------
-ExceptionTests.cpp:<line number>
-...............................................................................
-
-ExceptionTests.cpp:<line number>:
-PASSED:
-  REQUIRE_THROWS( thisFunctionNotImplemented( 7 ) )
-
--------------------------------------------------------------------------------
 Objects that evaluated in boolean contexts can be checked
 -------------------------------------------------------------------------------
 TrickyTests.cpp:<line number>
@@ -4673,7 +2190,7 @@ TrickyTests.cpp:<line number>:
 PASSED:
   CHECK( True )
 with expansion:
-  1
+  {?}
 
 TrickyTests.cpp:<line number>:
 PASSED:
@@ -4685,19 +2202,7 @@ TrickyTests.cpp:<line number>:
 PASSED:
   CHECK_FALSE( False )
 with expansion:
-  !0
-
--------------------------------------------------------------------------------
-Operators at different namespace levels not hijacked by Koenig lookup
--------------------------------------------------------------------------------
-TrickyTests.cpp:<line number>
-...............................................................................
-
-TrickyTests.cpp:<line number>:
-PASSED:
-  REQUIRE( 0x<hex digits> == o )
-with expansion:
-  3221225472 (0x<hex digits>) == {?}
+  !{?}
 
 -------------------------------------------------------------------------------
 Ordering comparison checks that should fail
@@ -5967,7 +3472,7 @@ TrickyTests.cpp:<line number>:
 PASSED:
   REQUIRE( (std::pair<int, int>( 1, 2 )) == aNicePair )
 with expansion:
-  std::pair( 1, 2 ) == std::pair( 1, 2 )
+  {?} == {?}
 
 -------------------------------------------------------------------------------
 Pointers can be compared to null
@@ -5979,13 +3484,13 @@ ConditionTests.cpp:<line number>:
 PASSED:
   REQUIRE( p == 0 )
 with expansion:
-  NULL == 0
+  0 == 0
 
 ConditionTests.cpp:<line number>:
 PASSED:
   REQUIRE( p == pNULL )
 with expansion:
-  NULL == NULL
+  0 == 0
 
 ConditionTests.cpp:<line number>:
 PASSED:
@@ -6024,20 +3529,6 @@ with expansion:
   0 != 0x<hex digits>
 
 -------------------------------------------------------------------------------
-Pointers can be converted to strings
--------------------------------------------------------------------------------
-MessageTests.cpp:<line number>
-...............................................................................
-
-MessageTests.cpp:<line number>:
-warning:
-  actual address of p: 0x<hex digits>
-
-MessageTests.cpp:<line number>:
-warning:
-  toString(p): 0x<hex digits>
-
--------------------------------------------------------------------------------
 Process can be configured on command line
   empty args don't cause a crash
 -------------------------------------------------------------------------------
@@ -6046,7 +3537,9 @@ TestMain.cpp:<line number>
 
 TestMain.cpp:<line number>:
 PASSED:
-  CHECK_NOTHROW( parser.parseInto( std::vector<std::string>(), config ) )
+  CHECK( result )
+with expansion:
+  {?}
 
 TestMain.cpp:<line number>:
 PASSED:
@@ -6063,7 +3556,9 @@ TestMain.cpp:<line number>
 
 TestMain.cpp:<line number>:
 PASSED:
-  CHECK_NOTHROW( parseIntoConfig( argv, config ) )
+  CHECK( result )
+with expansion:
+  {?}
 
 TestMain.cpp:<line number>:
 PASSED:
@@ -6105,17 +3600,19 @@ TestMain.cpp:<line number>
 
 TestMain.cpp:<line number>:
 PASSED:
-  CHECK_NOTHROW( parseIntoConfig( argv, config ) )
+  CHECK( result )
+with expansion:
+  {?}
 
 TestMain.cpp:<line number>:
 PASSED:
-  REQUIRE( cfg.testSpec().matches( fakeTestCase( "notIncluded" ) ) == false )
+  REQUIRE( cfg.testSpec().matches(fakeTestCase("notIncluded")) == false )
 with expansion:
   false == false
 
 TestMain.cpp:<line number>:
 PASSED:
-  REQUIRE( cfg.testSpec().matches( fakeTestCase( "test1" ) ) )
+  REQUIRE( cfg.testSpec().matches(fakeTestCase("test1")) )
 with expansion:
   true
 
@@ -6129,17 +3626,19 @@ TestMain.cpp:<line number>
 
 TestMain.cpp:<line number>:
 PASSED:
-  CHECK_NOTHROW( parseIntoConfig( argv, config ) )
+  CHECK( result )
+with expansion:
+  {?}
 
 TestMain.cpp:<line number>:
 PASSED:
-  REQUIRE( cfg.testSpec().matches( fakeTestCase( "test1" ) ) == false )
+  REQUIRE( cfg.testSpec().matches(fakeTestCase("test1")) == false )
 with expansion:
   false == false
 
 TestMain.cpp:<line number>:
 PASSED:
-  REQUIRE( cfg.testSpec().matches( fakeTestCase( "alwaysIncluded" ) ) )
+  REQUIRE( cfg.testSpec().matches(fakeTestCase("alwaysIncluded")) )
 with expansion:
   true
 
@@ -6153,17 +3652,19 @@ TestMain.cpp:<line number>
 
 TestMain.cpp:<line number>:
 PASSED:
-  CHECK_NOTHROW( parseIntoConfig( argv, config ) )
+  CHECK( result )
+with expansion:
+  {?}
 
 TestMain.cpp:<line number>:
 PASSED:
-  REQUIRE( cfg.testSpec().matches( fakeTestCase( "test1" ) ) == false )
+  REQUIRE( cfg.testSpec().matches(fakeTestCase("test1")) == false )
 with expansion:
   false == false
 
 TestMain.cpp:<line number>:
 PASSED:
-  REQUIRE( cfg.testSpec().matches( fakeTestCase( "alwaysIncluded" ) ) )
+  REQUIRE( cfg.testSpec().matches(fakeTestCase("alwaysIncluded")) )
 with expansion:
   true
 
@@ -6177,7 +3678,9 @@ TestMain.cpp:<line number>
 
 TestMain.cpp:<line number>:
 PASSED:
-  CHECK_NOTHROW( parseIntoConfig( argv, config ) )
+  CHECK( cli.parse({"test", "-r", "console"}) )
+with expansion:
+  {?}
 
 TestMain.cpp:<line number>:
 PASSED:
@@ -6195,7 +3698,9 @@ TestMain.cpp:<line number>
 
 TestMain.cpp:<line number>:
 PASSED:
-  CHECK_NOTHROW( parseIntoConfig( argv, config ) )
+  CHECK( cli.parse({"test", "-r", "xml"}) )
+with expansion:
+  {?}
 
 TestMain.cpp:<line number>:
 PASSED:
@@ -6213,7 +3718,9 @@ TestMain.cpp:<line number>
 
 TestMain.cpp:<line number>:
 PASSED:
-  CHECK_NOTHROW( parseIntoConfig( argv, config ) )
+  CHECK( cli.parse({"test", "-r", "xml", "-r", "junit"}) )
+with expansion:
+  {?}
 
 TestMain.cpp:<line number>:
 PASSED:
@@ -6243,7 +3750,9 @@ TestMain.cpp:<line number>
 
 TestMain.cpp:<line number>:
 PASSED:
-  CHECK_NOTHROW( parseIntoConfig( argv, config ) )
+  CHECK( cli.parse({"test", "--reporter", "junit"}) )
+with expansion:
+  {?}
 
 TestMain.cpp:<line number>:
 PASSED:
@@ -6261,7 +3770,9 @@ TestMain.cpp:<line number>
 
 TestMain.cpp:<line number>:
 PASSED:
-  CHECK_NOTHROW( parseIntoConfig( argv, config ) )
+  CHECK( cli.parse({"test", "-b"}) )
+with expansion:
+  {?}
 
 TestMain.cpp:<line number>:
 PASSED:
@@ -6279,7 +3790,9 @@ TestMain.cpp:<line number>
 
 TestMain.cpp:<line number>:
 PASSED:
-  CHECK_NOTHROW( parseIntoConfig( argv, config ) )
+  CHECK( cli.parse({"test", "--break"}) )
+with expansion:
+  {?}
 
 TestMain.cpp:<line number>:
 PASSED:
@@ -6297,7 +3810,9 @@ TestMain.cpp:<line number>
 
 TestMain.cpp:<line number>:
 PASSED:
-  CHECK_NOTHROW( parseIntoConfig( argv, config ) )
+  CHECK( cli.parse({"test", "-a"}) )
+with expansion:
+  {?}
 
 TestMain.cpp:<line number>:
 PASSED:
@@ -6315,28 +3830,15 @@ TestMain.cpp:<line number>
 
 TestMain.cpp:<line number>:
 PASSED:
-  CHECK_NOTHROW( parseIntoConfig( argv, config ) )
+  CHECK( cli.parse({"test", "-x", "2"}) )
+with expansion:
+  {?}
 
 TestMain.cpp:<line number>:
 PASSED:
   REQUIRE( config.abortAfter == 2 )
 with expansion:
   2 == 2
-
--------------------------------------------------------------------------------
-Process can be configured on command line
-  abort
-  -x must be greater than zero
--------------------------------------------------------------------------------
-TestMain.cpp:<line number>
-...............................................................................
-
-TestMain.cpp:<line number>:
-PASSED:
-  REQUIRE_THAT( parseIntoConfigAndReturnError( argv, config ), Contains( "greater than zero" ) )
-with expansion:
-  "Value after -x or --abortAfter must be greater than zero
-  - while parsing: (-x, --abortx <no. failures>)" contains: "greater than zero"
 
 -------------------------------------------------------------------------------
 Process can be configured on command line
@@ -6348,10 +3850,16 @@ TestMain.cpp:<line number>
 
 TestMain.cpp:<line number>:
 PASSED:
-  REQUIRE_THAT( parseIntoConfigAndReturnError( argv, config ), Contains( "-x" ) )
+  CHECK( !result )
 with expansion:
-  "Unable to convert oops to destination type
-  - while parsing: (-x, --abortx <no. failures>)" contains: "-x"
+  true
+
+TestMain.cpp:<line number>:
+PASSED:
+  REQUIRE_THAT( result.errorMessage(), Contains("convert") && Contains("oops") )
+with expansion:
+  "Unable to convert 'oops' to destination type" ( contains: "convert" and
+  contains: "oops" )
 
 -------------------------------------------------------------------------------
 Process can be configured on command line
@@ -6363,13 +3871,15 @@ TestMain.cpp:<line number>
 
 TestMain.cpp:<line number>:
 PASSED:
-  CHECK_NOTHROW( parseIntoConfig( argv, config ) )
+  CHECK( cli.parse({"test", "-e"}) )
+with expansion:
+  {?}
 
 TestMain.cpp:<line number>:
 PASSED:
-  REQUIRE( config.noThrow == true )
+  REQUIRE( config.noThrow )
 with expansion:
-  true == true
+  true
 
 -------------------------------------------------------------------------------
 Process can be configured on command line
@@ -6381,13 +3891,15 @@ TestMain.cpp:<line number>
 
 TestMain.cpp:<line number>:
 PASSED:
-  CHECK_NOTHROW( parseIntoConfig( argv, config ) )
+  CHECK( cli.parse({"test", "--nothrow"}) )
+with expansion:
+  {?}
 
 TestMain.cpp:<line number>:
 PASSED:
-  REQUIRE( config.noThrow == true )
+  REQUIRE( config.noThrow )
 with expansion:
-  true == true
+  true
 
 -------------------------------------------------------------------------------
 Process can be configured on command line
@@ -6399,7 +3911,9 @@ TestMain.cpp:<line number>
 
 TestMain.cpp:<line number>:
 PASSED:
-  CHECK_NOTHROW( parseIntoConfig( argv, config ) )
+  CHECK( cli.parse({"test", "-o", "filename.ext"}) )
+with expansion:
+  {?}
 
 TestMain.cpp:<line number>:
 PASSED:
@@ -6417,7 +3931,9 @@ TestMain.cpp:<line number>
 
 TestMain.cpp:<line number>:
 PASSED:
-  CHECK_NOTHROW( parseIntoConfig( argv, config ) )
+  CHECK( cli.parse({"test", "--out", "filename.ext"}) )
+with expansion:
+  {?}
 
 TestMain.cpp:<line number>:
 PASSED:
@@ -6435,7 +3951,9 @@ TestMain.cpp:<line number>
 
 TestMain.cpp:<line number>:
 PASSED:
-  CHECK_NOTHROW( parseIntoConfig( argv, config ) )
+  CHECK( cli.parse({"test", "-abe"}) )
+with expansion:
+  {?}
 
 TestMain.cpp:<line number>:
 PASSED:
@@ -6465,7 +3983,9 @@ TestMain.cpp:<line number>
 
 TestMain.cpp:<line number>:
 PASSED:
-  CHECK_NOTHROW( parseIntoConfig( argv, config ) )
+  CHECK( cli.parse({"test"}) )
+with expansion:
+  {?}
 
 TestMain.cpp:<line number>:
 PASSED:
@@ -6483,7 +4003,9 @@ TestMain.cpp:<line number>
 
 TestMain.cpp:<line number>:
 PASSED:
-  CHECK_NOTHROW( parseIntoConfig( argv, config ) )
+  CHECK( cli.parse({"test", "--use-colour", "auto"}) )
+with expansion:
+  {?}
 
 TestMain.cpp:<line number>:
 PASSED:
@@ -6501,7 +4023,9 @@ TestMain.cpp:<line number>
 
 TestMain.cpp:<line number>:
 PASSED:
-  CHECK_NOTHROW( parseIntoConfig( argv, config ) )
+  CHECK( cli.parse({"test", "--use-colour", "yes"}) )
+with expansion:
+  {?}
 
 TestMain.cpp:<line number>:
 PASSED:
@@ -6519,7 +4043,9 @@ TestMain.cpp:<line number>
 
 TestMain.cpp:<line number>:
 PASSED:
-  CHECK_NOTHROW( parseIntoConfig( argv, config ) )
+  CHECK( cli.parse({"test", "--use-colour", "no"}) )
+with expansion:
+  {?}
 
 TestMain.cpp:<line number>:
 PASSED:
@@ -6537,7 +4063,16 @@ TestMain.cpp:<line number>
 
 TestMain.cpp:<line number>:
 PASSED:
-  REQUIRE_THROWS_WITH( parseIntoConfig( argv, config ), Contains( "colour mode must be one of" ) )
+  CHECK( !result )
+with expansion:
+  true
+
+TestMain.cpp:<line number>:
+PASSED:
+  CHECK_THAT( result.errorMessage(), Contains( "colour mode must be one of" ) )
+with expansion:
+  "colour mode must be one of: auto, yes or no. 'wrong' not recognised"
+  contains: "colour mode must be one of"
 
 -------------------------------------------------------------------------------
 Reconstruction should be based on stringification: #914
@@ -6549,110 +4084,6 @@ DecompositionTests.cpp:<line number>: FAILED:
   CHECK( truthy(false) )
 with expansion:
   Hey, its truthy!
-
--------------------------------------------------------------------------------
-SCOPED_INFO is reset for each loop
--------------------------------------------------------------------------------
-MessageTests.cpp:<line number>
-...............................................................................
-
-MessageTests.cpp:<line number>:
-PASSED:
-  REQUIRE( i < 10 )
-with expansion:
-  0 < 10
-with messages:
-  current counter 0
-  i := 0
-
-MessageTests.cpp:<line number>:
-PASSED:
-  REQUIRE( i < 10 )
-with expansion:
-  1 < 10
-with messages:
-  current counter 1
-  i := 1
-
-MessageTests.cpp:<line number>:
-PASSED:
-  REQUIRE( i < 10 )
-with expansion:
-  2 < 10
-with messages:
-  current counter 2
-  i := 2
-
-MessageTests.cpp:<line number>:
-PASSED:
-  REQUIRE( i < 10 )
-with expansion:
-  3 < 10
-with messages:
-  current counter 3
-  i := 3
-
-MessageTests.cpp:<line number>:
-PASSED:
-  REQUIRE( i < 10 )
-with expansion:
-  4 < 10
-with messages:
-  current counter 4
-  i := 4
-
-MessageTests.cpp:<line number>:
-PASSED:
-  REQUIRE( i < 10 )
-with expansion:
-  5 < 10
-with messages:
-  current counter 5
-  i := 5
-
-MessageTests.cpp:<line number>:
-PASSED:
-  REQUIRE( i < 10 )
-with expansion:
-  6 < 10
-with messages:
-  current counter 6
-  i := 6
-
-MessageTests.cpp:<line number>:
-PASSED:
-  REQUIRE( i < 10 )
-with expansion:
-  7 < 10
-with messages:
-  current counter 7
-  i := 7
-
-MessageTests.cpp:<line number>:
-PASSED:
-  REQUIRE( i < 10 )
-with expansion:
-  8 < 10
-with messages:
-  current counter 8
-  i := 8
-
-MessageTests.cpp:<line number>:
-PASSED:
-  REQUIRE( i < 10 )
-with expansion:
-  9 < 10
-with messages:
-  current counter 9
-  i := 9
-
-MessageTests.cpp:<line number>: FAILED:
-  REQUIRE( i < 10 )
-with expansion:
-  10 < 10
-with messages:
-  current counter 10
-  i := 10
 
 -------------------------------------------------------------------------------
 SUCCEED counts as a test pass
@@ -6890,42 +4321,9 @@ with expansion:
 
 ApproxTests.cpp:<line number>:
 PASSED:
-  REQUIRE( 0 == Approx(0) )
+  REQUIRE( INFINITY == Approx(INFINITY) )
 with expansion:
-  0 == Approx( 0.0 )
-
-Write to std::cerr
--------------------------------------------------------------------------------
-Standard error is reported and redirected
-  std::cerr
--------------------------------------------------------------------------------
-MessageTests.cpp:<line number>
-...............................................................................
-
-
-No assertions in section 'std::cerr'
-
-Write to std::clog
--------------------------------------------------------------------------------
-Standard error is reported and redirected
-  std::clog
--------------------------------------------------------------------------------
-MessageTests.cpp:<line number>
-...............................................................................
-
-
-No assertions in section 'std::clog'
-
-Interleaved writes to error streams
--------------------------------------------------------------------------------
-Standard error is reported and redirected
-  Interleaved writes to cerr and clog
--------------------------------------------------------------------------------
-MessageTests.cpp:<line number>
-...............................................................................
-
-
-No assertions in section 'Interleaved writes to cerr and clog'
+  inff == Approx( inf )
 
 Message from section one
 -------------------------------------------------------------------------------
@@ -6990,8 +4388,429 @@ PASSED:
 with expansion:
   "this string contains 'abc' as a substring" ends with: "substring"
 
-hello
-hello
+-------------------------------------------------------------------------------
+StringRef
+  Empty string
+-------------------------------------------------------------------------------
+StringRef.tests.cpp:<line number>
+...............................................................................
+
+StringRef.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( empty.empty() )
+with expansion:
+  true
+
+StringRef.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( empty.size() == 0 )
+with expansion:
+  0 == 0
+
+StringRef.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( std::strcmp( empty.c_str(), "" ) == 0 )
+with expansion:
+  0 == 0
+
+-------------------------------------------------------------------------------
+StringRef
+  From string literal
+-------------------------------------------------------------------------------
+StringRef.tests.cpp:<line number>
+...............................................................................
+
+StringRef.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( s.empty() == false )
+with expansion:
+  false == false
+
+StringRef.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( s.size() == 5 )
+with expansion:
+  5 == 5
+
+StringRef.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( isSubstring( s ) == false )
+with expansion:
+  false == false
+
+StringRef.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( std::strcmp( rawChars, "hello" ) == 0 )
+with expansion:
+  0 == 0
+
+-------------------------------------------------------------------------------
+StringRef
+  From string literal
+  c_str() does not cause copy
+-------------------------------------------------------------------------------
+StringRef.tests.cpp:<line number>
+...............................................................................
+
+StringRef.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( isOwned( s ) == false )
+with expansion:
+  false == false
+
+StringRef.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( s.c_str() == rawChars )
+with expansion:
+  "hello" == "hello"
+
+StringRef.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( isOwned( s ) == false )
+with expansion:
+  false == false
+
+-------------------------------------------------------------------------------
+StringRef
+  From sub-string
+-------------------------------------------------------------------------------
+StringRef.tests.cpp:<line number>
+...............................................................................
+
+StringRef.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( original == "original" )
+
+StringRef.tests.cpp:<line number>: FAILED:
+  REQUIRE( isSubstring( original ) )
+with expansion:
+  false
+
+-------------------------------------------------------------------------------
+StringRef
+  Substrings
+  zero-based substring
+-------------------------------------------------------------------------------
+StringRef.tests.cpp:<line number>
+...............................................................................
+
+StringRef.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( ss.empty() == false )
+with expansion:
+  false == false
+
+StringRef.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( ss.size() == 5 )
+with expansion:
+  5 == 5
+
+StringRef.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( std::strcmp( ss.c_str(), "hello" ) == 0 )
+with expansion:
+  0 == 0
+
+StringRef.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( ss == "hello" )
+with expansion:
+  hello == "hello"
+
+-------------------------------------------------------------------------------
+StringRef
+  Substrings
+  c_str() causes copy
+-------------------------------------------------------------------------------
+StringRef.tests.cpp:<line number>
+...............................................................................
+
+StringRef.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( isSubstring( ss ) )
+with expansion:
+  true
+
+StringRef.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( isOwned( ss ) == false )
+with expansion:
+  false == false
+
+StringRef.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( rawChars == data( s ) )
+with expansion:
+  "hello world!" == "hello world!"
+
+StringRef.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( ss.c_str() != rawChars )
+with expansion:
+  "hello" != "hello world!"
+
+StringRef.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( isSubstring( ss ) == false )
+with expansion:
+  false == false
+
+StringRef.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( isOwned( ss ) )
+with expansion:
+  true
+
+StringRef.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( data( ss ) != data( s ) )
+with expansion:
+  "hello" != "hello world!"
+
+-------------------------------------------------------------------------------
+StringRef
+  Substrings
+  non-zero-based substring
+-------------------------------------------------------------------------------
+StringRef.tests.cpp:<line number>
+...............................................................................
+
+StringRef.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( ss.size() == 6 )
+with expansion:
+  6 == 6
+
+StringRef.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( std::strcmp( ss.c_str(), "world!" ) == 0 )
+with expansion:
+  0 == 0
+
+-------------------------------------------------------------------------------
+StringRef
+  Substrings
+  Pointer values of full refs should match
+-------------------------------------------------------------------------------
+StringRef.tests.cpp:<line number>
+...............................................................................
+
+StringRef.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( s.c_str() == s2.c_str() )
+with expansion:
+  "hello world!" == "hello world!"
+
+-------------------------------------------------------------------------------
+StringRef
+  Substrings
+  Pointer values of substring refs should not match
+-------------------------------------------------------------------------------
+StringRef.tests.cpp:<line number>
+...............................................................................
+
+StringRef.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( s.c_str() != ss.c_str() )
+with expansion:
+  "hello world!" != "hello"
+
+-------------------------------------------------------------------------------
+StringRef
+  Comparisons
+-------------------------------------------------------------------------------
+StringRef.tests.cpp:<line number>
+...............................................................................
+
+StringRef.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( StringRef("hello") == StringRef("hello") )
+with expansion:
+  hello == hello
+
+StringRef.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( StringRef("hello") != StringRef("cello") )
+with expansion:
+  hello != cello
+
+-------------------------------------------------------------------------------
+StringRef
+  from std::string
+  implicitly constructed
+-------------------------------------------------------------------------------
+StringRef.tests.cpp:<line number>
+...............................................................................
+
+StringRef.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( sr == "a standard string" )
+with expansion:
+  a standard string == "a standard string"
+
+StringRef.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( sr.size() == stdStr.size() )
+with expansion:
+  17 == 17
+
+-------------------------------------------------------------------------------
+StringRef
+  from std::string
+  explicitly constructed
+-------------------------------------------------------------------------------
+StringRef.tests.cpp:<line number>
+...............................................................................
+
+StringRef.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( sr == "a standard string" )
+with expansion:
+  a standard string == "a standard string"
+
+StringRef.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( sr.size() == stdStr.size() )
+with expansion:
+  17 == 17
+
+-------------------------------------------------------------------------------
+StringRef
+  from std::string
+  assigned
+-------------------------------------------------------------------------------
+StringRef.tests.cpp:<line number>
+...............................................................................
+
+StringRef.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( sr == "a standard string" )
+with expansion:
+  a standard string == "a standard string"
+
+StringRef.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( sr.size() == stdStr.size() )
+with expansion:
+  17 == 17
+
+-------------------------------------------------------------------------------
+StringRef
+  to std::string
+  implicitly constructed
+-------------------------------------------------------------------------------
+StringRef.tests.cpp:<line number>
+...............................................................................
+
+StringRef.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( stdStr == "a stringref" )
+with expansion:
+  "a stringref" == "a stringref"
+
+StringRef.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( stdStr.size() == sr.size() )
+with expansion:
+  11 == 11
+
+-------------------------------------------------------------------------------
+StringRef
+  to std::string
+  explicitly constructed
+-------------------------------------------------------------------------------
+StringRef.tests.cpp:<line number>
+...............................................................................
+
+StringRef.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( stdStr == "a stringref" )
+with expansion:
+  "a stringref" == "a stringref"
+
+StringRef.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( stdStr.size() == sr.size() )
+with expansion:
+  11 == 11
+
+-------------------------------------------------------------------------------
+StringRef
+  to std::string
+  assigned
+-------------------------------------------------------------------------------
+StringRef.tests.cpp:<line number>
+...............................................................................
+
+StringRef.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( stdStr == "a stringref" )
+with expansion:
+  "a stringref" == "a stringref"
+
+StringRef.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( stdStr.size() == sr.size() )
+with expansion:
+  11 == 11
+
+-------------------------------------------------------------------------------
+Stringifying std::chrono::duration helpers
+-------------------------------------------------------------------------------
+ToStringChrono.cpp:<line number>
+...............................................................................
+
+ToStringChrono.cpp:<line number>:
+PASSED:
+  REQUIRE( minute == seconds )
+with expansion:
+  1 m == 60 s
+
+ToStringChrono.cpp:<line number>:
+PASSED:
+  REQUIRE( hour != seconds )
+with expansion:
+  1 h != 60 s
+
+ToStringChrono.cpp:<line number>:
+PASSED:
+  REQUIRE( micro != milli )
+with expansion:
+  1 us != 1 ms
+
+ToStringChrono.cpp:<line number>:
+PASSED:
+  REQUIRE( nano != micro )
+with expansion:
+  1 ns != 1 us
+
+-------------------------------------------------------------------------------
+Stringifying std::chrono::duration with weird ratios
+-------------------------------------------------------------------------------
+ToStringChrono.cpp:<line number>
+...............................................................................
+
+ToStringChrono.cpp:<line number>:
+PASSED:
+  REQUIRE( half_minute != femto_second )
+with expansion:
+  1 [30/1]s != 1 fs
+
+-------------------------------------------------------------------------------
+Stringifying std::chrono::time_point<system_clock>
+-------------------------------------------------------------------------------
+ToStringChrono.cpp:<line number>
+...............................................................................
+
+ToStringChrono.cpp:<line number>:
+PASSED:
+  REQUIRE( now != later )
+with expansion:
+  {iso8601-timestamp}
+  !=
+  {iso8601-timestamp}
+
 -------------------------------------------------------------------------------
 Tabs and newlines show in output
 -------------------------------------------------------------------------------
@@ -7021,37 +4840,33 @@ TagAliasTests.cpp:<line number>:
 PASSED:
   CHECK_THAT( what, Contains( "[@zzz]" ) )
 with expansion:
-  "error: tag alias, "[@zzz]" already registered.
-  	First seen at file:2
-  	Redefined at file:10
-  " contains: "[@zzz]"
+  "error: tag alias, '[@zzz]' already registered.
+  	First seen at: file:2
+  	Redefined at: file:10" contains: "[@zzz]"
 
 TagAliasTests.cpp:<line number>:
 PASSED:
   CHECK_THAT( what, Contains( "file" ) )
 with expansion:
-  "error: tag alias, "[@zzz]" already registered.
-  	First seen at file:2
-  	Redefined at file:10
-  " contains: "file"
+  "error: tag alias, '[@zzz]' already registered.
+  	First seen at: file:2
+  	Redefined at: file:10" contains: "file"
 
 TagAliasTests.cpp:<line number>:
 PASSED:
   CHECK_THAT( what, Contains( "2" ) )
 with expansion:
-  "error: tag alias, "[@zzz]" already registered.
-  	First seen at file:2
-  	Redefined at file:10
-  " contains: "2"
+  "error: tag alias, '[@zzz]' already registered.
+  	First seen at: file:2
+  	Redefined at: file:10" contains: "2"
 
 TagAliasTests.cpp:<line number>:
 PASSED:
   CHECK_THAT( what, Contains( "10" ) )
 with expansion:
-  "error: tag alias, "[@zzz]" already registered.
-  	First seen at file:2
-  	Redefined at file:10
-  " contains: "10"
+  "error: tag alias, '[@zzz]' already registered.
+  	First seen at: file:2
+  	Redefined at: file:10" contains: "10"
 
 -------------------------------------------------------------------------------
 Tag alias can be registered against tag patterns
@@ -7098,28 +4913,6 @@ PASSED:
   REQUIRE( 0x<hex digits> == bit30and31 )
 with expansion:
   3221225472 (0x<hex digits>) == 3221225472
-
--------------------------------------------------------------------------------
-Text can be formatted using the Text class
--------------------------------------------------------------------------------
-TestMain.cpp:<line number>
-...............................................................................
-
-TestMain.cpp:<line number>:
-PASSED:
-  CHECK( Text( "hi there" ).toString() == "hi there" )
-with expansion:
-  "hi there" == "hi there"
-
-TestMain.cpp:<line number>:
-PASSED:
-  CHECK( Text( "hi there", narrow ).toString() == "hi\nthere" )
-with expansion:
-  "hi
-  there"
-  ==
-  "hi
-  there"
 
 -------------------------------------------------------------------------------
 The NO_FAIL macro reports a failure but does not fail the test
@@ -8789,7 +6582,8 @@ MiscTests.cpp:<line number>
 MiscTests.cpp:<line number>:
 PASSED:
 
-spanner-------------------------------------------------------------------------------
+loose text artifact
+-------------------------------------------------------------------------------
 just failure
 -------------------------------------------------------------------------------
 MessageTests.cpp:<line number>
@@ -8798,6 +6592,20 @@ MessageTests.cpp:<line number>
 MessageTests.cpp:<line number>: FAILED:
 explicitly with message:
   Previous info should not be seen
+
+-------------------------------------------------------------------------------
+long long
+-------------------------------------------------------------------------------
+MiscTests.cpp:<line number>
+...............................................................................
+
+MiscTests.cpp:<line number>:
+PASSED:
+  REQUIRE( l == std::numeric_limits<long long>::max() )
+with expansion:
+  9223372036854775807 (0x<hex digits>)
+  ==
+  9223372036854775807 (0x<hex digits>)
 
 -------------------------------------------------------------------------------
 looped SECTION tests
@@ -8962,6 +6770,18 @@ with expansion:
   "7" == "7"
 
 -------------------------------------------------------------------------------
+non-copyable objects
+-------------------------------------------------------------------------------
+TrickyTests.cpp:<line number>
+...............................................................................
+
+TrickyTests.cpp:<line number>:
+PASSED:
+  CHECK( ti == typeid(int) )
+with expansion:
+  {?} == {?}
+
+-------------------------------------------------------------------------------
 not allowed
 -------------------------------------------------------------------------------
 MiscTests.cpp:<line number>
@@ -8989,6 +6809,18 @@ with expansion:
   {null string} == {null string}
 
 -------------------------------------------------------------------------------
+null_ptr
+-------------------------------------------------------------------------------
+TrickyTests.cpp:<line number>
+...............................................................................
+
+TrickyTests.cpp:<line number>:
+PASSED:
+  REQUIRE( ptr.get() == 0 )
+with expansion:
+  0 == 0
+
+-------------------------------------------------------------------------------
 pair<pair<int,const char *,pair<std::string,int> > -> toString
 -------------------------------------------------------------------------------
 ToStringPair.cpp:<line number>
@@ -8996,7 +6828,7 @@ ToStringPair.cpp:<line number>
 
 ToStringPair.cpp:<line number>:
 PASSED:
-  REQUIRE( Catch::toString( pair ) == "{ { 42, \"Arthur\" }, { \"Ford\", 24 } }" )
+  REQUIRE( ::Catch::Detail::stringify( pair ) == "{ { 42, \"Arthur\" }, { \"Ford\", 24 } }" )
 with expansion:
   "{ { 42, "Arthur" }, { "Ford", 24 } }"
   ==
@@ -9012,7 +6844,7 @@ TrickyTests.cpp:<line number>:
 PASSED:
   REQUIRE( p == 0 )
 with expansion:
-  NULL == 0
+  0 == 0
 
 -------------------------------------------------------------------------------
 random SECTION tests
@@ -9055,7 +6887,7 @@ TestMain.cpp:<line number>
 
 TestMain.cpp:<line number>:
 PASSED:
-  CHECK( replaceInPlace( letters, "b", "z" ) )
+  CHECK( Catch::replaceInPlace( letters, "b", "z" ) )
 with expansion:
   true
 
@@ -9074,7 +6906,7 @@ TestMain.cpp:<line number>
 
 TestMain.cpp:<line number>:
 PASSED:
-  CHECK( replaceInPlace( letters, "c", "z" ) )
+  CHECK( Catch::replaceInPlace( letters, "c", "z" ) )
 with expansion:
   true
 
@@ -9093,7 +6925,7 @@ TestMain.cpp:<line number>
 
 TestMain.cpp:<line number>:
 PASSED:
-  CHECK( replaceInPlace( letters, "a", "z" ) )
+  CHECK( Catch::replaceInPlace( letters, "a", "z" ) )
 with expansion:
   true
 
@@ -9112,7 +6944,7 @@ TestMain.cpp:<line number>
 
 TestMain.cpp:<line number>:
 PASSED:
-  CHECK( replaceInPlace( letters, "g", "z" ) )
+  CHECK( Catch::replaceInPlace( letters, "g", "z" ) )
 with expansion:
   true
 
@@ -9131,7 +6963,7 @@ TestMain.cpp:<line number>
 
 TestMain.cpp:<line number>:
 PASSED:
-  CHECK( replaceInPlace( letters, letters, "replaced" ) )
+  CHECK( Catch::replaceInPlace( letters, letters, "replaced" ) )
 with expansion:
   true
 
@@ -9150,7 +6982,7 @@ TestMain.cpp:<line number>
 
 TestMain.cpp:<line number>:
 PASSED:
-  CHECK_FALSE( replaceInPlace( letters, "x", "z" ) )
+  CHECK_FALSE( Catch::replaceInPlace( letters, "x", "z" ) )
 with expansion:
   !false
 
@@ -9169,7 +7001,7 @@ TestMain.cpp:<line number>
 
 TestMain.cpp:<line number>:
 PASSED:
-  CHECK( replaceInPlace( s, "'", "|'" ) )
+  CHECK( Catch::replaceInPlace( s, "'", "|'" ) )
 with expansion:
   true
 
@@ -9210,7 +7042,7 @@ ToStringPair.cpp:<line number>
 
 ToStringPair.cpp:<line number>:
 PASSED:
-  REQUIRE( Catch::toString(value) == "{ 34, \"xyzzy\" }" )
+  REQUIRE( ::Catch::Detail::stringify(value) == "{ 34, \"xyzzy\" }" )
 with expansion:
   "{ 34, "xyzzy" }" == "{ 34, "xyzzy" }"
 
@@ -9222,7 +7054,7 @@ ToStringPair.cpp:<line number>
 
 ToStringPair.cpp:<line number>:
 PASSED:
-  REQUIRE( Catch::toString( value ) == "{ 34, \"xyzzy\" }" )
+  REQUIRE( ::Catch::Detail::stringify( value ) == "{ 34, \"xyzzy\" }" )
 with expansion:
   "{ 34, "xyzzy" }" == "{ 34, "xyzzy" }"
 
@@ -9234,7 +7066,7 @@ ToStringPair.cpp:<line number>
 
 ToStringPair.cpp:<line number>:
 PASSED:
-  REQUIRE( Catch::toString( pr ) == "{ { \"green\", 55 } }" )
+  REQUIRE( ::Catch::Detail::stringify( pr ) == "{ { \"green\", 55 } }" )
 with expansion:
   "{ { "green", 55 } }"
   ==
@@ -9250,6 +7082,48 @@ TrickyTests.cpp:<line number>: FAILED:
   REQUIRE( std::string( "first" ) == "second" )
 with expansion:
   "first" == "second"
+
+-------------------------------------------------------------------------------
+stringify( has_maker )
+-------------------------------------------------------------------------------
+ToStringWhich.cpp:<line number>
+...............................................................................
+
+ToStringWhich.cpp:<line number>:
+PASSED:
+  REQUIRE( ::Catch::Detail::stringify( item ) == "StringMaker<has_maker>" )
+with expansion:
+  "StringMaker<has_maker>"
+  ==
+  "StringMaker<has_maker>"
+
+-------------------------------------------------------------------------------
+stringify( has_maker_and_toString )
+-------------------------------------------------------------------------------
+ToStringWhich.cpp:<line number>
+...............................................................................
+
+ToStringWhich.cpp:<line number>:
+PASSED:
+  REQUIRE( ::Catch::Detail::stringify( item ) == "StringMaker<has_maker_and_operator>" )
+with expansion:
+  "StringMaker<has_maker_and_operator>"
+  ==
+  "StringMaker<has_maker_and_operator>"
+
+-------------------------------------------------------------------------------
+stringify( has_operator )
+-------------------------------------------------------------------------------
+ToStringWhich.cpp:<line number>
+...............................................................................
+
+ToStringWhich.cpp:<line number>:
+PASSED:
+  REQUIRE( ::Catch::Detail::stringify( item ) == "operator<<( has_operator )" )
+with expansion:
+  "operator<<( has_operator )"
+  ==
+  "operator<<( has_operator )"
 
 -------------------------------------------------------------------------------
 toString on const wchar_t const pointer returns the string contents
@@ -9300,48 +7174,6 @@ with expansion:
   ""wide load"" == ""wide load""
 
 -------------------------------------------------------------------------------
-toString( has_maker )
--------------------------------------------------------------------------------
-ToStringWhich.cpp:<line number>
-...............................................................................
-
-ToStringWhich.cpp:<line number>:
-PASSED:
-  REQUIRE( Catch::toString( item ) == "StringMaker<has_maker>" )
-with expansion:
-  "StringMaker<has_maker>"
-  ==
-  "StringMaker<has_maker>"
-
--------------------------------------------------------------------------------
-toString( has_maker_and_toString )
--------------------------------------------------------------------------------
-ToStringWhich.cpp:<line number>
-...............................................................................
-
-ToStringWhich.cpp:<line number>:
-PASSED:
-  REQUIRE( Catch::toString( item ) == "toString( has_maker_and_toString )" )
-with expansion:
-  "toString( has_maker_and_toString )"
-  ==
-  "toString( has_maker_and_toString )"
-
--------------------------------------------------------------------------------
-toString( has_toString )
--------------------------------------------------------------------------------
-ToStringWhich.cpp:<line number>
-...............................................................................
-
-ToStringWhich.cpp:<line number>:
-PASSED:
-  REQUIRE( Catch::toString( item ) == "toString( has_toString )" )
-with expansion:
-  "toString( has_toString )"
-  ==
-  "toString( has_toString )"
-
--------------------------------------------------------------------------------
 toString( vectors<has_maker )
 -------------------------------------------------------------------------------
 ToStringWhich.cpp:<line number>
@@ -9349,11 +7181,53 @@ ToStringWhich.cpp:<line number>
 
 ToStringWhich.cpp:<line number>:
 PASSED:
-  REQUIRE( Catch::toString( v ) == "{ StringMaker<has_maker> }" )
+  REQUIRE( ::Catch::Detail::stringify( v ) == "{ StringMaker<has_maker> }" )
 with expansion:
   "{ StringMaker<has_maker> }"
   ==
   "{ StringMaker<has_maker> }"
+
+-------------------------------------------------------------------------------
+toString(enum class w/operator<<)
+-------------------------------------------------------------------------------
+EnumToString.cpp:<line number>
+...............................................................................
+
+EnumToString.cpp:<line number>:
+PASSED:
+  CHECK( ::Catch::Detail::stringify(e0) == "E2/V0" )
+with expansion:
+  "E2/V0" == "E2/V0"
+
+EnumToString.cpp:<line number>:
+PASSED:
+  CHECK( ::Catch::Detail::stringify(e1) == "E2/V1" )
+with expansion:
+  "E2/V1" == "E2/V1"
+
+EnumToString.cpp:<line number>:
+PASSED:
+  CHECK( ::Catch::Detail::stringify(e3) == "Unknown enum value 10" )
+with expansion:
+  "Unknown enum value 10"
+  ==
+  "Unknown enum value 10"
+
+-------------------------------------------------------------------------------
+toString(enum class)
+-------------------------------------------------------------------------------
+EnumToString.cpp:<line number>
+...............................................................................
+
+EnumToString.cpp:<line number>: FAILED:
+  CHECK( ::Catch::Detail::stringify(e0) == "0" )
+with expansion:
+  "{?}" == "0"
+
+EnumToString.cpp:<line number>: FAILED:
+  CHECK( ::Catch::Detail::stringify(e1) == "1" )
+with expansion:
+  "{?}" == "1"
 
 -------------------------------------------------------------------------------
 toString(enum w/operator<<)
@@ -9363,13 +7237,13 @@ EnumToString.cpp:<line number>
 
 EnumToString.cpp:<line number>:
 PASSED:
-  CHECK( Catch::toString(e0) == "E2{0}" )
+  CHECK( ::Catch::Detail::stringify(e0) == "E2{0}" )
 with expansion:
   "E2{0}" == "E2{0}"
 
 EnumToString.cpp:<line number>:
 PASSED:
-  CHECK( Catch::toString(e1) == "E2{1}" )
+  CHECK( ::Catch::Detail::stringify(e1) == "E2{1}" )
 with expansion:
   "E2{1}" == "E2{1}"
 
@@ -9381,15 +7255,149 @@ EnumToString.cpp:<line number>
 
 EnumToString.cpp:<line number>:
 PASSED:
-  CHECK( Catch::toString(e0) == "0" )
+  CHECK( ::Catch::Detail::stringify(e0) == "0" )
 with expansion:
   "0" == "0"
 
 EnumToString.cpp:<line number>:
 PASSED:
-  CHECK( Catch::toString(e1) == "1" )
+  CHECK( ::Catch::Detail::stringify(e1) == "1" )
 with expansion:
   "1" == "1"
+
+-------------------------------------------------------------------------------
+tuple<>
+-------------------------------------------------------------------------------
+ToStringTuple.cpp:<line number>
+...............................................................................
+
+ToStringTuple.cpp:<line number>:
+PASSED:
+  CHECK( "{ }" == ::Catch::Detail::stringify(type{}) )
+with expansion:
+  "{ }" == "{ }"
+
+ToStringTuple.cpp:<line number>:
+PASSED:
+  CHECK( "{ }" == ::Catch::Detail::stringify(value) )
+with expansion:
+  "{ }" == "{ }"
+
+-------------------------------------------------------------------------------
+tuple<float,int>
+-------------------------------------------------------------------------------
+ToStringTuple.cpp:<line number>
+...............................................................................
+
+ToStringTuple.cpp:<line number>:
+PASSED:
+  CHECK( "1.2f" == ::Catch::Detail::stringify(float(1.2)) )
+with expansion:
+  "1.2f" == "1.2f"
+
+ToStringTuple.cpp:<line number>:
+PASSED:
+  CHECK( "{ 1.2f, 0 }" == ::Catch::Detail::stringify(type{1.2f,0}) )
+with expansion:
+  "{ 1.2f, 0 }" == "{ 1.2f, 0 }"
+
+-------------------------------------------------------------------------------
+tuple<int>
+-------------------------------------------------------------------------------
+ToStringTuple.cpp:<line number>
+...............................................................................
+
+ToStringTuple.cpp:<line number>:
+PASSED:
+  CHECK( "{ 0 }" == ::Catch::Detail::stringify(type{0}) )
+with expansion:
+  "{ 0 }" == "{ 0 }"
+
+-------------------------------------------------------------------------------
+tuple<0,int,const char *>
+-------------------------------------------------------------------------------
+ToStringTuple.cpp:<line number>
+...............................................................................
+
+ToStringTuple.cpp:<line number>:
+PASSED:
+  CHECK( "{ 0, 42, \"Catch me\" }" == ::Catch::Detail::stringify(value) )
+with expansion:
+  "{ 0, 42, "Catch me" }"
+  ==
+  "{ 0, 42, "Catch me" }"
+
+-------------------------------------------------------------------------------
+tuple<string,string>
+-------------------------------------------------------------------------------
+ToStringTuple.cpp:<line number>
+...............................................................................
+
+ToStringTuple.cpp:<line number>:
+PASSED:
+  CHECK( "{ \"hello\", \"world\" }" == ::Catch::Detail::stringify(type{"hello","world"}) )
+with expansion:
+  "{ "hello", "world" }"
+  ==
+  "{ "hello", "world" }"
+
+-------------------------------------------------------------------------------
+tuple<tuple<int>,tuple<>,float>
+-------------------------------------------------------------------------------
+ToStringTuple.cpp:<line number>
+...............................................................................
+
+ToStringTuple.cpp:<line number>:
+PASSED:
+  CHECK( "{ { 42 }, { }, 1.2f }" == ::Catch::Detail::stringify(value) )
+with expansion:
+  "{ { 42 }, { }, 1.2f }"
+  ==
+  "{ { 42 }, { }, 1.2f }"
+
+-------------------------------------------------------------------------------
+vec<vec<string,alloc>> -> toString
+-------------------------------------------------------------------------------
+ToStringVector.cpp:<line number>
+...............................................................................
+
+ToStringVector.cpp:<line number>:
+PASSED:
+  REQUIRE( ::Catch::Detail::stringify(v) == "{  }" )
+with expansion:
+  "{  }" == "{  }"
+
+ToStringVector.cpp:<line number>:
+PASSED:
+  REQUIRE( ::Catch::Detail::stringify(v) == "{ { \"hello\" }, { \"world\" } }" )
+with expansion:
+  "{ { "hello" }, { "world" } }"
+  ==
+  "{ { "hello" }, { "world" } }"
+
+-------------------------------------------------------------------------------
+vector<int,allocator> -> toString
+-------------------------------------------------------------------------------
+ToStringVector.cpp:<line number>
+...............................................................................
+
+ToStringVector.cpp:<line number>:
+PASSED:
+  REQUIRE( ::Catch::Detail::stringify(vv) == "{  }" )
+with expansion:
+  "{  }" == "{  }"
+
+ToStringVector.cpp:<line number>:
+PASSED:
+  REQUIRE( ::Catch::Detail::stringify(vv) == "{ 42 }" )
+with expansion:
+  "{ 42 }" == "{ 42 }"
+
+ToStringVector.cpp:<line number>:
+PASSED:
+  REQUIRE( ::Catch::Detail::stringify(vv) == "{ 42, 250 }" )
+with expansion:
+  "{ 42, 250 }" == "{ 42, 250 }"
 
 -------------------------------------------------------------------------------
 vector<int> -> toString
@@ -9399,19 +7407,19 @@ ToStringVector.cpp:<line number>
 
 ToStringVector.cpp:<line number>:
 PASSED:
-  REQUIRE( Catch::toString(vv) == "{  }" )
+  REQUIRE( ::Catch::Detail::stringify(vv) == "{  }" )
 with expansion:
   "{  }" == "{  }"
 
 ToStringVector.cpp:<line number>:
 PASSED:
-  REQUIRE( Catch::toString(vv) == "{ 42 }" )
+  REQUIRE( ::Catch::Detail::stringify(vv) == "{ 42 }" )
 with expansion:
   "{ 42 }" == "{ 42 }"
 
 ToStringVector.cpp:<line number>:
 PASSED:
-  REQUIRE( Catch::toString(vv) == "{ 42, 250 }" )
+  REQUIRE( ::Catch::Detail::stringify(vv) == "{ 42, 250 }" )
 with expansion:
   "{ 42, 250 }" == "{ 42, 250 }"
 
@@ -9423,19 +7431,19 @@ ToStringVector.cpp:<line number>
 
 ToStringVector.cpp:<line number>:
 PASSED:
-  REQUIRE( Catch::toString(vv) == "{  }" )
+  REQUIRE( ::Catch::Detail::stringify(vv) == "{  }" )
 with expansion:
   "{  }" == "{  }"
 
 ToStringVector.cpp:<line number>:
 PASSED:
-  REQUIRE( Catch::toString(vv) == "{ \"hello\" }" )
+  REQUIRE( ::Catch::Detail::stringify(vv) == "{ \"hello\" }" )
 with expansion:
   "{ "hello" }" == "{ "hello" }"
 
 ToStringVector.cpp:<line number>:
 PASSED:
-  REQUIRE( Catch::toString(vv) == "{ \"hello\", \"world\" }" )
+  REQUIRE( ::Catch::Detail::stringify(vv) == "{ \"hello\", \"world\" }" )
 with expansion:
   "{ "hello", "world" }"
   ==
@@ -9624,6 +7632,6 @@ MiscTests.cpp:<line number>:
 PASSED:
 
 ===============================================================================
-test cases: 171 | 120 passed | 47 failed |  4 failed as expected
-assertions: 985 | 871 passed | 93 failed | 21 failed as expected
+test cases: 185 | 132 passed | 49 failed |  4 failed as expected
+assertions: 903 | 783 passed | 99 failed | 21 failed as expected
 

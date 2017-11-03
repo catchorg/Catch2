@@ -8,7 +8,9 @@
 #ifndef TWOBLUECUBES_CATCH_MATCHERS_STRING_H_INCLUDED
 #define TWOBLUECUBES_CATCH_MATCHERS_STRING_H_INCLUDED
 
-#include "catch_matchers.hpp"
+#include "catch_matchers.h"
+
+#include <string>
 
 namespace Catch {
 namespace Matchers {
@@ -27,7 +29,7 @@ namespace Matchers {
 
         struct StringMatcherBase : MatcherBase<std::string> {
             StringMatcherBase( std::string const& operation, CasedString const& comparator );
-            virtual std::string describe() const CATCH_OVERRIDE;
+            std::string describe() const override;
 
             CasedString m_comparator;
             std::string m_operation;
@@ -35,19 +37,19 @@ namespace Matchers {
 
         struct EqualsMatcher : StringMatcherBase {
             EqualsMatcher( CasedString const& comparator );
-            virtual bool match( std::string const& source ) const CATCH_OVERRIDE;
+            bool match( std::string const& source ) const override;
         };
         struct ContainsMatcher : StringMatcherBase {
             ContainsMatcher( CasedString const& comparator );
-            virtual bool match( std::string const& source ) const CATCH_OVERRIDE;
+            bool match( std::string const& source ) const override;
         };
         struct StartsWithMatcher : StringMatcherBase {
             StartsWithMatcher( CasedString const& comparator );
-            virtual bool match( std::string const& source ) const CATCH_OVERRIDE;
+            bool match( std::string const& source ) const override;
         };
         struct EndsWithMatcher : StringMatcherBase {
             EndsWithMatcher( CasedString const& comparator );
-            virtual bool match( std::string const& source ) const CATCH_OVERRIDE;
+            bool match( std::string const& source ) const override;
         };
 
     } // namespace StdString

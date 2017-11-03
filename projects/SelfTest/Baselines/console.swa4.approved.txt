@@ -15,6 +15,25 @@ with message:
   yay
 
 -------------------------------------------------------------------------------
+#1005: Comparing pointer to int and long (NULL can be either on various
+       systems)
+-------------------------------------------------------------------------------
+DecompositionTests.cpp:<line number>
+...............................................................................
+
+DecompositionTests.cpp:<line number>:
+PASSED:
+  REQUIRE( fptr == 0 )
+with expansion:
+  0 == 0
+
+DecompositionTests.cpp:<line number>:
+PASSED:
+  REQUIRE( fptr == 0l )
+with expansion:
+  0 == 0
+
+-------------------------------------------------------------------------------
 #748 - captures with unexpected exceptions
   outside assertions
 -------------------------------------------------------------------------------
@@ -88,7 +107,7 @@ PASSED:
 
 CompilationTests.cpp:<line number>:
 PASSED:
-  CHECK_THROWS_AS( throws_int(true), const int& )
+  CHECK_THROWS_AS( throws_int(true), int )
 
 CompilationTests.cpp:<line number>:
 PASSED:
@@ -122,6 +141,20 @@ PASSED:
   REQUIRE( errno == 1 )
 with expansion:
   1 == 1
+
+-------------------------------------------------------------------------------
+#872
+-------------------------------------------------------------------------------
+CompilationTests.cpp:<line number>
+...............................................................................
+
+CompilationTests.cpp:<line number>:
+PASSED:
+  REQUIRE( x == 4 )
+with expansion:
+  {?} == 4
+with message:
+  dummy := 0
 
 -------------------------------------------------------------------------------
 #961 -- Dynamically created sections should all be reported
@@ -206,6 +239,6 @@ with expansion:
   !true
 
 ===============================================================================
-test cases:  7 |  4 passed | 1 failed | 2 failed as expected
-assertions: 23 | 16 passed | 4 failed | 3 failed as expected
+test cases:  9 |  6 passed | 1 failed | 2 failed as expected
+assertions: 26 | 19 passed | 4 failed | 3 failed as expected
 

@@ -13,26 +13,23 @@
 #pragma clang diagnostic ignored "-Wc++98-compat-pedantic"
 #endif
 
-TEST_CASE( "INFO and WARN do not abort tests", "[messages][.]" )
-{
+TEST_CASE( "INFO and WARN do not abort tests", "[messages][.]" ) {
     INFO( "this is a " << "message" );    // This should output the message if a failure occurs
     WARN( "this is a " << "warning" );    // This should always output the message but then continue
 }
-TEST_CASE( "SUCCEED counts as a test pass", "[messages]" )
-{
+
+TEST_CASE( "SUCCEED counts as a test pass", "[messages]" ) {
     SUCCEED( "this is a " << "success" );
 }
 
-TEST_CASE( "INFO gets logged on failure", "[failing][messages][.]" )
-{
+TEST_CASE( "INFO gets logged on failure", "[failing][messages][.]" ) {
     INFO( "this message should be logged" );
     INFO( "so should this" );
     int a = 2;
     REQUIRE( a == 1 );
 }
 
-TEST_CASE( "INFO gets logged on failure, even if captured before successful assertions", "[failing][messages][.]" )
-{
+TEST_CASE( "INFO gets logged on failure, even if captured before successful assertions", "[failing][messages][.]" ) {
     INFO( "this message may be logged later" );
     int a = 2;
     CHECK( a == 2 );
@@ -50,56 +47,45 @@ TEST_CASE( "INFO gets logged on failure, even if captured before successful asse
     CHECK( a == 2 );
 }
 
-TEST_CASE( "FAIL aborts the test", "[failing][messages][.]" )
-{
+TEST_CASE( "FAIL aborts the test", "[failing][messages][.]" ) {
     FAIL( "This is a " << "failure" );    // This should output the message and abort
     WARN( "We should never see this");
 }
 
-TEST_CASE( "FAIL_CHECK does not abort the test", "[failing][messages][.]" )
-{
+TEST_CASE( "FAIL_CHECK does not abort the test", "[failing][messages][.]" ) {
     FAIL_CHECK( "This is a " << "failure" );    // This should output the message then continue
     WARN( "This message appears in the output");
 }
 
-#ifdef CATCH_CONFIG_VARIADIC_MACROS
-TEST_CASE( "FAIL does not require an argument", "[failing][messages][.]" )
-{
+TEST_CASE( "FAIL does not require an argument", "[failing][messages][.]" ) {
     FAIL();
 }
-TEST_CASE( "SUCCESS does not require an argument", "[messages][.]" )
-{
+
+TEST_CASE( "SUCCESS does not require an argument", "[messages][.]" ) {
    SUCCEED();
 }
-#endif
 
-TEST_CASE( "Output from all sections is reported", "[failing][messages][.]" )
-{
-    SECTION( "one", "" )
-    {
+TEST_CASE( "Output from all sections is reported", "[failing][messages][.]" ) {
+    SECTION( "one" ) {
         FAIL( "Message from section one" );
     }
 
-    SECTION( "two", "" )
-    {
+    SECTION( "two" ) {
         FAIL( "Message from section two" );
     }
 }
 
-TEST_CASE( "Standard output from all sections is reported", "[messages][.]" )
-{
-    SECTION( "one", "" )
-    {
+TEST_CASE( "Standard output from all sections is reported", "[messages][.]" ) {
+    SECTION( "one" ) {
         std::cout << "Message from section one" << std::endl;
     }
 
-    SECTION( "two", "" )
-    {
+    SECTION( "two" ) {
         std::cout << "Message from section two" << std::endl;
     }
 }
 
-TEST_CASE( "Standard error is reported and redirected", "[messages][.]" ) {
+TEST_CASE( "Standard error is reported and redirected", "[messages][.][approvals]" ) {
     SECTION( "std::cerr" ) {
         std::cerr << "Write to std::cerr" << std::endl;
     }
@@ -112,46 +98,40 @@ TEST_CASE( "Standard error is reported and redirected", "[messages][.]" ) {
         std::cerr << ' ';
         std::clog << "writes";
         std::cerr << " to error";
-        std::clog << " streams\n";
+        std::clog << " streams" << std::endl;
     }
 }
 
-TEST_CASE( "SCOPED_INFO is reset for each loop", "[messages][failing][.]" )
-{
+TEST_CASE( "INFO is reset for each loop", "[messages][failing][.]" ) {
     for( int i=0; i<100; i++ )
     {
-        SCOPED_INFO( "current counter " << i );
-        SCOPED_CAPTURE( i );
+        INFO( "current counter " << i );
+        CAPTURE( i );
         REQUIRE( i < 10 );
     }
 }
 
-TEST_CASE( "The NO_FAIL macro reports a failure but does not fail the test", "[messages]" )
-{
+TEST_CASE( "The NO_FAIL macro reports a failure but does not fail the test", "[messages]" ) {
     CHECK_NOFAIL( 1 == 2 );
 }
 
-TEST_CASE( "just info", "[info][isolated info][messages]" )
-{
+TEST_CASE( "just info", "[info][isolated info][messages]" ) {
     INFO( "this should never be seen" );
 }
-TEST_CASE( "just failure", "[fail][isolated info][.][messages]" )
-{
+TEST_CASE( "just failure", "[fail][isolated info][.][messages]" ) {
     FAIL( "Previous info should not be seen" );
 }
 
 
-TEST_CASE( "sends information to INFO", "[.][failing]" )
-{
+TEST_CASE( "sends information to INFO", "[.][failing]" ) {
     INFO( "hi" );
     int i = 7;
     CAPTURE( i );
     REQUIRE( false );
 }
 
-TEST_CASE( "Pointers can be converted to strings", "[messages][.]" )
-{
+TEST_CASE( "Pointers can be converted to strings", "[messages][.][approvals]" ) {
     int p;
     WARN( "actual address of p: " << &p );
-    WARN( "toString(p): " << Catch::toString( &p ) );
+    WARN( "toString(p): " << ::Catch::Detail::stringify( &p ) );
 }

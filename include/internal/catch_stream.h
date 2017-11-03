@@ -9,7 +9,6 @@
 #ifndef TWOBLUECUBES_CATCH_STREAM_H_INCLUDED
 #define TWOBLUECUBES_CATCH_STREAM_H_INCLUDED
 
-#include "catch_compiler_capabilities.h"
 #include "catch_streambuf.h"
 
 #include <streambuf>
@@ -25,7 +24,7 @@ namespace Catch {
 
 
     struct IStream {
-        virtual ~IStream() CATCH_NOEXCEPT;
+        virtual ~IStream();
         virtual std::ostream& stream() const = 0;
     };
 
@@ -33,9 +32,9 @@ namespace Catch {
         mutable std::ofstream m_ofs;
     public:
         FileStream( std::string const& filename );
-        virtual ~FileStream() CATCH_NOEXCEPT;
+        ~FileStream() override = default;
     public: // IStream
-        virtual std::ostream& stream() const CATCH_OVERRIDE;
+        std::ostream& stream() const override;
     };
 
 
@@ -43,22 +42,22 @@ namespace Catch {
         mutable std::ostream m_os;
     public:
         CoutStream();
-        virtual ~CoutStream() CATCH_NOEXCEPT;
+        ~CoutStream() override = default;
 
     public: // IStream
-        virtual std::ostream& stream() const CATCH_OVERRIDE;
+        std::ostream& stream() const override;
     };
 
 
     class DebugOutStream : public IStream {
-        CATCH_AUTO_PTR( StreamBufBase ) m_streamBuf;
+        std::unique_ptr<StreamBufBase> m_streamBuf;
         mutable std::ostream m_os;
     public:
         DebugOutStream();
-        virtual ~DebugOutStream() CATCH_NOEXCEPT;
+        ~DebugOutStream() override = default;
 
     public: // IStream
-        virtual std::ostream& stream() const CATCH_OVERRIDE;
+        std::ostream& stream() const override;
     };
 }
 

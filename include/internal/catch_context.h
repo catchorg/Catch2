@@ -8,18 +8,15 @@
 #ifndef TWOBLUECUBES_CATCH_CONTEXT_H_INCLUDED
 #define TWOBLUECUBES_CATCH_CONTEXT_H_INCLUDED
 
-#include "catch_interfaces_generators.h"
-#include "catch_ptr.hpp"
-
+#include <memory>
 
 namespace Catch {
 
-    class TestCase;
-    class Stream;
     struct IResultCapture;
     struct IRunner;
-    struct IGeneratorsForTest;
     struct IConfig;
+
+    using IConfigPtr = std::shared_ptr<IConfig const>;
 
     struct IContext
     {
@@ -27,9 +24,7 @@ namespace Catch {
 
         virtual IResultCapture* getResultCapture() = 0;
         virtual IRunner* getRunner() = 0;
-        virtual size_t getGeneratorIndex( std::string const& fileInfo, size_t totalSize ) = 0;
-        virtual bool advanceGeneratorsForCurrentTest() = 0;
-        virtual Ptr<IConfig const> getConfig() const = 0;
+        virtual IConfigPtr getConfig() const = 0;
     };
 
     struct IMutableContext : IContext
@@ -37,14 +32,12 @@ namespace Catch {
         virtual ~IMutableContext();
         virtual void setResultCapture( IResultCapture* resultCapture ) = 0;
         virtual void setRunner( IRunner* runner ) = 0;
-        virtual void setConfig( Ptr<IConfig const> const& config ) = 0;
+        virtual void setConfig( IConfigPtr const& config ) = 0;
     };
 
     IContext& getCurrentContext();
     IMutableContext& getCurrentMutableContext();
     void cleanUpContext();
-    Stream createStream( std::string const& streamName );
-
 }
 
 #endif // TWOBLUECUBES_CATCH_CONTEXT_H_INCLUDED

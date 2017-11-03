@@ -18,6 +18,8 @@
 // in catch.hpp first to make sure they are included by the single
 // header for non obj-usage
 #include "catch_test_case_info.h"
+#include "catch_string_manip.h"
+#include "catch_tostring.h"
 
 ///////////////////////////////////////////////////////////////////////////////
 // This protocol is really only here for (self) documenting purposes, since
@@ -33,7 +35,7 @@
 
 namespace Catch {
 
-    class OcMethod : public SharedImpl<ITestCase> {
+    class OcMethod : public ITestInvoker {
 
     public:
         OcMethod( Class cls, SEL sel ) : m_cls( cls ), m_sel( sel ) {}
@@ -70,9 +72,9 @@ namespace Catch {
         }
     }
 
-    inline size_t registerTestMethods() {
-        size_t noTestMethods = 0;
-        int noClasses = objc_getClassList( CATCH_NULL, 0 );
+    inline std::size_t registerTestMethods() {
+        std::size_t noTestMethods = 0;
+        int noClasses = objc_getClassList( nullptr, 0 );
 
         Class* classes = (CATCH_UNSAFE_UNRETAINED Class *)malloc( sizeof(Class) * noClasses);
         objc_getClassList( classes, noClasses );
@@ -91,7 +93,7 @@ namespace Catch {
                         std::string desc = Detail::getAnnotation( cls, "Description", testCaseName );
                         const char* className = class_getName( cls );
 
-                        getMutableRegistryHub().registerTest( makeTestCase( new OcMethod( cls, selector ), className, name.c_str(), desc.c_str(), SourceLineInfo() ) );
+                        getMutableRegistryHub().registerTest( makeTestCase( new OcMethod( cls, selector ), className, name.c_str(), desc.c_str(), SourceLineInfo("",0) ) );
                         noTestMethods++;
                     }
                 }
@@ -100,6 +102,8 @@ namespace Catch {
         }
         return noTestMethods;
     }
+
+#if !defined(CATCH_CONFIG_DISABLE_MATCHERS)
 
     namespace Matchers {
         namespace Impl {
@@ -112,61 +116,61 @@ namespace Catch {
                     arcSafeRelease( m_substr );
                 }
 
-                virtual bool match( NSString* arg ) const CATCH_OVERRIDE {
+                bool match( NSString* arg ) const override {
                     return false;
                 }
 
-                NSString* m_substr;
+                NSString* CATCH_ARC_STRONG m_substr;
             };
 
             struct Equals : StringHolder {
                 Equals( NSString* substr ) : StringHolder( substr ){}
 
-                virtual bool match( NSString* str ) const CATCH_OVERRIDE {
+                bool match( NSString* str ) const override {
                     return  (str != nil || m_substr == nil ) &&
                             [str isEqualToString:m_substr];
                 }
 
-                virtual std::string describe() const CATCH_OVERRIDE {
-                    return "equals string: " + Catch::toString( m_substr );
+                std::string describe() const override {
+                    return "equals string: " + Catch::Detail::stringify( m_substr );
                 }
             };
 
             struct Contains : StringHolder {
                 Contains( NSString* substr ) : StringHolder( substr ){}
 
-                virtual bool match( NSString* str ) const {
+                bool match( NSString* str ) const {
                     return  (str != nil || m_substr == nil ) &&
                             [str rangeOfString:m_substr].location != NSNotFound;
                 }
 
-                virtual std::string describe() const CATCH_OVERRIDE {
-                    return "contains string: " + Catch::toString( m_substr );
+                std::string describe() const override {
+                    return "contains string: " + Catch::Detail::stringify( m_substr );
                 }
             };
 
             struct StartsWith : StringHolder {
                 StartsWith( NSString* substr ) : StringHolder( substr ){}
 
-                virtual bool match( NSString* str ) const {
+                bool match( NSString* str ) const override {
                     return  (str != nil || m_substr == nil ) &&
                             [str rangeOfString:m_substr].location == 0;
                 }
 
-                virtual std::string describe() const CATCH_OVERRIDE {
-                    return "starts with: " + Catch::toString( m_substr );
+                std::string describe() const override {
+                    return "starts with: " + Catch::Detail::stringify( m_substr );
                 }
             };
             struct EndsWith : StringHolder {
                 EndsWith( NSString* substr ) : StringHolder( substr ){}
 
-                virtual bool match( NSString* str ) const {
+                bool match( NSString* str ) const override {
                     return  (str != nil || m_substr == nil ) &&
                             [str rangeOfString:m_substr].location == [str length] - [m_substr length];
                 }
 
-                virtual std::string describe() const CATCH_OVERRIDE {
-                    return "ends with: " + Catch::toString( m_substr );
+                std::string describe() const override {
+                    return "ends with: " + Catch::Detail::stringify( m_substr );
                 }
             };
 
@@ -189,18 +193,23 @@ namespace Catch {
 
     using namespace Matchers;
 
+#endif // CATCH_CONFIG_DISABLE_MATCHERS
+
 } // namespace Catch
 
 ///////////////////////////////////////////////////////////////////////////////
-#define OC_TEST_CASE( name, desc )\
-+(NSString*) INTERNAL_CATCH_UNIQUE_NAME( Catch_Name_test ) \
-{\
+#define OC_MAKE_UNIQUE_NAME( root, uniqueSuffix ) root##uniqueSuffix
+#define OC_TEST_CASE2( name, desc, uniqueSuffix ) \
++(NSString*) OC_MAKE_UNIQUE_NAME( Catch_Name_test_, uniqueSuffix ) \
+{ \
 return @ name; \
-}\
-+(NSString*) INTERNAL_CATCH_UNIQUE_NAME( Catch_Description_test ) \
+} \
++(NSString*) OC_MAKE_UNIQUE_NAME( Catch_Description_test_, uniqueSuffix ) \
 { \
 return @ desc; \
 } \
--(void) INTERNAL_CATCH_UNIQUE_NAME( Catch_TestCase_test )
+-(void) OC_MAKE_UNIQUE_NAME( Catch_TestCase_test_, uniqueSuffix )
+
+#define OC_TEST_CASE( name, desc ) OC_TEST_CASE2( name, desc, __LINE__ )
 
 #endif // TWOBLUECUBES_CATCH_OBJC_HPP_INCLUDED

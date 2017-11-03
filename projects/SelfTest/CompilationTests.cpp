@@ -41,9 +41,11 @@ bool templated_tests(T t) {
     REQUIRE(a == t);
     CHECK(a == t);
     REQUIRE_THROWS(throws_int(true));
-    CHECK_THROWS_AS(throws_int(true), const int&);
+    CHECK_THROWS_AS(throws_int(true), int);
     REQUIRE_NOTHROW(throws_int(false));
+#ifndef CATCH_CONFIG_DISABLE_MATCHERS
     REQUIRE_THAT("aaa", Catch::EndsWith("aaa"));
+#endif
     return true;
 }
 
@@ -51,8 +53,17 @@ TEST_CASE("#833") {
     REQUIRE(templated_tests<int>(3));
 }
 
+#ifdef __clang__
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunused-function"
+#endif
+#ifdef __GNUC__
+// Note that because -~GCC~-, this warning cannot be silenced temporarily, by pushing diagnostic stack...
+// Luckily it is firing in test files and thus can be silenced for the whole file, without losing much.
+#pragma GCC diagnostic ignored "-Wunused-function"
+#endif
+
 // Test containing example where original stream insertable check breaks compilation
-#if defined (CATCH_CONFIG_CPP11_STREAM_INSERTABLE_CHECK)
 namespace {
     struct A {};
     std::ostream& operator<< (std::ostream &o, const A &) { return o << 0; }
@@ -64,9 +75,13 @@ namespace {
     B f ();
     std::ostream g ();
 }
+#ifdef __clang__
+#pragma clang diagnostic pop
+#endif
 
 TEST_CASE( "#872" ) {
+    A dummy;
+    CAPTURE( dummy );
     B x;
     REQUIRE (x == 4);
 }
-#endif

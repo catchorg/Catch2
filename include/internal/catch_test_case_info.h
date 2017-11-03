@@ -9,10 +9,10 @@
 #define TWOBLUECUBES_CATCH_TEST_CASE_INFO_H_INCLUDED
 
 #include "catch_common.h"
-#include "catch_ptr.hpp"
 
 #include <string>
-#include <set>
+#include <vector>
+#include <memory>
 
 #ifdef __clang__
 #pragma clang diagnostic push
@@ -21,7 +21,7 @@
 
 namespace Catch {
 
-    struct ITestCase;
+    struct ITestInvoker;
 
     struct TestCaseInfo {
         enum SpecialProperties{
@@ -30,30 +30,30 @@ namespace Catch {
             ShouldFail = 1 << 2,
             MayFail = 1 << 3,
             Throws = 1 << 4,
-            NonPortable = 1 << 5
+            NonPortable = 1 << 5,
+            Benchmark = 1 << 6
         };
 
         TestCaseInfo(   std::string const& _name,
                         std::string const& _className,
                         std::string const& _description,
-                        std::set<std::string> const& _tags,
+                        std::vector<std::string> const& _tags,
                         SourceLineInfo const& _lineInfo );
 
-        TestCaseInfo( TestCaseInfo const& other );
-
-        friend void setTags( TestCaseInfo& testCaseInfo, std::set<std::string> const& tags );
+        friend void setTags( TestCaseInfo& testCaseInfo, std::vector<std::string> tags );
 
         bool isHidden() const;
         bool throws() const;
         bool okToFail() const;
         bool expectedToFail() const;
 
+        std::string tagsAsString() const;
+
         std::string name;
         std::string className;
         std::string description;
-        std::set<std::string> tags;
-        std::set<std::string> lcaseTags;
-        std::string tagsAsString;
+        std::vector<std::string> tags;
+        std::vector<std::string> lcaseTags;
         SourceLineInfo lineInfo;
         SpecialProperties properties;
     };
@@ -61,8 +61,7 @@ namespace Catch {
     class TestCase : public TestCaseInfo {
     public:
 
-        TestCase( ITestCase* testCase, TestCaseInfo const& info );
-        TestCase( TestCase const& other );
+        TestCase( ITestInvoker* testCase, TestCaseInfo const& info );
 
         TestCase withName( std::string const& _newName ) const;
 
@@ -70,16 +69,14 @@ namespace Catch {
 
         TestCaseInfo const& getTestCaseInfo() const;
 
-        void swap( TestCase& other );
         bool operator == ( TestCase const& other ) const;
         bool operator < ( TestCase const& other ) const;
-        TestCase& operator = ( TestCase const& other );
 
     private:
-        Ptr<ITestCase> test;
+        std::shared_ptr<ITestInvoker> test;
     };
 
-    TestCase makeTestCase(  ITestCase* testCase,
+    TestCase makeTestCase(  ITestInvoker* testCase,
                             std::string const& className,
                             std::string const& name,
                             std::string const& description,

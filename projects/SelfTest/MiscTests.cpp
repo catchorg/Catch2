@@ -13,191 +13,157 @@
 #   pragma clang diagnostic ignored "-Wc++98-compat-pedantic"
 #endif
 
-#include "../include/internal/catch_xmlwriter.hpp"
+#include "internal/catch_xmlwriter.h"
 
 #include <iostream>
 #include <cerrno>
+#include <limits>
 
-TEST_CASE( "random SECTION tests", "[.][sections][failing]" )
-{
+TEST_CASE( "random SECTION tests", "[.][sections][failing]" ) {
     int a = 1;
     int b = 2;
 
-    SECTION( "s1", "doesn't equal" )
-    {
+    SECTION( "s1", "doesn't equal" ) {
         REQUIRE( a != b );
         REQUIRE( b != a );
     }
 
-    SECTION( "s2", "not equal" )
-    {
+    SECTION( "s2", "not equal" ) {
         REQUIRE( a != b);
     }
 }
 
-TEST_CASE( "nested SECTION tests", "[.][sections][failing]" )
-{
+TEST_CASE( "nested SECTION tests", "[.][sections][failing]" ) {
     int a = 1;
     int b = 2;
 
-    SECTION( "s1", "doesn't equal" )
-    {
+    SECTION( "s1", "doesn't equal" ) {
         REQUIRE( a != b );
         REQUIRE( b != a );
 
-        SECTION( "s2", "not equal" )
-        {
+        SECTION( "s2", "not equal" ) {
             REQUIRE( a != b);
         }
     }
 }
 
-TEST_CASE( "more nested SECTION tests", "[sections][failing][.]" )
-{
+TEST_CASE( "more nested SECTION tests", "[sections][failing][.]" ) {
     int a = 1;
     int b = 2;
 
-    SECTION( "s1", "doesn't equal" )
-    {
-        SECTION( "s2", "equal" )
-        {
+    SECTION( "s1", "doesn't equal" ) {
+        SECTION( "s2", "equal" ) {
             REQUIRE( a == b );
         }
 
-        SECTION( "s3", "not equal" )
-        {
+        SECTION( "s3", "not equal" ) {
             REQUIRE( a != b );
         }
-        SECTION( "s4", "less than" )
-        {
+        SECTION( "s4", "less than" ) {
             REQUIRE( a < b );
         }
     }
 }
 
-TEST_CASE( "even more nested SECTION tests", "[sections]" )
-{
-    SECTION( "c", "" )
-    {
-        SECTION( "d (leaf)", "" )
-        {
+TEST_CASE( "even more nested SECTION tests", "[sections]" ) {
+    SECTION( "c" ) {
+        SECTION( "d (leaf)" ) {
             SUCCEED(""); // avoid failing due to no tests
         }
 
-        SECTION( "e (leaf)", "" )
-        {
+        SECTION( "e (leaf)" ) {
             SUCCEED(""); // avoid failing due to no tests
         }
     }
 
-    SECTION( "f (leaf)", "" )
-    {
+    SECTION( "f (leaf)" ) {
         SUCCEED(""); // avoid failing due to no tests
     }
 }
 
-TEST_CASE( "looped SECTION tests", "[.][failing][sections]" )
-{
+TEST_CASE( "looped SECTION tests", "[.][failing][sections]" ) {
     int a = 1;
 
-    for( int b = 0; b < 10; ++b )
-    {
+    for( int b = 0; b < 10; ++b ) {
         std::ostringstream oss;
         oss << "b is currently: " << b;
-        SECTION( "s1", oss.str() )
-        {
+        SECTION( "s1", oss.str() ) {
             CHECK( b > a );
         }
     }
 }
 
-TEST_CASE( "looped tests", "[.][failing]" )
-{
+TEST_CASE( "looped tests", "[.][failing]" ) {
     static const int fib[]  = { 1, 1, 2, 3, 5, 8, 13, 21 };
 
-    for( size_t i=0; i < sizeof(fib)/sizeof(int); ++i )
-    {
+    for( std::size_t i=0; i < sizeof(fib)/sizeof(int); ++i ) {
         INFO( "Testing if fib[" << i << "] (" << fib[i] << ") is even" );
         CHECK( ( fib[i] % 2 ) == 0 );
     }
 }
 
-TEST_CASE( "Sends stuff to stdout and stderr", "[.]" )
-{
+TEST_CASE( "Sends stuff to stdout and stderr", "[.]" ) {
     std::cout << "A string sent directly to stdout" << std::endl;
 
     std::cerr << "A string sent directly to stderr" << std::endl;
 }
 
-inline const char* makeString( bool makeNull )
-{
-    return makeNull ? CATCH_NULL : "valid string";
+inline const char* makeString( bool makeNull ) {
+    return makeNull ? nullptr : "valid string";
 }
 
-TEST_CASE( "null strings", "" )
-{
-    REQUIRE( makeString( false ) != static_cast<char*>(CATCH_NULL));
-    REQUIRE( makeString( true ) == static_cast<char*>(CATCH_NULL));
+TEST_CASE( "null strings" ) {
+    REQUIRE( makeString( false ) != static_cast<char*>(nullptr));
+    REQUIRE( makeString( true ) == static_cast<char*>(nullptr));
 }
 
 
-inline bool testCheckedIf( bool flag )
-{
+inline bool testCheckedIf( bool flag )  {
     CHECKED_IF( flag )
         return true;
     else
         return false;
 }
 
-TEST_CASE( "checkedIf", "" )
-{
+TEST_CASE( "checkedIf" ) {
     REQUIRE( testCheckedIf( true ) );
 }
 
-TEST_CASE( "checkedIf, failing", "[failing][.]" )
-{
+TEST_CASE( "checkedIf, failing", "[failing][.]" ) {
     REQUIRE( testCheckedIf( false ) );
 }
 
-inline bool testCheckedElse( bool flag )
-{
+inline bool testCheckedElse( bool flag ) {
     CHECKED_ELSE( flag )
         return false;
 
     return true;
 }
 
-TEST_CASE( "checkedElse", "" )
-{
+TEST_CASE( "checkedElse" ) {
     REQUIRE( testCheckedElse( true ) );
 }
 
-TEST_CASE( "checkedElse, failing", "[failing][.]" )
-{
+TEST_CASE( "checkedElse, failing", "[failing][.]" ) {
     REQUIRE( testCheckedElse( false ) );
 }
 
-TEST_CASE( "xmlentitycheck", "" )
-{
-    SECTION( "embedded xml", "<test>it should be possible to embed xml characters, such as <, \" or &, or even whole <xml>documents</xml> within an attribute</test>" )
-    {
+TEST_CASE( "xmlentitycheck" ) {
+    SECTION( "embedded xml", "<test>it should be possible to embed xml characters, such as <, \" or &, or even whole <xml>documents</xml> within an attribute</test>" ) {
         SUCCEED(""); // We need this here to stop it failing due to no tests
     }
-    SECTION( "encoded chars", "these should all be encoded: &&&\"\"\"<<<&\"<<&\"" )
-    {
+    SECTION( "encoded chars", "these should all be encoded: &&&\"\"\"<<<&\"<<&\"" ) {
         SUCCEED(""); // We need this here to stop it failing due to no tests
     }
 }
 
-TEST_CASE( "send a single char to INFO", "[failing][.]" )
-{
+TEST_CASE( "send a single char to INFO", "[failing][.]" ) {
     INFO(3);
     REQUIRE(false);
 }
 
-TEST_CASE( "atomic if", "[failing][0]")
-{
-    size_t x = 0;
+TEST_CASE( "atomic if", "[failing][0]") {
+    std::size_t x = 0;
 
     if( x )
         REQUIRE(x > 0);
@@ -205,9 +171,7 @@ TEST_CASE( "atomic if", "[failing][0]")
         REQUIRE(x == 0);
 }
 
-inline unsigned int Factorial( unsigned int number )
-{
-//  return number <= 1 ? number : Factorial(number-1)*number;
+inline unsigned int Factorial( unsigned int number )  {
   return number > 1 ? Factorial(number-1)*number : 1;
 }
 
@@ -219,20 +183,14 @@ TEST_CASE( "Factorials are computed", "[factorial]" ) {
   REQUIRE( Factorial(10) == 3628800 );
 }
 
-TEST_CASE( "An empty test with no assertions", "[empty]" )
-{
-}
+TEST_CASE( "An empty test with no assertions", "[empty]" ) {}
 
-TEST_CASE( "Nice descriptive name", "[tag1][tag2][tag3][.]" )
-{
+TEST_CASE( "Nice descriptive name", "[tag1][tag2][tag3][.]" ) {
     WARN( "This one ran" );
 }
-TEST_CASE( "first tag", "[tag1]" )
-{
-}
-TEST_CASE( "second tag", "[tag2]" )
-{
-}
+TEST_CASE( "first tag", "[tag1]" ) {}
+TEST_CASE( "second tag", "[tag2]" ) {}
+
 //
 //TEST_CASE( "spawn a new process", "[.]" )
 //{
@@ -250,32 +208,32 @@ TEST_CASE( "vectors can be sized and resized", "[vector]" ) {
     REQUIRE( v.size() == 5 );
     REQUIRE( v.capacity() >= 5 );
 
-    SECTION( "resizing bigger changes size and capacity", "" ) {
+    SECTION( "resizing bigger changes size and capacity" ) {
         v.resize( 10 );
 
         REQUIRE( v.size() == 10 );
         REQUIRE( v.capacity() >= 10 );
     }
-    SECTION( "resizing smaller changes size but not capacity", "" ) {
+    SECTION( "resizing smaller changes size but not capacity" ) {
         v.resize( 0 );
 
         REQUIRE( v.size() == 0 );
         REQUIRE( v.capacity() >= 5 );
 
-        SECTION( "We can use the 'swap trick' to reset the capacity", "" ) {
+        SECTION( "We can use the 'swap trick' to reset the capacity" ) {
             std::vector<int> empty;
             empty.swap( v );
 
             REQUIRE( v.capacity() == 0 );
         }
     }
-    SECTION( "reserving bigger changes capacity but not size", "" ) {
+    SECTION( "reserving bigger changes capacity but not size" ) {
         v.reserve( 10 );
 
         REQUIRE( v.size() == 5 );
         REQUIRE( v.capacity() >= 10 );
     }
-    SECTION( "reserving smaller does not change size or capacity", "" ) {
+    SECTION( "reserving smaller does not change size or capacity" ) {
         v.reserve( 0 );
 
         REQUIRE( v.size() == 5 );
@@ -284,8 +242,7 @@ TEST_CASE( "vectors can be sized and resized", "[vector]" ) {
 }
 
 // https://github.com/philsquared/Catch/issues/166
-TEST_CASE("A couple of nested sections followed by a failure", "[failing][.]")
-{
+TEST_CASE("A couple of nested sections followed by a failure", "[failing][.]") {
     SECTION("Outer", "")
         SECTION("Inner", "")
             SUCCEED("that's not flying - that's failing in style");
@@ -293,8 +250,7 @@ TEST_CASE("A couple of nested sections followed by a failure", "[failing][.]")
     FAIL("to infinity and beyond");
 }
 
-TEST_CASE("not allowed", "[!throws]")
-{
+TEST_CASE("not allowed", "[!throws]") {
     // This test case should not be included if you run with -e on the command line
     SUCCEED( "" );
 }
@@ -314,25 +270,25 @@ TEST_CASE( "Tabs and newlines show in output", "[.][whitespace][failing]" ) {
 
 TEST_CASE( "toString on const wchar_t const pointer returns the string contents", "[toString]" ) {
         const wchar_t * const s = L"wide load";
-        std::string result = Catch::toString( s );
+        std::string result = ::Catch::Detail::stringify( s );
         CHECK( result == "\"wide load\"" );
 }
 
 TEST_CASE( "toString on const wchar_t pointer returns the string contents", "[toString]" ) {
         const wchar_t * s = L"wide load";
-        std::string result = Catch::toString( s );
+        std::string result = ::Catch::Detail::stringify( s );
         CHECK( result == "\"wide load\"" );
 }
 
 TEST_CASE( "toString on wchar_t const pointer returns the string contents", "[toString]" ) {
         wchar_t * const s = const_cast<wchar_t* const>( L"wide load" );
-        std::string result = Catch::toString( s );
+        std::string result = ::Catch::Detail::stringify( s );
         CHECK( result == "\"wide load\"" );
 }
 
 TEST_CASE( "toString on wchar_t returns the string contents", "[toString]" ) {
         wchar_t * s = const_cast<wchar_t*>( L"wide load" );
-        std::string result = Catch::toString( s );
+        std::string result = ::Catch::Detail::stringify( s );
         CHECK( result == "\"wide load\"" );
 }
 
@@ -372,13 +328,11 @@ TEST_CASE( "XmlEncode" ) {
     }
 }
 
-#ifdef CATCH_CONFIG_CPP11_LONG_LONG
-TEST_CASE( "long long", "[c++11][.]" ) {
+TEST_CASE( "long long" ) {
     long long l = std::numeric_limits<long long>::max();
 
     REQUIRE( l == std::numeric_limits<long long>::max() );
 }
-#endif
 
 //TEST_CASE( "Divide by Zero signal handler", "[.][sig]" ) {
 //    int i = 0;
@@ -386,8 +340,7 @@ TEST_CASE( "long long", "[c++11][.]" ) {
 //    CHECK( x == 0 );
 //}
 
-TEST_CASE( "This test 'should' fail but doesn't", "[.][failing][!shouldfail]" )
-{
+TEST_CASE( "This test 'should' fail but doesn't", "[.][failing][!shouldfail]" ) {
     SUCCEED( "oops!" );
 }
 
@@ -400,7 +353,7 @@ static int f() {
     return 1;
 }
 
-TEST_CASE( "#835 -- errno should not be touched by Catch", "[!shouldfail]" ) {
+TEST_CASE( "#835 -- errno should not be touched by Catch", "[.][failing][!shouldfail]" ) {
     errno = 1;
     CHECK(f() == 0);
     REQUIRE(errno == 1); // Check that f() doesn't touch errno.

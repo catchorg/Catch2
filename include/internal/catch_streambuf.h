@@ -8,15 +8,13 @@
 #ifndef TWOBLUECUBES_CATCH_STREAMBUF_H_INCLUDED
 #define TWOBLUECUBES_CATCH_STREAMBUF_H_INCLUDED
 
-#include "catch_compiler_capabilities.h"
-
 #include <streambuf>
 
 namespace Catch {
 
     class StreamBufBase : public std::streambuf {
     public:
-        virtual ~StreamBufBase() CATCH_NOEXCEPT;
+        virtual ~StreamBufBase();
     };
 }
 

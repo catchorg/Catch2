@@ -8,91 +8,81 @@
 #ifndef TWOBLUECUBES_CATCH_REPORTER_BASES_HPP_INCLUDED
 #define TWOBLUECUBES_CATCH_REPORTER_BASES_HPP_INCLUDED
 
+#include "../internal/catch_enforce.h"
 #include "../internal/catch_interfaces_reporter.h"
-#include "../internal/catch_errno_guard.hpp"
 
+
+#include <algorithm>
 #include <cstring>
 #include <cfloat>
 #include <cstdio>
 #include <assert.h>
+#include <memory>
 
 namespace Catch {
+    void prepareExpandedExpression(AssertionResult& result);
 
-    namespace {
-        // Because formatting using c++ streams is stateful, drop down to C is required
-        // Alternatively we could use stringstream, but its performance is... not good.
-        std::string getFormattedDuration( double duration ) {
-            // Max exponent + 1 is required to represent the whole part
-            // + 1 for decimal point
-            // + 3 for the 3 decimal places
-            // + 1 for null terminator
-            const size_t maxDoubleSize = DBL_MAX_10_EXP + 1 + 1 + 3 + 1;
-            char buffer[maxDoubleSize];
+    // Returns double formatted as %.3f (format expected on output)
+    std::string getFormattedDuration( double duration );
 
-            // Save previous errno, to prevent sprintf from overwriting it
-            ErrnoGuard guard;
-#ifdef _MSC_VER
-            sprintf_s(buffer, "%.3f", duration);
-#else
-            sprintf(buffer, "%.3f", duration);
-#endif
-            return std::string(buffer);
-        }
-    }
-
-
-    struct StreamingReporterBase : SharedImpl<IStreamingReporter> {
+    template<typename DerivedT>
+    struct StreamingReporterBase : IStreamingReporter {
 
         StreamingReporterBase( ReporterConfig const& _config )
         :   m_config( _config.fullConfig() ),
             stream( _config.stream() )
         {
             m_reporterPrefs.shouldRedirectStdOut = false;
+            CATCH_ENFORCE( DerivedT::getSupportedVerbosities().count( m_config->verbosity() ), "Verbosity level not supported by this reporter" );
         }
 
-        virtual ReporterPreferences getPreferences() const CATCH_OVERRIDE {
+        ReporterPreferences getPreferences() const override {
             return m_reporterPrefs;
         }
 
-        virtual ~StreamingReporterBase() CATCH_OVERRIDE;
+        static std::set<Verbosity> getSupportedVerbosities() {
+            return { Verbosity::Normal };
+        }
 
-        virtual void noMatchingTestCases( std::string const& ) CATCH_OVERRIDE {}
+        ~StreamingReporterBase() override = default;
 
-        virtual void testRunStarting( TestRunInfo const& _testRunInfo ) CATCH_OVERRIDE {
+        void noMatchingTestCases(std::string const&) override {}
+
+        void testRunStarting(TestRunInfo const& _testRunInfo) override {
             currentTestRunInfo = _testRunInfo;
         }
-        virtual void testGroupStarting( GroupInfo const& _groupInfo ) CATCH_OVERRIDE {
+        void testGroupStarting(GroupInfo const& _groupInfo) override {
             currentGroupInfo = _groupInfo;
         }
 
-        virtual void testCaseStarting( TestCaseInfo const& _testInfo ) CATCH_OVERRIDE {
+        void testCaseStarting(TestCaseInfo const& _testInfo) override  {
             currentTestCaseInfo = _testInfo;
         }
-        virtual void sectionStarting( SectionInfo const& _sectionInfo ) CATCH_OVERRIDE {
-            m_sectionStack.push_back( _sectionInfo );
+        void sectionStarting(SectionInfo const& _sectionInfo) override {
+            m_sectionStack.push_back(_sectionInfo);
         }
 
-        virtual void sectionEnded( SectionStats const& /* _sectionStats */ ) CATCH_OVERRIDE {
+        void sectionEnded(SectionStats const& /* _sectionStats */) override {
             m_sectionStack.pop_back();
         }
-        virtual void testCaseEnded( TestCaseStats const& /* _testCaseStats */ ) CATCH_OVERRIDE {
+        void testCaseEnded(TestCaseStats const& /* _testCaseStats */) override {
             currentTestCaseInfo.reset();
         }
-        virtual void testGroupEnded( TestGroupStats const& /* _testGroupStats */ ) CATCH_OVERRIDE {
+        void testGroupEnded(TestGroupStats const& /* _testGroupStats */) override {
             currentGroupInfo.reset();
         }
-        virtual void testRunEnded( TestRunStats const& /* _testRunStats */ ) CATCH_OVERRIDE {
+        void testRunEnded(TestRunStats const& /* _testRunStats */) override {
             currentTestCaseInfo.reset();
             currentGroupInfo.reset();
             currentTestRunInfo.reset();
         }
 
-        virtual void skipTest( TestCaseInfo const& ) CATCH_OVERRIDE {
+        void skipTest(TestCaseInfo const&) override {
             // Don't do anything with this by default.
             // It can optionally be overridden in the derived class.
         }
 
-        Ptr<IConfig const> m_config;
+        IConfigPtr m_config;
         std::ostream& stream;
 
         LazyStat<TestRunInfo> currentTestRunInfo;
@@ -103,30 +93,31 @@ namespace Catch {
         ReporterPreferences m_reporterPrefs;
     };
 
-    struct CumulativeReporterBase : SharedImpl<IStreamingReporter> {
+    template<typename DerivedT>
+    struct CumulativeReporterBase : IStreamingReporter {
         template<typename T, typename ChildNodeT>
-        struct Node : SharedImpl<> {
+        struct Node {
             explicit Node( T const& _value ) : value( _value ) {}
             virtual ~Node() {}
 
-            typedef std::vector<Ptr<ChildNodeT> > ChildNodes;
+            using ChildNodes = std::vector<std::shared_ptr<ChildNodeT>>;
             T value;
             ChildNodes children;
         };
-        struct SectionNode : SharedImpl<> {
-            explicit SectionNode( SectionStats const& _stats ) : stats( _stats ) {}
-            virtual ~SectionNode();
+        struct SectionNode {
+            explicit SectionNode(SectionStats const& _stats) : stats(_stats) {}
+            virtual ~SectionNode() = default;
 
-            bool operator == ( SectionNode const& other ) const {
+            bool operator == (SectionNode const& other) const {
                 return stats.sectionInfo.lineInfo == other.stats.sectionInfo.lineInfo;
             }
-            bool operator == ( Ptr<SectionNode> const& other ) const {
-                return operator==( *other );
+            bool operator == (std::shared_ptr<SectionNode> const& other) const {
+                return operator==(*other);
             }
 
             SectionStats stats;
-            typedef std::vector<Ptr<SectionNode> > ChildSections;
-            typedef std::vector<AssertionStats> Assertions;
+            using ChildSections = std::vector<std::shared_ptr<SectionNode>>;
+            using Assertions = std::vector<AssertionStats>;
             ChildSections childSections;
             Assertions assertions;
             std::string stdOut;
@@ -136,129 +127,127 @@ namespace Catch {
         struct BySectionInfo {
             BySectionInfo( SectionInfo const& other ) : m_other( other ) {}
             BySectionInfo( BySectionInfo const& other ) : m_other( other.m_other ) {}
-            bool operator() ( Ptr<SectionNode> const& node ) const {
+            bool operator() (std::shared_ptr<SectionNode> const& node) const {
                 return ((node->stats.sectionInfo.name == m_other.name) &&
                         (node->stats.sectionInfo.lineInfo == m_other.lineInfo));
             }
+            void operator=(BySectionInfo const&) = delete;
+
         private:
-            void operator=( BySectionInfo const& );
             SectionInfo const& m_other;
         };
 
 
-        typedef Node<TestCaseStats, SectionNode> TestCaseNode;
-        typedef Node<TestGroupStats, TestCaseNode> TestGroupNode;
-        typedef Node<TestRunStats, TestGroupNode> TestRunNode;
+        using TestCaseNode = Node<TestCaseStats, SectionNode>;
+        using TestGroupNode = Node<TestGroupStats, TestCaseNode>;
+        using TestRunNode = Node<TestRunStats, TestGroupNode>;
 
         CumulativeReporterBase( ReporterConfig const& _config )
         :   m_config( _config.fullConfig() ),
             stream( _config.stream() )
         {
             m_reporterPrefs.shouldRedirectStdOut = false;
+            CATCH_ENFORCE( DerivedT::getSupportedVerbosities().count( m_config->verbosity() ), "Verbosity level not supported by this reporter" );
         }
-        ~CumulativeReporterBase();
+        ~CumulativeReporterBase() override = default;
 
-        virtual ReporterPreferences getPreferences() const CATCH_OVERRIDE {
+        ReporterPreferences getPreferences() const override {
             return m_reporterPrefs;
         }
 
-        virtual void testRunStarting( TestRunInfo const& ) CATCH_OVERRIDE {}
-        virtual void testGroupStarting( GroupInfo const& ) CATCH_OVERRIDE {}
+        static std::set<Verbosity> getSupportedVerbosities() {
+            return { Verbosity::Normal };
+        }
 
-        virtual void testCaseStarting( TestCaseInfo const& ) CATCH_OVERRIDE {}
+        void testRunStarting( TestRunInfo const& ) override {}
+        void testGroupStarting( GroupInfo const& ) override {}
 
-        virtual void sectionStarting( SectionInfo const& sectionInfo ) CATCH_OVERRIDE {
+        void testCaseStarting( TestCaseInfo const& ) override {}
+
+        void sectionStarting( SectionInfo const& sectionInfo ) override {
             SectionStats incompleteStats( sectionInfo, Counts(), 0, false );
-            Ptr<SectionNode> node;
+            std::shared_ptr<SectionNode> node;
             if( m_sectionStack.empty() ) {
                 if( !m_rootSection )
-                    m_rootSection = new SectionNode( incompleteStats );
+                    m_rootSection = std::make_shared<SectionNode>( incompleteStats );
                 node = m_rootSection;
             }
             else {
                 SectionNode& parentNode = *m_sectionStack.back();
-                SectionNode::ChildSections::const_iterator it =
+                auto it =
                     std::find_if(   parentNode.childSections.begin(),
                                     parentNode.childSections.end(),
                                     BySectionInfo( sectionInfo ) );
                 if( it == parentNode.childSections.end() ) {
-                    node = new SectionNode( incompleteStats );
+                    node = std::make_shared<SectionNode>( incompleteStats );
                     parentNode.childSections.push_back( node );
                 }
                 else
                     node = *it;
             }
             m_sectionStack.push_back( node );
-            m_deepestSection = node;
+            m_deepestSection = std::move(node);
         }
 
-        virtual void assertionStarting( AssertionInfo const& ) CATCH_OVERRIDE {}
+        void assertionStarting(AssertionInfo const&) override {}
 
-        virtual bool assertionEnded( AssertionStats const& assertionStats ) CATCH_OVERRIDE {
-            assert( !m_sectionStack.empty() );
-            SectionNode& sectionNode = *m_sectionStack.back();
-            sectionNode.assertions.push_back( assertionStats );
+        bool assertionEnded(AssertionStats const& assertionStats) override {
+            assert(!m_sectionStack.empty());
             // AssertionResult holds a pointer to a temporary DecomposedExpression,
             // which getExpandedExpression() calls to build the expression string.
             // Our section stack copy of the assertionResult will likely outlive the
             // temporary, so it must be expanded or discarded now to avoid calling
             // a destroyed object later.
-            prepareExpandedExpression( sectionNode.assertions.back().assertionResult );
+            prepareExpandedExpression(const_cast<AssertionResult&>( assertionStats.assertionResult ) );
+            SectionNode& sectionNode = *m_sectionStack.back();
+            sectionNode.assertions.push_back(assertionStats);
             return true;
         }
-        virtual void sectionEnded( SectionStats const& sectionStats ) CATCH_OVERRIDE {
-            assert( !m_sectionStack.empty() );
+        void sectionEnded(SectionStats const& sectionStats) override {
+            assert(!m_sectionStack.empty());
             SectionNode& node = *m_sectionStack.back();
             node.stats = sectionStats;
             m_sectionStack.pop_back();
         }
-        virtual void testCaseEnded( TestCaseStats const& testCaseStats ) CATCH_OVERRIDE {
-            Ptr<TestCaseNode> node = new TestCaseNode( testCaseStats );
-            assert( m_sectionStack.size() == 0 );
-            node->children.push_back( m_rootSection );
-            m_testCases.push_back( node );
+        void testCaseEnded(TestCaseStats const& testCaseStats) override {
+            auto node = std::make_shared<TestCaseNode>(testCaseStats);
+            assert(m_sectionStack.size() == 0);
+            node->children.push_back(m_rootSection);
+            m_testCases.push_back(node);
             m_rootSection.reset();
-
-            assert( m_deepestSection );
+        
+            assert(m_deepestSection);
             m_deepestSection->stdOut = testCaseStats.stdOut;
             m_deepestSection->stdErr = testCaseStats.stdErr;
         }
-        virtual void testGroupEnded( TestGroupStats const& testGroupStats ) CATCH_OVERRIDE {
-            Ptr<TestGroupNode> node = new TestGroupNode( testGroupStats );
-            node->children.swap( m_testCases );
-            m_testGroups.push_back( node );
+        void testGroupEnded(TestGroupStats const& testGroupStats) override {
+            auto node = std::make_shared<TestGroupNode>(testGroupStats);
+            node->children.swap(m_testCases);
+            m_testGroups.push_back(node);
         }
-        virtual void testRunEnded( TestRunStats const& testRunStats ) CATCH_OVERRIDE {
-            Ptr<TestRunNode> node = new TestRunNode( testRunStats );
-            node->children.swap( m_testGroups );
-            m_testRuns.push_back( node );
+        void testRunEnded(TestRunStats const& testRunStats) override {
+            auto node = std::make_shared<TestRunNode>(testRunStats);
+            node->children.swap(m_testGroups);
+            m_testRuns.push_back(node);
             testRunEndedCumulative();
         }
         virtual void testRunEndedCumulative() = 0;
 
-        virtual void skipTest( TestCaseInfo const& ) CATCH_OVERRIDE {}
+        void skipTest(TestCaseInfo const&) override {}
 
-        virtual void prepareExpandedExpression( AssertionResult& result ) const {
-            if( result.isOk() )
-                result.discardDecomposedExpression();
-            else
-                result.expandDecomposedExpression();
-        }
-
-        Ptr<IConfig const> m_config;
+        IConfigPtr m_config;
         std::ostream& stream;
         std::vector<AssertionStats> m_assertions;
-        std::vector<std::vector<Ptr<SectionNode> > > m_sections;
-        std::vector<Ptr<TestCaseNode> > m_testCases;
-        std::vector<Ptr<TestGroupNode> > m_testGroups;
+        std::vector<std::vector<std::shared_ptr<SectionNode>>> m_sections;
+        std::vector<std::shared_ptr<TestCaseNode>> m_testCases;
+        std::vector<std::shared_ptr<TestGroupNode>> m_testGroups;
 
-        std::vector<Ptr<TestRunNode> > m_testRuns;
+        std::vector<std::shared_ptr<TestRunNode>> m_testRuns;
 
-        Ptr<SectionNode> m_rootSection;
-        Ptr<SectionNode> m_deepestSection;
-        std::vector<Ptr<SectionNode> > m_sectionStack;
+        std::shared_ptr<SectionNode> m_rootSection;
+        std::shared_ptr<SectionNode> m_deepestSection;
+        std::vector<std::shared_ptr<SectionNode>> m_sectionStack;
         ReporterPreferences m_reporterPrefs;
-
     };
 
     template<char C>
@@ -272,15 +261,11 @@ namespace Catch {
     }
 
 
-    struct TestEventListenerBase : StreamingReporterBase {
-        TestEventListenerBase( ReporterConfig const& _config )
-        :   StreamingReporterBase( _config )
-        {}
+    struct TestEventListenerBase : StreamingReporterBase<TestEventListenerBase> {
+        TestEventListenerBase( ReporterConfig const& _config );
 
-        virtual void assertionStarting( AssertionInfo const& ) CATCH_OVERRIDE {}
-        virtual bool assertionEnded( AssertionStats const& ) CATCH_OVERRIDE {
-            return false;
-        }
+        void assertionStarting(AssertionInfo const&) override;
+        bool assertionEnded(AssertionStats const&) override;
     };
 
 } // end namespace Catch

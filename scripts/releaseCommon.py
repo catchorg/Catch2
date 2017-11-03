@@ -11,10 +11,11 @@ import updateWandbox
 
 versionParser = re.compile( r'(\s*static\sVersion\sversion)\s*\(\s*(.*)\s*,\s*(.*)\s*,\s*(.*)\s*,\s*\"(.*)\"\s*,\s*(.*)\s*\).*' )
 rootPath = os.path.join( catchPath, 'include/' )
-versionPath = os.path.join( rootPath, "internal/catch_version.hpp" )
+versionPath = os.path.join( rootPath, "internal/catch_version.cpp" )
 readmePath = os.path.join( catchPath, "README.md" )
 conanPath = os.path.join(catchPath, 'conanfile.py')
 conanTestPath = os.path.join(catchPath, 'test_package', 'conanfile.py')
+cmakePath = os.path.join(catchPath, 'CMakeLists.txt')
 
 class Version:
     def __init__(self):
@@ -126,13 +127,23 @@ def updateConanTestFile(version):
     for line in lines:
         f.write( line + "\n" )
 
+def updateCmakeFile(version):
+    cmakeParser = re.compile(r'set(CATCH_VERSION_NUMBER \d+\.\d+\.\d+)')
+    with open(cmakePath, 'r') as file:
+        lines = file.readlines()
+    with open(cmakePath, 'w') as file:
+        for line in lines:
+            if 'set(CATCH_VERSION_NUMBER ' in line:
+                file.write('set(CATCH_VERSION_NUMBER {0})\n'.format(version.getVersionString()))
+            else:
+                file.write(line)
+
 def performUpdates(version):
     # First update version file, so we can regenerate single header and
     # have it ready for upload to wandbox, when updating readme
     version.updateVersionFile()
-    # ToDo: Regenerate single header
     generateSingleHeader.generate(version)
     updateReadmeFile(version)
-
     updateConanFile(version)
     updateConanTestFile(version)
+    updateCmakeFile(version)

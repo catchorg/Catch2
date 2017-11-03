@@ -1,0 +1,44 @@
+/*
+ *  Created by Phil on 03/11/2010.
+ *  Copyright 2010 Two Blue Cubes Ltd. All rights reserved.
+ *
+ *  Distributed under the Boost Software License, Version 1.0. (See accompanying
+ *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
+ */
+
+#include "catch_section.h"
+#include "catch_capture.hpp"
+
+namespace Catch {
+
+    Section::Section( SectionInfo const& info )
+    :   m_info( info ),
+        m_sectionIncluded( getResultCapture().sectionStarted( m_info, m_assertions ) )
+    {
+        m_timer.start();
+    }
+
+#if defined(_MSC_VER)
+#pragma warning(push)
+#pragma warning(disable:4996) // std::uncaught_exception is deprecated in C++17
+#endif
+    Section::~Section() {
+        if( m_sectionIncluded ) {
+            SectionEndInfo endInfo( m_info, m_assertions, m_timer.getElapsedSeconds() );
+            if( std::uncaught_exception() )
+                getResultCapture().sectionEndedEarly( endInfo );
+            else
+                getResultCapture().sectionEnded( endInfo );
+        }
+    }
+#if defined(_MSC_VER)
+#pragma warning(pop)
+#endif
+
+    // This indicates whether the section should be executed or not
+    Section::operator bool() const {
+        return m_sectionIncluded;
+    }
+
+
+} // end namespace Catch

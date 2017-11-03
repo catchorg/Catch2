@@ -8,17 +8,10 @@
 #ifndef TWOBLUECUBES_CATCH_TEXT_H_INCLUDED
 #define TWOBLUECUBES_CATCH_TEXT_H_INCLUDED
 
-#include "catch_config.hpp"
-
-#define TBC_TEXT_FORMAT_CONSOLE_WIDTH CATCH_CONFIG_CONSOLE_WIDTH
-
-#define CLICHE_TBC_TEXT_FORMAT_OUTER_NAMESPACE Catch
-#include "../external/tbc_text_format.h"
-#undef CLICHE_TBC_TEXT_FORMAT_OUTER_NAMESPACE
+#include "catch_clara.h"
 
 namespace Catch {
-    using Tbc::Text;
-    using Tbc::TextAttributes;
+    using namespace clara::TextFlow;
 }
 
 #endif // TWOBLUECUBES_CATCH_TEXT_H_INCLUDED

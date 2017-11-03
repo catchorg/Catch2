@@ -59,7 +59,7 @@ def compile_main():
     return end_t - start_t
 
 def compile_files():
-    cpp_files = glob.glob('*.cpp')
+    cpp_files = glob.glob('tests*.cpp')
     start_t = time.time()
     subprocess.check_call([compiler_path, '-c'] + flags + cpp_files)
     end_t = time.time()
@@ -114,7 +114,7 @@ parser.add_argument('benchmark_kind', nargs='?', default='all', choices=options,
 parser.add_argument('-I', '--catch-header', default='catch.hpp', help = 'Path to catch.hpp, default: catch.hpp')
 parser.add_argument('-c', '--compiler', default='g++', help = 'Compiler to use, default: g++')
 
-parser.add_argument('-f', '--flags', nargs='*', help = 'Flags to be passed to the compiler')
+parser.add_argument('-f', '--flags', help = 'Flags to be passed to the compiler. Pass as "," separated list')
 
 # Allow creating files only, without running the whole thing
 parser.add_argument('-g', '--generate-files', action='store_true', help='Generate test files and quit')
@@ -137,7 +137,7 @@ if args.generate_files:
 os.chdir(dir_name)
 
 if args.flags:
-    flags = args.flags
+    flags = args.flags.split(',')
 
 print('Time needed for ...')
 if args.benchmark_kind in ('all', 'main'):

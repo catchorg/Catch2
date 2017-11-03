@@ -1,3 +1,6 @@
+<a id="top"></a>
+# Test fixtures
+
 Although Catch allows you to group tests together as sections within a test case, it can still be convenient, sometimes, to group them using a more traditional test fixture. Catch fully supports this too. You define the test fixture as a simple structure:
 
 ```c++
@@ -29,4 +32,4 @@ The two test cases here will create uniquely-named derived classes of UniqueTest
 
 ---
 
-[Home](Readme.md)
+[Home](Readme.md#top)

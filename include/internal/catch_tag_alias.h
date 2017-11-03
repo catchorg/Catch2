@@ -15,18 +15,12 @@
 namespace Catch {
 
     struct TagAlias {
-        TagAlias( std::string const& _tag, SourceLineInfo _lineInfo ) : tag( _tag ), lineInfo( _lineInfo ) {}
+        TagAlias(std::string const& _tag, SourceLineInfo _lineInfo);
 
         std::string tag;
         SourceLineInfo lineInfo;
     };
 
-    struct RegistrarForTagAliases {
-        RegistrarForTagAliases( char const* alias, char const* tag, SourceLineInfo const& lineInfo );
-    };
-
 } // end namespace Catch
 
 #endif // TWOBLUECUBES_CATCH_TAG_ALIAS_H_INCLUDED
-
-#define CATCH_REGISTER_TAG_ALIAS( alias, spec ) namespace{ Catch::RegistrarForTagAliases INTERNAL_CATCH_UNIQUE_NAME( AutoRegisterTagAlias )( alias, spec, CATCH_INTERNAL_LINEINFO ); }

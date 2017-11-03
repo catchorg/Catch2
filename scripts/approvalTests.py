@@ -24,7 +24,7 @@ filelocParser = re.compile(r'''
 lineNumberParser = re.compile(r' line="[0-9]*"')
 hexParser = re.compile(r'\b(0[xX][0-9a-fA-F]+)\b')
 durationsParser = re.compile(r' time="[0-9]*\.[0-9]*"')
-timestampsParser = re.compile(r' timestamp="\d{4}-\d{2}-\d{2}T\d{2}\:\d{2}\:\d{2}Z"')
+timestampsParser = re.compile(r'\d{4}-\d{2}-\d{2}T\d{2}\:\d{2}\:\d{2}Z')
 versionParser = re.compile(r'Catch v[0-9]+\.[0-9]+\.[0-9]+(-develop\.[0-9]+)?')
 nullParser = re.compile(r'\b(__null|nullptr)\b')
 exeNameParser = re.compile(r'''
@@ -41,6 +41,16 @@ errnoParser = re.compile(r'''
     \(\*__errno_location\ \(\)\)
     |
     \(\*__error\(\)\)
+    |
+    \(\*_errno\(\)\)
+''', re.VERBOSE)
+sinceEpochParser = re.compile(r'\d+ .+ since epoch')
+infParser = re.compile(r'''
+    \(\(float\)\(1e\+300\ \*\ 1e\+300\)\) # MSVC INFINITY macro
+    |
+    \(__builtin_inff\(\)\)                # Linux (ubuntu) INFINITY macro
+    |
+    __builtin_huge_valf\(\)               # OSX macro
 ''', re.VERBOSE)
 
 if len(sys.argv) == 2:
@@ -95,9 +105,11 @@ def filterLine(line):
 
     # strip durations and timestamps
     line = durationsParser.sub(' time="{duration}"', line)
-    line = timestampsParser.sub(' timestamp="{iso8601-timestamp}"', line)
+    line = timestampsParser.sub('{iso8601-timestamp}', line)
     line = specialCaseParser.sub('file:\g<1>', line)
     line = errnoParser.sub('errno', line)
+    line = sinceEpochParser.sub('{since-epoch-report}', line)
+    line = infParser.sub('INFINITY', line)
     return line
 
 
@@ -145,15 +157,15 @@ print("Running approvals against executable:")
 print("  " + cmdPath)
 
 # Standard console reporter
-approve("console.std", ["~[c++11]~[!nonportable]", "--order", "lex"])
+approve("console.std", ["~[!nonportable]~[!benchmark]~[approvals]", "--order", "lex"])
 # console reporter, include passes, warn about No Assertions
-approve("console.sw", ["~[c++11]~[!nonportable]", "-s", "-w", "NoAssertions", "--order", "lex"])
+approve("console.sw", ["~[!nonportable]~[!benchmark]~[approvals]", "-s", "-w", "NoAssertions", "--order", "lex"])
 # console reporter, include passes, warn about No Assertions, limit failures to first 4
-approve("console.swa4", ["~[c++11]~[!nonportable]", "-s", "-w", "NoAssertions", "-x", "4", "--order", "lex"])
+approve("console.swa4", ["~[!nonportable]~[!benchmark]~[approvals]", "-s", "-w", "NoAssertions", "-x", "4", "--order", "lex"])
 # junit reporter, include passes, warn about No Assertions
-approve("junit.sw", ["~[c++11]~[!nonportable]", "-s", "-w", "NoAssertions", "-r", "junit", "--order", "lex"])
+approve("junit.sw", ["~[!nonportable]~[!benchmark]~[approvals]", "-s", "-w", "NoAssertions", "-r", "junit", "--order", "lex"])
 # xml reporter, include passes, warn about No Assertions
-approve("xml.sw", ["~[c++11]~[!nonportable]", "-s", "-w", "NoAssertions", "-r", "xml", "--order", "lex"])
+approve("xml.sw", ["~[!nonportable]~[!benchmark]~[approvals]", "-s", "-w", "NoAssertions", "-r", "xml", "--order", "lex"])
 
 if overallResult != 0:
     print("If these differences are expected, run approve.py to approve new baselines.")

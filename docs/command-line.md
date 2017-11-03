@@ -1,3 +1,30 @@
+<a id="top"></a>
+# Command line
+
+**Contents**<br>
+[Specifying which tests to run](#specifying-which-tests-to-run)<br>
+[Choosing a reporter to use](#choosing-a-reporter-to-use)<br>
+[Breaking into the debugger](#breaking-into-the-debugger)<br>
+[Showing results for successful tests](#showing-results-for-successful-tests)<br>
+[Aborting after a certain number of failures](#aborting-after-a-certain-number-of-failures)<br>
+[Listing available tests, tags or reporters](#listing-available-tests-tags-or-reporters)<br>
+[Sending output to a file](#sending-output-to-a-file)<br>
+[Naming a test run](#naming-a-test-run)<br>
+[Eliding assertions expected to throw](#eliding-assertions-expected-to-throw)<br>
+[Make whitespace visible](#make-whitespace-visible)<br>
+[Warnings](#warnings)<br>
+[Reporting timings](#reporting-timings)<br>
+[Load test names to run from a file](#load-test-names-to-run-from-a-file)<br>
+[Just test names](#just-test-names)<br>
+[Specify the order test cases are run](#specify-the-order-test-cases-are-run)<br>
+[Specify a seed for the Random Number Generator](#specify-a-seed-for-the-random-number-generator)<br>
+[Identify framework and version according to the libIdentify standard](#identify-framework-and-version-according-to-the-libidentify-standard)<br>
+[Wait for key before continuing](#wait-for-key-before-continuing)<br>
+[Specify multiples of clock resolution to run benchmarks for](#specify-multiples-of-clock-resolution-to-run-benchmarks-for)<br>
+[Usage](#usage)<br>
+[Specify the section to run](#specify-the-section-to-run)<br>
+[Filenames as tags](#filenames-as-tags)<br>
+
 Catch works quite nicely without any command line options at all - but for those times when you want greater control the following options are available.
 Click one of the followings links to take you straight to that option - or scroll on to browse the available options.
 
@@ -29,6 +56,7 @@ Click one of the followings links to take you straight to that option - or scrol
 <a href="#rng-seed">                                    `    --rng-seed`</a><br />
 <a href="#libidentify">                                 `    --libidentify`</a><br />
 <a href="#wait-for-keypress">                           `    --wait-for-keypress`</a><br />
+<a href="#benchmark-resolution-multiple">               `    --benchmark-resolution-multiple`</a><br />
 
 </br>
 
@@ -228,6 +256,13 @@ See [The LibIdentify repo for more information and examples](https://github.com/
 Will cause the executable to print a message and wait until the return/ enter key is pressed before continuing -
 either before running any tests, after running all tests - or both, depending on the argument.
 
+<a id="benchmark-resolution-multiple"></a>
+## Specify multiples of clock resolution to run benchmarks for
+<pre>--benchmark-resolution-multiple &lt;multiplier&gt;</pre>
+
+When running benchmarks the clock resolution is estimated. Benchmarks are then run for exponentially increasing
+numbers of iterations until some multiple of the estimated resolution is exceed. By default that multiple is 100, but 
+it can be overriden here.
 
 <a id="usage"></a>
 ## Usage
@@ -290,4 +325,4 @@ So, for example,  tests within the file `~\Dev\MyProject\Ferrets.cpp` would be t
 
 ---
 
-[Home](Readme.md)
+[Home](Readme.md#top)

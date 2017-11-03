@@ -1,6 +1,7 @@
+<a id="top"></a>
 # Commercial users of Catch
 
-As well as [Open Source](opensource-users.md) users Catch is widely used within proprietary code bases too.
+As well as [Open Source](opensource-users.md#top) users Catch is widely used within proprietary code bases too.
 Many organisations like to keep this information internal, and that's fine, 
 but if you're more open it would be great if we could list the names of as
 many organisations as possible that use Catch somewhere in their codebase. 

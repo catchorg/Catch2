@@ -275,6 +275,55 @@ with expansion:
   "this string contains 'abc' as a substring" equals: "something else"
 
 -------------------------------------------------------------------------------
+Exception matchers that fail
+  No exception
+-------------------------------------------------------------------------------
+MatchersTests.cpp:<line number>
+...............................................................................
+
+MatchersTests.cpp:<line number>: FAILED:
+  CHECK_THROWS_MATCHES( doesNotThrow(), SpecialException, ExceptionMatcher{ 1 } )
+because no exception was thrown where one was expected:
+
+MatchersTests.cpp:<line number>: FAILED:
+  REQUIRE_THROWS_MATCHES( doesNotThrow(), SpecialException, ExceptionMatcher{ 1 } )
+because no exception was thrown where one was expected:
+
+-------------------------------------------------------------------------------
+Exception matchers that fail
+  Type mismatch
+-------------------------------------------------------------------------------
+MatchersTests.cpp:<line number>
+...............................................................................
+
+MatchersTests.cpp:<line number>: FAILED:
+  CHECK_THROWS_MATCHES( throwsAsInt(1), SpecialException, ExceptionMatcher{ 1 } )
+due to unexpected exception with message:
+  Unknown exception
+
+MatchersTests.cpp:<line number>: FAILED:
+  REQUIRE_THROWS_MATCHES( throwsAsInt(1), SpecialException, ExceptionMatcher{ 1 } )
+due to unexpected exception with message:
+  Unknown exception
+
+-------------------------------------------------------------------------------
+Exception matchers that fail
+  Contents are wrong
+-------------------------------------------------------------------------------
+MatchersTests.cpp:<line number>
+...............................................................................
+
+MatchersTests.cpp:<line number>: FAILED:
+  CHECK_THROWS_MATCHES( throws(3), SpecialException, ExceptionMatcher{ 1 } )
+with expansion:
+  {?} special exception has value of 1
+
+MatchersTests.cpp:<line number>: FAILED:
+  REQUIRE_THROWS_MATCHES( throws(4), SpecialException, ExceptionMatcher{ 1 } )
+with expansion:
+  {?} special exception has value of 1
+
+-------------------------------------------------------------------------------
 Expected exceptions that don't throw or unexpected exceptions fail the test
 -------------------------------------------------------------------------------
 ExceptionTests.cpp:<line number>
@@ -374,6 +423,20 @@ with messages:
   and this, but later
 
 -------------------------------------------------------------------------------
+INFO is reset for each loop
+-------------------------------------------------------------------------------
+MessageTests.cpp:<line number>
+...............................................................................
+
+MessageTests.cpp:<line number>: FAILED:
+  REQUIRE( i < 10 )
+with expansion:
+  10 < 10
+with messages:
+  current counter 10
+  i := 10
+
+-------------------------------------------------------------------------------
 Inequality checks that should fail
 -------------------------------------------------------------------------------
 ConditionTests.cpp:<line number>
@@ -436,7 +499,7 @@ ExceptionTests.cpp:<line number>
 ExceptionTests.cpp:<line number>: FAILED:
   REQUIRE_THROWS_WITH( thisThrows(), "should fail" )
 with expansion:
-  expected exception
+  "expected exception" equals: "should fail"
 
 -------------------------------------------------------------------------------
 Nice descriptive name
@@ -582,20 +645,6 @@ explicitly with message:
   Message from section two
 
 -------------------------------------------------------------------------------
-Pointers can be converted to strings
--------------------------------------------------------------------------------
-MessageTests.cpp:<line number>
-...............................................................................
-
-MessageTests.cpp:<line number>:
-warning:
-  actual address of p: 0x<hex digits>
-
-MessageTests.cpp:<line number>:
-warning:
-  toString(p): 0x<hex digits>
-
--------------------------------------------------------------------------------
 Reconstruction should be based on stringification: #914
 -------------------------------------------------------------------------------
 DecompositionTests.cpp:<line number>
@@ -606,25 +655,8 @@ DecompositionTests.cpp:<line number>: FAILED:
 with expansion:
   Hey, its truthy!
 
--------------------------------------------------------------------------------
-SCOPED_INFO is reset for each loop
--------------------------------------------------------------------------------
-MessageTests.cpp:<line number>
-...............................................................................
-
-MessageTests.cpp:<line number>: FAILED:
-  REQUIRE( i < 10 )
-with expansion:
-  10 < 10
-with messages:
-  current counter 10
-  i := 10
-
 A string sent directly to stdout
 A string sent directly to stderr
-Write to std::cerr
-Write to std::clog
-Interleaved writes to error streams
 Message from section one
 Message from section two
 -------------------------------------------------------------------------------
@@ -638,8 +670,6 @@ MatchersTests.cpp:<line number>: FAILED:
 with expansion:
   "this string contains 'abc' as a substring" starts with: "string"
 
-hello
-hello
 -------------------------------------------------------------------------------
 Tabs and newlines show in output
 -------------------------------------------------------------------------------
@@ -838,7 +868,8 @@ MiscTests.cpp:<line number>: FAILED:
 with expansion:
   false
 
-spanner-------------------------------------------------------------------------------
+loose text artifact
+-------------------------------------------------------------------------------
 just failure
 -------------------------------------------------------------------------------
 MessageTests.cpp:<line number>
@@ -955,7 +986,23 @@ TrickyTests.cpp:<line number>: FAILED:
 with expansion:
   "first" == "second"
 
+-------------------------------------------------------------------------------
+toString(enum class)
+-------------------------------------------------------------------------------
+EnumToString.cpp:<line number>
+...............................................................................
+
+EnumToString.cpp:<line number>: FAILED:
+  CHECK( ::Catch::Detail::stringify(e0) == "0" )
+with expansion:
+  "{?}" == "0"
+
+EnumToString.cpp:<line number>: FAILED:
+  CHECK( ::Catch::Detail::stringify(e1) == "1" )
+with expansion:
+  "{?}" == "1"
+
 ===============================================================================
-test cases: 171 | 122 passed | 45 failed |  4 failed as expected
-assertions: 980 | 871 passed | 88 failed | 21 failed as expected
+test cases: 185 | 134 passed | 47 failed |  4 failed as expected
+assertions: 904 | 787 passed | 96 failed | 21 failed as expected
 

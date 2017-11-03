@@ -9,14 +9,15 @@ set(CATCH_DIR ${CMAKE_CURRENT_SOURCE_DIR})
 set(SELF_TEST_DIR ${CATCH_DIR}/projects/SelfTest)
 set(BENCHMARK_DIR ${CATCH_DIR}/projects/Benchmark)
 set(HEADER_DIR ${CATCH_DIR}/include)
+set(CATCH_VERSION_NUMBER 2.0.1)
 
-if(USE_CPP11)
-    ## We can't turn this on by default, since it breaks on travis
-    message(STATUS "Enabling C++11")
-    set(CMAKE_CXX_FLAGS "-std=c++11 ${CMAKE_CXX_FLAGS}")
-elseif(USE_CPP14)
+if(USE_CPP14)
     message(STATUS "Enabling C++14")
     set(CMAKE_CXX_FLAGS "-std=c++14 ${CMAKE_CXX_FLAGS}")
+else()
+    message(STATUS "Enabling C++11")
+    set(CMAKE_CXX_FLAGS "-std=c++11 ${CMAKE_CXX_FLAGS}")
+
 endif()
 
 if(USE_WMAIN)
@@ -55,6 +56,7 @@ endfunction()
 set(TEST_SOURCES
         ${SELF_TEST_DIR}/ApproxTests.cpp
         ${SELF_TEST_DIR}/BDDTests.cpp
+        ${SELF_TEST_DIR}/Benchmark.tests.cpp
         ${SELF_TEST_DIR}/ClassTests.cpp
         ${SELF_TEST_DIR}/CmdLineTests.cpp
         ${SELF_TEST_DIR}/CompilationTests.cpp
@@ -62,12 +64,12 @@ set(TEST_SOURCES
         ${SELF_TEST_DIR}/DecompositionTests.cpp
         ${SELF_TEST_DIR}/EnumToString.cpp
         ${SELF_TEST_DIR}/ExceptionTests.cpp
-        ${SELF_TEST_DIR}/GeneratorTests.cpp
         ${SELF_TEST_DIR}/MessageTests.cpp
         ${SELF_TEST_DIR}/MiscTests.cpp
         ${SELF_TEST_DIR}/PartTrackerTests.cpp
         ${SELF_TEST_DIR}/TagAliasTests.cpp
         ${SELF_TEST_DIR}/TestMain.cpp
+        ${SELF_TEST_DIR}/ToStringChrono.cpp
         ${SELF_TEST_DIR}/ToStringGeneralTests.cpp
         ${SELF_TEST_DIR}/ToStringPair.cpp
         ${SELF_TEST_DIR}/ToStringTuple.cpp
@@ -76,157 +78,195 @@ set(TEST_SOURCES
         ${SELF_TEST_DIR}/TrickyTests.cpp
         ${SELF_TEST_DIR}/VariadicMacrosTests.cpp
         ${SELF_TEST_DIR}/MatchersTests.cpp
+        ${SELF_TEST_DIR}/StringRef.tests.cpp
         )
 CheckFileList(TEST_SOURCES ${SELF_TEST_DIR})
 
 # A set of impl files that just #include a single header
 # Please keep these ordered alphabetically
-set(IMPL_SOURCES
-        ${SELF_TEST_DIR}/SurrogateCpps/catch_common.cpp
+set(SURROGATE_SOURCES
         ${SELF_TEST_DIR}/SurrogateCpps/catch_console_colour.cpp
         ${SELF_TEST_DIR}/SurrogateCpps/catch_debugger.cpp
-        ${SELF_TEST_DIR}/SurrogateCpps/catch_interfaces_capture.cpp
-        ${SELF_TEST_DIR}/SurrogateCpps/catch_interfaces_config.cpp
-        ${SELF_TEST_DIR}/SurrogateCpps/catch_interfaces_exception.cpp
-        ${SELF_TEST_DIR}/SurrogateCpps/catch_interfaces_generators.cpp
-        ${SELF_TEST_DIR}/SurrogateCpps/catch_interfaces_registry_hub.cpp
         ${SELF_TEST_DIR}/SurrogateCpps/catch_interfaces_reporter.cpp
-        ${SELF_TEST_DIR}/SurrogateCpps/catch_interfaces_runner.cpp
-        ${SELF_TEST_DIR}/SurrogateCpps/catch_interfaces_testcase.cpp
-        ${SELF_TEST_DIR}/SurrogateCpps/catch_message.cpp
         ${SELF_TEST_DIR}/SurrogateCpps/catch_option.cpp
-        ${SELF_TEST_DIR}/SurrogateCpps/catch_ptr.cpp
         ${SELF_TEST_DIR}/SurrogateCpps/catch_stream.cpp
-        ${SELF_TEST_DIR}/SurrogateCpps/catch_streambuf.cpp
+        ${SELF_TEST_DIR}/SurrogateCpps/catch_test_case_tracker.cpp
         ${SELF_TEST_DIR}/SurrogateCpps/catch_test_spec.cpp
         ${SELF_TEST_DIR}/SurrogateCpps/catch_xmlwriter.cpp
-        ${SELF_TEST_DIR}/SurrogateCpps/catch_test_case_tracker.cpp
         )
-CheckFileList(IMPL_SOURCES ${SELF_TEST_DIR}/SurrogateCpps)
+CheckFileList(SURROGATE_SOURCES ${SELF_TEST_DIR}/SurrogateCpps)
 
 
 # Please keep these ordered alphabetically
 set(TOP_LEVEL_HEADERS
         ${HEADER_DIR}/catch.hpp
-        ${HEADER_DIR}/catch_session.hpp
         ${HEADER_DIR}/catch_with_main.hpp
         )
 CheckFileList(TOP_LEVEL_HEADERS ${HEADER_DIR})
 
 # Please keep these ordered alphabetically
 set(EXTERNAL_HEADERS
-        ${HEADER_DIR}/external/clara.h
-        ${HEADER_DIR}/external/tbc_text_format.h
+        ${HEADER_DIR}/external/clara.hpp
         )
 CheckFileList(EXTERNAL_HEADERS ${HEADER_DIR}/external)
 
 
 # Please keep these ordered alphabetically
 set(INTERNAL_HEADERS
-        ${HEADER_DIR}/internal/catch_approx.hpp
+        ${HEADER_DIR}/internal/catch_approx.h
+        ${HEADER_DIR}/internal/catch_assertionhandler.h
+        ${HEADER_DIR}/internal/catch_assertioninfo.h
         ${HEADER_DIR}/internal/catch_assertionresult.h
-        ${HEADER_DIR}/internal/catch_assertionresult.hpp
         ${HEADER_DIR}/internal/catch_capture.hpp
+        ${HEADER_DIR}/internal/catch_capture_matchers.h
         ${HEADER_DIR}/internal/catch_clara.h
-        ${HEADER_DIR}/internal/catch_commandline.hpp
+        ${HEADER_DIR}/internal/catch_commandline.h
         ${HEADER_DIR}/internal/catch_common.h
-        ${HEADER_DIR}/internal/catch_common.hpp
         ${HEADER_DIR}/internal/catch_compiler_capabilities.h
         ${HEADER_DIR}/internal/catch_config.hpp
-        ${HEADER_DIR}/internal/catch_console_colour.hpp
-        ${HEADER_DIR}/internal/catch_console_colour_impl.hpp
+        ${HEADER_DIR}/internal/catch_console_colour.h
         ${HEADER_DIR}/internal/catch_context.h
-        ${HEADER_DIR}/internal/catch_context_impl.hpp
+        ${HEADER_DIR}/internal/catch_debug_console.h
         ${HEADER_DIR}/internal/catch_debugger.h
-        ${HEADER_DIR}/internal/catch_debugger.hpp
+        ${HEADER_DIR}/internal/catch_decomposer.h
         ${HEADER_DIR}/internal/catch_default_main.hpp
-        ${HEADER_DIR}/internal/catch_errno_guard.hpp
-        ${HEADER_DIR}/internal/catch_evaluate.hpp
-        ${HEADER_DIR}/internal/catch_exception_translator_registry.hpp
-        ${HEADER_DIR}/internal/catch_expression_lhs.hpp
-        ${HEADER_DIR}/internal/catch_fatal_condition.hpp
-        ${HEADER_DIR}/internal/catch_generators.hpp
-        ${HEADER_DIR}/internal/catch_generators_impl.hpp
+        ${HEADER_DIR}/internal/catch_enforce.h
+        ${HEADER_DIR}/internal/catch_errno_guard.h
+        ${HEADER_DIR}/internal/catch_exception_translator_registry.h
+        ${HEADER_DIR}/internal/catch_external_interfaces.h
+        ${HEADER_DIR}/internal/catch_fatal_condition.h
         ${HEADER_DIR}/internal/catch_impl.hpp
         ${HEADER_DIR}/internal/catch_interfaces_capture.h
         ${HEADER_DIR}/internal/catch_interfaces_config.h
         ${HEADER_DIR}/internal/catch_interfaces_exception.h
-        ${HEADER_DIR}/internal/catch_interfaces_generators.h
         ${HEADER_DIR}/internal/catch_interfaces_registry_hub.h
         ${HEADER_DIR}/internal/catch_interfaces_reporter.h
         ${HEADER_DIR}/internal/catch_interfaces_runner.h
         ${HEADER_DIR}/internal/catch_interfaces_tag_alias_registry.h
         ${HEADER_DIR}/internal/catch_interfaces_testcase.h
-        ${HEADER_DIR}/internal/catch_legacy_reporter_adapter.h
-        ${HEADER_DIR}/internal/catch_legacy_reporter_adapter.hpp
-        ${HEADER_DIR}/internal/catch_list.hpp
-        ${HEADER_DIR}/internal/catch_matchers.hpp
+        ${HEADER_DIR}/internal/catch_leak_detector.h
+        ${HEADER_DIR}/internal/catch_list.h
+        ${HEADER_DIR}/internal/catch_matchers.h
         ${HEADER_DIR}/internal/catch_matchers_string.h
-        ${HEADER_DIR}/internal/catch_matchers_string.hpp
         ${HEADER_DIR}/internal/catch_matchers_vector.h
         ${HEADER_DIR}/internal/catch_message.h
-        ${HEADER_DIR}/internal/catch_message.hpp
-        ${HEADER_DIR}/internal/catch_notimplemented_exception.h
-        ${HEADER_DIR}/internal/catch_notimplemented_exception.hpp
         ${HEADER_DIR}/internal/catch_objc.hpp
         ${HEADER_DIR}/internal/catch_objc_arc.hpp
         ${HEADER_DIR}/internal/catch_option.hpp
         ${HEADER_DIR}/internal/catch_platform.h
-        ${HEADER_DIR}/internal/catch_ptr.hpp
+        ${HEADER_DIR}/internal/catch_random_number_generator.h
         ${HEADER_DIR}/internal/catch_reenable_warnings.h
-        ${HEADER_DIR}/internal/catch_registry_hub.hpp
         ${HEADER_DIR}/internal/catch_reporter_registrars.hpp
-        ${HEADER_DIR}/internal/catch_reporter_registry.hpp
-        ${HEADER_DIR}/internal/catch_result_builder.h
-        ${HEADER_DIR}/internal/catch_result_builder.hpp
+        ${HEADER_DIR}/internal/catch_reporter_registry.h
         ${HEADER_DIR}/internal/catch_result_type.h
-        ${HEADER_DIR}/internal/catch_run_context.hpp
+        ${HEADER_DIR}/internal/catch_run_context.h
+        ${HEADER_DIR}/internal/catch_benchmark.h
         ${HEADER_DIR}/internal/catch_section.h
-        ${HEADER_DIR}/internal/catch_section.hpp
         ${HEADER_DIR}/internal/catch_section_info.h
-        ${HEADER_DIR}/internal/catch_section_info.hpp
+        ${HEADER_DIR}/internal/catch_session.h
+        ${HEADER_DIR}/internal/catch_startup_exception_registry.h
         ${HEADER_DIR}/internal/catch_stream.h
-        ${HEADER_DIR}/internal/catch_stream.hpp
         ${HEADER_DIR}/internal/catch_streambuf.h
+        ${HEADER_DIR}/internal/catch_stringref.h
+        ${HEADER_DIR}/internal/catch_string_manip.h
         ${HEADER_DIR}/internal/catch_suppress_warnings.h
         ${HEADER_DIR}/internal/catch_tag_alias.h
+        ${HEADER_DIR}/internal/catch_tag_alias_autoregistrar.h
         ${HEADER_DIR}/internal/catch_tag_alias_registry.h
-        ${HEADER_DIR}/internal/catch_tag_alias_registry.hpp
         ${HEADER_DIR}/internal/catch_test_case_info.h
-        ${HEADER_DIR}/internal/catch_test_case_info.hpp
-        ${HEADER_DIR}/internal/catch_test_case_registry_impl.hpp
-        ${HEADER_DIR}/internal/catch_test_case_tracker.hpp
-        ${HEADER_DIR}/internal/catch_test_registry.hpp
-        ${HEADER_DIR}/internal/catch_test_spec.hpp
-        ${HEADER_DIR}/internal/catch_test_spec_parser.hpp
+        ${HEADER_DIR}/internal/catch_test_case_registry_impl.h
+        ${HEADER_DIR}/internal/catch_test_case_tracker.h
+        ${HEADER_DIR}/internal/catch_test_registry.h
+        ${HEADER_DIR}/internal/catch_test_spec.h
+        ${HEADER_DIR}/internal/catch_test_spec_parser.h
         ${HEADER_DIR}/internal/catch_text.h
         ${HEADER_DIR}/internal/catch_timer.h
-        ${HEADER_DIR}/internal/catch_timer.hpp
         ${HEADER_DIR}/internal/catch_tostring.h
-        ${HEADER_DIR}/internal/catch_tostring.hpp
-        ${HEADER_DIR}/internal/catch_totals.hpp
-        ${HEADER_DIR}/internal/catch_type_traits.hpp
+        ${HEADER_DIR}/internal/catch_totals.h
         ${HEADER_DIR}/internal/catch_version.h
-        ${HEADER_DIR}/internal/catch_version.hpp
-        ${HEADER_DIR}/internal/catch_wildcard_pattern.hpp
+        ${HEADER_DIR}/internal/catch_wildcard_pattern.h
         ${HEADER_DIR}/internal/catch_windows_h_proxy.h
-        ${HEADER_DIR}/internal/catch_xmlwriter.hpp
+        ${HEADER_DIR}/internal/catch_xmlwriter.h
         )
-CheckFileList(INTERNAL_HEADERS ${HEADER_DIR}/internal)
+set(IMPL_SOURCES
+        ${HEADER_DIR}/internal/catch_approx.cpp
+        ${HEADER_DIR}/internal/catch_assertionhandler.cpp
+        ${HEADER_DIR}/internal/catch_assertionresult.cpp
+        ${HEADER_DIR}/internal/catch_benchmark.cpp
+        ${HEADER_DIR}/internal/catch_capture_matchers.cpp
+        ${HEADER_DIR}/internal/catch_commandline.cpp
+        ${HEADER_DIR}/internal/catch_common.cpp
+        ${HEADER_DIR}/internal/catch_config.cpp
+        ${HEADER_DIR}/internal/catch_console_colour.cpp
+        ${HEADER_DIR}/internal/catch_context.cpp
+        ${HEADER_DIR}/internal/catch_debug_console.cpp
+        ${HEADER_DIR}/internal/catch_debugger.cpp
+        ${HEADER_DIR}/internal/catch_decomposer.cpp
+        ${HEADER_DIR}/internal/catch_errno_guard.cpp
+        ${HEADER_DIR}/internal/catch_exception_translator_registry.cpp
+        ${HEADER_DIR}/internal/catch_fatal_condition.cpp
+        ${HEADER_DIR}/internal/catch_interfaces_capture.cpp
+        ${HEADER_DIR}/internal/catch_interfaces_config.cpp
+        ${HEADER_DIR}/internal/catch_interfaces_exception.cpp
+        ${HEADER_DIR}/internal/catch_interfaces_registry_hub.cpp
+        ${HEADER_DIR}/internal/catch_interfaces_runner.cpp
+        ${HEADER_DIR}/internal/catch_interfaces_testcase.cpp
+        ${HEADER_DIR}/internal/catch_list.cpp
+        ${HEADER_DIR}/internal/catch_leak_detector.cpp
+        ${HEADER_DIR}/internal/catch_matchers.cpp
+        ${HEADER_DIR}/internal/catch_matchers_string.cpp
+        ${HEADER_DIR}/internal/catch_message.cpp
+        ${HEADER_DIR}/internal/catch_registry_hub.cpp
+        ${HEADER_DIR}/internal/catch_interfaces_reporter.cpp
+        ${HEADER_DIR}/internal/catch_random_number_generator.cpp
+        ${HEADER_DIR}/internal/catch_reporter_registry.cpp
+        ${HEADER_DIR}/internal/catch_result_type.cpp
+        ${HEADER_DIR}/internal/catch_run_context.cpp
+        ${HEADER_DIR}/internal/catch_section.cpp
+        ${HEADER_DIR}/internal/catch_section_info.cpp
+        ${HEADER_DIR}/internal/catch_session.cpp
+        ${HEADER_DIR}/internal/catch_startup_exception_registry.cpp
+        ${HEADER_DIR}/internal/catch_stream.cpp
+        ${HEADER_DIR}/internal/catch_streambuf.cpp
+        ${HEADER_DIR}/internal/catch_stringref.cpp
+        ${HEADER_DIR}/internal/catch_string_manip.cpp
+        ${HEADER_DIR}/internal/catch_tag_alias.cpp
+        ${HEADER_DIR}/internal/catch_tag_alias_autoregistrar.cpp
+        ${HEADER_DIR}/internal/catch_tag_alias_registry.cpp
+        ${HEADER_DIR}/internal/catch_test_case_info.cpp
+        ${HEADER_DIR}/internal/catch_test_case_registry_impl.cpp
+        ${HEADER_DIR}/internal/catch_test_case_tracker.cpp
+        ${HEADER_DIR}/internal/catch_test_registry.cpp
+        ${HEADER_DIR}/internal/catch_test_spec.cpp
+        ${HEADER_DIR}/internal/catch_test_spec_parser.cpp
+        ${HEADER_DIR}/internal/catch_timer.cpp
+        ${HEADER_DIR}/internal/catch_tostring.cpp
+        ${HEADER_DIR}/internal/catch_totals.cpp
+        ${HEADER_DIR}/internal/catch_version.cpp
+        ${HEADER_DIR}/internal/catch_wildcard_pattern.cpp
+        ${HEADER_DIR}/internal/catch_xmlwriter.cpp
+        )
+set(INTERNAL_FILES ${IMPL_SOURCES} ${INTERNAL_HEADERS})
+CheckFileList(INTERNAL_FILES ${HEADER_DIR}/internal)
 
 # Please keep these ordered alphabetically
 set(REPORTER_HEADERS
         ${HEADER_DIR}/reporters/catch_reporter_automake.hpp
         ${HEADER_DIR}/reporters/catch_reporter_bases.hpp
-        ${HEADER_DIR}/reporters/catch_reporter_compact.hpp
-        ${HEADER_DIR}/reporters/catch_reporter_console.hpp
-        ${HEADER_DIR}/reporters/catch_reporter_junit.hpp
-        ${HEADER_DIR}/reporters/catch_reporter_multi.hpp
+        ${HEADER_DIR}/reporters/catch_reporter_multi.h
         ${HEADER_DIR}/reporters/catch_reporter_tap.hpp
         ${HEADER_DIR}/reporters/catch_reporter_teamcity.hpp
-        ${HEADER_DIR}/reporters/catch_reporter_xml.hpp
         )
-CheckFileList(REPORTER_HEADERS ${HEADER_DIR}/reporters)
+set(REPORTER_SOURCES
+        ${HEADER_DIR}/reporters/catch_reporter_bases.cpp
+        ${HEADER_DIR}/reporters/catch_reporter_compact.cpp
+        ${HEADER_DIR}/reporters/catch_reporter_console.cpp
+        ${HEADER_DIR}/reporters/catch_reporter_junit.cpp
+        ${HEADER_DIR}/reporters/catch_reporter_multi.cpp
+        ${HEADER_DIR}/reporters/catch_reporter_xml.cpp
+        )
+set(REPORTER_FILES ${REPORTER_HEADERS} ${REPORTER_SOURCES})
+CheckFileList(REPORTER_FILES ${HEADER_DIR}/reporters)
 
 # Specify the headers, too, so CLion recognises them as project files
 set(HEADERS
@@ -236,17 +276,9 @@ set(HEADERS
         ${REPORTER_HEADERS}
         )
 
-
-set(BENCH_SOURCES
-        ${BENCHMARK_DIR}/BenchMain.cpp
-        ${BENCHMARK_DIR}/StringificationBench.cpp
-        )
-CheckFileList(BENCH_SOURCES ${BENCHMARK_DIR})
-
 # Provide some groupings for IDEs
 SOURCE_GROUP("Tests" FILES ${TEST_SOURCES})
-SOURCE_GROUP("Surrogates" FILES ${IMPL_SOURCES})
-SOURCE_GROUP("Benchmarks" FILES ${BENCH_SOURCES})
+SOURCE_GROUP("Surrogates" FILES ${SURROGATE_SOURCES})
 
 # configure the executable
 include_directories(${HEADER_DIR})
@@ -254,17 +286,19 @@ include_directories(${HEADER_DIR})
 # Projects consuming Catch via ExternalProject_Add might want to use install step
 # without building all of our selftests.
 if (NOT NO_SELFTEST)
-    add_executable(SelfTest ${TEST_SOURCES} ${IMPL_SOURCES} ${HEADERS})
-    add_executable(Benchmark ${BENCH_SOURCES} ${HEADERS})
+    add_executable(SelfTest ${TEST_SOURCES} ${IMPL_SOURCES} ${REPORTER_SOURCES} ${SURROGATE_SOURCES} ${HEADERS})
 
     # Add desired warnings
     if ( CMAKE_CXX_COMPILER_ID MATCHES "Clang|AppleClang|GNU" )
-        target_compile_options( SelfTest PRIVATE -Wall -Wextra )
-        target_compile_options( Benchmark PRIVATE -Wall -Wextra )
+        target_compile_options( SelfTest PRIVATE -Wall -Wextra -Wunreachable-code )
+    endif()
+    # Clang specific warning go here
+    if ( CMAKE_CXX_COMPILER_ID MATCHES "Clang" )
+        # Actually keep these
+        target_compile_options( SelfTest PRIVATE -Wweak-vtables -Wexit-time-destructors -Wglobal-constructors -Wmissing-noreturn )
     endif()
     if ( CMAKE_CXX_COMPILER_ID MATCHES "MSVC" )
-        target_compile_options( SelfTest PRIVATE /W4 /w44265 /WX )
-        target_compile_options( Benchmark PRIVATE /W4 )
+        target_compile_options( SelfTest PRIVATE /W4 /w44265 /WX /w44061 /w44062 )
     endif()
 
 
@@ -278,7 +312,24 @@ if (NOT NO_SELFTEST)
     add_test(NAME ListTags COMMAND SelfTest --list-tags)
     set_tests_properties(ListTags PROPERTIES PASS_REGULAR_EXPRESSION "[0-9]+ tags")
 
+    # AppVeyor has a Python 2.7 in path, but doesn't have .py files as autorunnable
+    add_test(NAME ApprovalTests COMMAND python ${CMAKE_CURRENT_SOURCE_DIR}/scripts/approvalTests.py $<TARGET_FILE:SelfTest>)
+    set_tests_properties(ApprovalTests PROPERTIES FAIL_REGULAR_EXPRESSION "Results differed")
 endif() # !NO_SELFTEST
 
 
 install(DIRECTORY "single_include/" DESTINATION "include/catch")
+
+## Provide some pkg-config integration
+# Don't bother on Windows
+if(NOT WIN32 OR NOT CMAKE_HOST_SYSTEM_NAME MATCHES Windows)
+
+    set(PKGCONFIG_INSTALL_DIR
+        "${CMAKE_INSTALL_PREFIX}/share/pkgconfig"
+        CACHE PATH "Path where catch.pc is installed"
+    )
+
+    configure_file(${CMAKE_CURRENT_SOURCE_DIR}/catch.pc.in ${CMAKE_CURRENT_BINARY_DIR}/catch.pc @ONLY)
+    install(FILES ${CMAKE_CURRENT_BINARY_DIR}/catch.pc DESTINATION ${PKGCONFIG_INSTALL_DIR})
+
+endif()

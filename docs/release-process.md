@@ -1,3 +1,4 @@
+<a id="top"></a>
 # How to release
 
 When enough changes have accumulated, it is time to release new version of Catch. This document describes the proces in doing so, that no steps are forgotten. Note that all referenced scripts can be found in the `scripts/` directory.
@@ -16,7 +17,7 @@ There should be no differences, as Approval tests should be updated when changes
 
 ### Incrementing version number
 
-Catch uses a variant of [semantic versioning](http://semver.org/), with breaking API changes (and thus major version increments) being very rare. Thus, the release will usually increment the patch version, when it only contains couple of bugfixes, or minor version, when it contains new functionality, or larger changes in implementation of current functionality. 
+Catch uses a variant of [semantic versioning](http://semver.org/), with breaking API changes (and thus major version increments) being very rare. Thus, the release will usually increment the patch version, when it only contains couple of bugfixes, or minor version, when it contains new functionality, or larger changes in implementation of current functionality.
 
 After deciding which part of version number should be incremented, you can use one of the `*Release.py` scripts to perform the required changes to Catch.
 
@@ -33,7 +34,7 @@ Once a release is ready, release notes need to be written. They should summarize
 
 ### Commit and push update to GitHub
 
-After version number is incremented, single-include header is regenerated and release notes are updated, changes should be commited and pushed to GitHub. 
+After version number is incremented, single-include header is regenerated and release notes are updated, changes should be commited and pushed to GitHub.
 
 
 ### Release on GitHub

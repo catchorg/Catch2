@@ -10,24 +10,20 @@
 #pragma clang diagnostic ignored "-Wpadded"
 #endif
 
+#ifdef _MSC_VER
+#pragma warning (disable : 4702) // Disable unreachable code warning for the last test
+                                 // that is triggered when compiling as Win32|Release
+#endif
+
 #include <stdio.h>
 
 #include "catch.hpp"
 
-#ifdef __clang__
-#pragma clang diagnostic ignored "-Wc++98-compat"
-#pragma clang diagnostic ignored "-Wc++98-compat-pedantic"
-#endif
-
-namespace Catch
-{
-    template<>
-    std::string toString<std::pair<int, int> >( const std::pair<int, int>& value )
-    {
+namespace Catch {
+    std::string toString( const std::pair<int, int>& value ) {
         std::ostringstream oss;
         oss << "std::pair( " << value.first << ", " << value.second << " )";
         return oss.str();
-
     }
 }
 
@@ -172,14 +168,14 @@ namespace ObjectWithConversions
 {
     struct Object
     {
-        operator unsigned int() {return 0xc0000000;}
+        operator unsigned int() const {return 0xc0000000;}
     };
 
     ///////////////////////////////////////////////////////////////////////////////
     TEST_CASE
     (
         "Operators at different namespace levels not hijacked by Koenig lookup",
-        "[Tricky]"
+        "[Tricky][approvals]"
     )
     {
         Object o;
@@ -187,37 +183,18 @@ namespace ObjectWithConversions
     }
 }
 
-namespace ObjectWithNonConstEqualityOperator
-{
-    struct Test
-    {
-        Test( unsigned int v )
-        : m_value(v)
-        {}
-
-        bool operator==( const Test&rhs )
-        {
-            return (m_value == rhs.m_value);
-        }
-        bool operator==( const Test&rhs ) const
-        {
-            return (m_value != rhs.m_value);
-        }
-        unsigned int m_value;
-    };
-
-    TEST_CASE("Demonstrate that a non-const == is not used", "[Tricky]" )
-    {
-        Test t( 1 );
-        REQUIRE( t == 1u );
-    }
-}
-
 namespace EnumBitFieldTests
 {
-    enum Bits {bit0 = 0x0001, bit1 = 0x0002, bit2 = 0x0004, bit3 = 0x0008, bit1and2 = 0x0006,
-        bit30 = 0x40000000, bit31 = 0x80000000,
-        bit30and31 = 0xc0000000};
+    enum Bits : uint32_t {
+        bit0 = 0x0001,
+        bit1 = 0x0002,
+        bit2 = 0x0004,
+        bit3 = 0x0008,
+        bit1and2 = bit1 | bit2,
+        bit30 = 0x40000000,
+        bit31 = 0x80000000,
+        bit30and31 = bit30 | bit31
+    };
 
     TEST_CASE( "Test enum bit values", "[Tricky]" )
     {
@@ -236,7 +213,7 @@ struct Obj
 TEST_CASE("boolean member", "[Tricky]")
 {
     Obj obj;
-    REQUIRE( obj.prop != CATCH_NULL );
+    REQUIRE( obj.prop != nullptr );
 }
 
 // Tests for a problem submitted by Ralph McArdell
@@ -298,8 +275,8 @@ struct Boolable
 {
     explicit Boolable( bool value ) : m_value( value ) {}
 
-    operator Catch::SafeBool::type() const {
-        return Catch::SafeBool::makeSafe( m_value );
+    explicit operator bool() const {
+        return m_value;
     }
 
     bool m_value;
@@ -322,15 +299,15 @@ TEST_CASE( "Assertions then sections", "[Tricky]" )
 
     REQUIRE( Catch::alwaysTrue() );
 
-    SECTION( "A section", "" )
+    SECTION( "A section" )
     {
         REQUIRE( Catch::alwaysTrue() );
 
-        SECTION( "Another section", "" )
+        SECTION( "Another section" )
         {
             REQUIRE( Catch::alwaysTrue() );
         }
-        SECTION( "Another other section", "" )
+        SECTION( "Another other section" )
         {
             REQUIRE( Catch::alwaysTrue() );
         }
@@ -345,7 +322,7 @@ struct Awkward
 TEST_CASE( "non streamable - with conv. op", "[Tricky]" )
 {
     Awkward awkward;
-    std::string s = Catch::toString( awkward );
+    std::string s = ::Catch::Detail::stringify( awkward );
     REQUIRE( s == "7" );
 }
 
@@ -369,7 +346,7 @@ struct S
 };
 
 
-TEST_CASE( "Comparing member function pointers", "[Tricky][member function pointer]" )
+TEST_CASE( "Comparing member function pointers", "[Tricky][member function pointer][approvals]" )
 {
     typedef void (S::*MF)();
     MF m = &S::f;
@@ -385,27 +362,88 @@ TEST_CASE( "pointer to class", "[Tricky]" )
    REQUIRE( p == 0 );
 }
 
-#ifdef CATCH_CONFIG_CPP11_NULLPTR
-
 #include <memory>
 
-TEST_CASE( "null_ptr", "[Tricky][c++11][.]" )
+TEST_CASE( "null_ptr", "[Tricky]" )
 {
     std::unique_ptr<int> ptr;
     REQUIRE(ptr.get() == nullptr);
 }
-
-#endif
 
 TEST_CASE( "X/level/0/a", "[Tricky]" )      { SUCCEED(""); }
 TEST_CASE( "X/level/0/b", "[Tricky][fizz]" ){ SUCCEED(""); }
 TEST_CASE( "X/level/1/a", "[Tricky]" )      { SUCCEED(""); }
 TEST_CASE( "X/level/1/b", "[Tricky]" )      { SUCCEED(""); }
 
-TEST_CASE( "has printf", "" ) {
+TEST_CASE( "has printf" ) {
 
-    // This can cause problems as, currently, stdout itself is not redirect - only the cout (and cerr) buffer
-    printf( "spanner" );
+    // This can cause problems as, currently, stdout itself is not redirected - only the cout (and cerr) buffer
+    printf( "loose text artifact\n" );
+}
+
+namespace {
+    struct constructor_throws {
+        [[noreturn]] constructor_throws() {
+            throw 1;
+        }
+    };
+}
+
+TEST_CASE("Commas in various macros are allowed") {
+    REQUIRE_THROWS( std::vector<constructor_throws>{constructor_throws{}, constructor_throws{}} );
+    CHECK_THROWS( std::vector<constructor_throws>{constructor_throws{}, constructor_throws{}} );
+    REQUIRE_NOTHROW( std::vector<int>{1, 2, 3} == std::vector<int>{1, 2, 3} );
+    CHECK_NOTHROW( std::vector<int>{1, 2, 3} == std::vector<int>{1, 2, 3} );
+
+    REQUIRE(std::vector<int>{1, 2} == std::vector<int>{1, 2});
+    CHECK( std::vector<int>{1, 2} == std::vector<int>{1, 2} );
+    REQUIRE_FALSE(std::vector<int>{1, 2} == std::vector<int>{1, 2, 3});
+    CHECK_FALSE( std::vector<int>{1, 2} == std::vector<int>{1, 2, 3} );
+
+    CHECK_NOFAIL( std::vector<int>{1, 2} == std::vector<int>{1, 2} );
+    CHECKED_IF( std::vector<int>{1, 2} == std::vector<int>{1, 2} ) {
+        REQUIRE(true);
+    } CHECKED_ELSE( std::vector<int>{1, 2} == std::vector<int>{1, 2} ) {
+        CHECK(true);
+    }
+}
+
+TEST_CASE( "null deref", "[.][failing][!nonportable]" ) {
+    CHECK( false );
+    int *x = NULL;
+    *x = 1;
+}
+
+TEST_CASE( "non-copyable objects", "[.][failing]" ) {
+    // Thanks to Agustin Bergé (@k-ballo on the cpplang Slack) for raising this
+    std::type_info const& ti = typeid(int);
+    CHECK( ti == typeid(int) );
+}
+
+// #925
+using signal_t = void (*) (void*);
+
+struct TestClass {
+    signal_t testMethod_uponComplete_arg = nullptr;
+};
+
+namespace utility {
+    inline static void synchronizing_callback( void * ) { }
+}
+
+TEST_CASE("#925: comparing function pointer to function address failed to compile", "[!nonportable]" ) {
+
+    TestClass test;
+    REQUIRE(utility::synchronizing_callback != test.testMethod_uponComplete_arg);
+}
+
+TEST_CASE( "Bitfields can be captured (#1027)" ) {
+    struct Y {
+        uint32_t v : 1;
+    };
+    Y y{ 0 };
+    REQUIRE( y.v == 0 );
+    REQUIRE( 0 == y.v );
 }
 
 TEST_CASE( "null deref", "[.][failing][!nonportable]" ) {

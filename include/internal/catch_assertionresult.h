@@ -9,100 +9,32 @@
 #define TWOBLUECUBES_CATCH_ASSERTIONRESULT_H_INCLUDED
 
 #include <string>
+#include "catch_assertioninfo.h"
 #include "catch_result_type.h"
+#include "catch_common.h"
+#include "catch_stringref.h"
+#include "catch_assertionhandler.h"
 
 namespace Catch {
 
-    struct STATIC_ASSERT_Expression_Too_Complex_Please_Rewrite_As_Binary_Comparison;
-
-    struct DecomposedExpression
-    {
-        virtual ~DecomposedExpression() {}
-        virtual bool isBinaryExpression() const {
-            return false;
-        }
-        virtual void reconstructExpression( std::string& dest ) const = 0;
-
-        // Only simple binary comparisons can be decomposed.
-        // If more complex check is required then wrap sub-expressions in parentheses.
-        template<typename T> STATIC_ASSERT_Expression_Too_Complex_Please_Rewrite_As_Binary_Comparison& operator + ( T const& );
-        template<typename T> STATIC_ASSERT_Expression_Too_Complex_Please_Rewrite_As_Binary_Comparison& operator - ( T const& );
-        template<typename T> STATIC_ASSERT_Expression_Too_Complex_Please_Rewrite_As_Binary_Comparison& operator * ( T const& );
-        template<typename T> STATIC_ASSERT_Expression_Too_Complex_Please_Rewrite_As_Binary_Comparison& operator / ( T const& );
-        template<typename T> STATIC_ASSERT_Expression_Too_Complex_Please_Rewrite_As_Binary_Comparison& operator % ( T const& );
-        template<typename T> STATIC_ASSERT_Expression_Too_Complex_Please_Rewrite_As_Binary_Comparison& operator && ( T const& );
-        template<typename T> STATIC_ASSERT_Expression_Too_Complex_Please_Rewrite_As_Binary_Comparison& operator || ( T const& );
-
-    private:
-        DecomposedExpression& operator = (DecomposedExpression const&);
-    };
-
-    struct AssertionInfo
-    {
-        AssertionInfo();
-        AssertionInfo(  char const * _macroName,
-                        SourceLineInfo const& _lineInfo,
-                        char const * _capturedExpression,
-                        ResultDisposition::Flags _resultDisposition,
-                        char const * _secondArg = "");
-
-        char const * macroName;
-        SourceLineInfo lineInfo;
-        char const * capturedExpression;
-        ResultDisposition::Flags resultDisposition;
-        char const * secondArg;
-    };
-
     struct AssertionResultData
     {
-        AssertionResultData() : decomposedExpression( CATCH_NULL )
-                              , resultType( ResultWas::Unknown )
-                              , negated( false )
-                              , parenthesized( false ) {}
+        AssertionResultData() = delete;
 
-        void negate( bool parenthesize ) {
-            negated = !negated;
-            parenthesized = parenthesize;
-            if( resultType == ResultWas::Ok )
-                resultType = ResultWas::ExpressionFailed;
-            else if( resultType == ResultWas::ExpressionFailed )
-                resultType = ResultWas::Ok;
-        }
+        AssertionResultData( ResultWas::OfType _resultType, LazyExpression const& _lazyExpression );
 
-        std::string const& reconstructExpression() const {
-            if( decomposedExpression != CATCH_NULL ) {
-                decomposedExpression->reconstructExpression( reconstructedExpression );
-                if( parenthesized ) {
-                    reconstructedExpression.insert( 0, 1, '(' );
-                    reconstructedExpression.append( 1, ')' );
-                }
-                if( negated ) {
-                    reconstructedExpression.insert( 0, 1, '!' );
-                }
-                decomposedExpression = CATCH_NULL;
-            }
-            return reconstructedExpression;
-        }
-
-        mutable DecomposedExpression const* decomposedExpression;
-        mutable std::string reconstructedExpression;
         std::string message;
+        mutable std::string reconstructedExpression;
+        LazyExpression lazyExpression;
         ResultWas::OfType resultType;
-        bool negated;
-        bool parenthesized;
+
+        std::string reconstructExpression() const;
     };
 
     class AssertionResult {
     public:
-        AssertionResult();
+        AssertionResult() = delete;
         AssertionResult( AssertionInfo const& info, AssertionResultData const& data );
-        ~AssertionResult();
-#  ifdef CATCH_CONFIG_CPP11_GENERATED_METHODS
-         AssertionResult( AssertionResult const& )              = default;
-         AssertionResult( AssertionResult && )                  = default;
-         AssertionResult& operator = ( AssertionResult const& ) = default;
-         AssertionResult& operator = ( AssertionResult && )     = default;
-#  endif
 
         bool isOk() const;
         bool succeeded() const;
@@ -116,10 +48,8 @@ namespace Catch {
         std::string getMessage() const;
         SourceLineInfo getSourceInfo() const;
         std::string getTestMacroName() const;
-        void discardDecomposedExpression() const;
-        void expandDecomposedExpression() const;
 
-    protected:
+    //protected:
         AssertionInfo m_info;
         AssertionResultData m_resultData;
     };

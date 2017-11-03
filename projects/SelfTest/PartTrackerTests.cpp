@@ -6,7 +6,7 @@
  *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  */
 #include "internal/catch_suppress_warnings.h"
-#include "internal/catch_test_case_tracker.hpp"
+#include "internal/catch_test_case_tracker.h"
 
 
 namespace Catch
@@ -37,10 +37,10 @@ using namespace Catch;
 //}
 
 Catch::TestCaseTracking::NameAndLocation makeNAL( std::string const& name ) {
-    return Catch::TestCaseTracking::NameAndLocation( name, Catch::SourceLineInfo() );
+    return Catch::TestCaseTracking::NameAndLocation( name, Catch::SourceLineInfo("",0) );
 }
 
-TEST_CASE( "Tracker", "" ) {
+TEST_CASE( "Tracker" ) {
 
     TrackerContext ctx;
     ctx.startRun();
@@ -53,7 +53,7 @@ TEST_CASE( "Tracker", "" ) {
     ITracker& s1 = SectionTracker::acquire( ctx, makeNAL( "S1" ) );
     REQUIRE( s1.isOpen() );
 
-    SECTION( "successfully close one section", "" ) {
+    SECTION( "successfully close one section" ) {
         s1.close();
         REQUIRE( s1.isSuccessfullyCompleted() );
         REQUIRE( testCase.isComplete() == false );
@@ -63,7 +63,7 @@ TEST_CASE( "Tracker", "" ) {
         REQUIRE( testCase.isSuccessfullyCompleted() );
     }
 
-    SECTION( "fail one section", "" ) {
+    SECTION( "fail one section" ) {
         s1.fail();
         REQUIRE( s1.isComplete() );
         REQUIRE( s1.isSuccessfullyCompleted() == false );
@@ -73,7 +73,7 @@ TEST_CASE( "Tracker", "" ) {
         REQUIRE( ctx.completedCycle() );
         REQUIRE( testCase.isSuccessfullyCompleted() == false );
 
-        SECTION( "re-enter after failed section", "" ) {
+        SECTION( "re-enter after failed section" ) {
             ctx.startCycle();
             ITracker& testCase2 = SectionTracker::acquire( ctx, makeNAL( "Testcase" ) );
             REQUIRE( testCase2.isOpen() );
@@ -86,7 +86,7 @@ TEST_CASE( "Tracker", "" ) {
             REQUIRE( testCase.isComplete() );
             REQUIRE( testCase.isSuccessfullyCompleted() );
         }
-        SECTION( "re-enter after failed section and find next section", "" ) {
+        SECTION( "re-enter after failed section and find next section" ) {
             ctx.startCycle();
             ITracker& testCase2 = SectionTracker::acquire( ctx, makeNAL( "Testcase" ) );
             REQUIRE( testCase2.isOpen() );
@@ -106,7 +106,7 @@ TEST_CASE( "Tracker", "" ) {
         }
     }
 
-    SECTION( "successfully close one section, then find another", "" ) {
+    SECTION( "successfully close one section, then find another" ) {
         s1.close();
 
         ITracker& s2 = SectionTracker::acquire( ctx, makeNAL( "S2" ) );
@@ -115,7 +115,7 @@ TEST_CASE( "Tracker", "" ) {
         testCase.close();
         REQUIRE( testCase.isComplete() == false );
 
-        SECTION( "Re-enter - skips S1 and enters S2", "" ) {
+        SECTION( "Re-enter - skips S1 and enters S2" ) {
             ctx.startCycle();
             ITracker& testCase2 = SectionTracker::acquire( ctx, makeNAL( "Testcase" ) );
             REQUIRE( testCase2.isOpen() );
@@ -165,7 +165,7 @@ TEST_CASE( "Tracker", "" ) {
         }
     }
 
-    SECTION( "open a nested section", "" ) {
+    SECTION( "open a nested section" ) {
         ITracker& s2 = SectionTracker::acquire( ctx, makeNAL( "S2" ) );
         REQUIRE( s2.isOpen() );
 
@@ -181,7 +181,7 @@ TEST_CASE( "Tracker", "" ) {
         REQUIRE( testCase.isComplete() );
     }
 
-    SECTION( "start a generator", "" ) {
+    SECTION( "start a generator" ) {
         IndexTracker& g1 = IndexTracker::acquire( ctx, makeNAL( "G1" ), 2 );
         REQUIRE( g1.isOpen() );
         REQUIRE( g1.index() == 0 );
@@ -196,7 +196,7 @@ TEST_CASE( "Tracker", "" ) {
             testCase.close();
             REQUIRE( testCase.isSuccessfullyCompleted() == false );
 
-            SECTION( "Re-enter for second generation", "" ) {
+            SECTION( "Re-enter for second generation" ) {
                 ctx.startCycle();
                 ITracker& testCase2 = SectionTracker::acquire( ctx, makeNAL( "Testcase" ) );
                 REQUIRE( testCase2.isOpen() );
@@ -218,7 +218,7 @@ TEST_CASE( "Tracker", "" ) {
                 REQUIRE( testCase2.isComplete() );
             }
         }
-        SECTION( "Start a new inner section", "" ) {
+        SECTION( "Start a new inner section" ) {
             ITracker& s2 = SectionTracker::acquire( ctx, makeNAL( "S2" ) );
             REQUIRE( s2.isOpen() );
 
@@ -231,7 +231,7 @@ TEST_CASE( "Tracker", "" ) {
             testCase.close();
             REQUIRE( testCase.isComplete() == false );
 
-            SECTION( "Re-enter for second generation", "" ) {
+            SECTION( "Re-enter for second generation" ) {
                 ctx.startCycle();
                 ITracker& testCase2 = SectionTracker::acquire( ctx, makeNAL( "Testcase" ) );
                 REQUIRE( testCase2.isOpen() );
@@ -260,7 +260,7 @@ TEST_CASE( "Tracker", "" ) {
             }
         }
 
-        SECTION( "Fail an inner section", "" ) {
+        SECTION( "Fail an inner section" ) {
             ITracker& s2 = SectionTracker::acquire( ctx, makeNAL( "S2" ) );
             REQUIRE( s2.isOpen() );
 
@@ -274,7 +274,7 @@ TEST_CASE( "Tracker", "" ) {
             testCase.close();
             REQUIRE( testCase.isComplete() == false );
 
-            SECTION( "Re-enter for second generation", "" ) {
+            SECTION( "Re-enter for second generation" ) {
                 ctx.startCycle();
                 ITracker& testCase2 = SectionTracker::acquire( ctx, makeNAL( "Testcase" ) );
                 REQUIRE( testCase2.isOpen() );

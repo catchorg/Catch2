@@ -1,3 +1,4 @@
+<a id="top"></a>
 # Supplying main() yourself
 
 The easiest way to use Catch is to let it supply ```main()``` for you and handle configuring itself from the command line.
@@ -16,15 +17,14 @@ If you just need to have code that executes before and/ or after Catch this is t
 #define CATCH_CONFIG_RUNNER
 #include "catch.hpp"
 
-int main( int argc, char* argv[] )
-{
+int main( int argc, char* argv[] ) {
   // global setup...
 
   int result = Catch::Session().run( argc, argv );
 
   // global clean-up...
 
-  return ( result < 0xff ? result : 0xff );
+  return result;
 }
 ```
 
@@ -39,23 +39,24 @@ If you still want Catch to process the command line, but you want to programatic
 int main( int argc, char* argv[] )
 {
   Catch::Session session; // There must be exactly one instance
-
+ 
   // writing to session.configData() here sets defaults
   // this is the preferred way to set them
-
+    
   int returnCode = session.applyCommandLine( argc, argv );
   if( returnCode != 0 ) // Indicates a command line error
-  	return returnCode;
-
+  	  return returnCode;
+ 
   // writing to session.configData() or session.Config() here 
   // overrides command line args
   // only do this if you know you need to
 
   int numFailed = session.run();
-  // Note that on unices only the lower 8 bits are usually used, clamping
-  // the return value to 255 prevents false negative when some multiple
-  // of 256 tests has failed
-  return ( numFailed < 0xff ? numFailed : 0xff );
+  
+  // numFailed is clamped to 255 as some unices only use the lower 8 bits.
+  // This clamping has already been applied, so just return it here
+  // You can also do any post run clean-up here
+  return numFailed;
 }
 ```
 
@@ -65,8 +66,45 @@ To take full control of the config simply omit the call to ```applyCommandLine()
 
 ## Adding your own command line options
 
-Catch embeds a powerful command line parser which you can also use to parse your own options out. This capability is still in active development but will be documented here when it is ready.
+Catch embeds a powerful command line parser called [Clara](https://github.com/philsquared/Clara). 
+As of Catch2 (and Clara 1.0) Clara allows you to write _composable_ option and argument parsers, 
+so extending Catch's own command line options is now easy.
+
+```c++
+#define CATCH_CONFIG_RUNNER
+#include "catch.hpp"
+
+int main( int argc, char* argv[] )
+{
+  Catch::Session session; // There must be exactly one instance
+  
+  int height = 0; // Some user variable you want to be able to set
+  
+  // Build a new parser on top of Catch's
+  auto cli 
+    = session.cli() // Get Catch's composite command line parser
+    | Opt( height, "height" ) // bind variable to a new option, with a hint string
+        ["-g"]["--height"]    // the option names it will respond to
+        ("how high?");        // description string for the help output
+        
+  // Now pass the new composite back to Catch so it uses that
+  session.cli( cli ); 
+  
+  // Let Catch (using Clara) parse the command line
+  int returnCode = session.applyCommandLine( argc, argv );
+  if( returnCode != 0 ) // Indicates a command line error
+  	return returnCode;
+
+  // if set on the command line then 'height' is now set at this point
+  if( height > 0 )
+      std::cout << "height: " << height << std::endl;
+
+  return session.run();
+}
+```
+
+See the [Clara documentation](https://github.com/philsquared/Clara/blob/master/README.md) for more details.
 
 ---
 
-[Home](Readme.md)
+[Home](Readme.md#top)

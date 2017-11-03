@@ -8,7 +8,7 @@
 #ifndef TWOBLUECUBES_CATCH_MATCHERS_VECTOR_H_INCLUDED
 #define TWOBLUECUBES_CATCH_MATCHERS_VECTOR_H_INCLUDED
 
-#include "catch_matchers.hpp"
+#include "catch_matchers.h"
 
 namespace Catch {
 namespace Matchers {
@@ -20,12 +20,17 @@ namespace Matchers {
 
             ContainsElementMatcher(T const &comparator) : m_comparator( comparator) {}
 
-            bool match(std::vector<T> const &v) const CATCH_OVERRIDE {
-                return std::find(v.begin(), v.end(), m_comparator) != v.end();
+            bool match(std::vector<T> const &v) const override {
+                for (auto const& el : v) {
+                    if (el == m_comparator) {
+                        return true;
+                    }
+                }
+                return false;
             }
 
-            virtual std::string describe() const CATCH_OVERRIDE {
-                return "Contains: " + Catch::toString( m_comparator );
+            std::string describe() const override {
+                return "Contains: " + ::Catch::Detail::stringify( m_comparator );
             }
 
             T const& m_comparator;
@@ -36,17 +41,26 @@ namespace Matchers {
 
             ContainsMatcher(std::vector<T> const &comparator) : m_comparator( comparator ) {}
 
-            bool match(std::vector<T> const &v) const CATCH_OVERRIDE {
+            bool match(std::vector<T> const &v) const override {
                 // !TBD: see note in EqualsMatcher
                 if (m_comparator.size() > v.size())
                     return false;
-                for (size_t i = 0; i < m_comparator.size(); ++i)
-                    if (std::find(v.begin(), v.end(), m_comparator[i]) == v.end())
+                for (auto const& comparator : m_comparator) {
+                    auto present = false;
+                    for (const auto& el : v) {
+                        if (el == comparator) {
+                            present = true;
+                            break;
+                        }
+                    }
+                    if (!present) {
                         return false;
+                    }
+                }
                 return true;
             }
-            virtual std::string describe() const CATCH_OVERRIDE {
-                return "Contains: " + Catch::toString( m_comparator );
+            std::string describe() const override {
+                return "Contains: " + ::Catch::Detail::stringify( m_comparator );
             }
 
             std::vector<T> const& m_comparator;
@@ -57,20 +71,20 @@ namespace Matchers {
 
             EqualsMatcher(std::vector<T> const &comparator) : m_comparator( comparator ) {}
 
-            bool match(std::vector<T> const &v) const CATCH_OVERRIDE {
+            bool match(std::vector<T> const &v) const override {
                 // !TBD: This currently works if all elements can be compared using !=
                 // - a more general approach would be via a compare template that defaults
                 // to using !=. but could be specialised for, e.g. std::vector<T> etc
                 // - then just call that directly
                 if (m_comparator.size() != v.size())
                     return false;
-                for (size_t i = 0; i < v.size(); ++i)
+                for (std::size_t i = 0; i < v.size(); ++i)
                     if (m_comparator[i] != v[i])
                         return false;
                 return true;
             }
-            virtual std::string describe() const CATCH_OVERRIDE {
-                return "Equals: " + Catch::toString( m_comparator );
+            std::string describe() const override {
+                return "Equals: " + ::Catch::Detail::stringify( m_comparator );
             }
             std::vector<T> const& m_comparator;
         };

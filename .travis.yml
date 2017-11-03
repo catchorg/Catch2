@@ -7,19 +7,6 @@ matrix:
     # 1/ Linux Clang Builds
     - os: linux
       compiler: clang
-      addons: &clang34
-        apt:
-          sources: ['llvm-toolchain-precise', 'ubuntu-toolchain-r-test']
-          packages: ['clang']
-      env: COMPILER='clang++' BUILD_TYPE='Release'
-
-    - os: linux
-      compiler: clang
-      addons: *clang34
-      env: COMPILER='clang++' BUILD_TYPE='Debug'
-
-    - os: linux
-      compiler: clang
       addons: &clang35
         apt:
           sources: ['llvm-toolchain-precise-3.5', 'ubuntu-toolchain-r-test']
@@ -75,34 +62,6 @@ matrix:
 
 
     # 2/ Linux GCC Builds
-    - os: linux
-      compiler: gcc
-      addons: &gcc44
-        apt:
-         sources: ['ubuntu-toolchain-r-test']
-         packages: ['g++-4.4']
-      env: COMPILER='g++-4.4' BUILD_TYPE='Release'
-
-    - os: linux
-      compiler: gcc
-      addons: *gcc44
-      env: COMPILER='g++-4.4' BUILD_TYPE='Debug'
-
-
-    - os: linux
-      compiler: gcc
-      addons: &gcc47
-        apt:
-         sources: ['ubuntu-toolchain-r-test']
-         packages: ['g++-4.7']
-      env: COMPILER='g++-4.7' BUILD_TYPE='Release'
-
-    - os: linux
-      compiler: gcc
-      addons: *gcc47
-      env: COMPILER='g++-4.7' BUILD_TYPE='Debug'
-
-
     - os: linux
       compiler: gcc
       addons: &gcc48
@@ -191,7 +150,7 @@ matrix:
       addons: *gcc6
       env: COMPILER='g++-6' BUILD_TYPE='Debug' CPP14=1
 
-    # 4b/ Linux C++14 Clang builds
+#    # 4b/ Linux C++14 Clang builds
 #    - os: linux
 #      compiler: clang
 #      addons: *clang38

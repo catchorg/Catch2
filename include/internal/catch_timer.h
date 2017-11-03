@@ -8,32 +8,21 @@
 #ifndef TWOBLUECUBES_CATCH_TIMER_H_INCLUDED
 #define TWOBLUECUBES_CATCH_TIMER_H_INCLUDED
 
-#include "catch_platform.h"
-
-#ifdef _MSC_VER
+#include <cstdint>
 
 namespace Catch {
-    typedef unsigned long long UInt64;
-}
-#else
-#include <stdint.h>
-namespace Catch {
-    typedef uint64_t UInt64;
-}
-#endif
 
+    auto getCurrentNanosecondsSinceEpoch() -> uint64_t;
+    auto getEstimatedClockResolution() -> uint64_t;
 
-namespace Catch {
     class Timer {
+        uint64_t m_nanoseconds = 0;
     public:
-        Timer() : m_ticks( 0 ) {}
         void start();
-        unsigned int getElapsedMicroseconds() const;
-        unsigned int getElapsedMilliseconds() const;
-        double getElapsedSeconds() const;
-
-    private:
-        UInt64 m_ticks;
+        auto getElapsedNanoseconds() const -> unsigned int;
+        auto getElapsedMicroseconds() const -> unsigned int;
+        auto getElapsedMilliseconds() const -> unsigned int;
+        auto getElapsedSeconds() const -> double;
     };
 
 } // namespace Catch

@@ -1,3 +1,4 @@
+<a id="top"></a>
 # Test cases and sections
 
 While Catch fully supports the traditional, xUnit, style of class-based fixtures containing test case methods this is not the preferred style.
@@ -11,7 +12,7 @@ Test cases and sections are very easy to use in practice:
 
 _test name_ and _section name_ are free form, quoted, strings. The optional _tags_ argument is a quoted string containing one or more tags enclosed in square brackets. Tags are discussed below. Test names must be unique within the Catch executable.
 
-For examples see the [Tutorial](tutorial.md)
+For examples see the [Tutorial](tutorial.md#top)
 
 ## Tags
 
@@ -34,7 +35,7 @@ Tag names are not case sensitive and can contain any ASCII characters. This mean
 
 All tag names beginning with non-alphanumeric characters are reserved by Catch. Catch defines a number of "special" tags, which have meaning to the test runner itself. These special tags all begin with a symbol character. Following is a list of currently defined special tags and their meanings.
 
-* `[!hide]` or `[.]` (or, for legacy reasons, `[hide]`)	- causes test cases to be skipped from the default list (i.e. when no test cases have been explicitly selected through tag expressions or name wildcards). The hide tag is often combined with another, user, tag (for example `[.][integration]` - so all integration tests are excluded from the default run but can be run by passing `[integration]` on the command line). As a short-cut you can combine these by simply prefixing your user tag with a `.` - e.g. `[.integration]`. Because the hide tag has evolved to have several forms, all forms are added as tags if you use one of them.
+* `[!hide]` or `[.]` - causes test cases to be skipped from the default list (i.e. when no test cases have been explicitly selected through tag expressions or name wildcards). The hide tag is often combined with another, user, tag (for example `[.][integration]` - so all integration tests are excluded from the default run but can be run by passing `[integration]` on the command line). As a short-cut you can combine these by simply prefixing your user tag with a `.` - e.g. `[.integration]`. Because the hide tag has evolved to have several forms, all forms are added as tags if you use one of them.
 
 * `[!throws]`	- lets Catch know that this test is likely to throw an exception even if successful. This causes the test to be excluded when running with `-e` or `--nothrow`.
 
@@ -47,6 +48,8 @@ All tag names beginning with non-alphanumeric characters are reserved by Catch. 
 * `[#<filename>]` - running with `-#` or `--filenames-as-tags` causes Catch to add the filename, prefixed with `#` (and with any extension stripped), as a tag to all contained tests, e.g. tests in testfile.cpp would all be tagged `[#testfile]`.
 
 * `[@<alias>]` - tag aliases all begin with `@` (see below).
+
+* `[!benchmark]` - this test case is actually a benchmark. This is an experimental feature, and currently has no documentation. If you want to try it out, look at `projects/SelfTest/Benchmark.tests.cpp` for details.
 
 ## Tag aliases
 
@@ -85,4 +88,4 @@ Other than the additional prefixes and the formatting in the console reporter th
 
 ---
 
-[Home](Readme.md)
+[Home](Readme.md#top)

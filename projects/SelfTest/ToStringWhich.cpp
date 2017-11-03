@@ -5,17 +5,21 @@
 */
 
 
-struct has_toString { };
+struct has_operator { };
 struct has_maker {};
-struct has_maker_and_toString {};
+struct has_maker_and_operator {};
+
+std::ostream& operator<<(std::ostream& os, const has_operator&) {
+    os << "operator<<( has_operator )";
+    return os;
+}
+
+std::ostream& operator<<(std::ostream& os, const has_maker_and_operator&) {
+    os << "operator<<( has_maker_and_operator )";
+    return os;
+}
 
 namespace Catch {
-    inline std::string toString( const has_toString& ) {
-        return "toString( has_toString )";
-    }
-    inline std::string toString( const has_maker_and_toString& ) {
-        return "toString( has_maker_and_toString )";
-    }
     template<>
     struct StringMaker<has_maker> {
         static std::string convert( const has_maker& ) {
@@ -23,49 +27,47 @@ namespace Catch {
         }
     };
     template<>
-    struct StringMaker<has_maker_and_toString> {
-        static std::string convert( const has_maker_and_toString& ) {
-            return "StringMaker<has_maker_and_toString>";
+    struct StringMaker<has_maker_and_operator> {
+        static std::string convert( const has_maker_and_operator& ) {
+            return "StringMaker<has_maker_and_operator>";
         }
     };
 }
 
-// Call the overload
-TEST_CASE( "toString( has_toString )", "[toString]" ) {
-    has_toString item;
-    REQUIRE( Catch::toString( item ) == "toString( has_toString )" );
+// Call the operator
+TEST_CASE( "stringify( has_operator )", "[toString]" ) {
+    has_operator item;
+    REQUIRE( ::Catch::Detail::stringify( item ) == "operator<<( has_operator )" );
 }
 
-// Call the overload
-TEST_CASE( "toString( has_maker )", "toString]" ) {
+// Call the stringmaker
+TEST_CASE( "stringify( has_maker )", "[toString]" ) {
     has_maker item;
-    REQUIRE( Catch::toString( item ) == "StringMaker<has_maker>" );
+    REQUIRE( ::Catch::Detail::stringify( item ) == "StringMaker<has_maker>" );
 }
 
-// Call the overload
-TEST_CASE( "toString( has_maker_and_toString )", "[.][toString]" ) {
-    has_maker_and_toString item;
-    REQUIRE( Catch::toString( item ) == "toString( has_maker_and_toString )" );
+// Call the stringmaker
+TEST_CASE( "stringify( has_maker_and_toString )", "[.][toString]" ) {
+    has_maker_and_operator item;
+    REQUIRE( ::Catch::Detail::stringify( item ) == "StringMaker<has_maker_and_operator>" );
 }
 
 // Vectors...
 
 // Don't run this in approval tests as it is sensitive to two phase lookup differences
 TEST_CASE( "toString( vectors<has_toString )", "[.][toString][!nonportable]" ) {
-    std::vector<has_toString> v(1);
-    // This invokes template<T> toString which actually gives us '{ ? }'
-    REQUIRE( Catch::toString( v ) == "{ {?} }" );
+    std::vector<has_operator> v(1);
+    REQUIRE( ::Catch::Detail::stringify( v ) == "{ operator<<( has_operator ) }" );
 }
 
 TEST_CASE( "toString( vectors<has_maker )", "[toString]" ) {
     std::vector<has_maker> v(1);
-    REQUIRE( Catch::toString( v ) == "{ StringMaker<has_maker> }" );
+    REQUIRE( ::Catch::Detail::stringify( v ) == "{ StringMaker<has_maker> }" );
 }
 
 
 // Don't run this in approval tests as it is sensitive to two phase lookup differences
 TEST_CASE( "toString( vectors<has_maker_and_toString )", "[.][toString][!nonportable]" ) {
-    std::vector<has_maker_and_toString> v(1);
-    // Note: This invokes the template<T> toString -> StringMaker
-    REQUIRE( Catch::toString( v ) == "{ StringMaker<has_maker_and_toString> }" );
+    std::vector<has_maker_and_operator> v(1);
+    REQUIRE( ::Catch::Detail::stringify( v ) == "{ StringMaker<has_maker_and_toString> }" );
 }

@@ -8,10 +8,14 @@
 #ifndef TWOBLUECUBES_CATCH_VERSION_H_INCLUDED
 #define TWOBLUECUBES_CATCH_VERSION_H_INCLUDED
 
+#include <iosfwd>
+
 namespace Catch {
 
     // Versioning information
     struct Version {
+        Version( Version const& ) = delete;
+        Version& operator=( Version const& ) = delete;
         Version(    unsigned int _majorVersion,
                     unsigned int _minorVersion,
                     unsigned int _patchNumber,
@@ -27,12 +31,9 @@ namespace Catch {
         unsigned int const buildNumber;
 
         friend std::ostream& operator << ( std::ostream& os, Version const& version );
-
-    private:
-        void operator=( Version const& );
     };
 
-    inline Version libraryVersion();
+    Version const& libraryVersion();
 }
 
 #endif // TWOBLUECUBES_CATCH_VERSION_H_INCLUDED

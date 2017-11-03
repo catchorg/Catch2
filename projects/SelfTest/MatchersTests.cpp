@@ -8,6 +8,14 @@
 
 #include "catch.hpp"
 
+#ifdef __clang__
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wweak-vtables"
+#pragma clang diagnostic ignored "-Wpadded"
+#endif
+
+#ifndef CATCH_CONFIG_DISABLE_MATCHERS
+
 inline const char* testStringForMatching()
 {
     return "this string contains 'abc' as a substring";
@@ -46,16 +54,6 @@ TEST_CASE("EndsWith string matcher", "[.][failing][matchers]")
 TEST_CASE("Equals string matcher", "[.][failing][matchers]")
 {
     CHECK_THAT( testStringForMatching(), Equals( "something else" ) );
-}
-
-TEST_CASE("AllOf matcher", "[matchers]")
-{
-    CHECK_THAT( testStringForMatching(), AllOf( Catch::Contains( "string" ), Catch::Contains( "abc" ) ) );
-}
-TEST_CASE("AnyOf matcher", "[matchers]")
-{
-    CHECK_THAT( testStringForMatching(), AnyOf( Catch::Contains( "string" ), Catch::Contains( "not there" ) ) );
-    CHECK_THAT( testStringForMatching(), AnyOf( Catch::Contains( "not there" ), Catch::Contains( "string" ) ) );
 }
 
 TEST_CASE("Equals", "[matchers]")
@@ -166,3 +164,68 @@ TEST_CASE( "Vector matchers that fail", "[matchers][vector][.][failing]" ) {
         CHECK_THAT( v, Equals( empty ) );
     }
 }
+
+#ifdef _MSC_VER
+#pragma warning(disable:4702) // Unreachable code -- MSVC 19 (VS 2015) sees right through the indirection
+#endif
+
+#include <exception>
+
+struct SpecialException : std::exception {
+    SpecialException(int i_):i(i_) {}
+    int i;
+};
+
+void doesNotThrow() {}
+
+[[noreturn]]
+void throws(int i) {
+    throw SpecialException{ i };
+}
+
+[[noreturn]]
+void throwsAsInt(int i) {
+    throw i;
+}
+
+class ExceptionMatcher : public Catch::MatcherBase<SpecialException> {
+    int m_expected;
+public:
+    ExceptionMatcher(int i):m_expected(i) {}
+    bool match(SpecialException const& se) const override {
+        return se.i == m_expected;
+    }
+
+    std::string describe() const override {
+        std::ostringstream ss;
+        ss << "special exception has value of " << m_expected;
+        return ss.str();
+    }
+};
+
+
+TEST_CASE( "Exception matchers that succeed", "[matchers][exceptions][!throws]" ) {
+    CHECK_THROWS_MATCHES(throws(1), SpecialException, ExceptionMatcher{ 1 });
+    REQUIRE_THROWS_MATCHES(throws(2), SpecialException, ExceptionMatcher{ 2 });
+}
+
+TEST_CASE("Exception matchers that fail", "[matchers][exceptions][!throws][.failing]") {
+    SECTION("No exception") {
+        CHECK_THROWS_MATCHES(doesNotThrow(), SpecialException, ExceptionMatcher{ 1 });
+        REQUIRE_THROWS_MATCHES(doesNotThrow(), SpecialException, ExceptionMatcher{ 1 });
+    }
+    SECTION("Type mismatch") {
+        CHECK_THROWS_MATCHES(throwsAsInt(1), SpecialException, ExceptionMatcher{ 1 });
+        REQUIRE_THROWS_MATCHES(throwsAsInt(1), SpecialException, ExceptionMatcher{ 1 });
+    }
+    SECTION("Contents are wrong") {
+        CHECK_THROWS_MATCHES(throws(3), SpecialException, ExceptionMatcher{ 1 });
+        REQUIRE_THROWS_MATCHES(throws(4), SpecialException, ExceptionMatcher{ 1 });
+    }
+}
+
+#endif // CATCH_CONFIG_DISABLE_MATCHERS
+
+#ifdef __clang__
+#pragma clang diagnostic pop
+#endif

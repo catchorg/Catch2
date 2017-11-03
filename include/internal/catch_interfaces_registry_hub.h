@@ -8,9 +8,10 @@
 #ifndef TWOBLUECUBES_CATCH_INTERFACES_REGISTRY_HUB_H_INCLUDED
 #define TWOBLUECUBES_CATCH_INTERFACES_REGISTRY_HUB_H_INCLUDED
 
-#include "catch_ptr.hpp"
+#include "catch_common.h"
 
 #include <string>
+#include <memory>
 
 namespace Catch {
 
@@ -21,6 +22,9 @@ namespace Catch {
     struct IReporterRegistry;
     struct IReporterFactory;
     struct ITagAliasRegistry;
+    class StartupExceptionRegistry;
+
+    using IReporterFactoryPtr = std::shared_ptr<IReporterFactory>;
 
     struct IRegistryHub {
         virtual ~IRegistryHub();
@@ -30,15 +34,19 @@ namespace Catch {
         virtual ITagAliasRegistry const& getTagAliasRegistry() const = 0;
 
         virtual IExceptionTranslatorRegistry& getExceptionTranslatorRegistry() = 0;
+
+
+        virtual StartupExceptionRegistry const& getStartupExceptionRegistry() const = 0;
     };
 
     struct IMutableRegistryHub {
         virtual ~IMutableRegistryHub();
-        virtual void registerReporter( std::string const& name, Ptr<IReporterFactory> const& factory ) = 0;
-        virtual void registerListener( Ptr<IReporterFactory> const& factory ) = 0;
+        virtual void registerReporter( std::string const& name, IReporterFactoryPtr const& factory ) = 0;
+        virtual void registerListener( IReporterFactoryPtr const& factory ) = 0;
         virtual void registerTest( TestCase const& testInfo ) = 0;
         virtual void registerTranslator( const IExceptionTranslator* translator ) = 0;
         virtual void registerTagAlias( std::string const& alias, std::string const& tag, SourceLineInfo const& lineInfo ) = 0;
+        virtual void registerStartupException() noexcept = 0;
     };
 
     IRegistryHub& getRegistryHub();
