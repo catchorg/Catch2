@@ -7,8 +7,6 @@
 #ifndef TWOBLUECUBES_CATCH_RANDOM_NUMBER_GENERATOR_H_INCLUDED
 #define TWOBLUECUBES_CATCH_RANDOM_NUMBER_GENERATOR_H_INCLUDED
 
-#include "catch_random_number_generator.h"
-
 #include <algorithm>
 
 namespace Catch {
