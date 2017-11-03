@@ -445,9 +445,3 @@ TEST_CASE( "Bitfields can be captured (#1027)" ) {
     REQUIRE( y.v == 0 );
     REQUIRE( 0 == y.v );
 }
-
-TEST_CASE( "null deref", "[.][failing][!nonportable]" ) {
-    CHECK( false );
-    int *x = NULL;
-    *x = 1;
-}
