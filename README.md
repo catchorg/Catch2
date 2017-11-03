@@ -2,10 +2,10 @@
 ![catch logo](catch-logo-small.png)
 
 [![Github Releases](https://img.shields.io/github/release/philsquared/catch.svg)](https://github.com/catchorg/catch2/releases)
-[![Build Status](https://travis-ci.org/philsquared/Catch.svg?branch=catch2)](https://travis-ci.org/philsquared/Catch)
-[![Build status](https://ci.appveyor.com/api/projects/status/hrtk60hv6tw6fght/branch/catch2?svg=true)](https://ci.appveyor.com/project/philsquared/catch)
+[![Build Status](https://travis-ci.org/philsquared/Catch.svg)](https://travis-ci.org/philsquared/Catch)
+[![Build status](https://ci.appveyor.com/api/projects/status/hrtk60hv6tw6fght)](https://ci.appveyor.com/project/philsquared/catch)
 
-<a href="https://github.com/catchorg/Catch/2releases/download/v2.0.1/catch.hpp">The latest version of the single header can be downloaded directly using this link</a>
+<a href="https://github.com/catchorg/Catch2/releases/download/v2.0.1/catch.hpp">The latest version of the single header can be downloaded directly using this link</a>
 
 ## What's the Catch?
 
