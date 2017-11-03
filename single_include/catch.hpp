@@ -1,6 +1,6 @@
 /*
- *  Catch v2.0.0-develop.6
- *  Generated: 2017-10-31 15:09:47.277913
+ *  Catch v2.0.1
+ *  Generated: 2017-11-03 11:53:39.642003
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2017 Two Blue Cubes Ltd. All rights reserved.
@@ -1835,16 +1835,15 @@ namespace Catch {
     do{ if( !(condition) ) CATCH_ERROR( msg ); } while(false)
 
 // end catch_enforce.h
-#include <cmath>
-
 #include <type_traits>
 
 namespace Catch {
 namespace Detail {
 
-    double dmax(double lhs, double rhs);
-
     class Approx {
+    private:
+        bool equalityComparisonImpl(double other) const;
+
     public:
         explicit Approx ( double value );
 
@@ -1865,14 +1864,8 @@ namespace Detail {
 
         template <typename T, typename = typename std::enable_if<std::is_constructible<double, T>::value>::type>
         friend bool operator == ( const T& lhs, Approx const& rhs ) {
-            // Thanks to Richard Harris for his help refining this formula
             auto lhs_v = static_cast<double>(lhs);
-            bool relativeOK = std::fabs(lhs_v - rhs.m_value) < rhs.m_epsilon * (rhs.m_scale +
-                    dmax(std::fabs(lhs_v), std::fabs(rhs.m_value)));
-            if (relativeOK) {
-                return true;
-            }
-            return std::fabs(lhs_v - rhs.m_value) <= rhs.m_margin;
+            return rhs.equalityComparisonImpl(lhs_v);
         }
 
         template <typename T, typename = typename std::enable_if<std::is_constructible<double, T>::value>::type>
@@ -1912,14 +1905,21 @@ namespace Detail {
 
         template <typename T, typename = typename std::enable_if<std::is_constructible<double, T>::value>::type>
         Approx& epsilon( T const& newEpsilon ) {
-            m_epsilon = static_cast<double>(newEpsilon);
+            double epsilonAsDouble = static_cast<double>(newEpsilon);
+            CATCH_ENFORCE(epsilonAsDouble >= 0 && epsilonAsDouble <= 1.0,
+                          "Invalid Approx::epsilon: " << epsilonAsDouble
+                          << ", Approx::epsilon has to be between 0 and 1");
+            m_epsilon = epsilonAsDouble;
             return *this;
         }
 
         template <typename T, typename = typename std::enable_if<std::is_constructible<double, T>::value>::type>
         Approx& margin( T const& newMargin ) {
-            m_margin = static_cast<double>(newMargin);
-            CATCH_ENFORCE(m_margin >= 0, "Invalid Approx::margin: " << m_margin << ", Approx::Margin has to be non-negative.");
+            double marginAsDouble = static_cast<double>(newMargin);
+            CATCH_ENFORCE(marginAsDouble >= 0,
+                          "Invalid Approx::margin: " << marginAsDouble
+                          << ", Approx::Margin has to be non-negative.");
+            m_margin = marginAsDouble;
             return *this;
         }
 
@@ -3980,22 +3980,26 @@ namespace Catch {
 // Cpp files will be included in the single-header file here
 // start catch_approx.cpp
 
+#include <cmath>
 #include <limits>
+
+namespace {
+
+// Performs equivalent check of std::fabs(lhs - rhs) <= margin
+// But without the subtraction to allow for INFINITY in comparison
+bool marginComparison(double lhs, double rhs, double margin) {
+    return (lhs + margin >= rhs) && (rhs + margin >= lhs);
+}
+
+}
 
 namespace Catch {
 namespace Detail {
 
-    double dmax(double lhs, double rhs) {
-        if (lhs < rhs) {
-            return rhs;
-        }
-        return lhs;
-    }
-
     Approx::Approx ( double value )
     :   m_epsilon( std::numeric_limits<float>::epsilon()*100 ),
         m_margin( 0.0 ),
-        m_scale( 1.0 ),
+        m_scale( 0.0 ),
         m_value( value )
     {}
 
@@ -4007,6 +4011,12 @@ namespace Detail {
         std::ostringstream oss;
         oss << "Approx( " << ::Catch::Detail::stringify( m_value ) << " )";
         return oss.str();
+    }
+
+    bool Approx::equalityComparisonImpl(const double other) const {
+        // First try with fixed margin, then compute margin based on epsilon, scale and Approx's value
+        // Thanks to Richard Harris for his help refining the scaled margin value
+        return marginComparison(m_value, other, m_margin) || marginComparison(m_value, other, m_epsilon * (m_scale + std::fabs(m_value)));
     }
 
 } // end namespace Detail
@@ -8055,6 +8065,7 @@ namespace Catch {
         clara::Parser m_cli;
         ConfigData m_configData;
         std::shared_ptr<Config> m_config;
+        bool m_startupExceptions = false;
     };
 
 } // end namespace Catch
@@ -8186,8 +8197,26 @@ namespace Catch {
 
     Session::Session() {
         static bool alreadyInstantiated = false;
-        if( alreadyInstantiated )
-            CATCH_INTERNAL_ERROR( "Only one instance of Catch::Session can ever be used" );
+        if( alreadyInstantiated ) {
+            try         { CATCH_INTERNAL_ERROR( "Only one instance of Catch::Session can ever be used" ); }
+            catch(...)  { getMutableRegistryHub().registerStartupException(); }
+        }
+
+        const auto& exceptions = getRegistryHub().getStartupExceptionRegistry().getExceptions();
+        if ( !exceptions.empty() ) {
+            m_startupExceptions = true;
+            Colour colourGuard( Colour::Red );
+            Catch::cerr() << "Errors occured during startup!" << '\n';
+            // iterate over all exceptions and notify user
+            for ( const auto& ex_ptr : exceptions ) {
+                try {
+                    std::rethrow_exception(ex_ptr);
+                } catch ( std::exception const& ex ) {
+                    Catch::cerr() << Column( ex.what() ).indent(2) << '\n';
+                }
+            }
+        }
+
         alreadyInstantiated = true;
         m_cli = makeCommandLineParser( m_configData );
     }
@@ -8210,6 +8239,9 @@ namespace Catch {
     }
 
     int Session::applyCommandLine( int argc, char* argv[] ) {
+        if( m_startupExceptions )
+            return 1;
+
         auto result = m_cli.parse( clara::Args( argc, argv ) );
         if( !result ) {
             Catch::cerr()
@@ -8235,19 +8267,8 @@ namespace Catch {
     }
 
     int Session::run( int argc, char* argv[] ) {
-        const auto& exceptions = getRegistryHub().getStartupExceptionRegistry().getExceptions();
-        if ( !exceptions.empty() ) {
-            Catch::cerr() << "Errors occured during startup!" << '\n';
-            // iterate over all exceptions and notify user
-            for ( const auto& ex_ptr : exceptions ) {
-                try {
-                    std::rethrow_exception(ex_ptr);
-                } catch ( std::exception const& ex ) {
-                    Catch::cerr() << ex.what() << '\n';
-                }
-            }
+        if( m_startupExceptions )
             return 1;
-        }
         int returnCode = applyCommandLine( argc, argv );
         if( returnCode == 0 )
             returnCode = run();
@@ -8306,6 +8327,9 @@ namespace Catch {
     }
 
     int Session::runInternal() {
+        if( m_startupExceptions )
+            return 1;
+
         if( m_configData.showHelp || m_configData.libIdentify )
             return 0;
 
@@ -9802,7 +9826,7 @@ namespace Catch {
     }
 
     Version const& libraryVersion() {
-        static Version version( 2, 0, 0, "develop", 6 );
+        static Version version( 2, 0, 1, "", 0 );
         return version;
     }
 

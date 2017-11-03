@@ -1,5 +1,5 @@
 <a id="top"></a>
-# 2.0.0 (in progress)
+# 2.0.1
 
 ## Breaking changes
 * Removed C++98 support

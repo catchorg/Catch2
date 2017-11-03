@@ -9,7 +9,7 @@ set(CATCH_DIR ${CMAKE_CURRENT_SOURCE_DIR})
 set(SELF_TEST_DIR ${CATCH_DIR}/projects/SelfTest)
 set(BENCHMARK_DIR ${CATCH_DIR}/projects/Benchmark)
 set(HEADER_DIR ${CATCH_DIR}/include)
-set(CATCH_VERSION_NUMBER 2.0.0-develop.6)
+set(CATCH_VERSION_NUMBER 2.0.1)
 
 if(USE_CPP14)
     message(STATUS "Enabling C++14")
