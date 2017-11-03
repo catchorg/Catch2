@@ -10,7 +10,7 @@
 ## Catch2 is released!
 
 If you've been using an earlier version of Catch, please see the 
-[Breaking Changes section of the release notes](https://github.com/catchorg/Catch2/blob/master/docs/release-notes.md#breaking-changes)
+Breaking Changes section of [the release notes](https://github.com/catchorg/Catch2/releases/tag/v2.0.1)
 before moving to Catch2.
 
 ## What's the Catch?
