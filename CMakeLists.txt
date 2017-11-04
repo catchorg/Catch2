@@ -281,12 +281,12 @@ SOURCE_GROUP("Tests" FILES ${TEST_SOURCES})
 SOURCE_GROUP("Surrogates" FILES ${SURROGATE_SOURCES})
 
 # configure the executable
-include_directories(${HEADER_DIR})
 
 # Projects consuming Catch via ExternalProject_Add might want to use install step
 # without building all of our selftests.
 if (NOT NO_SELFTEST)
     add_executable(SelfTest ${TEST_SOURCES} ${IMPL_SOURCES} ${REPORTER_SOURCES} ${SURROGATE_SOURCES} ${HEADERS})
+    target_include_directories(SelfTest PRIVATE ${HEADER_DIR})
 
     # Add desired warnings
     if ( CMAKE_CXX_COMPILER_ID MATCHES "Clang|AppleClang|GNU" )
