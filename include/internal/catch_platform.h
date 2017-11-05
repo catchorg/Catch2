@@ -11,7 +11,7 @@
 
 #ifdef __APPLE__
 # include <TargetConditionals.h>
-# if TARGET_OS_MAC == 1
+# if TARGET_OS_OSX == 1
 #  define CATCH_PLATFORM_MAC
 # elif TARGET_OS_IPHONE == 1
 #  define CATCH_PLATFORM_IPHONE
