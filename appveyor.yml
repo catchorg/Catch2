@@ -20,14 +20,23 @@ environment:
         - additional_flags: "/D_UNICODE /DUNICODE"
           wmain: 1
 
+        - additional_flags: ""
+          wmain: 0
+          env_build_examples: 1
+          env_no_selftest: 1
+
 matrix:
     exclude:
-        -
-            additional_flags: "/permissive- /std:c++latest"
-            os: Visual Studio 2015
-        -
-            additional_flags: "/permissive- /std:c++latest"
-            os: Visual Studio 2013
+        - os: Visual Studio 2015
+          additional_flags: "/permissive- /std:c++latest"
+
+        - os: Visual Studio 2015
+          env_build_examples: 1
+          env_no_selftest: 1
+
+        - configuration: Debug
+          env_build_examples: 1
+          env_no_selftest: 1
 
 init:
   - git config --global core.autocrlf input
@@ -51,7 +60,7 @@ configuration:
 #Cmake will autodetect the compiler, but we set the arch
 before_build:
   - set CXXFLAGS=%additional_flags%
-  - cmake -H. -BBuild -A%PLATFORM% -DUSE_WMAIN=%wmain%
+  - cmake -H. -BBuild -A%PLATFORM% -DUSE_WMAIN=%wmain% -DNO_SELFTEST=%env_no_selftest% -DBUILD_EXAMPLES=%env_build_examples%
 
 # build with MSBuild
 build:
