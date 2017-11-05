@@ -1,6 +1,10 @@
 # version string format -- This will be overwritten later anyway
 version: "{build}"
 
+branches:
+  except:
+    - /dev-travis.+/
+
 os:
   - Visual Studio 2017
   - Visual Studio 2015
