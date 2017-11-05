@@ -28,7 +28,7 @@ matrix:
           packages: ['valgrind', 'clang-3.6']
       env: COMPILER='clang++-3.6' VALGRIND=1
 
-# Travis's containers do not seem to have Clang 3.7 in apt, no matter what sources I add. 
+# Travis's containers do not seem to have Clang 3.7 in apt, no matter what sources I add.
 #    - os: linux
 #      compiler: clang
 #      addons:
@@ -110,6 +110,10 @@ matrix:
           packages: ['valgrind', 'g++-7']
       env: COMPILER='g++-7' VALGRIND=1
 
+    - os: linux
+      compiler: gcc
+      addons: *gcc7
+      env: COMPILER='g++-7' ENV_NO_SELFTEST=1 ENV_BUILD_EXAMPLES=1
 
     # 3b/ Linux C++14 Clang builds
     - os: linux
@@ -200,8 +204,8 @@ before_script:
   - export CXX=${COMPILER}
   - cd ${TRAVIS_BUILD_DIR}
   # Only run valgrind in debug build
-  - cmake -H. -BBuild-Debug -DCMAKE_BUILD_TYPE=Debug -Wdev -DUSE_CPP14=${CPP14} -DUSE_VALGRIND=${VALGRIND}
-  - cmake -H. -BBuild-Release -DCMAKE_BUILD_TYPE=Release -Wdev -DUSE_CPP14=${CPP14}
+  - cmake -H. -BBuild-Debug -DCMAKE_BUILD_TYPE=Debug -Wdev -DUSE_CPP14=${CPP14} -DUSE_VALGRIND=${VALGRIND} -DNO_SELFTEST=${ENV_NO_SELFTEST} -DBUILD_EXAMPLES=${ENV_BUILD_EXAMPLES}
+  - cmake -H. -BBuild-Release -DCMAKE_BUILD_TYPE=Release -Wdev -DUSE_CPP14=${CPP14} -DNO_SELFTEST=${ENV_NO_SELFTEST} -DBUILD_EXAMPLES=${ENV_BUILD_EXAMPLES}
 
 script:
   - cd Build-Debug
