@@ -11,15 +11,6 @@ set(BENCHMARK_DIR ${CATCH_DIR}/projects/Benchmark)
 set(HEADER_DIR ${CATCH_DIR}/include)
 set(CATCH_VERSION_NUMBER 2.0.1)
 
-if(USE_CPP14)
-    message(STATUS "Enabling C++14")
-    set(CMAKE_CXX_FLAGS "-std=c++14 ${CMAKE_CXX_FLAGS}")
-else()
-    message(STATUS "Enabling C++11")
-    set(CMAKE_CXX_FLAGS "-std=c++11 ${CMAKE_CXX_FLAGS}")
-
-endif()
-
 if(USE_WMAIN)
     set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /ENTRY:wmainCRTStartup")
 endif()
@@ -287,6 +278,18 @@ SOURCE_GROUP("Surrogates" FILES ${SURROGATE_SOURCES})
 if (NOT NO_SELFTEST)
     add_executable(SelfTest ${TEST_SOURCES} ${IMPL_SOURCES} ${REPORTER_SOURCES} ${SURROGATE_SOURCES} ${HEADERS})
     target_include_directories(SelfTest PRIVATE ${HEADER_DIR})
+
+    if(USE_CPP14)
+        message(STATUS "Enabling C++14")
+        set_property(TARGET SelfTest PROPERTY CXX_STANDARD 14)
+    else()
+        message(STATUS "Enabling C++11")
+        set_property(TARGET SelfTest PROPERTY CXX_STANDARD 11)
+    endif()
+
+    set_property(TARGET SelfTest PROPERTY CXX_STANDARD_REQUIRED ON)
+    set_property(TARGET SelfTest PROPERTY CXX_EXTENSIONS OFF)
+
 
     # Add desired warnings
     if ( CMAKE_CXX_COMPILER_ID MATCHES "Clang|AppleClang|GNU" )
