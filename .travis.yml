@@ -117,27 +117,21 @@ matrix:
       addons: *gcc6
       env: COMPILER='g++-6' BUILD_TYPE='Debug'
 
-    # 3a/ Linux C++11 GCC builds
-    - os: linux
-      compiler: gcc
-      addons: *gcc48
-      env: COMPILER='g++-4.8' BUILD_TYPE='Release' CPP11=1
-
-    - os: linux
-      compiler: gcc
-      addons: *gcc48
-      env: COMPILER='g++-4.8' BUILD_TYPE='Debug' CPP11=1
-
-    # 3b/ Linux C++11 Clang builds
+    # 3b/ Linux C++14 Clang builds
     - os: linux
       compiler: clang
-      addons: *clang38
-      env: COMPILER='clang++-3.8' BUILD_TYPE='Release' CPP11=1
+      addons: &clang38cpp14
+          apt: 
+              packages: ["clang-3.8", "libstdc++-6-dev"]
+              sources:
+                  - ubuntu-toolchain-r-test
+                  - llvm-toolchain-trusty
+      env: COMPILER='clang++-3.8' BUILD_TYPE='Release' CPP14=1
 
     - os: linux
       compiler: clang
-      addons: *clang38
-      env: COMPILER='clang++-3.8' BUILD_TYPE='Debug' CPP11=1
+      addons: *clang38cpp14
+      env: COMPILER='clang++-3.8' BUILD_TYPE='Debug' CPP14=1
 
     # 4a/ Linux C++14 GCC builds
     - os: linux
@@ -149,18 +143,6 @@ matrix:
       compiler: gcc
       addons: *gcc6
       env: COMPILER='g++-6' BUILD_TYPE='Debug' CPP14=1
-
-#    # 4b/ Linux C++14 Clang builds
-#    - os: linux
-#      compiler: clang
-#      addons: *clang38
-#      env: COMPILER='clang++-3.8' BUILD_TYPE='Release' CPP14=1
-#
-#    - os: linux
-#      compiler: clang
-#      addons: *clang38
-#      env: COMPILER='clang++-3.8' BUILD_TYPE='Debug' CPP14=1
-
 
     # 5/ OSX Clang Builds
     - os: osx
@@ -182,16 +164,6 @@ matrix:
       osx_image: xcode8
       compiler: clang
       env: COMPILER='clang++' BUILD_TYPE='Release'
-
-    - os: osx
-      osx_image: xcode8
-      compiler: clang
-      env: COMPILER='clang++' BUILD_TYPE='Debug' USE_CPP11=1
-
-    - os: osx
-      osx_image: xcode8
-      compiler: clang
-      env: COMPILER='clang++' BUILD_TYPE='Release' USE_CPP11=1
 
     - os: osx
       osx_image: xcode8
@@ -219,7 +191,7 @@ install:
 before_script:
   - export CXX=${COMPILER}
   - cd ${TRAVIS_BUILD_DIR}
-  - cmake -H. -BBuild -DCMAKE_BUILD_TYPE=${BUILD_TYPE} -Wdev -DUSE_CPP11=${CPP11} -DUSE_CPP14=${CPP14}
+  - cmake -H. -BBuild -DCMAKE_BUILD_TYPE=${BUILD_TYPE} -Wdev -DUSE_CPP14=${CPP14}
   - cd Build
 
 script:
