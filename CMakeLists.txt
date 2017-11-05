@@ -337,6 +337,11 @@ if (NOT NO_SELFTEST)
 endif() # !NO_SELFTEST
 
 
+if(BUILD_EXAMPLES)
+    add_subdirectory(examples)
+endif()
+
+
 install(DIRECTORY "single_include/" DESTINATION "include/catch")
 
 ## Provide some pkg-config integration
