@@ -1,5 +1,5 @@
 <a id="top"></a>
-![catch logo](catch-logo-small.png)
+![catch logo](artwork/catch2-logo-small.png)
 
 [![Github Releases](https://img.shields.io/github/release/philsquared/catch.svg)](https://github.com/catchorg/catch2/releases)
 [![Build Status](https://travis-ci.org/philsquared/Catch.svg)](https://travis-ci.org/philsquared/Catch)
