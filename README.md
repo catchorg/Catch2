@@ -1,9 +1,9 @@
 <a id="top"></a>
 ![catch logo](artwork/catch2-logo-small.png)
 
-[![Github Releases](https://img.shields.io/github/release/philsquared/catch.svg)](https://github.com/catchorg/catch2/releases)
-[![Build Status](https://travis-ci.org/philsquared/Catch.svg)](https://travis-ci.org/philsquared/Catch)
-[![Build status](https://ci.appveyor.com/api/projects/status/hrtk60hv6tw6fght)](https://ci.appveyor.com/project/philsquared/catch)
+[![Github Releases](https://img.shields.io/github/release/catchorg/catch2.svg)](https://github.com/catchorg/catch2/releases)
+[![Build Status](https://travis-ci.org/catchorg/Catch2.svg)](https://travis-ci.org/catchorg/Catch2)
+[![Build status](https://ci.appveyor.com/api/projects/status/hrtk60hv6tw6fght)](https://ci.appveyor.com/project/catchorg/catch2)
 
 <a href="https://github.com/catchorg/Catch2/releases/download/v2.0.1/catch.hpp">The latest version of the single header can be downloaded directly using this link</a>
 
