@@ -23,6 +23,8 @@
 #include "catch_debugger.h"
 #include "catch_windows_h_proxy.h"
 
+#include <sstream>
+
 namespace Catch {
     namespace {
 

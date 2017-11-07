@@ -8,10 +8,10 @@
 #ifndef TWOBLUECUBES_CATCH_APPROX_HPP_INCLUDED
 #define TWOBLUECUBES_CATCH_APPROX_HPP_INCLUDED
 
-#include "catch_enforce.h"
 #include "catch_tostring.h"
 
 #include <type_traits>
+#include <stdexcept>
 
 namespace Catch {
 namespace Detail {
@@ -83,9 +83,12 @@ namespace Detail {
         template <typename T, typename = typename std::enable_if<std::is_constructible<double, T>::value>::type>
         Approx& epsilon( T const& newEpsilon ) {
             double epsilonAsDouble = static_cast<double>(newEpsilon);
-            CATCH_ENFORCE(epsilonAsDouble >= 0 && epsilonAsDouble <= 1.0,
-                          "Invalid Approx::epsilon: " << epsilonAsDouble
-                          << ", Approx::epsilon has to be between 0 and 1");
+            if( epsilonAsDouble < 0 || epsilonAsDouble > 1.0 ) {
+                throw std::domain_error
+                    (   "Invalid Approx::epsilon: " +
+                        Catch::Detail::stringify( epsilonAsDouble ) +
+                        ", Approx::epsilon has to be between 0 and 1" );
+            }
             m_epsilon = epsilonAsDouble;
             return *this;
         }
@@ -93,9 +96,13 @@ namespace Detail {
         template <typename T, typename = typename std::enable_if<std::is_constructible<double, T>::value>::type>
         Approx& margin( T const& newMargin ) {
             double marginAsDouble = static_cast<double>(newMargin);
-            CATCH_ENFORCE(marginAsDouble >= 0,
-                          "Invalid Approx::margin: " << marginAsDouble
-                          << ", Approx::Margin has to be non-negative.");
+            if( marginAsDouble < 0 ) {
+                throw std::domain_error
+                    (   "Invalid Approx::margin: " +
+                         Catch::Detail::stringify( marginAsDouble ) +
+                         ", Approx::Margin has to be non-negative." );
+
+            }
             m_margin = marginAsDouble;
             return *this;
         }

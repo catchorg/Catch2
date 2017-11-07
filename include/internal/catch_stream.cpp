@@ -13,10 +13,16 @@
 #include "catch_debug_console.h"
 #include "catch_stringref.h"
 
-#include <stdexcept>
 #include <cstdio>
 #include <iostream>
 #include <fstream>
+#include <sstream>
+#include <vector>
+
+#if defined(__clang__)
+#    pragma clang diagnostic push
+#    pragma clang diagnostic ignored "-Wexit-time-destructors"
+#endif
 
 namespace Catch {
 
@@ -132,18 +138,64 @@ namespace Catch {
             return new detail::FileStream( filename );
     }
 
+
+    // This class encapsulates the idea of a pool of ostringstreams that can be reused.
+    struct StringStreams {
+        std::vector<std::unique_ptr<std::ostringstream>> m_streams;
+        std::vector<std::size_t> m_unused;
+        std::ostringstream m_referenceStream; // Used for copy state/ flags from
+
+        auto add() -> std::size_t {
+            if( m_unused.empty() ) {
+                m_streams.push_back( std::unique_ptr<std::ostringstream>( new std::ostringstream ) );
+                return m_streams.size()-1;
+            }
+            else {
+                auto index = m_unused.back();
+                m_unused.pop_back();
+                return index;
+            }
+        }
+
+        void release( std::size_t index ) {
+            m_streams[index]->copyfmt( m_referenceStream ); // Restore initial flags and other state
+            m_unused.push_back(index);
+        }
+
+        // !TBD: put in TLS
+        static auto instance() -> StringStreams& {
+            static StringStreams s_stringStreams;
+            return s_stringStreams;
+        }
+    };
+
+
+    ReusableStringStream::ReusableStringStream()
+    :   m_index( StringStreams::instance().add() ),
+        m_oss( StringStreams::instance().m_streams[m_index].get() )
+    {}
+
+    ReusableStringStream::~ReusableStringStream() {
+        static_cast<std::ostringstream*>( m_oss )->str("");
+        m_oss->clear();
+        StringStreams::instance().release( m_index );
+    }
+
+    auto ReusableStringStream::str() const -> std::string {
+        return static_cast<std::ostringstream*>( m_oss )->str();
+    }
+
+
     ///////////////////////////////////////////////////////////////////////////
 
 
 #ifndef CATCH_CONFIG_NOSTDOUT // If you #define this you must implement these functions
-    std::ostream& cout() {
-        return std::cout;
-    }
-    std::ostream& cerr() {
-        return std::cerr;
-    }
-    std::ostream& clog() {
-        return std::clog;
-    }
+    std::ostream& cout() { return std::cout; }
+    std::ostream& cerr() { return std::cerr; }
+    std::ostream& clog() { return std::clog; }
 #endif
 }
+
+#if defined(__clang__)
+#    pragma clang diagnostic pop
+#endif

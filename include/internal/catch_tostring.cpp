@@ -52,22 +52,22 @@ namespace Detail {
         }
 
         unsigned char const *bytes = static_cast<unsigned char const *>(object);
-        std::ostringstream os;
-        os << "0x" << std::setfill('0') << std::hex;
+        ReusableStringStream rss;
+        rss << "0x" << std::setfill('0') << std::hex;
         for( ; i != end; i += inc )
-             os << std::setw(2) << static_cast<unsigned>(bytes[i]);
-       return os.str();
+             rss << std::setw(2) << static_cast<unsigned>(bytes[i]);
+       return rss.str();
     }
 }
 
 
 template<typename T>
 std::string fpToString( T value, int precision ) {
-    std::ostringstream oss;
-    oss << std::setprecision( precision )
+    ReusableStringStream rss;
+    rss << std::setprecision( precision )
         << std::fixed
         << value;
-    std::string d = oss.str();
+    std::string d = rss.str();
     std::size_t i = d.find_last_not_of( '0' );
     if( i != std::string::npos && i != d.size()-1 ) {
         if( d[i] == '.' )
@@ -153,12 +153,12 @@ std::string StringMaker<long>::convert(long value) {
     return ::Catch::Detail::stringify(static_cast<long long>(value));
 }
 std::string StringMaker<long long>::convert(long long value) {
-    std::ostringstream oss;
-    oss << value;
+    ReusableStringStream rss;
+    rss << value;
     if (value > Detail::hexThreshold) {
-        oss << " (0x" << std::hex << value << ')';
+        rss << " (0x" << std::hex << value << ')';
     }
-    return oss.str();
+    return rss.str();
 }
 
 std::string StringMaker<unsigned int>::convert(unsigned int value) {
@@ -168,12 +168,12 @@ std::string StringMaker<unsigned long>::convert(unsigned long value) {
     return ::Catch::Detail::stringify(static_cast<unsigned long long>(value));
 }
 std::string StringMaker<unsigned long long>::convert(unsigned long long value) {
-    std::ostringstream oss;
-    oss << value;
+    ReusableStringStream rss;
+    rss << value;
     if (value > Detail::hexThreshold) {
-        oss << " (0x" << std::hex << value << ')';
+        rss << " (0x" << std::hex << value << ')';
     }
-    return oss.str();
+    return rss.str();
 }
 
 

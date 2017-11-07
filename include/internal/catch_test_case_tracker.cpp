@@ -13,6 +13,7 @@
 #include <assert.h>
 #include <stdexcept>
 #include <memory>
+#include <sstream>
 
 #if defined(__clang__)
 #    pragma clang diagnostic push

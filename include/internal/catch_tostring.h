@@ -9,11 +9,11 @@
 #define TWOBLUECUBES_CATCH_TOSTRING_H_INCLUDED
 
 
-#include <sstream>
 #include <vector>
 #include <cstddef>
 #include <type_traits>
 #include <string>
+#include "catch_stream.h"
 
 #ifdef __OBJC__
 #include "catch_objc_arc.hpp"
@@ -66,9 +66,9 @@ namespace Catch {
         static
         typename std::enable_if<::Catch::Detail::IsStreamInsertable<Fake>::value, std::string>::type
             convert(const Fake& t) {
-                std::ostringstream sstr;
-                sstr << t;
-                return sstr.str();
+                ReusableStringStream rss;
+                rss << t;
+                return rss.str();
         }
 
         template <typename Fake = T>
@@ -221,15 +221,15 @@ namespace Catch {
     namespace Detail {
         template<typename InputIterator>
         std::string rangeToString(InputIterator first, InputIterator last) {
-            std::ostringstream oss;
-            oss << "{ ";
+            ReusableStringStream rss;
+            rss << "{ ";
             if (first != last) {
-                oss << ::Catch::Detail::stringify(*first);
+                rss << ::Catch::Detail::stringify(*first);
                 for (++first; first != last; ++first)
-                    oss << ", " << ::Catch::Detail::stringify(*first);
+                    rss << ", " << ::Catch::Detail::stringify(*first);
             }
-            oss << " }";
-            return oss.str();
+            rss << " }";
+            return rss.str();
         }
     }
 
@@ -290,13 +290,13 @@ namespace Catch {
     template<typename T1, typename T2>
     struct StringMaker<std::pair<T1, T2> > {
         static std::string convert(const std::pair<T1, T2>& pair) {
-            std::ostringstream oss;
-            oss << "{ "
+            ReusableStringStream rss;
+            rss << "{ "
                 << ::Catch::Detail::stringify(pair.first)
                 << ", "
                 << ::Catch::Detail::stringify(pair.second)
                 << " }";
-            return oss.str();
+            return rss.str();
         }
     };
 }
@@ -334,11 +334,11 @@ namespace Catch {
     template<typename ...Types>
     struct StringMaker<std::tuple<Types...>> {
         static std::string convert(const std::tuple<Types...>& tuple) {
-            std::ostringstream os;
-            os << '{';
-            Detail::TupleElementPrinter<std::tuple<Types...>>::print(tuple, os);
-            os << " }";
-            return os.str();
+            ReusableStringStream rss;
+            rss << '{';
+            Detail::TupleElementPrinter<std::tuple<Types...>>::print(tuple, rss.get());
+            rss << " }";
+            return rss.str();
         }
     };
 }
@@ -358,10 +358,10 @@ struct ratio_string {
 
 template <class Ratio>
 std::string ratio_string<Ratio>::symbol() {
-    std::ostringstream oss;
-    oss << '[' << Ratio::num << '/'
+    Catch::ReusableStringStream rss;
+    rss << '[' << Ratio::num << '/'
         << Ratio::den << ']';
-    return oss.str();
+    return rss.str();
 }
 template <>
 struct ratio_string<std::atto> {
@@ -394,33 +394,33 @@ namespace Catch {
     template<typename Value, typename Ratio>
     struct StringMaker<std::chrono::duration<Value, Ratio>> {
         static std::string convert(std::chrono::duration<Value, Ratio> const& duration) {
-            std::ostringstream oss;
-            oss << duration.count() << ' ' << ratio_string<Ratio>::symbol() << 's';
-            return oss.str();
+            ReusableStringStream rss;
+            rss << duration.count() << ' ' << ratio_string<Ratio>::symbol() << 's';
+            return rss.str();
         }
     };
     template<typename Value>
     struct StringMaker<std::chrono::duration<Value, std::ratio<1>>> {
         static std::string convert(std::chrono::duration<Value, std::ratio<1>> const& duration) {
-            std::ostringstream oss;
-            oss << duration.count() << " s";
-            return oss.str();
+            ReusableStringStream rss;
+            rss << duration.count() << " s";
+            return rss.str();
         }
     };
     template<typename Value>
     struct StringMaker<std::chrono::duration<Value, std::ratio<60>>> {
         static std::string convert(std::chrono::duration<Value, std::ratio<60>> const& duration) {
-            std::ostringstream oss;
-            oss << duration.count() << " m";
-            return oss.str();
+            ReusableStringStream rss;
+            rss << duration.count() << " m";
+            return rss.str();
         }
     };
     template<typename Value>
     struct StringMaker<std::chrono::duration<Value, std::ratio<3600>>> {
         static std::string convert(std::chrono::duration<Value, std::ratio<3600>> const& duration) {
-            std::ostringstream oss;
-            oss << duration.count() << " h";
-            return oss.str();
+            ReusableStringStream rss;
+            rss << duration.count() << " h";
+            return rss.str();
         }
     };
 

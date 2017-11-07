@@ -14,7 +14,7 @@
 #include "../internal/catch_timer.h"
 
 #include <assert.h>
-
+#include <sstream>
 #include <ctime>
 #include <algorithm>
 
@@ -230,15 +230,15 @@ namespace Catch {
                 xml.writeAttribute( "message", result.getExpandedExpression() );
                 xml.writeAttribute( "type", result.getTestMacroName() );
 
-                std::ostringstream oss;
+                ReusableStringStream rss;
                 if( !result.getMessage().empty() )
-                    oss << result.getMessage() << '\n';
+                    rss << result.getMessage() << '\n';
                 for( auto const& msg : stats.infoMessages )
                     if( msg.type == ResultWas::Info )
-                        oss << msg.message << '\n';
+                        rss << msg.message << '\n';
 
-                oss << "at " << result.getSourceInfo();
-                xml.writeText( oss.str(), false );
+                rss << "at " << result.getSourceInfo();
+                xml.writeText( rss.str(), false );
             }
         }
 

@@ -9,9 +9,9 @@
 #define TWOBLUECUBES_CATCH_MESSAGE_H_INCLUDED
 
 #include <string>
-#include <sstream>
 #include "catch_result_type.h"
 #include "catch_common.h"
+#include "catch_stream.h"
 
 namespace Catch {
 
@@ -40,8 +40,7 @@ namespace Catch {
             return *this;
         }
 
-        // !TBD reuse a global/ thread-local stream
-        std::ostringstream m_stream;
+        ReusableStringStream m_stream;
     };
 
     struct MessageBuilder : MessageStream {

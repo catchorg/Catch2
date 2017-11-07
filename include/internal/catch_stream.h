@@ -10,6 +10,8 @@
 #define TWOBLUECUBES_CATCH_STREAM_H_INCLUDED
 
 #include <iosfwd>
+#include <cstddef>
+#include <ostream>
 
 namespace Catch {
 
@@ -25,6 +27,23 @@ namespace Catch {
     };
 
     auto makeStream( StringRef const &filename ) -> IStream const*;
+
+    class ReusableStringStream {
+        std::size_t m_index;
+        std::ostream* m_oss;
+    public:
+        ReusableStringStream();
+        ~ReusableStringStream();
+
+        auto str() const -> std::string;
+
+        template<typename T>
+        auto operator << ( T const& value ) -> ReusableStringStream& {
+            *m_oss << value;
+            return *this;
+        }
+        auto get() -> std::ostream& { return *m_oss; }
+    };
 }
 
 #endif // TWOBLUECUBES_CATCH_STREAM_H_INCLUDED

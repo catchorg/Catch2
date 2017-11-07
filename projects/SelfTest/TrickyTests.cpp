@@ -15,9 +15,10 @@
                                  // that is triggered when compiling as Win32|Release
 #endif
 
-#include <stdio.h>
-
 #include "catch.hpp"
+
+#include <stdio.h>
+#include <sstream>
 
 namespace Catch {
     std::string toString( const std::pair<int, int>& value ) {

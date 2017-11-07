@@ -18,6 +18,7 @@
 #include <iostream>
 #include <cerrno>
 #include <limits>
+#include <sstream>
 
 TEST_CASE( "random SECTION tests", "[.][sections][failing]" ) {
     int a = 1;

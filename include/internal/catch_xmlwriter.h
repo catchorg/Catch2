@@ -11,7 +11,6 @@
 #include "catch_stream.h"
 #include "catch_compiler_capabilities.h"
 
-#include <sstream>
 #include <vector>
 
 namespace Catch {
@@ -73,10 +72,9 @@ namespace Catch {
 
         template<typename T>
         XmlWriter& writeAttribute( std::string const& name, T const& attribute ) {
-            m_oss.clear();
-            m_oss.str(std::string());
-            m_oss << attribute;
-            return writeAttribute( name, m_oss.str() );
+            ReusableStringStream rss;
+            rss << attribute;
+            return writeAttribute( name, rss.str() );
         }
 
         XmlWriter& writeText( std::string const& text, bool indent = true );
@@ -100,7 +98,6 @@ namespace Catch {
         std::vector<std::string> m_tags;
         std::string m_indent;
         std::ostream& m_os;
-        std::ostringstream m_oss;
     };
 
 }

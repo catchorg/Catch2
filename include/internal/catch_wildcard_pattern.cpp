@@ -9,6 +9,7 @@
 #include "catch_enforce.h"
 #include "catch_string_manip.h"
 
+#include <sstream>
 
 namespace Catch {
 

@@ -32,13 +32,12 @@ namespace Catch {
 
     public:
         StreamRedirect(std::ostream& stream, std::string& targetString);
-
         ~StreamRedirect();
 
     private:
         std::ostream& m_stream;
         std::streambuf* m_prevBuf;
-        std::ostringstream m_oss;
+        ReusableStringStream m_oss;
         std::string& m_targetString;
     };
 
@@ -52,7 +51,7 @@ namespace Catch {
     private:
         std::streambuf* m_cerrBuf;
         std::streambuf* m_clogBuf;
-        std::ostringstream m_oss;
+        ReusableStringStream m_oss;
         std::string& m_targetString;
     };
 

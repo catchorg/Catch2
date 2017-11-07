@@ -8,12 +8,13 @@
 #define TWOBLUECUBES_CATCH_ENFORCE_H_INCLUDED
 
 #include "catch_common.h"
+#include "catch_stream.h"
 
-#include <sstream>
 #include <stdexcept>
+#include <iosfwd>
 
 #define CATCH_PREPARE_EXCEPTION( type, msg ) \
-    type( static_cast<std::ostringstream&&>( std::ostringstream() << msg ).str() )
+    type( static_cast<std::ostringstream&&>( Catch::ReusableStringStream().get() << msg ).str() )
 #define CATCH_INTERNAL_ERROR( msg ) \
     throw CATCH_PREPARE_EXCEPTION( std::logic_error, CATCH_INTERNAL_LINEINFO << ": Internal Catch error: " << msg);
 #define CATCH_ERROR( msg ) \

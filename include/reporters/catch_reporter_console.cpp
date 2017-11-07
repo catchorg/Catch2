@@ -543,9 +543,9 @@ namespace Catch {
                 colour( _colour )
             {}
             SummaryColumn addRow( std::size_t count ) {
-                std::ostringstream oss;
-                oss << count;
-                std::string row = oss.str();
+                ReusableStringStream rss;
+                rss << count;
+                std::string row = rss.str();
                 for( auto& oldRow : rows ) {
                     while( oldRow.size() < row.size() )
                         oldRow = ' ' + oldRow;

@@ -115,13 +115,14 @@ namespace Catch {
         }
 
         for( auto const& tagCount : tagCounts ) {
-            std::ostringstream oss;
-            oss << "  " << std::setw(2) << tagCount.second.count << "  ";
+            ReusableStringStream rss;
+            rss << "  " << std::setw(2) << tagCount.second.count << "  ";
+            auto str = rss.str();
             auto wrapper = Column( tagCount.second.all() )
                                                     .initialIndent( 0 )
-                                                    .indent( oss.str().size() )
+                                                    .indent( str.size() )
                                                     .width( CATCH_CONFIG_CONSOLE_WIDTH-10 );
-            Catch::cout() << oss.str() << wrapper << '\n';
+            Catch::cout() << str << wrapper << '\n';
         }
         Catch::cout() << pluralise( tagCounts.size(), "tag" ) << '\n' << std::endl;
         return tagCounts.size();

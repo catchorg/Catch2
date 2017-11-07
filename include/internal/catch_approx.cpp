@@ -36,9 +36,9 @@ namespace Detail {
     }
 
     std::string Approx::toString() const {
-        std::ostringstream oss;
-        oss << "Approx( " << ::Catch::Detail::stringify( m_value ) << " )";
-        return oss.str();
+        ReusableStringStream rss;
+        rss << "Approx( " << ::Catch::Detail::stringify( m_value ) << " )";
+        return rss.str();
     }
 
     bool Approx::equalityComparisonImpl(const double other) const {

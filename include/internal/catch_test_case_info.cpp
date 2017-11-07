@@ -15,6 +15,7 @@
 #include <cctype>
 #include <exception>
 #include <algorithm>
+#include <sstream>
 
 namespace Catch {
 

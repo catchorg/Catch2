@@ -6,6 +6,7 @@
 
 #include <cassert>
 #include <algorithm>
+#include <sstream>
 
 namespace Catch {
 
@@ -13,7 +14,7 @@ namespace Catch {
         : m_stream(stream),
         m_prevBuf(stream.rdbuf()),
         m_targetString(targetString) {
-        stream.rdbuf(m_oss.rdbuf());
+        stream.rdbuf(m_oss.get().rdbuf());
     }
 
     StreamRedirect::~StreamRedirect() {
@@ -24,8 +25,8 @@ namespace Catch {
     StdErrRedirect::StdErrRedirect(std::string & targetString)
         :m_cerrBuf(cerr().rdbuf()), m_clogBuf(clog().rdbuf()),
         m_targetString(targetString) {
-        cerr().rdbuf(m_oss.rdbuf());
-        clog().rdbuf(m_oss.rdbuf());
+        cerr().rdbuf(m_oss.get().rdbuf());
+        clog().rdbuf(m_oss.get().rdbuf());
     }
 
     StdErrRedirect::~StdErrRedirect() {

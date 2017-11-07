@@ -17,10 +17,9 @@ namespace Catch {
 
         if( reconstructedExpression.empty() ) {
             if( lazyExpression ) {
-                // !TBD Use stringstream for now, but rework above to pass stream in
-                std::ostringstream oss;
-                oss << lazyExpression;
-                reconstructedExpression = oss.str();
+                ReusableStringStream rss;
+                rss << lazyExpression;
+                reconstructedExpression = rss.str();
             }
         }
         return reconstructedExpression;

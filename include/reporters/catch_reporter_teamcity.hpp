@@ -14,6 +14,8 @@
 // file can be distributed as a single header that works with the main
 // Catch single header.
 
+#include "../internal/catch_enforce.h"
+
 #include <cstring>
 
 #ifdef __clang__
@@ -69,9 +71,9 @@ namespace Catch {
             AssertionResult const& result = assertionStats.assertionResult;
             if( !result.isOk() ) {
 
-                std::ostringstream msg;
+                ReusableStringStream msg;
                 if( !m_headerPrintedForThisSection )
-                    printSectionHeader( msg );
+                    printSectionHeader( msg.get() );
                 m_headerPrintedForThisSection = true;
 
                 msg << result.getSourceInfo() << "\n";
