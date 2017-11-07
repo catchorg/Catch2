@@ -9,12 +9,7 @@
 #ifndef TWOBLUECUBES_CATCH_STREAM_H_INCLUDED
 #define TWOBLUECUBES_CATCH_STREAM_H_INCLUDED
 
-#include "catch_streambuf.h"
-
-#include <streambuf>
-#include <ostream>
-#include <fstream>
-#include <memory>
+#include <iosfwd>
 
 namespace Catch {
 
@@ -22,43 +17,14 @@ namespace Catch {
     std::ostream& cerr();
     std::ostream& clog();
 
+    class StringRef;
 
     struct IStream {
         virtual ~IStream();
         virtual std::ostream& stream() const = 0;
     };
 
-    class FileStream : public IStream {
-        mutable std::ofstream m_ofs;
-    public:
-        FileStream( std::string const& filename );
-        ~FileStream() override = default;
-    public: // IStream
-        std::ostream& stream() const override;
-    };
-
-
-    class CoutStream : public IStream {
-        mutable std::ostream m_os;
-    public:
-        CoutStream();
-        ~CoutStream() override = default;
-
-    public: // IStream
-        std::ostream& stream() const override;
-    };
-
-
-    class DebugOutStream : public IStream {
-        std::unique_ptr<StreamBufBase> m_streamBuf;
-        mutable std::ostream m_os;
-    public:
-        DebugOutStream();
-        ~DebugOutStream() override = default;
-
-    public: // IStream
-        std::ostream& stream() const override;
-    };
+    auto makeStream( StringRef const &filename ) -> IStream const*;
 }
 
 #endif // TWOBLUECUBES_CATCH_STREAM_H_INCLUDED

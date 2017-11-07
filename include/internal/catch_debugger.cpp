@@ -14,13 +14,15 @@
 
 #ifdef CATCH_PLATFORM_MAC
 
-    #include <assert.h>
-    #include <stdbool.h>
-    #include <sys/types.h>
-    #include <unistd.h>
-    #include <sys/sysctl.h>
+#  include <assert.h>
+#  include <stdbool.h>
+#  include <sys/types.h>
+#  include <unistd.h>
+#  include <sys/sysctl.h>
+#  include <cstddef>
+#  include <ostream>
 
-    namespace Catch {
+namespace Catch {
 
         // The following function is taken directly from the following technical note:
         // http://developer.apple.com/library/mac/#qa/qa2004/qa1361.html

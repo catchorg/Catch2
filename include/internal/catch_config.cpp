@@ -7,7 +7,7 @@
 
 #include "catch_config.hpp"
 #include "catch_enforce.h"
-#include "catch_stream.h"
+#include "catch_stringref.h"
 
 namespace Catch {
 
@@ -58,16 +58,7 @@ namespace Catch {
     Verbosity Config::verbosity() const                { return m_data.verbosity; }
 
     IStream const* Config::openStream() {
-        if( m_data.outputFilename.empty() )
-            return new CoutStream();
-        else if( m_data.outputFilename[0] == '%' ) {
-            if( m_data.outputFilename == "%debug" )
-                return new DebugOutStream();
-            else
-                CATCH_ERROR( "Unrecognised stream: '" << m_data.outputFilename << "'" );
-        }
-        else
-            return new FileStream( m_data.outputFilename );
+        return Catch::makeStream(m_data.outputFilename);
     }
 
 } // end namespace Catch

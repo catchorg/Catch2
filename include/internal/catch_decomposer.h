@@ -11,7 +11,7 @@
 #include "catch_tostring.h"
 #include "catch_stringref.h"
 
-#include <ostream>
+#include <iosfwd>
 
 #ifdef _MSC_VER
 #pragma warning(push)

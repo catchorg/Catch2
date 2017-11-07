@@ -159,7 +159,6 @@ set(INTERNAL_HEADERS
         ${HEADER_DIR}/internal/catch_session.h
         ${HEADER_DIR}/internal/catch_startup_exception_registry.h
         ${HEADER_DIR}/internal/catch_stream.h
-        ${HEADER_DIR}/internal/catch_streambuf.h
         ${HEADER_DIR}/internal/catch_stringref.h
         ${HEADER_DIR}/internal/catch_string_manip.h
         ${HEADER_DIR}/internal/catch_suppress_warnings.h
@@ -220,7 +219,6 @@ set(IMPL_SOURCES
         ${HEADER_DIR}/internal/catch_session.cpp
         ${HEADER_DIR}/internal/catch_startup_exception_registry.cpp
         ${HEADER_DIR}/internal/catch_stream.cpp
-        ${HEADER_DIR}/internal/catch_streambuf.cpp
         ${HEADER_DIR}/internal/catch_stringref.cpp
         ${HEADER_DIR}/internal/catch_string_manip.cpp
         ${HEADER_DIR}/internal/catch_tag_alias.cpp

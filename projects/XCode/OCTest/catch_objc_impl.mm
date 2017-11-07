@@ -39,7 +39,6 @@
 #include "../../../include/internal/catch_session.cpp"
 #include "../../../include/internal/catch_startup_exception_registry.cpp"
 #include "../../../include/internal/catch_stream.cpp"
-#include "../../../include/internal/catch_streambuf.cpp"
 #include "../../../include/internal/catch_string_manip.cpp"
 #include "../../../include/internal/catch_stringref.cpp"
 #include "../../../include/internal/catch_tag_alias.cpp"

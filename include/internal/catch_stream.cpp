@@ -11,88 +11,129 @@
 #include "catch_enforce.h"
 #include "catch_stream.h"
 #include "catch_debug_console.h"
+#include "catch_stringref.h"
 
 #include <stdexcept>
 #include <cstdio>
 #include <iostream>
+#include <fstream>
 
 namespace Catch {
 
-    template<typename WriterF, std::size_t bufferSize=256>
-    class StreamBufImpl : public StreamBufBase {
-        char data[bufferSize];
-        WriterF m_writer;
+    Catch::IStream::~IStream() = default;
 
-    public:
-        StreamBufImpl() {
-            setp( data, data + sizeof(data) );
-        }
+    namespace detail { namespace {
+        template<typename WriterF, std::size_t bufferSize=256>
+        class StreamBufImpl : public std::streambuf {
+            char data[bufferSize];
+            WriterF m_writer;
 
-        ~StreamBufImpl() noexcept {
-            StreamBufImpl::sync();
-        }
-
-    private:
-        int overflow( int c ) override {
-            sync();
-
-            if( c != EOF ) {
-                if( pbase() == epptr() )
-                    m_writer( std::string( 1, static_cast<char>( c ) ) );
-                else
-                    sputc( static_cast<char>( c ) );
+        public:
+            StreamBufImpl() {
+                setp( data, data + sizeof(data) );
             }
-            return 0;
-        }
 
-        int sync() override {
-            if( pbase() != pptr() ) {
-                m_writer( std::string( pbase(), static_cast<std::string::size_type>( pptr() - pbase() ) ) );
-                setp( pbase(), epptr() );
+            ~StreamBufImpl() noexcept {
+                StreamBufImpl::sync();
             }
-            return 0;
-        }
-    };
+
+        private:
+            int overflow( int c ) override {
+                sync();
+
+                if( c != EOF ) {
+                    if( pbase() == epptr() )
+                        m_writer( std::string( 1, static_cast<char>( c ) ) );
+                    else
+                        sputc( static_cast<char>( c ) );
+                }
+                return 0;
+            }
+
+            int sync() override {
+                if( pbase() != pptr() ) {
+                    m_writer( std::string( pbase(), static_cast<std::string::size_type>( pptr() - pbase() ) ) );
+                    setp( pbase(), epptr() );
+                }
+                return 0;
+            }
+        };
+
+        ///////////////////////////////////////////////////////////////////////////
+
+        struct OutputDebugWriter {
+
+            void operator()( std::string const&str ) {
+                writeToDebugConsole( str );
+            }
+        };
+
+        ///////////////////////////////////////////////////////////////////////////
+
+        class FileStream : public IStream {
+            mutable std::ofstream m_ofs;
+        public:
+            FileStream( StringRef filename ) {
+                m_ofs.open( filename.c_str() );
+                CATCH_ENFORCE( !m_ofs.fail(), "Unable to open file: '" << filename << "'" );
+            }
+            ~FileStream() override = default;
+        public: // IStream
+            std::ostream& stream() const override {
+                return m_ofs;
+            }
+        };
+
+        ///////////////////////////////////////////////////////////////////////////
+
+        class CoutStream : public IStream {
+            mutable std::ostream m_os;
+        public:
+            // Store the streambuf from cout up-front because
+            // cout may get redirected when running tests
+            CoutStream() : m_os( Catch::cout().rdbuf() ) {}
+            ~CoutStream() override = default;
+
+        public: // IStream
+            std::ostream& stream() const override { return m_os; }
+        };
+
+        ///////////////////////////////////////////////////////////////////////////
+
+        class DebugOutStream : public IStream {
+            std::unique_ptr<StreamBufImpl<OutputDebugWriter>> m_streamBuf;
+            mutable std::ostream m_os;
+        public:
+            DebugOutStream()
+            :   m_streamBuf( new StreamBufImpl<OutputDebugWriter>() ),
+                m_os( m_streamBuf.get() )
+            {}
+
+            ~DebugOutStream() override = default;
+
+        public: // IStream
+            std::ostream& stream() const override { return m_os; }
+        };
+
+    }} // namespace anon::detail
 
     ///////////////////////////////////////////////////////////////////////////
 
-
-    Catch::IStream::~IStream() = default;
-
-    FileStream::FileStream( std::string const& filename ) {
-        m_ofs.open( filename.c_str() );
-        CATCH_ENFORCE( !m_ofs.fail(), "Unable to open file: '" << filename << "'" );
-    }
-
-    std::ostream& FileStream::stream() const {
-        return m_ofs;
-    }
-
-    struct OutputDebugWriter {
-
-        void operator()( std::string const&str ) {
-            writeToDebugConsole( str );
+    auto makeStream( StringRef const &filename ) -> IStream const* {
+        if( filename.empty() )
+            return new detail::CoutStream();
+        else if( filename[0] == '%' ) {
+            if( filename == "%debug" )
+                return new detail::DebugOutStream();
+            else
+                CATCH_ERROR( "Unrecognised stream: '" << filename << "'" );
         }
-    };
-
-    DebugOutStream::DebugOutStream()
-    :   m_streamBuf( new StreamBufImpl<OutputDebugWriter>() ),
-        m_os( m_streamBuf.get() )
-    {}
-
-    std::ostream& DebugOutStream::stream() const {
-        return m_os;
+        else
+            return new detail::FileStream( filename );
     }
 
-    // Store the streambuf from cout up-front because
-    // cout may get redirected when running tests
-    CoutStream::CoutStream()
-    :   m_os( Catch::cout().rdbuf() )
-    {}
+    ///////////////////////////////////////////////////////////////////////////
 
-    std::ostream& CoutStream::stream() const {
-        return m_os;
-    }
 
 #ifndef CATCH_CONFIG_NOSTDOUT // If you #define this you must implement these functions
     std::ostream& cout() {
