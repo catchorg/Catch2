@@ -18,6 +18,7 @@
 #include <fstream>
 #include <sstream>
 #include <vector>
+#include <memory>
 
 #if defined(__clang__)
 #    pragma clang diagnostic push
