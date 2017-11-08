@@ -347,12 +347,9 @@ namespace Catch {
 
 // Separate std::chrono::duration specialization
 #if defined(CATCH_CONFIG_ENABLE_CHRONO_STRINGMAKER)
+#include <ctime>
 #include <ratio>
 #include <chrono>
-
-namespace Catch {
-
-std::string time_t_toString(time_t const& toConvert);
 
 template <class Ratio>
 struct ratio_string {
@@ -368,30 +365,30 @@ std::string ratio_string<Ratio>::symbol() {
 }
 template <>
 struct ratio_string<std::atto> {
-    static std::string symbol();
+    static std::string symbol() { return "a"; }
 };
 template <>
 struct ratio_string<std::femto> {
-    static std::string symbol();
+    static std::string symbol() { return "f"; }
 };
 template <>
 struct ratio_string<std::pico> {
-    static std::string symbol();
+    static std::string symbol() { return "p"; }
 };
 template <>
 struct ratio_string<std::nano> {
-    static std::string symbol();
+    static std::string symbol() { return "n"; }
 };
 template <>
 struct ratio_string<std::micro> {
-    static std::string symbol();
+    static std::string symbol() { return "u"; }
 };
 template <>
 struct ratio_string<std::milli> {
-    static std::string symbol();
+    static std::string symbol() { return "m"; }
 };
 
-
+namespace Catch {
     ////////////
     // std::chrono::duration specializations
     template<typename Value, typename Ratio>
@@ -436,16 +433,32 @@ struct ratio_string<std::milli> {
             return ::Catch::Detail::stringify(time_point.time_since_epoch()) + " since epoch";
         }
     };
-
     // std::chrono::time_point<system_clock> specialization
     template<typename Duration>
     struct StringMaker<std::chrono::time_point<std::chrono::system_clock, Duration>> {
         static std::string convert(std::chrono::time_point<std::chrono::system_clock, Duration> const& time_point) {
             auto converted = std::chrono::system_clock::to_time_t(time_point);
-            return time_t_toString(converted);
+
+#ifdef _MSC_VER
+            std::tm timeInfo = {};
+            gmtime_s(&timeInfo, &converted);
+#else
+            std::tm* timeInfo = std::gmtime(&converted);
+#endif
+
+            auto const timeStampSize = sizeof("2017-01-16T17:06:45Z");
+            char timeStamp[timeStampSize];
+            const char * const fmt = "%Y-%m-%dT%H:%M:%SZ";
+
+#ifdef _MSC_VER
+            std::strftime(timeStamp, timeStampSize, fmt, &timeInfo);
+#else
+            std::strftime(timeStamp, timeStampSize, fmt, timeInfo);
+#endif
+            return std::string(timeStamp);
         }
     };
-} // namespace Catch
+}
 #endif // CATCH_CONFIG_ENABLE_CHRONO_STRINGMAKER
 
 

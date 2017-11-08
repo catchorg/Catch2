@@ -216,56 +216,6 @@ std::string StringMaker<double>::convert(double value) {
     return fpToString(value, 10);
 }
 
-// Separate std::chrono::duration specialization
-#if defined(CATCH_CONFIG_ENABLE_CHRONO_STRINGMAKER)
-#include <ctime>
-
-std::string ratio_string<std::atto>::symbol() {
-    return "a";
-}
-
-std::string ratio_string<std::femto>::symbol() {
-    return "f";
-}
-
-std::string ratio_string<std::pico>::symbol() {
-    return "p";
-}
-
-std::string ratio_string<std::nano>::symbol() {
-    return "n";
-}
-
-std::string ratio_string<std::micro>::symbol() {
-    return "u";
-}
-
-std::string ratio_string<std::milli>::symbol() {
-    return "m";
-}
-
-
-std::string time_t_toString(time_t const& toConvert) {
-
-#ifdef _MSC_VER
-    std::tm timeInfo = {};
-    gmtime_s(&timeInfo, &toConvert);
-#else
-    std::tm* timeInfo = std::gmtime(&toConvert);
-#endif
-
-    auto const timeStampSize = sizeof("2017-01-16T17:06:45Z");
-    char timeStamp[timeStampSize];
-    const char * const fmt = "%Y-%m-%dT%H:%M:%SZ";
-
-#ifdef _MSC_VER
-    std::strftime(timeStamp, timeStampSize, fmt, &timeInfo);
-#else
-    std::strftime(timeStamp, timeStampSize, fmt, timeInfo);
-#endif
-    return std::string(timeStamp, timeStampSize);
-}
-#endif // CATCH_CONFIG_ENABLE_CHRONO_STRINGMAKER
 
 } // end namespace Catch
 
