@@ -17,8 +17,8 @@
 #       pragma clang diagnostic ignored "-Wcovered-switch-default"
 #    endif
 #elif defined __GNUC__
-#    pragma GCC diagnostic ignored "-Wunused-variable"
 #    pragma GCC diagnostic ignored "-Wparentheses"
 #    pragma GCC diagnostic push
+#    pragma GCC diagnostic ignored "-Wunused-variable"
 #    pragma GCC diagnostic ignored "-Wpadded"
 #endif
