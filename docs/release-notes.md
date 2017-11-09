@@ -36,7 +36,7 @@
   * The file has to define `CATCH_CONFIG_EXTERNAL_INTERFACES` before including catch.hpp.
 * Errors that happen during set up before main are now caught and properly reported once main is entered
   * If you are providing your own main, you can access and use these as well.
-* New assertion macros, *_THROWS_WITH(expr, exception_type, matcher) are provided
+* New assertion macros, *_THROWS_MATCHES(expr, exception_type, matcher) are provided
   * As the arguments suggest, these allow you to assert that an expression throws desired type of exception and pass the exception to a matcher.
 * JUnit reporter no longer has significantly different output for test cases with and without sections
 * Most assertions now support expressions containing commas (ie `REQUIRE(foo() == std::vector<int>{1, 2, 3});`)
