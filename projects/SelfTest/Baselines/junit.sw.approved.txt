@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuitesloose text artifact
 >
-  <testsuite name="<exe-name>" errors="15" failures="85" tests="904" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
+  <testsuite name="<exe-name>" errors="15" failures="85" tests="935" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
     <testcase classname="<exe-name>.global" name="# A test name that starts with a #" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="#1005: Comparing pointer to int and long (NULL can be either on various systems)" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="#748 - captures with unexpected exceptions/outside assertions" time="{duration}">
@@ -263,6 +263,12 @@ MessageTests.cpp:<line number>
       </failure>
     </testcase>
     <testcase classname="<exe-name>.global" name="Factorials are computed" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="Floating point matchers: double/Margin" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="Floating point matchers: double/ULPs" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="Floating point matchers: double/Composed" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="Floating point matchers: float/Margin" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="Floating point matchers: float/ULPs" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="Floating point matchers: float/Composed" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Greater-than inequalities with different epsilons" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="INFO and WARN do not abort tests" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="INFO gets logged on failure" time="{duration}">

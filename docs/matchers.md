@@ -36,9 +36,18 @@ REQUIRE_THAT( str,
 ```
 
 ## Built in matchers
-Currently Catch has some string matchers and some vector matchers. They are in the `Catch::Matchers` and `Catch` namespaces.
+Catch currently provides some matchers, they are in the `Catch::Matchers` and `Catch` namespaces.
+
+### String matchers
 The string matchers are `StartsWith`, `EndsWith`, `Contains` and `Equals`. Each of them also takes an optional second argument, that decides case sensitivity (by-default, they are case sensitive).
+
+### Vector matchers
 The vector matchers are `Contains`, `VectorContains` and `Equals`. `VectorContains` looks for a single element in the matched vector, `Contains` looks for a set (vector) of elements inside the matched vector.
+
+### Floating point matchers
+The floating point matchers are `WithinULP` and `WithinAbs`. `WithinAbs` accepts floating point numbers that are within a certain margin of target. `WithinULP` performs an [ULP](https://en.wikipedia.org/wiki/Unit_in_the_last_place)-based comparison of two floating point numbers and accepts them if they are less than certain number of ULPs apart.
+
+Do note that ULP-based checks only make sense when both compared numbers are of the same type and `WithinULP` will use type of its argument as the target type. This means that `WithinULP(1.f, 1)` will expect to compare `float`s, but `WithinULP(1., 1)` will expect to compare `double`s.
 
 
 ## Custom matchers

@@ -52,6 +52,12 @@ infParser = re.compile(r'''
     |
     __builtin_huge_valf\(\)               # OSX macro
 ''', re.VERBOSE)
+nanParser = re.compile(r'''
+    \(\(float\)\(\(\(float\)\(1e\+300\ \*\ 1e\+300\)\)\ \*\ 0\.0F\)\) # MSVC NAN macro
+    |
+    \(__builtin_nanf\ \(""\)\)                 # Linux (ubuntu) NAN macro
+''', re.VERBOSE)
+
 
 if len(sys.argv) == 2:
     cmdPath = sys.argv[1]
@@ -110,6 +116,7 @@ def filterLine(line):
     line = errnoParser.sub('errno', line)
     line = sinceEpochParser.sub('{since-epoch-report}', line)
     line = infParser.sub('INFINITY', line)
+    line = nanParser.sub('NAN', line)
     return line
 
 

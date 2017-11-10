@@ -1003,6 +1003,6 @@ with expansion:
   "{?}" == "1"
 
 ===============================================================================
-test cases: 185 | 134 passed | 47 failed |  4 failed as expected
-assertions: 904 | 787 passed | 96 failed | 21 failed as expected
+test cases: 187 | 136 passed | 47 failed |  4 failed as expected
+assertions: 935 | 818 passed | 96 failed | 21 failed as expected
 

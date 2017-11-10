@@ -226,6 +226,67 @@ TEST_CASE("Exception matchers that fail", "[matchers][exceptions][!throws][.fail
     }
 }
 
+TEST_CASE("Floating point matchers: float", "[matchers][floating-point]") {
+    SECTION("Margin") {
+        REQUIRE_THAT(1.f, WithinAbs(1.f, 0));
+        REQUIRE_THAT(0.f, WithinAbs(1.f, 1));
+
+        REQUIRE_THAT(0.f, !WithinAbs(1.f, 0.99f));
+        REQUIRE_THAT(0.f, !WithinAbs(1.f, 0.99f));
+
+        REQUIRE_THAT(0.f, WithinAbs(-0.f, 0));
+        REQUIRE_THAT(NAN, !WithinAbs(NAN, 0));
+    }
+    SECTION("ULPs") {
+        REQUIRE_THAT(1.f, WithinULP(1.f, 0));
+
+        REQUIRE_THAT(std::nextafter(1.f, 2.f), WithinULP(1.f, 1));
+        REQUIRE_THAT(std::nextafter(1.f, 0.f), WithinULP(1.f, 1));
+        REQUIRE_THAT(std::nextafter(1.f, 2.f), !WithinULP(1.f, 0));
+
+        REQUIRE_THAT(1.f, WithinULP(1.f, 0));
+        REQUIRE_THAT(-0.f, WithinULP(0.f, 0));
+
+        REQUIRE_THAT(NAN, !WithinULP(NAN, 123));
+    }
+    SECTION("Composed") {
+        REQUIRE_THAT(1.f, WithinAbs(1.f, 0.5) || WithinULP(1.f, 1));
+        REQUIRE_THAT(1.f, WithinAbs(2.f, 0.5) || WithinULP(1.f, 0));
+
+        REQUIRE_THAT(NAN, !(WithinAbs(NAN, 100) || WithinULP(NAN, 123)));
+    }
+}
+
+TEST_CASE("Floating point matchers: double", "[matchers][floating-point]") {
+    SECTION("Margin") {
+        REQUIRE_THAT(1., WithinAbs(1., 0));
+        REQUIRE_THAT(0., WithinAbs(1., 1));
+
+        REQUIRE_THAT(0., !WithinAbs(1., 0.99));
+        REQUIRE_THAT(0., !WithinAbs(1., 0.99));
+
+        REQUIRE_THAT(NAN, !WithinAbs(NAN, 0));
+    }
+    SECTION("ULPs") {
+        REQUIRE_THAT(1., WithinULP(1., 0));
+
+        REQUIRE_THAT(std::nextafter(1., 2.), WithinULP(1., 1));
+        REQUIRE_THAT(std::nextafter(1., 0.), WithinULP(1., 1));
+        REQUIRE_THAT(std::nextafter(1., 2.), !WithinULP(1., 0));
+
+        REQUIRE_THAT(1., WithinULP(1., 0));
+        REQUIRE_THAT(-0., WithinULP(0., 0));
+
+        REQUIRE_THAT(NAN, !WithinULP(NAN, 123));
+    }
+    SECTION("Composed") {
+        REQUIRE_THAT(1., WithinAbs(1., 0.5) || WithinULP(2., 1));
+        REQUIRE_THAT(1., WithinAbs(2., 0.5) || WithinULP(1., 0));
+
+        REQUIRE_THAT(NAN, !(WithinAbs(NAN, 100) || WithinULP(NAN, 123)));
+    }
+}
+
 #endif // CATCH_CONFIG_DISABLE_MATCHERS
 
 #ifdef __clang__

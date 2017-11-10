@@ -1718,6 +1718,234 @@ with expansion:
   3628800 (0x<hex digits>) == 3628800 (0x<hex digits>)
 
 -------------------------------------------------------------------------------
+Floating point matchers: double
+  Margin
+-------------------------------------------------------------------------------
+MatchersTests.cpp:<line number>
+...............................................................................
+
+MatchersTests.cpp:<line number>:
+PASSED:
+  REQUIRE_THAT( 1., WithinAbs(1., 0) )
+with expansion:
+  1.0 is within 0.000000 of 1.000000
+
+MatchersTests.cpp:<line number>:
+PASSED:
+  REQUIRE_THAT( 0., WithinAbs(1., 1) )
+with expansion:
+  0.0 is within 1.000000 of 1.000000
+
+MatchersTests.cpp:<line number>:
+PASSED:
+  REQUIRE_THAT( 0., !WithinAbs(1., 0.99) )
+with expansion:
+  0.0 not is within 0.990000 of 1.000000
+
+MatchersTests.cpp:<line number>:
+PASSED:
+  REQUIRE_THAT( 0., !WithinAbs(1., 0.99) )
+with expansion:
+  0.0 not is within 0.990000 of 1.000000
+
+MatchersTests.cpp:<line number>:
+PASSED:
+  REQUIRE_THAT( NAN, !WithinAbs(NAN, 0) )
+with expansion:
+  nanf not is within 0.000000 of nan
+
+-------------------------------------------------------------------------------
+Floating point matchers: double
+  ULPs
+-------------------------------------------------------------------------------
+MatchersTests.cpp:<line number>
+...............................................................................
+
+MatchersTests.cpp:<line number>:
+PASSED:
+  REQUIRE_THAT( 1., WithinULP(1., 0) )
+with expansion:
+  1.0 is within 0 ULPs of 1.000000
+
+MatchersTests.cpp:<line number>:
+PASSED:
+  REQUIRE_THAT( std::nextafter(1., 2.), WithinULP(1., 1) )
+with expansion:
+  1.0 is within 1 ULPs of 1.000000
+
+MatchersTests.cpp:<line number>:
+PASSED:
+  REQUIRE_THAT( std::nextafter(1., 0.), WithinULP(1., 1) )
+with expansion:
+  1.0 is within 1 ULPs of 1.000000
+
+MatchersTests.cpp:<line number>:
+PASSED:
+  REQUIRE_THAT( std::nextafter(1., 2.), !WithinULP(1., 0) )
+with expansion:
+  1.0 not is within 0 ULPs of 1.000000
+
+MatchersTests.cpp:<line number>:
+PASSED:
+  REQUIRE_THAT( 1., WithinULP(1., 0) )
+with expansion:
+  1.0 is within 0 ULPs of 1.000000
+
+MatchersTests.cpp:<line number>:
+PASSED:
+  REQUIRE_THAT( -0., WithinULP(0., 0) )
+with expansion:
+  -0.0 is within 0 ULPs of 0.000000
+
+MatchersTests.cpp:<line number>:
+PASSED:
+  REQUIRE_THAT( NAN, !WithinULP(NAN, 123) )
+with expansion:
+  nanf not is within 123 ULPs of nanf
+
+-------------------------------------------------------------------------------
+Floating point matchers: double
+  Composed
+-------------------------------------------------------------------------------
+MatchersTests.cpp:<line number>
+...............................................................................
+
+MatchersTests.cpp:<line number>:
+PASSED:
+  REQUIRE_THAT( 1., WithinAbs(1., 0.5) || WithinULP(2., 1) )
+with expansion:
+  1.0 ( is within 0.500000 of 1.000000 or is within 1 ULPs of 2.000000 )
+
+MatchersTests.cpp:<line number>:
+PASSED:
+  REQUIRE_THAT( 1., WithinAbs(2., 0.5) || WithinULP(1., 0) )
+with expansion:
+  1.0 ( is within 0.500000 of 2.000000 or is within 0 ULPs of 1.000000 )
+
+MatchersTests.cpp:<line number>:
+PASSED:
+  REQUIRE_THAT( NAN, !(WithinAbs(NAN, 100) || WithinULP(NAN, 123)) )
+with expansion:
+  nanf not ( is within 100.000000 of nan or is within 123 ULPs of nanf )
+
+-------------------------------------------------------------------------------
+Floating point matchers: float
+  Margin
+-------------------------------------------------------------------------------
+MatchersTests.cpp:<line number>
+...............................................................................
+
+MatchersTests.cpp:<line number>:
+PASSED:
+  REQUIRE_THAT( 1.f, WithinAbs(1.f, 0) )
+with expansion:
+  1.0f is within 0.000000 of 1.000000
+
+MatchersTests.cpp:<line number>:
+PASSED:
+  REQUIRE_THAT( 0.f, WithinAbs(1.f, 1) )
+with expansion:
+  0.0f is within 1.000000 of 1.000000
+
+MatchersTests.cpp:<line number>:
+PASSED:
+  REQUIRE_THAT( 0.f, !WithinAbs(1.f, 0.99f) )
+with expansion:
+  0.0f not is within 0.990000 of 1.000000
+
+MatchersTests.cpp:<line number>:
+PASSED:
+  REQUIRE_THAT( 0.f, !WithinAbs(1.f, 0.99f) )
+with expansion:
+  0.0f not is within 0.990000 of 1.000000
+
+MatchersTests.cpp:<line number>:
+PASSED:
+  REQUIRE_THAT( 0.f, WithinAbs(-0.f, 0) )
+with expansion:
+  0.0f is within 0.000000 of -0.000000
+
+MatchersTests.cpp:<line number>:
+PASSED:
+  REQUIRE_THAT( NAN, !WithinAbs(NAN, 0) )
+with expansion:
+  nanf not is within 0.000000 of nan
+
+-------------------------------------------------------------------------------
+Floating point matchers: float
+  ULPs
+-------------------------------------------------------------------------------
+MatchersTests.cpp:<line number>
+...............................................................................
+
+MatchersTests.cpp:<line number>:
+PASSED:
+  REQUIRE_THAT( 1.f, WithinULP(1.f, 0) )
+with expansion:
+  1.0f is within 0 ULPs of 1.000000f
+
+MatchersTests.cpp:<line number>:
+PASSED:
+  REQUIRE_THAT( std::nextafter(1.f, 2.f), WithinULP(1.f, 1) )
+with expansion:
+  1.0f is within 1 ULPs of 1.000000f
+
+MatchersTests.cpp:<line number>:
+PASSED:
+  REQUIRE_THAT( std::nextafter(1.f, 0.f), WithinULP(1.f, 1) )
+with expansion:
+  1.0f is within 1 ULPs of 1.000000f
+
+MatchersTests.cpp:<line number>:
+PASSED:
+  REQUIRE_THAT( std::nextafter(1.f, 2.f), !WithinULP(1.f, 0) )
+with expansion:
+  1.0f not is within 0 ULPs of 1.000000f
+
+MatchersTests.cpp:<line number>:
+PASSED:
+  REQUIRE_THAT( 1.f, WithinULP(1.f, 0) )
+with expansion:
+  1.0f is within 0 ULPs of 1.000000f
+
+MatchersTests.cpp:<line number>:
+PASSED:
+  REQUIRE_THAT( -0.f, WithinULP(0.f, 0) )
+with expansion:
+  -0.0f is within 0 ULPs of 0.000000f
+
+MatchersTests.cpp:<line number>:
+PASSED:
+  REQUIRE_THAT( NAN, !WithinULP(NAN, 123) )
+with expansion:
+  nanf not is within 123 ULPs of nanf
+
+-------------------------------------------------------------------------------
+Floating point matchers: float
+  Composed
+-------------------------------------------------------------------------------
+MatchersTests.cpp:<line number>
+...............................................................................
+
+MatchersTests.cpp:<line number>:
+PASSED:
+  REQUIRE_THAT( 1.f, WithinAbs(1.f, 0.5) || WithinULP(1.f, 1) )
+with expansion:
+  1.0f ( is within 0.500000 of 1.000000 or is within 1 ULPs of 1.000000f )
+
+MatchersTests.cpp:<line number>:
+PASSED:
+  REQUIRE_THAT( 1.f, WithinAbs(2.f, 0.5) || WithinULP(1.f, 0) )
+with expansion:
+  1.0f ( is within 0.500000 of 2.000000 or is within 0 ULPs of 1.000000f )
+
+MatchersTests.cpp:<line number>:
+PASSED:
+  REQUIRE_THAT( NAN, !(WithinAbs(NAN, 100) || WithinULP(NAN, 123)) )
+with expansion:
+  nanf not ( is within 100.000000 of nan or is within 123 ULPs of nanf )
+
+-------------------------------------------------------------------------------
 Greater-than inequalities with different epsilons
 -------------------------------------------------------------------------------
 ApproxTests.cpp:<line number>
@@ -7632,6 +7860,6 @@ MiscTests.cpp:<line number>:
 PASSED:
 
 ===============================================================================
-test cases: 185 | 132 passed | 49 failed |  4 failed as expected
-assertions: 903 | 783 passed | 99 failed | 21 failed as expected
+test cases: 187 | 134 passed | 49 failed |  4 failed as expected
+assertions: 934 | 814 passed | 99 failed | 21 failed as expected
 
