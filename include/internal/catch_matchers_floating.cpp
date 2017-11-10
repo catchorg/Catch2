@@ -24,16 +24,6 @@ enum class FloatingPointKind : uint8_t {
 }
 
 namespace {
-union Float_t {
-    Float_t(float num = 0.0f) : f(num) {}
-    // Portable extraction of components.
-    bool Negative() const { return i < 0; }
-    int32_t RawMantissa() const { return i & ((1 << 23) - 1); }
-    int32_t RawExponent() const { return (i >> 23) & 0xFF; }
-
-    int32_t i;
-    float f;
-};
 
 template <typename T>
 struct Converter;
@@ -77,7 +67,7 @@ bool almostEqualUlps(FP lhs, FP rhs, int maxUlpDiff) {
         return lhs == rhs;
     }
 
-    auto ulpDiff = abs(lc.i - rc.i);
+    auto ulpDiff = std::abs(lc.i - rc.i);
     return ulpDiff <= maxUlpDiff;
 }
 
