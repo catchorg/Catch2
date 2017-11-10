@@ -41,17 +41,11 @@ namespace Matchers {
 
     } // namespace Floating
 
+    // The following functions create the actual matcher objects.
+    // This allows the types to be inferred
     Floating::WithinUlpsMatcher WithinULP(double target, int maxUlpDiff);
     Floating::WithinUlpsMatcher WithinULP(float target, int maxUlpDiff);
     Floating::WithinAbsMatcher WithinAbs(double target, double margin);
-
-    // The following functions create the actual matcher objects.
-    // This allows the types to be inferred
-
-//    StdString::EqualsMatcher Equals( std::string const& str, CaseSensitive::Choice caseSensitivity = CaseSensitive::Yes );
-//    StdString::ContainsMatcher Contains( std::string const& str, CaseSensitive::Choice caseSensitivity = CaseSensitive::Yes );
-//    StdString::EndsWithMatcher EndsWith( std::string const& str, CaseSensitive::Choice caseSensitivity = CaseSensitive::Yes );
-//    StdString::StartsWithMatcher StartsWith( std::string const& str, CaseSensitive::Choice caseSensitivity = CaseSensitive::Yes );
 
 } // namespace Matchers
 } // namespace Catch
