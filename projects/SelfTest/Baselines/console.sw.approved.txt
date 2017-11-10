@@ -826,6 +826,18 @@ PASSED:
 with expansion:
   inff == Approx( inf )
 
+ApproxTests.cpp:<line number>:
+PASSED:
+  REQUIRE( NAN != Approx(NAN) )
+with expansion:
+  nanf != Approx( nan )
+
+ApproxTests.cpp:<line number>:
+PASSED:
+  REQUIRE_FALSE( NAN == Approx(NAN) )
+with expansion:
+  !(nanf == Approx( nan ))
+
 -------------------------------------------------------------------------------
 Bitfields can be captured (#1027)
 -------------------------------------------------------------------------------
@@ -7861,5 +7873,5 @@ PASSED:
 
 ===============================================================================
 test cases: 187 | 134 passed | 49 failed |  4 failed as expected
-assertions: 934 | 814 passed | 99 failed | 21 failed as expected
+assertions: 936 | 816 passed | 99 failed | 21 failed as expected
 

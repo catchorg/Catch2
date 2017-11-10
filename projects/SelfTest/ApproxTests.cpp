@@ -190,6 +190,8 @@ TEST_CASE("Epsilon only applies to Approx's value", "[Approx]") {
 
 TEST_CASE("Assorted miscellaneous tests", "[Approx]") {
     REQUIRE(INFINITY == Approx(INFINITY));
+    REQUIRE(NAN != Approx(NAN));
+    REQUIRE_FALSE(NAN == Approx(NAN));
 }
 
 class StrongDoubleTypedef
