@@ -55,6 +55,8 @@ infParser = re.compile(r'''
 nanParser = re.compile(r'''
     \(\(float\)\(\(\(float\)\(1e\+300\ \*\ 1e\+300\)\)\ \*\ 0\.0F\)\) # MSVC NAN macro
     |
+    \(\(float\)\(INFINITY\ \*\ 0\.0F\)\) # Yet another MSVC NAN macro
+    |
     \(__builtin_nanf\ \(""\)\)                 # Linux (ubuntu) NAN macro
 ''', re.VERBOSE)
 
