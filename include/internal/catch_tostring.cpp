@@ -17,6 +17,7 @@
 #include "catch_interfaces_config.h"
 #include "catch_context.h"
 
+#include <cmath>
 #include <iomanip>
 
 namespace Catch {
@@ -63,6 +64,10 @@ namespace Detail {
 
 template<typename T>
 std::string fpToString( T value, int precision ) {
+    if (std::isnan(value)) {
+        return "nan";
+    }
+
     ReusableStringStream rss;
     rss << std::setprecision( precision )
         << std::fixed

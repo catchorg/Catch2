@@ -6,8 +6,9 @@
  */
 
 #include "catch_matchers_floating.h"
+#include "catch_tostring.h"
 
-#include <cmath>
+#include <cstdlib>
 #include <cstdint>
 #include <cstring>
 #include <stdexcept>
@@ -87,7 +88,7 @@ namespace Floating {
     }
 
     std::string WithinAbsMatcher::describe() const {
-        return "is within " + std::to_string(m_margin) + " of " + std::to_string(m_target);
+        return "is within " + ::Catch::Detail::stringify(m_margin) + " of " + ::Catch::Detail::stringify(m_target);
     }
 
 
@@ -110,7 +111,7 @@ namespace Floating {
     }
 
     std::string WithinUlpsMatcher::describe() const {
-        return "is within " + std::to_string(m_ulps) + " ULPs of " + std::to_string(m_target) + ((m_type == FloatingPointKind::Float)? "f" : "");
+        return "is within " + std::to_string(m_ulps) + " ULPs of " + ::Catch::Detail::stringify(m_target) + ((m_type == FloatingPointKind::Float)? "f" : "");
     }
 
 }// namespace Floating
