@@ -47,7 +47,7 @@ namespace Catch {
         std::string getExpandedExpression() const;
         std::string getMessage() const;
         SourceLineInfo getSourceInfo() const;
-        std::string getTestMacroName() const;
+        StringRef getTestMacroName() const;
 
     //protected:
         AssertionInfo m_info;

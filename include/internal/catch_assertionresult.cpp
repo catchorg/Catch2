@@ -91,7 +91,7 @@ namespace Catch {
         return m_info.lineInfo;
     }
 
-    std::string AssertionResult::getTestMacroName() const {
+    StringRef AssertionResult::getTestMacroName() const {
         return m_info.macroName;
     }
 
