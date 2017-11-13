@@ -54,7 +54,7 @@ namespace Catch {
 
     std::string AssertionResult::getExpression() const {
         if( isFalseTest( m_info.resultDisposition ) )
-            return "!(" + std::string(m_info.capturedExpression) + ")";
+            return "!(" + m_info.capturedExpression + ")";
         else
             return m_info.capturedExpression;
     }
@@ -65,9 +65,9 @@ namespace Catch {
             expr = m_info.capturedExpression;
         else {
             expr.reserve( m_info.macroName.size() + m_info.capturedExpression.size() + 4 );
-            expr += m_info.macroName;
+            expr += m_info.macroName.c_str();
             expr += "( ";
-            expr += m_info.capturedExpression;
+            expr += m_info.capturedExpression.c_str();
             expr += " )";
         }
         return expr;
