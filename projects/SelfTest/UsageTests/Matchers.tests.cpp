@@ -39,12 +39,6 @@ TEST_CASE("String matchers", "[matchers]" ) {
     CHECK_THAT( testStringForMatching(), StartsWith( "THIS", Catch::CaseSensitive::No ));
     CHECK_THAT( testStringForMatching(), EndsWith( "substring" ) );
     CHECK_THAT( testStringForMatching(), EndsWith(" SuBsTrInG", Catch::CaseSensitive::No ));
-
-    REQUIRE_THAT(testStringForMatching(), Matches("this string contains 'abc' as a substring"));
-    REQUIRE_THAT(testStringForMatching(), Matches("this string CONTAINS 'abc' as a substring", Catch::CaseSensitive::No));
-    REQUIRE_THAT(testStringForMatching(), Matches("^this string contains 'abc' as a substring$"));
-    REQUIRE_THAT(testStringForMatching(), Matches("^.* 'abc' .*$"));
-    REQUIRE_THAT(testStringForMatching(), Matches("^.* 'ABC' .*$", Catch::CaseSensitive::No));
 }
 
 TEST_CASE("Contains string matcher", "[.][failing][matchers]") {
@@ -70,6 +64,15 @@ TEST_CASE("Equals string matcher", "[.][failing][matchers]") {
 TEST_CASE("Equals", "[matchers]") {
     CHECK_THAT( testStringForMatching(), Equals( "this string contains 'abc' as a substring" ));
     CHECK_THAT( testStringForMatching(), Equals( "this string contains 'ABC' as a substring", Catch::CaseSensitive::No ) );
+}
+
+// <regex> does not work in libstdc++ 4.8, so we have to
+TEST_CASE("Regex string matcher -- libstdc++-4.8 workaround", "[matchers][approvals]") {
+    REQUIRE_THAT(testStringForMatching(), Matches("this string contains 'abc' as a substring"));
+    REQUIRE_THAT(testStringForMatching(), Matches("this string CONTAINS 'abc' as a substring", Catch::CaseSensitive::No));
+    REQUIRE_THAT(testStringForMatching(), Matches("^this string contains 'abc' as a substring$"));
+    REQUIRE_THAT(testStringForMatching(), Matches("^.* 'abc' .*$"));
+    REQUIRE_THAT(testStringForMatching(), Matches("^.* 'ABC' .*$", Catch::CaseSensitive::No));
 }
 
 TEST_CASE("Regex string matcher", "[matchers][.failing]") {

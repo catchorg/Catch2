@@ -1053,5 +1053,5 @@ with expansion:
 
 ===============================================================================
 test cases: 189 | 137 passed |  48 failed |  4 failed as expected
-assertions: 957 | 833 passed | 103 failed | 21 failed as expected
+assertions: 952 | 828 passed | 103 failed | 21 failed as expected
 

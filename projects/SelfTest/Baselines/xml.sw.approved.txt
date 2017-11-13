@@ -5420,46 +5420,6 @@ Message from section two
           "this string contains 'abc' as a substring" ends with: " substring" (case insensitive)
         </Expanded>
       </Expression>
-      <Expression success="true" type="REQUIRE_THAT" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
-        <Original>
-          testStringForMatching(), Matches("this string contains 'abc' as a substring")
-        </Original>
-        <Expanded>
-          "this string contains 'abc' as a substring" matches "this string contains 'abc' as a substring" case sensitively
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="REQUIRE_THAT" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
-        <Original>
-          testStringForMatching(), Matches("this string CONTAINS 'abc' as a substring", Catch::CaseSensitive::No)
-        </Original>
-        <Expanded>
-          "this string contains 'abc' as a substring" matches "this string CONTAINS 'abc' as a substring" case insensitively
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="REQUIRE_THAT" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
-        <Original>
-          testStringForMatching(), Matches("^this string contains 'abc' as a substring$")
-        </Original>
-        <Expanded>
-          "this string contains 'abc' as a substring" matches "^this string contains 'abc' as a substring$" case sensitively
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="REQUIRE_THAT" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
-        <Original>
-          testStringForMatching(), Matches("^.* 'abc' .*$")
-        </Original>
-        <Expanded>
-          "this string contains 'abc' as a substring" matches "^.* 'abc' .*$" case sensitively
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="REQUIRE_THAT" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
-        <Original>
-          testStringForMatching(), Matches("^.* 'ABC' .*$", Catch::CaseSensitive::No)
-        </Original>
-        <Expanded>
-          "this string contains 'abc' as a substring" matches "^.* 'ABC' .*$" case insensitively
-        </Expanded>
-      </Expression>
       <OverallResult success="true"/>
     </TestCase>
     <TestCase name="StringRef" tags="[Strings]" filename="projects/<exe-name>/IntrospectiveTests/String.tests.cpp" >
@@ -8903,7 +8863,7 @@ loose text artifact
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="829" failures="107" expectedFailures="21"/>
+    <OverallResults successes="824" failures="107" expectedFailures="21"/>
   </Group>
-  <OverallResults successes="829" failures="106" expectedFailures="21"/>
+  <OverallResults successes="824" failures="106" expectedFailures="21"/>
 </Catch>
