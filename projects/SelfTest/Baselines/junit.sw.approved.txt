@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuitesloose text artifact
 >
-  <testsuite name="<exe-name>" errors="15" failures="88" tests="948" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
+  <testsuite name="<exe-name>" errors="15" failures="92" tests="957" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
     <testcase classname="<exe-name>.global" name="# A test name that starts with a #" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="#1005: Comparing pointer to int and long (NULL can be either on various systems)" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="#1027" time="{duration}"/>
@@ -126,7 +126,10 @@ ExceptionTests.cpp:<line number>
     <testcase classname="<exe-name>.global" name="Comparisons between unsigned ints and negative signed ints match c++ standard behaviour" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Comparisons with int literals don't warn when mixing signed/ unsigned" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Contains string matcher" time="{duration}">
-      <failure message="&quot;this string contains 'abc' as a substring&quot; contains: &quot;not there&quot;" type="CHECK_THAT">
+      <failure message="&quot;this string contains 'abc' as a substring&quot; contains: &quot;not there&quot; (case insensitive)" type="CHECK_THAT">
+MatchersTests.cpp:<line number>
+      </failure>
+      <failure message="&quot;this string contains 'abc' as a substring&quot; contains: &quot;STRING&quot;" type="CHECK_THAT">
 MatchersTests.cpp:<line number>
       </failure>
     </testcase>
@@ -150,7 +153,10 @@ ExceptionTests.cpp:<line number>
     </testcase>
     <testcase classname="<exe-name>.global" name="Default scale is invisible to comparison" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="EndsWith string matcher" time="{duration}">
-      <failure message="&quot;this string contains 'abc' as a substring&quot; ends with: &quot;this&quot;" type="CHECK_THAT">
+      <failure message="&quot;this string contains 'abc' as a substring&quot; ends with: &quot;Substring&quot;" type="CHECK_THAT">
+MatchersTests.cpp:<line number>
+      </failure>
+      <failure message="&quot;this string contains 'abc' as a substring&quot; ends with: &quot;this&quot; (case insensitive)" type="CHECK_THAT">
 MatchersTests.cpp:<line number>
       </failure>
     </testcase>
@@ -199,7 +205,10 @@ ConditionTests.cpp:<line number>
     <testcase classname="<exe-name>.global" name="Equality checks that should succeed" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Equals" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Equals string matcher" time="{duration}">
-      <failure message="&quot;this string contains 'abc' as a substring&quot; equals: &quot;something else&quot;" type="CHECK_THAT">
+      <failure message="&quot;this string contains 'abc' as a substring&quot; equals: &quot;this string contains 'ABC' as a substring&quot;" type="CHECK_THAT">
+MatchersTests.cpp:<line number>
+      </failure>
+      <failure message="&quot;this string contains 'abc' as a substring&quot; equals: &quot;something else&quot; (case insensitive)" type="CHECK_THAT">
 MatchersTests.cpp:<line number>
       </failure>
     </testcase>
@@ -518,7 +527,10 @@ Message from section two
       </system-out>
     </testcase>
     <testcase classname="<exe-name>.global" name="StartsWith string matcher" time="{duration}">
-      <failure message="&quot;this string contains 'abc' as a substring&quot; starts with: &quot;string&quot;" type="CHECK_THAT">
+      <failure message="&quot;this string contains 'abc' as a substring&quot; starts with: &quot;This String&quot;" type="CHECK_THAT">
+MatchersTests.cpp:<line number>
+      </failure>
+      <failure message="&quot;this string contains 'abc' as a substring&quot; starts with: &quot;string&quot; (case insensitive)" type="CHECK_THAT">
 MatchersTests.cpp:<line number>
       </failure>
     </testcase>

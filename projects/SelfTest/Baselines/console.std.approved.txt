@@ -145,9 +145,15 @@ MatchersTests.cpp:<line number>
 ...............................................................................
 
 MatchersTests.cpp:<line number>: FAILED:
-  CHECK_THAT( testStringForMatching(), Contains( "not there" ) )
+  CHECK_THAT( testStringForMatching(), Contains( "not there", Catch::CaseSensitive::No ) )
 with expansion:
-  "this string contains 'abc' as a substring" contains: "not there"
+  "this string contains 'abc' as a substring" contains: "not there" (case
+  insensitive)
+
+MatchersTests.cpp:<line number>: FAILED:
+  CHECK_THAT( testStringForMatching(), Contains( "STRING" ) )
+with expansion:
+  "this string contains 'abc' as a substring" contains: "STRING"
 
 -------------------------------------------------------------------------------
 Custom exceptions can be translated when testing for nothrow
@@ -188,9 +194,15 @@ MatchersTests.cpp:<line number>
 ...............................................................................
 
 MatchersTests.cpp:<line number>: FAILED:
-  CHECK_THAT( testStringForMatching(), EndsWith( "this" ) )
+  CHECK_THAT( testStringForMatching(), EndsWith( "Substring" ) )
 with expansion:
-  "this string contains 'abc' as a substring" ends with: "this"
+  "this string contains 'abc' as a substring" ends with: "Substring"
+
+MatchersTests.cpp:<line number>: FAILED:
+  CHECK_THAT( testStringForMatching(), EndsWith( "this", Catch::CaseSensitive::No ) )
+with expansion:
+  "this string contains 'abc' as a substring" ends with: "this" (case
+  insensitive)
 
 -------------------------------------------------------------------------------
 Equality checks that should fail
@@ -270,9 +282,16 @@ MatchersTests.cpp:<line number>
 ...............................................................................
 
 MatchersTests.cpp:<line number>: FAILED:
-  CHECK_THAT( testStringForMatching(), Equals( "something else" ) )
+  CHECK_THAT( testStringForMatching(), Equals( "this string contains 'ABC' as a substring" ) )
 with expansion:
-  "this string contains 'abc' as a substring" equals: "something else"
+  "this string contains 'abc' as a substring" equals: "this string contains
+  'ABC' as a substring"
+
+MatchersTests.cpp:<line number>: FAILED:
+  CHECK_THAT( testStringForMatching(), Equals( "something else", Catch::CaseSensitive::No ) )
+with expansion:
+  "this string contains 'abc' as a substring" equals: "something else" (case
+  insensitive)
 
 -------------------------------------------------------------------------------
 Exception matchers that fail
@@ -690,9 +709,15 @@ MatchersTests.cpp:<line number>
 ...............................................................................
 
 MatchersTests.cpp:<line number>: FAILED:
-  CHECK_THAT( testStringForMatching(), StartsWith( "string" ) )
+  CHECK_THAT( testStringForMatching(), StartsWith( "This String" ) )
 with expansion:
-  "this string contains 'abc' as a substring" starts with: "string"
+  "this string contains 'abc' as a substring" starts with: "This String"
+
+MatchersTests.cpp:<line number>: FAILED:
+  CHECK_THAT( testStringForMatching(), StartsWith( "string", Catch::CaseSensitive::No ) )
+with expansion:
+  "this string contains 'abc' as a substring" starts with: "string" (case
+  insensitive)
 
 -------------------------------------------------------------------------------
 Tabs and newlines show in output
@@ -1027,6 +1052,6 @@ with expansion:
   "{?}" == "1"
 
 ===============================================================================
-test cases: 189 | 137 passed | 48 failed |  4 failed as expected
-assertions: 948 | 828 passed | 99 failed | 21 failed as expected
+test cases: 189 | 137 passed |  48 failed |  4 failed as expected
+assertions: 957 | 833 passed | 103 failed | 21 failed as expected
 

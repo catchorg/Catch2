@@ -1469,10 +1469,18 @@
     <TestCase name="Contains string matcher" tags="[.][failing][matchers]" filename="projects/<exe-name>/MatchersTests.cpp" >
       <Expression success="false" type="CHECK_THAT" filename="projects/<exe-name>/MatchersTests.cpp" >
         <Original>
-          testStringForMatching(), Contains( "not there" )
+          testStringForMatching(), Contains( "not there", Catch::CaseSensitive::No )
         </Original>
         <Expanded>
-          "this string contains 'abc' as a substring" contains: "not there"
+          "this string contains 'abc' as a substring" contains: "not there" (case insensitive)
+        </Expanded>
+      </Expression>
+      <Expression success="false" type="CHECK_THAT" filename="projects/<exe-name>/MatchersTests.cpp" >
+        <Original>
+          testStringForMatching(), Contains( "STRING" )
+        </Original>
+        <Expanded>
+          "this string contains 'abc' as a substring" contains: "STRING"
         </Expanded>
       </Expression>
       <OverallResult success="false"/>
@@ -1533,10 +1541,18 @@
     <TestCase name="EndsWith string matcher" tags="[.][failing][matchers]" filename="projects/<exe-name>/MatchersTests.cpp" >
       <Expression success="false" type="CHECK_THAT" filename="projects/<exe-name>/MatchersTests.cpp" >
         <Original>
-          testStringForMatching(), EndsWith( "this" )
+          testStringForMatching(), EndsWith( "Substring" )
         </Original>
         <Expanded>
-          "this string contains 'abc' as a substring" ends with: "this"
+          "this string contains 'abc' as a substring" ends with: "Substring"
+        </Expanded>
+      </Expression>
+      <Expression success="false" type="CHECK_THAT" filename="projects/<exe-name>/MatchersTests.cpp" >
+        <Original>
+          testStringForMatching(), EndsWith( "this", Catch::CaseSensitive::No )
+        </Original>
+        <Expanded>
+          "this string contains 'abc' as a substring" ends with: "this" (case insensitive)
         </Expanded>
       </Expression>
       <OverallResult success="false"/>
@@ -1727,15 +1743,31 @@
           "this string contains 'abc' as a substring" equals: "this string contains 'abc' as a substring"
         </Expanded>
       </Expression>
+      <Expression success="true" type="CHECK_THAT" filename="projects/<exe-name>/MatchersTests.cpp" >
+        <Original>
+          testStringForMatching(), Equals( "this string contains 'ABC' as a substring", Catch::CaseSensitive::No )
+        </Original>
+        <Expanded>
+          "this string contains 'abc' as a substring" equals: "this string contains 'abc' as a substring" (case insensitive)
+        </Expanded>
+      </Expression>
       <OverallResult success="true"/>
     </TestCase>
     <TestCase name="Equals string matcher" tags="[.][failing][matchers]" filename="projects/<exe-name>/MatchersTests.cpp" >
       <Expression success="false" type="CHECK_THAT" filename="projects/<exe-name>/MatchersTests.cpp" >
         <Original>
-          testStringForMatching(), Equals( "something else" )
+          testStringForMatching(), Equals( "this string contains 'ABC' as a substring" )
         </Original>
         <Expanded>
-          "this string contains 'abc' as a substring" equals: "something else"
+          "this string contains 'abc' as a substring" equals: "this string contains 'ABC' as a substring"
+        </Expanded>
+      </Expression>
+      <Expression success="false" type="CHECK_THAT" filename="projects/<exe-name>/MatchersTests.cpp" >
+        <Original>
+          testStringForMatching(), Equals( "something else", Catch::CaseSensitive::No )
+        </Original>
+        <Expanded>
+          "this string contains 'abc' as a substring" equals: "something else" (case insensitive)
         </Expanded>
       </Expression>
       <OverallResult success="false"/>
@@ -5307,10 +5339,18 @@ Message from section two
     <TestCase name="StartsWith string matcher" tags="[.][failing][matchers]" filename="projects/<exe-name>/MatchersTests.cpp" >
       <Expression success="false" type="CHECK_THAT" filename="projects/<exe-name>/MatchersTests.cpp" >
         <Original>
-          testStringForMatching(), StartsWith( "string" )
+          testStringForMatching(), StartsWith( "This String" )
         </Original>
         <Expanded>
-          "this string contains 'abc' as a substring" starts with: "string"
+          "this string contains 'abc' as a substring" starts with: "This String"
+        </Expanded>
+      </Expression>
+      <Expression success="false" type="CHECK_THAT" filename="projects/<exe-name>/MatchersTests.cpp" >
+        <Original>
+          testStringForMatching(), StartsWith( "string", Catch::CaseSensitive::No )
+        </Original>
+        <Expanded>
+          "this string contains 'abc' as a substring" starts with: "string" (case insensitive)
         </Expanded>
       </Expression>
       <OverallResult success="false"/>
@@ -5324,12 +5364,28 @@ Message from section two
           "this string contains 'abc' as a substring" contains: "string"
         </Expanded>
       </Expression>
+      <Expression success="true" type="REQUIRE_THAT" filename="projects/<exe-name>/MatchersTests.cpp" >
+        <Original>
+          testStringForMatching(), Contains( "string", Catch::CaseSensitive::No )
+        </Original>
+        <Expanded>
+          "this string contains 'abc' as a substring" contains: "string" (case insensitive)
+        </Expanded>
+      </Expression>
       <Expression success="true" type="CHECK_THAT" filename="projects/<exe-name>/MatchersTests.cpp" >
         <Original>
           testStringForMatching(), Contains( "abc" )
         </Original>
         <Expanded>
           "this string contains 'abc' as a substring" contains: "abc"
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK_THAT" filename="projects/<exe-name>/MatchersTests.cpp" >
+        <Original>
+          testStringForMatching(), Contains( "aBC", Catch::CaseSensitive::No )
+        </Original>
+        <Expanded>
+          "this string contains 'abc' as a substring" contains: "abc" (case insensitive)
         </Expanded>
       </Expression>
       <Expression success="true" type="CHECK_THAT" filename="projects/<exe-name>/MatchersTests.cpp" >
@@ -5342,10 +5398,26 @@ Message from section two
       </Expression>
       <Expression success="true" type="CHECK_THAT" filename="projects/<exe-name>/MatchersTests.cpp" >
         <Original>
+          testStringForMatching(), StartsWith( "THIS", Catch::CaseSensitive::No )
+        </Original>
+        <Expanded>
+          "this string contains 'abc' as a substring" starts with: "this" (case insensitive)
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK_THAT" filename="projects/<exe-name>/MatchersTests.cpp" >
+        <Original>
           testStringForMatching(), EndsWith( "substring" )
         </Original>
         <Expanded>
           "this string contains 'abc' as a substring" ends with: "substring"
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK_THAT" filename="projects/<exe-name>/MatchersTests.cpp" >
+        <Original>
+          testStringForMatching(), EndsWith(" SuBsTrInG", Catch::CaseSensitive::No )
+        </Original>
+        <Expanded>
+          "this string contains 'abc' as a substring" ends with: " substring" (case insensitive)
         </Expanded>
       </Expression>
       <Expression success="true" type="REQUIRE_THAT" filename="projects/<exe-name>/MatchersTests.cpp" >
@@ -8831,7 +8903,7 @@ loose text artifact
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="824" failures="103" expectedFailures="21"/>
+    <OverallResults successes="829" failures="107" expectedFailures="21"/>
   </Group>
-  <OverallResults successes="824" failures="102" expectedFailures="21"/>
+  <OverallResults successes="829" failures="106" expectedFailures="21"/>
 </Catch>

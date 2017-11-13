@@ -29,13 +29,16 @@ inline const char* testStringForMatching2()
 
 using namespace Catch::Matchers;
 
-TEST_CASE("String matchers", "[matchers]" )
-{
+TEST_CASE("String matchers", "[matchers]" ) {
     REQUIRE_THAT( testStringForMatching(), Contains( "string" ) );
+    REQUIRE_THAT( testStringForMatching(), Contains( "string", Catch::CaseSensitive::No ));
     CHECK_THAT( testStringForMatching(), Contains( "abc" ) );
+    CHECK_THAT( testStringForMatching(), Contains( "aBC", Catch::CaseSensitive::No ));
 
     CHECK_THAT( testStringForMatching(), StartsWith( "this" ) );
+    CHECK_THAT( testStringForMatching(), StartsWith( "THIS", Catch::CaseSensitive::No ));
     CHECK_THAT( testStringForMatching(), EndsWith( "substring" ) );
+    CHECK_THAT( testStringForMatching(), EndsWith(" SuBsTrInG", Catch::CaseSensitive::No ));
 
     REQUIRE_THAT(testStringForMatching(), Matches("this string contains 'abc' as a substring"));
     REQUIRE_THAT(testStringForMatching(), Matches("this string CONTAINS 'abc' as a substring", Catch::CaseSensitive::No));
@@ -44,29 +47,29 @@ TEST_CASE("String matchers", "[matchers]" )
     REQUIRE_THAT(testStringForMatching(), Matches("^.* 'ABC' .*$", Catch::CaseSensitive::No));
 }
 
-TEST_CASE("Contains string matcher", "[.][failing][matchers]")
-{
-    CHECK_THAT( testStringForMatching(), Contains( "not there" ) );
+TEST_CASE("Contains string matcher", "[.][failing][matchers]") {
+    CHECK_THAT( testStringForMatching(), Contains( "not there", Catch::CaseSensitive::No ) );
+    CHECK_THAT( testStringForMatching(), Contains( "STRING" ));
 }
 
-TEST_CASE("StartsWith string matcher", "[.][failing][matchers]")
-{
-    CHECK_THAT( testStringForMatching(), StartsWith( "string" ) );
+TEST_CASE("StartsWith string matcher", "[.][failing][matchers]") {
+    CHECK_THAT( testStringForMatching(), StartsWith( "This String" ));
+    CHECK_THAT( testStringForMatching(), StartsWith( "string", Catch::CaseSensitive::No ) );
 }
 
-TEST_CASE("EndsWith string matcher", "[.][failing][matchers]")
-{
-    CHECK_THAT( testStringForMatching(), EndsWith( "this" ) );
+TEST_CASE("EndsWith string matcher", "[.][failing][matchers]") {
+    CHECK_THAT( testStringForMatching(), EndsWith( "Substring" ));
+    CHECK_THAT( testStringForMatching(), EndsWith( "this", Catch::CaseSensitive::No ) );
 }
 
-TEST_CASE("Equals string matcher", "[.][failing][matchers]")
-{
-    CHECK_THAT( testStringForMatching(), Equals( "something else" ) );
+TEST_CASE("Equals string matcher", "[.][failing][matchers]") {
+    CHECK_THAT( testStringForMatching(), Equals( "this string contains 'ABC' as a substring" ) );
+    CHECK_THAT( testStringForMatching(), Equals( "something else", Catch::CaseSensitive::No ));
 }
 
-TEST_CASE("Equals", "[matchers]")
-{
-    CHECK_THAT( testStringForMatching(), Equals( "this string contains 'abc' as a substring" ) );
+TEST_CASE("Equals", "[matchers]") {
+    CHECK_THAT( testStringForMatching(), Equals( "this string contains 'abc' as a substring" ));
+    CHECK_THAT( testStringForMatching(), Equals( "this string contains 'ABC' as a substring", Catch::CaseSensitive::No ) );
 }
 
 TEST_CASE("Regex string matcher", "[matchers][.failing]") {
