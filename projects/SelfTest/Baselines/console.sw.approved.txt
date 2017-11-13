@@ -34,6 +34,24 @@ with expansion:
   0 == 0
 
 -------------------------------------------------------------------------------
+#1027
+-------------------------------------------------------------------------------
+CompilationTests.cpp:<line number>
+...............................................................................
+
+CompilationTests.cpp:<line number>:
+PASSED:
+  REQUIRE( y.v == 0 )
+with expansion:
+  0 == 0
+
+CompilationTests.cpp:<line number>:
+PASSED:
+  REQUIRE( 0 == y.v )
+with expansion:
+  0 == 0
+
+-------------------------------------------------------------------------------
 #748 - captures with unexpected exceptions
   outside assertions
 -------------------------------------------------------------------------------
@@ -7872,6 +7890,6 @@ MiscTests.cpp:<line number>:
 PASSED:
 
 ===============================================================================
-test cases: 187 | 134 passed | 49 failed |  4 failed as expected
-assertions: 936 | 816 passed | 99 failed | 21 failed as expected
+test cases: 188 | 135 passed | 49 failed |  4 failed as expected
+assertions: 938 | 818 passed | 99 failed | 21 failed as expected
 

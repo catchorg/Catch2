@@ -23,6 +23,25 @@
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
+    <TestCase name="#1027" filename="projects/<exe-name>/CompilationTests.cpp" >
+      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/CompilationTests.cpp" >
+        <Original>
+          y.v == 0
+        </Original>
+        <Expanded>
+          0 == 0
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/CompilationTests.cpp" >
+        <Original>
+          0 == y.v
+        </Original>
+        <Expanded>
+          0 == 0
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
     <TestCase name="#748 - captures with unexpected exceptions" tags="[!shouldfail][!throws][.][failing]" filename="projects/<exe-name>/ExceptionTests.cpp" >
       <Section name="outside assertions" filename="projects/<exe-name>/ExceptionTests.cpp" >
         <Info>
@@ -8734,7 +8753,7 @@ loose text artifact
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="816" failures="100" expectedFailures="21"/>
+    <OverallResults successes="818" failures="100" expectedFailures="21"/>
   </Group>
-  <OverallResults successes="816" failures="99" expectedFailures="21"/>
+  <OverallResults successes="818" failures="99" expectedFailures="21"/>
 </Catch>

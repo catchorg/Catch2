@@ -85,3 +85,13 @@ TEST_CASE( "#872" ) {
     B x;
     REQUIRE (x == 4);
 }
+
+struct Y {
+    uint32_t v : 1;
+};
+
+TEST_CASE( "#1027" ) {
+    Y y{ 0 };
+    REQUIRE(y.v == 0);
+    REQUIRE(0 == y.v);
+}
