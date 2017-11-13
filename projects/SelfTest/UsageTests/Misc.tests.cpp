@@ -330,3 +330,13 @@ TEST_CASE( "#961 -- Dynamically created sections should all be reported", "[.]" 
         }
     }
 }
+
+inline void manuallyRegisteredTestFunction() {
+    SUCCEED( "was called" );
+}
+struct AutoTestReg {
+    AutoTestReg() {
+        REGISTER_TEST_CASE( manuallyRegisteredTestFunction, "ManuallyRegistered" );
+    }
+};
+static AutoTestReg autoTestReg;

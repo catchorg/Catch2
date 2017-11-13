@@ -6,10 +6,10 @@ Run with -? for options
 -------------------------------------------------------------------------------
 # A test name that starts with a #
 -------------------------------------------------------------------------------
-MiscTests.cpp:<line number>
+Misc.tests.cpp:<line number>
 ...............................................................................
 
-MiscTests.cpp:<line number>:
+Misc.tests.cpp:<line number>:
 PASSED:
 with message:
   yay
@@ -18,16 +18,16 @@ with message:
 #1005: Comparing pointer to int and long (NULL can be either on various
        systems)
 -------------------------------------------------------------------------------
-DecompositionTests.cpp:<line number>
+Decomposition.tests.cpp:<line number>
 ...............................................................................
 
-DecompositionTests.cpp:<line number>:
+Decomposition.tests.cpp:<line number>:
 PASSED:
   REQUIRE( fptr == 0 )
 with expansion:
   0 == 0
 
-DecompositionTests.cpp:<line number>:
+Decomposition.tests.cpp:<line number>:
 PASSED:
   REQUIRE( fptr == 0l )
 with expansion:
@@ -36,16 +36,16 @@ with expansion:
 -------------------------------------------------------------------------------
 #1027
 -------------------------------------------------------------------------------
-CompilationTests.cpp:<line number>
+Compilation.tests.cpp:<line number>
 ...............................................................................
 
-CompilationTests.cpp:<line number>:
+Compilation.tests.cpp:<line number>:
 PASSED:
   REQUIRE( y.v == 0 )
 with expansion:
   0 == 0
 
-CompilationTests.cpp:<line number>:
+Compilation.tests.cpp:<line number>:
 PASSED:
   REQUIRE( 0 == y.v )
 with expansion:
@@ -55,10 +55,10 @@ with expansion:
 #748 - captures with unexpected exceptions
   outside assertions
 -------------------------------------------------------------------------------
-ExceptionTests.cpp:<line number>
+Exception.tests.cpp:<line number>
 ...............................................................................
 
-ExceptionTests.cpp:<line number>: FAILED:
+Exception.tests.cpp:<line number>: FAILED:
 due to unexpected exception with messages:
   answer := 42
   expected exception
@@ -67,10 +67,10 @@ due to unexpected exception with messages:
 #748 - captures with unexpected exceptions
   inside REQUIRE_NOTHROW
 -------------------------------------------------------------------------------
-ExceptionTests.cpp:<line number>
+Exception.tests.cpp:<line number>
 ...............................................................................
 
-ExceptionTests.cpp:<line number>: FAILED:
+Exception.tests.cpp:<line number>: FAILED:
   REQUIRE_NOTHROW( thisThrows() )
 due to unexpected exception with messages:
   answer := 42
@@ -80,10 +80,10 @@ due to unexpected exception with messages:
 #748 - captures with unexpected exceptions
   inside REQUIRE_THROWS
 -------------------------------------------------------------------------------
-ExceptionTests.cpp:<line number>
+Exception.tests.cpp:<line number>
 ...............................................................................
 
-ExceptionTests.cpp:<line number>:
+Exception.tests.cpp:<line number>:
 PASSED:
   REQUIRE_THROWS( thisThrows() )
 with message:
@@ -92,10 +92,10 @@ with message:
 -------------------------------------------------------------------------------
 #809
 -------------------------------------------------------------------------------
-CompilationTests.cpp:<line number>
+Compilation.tests.cpp:<line number>
 ...............................................................................
 
-CompilationTests.cpp:<line number>:
+Compilation.tests.cpp:<line number>:
 PASSED:
   REQUIRE( 42 == f )
 with expansion:
@@ -104,40 +104,40 @@ with expansion:
 -------------------------------------------------------------------------------
 #833
 -------------------------------------------------------------------------------
-CompilationTests.cpp:<line number>
+Compilation.tests.cpp:<line number>
 ...............................................................................
 
-CompilationTests.cpp:<line number>:
+Compilation.tests.cpp:<line number>:
 PASSED:
   REQUIRE( a == t )
 with expansion:
   3 == 3
 
-CompilationTests.cpp:<line number>:
+Compilation.tests.cpp:<line number>:
 PASSED:
   CHECK( a == t )
 with expansion:
   3 == 3
 
-CompilationTests.cpp:<line number>:
+Compilation.tests.cpp:<line number>:
 PASSED:
   REQUIRE_THROWS( throws_int(true) )
 
-CompilationTests.cpp:<line number>:
+Compilation.tests.cpp:<line number>:
 PASSED:
   CHECK_THROWS_AS( throws_int(true), int )
 
-CompilationTests.cpp:<line number>:
+Compilation.tests.cpp:<line number>:
 PASSED:
   REQUIRE_NOTHROW( throws_int(false) )
 
-CompilationTests.cpp:<line number>:
+Compilation.tests.cpp:<line number>:
 PASSED:
   REQUIRE_THAT( "aaa", Catch::EndsWith("aaa") )
 with expansion:
   "aaa" ends with: "aaa"
 
-CompilationTests.cpp:<line number>:
+Compilation.tests.cpp:<line number>:
 PASSED:
   REQUIRE( templated_tests<int>(3) )
 with expansion:
@@ -146,15 +146,15 @@ with expansion:
 -------------------------------------------------------------------------------
 #835 -- errno should not be touched by Catch
 -------------------------------------------------------------------------------
-MiscTests.cpp:<line number>
+Misc.tests.cpp:<line number>
 ...............................................................................
 
-MiscTests.cpp:<line number>: FAILED:
+Misc.tests.cpp:<line number>: FAILED:
   CHECK( f() == 0 )
 with expansion:
   1 == 0
 
-MiscTests.cpp:<line number>:
+Misc.tests.cpp:<line number>:
 PASSED:
   REQUIRE( errno == 1 )
 with expansion:
@@ -163,10 +163,10 @@ with expansion:
 -------------------------------------------------------------------------------
 #872
 -------------------------------------------------------------------------------
-CompilationTests.cpp:<line number>
+Compilation.tests.cpp:<line number>
 ...............................................................................
 
-CompilationTests.cpp:<line number>:
+Compilation.tests.cpp:<line number>:
 PASSED:
   REQUIRE( x == 4 )
 with expansion:
@@ -178,10 +178,10 @@ with message:
 #961 -- Dynamically created sections should all be reported
   Looped section 0
 -------------------------------------------------------------------------------
-MiscTests.cpp:<line number>
+Misc.tests.cpp:<line number>
 ...............................................................................
 
-MiscTests.cpp:<line number>:
+Misc.tests.cpp:<line number>:
 PASSED:
 with message:
   Everything is OK
@@ -190,10 +190,10 @@ with message:
 #961 -- Dynamically created sections should all be reported
   Looped section 1
 -------------------------------------------------------------------------------
-MiscTests.cpp:<line number>
+Misc.tests.cpp:<line number>
 ...............................................................................
 
-MiscTests.cpp:<line number>:
+Misc.tests.cpp:<line number>:
 PASSED:
 with message:
   Everything is OK
@@ -202,10 +202,10 @@ with message:
 #961 -- Dynamically created sections should all be reported
   Looped section 2
 -------------------------------------------------------------------------------
-MiscTests.cpp:<line number>
+Misc.tests.cpp:<line number>
 ...............................................................................
 
-MiscTests.cpp:<line number>:
+Misc.tests.cpp:<line number>:
 PASSED:
 with message:
   Everything is OK
@@ -214,10 +214,10 @@ with message:
 #961 -- Dynamically created sections should all be reported
   Looped section 3
 -------------------------------------------------------------------------------
-MiscTests.cpp:<line number>
+Misc.tests.cpp:<line number>
 ...............................................................................
 
-MiscTests.cpp:<line number>:
+Misc.tests.cpp:<line number>:
 PASSED:
 with message:
   Everything is OK
@@ -226,10 +226,10 @@ with message:
 #961 -- Dynamically created sections should all be reported
   Looped section 4
 -------------------------------------------------------------------------------
-MiscTests.cpp:<line number>
+Misc.tests.cpp:<line number>
 ...............................................................................
 
-MiscTests.cpp:<line number>:
+Misc.tests.cpp:<line number>:
 PASSED:
 with message:
   Everything is OK
@@ -237,21 +237,21 @@ with message:
 -------------------------------------------------------------------------------
 'Not' checks that should fail
 -------------------------------------------------------------------------------
-ConditionTests.cpp:<line number>
+Condition.tests.cpp:<line number>
 ...............................................................................
 
-ConditionTests.cpp:<line number>: FAILED:
+Condition.tests.cpp:<line number>: FAILED:
   CHECK( false != false )
 
-ConditionTests.cpp:<line number>: FAILED:
+Condition.tests.cpp:<line number>: FAILED:
   CHECK( true != true )
 
-ConditionTests.cpp:<line number>: FAILED:
+Condition.tests.cpp:<line number>: FAILED:
   CHECK( !true )
 with expansion:
   false
 
-ConditionTests.cpp:<line number>: FAILED:
+Condition.tests.cpp:<line number>: FAILED:
   CHECK_FALSE( true )
 with expansion:
   !true

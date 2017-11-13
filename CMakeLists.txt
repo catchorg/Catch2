@@ -47,32 +47,32 @@ endfunction()
 # define the sources of the self test
 # Please keep these ordered alphabetically
 set(TEST_SOURCES
-        ${SELF_TEST_DIR}/UsageTests/ApproxTests.cpp
-        ${SELF_TEST_DIR}/UsageTests/BDDTests.cpp
+        ${SELF_TEST_DIR}/TestMain.cpp
+        ${SELF_TEST_DIR}/IntrospectiveTests/CmdLine.tests.cpp
+        ${SELF_TEST_DIR}/IntrospectiveTests/PartTracker.tests.cpp
+        ${SELF_TEST_DIR}/IntrospectiveTests/TagAlias.tests.cpp
+        ${SELF_TEST_DIR}/IntrospectiveTests/String.tests.cpp
+        ${SELF_TEST_DIR}/IntrospectiveTests/Xml.tests.cpp
+        ${SELF_TEST_DIR}/UsageTests/Approx.tests.cpp
+        ${SELF_TEST_DIR}/UsageTests/BDD.tests.cpp
         ${SELF_TEST_DIR}/UsageTests/Benchmark.tests.cpp
-        ${SELF_TEST_DIR}/UsageTests/ClassTests.cpp
-        ${SELF_TEST_DIR}/IntrospectiveTests/CmdLineTests.cpp
-        ${SELF_TEST_DIR}/UsageTests/CompilationTests.cpp
-        ${SELF_TEST_DIR}/UsageTests/ConditionTests.cpp
-        ${SELF_TEST_DIR}/UsageTests/DecompositionTests.cpp
-        ${SELF_TEST_DIR}/UsageTests/EnumToString.cpp
-        ${SELF_TEST_DIR}/UsageTests/ExceptionTests.cpp
-        ${SELF_TEST_DIR}/UsageTests/MessageTests.cpp
-        ${SELF_TEST_DIR}/UsageTests/MiscTests.cpp
-        ${SELF_TEST_DIR}/IntrospectiveTests/PartTrackerTests.cpp
-        ${SELF_TEST_DIR}/IntrospectiveTests/TagAliasTests.cpp
-        ${SELF_TEST_DIR}/IntrospectiveTests/TestMain.cpp
-        ${SELF_TEST_DIR}/UsageTests/ToStringChrono.cpp
-        ${SELF_TEST_DIR}/UsageTests/ToStringGeneralTests.cpp
-        ${SELF_TEST_DIR}/UsageTests/ToStringPair.cpp
-        ${SELF_TEST_DIR}/UsageTests/ToStringTuple.cpp
-        ${SELF_TEST_DIR}/UsageTests/ToStringVector.cpp
-        ${SELF_TEST_DIR}/UsageTests/ToStringWhich.cpp
-        ${SELF_TEST_DIR}/UsageTests/TrickyTests.cpp
-        ${SELF_TEST_DIR}/UsageTests/VariadicMacrosTests.cpp
-        ${SELF_TEST_DIR}/UsageTests/MatchersTests.cpp
-        ${SELF_TEST_DIR}/IntrospectiveTests/StringRef.tests.cpp
-        ${SELF_TEST_DIR}/IntrospectiveTests/XmlTests.cpp
+        ${SELF_TEST_DIR}/UsageTests/Class.tests.cpp
+        ${SELF_TEST_DIR}/UsageTests/Compilation.tests.cpp
+        ${SELF_TEST_DIR}/UsageTests/Condition.tests.cpp
+        ${SELF_TEST_DIR}/UsageTests/Decomposition.tests.cpp
+        ${SELF_TEST_DIR}/UsageTests/EnumToString.tests.cpp
+        ${SELF_TEST_DIR}/UsageTests/Exception.tests.cpp
+        ${SELF_TEST_DIR}/UsageTests/Message.tests.cpp
+        ${SELF_TEST_DIR}/UsageTests/Misc.tests.cpp
+        ${SELF_TEST_DIR}/UsageTests/ToStringChrono.tests.cpp
+        ${SELF_TEST_DIR}/UsageTests/ToStringGeneral.tests.cpp
+        ${SELF_TEST_DIR}/UsageTests/ToStringPair.tests.cpp
+        ${SELF_TEST_DIR}/UsageTests/ToStringTuple.tests.cpp
+        ${SELF_TEST_DIR}/UsageTests/ToStringVector.tests.cpp
+        ${SELF_TEST_DIR}/UsageTests/ToStringWhich.tests.cpp
+        ${SELF_TEST_DIR}/UsageTests/Tricky.tests.cpp
+        ${SELF_TEST_DIR}/UsageTests/VariadicMacros.tests.cpp
+        ${SELF_TEST_DIR}/UsageTests/Matchers.tests.cpp
         )
 CheckFileList(TEST_SOURCES ${SELF_TEST_DIR})
 

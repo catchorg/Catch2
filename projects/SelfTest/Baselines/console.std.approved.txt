@@ -7,10 +7,10 @@ Run with -? for options
 #748 - captures with unexpected exceptions
   outside assertions
 -------------------------------------------------------------------------------
-ExceptionTests.cpp:<line number>
+Exception.tests.cpp:<line number>
 ...............................................................................
 
-ExceptionTests.cpp:<line number>: FAILED:
+Exception.tests.cpp:<line number>: FAILED:
 due to unexpected exception with messages:
   answer := 42
   expected exception
@@ -19,10 +19,10 @@ due to unexpected exception with messages:
 #748 - captures with unexpected exceptions
   inside REQUIRE_NOTHROW
 -------------------------------------------------------------------------------
-ExceptionTests.cpp:<line number>
+Exception.tests.cpp:<line number>
 ...............................................................................
 
-ExceptionTests.cpp:<line number>: FAILED:
+Exception.tests.cpp:<line number>: FAILED:
   REQUIRE_NOTHROW( thisThrows() )
 due to unexpected exception with messages:
   answer := 42
@@ -31,10 +31,10 @@ due to unexpected exception with messages:
 -------------------------------------------------------------------------------
 #835 -- errno should not be touched by Catch
 -------------------------------------------------------------------------------
-MiscTests.cpp:<line number>
+Misc.tests.cpp:<line number>
 ...............................................................................
 
-MiscTests.cpp:<line number>: FAILED:
+Misc.tests.cpp:<line number>: FAILED:
   CHECK( f() == 0 )
 with expansion:
   1 == 0
@@ -42,50 +42,50 @@ with expansion:
 -------------------------------------------------------------------------------
 'Not' checks that should fail
 -------------------------------------------------------------------------------
-ConditionTests.cpp:<line number>
+Condition.tests.cpp:<line number>
 ...............................................................................
 
-ConditionTests.cpp:<line number>: FAILED:
+Condition.tests.cpp:<line number>: FAILED:
   CHECK( false != false )
 
-ConditionTests.cpp:<line number>: FAILED:
+Condition.tests.cpp:<line number>: FAILED:
   CHECK( true != true )
 
-ConditionTests.cpp:<line number>: FAILED:
+Condition.tests.cpp:<line number>: FAILED:
   CHECK( !true )
 with expansion:
   false
 
-ConditionTests.cpp:<line number>: FAILED:
+Condition.tests.cpp:<line number>: FAILED:
   CHECK_FALSE( true )
 with expansion:
   !true
 
-ConditionTests.cpp:<line number>: FAILED:
+Condition.tests.cpp:<line number>: FAILED:
   CHECK( !trueValue )
 with expansion:
   false
 
-ConditionTests.cpp:<line number>: FAILED:
+Condition.tests.cpp:<line number>: FAILED:
   CHECK_FALSE( trueValue )
 with expansion:
   !true
 
-ConditionTests.cpp:<line number>: FAILED:
+Condition.tests.cpp:<line number>: FAILED:
   CHECK( !(1 == 1) )
 with expansion:
   false
 
-ConditionTests.cpp:<line number>: FAILED:
+Condition.tests.cpp:<line number>: FAILED:
   CHECK_FALSE( 1 == 1 )
 
 -------------------------------------------------------------------------------
 A METHOD_AS_TEST_CASE based test run that fails
 -------------------------------------------------------------------------------
-ClassTests.cpp:<line number>
+Class.tests.cpp:<line number>
 ...............................................................................
 
-ClassTests.cpp:<line number>: FAILED:
+Class.tests.cpp:<line number>: FAILED:
   REQUIRE( s == "world" )
 with expansion:
   "hello" == "world"
@@ -93,10 +93,10 @@ with expansion:
 -------------------------------------------------------------------------------
 A TEST_CASE_METHOD based test run that fails
 -------------------------------------------------------------------------------
-ClassTests.cpp:<line number>
+Class.tests.cpp:<line number>
 ...............................................................................
 
-ClassTests.cpp:<line number>: FAILED:
+Class.tests.cpp:<line number>: FAILED:
   REQUIRE( m_a == 2 )
 with expansion:
   1 == 2
@@ -104,25 +104,25 @@ with expansion:
 -------------------------------------------------------------------------------
 A couple of nested sections followed by a failure
 -------------------------------------------------------------------------------
-MiscTests.cpp:<line number>
+Misc.tests.cpp:<line number>
 ...............................................................................
 
-MiscTests.cpp:<line number>: FAILED:
+Misc.tests.cpp:<line number>: FAILED:
 explicitly with message:
   to infinity and beyond
 
 -------------------------------------------------------------------------------
 A failing expression with a non streamable type is still captured
 -------------------------------------------------------------------------------
-TrickyTests.cpp:<line number>
+Tricky.tests.cpp:<line number>
 ...............................................................................
 
-TrickyTests.cpp:<line number>: FAILED:
+Tricky.tests.cpp:<line number>: FAILED:
   CHECK( &o1 == &o2 )
 with expansion:
   0x<hex digits> == 0x<hex digits>
 
-TrickyTests.cpp:<line number>: FAILED:
+Tricky.tests.cpp:<line number>: FAILED:
   CHECK( o1 == o2 )
 with expansion:
   {?} == {?}
@@ -130,10 +130,10 @@ with expansion:
 -------------------------------------------------------------------------------
 An unchecked exception reports the line of the last assertion
 -------------------------------------------------------------------------------
-ExceptionTests.cpp:<line number>
+Exception.tests.cpp:<line number>
 ...............................................................................
 
-ExceptionTests.cpp:<line number>: FAILED:
+Exception.tests.cpp:<line number>: FAILED:
   {Unknown expression after the reported line}
 due to unexpected exception with message:
   unexpected exception
@@ -141,16 +141,16 @@ due to unexpected exception with message:
 -------------------------------------------------------------------------------
 Contains string matcher
 -------------------------------------------------------------------------------
-MatchersTests.cpp:<line number>
+Matchers.tests.cpp:<line number>
 ...............................................................................
 
-MatchersTests.cpp:<line number>: FAILED:
+Matchers.tests.cpp:<line number>: FAILED:
   CHECK_THAT( testStringForMatching(), Contains( "not there", Catch::CaseSensitive::No ) )
 with expansion:
   "this string contains 'abc' as a substring" contains: "not there" (case
   insensitive)
 
-MatchersTests.cpp:<line number>: FAILED:
+Matchers.tests.cpp:<line number>: FAILED:
   CHECK_THAT( testStringForMatching(), Contains( "STRING" ) )
 with expansion:
   "this string contains 'abc' as a substring" contains: "STRING"
@@ -158,10 +158,10 @@ with expansion:
 -------------------------------------------------------------------------------
 Custom exceptions can be translated when testing for nothrow
 -------------------------------------------------------------------------------
-ExceptionTests.cpp:<line number>
+Exception.tests.cpp:<line number>
 ...............................................................................
 
-ExceptionTests.cpp:<line number>: FAILED:
+Exception.tests.cpp:<line number>: FAILED:
   REQUIRE_NOTHROW( throwCustom() )
 due to unexpected exception with message:
   custom exception - not std
@@ -169,10 +169,10 @@ due to unexpected exception with message:
 -------------------------------------------------------------------------------
 Custom exceptions can be translated when testing for throwing as something else
 -------------------------------------------------------------------------------
-ExceptionTests.cpp:<line number>
+Exception.tests.cpp:<line number>
 ...............................................................................
 
-ExceptionTests.cpp:<line number>: FAILED:
+Exception.tests.cpp:<line number>: FAILED:
   REQUIRE_THROWS_AS( throwCustom(), std::exception )
 due to unexpected exception with message:
   custom exception - not std
@@ -180,25 +180,25 @@ due to unexpected exception with message:
 -------------------------------------------------------------------------------
 Custom std-exceptions can be custom translated
 -------------------------------------------------------------------------------
-ExceptionTests.cpp:<line number>
+Exception.tests.cpp:<line number>
 ...............................................................................
 
-ExceptionTests.cpp:<line number>: FAILED:
+Exception.tests.cpp:<line number>: FAILED:
 due to unexpected exception with message:
   custom std exception
 
 -------------------------------------------------------------------------------
 EndsWith string matcher
 -------------------------------------------------------------------------------
-MatchersTests.cpp:<line number>
+Matchers.tests.cpp:<line number>
 ...............................................................................
 
-MatchersTests.cpp:<line number>: FAILED:
+Matchers.tests.cpp:<line number>: FAILED:
   CHECK_THAT( testStringForMatching(), EndsWith( "Substring" ) )
 with expansion:
   "this string contains 'abc' as a substring" ends with: "Substring"
 
-MatchersTests.cpp:<line number>: FAILED:
+Matchers.tests.cpp:<line number>: FAILED:
   CHECK_THAT( testStringForMatching(), EndsWith( "this", Catch::CaseSensitive::No ) )
 with expansion:
   "this string contains 'abc' as a substring" ends with: "this" (case
@@ -207,70 +207,70 @@ with expansion:
 -------------------------------------------------------------------------------
 Equality checks that should fail
 -------------------------------------------------------------------------------
-ConditionTests.cpp:<line number>
+Condition.tests.cpp:<line number>
 ...............................................................................
 
-ConditionTests.cpp:<line number>: FAILED:
+Condition.tests.cpp:<line number>: FAILED:
   CHECK( data.int_seven == 6 )
 with expansion:
   7 == 6
 
-ConditionTests.cpp:<line number>: FAILED:
+Condition.tests.cpp:<line number>: FAILED:
   CHECK( data.int_seven == 8 )
 with expansion:
   7 == 8
 
-ConditionTests.cpp:<line number>: FAILED:
+Condition.tests.cpp:<line number>: FAILED:
   CHECK( data.int_seven == 0 )
 with expansion:
   7 == 0
 
-ConditionTests.cpp:<line number>: FAILED:
+Condition.tests.cpp:<line number>: FAILED:
   CHECK( data.float_nine_point_one == Approx( 9.11f ) )
 with expansion:
   9.1f == Approx( 9.1099996567 )
 
-ConditionTests.cpp:<line number>: FAILED:
+Condition.tests.cpp:<line number>: FAILED:
   CHECK( data.float_nine_point_one == Approx( 9.0f ) )
 with expansion:
   9.1f == Approx( 9.0 )
 
-ConditionTests.cpp:<line number>: FAILED:
+Condition.tests.cpp:<line number>: FAILED:
   CHECK( data.float_nine_point_one == Approx( 1 ) )
 with expansion:
   9.1f == Approx( 1.0 )
 
-ConditionTests.cpp:<line number>: FAILED:
+Condition.tests.cpp:<line number>: FAILED:
   CHECK( data.float_nine_point_one == Approx( 0 ) )
 with expansion:
   9.1f == Approx( 0.0 )
 
-ConditionTests.cpp:<line number>: FAILED:
+Condition.tests.cpp:<line number>: FAILED:
   CHECK( data.double_pi == Approx( 3.1415 ) )
 with expansion:
   3.1415926535 == Approx( 3.1415 )
 
-ConditionTests.cpp:<line number>: FAILED:
+Condition.tests.cpp:<line number>: FAILED:
   CHECK( data.str_hello == "goodbye" )
 with expansion:
   "hello" == "goodbye"
 
-ConditionTests.cpp:<line number>: FAILED:
+Condition.tests.cpp:<line number>: FAILED:
   CHECK( data.str_hello == "hell" )
 with expansion:
   "hello" == "hell"
 
-ConditionTests.cpp:<line number>: FAILED:
+Condition.tests.cpp:<line number>: FAILED:
   CHECK( data.str_hello == "hello1" )
 with expansion:
   "hello" == "hello1"
 
-ConditionTests.cpp:<line number>: FAILED:
+Condition.tests.cpp:<line number>: FAILED:
   CHECK( data.str_hello.size() == 6 )
 with expansion:
   5 == 6
 
-ConditionTests.cpp:<line number>: FAILED:
+Condition.tests.cpp:<line number>: FAILED:
   CHECK( x == Approx( 1.301 ) )
 with expansion:
   1.3 == Approx( 1.301 )
@@ -278,16 +278,16 @@ with expansion:
 -------------------------------------------------------------------------------
 Equals string matcher
 -------------------------------------------------------------------------------
-MatchersTests.cpp:<line number>
+Matchers.tests.cpp:<line number>
 ...............................................................................
 
-MatchersTests.cpp:<line number>: FAILED:
+Matchers.tests.cpp:<line number>: FAILED:
   CHECK_THAT( testStringForMatching(), Equals( "this string contains 'ABC' as a substring" ) )
 with expansion:
   "this string contains 'abc' as a substring" equals: "this string contains
   'ABC' as a substring"
 
-MatchersTests.cpp:<line number>: FAILED:
+Matchers.tests.cpp:<line number>: FAILED:
   CHECK_THAT( testStringForMatching(), Equals( "something else", Catch::CaseSensitive::No ) )
 with expansion:
   "this string contains 'abc' as a substring" equals: "something else" (case
@@ -297,14 +297,14 @@ with expansion:
 Exception matchers that fail
   No exception
 -------------------------------------------------------------------------------
-MatchersTests.cpp:<line number>
+Matchers.tests.cpp:<line number>
 ...............................................................................
 
-MatchersTests.cpp:<line number>: FAILED:
+Matchers.tests.cpp:<line number>: FAILED:
   CHECK_THROWS_MATCHES( doesNotThrow(), SpecialException, ExceptionMatcher{ 1 } )
 because no exception was thrown where one was expected:
 
-MatchersTests.cpp:<line number>: FAILED:
+Matchers.tests.cpp:<line number>: FAILED:
   REQUIRE_THROWS_MATCHES( doesNotThrow(), SpecialException, ExceptionMatcher{ 1 } )
 because no exception was thrown where one was expected:
 
@@ -312,15 +312,15 @@ because no exception was thrown where one was expected:
 Exception matchers that fail
   Type mismatch
 -------------------------------------------------------------------------------
-MatchersTests.cpp:<line number>
+Matchers.tests.cpp:<line number>
 ...............................................................................
 
-MatchersTests.cpp:<line number>: FAILED:
+Matchers.tests.cpp:<line number>: FAILED:
   CHECK_THROWS_MATCHES( throwsAsInt(1), SpecialException, ExceptionMatcher{ 1 } )
 due to unexpected exception with message:
   Unknown exception
 
-MatchersTests.cpp:<line number>: FAILED:
+Matchers.tests.cpp:<line number>: FAILED:
   REQUIRE_THROWS_MATCHES( throwsAsInt(1), SpecialException, ExceptionMatcher{ 1 } )
 due to unexpected exception with message:
   Unknown exception
@@ -329,15 +329,15 @@ due to unexpected exception with message:
 Exception matchers that fail
   Contents are wrong
 -------------------------------------------------------------------------------
-MatchersTests.cpp:<line number>
+Matchers.tests.cpp:<line number>
 ...............................................................................
 
-MatchersTests.cpp:<line number>: FAILED:
+Matchers.tests.cpp:<line number>: FAILED:
   CHECK_THROWS_MATCHES( throws(3), SpecialException, ExceptionMatcher{ 1 } )
 with expansion:
   {?} special exception has value of 1
 
-MatchersTests.cpp:<line number>: FAILED:
+Matchers.tests.cpp:<line number>: FAILED:
   REQUIRE_THROWS_MATCHES( throws(4), SpecialException, ExceptionMatcher{ 1 } )
 with expansion:
   {?} special exception has value of 1
@@ -345,19 +345,19 @@ with expansion:
 -------------------------------------------------------------------------------
 Expected exceptions that don't throw or unexpected exceptions fail the test
 -------------------------------------------------------------------------------
-ExceptionTests.cpp:<line number>
+Exception.tests.cpp:<line number>
 ...............................................................................
 
-ExceptionTests.cpp:<line number>: FAILED:
+Exception.tests.cpp:<line number>: FAILED:
   CHECK_THROWS_AS( thisThrows(), std::string )
 due to unexpected exception with message:
   expected exception
 
-ExceptionTests.cpp:<line number>: FAILED:
+Exception.tests.cpp:<line number>: FAILED:
   CHECK_THROWS_AS( thisDoesntThrow(), std::domain_error )
 because no exception was thrown where one was expected:
 
-ExceptionTests.cpp:<line number>: FAILED:
+Exception.tests.cpp:<line number>: FAILED:
   CHECK_NOTHROW( thisThrows() )
 due to unexpected exception with message:
   expected exception
@@ -365,52 +365,52 @@ due to unexpected exception with message:
 -------------------------------------------------------------------------------
 FAIL aborts the test
 -------------------------------------------------------------------------------
-MessageTests.cpp:<line number>
+Message.tests.cpp:<line number>
 ...............................................................................
 
-MessageTests.cpp:<line number>: FAILED:
+Message.tests.cpp:<line number>: FAILED:
 explicitly with message:
   This is a failure
 
 -------------------------------------------------------------------------------
 FAIL does not require an argument
 -------------------------------------------------------------------------------
-MessageTests.cpp:<line number>
+Message.tests.cpp:<line number>
 ...............................................................................
 
-MessageTests.cpp:<line number>: FAILED:
+Message.tests.cpp:<line number>: FAILED:
 
 -------------------------------------------------------------------------------
 FAIL_CHECK does not abort the test
 -------------------------------------------------------------------------------
-MessageTests.cpp:<line number>
+Message.tests.cpp:<line number>
 ...............................................................................
 
-MessageTests.cpp:<line number>: FAILED:
+Message.tests.cpp:<line number>: FAILED:
 explicitly with message:
   This is a failure
 
-MessageTests.cpp:<line number>:
+Message.tests.cpp:<line number>:
 warning:
   This message appears in the output
 
 -------------------------------------------------------------------------------
 INFO and WARN do not abort tests
 -------------------------------------------------------------------------------
-MessageTests.cpp:<line number>
+Message.tests.cpp:<line number>
 ...............................................................................
 
-MessageTests.cpp:<line number>:
+Message.tests.cpp:<line number>:
 warning:
   this is a warning
 
 -------------------------------------------------------------------------------
 INFO gets logged on failure
 -------------------------------------------------------------------------------
-MessageTests.cpp:<line number>
+Message.tests.cpp:<line number>
 ...............................................................................
 
-MessageTests.cpp:<line number>: FAILED:
+Message.tests.cpp:<line number>: FAILED:
   REQUIRE( a == 1 )
 with expansion:
   2 == 1
@@ -421,10 +421,10 @@ with messages:
 -------------------------------------------------------------------------------
 INFO gets logged on failure, even if captured before successful assertions
 -------------------------------------------------------------------------------
-MessageTests.cpp:<line number>
+Message.tests.cpp:<line number>
 ...............................................................................
 
-MessageTests.cpp:<line number>: FAILED:
+Message.tests.cpp:<line number>: FAILED:
   CHECK( a == 1 )
 with expansion:
   2 == 1
@@ -432,7 +432,7 @@ with messages:
   this message may be logged later
   this message should be logged
 
-MessageTests.cpp:<line number>: FAILED:
+Message.tests.cpp:<line number>: FAILED:
   CHECK( a == 0 )
 with expansion:
   2 == 0
@@ -444,10 +444,10 @@ with messages:
 -------------------------------------------------------------------------------
 INFO is reset for each loop
 -------------------------------------------------------------------------------
-MessageTests.cpp:<line number>
+Message.tests.cpp:<line number>
 ...............................................................................
 
-MessageTests.cpp:<line number>: FAILED:
+Message.tests.cpp:<line number>: FAILED:
   REQUIRE( i < 10 )
 with expansion:
   10 < 10
@@ -458,30 +458,30 @@ with messages:
 -------------------------------------------------------------------------------
 Inequality checks that should fail
 -------------------------------------------------------------------------------
-ConditionTests.cpp:<line number>
+Condition.tests.cpp:<line number>
 ...............................................................................
 
-ConditionTests.cpp:<line number>: FAILED:
+Condition.tests.cpp:<line number>: FAILED:
   CHECK( data.int_seven != 7 )
 with expansion:
   7 != 7
 
-ConditionTests.cpp:<line number>: FAILED:
+Condition.tests.cpp:<line number>: FAILED:
   CHECK( data.float_nine_point_one != Approx( 9.1f ) )
 with expansion:
   9.1f != Approx( 9.1000003815 )
 
-ConditionTests.cpp:<line number>: FAILED:
+Condition.tests.cpp:<line number>: FAILED:
   CHECK( data.double_pi != Approx( 3.1415926535 ) )
 with expansion:
   3.1415926535 != Approx( 3.1415926535 )
 
-ConditionTests.cpp:<line number>: FAILED:
+Condition.tests.cpp:<line number>: FAILED:
   CHECK( data.str_hello != "hello" )
 with expansion:
   "hello" != "hello"
 
-ConditionTests.cpp:<line number>: FAILED:
+Condition.tests.cpp:<line number>: FAILED:
   CHECK( data.str_hello.size() != 5 )
 with expansion:
   5 != 5
@@ -489,10 +489,10 @@ with expansion:
 -------------------------------------------------------------------------------
 Matchers can be composed with both && and || - failing
 -------------------------------------------------------------------------------
-MatchersTests.cpp:<line number>
+Matchers.tests.cpp:<line number>
 ...............................................................................
 
-MatchersTests.cpp:<line number>: FAILED:
+Matchers.tests.cpp:<line number>: FAILED:
   CHECK_THAT( testStringForMatching(), ( Contains( "string" ) || Contains( "different" ) ) && Contains( "random" ) )
 with expansion:
   "this string contains 'abc' as a substring" ( ( contains: "string" or
@@ -501,10 +501,10 @@ with expansion:
 -------------------------------------------------------------------------------
 Matchers can be negated (Not) with the ! operator - failing
 -------------------------------------------------------------------------------
-MatchersTests.cpp:<line number>
+Matchers.tests.cpp:<line number>
 ...............................................................................
 
-MatchersTests.cpp:<line number>: FAILED:
+Matchers.tests.cpp:<line number>: FAILED:
   CHECK_THAT( testStringForMatching(), !Contains( "substring" ) )
 with expansion:
   "this string contains 'abc' as a substring" not contains: "substring"
@@ -512,10 +512,10 @@ with expansion:
 -------------------------------------------------------------------------------
 Mismatching exception messages failing the test
 -------------------------------------------------------------------------------
-ExceptionTests.cpp:<line number>
+Exception.tests.cpp:<line number>
 ...............................................................................
 
-ExceptionTests.cpp:<line number>: FAILED:
+Exception.tests.cpp:<line number>: FAILED:
   REQUIRE_THROWS_WITH( thisThrows(), "should fail" )
 with expansion:
   "expected exception" equals: "should fail"
@@ -523,120 +523,120 @@ with expansion:
 -------------------------------------------------------------------------------
 Nice descriptive name
 -------------------------------------------------------------------------------
-MiscTests.cpp:<line number>
+Misc.tests.cpp:<line number>
 ...............................................................................
 
-MiscTests.cpp:<line number>:
+Misc.tests.cpp:<line number>:
 warning:
   This one ran
 
 -------------------------------------------------------------------------------
 Non-std exceptions can be translated
 -------------------------------------------------------------------------------
-ExceptionTests.cpp:<line number>
+Exception.tests.cpp:<line number>
 ...............................................................................
 
-ExceptionTests.cpp:<line number>: FAILED:
+Exception.tests.cpp:<line number>: FAILED:
 due to unexpected exception with message:
   custom exception
 
 -------------------------------------------------------------------------------
 Ordering comparison checks that should fail
 -------------------------------------------------------------------------------
-ConditionTests.cpp:<line number>
+Condition.tests.cpp:<line number>
 ...............................................................................
 
-ConditionTests.cpp:<line number>: FAILED:
+Condition.tests.cpp:<line number>: FAILED:
   CHECK( data.int_seven > 7 )
 with expansion:
   7 > 7
 
-ConditionTests.cpp:<line number>: FAILED:
+Condition.tests.cpp:<line number>: FAILED:
   CHECK( data.int_seven < 7 )
 with expansion:
   7 < 7
 
-ConditionTests.cpp:<line number>: FAILED:
+Condition.tests.cpp:<line number>: FAILED:
   CHECK( data.int_seven > 8 )
 with expansion:
   7 > 8
 
-ConditionTests.cpp:<line number>: FAILED:
+Condition.tests.cpp:<line number>: FAILED:
   CHECK( data.int_seven < 6 )
 with expansion:
   7 < 6
 
-ConditionTests.cpp:<line number>: FAILED:
+Condition.tests.cpp:<line number>: FAILED:
   CHECK( data.int_seven < 0 )
 with expansion:
   7 < 0
 
-ConditionTests.cpp:<line number>: FAILED:
+Condition.tests.cpp:<line number>: FAILED:
   CHECK( data.int_seven < -1 )
 with expansion:
   7 < -1
 
-ConditionTests.cpp:<line number>: FAILED:
+Condition.tests.cpp:<line number>: FAILED:
   CHECK( data.int_seven >= 8 )
 with expansion:
   7 >= 8
 
-ConditionTests.cpp:<line number>: FAILED:
+Condition.tests.cpp:<line number>: FAILED:
   CHECK( data.int_seven <= 6 )
 with expansion:
   7 <= 6
 
-ConditionTests.cpp:<line number>: FAILED:
+Condition.tests.cpp:<line number>: FAILED:
   CHECK( data.float_nine_point_one < 9 )
 with expansion:
   9.1f < 9
 
-ConditionTests.cpp:<line number>: FAILED:
+Condition.tests.cpp:<line number>: FAILED:
   CHECK( data.float_nine_point_one > 10 )
 with expansion:
   9.1f > 10
 
-ConditionTests.cpp:<line number>: FAILED:
+Condition.tests.cpp:<line number>: FAILED:
   CHECK( data.float_nine_point_one > 9.2 )
 with expansion:
   9.1f > 9.2
 
-ConditionTests.cpp:<line number>: FAILED:
+Condition.tests.cpp:<line number>: FAILED:
   CHECK( data.str_hello > "hello" )
 with expansion:
   "hello" > "hello"
 
-ConditionTests.cpp:<line number>: FAILED:
+Condition.tests.cpp:<line number>: FAILED:
   CHECK( data.str_hello < "hello" )
 with expansion:
   "hello" < "hello"
 
-ConditionTests.cpp:<line number>: FAILED:
+Condition.tests.cpp:<line number>: FAILED:
   CHECK( data.str_hello > "hellp" )
 with expansion:
   "hello" > "hellp"
 
-ConditionTests.cpp:<line number>: FAILED:
+Condition.tests.cpp:<line number>: FAILED:
   CHECK( data.str_hello > "z" )
 with expansion:
   "hello" > "z"
 
-ConditionTests.cpp:<line number>: FAILED:
+Condition.tests.cpp:<line number>: FAILED:
   CHECK( data.str_hello < "hellm" )
 with expansion:
   "hello" < "hellm"
 
-ConditionTests.cpp:<line number>: FAILED:
+Condition.tests.cpp:<line number>: FAILED:
   CHECK( data.str_hello < "a" )
 with expansion:
   "hello" < "a"
 
-ConditionTests.cpp:<line number>: FAILED:
+Condition.tests.cpp:<line number>: FAILED:
   CHECK( data.str_hello >= "z" )
 with expansion:
   "hello" >= "z"
 
-ConditionTests.cpp:<line number>: FAILED:
+Condition.tests.cpp:<line number>: FAILED:
   CHECK( data.str_hello <= "a" )
 with expansion:
   "hello" <= "a"
@@ -645,10 +645,10 @@ with expansion:
 Output from all sections is reported
   one
 -------------------------------------------------------------------------------
-MessageTests.cpp:<line number>
+Message.tests.cpp:<line number>
 ...............................................................................
 
-MessageTests.cpp:<line number>: FAILED:
+Message.tests.cpp:<line number>: FAILED:
 explicitly with message:
   Message from section one
 
@@ -656,20 +656,20 @@ explicitly with message:
 Output from all sections is reported
   two
 -------------------------------------------------------------------------------
-MessageTests.cpp:<line number>
+Message.tests.cpp:<line number>
 ...............................................................................
 
-MessageTests.cpp:<line number>: FAILED:
+Message.tests.cpp:<line number>: FAILED:
 explicitly with message:
   Message from section two
 
 -------------------------------------------------------------------------------
 Reconstruction should be based on stringification: #914
 -------------------------------------------------------------------------------
-DecompositionTests.cpp:<line number>
+Decomposition.tests.cpp:<line number>
 ...............................................................................
 
-DecompositionTests.cpp:<line number>: FAILED:
+Decomposition.tests.cpp:<line number>: FAILED:
   CHECK( truthy(false) )
 with expansion:
   Hey, its truthy!
@@ -677,22 +677,22 @@ with expansion:
 -------------------------------------------------------------------------------
 Regex string matcher
 -------------------------------------------------------------------------------
-MatchersTests.cpp:<line number>
+Matchers.tests.cpp:<line number>
 ...............................................................................
 
-MatchersTests.cpp:<line number>: FAILED:
+Matchers.tests.cpp:<line number>: FAILED:
   CHECK_THAT( testStringForMatching(), Matches("this STRING contains 'abc' as a substring") )
 with expansion:
   "this string contains 'abc' as a substring" matches "this STRING contains
   'abc' as a substring" case sensitively
 
-MatchersTests.cpp:<line number>: FAILED:
+Matchers.tests.cpp:<line number>: FAILED:
   CHECK_THAT( testStringForMatching(), Matches("contains 'abc' as a substring") )
 with expansion:
   "this string contains 'abc' as a substring" matches "contains 'abc' as a
   substring" case sensitively
 
-MatchersTests.cpp:<line number>: FAILED:
+Matchers.tests.cpp:<line number>: FAILED:
   CHECK_THAT( testStringForMatching(), Matches("this string contains 'abc' as a") )
 with expansion:
   "this string contains 'abc' as a substring" matches "this string contains
@@ -705,15 +705,15 @@ Message from section two
 -------------------------------------------------------------------------------
 StartsWith string matcher
 -------------------------------------------------------------------------------
-MatchersTests.cpp:<line number>
+Matchers.tests.cpp:<line number>
 ...............................................................................
 
-MatchersTests.cpp:<line number>: FAILED:
+Matchers.tests.cpp:<line number>: FAILED:
   CHECK_THAT( testStringForMatching(), StartsWith( "This String" ) )
 with expansion:
   "this string contains 'abc' as a substring" starts with: "This String"
 
-MatchersTests.cpp:<line number>: FAILED:
+Matchers.tests.cpp:<line number>: FAILED:
   CHECK_THAT( testStringForMatching(), StartsWith( "string", Catch::CaseSensitive::No ) )
 with expansion:
   "this string contains 'abc' as a substring" starts with: "string" (case
@@ -722,10 +722,10 @@ with expansion:
 -------------------------------------------------------------------------------
 Tabs and newlines show in output
 -------------------------------------------------------------------------------
-MiscTests.cpp:<line number>
+Misc.tests.cpp:<line number>
 ...............................................................................
 
-MiscTests.cpp:<line number>: FAILED:
+Misc.tests.cpp:<line number>: FAILED:
   CHECK( s1 == s2 )
 with expansion:
   "if ($b == 10) {
@@ -740,10 +740,10 @@ with expansion:
 -------------------------------------------------------------------------------
 Unexpected exceptions can be translated
 -------------------------------------------------------------------------------
-ExceptionTests.cpp:<line number>
+Exception.tests.cpp:<line number>
 ...............................................................................
 
-ExceptionTests.cpp:<line number>: FAILED:
+Exception.tests.cpp:<line number>: FAILED:
 due to unexpected exception with message:
   3.14
 
@@ -751,15 +751,15 @@ due to unexpected exception with message:
 Vector matchers that fail
   Contains (element)
 -------------------------------------------------------------------------------
-MatchersTests.cpp:<line number>
+Matchers.tests.cpp:<line number>
 ...............................................................................
 
-MatchersTests.cpp:<line number>: FAILED:
+Matchers.tests.cpp:<line number>: FAILED:
   CHECK_THAT( v, VectorContains( -1 ) )
 with expansion:
   { 1, 2, 3 } Contains: -1
 
-MatchersTests.cpp:<line number>: FAILED:
+Matchers.tests.cpp:<line number>: FAILED:
   CHECK_THAT( empty, VectorContains( 1 ) )
 with expansion:
   {  } Contains: 1
@@ -768,15 +768,15 @@ with expansion:
 Vector matchers that fail
   Contains (vector)
 -------------------------------------------------------------------------------
-MatchersTests.cpp:<line number>
+Matchers.tests.cpp:<line number>
 ...............................................................................
 
-MatchersTests.cpp:<line number>: FAILED:
+Matchers.tests.cpp:<line number>: FAILED:
   CHECK_THAT( empty, Contains( v) )
 with expansion:
   {  } Contains: { 1, 2, 3 }
 
-MatchersTests.cpp:<line number>: FAILED:
+Matchers.tests.cpp:<line number>: FAILED:
   CHECK_THAT( v, Contains( v2 ) )
 with expansion:
   { 1, 2, 3 } Contains: { 1, 2, 4 }
@@ -785,25 +785,25 @@ with expansion:
 Vector matchers that fail
   Equals
 -------------------------------------------------------------------------------
-MatchersTests.cpp:<line number>
+Matchers.tests.cpp:<line number>
 ...............................................................................
 
-MatchersTests.cpp:<line number>: FAILED:
+Matchers.tests.cpp:<line number>: FAILED:
   CHECK_THAT( v, Equals( v2 ) )
 with expansion:
   { 1, 2, 3 } Equals: { 1, 2 }
 
-MatchersTests.cpp:<line number>: FAILED:
+Matchers.tests.cpp:<line number>: FAILED:
   CHECK_THAT( v2, Equals( v ) )
 with expansion:
   { 1, 2 } Equals: { 1, 2, 3 }
 
-MatchersTests.cpp:<line number>: FAILED:
+Matchers.tests.cpp:<line number>: FAILED:
   CHECK_THAT( empty, Equals( v ) )
 with expansion:
   {  } Equals: { 1, 2, 3 }
 
-MatchersTests.cpp:<line number>: FAILED:
+Matchers.tests.cpp:<line number>: FAILED:
   CHECK_THAT( v, Equals( empty ) )
 with expansion:
   { 1, 2, 3 } Equals: {  }
@@ -811,20 +811,20 @@ with expansion:
 -------------------------------------------------------------------------------
 When unchecked exceptions are thrown directly they are always failures
 -------------------------------------------------------------------------------
-ExceptionTests.cpp:<line number>
+Exception.tests.cpp:<line number>
 ...............................................................................
 
-ExceptionTests.cpp:<line number>: FAILED:
+Exception.tests.cpp:<line number>: FAILED:
 due to unexpected exception with message:
   unexpected exception
 
 -------------------------------------------------------------------------------
 When unchecked exceptions are thrown during a CHECK the test should continue
 -------------------------------------------------------------------------------
-ExceptionTests.cpp:<line number>
+Exception.tests.cpp:<line number>
 ...............................................................................
 
-ExceptionTests.cpp:<line number>: FAILED:
+Exception.tests.cpp:<line number>: FAILED:
   CHECK( thisThrows() == 0 )
 due to unexpected exception with message:
   expected exception
@@ -833,10 +833,10 @@ due to unexpected exception with message:
 When unchecked exceptions are thrown during a REQUIRE the test should abort
 fail
 -------------------------------------------------------------------------------
-ExceptionTests.cpp:<line number>
+Exception.tests.cpp:<line number>
 ...............................................................................
 
-ExceptionTests.cpp:<line number>: FAILED:
+Exception.tests.cpp:<line number>: FAILED:
   REQUIRE( thisThrows() == 0 )
 due to unexpected exception with message:
   expected exception
@@ -844,10 +844,10 @@ due to unexpected exception with message:
 -------------------------------------------------------------------------------
 When unchecked exceptions are thrown from functions they are always failures
 -------------------------------------------------------------------------------
-ExceptionTests.cpp:<line number>
+Exception.tests.cpp:<line number>
 ...............................................................................
 
-ExceptionTests.cpp:<line number>: FAILED:
+Exception.tests.cpp:<line number>: FAILED:
   CHECK( thisThrows() == 0 )
 due to unexpected exception with message:
   expected exception
@@ -856,20 +856,20 @@ due to unexpected exception with message:
 When unchecked exceptions are thrown from sections they are always failures
   section name
 -------------------------------------------------------------------------------
-ExceptionTests.cpp:<line number>
+Exception.tests.cpp:<line number>
 ...............................................................................
 
-ExceptionTests.cpp:<line number>: FAILED:
+Exception.tests.cpp:<line number>: FAILED:
 due to unexpected exception with message:
   unexpected exception
 
 -------------------------------------------------------------------------------
 Where the LHS is not a simple value
 -------------------------------------------------------------------------------
-TrickyTests.cpp:<line number>
+Tricky.tests.cpp:<line number>
 ...............................................................................
 
-TrickyTests.cpp:<line number>:
+Tricky.tests.cpp:<line number>:
 warning:
   Uncomment the code in this test to check that it gives a sensible compiler
   error
@@ -877,10 +877,10 @@ warning:
 -------------------------------------------------------------------------------
 Where there is more to the expression after the RHS
 -------------------------------------------------------------------------------
-TrickyTests.cpp:<line number>
+Tricky.tests.cpp:<line number>
 ...............................................................................
 
-TrickyTests.cpp:<line number>:
+Tricky.tests.cpp:<line number>:
 warning:
   Uncomment the code in this test to check that it gives a sensible compiler
   error
@@ -888,15 +888,15 @@ warning:
 -------------------------------------------------------------------------------
 checkedElse, failing
 -------------------------------------------------------------------------------
-MiscTests.cpp:<line number>
+Misc.tests.cpp:<line number>
 ...............................................................................
 
-MiscTests.cpp:<line number>: FAILED:
+Misc.tests.cpp:<line number>: FAILED:
   CHECKED_ELSE( flag )
 with expansion:
   false
 
-MiscTests.cpp:<line number>: FAILED:
+Misc.tests.cpp:<line number>: FAILED:
   REQUIRE( testCheckedElse( false ) )
 with expansion:
   false
@@ -904,15 +904,15 @@ with expansion:
 -------------------------------------------------------------------------------
 checkedIf, failing
 -------------------------------------------------------------------------------
-MiscTests.cpp:<line number>
+Misc.tests.cpp:<line number>
 ...............................................................................
 
-MiscTests.cpp:<line number>: FAILED:
+Misc.tests.cpp:<line number>: FAILED:
   CHECKED_IF( flag )
 with expansion:
   false
 
-MiscTests.cpp:<line number>: FAILED:
+Misc.tests.cpp:<line number>: FAILED:
   REQUIRE( testCheckedIf( false ) )
 with expansion:
   false
@@ -921,10 +921,10 @@ loose text artifact
 -------------------------------------------------------------------------------
 just failure
 -------------------------------------------------------------------------------
-MessageTests.cpp:<line number>
+Message.tests.cpp:<line number>
 ...............................................................................
 
-MessageTests.cpp:<line number>: FAILED:
+Message.tests.cpp:<line number>: FAILED:
 explicitly with message:
   Previous info should not be seen
 
@@ -932,10 +932,10 @@ explicitly with message:
 looped SECTION tests
   s1
 -------------------------------------------------------------------------------
-MiscTests.cpp:<line number>
+Misc.tests.cpp:<line number>
 ...............................................................................
 
-MiscTests.cpp:<line number>: FAILED:
+Misc.tests.cpp:<line number>: FAILED:
   CHECK( b > a )
 with expansion:
   0 > 1
@@ -943,45 +943,45 @@ with expansion:
 -------------------------------------------------------------------------------
 looped tests
 -------------------------------------------------------------------------------
-MiscTests.cpp:<line number>
+Misc.tests.cpp:<line number>
 ...............................................................................
 
-MiscTests.cpp:<line number>: FAILED:
+Misc.tests.cpp:<line number>: FAILED:
   CHECK( ( fib[i] % 2 ) == 0 )
 with expansion:
   1 == 0
 with message:
   Testing if fib[0] (1) is even
 
-MiscTests.cpp:<line number>: FAILED:
+Misc.tests.cpp:<line number>: FAILED:
   CHECK( ( fib[i] % 2 ) == 0 )
 with expansion:
   1 == 0
 with message:
   Testing if fib[1] (1) is even
 
-MiscTests.cpp:<line number>: FAILED:
+Misc.tests.cpp:<line number>: FAILED:
   CHECK( ( fib[i] % 2 ) == 0 )
 with expansion:
   1 == 0
 with message:
   Testing if fib[3] (3) is even
 
-MiscTests.cpp:<line number>: FAILED:
+Misc.tests.cpp:<line number>: FAILED:
   CHECK( ( fib[i] % 2 ) == 0 )
 with expansion:
   1 == 0
 with message:
   Testing if fib[4] (5) is even
 
-MiscTests.cpp:<line number>: FAILED:
+Misc.tests.cpp:<line number>: FAILED:
   CHECK( ( fib[i] % 2 ) == 0 )
 with expansion:
   1 == 0
 with message:
   Testing if fib[6] (13) is even
 
-MiscTests.cpp:<line number>: FAILED:
+Misc.tests.cpp:<line number>: FAILED:
   CHECK( ( fib[i] % 2 ) == 0 )
 with expansion:
   1 == 0
@@ -993,10 +993,10 @@ more nested SECTION tests
   s1
   s2
 -------------------------------------------------------------------------------
-MiscTests.cpp:<line number>
+Misc.tests.cpp:<line number>
 ...............................................................................
 
-MiscTests.cpp:<line number>: FAILED:
+Misc.tests.cpp:<line number>: FAILED:
   REQUIRE( a == b )
 with expansion:
   1 == 2
@@ -1004,10 +1004,10 @@ with expansion:
 -------------------------------------------------------------------------------
 send a single char to INFO
 -------------------------------------------------------------------------------
-MiscTests.cpp:<line number>
+Misc.tests.cpp:<line number>
 ...............................................................................
 
-MiscTests.cpp:<line number>: FAILED:
+Misc.tests.cpp:<line number>: FAILED:
   REQUIRE( false )
 with message:
   3
@@ -1015,10 +1015,10 @@ with message:
 -------------------------------------------------------------------------------
 sends information to INFO
 -------------------------------------------------------------------------------
-MessageTests.cpp:<line number>
+Message.tests.cpp:<line number>
 ...............................................................................
 
-MessageTests.cpp:<line number>: FAILED:
+Message.tests.cpp:<line number>: FAILED:
   REQUIRE( false )
 with messages:
   hi
@@ -1027,10 +1027,10 @@ with messages:
 -------------------------------------------------------------------------------
 string literals of different sizes can be compared
 -------------------------------------------------------------------------------
-TrickyTests.cpp:<line number>
+Tricky.tests.cpp:<line number>
 ...............................................................................
 
-TrickyTests.cpp:<line number>: FAILED:
+Tricky.tests.cpp:<line number>: FAILED:
   REQUIRE( std::string( "first" ) == "second" )
 with expansion:
   "first" == "second"
@@ -1038,15 +1038,15 @@ with expansion:
 -------------------------------------------------------------------------------
 toString(enum class)
 -------------------------------------------------------------------------------
-EnumToString.cpp:<line number>
+EnumToString.tests.cpp:<line number>
 ...............................................................................
 
-EnumToString.cpp:<line number>: FAILED:
+EnumToString.tests.cpp:<line number>: FAILED:
   CHECK( ::Catch::Detail::stringify(e0) == "0" )
 with expansion:
   "{?}" == "0"
 
-EnumToString.cpp:<line number>: FAILED:
+EnumToString.tests.cpp:<line number>: FAILED:
   CHECK( ::Catch::Detail::stringify(e1) == "1" )
 with expansion:
   "{?}" == "1"
