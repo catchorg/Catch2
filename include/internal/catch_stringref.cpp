@@ -20,11 +20,14 @@
 
 
 namespace Catch {
+     namespace {
 
-    auto getEmptyStringRef() -> StringRef {
-        static StringRef s_emptyStringRef("");
-        return s_emptyStringRef;
-    }
+     auto getEmptyStringRef() -> StringRef {
+         static StringRef s_emptyStringRef("");
+         return s_emptyStringRef;
+     }
+
+     }
 
     StringRef::StringRef() noexcept
     :   StringRef( getEmptyStringRef() )
