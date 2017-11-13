@@ -5026,6 +5026,33 @@
       </Expression>
       <OverallResult success="false"/>
     </TestCase>
+    <TestCase name="Regex string matcher" tags="[.][.failing][matchers]" filename="projects/<exe-name>/MatchersTests.cpp" >
+      <Expression success="false" type="CHECK_THAT" filename="projects/<exe-name>/MatchersTests.cpp" >
+        <Original>
+          testStringForMatching(), Matches("this STRING contains 'abc' as a substring")
+        </Original>
+        <Expanded>
+          "this string contains 'abc' as a substring" matches "this STRING contains 'abc' as a substring" case sensitively
+        </Expanded>
+      </Expression>
+      <Expression success="false" type="CHECK_THAT" filename="projects/<exe-name>/MatchersTests.cpp" >
+        <Original>
+          testStringForMatching(), Matches("contains 'abc' as a substring")
+        </Original>
+        <Expanded>
+          "this string contains 'abc' as a substring" matches "contains 'abc' as a substring" case sensitively
+        </Expanded>
+      </Expression>
+      <Expression success="false" type="CHECK_THAT" filename="projects/<exe-name>/MatchersTests.cpp" >
+        <Original>
+          testStringForMatching(), Matches("this string contains 'abc' as a")
+        </Original>
+        <Expanded>
+          "this string contains 'abc' as a substring" matches "this string contains 'abc' as a" case sensitively
+        </Expanded>
+      </Expression>
+      <OverallResult success="false"/>
+    </TestCase>
     <TestCase name="SUCCEED counts as a test pass" tags="[messages]" filename="projects/<exe-name>/MessageTests.cpp" >
       <OverallResult success="true"/>
     </TestCase>
@@ -5319,6 +5346,46 @@ Message from section two
         </Original>
         <Expanded>
           "this string contains 'abc' as a substring" ends with: "substring"
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE_THAT" filename="projects/<exe-name>/MatchersTests.cpp" >
+        <Original>
+          testStringForMatching(), Matches("this string contains 'abc' as a substring")
+        </Original>
+        <Expanded>
+          "this string contains 'abc' as a substring" matches "this string contains 'abc' as a substring" case sensitively
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE_THAT" filename="projects/<exe-name>/MatchersTests.cpp" >
+        <Original>
+          testStringForMatching(), Matches("this string CONTAINS 'abc' as a substring", Catch::CaseSensitive::No)
+        </Original>
+        <Expanded>
+          "this string contains 'abc' as a substring" matches "this string CONTAINS 'abc' as a substring" case insensitively
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE_THAT" filename="projects/<exe-name>/MatchersTests.cpp" >
+        <Original>
+          testStringForMatching(), Matches("^this string contains 'abc' as a substring$")
+        </Original>
+        <Expanded>
+          "this string contains 'abc' as a substring" matches "^this string contains 'abc' as a substring$" case sensitively
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE_THAT" filename="projects/<exe-name>/MatchersTests.cpp" >
+        <Original>
+          testStringForMatching(), Matches("^.* 'abc' .*$")
+        </Original>
+        <Expanded>
+          "this string contains 'abc' as a substring" matches "^.* 'abc' .*$" case sensitively
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE_THAT" filename="projects/<exe-name>/MatchersTests.cpp" >
+        <Original>
+          testStringForMatching(), Matches("^.* 'ABC' .*$", Catch::CaseSensitive::No)
+        </Original>
+        <Expanded>
+          "this string contains 'abc' as a substring" matches "^.* 'ABC' .*$" case insensitively
         </Expanded>
       </Expression>
       <OverallResult success="true"/>
@@ -8764,7 +8831,7 @@ loose text artifact
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="819" failures="100" expectedFailures="21"/>
+    <OverallResults successes="824" failures="103" expectedFailures="21"/>
   </Group>
-  <OverallResults successes="819" failures="99" expectedFailures="21"/>
+  <OverallResults successes="824" failures="102" expectedFailures="21"/>
 </Catch>

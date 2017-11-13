@@ -52,6 +52,16 @@ namespace Matchers {
             bool match( std::string const& source ) const override;
         };
 
+        struct RegexMatcher : MatcherBase<std::string> {
+            RegexMatcher( std::string regex, CaseSensitive::Choice caseSensitivity );
+            bool match( std::string const& matchee ) const override;
+            std::string describe() const override;
+
+        private:
+            std::string m_regex;
+            CaseSensitive::Choice m_caseSensitivity;
+        };
+
     } // namespace StdString
 
 
@@ -62,6 +72,7 @@ namespace Matchers {
     StdString::ContainsMatcher Contains( std::string const& str, CaseSensitive::Choice caseSensitivity = CaseSensitive::Yes );
     StdString::EndsWithMatcher EndsWith( std::string const& str, CaseSensitive::Choice caseSensitivity = CaseSensitive::Yes );
     StdString::StartsWithMatcher StartsWith( std::string const& str, CaseSensitive::Choice caseSensitivity = CaseSensitive::Yes );
+    StdString::RegexMatcher Matches( std::string const& regex, CaseSensitive::Choice caseSensitivity = CaseSensitive::Yes );
 
 } // namespace Matchers
 } // namespace Catch

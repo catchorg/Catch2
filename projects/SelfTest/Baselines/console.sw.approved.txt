@@ -4344,6 +4344,30 @@ with expansion:
   Hey, its truthy!
 
 -------------------------------------------------------------------------------
+Regex string matcher
+-------------------------------------------------------------------------------
+MatchersTests.cpp:<line number>
+...............................................................................
+
+MatchersTests.cpp:<line number>: FAILED:
+  CHECK_THAT( testStringForMatching(), Matches("this STRING contains 'abc' as a substring") )
+with expansion:
+  "this string contains 'abc' as a substring" matches "this STRING contains
+  'abc' as a substring" case sensitively
+
+MatchersTests.cpp:<line number>: FAILED:
+  CHECK_THAT( testStringForMatching(), Matches("contains 'abc' as a substring") )
+with expansion:
+  "this string contains 'abc' as a substring" matches "contains 'abc' as a
+  substring" case sensitively
+
+MatchersTests.cpp:<line number>: FAILED:
+  CHECK_THAT( testStringForMatching(), Matches("this string contains 'abc' as a") )
+with expansion:
+  "this string contains 'abc' as a substring" matches "this string contains
+  'abc' as a" case sensitively
+
+-------------------------------------------------------------------------------
 SUCCEED counts as a test pass
 -------------------------------------------------------------------------------
 MessageTests.cpp:<line number>
@@ -4645,6 +4669,41 @@ PASSED:
   CHECK_THAT( testStringForMatching(), EndsWith( "substring" ) )
 with expansion:
   "this string contains 'abc' as a substring" ends with: "substring"
+
+MatchersTests.cpp:<line number>:
+PASSED:
+  REQUIRE_THAT( testStringForMatching(), Matches("this string contains 'abc' as a substring") )
+with expansion:
+  "this string contains 'abc' as a substring" matches "this string contains
+  'abc' as a substring" case sensitively
+
+MatchersTests.cpp:<line number>:
+PASSED:
+  REQUIRE_THAT( testStringForMatching(), Matches("this string CONTAINS 'abc' as a substring", Catch::CaseSensitive::No) )
+with expansion:
+  "this string contains 'abc' as a substring" matches "this string CONTAINS
+  'abc' as a substring" case insensitively
+
+MatchersTests.cpp:<line number>:
+PASSED:
+  REQUIRE_THAT( testStringForMatching(), Matches("^this string contains 'abc' as a substring$") )
+with expansion:
+  "this string contains 'abc' as a substring" matches "^this string contains
+  'abc' as a substring$" case sensitively
+
+MatchersTests.cpp:<line number>:
+PASSED:
+  REQUIRE_THAT( testStringForMatching(), Matches("^.* 'abc' .*$") )
+with expansion:
+  "this string contains 'abc' as a substring" matches "^.* 'abc' .*$" case
+  sensitively
+
+MatchersTests.cpp:<line number>:
+PASSED:
+  REQUIRE_THAT( testStringForMatching(), Matches("^.* 'ABC' .*$", Catch::CaseSensitive::No) )
+with expansion:
+  "this string contains 'abc' as a substring" matches "^.* 'ABC' .*$" case
+  insensitively
 
 -------------------------------------------------------------------------------
 StringRef
@@ -7903,6 +7962,6 @@ MiscTests.cpp:<line number>:
 PASSED:
 
 ===============================================================================
-test cases: 188 | 135 passed | 49 failed |  4 failed as expected
-assertions: 939 | 819 passed | 99 failed | 21 failed as expected
+test cases: 189 | 135 passed |  50 failed |  4 failed as expected
+assertions: 947 | 824 passed | 102 failed | 21 failed as expected
 

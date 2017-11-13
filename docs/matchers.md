@@ -39,7 +39,10 @@ REQUIRE_THAT( str,
 Catch currently provides some matchers, they are in the `Catch::Matchers` and `Catch` namespaces.
 
 ### String matchers
-The string matchers are `StartsWith`, `EndsWith`, `Contains` and `Equals`. Each of them also takes an optional second argument, that decides case sensitivity (by-default, they are case sensitive).
+The string matchers are `StartsWith`, `EndsWith`, `Contains`, `Equals` and `Matches`. The first four match a literal (sub)string against a result, while `Matches` takes and matches an ECMAScript regex. Do note that `Matches` matches the string as a whole, meaning that "abc" will not match against "abcd", but "abc.*" will.
+
+Each of the provided `std::string` matchers also takes an optional second argument, that decides case sensitivity (by-default, they are case sensitive).
+
 
 ### Vector matchers
 The vector matchers are `Contains`, `VectorContains` and `Equals`. `VectorContains` looks for a single element in the matched vector, `Contains` looks for a set (vector) of elements inside the matched vector.

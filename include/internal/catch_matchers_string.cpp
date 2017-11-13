@@ -8,6 +8,9 @@
 
 #include "catch_matchers_string.h"
 #include "catch_string_manip.h"
+#include "catch_tostring.h"
+
+#include <regex>
 
 namespace Catch {
 namespace Matchers {
@@ -74,6 +77,23 @@ namespace Matchers {
             return endsWith( m_comparator.adjustString( source ), m_comparator.m_str );
         }
 
+
+
+        RegexMatcher::RegexMatcher(std::string regex, CaseSensitive::Choice caseSensitivity): m_regex(std::move(regex)), m_caseSensitivity(caseSensitivity) {}
+
+        bool RegexMatcher::match(std::string const& matchee) const {
+            auto flags = std::regex::ECMAScript; // ECMAScript is the default syntax option anyway
+            if (m_caseSensitivity == CaseSensitive::Choice::No) {
+                flags |= std::regex::icase;
+            }
+            auto reg = std::regex(m_regex, flags);
+            return std::regex_match(matchee, reg);
+        }
+
+        std::string RegexMatcher::describe() const {
+            return "matches " + ::Catch::Detail::stringify(m_regex) + ((m_caseSensitivity == CaseSensitive::Choice::Yes)? " case sensitively" : " case insensitively");
+        }
+
     } // namespace StdString
 
 
@@ -88,6 +108,10 @@ namespace Matchers {
     }
     StdString::StartsWithMatcher StartsWith( std::string const& str, CaseSensitive::Choice caseSensitivity ) {
         return StdString::StartsWithMatcher( StdString::CasedString( str, caseSensitivity) );
+    }
+
+    StdString::RegexMatcher Matches(std::string const& regex, CaseSensitive::Choice caseSensitivity) {
+        return StdString::RegexMatcher(regex, caseSensitivity);
     }
 
 } // namespace Matchers

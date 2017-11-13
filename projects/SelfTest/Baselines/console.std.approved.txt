@@ -655,6 +655,30 @@ DecompositionTests.cpp:<line number>: FAILED:
 with expansion:
   Hey, its truthy!
 
+-------------------------------------------------------------------------------
+Regex string matcher
+-------------------------------------------------------------------------------
+MatchersTests.cpp:<line number>
+...............................................................................
+
+MatchersTests.cpp:<line number>: FAILED:
+  CHECK_THAT( testStringForMatching(), Matches("this STRING contains 'abc' as a substring") )
+with expansion:
+  "this string contains 'abc' as a substring" matches "this STRING contains
+  'abc' as a substring" case sensitively
+
+MatchersTests.cpp:<line number>: FAILED:
+  CHECK_THAT( testStringForMatching(), Matches("contains 'abc' as a substring") )
+with expansion:
+  "this string contains 'abc' as a substring" matches "contains 'abc' as a
+  substring" case sensitively
+
+MatchersTests.cpp:<line number>: FAILED:
+  CHECK_THAT( testStringForMatching(), Matches("this string contains 'abc' as a") )
+with expansion:
+  "this string contains 'abc' as a substring" matches "this string contains
+  'abc' as a" case sensitively
+
 A string sent directly to stdout
 A string sent directly to stderr
 Message from section one
@@ -1003,6 +1027,6 @@ with expansion:
   "{?}" == "1"
 
 ===============================================================================
-test cases: 188 | 137 passed | 47 failed |  4 failed as expected
-assertions: 940 | 823 passed | 96 failed | 21 failed as expected
+test cases: 189 | 137 passed | 48 failed |  4 failed as expected
+assertions: 948 | 828 passed | 99 failed | 21 failed as expected
 

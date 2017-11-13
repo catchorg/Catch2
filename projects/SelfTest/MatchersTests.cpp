@@ -36,6 +36,12 @@ TEST_CASE("String matchers", "[matchers]" )
 
     CHECK_THAT( testStringForMatching(), StartsWith( "this" ) );
     CHECK_THAT( testStringForMatching(), EndsWith( "substring" ) );
+
+    REQUIRE_THAT(testStringForMatching(), Matches("this string contains 'abc' as a substring"));
+    REQUIRE_THAT(testStringForMatching(), Matches("this string CONTAINS 'abc' as a substring", Catch::CaseSensitive::No));
+    REQUIRE_THAT(testStringForMatching(), Matches("^this string contains 'abc' as a substring$"));
+    REQUIRE_THAT(testStringForMatching(), Matches("^.* 'abc' .*$"));
+    REQUIRE_THAT(testStringForMatching(), Matches("^.* 'ABC' .*$", Catch::CaseSensitive::No));
 }
 
 TEST_CASE("Contains string matcher", "[.][failing][matchers]")
@@ -61,6 +67,12 @@ TEST_CASE("Equals string matcher", "[.][failing][matchers]")
 TEST_CASE("Equals", "[matchers]")
 {
     CHECK_THAT( testStringForMatching(), Equals( "this string contains 'abc' as a substring" ) );
+}
+
+TEST_CASE("Regex string matcher", "[matchers][.failing]") {
+    CHECK_THAT( testStringForMatching(), Matches("this STRING contains 'abc' as a substring"));
+    CHECK_THAT( testStringForMatching(), Matches("contains 'abc' as a substring"));
+    CHECK_THAT( testStringForMatching(), Matches("this string contains 'abc' as a"));
 }
 
 TEST_CASE("Matchers can be (AllOf) composed with the && operator", "[matchers][operators][operator&&]")
