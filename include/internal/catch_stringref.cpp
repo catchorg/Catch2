@@ -10,7 +10,7 @@
 #    pragma clang diagnostic push
 #    pragma clang diagnostic ignored "-Wexit-time-destructors"
 #endif
- 
+
 #include "catch_stringref.h"
 
 #include <ostream>
@@ -25,16 +25,16 @@ namespace Catch {
         static StringRef s_emptyStringRef("");
         return s_emptyStringRef;
     }
-    
+
     StringRef::StringRef() noexcept
     :   StringRef( getEmptyStringRef() )
     {}
-    
+
     StringRef::StringRef( StringRef const& other ) noexcept
     :   m_start( other.m_start ),
         m_size( other.m_size )
     {}
-    
+
     StringRef::StringRef( StringRef&& other ) noexcept
     :   m_start( other.m_start ),
         m_size( other.m_size ),
@@ -42,23 +42,19 @@ namespace Catch {
     {
         other.m_data = nullptr;
     }
-    
+
     StringRef::StringRef( char const* rawChars ) noexcept
     :   m_start( rawChars ),
         m_size( static_cast<size_type>( std::strlen( rawChars ) ) )
     {
         assert( rawChars != nullptr );
     }
-    
+
     StringRef::StringRef( char const* rawChars, size_type size ) noexcept
     :   m_start( rawChars ),
         m_size( size )
-    {
-        size_type rawSize = rawChars == nullptr ? 0 : static_cast<size_type>( std::strlen( rawChars ) );
-        if( rawSize < size )
-            m_size = rawSize;
-    }
-    
+    {}
+
     StringRef::StringRef( std::string const& stdString ) noexcept
     :   m_start( stdString.c_str() ),
         m_size( stdString.size() )
@@ -67,7 +63,7 @@ namespace Catch {
     StringRef::~StringRef() noexcept {
         delete[] m_data;
     }
-    
+
     auto StringRef::operator = ( StringRef other ) noexcept -> StringRef& {
         swap( other );
         return *this;
@@ -81,7 +77,7 @@ namespace Catch {
         std::swap( m_size, other.m_size );
         std::swap( m_data, other.m_data );
     }
-    
+
     auto StringRef::c_str() const -> char const* {
         if( isSubstring() )
            const_cast<StringRef*>( this )->takeOwnership();
@@ -97,7 +93,7 @@ namespace Catch {
     auto StringRef::isSubstring() const noexcept -> bool {
         return m_start[m_size] != '\0';
     }
-    
+
     void StringRef::takeOwnership() {
         if( !isOwned() ) {
             m_data = new char[m_size+1];
@@ -166,7 +162,7 @@ namespace Catch {
     auto operator << ( std::ostream& os, StringRef const& str ) -> std::ostream& {
         return os << str.c_str();
     }
-        
+
 } // namespace Catch
 
 #if defined(__clang__)
