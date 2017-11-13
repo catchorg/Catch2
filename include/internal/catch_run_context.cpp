@@ -8,6 +8,8 @@
 #include <algorithm>
 #include <sstream>
 
+static auto const& defaultExpression = "{Unknown expression after the reported line}";
+
 namespace Catch {
 
     StreamRedirect::StreamRedirect(std::ostream& stream, std::string& targetString)
@@ -253,8 +255,8 @@ namespace Catch {
 
     void RunContext::assertionPassed() {
         ++m_totals.assertions.passed;
-        m_lastAssertionInfo.capturedExpression = "{Unknown expression after the reported line}";
-        m_lastAssertionInfo.macroName = "";
+        m_lastAssertionInfo.capturedExpression = StringRef(defaultExpression, sizeof(defaultExpression) - 1);
+        m_lastAssertionInfo.macroName = StringRef("", 0);
     }
 
     void RunContext::assertionRun() {
