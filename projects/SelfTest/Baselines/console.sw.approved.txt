@@ -6319,6 +6319,19 @@ with expansion:
 
 -------------------------------------------------------------------------------
 Vector matchers
+  Contains (element), composed
+-------------------------------------------------------------------------------
+MatchersTests.cpp:<line number>
+...............................................................................
+
+MatchersTests.cpp:<line number>:
+PASSED:
+  CHECK_THAT( v, VectorContains( 1 ) && VectorContains( 2 ) )
+with expansion:
+  { 1, 2, 3 } ( Contains: 1 and Contains: 2 )
+
+-------------------------------------------------------------------------------
+Vector matchers
   Equals
 -------------------------------------------------------------------------------
 MatchersTests.cpp:<line number>
@@ -7891,5 +7904,5 @@ PASSED:
 
 ===============================================================================
 test cases: 188 | 135 passed | 49 failed |  4 failed as expected
-assertions: 938 | 818 passed | 99 failed | 21 failed as expected
+assertions: 939 | 819 passed | 99 failed | 21 failed as expected
 

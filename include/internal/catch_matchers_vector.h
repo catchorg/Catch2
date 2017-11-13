@@ -16,7 +16,7 @@ namespace Matchers {
     namespace Vector {
 
         template<typename T>
-        struct ContainsElementMatcher : MatcherBase<std::vector<T>, T> {
+        struct ContainsElementMatcher : MatcherBase<std::vector<T>> {
 
             ContainsElementMatcher(T const &comparator) : m_comparator( comparator) {}
 
@@ -37,7 +37,7 @@ namespace Matchers {
         };
 
         template<typename T>
-        struct ContainsMatcher : MatcherBase<std::vector<T>, std::vector<T> > {
+        struct ContainsMatcher : MatcherBase<std::vector<T>> {
 
             ContainsMatcher(std::vector<T> const &comparator) : m_comparator( comparator ) {}
 
@@ -67,7 +67,7 @@ namespace Matchers {
         };
 
         template<typename T>
-        struct EqualsMatcher : MatcherBase<std::vector<T>, std::vector<T> > {
+        struct EqualsMatcher : MatcherBase<std::vector<T>> {
 
             EqualsMatcher(std::vector<T> const &comparator) : m_comparator( comparator ) {}
 

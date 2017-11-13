@@ -122,6 +122,9 @@ TEST_CASE( "Vector matchers", "[matchers][vector]" ) {
         CHECK_THAT( v, Contains( empty) );
         CHECK_THAT( empty, Contains( empty) );
     }
+    SECTION( "Contains (element), composed" ) {
+        CHECK_THAT( v, VectorContains( 1 ) && VectorContains( 2 ) );
+    }
 
     SECTION( "Equals" ) {
 

@@ -7161,6 +7161,17 @@ Message from section two
         </Expression>
         <OverallResults successes="4" failures="0" expectedFailures="0"/>
       </Section>
+      <Section name="Contains (element), composed" filename="projects/<exe-name>/MatchersTests.cpp" >
+        <Expression success="true" type="CHECK_THAT" filename="projects/<exe-name>/MatchersTests.cpp" >
+          <Original>
+            v, VectorContains( 1 ) &amp;&amp; VectorContains( 2 )
+          </Original>
+          <Expanded>
+            { 1, 2, 3 } ( Contains: 1 and Contains: 2 )
+          </Expanded>
+        </Expression>
+        <OverallResults successes="1" failures="0" expectedFailures="0"/>
+      </Section>
       <Section name="Equals" filename="projects/<exe-name>/MatchersTests.cpp" >
         <Expression success="true" type="CHECK_THAT" filename="projects/<exe-name>/MatchersTests.cpp" >
           <Original>
@@ -8753,7 +8764,7 @@ loose text artifact
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="818" failures="100" expectedFailures="21"/>
+    <OverallResults successes="819" failures="100" expectedFailures="21"/>
   </Group>
-  <OverallResults successes="818" failures="99" expectedFailures="21"/>
+  <OverallResults successes="819" failures="99" expectedFailures="21"/>
 </Catch>
