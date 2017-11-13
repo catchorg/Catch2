@@ -66,13 +66,29 @@ TEST_CASE("Equals", "[matchers]") {
     CHECK_THAT( testStringForMatching(), Equals( "this string contains 'ABC' as a substring", Catch::CaseSensitive::No ) );
 }
 
-// <regex> does not work in libstdc++ 4.8, so we have to
+// <regex> does not work in libstdc++ 4.8, so we have to enable these tests only when they
+// are expected to pass and cannot have them in baselines
 TEST_CASE("Regex string matcher -- libstdc++-4.8 workaround", "[matchers][approvals]") {
+
+// This is fiiiine
+// Taken from an answer at
+// https://stackoverflow.com/questions/12530406/is-gcc-4-8-or-earlier-buggy-about-regular-expressions
+#if (!defined(__GNUC__))                                 || \
+      (__cplusplus >= 201103L                            && \
+      (!defined(__GLIBCXX__) || (__cplusplus >= 201402L) || \
+        (defined(_GLIBCXX_REGEX_DFS_QUANTIFIERS_LIMIT)   || \
+          defined(_GLIBCXX_REGEX_STATE_LIMIT)            || \
+             (defined(_GLIBCXX_RELEASE)                  && \
+             _GLIBCXX_RELEASE > 4))))
+
     REQUIRE_THAT(testStringForMatching(), Matches("this string contains 'abc' as a substring"));
     REQUIRE_THAT(testStringForMatching(), Matches("this string CONTAINS 'abc' as a substring", Catch::CaseSensitive::No));
     REQUIRE_THAT(testStringForMatching(), Matches("^this string contains 'abc' as a substring$"));
     REQUIRE_THAT(testStringForMatching(), Matches("^.* 'abc' .*$"));
     REQUIRE_THAT(testStringForMatching(), Matches("^.* 'ABC' .*$", Catch::CaseSensitive::No));
+#endif
+
+    REQUIRE_THAT(testStringForMatching2(), !Matches("this string contains 'abc' as a substring"));
 }
 
 TEST_CASE("Regex string matcher", "[matchers][.failing]") {
