@@ -8,9 +8,9 @@
 
 #define CATCH_CONFIG_MAIN
 #include "catch.hpp"
-#include "../include/reporters/catch_reporter_teamcity.hpp"
-#include "../include/reporters/catch_reporter_tap.hpp"
-#include "../include/reporters/catch_reporter_automake.hpp"
+#include "reporters/catch_reporter_teamcity.hpp"
+#include "reporters/catch_reporter_tap.hpp"
+#include "reporters/catch_reporter_automake.hpp"
 
 
 // Some example tag aliases

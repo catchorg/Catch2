@@ -6670,10 +6670,10 @@ PASSED:
 XmlEncode
   normal string
 -------------------------------------------------------------------------------
-MiscTests.cpp:<line number>
+XmlTests.cpp:<line number>
 ...............................................................................
 
-MiscTests.cpp:<line number>:
+XmlTests.cpp:<line number>:
 PASSED:
   REQUIRE( encode( "normal string" ) == "normal string" )
 with expansion:
@@ -6683,10 +6683,10 @@ with expansion:
 XmlEncode
   empty string
 -------------------------------------------------------------------------------
-MiscTests.cpp:<line number>
+XmlTests.cpp:<line number>
 ...............................................................................
 
-MiscTests.cpp:<line number>:
+XmlTests.cpp:<line number>:
 PASSED:
   REQUIRE( encode( "" ) == "" )
 with expansion:
@@ -6696,10 +6696,10 @@ with expansion:
 XmlEncode
   string with ampersand
 -------------------------------------------------------------------------------
-MiscTests.cpp:<line number>
+XmlTests.cpp:<line number>
 ...............................................................................
 
-MiscTests.cpp:<line number>:
+XmlTests.cpp:<line number>:
 PASSED:
   REQUIRE( encode( "smith & jones" ) == "smith &amp; jones" )
 with expansion:
@@ -6709,10 +6709,10 @@ with expansion:
 XmlEncode
   string with less-than
 -------------------------------------------------------------------------------
-MiscTests.cpp:<line number>
+XmlTests.cpp:<line number>
 ...............................................................................
 
-MiscTests.cpp:<line number>:
+XmlTests.cpp:<line number>:
 PASSED:
   REQUIRE( encode( "smith < jones" ) == "smith &lt; jones" )
 with expansion:
@@ -6722,16 +6722,16 @@ with expansion:
 XmlEncode
   string with greater-than
 -------------------------------------------------------------------------------
-MiscTests.cpp:<line number>
+XmlTests.cpp:<line number>
 ...............................................................................
 
-MiscTests.cpp:<line number>:
+XmlTests.cpp:<line number>:
 PASSED:
   REQUIRE( encode( "smith > jones" ) == "smith > jones" )
 with expansion:
   "smith > jones" == "smith > jones"
 
-MiscTests.cpp:<line number>:
+XmlTests.cpp:<line number>:
 PASSED:
   REQUIRE( encode( "smith ]]> jones" ) == "smith ]]&gt; jones" )
 with expansion:
@@ -6743,10 +6743,10 @@ with expansion:
 XmlEncode
   string with quotes
 -------------------------------------------------------------------------------
-MiscTests.cpp:<line number>
+XmlTests.cpp:<line number>
 ...............................................................................
 
-MiscTests.cpp:<line number>:
+XmlTests.cpp:<line number>:
 PASSED:
   REQUIRE( encode( stringWithQuotes ) == stringWithQuotes )
 with expansion:
@@ -6754,7 +6754,7 @@ with expansion:
   ==
   "don't "quote" me on that"
 
-MiscTests.cpp:<line number>:
+XmlTests.cpp:<line number>:
 PASSED:
   REQUIRE( encode( stringWithQuotes, Catch::XmlEncode::ForAttributes ) == "don't &quot;quote&quot; me on that" )
 with expansion:
@@ -6766,10 +6766,10 @@ with expansion:
 XmlEncode
   string with control char (1)
 -------------------------------------------------------------------------------
-MiscTests.cpp:<line number>
+XmlTests.cpp:<line number>
 ...............................................................................
 
-MiscTests.cpp:<line number>:
+XmlTests.cpp:<line number>:
 PASSED:
   REQUIRE( encode( "[\x01]" ) == "[\\x01]" )
 with expansion:
@@ -6779,10 +6779,10 @@ with expansion:
 XmlEncode
   string with control char (x7F)
 -------------------------------------------------------------------------------
-MiscTests.cpp:<line number>
+XmlTests.cpp:<line number>
 ...............................................................................
 
-MiscTests.cpp:<line number>:
+XmlTests.cpp:<line number>:
 PASSED:
   REQUIRE( encode( "[\x7F]" ) == "[\\x7F]" )
 with expansion:

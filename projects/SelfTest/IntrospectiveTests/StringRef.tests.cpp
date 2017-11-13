@@ -1,4 +1,4 @@
-#include "../include/internal/catch_stringref.h"
+#include "internal/catch_stringref.h"
 
 #include "catch.hpp"
 
