@@ -27,6 +27,13 @@ namespace Catch {
          return s_emptyStringRef;
      }
 
+     char const* enforceNonNull(char const* ptr) {
+         if (ptr == nullptr) {
+             std::abort();
+         }
+         return ptr;
+     }
+
      }
 
     StringRef::StringRef() noexcept
@@ -47,10 +54,8 @@ namespace Catch {
     }
 
     StringRef::StringRef(char const* rawChars) noexcept
-        :   m_start(rawChars),
-            m_size( (rawChars != nullptr)?
-                    (static_cast<size_type>(std::strlen(rawChars))):
-                     throw std::domain_error("Cannot create StringRef from nullptr"))
+        :   m_start( enforceNonNull(rawChars) ),
+            m_size( static_cast<size_type>(std::strlen(rawChars)))
     {}
 
     StringRef::StringRef( char const* rawChars, size_type size ) noexcept
