@@ -144,7 +144,7 @@ TEST_CASE("Test3", "[a][b][c]") {
     REQUIRE(a == b);
 }
 ```
-would be registered as 3 tests, `Test1`, `Test2` and `Test3`, and ctest 4 labels would be created, `a`, `b`, `c` and `unit`.
+would be registered as 3 tests, `Test1`, `Test2` and `Test3`, and 4 ctest labels would be created, `a`, `b`, `c` and `unit`.
 
 ### CodeCoverage module (GCOV, LCOV...)
 
