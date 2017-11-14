@@ -8,10 +8,10 @@
 
 #include "catch_reporter_bases.hpp"
 
+#include "catch_reporter_junit.h"
+
 #include "../internal/catch_tostring.h"
 #include "../internal/catch_reporter_registrars.hpp"
-#include "internal/catch_xmlwriter.h"
-#include "../internal/catch_timer.h"
 
 #include <assert.h>
 #include <sstream>
@@ -55,202 +55,193 @@ namespace Catch {
                 return it->substr(1);
             return std::string();
         }
-    }
+    } // anonymous namespace
 
-    class JunitReporter : public CumulativeReporterBase<JunitReporter> {
-    public:
-        JunitReporter( ReporterConfig const& _config )
+    JunitReporter::JunitReporter( ReporterConfig const& _config )
         :   CumulativeReporterBase( _config ),
             xml( _config.stream() )
         {
             m_reporterPrefs.shouldRedirectStdOut = true;
         }
 
-        ~JunitReporter() override;
+    JunitReporter::~JunitReporter() {};
 
-        static std::string getDescription() {
-            return "Reports test results in an XML format that looks like Ant's junitreport target";
+    std::string JunitReporter::getDescription() {
+        return "Reports test results in an XML format that looks like Ant's junitreport target";
+    }
+
+    void JunitReporter::noMatchingTestCases( std::string const& /*spec*/ ) {}
+
+    void JunitReporter::testRunStarting( TestRunInfo const& runInfo )  {
+        CumulativeReporterBase::testRunStarting( runInfo );
+        xml.startElement( "testsuites" );
+    }
+
+    void JunitReporter::testGroupStarting( GroupInfo const& groupInfo ) {
+        suiteTimer.start();
+        stdOutForSuite.clear();
+        stdErrForSuite.clear();
+        unexpectedExceptions = 0;
+        CumulativeReporterBase::testGroupStarting( groupInfo );
+    }
+
+    void JunitReporter::testCaseStarting( TestCaseInfo const& testCaseInfo ) {
+        m_okToFail = testCaseInfo.okToFail();
+    }
+
+    bool JunitReporter::assertionEnded( AssertionStats const& assertionStats ) {
+        if( assertionStats.assertionResult.getResultType() == ResultWas::ThrewException && !m_okToFail )
+            unexpectedExceptions++;
+        return CumulativeReporterBase::assertionEnded( assertionStats );
+    }
+
+    void JunitReporter::testCaseEnded( TestCaseStats const& testCaseStats ) {
+        stdOutForSuite += testCaseStats.stdOut;
+        stdErrForSuite += testCaseStats.stdErr;
+        CumulativeReporterBase::testCaseEnded( testCaseStats );
+    }
+
+    void JunitReporter::testGroupEnded( TestGroupStats const& testGroupStats ) {
+        double suiteTime = suiteTimer.getElapsedSeconds();
+        CumulativeReporterBase::testGroupEnded( testGroupStats );
+        writeGroup( *m_testGroups.back(), suiteTime );
+    }
+
+    void JunitReporter::testRunEndedCumulative() {
+        xml.endElement();
+    }
+
+    void JunitReporter::writeGroup( TestGroupNode const& groupNode, double suiteTime ) {
+        XmlWriter::ScopedElement e = xml.scopedElement( "testsuite" );
+        TestGroupStats const& stats = groupNode.value;
+        xml.writeAttribute( "name", stats.groupInfo.name );
+        xml.writeAttribute( "errors", unexpectedExceptions );
+        xml.writeAttribute( "failures", stats.totals.assertions.failed-unexpectedExceptions );
+        xml.writeAttribute( "tests", stats.totals.assertions.total() );
+        xml.writeAttribute( "hostname", "tbd" ); // !TBD
+        if( m_config->showDurations() == ShowDurations::Never )
+            xml.writeAttribute( "time", "" );
+        else
+            xml.writeAttribute( "time", suiteTime );
+        xml.writeAttribute( "timestamp", getCurrentTimestamp() );
+
+        // Write test cases
+        for( auto const& child : groupNode.children )
+            writeTestCase( *child );
+
+        xml.scopedElement( "system-out" ).writeText( trim( stdOutForSuite ), false );
+        xml.scopedElement( "system-err" ).writeText( trim( stdErrForSuite ), false );
+    }
+
+    void JunitReporter::writeTestCase( TestCaseNode const& testCaseNode ) {
+        TestCaseStats const& stats = testCaseNode.value;
+
+        // All test cases have exactly one section - which represents the
+        // test case itself. That section may have 0-n nested sections
+        assert( testCaseNode.children.size() == 1 );
+        SectionNode const& rootSection = *testCaseNode.children.front();
+
+        std::string className = stats.testInfo.className;
+
+        if( className.empty() ) {
+            className = fileNameTag(stats.testInfo.tags);
+            if ( className.empty() )
+                className = "global";
         }
 
-        void noMatchingTestCases( std::string const& /*spec*/ ) override {}
+        if ( !m_config->name().empty() )
+            className = m_config->name() + "." + className;
 
-        void testRunStarting( TestRunInfo const& runInfo ) override {
-            CumulativeReporterBase::testRunStarting( runInfo );
-            xml.startElement( "testsuites" );
-        }
+        writeSection( className, "", rootSection );
+    }
 
-        void testGroupStarting( GroupInfo const& groupInfo ) override {
-            suiteTimer.start();
-            stdOutForSuite.str("");
-            stdErrForSuite.str("");
-            unexpectedExceptions = 0;
-            CumulativeReporterBase::testGroupStarting( groupInfo );
-        }
+    void JunitReporter::writeSection(  std::string const& className,
+                        std::string const& rootName,
+                        SectionNode const& sectionNode ) {
+        std::string name = trim( sectionNode.stats.sectionInfo.name );
+        if( !rootName.empty() )
+            name = rootName + '/' + name;
 
-        void testCaseStarting( TestCaseInfo const& testCaseInfo ) override {
-            m_okToFail = testCaseInfo.okToFail();
-        }
-        bool assertionEnded( AssertionStats const& assertionStats ) override {
-            if( assertionStats.assertionResult.getResultType() == ResultWas::ThrewException && !m_okToFail )
-                unexpectedExceptions++;
-            return CumulativeReporterBase::assertionEnded( assertionStats );
-        }
-
-        void testCaseEnded( TestCaseStats const& testCaseStats ) override {
-            stdOutForSuite << testCaseStats.stdOut;
-            stdErrForSuite << testCaseStats.stdErr;
-            CumulativeReporterBase::testCaseEnded( testCaseStats );
-        }
-
-        void testGroupEnded( TestGroupStats const& testGroupStats ) override {
-            double suiteTime = suiteTimer.getElapsedSeconds();
-            CumulativeReporterBase::testGroupEnded( testGroupStats );
-            writeGroup( *m_testGroups.back(), suiteTime );
-        }
-
-        void testRunEndedCumulative() override {
-            xml.endElement();
-        }
-
-        void writeGroup( TestGroupNode const& groupNode, double suiteTime ) {
-            XmlWriter::ScopedElement e = xml.scopedElement( "testsuite" );
-            TestGroupStats const& stats = groupNode.value;
-            xml.writeAttribute( "name", stats.groupInfo.name );
-            xml.writeAttribute( "errors", unexpectedExceptions );
-            xml.writeAttribute( "failures", stats.totals.assertions.failed-unexpectedExceptions );
-            xml.writeAttribute( "tests", stats.totals.assertions.total() );
-            xml.writeAttribute( "hostname", "tbd" ); // !TBD
-            if( m_config->showDurations() == ShowDurations::Never )
-                xml.writeAttribute( "time", "" );
-            else
-                xml.writeAttribute( "time", suiteTime );
-            xml.writeAttribute( "timestamp", getCurrentTimestamp() );
-
-            // Write test cases
-            for( auto const& child : groupNode.children )
-                writeTestCase( *child );
-
-            xml.scopedElement( "system-out" ).writeText( trim( stdOutForSuite.str() ), false );
-            xml.scopedElement( "system-err" ).writeText( trim( stdErrForSuite.str() ), false );
-        }
-
-        void writeTestCase( TestCaseNode const& testCaseNode ) {
-            TestCaseStats const& stats = testCaseNode.value;
-
-            // All test cases have exactly one section - which represents the
-            // test case itself. That section may have 0-n nested sections
-            assert( testCaseNode.children.size() == 1 );
-            SectionNode const& rootSection = *testCaseNode.children.front();
-
-            std::string className = stats.testInfo.className;
-
+        if( !sectionNode.assertions.empty() ||
+            !sectionNode.stdOut.empty() ||
+            !sectionNode.stdErr.empty() ) {
+            XmlWriter::ScopedElement e = xml.scopedElement( "testcase" );
             if( className.empty() ) {
-                className = fileNameTag(stats.testInfo.tags);
-                if ( className.empty() )
-                    className = "global";
+                xml.writeAttribute( "classname", name );
+                xml.writeAttribute( "name", "root" );
+            }
+            else {
+                xml.writeAttribute( "classname", className );
+                xml.writeAttribute( "name", name );
+            }
+            xml.writeAttribute( "time", ::Catch::Detail::stringify( sectionNode.stats.durationInSeconds ) );
+
+            writeAssertions( sectionNode );
+
+            if( !sectionNode.stdOut.empty() )
+                xml.scopedElement( "system-out" ).writeText( trim( sectionNode.stdOut ), false );
+            if( !sectionNode.stdErr.empty() )
+                xml.scopedElement( "system-err" ).writeText( trim( sectionNode.stdErr ), false );
+        }
+        for( auto const& childNode : sectionNode.childSections )
+            if( className.empty() )
+                writeSection( name, "", *childNode );
+            else
+                writeSection( className, name, *childNode );
+    }
+
+    void JunitReporter::writeAssertions( SectionNode const& sectionNode ) {
+        for( auto const& assertion : sectionNode.assertions )
+            writeAssertion( assertion );
+    }
+
+    void JunitReporter::writeAssertion( AssertionStats const& stats ) {
+        AssertionResult const& result = stats.assertionResult;
+        if( !result.isOk() ) {
+            std::string elementName;
+            switch( result.getResultType() ) {
+                case ResultWas::ThrewException:
+                case ResultWas::FatalErrorCondition:
+                    elementName = "error";
+                    break;
+                case ResultWas::ExplicitFailure:
+                    elementName = "failure";
+                    break;
+                case ResultWas::ExpressionFailed:
+                    elementName = "failure";
+                    break;
+                case ResultWas::DidntThrowException:
+                    elementName = "failure";
+                    break;
+
+                // We should never see these here:
+                case ResultWas::Info:
+                case ResultWas::Warning:
+                case ResultWas::Ok:
+                case ResultWas::Unknown:
+                case ResultWas::FailureBit:
+                case ResultWas::Exception:
+                    elementName = "internalError";
+                    break;
             }
 
-            if ( !m_config->name().empty() )
-                className = m_config->name() + "." + className;
+            XmlWriter::ScopedElement e = xml.scopedElement( elementName );
 
-            writeSection( className, "", rootSection );
+            xml.writeAttribute( "message", result.getExpandedExpression() );
+            xml.writeAttribute( "type", result.getTestMacroName() );
+
+            ReusableStringStream rss;
+            if( !result.getMessage().empty() )
+                rss << result.getMessage() << '\n';
+            for( auto const& msg : stats.infoMessages )
+                if( msg.type == ResultWas::Info )
+                    rss << msg.message << '\n';
+
+            rss << "at " << result.getSourceInfo();
+            xml.writeText( rss.str(), false );
         }
+    }
 
-        void writeSection(  std::string const& className,
-                            std::string const& rootName,
-                            SectionNode const& sectionNode ) {
-            std::string name = trim( sectionNode.stats.sectionInfo.name );
-            if( !rootName.empty() )
-                name = rootName + '/' + name;
-
-            if( !sectionNode.assertions.empty() ||
-                !sectionNode.stdOut.empty() ||
-                !sectionNode.stdErr.empty() ) {
-                XmlWriter::ScopedElement e = xml.scopedElement( "testcase" );
-                if( className.empty() ) {
-                    xml.writeAttribute( "classname", name );
-                    xml.writeAttribute( "name", "root" );
-                }
-                else {
-                    xml.writeAttribute( "classname", className );
-                    xml.writeAttribute( "name", name );
-                }
-                xml.writeAttribute( "time", ::Catch::Detail::stringify( sectionNode.stats.durationInSeconds ) );
-
-                writeAssertions( sectionNode );
-
-                if( !sectionNode.stdOut.empty() )
-                    xml.scopedElement( "system-out" ).writeText( trim( sectionNode.stdOut ), false );
-                if( !sectionNode.stdErr.empty() )
-                    xml.scopedElement( "system-err" ).writeText( trim( sectionNode.stdErr ), false );
-            }
-            for( auto const& childNode : sectionNode.childSections )
-                if( className.empty() )
-                    writeSection( name, "", *childNode );
-                else
-                    writeSection( className, name, *childNode );
-        }
-
-        void writeAssertions( SectionNode const& sectionNode ) {
-            for( auto const& assertion : sectionNode.assertions )
-                writeAssertion( assertion );
-        }
-        void writeAssertion( AssertionStats const& stats ) {
-            AssertionResult const& result = stats.assertionResult;
-            if( !result.isOk() ) {
-                std::string elementName;
-                switch( result.getResultType() ) {
-                    case ResultWas::ThrewException:
-                    case ResultWas::FatalErrorCondition:
-                        elementName = "error";
-                        break;
-                    case ResultWas::ExplicitFailure:
-                        elementName = "failure";
-                        break;
-                    case ResultWas::ExpressionFailed:
-                        elementName = "failure";
-                        break;
-                    case ResultWas::DidntThrowException:
-                        elementName = "failure";
-                        break;
-
-                    // We should never see these here:
-                    case ResultWas::Info:
-                    case ResultWas::Warning:
-                    case ResultWas::Ok:
-                    case ResultWas::Unknown:
-                    case ResultWas::FailureBit:
-                    case ResultWas::Exception:
-                        elementName = "internalError";
-                        break;
-                }
-
-                XmlWriter::ScopedElement e = xml.scopedElement( elementName );
-
-                xml.writeAttribute( "message", result.getExpandedExpression() );
-                xml.writeAttribute( "type", result.getTestMacroName() );
-
-                ReusableStringStream rss;
-                if( !result.getMessage().empty() )
-                    rss << result.getMessage() << '\n';
-                for( auto const& msg : stats.infoMessages )
-                    if( msg.type == ResultWas::Info )
-                        rss << msg.message << '\n';
-
-                rss << "at " << result.getSourceInfo();
-                xml.writeText( rss.str(), false );
-            }
-        }
-
-        XmlWriter xml;
-        Timer suiteTimer;
-        std::ostringstream stdOutForSuite;
-        std::ostringstream stdErrForSuite;
-        unsigned int unexpectedExceptions = 0;
-        bool m_okToFail = false;
-    };
-
-    JunitReporter::~JunitReporter() {}
     CATCH_REGISTER_REPORTER( "junit", JunitReporter )
 
 } // end namespace Catch

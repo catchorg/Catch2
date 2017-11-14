@@ -13,5 +13,6 @@
 
 // Allow users to base their work off existing reporters
 #include "../reporters/catch_reporter_compact.h"
+#include "../reporters/catch_reporter_junit.h"
 
 #endif // TWOBLUECUBES_CATCH_EXTERNAL_INTERFACES_H_INCLUDED
