@@ -247,6 +247,7 @@ CheckFileList(INTERNAL_FILES ${HEADER_DIR}/internal)
 set(REPORTER_HEADERS
         ${HEADER_DIR}/reporters/catch_reporter_automake.hpp
         ${HEADER_DIR}/reporters/catch_reporter_bases.hpp
+        ${HEADER_DIR}/reporters/catch_reporter_compact.h
         ${HEADER_DIR}/reporters/catch_reporter_multi.h
         ${HEADER_DIR}/reporters/catch_reporter_tap.hpp
         ${HEADER_DIR}/reporters/catch_reporter_teamcity.hpp
