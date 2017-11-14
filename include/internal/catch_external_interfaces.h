@@ -13,6 +13,7 @@
 
 // Allow users to base their work off existing reporters
 #include "../reporters/catch_reporter_compact.h"
+#include "../reporters/catch_reporter_console.h"
 #include "../reporters/catch_reporter_junit.h"
 #include "../reporters/catch_reporter_xml.h"
 
