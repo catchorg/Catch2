@@ -97,33 +97,11 @@ with expansion:
 ```
 
 
-### Visual Studio 2013 -- do-while loop withing range based for fails to compile (C2059)
-There is a known bug in Visual Studio 2013 (VC 12), that causes compilation error if range based for is followed by an assertion macro, without enclosing the block in braces. This snippet is sufficient to trigger the error
-```cpp
-#define CATCH_CONFIG_MAIN
-#include "catch.hpp"
 
-TEST_CASE("Syntax error with VC12") {
-    for ( auto x : { 1 , 2, 3 } )
-        REQUIRE( x < 3.14 );
-}
-```
-An easy workaround is possible, use braces:
-```cpp
-#define CATCH_CONFIG_MAIN
-#include "catch.hpp"
+### Visual Studio 2015 -- Wrong line number reported in debug mode
+VS 2015 has a known bug where `__LINE__` macro can be improperly expanded under certain circumstances, while compiling multi-file project in Debug mode.
 
-TEST_CASE("No longer a syntax error with VC12") {
-    for ( auto x : { 1 , 2, 3 } ) {
-        REQUIRE( x < 3.14 );
-    }
-}
-```
-
-### Visual Studio 2003 -- Syntax error caused by improperly expanded `__LINE__` macro
-Older version of Visual Studio can have trouble compiling Catch, not expanding the `__LINE__` macro properly when recompiling the test binary. This is caused by Edit and Continue being on.
-
-A workaround is to turn off Edit and Continue when compiling the test binary.
+A workaround is to compile the binary in Release mode.
 
 ### Clang/G++ -- skipping leaf sections after an exception
 Some versions of `libc++` and `libstdc++` (or their runtimes) have a bug with `std::uncaught_exception()` getting stuck returning `true` after rethrow, even if there are no active exceptions. One such case is this snippet, which skipped the sections "a" and "b", when compiled against `libcxxrt` from master
@@ -144,3 +122,8 @@ TEST_CASE("b") {
 ```
 
 If you are seeing a problem like this, i.e. a weird test paths that trigger only under Clang with `libc++`, or only under very specific version of `libstdc++`, it is very likely you are seeing this. The only known workaround is to use a fixed version of your standard library.
+
+### Clang/G++ -- `Matches` string matcher always returns false
+This is a bug in `libstdc++-4.8`, where all matching methods from `<regex>` return false. Since `Matches` uses `<regex>` internally, if the underlying implementation does not work, it doesn't work either.
+
+Workaround: Use newer version of `libstdc++`.
