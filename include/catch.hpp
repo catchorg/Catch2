@@ -9,6 +9,7 @@
 #ifndef TWOBLUECUBES_CATCH_HPP_INCLUDED
 #define TWOBLUECUBES_CATCH_HPP_INCLUDED
 
+
 #ifdef __clang__
 #    pragma clang system_header
 #elif defined __GNUC__
@@ -19,12 +20,19 @@
 
 #if defined(CATCH_CONFIG_MAIN) || defined(CATCH_CONFIG_RUNNER)
 #  define CATCH_IMPL
+#  define CATCH_CONFIG_ALL_PARTS
+#endif
+
+// In the impl file, we want to have access to all parts of the headers
+// Can also be used to sanely support PCHs
+#if defined(CATCH_CONFIG_ALL_PARTS)
 #  define CATCH_CONFIG_EXTERNAL_INTERFACES
 #  if defined(CATCH_CONFIG_DISABLE_MATCHERS)
 #    undef CATCH_CONFIG_DISABLE_MATCHERS
 #  endif
 #endif
 
+#if !defined(CATCH_CONFIG_IMPL_ONLY)
 #include "internal/catch_platform.h"
 
 #ifdef CATCH_IMPL
@@ -61,6 +69,8 @@
 #include "internal/catch_external_interfaces.h"
 #endif
 
+#endif // ! CATCH_CONFIG_IMPL_ONLY
+
 #ifdef CATCH_IMPL
 #include "internal/catch_impl.hpp"
 #endif
@@ -69,6 +79,7 @@
 #include "internal/catch_default_main.hpp"
 #endif
 
+#if !defined(CATCH_CONFIG_IMPL_ONLY)
 
 #ifdef CLARA_CONFIG_MAIN_NOT_DEFINED
 #  undef CLARA_CONFIG_MAIN
@@ -326,6 +337,8 @@ using Catch::Detail::Approx;
 
 
 #endif
+
+#endif // ! CATCH_CONFIG_IMPL_ONLY
 
 #include "internal/catch_reenable_warnings.h"
 

@@ -55,6 +55,17 @@ Because of the incremental nature of Catch's test suites and ability to run spec
 
 ## Low-level tools
 
+### Precompiled headers (PCHs)
+
+Catch offers prototypal support for being included in precompiled headers, but because of its single-header nature it does need some actions by the user:
+* The precompiled header needs to define `CATCH_CONFIG_ALL_PARTS`
+* The implementation file needs to
+  * undefine `TWOBLUECUBES_SINGLE_INCLUDE_CATCH_HPP_INCLUDED`
+  * define `CATCH_CONFIG_IMPL_ONLY`
+  * define `CATCH_CONFIG_MAIN` or `CATCH_CONFIG_RUNNER`
+  * include "catch.hpp" again
+
+
 ### CMake
 
 In general we recommend "vendoring" Catch's single-include releases inside your own repository. If you do this, the following example shows a minimal CMake project:
