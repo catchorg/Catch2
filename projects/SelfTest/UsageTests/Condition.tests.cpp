@@ -17,13 +17,17 @@
 #include <limits>
 #include <cstdint>
 
+namespace { namespace ConditionTests {
+
+#ifndef CONDITION_TEST_HELPERS_INCLUDED // Don't compile this more than once per TU
+#define CONDITION_TEST_HELPERS_INCLUDED
+
 struct TestData {
     int int_seven = 7;
     std::string str_hello = "hello";
     float float_nine_point_one = 9.1f;
     double double_pi = 3.1415926535;
 };
-
 
 struct TestDef {
     TestDef& operator + ( const std::string& ) {
@@ -34,13 +38,17 @@ struct TestDef {
     }
 };
 
+inline const char* returnsConstNull(){ return nullptr; }
+inline char* returnsNull(){ return nullptr; }
+
+#endif
+
 // The "failing" tests all use the CHECK macro, which continues if the specific test fails.
 // This allows us to see all results, even if an earlier check fails
 
 // Equality tests
 TEST_CASE( "Equality checks that should succeed" )
 {
-
     TestDef td;
     td + "hello" + "hello";
 
@@ -256,9 +264,6 @@ TEST_CASE( "Comparisons between ints where one side is computed" )
 #pragma GCC diagnostic pop
 #endif
 
-inline const char* returnsConstNull(){ return nullptr; }
-inline char* returnsNull(){ return nullptr; }
-
 TEST_CASE( "Pointers can be compared to null" )
 {
     TestData* p = nullptr;
@@ -323,3 +328,4 @@ TEST_CASE( "'Not' checks that should fail", "[.][failing]" )
     CHECK_FALSE( 1 == 1 );
 }
 
+}} // namespace ConditionTests

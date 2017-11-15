@@ -10,13 +10,32 @@
 
 #include <cmath>
 
+namespace { namespace ApproxTests {
+
+#ifndef APPROX_TEST_HELPERS_INCLUDED // Don't compile this more than once per TU
+#define APPROX_TEST_HELPERS_INCLUDED
+
+    inline double divide( double a, double b ) {
+        return a/b;
+    }
+
+    class StrongDoubleTypedef {
+        double d_ = 0.0;
+
+    public:
+        explicit StrongDoubleTypedef(double d) : d_(d) {}
+        explicit operator double() const { return d_; }
+    };
+
+    inline std::ostream& operator<<( std::ostream& os, StrongDoubleTypedef td ) {
+        return os << "StrongDoubleTypedef(" << static_cast<double>(td) << ")";
+    }
+
+#endif
+
+
 ///////////////////////////////////////////////////////////////////////////////
-TEST_CASE
-(
-    "Some simple comparisons between doubles",
-    "[Approx]"
-)
-{
+TEST_CASE( "Some simple comparisons between doubles", "[Approx]" ) {
     double d = 1.23;
 
     REQUIRE( d == Approx( 1.23 ) );
@@ -31,12 +50,7 @@ TEST_CASE
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-TEST_CASE
-(
-    "Approximate comparisons with different epsilons",
-    "[Approx]"
- )
-{
+TEST_CASE( "Approximate comparisons with different epsilons", "[Approx]" ) {
     double d = 1.23;
 
     REQUIRE( d != Approx( 1.231 ) );
@@ -44,12 +58,7 @@ TEST_CASE
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-TEST_CASE
-(
- "Less-than inequalities with different epsilons",
- "[Approx]"
-)
-{
+TEST_CASE( "Less-than inequalities with different epsilons", "[Approx]" ) {
   double d = 1.23;
 
   REQUIRE( d <= Approx( 1.24 ) );
@@ -59,12 +68,7 @@ TEST_CASE
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-TEST_CASE
-(
- "Greater-than inequalities with different epsilons",
- "[Approx]"
-)
-{
+TEST_CASE( "Greater-than inequalities with different epsilons", "[Approx]" ) {
   double d = 1.23;
 
   REQUIRE( d >= Approx( 1.22 ) );
@@ -74,34 +78,19 @@ TEST_CASE
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-TEST_CASE
-(
-    "Approximate comparisons with floats",
-    "[Approx]"
-)
-{
+TEST_CASE( "Approximate comparisons with floats", "[Approx]" ) {
     REQUIRE( 1.23f == Approx( 1.23f ) );
     REQUIRE( 0.0f == Approx( 0.0f ) );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-TEST_CASE
-(
-    "Approximate comparisons with ints",
-    "[Approx]"
-)
-{
+TEST_CASE( "Approximate comparisons with ints", "[Approx]" ) {
     REQUIRE( 1 == Approx( 1 ) );
     REQUIRE( 0 == Approx( 0 ) );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-TEST_CASE
-(
-    "Approximate comparisons with mixed numeric types",
-    "[Approx]"
-)
-{
+TEST_CASE( "Approximate comparisons with mixed numeric types", "[Approx]" ) {
     const double dZero = 0;
     const double dSmall = 0.00001;
     const double dMedium = 1.234;
@@ -114,12 +103,7 @@ TEST_CASE
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-TEST_CASE
-(
-    "Use a custom approx",
-    "[Approx][custom]"
-)
-{
+TEST_CASE( "Use a custom approx", "[Approx][custom]" ) {
     double d = 1.23;
 
     Approx approx = Approx::custom().epsilon( 0.01 );
@@ -135,12 +119,7 @@ TEST_CASE
     REQUIRE( approx( d ) != 1.25 );
 }
 
-inline double divide( double a, double b ) {
-    return a/b;
-}
-
-TEST_CASE( "Approximate PI", "[Approx][PI]" )
-{
+TEST_CASE( "Approximate PI", "[Approx][PI]" ) {
     REQUIRE( divide( 22, 7 ) == Approx( 3.141 ).epsilon( 0.001 ) );
     REQUIRE( divide( 22, 7 ) != Approx( 3.141 ).epsilon( 0.0001 ) );
 }
@@ -194,19 +173,6 @@ TEST_CASE("Assorted miscellaneous tests", "[Approx]") {
     REQUIRE_FALSE(NAN == Approx(NAN));
 }
 
-class StrongDoubleTypedef
-{
-  double d_ = 0.0;
-
-  public:
-    explicit StrongDoubleTypedef(double d) : d_(d) {}
-    explicit operator double() const { return d_; }
-};
-
-inline std::ostream& operator<<( std::ostream& os, StrongDoubleTypedef td ) {
-    return os << "StrongDoubleTypedef(" << static_cast<double>(td) << ")";
-}
-
 TEST_CASE( "Comparison with explicitly convertible types", "[Approx]" )
 {
   StrongDoubleTypedef td(10.0);
@@ -228,3 +194,5 @@ TEST_CASE( "Comparison with explicitly convertible types", "[Approx]" )
   REQUIRE(Approx(11.0) >= td);
 
 }
+
+}} // namespace ApproxTests

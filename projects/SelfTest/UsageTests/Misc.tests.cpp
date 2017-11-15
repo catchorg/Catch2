@@ -19,6 +19,48 @@
 #include <limits>
 #include <sstream>
 
+namespace { namespace MiscTests {
+
+#ifndef MISC_TEST_HELPERS_INCLUDED // Don't compile this more than once per TU
+#define MISC_TEST_HELPERS_INCLUDED
+
+inline const char* makeString( bool makeNull ) {
+    return makeNull ? nullptr : "valid string";
+}
+inline bool testCheckedIf( bool flag )  {
+    CHECKED_IF( flag )
+        return true;
+    else
+        return false;
+}
+inline bool testCheckedElse( bool flag ) {
+    CHECKED_ELSE( flag )
+        return false;
+
+    return true;
+}
+
+inline unsigned int Factorial( unsigned int number )  {
+    return number > 1 ? Factorial(number-1)*number : 1;
+}
+
+static int f() {
+    return 1;
+}
+
+inline void manuallyRegisteredTestFunction() {
+    SUCCEED( "was called" );
+}
+
+struct AutoTestReg {
+    AutoTestReg() {
+        REGISTER_TEST_CASE( manuallyRegisteredTestFunction, "ManuallyRegistered" );
+    }
+};
+static AutoTestReg autoTestReg;
+
+#endif
+
 TEST_CASE( "random SECTION tests", "[.][sections][failing]" ) {
     int a = 1;
     int b = 2;
@@ -108,21 +150,9 @@ TEST_CASE( "Sends stuff to stdout and stderr", "[.]" ) {
     std::cerr << "A string sent directly to stderr" << std::endl;
 }
 
-inline const char* makeString( bool makeNull ) {
-    return makeNull ? nullptr : "valid string";
-}
-
 TEST_CASE( "null strings" ) {
     REQUIRE( makeString( false ) != static_cast<char*>(nullptr));
     REQUIRE( makeString( true ) == static_cast<char*>(nullptr));
-}
-
-
-inline bool testCheckedIf( bool flag )  {
-    CHECKED_IF( flag )
-        return true;
-    else
-        return false;
 }
 
 TEST_CASE( "checkedIf" ) {
@@ -131,13 +161,6 @@ TEST_CASE( "checkedIf" ) {
 
 TEST_CASE( "checkedIf, failing", "[failing][.]" ) {
     REQUIRE( testCheckedIf( false ) );
-}
-
-inline bool testCheckedElse( bool flag ) {
-    CHECKED_ELSE( flag )
-        return false;
-
-    return true;
 }
 
 TEST_CASE( "checkedElse" ) {
@@ -171,9 +194,6 @@ TEST_CASE( "atomic if", "[failing][0]") {
         REQUIRE(x == 0);
 }
 
-inline unsigned int Factorial( unsigned int number )  {
-  return number > 1 ? Factorial(number-1)*number : 1;
-}
 
 TEST_CASE( "Factorials are computed", "[factorial]" ) {
   REQUIRE( Factorial(0) == 1 );
@@ -312,11 +332,6 @@ TEST_CASE( "# A test name that starts with a #" ) {
     SUCCEED( "yay" );
 }
 
-
-static int f() {
-    return 1;
-}
-
 TEST_CASE( "#835 -- errno should not be touched by Catch", "[.][failing][!shouldfail]" ) {
     errno = 1;
     CHECK(f() == 0);
@@ -331,12 +346,4 @@ TEST_CASE( "#961 -- Dynamically created sections should all be reported", "[.]" 
     }
 }
 
-inline void manuallyRegisteredTestFunction() {
-    SUCCEED( "was called" );
-}
-struct AutoTestReg {
-    AutoTestReg() {
-        REGISTER_TEST_CASE( manuallyRegisteredTestFunction, "ManuallyRegistered" );
-    }
-};
-static AutoTestReg autoTestReg;
+}} // namespace MiscTests

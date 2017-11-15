@@ -19,70 +19,97 @@
 #pragma clang diagnostic ignored "-Wweak-vtables"
 #endif
 
-namespace
-{
-    inline int thisThrows()
-    {
-        if( Catch::alwaysTrue() )
-            throw std::domain_error( "expected exception" );
-        return 1;
-    }
+namespace { namespace ExceptionTests {
 
-    int thisDoesntThrow()
-    {
-        return 0;
-    }
+#ifndef EXCEPTION_TEST_HELPERS_INCLUDED // Don't compile this more than once per TU
+#define EXCEPTION_TEST_HELPERS_INCLUDED
+
+inline int thisThrows() {
+    if( Catch::alwaysTrue() )
+        throw std::domain_error( "expected exception" );
+    return 1;
 }
 
-TEST_CASE( "When checked exceptions are thrown they can be expected or unexpected", "[!throws]" )
-{
+int thisDoesntThrow() {
+    return 0;
+}
+
+class CustomException {
+public:
+    CustomException( const std::string& msg )
+            : m_msg( msg )
+    {}
+
+    std::string getMessage() const {
+        return m_msg;
+    }
+
+private:
+    std::string m_msg;
+};
+
+class CustomStdException : public std::exception {
+public:
+    CustomStdException( const std::string& msg )
+            : m_msg( msg )
+    {}
+    ~CustomStdException() noexcept {}
+
+    std::string getMessage() const {
+        return m_msg;
+    }
+
+private:
+    std::string m_msg;
+};
+
+inline void throwCustom() {
+    if( Catch::alwaysTrue() )
+        throw CustomException( "custom exception - not std" );
+}
+
+#endif
+
+TEST_CASE( "When checked exceptions are thrown they can be expected or unexpected", "[!throws]" ) {
     REQUIRE_THROWS_AS( thisThrows(), std::domain_error );
     REQUIRE_NOTHROW( thisDoesntThrow() );
     REQUIRE_THROWS( thisThrows() );
 }
 
-TEST_CASE( "Expected exceptions that don't throw or unexpected exceptions fail the test", "[.][failing][!throws]" )
-{
+TEST_CASE( "Expected exceptions that don't throw or unexpected exceptions fail the test", "[.][failing][!throws]" ) {
     CHECK_THROWS_AS( thisThrows(), std::string );
     CHECK_THROWS_AS( thisDoesntThrow(), std::domain_error );
     CHECK_NOTHROW( thisThrows() );
 }
 
-TEST_CASE( "When unchecked exceptions are thrown directly they are always failures", "[.][failing][!throws]" )
-{
+TEST_CASE( "When unchecked exceptions are thrown directly they are always failures", "[.][failing][!throws]" ) {
     if( Catch::alwaysTrue() )
         throw std::domain_error( "unexpected exception" );
 }
 
-TEST_CASE( "An unchecked exception reports the line of the last assertion", "[.][failing][!throws]" )
-{
+TEST_CASE( "An unchecked exception reports the line of the last assertion", "[.][failing][!throws]" ) {
     CHECK( 1 == 1 );
     if( Catch::alwaysTrue() )
         throw std::domain_error( "unexpected exception" );
 }
 
-TEST_CASE( "When unchecked exceptions are thrown from sections they are always failures", "[.][failing][!throws]" )
-{
-    SECTION( "section name" )
-    {
+TEST_CASE( "When unchecked exceptions are thrown from sections they are always failures", "[.][failing][!throws]" ) {
+    SECTION( "section name" ) {
         if( Catch::alwaysTrue() )
             throw std::domain_error( "unexpected exception" );
     }
 }
 
-TEST_CASE( "When unchecked exceptions are thrown from functions they are always failures", "[.][failing][!throws]" )
-{
+TEST_CASE( "When unchecked exceptions are thrown from functions they are always failures", "[.][failing][!throws]" ) {
     CHECK( thisThrows() == 0 );
 }
 
-TEST_CASE( "When unchecked exceptions are thrown during a REQUIRE the test should abort fail", "[.][failing][!throws]" )
-{
+TEST_CASE( "When unchecked exceptions are thrown during a REQUIRE the test should abort fail", "[.][failing][!throws]" ) {
     REQUIRE( thisThrows() == 0 );
     FAIL( "This should never happen" );
 }
 
-TEST_CASE( "When unchecked exceptions are thrown during a CHECK the test should continue", "[.][failing][!throws]" )
-{
+TEST_CASE( "When unchecked exceptions are thrown during a CHECK the test should continue", "[.][failing][!throws]" ) {
     try {
         CHECK(thisThrows() == 0);
     }
@@ -91,96 +118,45 @@ TEST_CASE( "When unchecked exceptions are thrown during a CHECK the test should 
     }
 }
 
-TEST_CASE( "When unchecked exceptions are thrown, but caught, they do not affect the test", "[!throws]" )
-{
-    try
-    {
+TEST_CASE( "When unchecked exceptions are thrown, but caught, they do not affect the test", "[!throws]" ) {
+    try {
         throw std::domain_error( "unexpected exception" );
     }
-    catch(...)
-    {
-    }
+    catch(...) {}
 }
 
-class CustomException
-{
-public:
-    CustomException( const std::string& msg )
-    : m_msg( msg )
-    {}
 
-    std::string getMessage() const
-    {
-        return m_msg;
-    }
-
-private:
-    std::string m_msg;
-};
-
-class CustomStdException : public std::exception
-{
-public:
-    CustomStdException( const std::string& msg )
-    : m_msg( msg )
-    {}
-    ~CustomStdException() noexcept {}
-
-    std::string getMessage() const
-    {
-        return m_msg;
-    }
-
-private:
-    std::string m_msg;
-};
-
-
-CATCH_TRANSLATE_EXCEPTION( CustomException& ex )
-{
+CATCH_TRANSLATE_EXCEPTION( CustomException& ex ) {
     return ex.getMessage();
 }
 
-CATCH_TRANSLATE_EXCEPTION( CustomStdException& ex )
-{
+CATCH_TRANSLATE_EXCEPTION( CustomStdException& ex ) {
     return ex.getMessage();
 }
 
-CATCH_TRANSLATE_EXCEPTION( double& ex )
-{
+CATCH_TRANSLATE_EXCEPTION( double& ex ) {
     return Catch::Detail::stringify( ex );
 }
 
-TEST_CASE("Non-std exceptions can be translated", "[.][failing][!throws]" )
-{
+TEST_CASE("Non-std exceptions can be translated", "[.][failing][!throws]" ) {
     if( Catch::alwaysTrue() )
         throw CustomException( "custom exception" );
 }
 
-TEST_CASE("Custom std-exceptions can be custom translated", "[.][failing][!throws]" )
-{
+TEST_CASE("Custom std-exceptions can be custom translated", "[.][failing][!throws]" ) {
     if( Catch::alwaysTrue() )
         throw CustomException( "custom std exception" );
 }
 
-inline void throwCustom() {
-    if( Catch::alwaysTrue() )
-        throw CustomException( "custom exception - not std" );
-}
-
-TEST_CASE( "Custom exceptions can be translated when testing for nothrow", "[.][failing][!throws]" )
-{
+TEST_CASE( "Custom exceptions can be translated when testing for nothrow", "[.][failing][!throws]" ) {
     REQUIRE_NOTHROW( throwCustom() );
 }
 
-TEST_CASE( "Custom exceptions can be translated when testing for throwing as something else", "[.][failing][!throws]" )
-{
+TEST_CASE( "Custom exceptions can be translated when testing for throwing as something else", "[.][failing][!throws]" ) {
     REQUIRE_THROWS_AS( throwCustom(), std::exception );
 }
 
-
-TEST_CASE( "Unexpected exceptions can be translated", "[.][failing][!throws]"  )
-{
+TEST_CASE( "Unexpected exceptions can be translated", "[.][failing][!throws]"  ) {
     if( Catch::alwaysTrue() )
         throw double( 3.14 );
 }
@@ -223,6 +199,8 @@ TEST_CASE( "#748 - captures with unexpected exceptions", "[.][failing][!throws][
         REQUIRE_THROWS( thisThrows() );
     }
 }
+
+}} // namespace ExceptionTests
 
 #ifdef __clang__
 #pragma clang diagnostic pop

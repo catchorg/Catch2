@@ -8,32 +8,29 @@
 
 #include "catch.hpp"
 
-namespace
+namespace{ namespace ClassTests {
+
+#ifndef CLASS_TEST_HELPERS_INCLUDED // Don't compile this more than once per TU
+#define CLASS_TEST_HELPERS_INCLUDED
+
+class TestClass
 {
-    class TestClass
+    std::string s;
+
+public:
+    TestClass()
+    : s( "hello" )
+    {}
+
+    void succeedingCase()
     {
-        std::string s;
-
-    public:
-        TestClass()
-        : s( "hello" )
-        {}
-
-        void succeedingCase()
-        {
-            REQUIRE( s == "hello" );
-        }
-        void failingCase()
-        {
-            REQUIRE( s == "world" );
-        }
-    };
-}
-
-
-METHOD_AS_TEST_CASE( TestClass::succeedingCase, "A METHOD_AS_TEST_CASE based test run that succeeds", "[class]" )
-METHOD_AS_TEST_CASE( TestClass::failingCase, "A METHOD_AS_TEST_CASE based test run that fails", "[.][class][failing]" )
-
+        REQUIRE( s == "hello" );
+    }
+    void failingCase()
+    {
+        REQUIRE( s == "world" );
+    }
+};
 
 struct Fixture
 {
@@ -41,6 +38,13 @@ struct Fixture
 
     int m_a;
 };
+
+#endif
+
+
+
+METHOD_AS_TEST_CASE( TestClass::succeedingCase, "A METHOD_AS_TEST_CASE based test run that succeeds", "[class]" )
+METHOD_AS_TEST_CASE( TestClass::failingCase, "A METHOD_AS_TEST_CASE based test run that fails", "[.][class][failing]" )
 
 TEST_CASE_METHOD( Fixture, "A TEST_CASE_METHOD based test run that succeeds", "[class]" )
 {
@@ -55,3 +59,5 @@ namespace Inner
         REQUIRE( m_a == 2 );
     }
 }
+
+}} // namespace ClassTests
