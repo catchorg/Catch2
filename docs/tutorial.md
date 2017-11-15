@@ -25,7 +25,7 @@ The rest of this tutorial will assume that the Catch2 single-include header (or 
 
 ## Writing tests
 
-Let's start with a really simple example. Say you have written a function to calculate factorials and now you want to test it (let's leave aside TDD for now). 
+Let's start with a really simple example ([code](../examples/010-TestCase.cpp)). Say you have written a function to calculate factorials and now you want to test it (let's leave aside TDD for now). 
 
 ```c++
 unsigned int Factorial( unsigned int number ) {
@@ -33,7 +33,7 @@ unsigned int Factorial( unsigned int number ) {
 }
 ```
 
-To keep things simple we'll put everything in a single file (<a href="#scaling-up">see later for more on how to structure your test files</a>)
+To keep things simple we'll put everything in a single file (<a href="#scaling-up">see later for more on how to structure your test files</a>).
 
 ```c++
 #define CATCH_CONFIG_MAIN  // This tells Catch to provide a main() - only do this in one cpp file
@@ -110,7 +110,7 @@ Most test frameworks have a class-based fixture mechanism. That is, test cases m
 
 While Catch fully supports this way of working there are a few problems with the approach. In particular the way your code must be split up, and the blunt granularity of it, may cause problems. You can only have one setup/ teardown pair across a set of methods, but sometimes you want slightly different setup in each method, or you may even want several levels of setup (a concept which we will clarify later on in this tutorial). It was <a href="http://jamesnewkirk.typepad.com/posts/2007/09/why-you-should-.html">problems like these</a> that led James Newkirk, who led the team that built NUnit, to start again from scratch and <a href="http://jamesnewkirk.typepad.com/posts/2007/09/announcing-xuni.html">build xUnit</a>).
 
-Catch takes a different approach (to both NUnit and xUnit) that is a more natural fit for C++ and the C family of languages. This is best explained through an example:
+Catch takes a different approach (to both NUnit and xUnit) that is a more natural fit for C++ and the C family of languages. This is best explained through an example ([code](../examples/100-Fix-Section.cpp)):
 
 ```c++
 TEST_CASE( "vectors can be sized and resized", "[vector]" ) {
@@ -175,7 +175,7 @@ Sections can be nested to an arbitrary depth (limited only by your stack size). 
 
 If you name your test cases and sections appropriately you can achieve a BDD-style specification structure. This became such a useful way of working that first class support has been added to Catch. Scenarios can be specified using ```SCENARIO```, ```GIVEN```, ```WHEN``` and ```THEN``` macros, which map on to ```TEST_CASE```s and ```SECTION```s, respectively. For more details see [Test cases and sections](test-cases-and-sections.md#top).
 
-The vector example can be adjusted to use these macros like so:
+The vector example can be adjusted to use these macros like so ([example code](../examples/120-Bdd-ScenarioGivenWhenThen.cpp)):
 
 ```c++
 SCENARIO( "vectors can be sized and resized", "[vector]" ) {
@@ -245,7 +245,7 @@ The requirement is that the following block of code ([or equivalent](own-main.md
 
 appears in _exactly one_ source file. Use as many additional cpp files (or whatever you call your implementation files) as you need for your tests, partitioned however makes most sense for your way of working. Each additional file need only ```#include "catch.hpp"``` - do not repeat the ```#define```!
 
-In fact it is usually a good idea to put the block with the ```#define``` [in its own source file](slow-compiles.md#top).
+In fact it is usually a good idea to put the block with the ```#define``` [in its own source file](slow-compiles.md#top) (code example [main](../examples/020-TestCase-1.cpp), [tests](../examples/020-TestCase-2.cpp)).
 
 Do not write your tests in header files!
 
