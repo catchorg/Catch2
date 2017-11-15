@@ -145,13 +145,13 @@ Matchers.tests.cpp:<line number>
 ...............................................................................
 
 Matchers.tests.cpp:<line number>: FAILED:
-  CHECK_THAT( testStringForMatching(), Contains( "not there", Catch::CaseSensitive::No ) )
+  CHECK_THAT( testStringForMatching(), Contains("not there", Catch::CaseSensitive::No) )
 with expansion:
   "this string contains 'abc' as a substring" contains: "not there" (case
   insensitive)
 
 Matchers.tests.cpp:<line number>: FAILED:
-  CHECK_THAT( testStringForMatching(), Contains( "STRING" ) )
+  CHECK_THAT( testStringForMatching(), Contains("STRING") )
 with expansion:
   "this string contains 'abc' as a substring" contains: "STRING"
 
@@ -194,12 +194,12 @@ Matchers.tests.cpp:<line number>
 ...............................................................................
 
 Matchers.tests.cpp:<line number>: FAILED:
-  CHECK_THAT( testStringForMatching(), EndsWith( "Substring" ) )
+  CHECK_THAT( testStringForMatching(), EndsWith("Substring") )
 with expansion:
   "this string contains 'abc' as a substring" ends with: "Substring"
 
 Matchers.tests.cpp:<line number>: FAILED:
-  CHECK_THAT( testStringForMatching(), EndsWith( "this", Catch::CaseSensitive::No ) )
+  CHECK_THAT( testStringForMatching(), EndsWith("this", Catch::CaseSensitive::No) )
 with expansion:
   "this string contains 'abc' as a substring" ends with: "this" (case
   insensitive)
@@ -282,13 +282,13 @@ Matchers.tests.cpp:<line number>
 ...............................................................................
 
 Matchers.tests.cpp:<line number>: FAILED:
-  CHECK_THAT( testStringForMatching(), Equals( "this string contains 'ABC' as a substring" ) )
+  CHECK_THAT( testStringForMatching(), Equals("this string contains 'ABC' as a substring") )
 with expansion:
   "this string contains 'abc' as a substring" equals: "this string contains
   'ABC' as a substring"
 
 Matchers.tests.cpp:<line number>: FAILED:
-  CHECK_THAT( testStringForMatching(), Equals( "something else", Catch::CaseSensitive::No ) )
+  CHECK_THAT( testStringForMatching(), Equals("something else", Catch::CaseSensitive::No) )
 with expansion:
   "this string contains 'abc' as a substring" equals: "something else" (case
   insensitive)
@@ -301,11 +301,11 @@ Matchers.tests.cpp:<line number>
 ...............................................................................
 
 Matchers.tests.cpp:<line number>: FAILED:
-  CHECK_THROWS_MATCHES( doesNotThrow(), SpecialException, ExceptionMatcher{ 1 } )
+  CHECK_THROWS_MATCHES( doesNotThrow(), SpecialException, ExceptionMatcher{1} )
 because no exception was thrown where one was expected:
 
 Matchers.tests.cpp:<line number>: FAILED:
-  REQUIRE_THROWS_MATCHES( doesNotThrow(), SpecialException, ExceptionMatcher{ 1 } )
+  REQUIRE_THROWS_MATCHES( doesNotThrow(), SpecialException, ExceptionMatcher{1} )
 because no exception was thrown where one was expected:
 
 -------------------------------------------------------------------------------
@@ -316,12 +316,12 @@ Matchers.tests.cpp:<line number>
 ...............................................................................
 
 Matchers.tests.cpp:<line number>: FAILED:
-  CHECK_THROWS_MATCHES( throwsAsInt(1), SpecialException, ExceptionMatcher{ 1 } )
+  CHECK_THROWS_MATCHES( throwsAsInt(1), SpecialException, ExceptionMatcher{1} )
 due to unexpected exception with message:
   Unknown exception
 
 Matchers.tests.cpp:<line number>: FAILED:
-  REQUIRE_THROWS_MATCHES( throwsAsInt(1), SpecialException, ExceptionMatcher{ 1 } )
+  REQUIRE_THROWS_MATCHES( throwsAsInt(1), SpecialException, ExceptionMatcher{1} )
 due to unexpected exception with message:
   Unknown exception
 
@@ -333,12 +333,12 @@ Matchers.tests.cpp:<line number>
 ...............................................................................
 
 Matchers.tests.cpp:<line number>: FAILED:
-  CHECK_THROWS_MATCHES( throws(3), SpecialException, ExceptionMatcher{ 1 } )
+  CHECK_THROWS_MATCHES( throws(3), SpecialException, ExceptionMatcher{1} )
 with expansion:
   {?} special exception has value of 1
 
 Matchers.tests.cpp:<line number>: FAILED:
-  REQUIRE_THROWS_MATCHES( throws(4), SpecialException, ExceptionMatcher{ 1 } )
+  REQUIRE_THROWS_MATCHES( throws(4), SpecialException, ExceptionMatcher{1} )
 with expansion:
   {?} special exception has value of 1
 
@@ -493,7 +493,7 @@ Matchers.tests.cpp:<line number>
 ...............................................................................
 
 Matchers.tests.cpp:<line number>: FAILED:
-  CHECK_THAT( testStringForMatching(), ( Contains( "string" ) || Contains( "different" ) ) && Contains( "random" ) )
+  CHECK_THAT( testStringForMatching(), (Contains("string") || Contains("different")) && Contains("random") )
 with expansion:
   "this string contains 'abc' as a substring" ( ( contains: "string" or
   contains: "different" ) and contains: "random" )
@@ -505,7 +505,7 @@ Matchers.tests.cpp:<line number>
 ...............................................................................
 
 Matchers.tests.cpp:<line number>: FAILED:
-  CHECK_THAT( testStringForMatching(), !Contains( "substring" ) )
+  CHECK_THAT( testStringForMatching(), !Contains("substring") )
 with expansion:
   "this string contains 'abc' as a substring" not contains: "substring"
 
@@ -709,12 +709,12 @@ Matchers.tests.cpp:<line number>
 ...............................................................................
 
 Matchers.tests.cpp:<line number>: FAILED:
-  CHECK_THAT( testStringForMatching(), StartsWith( "This String" ) )
+  CHECK_THAT( testStringForMatching(), StartsWith("This String") )
 with expansion:
   "this string contains 'abc' as a substring" starts with: "This String"
 
 Matchers.tests.cpp:<line number>: FAILED:
-  CHECK_THAT( testStringForMatching(), StartsWith( "string", Catch::CaseSensitive::No ) )
+  CHECK_THAT( testStringForMatching(), StartsWith("string", Catch::CaseSensitive::No) )
 with expansion:
   "this string contains 'abc' as a substring" starts with: "string" (case
   insensitive)
@@ -755,12 +755,12 @@ Matchers.tests.cpp:<line number>
 ...............................................................................
 
 Matchers.tests.cpp:<line number>: FAILED:
-  CHECK_THAT( v, VectorContains( -1 ) )
+  CHECK_THAT( v, VectorContains(-1) )
 with expansion:
   { 1, 2, 3 } Contains: -1
 
 Matchers.tests.cpp:<line number>: FAILED:
-  CHECK_THAT( empty, VectorContains( 1 ) )
+  CHECK_THAT( empty, VectorContains(1) )
 with expansion:
   {  } Contains: 1
 
@@ -772,12 +772,12 @@ Matchers.tests.cpp:<line number>
 ...............................................................................
 
 Matchers.tests.cpp:<line number>: FAILED:
-  CHECK_THAT( empty, Contains( v) )
+  CHECK_THAT( empty, Contains(v) )
 with expansion:
   {  } Contains: { 1, 2, 3 }
 
 Matchers.tests.cpp:<line number>: FAILED:
-  CHECK_THAT( v, Contains( v2 ) )
+  CHECK_THAT( v, Contains(v2) )
 with expansion:
   { 1, 2, 3 } Contains: { 1, 2, 4 }
 
@@ -789,22 +789,22 @@ Matchers.tests.cpp:<line number>
 ...............................................................................
 
 Matchers.tests.cpp:<line number>: FAILED:
-  CHECK_THAT( v, Equals( v2 ) )
+  CHECK_THAT( v, Equals(v2) )
 with expansion:
   { 1, 2, 3 } Equals: { 1, 2 }
 
 Matchers.tests.cpp:<line number>: FAILED:
-  CHECK_THAT( v2, Equals( v ) )
+  CHECK_THAT( v2, Equals(v) )
 with expansion:
   { 1, 2 } Equals: { 1, 2, 3 }
 
 Matchers.tests.cpp:<line number>: FAILED:
-  CHECK_THAT( empty, Equals( v ) )
+  CHECK_THAT( empty, Equals(v) )
 with expansion:
   {  } Equals: { 1, 2, 3 }
 
 Matchers.tests.cpp:<line number>: FAILED:
-  CHECK_THAT( v, Equals( empty ) )
+  CHECK_THAT( v, Equals(empty) )
 with expansion:
   { 1, 2, 3 } Equals: {  }
 

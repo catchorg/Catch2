@@ -1469,7 +1469,7 @@
     <TestCase name="Contains string matcher" tags="[.][failing][matchers]" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
       <Expression success="false" type="CHECK_THAT" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
         <Original>
-          testStringForMatching(), Contains( "not there", Catch::CaseSensitive::No )
+          testStringForMatching(), Contains("not there", Catch::CaseSensitive::No)
         </Original>
         <Expanded>
           "this string contains 'abc' as a substring" contains: "not there" (case insensitive)
@@ -1477,7 +1477,7 @@
       </Expression>
       <Expression success="false" type="CHECK_THAT" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
         <Original>
-          testStringForMatching(), Contains( "STRING" )
+          testStringForMatching(), Contains("STRING")
         </Original>
         <Expanded>
           "this string contains 'abc' as a substring" contains: "STRING"
@@ -1541,7 +1541,7 @@
     <TestCase name="EndsWith string matcher" tags="[.][failing][matchers]" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
       <Expression success="false" type="CHECK_THAT" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
         <Original>
-          testStringForMatching(), EndsWith( "Substring" )
+          testStringForMatching(), EndsWith("Substring")
         </Original>
         <Expanded>
           "this string contains 'abc' as a substring" ends with: "Substring"
@@ -1549,7 +1549,7 @@
       </Expression>
       <Expression success="false" type="CHECK_THAT" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
         <Original>
-          testStringForMatching(), EndsWith( "this", Catch::CaseSensitive::No )
+          testStringForMatching(), EndsWith("this", Catch::CaseSensitive::No)
         </Original>
         <Expanded>
           "this string contains 'abc' as a substring" ends with: "this" (case insensitive)
@@ -1737,7 +1737,7 @@
     <TestCase name="Equals" tags="[matchers]" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
       <Expression success="true" type="CHECK_THAT" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
         <Original>
-          testStringForMatching(), Equals( "this string contains 'abc' as a substring" )
+          testStringForMatching(), Equals("this string contains 'abc' as a substring")
         </Original>
         <Expanded>
           "this string contains 'abc' as a substring" equals: "this string contains 'abc' as a substring"
@@ -1745,7 +1745,7 @@
       </Expression>
       <Expression success="true" type="CHECK_THAT" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
         <Original>
-          testStringForMatching(), Equals( "this string contains 'ABC' as a substring", Catch::CaseSensitive::No )
+          testStringForMatching(), Equals("this string contains 'ABC' as a substring", Catch::CaseSensitive::No)
         </Original>
         <Expanded>
           "this string contains 'abc' as a substring" equals: "this string contains 'abc' as a substring" (case insensitive)
@@ -1756,7 +1756,7 @@
     <TestCase name="Equals string matcher" tags="[.][failing][matchers]" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
       <Expression success="false" type="CHECK_THAT" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
         <Original>
-          testStringForMatching(), Equals( "this string contains 'ABC' as a substring" )
+          testStringForMatching(), Equals("this string contains 'ABC' as a substring")
         </Original>
         <Expanded>
           "this string contains 'abc' as a substring" equals: "this string contains 'ABC' as a substring"
@@ -1764,7 +1764,7 @@
       </Expression>
       <Expression success="false" type="CHECK_THAT" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
         <Original>
-          testStringForMatching(), Equals( "something else", Catch::CaseSensitive::No )
+          testStringForMatching(), Equals("something else", Catch::CaseSensitive::No)
         </Original>
         <Expanded>
           "this string contains 'abc' as a substring" equals: "something else" (case insensitive)
@@ -1776,18 +1776,18 @@
       <Section name="No exception" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
         <Expression success="false" type="CHECK_THROWS_MATCHES" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
           <Original>
-            doesNotThrow(), SpecialException, ExceptionMatcher{ 1 }
+            doesNotThrow(), SpecialException, ExceptionMatcher{1}
           </Original>
           <Expanded>
-            doesNotThrow(), SpecialException, ExceptionMatcher{ 1 }
+            doesNotThrow(), SpecialException, ExceptionMatcher{1}
           </Expanded>
         </Expression>
         <Expression success="false" type="REQUIRE_THROWS_MATCHES" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
           <Original>
-            doesNotThrow(), SpecialException, ExceptionMatcher{ 1 }
+            doesNotThrow(), SpecialException, ExceptionMatcher{1}
           </Original>
           <Expanded>
-            doesNotThrow(), SpecialException, ExceptionMatcher{ 1 }
+            doesNotThrow(), SpecialException, ExceptionMatcher{1}
           </Expanded>
         </Expression>
         <OverallResults successes="0" failures="2" expectedFailures="0"/>
@@ -1795,10 +1795,10 @@
       <Section name="Type mismatch" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
         <Expression success="false" type="CHECK_THROWS_MATCHES" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
           <Original>
-            throwsAsInt(1), SpecialException, ExceptionMatcher{ 1 }
+            throwsAsInt(1), SpecialException, ExceptionMatcher{1}
           </Original>
           <Expanded>
-            throwsAsInt(1), SpecialException, ExceptionMatcher{ 1 }
+            throwsAsInt(1), SpecialException, ExceptionMatcher{1}
           </Expanded>
           <Exception filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
             Unknown exception
@@ -1806,10 +1806,10 @@
         </Expression>
         <Expression success="false" type="REQUIRE_THROWS_MATCHES" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
           <Original>
-            throwsAsInt(1), SpecialException, ExceptionMatcher{ 1 }
+            throwsAsInt(1), SpecialException, ExceptionMatcher{1}
           </Original>
           <Expanded>
-            throwsAsInt(1), SpecialException, ExceptionMatcher{ 1 }
+            throwsAsInt(1), SpecialException, ExceptionMatcher{1}
           </Expanded>
           <Exception filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
             Unknown exception
@@ -1820,7 +1820,7 @@
       <Section name="Contents are wrong" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
         <Expression success="false" type="CHECK_THROWS_MATCHES" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
           <Original>
-            throws(3), SpecialException, ExceptionMatcher{ 1 }
+            throws(3), SpecialException, ExceptionMatcher{1}
           </Original>
           <Expanded>
             {?} special exception has value of 1
@@ -1828,7 +1828,7 @@
         </Expression>
         <Expression success="false" type="REQUIRE_THROWS_MATCHES" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
           <Original>
-            throws(4), SpecialException, ExceptionMatcher{ 1 }
+            throws(4), SpecialException, ExceptionMatcher{1}
           </Original>
           <Expanded>
             {?} special exception has value of 1
@@ -1841,7 +1841,7 @@
     <TestCase name="Exception matchers that succeed" tags="[!throws][exceptions][matchers]" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
       <Expression success="true" type="CHECK_THROWS_MATCHES" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
         <Original>
-          throws(1), SpecialException, ExceptionMatcher{ 1 }
+          throws(1), SpecialException, ExceptionMatcher{1}
         </Original>
         <Expanded>
           {?} special exception has value of 1
@@ -1849,7 +1849,7 @@
       </Expression>
       <Expression success="true" type="REQUIRE_THROWS_MATCHES" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
         <Original>
-          throws(2), SpecialException, ExceptionMatcher{ 2 }
+          throws(2), SpecialException, ExceptionMatcher{2}
         </Original>
         <Expanded>
           {?} special exception has value of 2
@@ -2742,7 +2742,7 @@
     <TestCase name="Matchers can be (AllOf) composed with the &amp;&amp; operator" tags="[matchers][operator&amp;&amp;][operators]" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
       <Expression success="true" type="CHECK_THAT" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
         <Original>
-          testStringForMatching(), Contains( "string" ) &amp;&amp; Contains( "abc" ) &amp;&amp; Contains( "substring" ) &amp;&amp; Contains( "contains" )
+          testStringForMatching(), Contains("string") &amp;&amp; Contains("abc") &amp;&amp; Contains("substring") &amp;&amp; Contains("contains")
         </Original>
         <Expanded>
           "this string contains 'abc' as a substring" ( contains: "string" and contains: "abc" and contains: "substring" and contains: "contains" )
@@ -2753,7 +2753,7 @@
     <TestCase name="Matchers can be (AnyOf) composed with the || operator" tags="[matchers][operators][operator||]" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
       <Expression success="true" type="CHECK_THAT" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
         <Original>
-          testStringForMatching(), Contains( "string" ) || Contains( "different" ) || Contains( "random" )
+          testStringForMatching(), Contains("string") || Contains("different") || Contains("random")
         </Original>
         <Expanded>
           "this string contains 'abc' as a substring" ( contains: "string" or contains: "different" or contains: "random" )
@@ -2761,7 +2761,7 @@
       </Expression>
       <Expression success="true" type="CHECK_THAT" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
         <Original>
-          testStringForMatching2(), Contains( "string" ) || Contains( "different" ) || Contains( "random" )
+          testStringForMatching2(), Contains("string") || Contains("different") || Contains("random")
         </Original>
         <Expanded>
           "some completely different text that contains one common word" ( contains: "string" or contains: "different" or contains: "random" )
@@ -2772,7 +2772,7 @@
     <TestCase name="Matchers can be composed with both &amp;&amp; and ||" tags="[matchers][operator&amp;&amp;][operators][operator||]" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
       <Expression success="true" type="CHECK_THAT" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
         <Original>
-          testStringForMatching(), ( Contains( "string" ) || Contains( "different" ) ) &amp;&amp; Contains( "substring" )
+          testStringForMatching(), (Contains("string") || Contains("different")) &amp;&amp; Contains("substring")
         </Original>
         <Expanded>
           "this string contains 'abc' as a substring" ( ( contains: "string" or contains: "different" ) and contains: "substring" )
@@ -2783,7 +2783,7 @@
     <TestCase name="Matchers can be composed with both &amp;&amp; and || - failing" tags="[.][.failing][matchers][operator&amp;&amp;][operators][operator||]" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
       <Expression success="false" type="CHECK_THAT" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
         <Original>
-          testStringForMatching(), ( Contains( "string" ) || Contains( "different" ) ) &amp;&amp; Contains( "random" )
+          testStringForMatching(), (Contains("string") || Contains("different")) &amp;&amp; Contains("random")
         </Original>
         <Expanded>
           "this string contains 'abc' as a substring" ( ( contains: "string" or contains: "different" ) and contains: "random" )
@@ -2794,7 +2794,7 @@
     <TestCase name="Matchers can be negated (Not) with the ! operator" tags="[matchers][not][operators]" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
       <Expression success="true" type="CHECK_THAT" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
         <Original>
-          testStringForMatching(), !Contains( "different" )
+          testStringForMatching(), !Contains("different")
         </Original>
         <Expanded>
           "this string contains 'abc' as a substring" not contains: "different"
@@ -2805,7 +2805,7 @@
     <TestCase name="Matchers can be negated (Not) with the ! operator - failing" tags="[.][.failing][matchers][not][operators]" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
       <Expression success="false" type="CHECK_THAT" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
         <Original>
-          testStringForMatching(), !Contains( "substring" )
+          testStringForMatching(), !Contains("substring")
         </Original>
         <Expanded>
           "this string contains 'abc' as a substring" not contains: "substring"
@@ -5339,7 +5339,7 @@ Message from section two
     <TestCase name="StartsWith string matcher" tags="[.][failing][matchers]" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
       <Expression success="false" type="CHECK_THAT" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
         <Original>
-          testStringForMatching(), StartsWith( "This String" )
+          testStringForMatching(), StartsWith("This String")
         </Original>
         <Expanded>
           "this string contains 'abc' as a substring" starts with: "This String"
@@ -5347,7 +5347,7 @@ Message from section two
       </Expression>
       <Expression success="false" type="CHECK_THAT" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
         <Original>
-          testStringForMatching(), StartsWith( "string", Catch::CaseSensitive::No )
+          testStringForMatching(), StartsWith("string", Catch::CaseSensitive::No)
         </Original>
         <Expanded>
           "this string contains 'abc' as a substring" starts with: "string" (case insensitive)
@@ -5358,7 +5358,7 @@ Message from section two
     <TestCase name="String matchers" tags="[matchers]" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
       <Expression success="true" type="REQUIRE_THAT" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
         <Original>
-          testStringForMatching(), Contains( "string" )
+          testStringForMatching(), Contains("string")
         </Original>
         <Expanded>
           "this string contains 'abc' as a substring" contains: "string"
@@ -5366,7 +5366,7 @@ Message from section two
       </Expression>
       <Expression success="true" type="REQUIRE_THAT" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
         <Original>
-          testStringForMatching(), Contains( "string", Catch::CaseSensitive::No )
+          testStringForMatching(), Contains("string", Catch::CaseSensitive::No)
         </Original>
         <Expanded>
           "this string contains 'abc' as a substring" contains: "string" (case insensitive)
@@ -5374,7 +5374,7 @@ Message from section two
       </Expression>
       <Expression success="true" type="CHECK_THAT" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
         <Original>
-          testStringForMatching(), Contains( "abc" )
+          testStringForMatching(), Contains("abc")
         </Original>
         <Expanded>
           "this string contains 'abc' as a substring" contains: "abc"
@@ -5382,7 +5382,7 @@ Message from section two
       </Expression>
       <Expression success="true" type="CHECK_THAT" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
         <Original>
-          testStringForMatching(), Contains( "aBC", Catch::CaseSensitive::No )
+          testStringForMatching(), Contains("aBC", Catch::CaseSensitive::No)
         </Original>
         <Expanded>
           "this string contains 'abc' as a substring" contains: "abc" (case insensitive)
@@ -5390,7 +5390,7 @@ Message from section two
       </Expression>
       <Expression success="true" type="CHECK_THAT" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
         <Original>
-          testStringForMatching(), StartsWith( "this" )
+          testStringForMatching(), StartsWith("this")
         </Original>
         <Expanded>
           "this string contains 'abc' as a substring" starts with: "this"
@@ -5398,7 +5398,7 @@ Message from section two
       </Expression>
       <Expression success="true" type="CHECK_THAT" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
         <Original>
-          testStringForMatching(), StartsWith( "THIS", Catch::CaseSensitive::No )
+          testStringForMatching(), StartsWith("THIS", Catch::CaseSensitive::No)
         </Original>
         <Expanded>
           "this string contains 'abc' as a substring" starts with: "this" (case insensitive)
@@ -5406,7 +5406,7 @@ Message from section two
       </Expression>
       <Expression success="true" type="CHECK_THAT" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
         <Original>
-          testStringForMatching(), EndsWith( "substring" )
+          testStringForMatching(), EndsWith("substring")
         </Original>
         <Expanded>
           "this string contains 'abc' as a substring" ends with: "substring"
@@ -5414,7 +5414,7 @@ Message from section two
       </Expression>
       <Expression success="true" type="CHECK_THAT" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
         <Original>
-          testStringForMatching(), EndsWith(" SuBsTrInG", Catch::CaseSensitive::No )
+          testStringForMatching(), EndsWith(" SuBsTrInG", Catch::CaseSensitive::No)
         </Original>
         <Expanded>
           "this string contains 'abc' as a substring" ends with: " substring" (case insensitive)
@@ -7209,7 +7209,7 @@ Message from section two
       <Section name="Contains (element)" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
         <Expression success="true" type="CHECK_THAT" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
           <Original>
-            v, VectorContains( 1 )
+            v, VectorContains(1)
           </Original>
           <Expanded>
             { 1, 2, 3 } Contains: 1
@@ -7217,7 +7217,7 @@ Message from section two
         </Expression>
         <Expression success="true" type="CHECK_THAT" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
           <Original>
-            v, VectorContains( 2 )
+            v, VectorContains(2)
           </Original>
           <Expanded>
             { 1, 2, 3 } Contains: 2
@@ -7228,7 +7228,7 @@ Message from section two
       <Section name="Contains (vector)" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
         <Expression success="true" type="CHECK_THAT" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
           <Original>
-            v, Contains( v2 )
+            v, Contains(v2)
           </Original>
           <Expanded>
             { 1, 2, 3 } Contains: { 1, 2 }
@@ -7236,7 +7236,7 @@ Message from section two
         </Expression>
         <Expression success="true" type="CHECK_THAT" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
           <Original>
-            v, Contains( v2 )
+            v, Contains(v2)
           </Original>
           <Expanded>
             { 1, 2, 3 } Contains: { 1, 2, 3 }
@@ -7244,7 +7244,7 @@ Message from section two
         </Expression>
         <Expression success="true" type="CHECK_THAT" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
           <Original>
-            v, Contains( empty)
+            v, Contains(empty)
           </Original>
           <Expanded>
             { 1, 2, 3 } Contains: {  }
@@ -7252,7 +7252,7 @@ Message from section two
         </Expression>
         <Expression success="true" type="CHECK_THAT" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
           <Original>
-            empty, Contains( empty)
+            empty, Contains(empty)
           </Original>
           <Expanded>
             {  } Contains: {  }
@@ -7263,7 +7263,7 @@ Message from section two
       <Section name="Contains (element), composed" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
         <Expression success="true" type="CHECK_THAT" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
           <Original>
-            v, VectorContains( 1 ) &amp;&amp; VectorContains( 2 )
+            v, VectorContains(1) &amp;&amp; VectorContains(2)
           </Original>
           <Expanded>
             { 1, 2, 3 } ( Contains: 1 and Contains: 2 )
@@ -7274,7 +7274,7 @@ Message from section two
       <Section name="Equals" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
         <Expression success="true" type="CHECK_THAT" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
           <Original>
-            v, Equals( v )
+            v, Equals(v)
           </Original>
           <Expanded>
             { 1, 2, 3 } Equals: { 1, 2, 3 }
@@ -7282,7 +7282,7 @@ Message from section two
         </Expression>
         <Expression success="true" type="CHECK_THAT" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
           <Original>
-            empty, Equals( empty )
+            empty, Equals(empty)
           </Original>
           <Expanded>
             {  } Equals: {  }
@@ -7290,7 +7290,7 @@ Message from section two
         </Expression>
         <Expression success="true" type="CHECK_THAT" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
           <Original>
-            v, Equals( v2 )
+            v, Equals(v2)
           </Original>
           <Expanded>
             { 1, 2, 3 } Equals: { 1, 2, 3 }
@@ -7304,7 +7304,7 @@ Message from section two
       <Section name="Contains (element)" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
         <Expression success="false" type="CHECK_THAT" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
           <Original>
-            v, VectorContains( -1 )
+            v, VectorContains(-1)
           </Original>
           <Expanded>
             { 1, 2, 3 } Contains: -1
@@ -7312,7 +7312,7 @@ Message from section two
         </Expression>
         <Expression success="false" type="CHECK_THAT" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
           <Original>
-            empty, VectorContains( 1 )
+            empty, VectorContains(1)
           </Original>
           <Expanded>
             {  } Contains: 1
@@ -7323,7 +7323,7 @@ Message from section two
       <Section name="Contains (vector)" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
         <Expression success="false" type="CHECK_THAT" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
           <Original>
-            empty, Contains( v)
+            empty, Contains(v)
           </Original>
           <Expanded>
             {  } Contains: { 1, 2, 3 }
@@ -7331,7 +7331,7 @@ Message from section two
         </Expression>
         <Expression success="false" type="CHECK_THAT" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
           <Original>
-            v, Contains( v2 )
+            v, Contains(v2)
           </Original>
           <Expanded>
             { 1, 2, 3 } Contains: { 1, 2, 4 }
@@ -7342,7 +7342,7 @@ Message from section two
       <Section name="Equals" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
         <Expression success="false" type="CHECK_THAT" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
           <Original>
-            v, Equals( v2 )
+            v, Equals(v2)
           </Original>
           <Expanded>
             { 1, 2, 3 } Equals: { 1, 2 }
@@ -7350,7 +7350,7 @@ Message from section two
         </Expression>
         <Expression success="false" type="CHECK_THAT" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
           <Original>
-            v2, Equals( v )
+            v2, Equals(v)
           </Original>
           <Expanded>
             { 1, 2 } Equals: { 1, 2, 3 }
@@ -7358,7 +7358,7 @@ Message from section two
         </Expression>
         <Expression success="false" type="CHECK_THAT" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
           <Original>
-            empty, Equals( v )
+            empty, Equals(v)
           </Original>
           <Expanded>
             {  } Equals: { 1, 2, 3 }
@@ -7366,7 +7366,7 @@ Message from section two
         </Expression>
         <Expression success="false" type="CHECK_THAT" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
           <Original>
-            v, Equals( empty )
+            v, Equals(empty)
           </Original>
           <Expanded>
             { 1, 2, 3 } Equals: {  }
