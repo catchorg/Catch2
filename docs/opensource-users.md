@@ -39,7 +39,7 @@ A header-only template engine for modern C++.
 A, single-header, JSON parsing library that takes advantage of what C++ has to offer.
 
 ### [MNMLSTC Core](https://github.com/mnmlstc/core)
-a small and easy to use C++11 library that adds a functionality set that will be available in C++14 and later, as well as some useful additions
+A small and easy to use C++11 library that adds a functionality set that will be available in C++14 and later, as well as some useful additions.
 
 ### [nanodbc](https://github.com/lexicalunit/nanodbc/)
 A small C++ library wrapper for the native C ODBC API.
