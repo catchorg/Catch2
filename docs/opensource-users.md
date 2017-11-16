@@ -32,6 +32,9 @@ A, single-header-only, type-safe, command line parser - which also prints format
 ### [Couchbase-lite-core](https://github.com/couchbase/couchbase-lite-core)
 The next-generation core storage and query engine for Couchbase Lite/
 
+### [Inja](ttps://github.com/pantor/inja)
+A header-only template engine for modern C++.
+
 ### [JSON for Modern C++](https://github.com/nlohmann/json)
 A, single-header, JSON parsing library that takes advantage of what C++ has to offer.
 
