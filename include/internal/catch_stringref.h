@@ -10,6 +10,8 @@
 #include <cstddef>
 #include <string>
 #include <iosfwd>
+#include <cassert>
+#include <cstring>
 
 namespace Catch {
     
@@ -33,16 +35,48 @@ namespace Catch {
         char* m_data = nullptr;
         
         void takeOwnership();
+
+        static constexpr char const* const s_empty = "";
         
     public: // construction/ assignment
-        StringRef() noexcept;
-        StringRef( StringRef const& other ) noexcept;
-        StringRef( StringRef&& other ) noexcept;
-        StringRef( char const* rawChars ) noexcept;
-        StringRef( char const* rawChars, size_type size ) noexcept;
-        StringRef( std::string const& stdString ) noexcept;
-        ~StringRef() noexcept;
-        
+        StringRef() noexcept
+        :   StringRef( s_empty, 0 )
+        {}
+
+        StringRef( StringRef const& other ) noexcept
+        :   m_start( other.m_start ),
+            m_size( other.m_size )
+        {}
+
+        StringRef( StringRef&& other ) noexcept
+        :   m_start( other.m_start ),
+            m_size( other.m_size ),
+            m_data( other.m_data )
+        {
+            other.m_data = nullptr;
+        }
+
+        StringRef( char const* rawChars ) noexcept
+            :   m_start( rawChars ),
+                m_size( static_cast<size_type>(std::strlen(rawChars)))
+        {
+            assert( rawChars );
+        }
+
+        StringRef( char const* rawChars, size_type size ) noexcept
+        :   m_start( rawChars ),
+            m_size( size )
+        {}
+
+        StringRef( std::string const& stdString ) noexcept
+        :   m_start( stdString.c_str() ),
+            m_size( stdString.size() )
+        {}
+
+        ~StringRef() noexcept {
+            delete[] m_data;
+        }
+
         auto operator = ( StringRef other ) noexcept -> StringRef&;
         operator std::string() const;
 
@@ -55,8 +89,13 @@ namespace Catch {
         auto operator[] ( size_type index ) const noexcept -> char;
         
     public: // named queries
-        auto empty() const noexcept -> bool;
-        auto size() const noexcept -> size_type;
+        auto empty() const noexcept -> bool {
+            return m_size == 0;
+        }
+        auto size() const noexcept -> size_type {
+            return m_size;
+        }
+
         auto numberOfCharacters() const noexcept -> size_type;
         auto c_str() const -> char const*;
         

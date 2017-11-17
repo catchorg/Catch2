@@ -14,63 +14,8 @@
 #include "catch_stringref.h"
 
 #include <ostream>
-#include <cstring>
-#include <stdexcept>
-
-
 
 namespace Catch {
-     namespace {
-
-     auto getEmptyStringRef() -> StringRef {
-         static StringRef s_emptyStringRef("");
-         return s_emptyStringRef;
-     }
-
-     char const* enforceNonNull(char const* ptr) {
-         if (ptr == nullptr) {
-             std::abort();
-         }
-         return ptr;
-     }
-
-     }
-
-    StringRef::StringRef() noexcept
-    :   StringRef( getEmptyStringRef() )
-    {}
-
-    StringRef::StringRef( StringRef const& other ) noexcept
-    :   m_start( other.m_start ),
-        m_size( other.m_size )
-    {}
-
-    StringRef::StringRef( StringRef&& other ) noexcept
-    :   m_start( other.m_start ),
-        m_size( other.m_size ),
-        m_data( other.m_data )
-    {
-        other.m_data = nullptr;
-    }
-
-    StringRef::StringRef(char const* rawChars) noexcept
-        :   m_start( enforceNonNull(rawChars) ),
-            m_size( static_cast<size_type>(std::strlen(rawChars)))
-    {}
-
-    StringRef::StringRef( char const* rawChars, size_type size ) noexcept
-    :   m_start( rawChars ),
-        m_size( size )
-    {}
-
-    StringRef::StringRef( std::string const& stdString ) noexcept
-    :   m_start( stdString.c_str() ),
-        m_size( stdString.size() )
-    {}
-
-    StringRef::~StringRef() noexcept {
-        delete[] m_data;
-    }
 
     auto StringRef::operator = ( StringRef other ) noexcept -> StringRef& {
         swap( other );
@@ -129,13 +74,6 @@ namespace Catch {
         return m_start[index];
     }
 
-    auto StringRef::empty() const noexcept -> bool {
-        return m_size == 0;
-    }
-
-    auto StringRef::size() const noexcept -> size_type {
-        return m_size;
-    }
     auto StringRef::numberOfCharacters() const noexcept -> size_type {
         size_type noChars = m_size;
         // Make adjustments for uft encodings
