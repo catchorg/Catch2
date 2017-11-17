@@ -72,6 +72,13 @@ namespace Catch {
         bool negated = isFalseTest( m_assertionInfo.resultDisposition );
         bool result = expr.getResult() != negated;
 
+        if(result && !getCurrentContext().getConfig()->includeSuccessfulResults())
+        {
+            getCurrentContext().getResultCapture()->assertionRun();
+            getCurrentContext().getResultCapture()->assertionPassed();
+            return;
+        }
+
         handle( result ? ResultWas::Ok : ResultWas::ExpressionFailed, &expr, negated );
     }
     void AssertionHandler::handle( ResultWas::OfType resultType ) {
