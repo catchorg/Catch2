@@ -10,8 +10,6 @@
 #include <cstddef>
 #include <string>
 #include <iosfwd>
-#include <cassert>
-#include <cstring>
 
 namespace Catch {
     
@@ -56,12 +54,11 @@ namespace Catch {
             other.m_data = nullptr;
         }
 
-        StringRef( char const* rawChars ) noexcept
-            :   m_start( rawChars ),
-                m_size( static_cast<size_type>(std::strlen(rawChars)))
-        {
-            assert( rawChars );
-        }
+        template<size_t Size>
+        StringRef( char const(& rawChars)[Size] ) noexcept
+        :   m_start( rawChars ),
+            m_size( static_cast<size_type>( Size-1 ) )
+        {}
 
         StringRef( char const* rawChars, size_type size ) noexcept
         :   m_start( rawChars ),
@@ -84,6 +81,8 @@ namespace Catch {
             m_size = other.m_size;
             return *this;
         }
+
+        static auto fromRaw( char const *rawChars ) -> StringRef;
 
         operator std::string() const;
 
