@@ -45,21 +45,16 @@ namespace Catch {
         IResultCapture* m_resultCapture = nullptr;
     };
 
-    namespace {
-        Context* currentContext = nullptr;
-    }
-    IMutableContext& getCurrentMutableContext() {
-        if( !currentContext )
-            currentContext = new Context();
-        return *currentContext;
-    }
-    IContext& getCurrentContext() {
-        return getCurrentMutableContext();
+    IMutableContext *IMutableContext::currentContext = nullptr;
+
+    void IMutableContext::createContext()
+    {
+        currentContext = new Context();
     }
 
     void cleanUpContext() {
-        delete currentContext;
-        currentContext = nullptr;
+        delete IMutableContext::currentContext;
+        IMutableContext::currentContext = nullptr;
     }
     IContext::~IContext() = default;
     IMutableContext::~IMutableContext() = default;
