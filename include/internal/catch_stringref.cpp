@@ -17,10 +17,6 @@
 
 namespace Catch {
 
-    auto StringRef::operator = ( StringRef other ) noexcept -> StringRef& {
-        swap( other );
-        return *this;
-    }
     StringRef::operator std::string() const {
         return std::string( m_start, m_size );
     }

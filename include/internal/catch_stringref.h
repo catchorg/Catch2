@@ -77,7 +77,14 @@ namespace Catch {
             delete[] m_data;
         }
 
-        auto operator = ( StringRef other ) noexcept -> StringRef&;
+        auto operator = ( StringRef const &other ) noexcept -> StringRef& {
+            delete[] m_data;
+            m_data = nullptr;
+            m_start = other.m_start;
+            m_size = other.m_size;
+            return *this;
+        }
+
         operator std::string() const;
 
         void swap( StringRef& other ) noexcept;
