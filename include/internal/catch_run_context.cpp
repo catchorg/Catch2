@@ -8,8 +8,6 @@
 #include <algorithm>
 #include <sstream>
 
-static auto const& defaultExpression = "{Unknown expression after the reported line}";
-
 namespace Catch {
 
     StreamRedirect::StreamRedirect(std::ostream& stream, std::string& targetString)
@@ -129,8 +127,12 @@ namespace Catch {
         static_cast<void>(m_reporter->assertionEnded(AssertionStats(result, m_messages, m_totals)));
 
         // Reset working state
-        m_lastAssertionInfo = { "", m_lastAssertionInfo.lineInfo, "{Unknown expression after the reported line}", m_lastAssertionInfo.resultDisposition };
+        resetAssertionInfo();
         m_lastResult = result;
+    }
+    void RunContext::resetAssertionInfo() {
+        m_lastAssertionInfo.macroName = StringRef();
+        m_lastAssertionInfo.capturedExpression = "{Unknown expression after the reported line}";
     }
 
     bool RunContext::sectionStarted(SectionInfo const & sectionInfo, Counts & assertions) {
@@ -255,8 +257,7 @@ namespace Catch {
 
     void RunContext::assertionPassed() {
         ++m_totals.assertions.passed;
-        m_lastAssertionInfo.capturedExpression = StringRef(defaultExpression, sizeof(defaultExpression) - 1);
-        m_lastAssertionInfo.macroName = StringRef("", 0);
+        resetAssertionInfo();
     }
 
     void RunContext::assertionRun() {
@@ -274,18 +275,19 @@ namespace Catch {
         Counts prevAssertions = m_totals.assertions;
         double duration = 0;
         m_shouldReportUnexpected = true;
+        m_lastAssertionInfo = { "TEST_CASE", testCaseInfo.lineInfo, "", ResultDisposition::Normal };
+
+        seedRng(*m_config);
+
+        Timer timer;
         try {
-            m_lastAssertionInfo = { "TEST_CASE", testCaseInfo.lineInfo, "", ResultDisposition::Normal };
-
-            seedRng(*m_config);
-
-            Timer timer;
-            timer.start();
             if (m_reporter->getPreferences().shouldRedirectStdOut) {
                 StreamRedirect coutRedir(cout(), redirectedCout);
                 StdErrRedirect errRedir(redirectedCerr);
+                timer.start();
                 invokeActiveTestCase();
             } else {
+                timer.start();
                 invokeActiveTestCase();
             }
             duration = timer.getElapsedSeconds();
