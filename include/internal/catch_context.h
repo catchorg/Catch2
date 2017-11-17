@@ -15,6 +15,7 @@ namespace Catch {
     struct IResultCapture;
     struct IRunner;
     struct IConfig;
+    struct IMutableContext;
 
     using IConfigPtr = std::shared_ptr<IConfig const>;
 
@@ -33,10 +34,26 @@ namespace Catch {
         virtual void setResultCapture( IResultCapture* resultCapture ) = 0;
         virtual void setRunner( IRunner* runner ) = 0;
         virtual void setConfig( IConfigPtr const& config ) = 0;
+
+    private:
+        static IMutableContext *currentContext;
+        friend IMutableContext& getCurrentMutableContext();
+        friend void cleanUpContext();
+        static void createContext();
     };
 
-    IContext& getCurrentContext();
-    IMutableContext& getCurrentMutableContext();
+    inline IMutableContext& getCurrentMutableContext()
+    {
+        if( !IMutableContext::currentContext )
+            IMutableContext::createContext();
+        return *IMutableContext::currentContext;
+    }
+
+    inline IContext& getCurrentContext()
+    {
+        return getCurrentMutableContext();
+    }
+
     void cleanUpContext();
 }
 
