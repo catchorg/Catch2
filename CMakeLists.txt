@@ -3,6 +3,7 @@ cmake_minimum_required(VERSION 3.0)
 project(CatchSelfTest)
 
 option(USE_VALGRIND "Perform SelfTests with Valgrind" OFF)
+option(BUILD_EXAMPLES "Build documentation examples" OFF)
 
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
