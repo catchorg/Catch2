@@ -351,6 +351,9 @@ namespace Catch {
 #include <ratio>
 #include <chrono>
 
+
+namespace Catch {
+
 template <class Ratio>
 struct ratio_string {
     static std::string symbol();
@@ -365,30 +368,29 @@ std::string ratio_string<Ratio>::symbol() {
 }
 template <>
 struct ratio_string<std::atto> {
-    static std::string symbol() { return "a"; }
+    static std::string symbol();
 };
 template <>
 struct ratio_string<std::femto> {
-    static std::string symbol() { return "f"; }
+    static std::string symbol();
 };
 template <>
 struct ratio_string<std::pico> {
-    static std::string symbol() { return "p"; }
+    static std::string symbol();
 };
 template <>
 struct ratio_string<std::nano> {
-    static std::string symbol() { return "n"; }
+    static std::string symbol();
 };
 template <>
 struct ratio_string<std::micro> {
-    static std::string symbol() { return "u"; }
+    static std::string symbol();
 };
 template <>
 struct ratio_string<std::milli> {
-    static std::string symbol() { return "m"; }
+    static std::string symbol();
 };
 
-namespace Catch {
     ////////////
     // std::chrono::duration specializations
     template<typename Value, typename Ratio>
