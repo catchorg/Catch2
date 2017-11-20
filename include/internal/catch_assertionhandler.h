@@ -10,6 +10,8 @@
 
 #include "catch_decomposer.h"
 #include "catch_assertioninfo.h"
+#include "catch_context.h"
+#include "catch_interfaces_capture.h"
 
 namespace Catch {
 
@@ -44,7 +46,13 @@ namespace Catch {
                 SourceLineInfo const& lineInfo,
                 StringRef capturedExpression,
                 ResultDisposition::Flags resultDisposition );
-        ~AssertionHandler();
+        ~AssertionHandler()
+        {
+            if ( m_inExceptionGuard ) {
+                handle( ResultWas::ThrewException, "Exception translation was disabled by CATCH_CONFIG_FAST_COMPILE" );
+                getCurrentContext().getResultCapture()->exceptionEarlyReported();
+            }
+        }
 
         void handle( ITransientExpression const& expr );
 

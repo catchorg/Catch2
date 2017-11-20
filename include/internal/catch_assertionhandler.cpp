@@ -8,10 +8,8 @@
 
 #include "catch_assertionhandler.h"
 #include "catch_assertionresult.h"
-#include "catch_interfaces_capture.h"
 #include "catch_interfaces_runner.h"
 #include "catch_interfaces_config.h"
-#include "catch_context.h"
 #include "catch_debugger.h"
 #include "catch_interfaces_registry_hub.h"
 #include "catch_capture_matchers.h"
@@ -59,12 +57,6 @@ namespace Catch {
     :   m_assertionInfo{ macroName, lineInfo, capturedExpression, resultDisposition }
     {
         getCurrentContext().getResultCapture()->assertionStarting( m_assertionInfo );
-    }
-    AssertionHandler::~AssertionHandler() {
-        if ( m_inExceptionGuard ) {
-            handle( ResultWas::ThrewException, "Exception translation was disabled by CATCH_CONFIG_FAST_COMPILE" );
-            getCurrentContext().getResultCapture()->exceptionEarlyReported();
-        }
     }
 
     void AssertionHandler::handle( ITransientExpression const& expr ) {
