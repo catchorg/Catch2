@@ -295,12 +295,15 @@ void print( std::ostream& os, int const level, std::string const& title, Catch::
 // 2. My listener and registration:
 //
 
-const std::string dashed_line =
+char const * dashed_line =
     "--------------------------------------------------------------------------";
 
 struct MyListener : Catch::TestEventListenerBase {
 
     using TestEventListenerBase::TestEventListenerBase; // inherit constructor
+    
+    // Get rid of Wweak-tables
+    ~MyListener();
 
     // The whole test run starting
     virtual void testRunStarting( Catch::TestRunInfo const& testRunInfo ) override {
@@ -366,6 +369,10 @@ struct MyListener : Catch::TestEventListenerBase {
 };
 
 CATCH_REGISTER_LISTENER( MyListener )
+
+// Get rid of Wweak-tables
+MyListener::~MyListener() {}
+
 
 // -----------------------------------------------------------------------
 // 3. Test cases:

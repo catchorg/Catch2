@@ -8,7 +8,10 @@
 #ifdef __clang__
 #   pragma clang diagnostic push
 #   pragma clang diagnostic ignored "-Wpadded"
-#   pragma clang diagnostic ignored "-Wdouble-promotion"
+// Wdouble-promotion is not supported until 3.8
+#   if (__clang_major__ > 3) || (__clang_major__ == 3 && __clang_minor__ > 7)
+#       pragma clang diagnostic ignored "-Wdouble-promotion"
+#   endif    
 #endif
 
 #include "catch.hpp"

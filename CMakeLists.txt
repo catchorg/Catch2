@@ -302,7 +302,7 @@ if (NOT NO_SELFTEST)
 
     # Add desired warnings
     if ( CMAKE_CXX_COMPILER_ID MATCHES "Clang|AppleClang|GNU" )
-        target_compile_options( SelfTest PRIVATE -Wall -Wextra -Wunreachable-code )
+        target_compile_options( SelfTest PRIVATE -Wall -Wextra -Wunreachable-code -Werror )
     endif()
     # Clang specific warning go here
     if ( CMAKE_CXX_COMPILER_ID MATCHES "Clang" )

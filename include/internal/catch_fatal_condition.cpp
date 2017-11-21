@@ -12,6 +12,11 @@
 #include "catch_context.h"
 #include "catch_interfaces_capture.h"
 
+#if defined(__GNUC__)
+#    pragma GCC diagnostic push
+#    pragma GCC diagnostic ignored "-Wmissing-field-initializers"
+#endif
+
 namespace {
     // Report the error condition
     void reportFatal( char const * const message ) {
@@ -174,3 +179,7 @@ namespace Catch {
 #  endif // CATCH_CONFIG_POSIX_SIGNALS
 
 #endif // not Windows
+
+#if defined(__GNUC__)
+#    pragma GCC diagnostic pop
+#endif
