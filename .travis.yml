@@ -110,11 +110,6 @@ matrix:
           packages: ['valgrind', 'g++-7']
       env: COMPILER='g++-7' VALGRIND=1
 
-    - os: linux
-      compiler: gcc
-      addons: *gcc7
-      env: COMPILER='g++-7' ENV_NO_SELFTEST=1 ENV_BUILD_EXAMPLES=1
-
     # 3b/ Linux C++14 Clang builds
     - os: linux
       compiler: clang
