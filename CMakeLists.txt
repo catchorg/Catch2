@@ -3,6 +3,7 @@ cmake_minimum_required(VERSION 3.0)
 project(CatchSelfTest)
 
 option(USE_VALGRIND "Perform SelfTests with Valgrind" OFF)
+option(BUILD_EXAMPLES "Build documentation examples" OFF)
 
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
@@ -177,6 +178,7 @@ set(INTERNAL_HEADERS
         ${HEADER_DIR}/internal/catch_timer.h
         ${HEADER_DIR}/internal/catch_tostring.h
         ${HEADER_DIR}/internal/catch_totals.h
+        ${HEADER_DIR}/internal/catch_user_interfaces.h
         ${HEADER_DIR}/internal/catch_version.h
         ${HEADER_DIR}/internal/catch_wildcard_pattern.h
         ${HEADER_DIR}/internal/catch_windows_h_proxy.h

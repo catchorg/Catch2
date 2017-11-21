@@ -14,8 +14,12 @@
 #include "catch_stringref.h"
 
 #include <ostream>
+#include <cstring>
 
 namespace Catch {
+    StringRef::StringRef( char const* rawChars ) noexcept
+    : StringRef( rawChars, static_cast<StringRef::size_type>(std::strlen(rawChars) ) )
+    {}
 
     StringRef::operator std::string() const {
         return std::string( m_start, m_size );

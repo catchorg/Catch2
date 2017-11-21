@@ -24,6 +24,5 @@ DerivedData
 *.xccheckout
 Build
 .idea
-cmake-build-debug
-cmake-build-release
 .vs
+cmake-build-*

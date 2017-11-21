@@ -6,8 +6,6 @@ import re
 import string
 
 from scriptCommon import catchPath
-import generateSingleHeader
-import updateWandbox
 
 versionParser = re.compile( r'(\s*static\sVersion\sversion)\s*\(\s*(.*)\s*,\s*(.*)\s*,\s*(.*)\s*,\s*\"(.*)\"\s*,\s*(.*)\s*\).*' )
 rootPath = os.path.join( catchPath, 'include/' )
@@ -80,6 +78,8 @@ class Version:
             f.write( line + "\n" )
 
 def updateReadmeFile(version):
+    import updateWandbox
+
     downloadParser = re.compile( r'<a href=\"https://github.com/philsquared/Catch/releases/download/v\d+\.\d+\.\d+/catch.hpp\">' )
     success, wandboxLink = updateWandbox.uploadFiles()
     if not success:
@@ -142,7 +142,10 @@ def performUpdates(version):
     # First update version file, so we can regenerate single header and
     # have it ready for upload to wandbox, when updating readme
     version.updateVersionFile()
+    
+    import generateSingleHeader
     generateSingleHeader.generate(version)
+    
     updateReadmeFile(version)
     updateConanFile(version)
     updateConanTestFile(version)

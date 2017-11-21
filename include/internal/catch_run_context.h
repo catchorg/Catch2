@@ -116,6 +116,8 @@ namespace Catch {
         void runCurrentTest(std::string& redirectedCout, std::string& redirectedCerr);
         void invokeActiveTestCase();
 
+        void resetAssertionInfo();
+
     private:
 
         void handleUnfinishedSections();

@@ -30,6 +30,7 @@
 #  if defined(CATCH_CONFIG_DISABLE_MATCHERS)
 #    undef CATCH_CONFIG_DISABLE_MATCHERS
 #  endif
+#  define CATCH_CONFIG_ENABLE_CHRONO_STRINGMAKER
 #endif
 
 #if !defined(CATCH_CONFIG_IMPL_ONLY)
@@ -42,6 +43,7 @@
 #  endif
 #endif
 
+#include "internal/catch_user_interfaces.h"
 #include "internal/catch_tag_alias_autoregistrar.h"
 #include "internal/catch_test_registry.h"
 #include "internal/catch_capture.hpp"

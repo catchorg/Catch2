@@ -203,9 +203,13 @@ install:
 before_script:
   - export CXX=${COMPILER}
   - cd ${TRAVIS_BUILD_DIR}
-  # Only run valgrind in debug build
-  - cmake -H. -BBuild-Debug -DCMAKE_BUILD_TYPE=Debug -Wdev -DUSE_CPP14=${CPP14} -DUSE_VALGRIND=${VALGRIND} -DNO_SELFTEST=${ENV_NO_SELFTEST} -DBUILD_EXAMPLES=${ENV_BUILD_EXAMPLES}
-  - cmake -H. -BBuild-Release -DCMAKE_BUILD_TYPE=Release -Wdev -DUSE_CPP14=${CPP14} -DNO_SELFTEST=${ENV_NO_SELFTEST} -DBUILD_EXAMPLES=${ENV_BUILD_EXAMPLES}
+  # Regenerate single header file, so it is tested in the examples...
+  - python scripts/generateSingleHeader.py
+
+  # Use Debug builds for running Valgrind and building examples
+  - cmake -H. -BBuild-Debug -DCMAKE_BUILD_TYPE=Debug -Wdev -DUSE_CPP14=${CPP14} -DUSE_VALGRIND=${VALGRIND} -DBUILD_EXAMPLES=ON
+  # Check that we don't miscompile with optimalizations...
+  - cmake -H. -BBuild-Release -DCMAKE_BUILD_TYPE=Release -Wdev -DUSE_CPP14=${CPP14}
 
 script:
   - cd Build-Debug
