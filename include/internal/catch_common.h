@@ -61,7 +61,7 @@ namespace Catch {
     std::ostream& operator << ( std::ostream& os, SourceLineInfo const& info );
 
     // This is just here to avoid compiler warnings with macro constants and boolean literals
-    bool isTrue( bool value );
+    inline bool isTrue( bool value ){ return value; }
     bool alwaysTrue();
     bool alwaysFalse();
 
