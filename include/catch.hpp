@@ -43,6 +43,7 @@
 #  endif
 #endif
 
+#include "internal/catch_user_interfaces.h"
 #include "internal/catch_tag_alias_autoregistrar.h"
 #include "internal/catch_test_registry.h"
 #include "internal/catch_capture.hpp"
