@@ -14,6 +14,7 @@
 #include "catch_stringref.h"
 
 #include <ostream>
+#include <cstring>
 
 namespace Catch {
     auto StringRef::fromRaw( char const* rawChars ) -> StringRef {
