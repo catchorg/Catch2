@@ -15,7 +15,7 @@
 namespace {
     // Report the error condition
     void reportFatal( char const * const message ) {
-        Catch::getCurrentContext().getResultCapture()->handleFatalErrorCondition( Catch::StringRef::fromRaw( message ) );
+        Catch::getCurrentContext().getResultCapture()->handleFatalErrorCondition( message );
     }
 }
 

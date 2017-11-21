@@ -17,11 +17,9 @@
 #include <cstring>
 
 namespace Catch {
-    auto StringRef::fromRaw( char const* rawChars ) -> StringRef {
-        return rawChars
-            ? StringRef( rawChars,static_cast<StringRef::size_type>(std::strlen(rawChars) ) )
-            : StringRef();
-    }
+    StringRef::StringRef( char const* rawChars ) noexcept
+    : StringRef( rawChars, static_cast<StringRef::size_type>(std::strlen(rawChars) ) )
+    {}
 
     StringRef::operator std::string() const {
         return std::string( m_start, m_size );

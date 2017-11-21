@@ -23,10 +23,12 @@ namespace Catch {
     /// visible - but it does mean (substring) StringRefs should not be shared between
     /// threads.
     class StringRef {
+    public:
+        using size_type = std::size_t;
+
+    private:
         friend struct StringRefTestAccess;
 
-        using size_type = std::size_t;
-        
         char const* m_start;
         size_type m_size;
         
@@ -54,11 +56,7 @@ namespace Catch {
             other.m_data = nullptr;
         }
 
-        template<size_t Size>
-        StringRef( char const(& rawChars)[Size] ) noexcept
-        :   m_start( rawChars ),
-            m_size( static_cast<size_type>( Size-1 ) )
-        {}
+        StringRef( char const* rawChars ) noexcept;
 
         StringRef( char const* rawChars, size_type size ) noexcept
         :   m_start( rawChars ),
@@ -81,8 +79,6 @@ namespace Catch {
             m_size = other.m_size;
             return *this;
         }
-
-        static auto fromRaw( char const *rawChars ) -> StringRef;
 
         operator std::string() const;
 
@@ -119,6 +115,10 @@ namespace Catch {
     auto operator + ( char const* lhs, StringRef const& rhs ) -> std::string;
 
     auto operator << ( std::ostream& os, StringRef const& sr ) -> std::ostream&;
+
+    inline auto operator ""_sr( char const* rawChars, std::size_t size ) noexcept -> StringRef {
+        return StringRef( rawChars, size );
+    }
 
 } // namespace Catch
 

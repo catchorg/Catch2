@@ -132,7 +132,7 @@ namespace Catch {
     }
     void RunContext::resetAssertionInfo() {
         m_lastAssertionInfo.macroName = StringRef();
-        m_lastAssertionInfo.capturedExpression = "{Unknown expression after the reported line}";
+        m_lastAssertionInfo.capturedExpression = "{Unknown expression after the reported line}"_sr;
     }
 
     bool RunContext::sectionStarted(SectionInfo const & sectionInfo, Counts & assertions) {
