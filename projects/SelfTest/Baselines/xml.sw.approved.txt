@@ -819,7 +819,7 @@
     <TestCase name="Assertions then sections" tags="[Tricky]" filename="projects/<exe-name>/UsageTests/Tricky.tests.cpp" >
       <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/UsageTests/Tricky.tests.cpp" >
         <Original>
-          Catch::alwaysTrue()
+          true
         </Original>
         <Expanded>
           true
@@ -828,7 +828,7 @@
       <Section name="A section" filename="projects/<exe-name>/UsageTests/Tricky.tests.cpp" >
         <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/UsageTests/Tricky.tests.cpp" >
           <Original>
-            Catch::alwaysTrue()
+            true
           </Original>
           <Expanded>
             true
@@ -837,7 +837,7 @@
         <Section name="Another section" filename="projects/<exe-name>/UsageTests/Tricky.tests.cpp" >
           <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/UsageTests/Tricky.tests.cpp" >
             <Original>
-              Catch::alwaysTrue()
+              true
             </Original>
             <Expanded>
               true
@@ -849,7 +849,7 @@
       </Section>
       <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/UsageTests/Tricky.tests.cpp" >
         <Original>
-          Catch::alwaysTrue()
+          true
         </Original>
         <Expanded>
           true
@@ -858,7 +858,7 @@
       <Section name="A section" filename="projects/<exe-name>/UsageTests/Tricky.tests.cpp" >
         <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/UsageTests/Tricky.tests.cpp" >
           <Original>
-            Catch::alwaysTrue()
+            true
           </Original>
           <Expanded>
             true
@@ -867,7 +867,7 @@
         <Section name="Another other section" filename="projects/<exe-name>/UsageTests/Tricky.tests.cpp" >
           <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/UsageTests/Tricky.tests.cpp" >
             <Original>
-              Catch::alwaysTrue()
+              true
             </Original>
             <Expanded>
               true

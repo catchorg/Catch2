@@ -12,11 +12,12 @@
 #include <stdexcept>
 
 #ifdef _MSC_VER
-#pragma warning(disable:4702) // Unreachable code -- MSVC 19 (VS 2015) sees right through the indirection
+#pragma warning(disable:4702) // Unreachable code -- uncoditional throws and so on
 #endif
 #ifdef __clang__
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wweak-vtables"
+#pragma clang diagnostic ignored "-Wmissing-noreturn"
 #endif
 
 namespace { namespace ExceptionTests {
@@ -24,9 +25,8 @@ namespace { namespace ExceptionTests {
 #ifndef EXCEPTION_TEST_HELPERS_INCLUDED // Don't compile this more than once per TU
 #define EXCEPTION_TEST_HELPERS_INCLUDED
 
-inline int thisThrows() {
-    if( Catch::alwaysTrue() )
-        throw std::domain_error( "expected exception" );
+int thisThrows() {
+    throw std::domain_error( "expected exception" );
     return 1;
 }
 
@@ -63,9 +63,8 @@ private:
     std::string m_msg;
 };
 
-inline void throwCustom() {
-    if( Catch::alwaysTrue() )
-        throw CustomException( "custom exception - not std" );
+[[noreturn]] void throwCustom() {
+    throw CustomException( "custom exception - not std" );
 }
 
 #endif
@@ -83,20 +82,17 @@ TEST_CASE( "Expected exceptions that don't throw or unexpected exceptions fail t
 }
 
 TEST_CASE( "When unchecked exceptions are thrown directly they are always failures", "[.][failing][!throws]" ) {
-    if( Catch::alwaysTrue() )
-        throw std::domain_error( "unexpected exception" );
+    throw std::domain_error( "unexpected exception" );
 }
 
 TEST_CASE( "An unchecked exception reports the line of the last assertion", "[.][failing][!throws]" ) {
     CHECK( 1 == 1 );
-    if( Catch::alwaysTrue() )
-        throw std::domain_error( "unexpected exception" );
+    throw std::domain_error( "unexpected exception" );
 }
 
 TEST_CASE( "When unchecked exceptions are thrown from sections they are always failures", "[.][failing][!throws]" ) {
     SECTION( "section name" ) {
-        if( Catch::alwaysTrue() )
-            throw std::domain_error( "unexpected exception" );
+        throw std::domain_error("unexpected exception");
     }
 }
 
@@ -139,13 +135,11 @@ CATCH_TRANSLATE_EXCEPTION( double& ex ) {
 }
 
 TEST_CASE("Non-std exceptions can be translated", "[.][failing][!throws]" ) {
-    if( Catch::alwaysTrue() )
-        throw CustomException( "custom exception" );
+    throw CustomException( "custom exception" );
 }
 
 TEST_CASE("Custom std-exceptions can be custom translated", "[.][failing][!throws]" ) {
-    if( Catch::alwaysTrue() )
-        throw CustomException( "custom std exception" );
+    throw CustomException( "custom std exception" );
 }
 
 TEST_CASE( "Custom exceptions can be translated when testing for nothrow", "[.][failing][!throws]" ) {
@@ -157,8 +151,7 @@ TEST_CASE( "Custom exceptions can be translated when testing for throwing as som
 }
 
 TEST_CASE( "Unexpected exceptions can be translated", "[.][failing][!throws]"  ) {
-    if( Catch::alwaysTrue() )
-        throw double( 3.14 );
+    throw double( 3.14 );
 }
 
 #ifndef CATCH_CONFIG_DISABLE_MATCHERS

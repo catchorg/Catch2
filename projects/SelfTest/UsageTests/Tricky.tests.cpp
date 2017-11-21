@@ -298,19 +298,19 @@ TEST_CASE( "Assertions then sections", "[Tricky]" )
     // This was causing a failure due to the way the console reporter was handling
     // the current section
 
-    REQUIRE( Catch::alwaysTrue() );
+    REQUIRE( true );
 
     SECTION( "A section" )
     {
-        REQUIRE( Catch::alwaysTrue() );
+        REQUIRE( true );
 
         SECTION( "Another section" )
         {
-            REQUIRE( Catch::alwaysTrue() );
+            REQUIRE( true );
         }
         SECTION( "Another other section" )
         {
-            REQUIRE( Catch::alwaysTrue() );
+            REQUIRE( true );
         }
     }
 }

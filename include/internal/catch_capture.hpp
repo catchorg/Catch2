@@ -63,7 +63,7 @@
             CATCH_INTERNAL_UNSUPPRESS_PARENTHESES_WARNINGS \
         } INTERNAL_CATCH_CATCH( catchAssertionHandler ) \
         INTERNAL_CATCH_REACT( catchAssertionHandler ) \
-    } while( Catch::isTrue(false) && static_cast<bool>( !!(__VA_ARGS__) ) ) // the expression here is never evaluated at runtime but it forces the compiler to give it a look
+    } while( (void)0, 0 && static_cast<bool>( !!(__VA_ARGS__) ) ) // the expression here is never evaluated at runtime but it forces the compiler to give it a look
     // The double negation silences MSVC's C4800 warning, the static_cast forces short-circuit evaluation if the type has overloaded &&.
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -88,7 +88,7 @@
             catchAssertionHandler.useActiveException(); \
         } \
         INTERNAL_CATCH_REACT( catchAssertionHandler ) \
-    } while( Catch::alwaysFalse() )
+    } while( false )
 
 ///////////////////////////////////////////////////////////////////////////////
 #define INTERNAL_CATCH_THROWS( macroName, resultDisposition, ... ) \
@@ -105,7 +105,7 @@
         else \
             catchAssertionHandler.handle( Catch::ResultWas::Ok ); \
         INTERNAL_CATCH_REACT( catchAssertionHandler ) \
-    } while( Catch::alwaysFalse() )
+    } while( false )
 
 ///////////////////////////////////////////////////////////////////////////////
 #define INTERNAL_CATCH_THROWS_AS( macroName, exceptionType, resultDisposition, expr ) \
@@ -125,7 +125,7 @@
         else \
             catchAssertionHandler.handle( Catch::ResultWas::Ok ); \
         INTERNAL_CATCH_REACT( catchAssertionHandler ) \
-    } while( Catch::alwaysFalse() )
+    } while( false )
 
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -134,7 +134,7 @@
         Catch::AssertionHandler catchAssertionHandler( macroName, CATCH_INTERNAL_LINEINFO, "", resultDisposition ); \
         catchAssertionHandler.handle( messageType, ( Catch::MessageStream() << __VA_ARGS__ + ::Catch::StreamEndStop() ).m_stream.str() ); \
         INTERNAL_CATCH_REACT( catchAssertionHandler ) \
-    } while( Catch::alwaysFalse() )
+    } while( false )
 
 ///////////////////////////////////////////////////////////////////////////////
 #define INTERNAL_CATCH_INFO( macroName, log ) \
@@ -156,7 +156,7 @@
         else \
             catchAssertionHandler.handle( Catch::ResultWas::Ok ); \
         INTERNAL_CATCH_REACT( catchAssertionHandler ) \
-    } while( Catch::alwaysFalse() )
+    } while( false )
 
 #endif // CATCH_CONFIG_DISABLE
 

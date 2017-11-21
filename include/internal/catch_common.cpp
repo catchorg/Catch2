@@ -38,9 +38,6 @@ namespace Catch {
         return os;
     }
 
-    bool alwaysTrue() { return true; }
-    bool alwaysFalse() { return false; }
-
     std::string StreamEndStop::operator+() const {
         return std::string();
     }

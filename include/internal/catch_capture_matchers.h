@@ -63,7 +63,7 @@ namespace Catch {
             catchAssertionHandler.handle( Catch::makeMatchExpr( arg, matcher, #matcher ) ); \
         } INTERNAL_CATCH_CATCH( catchAssertionHandler ) \
         INTERNAL_CATCH_REACT( catchAssertionHandler ) \
-    } while( Catch::alwaysFalse() )
+    } while( false )
 
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -84,6 +84,6 @@ namespace Catch {
         else \
             catchAssertionHandler.handle( Catch::ResultWas::Ok ); \
         INTERNAL_CATCH_REACT( catchAssertionHandler ) \
-    } while( Catch::alwaysFalse() )
+    } while( false )
 
 #endif // TWOBLUECUBES_CATCH_CAPTURE_MATCHERS_HPP_INCLUDED

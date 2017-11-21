@@ -762,9 +762,7 @@ Tricky.tests.cpp:<line number>
 
 Tricky.tests.cpp:<line number>:
 PASSED:
-  REQUIRE( Catch::alwaysTrue() )
-with expansion:
-  true
+  REQUIRE( true )
 
 -------------------------------------------------------------------------------
 Assertions then sections
@@ -775,9 +773,7 @@ Tricky.tests.cpp:<line number>
 
 Tricky.tests.cpp:<line number>:
 PASSED:
-  REQUIRE( Catch::alwaysTrue() )
-with expansion:
-  true
+  REQUIRE( true )
 
 -------------------------------------------------------------------------------
 Assertions then sections
@@ -789,9 +785,7 @@ Tricky.tests.cpp:<line number>
 
 Tricky.tests.cpp:<line number>:
 PASSED:
-  REQUIRE( Catch::alwaysTrue() )
-with expansion:
-  true
+  REQUIRE( true )
 
 -------------------------------------------------------------------------------
 Assertions then sections
@@ -801,9 +795,7 @@ Tricky.tests.cpp:<line number>
 
 Tricky.tests.cpp:<line number>:
 PASSED:
-  REQUIRE( Catch::alwaysTrue() )
-with expansion:
-  true
+  REQUIRE( true )
 
 -------------------------------------------------------------------------------
 Assertions then sections
@@ -814,9 +806,7 @@ Tricky.tests.cpp:<line number>
 
 Tricky.tests.cpp:<line number>:
 PASSED:
-  REQUIRE( Catch::alwaysTrue() )
-with expansion:
-  true
+  REQUIRE( true )
 
 -------------------------------------------------------------------------------
 Assertions then sections
@@ -828,9 +818,7 @@ Tricky.tests.cpp:<line number>
 
 Tricky.tests.cpp:<line number>:
 PASSED:
-  REQUIRE( Catch::alwaysTrue() )
-with expansion:
-  true
+  REQUIRE( true )
 
 -------------------------------------------------------------------------------
 Assorted miscellaneous tests
