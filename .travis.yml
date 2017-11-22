@@ -209,7 +209,7 @@ before_script:
 script:
   - cd Build-Debug
   - make -j 2
-  - ctest -V -j 2
+  - CTEST_OUTPUT_ON_FAILURE=1 ctest -j 2
   - cd ../Build-Release
   - make -j 2
-  - ctest -V -j 2
+  - CTEST_OUTPUT_ON_FAILURE=1 ctest -j 2

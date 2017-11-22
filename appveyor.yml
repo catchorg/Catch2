@@ -58,4 +58,5 @@ build:
 
 test_script:
   - cd Build
-  - ctest -V -j 2 -C %CONFIGURATION%
+  - set CTEST_OUTPUT_ON_FAILURE=1
+  - ctest -j 2 -C %CONFIGURATION%
