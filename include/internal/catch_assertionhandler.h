@@ -57,7 +57,8 @@ namespace Catch {
         void handle( ResultWas::OfType resultType, ITransientExpression const* expr, bool negated );
         void handle( AssertionResultData const& resultData, ITransientExpression const* expr );
 
-        auto shouldDebugBreak() const -> bool;
+        auto shouldDebugBreak() const -> bool { return m_shouldDebugBreak; }
+
         auto allowThrows() const -> bool;
         void reactWithDebugBreak() const;
         void reactWithoutDebugBreak() const;

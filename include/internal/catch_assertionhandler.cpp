@@ -116,9 +116,6 @@ namespace Catch {
         return getCurrentContext().getConfig()->allowThrows();
     }
 
-    auto AssertionHandler::shouldDebugBreak() const -> bool {
-        return m_shouldDebugBreak;
-    }
     void AssertionHandler::reactWithDebugBreak() const {
         if (m_shouldDebugBreak) {
             ///////////////////////////////////////////////////////////////////
