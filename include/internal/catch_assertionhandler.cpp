@@ -61,7 +61,7 @@ namespace Catch {
         getCurrentContext().getResultCapture()->assertionStarting( m_assertionInfo );
     }
     AssertionHandler::~AssertionHandler() {
-        if ( m_inExceptionGuard ) {
+        if ( !m_handled ) {
             handle( ResultWas::ThrewException, "Exception translation was disabled by CATCH_CONFIG_FAST_COMPILE" );
             getCurrentContext().getResultCapture()->exceptionEarlyReported();
         }
@@ -76,6 +76,7 @@ namespace Catch {
         {
             getCurrentContext().getResultCapture()->assertionRun();
             getCurrentContext().getResultCapture()->assertionPassed();
+            m_handled = true;
             return;
         }
 
@@ -95,6 +96,7 @@ namespace Catch {
     }
     void AssertionHandler::handle( AssertionResultData const& resultData, ITransientExpression const* expr ) {
 
+        m_handled = true;
         getResultCapture().assertionRun();
 
         AssertionResult assertionResult{ m_assertionInfo, resultData };
@@ -134,15 +136,6 @@ namespace Catch {
 
     void AssertionHandler::useActiveException() {
         handle( ResultWas::ThrewException, Catch::translateActiveException() );
-    }
-
-    void AssertionHandler::setExceptionGuard() {
-        assert( m_inExceptionGuard == false );
-        m_inExceptionGuard = true;
-    }
-    void AssertionHandler::unsetExceptionGuard() {
-        assert( m_inExceptionGuard == true );
-        m_inExceptionGuard = false;
     }
 
     // This is the overload that takes a string and infers the Equals matcher from it

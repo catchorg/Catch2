@@ -34,8 +34,8 @@
 // macros.
 // This can potentially cause false negative, if the test code catches
 // the exception before it propagates back up to the runner.
-#define INTERNAL_CATCH_TRY( capturer ) capturer.setExceptionGuard();
-#define INTERNAL_CATCH_CATCH( capturer ) capturer.unsetExceptionGuard();
+#define INTERNAL_CATCH_TRY
+#define INTERNAL_CATCH_CATCH( capturer )
 
 #else // CATCH_CONFIG_FAST_COMPILE
 
@@ -48,7 +48,7 @@
     if( handler.shouldDebugBreak() ) CATCH_BREAK_INTO_DEBUGGER(); \
     handler.reactWithoutDebugBreak();
 
-#define INTERNAL_CATCH_TRY( capturer ) try
+#define INTERNAL_CATCH_TRY try
 #define INTERNAL_CATCH_CATCH( capturer ) catch(...) { capturer.useActiveException(); }
 
 #endif
@@ -57,7 +57,7 @@
 #define INTERNAL_CATCH_TEST( macroName, resultDisposition, ... ) \
     do { \
         Catch::AssertionHandler catchAssertionHandler( macroName, CATCH_INTERNAL_LINEINFO, CATCH_INTERNAL_STRINGIFY(__VA_ARGS__), resultDisposition ); \
-        INTERNAL_CATCH_TRY( catchAssertionHandler ) { \
+        INTERNAL_CATCH_TRY { \
             CATCH_INTERNAL_SUPPRESS_PARENTHESES_WARNINGS \
             catchAssertionHandler.handle( Catch::Decomposer() <= __VA_ARGS__ ); \
             CATCH_INTERNAL_UNSUPPRESS_PARENTHESES_WARNINGS \

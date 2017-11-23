@@ -36,7 +36,7 @@ namespace Catch {
         AssertionInfo m_assertionInfo;
         bool m_shouldDebugBreak = false;
         bool m_shouldThrow = false;
-        bool m_inExceptionGuard = false;
+        bool m_handled = false;
 
     public:
         AssertionHandler
@@ -62,8 +62,6 @@ namespace Catch {
         void reactWithDebugBreak() const;
         void reactWithoutDebugBreak() const;
         void useActiveException();
-        void setExceptionGuard();
-        void unsetExceptionGuard();
     };
 
     void handleExceptionMatchExpr( AssertionHandler& handler, std::string const& str, StringRef matcherString );

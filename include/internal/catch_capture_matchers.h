@@ -59,7 +59,7 @@ namespace Catch {
 #define INTERNAL_CHECK_THAT( macroName, matcher, resultDisposition, arg ) \
     do { \
         Catch::AssertionHandler catchAssertionHandler( macroName, CATCH_INTERNAL_LINEINFO, CATCH_INTERNAL_STRINGIFY(arg) ", " CATCH_INTERNAL_STRINGIFY(matcher), resultDisposition ); \
-        INTERNAL_CATCH_TRY( catchAssertionHandler ) { \
+        INTERNAL_CATCH_TRY { \
             catchAssertionHandler.handle( Catch::makeMatchExpr( arg, matcher, #matcher ) ); \
         } INTERNAL_CATCH_CATCH( catchAssertionHandler ) \
         INTERNAL_CATCH_REACT( catchAssertionHandler ) \
