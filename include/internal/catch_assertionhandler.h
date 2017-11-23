@@ -15,6 +15,7 @@ namespace Catch {
 
     struct TestFailureException{};
     struct AssertionResultData;
+    struct IResultCapture;
 
     class LazyExpression {
         friend class AssertionHandler;
@@ -37,6 +38,7 @@ namespace Catch {
         bool m_shouldDebugBreak = false;
         bool m_shouldThrow = false;
         bool m_completed = false;
+        IResultCapture& m_resultCapture;
 
     public:
         AssertionHandler

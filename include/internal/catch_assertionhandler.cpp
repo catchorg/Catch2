@@ -56,14 +56,15 @@ namespace Catch {
             SourceLineInfo const& lineInfo,
             StringRef capturedExpression,
             ResultDisposition::Flags resultDisposition )
-    :   m_assertionInfo{ macroName, lineInfo, capturedExpression, resultDisposition }
+    :   m_assertionInfo{ macroName, lineInfo, capturedExpression, resultDisposition },
+        m_resultCapture( getResultCapture() )
     {
-        getCurrentContext().getResultCapture()->assertionStarting( m_assertionInfo );
+        m_resultCapture.assertionStarting( m_assertionInfo );
     }
     AssertionHandler::~AssertionHandler() {
         if ( !m_completed ) {
             handle( ResultWas::ThrewException, "Exception translation was disabled by CATCH_CONFIG_FAST_COMPILE" );
-            getCurrentContext().getResultCapture()->exceptionEarlyReported();
+            m_resultCapture.exceptionEarlyReported();
         }
     }
 
@@ -74,8 +75,8 @@ namespace Catch {
 
         if(result && !getCurrentContext().getConfig()->includeSuccessfulResults())
         {
-            getCurrentContext().getResultCapture()->assertionRun();
-            getCurrentContext().getResultCapture()->assertionPassed();
+            m_resultCapture.assertionRun();
+            m_resultCapture.assertionPassed();
             return;
         }
 
@@ -95,12 +96,12 @@ namespace Catch {
     }
     void AssertionHandler::handle( AssertionResultData const& resultData, ITransientExpression const* expr ) {
 
-        getResultCapture().assertionRun();
+        m_resultCapture.assertionRun();
 
         AssertionResult assertionResult{ m_assertionInfo, resultData };
         assertionResult.m_resultData.lazyExpression.m_transientExpression = expr;
 
-        getResultCapture().assertionEnded( assertionResult );
+        m_resultCapture.assertionEnded( assertionResult );
 
         if( !assertionResult.isOk() ) {
             m_shouldDebugBreak = getCurrentContext().getConfig()->shouldDebugBreak();
