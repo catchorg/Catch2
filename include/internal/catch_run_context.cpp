@@ -297,11 +297,13 @@ namespace Catch {
             // Under CATCH_CONFIG_FAST_COMPILE, unexpected exceptions under REQUIRE assertions
             // are reported without translation at the point of origin.
             if (m_shouldReportUnexpected) {
-                AssertionHandler
+                AssertionHandler handler
                     ( m_lastAssertionInfo.macroName,
                       m_lastAssertionInfo.lineInfo,
                       m_lastAssertionInfo.capturedExpression,
-                      m_lastAssertionInfo.resultDisposition ).useActiveException();
+                      m_lastAssertionInfo.resultDisposition );
+                handler.useActiveException();
+                handler.setCompleted();
             }
         }
         m_testCaseTracker->close();

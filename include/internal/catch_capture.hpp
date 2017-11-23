@@ -11,7 +11,6 @@
 #include "catch_assertionhandler.h"
 #include "catch_message.h"
 #include "catch_interfaces_capture.h"
-#include "catch_debugger.h"
 
 #if !defined(CATCH_CONFIG_DISABLE)
 
@@ -22,36 +21,21 @@
 #endif
 
 #if defined(CATCH_CONFIG_FAST_COMPILE)
-///////////////////////////////////////////////////////////////////////////////
-// We can speedup compilation significantly by breaking into debugger lower in
-// the callstack, because then we don't have to expand CATCH_BREAK_INTO_DEBUGGER
-// macro in each assertion
-#define INTERNAL_CATCH_REACT( handler ) \
-    handler.reactWithDebugBreak();
 
 ///////////////////////////////////////////////////////////////////////////////
 // Another way to speed-up compilation is to omit local try-catch for REQUIRE*
 // macros.
-// This can potentially cause false negative, if the test code catches
-// the exception before it propagates back up to the runner.
 #define INTERNAL_CATCH_TRY
 #define INTERNAL_CATCH_CATCH( capturer )
 
 #else // CATCH_CONFIG_FAST_COMPILE
 
-///////////////////////////////////////////////////////////////////////////////
-// In the event of a failure works out if the debugger needs to be invoked
-// and/or an exception thrown and takes appropriate action.
-// This needs to be done as a macro so the debugger will stop in the user
-// source code rather than in Catch library code
-#define INTERNAL_CATCH_REACT( handler ) \
-    if( handler.shouldDebugBreak() ) CATCH_BREAK_INTO_DEBUGGER(); \
-    handler.reactWithoutDebugBreak();
-
 #define INTERNAL_CATCH_TRY try
-#define INTERNAL_CATCH_CATCH( capturer ) catch(...) { capturer.useActiveException(); }
+#define INTERNAL_CATCH_CATCH( handler ) catch(...) { handler.useActiveException(); }
 
 #endif
+
+#define INTERNAL_CATCH_REACT( handler ) handler.complete();
 
 ///////////////////////////////////////////////////////////////////////////////
 #define INTERNAL_CATCH_TEST( macroName, resultDisposition, ... ) \

@@ -61,7 +61,7 @@ namespace Catch {
         getCurrentContext().getResultCapture()->assertionStarting( m_assertionInfo );
     }
     AssertionHandler::~AssertionHandler() {
-        if ( !m_handled ) {
+        if ( !m_completed ) {
             handle( ResultWas::ThrewException, "Exception translation was disabled by CATCH_CONFIG_FAST_COMPILE" );
             getCurrentContext().getResultCapture()->exceptionEarlyReported();
         }
@@ -76,7 +76,6 @@ namespace Catch {
         {
             getCurrentContext().getResultCapture()->assertionRun();
             getCurrentContext().getResultCapture()->assertionPassed();
-            m_handled = true;
             return;
         }
 
@@ -96,7 +95,6 @@ namespace Catch {
     }
     void AssertionHandler::handle( AssertionResultData const& resultData, ITransientExpression const* expr ) {
 
-        m_handled = true;
         getResultCapture().assertionRun();
 
         AssertionResult assertionResult{ m_assertionInfo, resultData };
@@ -116,19 +114,21 @@ namespace Catch {
         return getCurrentContext().getConfig()->allowThrows();
     }
 
-    void AssertionHandler::reactWithDebugBreak() const {
-        if (m_shouldDebugBreak) {
-            ///////////////////////////////////////////////////////////////////
-            // To inspect the state during test, you need to go one level up the callstack
-            // To go back to the test and change execution, jump over the reactWithoutDebugBreak() call
-            ///////////////////////////////////////////////////////////////////
+    void AssertionHandler::complete() {
+        setCompleted();
+        if( m_shouldDebugBreak ) {
+
+            // If you find your debugger stopping you here then go one level up on the
+            // call-stack for the code that caused it (typically a failed assertion)
+
+            // (To go back to the test and change execution, jump over the throw, next)
             CATCH_BREAK_INTO_DEBUGGER();
         }
-        reactWithoutDebugBreak();
-    }
-    void AssertionHandler::reactWithoutDebugBreak() const {
         if( m_shouldThrow )
             throw Catch::TestFailureException();
+    }
+    void AssertionHandler::setCompleted() {
+        m_completed = true;
     }
 
     void AssertionHandler::useActiveException() {

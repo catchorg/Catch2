@@ -36,7 +36,7 @@ namespace Catch {
         AssertionInfo m_assertionInfo;
         bool m_shouldDebugBreak = false;
         bool m_shouldThrow = false;
-        bool m_handled = false;
+        bool m_completed = false;
 
     public:
         AssertionHandler
@@ -57,11 +57,9 @@ namespace Catch {
         void handle( ResultWas::OfType resultType, ITransientExpression const* expr, bool negated );
         void handle( AssertionResultData const& resultData, ITransientExpression const* expr );
 
-        auto shouldDebugBreak() const -> bool { return m_shouldDebugBreak; }
-
         auto allowThrows() const -> bool;
-        void reactWithDebugBreak() const;
-        void reactWithoutDebugBreak() const;
+        void complete();
+        void setCompleted();
         void useActiveException();
     };
 
