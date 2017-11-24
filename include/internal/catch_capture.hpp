@@ -135,7 +135,7 @@
                 catchAssertionHandler.handle( Catch::ResultWas::DidntThrowException ); \
             } \
             catch( ... ) { \
-                handleExceptionMatchExpr( catchAssertionHandler, matcher, #matcher ); \
+                Catch::handleExceptionMatchExpr( catchAssertionHandler, matcher, #matcher ); \
             } \
         else \
             catchAssertionHandler.handle( Catch::ResultWas::Ok ); \
