@@ -43,6 +43,8 @@ namespace Catch {
             return *this;
         }
         auto get() -> std::ostream& { return *m_oss; }
+
+        static void cleanup();
     };
 }
 
