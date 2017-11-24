@@ -68,7 +68,7 @@ namespace Catch {
         }
     }
 
-    void AssertionHandler::handle( ITransientExpression const& expr ) {
+    void AssertionHandler::handleExpr( ITransientExpression const& expr ) {
 
         bool negated = isFalseTest( m_assertionInfo.resultDisposition );
         bool result = expr.getResult() != negated;
@@ -132,9 +132,25 @@ namespace Catch {
         m_completed = true;
     }
 
-    void AssertionHandler::useActiveException() {
+    void AssertionHandler::handleUnexpectedInflightException() {
         handle( ResultWas::ThrewException, Catch::translateActiveException() );
     }
+
+    void AssertionHandler::handleExceptionThrownAsExpected() {
+        handle( Catch::ResultWas::Ok );
+    }
+    void AssertionHandler::handleExceptionNotThrownAsExpected() {
+        handle( Catch::ResultWas::Ok );
+    }
+
+    void AssertionHandler::handleUnexpectedExceptionNotThrown() {
+        handle( Catch::ResultWas::DidntThrowException );
+    }
+
+    void AssertionHandler::handleThrowingCallSkipped() {
+        handle( Catch::ResultWas::Ok );
+    }
+
 
     // This is the overload that takes a string and infers the Equals matcher from it
     // The more general overload, that takes any string matcher, is in catch_capture_matchers.cpp

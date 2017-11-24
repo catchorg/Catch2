@@ -31,7 +31,7 @@
 #else // CATCH_CONFIG_FAST_COMPILE
 
 #define INTERNAL_CATCH_TRY try
-#define INTERNAL_CATCH_CATCH( handler ) catch(...) { handler.useActiveException(); }
+#define INTERNAL_CATCH_CATCH( handler ) catch(...) { handler.handleUnexpectedInflightException(); }
 
 #endif
 
@@ -43,7 +43,7 @@
         Catch::AssertionHandler catchAssertionHandler( macroName, CATCH_INTERNAL_LINEINFO, CATCH_INTERNAL_STRINGIFY(__VA_ARGS__), resultDisposition ); \
         INTERNAL_CATCH_TRY { \
             CATCH_INTERNAL_SUPPRESS_PARENTHESES_WARNINGS \
-            catchAssertionHandler.handle( Catch::Decomposer() <= __VA_ARGS__ ); \
+            catchAssertionHandler.handleExpr( Catch::Decomposer() <= __VA_ARGS__ ); \
             CATCH_INTERNAL_UNSUPPRESS_PARENTHESES_WARNINGS \
         } INTERNAL_CATCH_CATCH( catchAssertionHandler ) \
         INTERNAL_CATCH_REACT( catchAssertionHandler ) \
@@ -66,10 +66,10 @@
         Catch::AssertionHandler catchAssertionHandler( macroName, CATCH_INTERNAL_LINEINFO, CATCH_INTERNAL_STRINGIFY(__VA_ARGS__), resultDisposition ); \
         try { \
             static_cast<void>(__VA_ARGS__); \
-            catchAssertionHandler.handle( Catch::ResultWas::Ok ); \
+            catchAssertionHandler.handleExceptionNotThrownAsExpected(); \
         } \
         catch( ... ) { \
-            catchAssertionHandler.useActiveException(); \
+            catchAssertionHandler.handleUnexpectedInflightException(); \
         } \
         INTERNAL_CATCH_REACT( catchAssertionHandler ) \
     } while( false )
@@ -81,13 +81,13 @@
         if( catchAssertionHandler.allowThrows() ) \
             try { \
                 static_cast<void>(__VA_ARGS__); \
-                catchAssertionHandler.handle( Catch::ResultWas::DidntThrowException ); \
+                catchAssertionHandler.handleUnexpectedExceptionNotThrown(); \
             } \
             catch( ... ) { \
-                catchAssertionHandler.handle( Catch::ResultWas::Ok ); \
+                catchAssertionHandler.handleExceptionThrownAsExpected(); \
             } \
         else \
-            catchAssertionHandler.handle( Catch::ResultWas::Ok ); \
+            catchAssertionHandler.handleThrowingCallSkipped(); \
         INTERNAL_CATCH_REACT( catchAssertionHandler ) \
     } while( false )
 
@@ -98,16 +98,16 @@
         if( catchAssertionHandler.allowThrows() ) \
             try { \
                 static_cast<void>(expr); \
-                catchAssertionHandler.handle( Catch::ResultWas::DidntThrowException ); \
+                catchAssertionHandler.handleUnexpectedExceptionNotThrown(); \
             } \
             catch( exceptionType const& ) { \
-                catchAssertionHandler.handle( Catch::ResultWas::Ok ); \
+                catchAssertionHandler.handleExceptionThrownAsExpected(); \
             } \
             catch( ... ) { \
-                catchAssertionHandler.useActiveException(); \
+                catchAssertionHandler.handleUnexpectedInflightException(); \
             } \
         else \
-            catchAssertionHandler.handle( Catch::ResultWas::Ok ); \
+            catchAssertionHandler.handleThrowingCallSkipped(); \
         INTERNAL_CATCH_REACT( catchAssertionHandler ) \
     } while( false )
 
@@ -132,13 +132,13 @@
         if( catchAssertionHandler.allowThrows() ) \
             try { \
                 static_cast<void>(__VA_ARGS__); \
-                catchAssertionHandler.handle( Catch::ResultWas::DidntThrowException ); \
+                catchAssertionHandler.handleUnexpectedExceptionNotThrown(); \
             } \
             catch( ... ) { \
                 Catch::handleExceptionMatchExpr( catchAssertionHandler, matcher, #matcher ); \
             } \
         else \
-            catchAssertionHandler.handle( Catch::ResultWas::Ok ); \
+            catchAssertionHandler.handleThrowingCallSkipped(); \
         INTERNAL_CATCH_REACT( catchAssertionHandler ) \
     } while( false )
 

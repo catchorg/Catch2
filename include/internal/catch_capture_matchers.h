@@ -60,7 +60,7 @@ namespace Catch {
     do { \
         Catch::AssertionHandler catchAssertionHandler( macroName, CATCH_INTERNAL_LINEINFO, CATCH_INTERNAL_STRINGIFY(arg) ", " CATCH_INTERNAL_STRINGIFY(matcher), resultDisposition ); \
         INTERNAL_CATCH_TRY { \
-            catchAssertionHandler.handle( Catch::makeMatchExpr( arg, matcher, #matcher ) ); \
+            catchAssertionHandler.handleExpr( Catch::makeMatchExpr( arg, matcher, #matcher ) ); \
         } INTERNAL_CATCH_CATCH( catchAssertionHandler ) \
         INTERNAL_CATCH_REACT( catchAssertionHandler ) \
     } while( false )
@@ -73,16 +73,16 @@ namespace Catch {
         if( catchAssertionHandler.allowThrows() ) \
             try { \
                 static_cast<void>(__VA_ARGS__ ); \
-                catchAssertionHandler.handle( Catch::ResultWas::DidntThrowException ); \
+                catchAssertionHandler.handleUnexpectedExceptionNotThrown(); \
             } \
             catch( exceptionType const& ex ) { \
-                catchAssertionHandler.handle( Catch::makeMatchExpr( ex, matcher, #matcher ) ); \
+                catchAssertionHandler.handleExpr( Catch::makeMatchExpr( ex, matcher, #matcher ) ); \
             } \
             catch( ... ) { \
-                catchAssertionHandler.useActiveException(); \
+                catchAssertionHandler.handleUnexpectedInflightException(); \
             } \
         else \
-            catchAssertionHandler.handle( Catch::ResultWas::Ok ); \
+            catchAssertionHandler.handleThrowingCallSkipped(); \
         INTERNAL_CATCH_REACT( catchAssertionHandler ) \
     } while( false )
 

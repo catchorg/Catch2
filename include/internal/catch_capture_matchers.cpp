@@ -18,7 +18,7 @@ namespace Catch {
     void handleExceptionMatchExpr( AssertionHandler& handler, StringMatcher const& matcher, StringRef matcherString  ) {
         std::string exceptionMessage = Catch::translateActiveException();
         MatchExpr<std::string, StringMatcher const&> expr( exceptionMessage, matcher, matcherString );
-        handler.handle( expr );
+        handler.handleExpr( expr );
     }
 
 } // namespace Catch

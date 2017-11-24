@@ -48,21 +48,30 @@ namespace Catch {
                 ResultDisposition::Flags resultDisposition );
         ~AssertionHandler();
 
-        void handle( ITransientExpression const& expr );
-
         template<typename T>
-        void handle( ExprLhs<T> const& expr ) {
-            handle( expr.makeUnaryExpr() );
+        void handleExpr( ExprLhs<T> const& expr ) {
+            handleExpr( expr.makeUnaryExpr() );
         }
-        void handle( ResultWas::OfType resultType );
+        void handleExpr( ITransientExpression const& expr );
+
         void handle( ResultWas::OfType resultType, StringRef const& message );
         void handle( ResultWas::OfType resultType, ITransientExpression const* expr, bool negated );
         void handle( AssertionResultData const& resultData, ITransientExpression const* expr );
 
-        auto allowThrows() const -> bool;
+        void handleExceptionThrownAsExpected();
+        void handleUnexpectedExceptionNotThrown();
+        void handleExceptionNotThrownAsExpected();
+        void handleThrowingCallSkipped();
+        void handleUnexpectedInflightException();
+
         void complete();
         void setCompleted();
-        void useActiveException();
+
+        // query
+        auto allowThrows() const -> bool;
+
+    private:
+        void handle( ResultWas::OfType resultType );
     };
 
     void handleExceptionMatchExpr( AssertionHandler& handler, std::string const& str, StringRef matcherString );

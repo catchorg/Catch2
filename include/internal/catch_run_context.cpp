@@ -302,7 +302,7 @@ namespace Catch {
                       m_lastAssertionInfo.lineInfo,
                       m_lastAssertionInfo.capturedExpression,
                       m_lastAssertionInfo.resultDisposition );
-                handler.useActiveException();
+                handler.handleUnexpectedInflightException();
                 handler.setCompleted();
             }
         }
