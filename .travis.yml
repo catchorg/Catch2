@@ -17,7 +17,7 @@ matrix:
       addons:
         apt:
           sources: *all_sources
-          packages: ['valgrind', 'clang-3.5']
+          packages: ['valgrind', 'lcov', 'clang-3.5']
       env: COMPILER='clang++-3.5' VALGRIND=1
 
     - os: linux
@@ -25,7 +25,7 @@ matrix:
       addons:
         apt:
           sources: *all_sources
-          packages: ['valgrind', 'clang-3.6']
+          packages: ['valgrind', 'lcov', 'clang-3.6']
       env: COMPILER='clang++-3.6' VALGRIND=1
 
 # Travis's containers do not seem to have Clang 3.7 in apt, no matter what sources I add.
@@ -42,7 +42,7 @@ matrix:
       addons:
         apt:
           sources: *all_sources
-          packages: ['valgrind', 'clang-3.8']
+          packages: ['valgrind', 'lcov', 'clang-3.8']
       env: COMPILER='clang++-3.8' VALGRIND=1
 
     - os: linux
@@ -50,7 +50,7 @@ matrix:
       addons:
           apt:
               sources: *all_sources
-              packages: ['clang-3.9', 'valgrind']
+              packages: ['clang-3.9', 'valgrind', 'lcov']
       env: COMPILER='clang++-3.9' VALGRIND=1
 
     - os: linux
@@ -58,7 +58,7 @@ matrix:
       addons:
           apt:
               sources: *all_sources
-              packages: ['clang-4.0', 'valgrind']
+              packages: ['clang-4.0', 'valgrind', 'lcov']
       env: COMPILER='clang++-4.0' VALGRIND=1
 
     - os: linux
@@ -66,7 +66,7 @@ matrix:
       addons:
           apt:
               sources: *all_sources
-              packages: ['clang-5.0', 'valgrind']
+              packages: ['clang-5.0', 'valgrind', 'lcov']
       env: COMPILER='clang++-5.0' VALGRIND=1
 
     # 2/ Linux GCC Builds
@@ -75,7 +75,7 @@ matrix:
       addons:
         apt:
          sources: ['ubuntu-toolchain-r-test']
-         packages: ['valgrind', 'g++-4.8']
+         packages: ['valgrind', 'lcov', 'g++-4.8']
       env: COMPILER='g++-4.8' VALGRIND=1
 
     - os: linux
@@ -83,7 +83,7 @@ matrix:
       addons:
         apt:
           sources: *all_sources
-          packages: ['valgrind', 'g++-4.9']
+          packages: ['valgrind', 'lcov', 'g++-4.9']
       env: COMPILER='g++-4.9' VALGRIND=1
 
     - os: linux
@@ -91,7 +91,7 @@ matrix:
       addons:
         apt:
           sources: *all_sources
-          packages: ['valgrind', 'g++-5']
+          packages: ['valgrind', 'lcov', 'g++-5']
       env: COMPILER='g++-5' VALGRIND=1
 
     - os: linux
@@ -99,7 +99,7 @@ matrix:
       addons: &gcc6
         apt:
           sources: *all_sources
-          packages: ['valgrind', 'g++-6']
+          packages: ['valgrind', 'lcov', 'g++-6']
       env: COMPILER='g++-6' VALGRIND=1
 
     - os: linux
@@ -107,7 +107,7 @@ matrix:
       addons: &gcc7
         apt:
           sources: *all_sources
-          packages: ['valgrind', 'g++-7']
+          packages: ['valgrind', 'lcov', 'g++-7']
       env: COMPILER='g++-7' VALGRIND=1
 
     # 3b/ Linux C++14 Clang builds
@@ -115,7 +115,7 @@ matrix:
       compiler: clang
       addons:
           apt:
-              packages: ['clang-3.8', 'valgrind', 'libstdc++-6-dev']
+              packages: ['clang-3.8', 'valgrind', 'lcov', 'libstdc++-6-dev']
               sources:
                   - ubuntu-toolchain-r-test
                   - llvm-toolchain-trusty
@@ -126,7 +126,7 @@ matrix:
       addons:
           apt:
               sources: *all_sources
-              packages: ['clang-3.9', 'valgrind', 'libstdc++-6-dev']
+              packages: ['clang-3.9', 'valgrind', 'lcov', 'libstdc++-6-dev']
       env: COMPILER='clang++-3.9' CPP14=1 VALGRIND=1
 
     - os: linux
@@ -134,7 +134,7 @@ matrix:
       addons:
           apt:
               sources: *all_sources
-              packages: ['clang-4.0', 'valgrind', 'libstdc++-6-dev']
+              packages: ['clang-4.0', 'valgrind', 'lcov', 'libstdc++-6-dev']
       env: COMPILER='clang++-4.0' CPP14=1 VALGRIND=1
 
     - os: linux
@@ -142,7 +142,7 @@ matrix:
       addons:
           apt:
               sources: *all_sources
-              packages: ['clang-5.0', 'valgrind', 'libstdc++-6-dev']
+              packages: ['clang-5.0', 'valgrind', 'lcov', 'libstdc++-6-dev']
       env: COMPILER='clang++-5.0' CPP14=1 VALGRIND=1
 
 
@@ -183,6 +183,7 @@ matrix:
       compiler: clang
       env: COMPILER='clang++' USE_CPP14=1
 
+
 install:
   - DEPS_DIR="${TRAVIS_BUILD_DIR}/deps"
   - mkdir -p ${DEPS_DIR} && cd ${DEPS_DIR}
@@ -192,7 +193,13 @@ install:
       mkdir cmake && travis_retry wget --no-check-certificate --quiet -O - ${CMAKE_URL} | tar --strip-components=1 -xz -C cmake
       export PATH=${DEPS_DIR}/cmake/bin:${PATH}
     elif [[ "${TRAVIS_OS_NAME}" == "osx" ]]; then
-      which cmake || brew install cmake
+      for pkg in cmake lcov; do
+        if brew list -1 | grep -q "^${pkg}\$"; then
+          brew outdated $pkg || brew upgrade $pkg;
+        else
+          brew install $pkg;
+        fi
+      done
     fi
 
 before_script:
@@ -201,15 +208,25 @@ before_script:
   # Regenerate single header file, so it is tested in the examples...
   - python scripts/generateSingleHeader.py
 
-  # Use Debug builds for running Valgrind and building examples
-  - cmake -H. -BBuild-Debug -DCMAKE_BUILD_TYPE=Debug -Wdev -DUSE_CPP14=${CPP14} -DUSE_VALGRIND=${VALGRIND} -DBUILD_EXAMPLES=ON
-  # Check that we don't miscompile with optimalizations...
-  - cmake -H. -BBuild-Release -DCMAKE_BUILD_TYPE=Release -Wdev -DUSE_CPP14=${CPP14}
+  - |
+    # Use Debug builds for running Valgrind and building examples
+    cmake -H. -BBuild-Debug -DCMAKE_BUILD_TYPE=Debug -Wdev -DUSE_CPP14=${CPP14} -DUSE_VALGRIND=${VALGRIND} -DBUILD_EXAMPLES=ON -DENABLE_COVERAGE=ON
+    # Don't bother with release build for coverage build
+    cmake -H. -BBuild-Release -DCMAKE_BUILD_TYPE=Release -Wdev -DUSE_CPP14=${CPP14}
+
 
 script:
-  - cd Build-Debug
-  - make -j 2
-  - CTEST_OUTPUT_ON_FAILURE=1 ctest -j 2
-  - cd ../Build-Release
-  - make -j 2
-  - CTEST_OUTPUT_ON_FAILURE=1 ctest -j 2
+  - |
+    cd Build-Debug
+    make -j 2
+    CTEST_OUTPUT_ON_FAILURE=1 ctest -j 2
+    # Coverage collection does not work for OS X atm
+    if [[ "${TRAVIS_OS_NAME}" == "linux" ]]; then
+      make gcov
+      make lcov
+      bash <(curl -s https://codecov.io/bash) -X gcov || echo "Codecov did not collect coverage reports"
+    fi
+    # Go to release build
+    cd ../Build-Release
+    make -j 2
+    CTEST_OUTPUT_ON_FAILURE=1 ctest -j 2

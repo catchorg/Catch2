@@ -4,6 +4,7 @@ project(CatchSelfTest)
 
 option(USE_VALGRIND "Perform SelfTests with Valgrind" OFF)
 option(BUILD_EXAMPLES "Build documentation examples" OFF)
+option(ENABLE_COVERAGE "Generate coverage for codecov.io" OFF)
 
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
@@ -281,6 +282,10 @@ SOURCE_GROUP("Tests" FILES ${TEST_SOURCES})
 SOURCE_GROUP("Surrogates" FILES ${SURROGATE_SOURCES})
 
 # configure the executable
+if (ENABLE_COVERAGE)
+    list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/CMake")
+    find_package(codecov)
+endif()
 
 # Projects consuming Catch via ExternalProject_Add might want to use install step
 # without building all of our selftests.
@@ -299,6 +304,11 @@ if (NOT NO_SELFTEST)
     set_property(TARGET SelfTest PROPERTY CXX_STANDARD_REQUIRED ON)
     set_property(TARGET SelfTest PROPERTY CXX_EXTENSIONS OFF)
 
+    if (ENABLE_COVERAGE)
+        add_coverage(SelfTest)
+        list(APPEND LCOV_REMOVE_PATTERNS "/sys/")
+        coverage_evaluate()
+    endif()
 
     # Add desired warnings
     if ( CMAKE_CXX_COMPILER_ID MATCHES "Clang|AppleClang|GNU" )
