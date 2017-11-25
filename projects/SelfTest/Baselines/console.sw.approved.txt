@@ -7517,7 +7517,7 @@ with expansion:
   ""wide load"" == ""wide load""
 
 -------------------------------------------------------------------------------
-toString( vectors<has_maker )
+toString( vectors<has_maker> )
 -------------------------------------------------------------------------------
 ToStringWhich.tests.cpp:<line number>
 ...............................................................................
@@ -7529,6 +7529,34 @@ with expansion:
   "{ StringMaker<has_maker> }"
   ==
   "{ StringMaker<has_maker> }"
+
+-------------------------------------------------------------------------------
+toString( vectors<has_maker_and_operator> )
+-------------------------------------------------------------------------------
+ToStringWhich.tests.cpp:<line number>
+...............................................................................
+
+ToStringWhich.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( ::Catch::Detail::stringify( v ) == "{ StringMaker<has_maker_and_operator> }" )
+with expansion:
+  "{ StringMaker<has_maker_and_operator> }"
+  ==
+  "{ StringMaker<has_maker_and_operator> }"
+
+-------------------------------------------------------------------------------
+toString( vectors<has_operator> )
+-------------------------------------------------------------------------------
+ToStringWhich.tests.cpp:<line number>
+...............................................................................
+
+ToStringWhich.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( ::Catch::Detail::stringify( v ) == "{ operator<<( has_operator ) }" )
+with expansion:
+  "{ operator<<( has_operator ) }"
+  ==
+  "{ operator<<( has_operator ) }"
 
 -------------------------------------------------------------------------------
 toString(enum class w/operator<<)
@@ -7975,6 +8003,6 @@ Misc.tests.cpp:<line number>:
 PASSED:
 
 ===============================================================================
-test cases: 189 | 135 passed |  50 failed |  4 failed as expected
-assertions: 951 | 824 passed | 106 failed | 21 failed as expected
+test cases: 191 | 137 passed |  50 failed |  4 failed as expected
+assertions: 953 | 826 passed | 106 failed | 21 failed as expected
 

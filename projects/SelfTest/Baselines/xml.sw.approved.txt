@@ -8409,7 +8409,7 @@ loose text artifact
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="toString( vectors&lt;has_maker )" tags="[toString]" filename="projects/<exe-name>/UsageTests/ToStringWhich.tests.cpp" >
+    <TestCase name="toString( vectors&lt;has_maker> )" tags="[toString]" filename="projects/<exe-name>/UsageTests/ToStringWhich.tests.cpp" >
       <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/UsageTests/ToStringWhich.tests.cpp" >
         <Original>
           ::Catch::Detail::stringify( v ) == "{ StringMaker&lt;has_maker> }"
@@ -8418,6 +8418,32 @@ loose text artifact
           "{ StringMaker&lt;has_maker> }"
 ==
 "{ StringMaker&lt;has_maker> }"
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="toString( vectors&lt;has_maker_and_operator> )" tags="[toString]" filename="projects/<exe-name>/UsageTests/ToStringWhich.tests.cpp" >
+      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/UsageTests/ToStringWhich.tests.cpp" >
+        <Original>
+          ::Catch::Detail::stringify( v ) == "{ StringMaker&lt;has_maker_and_operator> }"
+        </Original>
+        <Expanded>
+          "{ StringMaker&lt;has_maker_and_operator> }"
+==
+"{ StringMaker&lt;has_maker_and_operator> }"
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="toString( vectors&lt;has_operator> )" tags="[toString]" filename="projects/<exe-name>/UsageTests/ToStringWhich.tests.cpp" >
+      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/UsageTests/ToStringWhich.tests.cpp" >
+        <Original>
+          ::Catch::Detail::stringify( v ) == "{ operator&lt;&lt;( has_operator ) }"
+        </Original>
+        <Expanded>
+          "{ operator&lt;&lt;( has_operator ) }"
+==
+"{ operator&lt;&lt;( has_operator ) }"
         </Expanded>
       </Expression>
       <OverallResult success="true"/>
@@ -8863,7 +8889,7 @@ loose text artifact
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="824" failures="107" expectedFailures="21"/>
+    <OverallResults successes="826" failures="107" expectedFailures="21"/>
   </Group>
-  <OverallResults successes="824" failures="106" expectedFailures="21"/>
+  <OverallResults successes="826" failures="106" expectedFailures="21"/>
 </Catch>
