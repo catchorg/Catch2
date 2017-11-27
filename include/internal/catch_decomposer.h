@@ -24,26 +24,31 @@
 namespace Catch {
 
     struct ITransientExpression {
-        virtual auto isBinaryExpression() const -> bool = 0;
-        virtual auto getResult() const -> bool = 0;
+        auto isBinaryExpression() const -> bool { return m_isBinaryExpression; }
+        auto getResult() const -> bool { return m_result; }
         virtual void streamReconstructedExpression( std::ostream &os ) const = 0;
 
-        // We don't actually need a virtual destructore, but many static analysers
+        ITransientExpression( bool isBinaryExpression, bool result )
+        :   m_isBinaryExpression( isBinaryExpression ),
+            m_result( result )
+        {}
+
+        // We don't actually need a virtual destructor, but many static analysers
         // complain if it's not here :-(
         virtual ~ITransientExpression();
+
+        bool m_isBinaryExpression;
+        bool m_result;
+
     };
 
     void formatReconstructedExpression( std::ostream &os, std::string const& lhs, StringRef op, std::string const& rhs );
 
     template<typename LhsT, typename RhsT>
     class BinaryExpr  : public ITransientExpression {
-        bool m_result;
         LhsT m_lhs;
         StringRef m_op;
         RhsT m_rhs;
-
-        auto isBinaryExpression() const -> bool override { return true; }
-        auto getResult() const -> bool override { return m_result; }
 
         void streamReconstructedExpression( std::ostream &os ) const override {
             formatReconstructedExpression
@@ -52,7 +57,7 @@ namespace Catch {
 
     public:
         BinaryExpr( bool comparisonResult, LhsT lhs, StringRef op, RhsT rhs )
-        :   m_result( comparisonResult ),
+        :   ITransientExpression{ true, comparisonResult },
             m_lhs( lhs ),
             m_op( op ),
             m_rhs( rhs )
@@ -63,15 +68,15 @@ namespace Catch {
     class UnaryExpr : public ITransientExpression {
         LhsT m_lhs;
 
-        auto isBinaryExpression() const -> bool override { return false; }
-        auto getResult() const -> bool override { return m_lhs ? true : false; }
-
         void streamReconstructedExpression( std::ostream &os ) const override {
             os << Catch::Detail::stringify( m_lhs );
         }
 
     public:
-        UnaryExpr( LhsT lhs ) : m_lhs( lhs ) {}
+        UnaryExpr( LhsT lhs )
+        :   ITransientExpression{ false, lhs ? true : false },
+            m_lhs( lhs )
+        {}
     };
 
 
