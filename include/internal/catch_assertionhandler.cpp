@@ -15,6 +15,7 @@
 #include "catch_debugger.h"
 #include "catch_interfaces_registry_hub.h"
 #include "catch_capture_matchers.h"
+#include "catch_run_context.h"
 
 #include <cassert>
 
@@ -57,58 +58,19 @@ namespace Catch {
             StringRef capturedExpression,
             ResultDisposition::Flags resultDisposition )
     :   m_assertionInfo{ macroName, lineInfo, capturedExpression, resultDisposition },
-        m_resultCapture( getResultCapture() )
-    {
-        m_resultCapture.assertionStarting( m_assertionInfo );
-    }
+        m_resultCapture( static_cast<RunContext&>( getResultCapture() ) )
+    {}
+
     AssertionHandler::~AssertionHandler() {
-        if ( !m_completed ) {
-            handleMessage(ResultWas::ThrewException, "Exception translation was disabled by CATCH_CONFIG_FAST_COMPILE");
-            m_resultCapture.exceptionEarlyReported();
-        }
+        if ( !m_completed )
+            m_resultCapture.handleIncomplete( m_assertionInfo );
     }
 
     void AssertionHandler::handleExpr( ITransientExpression const& expr ) {
-
-        bool negated = isFalseTest( m_assertionInfo.resultDisposition );
-        bool result = expr.getResult() != negated;
-
-        if(result && !getCurrentContext().getConfig()->includeSuccessfulResults())
-        {
-            m_resultCapture.assertionRun();
-            m_resultCapture.assertionPassed();
-            return;
-        }
-
-        handle( result ? ResultWas::Ok : ResultWas::ExpressionFailed, &expr, negated );
-    }
-    void AssertionHandler::handle( ResultWas::OfType resultType ) {
-        handle( resultType, nullptr, false );
+        m_resultCapture.handleExpr( m_assertionInfo, expr, m_reaction );
     }
     void AssertionHandler::handleMessage(ResultWas::OfType resultType, StringRef const &message) {
-        AssertionResultData data( resultType, LazyExpression( false ) );
-        data.message = message;
-        handle( data, nullptr );
-    }
-    void AssertionHandler::handle( ResultWas::OfType resultType, ITransientExpression const* expr, bool negated ) {
-        AssertionResultData data( resultType, LazyExpression( negated ) );
-        handle( data, expr );
-    }
-    void AssertionHandler::handle( AssertionResultData const& resultData, ITransientExpression const* expr ) {
-
-        m_resultCapture.assertionRun();
-
-        AssertionResult assertionResult{ m_assertionInfo, resultData };
-        assertionResult.m_resultData.lazyExpression.m_transientExpression = expr;
-
-        m_resultCapture.assertionEnded( assertionResult );
-
-        if( !assertionResult.isOk() ) {
-            m_shouldDebugBreak = getCurrentContext().getConfig()->shouldDebugBreak();
-            m_shouldThrow =
-                    getCurrentContext().getRunner()->aborting() ||
-                    (m_assertionInfo.resultDisposition & ResultDisposition::Normal);
-        }
+        m_resultCapture.handleMessage( m_assertionInfo, resultType, message, m_reaction );
     }
 
     auto AssertionHandler::allowThrows() const -> bool {
@@ -117,7 +79,7 @@ namespace Catch {
 
     void AssertionHandler::complete() {
         setCompleted();
-        if( m_shouldDebugBreak ) {
+        if( m_reaction.shouldDebugBreak ) {
 
             // If you find your debugger stopping you here then go one level up on the
             // call-stack for the code that caused it (typically a failed assertion)
@@ -125,7 +87,7 @@ namespace Catch {
             // (To go back to the test and change execution, jump over the throw, next)
             CATCH_BREAK_INTO_DEBUGGER();
         }
-        if( m_shouldThrow )
+        if( m_reaction.shouldThrow )
             throw Catch::TestFailureException();
     }
     void AssertionHandler::setCompleted() {
@@ -133,22 +95,22 @@ namespace Catch {
     }
 
     void AssertionHandler::handleUnexpectedInflightException() {
-        handleMessage(ResultWas::ThrewException, Catch::translateActiveException());
+        m_resultCapture.handleUnexpectedInflightException( m_assertionInfo, Catch::translateActiveException(), m_reaction );
     }
 
     void AssertionHandler::handleExceptionThrownAsExpected() {
-        handle( Catch::ResultWas::Ok );
+        m_resultCapture.handleNonExpr(m_assertionInfo, ResultWas::Ok, m_reaction);
     }
     void AssertionHandler::handleExceptionNotThrownAsExpected() {
-        handle( Catch::ResultWas::Ok );
+        m_resultCapture.handleNonExpr(m_assertionInfo, ResultWas::Ok, m_reaction);
     }
 
     void AssertionHandler::handleUnexpectedExceptionNotThrown() {
-        handle( Catch::ResultWas::DidntThrowException );
+        m_resultCapture.handleUnexpectedExceptionNotThrown( m_assertionInfo, m_reaction );
     }
 
     void AssertionHandler::handleThrowingCallSkipped() {
-        handle( Catch::ResultWas::Ok );
+        m_resultCapture.handleNonExpr(m_assertionInfo, ResultWas::Ok, m_reaction);
     }
 
     // This is the overload that takes a string and infers the Equals matcher from it

@@ -16,10 +16,12 @@ namespace Catch {
     struct TestFailureException{};
     struct AssertionResultData;
     struct IResultCapture;
+    class RunContext;
 
     class LazyExpression {
         friend class AssertionHandler;
         friend struct AssertionStats;
+        friend class RunContext;
 
         ITransientExpression const* m_transientExpression = nullptr;
         bool m_isNegated;
@@ -33,12 +35,16 @@ namespace Catch {
         friend auto operator << ( std::ostream& os, LazyExpression const& lazyExpr ) -> std::ostream&;
     };
 
+    struct AssertionReaction {
+        bool shouldDebugBreak = false;
+        bool shouldThrow = false;
+    };
+
     class AssertionHandler {
         AssertionInfo m_assertionInfo;
-        bool m_shouldDebugBreak = false;
-        bool m_shouldThrow = false;
+        AssertionReaction m_reaction;
         bool m_completed = false;
-        IResultCapture& m_resultCapture;
+        RunContext& m_resultCapture;
 
     public:
         AssertionHandler
@@ -67,11 +73,6 @@ namespace Catch {
 
         // query
         auto allowThrows() const -> bool;
-
-    private:
-        void handle( ResultWas::OfType resultType );
-        void handle( ResultWas::OfType resultType, ITransientExpression const* expr, bool negated );
-        void handle( AssertionResultData const& resultData, ITransientExpression const* expr );
     };
 
     void handleExceptionMatchExpr( AssertionHandler& handler, std::string const& str, StringRef matcherString );

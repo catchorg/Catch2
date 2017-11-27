@@ -75,11 +75,41 @@ namespace Catch {
         IConfigPtr config() const;
         IStreamingReporter& reporter() const;
 
-    private: // IResultCapture
+        // Assertion handlers
+        void handleExpr
+                (   AssertionInfo const& info,
+                    ITransientExpression const& expr,
+                    AssertionReaction& reaction );
+        void handleMessage
+                (   AssertionInfo const& info,
+                    ResultWas::OfType resultType,
+                    StringRef const &message,
+                    AssertionReaction& reaction );
+        void handleUnexpectedExceptionNotThrown
+                (   AssertionInfo const& info,
+                    AssertionReaction& reaction );
+        void handleUnexpectedInflightException
+                (   AssertionInfo const& info,
+                    std::string const& message,
+                    AssertionReaction& reaction );
+        void handleIncomplete
+                (   AssertionInfo const& info );
+        void handleNonExpr
+                (   AssertionInfo const &info,
+                    ResultWas::OfType resultType,
+                    AssertionReaction &reaction );
 
+        void reportExpr
+                (AssertionInfo const &info,
+                 ResultWas::OfType resultType,
+                 ITransientExpression const *expr,
+                 bool negated );
 
-        void assertionStarting(AssertionInfo const& info) override;
-        void assertionEnded(AssertionResult const& result) override;
+        void populateReaction( AssertionReaction& reaction );
+
+    public: // IResultCapture
+
+        void assertionEnded(AssertionResult const& result); // devirt
 
         bool sectionStarted( SectionInfo const& sectionInfo, Counts& assertions ) override;
         bool testForMissingAssertions(Counts& assertions);
@@ -103,9 +133,9 @@ namespace Catch {
 
         bool lastAssertionPassed() override;
 
-        void assertionPassed() override;
+        void assertionPassed() override; // devirt
 
-        void assertionRun() override;
+        void assertionRun() override; // devirt
 
     public:
         // !TBD We need to do this another way!
@@ -138,6 +168,7 @@ namespace Catch {
         TrackerContext m_trackerContext;
         std::size_t m_prevPassed = 0;
         bool m_shouldReportUnexpected = true;
+        bool m_includeSuccessfulResults;
     };
 
     IResultCapture& getResultCapture();
