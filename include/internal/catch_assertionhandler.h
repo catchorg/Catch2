@@ -60,7 +60,7 @@ namespace Catch {
         }
         void handleExpr( ITransientExpression const& expr );
 
-        void handleMessage(ResultWas::OfType resultType, StringRef const &message);
+        void handleMessage(ResultWas::OfType resultType, StringRef const& message);
 
         void handleExceptionThrownAsExpected();
         void handleUnexpectedExceptionNotThrown();

@@ -83,7 +83,7 @@ namespace Catch {
         void handleMessage
                 (   AssertionInfo const& info,
                     ResultWas::OfType resultType,
-                    StringRef const &message,
+                    StringRef const& message,
                     AssertionReaction& reaction );
         void handleUnexpectedExceptionNotThrown
                 (   AssertionInfo const& info,

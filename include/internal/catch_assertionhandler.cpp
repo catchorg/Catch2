@@ -69,7 +69,7 @@ namespace Catch {
     void AssertionHandler::handleExpr( ITransientExpression const& expr ) {
         m_resultCapture.handleExpr( m_assertionInfo, expr, m_reaction );
     }
-    void AssertionHandler::handleMessage(ResultWas::OfType resultType, StringRef const &message) {
+    void AssertionHandler::handleMessage(ResultWas::OfType resultType, StringRef const& message) {
         m_resultCapture.handleMessage( m_assertionInfo, resultType, message, m_reaction );
     }
 
