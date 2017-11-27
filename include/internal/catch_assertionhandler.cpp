@@ -63,7 +63,7 @@ namespace Catch {
     }
     AssertionHandler::~AssertionHandler() {
         if ( !m_completed ) {
-            handle( ResultWas::ThrewException, "Exception translation was disabled by CATCH_CONFIG_FAST_COMPILE" );
+            handleMessage(ResultWas::ThrewException, "Exception translation was disabled by CATCH_CONFIG_FAST_COMPILE");
             m_resultCapture.exceptionEarlyReported();
         }
     }
@@ -85,7 +85,7 @@ namespace Catch {
     void AssertionHandler::handle( ResultWas::OfType resultType ) {
         handle( resultType, nullptr, false );
     }
-    void AssertionHandler::handle( ResultWas::OfType resultType, StringRef const& message ) {
+    void AssertionHandler::handleMessage(ResultWas::OfType resultType, StringRef const &message) {
         AssertionResultData data( resultType, LazyExpression( false ) );
         data.message = message;
         handle( data, nullptr );
@@ -133,7 +133,7 @@ namespace Catch {
     }
 
     void AssertionHandler::handleUnexpectedInflightException() {
-        handle( ResultWas::ThrewException, Catch::translateActiveException() );
+        handleMessage(ResultWas::ThrewException, Catch::translateActiveException());
     }
 
     void AssertionHandler::handleExceptionThrownAsExpected() {
@@ -150,7 +150,6 @@ namespace Catch {
     void AssertionHandler::handleThrowingCallSkipped() {
         handle( Catch::ResultWas::Ok );
     }
-
 
     // This is the overload that takes a string and infers the Equals matcher from it
     // The more general overload, that takes any string matcher, is in catch_capture_matchers.cpp

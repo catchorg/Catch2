@@ -54,9 +54,7 @@ namespace Catch {
         }
         void handleExpr( ITransientExpression const& expr );
 
-        void handle( ResultWas::OfType resultType, StringRef const& message );
-        void handle( ResultWas::OfType resultType, ITransientExpression const* expr, bool negated );
-        void handle( AssertionResultData const& resultData, ITransientExpression const* expr );
+        void handleMessage(ResultWas::OfType resultType, StringRef const &message);
 
         void handleExceptionThrownAsExpected();
         void handleUnexpectedExceptionNotThrown();
@@ -72,6 +70,8 @@ namespace Catch {
 
     private:
         void handle( ResultWas::OfType resultType );
+        void handle( ResultWas::OfType resultType, ITransientExpression const* expr, bool negated );
+        void handle( AssertionResultData const& resultData, ITransientExpression const* expr );
     };
 
     void handleExceptionMatchExpr( AssertionHandler& handler, std::string const& str, StringRef matcherString );
