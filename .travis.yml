@@ -193,13 +193,7 @@ install:
       mkdir cmake && travis_retry wget --no-check-certificate --quiet -O - ${CMAKE_URL} | tar --strip-components=1 -xz -C cmake
       export PATH=${DEPS_DIR}/cmake/bin:${PATH}
     elif [[ "${TRAVIS_OS_NAME}" == "osx" ]]; then
-      for pkg in cmake lcov; do
-        if brew list -1 | grep -q "^${pkg}\$"; then
-          brew outdated $pkg || brew upgrade $pkg;
-        else
-          brew install $pkg;
-        fi
-      done
+        which cmake || brew install cmake;
     fi
 
 before_script:
