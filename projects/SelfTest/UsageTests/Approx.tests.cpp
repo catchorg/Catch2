@@ -189,8 +189,8 @@ TEST_CASE( "Comparison with explicitly convertible types", "[Approx]" )
   REQUIRE(Approx(9.0) <= td);
 
   REQUIRE(td >= Approx(9.0));
-  REQUIRE(td >= Approx(10.0));
-  REQUIRE(Approx(10.0) >= td);
+  REQUIRE(td >= Approx(td));
+  REQUIRE(Approx(td) >= td);
   REQUIRE(Approx(11.0) >= td);
 
 }

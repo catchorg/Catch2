@@ -1141,13 +1141,13 @@ with expansion:
 
 Approx.tests.cpp:<line number>:
 PASSED:
-  REQUIRE( td >= Approx(10.0) )
+  REQUIRE( td >= Approx(td) )
 with expansion:
   StrongDoubleTypedef(10) >= Approx( 10.0 )
 
 Approx.tests.cpp:<line number>:
 PASSED:
-  REQUIRE( Approx(10.0) >= td )
+  REQUIRE( Approx(td) >= td )
 with expansion:
   Approx( 10.0 ) >= StrongDoubleTypedef(10)
 

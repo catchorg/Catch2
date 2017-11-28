@@ -1273,7 +1273,7 @@
       </Expression>
       <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/UsageTests/Approx.tests.cpp" >
         <Original>
-          td >= Approx(10.0)
+          td >= Approx(td)
         </Original>
         <Expanded>
           StrongDoubleTypedef(10) >= Approx( 10.0 )
@@ -1281,7 +1281,7 @@
       </Expression>
       <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/UsageTests/Approx.tests.cpp" >
         <Original>
-          Approx(10.0) >= td
+          Approx(td) >= td
         </Original>
         <Expanded>
           Approx( 10.0 ) >= StrongDoubleTypedef(10)
