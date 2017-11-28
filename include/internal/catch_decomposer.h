@@ -73,7 +73,7 @@ namespace Catch {
         }
 
     public:
-        UnaryExpr( LhsT lhs )
+        explicit UnaryExpr( LhsT lhs )
         :   ITransientExpression{ false, lhs ? true : false },
             m_lhs( lhs )
         {}
@@ -108,43 +108,43 @@ namespace Catch {
     class ExprLhs {
         LhsT m_lhs;
     public:
-        ExprLhs( LhsT lhs ) : m_lhs( lhs ) {}
+        explicit ExprLhs( LhsT lhs ) : m_lhs( lhs ) {}
 
         template<typename RhsT>
         auto operator == ( RhsT const& rhs ) -> BinaryExpr<LhsT, RhsT const&> const {
-            return BinaryExpr<LhsT, RhsT const&>( compareEqual( m_lhs, rhs ), m_lhs, "==", rhs );
+            return { compareEqual( m_lhs, rhs ), m_lhs, "==", rhs };
         }
         auto operator == ( bool rhs ) -> BinaryExpr<LhsT, bool> const {
-            return BinaryExpr<LhsT, bool>( m_lhs == rhs, m_lhs, "==", rhs );
+            return { m_lhs == rhs, m_lhs, "==", rhs };
         }
 
         template<typename RhsT>
         auto operator != ( RhsT const& rhs ) -> BinaryExpr<LhsT, RhsT const&> const {
-            return BinaryExpr<LhsT, RhsT const&>( compareNotEqual( m_lhs, rhs ), m_lhs, "!=", rhs );
+            return { compareNotEqual( m_lhs, rhs ), m_lhs, "!=", rhs };
         }
         auto operator != ( bool rhs ) -> BinaryExpr<LhsT, bool> const {
-            return BinaryExpr<LhsT, bool>( m_lhs != rhs, m_lhs, "!=", rhs );
+            return { m_lhs != rhs, m_lhs, "!=", rhs };
         }
 
         template<typename RhsT>
         auto operator > ( RhsT const& rhs ) -> BinaryExpr<LhsT, RhsT const&> const {
-            return BinaryExpr<LhsT, RhsT const&>( m_lhs > rhs, m_lhs, ">", rhs );
+            return { m_lhs > rhs, m_lhs, ">", rhs };
         }
         template<typename RhsT>
         auto operator < ( RhsT const& rhs ) -> BinaryExpr<LhsT, RhsT const&> const {
-            return BinaryExpr<LhsT, RhsT const&>( m_lhs < rhs, m_lhs, "<", rhs );
+            return { m_lhs < rhs, m_lhs, "<", rhs };
         }
         template<typename RhsT>
         auto operator >= ( RhsT const& rhs ) -> BinaryExpr<LhsT, RhsT const&> const {
-            return BinaryExpr<LhsT, RhsT const&>( m_lhs >= rhs, m_lhs, ">=", rhs );
+            return { m_lhs >= rhs, m_lhs, ">=", rhs };
         }
         template<typename RhsT>
         auto operator <= ( RhsT const& rhs ) -> BinaryExpr<LhsT, RhsT const&> const {
-            return BinaryExpr<LhsT, RhsT const&>( m_lhs <= rhs, m_lhs, "<=", rhs );
+            return { m_lhs <= rhs, m_lhs, "<=", rhs };
         }
 
         auto makeUnaryExpr() const -> UnaryExpr<LhsT> {
-            return UnaryExpr<LhsT>( m_lhs );
+            return UnaryExpr<LhsT>{ m_lhs };
         }
     };
 
@@ -158,10 +158,11 @@ namespace Catch {
     struct Decomposer {
         template<typename T>
         auto operator <= ( T const& lhs ) -> ExprLhs<T const&> {
-            return ExprLhs<T const&>( lhs );
+            return ExprLhs<T const&>{ lhs };
         }
+
         auto operator <=( bool value ) -> ExprLhs<bool> {
-            return ExprLhs<bool>( value );
+            return ExprLhs<bool>{ value };
         }
     };
 

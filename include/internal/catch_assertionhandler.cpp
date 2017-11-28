@@ -17,8 +17,6 @@
 #include "catch_capture_matchers.h"
 #include "catch_run_context.h"
 
-#include <cassert>
-
 namespace Catch {
 
     auto operator <<( std::ostream& os, ITransientExpression const& expr ) -> std::ostream& {

@@ -46,7 +46,7 @@ namespace Catch {
     // order of writes and cannot use StreamRedirect on its own
     class StdErrRedirect {
     public:
-        StdErrRedirect(std::string& targetString);
+        explicit StdErrRedirect( std::string& targetString );
         ~StdErrRedirect();
     private:
         std::streambuf* m_cerrBuf;
@@ -65,7 +65,7 @@ namespace Catch {
 
         explicit RunContext(IConfigPtr const& _config, IStreamingReporterPtr&& reporter);
 
-        virtual ~RunContext();
+        ~RunContext() override;
 
         void testGroupStarting(std::string const& testSpec, std::size_t groupIndex, std::size_t groupsCount);
         void testGroupEnded(std::string const& testSpec, Totals const& totals, std::size_t groupIndex, std::size_t groupsCount);
@@ -109,7 +109,7 @@ namespace Catch {
 
     public: // IResultCapture
 
-        void assertionEnded(AssertionResult const& result); // devirt
+        void assertionEnded(AssertionResult const& result);
 
         bool sectionStarted( SectionInfo const& sectionInfo, Counts& assertions ) override;
         bool testForMissingAssertions(Counts& assertions);
@@ -170,8 +170,6 @@ namespace Catch {
         bool m_shouldReportUnexpected = true;
         bool m_includeSuccessfulResults;
     };
-
-    IResultCapture& getResultCapture();
 
 } // end namespace Catch
 
