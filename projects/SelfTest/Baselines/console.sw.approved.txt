@@ -5127,6 +5127,12 @@ PASSED:
 with expansion:
   1 [30/1]s != 1 fs
 
+ToStringChrono.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( pico_second != atto_second )
+with expansion:
+  1 ps != 1 as
+
 -------------------------------------------------------------------------------
 Stringifying std::chrono::time_point<system_clock>
 -------------------------------------------------------------------------------
@@ -8004,5 +8010,5 @@ PASSED:
 
 ===============================================================================
 test cases: 191 | 137 passed |  50 failed |  4 failed as expected
-assertions: 953 | 826 passed | 106 failed | 21 failed as expected
+assertions: 954 | 827 passed | 106 failed | 21 failed as expected
 
