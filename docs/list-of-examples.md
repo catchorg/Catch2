@@ -3,12 +3,15 @@
 
 ## Already available
 
+- Catch main: [Catch-provided main](../examples/000-CatchMain.cpp)
 - Test Case: [Single-file](../examples/010-TestCase.cpp)
 - Test Case: [Multiple-file 1](../examples/020-TestCase-1.cpp), [2](../examples/020-TestCase-2.cpp)
 - Assertion: [REQUIRE, CHECK](../examples/030-Asn-Require-Check.cpp)
 - Fixture: [Sections](../examples/100-Fix-Section.cpp)
 - Fixture: [Class-based fixtures](../examples/110-Fix-ClassFixture.cpp)
 - BDD: [SCENARIO, GIVEN, WHEN, THEN](../examples/120-Bdd-ScenarioGivenWhenThen.cpp)
+- Report: [Catch-provided main](../examples/200-Rpt-CatchMain.cpp)
+- Report: [TeamCity reporter](../examples/207-Rpt-TeamCityReporter.cpp)
 - Listener: [Listeners](../examples/210-Evt-EventListeners.cpp)
 - Configuration: [Provide your own output streams](../examples/231-Cfg-OutputStreams.cpp)
 
@@ -27,7 +30,10 @@
 - Logging: [FAIL, FAIL_CHECK - Issue message and force failure/continue](../examples/170-Log-Fail.cpp)
 - Logging: [SUCCEED - Issue message and continue](../examples/180-Log-Succeed.cpp)
 - Report: [User-defined type](../examples/190-Rpt-ReportUserDefinedType.cpp)
-- Report: [Reporter](../examples/200-Rpt-UserDefinedReporter.cpp)
+- Report: [User-defined reporter](../examples/202-Rpt-UserDefinedReporter.cpp)
+- Report: [Automake reporter](../examples/205-Rpt-AutomakeReporter.cpp)
+- Report: [TAP reporter](../examples/206-Rpt-TapReporter.cpp)
+- Report: [Multiple reporter](../examples/208-Rpt-MultipleReporters.cpp)
 - Configuration: [Provide your own main()](../examples/220-Cfg-OwnMain.cpp)
 - Configuration: [Compile-time configuration](../examples/230-Cfg-CompileTimeConfiguration.cpp)
 - Configuration: [Run-time configuration](../examples/240-Cfg-RunTimeConfiguration.cpp)

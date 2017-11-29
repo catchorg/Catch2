@@ -25,8 +25,8 @@ Because of the way the junit format is structured the run must complete before a
 There are a few additional reporters, for specific build systems, in the Catch repository (in `include\reporters`) which you can `#include` in your project if you would like to make use of them.
 Do this in one source file - the same one you have `CATCH_CONFIG_MAIN` or `CATCH_CONFIG_RUNNER`.
 
-* `teamcity` writes the native, streaming, format that [TeamCity](https://www.jetbrains.com/teamcity/) understands.
-Use this when building as part of a TeamCity build to see results as they happen.
+* `teamcity` writes the native, streaming, format that [TeamCity](https://www.jetbrains.com/teamcity/) understands. 
+Use this when building as part of a TeamCity build to see results as they happen ([code example](../examples/207-Rpt-TeamCityReporter.cpp)).
 * `tap` writes in the TAP ([Test Anything Protocol](https://en.wikipedia.org/wiki/Test_Anything_Protocol)) format.
 * `automake` writes in a format that correspond to [automake  .trs](https://www.gnu.org/software/automake/manual/html_node/Log-files-generation-and-test-results-recording.html) files
 
