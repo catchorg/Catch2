@@ -57,7 +57,9 @@ struct AutoTestReg {
         REGISTER_TEST_CASE( manuallyRegisteredTestFunction, "ManuallyRegistered" );
     }
 };
+CATCH_INTERNAL_SUPPRESS_GLOBALS_WARNINGS
 static AutoTestReg autoTestReg;
+CATCH_INTERNAL_UNSUPPRESS_GLOBALS_WARNINGS
 
 #endif
 

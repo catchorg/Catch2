@@ -17,6 +17,9 @@ namespace Catch {
 
 } // end namespace Catch
 
-#define CATCH_REGISTER_TAG_ALIAS( alias, spec ) namespace{ Catch::RegistrarForTagAliases INTERNAL_CATCH_UNIQUE_NAME( AutoRegisterTagAlias )( alias, spec, CATCH_INTERNAL_LINEINFO ); }
+#define CATCH_REGISTER_TAG_ALIAS( alias, spec ) \
+    CATCH_INTERNAL_SUPPRESS_GLOBALS_WARNINGS \
+    namespace{ Catch::RegistrarForTagAliases INTERNAL_CATCH_UNIQUE_NAME( AutoRegisterTagAlias )( alias, spec, CATCH_INTERNAL_LINEINFO ); } \
+    CATCH_INTERNAL_UNSUPPRESS_GLOBALS_WARNINGS
 
 #endif // TWOBLUECUBES_CATCH_TAG_ALIAS_AUTOREGISTRAR_H_INCLUDED
