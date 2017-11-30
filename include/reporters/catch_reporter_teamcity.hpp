@@ -14,8 +14,6 @@
 // file can be distributed as a single header that works with the main
 // Catch single header.
 
-#include "../internal/catch_enforce.h"
-
 #include <cstring>
 
 #ifdef __clang__
@@ -99,12 +97,12 @@ namespace Catch {
                     case ResultWas::Ok:
                     case ResultWas::Info:
                     case ResultWas::Warning:
-                        CATCH_ERROR( "Internal error in TeamCity reporter" );
+                        throw std::domain_error( "Internal error in TeamCity reporter" );
                     // These cases are here to prevent compiler warnings
                     case ResultWas::Unknown:
                     case ResultWas::FailureBit:
                     case ResultWas::Exception:
-                        CATCH_ERROR( "Not implemented" );
+                        throw std::domain_error( "Not implemented" );
                 }
                 if( assertionStats.infoMessages.size() == 1 )
                     msg << " with message:";
