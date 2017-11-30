@@ -61,7 +61,7 @@ TEST_CASE( "FAIL does not require an argument", "[failing][messages][.]" ) {
     FAIL();
 }
 
-TEST_CASE( "SUCCESS does not require an argument", "[messages][.]" ) {
+TEST_CASE( "SUCCEED does not require an argument", "[messages][.]" ) {
    SUCCEED();
 }
 

@@ -5158,7 +5158,7 @@
     <TestCase name="SUCCEED counts as a test pass" tags="[messages]" filename="projects/<exe-name>/UsageTests/Message.tests.cpp" >
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="SUCCESS does not require an argument" tags="[.][messages]" filename="projects/<exe-name>/UsageTests/Message.tests.cpp" >
+    <TestCase name="SUCCEED does not require an argument" tags="[.][messages]" filename="projects/<exe-name>/UsageTests/Message.tests.cpp" >
       <OverallResult success="true"/>
     </TestCase>
     <TestCase name="Scenario: BDD tests requiring Fixtures to provide commonly-accessed data or methods" tags="[bdd][fixtures]" filename="projects/<exe-name>/UsageTests/BDD.tests.cpp" >
