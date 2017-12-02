@@ -11,6 +11,8 @@
 #ifndef TWOBLUECUBES_CATCH_USER_INTERFACES_H_INCLUDED
 #define TWOBLUECUBES_CATCH_USER_INTERFACES_H_INCLUDED
 
+#include "catch_interfaces_object_model.h"
+
 namespace Catch {
     unsigned int rngSeed();
 }

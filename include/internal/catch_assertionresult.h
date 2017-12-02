@@ -14,6 +14,8 @@
 #include "catch_common.h"
 #include "catch_stringref.h"
 #include "catch_assertionhandler.h"
+#include "catch_totals.h"
+#include "catch_message.h"
 
 namespace Catch {
 
@@ -53,6 +55,23 @@ namespace Catch {
         AssertionInfo m_info;
         AssertionResultData m_resultData;
     };
+
+    struct AssertionStats {
+        AssertionStats( AssertionResult const& _assertionResult,
+                        std::vector<MessageInfo> const& _infoMessages,
+                        Totals const& _totals );
+
+        AssertionStats( AssertionStats const& )              = default;
+        AssertionStats( AssertionStats && )                  = default;
+        AssertionStats& operator = ( AssertionStats const& ) = default;
+        AssertionStats& operator = ( AssertionStats && )     = default;
+        virtual ~AssertionStats();
+
+        AssertionResult assertionResult;
+        std::vector<MessageInfo> infoMessages;
+        Totals totals;
+    };
+
 
 } // end namespace Catch
 

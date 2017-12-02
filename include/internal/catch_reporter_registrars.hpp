@@ -64,7 +64,7 @@ namespace Catch {
 
 #define CATCH_REGISTER_LISTENER( listenerType ) \
      CATCH_INTERNAL_SUPPRESS_GLOBALS_WARNINGS   \
-     namespace{ Catch::ListenerRegistrar<listenerType> catch_internal_RegistrarFor##listenerType; } \
+     namespace{ Catch::ListenerRegistrar<listenerType> INTERNAL_CATCH_UNIQUE_NAME( catchInternalListenerRegistrar ); } \
      CATCH_INTERNAL_SUPPRESS_GLOBALS_WARNINGS
 #else // CATCH_CONFIG_DISABLE
 

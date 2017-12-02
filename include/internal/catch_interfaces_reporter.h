@@ -11,10 +11,8 @@
 #include "catch_section_info.h"
 #include "catch_common.h"
 #include "catch_config.hpp"
-#include "catch_totals.h"
 #include "catch_test_case_info.h"
 #include "catch_assertionresult.h"
-#include "catch_message.h"
 #include "catch_option.hpp"
 #include "catch_stringref.h"
 
@@ -72,21 +70,6 @@ namespace Catch {
         std::size_t groupsCounts;
     };
 
-    struct AssertionStats {
-        AssertionStats( AssertionResult const& _assertionResult,
-                        std::vector<MessageInfo> const& _infoMessages,
-                        Totals const& _totals );
-
-        AssertionStats( AssertionStats const& )              = default;
-        AssertionStats( AssertionStats && )                  = default;
-        AssertionStats& operator = ( AssertionStats const& ) = default;
-        AssertionStats& operator = ( AssertionStats && )     = default;
-        virtual ~AssertionStats();
-
-        AssertionResult assertionResult;
-        std::vector<MessageInfo> infoMessages;
-        Totals totals;
-    };
 
     struct SectionStats {
         SectionStats(   SectionInfo const& _sectionInfo,

@@ -348,4 +348,39 @@ TEST_CASE( "#961 -- Dynamically created sections should all be reported", "[.]" 
     }
 }
 
+TEST_CASE( "Object Model" ) {
+    using namespace Catch::Matchers;
+
+    auto om = Catch::getObjectModel();
+    REQUIRE( om );
+
+    auto testCase = om->getCurrentTestCaseInfo();
+    REQUIRE( testCase );
+    REQUIRE( testCase->name == "Object Model" );
+    REQUIRE_THAT( testCase->lineInfo.file, EndsWith( "Misc.tests.cpp" ) );
+
+    auto sections = om->getSectionInfos();
+    REQUIRE( sections.size() == 1 );
+
+    // We'll only get the last assertion info if the last assertion failed, or we're including successful results
+    if( auto assertion = om->getLastAssertionStats() ) {
+        CHECK(assertion->assertionResult.m_info.capturedExpression == "sections.size() == 1");
+    }
+
+    SECTION( "s1" ) {
+        auto sections1 = om->getSectionInfos();
+        REQUIRE( sections1.size() == 2 );
+        REQUIRE( sections1[1].name == "s1" );
+
+        SECTION( "s2" ) {
+            auto sections2 = om->getSectionInfos();
+            REQUIRE( sections2.size() == 3 );
+            REQUIRE( sections2[1].name == "s1" );
+            REQUIRE( sections2[2].name == "s2" );
+
+            REQUIRE( sections1.size() == 2 );
+        }
+    }
+}
+
 }} // namespace MiscTests

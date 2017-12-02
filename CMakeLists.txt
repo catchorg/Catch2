@@ -135,6 +135,7 @@ set(INTERNAL_HEADERS
         ${HEADER_DIR}/internal/catch_interfaces_capture.h
         ${HEADER_DIR}/internal/catch_interfaces_config.h
         ${HEADER_DIR}/internal/catch_interfaces_exception.h
+        ${HEADER_DIR}/internal/catch_interfaces_object_model.h
         ${HEADER_DIR}/internal/catch_interfaces_registry_hub.h
         ${HEADER_DIR}/internal/catch_interfaces_reporter.h
         ${HEADER_DIR}/internal/catch_interfaces_runner.h
@@ -214,6 +215,7 @@ set(IMPL_SOURCES
         ${HEADER_DIR}/internal/catch_matchers_floating.cpp
         ${HEADER_DIR}/internal/catch_matchers_string.cpp
         ${HEADER_DIR}/internal/catch_message.cpp
+        ${HEADER_DIR}/internal/catch_object_model.cpp
         ${HEADER_DIR}/internal/catch_registry_hub.cpp
         ${HEADER_DIR}/internal/catch_interfaces_reporter.cpp
         ${HEADER_DIR}/internal/catch_random_number_generator.cpp
