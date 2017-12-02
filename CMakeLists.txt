@@ -306,7 +306,7 @@ if (NOT NO_SELFTEST)
 
     if (ENABLE_COVERAGE)
         add_coverage(SelfTest)
-        list(APPEND LCOV_REMOVE_PATTERNS "/sys/")
+        list(APPEND LCOV_REMOVE_PATTERNS "/usr/")
         coverage_evaluate()
     endif()
 
