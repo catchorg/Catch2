@@ -111,6 +111,7 @@ namespace Catch {
     }
 
     void RunContext::assertionEnded(AssertionResult const & result) {
+        m_prevPassed = m_totals.assertions.passed;
         if (result.getResultType() == ResultWas::Ok) {
             m_totals.assertions.passed++;
         } else if (!result.isOk()) {
@@ -254,12 +255,9 @@ namespace Catch {
     }
 
     void RunContext::assertionPassed() {
+        m_prevPassed = m_totals.assertions.passed;
         ++m_totals.assertions.passed;
         resetAssertionInfo();
-    }
-
-    void RunContext::assertionRun() {
-        m_prevPassed = m_totals.assertions.passed;
     }
 
     bool RunContext::aborting() const {
@@ -332,14 +330,12 @@ namespace Catch {
         AssertionReaction& reaction
     ) {
         m_reporter->assertionStarting( info );
-        assertionRun();
 
         bool negated = isFalseTest( info.resultDisposition );
         bool result = expr.getResult() != negated;
 
         if( result ) {
             if (!m_includeSuccessfulResults) {
-                assertionRun();
                 assertionPassed();
             }
             else {
@@ -375,7 +371,6 @@ namespace Catch {
         m_reporter->assertionStarting( info );
 
         m_lastAssertionInfo = info;
-        assertionRun();
 
         AssertionResultData data( resultType, LazyExpression( false ) );
         data.message = message;
@@ -397,7 +392,6 @@ namespace Catch {
             AssertionReaction& reaction
     ) {
         m_lastAssertionInfo = info;
-        assertionRun();
 
         AssertionResultData data( ResultWas::ThrewException, LazyExpression( false ) );
         data.message = message;
@@ -415,7 +409,6 @@ namespace Catch {
             AssertionInfo const& info
     ) {
         m_lastAssertionInfo = info;
-        assertionRun();
 
         AssertionResultData data( ResultWas::ThrewException, LazyExpression( false ) );
         data.message = "Exception translation was disabled by CATCH_CONFIG_FAST_COMPILE";
@@ -428,7 +421,6 @@ namespace Catch {
             AssertionReaction &reaction
     ) {
         m_lastAssertionInfo = info;
-        assertionRun();
 
         AssertionResultData data( resultType, LazyExpression( false ) );
         AssertionResult assertionResult{ info, data };
