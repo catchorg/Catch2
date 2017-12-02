@@ -281,11 +281,6 @@ set(HEADERS
 SOURCE_GROUP("Tests" FILES ${TEST_SOURCES})
 SOURCE_GROUP("Surrogates" FILES ${SURROGATE_SOURCES})
 
-# configure the executable
-if (ENABLE_COVERAGE)
-    list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/CMake")
-    find_package(codecov)
-endif()
 
 # Projects consuming Catch via ExternalProject_Add might want to use install step
 # without building all of our selftests.
@@ -305,6 +300,8 @@ if (NOT NO_SELFTEST)
     set_property(TARGET SelfTest PROPERTY CXX_EXTENSIONS OFF)
 
     if (ENABLE_COVERAGE)
+        list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/CMake")
+        find_package(codecov)
         add_coverage(SelfTest)
         list(APPEND LCOV_REMOVE_PATTERNS "/usr/")
         coverage_evaluate()
