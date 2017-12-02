@@ -111,14 +111,18 @@ namespace Catch {
     }
 
     void RunContext::assertionEnded(AssertionResult const & result) {
-        m_prevPassed = m_totals.assertions.passed;
         if (result.getResultType() == ResultWas::Ok) {
             m_totals.assertions.passed++;
+            m_lastAssertionPassed = true;
         } else if (!result.isOk()) {
+            m_lastAssertionPassed = false;
             if( m_activeTestCase->getTestCaseInfo().okToFail() )
                 m_totals.assertions.failedButOk++;
             else
                 m_totals.assertions.failed++;
+        }
+        else {
+            m_lastAssertionPassed = true;
         }
 
         // We have no use for the return value (whether messages should be cleared), because messages were made scoped
@@ -251,11 +255,11 @@ namespace Catch {
     }
 
     bool RunContext::lastAssertionPassed() {
-         return m_totals.assertions.passed == (m_prevPassed + 1);
+         return m_lastAssertionPassed;
     }
 
     void RunContext::assertionPassed() {
-        m_prevPassed = m_totals.assertions.passed;
+        m_lastAssertionPassed = true;
         ++m_totals.assertions.passed;
         resetAssertionInfo();
     }
