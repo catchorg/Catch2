@@ -87,6 +87,41 @@
 
 # Older versions
 
+## 1.11.x
+
+### 1.11.0
+
+#### Fixes
+* The original expression in `REQUIRE_FALSE( expr )` is now reporter properly as `!( expr )` (#1051)
+  * Previously the parentheses were missing and `x != y` would be expanded as `!x != x`
+* `Approx::Margin` is now inclusive (#952)
+  * Previously it was meant and documented as inclusive, but the check itself wasn't
+  * This means that `REQUIRE( 0.25f == Approx( 0.0f ).margin( 0.25f ) )` passes, instead of fails
+* `RandomNumberGenerator::result_type` is now unsigned (#1050)
+
+#### Improvements
+* `__JETBRAINS_IDE__` macro handling is now CLion version specific (#1017)
+  * When CLion 2017.3 or newer is detected, `__COUNTER__` is used instead of
+* TeamCity reporter now explicitly flushes output stream after each report (#1057)
+  * On some platforms, output from redirected streams would show up only after the tests finished running
+* `ParseAndAddCatchTests` now can add test files as dependency to CMake configuration
+  * This means you do not have to manually rerun CMake configuration step to detect new tests
+
+## 1.10.x
+
+### 1.10.0
+
+#### Fixes
+* Evaluation layer has been rewritten (backported from Catch 2)
+  * The new layer is much simpler and fixes some issues (#981)
+* Implemented workaround for VS 2017 raw string literal stringification bug (#995)
+* Fixed interaction between `[!shouldfail]` and `[!mayfail]` tags and sections
+  * Previously sections with failing assertions would be marked as failed, not failed-but-ok
+
+#### Improvements
+* Added [libidentify](https://github.com/janwilmans/LibIdentify) support
+* Added "wait-for-keypress" option
+
 ## 1.9.x
 
 ### 1.9.6
