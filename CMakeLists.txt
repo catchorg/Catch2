@@ -325,7 +325,7 @@ if (NOT NO_SELFTEST)
 
 
     # configure unit tests via CTest
-    enable_testing()
+    include(CTest)
     add_test(NAME RunTests COMMAND $<TARGET_FILE:SelfTest>)
 
     add_test(NAME ListTests COMMAND $<TARGET_FILE:SelfTest> --list-tests --verbosity high)
@@ -339,6 +339,7 @@ if (NOT NO_SELFTEST)
 
     add_test(NAME ListTestNamesOnly COMMAND $<TARGET_FILE:SelfTest> --list-test-names-only)
     set_tests_properties(ListTestNamesOnly PROPERTIES PASS_REGULAR_EXPRESSION "Regex string matcher")
+
 
 
     # AppVeyor has a Python 2.7 in path, but doesn't have .py files as autorunnable
@@ -359,7 +360,6 @@ endif() # !NO_SELFTEST
 if(BUILD_EXAMPLES)
     add_subdirectory(examples)
 endif()
-
 
 install(DIRECTORY "single_include/" DESTINATION "include/catch")
 

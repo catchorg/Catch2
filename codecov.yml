@@ -1,9 +1,5 @@
 codecov:
   branch: master
-  ci:
-    # Don't wait for AppVeyor build to finalize coverage information
-    # We don't have a way to generate coverage from it anyway
-    - !appveyor
 
 coverage:
   ignore:

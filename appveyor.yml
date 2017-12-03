@@ -30,8 +30,9 @@ init:
   # Set build version to git commit-hash
   - ps: Update-AppveyorBuild -Version "$($env:APPVEYOR_REPO_BRANCH) - $($env:APPVEYOR_REPO_COMMIT)"
 
-# fetch repository as zip archive
-shallow_clone: true
+install:
+  - ps: if (($env:CONFIGURATION) -eq "Debug" ) { python -m pip install codecov }
+  - ps: if (($env:CONFIGURATION) -eq "Debug" ) { .\misc\installOpenCppCoverage.ps1 }
 
 # Win32 and x64 are CMake-compatible solution platform names.
 # This allows us to pass %PLATFORM% to CMake -A.
@@ -46,9 +47,12 @@ configuration:
 
 #Cmake will autodetect the compiler, but we set the arch
 before_build:
-  - python scripts/generateSingleHeader.py
   - set CXXFLAGS=%additional_flags%
-  - cmake -H. -BBuild -A%PLATFORM% -DUSE_WMAIN=%wmain% -DBUILD_EXAMPLES=ON
+  # Indirection because appveyor doesn't handle multiline batch scripts properly
+  # https://stackoverflow.com/questions/37627248/how-to-split-a-command-over-multiple-lines-in-appveyor-yml/37647169#37647169
+  # https://help.appveyor.com/discussions/questions/3888-multi-line-cmd-or-powershell-warning-ignore
+  - cmd: .\misc\appveyorBuildConfigurationScript.bat
+
 
 # build with MSBuild
 build:
@@ -57,6 +61,5 @@ build:
   verbosity: normal                     # MSBuild verbosity level {quiet|minimal|normal|detailed}
 
 test_script:
-  - cd Build
   - set CTEST_OUTPUT_ON_FAILURE=1
-  - ctest -j 2 -C %CONFIGURATION%
+  - cmd: .\misc\appveyorTestRunScript.bat
