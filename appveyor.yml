@@ -27,8 +27,6 @@ matrix:
 
 init:
   - git config --global core.autocrlf input
-  # Set build version to git commit-hash
-  - ps: Update-AppveyorBuild -Version "$($env:APPVEYOR_REPO_BRANCH) - $($env:APPVEYOR_REPO_COMMIT)"
 
 install:
   - ps: if (($env:CONFIGURATION) -eq "Debug" ) { python -m pip install codecov }
