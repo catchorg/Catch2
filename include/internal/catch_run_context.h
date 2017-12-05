@@ -28,33 +28,6 @@ namespace Catch {
 
     struct IMutableContext;
 
-    class StreamRedirect {
-
-    public:
-        StreamRedirect(std::ostream& stream, std::string& targetString);
-        ~StreamRedirect();
-
-    private:
-        std::ostream& m_stream;
-        std::streambuf* m_prevBuf;
-        ReusableStringStream m_oss;
-        std::string& m_targetString;
-    };
-
-    // StdErr has two constituent streams in C++, std::cerr and std::clog
-    // This means that we need to redirect 2 streams into 1 to keep proper
-    // order of writes and cannot use StreamRedirect on its own
-    class StdErrRedirect {
-    public:
-        explicit StdErrRedirect( std::string& targetString );
-        ~StdErrRedirect();
-    private:
-        std::streambuf* m_cerrBuf;
-        std::streambuf* m_clogBuf;
-        ReusableStringStream m_oss;
-        std::string& m_targetString;
-    };
-
     ///////////////////////////////////////////////////////////////////////////
 
     class RunContext : public IResultCapture, public IRunner {

@@ -10,30 +10,47 @@
 
 namespace Catch {
 
-    StreamRedirect::StreamRedirect(std::ostream& stream, std::string& targetString)
-        : m_stream(stream),
-        m_prevBuf(stream.rdbuf()),
-        m_targetString(targetString) {
-        stream.rdbuf(m_oss.get().rdbuf());
-    }
+    class RedirectedStream {
+        std::ostream& m_originalStream;
+        std::ostream& m_redirectionStream;
+        std::streambuf* m_prevBuf;
 
-    StreamRedirect::~StreamRedirect() {
-        m_targetString += m_oss.str();
-        m_stream.rdbuf(m_prevBuf);
-    }
+    public:
+        RedirectedStream( std::ostream& originalStream, std::ostream& redirectionStream )
+        :   m_originalStream( originalStream ),
+            m_redirectionStream( redirectionStream ),
+            m_prevBuf( m_originalStream.rdbuf() )
+        {
+            m_originalStream.rdbuf( m_redirectionStream.rdbuf() );
+        }
+        ~RedirectedStream() {
+            m_originalStream.rdbuf( m_prevBuf );
+        }
+    };
 
-    StdErrRedirect::StdErrRedirect(std::string & targetString)
-        :m_cerrBuf(cerr().rdbuf()), m_clogBuf(clog().rdbuf()),
-        m_targetString(targetString) {
-        cerr().rdbuf(m_oss.get().rdbuf());
-        clog().rdbuf(m_oss.get().rdbuf());
-    }
+    class RedirectedStdOut {
+        ReusableStringStream m_rss;
+        RedirectedStream m_cout;
+    public:
+        RedirectedStdOut() : m_cout( Catch::cout(), m_rss.get() ) {}
+        auto str() const -> std::string { return m_rss.str(); }
+    };
 
-    StdErrRedirect::~StdErrRedirect() {
-        m_targetString += m_oss.str();
-        cerr().rdbuf(m_cerrBuf);
-        clog().rdbuf(m_clogBuf);
-    }
+    // StdErr has two constituent streams in C++, std::cerr and std::clog
+    // This means that we need to redirect 2 streams into 1 to keep proper
+    // order of writes
+    class RedirectedStdErr {
+        ReusableStringStream m_rss;
+        RedirectedStream m_cerr;
+        RedirectedStream m_clog;
+    public:
+        RedirectedStdErr()
+        :   m_cerr( Catch::cerr(), m_rss.get() ),
+            m_clog( Catch::clog(), m_rss.get() )
+        {}
+        auto str() const -> std::string { return m_rss.str(); }
+    };
+
 
     RunContext::RunContext(IConfigPtr const& _config, IStreamingReporterPtr&& reporter)
     :   m_runInfo(_config->name()),
@@ -282,10 +299,13 @@ namespace Catch {
         Timer timer;
         try {
             if (m_reporter->getPreferences().shouldRedirectStdOut) {
-                StreamRedirect coutRedir(cout(), redirectedCout);
-                StdErrRedirect errRedir(redirectedCerr);
+                RedirectedStdOut redirectedStdOut;
+                RedirectedStdErr redirectedStdErr;
                 timer.start();
                 invokeActiveTestCase();
+                redirectedCout += redirectedStdOut.str();
+                redirectedCerr += redirectedStdErr.str();
+
             } else {
                 timer.start();
                 invokeActiveTestCase();
