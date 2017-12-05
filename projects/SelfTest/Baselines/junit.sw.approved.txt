@@ -517,6 +517,7 @@ A string sent directly to stdout
       </system-out>
       <system-err>
 A string sent directly to stderr
+A string sent to stderr via clog
       </system-err>
     </testcase>
     <testcase classname="<exe-name>.global" name="Some simple comparisons between doubles" time="{duration}"/>
@@ -835,6 +836,7 @@ Message from section two
     </system-out>
     <system-err>
 A string sent directly to stderr
+A string sent to stderr via clog
     </system-err>
   </testsuite>
 </testsuites>

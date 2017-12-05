@@ -5260,6 +5260,7 @@ A string sent directly to stdout
         </StdOut>
         <StdErr>
 A string sent directly to stderr
+A string sent to stderr via clog
         </StdErr>
       </OverallResult>
     </TestCase>

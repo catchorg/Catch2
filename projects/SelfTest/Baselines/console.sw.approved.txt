@@ -4573,6 +4573,7 @@ with expansion:
 
 A string sent directly to stdout
 A string sent directly to stderr
+A string sent to stderr via clog
 -------------------------------------------------------------------------------
 Some simple comparisons between doubles
 -------------------------------------------------------------------------------
