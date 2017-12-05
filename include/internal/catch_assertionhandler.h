@@ -44,7 +44,7 @@ namespace Catch {
         AssertionInfo m_assertionInfo;
         AssertionReaction m_reaction;
         bool m_completed = false;
-        RunContext& m_resultCapture;
+        IResultCapture& m_resultCapture;
 
     public:
         AssertionHandler

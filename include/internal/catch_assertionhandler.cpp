@@ -56,7 +56,7 @@ namespace Catch {
             StringRef capturedExpression,
             ResultDisposition::Flags resultDisposition )
     :   m_assertionInfo{ macroName, lineInfo, capturedExpression, resultDisposition },
-        m_resultCapture( static_cast<RunContext&>( getResultCapture() ) )
+        m_resultCapture( getResultCapture() )
     {}
 
     AssertionHandler::~AssertionHandler() {

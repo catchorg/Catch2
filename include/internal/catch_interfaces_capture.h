@@ -11,6 +11,7 @@
 #include <string>
 
 #include "catch_stringref.h"
+#include "catch_result_type.h"
 
 namespace Catch {
 
@@ -22,6 +23,9 @@ namespace Catch {
     struct Counts;
     struct BenchmarkInfo;
     struct BenchmarkStats;
+    struct AssertionReaction;
+
+    struct ITransientExpression;
 
     struct IResultCapture {
 
@@ -39,6 +43,31 @@ namespace Catch {
         virtual void popScopedMessage( MessageInfo const& message ) = 0;
 
         virtual void handleFatalErrorCondition( StringRef message ) = 0;
+
+        virtual void handleExpr
+                (   AssertionInfo const& info,
+                    ITransientExpression const& expr,
+                    AssertionReaction& reaction ) = 0;
+        virtual void handleMessage
+                (   AssertionInfo const& info,
+                    ResultWas::OfType resultType,
+                    StringRef const& message,
+                    AssertionReaction& reaction ) = 0;
+        virtual void handleUnexpectedExceptionNotThrown
+                (   AssertionInfo const& info,
+                    AssertionReaction& reaction ) = 0;
+        virtual void handleUnexpectedInflightException
+                (   AssertionInfo const& info,
+                    std::string const& message,
+                    AssertionReaction& reaction ) = 0;
+        virtual void handleIncomplete
+                (   AssertionInfo const& info ) = 0;
+        virtual void handleNonExpr
+                (   AssertionInfo const &info,
+                    ResultWas::OfType resultType,
+                    AssertionReaction &reaction ) = 0;
+
+
 
         virtual bool lastAssertionPassed() = 0;
         virtual void assertionPassed() = 0;

@@ -63,65 +63,54 @@ namespace Catch {
         RunContext( RunContext const& ) = delete;
         RunContext& operator =( RunContext const& ) = delete;
 
-        explicit RunContext(IConfigPtr const& _config, IStreamingReporterPtr&& reporter);
+        explicit RunContext( IConfigPtr const& _config, IStreamingReporterPtr&& reporter );
 
         ~RunContext() override;
 
-        void testGroupStarting(std::string const& testSpec, std::size_t groupIndex, std::size_t groupsCount);
-        void testGroupEnded(std::string const& testSpec, Totals const& totals, std::size_t groupIndex, std::size_t groupsCount);
+        void testGroupStarting( std::string const& testSpec, std::size_t groupIndex, std::size_t groupsCount );
+        void testGroupEnded( std::string const& testSpec, Totals const& totals, std::size_t groupIndex, std::size_t groupsCount );
 
         Totals runTest(TestCase const& testCase);
 
         IConfigPtr config() const;
         IStreamingReporter& reporter() const;
 
+    public: // IResultCapture
+
         // Assertion handlers
         void handleExpr
                 (   AssertionInfo const& info,
                     ITransientExpression const& expr,
-                    AssertionReaction& reaction );
+                    AssertionReaction& reaction ) override;
         void handleMessage
                 (   AssertionInfo const& info,
                     ResultWas::OfType resultType,
                     StringRef const& message,
-                    AssertionReaction& reaction );
+                    AssertionReaction& reaction ) override;
         void handleUnexpectedExceptionNotThrown
                 (   AssertionInfo const& info,
-                    AssertionReaction& reaction );
+                    AssertionReaction& reaction ) override;
         void handleUnexpectedInflightException
                 (   AssertionInfo const& info,
                     std::string const& message,
-                    AssertionReaction& reaction );
+                    AssertionReaction& reaction ) override;
         void handleIncomplete
-                (   AssertionInfo const& info );
+                (   AssertionInfo const& info ) override;
         void handleNonExpr
                 (   AssertionInfo const &info,
                     ResultWas::OfType resultType,
-                    AssertionReaction &reaction );
-
-        void reportExpr
-                (AssertionInfo const &info,
-                 ResultWas::OfType resultType,
-                 ITransientExpression const *expr,
-                 bool negated );
-
-        void populateReaction( AssertionReaction& reaction );
-
-    public: // IResultCapture
-
-        void assertionEnded(AssertionResult const& result);
+                    AssertionReaction &reaction ) override;
 
         bool sectionStarted( SectionInfo const& sectionInfo, Counts& assertions ) override;
-        bool testForMissingAssertions(Counts& assertions);
 
-        void sectionEnded(SectionEndInfo const& endInfo) override;
-        void sectionEndedEarly(SectionEndInfo const& endInfo) override;
+        void sectionEnded( SectionEndInfo const& endInfo ) override;
+        void sectionEndedEarly( SectionEndInfo const& endInfo ) override;
 
         void benchmarkStarting( BenchmarkInfo const& info ) override;
         void benchmarkEnded( BenchmarkStats const& stats ) override;
 
-        void pushScopedMessage(MessageInfo const& message) override;
-        void popScopedMessage(MessageInfo const& message) override;
+        void pushScopedMessage( MessageInfo const& message ) override;
+        void popScopedMessage( MessageInfo const& message ) override;
 
         std::string getCurrentTestName() const override;
 
@@ -141,10 +130,20 @@ namespace Catch {
 
     private:
 
-        void runCurrentTest(std::string& redirectedCout, std::string& redirectedCerr);
+        void runCurrentTest( std::string& redirectedCout, std::string& redirectedCerr );
         void invokeActiveTestCase();
 
         void resetAssertionInfo();
+        bool testForMissingAssertions( Counts& assertions );
+
+        void assertionEnded( AssertionResult const& result );
+        void reportExpr
+                (   AssertionInfo const &info,
+                    ResultWas::OfType resultType,
+                    ITransientExpression const *expr,
+                    bool negated );
+
+        void populateReaction( AssertionReaction& reaction );
 
     private:
 
