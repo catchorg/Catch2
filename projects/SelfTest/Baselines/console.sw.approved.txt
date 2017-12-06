@@ -1873,6 +1873,29 @@ with expansion:
   nanf not ( is within 100.0 of nan or is within 123 ULPs of nanf )
 
 -------------------------------------------------------------------------------
+Floating point matchers: double
+  Constructor validation
+-------------------------------------------------------------------------------
+Matchers.tests.cpp:<line number>
+...............................................................................
+
+Matchers.tests.cpp:<line number>:
+PASSED:
+  REQUIRE_NOTHROW( WithinAbs(1., 0.) )
+
+Matchers.tests.cpp:<line number>:
+PASSED:
+  REQUIRE_THROWS_AS( WithinAbs(1., -1.), std::domain_error )
+
+Matchers.tests.cpp:<line number>:
+PASSED:
+  REQUIRE_NOTHROW( WithinULP(1., 0) )
+
+Matchers.tests.cpp:<line number>:
+PASSED:
+  REQUIRE_THROWS_AS( WithinULP(1., -1), std::domain_error )
+
+-------------------------------------------------------------------------------
 Floating point matchers: float
   Margin
 -------------------------------------------------------------------------------
@@ -1988,6 +2011,29 @@ PASSED:
   REQUIRE_THAT( NAN, !(WithinAbs(NAN, 100) || WithinULP(NAN, 123)) )
 with expansion:
   nanf not ( is within 100.0 of nan or is within 123 ULPs of nanf )
+
+-------------------------------------------------------------------------------
+Floating point matchers: float
+  Constructor validation
+-------------------------------------------------------------------------------
+Matchers.tests.cpp:<line number>
+...............................................................................
+
+Matchers.tests.cpp:<line number>:
+PASSED:
+  REQUIRE_NOTHROW( WithinAbs(1.f, 0.f) )
+
+Matchers.tests.cpp:<line number>:
+PASSED:
+  REQUIRE_THROWS_AS( WithinAbs(1.f, -1.f), std::domain_error )
+
+Matchers.tests.cpp:<line number>:
+PASSED:
+  REQUIRE_NOTHROW( WithinULP(1.f, 0) )
+
+Matchers.tests.cpp:<line number>:
+PASSED:
+  REQUIRE_THROWS_AS( WithinULP(1.f, -1), std::domain_error )
 
 -------------------------------------------------------------------------------
 Greater-than inequalities with different epsilons
@@ -8011,5 +8057,5 @@ PASSED:
 
 ===============================================================================
 test cases: 191 | 137 passed |  50 failed |  4 failed as expected
-assertions: 954 | 827 passed | 106 failed | 21 failed as expected
+assertions: 962 | 835 passed | 106 failed | 21 failed as expected
 

@@ -298,6 +298,13 @@ namespace { namespace MatchersTests {
 
                 REQUIRE_THAT(NAN, !(WithinAbs(NAN, 100) || WithinULP(NAN, 123)));
             }
+            SECTION("Constructor validation") {
+                REQUIRE_NOTHROW(WithinAbs(1.f, 0.f));
+                REQUIRE_THROWS_AS(WithinAbs(1.f, -1.f), std::domain_error);
+
+                REQUIRE_NOTHROW(WithinULP(1.f, 0));
+                REQUIRE_THROWS_AS(WithinULP(1.f, -1), std::domain_error);
+            }
         }
 
         TEST_CASE("Floating point matchers: double", "[matchers][floating-point]") {
@@ -327,6 +334,13 @@ namespace { namespace MatchersTests {
                 REQUIRE_THAT(1., WithinAbs(2., 0.5) || WithinULP(1., 0));
 
                 REQUIRE_THAT(NAN, !(WithinAbs(NAN, 100) || WithinULP(NAN, 123)));
+            }
+            SECTION("Constructor validation") {
+                REQUIRE_NOTHROW(WithinAbs(1., 0.));
+                REQUIRE_THROWS_AS(WithinAbs(1., -1.), std::domain_error);
+
+                REQUIRE_NOTHROW(WithinULP(1., 0));
+                REQUIRE_THROWS_AS(WithinULP(1., -1), std::domain_error);
             }
         }
 

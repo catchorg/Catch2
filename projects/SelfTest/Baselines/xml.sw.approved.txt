@@ -2142,6 +2142,41 @@
         </Expression>
         <OverallResults successes="3" failures="0" expectedFailures="0"/>
       </Section>
+      <Section name="Constructor validation" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
+        <Expression success="true" type="REQUIRE_NOTHROW" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
+          <Original>
+            WithinAbs(1., 0.)
+          </Original>
+          <Expanded>
+            WithinAbs(1., 0.)
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE_THROWS_AS" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
+          <Original>
+            WithinAbs(1., -1.), std::domain_error
+          </Original>
+          <Expanded>
+            WithinAbs(1., -1.), std::domain_error
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE_NOTHROW" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
+          <Original>
+            WithinULP(1., 0)
+          </Original>
+          <Expanded>
+            WithinULP(1., 0)
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE_THROWS_AS" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
+          <Original>
+            WithinULP(1., -1), std::domain_error
+          </Original>
+          <Expanded>
+            WithinULP(1., -1), std::domain_error
+          </Expanded>
+        </Expression>
+        <OverallResults successes="4" failures="0" expectedFailures="0"/>
+      </Section>
       <OverallResult success="true"/>
     </TestCase>
     <TestCase name="Floating point matchers: float" tags="[floating-point][matchers]" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
@@ -2281,6 +2316,41 @@
           </Expanded>
         </Expression>
         <OverallResults successes="3" failures="0" expectedFailures="0"/>
+      </Section>
+      <Section name="Constructor validation" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
+        <Expression success="true" type="REQUIRE_NOTHROW" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
+          <Original>
+            WithinAbs(1.f, 0.f)
+          </Original>
+          <Expanded>
+            WithinAbs(1.f, 0.f)
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE_THROWS_AS" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
+          <Original>
+            WithinAbs(1.f, -1.f), std::domain_error
+          </Original>
+          <Expanded>
+            WithinAbs(1.f, -1.f), std::domain_error
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE_NOTHROW" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
+          <Original>
+            WithinULP(1.f, 0)
+          </Original>
+          <Expanded>
+            WithinULP(1.f, 0)
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE_THROWS_AS" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
+          <Original>
+            WithinULP(1.f, -1), std::domain_error
+          </Original>
+          <Expanded>
+            WithinULP(1.f, -1), std::domain_error
+          </Expanded>
+        </Expression>
+        <OverallResults successes="4" failures="0" expectedFailures="0"/>
       </Section>
       <OverallResult success="true"/>
     </TestCase>
@@ -8898,7 +8968,7 @@ loose text artifact
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="827" failures="107" expectedFailures="21"/>
+    <OverallResults successes="835" failures="107" expectedFailures="21"/>
   </Group>
-  <OverallResults successes="827" failures="106" expectedFailures="21"/>
+  <OverallResults successes="835" failures="106" expectedFailures="21"/>
 </Catch>
