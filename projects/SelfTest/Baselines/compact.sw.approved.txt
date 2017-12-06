@@ -1,0 +1,1027 @@
+Misc.tests.cpp:<line number>: passed: with 1 message: 'yay'
+Decomposition.tests.cpp:<line number>: passed: fptr == 0 for: 0 == 0
+Decomposition.tests.cpp:<line number>: passed: fptr == 0l for: 0 == 0
+Compilation.tests.cpp:<line number>: passed: y.v == 0 for: 0 == 0
+Compilation.tests.cpp:<line number>: passed: 0 == y.v for: 0 == 0
+Exception.tests.cpp:<line number>: failed: unexpected exception with message: 'answer := 42' with 1 message: 'expected exception'
+Exception.tests.cpp:<line number>: failed: unexpected exception with message: 'answer := 42'; expression was: thisThrows() with 1 message: 'expected exception'
+Exception.tests.cpp:<line number>: passed: thisThrows() with 1 message: 'answer := 42'
+Compilation.tests.cpp:<line number>: passed: 42 == f for: 42 == {?}
+Compilation.tests.cpp:<line number>: passed: a == t for: 3 == 3
+Compilation.tests.cpp:<line number>: passed: a == t for: 3 == 3
+Compilation.tests.cpp:<line number>: passed: throws_int(true)
+Compilation.tests.cpp:<line number>: passed: throws_int(true), int
+Compilation.tests.cpp:<line number>: passed: throws_int(false)
+Compilation.tests.cpp:<line number>: passed: "aaa", Catch::EndsWith("aaa") for: "aaa" ends with: "aaa"
+Compilation.tests.cpp:<line number>: passed: templated_tests<int>(3) for: true
+Misc.tests.cpp:<line number>: failed: f() == 0 for: 1 == 0
+Misc.tests.cpp:<line number>: passed: errno == 1 for: 1 == 1
+Compilation.tests.cpp:<line number>: passed: x == 4 for: {?} == 4 with 1 message: 'dummy := 0'
+Misc.tests.cpp:<line number>: passed: with 1 message: 'Everything is OK'
+Misc.tests.cpp:<line number>: passed: with 1 message: 'Everything is OK'
+Misc.tests.cpp:<line number>: passed: with 1 message: 'Everything is OK'
+Misc.tests.cpp:<line number>: passed: with 1 message: 'Everything is OK'
+Misc.tests.cpp:<line number>: passed: with 1 message: 'Everything is OK'
+Condition.tests.cpp:<line number>: failed: false != false
+Condition.tests.cpp:<line number>: failed: true != true
+Condition.tests.cpp:<line number>: failed: !true for: false
+Condition.tests.cpp:<line number>: failed: !(true) for: !true
+Condition.tests.cpp:<line number>: failed: !trueValue for: false
+Condition.tests.cpp:<line number>: failed: !(trueValue) for: !true
+Condition.tests.cpp:<line number>: failed: !(1 == 1) for: false
+Condition.tests.cpp:<line number>: failed: !(1 == 1)
+Condition.tests.cpp:<line number>: passed: false == false
+Condition.tests.cpp:<line number>: passed: true == true
+Condition.tests.cpp:<line number>: passed: !false for: true
+Condition.tests.cpp:<line number>: passed: !(false) for: !false
+Condition.tests.cpp:<line number>: passed: !falseValue for: true
+Condition.tests.cpp:<line number>: passed: !(falseValue) for: !false
+Condition.tests.cpp:<line number>: passed: !(1 == 2) for: true
+Condition.tests.cpp:<line number>: passed: !(1 == 2)
+Tricky.tests.cpp:<line number>: passed: is_true<true>::value == true for: true == true
+Tricky.tests.cpp:<line number>: passed: true == is_true<true>::value for: true == true
+Tricky.tests.cpp:<line number>: passed: is_true<false>::value == false for: false == false
+Tricky.tests.cpp:<line number>: passed: false == is_true<false>::value for: false == false
+Tricky.tests.cpp:<line number>: passed: !is_true<false>::value for: true
+Tricky.tests.cpp:<line number>: passed: !!is_true<true>::value for: true
+Tricky.tests.cpp:<line number>: passed: is_true<true>::value for: true
+Tricky.tests.cpp:<line number>: passed: !(is_true<false>::value) for: !false
+Class.tests.cpp:<line number>: failed: s == "world" for: "hello" == "world"
+Class.tests.cpp:<line number>: passed: s == "hello" for: "hello" == "hello"
+Class.tests.cpp:<line number>: failed: m_a == 2 for: 1 == 2
+Class.tests.cpp:<line number>: passed: m_a == 1 for: 1 == 1
+Misc.tests.cpp:<line number>: passed: with 1 message: 'that's not flying - that's failing in style'
+Misc.tests.cpp:<line number>: failed: explicitly with 1 message: 'to infinity and beyond'
+Tricky.tests.cpp:<line number>: failed: &o1 == &o2 for: 0x<hex digits> == 0x<hex digits>
+Tricky.tests.cpp:<line number>: failed: o1 == o2 for: {?} == {?}
+Approx.tests.cpp:<line number>: passed: 104.0 != Approx(100.0) for: 104.0 != Approx( 100.0 )
+Approx.tests.cpp:<line number>: passed: 104.0 == Approx(100.0).margin(5) for: 104.0 == Approx( 100.0 )
+Approx.tests.cpp:<line number>: passed: 104.0 == Approx(100.0).margin(4) for: 104.0 == Approx( 100.0 )
+Approx.tests.cpp:<line number>: passed: 104.0 != Approx(100.0).margin(3) for: 104.0 != Approx( 100.0 )
+Approx.tests.cpp:<line number>: passed: 100.3 != Approx(100.0) for: 100.3 != Approx( 100.0 )
+Approx.tests.cpp:<line number>: passed: 100.3 == Approx(100.0).margin(0.5) for: 100.3 == Approx( 100.0 )
+Tricky.tests.cpp:<line number>: passed: i++ == 7 for: 7 == 7
+Tricky.tests.cpp:<line number>: passed: i++ == 8 for: 8 == 8
+Exception.tests.cpp:<line number>: passed: 1 == 1
+Exception.tests.cpp:<line number>: failed: unexpected exception with message: 'unexpected exception'; expression was: {Unknown expression after the reported line}
+VariadicMacros.tests.cpp:<line number>: passed: with 1 message: 'anonymous test case'
+Approx.tests.cpp:<line number>: passed: Approx(0).margin(0)
+Approx.tests.cpp:<line number>: passed: Approx(0).margin(1234656)
+Approx.tests.cpp:<line number>: passed: Approx(0).margin(-2), std::domain_error
+Approx.tests.cpp:<line number>: passed: Approx(0).epsilon(0)
+Approx.tests.cpp:<line number>: passed: Approx(0).epsilon(1)
+Approx.tests.cpp:<line number>: passed: Approx(0).epsilon(-0.001), std::domain_error
+Approx.tests.cpp:<line number>: passed: Approx(0).epsilon(1.0001), std::domain_error
+Approx.tests.cpp:<line number>: passed: 0.25f == Approx(0.0f).margin(0.25f) for: 0.25f == Approx( 0.0 )
+Approx.tests.cpp:<line number>: passed: 0.0f == Approx(0.25f).margin(0.25f) for: 0.0f == Approx( 0.25 )
+Approx.tests.cpp:<line number>: passed: 0.5f == Approx(0.25f).margin(0.25f) for: 0.5f == Approx( 0.25 )
+Approx.tests.cpp:<line number>: passed: 245.0f == Approx(245.25f).margin(0.25f) for: 245.0f == Approx( 245.25 )
+Approx.tests.cpp:<line number>: passed: 245.5f == Approx(245.25f).margin(0.25f) for: 245.5f == Approx( 245.25 )
+Approx.tests.cpp:<line number>: passed: divide( 22, 7 ) == Approx( 3.141 ).epsilon( 0.001 ) for: 3.1428571429 == Approx( 3.141 )
+Approx.tests.cpp:<line number>: passed: divide( 22, 7 ) != Approx( 3.141 ).epsilon( 0.0001 ) for: 3.1428571429 != Approx( 3.141 )
+Approx.tests.cpp:<line number>: passed: d != Approx( 1.231 ) for: 1.23 != Approx( 1.231 )
+Approx.tests.cpp:<line number>: passed: d == Approx( 1.231 ).epsilon( 0.1 ) for: 1.23 == Approx( 1.231 )
+Approx.tests.cpp:<line number>: passed: 1.23f == Approx( 1.23f ) for: 1.23f == Approx( 1.2300000191 )
+Approx.tests.cpp:<line number>: passed: 0.0f == Approx( 0.0f ) for: 0.0f == Approx( 0.0 )
+Approx.tests.cpp:<line number>: passed: 1 == Approx( 1 ) for: 1 == Approx( 1.0 )
+Approx.tests.cpp:<line number>: passed: 0 == Approx( 0 ) for: 0 == Approx( 0.0 )
+Approx.tests.cpp:<line number>: passed: 1.0f == Approx( 1 ) for: 1.0f == Approx( 1.0 )
+Approx.tests.cpp:<line number>: passed: 0 == Approx( dZero) for: 0 == Approx( 0.0 )
+Approx.tests.cpp:<line number>: passed: 0 == Approx( dSmall ).margin( 0.001 ) for: 0 == Approx( 0.00001 )
+Approx.tests.cpp:<line number>: passed: 1.234f == Approx( dMedium ) for: 1.234f == Approx( 1.234 )
+Approx.tests.cpp:<line number>: passed: dMedium == Approx( 1.234f ) for: 1.234 == Approx( 1.2339999676 )
+Tricky.tests.cpp:<line number>: passed: true
+Tricky.tests.cpp:<line number>: passed: true
+Tricky.tests.cpp:<line number>: passed: true
+Tricky.tests.cpp:<line number>: passed: true
+Tricky.tests.cpp:<line number>: passed: true
+Tricky.tests.cpp:<line number>: passed: true
+Approx.tests.cpp:<line number>: passed: INFINITY == Approx(INFINITY) for: inff == Approx( inf )
+Approx.tests.cpp:<line number>: passed: NAN != Approx(NAN) for: nanf != Approx( nan )
+Approx.tests.cpp:<line number>: passed: !(NAN == Approx(NAN)) for: !(nanf == Approx( nan ))
+Tricky.tests.cpp:<line number>: passed: y.v == 0 for: 0 == 0
+Tricky.tests.cpp:<line number>: passed: 0 == y.v for: 0 == 0
+ToStringGeneral.tests.cpp:<line number>: passed: true with 1 message: 'i := 2'
+ToStringGeneral.tests.cpp:<line number>: passed: true with 1 message: '3'
+ToStringGeneral.tests.cpp:<line number>: passed: tab == '/t' for: '/t' == '/t'
+ToStringGeneral.tests.cpp:<line number>: passed: newline == '/n' for: '/n' == '/n'
+ToStringGeneral.tests.cpp:<line number>: passed: carr_return == '/r' for: '/r' == '/r'
+ToStringGeneral.tests.cpp:<line number>: passed: form_feed == '/f' for: '/f' == '/f'
+ToStringGeneral.tests.cpp:<line number>: passed: space == ' ' for: ' ' == ' '
+ToStringGeneral.tests.cpp:<line number>: passed: c == chars[i] for: 'a' == 'a'
+ToStringGeneral.tests.cpp:<line number>: passed: c == chars[i] for: 'z' == 'z'
+ToStringGeneral.tests.cpp:<line number>: passed: c == chars[i] for: 'A' == 'A'
+ToStringGeneral.tests.cpp:<line number>: passed: c == chars[i] for: 'Z' == 'Z'
+ToStringGeneral.tests.cpp:<line number>: passed: null_terminator == '/0' for: 0 == 0
+ToStringGeneral.tests.cpp:<line number>: passed: c == i for: 2 == 2
+ToStringGeneral.tests.cpp:<line number>: passed: c == i for: 3 == 3
+ToStringGeneral.tests.cpp:<line number>: passed: c == i for: 4 == 4
+ToStringGeneral.tests.cpp:<line number>: passed: c == i for: 5 == 5
+Tricky.tests.cpp:<line number>: passed: std::vector<constructor_throws>{constructor_throws{}, constructor_throws{}}
+Tricky.tests.cpp:<line number>: passed: std::vector<constructor_throws>{constructor_throws{}, constructor_throws{}}
+Tricky.tests.cpp:<line number>: passed: std::vector<int>{1, 2, 3} == std::vector<int>{1, 2, 3}
+Tricky.tests.cpp:<line number>: passed: std::vector<int>{1, 2, 3} == std::vector<int>{1, 2, 3}
+Tricky.tests.cpp:<line number>: passed: std::vector<int>{1, 2} == std::vector<int>{1, 2} for: { 1, 2 } == { 1, 2 }
+Tricky.tests.cpp:<line number>: passed: std::vector<int>{1, 2} == std::vector<int>{1, 2} for: { 1, 2 } == { 1, 2 }
+Tricky.tests.cpp:<line number>: passed: !(std::vector<int>{1, 2} == std::vector<int>{1, 2, 3}) for: !({ 1, 2 } == { 1, 2, 3 })
+Tricky.tests.cpp:<line number>: passed: !(std::vector<int>{1, 2} == std::vector<int>{1, 2, 3}) for: !({ 1, 2 } == { 1, 2, 3 })
+Tricky.tests.cpp:<line number>: passed: std::vector<int>{1, 2} == std::vector<int>{1, 2} for: { 1, 2 } == { 1, 2 }
+Tricky.tests.cpp:<line number>: passed: std::vector<int>{1, 2} == std::vector<int>{1, 2} for: { 1, 2 } == { 1, 2 }
+Tricky.tests.cpp:<line number>: passed: true
+Tricky.tests.cpp:<line number>: passed: std::vector<int>{1, 2} == std::vector<int>{1, 2} for: { 1, 2 } == { 1, 2 }
+Tricky.tests.cpp:<line number>: passed: a for: 0x<hex digits>
+Tricky.tests.cpp:<line number>: passed: a == &foo for: 0x<hex digits> == 0x<hex digits>
+Approx.tests.cpp:<line number>: passed: td == Approx(10.0) for: StrongDoubleTypedef(10) == Approx( 10.0 )
+Approx.tests.cpp:<line number>: passed: Approx(10.0) == td for: Approx( 10.0 ) == StrongDoubleTypedef(10)
+Approx.tests.cpp:<line number>: passed: td != Approx(11.0) for: StrongDoubleTypedef(10) != Approx( 11.0 )
+Approx.tests.cpp:<line number>: passed: Approx(11.0) != td for: Approx( 11.0 ) != StrongDoubleTypedef(10)
+Approx.tests.cpp:<line number>: passed: td <= Approx(10.0) for: StrongDoubleTypedef(10) <= Approx( 10.0 )
+Approx.tests.cpp:<line number>: passed: td <= Approx(11.0) for: StrongDoubleTypedef(10) <= Approx( 11.0 )
+Approx.tests.cpp:<line number>: passed: Approx(10.0) <= td for: Approx( 10.0 ) <= StrongDoubleTypedef(10)
+Approx.tests.cpp:<line number>: passed: Approx(9.0) <= td for: Approx( 9.0 ) <= StrongDoubleTypedef(10)
+Approx.tests.cpp:<line number>: passed: td >= Approx(9.0) for: StrongDoubleTypedef(10) >= Approx( 9.0 )
+Approx.tests.cpp:<line number>: passed: td >= Approx(td) for: StrongDoubleTypedef(10) >= Approx( 10.0 )
+Approx.tests.cpp:<line number>: passed: Approx(td) >= td for: Approx( 10.0 ) >= StrongDoubleTypedef(10)
+Approx.tests.cpp:<line number>: passed: Approx(11.0) >= td for: Approx( 11.0 ) >= StrongDoubleTypedef(10)
+Condition.tests.cpp:<line number>: passed: 54 == 6*9 for: 54 == 54
+Condition.tests.cpp:<line number>: passed: ( -1 > 2u ) for: true
+Condition.tests.cpp:<line number>: passed: -1 > 2u for: -1 > 2
+Condition.tests.cpp:<line number>: passed: ( 2u < -1 ) for: true
+Condition.tests.cpp:<line number>: passed: 2u < -1 for: 2 < -1
+Condition.tests.cpp:<line number>: passed: ( minInt > 2u ) for: true
+Condition.tests.cpp:<line number>: passed: minInt > 2u for: -2147483648 > 2
+Condition.tests.cpp:<line number>: passed: i == 1 for: 1 == 1
+Condition.tests.cpp:<line number>: passed: ui == 2 for: 2 == 2
+Condition.tests.cpp:<line number>: passed: l == 3 for: 3 == 3
+Condition.tests.cpp:<line number>: passed: ul == 4 for: 4 == 4
+Condition.tests.cpp:<line number>: passed: c == 5 for: 5 == 5
+Condition.tests.cpp:<line number>: passed: uc == 6 for: 6 == 6
+Condition.tests.cpp:<line number>: passed: 1 == i for: 1 == 1
+Condition.tests.cpp:<line number>: passed: 2 == ui for: 2 == 2
+Condition.tests.cpp:<line number>: passed: 3 == l for: 3 == 3
+Condition.tests.cpp:<line number>: passed: 4 == ul for: 4 == 4
+Condition.tests.cpp:<line number>: passed: 5 == c for: 5 == 5
+Condition.tests.cpp:<line number>: passed: 6 == uc for: 6 == 6
+Condition.tests.cpp:<line number>: passed: (std::numeric_limits<uint32_t>::max)() > ul for: 4294967295 (0x<hex digits>) > 4
+Matchers.tests.cpp:<line number>: failed: testStringForMatching(), Contains("not there", Catch::CaseSensitive::No) for: "this string contains 'abc' as a substring" contains: "not there" (case insensitive)
+Matchers.tests.cpp:<line number>: failed: testStringForMatching(), Contains("STRING") for: "this string contains 'abc' as a substring" contains: "STRING"
+Exception.tests.cpp:<line number>: failed: unexpected exception with message: 'custom exception - not std'; expression was: throwCustom()
+Exception.tests.cpp:<line number>: failed: unexpected exception with message: 'custom exception - not std'; expression was: throwCustom(), std::exception
+Exception.tests.cpp:<line number>: failed: unexpected exception with message: 'custom std exception'
+Approx.tests.cpp:<line number>: passed: 101.000001 != Approx(100).epsilon(0.01) for: 101.000001 != Approx( 100.0 )
+Approx.tests.cpp:<line number>: passed: std::pow(10, -5) != Approx(std::pow(10, -7)) for: 0.00001 != Approx( 0.0000001 )
+Matchers.tests.cpp:<line number>: failed: testStringForMatching(), EndsWith("Substring") for: "this string contains 'abc' as a substring" ends with: "Substring"
+Matchers.tests.cpp:<line number>: failed: testStringForMatching(), EndsWith("this", Catch::CaseSensitive::No) for: "this string contains 'abc' as a substring" ends with: "this" (case insensitive)
+Approx.tests.cpp:<line number>: passed: 101.01 != Approx(100).epsilon(0.01) for: 101.01 != Approx( 100.0 )
+Condition.tests.cpp:<line number>: failed: data.int_seven == 6 for: 7 == 6
+Condition.tests.cpp:<line number>: failed: data.int_seven == 8 for: 7 == 8
+Condition.tests.cpp:<line number>: failed: data.int_seven == 0 for: 7 == 0
+Condition.tests.cpp:<line number>: failed: data.float_nine_point_one == Approx( 9.11f ) for: 9.1f == Approx( 9.1099996567 )
+Condition.tests.cpp:<line number>: failed: data.float_nine_point_one == Approx( 9.0f ) for: 9.1f == Approx( 9.0 )
+Condition.tests.cpp:<line number>: failed: data.float_nine_point_one == Approx( 1 ) for: 9.1f == Approx( 1.0 )
+Condition.tests.cpp:<line number>: failed: data.float_nine_point_one == Approx( 0 ) for: 9.1f == Approx( 0.0 )
+Condition.tests.cpp:<line number>: failed: data.double_pi == Approx( 3.1415 ) for: 3.1415926535 == Approx( 3.1415 )
+Condition.tests.cpp:<line number>: failed: data.str_hello == "goodbye" for: "hello" == "goodbye"
+Condition.tests.cpp:<line number>: failed: data.str_hello == "hell" for: "hello" == "hell"
+Condition.tests.cpp:<line number>: failed: data.str_hello == "hello1" for: "hello" == "hello1"
+Condition.tests.cpp:<line number>: failed: data.str_hello.size() == 6 for: 5 == 6
+Condition.tests.cpp:<line number>: failed: x == Approx( 1.301 ) for: 1.3 == Approx( 1.301 )
+Condition.tests.cpp:<line number>: passed: data.int_seven == 7 for: 7 == 7
+Condition.tests.cpp:<line number>: passed: data.float_nine_point_one == Approx( 9.1f ) for: 9.1f == Approx( 9.1000003815 )
+Condition.tests.cpp:<line number>: passed: data.double_pi == Approx( 3.1415926535 ) for: 3.1415926535 == Approx( 3.1415926535 )
+Condition.tests.cpp:<line number>: passed: data.str_hello == "hello" for: "hello" == "hello"
+Condition.tests.cpp:<line number>: passed: "hello" == data.str_hello for: "hello" == "hello"
+Condition.tests.cpp:<line number>: passed: data.str_hello.size() == 5 for: 5 == 5
+Condition.tests.cpp:<line number>: passed: x == Approx( 1.3 ) for: 1.3 == Approx( 1.3 )
+Matchers.tests.cpp:<line number>: passed: testStringForMatching(), Equals("this string contains 'abc' as a substring") for: "this string contains 'abc' as a substring" equals: "this string contains 'abc' as a substring"
+Matchers.tests.cpp:<line number>: passed: testStringForMatching(), Equals("this string contains 'ABC' as a substring", Catch::CaseSensitive::No) for: "this string contains 'abc' as a substring" equals: "this string contains 'abc' as a substring" (case insensitive)
+Matchers.tests.cpp:<line number>: failed: testStringForMatching(), Equals("this string contains 'ABC' as a substring") for: "this string contains 'abc' as a substring" equals: "this string contains 'ABC' as a substring"
+Matchers.tests.cpp:<line number>: failed: testStringForMatching(), Equals("something else", Catch::CaseSensitive::No) for: "this string contains 'abc' as a substring" equals: "something else" (case insensitive)
+Matchers.tests.cpp:<line number>: failed: expected exception, got none; expression was: doesNotThrow(), SpecialException, ExceptionMatcher{1}
+Matchers.tests.cpp:<line number>: failed: expected exception, got none; expression was: doesNotThrow(), SpecialException, ExceptionMatcher{1}
+Matchers.tests.cpp:<line number>: failed: unexpected exception with message: 'Unknown exception'; expression was: throwsAsInt(1), SpecialException, ExceptionMatcher{1}
+Matchers.tests.cpp:<line number>: failed: unexpected exception with message: 'Unknown exception'; expression was: throwsAsInt(1), SpecialException, ExceptionMatcher{1}
+Matchers.tests.cpp:<line number>: failed: throws(3), SpecialException, ExceptionMatcher{1} for: {?} special exception has value of 1
+Matchers.tests.cpp:<line number>: failed: throws(4), SpecialException, ExceptionMatcher{1} for: {?} special exception has value of 1
+Matchers.tests.cpp:<line number>: passed: throws(1), SpecialException, ExceptionMatcher{1} for: {?} special exception has value of 1
+Matchers.tests.cpp:<line number>: passed: throws(2), SpecialException, ExceptionMatcher{2} for: {?} special exception has value of 2
+Exception.tests.cpp:<line number>: passed: thisThrows(), "expected exception" for: "expected exception" equals: "expected exception"
+Exception.tests.cpp:<line number>: passed: thisThrows(), Equals( "expecteD Exception", Catch::CaseSensitive::No ) for: "expected exception" equals: "expected exception" (case insensitive)
+Exception.tests.cpp:<line number>: passed: thisThrows(), StartsWith( "expected" ) for: "expected exception" starts with: "expected"
+Exception.tests.cpp:<line number>: passed: thisThrows(), EndsWith( "exception" ) for: "expected exception" ends with: "exception"
+Exception.tests.cpp:<line number>: passed: thisThrows(), Contains( "except" ) for: "expected exception" contains: "except"
+Exception.tests.cpp:<line number>: passed: thisThrows(), Contains( "exCept", Catch::CaseSensitive::No ) for: "expected exception" contains: "except" (case insensitive)
+Exception.tests.cpp:<line number>: failed: unexpected exception with message: 'expected exception'; expression was: thisThrows(), std::string
+Exception.tests.cpp:<line number>: failed: expected exception, got none; expression was: thisDoesntThrow(), std::domain_error
+Exception.tests.cpp:<line number>: failed: unexpected exception with message: 'expected exception'; expression was: thisThrows()
+Message.tests.cpp:<line number>: failed: explicitly with 1 message: 'This is a failure'
+Message.tests.cpp:<line number>: failed: explicitly
+Message.tests.cpp:<line number>: failed: explicitly with 1 message: 'This is a failure'
+Message.tests.cpp:<line number>: warning: 'This message appears in the output'
+Misc.tests.cpp:<line number>: passed: Factorial(0) == 1 for: 1 == 1
+Misc.tests.cpp:<line number>: passed: Factorial(1) == 1 for: 1 == 1
+Misc.tests.cpp:<line number>: passed: Factorial(2) == 2 for: 2 == 2
+Misc.tests.cpp:<line number>: passed: Factorial(3) == 6 for: 6 == 6
+Misc.tests.cpp:<line number>: passed: Factorial(10) == 3628800 for: 3628800 (0x<hex digits>) == 3628800 (0x<hex digits>)
+Matchers.tests.cpp:<line number>: passed: 1., WithinAbs(1., 0) for: 1.0 is within 0.0 of 1.0
+Matchers.tests.cpp:<line number>: passed: 0., WithinAbs(1., 1) for: 0.0 is within 1.0 of 1.0
+Matchers.tests.cpp:<line number>: passed: 0., !WithinAbs(1., 0.99) for: 0.0 not is within 0.99 of 1.0
+Matchers.tests.cpp:<line number>: passed: 0., !WithinAbs(1., 0.99) for: 0.0 not is within 0.99 of 1.0
+Matchers.tests.cpp:<line number>: passed: NAN, !WithinAbs(NAN, 0) for: nanf not is within 0.0 of nan
+Matchers.tests.cpp:<line number>: passed: 1., WithinULP(1., 0) for: 1.0 is within 0 ULPs of 1.0
+Matchers.tests.cpp:<line number>: passed: std::nextafter(1., 2.), WithinULP(1., 1) for: 1.0 is within 1 ULPs of 1.0
+Matchers.tests.cpp:<line number>: passed: std::nextafter(1., 0.), WithinULP(1., 1) for: 1.0 is within 1 ULPs of 1.0
+Matchers.tests.cpp:<line number>: passed: std::nextafter(1., 2.), !WithinULP(1., 0) for: 1.0 not is within 0 ULPs of 1.0
+Matchers.tests.cpp:<line number>: passed: 1., WithinULP(1., 0) for: 1.0 is within 0 ULPs of 1.0
+Matchers.tests.cpp:<line number>: passed: -0., WithinULP(0., 0) for: -0.0 is within 0 ULPs of 0.0
+Matchers.tests.cpp:<line number>: passed: NAN, !WithinULP(NAN, 123) for: nanf not is within 123 ULPs of nanf
+Matchers.tests.cpp:<line number>: passed: 1., WithinAbs(1., 0.5) || WithinULP(2., 1) for: 1.0 ( is within 0.5 of 1.0 or is within 1 ULPs of 2.0 )
+Matchers.tests.cpp:<line number>: passed: 1., WithinAbs(2., 0.5) || WithinULP(1., 0) for: 1.0 ( is within 0.5 of 2.0 or is within 0 ULPs of 1.0 )
+Matchers.tests.cpp:<line number>: passed: NAN, !(WithinAbs(NAN, 100) || WithinULP(NAN, 123)) for: nanf not ( is within 100.0 of nan or is within 123 ULPs of nanf )
+Matchers.tests.cpp:<line number>: passed: WithinAbs(1., 0.)
+Matchers.tests.cpp:<line number>: passed: WithinAbs(1., -1.), std::domain_error
+Matchers.tests.cpp:<line number>: passed: WithinULP(1., 0)
+Matchers.tests.cpp:<line number>: passed: WithinULP(1., -1), std::domain_error
+Matchers.tests.cpp:<line number>: passed: 1.f, WithinAbs(1.f, 0) for: 1.0f is within 0.0 of 1.0
+Matchers.tests.cpp:<line number>: passed: 0.f, WithinAbs(1.f, 1) for: 0.0f is within 1.0 of 1.0
+Matchers.tests.cpp:<line number>: passed: 0.f, !WithinAbs(1.f, 0.99f) for: 0.0f not is within 0.9900000095 of 1.0
+Matchers.tests.cpp:<line number>: passed: 0.f, !WithinAbs(1.f, 0.99f) for: 0.0f not is within 0.9900000095 of 1.0
+Matchers.tests.cpp:<line number>: passed: 0.f, WithinAbs(-0.f, 0) for: 0.0f is within 0.0 of -0.0
+Matchers.tests.cpp:<line number>: passed: NAN, !WithinAbs(NAN, 0) for: nanf not is within 0.0 of nan
+Matchers.tests.cpp:<line number>: passed: 1.f, WithinULP(1.f, 0) for: 1.0f is within 0 ULPs of 1.0f
+Matchers.tests.cpp:<line number>: passed: std::nextafter(1.f, 2.f), WithinULP(1.f, 1) for: 1.0f is within 1 ULPs of 1.0f
+Matchers.tests.cpp:<line number>: passed: std::nextafter(1.f, 0.f), WithinULP(1.f, 1) for: 1.0f is within 1 ULPs of 1.0f
+Matchers.tests.cpp:<line number>: passed: std::nextafter(1.f, 2.f), !WithinULP(1.f, 0) for: 1.0f not is within 0 ULPs of 1.0f
+Matchers.tests.cpp:<line number>: passed: 1.f, WithinULP(1.f, 0) for: 1.0f is within 0 ULPs of 1.0f
+Matchers.tests.cpp:<line number>: passed: -0.f, WithinULP(0.f, 0) for: -0.0f is within 0 ULPs of 0.0f
+Matchers.tests.cpp:<line number>: passed: NAN, !WithinULP(NAN, 123) for: nanf not is within 123 ULPs of nanf
+Matchers.tests.cpp:<line number>: passed: 1.f, WithinAbs(1.f, 0.5) || WithinULP(1.f, 1) for: 1.0f ( is within 0.5 of 1.0 or is within 1 ULPs of 1.0f )
+Matchers.tests.cpp:<line number>: passed: 1.f, WithinAbs(2.f, 0.5) || WithinULP(1.f, 0) for: 1.0f ( is within 0.5 of 2.0 or is within 0 ULPs of 1.0f )
+Matchers.tests.cpp:<line number>: passed: NAN, !(WithinAbs(NAN, 100) || WithinULP(NAN, 123)) for: nanf not ( is within 100.0 of nan or is within 123 ULPs of nanf )
+Matchers.tests.cpp:<line number>: passed: WithinAbs(1.f, 0.f)
+Matchers.tests.cpp:<line number>: passed: WithinAbs(1.f, -1.f), std::domain_error
+Matchers.tests.cpp:<line number>: passed: WithinULP(1.f, 0)
+Matchers.tests.cpp:<line number>: passed: WithinULP(1.f, -1), std::domain_error
+Approx.tests.cpp:<line number>: passed: d >= Approx( 1.22 ) for: 1.23 >= Approx( 1.22 )
+Approx.tests.cpp:<line number>: passed: d >= Approx( 1.23 ) for: 1.23 >= Approx( 1.23 )
+Approx.tests.cpp:<line number>: passed: !(d >= Approx( 1.24 )) for: !(1.23 >= Approx( 1.24 ))
+Approx.tests.cpp:<line number>: passed: d >= Approx( 1.24 ).epsilon(0.1) for: 1.23 >= Approx( 1.24 )
+Message.tests.cpp:<line number>: warning: 'this is a message' with 1 message: 'this is a warning'
+Message.tests.cpp:<line number>: failed: a == 1 for: 2 == 1 with 2 messages: 'this message should be logged' and 'so should this'
+Message.tests.cpp:<line number>: passed: a == 2 for: 2 == 2 with 1 message: 'this message may be logged later'
+Message.tests.cpp:<line number>: failed: a == 1 for: 2 == 1 with 2 messages: 'this message may be logged later' and 'this message should be logged'
+Message.tests.cpp:<line number>: failed: a == 0 for: 2 == 0 with 3 messages: 'this message may be logged later' and 'this message should be logged' and 'and this, but later'
+Message.tests.cpp:<line number>: passed: a == 2 for: 2 == 2 with 4 messages: 'this message may be logged later' and 'this message should be logged' and 'and this, but later' and 'but not this'
+Message.tests.cpp:<line number>: passed: i < 10 for: 0 < 10 with 2 messages: 'current counter 0' and 'i := 0'
+Message.tests.cpp:<line number>: passed: i < 10 for: 1 < 10 with 2 messages: 'current counter 1' and 'i := 1'
+Message.tests.cpp:<line number>: passed: i < 10 for: 2 < 10 with 2 messages: 'current counter 2' and 'i := 2'
+Message.tests.cpp:<line number>: passed: i < 10 for: 3 < 10 with 2 messages: 'current counter 3' and 'i := 3'
+Message.tests.cpp:<line number>: passed: i < 10 for: 4 < 10 with 2 messages: 'current counter 4' and 'i := 4'
+Message.tests.cpp:<line number>: passed: i < 10 for: 5 < 10 with 2 messages: 'current counter 5' and 'i := 5'
+Message.tests.cpp:<line number>: passed: i < 10 for: 6 < 10 with 2 messages: 'current counter 6' and 'i := 6'
+Message.tests.cpp:<line number>: passed: i < 10 for: 7 < 10 with 2 messages: 'current counter 7' and 'i := 7'
+Message.tests.cpp:<line number>: passed: i < 10 for: 8 < 10 with 2 messages: 'current counter 8' and 'i := 8'
+Message.tests.cpp:<line number>: passed: i < 10 for: 9 < 10 with 2 messages: 'current counter 9' and 'i := 9'
+Message.tests.cpp:<line number>: failed: i < 10 for: 10 < 10 with 2 messages: 'current counter 10' and 'i := 10'
+Condition.tests.cpp:<line number>: failed: data.int_seven != 7 for: 7 != 7
+Condition.tests.cpp:<line number>: failed: data.float_nine_point_one != Approx( 9.1f ) for: 9.1f != Approx( 9.1000003815 )
+Condition.tests.cpp:<line number>: failed: data.double_pi != Approx( 3.1415926535 ) for: 3.1415926535 != Approx( 3.1415926535 )
+Condition.tests.cpp:<line number>: failed: data.str_hello != "hello" for: "hello" != "hello"
+Condition.tests.cpp:<line number>: failed: data.str_hello.size() != 5 for: 5 != 5
+Condition.tests.cpp:<line number>: passed: data.int_seven != 6 for: 7 != 6
+Condition.tests.cpp:<line number>: passed: data.int_seven != 8 for: 7 != 8
+Condition.tests.cpp:<line number>: passed: data.float_nine_point_one != Approx( 9.11f ) for: 9.1f != Approx( 9.1099996567 )
+Condition.tests.cpp:<line number>: passed: data.float_nine_point_one != Approx( 9.0f ) for: 9.1f != Approx( 9.0 )
+Condition.tests.cpp:<line number>: passed: data.float_nine_point_one != Approx( 1 ) for: 9.1f != Approx( 1.0 )
+Condition.tests.cpp:<line number>: passed: data.float_nine_point_one != Approx( 0 ) for: 9.1f != Approx( 0.0 )
+Condition.tests.cpp:<line number>: passed: data.double_pi != Approx( 3.1415 ) for: 3.1415926535 != Approx( 3.1415 )
+Condition.tests.cpp:<line number>: passed: data.str_hello != "goodbye" for: "hello" != "goodbye"
+Condition.tests.cpp:<line number>: passed: data.str_hello != "hell" for: "hello" != "hell"
+Condition.tests.cpp:<line number>: passed: data.str_hello != "hello1" for: "hello" != "hello1"
+Condition.tests.cpp:<line number>: passed: data.str_hello.size() != 6 for: 5 != 6
+Approx.tests.cpp:<line number>: passed: d <= Approx( 1.24 ) for: 1.23 <= Approx( 1.24 )
+Approx.tests.cpp:<line number>: passed: d <= Approx( 1.23 ) for: 1.23 <= Approx( 1.23 )
+Approx.tests.cpp:<line number>: passed: !(d <= Approx( 1.22 )) for: !(1.23 <= Approx( 1.22 ))
+Approx.tests.cpp:<line number>: passed: d <= Approx( 1.22 ).epsilon(0.1) for: 1.23 <= Approx( 1.22 )
+Misc.tests.cpp:<line number>: passed: with 1 message: 'was called'
+Matchers.tests.cpp:<line number>: passed: testStringForMatching(), Contains("string") && Contains("abc") && Contains("substring") && Contains("contains") for: "this string contains 'abc' as a substring" ( contains: "string" and contains: "abc" and contains: "substring" and contains: "contains" )
+Matchers.tests.cpp:<line number>: passed: testStringForMatching(), Contains("string") || Contains("different") || Contains("random") for: "this string contains 'abc' as a substring" ( contains: "string" or contains: "different" or contains: "random" )
+Matchers.tests.cpp:<line number>: passed: testStringForMatching2(), Contains("string") || Contains("different") || Contains("random") for: "some completely different text that contains one common word" ( contains: "string" or contains: "different" or contains: "random" )
+Matchers.tests.cpp:<line number>: passed: testStringForMatching(), (Contains("string") || Contains("different")) && Contains("substring") for: "this string contains 'abc' as a substring" ( ( contains: "string" or contains: "different" ) and contains: "substring" )
+Matchers.tests.cpp:<line number>: failed: testStringForMatching(), (Contains("string") || Contains("different")) && Contains("random") for: "this string contains 'abc' as a substring" ( ( contains: "string" or contains: "different" ) and contains: "random" )
+Matchers.tests.cpp:<line number>: passed: testStringForMatching(), !Contains("different") for: "this string contains 'abc' as a substring" not contains: "different"
+Matchers.tests.cpp:<line number>: failed: testStringForMatching(), !Contains("substring") for: "this string contains 'abc' as a substring" not contains: "substring"
+Exception.tests.cpp:<line number>: passed: thisThrows(), "expected exception" for: "expected exception" equals: "expected exception"
+Exception.tests.cpp:<line number>: failed: thisThrows(), "should fail" for: "expected exception" equals: "should fail"
+Misc.tests.cpp:<line number>: warning: 'This one ran'
+Exception.tests.cpp:<line number>: failed: unexpected exception with message: 'custom exception'
+Tricky.tests.cpp:<line number>: passed: True for: {?}
+Tricky.tests.cpp:<line number>: passed: !False for: true
+Tricky.tests.cpp:<line number>: passed: !(False) for: !{?}
+Condition.tests.cpp:<line number>: failed: data.int_seven > 7 for: 7 > 7
+Condition.tests.cpp:<line number>: failed: data.int_seven < 7 for: 7 < 7
+Condition.tests.cpp:<line number>: failed: data.int_seven > 8 for: 7 > 8
+Condition.tests.cpp:<line number>: failed: data.int_seven < 6 for: 7 < 6
+Condition.tests.cpp:<line number>: failed: data.int_seven < 0 for: 7 < 0
+Condition.tests.cpp:<line number>: failed: data.int_seven < -1 for: 7 < -1
+Condition.tests.cpp:<line number>: failed: data.int_seven >= 8 for: 7 >= 8
+Condition.tests.cpp:<line number>: failed: data.int_seven <= 6 for: 7 <= 6
+Condition.tests.cpp:<line number>: failed: data.float_nine_point_one < 9 for: 9.1f < 9
+Condition.tests.cpp:<line number>: failed: data.float_nine_point_one > 10 for: 9.1f > 10
+Condition.tests.cpp:<line number>: failed: data.float_nine_point_one > 9.2 for: 9.1f > 9.2
+Condition.tests.cpp:<line number>: failed: data.str_hello > "hello" for: "hello" > "hello"
+Condition.tests.cpp:<line number>: failed: data.str_hello < "hello" for: "hello" < "hello"
+Condition.tests.cpp:<line number>: failed: data.str_hello > "hellp" for: "hello" > "hellp"
+Condition.tests.cpp:<line number>: failed: data.str_hello > "z" for: "hello" > "z"
+Condition.tests.cpp:<line number>: failed: data.str_hello < "hellm" for: "hello" < "hellm"
+Condition.tests.cpp:<line number>: failed: data.str_hello < "a" for: "hello" < "a"
+Condition.tests.cpp:<line number>: failed: data.str_hello >= "z" for: "hello" >= "z"
+Condition.tests.cpp:<line number>: failed: data.str_hello <= "a" for: "hello" <= "a"
+Condition.tests.cpp:<line number>: passed: data.int_seven < 8 for: 7 < 8
+Condition.tests.cpp:<line number>: passed: data.int_seven > 6 for: 7 > 6
+Condition.tests.cpp:<line number>: passed: data.int_seven > 0 for: 7 > 0
+Condition.tests.cpp:<line number>: passed: data.int_seven > -1 for: 7 > -1
+Condition.tests.cpp:<line number>: passed: data.int_seven >= 7 for: 7 >= 7
+Condition.tests.cpp:<line number>: passed: data.int_seven >= 6 for: 7 >= 6
+Condition.tests.cpp:<line number>: passed: data.int_seven <= 7 for: 7 <= 7
+Condition.tests.cpp:<line number>: passed: data.int_seven <= 8 for: 7 <= 8
+Condition.tests.cpp:<line number>: passed: data.float_nine_point_one > 9 for: 9.1f > 9
+Condition.tests.cpp:<line number>: passed: data.float_nine_point_one < 10 for: 9.1f < 10
+Condition.tests.cpp:<line number>: passed: data.float_nine_point_one < 9.2 for: 9.1f < 9.2
+Condition.tests.cpp:<line number>: passed: data.str_hello <= "hello" for: "hello" <= "hello"
+Condition.tests.cpp:<line number>: passed: data.str_hello >= "hello" for: "hello" >= "hello"
+Condition.tests.cpp:<line number>: passed: data.str_hello < "hellp" for: "hello" < "hellp"
+Condition.tests.cpp:<line number>: passed: data.str_hello < "zebra" for: "hello" < "zebra"
+Condition.tests.cpp:<line number>: passed: data.str_hello > "hellm" for: "hello" > "hellm"
+Condition.tests.cpp:<line number>: passed: data.str_hello > "a" for: "hello" > "a"
+Message.tests.cpp:<line number>: failed: explicitly with 1 message: 'Message from section one'
+Message.tests.cpp:<line number>: failed: explicitly with 1 message: 'Message from section two'
+CmdLine.tests.cpp:<line number>: passed: spec.hasFilters() == false for: false == false
+CmdLine.tests.cpp:<line number>: passed: spec.matches( tcA ) == false for: false == false
+CmdLine.tests.cpp:<line number>: passed: spec.matches( tcB ) == false for: false == false
+CmdLine.tests.cpp:<line number>: passed: spec.hasFilters() == false for: false == false
+CmdLine.tests.cpp:<line number>: passed: spec.matches(tcA ) == false for: false == false
+CmdLine.tests.cpp:<line number>: passed: spec.matches( tcB ) == false for: false == false
+CmdLine.tests.cpp:<line number>: passed: spec.hasFilters() == false for: false == false
+CmdLine.tests.cpp:<line number>: passed: spec.matches( tcA ) == false for: false == false
+CmdLine.tests.cpp:<line number>: passed: spec.matches( tcB ) == false for: false == false
+CmdLine.tests.cpp:<line number>: passed: spec.hasFilters() == true for: true == true
+CmdLine.tests.cpp:<line number>: passed: spec.matches( tcA ) == false for: false == false
+CmdLine.tests.cpp:<line number>: passed: spec.matches( tcB ) == true for: true == true
+CmdLine.tests.cpp:<line number>: passed: spec.hasFilters() == true for: true == true
+CmdLine.tests.cpp:<line number>: passed: spec.matches( tcA ) == false for: false == false
+CmdLine.tests.cpp:<line number>: passed: spec.matches( tcB ) == true for: true == true
+CmdLine.tests.cpp:<line number>: passed: spec.hasFilters() == true for: true == true
+CmdLine.tests.cpp:<line number>: passed: spec.matches( tcA ) == false for: false == false
+CmdLine.tests.cpp:<line number>: passed: spec.matches( tcB ) == true for: true == true
+CmdLine.tests.cpp:<line number>: passed: spec.matches( tcC ) == false for: false == false
+CmdLine.tests.cpp:<line number>: passed: spec.hasFilters() == true for: true == true
+CmdLine.tests.cpp:<line number>: passed: spec.matches( tcA ) == false for: false == false
+CmdLine.tests.cpp:<line number>: passed: spec.matches( tcB ) == false for: false == false
+CmdLine.tests.cpp:<line number>: passed: spec.matches( tcC ) == true for: true == true
+CmdLine.tests.cpp:<line number>: passed: spec.matches( tcD ) == false for: false == false
+CmdLine.tests.cpp:<line number>: passed: parseTestSpec( "*a" ).matches( tcA ) == true for: true == true
+CmdLine.tests.cpp:<line number>: passed: spec.hasFilters() == true for: true == true
+CmdLine.tests.cpp:<line number>: passed: spec.matches( tcA ) == false for: false == false
+CmdLine.tests.cpp:<line number>: passed: spec.matches( tcB ) == false for: false == false
+CmdLine.tests.cpp:<line number>: passed: spec.matches( tcC ) == true for: true == true
+CmdLine.tests.cpp:<line number>: passed: spec.matches( tcD ) == false for: false == false
+CmdLine.tests.cpp:<line number>: passed: parseTestSpec( "a*" ).matches( tcA ) == true for: true == true
+CmdLine.tests.cpp:<line number>: passed: spec.hasFilters() == true for: true == true
+CmdLine.tests.cpp:<line number>: passed: spec.matches( tcA ) == false for: false == false
+CmdLine.tests.cpp:<line number>: passed: spec.matches( tcB ) == false for: false == false
+CmdLine.tests.cpp:<line number>: passed: spec.matches( tcC ) == true for: true == true
+CmdLine.tests.cpp:<line number>: passed: spec.matches( tcD ) == true for: true == true
+CmdLine.tests.cpp:<line number>: passed: parseTestSpec( "*a*" ).matches( tcA ) == true for: true == true
+CmdLine.tests.cpp:<line number>: passed: spec.hasFilters() == true for: true == true
+CmdLine.tests.cpp:<line number>: passed: spec.matches( tcA ) == true for: true == true
+CmdLine.tests.cpp:<line number>: passed: spec.matches( tcB ) == false for: false == false
+CmdLine.tests.cpp:<line number>: passed: spec.hasFilters() == true for: true == true
+CmdLine.tests.cpp:<line number>: passed: spec.matches( tcA ) == true for: true == true
+CmdLine.tests.cpp:<line number>: passed: spec.matches( tcB ) == false for: false == false
+CmdLine.tests.cpp:<line number>: passed: spec.hasFilters() == true for: true == true
+CmdLine.tests.cpp:<line number>: passed: spec.matches( tcA ) == true for: true == true
+CmdLine.tests.cpp:<line number>: passed: spec.matches( tcB ) == false for: false == false
+CmdLine.tests.cpp:<line number>: passed: spec.hasFilters() == true for: true == true
+CmdLine.tests.cpp:<line number>: passed: spec.matches( tcA ) == false for: false == false
+CmdLine.tests.cpp:<line number>: passed: spec.matches( tcB ) == false for: false == false
+CmdLine.tests.cpp:<line number>: passed: spec.matches( tcC ) == true for: true == true
+CmdLine.tests.cpp:<line number>: passed: spec.matches( tcD ) == true for: true == true
+CmdLine.tests.cpp:<line number>: passed: spec.hasFilters() == true for: true == true
+CmdLine.tests.cpp:<line number>: passed: spec.matches( tcA ) == true for: true == true
+CmdLine.tests.cpp:<line number>: passed: spec.matches( tcB ) == true for: true == true
+CmdLine.tests.cpp:<line number>: passed: spec.matches( tcC ) == true for: true == true
+CmdLine.tests.cpp:<line number>: passed: spec.matches( tcD ) == true for: true == true
+CmdLine.tests.cpp:<line number>: passed: spec.hasFilters() == true for: true == true
+CmdLine.tests.cpp:<line number>: passed: spec.matches( tcA ) == false for: false == false
+CmdLine.tests.cpp:<line number>: passed: spec.matches( tcB ) == true for: true == true
+CmdLine.tests.cpp:<line number>: passed: spec.matches( tcC ) == false for: false == false
+CmdLine.tests.cpp:<line number>: passed: spec.hasFilters() == true for: true == true
+CmdLine.tests.cpp:<line number>: passed: spec.matches( tcA ) == false for: false == false
+CmdLine.tests.cpp:<line number>: passed: spec.matches( tcB ) == true for: true == true
+CmdLine.tests.cpp:<line number>: passed: spec.matches( tcC ) == true for: true == true
+CmdLine.tests.cpp:<line number>: passed: spec.hasFilters() == true for: true == true
+CmdLine.tests.cpp:<line number>: passed: spec.matches( tcA ) == false for: false == false
+CmdLine.tests.cpp:<line number>: passed: spec.matches( tcB ) == false for: false == false
+CmdLine.tests.cpp:<line number>: passed: spec.matches( tcC ) == true for: true == true
+CmdLine.tests.cpp:<line number>: passed: spec.hasFilters() == true for: true == true
+CmdLine.tests.cpp:<line number>: passed: spec.matches( tcA ) == false for: false == false
+CmdLine.tests.cpp:<line number>: passed: spec.matches( tcB ) == false for: false == false
+CmdLine.tests.cpp:<line number>: passed: spec.matches( tcC ) == true for: true == true
+CmdLine.tests.cpp:<line number>: passed: spec.hasFilters() == true for: true == true
+CmdLine.tests.cpp:<line number>: passed: spec.matches( tcA ) == false for: false == false
+CmdLine.tests.cpp:<line number>: passed: spec.matches( tcB ) == false for: false == false
+CmdLine.tests.cpp:<line number>: passed: spec.matches( tcC ) == true for: true == true
+CmdLine.tests.cpp:<line number>: passed: spec.matches( tcD ) == false for: false == false
+CmdLine.tests.cpp:<line number>: passed: spec.hasFilters() == true for: true == true
+CmdLine.tests.cpp:<line number>: passed: spec.matches( tcA ) == true for: true == true
+CmdLine.tests.cpp:<line number>: passed: spec.matches( tcB ) == false for: false == false
+CmdLine.tests.cpp:<line number>: passed: spec.matches( tcC ) == true for: true == true
+CmdLine.tests.cpp:<line number>: passed: spec.hasFilters() == true for: true == true
+CmdLine.tests.cpp:<line number>: passed: spec.matches( tcA ) == false for: false == false
+CmdLine.tests.cpp:<line number>: passed: spec.matches( tcB ) == true for: true == true
+CmdLine.tests.cpp:<line number>: passed: spec.matches( tcC ) == false for: false == false
+CmdLine.tests.cpp:<line number>: passed: spec.hasFilters() == true for: true == true
+CmdLine.tests.cpp:<line number>: passed: spec.matches( tcA ) == false for: false == false
+CmdLine.tests.cpp:<line number>: passed: spec.matches( tcB ) == false for: false == false
+CmdLine.tests.cpp:<line number>: passed: spec.matches( tcC ) == false for: false == false
+CmdLine.tests.cpp:<line number>: passed: spec.matches( tcD ) == true for: true == true
+CmdLine.tests.cpp:<line number>: passed: spec.hasFilters() == true for: true == true
+CmdLine.tests.cpp:<line number>: passed: spec.matches( tcA ) == false for: false == false
+CmdLine.tests.cpp:<line number>: passed: spec.matches( tcB ) == false for: false == false
+CmdLine.tests.cpp:<line number>: passed: spec.matches( tcC ) == false for: false == false
+CmdLine.tests.cpp:<line number>: passed: spec.matches( tcD ) == true for: true == true
+CmdLine.tests.cpp:<line number>: passed: spec.hasFilters() == true for: true == true
+CmdLine.tests.cpp:<line number>: passed: spec.matches( tcA ) == true for: true == true
+CmdLine.tests.cpp:<line number>: passed: spec.matches( tcB ) == false for: false == false
+CmdLine.tests.cpp:<line number>: passed: spec.matches( tcC ) == true for: true == true
+CmdLine.tests.cpp:<line number>: passed: spec.matches( tcD ) == true for: true == true
+CmdLine.tests.cpp:<line number>: passed: spec.hasFilters() == true for: true == true
+CmdLine.tests.cpp:<line number>: passed: spec.matches( tcA ) == true for: true == true
+CmdLine.tests.cpp:<line number>: passed: spec.matches( tcB ) == true for: true == true
+CmdLine.tests.cpp:<line number>: passed: spec.matches( tcC ) == false for: false == false
+CmdLine.tests.cpp:<line number>: passed: spec.matches( tcD ) == false for: false == false
+CmdLine.tests.cpp:<line number>: passed: spec.hasFilters() == true for: true == true
+CmdLine.tests.cpp:<line number>: passed: spec.matches( tcA ) == true for: true == true
+CmdLine.tests.cpp:<line number>: passed: spec.matches( tcB ) == true for: true == true
+CmdLine.tests.cpp:<line number>: passed: spec.matches( tcC ) == true for: true == true
+CmdLine.tests.cpp:<line number>: passed: spec.matches( tcD ) == false for: false == false
+CmdLine.tests.cpp:<line number>: passed: spec.hasFilters() == true for: true == true
+CmdLine.tests.cpp:<line number>: passed: spec.matches( tcA ) == true for: true == true
+CmdLine.tests.cpp:<line number>: passed: spec.matches( tcB ) == true for: true == true
+CmdLine.tests.cpp:<line number>: passed: spec.matches( tcC ) == true for: true == true
+CmdLine.tests.cpp:<line number>: passed: spec.matches( tcD ) == false for: false == false
+CmdLine.tests.cpp:<line number>: passed: spec.hasFilters() == true for: true == true
+CmdLine.tests.cpp:<line number>: passed: spec.matches( tcA ) == false for: false == false
+CmdLine.tests.cpp:<line number>: passed: spec.matches( tcB ) == false for: false == false
+CmdLine.tests.cpp:<line number>: passed: spec.matches( tcC ) == true for: true == true
+CmdLine.tests.cpp:<line number>: passed: spec.matches( tcD ) == false for: false == false
+CmdLine.tests.cpp:<line number>: passed: spec.hasFilters() == false for: false == false
+CmdLine.tests.cpp:<line number>: passed: spec.matches( tcA ) == false for: false == false
+CmdLine.tests.cpp:<line number>: passed: spec.matches( tcB ) == false for: false == false
+CmdLine.tests.cpp:<line number>: passed: spec.matches( tcC ) == false for: false == false
+CmdLine.tests.cpp:<line number>: passed: spec.matches( tcD ) == false for: false == false
+CmdLine.tests.cpp:<line number>: passed: spec.hasFilters() == false for: false == false
+CmdLine.tests.cpp:<line number>: passed: spec.matches( tcA ) == false for: false == false
+CmdLine.tests.cpp:<line number>: passed: spec.matches( tcB ) == false for: false == false
+CmdLine.tests.cpp:<line number>: passed: spec.matches( tcC ) == false for: false == false
+CmdLine.tests.cpp:<line number>: passed: spec.matches( tcD ) == false for: false == false
+CmdLine.tests.cpp:<line number>: passed: spec.hasFilters() == true for: true == true
+CmdLine.tests.cpp:<line number>: passed: spec.matches( tcA ) == false for: false == false
+CmdLine.tests.cpp:<line number>: passed: spec.matches( tcB ) == false for: false == false
+CmdLine.tests.cpp:<line number>: passed: spec.matches( tcC ) == false for: false == false
+CmdLine.tests.cpp:<line number>: passed: spec.matches( tcD ) == true for: true == true
+Tricky.tests.cpp:<line number>: passed: (std::pair<int, int>( 1, 2 )) == aNicePair for: {?} == {?}
+Condition.tests.cpp:<line number>: passed: p == 0 for: 0 == 0
+Condition.tests.cpp:<line number>: passed: p == pNULL for: 0 == 0
+Condition.tests.cpp:<line number>: passed: p != 0 for: 0x<hex digits> != 0
+Condition.tests.cpp:<line number>: passed: cp != 0 for: 0x<hex digits> != 0
+Condition.tests.cpp:<line number>: passed: cpc != 0 for: 0x<hex digits> != 0
+Condition.tests.cpp:<line number>: passed: returnsNull() == 0 for: {null string} == 0
+Condition.tests.cpp:<line number>: passed: returnsConstNull() == 0 for: {null string} == 0
+Condition.tests.cpp:<line number>: passed: 0 != p for: 0 != 0x<hex digits>
+CmdLine.tests.cpp:<line number>: passed: result for: {?}
+CmdLine.tests.cpp:<line number>: passed: config.processName == "" for: "" == ""
+CmdLine.tests.cpp:<line number>: passed: result for: {?}
+CmdLine.tests.cpp:<line number>: passed: config.processName == "test" for: "test" == "test"
+CmdLine.tests.cpp:<line number>: passed: config.shouldDebugBreak == false for: false == false
+CmdLine.tests.cpp:<line number>: passed: config.abortAfter == -1 for: -1 == -1
+CmdLine.tests.cpp:<line number>: passed: config.noThrow == false for: false == false
+CmdLine.tests.cpp:<line number>: passed: config.reporterNames.empty() for: true
+CmdLine.tests.cpp:<line number>: passed: result for: {?}
+CmdLine.tests.cpp:<line number>: passed: cfg.testSpec().matches(fakeTestCase("notIncluded")) == false for: false == false
+CmdLine.tests.cpp:<line number>: passed: cfg.testSpec().matches(fakeTestCase("test1")) for: true
+CmdLine.tests.cpp:<line number>: passed: result for: {?}
+CmdLine.tests.cpp:<line number>: passed: cfg.testSpec().matches(fakeTestCase("test1")) == false for: false == false
+CmdLine.tests.cpp:<line number>: passed: cfg.testSpec().matches(fakeTestCase("alwaysIncluded")) for: true
+CmdLine.tests.cpp:<line number>: passed: result for: {?}
+CmdLine.tests.cpp:<line number>: passed: cfg.testSpec().matches(fakeTestCase("test1")) == false for: false == false
+CmdLine.tests.cpp:<line number>: passed: cfg.testSpec().matches(fakeTestCase("alwaysIncluded")) for: true
+CmdLine.tests.cpp:<line number>: passed: cli.parse({"test", "-r", "console"}) for: {?}
+CmdLine.tests.cpp:<line number>: passed: config.reporterNames[0] == "console" for: "console" == "console"
+CmdLine.tests.cpp:<line number>: passed: cli.parse({"test", "-r", "xml"}) for: {?}
+CmdLine.tests.cpp:<line number>: passed: config.reporterNames[0] == "xml" for: "xml" == "xml"
+CmdLine.tests.cpp:<line number>: passed: cli.parse({"test", "-r", "xml", "-r", "junit"}) for: {?}
+CmdLine.tests.cpp:<line number>: passed: config.reporterNames.size() == 2 for: 2 == 2
+CmdLine.tests.cpp:<line number>: passed: config.reporterNames[0] == "xml" for: "xml" == "xml"
+CmdLine.tests.cpp:<line number>: passed: config.reporterNames[1] == "junit" for: "junit" == "junit"
+CmdLine.tests.cpp:<line number>: passed: cli.parse({"test", "--reporter", "junit"}) for: {?}
+CmdLine.tests.cpp:<line number>: passed: config.reporterNames[0] == "junit" for: "junit" == "junit"
+CmdLine.tests.cpp:<line number>: passed: cli.parse({"test", "-b"}) for: {?}
+CmdLine.tests.cpp:<line number>: passed: config.shouldDebugBreak == true for: true == true
+CmdLine.tests.cpp:<line number>: passed: cli.parse({"test", "--break"}) for: {?}
+CmdLine.tests.cpp:<line number>: passed: config.shouldDebugBreak for: true
+CmdLine.tests.cpp:<line number>: passed: cli.parse({"test", "-a"}) for: {?}
+CmdLine.tests.cpp:<line number>: passed: config.abortAfter == 1 for: 1 == 1
+CmdLine.tests.cpp:<line number>: passed: cli.parse({"test", "-x", "2"}) for: {?}
+CmdLine.tests.cpp:<line number>: passed: config.abortAfter == 2 for: 2 == 2
+CmdLine.tests.cpp:<line number>: passed: !result for: true
+CmdLine.tests.cpp:<line number>: passed: result.errorMessage(), Contains("convert") && Contains("oops") for: "Unable to convert 'oops' to destination type" ( contains: "convert" and contains: "oops" )
+CmdLine.tests.cpp:<line number>: passed: cli.parse({"test", "-e"}) for: {?}
+CmdLine.tests.cpp:<line number>: passed: config.noThrow for: true
+CmdLine.tests.cpp:<line number>: passed: cli.parse({"test", "--nothrow"}) for: {?}
+CmdLine.tests.cpp:<line number>: passed: config.noThrow for: true
+CmdLine.tests.cpp:<line number>: passed: cli.parse({"test", "-o", "filename.ext"}) for: {?}
+CmdLine.tests.cpp:<line number>: passed: config.outputFilename == "filename.ext" for: "filename.ext" == "filename.ext"
+CmdLine.tests.cpp:<line number>: passed: cli.parse({"test", "--out", "filename.ext"}) for: {?}
+CmdLine.tests.cpp:<line number>: passed: config.outputFilename == "filename.ext" for: "filename.ext" == "filename.ext"
+CmdLine.tests.cpp:<line number>: passed: cli.parse({"test", "-abe"}) for: {?}
+CmdLine.tests.cpp:<line number>: passed: config.abortAfter == 1 for: 1 == 1
+CmdLine.tests.cpp:<line number>: passed: config.shouldDebugBreak for: true
+CmdLine.tests.cpp:<line number>: passed: config.noThrow == true for: true == true
+CmdLine.tests.cpp:<line number>: passed: cli.parse({"test"}) for: {?}
+CmdLine.tests.cpp:<line number>: passed: config.useColour == UseColour::Auto for: 0 == 0
+CmdLine.tests.cpp:<line number>: passed: cli.parse({"test", "--use-colour", "auto"}) for: {?}
+CmdLine.tests.cpp:<line number>: passed: config.useColour == UseColour::Auto for: 0 == 0
+CmdLine.tests.cpp:<line number>: passed: cli.parse({"test", "--use-colour", "yes"}) for: {?}
+CmdLine.tests.cpp:<line number>: passed: config.useColour == UseColour::Yes for: 1 == 1
+CmdLine.tests.cpp:<line number>: passed: cli.parse({"test", "--use-colour", "no"}) for: {?}
+CmdLine.tests.cpp:<line number>: passed: config.useColour == UseColour::No for: 2 == 2
+CmdLine.tests.cpp:<line number>: passed: !result for: true
+CmdLine.tests.cpp:<line number>: passed: result.errorMessage(), Contains( "colour mode must be one of" ) for: "colour mode must be one of: auto, yes or no. 'wrong' not recognised" contains: "colour mode must be one of"
+Decomposition.tests.cpp:<line number>: failed: truthy(false) for: Hey, its truthy!
+Matchers.tests.cpp:<line number>: failed: testStringForMatching(), Matches("this STRING contains 'abc' as a substring") for: "this string contains 'abc' as a substring" matches "this STRING contains 'abc' as a substring" case sensitively
+Matchers.tests.cpp:<line number>: failed: testStringForMatching(), Matches("contains 'abc' as a substring") for: "this string contains 'abc' as a substring" matches "contains 'abc' as a substring" case sensitively
+Matchers.tests.cpp:<line number>: failed: testStringForMatching(), Matches("this string contains 'abc' as a") for: "this string contains 'abc' as a substring" matches "this string contains 'abc' as a" case sensitively
+Message.tests.cpp:<line number>: passed: with 1 message: 'this is a success'
+Message.tests.cpp:<line number>: passed:
+BDD.tests.cpp:<line number>: passed: before == 0 for: 0 == 0
+BDD.tests.cpp:<line number>: passed: after > before for: 1 > 0
+BDD.tests.cpp:<line number>: passed: itDoesThis() for: true
+BDD.tests.cpp:<line number>: passed: itDoesThat() for: true
+BDD.tests.cpp:<line number>: passed: with 1 message: 'boo!'
+BDD.tests.cpp:<line number>: passed: v.size() == 0 for: 0 == 0
+BDD.tests.cpp:<line number>: passed: v.size() == 10 for: 10 == 10
+BDD.tests.cpp:<line number>: passed: v.capacity() >= 10 for: 10 >= 10
+BDD.tests.cpp:<line number>: passed: v.size() == 5 for: 5 == 5
+BDD.tests.cpp:<line number>: passed: v.capacity() >= 10 for: 10 >= 10
+BDD.tests.cpp:<line number>: passed: v.size() == 0 for: 0 == 0
+BDD.tests.cpp:<line number>: passed: v.capacity() >= 10 for: 10 >= 10
+BDD.tests.cpp:<line number>: passed: v.size() == 0 for: 0 == 0
+A string sent directly to stdout
+A string sent directly to stderr
+A string sent to stderr via clog
+Approx.tests.cpp:<line number>: passed: d == Approx( 1.23 ) for: 1.23 == Approx( 1.23 )
+Approx.tests.cpp:<line number>: passed: d != Approx( 1.22 ) for: 1.23 != Approx( 1.22 )
+Approx.tests.cpp:<line number>: passed: d != Approx( 1.24 ) for: 1.23 != Approx( 1.24 )
+Approx.tests.cpp:<line number>: passed: Approx( d ) == 1.23 for: Approx( 1.23 ) == 1.23
+Approx.tests.cpp:<line number>: passed: Approx( d ) != 1.22 for: Approx( 1.23 ) != 1.22
+Approx.tests.cpp:<line number>: passed: Approx( d ) != 1.24 for: Approx( 1.23 ) != 1.24
+Approx.tests.cpp:<line number>: passed: INFINITY == Approx(INFINITY) for: inff == Approx( inf )
+Message from section one
+Message from section two
+Matchers.tests.cpp:<line number>: failed: testStringForMatching(), StartsWith("This String") for: "this string contains 'abc' as a substring" starts with: "This String"
+Matchers.tests.cpp:<line number>: failed: testStringForMatching(), StartsWith("string", Catch::CaseSensitive::No) for: "this string contains 'abc' as a substring" starts with: "string" (case insensitive)
+Matchers.tests.cpp:<line number>: passed: testStringForMatching(), Contains("string") for: "this string contains 'abc' as a substring" contains: "string"
+Matchers.tests.cpp:<line number>: passed: testStringForMatching(), Contains("string", Catch::CaseSensitive::No) for: "this string contains 'abc' as a substring" contains: "string" (case insensitive)
+Matchers.tests.cpp:<line number>: passed: testStringForMatching(), Contains("abc") for: "this string contains 'abc' as a substring" contains: "abc"
+Matchers.tests.cpp:<line number>: passed: testStringForMatching(), Contains("aBC", Catch::CaseSensitive::No) for: "this string contains 'abc' as a substring" contains: "abc" (case insensitive)
+Matchers.tests.cpp:<line number>: passed: testStringForMatching(), StartsWith("this") for: "this string contains 'abc' as a substring" starts with: "this"
+Matchers.tests.cpp:<line number>: passed: testStringForMatching(), StartsWith("THIS", Catch::CaseSensitive::No) for: "this string contains 'abc' as a substring" starts with: "this" (case insensitive)
+Matchers.tests.cpp:<line number>: passed: testStringForMatching(), EndsWith("substring") for: "this string contains 'abc' as a substring" ends with: "substring"
+Matchers.tests.cpp:<line number>: passed: testStringForMatching(), EndsWith(" SuBsTrInG", Catch::CaseSensitive::No) for: "this string contains 'abc' as a substring" ends with: " substring" (case insensitive)
+String.tests.cpp:<line number>: passed: empty.empty() for: true
+String.tests.cpp:<line number>: passed: empty.size() == 0 for: 0 == 0
+String.tests.cpp:<line number>: passed: std::strcmp( empty.c_str(), "" ) == 0 for: 0 == 0
+String.tests.cpp:<line number>: passed: s.empty() == false for: false == false
+String.tests.cpp:<line number>: passed: s.size() == 5 for: 5 == 5
+String.tests.cpp:<line number>: passed: isSubstring( s ) == false for: false == false
+String.tests.cpp:<line number>: passed: std::strcmp( rawChars, "hello" ) == 0 for: 0 == 0
+String.tests.cpp:<line number>: passed: isOwned( s ) == false for: false == false
+String.tests.cpp:<line number>: passed: s.c_str() == rawChars for: "hello" == "hello"
+String.tests.cpp:<line number>: passed: isOwned( s ) == false for: false == false
+String.tests.cpp:<line number>: passed: original == "original"
+String.tests.cpp:<line number>: failed: isSubstring( original ) for: false
+String.tests.cpp:<line number>: passed: ss.empty() == false for: false == false
+String.tests.cpp:<line number>: passed: ss.size() == 5 for: 5 == 5
+String.tests.cpp:<line number>: passed: std::strcmp( ss.c_str(), "hello" ) == 0 for: 0 == 0
+String.tests.cpp:<line number>: passed: ss == "hello" for: hello == "hello"
+String.tests.cpp:<line number>: passed: isSubstring( ss ) for: true
+String.tests.cpp:<line number>: passed: isOwned( ss ) == false for: false == false
+String.tests.cpp:<line number>: passed: rawChars == data( s ) for: "hello world!" == "hello world!"
+String.tests.cpp:<line number>: passed: ss.c_str() != rawChars for: "hello" != "hello world!"
+String.tests.cpp:<line number>: passed: isSubstring( ss ) == false for: false == false
+String.tests.cpp:<line number>: passed: isOwned( ss ) for: true
+String.tests.cpp:<line number>: passed: data( ss ) != data( s ) for: "hello" != "hello world!"
+String.tests.cpp:<line number>: passed: ss.size() == 6 for: 6 == 6
+String.tests.cpp:<line number>: passed: std::strcmp( ss.c_str(), "world!" ) == 0 for: 0 == 0
+String.tests.cpp:<line number>: passed: s.c_str() == s2.c_str() for: "hello world!" == "hello world!"
+String.tests.cpp:<line number>: passed: s.c_str() != ss.c_str() for: "hello world!" != "hello"
+String.tests.cpp:<line number>: passed: StringRef("hello") == StringRef("hello") for: hello == hello
+String.tests.cpp:<line number>: passed: StringRef("hello") != StringRef("cello") for: hello != cello
+String.tests.cpp:<line number>: passed: sr == "a standard string" for: a standard string == "a standard string"
+String.tests.cpp:<line number>: passed: sr.size() == stdStr.size() for: 17 == 17
+String.tests.cpp:<line number>: passed: sr == "a standard string" for: a standard string == "a standard string"
+String.tests.cpp:<line number>: passed: sr.size() == stdStr.size() for: 17 == 17
+String.tests.cpp:<line number>: passed: sr == "a standard string" for: a standard string == "a standard string"
+String.tests.cpp:<line number>: passed: sr.size() == stdStr.size() for: 17 == 17
+String.tests.cpp:<line number>: passed: stdStr == "a stringref" for: "a stringref" == "a stringref"
+String.tests.cpp:<line number>: passed: stdStr.size() == sr.size() for: 11 == 11
+String.tests.cpp:<line number>: passed: stdStr == "a stringref" for: "a stringref" == "a stringref"
+String.tests.cpp:<line number>: passed: stdStr.size() == sr.size() for: 11 == 11
+String.tests.cpp:<line number>: passed: stdStr == "a stringref" for: "a stringref" == "a stringref"
+String.tests.cpp:<line number>: passed: stdStr.size() == sr.size() for: 11 == 11
+ToStringChrono.tests.cpp:<line number>: passed: minute == seconds for: 1 m == 60 s
+ToStringChrono.tests.cpp:<line number>: passed: hour != seconds for: 1 h != 60 s
+ToStringChrono.tests.cpp:<line number>: passed: micro != milli for: 1 us != 1 ms
+ToStringChrono.tests.cpp:<line number>: passed: nano != micro for: 1 ns != 1 us
+ToStringChrono.tests.cpp:<line number>: passed: half_minute != femto_second for: 1 [30/1]s != 1 fs
+ToStringChrono.tests.cpp:<line number>: passed: pico_second != atto_second for: 1 ps != 1 as
+ToStringChrono.tests.cpp:<line number>: passed: now != later for: {iso8601-timestamp}
+!=
+{iso8601-timestamp}
+Misc.tests.cpp:<line number>: failed: s1 == s2 for: "if ($b == 10) {
+		$a	= 20;
+}"
+==
+"if ($b == 10) {
+	$a = 20;
+}
+"
+TagAlias.tests.cpp:<line number>: passed: what, Contains( "[@zzz]" ) for: "error: tag alias, '[@zzz]' already registered.
+	First seen at: file:2
+	Redefined at: file:10" contains: "[@zzz]"
+TagAlias.tests.cpp:<line number>: passed: what, Contains( "file" ) for: "error: tag alias, '[@zzz]' already registered.
+	First seen at: file:2
+	Redefined at: file:10" contains: "file"
+TagAlias.tests.cpp:<line number>: passed: what, Contains( "2" ) for: "error: tag alias, '[@zzz]' already registered.
+	First seen at: file:2
+	Redefined at: file:10" contains: "2"
+TagAlias.tests.cpp:<line number>: passed: what, Contains( "10" ) for: "error: tag alias, '[@zzz]' already registered.
+	First seen at: file:2
+	Redefined at: file:10" contains: "10"
+TagAlias.tests.cpp:<line number>: passed: registry.add( "[no ampersat]", "", Catch::SourceLineInfo( "file", 3 ) )
+TagAlias.tests.cpp:<line number>: passed: registry.add( "[the @ is not at the start]", "", Catch::SourceLineInfo( "file", 3 ) )
+TagAlias.tests.cpp:<line number>: passed: registry.add( "@no square bracket at start]", "", Catch::SourceLineInfo( "file", 3 ) )
+TagAlias.tests.cpp:<line number>: passed: registry.add( "[@no square bracket at end", "", Catch::SourceLineInfo( "file", 3 ) )
+VariadicMacros.tests.cpp:<line number>: passed: with 1 message: 'no assertions'
+Tricky.tests.cpp:<line number>: passed: 0x<hex digits> == bit30and31 for: 3221225472 (0x<hex digits>) == 3221225472
+Message.tests.cpp:<line number>: failed - but was ok: 1 == 2
+Misc.tests.cpp:<line number>: passed: with 1 message: 'oops!'
+PartTracker.tests.cpp:<line number>: passed: testCase.isOpen() for: true
+PartTracker.tests.cpp:<line number>: passed: s1.isOpen() for: true
+PartTracker.tests.cpp:<line number>: passed: s1.isSuccessfullyCompleted() for: true
+PartTracker.tests.cpp:<line number>: passed: testCase.isComplete() == false for: false == false
+PartTracker.tests.cpp:<line number>: passed: ctx.completedCycle() for: true
+PartTracker.tests.cpp:<line number>: passed: testCase.isSuccessfullyCompleted() for: true
+PartTracker.tests.cpp:<line number>: passed: testCase.isOpen() for: true
+PartTracker.tests.cpp:<line number>: passed: s1.isOpen() for: true
+PartTracker.tests.cpp:<line number>: passed: s1.isComplete() for: true
+PartTracker.tests.cpp:<line number>: passed: s1.isSuccessfullyCompleted() == false for: false == false
+PartTracker.tests.cpp:<line number>: passed: testCase.isComplete() == false for: false == false
+PartTracker.tests.cpp:<line number>: passed: ctx.completedCycle() for: true
+PartTracker.tests.cpp:<line number>: passed: testCase.isSuccessfullyCompleted() == false for: false == false
+PartTracker.tests.cpp:<line number>: passed: testCase2.isOpen() for: true
+PartTracker.tests.cpp:<line number>: passed: s1b.isOpen() == false for: false == false
+PartTracker.tests.cpp:<line number>: passed: ctx.completedCycle() for: true
+PartTracker.tests.cpp:<line number>: passed: testCase.isComplete() for: true
+PartTracker.tests.cpp:<line number>: passed: testCase.isSuccessfullyCompleted() for: true
+PartTracker.tests.cpp:<line number>: passed: testCase.isOpen() for: true
+PartTracker.tests.cpp:<line number>: passed: s1.isOpen() for: true
+PartTracker.tests.cpp:<line number>: passed: s1.isComplete() for: true
+PartTracker.tests.cpp:<line number>: passed: s1.isSuccessfullyCompleted() == false for: false == false
+PartTracker.tests.cpp:<line number>: passed: testCase.isComplete() == false for: false == false
+PartTracker.tests.cpp:<line number>: passed: ctx.completedCycle() for: true
+PartTracker.tests.cpp:<line number>: passed: testCase.isSuccessfullyCompleted() == false for: false == false
+PartTracker.tests.cpp:<line number>: passed: testCase2.isOpen() for: true
+PartTracker.tests.cpp:<line number>: passed: s1b.isOpen() == false for: false == false
+PartTracker.tests.cpp:<line number>: passed: s2.isOpen() for: true
+PartTracker.tests.cpp:<line number>: passed: ctx.completedCycle() for: true
+PartTracker.tests.cpp:<line number>: passed: testCase.isComplete() for: true
+PartTracker.tests.cpp:<line number>: passed: testCase.isSuccessfullyCompleted() for: true
+PartTracker.tests.cpp:<line number>: passed: testCase.isOpen() for: true
+PartTracker.tests.cpp:<line number>: passed: s1.isOpen() for: true
+PartTracker.tests.cpp:<line number>: passed: s2.isOpen() == false for: false == false
+PartTracker.tests.cpp:<line number>: passed: testCase.isComplete() == false for: false == false
+PartTracker.tests.cpp:<line number>: passed: testCase2.isOpen() for: true
+PartTracker.tests.cpp:<line number>: passed: s1b.isOpen() == false for: false == false
+PartTracker.tests.cpp:<line number>: passed: s2b.isOpen() for: true
+PartTracker.tests.cpp:<line number>: passed: ctx.completedCycle() == false for: false == false
+PartTracker.tests.cpp:<line number>: passed: ctx.completedCycle() for: true
+PartTracker.tests.cpp:<line number>: passed: s2b.isSuccessfullyCompleted() for: true
+PartTracker.tests.cpp:<line number>: passed: testCase2.isComplete() == false for: false == false
+PartTracker.tests.cpp:<line number>: passed: testCase2.isSuccessfullyCompleted() for: true
+PartTracker.tests.cpp:<line number>: passed: testCase.isOpen() for: true
+PartTracker.tests.cpp:<line number>: passed: s1.isOpen() for: true
+PartTracker.tests.cpp:<line number>: passed: s2.isOpen() == false for: false == false
+PartTracker.tests.cpp:<line number>: passed: testCase.isComplete() == false for: false == false
+PartTracker.tests.cpp:<line number>: passed: testCase2.isOpen() for: true
+PartTracker.tests.cpp:<line number>: passed: s1b.isOpen() == false for: false == false
+PartTracker.tests.cpp:<line number>: passed: s2b.isOpen() for: true
+PartTracker.tests.cpp:<line number>: passed: ctx.completedCycle() == false for: false == false
+PartTracker.tests.cpp:<line number>: passed: ctx.completedCycle() for: true
+PartTracker.tests.cpp:<line number>: passed: s2b.isComplete() for: true
+PartTracker.tests.cpp:<line number>: passed: s2b.isSuccessfullyCompleted() == false for: false == false
+PartTracker.tests.cpp:<line number>: passed: testCase2.isSuccessfullyCompleted() == false for: false == false
+PartTracker.tests.cpp:<line number>: passed: testCase3.isOpen() for: true
+PartTracker.tests.cpp:<line number>: passed: s1c.isOpen() == false for: false == false
+PartTracker.tests.cpp:<line number>: passed: s2c.isOpen() == false for: false == false
+PartTracker.tests.cpp:<line number>: passed: testCase3.isSuccessfullyCompleted() for: true
+PartTracker.tests.cpp:<line number>: passed: testCase.isOpen() for: true
+PartTracker.tests.cpp:<line number>: passed: s1.isOpen() for: true
+PartTracker.tests.cpp:<line number>: passed: s2.isOpen() for: true
+PartTracker.tests.cpp:<line number>: passed: s2.isComplete() for: true
+PartTracker.tests.cpp:<line number>: passed: s1.isComplete() == false for: false == false
+PartTracker.tests.cpp:<line number>: passed: s1.isComplete() for: true
+PartTracker.tests.cpp:<line number>: passed: testCase.isComplete() == false for: false == false
+PartTracker.tests.cpp:<line number>: passed: testCase.isComplete() for: true
+PartTracker.tests.cpp:<line number>: passed: testCase.isOpen() for: true
+PartTracker.tests.cpp:<line number>: passed: s1.isOpen() for: true
+PartTracker.tests.cpp:<line number>: passed: g1.isOpen() for: true
+PartTracker.tests.cpp:<line number>: passed: g1.index() == 0 for: 0 == 0
+PartTracker.tests.cpp:<line number>: passed: g1.isComplete() == false for: false == false
+PartTracker.tests.cpp:<line number>: passed: s1.isComplete() == false for: false == false
+PartTracker.tests.cpp:<line number>: passed: s1.isComplete() == false for: false == false
+PartTracker.tests.cpp:<line number>: passed: testCase.isSuccessfullyCompleted() == false for: false == false
+PartTracker.tests.cpp:<line number>: passed: testCase2.isOpen() for: true
+PartTracker.tests.cpp:<line number>: passed: s1b.isOpen() for: true
+PartTracker.tests.cpp:<line number>: passed: g1b.isOpen() for: true
+PartTracker.tests.cpp:<line number>: passed: g1b.index() == 1 for: 1 == 1
+PartTracker.tests.cpp:<line number>: passed: s1.isComplete() == false for: false == false
+PartTracker.tests.cpp:<line number>: passed: s1b.isComplete() for: true
+PartTracker.tests.cpp:<line number>: passed: g1b.isComplete() for: true
+PartTracker.tests.cpp:<line number>: passed: testCase2.isComplete() for: true
+PartTracker.tests.cpp:<line number>: passed: testCase.isOpen() for: true
+PartTracker.tests.cpp:<line number>: passed: s1.isOpen() for: true
+PartTracker.tests.cpp:<line number>: passed: g1.isOpen() for: true
+PartTracker.tests.cpp:<line number>: passed: g1.index() == 0 for: 0 == 0
+PartTracker.tests.cpp:<line number>: passed: g1.isComplete() == false for: false == false
+PartTracker.tests.cpp:<line number>: passed: s1.isComplete() == false for: false == false
+PartTracker.tests.cpp:<line number>: passed: s2.isOpen() for: true
+PartTracker.tests.cpp:<line number>: passed: s2.isComplete() for: true
+PartTracker.tests.cpp:<line number>: passed: s1.isComplete() == false for: false == false
+PartTracker.tests.cpp:<line number>: passed: testCase.isComplete() == false for: false == false
+PartTracker.tests.cpp:<line number>: passed: testCase2.isOpen() for: true
+PartTracker.tests.cpp:<line number>: passed: s1b.isOpen() for: true
+PartTracker.tests.cpp:<line number>: passed: g1b.isOpen() for: true
+PartTracker.tests.cpp:<line number>: passed: g1b.index() == 1 for: 1 == 1
+PartTracker.tests.cpp:<line number>: passed: s2b.isOpen() for: true
+PartTracker.tests.cpp:<line number>: passed: s2b.isComplete() for: true
+PartTracker.tests.cpp:<line number>: passed: g1b.isComplete() for: true
+PartTracker.tests.cpp:<line number>: passed: s1b.isComplete() for: true
+PartTracker.tests.cpp:<line number>: passed: testCase2.isComplete() for: true
+PartTracker.tests.cpp:<line number>: passed: testCase.isOpen() for: true
+PartTracker.tests.cpp:<line number>: passed: s1.isOpen() for: true
+PartTracker.tests.cpp:<line number>: passed: g1.isOpen() for: true
+PartTracker.tests.cpp:<line number>: passed: g1.index() == 0 for: 0 == 0
+PartTracker.tests.cpp:<line number>: passed: g1.isComplete() == false for: false == false
+PartTracker.tests.cpp:<line number>: passed: s1.isComplete() == false for: false == false
+PartTracker.tests.cpp:<line number>: passed: s2.isOpen() for: true
+PartTracker.tests.cpp:<line number>: passed: s2.isComplete() for: true
+PartTracker.tests.cpp:<line number>: passed: s2.isSuccessfullyCompleted() == false for: false == false
+PartTracker.tests.cpp:<line number>: passed: s1.isComplete() == false for: false == false
+PartTracker.tests.cpp:<line number>: passed: testCase.isComplete() == false for: false == false
+PartTracker.tests.cpp:<line number>: passed: testCase2.isOpen() for: true
+PartTracker.tests.cpp:<line number>: passed: s1b.isOpen() for: true
+PartTracker.tests.cpp:<line number>: passed: g1b.isOpen() for: true
+PartTracker.tests.cpp:<line number>: passed: g1b.index() == 0 for: 0 == 0
+PartTracker.tests.cpp:<line number>: passed: s2b.isOpen() == false for: false == false
+PartTracker.tests.cpp:<line number>: passed: g1b.isComplete() == false for: false == false
+PartTracker.tests.cpp:<line number>: passed: s1b.isComplete() == false for: false == false
+PartTracker.tests.cpp:<line number>: passed: testCase2.isComplete() == false for: false == false
+PartTracker.tests.cpp:<line number>: passed: testCase3.isOpen() for: true
+PartTracker.tests.cpp:<line number>: passed: s1c.isOpen() for: true
+PartTracker.tests.cpp:<line number>: passed: g1c.isOpen() for: true
+PartTracker.tests.cpp:<line number>: passed: g1c.index() == 1 for: 1 == 1
+PartTracker.tests.cpp:<line number>: passed: s2c.isOpen() for: true
+PartTracker.tests.cpp:<line number>: passed: s2c.isComplete() for: true
+PartTracker.tests.cpp:<line number>: passed: g1c.isComplete() for: true
+PartTracker.tests.cpp:<line number>: passed: s1c.isComplete() for: true
+PartTracker.tests.cpp:<line number>: passed: testCase3.isComplete() for: true
+Exception.tests.cpp:<line number>: failed: unexpected exception with message: '3.14'
+Approx.tests.cpp:<line number>: passed: d == approx( 1.23 ) for: 1.23 == Approx( 1.23 )
+Approx.tests.cpp:<line number>: passed: d == approx( 1.22 ) for: 1.23 == Approx( 1.22 )
+Approx.tests.cpp:<line number>: passed: d == approx( 1.24 ) for: 1.23 == Approx( 1.24 )
+Approx.tests.cpp:<line number>: passed: d != approx( 1.25 ) for: 1.23 != Approx( 1.25 )
+Approx.tests.cpp:<line number>: passed: approx( d ) == 1.23 for: Approx( 1.23 ) == 1.23
+Approx.tests.cpp:<line number>: passed: approx( d ) == 1.22 for: Approx( 1.23 ) == 1.22
+Approx.tests.cpp:<line number>: passed: approx( d ) == 1.24 for: Approx( 1.23 ) == 1.24
+Approx.tests.cpp:<line number>: passed: approx( d ) != 1.25 for: Approx( 1.23 ) != 1.25
+VariadicMacros.tests.cpp:<line number>: passed: with 1 message: 'no assertions'
+Matchers.tests.cpp:<line number>: passed: v, VectorContains(1) for: { 1, 2, 3 } Contains: 1
+Matchers.tests.cpp:<line number>: passed: v, VectorContains(2) for: { 1, 2, 3 } Contains: 2
+Matchers.tests.cpp:<line number>: passed: v, Contains(v2) for: { 1, 2, 3 } Contains: { 1, 2 }
+Matchers.tests.cpp:<line number>: passed: v, Contains(v2) for: { 1, 2, 3 } Contains: { 1, 2, 3 }
+Matchers.tests.cpp:<line number>: passed: v, Contains(empty) for: { 1, 2, 3 } Contains: {  }
+Matchers.tests.cpp:<line number>: passed: empty, Contains(empty) for: {  } Contains: {  }
+Matchers.tests.cpp:<line number>: passed: v, VectorContains(1) && VectorContains(2) for: { 1, 2, 3 } ( Contains: 1 and Contains: 2 )
+Matchers.tests.cpp:<line number>: passed: v, Equals(v) for: { 1, 2, 3 } Equals: { 1, 2, 3 }
+Matchers.tests.cpp:<line number>: passed: empty, Equals(empty) for: {  } Equals: {  }
+Matchers.tests.cpp:<line number>: passed: v, Equals(v2) for: { 1, 2, 3 } Equals: { 1, 2, 3 }
+Matchers.tests.cpp:<line number>: failed: v, VectorContains(-1) for: { 1, 2, 3 } Contains: -1
+Matchers.tests.cpp:<line number>: failed: empty, VectorContains(1) for: {  } Contains: 1
+Matchers.tests.cpp:<line number>: failed: empty, Contains(v) for: {  } Contains: { 1, 2, 3 }
+Matchers.tests.cpp:<line number>: failed: v, Contains(v2) for: { 1, 2, 3 } Contains: { 1, 2, 4 }
+Matchers.tests.cpp:<line number>: failed: v, Equals(v2) for: { 1, 2, 3 } Equals: { 1, 2 }
+Matchers.tests.cpp:<line number>: failed: v2, Equals(v) for: { 1, 2 } Equals: { 1, 2, 3 }
+Matchers.tests.cpp:<line number>: failed: empty, Equals(v) for: {  } Equals: { 1, 2, 3 }
+Matchers.tests.cpp:<line number>: failed: v, Equals(empty) for: { 1, 2, 3 } Equals: {  }
+Exception.tests.cpp:<line number>: passed: thisThrows(), std::domain_error
+Exception.tests.cpp:<line number>: passed: thisDoesntThrow()
+Exception.tests.cpp:<line number>: passed: thisThrows()
+Exception.tests.cpp:<line number>: failed: unexpected exception with message: 'unexpected exception'
+Exception.tests.cpp:<line number>: failed: unexpected exception with message: 'expected exception'; expression was: thisThrows() == 0
+Exception.tests.cpp:<line number>: failed: unexpected exception with message: 'expected exception'; expression was: thisThrows() == 0
+Exception.tests.cpp:<line number>: failed: unexpected exception with message: 'expected exception'; expression was: thisThrows() == 0
+Exception.tests.cpp:<line number>: failed: unexpected exception with message: 'unexpected exception'
+Tricky.tests.cpp:<line number>: warning: 'Uncomment the code in this test to check that it gives a sensible compiler error'
+Tricky.tests.cpp:<line number>: warning: 'Uncomment the code in this test to check that it gives a sensible compiler error'
+Tricky.tests.cpp:<line number>: passed:
+Tricky.tests.cpp:<line number>: passed:
+Tricky.tests.cpp:<line number>: passed:
+Tricky.tests.cpp:<line number>: passed:
+Xml.tests.cpp:<line number>: passed: encode( "normal string" ) == "normal string" for: "normal string" == "normal string"
+Xml.tests.cpp:<line number>: passed: encode( "" ) == "" for: "" == ""
+Xml.tests.cpp:<line number>: passed: encode( "smith & jones" ) == "smith &amp; jones" for: "smith &amp; jones" == "smith &amp; jones"
+Xml.tests.cpp:<line number>: passed: encode( "smith < jones" ) == "smith &lt; jones" for: "smith &lt; jones" == "smith &lt; jones"
+Xml.tests.cpp:<line number>: passed: encode( "smith > jones" ) == "smith > jones" for: "smith > jones" == "smith > jones"
+Xml.tests.cpp:<line number>: passed: encode( "smith ]]> jones" ) == "smith ]]&gt; jones" for: "smith ]]&gt; jones"
+==
+"smith ]]&gt; jones"
+Xml.tests.cpp:<line number>: passed: encode( stringWithQuotes ) == stringWithQuotes for: "don't "quote" me on that"
+==
+"don't "quote" me on that"
+Xml.tests.cpp:<line number>: passed: encode( stringWithQuotes, Catch::XmlEncode::ForAttributes ) == "don't &quot;quote&quot; me on that" for: "don't &quot;quote&quot; me on that"
+==
+"don't &quot;quote&quot; me on that"
+Xml.tests.cpp:<line number>: passed: encode( "[/x01]" ) == "[//x01]" for: "[/x01]" == "[/x01]"
+Xml.tests.cpp:<line number>: passed: encode( "[/x7F]" ) == "[//x7F]" for: "[/x7F]" == "[/x7F]"
+Misc.tests.cpp:<line number>: passed: x == 0 for: 0 == 0
+Tricky.tests.cpp:<line number>: passed: obj.prop != 0 for: 0x<hex digits> != 0
+Misc.tests.cpp:<line number>: passed: flag for: true
+Misc.tests.cpp:<line number>: passed: testCheckedElse( true ) for: true
+Misc.tests.cpp:<line number>: failed: flag for: false
+Misc.tests.cpp:<line number>: failed: testCheckedElse( false ) for: false
+Misc.tests.cpp:<line number>: passed: flag for: true
+Misc.tests.cpp:<line number>: passed: testCheckedIf( true ) for: true
+Misc.tests.cpp:<line number>: failed: flag for: false
+Misc.tests.cpp:<line number>: failed: testCheckedIf( false ) for: false
+Condition.tests.cpp:<line number>: passed: unsigned_char_var == 1 for: 1 == 1
+Condition.tests.cpp:<line number>: passed: unsigned_short_var == 1 for: 1 == 1
+Condition.tests.cpp:<line number>: passed: unsigned_int_var == 1 for: 1 == 1
+Condition.tests.cpp:<line number>: passed: unsigned_long_var == 1 for: 1 == 1
+Condition.tests.cpp:<line number>: passed: long_var == unsigned_char_var for: 1 == 1
+Condition.tests.cpp:<line number>: passed: long_var == unsigned_short_var for: 1 == 1
+Condition.tests.cpp:<line number>: passed: long_var == unsigned_int_var for: 1 == 1
+Condition.tests.cpp:<line number>: passed: long_var == unsigned_long_var for: 1 == 1
+Misc.tests.cpp:<line number>: passed:
+Misc.tests.cpp:<line number>: passed:
+Misc.tests.cpp:<line number>: passed:
+loose text artifact
+Message.tests.cpp:<line number>: failed: explicitly with 1 message: 'Previous info should not be seen'
+Misc.tests.cpp:<line number>: passed: l == std::numeric_limits<long long>::max() for: 9223372036854775807 (0x<hex digits>)
+==
+9223372036854775807 (0x<hex digits>)
+Misc.tests.cpp:<line number>: failed: b > a for: 0 > 1
+Misc.tests.cpp:<line number>: failed: ( fib[i] % 2 ) == 0 for: 1 == 0 with 1 message: 'Testing if fib[0] (1) is even'
+Misc.tests.cpp:<line number>: failed: ( fib[i] % 2 ) == 0 for: 1 == 0 with 1 message: 'Testing if fib[1] (1) is even'
+Misc.tests.cpp:<line number>: passed: ( fib[i] % 2 ) == 0 for: 0 == 0 with 1 message: 'Testing if fib[2] (2) is even'
+Misc.tests.cpp:<line number>: failed: ( fib[i] % 2 ) == 0 for: 1 == 0 with 1 message: 'Testing if fib[3] (3) is even'
+Misc.tests.cpp:<line number>: failed: ( fib[i] % 2 ) == 0 for: 1 == 0 with 1 message: 'Testing if fib[4] (5) is even'
+Misc.tests.cpp:<line number>: passed: ( fib[i] % 2 ) == 0 for: 0 == 0 with 1 message: 'Testing if fib[5] (8) is even'
+Misc.tests.cpp:<line number>: failed: ( fib[i] % 2 ) == 0 for: 1 == 0 with 1 message: 'Testing if fib[6] (13) is even'
+Misc.tests.cpp:<line number>: failed: ( fib[i] % 2 ) == 0 for: 1 == 0 with 1 message: 'Testing if fib[7] (21) is even'
+Misc.tests.cpp:<line number>: failed: a == b for: 1 == 2
+Misc.tests.cpp:<line number>: passed: a != b for: 1 != 2
+Misc.tests.cpp:<line number>: passed: a < b for: 1 < 2
+Misc.tests.cpp:<line number>: passed: a != b for: 1 != 2
+Misc.tests.cpp:<line number>: passed: b != a for: 2 != 1
+Misc.tests.cpp:<line number>: passed: a != b for: 1 != 2
+Tricky.tests.cpp:<line number>: passed: s == "7" for: "7" == "7"
+Tricky.tests.cpp:<line number>: passed: ti == typeid(int) for: {?} == {?}
+Misc.tests.cpp:<line number>: passed:
+Misc.tests.cpp:<line number>: passed: makeString( false ) != static_cast<char*>(0) for: "valid string" != {null string}
+Misc.tests.cpp:<line number>: passed: makeString( true ) == static_cast<char*>(0) for: {null string} == {null string}
+Tricky.tests.cpp:<line number>: passed: ptr.get() == 0 for: 0 == 0
+ToStringPair.tests.cpp:<line number>: passed: ::Catch::Detail::stringify( pair ) == "{ { 42, /"Arthur/" }, { /"Ford/", 24 } }" for: "{ { 42, "Arthur" }, { "Ford", 24 } }"
+==
+"{ { 42, "Arthur" }, { "Ford", 24 } }"
+Tricky.tests.cpp:<line number>: passed: p == 0 for: 0 == 0
+Misc.tests.cpp:<line number>: passed: a != b for: 1 != 2
+Misc.tests.cpp:<line number>: passed: b != a for: 2 != 1
+Misc.tests.cpp:<line number>: passed: a != b for: 1 != 2
+String.tests.cpp:<line number>: passed: Catch::replaceInPlace( letters, "b", "z" ) for: true
+String.tests.cpp:<line number>: passed: letters == "azcdefcg" for: "azcdefcg" == "azcdefcg"
+String.tests.cpp:<line number>: passed: Catch::replaceInPlace( letters, "c", "z" ) for: true
+String.tests.cpp:<line number>: passed: letters == "abzdefzg" for: "abzdefzg" == "abzdefzg"
+String.tests.cpp:<line number>: passed: Catch::replaceInPlace( letters, "a", "z" ) for: true
+String.tests.cpp:<line number>: passed: letters == "zbcdefcg" for: "zbcdefcg" == "zbcdefcg"
+String.tests.cpp:<line number>: passed: Catch::replaceInPlace( letters, "g", "z" ) for: true
+String.tests.cpp:<line number>: passed: letters == "abcdefcz" for: "abcdefcz" == "abcdefcz"
+String.tests.cpp:<line number>: passed: Catch::replaceInPlace( letters, letters, "replaced" ) for: true
+String.tests.cpp:<line number>: passed: letters == "replaced" for: "replaced" == "replaced"
+String.tests.cpp:<line number>: passed: !(Catch::replaceInPlace( letters, "x", "z" )) for: !false
+String.tests.cpp:<line number>: passed: letters == letters for: "abcdefcg" == "abcdefcg"
+String.tests.cpp:<line number>: passed: Catch::replaceInPlace( s, "'", "|'" ) for: true
+String.tests.cpp:<line number>: passed: s == "didn|'t" for: "didn|'t" == "didn|'t"
+Misc.tests.cpp:<line number>: failed: false with 1 message: '3'
+Message.tests.cpp:<line number>: failed: false with 2 messages: 'hi' and 'i := 7'
+ToStringPair.tests.cpp:<line number>: passed: ::Catch::Detail::stringify(value) == "{ 34, /"xyzzy/" }" for: "{ 34, "xyzzy" }" == "{ 34, "xyzzy" }"
+ToStringPair.tests.cpp:<line number>: passed: ::Catch::Detail::stringify( value ) == "{ 34, /"xyzzy/" }" for: "{ 34, "xyzzy" }" == "{ 34, "xyzzy" }"
+ToStringPair.tests.cpp:<line number>: passed: ::Catch::Detail::stringify( pr ) == "{ { /"green/", 55 } }" for: "{ { "green", 55 } }"
+==
+"{ { "green", 55 } }"
+Tricky.tests.cpp:<line number>: failed: std::string( "first" ) == "second" for: "first" == "second"
+ToStringWhich.tests.cpp:<line number>: passed: ::Catch::Detail::stringify( item ) == "StringMaker<has_maker>" for: "StringMaker<has_maker>"
+==
+"StringMaker<has_maker>"
+ToStringWhich.tests.cpp:<line number>: passed: ::Catch::Detail::stringify( item ) == "StringMaker<has_maker_and_operator>" for: "StringMaker<has_maker_and_operator>"
+==
+"StringMaker<has_maker_and_operator>"
+ToStringWhich.tests.cpp:<line number>: passed: ::Catch::Detail::stringify( item ) == "operator<<( has_operator )" for: "operator<<( has_operator )"
+==
+"operator<<( has_operator )"
+Misc.tests.cpp:<line number>: passed: result == "/"wide load/"" for: ""wide load"" == ""wide load""
+Misc.tests.cpp:<line number>: passed: result == "/"wide load/"" for: ""wide load"" == ""wide load""
+Misc.tests.cpp:<line number>: passed: result == "/"wide load/"" for: ""wide load"" == ""wide load""
+Misc.tests.cpp:<line number>: passed: result == "/"wide load/"" for: ""wide load"" == ""wide load""
+ToStringWhich.tests.cpp:<line number>: passed: ::Catch::Detail::stringify( v ) == "{ StringMaker<has_maker> }" for: "{ StringMaker<has_maker> }"
+==
+"{ StringMaker<has_maker> }"
+ToStringWhich.tests.cpp:<line number>: passed: ::Catch::Detail::stringify( v ) == "{ StringMaker<has_maker_and_operator> }" for: "{ StringMaker<has_maker_and_operator> }"
+==
+"{ StringMaker<has_maker_and_operator> }"
+ToStringWhich.tests.cpp:<line number>: passed: ::Catch::Detail::stringify( v ) == "{ operator<<( has_operator ) }" for: "{ operator<<( has_operator ) }"
+==
+"{ operator<<( has_operator ) }"
+EnumToString.tests.cpp:<line number>: passed: ::Catch::Detail::stringify(e0) == "E2/V0" for: "E2/V0" == "E2/V0"
+EnumToString.tests.cpp:<line number>: passed: ::Catch::Detail::stringify(e1) == "E2/V1" for: "E2/V1" == "E2/V1"
+EnumToString.tests.cpp:<line number>: passed: ::Catch::Detail::stringify(e3) == "Unknown enum value 10" for: "Unknown enum value 10"
+==
+"Unknown enum value 10"
+EnumToString.tests.cpp:<line number>: failed: ::Catch::Detail::stringify(e0) == "0" for: "{?}" == "0"
+EnumToString.tests.cpp:<line number>: failed: ::Catch::Detail::stringify(e1) == "1" for: "{?}" == "1"
+EnumToString.tests.cpp:<line number>: passed: ::Catch::Detail::stringify(e0) == "E2{0}" for: "E2{0}" == "E2{0}"
+EnumToString.tests.cpp:<line number>: passed: ::Catch::Detail::stringify(e1) == "E2{1}" for: "E2{1}" == "E2{1}"
+EnumToString.tests.cpp:<line number>: passed: ::Catch::Detail::stringify(e0) == "0" for: "0" == "0"
+EnumToString.tests.cpp:<line number>: passed: ::Catch::Detail::stringify(e1) == "1" for: "1" == "1"
+ToStringTuple.tests.cpp:<line number>: passed: "{ }" == ::Catch::Detail::stringify(type{}) for: "{ }" == "{ }"
+ToStringTuple.tests.cpp:<line number>: passed: "{ }" == ::Catch::Detail::stringify(value) for: "{ }" == "{ }"
+ToStringTuple.tests.cpp:<line number>: passed: "1.2f" == ::Catch::Detail::stringify(float(1.2)) for: "1.2f" == "1.2f"
+ToStringTuple.tests.cpp:<line number>: passed: "{ 1.2f, 0 }" == ::Catch::Detail::stringify(type{1.2f,0}) for: "{ 1.2f, 0 }" == "{ 1.2f, 0 }"
+ToStringTuple.tests.cpp:<line number>: passed: "{ 0 }" == ::Catch::Detail::stringify(type{0}) for: "{ 0 }" == "{ 0 }"
+ToStringTuple.tests.cpp:<line number>: passed: "{ 0, 42, /"Catch me/" }" == ::Catch::Detail::stringify(value) for: "{ 0, 42, "Catch me" }"
+==
+"{ 0, 42, "Catch me" }"
+ToStringTuple.tests.cpp:<line number>: passed: "{ /"hello/", /"world/" }" == ::Catch::Detail::stringify(type{"hello","world"}) for: "{ "hello", "world" }"
+==
+"{ "hello", "world" }"
+ToStringTuple.tests.cpp:<line number>: passed: "{ { 42 }, { }, 1.2f }" == ::Catch::Detail::stringify(value) for: "{ { 42 }, { }, 1.2f }"
+==
+"{ { 42 }, { }, 1.2f }"
+ToStringVector.tests.cpp:<line number>: passed: ::Catch::Detail::stringify(v) == "{  }" for: "{  }" == "{  }"
+ToStringVector.tests.cpp:<line number>: passed: ::Catch::Detail::stringify(v) == "{ { /"hello/" }, { /"world/" } }" for: "{ { "hello" }, { "world" } }"
+==
+"{ { "hello" }, { "world" } }"
+ToStringVector.tests.cpp:<line number>: passed: ::Catch::Detail::stringify(vv) == "{  }" for: "{  }" == "{  }"
+ToStringVector.tests.cpp:<line number>: passed: ::Catch::Detail::stringify(vv) == "{ 42 }" for: "{ 42 }" == "{ 42 }"
+ToStringVector.tests.cpp:<line number>: passed: ::Catch::Detail::stringify(vv) == "{ 42, 250 }" for: "{ 42, 250 }" == "{ 42, 250 }"
+ToStringVector.tests.cpp:<line number>: passed: ::Catch::Detail::stringify(vv) == "{  }" for: "{  }" == "{  }"
+ToStringVector.tests.cpp:<line number>: passed: ::Catch::Detail::stringify(vv) == "{ 42 }" for: "{ 42 }" == "{ 42 }"
+ToStringVector.tests.cpp:<line number>: passed: ::Catch::Detail::stringify(vv) == "{ 42, 250 }" for: "{ 42, 250 }" == "{ 42, 250 }"
+ToStringVector.tests.cpp:<line number>: passed: ::Catch::Detail::stringify(vv) == "{  }" for: "{  }" == "{  }"
+ToStringVector.tests.cpp:<line number>: passed: ::Catch::Detail::stringify(vv) == "{ /"hello/" }" for: "{ "hello" }" == "{ "hello" }"
+ToStringVector.tests.cpp:<line number>: passed: ::Catch::Detail::stringify(vv) == "{ /"hello/", /"world/" }" for: "{ "hello", "world" }"
+==
+"{ "hello", "world" }"
+Misc.tests.cpp:<line number>: passed: v.size() == 5 for: 5 == 5
+Misc.tests.cpp:<line number>: passed: v.capacity() >= 5 for: 5 >= 5
+Misc.tests.cpp:<line number>: passed: v.size() == 10 for: 10 == 10
+Misc.tests.cpp:<line number>: passed: v.capacity() >= 10 for: 10 >= 10
+Misc.tests.cpp:<line number>: passed: v.size() == 5 for: 5 == 5
+Misc.tests.cpp:<line number>: passed: v.capacity() >= 5 for: 5 >= 5
+Misc.tests.cpp:<line number>: passed: v.size() == 0 for: 0 == 0
+Misc.tests.cpp:<line number>: passed: v.capacity() >= 5 for: 5 >= 5
+Misc.tests.cpp:<line number>: passed: v.capacity() == 0 for: 0 == 0
+Misc.tests.cpp:<line number>: passed: v.size() == 5 for: 5 == 5
+Misc.tests.cpp:<line number>: passed: v.capacity() >= 5 for: 5 >= 5
+Misc.tests.cpp:<line number>: passed: v.size() == 5 for: 5 == 5
+Misc.tests.cpp:<line number>: passed: v.capacity() >= 10 for: 10 >= 10
+Misc.tests.cpp:<line number>: passed: v.size() == 5 for: 5 == 5
+Misc.tests.cpp:<line number>: passed: v.capacity() >= 5 for: 5 >= 5
+Misc.tests.cpp:<line number>: passed: v.size() == 5 for: 5 == 5
+Misc.tests.cpp:<line number>: passed: v.capacity() >= 5 for: 5 >= 5
+Misc.tests.cpp:<line number>: passed:
+Misc.tests.cpp:<line number>: passed:
+Failed 50 test cases, failed 106 assertions.
+
