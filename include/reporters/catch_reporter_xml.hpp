@@ -97,12 +97,12 @@ namespace Catch {
 
             bool includeResults = m_config->includeSuccessfulResults() || !result.isOk();
 
-            if( includeResults ) {
+            if( includeResults || result.getResultType() == ResultWas::Warning ) {
                 // Print any info messages in <Info> tags.
                 for( std::vector<MessageInfo>::const_iterator it = assertionStats.infoMessages.begin(), itEnd = assertionStats.infoMessages.end();
                      it != itEnd;
                      ++it ) {
-                    if( it->type == ResultWas::Info ) {
+                    if( it->type == ResultWas::Info && includeResults ) {
                         m_xml.scopedElement( "Info" )
                                 .writeText( it->message );
                     } else if ( it->type == ResultWas::Warning ) {
