@@ -167,6 +167,8 @@ def approve(baseName, args):
 print("Running approvals against executable:")
 print("  " + cmdPath)
 
+
+### Keep default reporters here
 # Standard console reporter
 approve("console.std", ["~[!nonportable]~[!benchmark]~[approvals]", "--order", "lex"])
 # console reporter, include passes, warn about No Assertions
@@ -177,6 +179,8 @@ approve("console.swa4", ["~[!nonportable]~[!benchmark]~[approvals]", "-s", "-w",
 approve("junit.sw", ["~[!nonportable]~[!benchmark]~[approvals]", "-s", "-w", "NoAssertions", "-r", "junit", "--order", "lex"])
 # xml reporter, include passes, warn about No Assertions
 approve("xml.sw", ["~[!nonportable]~[!benchmark]~[approvals]", "-s", "-w", "NoAssertions", "-r", "xml", "--order", "lex"])
+# compact reporter, include passes, warn about No Assertions
+approve('compact.sw', ['~[!nonportable]~[!benchmark]~[approvals]', '-s', '-w', 'NoAssertions', '-r', 'compact', '--order', 'lex'])
 
 if overallResult != 0:
     print("If these differences are expected, run approve.py to approve new baselines.")
