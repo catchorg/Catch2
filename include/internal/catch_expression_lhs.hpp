@@ -111,7 +111,7 @@ public:
 
     void endExpression() const {
         m_rb
-            .setResultType(  Internal::Evaluator<LhsT, RhsT, Op>::evaluate( m_lhs, m_rhs ) )
+            .setResultType( Internal::compare<Op>( m_lhs, m_rhs ) )
             .endExpression( *this );
     }
 
