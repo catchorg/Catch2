@@ -9,6 +9,7 @@
 #include "catch.hpp"
 
 #include <sstream>
+#include <algorithm>
 
 #ifdef __clang__
 #pragma clang diagnostic push
@@ -216,6 +217,17 @@ namespace { namespace MatchersTests {
                 v2.push_back(3);
                 CHECK_THAT(v, Equals(v2));
             }
+            SECTION("UnorderedEquals") {
+                CHECK_THAT(v, UnorderedEquals(v));
+                CHECK_THAT(empty, UnorderedEquals(empty));
+
+                auto permuted = v;
+                std::next_permutation(begin(permuted), end(permuted));
+                REQUIRE_THAT(permuted, UnorderedEquals(v));
+
+                std::reverse(begin(permuted), end(permuted));
+                REQUIRE_THAT(permuted, UnorderedEquals(v));
+            }
         }
 
         TEST_CASE("Vector matchers that fail", "[matchers][vector][.][failing]") {
@@ -246,6 +258,18 @@ namespace { namespace MatchersTests {
                 CHECK_THAT(v2, Equals(v));
                 CHECK_THAT(empty, Equals(v));
                 CHECK_THAT(v, Equals(empty));
+            }
+            SECTION("UnorderedEquals") {
+                CHECK_THAT(v, UnorderedEquals(empty));
+                CHECK_THAT(empty, UnorderedEquals(v));
+
+                auto permuted = v;
+                std::next_permutation(begin(permuted), end(permuted));
+                permuted.pop_back();
+                CHECK_THAT(permuted, UnorderedEquals(v));
+
+                std::reverse(begin(permuted), end(permuted));
+                CHECK_THAT(permuted, UnorderedEquals(v));
             }
         }
 

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuitesloose text artifact
 >
-  <testsuite name="<exe-name>" errors="15" failures="92" tests="963" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
+  <testsuite name="<exe-name>" errors="15" failures="96" tests="971" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
     <testcase classname="<exe-name>.global" name="# A test name that starts with a #" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="#1005: Comparing pointer to int and long (NULL can be either on various systems)" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="#1027" time="{duration}"/>
@@ -608,6 +608,7 @@ Exception.tests.cpp:<line number>
     <testcase classname="<exe-name>.global" name="Vector matchers/Contains (vector)" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Vector matchers/Contains (element), composed" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Vector matchers/Equals" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="Vector matchers/UnorderedEquals" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Vector matchers that fail/Contains (element)" time="{duration}">
       <failure message="{ 1, 2, 3 } Contains: -1" type="CHECK_THAT">
 Matchers.tests.cpp:<line number>
@@ -635,6 +636,20 @@ Matchers.tests.cpp:<line number>
 Matchers.tests.cpp:<line number>
       </failure>
       <failure message="{ 1, 2, 3 } Equals: {  }" type="CHECK_THAT">
+Matchers.tests.cpp:<line number>
+      </failure>
+    </testcase>
+    <testcase classname="<exe-name>.global" name="Vector matchers that fail/UnorderedEquals" time="{duration}">
+      <failure message="{ 1, 2, 3 } UnorderedEquals: {  }" type="CHECK_THAT">
+Matchers.tests.cpp:<line number>
+      </failure>
+      <failure message="{  } UnorderedEquals: { 1, 2, 3 }" type="CHECK_THAT">
+Matchers.tests.cpp:<line number>
+      </failure>
+      <failure message="{ 1, 3 } UnorderedEquals: { 1, 2, 3 }" type="CHECK_THAT">
+Matchers.tests.cpp:<line number>
+      </failure>
+      <failure message="{ 3, 1 } UnorderedEquals: { 1, 2, 3 }" type="CHECK_THAT">
 Matchers.tests.cpp:<line number>
       </failure>
     </testcase>

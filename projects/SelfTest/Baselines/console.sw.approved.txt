@@ -6481,6 +6481,37 @@ with expansion:
   { 1, 2, 3 } Equals: { 1, 2, 3 }
 
 -------------------------------------------------------------------------------
+Vector matchers
+  UnorderedEquals
+-------------------------------------------------------------------------------
+Matchers.tests.cpp:<line number>
+...............................................................................
+
+Matchers.tests.cpp:<line number>:
+PASSED:
+  CHECK_THAT( v, UnorderedEquals(v) )
+with expansion:
+  { 1, 2, 3 } UnorderedEquals: { 1, 2, 3 }
+
+Matchers.tests.cpp:<line number>:
+PASSED:
+  CHECK_THAT( empty, UnorderedEquals(empty) )
+with expansion:
+  {  } UnorderedEquals: {  }
+
+Matchers.tests.cpp:<line number>:
+PASSED:
+  REQUIRE_THAT( permuted, UnorderedEquals(v) )
+with expansion:
+  { 1, 3, 2 } UnorderedEquals: { 1, 2, 3 }
+
+Matchers.tests.cpp:<line number>:
+PASSED:
+  REQUIRE_THAT( permuted, UnorderedEquals(v) )
+with expansion:
+  { 2, 3, 1 } UnorderedEquals: { 1, 2, 3 }
+
+-------------------------------------------------------------------------------
 Vector matchers that fail
   Contains (element)
 -------------------------------------------------------------------------------
@@ -6540,6 +6571,33 @@ Matchers.tests.cpp:<line number>: FAILED:
   CHECK_THAT( v, Equals(empty) )
 with expansion:
   { 1, 2, 3 } Equals: {  }
+
+-------------------------------------------------------------------------------
+Vector matchers that fail
+  UnorderedEquals
+-------------------------------------------------------------------------------
+Matchers.tests.cpp:<line number>
+...............................................................................
+
+Matchers.tests.cpp:<line number>: FAILED:
+  CHECK_THAT( v, UnorderedEquals(empty) )
+with expansion:
+  { 1, 2, 3 } UnorderedEquals: {  }
+
+Matchers.tests.cpp:<line number>: FAILED:
+  CHECK_THAT( empty, UnorderedEquals(v) )
+with expansion:
+  {  } UnorderedEquals: { 1, 2, 3 }
+
+Matchers.tests.cpp:<line number>: FAILED:
+  CHECK_THAT( permuted, UnorderedEquals(v) )
+with expansion:
+  { 1, 3 } UnorderedEquals: { 1, 2, 3 }
+
+Matchers.tests.cpp:<line number>: FAILED:
+  CHECK_THAT( permuted, UnorderedEquals(v) )
+with expansion:
+  { 3, 1 } UnorderedEquals: { 1, 2, 3 }
 
 -------------------------------------------------------------------------------
 When checked exceptions are thrown they can be expected or unexpected
@@ -8057,5 +8115,5 @@ PASSED:
 
 ===============================================================================
 test cases: 191 | 137 passed |  50 failed |  4 failed as expected
-assertions: 962 | 835 passed | 106 failed | 21 failed as expected
+assertions: 970 | 839 passed | 110 failed | 21 failed as expected
 

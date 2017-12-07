@@ -810,6 +810,33 @@ with expansion:
   { 1, 2, 3 } Equals: {  }
 
 -------------------------------------------------------------------------------
+Vector matchers that fail
+  UnorderedEquals
+-------------------------------------------------------------------------------
+Matchers.tests.cpp:<line number>
+...............................................................................
+
+Matchers.tests.cpp:<line number>: FAILED:
+  CHECK_THAT( v, UnorderedEquals(empty) )
+with expansion:
+  { 1, 2, 3 } UnorderedEquals: {  }
+
+Matchers.tests.cpp:<line number>: FAILED:
+  CHECK_THAT( empty, UnorderedEquals(v) )
+with expansion:
+  {  } UnorderedEquals: { 1, 2, 3 }
+
+Matchers.tests.cpp:<line number>: FAILED:
+  CHECK_THAT( permuted, UnorderedEquals(v) )
+with expansion:
+  { 1, 3 } UnorderedEquals: { 1, 2, 3 }
+
+Matchers.tests.cpp:<line number>: FAILED:
+  CHECK_THAT( permuted, UnorderedEquals(v) )
+with expansion:
+  { 3, 1 } UnorderedEquals: { 1, 2, 3 }
+
+-------------------------------------------------------------------------------
 When unchecked exceptions are thrown directly they are always failures
 -------------------------------------------------------------------------------
 Exception.tests.cpp:<line number>
@@ -1054,5 +1081,5 @@ with expansion:
 
 ===============================================================================
 test cases: 191 | 139 passed |  48 failed |  4 failed as expected
-assertions: 963 | 839 passed | 103 failed | 21 failed as expected
+assertions: 971 | 843 passed | 107 failed | 21 failed as expected
 
