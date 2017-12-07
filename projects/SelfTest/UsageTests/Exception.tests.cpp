@@ -36,8 +36,8 @@ int thisDoesntThrow() {
 
 class CustomException {
 public:
-    CustomException( const std::string& msg )
-            : m_msg( msg )
+    explicit CustomException( const std::string& msg )
+    : m_msg( msg )
     {}
 
     std::string getMessage() const {
@@ -50,10 +50,10 @@ private:
 
 class CustomStdException : public std::exception {
 public:
-    CustomStdException( const std::string& msg )
-            : m_msg( msg )
+    explicit CustomStdException( const std::string& msg )
+    : m_msg( msg )
     {}
-    ~CustomStdException() noexcept {}
+    ~CustomStdException() noexcept override {}
 
     std::string getMessage() const {
         return m_msg;

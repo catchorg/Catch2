@@ -26,7 +26,7 @@ namespace Catch {
         m_reporterPrefs.shouldRedirectStdOut = true;
     }
 
-    XmlReporter::~XmlReporter() {};
+    XmlReporter::~XmlReporter() = default;
 
     std::string XmlReporter::getDescription() {
         return "Reports test results as an XML document";
