@@ -49,11 +49,18 @@ namespace Catch {
         getResultCapture().pushScopedMessage( m_info );
     }
 
+#if defined(_MSC_VER)
+#pragma warning(push)
+#pragma warning(disable:4996) // std::uncaught_exception is deprecated in C++17
+#endif
     ScopedMessage::~ScopedMessage() {
         if ( !std::uncaught_exception() ){
             getResultCapture().popScopedMessage(m_info);
         }
     }
+#if defined(_MSC_VER)
+#pragma warning(pop)
+#endif
 
 
 } // end namespace Catch
