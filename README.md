@@ -2,7 +2,7 @@
 ![catch logo](artwork/catch2-logo-small.png)
 
 [![Github Releases](https://img.shields.io/github/release/catchorg/catch2.svg)](https://github.com/catchorg/catch2/releases)
-[![Build Status](https://travis-ci.org/catchorg/Catch2.svg)](https://travis-ci.org/catchorg/Catch2)
+[![Build Status](https://travis-ci.org/catchorg/Catch2.svg?branch=master)](https://travis-ci.org/catchorg/Catch2)
 [![Build status](https://ci.appveyor.com/api/projects/status/github/catchorg/Catch2?svg=true)](https://ci.appveyor.com/project/catchorg/catch2)
 [![Try online](https://img.shields.io/badge/try-online-blue.svg)](https://wandbox.org/permlink/tB8z0G3kMAIZkIca)
 
