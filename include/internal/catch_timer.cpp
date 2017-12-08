@@ -9,6 +9,7 @@
 #include "catch_timer.h"
 
 #include <chrono>
+#include <iostream>
 
 namespace Catch {
 
@@ -45,11 +46,11 @@ namespace Catch {
     void Timer::start() {
        m_nanoseconds = getCurrentNanosecondsSinceEpoch();
     }
-    auto Timer::getElapsedNanoseconds() const -> unsigned int {
-        return static_cast<unsigned int>(getCurrentNanosecondsSinceEpoch() - m_nanoseconds);
+    auto Timer::getElapsedNanoseconds() const -> uint64_t {
+        return getCurrentNanosecondsSinceEpoch() - m_nanoseconds;
     }
-    auto Timer::getElapsedMicroseconds() const -> unsigned int {
-        return static_cast<unsigned int>(getElapsedNanoseconds()/1000);
+    auto Timer::getElapsedMicroseconds() const -> uint64_t {
+        return getElapsedNanoseconds()/1000;
     }
     auto Timer::getElapsedMilliseconds() const -> unsigned int {
         return static_cast<unsigned int>(getElapsedMicroseconds()/1000);
