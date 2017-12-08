@@ -9,7 +9,6 @@
 #include "catch_timer.h"
 
 #include <chrono>
-#include <iostream>
 
 namespace Catch {
 
