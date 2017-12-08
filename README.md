@@ -3,7 +3,7 @@
 
 [![Github Releases](https://img.shields.io/github/release/catchorg/catch2.svg)](https://github.com/catchorg/catch2/releases)
 [![Build Status](https://travis-ci.org/catchorg/Catch2.svg)](https://travis-ci.org/catchorg/Catch2)
-[![Build status](https://ci.appveyor.com/api/projects/status/hrtk60hv6tw6fght?svg=true)](https://ci.appveyor.com/project/catchorg/catch2)
+[![Build status](https://ci.appveyor.com/api/projects/status/github/catchorg/Catch2?svg=true)](https://ci.appveyor.com/project/catchorg/catch2)
 [![Try online](https://img.shields.io/badge/try-online-blue.svg)](https://wandbox.org/permlink/tB8z0G3kMAIZkIca)
 
 <a href="https://github.com/catchorg/Catch2/releases/download/v2.0.1/catch.hpp">The latest version of the single header can be downloaded directly using this link</a>
