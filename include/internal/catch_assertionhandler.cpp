@@ -8,7 +8,6 @@
 
 #include "catch_assertionhandler.h"
 #include "catch_assertionresult.h"
-#include "catch_interfaces_capture.h"
 #include "catch_interfaces_runner.h"
 #include "catch_interfaces_config.h"
 #include "catch_context.h"

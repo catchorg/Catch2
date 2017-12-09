@@ -8,8 +8,9 @@
 #ifndef TWOBLUECUBES_CATCH_ASSERTIONHANDLER_H_INCLUDED
 #define TWOBLUECUBES_CATCH_ASSERTIONHANDLER_H_INCLUDED
 
-#include "catch_decomposer.h"
 #include "catch_assertioninfo.h"
+#include "catch_decomposer.h"
+#include "catch_interfaces_capture.h"
 
 namespace Catch {
 
@@ -54,7 +55,7 @@ namespace Catch {
                 ResultDisposition::Flags resultDisposition );
         ~AssertionHandler() {
             if ( !m_completed ) {
-                m_resultCapture.handleIncomplete( m_assertionInfo )
+                m_resultCapture.handleIncomplete( m_assertionInfo );
             }
         }
 
