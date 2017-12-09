@@ -20,7 +20,7 @@ namespace Catch {
             return m_runner;
         }
 
-        virtual IConfigPtr getConfig() const override {
+        virtual IConfigPtr const& getConfig() const override {
             return m_config;
         }
 

@@ -59,11 +59,6 @@ namespace Catch {
         m_resultCapture( getResultCapture() )
     {}
 
-    AssertionHandler::~AssertionHandler() {
-        if ( !m_completed )
-            m_resultCapture.handleIncomplete( m_assertionInfo );
-    }
-
     void AssertionHandler::handleExpr( ITransientExpression const& expr ) {
         m_resultCapture.handleExpr( m_assertionInfo, expr, m_reaction );
     }

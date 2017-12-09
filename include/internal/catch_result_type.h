@@ -47,7 +47,7 @@ namespace Catch {
     ResultDisposition::Flags operator | ( ResultDisposition::Flags lhs, ResultDisposition::Flags rhs );
 
     bool shouldContinueOnFailure( int flags );
-    bool isFalseTest( int flags );
+    inline bool isFalseTest( int flags ) { return ( flags & ResultDisposition::FalseTest ) != 0; }
     bool shouldSuppressFailure( int flags );
 
 } // end namespace Catch
