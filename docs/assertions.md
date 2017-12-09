@@ -21,7 +21,7 @@ The ```CHECK``` family are equivalent but execution continues in the same test c
 * **REQUIRE(** _expression_ **)** and  
 * **CHECK(** _expression_ **)**
 
-Evaluates the expression and records the result. If an exception is thrown it is caught, reported, and counted as a failure. These are the macros you will use most of  the time
+Evaluates the expression and records the result. If an exception is thrown, it is caught, reported, and counted as a failure. These are the macros you will use most of the time.
 
 Examples:
 ```
