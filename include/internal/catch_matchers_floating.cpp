@@ -79,7 +79,11 @@ namespace Catch {
 namespace Matchers {
 namespace Floating {
     WithinAbsMatcher::WithinAbsMatcher(double target, double margin)
-        :m_target{ target }, m_margin{ margin } {}
+        :m_target{ target }, m_margin{ margin } {
+        if (m_margin < 0) {
+            throw std::domain_error("Allowed margin difference has to be >= 0");
+        }
+    }
 
     // Performs equivalent check of std::fabs(lhs - rhs) <= margin
     // But without the subtraction to allow for INFINITY in comparison
@@ -95,7 +99,7 @@ namespace Floating {
     WithinUlpsMatcher::WithinUlpsMatcher(double target, int ulps, FloatingPointKind baseType)
         :m_target{ target }, m_ulps{ ulps }, m_type{ baseType } {
         if (m_ulps < 0) {
-            throw std::domain_error("Expected ulp difference has to be >0");
+            throw std::domain_error("Allowed ulp difference has to be >= 0");
         }
     }
 

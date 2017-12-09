@@ -29,7 +29,7 @@ namespace Catch {
 
     public:
 
-        ReporterRegistrar( std::string const& name ) {
+        explicit ReporterRegistrar( std::string const& name ) {
             getMutableRegistryHub().registerReporter( name, std::make_shared<ReporterFactory>() );
         }
     };

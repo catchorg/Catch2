@@ -28,33 +28,6 @@ namespace Catch {
 
     struct IMutableContext;
 
-    class StreamRedirect {
-
-    public:
-        StreamRedirect(std::ostream& stream, std::string& targetString);
-        ~StreamRedirect();
-
-    private:
-        std::ostream& m_stream;
-        std::streambuf* m_prevBuf;
-        ReusableStringStream m_oss;
-        std::string& m_targetString;
-    };
-
-    // StdErr has two constituent streams in C++, std::cerr and std::clog
-    // This means that we need to redirect 2 streams into 1 to keep proper
-    // order of writes and cannot use StreamRedirect on its own
-    class StdErrRedirect {
-    public:
-        StdErrRedirect(std::string& targetString);
-        ~StdErrRedirect();
-    private:
-        std::streambuf* m_cerrBuf;
-        std::streambuf* m_clogBuf;
-        ReusableStringStream m_oss;
-        std::string& m_targetString;
-    };
-
     ///////////////////////////////////////////////////////////////////////////
 
     class RunContext : public IResultCapture, public IRunner {
@@ -63,35 +36,54 @@ namespace Catch {
         RunContext( RunContext const& ) = delete;
         RunContext& operator =( RunContext const& ) = delete;
 
-        explicit RunContext(IConfigPtr const& _config, IStreamingReporterPtr&& reporter);
+        explicit RunContext( IConfigPtr const& _config, IStreamingReporterPtr&& reporter );
 
-        virtual ~RunContext();
+        ~RunContext() override;
 
-        void testGroupStarting(std::string const& testSpec, std::size_t groupIndex, std::size_t groupsCount);
-        void testGroupEnded(std::string const& testSpec, Totals const& totals, std::size_t groupIndex, std::size_t groupsCount);
+        void testGroupStarting( std::string const& testSpec, std::size_t groupIndex, std::size_t groupsCount );
+        void testGroupEnded( std::string const& testSpec, Totals const& totals, std::size_t groupIndex, std::size_t groupsCount );
 
         Totals runTest(TestCase const& testCase);
 
         IConfigPtr config() const;
         IStreamingReporter& reporter() const;
 
-    private: // IResultCapture
+    public: // IResultCapture
 
-
-        void assertionStarting(AssertionInfo const& info) override;
-        void assertionEnded(AssertionResult const& result) override;
+        // Assertion handlers
+        void handleExpr
+                (   AssertionInfo const& info,
+                    ITransientExpression const& expr,
+                    AssertionReaction& reaction ) override;
+        void handleMessage
+                (   AssertionInfo const& info,
+                    ResultWas::OfType resultType,
+                    StringRef const& message,
+                    AssertionReaction& reaction ) override;
+        void handleUnexpectedExceptionNotThrown
+                (   AssertionInfo const& info,
+                    AssertionReaction& reaction ) override;
+        void handleUnexpectedInflightException
+                (   AssertionInfo const& info,
+                    std::string const& message,
+                    AssertionReaction& reaction ) override;
+        void handleIncomplete
+                (   AssertionInfo const& info ) override;
+        void handleNonExpr
+                (   AssertionInfo const &info,
+                    ResultWas::OfType resultType,
+                    AssertionReaction &reaction ) override;
 
         bool sectionStarted( SectionInfo const& sectionInfo, Counts& assertions ) override;
-        bool testForMissingAssertions(Counts& assertions);
 
-        void sectionEnded(SectionEndInfo const& endInfo) override;
-        void sectionEndedEarly(SectionEndInfo const& endInfo) override;
+        void sectionEnded( SectionEndInfo const& endInfo ) override;
+        void sectionEndedEarly( SectionEndInfo const& endInfo ) override;
 
         void benchmarkStarting( BenchmarkInfo const& info ) override;
         void benchmarkEnded( BenchmarkStats const& stats ) override;
 
-        void pushScopedMessage(MessageInfo const& message) override;
-        void popScopedMessage(MessageInfo const& message) override;
+        void pushScopedMessage( MessageInfo const& message ) override;
+        void popScopedMessage( MessageInfo const& message ) override;
 
         std::string getCurrentTestName() const override;
 
@@ -105,18 +97,26 @@ namespace Catch {
 
         void assertionPassed() override;
 
-        void assertionRun() override;
-
     public:
         // !TBD We need to do this another way!
         bool aborting() const override;
 
     private:
 
-        void runCurrentTest(std::string& redirectedCout, std::string& redirectedCerr);
+        void runCurrentTest( std::string& redirectedCout, std::string& redirectedCerr );
         void invokeActiveTestCase();
 
         void resetAssertionInfo();
+        bool testForMissingAssertions( Counts& assertions );
+
+        void assertionEnded( AssertionResult const& result );
+        void reportExpr
+                (   AssertionInfo const &info,
+                    ResultWas::OfType resultType,
+                    ITransientExpression const *expr,
+                    bool negated );
+
+        void populateReaction( AssertionReaction& reaction );
 
     private:
 
@@ -136,11 +136,10 @@ namespace Catch {
         std::vector<SectionEndInfo> m_unfinishedSections;
         std::vector<ITracker*> m_activeSections;
         TrackerContext m_trackerContext;
-        std::size_t m_prevPassed = 0;
+        bool m_lastAssertionPassed = false;
         bool m_shouldReportUnexpected = true;
+        bool m_includeSuccessfulResults;
     };
-
-    IResultCapture& getResultCapture();
 
 } // end namespace Catch
 

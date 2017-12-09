@@ -87,6 +87,7 @@ namespace Catch {
         delete getTheRegistryHub();
         getTheRegistryHub() = nullptr;
         cleanUpContext();
+        ReusableStringStream::cleanup();
     }
     std::string translateActiveException() {
         return getRegistryHub().getExceptionTranslatorRegistry().translateActiveException();

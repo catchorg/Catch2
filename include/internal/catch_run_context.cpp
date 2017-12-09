@@ -10,37 +10,55 @@
 
 namespace Catch {
 
-    StreamRedirect::StreamRedirect(std::ostream& stream, std::string& targetString)
-        : m_stream(stream),
-        m_prevBuf(stream.rdbuf()),
-        m_targetString(targetString) {
-        stream.rdbuf(m_oss.get().rdbuf());
-    }
+    class RedirectedStream {
+        std::ostream& m_originalStream;
+        std::ostream& m_redirectionStream;
+        std::streambuf* m_prevBuf;
 
-    StreamRedirect::~StreamRedirect() {
-        m_targetString += m_oss.str();
-        m_stream.rdbuf(m_prevBuf);
-    }
+    public:
+        RedirectedStream( std::ostream& originalStream, std::ostream& redirectionStream )
+        :   m_originalStream( originalStream ),
+            m_redirectionStream( redirectionStream ),
+            m_prevBuf( m_originalStream.rdbuf() )
+        {
+            m_originalStream.rdbuf( m_redirectionStream.rdbuf() );
+        }
+        ~RedirectedStream() {
+            m_originalStream.rdbuf( m_prevBuf );
+        }
+    };
 
-    StdErrRedirect::StdErrRedirect(std::string & targetString)
-        :m_cerrBuf(cerr().rdbuf()), m_clogBuf(clog().rdbuf()),
-        m_targetString(targetString) {
-        cerr().rdbuf(m_oss.get().rdbuf());
-        clog().rdbuf(m_oss.get().rdbuf());
-    }
+    class RedirectedStdOut {
+        ReusableStringStream m_rss;
+        RedirectedStream m_cout;
+    public:
+        RedirectedStdOut() : m_cout( Catch::cout(), m_rss.get() ) {}
+        auto str() const -> std::string { return m_rss.str(); }
+    };
 
-    StdErrRedirect::~StdErrRedirect() {
-        m_targetString += m_oss.str();
-        cerr().rdbuf(m_cerrBuf);
-        clog().rdbuf(m_clogBuf);
-    }
+    // StdErr has two constituent streams in C++, std::cerr and std::clog
+    // This means that we need to redirect 2 streams into 1 to keep proper
+    // order of writes
+    class RedirectedStdErr {
+        ReusableStringStream m_rss;
+        RedirectedStream m_cerr;
+        RedirectedStream m_clog;
+    public:
+        RedirectedStdErr()
+        :   m_cerr( Catch::cerr(), m_rss.get() ),
+            m_clog( Catch::clog(), m_rss.get() )
+        {}
+        auto str() const -> std::string { return m_rss.str(); }
+    };
+
 
     RunContext::RunContext(IConfigPtr const& _config, IStreamingReporterPtr&& reporter)
     :   m_runInfo(_config->name()),
         m_context(getCurrentMutableContext()),
         m_config(_config),
         m_reporter(std::move(reporter)),
-        m_lastAssertionInfo{ "", SourceLineInfo("",0), "", ResultDisposition::Normal }
+        m_lastAssertionInfo{ "", SourceLineInfo("",0), "", ResultDisposition::Normal },
+        m_includeSuccessfulResults( m_config->includeSuccessfulResults() )
     {
         m_context.setRunner(this);
         m_context.setConfig(m_config);
@@ -109,17 +127,19 @@ namespace Catch {
         return *m_reporter;
     }
 
-    void RunContext::assertionStarting(AssertionInfo const& info) {
-        m_reporter->assertionStarting( info );
-    }
     void RunContext::assertionEnded(AssertionResult const & result) {
         if (result.getResultType() == ResultWas::Ok) {
             m_totals.assertions.passed++;
+            m_lastAssertionPassed = true;
         } else if (!result.isOk()) {
+            m_lastAssertionPassed = false;
             if( m_activeTestCase->getTestCaseInfo().okToFail() )
                 m_totals.assertions.failedButOk++;
             else
                 m_totals.assertions.failed++;
+        }
+        else {
+            m_lastAssertionPassed = true;
         }
 
         // We have no use for the return value (whether messages should be cleared), because messages were made scoped
@@ -223,7 +243,7 @@ namespace Catch {
         tempResult.message = message;
         AssertionResult result(m_lastAssertionInfo, tempResult);
 
-        getResultCapture().assertionEnded(result);
+        assertionEnded(result);
 
         handleUnfinishedSections();
 
@@ -252,16 +272,13 @@ namespace Catch {
     }
 
     bool RunContext::lastAssertionPassed() {
-         return m_totals.assertions.passed == (m_prevPassed + 1);
+         return m_lastAssertionPassed;
     }
 
     void RunContext::assertionPassed() {
+        m_lastAssertionPassed = true;
         ++m_totals.assertions.passed;
         resetAssertionInfo();
-    }
-
-    void RunContext::assertionRun() {
-        m_prevPassed = m_totals.assertions.passed;
     }
 
     bool RunContext::aborting() const {
@@ -282,10 +299,13 @@ namespace Catch {
         Timer timer;
         try {
             if (m_reporter->getPreferences().shouldRedirectStdOut) {
-                StreamRedirect coutRedir(cout(), redirectedCout);
-                StdErrRedirect errRedir(redirectedCerr);
+                RedirectedStdOut redirectedStdOut;
+                RedirectedStdErr redirectedStdErr;
                 timer.start();
                 invokeActiveTestCase();
+                redirectedCout += redirectedStdOut.str();
+                redirectedCerr += redirectedStdErr.str();
+
             } else {
                 timer.start();
                 invokeActiveTestCase();
@@ -296,12 +316,9 @@ namespace Catch {
         } catch (...) {
             // Under CATCH_CONFIG_FAST_COMPILE, unexpected exceptions under REQUIRE assertions
             // are reported without translation at the point of origin.
-            if (m_shouldReportUnexpected) {
-                AssertionHandler
-                    ( m_lastAssertionInfo.macroName,
-                      m_lastAssertionInfo.lineInfo,
-                      m_lastAssertionInfo.capturedExpression,
-                      m_lastAssertionInfo.resultDisposition ).useActiveException();
+            if( m_shouldReportUnexpected ) {
+                AssertionReaction dummyReaction;
+                handleUnexpectedInflightException( m_lastAssertionInfo, translateActiveException(), dummyReaction );
             }
         }
         m_testCaseTracker->close();
@@ -330,6 +347,113 @@ namespace Catch {
             sectionEnded(*it);
         m_unfinishedSections.clear();
     }
+
+    void RunContext::handleExpr(
+        AssertionInfo const& info,
+        ITransientExpression const& expr,
+        AssertionReaction& reaction
+    ) {
+        m_reporter->assertionStarting( info );
+
+        bool negated = isFalseTest( info.resultDisposition );
+        bool result = expr.getResult() != negated;
+
+        if( result ) {
+            if (!m_includeSuccessfulResults) {
+                assertionPassed();
+            }
+            else {
+                reportExpr(info, ResultWas::Ok, &expr, negated);
+            }
+        }
+        else {
+            reportExpr(info, ResultWas::ExpressionFailed, &expr, negated );
+            populateReaction( reaction );
+        }
+    }
+    void RunContext::reportExpr(
+            AssertionInfo const &info,
+            ResultWas::OfType resultType,
+            ITransientExpression const *expr,
+            bool negated ) {
+
+        m_lastAssertionInfo = info;
+        AssertionResultData data( resultType, LazyExpression( negated ) );
+
+        AssertionResult assertionResult{ info, data };
+        assertionResult.m_resultData.lazyExpression.m_transientExpression = expr;
+
+        assertionEnded( assertionResult );
+    }
+
+    void RunContext::handleMessage(
+            AssertionInfo const& info,
+            ResultWas::OfType resultType,
+            StringRef const& message,
+            AssertionReaction& reaction
+    ) {
+        m_reporter->assertionStarting( info );
+
+        m_lastAssertionInfo = info;
+
+        AssertionResultData data( resultType, LazyExpression( false ) );
+        data.message = message;
+        AssertionResult assertionResult{ m_lastAssertionInfo, data };
+        assertionEnded( assertionResult );
+        if( !assertionResult.isOk() )
+            populateReaction( reaction );
+    }
+    void RunContext::handleUnexpectedExceptionNotThrown(
+            AssertionInfo const& info,
+            AssertionReaction& reaction
+    ) {
+        handleNonExpr(info, Catch::ResultWas::DidntThrowException, reaction);
+    }
+
+    void RunContext::handleUnexpectedInflightException(
+            AssertionInfo const& info,
+            std::string const& message,
+            AssertionReaction& reaction
+    ) {
+        m_lastAssertionInfo = info;
+
+        AssertionResultData data( ResultWas::ThrewException, LazyExpression( false ) );
+        data.message = message;
+        AssertionResult assertionResult{ info, data };
+        assertionEnded( assertionResult );
+        populateReaction( reaction );
+    }
+
+    void RunContext::populateReaction( AssertionReaction& reaction ) {
+        reaction.shouldDebugBreak = m_config->shouldDebugBreak();
+        reaction.shouldThrow = aborting() || (m_lastAssertionInfo.resultDisposition & ResultDisposition::Normal);
+    }
+
+    void RunContext::handleIncomplete(
+            AssertionInfo const& info
+    ) {
+        m_lastAssertionInfo = info;
+
+        AssertionResultData data( ResultWas::ThrewException, LazyExpression( false ) );
+        data.message = "Exception translation was disabled by CATCH_CONFIG_FAST_COMPILE";
+        AssertionResult assertionResult{ info, data };
+        assertionEnded( assertionResult );
+    }
+    void RunContext::handleNonExpr(
+            AssertionInfo const &info,
+            ResultWas::OfType resultType,
+            AssertionReaction &reaction
+    ) {
+        m_lastAssertionInfo = info;
+
+        AssertionResultData data( resultType, LazyExpression( false ) );
+        AssertionResult assertionResult{ info, data };
+        assertionEnded( assertionResult );
+
+        if( !assertionResult.isOk() )
+            populateReaction( reaction );
+    }
+
 
     IResultCapture& getResultCapture() {
         if (auto* capture = getCurrentContext().getResultCapture())

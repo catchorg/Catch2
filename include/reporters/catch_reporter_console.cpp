@@ -210,7 +210,7 @@ class Duration {
     Unit m_units;
 
 public:
-    Duration(uint64_t inNanoseconds, Unit units = Unit::Auto)
+    explicit Duration(uint64_t inNanoseconds, Unit units = Unit::Auto)
         : m_inNanoseconds(inNanoseconds),
         m_units(units) {
         if (m_units == Unit::Auto) {
@@ -273,9 +273,9 @@ class TablePrinter {
     bool m_isOpen = false;
 
 public:
-    TablePrinter(std::ostream& os, std::vector<ColumnInfo> const& columnInfos)
-        : m_os(os),
-        m_columnInfos(columnInfos) {}
+    TablePrinter( std::ostream& os, std::vector<ColumnInfo> columnInfos )
+    :   m_os( os ),
+        m_columnInfos( std::move( columnInfos ) ) {}
 
     auto columnInfos() const -> std::vector<ColumnInfo> const& {
         return m_columnInfos;
@@ -346,7 +346,8 @@ ConsoleReporter::ConsoleReporter(ReporterConfig const& config)
         { "elapsed ns", 14, ColumnInfo::Right },
         { "average", 14, ColumnInfo::Right }
     })) {}
-ConsoleReporter::~ConsoleReporter() {}
+ConsoleReporter::~ConsoleReporter() = default;
+
 std::string ConsoleReporter::getDescription() {
     return "Reports test results as plain lines of text";
 }
@@ -402,7 +403,7 @@ void ConsoleReporter::sectionEnded(SectionStats const& _sectionStats) {
 void ConsoleReporter::benchmarkStarting(BenchmarkInfo const& info) {
     lazyPrintWithoutClosingBenchmarkTable();
 
-    auto nameCol = Column(info.name).width(m_tablePrinter->columnInfos()[0].width - 2);
+    auto nameCol = Column( info.name ).width( static_cast<std::size_t>( m_tablePrinter->columnInfos()[0].width - 2 ) );
 
     bool firstLine = true;
     for (auto line : nameCol) {
@@ -528,10 +529,10 @@ void ConsoleReporter::printHeaderString(std::string const& _string, std::size_t 
 
 struct SummaryColumn {
 
-    SummaryColumn(std::string const& _label, Colour::Code _colour)
-        : label(_label),
-        colour(_colour) {}
-    SummaryColumn addRow(std::size_t count) {
+    SummaryColumn( std::string _label, Colour::Code _colour )
+    :   label( std::move( _label ) ),
+        colour( _colour ) {}
+    SummaryColumn addRow( std::size_t count ) {
         ReusableStringStream rss;
         rss << count;
         std::string row = rss.str();
@@ -551,7 +552,7 @@ struct SummaryColumn {
 
 };
 
-void ConsoleReporter::printTotals(Totals const& totals) {
+void ConsoleReporter::printTotals( Totals const& totals ) {
     if (totals.testCases.total() == 0) {
         stream << Colour(Colour::Warning) << "No tests ran\n";
     } else if (totals.assertions.total() > 0 && totals.testCases.allPassed()) {

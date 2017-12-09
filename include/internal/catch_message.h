@@ -59,7 +59,7 @@ namespace Catch {
 
     class ScopedMessage {
     public:
-        ScopedMessage( MessageBuilder const& builder );
+        explicit ScopedMessage( MessageBuilder const& builder );
         ~ScopedMessage();
 
         MessageInfo m_info;

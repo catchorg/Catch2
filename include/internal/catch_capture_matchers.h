@@ -21,17 +21,13 @@ namespace Catch {
         ArgT const& m_arg;
         MatcherT m_matcher;
         StringRef m_matcherString;
-        bool m_result;
     public:
         MatchExpr( ArgT const& arg, MatcherT const& matcher, StringRef matcherString )
-        :   m_arg( arg ),
+        :   ITransientExpression{ true, matcher.match( arg ) },
+            m_arg( arg ),
             m_matcher( matcher ),
-            m_matcherString( matcherString ),
-            m_result( matcher.match( arg ) )
+            m_matcherString( matcherString )
         {}
-
-        auto isBinaryExpression() const -> bool  override { return true; }
-        auto getResult() const -> bool override { return m_result; }
 
         void streamReconstructedExpression( std::ostream &os ) const override {
             auto matcherAsString = m_matcher.toString();
@@ -59,11 +55,11 @@ namespace Catch {
 #define INTERNAL_CHECK_THAT( macroName, matcher, resultDisposition, arg ) \
     do { \
         Catch::AssertionHandler catchAssertionHandler( macroName, CATCH_INTERNAL_LINEINFO, CATCH_INTERNAL_STRINGIFY(arg) ", " CATCH_INTERNAL_STRINGIFY(matcher), resultDisposition ); \
-        INTERNAL_CATCH_TRY( catchAssertionHandler ) { \
-            catchAssertionHandler.handle( Catch::makeMatchExpr( arg, matcher, #matcher ) ); \
+        INTERNAL_CATCH_TRY { \
+            catchAssertionHandler.handleExpr( Catch::makeMatchExpr( arg, matcher, #matcher ) ); \
         } INTERNAL_CATCH_CATCH( catchAssertionHandler ) \
         INTERNAL_CATCH_REACT( catchAssertionHandler ) \
-    } while( Catch::alwaysFalse() )
+    } while( false )
 
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -73,17 +69,17 @@ namespace Catch {
         if( catchAssertionHandler.allowThrows() ) \
             try { \
                 static_cast<void>(__VA_ARGS__ ); \
-                catchAssertionHandler.handle( Catch::ResultWas::DidntThrowException ); \
+                catchAssertionHandler.handleUnexpectedExceptionNotThrown(); \
             } \
             catch( exceptionType const& ex ) { \
-                catchAssertionHandler.handle( Catch::makeMatchExpr( ex, matcher, #matcher ) ); \
+                catchAssertionHandler.handleExpr( Catch::makeMatchExpr( ex, matcher, #matcher ) ); \
             } \
             catch( ... ) { \
-                catchAssertionHandler.useActiveException(); \
+                catchAssertionHandler.handleUnexpectedInflightException(); \
             } \
         else \
-            catchAssertionHandler.handle( Catch::ResultWas::Ok ); \
+            catchAssertionHandler.handleThrowingCallSkipped(); \
         INTERNAL_CATCH_REACT( catchAssertionHandler ) \
-    } while( Catch::alwaysFalse() )
+    } while( false )
 
 #endif // TWOBLUECUBES_CATCH_CAPTURE_MATCHERS_HPP_INCLUDED

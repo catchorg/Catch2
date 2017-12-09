@@ -55,19 +55,19 @@ TEST_CASE( "stringify( has_maker_and_toString )", "[.][toString]" ) {
 // Vectors...
 
 // Don't run this in approval tests as it is sensitive to two phase lookup differences
-TEST_CASE( "toString( vectors<has_toString )", "[.][toString][!nonportable]" ) {
+TEST_CASE( "toString( vectors<has_operator> )", "[toString]" ) {
     std::vector<has_operator> v(1);
     REQUIRE( ::Catch::Detail::stringify( v ) == "{ operator<<( has_operator ) }" );
 }
 
-TEST_CASE( "toString( vectors<has_maker )", "[toString]" ) {
+TEST_CASE( "toString( vectors<has_maker> )", "[toString]" ) {
     std::vector<has_maker> v(1);
     REQUIRE( ::Catch::Detail::stringify( v ) == "{ StringMaker<has_maker> }" );
 }
 
 
 // Don't run this in approval tests as it is sensitive to two phase lookup differences
-TEST_CASE( "toString( vectors<has_maker_and_toString )", "[.][toString][!nonportable]" ) {
+TEST_CASE( "toString( vectors<has_maker_and_operator> )", "[toString]" ) {
     std::vector<has_maker_and_operator> v(1);
-    REQUIRE( ::Catch::Detail::stringify( v ) == "{ StringMaker<has_maker_and_toString> }" );
+    REQUIRE( ::Catch::Detail::stringify( v ) == "{ StringMaker<has_maker_and_operator> }" );
 }

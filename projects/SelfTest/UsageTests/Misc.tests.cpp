@@ -57,7 +57,9 @@ struct AutoTestReg {
         REGISTER_TEST_CASE( manuallyRegisteredTestFunction, "ManuallyRegistered" );
     }
 };
+CATCH_INTERNAL_SUPPRESS_GLOBALS_WARNINGS
 static AutoTestReg autoTestReg;
+CATCH_INTERNAL_UNSUPPRESS_GLOBALS_WARNINGS
 
 #endif
 
@@ -146,8 +148,8 @@ TEST_CASE( "looped tests", "[.][failing]" ) {
 
 TEST_CASE( "Sends stuff to stdout and stderr", "[.]" ) {
     std::cout << "A string sent directly to stdout" << std::endl;
-
     std::cerr << "A string sent directly to stderr" << std::endl;
+    std::clog << "A string sent to stderr via clog" << std::endl;
 }
 
 TEST_CASE( "null strings" ) {
@@ -301,13 +303,13 @@ TEST_CASE( "toString on const wchar_t pointer returns the string contents", "[to
 }
 
 TEST_CASE( "toString on wchar_t const pointer returns the string contents", "[toString]" ) {
-        wchar_t * const s = const_cast<wchar_t* const>( L"wide load" );
+        auto const s = const_cast<wchar_t* const>( L"wide load" );
         std::string result = ::Catch::Detail::stringify( s );
         CHECK( result == "\"wide load\"" );
 }
 
 TEST_CASE( "toString on wchar_t returns the string contents", "[toString]" ) {
-        wchar_t * s = const_cast<wchar_t*>( L"wide load" );
+        auto s = const_cast<wchar_t*>( L"wide load" );
         std::string result = ::Catch::Detail::stringify( s );
         CHECK( result == "\"wide load\"" );
 }

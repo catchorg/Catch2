@@ -1,0 +1,10 @@
+codecov:
+  branch: master
+
+coverage:
+  ignore:
+    - "projects/SelfTest"
+    - "**/catch_reporter_tap.hpp"
+    - "**/catch_reporter_automake.hpp"
+    - "**/catch_reporter_teamcity.hpp"
+    - "**/external/clara.hpp"

@@ -819,7 +819,7 @@
     <TestCase name="Assertions then sections" tags="[Tricky]" filename="projects/<exe-name>/UsageTests/Tricky.tests.cpp" >
       <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/UsageTests/Tricky.tests.cpp" >
         <Original>
-          Catch::alwaysTrue()
+          true
         </Original>
         <Expanded>
           true
@@ -828,7 +828,7 @@
       <Section name="A section" filename="projects/<exe-name>/UsageTests/Tricky.tests.cpp" >
         <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/UsageTests/Tricky.tests.cpp" >
           <Original>
-            Catch::alwaysTrue()
+            true
           </Original>
           <Expanded>
             true
@@ -837,7 +837,7 @@
         <Section name="Another section" filename="projects/<exe-name>/UsageTests/Tricky.tests.cpp" >
           <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/UsageTests/Tricky.tests.cpp" >
             <Original>
-              Catch::alwaysTrue()
+              true
             </Original>
             <Expanded>
               true
@@ -849,7 +849,7 @@
       </Section>
       <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/UsageTests/Tricky.tests.cpp" >
         <Original>
-          Catch::alwaysTrue()
+          true
         </Original>
         <Expanded>
           true
@@ -858,7 +858,7 @@
       <Section name="A section" filename="projects/<exe-name>/UsageTests/Tricky.tests.cpp" >
         <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/UsageTests/Tricky.tests.cpp" >
           <Original>
-            Catch::alwaysTrue()
+            true
           </Original>
           <Expanded>
             true
@@ -867,7 +867,7 @@
         <Section name="Another other section" filename="projects/<exe-name>/UsageTests/Tricky.tests.cpp" >
           <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/UsageTests/Tricky.tests.cpp" >
             <Original>
-              Catch::alwaysTrue()
+              true
             </Original>
             <Expanded>
               true
@@ -1273,7 +1273,7 @@
       </Expression>
       <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/UsageTests/Approx.tests.cpp" >
         <Original>
-          td >= Approx(10.0)
+          td >= Approx(td)
         </Original>
         <Expanded>
           StrongDoubleTypedef(10) >= Approx( 10.0 )
@@ -1281,7 +1281,7 @@
       </Expression>
       <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/UsageTests/Approx.tests.cpp" >
         <Original>
-          Approx(10.0) >= td
+          Approx(td) >= td
         </Original>
         <Expanded>
           Approx( 10.0 ) >= StrongDoubleTypedef(10)
@@ -2142,6 +2142,41 @@
         </Expression>
         <OverallResults successes="3" failures="0" expectedFailures="0"/>
       </Section>
+      <Section name="Constructor validation" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
+        <Expression success="true" type="REQUIRE_NOTHROW" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
+          <Original>
+            WithinAbs(1., 0.)
+          </Original>
+          <Expanded>
+            WithinAbs(1., 0.)
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE_THROWS_AS" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
+          <Original>
+            WithinAbs(1., -1.), std::domain_error
+          </Original>
+          <Expanded>
+            WithinAbs(1., -1.), std::domain_error
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE_NOTHROW" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
+          <Original>
+            WithinULP(1., 0)
+          </Original>
+          <Expanded>
+            WithinULP(1., 0)
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE_THROWS_AS" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
+          <Original>
+            WithinULP(1., -1), std::domain_error
+          </Original>
+          <Expanded>
+            WithinULP(1., -1), std::domain_error
+          </Expanded>
+        </Expression>
+        <OverallResults successes="4" failures="0" expectedFailures="0"/>
+      </Section>
       <OverallResult success="true"/>
     </TestCase>
     <TestCase name="Floating point matchers: float" tags="[floating-point][matchers]" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
@@ -2281,6 +2316,41 @@
           </Expanded>
         </Expression>
         <OverallResults successes="3" failures="0" expectedFailures="0"/>
+      </Section>
+      <Section name="Constructor validation" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
+        <Expression success="true" type="REQUIRE_NOTHROW" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
+          <Original>
+            WithinAbs(1.f, 0.f)
+          </Original>
+          <Expanded>
+            WithinAbs(1.f, 0.f)
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE_THROWS_AS" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
+          <Original>
+            WithinAbs(1.f, -1.f), std::domain_error
+          </Original>
+          <Expanded>
+            WithinAbs(1.f, -1.f), std::domain_error
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE_NOTHROW" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
+          <Original>
+            WithinULP(1.f, 0)
+          </Original>
+          <Expanded>
+            WithinULP(1.f, 0)
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE_THROWS_AS" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
+          <Original>
+            WithinULP(1.f, -1), std::domain_error
+          </Original>
+          <Expanded>
+            WithinULP(1.f, -1), std::domain_error
+          </Expanded>
+        </Expression>
+        <OverallResults successes="4" failures="0" expectedFailures="0"/>
       </Section>
       <OverallResult success="true"/>
     </TestCase>
@@ -5260,6 +5330,7 @@ A string sent directly to stdout
         </StdOut>
         <StdErr>
 A string sent directly to stderr
+A string sent to stderr via clog
         </StdErr>
       </OverallResult>
     </TestCase>
@@ -5876,6 +5947,14 @@ Message from section two
         </Original>
         <Expanded>
           1 [30/1]s != 1 fs
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/UsageTests/ToStringChrono.tests.cpp" >
+        <Original>
+          pico_second != atto_second
+        </Original>
+        <Expanded>
+          1 ps != 1 as
         </Expanded>
       </Expression>
       <OverallResult success="true"/>
@@ -7298,6 +7377,41 @@ Message from section two
         </Expression>
         <OverallResults successes="3" failures="0" expectedFailures="0"/>
       </Section>
+      <Section name="UnorderedEquals" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
+        <Expression success="true" type="CHECK_THAT" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
+          <Original>
+            v, UnorderedEquals(v)
+          </Original>
+          <Expanded>
+            { 1, 2, 3 } UnorderedEquals: { 1, 2, 3 }
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="CHECK_THAT" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
+          <Original>
+            empty, UnorderedEquals(empty)
+          </Original>
+          <Expanded>
+            {  } UnorderedEquals: {  }
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE_THAT" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
+          <Original>
+            permuted, UnorderedEquals(v)
+          </Original>
+          <Expanded>
+            { 1, 3, 2 } UnorderedEquals: { 1, 2, 3 }
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE_THAT" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
+          <Original>
+            permuted, UnorderedEquals(v)
+          </Original>
+          <Expanded>
+            { 2, 3, 1 } UnorderedEquals: { 1, 2, 3 }
+          </Expanded>
+        </Expression>
+        <OverallResults successes="4" failures="0" expectedFailures="0"/>
+      </Section>
       <OverallResult success="true"/>
     </TestCase>
     <TestCase name="Vector matchers that fail" tags="[.][failing][matchers][vector]" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
@@ -7370,6 +7484,41 @@ Message from section two
           </Original>
           <Expanded>
             { 1, 2, 3 } Equals: {  }
+          </Expanded>
+        </Expression>
+        <OverallResults successes="0" failures="4" expectedFailures="0"/>
+      </Section>
+      <Section name="UnorderedEquals" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
+        <Expression success="false" type="CHECK_THAT" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
+          <Original>
+            v, UnorderedEquals(empty)
+          </Original>
+          <Expanded>
+            { 1, 2, 3 } UnorderedEquals: {  }
+          </Expanded>
+        </Expression>
+        <Expression success="false" type="CHECK_THAT" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
+          <Original>
+            empty, UnorderedEquals(v)
+          </Original>
+          <Expanded>
+            {  } UnorderedEquals: { 1, 2, 3 }
+          </Expanded>
+        </Expression>
+        <Expression success="false" type="CHECK_THAT" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
+          <Original>
+            permuted, UnorderedEquals(v)
+          </Original>
+          <Expanded>
+            { 1, 3 } UnorderedEquals: { 1, 2, 3 }
+          </Expanded>
+        </Expression>
+        <Expression success="false" type="CHECK_THAT" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
+          <Original>
+            permuted, UnorderedEquals(v)
+          </Original>
+          <Expanded>
+            { 3, 1 } UnorderedEquals: { 1, 2, 3 }
           </Expanded>
         </Expression>
         <OverallResults successes="0" failures="4" expectedFailures="0"/>
@@ -8409,7 +8558,7 @@ loose text artifact
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="toString( vectors&lt;has_maker )" tags="[toString]" filename="projects/<exe-name>/UsageTests/ToStringWhich.tests.cpp" >
+    <TestCase name="toString( vectors&lt;has_maker> )" tags="[toString]" filename="projects/<exe-name>/UsageTests/ToStringWhich.tests.cpp" >
       <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/UsageTests/ToStringWhich.tests.cpp" >
         <Original>
           ::Catch::Detail::stringify( v ) == "{ StringMaker&lt;has_maker> }"
@@ -8418,6 +8567,32 @@ loose text artifact
           "{ StringMaker&lt;has_maker> }"
 ==
 "{ StringMaker&lt;has_maker> }"
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="toString( vectors&lt;has_maker_and_operator> )" tags="[toString]" filename="projects/<exe-name>/UsageTests/ToStringWhich.tests.cpp" >
+      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/UsageTests/ToStringWhich.tests.cpp" >
+        <Original>
+          ::Catch::Detail::stringify( v ) == "{ StringMaker&lt;has_maker_and_operator> }"
+        </Original>
+        <Expanded>
+          "{ StringMaker&lt;has_maker_and_operator> }"
+==
+"{ StringMaker&lt;has_maker_and_operator> }"
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="toString( vectors&lt;has_operator> )" tags="[toString]" filename="projects/<exe-name>/UsageTests/ToStringWhich.tests.cpp" >
+      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/UsageTests/ToStringWhich.tests.cpp" >
+        <Original>
+          ::Catch::Detail::stringify( v ) == "{ operator&lt;&lt;( has_operator ) }"
+        </Original>
+        <Expanded>
+          "{ operator&lt;&lt;( has_operator ) }"
+==
+"{ operator&lt;&lt;( has_operator ) }"
         </Expanded>
       </Expression>
       <OverallResult success="true"/>
@@ -8863,7 +9038,7 @@ loose text artifact
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="824" failures="107" expectedFailures="21"/>
+    <OverallResults successes="839" failures="111" expectedFailures="21"/>
   </Group>
-  <OverallResults successes="824" failures="106" expectedFailures="21"/>
+  <OverallResults successes="839" failures="110" expectedFailures="21"/>
 </Catch>

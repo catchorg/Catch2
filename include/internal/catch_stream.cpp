@@ -145,6 +145,7 @@ namespace Catch {
         std::vector<std::unique_ptr<std::ostringstream>> m_streams;
         std::vector<std::size_t> m_unused;
         std::ostringstream m_referenceStream; // Used for copy state/ flags from
+        static StringStreams* s_instance;
 
         auto add() -> std::size_t {
             if( m_unused.empty() ) {
@@ -165,11 +166,21 @@ namespace Catch {
 
         // !TBD: put in TLS
         static auto instance() -> StringStreams& {
-            static StringStreams s_stringStreams;
-            return s_stringStreams;
+            if( !s_instance )
+                s_instance = new StringStreams();
+            return *s_instance;
+        }
+        static void cleanup() {
+            delete s_instance;
+            s_instance = nullptr;
         }
     };
 
+    StringStreams* StringStreams::s_instance = nullptr;
+
+    void ReusableStringStream::cleanup() {
+        StringStreams::cleanup();
+    }
 
     ReusableStringStream::ReusableStringStream()
     :   m_index( StringStreams::instance().add() ),

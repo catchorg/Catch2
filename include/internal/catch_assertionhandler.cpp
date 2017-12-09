@@ -13,8 +13,7 @@
 #include "catch_debugger.h"
 #include "catch_interfaces_registry_hub.h"
 #include "catch_capture_matchers.h"
-
-#include <cassert>
+#include "catch_run_context.h"
 
 namespace Catch {
 
@@ -54,87 +53,60 @@ namespace Catch {
             SourceLineInfo const& lineInfo,
             StringRef capturedExpression,
             ResultDisposition::Flags resultDisposition )
-    :   m_assertionInfo{ macroName, lineInfo, capturedExpression, resultDisposition }
-    {
-        getCurrentContext().getResultCapture()->assertionStarting( m_assertionInfo );
+    :   m_assertionInfo{ macroName, lineInfo, capturedExpression, resultDisposition },
+        m_resultCapture( getResultCapture() )
+    {}
+
+    AssertionHandler::~AssertionHandler() {
+        if ( !m_completed )
+            m_resultCapture.handleIncomplete( m_assertionInfo );
     }
 
-    void AssertionHandler::handle( ITransientExpression const& expr ) {
-
-        bool negated = isFalseTest( m_assertionInfo.resultDisposition );
-        bool result = expr.getResult() != negated;
-
-        if(result && !getCurrentContext().getConfig()->includeSuccessfulResults())
-        {
-            getCurrentContext().getResultCapture()->assertionRun();
-            getCurrentContext().getResultCapture()->assertionPassed();
-            return;
-        }
-
-        handle( result ? ResultWas::Ok : ResultWas::ExpressionFailed, &expr, negated );
+    void AssertionHandler::handleExpr( ITransientExpression const& expr ) {
+        m_resultCapture.handleExpr( m_assertionInfo, expr, m_reaction );
     }
-    void AssertionHandler::handle( ResultWas::OfType resultType ) {
-        handle( resultType, nullptr, false );
-    }
-    void AssertionHandler::handle( ResultWas::OfType resultType, StringRef const& message ) {
-        AssertionResultData data( resultType, LazyExpression( false ) );
-        data.message = message;
-        handle( data, nullptr );
-    }
-    void AssertionHandler::handle( ResultWas::OfType resultType, ITransientExpression const* expr, bool negated ) {
-        AssertionResultData data( resultType, LazyExpression( negated ) );
-        handle( data, expr );
-    }
-    void AssertionHandler::handle( AssertionResultData const& resultData, ITransientExpression const* expr ) {
-
-        getResultCapture().assertionRun();
-
-        AssertionResult assertionResult{ m_assertionInfo, resultData };
-        assertionResult.m_resultData.lazyExpression.m_transientExpression = expr;
-
-        getResultCapture().assertionEnded( assertionResult );
-
-        if( !assertionResult.isOk() ) {
-            m_shouldDebugBreak = getCurrentContext().getConfig()->shouldDebugBreak();
-            m_shouldThrow =
-                    getCurrentContext().getRunner()->aborting() ||
-                    (m_assertionInfo.resultDisposition & ResultDisposition::Normal);
-        }
+    void AssertionHandler::handleMessage(ResultWas::OfType resultType, StringRef const& message) {
+        m_resultCapture.handleMessage( m_assertionInfo, resultType, message, m_reaction );
     }
 
     auto AssertionHandler::allowThrows() const -> bool {
         return getCurrentContext().getConfig()->allowThrows();
     }
 
-    auto AssertionHandler::shouldDebugBreak() const -> bool {
-        return m_shouldDebugBreak;
-    }
-    void AssertionHandler::reactWithDebugBreak() const {
-        if (m_shouldDebugBreak) {
-            ///////////////////////////////////////////////////////////////////
-            // To inspect the state during test, you need to go one level up the callstack
-            // To go back to the test and change execution, jump over the reactWithoutDebugBreak() call
-            ///////////////////////////////////////////////////////////////////
+    void AssertionHandler::complete() {
+        setCompleted();
+        if( m_reaction.shouldDebugBreak ) {
+
+            // If you find your debugger stopping you here then go one level up on the
+            // call-stack for the code that caused it (typically a failed assertion)
+
+            // (To go back to the test and change execution, jump over the throw, next)
             CATCH_BREAK_INTO_DEBUGGER();
         }
-        reactWithoutDebugBreak();
-    }
-    void AssertionHandler::reactWithoutDebugBreak() const {
-        if( m_shouldThrow )
+        if( m_reaction.shouldThrow )
             throw Catch::TestFailureException();
     }
-
-    void AssertionHandler::useActiveException() {
-        handle( ResultWas::ThrewException, Catch::translateActiveException() );
+    void AssertionHandler::setCompleted() {
+        m_completed = true;
     }
 
-    void AssertionHandler::setExceptionGuard() {
-        assert( m_inExceptionGuard == false );
-        m_inExceptionGuard = true;
+    void AssertionHandler::handleUnexpectedInflightException() {
+        m_resultCapture.handleUnexpectedInflightException( m_assertionInfo, Catch::translateActiveException(), m_reaction );
     }
-    void AssertionHandler::unsetExceptionGuard() {
-        assert( m_inExceptionGuard == true );
-        m_inExceptionGuard = false;
+
+    void AssertionHandler::handleExceptionThrownAsExpected() {
+        m_resultCapture.handleNonExpr(m_assertionInfo, ResultWas::Ok, m_reaction);
+    }
+    void AssertionHandler::handleExceptionNotThrownAsExpected() {
+        m_resultCapture.handleNonExpr(m_assertionInfo, ResultWas::Ok, m_reaction);
+    }
+
+    void AssertionHandler::handleUnexpectedExceptionNotThrown() {
+        m_resultCapture.handleUnexpectedExceptionNotThrown( m_assertionInfo, m_reaction );
+    }
+
+    void AssertionHandler::handleThrowingCallSkipped() {
+        m_resultCapture.handleNonExpr(m_assertionInfo, ResultWas::Ok, m_reaction);
     }
 
     // This is the overload that takes a string and infers the Equals matcher from it

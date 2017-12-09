@@ -26,7 +26,7 @@ namespace Catch {
         m_reporterPrefs.shouldRedirectStdOut = true;
     }
 
-    XmlReporter::~XmlReporter() {};
+    XmlReporter::~XmlReporter() = default;
 
     std::string XmlReporter::getDescription() {
         return "Reports test results as an XML document";
@@ -95,10 +95,10 @@ namespace Catch {
 
         bool includeResults = m_config->includeSuccessfulResults() || !result.isOk();
 
-        if( includeResults ) {
+        if( includeResults || result.getResultType() == ResultWas::Warning ) {
             // Print any info messages in <Info> tags.
             for( auto const& msg : assertionStats.infoMessages ) {
-                if( msg.type == ResultWas::Info ) {
+                if( msg.type == ResultWas::Info && includeResults ) {
                     m_xml.scopedElement( "Info" )
                             .writeText( msg.message );
                 } else if ( msg.type == ResultWas::Warning ) {

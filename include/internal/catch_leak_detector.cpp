@@ -8,10 +8,10 @@
  #include "catch_leak_detector.h"
 
 
-namespace Catch {
-
 #ifdef CATCH_CONFIG_WINDOWS_CRTDBG
 #include <crtdbg.h>
+
+namespace Catch {
 
 	LeakDetector::LeakDetector() {
 		int flag = _CrtSetDbgFlag(_CRTDBG_REPORT_FLAG);
@@ -23,11 +23,10 @@ namespace Catch {
 		// Change this to leaking allocation's number to break there
 		_CrtSetBreakAlloc(-1);
 	}
+}
 
 #else
 
-    LeakDetector::LeakDetector(){}
+    Catch::LeakDetector::LeakDetector() {}
 
 #endif
-
-}

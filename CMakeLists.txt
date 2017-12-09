@@ -4,6 +4,7 @@ project(CatchSelfTest)
 
 option(USE_VALGRIND "Perform SelfTests with Valgrind" OFF)
 option(BUILD_EXAMPLES "Build documentation examples" OFF)
+option(ENABLE_COVERAGE "Generate coverage for codecov.io" OFF)
 
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
@@ -280,7 +281,6 @@ set(HEADERS
 SOURCE_GROUP("Tests" FILES ${TEST_SOURCES})
 SOURCE_GROUP("Surrogates" FILES ${SURROGATE_SOURCES})
 
-# configure the executable
 
 # Projects consuming Catch via ExternalProject_Add might want to use install step
 # without building all of our selftests.
@@ -299,10 +299,17 @@ if (NOT NO_SELFTEST)
     set_property(TARGET SelfTest PROPERTY CXX_STANDARD_REQUIRED ON)
     set_property(TARGET SelfTest PROPERTY CXX_EXTENSIONS OFF)
 
+    if (ENABLE_COVERAGE)
+        list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/CMake")
+        find_package(codecov)
+        add_coverage(SelfTest)
+        list(APPEND LCOV_REMOVE_PATTERNS "/usr/")
+        coverage_evaluate()
+    endif()
 
     # Add desired warnings
     if ( CMAKE_CXX_COMPILER_ID MATCHES "Clang|AppleClang|GNU" )
-        target_compile_options( SelfTest PRIVATE -Wall -Wextra -Wunreachable-code )
+        target_compile_options( SelfTest PRIVATE -Wall -Wextra -Wunreachable-code -Werror )
     endif()
     # Clang specific warning go here
     if ( CMAKE_CXX_COMPILER_ID MATCHES "Clang" )
@@ -315,34 +322,41 @@ if (NOT NO_SELFTEST)
 
 
     # configure unit tests via CTest
-    enable_testing()
+    include(CTest)
     add_test(NAME RunTests COMMAND $<TARGET_FILE:SelfTest>)
 
-    add_test(NAME ListTests COMMAND $<TARGET_FILE:SelfTest> --list-tests)
+    add_test(NAME ListTests COMMAND $<TARGET_FILE:SelfTest> --list-tests --verbosity high)
     set_tests_properties(ListTests PROPERTIES PASS_REGULAR_EXPRESSION "[0-9]+ test cases")
 
     add_test(NAME ListTags COMMAND $<TARGET_FILE:SelfTest> --list-tags)
     set_tests_properties(ListTags PROPERTIES PASS_REGULAR_EXPRESSION "[0-9]+ tags")
 
+    add_test(NAME ListReporters COMMAND $<TARGET_FILE:SelfTest> --list-reporters)
+    set_tests_properties(ListReporters PROPERTIES PASS_REGULAR_EXPRESSION "Available reporters:")
+
+    add_test(NAME ListTestNamesOnly COMMAND $<TARGET_FILE:SelfTest> --list-test-names-only)
+    set_tests_properties(ListTestNamesOnly PROPERTIES PASS_REGULAR_EXPRESSION "Regex string matcher")
+
+
+
     # AppVeyor has a Python 2.7 in path, but doesn't have .py files as autorunnable
     add_test(NAME ApprovalTests COMMAND python ${CMAKE_CURRENT_SOURCE_DIR}/scripts/approvalTests.py $<TARGET_FILE:SelfTest>)
     set_tests_properties(ApprovalTests PROPERTIES FAIL_REGULAR_EXPRESSION "Results differed")
-    
+
     if (USE_VALGRIND)
         add_test(NAME ValgrindRunTests COMMAND valgrind --leak-check=full --error-exitcode=1 $<TARGET_FILE:SelfTest>)
-        add_test(NAME ValgrindListTests COMMAND valgrind --leak-check=full --error-exitcode=1 $<TARGET_FILE:SelfTest> --list-tests)
+        add_test(NAME ValgrindListTests COMMAND valgrind --leak-check=full --error-exitcode=1 $<TARGET_FILE:SelfTest> --list-tests --verbosity high)
         set_tests_properties(ValgrindListTests PROPERTIES PASS_REGULAR_EXPRESSION "definitely lost: 0 bytes in 0 blocks")
         add_test(NAME ValgrindListTags COMMAND valgrind --leak-check=full --error-exitcode=1 $<TARGET_FILE:SelfTest> --list-tags)
         set_tests_properties(ValgrindListTags PROPERTIES PASS_REGULAR_EXPRESSION "definitely lost: 0 bytes in 0 blocks")
     endif()
-    
+
 endif() # !NO_SELFTEST
 
 
 if(BUILD_EXAMPLES)
     add_subdirectory(examples)
 endif()
-
 
 install(DIRECTORY "single_include/" DESTINATION "include/catch")
 
