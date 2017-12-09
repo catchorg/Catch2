@@ -43,7 +43,8 @@ namespace Catch {
     struct SourceLineInfo {
 
         SourceLineInfo() = delete;
-        SourceLineInfo( char const* _file, std::size_t _line ) noexcept;
+        SourceLineInfo( char const* _file, std::size_t _line ) noexcept
+        : file( _file ), line( _line ) {}
 
         SourceLineInfo( SourceLineInfo const& other )        = default;
         SourceLineInfo( SourceLineInfo && )                  = default;
@@ -77,4 +78,3 @@ namespace Catch {
     ::Catch::SourceLineInfo( __FILE__, static_cast<std::size_t>( __LINE__ ) )
 
 #endif // TWOBLUECUBES_CATCH_COMMON_H_INCLUDED
-
