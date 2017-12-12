@@ -30,7 +30,10 @@ A, header-only, embedded scripting language designed from the ground up to direc
 A, single-header-only, type-safe, command line parser - which also prints formatted usage strings.
 
 ### [Couchbase-lite-core](https://github.com/couchbase/couchbase-lite-core)
-The next-generation core storage and query engine for Couchbase Lite/
+The next-generation core storage and query engine for Couchbase Lite
+
+### [DtCraft](https://github.com/twhuang-uiuc/DtCraft)
+A High-performance Cluster Computing Engine
 
 ### [Inja](https://github.com/pantor/inja)
 A header-only template engine for modern C++.
