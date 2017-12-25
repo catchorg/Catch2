@@ -303,7 +303,7 @@ if (NOT NO_SELFTEST)
         list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/CMake")
         find_package(codecov)
         add_coverage(SelfTest)
-        list(APPEND LCOV_REMOVE_PATTERNS "/usr/")
+        list(APPEND LCOV_REMOVE_PATTERNS "'/usr/*'")
         coverage_evaluate()
     endif()
 
