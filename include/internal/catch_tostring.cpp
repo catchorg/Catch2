@@ -63,7 +63,6 @@ namespace Detail {
              rss << std::setw(2) << static_cast<unsigned>(bytes[i]);
        return rss.str();
     }
-}
 
 
 template<typename T>
@@ -86,14 +85,13 @@ std::string fpToString( T value, int precision ) {
     return d;
 }
 
-
 //// ======================================================= ////
 //
 //   Out-of-line defs for full specialization of StringMaker
 //
 //// ======================================================= ////
 
-std::string StringMaker<std::string>::convert(const std::string& str) {
+std::string convert(const std::string& str) {
     if (!getCurrentContext().getConfig()->showInvisibles()) {
         return '"' + str + '"';
     }
@@ -116,7 +114,7 @@ std::string StringMaker<std::string>::convert(const std::string& str) {
     return s;
 }
 
-std::string StringMaker<std::wstring>::convert(const std::wstring& wstr) {
+std::string convert(const std::wstring& wstr) {
     std::string s;
     s.reserve(wstr.size());
     for (auto c : wstr) {
@@ -125,43 +123,41 @@ std::string StringMaker<std::wstring>::convert(const std::wstring& wstr) {
     return ::Catch::Detail::stringify(s);
 }
 
-std::string StringMaker<char const*>::convert(char const* str) {
+std::string convert(char const* str) {
     if (str) {
         return ::Catch::Detail::stringify(std::string{ str });
     } else {
         return{ "{null string}" };
     }
 }
-std::string StringMaker<char*>::convert(char* str) {
+std::string convert(char* str) {
     if (str) {
         return ::Catch::Detail::stringify(std::string{ str });
     } else {
         return{ "{null string}" };
     }
 }
-std::string StringMaker<wchar_t const*>::convert(wchar_t const * str) {
+std::string convert(wchar_t const * str) {
     if (str) {
         return ::Catch::Detail::stringify(std::wstring{ str });
     } else {
         return{ "{null string}" };
     }
 }
-std::string StringMaker<wchar_t *>::convert(wchar_t * str) {
+std::string convert(wchar_t * str) {
     if (str) {
         return ::Catch::Detail::stringify(std::wstring{ str });
     } else {
         return{ "{null string}" };
     }
 }
-
-
-std::string StringMaker<int>::convert(int value) {
+std::string convert(int value) {
     return ::Catch::Detail::stringify(static_cast<long long>(value));
 }
-std::string StringMaker<long>::convert(long value) {
+std::string convert(long value) {
     return ::Catch::Detail::stringify(static_cast<long long>(value));
 }
-std::string StringMaker<long long>::convert(long long value) {
+std::string convert(long long value) {
     ReusableStringStream rss;
     rss << value;
     if (value > Detail::hexThreshold) {
@@ -170,13 +166,13 @@ std::string StringMaker<long long>::convert(long long value) {
     return rss.str();
 }
 
-std::string StringMaker<unsigned int>::convert(unsigned int value) {
+std::string convert(unsigned int value) {
     return ::Catch::Detail::stringify(static_cast<unsigned long long>(value));
 }
-std::string StringMaker<unsigned long>::convert(unsigned long value) {
+std::string convert(unsigned long value) {
     return ::Catch::Detail::stringify(static_cast<unsigned long long>(value));
 }
-std::string StringMaker<unsigned long long>::convert(unsigned long long value) {
+std::string convert(unsigned long long value) {
     ReusableStringStream rss;
     rss << value;
     if (value > Detail::hexThreshold) {
@@ -186,11 +182,12 @@ std::string StringMaker<unsigned long long>::convert(unsigned long long value) {
 }
 
 
-std::string StringMaker<bool>::convert(bool b) {
+std::string convert(bool b) {
     return b ? "true" : "false";
 }
 
-std::string StringMaker<char>::convert(char value) {
+
+std::string convert(char value) {
     if (value == '\r') {
         return "'\\r'";
     } else if (value == '\f') {
@@ -207,31 +204,25 @@ std::string StringMaker<char>::convert(char value) {
         return chstr;
     }
 }
-std::string StringMaker<signed char>::convert(signed char c) {
+std::string convert(signed char c) {
     return ::Catch::Detail::stringify(static_cast<char>(c));
 }
-std::string StringMaker<unsigned char>::convert(unsigned char c) {
+std::string convert(unsigned char c) {
     return ::Catch::Detail::stringify(static_cast<char>(c));
 }
 
-std::string StringMaker<std::nullptr_t>::convert(std::nullptr_t) {
+std::string convert(std::nullptr_t) {
     return "nullptr";
 }
 
-std::string StringMaker<float>::convert(float value) {
+std::string convert(float value) {
     return fpToString(value, 5) + 'f';
 }
-std::string StringMaker<double>::convert(double value) {
+std::string convert(double value) {
     return fpToString(value, 10);
 }
 
-std::string ratio_string<std::atto>::symbol() { return "a"; }
-std::string ratio_string<std::femto>::symbol() { return "f"; }
-std::string  ratio_string<std::pico>::symbol() { return "p"; }
-std::string  ratio_string<std::nano>::symbol() { return "n"; }
-std::string ratio_string<std::micro>::symbol() { return "u"; }
-std::string ratio_string<std::milli>::symbol() { return "m"; }
-
+}
 
 } // end namespace Catch
 
