@@ -317,7 +317,8 @@ if (NOT NO_SELFTEST)
         target_compile_options( SelfTest PRIVATE -Wweak-vtables -Wexit-time-destructors -Wglobal-constructors -Wmissing-noreturn )
     endif()
     if ( CMAKE_CXX_COMPILER_ID MATCHES "MSVC" )
-        target_compile_options( SelfTest PRIVATE /W4 /w44265 /WX /w44061 /w44062 )
+		STRING(REGEX REPLACE "/W[0-9]" "/W4" CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS}) # override default warning level
+        target_compile_options( SelfTest PRIVATE /w44265 /WX /w44061 /w44062 )
     endif()
 
 
