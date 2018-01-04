@@ -1063,23 +1063,7 @@ Tricky.tests.cpp:<line number>: FAILED:
 with expansion:
   "first" == "second"
 
--------------------------------------------------------------------------------
-toString(enum class)
--------------------------------------------------------------------------------
-EnumToString.tests.cpp:<line number>
-...............................................................................
-
-EnumToString.tests.cpp:<line number>: FAILED:
-  CHECK( ::Catch::Detail::stringify(e0) == "0" )
-with expansion:
-  "{?}" == "0"
-
-EnumToString.tests.cpp:<line number>: FAILED:
-  CHECK( ::Catch::Detail::stringify(e1) == "1" )
-with expansion:
-  "{?}" == "1"
-
 ===============================================================================
-test cases: 193 | 141 passed |  48 failed |  4 failed as expected
-assertions: 977 | 849 passed | 107 failed | 21 failed as expected
+test cases: 194 | 143 passed |  47 failed |  4 failed as expected
+assertions: 980 | 854 passed | 105 failed | 21 failed as expected
 

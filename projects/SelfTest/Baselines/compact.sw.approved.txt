@@ -987,8 +987,8 @@ EnumToString.tests.cpp:<line number>: passed: ::Catch::Detail::stringify(e1) == 
 EnumToString.tests.cpp:<line number>: passed: ::Catch::Detail::stringify(e3) == "Unknown enum value 10" for: "Unknown enum value 10"
 ==
 "Unknown enum value 10"
-EnumToString.tests.cpp:<line number>: failed: ::Catch::Detail::stringify(e0) == "0" for: "{?}" == "0"
-EnumToString.tests.cpp:<line number>: failed: ::Catch::Detail::stringify(e1) == "1" for: "{?}" == "1"
+EnumToString.tests.cpp:<line number>: passed: ::Catch::Detail::stringify(e0) == "0" for: "0" == "0"
+EnumToString.tests.cpp:<line number>: passed: ::Catch::Detail::stringify(e1) == "1" for: "1" == "1"
 EnumToString.tests.cpp:<line number>: passed: ::Catch::Detail::stringify(e0) == "E2{0}" for: "E2{0}" == "E2{0}"
 EnumToString.tests.cpp:<line number>: passed: ::Catch::Detail::stringify(e1) == "E2{1}" for: "E2{1}" == "E2{1}"
 EnumToString.tests.cpp:<line number>: passed: ::Catch::Detail::stringify(e0) == "0" for: "0" == "0"
@@ -1011,6 +1011,9 @@ ToStringVector.tests.cpp:<line number>: passed: ::Catch::Detail::stringify(v) ==
 ToStringVector.tests.cpp:<line number>: passed: ::Catch::Detail::stringify(v) == "{ { /"hello/" }, { /"world/" } }" for: "{ { "hello" }, { "world" } }"
 ==
 "{ { "hello" }, { "world" } }"
+ToStringVector.tests.cpp:<line number>: passed: ::Catch::Detail::stringify(bools) == "{  }" for: "{  }" == "{  }"
+ToStringVector.tests.cpp:<line number>: passed: ::Catch::Detail::stringify(bools) == "{ true }" for: "{ true }" == "{ true }"
+ToStringVector.tests.cpp:<line number>: passed: ::Catch::Detail::stringify(bools) == "{ true, false }" for: "{ true, false }" == "{ true, false }"
 ToStringVector.tests.cpp:<line number>: passed: ::Catch::Detail::stringify(vv) == "{  }" for: "{  }" == "{  }"
 ToStringVector.tests.cpp:<line number>: passed: ::Catch::Detail::stringify(vv) == "{ 42 }" for: "{ 42 }" == "{ 42 }"
 ToStringVector.tests.cpp:<line number>: passed: ::Catch::Detail::stringify(vv) == "{ 42, 250 }" for: "{ 42, 250 }" == "{ 42, 250 }"
@@ -1041,5 +1044,5 @@ Misc.tests.cpp:<line number>: passed: v.size() == 5 for: 5 == 5
 Misc.tests.cpp:<line number>: passed: v.capacity() >= 5 for: 5 >= 5
 Misc.tests.cpp:<line number>: passed:
 Misc.tests.cpp:<line number>: passed:
-Failed 50 test cases, failed 110 assertions.
+Failed 49 test cases, failed 108 assertions.
 

@@ -57,7 +57,20 @@ namespace Catch {
             static const bool value = decltype(test<std::ostream, const T&>(0))::value;
         };
 
+        template<typename E>
+        std::string convertUnknownEnumToString( E e );
+
+        template<typename T>
+        typename std::enable_if<!std::is_enum<T>::value, std::string>::type convertUnstreamable( T const& ) {
+            return Detail::unprintableString;
+        };
+        template<typename T>
+        typename std::enable_if<std::is_enum<T>::value, std::string>::type convertUnstreamable( T const& value ) {
+            return convertUnknownEnumToString( value );
+        };
+
     } // namespace Detail
+
 
     // If we decide for C++14, change these to enable_if_ts
     template <typename T, typename = void>
@@ -65,17 +78,17 @@ namespace Catch {
         template <typename Fake = T>
         static
         typename std::enable_if<::Catch::Detail::IsStreamInsertable<Fake>::value, std::string>::type
-            convert(const Fake& t) {
+            convert(const Fake& value) {
                 ReusableStringStream rss;
-                rss << t;
+                rss << value;
                 return rss.str();
         }
 
         template <typename Fake = T>
         static
         typename std::enable_if<!::Catch::Detail::IsStreamInsertable<Fake>::value, std::string>::type
-            convert(const Fake&) {
-                return Detail::unprintableString;
+            convert( const Fake& value ) {
+                return Detail::convertUnstreamable( value );
         }
     };
 
@@ -88,8 +101,12 @@ namespace Catch {
             return ::Catch::StringMaker<typename std::remove_cv<typename std::remove_reference<T>::type>::type>::convert(e);
         }
 
-    } // namespace Detail
+        template<typename E>
+        std::string convertUnknownEnumToString( E e ) {
+            return ::Catch::Detail::stringify(static_cast<typename std::underlying_type<E>::type>(e));
+        }
 
+    } // namespace Detail
 
     // Some predefined specializations
 
@@ -232,13 +249,6 @@ namespace Catch {
             return rss.str();
         }
     }
-
-    template<typename T>
-    struct EnumStringMaker {
-        static std::string convert(const T& t) {
-            return ::Catch::Detail::stringify(static_cast<typename std::underlying_type<T>::type>(t));
-        }
-    };
 
 #ifdef __OBJC__
     template<>

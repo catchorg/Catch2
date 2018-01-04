@@ -7783,15 +7783,17 @@ toString(enum class)
 EnumToString.tests.cpp:<line number>
 ...............................................................................
 
-EnumToString.tests.cpp:<line number>: FAILED:
+EnumToString.tests.cpp:<line number>:
+PASSED:
   CHECK( ::Catch::Detail::stringify(e0) == "0" )
 with expansion:
-  "{?}" == "0"
+  "0" == "0"
 
-EnumToString.tests.cpp:<line number>: FAILED:
+EnumToString.tests.cpp:<line number>:
+PASSED:
   CHECK( ::Catch::Detail::stringify(e1) == "1" )
 with expansion:
-  "{?}" == "1"
+  "1" == "1"
 
 -------------------------------------------------------------------------------
 toString(enum w/operator<<)
@@ -7938,6 +7940,30 @@ with expansion:
   "{ { "hello" }, { "world" } }"
   ==
   "{ { "hello" }, { "world" } }"
+
+-------------------------------------------------------------------------------
+vector<bool> -> toString
+-------------------------------------------------------------------------------
+ToStringVector.tests.cpp:<line number>
+...............................................................................
+
+ToStringVector.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( ::Catch::Detail::stringify(bools) == "{  }" )
+with expansion:
+  "{  }" == "{  }"
+
+ToStringVector.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( ::Catch::Detail::stringify(bools) == "{ true }" )
+with expansion:
+  "{ true }" == "{ true }"
+
+ToStringVector.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( ::Catch::Detail::stringify(bools) == "{ true, false }" )
+with expansion:
+  "{ true, false }" == "{ true, false }"
 
 -------------------------------------------------------------------------------
 vector<int,allocator> -> toString
@@ -8196,6 +8222,6 @@ Misc.tests.cpp:<line number>:
 PASSED:
 
 ===============================================================================
-test cases: 193 | 139 passed |  50 failed |  4 failed as expected
-assertions: 976 | 845 passed | 110 failed | 21 failed as expected
+test cases: 194 | 141 passed |  49 failed |  4 failed as expected
+assertions: 979 | 850 passed | 108 failed | 21 failed as expected
 

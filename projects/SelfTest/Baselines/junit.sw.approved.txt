@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuitesloose text artifact
 >
-  <testsuite name="<exe-name>" errors="15" failures="96" tests="977" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
+  <testsuite name="<exe-name>" errors="15" failures="94" tests="980" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
     <testcase classname="<exe-name>.global" name="# A test name that starts with a #" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="#1005: Comparing pointer to int and long (NULL can be either on various systems)" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="#1027" time="{duration}"/>
@@ -824,14 +824,7 @@ Tricky.tests.cpp:<line number>
     <testcase classname="<exe-name>.global" name="toString( vectors&lt;has_maker_and_operator> )" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="toString( vectors&lt;has_operator> )" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="toString(enum class w/operator&lt;&lt;)" time="{duration}"/>
-    <testcase classname="<exe-name>.global" name="toString(enum class)" time="{duration}">
-      <failure message="&quot;{?}&quot; == &quot;0&quot;" type="CHECK">
-EnumToString.tests.cpp:<line number>
-      </failure>
-      <failure message="&quot;{?}&quot; == &quot;1&quot;" type="CHECK">
-EnumToString.tests.cpp:<line number>
-      </failure>
-    </testcase>
+    <testcase classname="<exe-name>.global" name="toString(enum class)" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="toString(enum w/operator&lt;&lt;)" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="toString(enum)" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="tuple&lt;>" time="{duration}"/>
@@ -841,6 +834,7 @@ EnumToString.tests.cpp:<line number>
     <testcase classname="<exe-name>.global" name="tuple&lt;string,string>" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="tuple&lt;tuple&lt;int>,tuple&lt;>,float>" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="vec&lt;vec&lt;string,alloc>> -> toString" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="vector&lt;bool> -> toString" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="vector&lt;int,allocator> -> toString" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="vector&lt;int> -> toString" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="vector&lt;string> -> toString" time="{duration}"/>
