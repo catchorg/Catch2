@@ -6853,6 +6853,30 @@ with expansion:
   "[\x7F]" == "[\x7F]"
 
 -------------------------------------------------------------------------------
+array<int, N> -> toString
+-------------------------------------------------------------------------------
+ToStringVector.tests.cpp:<line number>
+...............................................................................
+
+ToStringVector.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( Catch::Detail::stringify( empty ) == "{  }" )
+with expansion:
+  "{  }" == "{  }"
+
+ToStringVector.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( Catch::Detail::stringify( oneValue ) == "{ 42 }" )
+with expansion:
+  "{ 42 }" == "{ 42 }"
+
+ToStringVector.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( Catch::Detail::stringify( twoValues ) == "{ 42, 250 }" )
+with expansion:
+  "{ 42, 250 }" == "{ 42, 250 }"
+
+-------------------------------------------------------------------------------
 atomic if
 -------------------------------------------------------------------------------
 Misc.tests.cpp:<line number>
@@ -8222,6 +8246,6 @@ Misc.tests.cpp:<line number>:
 PASSED:
 
 ===============================================================================
-test cases: 194 | 141 passed |  49 failed |  4 failed as expected
-assertions: 979 | 850 passed | 108 failed | 21 failed as expected
+test cases: 195 | 142 passed |  49 failed |  4 failed as expected
+assertions: 982 | 853 passed | 108 failed | 21 failed as expected
 

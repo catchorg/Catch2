@@ -7749,6 +7749,33 @@ Message from section two
       </Section>
       <OverallResult success="true"/>
     </TestCase>
+    <TestCase name="array&lt;int, N> -> toString" tags="[array][containers][toString]" filename="projects/<exe-name>/UsageTests/ToStringVector.tests.cpp" >
+      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/UsageTests/ToStringVector.tests.cpp" >
+        <Original>
+          Catch::Detail::stringify( empty ) == "{  }"
+        </Original>
+        <Expanded>
+          "{  }" == "{  }"
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/UsageTests/ToStringVector.tests.cpp" >
+        <Original>
+          Catch::Detail::stringify( oneValue ) == "{ 42 }"
+        </Original>
+        <Expanded>
+          "{ 42 }" == "{ 42 }"
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/UsageTests/ToStringVector.tests.cpp" >
+        <Original>
+          Catch::Detail::stringify( twoValues ) == "{ 42, 250 }"
+        </Original>
+        <Expanded>
+          "{ 42, 250 }" == "{ 42, 250 }"
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
     <TestCase name="atomic if" tags="[0][failing]" filename="projects/<exe-name>/UsageTests/Misc.tests.cpp" >
       <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/UsageTests/Misc.tests.cpp" >
         <Original>
@@ -9141,7 +9168,7 @@ loose text artifact
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="850" failures="109" expectedFailures="21"/>
+    <OverallResults successes="853" failures="109" expectedFailures="21"/>
   </Group>
-  <OverallResults successes="850" failures="108" expectedFailures="21"/>
+  <OverallResults successes="853" failures="108" expectedFailures="21"/>
 </Catch>

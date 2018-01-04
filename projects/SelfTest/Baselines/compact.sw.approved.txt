@@ -874,6 +874,9 @@ Xml.tests.cpp:<line number>: passed: encode( stringWithQuotes, Catch::XmlEncode:
 "don't &quot;quote&quot; me on that"
 Xml.tests.cpp:<line number>: passed: encode( "[/x01]" ) == "[//x01]" for: "[/x01]" == "[/x01]"
 Xml.tests.cpp:<line number>: passed: encode( "[/x7F]" ) == "[//x7F]" for: "[/x7F]" == "[/x7F]"
+ToStringVector.tests.cpp:<line number>: passed: Catch::Detail::stringify( empty ) == "{  }" for: "{  }" == "{  }"
+ToStringVector.tests.cpp:<line number>: passed: Catch::Detail::stringify( oneValue ) == "{ 42 }" for: "{ 42 }" == "{ 42 }"
+ToStringVector.tests.cpp:<line number>: passed: Catch::Detail::stringify( twoValues ) == "{ 42, 250 }" for: "{ 42, 250 }" == "{ 42, 250 }"
 Misc.tests.cpp:<line number>: passed: x == 0 for: 0 == 0
 Tricky.tests.cpp:<line number>: passed: obj.prop != 0 for: 0x<hex digits> != 0
 Misc.tests.cpp:<line number>: passed: flag for: true

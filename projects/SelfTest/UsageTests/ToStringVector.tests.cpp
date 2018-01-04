@@ -1,6 +1,6 @@
 #include "catch.hpp"
 #include <vector>
-
+#include <array>
 
 // vedctor
 TEST_CASE( "vector<int> -> toString", "[toString][vector]" )
@@ -75,4 +75,12 @@ TEST_CASE( "vector<bool> -> toString", "[toString][containers][vector]" ) {
     REQUIRE( ::Catch::Detail::stringify(bools) == "{ true }");
     bools.push_back(false);
     REQUIRE( ::Catch::Detail::stringify(bools) == "{ true, false }");
+}
+TEST_CASE( "array<int, N> -> toString", "[toString][containers][array]" ) {
+    std::array<int, 0> empty;
+    REQUIRE( Catch::Detail::stringify( empty ) == "{  }" );
+    std::array<int, 1> oneValue = {{ 42 }};
+    REQUIRE( Catch::Detail::stringify( oneValue ) == "{ 42 }" );
+    std::array<int, 2> twoValues = {{ 42, 250 }};
+    REQUIRE( Catch::Detail::stringify( twoValues ) == "{ 42, 250 }" );
 }
