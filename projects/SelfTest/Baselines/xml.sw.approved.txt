@@ -8429,6 +8429,44 @@ loose text artifact
       </Expression>
       <OverallResult success="false"/>
     </TestCase>
+    <TestCase name="std::map is convertible string" tags="[toString]" filename="projects/<exe-name>/UsageTests/ToStringGeneral.tests.cpp" >
+      <Section name="empty" filename="projects/<exe-name>/UsageTests/ToStringGeneral.tests.cpp" >
+        <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/UsageTests/ToStringGeneral.tests.cpp" >
+          <Original>
+            Catch::Detail::stringify( emptyMap ) == "{  }"
+          </Original>
+          <Expanded>
+            "{  }" == "{  }"
+          </Expanded>
+        </Expression>
+        <OverallResults successes="1" failures="0" expectedFailures="0"/>
+      </Section>
+      <Section name="single item" filename="projects/<exe-name>/UsageTests/ToStringGeneral.tests.cpp" >
+        <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/UsageTests/ToStringGeneral.tests.cpp" >
+          <Original>
+            Catch::Detail::stringify( map ) == "{ { \"one\", 1 } }"
+          </Original>
+          <Expanded>
+            "{ { "one", 1 } }" == "{ { "one", 1 } }"
+          </Expanded>
+        </Expression>
+        <OverallResults successes="1" failures="0" expectedFailures="0"/>
+      </Section>
+      <Section name="several items" filename="projects/<exe-name>/UsageTests/ToStringGeneral.tests.cpp" >
+        <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/UsageTests/ToStringGeneral.tests.cpp" >
+          <Original>
+            Catch::Detail::stringify( map ) == "{ { \"abc\", 1 }, { \"def\", 2 }, { \"ghi\", 3 } }"
+          </Original>
+          <Expanded>
+            "{ { "abc", 1 }, { "def", 2 }, { "ghi", 3 } }"
+==
+"{ { "abc", 1 }, { "def", 2 }, { "ghi", 3 } }"
+          </Expanded>
+        </Expression>
+        <OverallResults successes="1" failures="0" expectedFailures="0"/>
+      </Section>
+      <OverallResult success="true"/>
+    </TestCase>
     <TestCase name="std::pair&lt;int,const std::string> -> toString" tags="[pair][toString]" filename="projects/<exe-name>/UsageTests/ToStringPair.tests.cpp" >
       <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/UsageTests/ToStringPair.tests.cpp" >
         <Original>
@@ -8449,6 +8487,44 @@ loose text artifact
           "{ 34, "xyzzy" }" == "{ 34, "xyzzy" }"
         </Expanded>
       </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="std::set is convertible string" tags="[toString]" filename="projects/<exe-name>/UsageTests/ToStringGeneral.tests.cpp" >
+      <Section name="empty" filename="projects/<exe-name>/UsageTests/ToStringGeneral.tests.cpp" >
+        <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/UsageTests/ToStringGeneral.tests.cpp" >
+          <Original>
+            Catch::Detail::stringify( emptySet ) == "{  }"
+          </Original>
+          <Expanded>
+            "{  }" == "{  }"
+          </Expanded>
+        </Expression>
+        <OverallResults successes="1" failures="0" expectedFailures="0"/>
+      </Section>
+      <Section name="single item" filename="projects/<exe-name>/UsageTests/ToStringGeneral.tests.cpp" >
+        <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/UsageTests/ToStringGeneral.tests.cpp" >
+          <Original>
+            Catch::Detail::stringify( set ) == "{ \"one\" }"
+          </Original>
+          <Expanded>
+            "{ "one" }" == "{ "one" }"
+          </Expanded>
+        </Expression>
+        <OverallResults successes="1" failures="0" expectedFailures="0"/>
+      </Section>
+      <Section name="several items" filename="projects/<exe-name>/UsageTests/ToStringGeneral.tests.cpp" >
+        <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/UsageTests/ToStringGeneral.tests.cpp" >
+          <Original>
+            Catch::Detail::stringify( set ) == "{ \"abc\", \"def\", \"ghi\" }"
+          </Original>
+          <Expanded>
+            "{ "abc", "def", "ghi" }"
+==
+"{ "abc", "def", "ghi" }"
+          </Expanded>
+        </Expression>
+        <OverallResults successes="1" failures="0" expectedFailures="0"/>
+      </Section>
       <OverallResult success="true"/>
     </TestCase>
     <TestCase name="std::vector&lt;std::pair&lt;std::string,int> > -> toString" tags="[pair][toString]" filename="projects/<exe-name>/UsageTests/ToStringPair.tests.cpp" >
@@ -9038,7 +9114,7 @@ loose text artifact
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="839" failures="111" expectedFailures="21"/>
+    <OverallResults successes="845" failures="111" expectedFailures="21"/>
   </Group>
-  <OverallResults successes="839" failures="110" expectedFailures="21"/>
+  <OverallResults successes="845" failures="110" expectedFailures="21"/>
 </Catch>

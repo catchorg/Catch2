@@ -7489,6 +7489,47 @@ with messages:
   i := 7
 
 -------------------------------------------------------------------------------
+std::map is convertible string
+  empty
+-------------------------------------------------------------------------------
+ToStringGeneral.tests.cpp:<line number>
+...............................................................................
+
+ToStringGeneral.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( Catch::Detail::stringify( emptyMap ) == "{  }" )
+with expansion:
+  "{  }" == "{  }"
+
+-------------------------------------------------------------------------------
+std::map is convertible string
+  single item
+-------------------------------------------------------------------------------
+ToStringGeneral.tests.cpp:<line number>
+...............................................................................
+
+ToStringGeneral.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( Catch::Detail::stringify( map ) == "{ { \"one\", 1 } }" )
+with expansion:
+  "{ { "one", 1 } }" == "{ { "one", 1 } }"
+
+-------------------------------------------------------------------------------
+std::map is convertible string
+  several items
+-------------------------------------------------------------------------------
+ToStringGeneral.tests.cpp:<line number>
+...............................................................................
+
+ToStringGeneral.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( Catch::Detail::stringify( map ) == "{ { \"abc\", 1 }, { \"def\", 2 }, { \"ghi\", 3 } }" )
+with expansion:
+  "{ { "abc", 1 }, { "def", 2 }, { "ghi", 3 } }"
+  ==
+  "{ { "abc", 1 }, { "def", 2 }, { "ghi", 3 } }"
+
+-------------------------------------------------------------------------------
 std::pair<int,const std::string> -> toString
 -------------------------------------------------------------------------------
 ToStringPair.tests.cpp:<line number>
@@ -7511,6 +7552,47 @@ PASSED:
   REQUIRE( ::Catch::Detail::stringify( value ) == "{ 34, \"xyzzy\" }" )
 with expansion:
   "{ 34, "xyzzy" }" == "{ 34, "xyzzy" }"
+
+-------------------------------------------------------------------------------
+std::set is convertible string
+  empty
+-------------------------------------------------------------------------------
+ToStringGeneral.tests.cpp:<line number>
+...............................................................................
+
+ToStringGeneral.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( Catch::Detail::stringify( emptySet ) == "{  }" )
+with expansion:
+  "{  }" == "{  }"
+
+-------------------------------------------------------------------------------
+std::set is convertible string
+  single item
+-------------------------------------------------------------------------------
+ToStringGeneral.tests.cpp:<line number>
+...............................................................................
+
+ToStringGeneral.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( Catch::Detail::stringify( set ) == "{ \"one\" }" )
+with expansion:
+  "{ "one" }" == "{ "one" }"
+
+-------------------------------------------------------------------------------
+std::set is convertible string
+  several items
+-------------------------------------------------------------------------------
+ToStringGeneral.tests.cpp:<line number>
+...............................................................................
+
+ToStringGeneral.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( Catch::Detail::stringify( set ) == "{ \"abc\", \"def\", \"ghi\" }" )
+with expansion:
+  "{ "abc", "def", "ghi" }"
+  ==
+  "{ "abc", "def", "ghi" }"
 
 -------------------------------------------------------------------------------
 std::vector<std::pair<std::string,int> > -> toString
@@ -8114,6 +8196,6 @@ Misc.tests.cpp:<line number>:
 PASSED:
 
 ===============================================================================
-test cases: 191 | 137 passed |  50 failed |  4 failed as expected
-assertions: 970 | 839 passed | 110 failed | 21 failed as expected
+test cases: 193 | 139 passed |  50 failed |  4 failed as expected
+assertions: 976 | 845 passed | 110 failed | 21 failed as expected
 

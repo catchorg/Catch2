@@ -944,8 +944,18 @@ String.tests.cpp:<line number>: passed: Catch::replaceInPlace( s, "'", "|'" ) fo
 String.tests.cpp:<line number>: passed: s == "didn|'t" for: "didn|'t" == "didn|'t"
 Misc.tests.cpp:<line number>: failed: false with 1 message: '3'
 Message.tests.cpp:<line number>: failed: false with 2 messages: 'hi' and 'i := 7'
+ToStringGeneral.tests.cpp:<line number>: passed: Catch::Detail::stringify( emptyMap ) == "{  }" for: "{  }" == "{  }"
+ToStringGeneral.tests.cpp:<line number>: passed: Catch::Detail::stringify( map ) == "{ { /"one/", 1 } }" for: "{ { "one", 1 } }" == "{ { "one", 1 } }"
+ToStringGeneral.tests.cpp:<line number>: passed: Catch::Detail::stringify( map ) == "{ { /"abc/", 1 }, { /"def/", 2 }, { /"ghi/", 3 } }" for: "{ { "abc", 1 }, { "def", 2 }, { "ghi", 3 } }"
+==
+"{ { "abc", 1 }, { "def", 2 }, { "ghi", 3 } }"
 ToStringPair.tests.cpp:<line number>: passed: ::Catch::Detail::stringify(value) == "{ 34, /"xyzzy/" }" for: "{ 34, "xyzzy" }" == "{ 34, "xyzzy" }"
 ToStringPair.tests.cpp:<line number>: passed: ::Catch::Detail::stringify( value ) == "{ 34, /"xyzzy/" }" for: "{ 34, "xyzzy" }" == "{ 34, "xyzzy" }"
+ToStringGeneral.tests.cpp:<line number>: passed: Catch::Detail::stringify( emptySet ) == "{  }" for: "{  }" == "{  }"
+ToStringGeneral.tests.cpp:<line number>: passed: Catch::Detail::stringify( set ) == "{ /"one/" }" for: "{ "one" }" == "{ "one" }"
+ToStringGeneral.tests.cpp:<line number>: passed: Catch::Detail::stringify( set ) == "{ /"abc/", /"def/", /"ghi/" }" for: "{ "abc", "def", "ghi" }"
+==
+"{ "abc", "def", "ghi" }"
 ToStringPair.tests.cpp:<line number>: passed: ::Catch::Detail::stringify( pr ) == "{ { /"green/", 55 } }" for: "{ { "green", 55 } }"
 ==
 "{ { "green", 55 } }"
