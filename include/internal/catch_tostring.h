@@ -233,7 +233,6 @@ namespace Catch {
         }
     }
 
-
     template<typename T>
     struct EnumStringMaker {
         static std::string convert(const T& t) {
@@ -355,10 +354,32 @@ namespace Catch {
             !std::is_same<decltype(end(std::declval<T>())), not_this_one>::value;
     };
 
+    template<typename Range>
+    std::string rangeToString( Range const& range ) {
+        return ::Catch::Detail::rangeToString( begin( range ), end( range ) );
+    }
+
+    // Handle vector<bool> specially
+    template<typename Allocator>
+    std::string rangeToString( std::vector<bool, Allocator> const& v ) {
+        ReusableStringStream rss;
+        rss << "{ ";
+        bool first = true;
+        for( bool b : v ) {
+            if( first )
+                first = false;
+            else
+                rss << ", ";
+            rss << ::Catch::Detail::stringify( b );
+        }
+        rss << " }";
+        return rss.str();
+    }
+
     template<typename R>
     struct StringMaker<R, typename std::enable_if<is_range<R>::value>::type> {
         static std::string convert( R const& range ) {
-            return ::Catch::Detail::rangeToString( begin( range ), end( range ) );
+            return rangeToString( range );
         }
     };
 

@@ -66,3 +66,13 @@ TEST_CASE( "vec<vec<string,alloc>> -> toString", "[toString][vector,allocator]" 
     v.push_back( inner { "world" } );
     REQUIRE( ::Catch::Detail::stringify(v) == "{ { \"hello\" }, { \"world\" } }" );
 }
+
+// Based on PR by mat-so: https://github.com/catchorg/Catch2/pull/606/files#diff-43562f40f8c6dcfe2c54557316e0f852
+TEST_CASE( "vector<bool> -> toString", "[toString][containers][vector]" ) {
+    std::vector<bool> bools;
+    REQUIRE( ::Catch::Detail::stringify(bools) == "{  }");
+    bools.push_back(true);
+    REQUIRE( ::Catch::Detail::stringify(bools) == "{ true }");
+    bools.push_back(false);
+    REQUIRE( ::Catch::Detail::stringify(bools) == "{ true, false }");
+}
