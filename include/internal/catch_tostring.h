@@ -60,7 +60,7 @@ namespace Catch {
     } // namespace Detail
 
     // If we decide for C++14, change these to enable_if_ts
-    template <typename T>
+    template <typename T, typename = void>
     struct StringMaker {
         template <typename Fake = T>
         static
@@ -233,12 +233,6 @@ namespace Catch {
         }
     }
 
-    template<typename T, typename Allocator>
-    struct StringMaker<std::vector<T, Allocator> > {
-        static std::string convert( std::vector<T,Allocator> const& v ) {
-            return ::Catch::Detail::rangeToString( v.begin(), v.end() );
-        }
-    };
 
     template<typename T>
     struct EnumStringMaker {
@@ -344,6 +338,31 @@ namespace Catch {
 }
 #endif // CATCH_CONFIG_ENABLE_TUPLE_STRINGMAKER
 
+namespace Catch {
+    struct not_this_one {}; // Tag type for detecting which begin/ end are being selected
+
+    // Import begin/ end from std here so they are considered alongside the fallback (...) overloads in this namespace
+    using std::begin;
+    using std::end;
+
+    not_this_one begin( ... );
+    not_this_one end( ... );
+
+    template <typename T>
+    struct is_range {
+        static const bool value =
+            !std::is_same<decltype(begin(std::declval<T>())), not_this_one>::value &&
+            !std::is_same<decltype(end(std::declval<T>())), not_this_one>::value;
+    };
+
+    template<typename R>
+    struct StringMaker<R, typename std::enable_if<is_range<R>::value>::type> {
+        static std::string convert( R const& range ) {
+            return ::Catch::Detail::rangeToString( begin( range ), end( range ) );
+        }
+    };
+
+} // namespace Catch
 
 // Separate std::chrono::duration specialization
 #if defined(CATCH_CONFIG_ENABLE_CHRONO_STRINGMAKER)
