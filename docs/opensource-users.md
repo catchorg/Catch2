@@ -35,6 +35,9 @@ The next-generation core storage and query engine for Couchbase Lite
 ### [DtCraft](https://github.com/twhuang-uiuc/DtCraft)
 A High-performance Cluster Computing Engine
 
+### [Fuxedo](https://github.com/fuxedo/fuxedo)
+Open source Oracle Tuxedo-like XATMI middleware for C and C++.
+
 ### [Inja](https://github.com/pantor/inja)
 A header-only template engine for modern C++.
 
