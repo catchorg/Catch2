@@ -5,8 +5,11 @@
  *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  */
 
+#define CATCH_CONFIG_ENABLE_PAIR_STRINGMAKER
 #include "catch.hpp"
 
+#include <map>
+#include <set>
 
 TEST_CASE( "Character pretty printing" ){
     SECTION("Specifically escaped"){
@@ -49,5 +52,51 @@ TEST_CASE( "Capture and info messages" ) {
         int i = 3;
         INFO(i);
         REQUIRE(true);
+    }
+}
+
+TEST_CASE( "std::map is convertible string", "[toString]" ) {
+
+    SECTION( "empty" ) {
+        std::map<std::string, int> emptyMap;
+
+        REQUIRE( Catch::Detail::stringify( emptyMap ) == "{  }" );
+    }
+
+    SECTION( "single item" ) {
+        std::map<std::string, int> map = { { "one", 1 } };
+
+        REQUIRE( Catch::Detail::stringify( map ) == "{ { \"one\", 1 } }" );
+    }
+
+    SECTION( "several items" ) {
+        std::map<std::string, int> map = {
+                { "abc", 1 },
+                { "def", 2 },
+                { "ghi", 3 }
+            };
+
+        REQUIRE( Catch::Detail::stringify( map ) == "{ { \"abc\", 1 }, { \"def\", 2 }, { \"ghi\", 3 } }" );
+    }
+}
+
+TEST_CASE( "std::set is convertible string", "[toString]" ) {
+
+    SECTION( "empty" ) {
+        std::set<std::string> emptySet;
+
+        REQUIRE( Catch::Detail::stringify( emptySet ) == "{  }" );
+    }
+
+    SECTION( "single item" ) {
+        std::set<std::string> set = { "one" };
+
+        REQUIRE( Catch::Detail::stringify( set ) == "{ \"one\" }" );
+    }
+
+    SECTION( "several items" ) {
+        std::set<std::string> set = { "abc", "def", "ghi" };
+
+        REQUIRE( Catch::Detail::stringify( set ) == "{ \"abc\", \"def\", \"ghi\" }" );
     }
 }

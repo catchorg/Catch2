@@ -6853,6 +6853,30 @@ with expansion:
   "[\x7F]" == "[\x7F]"
 
 -------------------------------------------------------------------------------
+array<int, N> -> toString
+-------------------------------------------------------------------------------
+ToStringVector.tests.cpp:<line number>
+...............................................................................
+
+ToStringVector.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( Catch::Detail::stringify( empty ) == "{  }" )
+with expansion:
+  "{  }" == "{  }"
+
+ToStringVector.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( Catch::Detail::stringify( oneValue ) == "{ 42 }" )
+with expansion:
+  "{ 42 }" == "{ 42 }"
+
+ToStringVector.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( Catch::Detail::stringify( twoValues ) == "{ 42, 250 }" )
+with expansion:
+  "{ 42, 250 }" == "{ 42, 250 }"
+
+-------------------------------------------------------------------------------
 atomic if
 -------------------------------------------------------------------------------
 Misc.tests.cpp:<line number>
@@ -7489,6 +7513,47 @@ with messages:
   i := 7
 
 -------------------------------------------------------------------------------
+std::map is convertible string
+  empty
+-------------------------------------------------------------------------------
+ToStringGeneral.tests.cpp:<line number>
+...............................................................................
+
+ToStringGeneral.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( Catch::Detail::stringify( emptyMap ) == "{  }" )
+with expansion:
+  "{  }" == "{  }"
+
+-------------------------------------------------------------------------------
+std::map is convertible string
+  single item
+-------------------------------------------------------------------------------
+ToStringGeneral.tests.cpp:<line number>
+...............................................................................
+
+ToStringGeneral.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( Catch::Detail::stringify( map ) == "{ { \"one\", 1 } }" )
+with expansion:
+  "{ { "one", 1 } }" == "{ { "one", 1 } }"
+
+-------------------------------------------------------------------------------
+std::map is convertible string
+  several items
+-------------------------------------------------------------------------------
+ToStringGeneral.tests.cpp:<line number>
+...............................................................................
+
+ToStringGeneral.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( Catch::Detail::stringify( map ) == "{ { \"abc\", 1 }, { \"def\", 2 }, { \"ghi\", 3 } }" )
+with expansion:
+  "{ { "abc", 1 }, { "def", 2 }, { "ghi", 3 } }"
+  ==
+  "{ { "abc", 1 }, { "def", 2 }, { "ghi", 3 } }"
+
+-------------------------------------------------------------------------------
 std::pair<int,const std::string> -> toString
 -------------------------------------------------------------------------------
 ToStringPair.tests.cpp:<line number>
@@ -7511,6 +7576,47 @@ PASSED:
   REQUIRE( ::Catch::Detail::stringify( value ) == "{ 34, \"xyzzy\" }" )
 with expansion:
   "{ 34, "xyzzy" }" == "{ 34, "xyzzy" }"
+
+-------------------------------------------------------------------------------
+std::set is convertible string
+  empty
+-------------------------------------------------------------------------------
+ToStringGeneral.tests.cpp:<line number>
+...............................................................................
+
+ToStringGeneral.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( Catch::Detail::stringify( emptySet ) == "{  }" )
+with expansion:
+  "{  }" == "{  }"
+
+-------------------------------------------------------------------------------
+std::set is convertible string
+  single item
+-------------------------------------------------------------------------------
+ToStringGeneral.tests.cpp:<line number>
+...............................................................................
+
+ToStringGeneral.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( Catch::Detail::stringify( set ) == "{ \"one\" }" )
+with expansion:
+  "{ "one" }" == "{ "one" }"
+
+-------------------------------------------------------------------------------
+std::set is convertible string
+  several items
+-------------------------------------------------------------------------------
+ToStringGeneral.tests.cpp:<line number>
+...............................................................................
+
+ToStringGeneral.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( Catch::Detail::stringify( set ) == "{ \"abc\", \"def\", \"ghi\" }" )
+with expansion:
+  "{ "abc", "def", "ghi" }"
+  ==
+  "{ "abc", "def", "ghi" }"
 
 -------------------------------------------------------------------------------
 std::vector<std::pair<std::string,int> > -> toString
@@ -7701,15 +7807,17 @@ toString(enum class)
 EnumToString.tests.cpp:<line number>
 ...............................................................................
 
-EnumToString.tests.cpp:<line number>: FAILED:
+EnumToString.tests.cpp:<line number>:
+PASSED:
   CHECK( ::Catch::Detail::stringify(e0) == "0" )
 with expansion:
-  "{?}" == "0"
+  "0" == "0"
 
-EnumToString.tests.cpp:<line number>: FAILED:
+EnumToString.tests.cpp:<line number>:
+PASSED:
   CHECK( ::Catch::Detail::stringify(e1) == "1" )
 with expansion:
-  "{?}" == "1"
+  "1" == "1"
 
 -------------------------------------------------------------------------------
 toString(enum w/operator<<)
@@ -7856,6 +7964,30 @@ with expansion:
   "{ { "hello" }, { "world" } }"
   ==
   "{ { "hello" }, { "world" } }"
+
+-------------------------------------------------------------------------------
+vector<bool> -> toString
+-------------------------------------------------------------------------------
+ToStringVector.tests.cpp:<line number>
+...............................................................................
+
+ToStringVector.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( ::Catch::Detail::stringify(bools) == "{  }" )
+with expansion:
+  "{  }" == "{  }"
+
+ToStringVector.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( ::Catch::Detail::stringify(bools) == "{ true }" )
+with expansion:
+  "{ true }" == "{ true }"
+
+ToStringVector.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( ::Catch::Detail::stringify(bools) == "{ true, false }" )
+with expansion:
+  "{ true, false }" == "{ true, false }"
 
 -------------------------------------------------------------------------------
 vector<int,allocator> -> toString
@@ -8114,6 +8246,6 @@ Misc.tests.cpp:<line number>:
 PASSED:
 
 ===============================================================================
-test cases: 191 | 137 passed |  50 failed |  4 failed as expected
-assertions: 970 | 839 passed | 110 failed | 21 failed as expected
+test cases: 195 | 142 passed |  49 failed |  4 failed as expected
+assertions: 982 | 853 passed | 108 failed | 21 failed as expected
 

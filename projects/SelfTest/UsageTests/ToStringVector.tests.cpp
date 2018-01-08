@@ -1,6 +1,6 @@
 #include "catch.hpp"
 #include <vector>
-
+#include <array>
 
 // vedctor
 TEST_CASE( "vector<int> -> toString", "[toString][vector]" )
@@ -65,4 +65,22 @@ TEST_CASE( "vec<vec<string,alloc>> -> toString", "[toString][vector,allocator]" 
     v.push_back( inner { "hello" } );
     v.push_back( inner { "world" } );
     REQUIRE( ::Catch::Detail::stringify(v) == "{ { \"hello\" }, { \"world\" } }" );
+}
+
+// Based on PR by mat-so: https://github.com/catchorg/Catch2/pull/606/files#diff-43562f40f8c6dcfe2c54557316e0f852
+TEST_CASE( "vector<bool> -> toString", "[toString][containers][vector]" ) {
+    std::vector<bool> bools;
+    REQUIRE( ::Catch::Detail::stringify(bools) == "{  }");
+    bools.push_back(true);
+    REQUIRE( ::Catch::Detail::stringify(bools) == "{ true }");
+    bools.push_back(false);
+    REQUIRE( ::Catch::Detail::stringify(bools) == "{ true, false }");
+}
+TEST_CASE( "array<int, N> -> toString", "[toString][containers][array]" ) {
+    std::array<int, 0> empty;
+    REQUIRE( Catch::Detail::stringify( empty ) == "{  }" );
+    std::array<int, 1> oneValue = {{ 42 }};
+    REQUIRE( Catch::Detail::stringify( oneValue ) == "{ 42 }" );
+    std::array<int, 2> twoValues = {{ 42, 250 }};
+    REQUIRE( Catch::Detail::stringify( twoValues ) == "{ 42, 250 }" );
 }
