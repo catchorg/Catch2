@@ -136,6 +136,18 @@ namespace Catch {
         static std::string convert(wchar_t * str);
     };
 
+    template<typename T>
+    struct is_string_array : std::false_type {};
+
+    template<std::size_t N>
+    struct is_string_array<char[N]> : std::true_type {};
+
+    template<std::size_t N>
+    struct is_string_array<signed char[N]> : std::true_type {};
+
+        template<std::size_t N>
+    struct is_string_array<unsigned char[N]> : std::true_type {};
+
     template<int SZ>
     struct StringMaker<char[SZ]> {
         static std::string convert(const char* str) {
@@ -387,7 +399,7 @@ namespace Catch {
     }
 
     template<typename R>
-    struct StringMaker<R, typename std::enable_if<is_range<R>::value>::type> {
+    struct StringMaker<R, typename std::enable_if<is_range<R>::value && !is_string_array<R>::value>::type> {
         static std::string convert( R const& range ) {
             return rangeToString( range );
         }
