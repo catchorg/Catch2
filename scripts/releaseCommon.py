@@ -142,10 +142,19 @@ def performUpdates(version):
     # First update version file, so we can regenerate single header and
     # have it ready for upload to wandbox, when updating readme
     version.updateVersionFile()
-    
+
     import generateSingleHeader
     generateSingleHeader.generate(version)
-    
+
+    # Then copy the reporters to single include folder to keep them in sync
+    # We probably should have some kind of convention to select which reporters need to be copied automagically,
+    # but this works for now
+    import shutil
+    for rep in ('automake', 'tap', 'teamcity'):
+        sourceFile = os.path.join(catchPath, 'include/reporters/catch_reporter_{}.hpp'.format(rep))
+        destFile = os.path.join(catchPath, 'single_include/catch_reporter_{}.hpp'.format(rep))
+        shutil.copyfile(sourceFile, destFile)
+
     updateReadmeFile(version)
     updateConanFile(version)
     updateConanTestFile(version)
