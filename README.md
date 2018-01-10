@@ -7,7 +7,7 @@
 [![codecov](https://codecov.io/gh/catchorg/Catch2/branch/master/graph/badge.svg)](https://codecov.io/gh/catchorg/Catch2)
 [![Try online](https://img.shields.io/badge/try-online-blue.svg)](https://wandbox.org/permlink/nerce2MiN6sVmfCi)
 
-<a href="https://github.com/catchorg/Catch2/releases/download/v2.0.1/catch.hpp">The latest version of the single header can be downloaded directly using this link</a>
+<a href="https://github.com/catchorg/Catch2/releases/download/v2.1.0/catch.hpp">The latest version of the single header can be downloaded directly using this link</a>
 
 ## Catch2 is released!
 

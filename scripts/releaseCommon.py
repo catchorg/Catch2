@@ -80,7 +80,7 @@ class Version:
 def updateReadmeFile(version):
     import updateWandbox
 
-    downloadParser = re.compile( r'<a href=\"https://github.com/philsquared/Catch/releases/download/v\d+\.\d+\.\d+/catch.hpp\">' )
+    downloadParser = re.compile( r'<a href=\"https://github.com/catchorg/Catch2/releases/download/v\d+\.\d+\.\d+/catch.hpp\">' )
     success, wandboxLink = updateWandbox.uploadFiles()
     if not success:
         print('Error when uploading to wandbox: {}'.format(wandboxLink))
@@ -92,7 +92,7 @@ def updateReadmeFile(version):
     f.close()
     f = open( readmePath, 'w' )
     for line in lines:
-        line = downloadParser.sub( r'<a href="https://github.com/philsquared/Catch/releases/download/v{0}/catch.hpp">'.format(version.getVersionString()) , line)
+        line = downloadParser.sub( r'<a href="https://github.com/catchorg/Catch2/releases/download/v{0}/catch.hpp">'.format(version.getVersionString()) , line)
         if '[![Try online](https://img.shields.io/badge/try-online-blue.svg)]' in line:
             line = '[![Try online](https://img.shields.io/badge/try-online-blue.svg)]({0})'.format(wandboxLink)
         f.write( line + "\n" )
