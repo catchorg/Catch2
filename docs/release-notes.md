@@ -1,4 +1,45 @@
 <a id="top"></a>
+
+# 2.1.0
+
+## Improvements
+* Various performance improvements
+  * On top of the performance regression fixes
+* Experimental support for PCH was added (#1061)
+* `CATCH_CONFIG_EXTERNAL_INTERFACES` now brings in declarations of Console, Compact, XML and JUnit reporters
+* `MatcherBase` no longer has a pointless second template argument
+* Reduced the number of warning suppressions that leak into user's code
+  * Bugs in g++ 4.x and 5.x mean that some of them have to be left in
+
+
+## Fixes
+* Fixed performance regression from Catch classic
+  * One of the performance improvement patches for Catch classic was not applied to Catch2
+* Fixed platform detection for iOS (#1084)
+* Fixed compilation when `g++` is used together with `libc++` (#1110)
+* Fixed TeamCity reporter compilation with the single header version
+  * To fix the underlying issue we will be versioning reporters in single_include folder per release
+* The XML reporter will now report `WARN` messages even when not used with `-s`
+* Fixed compilation when `VectorContains` matcher was combined using `&&` (#1092)
+* Fixed test duration overflowing after 10 seconds (#1125, #1129)
+* Fixed `std::uncaught_exception` deprecation warning (#1124)
+
+
+## New features
+* New Matchers
+  * Regex matcher for strings, `Matches`.
+  * Set-equal matcher for vectors, `UnorderedEquals`
+  * Floating point matchers, `WithinAbs` and `WithinULP`.
+* Stringification now attempts to decompose all containers (#606)
+  * Containers are objects that respond to ADL `begin(T)` and `end(T)`.
+
+
+## Other changes
+* Reporters will now be versioned in the `single_include` folder to ensure their compatibility with the last released version
+
+
+
+
 # 2.0.1
 
 ## Breaking changes
