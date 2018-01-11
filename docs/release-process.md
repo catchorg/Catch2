@@ -21,10 +21,8 @@ Catch uses a variant of [semantic versioning](http://semver.org/), with breaking
 
 After deciding which part of version number should be incremented, you can use one of the `*Release.py` scripts to perform the required changes to Catch.
 
-
-### Generate updated single-include header
-
-After updating version number, regenerate single-include header using `generateSingleHeader.py`.
+This will take care of generating the single include header, updating
+version numbers everywhere and pushing the new version to Wandbox.
 
 
 ### Release notes
@@ -39,11 +37,19 @@ After version number is incremented, single-include header is regenerated and re
 
 ### Release on GitHub
 
-After pushing changes to GitHub, GitHub release *needs* to be created. Tag version and release title should be same as the new version, description should contain the release notes for the current release. Single header version of `catch.hpp` *needs* to be attached as a binary, as that is where the official download link links to. Preferably it should use linux line endings.
+After pushing changes to GitHub, GitHub release *needs* to be created.
+Tag version and release title should be same as the new version,
+description should contain the release notes for the current release.
+Single header version of `catch.hpp` *needs* to be attached as a binary,
+as that is where the official download link links to. Preferably
+it should use linux line endings. All non-bundled reporters (Automake,
+TAP, TeamCity) should also be attached as binaries, as they are dependent
+on a specific version of the single-include header.
+
 
 ## Optional steps
 
-The following steps are optional, and do not have to be performed when releasing new version of Catch. However, they are *should* happen, but they can happen the next day without losing anything significant.
+The following steps are optional, and do not have to be performed when releasing new version of Catch. However, they *should* happen, but they can happen the next day without losing anything significant.
 
 
 ### vcpkg update
@@ -56,9 +62,4 @@ GitHub
     Catch
     vcpkg
 ```
-
-
-### Wandbox update
-
-Recently we also included a link to wandbox with preloaded Catch on the main page. Strictly speaking it is unneccessary to update this after every release, Catch usually does not change that much between versions, but it should be kept up to date anyway.
 
