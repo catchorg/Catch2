@@ -52,6 +52,48 @@ with expansion:
   0 == 0
 
 -------------------------------------------------------------------------------
+#1147
+-------------------------------------------------------------------------------
+Compilation.tests.cpp:<line number>
+...............................................................................
+
+Compilation.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( t1 == t2 )
+with expansion:
+  {?} == {?}
+
+Compilation.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( t1 != t2 )
+with expansion:
+  {?} != {?}
+
+Compilation.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( t1 < t2 )
+with expansion:
+  {?} < {?}
+
+Compilation.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( t1 > t2 )
+with expansion:
+  {?} > {?}
+
+Compilation.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( t1 <= t2 )
+with expansion:
+  {?} <= {?}
+
+Compilation.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( t1 >= t2 )
+with expansion:
+  {?} >= {?}
+
+-------------------------------------------------------------------------------
 #748 - captures with unexpected exceptions
   outside assertions
 -------------------------------------------------------------------------------
@@ -257,6 +299,6 @@ with expansion:
   !true
 
 ===============================================================================
-test cases: 10 |  7 passed | 1 failed | 2 failed as expected
-assertions: 28 | 21 passed | 4 failed | 3 failed as expected
+test cases: 11 |  8 passed | 1 failed | 2 failed as expected
+assertions: 34 | 27 passed | 4 failed | 3 failed as expected
 

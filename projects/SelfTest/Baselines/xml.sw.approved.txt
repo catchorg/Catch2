@@ -42,6 +42,57 @@
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
+    <TestCase name="#1147" filename="projects/<exe-name>/UsageTests/Compilation.tests.cpp" >
+      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/UsageTests/Compilation.tests.cpp" >
+        <Original>
+          t1 == t2
+        </Original>
+        <Expanded>
+          {?} == {?}
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/UsageTests/Compilation.tests.cpp" >
+        <Original>
+          t1 != t2
+        </Original>
+        <Expanded>
+          {?} != {?}
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/UsageTests/Compilation.tests.cpp" >
+        <Original>
+          t1 &lt; t2
+        </Original>
+        <Expanded>
+          {?} &lt; {?}
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/UsageTests/Compilation.tests.cpp" >
+        <Original>
+          t1 > t2
+        </Original>
+        <Expanded>
+          {?} > {?}
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/UsageTests/Compilation.tests.cpp" >
+        <Original>
+          t1 &lt;= t2
+        </Original>
+        <Expanded>
+          {?} &lt;= {?}
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/UsageTests/Compilation.tests.cpp" >
+        <Original>
+          t1 >= t2
+        </Original>
+        <Expanded>
+          {?} >= {?}
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
     <TestCase name="#748 - captures with unexpected exceptions" tags="[!shouldfail][!throws][.][failing]" filename="projects/<exe-name>/UsageTests/Exception.tests.cpp" >
       <Section name="outside assertions" filename="projects/<exe-name>/UsageTests/Exception.tests.cpp" >
         <Info>
@@ -9168,7 +9219,7 @@ loose text artifact
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="853" failures="109" expectedFailures="21"/>
+    <OverallResults successes="859" failures="109" expectedFailures="21"/>
   </Group>
-  <OverallResults successes="853" failures="108" expectedFailures="21"/>
+  <OverallResults successes="859" failures="108" expectedFailures="21"/>
 </Catch>

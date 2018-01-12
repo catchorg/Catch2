@@ -3,6 +3,12 @@ Decomposition.tests.cpp:<line number>: passed: fptr == 0 for: 0 == 0
 Decomposition.tests.cpp:<line number>: passed: fptr == 0l for: 0 == 0
 Compilation.tests.cpp:<line number>: passed: y.v == 0 for: 0 == 0
 Compilation.tests.cpp:<line number>: passed: 0 == y.v for: 0 == 0
+Compilation.tests.cpp:<line number>: passed: t1 == t2 for: {?} == {?}
+Compilation.tests.cpp:<line number>: passed: t1 != t2 for: {?} != {?}
+Compilation.tests.cpp:<line number>: passed: t1 < t2 for: {?} < {?}
+Compilation.tests.cpp:<line number>: passed: t1 > t2 for: {?} > {?}
+Compilation.tests.cpp:<line number>: passed: t1 <= t2 for: {?} <= {?}
+Compilation.tests.cpp:<line number>: passed: t1 >= t2 for: {?} >= {?}
 Exception.tests.cpp:<line number>: failed: unexpected exception with message: 'answer := 42' with 1 message: 'expected exception'
 Exception.tests.cpp:<line number>: failed: unexpected exception with message: 'answer := 42'; expression was: thisThrows() with 1 message: 'expected exception'
 Exception.tests.cpp:<line number>: passed: thisThrows() with 1 message: 'answer := 42'
