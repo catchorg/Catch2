@@ -129,7 +129,15 @@ The advantage of this approach is that you can always automatically update Catch
 
 
 ### Automatic test registration
-If you are also using ctest, `contrib/ParseAndAddCatchTests.cmake` is a CMake script that attempts to parse your test files and automatically register all test cases, using tags as labels. This means that these
+We provide 2 CMake scripts that can automatically register Catch-based
+tests with CTest,
+  * `contrib/ParseAndAddCatchTests.cmake`
+  * `contrib/CatchAddTests.cmake`
+
+The first is based on parsing the test implementation files, and attempts
+to register all `TEST_CASE`s using their tags as labels. This means that
+these:
+
 ```cpp
 TEST_CASE("Test1", "[unit]") {
     int a = 1;
@@ -149,7 +157,14 @@ TEST_CASE("Test3", "[a][b][c]") {
     REQUIRE(a == b);
 }
 ```
-would be registered as 3 tests, `Test1`, `Test2` and `Test3`, and 4 ctest labels would be created, `a`, `b`, `c` and `unit`.
+would be registered as 3 tests, `Test1`, `Test2` and `Test3`,
+and 4 CTest labels would be created, `a`, `b`, `c` and `unit`.
+
+
+The second is based on parsing the output of a Catch binary given
+`--list-test-names-only`. This means that it deals with inactive
+(e.g. commented-out) tests better, but requires CMake 3.10 for full
+functionality.
 
 ### CodeCoverage module (GCOV, LCOV...)
 
