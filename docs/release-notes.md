@@ -1,3 +1,11 @@
+# 1.12.0
+
+### Fixes
+* Fixed compilation for strict C++98 mode (ie not gnu++98) and older compilers (#1103)
+* `INFO` messages are included in the `xml` reporter output even without `-s` specified.
+
+
+
 # 1.11.0
 
 ### Fixes
