@@ -8,7 +8,7 @@ from releaseCommon import Version
 
 print(catchPath)
 
-default_path = '../vcpkg/ports/catch/'
+default_path = '../vcpkg/ports/catch-classic/'
 
 def adjusted_path(path):
     return os.path.join(catchPath, path)
