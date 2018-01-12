@@ -28,9 +28,14 @@ The advantage of this format is that the JUnit Ant schema is widely understood b
 The disadvantage is that this schema was designed to correspond to how JUnit works - and there is a significant mismatch with how Catch works. Additionally the format is not streamable (because opening elements hold counts of failed and passing tests as attributes) - so the whole test run must complete before it can be written.
 
 ## Other reporters
-Other reporters are not part of the single-header distribution and need to be downloaded and included separately. All reporters are stored in `include/reporters` directory in the git repository, and are named `catch_reporter_*.hpp`. For example, to use the TeamCity reporter you need to download `include/reporters/catch_reporter_teamcity.hpp` and include it after Catch itself.
+Other reporters are not part of the single-header distribution and need
+to be downloaded and included separately. All reporters are stored in
+`single_include` directory in the git repository, and are named
+`catch_reporter_*.hpp`. For example, to use the TeamCity reporter you
+need to download `single_include/catch_reporter_teamcity.hpp` and include
+it after Catch itself.
 
-```
+```cpp
 #define CATCH_CONFIG_MAIN
 #include "catch.hpp"
 #include "catch_reporter_teamcity.hpp"
