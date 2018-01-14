@@ -50,6 +50,8 @@ infParser = re.compile(r'''
     |
     \(__builtin_inff\(\)\)                # Linux (ubuntu) INFINITY macro
     |
+    \(__builtin_inff\ \(\)\)              # Fedora INFINITY macro
+    |
     __builtin_huge_valf\(\)               # OSX macro
 ''', re.VERBOSE)
 nanParser = re.compile(r'''
