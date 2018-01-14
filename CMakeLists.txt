@@ -5,6 +5,7 @@ project(CatchSelfTest)
 option(USE_VALGRIND "Perform SelfTests with Valgrind" OFF)
 option(BUILD_EXAMPLES "Build documentation examples" OFF)
 option(ENABLE_COVERAGE "Generate coverage for codecov.io" OFF)
+option(DISABLE_WERROR "Do not enable warnings as errors" OFF)
 
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
@@ -309,7 +310,10 @@ if (NOT NO_SELFTEST)
 
     # Add desired warnings
     if ( CMAKE_CXX_COMPILER_ID MATCHES "Clang|AppleClang|GNU" )
-        target_compile_options( SelfTest PRIVATE -Wall -Wextra -Wunreachable-code -Werror )
+        target_compile_options( SelfTest PRIVATE -Wall -Wextra -Wunreachable-code )
+        if (NOT DISABLE_WERROR)
+            target_compile_options( SelfTest PRIVATE -Werror)
+        endif()
     endif()
     # Clang specific warning go here
     if ( CMAKE_CXX_COMPILER_ID MATCHES "Clang" )
@@ -318,7 +322,10 @@ if (NOT NO_SELFTEST)
     endif()
     if ( CMAKE_CXX_COMPILER_ID MATCHES "MSVC" )
 		STRING(REGEX REPLACE "/W[0-9]" "/W4" CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS}) # override default warning level
-        target_compile_options( SelfTest PRIVATE /w44265 /WX /w44061 /w44062 )
+        target_compile_options( SelfTest PRIVATE /w44265 /w44061 /w44062 )
+        if (NOT DISABLE_WERROR)
+            target_compile_options( SelfTest PRIVATE /WX)
+        endif()
     endif()
 
 
