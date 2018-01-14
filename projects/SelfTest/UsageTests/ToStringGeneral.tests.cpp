@@ -100,3 +100,18 @@ TEST_CASE( "std::set is convertible string", "[toString]" ) {
         REQUIRE( Catch::Detail::stringify( set ) == "{ \"abc\", \"def\", \"ghi\" }" );
     }
 }
+
+TEST_CASE("Static arrays are convertible to string", "[toString]") {
+    SECTION("Single item") {
+        int singular[1] = { 1 };
+        REQUIRE(Catch::Detail::stringify(singular) == "{ 1 }");
+    }
+    SECTION("Multiple") {
+        int arr[3] = { 3, 2, 1 };
+        REQUIRE(Catch::Detail::stringify(arr) == "{ 3, 2, 1 }");
+    }
+    SECTION("Non-trivial inner items") {
+        std::vector<std::string> arr[2] = { {"1:1", "1:2", "1:3"}, {"2:1", "2:2"} };
+        REQUIRE(Catch::Detail::stringify(arr) == R"({ { "1:1", "1:2", "1:3" }, { "2:1", "2:2" } })");
+    }
+}

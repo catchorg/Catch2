@@ -5477,6 +5477,44 @@ Message from section two
       </Expression>
       <OverallResult success="false"/>
     </TestCase>
+    <TestCase name="Static arrays are convertible to string" tags="[toString]" filename="projects/<exe-name>/UsageTests/ToStringGeneral.tests.cpp" >
+      <Section name="Single item" filename="projects/<exe-name>/UsageTests/ToStringGeneral.tests.cpp" >
+        <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/UsageTests/ToStringGeneral.tests.cpp" >
+          <Original>
+            Catch::Detail::stringify(singular) == "{ 1 }"
+          </Original>
+          <Expanded>
+            "{ 1 }" == "{ 1 }"
+          </Expanded>
+        </Expression>
+        <OverallResults successes="1" failures="0" expectedFailures="0"/>
+      </Section>
+      <Section name="Multiple" filename="projects/<exe-name>/UsageTests/ToStringGeneral.tests.cpp" >
+        <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/UsageTests/ToStringGeneral.tests.cpp" >
+          <Original>
+            Catch::Detail::stringify(arr) == "{ 3, 2, 1 }"
+          </Original>
+          <Expanded>
+            "{ 3, 2, 1 }" == "{ 3, 2, 1 }"
+          </Expanded>
+        </Expression>
+        <OverallResults successes="1" failures="0" expectedFailures="0"/>
+      </Section>
+      <Section name="Non-trivial inner items" filename="projects/<exe-name>/UsageTests/ToStringGeneral.tests.cpp" >
+        <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/UsageTests/ToStringGeneral.tests.cpp" >
+          <Original>
+            Catch::Detail::stringify(arr) == R"({ { "1:1", "1:2", "1:3" }, { "2:1", "2:2" } })"
+          </Original>
+          <Expanded>
+            "{ { "1:1", "1:2", "1:3" }, { "2:1", "2:2" } }"
+==
+"{ { "1:1", "1:2", "1:3" }, { "2:1", "2:2" } }"
+          </Expanded>
+        </Expression>
+        <OverallResults successes="1" failures="0" expectedFailures="0"/>
+      </Section>
+      <OverallResult success="true"/>
+    </TestCase>
     <TestCase name="String matchers" tags="[matchers]" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
       <Expression success="true" type="REQUIRE_THAT" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
         <Original>
@@ -9219,7 +9257,7 @@ loose text artifact
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="859" failures="109" expectedFailures="21"/>
+    <OverallResults successes="862" failures="109" expectedFailures="21"/>
   </Group>
-  <OverallResults successes="859" failures="108" expectedFailures="21"/>
+  <OverallResults successes="862" failures="108" expectedFailures="21"/>
 </Catch>

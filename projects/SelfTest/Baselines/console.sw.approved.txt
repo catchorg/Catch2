@@ -4750,6 +4750,47 @@ with expansion:
   insensitive)
 
 -------------------------------------------------------------------------------
+Static arrays are convertible to string
+  Single item
+-------------------------------------------------------------------------------
+ToStringGeneral.tests.cpp:<line number>
+...............................................................................
+
+ToStringGeneral.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( Catch::Detail::stringify(singular) == "{ 1 }" )
+with expansion:
+  "{ 1 }" == "{ 1 }"
+
+-------------------------------------------------------------------------------
+Static arrays are convertible to string
+  Multiple
+-------------------------------------------------------------------------------
+ToStringGeneral.tests.cpp:<line number>
+...............................................................................
+
+ToStringGeneral.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( Catch::Detail::stringify(arr) == "{ 3, 2, 1 }" )
+with expansion:
+  "{ 3, 2, 1 }" == "{ 3, 2, 1 }"
+
+-------------------------------------------------------------------------------
+Static arrays are convertible to string
+  Non-trivial inner items
+-------------------------------------------------------------------------------
+ToStringGeneral.tests.cpp:<line number>
+...............................................................................
+
+ToStringGeneral.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( Catch::Detail::stringify(arr) == R"({ { "1:1", "1:2", "1:3" }, { "2:1", "2:2" } })" )
+with expansion:
+  "{ { "1:1", "1:2", "1:3" }, { "2:1", "2:2" } }"
+  ==
+  "{ { "1:1", "1:2", "1:3" }, { "2:1", "2:2" } }"
+
+-------------------------------------------------------------------------------
 String matchers
 -------------------------------------------------------------------------------
 Matchers.tests.cpp:<line number>
@@ -8288,6 +8329,6 @@ Misc.tests.cpp:<line number>:
 PASSED:
 
 ===============================================================================
-test cases: 196 | 143 passed |  49 failed |  4 failed as expected
-assertions: 988 | 859 passed | 108 failed | 21 failed as expected
+test cases: 197 | 144 passed |  49 failed |  4 failed as expected
+assertions: 991 | 862 passed | 108 failed | 21 failed as expected
 

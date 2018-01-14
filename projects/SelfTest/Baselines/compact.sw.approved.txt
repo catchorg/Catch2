@@ -598,6 +598,11 @@ Message from section one
 Message from section two
 Matchers.tests.cpp:<line number>: failed: testStringForMatching(), StartsWith("This String") for: "this string contains 'abc' as a substring" starts with: "This String"
 Matchers.tests.cpp:<line number>: failed: testStringForMatching(), StartsWith("string", Catch::CaseSensitive::No) for: "this string contains 'abc' as a substring" starts with: "string" (case insensitive)
+ToStringGeneral.tests.cpp:<line number>: passed: Catch::Detail::stringify(singular) == "{ 1 }" for: "{ 1 }" == "{ 1 }"
+ToStringGeneral.tests.cpp:<line number>: passed: Catch::Detail::stringify(arr) == "{ 3, 2, 1 }" for: "{ 3, 2, 1 }" == "{ 3, 2, 1 }"
+ToStringGeneral.tests.cpp:<line number>: passed: Catch::Detail::stringify(arr) == R"({ { "1:1", "1:2", "1:3" }, { "2:1", "2:2" } })" for: "{ { "1:1", "1:2", "1:3" }, { "2:1", "2:2" } }"
+==
+"{ { "1:1", "1:2", "1:3" }, { "2:1", "2:2" } }"
 Matchers.tests.cpp:<line number>: passed: testStringForMatching(), Contains("string") for: "this string contains 'abc' as a substring" contains: "string"
 Matchers.tests.cpp:<line number>: passed: testStringForMatching(), Contains("string", Catch::CaseSensitive::No) for: "this string contains 'abc' as a substring" contains: "string" (case insensitive)
 Matchers.tests.cpp:<line number>: passed: testStringForMatching(), Contains("abc") for: "this string contains 'abc' as a substring" contains: "abc"
