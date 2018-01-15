@@ -1,8 +1,4 @@
 codecov:
-  status:
-    project:
-      default:
-        threshold: 2
   branch: master
 
 coverage:
@@ -12,6 +8,3 @@ coverage:
     - "**/catch_reporter_automake.hpp"
     - "**/catch_reporter_teamcity.hpp"
     - "**/external/clara.hpp"
-
-comment:
-  layout: "diff"
