@@ -6,7 +6,7 @@ if(NOT DEFINED PROJECT_NAME)
   set(NOT_SUBPROJECT ON)
 endif()
 
-project(CatchSelfTest)
+project(Catch2)
 
 include(GNUInstallDirs)
 
