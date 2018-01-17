@@ -1,5 +1,17 @@
+coverage:
+  precision: 2
+  round: nearest
+  range: "60...90"
+  status:
+    project:
+      default:
+        threshold: 2
+
 codecov:
   branch: master
+
+comment:
+  layout: "diff"
 
 coverage:
   ignore:
