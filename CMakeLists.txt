@@ -1,5 +1,11 @@
 cmake_minimum_required(VERSION 3.0)
 
+# detect if Catch is being bundled,
+# disable testsuite in that case
+if(NOT DEFINED PROJECT_NAME)
+  set(NOT_SUBPROJECT ON)
+endif()
+
 project(CatchSelfTest)
 
 include(GNUInstallDirs)
@@ -287,7 +293,19 @@ SOURCE_GROUP("Surrogates" FILES ${SURROGATE_SOURCES})
 
 # Projects consuming Catch via ExternalProject_Add might want to use install step
 # without building all of our selftests.
-if (NOT NO_SELFTEST)
+
+if(DEFINED NO_SELFTEST)
+    message(DEPRECATION "*** CMake option NO_SELFTEST is deprecated; use BUILD_TESTING instead")
+    if (NO_SELFTEST)
+        set(BUILD_TESTING OFF CACHE BOOL "Disable Catch2 internal testsuite" FORCE)
+    else()
+        set(BUILD_TESTING ON CACHE BOOL "Disable Catch2 internal testsuite" FORCE)
+    endif()
+endif()
+
+include(CTest)
+
+if (BUILD_TESTING AND NOT_SUBPROJECT)
     add_executable(SelfTest ${TEST_SOURCES} ${IMPL_SOURCES} ${REPORTER_SOURCES} ${SURROGATE_SOURCES} ${HEADERS})
     target_include_directories(SelfTest PRIVATE ${HEADER_DIR})
 
