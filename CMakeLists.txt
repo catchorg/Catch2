@@ -388,6 +388,8 @@ endif()
 
 install(DIRECTORY "single_include/" DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/catch")
 
+install(DIRECTORY docs/ DESTINATION "${CMAKE_INSTALL_DOCDIR}")
+
 ## Provide some pkg-config integration
 # Don't bother on Windows
 if(NOT WIN32 OR NOT CMAKE_HOST_SYSTEM_NAME MATCHES Windows)
