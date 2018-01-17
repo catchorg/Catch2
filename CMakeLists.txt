@@ -2,6 +2,8 @@ cmake_minimum_required(VERSION 3.0)
 
 project(CatchSelfTest)
 
+include(GNUInstallDirs)
+
 option(USE_VALGRIND "Perform SelfTests with Valgrind" OFF)
 option(BUILD_EXAMPLES "Build documentation examples" OFF)
 option(ENABLE_COVERAGE "Generate coverage for codecov.io" OFF)
@@ -366,14 +368,14 @@ if(BUILD_EXAMPLES)
     add_subdirectory(examples)
 endif()
 
-install(DIRECTORY "single_include/" DESTINATION "include/catch")
+install(DIRECTORY "single_include/" DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/catch")
 
 ## Provide some pkg-config integration
 # Don't bother on Windows
 if(NOT WIN32 OR NOT CMAKE_HOST_SYSTEM_NAME MATCHES Windows)
 
     set(PKGCONFIG_INSTALL_DIR
-        "${CMAKE_INSTALL_PREFIX}/share/pkgconfig"
+        "${CMAKE_INSTALL_DATAROOTDIR}/pkgconfig"
         CACHE PATH "Path where catch.pc is installed"
     )
 
