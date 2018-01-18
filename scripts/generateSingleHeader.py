@@ -46,7 +46,7 @@ def generate(v):
     outDir = os.path.dirname(outputPath)
     if not os.path.exists(outDir):
         os.makedirs(outDir)
-    out = open( outputPath, 'w' )
+    out = open( outputPath, 'w', newline='\n' )
 
     def write( line ):
         if globals['includeImpl'] or globals['implIfDefs'] == -1:

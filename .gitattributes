@@ -9,3 +9,7 @@
 
 # Windows specific files should retain windows line-endings
 *.sln text eol=crlf
+
+# Keep the single include header with LFs to make sure it is uploaded,
+# hashed etc with LF
+single_include/*.hpp eol=lf
