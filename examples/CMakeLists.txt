@@ -1,7 +1,7 @@
 #
 # Build examples.
 #
-# Requires BUILD_EXAMPLES to be defined 'true', see ../CMakeLists.txt.
+# Requires CATCH_BUILD_EXAMPLES to be defined 'true', see ../CMakeLists.txt.
 #
 
 cmake_minimum_required( VERSION 3.0 )
