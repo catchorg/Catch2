@@ -128,13 +128,12 @@ def updateConanTestFile(version):
         f.write( line + "\n" )
 
 def updateCmakeFile(version):
-    cmakeParser = re.compile(r'set(CATCH_VERSION_NUMBER \d+\.\d+\.\d+)')
     with open(cmakePath, 'r') as file:
         lines = file.readlines()
     with open(cmakePath, 'w') as file:
         for line in lines:
-            if 'set(CATCH_VERSION_NUMBER ' in line:
-                file.write('set(CATCH_VERSION_NUMBER {0})\n'.format(version.getVersionString()))
+            if 'project(Catch2 LANGUAGES CXX VERSION ' in line:
+                file.write('project(Catch2 LANGUAGES CXX VERSION {0})\n'.format(version.getVersionString()))
             else:
                 file.write(line)
 

@@ -6,7 +6,7 @@ if(NOT DEFINED PROJECT_NAME)
   set(NOT_SUBPROJECT ON)
 endif()
 
-project(Catch2)
+project(Catch2 LANGUAGES CXX VERSION 2.1.0)
 
 include(GNUInstallDirs)
 
@@ -22,7 +22,6 @@ set(CATCH_DIR ${CMAKE_CURRENT_SOURCE_DIR})
 set(SELF_TEST_DIR ${CATCH_DIR}/projects/SelfTest)
 set(BENCHMARK_DIR ${CATCH_DIR}/projects/Benchmark)
 set(HEADER_DIR ${CATCH_DIR}/include)
-set(CATCH_VERSION_NUMBER 2.1.0)
 
 if(USE_WMAIN)
     set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /ENTRY:wmainCRTStartup")
