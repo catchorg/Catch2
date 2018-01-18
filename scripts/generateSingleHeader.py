@@ -3,6 +3,7 @@
 from __future__ import print_function
 
 import os
+import io
 import sys
 import re
 import datetime
@@ -46,11 +47,11 @@ def generate(v):
     outDir = os.path.dirname(outputPath)
     if not os.path.exists(outDir):
         os.makedirs(outDir)
-    out = open( outputPath, 'w', newline='\n' )
+    out = io.open( outputPath, 'w', newline='\n')
 
     def write( line ):
         if globals['includeImpl'] or globals['implIfDefs'] == -1:
-            out.write( line )
+            out.write( line.decode('utf-8') )
 
     def insertCpps():
         dirs = [os.path.join( rootPath, s) for s in ['', 'internal', 'reporters']]
@@ -104,22 +105,22 @@ def generate(v):
         write( '// end {}\n'.format(filename) )
 
 
-    out.write( "/*\n" )
-    out.write( " *  Catch v{0}\n".format( v.getVersionString() ) )
-    out.write( " *  Generated: {0}\n".format( datetime.datetime.now() ) )
-    out.write( " *  ----------------------------------------------------------\n" )
-    out.write( " *  This file has been merged from multiple headers. Please don't edit it directly\n" )
-    out.write( " *  Copyright (c) {} Two Blue Cubes Ltd. All rights reserved.\n".format( datetime.date.today().year ) )
-    out.write( " *\n" )
-    out.write( " *  Distributed under the Boost Software License, Version 1.0. (See accompanying\n" )
-    out.write( " *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)\n" )
-    out.write( " */\n" )
-    out.write( "#ifndef TWOBLUECUBES_SINGLE_INCLUDE_CATCH_HPP_INCLUDED\n" )
-    out.write( "#define TWOBLUECUBES_SINGLE_INCLUDE_CATCH_HPP_INCLUDED\n" )
+    write( "/*\n" )
+    write( " *  Catch v{0}\n".format( v.getVersionString() ) )
+    write( " *  Generated: {0}\n".format( datetime.datetime.now() ) )
+    write( " *  ----------------------------------------------------------\n" )
+    write( " *  This file has been merged from multiple headers. Please don't edit it directly\n" )
+    write( " *  Copyright (c) {} Two Blue Cubes Ltd. All rights reserved.\n".format( datetime.date.today().year ) )
+    write( " *\n" )
+    write( " *  Distributed under the Boost Software License, Version 1.0. (See accompanying\n" )
+    write( " *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)\n" )
+    write( " */\n" )
+    write( "#ifndef TWOBLUECUBES_SINGLE_INCLUDE_CATCH_HPP_INCLUDED\n" )
+    write( "#define TWOBLUECUBES_SINGLE_INCLUDE_CATCH_HPP_INCLUDED\n" )
 
     parseFile( rootPath, 'catch.hpp' )
 
-    out.write( "#endif // TWOBLUECUBES_SINGLE_INCLUDE_CATCH_HPP_INCLUDED\n\n" )
+    write( "#endif // TWOBLUECUBES_SINGLE_INCLUDE_CATCH_HPP_INCLUDED\n\n" )
     out.close()
     print ("Generated single include for Catch v{0}\n".format( v.getVersionString() ) )
 
