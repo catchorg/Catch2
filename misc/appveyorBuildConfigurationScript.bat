@@ -6,7 +6,7 @@ if "%CONFIGURATION%"=="Debug" (
   python scripts\generateSingleHeader.py
   cmake -Hmisc -Bbuild-misc -A%PLATFORM%
   cmake --build build-misc
-  cmake -H. -BBuild -A%PLATFORM% -DUSE_WMAIN=%wmain% -DBUILD_EXAMPLES=ON -DMEMORYCHECK_COMMAND=build-misc\Debug\CoverageHelper.exe -DMEMORYCHECK_COMMAND_OPTIONS=--sep-- -DMEMORYCHECK_TYPE=Valgrind
+  cmake -H. -BBuild -A%PLATFORM% -DUSE_WMAIN=%wmain% -DCATCH_BUILD_EXAMPLES=ON -DMEMORYCHECK_COMMAND=build-misc\Debug\CoverageHelper.exe -DMEMORYCHECK_COMMAND_OPTIONS=--sep-- -DMEMORYCHECK_TYPE=Valgrind
 )
 if "%CONFIGURATION%"=="Release" (
   cmake -H. -BBuild -A%PLATFORM% -DUSE_WMAIN=%wmain%

@@ -10,10 +10,10 @@ project(Catch2 LANGUAGES CXX VERSION 2.1.0)
 
 include(GNUInstallDirs)
 
-option(USE_VALGRIND "Perform SelfTests with Valgrind" OFF)
-option(BUILD_EXAMPLES "Build documentation examples" OFF)
-option(ENABLE_COVERAGE "Generate coverage for codecov.io" OFF)
-option(DISABLE_WERROR "Do not enable warnings as errors" OFF)
+option(CATCH_USE_VALGRIND "Perform SelfTests with Valgrind" OFF)
+option(CATCH_BUILD_EXAMPLES "Build documentation examples" OFF)
+option(CATCH_ENABLE_COVERAGE "Generate coverage for codecov.io" OFF)
+option(CATCH_ENABLE_WERROR "Enable all warnings as errors" ON)
 
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
@@ -319,7 +319,8 @@ if (BUILD_TESTING AND NOT_SUBPROJECT)
     set_property(TARGET SelfTest PROPERTY CXX_STANDARD_REQUIRED ON)
     set_property(TARGET SelfTest PROPERTY CXX_EXTENSIONS OFF)
 
-    if (ENABLE_COVERAGE)
+    if (CATCH_ENABLE_COVERAGE)
+        set(ENABLE_COVERAGE ON CACHE BOOL "Enable coverage build." FORCE)
         list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/CMake")
         find_package(codecov)
         add_coverage(SelfTest)
@@ -330,7 +331,7 @@ if (BUILD_TESTING AND NOT_SUBPROJECT)
     # Add desired warnings
     if ( CMAKE_CXX_COMPILER_ID MATCHES "Clang|AppleClang|GNU" )
         target_compile_options( SelfTest PRIVATE -Wall -Wextra -Wunreachable-code )
-        if (NOT DISABLE_WERROR)
+        if (CATCH_ENABLE_WERROR)
             target_compile_options( SelfTest PRIVATE -Werror)
         endif()
     endif()
@@ -342,7 +343,7 @@ if (BUILD_TESTING AND NOT_SUBPROJECT)
     if ( CMAKE_CXX_COMPILER_ID MATCHES "MSVC" )
 		STRING(REGEX REPLACE "/W[0-9]" "/W4" CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS}) # override default warning level
         target_compile_options( SelfTest PRIVATE /w44265 /w44061 /w44062 )
-        if (NOT DISABLE_WERROR)
+        if (CATCH_ENABLE_WERROR)
             target_compile_options( SelfTest PRIVATE /WX)
         endif()
     endif()
@@ -370,7 +371,7 @@ if (BUILD_TESTING AND NOT_SUBPROJECT)
     add_test(NAME ApprovalTests COMMAND python ${CMAKE_CURRENT_SOURCE_DIR}/scripts/approvalTests.py $<TARGET_FILE:SelfTest>)
     set_tests_properties(ApprovalTests PROPERTIES FAIL_REGULAR_EXPRESSION "Results differed")
 
-    if (USE_VALGRIND)
+    if (CATCH_USE_VALGRIND)
         add_test(NAME ValgrindRunTests COMMAND valgrind --leak-check=full --error-exitcode=1 $<TARGET_FILE:SelfTest>)
         add_test(NAME ValgrindListTests COMMAND valgrind --leak-check=full --error-exitcode=1 $<TARGET_FILE:SelfTest> --list-tests --verbosity high)
         set_tests_properties(ValgrindListTests PROPERTIES PASS_REGULAR_EXPRESSION "definitely lost: 0 bytes in 0 blocks")
@@ -381,7 +382,7 @@ if (BUILD_TESTING AND NOT_SUBPROJECT)
 endif() # !NO_SELFTEST
 
 
-if(BUILD_EXAMPLES)
+if(CATCH_BUILD_EXAMPLES)
     add_subdirectory(examples)
 endif()
 
