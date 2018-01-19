@@ -748,7 +748,7 @@ namespace detail {
 
     template<typename ArgType, typename L>
     inline auto invokeLambda( L const &lambda, std::string const &arg ) -> ParserResult {
-        ArgType temp;
+        ArgType temp{};
         auto result = convertInto( arg, temp );
         return !result
            ? result
