@@ -84,9 +84,9 @@ int main( int argc, char* argv[] )
   using namespace Catch::clara;
   auto cli 
     = session.cli() // Get Catch's composite command line parser
-    | Opt( height, "height" ) // bind variable to a new option, with a hint string
-        ["-g"]["--height"]    // the option names it will respond to
-        ("how high?");        // description string for the help output
+    | Catch::clara::Opt( height, "height" ) // bind variable to a new option, with a hint string
+                      ["-g"]["--height"]      // the option names it will respond to
+                      ("how high?");          // description string for the help output
         
   // Now pass the new composite back to Catch so it uses that
   session.cli( cli ); 
