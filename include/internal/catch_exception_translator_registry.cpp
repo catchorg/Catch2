@@ -33,6 +33,17 @@ namespace Catch {
                 return Catch::Detail::stringify( [exception description] );
             }
 #else
+            // Compiling a mixed mode project with MSVC means that CLR
+            // exceptions will be caught in (...) as well. However, these
+            // do not fill-in std::current_exception and thus lead to crash
+            // when attempting rethrow.
+            // /EHa switch also causes structured exceptions to be caught
+            // here, but they fill-in current_exception properly, so
+            // at worst the output should be a little weird, instead of
+            // causing a crash.
+            if (std::current_exception() == nullptr) {
+                return "Non C++ exception. Possibly a CLR exception.";
+            }
             return tryTranslators();
 #endif
         }
