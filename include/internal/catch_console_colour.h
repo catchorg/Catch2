@@ -30,10 +30,11 @@ namespace Catch {
             BrightGreen = Bright | Green,
             LightGrey = Bright | Grey,
             BrightWhite = Bright | White,
+            BrightYellow = Bright | Yellow,
 
             // By intention
             FileName = LightGrey,
-            Warning = Yellow,
+            Warning = BrightYellow,
             ResultError = BrightRed,
             ResultSuccess = BrightGreen,
             ResultExpectedFailure = Warning,
@@ -42,7 +43,7 @@ namespace Catch {
             Success = Green,
 
             OriginalExpression = Cyan,
-            ReconstructedExpression = Yellow,
+            ReconstructedExpression = BrightYellow,
 
             SecondaryText = LightGrey,
             Headers = White
