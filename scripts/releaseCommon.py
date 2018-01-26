@@ -10,6 +10,7 @@ from scriptCommon import catchPath
 versionParser = re.compile( r'(\s*static\sVersion\sversion)\s*\(\s*(.*)\s*,\s*(.*)\s*,\s*(.*)\s*,\s*\"(.*)\"\s*,\s*(.*)\s*\).*' )
 rootPath = os.path.join( catchPath, 'include/' )
 versionPath = os.path.join( rootPath, "internal/catch_version.cpp" )
+definePath = os.path.join(rootPath, 'catch.hpp')
 readmePath = os.path.join( catchPath, "README.md" )
 conanPath = os.path.join(catchPath, 'conanfile.py')
 conanTestPath = os.path.join(catchPath, 'test_package', 'conanfile.py')
@@ -137,10 +138,27 @@ def updateCmakeFile(version):
             else:
                 file.write(line)
 
+
+def updateVersionDefine(version):
+    with open(definePath, 'r') as file:
+        lines = file.readlines()
+    with open(definePath, 'w') as file:
+        for line in lines:
+            if '#define CATCH_VERSION_MAJOR' in line:
+                file.write('#define CATCH_VERSION_MAJOR {}\n'.format(version.majorVersion))
+            elif '#define CATCH_VERSION_MINOR' in line:
+                file.write('#define CATCH_VERSION_MINOR {}\n'.format(version.minorVersion))
+            elif '#define CATCH_VERSION_PATCH' in line:
+                file.write('#define CATCH_VERSION_PATCH {}\n'.format(version.patchNumber))
+            else:
+                file.write(line)
+
+
 def performUpdates(version):
     # First update version file, so we can regenerate single header and
     # have it ready for upload to wandbox, when updating readme
     version.updateVersionFile()
+    updateVersionDefine(version)
 
     import generateSingleHeader
     generateSingleHeader.generate(version)

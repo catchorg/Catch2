@@ -106,6 +106,20 @@ int main( int argc, char* argv[] )
 
 See the [Clara documentation](https://github.com/philsquared/Clara/blob/master/README.md) for more details.
 
+
+## Version detection
+
+Catch provides a triplet of macros providing the header's version, 
+
+* `CATCH_VERSION_MAJOR`
+* `CATCH_VERSION_MINOR`
+* `CATCH_VERSION_PATCH`
+
+these macros expand into a single number, that corresponds to the appropriate
+part of the version. As an example, given single header version v2.3.4,
+the macros would expand into `2`, `3`, and `4` respectively.
+
+
 ---
 
 [Home](Readme.md#top)
