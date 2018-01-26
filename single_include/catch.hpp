@@ -1,6 +1,6 @@
 /*
- *  Catch v2.1.0
- *  Generated: 2018-01-10 13:51:15.378034
+ *  Catch v2.1.1
+ *  Generated: 2018-01-26 16:04:07.190063
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2018 Two Blue Cubes Ltd. All rights reserved.
@@ -807,18 +807,6 @@ namespace Catch {
         static std::string convert(wchar_t * str);
     };
 
-    template<typename T>
-    struct is_string_array : std::false_type {};
-
-    template<std::size_t N>
-    struct is_string_array<char[N]> : std::true_type {};
-
-    template<std::size_t N>
-    struct is_string_array<signed char[N]> : std::true_type {};
-
-        template<std::size_t N>
-    struct is_string_array<unsigned char[N]> : std::true_type {};
-
     template<int SZ>
     struct StringMaker<char[SZ]> {
         static std::string convert(const char* str) {
@@ -1069,9 +1057,16 @@ namespace Catch {
     }
 
     template<typename R>
-    struct StringMaker<R, typename std::enable_if<is_range<R>::value && !is_string_array<R>::value>::type> {
+    struct StringMaker<R, typename std::enable_if<is_range<R>::value && !std::is_array<R>::value>::type> {
         static std::string convert( R const& range ) {
             return rangeToString( range );
+        }
+    };
+
+    template <typename T, int SZ>
+    struct StringMaker<T[SZ]> {
+        static std::string convert(T const(&arr)[SZ]) {
+            return rangeToString(arr);
         }
     };
 
@@ -1269,7 +1264,7 @@ namespace Catch {
 
     // Specialised comparison functions to handle equality comparisons between ints and pointers (NULL deduces as an int)
     template<typename LhsT, typename RhsT>
-    auto compareEqual( LhsT const& lhs, RhsT const& rhs ) -> bool { return lhs == rhs; };
+    auto compareEqual( LhsT const& lhs, RhsT const& rhs ) -> bool { return static_cast<bool>(lhs == rhs); };
     template<typename T>
     auto compareEqual( T* const& lhs, int rhs ) -> bool { return lhs == reinterpret_cast<void const*>( rhs ); }
     template<typename T>
@@ -1280,7 +1275,7 @@ namespace Catch {
     auto compareEqual( long lhs, T* const& rhs ) -> bool { return reinterpret_cast<void const*>( lhs ) == rhs; }
 
     template<typename LhsT, typename RhsT>
-    auto compareNotEqual( LhsT const& lhs, RhsT&& rhs ) -> bool { return lhs != rhs; };
+    auto compareNotEqual( LhsT const& lhs, RhsT&& rhs ) -> bool { return static_cast<bool>(lhs != rhs); };
     template<typename T>
     auto compareNotEqual( T* const& lhs, int rhs ) -> bool { return lhs != reinterpret_cast<void const*>( rhs ); }
     template<typename T>
@@ -1314,19 +1309,19 @@ namespace Catch {
 
         template<typename RhsT>
         auto operator > ( RhsT const& rhs ) -> BinaryExpr<LhsT, RhsT const&> const {
-            return { m_lhs > rhs, m_lhs, ">", rhs };
+            return { static_cast<bool>(m_lhs > rhs), m_lhs, ">", rhs };
         }
         template<typename RhsT>
         auto operator < ( RhsT const& rhs ) -> BinaryExpr<LhsT, RhsT const&> const {
-            return { m_lhs < rhs, m_lhs, "<", rhs };
+            return { static_cast<bool>(m_lhs < rhs), m_lhs, "<", rhs };
         }
         template<typename RhsT>
         auto operator >= ( RhsT const& rhs ) -> BinaryExpr<LhsT, RhsT const&> const {
-            return { m_lhs >= rhs, m_lhs, ">=", rhs };
+            return { static_cast<bool>(m_lhs >= rhs), m_lhs, ">=", rhs };
         }
         template<typename RhsT>
         auto operator <= ( RhsT const& rhs ) -> BinaryExpr<LhsT, RhsT const&> const {
-            return { m_lhs <= rhs, m_lhs, "<=", rhs };
+            return { static_cast<bool>(m_lhs <= rhs), m_lhs, "<=", rhs };
         }
 
         auto makeUnaryExpr() const -> UnaryExpr<LhsT> {
@@ -5093,8 +5088,14 @@ namespace Catch {
 #endif
 
 // start clara.hpp
-// v1.0-develop.2
-// See https://github.com/philsquared/Clara
+// Copyright 2017 Two Blue Cubes Ltd. All rights reserved.
+//
+// Distributed under the Boost Software License, Version 1.0. (See accompanying
+// file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
+//
+// See https://github.com/philsquared/Clara for more details
+
+// Clara v1.1.1
 
 
 #ifndef CATCH_CLARA_CONFIG_CONSOLE_WIDTH
@@ -5457,7 +5458,7 @@ namespace detail {
     template<typename ClassT, typename ReturnT, typename ArgT>
     struct UnaryLambdaTraits<ReturnT( ClassT::* )( ArgT ) const> {
         static const bool isValid = true;
-        using ArgType = typename std::remove_const<typename std::remove_reference<ArgT>::type>::type;;
+        using ArgType = typename std::remove_const<typename std::remove_reference<ArgT>::type>::type;
         using ReturnType = ReturnT;
     };
 
@@ -5621,7 +5622,7 @@ namespace detail {
             return *this;
         }
 
-        ~ResultValueBase() {
+        ~ResultValueBase() override {
             if( m_type == Ok )
                 m_value.~T();
         }
@@ -5659,7 +5660,7 @@ namespace detail {
         auto errorMessage() const -> std::string { return m_errorMessage; }
 
     protected:
-        virtual void enforceOk() const {
+        void enforceOk() const override {
             // !TBD: If no exceptions, std::terminate here or something
             switch( m_type ) {
                 case ResultBase::LogicError:
@@ -5739,46 +5740,30 @@ namespace detail {
         return ParserResult::ok( ParseResultType::Matched );
     }
 
-    struct BoundRefBase {
-        BoundRefBase() = default;
-        BoundRefBase( BoundRefBase const & ) = delete;
-        BoundRefBase( BoundRefBase && ) = delete;
-        BoundRefBase &operator=( BoundRefBase const & ) = delete;
-        BoundRefBase &operator=( BoundRefBase && ) = delete;
+    struct NonCopyable {
+        NonCopyable() = default;
+        NonCopyable( NonCopyable const & ) = delete;
+        NonCopyable( NonCopyable && ) = delete;
+        NonCopyable &operator=( NonCopyable const & ) = delete;
+        NonCopyable &operator=( NonCopyable && ) = delete;
+    };
 
-        virtual ~BoundRefBase() = default;
-
-        virtual auto isFlag() const -> bool = 0;
+    struct BoundRef : NonCopyable {
+        virtual ~BoundRef() = default;
         virtual auto isContainer() const -> bool { return false; }
+    };
+    struct BoundValueRefBase : BoundRef {
         virtual auto setValue( std::string const &arg ) -> ParserResult = 0;
+    };
+    struct BoundFlagRefBase : BoundRef {
         virtual auto setFlag( bool flag ) -> ParserResult = 0;
     };
 
-    struct BoundValueRefBase : BoundRefBase {
-        auto isFlag() const -> bool override { return false; }
-
-        auto setFlag( bool ) -> ParserResult override {
-            return ParserResult::logicError( "Flags can only be set on boolean fields" );
-        }
-    };
-
-    struct BoundFlagRefBase : BoundRefBase {
-        auto isFlag() const -> bool override { return true; }
-
-        auto setValue( std::string const &arg ) -> ParserResult override {
-            bool flag;
-            auto result = convertInto( arg, flag );
-            if( result )
-                setFlag( flag );
-            return result;
-        }
-    };
-
     template<typename T>
-    struct BoundRef : BoundValueRefBase {
+    struct BoundValueRef : BoundValueRefBase {
         T &m_ref;
 
-        explicit BoundRef( T &ref ) : m_ref( ref ) {}
+        explicit BoundValueRef( T &ref ) : m_ref( ref ) {}
 
         auto setValue( std::string const &arg ) -> ParserResult override {
             return convertInto( arg, m_ref );
@@ -5786,10 +5771,10 @@ namespace detail {
     };
 
     template<typename T>
-    struct BoundRef<std::vector<T>> : BoundValueRefBase {
+    struct BoundValueRef<std::vector<T>> : BoundValueRefBase {
         std::vector<T> &m_ref;
 
-        explicit BoundRef( std::vector<T> &ref ) : m_ref( ref ) {}
+        explicit BoundValueRef( std::vector<T> &ref ) : m_ref( ref ) {}
 
         auto isContainer() const -> bool override { return true; }
 
@@ -5834,12 +5819,12 @@ namespace detail {
 
     template<typename ArgType, typename L>
     inline auto invokeLambda( L const &lambda, std::string const &arg ) -> ParserResult {
-        ArgType temp;
+        ArgType temp{};
         auto result = convertInto( arg, temp );
         return !result
            ? result
            : LambdaInvoker<typename UnaryLambdaTraits<L>::ReturnType>::invoke( lambda, temp );
-    };
+    }
 
     template<typename L>
     struct BoundLambda : BoundValueRefBase {
@@ -5888,6 +5873,9 @@ namespace detail {
     public:
         template<typename T>
         auto operator|( T const &other ) const -> Parser;
+
+		template<typename T>
+        auto operator+( T const &other ) const -> Parser;
     };
 
     // Common code and state for Args and Opts
@@ -5895,16 +5883,16 @@ namespace detail {
     class ParserRefImpl : public ComposableParserImpl<DerivedT> {
     protected:
         Optionality m_optionality = Optionality::Optional;
-        std::shared_ptr<BoundRefBase> m_ref;
+        std::shared_ptr<BoundRef> m_ref;
         std::string m_hint;
         std::string m_description;
 
-        explicit ParserRefImpl( std::shared_ptr<BoundRefBase> const &ref ) : m_ref( ref ) {}
+        explicit ParserRefImpl( std::shared_ptr<BoundRef> const &ref ) : m_ref( ref ) {}
 
     public:
         template<typename T>
         ParserRefImpl( T &ref, std::string const &hint )
-        :   m_ref( std::make_shared<BoundRef<T>>( ref ) ),
+        :   m_ref( std::make_shared<BoundValueRef<T>>( ref ) ),
             m_hint( hint )
         {}
 
@@ -5945,10 +5933,10 @@ namespace detail {
 
     class ExeName : public ComposableParserImpl<ExeName> {
         std::shared_ptr<std::string> m_name;
-        std::shared_ptr<BoundRefBase> m_ref;
+        std::shared_ptr<BoundValueRefBase> m_ref;
 
         template<typename LambdaT>
-        static auto makeRef(LambdaT const &lambda) -> std::shared_ptr<BoundRefBase> {
+        static auto makeRef(LambdaT const &lambda) -> std::shared_ptr<BoundValueRefBase> {
             return std::make_shared<BoundLambda<LambdaT>>( lambda) ;
         }
 
@@ -5956,7 +5944,7 @@ namespace detail {
         ExeName() : m_name( std::make_shared<std::string>( "<executable>" ) ) {}
 
         explicit ExeName( std::string &ref ) : ExeName() {
-            m_ref = std::make_shared<BoundRef<std::string>>( ref );
+            m_ref = std::make_shared<BoundValueRef<std::string>>( ref );
         }
 
         template<typename LambdaT>
@@ -5999,7 +5987,10 @@ namespace detail {
             if( token.type != TokenType::Argument )
                 return InternalParseResult::ok( ParseState( ParseResultType::NoMatch, remainingTokens ) );
 
-            auto result = m_ref->setValue( remainingTokens->token );
+            assert( dynamic_cast<detail::BoundValueRefBase*>( m_ref.get() ) );
+            auto valueRef = static_cast<detail::BoundValueRefBase*>( m_ref.get() );
+
+            auto result = valueRef->setValue( remainingTokens->token );
             if( !result )
                 return InternalParseResult( result );
             else
@@ -6072,20 +6063,22 @@ namespace detail {
             if( remainingTokens && remainingTokens->type == TokenType::Option ) {
                 auto const &token = *remainingTokens;
                 if( isMatch(token.token ) ) {
-                    if( m_ref->isFlag() ) {
-                        auto result = m_ref->setFlag( true );
+                    if( auto flagRef = dynamic_cast<detail::BoundFlagRefBase*>( m_ref.get() ) ) {
+                        auto result = flagRef->setFlag( true );
                         if( !result )
                             return InternalParseResult( result );
                         if( result.value() == ParseResultType::ShortCircuitAll )
                             return InternalParseResult::ok( ParseState( result.value(), remainingTokens ) );
                     } else {
+                        assert( dynamic_cast<detail::BoundValueRefBase*>( m_ref.get() ) );
+                        auto valueRef = static_cast<detail::BoundValueRefBase*>( m_ref.get() );
                         ++remainingTokens;
                         if( !remainingTokens )
                             return InternalParseResult::runtimeError( "Expected argument following " + token.token );
                         auto const &argToken = *remainingTokens;
                         if( argToken.type != TokenType::Argument )
                             return InternalParseResult::runtimeError( "Expected argument following " + token.token );
-                        auto result = m_ref->setValue( argToken.token );
+                        auto result = valueRef->setValue( argToken.token );
                         if( !result )
                             return InternalParseResult( result );
                         if( result.value() == ParseResultType::ShortCircuitAll )
@@ -6161,6 +6154,12 @@ namespace detail {
             return Parser( *this ) |= other;
         }
 
+        // Forward deprecated interface with '+' instead of '|'
+        template<typename T>
+        auto operator+=( T const &other ) -> Parser & { return operator|=( other ); }
+        template<typename T>
+        auto operator+( T const &other ) const -> Parser { return operator|( other ); }
+
         auto getHelpColumns() const -> std::vector<HelpColumns> {
             std::vector<HelpColumns> cols;
             for (auto const &o : m_options) {
@@ -6199,6 +6198,8 @@ namespace detail {
             size_t optWidth = 0;
             for( auto const &cols : rows )
                 optWidth = (std::max)(optWidth, cols.left.size() + 2);
+
+            optWidth = (std::min)(optWidth, consoleWidth/2);
 
             for( auto const &cols : rows ) {
                 auto row =
@@ -7086,6 +7087,17 @@ namespace Catch {
                 return Catch::Detail::stringify( [exception description] );
             }
 #else
+            // Compiling a mixed mode project with MSVC means that CLR
+            // exceptions will be caught in (...) as well. However, these
+            // do not fill-in std::current_exception and thus lead to crash
+            // when attempting rethrow.
+            // /EHa switch also causes structured exceptions to be caught
+            // here, but they fill-in current_exception properly, so
+            // at worst the output should be a little weird, instead of
+            // causing a crash.
+            if (std::current_exception() == nullptr) {
+                return "Non C++ exception. Possibly a CLR exception.";
+            }
             return tryTranslators();
 #endif
         }
@@ -9148,6 +9160,9 @@ namespace Catch {
             if( Option<std::size_t> listed = list( config() ) )
                 return static_cast<int>( *listed );
 
+            // Note that on unices only the lower 8 bits are usually used, clamping
+            // the return value to 255 prevents false negative when some multiple
+            // of 256 tests has failed
             return (std::min)( MaxExitCode, static_cast<int>( runTests( m_config ).assertions.failed ) );
         }
         catch( std::exception& ex ) {
@@ -10689,7 +10704,7 @@ namespace Catch {
     }
 
     Version const& libraryVersion() {
-        static Version version( 2, 1, 0, "", 0 );
+        static Version version( 2, 1, 1, "", 0 );
         return version;
     }
 

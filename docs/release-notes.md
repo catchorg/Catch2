@@ -1,5 +1,27 @@
 <a id="top"></a>
 
+# 2.1.1
+
+## Improvements
+* Static arrays are now properly stringified like ranges across MSVC/GCC/Clang
+* Embedded newer version of Clara -- v1.1.1
+  * This should fix some warnings dragged in from Clara
+* MSVC's CLR exceptions are supported
+
+
+## Fixes
+* Fixed compilation when comparison operators do not return bool (#1147)
+* Fixed CLR exceptions blowing up the executable during translation (#1138)
+
+
+## Other changes
+* Many CMake changes
+  * `NO_SELFTEST` option is deprecated, use `BUILD_TESTING` instead.
+  * Catch specific CMake options were prefixed with `CATCH_` for namespacing purposes
+  * Other changes to simplify Catch2's packaging
+
+
+
 # 2.1.0
 
 ## Improvements
