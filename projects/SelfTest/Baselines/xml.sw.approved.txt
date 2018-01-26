@@ -600,7 +600,7 @@
       <OverallResult success="true"/>
     </TestCase>
     <TestCase name="An empty test with no assertions" tags="[empty]" filename="projects/<exe-name>/UsageTests/Misc.tests.cpp" >
-      <OverallResult success="true"/>
+      <OverallResult success="false"/>
     </TestCase>
     <TestCase name="An expression with side-effects should only be evaluated once" tags="[Tricky]" filename="projects/<exe-name>/UsageTests/Tricky.tests.cpp" >
       <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/UsageTests/Tricky.tests.cpp" >
@@ -2447,7 +2447,7 @@
       <Warning>
         this is a warning
       </Warning>
-      <OverallResult success="true"/>
+      <OverallResult success="false"/>
     </TestCase>
     <TestCase name="INFO gets logged on failure" tags="[.][failing][messages]" filename="projects/<exe-name>/UsageTests/Message.tests.cpp" >
       <Info>
@@ -2957,7 +2957,7 @@
       <Warning>
         This one ran
       </Warning>
-      <OverallResult success="true"/>
+      <OverallResult success="false"/>
     </TestCase>
     <TestCase name="Non-std exceptions can be translated" tags="[!throws][.][failing]" filename="projects/<exe-name>/UsageTests/Exception.tests.cpp" >
       <Exception filename="projects/<exe-name>/UsageTests/Exception.tests.cpp" >
@@ -5375,7 +5375,7 @@
       <OverallResult success="true"/>
     </TestCase>
     <TestCase name="Sends stuff to stdout and stderr" tags="[.]" filename="projects/<exe-name>/UsageTests/Misc.tests.cpp" >
-      <OverallResult success="true">
+      <OverallResult success="false">
         <StdOut>
 A string sent directly to stdout
         </StdOut>
@@ -6183,7 +6183,7 @@ Message from section two
           1 == 2
         </Expanded>
       </Expression>
-      <OverallResult success="true"/>
+      <OverallResult success="false"/>
     </TestCase>
     <TestCase name="This test 'should' fail but doesn't" tags="[!shouldfail][.][failing]" filename="projects/<exe-name>/UsageTests/Misc.tests.cpp" >
       <OverallResult success="false"/>
@@ -7699,19 +7699,19 @@ Message from section two
       <OverallResult success="false"/>
     </TestCase>
     <TestCase name="When unchecked exceptions are thrown, but caught, they do not affect the test" tags="[!throws]" filename="projects/<exe-name>/UsageTests/Exception.tests.cpp" >
-      <OverallResult success="true"/>
+      <OverallResult success="false"/>
     </TestCase>
     <TestCase name="Where the LHS is not a simple value" tags="[.][Tricky][failing]" filename="projects/<exe-name>/UsageTests/Tricky.tests.cpp" >
       <Warning>
         Uncomment the code in this test to check that it gives a sensible compiler error
       </Warning>
-      <OverallResult success="true"/>
+      <OverallResult success="false"/>
     </TestCase>
     <TestCase name="Where there is more to the expression after the RHS" tags="[.][Tricky][failing]" filename="projects/<exe-name>/UsageTests/Tricky.tests.cpp" >
       <Warning>
         Uncomment the code in this test to check that it gives a sensible compiler error
       </Warning>
-      <OverallResult success="true"/>
+      <OverallResult success="false"/>
     </TestCase>
     <TestCase name="X/level/0/a" tags="[Tricky]" filename="projects/<exe-name>/UsageTests/Tricky.tests.cpp" >
       <OverallResult success="true"/>
@@ -8052,11 +8052,11 @@ Message from section two
       <OverallResult success="true"/>
     </TestCase>
     <TestCase name="first tag" tags="[tag1]" filename="projects/<exe-name>/UsageTests/Misc.tests.cpp" >
-      <OverallResult success="true"/>
+      <OverallResult success="false"/>
     </TestCase>
     <TestCase name="has printf" filename="projects/<exe-name>/UsageTests/Tricky.tests.cpp" >
 loose text artifact
-      <OverallResult success="true"/>
+      <OverallResult success="false"/>
     </TestCase>
     <TestCase name="just failure" tags="[.][fail][isolated info][messages]" filename="projects/<exe-name>/UsageTests/Message.tests.cpp" >
       <Failure filename="projects/<exe-name>/UsageTests/Message.tests.cpp" >
@@ -8065,7 +8065,7 @@ loose text artifact
       <OverallResult success="false"/>
     </TestCase>
     <TestCase name="just info" tags="[info][isolated info][messages]" filename="projects/<exe-name>/UsageTests/Message.tests.cpp" >
-      <OverallResult success="true"/>
+      <OverallResult success="false"/>
     </TestCase>
     <TestCase name="long long" filename="projects/<exe-name>/UsageTests/Misc.tests.cpp" >
       <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/UsageTests/Misc.tests.cpp" >
@@ -8512,7 +8512,7 @@ loose text artifact
       <OverallResult success="true"/>
     </TestCase>
     <TestCase name="second tag" tags="[tag2]" filename="projects/<exe-name>/UsageTests/Misc.tests.cpp" >
-      <OverallResult success="true"/>
+      <OverallResult success="false"/>
     </TestCase>
     <TestCase name="send a single char to INFO" tags="[.][failing]" filename="projects/<exe-name>/UsageTests/Misc.tests.cpp" >
       <Info>
@@ -9257,7 +9257,7 @@ loose text artifact
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="862" failures="109" expectedFailures="21"/>
+    <OverallResults successes="862" failures="121" expectedFailures="21"/>
   </Group>
-  <OverallResults successes="862" failures="108" expectedFailures="21"/>
+  <OverallResults successes="862" failures="120" expectedFailures="21"/>
 </Catch>

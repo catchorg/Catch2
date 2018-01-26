@@ -575,6 +575,15 @@ with expansion:
   100.3 == Approx( 100.0 )
 
 -------------------------------------------------------------------------------
+An empty test with no assertions
+-------------------------------------------------------------------------------
+Misc.tests.cpp:<line number>
+...............................................................................
+
+
+No assertions in test case 'An empty test with no assertions'
+
+-------------------------------------------------------------------------------
 An expression with side-effects should only be evaluated once
 -------------------------------------------------------------------------------
 Tricky.tests.cpp:<line number>
@@ -2118,6 +2127,9 @@ warning:
   this is a message
   this is a warning
 
+
+No assertions in test case 'INFO and WARN do not abort tests'
+
 -------------------------------------------------------------------------------
 INFO gets logged on failure
 -------------------------------------------------------------------------------
@@ -2529,6 +2541,9 @@ Misc.tests.cpp:<line number>
 Misc.tests.cpp:<line number>:
 warning:
   This one ran
+
+
+No assertions in test case 'Nice descriptive name'
 
 -------------------------------------------------------------------------------
 Non-std exceptions can be translated
@@ -4663,6 +4678,15 @@ A string sent directly to stdout
 A string sent directly to stderr
 A string sent to stderr via clog
 -------------------------------------------------------------------------------
+Sends stuff to stdout and stderr
+-------------------------------------------------------------------------------
+Misc.tests.cpp:<line number>
+...............................................................................
+
+
+No assertions in test case 'Sends stuff to stdout and stderr'
+
+-------------------------------------------------------------------------------
 Some simple comparisons between doubles
 -------------------------------------------------------------------------------
 Approx.tests.cpp:<line number>
@@ -5389,6 +5413,9 @@ Message.tests.cpp:<line number>
 Message.tests.cpp:<line number>:
 FAILED - but was ok:
   CHECK_NOFAIL( 1 == 2 )
+
+
+No assertions in test case 'The NO_FAIL macro reports a failure but does not fail the test'
 
 -------------------------------------------------------------------------------
 This test 'should' fail but doesn't
@@ -6756,6 +6783,15 @@ due to unexpected exception with message:
   unexpected exception
 
 -------------------------------------------------------------------------------
+When unchecked exceptions are thrown, but caught, they do not affect the test
+-------------------------------------------------------------------------------
+Exception.tests.cpp:<line number>
+...............................................................................
+
+
+No assertions in test case 'When unchecked exceptions are thrown, but caught, they do not affect the test'
+
+-------------------------------------------------------------------------------
 Where the LHS is not a simple value
 -------------------------------------------------------------------------------
 Tricky.tests.cpp:<line number>
@@ -6765,6 +6801,9 @@ Tricky.tests.cpp:<line number>:
 warning:
   Uncomment the code in this test to check that it gives a sensible compiler
   error
+
+
+No assertions in test case 'Where the LHS is not a simple value'
 
 -------------------------------------------------------------------------------
 Where there is more to the expression after the RHS
@@ -6776,6 +6815,9 @@ Tricky.tests.cpp:<line number>:
 warning:
   Uncomment the code in this test to check that it gives a sensible compiler
   error
+
+
+No assertions in test case 'Where there is more to the expression after the RHS'
 
 -------------------------------------------------------------------------------
 X/level/0/a
@@ -7143,7 +7185,25 @@ Misc.tests.cpp:<line number>
 Misc.tests.cpp:<line number>:
 PASSED:
 
+-------------------------------------------------------------------------------
+first tag
+-------------------------------------------------------------------------------
+Misc.tests.cpp:<line number>
+...............................................................................
+
+
+No assertions in test case 'first tag'
+
 loose text artifact
+-------------------------------------------------------------------------------
+has printf
+-------------------------------------------------------------------------------
+Tricky.tests.cpp:<line number>
+...............................................................................
+
+
+No assertions in test case 'has printf'
+
 -------------------------------------------------------------------------------
 just failure
 -------------------------------------------------------------------------------
@@ -7153,6 +7213,15 @@ Message.tests.cpp:<line number>
 Message.tests.cpp:<line number>: FAILED:
 explicitly with message:
   Previous info should not be seen
+
+-------------------------------------------------------------------------------
+just info
+-------------------------------------------------------------------------------
+Message.tests.cpp:<line number>
+...............................................................................
+
+
+No assertions in test case 'just info'
 
 -------------------------------------------------------------------------------
 long long
@@ -7571,6 +7640,15 @@ PASSED:
   CHECK( s == "didn|'t" )
 with expansion:
   "didn|'t" == "didn|'t"
+
+-------------------------------------------------------------------------------
+second tag
+-------------------------------------------------------------------------------
+Misc.tests.cpp:<line number>
+...............................................................................
+
+
+No assertions in test case 'second tag'
 
 -------------------------------------------------------------------------------
 send a single char to INFO
@@ -8329,6 +8407,6 @@ Misc.tests.cpp:<line number>:
 PASSED:
 
 ===============================================================================
-test cases: 197 | 144 passed |  49 failed |  4 failed as expected
-assertions: 991 | 862 passed | 108 failed | 21 failed as expected
+test cases:  197 | 132 passed |  61 failed |  4 failed as expected
+assertions: 1003 | 862 passed | 120 failed | 21 failed as expected
 
