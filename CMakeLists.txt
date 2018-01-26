@@ -187,6 +187,7 @@ set(INTERNAL_HEADERS
         ${HEADER_DIR}/internal/catch_timer.h
         ${HEADER_DIR}/internal/catch_tostring.h
         ${HEADER_DIR}/internal/catch_totals.h
+        ${HEADER_DIR}/internal/catch_uncaught_exceptions.h
         ${HEADER_DIR}/internal/catch_user_interfaces.h
         ${HEADER_DIR}/internal/catch_version.h
         ${HEADER_DIR}/internal/catch_wildcard_pattern.h
@@ -247,6 +248,7 @@ set(IMPL_SOURCES
         ${HEADER_DIR}/internal/catch_timer.cpp
         ${HEADER_DIR}/internal/catch_tostring.cpp
         ${HEADER_DIR}/internal/catch_totals.cpp
+        ${HEADER_DIR}/internal/catch_uncaught_exceptions.cpp
         ${HEADER_DIR}/internal/catch_version.cpp
         ${HEADER_DIR}/internal/catch_wildcard_pattern.cpp
         ${HEADER_DIR}/internal/catch_xmlwriter.cpp
