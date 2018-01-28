@@ -35,6 +35,9 @@ The next-generation core storage and query engine for Couchbase Lite
 ### [DtCraft](https://github.com/twhuang-uiuc/DtCraft)
 A High-performance Cluster Computing Engine
 
+### [forest](https://github.com/xorz57/forest)
+Forest is an open-source, template library of tree data structures written in C++11.
+
 ### [Fuxedo](https://github.com/fuxedo/fuxedo)
 Open source Oracle Tuxedo-like XATMI middleware for C and C++.
 
