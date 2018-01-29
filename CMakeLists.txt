@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.0)
+cmake_minimum_required(VERSION 3.1)
 
 # detect if Catch is being bundled,
 # disable testsuite in that case
@@ -405,3 +405,37 @@ if(NOT WIN32 OR NOT CMAKE_HOST_SYSTEM_NAME MATCHES Windows)
     install(FILES ${CMAKE_CURRENT_BINARY_DIR}/catch.pc DESTINATION ${PKGCONFIG_INSTALL_DIR})
 
 endif()
+
+# add catch as a 'linkable' target
+add_library(Catch INTERFACE)
+
+# depend on some obvious c++11 features so the dependency is transitively added dependants
+target_compile_features(Catch INTERFACE cxx_auto_type cxx_constexpr cxx_noexcept)
+
+target_include_directories(Catch
+	INTERFACE
+		$<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}/single_include>
+		$<INSTALL_INTERFACE:include/catch>
+		$<INSTALL_INTERFACE:include>)
+
+# provide a namespaced alias for clients to 'link' against if catch is included as a sub-project
+add_library(Catch2::Catch ALIAS Catch)
+
+set(CATCH_CMAKE_CONFIG_DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake/Catch2")
+
+# create and install an export set for catch target as Catch2::Catch
+install(TARGETS Catch EXPORT Catch2Config DESTINATION ${CMAKE_INSTALL_LIBDIR})
+
+install(EXPORT Catch2Config
+	NAMESPACE Catch2::
+	DESTINATION ${CATCH_CMAKE_CONFIG_DESTINATION})
+
+# install Catch2ConfigVersion.cmake file to handle versions in find_package
+include(CMakePackageConfigHelpers)
+
+write_basic_package_version_file(Catch2ConfigVersion.cmake
+	COMPATIBILITY SameMajorVersion)
+
+install(FILES
+	"${CMAKE_BINARY_DIR}/Catch2ConfigVersion.cmake"
+	DESTINATION ${CATCH_CMAKE_CONFIG_DESTINATION})
