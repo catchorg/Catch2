@@ -7895,6 +7895,40 @@ with expansion:
   ""wide load"" == ""wide load""
 
 -------------------------------------------------------------------------------
+toString streamable range
+-------------------------------------------------------------------------------
+ToStringWhich.tests.cpp:<line number>
+...............................................................................
+
+ToStringWhich.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( ::Catch::Detail::stringify(streamable_range{}) == "op<<(streamable_range)" )
+with expansion:
+  "op<<(streamable_range)"
+  ==
+  "op<<(streamable_range)"
+
+ToStringWhich.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( ::Catch::Detail::stringify(stringmaker_range{}) == "stringmaker(streamable_range)" )
+with expansion:
+  "stringmaker(streamable_range)"
+  ==
+  "stringmaker(streamable_range)"
+
+ToStringWhich.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( ::Catch::Detail::stringify(just_range{}) == "{ 1, 2, 3, 4 }" )
+with expansion:
+  "{ 1, 2, 3, 4 }" == "{ 1, 2, 3, 4 }"
+
+ToStringWhich.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( ::Catch::Detail::stringify(disabled_range{}) == "{?}" )
+with expansion:
+  "{?}" == "{?}"
+
+-------------------------------------------------------------------------------
 toString( vectors<has_maker> )
 -------------------------------------------------------------------------------
 ToStringWhich.tests.cpp:<line number>
@@ -8407,6 +8441,6 @@ Misc.tests.cpp:<line number>:
 PASSED:
 
 ===============================================================================
-test cases:  197 | 132 passed |  61 failed |  4 failed as expected
-assertions: 1003 | 862 passed | 120 failed | 21 failed as expected
+test cases:  198 | 133 passed |  61 failed |  4 failed as expected
+assertions: 1007 | 866 passed | 120 failed | 21 failed as expected
 

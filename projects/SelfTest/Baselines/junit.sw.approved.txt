@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuitesloose text artifact
 >
-  <testsuite name="<exe-name>" errors="15" failures="106" tests="1004" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
+  <testsuite name="<exe-name>" errors="15" failures="106" tests="1008" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
     <testcase classname="<exe-name>.global" name="# A test name that starts with a #" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="#1005: Comparing pointer to int and long (NULL can be either on various systems)" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="#1027" time="{duration}"/>
@@ -825,6 +825,7 @@ Tricky.tests.cpp:<line number>
     <testcase classname="<exe-name>.global" name="toString on const wchar_t pointer returns the string contents" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="toString on wchar_t const pointer returns the string contents" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="toString on wchar_t returns the string contents" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="toString streamable range" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="toString( vectors&lt;has_maker> )" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="toString( vectors&lt;has_maker_and_operator> )" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="toString( vectors&lt;has_operator> )" time="{duration}"/>

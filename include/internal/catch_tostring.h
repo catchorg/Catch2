@@ -387,7 +387,7 @@ namespace Catch {
     }
 
     template<typename R>
-    struct StringMaker<R, typename std::enable_if<is_range<R>::value && !std::is_array<R>::value>::type> {
+    struct StringMaker<R, typename std::enable_if<is_range<R>::value && !::Catch::Detail::IsStreamInsertable<R>::value>::type> {
         static std::string convert( R const& range ) {
             return rangeToString( range );
         }

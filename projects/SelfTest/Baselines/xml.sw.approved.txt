@@ -8750,6 +8750,45 @@ loose text artifact
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
+    <TestCase name="toString streamable range" tags="[toString]" filename="projects/<exe-name>/UsageTests/ToStringWhich.tests.cpp" >
+      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/UsageTests/ToStringWhich.tests.cpp" >
+        <Original>
+          ::Catch::Detail::stringify(streamable_range{}) == "op&lt;&lt;(streamable_range)"
+        </Original>
+        <Expanded>
+          "op&lt;&lt;(streamable_range)"
+==
+"op&lt;&lt;(streamable_range)"
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/UsageTests/ToStringWhich.tests.cpp" >
+        <Original>
+          ::Catch::Detail::stringify(stringmaker_range{}) == "stringmaker(streamable_range)"
+        </Original>
+        <Expanded>
+          "stringmaker(streamable_range)"
+==
+"stringmaker(streamable_range)"
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/UsageTests/ToStringWhich.tests.cpp" >
+        <Original>
+          ::Catch::Detail::stringify(just_range{}) == "{ 1, 2, 3, 4 }"
+        </Original>
+        <Expanded>
+          "{ 1, 2, 3, 4 }" == "{ 1, 2, 3, 4 }"
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/UsageTests/ToStringWhich.tests.cpp" >
+        <Original>
+          ::Catch::Detail::stringify(disabled_range{}) == "{?}"
+        </Original>
+        <Expanded>
+          "{?}" == "{?}"
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
     <TestCase name="toString( vectors&lt;has_maker> )" tags="[toString]" filename="projects/<exe-name>/UsageTests/ToStringWhich.tests.cpp" >
       <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/UsageTests/ToStringWhich.tests.cpp" >
         <Original>
@@ -9257,7 +9296,7 @@ loose text artifact
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="862" failures="121" expectedFailures="21"/>
+    <OverallResults successes="866" failures="121" expectedFailures="21"/>
   </Group>
-  <OverallResults successes="862" failures="120" expectedFailures="21"/>
+  <OverallResults successes="866" failures="120" expectedFailures="21"/>
 </Catch>
