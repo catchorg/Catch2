@@ -33,6 +33,23 @@ namespace Catch {
 }
 ```
 
+## Catch::is_range<T> specialisation
+As a fallback, Catch attempts to detect if the type can be iterated
+(`begin(T)` and `end(T)` are valid) and if it can be, it is stringified
+as a range. For certain types this can lead to infinite recursion, so
+it can be disabled by specializing `Catch::is_range` like so:
+
+```cpp
+namespace Catch {
+    template<>
+    struct is_range<T> {
+        static const bool value = false;
+    };
+}
+
+```
+
+
 ## Exceptions
 
 By default all exceptions deriving from `std::exception` will be translated to strings by calling the `what()` method. For exception types that do not derive from `std::exception` - or if `what()` does not return a suitable string - use `CATCH_TRANSLATE_EXCEPTION`. This defines a function that takes your exception type, by reference, and returns a string. It can appear anywhere in the code - it doesn't have to be in the same translation unit. For example:
