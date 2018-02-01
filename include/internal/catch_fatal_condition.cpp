@@ -17,12 +17,14 @@
 #    pragma GCC diagnostic ignored "-Wmissing-field-initializers"
 #endif
 
+#if (defined(CATCH_PLATFORM_WINDOWS) && defined(CATCH_CONFIG_WINDOWS_SEH)) || defined(CATCH_CONFIG_POSIX_SIGNALS)
 namespace {
     // Report the error condition
     void reportFatal( char const * const message ) {
         Catch::getCurrentContext().getResultCapture()->handleFatalErrorCondition( message );
     }
 }
+#endif
 
 #if defined ( CATCH_PLATFORM_WINDOWS ) /////////////////////////////////////////
 

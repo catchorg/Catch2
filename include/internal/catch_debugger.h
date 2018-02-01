@@ -40,7 +40,10 @@ namespace Catch {
 #ifdef CATCH_TRAP
     #define CATCH_BREAK_INTO_DEBUGGER() if( Catch::isDebuggerActive() ) { CATCH_TRAP(); }
 #else
-    #define CATCH_BREAK_INTO_DEBUGGER() (void)0, 0
+    namespace Catch {
+        inline void doNothing() {}
+    }
+    #define CATCH_BREAK_INTO_DEBUGGER() Catch::doNothing()
 #endif
 
 #endif // TWOBLUECUBES_CATCH_DEBUGGER_H_INCLUDED
