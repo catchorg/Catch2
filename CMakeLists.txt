@@ -403,3 +403,35 @@ if(NOT WIN32 OR NOT CMAKE_HOST_SYSTEM_NAME MATCHES Windows)
     install(FILES ${CMAKE_CURRENT_BINARY_DIR}/catch.pc DESTINATION ${PKGCONFIG_INSTALL_DIR})
 
 endif()
+
+
+#### create a cmake package config
+## install a cmake package config
+set(PACKAGE_NAME "catch")
+set(PACKAGE_NAMESPACE "catchorg::")
+
+# package config files and folders
+set(CONFIG_INSTALL_DIR "lib/cmake/${PACKAGE_NAME}") 
+set(CONFIG_GENERATED_DIR "${CMAKE_CURRENT_BINARY_DIR}/generated")
+set(VERSION_CONFIG_FILE "${CONFIG_GENERATED_DIR}/${PACKAGE_NAME}ConfigVersion.cmake")
+set(PACKAGE_CONFIG_FILE "${CONFIG_GENERATED_DIR}/${PACKAGE_NAME}Config.cmake")
+set(TARGETS_EXPORT_NAME "${PACKAGE_NAME}Targets")
+
+# target for export
+add_library(catch INTERFACE)
+target_include_directories(catch INTERFACE "$<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}/single_include>" "$<INSTALL_INTERFACE:include>")
+
+# write package config files
+include(CMakePackageConfigHelpers)
+write_basic_package_version_file("${VERSION_CONFIG_FILE}" COMPATIBILITY SameMajorVersion)
+configure_package_config_file(
+        "${CMAKE_SOURCE_DIR}/config.cmake.in"
+        "${PACKAGE_CONFIG_FILE}"
+        INSTALL_DESTINATION "${CONFIG_INSTALL_DIR}"
+)
+
+# install the files
+install(FILES "${PACKAGE_CONFIG_FILE}" "${VERSION_CONFIG_FILE}" DESTINATION "${CONFIG_INSTALL_DIR}")
+install(EXPORT "${TARGETS_EXPORT_NAME}" NAMESPACE "${PACKAGE_NAMESPACE}" DESTINATION "${CONFIG_INSTALL_DIR}")
+install(TARGETS ${PACKAGE_NAME} EXPORT "${TARGETS_EXPORT_NAME}")
+
