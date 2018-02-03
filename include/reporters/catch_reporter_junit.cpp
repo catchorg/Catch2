@@ -64,7 +64,7 @@ namespace Catch {
             m_reporterPrefs.shouldRedirectStdOut = true;
         }
 
-    JunitReporter::~JunitReporter() {};
+    JunitReporter::~JunitReporter() {}
 
     std::string JunitReporter::getDescription() {
         return "Reports test results in an XML format that looks like Ant's junitreport target";

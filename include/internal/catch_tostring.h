@@ -63,11 +63,11 @@ namespace Catch {
         template<typename T>
         typename std::enable_if<!std::is_enum<T>::value, std::string>::type convertUnstreamable( T const& ) {
             return Detail::unprintableString;
-        };
+        }
         template<typename T>
         typename std::enable_if<std::is_enum<T>::value, std::string>::type convertUnstreamable( T const& value ) {
             return convertUnknownEnumToString( value );
-        };
+        }
 
     } // namespace Detail
 

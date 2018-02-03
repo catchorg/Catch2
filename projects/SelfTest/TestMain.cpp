@@ -29,5 +29,5 @@ CATCH_REGISTER_TAG_ALIAS( "[@tricky]", "[tricky]~[.]" )
 struct TestListener : Catch::TestEventListenerBase {
     using TestEventListenerBase::TestEventListenerBase; // inherit constructor
 };
-CATCH_REGISTER_LISTENER( TestListener );
+CATCH_REGISTER_LISTENER( TestListener )
 
