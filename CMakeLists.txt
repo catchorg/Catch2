@@ -332,7 +332,7 @@ if (BUILD_TESTING AND NOT_SUBPROJECT)
 
     # Add desired warnings
     if ( CMAKE_CXX_COMPILER_ID MATCHES "Clang|AppleClang|GNU" )
-        target_compile_options( SelfTest PRIVATE -Wall -Wextra -Wunreachable-code )
+        target_compile_options( SelfTest PRIVATE -Wall -Wextra -Wunreachable-code -Wpedantic)
         if (CATCH_ENABLE_WERROR)
             target_compile_options( SelfTest PRIVATE -Werror)
         endif()
