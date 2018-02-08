@@ -330,16 +330,15 @@ if (BUILD_TESTING AND NOT_SUBPROJECT)
         coverage_evaluate()
     endif()
 
-    # Add desired warnings
+    # Add per compiler options
     if ( CMAKE_CXX_COMPILER_ID MATCHES "Clang|AppleClang|GNU" )
         target_compile_options( SelfTest PRIVATE -Wall -Wextra -Wunreachable-code -Wpedantic)
         if (CATCH_ENABLE_WERROR)
             target_compile_options( SelfTest PRIVATE -Werror)
         endif()
     endif()
-    # Clang specific warning go here
+    # Clang specific options go here
     if ( CMAKE_CXX_COMPILER_ID MATCHES "Clang" )
-        # Actually keep these
         target_compile_options( SelfTest PRIVATE -Wweak-vtables -Wexit-time-destructors -Wglobal-constructors -Wmissing-noreturn )
     endif()
     if ( CMAKE_CXX_COMPILER_ID MATCHES "MSVC" )
@@ -348,6 +347,8 @@ if (BUILD_TESTING AND NOT_SUBPROJECT)
         if (CATCH_ENABLE_WERROR)
             target_compile_options( SelfTest PRIVATE /WX)
         endif()
+        # Force MSVC to consider everything as encoded in utf-8
+        target_compile_options( SelfTest PRIVATE /utf-8 )
     endif()
 
 
