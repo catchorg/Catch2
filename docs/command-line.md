@@ -192,9 +192,16 @@ This option transforms tabs and newline characters into ```\t``` and ```\n``` re
 ## Warnings
 <pre>-w, --warn &lt;warning name></pre>
 
-Enables reporting of warnings (only one, at time of this writing). If a warning is issued it fails the test.
+Enables reporting of suspicious test states. There are currently two
+available warnings
 
-The ony available warning, presently, is ```NoAssertions```. This warning fails a test case, or (leaf) section if no assertions (```REQUIRE```/ ```CHECK``` etc) are encountered.
+```
+    NoAssertions   // Fail test case / leaf section if no assertions
+                   // (e.g. `REQUIRE`) is encountered.
+    NoTests        // Return non-zero exit code when no test cases were run
+                   // Also calls reporter's noMatchingTestCases method
+```
+
 
 <a id="reporting-timings"></a>
 ## Reporting timings

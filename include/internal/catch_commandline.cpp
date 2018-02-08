@@ -20,9 +20,19 @@ namespace Catch {
         using namespace clara;
 
         auto const setWarning = [&]( std::string const& warning ) {
-                if( warning != "NoAssertions" )
+                auto warningSet = [&]() {
+                    if( warning == "NoAssertions" )
+                        return WarnAbout::NoAssertions;
+
+                    if ( warning == "NoTests" )
+                        return WarnAbout::NoTests;
+
+                    return WarnAbout::Nothing;
+                }();
+
+                if (warningSet == WarnAbout::Nothing)
                     return ParserResult::runtimeError( "Unrecognised warning: '" + warning + "'" );
-                config.warnings = static_cast<WarnAbout::What>( config.warnings | WarnAbout::NoAssertions );
+                config.warnings = static_cast<WarnAbout::What>( config.warnings | warningSet );
                 return ParserResult::ok( ParseResultType::Matched );
             };
         auto const loadTestNamesFromFile = [&]( std::string const& filename ) {

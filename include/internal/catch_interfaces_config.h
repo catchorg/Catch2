@@ -25,7 +25,8 @@ namespace Catch {
 
     struct WarnAbout { enum What {
         Nothing = 0x00,
-        NoAssertions = 0x01
+        NoAssertions = 0x01,
+        NoTests = 0x02
     }; };
 
     struct ShowDurations { enum OrNot {
@@ -62,6 +63,7 @@ namespace Catch {
         virtual bool includeSuccessfulResults() const = 0;
         virtual bool shouldDebugBreak() const = 0;
         virtual bool warnAboutMissingAssertions() const = 0;
+        virtual bool warnAboutNoTests() const = 0;
         virtual int abortAfter() const = 0;
         virtual bool showInvisibles() const = 0;
         virtual ShowDurations::OrNot showDurations() const = 0;

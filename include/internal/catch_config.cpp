@@ -35,6 +35,7 @@ namespace Catch {
     std::string Config::getProcessName() const { return m_data.processName; }
 
     std::vector<std::string> const& Config::getReporterNames() const { return m_data.reporterNames; }
+    std::vector<std::string> const& Config::getTestsOrTags() const { return m_data.testsOrTags; }
     std::vector<std::string> const& Config::getSectionsToRun() const { return m_data.sectionsToRun; }
 
     TestSpec const& Config::testSpec() const { return m_testSpec; }
@@ -46,7 +47,8 @@ namespace Catch {
     std::ostream& Config::stream() const               { return m_stream->stream(); }
     std::string Config::name() const                   { return m_data.name.empty() ? m_data.processName : m_data.name; }
     bool Config::includeSuccessfulResults() const      { return m_data.showSuccessfulTests; }
-    bool Config::warnAboutMissingAssertions() const    { return m_data.warnings & WarnAbout::NoAssertions; }
+    bool Config::warnAboutMissingAssertions() const    { return !!(m_data.warnings & WarnAbout::NoAssertions); }
+    bool Config::warnAboutNoTests() const              { return !!(m_data.warnings & WarnAbout::NoTests); }
     ShowDurations::OrNot Config::showDurations() const { return m_data.showDurations; }
     RunTests::InWhatOrder Config::runOrder() const     { return m_data.runOrder; }
     unsigned int Config::rngSeed() const               { return m_data.rngSeed; }

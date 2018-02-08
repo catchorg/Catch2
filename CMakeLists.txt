@@ -368,7 +368,11 @@ if (BUILD_TESTING AND NOT_SUBPROJECT)
     add_test(NAME ListTestNamesOnly COMMAND $<TARGET_FILE:SelfTest> --list-test-names-only)
     set_tests_properties(ListTestNamesOnly PROPERTIES PASS_REGULAR_EXPRESSION "Regex string matcher")
 
+    add_test(NAME NoAssertions COMMAND $<TARGET_FILE:SelfTest> -w NoAssertions)
+    set_tests_properties(NoAssertions PROPERTIES PASS_REGULAR_EXPRESSION "No assertions in test case")
 
+    add_test(NAME NoTest COMMAND $<TARGET_FILE:SelfTest> -w NoTests "___nonexistent_test___")
+    set_tests_properties(NoTest PROPERTIES PASS_REGULAR_EXPRESSION "No test cases matched")
 
     # AppVeyor has a Python 2.7 in path, but doesn't have .py files as autorunnable
     add_test(NAME ApprovalTests COMMAND python ${CMAKE_CURRENT_SOURCE_DIR}/scripts/approvalTests.py $<TARGET_FILE:SelfTest>)
