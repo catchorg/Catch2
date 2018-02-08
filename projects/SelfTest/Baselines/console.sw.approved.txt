@@ -5240,6 +5240,31 @@ with expansion:
   11 == 11
 
 -------------------------------------------------------------------------------
+StringRef
+  Counting utf-8 codepoints
+-------------------------------------------------------------------------------
+String.tests.cpp:<line number>
+...............................................................................
+
+String.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( ascii.numberOfCharacters() == ascii.size() )
+with expansion:
+  39 == 39
+
+String.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( simpleu8.numberOfCharacters() == 30 )
+with expansion:
+  30 == 30
+
+String.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( emojis.numberOfCharacters() == 9 )
+with expansion:
+  9 == 9
+
+-------------------------------------------------------------------------------
 Stringifying std::chrono::duration helpers
 -------------------------------------------------------------------------------
 ToStringChrono.tests.cpp:<line number>
@@ -8442,5 +8467,5 @@ PASSED:
 
 ===============================================================================
 test cases:  198 | 133 passed |  61 failed |  4 failed as expected
-assertions: 1007 | 866 passed | 120 failed | 21 failed as expected
+assertions: 1010 | 869 passed | 120 failed | 21 failed as expected
 

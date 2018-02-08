@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuitesloose text artifact
 >
-  <testsuite name="<exe-name>" errors="15" failures="106" tests="1008" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
+  <testsuite name="<exe-name>" errors="15" failures="106" tests="1011" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
     <testcase classname="<exe-name>.global" name="# A test name that starts with a #" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="#1005: Comparing pointer to int and long (NULL can be either on various systems)" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="#1027" time="{duration}"/>
@@ -562,6 +562,7 @@ String.tests.cpp:<line number>
     <testcase classname="<exe-name>.global" name="StringRef/to std::string/implicitly constructed" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="StringRef/to std::string/explicitly constructed" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="StringRef/to std::string/assigned" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="StringRef/Counting utf-8 codepoints" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Stringifying std::chrono::duration helpers" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Stringifying std::chrono::duration with weird ratios" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Stringifying std::chrono::time_point&lt;system_clock>" time="{duration}"/>

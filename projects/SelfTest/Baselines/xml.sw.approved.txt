@@ -5582,7 +5582,7 @@ Message from section two
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="StringRef" tags="[Strings]" filename="projects/<exe-name>/IntrospectiveTests/String.tests.cpp" >
+    <TestCase name="StringRef" tags="[StringRef][Strings]" filename="projects/<exe-name>/IntrospectiveTests/String.tests.cpp" >
       <Section name="Empty string" filename="projects/<exe-name>/IntrospectiveTests/String.tests.cpp" >
         <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/String.tests.cpp" >
           <Original>
@@ -5991,6 +5991,33 @@ Message from section two
           <OverallResults successes="2" failures="0" expectedFailures="0"/>
         </Section>
         <OverallResults successes="2" failures="0" expectedFailures="0"/>
+      </Section>
+      <Section name="Counting utf-8 codepoints" filename="projects/<exe-name>/IntrospectiveTests/String.tests.cpp" >
+        <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/String.tests.cpp" >
+          <Original>
+            ascii.numberOfCharacters() == ascii.size()
+          </Original>
+          <Expanded>
+            39 == 39
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/String.tests.cpp" >
+          <Original>
+            simpleu8.numberOfCharacters() == 30
+          </Original>
+          <Expanded>
+            30 == 30
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/String.tests.cpp" >
+          <Original>
+            emojis.numberOfCharacters() == 9
+          </Original>
+          <Expanded>
+            9 == 9
+          </Expanded>
+        </Expression>
+        <OverallResults successes="3" failures="0" expectedFailures="0"/>
       </Section>
       <OverallResult success="false"/>
     </TestCase>
@@ -8375,7 +8402,7 @@ loose text artifact
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="replaceInPlace" filename="projects/<exe-name>/IntrospectiveTests/String.tests.cpp" >
+    <TestCase name="replaceInPlace" tags="[StringManip][Strings]" filename="projects/<exe-name>/IntrospectiveTests/String.tests.cpp" >
       <Section name="replace single char" filename="projects/<exe-name>/IntrospectiveTests/String.tests.cpp" >
         <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/String.tests.cpp" >
           <Original>
@@ -9296,7 +9323,7 @@ loose text artifact
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="866" failures="121" expectedFailures="21"/>
+    <OverallResults successes="869" failures="121" expectedFailures="21"/>
   </Group>
-  <OverallResults successes="866" failures="120" expectedFailures="21"/>
+  <OverallResults successes="869" failures="120" expectedFailures="21"/>
 </Catch>

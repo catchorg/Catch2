@@ -652,6 +652,9 @@ String.tests.cpp:<line number>: passed: stdStr == "a stringref" for: "a stringre
 String.tests.cpp:<line number>: passed: stdStr.size() == sr.size() for: 11 == 11
 String.tests.cpp:<line number>: passed: stdStr == "a stringref" for: "a stringref" == "a stringref"
 String.tests.cpp:<line number>: passed: stdStr.size() == sr.size() for: 11 == 11
+String.tests.cpp:<line number>: passed: ascii.numberOfCharacters() == ascii.size() for: 39 == 39
+String.tests.cpp:<line number>: passed: simpleu8.numberOfCharacters() == 30 for: 30 == 30
+String.tests.cpp:<line number>: passed: emojis.numberOfCharacters() == 9 for: 9 == 9
 ToStringChrono.tests.cpp:<line number>: passed: minute == seconds for: 1 m == 60 s
 ToStringChrono.tests.cpp:<line number>: passed: hour != seconds for: 1 h != 60 s
 ToStringChrono.tests.cpp:<line number>: passed: micro != milli for: 1 us != 1 ms
