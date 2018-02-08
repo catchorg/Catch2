@@ -36,8 +36,8 @@ namespace Catch {
     }
 } // namespace Catch
 
-TEST_CASE( "StringRef", "[Strings]" ) {
-    
+TEST_CASE( "StringRef", "[Strings][StringRef]" ) {
+
     using Catch::StringRef;
 
     SECTION( "Empty string" ) {
@@ -46,21 +46,21 @@ TEST_CASE( "StringRef", "[Strings]" ) {
         REQUIRE( empty.size() == 0 );
         REQUIRE( std::strcmp( empty.c_str(), "" ) == 0 );
     }
-    
+
     SECTION( "From string literal" ) {
         StringRef s = "hello";
         REQUIRE( s.empty() == false );
         REQUIRE( s.size() == 5 );
         REQUIRE( isSubstring( s ) == false );
-        
+
         auto rawChars = data( s );
         REQUIRE( std::strcmp( rawChars, "hello" ) == 0 );
-        
+
         SECTION( "c_str() does not cause copy" ) {
             REQUIRE( isOwned( s ) == false );
-            
+
             REQUIRE( s.c_str() == rawChars );
-            
+
             REQUIRE( isOwned( s ) == false );
         }
     }
@@ -69,19 +69,19 @@ TEST_CASE( "StringRef", "[Strings]" ) {
         REQUIRE( original == "original" );
         REQUIRE( isSubstring( original ) );
         REQUIRE( isOwned( original ) == false );
-        
+
         original.c_str(); // Forces it to take ownership
-        
+
         REQUIRE( isSubstring( original ) == false );
         REQUIRE( isOwned( original ) );
-        
+
     }
-    
-    
+
+
     SECTION( "Substrings" ) {
         StringRef s = "hello world!";
         StringRef ss = s.substr(0, 5);
-        
+
         SECTION( "zero-based substring" ) {
             REQUIRE( ss.empty() == false );
             REQUIRE( ss.size() == 5 );
@@ -91,33 +91,33 @@ TEST_CASE( "StringRef", "[Strings]" ) {
         SECTION( "c_str() causes copy" ) {
             REQUIRE( isSubstring( ss ) );
             REQUIRE( isOwned( ss ) == false );
-            
+
             auto rawChars = data( ss );
             REQUIRE( rawChars == data( s ) ); // same pointer value
             REQUIRE( ss.c_str() != rawChars );
-            
+
             REQUIRE( isSubstring( ss ) == false );
             REQUIRE( isOwned( ss ) );
-            
+
             REQUIRE( data( ss ) != data( s ) ); // different pointer value
         }
-        
+
         SECTION( "non-zero-based substring") {
             ss = s.substr( 6, 6 );
             REQUIRE( ss.size() == 6 );
             REQUIRE( std::strcmp( ss.c_str(), "world!" ) == 0 );
         }
-        
+
         SECTION( "Pointer values of full refs should match" ) {
             StringRef s2 = s;
             REQUIRE( s.c_str() == s2.c_str() );
         }
-        
+
         SECTION( "Pointer values of substring refs should not match" ) {
             REQUIRE( s.c_str() != ss.c_str() );
         }
     }
-    
+
     SECTION( "Comparisons" ) {
         REQUIRE( StringRef("hello") == StringRef("hello") );
         REQUIRE( StringRef("hello") != StringRef("cello") );
@@ -164,9 +164,21 @@ TEST_CASE( "StringRef", "[Strings]" ) {
             REQUIRE( stdStr.size() == sr.size() );
         }
     }
+
+    SECTION( "Counting utf-8 codepoints" ) {
+        StringRef ascii = "just a plain old boring ascii string...";
+        REQUIRE(ascii.numberOfCharacters() == ascii.size());
+
+        StringRef simpleu8 = u8"Trocha češtiny nikoho nezabila";
+        REQUIRE(simpleu8.numberOfCharacters() == 30);
+
+        StringRef emojis = u8"Here be 👾";
+        REQUIRE(emojis.numberOfCharacters() == 9);
+    }
+
 }
 
-TEST_CASE( "replaceInPlace" ) {
+TEST_CASE( "replaceInPlace", "[Strings][StringManip]" ) {
     std::string letters = "abcdefcg";
     SECTION( "replace single char" ) {
         CHECK( Catch::replaceInPlace( letters, "b", "z" ) );
