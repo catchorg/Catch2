@@ -21,6 +21,9 @@
 
 #include <cstdlib>
 #include <iomanip>
+#include <sstream>
+#include <algorithm>
+#include <iterator>
 
 namespace Catch {
 
@@ -78,6 +81,14 @@ namespace Catch {
                     totals += context.runTest(testCase);
                 else
                     context.reporter().skipTest(testCase);
+            }
+
+            if (config->warnAboutNoTests() && totals.testCases.total() == 0) {
+              std::stringstream testConfig;
+              auto const& testsOrTags = config->getTestsOrTags();
+              std::copy(testsOrTags.begin(), testsOrTags.end(), std::ostream_iterator<std::string>(testConfig, ", "));
+              context.reporter().noMatchingTestCases(testConfig.str());
+              totals.error = -1;
             }
 
             context.testGroupEnded(config->name(), totals, 1, 1);
@@ -259,10 +270,11 @@ namespace Catch {
             if( Option<std::size_t> listed = list( config() ) )
                 return static_cast<int>( *listed );
 
+            auto totals = runTests( m_config );
             // Note that on unices only the lower 8 bits are usually used, clamping
             // the return value to 255 prevents false negative when some multiple
             // of 256 tests has failed
-            return (std::min)( MaxExitCode, static_cast<int>( runTests( m_config ).assertions.failed ) );
+            return (std::min)( { MaxExitCode, totals.error, static_cast<int>( totals.assertions.failed ) } );
         }
         catch( std::exception& ex ) {
             Catch::cerr() << ex.what() << std::endl;

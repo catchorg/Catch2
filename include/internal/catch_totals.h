@@ -32,7 +32,7 @@ namespace Catch {
 
         Totals delta( Totals const& prevTotals ) const;
 
-
+        int error = 0;
         Counts assertions;
         Counts testCases;
     };
