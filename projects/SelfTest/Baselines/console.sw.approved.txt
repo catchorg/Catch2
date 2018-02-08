@@ -94,6 +94,15 @@ with expansion:
   {?} >= {?}
 
 -------------------------------------------------------------------------------
+#1175 - Hidden Test
+-------------------------------------------------------------------------------
+Misc.tests.cpp:<line number>
+...............................................................................
+
+Misc.tests.cpp:<line number>:
+PASSED:
+
+-------------------------------------------------------------------------------
 #748 - captures with unexpected exceptions
   outside assertions
 -------------------------------------------------------------------------------
@@ -3965,6 +3974,12 @@ PASSED:
 with expansion:
   true
 
+CmdLine.tests.cpp:<line number>:
+PASSED:
+  CHECK_FALSE( cfg.hasTestFilters() )
+with expansion:
+  !false
+
 -------------------------------------------------------------------------------
 Process can be configured on command line
   test lists
@@ -3978,6 +3993,12 @@ PASSED:
   CHECK( result )
 with expansion:
   {?}
+
+CmdLine.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( cfg.hasTestFilters() )
+with expansion:
+  true
 
 CmdLine.tests.cpp:<line number>:
 PASSED:
@@ -4007,6 +4028,12 @@ with expansion:
 
 CmdLine.tests.cpp:<line number>:
 PASSED:
+  REQUIRE( cfg.hasTestFilters() )
+with expansion:
+  true
+
+CmdLine.tests.cpp:<line number>:
+PASSED:
   REQUIRE( cfg.testSpec().matches(fakeTestCase("test1")) == false )
 with expansion:
   false == false
@@ -4030,6 +4057,12 @@ PASSED:
   CHECK( result )
 with expansion:
   {?}
+
+CmdLine.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( cfg.hasTestFilters() )
+with expansion:
+  true
 
 CmdLine.tests.cpp:<line number>:
 PASSED:
@@ -8466,6 +8499,6 @@ Misc.tests.cpp:<line number>:
 PASSED:
 
 ===============================================================================
-test cases:  198 | 133 passed |  61 failed |  4 failed as expected
-assertions: 1010 | 869 passed | 120 failed | 21 failed as expected
+test cases:  199 | 134 passed |  61 failed |  4 failed as expected
+assertions: 1015 | 874 passed | 120 failed | 21 failed as expected
 

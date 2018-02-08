@@ -68,6 +68,7 @@ namespace Catch {
         virtual bool showInvisibles() const = 0;
         virtual ShowDurations::OrNot showDurations() const = 0;
         virtual TestSpec const& testSpec() const = 0;
+        virtual bool hasTestFilters() const = 0;
         virtual RunTests::InWhatOrder runOrder() const = 0;
         virtual unsigned int rngSeed() const = 0;
         virtual int benchmarkResolutionMultiple() const = 0;

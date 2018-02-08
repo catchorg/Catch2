@@ -82,6 +82,7 @@ namespace Catch {
         std::vector<std::string> const& getSectionsToRun() const override;
 
         virtual TestSpec const& testSpec() const override;
+        bool hasTestFilters() const override;
 
         bool showHelp() const;
 
@@ -109,6 +110,7 @@ namespace Catch {
 
         std::unique_ptr<IStream const> m_stream;
         TestSpec m_testSpec;
+        bool m_hasTestFilters = false;
     };
 
 } // end namespace Catch

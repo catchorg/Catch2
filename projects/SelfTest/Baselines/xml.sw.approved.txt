@@ -93,6 +93,9 @@
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
+    <TestCase name="#1175 - Hidden Test" tags="[.]" filename="projects/<exe-name>/UsageTests/Misc.tests.cpp" >
+      <OverallResult success="true"/>
+    </TestCase>
     <TestCase name="#748 - captures with unexpected exceptions" tags="[!shouldfail][!throws][.][failing]" filename="projects/<exe-name>/UsageTests/Exception.tests.cpp" >
       <Section name="outside assertions" filename="projects/<exe-name>/UsageTests/Exception.tests.cpp" >
         <Info>
@@ -4624,7 +4627,15 @@
             true
           </Expanded>
         </Expression>
-        <OverallResults successes="6" failures="0" expectedFailures="0"/>
+        <Expression success="true" type="CHECK_FALSE" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
+          <Original>
+            !(cfg.hasTestFilters())
+          </Original>
+          <Expanded>
+            !false
+          </Expanded>
+        </Expression>
+        <OverallResults successes="7" failures="0" expectedFailures="0"/>
       </Section>
       <Section name="test lists" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
         <Section name="1 test" description="Specify one test case using" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
@@ -4634,6 +4645,14 @@
             </Original>
             <Expanded>
               {?}
+            </Expanded>
+          </Expression>
+          <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
+            <Original>
+              cfg.hasTestFilters()
+            </Original>
+            <Expanded>
+              true
             </Expanded>
           </Expression>
           <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
@@ -4652,9 +4671,9 @@
               true
             </Expanded>
           </Expression>
-          <OverallResults successes="3" failures="0" expectedFailures="0"/>
+          <OverallResults successes="4" failures="0" expectedFailures="0"/>
         </Section>
-        <OverallResults successes="3" failures="0" expectedFailures="0"/>
+        <OverallResults successes="4" failures="0" expectedFailures="0"/>
       </Section>
       <Section name="test lists" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
         <Section name="Specify one test case exclusion using exclude:" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
@@ -4668,6 +4687,14 @@
           </Expression>
           <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
             <Original>
+              cfg.hasTestFilters()
+            </Original>
+            <Expanded>
+              true
+            </Expanded>
+          </Expression>
+          <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
+            <Original>
               cfg.testSpec().matches(fakeTestCase("test1")) == false
             </Original>
             <Expanded>
@@ -4682,9 +4709,9 @@
               true
             </Expanded>
           </Expression>
-          <OverallResults successes="3" failures="0" expectedFailures="0"/>
+          <OverallResults successes="4" failures="0" expectedFailures="0"/>
         </Section>
-        <OverallResults successes="3" failures="0" expectedFailures="0"/>
+        <OverallResults successes="4" failures="0" expectedFailures="0"/>
       </Section>
       <Section name="test lists" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
         <Section name="Specify one test case exclusion using ~" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
@@ -4698,6 +4725,14 @@
           </Expression>
           <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
             <Original>
+              cfg.hasTestFilters()
+            </Original>
+            <Expanded>
+              true
+            </Expanded>
+          </Expression>
+          <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
+            <Original>
               cfg.testSpec().matches(fakeTestCase("test1")) == false
             </Original>
             <Expanded>
@@ -4712,9 +4747,9 @@
               true
             </Expanded>
           </Expression>
-          <OverallResults successes="3" failures="0" expectedFailures="0"/>
+          <OverallResults successes="4" failures="0" expectedFailures="0"/>
         </Section>
-        <OverallResults successes="3" failures="0" expectedFailures="0"/>
+        <OverallResults successes="4" failures="0" expectedFailures="0"/>
       </Section>
       <Section name="reporter" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
         <Section name="-r/console" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
@@ -9323,7 +9358,7 @@ loose text artifact
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="869" failures="121" expectedFailures="21"/>
+    <OverallResults successes="874" failures="121" expectedFailures="21"/>
   </Group>
-  <OverallResults successes="869" failures="120" expectedFailures="21"/>
+  <OverallResults successes="874" failures="120" expectedFailures="21"/>
 </Catch>

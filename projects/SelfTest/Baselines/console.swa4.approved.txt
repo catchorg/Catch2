@@ -94,6 +94,15 @@ with expansion:
   {?} >= {?}
 
 -------------------------------------------------------------------------------
+#1175 - Hidden Test
+-------------------------------------------------------------------------------
+Misc.tests.cpp:<line number>
+...............................................................................
+
+Misc.tests.cpp:<line number>:
+PASSED:
+
+-------------------------------------------------------------------------------
 #748 - captures with unexpected exceptions
   outside assertions
 -------------------------------------------------------------------------------
@@ -299,6 +308,6 @@ with expansion:
   !true
 
 ===============================================================================
-test cases: 11 |  8 passed | 1 failed | 2 failed as expected
-assertions: 34 | 27 passed | 4 failed | 3 failed as expected
+test cases: 12 |  9 passed | 1 failed | 2 failed as expected
+assertions: 35 | 28 passed | 4 failed | 3 failed as expected
 

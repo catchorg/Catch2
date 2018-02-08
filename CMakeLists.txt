@@ -357,16 +357,23 @@ if (BUILD_TESTING AND NOT_SUBPROJECT)
     add_test(NAME RunTests COMMAND $<TARGET_FILE:SelfTest>)
 
     add_test(NAME ListTests COMMAND $<TARGET_FILE:SelfTest> --list-tests --verbosity high)
-    set_tests_properties(ListTests PROPERTIES PASS_REGULAR_EXPRESSION "[0-9]+ test cases")
+    set_tests_properties(ListTests PROPERTIES 
+        PASS_REGULAR_EXPRESSION "[0-9]+ test cases"
+        FAIL_REGULAR_EXPRESSION "Hidden Test"
+    )
 
     add_test(NAME ListTags COMMAND $<TARGET_FILE:SelfTest> --list-tags)
-    set_tests_properties(ListTags PROPERTIES PASS_REGULAR_EXPRESSION "[0-9]+ tags")
+    set_tests_properties(ListTags PROPERTIES 
+        PASS_REGULAR_EXPRESSION "[0-9]+ tags" 
+        FAIL_REGULAR_EXPRESSION "[.]")
 
     add_test(NAME ListReporters COMMAND $<TARGET_FILE:SelfTest> --list-reporters)
     set_tests_properties(ListReporters PROPERTIES PASS_REGULAR_EXPRESSION "Available reporters:")
 
     add_test(NAME ListTestNamesOnly COMMAND $<TARGET_FILE:SelfTest> --list-test-names-only)
-    set_tests_properties(ListTestNamesOnly PROPERTIES PASS_REGULAR_EXPRESSION "Regex string matcher")
+    set_tests_properties(ListTestNamesOnly PROPERTIES 
+        PASS_REGULAR_EXPRESSION "Regex string matcher"
+        FAIL_REGULAR_EXPRESSION "Hidden Test")
 
     add_test(NAME NoAssertions COMMAND $<TARGET_FILE:SelfTest> -w NoAssertions)
     set_tests_properties(NoAssertions PROPERTIES PASS_REGULAR_EXPRESSION "No assertions in test case")

@@ -348,4 +348,9 @@ TEST_CASE( "#961 -- Dynamically created sections should all be reported", "[.]" 
     }
 }
 
+TEST_CASE( "#1175 - Hidden Test", "[.]" ) {
+  // Just for checking that hidden test is not listed by default
+  SUCCEED();
+}
+
 }} // namespace MiscTests

@@ -15,12 +15,16 @@ namespace Catch {
     :   m_data( data ),
         m_stream( openStream() )
     {
-        if( !data.testsOrTags.empty() ) {
-            TestSpecParser parser( ITagAliasRegistry::get() );
+        TestSpecParser parser(ITagAliasRegistry::get());
+        if (data.testsOrTags.empty()) {
+            parser.parse("~[.]"); // All not hidden tests
+        }
+        else {
+            m_hasTestFilters = true;
             for( auto const& testOrTags : data.testsOrTags )
                 parser.parse( testOrTags );
-            m_testSpec = parser.testSpec();
         }
+        m_testSpec = parser.testSpec();
     }
 
     std::string const& Config::getFilename() const {
@@ -39,6 +43,7 @@ namespace Catch {
     std::vector<std::string> const& Config::getSectionsToRun() const { return m_data.sectionsToRun; }
 
     TestSpec const& Config::testSpec() const { return m_testSpec; }
+    bool Config::hasTestFilters() const { return m_hasTestFilters; }
 
     bool Config::showHelp() const { return m_data.showHelp; }
 
