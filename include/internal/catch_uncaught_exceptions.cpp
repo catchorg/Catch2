@@ -12,7 +12,6 @@
 
 namespace Catch {
     bool uncaught_exceptions() {
-// https://github.com/catchorg/Catch2/issues/1162
 #if defined(CATCH_CONFIG_CPP17_UNCAUGHT_EXCEPTIONS)
         return std::uncaught_exceptions() > 0;
 #else
