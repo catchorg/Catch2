@@ -69,8 +69,6 @@ namespace Catch {
             context.testGroupStarting(config->name(), 1, 1);
 
             TestSpec testSpec = config->testSpec();
-            if (!testSpec.hasFilters())
-                testSpec = TestSpecParser(ITagAliasRegistry::get()).parse("~[.]").testSpec(); // All not hidden tests
 
             auto const& allTestCases = getAllTestCasesSorted(*config);
             for (auto const& testCase : allTestCases) {

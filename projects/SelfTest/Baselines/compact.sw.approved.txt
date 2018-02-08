@@ -9,6 +9,7 @@ Compilation.tests.cpp:<line number>: passed: t1 < t2 for: {?} < {?}
 Compilation.tests.cpp:<line number>: passed: t1 > t2 for: {?} > {?}
 Compilation.tests.cpp:<line number>: passed: t1 <= t2 for: {?} <= {?}
 Compilation.tests.cpp:<line number>: passed: t1 >= t2 for: {?} >= {?}
+Misc.tests.cpp:<line number>: passed:
 Exception.tests.cpp:<line number>: failed: unexpected exception with message: 'answer := 42' with 1 message: 'expected exception'
 Exception.tests.cpp:<line number>: failed: unexpected exception with message: 'answer := 42'; expression was: thisThrows() with 1 message: 'expected exception'
 Exception.tests.cpp:<line number>: passed: thisThrows() with 1 message: 'answer := 42'
@@ -514,13 +515,17 @@ CmdLine.tests.cpp:<line number>: passed: config.shouldDebugBreak == false for: f
 CmdLine.tests.cpp:<line number>: passed: config.abortAfter == -1 for: -1 == -1
 CmdLine.tests.cpp:<line number>: passed: config.noThrow == false for: false == false
 CmdLine.tests.cpp:<line number>: passed: config.reporterNames.empty() for: true
+CmdLine.tests.cpp:<line number>: passed: !(cfg.hasTestFilters()) for: !false
 CmdLine.tests.cpp:<line number>: passed: result for: {?}
+CmdLine.tests.cpp:<line number>: passed: cfg.hasTestFilters() for: true
 CmdLine.tests.cpp:<line number>: passed: cfg.testSpec().matches(fakeTestCase("notIncluded")) == false for: false == false
 CmdLine.tests.cpp:<line number>: passed: cfg.testSpec().matches(fakeTestCase("test1")) for: true
 CmdLine.tests.cpp:<line number>: passed: result for: {?}
+CmdLine.tests.cpp:<line number>: passed: cfg.hasTestFilters() for: true
 CmdLine.tests.cpp:<line number>: passed: cfg.testSpec().matches(fakeTestCase("test1")) == false for: false == false
 CmdLine.tests.cpp:<line number>: passed: cfg.testSpec().matches(fakeTestCase("alwaysIncluded")) for: true
 CmdLine.tests.cpp:<line number>: passed: result for: {?}
+CmdLine.tests.cpp:<line number>: passed: cfg.hasTestFilters() for: true
 CmdLine.tests.cpp:<line number>: passed: cfg.testSpec().matches(fakeTestCase("test1")) == false for: false == false
 CmdLine.tests.cpp:<line number>: passed: cfg.testSpec().matches(fakeTestCase("alwaysIncluded")) for: true
 CmdLine.tests.cpp:<line number>: passed: cli.parse({"test", "-r", "console"}) for: {?}

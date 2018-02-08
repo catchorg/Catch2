@@ -289,6 +289,9 @@ TEST_CASE( "Process can be configured on command line", "[config][command-line]"
         CHECK(config.abortAfter == -1);
         CHECK(config.noThrow == false);
         CHECK(config.reporterNames.empty());
+
+        Catch::Config cfg(config);
+        CHECK_FALSE(cfg.hasTestFilters());
     }
 
     SECTION("test lists") {
@@ -297,6 +300,7 @@ TEST_CASE( "Process can be configured on command line", "[config][command-line]"
             CHECK(result);
 
             Catch::Config cfg(config);
+            REQUIRE(cfg.hasTestFilters());
             REQUIRE(cfg.testSpec().matches(fakeTestCase("notIncluded")) == false);
             REQUIRE(cfg.testSpec().matches(fakeTestCase("test1")));
         }
@@ -305,6 +309,7 @@ TEST_CASE( "Process can be configured on command line", "[config][command-line]"
             CHECK(result);
 
             Catch::Config cfg(config);
+            REQUIRE(cfg.hasTestFilters());
             REQUIRE(cfg.testSpec().matches(fakeTestCase("test1")) == false);
             REQUIRE(cfg.testSpec().matches(fakeTestCase("alwaysIncluded")));
         }
@@ -314,6 +319,7 @@ TEST_CASE( "Process can be configured on command line", "[config][command-line]"
             CHECK(result);
 
             Catch::Config cfg(config);
+            REQUIRE(cfg.hasTestFilters());
             REQUIRE(cfg.testSpec().matches(fakeTestCase("test1")) == false);
             REQUIRE(cfg.testSpec().matches(fakeTestCase("alwaysIncluded")));
         }
