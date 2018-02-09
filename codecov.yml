@@ -6,6 +6,10 @@ coverage:
     project:
       default:
         threshold: 2%
+    patch:
+      default:
+        target: 80%
+
 
 codecov:
   branch: master
