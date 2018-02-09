@@ -1,5 +1,22 @@
 <a id="top"></a>
 
+# 2.1.2
+
+## Fixes
+* Fixed compilation error with `-fno-rtti` (#1165)
+* Fixed NoAssertion warnings
+* `operator<<` is used before range-based stringification (#1172)
+* Fixed `-Wpedantic` warnings (extra semicolons and binary literals) (#1173)
+
+
+## Improvements
+* Added `CATCH_VERSION_{MAJOR,MINOR,PATCH}` macros (#1131)
+* Added `BrightYellow` colour for use in reporters (#979)
+  * It is also used by ConsoleReporter for reconstructed expressions
+
+## Other changes
+* Catch is now exported as a CMake package and linkable target (#1170)
+
 # 2.1.1
 
 ## Improvements

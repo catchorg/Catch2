@@ -4,7 +4,7 @@ from conans import ConanFile
 
 class CatchConan(ConanFile):
     name = "Catch"
-    version = "2.1.1"
+    version = "2.1.2"
     description = "A modern, C++-native, header-only, framework for unit-tests, TDD and BDD"
     author = "philsquared"
     generators = "cmake"

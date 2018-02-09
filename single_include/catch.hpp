@@ -1,6 +1,6 @@
 /*
- *  Catch v2.1.1
- *  Generated: 2018-01-26 16:04:07.190063
+ *  Catch v2.1.2
+ *  Generated: 2018-02-09 17:05:21.506253
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2018 Two Blue Cubes Ltd. All rights reserved.
@@ -12,6 +12,10 @@
 #define TWOBLUECUBES_SINGLE_INCLUDE_CATCH_HPP_INCLUDED
 // start catch.hpp
 
+
+#define CATCH_VERSION_MAJOR 2
+#define CATCH_VERSION_MINOR 1
+#define CATCH_VERSION_PATCH 2
 
 #ifdef __clang__
 #    pragma clang system_header
@@ -116,6 +120,14 @@ namespace Catch {
 #    define CATCH_CPP14_OR_GREATER
 #  endif
 
+#  if __cplusplus >= 201703L
+#    define CATCH_CPP17_OR_GREATER
+#  endif
+
+#endif
+
+#if defined(CATCH_CPP17_OR_GREATER)
+#  define CATCH_INTERNAL_CONFIG_CPP17_UNCAUGHT_EXCEPTIONS
 #endif
 
 #ifdef __clang__
@@ -164,6 +176,10 @@ namespace Catch {
 // Visual C++
 #ifdef _MSC_VER
 
+#  if _MSC_VER >= 1900 // Visual Studio 2015 or newer
+#    define CATCH_INTERNAL_CONFIG_CPP17_UNCAUGHT_EXCEPTIONS
+#  endif
+
 // Universal Windows platform does not support SEH
 // Or console colours (or console at all...)
 #  if defined(WINAPI_FAMILY) && (WINAPI_FAMILY == WINAPI_FAMILY_APP)
@@ -194,6 +210,10 @@ namespace Catch {
 // This is set by default, because we assume that unix compilers are posix-signal-compatible by default.
 #if !defined(CATCH_INTERNAL_CONFIG_NO_POSIX_SIGNALS) && !defined(CATCH_CONFIG_NO_POSIX_SIGNALS) && !defined(CATCH_CONFIG_POSIX_SIGNALS)
 #   define CATCH_CONFIG_POSIX_SIGNALS
+#endif
+
+#if defined(CATCH_INTERNAL_CONFIG_CPP17_UNCAUGHT_EXCEPTIONS) && !defined(CATCH_INTERNAL_CONFIG_NO_CPP17_UNCAUGHT_EXCEPTIONS) && !defined(CATCH_CONFIG_CPP17_UNCAUGHT_EXCEPTIONS)
+#  define CATCH_CONFIG_CPP17_UNCAUGHT_EXCEPTIONS
 #endif
 
 #if !defined(CATCH_INTERNAL_SUPPRESS_PARENTHESES_WARNINGS)
@@ -735,11 +755,11 @@ namespace Catch {
         template<typename T>
         typename std::enable_if<!std::is_enum<T>::value, std::string>::type convertUnstreamable( T const& ) {
             return Detail::unprintableString;
-        };
+        }
         template<typename T>
         typename std::enable_if<std::is_enum<T>::value, std::string>::type convertUnstreamable( T const& value ) {
             return convertUnknownEnumToString( value );
-        };
+        }
 
     } // namespace Detail
 
@@ -1057,7 +1077,7 @@ namespace Catch {
     }
 
     template<typename R>
-    struct StringMaker<R, typename std::enable_if<is_range<R>::value && !std::is_array<R>::value>::type> {
+    struct StringMaker<R, typename std::enable_if<is_range<R>::value && !::Catch::Detail::IsStreamInsertable<R>::value>::type> {
         static std::string convert( R const& range ) {
             return rangeToString( range );
         }
@@ -1264,7 +1284,7 @@ namespace Catch {
 
     // Specialised comparison functions to handle equality comparisons between ints and pointers (NULL deduces as an int)
     template<typename LhsT, typename RhsT>
-    auto compareEqual( LhsT const& lhs, RhsT const& rhs ) -> bool { return static_cast<bool>(lhs == rhs); };
+    auto compareEqual( LhsT const& lhs, RhsT const& rhs ) -> bool { return static_cast<bool>(lhs == rhs); }
     template<typename T>
     auto compareEqual( T* const& lhs, int rhs ) -> bool { return lhs == reinterpret_cast<void const*>( rhs ); }
     template<typename T>
@@ -1275,7 +1295,7 @@ namespace Catch {
     auto compareEqual( long lhs, T* const& rhs ) -> bool { return reinterpret_cast<void const*>( lhs ) == rhs; }
 
     template<typename LhsT, typename RhsT>
-    auto compareNotEqual( LhsT const& lhs, RhsT&& rhs ) -> bool { return static_cast<bool>(lhs != rhs); };
+    auto compareNotEqual( LhsT const& lhs, RhsT&& rhs ) -> bool { return static_cast<bool>(lhs != rhs); }
     template<typename T>
     auto compareNotEqual( T* const& lhs, int rhs ) -> bool { return lhs != reinterpret_cast<void const*>( rhs ); }
     template<typename T>
@@ -3881,10 +3901,11 @@ namespace Catch {
             BrightGreen = Bright | Green,
             LightGrey = Bright | Grey,
             BrightWhite = Bright | White,
+            BrightYellow = Bright | Yellow,
 
             // By intention
             FileName = LightGrey,
-            Warning = Yellow,
+            Warning = BrightYellow,
             ResultError = BrightRed,
             ResultSuccess = BrightGreen,
             ResultExpectedFailure = Warning,
@@ -3893,7 +3914,7 @@ namespace Catch {
             Success = Green,
 
             OriginalExpression = Cyan,
-            ReconstructedExpression = Yellow,
+            ReconstructedExpression = BrightYellow,
 
             SecondaryText = LightGrey,
             Headers = White
@@ -4606,7 +4627,10 @@ namespace Catch {
 #ifdef CATCH_TRAP
     #define CATCH_BREAK_INTO_DEBUGGER() if( Catch::isDebuggerActive() ) { CATCH_TRAP(); }
 #else
-    #define CATCH_BREAK_INTO_DEBUGGER() (void)0, 0
+    namespace Catch {
+        inline void doNothing() {}
+    }
+    #define CATCH_BREAK_INTO_DEBUGGER() Catch::doNothing()
 #endif
 
 // end catch_debugger.h
@@ -5095,7 +5119,7 @@ namespace Catch {
 //
 // See https://github.com/philsquared/Clara for more details
 
-// Clara v1.1.1
+// Clara v1.1.2
 
 
 #ifndef CATCH_CLARA_CONFIG_CONSOLE_WIDTH
@@ -5751,12 +5775,14 @@ namespace detail {
     struct BoundRef : NonCopyable {
         virtual ~BoundRef() = default;
         virtual auto isContainer() const -> bool { return false; }
+        virtual auto isFlag() const -> bool { return false; }
     };
     struct BoundValueRefBase : BoundRef {
         virtual auto setValue( std::string const &arg ) -> ParserResult = 0;
     };
     struct BoundFlagRefBase : BoundRef {
         virtual auto setFlag( bool flag ) -> ParserResult = 0;
+        virtual auto isFlag() const -> bool { return true; }
     };
 
     template<typename T>
@@ -5987,7 +6013,7 @@ namespace detail {
             if( token.type != TokenType::Argument )
                 return InternalParseResult::ok( ParseState( ParseResultType::NoMatch, remainingTokens ) );
 
-            assert( dynamic_cast<detail::BoundValueRefBase*>( m_ref.get() ) );
+            assert( !m_ref->isFlag() );
             auto valueRef = static_cast<detail::BoundValueRefBase*>( m_ref.get() );
 
             auto result = valueRef->setValue( remainingTokens->token );
@@ -6063,14 +6089,14 @@ namespace detail {
             if( remainingTokens && remainingTokens->type == TokenType::Option ) {
                 auto const &token = *remainingTokens;
                 if( isMatch(token.token ) ) {
-                    if( auto flagRef = dynamic_cast<detail::BoundFlagRefBase*>( m_ref.get() ) ) {
+                    if( m_ref->isFlag() ) {
+                        auto flagRef = static_cast<detail::BoundFlagRefBase*>( m_ref.get() );
                         auto result = flagRef->setFlag( true );
                         if( !result )
                             return InternalParseResult( result );
                         if( result.value() == ParseResultType::ShortCircuitAll )
                             return InternalParseResult::ok( ParseState( result.value(), remainingTokens ) );
                     } else {
-                        assert( dynamic_cast<detail::BoundValueRefBase*>( m_ref.get() ) );
                         auto valueRef = static_cast<detail::BoundValueRefBase*>( m_ref.get() );
                         ++remainingTokens;
                         if( !remainingTokens )
@@ -6691,8 +6717,12 @@ namespace {
                 case Colour::BrightRed:     return setTextAttribute( FOREGROUND_INTENSITY | FOREGROUND_RED );
                 case Colour::BrightGreen:   return setTextAttribute( FOREGROUND_INTENSITY | FOREGROUND_GREEN );
                 case Colour::BrightWhite:   return setTextAttribute( FOREGROUND_INTENSITY | FOREGROUND_GREEN | FOREGROUND_RED | FOREGROUND_BLUE );
+                case Colour::BrightYellow:  return setTextAttribute( FOREGROUND_INTENSITY | FOREGROUND_RED | FOREGROUND_GREEN );
 
                 case Colour::Bright: CATCH_INTERNAL_ERROR( "not a colour" );
+
+                default:
+                    CATCH_ERROR( "Unknown colour requested" );
             }
         }
 
@@ -6750,8 +6780,10 @@ namespace {
                 case Colour::BrightRed:     return setColour( "[1;31m" );
                 case Colour::BrightGreen:   return setColour( "[1;32m" );
                 case Colour::BrightWhite:   return setColour( "[1;37m" );
+                case Colour::BrightYellow:  return setColour( "[1;33m" );
 
                 case Colour::Bright: CATCH_INTERNAL_ERROR( "not a colour" );
+                default: CATCH_INTERNAL_ERROR( "Unknown colour requested" );
             }
         }
         static IColourImpl* instance() {
@@ -7133,12 +7165,14 @@ namespace Catch {
 #    pragma GCC diagnostic ignored "-Wmissing-field-initializers"
 #endif
 
+#if (defined(CATCH_PLATFORM_WINDOWS) && defined(CATCH_CONFIG_WINDOWS_SEH)) || defined(CATCH_CONFIG_POSIX_SIGNALS)
 namespace {
     // Report the error condition
     void reportFatal( char const * const message ) {
         Catch::getCurrentContext().getResultCapture()->handleFatalErrorCondition( message );
     }
 }
+#endif
 
 #if defined ( CATCH_PLATFORM_WINDOWS ) /////////////////////////////////////////
 
@@ -7962,6 +7996,13 @@ namespace Matchers {
 // end catch_matchers_string.cpp
 // start catch_message.cpp
 
+// start catch_uncaught_exceptions.h
+
+namespace Catch {
+    bool uncaught_exceptions();
+} // end namespace Catch
+
+// end catch_uncaught_exceptions.h
 namespace Catch {
 
     MessageInfo::MessageInfo(   std::string const& _macroName,
@@ -8000,19 +8041,11 @@ namespace Catch {
         getResultCapture().pushScopedMessage( m_info );
     }
 
-#if defined(_MSC_VER)
-#pragma warning(push)
-#pragma warning(disable:4996) // std::uncaught_exception is deprecated in C++17
-#endif
     ScopedMessage::~ScopedMessage() {
-        if ( !std::uncaught_exception() ){
+        if ( !uncaught_exceptions() ){
             getResultCapture().popScopedMessage(m_info);
         }
     }
-#if defined(_MSC_VER)
-#pragma warning(pop)
-#endif
-
 } // end namespace Catch
 // end catch_message.cpp
 // start catch_random_number_generator.cpp
@@ -8652,12 +8685,13 @@ namespace Catch {
                 handleUnexpectedInflightException( m_lastAssertionInfo, translateActiveException(), dummyReaction );
             }
         }
+        Counts assertions = m_totals.assertions - prevAssertions;
+        bool missingAssertions = testForMissingAssertions(assertions);
+
         m_testCaseTracker->close();
         handleUnfinishedSections();
         m_messages.clear();
 
-        Counts assertions = m_totals.assertions - prevAssertions;
-        bool missingAssertions = testForMissingAssertions(assertions);
         SectionStats testCaseSectionStats(testCaseSection, assertions, duration, missingAssertions);
         m_reporter->sectionEnded(testCaseSectionStats);
     }
@@ -8804,22 +8838,15 @@ namespace Catch {
         m_timer.start();
     }
 
-#if defined(_MSC_VER)
-#pragma warning(push)
-#pragma warning(disable:4996) // std::uncaught_exception is deprecated in C++17
-#endif
     Section::~Section() {
         if( m_sectionIncluded ) {
             SectionEndInfo endInfo( m_info, m_assertions, m_timer.getElapsedSeconds() );
-            if( std::uncaught_exception() )
+            if( uncaught_exceptions() )
                 getResultCapture().sectionEndedEarly( endInfo );
             else
                 getResultCapture().sectionEnded( endInfo );
         }
     }
-#if defined(_MSC_VER)
-#pragma warning(pop)
-#endif
 
     // This indicates whether the section should be executed or not
     Section::operator bool() const {
@@ -9470,6 +9497,13 @@ namespace Catch {
 
 #include <ostream>
 #include <cstring>
+#include <cstdint>
+
+namespace {
+    const uint32_t byte_2_lead = 0xC0;
+    const uint32_t byte_3_lead = 0xE0;
+    const uint32_t byte_4_lead = 0xF0;
+}
 
 namespace Catch {
     StringRef::StringRef( char const* rawChars ) noexcept
@@ -9534,13 +9568,12 @@ namespace Catch {
         // Make adjustments for uft encodings
         for( size_type i=0; i < m_size; ++i ) {
             char c = m_start[i];
-            if( ( c & 0b11000000 ) == 0b11000000 ) {
-                if( ( c & 0b11100000 ) == 0b11000000 )
+            if( ( c & byte_2_lead ) == byte_2_lead ) {
+                noChars--;
+                if (( c & byte_3_lead ) == byte_3_lead )
                     noChars--;
-                else if( ( c & 0b11110000 ) == 0b11100000 )
-                    noChars-=2;
-                else if( ( c & 0b11111000 ) == 0b11110000 )
-                    noChars-=3;
+                if( ( c & byte_4_lead ) == byte_4_lead )
+                    noChars--;
             }
         }
         return noChars;
@@ -10672,6 +10705,20 @@ namespace Catch {
 
 }
 // end catch_totals.cpp
+// start catch_uncaught_exceptions.cpp
+
+#include <exception>
+
+namespace Catch {
+    bool uncaught_exceptions() {
+#if defined(CATCH_CONFIG_CPP17_UNCAUGHT_EXCEPTIONS)
+        return std::uncaught_exceptions() > 0;
+#else
+        return std::uncaught_exception();
+#endif
+  }
+} // end namespace Catch
+// end catch_uncaught_exceptions.cpp
 // start catch_version.cpp
 
 #include <ostream>
@@ -10704,7 +10751,7 @@ namespace Catch {
     }
 
     Version const& libraryVersion() {
-        static Version version( 2, 1, 1, "", 0 );
+        static Version version( 2, 1, 2, "", 0 );
         return version;
     }
 
@@ -11933,7 +11980,7 @@ namespace Catch {
             m_reporterPrefs.shouldRedirectStdOut = true;
         }
 
-    JunitReporter::~JunitReporter() {};
+    JunitReporter::~JunitReporter() {}
 
     std::string JunitReporter::getDescription() {
         return "Reports test results in an XML format that looks like Ant's junitreport target";

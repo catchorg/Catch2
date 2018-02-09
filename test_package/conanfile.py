@@ -10,7 +10,7 @@ class CatchConanTest(ConanFile):
     settings = "os", "compiler", "arch", "build_type"
     username = getenv("CONAN_USERNAME", "philsquared")
     channel = getenv("CONAN_CHANNEL", "testing")
-    requires = "Catch/2.1.1@%s/%s" % (username, channel)
+    requires = "Catch/2.1.2@%s/%s" % (username, channel)
 
     def build(self):
         cmake = CMake(self)
