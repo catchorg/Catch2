@@ -10,6 +10,11 @@
 # Windows specific files should retain windows line-endings
 *.sln text eol=crlf
 
+# Keep executable scripts with LFs so they can be run after being
+# checked out on Windows
+*.py text eol=lf
+
+
 # Keep the single include header with LFs to make sure it is uploaded,
 # hashed etc with LF
 single_include/*.hpp eol=lf
