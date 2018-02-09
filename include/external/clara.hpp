@@ -5,7 +5,7 @@
 //
 // See https://github.com/philsquared/Clara for more details
 
-// Clara v1.1.1
+// Clara v1.1.2
 
 #ifndef CATCH_CLARA_HPP_INCLUDED
 #define CATCH_CLARA_HPP_INCLUDED
@@ -670,12 +670,14 @@ namespace detail {
     struct BoundRef : NonCopyable {
         virtual ~BoundRef() = default;
         virtual auto isContainer() const -> bool { return false; }
+        virtual auto isFlag() const -> bool { return false; }
     };
     struct BoundValueRefBase : BoundRef {
         virtual auto setValue( std::string const &arg ) -> ParserResult = 0;
     };
     struct BoundFlagRefBase : BoundRef {
         virtual auto setFlag( bool flag ) -> ParserResult = 0;
+        virtual auto isFlag() const -> bool { return true; }
     };
 
     template<typename T>
@@ -907,7 +909,7 @@ namespace detail {
             if( token.type != TokenType::Argument )
                 return InternalParseResult::ok( ParseState( ParseResultType::NoMatch, remainingTokens ) );
 
-            assert( dynamic_cast<detail::BoundValueRefBase*>( m_ref.get() ) );
+            assert( !m_ref->isFlag() );
             auto valueRef = static_cast<detail::BoundValueRefBase*>( m_ref.get() );
 
             auto result = valueRef->setValue( remainingTokens->token );
@@ -983,14 +985,14 @@ namespace detail {
             if( remainingTokens && remainingTokens->type == TokenType::Option ) {
                 auto const &token = *remainingTokens;
                 if( isMatch(token.token ) ) {
-                    if( auto flagRef = dynamic_cast<detail::BoundFlagRefBase*>( m_ref.get() ) ) {
+                    if( m_ref->isFlag() ) {
+                        auto flagRef = static_cast<detail::BoundFlagRefBase*>( m_ref.get() );
                         auto result = flagRef->setFlag( true );
                         if( !result )
                             return InternalParseResult( result );
                         if( result.value() == ParseResultType::ShortCircuitAll )
                             return InternalParseResult::ok( ParseState( result.value(), remainingTokens ) );
                     } else {
-                        assert( dynamic_cast<detail::BoundValueRefBase*>( m_ref.get() ) );
                         auto valueRef = static_cast<detail::BoundValueRefBase*>( m_ref.get() );
                         ++remainingTokens;
                         if( !remainingTokens )
