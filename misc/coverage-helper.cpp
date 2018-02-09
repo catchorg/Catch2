@@ -96,5 +96,10 @@ int main(int argc, char** argv) {
         return lhs + ' ' + rhs;
     });
 
-    exec_cmd(cmdline, num, windowsify_path(catch_path(args[0])));
+    try {
+        return exec_cmd(cmdline, num, windowsify_path(catch_path(args[0])));
+    } catch (std::exception const& ex) {
+        std::cerr << "Helper failed with: '" << ex.what() << "'\n";
+        return 12;
+    }
 }
