@@ -96,6 +96,14 @@ with expansion:
   ""\" == ""\"
 ```
 
+### Visual Studio 2015 -- Alignment compilation error (C2718)
+
+VS 2015 has a known bug, where `declval<T>` can cause compilation error
+if `T` has alignment requirements that it cannot meet.
+
+
+A workaround is to explicitly specialize `Catch::is_range` for given
+type (this avoids code path that uses `declval<T>` in a SFINAE context).
 
 
 ### Visual Studio 2015 -- Wrong line number reported in debug mode
