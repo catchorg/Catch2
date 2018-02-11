@@ -8,6 +8,7 @@
 [Console width](#console-width)<br>
 [stdout](#stdout)<br>
 [Fallback stringifier](#fallback-stringifier)<br>
+[Default reporter](#default-reporter)<br>
 [Other toggles](#other-toggles)<br>
 [Windows header clutter](#windows-header-clutter)<br>
 [Enabling stringification](#enabling-stringification)<br>
@@ -86,6 +87,16 @@ The provided function must return std::string and must accept any type
 
 _Note that if the provided function does not handle a type and this type
 requires to be stringified, the compilation will fail._
+
+
+## Default reporter
+
+Catch's default reporter can be changed by defining macro
+`CATCH_CONFIG_DEFAULT_REPORTER` to string literal naming the desired
+default reporter.
+
+This means that defining `CATCH_CONFIG_DEFAULT_REPORTER` to `"console"`
+is equivalent with the out-of-the-box experience.
 
 
 ## Other toggles
