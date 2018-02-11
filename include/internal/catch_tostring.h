@@ -88,7 +88,11 @@ namespace Catch {
         static
         typename std::enable_if<!::Catch::Detail::IsStreamInsertable<Fake>::value, std::string>::type
             convert( const Fake& value ) {
+#if !defined(CATCH_CONFIG_FALLBACK_STRINGIFIER)
                 return Detail::convertUnstreamable( value );
+#else
+                return CATCH_CONFIG_FALLBACK_STRINGIFIER( value );
+#endif
         }
     };
 

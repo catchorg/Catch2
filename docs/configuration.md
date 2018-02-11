@@ -7,6 +7,7 @@
 [Terminal colour](#terminal-colour)<br>
 [Console width](#console-width)<br>
 [stdout](#stdout)<br>
+[Fallback stringifier](#fallback-stringifier)<br>
 [Other toggles](#other-toggles)<br>
 [Windows header clutter](#windows-header-clutter)<br>
 [Enabling stringification](#enabling-stringification)<br>
@@ -72,6 +73,19 @@ Catch does not use ```std::cout```, ```std::cerr``` and ```std::clog``` directly
 
 This can be useful on certain platforms that do not provide the standard iostreams, such as certain embedded systems.
 
+
+## Fallback stringifier
+
+By default Catch's stringification machinery falls back to a "{?}". To
+let projects reuse their own existing stringification machinery, this
+fallback can be overriden by defining `CATCH_CONFIG_FALLBACK_STRINGIFIER`
+to a name of a function that should perform the stringification instead.
+
+The provided function must return std::string and must accept any type
+(e.g. via overloading).
+
+_Note that if the provided function does not handle a type and this type
+requires to be stringified, the compilation will fail._
 
 
 ## Other toggles
