@@ -1,18 +1,18 @@
 <a id="top"></a>
 # Open Source projects using Catch
 
-Catch is great for open source. With its [liberal license](../LICENSE.txt) and single-header, dependency-free, distribution 
+Catch is great for open source. With its [liberal license](../LICENSE.txt) and single-header, dependency-free, distribution
 it's easy to just drop the header into your project and start writing tests - what's not to like?
 
 As a result Catch is now being used in many Open Source projects, including some quite well known ones.
 This page is an attempt to track those projects. Obviously it can never be complete.
 This effort largely relies on the maintainers of the projects themselves updating this page and submitting a PR
-(or, if you prefer contact one of the maintainers of Catch directly, use the 
+(or, if you prefer contact one of the maintainers of Catch directly, use the
 [forums](https://groups.google.com/forum/?fromgroups#!forum/catch-forum)), or raise an [issue](https://github.com/philsquared/Catch/issues) to let us know).
 Of course users of those projects might want to update this page too. That's fine - as long you're confident the project maintainers won't mind.
-If you're an Open Source project maintainer and see your project listed here but would rather it wasn't - 
+If you're an Open Source project maintainer and see your project listed here but would rather it wasn't -
 just let us know via any of the previously mentioned means - although I'm sure there won't be many who feel that way.
- 
+
 Listing a project here does not imply endorsement and the plan is to keep these ordered alphabetically to avoid an implication of relative importance.
 
 ## Libraries & Frameworks
@@ -90,6 +90,9 @@ MAME originally stood for Multiple Arcade Machine Emulator
 
 ### [Newsbeuter](https://github.com/akrennmair/newsbeuter)
 Newsbeuter is an open-source RSS/Atom feed reader for text terminals.
+
+### [SpECTRE](https://github.com/sxs-collaboration/spectre)
+SpECTRE is a code for multi-scale, multi-physics problems in astrophysics and gravitational physics.
 
 ### [Standardese](https://github.com/foonathan/standardese)
 Standardese aims to be a nextgen Doxygen
