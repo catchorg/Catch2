@@ -11,10 +11,9 @@
 #include "catch_stream.h"
 
 #include <stdexcept>
-#include <iosfwd>
 
 #define CATCH_PREPARE_EXCEPTION( type, msg ) \
-    type( static_cast<std::ostringstream&&>( Catch::ReusableStringStream().get() << msg ).str() )
+    type( ( Catch::ReusableStringStream() << msg ).str() )
 #define CATCH_INTERNAL_ERROR( msg ) \
     throw CATCH_PREPARE_EXCEPTION( std::logic_error, CATCH_INTERNAL_LINEINFO << ": Internal Catch error: " << msg);
 #define CATCH_ERROR( msg ) \
