@@ -982,6 +982,14 @@ ToStringPair.tests.cpp:<line number>: passed: ::Catch::Detail::stringify( pr ) =
 ==
 "{ { "green", 55 } }"
 Tricky.tests.cpp:<line number>: failed: std::string( "first" ) == "second" for: "first" == "second"
+ToStringWhich.tests.cpp:<line number>: passed: ::Catch::Detail::stringify(streamable_range{}) == "op<<(streamable_range)" for: "op<<(streamable_range)"
+==
+"op<<(streamable_range)"
+ToStringWhich.tests.cpp:<line number>: passed: ::Catch::Detail::stringify(stringmaker_range{}) == "stringmaker(streamable_range)" for: "stringmaker(streamable_range)"
+==
+"stringmaker(streamable_range)"
+ToStringWhich.tests.cpp:<line number>: passed: ::Catch::Detail::stringify(just_range{}) == "{ 1, 2, 3, 4 }" for: "{ 1, 2, 3, 4 }" == "{ 1, 2, 3, 4 }"
+ToStringWhich.tests.cpp:<line number>: passed: ::Catch::Detail::stringify(disabled_range{}) == "{ !!! }" for: "{ !!! }" == "{ !!! }"
 ToStringWhich.tests.cpp:<line number>: passed: ::Catch::Detail::stringify( item ) == "StringMaker<has_maker>" for: "StringMaker<has_maker>"
 ==
 "StringMaker<has_maker>"
@@ -992,18 +1000,6 @@ ToStringWhich.tests.cpp:<line number>: passed: ::Catch::Detail::stringify(item) 
 ToStringWhich.tests.cpp:<line number>: passed: ::Catch::Detail::stringify( item ) == "operator<<( has_operator )" for: "operator<<( has_operator )"
 ==
 "operator<<( has_operator )"
-Misc.tests.cpp:<line number>: passed: result == "/"wide load/"" for: ""wide load"" == ""wide load""
-Misc.tests.cpp:<line number>: passed: result == "/"wide load/"" for: ""wide load"" == ""wide load""
-Misc.tests.cpp:<line number>: passed: result == "/"wide load/"" for: ""wide load"" == ""wide load""
-Misc.tests.cpp:<line number>: passed: result == "/"wide load/"" for: ""wide load"" == ""wide load""
-ToStringWhich.tests.cpp:<line number>: passed: ::Catch::Detail::stringify(streamable_range{}) == "op<<(streamable_range)" for: "op<<(streamable_range)"
-==
-"op<<(streamable_range)"
-ToStringWhich.tests.cpp:<line number>: passed: ::Catch::Detail::stringify(stringmaker_range{}) == "stringmaker(streamable_range)" for: "stringmaker(streamable_range)"
-==
-"stringmaker(streamable_range)"
-ToStringWhich.tests.cpp:<line number>: passed: ::Catch::Detail::stringify(just_range{}) == "{ 1, 2, 3, 4 }" for: "{ 1, 2, 3, 4 }" == "{ 1, 2, 3, 4 }"
-ToStringWhich.tests.cpp:<line number>: passed: ::Catch::Detail::stringify(disabled_range{}) == "{ !!! }" for: "{ !!! }" == "{ !!! }"
 ToStringWhich.tests.cpp:<line number>: passed: ::Catch::Detail::stringify( v ) == "{ StringMaker<has_maker> }" for: "{ StringMaker<has_maker> }"
 ==
 "{ StringMaker<has_maker> }"
@@ -1013,6 +1009,10 @@ ToStringWhich.tests.cpp:<line number>: passed: ::Catch::Detail::stringify( v ) =
 ToStringWhich.tests.cpp:<line number>: passed: ::Catch::Detail::stringify( v ) == "{ operator<<( has_operator ) }" for: "{ operator<<( has_operator ) }"
 ==
 "{ operator<<( has_operator ) }"
+Misc.tests.cpp:<line number>: passed: result == "/"wide load/"" for: ""wide load"" == ""wide load""
+Misc.tests.cpp:<line number>: passed: result == "/"wide load/"" for: ""wide load"" == ""wide load""
+Misc.tests.cpp:<line number>: passed: result == "/"wide load/"" for: ""wide load"" == ""wide load""
+Misc.tests.cpp:<line number>: passed: result == "/"wide load/"" for: ""wide load"" == ""wide load""
 EnumToString.tests.cpp:<line number>: passed: ::Catch::Detail::stringify(e0) == "E2/V0" for: "E2/V0" == "E2/V0"
 EnumToString.tests.cpp:<line number>: passed: ::Catch::Detail::stringify(e1) == "E2/V1" for: "E2/V1" == "E2/V1"
 EnumToString.tests.cpp:<line number>: passed: ::Catch::Detail::stringify(e3) == "Unknown enum value 10" for: "Unknown enum value 10"

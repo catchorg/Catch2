@@ -7863,6 +7863,40 @@ with expansion:
   "first" == "second"
 
 -------------------------------------------------------------------------------
+stringify ranges
+-------------------------------------------------------------------------------
+ToStringWhich.tests.cpp:<line number>
+...............................................................................
+
+ToStringWhich.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( ::Catch::Detail::stringify(streamable_range{}) == "op<<(streamable_range)" )
+with expansion:
+  "op<<(streamable_range)"
+  ==
+  "op<<(streamable_range)"
+
+ToStringWhich.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( ::Catch::Detail::stringify(stringmaker_range{}) == "stringmaker(streamable_range)" )
+with expansion:
+  "stringmaker(streamable_range)"
+  ==
+  "stringmaker(streamable_range)"
+
+ToStringWhich.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( ::Catch::Detail::stringify(just_range{}) == "{ 1, 2, 3, 4 }" )
+with expansion:
+  "{ 1, 2, 3, 4 }" == "{ 1, 2, 3, 4 }"
+
+ToStringWhich.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( ::Catch::Detail::stringify(disabled_range{}) == "{ !!! }" )
+with expansion:
+  "{ !!! }" == "{ !!! }"
+
+-------------------------------------------------------------------------------
 stringify( has_maker )
 -------------------------------------------------------------------------------
 ToStringWhich.tests.cpp:<line number>
@@ -7877,7 +7911,7 @@ with expansion:
   "StringMaker<has_maker>"
 
 -------------------------------------------------------------------------------
-stringify( has_maker_and_toString )
+stringify( has_maker_and_operator )
 -------------------------------------------------------------------------------
 ToStringWhich.tests.cpp:<line number>
 ...............................................................................
@@ -7915,6 +7949,48 @@ with expansion:
   "operator<<( has_operator )"
   ==
   "operator<<( has_operator )"
+
+-------------------------------------------------------------------------------
+stringify( vectors<has_maker> )
+-------------------------------------------------------------------------------
+ToStringWhich.tests.cpp:<line number>
+...............................................................................
+
+ToStringWhich.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( ::Catch::Detail::stringify( v ) == "{ StringMaker<has_maker> }" )
+with expansion:
+  "{ StringMaker<has_maker> }"
+  ==
+  "{ StringMaker<has_maker> }"
+
+-------------------------------------------------------------------------------
+stringify( vectors<has_maker_and_operator> )
+-------------------------------------------------------------------------------
+ToStringWhich.tests.cpp:<line number>
+...............................................................................
+
+ToStringWhich.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( ::Catch::Detail::stringify( v ) == "{ StringMaker<has_maker_and_operator> }" )
+with expansion:
+  "{ StringMaker<has_maker_and_operator> }"
+  ==
+  "{ StringMaker<has_maker_and_operator> }"
+
+-------------------------------------------------------------------------------
+stringify( vectors<has_operator> )
+-------------------------------------------------------------------------------
+ToStringWhich.tests.cpp:<line number>
+...............................................................................
+
+ToStringWhich.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( ::Catch::Detail::stringify( v ) == "{ operator<<( has_operator ) }" )
+with expansion:
+  "{ operator<<( has_operator ) }"
+  ==
+  "{ operator<<( has_operator ) }"
 
 -------------------------------------------------------------------------------
 toString on const wchar_t const pointer returns the string contents
@@ -7963,82 +8039,6 @@ PASSED:
   CHECK( result == "\"wide load\"" )
 with expansion:
   ""wide load"" == ""wide load""
-
--------------------------------------------------------------------------------
-toString streamable range
--------------------------------------------------------------------------------
-ToStringWhich.tests.cpp:<line number>
-...............................................................................
-
-ToStringWhich.tests.cpp:<line number>:
-PASSED:
-  REQUIRE( ::Catch::Detail::stringify(streamable_range{}) == "op<<(streamable_range)" )
-with expansion:
-  "op<<(streamable_range)"
-  ==
-  "op<<(streamable_range)"
-
-ToStringWhich.tests.cpp:<line number>:
-PASSED:
-  REQUIRE( ::Catch::Detail::stringify(stringmaker_range{}) == "stringmaker(streamable_range)" )
-with expansion:
-  "stringmaker(streamable_range)"
-  ==
-  "stringmaker(streamable_range)"
-
-ToStringWhich.tests.cpp:<line number>:
-PASSED:
-  REQUIRE( ::Catch::Detail::stringify(just_range{}) == "{ 1, 2, 3, 4 }" )
-with expansion:
-  "{ 1, 2, 3, 4 }" == "{ 1, 2, 3, 4 }"
-
-ToStringWhich.tests.cpp:<line number>:
-PASSED:
-  REQUIRE( ::Catch::Detail::stringify(disabled_range{}) == "{ !!! }" )
-with expansion:
-  "{ !!! }" == "{ !!! }"
-
--------------------------------------------------------------------------------
-toString( vectors<has_maker> )
--------------------------------------------------------------------------------
-ToStringWhich.tests.cpp:<line number>
-...............................................................................
-
-ToStringWhich.tests.cpp:<line number>:
-PASSED:
-  REQUIRE( ::Catch::Detail::stringify( v ) == "{ StringMaker<has_maker> }" )
-with expansion:
-  "{ StringMaker<has_maker> }"
-  ==
-  "{ StringMaker<has_maker> }"
-
--------------------------------------------------------------------------------
-toString( vectors<has_maker_and_operator> )
--------------------------------------------------------------------------------
-ToStringWhich.tests.cpp:<line number>
-...............................................................................
-
-ToStringWhich.tests.cpp:<line number>:
-PASSED:
-  REQUIRE( ::Catch::Detail::stringify( v ) == "{ StringMaker<has_maker_and_operator> }" )
-with expansion:
-  "{ StringMaker<has_maker_and_operator> }"
-  ==
-  "{ StringMaker<has_maker_and_operator> }"
-
--------------------------------------------------------------------------------
-toString( vectors<has_operator> )
--------------------------------------------------------------------------------
-ToStringWhich.tests.cpp:<line number>
-...............................................................................
-
-ToStringWhich.tests.cpp:<line number>:
-PASSED:
-  REQUIRE( ::Catch::Detail::stringify( v ) == "{ operator<<( has_operator ) }" )
-with expansion:
-  "{ operator<<( has_operator ) }"
-  ==
-  "{ operator<<( has_operator ) }"
 
 -------------------------------------------------------------------------------
 toString(enum class w/operator<<)

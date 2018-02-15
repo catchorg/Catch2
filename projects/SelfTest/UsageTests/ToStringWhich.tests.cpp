@@ -59,7 +59,7 @@ TEST_CASE( "stringify( has_maker )", "[toString]" ) {
 }
 
 // Call the stringmaker
-TEST_CASE( "stringify( has_maker_and_toString )", "[.][toString]" ) {
+TEST_CASE( "stringify( has_maker_and_operator )", "[toString]" ) {
     has_maker_and_operator item;
     REQUIRE( ::Catch::Detail::stringify( item ) == "StringMaker<has_maker_and_operator>" );
 }
@@ -72,25 +72,22 @@ TEST_CASE("stringify( has_neither )", "[toString]") {
 
 // Vectors...
 
-// Don't run this in approval tests as it is sensitive to two phase lookup differences
-TEST_CASE( "toString( vectors<has_operator> )", "[toString]" ) {
+TEST_CASE( "stringify( vectors<has_operator> )", "[toString]" ) {
     std::vector<has_operator> v(1);
     REQUIRE( ::Catch::Detail::stringify( v ) == "{ operator<<( has_operator ) }" );
 }
 
-TEST_CASE( "toString( vectors<has_maker> )", "[toString]" ) {
+TEST_CASE( "stringify( vectors<has_maker> )", "[toString]" ) {
     std::vector<has_maker> v(1);
     REQUIRE( ::Catch::Detail::stringify( v ) == "{ StringMaker<has_maker> }" );
 }
 
-// Don't run this in approval tests as it is sensitive to two phase lookup differences
-TEST_CASE( "toString( vectors<has_maker_and_operator> )", "[toString]" ) {
+TEST_CASE( "stringify( vectors<has_maker_and_operator> )", "[toString]" ) {
     std::vector<has_maker_and_operator> v(1);
     REQUIRE( ::Catch::Detail::stringify( v ) == "{ StringMaker<has_maker_and_operator> }" );
 }
 
-// Conversion should go
-// StringMaker specialization, operator<<, range/enum detection, unprintable
+// Range-based conversion should only be used if other possibilities fail
 struct int_iterator {
     using iterator_category = std::input_iterator_tag;
     using difference_type = std::ptrdiff_t;
@@ -155,7 +152,7 @@ struct is_range<disabled_range> {
 };
 }
 
-TEST_CASE("toString streamable range", "[toString]") {
+TEST_CASE("stringify ranges", "[toString]") {
     REQUIRE(::Catch::Detail::stringify(streamable_range{}) == "op<<(streamable_range)");
     REQUIRE(::Catch::Detail::stringify(stringmaker_range{}) == "stringmaker(streamable_range)");
     REQUIRE(::Catch::Detail::stringify(just_range{}) == "{ 1, 2, 3, 4 }");

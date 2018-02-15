@@ -8729,6 +8729,45 @@ loose text artifact
       </Expression>
       <OverallResult success="false"/>
     </TestCase>
+    <TestCase name="stringify ranges" tags="[toString]" filename="projects/<exe-name>/UsageTests/ToStringWhich.tests.cpp" >
+      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/UsageTests/ToStringWhich.tests.cpp" >
+        <Original>
+          ::Catch::Detail::stringify(streamable_range{}) == "op&lt;&lt;(streamable_range)"
+        </Original>
+        <Expanded>
+          "op&lt;&lt;(streamable_range)"
+==
+"op&lt;&lt;(streamable_range)"
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/UsageTests/ToStringWhich.tests.cpp" >
+        <Original>
+          ::Catch::Detail::stringify(stringmaker_range{}) == "stringmaker(streamable_range)"
+        </Original>
+        <Expanded>
+          "stringmaker(streamable_range)"
+==
+"stringmaker(streamable_range)"
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/UsageTests/ToStringWhich.tests.cpp" >
+        <Original>
+          ::Catch::Detail::stringify(just_range{}) == "{ 1, 2, 3, 4 }"
+        </Original>
+        <Expanded>
+          "{ 1, 2, 3, 4 }" == "{ 1, 2, 3, 4 }"
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/UsageTests/ToStringWhich.tests.cpp" >
+        <Original>
+          ::Catch::Detail::stringify(disabled_range{}) == "{ !!! }"
+        </Original>
+        <Expanded>
+          "{ !!! }" == "{ !!! }"
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
     <TestCase name="stringify( has_maker )" tags="[toString]" filename="projects/<exe-name>/UsageTests/ToStringWhich.tests.cpp" >
       <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/UsageTests/ToStringWhich.tests.cpp" >
         <Original>
@@ -8742,7 +8781,7 @@ loose text artifact
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="stringify( has_maker_and_toString )" tags="[.][toString]" filename="projects/<exe-name>/UsageTests/ToStringWhich.tests.cpp" >
+    <TestCase name="stringify( has_maker_and_operator )" tags="[toString]" filename="projects/<exe-name>/UsageTests/ToStringWhich.tests.cpp" >
       <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/UsageTests/ToStringWhich.tests.cpp" >
         <Original>
           ::Catch::Detail::stringify( item ) == "StringMaker&lt;has_maker_and_operator>"
@@ -8775,6 +8814,45 @@ loose text artifact
           "operator&lt;&lt;( has_operator )"
 ==
 "operator&lt;&lt;( has_operator )"
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="stringify( vectors&lt;has_maker> )" tags="[toString]" filename="projects/<exe-name>/UsageTests/ToStringWhich.tests.cpp" >
+      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/UsageTests/ToStringWhich.tests.cpp" >
+        <Original>
+          ::Catch::Detail::stringify( v ) == "{ StringMaker&lt;has_maker> }"
+        </Original>
+        <Expanded>
+          "{ StringMaker&lt;has_maker> }"
+==
+"{ StringMaker&lt;has_maker> }"
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="stringify( vectors&lt;has_maker_and_operator> )" tags="[toString]" filename="projects/<exe-name>/UsageTests/ToStringWhich.tests.cpp" >
+      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/UsageTests/ToStringWhich.tests.cpp" >
+        <Original>
+          ::Catch::Detail::stringify( v ) == "{ StringMaker&lt;has_maker_and_operator> }"
+        </Original>
+        <Expanded>
+          "{ StringMaker&lt;has_maker_and_operator> }"
+==
+"{ StringMaker&lt;has_maker_and_operator> }"
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="stringify( vectors&lt;has_operator> )" tags="[toString]" filename="projects/<exe-name>/UsageTests/ToStringWhich.tests.cpp" >
+      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/UsageTests/ToStringWhich.tests.cpp" >
+        <Original>
+          ::Catch::Detail::stringify( v ) == "{ operator&lt;&lt;( has_operator ) }"
+        </Original>
+        <Expanded>
+          "{ operator&lt;&lt;( has_operator ) }"
+==
+"{ operator&lt;&lt;( has_operator ) }"
         </Expanded>
       </Expression>
       <OverallResult success="true"/>
@@ -8819,84 +8897,6 @@ loose text artifact
         </Original>
         <Expanded>
           ""wide load"" == ""wide load""
-        </Expanded>
-      </Expression>
-      <OverallResult success="true"/>
-    </TestCase>
-    <TestCase name="toString streamable range" tags="[toString]" filename="projects/<exe-name>/UsageTests/ToStringWhich.tests.cpp" >
-      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/UsageTests/ToStringWhich.tests.cpp" >
-        <Original>
-          ::Catch::Detail::stringify(streamable_range{}) == "op&lt;&lt;(streamable_range)"
-        </Original>
-        <Expanded>
-          "op&lt;&lt;(streamable_range)"
-==
-"op&lt;&lt;(streamable_range)"
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/UsageTests/ToStringWhich.tests.cpp" >
-        <Original>
-          ::Catch::Detail::stringify(stringmaker_range{}) == "stringmaker(streamable_range)"
-        </Original>
-        <Expanded>
-          "stringmaker(streamable_range)"
-==
-"stringmaker(streamable_range)"
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/UsageTests/ToStringWhich.tests.cpp" >
-        <Original>
-          ::Catch::Detail::stringify(just_range{}) == "{ 1, 2, 3, 4 }"
-        </Original>
-        <Expanded>
-          "{ 1, 2, 3, 4 }" == "{ 1, 2, 3, 4 }"
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/UsageTests/ToStringWhich.tests.cpp" >
-        <Original>
-          ::Catch::Detail::stringify(disabled_range{}) == "{ !!! }"
-        </Original>
-        <Expanded>
-          "{ !!! }" == "{ !!! }"
-        </Expanded>
-      </Expression>
-      <OverallResult success="true"/>
-    </TestCase>
-    <TestCase name="toString( vectors&lt;has_maker> )" tags="[toString]" filename="projects/<exe-name>/UsageTests/ToStringWhich.tests.cpp" >
-      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/UsageTests/ToStringWhich.tests.cpp" >
-        <Original>
-          ::Catch::Detail::stringify( v ) == "{ StringMaker&lt;has_maker> }"
-        </Original>
-        <Expanded>
-          "{ StringMaker&lt;has_maker> }"
-==
-"{ StringMaker&lt;has_maker> }"
-        </Expanded>
-      </Expression>
-      <OverallResult success="true"/>
-    </TestCase>
-    <TestCase name="toString( vectors&lt;has_maker_and_operator> )" tags="[toString]" filename="projects/<exe-name>/UsageTests/ToStringWhich.tests.cpp" >
-      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/UsageTests/ToStringWhich.tests.cpp" >
-        <Original>
-          ::Catch::Detail::stringify( v ) == "{ StringMaker&lt;has_maker_and_operator> }"
-        </Original>
-        <Expanded>
-          "{ StringMaker&lt;has_maker_and_operator> }"
-==
-"{ StringMaker&lt;has_maker_and_operator> }"
-        </Expanded>
-      </Expression>
-      <OverallResult success="true"/>
-    </TestCase>
-    <TestCase name="toString( vectors&lt;has_operator> )" tags="[toString]" filename="projects/<exe-name>/UsageTests/ToStringWhich.tests.cpp" >
-      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/UsageTests/ToStringWhich.tests.cpp" >
-        <Original>
-          ::Catch::Detail::stringify( v ) == "{ operator&lt;&lt;( has_operator ) }"
-        </Original>
-        <Expanded>
-          "{ operator&lt;&lt;( has_operator ) }"
-==
-"{ operator&lt;&lt;( has_operator ) }"
         </Expanded>
       </Expression>
       <OverallResult success="true"/>
