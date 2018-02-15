@@ -739,6 +739,16 @@ with expansion:
   "
 
 -------------------------------------------------------------------------------
+Thrown string literals are translated
+-------------------------------------------------------------------------------
+Exception.tests.cpp:<line number>
+...............................................................................
+
+Exception.tests.cpp:<line number>: FAILED:
+due to unexpected exception with message:
+  For some reason someone is throwing a string literal!
+
+-------------------------------------------------------------------------------
 Unexpected exceptions can be translated
 -------------------------------------------------------------------------------
 Exception.tests.cpp:<line number>
@@ -1063,7 +1073,17 @@ Tricky.tests.cpp:<line number>: FAILED:
 with expansion:
   "first" == "second"
 
+-------------------------------------------------------------------------------
+thrown std::strings are translated
+-------------------------------------------------------------------------------
+Exception.tests.cpp:<line number>
+...............................................................................
+
+Exception.tests.cpp:<line number>: FAILED:
+due to unexpected exception with message:
+  Why would you throw a std::string?
+
 ===============================================================================
-test cases:  200 | 149 passed |  47 failed |  4 failed as expected
-assertions: 1005 | 879 passed | 105 failed | 21 failed as expected
+test cases:  202 | 149 passed |  49 failed |  4 failed as expected
+assertions: 1007 | 879 passed | 107 failed | 21 failed as expected
 

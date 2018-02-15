@@ -5487,6 +5487,16 @@ with message:
   oops!
 
 -------------------------------------------------------------------------------
+Thrown string literals are translated
+-------------------------------------------------------------------------------
+Exception.tests.cpp:<line number>
+...............................................................................
+
+Exception.tests.cpp:<line number>: FAILED:
+due to unexpected exception with message:
+  For some reason someone is throwing a string literal!
+
+-------------------------------------------------------------------------------
 Tracker
 -------------------------------------------------------------------------------
 PartTracker.tests.cpp:<line number>
@@ -7993,6 +8003,16 @@ with expansion:
   "{ operator<<( has_operator ) }"
 
 -------------------------------------------------------------------------------
+thrown std::strings are translated
+-------------------------------------------------------------------------------
+Exception.tests.cpp:<line number>
+...............................................................................
+
+Exception.tests.cpp:<line number>: FAILED:
+due to unexpected exception with message:
+  Why would you throw a std::string?
+
+-------------------------------------------------------------------------------
 toString on const wchar_t const pointer returns the string contents
 -------------------------------------------------------------------------------
 Misc.tests.cpp:<line number>
@@ -8511,6 +8531,6 @@ Misc.tests.cpp:<line number>:
 PASSED:
 
 ===============================================================================
-test cases:  200 | 135 passed |  61 failed |  4 failed as expected
-assertions: 1016 | 875 passed | 120 failed | 21 failed as expected
+test cases:  202 | 135 passed |  63 failed |  4 failed as expected
+assertions: 1018 | 875 passed | 122 failed | 21 failed as expected
 

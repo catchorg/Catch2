@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <Catch name="<exe-name>">
   <Group name="<exe-name>">
     <TestCase name="# A test name that starts with a #" filename="projects/<exe-name>/UsageTests/Misc.tests.cpp" >
@@ -6250,6 +6251,12 @@ Message from section two
     <TestCase name="This test 'should' fail but doesn't" tags="[!shouldfail][.][failing]" filename="projects/<exe-name>/UsageTests/Misc.tests.cpp" >
       <OverallResult success="false"/>
     </TestCase>
+    <TestCase name="Thrown string literals are translated" tags="[!throws][.][failing]" filename="projects/<exe-name>/UsageTests/Exception.tests.cpp" >
+      <Exception filename="projects/<exe-name>/UsageTests/Exception.tests.cpp" >
+        For some reason someone is throwing a string literal!
+      </Exception>
+      <OverallResult success="false"/>
+    </TestCase>
     <TestCase name="Tracker" filename="projects/<exe-name>/IntrospectiveTests/PartTracker.tests.cpp" >
       <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/PartTracker.tests.cpp" >
         <Original>
@@ -8857,6 +8864,12 @@ loose text artifact
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
+    <TestCase name="thrown std::strings are translated" tags="[!throws][.][failing]" filename="projects/<exe-name>/UsageTests/Exception.tests.cpp" >
+      <Exception filename="projects/<exe-name>/UsageTests/Exception.tests.cpp" >
+        Why would you throw a std::string?
+      </Exception>
+      <OverallResult success="false"/>
+    </TestCase>
     <TestCase name="toString on const wchar_t const pointer returns the string contents" tags="[toString]" filename="projects/<exe-name>/UsageTests/Misc.tests.cpp" >
       <Expression success="true" type="CHECK" filename="projects/<exe-name>/UsageTests/Misc.tests.cpp" >
         <Original>
@@ -9369,7 +9382,7 @@ loose text artifact
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="875" failures="121" expectedFailures="21"/>
+    <OverallResults successes="875" failures="123" expectedFailures="21"/>
   </Group>
-  <OverallResults successes="875" failures="120" expectedFailures="21"/>
+  <OverallResults successes="875" failures="122" expectedFailures="21"/>
 </Catch>

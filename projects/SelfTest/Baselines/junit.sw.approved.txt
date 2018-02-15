@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <testsuitesloose text artifact
 >
-  <testsuite name="<exe-name>" errors="15" failures="106" tests="1017" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
+  <testsuite name="<exe-name>" errors="17" failures="106" tests="1019" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
     <testcase classname="<exe-name>.global" name="# A test name that starts with a #" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="#1005: Comparing pointer to int and long (NULL can be either on various systems)" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="#1027" time="{duration}"/>
@@ -585,6 +586,12 @@ Misc.tests.cpp:<line number>
     <testcase classname="<exe-name>.global" name="Test enum bit values" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="The NO_FAIL macro reports a failure but does not fail the test" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="This test 'should' fail but doesn't" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="Thrown string literals are translated" time="{duration}">
+      <error type="TEST_CASE">
+For some reason someone is throwing a string literal!
+Exception.tests.cpp:<line number>
+      </error>
+    </testcase>
     <testcase classname="<exe-name>.global" name="Tracker" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Tracker/successfully close one section" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Tracker/fail one section" time="{duration}"/>
@@ -828,6 +835,12 @@ Tricky.tests.cpp:<line number>
     <testcase classname="<exe-name>.global" name="stringify( vectors&lt;has_maker> )" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="stringify( vectors&lt;has_maker_and_operator> )" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="stringify( vectors&lt;has_operator> )" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="thrown std::strings are translated" time="{duration}">
+      <error type="TEST_CASE">
+Why would you throw a std::string?
+Exception.tests.cpp:<line number>
+      </error>
+    </testcase>
     <testcase classname="<exe-name>.global" name="toString on const wchar_t const pointer returns the string contents" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="toString on const wchar_t pointer returns the string contents" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="toString on wchar_t const pointer returns the string contents" time="{duration}"/>

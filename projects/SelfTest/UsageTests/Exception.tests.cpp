@@ -154,6 +154,15 @@ TEST_CASE( "Unexpected exceptions can be translated", "[.][failing][!throws]"  )
     throw double( 3.14 );
 }
 
+TEST_CASE("Thrown string literals are translated", "[.][failing][!throws]") {
+    throw "For some reason someone is throwing a string literal!";
+}
+
+TEST_CASE("thrown std::strings are translated", "[.][failing][!throws]") {
+    throw std::string{ "Why would you throw a std::string?" };
+}
+
+
 #ifndef CATCH_CONFIG_DISABLE_MATCHERS
 
 TEST_CASE( "Exception messages can be tested for", "[!throws]" ) {
