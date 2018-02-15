@@ -8755,6 +8755,17 @@ loose text artifact
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
+    <TestCase name="stringify( has_neither )" tags="[toString]" filename="projects/<exe-name>/UsageTests/ToStringWhich.tests.cpp" >
+      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/UsageTests/ToStringWhich.tests.cpp" >
+        <Original>
+          ::Catch::Detail::stringify(item) == "{ !!! }"
+        </Original>
+        <Expanded>
+          "{ !!! }" == "{ !!! }"
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
     <TestCase name="stringify( has_operator )" tags="[toString]" filename="projects/<exe-name>/UsageTests/ToStringWhich.tests.cpp" >
       <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/UsageTests/ToStringWhich.tests.cpp" >
         <Original>
@@ -8843,10 +8854,10 @@ loose text artifact
       </Expression>
       <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/UsageTests/ToStringWhich.tests.cpp" >
         <Original>
-          ::Catch::Detail::stringify(disabled_range{}) == "{?}"
+          ::Catch::Detail::stringify(disabled_range{}) == "{ !!! }"
         </Original>
         <Expanded>
-          "{?}" == "{?}"
+          "{ !!! }" == "{ !!! }"
         </Expanded>
       </Expression>
       <OverallResult success="true"/>
@@ -9358,7 +9369,7 @@ loose text artifact
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="874" failures="121" expectedFailures="21"/>
+    <OverallResults successes="875" failures="121" expectedFailures="21"/>
   </Group>
-  <OverallResults successes="874" failures="120" expectedFailures="21"/>
+  <OverallResults successes="875" failures="120" expectedFailures="21"/>
 </Catch>

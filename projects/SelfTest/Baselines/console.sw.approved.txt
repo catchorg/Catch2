@@ -7891,6 +7891,18 @@ with expansion:
   "StringMaker<has_maker_and_operator>"
 
 -------------------------------------------------------------------------------
+stringify( has_neither )
+-------------------------------------------------------------------------------
+ToStringWhich.tests.cpp:<line number>
+...............................................................................
+
+ToStringWhich.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( ::Catch::Detail::stringify(item) == "{ !!! }" )
+with expansion:
+  "{ !!! }" == "{ !!! }"
+
+-------------------------------------------------------------------------------
 stringify( has_operator )
 -------------------------------------------------------------------------------
 ToStringWhich.tests.cpp:<line number>
@@ -7982,9 +7994,9 @@ with expansion:
 
 ToStringWhich.tests.cpp:<line number>:
 PASSED:
-  REQUIRE( ::Catch::Detail::stringify(disabled_range{}) == "{?}" )
+  REQUIRE( ::Catch::Detail::stringify(disabled_range{}) == "{ !!! }" )
 with expansion:
-  "{?}" == "{?}"
+  "{ !!! }" == "{ !!! }"
 
 -------------------------------------------------------------------------------
 toString( vectors<has_maker> )
@@ -8499,6 +8511,6 @@ Misc.tests.cpp:<line number>:
 PASSED:
 
 ===============================================================================
-test cases:  199 | 134 passed |  61 failed |  4 failed as expected
-assertions: 1015 | 874 passed | 120 failed | 21 failed as expected
+test cases:  200 | 135 passed |  61 failed |  4 failed as expected
+assertions: 1016 | 875 passed | 120 failed | 21 failed as expected
 

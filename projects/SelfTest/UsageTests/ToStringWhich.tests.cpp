@@ -1,13 +1,25 @@
-#include "catch.hpp"
 /*
-    Demonstrate which version of toString/StringMaker is being used
-    for various types
-*/
+ * Demonstrate which version of toString/StringMaker is being used
+ * for various types
+ */
+
+// Replace fallback stringifier for this TU
+// We should avoid ODR violations because these specific types aren't
+// present in different TUs
+#include <string>
+template <typename T>
+std::string fallbackStringifier(T const&) {
+    return "{ !!! }";
+}
+
+#define CATCH_CONFIG_FALLBACK_STRINGIFIER fallbackStringifier
+#include "catch.hpp"
 
 
 struct has_operator { };
 struct has_maker {};
 struct has_maker_and_operator {};
+struct has_neither {};
 
 std::ostream& operator<<(std::ostream& os, const has_operator&) {
     os << "operator<<( has_operator )";
@@ -52,6 +64,12 @@ TEST_CASE( "stringify( has_maker_and_toString )", "[.][toString]" ) {
     REQUIRE( ::Catch::Detail::stringify( item ) == "StringMaker<has_maker_and_operator>" );
 }
 
+TEST_CASE("stringify( has_neither )", "[toString]") {
+    has_neither item;
+    REQUIRE( ::Catch::Detail::stringify(item) == "{ !!! }" );
+}
+
+
 // Vectors...
 
 // Don't run this in approval tests as it is sensitive to two phase lookup differences
@@ -64,7 +82,6 @@ TEST_CASE( "toString( vectors<has_maker> )", "[toString]" ) {
     std::vector<has_maker> v(1);
     REQUIRE( ::Catch::Detail::stringify( v ) == "{ StringMaker<has_maker> }" );
 }
-
 
 // Don't run this in approval tests as it is sensitive to two phase lookup differences
 TEST_CASE( "toString( vectors<has_maker_and_operator> )", "[toString]" ) {
@@ -142,5 +159,5 @@ TEST_CASE("toString streamable range", "[toString]") {
     REQUIRE(::Catch::Detail::stringify(streamable_range{}) == "op<<(streamable_range)");
     REQUIRE(::Catch::Detail::stringify(stringmaker_range{}) == "stringmaker(streamable_range)");
     REQUIRE(::Catch::Detail::stringify(just_range{}) == "{ 1, 2, 3, 4 }");
-    REQUIRE(::Catch::Detail::stringify(disabled_range{}) == "{?}");
+    REQUIRE(::Catch::Detail::stringify(disabled_range{}) == "{ !!! }");
 }
