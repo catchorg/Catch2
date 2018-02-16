@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?xml version="1.0" encoding="UTF-8"?>
 <Catch name="<exe-name>">
   <Group name="<exe-name>">
     <TestCase name="# A test name that starts with a #" filename="projects/<exe-name>/UsageTests/Misc.tests.cpp" >
