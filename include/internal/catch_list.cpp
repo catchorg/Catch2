@@ -23,140 +23,86 @@
 #include <limits>
 #include <algorithm>
 #include <iomanip>
+#include <map>
+
 
 namespace Catch {
 
-    std::size_t listTests( Config const& config ) {
-        TestSpec testSpec = config.testSpec();
-        if( config.hasTestFilters() )
-            Catch::cout() << "Matching test cases:\n";
-        else {
-            Catch::cout() << "All available test cases:\n";
-        }
-
-        auto matchedTestCases = filterTests( getAllTestCasesSorted( config ), testSpec, config );
-        for( auto const& testCaseInfo : matchedTestCases ) {
-            Colour::Code colour = testCaseInfo.isHidden()
-                ? Colour::SecondaryText
-                : Colour::None;
-            Colour colourGuard( colour );
-
-            Catch::cout() << Column( testCaseInfo.name ).initialIndent( 2 ).indent( 4 ) << "\n";
-            if( config.verbosity() >= Verbosity::High ) {
-                Catch::cout() << Column( Catch::Detail::stringify( testCaseInfo.lineInfo ) ).indent(4) << std::endl;
-                std::string description = testCaseInfo.description;
-                if( description.empty() )
-                    description = "(NO DESCRIPTION)";
-                Catch::cout() << Column( description ).indent(4) << std::endl;
-            }
-            if( !testCaseInfo.tags.empty() )
-                Catch::cout() << Column( testCaseInfo.tagsAsString() ).indent( 6 ) << "\n";
-        }
-
-        if( !config.hasTestFilters() )
-            Catch::cout() << pluralise( matchedTestCases.size(), "test case" ) << '\n' << std::endl;
-        else
-            Catch::cout() << pluralise( matchedTestCases.size(), "matching test case" ) << '\n' << std::endl;
-        return matchedTestCases.size();
-    }
-
-    std::size_t listTestsNamesOnly( Config const& config ) {
-        TestSpec testSpec = config.testSpec();
-        std::size_t matchedTests = 0;
-        std::vector<TestCase> matchedTestCases = filterTests( getAllTestCasesSorted( config ), testSpec, config );
-        for( auto const& testCaseInfo : matchedTestCases ) {
-            matchedTests++;
-            if( startsWith( testCaseInfo.name, '#' ) )
-               Catch::cout() << '"' << testCaseInfo.name << '"';
-            else
-               Catch::cout() << testCaseInfo.name;
-            if ( config.verbosity() >= Verbosity::High )
-                Catch::cout() << "\t@" << testCaseInfo.lineInfo;
-            Catch::cout() << std::endl;
-        }
-        return matchedTests;
-    }
-
     void TagInfo::add( std::string const& spelling ) {
         ++count;
-        spellings.insert( spelling );
+        if (std::find(spellings.begin(), spellings.end(), spelling) == spellings.end()) {
+            spellings.push_back(spelling);
+        }
     }
 
-    std::string TagInfo::all() const {
-        std::string out;
-        for( auto const& spelling : spellings )
-            out += "[" + spelling + "]";
+    std::string TagInfo::tagsAsString() const {
+        std::size_t finalSize = 0;
+        for (auto const& sp : spellings) {
+            finalSize += sp.size();
+        }
+
+        std::string out; out.reserve(finalSize);
+        for (auto const& spelling : spellings) {
+            out.push_back('[');
+            out.append(spelling);
+            out.push_back(']');
+        }
         return out;
     }
 
-    std::size_t listTags( Config const& config ) {
-        TestSpec testSpec = config.testSpec();
-        if( config.hasTestFilters() )
-            Catch::cout() << "Tags for matching test cases:\n";
-        else {
-            Catch::cout() << "All available tags:\n";
-        }
-
+    void listTags( IStreamingReporter& reporter, Config const& config ) {
         std::map<std::string, TagInfo> tagCounts;
 
+        TestSpec testSpec = config.testSpec();
         std::vector<TestCase> matchedTestCases = filterTests( getAllTestCasesSorted( config ), testSpec, config );
         for( auto const& testCase : matchedTestCases ) {
             for( auto const& tagName : testCase.getTestCaseInfo().tags ) {
                 std::string lcaseTagName = toLower( tagName );
-                auto countIt = tagCounts.find( lcaseTagName );
-                if( countIt == tagCounts.end() )
-                    countIt = tagCounts.insert( std::make_pair( lcaseTagName, TagInfo() ) ).first;
-                countIt->second.add( tagName );
+                tagCounts[lcaseTagName].add(tagName);
             }
         }
 
-        for( auto const& tagCount : tagCounts ) {
-            ReusableStringStream rss;
-            rss << "  " << std::setw(2) << tagCount.second.count << "  ";
-            auto str = rss.str();
-            auto wrapper = Column( tagCount.second.all() )
-                                                    .initialIndent( 0 )
-                                                    .indent( str.size() )
-                                                    .width( CATCH_CONFIG_CONSOLE_WIDTH-10 );
-            Catch::cout() << str << wrapper << '\n';
+        std::vector<TagInfo> tagInfo;
+        for (auto const& tagc : tagCounts) {
+            tagInfo.emplace_back(std::move(tagc.second));
         }
-        Catch::cout() << pluralise( tagCounts.size(), "tag" ) << '\n' << std::endl;
-        return tagCounts.size();
+
+        reporter.listTags(tagInfo, config);
     }
 
-    std::size_t listReporters( Config const& /*config*/ ) {
-        Catch::cout() << "Available reporters:\n";
+    void listReporters( IStreamingReporter& reporter, Config const& config ) {
+        std::vector<ReporterDescription> descriptions;
+
         IReporterRegistry::FactoryMap const& factories = getRegistryHub().getReporterRegistry().getFactories();
-        std::size_t maxNameLen = 0;
-        for( auto const& factoryKvp : factories )
-            maxNameLen = (std::max)( maxNameLen, factoryKvp.first.size() );
-
-        for( auto const& factoryKvp : factories ) {
-            Catch::cout()
-                    << Column( factoryKvp.first + ":" )
-                            .indent(2)
-                            .width( 5+maxNameLen )
-                    +  Column( factoryKvp.second->getDescription() )
-                            .initialIndent(0)
-                            .indent(2)
-                            .width( CATCH_CONFIG_CONSOLE_WIDTH - maxNameLen-8 )
-                    << "\n";
+        descriptions.reserve(factories.size());
+        for (const auto& fac : factories) {
+            descriptions.push_back({ fac.first, fac.second->getDescription() });
         }
-        Catch::cout() << std::endl;
-        return factories.size();
+
+        reporter.listReporters(descriptions, config);
     }
 
-    Option<std::size_t> list( Config const& config ) {
-        Option<std::size_t> listedCount;
-        if( config.listTests() )
-            listedCount = listedCount.valueOr(0) + listTests( config );
-        if( config.listTestNamesOnly() )
-            listedCount = listedCount.valueOr(0) + listTestsNamesOnly( config );
-        if( config.listTags() )
-            listedCount = listedCount.valueOr(0) + listTags( config );
-        if( config.listReporters() )
-            listedCount = listedCount.valueOr(0) + listReporters( config );
-        return listedCount;
+    void listTests( IStreamingReporter& reporter, Config const& config ) {
+        TestSpec testSpec = config.testSpec();
+        auto matchedTestCases = filterTests(getAllTestCasesSorted(config), testSpec, config);
+        reporter.listTests(matchedTestCases, config);
+    }
+
+    bool list( IStreamingReporter& reporter, Config const& config ) {
+        bool listed = false;
+        if (config.listTests()) {
+            listTests(reporter, config);
+            listed = true;
+        }
+        if (config.listTags()) {
+            listTags(reporter, config);
+            listed = true;
+        }
+        if (config.listReporters()) {
+            listReporters(reporter, config);
+            listed = true;
+        }
+        return listed;
     }
 
 } // end namespace Catch

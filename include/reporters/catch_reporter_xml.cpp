@@ -188,9 +188,9 @@ namespace Catch {
             e.writeAttribute( "durationInSeconds", m_testCaseTimer.getElapsedSeconds() );
 
         if( !testCaseStats.stdOut.empty() )
-            m_xml.scopedElement( "StdOut" ).writeText( trim( testCaseStats.stdOut ), false );
+            m_xml.scopedElement( "StdOut" ).writeText( trim( testCaseStats.stdOut ), XmlFormatting::Newline );
         if( !testCaseStats.stdErr.empty() )
-            m_xml.scopedElement( "StdErr" ).writeText( trim( testCaseStats.stdErr ), false );
+            m_xml.scopedElement( "StdErr" ).writeText( trim( testCaseStats.stdErr ), XmlFormatting::Newline );
 
         m_xml.endElement();
     }
@@ -212,6 +212,42 @@ namespace Catch {
             .writeAttribute( "failures", testRunStats.totals.assertions.failed )
             .writeAttribute( "expectedFailures", testRunStats.totals.assertions.failedButOk );
         m_xml.endElement();
+    }
+
+    void XmlReporter::listReporters( std::vector<ReporterDescription> const& descriptions, Config const&) {
+        auto outerTag = m_xml.scopedElement("AvailableReporters");
+        for (auto const& reporter : descriptions) {
+            auto inner = m_xml.scopedElement("Reporter");
+            m_xml.startElement("Name").writeText(reporter.name, XmlFormatting::None).endElement(XmlFormatting::Newline);
+            m_xml.startElement("Description").writeText(reporter.description, XmlFormatting::None).endElement(XmlFormatting::Newline);
+        }
+    }
+
+    void XmlReporter::listTests(std::vector<TestCase> const& tests, Config const&) {
+        auto outerTag = m_xml.scopedElement("MatchingTests");
+        for (auto const& test : tests) {
+            auto innerTag = m_xml.scopedElement("TestCase");
+            auto const& testInfo = test.getTestCaseInfo();
+            m_xml.startElement("Name").writeText(testInfo.name, XmlFormatting::None).endElement(XmlFormatting::Newline);
+            m_xml.startElement("ClassName").writeText(testInfo.className, XmlFormatting::None).endElement(XmlFormatting::Newline);
+            m_xml.startElement("Description").writeText(testInfo.description, XmlFormatting::None).endElement(XmlFormatting::Newline);
+            m_xml.startElement("Tags").writeText(testInfo.tagsAsString(), XmlFormatting::None).endElement(XmlFormatting::Newline);
+            auto sourceTag = m_xml.scopedElement("SourceInfo");
+            m_xml.startElement("File").writeText(testInfo.lineInfo.file, XmlFormatting::None).endElement(XmlFormatting::Newline);
+            m_xml.startElement("Line").writeText(std::to_string(testInfo.lineInfo.line), XmlFormatting::None).endElement(XmlFormatting::Newline);
+        }
+    }
+
+    void XmlReporter::listTags(std::vector<TagInfo> const& tags, Config const&) {
+        auto outerTag = m_xml.scopedElement("TagsFromMatchingTests");
+        for (auto const& tag : tags) {
+            auto innerTag = m_xml.scopedElement("Tag");
+            m_xml.startElement("Count").writeText(std::to_string(tag.count), XmlFormatting::None).endElement(XmlFormatting::Newline);
+            auto aliasTag = m_xml.scopedElement("Aliases");
+            for (auto const& alias : tag.spellings) {
+                m_xml.startElement("Alias").writeText(alias, XmlFormatting::None).endElement(XmlFormatting::Newline);
+            }
+        }
     }
 
     CATCH_REGISTER_REPORTER( "xml", XmlReporter )

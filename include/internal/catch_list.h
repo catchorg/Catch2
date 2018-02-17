@@ -8,30 +8,28 @@
 #ifndef TWOBLUECUBES_CATCH_LIST_H_INCLUDED
 #define TWOBLUECUBES_CATCH_LIST_H_INCLUDED
 
-#include "catch_option.hpp"
-#include "catch_config.hpp"
-
-#include <set>
+#include <vector>
+#include <string>
 
 namespace Catch {
 
-    std::size_t listTests( Config const& config );
+    class Config;
+    struct IStreamingReporter;
 
-    std::size_t listTestsNamesOnly( Config const& config );
-
-    struct TagInfo {
-        void add( std::string const& spelling );
-        std::string all() const;
-
-        std::set<std::string> spellings;
-        std::size_t count = 0;
+    struct ReporterDescription {
+        std::string name;
+        std::string description;
     };
 
-    std::size_t listTags( Config const& config );
+    struct TagInfo {
+        void add(std::string const& spelling);
+        std::string tagsAsString() const;
 
-    std::size_t listReporters( Config const& /*config*/ );
-    
-    Option<std::size_t> list( Config const& config );
+        std::size_t count = 0;
+        std::vector<std::string> spellings;
+    };
+
+    bool list( IStreamingReporter& reporter, Config const& config );
 
 } // end namespace Catch
 

@@ -17,15 +17,17 @@
 #include "catch_message.h"
 #include "catch_option.hpp"
 #include "catch_stringref.h"
-
+#include "catch_list.h"
 
 #include <string>
 #include <iosfwd>
 #include <map>
-#include <set>
 #include <memory>
 
 namespace Catch {
+
+    struct TagInfo;
+    struct ReporterDescription;
 
     struct ReporterConfig {
         explicit ReporterConfig( IConfigPtr const& _fullConfig );
@@ -172,7 +174,6 @@ namespace Catch {
 
         // Implementing class must also provide the following static methods:
         // static std::string getDescription();
-        // static std::set<Verbosity> getSupportedVerbosities()
 
         virtual ReporterPreferences getPreferences() const = 0;
 
@@ -204,8 +205,12 @@ namespace Catch {
 
         // Default empty implementation provided
         virtual void fatalErrorEncountered( StringRef name );
+        virtual void listReporters( std::vector<ReporterDescription> const& descriptions, Config const& config );
+        virtual void listTests( std::vector<TestCase> const& tests, Config const& config );
+        virtual void listTags( std::vector<TagInfo> const& tags, Config const& config );
 
         virtual bool isMulti() const;
+
     };
     using IStreamingReporterPtr = std::unique_ptr<IStreamingReporter>;
 

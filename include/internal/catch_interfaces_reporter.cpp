@@ -6,7 +6,17 @@
  */
 
 #include "catch_interfaces_reporter.h"
+
+#include "catch_console_colour.h"
+#include "catch_interfaces_registry_hub.h"
+#include "catch_test_case_registry_impl.h"
+#include "catch_text.h"
+
+
 #include "../reporters/catch_reporter_multi.h"
+
+#include <algorithm>
+#include <iomanip>
 
 namespace Catch {
 
@@ -106,6 +116,69 @@ namespace Catch {
     TestRunStats::~TestRunStats() = default;
 
     void IStreamingReporter::fatalErrorEncountered( StringRef ) {}
+    void IStreamingReporter::listReporters(std::vector<ReporterDescription> const& descriptions, Config const&) {
+        Catch::cout() << "Available reporters:\n";
+        std::size_t maxNameLen = 0;
+        for (auto const& desc : descriptions) {
+            maxNameLen = (std::max)(maxNameLen, desc.name.size());
+        }
+        // TBD: Make quiet verbosity only print names?
+        for (auto const& desc : descriptions) {
+            Catch::cout()
+                << Column(desc.name + ":")
+                .indent(2)
+                .width(5 + maxNameLen)
+                + Column(desc.description)
+                .initialIndent(0)
+                .indent(2)
+                .width(CATCH_CONFIG_CONSOLE_WIDTH - maxNameLen - 8)
+                << '\n';
+        }
+        Catch::cout() << std::endl;
+    }
+
+    void IStreamingReporter::listTests(std::vector<TestCase> const& tests, Config const & config) {
+        Catch::cout() << "Matching test cases:\n";
+
+        for (auto const& testCaseInfo : tests) {
+            Colour::Code colour = testCaseInfo.isHidden()
+                ? Colour::SecondaryText
+                : Colour::None;
+            Colour colourGuard(colour);
+
+            Catch::cout() << Column(testCaseInfo.name).initialIndent(2).indent(4) << "\n";
+
+            if (config.verbosity() >= Verbosity::High) {
+                Catch::cout() << Column(Catch::Detail::stringify(testCaseInfo.lineInfo)).indent(4) << std::endl;
+                std::string description = testCaseInfo.description;
+                if (description.empty())
+                    description = "(NO DESCRIPTION)";
+                Catch::cout() << Column(description).indent(4) << std::endl;
+            }
+            if (config.verbosity() >= Verbosity::Normal && !testCaseInfo.tags.empty()) {
+                Catch::cout() << Column(testCaseInfo.tagsAsString()).indent(6) << "\n";
+            }
+        }
+
+        Catch::cout() << pluralise(tests.size(), "test case") << '\n' << std::endl;
+    }
+
+    void IStreamingReporter::listTags(std::vector<TagInfo> const& tags, Config const&) {
+        Catch::cout() << "Tags for matching test cases:\n";
+
+        for (auto const& tagCount : tags) {
+            ReusableStringStream rss;
+            rss << "  " << std::setw(2) << tagCount.count << "  ";
+            auto str = rss.str();
+            auto wrapper = Column(tagCount.tagsAsString())
+                .initialIndent(0)
+                .indent(str.size())
+                .width(CATCH_CONFIG_CONSOLE_WIDTH - 10);
+            Catch::cout() << str << wrapper << '\n';
+        }
+        Catch::cout() << pluralise(tags.size(), "tag") << '\n' << std::endl;
+    }
+
     bool IStreamingReporter::isMulti() const { return false; }
 
     IReporterFactory::~IReporterFactory() = default;
