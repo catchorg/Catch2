@@ -4998,10 +4998,29 @@ String.tests.cpp:<line number>:
 PASSED:
   REQUIRE( original == "original" )
 
-String.tests.cpp:<line number>: FAILED:
+String.tests.cpp:<line number>:
+PASSED:
   REQUIRE( isSubstring( original ) )
 with expansion:
-  false
+  true
+
+String.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( isOwned( original ) == false )
+with expansion:
+  false == false
+
+String.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( isSubstring( original ) == false )
+with expansion:
+  false == false
+
+String.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( isOwned( original ) )
+with expansion:
+  true
 
 -------------------------------------------------------------------------------
 StringRef
@@ -8531,6 +8550,6 @@ Misc.tests.cpp:<line number>:
 PASSED:
 
 ===============================================================================
-test cases:  202 | 135 passed |  63 failed |  4 failed as expected
-assertions: 1018 | 875 passed | 122 failed | 21 failed as expected
+test cases:  202 | 136 passed |  62 failed |  4 failed as expected
+assertions: 1021 | 879 passed | 121 failed | 21 failed as expected
 

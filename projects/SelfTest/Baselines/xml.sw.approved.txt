@@ -5716,15 +5716,39 @@ Message from section two
             original == "original"
           </Expanded>
         </Expression>
-        <Expression success="false" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/String.tests.cpp" >
+        <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/String.tests.cpp" >
           <Original>
             isSubstring( original )
           </Original>
           <Expanded>
-            false
+            true
           </Expanded>
         </Expression>
-        <OverallResults successes="1" failures="1" expectedFailures="0"/>
+        <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/String.tests.cpp" >
+          <Original>
+            isOwned( original ) == false
+          </Original>
+          <Expanded>
+            false == false
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/String.tests.cpp" >
+          <Original>
+            isSubstring( original ) == false
+          </Original>
+          <Expanded>
+            false == false
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/String.tests.cpp" >
+          <Original>
+            isOwned( original )
+          </Original>
+          <Expanded>
+            true
+          </Expanded>
+        </Expression>
+        <OverallResults successes="5" failures="0" expectedFailures="0"/>
       </Section>
       <Section name="Substrings" filename="projects/<exe-name>/IntrospectiveTests/String.tests.cpp" >
         <Section name="zero-based substring" filename="projects/<exe-name>/IntrospectiveTests/String.tests.cpp" >
@@ -6054,7 +6078,7 @@ Message from section two
         </Expression>
         <OverallResults successes="3" failures="0" expectedFailures="0"/>
       </Section>
-      <OverallResult success="false"/>
+      <OverallResult success="true"/>
     </TestCase>
     <TestCase name="Stringifying std::chrono::duration helpers" tags="[chrono][toString]" filename="projects/<exe-name>/UsageTests/ToStringChrono.tests.cpp" >
       <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/UsageTests/ToStringChrono.tests.cpp" >
@@ -9381,7 +9405,7 @@ loose text artifact
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="875" failures="123" expectedFailures="21"/>
+    <OverallResults successes="879" failures="122" expectedFailures="21"/>
   </Group>
-  <OverallResults successes="875" failures="122" expectedFailures="21"/>
+  <OverallResults successes="879" failures="121" expectedFailures="21"/>
 </Catch>

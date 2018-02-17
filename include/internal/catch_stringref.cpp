@@ -112,7 +112,7 @@ namespace Catch {
     }
 
     auto operator << ( std::ostream& os, StringRef const& str ) -> std::ostream& {
-        return os << str.c_str();
+        return os.write(str.m_start, str.m_size);
     }
 
 } // namespace Catch

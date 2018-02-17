@@ -12,7 +12,7 @@
 #include <iosfwd>
 
 namespace Catch {
-    
+
     class StringData;
 
     /// A non-owning string class (similar to the forthcoming std::string_view)
@@ -31,13 +31,13 @@ namespace Catch {
 
         char const* m_start;
         size_type m_size;
-        
+
         char* m_data = nullptr;
-        
+
         void takeOwnership();
 
         static constexpr char const* const s_empty = "";
-        
+
     public: // construction/ assignment
         StringRef() noexcept
         :   StringRef( s_empty, 0 )
@@ -83,13 +83,15 @@ namespace Catch {
         operator std::string() const;
 
         void swap( StringRef& other ) noexcept;
-        
+
+        friend auto operator << (std::ostream& os, StringRef const& sr)->std::ostream&;
+
     public: // operators
         auto operator == ( StringRef const& other ) const noexcept -> bool;
         auto operator != ( StringRef const& other ) const noexcept -> bool;
-        
+
         auto operator[] ( size_type index ) const noexcept -> char;
-        
+
     public: // named queries
         auto empty() const noexcept -> bool {
             return m_size == 0;
@@ -100,7 +102,7 @@ namespace Catch {
 
         auto numberOfCharacters() const noexcept -> size_type;
         auto c_str() const -> char const*;
-        
+
     public: // substrings and searches
         auto substr( size_type start, size_type size ) const noexcept -> StringRef;
 
@@ -114,7 +116,6 @@ namespace Catch {
     auto operator + ( StringRef const& lhs, char const* rhs ) -> std::string;
     auto operator + ( char const* lhs, StringRef const& rhs ) -> std::string;
 
-    auto operator << ( std::ostream& os, StringRef const& sr ) -> std::ostream&;
 
     inline auto operator "" _sr( char const* rawChars, std::size_t size ) noexcept -> StringRef {
         return StringRef( rawChars, size );
