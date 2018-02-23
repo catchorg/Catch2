@@ -9,21 +9,23 @@
 #include "catch_debug_console.h"
 #include "catch_stream.h"
 #include "catch_platform.h"
+#include "catch_windows_h_proxy.h"
 
 #ifdef CATCH_PLATFORM_WINDOWS
-
-#include "catch_windows_h_proxy.h"
 
     namespace Catch {
         void writeToDebugConsole( std::string const& text ) {
             ::OutputDebugStringA( text.c_str() );
         }
     }
+
 #else
+
     namespace Catch {
         void writeToDebugConsole( std::string const& text ) {
             // !TBD: Need a version for Mac/ XCode and other IDEs
             Catch::cout() << text;
         }
     }
+
 #endif // Platform

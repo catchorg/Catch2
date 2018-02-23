@@ -9,13 +9,13 @@
 #ifndef TWOBLUECUBES_CATCH_FATAL_CONDITION_H_INCLUDED
 #define TWOBLUECUBES_CATCH_FATAL_CONDITION_H_INCLUDED
 
-#include <string>
 #include "catch_platform.h"
 #include "catch_compiler_capabilities.h"
+#include "catch_windows_h_proxy.h"
 
 
 #if defined ( CATCH_PLATFORM_WINDOWS ) /////////////////////////////////////////
-#include "catch_windows_h_proxy.h"
+
 
 #  if !defined ( CATCH_CONFIG_WINDOWS_SEH )
 

@@ -19,6 +19,7 @@
 #include "catch_startup_exception_registry.h"
 #include "catch_text.h"
 #include "catch_stream.h"
+#include "catch_windows_h_proxy.h"
 
 #include <cstdlib>
 #include <iomanip>
