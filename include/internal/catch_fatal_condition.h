@@ -14,18 +14,7 @@
 #include "catch_windows_h_proxy.h"
 
 
-#if defined ( CATCH_PLATFORM_WINDOWS ) /////////////////////////////////////////
-
-
-#  if !defined ( CATCH_CONFIG_WINDOWS_SEH )
-
-namespace Catch {
-    struct FatalConditionHandler {
-        void reset();
-    };
-}
-
-#  else // CATCH_CONFIG_WINDOWS_SEH is defined
+#if defined( CATCH_CONFIG_WINDOWS_SEH )
 
 namespace Catch {
 
@@ -44,20 +33,7 @@ namespace Catch {
 
 } // namespace Catch
 
-#  endif // CATCH_CONFIG_WINDOWS_SEH
-
-#else // Not Windows - assumed to be POSIX compatible //////////////////////////
-
-#  if !defined(CATCH_CONFIG_POSIX_SIGNALS)
-
-namespace Catch {
-    struct FatalConditionHandler {
-        void reset();
-    };
-}
-
-
-#  else // CATCH_CONFIG_POSIX_SIGNALS is defined
+#elif defined ( CATCH_CONFIG_POSIX_SIGNALS )
 
 #include <signal.h>
 
@@ -66,7 +42,7 @@ namespace Catch {
     struct FatalConditionHandler {
 
         static bool isSet;
-        static struct sigaction oldSigActions[];// [sizeof(signalDefs) / sizeof(SignalDefs)];
+        static struct sigaction oldSigActions[];
         static stack_t oldSigStack;
         static char altStackMem[];
 
@@ -79,8 +55,15 @@ namespace Catch {
 
 } // namespace Catch
 
-#  endif // CATCH_CONFIG_POSIX_SIGNALS
 
-#endif // not Windows
+#else
+
+namespace Catch {
+    struct FatalConditionHandler {
+        void reset();
+    };
+}
+
+#endif
 
 #endif // TWOBLUECUBES_CATCH_FATAL_CONDITION_H_INCLUDED

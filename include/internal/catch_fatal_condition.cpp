@@ -17,24 +17,14 @@
 #    pragma GCC diagnostic ignored "-Wmissing-field-initializers"
 #endif
 
-#if (defined(CATCH_PLATFORM_WINDOWS) && defined(CATCH_CONFIG_WINDOWS_SEH)) || defined(CATCH_CONFIG_POSIX_SIGNALS)
 namespace {
     // Report the error condition
     void reportFatal( char const * const message ) {
         Catch::getCurrentContext().getResultCapture()->handleFatalErrorCondition( message );
     }
 }
-#endif
 
-#if defined ( CATCH_PLATFORM_WINDOWS ) /////////////////////////////////////////
-
-#  if !defined ( CATCH_CONFIG_WINDOWS_SEH )
-
-namespace Catch {
-    void FatalConditionHandler::reset() {}
-}
-
-#  else // CATCH_CONFIG_WINDOWS_SEH is defined
+#if defined( CATCH_CONFIG_WINDOWS_SEH )
 
 namespace Catch {
     struct SignalDefs { DWORD id; const char* name; };
@@ -74,7 +64,6 @@ namespace Catch {
 
     void FatalConditionHandler::reset() {
         if (isSet) {
-            // Unregister handler and restore the old guarantee
             RemoveVectoredExceptionHandler(exceptionHandlerHandle);
             SetThreadStackGuarantee(&guaranteeSize);
             exceptionHandlerHandle = nullptr;
@@ -93,20 +82,7 @@ PVOID FatalConditionHandler::exceptionHandlerHandle = nullptr;
 
 } // namespace Catch
 
-#  endif // CATCH_CONFIG_WINDOWS_SEH
-
-#else // Not Windows - assumed to be POSIX compatible //////////////////////////
-
-#  if !defined(CATCH_CONFIG_POSIX_SIGNALS)
-
-namespace Catch {
-    void FatalConditionHandler::reset() {}
-}
-
-
-#  else // CATCH_CONFIG_POSIX_SIGNALS is defined
-
-#include <signal.h>
+#elif defined( CATCH_CONFIG_POSIX_SIGNALS )
 
 namespace Catch {
 
@@ -178,9 +154,13 @@ namespace Catch {
 
 } // namespace Catch
 
-#  endif // CATCH_CONFIG_POSIX_SIGNALS
+#else
 
-#endif // not Windows
+namespace Catch {
+    void FatalConditionHandler::reset() {}
+}
+
+#endif // signals/SEH handling
 
 #if defined(__GNUC__)
 #    pragma GCC diagnostic pop
