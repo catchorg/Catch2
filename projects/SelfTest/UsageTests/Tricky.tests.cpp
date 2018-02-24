@@ -421,23 +421,6 @@ TEST_CASE( "non-copyable objects", "[.][failing]" ) {
     CHECK( ti == typeid(int) );
 }
 
-// #925
-using signal_t = void (*) (void*);
-
-struct TestClass {
-    signal_t testMethod_uponComplete_arg = nullptr;
-};
-
-namespace utility {
-    inline static void synchronizing_callback( void * ) { }
-}
-
-TEST_CASE("#925: comparing function pointer to function address failed to compile", "[!nonportable]" ) {
-
-    TestClass test;
-    REQUIRE(utility::synchronizing_callback != test.testMethod_uponComplete_arg);
-}
-
 TEST_CASE( "Bitfields can be captured (#1027)" ) {
     struct Y {
         uint32_t v : 1;

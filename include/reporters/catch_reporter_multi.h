@@ -31,7 +31,7 @@ namespace Catch {
 
         void testRunStarting( TestRunInfo const& testRunInfo ) override;
         void testGroupStarting( GroupInfo const& groupInfo ) override;
-        void testCaseStarting( TestCaseInfo const& testInfo ) override;
+        void testCaseStarting(std::shared_ptr<TestCaseInfo> const& testInfo ) override;
         void sectionStarting( SectionInfo const& sectionInfo ) override;
         void assertionStarting( AssertionInfo const& assertionInfo ) override;
 
@@ -42,7 +42,7 @@ namespace Catch {
         void testGroupEnded( TestGroupStats const& testGroupStats ) override;
         void testRunEnded( TestRunStats const& testRunStats ) override;
 
-        void skipTest( TestCaseInfo const& testInfo ) override;
+        void skipTest(std::shared_ptr<TestCaseInfo> const& testInfo ) override;
         bool isMulti() const override;
 
     };

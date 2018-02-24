@@ -47,12 +47,13 @@ namespace Catch {
             return std::string(timeStamp);
         }
 
-        std::string fileNameTag(const std::vector<std::string> &tags) {
+        std::string fileNameTag(std::vector<Tag> const& tags) {
             auto it = std::find_if(begin(tags),
                                    end(tags),
-                                   [] (std::string const& tag) {return tag.front() == '#'; });
-            if (it != tags.end())
-                return it->substr(1);
+                                   [] (Tag tag) {return tag.original[1] == '#'; });
+            if (it != tags.end()) {
+                return it->original.substr(1, it->original.size() - 1);
+            }
             return std::string();
         }
     } // anonymous namespace
@@ -85,8 +86,8 @@ namespace Catch {
         CumulativeReporterBase::testGroupStarting( groupInfo );
     }
 
-    void JunitReporter::testCaseStarting( TestCaseInfo const& testCaseInfo ) {
-        m_okToFail = testCaseInfo.okToFail();
+    void JunitReporter::testCaseStarting(std::shared_ptr<TestCaseInfo> const& testCaseInfo ) {
+        m_okToFail = testCaseInfo->okToFail();
     }
 
     bool JunitReporter::assertionEnded( AssertionStats const& assertionStats ) {
@@ -141,10 +142,10 @@ namespace Catch {
         assert( testCaseNode.children.size() == 1 );
         SectionNode const& rootSection = *testCaseNode.children.front();
 
-        std::string className = stats.testInfo.className;
+        std::string className = stats.testInfo->className;
 
         if( className.empty() ) {
-            className = fileNameTag(stats.testInfo.tags);
+            className = fileNameTag(stats.testInfo->tags);
             if ( className.empty() )
                 className = "global";
         }

@@ -9,6 +9,7 @@
 #define TWOBLUECUBES_CATCH_TEST_CASE_INFO_H_INCLUDED
 
 #include "catch_common.h"
+#include "catch_stringref.h"
 
 #include <string>
 #include <vector>
@@ -22,25 +23,41 @@
 namespace Catch {
 
     struct ITestInvoker;
+    struct NameAndTags;
+
+    struct Tag {
+        Tag(StringRef original, StringRef lCased) : original(original), lowerCased(lCased) {}
+        StringRef original, lowerCased;
+    };
+
+    bool operator <  (Tag lhs, Tag rhs);
+    bool operator == (Tag lhs, Tag rhs);
+
+    enum class TestCaseProperties {
+        None = 0,
+        IsHidden = 1 << 1,
+        ShouldFail = 1 << 2,
+        MayFail = 1 << 3,
+        Throws = 1 << 4,
+        NonPortable = 1 << 5,
+        Benchmark = 1 << 6
+    };
+
+    TestCaseProperties  operator |  (TestCaseProperties lhs, TestCaseProperties rhs);
+    TestCaseProperties& operator |= (TestCaseProperties& lhs, TestCaseProperties rhs);
+    TestCaseProperties  operator &  (TestCaseProperties lhs, TestCaseProperties rhs);
+
 
     struct TestCaseInfo {
-        enum SpecialProperties{
-            None = 0,
-            IsHidden = 1 << 1,
-            ShouldFail = 1 << 2,
-            MayFail = 1 << 3,
-            Throws = 1 << 4,
-            NonPortable = 1 << 5,
-            Benchmark = 1 << 6
-        };
 
-        TestCaseInfo(   std::string const& _name,
-                        std::string const& _className,
-                        std::string const& _description,
-                        std::vector<std::string> const& _tags,
+        TestCaseInfo(   std::string const& _className,
+                        NameAndTags const& nameAndDescription,
                         SourceLineInfo const& _lineInfo );
 
-        friend void setTags( TestCaseInfo& testCaseInfo, std::vector<std::string> tags );
+        TestCaseInfo(TestCaseInfo const&) = delete;
+        TestCaseInfo(TestCaseInfo&&) = delete;
+        TestCaseInfo& operator=(TestCaseInfo const&) = delete;
+        TestCaseInfo& operator=(TestCaseInfo&&) = delete;
 
         bool isHidden() const;
         bool throws() const;
@@ -49,37 +66,44 @@ namespace Catch {
 
         std::string tagsAsString() const;
 
+        void applyFilenameTag();
+
         std::string name;
         std::string className;
+
+        // This will be deprecated soon, but for now we keep it
         std::string description;
-        std::vector<std::string> tags;
-        std::vector<std::string> lcaseTags;
+
+        // To save allocations, tags are non-owning substrings of 2 backing strings
+        std::vector<Tag> tags;
+    private:
+        std::string tagsBacking;
+        std::string lcaseTagsBacking;
+    public:
         SourceLineInfo lineInfo;
-        SpecialProperties properties;
+        TestCaseProperties properties = TestCaseProperties::None;
     };
 
-    class TestCase : public TestCaseInfo {
+    class TestCase {
     public:
 
-        TestCase( ITestInvoker* testCase, TestCaseInfo const& info );
-
-        TestCase withName( std::string const& _newName ) const;
+        TestCase( ITestInvoker* testCase, std::shared_ptr<TestCaseInfo> info );
 
         void invoke() const;
 
-        TestCaseInfo const& getTestCaseInfo() const;
+        std::shared_ptr<TestCaseInfo> const& getTestCaseInfo() const;
 
         bool operator == ( TestCase const& other ) const;
         bool operator < ( TestCase const& other ) const;
 
     private:
         std::shared_ptr<ITestInvoker> test;
+        std::shared_ptr<TestCaseInfo> info;
     };
 
     TestCase makeTestCase(  ITestInvoker* testCase,
                             std::string const& className,
-                            std::string const& name,
-                            std::string const& description,
+                            NameAndTags const& nameAndDescription,
                             SourceLineInfo const& lineInfo );
 }
 

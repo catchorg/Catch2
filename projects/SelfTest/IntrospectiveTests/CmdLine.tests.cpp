@@ -15,7 +15,7 @@
 #   pragma clang diagnostic ignored "-Wc++98-compat"
 #endif
 
-inline Catch::TestCase fakeTestCase( const char* name, const char* desc = "" ){ return Catch::makeTestCase( nullptr, "", name, desc, CATCH_INTERNAL_LINEINFO ); }
+inline Catch::TestCase fakeTestCase(const char* name, const char* desc = "") { return Catch::makeTestCase(nullptr, "", Catch::NameAndTags( name, desc ), CATCH_INTERNAL_LINEINFO); }
 
 TEST_CASE( "Parse test names and tags" ) {
 
@@ -30,237 +30,237 @@ TEST_CASE( "Parse test names and tags" ) {
     SECTION( "Empty test spec should have no filters" ) {
         TestSpec spec;
         CHECK( spec.hasFilters() == false );
-        CHECK( spec.matches( tcA ) == false );
-        CHECK( spec.matches( tcB ) == false );
+        CHECK( spec.matches( *tcA.getTestCaseInfo() ) == false );
+        CHECK( spec.matches( *tcB.getTestCaseInfo() ) == false );
     }
 
     SECTION( "Test spec from empty string should have no filters" ) {
         TestSpec spec = parseTestSpec( "" );
         CHECK( spec.hasFilters() == false );
-        CHECK( spec.matches(tcA ) == false );
-        CHECK( spec.matches( tcB ) == false );
+        CHECK( spec.matches( *tcA.getTestCaseInfo() ) == false );
+        CHECK( spec.matches( *tcB.getTestCaseInfo() ) == false );
     }
 
     SECTION( "Test spec from just a comma should have no filters" ) {
         TestSpec spec = parseTestSpec( "," );
         CHECK( spec.hasFilters() == false );
-        CHECK( spec.matches( tcA ) == false );
-        CHECK( spec.matches( tcB ) == false );
+        CHECK( spec.matches( *tcA.getTestCaseInfo() ) == false );
+        CHECK( spec.matches( *tcB.getTestCaseInfo() ) == false );
     }
 
     SECTION( "Test spec from name should have one filter" ) {
         TestSpec spec = parseTestSpec( "b" );
         CHECK( spec.hasFilters() == true );
-        CHECK( spec.matches( tcA ) == false );
-        CHECK( spec.matches( tcB ) == true );
+        CHECK( spec.matches( *tcA.getTestCaseInfo() ) == false );
+        CHECK( spec.matches( *tcB.getTestCaseInfo() ) == true );
     }
 
     SECTION( "Test spec from quoted name should have one filter" ) {
         TestSpec spec = parseTestSpec( "\"b\"" );
         CHECK( spec.hasFilters() == true );
-        CHECK( spec.matches( tcA ) == false );
-        CHECK( spec.matches( tcB ) == true );
+        CHECK( spec.matches( *tcA.getTestCaseInfo() ) == false );
+        CHECK( spec.matches( *tcB.getTestCaseInfo() ) == true );
     }
 
     SECTION( "Test spec from name should have one filter" ) {
         TestSpec spec = parseTestSpec( "b" );
         CHECK( spec.hasFilters() == true );
-        CHECK( spec.matches( tcA ) == false );
-        CHECK( spec.matches( tcB ) == true );
-        CHECK( spec.matches( tcC ) == false );
+        CHECK( spec.matches( *tcA.getTestCaseInfo() ) == false );
+        CHECK( spec.matches( *tcB.getTestCaseInfo() ) == true );
+        CHECK( spec.matches( *tcC.getTestCaseInfo() ) == false );
     }
 
     SECTION( "Wildcard at the start" ) {
         TestSpec spec = parseTestSpec( "*spaces" );
         CHECK( spec.hasFilters() == true );
-        CHECK( spec.matches( tcA ) == false );
-        CHECK( spec.matches( tcB ) == false );
-        CHECK( spec.matches( tcC ) == true );
-        CHECK( spec.matches( tcD ) == false );
-        CHECK( parseTestSpec( "*a" ).matches( tcA ) == true );
+        CHECK( spec.matches( *tcA.getTestCaseInfo() ) == false );
+        CHECK( spec.matches( *tcB.getTestCaseInfo() ) == false );
+        CHECK( spec.matches( *tcC.getTestCaseInfo() ) == true );
+        CHECK( spec.matches( *tcD.getTestCaseInfo() ) == false );
+        CHECK( parseTestSpec( "*a" ).matches( *tcA.getTestCaseInfo() ) == true );
     }
     SECTION( "Wildcard at the end" ) {
         TestSpec spec = parseTestSpec( "long*" );
         CHECK( spec.hasFilters() == true );
-        CHECK( spec.matches( tcA ) == false );
-        CHECK( spec.matches( tcB ) == false );
-        CHECK( spec.matches( tcC ) == true );
-        CHECK( spec.matches( tcD ) == false );
-        CHECK( parseTestSpec( "a*" ).matches( tcA ) == true );
+        CHECK( spec.matches( *tcA.getTestCaseInfo() ) == false );
+        CHECK( spec.matches( *tcB.getTestCaseInfo() ) == false );
+        CHECK( spec.matches( *tcC.getTestCaseInfo() ) == true );
+        CHECK( spec.matches( *tcD.getTestCaseInfo() ) == false );
+        CHECK( parseTestSpec( "a*" ).matches( *tcA.getTestCaseInfo() ) == true );
     }
     SECTION( "Wildcard at both ends" ) {
         TestSpec spec = parseTestSpec( "*name*" );
         CHECK( spec.hasFilters() == true );
-        CHECK( spec.matches( tcA ) == false );
-        CHECK( spec.matches( tcB ) == false );
-        CHECK( spec.matches( tcC ) == true );
-        CHECK( spec.matches( tcD ) == true );
-        CHECK( parseTestSpec( "*a*" ).matches( tcA ) == true );
+        CHECK( spec.matches( *tcA.getTestCaseInfo() ) == false );
+        CHECK( spec.matches( *tcB.getTestCaseInfo() ) == false );
+        CHECK( spec.matches( *tcC.getTestCaseInfo() ) == true );
+        CHECK( spec.matches( *tcD.getTestCaseInfo() ) == true );
+        CHECK( parseTestSpec( "*a*" ).matches( *tcA.getTestCaseInfo() ) == true );
     }
     SECTION( "Redundant wildcard at the start" ) {
         TestSpec spec = parseTestSpec( "*a" );
         CHECK( spec.hasFilters() == true );
-        CHECK( spec.matches( tcA ) == true );
-        CHECK( spec.matches( tcB ) == false );
+        CHECK( spec.matches( *tcA.getTestCaseInfo() ) == true );
+        CHECK( spec.matches( *tcB.getTestCaseInfo() ) == false );
     }
     SECTION( "Redundant wildcard at the end" ) {
         TestSpec spec = parseTestSpec( "a*" );
         CHECK( spec.hasFilters() == true );
-        CHECK( spec.matches( tcA ) == true );
-        CHECK( spec.matches( tcB ) == false );
+        CHECK( spec.matches( *tcA.getTestCaseInfo() ) == true );
+        CHECK( spec.matches( *tcB.getTestCaseInfo() ) == false );
     }
     SECTION( "Redundant wildcard at both ends" ) {
         TestSpec spec = parseTestSpec( "*a*" );
         CHECK( spec.hasFilters() == true );
-        CHECK( spec.matches( tcA ) == true );
-        CHECK( spec.matches( tcB ) == false );
+        CHECK( spec.matches( *tcA.getTestCaseInfo() ) == true );
+        CHECK( spec.matches( *tcB.getTestCaseInfo() ) == false );
     }
     SECTION( "Wildcard at both ends, redundant at start" ) {
         TestSpec spec = parseTestSpec( "*longer*" );
         CHECK( spec.hasFilters() == true );
-        CHECK( spec.matches( tcA ) == false );
-        CHECK( spec.matches( tcB ) == false );
-        CHECK( spec.matches( tcC ) == true );
-        CHECK( spec.matches( tcD ) == true );
+        CHECK( spec.matches( *tcA.getTestCaseInfo() ) == false );
+        CHECK( spec.matches( *tcB.getTestCaseInfo() ) == false );
+        CHECK( spec.matches( *tcC.getTestCaseInfo() ) == true );
+        CHECK( spec.matches( *tcD.getTestCaseInfo() ) == true );
     }
     SECTION( "Just wildcard" ) {
         TestSpec spec = parseTestSpec( "*" );
         CHECK( spec.hasFilters() == true );
-        CHECK( spec.matches( tcA ) == true );
-        CHECK( spec.matches( tcB ) == true );
-        CHECK( spec.matches( tcC ) == true );
-        CHECK( spec.matches( tcD ) == true );
+        CHECK( spec.matches( *tcA.getTestCaseInfo() ) == true );
+        CHECK( spec.matches( *tcB.getTestCaseInfo() ) == true );
+        CHECK( spec.matches( *tcC.getTestCaseInfo() ) == true );
+        CHECK( spec.matches( *tcD.getTestCaseInfo() ) == true );
     }
 
     SECTION( "Single tag" ) {
         TestSpec spec = parseTestSpec( "[one]" );
         CHECK( spec.hasFilters() == true );
-        CHECK( spec.matches( tcA ) == false );
-        CHECK( spec.matches( tcB ) == true );
-        CHECK( spec.matches( tcC ) == false );
+        CHECK( spec.matches( *tcA.getTestCaseInfo() ) == false );
+        CHECK( spec.matches( *tcB.getTestCaseInfo() ) == true );
+        CHECK( spec.matches( *tcC.getTestCaseInfo() ) == false );
     }
     SECTION( "Single tag, two matches" ) {
         TestSpec spec = parseTestSpec( "[x]" );
         CHECK( spec.hasFilters() == true );
-        CHECK( spec.matches( tcA ) == false );
-        CHECK( spec.matches( tcB ) == true );
-        CHECK( spec.matches( tcC ) == true );
+        CHECK( spec.matches( *tcA.getTestCaseInfo() ) == false );
+        CHECK( spec.matches( *tcB.getTestCaseInfo() ) == true );
+        CHECK( spec.matches( *tcC.getTestCaseInfo() ) == true );
     }
     SECTION( "Two tags" ) {
         TestSpec spec = parseTestSpec( "[two][x]" );
         CHECK( spec.hasFilters() == true );
-        CHECK( spec.matches( tcA ) == false );
-        CHECK( spec.matches( tcB ) == false );
-        CHECK( spec.matches( tcC ) == true );
+        CHECK( spec.matches( *tcA.getTestCaseInfo() ) == false );
+        CHECK( spec.matches( *tcB.getTestCaseInfo() ) == false );
+        CHECK( spec.matches( *tcC.getTestCaseInfo() ) == true );
     }
     SECTION( "Two tags, spare separated" ) {
         TestSpec spec = parseTestSpec( "[two] [x]" );
         CHECK( spec.hasFilters() == true );
-        CHECK( spec.matches( tcA ) == false );
-        CHECK( spec.matches( tcB ) == false );
-        CHECK( spec.matches( tcC ) == true );
+        CHECK( spec.matches( *tcA.getTestCaseInfo() ) == false );
+        CHECK( spec.matches( *tcB.getTestCaseInfo() ) == false );
+        CHECK( spec.matches( *tcC.getTestCaseInfo() ) == true );
     }
     SECTION( "Wildcarded name and tag" ) {
         TestSpec spec = parseTestSpec( "*name*[x]" );
         CHECK( spec.hasFilters() == true );
-        CHECK( spec.matches( tcA ) == false );
-        CHECK( spec.matches( tcB ) == false );
-        CHECK( spec.matches( tcC ) == true );
-        CHECK( spec.matches( tcD ) == false );
+        CHECK( spec.matches( *tcA.getTestCaseInfo() ) == false );
+        CHECK( spec.matches( *tcB.getTestCaseInfo() ) == false );
+        CHECK( spec.matches( *tcC.getTestCaseInfo() ) == true );
+        CHECK( spec.matches( *tcD.getTestCaseInfo() ) == false );
     }
     SECTION( "Single tag exclusion" ) {
         TestSpec spec = parseTestSpec( "~[one]" );
         CHECK( spec.hasFilters() == true );
-        CHECK( spec.matches( tcA ) == true );
-        CHECK( spec.matches( tcB ) == false );
-        CHECK( spec.matches( tcC ) == true );
+        CHECK( spec.matches( *tcA.getTestCaseInfo() ) == true );
+        CHECK( spec.matches( *tcB.getTestCaseInfo() ) == false );
+        CHECK( spec.matches( *tcC.getTestCaseInfo() ) == true );
     }
     SECTION( "One tag exclusion and one tag inclusion" ) {
         TestSpec spec = parseTestSpec( "~[two][x]" );
         CHECK( spec.hasFilters() == true );
-        CHECK( spec.matches( tcA ) == false );
-        CHECK( spec.matches( tcB ) == true );
-        CHECK( spec.matches( tcC ) == false );
+        CHECK( spec.matches( *tcA.getTestCaseInfo() ) == false );
+        CHECK( spec.matches( *tcB.getTestCaseInfo() ) == true );
+        CHECK( spec.matches( *tcC.getTestCaseInfo() ) == false );
     }
     SECTION( "One tag exclusion and one wldcarded name inclusion" ) {
         TestSpec spec = parseTestSpec( "~[two]*name*" );
         CHECK( spec.hasFilters() == true );
-        CHECK( spec.matches( tcA ) == false );
-        CHECK( spec.matches( tcB ) == false );
-        CHECK( spec.matches( tcC ) == false );
-        CHECK( spec.matches( tcD ) == true );
+        CHECK( spec.matches( *tcA.getTestCaseInfo() ) == false );
+        CHECK( spec.matches( *tcB.getTestCaseInfo() ) == false );
+        CHECK( spec.matches( *tcC.getTestCaseInfo() ) == false );
+        CHECK( spec.matches( *tcD.getTestCaseInfo() ) == true );
     }
     SECTION( "One tag exclusion, using exclude:, and one wldcarded name inclusion" ) {
         TestSpec spec = parseTestSpec( "exclude:[two]*name*" );
         CHECK( spec.hasFilters() == true );
-        CHECK( spec.matches( tcA ) == false );
-        CHECK( spec.matches( tcB ) == false );
-        CHECK( spec.matches( tcC ) == false );
-        CHECK( spec.matches( tcD ) == true );
+        CHECK( spec.matches( *tcA.getTestCaseInfo() ) == false );
+        CHECK( spec.matches( *tcB.getTestCaseInfo() ) == false );
+        CHECK( spec.matches( *tcC.getTestCaseInfo() ) == false );
+        CHECK( spec.matches( *tcD.getTestCaseInfo() ) == true );
     }
     SECTION( "name exclusion" ) {
         TestSpec spec = parseTestSpec( "~b" );
         CHECK( spec.hasFilters() == true );
-        CHECK( spec.matches( tcA ) == true );
-        CHECK( spec.matches( tcB ) == false );
-        CHECK( spec.matches( tcC ) == true );
-        CHECK( spec.matches( tcD ) == true );
+        CHECK( spec.matches( *tcA.getTestCaseInfo() ) == true );
+        CHECK( spec.matches( *tcB.getTestCaseInfo() ) == false );
+        CHECK( spec.matches( *tcC.getTestCaseInfo() ) == true );
+        CHECK( spec.matches( *tcD.getTestCaseInfo() ) == true );
     }
     SECTION( "wildcarded name exclusion" ) {
         TestSpec spec = parseTestSpec( "~*name*" );
         CHECK( spec.hasFilters() == true );
-        CHECK( spec.matches( tcA ) == true );
-        CHECK( spec.matches( tcB ) == true );
-        CHECK( spec.matches( tcC ) == false );
-        CHECK( spec.matches( tcD ) == false );
+        CHECK( spec.matches( *tcA.getTestCaseInfo() ) == true );
+        CHECK( spec.matches( *tcB.getTestCaseInfo() ) == true );
+        CHECK( spec.matches( *tcC.getTestCaseInfo() ) == false );
+        CHECK( spec.matches( *tcD.getTestCaseInfo() ) == false );
     }
     SECTION( "wildcarded name exclusion with tag inclusion" ) {
         TestSpec spec = parseTestSpec( "~*name*,[three]" );
         CHECK( spec.hasFilters() == true );
-        CHECK( spec.matches( tcA ) == true );
-        CHECK( spec.matches( tcB ) == true );
-        CHECK( spec.matches( tcC ) == true );
-        CHECK( spec.matches( tcD ) == false );
+        CHECK( spec.matches( *tcA.getTestCaseInfo() ) == true );
+        CHECK( spec.matches( *tcB.getTestCaseInfo() ) == true );
+        CHECK( spec.matches( *tcC.getTestCaseInfo() ) == true );
+        CHECK( spec.matches( *tcD.getTestCaseInfo() ) == false );
     }
     SECTION( "wildcarded name exclusion, using exclude:, with tag inclusion" ) {
         TestSpec spec = parseTestSpec( "exclude:*name*,[three]" );
         CHECK( spec.hasFilters() == true );
-        CHECK( spec.matches( tcA ) == true );
-        CHECK( spec.matches( tcB ) == true );
-        CHECK( spec.matches( tcC ) == true );
-        CHECK( spec.matches( tcD ) == false );
+        CHECK( spec.matches( *tcA.getTestCaseInfo() ) == true );
+        CHECK( spec.matches( *tcB.getTestCaseInfo() ) == true );
+        CHECK( spec.matches( *tcC.getTestCaseInfo() ) == true );
+        CHECK( spec.matches( *tcD.getTestCaseInfo() ) == false );
     }
     SECTION( "two wildcarded names" ) {
         TestSpec spec = parseTestSpec( "\"longer*\"\"*spaces\"" );
         CHECK( spec.hasFilters() == true );
-        CHECK( spec.matches( tcA ) == false );
-        CHECK( spec.matches( tcB ) == false );
-        CHECK( spec.matches( tcC ) == true );
-        CHECK( spec.matches( tcD ) == false );
+        CHECK( spec.matches( *tcA.getTestCaseInfo() ) == false );
+        CHECK( spec.matches( *tcB.getTestCaseInfo() ) == false );
+        CHECK( spec.matches( *tcC.getTestCaseInfo() ) == true );
+        CHECK( spec.matches( *tcD.getTestCaseInfo() ) == false );
     }
     SECTION( "empty tag" ) {
         TestSpec spec = parseTestSpec( "[]" );
         CHECK( spec.hasFilters() == false );
-        CHECK( spec.matches( tcA ) == false );
-        CHECK( spec.matches( tcB ) == false );
-        CHECK( spec.matches( tcC ) == false );
-        CHECK( spec.matches( tcD ) == false );
+        CHECK( spec.matches( *tcA.getTestCaseInfo() ) == false );
+        CHECK( spec.matches( *tcB.getTestCaseInfo() ) == false );
+        CHECK( spec.matches( *tcC.getTestCaseInfo() ) == false );
+        CHECK( spec.matches( *tcD.getTestCaseInfo() ) == false );
     }
     SECTION( "empty quoted name" ) {
         TestSpec spec = parseTestSpec( "\"\"" );
         CHECK( spec.hasFilters() == false );
-        CHECK( spec.matches( tcA ) == false );
-        CHECK( spec.matches( tcB ) == false );
-        CHECK( spec.matches( tcC ) == false );
-        CHECK( spec.matches( tcD ) == false );
+        CHECK( spec.matches( *tcA.getTestCaseInfo() ) == false );
+        CHECK( spec.matches( *tcB.getTestCaseInfo() ) == false );
+        CHECK( spec.matches( *tcC.getTestCaseInfo() ) == false );
+        CHECK( spec.matches( *tcD.getTestCaseInfo() ) == false );
     }
     SECTION( "quoted string followed by tag exclusion" ) {
         TestSpec spec = parseTestSpec( "\"*name*\"~[.]" );
         CHECK( spec.hasFilters() == true );
-        CHECK( spec.matches( tcA ) == false );
-        CHECK( spec.matches( tcB ) == false );
-        CHECK( spec.matches( tcC ) == false );
-        CHECK( spec.matches( tcD ) == true );
+        CHECK( spec.matches( *tcA.getTestCaseInfo() ) == false );
+        CHECK( spec.matches( *tcB.getTestCaseInfo() ) == false );
+        CHECK( spec.matches( *tcC.getTestCaseInfo() ) == false );
+        CHECK( spec.matches( *tcD.getTestCaseInfo() ) == true );
     }
 
 }
@@ -301,8 +301,8 @@ TEST_CASE( "Process can be configured on command line", "[config][command-line]"
 
             Catch::Config cfg(config);
             REQUIRE(cfg.hasTestFilters());
-            REQUIRE(cfg.testSpec().matches(fakeTestCase("notIncluded")) == false);
-            REQUIRE(cfg.testSpec().matches(fakeTestCase("test1")));
+            REQUIRE(cfg.testSpec().matches(*fakeTestCase("notIncluded").getTestCaseInfo()) == false);
+            REQUIRE(cfg.testSpec().matches(*fakeTestCase("test1").getTestCaseInfo()));
         }
         SECTION("Specify one test case exclusion using exclude:") {
             auto result = cli.parse({"test", "exclude:test1"});
@@ -310,8 +310,8 @@ TEST_CASE( "Process can be configured on command line", "[config][command-line]"
 
             Catch::Config cfg(config);
             REQUIRE(cfg.hasTestFilters());
-            REQUIRE(cfg.testSpec().matches(fakeTestCase("test1")) == false);
-            REQUIRE(cfg.testSpec().matches(fakeTestCase("alwaysIncluded")));
+            REQUIRE(cfg.testSpec().matches(*fakeTestCase("test1").getTestCaseInfo()) == false);
+            REQUIRE(cfg.testSpec().matches(*fakeTestCase("alwaysIncluded").getTestCaseInfo()));
         }
 
         SECTION("Specify one test case exclusion using ~") {
@@ -320,8 +320,8 @@ TEST_CASE( "Process can be configured on command line", "[config][command-line]"
 
             Catch::Config cfg(config);
             REQUIRE(cfg.hasTestFilters());
-            REQUIRE(cfg.testSpec().matches(fakeTestCase("test1")) == false);
-            REQUIRE(cfg.testSpec().matches(fakeTestCase("alwaysIncluded")));
+            REQUIRE(cfg.testSpec().matches(*fakeTestCase("test1").getTestCaseInfo()) == false);
+            REQUIRE(cfg.testSpec().matches(*fakeTestCase("alwaysIncluded").getTestCaseInfo()));
         }
 
     }

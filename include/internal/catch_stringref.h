@@ -89,8 +89,11 @@ namespace Catch {
     public: // operators
         auto operator == ( StringRef const& other ) const noexcept -> bool;
         auto operator != ( StringRef const& other ) const noexcept -> bool;
+        auto operator <  ( StringRef const& other ) const noexcept -> bool;
 
-        auto operator[] ( size_type index ) const noexcept -> char;
+        auto operator[] ( size_type index ) const noexcept -> char const&;
+
+        friend auto operator += (std::string& lhs, StringRef const& rhs) -> std::string&;
 
     public: // named queries
         auto empty() const noexcept -> bool {

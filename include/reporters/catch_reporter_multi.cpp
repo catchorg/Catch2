@@ -48,7 +48,7 @@ namespace Catch {
     }
 
 
-    void MultipleReporters::testCaseStarting( TestCaseInfo const& testInfo ) {
+    void MultipleReporters::testCaseStarting(std::shared_ptr<TestCaseInfo> const& testInfo ) {
         for( auto const& reporter : m_reporters )
             reporter->testCaseStarting( testInfo );
     }
@@ -92,7 +92,7 @@ namespace Catch {
     }
 
 
-    void MultipleReporters::skipTest( TestCaseInfo const& testInfo ) {
+    void MultipleReporters::skipTest(std::shared_ptr<TestCaseInfo> const& testInfo ) {
         for( auto const& reporter : m_reporters )
             reporter->skipTest( testInfo );
     }

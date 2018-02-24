@@ -34,7 +34,7 @@ namespace Catch {
 
         void testGroupStarting(GroupInfo const& groupInfo) override;
 
-        void testCaseStarting(TestCaseInfo const& testInfo) override;
+        void testCaseStarting(std::shared_ptr<TestCaseInfo> const& testInfo) override;
 
         void sectionStarting(SectionInfo const& sectionInfo) override;
 

@@ -12,6 +12,19 @@ namespace { namespace CompilationTests {
 #ifndef COMPILATION_TEST_HELPERS_INCLUDED // Don't compile this more than once per TU
 #define COMPILATION_TEST_HELPERS_INCLUDED
 
+    // #925
+    using signal_t = void (*) (void*);
+
+    struct TestClass {
+        signal_t testMethod_uponComplete_arg = nullptr;
+    };
+
+    namespace utility {
+        inline static void synchronizing_callback( void * ) { }
+    }
+
+
+
     // Comparison operators can return non-booleans.
     // This is unusual, but should be supported.
     struct logic_t {
@@ -134,4 +147,10 @@ namespace { namespace CompilationTests {
         REQUIRE(t1 >= t2);
     }
 
+    TEST_CASE("#925: comparing function pointer to function address failed to compile", "[!nonportable]" ) {
+        TestClass test;
+        REQUIRE(utility::synchronizing_callback != test.testMethod_uponComplete_arg);
+    }
+
 }} // namespace CompilationTests
+

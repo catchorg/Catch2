@@ -8,153 +8,221 @@
 
 #include "catch_test_case_info.h"
 #include "catch_enforce.h"
+#include "catch_test_registry.h"
 #include "catch_test_spec.h"
 #include "catch_interfaces_testcase.h"
 #include "catch_string_manip.h"
 
+#include <algorithm>
 #include <cctype>
 #include <exception>
-#include <algorithm>
 #include <sstream>
+#include <type_traits>
 
 namespace Catch {
 
-    TestCaseInfo::SpecialProperties parseSpecialTag( std::string const& tag ) {
-        if( startsWith( tag, '.' ) ||
-            tag == "!hide" )
-            return TestCaseInfo::IsHidden;
-        else if( tag == "!throws" )
-            return TestCaseInfo::Throws;
-        else if( tag == "!shouldfail" )
-            return TestCaseInfo::ShouldFail;
-        else if( tag == "!mayfail" )
-            return TestCaseInfo::MayFail;
-        else if( tag == "!nonportable" )
-            return TestCaseInfo::NonPortable;
-        else if( tag == "!benchmark" )
-            return static_cast<TestCaseInfo::SpecialProperties>( TestCaseInfo::Benchmark | TestCaseInfo::IsHidden );
-        else
-            return TestCaseInfo::None;
+namespace {
+
+    size_t sizeOfExtraTags(StringRef filename) {
+        // Iterate the filename backward to get the parts between last / and last .
+        size_t idx = filename.size();
+        while (idx > 0 && filename[idx-1] != '.') { --idx; }
+
+        size_t lastDot = idx - 1;
+        while (idx > 0 && filename[idx-1] != '/' && filename[idx-1] != '\\') { --idx; }
+        size_t lastSlash = idx - 1;
+
+        // +3 for '[', ']' and '#'
+        return lastDot - lastSlash - 1 + 3;
     }
-    bool isReservedTag( std::string const& tag ) {
-        return parseSpecialTag( tag ) == TestCaseInfo::None && tag.size() > 0 && !std::isalnum( tag[0] );
+
+    StringRef extractFilenamePart(StringRef filename) {
+        size_t idx = filename.size();
+        while (idx > 0 && filename[idx - 1] != '.') { --idx; }
+
+        size_t lastDot = idx - 1;
+        while (idx > 0 && filename[idx - 1] != '/' && filename[idx - 1] != '\\') { --idx; }
+
+        return StringRef(&filename[idx], lastDot - idx);
     }
-    void enforceNotReservedTag( std::string const& tag, SourceLineInfo const& _lineInfo ) {
-        CATCH_ENFORCE( !isReservedTag(tag),
+
+    TestCaseProperties parseSpecialTag(StringRef const& tag) {
+        if ((tag.size() >= 2 && tag[1] == '.') ||
+                   tag == "[!hide]"_sr) {
+            return TestCaseProperties::IsHidden;
+        } else if (tag == "[!throws]"_sr) {
+            return TestCaseProperties::Throws;
+        } else if (tag == "[!shouldfail]"_sr) {
+            return TestCaseProperties::ShouldFail;
+        } else if (tag == "[!mayfail]"_sr) {
+            return TestCaseProperties::MayFail;
+        } else if (tag == "[!nonportable]"_sr) {
+            return TestCaseProperties::NonPortable;
+        } else if (tag == "[!benchmark]"_sr) {
+            return TestCaseProperties::Benchmark | TestCaseProperties::IsHidden;
+        } else {
+            return TestCaseProperties::None;
+        }
+    }
+
+    bool isReservedTag(StringRef const& tag) {
+        return parseSpecialTag(tag) == TestCaseProperties::None && tag.size() >= 2 && !std::isalnum(tag[1]);
+    }
+
+    void enforceNotReservedTag(StringRef const& tag, SourceLineInfo const& _lineInfo) {
+        CATCH_ENFORCE(!isReservedTag(tag),
                       "Tag name: [" << tag << "] is not allowed.\n"
                       << "Tag names starting with non alpha-numeric characters are reserved\n"
-                      << _lineInfo );
+                      << _lineInfo);
     }
+
+    bool applies(TestCaseProperties props) {
+        return !!(static_cast<std::underlying_type<TestCaseProperties>::type>(props));
+    }
+
+    std::string getDefaultName() {
+        static size_t counter = 0;
+        return "Anonymous test case " + std::to_string(++counter);
+    }
+
+} // Anonymous namespace
+
+
 
     TestCase makeTestCase(  ITestInvoker* _testCase,
                             std::string const& _className,
-                            std::string const& _name,
-                            std::string const& _descOrTags,
+                            NameAndTags const& nameAndDescription,
                             SourceLineInfo const& _lineInfo )
     {
-        bool isHidden = false;
-
-        // Parse out tags
-        std::vector<std::string> tags;
-        std::string desc, tag;
-        bool inTag = false;
-        for (char c : _descOrTags) {
-            if( !inTag ) {
-                if( c == '[' )
-                    inTag = true;
-                else
-                    desc += c;
-            }
-            else {
-                if( c == ']' ) {
-                    TestCaseInfo::SpecialProperties prop = parseSpecialTag( tag );
-                    if( ( prop & TestCaseInfo::IsHidden ) != 0 )
-                        isHidden = true;
-                    else if( prop == TestCaseInfo::None )
-                        enforceNotReservedTag( tag, _lineInfo );
-
-                    tags.push_back( tag );
-                    tag.clear();
-                    inTag = false;
-                }
-                else
-                    tag += c;
-            }
-        }
-        if( isHidden ) {
-            tags.push_back( "." );
-        }
-
-        TestCaseInfo info( _name, _className, desc, tags, _lineInfo );
-        return TestCase( _testCase, info );
+        auto info = std::make_shared<TestCaseInfo>(_className, nameAndDescription, _lineInfo);
+        return TestCase( _testCase, std::move(info) );
     }
 
-    void setTags( TestCaseInfo& testCaseInfo, std::vector<std::string> tags ) {
-        std::sort(begin(tags), end(tags));
-        tags.erase(std::unique(begin(tags), end(tags)), end(tags));
-        testCaseInfo.lcaseTags.clear();
-
-        for( auto const& tag : tags ) {
-            std::string lcaseTag = toLower( tag );
-            testCaseInfo.properties = static_cast<TestCaseInfo::SpecialProperties>( testCaseInfo.properties | parseSpecialTag( lcaseTag ) );
-            testCaseInfo.lcaseTags.push_back( lcaseTag );
-        }
-        testCaseInfo.tags = std::move(tags);
+    bool operator<(Tag lhs, Tag rhs) {
+        return lhs.original.substr(1, lhs.original.size() - 2) < rhs.original.substr(1, rhs.original.size() - 2);
     }
 
-    TestCaseInfo::TestCaseInfo( std::string const& _name,
-                                std::string const& _className,
-                                std::string const& _description,
-                                std::vector<std::string> const& _tags,
+    bool operator==(Tag lhs, Tag rhs) {
+        return lhs.original == rhs.original;
+    }
+
+    TestCaseProperties operator|(TestCaseProperties lhs, TestCaseProperties rhs) {
+        return static_cast<TestCaseProperties>(
+            static_cast<std::underlying_type<TestCaseProperties>::type>(lhs) |
+            static_cast<std::underlying_type<TestCaseProperties>::type>(rhs)
+        );
+    }
+
+    TestCaseProperties& operator|=(TestCaseProperties& lhs, TestCaseProperties rhs) {
+        lhs = static_cast<TestCaseProperties>(
+            static_cast<std::underlying_type<TestCaseProperties>::type>(lhs) |
+            static_cast<std::underlying_type<TestCaseProperties>::type>(rhs)
+        );
+        return lhs;
+    }
+
+    TestCaseProperties operator&(TestCaseProperties lhs, TestCaseProperties rhs) {
+        return static_cast<TestCaseProperties>(
+            static_cast<std::underlying_type<TestCaseProperties>::type>(lhs) &
+            static_cast<std::underlying_type<TestCaseProperties>::type>(rhs)
+        );
+    }
+
+
+    TestCaseInfo::TestCaseInfo( std::string const& _className,
+                                NameAndTags const& nameAndDescription,
                                 SourceLineInfo const& _lineInfo )
-    :   name( _name ),
+    :   name( nameAndDescription.name.empty()? getDefaultName() : std::string(nameAndDescription.name) ),
         className( _className ),
-        description( _description ),
-        lineInfo( _lineInfo ),
-        properties( None )
+        lineInfo( _lineInfo )
     {
-        setTags( *this, _tags );
+
+        // Reserve enough space for underlying tags and fill it with both.
+        auto backingSize = nameAndDescription.tags.size() + sizeOfExtraTags(_lineInfo.file);
+        tagsBacking.reserve(backingSize);
+        lcaseTagsBacking.reserve(backingSize);
+
+        tagsBacking += nameAndDescription.tags;
+        lcaseTagsBacking += tagsBacking;
+        toLowerInPlace(lcaseTagsBacking);
+
+        // Now we can parse the description and extract tags
+        bool inTag = false;
+        size_t tagStart = 0;
+
+        for (size_t idx = 0; idx < tagsBacking.size(); ++idx) {
+            char c = tagsBacking[idx];
+            if (!inTag) {
+                if (c == '[') {
+                    inTag = true;
+                    tagStart = idx;
+                } else {
+                    description += c;
+                }
+            } else {
+                if (c == ']') {
+                    inTag = false;
+                    StringRef tagRef(&tagsBacking[tagStart], idx - tagStart + 1);
+                    enforceNotReservedTag(tagRef, _lineInfo);
+                    properties |= parseSpecialTag(tagRef);
+
+                    tags.emplace_back(tagRef, StringRef(&lcaseTagsBacking[tagStart], idx - tagStart + 1));
+               }
+            }
+        }
+
+        // If the test case is hidden, we have to also add [.] to both tag ref vectors
+        // We can use string literal so they do not have to be added to the backing store
+        if ( isHidden() ) {
+            tags.emplace_back("[.]"_sr, "[.]"_sr);
+        }
+
+        // Sort and unique tag refs
+        std::sort(tags.begin(), tags.end());
+        tags.erase(std::unique(tags.begin(), tags.end()), tags.end());
     }
 
     bool TestCaseInfo::isHidden() const {
-        return ( properties & IsHidden ) != 0;
+        return applies( properties & TestCaseProperties::IsHidden );
     }
     bool TestCaseInfo::throws() const {
-        return ( properties & Throws ) != 0;
+        return applies( properties & TestCaseProperties::Throws );
     }
     bool TestCaseInfo::okToFail() const {
-        return ( properties & (ShouldFail | MayFail ) ) != 0;
+        return applies( properties & (TestCaseProperties::ShouldFail | TestCaseProperties::MayFail ) );
     }
     bool TestCaseInfo::expectedToFail() const {
-        return ( properties & (ShouldFail ) ) != 0;
+        return applies( properties & (TestCaseProperties::ShouldFail ) );
     }
 
     std::string TestCaseInfo::tagsAsString() const {
         std::string ret;
-        // '[' and ']' per tag
-        std::size_t full_size = 2 * tags.size();
+        std::size_t full_size = 0;
         for (const auto& tag : tags) {
-            full_size += tag.size();
+            full_size += tag.original.size();
         }
         ret.reserve(full_size);
         for (const auto& tag : tags) {
-            ret.push_back('[');
-            ret.append(tag);
-            ret.push_back(']');
+            ret += tag.original;
         }
 
         return ret;
     }
 
-
-    TestCase::TestCase( ITestInvoker* testCase, TestCaseInfo const& info ) : TestCaseInfo( info ), test( testCase ) {}
-
-
-    TestCase TestCase::withName( std::string const& _newName ) const {
-        TestCase other( *this );
-        other.name = _newName;
-        return other;
+    void TestCaseInfo::applyFilenameTag() {
+        auto startIdx = tagsBacking.size();
+        tagsBacking += "[#";
+        tagsBacking += extractFilenamePart(lineInfo.file);
+        tagsBacking += ']';
+        auto endIdx = tagsBacking.size();
+        lcaseTagsBacking += "[#";
+        lcaseTagsBacking += extractFilenamePart(lineInfo.file);
+        lcaseTagsBacking += ']';
+        tags.emplace_back(StringRef(&tagsBacking[startIdx], endIdx - startIdx), StringRef(&lcaseTagsBacking[startIdx], endIdx - startIdx));
     }
+
+
+    TestCase::TestCase( ITestInvoker* testCase, std::shared_ptr<TestCaseInfo> info ) : test( testCase ), info(std::move(info)) {}
 
     void TestCase::invoke() const {
         test->invoke();
@@ -162,17 +230,16 @@ namespace Catch {
 
     bool TestCase::operator == ( TestCase const& other ) const {
         return  test.get() == other.test.get() &&
-                name == other.name &&
-                className == other.className;
+                info->name == other.info->name &&
+                info->className == other.info->className;
     }
 
     bool TestCase::operator < ( TestCase const& other ) const {
-        return name < other.name;
+        return info->name < other.info->name;
     }
 
-    TestCaseInfo const& TestCase::getTestCaseInfo() const
-    {
-        return *this;
+    std::shared_ptr<TestCaseInfo> const& TestCase::getTestCaseInfo() const {
+        return info;
     }
 
 } // end namespace Catch

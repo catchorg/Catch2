@@ -28,7 +28,7 @@ namespace Catch {
 
         void testGroupStarting(GroupInfo const& groupInfo) override;
 
-        void testCaseStarting(TestCaseInfo const& testCaseInfo) override;
+        void testCaseStarting(std::shared_ptr<TestCaseInfo> const& testCaseInfo) override;
         bool assertionEnded(AssertionStats const& assertionStats) override;
 
         void testCaseEnded(TestCaseStats const& testCaseStats) override;

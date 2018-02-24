@@ -84,7 +84,7 @@ namespace Catch {
         std::string redirectedCout;
         std::string redirectedCerr;
 
-        TestCaseInfo testInfo = testCase.getTestCaseInfo();
+        auto const& testInfo = testCase.getTestCaseInfo();
 
         m_reporter->testCaseStarting(testInfo);
 
@@ -96,12 +96,12 @@ namespace Catch {
         static_cast<SectionTracker&>(rootTracker).addInitialFilters(m_config->getSectionsToRun());
         do {
             m_trackerContext.startCycle();
-            m_testCaseTracker = &SectionTracker::acquire(m_trackerContext, TestCaseTracking::NameAndLocation(testInfo.name, testInfo.lineInfo));
+            m_testCaseTracker = &SectionTracker::acquire(m_trackerContext, TestCaseTracking::NameAndLocation(testInfo->name, testInfo->lineInfo));
             runCurrentTest(redirectedCout, redirectedCerr);
         } while (!m_testCaseTracker->isSuccessfullyCompleted() && !aborting());
 
         Totals deltaTotals = m_totals.delta(prevTotals);
-        if (testInfo.expectedToFail() && deltaTotals.testCases.passed > 0) {
+        if (testInfo->expectedToFail() && deltaTotals.testCases.passed > 0) {
             deltaTotals.assertions.failed++;
             deltaTotals.testCases.passed--;
             deltaTotals.testCases.failed++;
@@ -133,7 +133,7 @@ namespace Catch {
             m_lastAssertionPassed = true;
         } else if (!result.isOk()) {
             m_lastAssertionPassed = false;
-            if( m_activeTestCase->getTestCaseInfo().okToFail() )
+            if( m_activeTestCase->getTestCaseInfo()->okToFail() )
                 m_totals.assertions.failedButOk++;
             else
                 m_totals.assertions.failed++;
@@ -221,7 +221,7 @@ namespace Catch {
 
     std::string RunContext::getCurrentTestName() const {
         return m_activeTestCase
-            ? m_activeTestCase->getTestCaseInfo().name
+            ? m_activeTestCase->getTestCaseInfo()->name
             : std::string();
     }
 
@@ -249,7 +249,7 @@ namespace Catch {
 
         // Recreate section for test case (as we will lose the one that was in scope)
         auto const& testCaseInfo = m_activeTestCase->getTestCaseInfo();
-        SectionInfo testCaseSection(testCaseInfo.lineInfo, testCaseInfo.name, testCaseInfo.description);
+        SectionInfo testCaseSection(testCaseInfo->lineInfo, testCaseInfo->name, testCaseInfo->description);
 
         Counts assertions;
         assertions.failed = 1;
@@ -287,12 +287,12 @@ namespace Catch {
 
     void RunContext::runCurrentTest(std::string & redirectedCout, std::string & redirectedCerr) {
         auto const& testCaseInfo = m_activeTestCase->getTestCaseInfo();
-        SectionInfo testCaseSection(testCaseInfo.lineInfo, testCaseInfo.name, testCaseInfo.description);
+        SectionInfo testCaseSection(testCaseInfo->lineInfo, testCaseInfo->name, testCaseInfo->description);
         m_reporter->sectionStarting(testCaseSection);
         Counts prevAssertions = m_totals.assertions;
         double duration = 0;
         m_shouldReportUnexpected = true;
-        m_lastAssertionInfo = { "TEST_CASE", testCaseInfo.lineInfo, "", ResultDisposition::Normal };
+        m_lastAssertionInfo = { "TEST_CASE"_sr, testCaseInfo->lineInfo, StringRef(), ResultDisposition::Normal };
 
         seedRng(*m_config);
 

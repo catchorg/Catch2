@@ -27,11 +27,13 @@ namespace Catch {
         return m_wildcardPattern.matches( toLower( testCase.name ) );
     }
 
-    TestSpec::TagPattern::TagPattern( std::string const& tag ) : m_tag( toLower( tag ) ) {}
+    TestSpec::TagPattern::TagPattern( std::string const& tag ) : m_tag( "[" + toLower( tag ) + "]" ) {}
     bool TestSpec::TagPattern::matches( TestCaseInfo const& testCase ) const {
-        return std::find(begin(testCase.lcaseTags),
-                         end(testCase.lcaseTags),
-                         m_tag) != end(testCase.lcaseTags);
+        return std::find_if(begin(testCase.tags),
+                            end(testCase.tags),
+                            [&] (Tag const& tag) {
+                                return tag.lowerCased == m_tag;
+                            }) != end(testCase.tags);
     }
 
     TestSpec::ExcludedPattern::ExcludedPattern( PatternPtr const& underlyingPattern ) : m_underlyingPattern( underlyingPattern ) {}

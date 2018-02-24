@@ -22,7 +22,7 @@ namespace Catch {
     class TestCase;
     struct IConfig;
 
-    std::vector<TestCase> sortTests( IConfig const& config, std::vector<TestCase> const& unsortedTestCases ); 
+    std::vector<TestCase> sortTests( IConfig const& config, std::vector<TestCase> const& unsortedTestCases );
     bool matchTest( TestCase const& testCase, TestSpec const& testSpec, IConfig const& config );
 
     void enforceNoDuplicateTestCases( std::vector<TestCase> const& functions );
@@ -43,7 +43,6 @@ namespace Catch {
         std::vector<TestCase> m_functions;
         mutable RunTests::InWhatOrder m_currentSortOrder = RunTests::InDeclarationOrder;
         mutable std::vector<TestCase> m_sortedFunctions;
-        std::size_t m_unnamedCount = 0;
         std::ios_base::Init m_ostreamInit; // Forces cout/ cerr to be initialised
     };
 

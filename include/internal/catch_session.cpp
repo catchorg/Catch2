@@ -77,7 +77,7 @@ namespace Catch {
                 if (!context.aborting() && matchTest(testCase, testSpec, *config))
                     totals += context.runTest(testCase);
                 else
-                    context.reporter().skipTest(testCase);
+                    context.reporter().skipTest(testCase.getTestCaseInfo());
             }
 
             if (config->warnAboutNoTests() && totals.testCases.total() == 0) {
@@ -101,22 +101,7 @@ namespace Catch {
         void applyFilenamesAsTags(Catch::IConfig const& config) {
             auto& tests = const_cast<std::vector<TestCase>&>(getAllTestCasesSorted(config));
             for (auto& testCase : tests) {
-                auto tags = testCase.tags;
-
-                std::string filename = testCase.lineInfo.file;
-                auto lastSlash = filename.find_last_of("\\/");
-                if (lastSlash != std::string::npos) {
-                    filename.erase(0, lastSlash);
-                    filename[0] = '#';
-                }
-
-                auto lastDot = filename.find_last_of('.');
-                if (lastDot != std::string::npos) {
-                    filename.erase(lastDot);
-                }
-
-                tags.push_back(std::move(filename));
-                setTags(testCase, tags);
+                testCase.getTestCaseInfo()->applyFilenameTag();
             }
         }
 

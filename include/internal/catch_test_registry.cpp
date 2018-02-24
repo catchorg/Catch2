@@ -24,14 +24,13 @@ namespace Catch {
                         makeTestCase(
                             invoker,
                             extractClassName( classOrMethod ),
-                            nameAndTags.name,
-                            nameAndTags.tags,
+                            nameAndTags,
                             lineInfo));
         } catch (...) {
             // Do not throw when constructing global objects, instead register the exception to be processed later
             getMutableRegistryHub().registerStartupException();
         }
     }
-    
+
     AutoReg::~AutoReg() = default;
 }

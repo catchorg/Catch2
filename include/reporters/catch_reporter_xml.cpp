@@ -62,14 +62,14 @@ namespace Catch {
             .writeAttribute( "name", groupInfo.name );
     }
 
-    void XmlReporter::testCaseStarting( TestCaseInfo const& testInfo ) {
+    void XmlReporter::testCaseStarting(std::shared_ptr<TestCaseInfo> const& testInfo ) {
         StreamingReporterBase::testCaseStarting(testInfo);
         m_xml.startElement( "TestCase" )
-            .writeAttribute( "name", trim( testInfo.name ) )
-            .writeAttribute( "description", testInfo.description )
-            .writeAttribute( "tags", testInfo.tagsAsString() );
+            .writeAttribute( "name", trim( testInfo->name ) )
+            .writeAttribute( "description", testInfo->description )
+            .writeAttribute( "tags", testInfo->tagsAsString() );
 
-        writeSourceInfo( testInfo.lineInfo );
+        writeSourceInfo( testInfo->lineInfo );
 
         if ( m_config->showDurations() == ShowDurations::Always )
             m_testCaseTimer.start();

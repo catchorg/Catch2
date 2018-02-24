@@ -41,12 +41,12 @@ namespace Catch {
             } else {
                 stream << "FAIL";
             }
-            stream << ' ' << _testCaseStats.testInfo.name << '\n';
+            stream << ' ' << _testCaseStats.testInfo->name << '\n';
             StreamingReporterBase::testCaseEnded( _testCaseStats );
         }
 
-        void skipTest( TestCaseInfo const& testInfo ) override {
-            stream << ":test-result: SKIP " << testInfo.name << '\n';
+        void skipTest(std::shared_ptr<TestCaseInfo> const& testInfo ) override {
+            stream << ":test-result: SKIP " << testInfo->name << '\n';
         }
 
     };

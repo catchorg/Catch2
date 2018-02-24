@@ -35,7 +35,8 @@ namespace Catch {
         }
 
         auto matchedTestCases = filterTests( getAllTestCasesSorted( config ), testSpec, config );
-        for( auto const& testCaseInfo : matchedTestCases ) {
+        for( auto const& testCase : matchedTestCases ) {
+            auto const& testCaseInfo = *testCase.getTestCaseInfo();
             Colour::Code colour = testCaseInfo.isHidden()
                 ? Colour::SecondaryText
                 : Colour::None;
@@ -64,7 +65,8 @@ namespace Catch {
         TestSpec testSpec = config.testSpec();
         std::size_t matchedTests = 0;
         std::vector<TestCase> matchedTestCases = filterTests( getAllTestCasesSorted( config ), testSpec, config );
-        for( auto const& testCaseInfo : matchedTestCases ) {
+        for( auto const& testCase : matchedTestCases ) {
+            auto const& testCaseInfo = *testCase.getTestCaseInfo();
             matchedTests++;
             if( startsWith( testCaseInfo.name, '#' ) )
                Catch::cout() << '"' << testCaseInfo.name << '"';
@@ -85,7 +87,7 @@ namespace Catch {
     std::string TagInfo::all() const {
         std::string out;
         for( auto const& spelling : spellings )
-            out += "[" + spelling + "]";
+            out += spelling;
         return out;
     }
 
@@ -97,16 +99,16 @@ namespace Catch {
             Catch::cout() << "All available tags:\n";
         }
 
-        std::map<std::string, TagInfo> tagCounts;
+        std::map<StringRef, TagInfo> tagCounts;
 
         std::vector<TestCase> matchedTestCases = filterTests( getAllTestCasesSorted( config ), testSpec, config );
         for( auto const& testCase : matchedTestCases ) {
-            for( auto const& tagName : testCase.getTestCaseInfo().tags ) {
-                std::string lcaseTagName = toLower( tagName );
+            for( auto const& tag : testCase.getTestCaseInfo()->tags ) {
+                auto lcaseTagName = tag.lowerCased;
                 auto countIt = tagCounts.find( lcaseTagName );
                 if( countIt == tagCounts.end() )
                     countIt = tagCounts.insert( std::make_pair( lcaseTagName, TagInfo() ) ).first;
-                countIt->second.add( tagName );
+                countIt->second.add( tag.original );
             }
         }
 

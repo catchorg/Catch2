@@ -46,8 +46,7 @@ namespace Catch {
             return "Reports test results as TeamCity service messages";
         }
 
-        void skipTest( TestCaseInfo const& /* testInfo */ ) override {
-        }
+        void skipTest(std::shared_ptr<TestCaseInfo> const& /* testInfo */ ) override {}
 
         void noMatchingTestCases( std::string const& /* spec */ ) override {}
 
@@ -142,11 +141,11 @@ namespace Catch {
             StreamingReporterBase::sectionStarting( sectionInfo );
         }
 
-        void testCaseStarting( TestCaseInfo const& testInfo ) override {
+        void testCaseStarting(std::shared_ptr<TestCaseInfo> const& testInfo ) override {
             m_testTimer.start();
             StreamingReporterBase::testCaseStarting( testInfo );
             stream << "##teamcity[testStarted name='"
-                << escape( testInfo.name ) << "']\n";
+                << escape( testInfo->name ) << "']\n";
             stream.flush();
         }
 
@@ -154,14 +153,14 @@ namespace Catch {
             StreamingReporterBase::testCaseEnded( testCaseStats );
             if( !testCaseStats.stdOut.empty() )
                 stream << "##teamcity[testStdOut name='"
-                    << escape( testCaseStats.testInfo.name )
+                    << escape( testCaseStats.testInfo->name )
                     << "' out='" << escape( testCaseStats.stdOut ) << "']\n";
             if( !testCaseStats.stdErr.empty() )
                 stream << "##teamcity[testStdErr name='"
-                    << escape( testCaseStats.testInfo.name )
+                    << escape( testCaseStats.testInfo->name )
                     << "' out='" << escape( testCaseStats.stdErr ) << "']\n";
             stream << "##teamcity[testFinished name='"
-                    << escape( testCaseStats.testInfo.name ) << "' duration='"
+                    << escape( testCaseStats.testInfo->name ) << "' duration='"
                     << m_testTimer.getElapsedMilliseconds() << "']\n";
             stream.flush();
         }

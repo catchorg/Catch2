@@ -65,7 +65,7 @@ namespace Catch {
     SectionStats::~SectionStats() = default;
 
 
-    TestCaseStats::TestCaseStats(  TestCaseInfo const& _testInfo,
+    TestCaseStats::TestCaseStats(  std::shared_ptr<TestCaseInfo> const& _testInfo,
                                    Totals const& _totals,
                                    std::string const& _stdOut,
                                    std::string const& _stdErr,

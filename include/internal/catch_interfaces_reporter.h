@@ -106,7 +106,7 @@ namespace Catch {
     };
 
     struct TestCaseStats {
-        TestCaseStats(  TestCaseInfo const& _testInfo,
+        TestCaseStats(  std::shared_ptr<TestCaseInfo> const& _testInfo,
                         Totals const& _totals,
                         std::string const& _stdOut,
                         std::string const& _stdErr,
@@ -118,7 +118,7 @@ namespace Catch {
         TestCaseStats& operator = ( TestCaseStats && )     = default;
         virtual ~TestCaseStats();
 
-        TestCaseInfo testInfo;
+        std::shared_ptr<TestCaseInfo> testInfo;
         Totals totals;
         std::string stdOut;
         std::string stdErr;
@@ -181,7 +181,7 @@ namespace Catch {
         virtual void testRunStarting( TestRunInfo const& testRunInfo ) = 0;
         virtual void testGroupStarting( GroupInfo const& groupInfo ) = 0;
 
-        virtual void testCaseStarting( TestCaseInfo const& testInfo ) = 0;
+        virtual void testCaseStarting( std::shared_ptr<TestCaseInfo> const& testInfo ) = 0;
         virtual void sectionStarting( SectionInfo const& sectionInfo ) = 0;
 
         // *** experimental ***
@@ -200,7 +200,7 @@ namespace Catch {
         virtual void testGroupEnded( TestGroupStats const& testGroupStats ) = 0;
         virtual void testRunEnded( TestRunStats const& testRunStats ) = 0;
 
-        virtual void skipTest( TestCaseInfo const& testInfo ) = 0;
+        virtual void skipTest( std::shared_ptr<TestCaseInfo> const& testInfo ) = 0;
 
         // Default empty implementation provided
         virtual void fatalErrorEncountered( StringRef name );

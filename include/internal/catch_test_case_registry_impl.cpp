@@ -37,7 +37,7 @@ namespace Catch {
         return sorted;
     }
     bool matchTest( TestCase const& testCase, TestSpec const& testSpec, IConfig const& config ) {
-        return testSpec.matches( testCase ) && ( config.allowThrows() || !testCase.throws() );
+        return testSpec.matches( *testCase.getTestCaseInfo() ) && ( config.allowThrows() || !testCase.getTestCaseInfo()->throws() );
     }
 
     void enforceNoDuplicateTestCases( std::vector<TestCase> const& functions ) {
@@ -45,9 +45,9 @@ namespace Catch {
         for( auto const& function : functions ) {
             auto prev = seenFunctions.insert( function );
             CATCH_ENFORCE( prev.second,
-                    "error: TEST_CASE( \"" << function.name << "\" ) already defined.\n"
-                    << "\tFirst seen at " << prev.first->getTestCaseInfo().lineInfo << "\n"
-                    << "\tRedefined at " << function.getTestCaseInfo().lineInfo );
+                    "error: TEST_CASE( \"" << function.getTestCaseInfo()->name << "\" ) already defined.\n"
+                    << "\tFirst seen at " << prev.first->getTestCaseInfo()->lineInfo << "\n"
+                    << "\tRedefined at " << function.getTestCaseInfo()->lineInfo );
         }
     }
 
@@ -64,12 +64,6 @@ namespace Catch {
     }
 
     void TestRegistry::registerTest( TestCase const& testCase ) {
-        std::string name = testCase.getTestCaseInfo().name;
-        if( name.empty() ) {
-            ReusableStringStream rss;
-            rss << "Anonymous test case " << ++m_unnamedCount;
-            return registerTest( testCase.withName( rss.str() ) );
-        }
         m_functions.push_back( testCase );
     }
 

@@ -13,6 +13,7 @@
 
 #include "catch_stringref.h"
 
+#include <algorithm>
 #include <ostream>
 #include <cstring>
 #include <cstdint>
@@ -77,7 +78,14 @@ namespace Catch {
         return !operator==( other );
     }
 
-    auto StringRef::operator[](size_type index) const noexcept -> char {
+    auto StringRef::operator<(StringRef const & other) const noexcept -> bool {
+        if (m_size < other.m_size) {
+            return strncmp(m_start, other.m_start, m_size) <= 0;
+        }
+        return strncmp(m_start, other.m_start, other.m_size) < 0;
+    }
+
+    auto StringRef::operator[](size_type index) const noexcept -> char const& {
         return m_start[index];
     }
 
@@ -109,6 +117,11 @@ namespace Catch {
     }
     auto operator + ( char const* lhs, StringRef const& rhs ) -> std::string {
         return std::string( lhs ) + std::string( rhs );
+    }
+
+    auto operator+=(std::string& lhs, StringRef const& rhs) -> std::string & {
+        lhs.append(rhs.m_start, rhs.m_size);
+        return lhs;
     }
 
     auto operator << ( std::ostream& os, StringRef const& str ) -> std::ostream& {

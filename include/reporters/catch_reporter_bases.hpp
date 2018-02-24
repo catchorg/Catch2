@@ -55,7 +55,7 @@ namespace Catch {
             currentGroupInfo = _groupInfo;
         }
 
-        void testCaseStarting(TestCaseInfo const& _testInfo) override  {
+        void testCaseStarting(std::shared_ptr<TestCaseInfo> const& _testInfo) override  {
             currentTestCaseInfo = _testInfo;
         }
         void sectionStarting(SectionInfo const& _sectionInfo) override {
@@ -77,7 +77,7 @@ namespace Catch {
             currentTestRunInfo.reset();
         }
 
-        void skipTest(TestCaseInfo const&) override {
+        void skipTest(std::shared_ptr<TestCaseInfo> const&) override {
             // Don't do anything with this by default.
             // It can optionally be overridden in the derived class.
         }
@@ -87,7 +87,8 @@ namespace Catch {
 
         LazyStat<TestRunInfo> currentTestRunInfo;
         LazyStat<GroupInfo> currentGroupInfo;
-        LazyStat<TestCaseInfo> currentTestCaseInfo;
+        std::shared_ptr<TestCaseInfo> currentTestCaseInfo;
+        //LazyStat<TestCaseInfo> currentTestCaseInfo;
 
         std::vector<SectionInfo> m_sectionStack;
         ReporterPreferences m_reporterPrefs;
@@ -163,7 +164,7 @@ namespace Catch {
         void testRunStarting( TestRunInfo const& ) override {}
         void testGroupStarting( GroupInfo const& ) override {}
 
-        void testCaseStarting( TestCaseInfo const& ) override {}
+        void testCaseStarting(std::shared_ptr<TestCaseInfo> const& ) override {}
 
         void sectionStarting( SectionInfo const& sectionInfo ) override {
             SectionStats incompleteStats( sectionInfo, Counts(), 0, false );
@@ -216,7 +217,7 @@ namespace Catch {
             node->children.push_back(m_rootSection);
             m_testCases.push_back(node);
             m_rootSection.reset();
-        
+
             assert(m_deepestSection);
             m_deepestSection->stdOut = testCaseStats.stdOut;
             m_deepestSection->stdErr = testCaseStats.stdErr;
@@ -234,7 +235,7 @@ namespace Catch {
         }
         virtual void testRunEndedCumulative() = 0;
 
-        void skipTest(TestCaseInfo const&) override {}
+        void skipTest(std::shared_ptr<TestCaseInfo> const&) override {}
 
         IConfigPtr m_config;
         std::ostream& stream;
