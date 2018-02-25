@@ -99,6 +99,17 @@ This means that defining `CATCH_CONFIG_DEFAULT_REPORTER` to `"console"`
 is equivalent with the out-of-the-box experience.
 
 
+## C++17 toggles
+
+    CATCH_CONFIG_CPP17_UNCAUGHT_EXCEPTIONS  // Use std::uncaught_exceptions instead of std::uncaught_exception
+
+Catch contains basic compiler/standard detection and attempts to use
+some C++17 features whenever appropriate. This automatic detection
+can be manually overridden in both directions, that is, a feature
+can be enabled by defining the macro in the table above, and disabled
+by using `_NO_` in the macro, e.g. `CATCH_CONFIG_NO_CPP17_UNCAUGHT_EXCEPTIONS`.
+
+
 ## Other toggles
 
     CATCH_CONFIG_COUNTER                    // Use __COUNTER__ to generate unique names for test cases
