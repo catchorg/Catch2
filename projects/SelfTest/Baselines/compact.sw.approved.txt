@@ -637,11 +637,11 @@ String.tests.cpp:<line number>: passed: std::strcmp( ss.c_str(), "hello" ) == 0 
 String.tests.cpp:<line number>: passed: ss == "hello" for: hello == "hello"
 String.tests.cpp:<line number>: passed: isSubstring( ss ) for: true
 String.tests.cpp:<line number>: passed: isOwned( ss ) == false for: false == false
-String.tests.cpp:<line number>: passed: rawChars == data( s ) for: "hello world!" == "hello world!"
+String.tests.cpp:<line number>: passed: rawChars == s.currentData() for: "hello world!" == "hello world!"
 String.tests.cpp:<line number>: passed: ss.c_str() != rawChars for: "hello" != "hello world!"
 String.tests.cpp:<line number>: passed: isSubstring( ss ) == false for: false == false
 String.tests.cpp:<line number>: passed: isOwned( ss ) for: true
-String.tests.cpp:<line number>: passed: data( ss ) != data( s ) for: "hello" != "hello world!"
+String.tests.cpp:<line number>: passed: ss.currentData() != s.currentData() for: "hello" != "hello world!"
 String.tests.cpp:<line number>: passed: ss.size() == 6 for: 6 == 6
 String.tests.cpp:<line number>: passed: std::strcmp( ss.c_str(), "world!" ) == 0 for: 0 == 0
 String.tests.cpp:<line number>: passed: s.c_str() == s2.c_str() for: "hello world!" == "hello world!"

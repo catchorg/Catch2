@@ -84,15 +84,11 @@ namespace Catch {
 
         void swap( StringRef& other ) noexcept;
 
-        friend auto operator << (std::ostream& os, StringRef const& sr)->std::ostream&;
-
     public: // operators
         auto operator == ( StringRef const& other ) const noexcept -> bool;
         auto operator != ( StringRef const& other ) const noexcept -> bool;
 
         auto operator[] ( size_type index ) const noexcept -> char;
-
-        friend auto operator += ( std::string& lhs, StringRef const& rhs ) -> std::string&;
 
     public: // named queries
         auto empty() const noexcept -> bool {
@@ -108,15 +104,21 @@ namespace Catch {
     public: // substrings and searches
         auto substr( size_type start, size_type size ) const noexcept -> StringRef;
 
+        // Returns the current start pointer.
+        // Note that the pointer can change when if the StringRef is a substring
+        auto currentData() const noexcept -> char const*;
+
     private: // ownership queries - may not be consistent between calls
         auto isOwned() const noexcept -> bool;
         auto isSubstring() const noexcept -> bool;
-        auto data() const noexcept -> char const*;
     };
 
     auto operator + ( StringRef const& lhs, StringRef const& rhs ) -> std::string;
     auto operator + ( StringRef const& lhs, char const* rhs ) -> std::string;
     auto operator + ( char const* lhs, StringRef const& rhs ) -> std::string;
+
+    auto operator += ( std::string& lhs, StringRef const& sr ) -> std::string&;
+    auto operator << ( std::ostream& os, StringRef const& sr ) -> std::ostream&;
 
 
     inline auto operator "" _sr( char const* rawChars, std::size_t size ) noexcept -> StringRef {

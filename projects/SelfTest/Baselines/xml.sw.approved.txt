@@ -5808,7 +5808,7 @@ Message from section two
           </Expression>
           <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/String.tests.cpp" >
             <Original>
-              rawChars == data( s )
+              rawChars == s.currentData()
             </Original>
             <Expanded>
               "hello world!" == "hello world!"
@@ -5840,7 +5840,7 @@ Message from section two
           </Expression>
           <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/String.tests.cpp" >
             <Original>
-              data( ss ) != data( s )
+              ss.currentData() != s.currentData()
             </Original>
             <Expanded>
               "hello" != "hello world!"

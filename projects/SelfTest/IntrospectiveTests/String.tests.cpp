@@ -14,9 +14,6 @@ namespace Catch {
         static auto isSubstring( StringRef const& stringRef ) -> bool {
             return stringRef.isSubstring();
         }
-        static auto data( StringRef const& stringRef ) -> char const* {
-            return stringRef.data();
-        }
     };
 
     auto isOwned( StringRef const& stringRef ) -> bool {
@@ -25,14 +22,11 @@ namespace Catch {
     auto isSubstring( StringRef const& stringRef ) -> bool {
         return StringRefTestAccess::isSubstring( stringRef );
     }
-    auto data( StringRef const& stringRef ) -> char const* {
-        return StringRefTestAccess::data( stringRef );
-    }
 } // namespace Catch2
 
 namespace Catch {
     inline auto toString( Catch::StringRef const& stringRef ) -> std::string {
-        return std::string( data( stringRef ), stringRef.size() );
+        return std::string( stringRef.currentData(), stringRef.size() );
     }
 } // namespace Catch
 
@@ -53,7 +47,7 @@ TEST_CASE( "StringRef", "[Strings][StringRef]" ) {
         REQUIRE( s.size() == 5 );
         REQUIRE( isSubstring( s ) == false );
 
-        auto rawChars = data( s );
+        auto rawChars = s.currentData();
         REQUIRE( std::strcmp( rawChars, "hello" ) == 0 );
 
         SECTION( "c_str() does not cause copy" ) {
@@ -74,7 +68,6 @@ TEST_CASE( "StringRef", "[Strings][StringRef]" ) {
 
         REQUIRE( isSubstring( original ) == false );
         REQUIRE( isOwned( original ) );
-
     }
 
 
@@ -92,14 +85,14 @@ TEST_CASE( "StringRef", "[Strings][StringRef]" ) {
             REQUIRE( isSubstring( ss ) );
             REQUIRE( isOwned( ss ) == false );
 
-            auto rawChars = data( ss );
-            REQUIRE( rawChars == data( s ) ); // same pointer value
+            auto rawChars = ss.currentData();
+            REQUIRE( rawChars == s.currentData() ); // same pointer value
             REQUIRE( ss.c_str() != rawChars );
 
             REQUIRE( isSubstring( ss ) == false );
             REQUIRE( isOwned( ss ) );
 
-            REQUIRE( data( ss ) != data( s ) ); // different pointer value
+            REQUIRE( ss.currentData() != s.currentData() ); // different pointer value
         }
 
         SECTION( "non-zero-based substring") {

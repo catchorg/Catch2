@@ -43,7 +43,7 @@ namespace Catch {
            const_cast<StringRef*>( this )->takeOwnership();
         return m_start;
     }
-    auto StringRef::data() const noexcept -> char const* {
+    auto StringRef::currentData() const noexcept -> char const* {
         return m_start;
     }
 
@@ -112,11 +112,11 @@ namespace Catch {
     }
 
     auto operator << ( std::ostream& os, StringRef const& str ) -> std::ostream& {
-        return os.write(str.m_start, str.m_size);
+        return os.write(str.currentData(), str.size());
     }
 
     auto operator+=( std::string& lhs, StringRef const& rhs ) -> std::string& {
-        lhs.append(rhs.m_start, rhs.m_size);
+        lhs.append(rhs.currentData(), rhs.size());
         return lhs;
     }
 

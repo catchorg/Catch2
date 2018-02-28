@@ -5076,7 +5076,7 @@ with expansion:
 
 String.tests.cpp:<line number>:
 PASSED:
-  REQUIRE( rawChars == data( s ) )
+  REQUIRE( rawChars == s.currentData() )
 with expansion:
   "hello world!" == "hello world!"
 
@@ -5100,7 +5100,7 @@ with expansion:
 
 String.tests.cpp:<line number>:
 PASSED:
-  REQUIRE( data( ss ) != data( s ) )
+  REQUIRE( ss.currentData() != s.currentData() )
 with expansion:
   "hello" != "hello world!"
 
