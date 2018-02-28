@@ -92,6 +92,8 @@ namespace Catch {
 
         auto operator[] ( size_type index ) const noexcept -> char;
 
+        friend auto operator += ( std::string& lhs, StringRef const& rhs ) -> std::string&;
+
     public: // named queries
         auto empty() const noexcept -> bool {
             return m_size == 0;

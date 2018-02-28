@@ -65,9 +65,9 @@ namespace Catch {
             expr = m_info.capturedExpression;
         else {
             expr.reserve( m_info.macroName.size() + m_info.capturedExpression.size() + 4 );
-            expr += m_info.macroName.c_str();
+            expr += m_info.macroName;
             expr += "( ";
-            expr += m_info.capturedExpression.c_str();
+            expr += m_info.capturedExpression;
             expr += " )";
         }
         return expr;

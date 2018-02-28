@@ -115,6 +115,11 @@ namespace Catch {
         return os.write(str.m_start, str.m_size);
     }
 
+    auto operator+=( std::string& lhs, StringRef const& rhs ) -> std::string& {
+        lhs.append(rhs.m_start, rhs.m_size);
+        return lhs;
+    }
+
 } // namespace Catch
 
 #if defined(__clang__)
