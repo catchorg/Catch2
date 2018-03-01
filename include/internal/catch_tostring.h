@@ -13,6 +13,7 @@
 #include <cstddef>
 #include <type_traits>
 #include <string>
+#include "catch_compiler_capabilities.h"
 #include "catch_stream.h"
 
 #ifdef __OBJC__
@@ -119,10 +120,12 @@ namespace Catch {
     struct StringMaker<std::string> {
         static std::string convert(const std::string& str);
     };
+#ifdef CATCH_CONFIG_WCHAR
     template<>
     struct StringMaker<std::wstring> {
         static std::string convert(const std::wstring& wstr);
     };
+#endif
 
     template<>
     struct StringMaker<char const *> {
@@ -132,6 +135,7 @@ namespace Catch {
     struct StringMaker<char *> {
         static std::string convert(char * str);
     };
+#ifdef CATCH_CONFIG_WCHAR
     template<>
     struct StringMaker<wchar_t const *> {
         static std::string convert(wchar_t const * str);
@@ -140,6 +144,7 @@ namespace Catch {
     struct StringMaker<wchar_t *> {
         static std::string convert(wchar_t * str);
     };
+#endif
 
     template<int SZ>
     struct StringMaker<char[SZ]> {
