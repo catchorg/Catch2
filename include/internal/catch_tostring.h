@@ -37,12 +37,41 @@ namespace Catch {
 
         extern const std::string unprintableString;
 
+        extern std::string convert(const std::string& str);
+        extern std::string convert(const std::wstring& wstr);
+        extern std::string convert(char const* str);
+        extern std::string convert(char* str);
+        extern std::string convert(wchar_t const * str);
+        extern std::string convert(wchar_t * str);
+        extern std::string convert(int value);
+        extern std::string convert(long value);
+        extern std::string convert(long long value);
+        extern std::string convert(unsigned int value);
+        extern std::string convert(unsigned long value);
+        extern std::string convert(unsigned long long value);
+        extern std::string convert(bool b);
+        extern std::string convert(char value);
+        extern std::string convert(signed char c);
+        extern std::string convert(unsigned char c);
+        extern std::string convert(std::nullptr_t);
+        extern std::string convert(float value);
+        extern std::string convert(double value);
+
         std::string rawMemoryToString( const void *object, std::size_t size );
 
         template<typename T>
         std::string rawMemoryToString( const T& object ) {
           return rawMemoryToString( &object, sizeof(object) );
         }
+
+        template <typename T, typename _ = void>
+        class HasConvertFunction : public std::false_type {};
+
+        template <typename T>
+        class HasConvertFunction<T,
+                decltype (Detail::convert(typename std::remove_reference<T>::type()))> : public std::true_type {};
+
+
 
         template<typename T>
         class IsStreamInsertable {
@@ -54,7 +83,7 @@ namespace Catch {
             static auto test(...)->std::false_type;
 
         public:
-            static const bool value = decltype(test<std::ostream, const T&>(0))::value;
+            static const bool value = decltype(test<std::ostream, const T&>(0))::value && !HasConvertFunction<T>::value;
         };
 
         template<typename E>
@@ -95,6 +124,12 @@ namespace Catch {
             convert( const Fake& value ) {
                 return Detail::convertUnstreamable( value );
         }
+        template <typename CT = T>
+        static
+        typename std::enable_if<Detail::HasConvertFunction<CT>::value, std::string>::type
+            convert(const CT& t) {
+                return Detail::convert(t);
+        }
     };
 
     namespace Detail {
@@ -115,32 +150,6 @@ namespace Catch {
 
     // Some predefined specializations
 
-    template<>
-    struct StringMaker<std::string> {
-        static std::string convert(const std::string& str);
-    };
-    template<>
-    struct StringMaker<std::wstring> {
-        static std::string convert(const std::wstring& wstr);
-    };
-
-    template<>
-    struct StringMaker<char const *> {
-        static std::string convert(char const * str);
-    };
-    template<>
-    struct StringMaker<char *> {
-        static std::string convert(char * str);
-    };
-    template<>
-    struct StringMaker<wchar_t const *> {
-        static std::string convert(wchar_t const * str);
-    };
-    template<>
-    struct StringMaker<wchar_t *> {
-        static std::string convert(wchar_t * str);
-    };
-
     template<int SZ>
     struct StringMaker<char[SZ]> {
         static std::string convert(const char* str) {
@@ -158,63 +167,6 @@ namespace Catch {
         static std::string convert(const char* str) {
             return ::Catch::Detail::stringify(std::string{ str });
         }
-    };
-
-    template<>
-    struct StringMaker<int> {
-        static std::string convert(int value);
-    };
-    template<>
-    struct StringMaker<long> {
-        static std::string convert(long value);
-    };
-    template<>
-    struct StringMaker<long long> {
-        static std::string convert(long long value);
-    };
-    template<>
-    struct StringMaker<unsigned int> {
-        static std::string convert(unsigned int value);
-    };
-    template<>
-    struct StringMaker<unsigned long> {
-        static std::string convert(unsigned long value);
-    };
-    template<>
-    struct StringMaker<unsigned long long> {
-        static std::string convert(unsigned long long value);
-    };
-
-    template<>
-    struct StringMaker<bool> {
-        static std::string convert(bool b);
-    };
-
-    template<>
-    struct StringMaker<char> {
-        static std::string convert(char c);
-    };
-    template<>
-    struct StringMaker<signed char> {
-        static std::string convert(signed char c);
-    };
-    template<>
-    struct StringMaker<unsigned char> {
-        static std::string convert(unsigned char c);
-    };
-
-    template<>
-    struct StringMaker<std::nullptr_t> {
-        static std::string convert(std::nullptr_t);
-    };
-
-    template<>
-    struct StringMaker<float> {
-        static std::string convert(float value);
-    };
-    template<>
-    struct StringMaker<double> {
-        static std::string convert(double value);
     };
 
     template <typename T>
@@ -523,6 +475,12 @@ struct ratio_string<std::milli> {
             return std::string(timeStamp);
         }
     };
+            inline std::string ratio_string<std::atto>::symbol() { return "a"; }
+            inline std::string ratio_string<std::femto>::symbol() { return "f"; }
+            inline std::string ratio_string<std::pico>::symbol() { return "p"; }
+            inline std::string ratio_string<std::nano>::symbol() { return "n"; }
+            inline std::string ratio_string<std::micro>::symbol() { return "u"; }
+            inline std::string ratio_string<std::milli>::symbol() { return "m"; }
 }
 #endif // CATCH_CONFIG_ENABLE_CHRONO_STRINGMAKER
 
