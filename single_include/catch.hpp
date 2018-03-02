@@ -1,6 +1,6 @@
 /*
- *  Catch v1.12.0
- *  Generated: 2018-01-11 21:56:34.893972
+ *  Catch v1.12.1
+ *  Generated: 2018-03-02 21:17:41.036711
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
@@ -7292,9 +7292,9 @@ namespace Catch {
         result_type operator()( result_type n ) const { return std::rand() % n; }
 
 #ifdef CATCH_CONFIG_CPP11_SHUFFLE
-        static constexpr result_type min() { return 0; }
-        static constexpr result_type max() { return 1000000; }
-        result_type operator()() const { return std::rand() % max(); }
+        static constexpr result_type (min)() { return 0; }
+        static constexpr result_type (max)() { return 1000000; }
+        result_type operator()() const { return std::rand() % (max)(); }
 #endif
         template<typename V>
         static void shuffle( V& vector ) {
@@ -8466,7 +8466,7 @@ namespace Catch {
     }
 
     inline Version libraryVersion() {
-        static Version version( 1, 12, 0, "", 0 );
+        static Version version( 1, 12, 1, "", 0 );
         return version;
     }
 
@@ -8501,11 +8501,18 @@ namespace Catch {
     : m_info( other.m_info )
     {}
 
+#if defined(_MSC_VER)
+#pragma warning(push)
+#pragma warning(disable:4996) // std::uncaught_exception is deprecated in C++17
+#endif
     ScopedMessage::~ScopedMessage() {
         if ( !std::uncaught_exception() ){
             getResultCapture().popScopedMessage(m_info);
         }
     }
+#if defined(_MSC_VER)
+#pragma warning(pop)
+#endif
 
 } // end namespace Catch
 

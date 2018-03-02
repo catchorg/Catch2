@@ -1,3 +1,12 @@
+# 1.12.1
+
+### Fixes
+* Fixed deprecation warning in `ScopedMessage::~ScopedMessage`
+* All uses of `min` or `max` identifiers are now wrapped in parentheses
+  * This avoids problems when Windows headers define `min` and `max` macros
+
+
+
 # 1.12.0
 
 ### Fixes
