@@ -2121,7 +2121,7 @@
         </Expression>
         <Expression success="true" type="REQUIRE_THAT" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
           <Original>
-            std::nextafter(1., 2.), WithinULP(1., 1)
+            nextafter(1., 2.), WithinULP(1., 1)
           </Original>
           <Expanded>
             1.0 is within 1 ULPs of 1.0
@@ -2129,7 +2129,7 @@
         </Expression>
         <Expression success="true" type="REQUIRE_THAT" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
           <Original>
-            std::nextafter(1., 0.), WithinULP(1., 1)
+            nextafter(1., 0.), WithinULP(1., 1)
           </Original>
           <Expanded>
             1.0 is within 1 ULPs of 1.0
@@ -2137,7 +2137,7 @@
         </Expression>
         <Expression success="true" type="REQUIRE_THAT" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
           <Original>
-            std::nextafter(1., 2.), !WithinULP(1., 0)
+            nextafter(1., 2.), !WithinULP(1., 0)
           </Original>
           <Expanded>
             1.0 not is within 0 ULPs of 1.0
@@ -2296,7 +2296,7 @@
         </Expression>
         <Expression success="true" type="REQUIRE_THAT" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
           <Original>
-            std::nextafter(1.f, 2.f), WithinULP(1.f, 1)
+            nextafter(1.f, 2.f), WithinULP(1.f, 1)
           </Original>
           <Expanded>
             1.0f is within 1 ULPs of 1.0f
@@ -2304,7 +2304,7 @@
         </Expression>
         <Expression success="true" type="REQUIRE_THAT" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
           <Original>
-            std::nextafter(1.f, 0.f), WithinULP(1.f, 1)
+            nextafter(1.f, 0.f), WithinULP(1.f, 1)
           </Original>
           <Expanded>
             1.0f is within 1 ULPs of 1.0f
@@ -2312,7 +2312,7 @@
         </Expression>
         <Expression success="true" type="REQUIRE_THAT" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
           <Original>
-            std::nextafter(1.f, 2.f), !WithinULP(1.f, 0)
+            nextafter(1.f, 2.f), !WithinULP(1.f, 0)
           </Original>
           <Expanded>
             1.0f not is within 0 ULPs of 1.0f

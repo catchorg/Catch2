@@ -1873,19 +1873,19 @@ with expansion:
 
 Matchers.tests.cpp:<line number>:
 PASSED:
-  REQUIRE_THAT( std::nextafter(1., 2.), WithinULP(1., 1) )
+  REQUIRE_THAT( nextafter(1., 2.), WithinULP(1., 1) )
 with expansion:
   1.0 is within 1 ULPs of 1.0
 
 Matchers.tests.cpp:<line number>:
 PASSED:
-  REQUIRE_THAT( std::nextafter(1., 0.), WithinULP(1., 1) )
+  REQUIRE_THAT( nextafter(1., 0.), WithinULP(1., 1) )
 with expansion:
   1.0 is within 1 ULPs of 1.0
 
 Matchers.tests.cpp:<line number>:
 PASSED:
-  REQUIRE_THAT( std::nextafter(1., 2.), !WithinULP(1., 0) )
+  REQUIRE_THAT( nextafter(1., 2.), !WithinULP(1., 0) )
 with expansion:
   1.0 not is within 0 ULPs of 1.0
 
@@ -2013,19 +2013,19 @@ with expansion:
 
 Matchers.tests.cpp:<line number>:
 PASSED:
-  REQUIRE_THAT( std::nextafter(1.f, 2.f), WithinULP(1.f, 1) )
+  REQUIRE_THAT( nextafter(1.f, 2.f), WithinULP(1.f, 1) )
 with expansion:
   1.0f is within 1 ULPs of 1.0f
 
 Matchers.tests.cpp:<line number>:
 PASSED:
-  REQUIRE_THAT( std::nextafter(1.f, 0.f), WithinULP(1.f, 1) )
+  REQUIRE_THAT( nextafter(1.f, 0.f), WithinULP(1.f, 1) )
 with expansion:
   1.0f is within 1 ULPs of 1.0f
 
 Matchers.tests.cpp:<line number>:
 PASSED:
-  REQUIRE_THAT( std::nextafter(1.f, 2.f), !WithinULP(1.f, 0) )
+  REQUIRE_THAT( nextafter(1.f, 2.f), !WithinULP(1.f, 0) )
 with expansion:
   1.0f not is within 0 ULPs of 1.0f
 
