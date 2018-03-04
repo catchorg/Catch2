@@ -25,7 +25,7 @@ namespace Catch {
         void showHelp() const;
         void libIdentify();
 
-        int applyCommandLine( int argc, char* argv[] );
+        int applyCommandLine( int argc, char const * const * argv );
 
         void useConfigData( ConfigData const& configData );
 
