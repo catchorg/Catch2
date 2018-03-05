@@ -181,7 +181,7 @@ matrix:
     - os: osx
       osx_image: xcode9.1
       compiler: clang
-      env: COMPILER='clang++' USE_CPP14=1
+      env: COMPILER='clang++' CPP14=1
 
 
 install:
