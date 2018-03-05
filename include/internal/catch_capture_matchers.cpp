@@ -13,7 +13,7 @@ namespace Catch {
     using StringMatcher = Matchers::Impl::MatcherBase<std::string>;
 
     // This is the general overload that takes a any string matcher
-    // There is another overload, in catch_assertinhandler.h/.cpp, that only takes a string and infers
+    // There is another overload, in catch_assertionhandler.h/.cpp, that only takes a string and infers
     // the Equals matcher (so the header does not mention matchers)
     void handleExceptionMatchExpr( AssertionHandler& handler, StringMatcher const& matcher, StringRef matcherString  ) {
         std::string exceptionMessage = Catch::translateActiveException();

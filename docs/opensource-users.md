@@ -21,7 +21,7 @@ Listing a project here does not imply endorsement and the plan is to keep these 
 Boost Asio style bindings for ZeroMQ
 
 ### [ChakraCore](https://github.com/Microsoft/ChakraCore)
-The core part of the Chakra Javascript engine that powers Microsoft Edge
+The core part of the Chakra JavaScript engine that powers Microsoft Edge
 
 ### [ChaiScript](https://github.com/ChaiScript/ChaiScript)
 A, header-only, embedded scripting language designed from the ground up to directly target C++ and take advantage of modern C++ development techniques

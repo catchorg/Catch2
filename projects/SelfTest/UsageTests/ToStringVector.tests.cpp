@@ -2,7 +2,7 @@
 #include <vector>
 #include <array>
 
-// vedctor
+// vector
 TEST_CASE( "vector<int> -> toString", "[toString][vector]" )
 {
     std::vector<int> vv;

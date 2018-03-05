@@ -78,7 +78,7 @@ Wildcards consist of the `*` character at the beginning and/or end of test case 
 
 Test specs are case insensitive.
 
-If a spec is prefixed with `exclude:` or the `~` character then the pattern matches an exclusion. This means that tests matching the pattern are excluded from the set - even if a prior inclusion spec included them. Subsequent inclusion specs will take precendence, however.
+If a spec is prefixed with `exclude:` or the `~` character then the pattern matches an exclusion. This means that tests matching the pattern are excluded from the set - even if a prior inclusion spec included them. Subsequent inclusion specs will take precedence, however.
 Inclusions and exclusions are evaluated in left-to-right order.
 
 Test case examples:
@@ -94,7 +94,7 @@ a* ~ab* abc             Matches all tests that start with 'a', except those that
 </pre>
 
 Names within square brackets are interpreted as tags.
-A series of tags form an AND expression wheras a comma-separated sequence forms an OR expression. e.g.:
+A series of tags form an AND expression whereas a comma-separated sequence forms an OR expression. e.g.:
 
 <pre>[one][two],[three]</pre>
 This matches all tests tagged `[one]` and `[two]`, as well as all tests tagged `[three]`
@@ -269,7 +269,7 @@ either before running any tests, after running all tests - or both, depending on
 
 When running benchmarks the clock resolution is estimated. Benchmarks are then run for exponentially increasing
 numbers of iterations until some multiple of the estimated resolution is exceed. By default that multiple is 100, but 
-it can be overriden here.
+it can be overridden here.
 
 <a id="usage"></a>
 ## Usage

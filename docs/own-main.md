@@ -30,7 +30,7 @@ int main( int argc, char* argv[] ) {
 
 ## Amending the config
 
-If you still want Catch to process the command line, but you want to programatically tweak the config, you can do so in one of two ways:
+If you still want Catch to process the command line, but you want to programmatically tweak the config, you can do so in one of two ways:
 
 ```c++
 #define CATCH_CONFIG_RUNNER
