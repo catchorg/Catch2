@@ -17,7 +17,7 @@ matrix:
       addons:
         apt:
           sources: *all_sources
-          packages: ['lcov', 'clang-3.5']
+          packages: ['clang-3.5']
       env: COMPILER='clang++-3.5'
 
     - os: linux
@@ -25,7 +25,7 @@ matrix:
       addons:
         apt:
           sources: *all_sources
-          packages: ['lcov', 'clang-3.6']
+          packages: ['clang-3.6']
       env: COMPILER='clang++-3.6'
 
     # Clang 3.7 is intentionally skipped as we cannot get it easily on
@@ -44,7 +44,7 @@ matrix:
       addons:
           apt:
               sources: *all_sources
-              packages: ['clang-3.9', 'lcov']
+              packages: ['clang-3.9']
       env: COMPILER='clang++-3.9'
 
     - os: linux
@@ -52,7 +52,7 @@ matrix:
       addons:
           apt:
               sources: *all_sources
-              packages: ['clang-4.0', 'lcov']
+              packages: ['clang-4.0']
       env: COMPILER='clang++-4.0'
 
     - os: linux
@@ -60,7 +60,7 @@ matrix:
       addons:
           apt:
               sources: *all_sources
-              packages: ['clang-5.0', 'lcov']
+              packages: ['clang-5.0']
       env: COMPILER='clang++-5.0'
 
     # 2/ Linux GCC Builds
@@ -69,7 +69,7 @@ matrix:
       addons:
         apt:
          sources: *all_sources
-         packages: ['lcov', 'g++-4.8']
+         packages: ['g++-4.8']
       env: COMPILER='g++-4.8'
 
     - os: linux
@@ -77,7 +77,7 @@ matrix:
       addons:
         apt:
           sources: *all_sources
-          packages: ['lcov', 'g++-4.9']
+          packages: ['g++-4.9']
       env: COMPILER='g++-4.9'
 
     - os: linux
@@ -85,7 +85,7 @@ matrix:
       addons:
         apt:
           sources: *all_sources
-          packages: ['lcov', 'g++-5']
+          packages: ['g++-5']
       env: COMPILER='g++-5'
 
     - os: linux
@@ -93,7 +93,7 @@ matrix:
       addons: &gcc6
         apt:
           sources: *all_sources
-          packages: ['lcov', 'g++-6']
+          packages: ['g++-6']
       env: COMPILER='g++-6'
 
     - os: linux
@@ -101,7 +101,7 @@ matrix:
       addons: &gcc7
         apt:
           sources: *all_sources
-          packages: ['lcov', 'g++-7']
+          packages: ['g++-7']
       env: COMPILER='g++-7'
 
     # 3b/ Linux C++14 Clang builds
@@ -110,7 +110,7 @@ matrix:
       compiler: clang
       addons:
           apt:
-              packages: ['clang-3.8', 'lcov', 'libstdc++-6-dev']
+              packages: ['clang-3.8', 'libstdc++-6-dev']
               sources:
                   - ubuntu-toolchain-r-test
                   - llvm-toolchain-trusty
@@ -121,7 +121,7 @@ matrix:
       addons:
           apt:
               sources: *all_sources
-              packages: ['clang-3.9', 'lcov', 'libstdc++-6-dev']
+              packages: ['clang-3.9', 'libstdc++-6-dev']
       env: COMPILER='clang++-3.9' CPP14=1
 
     - os: linux
@@ -129,7 +129,7 @@ matrix:
       addons:
           apt:
               sources: *all_sources
-              packages: ['clang-4.0', 'lcov', 'libstdc++-6-dev']
+              packages: ['clang-4.0', 'libstdc++-6-dev']
       env: COMPILER='clang++-4.0' CPP14=1
 
     - os: linux
@@ -137,7 +137,7 @@ matrix:
       addons:
           apt:
               sources: *all_sources
-              packages: ['clang-5.0', 'lcov', 'libstdc++-6-dev']
+              packages: ['clang-5.0', 'libstdc++-6-dev']
       env: COMPILER='clang++-5.0' CPP14=1
 
 
