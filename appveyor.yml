@@ -19,18 +19,51 @@ environment:
 
         - additional_flags: "/D_UNICODE /DUNICODE"
           wmain: 1
+          coverage: 0
+
+        # Have a coverage dimension
+        - additional_flags: ""
+          wmain: 0
+          coverage: 1
+
+        # Have an examples dimension
+        - additional_flags: ""
+          wmain: 0
+          examples: 1
+
 
 matrix:
     exclude:
         - os: Visual Studio 2015
           additional_flags: "/permissive- /std:c++latest"
 
-init:
-  - git config --global core.autocrlf input
+        - os: Visual Studio 2015
+          additional_flags: "/D_UNICODE /DUNICODE"
+
+        # Exclude unwanted coverage configurations
+        - coverage: 1
+          platform: Win32
+
+        - coverage: 1
+          os: Visual Studio 2015
+
+        - coverage: 1
+          configuration: Release
+
+        # Exclude unwanted examples configurations
+        - examples: 1
+          platform: Win32
+
+        - examples: 1
+          os: Visual Studio 2015
+
+        - examples: 1
+          configuration: Release
+
 
 install:
-  - ps: if (($env:CONFIGURATION) -eq "Debug" ) { python -m pip install codecov }
-  - ps: if (($env:CONFIGURATION) -eq "Debug" ) { .\misc\installOpenCppCoverage.ps1 }
+  - ps: if (($env:CONFIGURATION) -eq "Debug" -And ($env:coverage) -eq "1" ) { python -m pip install codecov }
+  - ps: if (($env:CONFIGURATION) -eq "Debug" -And ($env:coverage) -eq "1" ) { .\misc\installOpenCppCoverage.ps1 }
 
 # Win32 and x64 are CMake-compatible solution platform names.
 # This allows us to pass %PLATFORM% to CMake -A.
