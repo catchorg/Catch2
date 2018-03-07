@@ -1,5 +1,5 @@
-# Downloads are done from the oficial github release page links
-$downloadUrl = "https://github.com/OpenCppCoverage/OpenCppCoverage/releases/download/release-0.9.6.1/OpenCppCoverageSetup-x64-0.9.6.1.exe"
+# Downloads are done from the official github release page links
+$downloadUrl = "https://github.com/OpenCppCoverage/OpenCppCoverage/releases/download/release-0.9.7.0/OpenCppCoverageSetup-x64-0.9.7.0.exe"
 $installerPath = [System.IO.Path]::Combine($Env:USERPROFILE, "Downloads", "OpenCppCoverageSetup.exe")
 
 if(-Not (Test-Path $installerPath)) {

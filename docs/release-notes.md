@@ -379,8 +379,8 @@ Cygwin issue with `gettimeofday` - `#define` was not early enough
 * Cygwin compatibility fixes
   * Signal handling is no longer compiled by default.
   * Usage of `gettimeofday` inside Catch should no longer cause compilation errors.
-* Improved `-Wparentheses` supression for gcc (#674)
-  * When compiled with gcc 4.8 or newer, the supression is localized to assertions only
+* Improved `-Wparentheses` suppression for gcc (#674)
+  * When compiled with gcc 4.8 or newer, the suppression is localized to assertions only
   * Otherwise it is supressed for the whole TU
 * Fixed test spec parser issue (with escapes in multiple names)
 
@@ -399,7 +399,7 @@ Xml:
 * C-escape control characters instead of XML encoding them (which requires XML 1.1)
 * Revert XML output to XML 1.0
 * Can provide stylesheet references by extending the XML reporter
-* Added description and tags attribites to XML Reporter
+* Added description and tags attributes to XML Reporter
 * Tags are closed and the stream flushed more eagerly to avoid stdout interpolation
 
 

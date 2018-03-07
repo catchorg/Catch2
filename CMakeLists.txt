@@ -445,9 +445,10 @@ install(EXPORT Catch2Config
 # install Catch2ConfigVersion.cmake file to handle versions in find_package
 include(CMakePackageConfigHelpers)
 
-write_basic_package_version_file(Catch2ConfigVersion.cmake
+write_basic_package_version_file(
+	"${CMAKE_CURRENT_BINARY_DIR}/Catch2ConfigVersion.cmake"
 	COMPATIBILITY SameMajorVersion)
 
 install(FILES
-	"${CMAKE_BINARY_DIR}/Catch2ConfigVersion.cmake"
+	"${CMAKE_CURRENT_BINARY_DIR}/Catch2ConfigVersion.cmake"
 	DESTINATION ${CATCH_CMAKE_CONFIG_DESTINATION})

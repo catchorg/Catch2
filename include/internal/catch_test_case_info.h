@@ -9,6 +9,7 @@
 #define TWOBLUECUBES_CATCH_TEST_CASE_INFO_H_INCLUDED
 
 #include "catch_common.h"
+#include "catch_test_registry.h"
 
 #include <string>
 #include <vector>
@@ -61,7 +62,7 @@ namespace Catch {
     class TestCase : public TestCaseInfo {
     public:
 
-        TestCase( ITestInvoker* testCase, TestCaseInfo const& info );
+        TestCase( ITestInvoker* testCase, TestCaseInfo&& info );
 
         TestCase withName( std::string const& _newName ) const;
 
@@ -78,8 +79,7 @@ namespace Catch {
 
     TestCase makeTestCase(  ITestInvoker* testCase,
                             std::string const& className,
-                            std::string const& name,
-                            std::string const& description,
+                            NameAndTags const& nameAndTags,
                             SourceLineInfo const& lineInfo );
 }
 
