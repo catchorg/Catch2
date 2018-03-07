@@ -77,6 +77,20 @@ namespace { namespace MatchersTests {
 
     using namespace Catch::Matchers;
 
+#ifdef __DJGPP__
+    float nextafter(float from, float to)
+    {
+        return ::nextafterf(from, to);
+    }
+
+    double nextafter(double from, double to)
+    {
+        return ::nextafter(from, to);
+    }
+#else
+    using std::nextafter;
+#endif
+
     TEST_CASE("String matchers", "[matchers]") {
         REQUIRE_THAT(testStringForMatching(), Contains("string"));
         REQUIRE_THAT(testStringForMatching(), Contains("string", Catch::CaseSensitive::No));
@@ -130,12 +144,16 @@ namespace { namespace MatchersTests {
              (defined(_GLIBCXX_RELEASE) && \
              _GLIBCXX_RELEASE > 4))))
 
+// DJGPP meets the above condition but <regex> does not work properly anyway
+#ifndef __DJGPP__
             REQUIRE_THAT(testStringForMatching(), Matches("this string contains 'abc' as a substring"));
             REQUIRE_THAT(testStringForMatching(),
                          Matches("this string CONTAINS 'abc' as a substring", Catch::CaseSensitive::No));
             REQUIRE_THAT(testStringForMatching(), Matches("^this string contains 'abc' as a substring$"));
             REQUIRE_THAT(testStringForMatching(), Matches("^.* 'abc' .*$"));
             REQUIRE_THAT(testStringForMatching(), Matches("^.* 'ABC' .*$", Catch::CaseSensitive::No));
+#endif
+
 #endif
 
             REQUIRE_THAT(testStringForMatching2(), !Matches("this string contains 'abc' as a substring"));
@@ -307,9 +325,9 @@ namespace { namespace MatchersTests {
             SECTION("ULPs") {
                 REQUIRE_THAT(1.f, WithinULP(1.f, 0));
 
-                REQUIRE_THAT(std::nextafter(1.f, 2.f), WithinULP(1.f, 1));
-                REQUIRE_THAT(std::nextafter(1.f, 0.f), WithinULP(1.f, 1));
-                REQUIRE_THAT(std::nextafter(1.f, 2.f), !WithinULP(1.f, 0));
+                REQUIRE_THAT(nextafter(1.f, 2.f), WithinULP(1.f, 1));
+                REQUIRE_THAT(nextafter(1.f, 0.f), WithinULP(1.f, 1));
+                REQUIRE_THAT(nextafter(1.f, 2.f), !WithinULP(1.f, 0));
 
                 REQUIRE_THAT(1.f, WithinULP(1.f, 0));
                 REQUIRE_THAT(-0.f, WithinULP(0.f, 0));
@@ -344,9 +362,9 @@ namespace { namespace MatchersTests {
             SECTION("ULPs") {
                 REQUIRE_THAT(1., WithinULP(1., 0));
 
-                REQUIRE_THAT(std::nextafter(1., 2.), WithinULP(1., 1));
-                REQUIRE_THAT(std::nextafter(1., 0.), WithinULP(1., 1));
-                REQUIRE_THAT(std::nextafter(1., 2.), !WithinULP(1., 0));
+                REQUIRE_THAT(nextafter(1., 2.), WithinULP(1., 1));
+                REQUIRE_THAT(nextafter(1., 0.), WithinULP(1., 1));
+                REQUIRE_THAT(nextafter(1., 2.), !WithinULP(1., 0));
 
                 REQUIRE_THAT(1., WithinULP(1., 0));
                 REQUIRE_THAT(-0., WithinULP(0., 0));

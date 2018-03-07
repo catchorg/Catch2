@@ -116,6 +116,7 @@ std::string StringMaker<std::string>::convert(const std::string& str) {
     return s;
 }
 
+#ifdef CATCH_CONFIG_WCHAR
 std::string StringMaker<std::wstring>::convert(const std::wstring& wstr) {
     std::string s;
     s.reserve(wstr.size());
@@ -124,6 +125,7 @@ std::string StringMaker<std::wstring>::convert(const std::wstring& wstr) {
     }
     return ::Catch::Detail::stringify(s);
 }
+#endif
 
 std::string StringMaker<char const*>::convert(char const* str) {
     if (str) {
@@ -139,6 +141,7 @@ std::string StringMaker<char*>::convert(char* str) {
         return{ "{null string}" };
     }
 }
+#ifdef CATCH_CONFIG_WCHAR
 std::string StringMaker<wchar_t const*>::convert(wchar_t const * str) {
     if (str) {
         return ::Catch::Detail::stringify(std::wstring{ str });
@@ -153,6 +156,7 @@ std::string StringMaker<wchar_t *>::convert(wchar_t * str) {
         return{ "{null string}" };
     }
 }
+#endif
 
 
 std::string StringMaker<int>::convert(int value) {

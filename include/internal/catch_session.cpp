@@ -202,7 +202,7 @@ namespace Catch {
         return returnCode;
     }
 
-#if defined(WIN32) && defined(UNICODE)
+#if defined(CATCH_CONFIG_WCHAR) && defined(WIN32) && defined(UNICODE)
     int Session::run( int argc, wchar_t* const argv[] ) {
 
         char **utf8Argv = new char *[ argc ];

@@ -169,7 +169,12 @@ namespace {
 #ifdef CATCH_PLATFORM_MAC
             !isDebuggerActive() &&
 #endif
-            isatty(STDOUT_FILENO);
+#if !(defined(__DJGPP__) && defined(__STRICT_ANSI__))
+            isatty(STDOUT_FILENO)
+#else
+            false
+#endif
+            ;
     }
     IColourImpl* platformColourInstance() {
         ErrnoGuard guard;
