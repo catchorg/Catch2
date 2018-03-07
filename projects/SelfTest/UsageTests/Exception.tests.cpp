@@ -12,7 +12,7 @@
 #include <stdexcept>
 
 #ifdef _MSC_VER
-#pragma warning(disable:4702) // Unreachable code -- uncoditional throws and so on
+#pragma warning(disable:4702) // Unreachable code -- unconditional throws and so on
 #endif
 #ifdef __clang__
 #pragma clang diagnostic push

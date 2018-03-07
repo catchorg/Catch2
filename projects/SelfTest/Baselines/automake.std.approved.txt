@@ -53,7 +53,7 @@
 :test-result: PASS Inequality checks that should succeed
 :test-result: PASS Less-than inequalities with different epsilons
 :test-result: PASS Long strings can be wrapped
-:test-result: PASS Long text is truncted
+:test-result: PASS Long text is truncated
 :test-result: PASS ManuallyRegistered
 :test-result: PASS Matchers can be (AllOf) composed with the && operator
 :test-result: PASS Matchers can be (AnyOf) composed with the || operator

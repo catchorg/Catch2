@@ -26,7 +26,7 @@ Although Catch is header only it still, internally, maintains a distinction betw
 
 # Reporter / Listener interfaces
 
-    CATCH_CONFIG_EXTERNAL_INTERFACES  // Brings in neccessary headers for Reporter/Listener implementation
+    CATCH_CONFIG_EXTERNAL_INTERFACES  // Brings in necessary headers for Reporter/Listener implementation
 
 Brings in various parts of Catch that are required for user defined Reporters and Listeners. This means that new Reporters and Listeners can be defined in this file as well as in the main file.
 
@@ -79,7 +79,7 @@ This can be useful on certain platforms that do not provide the standard iostrea
 
 By default Catch's stringification machinery falls back to a "{?}". To
 let projects reuse their own existing stringification machinery, this
-fallback can be overriden by defining `CATCH_CONFIG_FALLBACK_STRINGIFIER`
+fallback can be overridden by defining `CATCH_CONFIG_FALLBACK_STRINGIFIER`
 to a name of a function that should perform the stringification instead.
 
 The provided function must return std::string and must accept any type

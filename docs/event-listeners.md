@@ -44,7 +44,7 @@ _Note that you should not use any assertion macros within a Listener!_
 
 ## Events that can be hooked
 
-The following are the methods that can be overriden in the Listener:
+The following are the methods that can be overridden in the Listener:
 
 ```c++
 // The whole test run, starting and ending
