@@ -1,6 +1,10 @@
 language: cpp
 sudo: false
 
+branches:
+  except:
+  - /dev-appveyor.*/
+
 common_sources: &all_sources
   - ubuntu-toolchain-r-test
   - llvm-toolchain-trusty
