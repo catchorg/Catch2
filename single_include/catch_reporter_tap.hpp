@@ -26,7 +26,7 @@ namespace Catch {
         ~TAPReporter() override;
 
         static std::string getDescription() {
-            return "Reports test results in TAP format, suitable for test harneses";
+            return "Reports test results in TAP format, suitable for test harnesses";
         }
 
         ReporterPreferences getPreferences() const override {

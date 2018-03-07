@@ -1,5 +1,25 @@
 <a id="top"></a>
 
+# 2.2.0
+
+## Fixes
+* Hidden tests are not listed by default when listing tests (#1175)
+  * This makes `catch_discover_tests` CMake script work better
+* Fixed regression that meant `<windows.h>` could potentially not be included properly (#1197)
+* Fixed installing `Catch2ConfigVersion.cmake` when Catch2 is a subproject.
+
+## Improvements
+* Added an option to warn (+ exit with error) when no tests were ran (#1158)
+  * Use as `-w NoTests`
+* Added provisional support for Emscripten (#1114)
+* [Added a way to override the fallback stringifier](https://github.com/catchorg/Catch2/blob/master/docs/configuration.md#fallback-stringifier) (#1024)
+  * This allows project's own stringification machinery to be easily reused for Catch
+* `Catch::Session::run()` now accepts `char const * const *`, allowing it to accept array of string literals (#1031, #1178)
+  * The embedded version of Clara was bumped to v1.1.3
+* Various minor performance improvements
+* Added support for DJGPP DOS crosscompiler (#1206)
+
+
 # 2.1.2
 
 ## Fixes
