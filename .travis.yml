@@ -17,145 +17,140 @@ matrix:
       addons:
         apt:
           sources: *all_sources
-          packages: ['valgrind', 'lcov', 'clang-3.5']
-      env: COMPILER='clang++-3.5' VALGRIND=1
+          packages: ['clang-3.5']
+      env: COMPILER='clang++-3.5'
 
     - os: linux
       compiler: clang
       addons:
         apt:
           sources: *all_sources
-          packages: ['valgrind', 'lcov', 'clang-3.6']
-      env: COMPILER='clang++-3.6' VALGRIND=1
+          packages: ['clang-3.6']
+      env: COMPILER='clang++-3.6'
 
-# Travis's containers do not seem to have Clang 3.7 in apt, no matter what sources I add.
-#    - os: linux
-#      compiler: clang
-#      addons:
-#        apt:
-#          sources: *all_sources
-#          packages: ['valgrind', 'clang-3.7']
-#      env: COMPILER='clang++-3.7' VALGRIND=1
+    # Clang 3.7 is intentionally skipped as we cannot get it easily on
+    # TravisCI container
 
     - os: linux
       compiler: clang
       addons:
         apt:
           sources: *all_sources
-          packages: ['valgrind', 'lcov', 'clang-3.8']
-      env: COMPILER='clang++-3.8' VALGRIND=1
+          packages: ['lcov', 'clang-3.8']
+      env: COMPILER='clang++-3.8'
 
     - os: linux
       compiler: clang
       addons:
           apt:
               sources: *all_sources
-              packages: ['clang-3.9', 'valgrind', 'lcov']
-      env: COMPILER='clang++-3.9' VALGRIND=1
+              packages: ['clang-3.9']
+      env: COMPILER='clang++-3.9'
 
     - os: linux
       compiler: clang
       addons:
           apt:
               sources: *all_sources
-              packages: ['clang-4.0', 'valgrind', 'lcov']
-      env: COMPILER='clang++-4.0' VALGRIND=1
+              packages: ['clang-4.0']
+      env: COMPILER='clang++-4.0'
 
     - os: linux
       compiler: clang
       addons:
           apt:
               sources: *all_sources
-              packages: ['clang-5.0', 'valgrind', 'lcov']
-      env: COMPILER='clang++-5.0' VALGRIND=1
+              packages: ['clang-5.0']
+      env: COMPILER='clang++-5.0'
 
     # 2/ Linux GCC Builds
     - os: linux
       compiler: gcc
       addons:
         apt:
-         sources: ['ubuntu-toolchain-r-test']
-         packages: ['valgrind', 'lcov', 'g++-4.8']
-      env: COMPILER='g++-4.8' VALGRIND=1
+         sources: *all_sources
+         packages: ['g++-4.8']
+      env: COMPILER='g++-4.8'
 
     - os: linux
       compiler: gcc
       addons:
         apt:
           sources: *all_sources
-          packages: ['valgrind', 'lcov', 'g++-4.9']
-      env: COMPILER='g++-4.9' VALGRIND=1
+          packages: ['g++-4.9']
+      env: COMPILER='g++-4.9'
 
     - os: linux
       compiler: gcc
       addons:
         apt:
           sources: *all_sources
-          packages: ['valgrind', 'lcov', 'g++-5']
-      env: COMPILER='g++-5' VALGRIND=1
+          packages: ['g++-5']
+      env: COMPILER='g++-5'
 
     - os: linux
       compiler: gcc
       addons: &gcc6
         apt:
           sources: *all_sources
-          packages: ['valgrind', 'lcov', 'g++-6']
-      env: COMPILER='g++-6' VALGRIND=1
+          packages: ['g++-6']
+      env: COMPILER='g++-6'
 
     - os: linux
       compiler: gcc
       addons: &gcc7
         apt:
           sources: *all_sources
-          packages: ['valgrind', 'lcov', 'g++-7']
-      env: COMPILER='g++-7' VALGRIND=1
+          packages: ['g++-7']
+      env: COMPILER='g++-7'
 
     # 3b/ Linux C++14 Clang builds
+    # Note that we need newer libstdc++ for C++14 support
     - os: linux
       compiler: clang
       addons:
           apt:
-              packages: ['clang-3.8', 'valgrind', 'lcov', 'libstdc++-6-dev']
+              packages: ['clang-3.8', 'libstdc++-6-dev']
               sources:
                   - ubuntu-toolchain-r-test
                   - llvm-toolchain-trusty
-      env: COMPILER='clang++-3.8' CPP14=1 VALGRIND=1
+      env: COMPILER='clang++-3.8' CPP14=1
 
     - os: linux
       compiler: clang
       addons:
           apt:
               sources: *all_sources
-              packages: ['clang-3.9', 'valgrind', 'lcov', 'libstdc++-6-dev']
-      env: COMPILER='clang++-3.9' CPP14=1 VALGRIND=1
+              packages: ['clang-3.9', 'libstdc++-6-dev']
+      env: COMPILER='clang++-3.9' CPP14=1
 
     - os: linux
       compiler: clang
       addons:
           apt:
               sources: *all_sources
-              packages: ['clang-4.0', 'valgrind', 'lcov', 'libstdc++-6-dev']
-      env: COMPILER='clang++-4.0' CPP14=1 VALGRIND=1
+              packages: ['clang-4.0', 'libstdc++-6-dev']
+      env: COMPILER='clang++-4.0' CPP14=1
 
     - os: linux
       compiler: clang
       addons:
           apt:
               sources: *all_sources
-              packages: ['clang-5.0', 'valgrind', 'lcov', 'libstdc++-6-dev']
-      env: COMPILER='clang++-5.0' CPP14=1 VALGRIND=1
+              packages: ['clang-5.0', 'libstdc++-6-dev']
+      env: COMPILER='clang++-5.0' CPP14=1
 
 
     # 4a/ Linux C++14 GCC builds
     - os: linux
       compiler: gcc
       addons: *gcc6
-      env: COMPILER='g++-6' CPP14=1 VALGRIND=1
+      env: COMPILER='g++-6' CPP14=1
 
     - os: linux
       compiler: gcc
       addons: *gcc7
-      env: COMPILER='g++-7' CPP14=1 VALGRIND=1
+      env: COMPILER='g++-7' CPP14=1
 
     # 5/ OSX Clang Builds
     - os: osx
@@ -181,8 +176,39 @@ matrix:
     - os: osx
       osx_image: xcode9.1
       compiler: clang
-      env: COMPILER='clang++' USE_CPP14=1
+      env: COMPILER='clang++' CPP14=1
 
+    # 6/ Special builds -- examples, coverage, valgrind, etc.
+    - os: linux
+      compiler: gcc
+      addons:
+        apt:
+          sources: *all_sources
+          packages: ['lcov', 'g++-7']
+      env: COMPILER='g++-7' CPP14=1 EXAMPLES=1 COVERAGE=1
+
+    - os: linux
+      compiler: clang
+      addons:
+        apt:
+          packages: ['clang-3.8', 'lcov']
+          sources:
+            - ubuntu-toolchain-r-test
+            - llvm-toolchain-trusty
+      env: COMPILER='clang++-3.8' EXAMPLES=1 COVERAGE=1
+
+    - os: linux
+      compiler: gcc
+      addons:
+        apt:
+          sources: *all_sources
+          packages: ['valgrind', 'lcov', 'g++-7']
+      env: COMPILER='g++-7' CPP14=1 VALGRIND=1      
+      
+    - os: osx
+      osx_image: xcode9.1
+      compiler: clang
+      env: COMPILER='clang++' CPP14=1 EXAMPLES=1 COVERAGE=1
 
 install:
   - DEPS_DIR="${TRAVIS_BUILD_DIR}/deps"
@@ -204,7 +230,7 @@ before_script:
 
   - |
     # Use Debug builds for running Valgrind and building examples
-    cmake -H. -BBuild-Debug -DCMAKE_BUILD_TYPE=Debug -Wdev -DUSE_CPP14=${CPP14} -DCATCH_USE_VALGRIND=${VALGRIND} -DCATCH_BUILD_EXAMPLES=ON -DCATCH_ENABLE_COVERAGE=ON
+    cmake -H. -BBuild-Debug -DCMAKE_BUILD_TYPE=Debug -Wdev -DUSE_CPP14=${CPP14} -DCATCH_USE_VALGRIND=${VALGRIND} -DCATCH_BUILD_EXAMPLES=${EXAMPLES} -DCATCH_ENABLE_COVERAGE=${COVERAGE}
     # Don't bother with release build for coverage build
     cmake -H. -BBuild-Release -DCMAKE_BUILD_TYPE=Release -Wdev -DUSE_CPP14=${CPP14}
 
@@ -215,7 +241,9 @@ script:
     make -j 2
     CTEST_OUTPUT_ON_FAILURE=1 ctest -j 2
     # Coverage collection does not work for OS X atm
-    if [[ "${TRAVIS_OS_NAME}" == "linux" ]]; then
+    echo "${TRAVIS_OS_NAME}";
+    echo "${COVERAGE}";
+    if [[ "${TRAVIS_OS_NAME}" == "linux" ]] && [[ "${COVERAGE}" == "1" ]]; then
       make gcov
       make lcov
       bash <(curl -s https://codecov.io/bash) -X gcov || echo "Codecov did not collect coverage reports"
