@@ -5,7 +5,7 @@
 //
 // See https://github.com/philsquared/Clara for more details
 
-// Clara v1.1.3
+// Clara v1.1.4
 
 #ifndef CLARA_HPP_INCLUDED
 #define CLARA_HPP_INCLUDED
@@ -21,6 +21,7 @@
 #ifndef CLARA_CONFIG_OPTIONAL_TYPE
 #ifdef __has_include
 #if __has_include(<optional>) && __cplusplus >= 201703L
+#include <optional>
 #define CLARA_CONFIG_OPTIONAL_TYPE std::optional
 #endif
 #endif
@@ -665,11 +666,11 @@ namespace detail {
     }
 #ifdef CLARA_CONFIG_OPTIONAL_TYPE
     template<typename T>
-    inline auto convertInto( std::string const &source, std::optional<T>& target ) -> ParserResult {
+    inline auto convertInto( std::string const &source, CLARA_CONFIG_OPTIONAL_TYPE<T>& target ) -> ParserResult {
         T temp;
         auto result = convertInto( source, temp );
         if( result )
-            target = temp;
+            target = std::move(temp);
         return result;
     }
 #endif // CLARA_CONFIG_OPTIONAL_TYPE
