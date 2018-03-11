@@ -1,6 +1,6 @@
 /*
- *  Catch v2.2.0
- *  Generated: 2018-03-07 10:56:32.217228
+ *  Catch v2.2.1
+ *  Generated: 2018-03-11 12:01:31.654719
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2018 Two Blue Cubes Ltd. All rights reserved.
@@ -15,7 +15,7 @@
 
 #define CATCH_VERSION_MAJOR 2
 #define CATCH_VERSION_MINOR 2
-#define CATCH_VERSION_PATCH 0
+#define CATCH_VERSION_PATCH 1
 
 #ifdef __clang__
 #    pragma clang system_header
@@ -5134,7 +5134,7 @@ namespace Catch {
 //
 // See https://github.com/philsquared/Clara for more details
 
-// Clara v1.1.3
+// Clara v1.1.4
 
 
 #ifndef CATCH_CLARA_CONFIG_CONSOLE_WIDTH
@@ -5148,6 +5148,7 @@ namespace Catch {
 #ifndef CLARA_CONFIG_OPTIONAL_TYPE
 #ifdef __has_include
 #if __has_include(<optional>) && __cplusplus >= 201703L
+#include <optional>
 #define CLARA_CONFIG_OPTIONAL_TYPE std::optional
 #endif
 #endif
@@ -5784,11 +5785,11 @@ namespace detail {
     }
 #ifdef CLARA_CONFIG_OPTIONAL_TYPE
     template<typename T>
-    inline auto convertInto( std::string const &source, std::optional<T>& target ) -> ParserResult {
+    inline auto convertInto( std::string const &source, CLARA_CONFIG_OPTIONAL_TYPE<T>& target ) -> ParserResult {
         T temp;
         auto result = convertInto( source, temp );
         if( result )
-            target = temp;
+            target = std::move(temp);
         return result;
     }
 #endif // CLARA_CONFIG_OPTIONAL_TYPE
@@ -9237,7 +9238,7 @@ namespace Catch {
             // Note that on unices only the lower 8 bits are usually used, clamping
             // the return value to 255 prevents false negative when some multiple
             // of 256 tests has failed
-            return (std::min)( { MaxExitCode, totals.error, static_cast<int>( totals.assertions.failed ) } );
+            return (std::min) (MaxExitCode, (std::max) (totals.error, static_cast<int>(totals.assertions.failed)));
         }
         catch( std::exception& ex ) {
             Catch::cerr() << ex.what() << std::endl;
@@ -10806,7 +10807,7 @@ namespace Catch {
     }
 
     Version const& libraryVersion() {
-        static Version version( 2, 2, 0, "", 0 );
+        static Version version( 2, 2, 1, "", 0 );
         return version;
     }
 

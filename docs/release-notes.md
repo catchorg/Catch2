@@ -1,5 +1,14 @@
 <a id="top"></a>
 
+# 2.2.1
+
+## Fixes
+* Fixed compilation error when compiling Catch2 with `std=c++17` against libc++ (#1214)
+  * Clara (Catch2's CLI parsing library) used `std::optional` without including it explicitly
+* Fixed Catch2 return code always being 0 (#1215)
+  * In the words of STL, "We feel superbad about letting this in"
+
+
 # 2.2.0
 
 ## Fixes
