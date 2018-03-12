@@ -38,4 +38,8 @@ TEST_CASE( "XmlEncode" ) {
     SECTION( "string with control char (x7F)" ) {
         REQUIRE( encode( "[\x7F]" ) == "[\\x7F]" );
     }
+    SECTION( "string with high bit set (x80 and xFF)" ) {
+        REQUIRE( encode( "[\x80]" ) == "[\\x80]" );
+        REQUIRE( encode( "[\xFF]" ) == "[\\xFF]" );
+    }
 }
