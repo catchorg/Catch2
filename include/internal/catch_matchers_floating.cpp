@@ -88,7 +88,7 @@ namespace Floating {
     // Performs equivalent check of std::fabs(lhs - rhs) <= margin
     // But without the subtraction to allow for INFINITY in comparison
     bool WithinAbsMatcher::match(double const& matchee) const {
-        return (matchee + m_margin >= m_target) && (m_target + m_margin >= m_margin);
+        return (matchee + m_margin >= m_target) && (m_target + m_margin >= matchee);
     }
 
     std::string WithinAbsMatcher::describe() const {

@@ -1858,6 +1858,30 @@ PASSED:
 with expansion:
   nanf not is within 0.0 of nan
 
+Matchers.tests.cpp:<line number>:
+PASSED:
+  REQUIRE_THAT( 11., !WithinAbs(10., 0.5) )
+with expansion:
+  11.0 not is within 0.5 of 10.0
+
+Matchers.tests.cpp:<line number>:
+PASSED:
+  REQUIRE_THAT( 10., !WithinAbs(11., 0.5) )
+with expansion:
+  10.0 not is within 0.5 of 11.0
+
+Matchers.tests.cpp:<line number>:
+PASSED:
+  REQUIRE_THAT( -10., WithinAbs(-10., 0.5) )
+with expansion:
+  -10.0 is within 0.5 of -10.0
+
+Matchers.tests.cpp:<line number>:
+PASSED:
+  REQUIRE_THAT( -10., WithinAbs(-9.6, 0.5) )
+with expansion:
+  -10.0 is within 0.5 of -9.6
+
 -------------------------------------------------------------------------------
 Floating point matchers: double
   ULPs
@@ -1997,6 +2021,30 @@ PASSED:
   REQUIRE_THAT( NAN, !WithinAbs(NAN, 0) )
 with expansion:
   nanf not is within 0.0 of nan
+
+Matchers.tests.cpp:<line number>:
+PASSED:
+  REQUIRE_THAT( 11.f, !WithinAbs(10.f, 0.5f) )
+with expansion:
+  11.0f not is within 0.5 of 10.0
+
+Matchers.tests.cpp:<line number>:
+PASSED:
+  REQUIRE_THAT( 10.f, !WithinAbs(11.f, 0.5f) )
+with expansion:
+  10.0f not is within 0.5 of 11.0
+
+Matchers.tests.cpp:<line number>:
+PASSED:
+  REQUIRE_THAT( -10.f, WithinAbs(-10.f, 0.5f) )
+with expansion:
+  -10.0f is within 0.5 of -10.0
+
+Matchers.tests.cpp:<line number>:
+PASSED:
+  REQUIRE_THAT( -10.f, WithinAbs(-9.6f, 0.5f) )
+with expansion:
+  -10.0f is within 0.5 of -9.6000003815
 
 -------------------------------------------------------------------------------
 Floating point matchers: float
@@ -8551,5 +8599,5 @@ PASSED:
 
 ===============================================================================
 test cases:  202 | 136 passed |  62 failed |  4 failed as expected
-assertions: 1021 | 879 passed | 121 failed | 21 failed as expected
+assertions: 1029 | 887 passed | 121 failed | 21 failed as expected
 
