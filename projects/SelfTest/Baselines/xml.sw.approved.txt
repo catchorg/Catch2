@@ -2108,7 +2108,39 @@
             nanf not is within 0.0 of nan
           </Expanded>
         </Expression>
-        <OverallResults successes="5" failures="0" expectedFailures="0"/>
+        <Expression success="true" type="REQUIRE_THAT" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
+          <Original>
+            11., !WithinAbs(10., 0.5)
+          </Original>
+          <Expanded>
+            11.0 not is within 0.5 of 10.0
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE_THAT" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
+          <Original>
+            10., !WithinAbs(11., 0.5)
+          </Original>
+          <Expanded>
+            10.0 not is within 0.5 of 11.0
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE_THAT" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
+          <Original>
+            -10., WithinAbs(-10., 0.5)
+          </Original>
+          <Expanded>
+            -10.0 is within 0.5 of -10.0
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE_THAT" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
+          <Original>
+            -10., WithinAbs(-9.6, 0.5)
+          </Original>
+          <Expanded>
+            -10.0 is within 0.5 of -9.6
+          </Expanded>
+        </Expression>
+        <OverallResults successes="9" failures="0" expectedFailures="0"/>
       </Section>
       <Section name="ULPs" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
         <Expression success="true" type="REQUIRE_THAT" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
@@ -2283,7 +2315,39 @@
             nanf not is within 0.0 of nan
           </Expanded>
         </Expression>
-        <OverallResults successes="6" failures="0" expectedFailures="0"/>
+        <Expression success="true" type="REQUIRE_THAT" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
+          <Original>
+            11.f, !WithinAbs(10.f, 0.5f)
+          </Original>
+          <Expanded>
+            11.0f not is within 0.5 of 10.0
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE_THAT" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
+          <Original>
+            10.f, !WithinAbs(11.f, 0.5f)
+          </Original>
+          <Expanded>
+            10.0f not is within 0.5 of 11.0
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE_THAT" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
+          <Original>
+            -10.f, WithinAbs(-10.f, 0.5f)
+          </Original>
+          <Expanded>
+            -10.0f is within 0.5 of -10.0
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE_THAT" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
+          <Original>
+            -10.f, WithinAbs(-9.6f, 0.5f)
+          </Original>
+          <Expanded>
+            -10.0f is within 0.5 of -9.6000003815
+          </Expanded>
+        </Expression>
+        <OverallResults successes="10" failures="0" expectedFailures="0"/>
       </Section>
       <Section name="ULPs" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
         <Expression success="true" type="REQUIRE_THAT" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
@@ -9405,7 +9469,7 @@ loose text artifact
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="879" failures="122" expectedFailures="21"/>
+    <OverallResults successes="887" failures="122" expectedFailures="21"/>
   </Group>
-  <OverallResults successes="879" failures="121" expectedFailures="21"/>
+  <OverallResults successes="887" failures="121" expectedFailures="21"/>
 </Catch>

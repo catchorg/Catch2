@@ -321,6 +321,11 @@ namespace { namespace MatchersTests {
 
                 REQUIRE_THAT(0.f, WithinAbs(-0.f, 0));
                 REQUIRE_THAT(NAN, !WithinAbs(NAN, 0));
+
+                REQUIRE_THAT(11.f, !WithinAbs(10.f, 0.5f));
+                REQUIRE_THAT(10.f, !WithinAbs(11.f, 0.5f));
+                REQUIRE_THAT(-10.f, WithinAbs(-10.f, 0.5f));
+                REQUIRE_THAT(-10.f, WithinAbs(-9.6f, 0.5f));
             }
             SECTION("ULPs") {
                 REQUIRE_THAT(1.f, WithinULP(1.f, 0));
@@ -358,6 +363,11 @@ namespace { namespace MatchersTests {
                 REQUIRE_THAT(0., !WithinAbs(1., 0.99));
 
                 REQUIRE_THAT(NAN, !WithinAbs(NAN, 0));
+
+                REQUIRE_THAT(11., !WithinAbs(10., 0.5));
+                REQUIRE_THAT(10., !WithinAbs(11., 0.5));
+                REQUIRE_THAT(-10., WithinAbs(-10., 0.5));
+                REQUIRE_THAT(-10., WithinAbs(-9.6, 0.5));
             }
             SECTION("ULPs") {
                 REQUIRE_THAT(1., WithinULP(1., 0));
