@@ -33,6 +33,8 @@ environment:
 
 
 matrix:
+    allow_failures:
+        - os: Visual Studio 2017
     exclude:
         - os: Visual Studio 2015
           additional_flags: "/permissive- /std:c++latest"
