@@ -7992,6 +7992,25 @@ Message from section two
         </Expression>
         <OverallResults successes="1" failures="0" expectedFailures="0"/>
       </Section>
+      <Section name="string with high bit set (x80 and xFF)" filename="projects/<exe-name>/IntrospectiveTests/Xml.tests.cpp" >
+        <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/Xml.tests.cpp" >
+          <Original>
+            encode( "[\x80]" ) == "[\\x80]"
+          </Original>
+          <Expanded>
+            "[\x80]" == "[\x80]"
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/Xml.tests.cpp" >
+          <Original>
+            encode( "[\xFF]" ) == "[\\xFF]"
+          </Original>
+          <Expanded>
+            "[\xFF]" == "[\xFF]"
+          </Expanded>
+        </Expression>
+        <OverallResults successes="2" failures="0" expectedFailures="0"/>
+      </Section>
       <OverallResult success="true"/>
     </TestCase>
     <TestCase name="array&lt;int, N> -> toString" tags="[array][containers][toString]" filename="projects/<exe-name>/UsageTests/ToStringVector.tests.cpp" >
@@ -9469,7 +9488,7 @@ loose text artifact
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="887" failures="122" expectedFailures="21"/>
+    <OverallResults successes="889" failures="122" expectedFailures="21"/>
   </Group>
-  <OverallResults successes="887" failures="121" expectedFailures="21"/>
+  <OverallResults successes="889" failures="121" expectedFailures="21"/>
 </Catch>

@@ -7113,6 +7113,25 @@ with expansion:
   "[\x7F]" == "[\x7F]"
 
 -------------------------------------------------------------------------------
+XmlEncode
+  string with high bit set (x80 and xFF)
+-------------------------------------------------------------------------------
+Xml.tests.cpp:<line number>
+...............................................................................
+
+Xml.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( encode( "[\x80]" ) == "[\\x80]" )
+with expansion:
+  "[\x80]" == "[\x80]"
+
+Xml.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( encode( "[\xFF]" ) == "[\\xFF]" )
+with expansion:
+  "[\xFF]" == "[\xFF]"
+
+-------------------------------------------------------------------------------
 array<int, N> -> toString
 -------------------------------------------------------------------------------
 ToStringVector.tests.cpp:<line number>
@@ -8599,5 +8618,5 @@ PASSED:
 
 ===============================================================================
 test cases:  202 | 136 passed |  62 failed |  4 failed as expected
-assertions: 1029 | 887 passed | 121 failed | 21 failed as expected
+assertions: 1031 | 889 passed | 121 failed | 21 failed as expected
 

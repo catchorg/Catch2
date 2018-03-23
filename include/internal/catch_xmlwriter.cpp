@@ -45,10 +45,14 @@ namespace Catch {
                 default:
                     // Escape control chars - based on contribution by @espenalb in PR #465 and
                     // by @mrpi PR #588
-                    if ( ( c >= 0 && c < '\x09' ) || ( c > '\x0D' && c < '\x20') || c=='\x7F' ) {
+                    // Also take care to avoid violation of UTF-8 encoding rules
+                    if ( ( c >= 0 && c < '\x09' )
+                         || ( c > '\x0D' && c < '\x20')
+                         || ( c & 0x80 )
+                         || c=='\x7F') {
                         // see http://stackoverflow.com/questions/404107/why-are-control-characters-illegal-in-xml-1-0
                         os << "\\x" << std::uppercase << std::hex << std::setfill('0') << std::setw(2)
-                           << static_cast<int>( c );
+                           << static_cast<int>( static_cast<unsigned char>(c) );
                     }
                     else
                         os << c;
