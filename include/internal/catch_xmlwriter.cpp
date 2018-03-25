@@ -7,9 +7,49 @@
 
 #include "catch_xmlwriter.h"
 
+#include "catch_enforce.h"
+
 #include <iomanip>
 
+using uchar = unsigned char;
+
 namespace Catch {
+
+namespace {
+
+    size_t trailingBytes(unsigned char c) {
+        if ((c & 0xE0) == 0xC0) {
+            return 2;
+        }
+        if ((c & 0xF0) == 0xE0) {
+            return 3;
+        }
+        if ((c & 0xF8) == 0xF0) {
+            return 4;
+        }
+        CATCH_INTERNAL_ERROR("Invalid multibyte utf-8 start byte encountered");
+    }
+
+    uint32_t headerValue(unsigned char c) {
+        if ((c & 0xE0) == 0xC0) {
+            return c & 0x1F;
+        }
+        if ((c & 0xF0) == 0xE0) {
+            return c & 0x0F;
+        }
+        if ((c & 0xF8) == 0xF0) {
+            return c & 0x07;
+        }
+        CATCH_INTERNAL_ERROR("Invalid multibyte utf-8 start byte encountered");
+    }
+
+    void hexEscapeChar(std::ostream& os, unsigned char c) {
+        os << "\\x"
+            << std::uppercase << std::hex << std::setfill('0') << std::setw(2)
+            << static_cast<int>(c);
+    }
+
+} // anonymous namespace
 
     XmlEncode::XmlEncode( std::string const& str, ForWhat forWhat )
     :   m_str( str ),
@@ -17,41 +57,95 @@ namespace Catch {
     {}
 
     void XmlEncode::encodeTo( std::ostream& os ) const {
-
         // Apostrophe escaping not necessary if we always use " to write attributes
         // (see: http://www.w3.org/TR/xml/#syntax)
 
-        for( std::size_t i = 0; i < m_str.size(); ++ i ) {
-            char c = m_str[i];
-            switch( c ) {
-                case '<':   os << "&lt;"; break;
-                case '&':   os << "&amp;"; break;
+        for( std::size_t idx = 0; idx < m_str.size(); ++ idx ) {
+            uchar c = m_str[idx];
+            switch (c) {
+            case '<':   os << "&lt;"; break;
+            case '&':   os << "&amp;"; break;
 
-                case '>':
-                    // See: http://www.w3.org/TR/xml/#syntax
-                    if( i > 2 && m_str[i-1] == ']' && m_str[i-2] == ']' )
-                        os << "&gt;";
-                    else
-                        os << c;
+            case '>':
+                // See: http://www.w3.org/TR/xml/#syntax
+                if (idx > 2 && m_str[idx - 1] == ']' && m_str[idx - 2] == ']')
+                    os << "&gt;";
+                else
+                    os << c;
+                break;
+
+            case '\"':
+                if (m_forWhat == ForAttributes)
+                    os << "&quot;";
+                else
+                    os << c;
+                break;
+
+            default:
+                // Check for control characters and invalid utf-8
+
+                // Escape control characters in standard ascii
+                // see http://stackoverflow.com/questions/404107/why-are-control-characters-illegal-in-xml-1-0
+                if (c < 0x09 || (c > 0x0D && c < 0x20) || c == 0x7F) {
+                    hexEscapeChar(os, c);
                     break;
+                }
 
-                case '\"':
-                    if( m_forWhat == ForAttributes )
-                        os << "&quot;";
-                    else
-                        os << c;
+                // Plain ASCII: Write it to stream
+                if (c < 0x7F) {
+                    os << c;
                     break;
+                }
 
-                default:
-                    // Escape control chars - based on contribution by @espenalb in PR #465 and
-                    // by @mrpi PR #588
-                    if ( ( c >= 0 && c < '\x09' ) || ( c > '\x0D' && c < '\x20') || c=='\x7F' ) {
-                        // see http://stackoverflow.com/questions/404107/why-are-control-characters-illegal-in-xml-1-0
-                        os << "\\x" << std::uppercase << std::hex << std::setfill('0') << std::setw(2)
-                           << static_cast<int>( c );
-                    }
-                    else
-                        os << c;
+                // UTF-8 territory
+                // Check if the encoding is valid and if it is not, hex escape bytes.
+                // Important: We do not check the exact decoded values for validity, only the encoding format
+                // First check that this bytes is a valid lead byte:
+                // This means that it is not encoded as 1111 1XXX
+                // Or as 10XX XXXX
+                if (c <  0xC0 ||
+                    c >= 0xF8) {
+                    hexEscapeChar(os, c);
+                    break;
+                }
+
+                auto encBytes = trailingBytes(c);
+                // Are there enough bytes left to avoid accessing out-of-bounds memory?
+                if (idx + encBytes - 1 >= m_str.size()) {
+                    hexEscapeChar(os, c);
+                    break;
+                }
+                // The header is valid, check data
+                // The next encBytes bytes must together be a valid utf-8
+                // This means: bitpattern 10XX XXXX and the extracted value is sane (ish)
+                bool valid = true;
+                uint32_t value = headerValue(c);
+                for (std::size_t n = 1; n < encBytes; ++n) {
+                    uchar nc = m_str[idx + n];
+                    valid &= ((nc & 0xC0) == 0x80);
+                    value = (value << 6) | (nc & 0x3F);
+                }
+
+                if (
+                    // Wrong bit pattern of following bytes
+                    (!valid) ||
+                    // Overlong encodings
+                    (value < 0x80) ||
+                    (0x80 <= value && value < 0x800   && encBytes > 2) ||
+                    (0x800 < value && value < 0x10000 && encBytes > 3) ||
+                    // Encoded value out of range
+                    (value >= 0x110000)
+                    ) {
+                    hexEscapeChar(os, c);
+                    break;
+                }
+
+                // If we got here, this is in fact a valid(ish) utf-8 sequence
+                for (std::size_t n = 0; n < encBytes; ++n) {
+                    os << m_str[idx + n];
+                }
+                idx += encBytes - 1;
+                break;
             }
         }
     }

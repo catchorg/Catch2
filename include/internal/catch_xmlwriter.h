@@ -56,7 +56,7 @@ namespace Catch {
 
         XmlWriter( std::ostream& os = Catch::cout() );
         ~XmlWriter();
-        
+
         XmlWriter( XmlWriter const& ) = delete;
         XmlWriter& operator=( XmlWriter const& ) = delete;
 
