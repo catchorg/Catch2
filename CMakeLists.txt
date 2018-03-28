@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.1)
 # detect if Catch is being bundled,
 # disable testsuite in that case
 if(NOT DEFINED PROJECT_NAME)
-  set(NOT_SUBPROJECT ON)
+  set(CATCH_NOT_SUBPROJECT ON)
 endif()
 
 project(Catch2 LANGUAGES CXX VERSION 2.2.1)
@@ -306,7 +306,7 @@ endif()
 
 include(CTest)
 
-if (BUILD_TESTING AND NOT_SUBPROJECT)
+if (BUILD_TESTING AND CATCH_NOT_SUBPROJECT)
     add_executable(SelfTest ${TEST_SOURCES} ${IMPL_SOURCES} ${REPORTER_SOURCES} ${SURROGATE_SOURCES} ${HEADERS})
     target_include_directories(SelfTest PRIVATE ${HEADER_DIR})
 
@@ -400,22 +400,21 @@ if(CATCH_BUILD_EXAMPLES)
     add_subdirectory(examples)
 endif()
 
-install(DIRECTORY "single_include/" DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/catch")
+if(DEFINED CATCH_NOT_SUBPROJECT)
+    install(DIRECTORY "single_include/" DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/catch")
+    install(DIRECTORY docs/ DESTINATION "${CMAKE_INSTALL_DOCDIR}")
 
-install(DIRECTORY docs/ DESTINATION "${CMAKE_INSTALL_DOCDIR}")
+    ## Provide some pkg-config integration
+    # Don't bother on Windows
+    if(NOT WIN32 OR NOT CMAKE_HOST_SYSTEM_NAME MATCHES Windows)
+        set(PKGCONFIG_INSTALL_DIR
+            "${CMAKE_INSTALL_DATAROOTDIR}/pkgconfig"
+            CACHE PATH "Path where catch.pc is installed"
+        )
 
-## Provide some pkg-config integration
-# Don't bother on Windows
-if(NOT WIN32 OR NOT CMAKE_HOST_SYSTEM_NAME MATCHES Windows)
-
-    set(PKGCONFIG_INSTALL_DIR
-        "${CMAKE_INSTALL_DATAROOTDIR}/pkgconfig"
-        CACHE PATH "Path where catch.pc is installed"
-    )
-
-    configure_file(${CMAKE_CURRENT_SOURCE_DIR}/catch.pc.in ${CMAKE_CURRENT_BINARY_DIR}/catch.pc @ONLY)
-    install(FILES ${CMAKE_CURRENT_BINARY_DIR}/catch.pc DESTINATION ${PKGCONFIG_INSTALL_DIR})
-
+        configure_file(${CMAKE_CURRENT_SOURCE_DIR}/catch.pc.in ${CMAKE_CURRENT_BINARY_DIR}/catch.pc @ONLY)
+        install(FILES ${CMAKE_CURRENT_BINARY_DIR}/catch.pc DESTINATION ${PKGCONFIG_INSTALL_DIR})
+    endif()
 endif()
 
 # add catch as a 'linkable' target
