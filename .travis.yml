@@ -232,27 +232,24 @@ before_script:
   # Regenerate single header file, so it is tested in the examples...
   - python scripts/generateSingleHeader.py
 
-  - |
     # Use Debug builds for running Valgrind and building examples
-    cmake -H. -BBuild-Debug -DCMAKE_BUILD_TYPE=Debug -Wdev -DUSE_CPP14=${CPP14} -DCATCH_USE_VALGRIND=${VALGRIND} -DCATCH_BUILD_EXAMPLES=${EXAMPLES} -DCATCH_ENABLE_COVERAGE=${COVERAGE}
+  - cmake -H. -BBuild-Debug -DCMAKE_BUILD_TYPE=Debug -Wdev -DUSE_CPP14=${CPP14} -DCATCH_USE_VALGRIND=${VALGRIND} -DCATCH_BUILD_EXAMPLES=${EXAMPLES} -DCATCH_ENABLE_COVERAGE=${COVERAGE}
     # Don't bother with release build for coverage build
-    cmake -H. -BBuild-Release -DCMAKE_BUILD_TYPE=Release -Wdev -DUSE_CPP14=${CPP14}
+  - cmake -H. -BBuild-Release -DCMAKE_BUILD_TYPE=Release -Wdev -DUSE_CPP14=${CPP14}
 
 
 script:
-  - |
-    cd Build-Debug
-    make -j 2
-    CTEST_OUTPUT_ON_FAILURE=1 ctest -j 2
+  - cd Build-Debug
+  - make -j 2
+  - CTEST_OUTPUT_ON_FAILURE=1 ctest -j 2
     # Coverage collection does not work for OS X atm
-    echo "${TRAVIS_OS_NAME}";
-    echo "${COVERAGE}";
+  - |
     if [[ "${TRAVIS_OS_NAME}" == "linux" ]] && [[ "${COVERAGE}" == "1" ]]; then
       make gcov
       make lcov
       bash <(curl -s https://codecov.io/bash) -X gcov || echo "Codecov did not collect coverage reports"
     fi
-    # Go to release build
-    cd ../Build-Release
-    make -j 2
-    CTEST_OUTPUT_ON_FAILURE=1 ctest -j 2
+  - # Go to release build
+  - cd ../Build-Release
+  - make -j 2
+  - CTEST_OUTPUT_ON_FAILURE=1 ctest -j 2
