@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuitesloose text artifact
 >
-  <testsuite name="<exe-name>" errors="17" failures="105" tests="1072" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
+  <testsuite name="<exe-name>" errors="17" failures="105" tests="1076" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
     <testcase classname="<exe-name>.global" name="# A test name that starts with a #" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="#1005: Comparing pointer to int and long (NULL can be either on various systems)" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="#1027" time="{duration}"/>
@@ -110,6 +110,8 @@ Exception.tests.cpp:<line number>
     <testcase classname="<exe-name>.global" name="Approximate comparisons with floats" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Approximate comparisons with ints" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Approximate comparisons with mixed numeric types" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="Arbitrary predicate matcher/Function pointer" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="Arbitrary predicate matcher/Lambdas + different type" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Assertions then sections" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Assertions then sections/A section" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Assertions then sections/A section/Another section" time="{duration}"/>

@@ -870,6 +870,47 @@
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
+    <TestCase name="Arbitrary predicate matcher" tags="[generic][matchers]" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
+      <Section name="Function pointer" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
+        <Expression success="true" type="REQUIRE_THAT" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
+          <Original>
+            1, Predicate&lt;int>(alwaysTrue, "always true")
+          </Original>
+          <Expanded>
+            1 matches predicate: "always true"
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE_THAT" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
+          <Original>
+            1, !Predicate&lt;int>(alwaysFalse, "always false")
+          </Original>
+          <Expanded>
+            1 not matches predicate: "always false"
+          </Expanded>
+        </Expression>
+        <OverallResults successes="2" failures="0" expectedFailures="0"/>
+      </Section>
+      <Section name="Lambdas + different type" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
+        <Expression success="true" type="REQUIRE_THAT" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
+          <Original>
+            "Hello olleH", Predicate&lt;std::string>( [] (std::string const&amp; str) -> bool { return str.front() == str.back(); }, "First and last character should be equal")
+          </Original>
+          <Expanded>
+            "Hello olleH" matches predicate: "First and last character should be equal"
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE_THAT" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
+          <Original>
+            "This wouldn't pass", !Predicate&lt;std::string>( [] (std::string const&amp; str) -> bool { return str.front() == str.back(); } )
+          </Original>
+          <Expanded>
+            "This wouldn't pass" not matches undescribed predicate
+          </Expanded>
+        </Expression>
+        <OverallResults successes="2" failures="0" expectedFailures="0"/>
+      </Section>
+      <OverallResult success="true"/>
+    </TestCase>
     <TestCase name="Assertions then sections" tags="[Tricky]" filename="projects/<exe-name>/UsageTests/Tricky.tests.cpp" >
       <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/UsageTests/Tricky.tests.cpp" >
         <Original>
@@ -9841,7 +9882,7 @@ loose text artifact
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="929" failures="122" expectedFailures="21"/>
+    <OverallResults successes="933" failures="122" expectedFailures="21"/>
   </Group>
-  <OverallResults successes="929" failures="121" expectedFailures="21"/>
+  <OverallResults successes="933" failures="121" expectedFailures="21"/>
 </Catch>

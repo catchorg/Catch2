@@ -53,6 +53,25 @@ The floating point matchers are `WithinULP` and `WithinAbs`. `WithinAbs` accepts
 Do note that ULP-based checks only make sense when both compared numbers are of the same type and `WithinULP` will use type of its argument as the target type. This means that `WithinULP(1.f, 1)` will expect to compare `float`s, but `WithinULP(1., 1)` will expect to compare `double`s.
 
 
+### Generic matchers
+Catch also aims to provide a set of generic matchers. Currently this set
+contains only a matcher that takes arbitrary callable predicate and applies
+it onto the provided object.
+
+Because of type inference limitations, the argument type of the predicate
+has to be provided explicitly. Example:
+```cpp
+REQUIRE_THAT("Hello olleH",
+             Predicate<std::string>(
+                 [] (std::string const& str) -> bool { return str.front() == str.back(); },
+                 "First and last character should be equal")
+);
+```
+
+The second argument is an optional description of the predicate, and is
+used only during reporting of the result.
+
+
 ## Custom matchers
 It's easy to provide your own matchers to extend Catch or just to work with your own types.
 

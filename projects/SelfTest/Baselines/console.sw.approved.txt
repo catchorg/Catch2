@@ -815,6 +815,44 @@ with expansion:
   1.234 == Approx( 1.2339999676 )
 
 -------------------------------------------------------------------------------
+Arbitrary predicate matcher
+  Function pointer
+-------------------------------------------------------------------------------
+Matchers.tests.cpp:<line number>
+...............................................................................
+
+Matchers.tests.cpp:<line number>:
+PASSED:
+  REQUIRE_THAT( 1, Predicate<int>(alwaysTrue, "always true") )
+with expansion:
+  1 matches predicate: "always true"
+
+Matchers.tests.cpp:<line number>:
+PASSED:
+  REQUIRE_THAT( 1, !Predicate<int>(alwaysFalse, "always false") )
+with expansion:
+  1 not matches predicate: "always false"
+
+-------------------------------------------------------------------------------
+Arbitrary predicate matcher
+  Lambdas + different type
+-------------------------------------------------------------------------------
+Matchers.tests.cpp:<line number>
+...............................................................................
+
+Matchers.tests.cpp:<line number>:
+PASSED:
+  REQUIRE_THAT( "Hello olleH", Predicate<std::string>( [] (std::string const& str) -> bool { return str.front() == str.back(); }, "First and last character should be equal") )
+with expansion:
+  "Hello olleH" matches predicate: "First and last character should be equal"
+
+Matchers.tests.cpp:<line number>:
+PASSED:
+  REQUIRE_THAT( "This wouldn't pass", !Predicate<std::string>( [] (std::string const& str) -> bool { return str.front() == str.back(); } ) )
+with expansion:
+  "This wouldn't pass" not matches undescribed predicate
+
+-------------------------------------------------------------------------------
 Assertions then sections
 -------------------------------------------------------------------------------
 Tricky.tests.cpp:<line number>
@@ -8897,6 +8935,6 @@ Misc.tests.cpp:<line number>:
 PASSED:
 
 ===============================================================================
-test cases:  203 | 137 passed |  62 failed |  4 failed as expected
-assertions: 1071 | 929 passed | 121 failed | 21 failed as expected
+test cases:  204 | 138 passed |  62 failed |  4 failed as expected
+assertions: 1075 | 933 passed | 121 failed | 21 failed as expected
 
