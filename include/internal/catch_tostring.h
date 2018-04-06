@@ -155,6 +155,7 @@ namespace Catch {
     struct StringMaker<char *> {
         static std::string convert(char * str);
     };
+
 #ifdef CATCH_CONFIG_WCHAR
     template<>
     struct StringMaker<wchar_t const *> {
@@ -166,22 +167,24 @@ namespace Catch {
     };
 #endif
 
+    // TBD: Should we use `strnlen` to ensure that we don't go out of the buffer,
+    //      while keeping string semantics?
     template<int SZ>
     struct StringMaker<char[SZ]> {
-        static std::string convert(const char* str) {
+        static std::string convert(char const* str) {
             return ::Catch::Detail::stringify(std::string{ str });
         }
     };
     template<int SZ>
     struct StringMaker<signed char[SZ]> {
-        static std::string convert(const char* str) {
-            return ::Catch::Detail::stringify(std::string{ str });
+        static std::string convert(signed char const* str) {
+            return ::Catch::Detail::stringify(std::string{ reinterpret_cast<char const *>(str) });
         }
     };
     template<int SZ>
     struct StringMaker<unsigned char[SZ]> {
-        static std::string convert(const char* str) {
-            return ::Catch::Detail::stringify(std::string{ str });
+        static std::string convert(unsigned char const* str) {
+            return ::Catch::Detail::stringify(std::string{ reinterpret_cast<char const *>(str) });
         }
     };
 

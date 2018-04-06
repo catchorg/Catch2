@@ -7,6 +7,8 @@
 
 #include "catch.hpp"
 
+#include <cstring>
+
 namespace { namespace CompilationTests {
 
 #ifndef COMPILATION_TEST_HELPERS_INCLUDED // Don't compile this more than once per TU
@@ -132,6 +134,17 @@ namespace { namespace CompilationTests {
         REQUIRE(t1 >  t2);
         REQUIRE(t1 <= t2);
         REQUIRE(t1 >= t2);
+    }
+
+    // unsigned array
+    TEST_CASE("#1238") {
+        unsigned char uarr[] = "123";
+        CAPTURE(uarr);
+        signed char sarr[] = "456";
+        CAPTURE(sarr);
+
+        REQUIRE(std::memcmp(uarr, "123", sizeof(uarr)) == 0);
+        REQUIRE(std::memcmp(sarr, "456", sizeof(sarr)) == 0);
     }
 
 }} // namespace CompilationTests

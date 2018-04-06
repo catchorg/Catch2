@@ -103,6 +103,30 @@ Misc.tests.cpp:<line number>:
 PASSED:
 
 -------------------------------------------------------------------------------
+#1238
+-------------------------------------------------------------------------------
+Compilation.tests.cpp:<line number>
+...............................................................................
+
+Compilation.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( std::memcmp(uarr, "123", sizeof(uarr)) == 0 )
+with expansion:
+  0 == 0
+with messages:
+  uarr := "123"
+  sarr := "456"
+
+Compilation.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( std::memcmp(sarr, "456", sizeof(sarr)) == 0 )
+with expansion:
+  0 == 0
+with messages:
+  uarr := "123"
+  sarr := "456"
+
+-------------------------------------------------------------------------------
 #748 - captures with unexpected exceptions
   outside assertions
 -------------------------------------------------------------------------------
@@ -308,6 +332,6 @@ with expansion:
   !true
 
 ===============================================================================
-test cases: 12 |  9 passed | 1 failed | 2 failed as expected
-assertions: 35 | 28 passed | 4 failed | 3 failed as expected
+test cases: 13 | 10 passed | 1 failed | 2 failed as expected
+assertions: 37 | 30 passed | 4 failed | 3 failed as expected
 

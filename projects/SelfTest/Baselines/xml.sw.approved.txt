@@ -96,6 +96,37 @@
     <TestCase name="#1175 - Hidden Test" tags="[.]" filename="projects/<exe-name>/UsageTests/Misc.tests.cpp" >
       <OverallResult success="true"/>
     </TestCase>
+    <TestCase name="#1238" filename="projects/<exe-name>/UsageTests/Compilation.tests.cpp" >
+      <Info>
+        uarr := "123"
+      </Info>
+      <Info>
+        sarr := "456"
+      </Info>
+      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/UsageTests/Compilation.tests.cpp" >
+        <Original>
+          std::memcmp(uarr, "123", sizeof(uarr)) == 0
+        </Original>
+        <Expanded>
+          0 == 0
+        </Expanded>
+      </Expression>
+      <Info>
+        uarr := "123"
+      </Info>
+      <Info>
+        sarr := "456"
+      </Info>
+      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/UsageTests/Compilation.tests.cpp" >
+        <Original>
+          std::memcmp(sarr, "456", sizeof(sarr)) == 0
+        </Original>
+        <Expanded>
+          0 == 0
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
     <TestCase name="#748 - captures with unexpected exceptions" tags="[!shouldfail][!throws][.][failing]" filename="projects/<exe-name>/UsageTests/Exception.tests.cpp" >
       <Section name="outside assertions" filename="projects/<exe-name>/UsageTests/Exception.tests.cpp" >
         <Info>
@@ -9882,7 +9913,7 @@ loose text artifact
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="933" failures="122" expectedFailures="21"/>
+    <OverallResults successes="935" failures="122" expectedFailures="21"/>
   </Group>
-  <OverallResults successes="933" failures="121" expectedFailures="21"/>
+  <OverallResults successes="935" failures="121" expectedFailures="21"/>
 </Catch>
