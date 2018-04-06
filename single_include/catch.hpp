@@ -1,6 +1,6 @@
 /*
- *  Catch v2.2.1
- *  Generated: 2018-03-11 12:01:31.654719
+ *  Catch v2.2.2
+ *  Generated: 2018-04-06 12:05:03.186665
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2018 Two Blue Cubes Ltd. All rights reserved.
@@ -15,7 +15,7 @@
 
 #define CATCH_VERSION_MAJOR 2
 #define CATCH_VERSION_MINOR 2
-#define CATCH_VERSION_PATCH 1
+#define CATCH_VERSION_PATCH 2
 
 #ifdef __clang__
 #    pragma clang system_header
@@ -37,9 +37,9 @@
 #       pragma clang diagnostic ignored "-Wcovered-switch-default"
 #    endif
 #elif defined __GNUC__
-#    pragma GCC diagnostic ignored "-Wunused-variable"
 #    pragma GCC diagnostic ignored "-Wparentheses"
 #    pragma GCC diagnostic push
+#    pragma GCC diagnostic ignored "-Wunused-variable"
 #    pragma GCC diagnostic ignored "-Wpadded"
 #endif
 // end catch_suppress_warnings.h
@@ -783,6 +783,18 @@ namespace Catch {
             return convertUnknownEnumToString( value );
         }
 
+#if defined(_MANAGED)
+        //! Convert a CLR string to a utf8 std::string
+        template<typename T>
+        std::string clrReferenceToString( T^ ref ) {
+            if (ref == nullptr)
+                return std::string("null");
+            auto bytes = System::Text::Encoding::UTF8->GetBytes(ref->ToString());
+            cli::pin_ptr<System::Byte> p = &bytes[0];
+            return std::string(reinterpret_cast<char const *>(p), bytes->Length);
+        }
+#endif
+
     } // namespace Detail
 
     // If we decide for C++14, change these to enable_if_ts
@@ -819,6 +831,13 @@ namespace Catch {
             return ::Catch::Detail::stringify(static_cast<typename std::underlying_type<E>::type>(e));
         }
 
+#if defined(_MANAGED)
+        template <typename T>
+        std::string stringify( T^ e ) {
+            return ::Catch::StringMaker<T^>::convert(e);
+        }
+#endif
+
     } // namespace Detail
 
     // Some predefined specializations
@@ -842,6 +861,7 @@ namespace Catch {
     struct StringMaker<char *> {
         static std::string convert(char * str);
     };
+
 #ifdef CATCH_CONFIG_WCHAR
     template<>
     struct StringMaker<wchar_t const *> {
@@ -853,22 +873,24 @@ namespace Catch {
     };
 #endif
 
+    // TBD: Should we use `strnlen` to ensure that we don't go out of the buffer,
+    //      while keeping string semantics?
     template<int SZ>
     struct StringMaker<char[SZ]> {
-        static std::string convert(const char* str) {
+        static std::string convert(char const* str) {
             return ::Catch::Detail::stringify(std::string{ str });
         }
     };
     template<int SZ>
     struct StringMaker<signed char[SZ]> {
-        static std::string convert(const char* str) {
-            return ::Catch::Detail::stringify(std::string{ str });
+        static std::string convert(signed char const* str) {
+            return ::Catch::Detail::stringify(std::string{ reinterpret_cast<char const *>(str) });
         }
     };
     template<int SZ>
     struct StringMaker<unsigned char[SZ]> {
-        static std::string convert(const char* str) {
-            return ::Catch::Detail::stringify(std::string{ str });
+        static std::string convert(unsigned char const* str) {
+            return ::Catch::Detail::stringify(std::string{ reinterpret_cast<char const *>(str) });
         }
     };
 
@@ -951,6 +973,15 @@ namespace Catch {
             }
         }
     };
+
+#if defined(_MANAGED)
+    template <typename T>
+    struct StringMaker<T^> {
+        static std::string convert( T^ ref ) {
+            return ::Catch::Detail::clrReferenceToString(ref);
+        }
+    };
+#endif
 
     namespace Detail {
         template<typename InputIterator>
@@ -1079,6 +1110,13 @@ namespace Catch {
             !std::is_same<decltype(begin(std::declval<T>())), not_this_one>::value &&
             !std::is_same<decltype(end(std::declval<T>())), not_this_one>::value;
     };
+
+#if defined(_MANAGED) // Managed types are never ranges
+    template <typename T>
+    struct is_range<T^> {
+        static const bool value = false;
+    };
+#endif
 
     template<typename Range>
     std::string rangeToString( Range const& range ) {
@@ -2357,6 +2395,54 @@ namespace Matchers {
 } // namespace Catch
 
 // end catch_matchers_floating.h
+// start catch_matchers_generic.hpp
+
+#include <functional>
+#include <string>
+
+namespace Catch {
+namespace Matchers {
+namespace Generic {
+
+namespace Detail {
+    std::string finalizeDescription(const std::string& desc);
+}
+
+template <typename T>
+class PredicateMatcher : public MatcherBase<T> {
+    std::function<bool(T const&)> m_predicate;
+    std::string m_description;
+public:
+
+    PredicateMatcher(std::function<bool(T const&)> const& elem, std::string const& descr)
+        :m_predicate(std::move(elem)),
+        m_description(Detail::finalizeDescription(descr))
+    {}
+
+    bool match( T const& item ) const override {
+        return m_predicate(item);
+    }
+
+    std::string describe() const override {
+        return m_description;
+    }
+};
+
+} // namespace Generic
+
+    // The following functions create the actual matcher objects.
+    // The user has to explicitly specify type to the function, because
+    // infering std::function<bool(T const&)> is hard (but possible) and
+    // requires a lot of TMP.
+    template<typename T>
+    Generic::PredicateMatcher<T> Predicate(std::function<bool(T const&)> const& predicate, std::string const& description = "") {
+        return Generic::PredicateMatcher<T>(predicate, description);
+    }
+
+} // namespace Matchers
+} // namespace Catch
+
+// end catch_matchers_generic.hpp
 // start catch_matchers_string.h
 
 #include <string>
@@ -4830,7 +4916,7 @@ namespace Catch {
 
     public:
         // !TBD We need to do this another way!
-        bool aborting() const override;
+        bool aborting() const final;
 
     private:
 
@@ -7880,7 +7966,7 @@ namespace Floating {
     // Performs equivalent check of std::fabs(lhs - rhs) <= margin
     // But without the subtraction to allow for INFINITY in comparison
     bool WithinAbsMatcher::match(double const& matchee) const {
-        return (matchee + m_margin >= m_target) && (m_target + m_margin >= m_margin);
+        return (matchee + m_margin >= m_target) && (m_target + m_margin >= matchee);
     }
 
     std::string WithinAbsMatcher::describe() const {
@@ -7927,6 +8013,16 @@ Floating::WithinAbsMatcher WithinAbs(double target, double margin) {
 } // namespace Catch
 
 // end catch_matchers_floating.cpp
+// start catch_matchers_generic.cpp
+
+std::string Catch::Matchers::Generic::Detail::finalizeDescription(const std::string& desc) {
+    if (desc.empty()) {
+        return "matches undescribed predicate";
+    } else {
+        return "matches predicate: \"" + desc + '"';
+    }
+}
+// end catch_matchers_generic.cpp
 // start catch_matchers_string.cpp
 
 #include <regex>
@@ -10425,6 +10521,8 @@ namespace Catch {
 
 #include <chrono>
 
+static const uint64_t nanosecondsInSecond = 1000000000;
+
 namespace Catch {
 
     auto getCurrentNanosecondsSinceEpoch() -> uint64_t {
@@ -10435,17 +10533,25 @@ namespace Catch {
         uint64_t sum = 0;
         static const uint64_t iterations = 1000000;
 
+        auto startTime = getCurrentNanosecondsSinceEpoch();
+
         for( std::size_t i = 0; i < iterations; ++i ) {
 
             uint64_t ticks;
             uint64_t baseTicks = getCurrentNanosecondsSinceEpoch();
             do {
                 ticks = getCurrentNanosecondsSinceEpoch();
-            }
-            while( ticks == baseTicks );
+            } while( ticks == baseTicks );
 
             auto delta = ticks - baseTicks;
             sum += delta;
+
+            // If we have been calibrating for over 3 seconds -- the clock
+            // is terrible and we should move on.
+            // TBD: How to signal that the measured resolution is probably wrong?
+            if (ticks > startTime + 3 * nanosecondsInSecond) {
+                return sum / i;
+            }
         }
 
         // We're just taking the mean, here. To do better we could take the std. dev and exclude outliers
@@ -10807,7 +10913,7 @@ namespace Catch {
     }
 
     Version const& libraryVersion() {
-        static Version version( 2, 2, 1, "", 0 );
+        static Version version( 2, 2, 2, "", 0 );
         return version;
     }
 
@@ -10858,7 +10964,45 @@ namespace Catch {
 
 #include <iomanip>
 
+using uchar = unsigned char;
+
 namespace Catch {
+
+namespace {
+
+    size_t trailingBytes(unsigned char c) {
+        if ((c & 0xE0) == 0xC0) {
+            return 2;
+        }
+        if ((c & 0xF0) == 0xE0) {
+            return 3;
+        }
+        if ((c & 0xF8) == 0xF0) {
+            return 4;
+        }
+        CATCH_INTERNAL_ERROR("Invalid multibyte utf-8 start byte encountered");
+    }
+
+    uint32_t headerValue(unsigned char c) {
+        if ((c & 0xE0) == 0xC0) {
+            return c & 0x1F;
+        }
+        if ((c & 0xF0) == 0xE0) {
+            return c & 0x0F;
+        }
+        if ((c & 0xF8) == 0xF0) {
+            return c & 0x07;
+        }
+        CATCH_INTERNAL_ERROR("Invalid multibyte utf-8 start byte encountered");
+    }
+
+    void hexEscapeChar(std::ostream& os, unsigned char c) {
+        os << "\\x"
+            << std::uppercase << std::hex << std::setfill('0') << std::setw(2)
+            << static_cast<int>(c);
+    }
+
+} // anonymous namespace
 
     XmlEncode::XmlEncode( std::string const& str, ForWhat forWhat )
     :   m_str( str ),
@@ -10866,41 +11010,95 @@ namespace Catch {
     {}
 
     void XmlEncode::encodeTo( std::ostream& os ) const {
-
         // Apostrophe escaping not necessary if we always use " to write attributes
         // (see: http://www.w3.org/TR/xml/#syntax)
 
-        for( std::size_t i = 0; i < m_str.size(); ++ i ) {
-            char c = m_str[i];
-            switch( c ) {
-                case '<':   os << "&lt;"; break;
-                case '&':   os << "&amp;"; break;
+        for( std::size_t idx = 0; idx < m_str.size(); ++ idx ) {
+            uchar c = m_str[idx];
+            switch (c) {
+            case '<':   os << "&lt;"; break;
+            case '&':   os << "&amp;"; break;
 
-                case '>':
-                    // See: http://www.w3.org/TR/xml/#syntax
-                    if( i > 2 && m_str[i-1] == ']' && m_str[i-2] == ']' )
-                        os << "&gt;";
-                    else
-                        os << c;
+            case '>':
+                // See: http://www.w3.org/TR/xml/#syntax
+                if (idx > 2 && m_str[idx - 1] == ']' && m_str[idx - 2] == ']')
+                    os << "&gt;";
+                else
+                    os << c;
+                break;
+
+            case '\"':
+                if (m_forWhat == ForAttributes)
+                    os << "&quot;";
+                else
+                    os << c;
+                break;
+
+            default:
+                // Check for control characters and invalid utf-8
+
+                // Escape control characters in standard ascii
+                // see http://stackoverflow.com/questions/404107/why-are-control-characters-illegal-in-xml-1-0
+                if (c < 0x09 || (c > 0x0D && c < 0x20) || c == 0x7F) {
+                    hexEscapeChar(os, c);
                     break;
+                }
 
-                case '\"':
-                    if( m_forWhat == ForAttributes )
-                        os << "&quot;";
-                    else
-                        os << c;
+                // Plain ASCII: Write it to stream
+                if (c < 0x7F) {
+                    os << c;
                     break;
+                }
 
-                default:
-                    // Escape control chars - based on contribution by @espenalb in PR #465 and
-                    // by @mrpi PR #588
-                    if ( ( c >= 0 && c < '\x09' ) || ( c > '\x0D' && c < '\x20') || c=='\x7F' ) {
-                        // see http://stackoverflow.com/questions/404107/why-are-control-characters-illegal-in-xml-1-0
-                        os << "\\x" << std::uppercase << std::hex << std::setfill('0') << std::setw(2)
-                           << static_cast<int>( c );
-                    }
-                    else
-                        os << c;
+                // UTF-8 territory
+                // Check if the encoding is valid and if it is not, hex escape bytes.
+                // Important: We do not check the exact decoded values for validity, only the encoding format
+                // First check that this bytes is a valid lead byte:
+                // This means that it is not encoded as 1111 1XXX
+                // Or as 10XX XXXX
+                if (c <  0xC0 ||
+                    c >= 0xF8) {
+                    hexEscapeChar(os, c);
+                    break;
+                }
+
+                auto encBytes = trailingBytes(c);
+                // Are there enough bytes left to avoid accessing out-of-bounds memory?
+                if (idx + encBytes - 1 >= m_str.size()) {
+                    hexEscapeChar(os, c);
+                    break;
+                }
+                // The header is valid, check data
+                // The next encBytes bytes must together be a valid utf-8
+                // This means: bitpattern 10XX XXXX and the extracted value is sane (ish)
+                bool valid = true;
+                uint32_t value = headerValue(c);
+                for (std::size_t n = 1; n < encBytes; ++n) {
+                    uchar nc = m_str[idx + n];
+                    valid &= ((nc & 0xC0) == 0x80);
+                    value = (value << 6) | (nc & 0x3F);
+                }
+
+                if (
+                    // Wrong bit pattern of following bytes
+                    (!valid) ||
+                    // Overlong encodings
+                    (value < 0x80) ||
+                    (0x80 <= value && value < 0x800   && encBytes > 2) ||
+                    (0x800 < value && value < 0x10000 && encBytes > 3) ||
+                    // Encoded value out of range
+                    (value >= 0x110000)
+                    ) {
+                    hexEscapeChar(os, c);
+                    break;
+                }
+
+                // If we got here, this is in fact a valid(ish) utf-8 sequence
+                for (std::size_t n = 0; n < encBytes; ++n) {
+                    os << m_str[idx + n];
+                }
+                idx += encBytes - 1;
+                break;
             }
         }
     }

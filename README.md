@@ -5,9 +5,9 @@
 [![Build Status](https://travis-ci.org/catchorg/Catch2.svg?branch=master)](https://travis-ci.org/catchorg/Catch2)
 [![Build status](https://ci.appveyor.com/api/projects/status/github/catchorg/Catch2?svg=true)](https://ci.appveyor.com/project/catchorg/catch2)
 [![codecov](https://codecov.io/gh/catchorg/Catch2/branch/master/graph/badge.svg)](https://codecov.io/gh/catchorg/Catch2)
-[![Try online](https://img.shields.io/badge/try-online-blue.svg)](https://wandbox.org/permlink/zDKMK3eGMC9IP2jy)
+[![Try online](https://img.shields.io/badge/try-online-blue.svg)](https://wandbox.org/permlink/fRDMfYjUnrbOFwLn)
 
-<a href="https://github.com/catchorg/Catch2/releases/download/v2.2.1/catch.hpp">The latest version of the single header can be downloaded directly using this link</a>
+<a href="https://github.com/catchorg/Catch2/releases/download/v2.2.2/catch.hpp">The latest version of the single header can be downloaded directly using this link</a>
 
 ## Catch2 is released!
 

@@ -1,5 +1,30 @@
 <a id="top"></a>
 
+# 2.2.2
+
+## Fixes
+* Fixed bug in `WithinAbs::match()` failing spuriously (#1228)
+* Fixed clang-tidy diagnostic about virtual call in destructor (#1226)
+* Reduced the number of GCC warnings suppression leaking out of the header (#1090, #1091)
+  * Only `-Wparentheses` should be leaking now
+* Added upper bound on the time benchmark timer calibration is allowed to take (#1237)
+  * On platforms where `std::chrono::high_resolution_clock`'s resolution is low, the calibration would appear stuck
+* Fixed compilation error when stringifying static arrays of `unsigned char`s (#1238)
+
+## Improvements
+* XML encoder now hex-encodes invalid UTF-8 sequences (#1207)
+  * This affects xml and junit reporters
+  * Some invalid UTF-8 parts are left as is, e.g. surrogate pairs. This is because certain extensions of UTF-8 allow them, such as WTF-8.
+* CLR objects (`T^`) can now be stringified (#1216)
+  * This affects code compiled as C++/CLI
+* Added `PredicateMatcher`, a matcher that takes an arbitrary predicate function (#1236)
+  * See [documentation for details](https://github.com/catchorg/Catch2/blob/master/docs/matchers.md)
+
+## Others
+* Modified CMake-installed pkg-config to allow `#include <catch.hpp>`(#1239)
+  * The plans to standardize on `#include <catch2/catch.hpp>` are still in effect
+
+
 # 2.2.1
 
 ## Fixes
