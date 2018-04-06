@@ -72,10 +72,17 @@ else:
 
 overallResult = 0
 
+def openFile(file, mode):
+    try:
+        return open(file, mode, encoding='utf-8', errors='surrogateescape')
+    except TypeError:
+        import io
+        return io.open(file, mode, encoding='utf-8', errors='surrogateescape')
+
 def diffFiles(fileA, fileB):
-    with open(fileA, 'r') as file:
+    with openFile(fileA, 'r') as file:
         aLines = [line.rstrip() for line in file.readlines()]
-    with open(fileB, 'r') as file:
+    with openFile(fileB, 'r') as file:
         bLines = [line.rstrip() for line in file.readlines()]
 
     shortenedFilenameA = fileA.rsplit(os.sep, 1)[-1]
@@ -139,8 +146,8 @@ def approve(baseName, args):
     subprocess.call(args, stdout=f, stderr=f)
     f.close()
 
-    rawFile = open(rawResultsPath, 'r')
-    filteredFile = open(filteredResultsPath, 'w')
+    rawFile = openFile(rawResultsPath, 'r')
+    filteredFile = openFile(filteredResultsPath, 'w')
     for line in rawFile:
         filteredFile.write(filterLine(line).rstrip() + "\n")
     filteredFile.close()
