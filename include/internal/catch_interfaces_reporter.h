@@ -226,8 +226,6 @@ namespace Catch {
         virtual Listeners const& getListeners() const = 0;
     };
 
-    void addReporter( IStreamingReporterPtr& existingReporter, IStreamingReporterPtr&& additionalReporter );
-
 } // end namespace Catch
 
 #endif // TWOBLUECUBES_CATCH_INTERFACES_REPORTER_H_INCLUDED

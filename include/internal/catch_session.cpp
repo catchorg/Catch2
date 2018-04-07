@@ -20,6 +20,7 @@
 #include "catch_text.h"
 #include "catch_stream.h"
 #include "catch_windows_h_proxy.h"
+#include "../reporters/catch_reporter_listening.h"
 
 #include <cstdlib>
 #include <iomanip>
@@ -36,22 +37,26 @@ namespace Catch {
             return reporter;
         }
 
-
         IStreamingReporterPtr makeReporter(std::shared_ptr<Config> const& config) {
-            return createReporter(config->getReporterName(), config);
-        }
+            if (Catch::getRegistryHub().getReporterRegistry().getListeners().empty()) {
+                return createReporter(config->getReporterName(), config);
+            }
 
+            auto multi = std::unique_ptr<ListeningReporter>(new ListeningReporter);
 
-        void addListeners(IStreamingReporterPtr& reporters, IConfigPtr const& config) {
             auto const& listeners = Catch::getRegistryHub().getReporterRegistry().getListeners();
-            for (auto const& listener : listeners)
-                addReporter(reporters, listener->create(Catch::ReporterConfig(config)));
+            for (auto const& listener : listeners) {
+                multi->addListener(listener->create(Catch::ReporterConfig(config)));
+            }
+            multi->addReporter(createReporter(config->getReporterName(), config));
+            return std::move(multi);
         }
 
 
         Catch::Totals runTests(std::shared_ptr<Config> const& config) {
-            IStreamingReporterPtr reporter = makeReporter(config);
-            addListeners(reporter, config);
+            // FixMe: Add listeners in order first, then add reporters.
+
+            auto reporter = makeReporter(config);
 
             RunContext context(config, std::move(reporter));
 

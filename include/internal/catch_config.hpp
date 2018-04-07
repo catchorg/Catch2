@@ -54,13 +54,11 @@ namespace Catch {
         std::string outputFilename;
         std::string name;
         std::string processName;
-
 #ifndef CATCH_CONFIG_DEFAULT_REPORTER
 #define CATCH_CONFIG_DEFAULT_REPORTER "console"
 #endif
         std::string reporterName = CATCH_CONFIG_DEFAULT_REPORTER;
 #undef CATCH_CONFIG_DEFAULT_REPORTER
-
 
         std::vector<std::string> testsOrTags;
         std::vector<std::string> sectionsToRun;

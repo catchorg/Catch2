@@ -11,12 +11,14 @@
 
 namespace Catch {
 
-    class MultipleReporters : public IStreamingReporter {
+    class ListeningReporter : public IStreamingReporter {
         using Reporters = std::vector<IStreamingReporterPtr>;
-        Reporters m_reporters;
+        Reporters m_listeners;
+        IStreamingReporterPtr m_reporter = nullptr;
 
     public:
-        void add( IStreamingReporterPtr&& reporter );
+        void addListener( IStreamingReporterPtr&& listener );
+        void addReporter( IStreamingReporterPtr&& reporter );
 
     public: // IStreamingReporter
 

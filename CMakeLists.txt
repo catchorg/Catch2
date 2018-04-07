@@ -265,7 +265,7 @@ set(REPORTER_HEADERS
         ${HEADER_DIR}/reporters/catch_reporter_compact.h
         ${HEADER_DIR}/reporters/catch_reporter_console.h
         ${HEADER_DIR}/reporters/catch_reporter_junit.h
-        ${HEADER_DIR}/reporters/catch_reporter_multi.h
+        ${HEADER_DIR}/reporters/catch_reporter_listening.h
         ${HEADER_DIR}/reporters/catch_reporter_tap.hpp
         ${HEADER_DIR}/reporters/catch_reporter_teamcity.hpp
         ${HEADER_DIR}/reporters/catch_reporter_xml.h
@@ -275,7 +275,7 @@ set(REPORTER_SOURCES
         ${HEADER_DIR}/reporters/catch_reporter_compact.cpp
         ${HEADER_DIR}/reporters/catch_reporter_console.cpp
         ${HEADER_DIR}/reporters/catch_reporter_junit.cpp
-        ${HEADER_DIR}/reporters/catch_reporter_multi.cpp
+        ${HEADER_DIR}/reporters/catch_reporter_listening.cpp
         ${HEADER_DIR}/reporters/catch_reporter_xml.cpp
         )
 set(REPORTER_FILES ${REPORTER_HEADERS} ${REPORTER_SOURCES})
