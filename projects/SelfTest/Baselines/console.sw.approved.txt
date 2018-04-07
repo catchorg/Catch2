@@ -4080,9 +4080,9 @@ with expansion:
 
 CmdLine.tests.cpp:<line number>:
 PASSED:
-  CHECK( config.reporterNames.empty() )
+  CHECK( config.reporterName == "console" )
 with expansion:
-  true
+  "console" == "console"
 
 CmdLine.tests.cpp:<line number>:
 PASSED:
@@ -4202,7 +4202,7 @@ with expansion:
 
 CmdLine.tests.cpp:<line number>:
 PASSED:
-  REQUIRE( config.reporterNames[0] == "console" )
+  REQUIRE( config.reporterName == "console" )
 with expansion:
   "console" == "console"
 
@@ -4222,41 +4222,9 @@ with expansion:
 
 CmdLine.tests.cpp:<line number>:
 PASSED:
-  REQUIRE( config.reporterNames[0] == "xml" )
+  REQUIRE( config.reporterName == "xml" )
 with expansion:
   "xml" == "xml"
-
--------------------------------------------------------------------------------
-Process can be configured on command line
-  reporter
-  -r xml and junit
--------------------------------------------------------------------------------
-CmdLine.tests.cpp:<line number>
-...............................................................................
-
-CmdLine.tests.cpp:<line number>:
-PASSED:
-  CHECK( cli.parse({"test", "-r", "xml", "-r", "junit"}) )
-with expansion:
-  {?}
-
-CmdLine.tests.cpp:<line number>:
-PASSED:
-  REQUIRE( config.reporterNames.size() == 2 )
-with expansion:
-  2 == 2
-
-CmdLine.tests.cpp:<line number>:
-PASSED:
-  REQUIRE( config.reporterNames[0] == "xml" )
-with expansion:
-  "xml" == "xml"
-
-CmdLine.tests.cpp:<line number>:
-PASSED:
-  REQUIRE( config.reporterNames[1] == "junit" )
-with expansion:
-  "junit" == "junit"
 
 -------------------------------------------------------------------------------
 Process can be configured on command line
@@ -4274,9 +4242,23 @@ with expansion:
 
 CmdLine.tests.cpp:<line number>:
 PASSED:
-  REQUIRE( config.reporterNames[0] == "junit" )
+  REQUIRE( config.reporterName == "junit" )
 with expansion:
   "junit" == "junit"
+
+-------------------------------------------------------------------------------
+Process can be configured on command line
+  reporter
+  Only one reporter is accepted
+-------------------------------------------------------------------------------
+CmdLine.tests.cpp:<line number>
+...............................................................................
+
+CmdLine.tests.cpp:<line number>:
+PASSED:
+  REQUIRE_FALSE( cli.parse({ "test", "-r", "xml", "-r", "junit" }) )
+with expansion:
+  !{?}
 
 -------------------------------------------------------------------------------
 Process can be configured on command line
@@ -8960,5 +8942,5 @@ PASSED:
 
 ===============================================================================
 test cases:  205 | 139 passed |  62 failed |  4 failed as expected
-assertions: 1077 | 935 passed | 121 failed | 21 failed as expected
+assertions: 1074 | 932 passed | 121 failed | 21 failed as expected
 

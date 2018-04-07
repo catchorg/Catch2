@@ -4757,10 +4757,10 @@
         </Expression>
         <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
           <Original>
-            config.reporterNames.empty()
+            config.reporterName == "console"
           </Original>
           <Expanded>
-            true
+            "console" == "console"
           </Expanded>
         </Expression>
         <Expression success="true" type="CHECK_FALSE" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
@@ -4899,7 +4899,7 @@
           </Expression>
           <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
             <Original>
-              config.reporterNames[0] == "console"
+              config.reporterName == "console"
             </Original>
             <Expanded>
               "console" == "console"
@@ -4921,7 +4921,7 @@
           </Expression>
           <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
             <Original>
-              config.reporterNames[0] == "xml"
+              config.reporterName == "xml"
             </Original>
             <Expanded>
               "xml" == "xml"
@@ -4930,44 +4930,6 @@
           <OverallResults successes="2" failures="0" expectedFailures="0"/>
         </Section>
         <OverallResults successes="2" failures="0" expectedFailures="0"/>
-      </Section>
-      <Section name="reporter" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-        <Section name="-r xml and junit" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-          <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-            <Original>
-              cli.parse({"test", "-r", "xml", "-r", "junit"})
-            </Original>
-            <Expanded>
-              {?}
-            </Expanded>
-          </Expression>
-          <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-            <Original>
-              config.reporterNames.size() == 2
-            </Original>
-            <Expanded>
-              2 == 2
-            </Expanded>
-          </Expression>
-          <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-            <Original>
-              config.reporterNames[0] == "xml"
-            </Original>
-            <Expanded>
-              "xml" == "xml"
-            </Expanded>
-          </Expression>
-          <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-            <Original>
-              config.reporterNames[1] == "junit"
-            </Original>
-            <Expanded>
-              "junit" == "junit"
-            </Expanded>
-          </Expression>
-          <OverallResults successes="4" failures="0" expectedFailures="0"/>
-        </Section>
-        <OverallResults successes="4" failures="0" expectedFailures="0"/>
       </Section>
       <Section name="reporter" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
         <Section name="--reporter/junit" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
@@ -4981,7 +4943,7 @@
           </Expression>
           <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
             <Original>
-              config.reporterNames[0] == "junit"
+              config.reporterName == "junit"
             </Original>
             <Expanded>
               "junit" == "junit"
@@ -4990,6 +4952,20 @@
           <OverallResults successes="2" failures="0" expectedFailures="0"/>
         </Section>
         <OverallResults successes="2" failures="0" expectedFailures="0"/>
+      </Section>
+      <Section name="reporter" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
+        <Section name="Only one reporter is accepted" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
+          <Expression success="true" type="REQUIRE_FALSE" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
+            <Original>
+              !(cli.parse({ "test", "-r", "xml", "-r", "junit" }))
+            </Original>
+            <Expanded>
+              !{?}
+            </Expanded>
+          </Expression>
+          <OverallResults successes="1" failures="0" expectedFailures="0"/>
+        </Section>
+        <OverallResults successes="1" failures="0" expectedFailures="0"/>
       </Section>
       <Section name="debugger" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
         <Section name="-b" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
@@ -9913,7 +9889,7 @@ loose text artifact
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="935" failures="122" expectedFailures="21"/>
+    <OverallResults successes="932" failures="122" expectedFailures="21"/>
   </Group>
-  <OverallResults successes="935" failures="121" expectedFailures="21"/>
+  <OverallResults successes="932" failures="121" expectedFailures="21"/>
 </Catch>
