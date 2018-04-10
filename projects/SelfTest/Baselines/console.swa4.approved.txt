@@ -127,6 +127,15 @@ with messages:
   sarr := "456"
 
 -------------------------------------------------------------------------------
+#1245
+-------------------------------------------------------------------------------
+Compilation.tests.cpp:<line number>
+...............................................................................
+
+Compilation.tests.cpp:<line number>:
+PASSED:
+
+-------------------------------------------------------------------------------
 #748 - captures with unexpected exceptions
   outside assertions
 -------------------------------------------------------------------------------
@@ -332,6 +341,6 @@ with expansion:
   !true
 
 ===============================================================================
-test cases: 13 | 10 passed | 1 failed | 2 failed as expected
-assertions: 37 | 30 passed | 4 failed | 3 failed as expected
+test cases: 14 | 11 passed | 1 failed | 2 failed as expected
+assertions: 38 | 31 passed | 4 failed | 3 failed as expected
 

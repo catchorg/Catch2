@@ -6,6 +6,7 @@
 [Exceptions](#exceptions)<br>
 [Matcher expressions](#matcher-expressions)<br>
 [Thread Safety](#thread-safety)<br>
+[Expressions with commas](#expressions-with-commas)<br>
 
 Most test frameworks have a large collection of assertion macros to capture all possible conditional forms (```_EQUALS```, ```_NOTEQUALS```, ```_GREATER_THAN``` etc).
 
@@ -154,6 +155,34 @@ Matchers can be composed using `&&`, `||` and `!` operators.
 
 Currently assertions in Catch are not thread safe.
 For more details, along with workarounds, see the section on [the limitations page](limitations.md#thread-safe-assertions).
+
+## Expressions with commas
+
+Because the preprocessor parses code using different rules than the
+compiler, multiple-argument assertions (e.g. `REQUIRE_THROWS_AS`) have
+problems with commas inside the provided expressions. As an example
+`REQUIRE_THROWS_AS(std::pair<int, int>(1, 2), std::invalid_argument);`
+will fails to compile, because the preprocessor sees 3 arguments provided,
+but the macro accepts only 2. There are two possible workarounds.
+
+1) Use typedef:
+```cpp
+using int_pair = std::pair<int, int>;
+REQUIRE_THROWS_AS(int_pair(1, 2), std::invalid_argument);
+```
+
+This solution is always applicable, but makes the meaning of the code
+less clear.
+
+2) Parenthesize the expression:
+```cpp
+TEST_CASE_METHOD((Fixture<int, int>), "foo", "[bar]") {
+    SUCCEED();
+}
+```
+
+This solution is not always applicable, because it might require extra
+changes on the Catch's side to work.
 
 ---
 
