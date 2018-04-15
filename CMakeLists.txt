@@ -359,21 +359,21 @@ if (BUILD_TESTING AND NOT_SUBPROJECT)
     add_test(NAME RunTests COMMAND $<TARGET_FILE:SelfTest>)
 
     add_test(NAME ListTests COMMAND $<TARGET_FILE:SelfTest> --list-tests --verbosity high)
-    set_tests_properties(ListTests PROPERTIES 
+    set_tests_properties(ListTests PROPERTIES
         PASS_REGULAR_EXPRESSION "[0-9]+ test cases"
         FAIL_REGULAR_EXPRESSION "Hidden Test"
     )
 
     add_test(NAME ListTags COMMAND $<TARGET_FILE:SelfTest> --list-tags)
-    set_tests_properties(ListTags PROPERTIES 
-        PASS_REGULAR_EXPRESSION "[0-9]+ tags" 
+    set_tests_properties(ListTags PROPERTIES
+        PASS_REGULAR_EXPRESSION "[0-9]+ tags"
         FAIL_REGULAR_EXPRESSION "[.]")
 
     add_test(NAME ListReporters COMMAND $<TARGET_FILE:SelfTest> --list-reporters)
     set_tests_properties(ListReporters PROPERTIES PASS_REGULAR_EXPRESSION "Available reporters:")
 
     add_test(NAME ListTestNamesOnly COMMAND $<TARGET_FILE:SelfTest> --list-test-names-only)
-    set_tests_properties(ListTestNamesOnly PROPERTIES 
+    set_tests_properties(ListTestNamesOnly PROPERTIES
         PASS_REGULAR_EXPRESSION "Regex string matcher"
         FAIL_REGULAR_EXPRESSION "Hidden Test")
 
@@ -443,6 +443,9 @@ install(TARGETS Catch EXPORT Catch2Config DESTINATION ${CMAKE_INSTALL_LIBDIR})
 install(EXPORT Catch2Config
 	NAMESPACE Catch2::
 	DESTINATION ${CATCH_CMAKE_CONFIG_DESTINATION})
+
+export(TARGETS Catch FILE Catch2Config.cmake)
+export(PACKAGE Catch)
 
 # install Catch2ConfigVersion.cmake file to handle versions in find_package
 include(CMakePackageConfigHelpers)
