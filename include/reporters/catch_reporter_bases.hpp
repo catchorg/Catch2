@@ -14,7 +14,7 @@
 #include <cstring>
 #include <cfloat>
 #include <cstdio>
-#include <assert.h>
+#include <cassert>
 #include <memory>
 #include <ostream>
 

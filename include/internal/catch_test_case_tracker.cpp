@@ -10,7 +10,7 @@
 #include "catch_enforce.h"
 
 #include <algorithm>
-#include <assert.h>
+#include <cassert>
 #include <stdexcept>
 #include <memory>
 #include <sstream>

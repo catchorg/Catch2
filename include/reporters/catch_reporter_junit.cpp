@@ -13,7 +13,7 @@
 #include "../internal/catch_tostring.h"
 #include "../internal/catch_reporter_registrars.hpp"
 
-#include <assert.h>
+#include <cassert>
 #include <sstream>
 #include <ctime>
 #include <algorithm>
