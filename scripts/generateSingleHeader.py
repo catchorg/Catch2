@@ -7,7 +7,6 @@ import io
 import sys
 import re
 import datetime
-import string
 from glob import glob
 
 from scriptCommon import catchPath
@@ -34,7 +33,7 @@ def generate(v):
     }
 
     for arg in sys.argv[1:]:
-        arg = string.lower(arg)
+        arg = arg.lower()
         if arg == "noimpl":
             globals['includeImpl'] = False
             print( "Not including impl code" )
@@ -82,7 +81,7 @@ def generate(v):
             if m:
                 header = m.group(1)
                 headerPath, sep, headerFile = header.rpartition( "/" )
-                if not headerFile in seenHeaders:
+                if headerFile not in seenHeaders:
                     if headerFile != "tbc_text_format.h" and headerFile != "clara.h":
                         seenHeaders.add( headerFile )
                     if headerPath == "internal" and path.endswith("internal/"):

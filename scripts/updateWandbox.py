@@ -41,7 +41,7 @@ def uploadFiles():
         'save': True
     })
 
-    if 'status' in response and not 'compiler_error' in response:
+    if 'status' in response and 'compiler_error' not in response:
         return True, response['url']
     else:
         return False, response

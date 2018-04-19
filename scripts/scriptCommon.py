@@ -15,7 +15,7 @@ def runAndCapture( args ):
     line = ""
     while True:
         out = child.stdout.read(1)
-        if out == '' and child.poll() != None:
+        if out == '' and child.poll():
             break
         if out != '':
             if out == '\n':

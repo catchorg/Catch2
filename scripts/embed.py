@@ -25,7 +25,7 @@ class LineMapper:
     # TBD:
     #  #if, #ifdef, comments after #else
     def mapLine( self, lineNo, line ):
-        for idFrom, idTo in self.idMap.iteritems():
+        for idFrom, idTo in self.idMap.items():
             r = re.compile("(.*)" + idFrom + "(.*)")
 
             m = r.match( line )
@@ -38,7 +38,7 @@ class LineMapper:
             # print("[{0}] originalNs: '{1}' - closing".format(lineNo, originalNs))
             # print( "  " + line )
             # print( "  1:[{0}]\n  2:[{1}]\n  3:[{2}]\n  4:[{3}]\n  5:[{4}]".format( m.group(1), m.group(2), m.group(3), m.group(4), m.group(5) ) )
-            if self.outerNamespace.has_key(originalNs):
+            if originalNs in self.outerNamespace:
                 outerNs, innerNs = self.outerNamespace[originalNs]
                 return "{0}}}{1}{2}::{3}{4}{5}\n".format( m.group(1), m.group(2), outerNs, innerNs, m.group(4), m.group(5))
         m = nsRe.match( line )
@@ -47,7 +47,7 @@ class LineMapper:
             # print("[{0}] originalNs: '{1}'".format(lineNo, originalNs))
             # print( "  " + line )
             # print( "  1:[{0}]\n  2:[{1}]\n  3:[{2}]\n  4:[{3}]".format( m.group(1), m.group(2), m.group(3), m.group(4) ) )
-            if self.outerNamespace.has_key(originalNs):
+            if originalNs in self.outerNamespace:
                 outerNs, innerNs = self.outerNamespace[originalNs]
                 return "{0}{1} {{ namespace {2}{3}{4}\n".format( m.group(1), outerNs, innerNs, m.group(3), m.group(4) )
 
