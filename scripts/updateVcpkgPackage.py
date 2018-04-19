@@ -31,7 +31,6 @@ def get_hash(path):
 
 def update_control(path):
     v = Version()
-    ver_string = v.getVersionString()
 
     # Update control
     lines = []
@@ -48,7 +47,6 @@ def update_control(path):
 def update_portfile(path, header_hash, licence_hash):
     print('Updating portfile')
     v = Version()
-    ver_string = v.getVersionString()
 
     # Update portfile
     lines = []

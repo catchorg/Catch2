@@ -12,13 +12,14 @@
 #
 
 from  __future__  import print_function
-from scriptCommon import catchPath
 
 import argparse
 import glob
 import os
 import re
 import sys
+
+from scriptCommon import catchPath
 
 # Configuration:
 
@@ -431,7 +432,7 @@ def updateDocumentToCMain():
 
     args = parser.parse_args()
 
-    paths = args.Input if len(args.Input) > 0 else [documentsDefault]
+    paths = args.Input if args.Input else [documentsDefault]
 
     changedFiles = updateDocumentToC(paths=paths, min_toc_len=args.minTocEntries, verbose=args.verbose)
 
