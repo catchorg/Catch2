@@ -14,6 +14,7 @@
 // file can be distributed as a single header that works with the main
 // Catch single header.
 
+#include <cassert>
 #include <cstring>
 
 #ifdef __clang__

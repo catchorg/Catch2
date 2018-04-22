@@ -16,6 +16,8 @@
 #include "catch_interfaces_registry_hub.h"
 #include "catch_wildcard_pattern.hpp"
 
+#include <cassert>
+
 namespace Catch {
 
     ResultBuilder::ResultBuilder(   char const* macroName,

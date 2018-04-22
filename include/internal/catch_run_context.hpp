@@ -22,7 +22,7 @@
 #include "catch_result_builder.h"
 #include "catch_fatal_condition.hpp"
 
-
+#include <cassert>
 #include <set>
 #include <string>
 

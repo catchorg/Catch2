@@ -13,6 +13,7 @@
 #include "../internal/catch_reporter_registrars.hpp"
 #include "../internal/catch_console_colour.hpp"
 
+#include <cassert>
 #include <cfloat>
 #include <cstdio>
 
