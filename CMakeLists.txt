@@ -424,7 +424,8 @@ endif()
 add_library(Catch INTERFACE)
 
 # depend on some obvious c++11 features so the dependency is transitively added dependants
-target_compile_features(Catch INTERFACE cxx_auto_type cxx_constexpr cxx_noexcept)
+set(COMPILE_FEATURES cxx_auto_type cxx_constexpr cxx_noexcept)
+target_compile_features(Catch INTERFACE ${COMPILE_FEATURES})
 
 target_include_directories(Catch
 	INTERFACE
@@ -454,3 +455,17 @@ write_basic_package_version_file(
 install(FILES
 	"${CMAKE_CURRENT_BINARY_DIR}/Catch2ConfigVersion.cmake"
 	DESTINATION ${CATCH_CMAKE_CONFIG_DESTINATION})
+
+# add an object library as intermediate for 'static' catch
+add_library(Catch-static-objects OBJECT EXCLUDE_FROM_ALL
+	${IMPL_SOURCES}
+	${REPORTER_SOURCES})
+target_compile_features(Catch-static-objects PRIVATE ${COMPILE_FEATURES})
+target_include_directories(Catch-static-objects PRIVATE ${HEADER_DIR})
+
+# add catch as a 'static' library target
+add_library(Catch-static INTERFACE)
+target_compile_features(Catch-static INTERFACE ${COMPILE_FEATURES})
+target_include_directories(Catch-static INTERFACE ${HEADER_DIR})
+target_sources(Catch-static INTERFACE $<TARGET_OBJECTS:Catch-static-objects>)
+add_library(Catch2::Catch-static ALIAS Catch-static)
