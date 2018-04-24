@@ -8,8 +8,6 @@
 #ifndef TWOBLUECUBES_CATCH_COMPILER_CAPABILITIES_HPP_INCLUDED
 #define TWOBLUECUBES_CATCH_COMPILER_CAPABILITIES_HPP_INCLUDED
 
-#include "catch_platform.h"
-
 // Detect a number of compiler features - by compiler
 // The following features are defined:
 //
@@ -81,7 +79,7 @@
 
 
 ////////////////////////////////////////////////////////////////////////////////
-// We know some environments not to support full POSIX signals
+// Not all Windows environments support SEH properly
 #if defined(__MINGW32__)
 #    define CATCH_INTERNAL_CONFIG_NO_WINDOWS_SEH
 #endif
