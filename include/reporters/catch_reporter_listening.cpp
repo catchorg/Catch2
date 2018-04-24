@@ -91,6 +91,21 @@ namespace Catch {
         m_reporter->assertionStarting( assertionInfo );
     }
 
+    void ListeningReporter::testStepInit( TestCaseInfo const& testInfo ) {
+        for (auto const& listener : m_listeners) {
+            listener->testStepInit( testInfo );
+        }
+        m_reporter->testStepInit( testInfo );
+    }
+
+    // The return value indicates if the messages buffer should be cleared:
+    void ListeningReporter::testStepDeinit( TestCaseInfo const& testInfo ) {
+       for (auto const& listener : m_listeners) {
+          static_cast<void>(listener->testStepDeinit(testInfo));
+       }
+       return m_reporter->testStepDeinit(testInfo);
+    }
+
     // The return value indicates if the messages buffer should be cleared:
     bool ListeningReporter::assertionEnded( AssertionStats const& assertionStats ) {
         for( auto const& listener : m_listeners ) {

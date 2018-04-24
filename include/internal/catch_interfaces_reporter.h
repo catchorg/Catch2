@@ -203,12 +203,48 @@ namespace Catch {
 
         virtual void skipTest( TestCaseInfo const& testInfo ) = 0;
 
+        /// Invoked prior to "leaf" test logic being executed for global initialization. "leaf" in
+        /// this case refers to a lone TEST_CASE or nested SECTION, depending on the structure of
+        /// the test itself. A "step" in the test is 1 leaf. The purpose of this method is to
+        /// perform identical global initialization prior to every test step's execution. This is
+        /// designed to happen before any local objects in a test step are constructed.
+        virtual void testStepInit( TestCaseInfo const& ) {}
+
+        /// Invoked after a "leaf" test to perform global cleanup. This is executed after all local
+        /// objects within test step scope have been destroyed. This method is meant to allow
+        /// shared global cleanup of state between test step executions.
+        virtual void testStepDeinit( TestCaseInfo const& ) {}
+
         // Default empty implementation provided
         virtual void fatalErrorEncountered( StringRef name );
 
         virtual bool isMulti() const;
     };
+
     using IStreamingReporterPtr = std::unique_ptr<IStreamingReporter>;
+
+    /// Utilizes RAII to invoke IStreamingReporter::testStepInit() and
+    /// IStreamingReporter::testStepDeinit(). This is useful in cases where exceptions can occur and
+    /// you want to make sure that the deinit method is still invoked.
+    class ScopedReporterStep
+    {
+    public:
+        ScopedReporterStep(IStreamingReporter& reporter, TestCaseInfo const& info)
+            : m_reporter(reporter)
+            , m_info(info)
+        {
+            m_reporter.testStepInit(m_info);
+        }
+
+        ~ScopedReporterStep()
+        {
+            m_reporter.testStepDeinit(m_info);
+        }
+
+    private:
+        IStreamingReporter& m_reporter;
+        TestCaseInfo const& m_info;
+    };
 
     struct IReporterFactory {
         virtual ~IReporterFactory();

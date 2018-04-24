@@ -299,6 +299,7 @@ namespace Catch {
 
     void RunContext::invokeActiveTestCase() {
         FatalConditionHandler fatalConditionHandler; // Handle signals
+        ScopedReporterStep step{*m_reporter, m_activeTestCase->getTestCaseInfo()};
         m_activeTestCase->invoke();
         fatalConditionHandler.reset();
     }

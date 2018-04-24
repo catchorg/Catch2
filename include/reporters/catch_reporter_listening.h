@@ -39,7 +39,8 @@ namespace Catch {
         void testCaseStarting( TestCaseInfo const& testInfo ) override;
         void sectionStarting( SectionInfo const& sectionInfo ) override;
         void assertionStarting( AssertionInfo const& assertionInfo ) override;
-
+        void testStepInit(TestCaseInfo const& testInfo) override;
+        void testStepDeinit(TestCaseInfo const& testInfo) override;
         // The return value indicates if the messages buffer should be cleared:
         bool assertionEnded( AssertionStats const& assertionStats ) override;
         void sectionEnded( SectionStats const& sectionStats ) override;
