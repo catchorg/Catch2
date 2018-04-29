@@ -3,54 +3,13 @@
 #include "catch_enforce.h"
 #include "catch_random_number_generator.h"
 #include "catch_stream.h"
+#include "catch_output_redirect.h"
 
 #include <cassert>
 #include <algorithm>
 #include <sstream>
 
 namespace Catch {
-
-    class RedirectedStream {
-        std::ostream& m_originalStream;
-        std::ostream& m_redirectionStream;
-        std::streambuf* m_prevBuf;
-
-    public:
-        RedirectedStream( std::ostream& originalStream, std::ostream& redirectionStream )
-        :   m_originalStream( originalStream ),
-            m_redirectionStream( redirectionStream ),
-            m_prevBuf( m_originalStream.rdbuf() )
-        {
-            m_originalStream.rdbuf( m_redirectionStream.rdbuf() );
-        }
-        ~RedirectedStream() {
-            m_originalStream.rdbuf( m_prevBuf );
-        }
-    };
-
-    class RedirectedStdOut {
-        ReusableStringStream m_rss;
-        RedirectedStream m_cout;
-    public:
-        RedirectedStdOut() : m_cout( Catch::cout(), m_rss.get() ) {}
-        auto str() const -> std::string { return m_rss.str(); }
-    };
-
-    // StdErr has two constituent streams in C++, std::cerr and std::clog
-    // This means that we need to redirect 2 streams into 1 to keep proper
-    // order of writes
-    class RedirectedStdErr {
-        ReusableStringStream m_rss;
-        RedirectedStream m_cerr;
-        RedirectedStream m_clog;
-    public:
-        RedirectedStdErr()
-        :   m_cerr( Catch::cerr(), m_rss.get() ),
-            m_clog( Catch::clog(), m_rss.get() )
-        {}
-        auto str() const -> std::string { return m_rss.str(); }
-    };
-
 
     RunContext::RunContext(IConfigPtr const& _config, IStreamingReporterPtr&& reporter)
     :   m_runInfo(_config->name()),
@@ -299,13 +258,19 @@ namespace Catch {
         Timer timer;
         try {
             if (m_reporter->getPreferences().shouldRedirectStdOut) {
+#if !defined(CATCH_CONFIG_EXPERIMENTAL_REDIRECT)
                 RedirectedStdOut redirectedStdOut;
                 RedirectedStdErr redirectedStdErr;
+
                 timer.start();
                 invokeActiveTestCase();
                 redirectedCout += redirectedStdOut.str();
                 redirectedCerr += redirectedStdErr.str();
-
+#else
+                OutputRedirect r(redirectedCout, redirectedCerr);
+                timer.start();
+                invokeActiveTestCase();
+#endif
             } else {
                 timer.start();
                 invokeActiveTestCase();

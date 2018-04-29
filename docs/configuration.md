@@ -121,6 +121,7 @@ by using `_NO_` in the macro, e.g. `CATCH_CONFIG_NO_CPP17_UNCAUGHT_EXCEPTIONS`.
     CATCH_CONFIG_DISABLE_STRINGIFICATION    // Disable stringifying the original expression
     CATCH_CONFIG_DISABLE                    // Disables assertions and test case registration
     CATCH_CONFIG_WCHAR                      // Enables use of wchart_t
+    CATCH_CONFIG_EXPERIMENTAL_REDIRECT      // Enables the new (experimental) way of capturing stdout/stderr
 
 Currently Catch enables `CATCH_CONFIG_WINDOWS_SEH` only when compiled with MSVC, because some versions of MinGW do not have the necessary Win32 API support.
 
@@ -131,7 +132,9 @@ Currently Catch enables `CATCH_CONFIG_WINDOWS_SEH` only when compiled with MSVC,
 `CATCH_CONFIG_WCHAR` is on by default, but can be disabled. Currently
 it is only used in support for DJGPP cross-compiler.
 
-These toggles can be disabled by using `_NO_` form of the toggle, e.g. `CATCH_CONFIG_NO_WINDOWS_SEH`.
+With the exception of `CATCH_CONFIG_EXPERIMENTAL_REDIRECT`,
+these toggles can be disabled by using `_NO_` form of the toggle,
+e.g. `CATCH_CONFIG_NO_WINDOWS_SEH`.
 
 ### `CATCH_CONFIG_FAST_COMPILE`
 Defining this flag speeds up compilation of test files by ~20%, by making 2 changes:
