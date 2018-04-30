@@ -15,7 +15,7 @@
 #include <sstream>
 #include <stdexcept>
 
-#if defined(CATCH_PLATFORM_WINDOWS)
+#if defined(_MSC_VER)
 #include <io.h>      //_dup and _dup2
 #define dup _dup
 #define dup2 _dup2

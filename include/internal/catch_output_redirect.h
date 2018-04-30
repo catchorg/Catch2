@@ -66,7 +66,7 @@ namespace Catch {
 
     private:
         std::FILE* m_file = nullptr;
-    #if defined(CATCH_PLATFORM_WINDOWS)
+    #if defined(_MSC_VER)
         char m_buffer[L_tmpnam] = { 0 };
     #endif
     };
