@@ -49,7 +49,7 @@ namespace Catch {
 
 
 
-#if defined(CATCH_PLATFORM_WINDOWS)
+#if defined(_MSC_VER)
     TempFile::TempFile() {
         if (tmpnam_s(m_buffer)) {
             throw std::runtime_error("Could not get a temp filename");
@@ -77,7 +77,7 @@ namespace Catch {
          std::fclose(m_file);
          // We manually create the file on Windows only, on Linux
          // it will be autodeleted
-#if defined(CATCH_PLATFORM_WINDOWS)
+#if defined(_MSC_VER)
          std::remove(m_buffer);
 #endif
     }
@@ -125,7 +125,7 @@ namespace Catch {
 
 } // namespace Catch
 
-#if defined(CATCH_PLATFORM_WINDOWS)
+#if defined(_MSC_VER)
 #undef dup
 #undef dup2
 #undef fileno
