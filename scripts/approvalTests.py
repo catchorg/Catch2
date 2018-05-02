@@ -12,6 +12,10 @@ import difflib
 import scriptCommon
 from scriptCommon import catchPath
 
+if os.name == 'nt':
+	# Enable console colours on windows
+	os.system('')
+
 rootPath = os.path.join(catchPath, 'projects/SelfTest/Baselines')
 
 
