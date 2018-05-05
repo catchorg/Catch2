@@ -11,6 +11,7 @@ common_sources: &all_sources
   - llvm-toolchain-trusty-3.9
   - llvm-toolchain-trusty-4.0
   - llvm-toolchain-trusty-5.0
+  - llvm-toolchain-trusty-6.0
 
 matrix:
   include:
@@ -66,6 +67,14 @@ matrix:
               sources: *all_sources
               packages: ['clang-5.0']
       env: COMPILER='clang++-5.0'
+
+    - os: linux
+      compiler: clang
+      addons:
+          apt:
+              sources: *all_sources
+              packages: ['clang-6.0']
+      env: COMPILER='clang++-6.0'
 
     # 2/ Linux GCC Builds
     - os: linux
@@ -143,6 +152,14 @@ matrix:
               sources: *all_sources
               packages: ['clang-5.0', 'libstdc++-6-dev']
       env: COMPILER='clang++-5.0' CPP14=1
+
+    - os: linux
+      compiler: clang
+      addons:
+          apt:
+              sources: *all_sources
+              packages: ['clang-6.0', 'libstdc++-6-dev']
+      env: COMPILER='clang++-6.0' CPP14=1
 
 
     # 4a/ Linux C++14 GCC builds
