@@ -304,7 +304,7 @@ TEST_CASE( "toString on const wchar_t pointer returns the string contents", "[to
 }
 
 TEST_CASE( "toString on wchar_t const pointer returns the string contents", "[toString]" ) {
-        auto const s = const_cast<wchar_t* const>( L"wide load" );
+        auto const s = const_cast<wchar_t*>( L"wide load" );
         std::string result = ::Catch::Detail::stringify( s );
         CHECK( result == "\"wide load\"" );
 }

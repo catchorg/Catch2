@@ -117,6 +117,14 @@ matrix:
           packages: ['g++-7']
       env: COMPILER='g++-7'
 
+    - os: linux
+      compiler: gcc
+      addons: &gcc8
+        apt:
+          sources: *all_sources
+          packages: ['g++-8']
+      env: COMPILER='g++-8'
+
     # 3b/ Linux C++14 Clang builds
     # Note that we need newer libstdc++ for C++14 support
     - os: linux
@@ -172,6 +180,11 @@ matrix:
       compiler: gcc
       addons: *gcc7
       env: COMPILER='g++-7' CPP14=1
+
+    - os: linux
+      compiler: gcc
+      addons: *gcc8
+      env: COMPILER='g++-8' CPP14=1
 
     # 5/ OSX Clang Builds
     - os: osx
