@@ -50,8 +50,7 @@ string(REPLACE "\n" ";" output "${output}")
 
 # Parse output
 foreach(line ${output})
-  # Test name; strip spaces to get just the name...
-  string(REGEX REPLACE " +" "" test "${line}")
+  set(test ${line})
   # ...and add to script
   add_command(add_test
     "${prefix}${test}${suffix}"
