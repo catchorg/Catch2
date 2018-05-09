@@ -99,6 +99,19 @@ This means that defining `CATCH_CONFIG_DEFAULT_REPORTER` to `"console"`
 is equivalent with the out-of-the-box experience.
 
 
+## C++11 toggles
+
+    CATCH_CONFIG_CPP11_TO_STRING // Use `std::to_string`
+
+Because we support platforms whose standard library does not contain
+`std::to_string`, it is possible to force Catch to use a workaround
+based on `std::stringstream`. On platforms other than Android,
+the default is to use `std::to_string`. On Android, the default is to
+use the `stringstream` workaround. As always, it is possible to override
+Catch's selection, by defining either `CATCH_CONFIG_CPP11_TO_STRING` or
+`CATCH_CONFIG_NO_CPP11_TO_STRING`.
+
+
 ## C++17 toggles
 
     CATCH_CONFIG_CPP17_UNCAUGHT_EXCEPTIONS  // Use std::uncaught_exceptions instead of std::uncaught_exception

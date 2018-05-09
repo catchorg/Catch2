@@ -187,6 +187,7 @@ set(INTERNAL_HEADERS
         ${HEADER_DIR}/internal/catch_test_spec_parser.h
         ${HEADER_DIR}/internal/catch_text.h
         ${HEADER_DIR}/internal/catch_timer.h
+        ${HEADER_DIR}/internal/catch_to_string.hpp
         ${HEADER_DIR}/internal/catch_tostring.h
         ${HEADER_DIR}/internal/catch_totals.h
         ${HEADER_DIR}/internal/catch_uncaught_exceptions.h
