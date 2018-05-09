@@ -22,6 +22,10 @@ public:
     : s( "hello" )
     {}
 
+#ifdef _MSC_VER
+#pragma warning(push)
+#pragma warning(disable:6237) // (<zero> && <expression>) is always zero
+#endif
     void succeedingCase()
     {
         REQUIRE( s == "hello" );
@@ -30,6 +34,9 @@ public:
     {
         REQUIRE( s == "world" );
     }
+#ifdef _MSC_VER
+#pragma warning(pop)
+#endif
 };
 
 struct Fixture

@@ -36,8 +36,15 @@ TEST_CASE( "benchmarked", "[!benchmark]" ) {
         for(int i =0; i < size; ++i )
             array[i] = i;
     }
+#ifdef _MSC_VER
+#pragma warning(push)
+#pragma warning(disable:6001) // Using uninitialized memory 'array'
+#endif
     int sum = 0;
     for(int i =0; i < size; ++i )
         sum += array[i];
+#ifdef _MSC_VER
+#pragma warning(pop)
+#endif
     REQUIRE( sum > size );
 }

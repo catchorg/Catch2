@@ -59,7 +59,16 @@ namespace Catch {
             if (strerror_s(buffer, errno)) {
                 throw std::runtime_error("Could not translate errno to string");
             }
+// strerror_s always null terminates the buffer when successful
+// m_buffer is zero initialized
+#ifdef _MSC_VER
+#pragma warning(push)
+#pragma warning(disable:6054) // String 'buffer' might not be zero-terminated
+#endif
             throw std::runtime_error("Could not open the temp file: " + std::string(m_buffer) + buffer);
+#ifdef _MSC_VER
+#pragma warning(pop)
+#endif
         }
     }
 #else
@@ -102,8 +111,15 @@ namespace Catch {
         m_originalStderr(dup(2)),
         m_stdoutDest(stdout_dest),
         m_stderrDest(stderr_dest) {
+#ifdef _MSC_VER
+#pragma warning(push)
+#pragma warning(disable:6031) // Return value ignored: '_dup2'
+#endif
         dup2(fileno(m_stdoutFile.getFile()), 1);
         dup2(fileno(m_stderrFile.getFile()), 2);
+#ifdef _MSC_VER
+#pragma warning(pop)
+#endif
     }
 
     OutputRedirect::~OutputRedirect() {
@@ -115,8 +131,15 @@ namespace Catch {
         Catch::clog() << std::flush;
         fflush(stderr);
 
+#ifdef _MSC_VER
+#pragma warning(push)
+#pragma warning(disable:6031) // Return value ignored: '_dup2'
+#endif
         dup2(m_originalStdout, 1);
         dup2(m_originalStderr, 2);
+#ifdef _MSC_VER
+#pragma warning(pop)
+#endif
 
         m_stdoutDest += m_stdoutFile.getContents();
         m_stderrDest += m_stderrFile.getContents();

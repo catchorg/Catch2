@@ -412,7 +412,14 @@ TEST_CASE("Commas in various macros are allowed") {
 TEST_CASE( "null deref", "[.][failing][!nonportable]" ) {
     CHECK( false );
     int *x = NULL;
+#ifdef _MSC_VER
+#pragma warning(push)
+#pragma warning(disable:6011) // Dereferencing NULL pointer 'x'
+#endif
     *x = 1;
+#ifdef _MSC_VER
+#pragma warning(pop)
+#endif
 }
 
 TEST_CASE( "non-copyable objects", "[.][failing]" ) {
