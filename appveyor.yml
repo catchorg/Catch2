@@ -96,3 +96,20 @@ build:
 test_script:
   - set CTEST_OUTPUT_ON_FAILURE=1
   - cmd: .\misc\appveyorTestRunScript.bat
+
+for:
+# Specific settings for msvc-analysis branch, overriding the common configuration
+-
+  branches:
+    only:
+      - msvc-analysis
+  environment:
+    matrix:
+      - additional_flags: "/analyze"
+        wmain: 0
+  matrix:
+    exclude:
+      - os: Visual Studio 2015
+      - additional_flags: "/permissive- /std:c++latest"
+      - additional_flags: "/D_UNICODE /DUNICODE"
+      - additional_flags: ""
