@@ -9,6 +9,12 @@ coverage:
     patch:
       default:
         target: 80%
+  ignore:
+    - "projects/SelfTest"
+    - "**/catch_reporter_tap.hpp"
+    - "**/catch_reporter_automake.hpp"
+    - "**/catch_reporter_teamcity.hpp"
+    - "**/external/clara.hpp"
 
 
 codecov:
@@ -16,11 +22,3 @@ codecov:
 
 comment:
   layout: "diff"
-
-coverage:
-  ignore:
-    - "projects/SelfTest"
-    - "**/catch_reporter_tap.hpp"
-    - "**/catch_reporter_automake.hpp"
-    - "**/catch_reporter_teamcity.hpp"
-    - "**/external/clara.hpp"
