@@ -238,10 +238,10 @@ Matchers.tests.cpp:<line number>
       </error>
     </testcase>
     <testcase classname="<exe-name>.global" name="Exception matchers that fail/Contents are wrong" time="{duration}">
-      <failure message="std::exception special exception has value of 1" type="CHECK_THROWS_MATCHES">
+      <failure message="SpecialException::what special exception has value of 1" type="CHECK_THROWS_MATCHES">
 Matchers.tests.cpp:<line number>
       </failure>
-      <failure message="std::exception special exception has value of 1" type="REQUIRE_THROWS_MATCHES">
+      <failure message="SpecialException::what special exception has value of 1" type="REQUIRE_THROWS_MATCHES">
 Matchers.tests.cpp:<line number>
       </failure>
     </testcase>

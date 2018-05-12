@@ -335,12 +335,12 @@ Matchers.tests.cpp:<line number>
 Matchers.tests.cpp:<line number>: FAILED:
   CHECK_THROWS_MATCHES( throws(3), SpecialException, ExceptionMatcher{1} )
 with expansion:
-  std::exception special exception has value of 1
+  SpecialException::what special exception has value of 1
 
 Matchers.tests.cpp:<line number>: FAILED:
   REQUIRE_THROWS_MATCHES( throws(4), SpecialException, ExceptionMatcher{1} )
 with expansion:
-  std::exception special exception has value of 1
+  SpecialException::what special exception has value of 1
 
 -------------------------------------------------------------------------------
 Expected exceptions that don't throw or unexpected exceptions fail the test

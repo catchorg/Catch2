@@ -222,10 +222,10 @@ Matchers.tests.cpp:<line number>: failed: expected exception, got none; expressi
 Matchers.tests.cpp:<line number>: failed: expected exception, got none; expression was: doesNotThrow(), SpecialException, ExceptionMatcher{1}
 Matchers.tests.cpp:<line number>: failed: unexpected exception with message: 'Unknown exception'; expression was: throwsAsInt(1), SpecialException, ExceptionMatcher{1}
 Matchers.tests.cpp:<line number>: failed: unexpected exception with message: 'Unknown exception'; expression was: throwsAsInt(1), SpecialException, ExceptionMatcher{1}
-Matchers.tests.cpp:<line number>: failed: throws(3), SpecialException, ExceptionMatcher{1} for: std::exception special exception has value of 1
-Matchers.tests.cpp:<line number>: failed: throws(4), SpecialException, ExceptionMatcher{1} for: std::exception special exception has value of 1
-Matchers.tests.cpp:<line number>: passed: throws(1), SpecialException, ExceptionMatcher{1} for: std::exception special exception has value of 1
-Matchers.tests.cpp:<line number>: passed: throws(2), SpecialException, ExceptionMatcher{2} for: std::exception special exception has value of 2
+Matchers.tests.cpp:<line number>: failed: throws(3), SpecialException, ExceptionMatcher{1} for: SpecialException::what special exception has value of 1
+Matchers.tests.cpp:<line number>: failed: throws(4), SpecialException, ExceptionMatcher{1} for: SpecialException::what special exception has value of 1
+Matchers.tests.cpp:<line number>: passed: throws(1), SpecialException, ExceptionMatcher{1} for: SpecialException::what special exception has value of 1
+Matchers.tests.cpp:<line number>: passed: throws(2), SpecialException, ExceptionMatcher{2} for: SpecialException::what special exception has value of 2
 Exception.tests.cpp:<line number>: passed: thisThrows(), "expected exception" for: "expected exception" equals: "expected exception"
 Exception.tests.cpp:<line number>: passed: thisThrows(), Equals( "expecteD Exception", Catch::CaseSensitive::No ) for: "expected exception" equals: "expected exception" (case insensitive)
 Exception.tests.cpp:<line number>: passed: thisThrows(), StartsWith( "expected" ) for: "expected exception" starts with: "expected"

@@ -45,6 +45,10 @@ namespace { namespace MatchersTests {
     struct SpecialException : std::exception {
         SpecialException(int i_) : i(i_) {}
 
+        char const* what() const noexcept override {
+            return "SpecialException::what";
+        }
+
         int i;
     };
 

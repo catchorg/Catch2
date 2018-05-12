@@ -1983,7 +1983,7 @@
             throws(3), SpecialException, ExceptionMatcher{1}
           </Original>
           <Expanded>
-            std::exception special exception has value of 1
+            SpecialException::what special exception has value of 1
           </Expanded>
         </Expression>
         <Expression success="false" type="REQUIRE_THROWS_MATCHES" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
@@ -1991,7 +1991,7 @@
             throws(4), SpecialException, ExceptionMatcher{1}
           </Original>
           <Expanded>
-            std::exception special exception has value of 1
+            SpecialException::what special exception has value of 1
           </Expanded>
         </Expression>
         <OverallResults successes="0" failures="2" expectedFailures="0"/>
@@ -2004,7 +2004,7 @@
           throws(1), SpecialException, ExceptionMatcher{1}
         </Original>
         <Expanded>
-          std::exception special exception has value of 1
+          SpecialException::what special exception has value of 1
         </Expanded>
       </Expression>
       <Expression success="true" type="REQUIRE_THROWS_MATCHES" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
@@ -2012,7 +2012,7 @@
           throws(2), SpecialException, ExceptionMatcher{2}
         </Original>
         <Expanded>
-          std::exception special exception has value of 2
+          SpecialException::what special exception has value of 2
         </Expanded>
       </Expression>
       <OverallResult success="true"/>
