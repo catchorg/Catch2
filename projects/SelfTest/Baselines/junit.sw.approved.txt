@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuitesloose text artifact
 >
-  <testsuite name="<exe-name>" errors="17" failures="105" tests="1076" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
+  <testsuite name="<exe-name>" errors="17" failures="105" tests="1079" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
     <testcase classname="<exe-name>.global" name="# A test name that starts with a #" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="#1005: Comparing pointer to int and long (NULL can be either on various systems)" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="#1027" time="{duration}"/>
@@ -218,6 +218,7 @@ Matchers.tests.cpp:<line number>
 Matchers.tests.cpp:<line number>
       </failure>
     </testcase>
+    <testcase classname="<exe-name>.global" name="Exception as a value (e.g. in REQUIRE_THROWS_MATCHES) can be stringified" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Exception matchers that fail/No exception" time="{duration}">
       <failure message="doesNotThrow(), SpecialException, ExceptionMatcher{1}" type="CHECK_THROWS_MATCHES">
 Matchers.tests.cpp:<line number>
@@ -237,10 +238,10 @@ Matchers.tests.cpp:<line number>
       </error>
     </testcase>
     <testcase classname="<exe-name>.global" name="Exception matchers that fail/Contents are wrong" time="{duration}">
-      <failure message="{?} special exception has value of 1" type="CHECK_THROWS_MATCHES">
+      <failure message="std::exception special exception has value of 1" type="CHECK_THROWS_MATCHES">
 Matchers.tests.cpp:<line number>
       </failure>
-      <failure message="{?} special exception has value of 1" type="REQUIRE_THROWS_MATCHES">
+      <failure message="std::exception special exception has value of 1" type="REQUIRE_THROWS_MATCHES">
 Matchers.tests.cpp:<line number>
       </failure>
     </testcase>

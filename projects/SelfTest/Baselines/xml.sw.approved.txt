@@ -1901,6 +1901,37 @@
       </Expression>
       <OverallResult success="false"/>
     </TestCase>
+    <TestCase name="Exception as a value (e.g. in REQUIRE_THROWS_MATCHES) can be stringified" tags="[exception][toString]" filename="projects/<exe-name>/UsageTests/ToStringGeneral.tests.cpp" >
+      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/UsageTests/ToStringGeneral.tests.cpp" >
+        <Original>
+          ::Catch::Detail::stringify(WhatException{}) == "This exception has overriden what() method"
+        </Original>
+        <Expanded>
+          "This exception has overriden what() method"
+==
+"This exception has overriden what() method"
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/UsageTests/ToStringGeneral.tests.cpp" >
+        <Original>
+          ::Catch::Detail::stringify(OperatorException{}) == "OperatorException"
+        </Original>
+        <Expanded>
+          "OperatorException" == "OperatorException"
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/UsageTests/ToStringGeneral.tests.cpp" >
+        <Original>
+          ::Catch::Detail::stringify(StringMakerException{}) == "StringMakerException"
+        </Original>
+        <Expanded>
+          "StringMakerException"
+==
+"StringMakerException"
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
     <TestCase name="Exception matchers that fail" tags="[!throws][.][.failing][exceptions][matchers]" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
       <Section name="No exception" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
         <Expression success="false" type="CHECK_THROWS_MATCHES" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
@@ -1952,7 +1983,7 @@
             throws(3), SpecialException, ExceptionMatcher{1}
           </Original>
           <Expanded>
-            {?} special exception has value of 1
+            std::exception special exception has value of 1
           </Expanded>
         </Expression>
         <Expression success="false" type="REQUIRE_THROWS_MATCHES" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
@@ -1960,7 +1991,7 @@
             throws(4), SpecialException, ExceptionMatcher{1}
           </Original>
           <Expanded>
-            {?} special exception has value of 1
+            std::exception special exception has value of 1
           </Expanded>
         </Expression>
         <OverallResults successes="0" failures="2" expectedFailures="0"/>
@@ -1973,7 +2004,7 @@
           throws(1), SpecialException, ExceptionMatcher{1}
         </Original>
         <Expanded>
-          {?} special exception has value of 1
+          std::exception special exception has value of 1
         </Expanded>
       </Expression>
       <Expression success="true" type="REQUIRE_THROWS_MATCHES" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
@@ -1981,7 +2012,7 @@
           throws(2), SpecialException, ExceptionMatcher{2}
         </Original>
         <Expanded>
-          {?} special exception has value of 2
+          std::exception special exception has value of 2
         </Expanded>
       </Expression>
       <OverallResult success="true"/>
@@ -9892,7 +9923,7 @@ loose text artifact
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="933" failures="122" expectedFailures="21"/>
+    <OverallResults successes="936" failures="122" expectedFailures="21"/>
   </Group>
-  <OverallResults successes="933" failures="121" expectedFailures="21"/>
+  <OverallResults successes="936" failures="121" expectedFailures="21"/>
 </Catch>

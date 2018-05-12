@@ -1681,6 +1681,34 @@ with expansion:
   insensitive)
 
 -------------------------------------------------------------------------------
+Exception as a value (e.g. in REQUIRE_THROWS_MATCHES) can be stringified
+-------------------------------------------------------------------------------
+ToStringGeneral.tests.cpp:<line number>
+...............................................................................
+
+ToStringGeneral.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( ::Catch::Detail::stringify(WhatException{}) == "This exception has overriden what() method" )
+with expansion:
+  "This exception has overriden what() method"
+  ==
+  "This exception has overriden what() method"
+
+ToStringGeneral.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( ::Catch::Detail::stringify(OperatorException{}) == "OperatorException" )
+with expansion:
+  "OperatorException" == "OperatorException"
+
+ToStringGeneral.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( ::Catch::Detail::stringify(StringMakerException{}) == "StringMakerException" )
+with expansion:
+  "StringMakerException"
+  ==
+  "StringMakerException"
+
+-------------------------------------------------------------------------------
 Exception matchers that fail
   No exception
 -------------------------------------------------------------------------------
@@ -1722,12 +1750,12 @@ Matchers.tests.cpp:<line number>
 Matchers.tests.cpp:<line number>: FAILED:
   CHECK_THROWS_MATCHES( throws(3), SpecialException, ExceptionMatcher{1} )
 with expansion:
-  {?} special exception has value of 1
+  std::exception special exception has value of 1
 
 Matchers.tests.cpp:<line number>: FAILED:
   REQUIRE_THROWS_MATCHES( throws(4), SpecialException, ExceptionMatcher{1} )
 with expansion:
-  {?} special exception has value of 1
+  std::exception special exception has value of 1
 
 -------------------------------------------------------------------------------
 Exception matchers that succeed
@@ -1739,13 +1767,13 @@ Matchers.tests.cpp:<line number>:
 PASSED:
   CHECK_THROWS_MATCHES( throws(1), SpecialException, ExceptionMatcher{1} )
 with expansion:
-  {?} special exception has value of 1
+  std::exception special exception has value of 1
 
 Matchers.tests.cpp:<line number>:
 PASSED:
   REQUIRE_THROWS_MATCHES( throws(2), SpecialException, ExceptionMatcher{2} )
 with expansion:
-  {?} special exception has value of 2
+  std::exception special exception has value of 2
 
 -------------------------------------------------------------------------------
 Exception messages can be tested for
@@ -8950,6 +8978,6 @@ Misc.tests.cpp:<line number>:
 PASSED:
 
 ===============================================================================
-test cases:  206 | 140 passed |  62 failed |  4 failed as expected
-assertions: 1075 | 933 passed | 121 failed | 21 failed as expected
+test cases:  207 | 141 passed |  62 failed |  4 failed as expected
+assertions: 1078 | 936 passed | 121 failed | 21 failed as expected
 

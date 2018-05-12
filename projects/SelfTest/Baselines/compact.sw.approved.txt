@@ -211,14 +211,21 @@ Matchers.tests.cpp:<line number>: passed: testStringForMatching(), Equals("this 
 Matchers.tests.cpp:<line number>: passed: testStringForMatching(), Equals("this string contains 'ABC' as a substring", Catch::CaseSensitive::No) for: "this string contains 'abc' as a substring" equals: "this string contains 'abc' as a substring" (case insensitive)
 Matchers.tests.cpp:<line number>: failed: testStringForMatching(), Equals("this string contains 'ABC' as a substring") for: "this string contains 'abc' as a substring" equals: "this string contains 'ABC' as a substring"
 Matchers.tests.cpp:<line number>: failed: testStringForMatching(), Equals("something else", Catch::CaseSensitive::No) for: "this string contains 'abc' as a substring" equals: "something else" (case insensitive)
+ToStringGeneral.tests.cpp:<line number>: passed: ::Catch::Detail::stringify(WhatException{}) == "This exception has overriden what() method" for: "This exception has overriden what() method"
+==
+"This exception has overriden what() method"
+ToStringGeneral.tests.cpp:<line number>: passed: ::Catch::Detail::stringify(OperatorException{}) == "OperatorException" for: "OperatorException" == "OperatorException"
+ToStringGeneral.tests.cpp:<line number>: passed: ::Catch::Detail::stringify(StringMakerException{}) == "StringMakerException" for: "StringMakerException"
+==
+"StringMakerException"
 Matchers.tests.cpp:<line number>: failed: expected exception, got none; expression was: doesNotThrow(), SpecialException, ExceptionMatcher{1}
 Matchers.tests.cpp:<line number>: failed: expected exception, got none; expression was: doesNotThrow(), SpecialException, ExceptionMatcher{1}
 Matchers.tests.cpp:<line number>: failed: unexpected exception with message: 'Unknown exception'; expression was: throwsAsInt(1), SpecialException, ExceptionMatcher{1}
 Matchers.tests.cpp:<line number>: failed: unexpected exception with message: 'Unknown exception'; expression was: throwsAsInt(1), SpecialException, ExceptionMatcher{1}
-Matchers.tests.cpp:<line number>: failed: throws(3), SpecialException, ExceptionMatcher{1} for: {?} special exception has value of 1
-Matchers.tests.cpp:<line number>: failed: throws(4), SpecialException, ExceptionMatcher{1} for: {?} special exception has value of 1
-Matchers.tests.cpp:<line number>: passed: throws(1), SpecialException, ExceptionMatcher{1} for: {?} special exception has value of 1
-Matchers.tests.cpp:<line number>: passed: throws(2), SpecialException, ExceptionMatcher{2} for: {?} special exception has value of 2
+Matchers.tests.cpp:<line number>: failed: throws(3), SpecialException, ExceptionMatcher{1} for: std::exception special exception has value of 1
+Matchers.tests.cpp:<line number>: failed: throws(4), SpecialException, ExceptionMatcher{1} for: std::exception special exception has value of 1
+Matchers.tests.cpp:<line number>: passed: throws(1), SpecialException, ExceptionMatcher{1} for: std::exception special exception has value of 1
+Matchers.tests.cpp:<line number>: passed: throws(2), SpecialException, ExceptionMatcher{2} for: std::exception special exception has value of 2
 Exception.tests.cpp:<line number>: passed: thisThrows(), "expected exception" for: "expected exception" equals: "expected exception"
 Exception.tests.cpp:<line number>: passed: thisThrows(), Equals( "expecteD Exception", Catch::CaseSensitive::No ) for: "expected exception" equals: "expected exception" (case insensitive)
 Exception.tests.cpp:<line number>: passed: thisThrows(), StartsWith( "expected" ) for: "expected exception" starts with: "expected"

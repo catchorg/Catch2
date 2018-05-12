@@ -115,3 +115,46 @@ TEST_CASE("Static arrays are convertible to string", "[toString]") {
         REQUIRE(Catch::Detail::stringify(arr) == R"({ { "1:1", "1:2", "1:3" }, { "2:1", "2:2" } })");
     }
 }
+
+struct WhatException : std::exception {
+    char const* what() const noexcept override {
+        return "This exception has overriden what() method";
+    }
+    ~WhatException() override;
+};
+
+struct OperatorException : std::exception {
+    ~OperatorException() override;
+};
+
+std::ostream& operator<<(std::ostream& out, OperatorException const&) {
+    out << "OperatorException";
+    return out;
+}
+
+struct StringMakerException : std::exception {
+    ~StringMakerException() override;
+};
+
+namespace Catch {
+template <>
+struct StringMaker<StringMakerException> {
+    static std::string convert(StringMakerException const&) {
+        return "StringMakerException";
+    }
+};
+}
+
+// Avoid -Wweak-tables
+WhatException::~WhatException() = default;
+OperatorException::~OperatorException() = default;
+StringMakerException::~StringMakerException() = default;
+
+
+
+
+TEST_CASE("Exception as a value (e.g. in REQUIRE_THROWS_MATCHES) can be stringified", "[toString][exception]") {
+    REQUIRE(::Catch::Detail::stringify(WhatException{}) == "This exception has overriden what() method");
+    REQUIRE(::Catch::Detail::stringify(OperatorException{}) == "OperatorException");
+    REQUIRE(::Catch::Detail::stringify(StringMakerException{}) == "StringMakerException");
+}

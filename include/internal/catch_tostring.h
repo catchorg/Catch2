@@ -62,7 +62,9 @@ namespace Catch {
         std::string convertUnknownEnumToString( E e );
 
         template<typename T>
-        typename std::enable_if<!std::is_enum<T>::value, std::string>::type convertUnstreamable( T const& value ) {
+        typename std::enable_if<
+            !std::is_enum<T>::value && !std::is_base_of<std::exception, T>::value,
+        std::string>::type convertUnstreamable( T const& value ) {
 #if !defined(CATCH_CONFIG_FALLBACK_STRINGIFIER)
             (void)value;
             return Detail::unprintableString;
@@ -71,10 +73,19 @@ namespace Catch {
 #endif
         }
         template<typename T>
-        typename std::enable_if<std::is_enum<T>::value, std::string>::type convertUnstreamable( T const& value ) {
-            return convertUnknownEnumToString( value );
+        typename std::enable_if<
+            !std::is_enum<T>::value && std::is_base_of<std::exception, T>::value,
+         std::string>::type convertUnstreamable(T const& ex) {
+            return ex.what();
         }
 
+
+        template<typename T>
+        typename std::enable_if<
+            std::is_enum<T>::value
+        , std::string>::type convertUnstreamable( T const& value ) {
+            return convertUnknownEnumToString( value );
+        }
 
 #if defined(_MANAGED)
         //! Convert a CLR string to a utf8 std::string
