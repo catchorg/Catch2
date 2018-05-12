@@ -294,8 +294,6 @@ namespace Catch {
         m_shouldReportUnexpected = true;
         m_lastAssertionInfo = { "TEST_CASE"_sr, testCaseInfo.lineInfo, StringRef(), ResultDisposition::Normal };
 
-        seedRng(*m_config);
-
         Timer timer;
         try {
             if (m_reporter->getPreferences().shouldRedirectStdOut) {

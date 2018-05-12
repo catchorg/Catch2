@@ -244,7 +244,7 @@ Randomly sorted. Test names are sorted using ```std::random_shuffle()```. By def
 ## Specify a seed for the Random Number Generator
 <pre>--rng-seed &lt;'time'|number&gt;</pre>
 
-Sets a seed for the random number generator using ```std::srand()```. 
+Sets a seed for the random number generator. 
 If a number is provided this is used directly as the seed so the random pattern is repeatable.
 Alternatively if the keyword ```time``` is provided then the result of calling ```std::time(0)``` is used and so the pattern becomes unpredictable.
 

@@ -13,19 +13,19 @@
 
 namespace Catch {
 
-    void seedRng( IConfig const& config ) {
-        if( config.rngSeed() != 0 )
-            std::srand( config.rngSeed() );
-    }
     unsigned int rngSeed() {
         return getCurrentContext().getConfig()->rngSeed();
     }
 
-    RandomNumberGenerator::result_type RandomNumberGenerator::operator()( result_type n ) const {
-        return std::rand() % n;
-    }
-    RandomNumberGenerator::result_type RandomNumberGenerator::operator()() const {
-        return std::rand() % (max)();
-    }
+    RandomNumberGenerator::RandomNumberGenerator( int seed )
+        : generator(seed)
+    {}
 
+    RandomNumberGenerator::result_type RandomNumberGenerator::operator()( RandomNumberGenerator::result_type n ) {
+        std::uniform_int_distribution<result_type> dis( 0, n );
+        return dis( generator );
+    }
+    RandomNumberGenerator::result_type RandomNumberGenerator::operator()() {
+        return (*this)((max)());
+    }
 }

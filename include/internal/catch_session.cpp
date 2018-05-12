@@ -258,8 +258,6 @@ namespace Catch {
         {
             config(); // Force config to be constructed
 
-            seedRng( *m_config );
-
             if( m_configData.filenamesAsTags )
                 applyFilenamesAsTags( *m_config );
 
