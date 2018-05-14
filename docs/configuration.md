@@ -77,13 +77,16 @@ This can be useful on certain platforms that do not provide the standard iostrea
 
 ## Fallback stringifier
 
-By default Catch's stringification machinery falls back to a "{?}". To
-let projects reuse their own existing stringification machinery, this
-fallback can be overridden by defining `CATCH_CONFIG_FALLBACK_STRINGIFIER`
-to a name of a function that should perform the stringification instead.
+By default, when Catch's stringification machinery has to stringify
+a type that does not specialize `StringMaker`, does not overload `operator<<`,
+is not an enumeration and is not a range, it uses `"{?}"`. This can be
+overriden by defining `CATCH_CONFIG_FALLBACK_STRINGIFIER` to name of a
+function that should perform the stringification instead.
 
-The provided function must return std::string and must accept any type
-(e.g. via overloading).
+All types that do not provide `StringMaker` specialization or `operator<<`
+overload will be sent to this function (this includes enums and ranges).
+The provided function must return `std::string` and must accept any type,
+e.g. via overloading.
 
 _Note that if the provided function does not handle a type and this type
 requires to be stringified, the compilation will fail._
