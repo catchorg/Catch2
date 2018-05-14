@@ -1,3 +1,7 @@
+# 1.12.2
+### Fixes
+* Fixed missing <cassert> include
+
 # 1.12.1
 
 ### Fixes
