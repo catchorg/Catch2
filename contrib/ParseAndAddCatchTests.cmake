@@ -168,6 +168,7 @@ function(ParseFile SourceFile TestTarget)
 
             # Add the test and set its properties
             add_test(NAME "\"${CTestName}\"" COMMAND ${PARSE_CATCH_TESTS_PROXY} $<TARGET_FILE:${TestTarget}> ${Name} ${AdditionalCatchParameters})
+                     WORKING_DIRECTORY $<TARGET_FILE_DIR:${TestTarget}>)
             set_tests_properties("\"${CTestName}\"" PROPERTIES FAIL_REGULAR_EXPRESSION "No tests ran"
                     LABELS "${Labels}")
         endif()
