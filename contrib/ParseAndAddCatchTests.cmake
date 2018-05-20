@@ -38,6 +38,8 @@
 #    -- adds cmake target name to the test name                                                    #
 #    PARSE_CATCH_TESTS_ADD_TO_CONFIGURE_DEPENDS (Default OFF)                                      #
 #    -- causes CMake to rerun when file with tests changes so that new tests will be discovered    #
+#    PARSE_CATCH_TESTS_PROXY
+#    -- causes tests to be executed through a proxy
 #                                                                                                  #
 #==================================================================================================#
 
@@ -165,9 +167,9 @@ function(ParseFile SourceFile TestTarget)
             endif()
 
             # Add the test and set its properties
-            add_test(NAME "\"${CTestName}\"" COMMAND ${TestTarget} ${Name} ${AdditionalCatchParameters})
+            add_test(NAME "\"${CTestName}\"" COMMAND ${PARSE_CATCH_TESTS_PROXY} ./${TestTarget} ${Name} ${AdditionalCatchParameters})
             set_tests_properties("\"${CTestName}\"" PROPERTIES FAIL_REGULAR_EXPRESSION "No tests ran"
-                                                    LABELS "${Labels}")
+                    LABELS "${Labels}")
         endif()
 
     endforeach()
