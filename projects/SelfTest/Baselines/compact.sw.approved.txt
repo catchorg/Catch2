@@ -60,6 +60,12 @@ Class.tests.cpp:<line number>: failed: s == "world" for: "hello" == "world"
 Class.tests.cpp:<line number>: passed: s == "hello" for: "hello" == "hello"
 Class.tests.cpp:<line number>: failed: m_a == 2 for: 1 == 2
 Class.tests.cpp:<line number>: passed: m_a == 1 for: 1 == 1
+Approx.tests.cpp:<line number>: passed: d == 1.23_a for: 1.23 == Approx( 1.23 )
+Approx.tests.cpp:<line number>: passed: d != 1.22_a for: 1.23 != Approx( 1.22 )
+Approx.tests.cpp:<line number>: passed: -d == -1.23_a for: -1.23 == Approx( -1.23 )
+Approx.tests.cpp:<line number>: passed: d == 1.2_a .epsilon(.1) for: 1.23 == Approx( 1.2 )
+Approx.tests.cpp:<line number>: passed: d != 1.2_a .epsilon(.001) for: 1.23 != Approx( 1.2 )
+Approx.tests.cpp:<line number>: passed: d == 1_a .epsilon(.3) for: 1.23 == Approx( 1.0 )
 Misc.tests.cpp:<line number>: passed: with 1 message: 'that's not flying - that's failing in style'
 Misc.tests.cpp:<line number>: failed: explicitly with 1 message: 'to infinity and beyond'
 Tricky.tests.cpp:<line number>: failed: &o1 == &o2 for: 0x<hex digits> == 0x<hex digits>
@@ -613,6 +619,8 @@ A string sent to stderr via clog
 Approx.tests.cpp:<line number>: passed: d == Approx( 1.23 ) for: 1.23 == Approx( 1.23 )
 Approx.tests.cpp:<line number>: passed: d != Approx( 1.22 ) for: 1.23 != Approx( 1.22 )
 Approx.tests.cpp:<line number>: passed: d != Approx( 1.24 ) for: 1.23 != Approx( 1.24 )
+Approx.tests.cpp:<line number>: passed: d == 1.23_a for: 1.23 == Approx( 1.23 )
+Approx.tests.cpp:<line number>: passed: d != 1.22_a for: 1.23 != Approx( 1.22 )
 Approx.tests.cpp:<line number>: passed: Approx( d ) == 1.23 for: Approx( 1.23 ) == 1.23
 Approx.tests.cpp:<line number>: passed: Approx( d ) != 1.22 for: Approx( 1.23 ) != 1.22
 Approx.tests.cpp:<line number>: passed: Approx( d ) != 1.24 for: Approx( 1.23 ) != 1.24

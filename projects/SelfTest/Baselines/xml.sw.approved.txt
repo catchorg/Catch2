@@ -554,6 +554,57 @@
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
+    <TestCase name="A comparison that uses literals instead of the normal constructor" tags="[Approx]" filename="projects/<exe-name>/UsageTests/Approx.tests.cpp" >
+      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/UsageTests/Approx.tests.cpp" >
+        <Original>
+          d == 1.23_a
+        </Original>
+        <Expanded>
+          1.23 == Approx( 1.23 )
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/UsageTests/Approx.tests.cpp" >
+        <Original>
+          d != 1.22_a
+        </Original>
+        <Expanded>
+          1.23 != Approx( 1.22 )
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/UsageTests/Approx.tests.cpp" >
+        <Original>
+          -d == -1.23_a
+        </Original>
+        <Expanded>
+          -1.23 == Approx( -1.23 )
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/UsageTests/Approx.tests.cpp" >
+        <Original>
+          d == 1.2_a .epsilon(.1)
+        </Original>
+        <Expanded>
+          1.23 == Approx( 1.2 )
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/UsageTests/Approx.tests.cpp" >
+        <Original>
+          d != 1.2_a .epsilon(.001)
+        </Original>
+        <Expanded>
+          1.23 != Approx( 1.2 )
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/UsageTests/Approx.tests.cpp" >
+        <Original>
+          d == 1_a .epsilon(.3)
+        </Original>
+        <Expanded>
+          1.23 == Approx( 1.0 )
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
     <TestCase name="A couple of nested sections followed by a failure" tags="[.][failing]" filename="projects/<exe-name>/UsageTests/Misc.tests.cpp" >
       <Section name="Outer" filename="projects/<exe-name>/UsageTests/Misc.tests.cpp" >
         <Section name="Inner" filename="projects/<exe-name>/UsageTests/Misc.tests.cpp" >
@@ -5582,6 +5633,22 @@ A string sent to stderr via clog
       </Expression>
       <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/UsageTests/Approx.tests.cpp" >
         <Original>
+          d == 1.23_a
+        </Original>
+        <Expanded>
+          1.23 == Approx( 1.23 )
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/UsageTests/Approx.tests.cpp" >
+        <Original>
+          d != 1.22_a
+        </Original>
+        <Expanded>
+          1.23 != Approx( 1.22 )
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/UsageTests/Approx.tests.cpp" >
+        <Original>
           Approx( d ) == 1.23
         </Original>
         <Expanded>
@@ -10024,7 +10091,7 @@ loose text artifact
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="944" failures="123" expectedFailures="21"/>
+    <OverallResults successes="952" failures="123" expectedFailures="21"/>
   </Group>
-  <OverallResults successes="944" failures="122" expectedFailures="21"/>
+  <OverallResults successes="952" failures="122" expectedFailures="21"/>
 </Catch>

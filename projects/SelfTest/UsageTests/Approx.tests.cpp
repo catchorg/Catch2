@@ -33,14 +33,30 @@ namespace { namespace ApproxTests {
 
 #endif
 
+using namespace Catch::literals;
 
 ///////////////////////////////////////////////////////////////////////////////
+TEST_CASE( "A comparison that uses literals instead of the normal constructor", "[Approx]" ) {
+    double d = 1.23;
+
+    REQUIRE( d == 1.23_a );
+    REQUIRE( d != 1.22_a );
+    REQUIRE( -d == -1.23_a );
+
+    REQUIRE( d == 1.2_a .epsilon(.1) );
+    REQUIRE( d != 1.2_a .epsilon(.001) );
+    REQUIRE( d == 1_a .epsilon(.3) );
+}
+
 TEST_CASE( "Some simple comparisons between doubles", "[Approx]" ) {
     double d = 1.23;
 
     REQUIRE( d == Approx( 1.23 ) );
     REQUIRE( d != Approx( 1.22 ) );
     REQUIRE( d != Approx( 1.24 ) );
+
+    REQUIRE( d == 1.23_a );
+    REQUIRE( d != 1.22_a );
 
     REQUIRE( Approx( d ) == 1.23 );
     REQUIRE( Approx( d ) != 1.22 );

@@ -536,6 +536,48 @@ with expansion:
   1 == 1
 
 -------------------------------------------------------------------------------
+A comparison that uses literals instead of the normal constructor
+-------------------------------------------------------------------------------
+Approx.tests.cpp:<line number>
+...............................................................................
+
+Approx.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( d == 1.23_a )
+with expansion:
+  1.23 == Approx( 1.23 )
+
+Approx.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( d != 1.22_a )
+with expansion:
+  1.23 != Approx( 1.22 )
+
+Approx.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( -d == -1.23_a )
+with expansion:
+  -1.23 == Approx( -1.23 )
+
+Approx.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( d == 1.2_a .epsilon(.1) )
+with expansion:
+  1.23 == Approx( 1.2 )
+
+Approx.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( d != 1.2_a .epsilon(.001) )
+with expansion:
+  1.23 != Approx( 1.2 )
+
+Approx.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( d == 1_a .epsilon(.3) )
+with expansion:
+  1.23 == Approx( 1.0 )
+
+-------------------------------------------------------------------------------
 A couple of nested sections followed by a failure
   Outer
   Inner
@@ -4862,6 +4904,18 @@ with expansion:
 
 Approx.tests.cpp:<line number>:
 PASSED:
+  REQUIRE( d == 1.23_a )
+with expansion:
+  1.23 == Approx( 1.23 )
+
+Approx.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( d != 1.22_a )
+with expansion:
+  1.23 != Approx( 1.22 )
+
+Approx.tests.cpp:<line number>:
+PASSED:
   REQUIRE( Approx( d ) == 1.23 )
 with expansion:
   Approx( 1.23 ) == 1.23
@@ -9098,6 +9152,6 @@ Misc.tests.cpp:<line number>:
 PASSED:
 
 ===============================================================================
-test cases:  207 | 141 passed |  62 failed |  4 failed as expected
-assertions: 1087 | 944 passed | 122 failed | 21 failed as expected
+test cases:  208 | 142 passed |  62 failed |  4 failed as expected
+assertions: 1095 | 952 passed | 122 failed | 21 failed as expected
 
