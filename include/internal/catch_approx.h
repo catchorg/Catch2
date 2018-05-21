@@ -25,6 +25,14 @@ namespace Detail {
 
         static Approx custom();
 
+        Approx operator-() const {
+            Approx approx( -static_cast<double>(m_value) );
+            approx.epsilon( m_epsilon );
+            approx.margin( m_margin );
+            approx.scale( m_scale );
+            return approx;
+        }
+
         template <typename T, typename = typename std::enable_if<std::is_constructible<double, T>::value>::type>
         Approx operator()( T const& value ) {
             Approx approx( static_cast<double>(value) );
@@ -121,7 +129,17 @@ namespace Detail {
         double m_scale;
         double m_value;
     };
-}
+} // end namespace Detail
+    
+namespace literals {
+    inline Detail::Approx operator "" _a(long double val) {
+        return Detail::Approx(val);
+    }
+
+    inline Detail::Approx operator "" _a(unsigned long long val) {
+        return Detail::Approx(val);
+    }
+} // end namespace literals
 
 template<>
 struct StringMaker<Catch::Detail::Approx> {
