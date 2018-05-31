@@ -8408,6 +8408,20 @@ with expansion:
   "operator<<( has_operator )"
 
 -------------------------------------------------------------------------------
+stringify( has_template_operator )
+-------------------------------------------------------------------------------
+ToStringWhich.tests.cpp:<line number>
+...............................................................................
+
+ToStringWhich.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( ::Catch::Detail::stringify( item ) == "operator<<( has_template_operator )" )
+with expansion:
+  "operator<<( has_template_operator )"
+  ==
+  "operator<<( has_template_operator )"
+
+-------------------------------------------------------------------------------
 stringify( vectors<has_maker> )
 -------------------------------------------------------------------------------
 ToStringWhich.tests.cpp:<line number>
@@ -8978,6 +8992,6 @@ Misc.tests.cpp:<line number>:
 PASSED:
 
 ===============================================================================
-test cases:  207 | 141 passed |  62 failed |  4 failed as expected
-assertions: 1078 | 936 passed | 121 failed | 21 failed as expected
+test cases:  208 | 142 passed |  62 failed |  4 failed as expected
+assertions: 1079 | 937 passed | 121 failed | 21 failed as expected
 
