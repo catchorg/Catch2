@@ -162,7 +162,7 @@ Because the preprocessor parses code using different rules than the
 compiler, multiple-argument assertions (e.g. `REQUIRE_THROWS_AS`) have
 problems with commas inside the provided expressions. As an example
 `REQUIRE_THROWS_AS(std::pair<int, int>(1, 2), std::invalid_argument);`
-will fails to compile, because the preprocessor sees 3 arguments provided,
+will fail to compile, because the preprocessor sees 3 arguments provided,
 but the macro accepts only 2. There are two possible workarounds.
 
 1) Use typedef:
