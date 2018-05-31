@@ -20,6 +20,7 @@ struct has_operator { };
 struct has_maker {};
 struct has_maker_and_operator {};
 struct has_neither {};
+struct has_template_operator {};
 
 std::ostream& operator<<(std::ostream& os, const has_operator&) {
     os << "operator<<( has_operator )";
@@ -28,6 +29,12 @@ std::ostream& operator<<(std::ostream& os, const has_operator&) {
 
 std::ostream& operator<<(std::ostream& os, const has_maker_and_operator&) {
     os << "operator<<( has_maker_and_operator )";
+    return os;
+}
+
+template <typename StreamT>
+StreamT& operator<<(StreamT& os, const has_template_operator&) {
+    os << "operator<<( has_template_operator )";
     return os;
 }
 
@@ -67,6 +74,12 @@ TEST_CASE( "stringify( has_maker_and_operator )", "[toString]" ) {
 TEST_CASE("stringify( has_neither )", "[toString]") {
     has_neither item;
     REQUIRE( ::Catch::Detail::stringify(item) == "{ !!! }" );
+}
+
+// Call the templated operator
+TEST_CASE( "stringify( has_template_operator )", "[toString]" ) {
+    has_template_operator item;
+    REQUIRE( ::Catch::Detail::stringify( item ) == "operator<<( has_template_operator )" );
 }
 
 

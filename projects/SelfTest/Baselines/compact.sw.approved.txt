@@ -1065,6 +1065,9 @@ ToStringWhich.tests.cpp:<line number>: passed: ::Catch::Detail::stringify(item) 
 ToStringWhich.tests.cpp:<line number>: passed: ::Catch::Detail::stringify( item ) == "operator<<( has_operator )" for: "operator<<( has_operator )"
 ==
 "operator<<( has_operator )"
+ToStringWhich.tests.cpp:<line number>: passed: ::Catch::Detail::stringify( item ) == "operator<<( has_template_operator )" for: "operator<<( has_template_operator )"
+==
+"operator<<( has_template_operator )"
 ToStringWhich.tests.cpp:<line number>: passed: ::Catch::Detail::stringify( v ) == "{ StringMaker<has_maker> }" for: "{ StringMaker<has_maker> }"
 ==
 "{ StringMaker<has_maker> }"

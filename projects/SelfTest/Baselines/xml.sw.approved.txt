@@ -9366,6 +9366,19 @@ loose text artifact
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
+    <TestCase name="stringify( has_template_operator )" tags="[toString]" filename="projects/<exe-name>/UsageTests/ToStringWhich.tests.cpp" >
+      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/UsageTests/ToStringWhich.tests.cpp" >
+        <Original>
+          ::Catch::Detail::stringify( item ) == "operator&lt;&lt;( has_template_operator )"
+        </Original>
+        <Expanded>
+          "operator&lt;&lt;( has_template_operator )"
+==
+"operator&lt;&lt;( has_template_operator )"
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
     <TestCase name="stringify( vectors&lt;has_maker> )" tags="[toString]" filename="projects/<exe-name>/UsageTests/ToStringWhich.tests.cpp" >
       <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/UsageTests/ToStringWhich.tests.cpp" >
         <Original>
@@ -9923,7 +9936,7 @@ loose text artifact
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="936" failures="122" expectedFailures="21"/>
+    <OverallResults successes="937" failures="122" expectedFailures="21"/>
   </Group>
-  <OverallResults successes="936" failures="121" expectedFailures="21"/>
+  <OverallResults successes="937" failures="121" expectedFailures="21"/>
 </Catch>

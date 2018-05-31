@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuitesloose text artifact
 >
-  <testsuite name="<exe-name>" errors="17" failures="105" tests="1079" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
+  <testsuite name="<exe-name>" errors="17" failures="105" tests="1080" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
     <testcase classname="<exe-name>.global" name="# A test name that starts with a #" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="#1005: Comparing pointer to int and long (NULL can be either on various systems)" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="#1027" time="{duration}"/>
@@ -838,6 +838,7 @@ Tricky.tests.cpp:<line number>
     <testcase classname="<exe-name>.global" name="stringify( has_maker_and_operator )" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="stringify( has_neither )" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="stringify( has_operator )" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="stringify( has_template_operator )" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="stringify( vectors&lt;has_maker> )" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="stringify( vectors&lt;has_maker_and_operator> )" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="stringify( vectors&lt;has_operator> )" time="{duration}"/>
