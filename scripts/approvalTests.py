@@ -91,7 +91,7 @@ def diffFiles(fileA, fileB):
     return [line for line in diff if line[0] in ('+', '-')]
 
 
-def filterLine(line):
+def filterLine(line, isCompact):
     if catchPath in line:
         # make paths relative to Catch root
         line = line.replace(catchPath + os.sep, '')
@@ -109,6 +109,10 @@ def filterLine(line):
     else:
         line = lineNumberParser.sub(" ", line)
 
+    if isCompact:
+        line = line.replace(': FAILED', ': failed')
+        line = line.replace(': PASSED', ': passed')
+        
     # strip Catch version number
     line = versionParser.sub("<version>", line)
 
@@ -148,7 +152,7 @@ def approve(baseName, args):
     rawFile = io.open(rawResultsPath, 'r', encoding='utf-8', errors='surrogateescape')
     filteredFile = io.open(filteredResultsPath, 'w', encoding='utf-8', errors='surrogateescape')
     for line in rawFile:
-        filteredFile.write(filterLine(line).rstrip() + "\n")
+        filteredFile.write(filterLine(line, 'compact' in baseName).rstrip() + "\n")
     filteredFile.close()
     rawFile.close()
 
