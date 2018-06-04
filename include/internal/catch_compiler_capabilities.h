@@ -24,6 +24,7 @@
 // Many features, at point of detection, define an _INTERNAL_ macro, so they
 // can be combined, en-mass, with the _NO_ forms later.
 
+#include "catch_platform.h"
 
 #ifdef __cplusplus
 
