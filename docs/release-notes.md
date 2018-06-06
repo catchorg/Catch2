@@ -1,5 +1,43 @@
 <a id="top"></a>
 
+# 2.2.3
+
+**To fix some of the bugs, some behavior had to change in potentially breaking manner.**
+**This means that even though this is a patch release, it might not be a drop-in replacement.**
+
+## Fixes
+* Listeners are now called before reporter
+  * This was always documented to be the case, now it actually works that way
+* Catch's commandline will no longer accept multiple reporters
+  * This was done because multiple reporters never worked properly and broke things in non-obvious ways
+  * **This has potential to be a breaking change**
+* MinGW is now detected as Windows platform w/o SEH support (#1257)
+  * This means that Catch2 no longer tries to use POSIX signal handling when compiled with MinGW
+* Fixed potential UB in parsing tags using non-ASCII characters (#1266)
+  * Note that Catch2 still supports only ASCII test names/tags/etc
+* `TEST_CASE_METHOD` can now be used on classnames containing commas (#1245)
+  * You have to enclose the classname in extra set of parentheses
+* Fixed insufficient alt stack size for POSIX signal handling (#1225)
+* Fixed compilation error on Android due to missing `std::to_string` in C++11 mode (#1280)
+* Fixed the order of user-provided `FALLBACK_STRINGIFIER` in stringification machinery (#1024)
+  * It was intended to be replacement for built-in fallbacks, but it was used _after_ them.
+  * **This has potential to be a breaking change**
+* Fixed compilation error when a type has an `operator<<` with templated lhs (#1285, #1306)
+
+## Improvements
+* Added a new, experimental, output capture (#1243)
+  * This capture can also redirect output written via C apis, e.g. `printf`
+  * To opt-in, define `CATCH_CONFIG_EXPERIMENTAL_REDIRECT` in the implementation file
+* Added a new fallback stringifier for classes derived from `std::exception`
+  * Both `StringMaker` specialization and `operator<<` overload are given priority
+
+## Miscellaneous
+* `contrib/` now contains dbg scripts that skip over Catch's internals (#904, #1283)
+  * `gdbinit` for gdb `lldbinit` for lldb
+* `CatchAddTests.cmake` no longer strips whitespace from tests (#1265, #1281)
+* Online documentation now describes `--use-colour` option (#1263)
+
+
 # 2.2.2
 
 ## Fixes

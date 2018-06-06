@@ -6,7 +6,7 @@ if(NOT DEFINED PROJECT_NAME)
   set(NOT_SUBPROJECT ON)
 endif()
 
-project(Catch2 LANGUAGES CXX VERSION 2.2.2)
+project(Catch2 LANGUAGES CXX VERSION 2.2.3)
 
 include(GNUInstallDirs)
 
