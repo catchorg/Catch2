@@ -49,17 +49,5 @@ on a specific version of the single-include header.
 
 ## Optional steps
 
-The following steps are optional, and do not have to be performed when releasing new version of Catch. However, they *should* happen, but they can happen the next day without losing anything significant.
-
-
-### vcpkg update
-
-Catch is maintaining its own port in Microsoft's package manager [vcpkg](https://github.com/Microsoft/vcpkg). This means that when new version of Catch is released, it should be posted there as well. `updateVcpkgPackage.py` can do a lot of necessary work for you, it creates a branch and commits necessary changes. You should review these changes, push and open a PR against vcpkg's upstream.
-
-Note that the script assumes you have your fork of vcpkg checked out in a directory next to the directory where you have checked out Catch, like so:
-```
-GitHub
-    Catch
-    vcpkg
-```
-
+Because Catch's [vcpkg](https://github.com/Microsoft/vcpkg) port updates
+itself automagically, there are no optional steps at this time.
