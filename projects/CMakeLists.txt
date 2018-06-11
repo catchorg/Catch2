@@ -292,7 +292,7 @@ if ( CMAKE_CXX_COMPILER_ID MATCHES "Clang" )
     target_compile_options( SelfTest PRIVATE -Wweak-vtables -Wexit-time-destructors -Wglobal-constructors -Wmissing-noreturn )
 endif()
 if ( CMAKE_CXX_COMPILER_ID MATCHES "MSVC" )
-RING(REGEX REPLACE "/W[0-9]" "/W4" CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS}) # override default warning level
+    STRING(REGEX REPLACE "/W[0-9]" "/W4" CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS}) # override default warning level
     target_compile_options( SelfTest PRIVATE /w44265 /w44061 /w44062 )
     if (CATCH_ENABLE_WERROR)
         target_compile_options( SelfTest PRIVATE /WX)
