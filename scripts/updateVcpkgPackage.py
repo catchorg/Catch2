@@ -100,7 +100,7 @@ def git_push(path_to_repo):
     # Don't push, so author can review
     print('Changes were commited to the vcpkg fork. Please check, push and open PR.')
 
-header_hash = get_hash(adjusted_path('single_include/catch.hpp'))
+header_hash = get_hash(adjusted_path('single_include/catch2/catch.hpp'))
 licence_hash = get_hash(adjusted_path('LICENSE.txt'))
 update_control(adjusted_path(default_path))
 update_portfile(adjusted_path(default_path), header_hash, licence_hash)

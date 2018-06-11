@@ -1,4 +1,3 @@
-
 include(MiscFunctions)
 
 # define the sources of the self test

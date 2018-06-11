@@ -24,7 +24,7 @@ def generate(v):
 
     seenHeaders = set([])
     rootPath = os.path.join( catchPath, 'include/' )
-    outputPath = os.path.join( catchPath, 'single_include/catch.hpp' )
+    outputPath = os.path.join( catchPath, 'single_include/catch2/catch.hpp' )
 
     globals = {
         'includeImpl' : True,
