@@ -1,6 +1,6 @@
 includedir=@CMAKE_INSTALL_FULL_INCLUDEDIR@
 
-Name: Catch
+Name: Catch2
 Description: Testing library for C++
 Version: @Catch2_VERSION@
-Cflags: -I${includedir} -I${includedir}/catch
+Cflags: -I${includedir}

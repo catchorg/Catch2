@@ -6,7 +6,7 @@
 
 // main() provided in 000-CatchMain.cpp
 
-#include "catch.hpp"
+#include <catch2/catch.hpp>
 
 class DBConnection
 {
