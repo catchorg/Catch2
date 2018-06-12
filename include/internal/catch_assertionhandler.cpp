@@ -18,9 +18,11 @@
 
 namespace Catch {
 
-    inline auto operator <<( std::ostream& os, ITransientExpression const& expr ) -> std::ostream& {
-        expr.streamReconstructedExpression( os );
-        return os;
+    namespace {
+        auto operator <<( std::ostream& os, ITransientExpression const& expr ) -> std::ostream& {
+            expr.streamReconstructedExpression( os );
+            return os;
+        }
     }
 
     LazyExpression::LazyExpression( bool isNegated )
