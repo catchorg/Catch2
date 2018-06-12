@@ -24,8 +24,10 @@ namespace Catch {
     struct BenchmarkInfo;
     struct BenchmarkStats;
     struct AssertionReaction;
+    struct SourceLineInfo;
 
     struct ITransientExpression;
+    struct IGeneratorTracker;
 
     struct IResultCapture {
 
@@ -35,6 +37,8 @@ namespace Catch {
                                         Counts& assertions ) = 0;
         virtual void sectionEnded( SectionEndInfo const& endInfo ) = 0;
         virtual void sectionEndedEarly( SectionEndInfo const& endInfo ) = 0;
+
+        virtual auto acquireGeneratorTracker( SourceLineInfo const& lineInfo ) -> IGeneratorTracker& = 0;
 
         virtual void benchmarkStarting( BenchmarkInfo const& info ) = 0;
         virtual void benchmarkEnded( BenchmarkStats const& stats ) = 0;
