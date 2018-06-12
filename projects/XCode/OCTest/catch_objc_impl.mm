@@ -1,6 +1,7 @@
 // This file #includes all the .cpp files into a single .mm
 // - so they get compiled as ObjectiveC++
 
+#include "../../../include/internal/catch_tostring.cpp"
 #include "../../../include/internal/catch_approx.cpp"
 #include "../../../include/internal/catch_assertionhandler.cpp"
 #include "../../../include/internal/catch_assertionresult.cpp"
@@ -52,7 +53,6 @@
 #include "../../../include/internal/catch_test_spec.cpp"
 #include "../../../include/internal/catch_test_spec_parser.cpp"
 #include "../../../include/internal/catch_timer.cpp"
-#include "../../../include/internal/catch_tostring.cpp"
 #include "../../../include/internal/catch_totals.cpp"
 #include "../../../include/internal/catch_uncaught_exceptions.cpp"
 #include "../../../include/internal/catch_version.cpp"
