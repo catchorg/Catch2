@@ -63,6 +63,7 @@ set(TEST_SOURCES
         ${SELF_TEST_DIR}/IntrospectiveTests/TagAlias.tests.cpp
         ${SELF_TEST_DIR}/IntrospectiveTests/String.tests.cpp
         ${SELF_TEST_DIR}/IntrospectiveTests/Xml.tests.cpp
+        ${SELF_TEST_DIR}/IntrospectiveTests/Generators.tests.cpp
         ${SELF_TEST_DIR}/UsageTests/Approx.tests.cpp
         ${SELF_TEST_DIR}/UsageTests/BDD.tests.cpp
         ${SELF_TEST_DIR}/UsageTests/Benchmark.tests.cpp
@@ -82,8 +83,7 @@ set(TEST_SOURCES
         ${SELF_TEST_DIR}/UsageTests/ToStringWhich.tests.cpp
         ${SELF_TEST_DIR}/UsageTests/Tricky.tests.cpp
         ${SELF_TEST_DIR}/UsageTests/VariadicMacros.tests.cpp
-        ${SELF_TEST_DIR}/UsageTests/Matchers.tests.cpp
-        )
+        ${SELF_TEST_DIR}/UsageTests/Matchers.tests.cpp)
 CheckFileList(TEST_SOURCES ${SELF_TEST_DIR})
 
 # A set of impl files that just #include a single header
