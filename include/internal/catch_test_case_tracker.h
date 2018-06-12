@@ -95,13 +95,6 @@ namespace TestCaseTracking {
             Failed
         };
 
-        class TrackerHasName {
-            NameAndLocation m_nameAndLocation;
-        public:
-            TrackerHasName( NameAndLocation const& nameAndLocation );
-            bool operator ()( ITrackerPtr const& tracker ) const;
-        };
-
         using Children = std::vector<ITrackerPtr>;
         NameAndLocation m_nameAndLocation;
         TrackerContext& m_ctx;

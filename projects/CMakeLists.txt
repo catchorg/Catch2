@@ -5,6 +5,7 @@ include(MiscFunctions)
 set(TEST_SOURCES
         ${SELF_TEST_DIR}/TestMain.cpp
         ${SELF_TEST_DIR}/IntrospectiveTests/CmdLine.tests.cpp
+        ${SELF_TEST_DIR}/IntrospectiveTests/GeneratorsImpl.tests.cpp
         ${SELF_TEST_DIR}/IntrospectiveTests/PartTracker.tests.cpp
         ${SELF_TEST_DIR}/IntrospectiveTests/TagAlias.tests.cpp
         ${SELF_TEST_DIR}/IntrospectiveTests/String.tests.cpp
@@ -18,6 +19,7 @@ set(TEST_SOURCES
         ${SELF_TEST_DIR}/UsageTests/Decomposition.tests.cpp
         ${SELF_TEST_DIR}/UsageTests/EnumToString.tests.cpp
         ${SELF_TEST_DIR}/UsageTests/Exception.tests.cpp
+        ${SELF_TEST_DIR}/UsageTests/Generators.tests.cpp
         ${SELF_TEST_DIR}/UsageTests/Message.tests.cpp
         ${SELF_TEST_DIR}/UsageTests/Misc.tests.cpp
         ${SELF_TEST_DIR}/UsageTests/ToStringChrono.tests.cpp
@@ -85,6 +87,7 @@ set(INTERNAL_HEADERS
         ${HEADER_DIR}/internal/catch_exception_translator_registry.h
         ${HEADER_DIR}/internal/catch_external_interfaces.h
         ${HEADER_DIR}/internal/catch_fatal_condition.h
+        ${HEADER_DIR}/internal/catch_generators.hpp
         ${HEADER_DIR}/internal/catch_impl.hpp
         ${HEADER_DIR}/internal/catch_interfaces_capture.h
         ${HEADER_DIR}/internal/catch_interfaces_config.h
@@ -161,9 +164,11 @@ set(IMPL_SOURCES
         ${HEADER_DIR}/internal/catch_errno_guard.cpp
         ${HEADER_DIR}/internal/catch_exception_translator_registry.cpp
         ${HEADER_DIR}/internal/catch_fatal_condition.cpp
+        ${HEADER_DIR}/internal/catch_generators.cpp
         ${HEADER_DIR}/internal/catch_interfaces_capture.cpp
         ${HEADER_DIR}/internal/catch_interfaces_config.cpp
         ${HEADER_DIR}/internal/catch_interfaces_exception.cpp
+        ${HEADER_DIR}/internal/catch_interfaces_generatortracker.h
         ${HEADER_DIR}/internal/catch_interfaces_registry_hub.cpp
         ${HEADER_DIR}/internal/catch_interfaces_runner.cpp
         ${HEADER_DIR}/internal/catch_interfaces_testcase.cpp

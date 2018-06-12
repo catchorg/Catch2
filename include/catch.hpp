@@ -62,6 +62,7 @@
 #ifndef CATCH_CONFIG_DISABLE_MATCHERS
 #include "internal/catch_capture_matchers.h"
 #endif
+#include "internal/catch_generators.hpp"
 
 // These files are included here so the single_include script doesn't put them
 // in the conditionally compiled sections
