@@ -10,7 +10,7 @@
 
 // main() provided in 000-CatchMain.cpp
 
-#include "catch.hpp"
+#include <catch2/catch.hpp>
 
 std::string one() {
     return "1";
