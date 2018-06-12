@@ -29,7 +29,7 @@ namespace Catch {
     bool contains( std::string const& s, std::string const& infix ) {
         return s.find( infix ) != std::string::npos;
     }
-    char toLowerCh(char c) {
+    inline char toLowerCh(char c) {
         return static_cast<char>( std::tolower( c ) );
     }
     void toLowerInPlace( std::string& s ) {

@@ -19,7 +19,7 @@
 
 namespace Catch {
 
-    TestCaseInfo::SpecialProperties parseSpecialTag( std::string const& tag ) {
+    inline TestCaseInfo::SpecialProperties parseSpecialTag( std::string const& tag ) {
         if( startsWith( tag, '.' ) ||
             tag == "!hide" )
             return TestCaseInfo::IsHidden;
@@ -36,10 +36,10 @@ namespace Catch {
         else
             return TestCaseInfo::None;
     }
-    bool isReservedTag( std::string const& tag ) {
+    inline bool isReservedTag( std::string const& tag ) {
         return parseSpecialTag( tag ) == TestCaseInfo::None && tag.size() > 0 && !std::isalnum( static_cast<unsigned char>(tag[0]) );
     }
-    void enforceNotReservedTag( std::string const& tag, SourceLineInfo const& _lineInfo ) {
+    inline void enforceNotReservedTag( std::string const& tag, SourceLineInfo const& _lineInfo ) {
         CATCH_ENFORCE( !isReservedTag(tag),
                       "Tag name: [" << tag << "] is not allowed.\n"
                       << "Tag names starting with non alpha-numeric characters are reserved\n"

@@ -18,7 +18,7 @@ namespace Catch {
         return std::chrono::duration_cast<std::chrono::nanoseconds>( std::chrono::high_resolution_clock::now().time_since_epoch() ).count();
     }
 
-    auto estimateClockResolution() -> uint64_t {
+    inline auto estimateClockResolution() -> uint64_t {
         uint64_t sum = 0;
         static const uint64_t iterations = 1000000;
 

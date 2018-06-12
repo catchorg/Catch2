@@ -18,7 +18,7 @@
 
 namespace Catch {
 
-    auto operator <<( std::ostream& os, ITransientExpression const& expr ) -> std::ostream& {
+    inline auto operator <<( std::ostream& os, ITransientExpression const& expr ) -> std::ostream& {
         expr.streamReconstructedExpression( os );
         return os;
     }
