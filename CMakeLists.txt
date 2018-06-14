@@ -109,7 +109,7 @@ install(
   DIRECTORY
     "single_include/"
   DESTINATION
-    "${CMAKE_INSTALL_INCLUDEDIR}/catch2"
+    "${CMAKE_INSTALL_INCLUDEDIR}"
 )
     
 install(
