@@ -7,13 +7,13 @@
 #ifndef TWOBLUECUBES_CATCH_GENERATORS_HPP_INCLUDED
 #define TWOBLUECUBES_CATCH_GENERATORS_HPP_INCLUDED
 
+#include "catch_common.h"
+
 #include <memory>
 #include <vector>
 #include <map>
 #include <cassert>
 #include <string>
-#include "catch_stream.h"
-#include "catch_common.h"
 
 namespace Catch {
 namespace generators {
@@ -132,23 +132,6 @@ namespace generators {
             assert(false); // should never happen
             throw std::logic_error("this should never happen");
         }
-
-        friend auto operator << ( Generator&& g1, Generator&& g2 ) -> Generator {
-            return Generator( std::move(g1), std::move(g2));
-        }
-        friend auto operator << ( Generator&& g1, T const& val ) -> Generator {
-            return Generator( std::move(g1), value( val ) );
-        }
-        friend auto operator << ( T const& val, Generator&& g2 ) -> Generator {
-            return Generator( value( val ), std::move(g2) );
-        }
-        template<typename U>
-        friend auto operator << ( Generator&&, Generator<U>&& ) -> Generator {
-            // If you get an error here it's probably because you are trying to compose two generators that
-            // are templated on different types.
-            // Your error message will probably also show you the line calling this, which should give more context.
-            return ComposedGeneratorsMustHaveTheSameUnderlyingType<T, U>();
-        }
     };
 
     using GeneratorBasePtr = std::unique_ptr<GeneratorBase>;
@@ -201,28 +184,47 @@ namespace generators {
     auto operator << ( NullGenerator, Generator<T>&& generator ) -> Generator<T> {
         return std::move(generator);
     }
+    template<typename T>
+    auto operator << ( Generator<T>&& g1, Generator<T>&& g2 ) -> Generator<T> {
+        return { std::move(g1), std::move(g2) };
+    }
+    template<typename T>
+    auto operator << ( Generator<T>&& g1, T const& val ) -> Generator<T> {
+        return { std::move(g1), value( val ) };
+    }
+    template<typename T>
+    auto operator << ( T const& val, Generator<T>&& g2 ) -> Generator<T> {
+        return { value( val ), std::move(g2) };
+    }
+    template<typename T, typename U>
+    auto operator << ( Generator<T>&&, Generator<U>&& ) -> Generator<T> {
+        // If you get an error here it's probably because you are trying to compose two generators that
+        // are templated on different types.
+        // Your error message will probably also show you the line calling this, which should give more context.
+        return ComposedGeneratorsMustHaveTheSameUnderlyingType<T, U>();
+    }
 
 
    class GeneratorCache {
-        std::map<std::string, GeneratorBasePtr> m_generators;
+        std::map<SourceLineInfo, GeneratorBasePtr> m_generators;
 
     public:
 
         template<typename T>
-        auto add( std::string const& id, Generator<T>&& generator ) -> Generator<T> const& {
+        auto add( SourceLineInfo const& lineInfo, Generator<T>&& generator ) -> Generator<T> const& {
             auto generatorPtr = make_unique<Generator<T>>( std::move( generator ) );
             auto const& storedGenerator = *generatorPtr;
-            m_generators.insert( { id, std::move( generatorPtr ) } );
+            m_generators.insert( { lineInfo, std::move( generatorPtr ) } );
             return storedGenerator;
         }
 
         template<typename T, typename L>
-        auto getGenerator( std::string const& id, L const& generatorExpression ) -> Generator<T> const& {
+        auto getGenerator( SourceLineInfo const& lineInfo, L const& generatorExpression ) -> Generator<T> const& {
 
-            auto it = m_generators.find( id );
+            auto it = m_generators.find( lineInfo );
             return ( it != m_generators.end() )
                 ? static_cast<Generator<T> const&>( *it->second )
-                : add( id, generatorExpression() );
+                : add( lineInfo, generatorExpression() );
         }
     };
 
@@ -230,17 +232,15 @@ namespace generators {
     auto getIndexForGeneratorId( SourceLineInfo const& lineInfo, size_t size ) -> size_t;
 
     template<typename L>
-    auto memoize( GeneratorCache& cache, std::string const& id, L const& generatorExpression ) -> decltype(generatorExpression()) const& {
+    auto memoize( GeneratorCache& cache, SourceLineInfo const& lineInfo, L const& generatorExpression ) -> decltype(generatorExpression()) const& {
 
         using UnderlyingType = typename decltype(generatorExpression())::type;
-        return cache.getGenerator<UnderlyingType, L>( id, generatorExpression );
+        return cache.getGenerator<UnderlyingType, L>( lineInfo, generatorExpression );
     }
     template<typename L>
     auto generate( SourceLineInfo const& lineInfo, L const& generatorExpression ) -> typename decltype(generatorExpression())::type {
 
-        ReusableStringStream rss;
-        rss << lineInfo;
-        auto const& generator = memoize( getGeneratorCache(), rss.str(), generatorExpression );
+        auto const& generator = memoize( getGeneratorCache(), lineInfo, generatorExpression );
         auto index = getIndexForGeneratorId( lineInfo, generator.size() );
         return generator[index];
     }

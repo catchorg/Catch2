@@ -94,7 +94,7 @@ TEST_CASE("Generators impl") {
     SECTION( "memoized" ) {
         GeneratorCache cache;
 
-        std::string id = "test";
+        auto lineInfo = CATCH_INTERNAL_LINEINFO;
 
         int created = 0;
         auto fun = [&]{
@@ -104,17 +104,17 @@ TEST_CASE("Generators impl") {
 
         // generator is only created on first call
         CHECK( created == 0 );
-        CHECK( memoize( cache, id, fun )[0] == 42 );
+        CHECK( memoize( cache, lineInfo, fun )[0] == 42 );
         CHECK( created == 1 );
-        CHECK( memoize( cache, id, fun )[0] == 42 );
+        CHECK( memoize( cache, lineInfo, fun )[0] == 42 );
         CHECK( created == 1 );
-        CHECK( memoize( cache, id, fun )[1] == 7 );
+        CHECK( memoize( cache, lineInfo, fun )[1] == 7 );
         CHECK( created == 1 );
     }
 
     SECTION( "strings" ) {
         GeneratorCache cache;
-        auto const& gen = memoize( cache, "test", []{ return values({ "one", "two", "three", "four" } ); }  );
+        auto const& gen = memoize( cache, CATCH_INTERNAL_LINEINFO, []{ return values({ "one", "two", "three", "four" } ); }  );
 
         REQUIRE( gen.size() == 4 );
         CHECK( gen[0] == "one" );
