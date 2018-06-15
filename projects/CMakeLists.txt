@@ -117,6 +117,7 @@ set(INTERNAL_HEADERS
         ${HEADER_DIR}/internal/catch_section.h
         ${HEADER_DIR}/internal/catch_section_info.h
         ${HEADER_DIR}/internal/catch_session.h
+        ${HEADER_DIR}/internal/catch_singletons.hpp
         ${HEADER_DIR}/internal/catch_startup_exception_registry.h
         ${HEADER_DIR}/internal/catch_stream.h
         ${HEADER_DIR}/internal/catch_stringref.h
@@ -183,6 +184,7 @@ set(IMPL_SOURCES
         ${HEADER_DIR}/internal/catch_section.cpp
         ${HEADER_DIR}/internal/catch_section_info.cpp
         ${HEADER_DIR}/internal/catch_session.cpp
+        ${HEADER_DIR}/internal/catch_singletons.cpp
         ${HEADER_DIR}/internal/catch_startup_exception_registry.cpp
         ${HEADER_DIR}/internal/catch_stream.cpp
         ${HEADER_DIR}/internal/catch_stringref.cpp
