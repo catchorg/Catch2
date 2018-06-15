@@ -31,7 +31,7 @@ namespace Catch {
             ITestCaseRegistry const& getTestCaseRegistry() const override {
                 return m_testCaseRegistry;
             }
-            IExceptionTranslatorRegistry& getExceptionTranslatorRegistry() override {
+            IExceptionTranslatorRegistry const& getExceptionTranslatorRegistry() const override {
                 return m_exceptionTranslatorRegistry;
             }
             ITagAliasRegistry const& getTagAliasRegistry() const override {
@@ -68,26 +68,18 @@ namespace Catch {
             TagAliasRegistry m_tagAliasRegistry;
             StartupExceptionRegistry m_exceptionRegistry;
         };
-
-        // Single, global, instance
-        RegistryHub*& getTheRegistryHub() {
-            static RegistryHub* theRegistryHub = nullptr;
-            if( !theRegistryHub )
-                theRegistryHub = new RegistryHub();
-            return theRegistryHub;
-        }
     }
 
-    IRegistryHub& getRegistryHub() {
-        return *getTheRegistryHub();
+    using RegistryHubSingleton = Singleton<RegistryHub, IRegistryHub, IMutableRegistryHub>;
+
+    IRegistryHub const& getRegistryHub() {
+        return RegistryHubSingleton::get();
     }
     IMutableRegistryHub& getMutableRegistryHub() {
-        return *getTheRegistryHub();
+        return RegistryHubSingleton::getMutable();
     }
     void cleanUp() {
         cleanupSingletons();
-        delete getTheRegistryHub();
-        getTheRegistryHub() = nullptr;
         cleanUpContext();
         ReusableStringStream::cleanup();
     }
