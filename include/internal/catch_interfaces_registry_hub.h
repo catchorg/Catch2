@@ -33,7 +33,7 @@ namespace Catch {
         virtual ITestCaseRegistry const& getTestCaseRegistry() const = 0;
         virtual ITagAliasRegistry const& getTagAliasRegistry() const = 0;
 
-        virtual IExceptionTranslatorRegistry& getExceptionTranslatorRegistry() = 0;
+        virtual IExceptionTranslatorRegistry const& getExceptionTranslatorRegistry() const = 0;
 
 
         virtual StartupExceptionRegistry const& getStartupExceptionRegistry() const = 0;
@@ -49,7 +49,7 @@ namespace Catch {
         virtual void registerStartupException() noexcept = 0;
     };
 
-    IRegistryHub& getRegistryHub();
+    IRegistryHub const& getRegistryHub();
     IMutableRegistryHub& getMutableRegistryHub();
     void cleanUp();
     std::string translateActiveException();
