@@ -4,6 +4,9 @@
 #include <iostream> // !DBG
 #include <numeric>
 #include <map>
+#include <set>
+
+#include "internal/catch_random_number_generator.h"
 
 namespace Catch {
 namespace generators {
@@ -143,6 +146,35 @@ namespace generators {
 
     using GeneratorBasePtr = std::unique_ptr<GeneratorBase>;
 
+
+    template<typename T>
+    class GeneratorRandomiser : public IGenerator<T> {
+        Generator<T> m_baseGenerator;
+
+        std::vector<size_t> m_indices;
+    public:
+        GeneratorRandomiser( Generator<T>&& baseGenerator, size_t numberOfItems )
+        : m_baseGenerator( std::move( baseGenerator ) )
+        {
+            assert( numberOfItems <= m_baseGenerator.size() );
+            m_indices.reserve( numberOfItems );
+            std::uniform_int_distribution<size_t> uid( 0, m_baseGenerator.size()-1 );
+
+            std::set<size_t> indices;
+            // !TBD: improve this algorithm - also move it out of line
+            while( indices.size() < numberOfItems ) {
+                auto index = uid( rng() );
+                if( indices.insert( index ).second )
+                    m_indices.push_back( index );
+            }
+        }
+
+        auto get( size_t index ) const -> T override {
+            return m_baseGenerator[m_indices[index]];
+        }
+    };
+
+
     class GeneratorCache {
         std::map<std::string, GeneratorBasePtr> m_generators;
 
@@ -186,6 +218,14 @@ namespace generators {
         return Generator<T>( 1+last-first, make_unique<RangeGenerator<T>>( first, last ) );
     }
     template<typename T>
+    auto random( T const& first, T const& last ) -> Generator<T> {
+        auto gen = range( first, last );
+        auto size = gen.size();
+
+        return Generator<T>( size, make_unique<GeneratorRandomiser<T>>( std::move( gen ), size ) );
+    }
+
+    template<typename T>
     auto values( std::initializer_list<T> values ) -> Generator<T> {
         return Generator<T>( values.size(), make_unique<FixedValuesGenerator<T>>( values ) );
     }
@@ -216,6 +256,17 @@ TEST_CASE("Generators") {
         CHECK( gen[1] == 1 );
         CHECK( gen[2] == 4 );
         CHECK( gen[3] == 1 );
+    }
+    SECTION( "random range" ) {
+        auto gen = random( 3, 8 );
+
+        CHECK( gen.size() == 6 );
+        for( size_t i = 0; i < 6; ++i ) {
+            CHECK( gen[i] >= 3 );
+            CHECK( gen[i] <= 8 );
+            if( i > 0 )
+                CHECK( gen[i] != gen[i-1] );
+        }
     }
     SECTION( "combined" ) {
         auto gen = range( 1, 2 ) << values( { 9, 7 } );
