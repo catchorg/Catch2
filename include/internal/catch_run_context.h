@@ -79,6 +79,8 @@ namespace Catch {
         void sectionEnded( SectionEndInfo const& endInfo ) override;
         void sectionEndedEarly( SectionEndInfo const& endInfo ) override;
 
+        int getGeneratorIndex( SourceLineInfo const& lineInfo, int size ) override;
+
         void benchmarkStarting( BenchmarkInfo const& info ) override;
         void benchmarkEnded( BenchmarkStats const& stats ) override;
 

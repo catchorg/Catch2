@@ -8,6 +8,7 @@
 #include "catch_generators.hpp"
 #include "catch_random_number_generator.h"
 #include "catch_singletons.hpp"
+#include "catch_interfaces_capture.h"
 
 #include <set>
 
@@ -35,6 +36,10 @@ namespace generators {
 
     auto getGeneratorCache() -> GeneratorCache& {
         return Singleton<GeneratorCache>::getMutable();
+    }
+
+    auto getIndexForGeneratorId( SourceLineInfo const& lineInfo, size_t size ) -> size_t {
+        return getResultCapture().getGeneratorIndex( lineInfo, static_cast<int>( size ) );
     }
 
 } // namespace generators

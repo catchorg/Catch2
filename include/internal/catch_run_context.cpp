@@ -128,6 +128,14 @@ namespace Catch {
 
         return true;
     }
+    int RunContext::getGeneratorIndex( SourceLineInfo const& lineInfo, int size ) {
+        IndexTracker& tracker = IndexTracker::acquire( m_trackerContext, TestCaseTracking::NameAndLocation( "generator", lineInfo ), size );
+        assert( tracker.isOpen() );
+
+        m_lastAssertionInfo.lineInfo = lineInfo;
+
+        return tracker.index();
+    }
 
     bool RunContext::testForMissingAssertions(Counts& assertions) {
         if (assertions.total() != 0)

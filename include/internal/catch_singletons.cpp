@@ -22,7 +22,7 @@ namespace Catch {
 
     ISingleton::~ISingleton() {}
 
-    void addSingleton(ISingleton* singleton ) {
+    void addSingleton( ISingleton* singleton ) {
         getSingletons()->push_back( singleton );
     }
     void cleanupSingletons() {

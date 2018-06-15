@@ -16,7 +16,7 @@ namespace generators {
 } // namespace Catch
 
 
-TEST_CASE("Generators") {
+TEST_CASE("Generators impl") {
     using namespace Catch::generators;
 
     SECTION( "range" ) {
@@ -59,7 +59,7 @@ TEST_CASE("Generators") {
     }
 
     SECTION( "values" ) {
-        auto gen = Generator<int>() << 3 << 1;
+        auto gen = NullGenerator() << 3 << 1;
 
         CHECK( gen.size() == 2 );
         CHECK( gen[0] == 3 );
@@ -121,10 +121,28 @@ TEST_CASE("Generators") {
         CHECK( gen[1] == "two" );
         CHECK( gen[2] == "three" );
         CHECK( gen[3] == "four" );
-
     }
-
-    //range( 1, 2 ) << values( { 3.1, 7.9 } ); // should error
-//    int i = GENERATE( range(1,3) );
 }
 
+#define GENERATE( expr ) Catch::generators::generate( CATCH_INTERNAL_LINEINFO, []{ using namespace Catch::generators; return NullGenerator() << expr; } )
+
+TEST_CASE("Generators") {
+
+    auto i = GENERATE( values( { "a", "b", "c" } ) );
+
+    SECTION( "one" ) {
+        auto j = GENERATE( range( 8, 11 ) << 2 );
+        std::cout << "one: " << i << ", " << j << std::endl;
+    }
+    SECTION( "two" ) {
+        auto j = GENERATE( 3.141 << 1.379 );
+        std::cout << "two: " << i << ", " << j << std::endl;
+    }
+}
+
+TEST_CASE( "200 ints" ) {
+    auto x = GENERATE( range( 0,100 ) );
+    auto y = GENERATE( range( 200,300 ) );
+
+    CHECK( x < y );
+}

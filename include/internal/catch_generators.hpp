@@ -12,6 +12,8 @@
 #include <map>
 #include <cassert>
 #include <string>
+#include "catch_stream.h"
+#include "catch_common.h"
 
 namespace Catch {
 namespace generators {
@@ -33,8 +35,7 @@ namespace generators {
     public:
         SingleValueGenerator( T const& value ) : m_value( value ) {}
 
-        auto get( size_t index ) const -> T override {
-            assert( index == 0 );
+        auto get( size_t ) const -> T override {
             return m_value;
         }
     };
@@ -86,6 +87,8 @@ namespace generators {
         auto size() const -> size_t { return m_size; }
     };
 
+    struct NullGenerator {};
+
     template<typename T>
     class Generator : public GeneratorBase {
         std::unique_ptr<IGenerator<T>> m_generator;
@@ -127,6 +130,7 @@ namespace generators {
                     return gen[localIndex];
             }
             assert(false); // should never happen
+            throw std::logic_error("this should never happen");
         }
 
         friend auto operator << ( Generator&& g1, Generator&& g2 ) -> Generator {
@@ -189,6 +193,15 @@ namespace generators {
         return Generator<T>( 1, make_unique<SingleValueGenerator<T>>( val ) );
     }
 
+    template<typename T>
+    auto operator << ( NullGenerator, T const& val ) -> Generator<T> {
+        return value( val );
+    }
+    template<typename T>
+    auto operator << ( NullGenerator, Generator<T>&& generator ) -> Generator<T> {
+        return std::move(generator);
+    }
+
 
    class GeneratorCache {
         std::map<std::string, GeneratorBasePtr> m_generators;
@@ -214,6 +227,7 @@ namespace generators {
     };
 
     auto getGeneratorCache() -> GeneratorCache&;
+    auto getIndexForGeneratorId( SourceLineInfo const& lineInfo, size_t size ) -> size_t;
 
     template<typename L>
     auto memoize( GeneratorCache& cache, std::string const& id, L const& generatorExpression ) -> decltype(generatorExpression()) const& {
@@ -222,9 +236,13 @@ namespace generators {
         return cache.getGenerator<UnderlyingType, L>( id, generatorExpression );
     }
     template<typename L>
-    auto generate( std::string const& id, L const& generatorExpression ) -> typename decltype(generatorExpression())::type {
+    auto generate( SourceLineInfo const& lineInfo, L const& generatorExpression ) -> typename decltype(generatorExpression())::type {
 
-        return memoize( getGeneratorCache(), id, generatorExpression )[0]; // !TBD
+        ReusableStringStream rss;
+        rss << lineInfo;
+        auto const& generator = memoize( getGeneratorCache(), rss.str(), generatorExpression );
+        auto index = getIndexForGeneratorId( lineInfo, generator.size() );
+        return generator[index];
     }
 
 } // namespace generators

@@ -24,6 +24,7 @@ namespace Catch {
     struct BenchmarkInfo;
     struct BenchmarkStats;
     struct AssertionReaction;
+    struct SourceLineInfo;
 
     struct ITransientExpression;
 
@@ -35,6 +36,8 @@ namespace Catch {
                                         Counts& assertions ) = 0;
         virtual void sectionEnded( SectionEndInfo const& endInfo ) = 0;
         virtual void sectionEndedEarly( SectionEndInfo const& endInfo ) = 0;
+
+        virtual int getGeneratorIndex( SourceLineInfo const& lineInfo, int size ) = 0;
 
         virtual void benchmarkStarting( BenchmarkInfo const& info ) = 0;
         virtual void benchmarkEnded( BenchmarkStats const& stats ) = 0;
