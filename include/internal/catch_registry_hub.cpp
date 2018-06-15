@@ -81,7 +81,6 @@ namespace Catch {
     void cleanUp() {
         cleanupSingletons();
         cleanUpContext();
-        ReusableStringStream::cleanup();
     }
     std::string translateActiveException() {
         return getRegistryHub().getExceptionTranslatorRegistry().translateActiveException();

@@ -12,6 +12,7 @@
 #include "catch_stream.h"
 #include "catch_debug_console.h"
 #include "catch_stringref.h"
+#include "catch_singletons.hpp"
 
 #include <cstdio>
 #include <iostream>
@@ -19,11 +20,6 @@
 #include <sstream>
 #include <vector>
 #include <memory>
-
-#if defined(__clang__)
-#    pragma clang diagnostic push
-#    pragma clang diagnostic ignored "-Wexit-time-destructors"
-#endif
 
 namespace Catch {
 
@@ -145,7 +141,6 @@ namespace Catch {
         std::vector<std::unique_ptr<std::ostringstream>> m_streams;
         std::vector<std::size_t> m_unused;
         std::ostringstream m_referenceStream; // Used for copy state/ flags from
-        static StringStreams* s_instance;
 
         auto add() -> std::size_t {
             if( m_unused.empty() ) {
@@ -163,34 +158,17 @@ namespace Catch {
             m_streams[index]->copyfmt( m_referenceStream ); // Restore initial flags and other state
             m_unused.push_back(index);
         }
-
-        // !TBD: put in TLS
-        static auto instance() -> StringStreams& {
-            if( !s_instance )
-                s_instance = new StringStreams();
-            return *s_instance;
-        }
-        static void cleanup() {
-            delete s_instance;
-            s_instance = nullptr;
-        }
     };
 
-    StringStreams* StringStreams::s_instance = nullptr;
-
-    void ReusableStringStream::cleanup() {
-        StringStreams::cleanup();
-    }
-
     ReusableStringStream::ReusableStringStream()
-    :   m_index( StringStreams::instance().add() ),
-        m_oss( StringStreams::instance().m_streams[m_index].get() )
+    :   m_index( Singleton<StringStreams>::getMutable().add() ),
+        m_oss( Singleton<StringStreams>::getMutable().m_streams[m_index].get() )
     {}
 
     ReusableStringStream::~ReusableStringStream() {
         static_cast<std::ostringstream*>( m_oss )->str("");
         m_oss->clear();
-        StringStreams::instance().release( m_index );
+        Singleton<StringStreams>::getMutable().release( m_index );
     }
 
     auto ReusableStringStream::str() const -> std::string {
@@ -207,7 +185,3 @@ namespace Catch {
     std::ostream& clog() { return std::clog; }
 #endif
 }
-
-#if defined(__clang__)
-#    pragma clang diagnostic pop
-#endif
