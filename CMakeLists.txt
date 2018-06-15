@@ -196,6 +196,7 @@ set(INTERNAL_HEADERS
         ${HEADER_DIR}/internal/catch_wildcard_pattern.h
         ${HEADER_DIR}/internal/catch_windows_h_proxy.h
         ${HEADER_DIR}/internal/catch_xmlwriter.h
+        ${HEADER_DIR}/internal/catch_generators.hpp
         )
 set(IMPL_SOURCES
         ${HEADER_DIR}/internal/catch_approx.cpp
@@ -257,6 +258,7 @@ set(IMPL_SOURCES
         ${HEADER_DIR}/internal/catch_version.cpp
         ${HEADER_DIR}/internal/catch_wildcard_pattern.cpp
         ${HEADER_DIR}/internal/catch_xmlwriter.cpp
+        ${HEADER_DIR}/internal/catch_generators.cpp
         )
 set(INTERNAL_FILES ${IMPL_SOURCES} ${INTERNAL_HEADERS})
 CheckFileList(INTERNAL_FILES ${HEADER_DIR}/internal)
