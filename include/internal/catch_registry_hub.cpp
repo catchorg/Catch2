@@ -14,6 +14,7 @@
 #include "catch_exception_translator_registry.h"
 #include "catch_tag_alias_registry.h"
 #include "catch_startup_exception_registry.h"
+#include "catch_singletons.hpp"
 
 namespace Catch {
 
@@ -84,6 +85,7 @@ namespace Catch {
         return *getTheRegistryHub();
     }
     void cleanUp() {
+        cleanupSingletons();
         delete getTheRegistryHub();
         getTheRegistryHub() = nullptr;
         cleanUpContext();

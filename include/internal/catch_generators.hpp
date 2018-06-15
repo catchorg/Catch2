@@ -194,6 +194,7 @@ namespace generators {
         std::map<std::string, GeneratorBasePtr> m_generators;
 
     public:
+
         template<typename T>
         auto add( std::string const& id, Generator<T>&& generator ) -> Generator<T> const& {
             auto generatorPtr = make_unique<Generator<T>>( std::move( generator ) );
@@ -210,8 +211,8 @@ namespace generators {
                 ? static_cast<Generator<T> const&>( *it->second )
                 : add( id, generatorExpression() );
         }
-
     };
+
     auto getGeneratorCache() -> GeneratorCache&;
 
     template<typename L>

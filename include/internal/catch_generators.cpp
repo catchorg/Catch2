@@ -7,6 +7,7 @@
 
 #include "catch_generators.hpp"
 #include "catch_random_number_generator.h"
+#include "catch_singletons.hpp"
 
 #include <set>
 
@@ -32,12 +33,8 @@ namespace generators {
         return indices;
     }
 
-    // !TBD: add this to hub
     auto getGeneratorCache() -> GeneratorCache& {
-        static GeneratorCache* s_cache = nullptr;
-        if( !s_cache )
-            s_cache = new GeneratorCache;
-        return *s_cache;
+        return Singleton<GeneratorCache>::getMutable();
     }
 
 } // namespace generators
