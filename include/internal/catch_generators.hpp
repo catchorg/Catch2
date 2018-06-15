@@ -212,19 +212,18 @@ namespace generators {
         }
 
     };
-//    auto getGeneratorCache() -> GeneratorCache& {
-//        static GeneratorCache s_cache;
-//        return s_cache;
-//    }
+    auto getGeneratorCache() -> GeneratorCache&;
 
     template<typename L>
-    auto generate( GeneratorCache& cache, std::string const& id, size_t index, L const& generatorExpression ) -> typename decltype(generatorExpression())::type {
+    auto memoize( GeneratorCache& cache, std::string const& id, L const& generatorExpression ) -> decltype(generatorExpression()) const& {
 
         using UnderlyingType = typename decltype(generatorExpression())::type;
+        return cache.getGenerator<UnderlyingType, L>( id, generatorExpression );
+    }
+    template<typename L>
+    auto generate( std::string const& id, L const& generatorExpression ) -> typename decltype(generatorExpression())::type {
 
-        auto const& generator = cache.getGenerator<UnderlyingType, L>( id, generatorExpression );
-
-        return generator[index];
+        return memoize( getGeneratorCache(), id, generatorExpression )[0]; // !TBD
     }
 
 } // namespace generators

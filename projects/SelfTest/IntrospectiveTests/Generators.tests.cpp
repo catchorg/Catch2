@@ -8,6 +8,12 @@
 
 #include "internal/catch_generators.hpp"
 
+namespace Catch {
+namespace generators {
+
+
+} // namespace generators
+} // namespace Catch
 
 
 TEST_CASE("Generators") {
@@ -90,29 +96,35 @@ TEST_CASE("Generators") {
 
         std::string id = "test";
 
-        SECTION( "type is deducible" ) {
-            using GeneratorType = decltype( range( 11, 14 ) << 27 );
-            REQUIRE( std::is_same<GeneratorType, Generator<int>>::value );
-            REQUIRE( std::is_same<GeneratorType::type, int>::value );
-        }
+        int created = 0;
+        auto fun = [&]{
+            created++;
+            return values({42, 7});
+        };
 
-        SECTION( "macro2" ) {
-            int created = 0;
-            auto fun = [&]{
-                created++;
-                return values({42, 7});
-            };
+        // generator is only created on first call
+        CHECK( created == 0 );
+        CHECK( memoize( cache, id, fun )[0] == 42 );
+        CHECK( created == 1 );
+        CHECK( memoize( cache, id, fun )[0] == 42 );
+        CHECK( created == 1 );
+        CHECK( memoize( cache, id, fun )[1] == 7 );
+        CHECK( created == 1 );
+    }
 
-            CHECK( generate( cache, id, 0, fun ) == 42 );
-            CHECK( created == 1 );
-            CHECK( generate( cache, id, 0, fun ) == 42 );
-            CHECK( created == 1 );
-            CHECK( generate( cache, id, 1, fun ) == 7 );
-            CHECK( created == 1 );
-        }
+    SECTION( "strings" ) {
+        GeneratorCache cache;
+        auto const& gen = memoize( cache, "test", []{ return values({ "one", "two", "three", "four" } ); }  );
+
+        REQUIRE( gen.size() == 4 );
+        CHECK( gen[0] == "one" );
+        CHECK( gen[1] == "two" );
+        CHECK( gen[2] == "three" );
+        CHECK( gen[3] == "four" );
+
     }
 
     //range( 1, 2 ) << values( { 3.1, 7.9 } ); // should error
 //    int i = GENERATE( range(1,3) );
-
 }
+

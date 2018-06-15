@@ -32,5 +32,13 @@ namespace generators {
         return indices;
     }
 
+    // !TBD: add this to hub
+    auto getGeneratorCache() -> GeneratorCache& {
+        static GeneratorCache* s_cache = nullptr;
+        if( !s_cache )
+            s_cache = new GeneratorCache;
+        return *s_cache;
+    }
+
 } // namespace generators
 } // namespace Catch
