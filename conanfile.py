@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-from conans import ConanFile
+from conans import ConanFile, CMake
 
 
 class CatchConan(ConanFile):
@@ -8,12 +8,23 @@ class CatchConan(ConanFile):
     description = "A modern, C++-native, header-only, framework for unit-tests, TDD and BDD"
     author = "philsquared"
     generators = "cmake"
-    exports_sources = "single_include/*"
+    # Only needed until conan 1.5 is released
+    settings = "compiler", "arch"
+    exports_sources = "single_include/*", "CMakeLists.txt", "CMake/catch2.pc.in", "LICENSE.txt"
     url = "https://github.com/catchorg/Catch2"
     license = "Boost Software License - Version 1.0. http://www.boost.org/LICENSE_1_0.txt"
 
+    def build(self):
+        pass
+
     def package(self):
-        self.copy(pattern="catch.hpp", src="single_include/catch2", dst="include/catch2")
+        cmake = CMake(self)
+        cmake.definitions["BUILD_TESTING"] = "OFF"
+        cmake.definitions["CATCH_INSTALL_DOCS"] = "OFF"
+        cmake.configure()
+        cmake.install()
+
+        self.copy(pattern="LICENSE.txt", dst="licenses")
 
     def package_id(self):
-            self.info.header_only()
+        self.info.header_only()
