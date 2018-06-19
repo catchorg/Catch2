@@ -19,6 +19,7 @@ option(CATCH_USE_VALGRIND "Perform SelfTests with Valgrind" OFF)
 option(CATCH_BUILD_EXAMPLES "Build documentation examples" OFF)
 option(CATCH_ENABLE_COVERAGE "Generate coverage for codecov.io" OFF)
 option(CATCH_ENABLE_WERROR "Enable all warnings as errors" ON)
+option(CATCH_INSTALL_DOCS "Install documentation alongside library" ON)
 
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
@@ -120,12 +121,14 @@ install(
 )
 
 # Install documentation
-install(
-  DIRECTORY
-    docs/
-  DESTINATION
-    "${CMAKE_INSTALL_DOCDIR}"
-)
+if(CATCH_INSTALL_DOCS)
+  install(
+    DIRECTORY
+      docs/
+    DESTINATION
+      "${CMAKE_INSTALL_DOCDIR}"
+  )
+endif()
 
 
 ## Provide some pkg-config integration
