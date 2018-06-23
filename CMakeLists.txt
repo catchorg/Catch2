@@ -20,6 +20,8 @@ option(CATCH_BUILD_EXAMPLES "Build documentation examples" OFF)
 option(CATCH_ENABLE_COVERAGE "Generate coverage for codecov.io" OFF)
 option(CATCH_ENABLE_WERROR "Enable all warnings as errors" ON)
 option(CATCH_INSTALL_DOCS "Install documentation alongside library" ON)
+option(CATCH_INSTALL_HELPERS "Install contrib alongside library" ON)
+
 
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
@@ -130,6 +132,26 @@ if(CATCH_INSTALL_DOCS)
   )
 endif()
 
+if(CATCH_INSTALL_HELPERS)
+# Install CMake scripts
+install(
+  FILES
+    "contrib/ParseAndAddCatchTests.cmake"
+    "contrib/Catch.cmake"
+    "contrib/CatchAddTests.cmake"
+  DESTINATION
+    ${CATCH_CMAKE_CONFIG_DESTINATION}
+)
+
+# Install debugger helpers
+install(
+  FILES
+    "contrib/gdbinit"
+    "contrib/lldbinit"
+  DESTINATION
+    ${CMAKE_INSTALL_DATAROOTDIR}/Catch2
+)
+endif()
 
 ## Provide some pkg-config integration
 set(PKGCONFIG_INSTALL_DIR
