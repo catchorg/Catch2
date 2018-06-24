@@ -84,18 +84,29 @@ add_library(Catch2::Catch2 ALIAS Catch2)
 
 set(CATCH_CMAKE_CONFIG_DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake/Catch2")
 
+include(CMakePackageConfigHelpers)
+configure_package_config_file(
+    ${CMAKE_CURRENT_LIST_DIR}/CMake/Catch2Config.cmake.in
+    ${CMAKE_CURRENT_BINARY_DIR}/Catch2Config.cmake
+    INSTALL_DESTINATION
+      ${CATCH_CMAKE_CONFIG_DESTINATION}
+)
+
+
 # create and install an export set for catch target as Catch2::Catch
 install(
   TARGETS
     Catch2
   EXPORT
-    Catch2Config
-  DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    Catch2Targets
+  DESTINATION
+    ${CMAKE_INSTALL_LIBDIR}
 )
+
 
 install(
   EXPORT
-    Catch2Config
+    Catch2Targets
   NAMESPACE
     Catch2::
   DESTINATION
@@ -117,6 +128,7 @@ install(
     
 install(
   FILES 
+    "${CMAKE_CURRENT_BINARY_DIR}/Catch2Config.cmake"
     "${CMAKE_CURRENT_BINARY_DIR}/Catch2ConfigVersion.cmake"
   DESTINATION
     ${CATCH_CMAKE_CONFIG_DESTINATION}
