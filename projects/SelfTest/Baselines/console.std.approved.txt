@@ -968,7 +968,7 @@ explicitly with message:
 
 -------------------------------------------------------------------------------
 looped SECTION tests
-  s1
+  b is currently: 0
 -------------------------------------------------------------------------------
 Misc.tests.cpp:<line number>
 ...............................................................................
@@ -977,6 +977,18 @@ Misc.tests.cpp:<line number>: FAILED:
   CHECK( b > a )
 with expansion:
   0 > 1
+
+-------------------------------------------------------------------------------
+looped SECTION tests
+  b is currently: 1
+-------------------------------------------------------------------------------
+Misc.tests.cpp:<line number>
+...............................................................................
+
+Misc.tests.cpp:<line number>: FAILED:
+  CHECK( b > a )
+with expansion:
+  1 > 1
 
 -------------------------------------------------------------------------------
 looped tests
@@ -1028,8 +1040,8 @@ with message:
 
 -------------------------------------------------------------------------------
 more nested SECTION tests
-  s1
-  s2
+  doesn't equal
+  equal
 -------------------------------------------------------------------------------
 Misc.tests.cpp:<line number>
 ...............................................................................
@@ -1085,5 +1097,5 @@ due to unexpected exception with message:
 
 ===============================================================================
 test cases:  208 | 155 passed |  49 failed |  4 failed as expected
-assertions: 1065 | 937 passed | 107 failed | 21 failed as expected
+assertions: 1074 | 945 passed | 108 failed | 21 failed as expected
 

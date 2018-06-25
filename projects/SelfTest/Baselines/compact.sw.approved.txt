@@ -988,6 +988,15 @@ Misc.tests.cpp:<line number>: passed: l == std::numeric_limits<long long>::max()
 ==
 9223372036854775807 (0x<hex digits>)
 Misc.tests.cpp:<line number>: failed: b > a for: 0 > 1
+Misc.tests.cpp:<line number>: failed: b > a for: 1 > 1
+Misc.tests.cpp:<line number>: passed: b > a for: 2 > 1
+Misc.tests.cpp:<line number>: passed: b > a for: 3 > 1
+Misc.tests.cpp:<line number>: passed: b > a for: 4 > 1
+Misc.tests.cpp:<line number>: passed: b > a for: 5 > 1
+Misc.tests.cpp:<line number>: passed: b > a for: 6 > 1
+Misc.tests.cpp:<line number>: passed: b > a for: 7 > 1
+Misc.tests.cpp:<line number>: passed: b > a for: 8 > 1
+Misc.tests.cpp:<line number>: passed: b > a for: 9 > 1
 Misc.tests.cpp:<line number>: failed: ( fib[i] % 2 ) == 0 for: 1 == 0 with 1 message: 'Testing if fib[0] (1) is even'
 Misc.tests.cpp:<line number>: failed: ( fib[i] % 2 ) == 0 for: 1 == 0 with 1 message: 'Testing if fib[1] (1) is even'
 Misc.tests.cpp:<line number>: passed: ( fib[i] % 2 ) == 0 for: 0 == 0 with 1 message: 'Testing if fib[2] (2) is even'
@@ -1144,5 +1153,5 @@ Misc.tests.cpp:<line number>: passed: v.size() == 5 for: 5 == 5
 Misc.tests.cpp:<line number>: passed: v.capacity() >= 5 for: 5 >= 5
 Misc.tests.cpp:<line number>: passed:
 Misc.tests.cpp:<line number>: passed:
-Failed 62 test cases, failed 121 assertions.
+Failed 62 test cases, failed 122 assertions.
 

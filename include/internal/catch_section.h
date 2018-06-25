@@ -35,7 +35,7 @@ namespace Catch {
 
 } // end namespace Catch
 
-    #define INTERNAL_CATCH_SECTION( ... ) \
-        if( Catch::Section const& INTERNAL_CATCH_UNIQUE_NAME( catch_internal_Section ) = Catch::SectionInfo( CATCH_INTERNAL_LINEINFO, __VA_ARGS__ ) )
+#define INTERNAL_CATCH_SECTION( ... ) \
+    if( Catch::Section const& INTERNAL_CATCH_UNIQUE_NAME( catch_internal_Section ) = Catch::SectionInfo( CATCH_INTERNAL_LINEINFO, __VA_ARGS__ ) )
 
 #endif // TWOBLUECUBES_CATCH_SECTION_H_INCLUDED

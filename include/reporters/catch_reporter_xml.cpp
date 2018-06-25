@@ -80,8 +80,7 @@ namespace Catch {
         StreamingReporterBase::sectionStarting( sectionInfo );
         if( m_sectionDepth++ > 0 ) {
             m_xml.startElement( "Section" )
-                .writeAttribute( "name", trim( sectionInfo.name ) )
-                .writeAttribute( "description", sectionInfo.description );
+                .writeAttribute( "name", trim( sectionInfo.name ) );
             writeSourceInfo( sectionInfo.lineInfo );
             m_xml.ensureTagClosed();
         }
