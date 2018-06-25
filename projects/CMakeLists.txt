@@ -5,6 +5,7 @@ include(MiscFunctions)
 set(TEST_SOURCES
         ${SELF_TEST_DIR}/TestMain.cpp
         ${SELF_TEST_DIR}/IntrospectiveTests/CmdLine.tests.cpp
+        ${SELF_TEST_DIR}/IntrospectiveTests/Generators.tests.cpp
         ${SELF_TEST_DIR}/IntrospectiveTests/PartTracker.tests.cpp
         ${SELF_TEST_DIR}/IntrospectiveTests/TagAlias.tests.cpp
         ${SELF_TEST_DIR}/IntrospectiveTests/String.tests.cpp
@@ -85,6 +86,7 @@ set(INTERNAL_HEADERS
         ${HEADER_DIR}/internal/catch_exception_translator_registry.h
         ${HEADER_DIR}/internal/catch_external_interfaces.h
         ${HEADER_DIR}/internal/catch_fatal_condition.h
+        ${HEADER_DIR}/internal/catch_generators.hpp
         ${HEADER_DIR}/internal/catch_impl.hpp
         ${HEADER_DIR}/internal/catch_interfaces_capture.h
         ${HEADER_DIR}/internal/catch_interfaces_config.h
@@ -117,6 +119,7 @@ set(INTERNAL_HEADERS
         ${HEADER_DIR}/internal/catch_section.h
         ${HEADER_DIR}/internal/catch_section_info.h
         ${HEADER_DIR}/internal/catch_session.h
+        ${HEADER_DIR}/internal/catch_singletons.hpp
         ${HEADER_DIR}/internal/catch_startup_exception_registry.h
         ${HEADER_DIR}/internal/catch_stream.h
         ${HEADER_DIR}/internal/catch_stringref.h
@@ -160,6 +163,7 @@ set(IMPL_SOURCES
         ${HEADER_DIR}/internal/catch_errno_guard.cpp
         ${HEADER_DIR}/internal/catch_exception_translator_registry.cpp
         ${HEADER_DIR}/internal/catch_fatal_condition.cpp
+        ${HEADER_DIR}/internal/catch_generators.cpp
         ${HEADER_DIR}/internal/catch_interfaces_capture.cpp
         ${HEADER_DIR}/internal/catch_interfaces_config.cpp
         ${HEADER_DIR}/internal/catch_interfaces_exception.cpp
@@ -183,6 +187,7 @@ set(IMPL_SOURCES
         ${HEADER_DIR}/internal/catch_section.cpp
         ${HEADER_DIR}/internal/catch_section_info.cpp
         ${HEADER_DIR}/internal/catch_session.cpp
+        ${HEADER_DIR}/internal/catch_singletons.cpp
         ${HEADER_DIR}/internal/catch_startup_exception_registry.cpp
         ${HEADER_DIR}/internal/catch_stream.cpp
         ${HEADER_DIR}/internal/catch_stringref.cpp
@@ -247,7 +252,10 @@ include(CTest)
 add_executable(SelfTest ${TEST_SOURCES} ${IMPL_SOURCES} ${REPORTER_SOURCES} ${SURROGATE_SOURCES} ${HEADERS})
 target_include_directories(SelfTest PRIVATE ${HEADER_DIR})
 
-if(USE_CPP14)
+if(USE_CPP17)
+    message(STATUS "Enabling C++17")
+    set_property(TARGET SelfTest PROPERTY CXX_STANDARD 17)
+elseif(USE_CPP14)
     message(STATUS "Enabling C++14")
     set_property(TARGET SelfTest PROPERTY CXX_STANDARD 14)
 else()
