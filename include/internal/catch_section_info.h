@@ -27,6 +27,7 @@ namespace Catch {
                 std::string const& ) : SectionInfo( _lineInfo, _name ) {}
 
         std::string name;
+        std::string description; // !Deprecated: this will always be empty
         SourceLineInfo lineInfo;
     };
 
