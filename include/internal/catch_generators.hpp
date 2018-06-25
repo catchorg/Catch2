@@ -15,12 +15,16 @@
 #include <cassert>
 #include <string>
 
+#include "internal/catch_suppress_warnings.h"
+
 namespace Catch {
 namespace generators {
 
-    template<typename T, typename... Args>
-    std::unique_ptr<T> make_unique( Args&&... args ) {
-        return std::unique_ptr<T>(new T(std::forward<Args>(args)...));
+    namespace pf{
+        template<typename T, typename... Args>
+        std::unique_ptr<T> make_unique( Args&&... args ) {
+            return std::unique_ptr<T>(new T(std::forward<Args>(args)...));
+        }
     }
 
     template<typename T>
@@ -154,27 +158,50 @@ namespace generators {
         }
     };
 
+    template<typename T>
+    struct RequiresASpecialisationFor;
+
+    template<typename T>
+    auto all() -> Generator<T> { return RequiresASpecialisationFor<T>(); }
+
 
     template<typename T>
     auto range( T const& first, T const& last ) -> Generator<T> {
-        return Generator<T>( 1+last-first, make_unique<RangeGenerator<T>>( first, last ) );
+        return Generator<T>( 1+(last-first), pf::make_unique<RangeGenerator<T>>( first, last ) );
     }
+    template<>
+    inline auto all<int>() -> Generator<int> {
+        return range( std::numeric_limits<int>::min(), std::numeric_limits<int>::max()-1 );
+    }
+
+
     template<typename T>
     auto random( T const& first, T const& last ) -> Generator<T> {
         auto gen = range( first, last );
         auto size = gen.size();
 
-        return Generator<T>( size, make_unique<GeneratorRandomiser<T>>( std::move( gen ), size ) );
+        return Generator<T>( size, pf::make_unique<GeneratorRandomiser<T>>( std::move( gen ), size ) );
+    }
+    template<typename T>
+    auto random( size_t size ) -> Generator<T> {
+        return Generator<T>( size, pf::make_unique<GeneratorRandomiser<T>>( all<T>(), size ) );
     }
 
     template<typename T>
     auto values( std::initializer_list<T> values ) -> Generator<T> {
-        return Generator<T>( values.size(), make_unique<FixedValuesGenerator<T>>( values ) );
+        return Generator<T>( values.size(), pf::make_unique<FixedValuesGenerator<T>>( values ) );
     }
     template<typename T>
     auto value( T const& val ) -> Generator<T> {
-        return Generator<T>( 1, make_unique<SingleValueGenerator<T>>( val ) );
+        return Generator<T>( 1, pf::make_unique<SingleValueGenerator<T>>( val ) );
     }
+
+    template<typename... Ts>
+    auto table( std::initializer_list<std::tuple<Ts...>>&& tuples ) -> Generator<std::tuple<Ts...>> {
+        return values<std::tuple<Ts...>>( std::forward<std::initializer_list<std::tuple<Ts...>>>( tuples ) );
+    }
+
+
 
     template<typename T>
     auto operator << ( NullGenerator, T const& val ) -> Generator<T> {
@@ -212,7 +239,7 @@ namespace generators {
 
         template<typename T>
         auto add( SourceLineInfo const& lineInfo, Generator<T>&& generator ) -> Generator<T> const& {
-            auto generatorPtr = make_unique<Generator<T>>( std::move( generator ) );
+            auto generatorPtr = pf::make_unique<Generator<T>>( std::move( generator ) );
             auto const& storedGenerator = *generatorPtr;
             m_generators.insert( { lineInfo, std::move( generatorPtr ) } );
             return storedGenerator;
@@ -247,5 +274,7 @@ namespace generators {
 
 } // namespace generators
 } // namespace Catch
+
+#include "internal/catch_reenable_warnings.h"
 
 #endif // TWOBLUECUBES_CATCH_GENERATORS_HPP_INCLUDED

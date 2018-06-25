@@ -8,6 +8,8 @@
 
 #include "internal/catch_generators.hpp"
 
+#include "internal/catch_suppress_warnings.h"
+
 namespace Catch {
 namespace generators {
 
@@ -48,6 +50,15 @@ TEST_CASE("Generators impl") {
                 CHECK( gen[i] != gen[i-1] );
         }
     }
+    SECTION( "random selection" ) {
+        auto gen = random<int>( 10 );
+
+        CHECK( gen.size() == 10 );
+        for( size_t i = 0; i < 10; ++i ) {
+            if( i > 0 )
+                CHECK( gen[i] != gen[i-1] );
+        }
+    }
     SECTION( "combined" ) {
         auto gen = range( 1, 2 ) << values( { 9, 7 } );
 
@@ -77,7 +88,7 @@ TEST_CASE("Generators impl") {
         auto gen = range( 7, 9 ) << 11;
 
         // Make type erased version
-        auto dynCopy = make_unique<Generator<int>>( std::move( gen ) );
+        auto dynCopy = pf::make_unique<Generator<int>>( std::move( gen ) );
         std::unique_ptr<GeneratorBase const> base = std::move( dynCopy );
 
         // Only thing we can do is ask for the size
@@ -124,7 +135,7 @@ TEST_CASE("Generators impl") {
     }
 }
 
-#define GENERATE( expr ) Catch::generators::generate( CATCH_INTERNAL_LINEINFO, []{ using namespace Catch::generators; return NullGenerator() << expr; } )
+#define GENERATE( ... ) Catch::generators::generate( CATCH_INTERNAL_LINEINFO, []{ using namespace Catch::generators; return NullGenerator() << __VA_ARGS__; } )
 
 TEST_CASE("Generators") {
 
@@ -146,3 +157,68 @@ TEST_CASE( "200 ints" ) {
 
     CHECK( x < y );
 }
+
+#ifdef __cpp_structured_bindings
+TEST_CASE( "strlen" ) {
+    auto [test_input, expected] = GENERATE( values<std::pair<std::string_view, int>>({
+            {"one", 3},
+            {"two", 3},
+            {"three", 5},
+            {"four", 4}
+        }));
+
+    REQUIRE( test_input.size() == expected );
+}
+
+TEST_CASE( "strlen2" ) {
+    auto [test_input, expected] = GENERATE( table<std::string, int>({
+            {"one", 3},
+            {"two", 3},
+            {"three", 5},
+            {"four", 4}
+        }));
+
+    REQUIRE( test_input.size() == expected );
+}
+#endif
+
+TEST_CASE( "strlen3" ) {
+    struct Data { std::string str; int len; };
+    auto data = GENERATE( values<Data>({
+            {"one", 3},
+            {"two", 3},
+            {"three", 5},
+            {"four", 4}
+        }));
+
+    REQUIRE( data.str.size() == data.len );
+}
+
+
+auto square( int i ) -> int { return i*i; }
+
+TEST_CASE( "sqr" ) {
+    auto x = GENERATE( random( -10000, 10000 ) );
+    CAPTURE( x );
+    REQUIRE( square(x) >= 0 );
+}
+
+#ifdef __cpp_structured_bindings
+// Based on example from https://docs.cucumber.io/gherkin/reference/#scenario-outline
+// (thanks to https://github.com/catchorg/Catch2/issues/850#issuecomment-399504851)
+auto eatCucumbers( int start, int eat ) -> int { return start-eat; }
+
+SCENARIO("Eating cucumbers") {
+
+    auto [start, eat, left] = GENERATE( table<int,int,int> ({
+            { 12, 5, 7 },
+            { 20, 5, 15 }
+        }));
+
+    GIVEN( "there are " << start << " cucumbers" )
+    WHEN( "I eat " << eat << " cucumbers" )
+    THEN( "I should have " << left << " cucumbers" ) {
+        REQUIRE( eatCucumbers( start, eat ) == left );
+    }
+}
+#endif
