@@ -129,9 +129,7 @@ TEST_CASE( "looped SECTION tests", "[.][failing][sections]" ) {
     int a = 1;
 
     for( int b = 0; b < 10; ++b ) {
-        std::ostringstream oss;
-        oss << "b is currently: " << b;
-        SECTION( oss.str() ) {
+        DYNAMIC_SECTION( "b is currently: " << b ) {
             CHECK( b > a );
         }
     }
