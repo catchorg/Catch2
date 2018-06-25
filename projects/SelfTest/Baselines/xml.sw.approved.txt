@@ -4808,7 +4808,7 @@
         <OverallResults successes="7" failures="0" expectedFailures="0"/>
       </Section>
       <Section name="test lists" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-        <Section name="1 test" description="Specify one test case using" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
+        <Section name="Specify one test case using" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
           <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
             <Original>
               result
@@ -8691,7 +8691,7 @@ loose text artifact
       <OverallResult success="true"/>
     </TestCase>
     <TestCase name="looped SECTION tests" tags="[.][failing][sections]" filename="projects/<exe-name>/UsageTests/Misc.tests.cpp" >
-      <Section name="s1" description="b is currently: 0" filename="projects/<exe-name>/UsageTests/Misc.tests.cpp" >
+      <Section name="b is currently: 0" filename="projects/<exe-name>/UsageTests/Misc.tests.cpp" >
         <Expression success="false" type="CHECK" filename="projects/<exe-name>/UsageTests/Misc.tests.cpp" >
           <Original>
             b > a
@@ -8701,6 +8701,105 @@ loose text artifact
           </Expanded>
         </Expression>
         <OverallResults successes="0" failures="1" expectedFailures="0"/>
+      </Section>
+      <Section name="b is currently: 1" filename="projects/<exe-name>/UsageTests/Misc.tests.cpp" >
+        <Expression success="false" type="CHECK" filename="projects/<exe-name>/UsageTests/Misc.tests.cpp" >
+          <Original>
+            b > a
+          </Original>
+          <Expanded>
+            1 > 1
+          </Expanded>
+        </Expression>
+        <OverallResults successes="0" failures="1" expectedFailures="0"/>
+      </Section>
+      <Section name="b is currently: 2" filename="projects/<exe-name>/UsageTests/Misc.tests.cpp" >
+        <Expression success="true" type="CHECK" filename="projects/<exe-name>/UsageTests/Misc.tests.cpp" >
+          <Original>
+            b > a
+          </Original>
+          <Expanded>
+            2 > 1
+          </Expanded>
+        </Expression>
+        <OverallResults successes="1" failures="0" expectedFailures="0"/>
+      </Section>
+      <Section name="b is currently: 3" filename="projects/<exe-name>/UsageTests/Misc.tests.cpp" >
+        <Expression success="true" type="CHECK" filename="projects/<exe-name>/UsageTests/Misc.tests.cpp" >
+          <Original>
+            b > a
+          </Original>
+          <Expanded>
+            3 > 1
+          </Expanded>
+        </Expression>
+        <OverallResults successes="1" failures="0" expectedFailures="0"/>
+      </Section>
+      <Section name="b is currently: 4" filename="projects/<exe-name>/UsageTests/Misc.tests.cpp" >
+        <Expression success="true" type="CHECK" filename="projects/<exe-name>/UsageTests/Misc.tests.cpp" >
+          <Original>
+            b > a
+          </Original>
+          <Expanded>
+            4 > 1
+          </Expanded>
+        </Expression>
+        <OverallResults successes="1" failures="0" expectedFailures="0"/>
+      </Section>
+      <Section name="b is currently: 5" filename="projects/<exe-name>/UsageTests/Misc.tests.cpp" >
+        <Expression success="true" type="CHECK" filename="projects/<exe-name>/UsageTests/Misc.tests.cpp" >
+          <Original>
+            b > a
+          </Original>
+          <Expanded>
+            5 > 1
+          </Expanded>
+        </Expression>
+        <OverallResults successes="1" failures="0" expectedFailures="0"/>
+      </Section>
+      <Section name="b is currently: 6" filename="projects/<exe-name>/UsageTests/Misc.tests.cpp" >
+        <Expression success="true" type="CHECK" filename="projects/<exe-name>/UsageTests/Misc.tests.cpp" >
+          <Original>
+            b > a
+          </Original>
+          <Expanded>
+            6 > 1
+          </Expanded>
+        </Expression>
+        <OverallResults successes="1" failures="0" expectedFailures="0"/>
+      </Section>
+      <Section name="b is currently: 7" filename="projects/<exe-name>/UsageTests/Misc.tests.cpp" >
+        <Expression success="true" type="CHECK" filename="projects/<exe-name>/UsageTests/Misc.tests.cpp" >
+          <Original>
+            b > a
+          </Original>
+          <Expanded>
+            7 > 1
+          </Expanded>
+        </Expression>
+        <OverallResults successes="1" failures="0" expectedFailures="0"/>
+      </Section>
+      <Section name="b is currently: 8" filename="projects/<exe-name>/UsageTests/Misc.tests.cpp" >
+        <Expression success="true" type="CHECK" filename="projects/<exe-name>/UsageTests/Misc.tests.cpp" >
+          <Original>
+            b > a
+          </Original>
+          <Expanded>
+            8 > 1
+          </Expanded>
+        </Expression>
+        <OverallResults successes="1" failures="0" expectedFailures="0"/>
+      </Section>
+      <Section name="b is currently: 9" filename="projects/<exe-name>/UsageTests/Misc.tests.cpp" >
+        <Expression success="true" type="CHECK" filename="projects/<exe-name>/UsageTests/Misc.tests.cpp" >
+          <Original>
+            b > a
+          </Original>
+          <Expanded>
+            9 > 1
+          </Expanded>
+        </Expression>
+        <OverallResults successes="1" failures="0" expectedFailures="0"/>
       </Section>
       <OverallResult success="false"/>
     </TestCase>
@@ -8796,8 +8895,8 @@ loose text artifact
       <OverallResult success="false"/>
     </TestCase>
     <TestCase name="more nested SECTION tests" tags="[.][failing][sections]" filename="projects/<exe-name>/UsageTests/Misc.tests.cpp" >
-      <Section name="s1" description="doesn't equal" filename="projects/<exe-name>/UsageTests/Misc.tests.cpp" >
-        <Section name="s2" description="equal" filename="projects/<exe-name>/UsageTests/Misc.tests.cpp" >
+      <Section name="doesn't equal" filename="projects/<exe-name>/UsageTests/Misc.tests.cpp" >
+        <Section name="equal" filename="projects/<exe-name>/UsageTests/Misc.tests.cpp" >
           <Expression success="false" type="REQUIRE" filename="projects/<exe-name>/UsageTests/Misc.tests.cpp" >
             <Original>
               a == b
@@ -8810,8 +8909,8 @@ loose text artifact
         </Section>
         <OverallResults successes="0" failures="1" expectedFailures="0"/>
       </Section>
-      <Section name="s1" description="doesn't equal" filename="projects/<exe-name>/UsageTests/Misc.tests.cpp" >
-        <Section name="s3" description="not equal" filename="projects/<exe-name>/UsageTests/Misc.tests.cpp" >
+      <Section name="doesn't equal" filename="projects/<exe-name>/UsageTests/Misc.tests.cpp" >
+        <Section name="not equal" filename="projects/<exe-name>/UsageTests/Misc.tests.cpp" >
           <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/UsageTests/Misc.tests.cpp" >
             <Original>
               a != b
@@ -8824,8 +8923,8 @@ loose text artifact
         </Section>
         <OverallResults successes="1" failures="0" expectedFailures="0"/>
       </Section>
-      <Section name="s1" description="doesn't equal" filename="projects/<exe-name>/UsageTests/Misc.tests.cpp" >
-        <Section name="s4" description="less than" filename="projects/<exe-name>/UsageTests/Misc.tests.cpp" >
+      <Section name="doesn't equal" filename="projects/<exe-name>/UsageTests/Misc.tests.cpp" >
+        <Section name="less than" filename="projects/<exe-name>/UsageTests/Misc.tests.cpp" >
           <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/UsageTests/Misc.tests.cpp" >
             <Original>
               a &lt; b
@@ -8841,7 +8940,7 @@ loose text artifact
       <OverallResult success="false"/>
     </TestCase>
     <TestCase name="nested SECTION tests" tags="[.][failing][sections]" filename="projects/<exe-name>/UsageTests/Misc.tests.cpp" >
-      <Section name="s1" description="doesn't equal" filename="projects/<exe-name>/UsageTests/Misc.tests.cpp" >
+      <Section name="doesn't equal" filename="projects/<exe-name>/UsageTests/Misc.tests.cpp" >
         <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/UsageTests/Misc.tests.cpp" >
           <Original>
             a != b
@@ -8858,7 +8957,7 @@ loose text artifact
             2 != 1
           </Expanded>
         </Expression>
-        <Section name="s2" description="not equal" filename="projects/<exe-name>/UsageTests/Misc.tests.cpp" >
+        <Section name="not equal" filename="projects/<exe-name>/UsageTests/Misc.tests.cpp" >
           <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/UsageTests/Misc.tests.cpp" >
             <Original>
               a != b
@@ -8953,7 +9052,7 @@ loose text artifact
       <OverallResult success="true"/>
     </TestCase>
     <TestCase name="random SECTION tests" tags="[.][failing][sections]" filename="projects/<exe-name>/UsageTests/Misc.tests.cpp" >
-      <Section name="s1" description="doesn't equal" filename="projects/<exe-name>/UsageTests/Misc.tests.cpp" >
+      <Section name="doesn't equal" filename="projects/<exe-name>/UsageTests/Misc.tests.cpp" >
         <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/UsageTests/Misc.tests.cpp" >
           <Original>
             a != b
@@ -8972,7 +9071,7 @@ loose text artifact
         </Expression>
         <OverallResults successes="2" failures="0" expectedFailures="0"/>
       </Section>
-      <Section name="s2" description="not equal" filename="projects/<exe-name>/UsageTests/Misc.tests.cpp" >
+      <Section name="not equal" filename="projects/<exe-name>/UsageTests/Misc.tests.cpp" >
         <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/UsageTests/Misc.tests.cpp" >
           <Original>
             a != b
@@ -9928,15 +10027,15 @@ loose text artifact
       <OverallResult success="true"/>
     </TestCase>
     <TestCase name="xmlentitycheck" filename="projects/<exe-name>/UsageTests/Misc.tests.cpp" >
-      <Section name="embedded xml" description="&lt;test>it should be possible to embed xml characters, such as &lt;, &quot; or &amp;, or even whole &lt;xml>documents&lt;/xml> within an attribute&lt;/test>" filename="projects/<exe-name>/UsageTests/Misc.tests.cpp" >
+      <Section name="embedded xml: &lt;test>it should be possible to embed xml characters, such as &lt;, &quot; or &amp;, or even whole &lt;xml>documents&lt;/xml> within an attribute&lt;/test>" filename="projects/<exe-name>/UsageTests/Misc.tests.cpp" >
         <OverallResults successes="1" failures="0" expectedFailures="0"/>
       </Section>
-      <Section name="encoded chars" description="these should all be encoded: &amp;&amp;&amp;&quot;&quot;&quot;&lt;&lt;&lt;&amp;&quot;&lt;&lt;&amp;&quot;" filename="projects/<exe-name>/UsageTests/Misc.tests.cpp" >
+      <Section name="encoded chars: these should all be encoded: &amp;&amp;&amp;&quot;&quot;&quot;&lt;&lt;&lt;&amp;&quot;&lt;&lt;&amp;&quot;" filename="projects/<exe-name>/UsageTests/Misc.tests.cpp" >
         <OverallResults successes="1" failures="0" expectedFailures="0"/>
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="937" failures="122" expectedFailures="21"/>
+    <OverallResults successes="945" failures="123" expectedFailures="21"/>
   </Group>
-  <OverallResults successes="937" failures="121" expectedFailures="21"/>
+  <OverallResults successes="945" failures="122" expectedFailures="21"/>
 </Catch>

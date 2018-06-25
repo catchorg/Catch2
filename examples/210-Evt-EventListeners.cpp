@@ -10,7 +10,7 @@
 // Let Catch provide the required interfaces:
 #define CATCH_CONFIG_EXTERNAL_INTERFACES
 
-#include "catch.hpp"
+#include <catch2/catch.hpp>
 #include <iostream>
 
 // -----------------------------------------------------------------------

@@ -169,7 +169,7 @@ def performUpdates(version):
     import shutil
     for rep in ('automake', 'tap', 'teamcity'):
         sourceFile = os.path.join(catchPath, 'include/reporters/catch_reporter_{}.hpp'.format(rep))
-        destFile = os.path.join(catchPath, 'single_include/catch_reporter_{}.hpp'.format(rep))
+        destFile = os.path.join(catchPath, 'single_include', 'catch2', 'catch_reporter_{}.hpp'.format(rep))
         shutil.copyfile(sourceFile, destFile)
 
     updateReadmeFile(version)

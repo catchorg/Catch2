@@ -68,16 +68,16 @@ set( TARGETS_ALL             ${TARGETS_SINGLE_FILE} ${TARGETS_IDIOMATIC_TESTS} 0
 
 # define program targets:
 
-add_library( CatchMain OBJECT ${EXAMPLES_DIR}/${SOURCES_IDIOMATIC_MAIN} ${HEADER_DIR}/catch.hpp )
+add_library( CatchMain OBJECT ${EXAMPLES_DIR}/${SOURCES_IDIOMATIC_MAIN} ${HEADER_DIR}/catch2/catch.hpp )
 
-add_executable( 020-TestCase ${EXAMPLES_DIR}/020-TestCase-1.cpp ${EXAMPLES_DIR}/020-TestCase-2.cpp ${HEADER_DIR}/catch.hpp )
+add_executable( 020-TestCase ${EXAMPLES_DIR}/020-TestCase-1.cpp ${EXAMPLES_DIR}/020-TestCase-2.cpp ${HEADER_DIR}/catch2/catch.hpp )
 
 foreach( name ${TARGETS_SINGLE_FILE} )
-    add_executable( ${name} ${EXAMPLES_DIR}/${name}.cpp ${HEADER_DIR}/catch.hpp )
+    add_executable( ${name} ${EXAMPLES_DIR}/${name}.cpp ${HEADER_DIR}/catch2/catch.hpp )
 endforeach()
 
 foreach( name ${TARGETS_IDIOMATIC_TESTS} )
-    add_executable( ${name} ${EXAMPLES_DIR}/${name}.cpp $<TARGET_OBJECTS:CatchMain> ${HEADER_DIR}/catch.hpp )
+    add_executable( ${name} ${EXAMPLES_DIR}/${name}.cpp $<TARGET_OBJECTS:CatchMain> ${HEADER_DIR}/catch2/catch.hpp )
 endforeach()
 
 foreach( name ${TARGETS_ALL} )

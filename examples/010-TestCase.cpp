@@ -3,7 +3,7 @@
 // Let Catch provide main():
 #define CATCH_CONFIG_MAIN
 
-#include "catch.hpp"
+#include <catch2/catch.hpp>
 
 int Factorial( int number ) {
    return number <= 1 ? number : Factorial( number - 1 ) * number;  // fail

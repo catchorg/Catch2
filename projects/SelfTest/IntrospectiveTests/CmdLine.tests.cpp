@@ -295,7 +295,7 @@ TEST_CASE( "Process can be configured on command line", "[config][command-line]"
     }
 
     SECTION("test lists") {
-        SECTION("1 test", "Specify one test case using") {
+        SECTION("Specify one test case using") {
             auto result = cli.parse({"test", "test1"});
             CHECK(result);
 
