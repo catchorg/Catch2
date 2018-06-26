@@ -394,6 +394,27 @@ Message.tests.cpp:<line number>:
 warning:
   This message appears in the output
 
+one: a, 8
+one: a, 9
+one: a, 10
+one: a, 11
+one: a, 2
+two: a, 3.141
+two: a, 1.379
+one: b, 8
+one: b, 9
+one: b, 10
+one: b, 11
+one: b, 2
+two: b, 3.141
+two: b, 1.379
+one: c, 8
+one: c, 9
+one: c, 10
+one: c, 11
+one: c, 2
+two: c, 3.141
+two: c, 1.379
 -------------------------------------------------------------------------------
 INFO and WARN do not abort tests
 -------------------------------------------------------------------------------
@@ -1096,6 +1117,6 @@ due to unexpected exception with message:
   Why would you throw a std::string?
 
 ===============================================================================
-test cases:  208 | 155 passed |  49 failed |  4 failed as expected
-assertions: 1074 | 945 passed | 108 failed | 21 failed as expected
+test cases:   216 |   163 passed |  49 failed |  4 failed as expected
+assertions: 31343 | 31214 passed | 108 failed | 21 failed as expected
 
