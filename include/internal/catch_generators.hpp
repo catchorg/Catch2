@@ -9,13 +9,10 @@
 
 #include "catch_interfaces_generatortracker.h"
 #include "catch_common.h"
-#include "catch_test_case_tracker.h"
 
 #include <memory>
 #include <vector>
-#include <map>
 #include <cassert>
-#include <string>
 
 #include "internal/catch_suppress_warnings.h"
 

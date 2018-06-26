@@ -7,7 +7,6 @@
 
 #include "catch_generators.hpp"
 #include "catch_random_number_generator.h"
-#include "catch_singletons.hpp"
 #include "catch_interfaces_capture.h"
 
 #include <set>
