@@ -182,17 +182,17 @@ print("  " + cmdPath)
 
 ### Keep default reporters here
 # Standard console reporter
-approve("console.std", ["~[!nonportable]~[!benchmark]~[approvals]", "--order", "lex"])
+approve("console.std", ["~[!nonportable]~[!benchmark]~[approvals]", "--order", "lex", "--rng-seed", "0"])
 # console reporter, include passes, warn about No Assertions
-approve("console.sw", ["~[!nonportable]~[!benchmark]~[approvals]", "-s", "-w", "NoAssertions", "--order", "lex"])
+approve("console.sw", ["~[!nonportable]~[!benchmark]~[approvals]", "-s", "-w", "NoAssertions", "--order", "lex", "--rng-seed", "0"])
 # console reporter, include passes, warn about No Assertions, limit failures to first 4
-approve("console.swa4", ["~[!nonportable]~[!benchmark]~[approvals]", "-s", "-w", "NoAssertions", "-x", "4", "--order", "lex"])
+approve("console.swa4", ["~[!nonportable]~[!benchmark]~[approvals]", "-s", "-w", "NoAssertions", "-x", "4", "--order", "lex", "--rng-seed", "0"])
 # junit reporter, include passes, warn about No Assertions
-approve("junit.sw", ["~[!nonportable]~[!benchmark]~[approvals]", "-s", "-w", "NoAssertions", "-r", "junit", "--order", "lex"])
+approve("junit.sw", ["~[!nonportable]~[!benchmark]~[approvals]", "-s", "-w", "NoAssertions", "-r", "junit", "--order", "lex", "--rng-seed", "0"])
 # xml reporter, include passes, warn about No Assertions
-approve("xml.sw", ["~[!nonportable]~[!benchmark]~[approvals]", "-s", "-w", "NoAssertions", "-r", "xml", "--order", "lex"])
+approve("xml.sw", ["~[!nonportable]~[!benchmark]~[approvals]", "-s", "-w", "NoAssertions", "-r", "xml", "--order", "lex", "--rng-seed", "0"])
 # compact reporter, include passes, warn about No Assertions
-approve('compact.sw', ['~[!nonportable]~[!benchmark]~[approvals]', '-s', '-w', 'NoAssertions', '-r', 'compact', '--order', 'lex'])
+approve('compact.sw', ['~[!nonportable]~[!benchmark]~[approvals]', '-s', '-w', 'NoAssertions', '-r', 'compact', '--order', 'lex', "--rng-seed", "0"])
 
 if overallResult != 0:
     print("If these differences are expected, run approve.py to approve new baselines.")
