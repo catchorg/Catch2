@@ -156,9 +156,10 @@ TEST_CASE( "strlen2" ) {
 }
 #endif
 
+struct Data { std::string str; size_t len; };
+
 // An alternate way of doing data tables without structure bindings
 TEST_CASE( "strlen3" ) {
-    struct Data { std::string str; size_t len; };
     auto data = GENERATE( values<Data>({
             {"one", 3},
             {"two", 3},
