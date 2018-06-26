@@ -116,7 +116,7 @@ TEST_CASE("Generators") {
 // This generates the cross-product of two ranges.
 // It's mostly here to demonstrate the performance which, at time of writing,
 // leaves a lot to be desired.
-TEST_CASE( "200 ints" ) {
+TEST_CASE( "200 ints", "[.][approvals]" ) {
     auto x = GENERATE( range( 0,100 ) );
     auto y = GENERATE( range( 200,300 ) );
 
@@ -168,7 +168,7 @@ TEST_CASE( "strlen3" ) {
 
 auto square( int i ) -> int { return i*i; }
 
-TEST_CASE( "Random numbers in a range" ) {
+TEST_CASE( "Random numbers in a range", "[.][approvals]" ) {
     auto x = GENERATE( random( -10000, 10000 ) );
     CAPTURE( x );
     REQUIRE( square(x) >= 0 );
