@@ -8,8 +8,6 @@
 
 #include "internal/catch_generators.hpp"
 
-#include "internal/catch_suppress_warnings.h"
-
 // Tests of implementation details
 
 TEST_CASE("Generators impl") {
