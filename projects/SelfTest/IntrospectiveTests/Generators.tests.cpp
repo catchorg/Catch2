@@ -68,9 +68,25 @@ TEST_CASE("Generators impl") {
         CHECK( gen[2] == 9 );
         CHECK( gen[3] == 7 );
     }
+    SECTION( "combined2" ) {
+        auto gen = makeGenerators( range( 1, 2 ), values( { 9, 7 } ) );
+
+        CHECK( gen.size() == 4 );
+        CHECK( gen[0] == 1 );
+        CHECK( gen[1] == 2 );
+        CHECK( gen[2] == 9 );
+        CHECK( gen[3] == 7 );
+    }
 
     SECTION( "values" ) {
         auto gen = NullGenerator() << 3 << 1;
+
+        CHECK( gen.size() == 2 );
+        CHECK( gen[0] == 3 );
+        CHECK( gen[1] == 1 );
+    }
+    SECTION( "values2" ) {
+        auto gen = makeGenerators( 3, 1 );
 
         CHECK( gen.size() == 2 );
         CHECK( gen[0] == 3 );
@@ -110,7 +126,7 @@ TEST_CASE("Generators impl") {
         int created = 0;
         auto fun = [&]{
             created++;
-            return values({42, 7});
+            return makeGenerators( values({42, 7}) );
         };
 
         // generator is only created on first call
@@ -125,7 +141,7 @@ TEST_CASE("Generators impl") {
 
     SECTION( "strings" ) {
         GeneratorCache cache;
-        auto const& gen = memoize( cache, CATCH_INTERNAL_LINEINFO, []{ return values({ "one", "two", "three", "four" } ); }  );
+        auto const& gen = memoize( cache, CATCH_INTERNAL_LINEINFO, []{ return makeGenerators<std::string>( "one", "two", "three", "four" ); }  );
 
         REQUIRE( gen.size() == 4 );
         CHECK( gen[0] == "one" );
@@ -135,18 +151,18 @@ TEST_CASE("Generators impl") {
     }
 }
 
-#define GENERATE( ... ) Catch::generators::generate( CATCH_INTERNAL_LINEINFO, []{ using namespace Catch::generators; return NullGenerator() << __VA_ARGS__; } )
+#define GENERATE( ... ) Catch::generators::generate( CATCH_INTERNAL_LINEINFO, []{ using namespace Catch::generators; return makeGenerators( __VA_ARGS__ ); } )
 
 TEST_CASE("Generators") {
 
     auto i = GENERATE( values( { "a", "b", "c" } ) );
 
     SECTION( "one" ) {
-        auto j = GENERATE( range( 8, 11 ) << 2 );
+        auto j = GENERATE( range( 8, 11 ), 2 );
         std::cout << "one: " << i << ", " << j << std::endl;
     }
     SECTION( "two" ) {
-        auto j = GENERATE( 3.141 << 1.379 );
+        auto j = GENERATE( 3.141, 1.379 );
         std::cout << "two: " << i << ", " << j << std::endl;
     }
 }

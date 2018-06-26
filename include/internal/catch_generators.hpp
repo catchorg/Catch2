@@ -83,7 +83,7 @@ namespace generators {
 
     class GeneratorBase {
     protected:
-        size_t const m_size;
+        size_t m_size = 0;
 
     public:
         GeneratorBase( size_t size ) : m_size( size ) {}
@@ -231,26 +231,89 @@ namespace generators {
         return ComposedGeneratorsMustHaveTheSameUnderlyingType<T, U>();
     }
 
+    template<typename T>
+    struct Generators : GeneratorBase {
+        std::vector<Generator<T>> m_generators;
 
-   class GeneratorCache {
+        using type = T;
+
+        Generators() : GeneratorBase( 0 ) {}
+
+        void populate( T&& value ) {
+            m_size += 1;
+            m_generators.emplace_back( values( { std::move( value ) } ) );
+        }
+        template<typename U>
+        void populate( U&& value ) {
+            populate( T( std::move( value ) ) );
+        }
+        void populate( Generator<T>&& generator ) {
+            m_size += generator.size();
+            m_generators.emplace_back( std::move( generator ) );
+        }
+
+        template<typename U, typename... Gs>
+        void populate( U&& valueOrGenerator, Gs... moreGenerators ) {
+            populate( std::forward<U>( valueOrGenerator ) );
+            populate( std::forward<Gs>( moreGenerators )... );
+        }
+
+        auto operator[]( size_t index ) const -> T {
+            assert( index < m_size );
+
+            size_t sizes = 0;
+            for( auto const& gen : m_generators ) {
+                auto localIndex = index-sizes;
+                sizes += gen.size();
+                if( index < sizes )
+                    return gen[localIndex];
+            }
+            assert(false); // should never happen
+            throw std::logic_error("this should never happen");
+        }
+    };
+
+    template<typename T, typename... Gs>
+    auto makeGenerators( Generator<T>&& generator, Gs... moreGenerators ) -> Generators<T> {
+        Generators<T> generators;
+        generators.m_generators.reserve( 1+sizeof...(Gs) );
+        generators.populate( std::move( generator ), std::forward<Gs>( moreGenerators )... );
+        return generators;
+    }
+    template<typename T>
+    auto makeGenerators( Generator<T>&& generator ) -> Generators<T> {
+        Generators<T> generators;
+        generators.populate( std::move( generator ) );
+        return generators;
+    }
+    template<typename T, typename... Gs>
+    auto makeGenerators( T&& value, Gs... moreGenerators ) -> Generators<T> {
+        return makeGenerators( values({ std::forward<T>( value ) }), std::forward<Gs>( moreGenerators )... );
+    }
+    template<typename T, typename U, typename... Gs>
+    auto makeGenerators( U&& value, Gs... moreGenerators ) -> Generators<T> {
+        return makeGenerators( values({ T( std::forward<U>( value ) ) }), std::forward<Gs>( moreGenerators )... );
+    }
+
+    class GeneratorCache {
         std::map<SourceLineInfo, GeneratorBasePtr> m_generators;
 
     public:
 
         template<typename T>
-        auto add( SourceLineInfo const& lineInfo, Generator<T>&& generator ) -> Generator<T> const& {
-            auto generatorPtr = pf::make_unique<Generator<T>>( std::move( generator ) );
+        auto add( SourceLineInfo const& lineInfo, Generators<T>&& generators ) -> Generators<T> const& {
+            auto generatorPtr = pf::make_unique<Generators<T>>( std::move( generators ) );
             auto const& storedGenerator = *generatorPtr;
             m_generators.insert( { lineInfo, std::move( generatorPtr ) } );
             return storedGenerator;
         }
 
         template<typename T, typename L>
-        auto getGenerator( SourceLineInfo const& lineInfo, L const& generatorExpression ) -> Generator<T> const& {
+        auto getGenerator( SourceLineInfo const& lineInfo, L const& generatorExpression ) -> Generators<T> const& {
 
             auto it = m_generators.find( lineInfo );
             return ( it != m_generators.end() )
-                ? static_cast<Generator<T> const&>( *it->second )
+                ? static_cast<Generators<T> const&>( *it->second )
                 : add( lineInfo, generatorExpression() );
         }
     };
@@ -264,8 +327,11 @@ namespace generators {
         using UnderlyingType = typename decltype(generatorExpression())::type;
         return cache.getGenerator<UnderlyingType, L>( lineInfo, generatorExpression );
     }
+
     template<typename L>
     auto generate( SourceLineInfo const& lineInfo, L const& generatorExpression ) -> typename decltype(generatorExpression())::type {
+        // !TBD: how to do this without so many lookups?
+        // hold cache in ResultCapture object? (so we don\t have to look up cache, then look up index)
 
         auto const& generator = memoize( getGeneratorCache(), lineInfo, generatorExpression );
         auto index = getIndexForGeneratorId( lineInfo, generator.size() );
