@@ -130,7 +130,7 @@ TEST_CASE( "200 ints" ) {
 // One way to do pairs of values (actual/ expected?)
 // - the use of structured bindings here is an optional convenience
 TEST_CASE( "strlen" ) {
-    auto [test_input, expected] = GENERATE( values<std::pair<std::string_view, int>>({
+    auto [test_input, expected] = GENERATE( values<std::pair<std::string_view, size_t>>({
             {"one", 3},
             {"two", 3},
             {"three", 5},
@@ -156,7 +156,7 @@ TEST_CASE( "strlen2" ) {
 
 // An alternate way of doing data tables without structure bindings
 TEST_CASE( "strlen3" ) {
-    struct Data { std::string str; int len; };
+    struct Data { std::string str; size_t len; };
     auto data = GENERATE( values<Data>({
             {"one", 3},
             {"two", 3},
