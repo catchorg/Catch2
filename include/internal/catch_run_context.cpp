@@ -13,7 +13,7 @@ namespace Catch {
 
     namespace generators {
         struct GeneratorTracker : TestCaseTracking::TrackerBase, IGeneratorTracker {
-            size_t m_index = -1;
+            size_t m_index = static_cast<size_t>( -1 );
             GeneratorBasePtr m_generator;
 
             GeneratorTracker( TestCaseTracking::NameAndLocation const& nameAndLocation, TrackerContext& ctx, ITracker* parent )
