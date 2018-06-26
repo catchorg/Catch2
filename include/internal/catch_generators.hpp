@@ -13,6 +13,7 @@
 #include <memory>
 #include <vector>
 #include <cassert>
+#include <limits>
 
 #include "internal/catch_suppress_warnings.h"
 
