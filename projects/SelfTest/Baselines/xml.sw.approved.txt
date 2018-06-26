@@ -5999,43 +5999,6 @@ two: c, 1.379
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="Scenario: Eating cucumbers" filename="projects/<exe-name>/IntrospectiveTests/Generators.tests.cpp" >
-      <Section name="Given: there are 12 cucumbers" filename="projects/<exe-name>/IntrospectiveTests/Generators.tests.cpp" >
-        <Section name="When: I eat 5 cucumbers" filename="projects/<exe-name>/IntrospectiveTests/Generators.tests.cpp" >
-          <Section name="Then: I should have 7 cucumbers" filename="projects/<exe-name>/IntrospectiveTests/Generators.tests.cpp" >
-            <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/Generators.tests.cpp" >
-              <Original>
-                eatCucumbers( start, eat ) == left
-              </Original>
-              <Expanded>
-                7 == 7
-              </Expanded>
-            </Expression>
-            <OverallResults successes="1" failures="0" expectedFailures="0"/>
-          </Section>
-          <OverallResults successes="1" failures="0" expectedFailures="0"/>
-        </Section>
-        <OverallResults successes="1" failures="0" expectedFailures="0"/>
-      </Section>
-      <Section name="Given: there are 20 cucumbers" filename="projects/<exe-name>/IntrospectiveTests/Generators.tests.cpp" >
-        <Section name="When: I eat 5 cucumbers" filename="projects/<exe-name>/IntrospectiveTests/Generators.tests.cpp" >
-          <Section name="Then: I should have 15 cucumbers" filename="projects/<exe-name>/IntrospectiveTests/Generators.tests.cpp" >
-            <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/Generators.tests.cpp" >
-              <Original>
-                eatCucumbers( start, eat ) == left
-              </Original>
-              <Expanded>
-                15 == 15
-              </Expanded>
-            </Expression>
-            <OverallResults successes="1" failures="0" expectedFailures="0"/>
-          </Section>
-          <OverallResults successes="1" failures="0" expectedFailures="0"/>
-        </Section>
-        <OverallResults successes="1" failures="0" expectedFailures="0"/>
-      </Section>
-      <OverallResult success="true"/>
-    </TestCase>
     <TestCase name="Scenario: This is a really long scenario name to see how the list command deals with wrapping" tags="[anotherReallyLongTagNameButThisOneHasNoObviousWrapPointsSoShouldSplitWithinAWordUsingADashCharacter][long][lots][one very long tag name that should cause line wrapping writing out using the list command][tags][verbose][very long tags]" filename="projects/<exe-name>/UsageTests/BDD.tests.cpp" >
       <Section name="Given: A section name that is so long that it cannot fit in a single console width" filename="projects/<exe-name>/UsageTests/BDD.tests.cpp" >
         <Section name="When: The test headers are printed as part of the normal running of the scenario" filename="projects/<exe-name>/UsageTests/BDD.tests.cpp" >
@@ -10101,76 +10064,6 @@ loose text artifact
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="strlen" filename="projects/<exe-name>/IntrospectiveTests/Generators.tests.cpp" >
-      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/Generators.tests.cpp" >
-        <Original>
-          test_input.size() == expected
-        </Original>
-        <Expanded>
-          3 == 3
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/Generators.tests.cpp" >
-        <Original>
-          test_input.size() == expected
-        </Original>
-        <Expanded>
-          3 == 3
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/Generators.tests.cpp" >
-        <Original>
-          test_input.size() == expected
-        </Original>
-        <Expanded>
-          5 == 5
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/Generators.tests.cpp" >
-        <Original>
-          test_input.size() == expected
-        </Original>
-        <Expanded>
-          4 == 4
-        </Expanded>
-      </Expression>
-      <OverallResult success="true"/>
-    </TestCase>
-    <TestCase name="strlen2" filename="projects/<exe-name>/IntrospectiveTests/Generators.tests.cpp" >
-      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/Generators.tests.cpp" >
-        <Original>
-          test_input.size() == expected
-        </Original>
-        <Expanded>
-          3 == 3
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/Generators.tests.cpp" >
-        <Original>
-          test_input.size() == expected
-        </Original>
-        <Expanded>
-          3 == 3
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/Generators.tests.cpp" >
-        <Original>
-          test_input.size() == expected
-        </Original>
-        <Expanded>
-          5 == 5
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/Generators.tests.cpp" >
-        <Original>
-          test_input.size() == expected
-        </Original>
-        <Expanded>
-          4 == 4
-        </Expanded>
-      </Expression>
-      <OverallResult success="true"/>
-    </TestCase>
     <TestCase name="strlen3" filename="projects/<exe-name>/IntrospectiveTests/Generators.tests.cpp" >
       <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/Generators.tests.cpp" >
         <Original>
@@ -10724,7 +10617,7 @@ loose text artifact
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="1012" failures="144" expectedFailures="21"/>
+    <OverallResults successes="1002" failures="144" expectedFailures="21"/>
   </Group>
-  <OverallResults successes="1012" failures="143" expectedFailures="21"/>
+  <OverallResults successes="1002" failures="143" expectedFailures="21"/>
 </Catch>

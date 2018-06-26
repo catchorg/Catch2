@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuitesloose text artifact
 >
-  <testsuite name="<exe-name>" errors="17" failures="127" tests="1177" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
+  <testsuite name="<exe-name>" errors="17" failures="127" tests="1167" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
     <testcase classname="<exe-name>.global" name="# A test name that starts with a #" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="#1005: Comparing pointer to int and long (NULL can be either on various systems)" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="#1027" time="{duration}"/>
@@ -548,8 +548,6 @@ Matchers.tests.cpp:<line number>
     <testcase classname="<exe-name>.Fixture" name="Scenario: BDD tests requiring Fixtures to provide commonly-accessed data or methods/Given: No operations precede me/When: We get the count/Then: Subsequently values are higher" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Scenario: Do that thing with the thing/Given: This stuff exists/When: I do this/Then: it should do this" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Scenario: Do that thing with the thing/Given: This stuff exists/When: I do this/Then: it should do this/And: do that" time="{duration}"/>
-    <testcase classname="<exe-name>.global" name="Scenario: Eating cucumbers/Given: there are 12 cucumbers/When: I eat 5 cucumbers/Then: I should have 7 cucumbers" time="{duration}"/>
-    <testcase classname="<exe-name>.global" name="Scenario: Eating cucumbers/Given: there are 20 cucumbers/When: I eat 5 cucumbers/Then: I should have 15 cucumbers" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Scenario: This is a really long scenario name to see how the list command deals with wrapping/Given: A section name that is so long that it cannot fit in a single console width/When: The test headers are printed as part of the normal running of the scenario/Then: The, deliberately very long and overly verbose (you see what I did there?) section names must wrap, along with an indent" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Scenario: Vector resizing affects size and capacity/Given: an empty vector" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Scenario: Vector resizing affects size and capacity/Given: an empty vector/When: it is made larger/Then: the size and capacity go up" time="{duration}"/>
@@ -890,8 +888,6 @@ Tricky.tests.cpp:<line number>
     <testcase classname="<exe-name>.global" name="stringify( vectors&lt;has_maker> )" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="stringify( vectors&lt;has_maker_and_operator> )" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="stringify( vectors&lt;has_operator> )" time="{duration}"/>
-    <testcase classname="<exe-name>.global" name="strlen" time="{duration}"/>
-    <testcase classname="<exe-name>.global" name="strlen2" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="strlen3" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="thrown std::strings are translated" time="{duration}">
       <error type="TEST_CASE">

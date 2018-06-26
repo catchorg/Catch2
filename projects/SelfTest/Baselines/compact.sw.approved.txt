@@ -679,8 +679,6 @@ BDD.tests.cpp:<line number>: passed: before == 0 for: 0 == 0
 BDD.tests.cpp:<line number>: passed: after > before for: 1 > 0
 BDD.tests.cpp:<line number>: passed: itDoesThis() for: true
 BDD.tests.cpp:<line number>: passed: itDoesThat() for: true
-Generators.tests.cpp:<line number>: passed: eatCucumbers( start, eat ) == left for: 7 == 7
-Generators.tests.cpp:<line number>: passed: eatCucumbers( start, eat ) == left for: 15 == 15
 BDD.tests.cpp:<line number>: passed: with 1 message: 'boo!'
 BDD.tests.cpp:<line number>: passed: v.size() == 0 for: 0 == 0
 BDD.tests.cpp:<line number>: passed: v.size() == 10 for: 10 == 10
@@ -1168,14 +1166,6 @@ ToStringWhich.tests.cpp:<line number>: passed: ::Catch::Detail::stringify( v ) =
 ToStringWhich.tests.cpp:<line number>: passed: ::Catch::Detail::stringify( v ) == "{ operator<<( has_operator ) }" for: "{ operator<<( has_operator ) }"
 ==
 "{ operator<<( has_operator ) }"
-Generators.tests.cpp:<line number>: passed: test_input.size() == expected for: 3 == 3
-Generators.tests.cpp:<line number>: passed: test_input.size() == expected for: 3 == 3
-Generators.tests.cpp:<line number>: passed: test_input.size() == expected for: 5 == 5
-Generators.tests.cpp:<line number>: passed: test_input.size() == expected for: 4 == 4
-Generators.tests.cpp:<line number>: passed: test_input.size() == expected for: 3 == 3
-Generators.tests.cpp:<line number>: passed: test_input.size() == expected for: 3 == 3
-Generators.tests.cpp:<line number>: passed: test_input.size() == expected for: 5 == 5
-Generators.tests.cpp:<line number>: passed: test_input.size() == expected for: 4 == 4
 Generators.tests.cpp:<line number>: passed: data.str.size() == data.len for: 3 == 3
 Generators.tests.cpp:<line number>: passed: data.str.size() == data.len for: 3 == 3
 Generators.tests.cpp:<line number>: passed: data.str.size() == data.len for: 5 == 5

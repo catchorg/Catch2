@@ -5339,36 +5339,6 @@ with expansion:
   true
 
 -------------------------------------------------------------------------------
-Scenario: Eating cucumbers
-     Given: there are 12 cucumbers
-      When: I eat 5 cucumbers
-      Then: I should have 7 cucumbers
--------------------------------------------------------------------------------
-Generators.tests.cpp:<line number>
-...............................................................................
-
-Generators.tests.cpp:<line number>:
-PASSED:
-  REQUIRE( eatCucumbers( start, eat ) == left )
-with expansion:
-  7 == 7
-
--------------------------------------------------------------------------------
-Scenario: Eating cucumbers
-     Given: there are 20 cucumbers
-      When: I eat 5 cucumbers
-      Then: I should have 15 cucumbers
--------------------------------------------------------------------------------
-Generators.tests.cpp:<line number>
-...............................................................................
-
-Generators.tests.cpp:<line number>:
-PASSED:
-  REQUIRE( eatCucumbers( start, eat ) == left )
-with expansion:
-  15 == 15
-
--------------------------------------------------------------------------------
 Scenario: This is a really long scenario name to see how the list command deals
           with wrapping
      Given: A section name that is so long that it cannot fit in a single
@@ -9221,102 +9191,6 @@ with expansion:
   "{ operator<<( has_operator ) }"
 
 -------------------------------------------------------------------------------
-strlen
--------------------------------------------------------------------------------
-Generators.tests.cpp:<line number>
-...............................................................................
-
-Generators.tests.cpp:<line number>:
-PASSED:
-  REQUIRE( test_input.size() == expected )
-with expansion:
-  3 == 3
-
--------------------------------------------------------------------------------
-strlen
--------------------------------------------------------------------------------
-Generators.tests.cpp:<line number>
-...............................................................................
-
-Generators.tests.cpp:<line number>:
-PASSED:
-  REQUIRE( test_input.size() == expected )
-with expansion:
-  3 == 3
-
--------------------------------------------------------------------------------
-strlen
--------------------------------------------------------------------------------
-Generators.tests.cpp:<line number>
-...............................................................................
-
-Generators.tests.cpp:<line number>:
-PASSED:
-  REQUIRE( test_input.size() == expected )
-with expansion:
-  5 == 5
-
--------------------------------------------------------------------------------
-strlen
--------------------------------------------------------------------------------
-Generators.tests.cpp:<line number>
-...............................................................................
-
-Generators.tests.cpp:<line number>:
-PASSED:
-  REQUIRE( test_input.size() == expected )
-with expansion:
-  4 == 4
-
--------------------------------------------------------------------------------
-strlen2
--------------------------------------------------------------------------------
-Generators.tests.cpp:<line number>
-...............................................................................
-
-Generators.tests.cpp:<line number>:
-PASSED:
-  REQUIRE( test_input.size() == expected )
-with expansion:
-  3 == 3
-
--------------------------------------------------------------------------------
-strlen2
--------------------------------------------------------------------------------
-Generators.tests.cpp:<line number>
-...............................................................................
-
-Generators.tests.cpp:<line number>:
-PASSED:
-  REQUIRE( test_input.size() == expected )
-with expansion:
-  3 == 3
-
--------------------------------------------------------------------------------
-strlen2
--------------------------------------------------------------------------------
-Generators.tests.cpp:<line number>
-...............................................................................
-
-Generators.tests.cpp:<line number>:
-PASSED:
-  REQUIRE( test_input.size() == expected )
-with expansion:
-  5 == 5
-
--------------------------------------------------------------------------------
-strlen2
--------------------------------------------------------------------------------
-Generators.tests.cpp:<line number>
-...............................................................................
-
-Generators.tests.cpp:<line number>:
-PASSED:
-  REQUIRE( test_input.size() == expected )
-with expansion:
-  4 == 4
-
--------------------------------------------------------------------------------
 strlen3
 -------------------------------------------------------------------------------
 Generators.tests.cpp:<line number>
@@ -9895,6 +9769,6 @@ Misc.tests.cpp:<line number>:
 PASSED:
 
 ===============================================================================
-test cases:  214 |  147 passed |  63 failed |  4 failed as expected
-assertions: 1176 | 1012 passed | 143 failed | 21 failed as expected
+test cases:  211 |  144 passed |  63 failed |  4 failed as expected
+assertions: 1166 | 1002 passed | 143 failed | 21 failed as expected
 
