@@ -20,6 +20,7 @@
 namespace Catch {
 namespace generators {
 
+    // !TBD move this into its own location?
     namespace pf{
         template<typename T, typename... Args>
         std::unique_ptr<T> make_unique( Args&&... args ) {
@@ -71,15 +72,6 @@ namespace generators {
         }
     };
 
-    template<typename T>
-    class Generator;
-
-    template<typename T>
-    auto value( T const& val ) -> Generator<T>;
-
-
-    template<typename Left, typename Right>
-    struct ComposedGeneratorsMustHaveTheSameUnderlyingType;
 
     class GeneratorBase {
     protected:
@@ -91,50 +83,28 @@ namespace generators {
         auto size() const -> size_t { return m_size; }
     };
 
-    struct NullGenerator {};
+    template<typename T>
+    struct NullGenerator : IGenerator<T> {
+        auto get( size_t ) const -> T override {
+            throw std::logic_error("A Null Generator should always be empty" );
+        }
+
+    };
 
     template<typename T>
     class Generator : public GeneratorBase {
         std::unique_ptr<IGenerator<T>> m_generator;
-        std::vector<Generator<T>> m_generators;
-
-        void add( Generator&& other ) {
-            if( other.m_generator )
-                m_generators.push_back( std::move( other ) );
-            else {
-                std::move( other.m_generators.begin(), other.m_generators.end(), std::back_inserter( m_generators ) );
-            }
-        }
     public:
         using type = T;
-
-        Generator() : GeneratorBase( 0 ) {}
 
         Generator( size_t size, std::unique_ptr<IGenerator<T>> generator )
         :   GeneratorBase( size ),
             m_generator( std::move( generator ) )
         {}
-        Generator( Generator&& g1, Generator&& g2 )
-        : GeneratorBase( g1.size() + g2.size() ) {
-            m_generators.reserve( m_size );
-            add( std::move( g1 ) );
-            add( std::move( g2 ) );
-        }
 
         auto operator[]( size_t index ) const -> T {
             assert( index < m_size );
-            if( m_generator )
-                return m_generator->get( index );
-
-            size_t sizes = 0;
-            for( auto const& gen : m_generators ) {
-                auto localIndex = index-sizes;
-                sizes += gen.size();
-                if( index < sizes )
-                    return gen[localIndex];
-            }
-            assert(false); // should never happen
-            throw std::logic_error("this should never happen");
+            return m_generator->get( index );
         }
     };
 
@@ -196,40 +166,16 @@ namespace generators {
         return Generator<T>( 1, pf::make_unique<SingleValueGenerator<T>>( val ) );
     }
 
+    template<typename T>
+    auto as() -> Generator<T> {
+        return Generator<T>( 0, pf::make_unique<NullGenerator<T>>() );
+    }
+
     template<typename... Ts>
     auto table( std::initializer_list<std::tuple<Ts...>>&& tuples ) -> Generator<std::tuple<Ts...>> {
         return values<std::tuple<Ts...>>( std::forward<std::initializer_list<std::tuple<Ts...>>>( tuples ) );
     }
 
-
-
-    template<typename T>
-    auto operator << ( NullGenerator, T const& val ) -> Generator<T> {
-        return value( val );
-    }
-    template<typename T>
-    auto operator << ( NullGenerator, Generator<T>&& generator ) -> Generator<T> {
-        return std::move(generator);
-    }
-    template<typename T>
-    auto operator << ( Generator<T>&& g1, Generator<T>&& g2 ) -> Generator<T> {
-        return { std::move(g1), std::move(g2) };
-    }
-    template<typename T>
-    auto operator << ( Generator<T>&& g1, T const& val ) -> Generator<T> {
-        return { std::move(g1), value( val ) };
-    }
-    template<typename T>
-    auto operator << ( T const& val, Generator<T>&& g2 ) -> Generator<T> {
-        return { value( val ), std::move(g2) };
-    }
-    template<typename T, typename U>
-    auto operator << ( Generator<T>&&, Generator<U>&& ) -> Generator<T> {
-        // If you get an error here it's probably because you are trying to compose two generators that
-        // are templated on different types.
-        // Your error message will probably also show you the line calling this, which should give more context.
-        return ComposedGeneratorsMustHaveTheSameUnderlyingType<T, U>();
-    }
 
     template<typename T>
     struct Generators : GeneratorBase {
@@ -239,13 +185,13 @@ namespace generators {
 
         Generators() : GeneratorBase( 0 ) {}
 
-        void populate( T&& value ) {
+        void populate( T&& val ) {
             m_size += 1;
-            m_generators.emplace_back( values( { std::move( value ) } ) );
+            m_generators.emplace_back( value( std::move( val ) ) );
         }
         template<typename U>
-        void populate( U&& value ) {
-            populate( T( std::move( value ) ) );
+        void populate( U&& val ) {
+            populate( T( std::move( val ) ) );
         }
         void populate( Generator<T>&& generator ) {
             m_size += generator.size();
@@ -287,12 +233,12 @@ namespace generators {
         return generators;
     }
     template<typename T, typename... Gs>
-    auto makeGenerators( T&& value, Gs... moreGenerators ) -> Generators<T> {
-        return makeGenerators( values({ std::forward<T>( value ) }), std::forward<Gs>( moreGenerators )... );
+    auto makeGenerators( T&& val, Gs... moreGenerators ) -> Generators<T> {
+        return makeGenerators( value( std::forward<T>( val ) ), std::forward<Gs>( moreGenerators )... );
     }
     template<typename T, typename U, typename... Gs>
-    auto makeGenerators( U&& value, Gs... moreGenerators ) -> Generators<T> {
-        return makeGenerators( values({ T( std::forward<U>( value ) ) }), std::forward<Gs>( moreGenerators )... );
+    auto makeGenerators( U&& val, Gs... moreGenerators ) -> Generators<T> {
+        return makeGenerators( value( T( std::forward<U>( val ) ) ), std::forward<Gs>( moreGenerators )... );
     }
 
     class GeneratorCache {

@@ -60,15 +60,6 @@ TEST_CASE("Generators impl") {
         }
     }
     SECTION( "combined" ) {
-        auto gen = range( 1, 2 ) << values( { 9, 7 } );
-
-        CHECK( gen.size() == 4 );
-        CHECK( gen[0] == 1 );
-        CHECK( gen[1] == 2 );
-        CHECK( gen[2] == 9 );
-        CHECK( gen[3] == 7 );
-    }
-    SECTION( "combined2" ) {
         auto gen = makeGenerators( range( 1, 2 ), values( { 9, 7 } ) );
 
         CHECK( gen.size() == 4 );
@@ -79,7 +70,7 @@ TEST_CASE("Generators impl") {
     }
 
     SECTION( "values" ) {
-        auto gen = NullGenerator() << 3 << 1;
+        auto gen = makeGenerators( 3, 1 );
 
         CHECK( gen.size() == 2 );
         CHECK( gen[0] == 3 );
@@ -93,25 +84,19 @@ TEST_CASE("Generators impl") {
         CHECK( gen[1] == 1 );
     }
 
-    SECTION( "values first" ) {
-        auto gen = 7 << Generator<int>();
-
-        CHECK( gen.size() == 1 );
-        CHECK( gen[0] == 7 );
-    }
 
     SECTION( "type erasure" ) {
-        auto gen = range( 7, 9 ) << 11;
+        auto gen = makeGenerators( range( 7, 9 ), 11 );
 
         // Make type erased version
-        auto dynCopy = pf::make_unique<Generator<int>>( std::move( gen ) );
+        auto dynCopy = pf::make_unique<Generators<int>>( std::move( gen ) );
         std::unique_ptr<GeneratorBase const> base = std::move( dynCopy );
 
         // Only thing we can do is ask for the size
         CHECK( base->size() == 4 );
 
         // Restore typed version
-        auto typed = dynamic_cast<Generator<int> const*>( base.get() );
+        auto typed = dynamic_cast<Generators<int> const*>( base.get() );
         REQUIRE( typed );
         CHECK( typed->size() == 4 );
         CHECK( (*typed)[0] == 7 );
@@ -141,7 +126,7 @@ TEST_CASE("Generators impl") {
 
     SECTION( "strings" ) {
         GeneratorCache cache;
-        auto const& gen = memoize( cache, CATCH_INTERNAL_LINEINFO, []{ return makeGenerators<std::string>( "one", "two", "three", "four" ); }  );
+        auto const& gen = memoize( cache, CATCH_INTERNAL_LINEINFO, []{ return makeGenerators( as<std::string>(), "one", "two", "three", "four" ); }  );
 
         REQUIRE( gen.size() == 4 );
         CHECK( gen[0] == "one" );
@@ -155,7 +140,7 @@ TEST_CASE("Generators impl") {
 
 TEST_CASE("Generators") {
 
-    auto i = GENERATE( values( { "a", "b", "c" } ) );
+    auto i = GENERATE( as<std::string>(), "a", "b", "c" );
 
     SECTION( "one" ) {
         auto j = GENERATE( range( 8, 11 ), 2 );
