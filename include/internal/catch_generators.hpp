@@ -81,16 +81,19 @@ namespace generators {
     };
 
     template<typename T>
-    class Generator : public GeneratorBase {
+    class Generator {
         std::unique_ptr<IGenerator<T>> m_generator;
+        size_t m_size;
+
     public:
         using type = T;
 
         Generator( size_t size, std::unique_ptr<IGenerator<T>> generator )
-        :   GeneratorBase( size ),
-            m_generator( std::move( generator ) )
+        :   m_generator( std::move( generator ) ),
+            m_size( size )
         {}
 
+        auto size() const -> size_t { return m_size; }
         auto operator[]( size_t index ) const -> T {
             assert( index < m_size );
             return m_generator->get( index );
@@ -192,8 +195,6 @@ namespace generators {
         }
 
         auto operator[]( size_t index ) const -> T {
-            assert( index < m_size );
-
             size_t sizes = 0;
             for( auto const& gen : m_generators ) {
                 auto localIndex = index-sizes;
@@ -201,8 +202,7 @@ namespace generators {
                 if( index < sizes )
                     return gen[localIndex];
             }
-            assert(false); // should never happen
-            throw std::logic_error("this should never happen");
+            throw std::out_of_range("index out of range");
         }
     };
 
