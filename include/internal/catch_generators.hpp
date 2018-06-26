@@ -7,6 +7,7 @@
 #ifndef TWOBLUECUBES_CATCH_GENERATORS_HPP_INCLUDED
 #define TWOBLUECUBES_CATCH_GENERATORS_HPP_INCLUDED
 
+#include "catch_interfaces_generatortracker.h"
 #include "catch_common.h"
 #include "catch_test_case_tracker.h"
 
@@ -74,16 +75,6 @@ namespace generators {
     };
 
 
-    class GeneratorBase {
-    protected:
-        size_t m_size = 0;
-
-    public:
-        GeneratorBase( size_t size ) : m_size( size ) {}
-        virtual ~GeneratorBase();
-        auto size() const -> size_t { return m_size; }
-    };
-
     template<typename T>
     struct NullGenerator : IGenerator<T> {
         auto get( size_t ) const -> T override {
@@ -108,8 +99,6 @@ namespace generators {
             return m_generator->get( index );
         }
     };
-
-    using GeneratorBasePtr = std::unique_ptr<GeneratorBase>;
 
     std::vector<size_t> randomiseIndices( size_t selectionSize, size_t sourceSize );
 
@@ -242,13 +231,6 @@ namespace generators {
         return makeGenerators( value( T( std::forward<U>( val ) ) ), std::forward<Gs>( moreGenerators )... );
     }
 
-    struct IGeneratorTracker {
-        virtual ~IGeneratorTracker();
-        virtual auto hasGenerator() const -> bool = 0;
-        virtual auto getGenerator() const -> GeneratorBasePtr const& = 0;
-        virtual void setGenerator( GeneratorBasePtr&& generator ) = 0;
-        virtual auto getIndex() const -> size_t = 0;
-    };
 
     auto acquireGeneratorTracker( SourceLineInfo const& lineInfo ) -> IGeneratorTracker&;
 

@@ -167,6 +167,7 @@ set(IMPL_SOURCES
         ${HEADER_DIR}/internal/catch_interfaces_capture.cpp
         ${HEADER_DIR}/internal/catch_interfaces_config.cpp
         ${HEADER_DIR}/internal/catch_interfaces_exception.cpp
+        ${HEADER_DIR}/internal/catch_interfaces_generatortracker.h
         ${HEADER_DIR}/internal/catch_interfaces_registry_hub.cpp
         ${HEADER_DIR}/internal/catch_interfaces_runner.cpp
         ${HEADER_DIR}/internal/catch_interfaces_testcase.cpp
