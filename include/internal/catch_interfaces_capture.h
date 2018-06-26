@@ -28,6 +28,8 @@ namespace Catch {
 
     struct ITransientExpression;
 
+    namespace TestCaseTracking { class TrackerContext; }
+
     struct IResultCapture {
 
         virtual ~IResultCapture();
@@ -38,6 +40,7 @@ namespace Catch {
         virtual void sectionEndedEarly( SectionEndInfo const& endInfo ) = 0;
 
         virtual int getGeneratorIndex( SourceLineInfo const& lineInfo, int size ) = 0;
+        virtual auto getTrackerContext() -> TestCaseTracking::TrackerContext& = 0;
 
         virtual void benchmarkStarting( BenchmarkInfo const& info ) = 0;
         virtual void benchmarkEnded( BenchmarkStats const& stats ) = 0;

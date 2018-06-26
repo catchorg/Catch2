@@ -8,6 +8,7 @@
 #define TWOBLUECUBES_CATCH_GENERATORS_HPP_INCLUDED
 
 #include "catch_common.h"
+#include "catch_test_case_tracker.h"
 
 #include <memory>
 #include <vector>
@@ -241,47 +242,26 @@ namespace generators {
         return makeGenerators( value( T( std::forward<U>( val ) ) ), std::forward<Gs>( moreGenerators )... );
     }
 
-    class GeneratorCache {
-        std::map<SourceLineInfo, GeneratorBasePtr> m_generators;
-
-    public:
-
-        template<typename T>
-        auto add( SourceLineInfo const& lineInfo, Generators<T>&& generators ) -> Generators<T> const& {
-            auto generatorPtr = pf::make_unique<Generators<T>>( std::move( generators ) );
-            auto const& storedGenerator = *generatorPtr;
-            m_generators.insert( { lineInfo, std::move( generatorPtr ) } );
-            return storedGenerator;
-        }
-
-        template<typename T, typename L>
-        auto getGenerator( SourceLineInfo const& lineInfo, L const& generatorExpression ) -> Generators<T> const& {
-
-            auto it = m_generators.find( lineInfo );
-            return ( it != m_generators.end() )
-                ? static_cast<Generators<T> const&>( *it->second )
-                : add( lineInfo, generatorExpression() );
-        }
+    struct IGeneratorTracker {
+        virtual ~IGeneratorTracker();
+        virtual auto hasGenerator() const -> bool = 0;
+        virtual auto getGenerator() const -> GeneratorBasePtr const& = 0;
+        virtual void setGenerator( GeneratorBasePtr&& generator ) = 0;
+        virtual auto getIndex() const -> size_t = 0;
     };
 
-    auto getGeneratorCache() -> GeneratorCache&;
-    auto getIndexForGeneratorId( SourceLineInfo const& lineInfo, size_t size ) -> size_t;
-
-    template<typename L>
-    auto memoize( GeneratorCache& cache, SourceLineInfo const& lineInfo, L const& generatorExpression ) -> decltype(generatorExpression()) const& {
-
-        using UnderlyingType = typename decltype(generatorExpression())::type;
-        return cache.getGenerator<UnderlyingType, L>( lineInfo, generatorExpression );
-    }
+    auto acquireGeneratorTracker( SourceLineInfo const& lineInfo ) -> IGeneratorTracker&;
 
     template<typename L>
     auto generate( SourceLineInfo const& lineInfo, L const& generatorExpression ) -> typename decltype(generatorExpression())::type {
-        // !TBD: how to do this without so many lookups?
-        // hold cache in ResultCapture object? (so we don\t have to look up cache, then look up index)
+        using UnderlyingType = typename decltype(generatorExpression())::type;
 
-        auto const& generator = memoize( getGeneratorCache(), lineInfo, generatorExpression );
-        auto index = getIndexForGeneratorId( lineInfo, generator.size() );
-        return generator[index];
+        IGeneratorTracker& tracker = acquireGeneratorTracker( lineInfo );
+        if( !tracker.hasGenerator() )
+            tracker.setGenerator( pf::make_unique<Generators<UnderlyingType>>( generatorExpression() ) );
+
+        auto const& generator = static_cast<Generators<UnderlyingType> const&>( *tracker.getGenerator() );
+        return generator[tracker.getIndex()];
     }
 
 } // namespace generators

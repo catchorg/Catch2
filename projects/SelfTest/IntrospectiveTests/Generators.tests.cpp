@@ -10,13 +10,6 @@
 
 #include "internal/catch_suppress_warnings.h"
 
-namespace Catch {
-namespace generators {
-
-
-} // namespace generators
-} // namespace Catch
-
 
 TEST_CASE("Generators impl") {
     using namespace Catch::generators;
@@ -101,38 +94,6 @@ TEST_CASE("Generators impl") {
         CHECK( typed->size() == 4 );
         CHECK( (*typed)[0] == 7 );
         CHECK( (*typed)[3] == 11 );
-    }
-
-    SECTION( "memoized" ) {
-        GeneratorCache cache;
-
-        auto lineInfo = CATCH_INTERNAL_LINEINFO;
-
-        int created = 0;
-        auto fun = [&]{
-            created++;
-            return makeGenerators( values({42, 7}) );
-        };
-
-        // generator is only created on first call
-        CHECK( created == 0 );
-        CHECK( memoize( cache, lineInfo, fun )[0] == 42 );
-        CHECK( created == 1 );
-        CHECK( memoize( cache, lineInfo, fun )[0] == 42 );
-        CHECK( created == 1 );
-        CHECK( memoize( cache, lineInfo, fun )[1] == 7 );
-        CHECK( created == 1 );
-    }
-
-    SECTION( "strings" ) {
-        GeneratorCache cache;
-        auto const& gen = memoize( cache, CATCH_INTERNAL_LINEINFO, []{ return makeGenerators( as<std::string>(), "one", "two", "three", "four" ); }  );
-
-        REQUIRE( gen.size() == 4 );
-        CHECK( gen[0] == "one" );
-        CHECK( gen[1] == "two" );
-        CHECK( gen[2] == "three" );
-        CHECK( gen[3] == "four" );
     }
 }
 

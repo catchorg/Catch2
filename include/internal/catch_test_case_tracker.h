@@ -95,6 +95,7 @@ namespace TestCaseTracking {
             Failed
         };
 
+        // !TBD: remove
         class TrackerHasName {
             NameAndLocation m_nameAndLocation;
         public:

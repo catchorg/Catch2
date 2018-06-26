@@ -103,6 +103,9 @@ namespace Catch {
         // !TBD We need to do this another way!
         bool aborting() const final;
 
+        // !TBD: best way to expose?
+        auto getTrackerContext() -> TrackerContext& override { return m_trackerContext; }
+
     private:
 
         void runCurrentTest( std::string& redirectedCout, std::string& redirectedCerr );
