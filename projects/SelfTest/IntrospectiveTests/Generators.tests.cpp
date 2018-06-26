@@ -10,6 +10,7 @@
 
 #include "internal/catch_suppress_warnings.h"
 
+// Tests of implementation details
 
 TEST_CASE("Generators impl") {
     using namespace Catch::generators;
@@ -97,7 +98,8 @@ TEST_CASE("Generators impl") {
     }
 }
 
-#define GENERATE( ... ) Catch::generators::generate( CATCH_INTERNAL_LINEINFO, []{ using namespace Catch::generators; return makeGenerators( __VA_ARGS__ ); } )
+
+// The rest are usage tests
 
 TEST_CASE("Generators") {
 
@@ -113,6 +115,9 @@ TEST_CASE("Generators") {
     }
 }
 
+// This generates the cross-product of two ranges.
+// It's mostly here to demonstrate the performance which, at time of writing,
+// leaves a lot to be desired.
 TEST_CASE( "200 ints" ) {
     auto x = GENERATE( range( 0,100 ) );
     auto y = GENERATE( range( 200,300 ) );
@@ -121,6 +126,9 @@ TEST_CASE( "200 ints" ) {
 }
 
 #ifdef __cpp_structured_bindings
+
+// One way to do pairs of values (actual/ expected?)
+// - the use of structured bindings here is an optional convenience
 TEST_CASE( "strlen" ) {
     auto [test_input, expected] = GENERATE( values<std::pair<std::string_view, int>>({
             {"one", 3},
@@ -132,6 +140,8 @@ TEST_CASE( "strlen" ) {
     REQUIRE( test_input.size() == expected );
 }
 
+// A nicer way to do pairs (or more) of values - using the table generator.
+// Note, you must specify the types up-front
 TEST_CASE( "strlen2" ) {
     auto [test_input, expected] = GENERATE( table<std::string, int>({
             {"one", 3},
@@ -144,6 +154,7 @@ TEST_CASE( "strlen2" ) {
 }
 #endif
 
+// An alternate way of doing data tables without structure bindings
 TEST_CASE( "strlen3" ) {
     struct Data { std::string str; int len; };
     auto data = GENERATE( values<Data>({
@@ -159,7 +170,7 @@ TEST_CASE( "strlen3" ) {
 
 auto square( int i ) -> int { return i*i; }
 
-TEST_CASE( "sqr" ) {
+TEST_CASE( "Random numbers in a range" ) {
     auto x = GENERATE( random( -10000, 10000 ) );
     CAPTURE( x );
     REQUIRE( square(x) >= 0 );

@@ -248,4 +248,8 @@ namespace generators {
 
 #include "internal/catch_reenable_warnings.h"
 
+#define GENERATE( ... ) \
+    Catch::generators::generate( CATCH_INTERNAL_LINEINFO, []{ using namespace Catch::generators; return makeGenerators( __VA_ARGS__ ); } )
+
+
 #endif // TWOBLUECUBES_CATCH_GENERATORS_HPP_INCLUDED
