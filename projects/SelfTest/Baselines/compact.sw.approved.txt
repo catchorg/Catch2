@@ -321,40 +321,6 @@ Generators.tests.cpp:<line number>: passed: gen[0] == 3 for: 3 == 3
 Generators.tests.cpp:<line number>: passed: gen[1] == 1 for: 1 == 1
 Generators.tests.cpp:<line number>: passed: gen[2] == 4 for: 4 == 4
 Generators.tests.cpp:<line number>: passed: gen[3] == 1 for: 1 == 1
-Generators.tests.cpp:<line number>: passed: gen.size() == 6 for: 6 == 6
-Generators.tests.cpp:<line number>: passed: gen[i] >= 3 for: 7 >= 3
-Generators.tests.cpp:<line number>: passed: gen[i] <= 8 for: 7 <= 8
-Generators.tests.cpp:<line number>: passed: gen[i] >= 3 for: 4 >= 3
-Generators.tests.cpp:<line number>: passed: gen[i] <= 8 for: 4 <= 8
-Generators.tests.cpp:<line number>: passed: gen[i] != gen[i-1] for: 4 != 7
-Generators.tests.cpp:<line number>: passed: gen[i] >= 3 for: 8 >= 3
-Generators.tests.cpp:<line number>: passed: gen[i] <= 8 for: 8 <= 8
-Generators.tests.cpp:<line number>: passed: gen[i] != gen[i-1] for: 8 != 4
-Generators.tests.cpp:<line number>: passed: gen[i] >= 3 for: 5 >= 3
-Generators.tests.cpp:<line number>: passed: gen[i] <= 8 for: 5 <= 8
-Generators.tests.cpp:<line number>: passed: gen[i] != gen[i-1] for: 5 != 8
-Generators.tests.cpp:<line number>: passed: gen[i] >= 3 for: 6 >= 3
-Generators.tests.cpp:<line number>: passed: gen[i] <= 8 for: 6 <= 8
-Generators.tests.cpp:<line number>: passed: gen[i] != gen[i-1] for: 6 != 5
-Generators.tests.cpp:<line number>: passed: gen[i] >= 3 for: 3 >= 3
-Generators.tests.cpp:<line number>: passed: gen[i] <= 8 for: 3 <= 8
-Generators.tests.cpp:<line number>: passed: gen[i] != gen[i-1] for: 3 != 6
-Generators.tests.cpp:<line number>: passed: gen.size() == 10 for: 10 == 10
-Generators.tests.cpp:<line number>: passed: gen[i] != gen[i-1] for: 2008734458 (0x<hex digits>)
-!=
-2132285156 (0x<hex digits>)
-Generators.tests.cpp:<line number>: passed: gen[i] != gen[i-1] for: 969970961 (0x<hex digits>)
-!=
-2008734458 (0x<hex digits>)
-Generators.tests.cpp:<line number>: passed: gen[i] != gen[i-1] for: 2066350391 (0x<hex digits>)
-!=
-969970961 (0x<hex digits>)
-Generators.tests.cpp:<line number>: passed: gen[i] != gen[i-1] for: -1675631022 != 2066350391 (0x<hex digits>)
-Generators.tests.cpp:<line number>: passed: gen[i] != gen[i-1] for: 1280354905 (0x<hex digits>) != -1675631022
-Generators.tests.cpp:<line number>: passed: gen[i] != gen[i-1] for: -871751877 != 1280354905 (0x<hex digits>)
-Generators.tests.cpp:<line number>: passed: gen[i] != gen[i-1] for: -2126938739 != -871751877
-Generators.tests.cpp:<line number>: passed: gen[i] != gen[i-1] for: -1664452230 != -2126938739
-Generators.tests.cpp:<line number>: passed: gen[i] != gen[i-1] for: 600279047 (0x<hex digits>) != -1664452230
 Generators.tests.cpp:<line number>: passed: gen.size() == 4 for: 4 == 4
 Generators.tests.cpp:<line number>: passed: gen[0] == 1 for: 1 == 1
 Generators.tests.cpp:<line number>: passed: gen[1] == 2 for: 2 == 2

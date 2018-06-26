@@ -31,26 +31,6 @@ TEST_CASE("Generators impl") {
         CHECK( gen[2] == 4 );
         CHECK( gen[3] == 1 );
     }
-    SECTION( "random range" ) {
-        auto gen = random( 3, 8 );
-
-        CHECK( gen.size() == 6 );
-        for( size_t i = 0; i < 6; ++i ) {
-            CHECK( gen[i] >= 3 );
-            CHECK( gen[i] <= 8 );
-            if( i > 0 )
-                CHECK( gen[i] != gen[i-1] );
-        }
-    }
-    SECTION( "random selection" ) {
-        auto gen = random<int>( 10 );
-
-        CHECK( gen.size() == 10 );
-        for( size_t i = 0; i < 10; ++i ) {
-            if( i > 0 )
-                CHECK( gen[i] != gen[i-1] );
-        }
-    }
     SECTION( "combined" ) {
         auto gen = makeGenerators( range( 1, 2 ), values( { 9, 7 } ) );
 
@@ -96,6 +76,30 @@ TEST_CASE("Generators impl") {
     }
 }
 
+TEST_CASE("Generators impl - random", "[approvals]") {
+    using namespace Catch::generators;
+
+    SECTION( "random range" ) {
+        auto gen = random( 3, 8 );
+
+        CHECK( gen.size() == 6 );
+        for( size_t i = 0; i < 6; ++i ) {
+            CHECK( gen[i] >= 3 );
+            CHECK( gen[i] <= 8 );
+            if( i > 0 )
+                CHECK( gen[i] != gen[i-1] );
+        }
+    }
+    SECTION( "random selection" ) {
+        auto gen = random<int>( 10 );
+
+        CHECK( gen.size() == 10 );
+        for( size_t i = 0; i < 10; ++i ) {
+            if( i > 0 )
+                CHECK( gen[i] != gen[i-1] );
+        }
+    }
+}
 
 // The rest are usage tests
 

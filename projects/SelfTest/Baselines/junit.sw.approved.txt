@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuitesloose text artifact
 >
-  <testsuite name="<exe-name>" errors="17" failures="127" tests="1167" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
+  <testsuite name="<exe-name>" errors="17" failures="127" tests="1139" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
     <testcase classname="<exe-name>.global" name="# A test name that starts with a #" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="#1005: Comparing pointer to int and long (NULL can be either on various systems)" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="#1027" time="{duration}"/>
@@ -315,8 +315,6 @@ two: c, 1.379
     </testcase>
     <testcase classname="<exe-name>.global" name="Generators impl/range" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Generators impl/fixed values" time="{duration}"/>
-    <testcase classname="<exe-name>.global" name="Generators impl/random range" time="{duration}"/>
-    <testcase classname="<exe-name>.global" name="Generators impl/random selection" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Generators impl/combined" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Generators impl/values" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Generators impl/values2" time="{duration}"/>
