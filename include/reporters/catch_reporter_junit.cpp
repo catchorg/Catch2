@@ -152,19 +152,20 @@ namespace Catch {
         if ( !m_config->name().empty() )
             className = m_config->name() + "." + className;
 
-        writeSection( className, "", rootSection );
+        writeSection( className, "", rootSection, true);
     }
 
     void JunitReporter::writeSection(  std::string const& className,
                         std::string const& rootName,
-                        SectionNode const& sectionNode ) {
+                        SectionNode const& sectionNode,
+                        bool topLevel) {
         std::string name = trim( sectionNode.stats.sectionInfo.name );
         if( !rootName.empty() )
             name = rootName + '/' + name;
 
-        if( !sectionNode.assertions.empty() ||
-            !sectionNode.stdOut.empty() ||
-            !sectionNode.stdErr.empty() ) {
+        if (topLevel || (!sectionNode.assertions.empty() ||
+                         !sectionNode.stdOut.empty() ||
+                         !sectionNode.stdErr.empty())) {
             XmlWriter::ScopedElement e = xml.scopedElement( "testcase" );
             if( className.empty() ) {
                 xml.writeAttribute( "classname", name );
@@ -176,18 +177,20 @@ namespace Catch {
             }
             xml.writeAttribute( "time", ::Catch::Detail::stringify( sectionNode.stats.durationInSeconds ) );
 
-            writeAssertions( sectionNode );
+            if( !sectionNode.assertions.empty() )
+                writeAssertions( sectionNode );
 
             if( !sectionNode.stdOut.empty() )
                 xml.scopedElement( "system-out" ).writeText( trim( sectionNode.stdOut ), false );
             if( !sectionNode.stdErr.empty() )
                 xml.scopedElement( "system-err" ).writeText( trim( sectionNode.stdErr ), false );
         }
+
         for( auto const& childNode : sectionNode.childSections )
             if( className.empty() )
-                writeSection( name, "", *childNode );
+                writeSection( name, "", *childNode, false );
             else
-                writeSection( className, name, *childNode );
+                writeSection( className, name, *childNode, false );
     }
 
     void JunitReporter::writeAssertions( SectionNode const& sectionNode ) {
