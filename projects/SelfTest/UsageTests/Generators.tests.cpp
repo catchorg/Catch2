@@ -1,7 +1,5 @@
 #include "catch.hpp"
 
-#include <iostream> // !DBG
-
 // Tests of generartor implementation details
 
 TEST_CASE("Generators impl", "[impl]") {

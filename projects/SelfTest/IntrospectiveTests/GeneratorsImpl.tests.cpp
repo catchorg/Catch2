@@ -13,16 +13,16 @@
 TEST_CASE("Generators") {
 
     auto i = GENERATE( as<std::string>(), "a", "b", "c" );
-    CAPTURE( i );
 
     SECTION( "one" ) {
         auto j = GENERATE( range( 8, 11 ), 2 );
-        CAPTURE( j );
+
+        CAPTURE( i, j );
         SUCCEED();
     }
     SECTION( "two" ) {
         auto j = GENERATE( 3.141, 1.379 );
-        CAPTURE( j );
+        CAPTURE( i, j );
         SUCCEED();
     }
 }
