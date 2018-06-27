@@ -232,28 +232,28 @@ struct is_true
 
 TEST_CASE( "(unimplemented) static bools can be evaluated", "[Tricky]" )
 {
-    SECTION("compare to true","")
+    SECTION("compare to true")
     {
         REQUIRE( is_true<true>::value == true );
         REQUIRE( true == is_true<true>::value );
     }
-    SECTION("compare to false","")
+    SECTION("compare to false")
     {
         REQUIRE( is_true<false>::value == false );
         REQUIRE( false == is_true<false>::value );
     }
 
-    SECTION("negation", "")
+    SECTION("negation")
     {
         REQUIRE( !is_true<false>::value );
     }
 
-    SECTION("double negation","")
+    SECTION("double negation")
     {
         REQUIRE( !!is_true<true>::value );
     }
 
-    SECTION("direct","")
+    SECTION("direct")
     {
         REQUIRE( is_true<true>::value );
         REQUIRE_FALSE( is_true<false>::value );

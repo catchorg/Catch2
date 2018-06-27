@@ -10,7 +10,7 @@
 // Let Catch provide the required interfaces:
 #define CATCH_CONFIG_EXTERNAL_INTERFACES
 
-#include "catch.hpp"
+#include <catch2/catch.hpp>
 #include <iostream>
 
 // -----------------------------------------------------------------------
@@ -187,8 +187,7 @@ void print( std::ostream& os, int const level, std::string const& title, Catch::
 
 void print( std::ostream& os, int const level, std::string const& title, Catch::SectionInfo const& info ) {
     os << ws(level  ) << title << ":\n"
-       << ws(level+1) << "- name: "         << info.name << "\n"
-       << ws(level+1) << "- description: '" << info.description << "'\n";
+       << ws(level+1) << "- name: "         << info.name << "\n";
     print( os, level+1 , "- lineInfo", info.lineInfo );
 }
 

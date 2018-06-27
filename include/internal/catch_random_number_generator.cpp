@@ -9,23 +9,21 @@
 #include "catch_context.h"
 #include "catch_interfaces_config.h"
 
-#include <cstdlib>
-
 namespace Catch {
 
-    void seedRng( IConfig const& config ) {
-        if( config.rngSeed() != 0 )
-            std::srand( config.rngSeed() );
+    std::mt19937& rng() {
+        static std::mt19937 s_rng;
+        return s_rng;
     }
+
+    void seedRng( IConfig const& config ) {
+        if( config.rngSeed() != 0 ) {
+            std::srand( config.rngSeed() );
+            rng().seed( config.rngSeed() );
+        }
+    }
+
     unsigned int rngSeed() {
         return getCurrentContext().getConfig()->rngSeed();
     }
-
-    RandomNumberGenerator::result_type RandomNumberGenerator::operator()( result_type n ) const {
-        return std::rand() % n;
-    }
-    RandomNumberGenerator::result_type RandomNumberGenerator::operator()() const {
-        return std::rand() % (max)();
-    }
-
 }

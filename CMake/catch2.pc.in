@@ -1,0 +1,7 @@
+includedir=@CMAKE_INSTALL_FULL_INCLUDEDIR@
+
+Name: Catch2
+Description: A modern, C++-native, header-only, test framework for C++11
+URL: https://github.com/catchorg/Catch2
+Version: @Catch2_VERSION@
+Cflags: -I${includedir}

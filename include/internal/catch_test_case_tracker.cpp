@@ -73,8 +73,8 @@ namespace TestCaseTracking {
     TrackerBase::TrackerHasName::TrackerHasName( NameAndLocation const& nameAndLocation ) : m_nameAndLocation( nameAndLocation ) {}
     bool TrackerBase::TrackerHasName::operator ()( ITrackerPtr const& tracker ) const {
         return
-            tracker->nameAndLocation().name == m_nameAndLocation.name &&
-            tracker->nameAndLocation().location == m_nameAndLocation.location;
+            tracker->nameAndLocation().location == m_nameAndLocation.location &&
+            tracker->nameAndLocation().name == m_nameAndLocation.name;
     }
 
     TrackerBase::TrackerBase( NameAndLocation const& nameAndLocation, TrackerContext& ctx, ITracker* parent )
