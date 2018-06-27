@@ -6,8 +6,6 @@
 #include <map>
 #include <set>
 
-#include "internal/catch_generators.hpp"
-
 // Tests of implementation details
 
 TEST_CASE("Generators impl") {
@@ -120,12 +118,21 @@ TEST_CASE("Generators") {
 // This generates the cross-product of two ranges.
 // It's mostly here to demonstrate the performance which, at time of writing,
 // leaves a lot to be desired.
-TEST_CASE( "200 ints", "[.][approvals]" ) {
+TEST_CASE( "101x101 ints", "[.][approvals]" ) {
     auto x = GENERATE( range( 0,100 ) );
     auto y = GENERATE( range( 200,300 ) );
 
     CHECK( x < y );
 }
+
+// smaller version
+TEST_CASE( "10x10 ints", "[.][approvals]" ) {
+    auto x = GENERATE( range( 1,10 ) );
+    auto y = GENERATE( range( 101, 110 ) );
+
+    CHECK( x < y );
+}
+
 
 #ifdef __cpp_structured_bindings
 
