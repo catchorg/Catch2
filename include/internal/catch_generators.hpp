@@ -76,7 +76,6 @@ namespace generators {
         auto get( size_t ) const -> T override {
             throw std::logic_error("A Null Generator should always be empty" );
         }
-
     };
 
     template<typename T>
@@ -85,8 +84,6 @@ namespace generators {
         size_t m_size;
 
     public:
-        using type = T;
-
         Generator( size_t size, std::unique_ptr<IGenerator<T>> generator )
         :   m_generator( std::move( generator ) ),
             m_size( size )

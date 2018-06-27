@@ -5,7 +5,7 @@ include(MiscFunctions)
 set(TEST_SOURCES
         ${SELF_TEST_DIR}/TestMain.cpp
         ${SELF_TEST_DIR}/IntrospectiveTests/CmdLine.tests.cpp
-        ${SELF_TEST_DIR}/IntrospectiveTests/Generators.tests.cpp
+        ${SELF_TEST_DIR}/IntrospectiveTests/GeneratorsImpl.tests.cpp
         ${SELF_TEST_DIR}/IntrospectiveTests/PartTracker.tests.cpp
         ${SELF_TEST_DIR}/IntrospectiveTests/TagAlias.tests.cpp
         ${SELF_TEST_DIR}/IntrospectiveTests/String.tests.cpp
@@ -19,6 +19,7 @@ set(TEST_SOURCES
         ${SELF_TEST_DIR}/UsageTests/Decomposition.tests.cpp
         ${SELF_TEST_DIR}/UsageTests/EnumToString.tests.cpp
         ${SELF_TEST_DIR}/UsageTests/Exception.tests.cpp
+        ${SELF_TEST_DIR}/UsageTests/Generators.tests.cpp
         ${SELF_TEST_DIR}/UsageTests/Message.tests.cpp
         ${SELF_TEST_DIR}/UsageTests/Misc.tests.cpp
         ${SELF_TEST_DIR}/UsageTests/ToStringChrono.tests.cpp

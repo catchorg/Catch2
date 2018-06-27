@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuitesloose text artifact
 >
-  <testsuite name="<exe-name>" errors="17" failures="127" tests="1139" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
+  <testsuite name="<exe-name>" errors="17" failures="106" tests="1239" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
     <testcase classname="<exe-name>.global" name="# A test name that starts with a #" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="#1005: Comparing pointer to int and long (NULL can be either on various systems)" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="#1027" time="{duration}"/>
@@ -69,6 +69,7 @@ Condition.tests.cpp:<line number>
     <testcase classname="<exe-name>.global" name="(unimplemented) static bools can be evaluated/negation" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="(unimplemented) static bools can be evaluated/double negation" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="(unimplemented) static bools can be evaluated/direct" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="10x10 ints" time="{duration}"/>
     <testcase classname="<exe-name>.TestClass" name="A METHOD_AS_TEST_CASE based test run that fails" time="{duration}">
       <failure message="&quot;hello&quot; == &quot;world&quot;" type="REQUIRE">
 Class.tests.cpp:<line number>
@@ -288,31 +289,8 @@ Message.tests.cpp:<line number>
     <testcase classname="<exe-name>.global" name="Floating point matchers: float/ULPs" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Floating point matchers: float/Composed" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Floating point matchers: float/Constructor validation" time="{duration}"/>
-    <testcase classname="<exe-name>.global" name="Generators/two" time="{duration}">
-      <system-out>
-one: a, 8
-one: a, 9
-one: a, 10
-one: a, 11
-one: a, 2
-two: a, 3.141
-two: a, 1.379
-one: b, 8
-one: b, 9
-one: b, 10
-one: b, 11
-one: b, 2
-two: b, 3.141
-two: b, 1.379
-one: c, 8
-one: c, 9
-one: c, 10
-one: c, 11
-one: c, 2
-two: c, 3.141
-two: c, 1.379
-      </system-out>
-    </testcase>
+    <testcase classname="<exe-name>.global" name="Generators/one" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="Generators/two" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Generators impl/range" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Generators impl/fixed values" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Generators impl/combined" time="{duration}"/>
@@ -921,27 +899,6 @@ Exception.tests.cpp:<line number>
     <testcase classname="<exe-name>.global" name="xmlentitycheck/embedded xml: &lt;test>it should be possible to embed xml characters, such as &lt;, &quot; or &amp;, or even whole &lt;xml>documents&lt;/xml> within an attribute&lt;/test>" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="xmlentitycheck/encoded chars: these should all be encoded: &amp;&amp;&amp;&quot;&quot;&quot;&lt;&lt;&lt;&amp;&quot;&lt;&lt;&amp;&quot;" time="{duration}"/>
     <system-out>
-one: a, 8
-one: a, 9
-one: a, 10
-one: a, 11
-one: a, 2
-two: a, 3.141
-two: a, 1.379
-one: b, 8
-one: b, 9
-one: b, 10
-one: b, 11
-one: b, 2
-two: b, 3.141
-two: b, 1.379
-one: c, 8
-one: c, 9
-one: c, 10
-one: c, 11
-one: c, 2
-two: c, 3.141
-two: c, 1.379
 A string sent directly to stdout
 Message from section one
 Message from section two
