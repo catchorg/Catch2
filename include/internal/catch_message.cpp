@@ -10,6 +10,8 @@
 #include "catch_interfaces_capture.h"
 #include "catch_uncaught_exceptions.h"
 
+#include <cassert>
+
 namespace Catch {
 
     MessageInfo::MessageInfo(   std::string const& _macroName,
