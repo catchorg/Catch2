@@ -1,3 +1,0 @@
-Successful tests -- CHECK: median: 3.38116 (s), stddev: 0.11567366292001534 (s)
-Successful tests -- REQUIRE: median: 3.479955 (s), stddev: 0.16295972890734556 (s)
-Unsuccessful tests -- CHECK: median: 1.966895 (s), stddev: 0.06323488524716572 (s)
