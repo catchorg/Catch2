@@ -21,7 +21,9 @@ TEST_CASE( "Looped section" ) {
 This section outlines some missing features, what is their status and their possible workarounds.
 
 ### Thread safe assertions
-Because threading support in standard C++98 is limited (well, non-existent), assertion macros in Catch are not thread safe. This does not mean that you cannot use threads inside Catch's test, but that only single thread can interact with Catch's assertions and other macros.
+Catch2's assertion macros are not thread safe. This does not mean that
+you cannot use threads inside Catch's test, but that only single thread
+can interact with Catch's assertions and other macros.
 
 This means that this is ok
 ```cpp
@@ -49,8 +51,8 @@ because only one thread passes the `REQUIRE` macro and this is not
     REQUIRE(cnt == 16);
 ```
 
-
-_This limitation is highly unlikely to be lifted before Catch 2 is released._
+Because C++11 provides the necessary tools to do this, we are planning
+to remove this limitation in the future.
 
 ### Process isolation in a test
 Catch does not support running tests in isolated (forked) processes. While this might in the future, the fact that Windows does not support forking and only allows full-on process creation and the desire to keep code as similar as possible across platforms, mean that this is likely to take significant development time, that is not currently available.
