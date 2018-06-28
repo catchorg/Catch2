@@ -72,12 +72,6 @@ This would log something like:
 
 <pre>"theAnswer := 42"</pre>
 
-## Deprecated macros
-
-**SCOPED_INFO and SCOPED_CAPTURE**
-
-These macros are now deprecated and are just aliases for INFO and CAPTURE (which were not previously scoped).
-
 ---
 
 [Home](Readme.md#top)
