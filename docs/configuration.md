@@ -153,11 +153,14 @@ these toggles can be disabled by using `_NO_` form of the toggle,
 e.g. `CATCH_CONFIG_NO_WINDOWS_SEH`.
 
 ### `CATCH_CONFIG_FAST_COMPILE`
-Defining this flag speeds up compilation of test files by ~20%, by making 2 changes:
-* The `-b` (`--break`) flag no longer makes Catch break into debugger in the same stack frame as the failed test, but rather in a stack frame *below*.
-* Non-exception family of macros ({`REQUIRE`,`CHECK`}{`_`,`_FALSE`, `_THAT`}, no longer use local try-catch block. This disables exception translation, but should not lead to false negatives.
+This compile-time flag speeds up compilation of assertion macros by ~20%,
+by disabling the generation of assertion-local try-catch blocks for
+non-exception family of assertion macros ({`REQUIRE`,`CHECK`}{``,`_FALSE`, `_THAT`}).
+This disables translation of exceptions thrown under these assertions, but
+should not lead to false negatives.
 
-`CATCH_CONFIG_FAST_COMPILE` has to be either defined, or not defined, in all translation units that are linked into single test binary, or the behaviour of setting `-b` flag and throwing unexpected exceptions will be unpredictable.
+`CATCH_CONFIG_FAST_COMPILE` has to be either defined, or not defined,
+in all translation units that are linked into single test binary.
 
 ### `CATCH_CONFIG_DISABLE_MATCHERS`
 When `CATCH_CONFIG_DISABLE_MATCHERS` is defined, all mentions of Catch's Matchers are ifdef-ed away from the translation unit. Doing so will speed up compilation of that TU.
