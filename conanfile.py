@@ -21,7 +21,7 @@ class CatchConan(ConanFile):
         cmake = CMake(self)
         cmake.definitions["BUILD_TESTING"] = "OFF"
         cmake.definitions["CATCH_INSTALL_DOCS"] = "OFF"
-        cmake.definitions["CATCH_INSTALL_HELPERS"] = "OFF"
+        cmake.definitions["CATCH_INSTALL_HELPERS"] = "ON"
         cmake.configure()
         cmake.install()
 
