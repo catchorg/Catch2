@@ -6,6 +6,8 @@
 [![Build status](https://ci.appveyor.com/api/projects/status/github/catchorg/Catch2?svg=true)](https://ci.appveyor.com/project/catchorg/catch2)
 [![codecov](https://codecov.io/gh/catchorg/Catch2/branch/master/graph/badge.svg)](https://codecov.io/gh/catchorg/Catch2)
 [![Try online](https://img.shields.io/badge/try-online-blue.svg)](https://wandbox.org/permlink/u7qF77qgv9YqOr55)
+[![Join the chat in Discord: https://discord.gg/4CWS9zD](https://img.shields.io/badge/Discord-Chat!-brightgreen.svg)](https://discord.gg/4CWS9zD)
+
 
 <a href="https://github.com/catchorg/Catch2/releases/download/v2.2.3/catch.hpp">The latest version of the single header can be downloaded directly using this link</a>
 
@@ -32,5 +34,5 @@ This documentation comprises these three parts:
 
 ## More
 * Issues and bugs can be raised on the [Issue tracker on GitHub](https://github.com/catchorg/Catch2/issues)
-* For discussion or questions please use [the dedicated Google Groups forum](https://groups.google.com/forum/?fromgroups#!forum/catch-forum)
+* For discussion or questions please use [the dedicated Google Groups forum](https://groups.google.com/forum/?fromgroups#!forum/catch-forum) or our [Discord](https://discord.gg/4CWS9zD)
 * See [who else is using Catch2](docs/opensource-users.md#top)
