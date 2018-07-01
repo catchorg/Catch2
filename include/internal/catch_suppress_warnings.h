@@ -16,6 +16,9 @@
 #       pragma clang diagnostic ignored "-Wcovered-switch-default"
 #    endif
 #elif defined __GNUC__
+     // GCC likes to warn on REQUIREs, and we cannot suppress them
+     // locally because g++'s support for _Pragma is lacking in older,
+     // still supported, versions
 #    pragma GCC diagnostic ignored "-Wparentheses"
 #    pragma GCC diagnostic push
 #    pragma GCC diagnostic ignored "-Wunused-variable"
