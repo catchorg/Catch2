@@ -8,6 +8,7 @@
 #ifndef TWOBLUECUBES_CATCH_SECTION_H_INCLUDED
 #define TWOBLUECUBES_CATCH_SECTION_H_INCLUDED
 
+#include "catch_compiler_capabilities.h"
 #include "catch_section_info.h"
 #include "catch_totals.h"
 #include "catch_timer.h"
@@ -36,9 +37,13 @@ namespace Catch {
 } // end namespace Catch
 
 #define INTERNAL_CATCH_SECTION( ... ) \
-    if( Catch::Section const& INTERNAL_CATCH_UNIQUE_NAME( catch_internal_Section ) = Catch::SectionInfo( CATCH_INTERNAL_LINEINFO, __VA_ARGS__ ) )
+    CATCH_INTERNAL_SUPPRESS_UNUSED_WARNINGS \
+    if( Catch::Section const& INTERNAL_CATCH_UNIQUE_NAME( catch_internal_Section ) = Catch::SectionInfo( CATCH_INTERNAL_LINEINFO, __VA_ARGS__ ) ) \
+    CATCH_INTERNAL_UNSUPPRESS_UNUSED_WARNINGS
 
 #define INTERNAL_CATCH_DYNAMIC_SECTION( ... ) \
-    if( Catch::Section const& INTERNAL_CATCH_UNIQUE_NAME( catch_internal_Section ) = Catch::SectionInfo( CATCH_INTERNAL_LINEINFO, (Catch::ReusableStringStream() << __VA_ARGS__).str() ) )
+    CATCH_INTERNAL_SUPPRESS_UNUSED_WARNINGS \
+    if( Catch::Section const& INTERNAL_CATCH_UNIQUE_NAME( catch_internal_Section ) = Catch::SectionInfo( CATCH_INTERNAL_LINEINFO, (Catch::ReusableStringStream() << __VA_ARGS__).str() ) ) \
+    CATCH_INTERNAL_UNSUPPRESS_UNUSED_WARNINGS
 
 #endif // TWOBLUECUBES_CATCH_SECTION_H_INCLUDED
