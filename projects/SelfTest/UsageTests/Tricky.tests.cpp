@@ -20,26 +20,6 @@
 #include <stdio.h>
 #include <sstream>
 
-namespace Catch {
-    std::string toString( const std::pair<int, int>& value ) {
-        std::ostringstream oss;
-        oss << "std::pair( " << value.first << ", " << value.second << " )";
-        return oss.str();
-    }
-}
-
-///////////////////////////////////////////////////////////////////////////////
-TEST_CASE
-(
-    "Parsing a std::pair",
-    "[Tricky][std::pair]"
-)
-{
-    std::pair<int, int> aNicePair( 1, 2 );
-
-    REQUIRE( (std::pair<int, int>( 1, 2 )) == aNicePair );
-}
-
 ///////////////////////////////////////////////////////////////////////////////
 TEST_CASE
 (
@@ -175,7 +155,7 @@ namespace ObjectWithConversions
     ///////////////////////////////////////////////////////////////////////////////
     TEST_CASE
     (
-        "Operators at different namespace levels not hijacked by Koenig lookup",
+        "Implicit conversions are supported inside assertion macros",
         "[Tricky][approvals]"
     )
     {

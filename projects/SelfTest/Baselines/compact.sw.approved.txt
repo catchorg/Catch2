@@ -520,7 +520,6 @@ CmdLine.tests.cpp:<line number>: passed: spec.matches( tcA ) == false for: false
 CmdLine.tests.cpp:<line number>: passed: spec.matches( tcB ) == false for: false == false
 CmdLine.tests.cpp:<line number>: passed: spec.matches( tcC ) == false for: false == false
 CmdLine.tests.cpp:<line number>: passed: spec.matches( tcD ) == true for: true == true
-Tricky.tests.cpp:<line number>: passed: (std::pair<int, int>( 1, 2 )) == aNicePair for: {?} == {?}
 Condition.tests.cpp:<line number>: passed: p == 0 for: 0 == 0
 Condition.tests.cpp:<line number>: passed: p == pNULL for: 0 == 0
 Condition.tests.cpp:<line number>: passed: p != 0 for: 0x<hex digits> != 0

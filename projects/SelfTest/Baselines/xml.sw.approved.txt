@@ -4650,17 +4650,6 @@
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="Parsing a std::pair" tags="[Tricky][std::pair]" filename="projects/<exe-name>/UsageTests/Tricky.tests.cpp" >
-      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/UsageTests/Tricky.tests.cpp" >
-        <Original>
-          (std::pair&lt;int, int>( 1, 2 )) == aNicePair
-        </Original>
-        <Expanded>
-          {?} == {?}
-        </Expanded>
-      </Expression>
-      <OverallResult success="true"/>
-    </TestCase>
     <TestCase name="Pointers can be compared to null" filename="projects/<exe-name>/UsageTests/Condition.tests.cpp" >
       <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/UsageTests/Condition.tests.cpp" >
         <Original>
@@ -10035,7 +10024,7 @@ loose text artifact
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="945" failures="123" expectedFailures="21"/>
+    <OverallResults successes="944" failures="123" expectedFailures="21"/>
   </Group>
-  <OverallResults successes="945" failures="122" expectedFailures="21"/>
+  <OverallResults successes="944" failures="122" expectedFailures="21"/>
 </Catch>
