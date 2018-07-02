@@ -116,6 +116,8 @@ TEST_CASE("Static arrays are convertible to string", "[toString]") {
     }
 }
 
+namespace {
+
 struct WhatException : std::exception {
     char const* what() const noexcept override {
         return "This exception has overriden what() method";
@@ -135,6 +137,8 @@ std::ostream& operator<<(std::ostream& out, OperatorException const&) {
 struct StringMakerException : std::exception {
     ~StringMakerException() override;
 };
+
+} // end anonymous namespace
 
 namespace Catch {
 template <>

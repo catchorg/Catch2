@@ -16,23 +16,22 @@ namespace Catch {
         }
     };
 
+
+    namespace {
     auto isOwned( StringRef const& stringRef ) -> bool {
         return StringRefTestAccess::isOwned( stringRef );
     }
     auto isSubstring( StringRef const& stringRef ) -> bool {
         return StringRefTestAccess::isSubstring( stringRef );
     }
-} // namespace Catch2
+    } // end anonymous namespace
 
-namespace Catch {
-    inline auto toString( Catch::StringRef const& stringRef ) -> std::string {
-        return std::string( stringRef.currentData(), stringRef.size() );
-    }
 } // namespace Catch
 
 TEST_CASE( "StringRef", "[Strings][StringRef]" ) {
 
     using Catch::StringRef;
+    using Catch::isOwned; using Catch::isSubstring;
 
     SECTION( "Empty string" ) {
         StringRef empty;

@@ -21,23 +21,16 @@ namespace Catch
 
 } // namespace Catch
 
-inline Catch::TrackerContext& C_A_T_C_H_Context() {
-    return Catch::TrackerContext::instance();
-}
-
 // -------------------
 
 #include "catch.hpp"
 
 using namespace Catch;
 
-//inline void testCase( Catch::LocalContext const& C_A_T_C_H_Context ) {
-//
-//    REQUIRE( C_A_T_C_H_Context().i() == 42 );
-//}
-
+namespace {
 Catch::TestCaseTracking::NameAndLocation makeNAL( std::string const& name ) {
     return Catch::TestCaseTracking::NameAndLocation( name, Catch::SourceLineInfo("",0) );
+}
 }
 
 TEST_CASE( "Tracker" ) {

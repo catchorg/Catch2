@@ -9,6 +9,8 @@
 #include <iostream>
 #include <cstdio>
 
+namespace {
+
 struct truthy {
     truthy(bool b):m_value(b){}
     operator bool() const {
@@ -21,6 +23,8 @@ std::ostream& operator<<(std::ostream& o, truthy) {
     o << "Hey, its truthy!";
     return o;
 }
+
+} // end anonymous namespace
 
 #include "catch.hpp"
 
