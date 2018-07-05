@@ -55,33 +55,32 @@ This expression is too complex because of the `||` operator. If you want to chec
 
 When comparing floating point numbers - especially if at least one of them has been computed - great care must be taken to allow for rounding errors and inexact representations.
 
-Catch provides a way to perform tolerant comparisons of floating point values through use of a wrapper class called ```Approx```. ```Approx``` can be used on either side of a comparison expression. It overloads the comparisons operators to take a tolerance into account. Here's a simple example:
+Catch provides a way to perform tolerant comparisons of floating point values through use of a wrapper class called `Approx`. `Approx` can be used on either side of a comparison expression. It overloads the comparisons operators to take a tolerance into account. Here's a simple example:
 
-```
+```cpp
 REQUIRE( performComputation() == Approx( 2.1 ) );
 ```
 
 This way `Approx` is constructed with reasonable defaults, covering most simple cases of rounding errors. If these are insufficient, each `Approx` instance has 3 tuning knobs, that can be used to customize it for your computation.
 
-* __epsilon__ - epsilon serves to set the percentage by which a result can be erroneous, before it is rejected. By default set to `std::numeric_limits<float>::epsilon()*100`.
-* __margin__ - margin serves to set the the absolute value by which a result can be erroneous before it is rejected. By default set to `0.0`.
-* __scale__ - scale serves to adjust the epsilon's multiplicator. By default set to `0.0`.
+* __epsilon__ - epsilon serves to set the percentage by which a result can differ from `Approx`'s value before it is rejected. By default set to `std::numeric_limits<float>::epsilon()*100`.
+* __margin__ - margin serves to set the the absolute value by which a result can differ from `Approx`'s value before it is rejected. By default set to `0.0`.
+* __scale__ - scale is used to change the magnitude of `Approx` for relative check. By default set to `0.0`.
 
 #### epsilon example
 ```cpp
 Approx target = Approx(100).epsilon(0.01);
 100.0 == target; // Obviously true
 200.0 == target; // Obviously still false
-100.5 == target; // True, because we set target to allow up to 1% error
+100.5 == target; // True, because we set target to allow up to 1% difference
 ```
 
 #### margin example
-_Margin check is used only if the relative (epsilon and scale based) check fails._
 ```cpp
 Approx target = Approx(100).margin(5);
 100.0 == target; // Obviously true
 200.0 == target; // Obviously still false
-104.0 == target; // True, because we set target to allow absolute error up to 5
+104.0 == target; // True, because we set target to allow absolute difference of at most 5
 ```
 
 #### scale
