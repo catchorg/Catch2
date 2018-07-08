@@ -17,6 +17,7 @@ set( HEADER_DIR   ${CATCH_DIR}/single_include )
 
 set( SOURCES_SINGLE_FILE
     010-TestCase.cpp
+    231-Cfg-OutputStreams.cpp
 )
 
 # multiple-file modules:
