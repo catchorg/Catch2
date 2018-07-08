@@ -66,13 +66,18 @@ By default a console width of 80 is assumed but this can be controlled by defini
 
 	CATCH_CONFIG_NOSTDOUT
 
-Catch does not use ```std::cout```, ```std::cerr``` and ```std::clog``` directly but gets them from ```Catch::cout()```, ```Catch::cerr()``` and ```Catch::clog``` respectively. If the above identifier is defined these functions are left unimplemented and you must implement them yourself. Their signatures are:
+To support platforms that do not provide `std::cout`, `std::cerr` and
+`std::clog`, Catch does not usem the directly, but rather calls
+`Catch::cout`, `Catch::cerr` and `Catch::clog`. You can replace their
+implementation by defining `CATCH_CONFIG_NOSTDOUT` and implementing
+them yourself, their signatures are:
 
     std::ostream& cout();
     std::ostream& cerr();
     std::ostream& clog();
 
-This can be useful on certain platforms that do not provide the standard iostreams, such as certain embedded systems.
+[You can see an example of replacing these functions here.](
+../examples/231-Cfg-OutputStreams.cpp)
 
 
 ## Fallback stringifier
