@@ -143,6 +143,9 @@ function(ParseFile SourceFile TestTarget)
             endif()
             string(REPLACE "]" ";" Tags "${Tags}")
             string(REPLACE "[" "" Tags "${Tags}")
+        else()
+          # unset tags variable from previous loop
+          unset(Tags)
         endif()
 
         list(APPEND Labels ${Tags})
