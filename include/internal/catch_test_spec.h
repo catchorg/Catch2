@@ -33,7 +33,7 @@ namespace Catch {
         public:
             NamePattern( std::string const& name );
             virtual ~NamePattern();
-            virtual bool matches( TestCaseInfo const& testCase ) const override;
+            bool matches( TestCaseInfo const& testCase ) const override;
         private:
             WildcardPattern m_wildcardPattern;
         };
@@ -42,7 +42,7 @@ namespace Catch {
         public:
             TagPattern( std::string const& tag );
             virtual ~TagPattern();
-            virtual bool matches( TestCaseInfo const& testCase ) const override;
+            bool matches( TestCaseInfo const& testCase ) const override;
         private:
             std::string m_tag;
         };
@@ -51,7 +51,7 @@ namespace Catch {
         public:
             ExcludedPattern( PatternPtr const& underlyingPattern );
             virtual ~ExcludedPattern();
-            virtual bool matches( TestCaseInfo const& testCase ) const override;
+            bool matches( TestCaseInfo const& testCase ) const override;
         private:
             PatternPtr m_underlyingPattern;
         };

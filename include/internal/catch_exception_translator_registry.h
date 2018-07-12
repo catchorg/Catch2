@@ -19,7 +19,7 @@ namespace Catch {
     public:
         ~ExceptionTranslatorRegistry();
         virtual void registerTranslator( const IExceptionTranslator* translator );
-        virtual std::string translateActiveException() const override;
+        std::string translateActiveException() const override;
         std::string tryTranslators() const;
 
     private:

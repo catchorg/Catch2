@@ -13,27 +13,27 @@ namespace Catch {
     class Context : public IMutableContext, NonCopyable {
 
     public: // IContext
-        virtual IResultCapture* getResultCapture() override {
+        IResultCapture* getResultCapture() override {
             return m_resultCapture;
         }
-        virtual IRunner* getRunner() override {
+        IRunner* getRunner() override {
             return m_runner;
         }
 
-        virtual IConfigPtr const& getConfig() const override {
+        IConfigPtr const& getConfig() const override {
             return m_config;
         }
 
-        virtual ~Context() override;
+        ~Context() override;
 
     public: // IMutableContext
-        virtual void setResultCapture( IResultCapture* resultCapture ) override {
+        void setResultCapture( IResultCapture* resultCapture ) override {
             m_resultCapture = resultCapture;
         }
-        virtual void setRunner( IRunner* runner ) override {
+        void setRunner( IRunner* runner ) override {
             m_runner = runner;
         }
-        virtual void setConfig( IConfigPtr const& config ) override {
+        void setConfig( IConfigPtr const& config ) override {
             m_config = config;
         }
 

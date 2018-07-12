@@ -92,7 +92,7 @@ public:
     IntRange( int begin, int end ) : m_begin( begin ), m_end( end ) {}
 
     // Performs the test for this matcher
-    virtual bool match( int const& i ) const override {
+    bool match( int const& i ) const override {
         return i >= m_begin && i <= m_end;
     }
 
