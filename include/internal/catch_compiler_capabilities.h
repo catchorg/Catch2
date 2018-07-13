@@ -96,6 +96,12 @@
 #endif
 
 ////////////////////////////////////////////////////////////////////////////////
+// PS4
+#if defined(__ORBIS__)
+#    define CATCH_INTERNAL_CONFIG_NO_NEW_CAPTURE
+#endif
+
+////////////////////////////////////////////////////////////////////////////////
 // Cygwin
 #ifdef __CYGWIN__
 
@@ -165,6 +171,13 @@
 #  define CATCH_CONFIG_CPP17_UNCAUGHT_EXCEPTIONS
 #endif
 
+#if defined(CATCH_CONFIG_EXPERIMENTAL_REDIRECT)
+#  define CATCH_INTERNAL_CONFIG_NEW_CAPTURE
+#endif
+
+#if defined(CATCH_INTERNAL_CONFIG_NEW_CAPTURE) && !defined(CATCH_INTERNAL_CONFIG_NO_NEW_CAPTURE) && !defined(CATCH_CONFIG_NO_NEW_CAPTURE) && !defined(CATCH_CONFIG_NEW_CAPTURE)
+#  define CATCH_CONFIG_NEW_CAPTURE
+#endif
 
 #if !defined(CATCH_INTERNAL_SUPPRESS_PARENTHESES_WARNINGS)
 #   define CATCH_INTERNAL_SUPPRESS_PARENTHESES_WARNINGS

@@ -15,14 +15,17 @@
 #include <sstream>
 #include <stdexcept>
 
-#if defined(_MSC_VER)
-#include <io.h>      //_dup and _dup2
-#define dup _dup
-#define dup2 _dup2
-#define fileno _fileno
-#else
-#include <unistd.h>  // dup and dup2
+#if defined(CATCH_CONFIG_NEW_CAPTURE)
+    #if defined(_MSC_VER)
+    #include <io.h>      //_dup and _dup2
+    #define dup _dup
+    #define dup2 _dup2
+    #define fileno _fileno
+    #else
+    #include <unistd.h>  // dup and dup2
+    #endif
 #endif
+
 
 namespace Catch {
 
@@ -48,6 +51,7 @@ namespace Catch {
     auto RedirectedStdErr::str() const -> std::string { return m_rss.str(); }
 
 
+#if defined(CATCH_CONFIG_NEW_CAPTURE)
 
 #if defined(_MSC_VER)
     TempFile::TempFile() {
@@ -122,11 +126,14 @@ namespace Catch {
         m_stderrDest += m_stderrFile.getContents();
     }
 
+#endif // CATCH_CONFIG_NEW_CAPTURE
 
 } // namespace Catch
 
-#if defined(_MSC_VER)
-#undef dup
-#undef dup2
-#undef fileno
+#if defined(CATCH_CONFIG_NEW_CAPTURE)
+    #if defined(_MSC_VER)
+    #undef dup
+    #undef dup2
+    #undef fileno
+    #endif
 #endif

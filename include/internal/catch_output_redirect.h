@@ -47,6 +47,8 @@ namespace Catch {
     };
 
 
+#if defined(CATCH_CONFIG_NEW_CAPTURE)
+
     // Windows's implementation of std::tmpfile is terrible (it tries
     // to create a file inside system folder, thus requiring elevated
     // privileges for the binary), so we have to use tmpnam(_s) and
@@ -92,6 +94,7 @@ namespace Catch {
         std::string& m_stderrDest;
     };
 
+#endif
 
 } // end namespace Catch
 
