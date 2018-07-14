@@ -24,6 +24,7 @@ namespace Catch {
         m_xml(_config.stream())
     {
         m_reporterPrefs.shouldRedirectStdOut = true;
+        m_reporterPrefs.shouldReportAllAssertions = true;
     }
 
     XmlReporter::~XmlReporter() = default;

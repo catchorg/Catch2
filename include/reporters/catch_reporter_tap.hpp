@@ -30,9 +30,7 @@ namespace Catch {
         }
 
         ReporterPreferences getPreferences() const override {
-            ReporterPreferences prefs;
-            prefs.shouldRedirectStdOut = false;
-            return prefs;
+            return m_reporterPrefs;
         }
 
         void noMatchingTestCases( std::string const& spec ) override {

@@ -245,9 +245,7 @@ private:
         }
 
         ReporterPreferences CompactReporter::getPreferences() const {
-            ReporterPreferences prefs;
-            prefs.shouldRedirectStdOut = false;
-            return prefs;
+            return m_reporterPrefs;
         }
 
         void CompactReporter::noMatchingTestCases( std::string const& spec ) {

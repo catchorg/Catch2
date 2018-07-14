@@ -42,6 +42,7 @@ namespace Catch {
 
     struct ReporterPreferences {
         bool shouldRedirectStdOut = false;
+        bool shouldReportAllAssertions = false;
     };
 
     template<typename T>

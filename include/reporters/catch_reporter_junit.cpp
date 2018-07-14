@@ -62,6 +62,7 @@ namespace Catch {
             xml( _config.stream() )
         {
             m_reporterPrefs.shouldRedirectStdOut = true;
+            m_reporterPrefs.shouldReportAllAssertions = true;
         }
 
     JunitReporter::~JunitReporter() {}

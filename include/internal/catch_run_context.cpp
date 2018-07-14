@@ -17,7 +17,7 @@ namespace Catch {
         m_config(_config),
         m_reporter(std::move(reporter)),
         m_lastAssertionInfo{ StringRef(), SourceLineInfo("",0), StringRef(), ResultDisposition::Normal },
-        m_includeSuccessfulResults( m_config->includeSuccessfulResults() )
+        m_includeSuccessfulResults( m_config->includeSuccessfulResults() || m_reporter->getPreferences().shouldReportAllAssertions )
     {
         m_context.setRunner(this);
         m_context.setConfig(m_config);
