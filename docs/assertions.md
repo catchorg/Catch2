@@ -61,11 +61,24 @@ Catch provides a way to perform tolerant comparisons of floating point values th
 REQUIRE( performComputation() == Approx( 2.1 ) );
 ```
 
-This way `Approx` is constructed with reasonable defaults, covering most simple cases of rounding errors. If these are insufficient, each `Approx` instance has 3 tuning knobs, that can be used to customize it for your computation.
+Catch also provides a UDL for `Approx`; `_a`. It resides in
+the `Catch::literals` namespace and can be used like so:
+```cpp
+using namespace Catch::literals;
+REQUIRE( performComputation() == 2.1_a );
+```
 
-* __epsilon__ - epsilon serves to set the percentage by which a result can differ from `Approx`'s value before it is rejected. By default set to `std::numeric_limits<float>::epsilon()*100`.
-* __margin__ - margin serves to set the the absolute value by which a result can differ from `Approx`'s value before it is rejected. By default set to `0.0`.
-* __scale__ - scale is used to change the magnitude of `Approx` for relative check. By default set to `0.0`.
+`Approx` is constructed with defaults that should cover most simple cases.
+For the more complex cases, `Approx` provides 3 customization points:
+
+* __epsilon__ - epsilon serves to set the percentage by which a result
+can differ from `Approx`'s value before it is rejected.
+_By default set to `std::numeric_limits<float>::epsilon()*100`._
+* __margin__ - margin serves to set the the absolute value by which
+a result can differ from `Approx`'s value before it is rejected.
+_By default set to `0.0`._
+* __scale__ - scale is used to change the magnitude of `Approx` for relative check.
+_By default set to `0.0`._
 
 #### epsilon example
 ```cpp
