@@ -16,6 +16,7 @@ include(CMakePackageConfigHelpers)
 include(CTest)
 
 option(CATCH_USE_VALGRIND "Perform SelfTests with Valgrind" OFF)
+option(CATCH_BUILD_TESTING "Build SelfTest project" ON)
 option(CATCH_BUILD_EXAMPLES "Build documentation examples" OFF)
 option(CATCH_ENABLE_COVERAGE "Generate coverage for codecov.io" OFF)
 option(CATCH_ENABLE_WERROR "Enable all warnings as errors" ON)
@@ -35,7 +36,7 @@ if(USE_WMAIN)
     set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /ENTRY:wmainCRTStartup")
 endif()
 
-if (BUILD_TESTING AND NOT_SUBPROJECT)
+if (BUILD_TESTING AND CATCH_BUILD_TESTING AND NOT_SUBPROJECT)
     add_subdirectory(projects)
 endif()
 

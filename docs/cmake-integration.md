@@ -171,6 +171,10 @@ automatically discovered. Defaults to `OFF`.
 Catch2's CMake project also provides some options for other projects
 that consume it. These are
 
+* `CATCH_BUILD_TESTING` -- When `ON`, Catch2's SelfTest project will be
+built. Defaults to `ON`. Note that Catch2 also obeys `BUILD_TESTING` CMake
+variable, so _both_ of them need to be `ON` for the SelfTest to be built,
+and either of them can be set to `OFF` to disable building SelfTest.
 * `CATCH_BUILD_EXAMPLES` -- When `ON`, Catch2's usage examples will be
 built. Defaults to `OFF`.
 * `CATCH_INSTALL_DOCS` -- When `ON`, Catch2's documentation will be
