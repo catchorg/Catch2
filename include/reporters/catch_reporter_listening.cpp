@@ -11,6 +11,11 @@
 
 namespace Catch {
 
+    ListeningReporter::ListeningReporter() {
+        // We will assume that listeners will always want all assertions
+        m_preferences.shouldReportAllAssertions = true;
+    }
+
     void ListeningReporter::addListener( IStreamingReporterPtr&& listener ) {
         m_listeners.push_back( std::move( listener ) );
     }
@@ -18,10 +23,11 @@ namespace Catch {
     void ListeningReporter::addReporter(IStreamingReporterPtr&& reporter) {
         assert(!m_reporter && "Listening reporter can wrap only 1 real reporter");
         m_reporter = std::move( reporter );
+        m_preferences.shouldRedirectStdOut = m_reporter->getPreferences().shouldRedirectStdOut;
     }
 
     ReporterPreferences ListeningReporter::getPreferences() const {
-        return m_reporter->getPreferences();
+        return m_preferences;
     }
 
     std::set<Verbosity> ListeningReporter::getSupportedVerbosities() {

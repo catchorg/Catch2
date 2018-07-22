@@ -15,8 +15,11 @@ namespace Catch {
         using Reporters = std::vector<IStreamingReporterPtr>;
         Reporters m_listeners;
         IStreamingReporterPtr m_reporter = nullptr;
+        ReporterPreferences m_preferences;
 
     public:
+        ListeningReporter();
+
         void addListener( IStreamingReporterPtr&& listener );
         void addReporter( IStreamingReporterPtr&& reporter );
 
