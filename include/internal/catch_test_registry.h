@@ -69,7 +69,7 @@ struct AutoReg : NonCopyable {
     #define INTERNAL_CATCH_TESTCASE2( TestName, ... ) \
         static void TestName(); \
         CATCH_INTERNAL_SUPPRESS_GLOBALS_WARNINGS \
-        namespace{ Catch::AutoReg INTERNAL_CATCH_UNIQUE_NAME( autoRegistrar )( Catch::makeTestInvoker( &TestName ), CATCH_INTERNAL_LINEINFO, "", Catch::NameAndTags{ __VA_ARGS__ } ); } /* NOLINT */ \
+        namespace{ Catch::AutoReg INTERNAL_CATCH_UNIQUE_NAME( autoRegistrar )( Catch::makeTestInvoker( &TestName ), CATCH_INTERNAL_LINEINFO, Catch::StringRef(), Catch::NameAndTags{ __VA_ARGS__ } ); } /* NOLINT */ \
         CATCH_INTERNAL_UNSUPPRESS_GLOBALS_WARNINGS \
         static void TestName()
     #define INTERNAL_CATCH_TESTCASE( ... ) \
@@ -98,7 +98,7 @@ struct AutoReg : NonCopyable {
     ///////////////////////////////////////////////////////////////////////////////
     #define INTERNAL_CATCH_REGISTER_TESTCASE( Function, ... ) \
         CATCH_INTERNAL_SUPPRESS_GLOBALS_WARNINGS \
-        Catch::AutoReg INTERNAL_CATCH_UNIQUE_NAME( autoRegistrar )( Catch::makeTestInvoker( Function ), CATCH_INTERNAL_LINEINFO, "", Catch::NameAndTags{ __VA_ARGS__ } ); /* NOLINT */ \
+        Catch::AutoReg INTERNAL_CATCH_UNIQUE_NAME( autoRegistrar )( Catch::makeTestInvoker( Function ), CATCH_INTERNAL_LINEINFO, Catch::StringRef(), Catch::NameAndTags{ __VA_ARGS__ } ); /* NOLINT */ \
         CATCH_INTERNAL_UNSUPPRESS_GLOBALS_WARNINGS
 
 
