@@ -12,15 +12,16 @@
 #include "catch_result_type.h"
 #include "catch_common.h"
 #include "catch_stream.h"
+#include "catch_stringref.h"
 
 namespace Catch {
 
     struct MessageInfo {
-        MessageInfo(    std::string const& _macroName,
+        MessageInfo(    StringRef const& _macroName,
                         SourceLineInfo const& _lineInfo,
                         ResultWas::OfType _type );
 
-        std::string macroName;
+        StringRef macroName;
         std::string message;
         SourceLineInfo lineInfo;
         ResultWas::OfType type;
@@ -44,7 +45,7 @@ namespace Catch {
     };
 
     struct MessageBuilder : MessageStream {
-        MessageBuilder( std::string const& macroName,
+        MessageBuilder( StringRef const& macroName,
                         SourceLineInfo const& lineInfo,
                         ResultWas::OfType type );
 
