@@ -127,4 +127,8 @@ namespace Catch {
 
 } // namespace Catch
 
+inline auto operator "" _catch_sr( char const* rawChars, std::size_t size ) noexcept -> Catch::StringRef {
+    return Catch::StringRef( rawChars, size );
+}
+
 #endif // CATCH_STRINGREF_H_INCLUDED
