@@ -1,5 +1,36 @@
 <a id="top"></a>
 
+# 2.3.0
+
+**This release changes the include paths provided by our CMake and
+pkg-config integration. The proper include path for the single-header
+when using one of the above is now `<catch2/catch.hpp>`. This change
+also necessitated changes to paths inside the repository, so that the
+single-header version is now at `single_include/catch2/catch.hpp`, rather
+than `single_include/catch.hpp`.**
+
+
+
+## Fixes
+* Fixed Objective-C++ build
+* `-Wunused-variable` suppression no longer leaks from Catch's header under Clang
+* Implementation of the experimental new output capture can now be disabled (#1335)
+  * This allows building Catch2 on platforms that do not provide things like `dup` or `tmpfile`.
+* The JUnit and XML reporters will no longer skip over successful tests when running without `-s`  (#1264, #1267, #1310)
+  * See improvements for more details
+
+## Improvements
+* pkg-config and CMake integration has been rewritten
+  * If you use them, the new include path is `#include <catch2/catch.hpp>`
+  * CMake installation now also installs scripts from `contrib/`
+  * For details see the [new documentation](cmake-integration.md#top)
+* Reporters now have a new customization point, `ReporterPreferences::shouldReportAllAssertions`
+  * When this is set to `false` and the tests are run without `-s`, passing assertions are not sent to the reporter.
+  * Defaults to `false`.
+* Added `DYNAMIC_SECTION`, a section variant that constructs its name using stream
+  * This means that you can do `DYNAMIC_SECTION("For X := " << x)`.
+
+
 # 2.2.3
 
 **To fix some of the bugs, some behavior had to change in potentially breaking manner.**
