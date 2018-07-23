@@ -17,6 +17,6 @@
 
 # Keep the single include header with LFs to make sure it is uploaded,
 # hashed etc with LF
-single_include/*.hpp eol=lf
+single_include/**/*.hpp eol=lf
 # Also keep the LICENCE file with LFs for the same reason
 LICENCE.txt eol=lf
