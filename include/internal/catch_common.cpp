@@ -22,7 +22,9 @@ namespace Catch {
         return line == other.line && (file == other.file || std::strcmp(file, other.file) == 0);
     }
     bool SourceLineInfo::operator < ( SourceLineInfo const& other ) const noexcept {
-        return line < other.line || ( line == other.line && (std::strcmp(file, other.file) < 0));
+        // We can assume that the same file will usually have the same pointer.
+        // Thus, if the pointers are the same, there is no point in calling the strcmp
+        return line < other.line || ( line == other.line && file != other.file && (std::strcmp(file, other.file) < 0));
     }
 
     std::ostream& operator << ( std::ostream& os, SourceLineInfo const& info ) {
