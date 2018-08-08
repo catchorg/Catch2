@@ -141,7 +141,6 @@ namespace Catch {
         std::vector<std::unique_ptr<std::ostringstream>> m_streams;
         std::vector<std::size_t> m_unused;
         std::ostringstream m_referenceStream; // Used for copy state/ flags from
-        static StringStreams* s_instance;
 
         auto add() -> std::size_t {
             if( m_unused.empty() ) {
