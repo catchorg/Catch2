@@ -66,7 +66,8 @@ namespace generators {
         }
 
         auto get( size_t index ) const -> T override {
-            return m_first+index;
+            // ToDo:: introduce a safe cast to catch potential overflows
+            return static_cast<T>(m_first+index);
         }
     };
 
