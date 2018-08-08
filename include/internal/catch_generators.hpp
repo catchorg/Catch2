@@ -15,6 +15,8 @@
 #include <cassert>
 #include <limits>
 
+#include <utility>
+
 namespace Catch {
 namespace generators {
 
@@ -229,7 +231,7 @@ namespace generators {
     auto acquireGeneratorTracker( SourceLineInfo const& lineInfo ) -> IGeneratorTracker&;
 
     template<typename L>
-    auto generate( SourceLineInfo const& lineInfo, L const& generatorExpression ) -> typename decltype(generatorExpression())::type {
+    auto generate( SourceLineInfo const& lineInfo, L const& generatorExpression ) -> decltype(std::declval<decltype(generatorExpression())>()[0]) {
         using UnderlyingType = typename decltype(generatorExpression())::type;
 
         IGeneratorTracker& tracker = acquireGeneratorTracker( lineInfo );
