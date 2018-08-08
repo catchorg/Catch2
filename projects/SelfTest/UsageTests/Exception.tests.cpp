@@ -20,6 +20,10 @@
 #pragma clang diagnostic ignored "-Wmissing-noreturn"
 #endif
 
+#if CATCH_CONFIG_USE_EXCEPTIONS
+// Cannot use try/catch keywords with -fno-exceptions.
+// Even if an exception was to be "thrown" it would just call std::terminate instead.
+
 namespace { namespace ExceptionTests {
 
 #ifndef EXCEPTION_TEST_HELPERS_INCLUDED // Don't compile this more than once per TU
@@ -194,6 +198,8 @@ TEST_CASE( "#748 - captures with unexpected exceptions", "[.][failing][!throws][
 }
 
 }} // namespace ExceptionTests
+
+#endif // CATCH_CONFIG_USE_EXCEPTIONS
 
 #ifdef __clang__
 #pragma clang diagnostic pop

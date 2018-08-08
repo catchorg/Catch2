@@ -22,6 +22,13 @@
 
 #if defined(CATCH_CONFIG_FAST_COMPILE)
 
+struct ConvertToAny {
+  template <typename T>
+  operator T() {
+    return T{};
+  }
+};
+
 ///////////////////////////////////////////////////////////////////////////////
 // Another way to speed-up compilation is to omit local try-catch for REQUIRE*
 // macros.
@@ -30,8 +37,8 @@
 
 #else // CATCH_CONFIG_FAST_COMPILE
 
-#define INTERNAL_CATCH_TRY try
-#define INTERNAL_CATCH_CATCH( handler ) catch(...) { handler.handleUnexpectedInflightException(); }
+#define INTERNAL_CATCH_TRY CATCH_INTERNAL_TRY
+#define INTERNAL_CATCH_CATCH( handler ) CATCH_INTERNAL_CATCH_ALL() { handler.handleUnexpectedInflightException(); }
 
 #endif
 
@@ -64,11 +71,11 @@
 #define INTERNAL_CATCH_NO_THROW( macroName, resultDisposition, ... ) \
     do { \
         Catch::AssertionHandler catchAssertionHandler( macroName, CATCH_INTERNAL_LINEINFO, CATCH_INTERNAL_STRINGIFY(__VA_ARGS__), resultDisposition ); \
-        try { \
+        CATCH_INTERNAL_TRY { \
             static_cast<void>(__VA_ARGS__); \
             catchAssertionHandler.handleExceptionNotThrownAsExpected(); \
         } \
-        catch( ... ) { \
+        CATCH_INTERNAL_CATCH_ALL() { \
             catchAssertionHandler.handleUnexpectedInflightException(); \
         } \
         INTERNAL_CATCH_REACT( catchAssertionHandler ) \

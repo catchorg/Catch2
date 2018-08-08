@@ -9,7 +9,9 @@
 #include "catch.hpp"
 #include "internal/catch_tag_alias_registry.h"
 
+
 TEST_CASE( "Tag alias can be registered against tag patterns" ) {
+#if CATCH_CONFIG_USE_EXCEPTIONS
 
     Catch::TagAliasRegistry registry;
 
@@ -39,4 +41,6 @@ TEST_CASE( "Tag alias can be registered against tag patterns" ) {
         CHECK_THROWS( registry.add( "@no square bracket at start]", "", Catch::SourceLineInfo( "file", 3 ) ) );
         CHECK_THROWS( registry.add( "[@no square bracket at end", "", Catch::SourceLineInfo( "file", 3 ) ) );
     }
+
+#endif
 }

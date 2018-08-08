@@ -74,10 +74,40 @@ namespace Catch {
     T const& operator + ( T const& value, StreamEndStop ) {
         return value;
     }
+
+
+    // A replacement for the "throw" keyword which is illegal when
+    // exceptions are disabled with -fno-exceptions.
+    struct Exception {
+        template <typename E>
+        [[noreturn]] static void doThrow(E&& e) {
+#if CATCH_CONFIG_USE_EXCEPTIONS
+            throw std::forward<E>(e);
+#else
+            // "throw" keyword is unsupported when exceptions are disabled.
+            // Immediately terminate instead.
+            (void)e;  // error: unused parameter 'e' [-Werror,-Wunused-parameter]
+            std::terminate();
+#endif
+        }
+    };
 }
 
 #define CATCH_INTERNAL_LINEINFO \
     ::Catch::SourceLineInfo( __FILE__, static_cast<std::size_t>( __LINE__ ) )
+
+#if CATCH_CONFIG_USE_EXCEPTIONS
+#  define CATCH_INTERNAL_TRY try
+#  define CATCH_INTERNAL_CATCH( type, var) catch( type var )
+#  define CATCH_INTERNAL_CATCH_UNNAMED( type ) catch( type )
+#  define CATCH_INTERNAL_CATCH_ALL() catch( ... )
+#else
+// 'try' and 'catch' (and 'throw') keywords are illegal with -fno-exceptions.
+#  define CATCH_INTERNAL_TRY if ((true))
+#  define CATCH_INTERNAL_CATCH( typ, var ) while ((false)) for ( typename std::remove_reference<typ>::type var ; ; )
+#  define CATCH_INTERNAL_CATCH_UNNAMED( type ) while ((false))
+#  define CATCH_INTERNAL_CATCH_ALL() while ((false))
+#endif
 
 #endif // TWOBLUECUBES_CATCH_COMMON_H_INCLUDED
 

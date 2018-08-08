@@ -33,7 +33,7 @@ namespace Catch {
         {
             m_reporterPrefs.shouldRedirectStdOut = false;
             if( !DerivedT::getSupportedVerbosities().count( m_config->verbosity() ) )
-                throw std::domain_error( "Verbosity level not supported by this reporter" );
+                Exception::doThrow( std::domain_error( "Verbosity level not supported by this reporter" ) );
         }
 
         ReporterPreferences getPreferences() const override {
@@ -148,7 +148,7 @@ namespace Catch {
         {
             m_reporterPrefs.shouldRedirectStdOut = false;
             if( !DerivedT::getSupportedVerbosities().count( m_config->verbosity() ) )
-                throw std::domain_error( "Verbosity level not supported by this reporter" );
+                Exception::doThrow( std::domain_error( "Verbosity level not supported by this reporter" ) );
         }
         ~CumulativeReporterBase() override = default;
 

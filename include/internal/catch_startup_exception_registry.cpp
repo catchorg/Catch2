@@ -7,13 +7,14 @@
  */
 
 #include "catch_startup_exception_registry.h"
+#include "catch_common.h"
 
 namespace Catch {
     void StartupExceptionRegistry::add( std::exception_ptr const& exception ) noexcept {
-        try {
+        CATCH_INTERNAL_TRY {
             m_exceptions.push_back(exception);
         }
-        catch(...) {
+        CATCH_INTERNAL_CATCH_ALL() {
             // If we run out of memory during start-up there's really not a lot more we can do about it
             std::terminate();
         }

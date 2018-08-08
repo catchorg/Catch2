@@ -56,6 +56,14 @@
 #       define CATCH_INTERNAL_UNSUPPRESS_PARENTHESES_WARNINGS \
             _Pragma( "clang diagnostic pop" )
 
+#if  !__has_feature(cxx_rtti)
+#    define CATCH_CONFIG_USE_RTTI 0
+#endif
+
+#if !__has_feature(cxx_exceptions)
+#    define CATCH_CONFIG_USE_EXCEPTIONS 0
+#endif
+
 #endif // __clang__
 
 
@@ -139,6 +147,13 @@
 #   define CATCH_INTERNAL_UNSUPPRESS_GLOBALS_WARNINGS
 #endif
 
+#if !defined(CATCH_CONFIG_USE_RTTI)
+#  define CATCH_CONFIG_USE_RTTI 1
+#endif
+
+#if !defined(CATCH_CONFIG_USE_EXCEPTIONS)
+#  define CATCH_CONFIG_USE_EXCEPTIONS 1
+#endif
 
 #endif // TWOBLUECUBES_CATCH_COMPILER_CAPABILITIES_HPP_INCLUDED
 

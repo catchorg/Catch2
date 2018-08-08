@@ -18,7 +18,7 @@ namespace Catch {
     NameAndTags::NameAndTags( StringRef name_ , StringRef tags_ ) noexcept : name( name_ ), tags( tags_ ) {}
 
     AutoReg::AutoReg( ITestInvoker* invoker, SourceLineInfo const& lineInfo, StringRef classOrMethod, NameAndTags const& nameAndTags ) noexcept {
-        try {
+        CATCH_INTERNAL_TRY {
             getMutableRegistryHub()
                     .registerTest(
                         makeTestCase(
@@ -27,7 +27,7 @@ namespace Catch {
                             nameAndTags.name,
                             nameAndTags.tags,
                             lineInfo));
-        } catch (...) {
+        } CATCH_INTERNAL_CATCH_ALL() {
             // Do not throw when constructing global objects, instead register the exception to be processed later
             getMutableRegistryHub().registerStartupException();
         }

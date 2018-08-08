@@ -23,7 +23,7 @@ namespace Catch {
     }
 
     std::string ExceptionTranslatorRegistry::translateActiveException() const {
-        try {
+        CATCH_INTERNAL_TRY {
 #ifdef __OBJC__
             // In Objective-C try objective-c exceptions first
             @try {
@@ -47,19 +47,19 @@ namespace Catch {
             return tryTranslators();
 #endif
         }
-        catch( TestFailureException& ) {
+        CATCH_INTERNAL_CATCH_UNNAMED( TestFailureException& ) {
             std::rethrow_exception(std::current_exception());
         }
-        catch( std::exception& ex ) {
+        CATCH_INTERNAL_CATCH( std::exception&, ex ) {
             return ex.what();
         }
-        catch( std::string& msg ) {
+        CATCH_INTERNAL_CATCH( std::string&, msg ) {
             return msg;
         }
-        catch( const char* msg ) {
+        CATCH_INTERNAL_CATCH( const char*, msg ) {
             return msg;
         }
-        catch(...) {
+        CATCH_INTERNAL_CATCH_ALL() {
             return "Unknown exception";
         }
     }

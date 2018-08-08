@@ -149,13 +149,17 @@ TEST_CASE("Approx setters validate their arguments", "[Approx]") {
     REQUIRE_NOTHROW(Approx(0).margin(0));
     REQUIRE_NOTHROW(Approx(0).margin(1234656));
 
+#if CATCH_CONFIG_USE_EXCEPTIONS
     REQUIRE_THROWS_AS(Approx(0).margin(-2), std::domain_error);
+#endif
 
     REQUIRE_NOTHROW(Approx(0).epsilon(0));
     REQUIRE_NOTHROW(Approx(0).epsilon(1));
 
+#if CATCH_CONFIG_USE_EXCEPTIONS
     REQUIRE_THROWS_AS(Approx(0).epsilon(-0.001), std::domain_error);
     REQUIRE_THROWS_AS(Approx(0).epsilon(1.0001), std::domain_error);
+#endif
 }
 
 TEST_CASE("Default scale is invisible to comparison", "[Approx]") {

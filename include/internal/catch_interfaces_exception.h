@@ -8,6 +8,7 @@
 #ifndef TWOBLUECUBES_CATCH_INTERFACES_EXCEPTION_H_INCLUDED
 #define TWOBLUECUBES_CATCH_INTERFACES_EXCEPTION_H_INCLUDED
 
+#include "catch_capture.hpp"  // for CATCH_INTERNAL_TRY
 #include "catch_interfaces_registry_hub.h"
 
 #if defined(CATCH_CONFIG_DISABLE)
@@ -46,13 +47,13 @@ namespace Catch {
             {}
 
             std::string translate( ExceptionTranslators::const_iterator it, ExceptionTranslators::const_iterator itEnd ) const override {
-                try {
+                CATCH_INTERNAL_TRY {
                     if( it == itEnd )
                         std::rethrow_exception(std::current_exception());
                     else
                         return (*it)->translate( it+1, itEnd );
                 }
-                catch( T& ex ) {
+                CATCH_INTERNAL_CATCH ( T&, ex ) {
                     return m_translateFunction( ex );
                 }
             }

@@ -41,7 +41,11 @@ namespace { namespace CompilationTests {
 
     void throws_int(bool b) {
         if (b) {
+#if CATCH_CONFIG_USE_EXCEPTIONS
             throw 1;
+#else
+            std::terminate();
+#endif
         }
     }
 
@@ -50,8 +54,10 @@ namespace { namespace CompilationTests {
         int a = 3;
         REQUIRE(a == t);
         CHECK(a == t);
+#if CATCH_CONFIG_USE_EXCEPTIONS
         REQUIRE_THROWS(throws_int(true));
         CHECK_THROWS_AS(throws_int(true), int);
+#endif
         REQUIRE_NOTHROW(throws_int(false));
 #ifndef CATCH_CONFIG_DISABLE_MATCHERS
         REQUIRE_THAT("aaa", Catch::EndsWith("aaa"));

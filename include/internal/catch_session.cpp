@@ -5,6 +5,7 @@
  *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  */
 
+#include "catch_common.h"
 #include "catch_session.h"
 #include "catch_commandline.h"
 #include "catch_console_colour.h"
@@ -111,8 +112,10 @@ namespace Catch {
     Session::Session() {
         static bool alreadyInstantiated = false;
         if( alreadyInstantiated ) {
-            try         { CATCH_INTERNAL_ERROR( "Only one instance of Catch::Session can ever be used" ); }
-            catch(...)  { getMutableRegistryHub().registerStartupException(); }
+            CATCH_INTERNAL_TRY {
+                CATCH_INTERNAL_ERROR( "Only one instance of Catch::Session can ever be used" );
+            }
+            CATCH_INTERNAL_CATCH_ALL() { getMutableRegistryHub().registerStartupException(); }
         }
 
         const auto& exceptions = getRegistryHub().getStartupExceptionRegistry().getExceptions();
@@ -122,9 +125,9 @@ namespace Catch {
             Catch::cerr() << "Errors occured during startup!" << '\n';
             // iterate over all exceptions and notify user
             for ( const auto& ex_ptr : exceptions ) {
-                try {
+                CATCH_INTERNAL_TRY {
                     std::rethrow_exception(ex_ptr);
-                } catch ( std::exception const& ex ) {
+                } CATCH_INTERNAL_CATCH ( std::exception const&, ex ) {
                     Catch::cerr() << Column( ex.what() ).indent(2) << '\n';
                 }
             }
@@ -246,7 +249,7 @@ namespace Catch {
         if( m_configData.showHelp || m_configData.libIdentify )
             return 0;
 
-        try
+        CATCH_INTERNAL_TRY
         {
             config(); // Force config to be constructed
 
@@ -264,7 +267,7 @@ namespace Catch {
             // of 256 tests has failed
             return (std::min)( MaxExitCode, static_cast<int>( runTests( m_config ).assertions.failed ) );
         }
-        catch( std::exception& ex ) {
+        CATCH_INTERNAL_CATCH ( std::exception&, ex ) {
             Catch::cerr() << ex.what() << std::endl;
             return MaxExitCode;
         }

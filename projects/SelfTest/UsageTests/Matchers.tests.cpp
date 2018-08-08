@@ -45,6 +45,7 @@ namespace { namespace MatchersTests {
         int i;
     };
 
+#if CATCH_CONFIG_USE_EXCEPTIONS
     void doesNotThrow() {}
 
     [[noreturn]]
@@ -56,6 +57,7 @@ namespace { namespace MatchersTests {
     void throwsAsInt(int i) {
         throw i;
     }
+#endif
 
     class ExceptionMatcher : public Catch::MatcherBase<SpecialException> {
         int m_expected;
@@ -273,6 +275,7 @@ namespace { namespace MatchersTests {
             }
         }
 
+#if CATCH_CONFIG_USE_EXCEPTIONS
         TEST_CASE("Exception matchers that succeed", "[matchers][exceptions][!throws]") {
             CHECK_THROWS_MATCHES(throws(1), SpecialException, ExceptionMatcher{1});
             REQUIRE_THROWS_MATCHES(throws(2), SpecialException, ExceptionMatcher{2});
@@ -292,6 +295,7 @@ namespace { namespace MatchersTests {
                 REQUIRE_THROWS_MATCHES(throws(4), SpecialException, ExceptionMatcher{1});
             }
         }
+#endif
 
         TEST_CASE("Floating point matchers: float", "[matchers][floating-point]") {
             SECTION("Margin") {
@@ -322,6 +326,7 @@ namespace { namespace MatchersTests {
 
                 REQUIRE_THAT(NAN, !(WithinAbs(NAN, 100) || WithinULP(NAN, 123)));
             }
+#if CHECK_CONFIG_USE_EXCEPTIONS
             SECTION("Constructor validation") {
                 REQUIRE_NOTHROW(WithinAbs(1.f, 0.f));
                 REQUIRE_THROWS_AS(WithinAbs(1.f, -1.f), std::domain_error);
@@ -329,6 +334,7 @@ namespace { namespace MatchersTests {
                 REQUIRE_NOTHROW(WithinULP(1.f, 0));
                 REQUIRE_THROWS_AS(WithinULP(1.f, -1), std::domain_error);
             }
+#endif
         }
 
         TEST_CASE("Floating point matchers: double", "[matchers][floating-point]") {
@@ -359,6 +365,7 @@ namespace { namespace MatchersTests {
 
                 REQUIRE_THAT(NAN, !(WithinAbs(NAN, 100) || WithinULP(NAN, 123)));
             }
+#if CHECK_CONFIG_USE_EXCEPTIONS
             SECTION("Constructor validation") {
                 REQUIRE_NOTHROW(WithinAbs(1., 0.));
                 REQUIRE_THROWS_AS(WithinAbs(1., -1.), std::domain_error);
@@ -366,6 +373,7 @@ namespace { namespace MatchersTests {
                 REQUIRE_NOTHROW(WithinULP(1., 0));
                 REQUIRE_THROWS_AS(WithinULP(1., -1), std::domain_error);
             }
+#endif
         }
 
 } } // namespace MatchersTests

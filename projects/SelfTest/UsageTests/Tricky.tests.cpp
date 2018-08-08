@@ -383,16 +383,20 @@ TEST_CASE( "has printf" ) {
 }
 
 namespace {
+#if CHECK_CONFIG_USE_EXCEPTIONS
     struct constructor_throws {
         [[noreturn]] constructor_throws() {
             throw 1;
         }
     };
+#endif
 }
 
 TEST_CASE("Commas in various macros are allowed") {
+#if CHECK_CONFIG_USE_EXCEPTIONS
     REQUIRE_THROWS( std::vector<constructor_throws>{constructor_throws{}, constructor_throws{}} );
     CHECK_THROWS( std::vector<constructor_throws>{constructor_throws{}, constructor_throws{}} );
+#endif
     REQUIRE_NOTHROW( std::vector<int>{1, 2, 3} == std::vector<int>{1, 2, 3} );
     CHECK_NOTHROW( std::vector<int>{1, 2, 3} == std::vector<int>{1, 2, 3} );
 
@@ -416,9 +420,11 @@ TEST_CASE( "null deref", "[.][failing][!nonportable]" ) {
 }
 
 TEST_CASE( "non-copyable objects", "[.][failing]" ) {
+#if CHECK_CONFIG_USE_RTTI
     // Thanks to Agustin Bergé (@k-ballo on the cpplang Slack) for raising this
     std::type_info const& ti = typeid(int);
     CHECK( ti == typeid(int) );
+#endif
 }
 
 // #925

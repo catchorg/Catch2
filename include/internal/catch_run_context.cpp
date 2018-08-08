@@ -297,7 +297,7 @@ namespace Catch {
         seedRng(*m_config);
 
         Timer timer;
-        try {
+        CATCH_INTERNAL_TRY {
             if (m_reporter->getPreferences().shouldRedirectStdOut) {
                 RedirectedStdOut redirectedStdOut;
                 RedirectedStdErr redirectedStdErr;
@@ -311,9 +311,9 @@ namespace Catch {
                 invokeActiveTestCase();
             }
             duration = timer.getElapsedSeconds();
-        } catch (TestFailureException&) {
+        } CATCH_INTERNAL_CATCH_UNNAMED (TestFailureException&) {
             // This just means the test was aborted due to failure
-        } catch (...) {
+        } CATCH_INTERNAL_CATCH_ALL() {
             // Under CATCH_CONFIG_FAST_COMPILE, unexpected exceptions under REQUIRE assertions
             // are reported without translation at the point of origin.
             if( m_shouldReportUnexpected ) {

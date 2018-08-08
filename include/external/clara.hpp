@@ -41,6 +41,12 @@
 #define CATCH_CLARA_TEXTFLOW_CONFIG_CONSOLE_WIDTH 80
 #endif
 
+#if CATCH_CONFIG_USE_EXCEPTIONS == 0
+// std::cerr + std::terminate instead of 'throw'
+#include <iostream>
+#include <exception>
+#endif
+
 
 namespace Catch { namespace clara { namespace TextFlow {
 
@@ -580,12 +586,11 @@ namespace detail {
 
     protected:
         void enforceOk() const override {
-            // !TBD: If no exceptions, std::terminate here or something
             switch( m_type ) {
                 case ResultBase::LogicError:
-                    throw std::logic_error( m_errorMessage );
+                    Exception::doThrow( std::logic_error( m_errorMessage ) );
                 case ResultBase::RuntimeError:
-                    throw std::runtime_error( m_errorMessage );
+                    Exception::doThrow( std::runtime_error( m_errorMessage ) );
                 case ResultBase::Ok:
                     break;
             }
@@ -667,15 +672,20 @@ namespace detail {
         NonCopyable &operator=( NonCopyable && ) = delete;
     };
 
+    struct BoundValueRefBase;
+
     struct BoundRef : NonCopyable {
         virtual ~BoundRef() = default;
         virtual auto isContainer() const -> bool { return false; }
+        virtual auto isValueRefBase() const -> bool = 0;  // Support for compiling without rtti.
     };
     struct BoundValueRefBase : BoundRef {
         virtual auto setValue( std::string const &arg ) -> ParserResult = 0;
+        virtual auto isValueRefBase() const -> bool { return true; }
     };
     struct BoundFlagRefBase : BoundRef {
         virtual auto setFlag( bool flag ) -> ParserResult = 0;
+        virtual auto isValueRefBase() const -> bool { return false; }
     };
 
     template<typename T>
@@ -907,7 +917,7 @@ namespace detail {
             if( token.type != TokenType::Argument )
                 return InternalParseResult::ok( ParseState( ParseResultType::NoMatch, remainingTokens ) );
 
-            assert( dynamic_cast<detail::BoundValueRefBase*>( m_ref.get() ) );
+            assert( m_ref.get()->isValueRefBase() );
             auto valueRef = static_cast<detail::BoundValueRefBase*>( m_ref.get() );
 
             auto result = valueRef->setValue( remainingTokens->token );
@@ -983,14 +993,20 @@ namespace detail {
             if( remainingTokens && remainingTokens->type == TokenType::Option ) {
                 auto const &token = *remainingTokens;
                 if( isMatch(token.token ) ) {
-                    if( auto flagRef = dynamic_cast<detail::BoundFlagRefBase*>( m_ref.get() ) ) {
+                    if ( !m_ref.get()->isValueRefBase() ) {
+                        detail::BoundFlagRefBase* flagRef = static_cast<detail::BoundFlagRefBase*>( m_ref.get() );
+#if CATCH_CONFIG_USE_RTTI
+                        assert( dynamic_cast<detail::BoundFlagRefBase*>( m_ref.get() ) );
+#endif
                         auto result = flagRef->setFlag( true );
                         if( !result )
                             return InternalParseResult( result );
                         if( result.value() == ParseResultType::ShortCircuitAll )
                             return InternalParseResult::ok( ParseState( result.value(), remainingTokens ) );
                     } else {
+#if CATCH_CONFIG_USE_RTTI
                         assert( dynamic_cast<detail::BoundValueRefBase*>( m_ref.get() ) );
+#endif
                         auto valueRef = static_cast<detail::BoundValueRefBase*>( m_ref.get() );
                         ++remainingTokens;
                         if( !remainingTokens )

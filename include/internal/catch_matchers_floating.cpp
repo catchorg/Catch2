@@ -81,7 +81,7 @@ namespace Floating {
     WithinAbsMatcher::WithinAbsMatcher(double target, double margin)
         :m_target{ target }, m_margin{ margin } {
         if (m_margin < 0) {
-            throw std::domain_error("Allowed margin difference has to be >= 0");
+          Exception::doThrow( std::domain_error("Allowed margin difference has to be >= 0") );
         }
     }
 
@@ -99,7 +99,7 @@ namespace Floating {
     WithinUlpsMatcher::WithinUlpsMatcher(double target, int ulps, FloatingPointKind baseType)
         :m_target{ target }, m_ulps{ ulps }, m_type{ baseType } {
         if (m_ulps < 0) {
-            throw std::domain_error("Allowed ulp difference has to be >= 0");
+          Exception::doThrow( std::domain_error("Allowed ulp difference has to be >= 0") );
         }
     }
 
@@ -110,7 +110,7 @@ namespace Floating {
         case FloatingPointKind::Double:
             return almostEqualUlps<double>(matchee, m_target, m_ulps);
         default:
-            throw std::domain_error("Unknown FloatingPointKind value");
+            Exception::doThrow( std::domain_error("Unknown FloatingPointKind value") );
         }
     }
 

@@ -4,9 +4,9 @@
 namespace Catch {
     
     RegistrarForTagAliases::RegistrarForTagAliases(char const* alias, char const* tag, SourceLineInfo const& lineInfo) {
-        try {
+        CATCH_INTERNAL_TRY {
             getMutableRegistryHub().registerTagAlias(alias, tag, lineInfo);
-        } catch (...) {
+        } CATCH_INTERNAL_CATCH_ALL() {
             // Do not throw when constructing global objects, instead register the exception to be processed later
             getMutableRegistryHub().registerStartupException();
         }

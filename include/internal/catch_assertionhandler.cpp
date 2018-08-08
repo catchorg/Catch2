@@ -80,7 +80,7 @@ namespace Catch {
             CATCH_BREAK_INTO_DEBUGGER();
         }
         if( m_reaction.shouldThrow )
-            throw Catch::TestFailureException();
+            Exception::doThrow( Catch::TestFailureException() );
     }
     void AssertionHandler::setCompleted() {
         m_completed = true;
