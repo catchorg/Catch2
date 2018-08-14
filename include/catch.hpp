@@ -148,11 +148,12 @@
 // "BDD-style" convenience wrappers
 #define CATCH_SCENARIO( ... ) CATCH_TEST_CASE( "Scenario: " __VA_ARGS__ )
 #define CATCH_SCENARIO_METHOD( className, ... ) INTERNAL_CATCH_TEST_CASE_METHOD( className, "Scenario: " __VA_ARGS__ )
-#define CATCH_GIVEN( desc )    INTERNAL_CATCH_DYNAMIC_SECTION( "   Given: " << desc )
-#define CATCH_WHEN( desc )     INTERNAL_CATCH_DYNAMIC_SECTION( "    When: " << desc )
-#define CATCH_AND_WHEN( desc ) INTERNAL_CATCH_DYNAMIC_SECTION( "And when: " << desc )
-#define CATCH_THEN( desc )     INTERNAL_CATCH_DYNAMIC_SECTION( "    Then: " << desc )
-#define CATCH_AND_THEN( desc ) INTERNAL_CATCH_DYNAMIC_SECTION( "     And: " << desc )
+#define CATCH_GIVEN( desc )     INTERNAL_CATCH_DYNAMIC_SECTION( "    Given: " << desc )
+#define CATCH_AND_GIVEN( desc ) INTERNAL_CATCH_DYNAMIC_SECTION( "And given: " << desc )
+#define CATCH_WHEN( desc )      INTERNAL_CATCH_DYNAMIC_SECTION( "     When: " << desc )
+#define CATCH_AND_WHEN( desc )  INTERNAL_CATCH_DYNAMIC_SECTION( " And when: " << desc )
+#define CATCH_THEN( desc )      INTERNAL_CATCH_DYNAMIC_SECTION( "     Then: " << desc )
+#define CATCH_AND_THEN( desc )  INTERNAL_CATCH_DYNAMIC_SECTION( "      And: " << desc )
 
 // If CATCH_CONFIG_PREFIX_ALL is not defined then the CATCH_ prefix is not required
 #else
@@ -212,11 +213,12 @@
 #define SCENARIO( ... ) TEST_CASE( "Scenario: " __VA_ARGS__ )
 #define SCENARIO_METHOD( className, ... ) INTERNAL_CATCH_TEST_CASE_METHOD( className, "Scenario: " __VA_ARGS__ )
 
-#define GIVEN( desc )    INTERNAL_CATCH_DYNAMIC_SECTION( "   Given: " << desc )
-#define WHEN( desc )     INTERNAL_CATCH_DYNAMIC_SECTION( "    When: " << desc )
-#define AND_WHEN( desc ) INTERNAL_CATCH_DYNAMIC_SECTION( "And when: " << desc )
-#define THEN( desc )     INTERNAL_CATCH_DYNAMIC_SECTION( "    Then: " << desc )
-#define AND_THEN( desc ) INTERNAL_CATCH_DYNAMIC_SECTION( "     And: " << desc )
+#define GIVEN( desc )     INTERNAL_CATCH_DYNAMIC_SECTION( "    Given: " << desc )
+#define AND_GIVEN( desc ) INTERNAL_CATCH_DYNAMIC_SECTION( "And given: " << desc )
+#define WHEN( desc )      INTERNAL_CATCH_DYNAMIC_SECTION( "     When: " << desc )
+#define AND_WHEN( desc )  INTERNAL_CATCH_DYNAMIC_SECTION( " And when: " << desc )
+#define THEN( desc )      INTERNAL_CATCH_DYNAMIC_SECTION( "     Then: " << desc )
+#define AND_THEN( desc )  INTERNAL_CATCH_DYNAMIC_SECTION( "      And: " << desc )
 
 using Catch::Detail::Approx;
 
@@ -277,6 +279,7 @@ using Catch::Detail::Approx;
 #define CATCH_SCENARIO( ... ) INTERNAL_CATCH_TESTCASE_NO_REGISTRATION(INTERNAL_CATCH_UNIQUE_NAME( ____C_A_T_C_H____T_E_S_T____ ))
 #define CATCH_SCENARIO_METHOD( className, ... ) INTERNAL_CATCH_TESTCASE_METHOD_NO_REGISTRATION(INTERNAL_CATCH_UNIQUE_NAME( ____C_A_T_C_H____T_E_S_T____ ), className )
 #define CATCH_GIVEN( desc )
+#define CATCH_AND_GIVEN( desc )
 #define CATCH_WHEN( desc )
 #define CATCH_AND_WHEN( desc )
 #define CATCH_THEN( desc )
@@ -341,6 +344,7 @@ using Catch::Detail::Approx;
 #define SCENARIO_METHOD( className, ... ) INTERNAL_CATCH_TESTCASE_METHOD_NO_REGISTRATION(INTERNAL_CATCH_UNIQUE_NAME( ____C_A_T_C_H____T_E_S_T____ ), className )
 
 #define GIVEN( desc )
+#define AND_GIVEN( desc )
 #define WHEN( desc )
 #define AND_WHEN( desc )
 #define THEN( desc )
