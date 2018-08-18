@@ -319,7 +319,7 @@ add_test(NAME NoTest COMMAND $<TARGET_FILE:SelfTest> -w NoTests "___nonexistent_
 set_tests_properties(NoTest PROPERTIES PASS_REGULAR_EXPRESSION "No test cases matched")
 
 # AppVeyor has a Python 2.7 in path, but doesn't have .py files as autorunnable
-add_test(NAME ApprovalTests COMMAND python ${CATCH_DIR}/scripts/approvalTests.py $<TARGET_FILE:SelfTest>)
+add_test(NAME ApprovalTests COMMAND ${PYTHON_EXECUTABLE} ${CATCH_DIR}/scripts/approvalTests.py $<TARGET_FILE:SelfTest>)
 set_tests_properties(ApprovalTests PROPERTIES FAIL_REGULAR_EXPRESSION "Results differed")
 
 if (CATCH_USE_VALGRIND)
