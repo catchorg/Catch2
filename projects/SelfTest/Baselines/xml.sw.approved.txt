@@ -510,6 +510,809 @@
       </Section>
       <OverallResult success="true"/>
     </TestCase>
+    <TestCase name="10x10 ints" filename="projects/<exe-name>/UsageTests/Generators.tests.cpp" >
+      <Expression success="true" type="CHECK" filename="projects/<exe-name>/UsageTests/Generators.tests.cpp" >
+        <Original>
+          x &lt; y
+        </Original>
+        <Expanded>
+          1 &lt; 101
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="projects/<exe-name>/UsageTests/Generators.tests.cpp" >
+        <Original>
+          x &lt; y
+        </Original>
+        <Expanded>
+          1 &lt; 102
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="projects/<exe-name>/UsageTests/Generators.tests.cpp" >
+        <Original>
+          x &lt; y
+        </Original>
+        <Expanded>
+          1 &lt; 103
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="projects/<exe-name>/UsageTests/Generators.tests.cpp" >
+        <Original>
+          x &lt; y
+        </Original>
+        <Expanded>
+          1 &lt; 104
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="projects/<exe-name>/UsageTests/Generators.tests.cpp" >
+        <Original>
+          x &lt; y
+        </Original>
+        <Expanded>
+          1 &lt; 105
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="projects/<exe-name>/UsageTests/Generators.tests.cpp" >
+        <Original>
+          x &lt; y
+        </Original>
+        <Expanded>
+          1 &lt; 106
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="projects/<exe-name>/UsageTests/Generators.tests.cpp" >
+        <Original>
+          x &lt; y
+        </Original>
+        <Expanded>
+          1 &lt; 107
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="projects/<exe-name>/UsageTests/Generators.tests.cpp" >
+        <Original>
+          x &lt; y
+        </Original>
+        <Expanded>
+          1 &lt; 108
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="projects/<exe-name>/UsageTests/Generators.tests.cpp" >
+        <Original>
+          x &lt; y
+        </Original>
+        <Expanded>
+          1 &lt; 109
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="projects/<exe-name>/UsageTests/Generators.tests.cpp" >
+        <Original>
+          x &lt; y
+        </Original>
+        <Expanded>
+          1 &lt; 110
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="projects/<exe-name>/UsageTests/Generators.tests.cpp" >
+        <Original>
+          x &lt; y
+        </Original>
+        <Expanded>
+          2 &lt; 101
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="projects/<exe-name>/UsageTests/Generators.tests.cpp" >
+        <Original>
+          x &lt; y
+        </Original>
+        <Expanded>
+          2 &lt; 102
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="projects/<exe-name>/UsageTests/Generators.tests.cpp" >
+        <Original>
+          x &lt; y
+        </Original>
+        <Expanded>
+          2 &lt; 103
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="projects/<exe-name>/UsageTests/Generators.tests.cpp" >
+        <Original>
+          x &lt; y
+        </Original>
+        <Expanded>
+          2 &lt; 104
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="projects/<exe-name>/UsageTests/Generators.tests.cpp" >
+        <Original>
+          x &lt; y
+        </Original>
+        <Expanded>
+          2 &lt; 105
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="projects/<exe-name>/UsageTests/Generators.tests.cpp" >
+        <Original>
+          x &lt; y
+        </Original>
+        <Expanded>
+          2 &lt; 106
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="projects/<exe-name>/UsageTests/Generators.tests.cpp" >
+        <Original>
+          x &lt; y
+        </Original>
+        <Expanded>
+          2 &lt; 107
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="projects/<exe-name>/UsageTests/Generators.tests.cpp" >
+        <Original>
+          x &lt; y
+        </Original>
+        <Expanded>
+          2 &lt; 108
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="projects/<exe-name>/UsageTests/Generators.tests.cpp" >
+        <Original>
+          x &lt; y
+        </Original>
+        <Expanded>
+          2 &lt; 109
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="projects/<exe-name>/UsageTests/Generators.tests.cpp" >
+        <Original>
+          x &lt; y
+        </Original>
+        <Expanded>
+          2 &lt; 110
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="projects/<exe-name>/UsageTests/Generators.tests.cpp" >
+        <Original>
+          x &lt; y
+        </Original>
+        <Expanded>
+          3 &lt; 101
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="projects/<exe-name>/UsageTests/Generators.tests.cpp" >
+        <Original>
+          x &lt; y
+        </Original>
+        <Expanded>
+          3 &lt; 102
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="projects/<exe-name>/UsageTests/Generators.tests.cpp" >
+        <Original>
+          x &lt; y
+        </Original>
+        <Expanded>
+          3 &lt; 103
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="projects/<exe-name>/UsageTests/Generators.tests.cpp" >
+        <Original>
+          x &lt; y
+        </Original>
+        <Expanded>
+          3 &lt; 104
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="projects/<exe-name>/UsageTests/Generators.tests.cpp" >
+        <Original>
+          x &lt; y
+        </Original>
+        <Expanded>
+          3 &lt; 105
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="projects/<exe-name>/UsageTests/Generators.tests.cpp" >
+        <Original>
+          x &lt; y
+        </Original>
+        <Expanded>
+          3 &lt; 106
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="projects/<exe-name>/UsageTests/Generators.tests.cpp" >
+        <Original>
+          x &lt; y
+        </Original>
+        <Expanded>
+          3 &lt; 107
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="projects/<exe-name>/UsageTests/Generators.tests.cpp" >
+        <Original>
+          x &lt; y
+        </Original>
+        <Expanded>
+          3 &lt; 108
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="projects/<exe-name>/UsageTests/Generators.tests.cpp" >
+        <Original>
+          x &lt; y
+        </Original>
+        <Expanded>
+          3 &lt; 109
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="projects/<exe-name>/UsageTests/Generators.tests.cpp" >
+        <Original>
+          x &lt; y
+        </Original>
+        <Expanded>
+          3 &lt; 110
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="projects/<exe-name>/UsageTests/Generators.tests.cpp" >
+        <Original>
+          x &lt; y
+        </Original>
+        <Expanded>
+          4 &lt; 101
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="projects/<exe-name>/UsageTests/Generators.tests.cpp" >
+        <Original>
+          x &lt; y
+        </Original>
+        <Expanded>
+          4 &lt; 102
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="projects/<exe-name>/UsageTests/Generators.tests.cpp" >
+        <Original>
+          x &lt; y
+        </Original>
+        <Expanded>
+          4 &lt; 103
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="projects/<exe-name>/UsageTests/Generators.tests.cpp" >
+        <Original>
+          x &lt; y
+        </Original>
+        <Expanded>
+          4 &lt; 104
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="projects/<exe-name>/UsageTests/Generators.tests.cpp" >
+        <Original>
+          x &lt; y
+        </Original>
+        <Expanded>
+          4 &lt; 105
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="projects/<exe-name>/UsageTests/Generators.tests.cpp" >
+        <Original>
+          x &lt; y
+        </Original>
+        <Expanded>
+          4 &lt; 106
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="projects/<exe-name>/UsageTests/Generators.tests.cpp" >
+        <Original>
+          x &lt; y
+        </Original>
+        <Expanded>
+          4 &lt; 107
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="projects/<exe-name>/UsageTests/Generators.tests.cpp" >
+        <Original>
+          x &lt; y
+        </Original>
+        <Expanded>
+          4 &lt; 108
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="projects/<exe-name>/UsageTests/Generators.tests.cpp" >
+        <Original>
+          x &lt; y
+        </Original>
+        <Expanded>
+          4 &lt; 109
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="projects/<exe-name>/UsageTests/Generators.tests.cpp" >
+        <Original>
+          x &lt; y
+        </Original>
+        <Expanded>
+          4 &lt; 110
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="projects/<exe-name>/UsageTests/Generators.tests.cpp" >
+        <Original>
+          x &lt; y
+        </Original>
+        <Expanded>
+          5 &lt; 101
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="projects/<exe-name>/UsageTests/Generators.tests.cpp" >
+        <Original>
+          x &lt; y
+        </Original>
+        <Expanded>
+          5 &lt; 102
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="projects/<exe-name>/UsageTests/Generators.tests.cpp" >
+        <Original>
+          x &lt; y
+        </Original>
+        <Expanded>
+          5 &lt; 103
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="projects/<exe-name>/UsageTests/Generators.tests.cpp" >
+        <Original>
+          x &lt; y
+        </Original>
+        <Expanded>
+          5 &lt; 104
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="projects/<exe-name>/UsageTests/Generators.tests.cpp" >
+        <Original>
+          x &lt; y
+        </Original>
+        <Expanded>
+          5 &lt; 105
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="projects/<exe-name>/UsageTests/Generators.tests.cpp" >
+        <Original>
+          x &lt; y
+        </Original>
+        <Expanded>
+          5 &lt; 106
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="projects/<exe-name>/UsageTests/Generators.tests.cpp" >
+        <Original>
+          x &lt; y
+        </Original>
+        <Expanded>
+          5 &lt; 107
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="projects/<exe-name>/UsageTests/Generators.tests.cpp" >
+        <Original>
+          x &lt; y
+        </Original>
+        <Expanded>
+          5 &lt; 108
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="projects/<exe-name>/UsageTests/Generators.tests.cpp" >
+        <Original>
+          x &lt; y
+        </Original>
+        <Expanded>
+          5 &lt; 109
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="projects/<exe-name>/UsageTests/Generators.tests.cpp" >
+        <Original>
+          x &lt; y
+        </Original>
+        <Expanded>
+          5 &lt; 110
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="projects/<exe-name>/UsageTests/Generators.tests.cpp" >
+        <Original>
+          x &lt; y
+        </Original>
+        <Expanded>
+          6 &lt; 101
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="projects/<exe-name>/UsageTests/Generators.tests.cpp" >
+        <Original>
+          x &lt; y
+        </Original>
+        <Expanded>
+          6 &lt; 102
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="projects/<exe-name>/UsageTests/Generators.tests.cpp" >
+        <Original>
+          x &lt; y
+        </Original>
+        <Expanded>
+          6 &lt; 103
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="projects/<exe-name>/UsageTests/Generators.tests.cpp" >
+        <Original>
+          x &lt; y
+        </Original>
+        <Expanded>
+          6 &lt; 104
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="projects/<exe-name>/UsageTests/Generators.tests.cpp" >
+        <Original>
+          x &lt; y
+        </Original>
+        <Expanded>
+          6 &lt; 105
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="projects/<exe-name>/UsageTests/Generators.tests.cpp" >
+        <Original>
+          x &lt; y
+        </Original>
+        <Expanded>
+          6 &lt; 106
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="projects/<exe-name>/UsageTests/Generators.tests.cpp" >
+        <Original>
+          x &lt; y
+        </Original>
+        <Expanded>
+          6 &lt; 107
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="projects/<exe-name>/UsageTests/Generators.tests.cpp" >
+        <Original>
+          x &lt; y
+        </Original>
+        <Expanded>
+          6 &lt; 108
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="projects/<exe-name>/UsageTests/Generators.tests.cpp" >
+        <Original>
+          x &lt; y
+        </Original>
+        <Expanded>
+          6 &lt; 109
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="projects/<exe-name>/UsageTests/Generators.tests.cpp" >
+        <Original>
+          x &lt; y
+        </Original>
+        <Expanded>
+          6 &lt; 110
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="projects/<exe-name>/UsageTests/Generators.tests.cpp" >
+        <Original>
+          x &lt; y
+        </Original>
+        <Expanded>
+          7 &lt; 101
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="projects/<exe-name>/UsageTests/Generators.tests.cpp" >
+        <Original>
+          x &lt; y
+        </Original>
+        <Expanded>
+          7 &lt; 102
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="projects/<exe-name>/UsageTests/Generators.tests.cpp" >
+        <Original>
+          x &lt; y
+        </Original>
+        <Expanded>
+          7 &lt; 103
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="projects/<exe-name>/UsageTests/Generators.tests.cpp" >
+        <Original>
+          x &lt; y
+        </Original>
+        <Expanded>
+          7 &lt; 104
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="projects/<exe-name>/UsageTests/Generators.tests.cpp" >
+        <Original>
+          x &lt; y
+        </Original>
+        <Expanded>
+          7 &lt; 105
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="projects/<exe-name>/UsageTests/Generators.tests.cpp" >
+        <Original>
+          x &lt; y
+        </Original>
+        <Expanded>
+          7 &lt; 106
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="projects/<exe-name>/UsageTests/Generators.tests.cpp" >
+        <Original>
+          x &lt; y
+        </Original>
+        <Expanded>
+          7 &lt; 107
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="projects/<exe-name>/UsageTests/Generators.tests.cpp" >
+        <Original>
+          x &lt; y
+        </Original>
+        <Expanded>
+          7 &lt; 108
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="projects/<exe-name>/UsageTests/Generators.tests.cpp" >
+        <Original>
+          x &lt; y
+        </Original>
+        <Expanded>
+          7 &lt; 109
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="projects/<exe-name>/UsageTests/Generators.tests.cpp" >
+        <Original>
+          x &lt; y
+        </Original>
+        <Expanded>
+          7 &lt; 110
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="projects/<exe-name>/UsageTests/Generators.tests.cpp" >
+        <Original>
+          x &lt; y
+        </Original>
+        <Expanded>
+          8 &lt; 101
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="projects/<exe-name>/UsageTests/Generators.tests.cpp" >
+        <Original>
+          x &lt; y
+        </Original>
+        <Expanded>
+          8 &lt; 102
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="projects/<exe-name>/UsageTests/Generators.tests.cpp" >
+        <Original>
+          x &lt; y
+        </Original>
+        <Expanded>
+          8 &lt; 103
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="projects/<exe-name>/UsageTests/Generators.tests.cpp" >
+        <Original>
+          x &lt; y
+        </Original>
+        <Expanded>
+          8 &lt; 104
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="projects/<exe-name>/UsageTests/Generators.tests.cpp" >
+        <Original>
+          x &lt; y
+        </Original>
+        <Expanded>
+          8 &lt; 105
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="projects/<exe-name>/UsageTests/Generators.tests.cpp" >
+        <Original>
+          x &lt; y
+        </Original>
+        <Expanded>
+          8 &lt; 106
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="projects/<exe-name>/UsageTests/Generators.tests.cpp" >
+        <Original>
+          x &lt; y
+        </Original>
+        <Expanded>
+          8 &lt; 107
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="projects/<exe-name>/UsageTests/Generators.tests.cpp" >
+        <Original>
+          x &lt; y
+        </Original>
+        <Expanded>
+          8 &lt; 108
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="projects/<exe-name>/UsageTests/Generators.tests.cpp" >
+        <Original>
+          x &lt; y
+        </Original>
+        <Expanded>
+          8 &lt; 109
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="projects/<exe-name>/UsageTests/Generators.tests.cpp" >
+        <Original>
+          x &lt; y
+        </Original>
+        <Expanded>
+          8 &lt; 110
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="projects/<exe-name>/UsageTests/Generators.tests.cpp" >
+        <Original>
+          x &lt; y
+        </Original>
+        <Expanded>
+          9 &lt; 101
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="projects/<exe-name>/UsageTests/Generators.tests.cpp" >
+        <Original>
+          x &lt; y
+        </Original>
+        <Expanded>
+          9 &lt; 102
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="projects/<exe-name>/UsageTests/Generators.tests.cpp" >
+        <Original>
+          x &lt; y
+        </Original>
+        <Expanded>
+          9 &lt; 103
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="projects/<exe-name>/UsageTests/Generators.tests.cpp" >
+        <Original>
+          x &lt; y
+        </Original>
+        <Expanded>
+          9 &lt; 104
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="projects/<exe-name>/UsageTests/Generators.tests.cpp" >
+        <Original>
+          x &lt; y
+        </Original>
+        <Expanded>
+          9 &lt; 105
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="projects/<exe-name>/UsageTests/Generators.tests.cpp" >
+        <Original>
+          x &lt; y
+        </Original>
+        <Expanded>
+          9 &lt; 106
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="projects/<exe-name>/UsageTests/Generators.tests.cpp" >
+        <Original>
+          x &lt; y
+        </Original>
+        <Expanded>
+          9 &lt; 107
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="projects/<exe-name>/UsageTests/Generators.tests.cpp" >
+        <Original>
+          x &lt; y
+        </Original>
+        <Expanded>
+          9 &lt; 108
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="projects/<exe-name>/UsageTests/Generators.tests.cpp" >
+        <Original>
+          x &lt; y
+        </Original>
+        <Expanded>
+          9 &lt; 109
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="projects/<exe-name>/UsageTests/Generators.tests.cpp" >
+        <Original>
+          x &lt; y
+        </Original>
+        <Expanded>
+          9 &lt; 110
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="projects/<exe-name>/UsageTests/Generators.tests.cpp" >
+        <Original>
+          x &lt; y
+        </Original>
+        <Expanded>
+          10 &lt; 101
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="projects/<exe-name>/UsageTests/Generators.tests.cpp" >
+        <Original>
+          x &lt; y
+        </Original>
+        <Expanded>
+          10 &lt; 102
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="projects/<exe-name>/UsageTests/Generators.tests.cpp" >
+        <Original>
+          x &lt; y
+        </Original>
+        <Expanded>
+          10 &lt; 103
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="projects/<exe-name>/UsageTests/Generators.tests.cpp" >
+        <Original>
+          x &lt; y
+        </Original>
+        <Expanded>
+          10 &lt; 104
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="projects/<exe-name>/UsageTests/Generators.tests.cpp" >
+        <Original>
+          x &lt; y
+        </Original>
+        <Expanded>
+          10 &lt; 105
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="projects/<exe-name>/UsageTests/Generators.tests.cpp" >
+        <Original>
+          x &lt; y
+        </Original>
+        <Expanded>
+          10 &lt; 106
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="projects/<exe-name>/UsageTests/Generators.tests.cpp" >
+        <Original>
+          x &lt; y
+        </Original>
+        <Expanded>
+          10 &lt; 107
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="projects/<exe-name>/UsageTests/Generators.tests.cpp" >
+        <Original>
+          x &lt; y
+        </Original>
+        <Expanded>
+          10 &lt; 108
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="projects/<exe-name>/UsageTests/Generators.tests.cpp" >
+        <Original>
+          x &lt; y
+        </Original>
+        <Expanded>
+          10 &lt; 109
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="projects/<exe-name>/UsageTests/Generators.tests.cpp" >
+        <Original>
+          x &lt; y
+        </Original>
+        <Expanded>
+          10 &lt; 110
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
     <TestCase name="A METHOD_AS_TEST_CASE based test run that fails" tags="[.][class][failing]" filename="projects/<exe-name>/UsageTests/Class.tests.cpp" >
       <Expression success="false" type="REQUIRE" filename="projects/<exe-name>/UsageTests/Class.tests.cpp" >
         <Original>
@@ -2626,6 +3429,384 @@
           </Expanded>
         </Expression>
         <OverallResults successes="4" failures="0" expectedFailures="0"/>
+      </Section>
+      <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="Generators" filename="projects/<exe-name>/UsageTests/Generators.tests.cpp" >
+      <Section name="one" filename="projects/<exe-name>/UsageTests/Generators.tests.cpp" >
+        <Info>
+          i := "a"
+        </Info>
+        <Info>
+          j := 8
+        </Info>
+        <OverallResults successes="1" failures="0" expectedFailures="0"/>
+      </Section>
+      <Section name="one" filename="projects/<exe-name>/UsageTests/Generators.tests.cpp" >
+        <Info>
+          i := "a"
+        </Info>
+        <Info>
+          j := 9
+        </Info>
+        <OverallResults successes="1" failures="0" expectedFailures="0"/>
+      </Section>
+      <Section name="one" filename="projects/<exe-name>/UsageTests/Generators.tests.cpp" >
+        <Info>
+          i := "a"
+        </Info>
+        <Info>
+          j := 10
+        </Info>
+        <OverallResults successes="1" failures="0" expectedFailures="0"/>
+      </Section>
+      <Section name="one" filename="projects/<exe-name>/UsageTests/Generators.tests.cpp" >
+        <Info>
+          i := "a"
+        </Info>
+        <Info>
+          j := 2
+        </Info>
+        <OverallResults successes="1" failures="0" expectedFailures="0"/>
+      </Section>
+      <Section name="two" filename="projects/<exe-name>/UsageTests/Generators.tests.cpp" >
+        <Info>
+          i := "a"
+        </Info>
+        <Info>
+          j := 3.141
+        </Info>
+        <OverallResults successes="1" failures="0" expectedFailures="0"/>
+      </Section>
+      <Section name="two" filename="projects/<exe-name>/UsageTests/Generators.tests.cpp" >
+        <Info>
+          i := "a"
+        </Info>
+        <Info>
+          j := 1.379
+        </Info>
+        <OverallResults successes="1" failures="0" expectedFailures="0"/>
+      </Section>
+      <Section name="one" filename="projects/<exe-name>/UsageTests/Generators.tests.cpp" >
+        <Info>
+          i := "b"
+        </Info>
+        <Info>
+          j := 8
+        </Info>
+        <OverallResults successes="1" failures="0" expectedFailures="0"/>
+      </Section>
+      <Section name="one" filename="projects/<exe-name>/UsageTests/Generators.tests.cpp" >
+        <Info>
+          i := "b"
+        </Info>
+        <Info>
+          j := 9
+        </Info>
+        <OverallResults successes="1" failures="0" expectedFailures="0"/>
+      </Section>
+      <Section name="one" filename="projects/<exe-name>/UsageTests/Generators.tests.cpp" >
+        <Info>
+          i := "b"
+        </Info>
+        <Info>
+          j := 10
+        </Info>
+        <OverallResults successes="1" failures="0" expectedFailures="0"/>
+      </Section>
+      <Section name="one" filename="projects/<exe-name>/UsageTests/Generators.tests.cpp" >
+        <Info>
+          i := "b"
+        </Info>
+        <Info>
+          j := 2
+        </Info>
+        <OverallResults successes="1" failures="0" expectedFailures="0"/>
+      </Section>
+      <Section name="two" filename="projects/<exe-name>/UsageTests/Generators.tests.cpp" >
+        <Info>
+          i := "b"
+        </Info>
+        <Info>
+          j := 3.141
+        </Info>
+        <OverallResults successes="1" failures="0" expectedFailures="0"/>
+      </Section>
+      <Section name="two" filename="projects/<exe-name>/UsageTests/Generators.tests.cpp" >
+        <Info>
+          i := "b"
+        </Info>
+        <Info>
+          j := 1.379
+        </Info>
+        <OverallResults successes="1" failures="0" expectedFailures="0"/>
+      </Section>
+      <Section name="one" filename="projects/<exe-name>/UsageTests/Generators.tests.cpp" >
+        <Info>
+          i := "c"
+        </Info>
+        <Info>
+          j := 8
+        </Info>
+        <OverallResults successes="1" failures="0" expectedFailures="0"/>
+      </Section>
+      <Section name="one" filename="projects/<exe-name>/UsageTests/Generators.tests.cpp" >
+        <Info>
+          i := "c"
+        </Info>
+        <Info>
+          j := 9
+        </Info>
+        <OverallResults successes="1" failures="0" expectedFailures="0"/>
+      </Section>
+      <Section name="one" filename="projects/<exe-name>/UsageTests/Generators.tests.cpp" >
+        <Info>
+          i := "c"
+        </Info>
+        <Info>
+          j := 10
+        </Info>
+        <OverallResults successes="1" failures="0" expectedFailures="0"/>
+      </Section>
+      <Section name="one" filename="projects/<exe-name>/UsageTests/Generators.tests.cpp" >
+        <Info>
+          i := "c"
+        </Info>
+        <Info>
+          j := 2
+        </Info>
+        <OverallResults successes="1" failures="0" expectedFailures="0"/>
+      </Section>
+      <Section name="two" filename="projects/<exe-name>/UsageTests/Generators.tests.cpp" >
+        <Info>
+          i := "c"
+        </Info>
+        <Info>
+          j := 3.141
+        </Info>
+        <OverallResults successes="1" failures="0" expectedFailures="0"/>
+      </Section>
+      <Section name="two" filename="projects/<exe-name>/UsageTests/Generators.tests.cpp" >
+        <Info>
+          i := "c"
+        </Info>
+        <Info>
+          j := 1.379
+        </Info>
+        <OverallResults successes="1" failures="0" expectedFailures="0"/>
+      </Section>
+      <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="Generators impl" tags="[impl]" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+      <Section name="range" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+        <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+          <Original>
+            gen.size() == 2
+          </Original>
+          <Expanded>
+            2 == 2
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+          <Original>
+            gen[0] == 1
+          </Original>
+          <Expanded>
+            1 == 1
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+          <Original>
+            gen[1] == 2
+          </Original>
+          <Expanded>
+            2 == 2
+          </Expanded>
+        </Expression>
+        <OverallResults successes="3" failures="0" expectedFailures="0"/>
+      </Section>
+      <Section name="fixed values" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+        <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+          <Original>
+            gen.size() == 4
+          </Original>
+          <Expanded>
+            4 == 4
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+          <Original>
+            gen[0] == 3
+          </Original>
+          <Expanded>
+            3 == 3
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+          <Original>
+            gen[1] == 1
+          </Original>
+          <Expanded>
+            1 == 1
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+          <Original>
+            gen[2] == 4
+          </Original>
+          <Expanded>
+            4 == 4
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+          <Original>
+            gen[3] == 1
+          </Original>
+          <Expanded>
+            1 == 1
+          </Expanded>
+        </Expression>
+        <OverallResults successes="5" failures="0" expectedFailures="0"/>
+      </Section>
+      <Section name="combined" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+        <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+          <Original>
+            gen.size() == 4
+          </Original>
+          <Expanded>
+            4 == 4
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+          <Original>
+            gen[0] == 1
+          </Original>
+          <Expanded>
+            1 == 1
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+          <Original>
+            gen[1] == 2
+          </Original>
+          <Expanded>
+            2 == 2
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+          <Original>
+            gen[2] == 9
+          </Original>
+          <Expanded>
+            9 == 9
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+          <Original>
+            gen[3] == 7
+          </Original>
+          <Expanded>
+            7 == 7
+          </Expanded>
+        </Expression>
+        <OverallResults successes="5" failures="0" expectedFailures="0"/>
+      </Section>
+      <Section name="values" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+        <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+          <Original>
+            gen.size() == 2
+          </Original>
+          <Expanded>
+            2 == 2
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+          <Original>
+            gen[0] == 3
+          </Original>
+          <Expanded>
+            3 == 3
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+          <Original>
+            gen[1] == 1
+          </Original>
+          <Expanded>
+            1 == 1
+          </Expanded>
+        </Expression>
+        <OverallResults successes="3" failures="0" expectedFailures="0"/>
+      </Section>
+      <Section name="values2" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+        <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+          <Original>
+            gen.size() == 2
+          </Original>
+          <Expanded>
+            2 == 2
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+          <Original>
+            gen[0] == 3
+          </Original>
+          <Expanded>
+            3 == 3
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+          <Original>
+            gen[1] == 1
+          </Original>
+          <Expanded>
+            1 == 1
+          </Expanded>
+        </Expression>
+        <OverallResults successes="3" failures="0" expectedFailures="0"/>
+      </Section>
+      <Section name="type erasure" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+        <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+          <Original>
+            base->size() == 4
+          </Original>
+          <Expanded>
+            4 == 4
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+          <Original>
+            typed
+          </Original>
+          <Expanded>
+            0x<hex digits>
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+          <Original>
+            typed->size() == 4
+          </Original>
+          <Expanded>
+            4 == 4
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+          <Original>
+            (*typed)[0] == 7
+          </Original>
+          <Expanded>
+            7 == 7
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+          <Original>
+            (*typed)[3] == 11
+          </Original>
+          <Expanded>
+            11 == 11
+          </Expanded>
+        </Expression>
+        <OverallResults successes="5" failures="0" expectedFailures="0"/>
       </Section>
       <OverallResult success="true"/>
     </TestCase>
@@ -9573,6 +10754,41 @@ loose text artifact
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
+    <TestCase name="strlen3" filename="projects/<exe-name>/UsageTests/Generators.tests.cpp" >
+      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/UsageTests/Generators.tests.cpp" >
+        <Original>
+          data.str.size() == data.len
+        </Original>
+        <Expanded>
+          3 == 3
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/UsageTests/Generators.tests.cpp" >
+        <Original>
+          data.str.size() == data.len
+        </Original>
+        <Expanded>
+          3 == 3
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/UsageTests/Generators.tests.cpp" >
+        <Original>
+          data.str.size() == data.len
+        </Original>
+        <Expanded>
+          5 == 5
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/UsageTests/Generators.tests.cpp" >
+        <Original>
+          data.str.size() == data.len
+        </Original>
+        <Expanded>
+          4 == 4
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
     <TestCase name="thrown std::strings are translated" tags="[!throws][.][failing]" filename="projects/<exe-name>/UsageTests/Exception.tests.cpp" >
       <Exception filename="projects/<exe-name>/UsageTests/Exception.tests.cpp" >
         Why would you throw a std::string?
@@ -10091,7 +11307,7 @@ loose text artifact
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="952" failures="123" expectedFailures="21"/>
+    <OverallResults successes="1098" failures="123" expectedFailures="21"/>
   </Group>
-  <OverallResults successes="952" failures="122" expectedFailures="21"/>
+  <OverallResults successes="1098" failures="122" expectedFailures="21"/>
 </Catch>
