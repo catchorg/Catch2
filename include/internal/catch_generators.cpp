@@ -9,6 +9,7 @@
 #include "catch_random_number_generator.h"
 #include "catch_interfaces_capture.h"
 
+#include <limits>
 #include <set>
 
 namespace Catch {
@@ -40,6 +41,10 @@ namespace Generators {
         return getResultCapture().acquireGeneratorTracker( lineInfo );
     }
 
+    template<>
+    auto all<int>() -> Generator<int> {
+        return range( std::numeric_limits<int>::min(), std::numeric_limits<int>::max() );
+    }
 
 } // namespace Generators
 } // namespace Catch
