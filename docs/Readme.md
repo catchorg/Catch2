@@ -12,6 +12,7 @@ Writing tests:
 * [Test fixtures](test-fixtures.md#top)
 * [Reporters](reporters.md#top)
 * [Event Listeners](event-listeners.md#top)
+* [Data Generators](generators.md#top)
 
 Fine tuning:
 * [Supplying your own main()](own-main.md#top)
