@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-from  __future__ import print_function
+from __future__ import print_function
 
 import io
 import os
@@ -13,8 +13,8 @@ import scriptCommon
 from scriptCommon import catchPath
 
 if os.name == 'nt':
-	# Enable console colours on windows
-	os.system('')
+    # Enable console colours on windows
+    os.system('')
 
 rootPath = os.path.join(catchPath, 'projects/SelfTest/Baselines')
 
@@ -98,7 +98,6 @@ def filterLine(line, isCompact):
         # go from \ in windows paths to /
         line = line.replace('\\', '/')
 
-
     # strip source line numbers
     m = filelocParser.match(line)
     if m:
@@ -112,7 +111,7 @@ def filterLine(line, isCompact):
     if isCompact:
         line = line.replace(': FAILED', ': failed')
         line = line.replace(': PASSED', ': passed')
-        
+
     # strip Catch version number
     line = versionParser.sub("<version>", line)
 
@@ -180,7 +179,7 @@ print("Running approvals against executable:")
 print("  " + cmdPath)
 
 
-### Keep default reporters here
+# ## Keep default reporters here ##
 # Standard console reporter
 approve("console.std", ["~[!nonportable]~[!benchmark]~[approvals]", "--order", "lex", "--rng-seed", "0"])
 # console reporter, include passes, warn about No Assertions
