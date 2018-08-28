@@ -20,10 +20,10 @@ Tags allow an arbitrary number of additional strings to be associated with a tes
 
 As an example - given the following test cases:
 
-	TEST_CASE( "A", "[widget]" ) { /* ... */ }
-	TEST_CASE( "B", "[widget]" ) { /* ... */ }
-	TEST_CASE( "C", "[gadget]" ) { /* ... */ }
-	TEST_CASE( "D", "[widget][gadget]" ) { /* ... */ }
+    TEST_CASE( "A", "[widget]" ) { /* ... */ }
+    TEST_CASE( "B", "[widget]" ) { /* ... */ }
+    TEST_CASE( "C", "[gadget]" ) { /* ... */ }
+    TEST_CASE( "D", "[widget][gadget]" ) { /* ... */ }
 
 The tag expression, ```"[widget]"``` selects A, B & D. ```"[gadget]"``` selects C & D. ```"[widget][gadget]"``` selects just D and ```"[widget],[gadget]"``` selects all four test cases.
 
@@ -37,7 +37,7 @@ All tag names beginning with non-alphanumeric characters are reserved by Catch. 
 
 * `[!hide]` or `[.]` - causes test cases to be skipped from the default list (i.e. when no test cases have been explicitly selected through tag expressions or name wildcards). The hide tag is often combined with another, user, tag (for example `[.][integration]` - so all integration tests are excluded from the default run but can be run by passing `[integration]` on the command line). As a short-cut you can combine these by simply prefixing your user tag with a `.` - e.g. `[.integration]`. Because the hide tag has evolved to have several forms, all forms are added as tags if you use one of them.
 
-* `[!throws]`	- lets Catch know that this test is likely to throw an exception even if successful. This causes the test to be excluded when running with `-e` or `--nothrow`.
+* `[!throws]` - lets Catch know that this test is likely to throw an exception even if successful. This causes the test to be excluded when running with `-e` or `--nothrow`.
 
 * `[!mayfail]` - doesn't fail the test if any given assertion fails (but still reports it). This can be useful to flag a work-in-progress, or a known issue that you don't want to immediately fix but still want to track in your tests.
 
@@ -55,11 +55,11 @@ All tag names beginning with non-alphanumeric characters are reserved by Catch. 
 
 Between tag expressions and wildcarded test names (as well as combinations of the two) quite complex patterns can be constructed to direct which test cases are run. If a complex pattern is used often it is convenient to be able to create an alias for the expression. This can be done, in code, using the following form:
 
-	CATCH_REGISTER_TAG_ALIAS( <alias string>, <tag expression> )
+    CATCH_REGISTER_TAG_ALIAS( <alias string>, <tag expression> )
 
 Aliases must begin with the `@` character. An example of a tag alias is:
 
-	CATCH_REGISTER_TAG_ALIAS( "[@nhf]", "[failing]~[.]" )
+    CATCH_REGISTER_TAG_ALIAS( "[@nhf]", "[failing]~[.]" )
 
 Now when `[@nhf]` is used on the command line this matches all tests that are tagged `[failing]`, but which are not also hidden.
 
