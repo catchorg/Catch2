@@ -85,6 +85,7 @@ foreach( name ${TARGETS_ALL} )
     target_include_directories( ${name} PRIVATE ${HEADER_DIR} )
 
     set_property(TARGET ${name} PROPERTY CXX_STANDARD 11)
+    set_property(TARGET ${name} PROPERTY CXX_EXTENSIONS OFF)
 
     # Add desired warnings
     if ( CMAKE_CXX_COMPILER_ID MATCHES "Clang|AppleClang|GNU" )
