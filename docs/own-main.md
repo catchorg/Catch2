@@ -45,7 +45,7 @@ int main( int argc, char* argv[] )
     
   int returnCode = session.applyCommandLine( argc, argv );
   if( returnCode != 0 ) // Indicates a command line error
-  	  return returnCode;
+        return returnCode;
  
   // writing to session.configData() or session.Config() here 
   // overrides command line args
@@ -94,7 +94,7 @@ int main( int argc, char* argv[] )
   // Let Catch (using Clara) parse the command line
   int returnCode = session.applyCommandLine( argc, argv );
   if( returnCode != 0 ) // Indicates a command line error
-  	return returnCode;
+      return returnCode;
 
   // if set on the command line then 'height' is now set at this point
   if( height > 0 )

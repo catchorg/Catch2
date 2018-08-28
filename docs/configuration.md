@@ -19,8 +19,8 @@ Nonetheless there are still some occasions where finer control is needed. For th
 
 ## main()/ implementation
 
-	CATCH_CONFIG_MAIN	// Designates this as implementation file and defines main()
-	CATCH_CONFIG_RUNNER	// Designates this as implementation file
+    CATCH_CONFIG_MAIN      // Designates this as implementation file and defines main()
+    CATCH_CONFIG_RUNNER    // Designates this as implementation file
 
 Although Catch is header only it still, internally, maintains a distinction between interface headers and headers that contain implementation. Only one source file in your test project should compile the implementation headers and this is controlled through the use of one of these macros - one of these identifiers should be defined before including Catch in *exactly one implementation file in your project*.
 
@@ -34,16 +34,16 @@ Implied by both `CATCH_CONFIG_MAIN` and `CATCH_CONFIG_RUNNER`.
 
 ## Prefixing Catch macros
 
-	CATCH_CONFIG_PREFIX_ALL
+    CATCH_CONFIG_PREFIX_ALL
 
 To keep test code clean and uncluttered Catch uses short macro names (e.g. ```TEST_CASE``` and ```REQUIRE```). Occasionally these may conflict with identifiers from platform headers or the system under test. In this case the above identifier can be defined. This will cause all the Catch user macros to be prefixed with ```CATCH_``` (e.g. ```CATCH_TEST_CASE``` and ```CATCH_REQUIRE```).
 
 
 ## Terminal colour
 
-	CATCH_CONFIG_COLOUR_NONE	// completely disables all text colouring
-	CATCH_CONFIG_COLOUR_WINDOWS	// forces the Win32 console API to be used
-	CATCH_CONFIG_COLOUR_ANSI	// forces ANSI colour codes to be used
+    CATCH_CONFIG_COLOUR_NONE      // completely disables all text colouring
+    CATCH_CONFIG_COLOUR_WINDOWS   // forces the Win32 console API to be used
+    CATCH_CONFIG_COLOUR_ANSI      // forces ANSI colour codes to be used
 
 Yes, I am English, so I will continue to spell "colour" with a 'u'.
 
@@ -57,14 +57,14 @@ Typically you should place the ```#define``` before #including "catch.hpp" in yo
 
 ## Console width
 
-	CATCH_CONFIG_CONSOLE_WIDTH = x // where x is a number
+    CATCH_CONFIG_CONSOLE_WIDTH = x // where x is a number
 
 Catch formats output intended for the console to fit within a fixed number of characters. This is especially important as indentation is used extensively and uncontrolled line wraps break this.
 By default a console width of 80 is assumed but this can be controlled by defining the above identifier to be a different value.
 
 ## stdout
 
-	CATCH_CONFIG_NOSTDOUT
+    CATCH_CONFIG_NOSTDOUT
 
 To support platforms that do not provide `std::cout`, `std::cerr` and
 `std::clog`, Catch does not usem the directly, but rather calls

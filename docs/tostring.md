@@ -10,8 +10,8 @@ This is the standard way of providing string conversions in C++ - and the chance
 
 ```
 std::ostream& operator << ( std::ostream& os, T const& value ) {
-	os << convertMyTypeToString( value );
-	return os;
+    os << convertMyTypeToString( value );
+    return os;
 }
 ```
 
@@ -24,10 +24,10 @@ If you don't want to provide an ```operator <<``` overload, or you want to conve
 
 ```
 namespace Catch {
-	template<>
+    template<>
     struct StringMaker<T> {
-    	static std::string convert( T const& value ) {
-        	return convertMyTypeToString( value );
+        static std::string convert( T const& value ) {
+            return convertMyTypeToString( value );
         }
     };
 }
@@ -56,7 +56,7 @@ By default all exceptions deriving from `std::exception` will be translated to s
 
 ```
 CATCH_TRANSLATE_EXCEPTION( MyType& ex ) {
-	return ex.message();
+    return ex.message();
 }
 ```
 
