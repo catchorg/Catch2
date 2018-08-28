@@ -1,5 +1,17 @@
 include(MiscFunctions)
 
+####
+# Temporary workaround for VS toolset changes in 2017
+# We need to disable <UseFullPaths> property, but CMake doesn't support it
+# until 3.13 (not yet released)
+####
+if (MSVC)
+configure_file(${CATCH_DIR}/misc/SelfTest.vcxproj.user
+               ${CMAKE_BINARY_DIR}/projects
+               COPYONLY)
+endif(MSVC) #Temporary workaround
+
+
 # define the sources of the self test
 # Please keep these ordered alphabetically
 set(TEST_SOURCES
