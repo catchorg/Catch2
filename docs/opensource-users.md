@@ -36,7 +36,7 @@ The next-generation core storage and query engine for Couchbase Lite
 A High-performance Cluster Computing Engine
 
 ### [forest](https://github.com/xorz57/forest)
-Forest is an open-source, template library of tree data structures written in C++11.
+Template Library of Tree Data Structures
 
 ### [Fuxedo](https://github.com/fuxedo/fuxedo)
 Open source Oracle Tuxedo-like XATMI middleware for C and C++.
@@ -70,6 +70,9 @@ A C++ client library for Consul. Consul is a distributed tool for discovering an
 
 ### [Reactive-Extensions/ RxCpp](https://github.com/Reactive-Extensions/RxCpp)
 A library of algorithms for values-distributed-in-time
+
+### [thor](https://github.com/xorz57/thor)
+Wrapper Library for CUDA
 
 ### [TextFlowCpp](https://github.com/philsquared/textflowcpp)
 A small, single-header-only, library for wrapping and composing columns of text
