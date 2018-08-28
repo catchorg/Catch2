@@ -219,7 +219,7 @@ matrix:
         apt:
           sources: *all_sources
           packages: ['lcov', 'g++-7']
-      env: COMPILER='g++-7' CPP14=1 EXAMPLES=1 COVERAGE=1
+      env: COMPILER='g++-7' CPP14=1 EXAMPLES=1 COVERAGE=1 EXTRAS=1
 
     - os: linux
       compiler: clang
@@ -229,7 +229,7 @@ matrix:
           sources:
             - ubuntu-toolchain-r-test
             - llvm-toolchain-trusty
-      env: COMPILER='clang++-3.8' EXAMPLES=1 COVERAGE=1
+      env: COMPILER='clang++-3.8' EXAMPLES=1 COVERAGE=1 EXTRAS=1
 
     - os: linux
       compiler: gcc
@@ -242,7 +242,7 @@ matrix:
     - os: osx
       osx_image: xcode9.1
       compiler: clang
-      env: COMPILER='clang++' CPP14=1 EXAMPLES=1 COVERAGE=1
+      env: COMPILER='clang++' CPP14=1 EXAMPLES=1 COVERAGE=1 EXTRAS=1
 
 install:
   - DEPS_DIR="${TRAVIS_BUILD_DIR}/deps"
@@ -263,7 +263,7 @@ before_script:
   - python scripts/generateSingleHeader.py
 
     # Use Debug builds for running Valgrind and building examples
-  - cmake -H. -BBuild-Debug -DCMAKE_BUILD_TYPE=Debug -Wdev -DUSE_CPP14=${CPP14} -DCATCH_USE_VALGRIND=${VALGRIND} -DCATCH_BUILD_EXAMPLES=${EXAMPLES} -DCATCH_ENABLE_COVERAGE=${COVERAGE}
+  - cmake -H. -BBuild-Debug -DCMAKE_BUILD_TYPE=Debug -Wdev -DUSE_CPP14=${CPP14} -DCATCH_USE_VALGRIND=${VALGRIND} -DCATCH_BUILD_EXAMPLES=${EXAMPLES} -DCATCH_ENABLE_COVERAGE=${COVERAGE} -DCATCH_BUILD_EXTRA_TESTS=${EXTRAS}
     # Don't bother with release build for coverage build
   - cmake -H. -BBuild-Release -DCMAKE_BUILD_TYPE=Release -Wdev -DUSE_CPP14=${CPP14}
 
