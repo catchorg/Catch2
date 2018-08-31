@@ -56,7 +56,7 @@ TEST_CASE( "10x10 ints" ) {
 // but it demonstrates a possible usage.
 // Spelling out the pair like this is a bit verbose, so read on for better examples
 // - the use of structured bindings here is an optional convenience
-TEST_CASE( "strlen" ) {
+TEST_CASE( "strlen", "[.][approvals]" ) {
     auto [test_input, expected] = GENERATE( values<std::pair<std::string_view, size_t>>({
             {"one", 3},
             {"two", 3},
@@ -69,8 +69,8 @@ TEST_CASE( "strlen" ) {
 
 // A nicer way to do pairs (or more) of values - using the table generator.
 // Note, you must specify the types up-front.
-TEST_CASE( "strlen2" ) {
-    auto [test_input, expected] = GENERATE( table<std::string, int>({
+TEST_CASE( "strlen2", "[.][approvals]" ) {
+    auto [test_input, expected] = GENERATE( table<std::string, size_t>({
             {"one", 3},
             {"two", 3},
             {"three", 5},
@@ -116,9 +116,9 @@ TEST_CASE( "Random numbers in a range", "[.][approvals]" ) {
 // variables in scope - such as the generated variables here. This reads quite nicely in the
 // test name output (the full scenario description).
 
-auto eatCucumbers( int start, int eat ) -> int { return start-eat; }
+static auto eatCucumbers( int start, int eat ) -> int { return start-eat; }
 
-SCENARIO("Eating cucumbers") {
+SCENARIO("Eating cucumbers", "[.][approvals]") {
 
     auto [start, eat, left] = GENERATE( table<int,int,int> ({
             { 12, 5, 7 },
