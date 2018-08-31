@@ -91,102 +91,107 @@ target_include_directories(Catch2
 # provide a namespaced alias for clients to 'link' against if catch is included as a sub-project
 add_library(Catch2::Catch2 ALIAS Catch2)
 
-set(CATCH_CMAKE_CONFIG_DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake/Catch2")
+# Only perform the installation steps when Catch is not being used as
+# a subproject via `add_subdirectory`, or the destinations will break,
+# see https://github.com/catchorg/Catch2/issues/1373
+if (NOT_SUBPROJECT)
+    set(CATCH_CMAKE_CONFIG_DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake/Catch2")
 
-include(CMakePackageConfigHelpers)
-configure_package_config_file(
-    ${CMAKE_CURRENT_LIST_DIR}/CMake/Catch2Config.cmake.in
-    ${CMAKE_CURRENT_BINARY_DIR}/Catch2Config.cmake
-    INSTALL_DESTINATION
-      ${CATCH_CMAKE_CONFIG_DESTINATION}
-)
-
-
-# create and install an export set for catch target as Catch2::Catch
-install(
-  TARGETS
-    Catch2
-  EXPORT
-    Catch2Targets
-  DESTINATION
-    ${CMAKE_INSTALL_LIBDIR}
-)
+    configure_package_config_file(
+        ${CMAKE_CURRENT_LIST_DIR}/CMake/Catch2Config.cmake.in
+        ${CMAKE_CURRENT_BINARY_DIR}/Catch2Config.cmake
+        INSTALL_DESTINATION
+          ${CATCH_CMAKE_CONFIG_DESTINATION}
+    )
 
 
-install(
-  EXPORT
-    Catch2Targets
-  NAMESPACE
-    Catch2::
-  DESTINATION
-    ${CATCH_CMAKE_CONFIG_DESTINATION}
-)
+    # create and install an export set for catch target as Catch2::Catch
+    install(
+      TARGETS
+        Catch2
+      EXPORT
+        Catch2Targets
+      DESTINATION
+        ${CMAKE_INSTALL_LIBDIR}
+    )
 
-write_basic_package_version_file(
-  "${CMAKE_CURRENT_BINARY_DIR}/Catch2ConfigVersion.cmake"
-  COMPATIBILITY
-    SameMajorVersion
-)
 
-install(
-  DIRECTORY
-    "single_include/"
-  DESTINATION
-    "${CMAKE_INSTALL_INCLUDEDIR}"
-)
-    
-install(
-  FILES 
-    "${CMAKE_CURRENT_BINARY_DIR}/Catch2Config.cmake"
-    "${CMAKE_CURRENT_BINARY_DIR}/Catch2ConfigVersion.cmake"
-  DESTINATION
-    ${CATCH_CMAKE_CONFIG_DESTINATION}
-)
+    install(
+      EXPORT
+        Catch2Targets
+      NAMESPACE
+        Catch2::
+      DESTINATION
+        ${CATCH_CMAKE_CONFIG_DESTINATION}
+    )
 
-# Install documentation
-if(CATCH_INSTALL_DOCS)
-  install(
-    DIRECTORY
-      docs/
-    DESTINATION
-      "${CMAKE_INSTALL_DOCDIR}"
-  )
-endif()
+    write_basic_package_version_file(
+      "${CMAKE_CURRENT_BINARY_DIR}/Catch2ConfigVersion.cmake"
+      COMPATIBILITY
+        SameMajorVersion
+    )
 
-if(CATCH_INSTALL_HELPERS)
-# Install CMake scripts
-install(
-  FILES
-    "contrib/ParseAndAddCatchTests.cmake"
-    "contrib/Catch.cmake"
-    "contrib/CatchAddTests.cmake"
-  DESTINATION
-    ${CATCH_CMAKE_CONFIG_DESTINATION}
-)
+    install(
+      DIRECTORY
+        "single_include/"
+      DESTINATION
+        "${CMAKE_INSTALL_INCLUDEDIR}"
+    )
 
-# Install debugger helpers
-install(
-  FILES
-    "contrib/gdbinit"
-    "contrib/lldbinit"
-  DESTINATION
-    ${CMAKE_INSTALL_DATAROOTDIR}/Catch2
-)
-endif()
+    install(
+      FILES
+        "${CMAKE_CURRENT_BINARY_DIR}/Catch2Config.cmake"
+        "${CMAKE_CURRENT_BINARY_DIR}/Catch2ConfigVersion.cmake"
+      DESTINATION
+        ${CATCH_CMAKE_CONFIG_DESTINATION}
+    )
 
-## Provide some pkg-config integration
-set(PKGCONFIG_INSTALL_DIR
-    "${CMAKE_INSTALL_DATAROOTDIR}/pkgconfig"
-    CACHE PATH "Path where catch2.pc is installed"
-)
-configure_file(
-  ${CMAKE_CURRENT_SOURCE_DIR}/CMake/catch2.pc.in
-  ${CMAKE_CURRENT_BINARY_DIR}/catch2.pc
-  @ONLY
-)
-install(
-  FILES
-    "${CMAKE_CURRENT_BINARY_DIR}/catch2.pc"
-  DESTINATION
-    ${PKGCONFIG_INSTALL_DIR}
-)
+    # Install documentation
+    if(CATCH_INSTALL_DOCS)
+      install(
+        DIRECTORY
+          docs/
+        DESTINATION
+          "${CMAKE_INSTALL_DOCDIR}"
+      )
+    endif()
+
+    if(CATCH_INSTALL_HELPERS)
+    # Install CMake scripts
+    install(
+      FILES
+        "contrib/ParseAndAddCatchTests.cmake"
+        "contrib/Catch.cmake"
+        "contrib/CatchAddTests.cmake"
+      DESTINATION
+        ${CATCH_CMAKE_CONFIG_DESTINATION}
+    )
+
+    # Install debugger helpers
+    install(
+      FILES
+        "contrib/gdbinit"
+        "contrib/lldbinit"
+      DESTINATION
+        ${CMAKE_INSTALL_DATAROOTDIR}/Catch2
+    )
+    endif()
+
+    ## Provide some pkg-config integration
+    set(PKGCONFIG_INSTALL_DIR
+        "${CMAKE_INSTALL_DATAROOTDIR}/pkgconfig"
+        CACHE PATH "Path where catch2.pc is installed"
+    )
+    configure_file(
+      ${CMAKE_CURRENT_SOURCE_DIR}/CMake/catch2.pc.in
+      ${CMAKE_CURRENT_BINARY_DIR}/catch2.pc
+      @ONLY
+    )
+    install(
+      FILES
+        "${CMAKE_CURRENT_BINARY_DIR}/catch2.pc"
+      DESTINATION
+        ${PKGCONFIG_INSTALL_DIR}
+    )
+
+endif(NOT_SUBPROJECT)
