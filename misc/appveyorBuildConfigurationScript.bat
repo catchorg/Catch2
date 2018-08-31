@@ -15,7 +15,7 @@ if "%CONFIGURATION%"=="Debug" (
     if "%examples%"=="1" (
       @REM # Examples live off the single header, so it needs to be regenerated
       python scripts\generateSingleHeader.py
-      cmake -H. -BBuild -A%PLATFORM% -DUSE_WMAIN=%wmain% -DCATCH_BUILD_EXAMPLES=ON
+      cmake -H. -BBuild -A%PLATFORM% -DUSE_WMAIN=%wmain% -DCATCH_BUILD_EXAMPLES=ON -DCATCH_BUILD_EXTRA_TESTS=ON
     ) else (
       @REM # This is just a plain debug build
       cmake -H. -BBuild -A%PLATFORM% -DUSE_WMAIN=%wmain%
