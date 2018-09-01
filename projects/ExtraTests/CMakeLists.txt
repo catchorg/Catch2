@@ -16,6 +16,21 @@ set( TESTS_DIR   ${CATCH_DIR}/projects/ExtraTests )
 set( SINGLE_INCLUDE_PATH ${CATCH_DIR}/single_include )
 
 
+add_executable(PrefixedMacros ${TESTS_DIR}/X01-PrefixedMacros.cpp)
+target_compile_definitions( PrefixedMacros PRIVATE CATCH_CONFIG_PREFIX_ALL )
+
+add_test(NAME CATCH_CONFIG_PREFIX_ALL COMMAND PrefixedMacros -s)
+set_tests_properties(
+    CATCH_CONFIG_PREFIX_ALL
+  PROPERTIES
+    PASS_REGULAR_EXPRESSION "CATCH_"
+    FAIL_REGULAR_EXPRESSION
+    # The spaces are important -> They disambiguate between CATCH_REQUIRE
+    # and REQUIRE without prefix.
+    " REQUIRE; REQUIRE_FALSE; REQUIRE_THROWS; REQUIRE_THROWS_AS; REQUIRE_THROWS_WITH; REQUIRE_THROWS_MATCHES; REQUIRE_NOTHROW; CHECK; CHECK_FALSE; CHECKED_IF; CHECKED_ELSE; CHECK_NOFAIL; CHECK_THROWS; CHECK_THROWS_AS; CHECK_THROWS_WITH; CHECK_THROWS_MATCHES; CHECK_NOTHROW; REQUIRE_THAT; CHECK_THAT"
+)
+
+
 add_executable(FallbackStringifier ${TESTS_DIR}/X10-FallbackStringifier.cpp)
 target_compile_definitions( FallbackStringifier PRIVATE CATCH_CONFIG_FALLBACK_STRINGIFIER=fallbackStringifier )
 
@@ -39,6 +54,7 @@ set_tests_properties(
 
 
 set( EXTRA_TEST_BINARIES
+    PrefixedMacros
     FallbackStringifier
     DisableStringification
 )
