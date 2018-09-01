@@ -104,6 +104,12 @@ namespace Floating {
         }
     }
 
+#if defined(__clang__)
+#pragma clang diagnostic push
+// Clang <3.5 reports on the default branch in the switch below
+#pragma clang diagnostic ignored "-Wunreachable-code"
+#endif
+
     bool WithinUlpsMatcher::match(double const& matchee) const {
         switch (m_type) {
         case FloatingPointKind::Float:
@@ -114,6 +120,10 @@ namespace Floating {
             throw std::domain_error("Unknown FloatingPointKind value");
         }
     }
+
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
 
     std::string WithinUlpsMatcher::describe() const {
         return "is within " + Catch::to_string(m_ulps) + " ULPs of " + ::Catch::Detail::stringify(m_target) + ((m_type == FloatingPointKind::Float)? "f" : "");
