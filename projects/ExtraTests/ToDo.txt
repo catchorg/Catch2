@@ -7,6 +7,5 @@ yet:
     CATCH_CONFIG_DISABLE_MATCHERS           // Do not compile Matchers in this compilation unit
     CATCH_CONFIG_POSIX_SIGNALS              // Enable handling POSIX signals
     CATCH_CONFIG_WINDOWS_CRTDBG             // Enable leak checking using Windows's CRT Debug Heap
-    CATCH_CONFIG_DISABLE                    // Disables assertions and test case registration
     CATCH_CONFIG_DEFAULT_REPORTER
     CATCH_CONFIG_ENABLE_ALL_STRINGMAKERS

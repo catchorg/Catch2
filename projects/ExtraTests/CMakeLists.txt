@@ -30,6 +30,23 @@ set_tests_properties(
     " REQUIRE; REQUIRE_FALSE; REQUIRE_THROWS; REQUIRE_THROWS_AS; REQUIRE_THROWS_WITH; REQUIRE_THROWS_MATCHES; REQUIRE_NOTHROW; CHECK; CHECK_FALSE; CHECKED_IF; CHECKED_ELSE; CHECK_NOFAIL; CHECK_THROWS; CHECK_THROWS_AS; CHECK_THROWS_WITH; CHECK_THROWS_MATCHES; CHECK_NOTHROW; REQUIRE_THAT; CHECK_THAT"
 )
 
+add_executable(DisabledMacros ${TESTS_DIR}/X02-DisabledMacros.cpp)
+target_compile_definitions( DisabledMacros PRIVATE CATCH_CONFIG_DISABLE )
+
+add_test(NAME CATCH_CONFIG_DISABLE-1 COMMAND DisabledMacros -s)
+set_tests_properties(
+    CATCH_CONFIG_DISABLE-1
+  PROPERTIES
+    PASS_REGULAR_EXPRESSION "No tests ran"
+    FAIL_REGULAR_EXPRESSION "This should not happen"
+)
+add_test(NAME CATCH_CONFIG_DISABLE-2 COMMAND DisabledMacros --list-tests)
+set_tests_properties(
+    CATCH_CONFIG_DISABLE-2
+  PROPERTIES
+    PASS_REGULAR_EXPRESSION "0 test cases"
+)
+
 
 add_executable(FallbackStringifier ${TESTS_DIR}/X10-FallbackStringifier.cpp)
 target_compile_definitions( FallbackStringifier PRIVATE CATCH_CONFIG_FALLBACK_STRINGIFIER=fallbackStringifier )
@@ -55,6 +72,7 @@ set_tests_properties(
 
 set( EXTRA_TEST_BINARIES
     PrefixedMacros
+    DisabledMacros
     FallbackStringifier
     DisableStringification
 )
