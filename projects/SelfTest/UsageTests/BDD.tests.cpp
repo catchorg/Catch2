@@ -38,11 +38,14 @@ namespace { namespace BDDTests {
     SCENARIO("Do that thing with the thing", "[Tags]") {
         GIVEN("This stuff exists") {
             // make stuff exist
-            WHEN("I do this") {
-                // do this
-                THEN("it should do this") {
-                    REQUIRE(itDoesThis());
-                    AND_THEN("do that")REQUIRE(itDoesThat());
+            AND_GIVEN("And some assumption") {
+                // Validate assumption
+                WHEN("I do this") {
+                    // do this
+                    THEN("it should do this") {
+                        REQUIRE(itDoesThis());
+                        AND_THEN("do that")REQUIRE(itDoesThat());
+                    }
                 }
             }
         }

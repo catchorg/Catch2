@@ -6644,26 +6644,29 @@
     </TestCase>
     <TestCase name="Scenario: Do that thing with the thing" tags="[Tags]" filename="projects/<exe-name>/UsageTests/BDD.tests.cpp" >
       <Section name="Given: This stuff exists" filename="projects/<exe-name>/UsageTests/BDD.tests.cpp" >
-        <Section name="When: I do this" filename="projects/<exe-name>/UsageTests/BDD.tests.cpp" >
-          <Section name="Then: it should do this" filename="projects/<exe-name>/UsageTests/BDD.tests.cpp" >
-            <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/UsageTests/BDD.tests.cpp" >
-              <Original>
-                itDoesThis()
-              </Original>
-              <Expanded>
-                true
-              </Expanded>
-            </Expression>
-            <Section name="And: do that" filename="projects/<exe-name>/UsageTests/BDD.tests.cpp" >
+        <Section name="And given: And some assumption" filename="projects/<exe-name>/UsageTests/BDD.tests.cpp" >
+          <Section name="When: I do this" filename="projects/<exe-name>/UsageTests/BDD.tests.cpp" >
+            <Section name="Then: it should do this" filename="projects/<exe-name>/UsageTests/BDD.tests.cpp" >
               <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/UsageTests/BDD.tests.cpp" >
                 <Original>
-                  itDoesThat()
+                  itDoesThis()
                 </Original>
                 <Expanded>
                   true
                 </Expanded>
               </Expression>
-              <OverallResults successes="1" failures="0" expectedFailures="0"/>
+              <Section name="And: do that" filename="projects/<exe-name>/UsageTests/BDD.tests.cpp" >
+                <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/UsageTests/BDD.tests.cpp" >
+                  <Original>
+                    itDoesThat()
+                  </Original>
+                  <Expanded>
+                    true
+                  </Expanded>
+                </Expression>
+                <OverallResults successes="1" failures="0" expectedFailures="0"/>
+              </Section>
+              <OverallResults successes="2" failures="0" expectedFailures="0"/>
             </Section>
             <OverallResults successes="2" failures="0" expectedFailures="0"/>
           </Section>

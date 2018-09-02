@@ -6319,7 +6319,7 @@ PASSED:
 -------------------------------------------------------------------------------
 Scenario: BDD tests requiring Fixtures to provide commonly-accessed data or
           methods
-     Given: No operations precede me
+      Given: No operations precede me
 -------------------------------------------------------------------------------
 BDD.tests.cpp:<line number>
 ...............................................................................
@@ -6333,9 +6333,9 @@ with expansion:
 -------------------------------------------------------------------------------
 Scenario: BDD tests requiring Fixtures to provide commonly-accessed data or
           methods
-     Given: No operations precede me
-      When: We get the count
-      Then: Subsequently values are higher
+      Given: No operations precede me
+       When: We get the count
+       Then: Subsequently values are higher
 -------------------------------------------------------------------------------
 BDD.tests.cpp:<line number>
 ...............................................................................
@@ -6348,9 +6348,10 @@ with expansion:
 
 -------------------------------------------------------------------------------
 Scenario: Do that thing with the thing
-     Given: This stuff exists
-      When: I do this
-      Then: it should do this
+      Given: This stuff exists
+  And given: And some assumption
+       When: I do this
+       Then: it should do this
 -------------------------------------------------------------------------------
 BDD.tests.cpp:<line number>
 ...............................................................................
@@ -6363,10 +6364,11 @@ with expansion:
 
 -------------------------------------------------------------------------------
 Scenario: Do that thing with the thing
-     Given: This stuff exists
-      When: I do this
-      Then: it should do this
-       And: do that
+      Given: This stuff exists
+  And given: And some assumption
+       When: I do this
+       Then: it should do this
+        And: do that
 -------------------------------------------------------------------------------
 BDD.tests.cpp:<line number>
 ...............................................................................
@@ -6380,12 +6382,12 @@ with expansion:
 -------------------------------------------------------------------------------
 Scenario: This is a really long scenario name to see how the list command deals
           with wrapping
-     Given: A section name that is so long that it cannot fit in a single
-            console width
-      When: The test headers are printed as part of the normal running of the
-            scenario
-      Then: The, deliberately very long and overly verbose (you see what I did
-            there?) section names must wrap, along with an indent
+      Given: A section name that is so long that it cannot fit in a single
+             console width
+       When: The test headers are printed as part of the normal running of the
+             scenario
+       Then: The, deliberately very long and overly verbose (you see what I did
+             there?) section names must wrap, along with an indent
 -------------------------------------------------------------------------------
 BDD.tests.cpp:<line number>
 ...............................................................................
@@ -6397,7 +6399,7 @@ with message:
 
 -------------------------------------------------------------------------------
 Scenario: Vector resizing affects size and capacity
-     Given: an empty vector
+      Given: an empty vector
 -------------------------------------------------------------------------------
 BDD.tests.cpp:<line number>
 ...............................................................................
@@ -6410,9 +6412,9 @@ with expansion:
 
 -------------------------------------------------------------------------------
 Scenario: Vector resizing affects size and capacity
-     Given: an empty vector
-      When: it is made larger
-      Then: the size and capacity go up
+      Given: an empty vector
+       When: it is made larger
+       Then: the size and capacity go up
 -------------------------------------------------------------------------------
 BDD.tests.cpp:<line number>
 ...............................................................................
@@ -6431,11 +6433,11 @@ with expansion:
 
 -------------------------------------------------------------------------------
 Scenario: Vector resizing affects size and capacity
-     Given: an empty vector
-      When: it is made larger
-      Then: the size and capacity go up
-  And when: it is made smaller again
-      Then: the size goes down but the capacity stays the same
+      Given: an empty vector
+       When: it is made larger
+       Then: the size and capacity go up
+   And when: it is made smaller again
+       Then: the size goes down but the capacity stays the same
 -------------------------------------------------------------------------------
 BDD.tests.cpp:<line number>
 ...............................................................................
@@ -6454,7 +6456,7 @@ with expansion:
 
 -------------------------------------------------------------------------------
 Scenario: Vector resizing affects size and capacity
-     Given: an empty vector
+      Given: an empty vector
 -------------------------------------------------------------------------------
 BDD.tests.cpp:<line number>
 ...............................................................................
@@ -6467,9 +6469,9 @@ with expansion:
 
 -------------------------------------------------------------------------------
 Scenario: Vector resizing affects size and capacity
-     Given: an empty vector
-      When: we reserve more space
-      Then: The capacity is increased but the size remains the same
+      Given: an empty vector
+       When: we reserve more space
+       Then: The capacity is increased but the size remains the same
 -------------------------------------------------------------------------------
 BDD.tests.cpp:<line number>
 ...............................................................................
