@@ -200,6 +200,40 @@ By default, Catch does not stringify some types from the standard library. This 
     CATCH_CONFIG_ENABLE_ALL_STRINGMAKERS    // Defines all of the above
 
 
+## Disabling exceptions
+
+By default, Catch2 uses exceptions to signal errors and to abort tests
+when an assertion from the `REQUIRE` family of assertions fails. We also
+provide an experimental support for disabling exceptions. Catch2 should
+automatically detect when it is compiled with exceptions disabled, but
+it can be forced to compile without exceptions by defining
+
+    CATCH_CONFIG_DISABLE_EXCEPTIONS
+
+Note that when using Catch2 without exceptions, there are 2 major
+limitations:
+
+1) If there is an error that would normally be signalled by an exception,
+the exception's message will instead be written to `Catch::cerr` and
+`std::terminate` will be called.
+2) If an assertion from the `REQUIRE` family of macros fails,
+`std::terminate` will be called after the active reporter returns.
+
+
+There is also a customization point for the exact behaviour of what
+happens instead of exception being thrown. To use it, define
+
+    CATCH_CONFIG_DISABLE_EXCEPTIONS_CUSTOM_HANDLER
+
+and provide a definition for this function:
+
+```cpp
+namespace Catch {
+    [[noreturn]]
+    void throw_exception(std::exception const&);
+}
+```
+
 ---
 
 [Home](Readme.md#top)
