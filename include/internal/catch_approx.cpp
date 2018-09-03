@@ -7,10 +7,10 @@
  */
 
 #include "catch_approx.h"
+#include "catch_enforce.h"
 
 #include <cmath>
 #include <limits>
-#include <stdexcept>
 
 namespace {
 
@@ -56,23 +56,16 @@ namespace Detail {
     }
 
     void Approx::setMargin(double margin) {
-        if (margin < 0) {
-            throw std::domain_error
-            ("Invalid Approx::margin: " +
-             Catch::Detail::stringify(margin) +
-             ", Approx::Margin has to be non-negative.");
-
-        }
+        CATCH_ENFORCE(margin >= 0,
+            "Invalid Approx::margin: " << margin << '.'
+            << " Approx::Margin has to be non-negative.");
         m_margin = margin;
     }
 
     void Approx::setEpsilon(double epsilon) {
-        if (epsilon < 0 || epsilon > 1.0) {
-            throw std::domain_error
-            ("Invalid Approx::epsilon: " +
-             Catch::Detail::stringify(epsilon) +
-             ", Approx::epsilon has to be between 0 and 1");
-        }
+        CATCH_ENFORCE(epsilon >= 0 && epsilon <= 1.0,
+            "Invalid Approx::epsilon: " << epsilon << '.'
+            << " Approx::epsilon has to be in [0, 1]");
         m_epsilon = epsilon;
     }
 

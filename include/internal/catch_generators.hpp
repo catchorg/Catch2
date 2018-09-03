@@ -9,6 +9,7 @@
 
 #include "catch_interfaces_generatortracker.h"
 #include "catch_common.h"
+#include "catch_enforce.h"
 
 #include <memory>
 #include <vector>
@@ -76,7 +77,7 @@ namespace Generators {
     template<typename T>
     struct NullGenerator : IGenerator<T> {
         auto get( size_t ) const -> T override {
-            throw std::logic_error("A Null Generator should always be empty" );
+            CATCH_INTERNAL_ERROR("A Null Generator is always empty");
         }
     };
 
@@ -198,7 +199,7 @@ namespace Generators {
                 if( index < sizes )
                     return gen[localIndex];
             }
-            throw std::out_of_range("index out of range");
+            CATCH_INTERNAL_ERROR("Index '" << index << "' is out of range (" << sizes << ')');
         }
     };
 

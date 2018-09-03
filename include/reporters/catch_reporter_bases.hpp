@@ -8,6 +8,7 @@
 #ifndef TWOBLUECUBES_CATCH_REPORTER_BASES_HPP_INCLUDED
 #define TWOBLUECUBES_CATCH_REPORTER_BASES_HPP_INCLUDED
 
+#include "../internal/catch_enforce.h"
 #include "../internal/catch_interfaces_reporter.h"
 
 #include <algorithm>
@@ -33,7 +34,7 @@ namespace Catch {
         {
             m_reporterPrefs.shouldRedirectStdOut = false;
             if( !DerivedT::getSupportedVerbosities().count( m_config->verbosity() ) )
-                throw std::domain_error( "Verbosity level not supported by this reporter" );
+                CATCH_ERROR( "Verbosity level not supported by this reporter" );
         }
 
         ReporterPreferences getPreferences() const override {
@@ -148,7 +149,7 @@ namespace Catch {
         {
             m_reporterPrefs.shouldRedirectStdOut = false;
             if( !DerivedT::getSupportedVerbosities().count( m_config->verbosity() ) )
-                throw std::domain_error( "Verbosity level not supported by this reporter" );
+                CATCH_ERROR( "Verbosity level not supported by this reporter" );
         }
         ~CumulativeReporterBase() override = default;
 

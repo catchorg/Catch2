@@ -6,13 +6,13 @@
  */
 
 #include "catch_matchers_floating.h"
+#include "catch_enforce.h"
 #include "catch_to_string.hpp"
 #include "catch_tostring.h"
 
 #include <cstdlib>
 #include <cstdint>
 #include <cstring>
-#include <stdexcept>
 
 namespace Catch {
 namespace Matchers {
@@ -81,9 +81,8 @@ namespace Matchers {
 namespace Floating {
     WithinAbsMatcher::WithinAbsMatcher(double target, double margin)
         :m_target{ target }, m_margin{ margin } {
-        if (m_margin < 0) {
-            throw std::domain_error("Allowed margin difference has to be >= 0");
-        }
+        CATCH_ENFORCE(margin >= 0, "Invalid margin: " << margin << '.'
+            << " Margin has to be non-negative.");
     }
 
     // Performs equivalent check of std::fabs(lhs - rhs) <= margin
@@ -99,9 +98,8 @@ namespace Floating {
 
     WithinUlpsMatcher::WithinUlpsMatcher(double target, int ulps, FloatingPointKind baseType)
         :m_target{ target }, m_ulps{ ulps }, m_type{ baseType } {
-        if (m_ulps < 0) {
-            throw std::domain_error("Allowed ulp difference has to be >= 0");
-        }
+        CATCH_ENFORCE(ulps >= 0, "Invalid ULP setting: " << ulps << '.'
+            << " ULPs have to be non-negative.");
     }
 
 #if defined(__clang__)
@@ -117,7 +115,7 @@ namespace Floating {
         case FloatingPointKind::Double:
             return almostEqualUlps<double>(matchee, m_target, m_ulps);
         default:
-            throw std::domain_error("Unknown FloatingPointKind value");
+            CATCH_INTERNAL_ERROR( "Unknown FloatingPointKind value" );
         }
     }
 
