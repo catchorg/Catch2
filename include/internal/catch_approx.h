@@ -35,9 +35,9 @@ namespace Detail {
         template <typename T, typename = typename std::enable_if<std::is_constructible<double, T>::value>::type>
         Approx operator()( T const& value ) {
             Approx approx( static_cast<double>(value) );
-            approx.epsilon( m_epsilon );
-            approx.margin( m_margin );
-            approx.scale( m_scale );
+            approx.m_epsilon = m_epsilon;
+            approx.m_margin = m_margin;
+            approx.m_scale = m_scale;
             return approx;
         }
 
