@@ -10,6 +10,7 @@
 
 #include <cmath>
 #include <limits>
+#include <stdexcept>
 
 namespace {
 
@@ -52,6 +53,27 @@ namespace Detail {
         // First try with fixed margin, then compute margin based on epsilon, scale and Approx's value
         // Thanks to Richard Harris for his help refining the scaled margin value
         return marginComparison(m_value, other, m_margin) || marginComparison(m_value, other, m_epsilon * (m_scale + std::fabs(m_value)));
+    }
+
+    void Approx::setMargin(double margin) {
+        if (margin < 0) {
+            throw std::domain_error
+            ("Invalid Approx::margin: " +
+             Catch::Detail::stringify(margin) +
+             ", Approx::Margin has to be non-negative.");
+
+        }
+        m_margin = margin;
+    }
+
+    void Approx::setEpsilon(double epsilon) {
+        if (epsilon < 0 || epsilon > 1.0) {
+            throw std::domain_error
+            ("Invalid Approx::epsilon: " +
+             Catch::Detail::stringify(epsilon) +
+             ", Approx::epsilon has to be between 0 and 1");
+        }
+        m_epsilon = epsilon;
     }
 
 } // end namespace Detail
