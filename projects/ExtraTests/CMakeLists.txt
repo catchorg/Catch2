@@ -48,6 +48,52 @@ set_tests_properties(
 )
 
 
+add_executable( DisabledExceptions-DefaultHandler ${TESTS_DIR}/X03-DisabledExceptions-DefaultHandler.cpp )
+add_executable( DisabledExceptions-CustomHandler ${TESTS_DIR}/X04-DisabledExceptions-CustomHandler.cpp )
+
+foreach(target DisabledExceptions-DefaultHandler DisabledExceptions-CustomHandler)
+target_compile_options( ${target}
+  PRIVATE
+    $<$<CXX_COMPILER_ID:MSVC>:/EHs-c-;/D_HAS_EXCEPTIONS=0>
+    $<$<OR:$<CXX_COMPILER_ID:Clang>,$<CXX_COMPILER_ID:GNU>,$<CXX_COMPILER_ID:AppleClang>>:-fno-exceptions>
+#    $<$<CXX_COMPILER_ID:Clang>:-fno-exceptions>
+#    $<$<CXX_COMPILER_ID:GNU>:-fno-exceptions>
+)
+endforeach()
+
+
+add_test(NAME CATCH_CONFIG_DISABLE_EXCEPTIONS-1 COMMAND DisabledExceptions-DefaultHandler "Tests that run")
+set_tests_properties(
+    CATCH_CONFIG_DISABLE_EXCEPTIONS-1
+  PROPERTIES
+    PASS_REGULAR_EXPRESSION "assertions: 4 \| 2 passed \| 2 failed"
+    FAIL_REGULAR_EXPRESSION "abort;terminate;fatal"
+)
+
+add_test(NAME CATCH_CONFIG_DISABLE_EXCEPTIONS-2 COMMAND DisabledExceptions-DefaultHandler "Tests that abort")
+set_tests_properties(
+    CATCH_CONFIG_DISABLE_EXCEPTIONS-2
+  PROPERTIES
+    PASS_REGULAR_EXPRESSION "Catch will terminate"
+)
+
+add_test(NAME CATCH_CONFIG_DISABLE_EXCEPTIONS-3 COMMAND DisabledExceptions-CustomHandler "Tests that run")
+set_tests_properties(
+    CATCH_CONFIG_DISABLE_EXCEPTIONS-3
+  PROPERTIES
+    PASS_REGULAR_EXPRESSION "assertions: 4 \| 2 passed \| 2 failed"
+    FAIL_REGULAR_EXPRESSION "====== CUSTOM HANDLER ======"
+)
+
+add_test(NAME CATCH_CONFIG_DISABLE_EXCEPTIONS-4 COMMAND DisabledExceptions-CustomHandler "Tests that abort")
+set_tests_properties(
+    CATCH_CONFIG_DISABLE_EXCEPTIONS-4
+  PROPERTIES
+    PASS_REGULAR_EXPRESSION "====== CUSTOM HANDLER ======"
+)
+
+
+
 add_executable(FallbackStringifier ${TESTS_DIR}/X10-FallbackStringifier.cpp)
 target_compile_definitions( FallbackStringifier PRIVATE CATCH_CONFIG_FALLBACK_STRINGIFIER=fallbackStringifier )
 
@@ -73,6 +119,8 @@ set_tests_properties(
 set( EXTRA_TEST_BINARIES
     PrefixedMacros
     DisabledMacros
+    DisabledExceptions-DefaultHandler
+    DisabledExceptions-CustomHandler
     FallbackStringifier
     DisableStringification
 )
