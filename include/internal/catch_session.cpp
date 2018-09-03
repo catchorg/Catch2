@@ -119,10 +119,12 @@ namespace Catch {
     Session::Session() {
         static bool alreadyInstantiated = false;
         if( alreadyInstantiated ) {
-            try         { CATCH_INTERNAL_ERROR( "Only one instance of Catch::Session can ever be used" ); }
-            catch(...)  { getMutableRegistryHub().registerStartupException(); }
+            CATCH_TRY { CATCH_INTERNAL_ERROR( "Only one instance of Catch::Session can ever be used" ); }
+            CATCH_CATCH_ALL { getMutableRegistryHub().registerStartupException(); }
         }
 
+        // There cannot be exceptions at startup in no-exception mode.
+#if !defined(CATCH_CONFIG_DISABLE_EXCEPTIONS)
         const auto& exceptions = getRegistryHub().getStartupExceptionRegistry().getExceptions();
         if ( !exceptions.empty() ) {
             m_startupExceptions = true;
@@ -137,6 +139,7 @@ namespace Catch {
                 }
             }
         }
+#endif
 
         alreadyInstantiated = true;
         m_cli = makeCommandLineParser( m_configData );
@@ -251,11 +254,11 @@ namespace Catch {
         if( m_startupExceptions )
             return 1;
 
-        if( m_configData.showHelp || m_configData.libIdentify )
+        if (m_configData.showHelp || m_configData.libIdentify) {
             return 0;
+        }
 
-        try
-        {
+        CATCH_TRY {
             config(); // Force config to be constructed
 
             seedRng( *m_config );
@@ -273,10 +276,12 @@ namespace Catch {
             // of 256 tests has failed
             return (std::min) (MaxExitCode, (std::max) (totals.error, static_cast<int>(totals.assertions.failed)));
         }
+#if !defined(CATCH_CONFIG_DISABLE_EXCEPTIONS)
         catch( std::exception& ex ) {
             Catch::cerr() << ex.what() << std::endl;
             return MaxExitCode;
         }
+#endif
     }
 
 } // end namespace Catch

@@ -6,8 +6,10 @@
  *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  */
 
-#include "catch_assertionhandler.h"
 #include "catch_exception_translator_registry.h"
+#include "catch_assertionhandler.h"
+#include "catch_compiler_capabilities.h"
+#include "catch_enforce.h"
 
 #ifdef __OBJC__
 #import "Foundation/Foundation.h"
@@ -22,6 +24,7 @@ namespace Catch {
         m_translators.push_back( std::unique_ptr<const IExceptionTranslator>( translator ) );
     }
 
+#if !defined(CATCH_CONFIG_DISABLE_EXCEPTIONS)
     std::string ExceptionTranslatorRegistry::translateActiveException() const {
         try {
 #ifdef __OBJC__
@@ -63,6 +66,13 @@ namespace Catch {
             return "Unknown exception";
         }
     }
+
+#else // ^^ Exceptions are enabled // Exceptions are disabled vv
+    std::string ExceptionTranslatorRegistry::translateActiveException() const {
+        CATCH_INTERNAL_ERROR("Attempted to translate active exception under CATCH_CONFIG_DISABLE_EXCEPTIONS!");
+    }
+#endif
+
 
     std::string ExceptionTranslatorRegistry::tryTranslators() const {
         if( m_translators.empty() )

@@ -173,6 +173,7 @@ set(IMPL_SOURCES
         ${HEADER_DIR}/internal/catch_debug_console.cpp
         ${HEADER_DIR}/internal/catch_debugger.cpp
         ${HEADER_DIR}/internal/catch_decomposer.cpp
+        ${HEADER_DIR}/internal/catch_enforce.cpp
         ${HEADER_DIR}/internal/catch_errno_guard.cpp
         ${HEADER_DIR}/internal/catch_exception_translator_registry.cpp
         ${HEADER_DIR}/internal/catch_fatal_condition.cpp

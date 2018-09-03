@@ -1,4 +1,5 @@
 #include "catch_run_context.h"
+#include "catch_compiler_capabilities.h"
 #include "catch_context.h"
 #include "catch_enforce.h"
 #include "catch_random_number_generator.h"
@@ -327,7 +328,7 @@ namespace Catch {
         seedRng(*m_config);
 
         Timer timer;
-        try {
+        CATCH_TRY {
             if (m_reporter->getPreferences().shouldRedirectStdOut) {
 #if !defined(CATCH_CONFIG_EXPERIMENTAL_REDIRECT)
                 RedirectedStdOut redirectedStdOut;
@@ -347,9 +348,9 @@ namespace Catch {
                 invokeActiveTestCase();
             }
             duration = timer.getElapsedSeconds();
-        } catch (TestFailureException&) {
+        } CATCH_CATCH_ANON (TestFailureException&) {
             // This just means the test was aborted due to failure
-        } catch (...) {
+        } CATCH_CATCH_ALL {
             // Under CATCH_CONFIG_FAST_COMPILE, unexpected exceptions under REQUIRE assertions
             // are reported without translation at the point of origin.
             if( m_shouldReportUnexpected ) {

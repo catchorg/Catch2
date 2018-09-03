@@ -6,6 +6,7 @@
  */
 
 #include "catch_test_registry.h"
+#include "catch_compiler_capabilities.h"
 #include "catch_test_case_registry_impl.h"
 #include "catch_interfaces_registry_hub.h"
 
@@ -18,7 +19,7 @@ namespace Catch {
     NameAndTags::NameAndTags( StringRef const& name_ , StringRef const& tags_ ) noexcept : name( name_ ), tags( tags_ ) {}
 
     AutoReg::AutoReg( ITestInvoker* invoker, SourceLineInfo const& lineInfo, StringRef const& classOrMethod, NameAndTags const& nameAndTags ) noexcept {
-        try {
+        CATCH_TRY {
             getMutableRegistryHub()
                     .registerTest(
                         makeTestCase(
@@ -26,7 +27,7 @@ namespace Catch {
                             extractClassName( classOrMethod ),
                             nameAndTags,
                             lineInfo));
-        } catch (...) {
+        } CATCH_CATCH_ALL {
             // Do not throw when constructing global objects, instead register the exception to be processed later
             getMutableRegistryHub().registerStartupException();
         }
