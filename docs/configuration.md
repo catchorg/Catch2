@@ -127,6 +127,7 @@ Catch's selection, by defining either `CATCH_CONFIG_CPP11_TO_STRING` or
 ## C++17 toggles
 
     CATCH_CONFIG_CPP17_UNCAUGHT_EXCEPTIONS  // Use std::uncaught_exceptions instead of std::uncaught_exception
+    CATCH_CONFIG_CPP17_STRING_VIEW          // Provide StringMaker specialization for std::string_view
 
 Catch contains basic compiler/standard detection and attempts to use
 some C++17 features whenever appropriate. This automatic detection
