@@ -1,5 +1,34 @@
 <a id="top"></a>
 
+# 2.4.0
+
+**This release brings two new experimental features, generator support
+and a `-fno-exceptions` support. Being experimental means that they
+will not be subject to the usual stability guarantees provided by semver.**
+
+## Improvements
+* Various small runtime performance improvements
+* `CAPTURE` macro is now variadic
+* Added `AND_GIVEN` macro (#1360)
+* Added experimental support for data generators
+  * See [their documentation](generators.md) for details
+* Added support for compiling and running Catch without exceptions
+  * Doing so limits the functionality somewhat
+  * Look [into the documentation](configuration.md#disablingexceptions) for details
+
+## Fixes
+* Suppressed `-Wnon-virtual-dtor` warnings in Matchers (#1357)
+* Suppressed `-Wunreachable-code` warnings in floating point matchers (#1350)
+
+## CMake
+* It is now possible to override which Python is used to run Catch's tests (#1365)
+* Catch now provides infrastructure for adding tests that check compile-time configuration
+* Catch no longer tries to install itself when used as a subproject (#1373)
+* Catch2ConfigVersion.cmake is now generated as arch-independent (#1368)
+  * This means that installing Catch from 32-bit machine and copying it to 64-bit one works
+  * This fixes conan installation of Catch
+
+
 # 2.3.0
 
 **This release changes the include paths provided by our CMake and
