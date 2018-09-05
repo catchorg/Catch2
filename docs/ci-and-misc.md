@@ -1,6 +1,12 @@
 <a id="top"></a>
 # CI and other odd pieces
 
+**Contents**<br>
+[Continuous Integration systems](#continuous-integration-systems)<br>
+[Other reporters](#other-reporters)<br>
+[Low-level tools](#low-level-tools)<br>
+[CMake](#cmake)<br>
+
 This page talks about how Catch integrates with Continuous Integration 
 Build Systems may refer to low-level tools, like CMake, or larger systems that run on servers, like Jenkins or TeamCity. This page will talk about both.
 

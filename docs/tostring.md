@@ -1,6 +1,12 @@
 <a id="top"></a>
 # String conversions
 
+**Contents**<br>
+[operator << overload for std::ostream](#operator-overload-for-std-ostream)<br>
+[Catch::StringMaker<T> specialisation](#catch-stringmaker-t-specialisation)<br>
+[Catch::is_range<T> specialisation](#catch-is_range-t-specialisation)<br>
+[Exceptions](#exceptions)<br>
+
 Catch needs to be able to convert types you use in assertions and logging expressions into strings (for logging and reporting purposes).
 Most built-in or std types are supported out of the box but there are two ways that you can tell Catch how to convert your own types (or other, third-party types) into strings.
 

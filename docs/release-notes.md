@@ -1,5 +1,21 @@
 <a id="top"></a>
 
+# Release notes
+**Contents**<br>
+[2.4.0](#240)<br>
+[2.3.0](#230)<br>
+[2.2.3](#223)<br>
+[2.2.2](#222)<br>
+[2.2.1](#221)<br>
+[2.2.0](#220)<br>
+[2.1.2](#212)<br>
+[2.1.1](#211)<br>
+[2.1.0](#210)<br>
+[2.0.1](#201)<br>
+[Older versions](#older-versions)<br>
+[Even Older versions](#even-older-versions)<br>
+
+
 # 2.4.0
 
 **This release brings two new experimental features, generator support
