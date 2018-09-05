@@ -1,6 +1,12 @@
 <a id="top"></a>
 # Supplying main() yourself
 
+**Contents**<br>
+[Let Catch take full control of args and config](#let-catch-take-full-control-of-args-and-config)<br>
+[Amending the config](#amending-the-config)<br>
+[Adding your own command line options](#adding-your-own-command-line-options)<br>
+[Version detection](#version-detection)<br>
+
 The easiest way to use Catch is to let it supply ```main()``` for you and handle configuring itself from the command line.
 
 This is achieved by writing ```#define CATCH_CONFIG_MAIN``` before the ```#include "catch.hpp"``` in *exactly one* source file.

@@ -24,7 +24,7 @@
 [Usage](#usage)<br>
 [Specify the section to run](#specify-the-section-to-run)<br>
 [Filenames as tags](#filenames-as-tags)<br>
-[Override output colouring](#use-colour)<br>
+[Override output colouring](#override-output-colouring)<br>
 
 Catch works quite nicely without any command line options at all - but for those times when you want greater control the following options are available.
 Click one of the followings links to take you straight to that option - or scroll on to browse the available options.
