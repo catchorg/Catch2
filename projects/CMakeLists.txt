@@ -320,7 +320,7 @@ set_tests_properties(ListTests PROPERTIES
 add_test(NAME ListTags COMMAND $<TARGET_FILE:SelfTest> --list-tags)
 set_tests_properties(ListTags PROPERTIES 
     PASS_REGULAR_EXPRESSION "[0-9]+ tags" 
-    FAIL_REGULAR_EXPRESSION "[.]")
+    FAIL_REGULAR_EXPRESSION "\\[\\.\\]")
 
 add_test(NAME ListReporters COMMAND $<TARGET_FILE:SelfTest> --list-reporters)
 set_tests_properties(ListReporters PROPERTIES PASS_REGULAR_EXPRESSION "Available reporters:")
