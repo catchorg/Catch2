@@ -8,6 +8,8 @@ cmake_minimum_required( VERSION 3.0 )
 
 project( CatchExamples CXX )
 
+message( STATUS "Examples included" )
+
 # define folders used:
 
 set( EXAMPLES_DIR ${CATCH_DIR}/examples )
