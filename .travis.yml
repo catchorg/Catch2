@@ -237,19 +237,46 @@ matrix:
         apt:
           sources: *all_sources
           packages: ['valgrind', 'lcov', 'g++-7']
-      env: COMPILER='g++-7' CPP14=1 VALGRIND=1      
-      
+      env: COMPILER='g++-7' CPP14=1 VALGRIND=1
+
     - os: osx
       osx_image: xcode9.1
       compiler: clang
       env: COMPILER='clang++' CPP14=1 EXAMPLES=1 COVERAGE=1 EXTRAS=1
+
+    # 7/ C++17 builds
+    - os: linux
+      compiler: gcc
+      addons: *gcc7
+      env: COMPILER='g++-7' CPP17=1
+
+    - os: linux
+      compiler: gcc
+      addons: *gcc7
+      env: COMPILER='g++-7' EXAMPLES=1 COVERAGE=1 EXTRAS=1 CPP17=1
+
+    - os: linux
+      compiler: clang
+      addons:
+          apt:
+              sources: *all_sources
+              packages: ['clang-6.0', 'libstdc++-7-dev']
+      env: COMPILER='clang++-6.0' CPP17=1
+
+    - os: linux
+      compiler: clang
+      addons:
+          apt:
+              sources: *all_sources
+              packages: ['clang-6.0', 'libstdc++-7-dev']
+      env: COMPILER='clang++-6.0' CPP17=1 EXAMPLES=1 COVERAGE=1 EXTRAS=1
 
 install:
   - DEPS_DIR="${TRAVIS_BUILD_DIR}/deps"
   - mkdir -p ${DEPS_DIR} && cd ${DEPS_DIR}
   - |
     if [[ "${TRAVIS_OS_NAME}" == "linux" ]]; then
-      CMAKE_URL="http://www.cmake.org/files/v3.5/cmake-3.5.2-Linux-x86_64.tar.gz"
+      CMAKE_URL="http://cmake.org/files/v3.8/cmake-3.8.2-Linux-x86_64.tar.gz"
       mkdir cmake && travis_retry wget --no-check-certificate --quiet -O - ${CMAKE_URL} | tar --strip-components=1 -xz -C cmake
       export PATH=${DEPS_DIR}/cmake/bin:${PATH}
     elif [[ "${TRAVIS_OS_NAME}" == "osx" ]]; then
@@ -263,7 +290,7 @@ before_script:
   - python scripts/generateSingleHeader.py
 
     # Use Debug builds for running Valgrind and building examples
-  - cmake -H. -BBuild-Debug -DCMAKE_BUILD_TYPE=Debug -Wdev -DUSE_CPP14=${CPP14} -DCATCH_USE_VALGRIND=${VALGRIND} -DCATCH_BUILD_EXAMPLES=${EXAMPLES} -DCATCH_ENABLE_COVERAGE=${COVERAGE} -DCATCH_BUILD_EXTRA_TESTS=${EXTRAS}
+  - cmake -H. -BBuild-Debug -DCMAKE_BUILD_TYPE=Debug -Wdev -DUSE_CPP14=${CPP14} -DUSE_CPP17=${CPP17} -DCATCH_USE_VALGRIND=${VALGRIND} -DCATCH_BUILD_EXAMPLES=${EXAMPLES} -DCATCH_ENABLE_COVERAGE=${COVERAGE} -DCATCH_BUILD_EXTRA_TESTS=${EXTRAS}
     # Don't bother with release build for coverage build
   - cmake -H. -BBuild-Release -DCMAKE_BUILD_TYPE=Release -Wdev -DUSE_CPP14=${CPP14}
 
