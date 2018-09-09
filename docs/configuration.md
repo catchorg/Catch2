@@ -3,14 +3,15 @@
 
 **Contents**<br>
 [main()/ implementation](#main-implementation)<br>
+[Reporter / Listener interfaces](#reporter--listener-interfaces)<br>
 [Prefixing Catch macros](#prefixing-catch-macros)<br>
 [Terminal colour](#terminal-colour)<br>
 [Console width](#console-width)<br>
 [stdout](#stdout)<br>
 [Fallback stringifier](#fallback-stringifier)<br>
 [Default reporter](#default-reporter)<br>
-[C++11 toggles](#c-11-toggles)<br>
-[C++17 toggles](#c-17-toggles)<br>
+[C++11 toggles](#c11-toggles)<br>
+[C++17 toggles](#c17-toggles)<br>
 [Other toggles](#other-toggles)<br>
 [Windows header clutter](#windows-header-clutter)<br>
 [Enabling stringification](#enabling-stringification)<br>
@@ -27,7 +28,7 @@ Nonetheless there are still some occasions where finer control is needed. For th
 
 Although Catch is header only it still, internally, maintains a distinction between interface headers and headers that contain implementation. Only one source file in your test project should compile the implementation headers and this is controlled through the use of one of these macros - one of these identifiers should be defined before including Catch in *exactly one implementation file in your project*.
 
-# Reporter / Listener interfaces
+## Reporter / Listener interfaces
 
     CATCH_CONFIG_EXTERNAL_INTERFACES  // Brings in necessary headers for Reporter/Listener implementation
 

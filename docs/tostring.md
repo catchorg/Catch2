@@ -2,9 +2,9 @@
 # String conversions
 
 **Contents**<br>
-[operator << overload for std::ostream](#operator-overload-for-std-ostream)<br>
-[Catch::StringMaker<T> specialisation](#catch-stringmaker-t-specialisation)<br>
-[Catch::is_range<T> specialisation](#catch-is_range-t-specialisation)<br>
+[operator << overload for std::ostream](#operator--overload-for-stdostream)<br>
+[Catch::StringMaker specialisation](#catchstringmaker-specialisation)<br>
+[Catch::is_range specialisation](#catchis_range-specialisation)<br>
 [Exceptions](#exceptions)<br>
 
 Catch needs to be able to convert types you use in assertions and logging expressions into strings (for logging and reporting purposes).
@@ -25,7 +25,7 @@ std::ostream& operator << ( std::ostream& os, T const& value ) {
 
 You should put this function in the same namespace as your type and have it declared before including Catch's header.
 
-## Catch::StringMaker<T> specialisation
+## Catch::StringMaker specialisation
 If you don't want to provide an ```operator <<``` overload, or you want to convert your type differently for testing purposes, you can provide a specialization for `Catch::StringMaker<T>`:
 
 ```
@@ -39,7 +39,7 @@ namespace Catch {
 }
 ```
 
-## Catch::is_range<T> specialisation
+## Catch::is_range specialisation
 As a fallback, Catch attempts to detect if the type can be iterated
 (`begin(T)` and `end(T)` are valid) and if it can be, it is stringified
 as a range. For certain types this can lead to infinite recursion, so
