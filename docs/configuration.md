@@ -128,6 +128,7 @@ Catch's selection, by defining either `CATCH_CONFIG_CPP11_TO_STRING` or
 
     CATCH_CONFIG_CPP17_UNCAUGHT_EXCEPTIONS  // Use std::uncaught_exceptions instead of std::uncaught_exception
     CATCH_CONFIG_CPP17_STRING_VIEW          // Provide StringMaker specialization for std::string_view
+    CATCH_CONFIG_CPP17_VARIANT              // Override C++17 detection for CATCH_CONFIG_ENABLE_VARIANT_STRINGMAKER
 
 Catch contains basic compiler/standard detection and attempts to use
 some C++17 features whenever appropriate. This automatic detection
@@ -202,6 +203,7 @@ By default, Catch does not stringify some types from the standard library. This 
     CATCH_CONFIG_ENABLE_PAIR_STRINGMAKER    // Provide StringMaker specialization for std::pair
     CATCH_CONFIG_ENABLE_TUPLE_STRINGMAKER   // Provide StringMaker specialization for std::tuple
     CATCH_CONFIG_ENABLE_CHRONO_STRINGMAKER  // Provide StringMaker specialization for std::chrono::duration, std::chrono::timepoint
+    CATCH_CONFIG_ENABLE_VARIANT_STRINGMAKER // Provide StringMaker specialization for std::variant, std::monostate (on C++17)
     CATCH_CONFIG_ENABLE_ALL_STRINGMAKERS    // Defines all of the above
 
 
