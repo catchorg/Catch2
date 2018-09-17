@@ -13,6 +13,7 @@ Writing tests:
 * [Reporters](reporters.md#top)
 * [Event Listeners](event-listeners.md#top)
 * [Data Generators](generators.md#top)
+* [Other macros](other-macros.md#top)
 
 Fine tuning:
 * [Supplying your own main()](own-main.md#top)
