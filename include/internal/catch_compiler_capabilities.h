@@ -171,11 +171,11 @@
        // work around clang bug with libstdc++ https://bugs.llvm.org/show_bug.cgi?id=31852
        // fix should be in clang 8, workaround in libstdc++ 8.2
 #      include <ciso646>
-#      if defined(__GLIBCXX__) && defined(_GLIBCXX_RELEASE) && (__GLIBCXX__  <= 20180502)
+#      if defined(__GLIBCXX__) && defined(_GLIBCXX_RELEASE) && (_GLIBCXX_RELEASE < 9)
 #        define CATCH_CONFIG_NO_CPP17_VARIANT
 #     else
 #        define CATCH_INTERNAL_CONFIG_CPP17_VARIANT
-#      endif // defined(__GLIBCXX__) && defined(_GLIBCXX_RELEASE) && (__GLIBCXX__  <= 20180502))
+#      endif // defined(__GLIBCXX__) && defined(_GLIBCXX_RELEASE) && (_GLIBCXX_RELEASE < 9)
 #    endif // defined(__clang__) && (__clang_major__ < 8)
 #  endif // __has_include(<variant>) && defined(CATCH_CPP17_OR_GREATER)
 #endif // __has_include
