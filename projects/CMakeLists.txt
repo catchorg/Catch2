@@ -38,6 +38,7 @@ set(TEST_SOURCES
         ${SELF_TEST_DIR}/UsageTests/ToStringGeneral.tests.cpp
         ${SELF_TEST_DIR}/UsageTests/ToStringPair.tests.cpp
         ${SELF_TEST_DIR}/UsageTests/ToStringTuple.tests.cpp
+        ${SELF_TEST_DIR}/UsageTests/ToStringVariant.tests.cpp
         ${SELF_TEST_DIR}/UsageTests/ToStringVector.tests.cpp
         ${SELF_TEST_DIR}/UsageTests/ToStringWhich.tests.cpp
         ${SELF_TEST_DIR}/UsageTests/Tricky.tests.cpp
