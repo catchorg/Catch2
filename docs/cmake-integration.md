@@ -1,6 +1,12 @@
 <a id="top"></a>
 # CMake integration
 
+**Contents**<br>
+[CMake target](#cmake-target)<br>
+[Automatic test registration](#automatic-test-registration)<br>
+[CMake project options](#cmake-project-options)<br>
+[Installing Catch2 from git repository](#installing-catch2-from-git-repository)<br>
+
 Because we use CMake to build Catch2, we also provide a couple of
 integration points for our users.
 
@@ -47,7 +53,7 @@ to your CMake module path.
 `Catch.cmake` provides function `catch_discover_tests` to get tests from
 a target. This function works by running the resulting executable with
 `--list-test-names-only` flag, and then parsing the output to find all
-existing tests. 
+existing tests.
 
 #### Usage
 ```cmake
@@ -183,6 +189,27 @@ included in the installation. Defaults to `ON`.
 included in the installation. Defaults to `ON`.
 * `BUILD_TESTING` -- When `ON` and the project is not used as a subproject,
 Catch2's test binary will be built. Defaults to `ON`.
+
+
+## Installing Catch2 from git repository
+
+If you cannot install Catch2 from a package manager (e.g. Ubuntu 16.04
+provides catch only in version 1.2.0) you might want to install it from
+the repository instead. Assuming you have enough rights, you can just
+install it to the default location, like so:
+```
+$ git clone https://github.com/catchorg/Catch2.git
+$ cd Catch2
+$ cmake -Bbuild -H. -DBUILD_TESTING=OFF
+$ sudo cmake --build build/ --target install
+```
+
+If you do not have superuser rights, you will also need to specify
+[CMAKE_INSTALL_PREFIX](https://cmake.org/cmake/help/latest/variable/CMAKE_INSTALL_PREFIX.html)
+when configuring the build, and then modify your calls to
+[find_package](https://cmake.org/cmake/help/latest/command/find_package.html)
+accordingly.
+
 
 ---
 
