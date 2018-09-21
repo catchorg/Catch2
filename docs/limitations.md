@@ -1,12 +1,19 @@
 <a id="top"></a>
 # Known limitations
 
-Catch has some known limitations, that we are not planning to change. Some of these are caused by our desire to support C++98 compilers, some of these are caused by our desire to keep Catch crossplatform, some exist because their priority is seen as low compared to the development effort they would need and some other yet are compiler/runtime bugs.
+Over time, some limitations of Catch2 emerged. Some of these are due
+to implementation details that cannot be easily changed, some of these
+are due to lack of development resources on our part, and some of these
+are due to plain old 3rd party bugs.
+
 
 ## Implementation limits
 ### Sections nested in loops
 
-If you are using `SECTION`s inside loops, you have to create them with different name per loop's iteration. The recommended way to do so is to incorporate the loop's counter into section's name, like so
+If you are using `SECTION`s inside loops, you have to create them with
+different name per loop's iteration. The recommended way to do so is to
+incorporate the loop's counter into section's name, like so:
+
 ```cpp
 TEST_CASE( "Looped section" ) {
     for (char i = '0'; i < '5'; ++i) {
@@ -16,6 +23,27 @@ TEST_CASE( "Looped section" ) {
     }
 }
 ```
+
+or with a `DYNAMIC_SECTION` macro (that was made for exactly this purpose):
+
+```cpp
+TEST_CASE( "Looped section" ) {
+    for (char i = '0'; i < '5'; ++i) {
+        DYNAMIC_SECTION( "Looped section " << i) {
+            SUCCEED( "Everything is OK" );
+        }
+    }
+}
+```
+
+### Tests might be run again if last section fails
+
+If the last section in a test fails, it might be run again. This is because
+Catch2 discovers `SECTION`s dynamically, as they are about to run, and
+if the last section in test case is aborted during execution (e.g. via
+the `REQUIRE` family of macros), Catch2 does not know that there are no
+more sections in that test case and must run the test case again.
+
 
 ## Features
 This section outlines some missing features, what is their status and their possible workarounds.
@@ -137,3 +165,14 @@ If you are seeing a problem like this, i.e. a weird test paths that trigger only
 This is a bug in `libstdc++-4.8`, where all matching methods from `<regex>` return false. Since `Matches` uses `<regex>` internally, if the underlying implementation does not work, it doesn't work either.
 
 Workaround: Use newer version of `libstdc++`.
+
+
+### libstdc++, `_GLIBCXX_DEBUG` macro and random ordering of tests
+
+Running a Catch2 binary compiled against libstdc++ with `_GLIBCXX_DEBUG`
+macro defined with `--order rand` will cause a debug check to trigger and
+abort the run due to self-assignment.
+[This is a known bug inside libstdc++](https://stackoverflow.com/questions/22915325/avoiding-self-assignment-in-stdshuffle/23691322)
+
+Workaround: Don't use `--order rand` when compiling against debug-enabled
+libstdc++.
