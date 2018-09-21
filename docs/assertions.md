@@ -71,7 +71,7 @@ REQUIRE( performComputation() == 2.1_a );
 `Approx` is constructed with defaults that should cover most simple cases.
 For the more complex cases, `Approx` provides 3 customization points:
 
-* __epsilon__ - epsilon serves to set the percentage by which a result
+* __epsilon__ - epsilon serves to set the coefficient by which a result
 can differ from `Approx`'s value before it is rejected.
 _By default set to `std::numeric_limits<float>::epsilon()*100`._
 * __margin__ - margin serves to set the the absolute value by which
