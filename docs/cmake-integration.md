@@ -67,6 +67,7 @@ target_link_libraries(foo Catch2::Catch2)
 
 include(CTest)
 include(Catch)
+enable_testing()
 catch_discover_tests(foo)
 ```
 
@@ -150,6 +151,7 @@ target_link_libraries(foo Catch2::Catch2)
 
 include(CTest)
 include(ParseAndAddCatchTests)
+enable_testing()
 ParseAndAddCatchTests(foo)
 ```
 
