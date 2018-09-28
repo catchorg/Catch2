@@ -2,6 +2,7 @@
 
 # Release notes
 **Contents**<br>
+[2.4.1](#241)<br>
 [2.4.0](#240)<br>
 [2.3.0](#230)<br>
 [2.2.3](#223)<br>
@@ -16,6 +17,19 @@
 [Even Older versions](#even-older-versions)<br>
 
 
+## 2.4.1
+
+### Improvements
+* Added a StringMaker for `std::(w)string_view` (#1375, #1376)
+* Added a StringMaker for `std::variant` (#1380)
+  * This one is disabled by default to avoid increased compile-time drag
+* Added detection for cygwin environment without `std::to_string` (#1396, #1397)
+
+### Fixes
+* `UnorderedEqualsMatcher` will no longer accept erroneously accept
+vectors that share suffix, but are not permutation of the desired vector
+* Abort after (`-x N`) can no longer be overshot by nested `REQUIRES` and
+subsequently ignored (#1391, #1392)
 
 
 ## 2.4.0
