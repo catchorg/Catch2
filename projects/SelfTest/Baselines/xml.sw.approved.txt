@@ -6608,6 +6608,17 @@
       </Expression>
       <OverallResult success="false"/>
     </TestCase>
+    <TestCase name="Regression test #1" tags="[matchers][vector]" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
+      <Expression success="true" type="CHECK_THAT" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
+        <Original>
+          actual, !UnorderedEquals(expected)
+        </Original>
+        <Expanded>
+          { 'a', 'b' } not UnorderedEquals: { 'c', 'b' }
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
     <TestCase name="SUCCEED counts as a test pass" tags="[messages]" filename="projects/<exe-name>/UsageTests/Message.tests.cpp" >
       <OverallResult success="true"/>
     </TestCase>
@@ -11310,7 +11321,7 @@ loose text artifact
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="1098" failures="123" expectedFailures="21"/>
+    <OverallResults successes="1099" failures="123" expectedFailures="21"/>
   </Group>
-  <OverallResults successes="1098" failures="122" expectedFailures="21"/>
+  <OverallResults successes="1099" failures="122" expectedFailures="21"/>
 </Catch>

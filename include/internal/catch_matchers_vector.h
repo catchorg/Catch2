@@ -124,7 +124,7 @@ namespace Matchers {
                 auto lfirst = m_target.begin(), llast = m_target.end();
                 auto rfirst = vec.begin(), rlast = vec.end();
                 // Cut common prefix to optimize checking of permuted parts
-                while (lfirst != llast && *lfirst != *rfirst) {
+                while (lfirst != llast && *lfirst == *rfirst) {
                     ++lfirst; ++rfirst;
                 }
                 if (lfirst == llast) {
