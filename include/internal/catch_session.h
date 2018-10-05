@@ -33,7 +33,14 @@ namespace Catch {
         void useConfigData( ConfigData const& configData );
 
         template<typename CharT>
-        int run( int argc, CharT const * const argv[] );
+        int run(int argc, CharT const * const argv[]) {
+            if (m_startupExceptions)
+                return 1;
+            int returnCode = applyCommandLine(argc, argv);
+            if (returnCode == 0)
+                returnCode = run();
+            return returnCode;
+        }
     
         int run();
 
