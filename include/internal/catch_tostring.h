@@ -29,15 +29,7 @@
 #pragma warning(disable:4180) // We attempt to stream a function (address) by const&, which MSVC complains about but is harmless
 #endif
 
-
-// We need a dummy global operator<< so we can bring it into Catch namespace later
-struct Catch_global_namespace_dummy {};
-std::ostream& operator<<(std::ostream&, Catch_global_namespace_dummy);
-
 namespace Catch {
-    // Bring in operator<< from global namespace into Catch namespace
-    using ::operator<<;
-
     namespace Detail {
 
         extern const std::string unprintableString;
