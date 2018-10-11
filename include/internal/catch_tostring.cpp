@@ -214,7 +214,7 @@ std::string StringMaker<char>::convert(char value) {
         return "'\\n'";
     } else if (value == '\t') {
         return "'\\t'";
-    } else if ('\0' <= value && value < ' ') {
+    } else if (value < ' ') {
         return ::Catch::Detail::stringify(static_cast<unsigned int>(value));
     } else {
         char chstr[] = "' '";
