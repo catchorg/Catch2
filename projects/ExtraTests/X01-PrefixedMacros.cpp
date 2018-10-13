@@ -2,8 +2,12 @@
 // Test that Catch's prefixed macros compile and run properly.
 
 #define CATCH_CONFIG_MAIN
+// This won't provide full coverage, but it might be worth checking
+// the other branch as well
+#define CATCH_CONFIG_RUNTIME_STATIC_REQUIRE
 #include <catch2/catch.hpp>
 
+#include <type_traits>
 #include <stdexcept>
 
 [[noreturn]]
@@ -23,7 +27,7 @@ CATCH_TEST_CASE("PrefixedMacros") {
     CATCH_REQUIRE_THROWS_WITH(this_throws(), "Some msg");
     CATCH_REQUIRE_THROWS_MATCHES(this_throws(), std::runtime_error, Predicate<std::runtime_error>([](std::runtime_error const&) { return true; }));
     CATCH_REQUIRE_NOTHROW(this_doesnt_throw());
-    
+
     CATCH_CHECK( 1 == 1 );
     CATCH_CHECK_FALSE( 1 != 1 );
     CATCH_CHECKED_IF( 1 == 1 ) {
@@ -31,15 +35,15 @@ CATCH_TEST_CASE("PrefixedMacros") {
     } CATCH_CHECKED_ELSE ( 1 == 1 ) {
         CATCH_SUCCEED("don't care");
     }
-    
+
     CATCH_CHECK_NOFAIL(1 == 2);
-    
+
     CATCH_CHECK_THROWS(this_throws());
     CATCH_CHECK_THROWS_AS(this_throws(), std::runtime_error);
     CATCH_CHECK_THROWS_WITH(this_throws(), "Some msg");
     CATCH_CHECK_THROWS_MATCHES(this_throws(), std::runtime_error, Predicate<std::runtime_error>([](std::runtime_error const&) { return true; }));
-    CATCH_CHECK_NOTHROW(this_doesnt_throw());    
-    
+    CATCH_CHECK_NOTHROW(this_doesnt_throw());
+
     CATCH_REQUIRE_THAT("abcd", Equals("abcd"));
     CATCH_CHECK_THAT("bdef", Equals("bdef"));
 
@@ -52,6 +56,9 @@ CATCH_TEST_CASE("PrefixedMacros") {
             CATCH_FAIL_CHECK( "failure" );
         }
     }
+
+    CATCH_STATIC_REQUIRE( std::is_void<void>::value );
+    CATCH_STATIC_REQUIRE_FALSE( std::is_void<int>::value );
 }
 
 CATCH_ANON_TEST_CASE() {

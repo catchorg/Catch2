@@ -4412,6 +4412,22 @@ with expansion:
   !{?}
 
 -------------------------------------------------------------------------------
+Optionally static assertions
+-------------------------------------------------------------------------------
+Compilation.tests.cpp:<line number>
+...............................................................................
+
+Compilation.tests.cpp:<line number>:
+PASSED:
+with message:
+  std::is_void<void>::value
+
+Compilation.tests.cpp:<line number>:
+PASSED:
+with message:
+  !(std::is_void<int>::value)
+
+-------------------------------------------------------------------------------
 Ordering comparison checks that should fail
 -------------------------------------------------------------------------------
 Condition.tests.cpp:<line number>
@@ -10848,6 +10864,6 @@ Misc.tests.cpp:<line number>:
 PASSED:
 
 ===============================================================================
-test cases:  214 |  148 passed |  62 failed |  4 failed as expected
-assertions: 1243 | 1100 passed | 122 failed | 21 failed as expected
+test cases:  215 |  149 passed |  62 failed |  4 failed as expected
+assertions: 1245 | 1102 passed | 122 failed | 21 failed as expected
 

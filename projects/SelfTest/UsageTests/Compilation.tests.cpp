@@ -5,12 +5,11 @@
  *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  */
 
+#include <type_traits>
+
 // Setup for #1403 -- look for global overloads of operator << for classes
 // in a different namespace.
-
 #include <ostream>
-
-
 
 namespace foo {
     struct helper_1403 {
@@ -25,7 +24,7 @@ std::ostream& operator<<(std::ostream& out, foo::helper_1403 const&) {
     return out << "[1403 helper]";
 }
 ///////////////////////////////
- 
+
 #include "catch.hpp"
 
 #include <cstring>
@@ -174,12 +173,17 @@ namespace { namespace CompilationTests {
     TEST_CASE_METHOD((Fixture_1245<int, int>), "#1245", "[compilation]") {
         SUCCEED();
     }
-    
+
     TEST_CASE("#1403", "[compilation]") {
         ::foo::helper_1403 h1, h2;
         REQUIRE(h1 == h2);
     }
-    
+
+    TEST_CASE("Optionally static assertions", "[compilation]") {
+        STATIC_REQUIRE( std::is_void<void>::value );
+        STATIC_REQUIRE_FALSE( std::is_void<int>::value );
+    }
+
 }} // namespace CompilationTests
 
 

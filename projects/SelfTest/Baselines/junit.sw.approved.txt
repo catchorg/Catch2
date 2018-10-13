@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuitesloose text artifact
 >
-  <testsuite name="<exe-name>" errors="17" failures="106" tests="1244" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
+  <testsuite name="<exe-name>" errors="17" failures="106" tests="1246" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
     <testcase classname="<exe-name>.global" name="# A test name that starts with a #" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="#1005: Comparing pointer to int and long (NULL can be either on various systems)" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="#1027" time="{duration}"/>
@@ -375,6 +375,7 @@ Exception.tests.cpp:<line number>
       </error>
     </testcase>
     <testcase classname="<exe-name>.global" name="Objects that evaluated in boolean contexts can be checked" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="Optionally static assertions" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Ordering comparison checks that should fail" time="{duration}">
       <failure message="7 > 7" type="CHECK">
 Condition.tests.cpp:<line number>

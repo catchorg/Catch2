@@ -4409,6 +4409,9 @@
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
+    <TestCase name="Optionally static assertions" tags="[compilation]" filename="projects/<exe-name>/UsageTests/Compilation.tests.cpp" >
+      <OverallResult success="true"/>
+    </TestCase>
     <TestCase name="Ordering comparison checks that should fail" tags="[.][failing]" filename="projects/<exe-name>/UsageTests/Condition.tests.cpp" >
       <Expression success="false" type="CHECK" filename="projects/<exe-name>/UsageTests/Condition.tests.cpp" >
         <Original>
@@ -11333,7 +11336,7 @@ loose text artifact
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="1100" failures="123" expectedFailures="21"/>
+    <OverallResults successes="1102" failures="123" expectedFailures="21"/>
   </Group>
-  <OverallResults successes="1100" failures="122" expectedFailures="21"/>
+  <OverallResults successes="1102" failures="122" expectedFailures="21"/>
 </Catch>
