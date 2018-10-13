@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Catch name="<exe-name>">
+  <Randomness seed="1"/>
   <Group name="<exe-name>">
     <TestCase name="# A test name that starts with a #" filename="projects/<exe-name>/UsageTests/Misc.tests.cpp" >
       <OverallResult success="true"/>
