@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuitesloose text artifact
 >
-  <testsuite name="<exe-name>" errors="17" failures="106" tests="1243" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
+  <testsuite name="<exe-name>" errors="17" failures="106" tests="1244" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
     <testcase classname="<exe-name>.global" name="# A test name that starts with a #" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="#1005: Comparing pointer to int and long (NULL can be either on various systems)" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="#1027" time="{duration}"/>
@@ -9,6 +9,7 @@
     <testcase classname="<exe-name>.global" name="#1175 - Hidden Test" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="#1238" time="{duration}"/>
     <testcase classname="<exe-name>.(Fixture_1245&lt;int, int>)" name="#1245" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="#1403" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="#748 - captures with unexpected exceptions/outside assertions" time="{duration}">
       <error type="TEST_CASE">
 expected exception
