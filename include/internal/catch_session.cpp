@@ -185,22 +185,8 @@ namespace Catch {
         return 0;
     }
 
-    void Session::useConfigData( ConfigData const& configData ) {
-        m_configData = configData;
-        m_config.reset();
-    }
-
-    int Session::run( int argc, char* argv[] ) {
-        if( m_startupExceptions )
-            return 1;
-        int returnCode = applyCommandLine( argc, argv );
-        if( returnCode == 0 )
-            returnCode = run();
-        return returnCode;
-    }
-
 #if defined(CATCH_CONFIG_WCHAR) && defined(WIN32) && defined(UNICODE)
-    int Session::run( int argc, wchar_t* const argv[] ) {
+    int Session::applyCommandLine( int argc, wchar_t const * const * argv ) {
 
         char **utf8Argv = new char *[ argc ];
 
@@ -212,7 +198,7 @@ namespace Catch {
             WideCharToMultiByte( CP_UTF8, 0, argv[i], -1, utf8Argv[i], bufSize, NULL, NULL );
         }
 
-        int returnCode = run( argc, utf8Argv );
+        int returnCode = applyCommandLine( argc, utf8Argv );
 
         for ( int i = 0; i < argc; ++i )
             delete [] utf8Argv[ i ];
@@ -222,6 +208,12 @@ namespace Catch {
         return returnCode;
     }
 #endif
+
+    void Session::useConfigData( ConfigData const& configData ) {
+        m_configData = configData;
+        m_config.reset();
+    }
+
     int Session::run() {
         if( ( m_configData.waitForKeypress & WaitForKeypress::BeforeStart ) != 0 ) {
             Catch::cout() << "...waiting for enter/ return before starting" << std::endl;

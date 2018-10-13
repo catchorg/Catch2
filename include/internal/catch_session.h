@@ -26,13 +26,22 @@ namespace Catch {
         void libIdentify();
 
         int applyCommandLine( int argc, char const * const * argv );
+    #if defined(CATCH_CONFIG_WCHAR) && defined(WIN32) && defined(UNICODE)
+        int applyCommandLine( int argc, wchar_t const * const * argv );
+    #endif
 
         void useConfigData( ConfigData const& configData );
 
-        int run( int argc, char* argv[] );
-    #if defined(CATCH_CONFIG_WCHAR) && defined(WIN32) && defined(UNICODE)
-        int run( int argc, wchar_t* const argv[] );
-    #endif
+        template<typename CharT>
+        int run(int argc, CharT const * const argv[]) {
+            if (m_startupExceptions)
+                return 1;
+            int returnCode = applyCommandLine(argc, argv);
+            if (returnCode == 0)
+                returnCode = run();
+            return returnCode;
+        }
+    
         int run();
 
         clara::Parser const& cli() const;
