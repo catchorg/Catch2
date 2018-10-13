@@ -3,6 +3,8 @@
 <exe-name> is a <version> host application.
 Run with -? for options
 
+Randomness seeded to: 1
+
 -------------------------------------------------------------------------------
 # A test name that starts with a #
 -------------------------------------------------------------------------------
