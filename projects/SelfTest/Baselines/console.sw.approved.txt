@@ -136,6 +136,18 @@ Compilation.tests.cpp:<line number>:
 PASSED:
 
 -------------------------------------------------------------------------------
+#1403
+-------------------------------------------------------------------------------
+Compilation.tests.cpp:<line number>
+...............................................................................
+
+Compilation.tests.cpp:<line number>:
+PASSED:
+  REQUIRE( h1 == h2 )
+with expansion:
+  [1403 helper] == [1403 helper]
+
+-------------------------------------------------------------------------------
 #748 - captures with unexpected exceptions
   outside assertions
 -------------------------------------------------------------------------------
@@ -10834,6 +10846,6 @@ Misc.tests.cpp:<line number>:
 PASSED:
 
 ===============================================================================
-test cases:  213 |  147 passed |  62 failed |  4 failed as expected
-assertions: 1242 | 1099 passed | 122 failed | 21 failed as expected
+test cases:  214 |  148 passed |  62 failed |  4 failed as expected
+assertions: 1243 | 1100 passed | 122 failed | 21 failed as expected
 

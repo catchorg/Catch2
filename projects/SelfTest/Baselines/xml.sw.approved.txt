@@ -130,6 +130,17 @@
     <TestCase name="#1245" tags="[compilation]" filename="projects/<exe-name>/UsageTests/Compilation.tests.cpp" >
       <OverallResult success="true"/>
     </TestCase>
+    <TestCase name="#1403" tags="[compilation]" filename="projects/<exe-name>/UsageTests/Compilation.tests.cpp" >
+      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/UsageTests/Compilation.tests.cpp" >
+        <Original>
+          h1 == h2
+        </Original>
+        <Expanded>
+          [1403 helper] == [1403 helper]
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
     <TestCase name="#748 - captures with unexpected exceptions" tags="[!shouldfail][!throws][.][failing]" filename="projects/<exe-name>/UsageTests/Exception.tests.cpp" >
       <Section name="outside assertions" filename="projects/<exe-name>/UsageTests/Exception.tests.cpp" >
         <Info>
@@ -11321,7 +11332,7 @@ loose text artifact
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="1099" failures="123" expectedFailures="21"/>
+    <OverallResults successes="1100" failures="123" expectedFailures="21"/>
   </Group>
-  <OverallResults successes="1099" failures="122" expectedFailures="21"/>
+  <OverallResults successes="1100" failures="122" expectedFailures="21"/>
 </Catch>
