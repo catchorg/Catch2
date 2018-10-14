@@ -51,12 +51,14 @@ string(REPLACE "\n" ";" output "${output}")
 # Parse output
 foreach(line ${output})
   set(test ${line})
+  # use escape commas to handle properly test cases with commans inside the name
+  string(REPLACE "," "\\," test_name ${test})
   # ...and add to script
   add_command(add_test
     "${prefix}${test}${suffix}"
     ${TEST_EXECUTOR}
     "${TEST_EXECUTABLE}"
-    "${test}"
+    "${test_name}"
     ${extra_args}
   )
   add_command(set_tests_properties
