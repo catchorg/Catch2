@@ -145,6 +145,14 @@
 
 #define CATCH_ANON_TEST_CASE() INTERNAL_CATCH_TESTCASE()
 
+#ifdef CATCH_USE_STATIC_REQUIRE
+#define CATCH_STATIC_REQUIRE( expr )       static_assert( expr, #expr ); CATCH_SUCCEED( #expr )
+#define CATCH_STATIC_REQUIRE_FALSE( expr ) static_assert( !(expr), "!(" #expr ")" ); CATCH_SUCCEED( !(#expr) )
+#else // CATCH_USE_STATIC_REQUIRE
+#define CATCH_STATIC_REQUIRE( expr )       CATCH_REQUIRE( #expr )
+#define CATCH_STATIC_REQUIRE_FALSE( expr ) CATCH_REQUIRE_FALSE( #expr )
+#endif // CATCH_USE_STATIC_REQUIRE
+
 // "BDD-style" convenience wrappers
 #define CATCH_SCENARIO( ... ) CATCH_TEST_CASE( "Scenario: " __VA_ARGS__ )
 #define CATCH_SCENARIO_METHOD( className, ... ) INTERNAL_CATCH_TEST_CASE_METHOD( className, "Scenario: " __VA_ARGS__ )
@@ -204,6 +212,14 @@
 #define FAIL_CHECK( ... ) INTERNAL_CATCH_MSG( "FAIL_CHECK", Catch::ResultWas::ExplicitFailure, Catch::ResultDisposition::ContinueOnFailure, __VA_ARGS__ )
 #define SUCCEED( ... ) INTERNAL_CATCH_MSG( "SUCCEED", Catch::ResultWas::Ok, Catch::ResultDisposition::ContinueOnFailure, __VA_ARGS__ )
 #define ANON_TEST_CASE() INTERNAL_CATCH_TESTCASE()
+
+#ifdef CATCH_USE_STATIC_REQUIRE
+#define STATIC_REQUIRE( expr )       static_assert( expr, #expr ); SUCCEED( #expr )
+#define STATIC_REQUIRE_FALSE( expr ) static_assert( !(expr), "!(" #expr ")" ); SUCCEED( !(#expr) )
+#else // CATCH_USE_STATIC_REQUIRE
+#define STATIC_REQUIRE( expr )       REQUIRE( #expr )
+#define STATIC_REQUIRE_FALSE( expr ) REQUIRE_FALSE( #expr )
+#endif // CATCH_USE_STATIC_REQUIRE
 
 #endif
 
@@ -285,6 +301,9 @@ using Catch::Detail::Approx;
 #define CATCH_THEN( desc )
 #define CATCH_AND_THEN( desc )
 
+#define CATCH_STATIC_REQUIRE( expr )       (void)(0)
+#define CATCH_STATIC_REQUIRE_FALSE( expr ) (void)(0)
+
 // If CATCH_CONFIG_PREFIX_ALL is not defined then the CATCH_ prefix is not required
 #else
 
@@ -334,6 +353,10 @@ using Catch::Detail::Approx;
 #define FAIL_CHECK( ... ) (void)(0)
 #define SUCCEED( ... ) (void)(0)
 #define ANON_TEST_CASE() INTERNAL_CATCH_TESTCASE_NO_REGISTRATION(INTERNAL_CATCH_UNIQUE_NAME( ____C_A_T_C_H____T_E_S_T____ ))
+
+#define STATIC_REQUIRE( expr )       (void)(0)
+#define STATIC_REQUIRE_FALSE( expr ) (void)(0)
+
 
 #endif
 
