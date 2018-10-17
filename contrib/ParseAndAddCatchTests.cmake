@@ -39,6 +39,11 @@
 #    PARSE_CATCH_TESTS_ADD_TO_CONFIGURE_DEPENDS (Default OFF)                                      #
 #    -- causes CMake to rerun when file with tests changes so that new tests will be discovered    #
 #                                                                                                  #
+# One can also set (locally) the optional variable OptionalCatchTestLauncher to precise the way    #
+# a test should be run. For instance to use test MPI, one can write                                #
+#     set(OptionalCatchTestLauncher ${MPIEXEC} ${MPIEXEC_NUMPROC_FLAG} ${NUMPROC})                 #
+# just before calling this ParseAndAddCatchTests function                                          #
+#                                                                                                  #
 #==================================================================================================#
 
 cmake_minimum_required(VERSION 2.8.8)
@@ -168,7 +173,7 @@ function(ParseFile SourceFile TestTarget)
             endif()
 
             # Add the test and set its properties
-            add_test(NAME "\"${CTestName}\"" COMMAND ${TestTarget} ${Name} ${AdditionalCatchParameters})
+            add_test(NAME "\"${CTestName}\"" COMMAND ${OptionalCatchTestLauncher} ${TestTarget} ${Name} ${AdditionalCatchParameters})
             set_tests_properties("\"${CTestName}\"" PROPERTIES FAIL_REGULAR_EXPRESSION "No tests ran"
                                                     LABELS "${Labels}")
         endif()
