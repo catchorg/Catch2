@@ -172,6 +172,16 @@ step will be re-ran when the test files change, letting new tests be
 automatically discovered. Defaults to `OFF`.
 
 
+Optionally, one can specify a launching command to run tests by setting the
+variable `OptionalCatchTestLauncher` before calling `ParseAndAddCatchTests`. For
+instance to run some tests using `MPI` and other sequentially, one can write
+```cmake
+set(OptionalCatchTestLauncher ${MPIEXEC} ${MPIEXEC_NUMPROC_FLAG} ${NUMPROC})
+ParseAndAddCatchTests(mpi_foo)
+unset(OptionalCatchTestLauncher)
+ParseAndAddCatchTests(bar)
+```
+
 ## CMake project options
 
 Catch2's CMake project also provides some options for other projects
