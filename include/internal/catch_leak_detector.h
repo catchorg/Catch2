@@ -11,6 +11,7 @@ namespace Catch {
 
     struct LeakDetector {
         LeakDetector();
+        ~LeakDetector();
     };
 
 }

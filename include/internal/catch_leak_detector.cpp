@@ -6,6 +6,7 @@
  */
 
  #include "catch_leak_detector.h"
+ #include "catch_interfaces_registry_hub.h"
 
 
 #ifdef CATCH_CONFIG_WINDOWS_CRTDBG
@@ -30,3 +31,7 @@ namespace Catch {
     Catch::LeakDetector::LeakDetector() {}
 
 #endif
+
+Catch::LeakDetector::~LeakDetector() {
+    Catch::cleanUp();
+}
