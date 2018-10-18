@@ -18,7 +18,7 @@ if os.name == 'nt':
 
 rootPath = os.path.join(catchPath, 'projects/SelfTest/Baselines')
 
-
+langFilenameParser = re.compile(r'(.+\.[ch]pp)')
 filelocParser = re.compile(r'''
     .*/
     (.+\.[ch]pp)  # filename
@@ -95,8 +95,12 @@ def filterLine(line, isCompact):
     if catchPath in line:
         # make paths relative to Catch root
         line = line.replace(catchPath + os.sep, '')
+
+    if langFilenameParser.match(line):
         # go from \ in windows paths to /
         line = line.replace('\\', '/')
+        # remove start of relative path
+        line = line.replace('../', '')
 
     # strip source line numbers
     m = filelocParser.match(line)
