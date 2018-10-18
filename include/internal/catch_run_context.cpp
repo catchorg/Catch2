@@ -107,8 +107,16 @@ namespace Catch {
 
         std::string redirectedCout;
         std::string redirectedCerr;
+        RedirectedStdOut redirectedStdOut;
+        RedirectedStdErr redirectedStdErr;
 
         auto const& testInfo = testCase.getTestCaseInfo();
+#if !defined(CATCH_CONFIG_EXPERIMENTAL_REDIRECT)
+        redirectedCout += redirectedStdOut.str();
+        redirectedCerr += redirectedStdErr.str();
+#else
+        OutputRedirect r(redirectedCout, redirectedCerr);
+#endif
 
         m_reporter->testCaseStarting(testInfo);
 
