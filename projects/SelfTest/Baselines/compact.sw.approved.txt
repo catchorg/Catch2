@@ -224,16 +224,16 @@ Tricky.tests.cpp:<line number>: passed: y.v == 0 for: 0 == 0
 Tricky.tests.cpp:<line number>: passed: 0 == y.v for: 0 == 0
 ToStringGeneral.tests.cpp:<line number>: passed: true with 1 message: 'i := 2'
 ToStringGeneral.tests.cpp:<line number>: passed: true with 1 message: '3'
-ToStringGeneral.tests.cpp:<line number>: passed: tab == '/t' for: '/t' == '/t'
-ToStringGeneral.tests.cpp:<line number>: passed: newline == '/n' for: '/n' == '/n'
-ToStringGeneral.tests.cpp:<line number>: passed: carr_return == '/r' for: '/r' == '/r'
-ToStringGeneral.tests.cpp:<line number>: passed: form_feed == '/f' for: '/f' == '/f'
+ToStringGeneral.tests.cpp:<line number>: passed: tab == '\t' for: '\t' == '\t'
+ToStringGeneral.tests.cpp:<line number>: passed: newline == '\n' for: '\n' == '\n'
+ToStringGeneral.tests.cpp:<line number>: passed: carr_return == '\r' for: '\r' == '\r'
+ToStringGeneral.tests.cpp:<line number>: passed: form_feed == '\f' for: '\f' == '\f'
 ToStringGeneral.tests.cpp:<line number>: passed: space == ' ' for: ' ' == ' '
 ToStringGeneral.tests.cpp:<line number>: passed: c == chars[i] for: 'a' == 'a'
 ToStringGeneral.tests.cpp:<line number>: passed: c == chars[i] for: 'z' == 'z'
 ToStringGeneral.tests.cpp:<line number>: passed: c == chars[i] for: 'A' == 'A'
 ToStringGeneral.tests.cpp:<line number>: passed: c == chars[i] for: 'Z' == 'Z'
-ToStringGeneral.tests.cpp:<line number>: passed: null_terminator == '/0' for: 0 == 0
+ToStringGeneral.tests.cpp:<line number>: passed: null_terminator == '\0' for: 0 == 0
 ToStringGeneral.tests.cpp:<line number>: passed: c == i for: 2 == 2
 ToStringGeneral.tests.cpp:<line number>: passed: c == i for: 3 == 3
 ToStringGeneral.tests.cpp:<line number>: passed: c == i for: 4 == 4
@@ -1067,50 +1067,50 @@ Xml.tests.cpp:<line number>: passed: encode( stringWithQuotes ) == stringWithQuo
 Xml.tests.cpp:<line number>: passed: encode( stringWithQuotes, Catch::XmlEncode::ForAttributes ) == "don't &quot;quote&quot; me on that" for: "don't &quot;quote&quot; me on that"
 ==
 "don't &quot;quote&quot; me on that"
-Xml.tests.cpp:<line number>: passed: encode( "[/x01]" ) == "[//x01]" for: "[/x01]" == "[/x01]"
-Xml.tests.cpp:<line number>: passed: encode( "[/x7F]" ) == "[//x7F]" for: "[/x7F]" == "[/x7F]"
+Xml.tests.cpp:<line number>: passed: encode( "[\x01]" ) == "[\\x01]" for: "[\x01]" == "[\x01]"
+Xml.tests.cpp:<line number>: passed: encode( "[\x7F]" ) == "[\\x7F]" for: "[\x7F]" == "[\x7F]"
 Xml.tests.cpp:<line number>: passed: encode(u8"Here be üëæ") == u8"Here be üëæ" for: "Here be üëæ" == "Here be üëæ"
 Xml.tests.cpp:<line number>: passed: encode(u8"≈°≈°") == u8"≈°≈°" for: "≈°≈°" == "≈°≈°"
-Xml.tests.cpp:<line number>: passed: encode("/xDF/xBF") == "/xDF/xBF" for: "ﬂø" == "ﬂø"
-Xml.tests.cpp:<line number>: passed: encode("/xE0/xA0/x80") == "/xE0/xA0/x80" for: "‡†Ä" == "‡†Ä"
-Xml.tests.cpp:<line number>: passed: encode("/xED/x9F/xBF") == "/xED/x9F/xBF" for: "Ìüø" == "Ìüø"
-Xml.tests.cpp:<line number>: passed: encode("/xEE/x80/x80") == "/xEE/x80/x80" for: "ÓÄÄ" == "ÓÄÄ"
-Xml.tests.cpp:<line number>: passed: encode("/xEF/xBF/xBF") == "/xEF/xBF/xBF" for: "Ôøø" == "Ôøø"
-Xml.tests.cpp:<line number>: passed: encode("/xF0/x90/x80/x80") == "/xF0/x90/x80/x80" for: "êÄÄ" == "êÄÄ"
-Xml.tests.cpp:<line number>: passed: encode("/xF4/x8F/xBF/xBF") == "/xF4/x8F/xBF/xBF" for: "Ùèøø" == "Ùèøø"
-Xml.tests.cpp:<line number>: passed: encode("Here /xFF be üëæ") == u8"Here //xFF be üëæ" for: "Here /xFF be üëæ" == "Here /xFF be üëæ"
-Xml.tests.cpp:<line number>: passed: encode("/xFF") == "//xFF" for: "/xFF" == "/xFF"
-Xml.tests.cpp:<line number>: passed: encode("/xC5/xC5/xA0") == u8"//xC5≈†" for: "/xC5≈†" == "/xC5≈†"
-Xml.tests.cpp:<line number>: passed: encode("/xF4/x90/x80/x80") == u8"//xF4//x90//x80//x80" for: "/xF4/x90/x80/x80" == "/xF4/x90/x80/x80"
-Xml.tests.cpp:<line number>: passed: encode("/xC0/x80") == u8"//xC0//x80" for: "/xC0/x80" == "/xC0/x80"
-Xml.tests.cpp:<line number>: passed: encode("/xF0/x80/x80/x80") == u8"//xF0//x80//x80//x80" for: "/xF0/x80/x80/x80" == "/xF0/x80/x80/x80"
-Xml.tests.cpp:<line number>: passed: encode("/xC1/xBF") == u8"//xC1//xBF" for: "/xC1/xBF" == "/xC1/xBF"
-Xml.tests.cpp:<line number>: passed: encode("/xE0/x9F/xBF") == u8"//xE0//x9F//xBF" for: "/xE0/x9F/xBF" == "/xE0/x9F/xBF"
-Xml.tests.cpp:<line number>: passed: encode("/xF0/x8F/xBF/xBF") == u8"//xF0//x8F//xBF//xBF" for: "/xF0/x8F/xBF/xBF" == "/xF0/x8F/xBF/xBF"
-Xml.tests.cpp:<line number>: passed: encode("/xED/xA0/x80") == "/xED/xA0/x80" for: "Ì†Ä" == "Ì†Ä"
-Xml.tests.cpp:<line number>: passed: encode("/xED/xAF/xBF") == "/xED/xAF/xBF" for: "ÌØø" == "ÌØø"
-Xml.tests.cpp:<line number>: passed: encode("/xED/xB0/x80") == "/xED/xB0/x80" for: "Ì∞Ä" == "Ì∞Ä"
-Xml.tests.cpp:<line number>: passed: encode("/xED/xBF/xBF") == "/xED/xBF/xBF" for: "Ìøø" == "Ìøø"
-Xml.tests.cpp:<line number>: passed: encode("/x80") == u8"//x80" for: "/x80" == "/x80"
-Xml.tests.cpp:<line number>: passed: encode("/x81") == u8"//x81" for: "/x81" == "/x81"
-Xml.tests.cpp:<line number>: passed: encode("/xBC") == u8"//xBC" for: "/xBC" == "/xBC"
-Xml.tests.cpp:<line number>: passed: encode("/xBF") == u8"//xBF" for: "/xBF" == "/xBF"
-Xml.tests.cpp:<line number>: passed: encode("/xF5/x80/x80/x80") == u8"//xF5//x80//x80//x80" for: "/xF5/x80/x80/x80" == "/xF5/x80/x80/x80"
-Xml.tests.cpp:<line number>: passed: encode("/xF6/x80/x80/x80") == u8"//xF6//x80//x80//x80" for: "/xF6/x80/x80/x80" == "/xF6/x80/x80/x80"
-Xml.tests.cpp:<line number>: passed: encode("/xF7/x80/x80/x80") == u8"//xF7//x80//x80//x80" for: "/xF7/x80/x80/x80" == "/xF7/x80/x80/x80"
-Xml.tests.cpp:<line number>: passed: encode("/xDE") == u8"//xDE" for: "/xDE" == "/xDE"
-Xml.tests.cpp:<line number>: passed: encode("/xDF") == u8"//xDF" for: "/xDF" == "/xDF"
-Xml.tests.cpp:<line number>: passed: encode("/xE0") == u8"//xE0" for: "/xE0" == "/xE0"
-Xml.tests.cpp:<line number>: passed: encode("/xEF") == u8"//xEF" for: "/xEF" == "/xEF"
-Xml.tests.cpp:<line number>: passed: encode("/xF0") == u8"//xF0" for: "/xF0" == "/xF0"
-Xml.tests.cpp:<line number>: passed: encode("/xF4") == u8"//xF4" for: "/xF4" == "/xF4"
-Xml.tests.cpp:<line number>: passed: encode("/xE0/x80") == u8"//xE0//x80" for: "/xE0/x80" == "/xE0/x80"
-Xml.tests.cpp:<line number>: passed: encode("/xE0/xBF") == u8"//xE0//xBF" for: "/xE0/xBF" == "/xE0/xBF"
-Xml.tests.cpp:<line number>: passed: encode("/xE1/x80") == u8"//xE1//x80" for: "/xE1/x80" == "/xE1/x80"
-Xml.tests.cpp:<line number>: passed: encode("/xF0/x80") == u8"//xF0//x80" for: "/xF0/x80" == "/xF0/x80"
-Xml.tests.cpp:<line number>: passed: encode("/xF4/x80") == u8"//xF4//x80" for: "/xF4/x80" == "/xF4/x80"
-Xml.tests.cpp:<line number>: passed: encode("/xF0/x80/x80") == u8"//xF0//x80//x80" for: "/xF0/x80/x80" == "/xF0/x80/x80"
-Xml.tests.cpp:<line number>: passed: encode("/xF4/x80/x80") == u8"//xF4//x80//x80" for: "/xF4/x80/x80" == "/xF4/x80/x80"
+Xml.tests.cpp:<line number>: passed: encode("\xDF\xBF") == "\xDF\xBF" for: "ﬂø" == "ﬂø"
+Xml.tests.cpp:<line number>: passed: encode("\xE0\xA0\x80") == "\xE0\xA0\x80" for: "‡†Ä" == "‡†Ä"
+Xml.tests.cpp:<line number>: passed: encode("\xED\x9F\xBF") == "\xED\x9F\xBF" for: "Ìüø" == "Ìüø"
+Xml.tests.cpp:<line number>: passed: encode("\xEE\x80\x80") == "\xEE\x80\x80" for: "ÓÄÄ" == "ÓÄÄ"
+Xml.tests.cpp:<line number>: passed: encode("\xEF\xBF\xBF") == "\xEF\xBF\xBF" for: "Ôøø" == "Ôøø"
+Xml.tests.cpp:<line number>: passed: encode("\xF0\x90\x80\x80") == "\xF0\x90\x80\x80" for: "êÄÄ" == "êÄÄ"
+Xml.tests.cpp:<line number>: passed: encode("\xF4\x8F\xBF\xBF") == "\xF4\x8F\xBF\xBF" for: "Ùèøø" == "Ùèøø"
+Xml.tests.cpp:<line number>: passed: encode("Here \xFF be üëæ") == u8"Here \\xFF be üëæ" for: "Here \xFF be üëæ" == "Here \xFF be üëæ"
+Xml.tests.cpp:<line number>: passed: encode("\xFF") == "\\xFF" for: "\xFF" == "\xFF"
+Xml.tests.cpp:<line number>: passed: encode("\xC5\xC5\xA0") == u8"\\xC5≈†" for: "\xC5≈†" == "\xC5≈†"
+Xml.tests.cpp:<line number>: passed: encode("\xF4\x90\x80\x80") == u8"\\xF4\\x90\\x80\\x80" for: "\xF4\x90\x80\x80" == "\xF4\x90\x80\x80"
+Xml.tests.cpp:<line number>: passed: encode("\xC0\x80") == u8"\\xC0\\x80" for: "\xC0\x80" == "\xC0\x80"
+Xml.tests.cpp:<line number>: passed: encode("\xF0\x80\x80\x80") == u8"\\xF0\\x80\\x80\\x80" for: "\xF0\x80\x80\x80" == "\xF0\x80\x80\x80"
+Xml.tests.cpp:<line number>: passed: encode("\xC1\xBF") == u8"\\xC1\\xBF" for: "\xC1\xBF" == "\xC1\xBF"
+Xml.tests.cpp:<line number>: passed: encode("\xE0\x9F\xBF") == u8"\\xE0\\x9F\\xBF" for: "\xE0\x9F\xBF" == "\xE0\x9F\xBF"
+Xml.tests.cpp:<line number>: passed: encode("\xF0\x8F\xBF\xBF") == u8"\\xF0\\x8F\\xBF\\xBF" for: "\xF0\x8F\xBF\xBF" == "\xF0\x8F\xBF\xBF"
+Xml.tests.cpp:<line number>: passed: encode("\xED\xA0\x80") == "\xED\xA0\x80" for: "Ì†Ä" == "Ì†Ä"
+Xml.tests.cpp:<line number>: passed: encode("\xED\xAF\xBF") == "\xED\xAF\xBF" for: "ÌØø" == "ÌØø"
+Xml.tests.cpp:<line number>: passed: encode("\xED\xB0\x80") == "\xED\xB0\x80" for: "Ì∞Ä" == "Ì∞Ä"
+Xml.tests.cpp:<line number>: passed: encode("\xED\xBF\xBF") == "\xED\xBF\xBF" for: "Ìøø" == "Ìøø"
+Xml.tests.cpp:<line number>: passed: encode("\x80") == u8"\\x80" for: "\x80" == "\x80"
+Xml.tests.cpp:<line number>: passed: encode("\x81") == u8"\\x81" for: "\x81" == "\x81"
+Xml.tests.cpp:<line number>: passed: encode("\xBC") == u8"\\xBC" for: "\xBC" == "\xBC"
+Xml.tests.cpp:<line number>: passed: encode("\xBF") == u8"\\xBF" for: "\xBF" == "\xBF"
+Xml.tests.cpp:<line number>: passed: encode("\xF5\x80\x80\x80") == u8"\\xF5\\x80\\x80\\x80" for: "\xF5\x80\x80\x80" == "\xF5\x80\x80\x80"
+Xml.tests.cpp:<line number>: passed: encode("\xF6\x80\x80\x80") == u8"\\xF6\\x80\\x80\\x80" for: "\xF6\x80\x80\x80" == "\xF6\x80\x80\x80"
+Xml.tests.cpp:<line number>: passed: encode("\xF7\x80\x80\x80") == u8"\\xF7\\x80\\x80\\x80" for: "\xF7\x80\x80\x80" == "\xF7\x80\x80\x80"
+Xml.tests.cpp:<line number>: passed: encode("\xDE") == u8"\\xDE" for: "\xDE" == "\xDE"
+Xml.tests.cpp:<line number>: passed: encode("\xDF") == u8"\\xDF" for: "\xDF" == "\xDF"
+Xml.tests.cpp:<line number>: passed: encode("\xE0") == u8"\\xE0" for: "\xE0" == "\xE0"
+Xml.tests.cpp:<line number>: passed: encode("\xEF") == u8"\\xEF" for: "\xEF" == "\xEF"
+Xml.tests.cpp:<line number>: passed: encode("\xF0") == u8"\\xF0" for: "\xF0" == "\xF0"
+Xml.tests.cpp:<line number>: passed: encode("\xF4") == u8"\\xF4" for: "\xF4" == "\xF4"
+Xml.tests.cpp:<line number>: passed: encode("\xE0\x80") == u8"\\xE0\\x80" for: "\xE0\x80" == "\xE0\x80"
+Xml.tests.cpp:<line number>: passed: encode("\xE0\xBF") == u8"\\xE0\\xBF" for: "\xE0\xBF" == "\xE0\xBF"
+Xml.tests.cpp:<line number>: passed: encode("\xE1\x80") == u8"\\xE1\\x80" for: "\xE1\x80" == "\xE1\x80"
+Xml.tests.cpp:<line number>: passed: encode("\xF0\x80") == u8"\\xF0\\x80" for: "\xF0\x80" == "\xF0\x80"
+Xml.tests.cpp:<line number>: passed: encode("\xF4\x80") == u8"\\xF4\\x80" for: "\xF4\x80" == "\xF4\x80"
+Xml.tests.cpp:<line number>: passed: encode("\xF0\x80\x80") == u8"\\xF0\\x80\\x80" for: "\xF0\x80\x80" == "\xF0\x80\x80"
+Xml.tests.cpp:<line number>: passed: encode("\xF4\x80\x80") == u8"\\xF4\\x80\\x80" for: "\xF4\x80\x80" == "\xF4\x80\x80"
 ToStringVector.tests.cpp:<line number>: passed: Catch::Detail::stringify( empty ) == "{  }" for: "{  }" == "{  }"
 ToStringVector.tests.cpp:<line number>: passed: Catch::Detail::stringify( oneValue ) == "{ 42 }" for: "{ 42 }" == "{ 42 }"
 ToStringVector.tests.cpp:<line number>: passed: Catch::Detail::stringify( twoValues ) == "{ 42, 250 }" for: "{ 42, 250 }" == "{ 42, 250 }"
@@ -1170,7 +1170,7 @@ Misc.tests.cpp:<line number>: passed:
 Misc.tests.cpp:<line number>: passed: makeString( false ) != static_cast<char*>(0) for: "valid string" != {null string}
 Misc.tests.cpp:<line number>: passed: makeString( true ) == static_cast<char*>(0) for: {null string} == {null string}
 Tricky.tests.cpp:<line number>: passed: ptr.get() == 0 for: 0 == 0
-ToStringPair.tests.cpp:<line number>: passed: ::Catch::Detail::stringify( pair ) == "{ { 42, /"Arthur/" }, { /"Ford/", 24 } }" for: "{ { 42, "Arthur" }, { "Ford", 24 } }"
+ToStringPair.tests.cpp:<line number>: passed: ::Catch::Detail::stringify( pair ) == "{ { 42, \"Arthur\" }, { \"Ford\", 24 } }" for: "{ { 42, "Arthur" }, { "Ford", 24 } }"
 ==
 "{ { 42, "Arthur" }, { "Ford", 24 } }"
 Tricky.tests.cpp:<line number>: passed: p == 0 for: 0 == 0
@@ -1194,18 +1194,18 @@ String.tests.cpp:<line number>: passed: s == "didn|'t" for: "didn|'t" == "didn|'
 Misc.tests.cpp:<line number>: failed: false with 1 message: '3'
 Message.tests.cpp:<line number>: failed: false with 2 messages: 'hi' and 'i := 7'
 ToStringGeneral.tests.cpp:<line number>: passed: Catch::Detail::stringify( emptyMap ) == "{  }" for: "{  }" == "{  }"
-ToStringGeneral.tests.cpp:<line number>: passed: Catch::Detail::stringify( map ) == "{ { /"one/", 1 } }" for: "{ { "one", 1 } }" == "{ { "one", 1 } }"
-ToStringGeneral.tests.cpp:<line number>: passed: Catch::Detail::stringify( map ) == "{ { /"abc/", 1 }, { /"def/", 2 }, { /"ghi/", 3 } }" for: "{ { "abc", 1 }, { "def", 2 }, { "ghi", 3 } }"
+ToStringGeneral.tests.cpp:<line number>: passed: Catch::Detail::stringify( map ) == "{ { \"one\", 1 } }" for: "{ { "one", 1 } }" == "{ { "one", 1 } }"
+ToStringGeneral.tests.cpp:<line number>: passed: Catch::Detail::stringify( map ) == "{ { \"abc\", 1 }, { \"def\", 2 }, { \"ghi\", 3 } }" for: "{ { "abc", 1 }, { "def", 2 }, { "ghi", 3 } }"
 ==
 "{ { "abc", 1 }, { "def", 2 }, { "ghi", 3 } }"
-ToStringPair.tests.cpp:<line number>: passed: ::Catch::Detail::stringify(value) == "{ 34, /"xyzzy/" }" for: "{ 34, "xyzzy" }" == "{ 34, "xyzzy" }"
-ToStringPair.tests.cpp:<line number>: passed: ::Catch::Detail::stringify( value ) == "{ 34, /"xyzzy/" }" for: "{ 34, "xyzzy" }" == "{ 34, "xyzzy" }"
+ToStringPair.tests.cpp:<line number>: passed: ::Catch::Detail::stringify(value) == "{ 34, \"xyzzy\" }" for: "{ 34, "xyzzy" }" == "{ 34, "xyzzy" }"
+ToStringPair.tests.cpp:<line number>: passed: ::Catch::Detail::stringify( value ) == "{ 34, \"xyzzy\" }" for: "{ 34, "xyzzy" }" == "{ 34, "xyzzy" }"
 ToStringGeneral.tests.cpp:<line number>: passed: Catch::Detail::stringify( emptySet ) == "{  }" for: "{  }" == "{  }"
-ToStringGeneral.tests.cpp:<line number>: passed: Catch::Detail::stringify( set ) == "{ /"one/" }" for: "{ "one" }" == "{ "one" }"
-ToStringGeneral.tests.cpp:<line number>: passed: Catch::Detail::stringify( set ) == "{ /"abc/", /"def/", /"ghi/" }" for: "{ "abc", "def", "ghi" }"
+ToStringGeneral.tests.cpp:<line number>: passed: Catch::Detail::stringify( set ) == "{ \"one\" }" for: "{ "one" }" == "{ "one" }"
+ToStringGeneral.tests.cpp:<line number>: passed: Catch::Detail::stringify( set ) == "{ \"abc\", \"def\", \"ghi\" }" for: "{ "abc", "def", "ghi" }"
 ==
 "{ "abc", "def", "ghi" }"
-ToStringPair.tests.cpp:<line number>: passed: ::Catch::Detail::stringify( pr ) == "{ { /"green/", 55 } }" for: "{ { "green", 55 } }"
+ToStringPair.tests.cpp:<line number>: passed: ::Catch::Detail::stringify( pr ) == "{ { \"green\", 55 } }" for: "{ { "green", 55 } }"
 ==
 "{ { "green", 55 } }"
 Tricky.tests.cpp:<line number>: failed: std::string( "first" ) == "second" for: "first" == "second"
@@ -1244,10 +1244,10 @@ Generators.tests.cpp:<line number>: passed: data.str.size() == data.len for: 3 =
 Generators.tests.cpp:<line number>: passed: data.str.size() == data.len for: 5 == 5
 Generators.tests.cpp:<line number>: passed: data.str.size() == data.len for: 4 == 4
 Exception.tests.cpp:<line number>: failed: unexpected exception with message: 'Why would you throw a std::string?'
-Misc.tests.cpp:<line number>: passed: result == "/"wide load/"" for: ""wide load"" == ""wide load""
-Misc.tests.cpp:<line number>: passed: result == "/"wide load/"" for: ""wide load"" == ""wide load""
-Misc.tests.cpp:<line number>: passed: result == "/"wide load/"" for: ""wide load"" == ""wide load""
-Misc.tests.cpp:<line number>: passed: result == "/"wide load/"" for: ""wide load"" == ""wide load""
+Misc.tests.cpp:<line number>: passed: result == "\"wide load\"" for: ""wide load"" == ""wide load""
+Misc.tests.cpp:<line number>: passed: result == "\"wide load\"" for: ""wide load"" == ""wide load""
+Misc.tests.cpp:<line number>: passed: result == "\"wide load\"" for: ""wide load"" == ""wide load""
+Misc.tests.cpp:<line number>: passed: result == "\"wide load\"" for: ""wide load"" == ""wide load""
 EnumToString.tests.cpp:<line number>: passed: ::Catch::Detail::stringify(e0) == "E2/V0" for: "E2/V0" == "E2/V0"
 EnumToString.tests.cpp:<line number>: passed: ::Catch::Detail::stringify(e1) == "E2/V1" for: "E2/V1" == "E2/V1"
 EnumToString.tests.cpp:<line number>: passed: ::Catch::Detail::stringify(e3) == "Unknown enum value 10" for: "Unknown enum value 10"
@@ -1264,17 +1264,17 @@ ToStringTuple.tests.cpp:<line number>: passed: "{ }" == ::Catch::Detail::stringi
 ToStringTuple.tests.cpp:<line number>: passed: "1.2f" == ::Catch::Detail::stringify(float(1.2)) for: "1.2f" == "1.2f"
 ToStringTuple.tests.cpp:<line number>: passed: "{ 1.2f, 0 }" == ::Catch::Detail::stringify(type{1.2f,0}) for: "{ 1.2f, 0 }" == "{ 1.2f, 0 }"
 ToStringTuple.tests.cpp:<line number>: passed: "{ 0 }" == ::Catch::Detail::stringify(type{0}) for: "{ 0 }" == "{ 0 }"
-ToStringTuple.tests.cpp:<line number>: passed: "{ 0, 42, /"Catch me/" }" == ::Catch::Detail::stringify(value) for: "{ 0, 42, "Catch me" }"
+ToStringTuple.tests.cpp:<line number>: passed: "{ 0, 42, \"Catch me\" }" == ::Catch::Detail::stringify(value) for: "{ 0, 42, "Catch me" }"
 ==
 "{ 0, 42, "Catch me" }"
-ToStringTuple.tests.cpp:<line number>: passed: "{ /"hello/", /"world/" }" == ::Catch::Detail::stringify(type{"hello","world"}) for: "{ "hello", "world" }"
+ToStringTuple.tests.cpp:<line number>: passed: "{ \"hello\", \"world\" }" == ::Catch::Detail::stringify(type{"hello","world"}) for: "{ "hello", "world" }"
 ==
 "{ "hello", "world" }"
 ToStringTuple.tests.cpp:<line number>: passed: "{ { 42 }, { }, 1.2f }" == ::Catch::Detail::stringify(value) for: "{ { 42 }, { }, 1.2f }"
 ==
 "{ { 42 }, { }, 1.2f }"
 ToStringVector.tests.cpp:<line number>: passed: ::Catch::Detail::stringify(v) == "{  }" for: "{  }" == "{  }"
-ToStringVector.tests.cpp:<line number>: passed: ::Catch::Detail::stringify(v) == "{ { /"hello/" }, { /"world/" } }" for: "{ { "hello" }, { "world" } }"
+ToStringVector.tests.cpp:<line number>: passed: ::Catch::Detail::stringify(v) == "{ { \"hello\" }, { \"world\" } }" for: "{ { "hello" }, { "world" } }"
 ==
 "{ { "hello" }, { "world" } }"
 ToStringVector.tests.cpp:<line number>: passed: ::Catch::Detail::stringify(bools) == "{  }" for: "{  }" == "{  }"
@@ -1287,8 +1287,8 @@ ToStringVector.tests.cpp:<line number>: passed: ::Catch::Detail::stringify(vv) =
 ToStringVector.tests.cpp:<line number>: passed: ::Catch::Detail::stringify(vv) == "{ 42 }" for: "{ 42 }" == "{ 42 }"
 ToStringVector.tests.cpp:<line number>: passed: ::Catch::Detail::stringify(vv) == "{ 42, 250 }" for: "{ 42, 250 }" == "{ 42, 250 }"
 ToStringVector.tests.cpp:<line number>: passed: ::Catch::Detail::stringify(vv) == "{  }" for: "{  }" == "{  }"
-ToStringVector.tests.cpp:<line number>: passed: ::Catch::Detail::stringify(vv) == "{ /"hello/" }" for: "{ "hello" }" == "{ "hello" }"
-ToStringVector.tests.cpp:<line number>: passed: ::Catch::Detail::stringify(vv) == "{ /"hello/", /"world/" }" for: "{ "hello", "world" }"
+ToStringVector.tests.cpp:<line number>: passed: ::Catch::Detail::stringify(vv) == "{ \"hello\" }" for: "{ "hello" }" == "{ "hello" }"
+ToStringVector.tests.cpp:<line number>: passed: ::Catch::Detail::stringify(vv) == "{ \"hello\", \"world\" }" for: "{ "hello", "world" }"
 ==
 "{ "hello", "world" }"
 Misc.tests.cpp:<line number>: passed: v.size() == 5 for: 5 == 5

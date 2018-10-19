@@ -91,16 +91,24 @@ def diffFiles(fileA, fileB):
     return [line for line in diff if line[0] in ('+', '-')]
 
 
-def filterLine(line, isCompact):
+def normalizeFilepath(line):
     if catchPath in line:
         # make paths relative to Catch root
         line = line.replace(catchPath + os.sep, '')
 
-    if langFilenameParser.match(line):
+    m = langFilenameParser.match(line)
+    if m:
+        filepath = m.group(0)
         # go from \ in windows paths to /
-        line = line.replace('\\', '/')
+        filepath = filepath.replace('\\', '/')
         # remove start of relative path
-        line = line.replace('../', '')
+        filepath = filepath.replace('../', '')
+        line = line[:m.start()] + filepath + line[m.end():]
+
+    return line
+
+def filterLine(line, isCompact):
+    line = normalizeFilepath(line)
 
     # strip source line numbers
     m = filelocParser.match(line)
