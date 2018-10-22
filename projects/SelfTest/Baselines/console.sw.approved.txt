@@ -5979,6 +5979,27 @@ with expansion:
 
 -------------------------------------------------------------------------------
 Process can be configured on command line
+  reporter
+  must match one of the available ones
+-------------------------------------------------------------------------------
+CmdLine.tests.cpp:<line number>
+...............................................................................
+
+CmdLine.tests.cpp:<line number>:
+PASSED:
+  CHECK( !result )
+with expansion:
+  true
+
+CmdLine.tests.cpp:<line number>:
+PASSED:
+  REQUIRE_THAT( result.errorMessage(), Contains("Unrecognized reporter") )
+with expansion:
+  "Unrecognized reporter, 'unsupported'. Check available with --list-reporters"
+  contains: "Unrecognized reporter"
+
+-------------------------------------------------------------------------------
+Process can be configured on command line
   debugger
   -b
 -------------------------------------------------------------------------------
@@ -10865,5 +10886,5 @@ PASSED:
 
 ===============================================================================
 test cases:  215 |  149 passed |  62 failed |  4 failed as expected
-assertions: 1245 | 1102 passed | 122 failed | 21 failed as expected
+assertions: 1247 | 1104 passed | 122 failed | 21 failed as expected
 

@@ -280,7 +280,6 @@ TEST_CASE( "Process can be configured on command line", "[config][command-line]"
         CHECK(config.processName == "");
     }
 
-
     SECTION("default - no arguments") {
         auto result = cli.parse({"test"});
         CHECK(result);
@@ -345,8 +344,15 @@ TEST_CASE( "Process can be configured on command line", "[config][command-line]"
         SECTION("Only one reporter is accepted") {
             REQUIRE_FALSE(cli.parse({ "test", "-r", "xml", "-r", "junit" }));
         }
-    }
+        SECTION("must match one of the available ones") {
+            auto result = cli.parse({"test", "--reporter", "unsupported"});
+            CHECK(!result);
 
+#ifndef CATCH_CONFIG_DISABLE_MATCHERS
+            REQUIRE_THAT(result.errorMessage(), Contains("Unrecognized reporter"));
+#endif
+        }
+    }
 
     SECTION("debugger") {
         SECTION("-b") {

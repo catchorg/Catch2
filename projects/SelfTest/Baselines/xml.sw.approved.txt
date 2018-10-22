@@ -6237,6 +6237,28 @@
         </Section>
         <OverallResults successes="1" failures="0" expectedFailures="0"/>
       </Section>
+      <Section name="reporter" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
+        <Section name="must match one of the available ones" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
+          <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
+            <Original>
+              !result
+            </Original>
+            <Expanded>
+              true
+            </Expanded>
+          </Expression>
+          <Expression success="true" type="REQUIRE_THAT" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
+            <Original>
+              result.errorMessage(), Contains("Unrecognized reporter")
+            </Original>
+            <Expanded>
+              "Unrecognized reporter, 'unsupported'. Check available with --list-reporters" contains: "Unrecognized reporter"
+            </Expanded>
+          </Expression>
+          <OverallResults successes="2" failures="0" expectedFailures="0"/>
+        </Section>
+        <OverallResults successes="2" failures="0" expectedFailures="0"/>
+      </Section>
       <Section name="debugger" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
         <Section name="-b" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
           <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
@@ -11336,7 +11358,7 @@ loose text artifact
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="1102" failures="123" expectedFailures="21"/>
+    <OverallResults successes="1104" failures="123" expectedFailures="21"/>
   </Group>
-  <OverallResults successes="1102" failures="122" expectedFailures="21"/>
+  <OverallResults successes="1104" failures="122" expectedFailures="21"/>
 </Catch>
