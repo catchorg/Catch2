@@ -10,6 +10,9 @@
 
 #include "catch_string_manip.h"
 
+#include "catch_interfaces_registry_hub.h"
+#include "catch_interfaces_reporter.h"
+
 #include <fstream>
 #include <ctime>
 
@@ -105,6 +108,18 @@ namespace Catch {
                 return ParserResult::runtimeError( "Unrecognised verbosity, '" + verbosity + "'" );
             return ParserResult::ok( ParseResultType::Matched );
         };
+        auto const setReporter = [&]( std::string const& reporter ) {
+            IReporterRegistry::FactoryMap const& factories = getRegistryHub().getReporterRegistry().getFactories();
+
+            auto lcReporter = toLower( reporter );
+            auto result = factories.find( lcReporter );
+
+            if( factories.end() != result )
+                config.reporterName = lcReporter;
+            else
+                return ParserResult::runtimeError( "Unrecognized reporter, '" + reporter + "'. Check available with --list-reporters" );
+            return ParserResult::ok( ParseResultType::Matched );
+        };
 
         auto cli
             = ExeName( config.processName )
@@ -130,7 +145,7 @@ namespace Catch {
             | Opt( config.outputFilename, "filename" )
                 ["-o"]["--out"]
                 ( "output filename" )
-            | Opt( config.reporterName, "name" )
+            | Opt( setReporter, "name" )
                 ["-r"]["--reporter"]
                 ( "reporter to use (defaults to console)" )
             | Opt( config.name, "name" )

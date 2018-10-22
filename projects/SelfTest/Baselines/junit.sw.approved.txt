@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuitesloose text artifact
 >
-  <testsuite name="<exe-name>" errors="17" failures="106" tests="1246" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
+  <testsuite name="<exe-name>" errors="17" failures="106" tests="1248" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
     <testcase classname="<exe-name>.global" name="# A test name that starts with a #" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="#1005: Comparing pointer to int and long (NULL can be either on various systems)" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="#1027" time="{duration}"/>
@@ -489,6 +489,7 @@ Message.tests.cpp:<line number>
     <testcase classname="<exe-name>.global" name="Process can be configured on command line/reporter/-r/xml" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Process can be configured on command line/reporter/--reporter/junit" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Process can be configured on command line/reporter/Only one reporter is accepted" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="Process can be configured on command line/reporter/must match one of the available ones" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Process can be configured on command line/debugger/-b" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Process can be configured on command line/debugger/--break" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Process can be configured on command line/abort/-a aborts after first failure" time="{duration}"/>

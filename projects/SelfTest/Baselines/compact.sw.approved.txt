@@ -707,6 +707,8 @@ CmdLine.tests.cpp:<line number>: passed: config.reporterName == "xml" for: "xml"
 CmdLine.tests.cpp:<line number>: passed: cli.parse({"test", "--reporter", "junit"}) for: {?}
 CmdLine.tests.cpp:<line number>: passed: config.reporterName == "junit" for: "junit" == "junit"
 CmdLine.tests.cpp:<line number>: passed: !(cli.parse({ "test", "-r", "xml", "-r", "junit" })) for: !{?}
+CmdLine.tests.cpp:<line number>: passed: !result for: true
+CmdLine.tests.cpp:<line number>: passed: result.errorMessage(), Contains("Unrecognized reporter") for: "Unrecognized reporter, 'unsupported'. Check available with --list-reporters" contains: "Unrecognized reporter"
 CmdLine.tests.cpp:<line number>: passed: cli.parse({"test", "-b"}) for: {?}
 CmdLine.tests.cpp:<line number>: passed: config.shouldDebugBreak == true for: true == true
 CmdLine.tests.cpp:<line number>: passed: cli.parse({"test", "--break"}) for: {?}
