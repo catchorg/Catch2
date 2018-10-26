@@ -6732,7 +6732,7 @@ Matchers.tests.cpp:<line number>:
 PASSED:
   CHECK_THAT( testStringForMatching(), Contains("aBC", Catch::CaseSensitive::No) )
 with expansion:
-  "this string contains 'abc' as a substring" contains: "abc" (case insensitive)
+  "this string contains 'abc' as a substring" contains: "abc" (case
   insensitive)
 
 Matchers.tests.cpp:<line number>:
@@ -10865,7 +10865,7 @@ with expansion:
 -------------------------------------------------------------------------------
 xmlentitycheck
   embedded xml: <test>it should be possible to embed xml characters, such as <,
-                " or &, or even whole <xml>documents</xml> within an attribute</test>
+                " or &, or even whole <xml>documents</xml> within an attribute
                 </test>
 -------------------------------------------------------------------------------
 Misc.tests.cpp:<line number>
