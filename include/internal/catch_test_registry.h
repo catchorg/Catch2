@@ -63,6 +63,23 @@ struct AutoReg : NonCopyable {
         }                                 \
         void TestName::test()
 
+	#define INTERNAL_CATCH_TEMPLATE_TEST_CASE_NO_REGISTRATION( TestName, name, description, ...)\
+		template<typename TestType> static void TestName();\
+		INTERNAL_CATCH_TESTCASE_NO_REGISTRATION( INTERNAL_CATCH_UNIQUE_NAME( ____C_A_T_C_H____T_E_S_T____ ) )\
+		{\
+			INTERNAL_CATCH_CALL_MACRO_X_TIMES_FOR_ARGS(INTERNAL_CATCH_TEMPLATE_TEST_CASE_SECTION_NO_REGISTRATION, TestName, __VA_ARGS__)\
+		}\
+		template<typename TestType> static void TestName()
+
+    #define INTERNAL_CATCH_TEMPLATE_TEST_CASE_METHOD_NO_REGISTRATION( TestName, ClassName, ... ) \
+        namespace{                        \
+            template<typename TestType>   \
+            struct TestName : INTERNAL_CATCH_EXPAND1(INTERNAL_CATCH_DEF ClassName <TestType>) { \
+                void test();              \
+            };                            \
+        }                                 \
+        template<typename TestType> void TestName::test()
+
 #endif
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -100,6 +117,112 @@ struct AutoReg : NonCopyable {
         CATCH_INTERNAL_SUPPRESS_GLOBALS_WARNINGS \
         Catch::AutoReg INTERNAL_CATCH_UNIQUE_NAME( autoRegistrar )( Catch::makeTestInvoker( Function ), CATCH_INTERNAL_LINEINFO, Catch::StringRef(), Catch::NameAndTags{ __VA_ARGS__ } ); /* NOLINT */ \
         CATCH_INTERNAL_UNSUPPRESS_GLOBALS_WARNINGS
+
+    ///////////////////////////////////////////////////////////////////////////////
+    #define CATCH_GET_NTH_ARG( _1, _2, _3, _4, _5, _6, _7, _8, N, ... ) N
+
+#ifdef CATCH_INTERNAL_TRADITIONAL_MSVC_PREPROCESSOR
+    #define CATCH_INTERNAL_EXPAND_VARGS( ... ) __VA_ARGS__
+
+    // function expanding helpers
+    #define _fe_0( _call, x, ... )
+    #define _fe_1( _call, x, y ) CATCH_INTERNAL_EXPAND_VARGS( _call( x, y ) );
+    #define _fe_2( _call, x, y, ... ) CATCH_INTERNAL_EXPAND_VARGS( _call( x, y ) ); CATCH_INTERNAL_EXPAND_VARGS( _fe_1( _call, x, __VA_ARGS__ ) )
+    #define _fe_3( _call, x, y, ... ) CATCH_INTERNAL_EXPAND_VARGS( _call( x, y ) ); CATCH_INTERNAL_EXPAND_VARGS( _fe_2( _call, x, __VA_ARGS__ ) )
+    #define _fe_4( _call, x, y, ... ) CATCH_INTERNAL_EXPAND_VARGS( _call( x, y ) ); CATCH_INTERNAL_EXPAND_VARGS( _fe_3( _call, x, __VA_ARGS__ ) )
+    #define _fe_5( _call, x, y, ... ) CATCH_INTERNAL_EXPAND_VARGS( _call( x, y ) ); CATCH_INTERNAL_EXPAND_VARGS( _fe_4( _call, x, __VA_ARGS__ ) )
+    #define _fe_6( _call, x, y, ... ) CATCH_INTERNAL_EXPAND_VARGS( _call( x, y ) ); CATCH_INTERNAL_EXPAND_VARGS( _fe_5( _call, x, __VA_ARGS__ ) )
+    #define _fe_7( _call, x, y, ... ) CATCH_INTERNAL_EXPAND_VARGS( _call( x, y ) ); CATCH_INTERNAL_EXPAND_VARGS( _fe_6( _call, x, __VA_ARGS__ ) )
+    #define _fe_8( _call, x, y, ... ) CATCH_INTERNAL_EXPAND_VARGS( _call( x, y ) ); CATCH_INTERNAL_EXPAND_VARGS( _fe_7( _call, x, __VA_ARGS__ ) )
+
+    #define INTERNAL_CATCH_CALL_MACRO_X_TIMES_FOR_ARGS( macro, test, ... )\
+        CATCH_INTERNAL_EXPAND_VARGS( CATCH_INTERNAL_EXPAND_VARGS( CATCH_GET_NTH_ARG( __VA_ARGS__, \
+        _fe_8, _fe_7, _fe_6, _fe_5, _fe_4, _fe_3, \
+        _fe_2, _fe_1, _fe_0 ) )( macro, test, __VA_ARGS__ ) )
+
+    #define INTERNAL_CATCH_TEMPLATE_TEST_CASE( name, description, ... ) CATCH_INTERNAL_EXPAND_VARGS( INTERNAL_CATCH_TEMPLATE_TEST_CASE2( INTERNAL_CATCH_UNIQUE_NAME( ____C_A_T_C_H____T_E_M_P_L_A_T_E____T_E_S_T____ ), name, description, __VA_ARGS__ ) )
+
+    #define _fem_0( _call, w, x, y, z, ... )
+    #define _fem_1( _call, v, w, x, y, z ) CATCH_INTERNAL_EXPAND_VARGS( _call( v, w, x, y, z ) );
+    #define _fem_2( _call, v, w, x, y, z, ... ) CATCH_INTERNAL_EXPAND_VARGS( _call(v, w, x, y, z ) ); CATCH_INTERNAL_EXPAND_VARGS( _fem_1( _call, v, w, x, y, __VA_ARGS__ ) )
+    #define _fem_3( _call, v, w, x, y, z, ... ) CATCH_INTERNAL_EXPAND_VARGS( _call(v, w, x, y, z ) ); CATCH_INTERNAL_EXPAND_VARGS( _fem_2( _call, v, w, x, y, __VA_ARGS__ ) )
+    #define _fem_4( _call, v, w, x, y, z, ... ) CATCH_INTERNAL_EXPAND_VARGS( _call(v, w, x, y, z ) ); CATCH_INTERNAL_EXPAND_VARGS( _fem_3( _call, v, w, x, y, __VA_ARGS__ ) )
+    #define _fem_5( _call, v, w, x, y, z, ... ) CATCH_INTERNAL_EXPAND_VARGS( _call(v, w, x, y, z ) ); CATCH_INTERNAL_EXPAND_VARGS( _fem_4( _call, v, w, x, y, __VA_ARGS__ ) )
+    #define _fem_6( _call, v, w, x, y, z, ... ) CATCH_INTERNAL_EXPAND_VARGS( _call(v, w, x, y, z ) ); CATCH_INTERNAL_EXPAND_VARGS( _fem_5( _call, v, w, x, y, __VA_ARGS__ ) )
+    #define _fem_7( _call, v, w, x, y, z, ... ) CATCH_INTERNAL_EXPAND_VARGS( _call(v, w, x, y, z ) ); CATCH_INTERNAL_EXPAND_VARGS( _fem_6( _call, v, w, x, y, __VA_ARGS__ ) )
+    #define _fem_8( _call, v, w, x, y, z, ... ) CATCH_INTERNAL_EXPAND_VARGS( _call(v, w, x, y, z ) ); CATCH_INTERNAL_EXPAND_VARGS( _fem_7( _call, v, w, x, y, __VA_ARGS__ ) )
+
+    #define INTERNAL_CATCH_CALL_MACRO_X_TIMES_FOR_ARGS_M( macro, TestName, ClassName, name, description, ... )\
+        CATCH_INTERNAL_EXPAND_VARGS( CATCH_INTERNAL_EXPAND_VARGS( CATCH_GET_NTH_ARG( __VA_ARGS__, \
+        _fem_8, _fem_7, _fem_6, _fem_5, _fem_4, _fem_3, \
+        _fem_2, _fem_1, _fem_0 ) )( macro, TestName, ClassName, name, description, __VA_ARGS__ ) )
+
+    #define INTERNAL_CATCH_TEMPLATE_TEST_CASE_METHOD( ClassName, ... ) \
+        CATCH_INTERNAL_EXPAND_VARGS(INTERNAL_CATCH_TEMPLATE_TEST_CASE_METHOD2( INTERNAL_CATCH_UNIQUE_NAME( ____C_A_T_C_H____T_E_M_P_L_A_T_E____T_E_S_T____ ), ClassName, __VA_ARGS__ ) )
+
+#else
+    // function expanding helpers
+    #define _fe_0( _call, x, ... )
+    #define _fe_1( _call, x, y ) _call( x, y );
+    #define _fe_2( _call, x, y, ... ) _call( x, y ); _fe_1( _call, x, __VA_ARGS__ )
+    #define _fe_3( _call, x, y, ... ) _call( x, y ); _fe_2( _call, x, __VA_ARGS__ )
+    #define _fe_4( _call, x, y, ... ) _call( x, y ); _fe_3( _call, x, __VA_ARGS__ )
+    #define _fe_5( _call, x, y, ... ) _call( x, y ); _fe_4( _call, x, __VA_ARGS__ )
+    #define _fe_6( _call, x, y, ... ) _call( x, y ); _fe_5( _call, x, __VA_ARGS__ )
+    #define _fe_7( _call, x, y, ... ) _call( x, y ); _fe_6( _call, x, __VA_ARGS__ )
+    #define _fe_8( _call, x, y, ... ) _call( x, y ); _fe_7( _call, x, __VA_ARGS__ )
+
+    #define INTERNAL_CATCH_CALL_MACRO_X_TIMES_FOR_ARGS( macro, test, ... )\
+        CATCH_GET_NTH_ARG( __VA_ARGS__, \
+        _fe_8, _fe_7, _fe_6, _fe_5, _fe_4, _fe_3, \
+        _fe_2, _fe_1, _fe_0 )( macro, test, __VA_ARGS__ )
+
+    #define INTERNAL_CATCH_TEMPLATE_TEST_CASE( name, description, ... ) INTERNAL_CATCH_TEMPLATE_TEST_CASE2( INTERNAL_CATCH_UNIQUE_NAME( ____C_A_T_C_H____T_E_M_P_L_A_T_E____T_E_S_T____ ), name, description, __VA_ARGS__ )
+
+    #define _fem_0( _call, w, x, y, z, ... )
+    #define _fem_1( _call, v, w, x, y, z ) _call( v, w, x, y, z );
+    #define _fem_2( _call, v, w, x, y, z, ... ) _call(v, w, x, y, z ); _fem_1( _call, v, w, x, y, __VA_ARGS__ )
+    #define _fem_3( _call, v, w, x, y, z, ... ) _call(v, w, x, y, z ); _fem_2( _call, v, w, x, y, __VA_ARGS__ )
+    #define _fem_4( _call, v, w, x, y, z, ... ) _call(v, w, x, y, z ); _fem_3( _call, v, w, x, y, __VA_ARGS__ )
+    #define _fem_5( _call, v, w, x, y, z, ... ) _call(v, w, x, y, z ); _fem_4( _call, v, w, x, y, __VA_ARGS__ )
+    #define _fem_6( _call, v, w, x, y, z, ... ) _call(v, w, x, y, z ); _fem_5( _call, v, w, x, y, __VA_ARGS__ )
+    #define _fem_7( _call, v, w, x, y, z, ... ) _call(v, w, x, y, z ); _fem_6( _call, v, w, x, y, __VA_ARGS__ )
+    #define _fem_8( _call, v, w, x, y, z, ... ) _call(v, w, x, y, z ); _fem_7( _call, v, w, x, y, __VA_ARGS__ )
+
+    #define INTERNAL_CATCH_CALL_MACRO_X_TIMES_FOR_ARGS_M( macro, TestName, ClassName, name, description, ... )\
+        CATCH_GET_NTH_ARG( __VA_ARGS__, \
+        _fem_8, _fem_7, _fem_6, _fem_5, _fem_4, _fem_3, \
+        _fem_2, _fem_1, _fem_0 )( macro, TestName, ClassName, name, description, __VA_ARGS__ )
+
+    #define INTERNAL_CATCH_TEMPLATE_TEST_CASE_METHOD( ClassName, ... ) \
+        INTERNAL_CATCH_TEMPLATE_TEST_CASE_METHOD2( INTERNAL_CATCH_UNIQUE_NAME( ____C_A_T_C_H____T_E_M_P_L_A_T_E____T_E_S_T____ ), ClassName, __VA_ARGS__ )
+
+#endif
+
+    #define INTERNAL_CATCH_TEMPLATE_TEST_CASE2( TestName, name, description, ... )\
+        template<typename TestType> static void TestName();\
+        INTERNAL_CATCH_TESTCASE( name, description )\
+        {\
+            INTERNAL_CATCH_CALL_MACRO_X_TIMES_FOR_ARGS( INTERNAL_CATCH_TEMPLATE_TEST_CASE_SECTION, TestName, __VA_ARGS__ )\
+        }\
+        template<typename TestType> static void TestName()
+
+
+    ///////////////////////////////////////////////////////////////////////////////
+    #define INTERNAL_CATCH_TEMPLATE_TEST_CASE_METHOD_REGISTER( TestName, ClassName, name, description, Tn)\
+        Catch::AutoReg INTERNAL_CATCH_UNIQUE_NAME( autoRegistrar ) ( Catch::makeTestInvoker( &TestName<Tn>::test ), CATCH_INTERNAL_LINEINFO, #ClassName "<" #Tn ">", Catch::NameAndTags{ name " - " #Tn, description } ) /* NOLINT */
+
+    #define INTERNAL_CATCH_TEMPLATE_TEST_CASE_METHOD2( TestName, ClassName, name, description, ... )\
+        CATCH_INTERNAL_SUPPRESS_GLOBALS_WARNINGS \
+        namespace{ \
+            template<typename TestType> \
+            struct TestName : INTERNAL_CATCH_EXPAND1(INTERNAL_CATCH_DEF ClassName <TestType>) { \
+                void test(); \
+            }; \
+            INTERNAL_CATCH_CALL_MACRO_X_TIMES_FOR_ARGS_M(INTERNAL_CATCH_TEMPLATE_TEST_CASE_METHOD_REGISTER, TestName, ClassName, name, description, __VA_ARGS__) \
+        } \
+        CATCH_INTERNAL_UNSUPPRESS_GLOBALS_WARNINGS \
+        template<typename TestType> void TestName<TestType>::test()
 
 
 #endif // TWOBLUECUBES_CATCH_TEST_REGISTRY_HPP_INCLUDED

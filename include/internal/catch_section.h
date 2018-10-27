@@ -46,4 +46,17 @@ namespace Catch {
     if( Catch::Section const& INTERNAL_CATCH_UNIQUE_NAME( catch_internal_Section ) = Catch::SectionInfo( CATCH_INTERNAL_LINEINFO, (Catch::ReusableStringStream() << __VA_ARGS__).str() ) ) \
     CATCH_INTERNAL_UNSUPPRESS_UNUSED_WARNINGS
 
+#define INTERNAL_CATCH_TEMPLATE_TEST_CASE_SECTION( TestName, Tn ) \
+    INTERNAL_CATCH_SECTION( #Tn, "" ) \
+    {\
+        TestName<Tn>(); \
+    }
+
+#if defined(CATCH_CONFIG_DISABLE)
+	#define INTERNAL_CATCH_TEMPLATE_TEST_CASE_SECTION_NO_REGISTRATION( TestName, Tn)\
+		{\
+			TestName<Tn>();\
+		}
+#endif
+
 #endif // TWOBLUECUBES_CATCH_SECTION_H_INCLUDED
