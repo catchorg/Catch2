@@ -86,6 +86,16 @@ When any of these macros are used the console reporter recognises them and forma
 
 Other than the additional prefixes and the formatting in the console reporter these macros behave exactly as ```TEST_CASE```s and ```SECTION```s. As such there is nothing enforcing the correct sequencing of these macros - that's up to the programmer!
 
+## Type parametrised test cases
+
+In addition to normal ```TEST_CASE```s, Catch also supports test cases parametrised by type. This runs test case body for each type specified.
+
+* **TEMPLATE_TEST_CASE(** _test name_ , _tags_,  _type_... **)**
+
+_test name_ and _tag_ have the exactly same requirements as in case of ```TEST_CASE```, but in this case at least empty string has to be provided. _type_ is a list of typenames for which test should be run. At least one _type_ needs to be specified. Currently Catch supports up to 8 types provided to ```TEMPLATE_TEST_CASE```. Test names must be unique within the Catch executable. Type for which test is run is provided as _TestType_.
+
+For examples see the [Tutorial](tutorial.md#top)
+
 ---
 
 [Home](Readme.md#top)

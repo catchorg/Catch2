@@ -8,6 +8,7 @@
 [Test cases and sections](#test-cases-and-sections)<br>
 [BDD-Style](#bdd-style)<br>
 [Scaling up](#scaling-up)<br>
+[Type parametrised test cases](#type-parametrised-test-cases)<br>
 [Next steps](#next-steps)<br>
 
 ## Getting Catch2
@@ -254,6 +255,47 @@ appears in _exactly one_ source file. Use as many additional cpp files (or whate
 In fact it is usually a good idea to put the block with the ```#define``` [in its own source file](slow-compiles.md#top) (code example [main](../examples/020-TestCase-1.cpp), [tests](../examples/020-TestCase-2.cpp)).
 
 Do not write your tests in header files!
+
+
+<a id="type-parametrised-test-cases"></a>
+## Type parametrised test cases
+
+Test cases can be also parametrised by type. ```TEMPLATE_TEST_CASE``` is basically a ```TEST_CASE``` with ```SECTION``` for each type executing templated test function implemented as body of ```TEMPLATE_TEST_CASE```. In terms of execution ```TEMPLATE_TEST_CASE``` behaves the same as ```TEST_CASE```.
+
+```c++
+TEMPLATE_TEST_CASE( "Template test: vectors can be sized and resized", "[vector][template]", int, std::string ) {
+
+    std::vector<TestType> v( 5 );
+
+    REQUIRE( v.size() == 5 );
+    REQUIRE( v.capacity() >= 5 );
+
+    SECTION( "resizing bigger changes size and capacity" ) {
+        v.resize( 10 );
+
+        REQUIRE( v.size() == 10 );
+        REQUIRE( v.capacity() >= 10 );
+    }
+    SECTION( "resizing smaller changes size but not capacity" ) {
+        v.resize( 0 );
+
+        REQUIRE( v.size() == 0 );
+        REQUIRE( v.capacity() >= 5 );
+    }
+    SECTION( "reserving bigger changes capacity but not size" ) {
+        v.reserve( 10 );
+
+        REQUIRE( v.size() == 5 );
+        REQUIRE( v.capacity() >= 10 );
+    }
+    SECTION( "reserving smaller does not change size or capacity" ) {
+        v.reserve( 0 );
+
+        REQUIRE( v.size() == 5 );
+        REQUIRE( v.capacity() >= 5 );
+    }
+}
+```
 
 
 ## Next steps
