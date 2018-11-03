@@ -1098,6 +1098,6 @@ due to unexpected exception with message:
   Why would you throw a std::string?
 
 ===============================================================================
-test cases:  215 |  162 passed |  49 failed |  4 failed as expected
-assertions: 1233 | 1104 passed | 108 failed | 21 failed as expected
+test cases:  216 |  163 passed |  49 failed |  4 failed as expected
+assertions: 1234 | 1105 passed | 108 failed | 21 failed as expected
 

@@ -5740,6 +5740,18 @@ with expansion:
   0 != 0x<hex digits>
 
 -------------------------------------------------------------------------------
+Predicate matcher can accept const char*
+-------------------------------------------------------------------------------
+Matchers.tests.cpp:<line number>
+...............................................................................
+
+Matchers.tests.cpp:<line number>:
+PASSED:
+  REQUIRE_THAT( "foo", Predicate<const char*>([] (const char* const&) { return true; }) )
+with expansion:
+  "foo" matches undescribed predicate
+
+-------------------------------------------------------------------------------
 Process can be configured on command line
   empty args don't cause a crash
 -------------------------------------------------------------------------------
@@ -10885,6 +10897,6 @@ Misc.tests.cpp:<line number>:
 PASSED:
 
 ===============================================================================
-test cases:  215 |  149 passed |  62 failed |  4 failed as expected
-assertions: 1247 | 1104 passed | 122 failed | 21 failed as expected
+test cases:  216 |  150 passed |  62 failed |  4 failed as expected
+assertions: 1248 | 1105 passed | 122 failed | 21 failed as expected
 

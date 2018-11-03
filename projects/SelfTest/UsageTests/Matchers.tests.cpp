@@ -432,6 +432,10 @@ namespace { namespace MatchersTests {
             CHECK_THAT(actual, !UnorderedEquals(expected));
         }
 
+        TEST_CASE("Predicate matcher can accept const char*", "[matchers][compilation]") {
+            REQUIRE_THAT("foo", Predicate<const char*>([] (const char* const&) { return true; }));
+        }
+
 } } // namespace MatchersTests
 
 #endif // CATCH_CONFIG_DISABLE_MATCHERS

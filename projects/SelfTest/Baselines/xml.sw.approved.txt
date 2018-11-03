@@ -5964,6 +5964,17 @@
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
+    <TestCase name="Predicate matcher can accept const char*" tags="[compilation][matchers]" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
+      <Expression success="true" type="REQUIRE_THAT" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
+        <Original>
+          "foo", Predicate&lt;const char*>([] (const char* const&amp;) { return true; })
+        </Original>
+        <Expanded>
+          "foo" matches undescribed predicate
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
     <TestCase name="Process can be configured on command line" tags="[command-line][config]" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
       <Section name="empty args don't cause a crash" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
         <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
@@ -11358,7 +11369,7 @@ loose text artifact
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="1104" failures="123" expectedFailures="21"/>
+    <OverallResults successes="1105" failures="123" expectedFailures="21"/>
   </Group>
-  <OverallResults successes="1104" failures="122" expectedFailures="21"/>
+  <OverallResults successes="1105" failures="122" expectedFailures="21"/>
 </Catch>
