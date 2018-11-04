@@ -111,8 +111,6 @@ public:
     void print() const {
         printSourceInfo();
         if (stats.totals.assertions.total() > 0) {
-            if (result.isOk())
-                stream << '\n';
             printResultType();
             printOriginalExpression();
             printReconstructedExpression();

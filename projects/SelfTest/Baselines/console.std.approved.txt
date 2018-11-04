@@ -392,8 +392,7 @@ Message.tests.cpp:<line number>: FAILED:
 explicitly with message:
   This is a failure
 
-Message.tests.cpp:<line number>:
-warning:
+Message.tests.cpp:<line number>: warning:
   This message appears in the output
 
 -------------------------------------------------------------------------------
@@ -402,8 +401,7 @@ INFO and WARN do not abort tests
 Message.tests.cpp:<line number>
 ...............................................................................
 
-Message.tests.cpp:<line number>:
-warning:
+Message.tests.cpp:<line number>: warning:
   this is a warning
 
 -------------------------------------------------------------------------------
@@ -528,8 +526,7 @@ Nice descriptive name
 Misc.tests.cpp:<line number>
 ...............................................................................
 
-Misc.tests.cpp:<line number>:
-warning:
+Misc.tests.cpp:<line number>: warning:
   This one ran
 
 -------------------------------------------------------------------------------
@@ -909,8 +906,7 @@ Where the LHS is not a simple value
 Tricky.tests.cpp:<line number>
 ...............................................................................
 
-Tricky.tests.cpp:<line number>:
-warning:
+Tricky.tests.cpp:<line number>: warning:
   Uncomment the code in this test to check that it gives a sensible compiler
   error
 
@@ -920,8 +916,7 @@ Where there is more to the expression after the RHS
 Tricky.tests.cpp:<line number>
 ...............................................................................
 
-Tricky.tests.cpp:<line number>:
-warning:
+Tricky.tests.cpp:<line number>: warning:
   Uncomment the code in this test to check that it gives a sensible compiler
   error
 
