@@ -42,7 +42,7 @@ namespace Catch {
         }
 
         static std::set<Verbosity> getSupportedVerbosities() {
-            return { Verbosity::Normal };
+            return { Verbosity::Quiet, Verbosity::Normal, Verbosity::High };
         }
 
         ~StreamingReporterBase() override = default;
