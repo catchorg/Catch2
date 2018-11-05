@@ -303,7 +303,7 @@ if ( CMAKE_CXX_COMPILER_ID MATCHES "Clang" )
 endif()
 if ( CMAKE_CXX_COMPILER_ID MATCHES "MSVC" )
     STRING(REGEX REPLACE "/W[0-9]" "/W4" CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS}) # override default warning level
-    target_compile_options( SelfTest PRIVATE /w44265 /w44061 /w44062 )
+    target_compile_options( SelfTest PRIVATE /w44265 /w44061 /w44062 /w45038 )
     if (CATCH_ENABLE_WERROR)
         target_compile_options( SelfTest PRIVATE /WX)
     endif()
