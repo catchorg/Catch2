@@ -54,8 +54,6 @@ namespace Catch {
 
 
         Catch::Totals runTests(std::shared_ptr<Config> const& config) {
-            // FixMe: Add listeners in order first, then add reporters.
-
             auto reporter = makeReporter(config);
 
             RunContext context(config, std::move(reporter));
