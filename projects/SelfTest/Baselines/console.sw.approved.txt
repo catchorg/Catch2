@@ -1578,6 +1578,72 @@ with expansion:
   "hello" == "hello"
 
 -------------------------------------------------------------------------------
+A TEMPLATE_TEST_CASE_METHOD based test run that fails - double
+-------------------------------------------------------------------------------
+Class.tests.cpp:<line number>
+...............................................................................
+
+Class.tests.cpp:<line number>: FAILED:
+  REQUIRE( Template_Fixture<TestType>::m_a == 2 )
+with expansion:
+  1.0 == 2
+
+-------------------------------------------------------------------------------
+A TEMPLATE_TEST_CASE_METHOD based test run that fails - float
+-------------------------------------------------------------------------------
+Class.tests.cpp:<line number>
+...............................................................................
+
+Class.tests.cpp:<line number>: FAILED:
+  REQUIRE( Template_Fixture<TestType>::m_a == 2 )
+with expansion:
+  1.0f == 2
+
+-------------------------------------------------------------------------------
+A TEMPLATE_TEST_CASE_METHOD based test run that fails - int
+-------------------------------------------------------------------------------
+Class.tests.cpp:<line number>
+...............................................................................
+
+Class.tests.cpp:<line number>: FAILED:
+  REQUIRE( Template_Fixture<TestType>::m_a == 2 )
+with expansion:
+  1 == 2
+
+-------------------------------------------------------------------------------
+A TEMPLATE_TEST_CASE_METHOD based test run that succeeds - double
+-------------------------------------------------------------------------------
+Class.tests.cpp:<line number>
+...............................................................................
+
+Class.tests.cpp:<line number>: PASSED:
+  REQUIRE( Template_Fixture<TestType>::m_a == 1 )
+with expansion:
+  1.0 == 1
+
+-------------------------------------------------------------------------------
+A TEMPLATE_TEST_CASE_METHOD based test run that succeeds - float
+-------------------------------------------------------------------------------
+Class.tests.cpp:<line number>
+...............................................................................
+
+Class.tests.cpp:<line number>: PASSED:
+  REQUIRE( Template_Fixture<TestType>::m_a == 1 )
+with expansion:
+  1.0f == 1
+
+-------------------------------------------------------------------------------
+A TEMPLATE_TEST_CASE_METHOD based test run that succeeds - int
+-------------------------------------------------------------------------------
+Class.tests.cpp:<line number>
+...............................................................................
+
+Class.tests.cpp:<line number>: PASSED:
+  REQUIRE( Template_Fixture<TestType>::m_a == 1 )
+with expansion:
+  1 == 1
+
+-------------------------------------------------------------------------------
 A TEST_CASE_METHOD based test run that fails
 -------------------------------------------------------------------------------
 Class.tests.cpp:<line number>
@@ -6574,6 +6640,586 @@ TagAlias.tests.cpp:<line number>: PASSED:
   CHECK_THROWS( registry.add( "[@no square bracket at end", "", Catch::SourceLineInfo( "file", 3 ) ) )
 
 -------------------------------------------------------------------------------
+TemplateTest: vectors can be sized and resized - float
+-------------------------------------------------------------------------------
+Misc.tests.cpp:<line number>
+...............................................................................
+
+Misc.tests.cpp:<line number>: PASSED:
+  REQUIRE( v.size() == 5 )
+with expansion:
+  5 == 5
+
+Misc.tests.cpp:<line number>: PASSED:
+  REQUIRE( v.capacity() >= 5 )
+with expansion:
+  5 >= 5
+
+-------------------------------------------------------------------------------
+TemplateTest: vectors can be sized and resized - float
+  resizing bigger changes size and capacity
+-------------------------------------------------------------------------------
+Misc.tests.cpp:<line number>
+...............................................................................
+
+Misc.tests.cpp:<line number>: PASSED:
+  REQUIRE( v.size() == 10 )
+with expansion:
+  10 == 10
+
+Misc.tests.cpp:<line number>: PASSED:
+  REQUIRE( v.capacity() >= 10 )
+with expansion:
+  10 >= 10
+
+-------------------------------------------------------------------------------
+TemplateTest: vectors can be sized and resized - float
+-------------------------------------------------------------------------------
+Misc.tests.cpp:<line number>
+...............................................................................
+
+Misc.tests.cpp:<line number>: PASSED:
+  REQUIRE( v.size() == 5 )
+with expansion:
+  5 == 5
+
+Misc.tests.cpp:<line number>: PASSED:
+  REQUIRE( v.capacity() >= 5 )
+with expansion:
+  5 >= 5
+
+-------------------------------------------------------------------------------
+TemplateTest: vectors can be sized and resized - float
+  resizing smaller changes size but not capacity
+-------------------------------------------------------------------------------
+Misc.tests.cpp:<line number>
+...............................................................................
+
+Misc.tests.cpp:<line number>: PASSED:
+  REQUIRE( v.size() == 0 )
+with expansion:
+  0 == 0
+
+Misc.tests.cpp:<line number>: PASSED:
+  REQUIRE( v.capacity() >= 5 )
+with expansion:
+  5 >= 5
+
+-------------------------------------------------------------------------------
+TemplateTest: vectors can be sized and resized - float
+  resizing smaller changes size but not capacity
+  We can use the 'swap trick' to reset the capacity
+-------------------------------------------------------------------------------
+Misc.tests.cpp:<line number>
+...............................................................................
+
+Misc.tests.cpp:<line number>: PASSED:
+  REQUIRE( v.capacity() == 0 )
+with expansion:
+  0 == 0
+
+-------------------------------------------------------------------------------
+TemplateTest: vectors can be sized and resized - float
+-------------------------------------------------------------------------------
+Misc.tests.cpp:<line number>
+...............................................................................
+
+Misc.tests.cpp:<line number>: PASSED:
+  REQUIRE( v.size() == 5 )
+with expansion:
+  5 == 5
+
+Misc.tests.cpp:<line number>: PASSED:
+  REQUIRE( v.capacity() >= 5 )
+with expansion:
+  5 >= 5
+
+-------------------------------------------------------------------------------
+TemplateTest: vectors can be sized and resized - float
+  reserving bigger changes capacity but not size
+-------------------------------------------------------------------------------
+Misc.tests.cpp:<line number>
+...............................................................................
+
+Misc.tests.cpp:<line number>: PASSED:
+  REQUIRE( v.size() == 5 )
+with expansion:
+  5 == 5
+
+Misc.tests.cpp:<line number>: PASSED:
+  REQUIRE( v.capacity() >= 10 )
+with expansion:
+  10 >= 10
+
+-------------------------------------------------------------------------------
+TemplateTest: vectors can be sized and resized - float
+-------------------------------------------------------------------------------
+Misc.tests.cpp:<line number>
+...............................................................................
+
+Misc.tests.cpp:<line number>: PASSED:
+  REQUIRE( v.size() == 5 )
+with expansion:
+  5 == 5
+
+Misc.tests.cpp:<line number>: PASSED:
+  REQUIRE( v.capacity() >= 5 )
+with expansion:
+  5 >= 5
+
+-------------------------------------------------------------------------------
+TemplateTest: vectors can be sized and resized - float
+  reserving smaller does not change size or capacity
+-------------------------------------------------------------------------------
+Misc.tests.cpp:<line number>
+...............................................................................
+
+Misc.tests.cpp:<line number>: PASSED:
+  REQUIRE( v.size() == 5 )
+with expansion:
+  5 == 5
+
+Misc.tests.cpp:<line number>: PASSED:
+  REQUIRE( v.capacity() >= 5 )
+with expansion:
+  5 >= 5
+
+-------------------------------------------------------------------------------
+TemplateTest: vectors can be sized and resized - int
+-------------------------------------------------------------------------------
+Misc.tests.cpp:<line number>
+...............................................................................
+
+Misc.tests.cpp:<line number>: PASSED:
+  REQUIRE( v.size() == 5 )
+with expansion:
+  5 == 5
+
+Misc.tests.cpp:<line number>: PASSED:
+  REQUIRE( v.capacity() >= 5 )
+with expansion:
+  5 >= 5
+
+-------------------------------------------------------------------------------
+TemplateTest: vectors can be sized and resized - int
+  resizing bigger changes size and capacity
+-------------------------------------------------------------------------------
+Misc.tests.cpp:<line number>
+...............................................................................
+
+Misc.tests.cpp:<line number>: PASSED:
+  REQUIRE( v.size() == 10 )
+with expansion:
+  10 == 10
+
+Misc.tests.cpp:<line number>: PASSED:
+  REQUIRE( v.capacity() >= 10 )
+with expansion:
+  10 >= 10
+
+-------------------------------------------------------------------------------
+TemplateTest: vectors can be sized and resized - int
+-------------------------------------------------------------------------------
+Misc.tests.cpp:<line number>
+...............................................................................
+
+Misc.tests.cpp:<line number>: PASSED:
+  REQUIRE( v.size() == 5 )
+with expansion:
+  5 == 5
+
+Misc.tests.cpp:<line number>: PASSED:
+  REQUIRE( v.capacity() >= 5 )
+with expansion:
+  5 >= 5
+
+-------------------------------------------------------------------------------
+TemplateTest: vectors can be sized and resized - int
+  resizing smaller changes size but not capacity
+-------------------------------------------------------------------------------
+Misc.tests.cpp:<line number>
+...............................................................................
+
+Misc.tests.cpp:<line number>: PASSED:
+  REQUIRE( v.size() == 0 )
+with expansion:
+  0 == 0
+
+Misc.tests.cpp:<line number>: PASSED:
+  REQUIRE( v.capacity() >= 5 )
+with expansion:
+  5 >= 5
+
+-------------------------------------------------------------------------------
+TemplateTest: vectors can be sized and resized - int
+  resizing smaller changes size but not capacity
+  We can use the 'swap trick' to reset the capacity
+-------------------------------------------------------------------------------
+Misc.tests.cpp:<line number>
+...............................................................................
+
+Misc.tests.cpp:<line number>: PASSED:
+  REQUIRE( v.capacity() == 0 )
+with expansion:
+  0 == 0
+
+-------------------------------------------------------------------------------
+TemplateTest: vectors can be sized and resized - int
+-------------------------------------------------------------------------------
+Misc.tests.cpp:<line number>
+...............................................................................
+
+Misc.tests.cpp:<line number>: PASSED:
+  REQUIRE( v.size() == 5 )
+with expansion:
+  5 == 5
+
+Misc.tests.cpp:<line number>: PASSED:
+  REQUIRE( v.capacity() >= 5 )
+with expansion:
+  5 >= 5
+
+-------------------------------------------------------------------------------
+TemplateTest: vectors can be sized and resized - int
+  reserving bigger changes capacity but not size
+-------------------------------------------------------------------------------
+Misc.tests.cpp:<line number>
+...............................................................................
+
+Misc.tests.cpp:<line number>: PASSED:
+  REQUIRE( v.size() == 5 )
+with expansion:
+  5 == 5
+
+Misc.tests.cpp:<line number>: PASSED:
+  REQUIRE( v.capacity() >= 10 )
+with expansion:
+  10 >= 10
+
+-------------------------------------------------------------------------------
+TemplateTest: vectors can be sized and resized - int
+-------------------------------------------------------------------------------
+Misc.tests.cpp:<line number>
+...............................................................................
+
+Misc.tests.cpp:<line number>: PASSED:
+  REQUIRE( v.size() == 5 )
+with expansion:
+  5 == 5
+
+Misc.tests.cpp:<line number>: PASSED:
+  REQUIRE( v.capacity() >= 5 )
+with expansion:
+  5 >= 5
+
+-------------------------------------------------------------------------------
+TemplateTest: vectors can be sized and resized - int
+  reserving smaller does not change size or capacity
+-------------------------------------------------------------------------------
+Misc.tests.cpp:<line number>
+...............................................................................
+
+Misc.tests.cpp:<line number>: PASSED:
+  REQUIRE( v.size() == 5 )
+with expansion:
+  5 == 5
+
+Misc.tests.cpp:<line number>: PASSED:
+  REQUIRE( v.capacity() >= 5 )
+with expansion:
+  5 >= 5
+
+-------------------------------------------------------------------------------
+TemplateTest: vectors can be sized and resized - std::string
+-------------------------------------------------------------------------------
+Misc.tests.cpp:<line number>
+...............................................................................
+
+Misc.tests.cpp:<line number>: PASSED:
+  REQUIRE( v.size() == 5 )
+with expansion:
+  5 == 5
+
+Misc.tests.cpp:<line number>: PASSED:
+  REQUIRE( v.capacity() >= 5 )
+with expansion:
+  5 >= 5
+
+-------------------------------------------------------------------------------
+TemplateTest: vectors can be sized and resized - std::string
+  resizing bigger changes size and capacity
+-------------------------------------------------------------------------------
+Misc.tests.cpp:<line number>
+...............................................................................
+
+Misc.tests.cpp:<line number>: PASSED:
+  REQUIRE( v.size() == 10 )
+with expansion:
+  10 == 10
+
+Misc.tests.cpp:<line number>: PASSED:
+  REQUIRE( v.capacity() >= 10 )
+with expansion:
+  10 >= 10
+
+-------------------------------------------------------------------------------
+TemplateTest: vectors can be sized and resized - std::string
+-------------------------------------------------------------------------------
+Misc.tests.cpp:<line number>
+...............................................................................
+
+Misc.tests.cpp:<line number>: PASSED:
+  REQUIRE( v.size() == 5 )
+with expansion:
+  5 == 5
+
+Misc.tests.cpp:<line number>: PASSED:
+  REQUIRE( v.capacity() >= 5 )
+with expansion:
+  5 >= 5
+
+-------------------------------------------------------------------------------
+TemplateTest: vectors can be sized and resized - std::string
+  resizing smaller changes size but not capacity
+-------------------------------------------------------------------------------
+Misc.tests.cpp:<line number>
+...............................................................................
+
+Misc.tests.cpp:<line number>: PASSED:
+  REQUIRE( v.size() == 0 )
+with expansion:
+  0 == 0
+
+Misc.tests.cpp:<line number>: PASSED:
+  REQUIRE( v.capacity() >= 5 )
+with expansion:
+  5 >= 5
+
+-------------------------------------------------------------------------------
+TemplateTest: vectors can be sized and resized - std::string
+  resizing smaller changes size but not capacity
+  We can use the 'swap trick' to reset the capacity
+-------------------------------------------------------------------------------
+Misc.tests.cpp:<line number>
+...............................................................................
+
+Misc.tests.cpp:<line number>: PASSED:
+  REQUIRE( v.capacity() == 0 )
+with expansion:
+  0 == 0
+
+-------------------------------------------------------------------------------
+TemplateTest: vectors can be sized and resized - std::string
+-------------------------------------------------------------------------------
+Misc.tests.cpp:<line number>
+...............................................................................
+
+Misc.tests.cpp:<line number>: PASSED:
+  REQUIRE( v.size() == 5 )
+with expansion:
+  5 == 5
+
+Misc.tests.cpp:<line number>: PASSED:
+  REQUIRE( v.capacity() >= 5 )
+with expansion:
+  5 >= 5
+
+-------------------------------------------------------------------------------
+TemplateTest: vectors can be sized and resized - std::string
+  reserving bigger changes capacity but not size
+-------------------------------------------------------------------------------
+Misc.tests.cpp:<line number>
+...............................................................................
+
+Misc.tests.cpp:<line number>: PASSED:
+  REQUIRE( v.size() == 5 )
+with expansion:
+  5 == 5
+
+Misc.tests.cpp:<line number>: PASSED:
+  REQUIRE( v.capacity() >= 10 )
+with expansion:
+  10 >= 10
+
+-------------------------------------------------------------------------------
+TemplateTest: vectors can be sized and resized - std::string
+-------------------------------------------------------------------------------
+Misc.tests.cpp:<line number>
+...............................................................................
+
+Misc.tests.cpp:<line number>: PASSED:
+  REQUIRE( v.size() == 5 )
+with expansion:
+  5 == 5
+
+Misc.tests.cpp:<line number>: PASSED:
+  REQUIRE( v.capacity() >= 5 )
+with expansion:
+  5 >= 5
+
+-------------------------------------------------------------------------------
+TemplateTest: vectors can be sized and resized - std::string
+  reserving smaller does not change size or capacity
+-------------------------------------------------------------------------------
+Misc.tests.cpp:<line number>
+...............................................................................
+
+Misc.tests.cpp:<line number>: PASSED:
+  REQUIRE( v.size() == 5 )
+with expansion:
+  5 == 5
+
+Misc.tests.cpp:<line number>: PASSED:
+  REQUIRE( v.capacity() >= 5 )
+with expansion:
+  5 >= 5
+
+-------------------------------------------------------------------------------
+TemplateTest: vectors can be sized and resized - std::tuple<int,float>
+-------------------------------------------------------------------------------
+Misc.tests.cpp:<line number>
+...............................................................................
+
+Misc.tests.cpp:<line number>: PASSED:
+  REQUIRE( v.size() == 5 )
+with expansion:
+  5 == 5
+
+Misc.tests.cpp:<line number>: PASSED:
+  REQUIRE( v.capacity() >= 5 )
+with expansion:
+  5 >= 5
+
+-------------------------------------------------------------------------------
+TemplateTest: vectors can be sized and resized - std::tuple<int,float>
+  resizing bigger changes size and capacity
+-------------------------------------------------------------------------------
+Misc.tests.cpp:<line number>
+...............................................................................
+
+Misc.tests.cpp:<line number>: PASSED:
+  REQUIRE( v.size() == 10 )
+with expansion:
+  10 == 10
+
+Misc.tests.cpp:<line number>: PASSED:
+  REQUIRE( v.capacity() >= 10 )
+with expansion:
+  10 >= 10
+
+-------------------------------------------------------------------------------
+TemplateTest: vectors can be sized and resized - std::tuple<int,float>
+-------------------------------------------------------------------------------
+Misc.tests.cpp:<line number>
+...............................................................................
+
+Misc.tests.cpp:<line number>: PASSED:
+  REQUIRE( v.size() == 5 )
+with expansion:
+  5 == 5
+
+Misc.tests.cpp:<line number>: PASSED:
+  REQUIRE( v.capacity() >= 5 )
+with expansion:
+  5 >= 5
+
+-------------------------------------------------------------------------------
+TemplateTest: vectors can be sized and resized - std::tuple<int,float>
+  resizing smaller changes size but not capacity
+-------------------------------------------------------------------------------
+Misc.tests.cpp:<line number>
+...............................................................................
+
+Misc.tests.cpp:<line number>: PASSED:
+  REQUIRE( v.size() == 0 )
+with expansion:
+  0 == 0
+
+Misc.tests.cpp:<line number>: PASSED:
+  REQUIRE( v.capacity() >= 5 )
+with expansion:
+  5 >= 5
+
+-------------------------------------------------------------------------------
+TemplateTest: vectors can be sized and resized - std::tuple<int,float>
+  resizing smaller changes size but not capacity
+  We can use the 'swap trick' to reset the capacity
+-------------------------------------------------------------------------------
+Misc.tests.cpp:<line number>
+...............................................................................
+
+Misc.tests.cpp:<line number>: PASSED:
+  REQUIRE( v.capacity() == 0 )
+with expansion:
+  0 == 0
+
+-------------------------------------------------------------------------------
+TemplateTest: vectors can be sized and resized - std::tuple<int,float>
+-------------------------------------------------------------------------------
+Misc.tests.cpp:<line number>
+...............................................................................
+
+Misc.tests.cpp:<line number>: PASSED:
+  REQUIRE( v.size() == 5 )
+with expansion:
+  5 == 5
+
+Misc.tests.cpp:<line number>: PASSED:
+  REQUIRE( v.capacity() >= 5 )
+with expansion:
+  5 >= 5
+
+-------------------------------------------------------------------------------
+TemplateTest: vectors can be sized and resized - std::tuple<int,float>
+  reserving bigger changes capacity but not size
+-------------------------------------------------------------------------------
+Misc.tests.cpp:<line number>
+...............................................................................
+
+Misc.tests.cpp:<line number>: PASSED:
+  REQUIRE( v.size() == 5 )
+with expansion:
+  5 == 5
+
+Misc.tests.cpp:<line number>: PASSED:
+  REQUIRE( v.capacity() >= 10 )
+with expansion:
+  10 >= 10
+
+-------------------------------------------------------------------------------
+TemplateTest: vectors can be sized and resized - std::tuple<int,float>
+-------------------------------------------------------------------------------
+Misc.tests.cpp:<line number>
+...............................................................................
+
+Misc.tests.cpp:<line number>: PASSED:
+  REQUIRE( v.size() == 5 )
+with expansion:
+  5 == 5
+
+Misc.tests.cpp:<line number>: PASSED:
+  REQUIRE( v.capacity() >= 5 )
+with expansion:
+  5 >= 5
+
+-------------------------------------------------------------------------------
+TemplateTest: vectors can be sized and resized - std::tuple<int,float>
+  reserving smaller does not change size or capacity
+-------------------------------------------------------------------------------
+Misc.tests.cpp:<line number>
+...............................................................................
+
+Misc.tests.cpp:<line number>: PASSED:
+  REQUIRE( v.size() == 5 )
+with expansion:
+  5 == 5
+
+Misc.tests.cpp:<line number>: PASSED:
+  REQUIRE( v.capacity() >= 5 )
+with expansion:
+  5 >= 5
+
+-------------------------------------------------------------------------------
 Test case with one argument
 -------------------------------------------------------------------------------
 VariadicMacros.tests.cpp:<line number>
@@ -9786,6 +10432,6 @@ Misc.tests.cpp:<line number>
 Misc.tests.cpp:<line number>: PASSED:
 
 ===============================================================================
-test cases:  216 |  150 passed |  62 failed |  4 failed as expected
-assertions: 1248 | 1105 passed | 122 failed | 21 failed as expected
+test cases:  226 |  157 passed |  65 failed |  4 failed as expected
+assertions: 1322 | 1176 passed | 125 failed | 21 failed as expected
 

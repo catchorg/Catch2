@@ -39,6 +39,13 @@ struct Fixture
     int m_a;
 };
 
+template< typename T >
+struct Template_Fixture {
+    Template_Fixture(): m_a(1) {}
+
+    T m_a;
+};
+
 #endif
 
 
@@ -51,6 +58,10 @@ TEST_CASE_METHOD( Fixture, "A TEST_CASE_METHOD based test run that succeeds", "[
     REQUIRE( m_a == 1 );
 }
 
+TEMPLATE_TEST_CASE_METHOD(Template_Fixture, "A TEMPLATE_TEST_CASE_METHOD based test run that succeeds", "[class][template]", int, float, double) {
+    REQUIRE( Template_Fixture<TestType>::m_a == 1 );
+}
+
 // We should be able to write our tests within a different namespace
 namespace Inner
 {
@@ -58,6 +69,13 @@ namespace Inner
     {
         REQUIRE( m_a == 2 );
     }
+
+    TEMPLATE_TEST_CASE_METHOD(Template_Fixture,"A TEMPLATE_TEST_CASE_METHOD based test run that fails", "[.][class][template][failing]", int, float, double)
+    {
+        REQUIRE( Template_Fixture<TestType>::m_a == 2 );
+    }
 }
+
+
 
 }} // namespace ClassTests

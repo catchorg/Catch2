@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuitesloose text artifact
 >
-  <testsuite name="<exe-name>" errors="17" failures="106" tests="1249" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
+  <testsuite name="<exe-name>" errors="17" failures="109" tests="1323" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
     <testcase classname="<exe-name>.global" name="# A test name that starts with a #" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="#1005: Comparing pointer to int and long (NULL can be either on various systems)" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="#1027" time="{duration}"/>
@@ -77,6 +77,24 @@ Class.tests.cpp:<line number>
       </failure>
     </testcase>
     <testcase classname="<exe-name>.TestClass" name="A METHOD_AS_TEST_CASE based test run that succeeds" time="{duration}"/>
+    <testcase classname="<exe-name>.Template_Fixture" name="A TEMPLATE_TEST_CASE_METHOD based test run that fails - double" time="{duration}">
+      <failure message="1.0 == 2" type="REQUIRE">
+Class.tests.cpp:<line number>
+      </failure>
+    </testcase>
+    <testcase classname="<exe-name>.Template_Fixture" name="A TEMPLATE_TEST_CASE_METHOD based test run that fails - float" time="{duration}">
+      <failure message="1.0f == 2" type="REQUIRE">
+Class.tests.cpp:<line number>
+      </failure>
+    </testcase>
+    <testcase classname="<exe-name>.Template_Fixture" name="A TEMPLATE_TEST_CASE_METHOD based test run that fails - int" time="{duration}">
+      <failure message="1 == 2" type="REQUIRE">
+Class.tests.cpp:<line number>
+      </failure>
+    </testcase>
+    <testcase classname="<exe-name>.Template_Fixture" name="A TEMPLATE_TEST_CASE_METHOD based test run that succeeds - double" time="{duration}"/>
+    <testcase classname="<exe-name>.Template_Fixture" name="A TEMPLATE_TEST_CASE_METHOD based test run that succeeds - float" time="{duration}"/>
+    <testcase classname="<exe-name>.Template_Fixture" name="A TEMPLATE_TEST_CASE_METHOD based test run that succeeds - int" time="{duration}"/>
     <testcase classname="<exe-name>.Fixture" name="A TEST_CASE_METHOD based test run that fails" time="{duration}">
       <failure message="1 == 2" type="REQUIRE">
 Class.tests.cpp:<line number>
@@ -596,6 +614,30 @@ Misc.tests.cpp:<line number>
     </testcase>
     <testcase classname="<exe-name>.global" name="Tag alias can be registered against tag patterns/The same tag alias can only be registered once" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Tag alias can be registered against tag patterns/Tag aliases must be of the form [@name]" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="TemplateTest: vectors can be sized and resized - float" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="TemplateTest: vectors can be sized and resized - float/resizing bigger changes size and capacity" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="TemplateTest: vectors can be sized and resized - float/resizing smaller changes size but not capacity" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="TemplateTest: vectors can be sized and resized - float/resizing smaller changes size but not capacity/We can use the 'swap trick' to reset the capacity" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="TemplateTest: vectors can be sized and resized - float/reserving bigger changes capacity but not size" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="TemplateTest: vectors can be sized and resized - float/reserving smaller does not change size or capacity" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="TemplateTest: vectors can be sized and resized - int" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="TemplateTest: vectors can be sized and resized - int/resizing bigger changes size and capacity" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="TemplateTest: vectors can be sized and resized - int/resizing smaller changes size but not capacity" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="TemplateTest: vectors can be sized and resized - int/resizing smaller changes size but not capacity/We can use the 'swap trick' to reset the capacity" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="TemplateTest: vectors can be sized and resized - int/reserving bigger changes capacity but not size" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="TemplateTest: vectors can be sized and resized - int/reserving smaller does not change size or capacity" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="TemplateTest: vectors can be sized and resized - std::string" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="TemplateTest: vectors can be sized and resized - std::string/resizing bigger changes size and capacity" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="TemplateTest: vectors can be sized and resized - std::string/resizing smaller changes size but not capacity" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="TemplateTest: vectors can be sized and resized - std::string/resizing smaller changes size but not capacity/We can use the 'swap trick' to reset the capacity" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="TemplateTest: vectors can be sized and resized - std::string/reserving bigger changes capacity but not size" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="TemplateTest: vectors can be sized and resized - std::string/reserving smaller does not change size or capacity" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="TemplateTest: vectors can be sized and resized - std::tuple&lt;int,float>" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="TemplateTest: vectors can be sized and resized - std::tuple&lt;int,float>/resizing bigger changes size and capacity" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="TemplateTest: vectors can be sized and resized - std::tuple&lt;int,float>/resizing smaller changes size but not capacity" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="TemplateTest: vectors can be sized and resized - std::tuple&lt;int,float>/resizing smaller changes size but not capacity/We can use the 'swap trick' to reset the capacity" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="TemplateTest: vectors can be sized and resized - std::tuple&lt;int,float>/reserving bigger changes capacity but not size" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="TemplateTest: vectors can be sized and resized - std::tuple&lt;int,float>/reserving smaller does not change size or capacity" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Test case with one argument" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Test enum bit values" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="The NO_FAIL macro reports a failure but does not fail the test" time="{duration}"/>

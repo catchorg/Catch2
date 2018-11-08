@@ -93,6 +93,39 @@ with expansion:
   "hello" == "world"
 
 -------------------------------------------------------------------------------
+A TEMPLATE_TEST_CASE_METHOD based test run that fails - double
+-------------------------------------------------------------------------------
+Class.tests.cpp:<line number>
+...............................................................................
+
+Class.tests.cpp:<line number>: FAILED:
+  REQUIRE( Template_Fixture<TestType>::m_a == 2 )
+with expansion:
+  1.0 == 2
+
+-------------------------------------------------------------------------------
+A TEMPLATE_TEST_CASE_METHOD based test run that fails - float
+-------------------------------------------------------------------------------
+Class.tests.cpp:<line number>
+...............................................................................
+
+Class.tests.cpp:<line number>: FAILED:
+  REQUIRE( Template_Fixture<TestType>::m_a == 2 )
+with expansion:
+  1.0f == 2
+
+-------------------------------------------------------------------------------
+A TEMPLATE_TEST_CASE_METHOD based test run that fails - int
+-------------------------------------------------------------------------------
+Class.tests.cpp:<line number>
+...............................................................................
+
+Class.tests.cpp:<line number>: FAILED:
+  REQUIRE( Template_Fixture<TestType>::m_a == 2 )
+with expansion:
+  1 == 2
+
+-------------------------------------------------------------------------------
 A TEST_CASE_METHOD based test run that fails
 -------------------------------------------------------------------------------
 Class.tests.cpp:<line number>
@@ -1093,6 +1126,6 @@ due to unexpected exception with message:
   Why would you throw a std::string?
 
 ===============================================================================
-test cases:  216 |  163 passed |  49 failed |  4 failed as expected
-assertions: 1234 | 1105 passed | 108 failed | 21 failed as expected
+test cases:  226 |  170 passed |  52 failed |  4 failed as expected
+assertions: 1308 | 1176 passed | 111 failed | 21 failed as expected
 
