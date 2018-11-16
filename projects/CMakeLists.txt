@@ -123,6 +123,7 @@ set(INTERNAL_HEADERS
         ${HEADER_DIR}/internal/catch_option.hpp
         ${HEADER_DIR}/internal/catch_output_redirect.h
         ${HEADER_DIR}/internal/catch_platform.h
+        ${HEADER_DIR}/internal/catch_preprocessor.hpp
         ${HEADER_DIR}/internal/catch_random_number_generator.h
         ${HEADER_DIR}/internal/catch_reenable_warnings.h
         ${HEADER_DIR}/internal/catch_reporter_registrars.hpp
@@ -153,6 +154,7 @@ set(INTERNAL_HEADERS
         ${HEADER_DIR}/internal/catch_to_string.hpp
         ${HEADER_DIR}/internal/catch_tostring.h
         ${HEADER_DIR}/internal/catch_totals.h
+        ${HEADER_DIR}/internal/catch_type_traits.hpp
         ${HEADER_DIR}/internal/catch_uncaught_exceptions.h
         ${HEADER_DIR}/internal/catch_user_interfaces.h
         ${HEADER_DIR}/internal/catch_version.h
