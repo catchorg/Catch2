@@ -86,6 +86,65 @@ When any of these macros are used the console reporter recognises them and forma
 
 Other than the additional prefixes and the formatting in the console reporter these macros behave exactly as ```TEST_CASE```s and ```SECTION```s. As such there is nothing enforcing the correct sequencing of these macros - that's up to the programmer!
 
+## Type parametrised test cases
+
+In addition to `TEST_CASE`s, Catch2 also supports test cases parametrised
+by type, in the form of `TEMPLATE_TEST_CASE`.
+
+* **TEMPLATE_TEST_CASE(** _test name_ , _tags_,  _type1_, _type2_, ..., _typen_ **)**
+
+_test name_ and _tag_ are exactly the same as they are in `TEST_CASE`,
+with the difference that the tag string must be provided (however, it
+can be empty). _type1_ through _typen_ is the list of types for which
+this test case should run, and, inside the test code, the current type
+is available as the `TestType` type.
+
+Because of limitations of the C++ preprocessor, if you want to specify
+a type with multiple template parameters, you need to enclose it in
+parentheses, e.g. `std::map<int, std::string>` needs to be passed as
+`(std::map<int, std::string>)`.
+
+Example:
+```cpp
+TEMPLATE_TEST_CASE( "vectors can be sized and resized", "[vector][template]", int, std::string, (std::tuple<int,float>) ) {
+
+    std::vector<TestType> v( 5 );
+
+    REQUIRE( v.size() == 5 );
+    REQUIRE( v.capacity() >= 5 );
+
+    SECTION( "resizing bigger changes size and capacity" ) {
+        v.resize( 10 );
+
+        REQUIRE( v.size() == 10 );
+        REQUIRE( v.capacity() >= 10 );
+    }
+    SECTION( "resizing smaller changes size but not capacity" ) {
+        v.resize( 0 );
+
+        REQUIRE( v.size() == 0 );
+        REQUIRE( v.capacity() >= 5 );
+
+        SECTION( "We can use the 'swap trick' to reset the capacity" ) {
+            std::vector<TestType> empty;
+            empty.swap( v );
+
+            REQUIRE( v.capacity() == 0 );
+        }
+    }
+    SECTION( "reserving smaller does not change size or capacity" ) {
+        v.reserve( 0 );
+
+        REQUIRE( v.size() == 5 );
+        REQUIRE( v.capacity() >= 5 );
+    }
+}
+```
+
+_While there is an upper limit on the number of types you can specify
+in single `TEMPLATE_TEST_CASE`, the limit is very high and should not
+be encountered in practice._
+
 ---
 
 [Home](Readme.md#top)
