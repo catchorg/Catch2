@@ -36,3 +36,4 @@ Other:
 * [Open Source Projects using Catch](opensource-users.md#top)
 * [Contributing](contributing.md#top)
 * [Release Notes](release-notes.md#top)
+* [Deprecations](deprecations.md#top)
