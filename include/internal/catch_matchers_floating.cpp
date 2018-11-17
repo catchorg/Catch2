@@ -7,6 +7,7 @@
 
 #include "catch_matchers_floating.h"
 #include "catch_enforce.h"
+#include "catch_polyfills.hpp"
 #include "catch_to_string.hpp"
 #include "catch_tostring.h"
 
@@ -57,7 +58,7 @@ template <typename FP>
 bool almostEqualUlps(FP lhs, FP rhs, int maxUlpDiff) {
     // Comparison with NaN should always be false.
     // This way we can rule it out before getting into the ugly details
-    if (std::isnan(lhs) || std::isnan(rhs)) {
+    if (Catch::isnan(lhs) || Catch::isnan(rhs)) {
         return false;
     }
 

@@ -20,6 +20,7 @@
 #include "catch_tostring.h"
 #include "catch_interfaces_config.h"
 #include "catch_context.h"
+#include "catch_polyfills.hpp"
 
 #include <cmath>
 #include <iomanip>
@@ -68,7 +69,7 @@ namespace Detail {
 
 template<typename T>
 std::string fpToString( T value, int precision ) {
-    if (std::isnan(value)) {
+    if (Catch::isnan(value)) {
         return "nan";
     }
 

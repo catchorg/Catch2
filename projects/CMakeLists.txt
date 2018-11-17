@@ -123,6 +123,7 @@ set(INTERNAL_HEADERS
         ${HEADER_DIR}/internal/catch_option.hpp
         ${HEADER_DIR}/internal/catch_output_redirect.h
         ${HEADER_DIR}/internal/catch_platform.h
+        ${HEADER_DIR}/internal/catch_polyfills.hpp
         ${HEADER_DIR}/internal/catch_preprocessor.hpp
         ${HEADER_DIR}/internal/catch_random_number_generator.h
         ${HEADER_DIR}/internal/catch_reenable_warnings.h
@@ -198,6 +199,7 @@ set(IMPL_SOURCES
         ${HEADER_DIR}/internal/catch_output_redirect.cpp
         ${HEADER_DIR}/internal/catch_registry_hub.cpp
         ${HEADER_DIR}/internal/catch_interfaces_reporter.cpp
+        ${HEADER_DIR}/internal/catch_polyfills.cpp
         ${HEADER_DIR}/internal/catch_random_number_generator.cpp
         ${HEADER_DIR}/internal/catch_reporter_registry.cpp
         ${HEADER_DIR}/internal/catch_result_type.cpp

@@ -158,6 +158,12 @@
 #endif // __DJGPP__
 
 ////////////////////////////////////////////////////////////////////////////////
+// Embarcadero C++Build
+#if defined(__BORLANDC__)
+    #define CATCH_INTERNAL_CONFIG_POLYFILL_ISNAN
+#endif
+
+////////////////////////////////////////////////////////////////////////////////
 
 // Use of __COUNTER__ is suppressed during code analysis in
 // CLion/AppCode 2017.2.x and former, because __COUNTER__ is not properly
@@ -236,6 +242,10 @@
 
 #if !defined(CATCH_INTERNAL_CONFIG_EXCEPTIONS_ENABLED) && !defined(CATCH_CONFIG_DISABLE_EXCEPTIONS)
 #  define CATCH_CONFIG_DISABLE_EXCEPTIONS
+#endif
+
+#if defined(CATCH_INTERNAL_CONFIG_POLYFILL_ISNAN) && !defined(CATCH_CONFIG_NO_POLYFILL_ISNAN) && !defined(CATCH_CONFIG_POLYFILL_ISNAN)
+#  define CATCH_CONFIG_POLYFILL_ISNAN
 #endif
 
 #if !defined(CATCH_INTERNAL_SUPPRESS_PARENTHESES_WARNINGS)
