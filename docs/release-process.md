@@ -43,11 +43,12 @@ description should contain the release notes for the current release.
 Single header version of `catch.hpp` *needs* to be attached as a binary,
 as that is where the official download link links to. Preferably
 it should use linux line endings. All non-bundled reporters (Automake,
-TAP, TeamCity) should also be attached as binaries, as they are dependent
-on a specific version of the single-include header.
+TAP, TeamCity) should also be attached as binaries, as they might be
+dependent on a specific version of the single-include header.
 
+Since 2.5.0 the released "binaries" (headers) should be PGP signed.
 
 ## Optional steps
 
-Because Catch's [vcpkg](https://github.com/Microsoft/vcpkg) port updates
+Because Catch2's [vcpkg](https://github.com/Microsoft/vcpkg) port updates
 itself automagically, there are no optional steps at this time.
