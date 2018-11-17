@@ -263,8 +263,8 @@ Test cases in Catch2 can be also parametrised by type, via the
 `TEMPLATE_TEST_CASE` macro, which behaves in the same way the `TEST_CASE`
 macro, but is run for every type.
 
-For more details, see our documentation on [test cases and sections]
-(test-cases-and-sections.md#type-parametrised-test-cases).
+For more details, see our documentation on [test cases and
+sections](test-cases-and-sections.md#type-parametrised-test-cases).
 
 
 ## Next steps
