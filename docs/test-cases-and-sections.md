@@ -1,6 +1,12 @@
 <a id="top"></a>
 # Test cases and sections
 
+**Contents**<br>
+[Tags](#tags)<br>
+[Tag aliases](#tag-aliases)<br>
+[BDD-style test cases](#bdd-style-test-cases)<br>
+[Type parametrised test cases](#type-parametrised-test-cases)<br>
+
 While Catch fully supports the traditional, xUnit, style of class-based fixtures containing test case methods this is not the preferred style.
 
 Instead Catch provides a powerful mechanism for nesting test case sections within a test case. For a more detailed discussion see the [tutorial](tutorial.md#test-cases-and-sections).
