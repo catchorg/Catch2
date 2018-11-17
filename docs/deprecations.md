@@ -6,6 +6,8 @@
 [`--list-*` command line parameters](#--list--command-line-parameters)<br>
 [Types passed to the reporter interface](#types-passed-to-the-reporter-interface)<br>
 [Generators](#generators)<br>
+[`ANON_TEST_CASE`](#anon_test_case)<br>
+[Secondary description amongst tags](#secondary-description-amongst-tags)<br>
 
 This page documents current deprecations and upcoming changes inside
 Catch2. You can expect deprecated functionality to stick around until
@@ -43,6 +45,19 @@ the arguments provided to functions in the reporter interface.
 
 The current generator interface is not intended to be stable and will be
 changed.
+
+
+## `ANON_TEST_CASE`
+
+`ANON_TEST_CASE` is scheduled for removal, as it can be fully replaced
+by a `TEST_CASE` with no arguments.
+
+
+## Secondary description amongst tags
+
+Currently, the tags part of `TEST_CASE` (and others) macro can also
+contain text that is not part of tags. As it is not actually documented,
+or used, it will be removed.
 
 
 ---
