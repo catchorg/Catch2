@@ -3,19 +3,15 @@ from conans import ConanFile, CMake
 
 
 class CatchConan(ConanFile):
-    name = "Catch"
-    version = "2.4.2"
+    name = "Catch2"
     description = "A modern, C++-native, header-only, framework for unit-tests, TDD and BDD"
-    author = "philsquared"
-    generators = "cmake"
-    # Only needed until conan 1.5 is released
-    settings = "compiler", "arch"
-    exports_sources = "single_include/*", "CMakeLists.txt", "CMake/catch2.pc.in", "LICENSE.txt"
+    topics = ("conan", "catch2", "header-only", "unit-test", "tdd", "bdd")
     url = "https://github.com/catchorg/Catch2"
-    license = "Boost Software License - Version 1.0. http://www.boost.org/LICENSE_1_0.txt"
-
-    def build(self):
-        pass
+    homepage = url
+    license = "BSL-1.0"
+    exports = "LICENSE.txt"
+    exports_sources = ("single_include/*", "CMakeLists.txt", "CMake/*", "contrib/*")
+    generators = "cmake"
 
     def package(self):
         cmake = CMake(self)
