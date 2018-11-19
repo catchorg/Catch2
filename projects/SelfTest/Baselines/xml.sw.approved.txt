@@ -1986,6 +1986,54 @@
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
+    <TestCase name="CAPTURE can deal with complex expressions" tags="[capture][messages]" filename="projects/<exe-name>/UsageTests/Message.tests.cpp" >
+      <Info>
+        a := 1
+      </Info>
+      <Info>
+        b := 2
+      </Info>
+      <Info>
+        c := 3
+      </Info>
+      <Info>
+        a + b := 3
+      </Info>
+      <Info>
+        a+b := 3
+      </Info>
+      <Info>
+        c > b := true
+      </Info>
+      <Info>
+        a == 1 := true
+      </Info>
+      <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="CAPTURE can deal with complex expressions involving commas" tags="[capture][messages]" filename="projects/<exe-name>/UsageTests/Message.tests.cpp" >
+      <Info>
+        std::vector&lt;int>{1, 2, 3}[0, 1, 2] := 3
+      </Info>
+      <Info>
+        std::vector&lt;int>{1, 2, 3}[(0, 1)] := 2
+      </Info>
+      <Info>
+        std::vector&lt;int>{1, 2, 3}[0] := 1
+      </Info>
+      <Info>
+        (helper_1436&lt;int, int>{12, -12}) := { 12, -12 }
+      </Info>
+      <Info>
+        (helper_1436&lt;int, int>(-12, 12)) := { -12, 12 }
+      </Info>
+      <Info>
+        (1, 2) := 2
+      </Info>
+      <Info>
+        (2, 3) := 3
+      </Info>
+      <OverallResult success="true"/>
+    </TestCase>
     <TestCase name="Capture and info messages" filename="projects/<exe-name>/UsageTests/ToStringGeneral.tests.cpp" >
       <Section name="Capture should stringify like assertions" filename="projects/<exe-name>/UsageTests/ToStringGeneral.tests.cpp" >
         <Info>
@@ -12051,7 +12099,7 @@ loose text artifact
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="1176" failures="126" expectedFailures="21"/>
+    <OverallResults successes="1178" failures="126" expectedFailures="21"/>
   </Group>
-  <OverallResults successes="1176" failures="125" expectedFailures="21"/>
+  <OverallResults successes="1178" failures="125" expectedFailures="21"/>
 </Catch>
