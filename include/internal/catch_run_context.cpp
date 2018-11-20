@@ -393,6 +393,8 @@ namespace Catch {
     ) {
         m_reporter->assertionStarting( info );
 
+        m_lastAssertionInfo = info;
+
         bool negated = isFalseTest( info.resultDisposition );
         bool result = expr.getResult() != negated;
 
@@ -415,7 +417,6 @@ namespace Catch {
             ITransientExpression const *expr,
             bool negated ) {
 
-        m_lastAssertionInfo = info;
         AssertionResultData data( resultType, LazyExpression( negated ) );
 
         AssertionResult assertionResult{ info, data };
@@ -436,7 +437,7 @@ namespace Catch {
 
         AssertionResultData data( resultType, LazyExpression( false ) );
         data.message = message;
-        AssertionResult assertionResult{ m_lastAssertionInfo, data };
+        AssertionResult assertionResult{ info, data };
         assertionEnded( assertionResult );
         if( !assertionResult.isOk() )
             populateReaction( reaction );
