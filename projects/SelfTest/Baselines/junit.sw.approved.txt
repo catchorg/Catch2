@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuitesloose text artifact
 >
-  <testsuite name="<exe-name>" errors="17" failures="109" tests="1323" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
+  <testsuite name="<exe-name>" errors="17" failures="109" tests="1325" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
     <testcase classname="<exe-name>.global" name="# A test name that starts with a #" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="#1005: Comparing pointer to int and long (NULL can be either on various systems)" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="#1027" time="{duration}"/>
@@ -141,6 +141,8 @@ Exception.tests.cpp:<line number>
     <testcase classname="<exe-name>.global" name="Assertions then sections/A section/Another other section" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Assorted miscellaneous tests" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Bitfields can be captured (#1027)" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="CAPTURE can deal with complex expressions" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="CAPTURE can deal with complex expressions involving commas" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Capture and info messages/Capture should stringify like assertions" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Capture and info messages/Info should NOT stringify the way assertions do" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Character pretty printing/Specifically escaped" time="{duration}"/>

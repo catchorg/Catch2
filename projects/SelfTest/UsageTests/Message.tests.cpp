@@ -9,10 +9,6 @@
 #include "catch.hpp"
 #include <iostream>
 
-#ifdef __clang__
-#pragma clang diagnostic ignored "-Wc++98-compat-pedantic"
-#endif
-
 TEST_CASE( "INFO and WARN do not abort tests", "[messages][.]" ) {
     INFO( "this is a " << "message" );    // This should output the message if a failure occurs
     WARN( "this is a " << "warning" );    // This should always output the message but then continue
@@ -135,3 +131,60 @@ TEST_CASE( "Pointers can be converted to strings", "[messages][.][approvals]" ) 
     WARN( "actual address of p: " << &p );
     WARN( "toString(p): " << ::Catch::Detail::stringify( &p ) );
 }
+
+TEST_CASE( "CAPTURE can deal with complex expressions", "[messages][capture]" ) {
+    int a = 1;
+    int b = 2;
+    int c = 3;
+    CAPTURE( a, b, c, a + b, a+b, c > b, a == 1 );
+    SUCCEED();
+}
+
+#ifdef __clang__
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunused-value" // In (1, 2), the "1" is unused ...
+#endif
+#ifdef __GNUC__
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunused-value" // All the comma operators are side-effect free
+#endif
+#ifdef _MSC_VER
+#pragma warning(push)
+#pragma warning(disable:4709) // comma in indexing operator
+#endif
+
+template <typename T1, typename T2>
+struct helper_1436 {
+    helper_1436(T1 t1, T2 t2):
+        t1{ t1 },
+        t2{ t2 }
+    {}
+    T1 t1;
+    T2 t2;
+};
+
+template <typename T1, typename T2>
+std::ostream& operator<<(std::ostream& out, helper_1436<T1, T2> const& helper) {
+    out << "{ " << helper.t1 << ", " << helper.t2 << " }";
+    return out;
+}
+
+TEST_CASE("CAPTURE can deal with complex expressions involving commas", "[messages][capture]") {
+    CAPTURE(std::vector<int>{1, 2, 3}[0, 1, 2],
+            std::vector<int>{1, 2, 3}[(0, 1)],
+            std::vector<int>{1, 2, 3}[0]);
+    CAPTURE((helper_1436<int, int>{12, -12}),
+            (helper_1436<int, int>(-12, 12)));
+    CAPTURE( (1, 2), (2, 3) );
+    SUCCEED();
+}
+
+#ifdef __clang__
+#pragma clang diagnostic pop
+#endif
+#ifdef __GNUC__
+#pragma GCC diagnostic pop
+#endif
+#ifdef _MSC_VER
+#pragma warning(pop)
+#endif

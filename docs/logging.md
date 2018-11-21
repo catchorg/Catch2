@@ -57,20 +57,37 @@ The message is reported and the test case fails.
 
 AS `FAIL`, but does not abort the test
 
-## Quickly capture a variable value
+## Quickly capture value of variables or expressions
 
-**CAPTURE(** _expression_ **)**
+**CAPTURE(** _expression1_, _expression2_, ... **)**
 
-Sometimes you just want to log the name and value of a variable. While you can easily do this with the INFO macro, above, as a convenience the CAPTURE macro handles the stringising of the variable name for you (actually it works with any expression, not just variables).
+Sometimes you just want to log a value of variable, or expression. For
+convenience, we provide the `CAPTURE` macro, that can take a variable,
+or an expression, and prints out that variable/expression and its value
+at the time of capture.
 
-E.g.
-```c++
-CAPTURE( theAnswer );
+e.g. `CAPTURE( theAnswer );` will log message "theAnswer := 42", while
+```cpp
+int a = 1, b = 2, c = 3;
+CAPTURE( a, b, c, a + b, c > b, a == 1);
+```
+will log a total of 6 messages:
+```
+a := 1
+b := 2
+c := 3
+a + b := 3
+c > b := true
+a == 1 := true
 ```
 
-This would log something like:
+You can also capture expressions that use commas inside parentheses
+(e.g. function calls), brackets, or braces (e.g. initializers). To
+properly capture expression that contains template parameters list
+(in other words, it contains commas between angle brackets), you need
+to enclose the expression inside parentheses:
+`CAPTURE( (std::pair<int, int>{1, 2}) );`
 
-<pre>"theAnswer := 42"</pre>
 
 ---
 
