@@ -32,6 +32,8 @@
 #    -- enables debug messages                                                                     #
 #    PARSE_CATCH_TESTS_NO_HIDDEN_TESTS (Default OFF)                                               #
 #    -- excludes tests marked with [!hide], [.] or [.foo] tags                                     #
+#    PARSE_CATCH_TESTS_HIDDEN_TESTS_DISABLED (Default OFF)                                         #
+#    -- if not excluded, mark tests with [!hide], [.] or [.foo] tags as DISABLED                   #
 #    PARSE_CATCH_TESTS_ADD_FIXTURE_IN_TEST_NAME (Default ON)                                       #
 #    -- adds fixture class name to the test name                                                   #
 #    PARSE_CATCH_TESTS_ADD_TARGET_IN_TEST_NAME (Default ON)                                        #
@@ -50,6 +52,7 @@ cmake_minimum_required(VERSION 2.8.8)
 
 option(PARSE_CATCH_TESTS_VERBOSE "Print Catch to CTest parser debug messages" OFF)
 option(PARSE_CATCH_TESTS_NO_HIDDEN_TESTS "Exclude tests with [!hide], [.] or [.foo] tags" OFF)
+option(PARSE_CATCH_TESTS_HIDDEN_TESTS_DISABLED "If not excluded, mark tests with [!hide], [.] or [.foo] tags as DISABLED" OFF)
 option(PARSE_CATCH_TESTS_ADD_FIXTURE_IN_TEST_NAME "Add fixture class name to the test name" ON)
 option(PARSE_CATCH_TESTS_ADD_TARGET_IN_TEST_NAME "Add target name to the test name" ON)
 option(PARSE_CATCH_TESTS_ADD_TO_CONFIGURE_DEPENDS "Add test file to CMAKE_CONFIGURE_DEPENDS property" OFF)
@@ -174,8 +177,13 @@ function(ParseFile SourceFile TestTarget)
 
             # Add the test and set its properties
             add_test(NAME "\"${CTestName}\"" COMMAND ${OptionalCatchTestLauncher} ${TestTarget} ${Name} ${AdditionalCatchParameters})
-            set_tests_properties("\"${CTestName}\"" PROPERTIES FAIL_REGULAR_EXPRESSION "No tests ran"
-                                                    LABELS "${Labels}")
+            if(PARSE_CATCH_TESTS_HIDDEN_TESTS_DISABLED AND ${HiddenTagFound})
+                PrintDebugMessage("Setting DISABLED test property")
+                set_tests_properties("\"${CTestName}\"" PROPERTIES DISABLED ON)
+            else()
+                set_tests_properties("\"${CTestName}\"" PROPERTIES FAIL_REGULAR_EXPRESSION "No tests ran"
+                                                        LABELS "${Labels}")
+            endif()
         endif()
 
     endforeach()
