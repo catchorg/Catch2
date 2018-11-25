@@ -95,15 +95,20 @@ Other than the additional prefixes and the formatting in the console reporter th
 ## Type parametrised test cases
 
 In addition to `TEST_CASE`s, Catch2 also supports test cases parametrised
-by type, in the form of `TEMPLATE_TEST_CASE`.
+by type, in the form of `TEMPLATE_TEST_CASE` and `TEMPLATE_TEMPLATE_TEST_CASE`.
 
 * **TEMPLATE_TEST_CASE(** _test name_ , _tags_,  _type1_, _type2_, ..., _typen_ **)**
+* **TEMPLATE_TEMPLATE_TEST_CASE(** _test name_ , _tags_,  _templatetype1_, _templatetype2_, ..., _templatetypen_ **)**
 
 _test name_ and _tag_ are exactly the same as they are in `TEST_CASE`,
 with the difference that the tag string must be provided (however, it
 can be empty). _type1_ through _typen_ is the list of types for which
 this test case should run, and, inside the test code, the current type
 is available as the `TestType` type.
+
+_templatetype1_ through _templatetypen_ is list of template template types
+for which this test case should run, and, inside the test code, the current
+type is available as the `TestType` type.
 
 Because of limitations of the C++ preprocessor, if you want to specify
 a type with multiple template parameters, you need to enclose it in
@@ -144,6 +149,20 @@ TEMPLATE_TEST_CASE( "vectors can be sized and resized", "[vector][template]", in
         REQUIRE( v.size() == 5 );
         REQUIRE( v.capacity() >= 5 );
     }
+}
+
+template< typename T>
+struct Foo {
+    size_t size() {
+        return 0;
+    }
+};
+
+TEMPLATE_TEMPLATE_TEST_CASE("Template test cases can have template template types","[template]", std::vector,Foo)
+{
+    using Type = TestType<int>;
+    Type var;
+    REQUIRE(var.size() == 0);
 }
 ```
 

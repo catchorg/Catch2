@@ -31,9 +31,12 @@ class UniqueTestsFixture {
 The two test cases here will create uniquely-named derived classes of UniqueTestsFixture and thus can access the `getID()` protected method and `conn` member variables. This ensures that both the test cases are able to create a DBConnection using the same method (DRY principle) and that any ID's created are unique such that the order that tests are executed does not matter.
 
 
-Catch2 also provides `TEMPLATE_TEST_CASE_METHOD` that can be used together
-with templated fixtures to perform tests for multiple different types.
-However, unlike `TEST_CASE_METHOD`, `TEMPLATE_TEST_CASE_METHOD` requires
+Catch2 also provides `TEMPLATE_TEST_CASE_METHOD` and
+`TEMPLATE_TEMPLATE_TEST_CASE_METHOD` that can be used together
+with templated fixtures and templated template fixtures to perform
+tests for multiple different types.
+However, unlike `TEST_CASE_METHOD`, `TEMPLATE_TEST_CASE_METHOD`
+and `TEMPLATE_TEMPLATE_TEST_CASE_METHOD` requires
 the tag specification to be non-empty, as it is followed by further macros
 arguments.
 
@@ -53,6 +56,25 @@ struct Template_Fixture {
 
 TEMPLATE_TEST_CASE_METHOD(Template_Fixture,"A TEMPLATE_TEST_CASE_METHOD based test run that succeeds", "[class][template]", int, float, double) {
     REQUIRE( Template_Fixture<TestType>::m_a == 1 );
+}
+
+template<template <typename...> class T>
+struct Template_Template_Fixture {
+    Template_Template_Fixture() {}
+
+    T<int> m_a;
+};
+
+template<typename T>
+struct Foo_class{
+    size_t size(){
+        return 0;
+    }
+};
+
+TEMPLATE_TEMPLATE_TEST_CASE_METHOD(Template_Template_Fixture, "A TEMPLATE_TEMPLATE_TEST_CASE_METHOD based test succeeds","[class][template]", Foo_class,std::vector)
+{
+    REQUIRE( Template_Template_Fixture<TestType>::m_a.size() == 0 );
 }
 ```
 

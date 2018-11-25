@@ -260,7 +260,8 @@ Do not write your tests in header files!
 ## Type parametrised test cases
 
 Test cases in Catch2 can be also parametrised by type, via the
-`TEMPLATE_TEST_CASE` macro, which behaves in the same way the `TEST_CASE`
+`TEMPLATE_TEST_CASE` and `TEMPLATE_TEMPLATE_TEST_CASE` macros,
+which behaves in the same way the `TEST_CASE`
 macro, but is run for every type.
 
 For more details, see our documentation on [test cases and
