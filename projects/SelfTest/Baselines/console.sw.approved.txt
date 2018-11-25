@@ -1578,6 +1578,50 @@ with expansion:
   "hello" == "hello"
 
 -------------------------------------------------------------------------------
+A TEMPLATE_TEMPLATE_TEST_CASE_METHOD based test fails - Foo_class
+-------------------------------------------------------------------------------
+Class.tests.cpp:<line number>
+...............................................................................
+
+Class.tests.cpp:<line number>: FAILED:
+  REQUIRE( Template_Template_Fixture<TestType>::m_a.size() == 1 )
+with expansion:
+  0 == 1
+
+-------------------------------------------------------------------------------
+A TEMPLATE_TEMPLATE_TEST_CASE_METHOD based test fails - std::vector
+-------------------------------------------------------------------------------
+Class.tests.cpp:<line number>
+...............................................................................
+
+Class.tests.cpp:<line number>: FAILED:
+  REQUIRE( Template_Template_Fixture<TestType>::m_a.size() == 1 )
+with expansion:
+  0 == 1
+
+-------------------------------------------------------------------------------
+A TEMPLATE_TEMPLATE_TEST_CASE_METHOD based test succeeds - Foo_class
+-------------------------------------------------------------------------------
+Class.tests.cpp:<line number>
+...............................................................................
+
+Class.tests.cpp:<line number>: PASSED:
+  REQUIRE( Template_Template_Fixture<TestType>::m_a.size() == 0 )
+with expansion:
+  0 == 0
+
+-------------------------------------------------------------------------------
+A TEMPLATE_TEMPLATE_TEST_CASE_METHOD based test succeeds - std::vector
+-------------------------------------------------------------------------------
+Class.tests.cpp:<line number>
+...............................................................................
+
+Class.tests.cpp:<line number>: PASSED:
+  REQUIRE( Template_Template_Fixture<TestType>::m_a.size() == 0 )
+with expansion:
+  0 == 0
+
+-------------------------------------------------------------------------------
 A TEMPLATE_TEST_CASE_METHOD based test run that fails - double
 -------------------------------------------------------------------------------
 Class.tests.cpp:<line number>
@@ -6672,6 +6716,28 @@ TagAlias.tests.cpp:<line number>: PASSED:
   CHECK_THROWS( registry.add( "[@no square bracket at end", "", Catch::SourceLineInfo( "file", 3 ) ) )
 
 -------------------------------------------------------------------------------
+Template test cases can have template template types - Foo
+-------------------------------------------------------------------------------
+Misc.tests.cpp:<line number>
+...............................................................................
+
+Misc.tests.cpp:<line number>: PASSED:
+  REQUIRE( var.size() == 0 )
+with expansion:
+  0 == 0
+
+-------------------------------------------------------------------------------
+Template test cases can have template template types - std::vector
+-------------------------------------------------------------------------------
+Misc.tests.cpp:<line number>
+...............................................................................
+
+Misc.tests.cpp:<line number>: PASSED:
+  REQUIRE( var.size() == 0 )
+with expansion:
+  0 == 0
+
+-------------------------------------------------------------------------------
 TemplateTest: vectors can be sized and resized - float
 -------------------------------------------------------------------------------
 Misc.tests.cpp:<line number>
@@ -10464,6 +10530,6 @@ Misc.tests.cpp:<line number>
 Misc.tests.cpp:<line number>: PASSED:
 
 ===============================================================================
-test cases:  228 |  159 passed |  65 failed |  4 failed as expected
-assertions: 1324 | 1178 passed | 125 failed | 21 failed as expected
+test cases:  234 |  163 passed |  67 failed |  4 failed as expected
+assertions: 1330 | 1182 passed | 127 failed | 21 failed as expected
 

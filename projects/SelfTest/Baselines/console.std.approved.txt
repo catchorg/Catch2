@@ -93,6 +93,28 @@ with expansion:
   "hello" == "world"
 
 -------------------------------------------------------------------------------
+A TEMPLATE_TEMPLATE_TEST_CASE_METHOD based test fails - Foo_class
+-------------------------------------------------------------------------------
+Class.tests.cpp:<line number>
+...............................................................................
+
+Class.tests.cpp:<line number>: FAILED:
+  REQUIRE( Template_Template_Fixture<TestType>::m_a.size() == 1 )
+with expansion:
+  0 == 1
+
+-------------------------------------------------------------------------------
+A TEMPLATE_TEMPLATE_TEST_CASE_METHOD based test fails - std::vector
+-------------------------------------------------------------------------------
+Class.tests.cpp:<line number>
+...............................................................................
+
+Class.tests.cpp:<line number>: FAILED:
+  REQUIRE( Template_Template_Fixture<TestType>::m_a.size() == 1 )
+with expansion:
+  0 == 1
+
+-------------------------------------------------------------------------------
 A TEMPLATE_TEST_CASE_METHOD based test run that fails - double
 -------------------------------------------------------------------------------
 Class.tests.cpp:<line number>
@@ -1126,6 +1148,6 @@ due to unexpected exception with message:
   Why would you throw a std::string?
 
 ===============================================================================
-test cases:  228 |  172 passed |  52 failed |  4 failed as expected
-assertions: 1310 | 1178 passed | 111 failed | 21 failed as expected
+test cases:  234 |  176 passed |  54 failed |  4 failed as expected
+assertions: 1316 | 1182 passed | 113 failed | 21 failed as expected
 

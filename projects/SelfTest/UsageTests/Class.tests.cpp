@@ -46,6 +46,20 @@ struct Template_Fixture {
     T m_a;
 };
 
+template<template <typename...> class T>
+struct Template_Template_Fixture {
+    Template_Template_Fixture() {}
+
+    T<int> m_a;
+};
+
+template<typename T>
+struct Foo_class{
+    size_t size(){
+        return 0;
+    }
+};
+
 #endif
 
 
@@ -62,6 +76,10 @@ TEMPLATE_TEST_CASE_METHOD(Template_Fixture, "A TEMPLATE_TEST_CASE_METHOD based t
     REQUIRE( Template_Fixture<TestType>::m_a == 1 );
 }
 
+TEMPLATE_TEMPLATE_TEST_CASE_METHOD(Template_Template_Fixture, "A TEMPLATE_TEMPLATE_TEST_CASE_METHOD based test succeeds","[class][template]", Foo_class,std::vector)
+{
+    REQUIRE( Template_Template_Fixture<TestType>::m_a.size() == 0 );
+}
 // We should be able to write our tests within a different namespace
 namespace Inner
 {
@@ -73,6 +91,11 @@ namespace Inner
     TEMPLATE_TEST_CASE_METHOD(Template_Fixture,"A TEMPLATE_TEST_CASE_METHOD based test run that fails", "[.][class][template][failing]", int, float, double)
     {
         REQUIRE( Template_Fixture<TestType>::m_a == 2 );
+    }
+
+    TEMPLATE_TEMPLATE_TEST_CASE_METHOD(Template_Template_Fixture, "A TEMPLATE_TEMPLATE_TEST_CASE_METHOD based test fails","[.][class][template][failing]", Foo_class,std::vector)
+    {
+        REQUIRE( Template_Template_Fixture<TestType>::m_a.size() == 1 );
     }
 }
 

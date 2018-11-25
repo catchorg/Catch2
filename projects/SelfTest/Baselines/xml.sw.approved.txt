@@ -1347,6 +1347,50 @@
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
+    <TestCase name="A TEMPLATE_TEMPLATE_TEST_CASE_METHOD based test fails - Foo_class" tags="[.][class][failing][template]" filename="projects/<exe-name>/UsageTests/Class.tests.cpp" >
+      <Expression success="false" type="REQUIRE" filename="projects/<exe-name>/UsageTests/Class.tests.cpp" >
+        <Original>
+          Template_Template_Fixture&lt;TestType>::m_a.size() == 1
+        </Original>
+        <Expanded>
+          0 == 1
+        </Expanded>
+      </Expression>
+      <OverallResult success="false"/>
+    </TestCase>
+    <TestCase name="A TEMPLATE_TEMPLATE_TEST_CASE_METHOD based test fails - std::vector" tags="[.][class][failing][template]" filename="projects/<exe-name>/UsageTests/Class.tests.cpp" >
+      <Expression success="false" type="REQUIRE" filename="projects/<exe-name>/UsageTests/Class.tests.cpp" >
+        <Original>
+          Template_Template_Fixture&lt;TestType>::m_a.size() == 1
+        </Original>
+        <Expanded>
+          0 == 1
+        </Expanded>
+      </Expression>
+      <OverallResult success="false"/>
+    </TestCase>
+    <TestCase name="A TEMPLATE_TEMPLATE_TEST_CASE_METHOD based test succeeds - Foo_class" tags="[class][template]" filename="projects/<exe-name>/UsageTests/Class.tests.cpp" >
+      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/UsageTests/Class.tests.cpp" >
+        <Original>
+          Template_Template_Fixture&lt;TestType>::m_a.size() == 0
+        </Original>
+        <Expanded>
+          0 == 0
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="A TEMPLATE_TEMPLATE_TEST_CASE_METHOD based test succeeds - std::vector" tags="[class][template]" filename="projects/<exe-name>/UsageTests/Class.tests.cpp" >
+      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/UsageTests/Class.tests.cpp" >
+        <Original>
+          Template_Template_Fixture&lt;TestType>::m_a.size() == 0
+        </Original>
+        <Expanded>
+          0 == 0
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
     <TestCase name="A TEMPLATE_TEST_CASE_METHOD based test run that fails - double" tags="[.][class][failing][template]" filename="projects/<exe-name>/UsageTests/Class.tests.cpp" >
       <Expression success="false" type="REQUIRE" filename="projects/<exe-name>/UsageTests/Class.tests.cpp" >
         <Original>
@@ -7805,6 +7849,28 @@ Message from section two
       </Section>
       <OverallResult success="true"/>
     </TestCase>
+    <TestCase name="Template test cases can have template template types - Foo" tags="[template]" filename="projects/<exe-name>/UsageTests/Misc.tests.cpp" >
+      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/UsageTests/Misc.tests.cpp" >
+        <Original>
+          var.size() == 0
+        </Original>
+        <Expanded>
+          0 == 0
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="Template test cases can have template template types - std::vector" tags="[template]" filename="projects/<exe-name>/UsageTests/Misc.tests.cpp" >
+      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/UsageTests/Misc.tests.cpp" >
+        <Original>
+          var.size() == 0
+        </Original>
+        <Expanded>
+          0 == 0
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
     <TestCase name="TemplateTest: vectors can be sized and resized - float" tags="[template][vector]" filename="projects/<exe-name>/UsageTests/Misc.tests.cpp" >
       <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/UsageTests/Misc.tests.cpp" >
         <Original>
@@ -12099,7 +12165,7 @@ loose text artifact
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="1178" failures="126" expectedFailures="21"/>
+    <OverallResults successes="1182" failures="128" expectedFailures="21"/>
   </Group>
-  <OverallResults successes="1178" failures="125" expectedFailures="21"/>
+  <OverallResults successes="1182" failures="127" expectedFailures="21"/>
 </Catch>

@@ -59,17 +59,17 @@ struct AutoReg : NonCopyable {
             };                            \
         }                                 \
         void TestName::test()
-    #define INTERNAL_CATCH_TEMPLATE_TEST_CASE_NO_REGISTRATION( TestName, ... )  \
-        template<typename TestType>                                             \
+    #define INTERNAL_CATCH_TEMPLATE_TEST_CASE_NO_REGISTRATION(TestSignature, TestName, ... )  \
+        template<INTERNAL_CATCH_REMOVE_PARENS(TestSignature) TestType>                                             \
         static void TestName()
-    #define INTERNAL_CATCH_TEMPLATE_TEST_CASE_METHOD_NO_REGISTRATION( TestName, ClassName, ... )    \
+    #define INTERNAL_CATCH_TEMPLATE_TEST_CASE_METHOD_NO_REGISTRATION(TestSignature, TestName, ClassName, ... )    \
         namespace{                                                                                  \
-            template<typename TestType>                                                             \
+            template<INTERNAL_CATCH_REMOVE_PARENS(TestSignature) TestType>                                                             \
             struct TestName : INTERNAL_CATCH_REMOVE_PARENS(ClassName <TestType>) {     \
                 void test();                                                                        \
             };                                                                                      \
         }                                                                                           \
-        template<typename TestType>                                                                 \
+        template<INTERNAL_CATCH_REMOVE_PARENS(TestSignature) TestType>                                                                 \
         void TestName::test()
 #endif
 
@@ -110,16 +110,16 @@ struct AutoReg : NonCopyable {
         CATCH_INTERNAL_UNSUPPRESS_GLOBALS_WARNINGS
 
     ///////////////////////////////////////////////////////////////////////////////
-    #define INTERNAL_CATCH_TEMPLATE_TEST_CASE_2(TestName, TestFunc, Name, Tags, ... )\
+    #define INTERNAL_CATCH_TEMPLATE_TEST_CASE_2(TypeCheckMacro,TestSignature,TestName, TestFunc, Name, Tags, ... )\
         CATCH_INTERNAL_SUPPRESS_GLOBALS_WARNINGS \
-        template<typename TestType> \
+        template<INTERNAL_CATCH_REMOVE_PARENS(TestSignature) TestType> \
         static void TestFunc();\
         namespace {\
-            template<typename...Types> \
+            template<INTERNAL_CATCH_REMOVE_PARENS(TestSignature)...Types> \
             struct TestName{\
                 template<typename...Ts> \
                 TestName(Ts...names){\
-                    CATCH_INTERNAL_CHECK_UNIQUE_TYPES(CATCH_REC_LIST(INTERNAL_CATCH_REMOVE_PARENS, __VA_ARGS__)) \
+                    TypeCheckMacro(CATCH_REC_LIST(INTERNAL_CATCH_REMOVE_PARENS, __VA_ARGS__)) \
                     using expander = int[];\
                     (void)expander{(Catch::AutoReg( Catch::makeTestInvoker( &TestFunc<Types> ), CATCH_INTERNAL_LINEINFO, Catch::StringRef(), Catch::NameAndTags{ names, Tags } ), 0)... };/* NOLINT */ \
                 }\
@@ -127,7 +127,7 @@ struct AutoReg : NonCopyable {
             INTERNAL_CATCH_TEMPLATE_REGISTRY_INITIATE(TestName, Name, __VA_ARGS__) \
         }\
         CATCH_INTERNAL_UNSUPPRESS_GLOBALS_WARNINGS \
-        template<typename TestType> \
+        template<INTERNAL_CATCH_REMOVE_PARENS(TestSignature) TestType> \
         static void TestFunc()
 
 #if defined(CATCH_CPP17_OR_GREATER)
@@ -136,12 +136,22 @@ struct AutoReg : NonCopyable {
 #define CATCH_INTERNAL_CHECK_UNIQUE_TYPES(...) static_assert(Catch::is_unique<__VA_ARGS__>::value,"Duplicate type detected in declaration of template test case");
 #endif
 
+#define CATCH_INTERNAL_NO_CHECK_UNIQUE_TYPES(...)
+
 #ifndef CATCH_CONFIG_TRADITIONAL_MSVC_PREPROCESSOR
     #define INTERNAL_CATCH_TEMPLATE_TEST_CASE(Name, Tags, ...) \
-        INTERNAL_CATCH_TEMPLATE_TEST_CASE_2( INTERNAL_CATCH_UNIQUE_NAME( ____C_A_T_C_H____T_E_M_P_L_A_T_E____T_E_S_T____ ), INTERNAL_CATCH_UNIQUE_NAME( ____C_A_T_C_H____T_E_M_P_L_A_T_E____T_E_S_T____F_U_N_C____ ), Name, Tags, __VA_ARGS__ )
+        INTERNAL_CATCH_TEMPLATE_TEST_CASE_2(CATCH_INTERNAL_CHECK_UNIQUE_TYPES,typename ,INTERNAL_CATCH_UNIQUE_NAME( ____C_A_T_C_H____T_E_M_P_L_A_T_E____T_E_S_T____ ), INTERNAL_CATCH_UNIQUE_NAME( ____C_A_T_C_H____T_E_M_P_L_A_T_E____T_E_S_T____F_U_N_C____ ), Name, Tags, __VA_ARGS__ )
 #else
     #define INTERNAL_CATCH_TEMPLATE_TEST_CASE(Name, Tags, ...) \
-        INTERNAL_CATCH_EXPAND_VARGS( INTERNAL_CATCH_TEMPLATE_TEST_CASE_2( INTERNAL_CATCH_UNIQUE_NAME( ____C_A_T_C_H____T_E_M_P_L_A_T_E____T_E_S_T____ ), INTERNAL_CATCH_UNIQUE_NAME( ____C_A_T_C_H____T_E_M_P_L_A_T_E____T_E_S_T____F_U_N_C____ ), Name, Tags, __VA_ARGS__ ) )
+        INTERNAL_CATCH_EXPAND_VARGS( INTERNAL_CATCH_TEMPLATE_TEST_CASE_2(CATCH_INTERNAL_CHECK_UNIQUE_TYPES,typename, INTERNAL_CATCH_UNIQUE_NAME( ____C_A_T_C_H____T_E_M_P_L_A_T_E____T_E_S_T____ ), INTERNAL_CATCH_UNIQUE_NAME( ____C_A_T_C_H____T_E_M_P_L_A_T_E____T_E_S_T____F_U_N_C____ ), Name, Tags, __VA_ARGS__ ) )
+#endif
+
+#ifndef CATCH_CONFIG_TRADITIONAL_MSVC_PREPROCESSOR
+    #define INTERNAL_CATCH_TEMPLATE_TEMPLATE_TEST_CASE(Name, Tags, ...) \
+        INTERNAL_CATCH_TEMPLATE_TEST_CASE_2(CATCH_INTERNAL_NO_CHECK_UNIQUE_TYPES,template <typename...> class ,INTERNAL_CATCH_UNIQUE_NAME( ____C_A_T_C_H____T_E_M_P_L_A_T_E____T_E_S_T____ ), INTERNAL_CATCH_UNIQUE_NAME( ____C_A_T_C_H____T_E_M_P_L_A_T_E____T_E_S_T____F_U_N_C____ ), Name, Tags, __VA_ARGS__ )
+#else
+    #define INTERNAL_CATCH_TEMPLATE_TEMPLATE_TEST_CASE(Name, Tags, ...) \
+        INTERNAL_CATCH_EXPAND_VARGS( INTERNAL_CATCH_TEMPLATE_TEST_CASE_2(CATCH_INTERNAL_NO_CHECK_UNIQUE_TYPES,template <typename...> class, INTERNAL_CATCH_UNIQUE_NAME( ____C_A_T_C_H____T_E_M_P_L_A_T_E____T_E_S_T____ ), INTERNAL_CATCH_UNIQUE_NAME( ____C_A_T_C_H____T_E_M_P_L_A_T_E____T_E_S_T____F_U_N_C____ ), Name, Tags, __VA_ARGS__ ) )
 #endif
 
     #define INTERNAL_CATCH_TEMPLATE_REGISTRY_INITIATE(TestName, Name, ...)\
@@ -150,18 +160,18 @@ struct AutoReg : NonCopyable {
             return 0;\
         }();
 
-    #define INTERNAL_CATCH_TEMPLATE_TEST_CASE_METHOD_2( TestNameClass, TestName, ClassName, Name, Tags, ... ) \
+    #define INTERNAL_CATCH_TEMPLATE_TEST_CASE_METHOD_2(TypeCheckMacro,TestSignature, TestNameClass, TestName, ClassName, Name, Tags, ... ) \
         CATCH_INTERNAL_SUPPRESS_GLOBALS_WARNINGS \
         namespace{ \
-            template<typename TestType> \
+            template<INTERNAL_CATCH_REMOVE_PARENS(TestSignature) TestType> \
             struct TestName : INTERNAL_CATCH_REMOVE_PARENS(ClassName <TestType>) { \
                 void test();\
             };\
-            template<typename...Types> \
+            template<INTERNAL_CATCH_REMOVE_PARENS(TestSignature)...Types> \
             struct TestNameClass{\
                 template<typename...Ts> \
                 TestNameClass(Ts...names){\
-                    CATCH_INTERNAL_CHECK_UNIQUE_TYPES(CATCH_REC_LIST(INTERNAL_CATCH_REMOVE_PARENS, __VA_ARGS__)) \
+                    TypeCheckMacro(CATCH_REC_LIST(INTERNAL_CATCH_REMOVE_PARENS, __VA_ARGS__)) \
                     using expander = int[];\
                     (void)expander{(Catch::AutoReg( Catch::makeTestInvoker( &TestName<Types>::test ), CATCH_INTERNAL_LINEINFO, #ClassName, Catch::NameAndTags{ names, Tags } ), 0)... };/* NOLINT */ \
                 }\
@@ -169,15 +179,23 @@ struct AutoReg : NonCopyable {
             INTERNAL_CATCH_TEMPLATE_REGISTRY_INITIATE(TestNameClass, Name, __VA_ARGS__)\
         }\
         CATCH_INTERNAL_UNSUPPRESS_GLOBALS_WARNINGS\
-        template<typename TestType> \
+        template<INTERNAL_CATCH_REMOVE_PARENS(TestSignature) TestType> \
         void TestName<TestType>::test()
 
 #ifndef CATCH_CONFIG_TRADITIONAL_MSVC_PREPROCESSOR
     #define INTERNAL_CATCH_TEMPLATE_TEST_CASE_METHOD( ClassName, Name, Tags,... ) \
-        INTERNAL_CATCH_TEMPLATE_TEST_CASE_METHOD_2( INTERNAL_CATCH_UNIQUE_NAME( ____C_A_T_C_H____T_E_M_P_L_A_T_E____T_E_S_T____C_L_A_S_S____ ), INTERNAL_CATCH_UNIQUE_NAME( ____C_A_T_C_H____T_E_M_P_L_A_T_E____T_E_S_T____ ) , ClassName, Name, Tags, __VA_ARGS__ )
+        INTERNAL_CATCH_TEMPLATE_TEST_CASE_METHOD_2(CATCH_INTERNAL_CHECK_UNIQUE_TYPES,typename, INTERNAL_CATCH_UNIQUE_NAME( ____C_A_T_C_H____T_E_M_P_L_A_T_E____T_E_S_T____C_L_A_S_S____ ), INTERNAL_CATCH_UNIQUE_NAME( ____C_A_T_C_H____T_E_M_P_L_A_T_E____T_E_S_T____ ) , ClassName, Name, Tags, __VA_ARGS__ )
 #else
     #define INTERNAL_CATCH_TEMPLATE_TEST_CASE_METHOD( ClassName, Name, Tags,... ) \
-        INTERNAL_CATCH_EXPAND_VARGS( INTERNAL_CATCH_TEMPLATE_TEST_CASE_METHOD_2( INTERNAL_CATCH_UNIQUE_NAME( ____C_A_T_C_H____T_E_M_P_L_A_T_E____T_E_S_T____C_L_A_S_S____ ), INTERNAL_CATCH_UNIQUE_NAME( ____C_A_T_C_H____T_E_M_P_L_A_T_E____T_E_S_T____ ) , ClassName, Name, Tags, __VA_ARGS__ ) )
+        INTERNAL_CATCH_EXPAND_VARGS( INTERNAL_CATCH_TEMPLATE_TEST_CASE_METHOD_2(CATCH_INTERNAL_CHECK_UNIQUE_TYPES,typename, INTERNAL_CATCH_UNIQUE_NAME( ____C_A_T_C_H____T_E_M_P_L_A_T_E____T_E_S_T____C_L_A_S_S____ ), INTERNAL_CATCH_UNIQUE_NAME( ____C_A_T_C_H____T_E_M_P_L_A_T_E____T_E_S_T____ ) , ClassName, Name, Tags, __VA_ARGS__ ) )
+#endif
+
+#ifndef CATCH_CONFIG_TRADITIONAL_MSVC_PREPROCESSOR
+    #define INTERNAL_CATCH_TEMPLATE_TEMPLATE_TEST_CASE_METHOD( ClassName, Name, Tags,... ) \
+        INTERNAL_CATCH_TEMPLATE_TEST_CASE_METHOD_2(CATCH_INTERNAL_NO_CHECK_UNIQUE_TYPES,template <typename...> class, INTERNAL_CATCH_UNIQUE_NAME( ____C_A_T_C_H____T_E_M_P_L_A_T_E____T_E_S_T____C_L_A_S_S____ ), INTERNAL_CATCH_UNIQUE_NAME( ____C_A_T_C_H____T_E_M_P_L_A_T_E____T_E_S_T____ ) , ClassName, Name, Tags, __VA_ARGS__ )
+#else
+    #define INTERNAL_CATCH_TEMPLATE_TEMPLATE_TEST_CASE_METHOD( ClassName, Name, Tags,... ) \
+        INTERNAL_CATCH_EXPAND_VARGS( INTERNAL_CATCH_TEMPLATE_TEST_CASE_METHOD_2(CATCH_INTERNAL_NO_CHECK_UNIQUE_TYPES,template <typename...> class, INTERNAL_CATCH_UNIQUE_NAME( ____C_A_T_C_H____T_E_M_P_L_A_T_E____T_E_S_T____C_L_A_S_S____ ), INTERNAL_CATCH_UNIQUE_NAME( ____C_A_T_C_H____T_E_M_P_L_A_T_E____T_E_S_T____ ) , ClassName, Name, Tags, __VA_ARGS__ ) )
 #endif
 
 #endif // TWOBLUECUBES_CATCH_TEST_REGISTRY_HPP_INCLUDED

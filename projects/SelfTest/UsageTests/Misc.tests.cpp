@@ -301,6 +301,23 @@ TEMPLATE_TEST_CASE( "TemplateTest: vectors can be sized and resized", "[vector][
     }
 }
 
+template<typename T>
+struct Foo {
+    size_t size(){
+        return m_size;
+    }
+
+    private:
+        size_t m_size = 0;
+};
+
+TEMPLATE_TEMPLATE_TEST_CASE("Template test cases can have template template types","[template]", std::vector,Foo)
+{
+    using Type = TestType<int>;
+    Type var;
+    REQUIRE(var.size() == 0);
+}
+
 // https://github.com/philsquared/Catch/issues/166
 TEST_CASE("A couple of nested sections followed by a failure", "[failing][.]") {
     SECTION("Outer")

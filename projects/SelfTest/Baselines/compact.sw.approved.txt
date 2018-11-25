@@ -159,6 +159,10 @@ Generators.tests.cpp:<line number>: passed: x < y for: 10 < 109
 Generators.tests.cpp:<line number>: passed: x < y for: 10 < 110
 Class.tests.cpp:<line number>: failed: s == "world" for: "hello" == "world"
 Class.tests.cpp:<line number>: passed: s == "hello" for: "hello" == "hello"
+Class.tests.cpp:<line number>: failed: Template_Template_Fixture<TestType>::m_a.size() == 1 for: 0 == 1
+Class.tests.cpp:<line number>: failed: Template_Template_Fixture<TestType>::m_a.size() == 1 for: 0 == 1
+Class.tests.cpp:<line number>: passed: Template_Template_Fixture<TestType>::m_a.size() == 0 for: 0 == 0
+Class.tests.cpp:<line number>: passed: Template_Template_Fixture<TestType>::m_a.size() == 0 for: 0 == 0
 Class.tests.cpp:<line number>: failed: Template_Fixture<TestType>::m_a == 2 for: 1.0 == 2
 Class.tests.cpp:<line number>: failed: Template_Fixture<TestType>::m_a == 2 for: 1.0f == 2
 Class.tests.cpp:<line number>: failed: Template_Fixture<TestType>::m_a == 2 for: 1 == 2
@@ -879,6 +883,8 @@ TagAlias.tests.cpp:<line number>: passed: registry.add( "[no ampersat]", "", Cat
 TagAlias.tests.cpp:<line number>: passed: registry.add( "[the @ is not at the start]", "", Catch::SourceLineInfo( "file", 3 ) )
 TagAlias.tests.cpp:<line number>: passed: registry.add( "@no square bracket at start]", "", Catch::SourceLineInfo( "file", 3 ) )
 TagAlias.tests.cpp:<line number>: passed: registry.add( "[@no square bracket at end", "", Catch::SourceLineInfo( "file", 3 ) )
+Misc.tests.cpp:<line number>: passed: var.size() == 0 for: 0 == 0
+Misc.tests.cpp:<line number>: passed: var.size() == 0 for: 0 == 0
 Misc.tests.cpp:<line number>: passed: v.size() == 5 for: 5 == 5
 Misc.tests.cpp:<line number>: passed: v.capacity() >= 5 for: 5 >= 5
 Misc.tests.cpp:<line number>: passed: v.size() == 10 for: 10 == 10
@@ -1389,5 +1395,5 @@ Misc.tests.cpp:<line number>: passed: v.size() == 5 for: 5 == 5
 Misc.tests.cpp:<line number>: passed: v.capacity() >= 5 for: 5 >= 5
 Misc.tests.cpp:<line number>: passed:
 Misc.tests.cpp:<line number>: passed:
-Failed 65 test cases, failed 125 assertions.
+Failed 67 test cases, failed 127 assertions.
 
