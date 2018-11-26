@@ -12,8 +12,6 @@ rootPath = os.path.join( catchPath, 'include/' )
 versionPath = os.path.join( rootPath, "internal/catch_version.cpp" )
 definePath = os.path.join(rootPath, 'catch.hpp')
 readmePath = os.path.join( catchPath, "README.md" )
-conanPath = os.path.join(catchPath, 'conanfile.py')
-conanTestPath = os.path.join(catchPath, 'test_package', 'conanfile.py')
 cmakePath = os.path.join(catchPath, 'CMakeLists.txt')
 
 class Version:
@@ -98,35 +96,6 @@ def updateReadmeFile(version):
             line = '[![Try online](https://img.shields.io/badge/try-online-blue.svg)]({0})'.format(wandboxLink)
         f.write( line + "\n" )
 
-def updateConanFile(version):
-    conanParser = re.compile( r'    version = "\d+\.\d+\.\d+.*"')
-    f = open( conanPath, 'r' )
-    lines = []
-    for line in f:
-        m = conanParser.match( line )
-        if m:
-            lines.append( '    version = "{0}"'.format(format(version.getVersionString())) )
-        else:
-            lines.append( line.rstrip() )
-    f.close()
-    f = open( conanPath, 'w' )
-    for line in lines:
-        f.write( line + "\n" )
-
-def updateConanTestFile(version):
-    conanParser = re.compile( r'    requires = \"Catch\/\d+\.\d+\.\d+.*@%s\/%s\" % \(username, channel\)')
-    f = open( conanTestPath, 'r' )
-    lines = []
-    for line in f:
-        m = conanParser.match( line )
-        if m:
-            lines.append( '    requires = "Catch/{0}@%s/%s" % (username, channel)'.format(format(version.getVersionString())) )
-        else:
-            lines.append( line.rstrip() )
-    f.close()
-    f = open( conanTestPath, 'w' )
-    for line in lines:
-        f.write( line + "\n" )
 
 def updateCmakeFile(version):
     with open(cmakePath, 'r') as file:
@@ -173,6 +142,4 @@ def performUpdates(version):
         shutil.copyfile(sourceFile, destFile)
 
     updateReadmeFile(version)
-    updateConanFile(version)
-    updateConanTestFile(version)
     updateCmakeFile(version)
