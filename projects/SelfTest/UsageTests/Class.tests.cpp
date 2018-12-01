@@ -76,7 +76,7 @@ TEMPLATE_TEST_CASE_METHOD(Template_Fixture, "A TEMPLATE_TEST_CASE_METHOD based t
     REQUIRE( Template_Fixture<TestType>::m_a == 1 );
 }
 
-TEMPLATE_TEMPLATE_TEST_CASE_METHOD(Template_Template_Fixture, "A TEMPLATE_TEMPLATE_TEST_CASE_METHOD based test succeeds","[class][template]", Foo_class,std::vector)
+TEMPLATE_TEMPLATE_TEST_CASE_METHOD(Template_Template_Fixture, "A TEMPLATE_TEMPLATE_TEST_CASE_METHOD based test succeeds", "[class][template]", Foo_class,std::vector)
 {
     REQUIRE( Template_Template_Fixture<TestType>::m_a.size() == 0 );
 }
@@ -93,7 +93,7 @@ namespace Inner
         REQUIRE( Template_Fixture<TestType>::m_a == 2 );
     }
 
-    TEMPLATE_TEMPLATE_TEST_CASE_METHOD(Template_Template_Fixture, "A TEMPLATE_TEMPLATE_TEST_CASE_METHOD based test fails","[.][class][template][failing]", Foo_class,std::vector)
+    TEMPLATE_TEMPLATE_TEST_CASE_METHOD(Template_Template_Fixture, "A TEMPLATE_TEMPLATE_TEST_CASE_METHOD based test fails", "[.][class][template][failing]", Foo_class,std::vector)
     {
         REQUIRE( Template_Template_Fixture<TestType>::m_a.size() == 1 );
     }

@@ -311,7 +311,7 @@ struct Foo {
         size_t m_size = 0;
 };
 
-TEMPLATE_TEMPLATE_TEST_CASE("Template test cases can have template template types","[template]", std::vector,Foo)
+TEMPLATE_TEMPLATE_TEST_CASE("Template test cases can have template template types", "[template]", std::vector,Foo)
 {
     using Type = TestType<int>;
     Type var;

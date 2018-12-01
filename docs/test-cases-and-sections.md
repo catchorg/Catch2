@@ -151,14 +151,14 @@ TEMPLATE_TEST_CASE( "vectors can be sized and resized", "[vector][template]", in
     }
 }
 
-template< typename T>
+template<typename T>
 struct Foo {
     size_t size() {
         return 0;
     }
 };
 
-TEMPLATE_TEMPLATE_TEST_CASE("Template test cases can have template template types","[template]", std::vector,Foo)
+TEMPLATE_TEMPLATE_TEST_CASE("Template test cases can have template template types", "[template]", std::vector,Foo)
 {
     using Type = TestType<int>;
     Type var;
