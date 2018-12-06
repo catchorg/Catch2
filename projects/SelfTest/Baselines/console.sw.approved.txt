@@ -1578,6 +1578,94 @@ with expansion:
   "hello" == "hello"
 
 -------------------------------------------------------------------------------
+A TEMPLATE_PRODUCT_TEST_CASE_METHOD based test run that fails - 0
+-------------------------------------------------------------------------------
+Class.tests.cpp:<line number>
+...............................................................................
+
+Class.tests.cpp:<line number>: FAILED:
+  REQUIRE( Template_Fixture_2<TestType>::m_a.size() == 1 )
+with expansion:
+  0 == 1
+
+-------------------------------------------------------------------------------
+A TEMPLATE_PRODUCT_TEST_CASE_METHOD based test run that fails - 1
+-------------------------------------------------------------------------------
+Class.tests.cpp:<line number>
+...............................................................................
+
+Class.tests.cpp:<line number>: FAILED:
+  REQUIRE( Template_Fixture_2<TestType>::m_a.size() == 1 )
+with expansion:
+  0 == 1
+
+-------------------------------------------------------------------------------
+A TEMPLATE_PRODUCT_TEST_CASE_METHOD based test run that fails - 2
+-------------------------------------------------------------------------------
+Class.tests.cpp:<line number>
+...............................................................................
+
+Class.tests.cpp:<line number>: FAILED:
+  REQUIRE( Template_Fixture_2<TestType>::m_a.size() == 1 )
+with expansion:
+  0 == 1
+
+-------------------------------------------------------------------------------
+A TEMPLATE_PRODUCT_TEST_CASE_METHOD based test run that fails - 3
+-------------------------------------------------------------------------------
+Class.tests.cpp:<line number>
+...............................................................................
+
+Class.tests.cpp:<line number>: FAILED:
+  REQUIRE( Template_Fixture_2<TestType>::m_a.size() == 1 )
+with expansion:
+  0 == 1
+
+-------------------------------------------------------------------------------
+A TEMPLATE_PRODUCT_TEST_CASE_METHOD based test run that succeeds - 0
+-------------------------------------------------------------------------------
+Class.tests.cpp:<line number>
+...............................................................................
+
+Class.tests.cpp:<line number>: PASSED:
+  REQUIRE( Template_Fixture_2<TestType>::m_a.size() == 0 )
+with expansion:
+  0 == 0
+
+-------------------------------------------------------------------------------
+A TEMPLATE_PRODUCT_TEST_CASE_METHOD based test run that succeeds - 1
+-------------------------------------------------------------------------------
+Class.tests.cpp:<line number>
+...............................................................................
+
+Class.tests.cpp:<line number>: PASSED:
+  REQUIRE( Template_Fixture_2<TestType>::m_a.size() == 0 )
+with expansion:
+  0 == 0
+
+-------------------------------------------------------------------------------
+A TEMPLATE_PRODUCT_TEST_CASE_METHOD based test run that succeeds - 2
+-------------------------------------------------------------------------------
+Class.tests.cpp:<line number>
+...............................................................................
+
+Class.tests.cpp:<line number>: PASSED:
+  REQUIRE( Template_Fixture_2<TestType>::m_a.size() == 0 )
+with expansion:
+  0 == 0
+
+-------------------------------------------------------------------------------
+A TEMPLATE_PRODUCT_TEST_CASE_METHOD based test run that succeeds - 3
+-------------------------------------------------------------------------------
+Class.tests.cpp:<line number>
+...............................................................................
+
+Class.tests.cpp:<line number>: PASSED:
+  REQUIRE( Template_Fixture_2<TestType>::m_a.size() == 0 )
+with expansion:
+  0 == 0
+
+-------------------------------------------------------------------------------
 A TEMPLATE_TEST_CASE_METHOD based test run that fails - double
 -------------------------------------------------------------------------------
 Class.tests.cpp:<line number>
@@ -1664,6 +1752,50 @@ Class.tests.cpp:<line number>: PASSED:
   REQUIRE( m_a == 1 )
 with expansion:
   1 == 1
+
+-------------------------------------------------------------------------------
+A Template product test case - 0
+-------------------------------------------------------------------------------
+Misc.tests.cpp:<line number>
+...............................................................................
+
+Misc.tests.cpp:<line number>: PASSED:
+  REQUIRE( x.size() == 0 )
+with expansion:
+  0 == 0
+
+-------------------------------------------------------------------------------
+A Template product test case - 1
+-------------------------------------------------------------------------------
+Misc.tests.cpp:<line number>
+...............................................................................
+
+Misc.tests.cpp:<line number>: PASSED:
+  REQUIRE( x.size() == 0 )
+with expansion:
+  0 == 0
+
+-------------------------------------------------------------------------------
+A Template product test case - 2
+-------------------------------------------------------------------------------
+Misc.tests.cpp:<line number>
+...............................................................................
+
+Misc.tests.cpp:<line number>: PASSED:
+  REQUIRE( x.size() == 0 )
+with expansion:
+  0 == 0
+
+-------------------------------------------------------------------------------
+A Template product test case - 3
+-------------------------------------------------------------------------------
+Misc.tests.cpp:<line number>
+...............................................................................
+
+Misc.tests.cpp:<line number>: PASSED:
+  REQUIRE( x.size() == 0 )
+with expansion:
+  0 == 0
 
 -------------------------------------------------------------------------------
 A comparison that uses literals instead of the normal constructor
@@ -5766,6 +5898,39 @@ CmdLine.tests.cpp:<line number>: PASSED:
 with expansion:
   "colour mode must be one of: auto, yes or no. 'wrong' not recognised"
   contains: "colour mode must be one of"
+
+-------------------------------------------------------------------------------
+Product with differing arities - 0
+-------------------------------------------------------------------------------
+Misc.tests.cpp:<line number>
+...............................................................................
+
+Misc.tests.cpp:<line number>: PASSED:
+  REQUIRE( std::tuple_size<TestType>::value >= 1 )
+with expansion:
+  1 >= 1
+
+-------------------------------------------------------------------------------
+Product with differing arities - 1
+-------------------------------------------------------------------------------
+Misc.tests.cpp:<line number>
+...............................................................................
+
+Misc.tests.cpp:<line number>: PASSED:
+  REQUIRE( std::tuple_size<TestType>::value >= 1 )
+with expansion:
+  2 >= 1
+
+-------------------------------------------------------------------------------
+Product with differing arities - 2
+-------------------------------------------------------------------------------
+Misc.tests.cpp:<line number>
+...............................................................................
+
+Misc.tests.cpp:<line number>: PASSED:
+  REQUIRE( std::tuple_size<TestType>::value >= 1 )
+with expansion:
+  3 >= 1
 
 -------------------------------------------------------------------------------
 Reconstruction should be based on stringification: #914
@@ -10464,6 +10629,6 @@ Misc.tests.cpp:<line number>
 Misc.tests.cpp:<line number>: PASSED:
 
 ===============================================================================
-test cases:  228 |  159 passed |  65 failed |  4 failed as expected
-assertions: 1324 | 1178 passed | 125 failed | 21 failed as expected
+test cases:  243 |  170 passed |  69 failed |  4 failed as expected
+assertions: 1339 | 1189 passed | 129 failed | 21 failed as expected
 

@@ -1347,6 +1347,94 @@
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
+    <TestCase name="A TEMPLATE_PRODUCT_TEST_CASE_METHOD based test run that fails - 0" tags="[.][class][failing][product][template]" filename="projects/<exe-name>/UsageTests/Class.tests.cpp" >
+      <Expression success="false" type="REQUIRE" filename="projects/<exe-name>/UsageTests/Class.tests.cpp" >
+        <Original>
+          Template_Fixture_2&lt;TestType>::m_a.size() == 1
+        </Original>
+        <Expanded>
+          0 == 1
+        </Expanded>
+      </Expression>
+      <OverallResult success="false"/>
+    </TestCase>
+    <TestCase name="A TEMPLATE_PRODUCT_TEST_CASE_METHOD based test run that fails - 1" tags="[.][class][failing][product][template]" filename="projects/<exe-name>/UsageTests/Class.tests.cpp" >
+      <Expression success="false" type="REQUIRE" filename="projects/<exe-name>/UsageTests/Class.tests.cpp" >
+        <Original>
+          Template_Fixture_2&lt;TestType>::m_a.size() == 1
+        </Original>
+        <Expanded>
+          0 == 1
+        </Expanded>
+      </Expression>
+      <OverallResult success="false"/>
+    </TestCase>
+    <TestCase name="A TEMPLATE_PRODUCT_TEST_CASE_METHOD based test run that fails - 2" tags="[.][class][failing][product][template]" filename="projects/<exe-name>/UsageTests/Class.tests.cpp" >
+      <Expression success="false" type="REQUIRE" filename="projects/<exe-name>/UsageTests/Class.tests.cpp" >
+        <Original>
+          Template_Fixture_2&lt;TestType>::m_a.size() == 1
+        </Original>
+        <Expanded>
+          0 == 1
+        </Expanded>
+      </Expression>
+      <OverallResult success="false"/>
+    </TestCase>
+    <TestCase name="A TEMPLATE_PRODUCT_TEST_CASE_METHOD based test run that fails - 3" tags="[.][class][failing][product][template]" filename="projects/<exe-name>/UsageTests/Class.tests.cpp" >
+      <Expression success="false" type="REQUIRE" filename="projects/<exe-name>/UsageTests/Class.tests.cpp" >
+        <Original>
+          Template_Fixture_2&lt;TestType>::m_a.size() == 1
+        </Original>
+        <Expanded>
+          0 == 1
+        </Expanded>
+      </Expression>
+      <OverallResult success="false"/>
+    </TestCase>
+    <TestCase name="A TEMPLATE_PRODUCT_TEST_CASE_METHOD based test run that succeeds - 0" tags="[class][product][template]" filename="projects/<exe-name>/UsageTests/Class.tests.cpp" >
+      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/UsageTests/Class.tests.cpp" >
+        <Original>
+          Template_Fixture_2&lt;TestType>::m_a.size() == 0
+        </Original>
+        <Expanded>
+          0 == 0
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="A TEMPLATE_PRODUCT_TEST_CASE_METHOD based test run that succeeds - 1" tags="[class][product][template]" filename="projects/<exe-name>/UsageTests/Class.tests.cpp" >
+      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/UsageTests/Class.tests.cpp" >
+        <Original>
+          Template_Fixture_2&lt;TestType>::m_a.size() == 0
+        </Original>
+        <Expanded>
+          0 == 0
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="A TEMPLATE_PRODUCT_TEST_CASE_METHOD based test run that succeeds - 2" tags="[class][product][template]" filename="projects/<exe-name>/UsageTests/Class.tests.cpp" >
+      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/UsageTests/Class.tests.cpp" >
+        <Original>
+          Template_Fixture_2&lt;TestType>::m_a.size() == 0
+        </Original>
+        <Expanded>
+          0 == 0
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="A TEMPLATE_PRODUCT_TEST_CASE_METHOD based test run that succeeds - 3" tags="[class][product][template]" filename="projects/<exe-name>/UsageTests/Class.tests.cpp" >
+      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/UsageTests/Class.tests.cpp" >
+        <Original>
+          Template_Fixture_2&lt;TestType>::m_a.size() == 0
+        </Original>
+        <Expanded>
+          0 == 0
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
     <TestCase name="A TEMPLATE_TEST_CASE_METHOD based test run that fails - double" tags="[.][class][failing][template]" filename="projects/<exe-name>/UsageTests/Class.tests.cpp" >
       <Expression success="false" type="REQUIRE" filename="projects/<exe-name>/UsageTests/Class.tests.cpp" >
         <Original>
@@ -1431,6 +1519,50 @@
         </Original>
         <Expanded>
           1 == 1
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="A Template product test case - 0" tags="[product][template]" filename="projects/<exe-name>/UsageTests/Misc.tests.cpp" >
+      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/UsageTests/Misc.tests.cpp" >
+        <Original>
+          x.size() == 0
+        </Original>
+        <Expanded>
+          0 == 0
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="A Template product test case - 1" tags="[product][template]" filename="projects/<exe-name>/UsageTests/Misc.tests.cpp" >
+      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/UsageTests/Misc.tests.cpp" >
+        <Original>
+          x.size() == 0
+        </Original>
+        <Expanded>
+          0 == 0
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="A Template product test case - 2" tags="[product][template]" filename="projects/<exe-name>/UsageTests/Misc.tests.cpp" >
+      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/UsageTests/Misc.tests.cpp" >
+        <Original>
+          x.size() == 0
+        </Original>
+        <Expanded>
+          0 == 0
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="A Template product test case - 3" tags="[product][template]" filename="projects/<exe-name>/UsageTests/Misc.tests.cpp" >
+      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/UsageTests/Misc.tests.cpp" >
+        <Original>
+          x.size() == 0
+        </Original>
+        <Expanded>
+          0 == 0
         </Expanded>
       </Expression>
       <OverallResult success="true"/>
@@ -6730,6 +6862,39 @@
         </Section>
         <OverallResults successes="2" failures="0" expectedFailures="0"/>
       </Section>
+      <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="Product with differing arities - 0" tags="[product][template]" filename="projects/<exe-name>/UsageTests/Misc.tests.cpp" >
+      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/UsageTests/Misc.tests.cpp" >
+        <Original>
+          std::tuple_size&lt;TestType>::value >= 1
+        </Original>
+        <Expanded>
+          1 >= 1
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="Product with differing arities - 1" tags="[product][template]" filename="projects/<exe-name>/UsageTests/Misc.tests.cpp" >
+      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/UsageTests/Misc.tests.cpp" >
+        <Original>
+          std::tuple_size&lt;TestType>::value >= 1
+        </Original>
+        <Expanded>
+          2 >= 1
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="Product with differing arities - 2" tags="[product][template]" filename="projects/<exe-name>/UsageTests/Misc.tests.cpp" >
+      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/UsageTests/Misc.tests.cpp" >
+        <Original>
+          std::tuple_size&lt;TestType>::value >= 1
+        </Original>
+        <Expanded>
+          3 >= 1
+        </Expanded>
+      </Expression>
       <OverallResult success="true"/>
     </TestCase>
     <TestCase name="Reconstruction should be based on stringification: #914" tags="[.][Decomposition][failing]" filename="projects/<exe-name>/UsageTests/Decomposition.tests.cpp" >
@@ -12099,7 +12264,7 @@ loose text artifact
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="1178" failures="126" expectedFailures="21"/>
+    <OverallResults successes="1189" failures="130" expectedFailures="21"/>
   </Group>
-  <OverallResults successes="1178" failures="125" expectedFailures="21"/>
+  <OverallResults successes="1189" failures="129" expectedFailures="21"/>
 </Catch>
