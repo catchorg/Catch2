@@ -3669,6 +3669,21 @@ Message.tests.cpp:<line number>: warning:
 No assertions in test case 'INFO and WARN do not abort tests'
 
 -------------------------------------------------------------------------------
+INFO and WARN start with a linebreak
+-------------------------------------------------------------------------------
+Message.tests.cpp:<line number>
+...............................................................................
+
+Message.tests.cpp:<line number>: warning:
+
+this is a message start with a linebreak
+
+this is a warning start with a linebreak
+
+
+No assertions in test case 'INFO and WARN start with a linebreak'
+
+-------------------------------------------------------------------------------
 INFO gets logged on failure
 -------------------------------------------------------------------------------
 Message.tests.cpp:<line number>
@@ -10464,6 +10479,6 @@ Misc.tests.cpp:<line number>
 Misc.tests.cpp:<line number>: PASSED:
 
 ===============================================================================
-test cases:  228 |  159 passed |  65 failed |  4 failed as expected
-assertions: 1324 | 1178 passed | 125 failed | 21 failed as expected
+test cases:  229 |  159 passed |  66 failed |  4 failed as expected
+assertions: 1325 | 1178 passed | 126 failed | 21 failed as expected
 

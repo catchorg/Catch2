@@ -453,6 +453,9 @@ Approx.tests.cpp:<line number>: passed: d >= Approx( 1.23 ) for: 1.23 >= Approx(
 Approx.tests.cpp:<line number>: passed: !(d >= Approx( 1.24 )) for: !(1.23 >= Approx( 1.24 ))
 Approx.tests.cpp:<line number>: passed: d >= Approx( 1.24 ).epsilon(0.1) for: 1.23 >= Approx( 1.24 )
 Message.tests.cpp:<line number>: warning: 'this is a message' with 1 message: 'this is a warning'
+Message.tests.cpp:<line number>: warning: '
+this is a message start with a linebreak' with 1 message: '
+this is a warning start with a linebreak'
 Message.tests.cpp:<line number>: failed: a == 1 for: 2 == 1 with 2 messages: 'this message should be logged' and 'so should this'
 Message.tests.cpp:<line number>: passed: a == 2 for: 2 == 2 with 1 message: 'this message may be logged later'
 Message.tests.cpp:<line number>: failed: a == 1 for: 2 == 1 with 2 messages: 'this message may be logged later' and 'this message should be logged'
@@ -1389,5 +1392,5 @@ Misc.tests.cpp:<line number>: passed: v.size() == 5 for: 5 == 5
 Misc.tests.cpp:<line number>: passed: v.capacity() >= 5 for: 5 >= 5
 Misc.tests.cpp:<line number>: passed:
 Misc.tests.cpp:<line number>: passed:
-Failed 65 test cases, failed 125 assertions.
+Failed 66 test cases, failed 126 assertions.
 

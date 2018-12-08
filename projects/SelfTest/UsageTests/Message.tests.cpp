@@ -14,6 +14,11 @@ TEST_CASE( "INFO and WARN do not abort tests", "[messages][.]" ) {
     WARN( "this is a " << "warning" );    // This should always output the message but then continue
 }
 
+TEST_CASE( "INFO and WARN start with a linebreak", "[messages][.]" ) {
+    INFO( "\nthis is a " << "message start with a linebreak" );
+    WARN( "\nthis is a " << "warning start with a linebreak" );
+}
+
 TEST_CASE( "SUCCEED counts as a test pass", "[messages]" ) {
     SUCCEED( "this is a " << "success" );
 }

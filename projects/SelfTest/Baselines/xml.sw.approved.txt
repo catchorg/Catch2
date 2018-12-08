@@ -3980,6 +3980,17 @@
       </Warning>
       <OverallResult success="false"/>
     </TestCase>
+    <TestCase name="INFO and WARN start with a linebreak" tags="[.][messages]" filename="projects/<exe-name>/UsageTests/Message.tests.cpp" >
+      <Info>
+
+this is a message start with a linebreak
+      </Info>
+      <Warning>
+
+this is a warning start with a linebreak
+      </Warning>
+      <OverallResult success="false"/>
+    </TestCase>
     <TestCase name="INFO gets logged on failure" tags="[.][failing][messages]" filename="projects/<exe-name>/UsageTests/Message.tests.cpp" >
       <Info>
         this message should be logged
@@ -12099,7 +12110,7 @@ loose text artifact
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="1178" failures="126" expectedFailures="21"/>
+    <OverallResults successes="1178" failures="127" expectedFailures="21"/>
   </Group>
-  <OverallResults successes="1178" failures="125" expectedFailures="21"/>
+  <OverallResults successes="1178" failures="126" expectedFailures="21"/>
 </Catch>

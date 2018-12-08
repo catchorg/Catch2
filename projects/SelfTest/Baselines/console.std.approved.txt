@@ -438,6 +438,16 @@ Message.tests.cpp:<line number>: warning:
   this is a warning
 
 -------------------------------------------------------------------------------
+INFO and WARN start with a linebreak
+-------------------------------------------------------------------------------
+Message.tests.cpp:<line number>
+...............................................................................
+
+Message.tests.cpp:<line number>: warning:
+
+this is a warning start with a linebreak
+
+-------------------------------------------------------------------------------
 INFO gets logged on failure
 -------------------------------------------------------------------------------
 Message.tests.cpp:<line number>
@@ -1126,6 +1136,6 @@ due to unexpected exception with message:
   Why would you throw a std::string?
 
 ===============================================================================
-test cases:  228 |  172 passed |  52 failed |  4 failed as expected
+test cases:  229 |  173 passed |  52 failed |  4 failed as expected
 assertions: 1310 | 1178 passed | 111 failed | 21 failed as expected
 
