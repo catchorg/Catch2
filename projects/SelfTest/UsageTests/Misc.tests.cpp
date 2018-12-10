@@ -61,6 +61,11 @@ CATCH_INTERNAL_SUPPRESS_GLOBALS_WARNINGS
 static AutoTestReg autoTestReg;
 CATCH_INTERNAL_UNSUPPRESS_GLOBALS_WARNINGS
 
+template<typename T>
+struct Foo {
+    size_t size() { return 0; }
+};
+
 #endif
 
 TEST_CASE( "random SECTION tests", "[.][sections][failing]" ) {
@@ -299,6 +304,15 @@ TEMPLATE_TEST_CASE( "TemplateTest: vectors can be sized and resized", "[vector][
         REQUIRE( v.size() == 5 );
         REQUIRE( v.capacity() >= 5 );
     }
+}
+
+TEMPLATE_PRODUCT_TEST_CASE("A Template product test case", "[template][product]", (std::vector, Foo), (int, float)) {
+    TestType x;
+    REQUIRE(x.size() == 0);
+}
+
+TEMPLATE_PRODUCT_TEST_CASE("Product with differing arities", "[template][product]", std::tuple, (int, (int, double), (int, double, float))) {
+    REQUIRE(std::tuple_size<TestType>::value >= 1);
 }
 
 // https://github.com/philsquared/Catch/issues/166

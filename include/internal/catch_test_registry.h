@@ -14,6 +14,7 @@
 #include "catch_stringref.h"
 #include "catch_type_traits.hpp"
 #include "catch_preprocessor.hpp"
+#include "catch_meta.hpp"
 
 namespace Catch {
 
@@ -150,6 +151,38 @@ struct AutoReg : NonCopyable {
             return 0;\
         }();
 
+    #define INTERNAL_CATCH_TEMPLATE_PRODUCT_TEST_CASE2(TestName, TestFuncName, Name, Tags, TmplTypes, TypesList) \
+        CATCH_INTERNAL_SUPPRESS_GLOBALS_WARNINGS                      \
+        template<typename TestType> static void TestFuncName();       \
+        namespace {                                                   \
+            template<typename... Types>                               \
+            struct TestName {                                         \
+                TestName() {                                          \
+                    CATCH_INTERNAL_CHECK_UNIQUE_TYPES(Types...)       \
+                    int index = 0;                                    \
+                    using expander = int[];                           \
+                    (void)expander{(Catch::AutoReg( Catch::makeTestInvoker( &TestFuncName<Types> ), CATCH_INTERNAL_LINEINFO, Catch::StringRef(), Catch::NameAndTags{ Name " - " + Catch::StringMaker<int>::convert(index++), Tags } ), 0)... };/* NOLINT */ \
+                }                                                     \
+            };                                                        \
+            static int INTERNAL_CATCH_UNIQUE_NAME( globalRegistrar ) = [](){ \
+                using TestInit = combine<INTERNAL_CATCH_REMOVE_PARENS(TmplTypes)> \
+                            ::with_types<INTERNAL_CATCH_MAKE_TYPE_LISTS_FROM_TYPES(TypesList)>::into<TestName>::type; \
+                TestInit();                                           \
+                return 0;                                             \
+            }();                                                      \
+        }                                                             \
+        CATCH_INTERNAL_UNSUPPRESS_GLOBALS_WARNINGS                    \
+        template<typename TestType>                                   \
+        static void TestFuncName()
+
+#ifndef CATCH_CONFIG_TRADITIONAL_MSVC_PREPROCESSOR
+    #define INTERNAL_CATCH_TEMPLATE_PRODUCT_TEST_CASE(Name, Tags, ...)\
+        INTERNAL_CATCH_TEMPLATE_PRODUCT_TEST_CASE2(INTERNAL_CATCH_UNIQUE_NAME( ____C_A_T_C_H____T_E_M_P_L_A_T_E____T_E_S_T____ ), INTERNAL_CATCH_UNIQUE_NAME( ____C_A_T_C_H____T_E_M_P_L_A_T_E____T_E_S_T____F_U_N_C____ ),Name,Tags,__VA_ARGS__)
+#else
+    #define INTERNAL_CATCH_TEMPLATE_PRODUCT_TEST_CASE(Name, Tags, ...)\
+        INTERNAL_CATCH_EXPAND_VARGS( INTERNAL_CATCH_TEMPLATE_PRODUCT_TEST_CASE2( INTERNAL_CATCH_UNIQUE_NAME( ____C_A_T_C_H____T_E_M_P_L_A_T_E____T_E_S_T____ ), INTERNAL_CATCH_UNIQUE_NAME( ____C_A_T_C_H____T_E_M_P_L_A_T_E____T_E_S_T____F_U_N_C____ ), Name, Tags, __VA_ARGS__ ) )
+#endif
+
     #define INTERNAL_CATCH_TEMPLATE_TEST_CASE_METHOD_2( TestNameClass, TestName, ClassName, Name, Tags, ... ) \
         CATCH_INTERNAL_SUPPRESS_GLOBALS_WARNINGS \
         namespace{ \
@@ -178,6 +211,41 @@ struct AutoReg : NonCopyable {
 #else
     #define INTERNAL_CATCH_TEMPLATE_TEST_CASE_METHOD( ClassName, Name, Tags,... ) \
         INTERNAL_CATCH_EXPAND_VARGS( INTERNAL_CATCH_TEMPLATE_TEST_CASE_METHOD_2( INTERNAL_CATCH_UNIQUE_NAME( ____C_A_T_C_H____T_E_M_P_L_A_T_E____T_E_S_T____C_L_A_S_S____ ), INTERNAL_CATCH_UNIQUE_NAME( ____C_A_T_C_H____T_E_M_P_L_A_T_E____T_E_S_T____ ) , ClassName, Name, Tags, __VA_ARGS__ ) )
+#endif
+
+    #define INTERNAL_CATCH_TEMPLATE_PRODUCT_TEST_CASE_METHOD_2(TestNameClass, TestName, ClassName, Name, Tags, TmplTypes, TypesList)\
+        CATCH_INTERNAL_SUPPRESS_GLOBALS_WARNINGS \
+        template<typename TestType> \
+            struct TestName : INTERNAL_CATCH_REMOVE_PARENS(ClassName <TestType>) { \
+                void test();\
+            };\
+        namespace {\
+            template<typename...Types>\
+            struct TestNameClass{\
+                TestNameClass(){\
+                    CATCH_INTERNAL_CHECK_UNIQUE_TYPES(Types...)\
+                    int index = 0;\
+                    using expander = int[];\
+                    (void)expander{(Catch::AutoReg( Catch::makeTestInvoker( &TestName<Types>::test ), CATCH_INTERNAL_LINEINFO, #ClassName, Catch::NameAndTags{ Name " - " + Catch::StringMaker<int>::convert(index++), Tags } ), 0)... };/* NOLINT */ \
+                }\
+            };\
+            static int INTERNAL_CATCH_UNIQUE_NAME( globalRegistrar ) = [](){\
+                using TestInit = combine<INTERNAL_CATCH_REMOVE_PARENS(TmplTypes)>\
+                            ::with_types<INTERNAL_CATCH_MAKE_TYPE_LISTS_FROM_TYPES(TypesList)>::into<TestNameClass>::type;\
+                TestInit();\
+                return 0;\
+            }(); \
+        }\
+        CATCH_INTERNAL_UNSUPPRESS_GLOBALS_WARNINGS \
+        template<typename TestType> \
+        void TestName<TestType>::test()
+
+#ifndef CATCH_CONFIG_TRADITIONAL_MSVC_PREPROCESSOR
+    #define INTERNAL_CATCH_TEMPLATE_PRODUCT_TEST_CASE_METHOD( ClassName, Name, Tags, ... )\
+        INTERNAL_CATCH_TEMPLATE_PRODUCT_TEST_CASE_METHOD_2( INTERNAL_CATCH_UNIQUE_NAME( ____C_A_T_C_H____T_E_M_P_L_A_T_E____T_E_S_T____ ), INTERNAL_CATCH_UNIQUE_NAME( ____C_A_T_C_H____T_E_M_P_L_A_T_E____T_E_S_T____F_U_N_C____ ), ClassName, Name, Tags, __VA_ARGS__ )
+#else
+    #define INTERNAL_CATCH_TEMPLATE_PRODUCT_TEST_CASE_METHOD( ClassName, Name, Tags, ... )\
+        INTERNAL_CATCH_EXPAND_VARGS( INTERNAL_CATCH_TEMPLATE_PRODUCT_TEST_CASE_METHOD_2( INTERNAL_CATCH_UNIQUE_NAME( ____C_A_T_C_H____T_E_M_P_L_A_T_E____T_E_S_T____ ), INTERNAL_CATCH_UNIQUE_NAME( ____C_A_T_C_H____T_E_M_P_L_A_T_E____T_E_S_T____F_U_N_C____ ), ClassName, Name, Tags, __VA_ARGS__ ) )
 #endif
 
 #endif // TWOBLUECUBES_CATCH_TEST_REGISTRY_HPP_INCLUDED

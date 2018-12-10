@@ -95,7 +95,8 @@ Other than the additional prefixes and the formatting in the console reporter th
 ## Type parametrised test cases
 
 In addition to `TEST_CASE`s, Catch2 also supports test cases parametrised
-by type, in the form of `TEMPLATE_TEST_CASE`.
+by types, in the form of `TEMPLATE_TEST_CASE` and
+`TEMPLATE_PRODUCT_TEST_CASE`.
 
 * **TEMPLATE_TEST_CASE(** _test name_ , _tags_,  _type1_, _type2_, ..., _typen_ **)**
 
@@ -147,9 +148,48 @@ TEMPLATE_TEST_CASE( "vectors can be sized and resized", "[vector][template]", in
 }
 ```
 
+* **TEMPLATE_PRODUCT_TEST_CASE(** _test name_ , _tags_, (_template-type1_, _template-type2_, ..., _template-typen_), (_template-arg1_, _template-arg2_, ..., _template-argm_) **)**
+
+_template-type1_ through _template-typen_ is list of template template
+types which should be combined with each of _template-arg1_ through
+ _template-argm_, resulting in _n * m_ test cases. Inside the test case,
+the resulting type is available under the name of `TestType`.
+
+To specify more than 1 type as a single _template-type_ or _template-arg_,
+you must enclose the types in an additional set of parentheses, e.g.
+`((int, float), (char, double))` specifies 2 template-args, each
+consisting of 2 concrete types (`int`, `float` and `char`, `double`
+respectively). You can also omit the outer set of parentheses if you
+specify only one type as the full set of either the _template-types_,
+or the _template-args_.
+
+
+Example:
+```
+template< typename T>
+struct Foo {
+    size_t size() {
+        return 0;
+    }
+};
+
+TEMPLATE_PRODUCT_TEST_CASE("A Template product test case", "[template][product]", (std::vector, Foo), (int, float)) {
+    TestType x;
+    REQUIRE(x.size() == 0);
+}
+```
+
+You can also have different arities in the _template-arg_ packs:
+```
+TEMPLATE_PRODUCT_TEST_CASE("Product with differing arities", "[template][product]", std::tuple, (int, (int, double), (int, double, float))) {
+    TestType x;
+    REQUIRE(std::tuple_size<TestType>::value >= 1);
+}
+```
+
 _While there is an upper limit on the number of types you can specify
-in single `TEMPLATE_TEST_CASE`, the limit is very high and should not
-be encountered in practice._
+in single `TEMPLATE_TEST_CASE` or `TEMPLATE_PRODUCT_TEST_CASE`, the limit
+is very high and should not be encountered in practice._
 
 ---
 
