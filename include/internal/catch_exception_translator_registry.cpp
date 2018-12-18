@@ -67,17 +67,23 @@ namespace Catch {
         }
     }
 
+    std::string ExceptionTranslatorRegistry::tryTranslators() const {
+        if (m_translators.empty()) {
+            std::rethrow_exception(std::current_exception());
+        } else {
+            return m_translators[0]->translate(m_translators.begin() + 1, m_translators.end());
+        }
+    }
+
 #else // ^^ Exceptions are enabled // Exceptions are disabled vv
     std::string ExceptionTranslatorRegistry::translateActiveException() const {
         CATCH_INTERNAL_ERROR("Attempted to translate active exception under CATCH_CONFIG_DISABLE_EXCEPTIONS!");
     }
+
+    std::string ExceptionTranslatorRegistry::tryTranslators() const {
+        CATCH_INTERNAL_ERROR("Attempted to use exception translators under CATCH_CONFIG_DISABLE_EXCEPTIONS!");
+    }
 #endif
 
 
-    std::string ExceptionTranslatorRegistry::tryTranslators() const {
-        if( m_translators.empty() )
-            std::rethrow_exception(std::current_exception());
-        else
-            return m_translators[0]->translate( m_translators.begin()+1, m_translators.end() );
-    }
 }
