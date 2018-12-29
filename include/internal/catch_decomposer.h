@@ -142,7 +142,17 @@ namespace Catch {
         auto operator <= ( RhsT const& rhs ) -> BinaryExpr<LhsT, RhsT const&> const {
             return { static_cast<bool>(m_lhs <= rhs), m_lhs, "<=", rhs };
         }
+        
+        template<typename RhsT>
+        void operator&&( RhsT const&) = delete;
 
+        void operator&&(bool) = delete;
+        
+        template<typename RhsT>
+        void operator||( RhsT const&) = delete;
+
+        void operator||(bool) = delete;
+        
         auto makeUnaryExpr() const -> UnaryExpr<LhsT> {
             return UnaryExpr<LhsT>{ m_lhs };
         }
