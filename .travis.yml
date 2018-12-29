@@ -276,7 +276,7 @@ matrix:
         - "3.7"
       dist: xenial
       install:
-        - pip install conan conan-package-tools
+        - pip install conan==1.10.2 conan-package-tools
       env:
         - CONAN_GCC_VERSIONS=8
         - CONAN_DOCKER_IMAGE=conanio/gcc8
