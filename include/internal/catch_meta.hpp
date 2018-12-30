@@ -9,6 +9,8 @@
 #ifndef TWOBLUECUBES_CATCH_META_HPP_INCLUDED
 #define TWOBLUECUBES_CATCH_META_HPP_INCLUDED
 
+#include <type_traits>
+
 template< typename... >
 struct TypeList{};
 
@@ -72,5 +74,8 @@ struct combine
         };
     };
 };
+
+template<typename T>
+struct always_false : std::false_type {};
 
 #endif // TWOBLUECUBES_CATCH_META_HPP_INCLUDED

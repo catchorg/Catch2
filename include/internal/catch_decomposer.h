@@ -10,6 +10,7 @@
 
 #include "catch_tostring.h"
 #include "catch_stringref.h"
+#include "catch_meta.hpp"
 
 #include <iosfwd>
 
@@ -141,6 +142,20 @@ namespace Catch {
         template<typename RhsT>
         auto operator <= ( RhsT const& rhs ) -> BinaryExpr<LhsT, RhsT const&> const {
             return { static_cast<bool>(m_lhs <= rhs), m_lhs, "<=", rhs };
+        }
+
+        template<typename RhsT>
+        auto operator && ( RhsT const& ) -> BinaryExpr<LhsT, RhsT const&> const {
+            static_assert(always_false<RhsT>::value,
+            "operator&& is not supported inside assertions, "
+            "wrap the expression inside parentheses, or decompose it");
+        }
+
+        template<typename RhsT>
+        auto operator || ( RhsT const& ) -> BinaryExpr<LhsT, RhsT const&> const {
+            static_assert(always_false<RhsT>::value,
+            "operator|| is not supported inside assertions, "
+            "wrap the expression inside parentheses, or decompose it");
         }
 
         auto makeUnaryExpr() const -> UnaryExpr<LhsT> {
