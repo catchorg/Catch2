@@ -387,16 +387,16 @@ TEST_CASE( "2: Testcase with sections", "[tag-A][tag-B]" ) {
     REQUIRE( i == 42 );
 
     SECTION("Section 1") {
-        INFO("Section 1")
+        INFO("Section 1");
         i = 7;
         SECTION("Section 1.1") {
-            INFO("Section 1.1")
+            INFO("Section 1.1");
             REQUIRE( i == 42 );
         }
     }
 
     SECTION("Section 2") {
-        INFO("Section 2")
+        INFO("Section 2");
         REQUIRE( i == 42 );
     }
     WARN("At end of test case");
