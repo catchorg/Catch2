@@ -44,7 +44,7 @@ namespace Catch {
 
     inline IMutableContext& getCurrentMutableContext()
     {
-        if( !IMutableContext::currentContext )
+        while( !IMutableContext::currentContext )
             IMutableContext::createContext();
         return *IMutableContext::currentContext;
     }
