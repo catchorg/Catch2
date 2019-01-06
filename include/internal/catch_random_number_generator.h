@@ -16,7 +16,7 @@ namespace Catch {
 
     std::mt19937& rng();
     void seedRng( IConfig const& config );
-    unsigned int rngSeed();
+    std::mt19937::result_type rngSeed();
 
 }
 

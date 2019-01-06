@@ -15,6 +15,7 @@
 
 #include <fstream>
 #include <ctime>
+#include <random>
 
 namespace Catch {
 
@@ -68,7 +69,7 @@ namespace Catch {
         auto const setRngSeed = [&]( std::string const& seed ) {
                 if( seed != "time" )
                     return clara::detail::convertInto( seed, config.rngSeed );
-                config.rngSeed = static_cast<unsigned int>( std::time(nullptr) );
+                config.rngSeed = static_cast<std::mt19937::result_type>( std::time(nullptr) );
                 return ParserResult::ok( ParseResultType::Matched );
             };
         auto const setColourUsage = [&]( std::string const& useColour ) {

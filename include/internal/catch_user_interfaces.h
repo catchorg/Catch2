@@ -11,8 +11,10 @@
 #ifndef TWOBLUECUBES_CATCH_USER_INTERFACES_H_INCLUDED
 #define TWOBLUECUBES_CATCH_USER_INTERFACES_H_INCLUDED
 
+#include <random>
+
 namespace Catch {
-    unsigned int rngSeed();
+    std::mt19937::result_type rngSeed();
 }
 
 #endif // TWOBLUECUBES_CATCH_USER_INTERFACES_H_INCLUDED

@@ -16,6 +16,7 @@
 
 #include <memory>
 #include <vector>
+#include <random>
 #include <string>
 
 #ifndef CATCH_CONFIG_CONSOLE_WIDTH
@@ -41,7 +42,7 @@ namespace Catch {
         bool libIdentify = false;
 
         int abortAfter = -1;
-        unsigned int rngSeed = 0;
+        std::mt19937::result_type rngSeed = 0;
         int benchmarkResolutionMultiple = 100;
 
         Verbosity verbosity = Verbosity::Normal;
@@ -99,7 +100,7 @@ namespace Catch {
         bool warnAboutNoTests() const override;
         ShowDurations::OrNot showDurations() const override;
         RunTests::InWhatOrder runOrder() const override;
-        unsigned int rngSeed() const override;
+        std::mt19937::result_type rngSeed() const override;
         int benchmarkResolutionMultiple() const override;
         UseColour::YesOrNo useColour() const override;
         bool shouldDebugBreak() const override;

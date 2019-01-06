@@ -12,18 +12,17 @@
 namespace Catch {
 
     std::mt19937& rng() {
-        static std::mt19937 s_rng;
+        thread_local static std::mt19937 s_rng;
         return s_rng;
     }
 
     void seedRng( IConfig const& config ) {
         if( config.rngSeed() != 0 ) {
-            std::srand( config.rngSeed() );
             rng().seed( config.rngSeed() );
         }
     }
 
-    unsigned int rngSeed() {
+    std::mt19937::result_type rngSeed() {
         return getCurrentContext().getConfig()->rngSeed();
     }
 }
