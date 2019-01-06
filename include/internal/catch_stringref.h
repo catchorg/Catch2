@@ -13,8 +13,6 @@
 
 namespace Catch {
 
-    class StringData;
-
     /// A non-owning string class (similar to the forthcoming std::string_view)
     /// Note that, because a StringRef may be a substring of another string,
     /// it may not be null terminated. c_str() must return a null terminated
