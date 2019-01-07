@@ -44,9 +44,11 @@ namespace {
     }
 
     void hexEscapeChar(std::ostream& os, unsigned char c) {
+        std::ios_base::fmtflags f(os.flags());
         os << "\\x"
             << std::uppercase << std::hex << std::setfill('0') << std::setw(2)
             << static_cast<int>(c);
+        os.flags(f);
     }
 
 } // anonymous namespace
