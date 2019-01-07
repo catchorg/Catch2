@@ -21,6 +21,7 @@ set( REPORTER_HEADER_DIR ${CATCH_DIR}/include/reporters )
 set( SOURCES_SINGLE_FILE
     010-TestCase.cpp
     231-Cfg-OutputStreams.cpp
+    300-FilteredSection.cpp
 )
 
 # multiple-file modules:
