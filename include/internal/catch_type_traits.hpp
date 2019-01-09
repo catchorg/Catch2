@@ -9,6 +9,8 @@
 #ifndef TWOBLUECUBES_CATCH_TYPE_TRAITS_HPP_INCLUDED
 #define TWOBLUECUBES_CATCH_TYPE_TRAITS_HPP_INCLUDED
 
+#include <type_traits>
+
 namespace Catch{
 
 #ifdef CATCH_CPP17_OR_GREATER
