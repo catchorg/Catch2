@@ -109,7 +109,7 @@ function(ParseFile SourceFile TestTarget)
         # Get test type and fixture if applicable
         string(REGEX MATCH "(CATCH_)?(TEST_CASE_METHOD|SCENARIO|TEST_CASE)[ \t]*\\([^,^\"]*" TestTypeAndFixture "${TestName}")
         string(REGEX MATCH "(CATCH_)?(TEST_CASE_METHOD|SCENARIO|TEST_CASE)" TestType "${TestTypeAndFixture}")
-        string(REPLACE "${TestType}(" "" TestFixture "${TestTypeAndFixture}")
+        string(REGEX REPLACE "${TestType}\\([ \t]*" "" TestFixture "${TestTypeAndFixture}")
 
         # Get string parts of test definition
         string(REGEX MATCHALL "\"+([^\\^\"]|\\\\\")+\"+" TestStrings "${TestName}")
