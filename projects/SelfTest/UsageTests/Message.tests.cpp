@@ -227,9 +227,9 @@ TEST_CASE( "CAPTURE can deal with complex expressions", "[messages][capture]" ) 
 
 template <typename T1, typename T2>
 struct helper_1436 {
-    helper_1436(T1 t1, T2 t2):
-        t1{ t1 },
-        t2{ t2 }
+    helper_1436(T1 t1_, T2 t2_):
+        t1{ t1_ },
+        t2{ t2_ }
     {}
     T1 t1;
     T2 t2;
