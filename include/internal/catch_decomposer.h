@@ -131,7 +131,7 @@ namespace Catch {
 
     public:
         explicit UnaryExpr( LhsT lhs )
-        :   ITransientExpression{ false, lhs ? true : false },
+        :   ITransientExpression{ false, static_cast<bool>(lhs) },
             m_lhs( lhs )
         {}
     };
