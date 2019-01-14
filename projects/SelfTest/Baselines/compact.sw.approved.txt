@@ -1189,6 +1189,15 @@ Approx.tests.cpp:<line number>: passed: approx( d ) == 1.22 for: Approx( 1.23 ) 
 Approx.tests.cpp:<line number>: passed: approx( d ) == 1.24 for: Approx( 1.23 ) == 1.24
 Approx.tests.cpp:<line number>: passed: approx( d ) != 1.25 for: Approx( 1.23 ) != 1.25
 VariadicMacros.tests.cpp:<line number>: passed: with 1 message: 'no assertions'
+Matchers.tests.cpp:<line number>: passed: empty, Approx(empty) for: {  } is approx: {  }
+Matchers.tests.cpp:<line number>: passed: v1, Approx(v1) for: { 1.0, 2.0, 3.0 } is approx: { 1.0, 2.0, 3.0 }
+Matchers.tests.cpp:<line number>: passed: v1, !Approx(temp) for: { 1.0, 2.0, 3.0 } not is approx: { 1.0, 2.0, 3.0, 4.0 }
+Matchers.tests.cpp:<line number>: passed: v1, !Approx(v2) for: { 1.0, 2.0, 3.0 } not is approx: { 1.5, 2.5, 3.5 }
+Matchers.tests.cpp:<line number>: passed: v1, Approx(v2).margin(0.5) for: { 1.0, 2.0, 3.0 } is approx: { 1.5, 2.5, 3.5 }
+Matchers.tests.cpp:<line number>: passed: v1, Approx(v2).epsilon(0.5) for: { 1.0, 2.0, 3.0 } is approx: { 1.5, 2.5, 3.5 }
+Matchers.tests.cpp:<line number>: passed: v1, Approx(v2).epsilon(0.1).scale(500) for: { 1.0, 2.0, 3.0 } is approx: { 1.5, 2.5, 3.5 }
+Matchers.tests.cpp:<line number>: failed: empty, Approx(t1) for: {  } is approx: { 1.0, 2.0 }
+Matchers.tests.cpp:<line number>: failed: v1, Approx(v2) for: { 2.0, 4.0, 6.0 } is approx: { 1.0, 3.0, 5.0 }
 Matchers.tests.cpp:<line number>: passed: v, VectorContains(1) for: { 1, 2, 3 } Contains: 1
 Matchers.tests.cpp:<line number>: passed: v, VectorContains(2) for: { 1, 2, 3 } Contains: 2
 Matchers.tests.cpp:<line number>: passed: v, Contains(v2) for: { 1, 2, 3 } Contains: { 1, 2 }
@@ -1505,5 +1514,5 @@ Misc.tests.cpp:<line number>: passed: v.size() == 5 for: 5 == 5
 Misc.tests.cpp:<line number>: passed: v.capacity() >= 5 for: 5 >= 5
 Misc.tests.cpp:<line number>: passed:
 Misc.tests.cpp:<line number>: passed:
-Failed 78 test cases, failed 139 assertions.
+Failed 79 test cases, failed 141 assertions.
 

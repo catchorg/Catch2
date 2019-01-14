@@ -9,6 +9,7 @@
 #define TWOBLUECUBES_CATCH_MATCHERS_VECTOR_H_INCLUDED
 
 #include "catch_matchers.h"
+#include "catch_approx.h"
 
 #include <algorithm>
 
@@ -91,6 +92,42 @@ namespace Matchers {
         };
 
         template<typename T>
+        struct ApproxMatcher : MatcherBase<std::vector<T>> {
+
+            ApproxMatcher(std::vector<T> const& comparator) : m_comparator( comparator ) {}
+
+            bool match(std::vector<T> const &v) const override {
+                if (m_comparator.size() != v.size())
+                    return false;
+                for (std::size_t i = 0; i < v.size(); ++i)
+                    if (m_comparator[i] != approx(v[i]))
+                        return false;
+                return true;
+            }
+            std::string describe() const override {
+                return "is approx: " + ::Catch::Detail::stringify( m_comparator );
+            }
+            template <typename = typename std::enable_if<std::is_constructible<double, T>::value>::type>
+            ApproxMatcher& epsilon( T const& newEpsilon ) {
+                approx.epsilon(newEpsilon);
+                return *this;
+            }
+            template <typename = typename std::enable_if<std::is_constructible<double, T>::value>::type>
+            ApproxMatcher& margin( T const& newMargin ) {
+                approx.margin(newMargin);
+                return *this;
+            }
+            template <typename = typename std::enable_if<std::is_constructible<double, T>::value>::type>
+            ApproxMatcher& scale( T const& newScale ) {
+                approx.scale(newScale);
+                return *this;
+            }
+
+            std::vector<T> const& m_comparator;
+            mutable Catch::Detail::Approx approx = Catch::Detail::Approx::custom();
+        };
+
+        template<typename T>
         struct UnorderedEqualsMatcher : MatcherBase<std::vector<T>> {
             UnorderedEqualsMatcher(std::vector<T> const& target) : m_target(target) {}
             bool match(std::vector<T> const& vec) const override {
@@ -127,6 +164,11 @@ namespace Matchers {
     template<typename T>
     Vector::EqualsMatcher<T> Equals( std::vector<T> const& comparator ) {
         return Vector::EqualsMatcher<T>( comparator );
+    }
+
+    template<typename T>
+    Vector::ApproxMatcher<T> Approx( std::vector<T> const& comparator ) {
+        return Vector::ApproxMatcher<T>( comparator );
     }
 
     template<typename T>

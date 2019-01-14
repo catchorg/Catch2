@@ -8721,6 +8721,96 @@ with message:
   no assertions
 
 -------------------------------------------------------------------------------
+Vector Approx matcher
+  Empty vector is roughly equal to an empty vector
+-------------------------------------------------------------------------------
+Matchers.tests.cpp:<line number>
+...............................................................................
+
+Matchers.tests.cpp:<line number>: PASSED:
+  REQUIRE_THAT( empty, Approx(empty) )
+with expansion:
+  {  } is approx: {  }
+
+-------------------------------------------------------------------------------
+Vector Approx matcher
+  Vectors with elements
+  A vector is approx equal to itself
+-------------------------------------------------------------------------------
+Matchers.tests.cpp:<line number>
+...............................................................................
+
+Matchers.tests.cpp:<line number>: PASSED:
+  REQUIRE_THAT( v1, Approx(v1) )
+with expansion:
+  { 1.0, 2.0, 3.0 } is approx: { 1.0, 2.0, 3.0 }
+
+-------------------------------------------------------------------------------
+Vector Approx matcher
+  Vectors with elements
+  Different length
+-------------------------------------------------------------------------------
+Matchers.tests.cpp:<line number>
+...............................................................................
+
+Matchers.tests.cpp:<line number>: PASSED:
+  REQUIRE_THAT( v1, !Approx(temp) )
+with expansion:
+  { 1.0, 2.0, 3.0 } not is approx: { 1.0, 2.0, 3.0, 4.0 }
+
+-------------------------------------------------------------------------------
+Vector Approx matcher
+  Vectors with elements
+  Same length, different elements
+-------------------------------------------------------------------------------
+Matchers.tests.cpp:<line number>
+...............................................................................
+
+Matchers.tests.cpp:<line number>: PASSED:
+  REQUIRE_THAT( v1, !Approx(v2) )
+with expansion:
+  { 1.0, 2.0, 3.0 } not is approx: { 1.5, 2.5, 3.5 }
+
+Matchers.tests.cpp:<line number>: PASSED:
+  REQUIRE_THAT( v1, Approx(v2).margin(0.5) )
+with expansion:
+  { 1.0, 2.0, 3.0 } is approx: { 1.5, 2.5, 3.5 }
+
+Matchers.tests.cpp:<line number>: PASSED:
+  REQUIRE_THAT( v1, Approx(v2).epsilon(0.5) )
+with expansion:
+  { 1.0, 2.0, 3.0 } is approx: { 1.5, 2.5, 3.5 }
+
+Matchers.tests.cpp:<line number>: PASSED:
+  REQUIRE_THAT( v1, Approx(v2).epsilon(0.1).scale(500) )
+with expansion:
+  { 1.0, 2.0, 3.0 } is approx: { 1.5, 2.5, 3.5 }
+
+-------------------------------------------------------------------------------
+Vector Approx matcher -- failing
+  Empty and non empty vectors are not approx equal
+-------------------------------------------------------------------------------
+Matchers.tests.cpp:<line number>
+...............................................................................
+
+Matchers.tests.cpp:<line number>: FAILED:
+  CHECK_THAT( empty, Approx(t1) )
+with expansion:
+  {  } is approx: { 1.0, 2.0 }
+
+-------------------------------------------------------------------------------
+Vector Approx matcher -- failing
+  Just different vectors
+-------------------------------------------------------------------------------
+Matchers.tests.cpp:<line number>
+...............................................................................
+
+Matchers.tests.cpp:<line number>: FAILED:
+  CHECK_THAT( v1, Approx(v2) )
+with expansion:
+  { 2.0, 4.0, 6.0 } is approx: { 1.0, 3.0, 5.0 }
+
+-------------------------------------------------------------------------------
 Vector matchers
   Contains (element)
 -------------------------------------------------------------------------------
@@ -11128,6 +11218,6 @@ Misc.tests.cpp:<line number>
 Misc.tests.cpp:<line number>: PASSED:
 
 ===============================================================================
-test cases:  258 |  176 passed |  78 failed |  4 failed as expected
-assertions: 1436 | 1276 passed | 139 failed | 21 failed as expected
+test cases:  260 |  177 passed |  79 failed |  4 failed as expected
+assertions: 1445 | 1283 passed | 141 failed | 21 failed as expected
 
