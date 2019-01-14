@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuitesloose text artifact
 >
-  <testsuite name="<exe-name>" errors="17" failures="123" tests="1437" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
+  <testsuite name="<exe-name>" errors="17" failures="125" tests="1446" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
     <properties>
       <property name="filters" value="~[!nonportable]~[!benchmark]~[approvals]"/>
       <property name="random-seed" value="1"/>
@@ -741,6 +741,20 @@ Exception.tests.cpp:<line number>
     </testcase>
     <testcase classname="<exe-name>.global" name="Use a custom approx" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Variadic macros/Section with one argument" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="Vector Approx matcher/Empty vector is roughly equal to an empty vector" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="Vector Approx matcher/Vectors with elements/A vector is approx equal to itself" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="Vector Approx matcher/Vectors with elements/Different length" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="Vector Approx matcher/Vectors with elements/Same length, different elements" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="Vector Approx matcher -- failing/Empty and non empty vectors are not approx equal" time="{duration}">
+      <failure message="{  } is approx: { 1.0, 2.0 }" type="CHECK_THAT">
+Matchers.tests.cpp:<line number>
+      </failure>
+    </testcase>
+    <testcase classname="<exe-name>.global" name="Vector Approx matcher -- failing/Just different vectors" time="{duration}">
+      <failure message="{ 2.0, 4.0, 6.0 } is approx: { 1.0, 3.0, 5.0 }" type="CHECK_THAT">
+Matchers.tests.cpp:<line number>
+      </failure>
+    </testcase>
     <testcase classname="<exe-name>.global" name="Vector matchers/Contains (element)" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Vector matchers/Contains (vector)" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Vector matchers/Contains (element), composed" time="{duration}"/>

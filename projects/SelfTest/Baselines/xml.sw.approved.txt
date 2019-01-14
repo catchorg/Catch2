@@ -10713,6 +10713,111 @@ Message from section two
       </Section>
       <OverallResult success="true"/>
     </TestCase>
+    <TestCase name="Vector Approx matcher" tags="[approx][matchers][vector]" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
+      <Section name="Empty vector is roughly equal to an empty vector" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
+        <Expression success="true" type="REQUIRE_THAT" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
+          <Original>
+            empty, Approx(empty)
+          </Original>
+          <Expanded>
+            {  } is approx: {  }
+          </Expanded>
+        </Expression>
+        <OverallResults successes="1" failures="0" expectedFailures="0"/>
+      </Section>
+      <Section name="Vectors with elements" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
+        <Section name="A vector is approx equal to itself" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
+          <Expression success="true" type="REQUIRE_THAT" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
+            <Original>
+              v1, Approx(v1)
+            </Original>
+            <Expanded>
+              { 1.0, 2.0, 3.0 } is approx: { 1.0, 2.0, 3.0 }
+            </Expanded>
+          </Expression>
+          <OverallResults successes="1" failures="0" expectedFailures="0"/>
+        </Section>
+        <OverallResults successes="1" failures="0" expectedFailures="0"/>
+      </Section>
+      <Section name="Vectors with elements" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
+        <Section name="Different length" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
+          <Expression success="true" type="REQUIRE_THAT" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
+            <Original>
+              v1, !Approx(temp)
+            </Original>
+            <Expanded>
+              { 1.0, 2.0, 3.0 } not is approx: { 1.0, 2.0, 3.0, 4.0 }
+            </Expanded>
+          </Expression>
+          <OverallResults successes="1" failures="0" expectedFailures="0"/>
+        </Section>
+        <OverallResults successes="1" failures="0" expectedFailures="0"/>
+      </Section>
+      <Section name="Vectors with elements" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
+        <Section name="Same length, different elements" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
+          <Expression success="true" type="REQUIRE_THAT" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
+            <Original>
+              v1, !Approx(v2)
+            </Original>
+            <Expanded>
+              { 1.0, 2.0, 3.0 } not is approx: { 1.5, 2.5, 3.5 }
+            </Expanded>
+          </Expression>
+          <Expression success="true" type="REQUIRE_THAT" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
+            <Original>
+              v1, Approx(v2).margin(0.5)
+            </Original>
+            <Expanded>
+              { 1.0, 2.0, 3.0 } is approx: { 1.5, 2.5, 3.5 }
+            </Expanded>
+          </Expression>
+          <Expression success="true" type="REQUIRE_THAT" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
+            <Original>
+              v1, Approx(v2).epsilon(0.5)
+            </Original>
+            <Expanded>
+              { 1.0, 2.0, 3.0 } is approx: { 1.5, 2.5, 3.5 }
+            </Expanded>
+          </Expression>
+          <Expression success="true" type="REQUIRE_THAT" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
+            <Original>
+              v1, Approx(v2).epsilon(0.1).scale(500)
+            </Original>
+            <Expanded>
+              { 1.0, 2.0, 3.0 } is approx: { 1.5, 2.5, 3.5 }
+            </Expanded>
+          </Expression>
+          <OverallResults successes="4" failures="0" expectedFailures="0"/>
+        </Section>
+        <OverallResults successes="4" failures="0" expectedFailures="0"/>
+      </Section>
+      <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="Vector Approx matcher -- failing" tags="[.][approx][failing][matchers][vector]" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
+      <Section name="Empty and non empty vectors are not approx equal" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
+        <Expression success="false" type="CHECK_THAT" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
+          <Original>
+            empty, Approx(t1)
+          </Original>
+          <Expanded>
+            {  } is approx: { 1.0, 2.0 }
+          </Expanded>
+        </Expression>
+        <OverallResults successes="0" failures="1" expectedFailures="0"/>
+      </Section>
+      <Section name="Just different vectors" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
+        <Expression success="false" type="CHECK_THAT" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
+          <Original>
+            v1, Approx(v2)
+          </Original>
+          <Expanded>
+            { 2.0, 4.0, 6.0 } is approx: { 1.0, 3.0, 5.0 }
+          </Expanded>
+        </Expression>
+        <OverallResults successes="0" failures="1" expectedFailures="0"/>
+      </Section>
+      <OverallResult success="false"/>
+    </TestCase>
     <TestCase name="Vector matchers" tags="[matchers][vector]" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
       <Section name="Contains (element)" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
         <Expression success="true" type="CHECK_THAT" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
@@ -13399,7 +13504,7 @@ loose text artifact
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="1276" failures="140" expectedFailures="21"/>
+    <OverallResults successes="1283" failures="142" expectedFailures="21"/>
   </Group>
-  <OverallResults successes="1276" failures="139" expectedFailures="21"/>
+  <OverallResults successes="1283" failures="141" expectedFailures="21"/>
 </Catch>
