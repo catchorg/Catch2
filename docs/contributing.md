@@ -42,36 +42,37 @@ functionality, you should add tests covering and showcasing it. Even if you have
 only made changes to Catch internals (i.e. you implemented some performance
 improvements), you should still test your changes.
 
-This means 3 things
+This means 2 things
 
 * Compiling Catch's SelfTest project:
 ```
 $ cd Catch2
-$ cmake -Bcmake-build-debug -H. -DCATCH_BUILD_TESTING=ON
-$ cd cmake-build-debug/
-$ make
+$ cmake -Bdebug-build -H. -DCMAKE_BUILD_TYPE=Debug
+$ cmake --build debug-build
 ```
--- code that does not compile is evidently incorrect. Obviously, you are not
-expected to have access to all compilers and platforms Catch supports, Catch's
-CI pipeline will compile your code using supported compilers once you open a PR.
+because code that does not compile is evidently incorrect. Obviously,
+you are not expected to have access to all the compilers and platforms
+supported by Catch2, but you should at least smoke test your changes
+on your platform. Our CI pipeline will check your PR against most of
+the supported platforms, but it takes an hour to finish -- compiling
+locally takes just a few minutes.
 
-* Running the SelfTest binary:
-```
-$ ./cmake-build-debug/projects/SelfTest
-```
-There should be no unexpected failures on simple run.
-*Note: on Windows, the binary is located at `cmake-build-debug\projects\Debug\SelfTest`*
 
-* Running Catch's approval tests:
+* Running the tests via CTest:
 ```
-$ ./scripts/approvalTests.py
+$ cd debug-build
+$ ctest -j 2 --output-on-failure
 ```
-Approval tests compare current output of the SelfTest binary in various
-configurations against known good output. If you've configured the SelfTest
-binary with your changes to be located in any other directory than
-`/cmake-build-debug/projects/SelfTest`, its path needs to be passed to the
-script, like so: `$ ./scripts/approvalTests.py clang-build/SelfTest`.
-The output should be fairly self-explanatory.
+If you added new tests, approval tests are very likely to fail. If they
+do not, it means that your changes weren't run as part of them. This
+_might_ be intentional, but usually is not.
+
+The approval tests compare current output of the SelfTest binary in various
+configurations against known good outputs. The reason it fails is,
+_usually_, that you've added new tests but have not yet approved the changes
+they introduce. This is done with the `scripts/approve.py` script, but
+before you do so, you need to check that the introduced changes are indeed
+intentional.
 
 
 
