@@ -160,7 +160,7 @@ namespace {
 
     private:
         void setColour( const char* _escapeCode ) {
-            getCurrentContext().getConfig().stream()
+            getCurrentContext().getConfig()->stream()
                 << '\033' << _escapeCode;
         }
     };
