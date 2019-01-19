@@ -83,6 +83,11 @@ be changed so that hidden tests are included in a run only if they
 positively match a testspec.
 
 
+### Console Colour API
+
+The API for Catch2's console colour will be changed to take an extra
+argument, the stream to which the colour code should be applied.
+
 ---
 
 [Home](Readme.md#top)
