@@ -164,7 +164,7 @@ function(ParseFile SourceFile TestTarget)
                 break()
             endif(result)
         endforeach(label)
-        if(PARSE_CATCH_TESTS_NO_HIDDEN_TESTS AND ${HiddenTagFound})
+        if(PARSE_CATCH_TESTS_NO_HIDDEN_TESTS AND ${HiddenTagFound} AND ${CMAKE_VERSION} VERSION_LESS "3.9")
             PrintDebugMessage("Skipping test \"${CTestName}\" as it has [!hide], [.] or [.foo] label")
         else()
             PrintDebugMessage("Adding test \"${CTestName}\"")
@@ -174,9 +174,16 @@ function(ParseFile SourceFile TestTarget)
 
             # Add the test and set its properties
             add_test(NAME "\"${CTestName}\"" COMMAND ${OptionalCatchTestLauncher} ${TestTarget} ${Name} ${AdditionalCatchParameters})
-            set_tests_properties("\"${CTestName}\"" PROPERTIES FAIL_REGULAR_EXPRESSION "No tests ran"
-                                                    LABELS "${Labels}")
+            # Old CMake versions do not document VERSION_GREATER_EQUAL, so we use VERSION_GREATER with 3.8 instead
+            if(PARSE_CATCH_TESTS_NO_HIDDEN_TESTS AND ${HiddenTagFound} AND ${CMAKE_VERSION} VERSION_GREATER "3.8")
+                PrintDebugMessage("Setting DISABLED test property")
+                set_tests_properties("\"${CTestName}\"" PROPERTIES DISABLED ON)
+            else()
+                set_tests_properties("\"${CTestName}\"" PROPERTIES FAIL_REGULAR_EXPRESSION "No tests ran"
+                                                        LABELS "${Labels}")
+            endif()
         endif()
+
 
     endforeach()
 endfunction()
