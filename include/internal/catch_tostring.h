@@ -602,7 +602,8 @@ struct ratio_string<std::milli> {
             std::tm timeInfo = {};
             gmtime_s(&timeInfo, &converted);
 #else
-            std::tm* timeInfo = std::gmtime(&converted);
+            struct tm_instance;
+            std::tm* timeInfo = std::gmtime_r(&converted, &tm_instance);
 #endif
 
             auto const timeStampSize = sizeof("2017-01-16T17:06:45Z");

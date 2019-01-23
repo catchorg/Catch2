@@ -33,7 +33,8 @@ namespace Catch {
             gmtime_s(&timeInfo, &rawtime);
 #else
             std::tm* timeInfo;
-            timeInfo = std::gmtime(&rawtime);
+            struct tm tm_instance;
+            timeInfo = std::gmtime_r(&rawtime, &tm_instance);
 #endif
 
             char timeStamp[timeStampSize];
