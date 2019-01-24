@@ -8,6 +8,10 @@
 
 #include "catch.hpp"
 
+#if defined __GNUC__
+#    pragma GCC diagnostic ignored "-Wparentheses"
+#endif
+
 namespace{ namespace ClassTests {
 
 #ifndef CLASS_TEST_HELPERS_INCLUDED // Don't compile this more than once per TU

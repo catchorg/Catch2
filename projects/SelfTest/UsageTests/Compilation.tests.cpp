@@ -19,6 +19,7 @@ namespace foo {
 
 #ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wmissing-declarations"
+#pragma GCC diagnostic ignored "-Wparentheses"
 #endif
 std::ostream& operator<<(std::ostream& out, foo::helper_1403 const&) {
     return out << "[1403 helper]";
