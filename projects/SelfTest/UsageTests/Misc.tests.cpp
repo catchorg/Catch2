@@ -11,6 +11,8 @@
 #ifdef __clang__
 #   pragma clang diagnostic ignored "-Wc++98-compat"
 #   pragma clang diagnostic ignored "-Wc++98-compat-pedantic"
+#elif defined __GNUC__
+#   pragma GCC diagnostic ignored "-Wparentheses"
 #endif
 
 
