@@ -53,8 +53,8 @@ namespace Catch {
                 // - and potentially do more iterations if there's a high variance.
                 result = sum / iterations;
                 auto squared_difference_sum = 0;
-                for (std::size_t i = 0; i < iterations; ++i) {
-                    squared_difference_sum += (deltas[i] - result) * (deltas[i] - result);
+                for (std::size_t iterator = 0; iterator < iterations; ++iterator) {
+                    squared_difference_sum += (deltas[iterator] - result) * (deltas[iterator] - result);
                 }
                 auto std_deviation = squared_difference_sum / iterations;
                 if (std_deviation < STD_DEVIATION_THRESHOLD) {
