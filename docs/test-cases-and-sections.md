@@ -165,7 +165,7 @@ or the _template-args_.
 
 
 Example:
-```
+```cpp
 template< typename T>
 struct Foo {
     size_t size() {
@@ -180,7 +180,7 @@ TEMPLATE_PRODUCT_TEST_CASE("A Template product test case", "[template][product]"
 ```
 
 You can also have different arities in the _template-arg_ packs:
-```
+```cpp
 TEMPLATE_PRODUCT_TEST_CASE("Product with differing arities", "[template][product]", std::tuple, (int, (int, double), (int, double, float))) {
     TestType x;
     REQUIRE(std::tuple_size<TestType>::value >= 1);

@@ -45,6 +45,9 @@ These macros come in three forms:
 
 The message is logged to a buffer, but only reported with the next assertion that is logged. This allows you to log contextual information in case of failures which is not shown during a successful test run (for the console reporter, without -s). Messages are removed from the buffer at the end of their scope, so may be used, for example, in loops.
 
+_Note that in Catch2 2.x.x `INFO` can be used without a trailing semicolon as there is a trailing semicolon inside macro.
+This semicolon will be removed with next major version. It is highly advised to use a trailing semicolon after `INFO` macro._
+
 **WARN(** _message expression_ **)**
 
 The message is always reported but does not fail the test.

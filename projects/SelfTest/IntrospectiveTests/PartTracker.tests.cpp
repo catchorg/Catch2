@@ -324,3 +324,33 @@ TEST_CASE( "Tracker" ) {
         //   two sections within a generator
     }
 }
+
+static bool previouslyRun = false;
+static bool previouslyRunNested = false;
+
+TEST_CASE( "#1394", "[.][approvals][tracker]" ) {
+    // -- Don't re-run after specified section is done
+    REQUIRE(previouslyRun == false);
+
+    SECTION( "RunSection" ) {
+        previouslyRun = true;
+    }
+    SECTION( "SkipSection" ) {
+        // cause an error if this section is called because it shouldn't be
+        REQUIRE(1 == 0);
+    }
+}
+
+TEST_CASE( "#1394 nested", "[.][approvals][tracker]" ) {
+    REQUIRE(previouslyRunNested == false);
+
+    SECTION( "NestedRunSection" ) {
+        SECTION( "s1" ) {
+            previouslyRunNested = true;
+        }
+    }
+    SECTION( "NestedSkipSection" ) {
+        // cause an error if this section is called because it shouldn't be
+        REQUIRE(1 == 0);
+    }
+}

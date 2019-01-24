@@ -42,13 +42,11 @@ namespace Catch {
                     auto delta = ticks - baseTicks;
                     deltas.push_back(delta);
                     sum += delta;
-
-                    // If we have been calibrating for over 3 seconds -- the clock
-                    // is terrible and we should move on.
-                    // TBD: How to signal that the measured resolution is probably wrong?
-                    if (ticks > startTime + 3 * nanosecondsInSecond) {
-                        return sum / i;
-                    }
+                // If we have been calibrating for over 3 seconds -- the clock
+                // is terrible and we should move on.
+                // TBD: How to signal that the measured resolution is probably wrong?
+                if (ticks > startTime + 3 * nanosecondsInSecond) {
+                    return sum / ( i + 1u );
                 }
 
                 // We're just taking the mean, here. To do better we could take the std. dev and exclude outliers
