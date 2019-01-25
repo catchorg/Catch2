@@ -36,6 +36,7 @@ set(TEST_SOURCES
         ${SELF_TEST_DIR}/UsageTests/Misc.tests.cpp
         ${SELF_TEST_DIR}/UsageTests/ToStringChrono.tests.cpp
         ${SELF_TEST_DIR}/UsageTests/ToStringGeneral.tests.cpp
+        ${SELF_TEST_DIR}/UsageTests/ToStringOptional.tests.cpp
         ${SELF_TEST_DIR}/UsageTests/ToStringPair.tests.cpp
         ${SELF_TEST_DIR}/UsageTests/ToStringTuple.tests.cpp
         ${SELF_TEST_DIR}/UsageTests/ToStringVariant.tests.cpp
