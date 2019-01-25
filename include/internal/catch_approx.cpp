@@ -29,7 +29,8 @@ namespace Detail {
     :   m_epsilon( std::numeric_limits<float>::epsilon()*100 ),
         m_margin( 0.0 ),
         m_scale( 0.0 ),
-        m_value( value )
+        m_value( value ),
+        current_calculation_type(DEFAULT)
     {}
 
     Approx Approx::custom() {
@@ -52,7 +53,26 @@ namespace Detail {
     bool Approx::equalityComparisonImpl(const double other) const {
         // First try with fixed margin, then compute margin based on epsilon, scale and Approx's value
         // Thanks to Richard Harris for his help refining the scaled margin value
-        return marginComparison(m_value, other, m_margin) || marginComparison(m_value, other, m_epsilon * (m_scale + std::fabs(m_value)));
+        bool is_equal = false;
+        switch (current_calculation_type) {
+            case DEFAULT: {
+                is_equal = marginComparison(m_value, other, m_margin) ||
+                           marginComparison(m_value, other, m_epsilon * (m_scale + std::fabs(m_value)));
+                break;
+            }
+            case MARGIN: {
+                is_equal = marginComparison(m_value, other, m_margin);
+                break;
+            }
+            case EPSILON: {
+                is_equal = marginComparison(m_value, other, m_epsilon * (m_scale + std::fabs(m_value)));
+                break;
+            }
+            default: {
+                // How is this possible???
+            }
+        }
+        return is_equal;
     }
 
     void Approx::setMargin(double margin) {
@@ -60,6 +80,7 @@ namespace Detail {
             "Invalid Approx::margin: " << margin << '.'
             << " Approx::Margin has to be non-negative.");
         m_margin = margin;
+        current_calculation_type = MARGIN;
     }
 
     void Approx::setEpsilon(double epsilon) {
@@ -67,6 +88,7 @@ namespace Detail {
             "Invalid Approx::epsilon: " << epsilon << '.'
             << " Approx::epsilon has to be in [0, 1]");
         m_epsilon = epsilon;
+        current_calculation_type = EPSILON;
     }
 
 } // end namespace Detail

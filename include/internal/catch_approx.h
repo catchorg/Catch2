@@ -110,10 +110,15 @@ namespace Detail {
         std::string toString() const;
 
     private:
+
+        enum calculation_type{
+            DEFAULT, MARGIN, EPSILON
+        };
         double m_epsilon;
         double m_margin;
         double m_scale;
         double m_value;
+        calculation_type current_calculation_type;
     };
 } // end namespace Detail
 
