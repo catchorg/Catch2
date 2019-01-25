@@ -17,8 +17,8 @@ static const uint64_t STD_DEVIATION_THRESHOLD = 100;
 namespace Catch {
 
     auto getCurrentNanosecondsSinceEpoch() -> uint64_t {
-        return static_cast<uint64_t>(std::chrono::duration_cast<std::chrono::nanoseconds>(
-                std::chrono::high_resolution_clock::now().time_since_epoch()).count());
+        return std::chrono::duration_cast<std::chrono::nanoseconds>(
+                std::chrono::high_resolution_clock::now().time_since_epoch()).count();
     }
 
     namespace {
