@@ -57,7 +57,7 @@ namespace Catch {
                     for (std::size_t iterator = 0; iterator < iterations; ++iterator) {
                         squared_difference_sum += (deltas[iterator] - result) * (deltas[iterator] - result);
                     }
-                    float std_deviation = squared_difference_sum / iterations;
+                    long double std_deviation = static_cast<long double>(squared_difference_sum) / iterations;
                     if (std_deviation < STD_DEVIATION_THRESHOLD) {
                         return result;
                     } else {
