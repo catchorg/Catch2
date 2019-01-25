@@ -40,7 +40,7 @@ namespace Catch {
                         ticks = getCurrentNanosecondsSinceEpoch();
                     } while (ticks == baseTicks);
 
-                    auto delta = ticks - baseTicks;
+                    uint64_t delta = ticks - baseTicks;
                     deltas.push_back(delta);
                     sum += delta;
                     // If we have been calibrating for over 3 seconds -- the clock
@@ -53,11 +53,11 @@ namespace Catch {
                     // We're just taking the mean, here. To do better we could take the std. dev and exclude outliers
                     // - and potentially do more iterations if there's a high variance.
                     result = sum / iterations;
-                    auto squared_difference_sum = 0;
+                    uint64_t squared_difference_sum = 0;
                     for (std::size_t iterator = 0; iterator < iterations; ++iterator) {
                         squared_difference_sum += (deltas[iterator] - result) * (deltas[iterator] - result);
                     }
-                    auto std_deviation = squared_difference_sum / iterations;
+                    float std_deviation = squared_difference_sum / iterations;
                     if (std_deviation < STD_DEVIATION_THRESHOLD) {
                         return result;
                     } else {
