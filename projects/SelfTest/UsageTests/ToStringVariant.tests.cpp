@@ -43,7 +43,7 @@ TEST_CASE( "variant<float, int>", "[toString][variant][approvals]")
 TEST_CASE( "variant -- valueless-by-exception", "[toString][variant][approvals]" ) {
     using type = std::variant<MyType1, MyType2>;
 
-    type variant;
+    type value;
     REQUIRE_THROWS_AS(value.emplace<MyType2>(MyType2{}), int);
     REQUIRE(value.valueless_by_exception());
     CHECK("{valueless variant}" == ::Catch::Detail::stringify(value));
@@ -59,7 +59,7 @@ TEST_CASE( "variant<string, int>", "[toString][variant][approvals]")
 
 TEST_CASE( "variant<variant<float, int>, string>", "[toString][variant][approvals]")
 {
-    using inner = std::variant<float, int>;
+    using inner = std::variant<MyType1, float, int>;
     using type = std::variant<inner, std::string>;
     CHECK( "0.5f" == ::Catch::Detail::stringify(type{0.5f}) );
     CHECK( "0" == ::Catch::Detail::stringify(type{0}) );
@@ -74,7 +74,7 @@ TEST_CASE( "variant<variant<float, int>, string>", "[toString][variant][approval
         REQUIRE( std::holds_alternative<inner>(value) );
         REQUIRE( std::holds_alternative<float>(std::get<inner>(value)) );
 
-        REQUIRE_THROWS_AS( std::get<0>(value).emplace<int>(sample{}), int );
+        REQUIRE_THROWS_AS( std::get<0>(value).emplace<MyType1>(MyType1{}), int );
 
         // outer variant is still valid and contains inner
         REQUIRE( std::holds_alternative<inner>(value) );
