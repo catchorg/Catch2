@@ -65,10 +65,6 @@ TEST_CASE( "variant<variant<float, int>, string>", "[toString][variant][approval
     CHECK( "0" == ::Catch::Detail::stringify(type{0}) );
     CHECK( "\"foo\"" == ::Catch::Detail::stringify(type{"foo"}) );
 
-    struct sample {
-        operator int() const { throw 42; }
-    };
-
     SECTION("valueless nested variant") {
         type value = inner{0.5f};
         REQUIRE( std::holds_alternative<inner>(value) );
