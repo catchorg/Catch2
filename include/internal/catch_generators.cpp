@@ -18,32 +18,10 @@ IGeneratorTracker::~IGeneratorTracker() {}
 
 namespace Generators {
 
-    GeneratorBase::~GeneratorBase() {}
-
-    std::vector<size_t> randomiseIndices( size_t selectionSize, size_t sourceSize ) {
-
-        assert( selectionSize <= sourceSize );
-        std::vector<size_t> indices;
-        indices.reserve( selectionSize );
-        std::uniform_int_distribution<size_t> uid( 0, sourceSize-1 );
-
-        std::set<size_t> seen;
-        // !TBD: improve this algorithm
-        while( indices.size() < selectionSize ) {
-            auto index = uid( rng() );
-            if( seen.insert( index ).second )
-                indices.push_back( index );
-        }
-        return indices;
-    }
+    GeneratorUntypedBase::~GeneratorUntypedBase() {}
 
     auto acquireGeneratorTracker( SourceLineInfo const& lineInfo ) -> IGeneratorTracker& {
         return getResultCapture().acquireGeneratorTracker( lineInfo );
-    }
-
-    template<>
-    auto all<int>() -> Generator<int> {
-        return range( std::numeric_limits<int>::min(), std::numeric_limits<int>::max() );
     }
 
 } // namespace Generators

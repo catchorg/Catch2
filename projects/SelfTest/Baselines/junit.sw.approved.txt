@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuitesloose text artifact
 >
-  <testsuite name="<exe-name>" errors="17" failures="113" tests="1277" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
+  <testsuite name="<exe-name>" errors="17" failures="113" tests="1263" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
     <testcase classname="<exe-name>.global" name="# A test name that starts with a #" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="#1005: Comparing pointer to int and long (NULL can be either on various systems)" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="#1027" time="{duration}"/>
@@ -70,7 +70,7 @@ Condition.tests.cpp:<line number>
     <testcase classname="<exe-name>.global" name="(unimplemented) static bools can be evaluated/negation" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="(unimplemented) static bools can be evaluated/double negation" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="(unimplemented) static bools can be evaluated/direct" time="{duration}"/>
-    <testcase classname="<exe-name>.global" name="10x10 ints" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="3x3x3 ints" time="{duration}"/>
     <testcase classname="<exe-name>.TestClass" name="A METHOD_AS_TEST_CASE based test run that fails" time="{duration}">
       <failure message="&quot;hello&quot; == &quot;world&quot;" type="REQUIRE">
 Class.tests.cpp:<line number>
@@ -339,14 +339,12 @@ Message.tests.cpp:<line number>
     <testcase classname="<exe-name>.global" name="Floating point matchers: float/ULPs" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Floating point matchers: float/Composed" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Floating point matchers: float/Constructor validation" time="{duration}"/>
-    <testcase classname="<exe-name>.global" name="Generators/one" time="{duration}"/>
-    <testcase classname="<exe-name>.global" name="Generators/two" time="{duration}"/>
-    <testcase classname="<exe-name>.global" name="Generators impl/range" time="{duration}"/>
-    <testcase classname="<exe-name>.global" name="Generators impl/fixed values" time="{duration}"/>
-    <testcase classname="<exe-name>.global" name="Generators impl/combined" time="{duration}"/>
-    <testcase classname="<exe-name>.global" name="Generators impl/values" time="{duration}"/>
-    <testcase classname="<exe-name>.global" name="Generators impl/values2" time="{duration}"/>
-    <testcase classname="<exe-name>.global" name="Generators impl/type erasure" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="Generators -- simple/one" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="Generators -- simple/two" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="Generators internals/Single value" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="Generators internals/Preset values" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="Generators internals/Generator combinator" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="Generators internals/Explicitly typed generator sequence" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Greater-than inequalities with different epsilons" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="INFO and WARN do not abort tests" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="INFO gets logged on failure" time="{duration}">
@@ -938,6 +936,7 @@ Tricky.tests.cpp:<line number>
     <testcase classname="<exe-name>.global" name="stringify( vectors&lt;has_maker_and_operator> )" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="stringify( vectors&lt;has_operator> )" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="strlen3" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="tables" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="thrown std::strings are translated" time="{duration}">
       <error type="TEST_CASE">
 Why would you throw a std::string?
