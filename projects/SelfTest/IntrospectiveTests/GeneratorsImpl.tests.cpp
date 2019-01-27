@@ -43,4 +43,61 @@ TEST_CASE("Generators internals", "[generators][internals]") {
         REQUIRE(gen.get() == "cc");
         REQUIRE_FALSE(gen.next());
     }
+    SECTION("Filter generator") {
+        // Normal usage
+        auto gen = filter([] (int i) { return i != 2; }, values({ 2, 1, 2, 3, 2, 2 }));
+        REQUIRE(gen.get() == 1);
+        REQUIRE(gen.next());
+        REQUIRE(gen.get() == 3);
+        REQUIRE_FALSE(gen.next());
+
+        // Completely filtered-out generator should throw on construction
+        REQUIRE_THROWS_AS(filter([] (int) { return false; }, value(1)), Catch::GeneratorException);
+    }
+    SECTION("Take generator") {
+        SECTION("Take less") {
+            auto gen = take(2, values({ 1, 2, 3 }));
+            REQUIRE(gen.get() == 1);
+            REQUIRE(gen.next());
+            REQUIRE(gen.get() == 2);
+            REQUIRE_FALSE(gen.next());
+        }
+        SECTION("Take more") {
+            auto gen = take(2, value(1));
+            REQUIRE(gen.get() == 1);
+            REQUIRE_FALSE(gen.next());
+        }
+    }
+    SECTION("Map") {
+        auto gen = map<double>([] (int i) {return 2.0 * i; }, values({ 1, 2, 3 }));
+        REQUIRE(gen.get() == 2.0);
+        REQUIRE(gen.next());
+        REQUIRE(gen.get() == 4.0);
+        REQUIRE(gen.next());
+        REQUIRE(gen.get() == 6.0);
+        REQUIRE_FALSE(gen.next());
+    }
+    SECTION("Repeat") {
+        SECTION("Singular repeat") {
+            auto gen = repeat(1, value(3));
+            REQUIRE(gen.get() == 3);
+            REQUIRE_FALSE(gen.next());
+        }
+        SECTION("Actual repeat") {
+            auto gen = repeat(2, values({ 1, 2, 3 }));
+            REQUIRE(gen.get() == 1);
+            REQUIRE(gen.next());
+            REQUIRE(gen.get() == 2);
+            REQUIRE(gen.next());
+            REQUIRE(gen.get() == 3);
+            REQUIRE(gen.next());
+            REQUIRE(gen.get() == 1);
+            REQUIRE(gen.next());
+            REQUIRE(gen.get() == 2);
+            REQUIRE(gen.next());
+            REQUIRE(gen.get() == 3);
+            REQUIRE_FALSE(gen.next());
+        }
+    }
+
 }

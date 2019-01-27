@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuitesloose text artifact
 >
-  <testsuite name="<exe-name>" errors="17" failures="113" tests="1263" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
+  <testsuite name="<exe-name>" errors="17" failures="113" tests="1312" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
     <testcase classname="<exe-name>.global" name="# A test name that starts with a #" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="#1005: Comparing pointer to int and long (NULL can be either on various systems)" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="#1027" time="{duration}"/>
@@ -339,12 +339,23 @@ Message.tests.cpp:<line number>
     <testcase classname="<exe-name>.global" name="Floating point matchers: float/ULPs" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Floating point matchers: float/Composed" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Floating point matchers: float/Constructor validation" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="Generators -- adapters/Filtering by predicate" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="Generators -- adapters/Shortening a range" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="Generators -- adapters/Transforming elements/Same type" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="Generators -- adapters/Transforming elements/Different type" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="Generators -- adapters/Repeating a generator" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Generators -- simple/one" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Generators -- simple/two" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Generators internals/Single value" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Generators internals/Preset values" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Generators internals/Generator combinator" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Generators internals/Explicitly typed generator sequence" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="Generators internals/Filter generator" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="Generators internals/Take generator/Take less" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="Generators internals/Take generator/Take more" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="Generators internals/Map" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="Generators internals/Repeat/Singular repeat" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="Generators internals/Repeat/Actual repeat" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Greater-than inequalities with different epsilons" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="INFO and WARN do not abort tests" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="INFO gets logged on failure" time="{duration}">

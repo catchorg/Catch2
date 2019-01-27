@@ -56,24 +56,7 @@ TEST_CASE("tables", "[generators]") {
 
 #ifdef __cpp_structured_bindings
 
-// One way to do pairs of values (actual/ expected?)
-// For a simple case like this I'd recommend writing out a series of REQUIREs
-// but it demonstrates a possible usage.
-// Spelling out the pair like this is a bit verbose, so read on for better examples
-// - the use of structured bindings here is an optional convenience
-TEST_CASE( "strlen", "[approvals][generators]" ) {
-    auto [test_input, expected] = GENERATE( values<std::pair<std::string_view, size_t>>({
-            {"one", 3},
-            {"two", 3},
-            {"three", 5},
-            {"four", 4}
-        }));
-
-    REQUIRE( test_input.size() == expected );
-}
-
-// A nicer way to do pairs (or more) of values - using the table generator.
-// Note, you must specify the types up-front.
+// Structured bindings make the table utility much nicer to use
 TEST_CASE( "strlen2", "[approvals][generators]" ) {
     auto [test_input, expected] = GENERATE( table<std::string, size_t>({
             {"one", 3},
@@ -129,3 +112,36 @@ SCENARIO("Eating cucumbers", "[generators][approvals]") {
     }
 }
 #endif
+
+// There are also some generic generator manipulators
+TEST_CASE("Generators -- adapters", "[generators]") {
+    // TODO: This won't work yet, introduce GENERATE_VAR?
+    //auto numbers = Catch::Generators::values({ 1, 2, 3, 4, 5, 6 });
+    SECTION("Filtering by predicate") {
+        // This filters out all odd (false) numbers, giving [2, 4, 6]
+        auto i = GENERATE(filter([] (int val) { return val % 2 == 0; }, values({ 1, 2, 3, 4, 5, 6 })));
+        REQUIRE(i % 2 == 0);
+    }
+    SECTION("Shortening a range") {
+        // This takes the first 3 elements from the values, giving back [1, 2, 3]
+        auto i = GENERATE(take(3, values({ 1, 2, 3, 4, 5, 6 })));
+        REQUIRE(i < 4);
+    }
+    SECTION("Transforming elements") {
+        SECTION("Same type") {
+            // This doubles values [1, 2, 3] into [2, 4, 6]
+            auto i = GENERATE(map([] (int val) { return val * 2; }, values({ 1, 2, 3 })));
+            REQUIRE(i % 2 == 0);
+        }
+        SECTION("Different type") {
+            // This takes a generator that returns ints and maps them into strings
+            auto i = GENERATE(map<std::string>([] (int val) { return std::to_string(val); }, values({ 1, 2, 3 })));
+            REQUIRE(i.size() == 1);
+        }
+    }
+    SECTION("Repeating a generator") {
+        // This will return values [1, 2, 3, 1, 2, 3]
+        auto j = GENERATE(repeat(2, values({ 1, 2, 3 })));
+        REQUIRE(j > 0);
+    }
+}

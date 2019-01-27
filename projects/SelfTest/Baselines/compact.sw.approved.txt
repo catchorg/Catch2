@@ -399,6 +399,24 @@ Matchers.tests.cpp:<line number>: passed: WithinAbs(1.f, 0.f)
 Matchers.tests.cpp:<line number>: passed: WithinAbs(1.f, -1.f), std::domain_error
 Matchers.tests.cpp:<line number>: passed: WithinULP(1.f, 0)
 Matchers.tests.cpp:<line number>: passed: WithinULP(1.f, -1), std::domain_error
+Generators.tests.cpp:<line number>: passed: i % 2 == 0 for: 0 == 0
+Generators.tests.cpp:<line number>: passed: i % 2 == 0 for: 0 == 0
+Generators.tests.cpp:<line number>: passed: i % 2 == 0 for: 0 == 0
+Generators.tests.cpp:<line number>: passed: i < 4 for: 1 < 4
+Generators.tests.cpp:<line number>: passed: i < 4 for: 2 < 4
+Generators.tests.cpp:<line number>: passed: i < 4 for: 3 < 4
+Generators.tests.cpp:<line number>: passed: i % 2 == 0 for: 0 == 0
+Generators.tests.cpp:<line number>: passed: i % 2 == 0 for: 0 == 0
+Generators.tests.cpp:<line number>: passed: i % 2 == 0 for: 0 == 0
+Generators.tests.cpp:<line number>: passed: i.size() == 1 for: 1 == 1
+Generators.tests.cpp:<line number>: passed: i.size() == 1 for: 1 == 1
+Generators.tests.cpp:<line number>: passed: i.size() == 1 for: 1 == 1
+Generators.tests.cpp:<line number>: passed: j > 0 for: 1 > 0
+Generators.tests.cpp:<line number>: passed: j > 0 for: 2 > 0
+Generators.tests.cpp:<line number>: passed: j > 0 for: 3 > 0
+Generators.tests.cpp:<line number>: passed: j > 0 for: 1 > 0
+Generators.tests.cpp:<line number>: passed: j > 0 for: 2 > 0
+Generators.tests.cpp:<line number>: passed: j > 0 for: 3 > 0
 Generators.tests.cpp:<line number>: passed: j < i for: -3 < 1
 Generators.tests.cpp:<line number>: passed: j < i for: -2 < 1
 Generators.tests.cpp:<line number>: passed: j < i for: -1 < 1
@@ -441,6 +459,37 @@ GeneratorsImpl.tests.cpp:<line number>: passed: gen.next() for: true
 GeneratorsImpl.tests.cpp:<line number>: passed: gen.get() == "bb" for: "bb" == "bb"
 GeneratorsImpl.tests.cpp:<line number>: passed: gen.next() for: true
 GeneratorsImpl.tests.cpp:<line number>: passed: gen.get() == "cc" for: "cc" == "cc"
+GeneratorsImpl.tests.cpp:<line number>: passed: !(gen.next()) for: !false
+GeneratorsImpl.tests.cpp:<line number>: passed: gen.get() == 1 for: 1 == 1
+GeneratorsImpl.tests.cpp:<line number>: passed: gen.next() for: true
+GeneratorsImpl.tests.cpp:<line number>: passed: gen.get() == 3 for: 3 == 3
+GeneratorsImpl.tests.cpp:<line number>: passed: !(gen.next()) for: !false
+GeneratorsImpl.tests.cpp:<line number>: passed: filter([] (int) { return false; }, value(1)), Catch::GeneratorException
+GeneratorsImpl.tests.cpp:<line number>: passed: gen.get() == 1 for: 1 == 1
+GeneratorsImpl.tests.cpp:<line number>: passed: gen.next() for: true
+GeneratorsImpl.tests.cpp:<line number>: passed: gen.get() == 2 for: 2 == 2
+GeneratorsImpl.tests.cpp:<line number>: passed: !(gen.next()) for: !false
+GeneratorsImpl.tests.cpp:<line number>: passed: gen.get() == 1 for: 1 == 1
+GeneratorsImpl.tests.cpp:<line number>: passed: !(gen.next()) for: !false
+GeneratorsImpl.tests.cpp:<line number>: passed: gen.get() == 2.0 for: 2.0 == 2.0
+GeneratorsImpl.tests.cpp:<line number>: passed: gen.next() for: true
+GeneratorsImpl.tests.cpp:<line number>: passed: gen.get() == 4.0 for: 4.0 == 4.0
+GeneratorsImpl.tests.cpp:<line number>: passed: gen.next() for: true
+GeneratorsImpl.tests.cpp:<line number>: passed: gen.get() == 6.0 for: 6.0 == 6.0
+GeneratorsImpl.tests.cpp:<line number>: passed: !(gen.next()) for: !false
+GeneratorsImpl.tests.cpp:<line number>: passed: gen.get() == 3 for: 3 == 3
+GeneratorsImpl.tests.cpp:<line number>: passed: !(gen.next()) for: !false
+GeneratorsImpl.tests.cpp:<line number>: passed: gen.get() == 1 for: 1 == 1
+GeneratorsImpl.tests.cpp:<line number>: passed: gen.next() for: true
+GeneratorsImpl.tests.cpp:<line number>: passed: gen.get() == 2 for: 2 == 2
+GeneratorsImpl.tests.cpp:<line number>: passed: gen.next() for: true
+GeneratorsImpl.tests.cpp:<line number>: passed: gen.get() == 3 for: 3 == 3
+GeneratorsImpl.tests.cpp:<line number>: passed: gen.next() for: true
+GeneratorsImpl.tests.cpp:<line number>: passed: gen.get() == 1 for: 1 == 1
+GeneratorsImpl.tests.cpp:<line number>: passed: gen.next() for: true
+GeneratorsImpl.tests.cpp:<line number>: passed: gen.get() == 2 for: 2 == 2
+GeneratorsImpl.tests.cpp:<line number>: passed: gen.next() for: true
+GeneratorsImpl.tests.cpp:<line number>: passed: gen.get() == 3 for: 3 == 3
 GeneratorsImpl.tests.cpp:<line number>: passed: !(gen.next()) for: !false
 Approx.tests.cpp:<line number>: passed: d >= Approx( 1.22 ) for: 1.23 >= Approx( 1.22 )
 Approx.tests.cpp:<line number>: passed: d >= Approx( 1.23 ) for: 1.23 >= Approx( 1.23 )

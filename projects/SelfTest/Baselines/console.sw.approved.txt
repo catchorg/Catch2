@@ -2851,6 +2851,228 @@ Matchers.tests.cpp:<line number>: PASSED:
   REQUIRE_THROWS_AS( WithinULP(1.f, -1), std::domain_error )
 
 -------------------------------------------------------------------------------
+Generators -- adapters
+  Filtering by predicate
+-------------------------------------------------------------------------------
+Generators.tests.cpp:<line number>
+...............................................................................
+
+Generators.tests.cpp:<line number>: PASSED:
+  REQUIRE( i % 2 == 0 )
+with expansion:
+  0 == 0
+
+-------------------------------------------------------------------------------
+Generators -- adapters
+  Filtering by predicate
+-------------------------------------------------------------------------------
+Generators.tests.cpp:<line number>
+...............................................................................
+
+Generators.tests.cpp:<line number>: PASSED:
+  REQUIRE( i % 2 == 0 )
+with expansion:
+  0 == 0
+
+-------------------------------------------------------------------------------
+Generators -- adapters
+  Filtering by predicate
+-------------------------------------------------------------------------------
+Generators.tests.cpp:<line number>
+...............................................................................
+
+Generators.tests.cpp:<line number>: PASSED:
+  REQUIRE( i % 2 == 0 )
+with expansion:
+  0 == 0
+
+-------------------------------------------------------------------------------
+Generators -- adapters
+  Shortening a range
+-------------------------------------------------------------------------------
+Generators.tests.cpp:<line number>
+...............................................................................
+
+Generators.tests.cpp:<line number>: PASSED:
+  REQUIRE( i < 4 )
+with expansion:
+  1 < 4
+
+-------------------------------------------------------------------------------
+Generators -- adapters
+  Shortening a range
+-------------------------------------------------------------------------------
+Generators.tests.cpp:<line number>
+...............................................................................
+
+Generators.tests.cpp:<line number>: PASSED:
+  REQUIRE( i < 4 )
+with expansion:
+  2 < 4
+
+-------------------------------------------------------------------------------
+Generators -- adapters
+  Shortening a range
+-------------------------------------------------------------------------------
+Generators.tests.cpp:<line number>
+...............................................................................
+
+Generators.tests.cpp:<line number>: PASSED:
+  REQUIRE( i < 4 )
+with expansion:
+  3 < 4
+
+-------------------------------------------------------------------------------
+Generators -- adapters
+  Transforming elements
+  Same type
+-------------------------------------------------------------------------------
+Generators.tests.cpp:<line number>
+...............................................................................
+
+Generators.tests.cpp:<line number>: PASSED:
+  REQUIRE( i % 2 == 0 )
+with expansion:
+  0 == 0
+
+-------------------------------------------------------------------------------
+Generators -- adapters
+  Transforming elements
+  Same type
+-------------------------------------------------------------------------------
+Generators.tests.cpp:<line number>
+...............................................................................
+
+Generators.tests.cpp:<line number>: PASSED:
+  REQUIRE( i % 2 == 0 )
+with expansion:
+  0 == 0
+
+-------------------------------------------------------------------------------
+Generators -- adapters
+  Transforming elements
+  Same type
+-------------------------------------------------------------------------------
+Generators.tests.cpp:<line number>
+...............................................................................
+
+Generators.tests.cpp:<line number>: PASSED:
+  REQUIRE( i % 2 == 0 )
+with expansion:
+  0 == 0
+
+-------------------------------------------------------------------------------
+Generators -- adapters
+  Transforming elements
+  Different type
+-------------------------------------------------------------------------------
+Generators.tests.cpp:<line number>
+...............................................................................
+
+Generators.tests.cpp:<line number>: PASSED:
+  REQUIRE( i.size() == 1 )
+with expansion:
+  1 == 1
+
+-------------------------------------------------------------------------------
+Generators -- adapters
+  Transforming elements
+  Different type
+-------------------------------------------------------------------------------
+Generators.tests.cpp:<line number>
+...............................................................................
+
+Generators.tests.cpp:<line number>: PASSED:
+  REQUIRE( i.size() == 1 )
+with expansion:
+  1 == 1
+
+-------------------------------------------------------------------------------
+Generators -- adapters
+  Transforming elements
+  Different type
+-------------------------------------------------------------------------------
+Generators.tests.cpp:<line number>
+...............................................................................
+
+Generators.tests.cpp:<line number>: PASSED:
+  REQUIRE( i.size() == 1 )
+with expansion:
+  1 == 1
+
+-------------------------------------------------------------------------------
+Generators -- adapters
+  Repeating a generator
+-------------------------------------------------------------------------------
+Generators.tests.cpp:<line number>
+...............................................................................
+
+Generators.tests.cpp:<line number>: PASSED:
+  REQUIRE( j > 0 )
+with expansion:
+  1 > 0
+
+-------------------------------------------------------------------------------
+Generators -- adapters
+  Repeating a generator
+-------------------------------------------------------------------------------
+Generators.tests.cpp:<line number>
+...............................................................................
+
+Generators.tests.cpp:<line number>: PASSED:
+  REQUIRE( j > 0 )
+with expansion:
+  2 > 0
+
+-------------------------------------------------------------------------------
+Generators -- adapters
+  Repeating a generator
+-------------------------------------------------------------------------------
+Generators.tests.cpp:<line number>
+...............................................................................
+
+Generators.tests.cpp:<line number>: PASSED:
+  REQUIRE( j > 0 )
+with expansion:
+  3 > 0
+
+-------------------------------------------------------------------------------
+Generators -- adapters
+  Repeating a generator
+-------------------------------------------------------------------------------
+Generators.tests.cpp:<line number>
+...............................................................................
+
+Generators.tests.cpp:<line number>: PASSED:
+  REQUIRE( j > 0 )
+with expansion:
+  1 > 0
+
+-------------------------------------------------------------------------------
+Generators -- adapters
+  Repeating a generator
+-------------------------------------------------------------------------------
+Generators.tests.cpp:<line number>
+...............................................................................
+
+Generators.tests.cpp:<line number>: PASSED:
+  REQUIRE( j > 0 )
+with expansion:
+  2 > 0
+
+-------------------------------------------------------------------------------
+Generators -- adapters
+  Repeating a generator
+-------------------------------------------------------------------------------
+Generators.tests.cpp:<line number>
+...............................................................................
+
+Generators.tests.cpp:<line number>: PASSED:
+  REQUIRE( j > 0 )
+with expansion:
+  3 > 0
+
+-------------------------------------------------------------------------------
 Generators -- simple
   one
 -------------------------------------------------------------------------------
@@ -3213,6 +3435,205 @@ GeneratorsImpl.tests.cpp:<line number>: PASSED:
   REQUIRE( gen.get() == "cc" )
 with expansion:
   "cc" == "cc"
+
+GeneratorsImpl.tests.cpp:<line number>: PASSED:
+  REQUIRE_FALSE( gen.next() )
+with expansion:
+  !false
+
+-------------------------------------------------------------------------------
+Generators internals
+  Filter generator
+-------------------------------------------------------------------------------
+GeneratorsImpl.tests.cpp:<line number>
+...............................................................................
+
+GeneratorsImpl.tests.cpp:<line number>: PASSED:
+  REQUIRE( gen.get() == 1 )
+with expansion:
+  1 == 1
+
+GeneratorsImpl.tests.cpp:<line number>: PASSED:
+  REQUIRE( gen.next() )
+with expansion:
+  true
+
+GeneratorsImpl.tests.cpp:<line number>: PASSED:
+  REQUIRE( gen.get() == 3 )
+with expansion:
+  3 == 3
+
+GeneratorsImpl.tests.cpp:<line number>: PASSED:
+  REQUIRE_FALSE( gen.next() )
+with expansion:
+  !false
+
+GeneratorsImpl.tests.cpp:<line number>: PASSED:
+  REQUIRE_THROWS_AS( filter([] (int) { return false; }, value(1)), Catch::GeneratorException )
+
+-------------------------------------------------------------------------------
+Generators internals
+  Take generator
+  Take less
+-------------------------------------------------------------------------------
+GeneratorsImpl.tests.cpp:<line number>
+...............................................................................
+
+GeneratorsImpl.tests.cpp:<line number>: PASSED:
+  REQUIRE( gen.get() == 1 )
+with expansion:
+  1 == 1
+
+GeneratorsImpl.tests.cpp:<line number>: PASSED:
+  REQUIRE( gen.next() )
+with expansion:
+  true
+
+GeneratorsImpl.tests.cpp:<line number>: PASSED:
+  REQUIRE( gen.get() == 2 )
+with expansion:
+  2 == 2
+
+GeneratorsImpl.tests.cpp:<line number>: PASSED:
+  REQUIRE_FALSE( gen.next() )
+with expansion:
+  !false
+
+-------------------------------------------------------------------------------
+Generators internals
+  Take generator
+  Take more
+-------------------------------------------------------------------------------
+GeneratorsImpl.tests.cpp:<line number>
+...............................................................................
+
+GeneratorsImpl.tests.cpp:<line number>: PASSED:
+  REQUIRE( gen.get() == 1 )
+with expansion:
+  1 == 1
+
+GeneratorsImpl.tests.cpp:<line number>: PASSED:
+  REQUIRE_FALSE( gen.next() )
+with expansion:
+  !false
+
+-------------------------------------------------------------------------------
+Generators internals
+  Map
+-------------------------------------------------------------------------------
+GeneratorsImpl.tests.cpp:<line number>
+...............................................................................
+
+GeneratorsImpl.tests.cpp:<line number>: PASSED:
+  REQUIRE( gen.get() == 2.0 )
+with expansion:
+  2.0 == 2.0
+
+GeneratorsImpl.tests.cpp:<line number>: PASSED:
+  REQUIRE( gen.next() )
+with expansion:
+  true
+
+GeneratorsImpl.tests.cpp:<line number>: PASSED:
+  REQUIRE( gen.get() == 4.0 )
+with expansion:
+  4.0 == 4.0
+
+GeneratorsImpl.tests.cpp:<line number>: PASSED:
+  REQUIRE( gen.next() )
+with expansion:
+  true
+
+GeneratorsImpl.tests.cpp:<line number>: PASSED:
+  REQUIRE( gen.get() == 6.0 )
+with expansion:
+  6.0 == 6.0
+
+GeneratorsImpl.tests.cpp:<line number>: PASSED:
+  REQUIRE_FALSE( gen.next() )
+with expansion:
+  !false
+
+-------------------------------------------------------------------------------
+Generators internals
+  Repeat
+  Singular repeat
+-------------------------------------------------------------------------------
+GeneratorsImpl.tests.cpp:<line number>
+...............................................................................
+
+GeneratorsImpl.tests.cpp:<line number>: PASSED:
+  REQUIRE( gen.get() == 3 )
+with expansion:
+  3 == 3
+
+GeneratorsImpl.tests.cpp:<line number>: PASSED:
+  REQUIRE_FALSE( gen.next() )
+with expansion:
+  !false
+
+-------------------------------------------------------------------------------
+Generators internals
+  Repeat
+  Actual repeat
+-------------------------------------------------------------------------------
+GeneratorsImpl.tests.cpp:<line number>
+...............................................................................
+
+GeneratorsImpl.tests.cpp:<line number>: PASSED:
+  REQUIRE( gen.get() == 1 )
+with expansion:
+  1 == 1
+
+GeneratorsImpl.tests.cpp:<line number>: PASSED:
+  REQUIRE( gen.next() )
+with expansion:
+  true
+
+GeneratorsImpl.tests.cpp:<line number>: PASSED:
+  REQUIRE( gen.get() == 2 )
+with expansion:
+  2 == 2
+
+GeneratorsImpl.tests.cpp:<line number>: PASSED:
+  REQUIRE( gen.next() )
+with expansion:
+  true
+
+GeneratorsImpl.tests.cpp:<line number>: PASSED:
+  REQUIRE( gen.get() == 3 )
+with expansion:
+  3 == 3
+
+GeneratorsImpl.tests.cpp:<line number>: PASSED:
+  REQUIRE( gen.next() )
+with expansion:
+  true
+
+GeneratorsImpl.tests.cpp:<line number>: PASSED:
+  REQUIRE( gen.get() == 1 )
+with expansion:
+  1 == 1
+
+GeneratorsImpl.tests.cpp:<line number>: PASSED:
+  REQUIRE( gen.next() )
+with expansion:
+  true
+
+GeneratorsImpl.tests.cpp:<line number>: PASSED:
+  REQUIRE( gen.get() == 2 )
+with expansion:
+  2 == 2
+
+GeneratorsImpl.tests.cpp:<line number>: PASSED:
+  REQUIRE( gen.next() )
+with expansion:
+  true
+
+GeneratorsImpl.tests.cpp:<line number>: PASSED:
+  REQUIRE( gen.get() == 3 )
+with expansion:
+  3 == 3
 
 GeneratorsImpl.tests.cpp:<line number>: PASSED:
   REQUIRE_FALSE( gen.next() )
@@ -9726,6 +10147,6 @@ Misc.tests.cpp:<line number>
 Misc.tests.cpp:<line number>: PASSED:
 
 ===============================================================================
-test cases:  244 |  171 passed |  69 failed |  4 failed as expected
-assertions: 1262 | 1112 passed | 129 failed | 21 failed as expected
+test cases:  245 |  172 passed |  69 failed |  4 failed as expected
+assertions: 1311 | 1161 passed | 129 failed | 21 failed as expected
 
