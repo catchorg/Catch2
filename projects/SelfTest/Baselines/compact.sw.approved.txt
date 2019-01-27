@@ -1034,69 +1034,6 @@ PartTracker.tests.cpp:<line number>: passed: s1.isComplete() == false for: false
 PartTracker.tests.cpp:<line number>: passed: s1.isComplete() for: true
 PartTracker.tests.cpp:<line number>: passed: testCase.isComplete() == false for: false == false
 PartTracker.tests.cpp:<line number>: passed: testCase.isComplete() for: true
-PartTracker.tests.cpp:<line number>: passed: testCase.isOpen() for: true
-PartTracker.tests.cpp:<line number>: passed: s1.isOpen() for: true
-PartTracker.tests.cpp:<line number>: passed: g1.isOpen() for: true
-PartTracker.tests.cpp:<line number>: passed: g1.index() == 0 for: 0 == 0
-PartTracker.tests.cpp:<line number>: passed: g1.isComplete() == false for: false == false
-PartTracker.tests.cpp:<line number>: passed: s1.isComplete() == false for: false == false
-PartTracker.tests.cpp:<line number>: passed: s1.isComplete() == false for: false == false
-PartTracker.tests.cpp:<line number>: passed: testCase.isSuccessfullyCompleted() == false for: false == false
-PartTracker.tests.cpp:<line number>: passed: testCase2.isOpen() for: true
-PartTracker.tests.cpp:<line number>: passed: s1b.isOpen() for: true
-PartTracker.tests.cpp:<line number>: passed: g1b.isOpen() for: true
-PartTracker.tests.cpp:<line number>: passed: g1b.index() == 1 for: 1 == 1
-PartTracker.tests.cpp:<line number>: passed: s1.isComplete() == false for: false == false
-PartTracker.tests.cpp:<line number>: passed: s1b.isComplete() for: true
-PartTracker.tests.cpp:<line number>: passed: g1b.isComplete() for: true
-PartTracker.tests.cpp:<line number>: passed: testCase2.isComplete() for: true
-PartTracker.tests.cpp:<line number>: passed: testCase.isOpen() for: true
-PartTracker.tests.cpp:<line number>: passed: s1.isOpen() for: true
-PartTracker.tests.cpp:<line number>: passed: g1.isOpen() for: true
-PartTracker.tests.cpp:<line number>: passed: g1.index() == 0 for: 0 == 0
-PartTracker.tests.cpp:<line number>: passed: g1.isComplete() == false for: false == false
-PartTracker.tests.cpp:<line number>: passed: s1.isComplete() == false for: false == false
-PartTracker.tests.cpp:<line number>: passed: s2.isOpen() for: true
-PartTracker.tests.cpp:<line number>: passed: s2.isComplete() for: true
-PartTracker.tests.cpp:<line number>: passed: s1.isComplete() == false for: false == false
-PartTracker.tests.cpp:<line number>: passed: testCase.isComplete() == false for: false == false
-PartTracker.tests.cpp:<line number>: passed: testCase2.isOpen() for: true
-PartTracker.tests.cpp:<line number>: passed: s1b.isOpen() for: true
-PartTracker.tests.cpp:<line number>: passed: g1b.isOpen() for: true
-PartTracker.tests.cpp:<line number>: passed: g1b.index() == 1 for: 1 == 1
-PartTracker.tests.cpp:<line number>: passed: s2b.isOpen() for: true
-PartTracker.tests.cpp:<line number>: passed: s2b.isComplete() for: true
-PartTracker.tests.cpp:<line number>: passed: g1b.isComplete() for: true
-PartTracker.tests.cpp:<line number>: passed: s1b.isComplete() for: true
-PartTracker.tests.cpp:<line number>: passed: testCase2.isComplete() for: true
-PartTracker.tests.cpp:<line number>: passed: testCase.isOpen() for: true
-PartTracker.tests.cpp:<line number>: passed: s1.isOpen() for: true
-PartTracker.tests.cpp:<line number>: passed: g1.isOpen() for: true
-PartTracker.tests.cpp:<line number>: passed: g1.index() == 0 for: 0 == 0
-PartTracker.tests.cpp:<line number>: passed: g1.isComplete() == false for: false == false
-PartTracker.tests.cpp:<line number>: passed: s1.isComplete() == false for: false == false
-PartTracker.tests.cpp:<line number>: passed: s2.isOpen() for: true
-PartTracker.tests.cpp:<line number>: passed: s2.isComplete() for: true
-PartTracker.tests.cpp:<line number>: passed: s2.isSuccessfullyCompleted() == false for: false == false
-PartTracker.tests.cpp:<line number>: passed: s1.isComplete() == false for: false == false
-PartTracker.tests.cpp:<line number>: passed: testCase.isComplete() == false for: false == false
-PartTracker.tests.cpp:<line number>: passed: testCase2.isOpen() for: true
-PartTracker.tests.cpp:<line number>: passed: s1b.isOpen() for: true
-PartTracker.tests.cpp:<line number>: passed: g1b.isOpen() for: true
-PartTracker.tests.cpp:<line number>: passed: g1b.index() == 0 for: 0 == 0
-PartTracker.tests.cpp:<line number>: passed: s2b.isOpen() == false for: false == false
-PartTracker.tests.cpp:<line number>: passed: g1b.isComplete() == false for: false == false
-PartTracker.tests.cpp:<line number>: passed: s1b.isComplete() == false for: false == false
-PartTracker.tests.cpp:<line number>: passed: testCase2.isComplete() == false for: false == false
-PartTracker.tests.cpp:<line number>: passed: testCase3.isOpen() for: true
-PartTracker.tests.cpp:<line number>: passed: s1c.isOpen() for: true
-PartTracker.tests.cpp:<line number>: passed: g1c.isOpen() for: true
-PartTracker.tests.cpp:<line number>: passed: g1c.index() == 1 for: 1 == 1
-PartTracker.tests.cpp:<line number>: passed: s2c.isOpen() for: true
-PartTracker.tests.cpp:<line number>: passed: s2c.isComplete() for: true
-PartTracker.tests.cpp:<line number>: passed: g1c.isComplete() for: true
-PartTracker.tests.cpp:<line number>: passed: s1c.isComplete() for: true
-PartTracker.tests.cpp:<line number>: passed: testCase3.isComplete() for: true
 Exception.tests.cpp:<line number>: failed: unexpected exception with message: '3.14'
 Approx.tests.cpp:<line number>: passed: d == approx( 1.23 ) for: 1.23 == Approx( 1.23 )
 Approx.tests.cpp:<line number>: passed: d == approx( 1.22 ) for: 1.23 == Approx( 1.22 )

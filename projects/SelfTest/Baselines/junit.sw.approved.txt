@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuitesloose text artifact
 >
-  <testsuite name="<exe-name>" errors="17" failures="113" tests="1340" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
+  <testsuite name="<exe-name>" errors="17" failures="113" tests="1277" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
     <testcase classname="<exe-name>.global" name="# A test name that starts with a #" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="#1005: Comparing pointer to int and long (NULL can be either on various systems)" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="#1027" time="{duration}"/>
@@ -691,13 +691,6 @@ Exception.tests.cpp:<line number>
     <testcase classname="<exe-name>.global" name="Tracker/successfully close one section, then find another/Re-enter - skips S1 and enters S2/Successfully close S2" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Tracker/successfully close one section, then find another/Re-enter - skips S1 and enters S2/fail S2" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Tracker/open a nested section" time="{duration}"/>
-    <testcase classname="<exe-name>.global" name="Tracker/start a generator" time="{duration}"/>
-    <testcase classname="<exe-name>.global" name="Tracker/start a generator/close outer section" time="{duration}"/>
-    <testcase classname="<exe-name>.global" name="Tracker/start a generator/close outer section/Re-enter for second generation" time="{duration}"/>
-    <testcase classname="<exe-name>.global" name="Tracker/start a generator/Start a new inner section" time="{duration}"/>
-    <testcase classname="<exe-name>.global" name="Tracker/start a generator/Start a new inner section/Re-enter for second generation" time="{duration}"/>
-    <testcase classname="<exe-name>.global" name="Tracker/start a generator/Fail an inner section" time="{duration}"/>
-    <testcase classname="<exe-name>.global" name="Tracker/start a generator/Fail an inner section/Re-enter for second generation" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Unexpected exceptions can be translated" time="{duration}">
       <error type="TEST_CASE">
 3.14
