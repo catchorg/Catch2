@@ -49,25 +49,22 @@ namespace Catch {
                     if (ticks > startTime + 3 * nanosecondsInSecond) {
                         return sum / (i + 1u);
                     }
-
-                    // We're just taking the mean, here. To do better we could take the std. dev and exclude outliers
-                    // - and potentially do more iterations if there's a high variance.
-                    result = sum / iterations;
-                    uint64_t squared_difference_sum = 0;
-                    for (std::size_t iterator = 0; iterator < iterations; ++iterator) {
-                        squared_difference_sum += (deltas[iterator] - result) * (deltas[iterator] - result);
-                    }
-                    long double std_deviation = static_cast<long double>(squared_difference_sum) / iterations;
-                    if (std_deviation < STD_DEVIATION_THRESHOLD) {
-                        return result;
-                    } else {
-                        attempts++;
-
-                    }
+                }
+                // We're just taking the mean, here. To do better we could take the std. dev and exclude outliers
+                // - and potentially do more iterations if there's a high variance.
+                result = sum / iterations;
+                uint64_t squared_difference_sum = 0;
+                for (std::size_t iterator = 0; iterator < iterations; ++iterator) {
+                    squared_difference_sum += (deltas[iterator] - result) * (deltas[iterator] - result);
+                }
+                long double std_deviation = static_cast<long double>(squared_difference_sum) / iterations;
+                if (std_deviation < STD_DEVIATION_THRESHOLD) {
+                    return result;
+                } else {
+                    attempts++;
                 }
             } while (attempts < 10);
             // too much attempts have failed, exit program. should i assert(false) here or tell user that their computer is unreliable for benchmarking
-
             return 0u;
         }
     }
