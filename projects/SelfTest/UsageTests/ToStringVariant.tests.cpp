@@ -6,6 +6,18 @@
 #include <string>
 #include <variant>
 
+// We need 2 types with non-trivial copies/moves
+struct MyType1 {
+    MyType1() = default;
+    MyType1(MyType1 const&) { throw 1; }
+    MyType1& operator=(MyType1 const&) { throw 3; }
+};
+struct MyType2 {
+    MyType2() = default;
+    MyType2(MyType2 const&) { throw 2; }
+    MyType2& operator=(MyType2 const&) { throw 4; }
+};
+
 TEST_CASE( "variant<std::monostate>", "[toString][variant][approvals]")
 {
     using type = std::variant<std::monostate>;
@@ -26,18 +38,17 @@ TEST_CASE( "variant<float, int>", "[toString][variant][approvals]")
     using type = std::variant<float, int>;
     CHECK( "0.5f" == ::Catch::Detail::stringify(type{0.5f}) );
     CHECK( "0" == ::Catch::Detail::stringify(type{0}) );
-
-    SECTION("valueless by exception") {
-        struct sample {
-            operator int() const { throw 42; }
-        };
-
-        type value{1.5f};
-        REQUIRE_THROWS_AS( value.emplace<int>(sample{}), int );
-        REQUIRE( value.valueless_by_exception() );
-        CHECK( "{valueless variant}" == ::Catch::Detail::stringify(value) );
-    }
 }
+
+TEST_CASE( "variant -- valueless-by-exception", "[toString][variant][approvals]" ) {
+    using type = std::variant<MyType1, MyType2>;
+
+    type value;
+    REQUIRE_THROWS_AS(value.emplace<MyType2>(MyType2{}), int);
+    REQUIRE(value.valueless_by_exception());
+    CHECK("{valueless variant}" == ::Catch::Detail::stringify(value));
+}
+
 
 TEST_CASE( "variant<string, int>", "[toString][variant][approvals]")
 {
@@ -48,22 +59,18 @@ TEST_CASE( "variant<string, int>", "[toString][variant][approvals]")
 
 TEST_CASE( "variant<variant<float, int>, string>", "[toString][variant][approvals]")
 {
-    using inner = std::variant<float, int>;
+    using inner = std::variant<MyType1, float, int>;
     using type = std::variant<inner, std::string>;
     CHECK( "0.5f" == ::Catch::Detail::stringify(type{0.5f}) );
     CHECK( "0" == ::Catch::Detail::stringify(type{0}) );
     CHECK( "\"foo\"" == ::Catch::Detail::stringify(type{"foo"}) );
-
-    struct sample {
-        operator int() const { throw 42; }
-    };
 
     SECTION("valueless nested variant") {
         type value = inner{0.5f};
         REQUIRE( std::holds_alternative<inner>(value) );
         REQUIRE( std::holds_alternative<float>(std::get<inner>(value)) );
 
-        REQUIRE_THROWS_AS( std::get<0>(value).emplace<int>(sample{}), int );
+        REQUIRE_THROWS_AS( std::get<0>(value).emplace<MyType1>(MyType1{}), int );
 
         // outer variant is still valid and contains inner
         REQUIRE( std::holds_alternative<inner>(value) );
