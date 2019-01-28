@@ -12,7 +12,7 @@
 #include <assert.h>
 
 static const uint64_t nanosecondsInSecond = 1000000000;
-static const uint64_t STD_DEVIATION_THRESHOLD = 100;
+static const long double STD_DEVIATION_THRESHOLD = 100.0;
 
 namespace Catch {
 
@@ -28,7 +28,7 @@ namespace Catch {
             do {
                 uint64_t sum = 0;
                 std::vector<uint64_t> deltas;
-                static const uint64_t iterations = 1000000;
+                static const uint64_t iterations = 1000;
 
                 auto startTime = getCurrentNanosecondsSinceEpoch();
 
@@ -41,7 +41,6 @@ namespace Catch {
                     } while (ticks == baseTicks);
 
                     uint64_t delta = ticks - baseTicks;
-                    deltas.push_back(delta);
                     sum += delta;
                     // If we have been calibrating for over 3 seconds -- the clock
                     // is terrible and we should move on.
@@ -49,9 +48,9 @@ namespace Catch {
                     if (ticks > startTime + 3 * nanosecondsInSecond) {
                         return sum / (i + 1u);
                     }
+                    deltas.push_back(delta);
                 }
-                // We're just taking the mean, here. To do better we could take the std. dev and exclude outliers
-                // - and potentially do more iterations if there's a high variance.
+
                 result = sum / iterations;
                 uint64_t squared_difference_sum = 0;
                 for (std::size_t iterator = 0; iterator < iterations; ++iterator) {
