@@ -1,75 +1,63 @@
 #include "catch.hpp"
 
-// Examples of usage of Generators
+#include <cstring>
 
-// This test doesn't do much - it just shows how you can have several generators, of different
-// types (ie `i` and `j` are different types), can be sequenced using `,` and
-// can be expressed as named generators (like range) or as individual values.
-// Generators can be mixed with SECTIONs.
-// At time of writing the generated values are not automatically reported as part of the test
-// name or associated values - so we explicitly CAPTURE then (run this with `-s` to see them).
-// We could also incorporate them into the section names using DYNAMIC_SECTION. See the BDD
-// example later for more information.
-TEST_CASE("Generators") {
 
-    auto i = GENERATE( as<std::string>(), "a", "b", "c" );
-
-    SECTION( "one" ) {
-        auto j = GENERATE( range( 8, 11 ), 2 );
-
-        CAPTURE( i, j );
-        SUCCEED();
+// Generators and sections can be nested freely
+TEST_CASE("Generators -- simple", "[generators]") {
+    auto i = GENERATE(1, 2, 3);
+    SECTION("one") {
+        auto j = GENERATE(values({ -3, -2, -1 }));
+        REQUIRE(j < i);
     }
-    SECTION( "two" ) {
-        auto j = GENERATE( 3.141, 1.379 );
-        CAPTURE( i, j );
-        SUCCEED();
+
+    SECTION("two") {
+        // You can also explicitly set type for generators via Catch::Generators::as
+        auto str = GENERATE(as<std::string>{}, "a", "bb", "ccc");
+        REQUIRE(4u * i > str.size());
     }
 }
 
-// This one generates the cross-product of two ranges.
-// It's mostly here to demonstrate the performance which, at time of writing,
-// leaves a lot to be desired.
-TEST_CASE( "100x100 ints", "[.][approvals]" ) {
-    auto x = GENERATE( range( 0,100 ) );
-    auto y = GENERATE( range( 200,300 ) );
-
-    CHECK( x < y );
+// You can create a cartesian-product of generators by creating multiple ones
+TEST_CASE("3x3x3 ints", "[generators]") {
+    auto x = GENERATE(1, 2, 3);
+    auto y = GENERATE(4, 5, 6);
+    auto z = GENERATE(7, 8, 9);
+    // These assertions will be run 27 times (3x3x3)
+    CHECK(x < y);
+    CHECK(y < z);
+    REQUIRE(x < z);
 }
 
-// smaller version
-TEST_CASE( "10x10 ints" ) {
-    auto x = GENERATE( range( 1,11 ) );
-    auto y = GENERATE( range( 101, 111 ) );
+// You can also create data tuples
+TEST_CASE("tables", "[generators]") {
+    // Note that this will not compile with libstdc++ older than libstdc++6
+    // See https://stackoverflow.com/questions/12436586/tuple-vector-and-initializer-list
+    // for possible workarounds
+    //    auto data = GENERATE(table<char const*, int>({
+    //        {"first", 5},
+    //        {"second", 6},
+    //        {"third", 5},
+    //        {"etc...", 6}
+    //    }));
 
-    CHECK( x < y );
+    // Workaround for the libstdc++ bug mentioned above
+    using tuple_type = std::tuple<char const*, int>;
+    auto data = GENERATE(table<char const*, int>({
+        tuple_type{"first", 5},
+        tuple_type{"second", 6},
+        tuple_type{"third", 5},
+        tuple_type{"etc...", 6}
+    }));
+
+    REQUIRE(strlen(std::get<0>(data)) == static_cast<size_t>(std::get<1>(data)));
 }
 
-// Some of the following tests use structured bindings for convenience and so are
-// conditionally compiled using the de-facto (and soon to be formally) standard
-// feature macros
 
 #ifdef __cpp_structured_bindings
 
-// One way to do pairs of values (actual/ expected?)
-// For a simple case like this I'd recommend writing out a series of REQUIREs
-// but it demonstrates a possible usage.
-// Spelling out the pair like this is a bit verbose, so read on for better examples
-// - the use of structured bindings here is an optional convenience
-TEST_CASE( "strlen", "[approvals]" ) {
-    auto [test_input, expected] = GENERATE( values<std::pair<std::string_view, size_t>>({
-            {"one", 3},
-            {"two", 3},
-            {"three", 5},
-            {"four", 4}
-        }));
-
-    REQUIRE( test_input.size() == expected );
-}
-
-// A nicer way to do pairs (or more) of values - using the table generator.
-// Note, you must specify the types up-front.
-TEST_CASE( "strlen2", "[approvals]" ) {
+// Structured bindings make the table utility much nicer to use
+TEST_CASE( "strlen2", "[approvals][generators]" ) {
     auto [test_input, expected] = GENERATE( table<std::string, size_t>({
             {"one", 3},
             {"two", 3},
@@ -81,11 +69,11 @@ TEST_CASE( "strlen2", "[approvals]" ) {
 }
 #endif
 
-// An alternate way of doing data tables without structure bindings
-// - I'd prefer to have the Data class within the test case but gcc 4.x doesn't seem to like it
+
+// An alternate way of doing data tables without structured bindings
 struct Data { std::string str; size_t len; };
 
-TEST_CASE( "strlen3" ) {
+TEST_CASE( "strlen3", "[generators]" ) {
     auto data = GENERATE( values<Data>({
             {"one", 3},
             {"two", 3},
@@ -96,15 +84,7 @@ TEST_CASE( "strlen3" ) {
     REQUIRE( data.str.size() == data.len );
 }
 
-// A nod towards property-based testing - generate a random selection of numbers
-// in a range and assert on global properties those numbers.
-static auto square( int i ) -> int { return i*i; }
 
-TEST_CASE( "Random numbers in a range", "[.][approvals]" ) {
-    auto x = GENERATE( random( -10000, 10000 ) );
-    CAPTURE( x );
-    REQUIRE( square(x) >= 0 );
-}
 
 #ifdef __cpp_structured_bindings
 
@@ -118,7 +98,7 @@ TEST_CASE( "Random numbers in a range", "[.][approvals]" ) {
 
 static auto eatCucumbers( int start, int eat ) -> int { return start-eat; }
 
-SCENARIO("Eating cucumbers", "[approvals]") {
+SCENARIO("Eating cucumbers", "[generators][approvals]") {
 
     auto [start, eat, left] = GENERATE( table<int,int,int> ({
             { 12, 5, 7 },
@@ -132,3 +112,36 @@ SCENARIO("Eating cucumbers", "[approvals]") {
     }
 }
 #endif
+
+// There are also some generic generator manipulators
+TEST_CASE("Generators -- adapters", "[generators]") {
+    // TODO: This won't work yet, introduce GENERATE_VAR?
+    //auto numbers = Catch::Generators::values({ 1, 2, 3, 4, 5, 6 });
+    SECTION("Filtering by predicate") {
+        // This filters out all odd (false) numbers, giving [2, 4, 6]
+        auto i = GENERATE(filter([] (int val) { return val % 2 == 0; }, values({ 1, 2, 3, 4, 5, 6 })));
+        REQUIRE(i % 2 == 0);
+    }
+    SECTION("Shortening a range") {
+        // This takes the first 3 elements from the values, giving back [1, 2, 3]
+        auto i = GENERATE(take(3, values({ 1, 2, 3, 4, 5, 6 })));
+        REQUIRE(i < 4);
+    }
+    SECTION("Transforming elements") {
+        SECTION("Same type") {
+            // This doubles values [1, 2, 3] into [2, 4, 6]
+            auto i = GENERATE(map([] (int val) { return val * 2; }, values({ 1, 2, 3 })));
+            REQUIRE(i % 2 == 0);
+        }
+        SECTION("Different type") {
+            // This takes a generator that returns ints and maps them into strings
+            auto i = GENERATE(map<std::string>([] (int val) { return std::to_string(val); }, values({ 1, 2, 3 })));
+            REQUIRE(i.size() == 1);
+        }
+    }
+    SECTION("Repeating a generator") {
+        // This will return values [1, 2, 3, 1, 2, 3]
+        auto j = GENERATE(repeat(2, values({ 1, 2, 3 })));
+        REQUIRE(j > 0);
+    }
+}

@@ -16,8 +16,21 @@
 #include <cassert>
 
 #include <utility>
+#include <exception>
 
 namespace Catch {
+
+class GeneratorException : public std::exception {
+    const char* const m_msg = "";
+
+public:
+    GeneratorException(const char* msg):
+        m_msg(msg)
+    {}
+
+    const char* what() const noexcept override final;
+};
+
 namespace Generators {
 
     // !TBD move this into its own location?
@@ -29,202 +42,312 @@ namespace Generators {
     }
 
     template<typename T>
-    struct IGenerator {
-        virtual ~IGenerator() {}
-        virtual auto get( size_t index ) const -> T = 0;
+    struct IGenerator : GeneratorUntypedBase {
+        virtual ~IGenerator() = default;
+
+        // Returns the current element of the generator
+        //
+        // \Precondition The generator is either freshly constructed,
+        // or the last call to `next()` returned true
+        virtual T const& get() const = 0;
+        using type = T;
     };
 
     template<typename T>
-    class SingleValueGenerator : public IGenerator<T> {
+    class SingleValueGenerator final : public IGenerator<T> {
         T m_value;
     public:
-        SingleValueGenerator( T const& value ) : m_value( value ) {}
+        SingleValueGenerator(T const& value) : m_value( value ) {}
+        SingleValueGenerator(T&& value) : m_value(std::move(value)) {}
 
-        auto get( size_t ) const -> T override {
+        T const& get() const override {
             return m_value;
+        }
+        bool next() override {
+            return false;
         }
     };
 
     template<typename T>
-    class FixedValuesGenerator : public IGenerator<T> {
+    class FixedValuesGenerator final : public IGenerator<T> {
         std::vector<T> m_values;
-
+        size_t m_idx = 0;
     public:
         FixedValuesGenerator( std::initializer_list<T> values ) : m_values( values ) {}
 
-        auto get( size_t index ) const -> T override {
-            return m_values[index];
+        T const& get() const override {
+            return m_values[m_idx];
+        }
+        bool next() override {
+            ++m_idx;
+            return m_idx < m_values.size();
         }
     };
 
-    template<typename T>
-    class RangeGenerator : public IGenerator<T> {
-        T const m_first;
-        T const m_last;
-
-    public:
-        RangeGenerator( T const& first, T const& last ) : m_first( first ), m_last( last ) {
-            assert( m_last > m_first );
-        }
-
-        auto get( size_t index ) const -> T override {
-            // ToDo:: introduce a safe cast to catch potential overflows
-            return static_cast<T>(m_first+index);
-        }
-    };
-
-
-    template<typename T>
-    struct NullGenerator : IGenerator<T> {
-        auto get( size_t ) const -> T override {
-            CATCH_INTERNAL_ERROR("A Null Generator is always empty");
-        }
-    };
-
-    template<typename T>
-    class Generator {
+    template <typename T>
+    class GeneratorWrapper final {
         std::unique_ptr<IGenerator<T>> m_generator;
-        size_t m_size;
-
     public:
-        Generator( size_t size, std::unique_ptr<IGenerator<T>> generator )
-        :   m_generator( std::move( generator ) ),
-            m_size( size )
+        GeneratorWrapper(std::unique_ptr<IGenerator<T>> generator):
+            m_generator(std::move(generator))
         {}
-
-        auto size() const -> size_t { return m_size; }
-        auto operator[]( size_t index ) const -> T {
-            assert( index < m_size );
-            return m_generator->get( index );
+        T const& get() const {
+            return m_generator->get();
+        }
+        bool next() {
+            return m_generator->next();
         }
     };
 
-    std::vector<size_t> randomiseIndices( size_t selectionSize, size_t sourceSize );
+    template <typename T>
+    GeneratorWrapper<T> value(T&& value) {
+        return GeneratorWrapper<T>(pf::make_unique<SingleValueGenerator<T>>(std::forward<T>(value)));
+    }
+    template <typename T>
+    GeneratorWrapper<T> values(std::initializer_list<T> values) {
+        return GeneratorWrapper<T>(pf::make_unique<FixedValuesGenerator<T>>(values));
+    }
 
     template<typename T>
-    class GeneratorRandomiser : public IGenerator<T> {
-        Generator<T> m_baseGenerator;
+    class Generators : public IGenerator<T> {
+        std::vector<GeneratorWrapper<T>> m_generators;
+        size_t m_current = 0;
 
-        std::vector<size_t> m_indices;
-    public:
-        GeneratorRandomiser( Generator<T>&& baseGenerator, size_t numberOfItems )
-        :   m_baseGenerator( std::move( baseGenerator ) ),
-            m_indices( randomiseIndices( numberOfItems, m_baseGenerator.size() ) )
-        {}
-
-        auto get( size_t index ) const -> T override {
-            return m_baseGenerator[m_indices[index]];
+        void populate(GeneratorWrapper<T>&& generator) {
+            m_generators.emplace_back(std::move(generator));
         }
-    };
-
-    template<typename T>
-    struct RequiresASpecialisationFor;
-
-    template<typename T>
-    auto all() -> Generator<T> { return RequiresASpecialisationFor<T>(); }
-
-    template<>
-    auto all<int>() -> Generator<int>;
-
-
-    template<typename T>
-    auto range( T const& first, T const& last ) -> Generator<T> {
-        return Generator<T>( (last-first), pf::make_unique<RangeGenerator<T>>( first, last ) );
-    }
-
-    template<typename T>
-    auto random( T const& first, T const& last ) -> Generator<T> {
-        auto gen = range( first, last );
-        auto size = gen.size();
-
-        return Generator<T>( size, pf::make_unique<GeneratorRandomiser<T>>( std::move( gen ), size ) );
-    }
-    template<typename T>
-    auto random( size_t size ) -> Generator<T> {
-        return Generator<T>( size, pf::make_unique<GeneratorRandomiser<T>>( all<T>(), size ) );
-    }
-
-    template<typename T>
-    auto values( std::initializer_list<T> values ) -> Generator<T> {
-        return Generator<T>( values.size(), pf::make_unique<FixedValuesGenerator<T>>( values ) );
-    }
-    template<typename T>
-    auto value( T const& val ) -> Generator<T> {
-        return Generator<T>( 1, pf::make_unique<SingleValueGenerator<T>>( val ) );
-    }
-
-    template<typename T>
-    auto as() -> Generator<T> {
-        return Generator<T>( 0, pf::make_unique<NullGenerator<T>>() );
-    }
-
-    template<typename... Ts>
-    auto table( std::initializer_list<std::tuple<Ts...>>&& tuples ) -> Generator<std::tuple<Ts...>> {
-        return values<std::tuple<Ts...>>( std::forward<std::initializer_list<std::tuple<Ts...>>>( tuples ) );
-    }
-
-
-    template<typename T>
-    struct Generators : GeneratorBase {
-        std::vector<Generator<T>> m_generators;
-
-        using type = T;
-
-        Generators() : GeneratorBase( 0 ) {}
-
-        void populate( T&& val ) {
-            m_size += 1;
-            m_generators.emplace_back( value( std::move( val ) ) );
+        void populate(T&& val) {
+            m_generators.emplace_back(value(std::move(val)));
         }
         template<typename U>
-        void populate( U&& val ) {
-            populate( T( std::move( val ) ) );
+        void populate(U&& val) {
+            populate(T(std::move(val)));
         }
-        void populate( Generator<T>&& generator ) {
-            m_size += generator.size();
-            m_generators.emplace_back( std::move( generator ) );
-        }
-
         template<typename U, typename... Gs>
-        void populate( U&& valueOrGenerator, Gs... moreGenerators ) {
-            populate( std::forward<U>( valueOrGenerator ) );
-            populate( std::forward<Gs>( moreGenerators )... );
+        void populate(U&& valueOrGenerator, Gs... moreGenerators) {
+            populate(std::forward<U>(valueOrGenerator));
+            populate(std::forward<Gs>(moreGenerators)...);
         }
 
-        auto operator[]( size_t index ) const -> T {
-            size_t sizes = 0;
-            for( auto const& gen : m_generators ) {
-                auto localIndex = index-sizes;
-                sizes += gen.size();
-                if( index < sizes )
-                    return gen[localIndex];
+    public:
+        template <typename... Gs>
+        Generators(Gs... moreGenerators) {
+            m_generators.reserve(sizeof...(Gs));
+            populate(std::forward<Gs>(moreGenerators)...);
+        }
+
+        T const& get() const override {
+            return m_generators[m_current].get();
+        }
+
+        bool next() override {
+            if (m_current >= m_generators.size()) {
+                return false;
             }
-            CATCH_INTERNAL_ERROR("Index '" << index << "' is out of range (" << sizes << ')');
+            const bool current_status = m_generators[m_current].next();
+            if (!current_status) {
+                ++m_current;
+            }
+            return m_current < m_generators.size();
         }
     };
 
+
+    template<typename... Ts>
+    GeneratorWrapper<std::tuple<Ts...>> table( std::initializer_list<std::tuple<typename std::decay<Ts>::type...>> tuples ) {
+        return values<std::tuple<Ts...>>( tuples );
+    }
+
+    // Tag type to signal that a generator sequence should convert arguments to a specific type
+    template <typename T>
+    struct as {};
+
     template<typename T, typename... Gs>
-    auto makeGenerators( Generator<T>&& generator, Gs... moreGenerators ) -> Generators<T> {
-        Generators<T> generators;
-        generators.m_generators.reserve( 1+sizeof...(Gs) );
-        generators.populate( std::move( generator ), std::forward<Gs>( moreGenerators )... );
-        return generators;
+    auto makeGenerators( GeneratorWrapper<T>&& generator, Gs... moreGenerators ) -> Generators<T> {
+        return Generators<T>(std::move(generator), std::forward<Gs>(moreGenerators)...);
     }
     template<typename T>
-    auto makeGenerators( Generator<T>&& generator ) -> Generators<T> {
-        Generators<T> generators;
-        generators.populate( std::move( generator ) );
-        return generators;
+    auto makeGenerators( GeneratorWrapper<T>&& generator ) -> Generators<T> {
+        return Generators<T>(std::move(generator));
     }
     template<typename T, typename... Gs>
     auto makeGenerators( T&& val, Gs... moreGenerators ) -> Generators<T> {
         return makeGenerators( value( std::forward<T>( val ) ), std::forward<Gs>( moreGenerators )... );
     }
     template<typename T, typename U, typename... Gs>
-    auto makeGenerators( U&& val, Gs... moreGenerators ) -> Generators<T> {
+    auto makeGenerators( as<T>, U&& val, Gs... moreGenerators ) -> Generators<T> {
         return makeGenerators( value( T( std::forward<U>( val ) ) ), std::forward<Gs>( moreGenerators )... );
     }
 
+    template <typename T>
+    class TakeGenerator : public IGenerator<T> {
+        GeneratorWrapper<T> m_generator;
+        size_t m_returned = 0;
+        size_t m_target;
+    public:
+        TakeGenerator(size_t target, GeneratorWrapper<T>&& generator):
+            m_generator(std::move(generator)),
+            m_target(target)
+        {
+            assert(target != 0 && "Empty generators are not allowed");
+        }
+        T const& get() const override {
+            return m_generator.get();
+        }
+        bool next() override {
+            ++m_returned;
+            if (m_returned >= m_target) {
+                return false;
+            }
+
+            const auto success = m_generator.next();
+            // If the underlying generator does not contain enough values
+            // then we cut short as well
+            if (!success) {
+                m_returned = m_target;
+            }
+            return success;
+        }
+    };
+
+    template <typename T>
+    GeneratorWrapper<T> take(size_t target, GeneratorWrapper<T>&& generator) {
+        return GeneratorWrapper<T>(pf::make_unique<TakeGenerator<T>>(target, std::move(generator)));
+    }
+
+
+    template <typename T, typename Predicate>
+    class FilterGenerator : public IGenerator<T> {
+        GeneratorWrapper<T> m_generator;
+        Predicate m_predicate;
+    public:
+        template <typename P = Predicate>
+        FilterGenerator(P&& pred, GeneratorWrapper<T>&& generator):
+            m_generator(std::move(generator)),
+            m_predicate(std::forward<P>(pred))
+        {
+            if (!m_predicate(m_generator.get())) {
+                // It might happen that there are no values that pass the
+                // filter. In that case we throw an exception.
+                auto has_initial_value = next();
+                if (!has_initial_value) {
+                    Catch::throw_exception(GeneratorException("No valid value found in filtered generator"));
+                }
+            }
+        }
+
+        T const& get() const override {
+            return m_generator.get();
+        }
+
+        bool next() override {
+            bool success = m_generator.next();
+            if (!success) {
+                return false;
+            }
+            while (!m_predicate(m_generator.get()) && (success = m_generator.next()) == true);
+            return success;
+        }
+    };
+
+
+    template <typename T, typename Predicate>
+    GeneratorWrapper<T> filter(Predicate&& pred, GeneratorWrapper<T>&& generator) {
+        return GeneratorWrapper<T>(std::unique_ptr<IGenerator<T>>(pf::make_unique<FilterGenerator<T, Predicate>>(std::forward<Predicate>(pred), std::move(generator))));
+    }
+
+    template <typename T>
+    class RepeatGenerator : public IGenerator<T> {
+        GeneratorWrapper<T> m_generator;
+        mutable std::vector<T> m_returned;
+        size_t m_target_repeats;
+        size_t m_current_repeat = 0;
+        size_t m_repeat_index = 0;
+    public:
+        RepeatGenerator(size_t repeats, GeneratorWrapper<T>&& generator):
+            m_generator(std::move(generator)),
+            m_target_repeats(repeats)
+        {
+            assert(m_target_repeats > 0 && "Repeat generator must repeat at least once");
+        }
+
+        T const& get() const override {
+            if (m_current_repeat == 0) {
+                m_returned.push_back(m_generator.get());
+                return m_returned.back();
+            }
+            return m_returned[m_repeat_index];
+        }
+
+        bool next() override {
+            // There are 2 basic cases:
+            // 1) We are still reading the generator
+            // 2) We are reading our own cache
+
+            // In the first case, we need to poke the underlying generator.
+            // If it happily moves, we are left in that state, otherwise it is time to start reading from our cache
+            if (m_current_repeat == 0) {
+                const auto success = m_generator.next();
+                if (!success) {
+                    ++m_current_repeat;
+                }
+                return m_current_repeat < m_target_repeats;
+            }
+
+            // In the second case, we need to move indices forward and check that we haven't run up against the end
+            ++m_repeat_index;
+            if (m_repeat_index == m_returned.size()) {
+                m_repeat_index = 0;
+                ++m_current_repeat;
+            }
+            return m_current_repeat < m_target_repeats;
+        }
+    };
+
+    template <typename T>
+    GeneratorWrapper<T> repeat(size_t repeats, GeneratorWrapper<T>&& generator) {
+        return GeneratorWrapper<T>(pf::make_unique<RepeatGenerator<T>>(repeats, std::move(generator)));
+    }
+
+    template <typename T, typename U, typename Func>
+    class MapGenerator : public IGenerator<T> {
+        // TBD: provide static assert for mapping function, for friendly error message
+        GeneratorWrapper<U> m_generator;
+        Func m_function;
+        // To avoid returning dangling reference, we have to save the values
+        T m_cache;
+    public:
+        template <typename F2 = Func>
+        MapGenerator(F2&& function, GeneratorWrapper<U>&& generator) :
+            m_generator(std::move(generator)),
+            m_function(std::forward<F2>(function)),
+            m_cache(m_function(m_generator.get()))
+        {}
+
+        T const& get() const override {
+            return m_cache;
+        }
+        bool next() override {
+            const auto success = m_generator.next();
+            if (success) {
+                m_cache = m_function(m_generator.get());
+            }
+            return success;
+        }
+    };
+
+    template <typename T, typename U, typename Func>
+    GeneratorWrapper<T> map(Func&& function, GeneratorWrapper<U>&& generator) {
+        return GeneratorWrapper<T>(
+            pf::make_unique<MapGenerator<T, U, Func>>(std::forward<Func>(function), std::move(generator))
+        );
+    }
+    template <typename T, typename Func>
+    GeneratorWrapper<T> map(Func&& function, GeneratorWrapper<T>&& generator) {
+        return GeneratorWrapper<T>(
+            pf::make_unique<MapGenerator<T, T, Func>>(std::forward<Func>(function), std::move(generator))
+        );
+    }
 
     auto acquireGeneratorTracker( SourceLineInfo const& lineInfo ) -> IGeneratorTracker&;
 
@@ -232,15 +355,16 @@ namespace Generators {
     // Note: The type after -> is weird, because VS2015 cannot parse
     //       the expression used in the typedef inside, when it is in
     //       return type. Yeah, ¯\_(ツ)_/¯
-    auto generate( SourceLineInfo const& lineInfo, L const& generatorExpression ) -> decltype(std::declval<decltype(generatorExpression())>()[0]) {
+    auto generate( SourceLineInfo const& lineInfo, L const& generatorExpression ) -> decltype(std::declval<decltype(generatorExpression())>().get()) {
         using UnderlyingType = typename decltype(generatorExpression())::type;
 
         IGeneratorTracker& tracker = acquireGeneratorTracker( lineInfo );
-        if( !tracker.hasGenerator() )
-            tracker.setGenerator( pf::make_unique<Generators<UnderlyingType>>( generatorExpression() ) );
+        if (!tracker.hasGenerator()) {
+            tracker.setGenerator(pf::make_unique<Generators<UnderlyingType>>(generatorExpression()));
+        }
 
-        auto const& generator = static_cast<Generators<UnderlyingType> const&>( *tracker.getGenerator() );
-        return generator[tracker.getIndex()];
+        auto const& generator = static_cast<IGenerator<UnderlyingType> const&>( *tracker.getGenerator() );
+        return generator.get();
     }
 
 } // namespace Generators

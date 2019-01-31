@@ -14,7 +14,6 @@ namespace Catch {
 
     namespace Generators {
         struct GeneratorTracker : TestCaseTracking::TrackerBase, IGeneratorTracker {
-            size_t m_index = static_cast<size_t>( -1 );
             GeneratorBasePtr m_generator;
 
             GeneratorTracker( TestCaseTracking::NameAndLocation const& nameAndLocation, TrackerContext& ctx, ITracker* parent )
@@ -28,7 +27,7 @@ namespace Catch {
                 ITracker& currentTracker = ctx.currentTracker();
                 if( TestCaseTracking::ITrackerPtr childTracker = currentTracker.findChild( nameAndLocation ) ) {
                     assert( childTracker );
-                    assert( childTracker->isIndexTracker() );
+                    assert( childTracker->isGeneratorTracker() );
                     tracker = std::static_pointer_cast<GeneratorTracker>( childTracker );
                 }
                 else {
@@ -37,28 +36,24 @@ namespace Catch {
                 }
 
                 if( !ctx.completedCycle() && !tracker->isComplete() ) {
-                    if( tracker->m_runState != ExecutingChildren && tracker->m_runState != NeedsAnotherRun )
-                        tracker->moveNext();
                     tracker->open();
                 }
 
                 return *tracker;
             }
 
-            void moveNext() {
-                m_index++;
-                m_children.clear();
-            }
-
             // TrackerBase interface
-            bool isIndexTracker() const override { return true; }
+            bool isGeneratorTracker() const override { return true; }
             auto hasGenerator() const -> bool override {
                 return !!m_generator;
             }
             void close() override {
                 TrackerBase::close();
-                if( m_runState == CompletedSuccessfully && m_index < m_generator->size()-1 )
+                // Generator interface only finds out if it has another item on atual move
+                if (m_runState == CompletedSuccessfully && m_generator->next()) {
+                    m_children.clear();
                     m_runState = Executing;
+                }
             }
 
             // IGeneratorTracker interface
@@ -67,9 +62,6 @@ namespace Catch {
             }
             void setGenerator( GeneratorBasePtr&& generator ) override {
                 m_generator = std::move( generator );
-            }
-            auto getIndex() const -> size_t override {
-                return m_index;
             }
         };
         GeneratorTracker::~GeneratorTracker() {}
