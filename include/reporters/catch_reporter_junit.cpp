@@ -76,6 +76,13 @@ namespace Catch {
     void JunitReporter::testRunStarting( TestRunInfo const& runInfo )  {
         CumulativeReporterBase::testRunStarting( runInfo );
         xml.startElement( "testsuites" );
+        if( m_config->rngSeed() != 0 ) {
+            xml.startElement( "properties" );
+            xml.scopedElement( "property" )
+                .writeAttribute( "name", "random-seed" )
+                .writeAttribute( "value", m_config->rngSeed() );
+            xml.endElement();
+        }
     }
 
     void JunitReporter::testGroupStarting( GroupInfo const& groupInfo ) {

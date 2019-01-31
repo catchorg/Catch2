@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuitesloose text artifact
->
+<testsuites>
+  <properties>
+    <property name="random-seed" value="1"/>
+  </properties>
+loose text artifact
   <testsuite name="<exe-name>" errors="17" failures="113" tests="1312" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
     <testcase classname="<exe-name>.global" name="# A test name that starts with a #" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="#1005: Comparing pointer to int and long (NULL can be either on various systems)" time="{duration}"/>
