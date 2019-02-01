@@ -132,6 +132,71 @@ TEST_CASE( "Pointers can be converted to strings", "[messages][.][approvals]" ) 
     WARN( "toString(p): " << ::Catch::Detail::stringify( &p ) );
 }
 
+template <typename T>
+static void unscoped_info( T msg ) {
+    UNSCOPED_INFO( msg );
+}
+
+TEST_CASE( "just unscoped info", "[unscoped][info]" ) {
+    unscoped_info( "this should NOT be seen" );
+    unscoped_info( "this also should NOT be seen" );
+}
+
+TEST_CASE( "just failure after unscoped info", "[failing][.][unscoped][info]" ) {
+    FAIL( "previous unscoped info SHOULD not be seen" );
+}
+
+TEST_CASE( "print unscoped info if passing unscoped info is printed", "[unscoped][info]" ) {
+    unscoped_info( "this MAY be seen IF info is printed for passing assertions" );
+    REQUIRE( true );
+}
+
+TEST_CASE( "prints unscoped info on failure", "[failing][.][unscoped][info]" ) {
+    unscoped_info( "this SHOULD be seen" );
+    unscoped_info( "this SHOULD also be seen" );
+    REQUIRE( false );
+    unscoped_info( "but this should NOT be seen" );
+}
+
+TEST_CASE( "not prints unscoped info from previous failures", "[failing][.][unscoped][info]" ) {
+    unscoped_info( "this MAY be seen only for the FIRST assertion IF info is printed for passing assertions" );
+    REQUIRE( true );
+    unscoped_info( "this MAY be seen only for the SECOND assertion IF info is printed for passing assertions" );
+    REQUIRE( true );
+    unscoped_info( "this SHOULD be seen" );
+    REQUIRE( false );
+}
+
+TEST_CASE( "prints unscoped info only for the first assertion", "[failing][.][unscoped][info]" ) {
+    unscoped_info( "this SHOULD be seen only ONCE" );
+    CHECK( false );
+    CHECK( true );
+    unscoped_info( "this MAY also be seen only ONCE IF info is printed for passing assertions" );
+    CHECK( true );
+    CHECK( true );
+}
+
+TEST_CASE( "stacks unscoped info in loops", "[failing][.][unscoped][info]" ) {
+    UNSCOPED_INFO("Count 1 to 3...");
+    for (int i = 1; i <= 3; i++) {
+        unscoped_info(i);
+    }
+    CHECK( false );
+
+    UNSCOPED_INFO("Count 4 to 6...");
+    for (int i = 4; i <= 6; i++) {
+        unscoped_info(i);
+    }
+    CHECK( false );
+}
+
+TEST_CASE( "mix info, unscoped info and warning", "[unscoped][info]" ) {
+    INFO("info");
+    unscoped_info("unscoped info");
+    WARN("and warn may mix");
+    WARN("they are not cleared after warnings");
+}
+
 TEST_CASE( "CAPTURE can deal with complex expressions", "[messages][capture]" ) {
     int a = 1;
     int b = 2;
