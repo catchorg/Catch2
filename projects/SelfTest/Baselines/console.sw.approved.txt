@@ -9369,6 +9369,16 @@ explicitly with message:
   Previous info should not be seen
 
 -------------------------------------------------------------------------------
+just failure after unscoped info
+-------------------------------------------------------------------------------
+Message.tests.cpp:<line number>
+...............................................................................
+
+Message.tests.cpp:<line number>: FAILED:
+explicitly with message:
+  previous unscoped info SHOULD not be seen
+
+-------------------------------------------------------------------------------
 just info
 -------------------------------------------------------------------------------
 Message.tests.cpp:<line number>
@@ -9376,6 +9386,15 @@ Message.tests.cpp:<line number>
 
 
 No assertions in test case 'just info'
+
+-------------------------------------------------------------------------------
+just unscoped info
+-------------------------------------------------------------------------------
+Message.tests.cpp:<line number>
+...............................................................................
+
+
+No assertions in test case 'just unscoped info'
 
 -------------------------------------------------------------------------------
 long long
@@ -9573,6 +9592,25 @@ with message:
   Testing if fib[7] (21) is even
 
 -------------------------------------------------------------------------------
+mix info, unscoped info and warning
+-------------------------------------------------------------------------------
+Message.tests.cpp:<line number>
+...............................................................................
+
+Message.tests.cpp:<line number>: warning:
+  info
+  unscoped info
+  and warn may mix
+
+Message.tests.cpp:<line number>: warning:
+  info
+  unscoped info
+  they are not cleared after warnings
+
+
+No assertions in test case 'mix info, unscoped info and warning'
+
+-------------------------------------------------------------------------------
 more nested SECTION tests
   doesn't equal
   equal
@@ -9672,6 +9710,29 @@ Misc.tests.cpp:<line number>
 Misc.tests.cpp:<line number>: PASSED:
 
 -------------------------------------------------------------------------------
+not prints unscoped info from previous failures
+-------------------------------------------------------------------------------
+Message.tests.cpp:<line number>
+...............................................................................
+
+Message.tests.cpp:<line number>: PASSED:
+  REQUIRE( true )
+with message:
+  this MAY be seen only for the FIRST assertion IF info is printed for passing
+  assertions
+
+Message.tests.cpp:<line number>: PASSED:
+  REQUIRE( true )
+with message:
+  this MAY be seen only for the SECOND assertion IF info is printed for passing
+  assertions
+
+Message.tests.cpp:<line number>: FAILED:
+  REQUIRE( false )
+with message:
+  this SHOULD be seen
+
+-------------------------------------------------------------------------------
 null strings
 -------------------------------------------------------------------------------
 Misc.tests.cpp:<line number>
@@ -9721,6 +9782,51 @@ Tricky.tests.cpp:<line number>: PASSED:
   REQUIRE( p == 0 )
 with expansion:
   0 == 0
+
+-------------------------------------------------------------------------------
+print unscoped info if passing unscoped info is printed
+-------------------------------------------------------------------------------
+Message.tests.cpp:<line number>
+...............................................................................
+
+Message.tests.cpp:<line number>: PASSED:
+  REQUIRE( true )
+with message:
+  this MAY be seen IF info is printed for passing assertions
+
+-------------------------------------------------------------------------------
+prints unscoped info on failure
+-------------------------------------------------------------------------------
+Message.tests.cpp:<line number>
+...............................................................................
+
+Message.tests.cpp:<line number>: FAILED:
+  REQUIRE( false )
+with messages:
+  this SHOULD be seen
+  this SHOULD also be seen
+
+-------------------------------------------------------------------------------
+prints unscoped info only for the first assertion
+-------------------------------------------------------------------------------
+Message.tests.cpp:<line number>
+...............................................................................
+
+Message.tests.cpp:<line number>: FAILED:
+  CHECK( false )
+with message:
+  this SHOULD be seen only ONCE
+
+Message.tests.cpp:<line number>: PASSED:
+  CHECK( true )
+
+Message.tests.cpp:<line number>: PASSED:
+  CHECK( true )
+with message:
+  this MAY also be seen only ONCE IF info is printed for passing assertions
+
+Message.tests.cpp:<line number>: PASSED:
+  CHECK( true )
 
 -------------------------------------------------------------------------------
 random SECTION tests
@@ -9901,6 +10007,28 @@ Message.tests.cpp:<line number>: FAILED:
 with messages:
   hi
   i := 7
+
+-------------------------------------------------------------------------------
+stacks unscoped info in loops
+-------------------------------------------------------------------------------
+Message.tests.cpp:<line number>
+...............................................................................
+
+Message.tests.cpp:<line number>: FAILED:
+  CHECK( false )
+with messages:
+  Count 1 to 3...
+  1
+  2
+  3
+
+Message.tests.cpp:<line number>: FAILED:
+  CHECK( false )
+with messages:
+  Count 4 to 6...
+  4
+  5
+  6
 
 -------------------------------------------------------------------------------
 std::map is convertible string
@@ -10721,6 +10849,6 @@ Misc.tests.cpp:<line number>
 Misc.tests.cpp:<line number>: PASSED:
 
 ===============================================================================
-test cases:  247 |  173 passed |  70 failed |  4 failed as expected
-assertions: 1395 | 1244 passed | 130 failed | 21 failed as expected
+test cases:  255 |  174 passed |  77 failed |  4 failed as expected
+assertions: 1409 | 1250 passed | 138 failed | 21 failed as expected
 

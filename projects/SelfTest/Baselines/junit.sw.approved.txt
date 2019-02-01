@@ -4,7 +4,7 @@
     <property name="random-seed" value="1"/>
   </properties>
 loose text artifact
-  <testsuite name="<exe-name>" errors="17" failures="114" tests="1396" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
+  <testsuite name="<exe-name>" errors="17" failures="122" tests="1410" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
     <testcase classname="<exe-name>.global" name="# A test name that starts with a #" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="#1005: Comparing pointer to int and long (NULL can be either on various systems)" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="#1027" time="{duration}"/>
@@ -868,6 +868,12 @@ Previous info should not be seen
 Message.tests.cpp:<line number>
       </failure>
     </testcase>
+    <testcase classname="<exe-name>.global" name="just failure after unscoped info" time="{duration}">
+      <failure type="FAIL">
+previous unscoped info SHOULD not be seen
+Message.tests.cpp:<line number>
+      </failure>
+    </testcase>
     <testcase classname="<exe-name>.global" name="long long" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="looped SECTION tests/b is currently: 0" time="{duration}">
       <failure message="0 > 1" type="CHECK">
@@ -913,6 +919,7 @@ Testing if fib[7] (21) is even
 Misc.tests.cpp:<line number>
       </failure>
     </testcase>
+    <testcase classname="<exe-name>.global" name="mix info, unscoped info and warning" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="more nested SECTION tests/equal/doesn't equal" time="{duration}">
       <failure message="1 == 2" type="REQUIRE">
 Misc.tests.cpp:<line number>
@@ -925,10 +932,30 @@ Misc.tests.cpp:<line number>
     <testcase classname="<exe-name>.global" name="non streamable - with conv. op" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="non-copyable objects" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="not allowed" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="not prints unscoped info from previous failures" time="{duration}">
+      <failure message="false" type="REQUIRE">
+this SHOULD be seen
+Message.tests.cpp:<line number>
+      </failure>
+    </testcase>
     <testcase classname="<exe-name>.global" name="null strings" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="null_ptr" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="pair&lt;pair&lt;int,const char *,pair&lt;std::string,int> > -> toString" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="pointer to class" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="print unscoped info if passing unscoped info is printed" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="prints unscoped info on failure" time="{duration}">
+      <failure message="false" type="REQUIRE">
+this SHOULD be seen
+this SHOULD also be seen
+Message.tests.cpp:<line number>
+      </failure>
+    </testcase>
+    <testcase classname="<exe-name>.global" name="prints unscoped info only for the first assertion" time="{duration}">
+      <failure message="false" type="CHECK">
+this SHOULD be seen only ONCE
+Message.tests.cpp:<line number>
+      </failure>
+    </testcase>
     <testcase classname="<exe-name>.global" name="random SECTION tests/doesn't equal" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="random SECTION tests/not equal" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="replaceInPlace/replace single char" time="{duration}"/>
@@ -948,6 +975,22 @@ Misc.tests.cpp:<line number>
       <failure message="false" type="REQUIRE">
 hi
 i := 7
+Message.tests.cpp:<line number>
+      </failure>
+    </testcase>
+    <testcase classname="<exe-name>.global" name="stacks unscoped info in loops" time="{duration}">
+      <failure message="false" type="CHECK">
+Count 1 to 3...
+1
+2
+3
+Message.tests.cpp:<line number>
+      </failure>
+      <failure message="false" type="CHECK">
+Count 4 to 6...
+4
+5
+6
 Message.tests.cpp:<line number>
       </failure>
     </testcase>

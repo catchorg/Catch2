@@ -1057,6 +1057,16 @@ explicitly with message:
   Previous info should not be seen
 
 -------------------------------------------------------------------------------
+just failure after unscoped info
+-------------------------------------------------------------------------------
+Message.tests.cpp:<line number>
+...............................................................................
+
+Message.tests.cpp:<line number>: FAILED:
+explicitly with message:
+  previous unscoped info SHOULD not be seen
+
+-------------------------------------------------------------------------------
 looped SECTION tests
   b is currently: 0
 -------------------------------------------------------------------------------
@@ -1129,6 +1139,18 @@ with message:
   Testing if fib[7] (21) is even
 
 -------------------------------------------------------------------------------
+mix info, unscoped info and warning
+-------------------------------------------------------------------------------
+Message.tests.cpp:<line number>
+...............................................................................
+
+Message.tests.cpp:<line number>: warning:
+  and warn may mix
+
+Message.tests.cpp:<line number>: warning:
+  they are not cleared after warnings
+
+-------------------------------------------------------------------------------
 more nested SECTION tests
   doesn't equal
   equal
@@ -1140,6 +1162,40 @@ Misc.tests.cpp:<line number>: FAILED:
   REQUIRE( a == b )
 with expansion:
   1 == 2
+
+-------------------------------------------------------------------------------
+not prints unscoped info from previous failures
+-------------------------------------------------------------------------------
+Message.tests.cpp:<line number>
+...............................................................................
+
+Message.tests.cpp:<line number>: FAILED:
+  REQUIRE( false )
+with message:
+  this SHOULD be seen
+
+-------------------------------------------------------------------------------
+prints unscoped info on failure
+-------------------------------------------------------------------------------
+Message.tests.cpp:<line number>
+...............................................................................
+
+Message.tests.cpp:<line number>: FAILED:
+  REQUIRE( false )
+with messages:
+  this SHOULD be seen
+  this SHOULD also be seen
+
+-------------------------------------------------------------------------------
+prints unscoped info only for the first assertion
+-------------------------------------------------------------------------------
+Message.tests.cpp:<line number>
+...............................................................................
+
+Message.tests.cpp:<line number>: FAILED:
+  CHECK( false )
+with message:
+  this SHOULD be seen only ONCE
 
 -------------------------------------------------------------------------------
 send a single char to INFO
@@ -1165,6 +1221,28 @@ with messages:
   i := 7
 
 -------------------------------------------------------------------------------
+stacks unscoped info in loops
+-------------------------------------------------------------------------------
+Message.tests.cpp:<line number>
+...............................................................................
+
+Message.tests.cpp:<line number>: FAILED:
+  CHECK( false )
+with messages:
+  Count 1 to 3...
+  1
+  2
+  3
+
+Message.tests.cpp:<line number>: FAILED:
+  CHECK( false )
+with messages:
+  Count 4 to 6...
+  4
+  5
+  6
+
+-------------------------------------------------------------------------------
 string literals of different sizes can be compared
 -------------------------------------------------------------------------------
 Tricky.tests.cpp:<line number>
@@ -1186,6 +1264,6 @@ due to unexpected exception with message:
   Why would you throw a std::string?
 
 ===============================================================================
-test cases:  247 |  186 passed |  57 failed |  4 failed as expected
-assertions: 1381 | 1244 passed | 116 failed | 21 failed as expected
+test cases:  255 |  189 passed |  62 failed |  4 failed as expected
+assertions: 1393 | 1250 passed | 122 failed | 21 failed as expected
 
