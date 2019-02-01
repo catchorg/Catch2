@@ -47,14 +47,20 @@ namespace Catch {
 
 
     ScopedMessage::ScopedMessage( MessageBuilder const& builder )
-    : m_info( builder.m_info )
+    : m_info( builder.m_info ), m_moved()
     {
         m_info.message = builder.m_stream.str();
         getResultCapture().pushScopedMessage( m_info );
     }
 
+    ScopedMessage::ScopedMessage( ScopedMessage&& old )
+    : m_info( old.m_info ), m_moved()
+    {
+        old.m_moved = true;
+    }
+
     ScopedMessage::~ScopedMessage() {
-        if ( !uncaught_exceptions() ){
+        if ( !uncaught_exceptions() && !m_moved ){
             getResultCapture().popScopedMessage(m_info);
         }
     }
