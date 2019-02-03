@@ -33,9 +33,10 @@ Catch2's provided generator functionality consists of three parts,
 
 * `GENERATE` macro,  that serves to integrate generator expression with
 a test case,
-* 2 fundamental generators
+* 3 fundamental generators
   * `ValueGenerator<T>` -- contains only single element
   * `ValuesGenerator<T>` -- contains multiple elements
+  * `RangeGenerator<T>` -- generates all values between `start` and `end`
 * 4 generic generators that modify other generators
   * `FilterGenerator<T, Predicate>` -- filters out elements from a generator
   for which the predicate returns "false"
@@ -52,6 +53,8 @@ type, making their usage much nicer. These are
 
 * `value(T&&)` for `ValueGenerator<T>`
 * `values(std::initializer_list<T>)` for `ValuesGenerator<T>`
+* `range(start, end)` for `RangeGenerator<T>` with a step size of `1` 
+* `range(start, end, step)` for `RangeGenerator<T>` with a custom step size
 * `filter(predicate, GeneratorWrapper<T>&&)` for `FilterGenerator<T, Predicate>`
 * `take(count, GeneratorWrapper<T>&&)` for `TakeGenerator<T>`
 * `repeat(repeats, GeneratorWrapper<T>&&)` for `RepeatGenerator<T>`

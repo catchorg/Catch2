@@ -4449,6 +4449,640 @@
         </Section>
         <OverallResults successes="12" failures="0" expectedFailures="0"/>
       </Section>
+      <Section name="Range" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+        <Section name="Positive auto step" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+          <Section name="Integer" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+            <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+              <Original>
+                gen.get() == -2
+              </Original>
+              <Expanded>
+                -2 == -2
+              </Expanded>
+            </Expression>
+            <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+              <Original>
+                gen.next()
+              </Original>
+              <Expanded>
+                true
+              </Expanded>
+            </Expression>
+            <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+              <Original>
+                gen.get() == -1
+              </Original>
+              <Expanded>
+                -1 == -1
+              </Expanded>
+            </Expression>
+            <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+              <Original>
+                gen.next()
+              </Original>
+              <Expanded>
+                true
+              </Expanded>
+            </Expression>
+            <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+              <Original>
+                gen.get() == 0
+              </Original>
+              <Expanded>
+                0 == 0
+              </Expanded>
+            </Expression>
+            <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+              <Original>
+                gen.next()
+              </Original>
+              <Expanded>
+                true
+              </Expanded>
+            </Expression>
+            <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+              <Original>
+                gen.get() == 1
+              </Original>
+              <Expanded>
+                1 == 1
+              </Expanded>
+            </Expression>
+            <Expression success="true" type="REQUIRE_FALSE" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+              <Original>
+                !(gen.next())
+              </Original>
+              <Expanded>
+                !false
+              </Expanded>
+            </Expression>
+            <OverallResults successes="8" failures="0" expectedFailures="0"/>
+          </Section>
+          <OverallResults successes="8" failures="0" expectedFailures="0"/>
+        </Section>
+        <OverallResults successes="8" failures="0" expectedFailures="0"/>
+      </Section>
+      <Section name="Range" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+        <Section name="Negative auto step" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+          <Section name="Integer" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+            <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+              <Original>
+                gen.get() == 2
+              </Original>
+              <Expanded>
+                2 == 2
+              </Expanded>
+            </Expression>
+            <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+              <Original>
+                gen.next()
+              </Original>
+              <Expanded>
+                true
+              </Expanded>
+            </Expression>
+            <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+              <Original>
+                gen.get() == 1
+              </Original>
+              <Expanded>
+                1 == 1
+              </Expanded>
+            </Expression>
+            <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+              <Original>
+                gen.next()
+              </Original>
+              <Expanded>
+                true
+              </Expanded>
+            </Expression>
+            <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+              <Original>
+                gen.get() == 0
+              </Original>
+              <Expanded>
+                0 == 0
+              </Expanded>
+            </Expression>
+            <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+              <Original>
+                gen.next()
+              </Original>
+              <Expanded>
+                true
+              </Expanded>
+            </Expression>
+            <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+              <Original>
+                gen.get() == -1
+              </Original>
+              <Expanded>
+                -1 == -1
+              </Expanded>
+            </Expression>
+            <Expression success="true" type="REQUIRE_FALSE" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+              <Original>
+                !(gen.next())
+              </Original>
+              <Expanded>
+                !false
+              </Expanded>
+            </Expression>
+            <OverallResults successes="8" failures="0" expectedFailures="0"/>
+          </Section>
+          <OverallResults successes="8" failures="0" expectedFailures="0"/>
+        </Section>
+        <OverallResults successes="8" failures="0" expectedFailures="0"/>
+      </Section>
+      <Section name="Range" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+        <Section name="Positive manual step" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+          <Section name="Integer" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+            <Section name="Exact" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+              <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+                <Original>
+                  gen.get() == -7
+                </Original>
+                <Expanded>
+                  -7 == -7
+                </Expanded>
+              </Expression>
+              <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+                <Original>
+                  gen.next()
+                </Original>
+                <Expanded>
+                  true
+                </Expanded>
+              </Expression>
+              <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+                <Original>
+                  gen.get() == -4
+                </Original>
+                <Expanded>
+                  -4 == -4
+                </Expanded>
+              </Expression>
+              <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+                <Original>
+                  gen.next()
+                </Original>
+                <Expanded>
+                  true
+                </Expanded>
+              </Expression>
+              <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+                <Original>
+                  gen.get() == -1
+                </Original>
+                <Expanded>
+                  -1 == -1
+                </Expanded>
+              </Expression>
+              <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+                <Original>
+                  gen.next()
+                </Original>
+                <Expanded>
+                  true
+                </Expanded>
+              </Expression>
+              <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+                <Original>
+                  gen.get() == 2
+                </Original>
+                <Expanded>
+                  2 == 2
+                </Expanded>
+              </Expression>
+              <Expression success="true" type="REQUIRE_FALSE" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+                <Original>
+                  !(gen.next())
+                </Original>
+                <Expanded>
+                  !false
+                </Expanded>
+              </Expression>
+              <OverallResults successes="8" failures="0" expectedFailures="0"/>
+            </Section>
+            <OverallResults successes="8" failures="0" expectedFailures="0"/>
+          </Section>
+          <OverallResults successes="8" failures="0" expectedFailures="0"/>
+        </Section>
+        <OverallResults successes="8" failures="0" expectedFailures="0"/>
+      </Section>
+      <Section name="Range" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+        <Section name="Positive manual step" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+          <Section name="Integer" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+            <Section name="Slightly over end" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+              <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+                <Original>
+                  gen.get() == -7
+                </Original>
+                <Expanded>
+                  -7 == -7
+                </Expanded>
+              </Expression>
+              <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+                <Original>
+                  gen.next()
+                </Original>
+                <Expanded>
+                  true
+                </Expanded>
+              </Expression>
+              <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+                <Original>
+                  gen.get() == -4
+                </Original>
+                <Expanded>
+                  -4 == -4
+                </Expanded>
+              </Expression>
+              <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+                <Original>
+                  gen.next()
+                </Original>
+                <Expanded>
+                  true
+                </Expanded>
+              </Expression>
+              <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+                <Original>
+                  gen.get() == -1
+                </Original>
+                <Expanded>
+                  -1 == -1
+                </Expanded>
+              </Expression>
+              <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+                <Original>
+                  gen.next()
+                </Original>
+                <Expanded>
+                  true
+                </Expanded>
+              </Expression>
+              <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+                <Original>
+                  gen.get() == 2
+                </Original>
+                <Expanded>
+                  2 == 2
+                </Expanded>
+              </Expression>
+              <Expression success="true" type="REQUIRE_FALSE" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+                <Original>
+                  !(gen.next())
+                </Original>
+                <Expanded>
+                  !false
+                </Expanded>
+              </Expression>
+              <OverallResults successes="8" failures="0" expectedFailures="0"/>
+            </Section>
+            <OverallResults successes="8" failures="0" expectedFailures="0"/>
+          </Section>
+          <OverallResults successes="8" failures="0" expectedFailures="0"/>
+        </Section>
+        <OverallResults successes="8" failures="0" expectedFailures="0"/>
+      </Section>
+      <Section name="Range" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+        <Section name="Positive manual step" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+          <Section name="Integer" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+            <Section name="Slightly under end" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+              <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+                <Original>
+                  gen.get() == -7
+                </Original>
+                <Expanded>
+                  -7 == -7
+                </Expanded>
+              </Expression>
+              <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+                <Original>
+                  gen.next()
+                </Original>
+                <Expanded>
+                  true
+                </Expanded>
+              </Expression>
+              <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+                <Original>
+                  gen.get() == -4
+                </Original>
+                <Expanded>
+                  -4 == -4
+                </Expanded>
+              </Expression>
+              <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+                <Original>
+                  gen.next()
+                </Original>
+                <Expanded>
+                  true
+                </Expanded>
+              </Expression>
+              <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+                <Original>
+                  gen.get() == -1
+                </Original>
+                <Expanded>
+                  -1 == -1
+                </Expanded>
+              </Expression>
+              <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+                <Original>
+                  gen.next()
+                </Original>
+                <Expanded>
+                  true
+                </Expanded>
+              </Expression>
+              <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+                <Original>
+                  gen.get() == 2
+                </Original>
+                <Expanded>
+                  2 == 2
+                </Expanded>
+              </Expression>
+              <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+                <Original>
+                  gen.next()
+                </Original>
+                <Expanded>
+                  true
+                </Expanded>
+              </Expression>
+              <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+                <Original>
+                  gen.get() == 5
+                </Original>
+                <Expanded>
+                  5 == 5
+                </Expanded>
+              </Expression>
+              <Expression success="true" type="REQUIRE_FALSE" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+                <Original>
+                  !(gen.next())
+                </Original>
+                <Expanded>
+                  !false
+                </Expanded>
+              </Expression>
+              <OverallResults successes="10" failures="0" expectedFailures="0"/>
+            </Section>
+            <OverallResults successes="10" failures="0" expectedFailures="0"/>
+          </Section>
+          <OverallResults successes="10" failures="0" expectedFailures="0"/>
+        </Section>
+        <OverallResults successes="10" failures="0" expectedFailures="0"/>
+      </Section>
+      <Section name="Range" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+        <Section name="Negative manual step" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+          <Section name="Integer" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+            <Section name="Exact" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+              <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+                <Original>
+                  gen.get() == 5
+                </Original>
+                <Expanded>
+                  5 == 5
+                </Expanded>
+              </Expression>
+              <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+                <Original>
+                  gen.next()
+                </Original>
+                <Expanded>
+                  true
+                </Expanded>
+              </Expression>
+              <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+                <Original>
+                  gen.get() == 2
+                </Original>
+                <Expanded>
+                  2 == 2
+                </Expanded>
+              </Expression>
+              <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+                <Original>
+                  gen.next()
+                </Original>
+                <Expanded>
+                  true
+                </Expanded>
+              </Expression>
+              <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+                <Original>
+                  gen.get() == -1
+                </Original>
+                <Expanded>
+                  -1 == -1
+                </Expanded>
+              </Expression>
+              <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+                <Original>
+                  gen.next()
+                </Original>
+                <Expanded>
+                  true
+                </Expanded>
+              </Expression>
+              <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+                <Original>
+                  gen.get() == -4
+                </Original>
+                <Expanded>
+                  -4 == -4
+                </Expanded>
+              </Expression>
+              <Expression success="true" type="REQUIRE_FALSE" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+                <Original>
+                  !(gen.next())
+                </Original>
+                <Expanded>
+                  !false
+                </Expanded>
+              </Expression>
+              <OverallResults successes="8" failures="0" expectedFailures="0"/>
+            </Section>
+            <OverallResults successes="8" failures="0" expectedFailures="0"/>
+          </Section>
+          <OverallResults successes="8" failures="0" expectedFailures="0"/>
+        </Section>
+        <OverallResults successes="8" failures="0" expectedFailures="0"/>
+      </Section>
+      <Section name="Range" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+        <Section name="Negative manual step" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+          <Section name="Integer" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+            <Section name="Slightly over end" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+              <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+                <Original>
+                  gen.get() == 5
+                </Original>
+                <Expanded>
+                  5 == 5
+                </Expanded>
+              </Expression>
+              <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+                <Original>
+                  gen.next()
+                </Original>
+                <Expanded>
+                  true
+                </Expanded>
+              </Expression>
+              <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+                <Original>
+                  gen.get() == 2
+                </Original>
+                <Expanded>
+                  2 == 2
+                </Expanded>
+              </Expression>
+              <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+                <Original>
+                  gen.next()
+                </Original>
+                <Expanded>
+                  true
+                </Expanded>
+              </Expression>
+              <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+                <Original>
+                  gen.get() == -1
+                </Original>
+                <Expanded>
+                  -1 == -1
+                </Expanded>
+              </Expression>
+              <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+                <Original>
+                  gen.next()
+                </Original>
+                <Expanded>
+                  true
+                </Expanded>
+              </Expression>
+              <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+                <Original>
+                  gen.get() == -4
+                </Original>
+                <Expanded>
+                  -4 == -4
+                </Expanded>
+              </Expression>
+              <Expression success="true" type="REQUIRE_FALSE" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+                <Original>
+                  !(gen.next())
+                </Original>
+                <Expanded>
+                  !false
+                </Expanded>
+              </Expression>
+              <OverallResults successes="8" failures="0" expectedFailures="0"/>
+            </Section>
+            <OverallResults successes="8" failures="0" expectedFailures="0"/>
+          </Section>
+          <OverallResults successes="8" failures="0" expectedFailures="0"/>
+        </Section>
+        <OverallResults successes="8" failures="0" expectedFailures="0"/>
+      </Section>
+      <Section name="Range" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+        <Section name="Negative manual step" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+          <Section name="Integer" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+            <Section name="Slightly under end" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+              <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+                <Original>
+                  gen.get() == 5
+                </Original>
+                <Expanded>
+                  5 == 5
+                </Expanded>
+              </Expression>
+              <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+                <Original>
+                  gen.next()
+                </Original>
+                <Expanded>
+                  true
+                </Expanded>
+              </Expression>
+              <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+                <Original>
+                  gen.get() == 2
+                </Original>
+                <Expanded>
+                  2 == 2
+                </Expanded>
+              </Expression>
+              <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+                <Original>
+                  gen.next()
+                </Original>
+                <Expanded>
+                  true
+                </Expanded>
+              </Expression>
+              <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+                <Original>
+                  gen.get() == -1
+                </Original>
+                <Expanded>
+                  -1 == -1
+                </Expanded>
+              </Expression>
+              <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+                <Original>
+                  gen.next()
+                </Original>
+                <Expanded>
+                  true
+                </Expanded>
+              </Expression>
+              <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+                <Original>
+                  gen.get() == -4
+                </Original>
+                <Expanded>
+                  -4 == -4
+                </Expanded>
+              </Expression>
+              <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+                <Original>
+                  gen.next()
+                </Original>
+                <Expanded>
+                  true
+                </Expanded>
+              </Expression>
+              <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+                <Original>
+                  gen.get() == -7
+                </Original>
+                <Expanded>
+                  -7 == -7
+                </Expanded>
+              </Expression>
+              <Expression success="true" type="REQUIRE_FALSE" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+                <Original>
+                  !(gen.next())
+                </Original>
+                <Expanded>
+                  !false
+                </Expanded>
+              </Expression>
+              <OverallResults successes="10" failures="0" expectedFailures="0"/>
+            </Section>
+            <OverallResults successes="10" failures="0" expectedFailures="0"/>
+          </Section>
+          <OverallResults successes="10" failures="0" expectedFailures="0"/>
+        </Section>
+        <OverallResults successes="10" failures="0" expectedFailures="0"/>
+      </Section>
       <OverallResult success="true"/>
     </TestCase>
     <TestCase name="Greater-than inequalities with different epsilons" tags="[Approx]" filename="projects/<exe-name>/UsageTests/Approx.tests.cpp" >
@@ -12151,7 +12785,7 @@ loose text artifact
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="1161" failures="130" expectedFailures="21"/>
+    <OverallResults successes="1229" failures="130" expectedFailures="21"/>
   </Group>
-  <OverallResults successes="1161" failures="129" expectedFailures="21"/>
+  <OverallResults successes="1229" failures="129" expectedFailures="21"/>
 </Catch>

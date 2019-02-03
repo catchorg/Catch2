@@ -349,6 +349,51 @@ namespace Generators {
         );
     }
 
+    template <typename T>
+    class RangeGenerator final : public IGenerator<T> {
+        T m_current;
+        T m_end;
+        T m_step;
+        bool m_positive;
+
+    public:
+        RangeGenerator(T const& start, T const& end, T const& step):
+            m_current(start),
+            m_end(end),
+            m_step(step),
+            m_positive(m_step > T(0))
+        {
+            assert(m_current != m_end && "Range start and end cannot be equal");
+            assert(m_step != T(0) && "Step size cannot be zero");
+            assert(((m_positive && m_current <= m_end) || (!m_positive && m_current >= m_end)) && "Step moves away from end");
+        }
+
+        RangeGenerator(T const& start, T const& end):
+            RangeGenerator(start, end, (start < end) ? T(1) : T(-1))
+        {}
+
+        T const& get() const override {
+            return m_current;
+        }
+
+        bool next() override {
+            m_current += m_step;
+            return (m_positive) ? (m_current < m_end) : (m_current > m_end);
+        }
+    };
+
+    template <typename T>
+    GeneratorWrapper<T> range(T const& start, T const& end, T const& step) {
+        static_assert(std::is_integral<T>::value && !std::is_same<T, bool>::value, "Type must be an integer");
+        return GeneratorWrapper<T>(pf::make_unique<RangeGenerator<T>>(start, end, step));
+    }
+
+    template <typename T>
+    GeneratorWrapper<T> range(T const& start, T const& end) {
+        static_assert(std::is_integral<T>::value && !std::is_same<T, bool>::value, "Type must be an integer");
+        return GeneratorWrapper<T>(pf::make_unique<RangeGenerator<T>>(start, end));
+    }
+
     auto acquireGeneratorTracker( SourceLineInfo const& lineInfo ) -> IGeneratorTracker&;
 
     template<typename L>
