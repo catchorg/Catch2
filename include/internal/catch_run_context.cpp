@@ -67,6 +67,23 @@ namespace Catch {
         GeneratorTracker::~GeneratorTracker() {}
     }
 
+    class RedirectedStreams {
+    public:
+        RedirectedStreams(std::string& redirectedCout, std::string& redirectedCerr)
+        :   m_redirectedCout(redirectedCout),   
+            m_redirectedCerr(redirectedCerr)
+        {
+        }
+        ~RedirectedStreams() {
+            m_redirectedCout += m_redirectedStdOut.str();
+            m_redirectedCerr += m_redirectedStdErr.str();
+        }
+    private:
+        std::string& m_redirectedCout;
+        std::string& m_redirectedCerr;
+        RedirectedStdOut m_redirectedStdOut;
+        RedirectedStdErr m_redirectedStdErr;
+    };
 
     RunContext::RunContext(IConfigPtr const& _config, IStreamingReporterPtr&& reporter)
     :   m_runInfo(_config->name()),
@@ -323,13 +340,10 @@ namespace Catch {
         CATCH_TRY {
             if (m_reporter->getPreferences().shouldRedirectStdOut) {
 #if !defined(CATCH_CONFIG_EXPERIMENTAL_REDIRECT)
-                RedirectedStdOut redirectedStdOut;
-                RedirectedStdErr redirectedStdErr;
+                RedirectedStreams redirectedStreams(redirectedCout, redirectedCerr);
 
                 timer.start();
                 invokeActiveTestCase();
-                redirectedCout += redirectedStdOut.str();
-                redirectedCerr += redirectedStdErr.str();
 #else
                 OutputRedirect r(redirectedCout, redirectedCerr);
                 timer.start();
