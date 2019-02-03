@@ -4,7 +4,7 @@
     <property name="random-seed" value="1"/>
   </properties>
 loose text artifact
-  <testsuite name="<exe-name>" errors="17" failures="113" tests="1312" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
+  <testsuite name="<exe-name>" errors="17" failures="113" tests="1380" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
     <testcase classname="<exe-name>.global" name="# A test name that starts with a #" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="#1005: Comparing pointer to int and long (NULL can be either on various systems)" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="#1027" time="{duration}"/>
@@ -359,6 +359,14 @@ Message.tests.cpp:<line number>
     <testcase classname="<exe-name>.global" name="Generators internals/Map" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Generators internals/Repeat/Singular repeat" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Generators internals/Repeat/Actual repeat" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="Generators internals/Range/Positive auto step/Integer" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="Generators internals/Range/Negative auto step/Integer" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="Generators internals/Range/Positive manual step/Integer/Exact" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="Generators internals/Range/Positive manual step/Integer/Slightly over end" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="Generators internals/Range/Positive manual step/Integer/Slightly under end" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="Generators internals/Range/Negative manual step/Integer/Exact" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="Generators internals/Range/Negative manual step/Integer/Slightly over end" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="Generators internals/Range/Negative manual step/Integer/Slightly under end" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Greater-than inequalities with different epsilons" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="INFO and WARN do not abort tests" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="INFO gets logged on failure" time="{duration}">

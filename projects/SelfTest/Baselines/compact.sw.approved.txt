@@ -491,6 +491,74 @@ GeneratorsImpl.tests.cpp:<line number>: passed: gen.get() == 2 for: 2 == 2
 GeneratorsImpl.tests.cpp:<line number>: passed: gen.next() for: true
 GeneratorsImpl.tests.cpp:<line number>: passed: gen.get() == 3 for: 3 == 3
 GeneratorsImpl.tests.cpp:<line number>: passed: !(gen.next()) for: !false
+GeneratorsImpl.tests.cpp:<line number>: passed: gen.get() == -2 for: -2 == -2
+GeneratorsImpl.tests.cpp:<line number>: passed: gen.next() for: true
+GeneratorsImpl.tests.cpp:<line number>: passed: gen.get() == -1 for: -1 == -1
+GeneratorsImpl.tests.cpp:<line number>: passed: gen.next() for: true
+GeneratorsImpl.tests.cpp:<line number>: passed: gen.get() == 0 for: 0 == 0
+GeneratorsImpl.tests.cpp:<line number>: passed: gen.next() for: true
+GeneratorsImpl.tests.cpp:<line number>: passed: gen.get() == 1 for: 1 == 1
+GeneratorsImpl.tests.cpp:<line number>: passed: !(gen.next()) for: !false
+GeneratorsImpl.tests.cpp:<line number>: passed: gen.get() == 2 for: 2 == 2
+GeneratorsImpl.tests.cpp:<line number>: passed: gen.next() for: true
+GeneratorsImpl.tests.cpp:<line number>: passed: gen.get() == 1 for: 1 == 1
+GeneratorsImpl.tests.cpp:<line number>: passed: gen.next() for: true
+GeneratorsImpl.tests.cpp:<line number>: passed: gen.get() == 0 for: 0 == 0
+GeneratorsImpl.tests.cpp:<line number>: passed: gen.next() for: true
+GeneratorsImpl.tests.cpp:<line number>: passed: gen.get() == -1 for: -1 == -1
+GeneratorsImpl.tests.cpp:<line number>: passed: !(gen.next()) for: !false
+GeneratorsImpl.tests.cpp:<line number>: passed: gen.get() == -7 for: -7 == -7
+GeneratorsImpl.tests.cpp:<line number>: passed: gen.next() for: true
+GeneratorsImpl.tests.cpp:<line number>: passed: gen.get() == -4 for: -4 == -4
+GeneratorsImpl.tests.cpp:<line number>: passed: gen.next() for: true
+GeneratorsImpl.tests.cpp:<line number>: passed: gen.get() == -1 for: -1 == -1
+GeneratorsImpl.tests.cpp:<line number>: passed: gen.next() for: true
+GeneratorsImpl.tests.cpp:<line number>: passed: gen.get() == 2 for: 2 == 2
+GeneratorsImpl.tests.cpp:<line number>: passed: !(gen.next()) for: !false
+GeneratorsImpl.tests.cpp:<line number>: passed: gen.get() == -7 for: -7 == -7
+GeneratorsImpl.tests.cpp:<line number>: passed: gen.next() for: true
+GeneratorsImpl.tests.cpp:<line number>: passed: gen.get() == -4 for: -4 == -4
+GeneratorsImpl.tests.cpp:<line number>: passed: gen.next() for: true
+GeneratorsImpl.tests.cpp:<line number>: passed: gen.get() == -1 for: -1 == -1
+GeneratorsImpl.tests.cpp:<line number>: passed: gen.next() for: true
+GeneratorsImpl.tests.cpp:<line number>: passed: gen.get() == 2 for: 2 == 2
+GeneratorsImpl.tests.cpp:<line number>: passed: !(gen.next()) for: !false
+GeneratorsImpl.tests.cpp:<line number>: passed: gen.get() == -7 for: -7 == -7
+GeneratorsImpl.tests.cpp:<line number>: passed: gen.next() for: true
+GeneratorsImpl.tests.cpp:<line number>: passed: gen.get() == -4 for: -4 == -4
+GeneratorsImpl.tests.cpp:<line number>: passed: gen.next() for: true
+GeneratorsImpl.tests.cpp:<line number>: passed: gen.get() == -1 for: -1 == -1
+GeneratorsImpl.tests.cpp:<line number>: passed: gen.next() for: true
+GeneratorsImpl.tests.cpp:<line number>: passed: gen.get() == 2 for: 2 == 2
+GeneratorsImpl.tests.cpp:<line number>: passed: gen.next() for: true
+GeneratorsImpl.tests.cpp:<line number>: passed: gen.get() == 5 for: 5 == 5
+GeneratorsImpl.tests.cpp:<line number>: passed: !(gen.next()) for: !false
+GeneratorsImpl.tests.cpp:<line number>: passed: gen.get() == 5 for: 5 == 5
+GeneratorsImpl.tests.cpp:<line number>: passed: gen.next() for: true
+GeneratorsImpl.tests.cpp:<line number>: passed: gen.get() == 2 for: 2 == 2
+GeneratorsImpl.tests.cpp:<line number>: passed: gen.next() for: true
+GeneratorsImpl.tests.cpp:<line number>: passed: gen.get() == -1 for: -1 == -1
+GeneratorsImpl.tests.cpp:<line number>: passed: gen.next() for: true
+GeneratorsImpl.tests.cpp:<line number>: passed: gen.get() == -4 for: -4 == -4
+GeneratorsImpl.tests.cpp:<line number>: passed: !(gen.next()) for: !false
+GeneratorsImpl.tests.cpp:<line number>: passed: gen.get() == 5 for: 5 == 5
+GeneratorsImpl.tests.cpp:<line number>: passed: gen.next() for: true
+GeneratorsImpl.tests.cpp:<line number>: passed: gen.get() == 2 for: 2 == 2
+GeneratorsImpl.tests.cpp:<line number>: passed: gen.next() for: true
+GeneratorsImpl.tests.cpp:<line number>: passed: gen.get() == -1 for: -1 == -1
+GeneratorsImpl.tests.cpp:<line number>: passed: gen.next() for: true
+GeneratorsImpl.tests.cpp:<line number>: passed: gen.get() == -4 for: -4 == -4
+GeneratorsImpl.tests.cpp:<line number>: passed: !(gen.next()) for: !false
+GeneratorsImpl.tests.cpp:<line number>: passed: gen.get() == 5 for: 5 == 5
+GeneratorsImpl.tests.cpp:<line number>: passed: gen.next() for: true
+GeneratorsImpl.tests.cpp:<line number>: passed: gen.get() == 2 for: 2 == 2
+GeneratorsImpl.tests.cpp:<line number>: passed: gen.next() for: true
+GeneratorsImpl.tests.cpp:<line number>: passed: gen.get() == -1 for: -1 == -1
+GeneratorsImpl.tests.cpp:<line number>: passed: gen.next() for: true
+GeneratorsImpl.tests.cpp:<line number>: passed: gen.get() == -4 for: -4 == -4
+GeneratorsImpl.tests.cpp:<line number>: passed: gen.next() for: true
+GeneratorsImpl.tests.cpp:<line number>: passed: gen.get() == -7 for: -7 == -7
+GeneratorsImpl.tests.cpp:<line number>: passed: !(gen.next()) for: !false
 Approx.tests.cpp:<line number>: passed: d >= Approx( 1.22 ) for: 1.23 >= Approx( 1.22 )
 Approx.tests.cpp:<line number>: passed: d >= Approx( 1.23 ) for: 1.23 >= Approx( 1.23 )
 Approx.tests.cpp:<line number>: passed: !(d >= Approx( 1.24 )) for: !(1.23 >= Approx( 1.24 ))
