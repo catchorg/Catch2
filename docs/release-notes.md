@@ -2,6 +2,7 @@
 
 # Release notes
 **Contents**<br>
+[2.6.1](#261)<br>
 [2.6.0](#260)<br>
 [2.5.0](#250)<br>
 [2.4.2](#242)<br>
@@ -18,6 +19,18 @@
 [2.0.1](#201)<br>
 [Older versions](#older-versions)<br>
 [Even Older versions](#even-older-versions)<br>
+
+## 2.6.1
+
+### Improvements
+* The JUnit reporter now also reports random seed (#1520, #1521)
+
+### Fixes
+* The TAP reporter now formats comments with test name properly (#1529)
+* `CATCH_REQUIRE_THROWS`'s internals were unified with `REQUIRE_THROWS` (#1536)
+  * This fixes a potential `-Wunused-value` warning when used
+* Fixed a potential segfault when using any of the `--list-*` options (#1533, #1534)
+
 
 ## 2.6.0
 
