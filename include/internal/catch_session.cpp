@@ -171,9 +171,9 @@ namespace Catch {
             return 1;
 
         auto result = m_cli.parse( clara::Args( argc, argv ) );
-        config();
-        getCurrentMutableContext().setConfig( m_config );
         if( !result ) {
+            config();
+            getCurrentMutableContext().setConfig(m_config);
             Catch::cerr()
                 << Colour( Colour::Red )
                 << "\nError(s) in input:\n"
