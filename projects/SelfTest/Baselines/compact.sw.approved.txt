@@ -793,9 +793,9 @@ CmdLine.tests.cpp:<line number>: passed: cli.parse({"test", "--use-colour", "no"
 CmdLine.tests.cpp:<line number>: passed: config.useColour == UseColour::No for: 2 == 2
 CmdLine.tests.cpp:<line number>: passed: !result for: true
 CmdLine.tests.cpp:<line number>: passed: result.errorMessage(), Contains( "colour mode must be one of" ) for: "colour mode must be one of: auto, yes or no. 'wrong' not recognised" contains: "colour mode must be one of"
-Misc.tests.cpp:<line number>: passed: std::tuple_size<TestType>::value >= 1 for: 1 >= 1
-Misc.tests.cpp:<line number>: passed: std::tuple_size<TestType>::value >= 1 for: 2 >= 1
 Misc.tests.cpp:<line number>: passed: std::tuple_size<TestType>::value >= 1 for: 3 >= 1
+Misc.tests.cpp:<line number>: passed: std::tuple_size<TestType>::value >= 1 for: 2 >= 1
+Misc.tests.cpp:<line number>: passed: std::tuple_size<TestType>::value >= 1 for: 1 >= 1
 Decomposition.tests.cpp:<line number>: failed: truthy(false) for: Hey, its truthy!
 Matchers.tests.cpp:<line number>: failed: testStringForMatching(), Matches("this STRING contains 'abc' as a substring") for: "this string contains 'abc' as a substring" matches "this STRING contains 'abc' as a substring" case sensitively
 Matchers.tests.cpp:<line number>: failed: testStringForMatching(), Matches("contains 'abc' as a substring") for: "this string contains 'abc' as a substring" matches "contains 'abc' as a substring" case sensitively

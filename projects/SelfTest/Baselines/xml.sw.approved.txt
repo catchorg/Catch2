@@ -1195,7 +1195,7 @@
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="A TEMPLATE_PRODUCT_TEST_CASE_METHOD based test run that fails - 0" tags="[.][class][failing][product][template]" filename="projects/<exe-name>/UsageTests/Class.tests.cpp" >
+    <TestCase name="A TEMPLATE_PRODUCT_TEST_CASE_METHOD based test run that fails - Template_Foo&lt;float>" tags="[.][class][failing][product][template]" filename="projects/<exe-name>/UsageTests/Class.tests.cpp" >
       <Expression success="false" type="REQUIRE" filename="projects/<exe-name>/UsageTests/Class.tests.cpp" >
         <Original>
           Template_Fixture_2&lt;TestType>::m_a.size() == 1
@@ -1206,7 +1206,7 @@
       </Expression>
       <OverallResult success="false"/>
     </TestCase>
-    <TestCase name="A TEMPLATE_PRODUCT_TEST_CASE_METHOD based test run that fails - 1" tags="[.][class][failing][product][template]" filename="projects/<exe-name>/UsageTests/Class.tests.cpp" >
+    <TestCase name="A TEMPLATE_PRODUCT_TEST_CASE_METHOD based test run that fails - Template_Foo&lt;int>" tags="[.][class][failing][product][template]" filename="projects/<exe-name>/UsageTests/Class.tests.cpp" >
       <Expression success="false" type="REQUIRE" filename="projects/<exe-name>/UsageTests/Class.tests.cpp" >
         <Original>
           Template_Fixture_2&lt;TestType>::m_a.size() == 1
@@ -1217,7 +1217,7 @@
       </Expression>
       <OverallResult success="false"/>
     </TestCase>
-    <TestCase name="A TEMPLATE_PRODUCT_TEST_CASE_METHOD based test run that fails - 2" tags="[.][class][failing][product][template]" filename="projects/<exe-name>/UsageTests/Class.tests.cpp" >
+    <TestCase name="A TEMPLATE_PRODUCT_TEST_CASE_METHOD based test run that fails - std::vector&lt;float>" tags="[.][class][failing][product][template]" filename="projects/<exe-name>/UsageTests/Class.tests.cpp" >
       <Expression success="false" type="REQUIRE" filename="projects/<exe-name>/UsageTests/Class.tests.cpp" >
         <Original>
           Template_Fixture_2&lt;TestType>::m_a.size() == 1
@@ -1228,7 +1228,7 @@
       </Expression>
       <OverallResult success="false"/>
     </TestCase>
-    <TestCase name="A TEMPLATE_PRODUCT_TEST_CASE_METHOD based test run that fails - 3" tags="[.][class][failing][product][template]" filename="projects/<exe-name>/UsageTests/Class.tests.cpp" >
+    <TestCase name="A TEMPLATE_PRODUCT_TEST_CASE_METHOD based test run that fails - std::vector&lt;int>" tags="[.][class][failing][product][template]" filename="projects/<exe-name>/UsageTests/Class.tests.cpp" >
       <Expression success="false" type="REQUIRE" filename="projects/<exe-name>/UsageTests/Class.tests.cpp" >
         <Original>
           Template_Fixture_2&lt;TestType>::m_a.size() == 1
@@ -1239,7 +1239,7 @@
       </Expression>
       <OverallResult success="false"/>
     </TestCase>
-    <TestCase name="A TEMPLATE_PRODUCT_TEST_CASE_METHOD based test run that succeeds - 0" tags="[class][product][template]" filename="projects/<exe-name>/UsageTests/Class.tests.cpp" >
+    <TestCase name="A TEMPLATE_PRODUCT_TEST_CASE_METHOD based test run that succeeds - Template_Foo&lt;float>" tags="[class][product][template]" filename="projects/<exe-name>/UsageTests/Class.tests.cpp" >
       <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/UsageTests/Class.tests.cpp" >
         <Original>
           Template_Fixture_2&lt;TestType>::m_a.size() == 0
@@ -1250,7 +1250,7 @@
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="A TEMPLATE_PRODUCT_TEST_CASE_METHOD based test run that succeeds - 1" tags="[class][product][template]" filename="projects/<exe-name>/UsageTests/Class.tests.cpp" >
+    <TestCase name="A TEMPLATE_PRODUCT_TEST_CASE_METHOD based test run that succeeds - Template_Foo&lt;int>" tags="[class][product][template]" filename="projects/<exe-name>/UsageTests/Class.tests.cpp" >
       <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/UsageTests/Class.tests.cpp" >
         <Original>
           Template_Fixture_2&lt;TestType>::m_a.size() == 0
@@ -1261,7 +1261,7 @@
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="A TEMPLATE_PRODUCT_TEST_CASE_METHOD based test run that succeeds - 2" tags="[class][product][template]" filename="projects/<exe-name>/UsageTests/Class.tests.cpp" >
+    <TestCase name="A TEMPLATE_PRODUCT_TEST_CASE_METHOD based test run that succeeds - std::vector&lt;float>" tags="[class][product][template]" filename="projects/<exe-name>/UsageTests/Class.tests.cpp" >
       <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/UsageTests/Class.tests.cpp" >
         <Original>
           Template_Fixture_2&lt;TestType>::m_a.size() == 0
@@ -1272,7 +1272,7 @@
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="A TEMPLATE_PRODUCT_TEST_CASE_METHOD based test run that succeeds - 3" tags="[class][product][template]" filename="projects/<exe-name>/UsageTests/Class.tests.cpp" >
+    <TestCase name="A TEMPLATE_PRODUCT_TEST_CASE_METHOD based test run that succeeds - std::vector&lt;int>" tags="[class][product][template]" filename="projects/<exe-name>/UsageTests/Class.tests.cpp" >
       <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/UsageTests/Class.tests.cpp" >
         <Original>
           Template_Fixture_2&lt;TestType>::m_a.size() == 0
@@ -1371,7 +1371,7 @@
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="A Template product test case - 0" tags="[product][template]" filename="projects/<exe-name>/UsageTests/Misc.tests.cpp" >
+    <TestCase name="A Template product test case - Foo&lt;float>" tags="[product][template]" filename="projects/<exe-name>/UsageTests/Misc.tests.cpp" >
       <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/UsageTests/Misc.tests.cpp" >
         <Original>
           x.size() == 0
@@ -1382,7 +1382,7 @@
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="A Template product test case - 1" tags="[product][template]" filename="projects/<exe-name>/UsageTests/Misc.tests.cpp" >
+    <TestCase name="A Template product test case - Foo&lt;int>" tags="[product][template]" filename="projects/<exe-name>/UsageTests/Misc.tests.cpp" >
       <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/UsageTests/Misc.tests.cpp" >
         <Original>
           x.size() == 0
@@ -1393,7 +1393,7 @@
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="A Template product test case - 2" tags="[product][template]" filename="projects/<exe-name>/UsageTests/Misc.tests.cpp" >
+    <TestCase name="A Template product test case - std::vector&lt;float>" tags="[product][template]" filename="projects/<exe-name>/UsageTests/Misc.tests.cpp" >
       <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/UsageTests/Misc.tests.cpp" >
         <Original>
           x.size() == 0
@@ -1404,7 +1404,7 @@
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="A Template product test case - 3" tags="[product][template]" filename="projects/<exe-name>/UsageTests/Misc.tests.cpp" >
+    <TestCase name="A Template product test case - std::vector&lt;int>" tags="[product][template]" filename="projects/<exe-name>/UsageTests/Misc.tests.cpp" >
       <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/UsageTests/Misc.tests.cpp" >
         <Original>
           x.size() == 0
@@ -7247,18 +7247,18 @@
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="Product with differing arities - 0" tags="[product][template]" filename="projects/<exe-name>/UsageTests/Misc.tests.cpp" >
+    <TestCase name="Product with differing arities - std::tuple&lt;int, double, float>" tags="[product][template]" filename="projects/<exe-name>/UsageTests/Misc.tests.cpp" >
       <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/UsageTests/Misc.tests.cpp" >
         <Original>
           std::tuple_size&lt;TestType>::value >= 1
         </Original>
         <Expanded>
-          1 >= 1
+          3 >= 1
         </Expanded>
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="Product with differing arities - 1" tags="[product][template]" filename="projects/<exe-name>/UsageTests/Misc.tests.cpp" >
+    <TestCase name="Product with differing arities - std::tuple&lt;int, double>" tags="[product][template]" filename="projects/<exe-name>/UsageTests/Misc.tests.cpp" >
       <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/UsageTests/Misc.tests.cpp" >
         <Original>
           std::tuple_size&lt;TestType>::value >= 1
@@ -7269,13 +7269,13 @@
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="Product with differing arities - 2" tags="[product][template]" filename="projects/<exe-name>/UsageTests/Misc.tests.cpp" >
+    <TestCase name="Product with differing arities - std::tuple&lt;int>" tags="[product][template]" filename="projects/<exe-name>/UsageTests/Misc.tests.cpp" >
       <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/UsageTests/Misc.tests.cpp" >
         <Original>
           std::tuple_size&lt;TestType>::value >= 1
         </Original>
         <Expanded>
-          3 >= 1
+          1 >= 1
         </Expanded>
       </Expression>
       <OverallResult success="true"/>
