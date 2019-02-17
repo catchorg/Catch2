@@ -1045,7 +1045,8 @@ with expansion:
   "hello" == "hello"
 
 -------------------------------------------------------------------------------
-A TEMPLATE_PRODUCT_TEST_CASE_METHOD based test run that fails - 0
+A TEMPLATE_PRODUCT_TEST_CASE_METHOD based test run that fails - Template_Foo
+<float>
 -------------------------------------------------------------------------------
 Class.tests.cpp:<line number>
 ...............................................................................
@@ -1056,7 +1057,8 @@ with expansion:
   0 == 1
 
 -------------------------------------------------------------------------------
-A TEMPLATE_PRODUCT_TEST_CASE_METHOD based test run that fails - 1
+A TEMPLATE_PRODUCT_TEST_CASE_METHOD based test run that fails - Template_Foo
+<int>
 -------------------------------------------------------------------------------
 Class.tests.cpp:<line number>
 ...............................................................................
@@ -1067,7 +1069,8 @@ with expansion:
   0 == 1
 
 -------------------------------------------------------------------------------
-A TEMPLATE_PRODUCT_TEST_CASE_METHOD based test run that fails - 2
+A TEMPLATE_PRODUCT_TEST_CASE_METHOD based test run that fails - std::vector
+<float>
 -------------------------------------------------------------------------------
 Class.tests.cpp:<line number>
 ...............................................................................
@@ -1078,7 +1081,8 @@ with expansion:
   0 == 1
 
 -------------------------------------------------------------------------------
-A TEMPLATE_PRODUCT_TEST_CASE_METHOD based test run that fails - 3
+A TEMPLATE_PRODUCT_TEST_CASE_METHOD based test run that fails - std::vector
+<int>
 -------------------------------------------------------------------------------
 Class.tests.cpp:<line number>
 ...............................................................................
@@ -1089,7 +1093,8 @@ with expansion:
   0 == 1
 
 -------------------------------------------------------------------------------
-A TEMPLATE_PRODUCT_TEST_CASE_METHOD based test run that succeeds - 0
+A TEMPLATE_PRODUCT_TEST_CASE_METHOD based test run that succeeds - Template_Foo
+<float>
 -------------------------------------------------------------------------------
 Class.tests.cpp:<line number>
 ...............................................................................
@@ -1100,7 +1105,8 @@ with expansion:
   0 == 0
 
 -------------------------------------------------------------------------------
-A TEMPLATE_PRODUCT_TEST_CASE_METHOD based test run that succeeds - 1
+A TEMPLATE_PRODUCT_TEST_CASE_METHOD based test run that succeeds - Template_Foo
+<int>
 -------------------------------------------------------------------------------
 Class.tests.cpp:<line number>
 ...............................................................................
@@ -1111,7 +1117,8 @@ with expansion:
   0 == 0
 
 -------------------------------------------------------------------------------
-A TEMPLATE_PRODUCT_TEST_CASE_METHOD based test run that succeeds - 2
+A TEMPLATE_PRODUCT_TEST_CASE_METHOD based test run that succeeds - std::vector
+<float>
 -------------------------------------------------------------------------------
 Class.tests.cpp:<line number>
 ...............................................................................
@@ -1122,7 +1129,8 @@ with expansion:
   0 == 0
 
 -------------------------------------------------------------------------------
-A TEMPLATE_PRODUCT_TEST_CASE_METHOD based test run that succeeds - 3
+A TEMPLATE_PRODUCT_TEST_CASE_METHOD based test run that succeeds - std::vector
+<int>
 -------------------------------------------------------------------------------
 Class.tests.cpp:<line number>
 ...............................................................................
@@ -1221,7 +1229,7 @@ with expansion:
   1 == 1
 
 -------------------------------------------------------------------------------
-A Template product test case - 0
+A Template product test case - Foo<float>
 -------------------------------------------------------------------------------
 Misc.tests.cpp:<line number>
 ...............................................................................
@@ -1232,7 +1240,7 @@ with expansion:
   0 == 0
 
 -------------------------------------------------------------------------------
-A Template product test case - 1
+A Template product test case - Foo<int>
 -------------------------------------------------------------------------------
 Misc.tests.cpp:<line number>
 ...............................................................................
@@ -1243,7 +1251,7 @@ with expansion:
   0 == 0
 
 -------------------------------------------------------------------------------
-A Template product test case - 2
+A Template product test case - std::vector<float>
 -------------------------------------------------------------------------------
 Misc.tests.cpp:<line number>
 ...............................................................................
@@ -1254,7 +1262,7 @@ with expansion:
   0 == 0
 
 -------------------------------------------------------------------------------
-A Template product test case - 3
+A Template product test case - std::vector<int>
 -------------------------------------------------------------------------------
 Misc.tests.cpp:<line number>
 ...............................................................................
@@ -5779,7 +5787,7 @@ with expansion:
   contains: "colour mode must be one of"
 
 -------------------------------------------------------------------------------
-Product with differing arities - 0
+Product with differing arities - std::tuple<int, double, float>
 -------------------------------------------------------------------------------
 Misc.tests.cpp:<line number>
 ...............................................................................
@@ -5787,10 +5795,10 @@ Misc.tests.cpp:<line number>
 Misc.tests.cpp:<line number>: PASSED:
   REQUIRE( std::tuple_size<TestType>::value >= 1 )
 with expansion:
-  1 >= 1
+  3 >= 1
 
 -------------------------------------------------------------------------------
-Product with differing arities - 1
+Product with differing arities - std::tuple<int, double>
 -------------------------------------------------------------------------------
 Misc.tests.cpp:<line number>
 ...............................................................................
@@ -5801,7 +5809,7 @@ with expansion:
   2 >= 1
 
 -------------------------------------------------------------------------------
-Product with differing arities - 2
+Product with differing arities - std::tuple<int>
 -------------------------------------------------------------------------------
 Misc.tests.cpp:<line number>
 ...............................................................................
@@ -5809,7 +5817,7 @@ Misc.tests.cpp:<line number>
 Misc.tests.cpp:<line number>: PASSED:
   REQUIRE( std::tuple_size<TestType>::value >= 1 )
 with expansion:
-  3 >= 1
+  1 >= 1
 
 -------------------------------------------------------------------------------
 Reconstruction should be based on stringification: #914

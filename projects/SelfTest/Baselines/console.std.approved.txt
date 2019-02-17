@@ -93,7 +93,8 @@ with expansion:
   "hello" == "world"
 
 -------------------------------------------------------------------------------
-A TEMPLATE_PRODUCT_TEST_CASE_METHOD based test run that fails - 0
+A TEMPLATE_PRODUCT_TEST_CASE_METHOD based test run that fails - Template_Foo
+<float>
 -------------------------------------------------------------------------------
 Class.tests.cpp:<line number>
 ...............................................................................
@@ -104,7 +105,8 @@ with expansion:
   0 == 1
 
 -------------------------------------------------------------------------------
-A TEMPLATE_PRODUCT_TEST_CASE_METHOD based test run that fails - 1
+A TEMPLATE_PRODUCT_TEST_CASE_METHOD based test run that fails - Template_Foo
+<int>
 -------------------------------------------------------------------------------
 Class.tests.cpp:<line number>
 ...............................................................................
@@ -115,7 +117,8 @@ with expansion:
   0 == 1
 
 -------------------------------------------------------------------------------
-A TEMPLATE_PRODUCT_TEST_CASE_METHOD based test run that fails - 2
+A TEMPLATE_PRODUCT_TEST_CASE_METHOD based test run that fails - std::vector
+<float>
 -------------------------------------------------------------------------------
 Class.tests.cpp:<line number>
 ...............................................................................
@@ -126,7 +129,8 @@ with expansion:
   0 == 1
 
 -------------------------------------------------------------------------------
-A TEMPLATE_PRODUCT_TEST_CASE_METHOD based test run that fails - 3
+A TEMPLATE_PRODUCT_TEST_CASE_METHOD based test run that fails - std::vector
+<int>
 -------------------------------------------------------------------------------
 Class.tests.cpp:<line number>
 ...............................................................................

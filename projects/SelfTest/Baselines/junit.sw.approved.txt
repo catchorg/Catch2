@@ -80,30 +80,30 @@ Class.tests.cpp:<line number>
       </failure>
     </testcase>
     <testcase classname="<exe-name>.TestClass" name="A METHOD_AS_TEST_CASE based test run that succeeds" time="{duration}"/>
-    <testcase classname="<exe-name>.Template_Fixture_2" name="A TEMPLATE_PRODUCT_TEST_CASE_METHOD based test run that fails - 0" time="{duration}">
+    <testcase classname="<exe-name>.Template_Fixture_2" name="A TEMPLATE_PRODUCT_TEST_CASE_METHOD based test run that fails - Template_Foo&lt;float>" time="{duration}">
       <failure message="0 == 1" type="REQUIRE">
 Class.tests.cpp:<line number>
       </failure>
     </testcase>
-    <testcase classname="<exe-name>.Template_Fixture_2" name="A TEMPLATE_PRODUCT_TEST_CASE_METHOD based test run that fails - 1" time="{duration}">
+    <testcase classname="<exe-name>.Template_Fixture_2" name="A TEMPLATE_PRODUCT_TEST_CASE_METHOD based test run that fails - Template_Foo&lt;int>" time="{duration}">
       <failure message="0 == 1" type="REQUIRE">
 Class.tests.cpp:<line number>
       </failure>
     </testcase>
-    <testcase classname="<exe-name>.Template_Fixture_2" name="A TEMPLATE_PRODUCT_TEST_CASE_METHOD based test run that fails - 2" time="{duration}">
+    <testcase classname="<exe-name>.Template_Fixture_2" name="A TEMPLATE_PRODUCT_TEST_CASE_METHOD based test run that fails - std::vector&lt;float>" time="{duration}">
       <failure message="0 == 1" type="REQUIRE">
 Class.tests.cpp:<line number>
       </failure>
     </testcase>
-    <testcase classname="<exe-name>.Template_Fixture_2" name="A TEMPLATE_PRODUCT_TEST_CASE_METHOD based test run that fails - 3" time="{duration}">
+    <testcase classname="<exe-name>.Template_Fixture_2" name="A TEMPLATE_PRODUCT_TEST_CASE_METHOD based test run that fails - std::vector&lt;int>" time="{duration}">
       <failure message="0 == 1" type="REQUIRE">
 Class.tests.cpp:<line number>
       </failure>
     </testcase>
-    <testcase classname="<exe-name>.Template_Fixture_2" name="A TEMPLATE_PRODUCT_TEST_CASE_METHOD based test run that succeeds - 0" time="{duration}"/>
-    <testcase classname="<exe-name>.Template_Fixture_2" name="A TEMPLATE_PRODUCT_TEST_CASE_METHOD based test run that succeeds - 1" time="{duration}"/>
-    <testcase classname="<exe-name>.Template_Fixture_2" name="A TEMPLATE_PRODUCT_TEST_CASE_METHOD based test run that succeeds - 2" time="{duration}"/>
-    <testcase classname="<exe-name>.Template_Fixture_2" name="A TEMPLATE_PRODUCT_TEST_CASE_METHOD based test run that succeeds - 3" time="{duration}"/>
+    <testcase classname="<exe-name>.Template_Fixture_2" name="A TEMPLATE_PRODUCT_TEST_CASE_METHOD based test run that succeeds - Template_Foo&lt;float>" time="{duration}"/>
+    <testcase classname="<exe-name>.Template_Fixture_2" name="A TEMPLATE_PRODUCT_TEST_CASE_METHOD based test run that succeeds - Template_Foo&lt;int>" time="{duration}"/>
+    <testcase classname="<exe-name>.Template_Fixture_2" name="A TEMPLATE_PRODUCT_TEST_CASE_METHOD based test run that succeeds - std::vector&lt;float>" time="{duration}"/>
+    <testcase classname="<exe-name>.Template_Fixture_2" name="A TEMPLATE_PRODUCT_TEST_CASE_METHOD based test run that succeeds - std::vector&lt;int>" time="{duration}"/>
     <testcase classname="<exe-name>.Template_Fixture" name="A TEMPLATE_TEST_CASE_METHOD based test run that fails - double" time="{duration}">
       <failure message="1.0 == 2" type="REQUIRE">
 Class.tests.cpp:<line number>
@@ -128,10 +128,10 @@ Class.tests.cpp:<line number>
       </failure>
     </testcase>
     <testcase classname="<exe-name>.Fixture" name="A TEST_CASE_METHOD based test run that succeeds" time="{duration}"/>
-    <testcase classname="<exe-name>.global" name="A Template product test case - 0" time="{duration}"/>
-    <testcase classname="<exe-name>.global" name="A Template product test case - 1" time="{duration}"/>
-    <testcase classname="<exe-name>.global" name="A Template product test case - 2" time="{duration}"/>
-    <testcase classname="<exe-name>.global" name="A Template product test case - 3" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="A Template product test case - Foo&lt;float>" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="A Template product test case - Foo&lt;int>" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="A Template product test case - std::vector&lt;float>" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="A Template product test case - std::vector&lt;int>" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="A comparison that uses literals instead of the normal constructor" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="A couple of nested sections followed by a failure" time="{duration}">
       <failure type="FAIL">
@@ -566,9 +566,9 @@ Message.tests.cpp:<line number>
     <testcase classname="<exe-name>.global" name="Process can be configured on command line/use-colour/yes" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Process can be configured on command line/use-colour/no" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Process can be configured on command line/use-colour/error" time="{duration}"/>
-    <testcase classname="<exe-name>.global" name="Product with differing arities - 0" time="{duration}"/>
-    <testcase classname="<exe-name>.global" name="Product with differing arities - 1" time="{duration}"/>
-    <testcase classname="<exe-name>.global" name="Product with differing arities - 2" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="Product with differing arities - std::tuple&lt;int, double, float>" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="Product with differing arities - std::tuple&lt;int, double>" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="Product with differing arities - std::tuple&lt;int>" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Reconstruction should be based on stringification: #914" time="{duration}">
       <failure message="Hey, its truthy!" type="CHECK">
 Decomposition.tests.cpp:<line number>
