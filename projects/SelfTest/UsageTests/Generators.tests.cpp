@@ -145,3 +145,16 @@ TEST_CASE("Generators -- adapters", "[generators]") {
         REQUIRE(j > 0);
     }
 }
+
+// Note that because of the non-reproducibility of distributions,
+// anything involving the random generators cannot be part of approvals
+TEST_CASE("Random generator", "[generators][.][approvals]") {
+    SECTION("Infer int from integral arguments") {
+        auto val = GENERATE(take(4, random(0, 1)));
+        STATIC_REQUIRE(std::is_same<decltype(val), int>::value);
+    }
+    SECTION("Infer double from double arguments") {
+        auto val = GENERATE(take(4, random(0., 1.)));
+        STATIC_REQUIRE(std::is_same<decltype(val), double>::value);
+    }
+}
