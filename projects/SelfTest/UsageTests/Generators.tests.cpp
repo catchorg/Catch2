@@ -152,9 +152,11 @@ TEST_CASE("Random generator", "[generators][.][approvals]") {
     SECTION("Infer int from integral arguments") {
         auto val = GENERATE(take(4, random(0, 1)));
         STATIC_REQUIRE(std::is_same<decltype(val), int>::value);
+        static_cast<void>(val); // Silence VS 2015 unused variable warning
     }
     SECTION("Infer double from double arguments") {
         auto val = GENERATE(take(4, random(0., 1.)));
         STATIC_REQUIRE(std::is_same<decltype(val), double>::value);
+        static_cast<void>(val); // Silence VS 2015 unused variable warning
     }
 }
