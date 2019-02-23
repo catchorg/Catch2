@@ -36,13 +36,14 @@ a test case,
 * 2 fundamental generators
   * `ValueGenerator<T>` -- contains only single element
   * `ValuesGenerator<T>` -- contains multiple elements
-* 4 generic generators that modify other generators
+* 5 generic generators that modify other generators
   * `FilterGenerator<T, Predicate>` -- filters out elements from a generator
   for which the predicate returns "false"
   * `TakeGenerator<T>` -- takes first `n` elements from a generator
   * `RepeatGenerator<T>` -- repeats output from a generator `n` times
   * `MapGenerator<T, U, Func>` -- returns the result of applying `Func`
   on elements from a different generator
+  * `ChunkGenerator<T>` -- returns chunks (inside `std::vector`) of n elements from a generator
 * 3 specific purpose generators
   * `RandomIntegerGenerator<Integral>` -- generates random Integrals from range
   * `RandomFloatGenerator<Float>` -- generates random Floats from range
@@ -58,6 +59,7 @@ type, making their usage much nicer. These are
 * `repeat(repeats, GeneratorWrapper<T>&&)` for `RepeatGenerator<T>`
 * `map(func, GeneratorWrapper<T>&&)` for `MapGenerator<T, T, Func>` (map `T` to `T`)
 * `map<T>(func, GeneratorWrapper<U>&&)` for `MapGenerator<T, U, Func>` (map `U` to `T`)
+* `chunk(chunk-size, GeneratorWrapper<T>&&)` for `ChunkGenerator<T>`
 * `random(IntegerOrFloat a, IntegerOrFloat b)` for `RandomIntegerGenerator` or `RandomFloatGenerator`
 * `range(start, end)` for `RangeGenerator<T>` with a step size of `1` 
 * `range(start, end, step)` for `RangeGenerator<T>` with a custom step size

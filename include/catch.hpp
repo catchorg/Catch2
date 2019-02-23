@@ -63,6 +63,7 @@
 #include "internal/catch_capture_matchers.h"
 #endif
 #include "internal/catch_generators.hpp"
+#include "internal/catch_generators_generic.hpp"
 #include "internal/catch_generators_specific.hpp"
 
 // These files are included here so the single_include script doesn't put them

@@ -114,7 +114,7 @@ SCENARIO("Eating cucumbers", "[generators][approvals]") {
 #endif
 
 // There are also some generic generator manipulators
-TEST_CASE("Generators -- adapters", "[generators]") {
+TEST_CASE("Generators -- adapters", "[generators][generic]") {
     // TODO: This won't work yet, introduce GENERATE_VAR?
     //auto numbers = Catch::Generators::values({ 1, 2, 3, 4, 5, 6 });
     SECTION("Filtering by predicate") {
@@ -143,6 +143,23 @@ TEST_CASE("Generators -- adapters", "[generators]") {
         // This will return values [1, 2, 3, 1, 2, 3]
         auto j = GENERATE(repeat(2, values({ 1, 2, 3 })));
         REQUIRE(j > 0);
+    }
+    SECTION("Chunking a generator into sized pieces") {
+        SECTION("Number of elements in source is divisible by chunk size") {
+            auto chunk2 = GENERATE(chunk(2, values({ 1, 1, 2, 2, 3, 3 })));
+            REQUIRE(chunk2.size() == 2);
+            REQUIRE(chunk2.front() == chunk2.back());
+        }
+        SECTION("Number of elements in source is not divisible by chunk size") {
+            auto chunk2 = GENERATE(chunk(2, values({ 1, 1, 2, 2, 3 })));
+            REQUIRE(chunk2.size() == 2);
+            REQUIRE(chunk2.front() == chunk2.back());
+            REQUIRE(chunk2.front() < 3);
+        }
+        SECTION("Throws on too small generators") {
+            using namespace Catch::Generators;
+            REQUIRE_THROWS_AS(chunk(2, value(1)), Catch::GeneratorException);
+        }
     }
 }
 

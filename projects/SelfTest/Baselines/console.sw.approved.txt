@@ -3081,6 +3081,117 @@ with expansion:
   3 > 0
 
 -------------------------------------------------------------------------------
+Generators -- adapters
+  Chunking a generator into sized pieces
+  Number of elements in source is divisible by chunk size
+-------------------------------------------------------------------------------
+Generators.tests.cpp:<line number>
+...............................................................................
+
+Generators.tests.cpp:<line number>: PASSED:
+  REQUIRE( chunk2.size() == 2 )
+with expansion:
+  2 == 2
+
+Generators.tests.cpp:<line number>: PASSED:
+  REQUIRE( chunk2.front() == chunk2.back() )
+with expansion:
+  1 == 1
+
+-------------------------------------------------------------------------------
+Generators -- adapters
+  Chunking a generator into sized pieces
+  Number of elements in source is divisible by chunk size
+-------------------------------------------------------------------------------
+Generators.tests.cpp:<line number>
+...............................................................................
+
+Generators.tests.cpp:<line number>: PASSED:
+  REQUIRE( chunk2.size() == 2 )
+with expansion:
+  2 == 2
+
+Generators.tests.cpp:<line number>: PASSED:
+  REQUIRE( chunk2.front() == chunk2.back() )
+with expansion:
+  2 == 2
+
+-------------------------------------------------------------------------------
+Generators -- adapters
+  Chunking a generator into sized pieces
+  Number of elements in source is divisible by chunk size
+-------------------------------------------------------------------------------
+Generators.tests.cpp:<line number>
+...............................................................................
+
+Generators.tests.cpp:<line number>: PASSED:
+  REQUIRE( chunk2.size() == 2 )
+with expansion:
+  2 == 2
+
+Generators.tests.cpp:<line number>: PASSED:
+  REQUIRE( chunk2.front() == chunk2.back() )
+with expansion:
+  3 == 3
+
+-------------------------------------------------------------------------------
+Generators -- adapters
+  Chunking a generator into sized pieces
+  Number of elements in source is not divisible by chunk size
+-------------------------------------------------------------------------------
+Generators.tests.cpp:<line number>
+...............................................................................
+
+Generators.tests.cpp:<line number>: PASSED:
+  REQUIRE( chunk2.size() == 2 )
+with expansion:
+  2 == 2
+
+Generators.tests.cpp:<line number>: PASSED:
+  REQUIRE( chunk2.front() == chunk2.back() )
+with expansion:
+  1 == 1
+
+Generators.tests.cpp:<line number>: PASSED:
+  REQUIRE( chunk2.front() < 3 )
+with expansion:
+  1 < 3
+
+-------------------------------------------------------------------------------
+Generators -- adapters
+  Chunking a generator into sized pieces
+  Number of elements in source is not divisible by chunk size
+-------------------------------------------------------------------------------
+Generators.tests.cpp:<line number>
+...............................................................................
+
+Generators.tests.cpp:<line number>: PASSED:
+  REQUIRE( chunk2.size() == 2 )
+with expansion:
+  2 == 2
+
+Generators.tests.cpp:<line number>: PASSED:
+  REQUIRE( chunk2.front() == chunk2.back() )
+with expansion:
+  2 == 2
+
+Generators.tests.cpp:<line number>: PASSED:
+  REQUIRE( chunk2.front() < 3 )
+with expansion:
+  2 < 3
+
+-------------------------------------------------------------------------------
+Generators -- adapters
+  Chunking a generator into sized pieces
+  Throws on too small generators
+-------------------------------------------------------------------------------
+Generators.tests.cpp:<line number>
+...............................................................................
+
+Generators.tests.cpp:<line number>: PASSED:
+  REQUIRE_THROWS_AS( chunk(2, value(1)), Catch::GeneratorException )
+
+-------------------------------------------------------------------------------
 Generators -- simple
   one
 -------------------------------------------------------------------------------
@@ -10574,5 +10685,5 @@ Misc.tests.cpp:<line number>: PASSED:
 
 ===============================================================================
 test cases:  245 |  172 passed |  69 failed |  4 failed as expected
-assertions: 1379 | 1229 passed | 129 failed | 21 failed as expected
+assertions: 1392 | 1242 passed | 129 failed | 21 failed as expected
 
