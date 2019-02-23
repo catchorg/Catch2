@@ -134,6 +134,17 @@ with expansion:
   [1403 helper] == [1403 helper]
 
 -------------------------------------------------------------------------------
+#1548
+-------------------------------------------------------------------------------
+Compilation.tests.cpp:<line number>
+...............................................................................
+
+Compilation.tests.cpp:<line number>: PASSED:
+  REQUIRE( std::is_same<TypeList<int>, TypeList<int>>::value )
+with expansion:
+  true
+
+-------------------------------------------------------------------------------
 #748 - captures with unexpected exceptions
   outside assertions
 -------------------------------------------------------------------------------
@@ -10698,6 +10709,6 @@ Misc.tests.cpp:<line number>
 Misc.tests.cpp:<line number>: PASSED:
 
 ===============================================================================
-test cases:  245 |  172 passed |  69 failed |  4 failed as expected
-assertions: 1393 | 1243 passed | 129 failed | 21 failed as expected
+test cases:  246 |  173 passed |  69 failed |  4 failed as expected
+assertions: 1394 | 1244 passed | 129 failed | 21 failed as expected
 

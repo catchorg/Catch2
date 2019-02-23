@@ -142,6 +142,17 @@
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
+    <TestCase name="#1548" tags="[compilation]" filename="projects/<exe-name>/UsageTests/Compilation.tests.cpp" >
+      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/UsageTests/Compilation.tests.cpp" >
+        <Original>
+          std::is_same&lt;TypeList&lt;int>, TypeList&lt;int>>::value
+        </Original>
+        <Expanded>
+          true
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
     <TestCase name="#748 - captures with unexpected exceptions" tags="[!shouldfail][!throws][.][failing]" filename="projects/<exe-name>/UsageTests/Exception.tests.cpp" >
       <Section name="outside assertions" filename="projects/<exe-name>/UsageTests/Exception.tests.cpp" >
         <Info>
@@ -12948,7 +12959,7 @@ loose text artifact
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="1243" failures="130" expectedFailures="21"/>
+    <OverallResults successes="1244" failures="130" expectedFailures="21"/>
   </Group>
-  <OverallResults successes="1243" failures="129" expectedFailures="21"/>
+  <OverallResults successes="1244" failures="129" expectedFailures="21"/>
 </Catch>

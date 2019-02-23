@@ -17,6 +17,11 @@ namespace foo {
     };
 }
 
+namespace bar {
+    template <typename... Ts>
+    struct TypeList {};
+}
+
 #ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wmissing-declarations"
 #endif
@@ -182,6 +187,11 @@ namespace { namespace CompilationTests {
     TEST_CASE("Optionally static assertions", "[compilation]") {
         STATIC_REQUIRE( std::is_void<void>::value );
         STATIC_REQUIRE_FALSE( std::is_void<int>::value );
+    }
+
+    TEST_CASE("#1548", "[compilation]") {
+        using namespace bar;
+        REQUIRE(std::is_same<TypeList<int>, TypeList<int>>::value);
     }
 
 }} // namespace CompilationTests
