@@ -36,7 +36,7 @@ namespace Catch {
 #ifdef _MSC_VER
         sprintf_s(buffer, "%.3f", duration);
 #else
-        sprintf(buffer, "%.3f", duration);
+        std::sprintf(buffer, "%.3f", duration);
 #endif
         return std::string(buffer);
     }

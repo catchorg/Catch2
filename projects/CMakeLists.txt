@@ -102,6 +102,7 @@ set(INTERNAL_HEADERS
         ${HEADER_DIR}/internal/catch_external_interfaces.h
         ${HEADER_DIR}/internal/catch_fatal_condition.h
         ${HEADER_DIR}/internal/catch_generators.hpp
+        ${HEADER_DIR}/internal/catch_generators_specific.hpp
         ${HEADER_DIR}/internal/catch_impl.hpp
         ${HEADER_DIR}/internal/catch_interfaces_capture.h
         ${HEADER_DIR}/internal/catch_interfaces_config.h

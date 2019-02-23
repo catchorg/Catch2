@@ -10,6 +10,7 @@
 #include "catch_console_colour.h"
 #include "catch_enforce.h"
 #include "catch_list.h"
+#include "catch_context.h"
 #include "catch_run_context.h"
 #include "catch_stream.h"
 #include "catch_test_spec.h"
@@ -171,6 +172,8 @@ namespace Catch {
 
         auto result = m_cli.parse( clara::Args( argc, argv ) );
         if( !result ) {
+            config();
+            getCurrentMutableContext().setConfig(m_config);
             Catch::cerr()
                 << Colour( Colour::Red )
                 << "\nError(s) in input:\n"
@@ -262,7 +265,7 @@ namespace Catch {
                 applyFilenamesAsTags( *m_config );
 
             // Handle list request
-            if( Option<std::size_t> listed = list( config() ) )
+            if( Option<std::size_t> listed = list( m_config ) )
                 return static_cast<int>( *listed );
 
             auto totals = runTests( m_config );

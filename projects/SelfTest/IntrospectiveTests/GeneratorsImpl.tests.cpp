@@ -99,5 +99,111 @@ TEST_CASE("Generators internals", "[generators][internals]") {
             REQUIRE_FALSE(gen.next());
         }
     }
+    SECTION("Range") {
+        SECTION("Positive auto step") {
+            SECTION("Integer") {
+                auto gen = range(-2, 2);
+                REQUIRE(gen.get() == -2);
+                REQUIRE(gen.next());
+                REQUIRE(gen.get() == -1);
+                REQUIRE(gen.next());
+                REQUIRE(gen.get() == 0);
+                REQUIRE(gen.next());
+                REQUIRE(gen.get() == 1);
+                REQUIRE_FALSE(gen.next());
+            }
+        }
+        SECTION("Negative auto step") {
+            SECTION("Integer") {
+                auto gen = range(2, -2);
+                REQUIRE(gen.get() == 2);
+                REQUIRE(gen.next());
+                REQUIRE(gen.get() == 1);
+                REQUIRE(gen.next());
+                REQUIRE(gen.get() == 0);
+                REQUIRE(gen.next());
+                REQUIRE(gen.get() == -1);
+                REQUIRE_FALSE(gen.next());
+            }
+        }
+        SECTION("Positive manual step") {
+            SECTION("Integer") {
+                SECTION("Exact") {
+                    auto gen = range(-7, 5, 3);
+                    REQUIRE(gen.get() == -7);
+                    REQUIRE(gen.next());
+                    REQUIRE(gen.get() == -4);
+                    REQUIRE(gen.next());
+                    REQUIRE(gen.get() == -1);
+                    REQUIRE(gen.next());
+                    REQUIRE(gen.get() == 2);
+                    REQUIRE_FALSE(gen.next());
+                }
+                SECTION("Slightly over end") {
+                    auto gen = range(-7, 4, 3);
+                    REQUIRE(gen.get() == -7);
+                    REQUIRE(gen.next());
+                    REQUIRE(gen.get() == -4);
+                    REQUIRE(gen.next());
+                    REQUIRE(gen.get() == -1);
+                    REQUIRE(gen.next());
+                    REQUIRE(gen.get() == 2);
+                    REQUIRE_FALSE(gen.next());
+                }
+                SECTION("Slightly under end") {
+                    auto gen = range(-7, 6, 3);
+                    REQUIRE(gen.get() == -7);
+                    REQUIRE(gen.next());
+                    REQUIRE(gen.get() == -4);
+                    REQUIRE(gen.next());
+                    REQUIRE(gen.get() == -1);
+                    REQUIRE(gen.next());
+                    REQUIRE(gen.get() == 2);
+                    REQUIRE(gen.next());
+                    REQUIRE(gen.get() == 5);
+                    REQUIRE_FALSE(gen.next());
+                }
+            }
+        }
+        SECTION("Negative manual step") {
+            SECTION("Integer") {
+                SECTION("Exact") {
+                    auto gen = range(5, -7, -3);
+                    REQUIRE(gen.get() == 5);
+                    REQUIRE(gen.next());
+                    REQUIRE(gen.get() == 2);
+                    REQUIRE(gen.next());
+                    REQUIRE(gen.get() == -1);
+                    REQUIRE(gen.next());
+                    REQUIRE(gen.get() == -4);
+                    REQUIRE_FALSE(gen.next());
+                }
+                SECTION("Slightly over end") {
+                    auto gen = range(5, -6, -3);
+                    REQUIRE(gen.get() == 5);
+                    REQUIRE(gen.next());
+                    REQUIRE(gen.get() == 2);
+                    REQUIRE(gen.next());
+                    REQUIRE(gen.get() == -1);
+                    REQUIRE(gen.next());
+                    REQUIRE(gen.get() == -4);
+                    REQUIRE_FALSE(gen.next());
+                }
+                SECTION("Slightly under end") {
+                    auto gen = range(5, -8, -3);
+                    REQUIRE(gen.get() == 5);
+                    REQUIRE(gen.next());
+                    REQUIRE(gen.get() == 2);
+                    REQUIRE(gen.next());
+                    REQUIRE(gen.get() == -1);
+                    REQUIRE(gen.next());
+                    REQUIRE(gen.get() == -4);
+                    REQUIRE(gen.next());
+                    REQUIRE(gen.get() == -7);
+                    REQUIRE_FALSE(gen.next());
+                }
+            }
+        }
+    }
 
 }

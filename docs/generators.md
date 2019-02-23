@@ -43,6 +43,10 @@ a test case,
   * `RepeatGenerator<T>` -- repeats output from a generator `n` times
   * `MapGenerator<T, U, Func>` -- returns the result of applying `Func`
   on elements from a different generator
+* 3 specific purpose generators
+  * `RandomIntegerGenerator<Integral>` -- generates random Integrals from range
+  * `RandomFloatGenerator<Float>` -- generates random Floats from range
+  * `RangeGenerator<T>` -- generates all values inside a specific range
 
 The generators also have associated helper functions that infer their
 type, making their usage much nicer. These are
@@ -54,6 +58,10 @@ type, making their usage much nicer. These are
 * `repeat(repeats, GeneratorWrapper<T>&&)` for `RepeatGenerator<T>`
 * `map(func, GeneratorWrapper<T>&&)` for `MapGenerator<T, T, Func>` (map `T` to `T`)
 * `map<T>(func, GeneratorWrapper<U>&&)` for `MapGenerator<T, U, Func>` (map `U` to `T`)
+* `random(IntegerOrFloat a, IntegerOrFloat b)` for `RandomIntegerGenerator` or `RandomFloatGenerator`
+* `range(start, end)` for `RangeGenerator<T>` with a step size of `1` 
+* `range(start, end, step)` for `RangeGenerator<T>` with a custom step size
+
 
 And can be used as shown in the example below to create a generator
 that returns 100 odd random number:
@@ -68,8 +76,6 @@ TEST_CASE("Generating random ints", "[example][generator]") {
     }
 }
 ```
-
-_Note that `random` is currently not a part of the first-party generators_.
 
 
 Apart from registering generators with Catch2, the `GENERATE` macro has

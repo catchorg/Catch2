@@ -1,6 +1,6 @@
 /*
- *  Catch v2.6.0
- *  Generated: 2019-01-31 22:25:55.560884
+ *  Catch v2.6.1
+ *  Generated: 2019-02-12 19:52:52.262497
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2019 Two Blue Cubes Ltd. All rights reserved.
@@ -15,7 +15,7 @@
 
 #define CATCH_VERSION_MAJOR 2
 #define CATCH_VERSION_MINOR 6
-#define CATCH_VERSION_PATCH 0
+#define CATCH_VERSION_PATCH 1
 
 #ifdef __clang__
 #    pragma clang system_header
@@ -8881,7 +8881,7 @@ namespace Catch {
 
     std::size_t listReporters();
 
-    Option<std::size_t> list( Config const& config );
+    Option<std::size_t> list( std::shared_ptr<Config> const& config );
 
 } // end namespace Catch
 
@@ -9019,15 +9019,16 @@ namespace Catch {
         return factories.size();
     }
 
-    Option<std::size_t> list( Config const& config ) {
+    Option<std::size_t> list( std::shared_ptr<Config> const& config ) {
         Option<std::size_t> listedCount;
-        if( config.listTests() )
-            listedCount = listedCount.valueOr(0) + listTests( config );
-        if( config.listTestNamesOnly() )
-            listedCount = listedCount.valueOr(0) + listTestsNamesOnly( config );
-        if( config.listTags() )
-            listedCount = listedCount.valueOr(0) + listTags( config );
-        if( config.listReporters() )
+        getCurrentMutableContext().setConfig( config );
+        if( config->listTests() )
+            listedCount = listedCount.valueOr(0) + listTests( *config );
+        if( config->listTestNamesOnly() )
+            listedCount = listedCount.valueOr(0) + listTestsNamesOnly( *config );
+        if( config->listTags() )
+            listedCount = listedCount.valueOr(0) + listTags( *config );
+        if( config->listReporters() )
             listedCount = listedCount.valueOr(0) + listReporters();
         return listedCount;
     }
@@ -10761,6 +10762,8 @@ namespace Catch {
             return 1;
 
         auto result = m_cli.parse( clara::Args( argc, argv ) );
+        config();
+        getCurrentMutableContext().setConfig( m_config );
         if( !result ) {
             Catch::cerr()
                 << Colour( Colour::Red )
@@ -10853,7 +10856,7 @@ namespace Catch {
                 applyFilenamesAsTags( *m_config );
 
             // Handle list request
-            if( Option<std::size_t> listed = list( config() ) )
+            if( Option<std::size_t> listed = list( m_config ) )
                 return static_cast<int>( *listed );
 
             auto totals = runTests( m_config );
@@ -12426,7 +12429,7 @@ namespace Catch {
     }
 
     Version const& libraryVersion() {
-        static Version version( 2, 6, 0, "", 0 );
+        static Version version( 2, 6, 1, "", 0 );
         return version;
     }
 
@@ -13761,6 +13764,13 @@ namespace Catch {
     void JunitReporter::testRunStarting( TestRunInfo const& runInfo )  {
         CumulativeReporterBase::testRunStarting( runInfo );
         xml.startElement( "testsuites" );
+        if( m_config->rngSeed() != 0 ) {
+            xml.startElement( "properties" );
+            xml.scopedElement( "property" )
+                .writeAttribute( "name", "random-seed" )
+                .writeAttribute( "value", m_config->rngSeed() );
+            xml.endElement();
+        }
     }
 
     void JunitReporter::testGroupStarting( GroupInfo const& groupInfo ) {
@@ -14345,7 +14355,7 @@ int main (int argc, char * const argv[]) {
 #define CATCH_REQUIRE( ... ) INTERNAL_CATCH_TEST( "CATCH_REQUIRE", Catch::ResultDisposition::Normal, __VA_ARGS__ )
 #define CATCH_REQUIRE_FALSE( ... ) INTERNAL_CATCH_TEST( "CATCH_REQUIRE_FALSE", Catch::ResultDisposition::Normal | Catch::ResultDisposition::FalseTest, __VA_ARGS__ )
 
-#define CATCH_REQUIRE_THROWS( ... ) INTERNAL_CATCH_THROWS( "CATCH_REQUIRE_THROWS", Catch::ResultDisposition::Normal, "", __VA_ARGS__ )
+#define CATCH_REQUIRE_THROWS( ... ) INTERNAL_CATCH_THROWS( "CATCH_REQUIRE_THROWS", Catch::ResultDisposition::Normal, __VA_ARGS__ )
 #define CATCH_REQUIRE_THROWS_AS( expr, exceptionType ) INTERNAL_CATCH_THROWS_AS( "CATCH_REQUIRE_THROWS_AS", exceptionType, Catch::ResultDisposition::Normal, expr )
 #define CATCH_REQUIRE_THROWS_WITH( expr, matcher ) INTERNAL_CATCH_THROWS_STR_MATCHES( "CATCH_REQUIRE_THROWS_WITH", Catch::ResultDisposition::Normal, matcher, expr )
 #if !defined(CATCH_CONFIG_DISABLE_MATCHERS)
@@ -14359,7 +14369,7 @@ int main (int argc, char * const argv[]) {
 #define CATCH_CHECKED_ELSE( ... ) INTERNAL_CATCH_ELSE( "CATCH_CHECKED_ELSE", Catch::ResultDisposition::ContinueOnFailure, __VA_ARGS__ )
 #define CATCH_CHECK_NOFAIL( ... ) INTERNAL_CATCH_TEST( "CATCH_CHECK_NOFAIL", Catch::ResultDisposition::ContinueOnFailure | Catch::ResultDisposition::SuppressFail, __VA_ARGS__ )
 
-#define CATCH_CHECK_THROWS( ... )  INTERNAL_CATCH_THROWS( "CATCH_CHECK_THROWS", Catch::ResultDisposition::ContinueOnFailure, "", __VA_ARGS__ )
+#define CATCH_CHECK_THROWS( ... )  INTERNAL_CATCH_THROWS( "CATCH_CHECK_THROWS", Catch::ResultDisposition::ContinueOnFailure, __VA_ARGS__ )
 #define CATCH_CHECK_THROWS_AS( expr, exceptionType ) INTERNAL_CATCH_THROWS_AS( "CATCH_CHECK_THROWS_AS", exceptionType, Catch::ResultDisposition::ContinueOnFailure, expr )
 #define CATCH_CHECK_THROWS_WITH( expr, matcher ) INTERNAL_CATCH_THROWS_STR_MATCHES( "CATCH_CHECK_THROWS_WITH", Catch::ResultDisposition::ContinueOnFailure, matcher, expr )
 #if !defined(CATCH_CONFIG_DISABLE_MATCHERS)

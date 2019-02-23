@@ -6,8 +6,13 @@ import subprocess
 catchPath = os.path.dirname(os.path.realpath( os.path.dirname(sys.argv[0])))
 
 def getBuildExecutable():
-    dir = os.environ.get('CATCH_DEV_OUT_DIR', "cmake-build-debug/projects/SelfTest")
-    return dir
+    if os.name == 'nt':
+        dir = os.environ.get('CATCH_DEV_OUT_DIR', "cmake-build-debug/projects/SelfTest.exe")
+        return dir
+    else:
+        dir = os.environ.get('CATCH_DEV_OUT_DIR', "cmake-build-debug/projects/SelfTest")
+        return dir
+
 
 def runAndCapture( args ):
     child = subprocess.Popen(" ".join( args ), shell=True, stdout=subprocess.PIPE)
