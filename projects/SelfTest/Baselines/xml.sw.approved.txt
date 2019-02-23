@@ -3540,36 +3540,59 @@
     </TestCase>
     <TestCase name="Generators -- adapters" tags="[generators][generic]" filename="projects/<exe-name>/UsageTests/Generators.tests.cpp" >
       <Section name="Filtering by predicate" filename="projects/<exe-name>/UsageTests/Generators.tests.cpp" >
-        <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/UsageTests/Generators.tests.cpp" >
-          <Original>
-            i % 2 == 0
-          </Original>
-          <Expanded>
-            0 == 0
-          </Expanded>
-        </Expression>
+        <Section name="Basic usage" filename="projects/<exe-name>/UsageTests/Generators.tests.cpp" >
+          <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/UsageTests/Generators.tests.cpp" >
+            <Original>
+              i % 2 == 0
+            </Original>
+            <Expanded>
+              0 == 0
+            </Expanded>
+          </Expression>
+          <OverallResults successes="1" failures="0" expectedFailures="0"/>
+        </Section>
         <OverallResults successes="1" failures="0" expectedFailures="0"/>
       </Section>
       <Section name="Filtering by predicate" filename="projects/<exe-name>/UsageTests/Generators.tests.cpp" >
-        <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/UsageTests/Generators.tests.cpp" >
-          <Original>
-            i % 2 == 0
-          </Original>
-          <Expanded>
-            0 == 0
-          </Expanded>
-        </Expression>
+        <Section name="Basic usage" filename="projects/<exe-name>/UsageTests/Generators.tests.cpp" >
+          <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/UsageTests/Generators.tests.cpp" >
+            <Original>
+              i % 2 == 0
+            </Original>
+            <Expanded>
+              0 == 0
+            </Expanded>
+          </Expression>
+          <OverallResults successes="1" failures="0" expectedFailures="0"/>
+        </Section>
         <OverallResults successes="1" failures="0" expectedFailures="0"/>
       </Section>
       <Section name="Filtering by predicate" filename="projects/<exe-name>/UsageTests/Generators.tests.cpp" >
-        <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/UsageTests/Generators.tests.cpp" >
-          <Original>
-            i % 2 == 0
-          </Original>
-          <Expanded>
-            0 == 0
-          </Expanded>
-        </Expression>
+        <Section name="Basic usage" filename="projects/<exe-name>/UsageTests/Generators.tests.cpp" >
+          <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/UsageTests/Generators.tests.cpp" >
+            <Original>
+              i % 2 == 0
+            </Original>
+            <Expanded>
+              0 == 0
+            </Expanded>
+          </Expression>
+          <OverallResults successes="1" failures="0" expectedFailures="0"/>
+        </Section>
+        <OverallResults successes="1" failures="0" expectedFailures="0"/>
+      </Section>
+      <Section name="Filtering by predicate" filename="projects/<exe-name>/UsageTests/Generators.tests.cpp" >
+        <Section name="Throws if there are no matching values" filename="projects/<exe-name>/UsageTests/Generators.tests.cpp" >
+          <Expression success="true" type="REQUIRE_THROWS_AS" filename="projects/<exe-name>/UsageTests/Generators.tests.cpp" >
+            <Original>
+              filter([] (int) {return false; }, value(1)), Catch::GeneratorException
+            </Original>
+            <Expanded>
+              filter([] (int) {return false; }, value(1)), Catch::GeneratorException
+            </Expanded>
+          </Expression>
+          <OverallResults successes="1" failures="0" expectedFailures="0"/>
+        </Section>
         <OverallResults successes="1" failures="0" expectedFailures="0"/>
       </Section>
       <Section name="Shortening a range" filename="projects/<exe-name>/UsageTests/Generators.tests.cpp" >
@@ -12925,7 +12948,7 @@ loose text artifact
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="1242" failures="130" expectedFailures="21"/>
+    <OverallResults successes="1243" failures="130" expectedFailures="21"/>
   </Group>
-  <OverallResults successes="1242" failures="129" expectedFailures="21"/>
+  <OverallResults successes="1243" failures="129" expectedFailures="21"/>
 </Catch>

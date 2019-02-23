@@ -402,6 +402,7 @@ Matchers.tests.cpp:<line number>: passed: WithinULP(1.f, -1), std::domain_error
 Generators.tests.cpp:<line number>: passed: i % 2 == 0 for: 0 == 0
 Generators.tests.cpp:<line number>: passed: i % 2 == 0 for: 0 == 0
 Generators.tests.cpp:<line number>: passed: i % 2 == 0 for: 0 == 0
+Generators.tests.cpp:<line number>: passed: filter([] (int) {return false; }, value(1)), Catch::GeneratorException
 Generators.tests.cpp:<line number>: passed: i < 4 for: 1 < 4
 Generators.tests.cpp:<line number>: passed: i < 4 for: 2 < 4
 Generators.tests.cpp:<line number>: passed: i < 4 for: 3 < 4

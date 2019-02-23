@@ -2861,6 +2861,7 @@ Matchers.tests.cpp:<line number>: PASSED:
 -------------------------------------------------------------------------------
 Generators -- adapters
   Filtering by predicate
+  Basic usage
 -------------------------------------------------------------------------------
 Generators.tests.cpp:<line number>
 ...............................................................................
@@ -2873,6 +2874,7 @@ with expansion:
 -------------------------------------------------------------------------------
 Generators -- adapters
   Filtering by predicate
+  Basic usage
 -------------------------------------------------------------------------------
 Generators.tests.cpp:<line number>
 ...............................................................................
@@ -2885,6 +2887,7 @@ with expansion:
 -------------------------------------------------------------------------------
 Generators -- adapters
   Filtering by predicate
+  Basic usage
 -------------------------------------------------------------------------------
 Generators.tests.cpp:<line number>
 ...............................................................................
@@ -2893,6 +2896,17 @@ Generators.tests.cpp:<line number>: PASSED:
   REQUIRE( i % 2 == 0 )
 with expansion:
   0 == 0
+
+-------------------------------------------------------------------------------
+Generators -- adapters
+  Filtering by predicate
+  Throws if there are no matching values
+-------------------------------------------------------------------------------
+Generators.tests.cpp:<line number>
+...............................................................................
+
+Generators.tests.cpp:<line number>: PASSED:
+  REQUIRE_THROWS_AS( filter([] (int) {return false; }, value(1)), Catch::GeneratorException )
 
 -------------------------------------------------------------------------------
 Generators -- adapters
@@ -10685,5 +10699,5 @@ Misc.tests.cpp:<line number>: PASSED:
 
 ===============================================================================
 test cases:  245 |  172 passed |  69 failed |  4 failed as expected
-assertions: 1392 | 1242 passed | 129 failed | 21 failed as expected
+assertions: 1393 | 1243 passed | 129 failed | 21 failed as expected
 

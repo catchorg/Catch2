@@ -118,9 +118,15 @@ TEST_CASE("Generators -- adapters", "[generators][generic]") {
     // TODO: This won't work yet, introduce GENERATE_VAR?
     //auto numbers = Catch::Generators::values({ 1, 2, 3, 4, 5, 6 });
     SECTION("Filtering by predicate") {
-        // This filters out all odd (false) numbers, giving [2, 4, 6]
-        auto i = GENERATE(filter([] (int val) { return val % 2 == 0; }, values({ 1, 2, 3, 4, 5, 6 })));
-        REQUIRE(i % 2 == 0);
+        SECTION("Basic usage") {
+            // This filters out all odd (false) numbers, giving [2, 4, 6]
+            auto i = GENERATE(filter([] (int val) { return val % 2 == 0; }, values({ 1, 2, 3, 4, 5, 6 })));
+            REQUIRE(i % 2 == 0);
+        }
+        SECTION("Throws if there are no matching values") {
+            using namespace Catch::Generators;
+            REQUIRE_THROWS_AS(filter([] (int) {return false; }, value(1)), Catch::GeneratorException);
+        }
     }
     SECTION("Shortening a range") {
         // This takes the first 3 elements from the values, giving back [1, 2, 3]
