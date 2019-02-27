@@ -27,42 +27,63 @@ namespace Matchers {
             std::string m_str;
         };
 
-        struct StringMatcherBase : MatcherBase<std::string> {
+        template<typename Derived>
+        struct StringMatcherBase : MatcherBase<Derived> {
             StringMatcherBase( std::string const& operation, CasedString const& comparator );
-            std::string describe() const override;
+            std::string describe() const ;
 
             CasedString m_comparator;
             std::string m_operation;
         };
 
-        struct EqualsMatcher : StringMatcherBase {
+
+        template<typename Derived>
+        StringMatcherBase<Derived>::StringMatcherBase( std::string const& operation, CasedString const& comparator )
+        : m_comparator( comparator ),
+          m_operation( operation ) {
+        }
+
+        template<typename Derived>
+        std::string StringMatcherBase<Derived>::describe() const {
+            std::string description;
+            description.reserve(5 + m_operation.size() + m_comparator.m_str.size() +
+                                        m_comparator.caseSensitivitySuffix().size());
+            description += m_operation;
+            description += ": \"";
+            description += m_comparator.m_str;
+            description += "\"";
+            description += m_comparator.caseSensitivitySuffix();
+            return description;
+        }
+
+        struct EqualsMatcher : StringMatcherBase<EqualsMatcher> {
             EqualsMatcher( CasedString const& comparator );
-            bool match( std::string const& source ) const override;
+            bool match( std::string const& source ) const ;
         };
-        struct ContainsMatcher : StringMatcherBase {
+        struct ContainsMatcher : StringMatcherBase<ContainsMatcher> {
             ContainsMatcher( CasedString const& comparator );
-            bool match( std::string const& source ) const override;
+            bool match( std::string const& source ) const ;
         };
-        struct StartsWithMatcher : StringMatcherBase {
+        struct StartsWithMatcher : StringMatcherBase<StartsWithMatcher> {
             StartsWithMatcher( CasedString const& comparator );
-            bool match( std::string const& source ) const override;
+            bool match( std::string const& source ) const ;
         };
-        struct EndsWithMatcher : StringMatcherBase {
+        struct EndsWithMatcher : StringMatcherBase<EndsWithMatcher> {
             EndsWithMatcher( CasedString const& comparator );
-            bool match( std::string const& source ) const override;
+            bool match( std::string const& source ) const ;
         };
 
-        struct RegexMatcher : MatcherBase<std::string> {
+        struct RegexMatcher : MatcherBase<RegexMatcher> {
             RegexMatcher( std::string regex, CaseSensitive::Choice caseSensitivity );
-            bool match( std::string const& matchee ) const override;
-            std::string describe() const override;
+            bool match( std::string const& matchee ) const ;
+            std::string describe() const ;
 
         private:
             std::string m_regex;
             CaseSensitive::Choice m_caseSensitivity;
         };
 
-    } // namespace StdString
+    } // namespace StdString`
 
 
     // The following functions create the actual matcher objects.

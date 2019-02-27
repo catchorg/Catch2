@@ -24,7 +24,7 @@ namespace Catch {
             return m_reporterPrefs;
         }
 
-        void noMatchingTestCases(std::string const& spec) override;
+        void noMatchingTestCases(std::string const& spec);
 
         void assertionStarting( AssertionInfo const& ) override {}
 

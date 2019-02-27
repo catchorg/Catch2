@@ -467,13 +467,13 @@ ok {test-number} - 1.234f == Approx( dMedium ) for: 1.234f == Approx( 1.234 )
 # Approximate comparisons with mixed numeric types
 ok {test-number} - dMedium == Approx( 1.234f ) for: 1.234 == Approx( 1.2339999676 )
 # Arbitrary predicate matcher
-ok {test-number} - 1, Predicate<int>(alwaysTrue, "always true") for: 1 matches predicate: "always true"
+ok {test-number} - 1, Predicate(alwaysTrue, "always true") for: 1 matches predicate: "always true"
 # Arbitrary predicate matcher
-ok {test-number} - 1, !Predicate<int>(alwaysFalse, "always false") for: 1 not matches predicate: "always false"
+ok {test-number} - 1, !Predicate(alwaysFalse, "always false") for: 1 not matches predicate: "always false"
 # Arbitrary predicate matcher
-ok {test-number} - "Hello olleH", Predicate<std::string>( [] (std::string const& str) -> bool { return str.front() == str.back(); }, "First and last character should be equal") for: "Hello olleH" matches predicate: "First and last character should be equal"
+ok {test-number} - "Hello olleH", Predicate( [] (std::string const& str) -> bool { return str.front() == str.back(); }, "First and last character should be equal") for: "Hello olleH" matches predicate: "First and last character should be equal"
 # Arbitrary predicate matcher
-ok {test-number} - "This wouldn't pass", !Predicate<std::string>( [] (std::string const& str) -> bool { return str.front() == str.back(); } ) for: "This wouldn't pass" not matches undescribed predicate
+ok {test-number} - "This wouldn't pass", !Predicate( [] (std::string const& str) -> bool { return str.front() == str.back(); } ) for: "This wouldn't pass" not matches undescribed predicate
 # Assertions then sections
 ok {test-number} - true
 # Assertions then sections
@@ -2003,7 +2003,7 @@ ok {test-number} - str1.size() == 2 + 5 for: 7 == 7
 # Precision of floating point stringification can be set
 ok {test-number} - str2.size() == 2 + 15 for: 17 == 17
 # Predicate matcher can accept const char*
-ok {test-number} - "foo", Predicate<const char*>([] (const char* const&) { return true; }) for: "foo" matches undescribed predicate
+ok {test-number} - "foo", Predicate([] (const char* const&) { return true; }) for: "foo" matches undescribed predicate
 # Process can be configured on command line
 ok {test-number} - result for: {?}
 # Process can be configured on command line
@@ -3214,6 +3214,8 @@ ok {test-number} - b != a for: 2 != 1
 ok {test-number} - a != b for: 1 != 2
 # non streamable - with conv. op
 ok {test-number} - s == "7" for: "7" == "7"
+# non-const access
+ok {test-number} - s, Predicate([](S &s){ return s.value() == 42;}) for: {?} matches undescribed predicate
 # non-copyable objects
 ok {test-number} - ti == typeid(int) for: {?} == {?}
 # normal_cdf
@@ -3578,5 +3580,5 @@ ok {test-number} - q3 == 23. for: 23.0 == 23.0
 ok {test-number} -
 # xmlentitycheck
 ok {test-number} -
-1..1785
+1..1786
 

@@ -1862,12 +1862,12 @@ Matchers.tests.cpp:<line number>
 ...............................................................................
 
 Matchers.tests.cpp:<line number>: PASSED:
-  REQUIRE_THAT( 1, Predicate<int>(alwaysTrue, "always true") )
+  REQUIRE_THAT( 1, Predicate(alwaysTrue, "always true") )
 with expansion:
   1 matches predicate: "always true"
 
 Matchers.tests.cpp:<line number>: PASSED:
-  REQUIRE_THAT( 1, !Predicate<int>(alwaysFalse, "always false") )
+  REQUIRE_THAT( 1, !Predicate(alwaysFalse, "always false") )
 with expansion:
   1 not matches predicate: "always false"
 
@@ -1879,12 +1879,12 @@ Matchers.tests.cpp:<line number>
 ...............................................................................
 
 Matchers.tests.cpp:<line number>: PASSED:
-  REQUIRE_THAT( "Hello olleH", Predicate<std::string>( [] (std::string const& str) -> bool { return str.front() == str.back(); }, "First and last character should be equal") )
+  REQUIRE_THAT( "Hello olleH", Predicate( [] (std::string const& str) -> bool { return str.front() == str.back(); }, "First and last character should be equal") )
 with expansion:
   "Hello olleH" matches predicate: "First and last character should be equal"
 
 Matchers.tests.cpp:<line number>: PASSED:
-  REQUIRE_THAT( "This wouldn't pass", !Predicate<std::string>( [] (std::string const& str) -> bool { return str.front() == str.back(); } ) )
+  REQUIRE_THAT( "This wouldn't pass", !Predicate( [] (std::string const& str) -> bool { return str.front() == str.back(); } ) )
 with expansion:
   "This wouldn't pass" not matches undescribed predicate
 
@@ -7457,7 +7457,7 @@ Matchers.tests.cpp:<line number>
 ...............................................................................
 
 Matchers.tests.cpp:<line number>: PASSED:
-  REQUIRE_THAT( "foo", Predicate<const char*>([] (const char* const&) { return true; }) )
+  REQUIRE_THAT( "foo", Predicate([] (const char* const&) { return true; }) )
 with expansion:
   "foo" matches undescribed predicate
 
@@ -12421,6 +12421,17 @@ with expansion:
   "7" == "7"
 
 -------------------------------------------------------------------------------
+non-const access
+-------------------------------------------------------------------------------
+Matchers.tests.cpp:<line number>
+...............................................................................
+
+Matchers.tests.cpp:<line number>: PASSED:
+  REQUIRE_THAT( s, Predicate([](S &s){ return s.value() == 42;}) )
+with expansion:
+  {?} matches undescribed predicate
+
+-------------------------------------------------------------------------------
 non-copyable objects
 -------------------------------------------------------------------------------
 Tricky.tests.cpp:<line number>
@@ -13960,6 +13971,6 @@ Misc.tests.cpp:<line number>
 Misc.tests.cpp:<line number>: PASSED:
 
 ===============================================================================
-test cases:  320 |  230 passed |  86 failed |  4 failed as expected
-assertions: 1793 | 1624 passed | 148 failed | 21 failed as expected
+test cases:  321 |  231 passed |  86 failed |  4 failed as expected
+assertions: 1794 | 1625 passed | 148 failed | 21 failed as expected
 

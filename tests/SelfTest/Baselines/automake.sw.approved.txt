@@ -260,6 +260,7 @@ loose text artifact
 :test-result: FAIL more nested SECTION tests
 :test-result: PASS nested SECTION tests
 :test-result: PASS non streamable - with conv. op
+:test-result: PASS non-const access
 :test-result: PASS non-copyable objects
 :test-result: PASS normal_cdf
 :test-result: PASS normal_quantile

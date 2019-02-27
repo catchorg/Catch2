@@ -22,8 +22,8 @@ namespace Detail {
     std::string finalizeDescription(const std::string& desc);
 }
 
-template <typename T, typename Predicate>
-class PredicateMatcher : public MatcherBase<T> {
+template <typename Predicate>
+class PredicateMatcher : public MatcherBase<PredicateMatcher<Predicate>> {
     Predicate m_predicate;
     std::string m_description;
 public:
@@ -33,11 +33,14 @@ public:
         m_description(Detail::finalizeDescription(descr))
     {}
 
-    bool match( T const& item ) const override {
-        return m_predicate(item);
+    template<typename ArgT>
+    bool match( ArgT && item ) const  {
+        static_assert(is_callable<Predicate(ArgT)>::value, "Predicate not callable with argument T");
+        static_assert(std::is_same<bool, FunctionReturnType<Predicate, ArgT>>::value, "Predicate does not return bool");
+        return m_predicate(std::forward<ArgT>(item));
     }
 
-    std::string describe() const override {
+    std::string describe() const  {
         return m_description;
     }
 };
@@ -48,11 +51,9 @@ public:
     // The user has to explicitly specify type to the function, because
     // inferring std::function<bool(T const&)> is hard (but possible) and
     // requires a lot of TMP.
-    template<typename T, typename Pred>
-    Generic::PredicateMatcher<T, Pred> Predicate(Pred&& predicate, std::string const& description = "") {
-        static_assert(is_callable<Pred(T)>::value, "Predicate not callable with argument T");
-        static_assert(std::is_same<bool, FunctionReturnType<Pred, T>>::value, "Predicate does not return bool");
-        return Generic::PredicateMatcher<T, Pred>(std::forward<Pred>(predicate), description);
+    template<typename Pred>
+    Generic::PredicateMatcher<Pred> Predicate(Pred&& predicate, std::string const& description = "") {
+        return Generic::PredicateMatcher<Pred>(std::forward<Pred>(predicate), description);
     }
 
 } // namespace Matchers

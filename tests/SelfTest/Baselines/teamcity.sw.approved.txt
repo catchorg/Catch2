@@ -656,6 +656,8 @@ Misc.tests.cpp:<line number>|nexpression failed|n  REQUIRE( a == b )|nwith expan
 ##teamcity[testFinished name='nested SECTION tests' duration="{duration}"]
 ##teamcity[testStarted name='non streamable - with conv. op']
 ##teamcity[testFinished name='non streamable - with conv. op' duration="{duration}"]
+##teamcity[testStarted name='non-const access']
+##teamcity[testFinished name='non-const access' duration="{duration}"]
 ##teamcity[testStarted name='non-copyable objects']
 ##teamcity[testFinished name='non-copyable objects' duration="{duration}"]
 ##teamcity[testStarted name='normal_cdf']

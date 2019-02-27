@@ -32,24 +32,6 @@ namespace Matchers {
                    : std::string();
         }
 
-
-        StringMatcherBase::StringMatcherBase( std::string const& operation, CasedString const& comparator )
-        : m_comparator( comparator ),
-          m_operation( operation ) {
-        }
-
-        std::string StringMatcherBase::describe() const {
-            std::string description;
-            description.reserve(5 + m_operation.size() + m_comparator.m_str.size() +
-                                        m_comparator.caseSensitivitySuffix().size());
-            description += m_operation;
-            description += ": \"";
-            description += m_comparator.m_str;
-            description += "\"";
-            description += m_comparator.caseSensitivitySuffix();
-            return description;
-        }
-
         EqualsMatcher::EqualsMatcher( CasedString const& comparator ) : StringMatcherBase( "equals", comparator ) {}
 
         bool EqualsMatcher::match( std::string const& source ) const {

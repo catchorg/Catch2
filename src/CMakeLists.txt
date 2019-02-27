@@ -129,7 +129,6 @@ set(IMPL_SOURCES
     ${SOURCES_DIR}/catch_approx.cpp
     ${SOURCES_DIR}/catch_assertionhandler.cpp
     ${SOURCES_DIR}/catch_assertionresult.cpp
-    ${SOURCES_DIR}/catch_capture_matchers.cpp
     ${SOURCES_DIR}/catch_commandline.cpp
     ${SOURCES_DIR}/catch_common.cpp
     ${SOURCES_DIR}/catch_config.cpp
@@ -153,7 +152,6 @@ set(IMPL_SOURCES
     ${SOURCES_DIR}/catch_interfaces_testcase.cpp
     ${SOURCES_DIR}/catch_list.cpp
     ${SOURCES_DIR}/catch_leak_detector.cpp
-    ${SOURCES_DIR}/catch_matchers.cpp
     ${SOURCES_DIR}/catch_matchers_exception.cpp
     ${SOURCES_DIR}/catch_matchers_floating.cpp
     ${SOURCES_DIR}/catch_matchers_generic.cpp

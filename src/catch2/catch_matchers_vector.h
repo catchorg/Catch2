@@ -18,11 +18,11 @@ namespace Matchers {
 
     namespace Vector {
         template<typename T>
-        struct ContainsElementMatcher : MatcherBase<std::vector<T>> {
+        struct ContainsElementMatcher : MatcherBase<ContainsElementMatcher<T>> {
 
             ContainsElementMatcher(T const &comparator) : m_comparator( comparator) {}
 
-            bool match(std::vector<T> const &v) const override {
+            bool match(std::vector<T> const &v) const  {
                 for (auto const& el : v) {
                     if (el == m_comparator) {
                         return true;
@@ -31,7 +31,7 @@ namespace Matchers {
                 return false;
             }
 
-            std::string describe() const override {
+            std::string describe() const  {
                 return "Contains: " + ::Catch::Detail::stringify( m_comparator );
             }
 
@@ -39,11 +39,11 @@ namespace Matchers {
         };
 
         template<typename T>
-        struct ContainsMatcher : MatcherBase<std::vector<T>> {
+        struct ContainsMatcher : MatcherBase<ContainsMatcher<T>> {
 
             ContainsMatcher(std::vector<T> const &comparator) : m_comparator( comparator ) {}
 
-            bool match(std::vector<T> const &v) const override {
+            bool match(std::vector<T> const &v) const  {
                 // !TBD: see note in EqualsMatcher
                 if (m_comparator.size() > v.size())
                     return false;
@@ -61,7 +61,7 @@ namespace Matchers {
                 }
                 return true;
             }
-            std::string describe() const override {
+            std::string describe() const  {
                 return "Contains: " + ::Catch::Detail::stringify( m_comparator );
             }
 
@@ -69,11 +69,11 @@ namespace Matchers {
         };
 
         template<typename T>
-        struct EqualsMatcher : MatcherBase<std::vector<T>> {
+        struct EqualsMatcher : MatcherBase<EqualsMatcher<T>> {
 
             EqualsMatcher(std::vector<T> const &comparator) : m_comparator( comparator ) {}
 
-            bool match(std::vector<T> const &v) const override {
+            bool match(std::vector<T> const &v) const  {
                 // !TBD: This currently works if all elements can be compared using !=
                 // - a more general approach would be via a compare template that defaults
                 // to using !=. but could be specialised for, e.g. std::vector<T> etc
@@ -85,18 +85,18 @@ namespace Matchers {
                         return false;
                 return true;
             }
-            std::string describe() const override {
+            std::string describe() const  {
                 return "Equals: " + ::Catch::Detail::stringify( m_comparator );
             }
             std::vector<T> const& m_comparator;
         };
 
         template<typename T>
-        struct ApproxMatcher : MatcherBase<std::vector<T>> {
+        struct ApproxMatcher : MatcherBase<ApproxMatcher<T>> {
 
             ApproxMatcher(std::vector<T> const& comparator) : m_comparator( comparator ) {}
 
-            bool match(std::vector<T> const &v) const override {
+            bool match(std::vector<T> const &v) const {
                 if (m_comparator.size() != v.size())
                     return false;
                 for (std::size_t i = 0; i < v.size(); ++i)
@@ -104,7 +104,7 @@ namespace Matchers {
                         return false;
                 return true;
             }
-            std::string describe() const override {
+            std::string describe() const {
                 return "is approx: " + ::Catch::Detail::stringify( m_comparator );
             }
             template <typename = std::enable_if_t<std::is_constructible<double, T>::value>>
@@ -128,9 +128,9 @@ namespace Matchers {
         };
 
         template<typename T>
-        struct UnorderedEqualsMatcher : MatcherBase<std::vector<T>> {
+        struct UnorderedEqualsMatcher : MatcherBase<UnorderedEqualsMatcher<T>> {
             UnorderedEqualsMatcher(std::vector<T> const& target) : m_target(target) {}
-            bool match(std::vector<T> const& vec) const override {
+            bool match(std::vector<T> const& vec) const  {
                 // Note: This is a reimplementation of std::is_permutation,
                 //       because I don't want to include <algorithm> inside the common path
                 if (m_target.size() != vec.size()) {
@@ -139,7 +139,7 @@ namespace Matchers {
                 return std::is_permutation(m_target.begin(), m_target.end(), vec.begin());
             }
 
-            std::string describe() const override {
+            std::string describe() const  {
                 return "UnorderedEquals: " + ::Catch::Detail::stringify(m_target);
             }
         private:

@@ -2078,7 +2078,7 @@ Nor would this
       <Section name="Function pointer" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
         <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
           <Original>
-            1, Predicate&lt;int>(alwaysTrue, "always true")
+            1, Predicate(alwaysTrue, "always true")
           </Original>
           <Expanded>
             1 matches predicate: "always true"
@@ -2086,7 +2086,7 @@ Nor would this
         </Expression>
         <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
           <Original>
-            1, !Predicate&lt;int>(alwaysFalse, "always false")
+            1, !Predicate(alwaysFalse, "always false")
           </Original>
           <Expanded>
             1 not matches predicate: "always false"
@@ -2097,7 +2097,7 @@ Nor would this
       <Section name="Lambdas + different type" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
         <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
           <Original>
-            "Hello olleH", Predicate&lt;std::string>( [] (std::string const&amp; str) -> bool { return str.front() == str.back(); }, "First and last character should be equal")
+            "Hello olleH", Predicate( [] (std::string const&amp; str) -> bool { return str.front() == str.back(); }, "First and last character should be equal")
           </Original>
           <Expanded>
             "Hello olleH" matches predicate: "First and last character should be equal"
@@ -2105,7 +2105,7 @@ Nor would this
         </Expression>
         <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
           <Original>
-            "This wouldn't pass", !Predicate&lt;std::string>( [] (std::string const&amp; str) -> bool { return str.front() == str.back(); } )
+            "This wouldn't pass", !Predicate( [] (std::string const&amp; str) -> bool { return str.front() == str.back(); } )
           </Original>
           <Expanded>
             "This wouldn't pass" not matches undescribed predicate
@@ -9398,7 +9398,7 @@ Nor would this
     <TestCase name="Predicate matcher can accept const char*" tags="[compilation][matchers]" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
       <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
         <Original>
-          "foo", Predicate&lt;const char*>([] (const char* const&amp;) { return true; })
+          "foo", Predicate([] (const char* const&amp;) { return true; })
         </Original>
         <Expanded>
           "foo" matches undescribed predicate
@@ -15046,6 +15046,17 @@ loose text artifact
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
+    <TestCase name="non-const access" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
+      <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
+        <Original>
+          s, Predicate([](S &amp;s){ return s.value() == 42;})
+        </Original>
+        <Expanded>
+          {?} matches undescribed predicate
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
     <TestCase name="non-copyable objects" tags="[.][failing]" filename="tests/<exe-name>/UsageTests/Tricky.tests.cpp" >
       <Expression success="true" type="CHECK" filename="tests/<exe-name>/UsageTests/Tricky.tests.cpp" >
         <Original>
@@ -16841,7 +16852,7 @@ loose text artifact
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="1624" failures="149" expectedFailures="21"/>
+    <OverallResults successes="1625" failures="149" expectedFailures="21"/>
   </Group>
-  <OverallResults successes="1624" failures="148" expectedFailures="21"/>
+  <OverallResults successes="1625" failures="148" expectedFailures="21"/>
 </Catch>

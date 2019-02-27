@@ -16,19 +16,19 @@ namespace Matchers {
 
         enum class FloatingPointKind : uint8_t;
 
-        struct WithinAbsMatcher : MatcherBase<double> {
+        struct WithinAbsMatcher : MatcherBase<WithinAbsMatcher> {
             WithinAbsMatcher(double target, double margin);
-            bool match(double const& matchee) const override;
-            std::string describe() const override;
+            bool match(double const& matchee) const;
+            std::string describe() const;
         private:
             double m_target;
             double m_margin;
         };
 
-        struct WithinUlpsMatcher : MatcherBase<double> {
+        struct WithinUlpsMatcher : MatcherBase<WithinUlpsMatcher> {
             WithinUlpsMatcher(double target, uint64_t ulps, FloatingPointKind baseType);
-            bool match(double const& matchee) const override;
-            std::string describe() const override;
+            bool match(double const& matchee) const;
+            std::string describe() const;
         private:
             double m_target;
             uint64_t m_ulps;
@@ -41,10 +41,10 @@ namespace Matchers {
         // |lhs - rhs| <= epsilon * max(fabs(lhs), fabs(rhs)), then we get
         // the same result if we do this for floats, as if we do this for
         // doubles that were promoted from floats.
-        struct WithinRelMatcher : MatcherBase<double> {
+        struct WithinRelMatcher : MatcherBase<WithinRelMatcher> {
             WithinRelMatcher(double target, double epsilon);
-            bool match(double const& matchee) const override;
-            std::string describe() const override;
+            bool match(double const& matchee) const;
+            std::string describe() const;
         private:
             double m_target;
             double m_epsilon;

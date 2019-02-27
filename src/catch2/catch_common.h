@@ -80,6 +80,23 @@ namespace Catch {
     T const& operator + ( T const& value, StreamEndStop ) {
         return value;
     }
+
+    // backported index_sequnce
+    template <std::size_t ...>
+    struct indexSequence
+    { };
+
+    template <std::size_t N, std::size_t ... Next>
+    struct indexSequenceHelper : public indexSequenceHelper<N-1U, N-1U, Next...>
+    { };
+
+    template <std::size_t ... Next>
+    struct indexSequenceHelper<0U, Next ... >
+    { using type = indexSequence<Next ... >; };
+
+    template <std::size_t N>
+  using makeIndexSequence = typename indexSequenceHelper<N>::type;
+
 }
 
 #define CATCH_INTERNAL_LINEINFO \

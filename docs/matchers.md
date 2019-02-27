@@ -147,9 +147,9 @@ REQUIRE_THROWS_MATCHES(throwsDerivedException(),  DerivedException,  Message("De
 It's easy to provide your own matchers to extend Catch or just to work with your own types.
 
 You need to provide two things:
-1. A matcher class, derived from `Catch::MatcherBase<T>` - where `T` is the type being tested.
+1. A matcher class, derived from `Catch::MatcherBase<T>` - where `T` is the matcher class.
 The constructor takes and stores any arguments needed (e.g. something to compare against) and you must
-override two methods: `match()` and `describe()`.
+provide two methods: `match()` and `describe()`.
 2. A simple builder function. This is what is actually called from the test code and allows overloading.
 
 Here's an example for asserting that an integer falls within a given range
@@ -157,13 +157,13 @@ Here's an example for asserting that an integer falls within a given range
 
 ```c++
 // The matcher class
-class IntRange : public Catch::MatcherBase<int> {
+class IntRange : public Catch::MatcherBase<IntRange> {
     int m_begin, m_end;
 public:
     IntRange( int begin, int end ) : m_begin( begin ), m_end( end ) {}
 
     // Performs the test for this matcher
-    bool match( int const& i ) const override {
+    bool match( int const& i ) const {
         return i >= m_begin && i <= m_end;
     }
 
@@ -171,7 +171,7 @@ public:
     // include any provided data (the begin/ end in this case) and
     // be written as if it were stating a fact (in the output it will be
     // preceded by the value under test).
-    virtual std::string describe() const override {
+    std::string describe() const {
         std::ostringstream ss;
         ss << "is between " << m_begin << " and " << m_end;
         return ss.str();

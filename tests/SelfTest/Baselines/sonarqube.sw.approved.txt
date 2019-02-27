@@ -1200,6 +1200,7 @@ with expansion:
 Matchers.tests.cpp:<line number>
       </failure>
     </testCase>
+    <testCase name="non-const access" duration="{duration}"/>
   </file>
   <file path="tests/<exe-name>/UsageTests/Message.tests.cpp">
     <testCase name="#1455 - INFO and WARN can start with a linebreak" duration="{duration}"/>

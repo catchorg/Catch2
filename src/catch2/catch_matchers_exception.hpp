@@ -13,7 +13,7 @@ namespace Catch {
 namespace Matchers {
 namespace Exception {
 
-class ExceptionMessageMatcher : public MatcherBase<std::exception> {
+class ExceptionMessageMatcher : public MatcherBase<ExceptionMessageMatcher> {
     std::string m_message;
 public:
 
@@ -21,9 +21,9 @@ public:
         m_message(message)
     {}
 
-    bool match(std::exception const& ex) const override;
+    bool match(std::exception const& ex) const;
 
-    std::string describe() const override;
+    std::string describe() const;
 };
 
 } // namespace Exception

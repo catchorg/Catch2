@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuitesloose text artifact
 >
-  <testsuite name="<exe-name>" errors="17" failures="132" tests="1794" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
+  <testsuite name="<exe-name>" errors="17" failures="132" tests="1795" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
     <properties>
       <property name="filters" value="~[!nonportable]~[!benchmark]~[approvals] *"/>
       <property name="random-seed" value="1"/>
@@ -1564,6 +1564,7 @@ Misc.tests.cpp:<line number>
     <testcase classname="<exe-name>.global" name="nested SECTION tests/doesn't equal" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="nested SECTION tests/doesn't equal/not equal" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="non streamable - with conv. op" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="non-const access" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="non-copyable objects" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="normal_cdf" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="normal_quantile" time="{duration}"/>

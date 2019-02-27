@@ -11,153 +11,203 @@
 #include <catch2/catch_common.h>
 
 #include <string>
-#include <vector>
+#include <tuple>
 
 namespace Catch {
 namespace Matchers {
     namespace Impl {
 
-        template<typename ArgT> struct MatchAllOf;
-        template<typename ArgT> struct MatchAnyOf;
-        template<typename ArgT> struct MatchNotOf;
+        template<typename... Matchers> struct MatchAllOf;
+        template<typename... Matchers> struct MatchAnyOf;
+        template<typename Matcher> struct MatchNotOf;
 
-        class MatcherUntypedBase {
+        template<typename Derived>
+        class MatcherBase {
         public:
-            MatcherUntypedBase() = default;
-            MatcherUntypedBase ( MatcherUntypedBase const& ) = default;
-            MatcherUntypedBase& operator = ( MatcherUntypedBase const& ) = delete;
+            MatcherBase() = default;
+            MatcherBase ( MatcherBase const& ) = default;
+            MatcherBase& operator = ( MatcherBase const& ) = delete;
             std::string toString() const;
 
+            template<typename Other>
+            MatchAllOf<Derived, Other> operator && ( Other const& other ) const;
+
+            template<typename Other>
+            MatchAnyOf<Derived, Other> operator || ( Other const& other ) const;
+
+            MatchNotOf<Derived> operator ! () const;
+
+            Derived const& derived() const { return static_cast<const Derived &>(*this); }
+
         protected:
-            virtual ~MatcherUntypedBase();
-            virtual std::string describe() const = 0;
             mutable std::string m_cachedToString;
         };
 
-#ifdef __clang__
-#    pragma clang diagnostic push
-#    pragma clang diagnostic ignored "-Wnon-virtual-dtor"
-#endif
+        template<typename Derived>
+        std::string MatcherBase<Derived>::toString() const {
+            if( m_cachedToString.empty() )
+                m_cachedToString = derived().describe();
+            return m_cachedToString;
+        }
 
-        template<typename ObjectT>
-        struct MatcherMethod {
-            virtual bool match( ObjectT const& arg ) const = 0;
-        };
+        template<typename... Matchers>
+        using Tuple = std::tuple<typename std::add_lvalue_reference<typename std::add_const<Matchers>::type>::type ...>;
 
-#if defined(__OBJC__)
-        // Hack to fix Catch GH issue #1661. Could use id for generic Object support.
-        // use of const for Object pointers is very uncommon and under ARC it causes some kind of signature mismatch that breaks compilation
-        template<>
-        struct MatcherMethod<NSString*> {
-            virtual bool match( NSString* arg ) const = 0;
-        };
-#endif
+        template<typename... Matchers>
+        struct MatchAllOf : MatcherBase<MatchAllOf<Matchers...>> {
+            MatchAllOf( Matchers const &... matchers ) : m_matchers{matchers...}
+            {}
 
-#ifdef __clang__
-#    pragma clang diagnostic pop
-#endif
-
-        template<typename T>
-        struct MatcherBase : MatcherUntypedBase, MatcherMethod<T> {
-
-
-            MatchAllOf<T> operator && ( MatcherBase const& other ) const;
-            MatchAnyOf<T> operator || ( MatcherBase const& other ) const;
-            MatchNotOf<T> operator ! () const;
-        };
-
-        template<typename ArgT>
-        struct MatchAllOf : MatcherBase<ArgT> {
-            bool match( ArgT const& arg ) const override {
-                for( auto matcher : m_matchers ) {
-                    if (!matcher->match(arg))
-                        return false;
-                }
-                return true;
-            }
-            std::string describe() const override {
-                std::string description;
-                description.reserve( 4 + m_matchers.size()*32 );
-                description += "( ";
-                bool first = true;
-                for( auto matcher : m_matchers ) {
-                    if( first )
-                        first = false;
-                    else
-                        description += " and ";
-                    description += matcher->toString();
-                }
-                description += " )";
-                return description;
+            template<typename ArgT>
+            bool match_helper( ArgT && ) const { 
+              return true;
             }
 
-            MatchAllOf<ArgT>& operator && ( MatcherBase<ArgT> const& other ) {
-                m_matchers.push_back( &other );
-                return *this;
-            }
-
-            std::vector<MatcherBase<ArgT> const*> m_matchers;
-        };
-        template<typename ArgT>
-        struct MatchAnyOf : MatcherBase<ArgT> {
-
-            bool match( ArgT const& arg ) const override {
-                for( auto matcher : m_matchers ) {
-                    if (matcher->match(arg))
-                        return true;
-                }
+            template<typename ArgT, typename Matcher, typename... Rest>
+            bool match_helper( ArgT && arg, Matcher &&matcher, Rest &&... rest ) const {
+              if (!matcher.match(std::forward<ArgT>(arg))) {
                 return false;
+              }
+
+              return match_helper(std::forward<ArgT>(arg), std::forward<Rest>(rest)...);
             }
-            std::string describe() const override {
+
+            template<typename ArgT, size_t... Is>
+            bool match_impl( ArgT && arg, indexSequence<Is...>) const {
+              return match_helper(std::forward<ArgT>(arg), std::get<Is>(m_matchers)...);
+            }
+
+            template<typename ArgT>
+            bool match( ArgT && arg ) const {
+                return match_impl(std::forward<ArgT>(arg), makeIndexSequence<sizeof...(Matchers)>{});
+            }
+
+            std::string describe_helper() const { return {}; }
+
+            template<typename Matcher, typename... Rest>
+            std::string describe_helper( Matcher &&matcher, Rest &&... rest ) const {
+              return " and " + matcher.describe() + describe_helper(std::forward<Rest>(rest)...);
+            }
+
+            template<size_t... Is>
+            std::string describe_impl( indexSequence<Is...>) const {
+              // remove first and
+              return describe_helper(std::get<Is>(m_matchers)...).substr(5);
+            }            
+            
+            std::string describe() const {
                 std::string description;
-                description.reserve( 4 + m_matchers.size()*32 );
-                description += "( ";
-                bool first = true;
-                for( auto matcher : m_matchers ) {
-                    if( first )
-                        first = false;
-                    else
-                        description += " or ";
-                    description += matcher->toString();
-                }
-                description += " )";
+                description.reserve( 4 + sizeof...(Matchers)*32 );
+                description += "( " + describe_impl(makeIndexSequence<sizeof...(Matchers)>{}) + " )";
                 return description;
             }
 
-            MatchAnyOf<ArgT>& operator || ( MatcherBase<ArgT> const& other ) {
-                m_matchers.push_back( &other );
-                return *this;
+            template<typename Other, size_t... I>
+            MatchAllOf<Matchers..., Other> and_helper(Other const &other, indexSequence<I...>) {
+                return {std::get<I>(m_matchers)..., other};
             }
 
-            std::vector<MatcherBase<ArgT> const*> m_matchers;
+            template<typename Other>
+            MatchAllOf<Matchers..., Other> operator && ( Other const& other ) {
+                return and_helper(other, makeIndexSequence<sizeof...(Matchers)>());
+            }
+
+            Tuple<Matchers...> m_matchers;
         };
 
-        template<typename ArgT>
-        struct MatchNotOf : MatcherBase<ArgT> {
+        template<typename... Matchers>
+        struct MatchAnyOf : MatcherBase<MatchAnyOf<Matchers...>> {
+            MatchAnyOf( Matchers const &... matchers ) : m_matchers{matchers...}
+            {}
 
-            MatchNotOf( MatcherBase<ArgT> const& underlyingMatcher ) : m_underlyingMatcher( underlyingMatcher ) {}
-
-            bool match( ArgT const& arg ) const override {
-                return !m_underlyingMatcher.match( arg );
+            template<typename ArgT>
+            bool match_helper( ArgT && ) const { 
+              return false;
             }
 
-            std::string describe() const override {
+            template<typename ArgT, typename Matcher, typename... Rest>
+            bool match_helper( ArgT && arg, Matcher &&matcher, Rest &&... rest ) const {
+              if (matcher.match(std::forward<ArgT>(arg))) {
+                return true;
+              }
+
+              return match_helper(std::forward<ArgT>(arg), std::forward<Rest>(rest)...);
+            }
+
+            template<typename ArgT, size_t... Is>
+            bool match_impl( ArgT && arg, indexSequence<Is...>) const {
+              return match_helper(std::forward<ArgT>(arg), std::get<Is>(m_matchers)...);
+            }
+
+            template<typename ArgT>
+            bool match( ArgT && arg ) const {
+                return match_impl(std::forward<ArgT>(arg), makeIndexSequence<sizeof...(Matchers)>{});
+            }
+
+            std::string describe_helper() const { return {}; }
+
+            template<typename Matcher, typename... Rest>
+            std::string describe_helper( Matcher &&matcher, Rest &&... rest ) const {
+              return " or " + matcher.describe() + describe_helper(std::forward<Rest>(rest)...);
+            }
+
+            template<size_t... Is>
+            std::string describe_impl( indexSequence<Is...>) const {
+              // remove first or
+              return describe_helper(std::get<Is>(m_matchers)...).substr(4);
+            }            
+            
+            std::string describe() const {
+                std::string description;
+                description.reserve( 4 + sizeof...(Matchers)*32 );
+                description += "( " + describe_impl(makeIndexSequence<sizeof...(Matchers)>{}) + " )";
+                return description;
+            }
+
+            template<typename Other, size_t... I>
+            MatchAnyOf<Matchers..., Other> or_helper(Other const &other, indexSequence<I...>) {
+                return {std::get<I>(m_matchers)..., other};
+            }
+
+            template<typename Other>
+            MatchAnyOf<Matchers..., Other> operator || ( Other const& other ) {
+                return or_helper(other, makeIndexSequence<sizeof...(Matchers)>());
+            }
+
+            Tuple<Matchers...> m_matchers;
+        };
+
+        template<typename Matcher>
+        struct MatchNotOf : MatcherBase<MatchNotOf<Matcher>> {
+
+            MatchNotOf( Matcher const& underlyingMatcher ) : m_underlyingMatcher( underlyingMatcher ) {}
+
+            template<typename ArgT>
+            bool match( ArgT && arg ) const  {
+                return !m_underlyingMatcher.match( std::forward<ArgT>(arg) );
+            }
+
+            std::string describe() const  {
                 return "not " + m_underlyingMatcher.toString();
             }
-            MatcherBase<ArgT> const& m_underlyingMatcher;
+            Matcher const& m_underlyingMatcher;
         };
 
-        template<typename T>
-        MatchAllOf<T> MatcherBase<T>::operator && ( MatcherBase const& other ) const {
-            return MatchAllOf<T>() && *this && other;
+        template<typename Derived>
+        template<typename Other>
+        MatchAllOf<Derived, Other> MatcherBase<Derived>::operator && ( Other const& other ) const {
+            return {derived(), other};
         }
-        template<typename T>
-        MatchAnyOf<T> MatcherBase<T>::operator || ( MatcherBase const& other ) const {
-            return MatchAnyOf<T>() || *this || other;
+
+        template<typename Derived>
+        template<typename Other>
+        MatchAnyOf<Derived, Other> MatcherBase<Derived>::operator || ( Other const& other ) const {
+            return {derived(), other};
         }
-        template<typename T>
-        MatchNotOf<T> MatcherBase<T>::operator ! () const {
-            return MatchNotOf<T>( *this );
+        
+        template<typename Derived>
+        MatchNotOf<Derived> MatcherBase<Derived>::operator ! () const {
+            return {derived()};
         }
 
     } // namespace Impl

@@ -76,16 +76,16 @@ namespace { namespace MatchersTests {
         throw DerivedException{};
     }
 
-    class ExceptionMatcher : public Catch::MatcherBase<SpecialException> {
+    class ExceptionMatcher : public Catch::MatcherBase<ExceptionMatcher> {
         int m_expected;
     public:
         ExceptionMatcher(int i) : m_expected(i) {}
 
-        bool match(SpecialException const &se) const override {
+        bool match(SpecialException const &se) const  {
             return se.i == m_expected;
         }
 
-        std::string describe() const override {
+        std::string describe() const  {
             std::ostringstream ss;
             ss << "special exception has value of " << m_expected;
             return ss.str();
@@ -478,18 +478,18 @@ namespace { namespace MatchersTests {
 
         TEST_CASE("Arbitrary predicate matcher", "[matchers][generic]") {
             SECTION("Function pointer") {
-                REQUIRE_THAT(1,  Predicate<int>(alwaysTrue, "always true"));
-                REQUIRE_THAT(1, !Predicate<int>(alwaysFalse, "always false"));
+                REQUIRE_THAT(1,  Predicate(alwaysTrue, "always true"));
+                REQUIRE_THAT(1, !Predicate(alwaysFalse, "always false"));
             }
             SECTION("Lambdas + different type") {
                 REQUIRE_THAT("Hello olleH",
-                             Predicate<std::string>(
+                             Predicate(
                                  [] (std::string const& str) -> bool { return str.front() == str.back(); },
                                  "First and last character should be equal")
                 );
 
                 REQUIRE_THAT("This wouldn't pass",
-                             !Predicate<std::string>(
+                             !Predicate(
                                  [] (std::string const& str) -> bool { return str.front() == str.back(); }
                              )
                 );
@@ -506,7 +506,7 @@ namespace { namespace MatchersTests {
         }
 
         TEST_CASE("Predicate matcher can accept const char*", "[matchers][compilation]") {
-            REQUIRE_THAT("foo", Predicate<const char*>([] (const char* const&) { return true; }));
+            REQUIRE_THAT("foo", Predicate([] (const char* const&) { return true; }));
         }
 
         TEST_CASE("Vector Approx matcher", "[matchers][approx][vector]") {
@@ -552,6 +552,17 @@ namespace { namespace MatchersTests {
             REQUIRE_THROWS_MATCHES(throwsDerivedException(),  DerivedException, !Message("derivedexception::what"));
             REQUIRE_THROWS_MATCHES(throwsSpecialException(2), SpecialException, !Message("DerivedException::what"));
             REQUIRE_THROWS_MATCHES(throwsSpecialException(2), SpecialException,  Message("SpecialException::what"));
+        }
+
+        TEST_CASE("non-const access") {
+          struct S{
+            int value() {
+              return 42;
+            }
+          };
+
+          S s;
+          REQUIRE_THAT(s, Predicate([](S &s){ return s.value() == 42;}));
         }
 
 } } // namespace MatchersTests

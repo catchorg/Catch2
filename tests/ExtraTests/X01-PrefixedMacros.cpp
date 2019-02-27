@@ -26,7 +26,7 @@ CATCH_TEST_CASE("PrefixedMacros") {
     CATCH_REQUIRE_THROWS(this_throws());
     CATCH_REQUIRE_THROWS_AS(this_throws(), std::runtime_error);
     CATCH_REQUIRE_THROWS_WITH(this_throws(), "Some msg");
-    CATCH_REQUIRE_THROWS_MATCHES(this_throws(), std::runtime_error, Predicate<std::runtime_error>([](std::runtime_error const&) { return true; }));
+    CATCH_REQUIRE_THROWS_MATCHES(this_throws(), std::runtime_error, Predicate([](std::runtime_error const&) { return true; }));
     CATCH_REQUIRE_NOTHROW(this_doesnt_throw());
 
     CATCH_CHECK( 1 == 1 );
@@ -42,7 +42,7 @@ CATCH_TEST_CASE("PrefixedMacros") {
     CATCH_CHECK_THROWS(this_throws());
     CATCH_CHECK_THROWS_AS(this_throws(), std::runtime_error);
     CATCH_CHECK_THROWS_WITH(this_throws(), "Some msg");
-    CATCH_CHECK_THROWS_MATCHES(this_throws(), std::runtime_error, Predicate<std::runtime_error>([](std::runtime_error const&) { return true; }));
+    CATCH_CHECK_THROWS_MATCHES(this_throws(), std::runtime_error, Predicate([](std::runtime_error const&) { return true; }));
     CATCH_CHECK_NOTHROW(this_doesnt_throw());
 
     CATCH_REQUIRE_THAT("abcd", Equals("abcd"));

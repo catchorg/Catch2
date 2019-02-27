@@ -234,10 +234,10 @@ Approx.tests.cpp:<line number>: passed: 0 == Approx( dZero) for: 0 == Approx( 0.
 Approx.tests.cpp:<line number>: passed: 0 == Approx( dSmall ).margin( 0.001 ) for: 0 == Approx( 0.00001 )
 Approx.tests.cpp:<line number>: passed: 1.234f == Approx( dMedium ) for: 1.234f == Approx( 1.234 )
 Approx.tests.cpp:<line number>: passed: dMedium == Approx( 1.234f ) for: 1.234 == Approx( 1.2339999676 )
-Matchers.tests.cpp:<line number>: passed: 1, Predicate<int>(alwaysTrue, "always true") for: 1 matches predicate: "always true"
-Matchers.tests.cpp:<line number>: passed: 1, !Predicate<int>(alwaysFalse, "always false") for: 1 not matches predicate: "always false"
-Matchers.tests.cpp:<line number>: passed: "Hello olleH", Predicate<std::string>( [] (std::string const& str) -> bool { return str.front() == str.back(); }, "First and last character should be equal") for: "Hello olleH" matches predicate: "First and last character should be equal"
-Matchers.tests.cpp:<line number>: passed: "This wouldn't pass", !Predicate<std::string>( [] (std::string const& str) -> bool { return str.front() == str.back(); } ) for: "This wouldn't pass" not matches undescribed predicate
+Matchers.tests.cpp:<line number>: passed: 1, Predicate(alwaysTrue, "always true") for: 1 matches predicate: "always true"
+Matchers.tests.cpp:<line number>: passed: 1, !Predicate(alwaysFalse, "always false") for: 1 not matches predicate: "always false"
+Matchers.tests.cpp:<line number>: passed: "Hello olleH", Predicate( [] (std::string const& str) -> bool { return str.front() == str.back(); }, "First and last character should be equal") for: "Hello olleH" matches predicate: "First and last character should be equal"
+Matchers.tests.cpp:<line number>: passed: "This wouldn't pass", !Predicate( [] (std::string const& str) -> bool { return str.front() == str.back(); } ) for: "This wouldn't pass" not matches undescribed predicate
 Tricky.tests.cpp:<line number>: passed: true
 Tricky.tests.cpp:<line number>: passed: true
 Tricky.tests.cpp:<line number>: passed: true
@@ -1040,7 +1040,7 @@ ToStringGeneral.tests.cpp:<line number>: passed: str1.size() == 3 + 5 for: 8 == 
 ToStringGeneral.tests.cpp:<line number>: passed: str2.size() == 3 + 10 for: 13 == 13
 ToStringGeneral.tests.cpp:<line number>: passed: str1.size() == 2 + 5 for: 7 == 7
 ToStringGeneral.tests.cpp:<line number>: passed: str2.size() == 2 + 15 for: 17 == 17
-Matchers.tests.cpp:<line number>: passed: "foo", Predicate<const char*>([] (const char* const&) { return true; }) for: "foo" matches undescribed predicate
+Matchers.tests.cpp:<line number>: passed: "foo", Predicate([] (const char* const&) { return true; }) for: "foo" matches undescribed predicate
 CmdLine.tests.cpp:<line number>: passed: result for: {?}
 CmdLine.tests.cpp:<line number>: passed: config.processName == "" for: "" == ""
 CmdLine.tests.cpp:<line number>: passed: result for: {?}
@@ -1692,6 +1692,7 @@ Misc.tests.cpp:<line number>: passed: a != b for: 1 != 2
 Misc.tests.cpp:<line number>: passed: b != a for: 2 != 1
 Misc.tests.cpp:<line number>: passed: a != b for: 1 != 2
 Tricky.tests.cpp:<line number>: passed: s == "7" for: "7" == "7"
+Matchers.tests.cpp:<line number>: passed: s, Predicate([](S &s){ return s.value() == 42;}) for: {?} matches undescribed predicate
 Tricky.tests.cpp:<line number>: passed: ti == typeid(int) for: {?} == {?}
 InternalBenchmark.tests.cpp:<line number>: passed: normal_cdf(0.000000) == Approx(0.50000000000000000) for: 0.5 == Approx( 0.5 )
 InternalBenchmark.tests.cpp:<line number>: passed: normal_cdf(1.000000) == Approx(0.84134474606854293) for: 0.8413447461 == Approx( 0.8413447461 )

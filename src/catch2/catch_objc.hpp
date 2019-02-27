@@ -108,14 +108,14 @@ namespace Catch {
         namespace Impl {
         namespace NSStringMatchers {
 
-            struct StringHolder : MatcherBase<NSString*>{
+            struct StringHolder : MatcherBase<StringHolder>{
                 StringHolder( NSString* substr ) : m_substr( [substr copy] ){}
                 StringHolder( StringHolder const& other ) : m_substr( [other.m_substr copy] ){}
                 StringHolder() {
                     arcSafeRelease( m_substr );
                 }
 
-                bool match( NSString* str ) const override {
+                bool match( NSString* str ) const {
                     return false;
                 }
 
@@ -125,12 +125,12 @@ namespace Catch {
             struct Equals : StringHolder {
                 Equals( NSString* substr ) : StringHolder( substr ){}
 
-                bool match( NSString* str ) const override {
+                bool match( NSString* str ) const  {
                     return  (str != nil || m_substr == nil ) &&
                             [str isEqualToString:m_substr];
                 }
 
-                std::string describe() const override {
+                std::string describe() const  {
                     return "equals string: " + Catch::Detail::stringify( m_substr );
                 }
             };
@@ -143,7 +143,7 @@ namespace Catch {
                             [str rangeOfString:m_substr].location != NSNotFound;
                 }
 
-                std::string describe() const override {
+                std::string describe() const  {
                     return "contains string: " + Catch::Detail::stringify( m_substr );
                 }
             };
@@ -151,24 +151,24 @@ namespace Catch {
             struct StartsWith : StringHolder {
                 StartsWith( NSString* substr ) : StringHolder( substr ){}
 
-                bool match( NSString* str ) const override {
+                bool match( NSString* str ) const  {
                     return  (str != nil || m_substr == nil ) &&
                             [str rangeOfString:m_substr].location == 0;
                 }
 
-                std::string describe() const override {
+                std::string describe() const  {
                     return "starts with: " + Catch::Detail::stringify( m_substr );
                 }
             };
             struct EndsWith : StringHolder {
                 EndsWith( NSString* substr ) : StringHolder( substr ){}
 
-                bool match( NSString* str ) const override {
+                bool match( NSString* str ) const  {
                     return  (str != nil || m_substr == nil ) &&
                             [str rangeOfString:m_substr].location == [str length] - [m_substr length];
                 }
 
-                std::string describe() const override {
+                std::string describe() const  {
                     return "ends with: " + Catch::Detail::stringify( m_substr );
                 }
             };
