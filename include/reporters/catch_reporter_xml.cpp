@@ -53,6 +53,8 @@ namespace Catch {
         if( !stylesheetRef.empty() )
             m_xml.writeStylesheetRef( stylesheetRef );
         m_xml.startElement( "Catch" );
+		if (m_config->testSpec().hasFilters())
+			m_xml.writeAttribute("Filters", filtersToString());
         if( !m_config->name().empty() )
             m_xml.writeAttribute( "name", m_config->name() );
         if( m_config->rngSeed() != 0 )

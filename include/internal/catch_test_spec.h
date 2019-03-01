@@ -22,10 +22,16 @@
 
 namespace Catch {
 
+	struct PatternDescription {
+		std::string name;
+		std::string pattern;
+	};
+
     class TestSpec {
         struct Pattern {
             virtual ~Pattern();
-            virtual bool matches( TestCaseInfo const& testCase ) const = 0;
+			virtual bool matches(TestCaseInfo const& testCase) const = 0;
+			virtual PatternDescription description() const = 0;
         };
         using PatternPtr = std::shared_ptr<Pattern>;
 
@@ -34,7 +40,8 @@ namespace Catch {
             NamePattern( std::string const& name );
             virtual ~NamePattern();
             virtual bool matches( TestCaseInfo const& testCase ) const override;
-        private:
+			virtual PatternDescription description() const override;
+		private:
             WildcardPattern m_wildcardPattern;
         };
 
@@ -43,7 +50,8 @@ namespace Catch {
             TagPattern( std::string const& tag );
             virtual ~TagPattern();
             virtual bool matches( TestCaseInfo const& testCase ) const override;
-        private:
+			virtual PatternDescription description() const override;
+		private:
             std::string m_tag;
         };
 
@@ -52,7 +60,8 @@ namespace Catch {
             ExcludedPattern( PatternPtr const& underlyingPattern );
             virtual ~ExcludedPattern();
             virtual bool matches( TestCaseInfo const& testCase ) const override;
-        private:
+			virtual PatternDescription description() const override;
+		private:
             PatternPtr m_underlyingPattern;
         };
 
@@ -65,7 +74,7 @@ namespace Catch {
     public:
         bool hasFilters() const;
         bool matches( TestCaseInfo const& testCase ) const;
-
+		std::vector<PatternDescription> filters() const;
     private:
         std::vector<Filter> m_filters;
 

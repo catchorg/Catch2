@@ -83,6 +83,22 @@ namespace Catch {
             // It can optionally be overridden in the derived class.
         }
 
+		std::string filtersToString() const
+		{
+			std::ostringstream oss;
+			bool first = true;
+			for (auto&& pattern : m_config->testSpec().filters())
+			{
+				if (!first)
+				{
+					oss << ", ";
+				}
+				oss << pattern.pattern;
+				first = false;
+			}
+			return oss.str();
+		}
+
         IConfigPtr m_config;
         std::ostream& stream;
 

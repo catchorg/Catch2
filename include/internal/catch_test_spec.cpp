@@ -26,6 +26,11 @@ namespace Catch {
     bool TestSpec::NamePattern::matches( TestCaseInfo const& testCase ) const {
         return m_wildcardPattern.matches( toLower( testCase.name ) );
     }
+	 
+	PatternDescription TestSpec::NamePattern::description() const
+	{
+		return PatternDescription{ "Names" , m_wildcardPattern.getPattern() };
+	}
 
     TestSpec::TagPattern::TagPattern( std::string const& tag ) : m_tag( toLower( tag ) ) {}
     bool TestSpec::TagPattern::matches( TestCaseInfo const& testCase ) const {
@@ -34,8 +39,18 @@ namespace Catch {
                          m_tag) != end(testCase.lcaseTags);
     }
 
+	PatternDescription TestSpec::TagPattern::description() const
+	{
+		return PatternDescription{ "Tags" ,m_tag };
+	}
+
     TestSpec::ExcludedPattern::ExcludedPattern( PatternPtr const& underlyingPattern ) : m_underlyingPattern( underlyingPattern ) {}
     bool TestSpec::ExcludedPattern::matches( TestCaseInfo const& testCase ) const { return !m_underlyingPattern->matches( testCase ); }
+
+	PatternDescription TestSpec::ExcludedPattern::description() const
+	{
+		return PatternDescription{ "Excluded" , m_underlyingPattern->description().pattern };
+	}
 
     bool TestSpec::Filter::matches( TestCaseInfo const& testCase ) const {
         // All patterns in a filter must match for the filter to be a match
@@ -56,4 +71,14 @@ namespace Catch {
                 return true;
         return false;
     }
+	std::vector<PatternDescription> TestSpec::filters() const {
+		std::vector<PatternDescription> filters;
+		filters.reserve(m_filters.size());
+		for (auto&& filter : m_filters) {
+			for (auto&& pattern : filter.m_patterns) {
+				filters.emplace_back(pattern->description());
+			}
+		}
+		return filters;
+	}
 }

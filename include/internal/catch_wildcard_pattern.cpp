@@ -43,6 +43,22 @@ namespace Catch {
         }
     }
 
+	std::string WildcardPattern::getPattern() const
+	{
+		switch (m_wildcard) {
+		case NoWildcard:
+			return m_pattern;
+		case WildcardAtStart:
+			return "*" + m_pattern;
+		case WildcardAtEnd:
+			return m_pattern + "*";
+		case WildcardAtBothEnds:
+			return "*" + m_pattern + "*";
+		default:
+			CATCH_INTERNAL_ERROR("Unknown enum");
+		}
+	}
+
     std::string WildcardPattern::adjustCase( std::string const& str ) const {
         return m_caseSensitivity == CaseSensitive::No ? toLower( str ) : str;
     }

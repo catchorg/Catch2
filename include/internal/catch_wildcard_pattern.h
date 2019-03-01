@@ -26,7 +26,7 @@ namespace Catch
         WildcardPattern( std::string const& pattern, CaseSensitive::Choice caseSensitivity );
         virtual ~WildcardPattern() = default;
         virtual bool matches( std::string const& str ) const;
-
+		virtual std::string getPattern() const;
     private:
         std::string adjustCase( std::string const& str ) const;
         CaseSensitive::Choice m_caseSensitivity;
