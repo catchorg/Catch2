@@ -49,6 +49,15 @@ namespace Catch {
     {}
     auto RedirectedStdErr::str() const -> std::string { return m_rss.str(); }
 
+    RedirectedStreams::RedirectedStreams(std::string& redirectedCout, std::string& redirectedCerr)
+    :   m_redirectedCout(redirectedCout),
+        m_redirectedCerr(redirectedCerr)
+    {}
+
+    RedirectedStreams::~RedirectedStreams() {
+        m_redirectedCout += m_redirectedStdOut.str();
+        m_redirectedCerr += m_redirectedStdErr.str();
+    }
 
 #if defined(CATCH_CONFIG_NEW_CAPTURE)
 

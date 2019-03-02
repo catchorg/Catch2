@@ -67,7 +67,6 @@ namespace Catch {
         GeneratorTracker::~GeneratorTracker() {}
     }
 
-
     RunContext::RunContext(IConfigPtr const& _config, IStreamingReporterPtr&& reporter)
     :   m_runInfo(_config->name()),
         m_context(getCurrentMutableContext()),
@@ -323,13 +322,10 @@ namespace Catch {
         CATCH_TRY {
             if (m_reporter->getPreferences().shouldRedirectStdOut) {
 #if !defined(CATCH_CONFIG_EXPERIMENTAL_REDIRECT)
-                RedirectedStdOut redirectedStdOut;
-                RedirectedStdErr redirectedStdErr;
+                RedirectedStreams redirectedStreams(redirectedCout, redirectedCerr);
 
                 timer.start();
                 invokeActiveTestCase();
-                redirectedCout += redirectedStdOut.str();
-                redirectedCerr += redirectedStdErr.str();
 #else
                 OutputRedirect r(redirectedCout, redirectedCerr);
                 timer.start();

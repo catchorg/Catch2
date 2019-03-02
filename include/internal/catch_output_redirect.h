@@ -46,6 +46,21 @@ namespace Catch {
         auto str() const -> std::string;
     };
 
+    class RedirectedStreams {
+    public:
+        RedirectedStreams(RedirectedStreams const&) = delete;
+        RedirectedStreams& operator=(RedirectedStreams const&) = delete;
+        RedirectedStreams(RedirectedStreams&&) = delete;
+        RedirectedStreams& operator=(RedirectedStreams&&) = delete;
+
+        RedirectedStreams(std::string& redirectedCout, std::string& redirectedCerr);
+        ~RedirectedStreams();
+    private:
+        std::string& m_redirectedCout;
+        std::string& m_redirectedCerr;
+        RedirectedStdOut m_redirectedStdOut;
+        RedirectedStdErr m_redirectedStdErr;
+    };
 
 #if defined(CATCH_CONFIG_NEW_CAPTURE)
 
