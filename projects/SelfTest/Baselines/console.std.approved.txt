@@ -1,9 +1,21 @@
+Nor would this
+This would not be caught previously
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 <exe-name> is a <version> host application.
 Run with -? for options
 
 Randomness seeded to: 1
+
+-------------------------------------------------------------------------------
+#1514: stderr/stdout is not captured in tests aborted by an exception
+-------------------------------------------------------------------------------
+Tricky.tests.cpp:<line number>
+...............................................................................
+
+Tricky.tests.cpp:<line number>: FAILED:
+explicitly with message:
+  1514
 
 -------------------------------------------------------------------------------
 #748 - captures with unexpected exceptions
@@ -1174,6 +1186,6 @@ due to unexpected exception with message:
   Why would you throw a std::string?
 
 ===============================================================================
-test cases:  246 |  186 passed |  56 failed |  4 failed as expected
-assertions: 1380 | 1244 passed | 115 failed | 21 failed as expected
+test cases:  247 |  186 passed |  57 failed |  4 failed as expected
+assertions: 1381 | 1244 passed | 116 failed | 21 failed as expected
 

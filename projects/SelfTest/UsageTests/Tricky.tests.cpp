@@ -19,6 +19,7 @@
 
 #include <stdio.h>
 #include <sstream>
+#include <iostream>
 
 ///////////////////////////////////////////////////////////////////////////////
 TEST_CASE
@@ -425,4 +426,11 @@ TEST_CASE( "Bitfields can be captured (#1027)" ) {
     Y y{ 0 };
     REQUIRE( y.v == 0 );
     REQUIRE( 0 == y.v );
+}
+
+TEST_CASE("#1514: stderr/stdout is not captured in tests aborted by an exception", "[output-capture][regression][.]") {
+    std::cout << "This would not be caught previously\n";
+    std::clog << "Nor would this\n";
+    // FAIL aborts the test by throwing a Catch exception
+    FAIL("1514");
 }

@@ -133,6 +133,18 @@ Compilation.tests.cpp:<line number>: PASSED:
 with expansion:
   [1403 helper] == [1403 helper]
 
+Nor would this
+This would not be caught previously
+-------------------------------------------------------------------------------
+#1514: stderr/stdout is not captured in tests aborted by an exception
+-------------------------------------------------------------------------------
+Tricky.tests.cpp:<line number>
+...............................................................................
+
+Tricky.tests.cpp:<line number>: FAILED:
+explicitly with message:
+  1514
+
 -------------------------------------------------------------------------------
 #1548
 -------------------------------------------------------------------------------
@@ -328,12 +340,7 @@ Condition.tests.cpp:<line number>: FAILED:
 with expansion:
   false
 
-Condition.tests.cpp:<line number>: FAILED:
-  CHECK_FALSE( true )
-with expansion:
-  !true
-
 ===============================================================================
-test cases: 16 | 13 passed | 1 failed | 2 failed as expected
+test cases: 17 | 13 passed | 2 failed | 2 failed as expected
 assertions: 40 | 33 passed | 4 failed | 3 failed as expected
 

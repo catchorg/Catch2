@@ -142,6 +142,19 @@
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
+    <TestCase name="#1514: stderr/stdout is not captured in tests aborted by an exception" tags="[.][output-capture][regression]" filename="projects/<exe-name>/UsageTests/Tricky.tests.cpp" >
+      <Failure filename="projects/<exe-name>/UsageTests/Tricky.tests.cpp" >
+        1514
+      </Failure>
+      <OverallResult success="false">
+        <StdOut>
+This would not be caught previously
+        </StdOut>
+        <StdErr>
+Nor would this
+        </StdErr>
+      </OverallResult>
+    </TestCase>
     <TestCase name="#1548" tags="[compilation]" filename="projects/<exe-name>/UsageTests/Compilation.tests.cpp" >
       <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/UsageTests/Compilation.tests.cpp" >
         <Original>
@@ -12959,7 +12972,7 @@ loose text artifact
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="1244" failures="130" expectedFailures="21"/>
+    <OverallResults successes="1244" failures="131" expectedFailures="21"/>
   </Group>
-  <OverallResults successes="1244" failures="129" expectedFailures="21"/>
+  <OverallResults successes="1244" failures="130" expectedFailures="21"/>
 </Catch>

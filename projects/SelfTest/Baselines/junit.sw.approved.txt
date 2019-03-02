@@ -4,7 +4,7 @@
     <property name="random-seed" value="1"/>
   </properties>
 loose text artifact
-  <testsuite name="<exe-name>" errors="17" failures="113" tests="1395" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
+  <testsuite name="<exe-name>" errors="17" failures="114" tests="1396" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
     <testcase classname="<exe-name>.global" name="# A test name that starts with a #" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="#1005: Comparing pointer to int and long (NULL can be either on various systems)" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="#1027" time="{duration}"/>
@@ -13,6 +13,18 @@ loose text artifact
     <testcase classname="<exe-name>.global" name="#1238" time="{duration}"/>
     <testcase classname="<exe-name>.(Fixture_1245&lt;int, int>)" name="#1245" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="#1403" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="#1514: stderr/stdout is not captured in tests aborted by an exception" time="{duration}">
+      <failure type="FAIL">
+1514
+Tricky.tests.cpp:<line number>
+      </failure>
+      <system-out>
+This would not be caught previously
+      </system-out>
+      <system-err>
+Nor would this
+      </system-err>
+    </testcase>
     <testcase classname="<exe-name>.global" name="#1548" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="#748 - captures with unexpected exceptions/outside assertions" time="{duration}">
       <error type="TEST_CASE">
@@ -998,11 +1010,13 @@ Exception.tests.cpp:<line number>
     <testcase classname="<exe-name>.global" name="xmlentitycheck/embedded xml: &lt;test>it should be possible to embed xml characters, such as &lt;, &quot; or &amp;, or even whole &lt;xml>documents&lt;/xml> within an attribute&lt;/test>" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="xmlentitycheck/encoded chars: these should all be encoded: &amp;&amp;&amp;&quot;&quot;&quot;&lt;&lt;&lt;&amp;&quot;&lt;&lt;&amp;&quot;" time="{duration}"/>
     <system-out>
+This would not be caught previously
 A string sent directly to stdout
 Message from section one
 Message from section two
     </system-out>
     <system-err>
+Nor would this
 A string sent directly to stderr
 A string sent to stderr via clog
     </system-err>

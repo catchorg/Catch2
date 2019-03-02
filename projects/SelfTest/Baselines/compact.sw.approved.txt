@@ -14,6 +14,9 @@ Compilation.tests.cpp:<line number>: passed: std::memcmp(uarr, "123", sizeof(uar
 Compilation.tests.cpp:<line number>: passed: std::memcmp(sarr, "456", sizeof(sarr)) == 0 for: 0 == 0 with 2 messages: 'uarr := "123"' and 'sarr := "456"'
 Compilation.tests.cpp:<line number>: passed:
 Compilation.tests.cpp:<line number>: passed: h1 == h2 for: [1403 helper] == [1403 helper]
+Nor would this
+This would not be caught previously
+Tricky.tests.cpp:<line number>: failed: explicitly with 1 message: '1514'
 Compilation.tests.cpp:<line number>: passed: std::is_same<TypeList<int>, TypeList<int>>::value for: true
 Exception.tests.cpp:<line number>: failed: unexpected exception with message: 'answer := 42' with 1 message: 'expected exception'
 Exception.tests.cpp:<line number>: failed: unexpected exception with message: 'answer := 42'; expression was: thisThrows() with 1 message: 'expected exception'
@@ -1459,5 +1462,5 @@ Misc.tests.cpp:<line number>: passed: v.size() == 5 for: 5 == 5
 Misc.tests.cpp:<line number>: passed: v.capacity() >= 5 for: 5 >= 5
 Misc.tests.cpp:<line number>: passed:
 Misc.tests.cpp:<line number>: passed:
-Failed 69 test cases, failed 129 assertions.
+Failed 70 test cases, failed 130 assertions.
 
