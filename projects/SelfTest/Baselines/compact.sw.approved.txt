@@ -14,8 +14,8 @@ Compilation.tests.cpp:<line number>: passed: std::memcmp(uarr, "123", sizeof(uar
 Compilation.tests.cpp:<line number>: passed: std::memcmp(sarr, "456", sizeof(sarr)) == 0 for: 0 == 0 with 2 messages: 'uarr := "123"' and 'sarr := "456"'
 Compilation.tests.cpp:<line number>: passed:
 Compilation.tests.cpp:<line number>: passed: h1 == h2 for: [1403 helper] == [1403 helper]
-Nor would this
 This would not be caught previously
+Nor would this
 Tricky.tests.cpp:<line number>: failed: explicitly with 1 message: '1514'
 Compilation.tests.cpp:<line number>: passed: std::is_same<TypeList<int>, TypeList<int>>::value for: true
 Exception.tests.cpp:<line number>: failed: unexpected exception with message: 'answer := 42' with 1 message: 'expected exception'

@@ -429,8 +429,8 @@ TEST_CASE( "Bitfields can be captured (#1027)" ) {
 }
 
 TEST_CASE("#1514: stderr/stdout is not captured in tests aborted by an exception", "[output-capture][regression][.]") {
-    std::cout << "This would not be caught previously\n";
-    std::clog << "Nor would this\n";
+    std::cout << "This would not be caught previously\n" << std::flush;
+    std::clog << "Nor would this\n" << std::flush;
     // FAIL aborts the test by throwing a Catch exception
     FAIL("1514");
 }

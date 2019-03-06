@@ -133,8 +133,8 @@ Compilation.tests.cpp:<line number>: PASSED:
 with expansion:
   [1403 helper] == [1403 helper]
 
-Nor would this
 This would not be caught previously
+Nor would this
 -------------------------------------------------------------------------------
 #1514: stderr/stdout is not captured in tests aborted by an exception
 -------------------------------------------------------------------------------

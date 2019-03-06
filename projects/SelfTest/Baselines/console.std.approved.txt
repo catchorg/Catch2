@@ -1,5 +1,5 @@
-Nor would this
 This would not be caught previously
+Nor would this
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 <exe-name> is a <version> host application.
