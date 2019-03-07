@@ -179,7 +179,7 @@ function(ParseFile SourceFile TestTarget)
             string(REPLACE "," "\\," Name ${Name})
 
             # Add the test and set its properties
-            add_test(NAME "\"${CTestName}\"" COMMAND ${OptionalCatchTestLauncher} ${TestTarget} ${Name} ${AdditionalCatchParameters})
+            add_test(NAME "\"${CTestName}\"" COMMAND ${OptionalCatchTestLauncher} $<TARGET_FILE:${TestTarget}> ${Name} ${AdditionalCatchParameters})
             # Old CMake versions do not document VERSION_GREATER_EQUAL, so we use VERSION_GREATER with 3.8 instead
             if(PARSE_CATCH_TESTS_NO_HIDDEN_TESTS AND ${HiddenTagFound} AND ${CMAKE_VERSION} VERSION_GREATER "3.8")
                 PrintDebugMessage("Setting DISABLED test property")
