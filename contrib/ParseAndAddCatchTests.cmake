@@ -62,7 +62,7 @@ option(PARSE_CATCH_TESTS_ADD_FIXTURE_IN_TEST_NAME "Add fixture class name to the
 option(PARSE_CATCH_TESTS_ADD_TARGET_IN_TEST_NAME "Add target name to the test name" ON)
 option(PARSE_CATCH_TESTS_ADD_TO_CONFIGURE_DEPENDS "Add test file to CMAKE_CONFIGURE_DEPENDS property" OFF)
 
-function(PrintDebugMessage)
+function(ParseAndAddCatchTests_PrintDebugMessage)
     if(PARSE_CATCH_TESTS_VERBOSE)
             message(STATUS "ParseAndAddCatchTests: ${ARGV}")
     endif()
@@ -73,7 +73,7 @@ endfunction()
 #  - full line comments (i.e. // ... )
 # contents have been read into '${CppCode}'.
 # !keep partial line comments
-function(RemoveComments CppCode)
+function(ParseAndAddCatchTests_RemoveComments CppCode)
   string(ASCII 2 CMakeBeginBlockComment)
   string(ASCII 3 CMakeEndBlockComment)
   string(REGEX REPLACE "/\\*" "${CMakeBeginBlockComment}" ${CppCode} "${${CppCode}}")
@@ -85,24 +85,24 @@ function(RemoveComments CppCode)
 endfunction()
 
 # Worker function
-function(ParseFile SourceFile TestTarget)
+function(ParseAndAddCatchTests_ParseFile SourceFile TestTarget)
     # According to CMake docs EXISTS behavior is well-defined only for full paths.
     get_filename_component(SourceFile ${SourceFile} ABSOLUTE)
     if(NOT EXISTS ${SourceFile})
         message(WARNING "Cannot find source file: ${SourceFile}")
         return()
     endif()
-    PrintDebugMessage("parsing ${SourceFile}")
+    ParseAndAddCatchTests_PrintDebugMessage("parsing ${SourceFile}")
     file(STRINGS ${SourceFile} Contents NEWLINE_CONSUME)
 
     # Remove block and fullline comments
-    RemoveComments(Contents)
+    ParseAndAddCatchTests_RemoveComments(Contents)
 
     # Find definition of test names
     string(REGEX MATCHALL "[ \t]*(CATCH_)?(TEST_CASE_METHOD|SCENARIO|TEST_CASE)[ \t]*\\([^\)]+\\)+[ \t\n]*{+[ \t]*(//[^\n]*[Tt][Ii][Mm][Ee][Oo][Uu][Tt][ \t]*[0-9]+)*" Tests "${Contents}")
 
     if(PARSE_CATCH_TESTS_ADD_TO_CONFIGURE_DEPENDS AND Tests)
-      PrintDebugMessage("Adding ${SourceFile} to CMAKE_CONFIGURE_DEPENDS property")
+      ParseAndAddCatchTests_PrintDebugMessage("Adding ${SourceFile} to CMAKE_CONFIGURE_DEPENDS property")
       set_property(
         DIRECTORY
         APPEND
@@ -172,11 +172,11 @@ function(ParseFile SourceFile TestTarget)
             endif(result)
         endforeach(label)
         if(PARSE_CATCH_TESTS_NO_HIDDEN_TESTS AND ${HiddenTagFound} AND ${CMAKE_VERSION} VERSION_LESS "3.9")
-            PrintDebugMessage("Skipping test \"${CTestName}\" as it has [!hide], [.] or [.foo] label")
+            ParseAndAddCatchTests_PrintDebugMessage("Skipping test \"${CTestName}\" as it has [!hide], [.] or [.foo] label")
         else()
-            PrintDebugMessage("Adding test \"${CTestName}\"")
+            ParseAndAddCatchTests_PrintDebugMessage("Adding test \"${CTestName}\"")
             if(Labels)
-                PrintDebugMessage("Setting labels to ${Labels}")
+                ParseAndAddCatchTests_PrintDebugMessage("Setting labels to ${Labels}")
             endif()
 
             # Escape commas in the test spec
@@ -186,7 +186,7 @@ function(ParseFile SourceFile TestTarget)
             add_test(NAME "\"${CTestName}\"" COMMAND ${OptionalCatchTestLauncher} $<TARGET_FILE:${TestTarget}> ${Name} ${AdditionalCatchParameters})
             # Old CMake versions do not document VERSION_GREATER_EQUAL, so we use VERSION_GREATER with 3.8 instead
             if(PARSE_CATCH_TESTS_NO_HIDDEN_TESTS AND ${HiddenTagFound} AND ${CMAKE_VERSION} VERSION_GREATER "3.8")
-                PrintDebugMessage("Setting DISABLED test property")
+                ParseAndAddCatchTests_PrintDebugMessage("Setting DISABLED test property")
                 set_tests_properties("\"${CTestName}\"" PROPERTIES DISABLED ON)
             else()
                 set_tests_properties("\"${CTestName}\"" PROPERTIES FAIL_REGULAR_EXPRESSION "No tests ran"
@@ -208,11 +208,11 @@ endfunction()
 
 # entry point
 function(ParseAndAddCatchTests TestTarget)
-    PrintDebugMessage("Started parsing ${TestTarget}")
+    ParseAndAddCatchTests_PrintDebugMessage("Started parsing ${TestTarget}")
     get_target_property(SourceFiles ${TestTarget} SOURCES)
-    PrintDebugMessage("Found the following sources: ${SourceFiles}")
+    ParseAndAddCatchTests_PrintDebugMessage("Found the following sources: ${SourceFiles}")
     foreach(SourceFile ${SourceFiles})
-        ParseFile(${SourceFile} ${TestTarget})
+        ParseAndAddCatchTests_ParseFile(${SourceFile} ${TestTarget})
     endforeach()
-    PrintDebugMessage("Finished parsing ${TestTarget}")
+    ParseAndAddCatchTests_PrintDebugMessage("Finished parsing ${TestTarget}")
 endfunction()
