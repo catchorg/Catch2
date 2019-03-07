@@ -54,7 +54,9 @@
 #                                                                                                  #
 #==================================================================================================#
 
-cmake_minimum_required(VERSION 2.8.8)
+if (CMAKE_MINIMUM_REQUIRED_VERSION VERSION_LESS 2.8.8)
+  message(FATAL_ERROR "ParseAndAddCatchTests requires CMake 2.8.8 or newer")
+endif()
 
 option(PARSE_CATCH_TESTS_VERBOSE "Print Catch to CTest parser debug messages" OFF)
 option(PARSE_CATCH_TESTS_NO_HIDDEN_TESTS "Exclude tests with [!hide], [.] or [.foo] tags" OFF)
