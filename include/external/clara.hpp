@@ -370,7 +370,7 @@ inline auto Column::operator + (Column const& other) -> Columns {
 // ----------- end of #include from clara_textflow.hpp -----------
 // ........... back in clara.hpp
 
-
+#include <cctype>
 #include <string>
 #include <memory>
 #include <set>
@@ -664,7 +664,7 @@ namespace detail {
     }
     inline auto convertInto( std::string const &source, bool &target ) -> ParserResult {
         std::string srcLC = source;
-        std::transform( srcLC.begin(), srcLC.end(), srcLC.begin(), []( char c ) { return static_cast<char>( ::tolower(c) ); } );
+        std::transform( srcLC.begin(), srcLC.end(), srcLC.begin(), []( char c ) { return static_cast<char>( std::tolower(c) ); } );
         if (srcLC == "y" || srcLC == "1" || srcLC == "true" || srcLC == "yes" || srcLC == "on")
             target = true;
         else if (srcLC == "n" || srcLC == "0" || srcLC == "false" || srcLC == "no" || srcLC == "off")
