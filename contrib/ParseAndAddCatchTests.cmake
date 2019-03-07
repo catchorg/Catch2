@@ -44,6 +44,10 @@
 #     set(OptionalCatchTestLauncher ${MPIEXEC} ${MPIEXEC_NUMPROC_FLAG} ${NUMPROC})                 #
 # just before calling this ParseAndAddCatchTests function                                          #
 #                                                                                                  #
+# After the script, the ParseAndAddCatchTests_TESTS property for the target, and for each source   #
+# file in the target is set, and contains the list of the tests extracted from that target, or     #
+# from that file. This is useful, for example to add further labels or properties to the tests.    #
+#                                                                                                  #
 #==================================================================================================#
 
 cmake_minimum_required(VERSION 2.8.8)
@@ -184,6 +188,14 @@ function(ParseFile SourceFile TestTarget)
                 set_tests_properties("\"${CTestName}\"" PROPERTIES FAIL_REGULAR_EXPRESSION "No tests ran"
                                                         LABELS "${Labels}")
             endif()
+            set_property(
+              TARGET ${TestTarget}
+              APPEND
+              PROPERTY ParseAndAddCatchTests_TESTS "\"${CTestName}\"")
+            set_property(
+              SOURCE ${SourceFile}
+              APPEND
+              PROPERTY ParseAndAddCatchTests_TESTS "\"${CTestName}\"")
         endif()
 
 
