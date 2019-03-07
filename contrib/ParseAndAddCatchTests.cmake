@@ -44,6 +44,10 @@
 #     set(OptionalCatchTestLauncher ${MPIEXEC} ${MPIEXEC_NUMPROC_FLAG} ${NUMPROC})                 #
 # just before calling this ParseAndAddCatchTests function                                          #
 #                                                                                                  #
+# The AdditionalCatchParameters optional variable can be used to pass extra argument to the test   #
+# command. For example, to include successful tests in the output, one can write                   #
+#     set(AdditionalCatchParameters --success)                                                     #
+#                                                                                                  #
 # After the script, the ParseAndAddCatchTests_TESTS property for the target, and for each source   #
 # file in the target is set, and contains the list of the tests extracted from that target, or     #
 # from that file. This is useful, for example to add further labels or properties to the tests.    #
