@@ -17,6 +17,9 @@ Listing a project here does not imply endorsement and the plan is to keep these 
 
 ## Libraries & Frameworks
 
+### [ApprovalTests.cpp](https://github.com/approvals/ApprovalTests.cpp)
+C++11 implementation of Approval Tests, for quick, convenient testing of legacy code.
+
 ### [Azmq](https://github.com/zeromq/azmq)
 Boost Asio style bindings for ZeroMQ.
 
