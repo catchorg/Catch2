@@ -111,6 +111,51 @@ SCENARIO("Eating cucumbers", "[generators][approvals]") {
         REQUIRE( eatCucumbers( start, eat ) == left );
     }
 }
+
+SCENARIO("capturing lambda", "[generators]") {
+
+    class SomeStateMachine {
+    public:
+        void doA() { i++; }
+        void doB() { i += 2; }
+        bool checkSomeProperty() { return (i & 1); }
+
+    private:
+        int i{};
+    };
+
+    GIVEN("some instance") {
+        SomeStateMachine instance;
+
+        auto[seqId, inputSequence, expectedProperty] =
+            GENERATE(table<std::string, std::function<void()>, bool>({
+                {
+                    "AA",
+                    [&]() {
+                        instance.doA();
+                        instance.doA();
+                    },
+                    false
+                },
+                {
+                    "AB",
+                    [&]() {
+                        instance.doA();
+                        instance.doB();
+                    },
+                    true
+                },
+            }));
+
+        WHEN("the input sequence " << seqId << " is applied") {
+            inputSequence();
+
+            THEN("the expected property value is met") {
+                REQUIRE(instance.checkSomeProperty() == expectedProperty);
+            }
+        }
+    }
+}
 #endif
 
 // There are also some generic generator manipulators
