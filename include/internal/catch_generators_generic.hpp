@@ -169,16 +169,28 @@ namespace Generators {
         }
     };
 
-    template <typename T, typename U, typename Func>
+    template <
+        typename Func, typename U,
+        typename T = typename std::remove_reference<typename std::remove_cv<
+            typename std::result_of<Func(U)>::type>::type>::type,
+        typename = typename std::enable_if<std::is_constructible<
+            std::function<T(U)>,
+            std::reference_wrapper<
+                typename std::remove_reference<Func>::type>>::value>::type>
     GeneratorWrapper<T> map(Func&& function, GeneratorWrapper<U>&& generator) {
         return GeneratorWrapper<T>(
             pf::make_unique<MapGenerator<T, U, Func>>(std::forward<Func>(function), std::move(generator))
         );
     }
-    template <typename T, typename Func>
-    GeneratorWrapper<T> map(Func&& function, GeneratorWrapper<T>&& generator) {
+
+    template <typename T, typename U, typename Func,
+              typename = typename std::enable_if<std::is_constructible<
+                  std::function<T(U)>,
+                  std::reference_wrapper<typename std::remove_reference<
+                      Func>::type>>::value>::type>
+    GeneratorWrapper<T> map(Func&& function, GeneratorWrapper<U>&& generator) {
         return GeneratorWrapper<T>(
-            pf::make_unique<MapGenerator<T, T, Func>>(std::forward<Func>(function), std::move(generator))
+            pf::make_unique<MapGenerator<T, U, Func>>(std::forward<Func>(function), std::move(generator))
         );
     }
 
