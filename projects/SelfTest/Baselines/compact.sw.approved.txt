@@ -416,6 +416,9 @@ Generators.tests.cpp:<line number>: passed: i % 2 == 0 for: 0 == 0
 Generators.tests.cpp:<line number>: passed: i.size() == 1 for: 1 == 1
 Generators.tests.cpp:<line number>: passed: i.size() == 1 for: 1 == 1
 Generators.tests.cpp:<line number>: passed: i.size() == 1 for: 1 == 1
+Generators.tests.cpp:<line number>: passed: i.size() == 1 for: 1 == 1
+Generators.tests.cpp:<line number>: passed: i.size() == 1 for: 1 == 1
+Generators.tests.cpp:<line number>: passed: i.size() == 1 for: 1 == 1
 Generators.tests.cpp:<line number>: passed: j > 0 for: 1 > 0
 Generators.tests.cpp:<line number>: passed: j > 0 for: 2 > 0
 Generators.tests.cpp:<line number>: passed: j > 0 for: 3 > 0
@@ -488,6 +491,12 @@ GeneratorsImpl.tests.cpp:<line number>: passed: gen.next() for: true
 GeneratorsImpl.tests.cpp:<line number>: passed: gen.get() == 2 for: 2 == 2
 GeneratorsImpl.tests.cpp:<line number>: passed: !(gen.next()) for: !false
 GeneratorsImpl.tests.cpp:<line number>: passed: gen.get() == 1 for: 1 == 1
+GeneratorsImpl.tests.cpp:<line number>: passed: !(gen.next()) for: !false
+GeneratorsImpl.tests.cpp:<line number>: passed: gen.get() == 2.0 for: 2.0 == 2.0
+GeneratorsImpl.tests.cpp:<line number>: passed: gen.next() for: true
+GeneratorsImpl.tests.cpp:<line number>: passed: gen.get() == 4.0 for: 4.0 == 4.0
+GeneratorsImpl.tests.cpp:<line number>: passed: gen.next() for: true
+GeneratorsImpl.tests.cpp:<line number>: passed: gen.get() == 6.0 for: 6.0 == 6.0
 GeneratorsImpl.tests.cpp:<line number>: passed: !(gen.next()) for: !false
 GeneratorsImpl.tests.cpp:<line number>: passed: gen.get() == 2.0 for: 2.0 == 2.0
 GeneratorsImpl.tests.cpp:<line number>: passed: gen.next() for: true
