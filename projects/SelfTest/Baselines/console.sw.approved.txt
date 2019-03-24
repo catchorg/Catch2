@@ -3047,6 +3047,45 @@ with expansion:
 
 -------------------------------------------------------------------------------
 Generators -- adapters
+  Transforming elements
+  Different deduced type
+-------------------------------------------------------------------------------
+Generators.tests.cpp:<line number>
+...............................................................................
+
+Generators.tests.cpp:<line number>: PASSED:
+  REQUIRE( i.size() == 1 )
+with expansion:
+  1 == 1
+
+-------------------------------------------------------------------------------
+Generators -- adapters
+  Transforming elements
+  Different deduced type
+-------------------------------------------------------------------------------
+Generators.tests.cpp:<line number>
+...............................................................................
+
+Generators.tests.cpp:<line number>: PASSED:
+  REQUIRE( i.size() == 1 )
+with expansion:
+  1 == 1
+
+-------------------------------------------------------------------------------
+Generators -- adapters
+  Transforming elements
+  Different deduced type
+-------------------------------------------------------------------------------
+Generators.tests.cpp:<line number>
+...............................................................................
+
+Generators.tests.cpp:<line number>: PASSED:
+  REQUIRE( i.size() == 1 )
+with expansion:
+  1 == 1
+
+-------------------------------------------------------------------------------
+Generators -- adapters
   Repeating a generator
 -------------------------------------------------------------------------------
 Generators.tests.cpp:<line number>
@@ -3675,7 +3714,44 @@ with expansion:
 
 -------------------------------------------------------------------------------
 Generators internals
-  Map
+  Map with explicit return type
+-------------------------------------------------------------------------------
+GeneratorsImpl.tests.cpp:<line number>
+...............................................................................
+
+GeneratorsImpl.tests.cpp:<line number>: PASSED:
+  REQUIRE( gen.get() == 2.0 )
+with expansion:
+  2.0 == 2.0
+
+GeneratorsImpl.tests.cpp:<line number>: PASSED:
+  REQUIRE( gen.next() )
+with expansion:
+  true
+
+GeneratorsImpl.tests.cpp:<line number>: PASSED:
+  REQUIRE( gen.get() == 4.0 )
+with expansion:
+  4.0 == 4.0
+
+GeneratorsImpl.tests.cpp:<line number>: PASSED:
+  REQUIRE( gen.next() )
+with expansion:
+  true
+
+GeneratorsImpl.tests.cpp:<line number>: PASSED:
+  REQUIRE( gen.get() == 6.0 )
+with expansion:
+  6.0 == 6.0
+
+GeneratorsImpl.tests.cpp:<line number>: PASSED:
+  REQUIRE_FALSE( gen.next() )
+with expansion:
+  !false
+
+-------------------------------------------------------------------------------
+Generators internals
+  Map with deduced return type
 -------------------------------------------------------------------------------
 GeneratorsImpl.tests.cpp:<line number>
 ...............................................................................
@@ -10850,5 +10926,5 @@ Misc.tests.cpp:<line number>: PASSED:
 
 ===============================================================================
 test cases:  255 |  174 passed |  77 failed |  4 failed as expected
-assertions: 1409 | 1250 passed | 138 failed | 21 failed as expected
+assertions: 1418 | 1259 passed | 138 failed | 21 failed as expected
 

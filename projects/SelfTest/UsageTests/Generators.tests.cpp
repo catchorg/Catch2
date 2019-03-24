@@ -144,6 +144,11 @@ TEST_CASE("Generators -- adapters", "[generators][generic]") {
             auto i = GENERATE(map<std::string>([] (int val) { return std::to_string(val); }, values({ 1, 2, 3 })));
             REQUIRE(i.size() == 1);
         }
+        SECTION("Different deduced type") {
+            // This takes a generator that returns ints and maps them into strings
+            auto i = GENERATE(map([] (int val) { return std::to_string(val); }, values({ 1, 2, 3 })));
+            REQUIRE(i.size() == 1);
+        }
     }
     SECTION("Repeating a generator") {
         // This will return values [1, 2, 3, 1, 2, 3]

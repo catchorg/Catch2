@@ -68,8 +68,17 @@ TEST_CASE("Generators internals", "[generators][internals]") {
             REQUIRE_FALSE(gen.next());
         }
     }
-    SECTION("Map") {
+    SECTION("Map with explicit return type") {
         auto gen = map<double>([] (int i) {return 2.0 * i; }, values({ 1, 2, 3 }));
+        REQUIRE(gen.get() == 2.0);
+        REQUIRE(gen.next());
+        REQUIRE(gen.get() == 4.0);
+        REQUIRE(gen.next());
+        REQUIRE(gen.get() == 6.0);
+        REQUIRE_FALSE(gen.next());
+    }
+    SECTION("Map with deduced return type") {
+        auto gen = map([] (int i) {return 2.0 * i; }, values({ 1, 2, 3 }));
         REQUIRE(gen.get() == 2.0);
         REQUIRE(gen.next());
         REQUIRE(gen.get() == 4.0);
