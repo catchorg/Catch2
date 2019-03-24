@@ -17,7 +17,6 @@
 
 #include <utility>
 #include <exception>
-#include <functional>
 
 namespace Catch {
 
