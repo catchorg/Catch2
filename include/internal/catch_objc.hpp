@@ -116,7 +116,7 @@ namespace Catch {
                     arcSafeRelease( m_substr );
                 }
 
-                bool match( NSString* arg ) const override {
+                bool match( NSString* const& str ) const override {
                     return false;
                 }
 
@@ -126,7 +126,7 @@ namespace Catch {
             struct Equals : StringHolder {
                 Equals( NSString* substr ) : StringHolder( substr ){}
 
-                bool match( NSString* str ) const override {
+                bool match( NSString* const& str ) const override {
                     return  (str != nil || m_substr == nil ) &&
                             [str isEqualToString:m_substr];
                 }
@@ -139,7 +139,7 @@ namespace Catch {
             struct Contains : StringHolder {
                 Contains( NSString* substr ) : StringHolder( substr ){}
 
-                bool match( NSString* str ) const {
+                bool match( NSString* const& str ) const override {
                     return  (str != nil || m_substr == nil ) &&
                             [str rangeOfString:m_substr].location != NSNotFound;
                 }
@@ -152,7 +152,7 @@ namespace Catch {
             struct StartsWith : StringHolder {
                 StartsWith( NSString* substr ) : StringHolder( substr ){}
 
-                bool match( NSString* str ) const override {
+                bool match( NSString* const& str ) const override {
                     return  (str != nil || m_substr == nil ) &&
                             [str rangeOfString:m_substr].location == 0;
                 }
@@ -164,7 +164,7 @@ namespace Catch {
             struct EndsWith : StringHolder {
                 EndsWith( NSString* substr ) : StringHolder( substr ){}
 
-                bool match( NSString* str ) const override {
+                bool match( NSString* const& str ) const override {
                     return  (str != nil || m_substr == nil ) &&
                             [str rangeOfString:m_substr].location == [str length] - [m_substr length];
                 }
