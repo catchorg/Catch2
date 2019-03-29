@@ -2916,7 +2916,7 @@ Nor would this
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="Exception matchers that fail" tags="[!throws][.][.failing][exceptions][matchers]" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
+    <TestCase name="Exception matchers that fail" tags="[!throws][.][exceptions][failing][matchers]" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
       <Section name="No exception" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
         <Expression success="false" type="CHECK_THROWS_MATCHES" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
           <Original>
@@ -5861,7 +5861,7 @@ Nor would this
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="Matchers can be composed with both &amp;&amp; and || - failing" tags="[.][.failing][matchers][operator&amp;&amp;][operators][operator||]" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
+    <TestCase name="Matchers can be composed with both &amp;&amp; and || - failing" tags="[.][failing][matchers][operator&amp;&amp;][operators][operator||]" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
       <Expression success="false" type="CHECK_THAT" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
         <Original>
           testStringForMatching(), (Contains("string") || Contains("different")) &amp;&amp; Contains("random")
@@ -5883,7 +5883,7 @@ Nor would this
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="Matchers can be negated (Not) with the ! operator - failing" tags="[.][.failing][matchers][not][operators]" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
+    <TestCase name="Matchers can be negated (Not) with the ! operator - failing" tags="[.][failing][matchers][not][operators]" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
       <Expression success="false" type="CHECK_THAT" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
         <Original>
           testStringForMatching(), !Contains("substring")
@@ -8205,7 +8205,7 @@ Nor would this
       </Expression>
       <OverallResult success="false"/>
     </TestCase>
-    <TestCase name="Regex string matcher" tags="[.][.failing][matchers]" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
+    <TestCase name="Regex string matcher" tags="[.][failing][matchers]" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
       <Expression success="false" type="CHECK_THAT" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
         <Original>
           testStringForMatching(), Matches("this STRING contains 'abc' as a substring")
@@ -9186,9 +9186,9 @@ Message from section two
       </Expression>
       <OverallResult success="false"/>
     </TestCase>
-    <TestCase name="Tag alias can be registered against tag patterns" filename="projects/<exe-name>/IntrospectiveTests/TagAlias.tests.cpp" >
-      <Section name="The same tag alias can only be registered once" filename="projects/<exe-name>/IntrospectiveTests/TagAlias.tests.cpp" >
-        <Expression success="true" type="CHECK_THAT" filename="projects/<exe-name>/IntrospectiveTests/TagAlias.tests.cpp" >
+    <TestCase name="Tag alias can be registered against tag patterns" filename="projects/<exe-name>/IntrospectiveTests/Tag.tests.cpp" >
+      <Section name="The same tag alias can only be registered once" filename="projects/<exe-name>/IntrospectiveTests/Tag.tests.cpp" >
+        <Expression success="true" type="CHECK_THAT" filename="projects/<exe-name>/IntrospectiveTests/Tag.tests.cpp" >
           <Original>
             what, Contains( "[@zzz]" )
           </Original>
@@ -9198,7 +9198,7 @@ Message from section two
 	Redefined at: file:10" contains: "[@zzz]"
           </Expanded>
         </Expression>
-        <Expression success="true" type="CHECK_THAT" filename="projects/<exe-name>/IntrospectiveTests/TagAlias.tests.cpp" >
+        <Expression success="true" type="CHECK_THAT" filename="projects/<exe-name>/IntrospectiveTests/Tag.tests.cpp" >
           <Original>
             what, Contains( "file" )
           </Original>
@@ -9208,7 +9208,7 @@ Message from section two
 	Redefined at: file:10" contains: "file"
           </Expanded>
         </Expression>
-        <Expression success="true" type="CHECK_THAT" filename="projects/<exe-name>/IntrospectiveTests/TagAlias.tests.cpp" >
+        <Expression success="true" type="CHECK_THAT" filename="projects/<exe-name>/IntrospectiveTests/Tag.tests.cpp" >
           <Original>
             what, Contains( "2" )
           </Original>
@@ -9218,7 +9218,7 @@ Message from section two
 	Redefined at: file:10" contains: "2"
           </Expanded>
         </Expression>
-        <Expression success="true" type="CHECK_THAT" filename="projects/<exe-name>/IntrospectiveTests/TagAlias.tests.cpp" >
+        <Expression success="true" type="CHECK_THAT" filename="projects/<exe-name>/IntrospectiveTests/Tag.tests.cpp" >
           <Original>
             what, Contains( "10" )
           </Original>
@@ -9230,8 +9230,8 @@ Message from section two
         </Expression>
         <OverallResults successes="4" failures="0" expectedFailures="0"/>
       </Section>
-      <Section name="Tag aliases must be of the form [@name]" filename="projects/<exe-name>/IntrospectiveTests/TagAlias.tests.cpp" >
-        <Expression success="true" type="CHECK_THROWS" filename="projects/<exe-name>/IntrospectiveTests/TagAlias.tests.cpp" >
+      <Section name="Tag aliases must be of the form [@name]" filename="projects/<exe-name>/IntrospectiveTests/Tag.tests.cpp" >
+        <Expression success="true" type="CHECK_THROWS" filename="projects/<exe-name>/IntrospectiveTests/Tag.tests.cpp" >
           <Original>
             registry.add( "[no ampersat]", "", Catch::SourceLineInfo( "file", 3 ) )
           </Original>
@@ -9239,7 +9239,7 @@ Message from section two
             registry.add( "[no ampersat]", "", Catch::SourceLineInfo( "file", 3 ) )
           </Expanded>
         </Expression>
-        <Expression success="true" type="CHECK_THROWS" filename="projects/<exe-name>/IntrospectiveTests/TagAlias.tests.cpp" >
+        <Expression success="true" type="CHECK_THROWS" filename="projects/<exe-name>/IntrospectiveTests/Tag.tests.cpp" >
           <Original>
             registry.add( "[the @ is not at the start]", "", Catch::SourceLineInfo( "file", 3 ) )
           </Original>
@@ -9247,7 +9247,7 @@ Message from section two
             registry.add( "[the @ is not at the start]", "", Catch::SourceLineInfo( "file", 3 ) )
           </Expanded>
         </Expression>
-        <Expression success="true" type="CHECK_THROWS" filename="projects/<exe-name>/IntrospectiveTests/TagAlias.tests.cpp" >
+        <Expression success="true" type="CHECK_THROWS" filename="projects/<exe-name>/IntrospectiveTests/Tag.tests.cpp" >
           <Original>
             registry.add( "@no square bracket at start]", "", Catch::SourceLineInfo( "file", 3 ) )
           </Original>
@@ -9255,7 +9255,7 @@ Message from section two
             registry.add( "@no square bracket at start]", "", Catch::SourceLineInfo( "file", 3 ) )
           </Expanded>
         </Expression>
-        <Expression success="true" type="CHECK_THROWS" filename="projects/<exe-name>/IntrospectiveTests/TagAlias.tests.cpp" >
+        <Expression success="true" type="CHECK_THROWS" filename="projects/<exe-name>/IntrospectiveTests/Tag.tests.cpp" >
           <Original>
             registry.add( "[@no square bracket at end", "", Catch::SourceLineInfo( "file", 3 ) )
           </Original>
@@ -12352,6 +12352,17 @@ loose text artifact
       </Expression>
       <OverallResult success="false"/>
     </TestCase>
+    <TestCase name="shortened hide tags are split apart" filename="projects/<exe-name>/IntrospectiveTests/Tag.tests.cpp" >
+      <Expression success="true" type="REQUIRE_THAT" filename="projects/<exe-name>/IntrospectiveTests/Tag.tests.cpp" >
+        <Original>
+          testcase.tags, Catch::VectorContains(std::string("magic-tag")) &amp;&amp; Catch::VectorContains(std::string("."))
+        </Original>
+        <Expanded>
+          { ".", "magic-tag" } ( Contains: "magic-tag" and Contains: "." )
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
     <TestCase name="stacks unscoped info in loops" tags="[.][failing][info][unscoped]" filename="projects/<exe-name>/UsageTests/Message.tests.cpp" >
       <Info>
         Count 1 to 3...
@@ -13246,7 +13257,7 @@ loose text artifact
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="1259" failures="139" expectedFailures="21"/>
+    <OverallResults successes="1260" failures="139" expectedFailures="21"/>
   </Group>
-  <OverallResults successes="1259" failures="138" expectedFailures="21"/>
+  <OverallResults successes="1260" failures="138" expectedFailures="21"/>
 </Catch>

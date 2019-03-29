@@ -7315,31 +7315,31 @@ with expansion:
 Tag alias can be registered against tag patterns
   The same tag alias can only be registered once
 -------------------------------------------------------------------------------
-TagAlias.tests.cpp:<line number>
+Tag.tests.cpp:<line number>
 ...............................................................................
 
-TagAlias.tests.cpp:<line number>: PASSED:
+Tag.tests.cpp:<line number>: PASSED:
   CHECK_THAT( what, Contains( "[@zzz]" ) )
 with expansion:
   "error: tag alias, '[@zzz]' already registered.
   	First seen at: file:2
   	Redefined at: file:10" contains: "[@zzz]"
 
-TagAlias.tests.cpp:<line number>: PASSED:
+Tag.tests.cpp:<line number>: PASSED:
   CHECK_THAT( what, Contains( "file" ) )
 with expansion:
   "error: tag alias, '[@zzz]' already registered.
   	First seen at: file:2
   	Redefined at: file:10" contains: "file"
 
-TagAlias.tests.cpp:<line number>: PASSED:
+Tag.tests.cpp:<line number>: PASSED:
   CHECK_THAT( what, Contains( "2" ) )
 with expansion:
   "error: tag alias, '[@zzz]' already registered.
   	First seen at: file:2
   	Redefined at: file:10" contains: "2"
 
-TagAlias.tests.cpp:<line number>: PASSED:
+Tag.tests.cpp:<line number>: PASSED:
   CHECK_THAT( what, Contains( "10" ) )
 with expansion:
   "error: tag alias, '[@zzz]' already registered.
@@ -7350,19 +7350,19 @@ with expansion:
 Tag alias can be registered against tag patterns
   Tag aliases must be of the form [@name]
 -------------------------------------------------------------------------------
-TagAlias.tests.cpp:<line number>
+Tag.tests.cpp:<line number>
 ...............................................................................
 
-TagAlias.tests.cpp:<line number>: PASSED:
+Tag.tests.cpp:<line number>: PASSED:
   CHECK_THROWS( registry.add( "[no ampersat]", "", Catch::SourceLineInfo( "file", 3 ) ) )
 
-TagAlias.tests.cpp:<line number>: PASSED:
+Tag.tests.cpp:<line number>: PASSED:
   CHECK_THROWS( registry.add( "[the @ is not at the start]", "", Catch::SourceLineInfo( "file", 3 ) ) )
 
-TagAlias.tests.cpp:<line number>: PASSED:
+Tag.tests.cpp:<line number>: PASSED:
   CHECK_THROWS( registry.add( "@no square bracket at start]", "", Catch::SourceLineInfo( "file", 3 ) ) )
 
-TagAlias.tests.cpp:<line number>: PASSED:
+Tag.tests.cpp:<line number>: PASSED:
   CHECK_THROWS( registry.add( "[@no square bracket at end", "", Catch::SourceLineInfo( "file", 3 ) ) )
 
 -------------------------------------------------------------------------------
@@ -10085,6 +10085,17 @@ with messages:
   i := 7
 
 -------------------------------------------------------------------------------
+shortened hide tags are split apart
+-------------------------------------------------------------------------------
+Tag.tests.cpp:<line number>
+...............................................................................
+
+Tag.tests.cpp:<line number>: PASSED:
+  REQUIRE_THAT( testcase.tags, Catch::VectorContains(std::string("magic-tag")) && Catch::VectorContains(std::string(".")) )
+with expansion:
+  { ".", "magic-tag" } ( Contains: "magic-tag" and Contains: "." )
+
+-------------------------------------------------------------------------------
 stacks unscoped info in loops
 -------------------------------------------------------------------------------
 Message.tests.cpp:<line number>
@@ -10925,6 +10936,6 @@ Misc.tests.cpp:<line number>
 Misc.tests.cpp:<line number>: PASSED:
 
 ===============================================================================
-test cases:  255 |  174 passed |  77 failed |  4 failed as expected
-assertions: 1418 | 1259 passed | 138 failed | 21 failed as expected
+test cases:  256 |  175 passed |  77 failed |  4 failed as expected
+assertions: 1419 | 1260 passed | 138 failed | 21 failed as expected
 
