@@ -4698,6 +4698,182 @@ with expansion:
   "expected exception" equals: "should fail"
 
 -------------------------------------------------------------------------------
+Nested generators and captured variables
+-------------------------------------------------------------------------------
+Generators.tests.cpp:<line number>
+...............................................................................
+
+Generators.tests.cpp:<line number>: PASSED:
+  REQUIRE( values > -6 )
+with expansion:
+  3 > -6
+
+-------------------------------------------------------------------------------
+Nested generators and captured variables
+-------------------------------------------------------------------------------
+Generators.tests.cpp:<line number>
+...............................................................................
+
+Generators.tests.cpp:<line number>: PASSED:
+  REQUIRE( values > -6 )
+with expansion:
+  4 > -6
+
+-------------------------------------------------------------------------------
+Nested generators and captured variables
+-------------------------------------------------------------------------------
+Generators.tests.cpp:<line number>
+...............................................................................
+
+Generators.tests.cpp:<line number>: PASSED:
+  REQUIRE( values > -6 )
+with expansion:
+  5 > -6
+
+-------------------------------------------------------------------------------
+Nested generators and captured variables
+-------------------------------------------------------------------------------
+Generators.tests.cpp:<line number>
+...............................................................................
+
+Generators.tests.cpp:<line number>: PASSED:
+  REQUIRE( values > -6 )
+with expansion:
+  6 > -6
+
+-------------------------------------------------------------------------------
+Nested generators and captured variables
+-------------------------------------------------------------------------------
+Generators.tests.cpp:<line number>
+...............................................................................
+
+Generators.tests.cpp:<line number>: PASSED:
+  REQUIRE( values > -6 )
+with expansion:
+  -5 > -6
+
+-------------------------------------------------------------------------------
+Nested generators and captured variables
+-------------------------------------------------------------------------------
+Generators.tests.cpp:<line number>
+...............................................................................
+
+Generators.tests.cpp:<line number>: PASSED:
+  REQUIRE( values > -6 )
+with expansion:
+  -4 > -6
+
+-------------------------------------------------------------------------------
+Nested generators and captured variables
+-------------------------------------------------------------------------------
+Generators.tests.cpp:<line number>
+...............................................................................
+
+Generators.tests.cpp:<line number>: PASSED:
+  REQUIRE( values > -6 )
+with expansion:
+  90 > -6
+
+-------------------------------------------------------------------------------
+Nested generators and captured variables
+-------------------------------------------------------------------------------
+Generators.tests.cpp:<line number>
+...............................................................................
+
+Generators.tests.cpp:<line number>: PASSED:
+  REQUIRE( values > -6 )
+with expansion:
+  91 > -6
+
+-------------------------------------------------------------------------------
+Nested generators and captured variables
+-------------------------------------------------------------------------------
+Generators.tests.cpp:<line number>
+...............................................................................
+
+Generators.tests.cpp:<line number>: PASSED:
+  REQUIRE( values > -6 )
+with expansion:
+  92 > -6
+
+-------------------------------------------------------------------------------
+Nested generators and captured variables
+-------------------------------------------------------------------------------
+Generators.tests.cpp:<line number>
+...............................................................................
+
+Generators.tests.cpp:<line number>: PASSED:
+  REQUIRE( values > -6 )
+with expansion:
+  93 > -6
+
+-------------------------------------------------------------------------------
+Nested generators and captured variables
+-------------------------------------------------------------------------------
+Generators.tests.cpp:<line number>
+...............................................................................
+
+Generators.tests.cpp:<line number>: PASSED:
+  REQUIRE( values > -6 )
+with expansion:
+  94 > -6
+
+-------------------------------------------------------------------------------
+Nested generators and captured variables
+-------------------------------------------------------------------------------
+Generators.tests.cpp:<line number>
+...............................................................................
+
+Generators.tests.cpp:<line number>: PASSED:
+  REQUIRE( values > -6 )
+with expansion:
+  95 > -6
+
+-------------------------------------------------------------------------------
+Nested generators and captured variables
+-------------------------------------------------------------------------------
+Generators.tests.cpp:<line number>
+...............................................................................
+
+Generators.tests.cpp:<line number>: PASSED:
+  REQUIRE( values > -6 )
+with expansion:
+  96 > -6
+
+-------------------------------------------------------------------------------
+Nested generators and captured variables
+-------------------------------------------------------------------------------
+Generators.tests.cpp:<line number>
+...............................................................................
+
+Generators.tests.cpp:<line number>: PASSED:
+  REQUIRE( values > -6 )
+with expansion:
+  97 > -6
+
+-------------------------------------------------------------------------------
+Nested generators and captured variables
+-------------------------------------------------------------------------------
+Generators.tests.cpp:<line number>
+...............................................................................
+
+Generators.tests.cpp:<line number>: PASSED:
+  REQUIRE( values > -6 )
+with expansion:
+  98 > -6
+
+-------------------------------------------------------------------------------
+Nested generators and captured variables
+-------------------------------------------------------------------------------
+Generators.tests.cpp:<line number>
+...............................................................................
+
+Generators.tests.cpp:<line number>: PASSED:
+  REQUIRE( values > -6 )
+with expansion:
+  99 > -6
+
+-------------------------------------------------------------------------------
 Nice descriptive name
 -------------------------------------------------------------------------------
 Misc.tests.cpp:<line number>
@@ -10936,6 +11112,6 @@ Misc.tests.cpp:<line number>
 Misc.tests.cpp:<line number>: PASSED:
 
 ===============================================================================
-test cases:  256 |  175 passed |  77 failed |  4 failed as expected
-assertions: 1419 | 1260 passed | 138 failed | 21 failed as expected
+test cases:  257 |  176 passed |  77 failed |  4 failed as expected
+assertions: 1435 | 1276 passed | 138 failed | 21 failed as expected
 

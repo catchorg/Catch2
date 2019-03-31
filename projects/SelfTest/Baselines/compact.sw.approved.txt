@@ -637,6 +637,22 @@ Matchers.tests.cpp:<line number>: passed: testStringForMatching(), !Contains("di
 Matchers.tests.cpp:<line number>: failed: testStringForMatching(), !Contains("substring") for: "this string contains 'abc' as a substring" not contains: "substring"
 Exception.tests.cpp:<line number>: passed: thisThrows(), "expected exception" for: "expected exception" equals: "expected exception"
 Exception.tests.cpp:<line number>: failed: thisThrows(), "should fail" for: "expected exception" equals: "should fail"
+Generators.tests.cpp:<line number>: passed: values > -6 for: 3 > -6
+Generators.tests.cpp:<line number>: passed: values > -6 for: 4 > -6
+Generators.tests.cpp:<line number>: passed: values > -6 for: 5 > -6
+Generators.tests.cpp:<line number>: passed: values > -6 for: 6 > -6
+Generators.tests.cpp:<line number>: passed: values > -6 for: -5 > -6
+Generators.tests.cpp:<line number>: passed: values > -6 for: -4 > -6
+Generators.tests.cpp:<line number>: passed: values > -6 for: 90 > -6
+Generators.tests.cpp:<line number>: passed: values > -6 for: 91 > -6
+Generators.tests.cpp:<line number>: passed: values > -6 for: 92 > -6
+Generators.tests.cpp:<line number>: passed: values > -6 for: 93 > -6
+Generators.tests.cpp:<line number>: passed: values > -6 for: 94 > -6
+Generators.tests.cpp:<line number>: passed: values > -6 for: 95 > -6
+Generators.tests.cpp:<line number>: passed: values > -6 for: 96 > -6
+Generators.tests.cpp:<line number>: passed: values > -6 for: 97 > -6
+Generators.tests.cpp:<line number>: passed: values > -6 for: 98 > -6
+Generators.tests.cpp:<line number>: passed: values > -6 for: 99 > -6
 Misc.tests.cpp:<line number>: warning: 'This one ran'
 Exception.tests.cpp:<line number>: failed: unexpected exception with message: 'custom exception'
 Tricky.tests.cpp:<line number>: passed: True for: {?}

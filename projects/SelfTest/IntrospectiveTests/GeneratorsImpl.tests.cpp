@@ -216,3 +216,45 @@ TEST_CASE("Generators internals", "[generators][internals]") {
     }
 
 }
+
+
+// todo: uncopyable type used in a generator
+//  idea: uncopyable tag type for a stupid generator
+
+namespace {
+struct non_copyable {
+    non_copyable() = default;
+    non_copyable(non_copyable const&) = delete;
+    non_copyable& operator=(non_copyable const&) = delete;
+    int value = -1;
+};
+
+// This class shows how to implement a simple generator for Catch tests
+class TestGen : public Catch::Generators::IGenerator<int> {
+    int current_number;
+public:
+
+    TestGen(non_copyable const& nc):
+        current_number(nc.value) {}
+
+    int const& get() const override;
+    bool next() override {
+        return false;
+    }
+};
+
+// Avoids -Wweak-vtables
+int const& TestGen::get() const {
+    return current_number;
+}
+
+}
+
+TEST_CASE("GENERATE capture macros", "[generators][internals][.approvals]") {
+    auto value = GENERATE(take(10, random(0, 10)));
+
+    non_copyable nc; nc.value = value;
+    // neither `GENERATE_COPY` nor plain `GENERATE` would compile here
+    auto value2 = GENERATE_REF(Catch::Generators::GeneratorWrapper<int>(std::unique_ptr<Catch::Generators::IGenerator<int>>(new TestGen(nc))));
+    REQUIRE(value == value2);
+}

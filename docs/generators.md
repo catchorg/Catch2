@@ -90,7 +90,11 @@ used with other generators as arguments, such as `auto i = GENERATE(0, 2,
 take(100, random(300, 3000)));`. This is useful e.g. if you know that
 specific inputs are problematic and want to test them separately/first.
 
-**For safety reasons, you cannot use variables inside the `GENERATE` macro.**
+**For safety reasons, you cannot use variables inside the `GENERATE` macro.
+This is done because the generator expression _will_ outlive the outside
+scope and thus capturing references is dangerous. If you need to use
+variables inside the generator expression, make sure you thought through
+the lifetime implications and use `GENERATE_COPY` or `GENERATE_REF`.**
 
 You can also override the inferred type by using `as<type>` as the first
 argument to the macro. This can be useful when dealing with string literals,

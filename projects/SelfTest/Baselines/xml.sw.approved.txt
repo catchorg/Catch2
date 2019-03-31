@@ -5913,6 +5913,137 @@ Nor would this
       </Expression>
       <OverallResult success="false"/>
     </TestCase>
+    <TestCase name="Nested generators and captured variables" tags="[generators]" filename="projects/<exe-name>/UsageTests/Generators.tests.cpp" >
+      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/UsageTests/Generators.tests.cpp" >
+        <Original>
+          values > -6
+        </Original>
+        <Expanded>
+          3 > -6
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/UsageTests/Generators.tests.cpp" >
+        <Original>
+          values > -6
+        </Original>
+        <Expanded>
+          4 > -6
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/UsageTests/Generators.tests.cpp" >
+        <Original>
+          values > -6
+        </Original>
+        <Expanded>
+          5 > -6
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/UsageTests/Generators.tests.cpp" >
+        <Original>
+          values > -6
+        </Original>
+        <Expanded>
+          6 > -6
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/UsageTests/Generators.tests.cpp" >
+        <Original>
+          values > -6
+        </Original>
+        <Expanded>
+          -5 > -6
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/UsageTests/Generators.tests.cpp" >
+        <Original>
+          values > -6
+        </Original>
+        <Expanded>
+          -4 > -6
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/UsageTests/Generators.tests.cpp" >
+        <Original>
+          values > -6
+        </Original>
+        <Expanded>
+          90 > -6
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/UsageTests/Generators.tests.cpp" >
+        <Original>
+          values > -6
+        </Original>
+        <Expanded>
+          91 > -6
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/UsageTests/Generators.tests.cpp" >
+        <Original>
+          values > -6
+        </Original>
+        <Expanded>
+          92 > -6
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/UsageTests/Generators.tests.cpp" >
+        <Original>
+          values > -6
+        </Original>
+        <Expanded>
+          93 > -6
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/UsageTests/Generators.tests.cpp" >
+        <Original>
+          values > -6
+        </Original>
+        <Expanded>
+          94 > -6
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/UsageTests/Generators.tests.cpp" >
+        <Original>
+          values > -6
+        </Original>
+        <Expanded>
+          95 > -6
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/UsageTests/Generators.tests.cpp" >
+        <Original>
+          values > -6
+        </Original>
+        <Expanded>
+          96 > -6
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/UsageTests/Generators.tests.cpp" >
+        <Original>
+          values > -6
+        </Original>
+        <Expanded>
+          97 > -6
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/UsageTests/Generators.tests.cpp" >
+        <Original>
+          values > -6
+        </Original>
+        <Expanded>
+          98 > -6
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/UsageTests/Generators.tests.cpp" >
+        <Original>
+          values > -6
+        </Original>
+        <Expanded>
+          99 > -6
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
     <TestCase name="Nice descriptive name" tags="[.][tag1][tag2][tag3]" filename="projects/<exe-name>/UsageTests/Misc.tests.cpp" >
       <Warning>
         This one ran
@@ -13257,7 +13388,7 @@ loose text artifact
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="1260" failures="139" expectedFailures="21"/>
+    <OverallResults successes="1276" failures="139" expectedFailures="21"/>
   </Group>
-  <OverallResults successes="1260" failures="138" expectedFailures="21"/>
+  <OverallResults successes="1276" failures="138" expectedFailures="21"/>
 </Catch>

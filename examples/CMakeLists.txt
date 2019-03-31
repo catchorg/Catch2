@@ -47,6 +47,7 @@ set( SOURCES_IDIOMATIC_TESTS
     300-Gen-OwnGenerator.cpp
     301-Gen-MapTypeConversion.cpp
     310-Gen-VariablesInGenerators.cpp
+    311-Gen-CustomCapture.cpp
 )
 
 # main-s for reporter-specific test sources:

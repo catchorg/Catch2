@@ -4,7 +4,7 @@
     <property name="random-seed" value="1"/>
   </properties>
 loose text artifact
-  <testsuite name="<exe-name>" errors="17" failures="122" tests="1420" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
+  <testsuite name="<exe-name>" errors="17" failures="122" tests="1436" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
     <testcase classname="<exe-name>.global" name="# A test name that starts with a #" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="#1005: Comparing pointer to int and long (NULL can be either on various systems)" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="#1027" time="{duration}"/>
@@ -454,6 +454,7 @@ Matchers.tests.cpp:<line number>
 Exception.tests.cpp:<line number>
       </failure>
     </testcase>
+    <testcase classname="<exe-name>.global" name="Nested generators and captured variables" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Nice descriptive name" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Non-std exceptions can be translated" time="{duration}">
       <error type="TEST_CASE">

@@ -188,3 +188,21 @@ TEST_CASE("Random generator", "[generators][.][approvals]") {
         static_cast<void>(val); // Silence VS 2015 unused variable warning
     }
 }
+
+
+TEST_CASE("Nested generators and captured variables", "[generators]") {
+    // Workaround for old libstdc++
+    using record = std::tuple<int, int>;
+    // Set up 3 ranges to generate numbers from
+    auto extent = GENERATE(table<int, int>({
+        record{3, 7},
+        record{-5, -3},
+        record{90, 100}
+    }));
+
+    auto from = std::get<0>(extent);
+    auto to = std::get<1>(extent);
+
+    auto values = GENERATE_COPY(range(from, to));
+    REQUIRE(values > -6);
+}
