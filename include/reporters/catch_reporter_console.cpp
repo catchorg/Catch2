@@ -441,6 +441,10 @@ void ConsoleReporter::testRunEnded(TestRunStats const& _testRunStats) {
     stream << std::endl;
     StreamingReporterBase::testRunEnded(_testRunStats);
 }
+void ConsoleReporter::testRunStarting(TestRunInfo const& _testInfo) {
+    StreamingReporterBase::testRunStarting(_testInfo);
+    printTestFilters();
+}
 
 void ConsoleReporter::lazyPrint() {
 
@@ -620,6 +624,11 @@ void ConsoleReporter::printTotalsDivider(Totals const& totals) {
 }
 void ConsoleReporter::printSummaryDivider() {
     stream << getLineOfChars<'-'>() << '\n';
+}
+
+void ConsoleReporter::printTestFilters() {
+    if (m_config->testSpec().hasFilters())
+        stream << Colour(Colour::BrightYellow) << "Filters: " << serializeFilters( m_config->getTestsOrTags() ) << '\n';
 }
 
 CATCH_REGISTER_REPORTER("console", ConsoleReporter)

@@ -25,6 +25,8 @@ namespace Catch {
     // Returns double formatted as %.3f (format expected on output)
     std::string getFormattedDuration( double duration );
 
+    std::string serializeFilters( std::vector<std::string> const& container );
+
     template<typename DerivedT>
     struct StreamingReporterBase : IStreamingReporter {
 
@@ -52,6 +54,7 @@ namespace Catch {
         void testRunStarting(TestRunInfo const& _testRunInfo) override {
             currentTestRunInfo = _testRunInfo;
         }
+
         void testGroupStarting(GroupInfo const& _groupInfo) override {
             currentGroupInfo = _groupInfo;
         }
