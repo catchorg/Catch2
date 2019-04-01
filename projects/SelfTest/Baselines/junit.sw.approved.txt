@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuites>
   <properties>
+    <property name="filters" value="~[!nonportable]~[!benchmark]~[approvals]"/>
     <property name="random-seed" value="1"/>
   </properties>
 loose text artifact
