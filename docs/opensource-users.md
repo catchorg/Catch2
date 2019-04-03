@@ -106,6 +106,9 @@ Newsbeuter is an open-source RSS/Atom feed reader for text terminals.
 ### [raspigcd](https://github.com/pantadeusz/raspigcd)
 Low level CLI app and library for execution of GCODE on Raspberry Pi without any additional microcontrolers (just RPi + Stepsticks).
 
+### [RenderDoc](https://github.com/baldurk/renderdoc)
+RenderDoc is a stand-alone graphics debugging tool.
+
 ### [SpECTRE](https://github.com/sxs-collaboration/spectre)
 SpECTRE is a code for multi-scale, multi-physics problems in astrophysics and gravitational physics.
 
