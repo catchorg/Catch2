@@ -1,6 +1,6 @@
 /*
- *  Catch v2.7.0
- *  Generated: 2019-03-07 21:34:30.252164
+ *  Catch v2.7.0-develop.2
+ *  Generated: 2019-04-04 16:00:49.937519
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2019 Two Blue Cubes Ltd. All rights reserved.
@@ -1166,6 +1166,36 @@ namespace Catch {
 }
 
 // end catch_stream.h
+// start catch_interfaces_enum_values_registry.h
+
+#include <vector>
+
+namespace Catch {
+
+    struct IEnumInfo {
+        virtual ~IEnumInfo();
+
+        virtual std::string lookup( int value ) const = 0;
+    };
+
+    struct IMutableEnumValuesRegistry {
+        virtual ~IMutableEnumValuesRegistry();
+
+        virtual IEnumInfo const& registerEnum( StringRef enumName, StringRef allEnums, std::vector<int> const& values ) = 0;
+
+        template<typename E>
+        IEnumInfo const& registerEnum( StringRef enumName, StringRef allEnums, std::initializer_list<E> values ) {
+            std::vector<int> intValues;
+            intValues.reserve( values.size() );
+            for( auto enumValue : values )
+                intValues.push_back( static_cast<int>( enumValue ) );
+            return registerEnum( enumName, allEnums, intValues );
+        }
+    };
+
+} // Catch
+
+// end catch_interfaces_enum_values_registry.h
 
 #ifdef CATCH_CONFIG_CPP17_STRING_VIEW
 #include <string_view>
@@ -1826,6 +1856,20 @@ struct ratio_string<std::milli> {
     };
 }
 #endif // CATCH_CONFIG_ENABLE_CHRONO_STRINGMAKER
+
+#define INTERNAL_CATCH_STRINGIFY_ENUM( enumName, ... ) \
+    template<> struct ::Catch::StringMaker<enumName> { \
+        static std::string convert( enumName value ) { \
+            static const auto& enumInfo = ::Catch::getMutableRegistryHub().getMutableEnumValuesRegistry().registerEnum( #enumName, #__VA_ARGS__, { __VA_ARGS__ } ); \
+            return enumInfo.lookup( static_cast<int>( value ) ); \
+        } \
+    };
+
+#ifdef CATCH_CONFIG_PREFIX_ALL
+#  define CATCH_STRINGIFY_ENUM( enumName, ... ) INTERNAL_CATCH_STRINGIFY_ENUM( enumName, __VA_ARGS__ )
+#else
+#  define STRINGIFY_ENUM( enumName, ... ) INTERNAL_CATCH_STRINGIFY_ENUM( enumName, __VA_ARGS__ )
+#endif
 
 #ifdef _MSC_VER
 #pragma warning(pop)
@@ -2624,6 +2668,8 @@ namespace Catch {
     struct IReporterRegistry;
     struct IReporterFactory;
     struct ITagAliasRegistry;
+    struct IMutableEnumValuesRegistry;
+
     class StartupExceptionRegistry;
 
     using IReporterFactoryPtr = std::shared_ptr<IReporterFactory>;
@@ -2634,7 +2680,6 @@ namespace Catch {
         virtual IReporterRegistry const& getReporterRegistry() const = 0;
         virtual ITestCaseRegistry const& getTestCaseRegistry() const = 0;
         virtual ITagAliasRegistry const& getTagAliasRegistry() const = 0;
-
         virtual IExceptionTranslatorRegistry const& getExceptionTranslatorRegistry() const = 0;
 
         virtual StartupExceptionRegistry const& getStartupExceptionRegistry() const = 0;
@@ -2648,6 +2693,7 @@ namespace Catch {
         virtual void registerTranslator( const IExceptionTranslator* translator ) = 0;
         virtual void registerTagAlias( std::string const& alias, std::string const& tag, SourceLineInfo const& lineInfo ) = 0;
         virtual void registerStartupException() noexcept = 0;
+        virtual IMutableEnumValuesRegistry& getMutableEnumValuesRegistry() = 0;
     };
 
     IRegistryHub const& getRegistryHub();
@@ -2857,6 +2903,8 @@ struct StringMaker<Catch::Detail::Approx> {
 
 namespace Catch {
 
+    class StringRef;
+
     bool startsWith( std::string const& s, std::string const& prefix );
     bool startsWith( std::string const& s, char prefix );
     bool endsWith( std::string const& s, std::string const& suffix );
@@ -2866,6 +2914,7 @@ namespace Catch {
     std::string toLower( std::string const& s );
     std::string trim( std::string const& str );
     bool replaceInPlace( std::string& str, std::string const& replaceThis, std::string const& withThis );
+    std::vector<std::string> splitString( StringRef str, char delimiter );
 
     struct pluralise {
         pluralise( std::size_t count, std::string const& label );
@@ -3686,7 +3735,11 @@ namespace Generators {
 } // namespace Catch
 
 #define GENERATE( ... ) \
-    Catch::Generators::generate( CATCH_INTERNAL_LINEINFO, []{ using namespace Catch::Generators; return makeGenerators( __VA_ARGS__ ); } )
+    Catch::Generators::generate( CATCH_INTERNAL_LINEINFO, [ ]{ using namespace Catch::Generators; return makeGenerators( __VA_ARGS__ ); } )
+#define GENERATE_COPY( ... ) \
+    Catch::Generators::generate( CATCH_INTERNAL_LINEINFO, [=]{ using namespace Catch::Generators; return makeGenerators( __VA_ARGS__ ); } )
+#define GENERATE_REF( ... ) \
+    Catch::Generators::generate( CATCH_INTERNAL_LINEINFO, [&]{ using namespace Catch::Generators; return makeGenerators( __VA_ARGS__ ); } )
 
 // end catch_generators.hpp
 // start catch_generators_generic.hpp
@@ -3849,16 +3902,28 @@ namespace Generators {
         }
     };
 
-    template <typename T, typename U, typename Func>
+#if defined(__cpp_lib_is_invocable) && __cpp_lib_is_invocable >= 201703
+    // std::result_of is deprecated in C++17 and removed in C++20. Hence, it is
+    // replaced with std::invoke_result here. Also *_t format is preferred over
+    // typename *::type format.
+    template <typename Func, typename U>
+    using MapFunctionReturnType = std::remove_reference_t<std::remove_cv_t<std::invoke_result_t<Func, U>>>;
+#else
+    template <typename Func, typename U>
+    using MapFunctionReturnType = typename std::remove_reference<typename std::remove_cv<typename std::result_of<Func(U)>::type>::type>::type;
+#endif
+
+    template <typename Func, typename U, typename T = MapFunctionReturnType<Func, U>>
     GeneratorWrapper<T> map(Func&& function, GeneratorWrapper<U>&& generator) {
         return GeneratorWrapper<T>(
             pf::make_unique<MapGenerator<T, U, Func>>(std::forward<Func>(function), std::move(generator))
         );
     }
-    template <typename T, typename Func>
-    GeneratorWrapper<T> map(Func&& function, GeneratorWrapper<T>&& generator) {
+
+    template <typename T, typename U, typename Func>
+    GeneratorWrapper<T> map(Func&& function, GeneratorWrapper<U>&& generator) {
         return GeneratorWrapper<T>(
-            pf::make_unique<MapGenerator<T, T, Func>>(std::forward<Func>(function), std::move(generator))
+            pf::make_unique<MapGenerator<T, U, Func>>(std::forward<Func>(function), std::move(generator))
         );
     }
 
@@ -4022,6 +4087,7 @@ namespace Catch {
         virtual ShowDurations::OrNot showDurations() const = 0;
         virtual TestSpec const& testSpec() const = 0;
         virtual bool hasTestFilters() const = 0;
+        virtual std::vector<std::string> const& getTestsOrTags() const = 0;
         virtual RunTests::InWhatOrder runOrder() const = 0;
         virtual unsigned int rngSeed() const = 0;
         virtual int benchmarkResolutionMultiple() const = 0;
@@ -4352,7 +4418,7 @@ namespace Catch {
                     arcSafeRelease( m_substr );
                 }
 
-                bool match( NSString* arg ) const override {
+                bool match( NSString* const& str ) const override {
                     return false;
                 }
 
@@ -4362,7 +4428,7 @@ namespace Catch {
             struct Equals : StringHolder {
                 Equals( NSString* substr ) : StringHolder( substr ){}
 
-                bool match( NSString* str ) const override {
+                bool match( NSString* const& str ) const override {
                     return  (str != nil || m_substr == nil ) &&
                             [str isEqualToString:m_substr];
                 }
@@ -4375,7 +4441,7 @@ namespace Catch {
             struct Contains : StringHolder {
                 Contains( NSString* substr ) : StringHolder( substr ){}
 
-                bool match( NSString* str ) const {
+                bool match( NSString* const& str ) const override {
                     return  (str != nil || m_substr == nil ) &&
                             [str rangeOfString:m_substr].location != NSNotFound;
                 }
@@ -4388,7 +4454,7 @@ namespace Catch {
             struct StartsWith : StringHolder {
                 StartsWith( NSString* substr ) : StringHolder( substr ){}
 
-                bool match( NSString* str ) const override {
+                bool match( NSString* const& str ) const override {
                     return  (str != nil || m_substr == nil ) &&
                             [str rangeOfString:m_substr].location == 0;
                 }
@@ -4400,7 +4466,7 @@ namespace Catch {
             struct EndsWith : StringHolder {
                 EndsWith( NSString* substr ) : StringHolder( substr ){}
 
-                bool match( NSString* str ) const override {
+                bool match( NSString* const& str ) const override {
                     return  (str != nil || m_substr == nil ) &&
                             [str rangeOfString:m_substr].location == [str length] - [m_substr length];
                 }
@@ -4708,7 +4774,7 @@ namespace Catch {
         std::string getProcessName() const;
         std::string const& getReporterName() const;
 
-        std::vector<std::string> const& getTestsOrTags() const;
+        std::vector<std::string> const& getTestsOrTags() const override;
         std::vector<std::string> const& getSectionsToRun() const override;
 
         virtual TestSpec const& testSpec() const override;
@@ -5082,6 +5148,8 @@ namespace Catch {
     // Returns double formatted as %.3f (format expected on output)
     std::string getFormattedDuration( double duration );
 
+    std::string serializeFilters( std::vector<std::string> const& container );
+
     template<typename DerivedT>
     struct StreamingReporterBase : IStreamingReporter {
 
@@ -5109,6 +5177,7 @@ namespace Catch {
         void testRunStarting(TestRunInfo const& _testRunInfo) override {
             currentTestRunInfo = _testRunInfo;
         }
+
         void testGroupStarting(GroupInfo const& _groupInfo) override {
             currentGroupInfo = _groupInfo;
         }
@@ -5521,7 +5590,7 @@ namespace Catch {
         void testCaseEnded(TestCaseStats const& _testCaseStats) override;
         void testGroupEnded(TestGroupStats const& _testGroupStats) override;
         void testRunEnded(TestRunStats const& _testRunStats) override;
-
+        void testRunStarting(TestRunInfo const& _testRunInfo) override;
     private:
 
         void lazyPrint();
@@ -5543,6 +5612,7 @@ namespace Catch {
 
         void printTotalsDivider(Totals const& totals);
         void printSummaryDivider();
+        void printTestFilters();
 
     private:
         bool m_headerPrinted = false;
@@ -8525,6 +8595,88 @@ namespace Catch {
 #endif
 } // namespace Catch;
 // end catch_enforce.cpp
+// start catch_enum_values_registry.cpp
+// start catch_enum_values_registry.h
+
+#include <vector>
+
+namespace Catch {
+
+    namespace Detail {
+
+        class EnumValuesRegistry : public IMutableEnumValuesRegistry {
+
+            std::vector<std::unique_ptr<IEnumInfo>> m_enumInfos;
+
+            IEnumInfo const& registerEnum(StringRef enumName, StringRef allEnums, std::vector<int> const& values) override;
+        };
+
+        std::vector<std::string> parseEnums( StringRef enums );
+
+    } // Detail
+
+} // Catch
+
+// end catch_enum_values_registry.h
+
+#include <map>
+
+namespace Catch {
+
+    IMutableEnumValuesRegistry::~IMutableEnumValuesRegistry() {}
+    IEnumInfo::~IEnumInfo() {}
+
+    namespace Detail {
+
+        std::vector<std::string> parseEnums( StringRef enums ) {
+            auto enumValues = splitString( enums, ',' );
+            std::vector<std::string> parsed;
+            parsed.reserve( enumValues.size() );
+            for( auto const& enumValue : enumValues ) {
+                auto identifiers = splitString( enumValue, ':' );
+                parsed.push_back( Catch::trim( identifiers.back() ) );
+            }
+            return parsed;
+        }
+
+        struct EnumInfo : IEnumInfo {
+            std::string m_name;
+            std::map<int, std::string> m_values;
+
+            ~EnumInfo();
+
+            std::string lookup( int value ) const override {
+                auto it = m_values.find( value );
+                if( it == m_values.end() ) {
+                    ReusableStringStream rss;
+                    rss << "{** unexpected value for " << m_name << ": " << value << "**}";
+                    return rss.str();
+                }
+                return it->second;
+            }
+        };
+        EnumInfo::~EnumInfo() {}
+
+        IEnumInfo const& EnumValuesRegistry::registerEnum( StringRef enumName, StringRef allValueNames, std::vector<int> const& values ) {
+            std::unique_ptr<EnumInfo> enumInfo( new EnumInfo );
+            enumInfo->m_name = enumName;
+
+            const auto valueNames = Catch::Detail::parseEnums( allValueNames );
+            assert( valueNames.size() == values.size() );
+            std::size_t i = 0;
+            for( auto value : values )
+                enumInfo->m_values.insert({ value, valueNames[i++] });
+
+            EnumInfo* raw = enumInfo.get();
+            m_enumInfos.push_back( std::move( enumInfo ) );
+            return *raw;
+        }
+
+    } // Detail
+
+} // Catch
+
+// end catch_enum_values_registry.cpp
 // start catch_errno_guard.cpp
 
 #include <cerrno>
@@ -8660,10 +8812,10 @@ namespace Catch {
     // Windows can easily distinguish between SO and SigSegV,
     // but SigInt, SigTerm, etc are handled differently.
     static SignalDefs signalDefs[] = {
-        { EXCEPTION_ILLEGAL_INSTRUCTION,  "SIGILL - Illegal instruction signal" },
-        { EXCEPTION_STACK_OVERFLOW, "SIGSEGV - Stack overflow" },
-        { EXCEPTION_ACCESS_VIOLATION, "SIGSEGV - Segmentation violation signal" },
-        { EXCEPTION_INT_DIVIDE_BY_ZERO, "Divide by zero error" },
+        { static_cast<DWORD>(EXCEPTION_ILLEGAL_INSTRUCTION),  "SIGILL - Illegal instruction signal" },
+        { static_cast<DWORD>(EXCEPTION_STACK_OVERFLOW), "SIGSEGV - Stack overflow" },
+        { static_cast<DWORD>(EXCEPTION_ACCESS_VIOLATION), "SIGSEGV - Segmentation violation signal" },
+        { static_cast<DWORD>(EXCEPTION_INT_DIVIDE_BY_ZERO), "Divide by zero error" },
     };
 
     LONG CALLBACK FatalConditionHandler::handleVectoredException(PEXCEPTION_POINTERS ExceptionInfo) {
@@ -10157,6 +10309,9 @@ namespace Catch {
             void registerStartupException() noexcept override {
                 m_exceptionRegistry.add(std::current_exception());
             }
+            IMutableEnumValuesRegistry& getMutableEnumValuesRegistry() override {
+                return m_enumValuesRegistry;
+            }
 
         private:
             TestRegistry m_testCaseRegistry;
@@ -10164,6 +10319,7 @@ namespace Catch {
             ExceptionTranslatorRegistry m_exceptionTranslatorRegistry;
             TagAliasRegistry m_tagAliasRegistry;
             StartupExceptionRegistry m_exceptionRegistry;
+            Detail::EnumValuesRegistry m_enumValuesRegistry;
         };
     }
 
@@ -11336,6 +11492,7 @@ namespace Catch {
 #include <ostream>
 #include <cstring>
 #include <cctype>
+#include <vector>
 
 namespace Catch {
 
@@ -11388,6 +11545,21 @@ namespace Catch {
                 i = std::string::npos;
         }
         return replaced;
+    }
+
+    std::vector<std::string> splitString( StringRef str, char delimiter ) {
+        std::vector<std::string> subStrings;
+        std::size_t start = 0;
+        for(std::size_t pos = 0; pos < str.size(); ++pos ) {
+            if( str[pos] == delimiter ) {
+                if( pos - start > 1 )
+                    subStrings.push_back( str.substr( start, pos-start ) );
+                start = pos+1;
+            }
+        }
+        if( start < str.size() )
+            subStrings.push_back( str.substr( start, str.size()-start ) );
+        return subStrings;
     }
 
     pluralise::pluralise( std::size_t count, std::string const& label )
@@ -11657,6 +11829,12 @@ namespace Catch {
                     else if( prop == TestCaseInfo::None )
                         enforceNotReservedTag( tag, _lineInfo );
 
+                    // Merged hide tags like `[.approvals]` should be added as
+                    // `[.][approvals]`. The `[.]` is added at later point, so
+                    // we only strip the prefix
+                    if (startsWith(tag, '.') && tag.size() > 1) {
+                        tag.erase(0, 1);
+                    }
                     tags.push_back( tag );
                     tag.clear();
                     inTag = false;
@@ -12665,7 +12843,7 @@ namespace Catch {
     }
 
     Version const& libraryVersion() {
-        static Version version( 2, 7, 0, "", 0 );
+        static Version version( 2, 7, 0, "develop", 2 );
         return version;
     }
 
@@ -13020,6 +13198,21 @@ namespace Catch {
         std::sprintf(buffer, "%.3f", duration);
 #endif
         return std::string(buffer);
+    }
+
+    std::string serializeFilters( std::vector<std::string> const& container ) {
+        ReusableStringStream oss;
+        bool first = true;
+        for (auto&& filter : container)
+        {
+            if (!first)
+                oss << ' ';
+            else
+                first = false;
+
+            oss << filter;
+        }
+        return oss.str();
     }
 
     TestEventListenerBase::TestEventListenerBase(ReporterConfig const & _config)
@@ -13746,6 +13939,10 @@ void ConsoleReporter::testRunEnded(TestRunStats const& _testRunStats) {
     stream << std::endl;
     StreamingReporterBase::testRunEnded(_testRunStats);
 }
+void ConsoleReporter::testRunStarting(TestRunInfo const& _testInfo) {
+    StreamingReporterBase::testRunStarting(_testInfo);
+    printTestFilters();
+}
 
 void ConsoleReporter::lazyPrint() {
 
@@ -13927,6 +14124,11 @@ void ConsoleReporter::printSummaryDivider() {
     stream << getLineOfChars<'-'>() << '\n';
 }
 
+void ConsoleReporter::printTestFilters() {
+    if (m_config->testSpec().hasFilters())
+        stream << Colour(Colour::BrightYellow) << "Filters: " << serializeFilters( m_config->getTestsOrTags() ) << '\n';
+}
+
 CATCH_REGISTER_REPORTER("console", ConsoleReporter)
 
 } // end namespace Catch
@@ -14000,8 +14202,17 @@ namespace Catch {
     void JunitReporter::testRunStarting( TestRunInfo const& runInfo )  {
         CumulativeReporterBase::testRunStarting( runInfo );
         xml.startElement( "testsuites" );
+
+        if ( m_config->hasTestFilters() || m_config->rngSeed() != 0 )
+            xml.startElement("properties");
+
+        if ( m_config->hasTestFilters() ) {
+            xml.scopedElement( "property" )
+                .writeAttribute( "name" , "filters" )
+                .writeAttribute( "value" , serializeFilters( m_config->getTestsOrTags() ) );
+        }
+
         if( m_config->rngSeed() != 0 ) {
-            xml.startElement( "properties" );
             xml.scopedElement( "property" )
                 .writeAttribute( "name", "random-seed" )
                 .writeAttribute( "value", m_config->rngSeed() );
@@ -14357,6 +14568,8 @@ namespace Catch {
         m_xml.startElement( "Catch" );
         if( !m_config->name().empty() )
             m_xml.writeAttribute( "name", m_config->name() );
+        if (m_config->testSpec().hasFilters())
+            m_xml.writeAttribute( "filters", serializeFilters( m_config->getTestsOrTags() ) );
         if( m_config->rngSeed() != 0 )
             m_xml.scopedElement( "Randomness" )
                 .writeAttribute( "seed", m_config->rngSeed() );
