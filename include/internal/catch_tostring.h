@@ -15,6 +15,7 @@
 #include <string>
 #include "catch_compiler_capabilities.h"
 #include "catch_stream.h"
+#include "catch_interfaces_enum_values_registry.h"
 
 #ifdef CATCH_CONFIG_CPP17_STRING_VIEW
 #include <string_view>
@@ -639,6 +640,19 @@ struct ratio_string<std::milli> {
 }
 #endif // CATCH_CONFIG_ENABLE_CHRONO_STRINGMAKER
 
+#define INTERNAL_CATCH_STRINGIFY_ENUM( enumName, ... ) \
+    template<> struct ::Catch::StringMaker<enumName> { \
+        static std::string convert( enumName value ) { \
+            static const auto& enumInfo = ::Catch::getMutableRegistryHub().getMutableEnumValuesRegistry().registerEnum( #enumName, #__VA_ARGS__, { __VA_ARGS__ } ); \
+            return enumInfo.lookup( static_cast<int>( value ) ); \
+        } \
+    };
+
+#ifdef CATCH_CONFIG_PREFIX_ALL
+#  define CATCH_STRINGIFY_ENUM( enumName, ... ) INTERNAL_CATCH_STRINGIFY_ENUM( enumName, __VA_ARGS__ )
+#else
+#  define STRINGIFY_ENUM( enumName, ... ) INTERNAL_CATCH_STRINGIFY_ENUM( enumName, __VA_ARGS__ )
+#endif
 
 #ifdef _MSC_VER
 #pragma warning(pop)

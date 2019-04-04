@@ -202,3 +202,14 @@ TEST_CASE( "replaceInPlace", "[Strings][StringManip]" ) {
         CHECK( s == "didn|'t" );
     }
 }
+
+TEST_CASE( "splitString", "[Strings]" ) {
+    using namespace Catch::Matchers;
+    using Catch::splitString;
+
+    CHECK_THAT( splitString("", ',' ), Equals(std::vector<std::string>() ) );
+    CHECK_THAT( splitString("abc", ',' ), Equals(std::vector<std::string>{"abc"} ) );
+    CHECK_THAT( splitString("abc,def", ',' ), Equals(std::vector<std::string>{"abc", "def"} ) );
+}
+
+

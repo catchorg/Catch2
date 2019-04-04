@@ -5,7 +5,7 @@
     <property name="random-seed" value="1"/>
   </properties>
 loose text artifact
-  <testsuite name="<exe-name>" errors="17" failures="122" tests="1436" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
+  <testsuite name="<exe-name>" errors="17" failures="122" tests="1454" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
     <testcase classname="<exe-name>.global" name="# A test name that starts with a #" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="#1005: Comparing pointer to int and long (NULL can be either on various systems)" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="#1027" time="{duration}"/>
@@ -234,6 +234,7 @@ Matchers.tests.cpp:<line number>
 Matchers.tests.cpp:<line number>
       </failure>
     </testcase>
+    <testcase classname="<exe-name>.global" name="EnumInfo" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Epsilon only applies to Approx's value" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Equality checks that should fail" time="{duration}">
       <failure message="7 == 6" type="CHECK">
@@ -615,6 +616,7 @@ Matchers.tests.cpp:<line number>
       </failure>
     </testcase>
     <testcase classname="<exe-name>.global" name="Regression test #1" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="STRINGIFY_ENUM" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="SUCCEED counts as a test pass" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="SUCCEED does not require an argument" time="{duration}"/>
     <testcase classname="<exe-name>.Fixture" name="Scenario: BDD tests requiring Fixtures to provide commonly-accessed data or methods/Given: No operations precede me" time="{duration}"/>
@@ -945,6 +947,9 @@ Message.tests.cpp:<line number>
     <testcase classname="<exe-name>.global" name="null strings" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="null_ptr" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="pair&lt;pair&lt;int,const char *,pair&lt;std::string,int> > -> toString" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="parseEnums/No enums" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="parseEnums/One enum value" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="parseEnums/Multiple enum values" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="pointer to class" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="print unscoped info if passing unscoped info is printed" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="prints unscoped info on failure" time="{duration}">
@@ -983,6 +988,7 @@ Message.tests.cpp:<line number>
       </failure>
     </testcase>
     <testcase classname="<exe-name>.global" name="shortened hide tags are split apart" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="splitString" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="stacks unscoped info in loops" time="{duration}">
       <failure message="false" type="CHECK">
 Count 1 to 3...

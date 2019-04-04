@@ -64,3 +64,57 @@ TEST_CASE( "toString(enum class w/operator<<)", "[toString][enum][enumClass]" ) 
     EnumClass2 e3 = static_cast<EnumClass2>(10);
     CHECK( ::Catch::Detail::stringify(e3) == "Unknown enum value 10" );
 }
+
+enum class EnumClass3 { Value1, Value2, Value3, Value4 };
+
+STRINGIFY_ENUM( EnumClass3, EnumClass3::Value1, EnumClass3::Value2, EnumClass3::Value3 )
+
+
+TEST_CASE( "STRINGIFY_ENUM" ) {
+    using Catch::Detail::stringify;
+    REQUIRE( stringify( EnumClass3::Value1 ) == "Value1" );
+    REQUIRE( stringify( EnumClass3::Value2 ) == "Value2" );
+    REQUIRE( stringify( EnumClass3::Value3 ) == "Value3" );
+    REQUIRE( stringify( EnumClass3::Value4 ) == "{** unexpected value for EnumClass3: 3**}" );
+
+    EnumClass3 ec3 = EnumClass3 ::Value2;
+    REQUIRE( stringify( ec3 ) == "Value2" );
+}
+
+#include "internal/catch_interfaces_enum_values_registry.h"
+
+TEST_CASE( "EnumInfo" ) {
+
+    auto& hub = Catch::getMutableRegistryHub();
+    auto& reg = hub.getMutableEnumValuesRegistry();
+    auto const& enumInfo = reg.registerEnum( "EnumName", "EnumName::Value1, EnumName::Value2", {0, 1} );
+
+    CHECK( enumInfo.lookup(0) == "Value1" );
+    CHECK( enumInfo.lookup(1) == "Value2" );
+    CHECK( enumInfo.lookup(3) == "{** unexpected value for EnumName: 3**}" );
+}
+
+#include "internal/catch_enum_values_registry.h"
+
+TEST_CASE( "parseEnums", "[Strings][enums]" ) {
+    using namespace Catch::Matchers;
+    using Catch::Detail::parseEnums;
+
+    SECTION( "No enums" )
+        CHECK_THAT( parseEnums( "" ), Equals( std::vector<std::string>{} ) );
+
+    SECTION( "One enum value" ) {
+        CHECK_THAT( parseEnums( "ClassName::EnumName::Value1" ), Equals(std::vector<std::string>{"Value1"} ) );
+        CHECK_THAT( parseEnums( "Value1" ), Equals( std::vector<std::string>{"Value1"} ) );
+        CHECK_THAT( parseEnums( "EnumName::Value1" ), Equals(std::vector<std::string>{"Value1"} ) );
+    }
+
+    SECTION( "Multiple enum values" ) {
+        CHECK_THAT( parseEnums( "ClassName::EnumName::Value1, ClassName::EnumName::Value2" ),
+                    Equals( std::vector<std::string>{"Value1", "Value2"} ) );
+        CHECK_THAT( parseEnums( "ClassName::EnumName::Value1, ClassName::EnumName::Value2, ClassName::EnumName::Value3" ),
+                    Equals( std::vector<std::string>{"Value1", "Value2", "Value3"} ) );
+        CHECK_THAT( parseEnums( "ClassName::EnumName::Value1,ClassName::EnumName::Value2 , ClassName::EnumName::Value3" ),
+                    Equals( std::vector<std::string>{"Value1", "Value2", "Value3"} ) );
+    }
+}

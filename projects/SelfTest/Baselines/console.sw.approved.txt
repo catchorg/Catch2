@@ -2226,6 +2226,29 @@ with expansion:
   insensitive)
 
 -------------------------------------------------------------------------------
+EnumInfo
+-------------------------------------------------------------------------------
+EnumToString.tests.cpp:<line number>
+...............................................................................
+
+EnumToString.tests.cpp:<line number>: PASSED:
+  CHECK( enumInfo.lookup(0) == "Value1" )
+with expansion:
+  "Value1" == "Value1"
+
+EnumToString.tests.cpp:<line number>: PASSED:
+  CHECK( enumInfo.lookup(1) == "Value2" )
+with expansion:
+  "Value2" == "Value2"
+
+EnumToString.tests.cpp:<line number>: PASSED:
+  CHECK( enumInfo.lookup(3) == "{** unexpected value for EnumName: 3**}" )
+with expansion:
+  "{** unexpected value for EnumName: 3**}"
+  ==
+  "{** unexpected value for EnumName: 3**}"
+
+-------------------------------------------------------------------------------
 Epsilon only applies to Approx's value
 -------------------------------------------------------------------------------
 Approx.tests.cpp:<line number>
@@ -6685,6 +6708,39 @@ with expansion:
   { 'a', 'b' } not UnorderedEquals: { 'c', 'b' }
 
 -------------------------------------------------------------------------------
+STRINGIFY_ENUM
+-------------------------------------------------------------------------------
+EnumToString.tests.cpp:<line number>
+...............................................................................
+
+EnumToString.tests.cpp:<line number>: PASSED:
+  REQUIRE( stringify( EnumClass3::Value1 ) == "Value1" )
+with expansion:
+  "Value1" == "Value1"
+
+EnumToString.tests.cpp:<line number>: PASSED:
+  REQUIRE( stringify( EnumClass3::Value2 ) == "Value2" )
+with expansion:
+  "Value2" == "Value2"
+
+EnumToString.tests.cpp:<line number>: PASSED:
+  REQUIRE( stringify( EnumClass3::Value3 ) == "Value3" )
+with expansion:
+  "Value3" == "Value3"
+
+EnumToString.tests.cpp:<line number>: PASSED:
+  REQUIRE( stringify( EnumClass3::Value4 ) == "{** unexpected value for EnumClass3: 3**}" )
+with expansion:
+  "{** unexpected value for EnumClass3: 3**}"
+  ==
+  "{** unexpected value for EnumClass3: 3**}"
+
+EnumToString.tests.cpp:<line number>: PASSED:
+  REQUIRE( stringify( ec3 ) == "Value2" )
+with expansion:
+  "Value2" == "Value2"
+
+-------------------------------------------------------------------------------
 SUCCEED counts as a test pass
 -------------------------------------------------------------------------------
 Message.tests.cpp:<line number>
@@ -10026,6 +10082,62 @@ with expansion:
   "{ { 42, "Arthur" }, { "Ford", 24 } }"
 
 -------------------------------------------------------------------------------
+parseEnums
+  No enums
+-------------------------------------------------------------------------------
+EnumToString.tests.cpp:<line number>
+...............................................................................
+
+EnumToString.tests.cpp:<line number>: PASSED:
+  CHECK_THAT( parseEnums( "" ), Equals( std::vector<std::string>{} ) )
+with expansion:
+  {  } Equals: {  }
+
+-------------------------------------------------------------------------------
+parseEnums
+  One enum value
+-------------------------------------------------------------------------------
+EnumToString.tests.cpp:<line number>
+...............................................................................
+
+EnumToString.tests.cpp:<line number>: PASSED:
+  CHECK_THAT( parseEnums( "ClassName::EnumName::Value1" ), Equals(std::vector<std::string>{"Value1"} ) )
+with expansion:
+  { "Value1" } Equals: { "Value1" }
+
+EnumToString.tests.cpp:<line number>: PASSED:
+  CHECK_THAT( parseEnums( "Value1" ), Equals( std::vector<std::string>{"Value1"} ) )
+with expansion:
+  { "Value1" } Equals: { "Value1" }
+
+EnumToString.tests.cpp:<line number>: PASSED:
+  CHECK_THAT( parseEnums( "EnumName::Value1" ), Equals(std::vector<std::string>{"Value1"} ) )
+with expansion:
+  { "Value1" } Equals: { "Value1" }
+
+-------------------------------------------------------------------------------
+parseEnums
+  Multiple enum values
+-------------------------------------------------------------------------------
+EnumToString.tests.cpp:<line number>
+...............................................................................
+
+EnumToString.tests.cpp:<line number>: PASSED:
+  CHECK_THAT( parseEnums( "ClassName::EnumName::Value1, ClassName::EnumName::Value2" ), Equals( std::vector<std::string>{"Value1", "Value2"} ) )
+with expansion:
+  { "Value1", "Value2" } Equals: { "Value1", "Value2" }
+
+EnumToString.tests.cpp:<line number>: PASSED:
+  CHECK_THAT( parseEnums( "ClassName::EnumName::Value1, ClassName::EnumName::Value2, ClassName::EnumName::Value3" ), Equals( std::vector<std::string>{"Value1", "Value2", "Value3"} ) )
+with expansion:
+  { "Value1", "Value2", "Value3" } Equals: { "Value1", "Value2", "Value3" }
+
+EnumToString.tests.cpp:<line number>: PASSED:
+  CHECK_THAT( parseEnums( "ClassName::EnumName::Value1,ClassName::EnumName::Value2 , ClassName::EnumName::Value3" ), Equals( std::vector<std::string>{"Value1", "Value2", "Value3"} ) )
+with expansion:
+  { "Value1", "Value2", "Value3" } Equals: { "Value1", "Value2", "Value3" }
+
+-------------------------------------------------------------------------------
 pointer to class
 -------------------------------------------------------------------------------
 Tricky.tests.cpp:<line number>
@@ -10271,6 +10383,27 @@ Tag.tests.cpp:<line number>: PASSED:
   REQUIRE_THAT( testcase.tags, Catch::VectorContains(std::string("magic-tag")) && Catch::VectorContains(std::string(".")) )
 with expansion:
   { ".", "magic-tag" } ( Contains: "magic-tag" and Contains: "." )
+
+-------------------------------------------------------------------------------
+splitString
+-------------------------------------------------------------------------------
+String.tests.cpp:<line number>
+...............................................................................
+
+String.tests.cpp:<line number>: PASSED:
+  CHECK_THAT( splitString("", ',' ), Equals(std::vector<std::string>() ) )
+with expansion:
+  {  } Equals: {  }
+
+String.tests.cpp:<line number>: PASSED:
+  CHECK_THAT( splitString("abc", ',' ), Equals(std::vector<std::string>{"abc"} ) )
+with expansion:
+  { "abc" } Equals: { "abc" }
+
+String.tests.cpp:<line number>: PASSED:
+  CHECK_THAT( splitString("abc,def", ',' ), Equals(std::vector<std::string>{"abc", "def"} ) )
+with expansion:
+  { "abc", "def" } Equals: { "abc", "def" }
 
 -------------------------------------------------------------------------------
 stacks unscoped info in loops
@@ -11113,6 +11246,6 @@ Misc.tests.cpp:<line number>
 Misc.tests.cpp:<line number>: PASSED:
 
 ===============================================================================
-test cases:  257 |  176 passed |  77 failed |  4 failed as expected
-assertions: 1435 | 1276 passed | 138 failed | 21 failed as expected
+test cases:  261 |  180 passed |  77 failed |  4 failed as expected
+assertions: 1453 | 1294 passed | 138 failed | 21 failed as expected
 

@@ -15,6 +15,7 @@
 #include "catch_tag_alias_registry.h"
 #include "catch_startup_exception_registry.h"
 #include "catch_singletons.hpp"
+#include "catch_enum_values_registry.h"
 
 namespace Catch {
 
@@ -60,6 +61,9 @@ namespace Catch {
             void registerStartupException() noexcept override {
                 m_exceptionRegistry.add(std::current_exception());
             }
+            IMutableEnumValuesRegistry& getMutableEnumValuesRegistry() override {
+                return m_enumValuesRegistry;
+            }
 
         private:
             TestRegistry m_testCaseRegistry;
@@ -67,6 +71,7 @@ namespace Catch {
             ExceptionTranslatorRegistry m_exceptionTranslatorRegistry;
             TagAliasRegistry m_tagAliasRegistry;
             StartupExceptionRegistry m_exceptionRegistry;
+            Detail::EnumValuesRegistry m_enumValuesRegistry;
         };
     }
 

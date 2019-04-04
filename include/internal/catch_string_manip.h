@@ -12,6 +12,8 @@
 
 namespace Catch {
 
+    class StringRef;
+
     bool startsWith( std::string const& s, std::string const& prefix );
     bool startsWith( std::string const& s, char prefix );
     bool endsWith( std::string const& s, std::string const& suffix );
@@ -21,6 +23,7 @@ namespace Catch {
     std::string toLower( std::string const& s );
     std::string trim( std::string const& str );
     bool replaceInPlace( std::string& str, std::string const& replaceThis, std::string const& withThis );
+    std::vector<std::string> splitString( StringRef str, char delimiter );
 
     struct pluralise {
         pluralise( std::size_t count, std::string const& label );

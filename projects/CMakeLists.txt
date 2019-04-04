@@ -97,6 +97,7 @@ set(INTERNAL_HEADERS
         ${HEADER_DIR}/internal/catch_decomposer.h
         ${HEADER_DIR}/internal/catch_default_main.hpp
         ${HEADER_DIR}/internal/catch_enforce.h
+        ${HEADER_DIR}/internal/catch_enum_values_registry.h
         ${HEADER_DIR}/internal/catch_errno_guard.h
         ${HEADER_DIR}/internal/catch_exception_translator_registry.h
         ${HEADER_DIR}/internal/catch_external_interfaces.h
@@ -107,6 +108,7 @@ set(INTERNAL_HEADERS
         ${HEADER_DIR}/internal/catch_impl.hpp
         ${HEADER_DIR}/internal/catch_interfaces_capture.h
         ${HEADER_DIR}/internal/catch_interfaces_config.h
+        ${HEADER_DIR}/internal/catch_interfaces_enum_values_registry.h
         ${HEADER_DIR}/internal/catch_interfaces_exception.h
         ${HEADER_DIR}/internal/catch_interfaces_registry_hub.h
         ${HEADER_DIR}/internal/catch_interfaces_reporter.h
@@ -182,6 +184,7 @@ set(IMPL_SOURCES
         ${HEADER_DIR}/internal/catch_debugger.cpp
         ${HEADER_DIR}/internal/catch_decomposer.cpp
         ${HEADER_DIR}/internal/catch_enforce.cpp
+        ${HEADER_DIR}/internal/catch_enum_values_registry.cpp
         ${HEADER_DIR}/internal/catch_errno_guard.cpp
         ${HEADER_DIR}/internal/catch_exception_translator_registry.cpp
         ${HEADER_DIR}/internal/catch_fatal_condition.cpp

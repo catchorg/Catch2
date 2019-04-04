@@ -298,6 +298,11 @@ Approx.tests.cpp:<line number>: passed: 101.000001 != Approx(100).epsilon(0.01) 
 Approx.tests.cpp:<line number>: passed: std::pow(10, -5) != Approx(std::pow(10, -7)) for: 0.00001 != Approx( 0.0000001 )
 Matchers.tests.cpp:<line number>: failed: testStringForMatching(), EndsWith("Substring") for: "this string contains 'abc' as a substring" ends with: "Substring"
 Matchers.tests.cpp:<line number>: failed: testStringForMatching(), EndsWith("this", Catch::CaseSensitive::No) for: "this string contains 'abc' as a substring" ends with: "this" (case insensitive)
+EnumToString.tests.cpp:<line number>: passed: enumInfo.lookup(0) == "Value1" for: "Value1" == "Value1"
+EnumToString.tests.cpp:<line number>: passed: enumInfo.lookup(1) == "Value2" for: "Value2" == "Value2"
+EnumToString.tests.cpp:<line number>: passed: enumInfo.lookup(3) == "{** unexpected value for EnumName: 3**}" for: "{** unexpected value for EnumName: 3**}"
+==
+"{** unexpected value for EnumName: 3**}"
 Approx.tests.cpp:<line number>: passed: 101.01 != Approx(100).epsilon(0.01) for: 101.01 != Approx( 100.0 )
 Condition.tests.cpp:<line number>: failed: data.int_seven == 6 for: 7 == 6
 Condition.tests.cpp:<line number>: failed: data.int_seven == 8 for: 7 == 8
@@ -912,6 +917,13 @@ Matchers.tests.cpp:<line number>: failed: testStringForMatching(), Matches("this
 Matchers.tests.cpp:<line number>: failed: testStringForMatching(), Matches("contains 'abc' as a substring") for: "this string contains 'abc' as a substring" matches "contains 'abc' as a substring" case sensitively
 Matchers.tests.cpp:<line number>: failed: testStringForMatching(), Matches("this string contains 'abc' as a") for: "this string contains 'abc' as a substring" matches "this string contains 'abc' as a" case sensitively
 Matchers.tests.cpp:<line number>: passed: actual, !UnorderedEquals(expected) for: { 'a', 'b' } not UnorderedEquals: { 'c', 'b' }
+EnumToString.tests.cpp:<line number>: passed: stringify( EnumClass3::Value1 ) == "Value1" for: "Value1" == "Value1"
+EnumToString.tests.cpp:<line number>: passed: stringify( EnumClass3::Value2 ) == "Value2" for: "Value2" == "Value2"
+EnumToString.tests.cpp:<line number>: passed: stringify( EnumClass3::Value3 ) == "Value3" for: "Value3" == "Value3"
+EnumToString.tests.cpp:<line number>: passed: stringify( EnumClass3::Value4 ) == "{** unexpected value for EnumClass3: 3**}" for: "{** unexpected value for EnumClass3: 3**}"
+==
+"{** unexpected value for EnumClass3: 3**}"
+EnumToString.tests.cpp:<line number>: passed: stringify( ec3 ) == "Value2" for: "Value2" == "Value2"
 Message.tests.cpp:<line number>: passed: with 1 message: 'this is a success'
 Message.tests.cpp:<line number>: passed:
 BDD.tests.cpp:<line number>: passed: before == 0 for: 0 == 0
@@ -1352,6 +1364,13 @@ Tricky.tests.cpp:<line number>: passed: ptr.get() == 0 for: 0 == 0
 ToStringPair.tests.cpp:<line number>: passed: ::Catch::Detail::stringify( pair ) == "{ { 42, \"Arthur\" }, { \"Ford\", 24 } }" for: "{ { 42, "Arthur" }, { "Ford", 24 } }"
 ==
 "{ { 42, "Arthur" }, { "Ford", 24 } }"
+EnumToString.tests.cpp:<line number>: passed: parseEnums( "" ), Equals( std::vector<std::string>{} ) for: {  } Equals: {  }
+EnumToString.tests.cpp:<line number>: passed: parseEnums( "ClassName::EnumName::Value1" ), Equals(std::vector<std::string>{"Value1"} ) for: { "Value1" } Equals: { "Value1" }
+EnumToString.tests.cpp:<line number>: passed: parseEnums( "Value1" ), Equals( std::vector<std::string>{"Value1"} ) for: { "Value1" } Equals: { "Value1" }
+EnumToString.tests.cpp:<line number>: passed: parseEnums( "EnumName::Value1" ), Equals(std::vector<std::string>{"Value1"} ) for: { "Value1" } Equals: { "Value1" }
+EnumToString.tests.cpp:<line number>: passed: parseEnums( "ClassName::EnumName::Value1, ClassName::EnumName::Value2" ), Equals( std::vector<std::string>{"Value1", "Value2"} ) for: { "Value1", "Value2" } Equals: { "Value1", "Value2" }
+EnumToString.tests.cpp:<line number>: passed: parseEnums( "ClassName::EnumName::Value1, ClassName::EnumName::Value2, ClassName::EnumName::Value3" ), Equals( std::vector<std::string>{"Value1", "Value2", "Value3"} ) for: { "Value1", "Value2", "Value3" } Equals: { "Value1", "Value2", "Value3" }
+EnumToString.tests.cpp:<line number>: passed: parseEnums( "ClassName::EnumName::Value1,ClassName::EnumName::Value2 , ClassName::EnumName::Value3" ), Equals( std::vector<std::string>{"Value1", "Value2", "Value3"} ) for: { "Value1", "Value2", "Value3" } Equals: { "Value1", "Value2", "Value3" }
 Tricky.tests.cpp:<line number>: passed: p == 0 for: 0 == 0
 Message.tests.cpp:<line number>: passed: true with 1 message: 'this MAY be seen IF info is printed for passing assertions'
 Message.tests.cpp:<line number>: failed: false with 2 messages: 'this SHOULD be seen' and 'this SHOULD also be seen'
@@ -1379,6 +1398,9 @@ String.tests.cpp:<line number>: passed: s == "didn|'t" for: "didn|'t" == "didn|'
 Misc.tests.cpp:<line number>: failed: false with 1 message: '3'
 Message.tests.cpp:<line number>: failed: false with 2 messages: 'hi' and 'i := 7'
 Tag.tests.cpp:<line number>: passed: testcase.tags, Catch::VectorContains(std::string("magic-tag")) && Catch::VectorContains(std::string(".")) for: { ".", "magic-tag" } ( Contains: "magic-tag" and Contains: "." )
+String.tests.cpp:<line number>: passed: splitString("", ',' ), Equals(std::vector<std::string>() ) for: {  } Equals: {  }
+String.tests.cpp:<line number>: passed: splitString("abc", ',' ), Equals(std::vector<std::string>{"abc"} ) for: { "abc" } Equals: { "abc" }
+String.tests.cpp:<line number>: passed: splitString("abc,def", ',' ), Equals(std::vector<std::string>{"abc", "def"} ) for: { "abc", "def" } Equals: { "abc", "def" }
 Message.tests.cpp:<line number>: failed: false with 4 messages: 'Count 1 to 3...' and '1' and '2' and '3'
 Message.tests.cpp:<line number>: failed: false with 4 messages: 'Count 4 to 6...' and '4' and '5' and '6'
 ToStringGeneral.tests.cpp:<line number>: passed: Catch::Detail::stringify( emptyMap ) == "{  }" for: "{  }" == "{  }"
