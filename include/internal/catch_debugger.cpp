@@ -18,19 +18,23 @@
 #  include <stdbool.h>
 #  include <sys/types.h>
 #  include <unistd.h>
-#  include <sys/sysctl.h>
 #  include <cstddef>
 #  include <ostream>
 
-namespace Catch {
+#ifdef __apple_build_version__
+    // These headers will only compile with AppleClang (XCode)
+    // For other compilers (Clang, GCC, ... ) we need to exclude them
+#  include <sys/sysctl.h>
+#endif
 
+    namespace Catch {
+        #ifdef __apple_build_version__
         // The following function is taken directly from the following technical note:
-        // http://developer.apple.com/library/mac/#qa/qa2004/qa1361.html
+        // https://developer.apple.com/library/archive/qa/qa1361/_index.html
 
         // Returns true if the current process is being debugged (either
         // running under the debugger or has a debugger attached post facto).
         bool isDebuggerActive(){
-
             int                 mib[4];
             struct kinfo_proc   info;
             std::size_t         size;
@@ -60,6 +64,12 @@ namespace Catch {
 
             return ( (info.kp_proc.p_flag & P_TRACED) != 0 );
         }
+        #else
+        bool isDebuggerActive() {
+            // We need to find another way to determine this for non-appleclang compilers on macOS
+            return false;
+        }
+        #endif
     } // namespace Catch
 
 #elif defined(CATCH_PLATFORM_LINUX)
