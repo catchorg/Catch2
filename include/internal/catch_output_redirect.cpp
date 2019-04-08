@@ -71,7 +71,7 @@ namespace Catch {
             if (strerror_s(buffer, errno)) {
                 CATCH_RUNTIME_ERROR("Could not translate errno to a string");
             }
-            CATCH_RUNTIME_ERROR("Coul dnot open the temp file: '" << m_buffer << "' because: " << buffer);
+            CATCH_RUNTIME_ERROR("Could not open the temp file: '" << m_buffer << "' because: " << buffer);
         }
     }
 #else

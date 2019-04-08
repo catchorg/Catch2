@@ -19,7 +19,7 @@ set(CMAKE_REQUIRED_QUIET ${codecov_FIND_QUIETLY})
 
 get_property(ENABLED_LANGUAGES GLOBAL PROPERTY ENABLED_LANGUAGES)
 foreach (LANG ${ENABLED_LANGUAGES})
-	# Gcov evaluation is dependend on the used compiler. Check gcov support for
+	# Gcov evaluation is dependent on the used compiler. Check gcov support for
 	# each compiler that is used. If gcov binary was already found for this
 	# compiler, do not try to find it again.
 	if (NOT GCOV_${CMAKE_${LANG}_COMPILER_ID}_BIN)

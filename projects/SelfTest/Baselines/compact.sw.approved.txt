@@ -323,9 +323,9 @@ Matchers.tests.cpp:<line number>: passed: testStringForMatching(), Equals("this 
 Matchers.tests.cpp:<line number>: passed: testStringForMatching(), Equals("this string contains 'ABC' as a substring", Catch::CaseSensitive::No) for: "this string contains 'abc' as a substring" equals: "this string contains 'abc' as a substring" (case insensitive)
 Matchers.tests.cpp:<line number>: failed: testStringForMatching(), Equals("this string contains 'ABC' as a substring") for: "this string contains 'abc' as a substring" equals: "this string contains 'ABC' as a substring"
 Matchers.tests.cpp:<line number>: failed: testStringForMatching(), Equals("something else", Catch::CaseSensitive::No) for: "this string contains 'abc' as a substring" equals: "something else" (case insensitive)
-ToStringGeneral.tests.cpp:<line number>: passed: ::Catch::Detail::stringify(WhatException{}) == "This exception has overriden what() method" for: "This exception has overriden what() method"
+ToStringGeneral.tests.cpp:<line number>: passed: ::Catch::Detail::stringify(WhatException{}) == "This exception has overridden what() method" for: "This exception has overridden what() method"
 ==
-"This exception has overriden what() method"
+"This exception has overridden what() method"
 ToStringGeneral.tests.cpp:<line number>: passed: ::Catch::Detail::stringify(OperatorException{}) == "OperatorException" for: "OperatorException" == "OperatorException"
 ToStringGeneral.tests.cpp:<line number>: passed: ::Catch::Detail::stringify(StringMakerException{}) == "StringMakerException" for: "StringMakerException"
 ==

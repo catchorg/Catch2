@@ -2391,11 +2391,11 @@ ToStringGeneral.tests.cpp:<line number>
 ...............................................................................
 
 ToStringGeneral.tests.cpp:<line number>: PASSED:
-  REQUIRE( ::Catch::Detail::stringify(WhatException{}) == "This exception has overriden what() method" )
+  REQUIRE( ::Catch::Detail::stringify(WhatException{}) == "This exception has overridden what() method" )
 with expansion:
-  "This exception has overriden what() method"
+  "This exception has overridden what() method"
   ==
-  "This exception has overriden what() method"
+  "This exception has overridden what() method"
 
 ToStringGeneral.tests.cpp:<line number>: PASSED:
   REQUIRE( ::Catch::Detail::stringify(OperatorException{}) == "OperatorException" )
