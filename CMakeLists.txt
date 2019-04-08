@@ -6,7 +6,7 @@ if(NOT DEFINED PROJECT_NAME)
   set(NOT_SUBPROJECT ON)
 endif()
 
-project(Catch2 LANGUAGES CXX VERSION 2.7.0)
+project(Catch2 LANGUAGES CXX VERSION 2.7.1)
 
 # Provide path for scripts
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/CMake")

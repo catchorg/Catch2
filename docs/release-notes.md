@@ -2,6 +2,7 @@
 
 # Release notes
 **Contents**<br>
+[2.7.1](#271)<br>
 [2.7.0](#270)<br>
 [2.6.1](#261)<br>
 [2.6.0](#260)<br>
@@ -20,6 +21,19 @@
 [2.0.1](#201)<br>
 [Older versions](#older-versions)<br>
 [Even Older versions](#even-older-versions)<br>
+
+## 2.7.1
+
+### Improvements
+* Reporters now print out the filters applied to test cases (#1550, #1585)
+* Added `GENERATE_COPY` and `GENERATE_VAR` macros that can use variables inside the generator expression
+  * Because of the significant danger of lifetime issues, the default `GENERATE` macro still does not allow variables
+* The `map` generator helper now deduces the mapped return type (#1576)
+
+### Fixes
+* Fixed ObjC++ compilation (#1571)
+* Fixed test tag parsing so that `[.foo]` is now parsed as `[.][foo]`.
+* Suppressed warning caused by the Windows headers defining SE codes in different manners (#1575)
 
 ## 2.7.0
 
