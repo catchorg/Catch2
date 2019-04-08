@@ -56,7 +56,7 @@
 * Running tests will no longer open the specified output file twice (#1545)
   * This would cause trouble when the file was not a file, but rather a named pipe
   * Fixes the CLion/Resharper integration with Catch
-* Fixed `-Wunreachable-code` occuring with (old) ccache+cmake+clang combination (#1540)
+* Fixed `-Wunreachable-code` occurring with (old) ccache+cmake+clang combination (#1540)
 * Fixed `-Wdefaulted-function-deleted` warning with Clang 8 (#1537)
 * Catch2's type traits and helpers are now properly namespaced inside `Catch::` (#1548)
 * Fixed std{out,err} redirection for failing test (#1514, #1525)
@@ -738,7 +738,7 @@ Cygwin issue with `gettimeofday` - `#define` was not early enough
   * Usage of `gettimeofday` inside Catch should no longer cause compilation errors.
 * Improved `-Wparentheses` suppression for gcc (#674)
   * When compiled with gcc 4.8 or newer, the suppression is localized to assertions only
-  * Otherwise it is supressed for the whole TU
+  * Otherwise it is suppressed for the whole TU
 * Fixed test spec parser issue (with escapes in multiple names)
 
 ##### Other
@@ -821,7 +821,7 @@ Other:
 
 ##### Other:
 * Types with overloaded `&&` operator are no longer evaluated twice when used in an assertion macro.
-* The use of `__COUNTER__` is supressed when Catch is parsed by CLion
+* The use of `__COUNTER__` is suppressed when Catch is parsed by CLion
   * This change is not active when compiling a binary
 * Approval tests can now be run on Windows
 * CMake will now warn if a file is present in the `include` folder but not is not enumerated as part of the project

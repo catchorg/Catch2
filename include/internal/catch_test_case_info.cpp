@@ -43,7 +43,7 @@ namespace Catch {
         void enforceNotReservedTag( std::string const& tag, SourceLineInfo const& _lineInfo ) {
             CATCH_ENFORCE( !isReservedTag(tag),
                           "Tag name: [" << tag << "] is not allowed.\n"
-                          << "Tag names starting with non alpha-numeric characters are reserved\n"
+                          << "Tag names starting with non alphanumeric characters are reserved\n"
                           << _lineInfo );
         }
     }

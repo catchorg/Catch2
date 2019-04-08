@@ -2888,12 +2888,12 @@ Nor would this
     <TestCase name="Exception as a value (e.g. in REQUIRE_THROWS_MATCHES) can be stringified" tags="[exception][toString]" filename="projects/<exe-name>/UsageTests/ToStringGeneral.tests.cpp" >
       <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/UsageTests/ToStringGeneral.tests.cpp" >
         <Original>
-          ::Catch::Detail::stringify(WhatException{}) == "This exception has overriden what() method"
+          ::Catch::Detail::stringify(WhatException{}) == "This exception has overridden what() method"
         </Original>
         <Expanded>
-          "This exception has overriden what() method"
+          "This exception has overridden what() method"
 ==
-"This exception has overriden what() method"
+"This exception has overridden what() method"
         </Expanded>
       </Expression>
       <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/UsageTests/ToStringGeneral.tests.cpp" >

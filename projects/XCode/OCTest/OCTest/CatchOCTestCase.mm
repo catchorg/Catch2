@@ -70,7 +70,7 @@ OC_TEST_CASE( "Matches work with OC types (NSString so far)", "[!shouldfail]" )
 {
     using namespace Catch::Matchers;
 
-    REQUIRE_THAT( @"This is a string", Equals( @"This isnt a string" ) );
+    REQUIRE_THAT( @"This is a string", Equals( @"This isn't a string" ) );
     REQUIRE_THAT( @"This is a string", Contains( @"is a" ) );
     REQUIRE_THAT( @"This is a string", StartsWith( @"This" ) );
     REQUIRE_THAT( @"This is a string", EndsWith( @"string" ) );

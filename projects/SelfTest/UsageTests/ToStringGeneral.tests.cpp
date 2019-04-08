@@ -132,7 +132,7 @@ namespace {
 
 struct WhatException : std::exception {
     char const* what() const noexcept override {
-        return "This exception has overriden what() method";
+        return "This exception has overridden what() method";
     }
     ~WhatException() override;
 };
@@ -170,7 +170,7 @@ StringMakerException::~StringMakerException() = default;
 
 
 TEST_CASE("Exception as a value (e.g. in REQUIRE_THROWS_MATCHES) can be stringified", "[toString][exception]") {
-    REQUIRE(::Catch::Detail::stringify(WhatException{}) == "This exception has overriden what() method");
+    REQUIRE(::Catch::Detail::stringify(WhatException{}) == "This exception has overridden what() method");
     REQUIRE(::Catch::Detail::stringify(OperatorException{}) == "OperatorException");
     REQUIRE(::Catch::Detail::stringify(StringMakerException{}) == "StringMakerException");
 }

@@ -12,7 +12,7 @@ at docs/contributing.md. It will tell you how to properly test your changes.
 <!--
 Describe the what and the why of your pull request. Remember that these two
 are usually a bit different. As an example, if you have made various changes
-to decrease the number of new strings allocated, thats what. The why probably
+to decrease the number of new strings allocated, that's what. The why probably
 was that you have a large set of tests and found that this speeds them up.
 -->
 

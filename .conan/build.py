@@ -47,7 +47,7 @@ class BuilderSettings(object):
 
     @property
     def reference(self):
-        """ Read project version from branch create Conan referece
+        """ Read project version from branch create Conan reference
         """
         return os.getenv("CONAN_REFERENCE", "Catch2/{}".format(self._version))
 
