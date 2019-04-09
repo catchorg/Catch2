@@ -54,9 +54,12 @@ namespace Catch {
     std::vector<TestCase> filterTests( std::vector<TestCase> const& testCases, TestSpec const& testSpec, IConfig const& config ) {
         std::vector<TestCase> filtered;
         filtered.reserve( testCases.size() );
-        for( auto const& testCase : testCases )
-            if( matchTest( testCase, testSpec, config ) )
-                filtered.push_back( testCase );
+        for (auto const& testCase : testCases) {
+            if ((!testSpec.hasFilters() && !testCase.isHidden()) ||
+                (testSpec.hasFilters() && matchTest(testCase, testSpec, config))) {
+                filtered.push_back(testCase);
+            }
+        }
         return filtered;
     }
     std::vector<TestCase> const& getAllTestCasesSorted( IConfig const& config ) {

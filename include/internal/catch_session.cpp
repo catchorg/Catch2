@@ -72,7 +72,10 @@ namespace Catch {
 
             auto const& allTestCases = getAllTestCasesSorted(*config);
             for (auto const& testCase : allTestCases) {
-                if (!context.aborting() && matchTest(testCase, testSpec, *config))
+                bool matching = (!testSpec.hasFilters() && !testCase.isHidden()) ||
+                                 (testSpec.hasFilters() && matchTest(testCase, testSpec, *config));
+
+                if (!context.aborting() && matching)
                     totals += context.runTest(testCase);
                 else
                     context.reporter().skipTest(testCase);
