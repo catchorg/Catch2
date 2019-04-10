@@ -134,6 +134,21 @@ Compilation.tests.cpp:<line number>: PASSED:
 with expansion:
   [1403 helper] == [1403 helper]
 
+-------------------------------------------------------------------------------
+#1455 - INFO and WARN can start with a linebreak
+-------------------------------------------------------------------------------
+Message.tests.cpp:<line number>
+...............................................................................
+
+Message.tests.cpp:<line number>: warning:
+
+This info message starts with a linebreak
+
+This warning message starts with a linebreak
+
+
+No assertions in test case '#1455 - INFO and WARN can start with a linebreak'
+
 This would not be caught previously
 Nor would this
 -------------------------------------------------------------------------------
@@ -11113,6 +11128,6 @@ Misc.tests.cpp:<line number>
 Misc.tests.cpp:<line number>: PASSED:
 
 ===============================================================================
-test cases:  257 |  176 passed |  77 failed |  4 failed as expected
-assertions: 1435 | 1276 passed | 138 failed | 21 failed as expected
+test cases:  258 |  176 passed |  78 failed |  4 failed as expected
+assertions: 1436 | 1276 passed | 139 failed | 21 failed as expected
 
