@@ -155,7 +155,6 @@ function(ParseFile SourceFile TestTarget)
 
         list(APPEND Labels ${Tags})
 
-        list(FIND Labels "!hide" IndexOfHideLabel)
         set(HiddenTagFound OFF)
         foreach(label ${Labels})
             string(REGEX MATCH "^!hide|^\\." result ${label})
