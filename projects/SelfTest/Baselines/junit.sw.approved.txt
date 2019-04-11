@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuites>
-  <properties>
-    <property name="filters" value="~[!nonportable]~[!benchmark]~[approvals]"/>
-    <property name="random-seed" value="1"/>
-  </properties>
-loose text artifact
+<testsuitesloose text artifact
+>
   <testsuite name="<exe-name>" errors="17" failures="123" tests="1437" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
+    <properties>
+      <property name="filters" value="~[!nonportable]~[!benchmark]~[approvals]"/>
+      <property name="random-seed" value="1"/>
+    </properties>
     <testcase classname="<exe-name>.global" name="# A test name that starts with a #" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="#1005: Comparing pointer to int and long (NULL can be either on various systems)" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="#1027" time="{duration}"/>

@@ -76,22 +76,6 @@ namespace Catch {
     void JunitReporter::testRunStarting( TestRunInfo const& runInfo )  {
         CumulativeReporterBase::testRunStarting( runInfo );
         xml.startElement( "testsuites" );
-
-        if ( m_config->hasTestFilters() || m_config->rngSeed() != 0 ) 
-            xml.startElement("properties");
-
-        if ( m_config->hasTestFilters() ) {
-            xml.scopedElement( "property" )
-                .writeAttribute( "name" , "filters" )
-                .writeAttribute( "value" , serializeFilters( m_config->getTestsOrTags() ) );
-        }
-        
-        if( m_config->rngSeed() != 0 ) {
-            xml.scopedElement( "property" )
-                .writeAttribute( "name", "random-seed" )
-                .writeAttribute( "value", m_config->rngSeed() );
-            xml.endElement();
-        }
     }
 
     void JunitReporter::testGroupStarting( GroupInfo const& groupInfo ) {
@@ -130,6 +114,7 @@ namespace Catch {
 
     void JunitReporter::writeGroup( TestGroupNode const& groupNode, double suiteTime ) {
         XmlWriter::ScopedElement e = xml.scopedElement( "testsuite" );
+
         TestGroupStats const& stats = groupNode.value;
         xml.writeAttribute( "name", stats.groupInfo.name );
         xml.writeAttribute( "errors", unexpectedExceptions );
@@ -141,6 +126,21 @@ namespace Catch {
         else
             xml.writeAttribute( "time", suiteTime );
         xml.writeAttribute( "timestamp", getCurrentTimestamp() );
+
+        // Write properties if there are any
+        if (m_config->hasTestFilters() || m_config->rngSeed() != 0) {
+            auto properties = xml.scopedElement("properties");
+            if (m_config->hasTestFilters()) {
+                xml.scopedElement("property")
+                    .writeAttribute("name", "filters")
+                    .writeAttribute("value", serializeFilters(m_config->getTestsOrTags()));
+            }
+            if (m_config->rngSeed() != 0) {
+                xml.scopedElement("property")
+                    .writeAttribute("name", "random-seed")
+                    .writeAttribute("value", m_config->rngSeed());
+            }
+        }
 
         // Write test cases
         for( auto const& child : groupNode.children )
