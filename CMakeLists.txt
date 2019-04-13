@@ -205,4 +205,17 @@ if (NOT_SUBPROJECT)
         ${PKGCONFIG_INSTALL_DIR}
     )
 
+    if(EXISTS "/etc/debian_version")
+        set(DEBIAN TRUE CACHE BOOL "Enable debian specific options: .deb generation")
+    endif()
+
+    set(CPACK_PACKAGE_NAME "catch2")
+    set(CPACK_PACKAGE_CONTACT "https://discord.gg/4CWS9zD")
+    if(DEBIAN)
+        set( CPACK_SOURCE_GENERATOR "DEB" )
+        set( CPACK_GENERATOR "DEB" )
+    endif(DEBIAN)
+
+    include( CPack )
+
 endif(NOT_SUBPROJECT)
