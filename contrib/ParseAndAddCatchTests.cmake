@@ -88,6 +88,11 @@ endfunction()
 
 # Worker function
 function(ParseAndAddCatchTests_ParseFile SourceFile TestTarget)
+    # If SourceFile is an object library, do not scan it (as it is not a file). Exit without giving a warning about a missing file.
+    if(SourceFile MATCHES "\\\$<TARGET_OBJECTS:.+>")
+        ParseAndAddCatchTests_PrintDebugMessage("Detected OBJECT library: ${SourceFile} this will not be scanned for tests.")
+        return()
+    endif()
     # According to CMake docs EXISTS behavior is well-defined only for full paths.
     get_filename_component(SourceFile ${SourceFile} ABSOLUTE)
     if(NOT EXISTS ${SourceFile})
