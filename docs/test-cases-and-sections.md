@@ -92,11 +92,11 @@ When any of these macros are used the console reporter recognises them and forma
 
 Other than the additional prefixes and the formatting in the console reporter these macros behave exactly as ```TEST_CASE```s and ```SECTION```s. As such there is nothing enforcing the correct sequencing of these macros - that's up to the programmer!
 
-## Type parametrised test cases
+## Type parameterised test cases
 
-In addition to `TEST_CASE`s, Catch2 also supports test cases parametrised
+In addition to `TEST_CASE`s, Catch2 also supports test cases parameterised
 by types, in the form of `TEMPLATE_TEST_CASE` and
-`TEMPLATE_PRODUCT_TEST_CASE`.
+`TEMPLATE_PRODUCT_TEST_CASE`. NOTE: This feature was added in version 2.5.0.
 
 * **TEMPLATE_TEST_CASE(** _test name_ , _tags_,  _type1_, _type2_, ..., _typen_ **)**
 
