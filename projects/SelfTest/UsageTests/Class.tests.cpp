@@ -7,6 +7,7 @@
  */
 
 #include "catch.hpp"
+#include <array>
 
 namespace{ namespace ClassTests {
 
@@ -58,6 +59,15 @@ struct Template_Foo {
     size_t size() { return 0; }
 };
 
+template< typename T, size_t V>
+struct Template_Foo_2 {
+    size_t size() { return V; }
+};
+
+template <int V>
+struct Nttp_Fixture{
+    int value = V;
+};
 #endif
 
 
@@ -74,9 +84,18 @@ TEMPLATE_TEST_CASE_METHOD(Template_Fixture, "A TEMPLATE_TEST_CASE_METHOD based t
     REQUIRE( Template_Fixture<TestType>::m_a == 1 );
 }
 
+TEMPLATE_TEST_CASE_METHOD_SIG(Nttp_Fixture, "A TEMPLATE_TEST_CASE_METHOD_SIG based test run that succeeds", "[class][template][nttp]",((int V), V), 1, 3, 6) {
+    REQUIRE(Nttp_Fixture<V>::value > 0);
+}
+
 TEMPLATE_PRODUCT_TEST_CASE_METHOD(Template_Fixture_2, "A TEMPLATE_PRODUCT_TEST_CASE_METHOD based test run that succeeds","[class][template][product]",(std::vector,Template_Foo),(int,float))
 {
     REQUIRE( Template_Fixture_2<TestType>::m_a.size() == 0 );
+}
+
+TEMPLATE_PRODUCT_TEST_CASE_METHOD_SIG(Template_Fixture_2, "A TEMPLATE_PRODUCT_TEST_CASE_METHOD_SIG based test run that succeeds", "[class][template][product][nttp]", ((typename T, size_t S), T, S),(std::array, Template_Foo_2), ((int,2), (float,6)))
+{
+    REQUIRE(Template_Fixture_2<TestType>{}.m_a.size() >= 2);
 }
 
 // We should be able to write our tests within a different namespace
@@ -92,9 +111,18 @@ namespace Inner
         REQUIRE( Template_Fixture<TestType>::m_a == 2 );
     }
 
+    TEMPLATE_TEST_CASE_METHOD_SIG(Nttp_Fixture, "A TEMPLATE_TEST_CASE_METHOD_SIG based test run that fails", "[.][class][template][nttp][failing]", ((int V), V), 1, 3, 6) {
+        REQUIRE(Nttp_Fixture<V>::value == 0);
+    }
+
     TEMPLATE_PRODUCT_TEST_CASE_METHOD(Template_Fixture_2, "A TEMPLATE_PRODUCT_TEST_CASE_METHOD based test run that fails","[.][class][template][product][failing]",(std::vector,Template_Foo),(int,float))
     {
         REQUIRE( Template_Fixture_2<TestType>::m_a.size() == 1 );
+    }
+
+    TEMPLATE_PRODUCT_TEST_CASE_METHOD_SIG(Template_Fixture_2, "A TEMPLATE_PRODUCT_TEST_CASE_METHOD_SIG based test run that fails", "[.][class][template][product][nttp][failing]", ((typename T, size_t S), T, S), (std::array, Template_Foo_2), ((int, 2), (float, 6)))
+    {
+        REQUIRE(Template_Fixture_2<TestType>{}.m_a.size() < 2);
     }
 }
 
