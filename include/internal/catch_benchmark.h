@@ -24,15 +24,13 @@ namespace Catch {
         std::size_t m_iterationsToRun = 1;
         uint64_t m_resolution;
         Timer m_timer;
-        std::vector<uint64_t> timeStamps;
 
         static auto getResolution() -> uint64_t;
     public:
         // Keep most of this inline as it's on the code path that is being timed
-        BenchmarkLooper( StringRef name, size_t timeStampsToSample = 1 )
+        BenchmarkLooper( StringRef name )
         :   m_name( name ),
-            m_resolution( getResolution() ),
-            timeStamps( timeStampsToSample )
+            m_resolution( getResolution() )
         {
             reportStart();
             m_timer.start();
