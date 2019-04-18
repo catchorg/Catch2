@@ -55,7 +55,7 @@ namespace Catch {
         double sigma = 0.0;
         for (auto v: m_timeStamps)
             sigma += (v - mean) * (v - mean);
-        sigma = sqrt(sigma / (double)(m_timeStamps.size() - 1));
+        sigma = std::sqrt(sigma / (double)(m_timeStamps.size() - 1));
 
         getResultCapture().benchmarkEnded( { { m_name }, m_count, elapsed, (uint64_t)sigma } );
     }
