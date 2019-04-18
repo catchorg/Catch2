@@ -13,6 +13,7 @@
 
 #include <cstdint>
 #include <string>
+#include <vector>
 
 namespace Catch {
 
@@ -23,13 +24,15 @@ namespace Catch {
         std::size_t m_iterationsToRun = 1;
         uint64_t m_resolution;
         Timer m_timer;
+        std::vector<uint64_t> timeStamps;
 
         static auto getResolution() -> uint64_t;
     public:
         // Keep most of this inline as it's on the code path that is being timed
-        BenchmarkLooper( StringRef name )
+        BenchmarkLooper( StringRef name, size_t timeStampsToSample = 1 )
         :   m_name( name ),
-            m_resolution( getResolution() )
+            m_resolution( getResolution() ),
+            timeStamps( timeStampsToSample )
         {
             reportStart();
             m_timer.start();
@@ -49,9 +52,52 @@ namespace Catch {
         auto needsMoreIterations() -> bool;
     };
 
+    class BenchmarkDeviationLooper {
+
+        std::string m_name;
+        std::size_t m_count = 0;
+        std::size_t m_timeStampsToSample;
+        Timer m_timer;
+        std::vector<uint64_t> m_timeStamps;
+
+        static auto getResolution() -> uint64_t;
+    public:
+        BenchmarkDeviationLooper( StringRef name, size_t timeStampsToSample )
+        :   m_name( name ),
+            m_timeStampsToSample( timeStampsToSample ),
+            m_timeStamps( timeStampsToSample )
+        {
+            reportStart();
+            m_timer.start();
+        }
+
+        explicit operator bool() {
+            if( m_count < m_timeStampsToSample )
+            {
+                m_timeStamps [ m_count ] = m_timer.getElapsedNanoseconds();
+                return true;
+            }
+            else
+            {
+                reportEnd();
+                return false;
+            }
+        }
+
+        void increment() {
+            ++m_count;
+        }
+
+        void reportStart();
+        void reportEnd();
+        auto needsMoreIterations() -> bool;
+    };
+
 } // end namespace Catch
 
 #define BENCHMARK( name ) \
     for( Catch::BenchmarkLooper looper( name ); looper; looper.increment() )
+#define BENCHMARK_DEVIATION( name, timeStampsToSample ) \
+    for( Catch::BenchmarkDeviationLooper looper( name, timeStampsToSample ); looper; looper.increment() )
 
 #endif // TWOBLUECUBES_CATCH_BENCHMARK_H_INCLUDED

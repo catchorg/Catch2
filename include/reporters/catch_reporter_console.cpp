@@ -339,10 +339,12 @@ ConsoleReporter::ConsoleReporter(ReporterConfig const& config)
     : StreamingReporterBase(config),
     m_tablePrinter(new TablePrinter(config.stream(),
     {
-        { "benchmark name", CATCH_CONFIG_CONSOLE_WIDTH - 32, ColumnInfo::Left },
+        { "benchmark name", CATCH_CONFIG_CONSOLE_WIDTH - 43, ColumnInfo::Left },
         { "iters", 8, ColumnInfo::Right },
         { "elapsed ns", 14, ColumnInfo::Right },
-        { "average", 14, ColumnInfo::Right }
+        { "average", 14, ColumnInfo::Right },
+        { "sigma", 12, ColumnInfo::Right }
+
     })) {}
 ConsoleReporter::~ConsoleReporter() = default;
 
@@ -406,7 +408,7 @@ void ConsoleReporter::benchmarkStarting(BenchmarkInfo const& info) {
     bool firstLine = true;
     for (auto line : nameCol) {
         if (!firstLine)
-            (*m_tablePrinter) << ColumnBreak() << ColumnBreak() << ColumnBreak();
+            (*m_tablePrinter) << ColumnBreak() << ColumnBreak() << ColumnBreak() << ColumnBreak();
         else
             firstLine = false;
 
@@ -415,10 +417,12 @@ void ConsoleReporter::benchmarkStarting(BenchmarkInfo const& info) {
 }
 void ConsoleReporter::benchmarkEnded(BenchmarkStats const& stats) {
     Duration average(stats.elapsedTimeInNanoseconds / stats.iterations);
+    Duration sigma(stats.sigmaInNanoseconds);
     (*m_tablePrinter)
         << stats.iterations << ColumnBreak()
         << stats.elapsedTimeInNanoseconds << ColumnBreak()
-        << average << ColumnBreak();
+        << average << ColumnBreak()
+        << sigma << ColumnBreak();
 }
 
 void ConsoleReporter::testCaseEnded(TestCaseStats const& _testCaseStats) {

@@ -166,6 +166,7 @@ namespace Catch {
         BenchmarkInfo info;
         std::size_t iterations;
         uint64_t elapsedTimeInNanoseconds;
+        uint64_t sigmaInNanoseconds;
     };
 
     struct IStreamingReporter {

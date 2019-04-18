@@ -16,7 +16,7 @@ TEST_CASE( "benchmarked", "[!benchmark]" ) {
     }
     REQUIRE( v.size() == size );
 
-    BENCHMARK( "Load up a map" ) {
+    BENCHMARK_DEVIATION( "Load up a map", 256 ) {
         m = std::map<int, int>();
         for(int i =0; i < size; ++i )
             m.insert( { i, i+1 } );

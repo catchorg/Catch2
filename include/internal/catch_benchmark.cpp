@@ -29,8 +29,34 @@ namespace Catch {
             return true;
         }
 
-        getResultCapture().benchmarkEnded( { { m_name }, m_count, elapsed } );
+        getResultCapture().benchmarkEnded( { { m_name }, m_count, elapsed, 0 } );
         return false;
+    }
+
+    void BenchmarkDeviationLooper::reportStart() {
+        getResultCapture().benchmarkStarting( { m_name } );
+    }
+    void BenchmarkDeviationLooper::reportEnd() {
+        auto elapsed = m_timer.getElapsedNanoseconds();
+        if (m_timeStampsToSample < 3)
+        {
+            getResultCapture().benchmarkEnded( { { m_name }, m_count, elapsed, 0 } );
+            return;
+        }
+
+        // Convert timestamps to delta timestamps
+        for (size_t i = 0; i + 1 < m_timeStamps.size(); ++i)
+            m_timeStamps[i] = m_timeStamps[i + 1] - m_timeStamps[i];
+        // Note N timestamps produce N-1 delta timestamps
+        m_timeStamps.pop_back();
+
+        double mean = (double)elapsed / (double)m_count;
+        double sigma = 0.0;
+        for (auto v: m_timeStamps)
+            sigma += (v - mean) * (v - mean);
+        sigma = sqrt(sigma / (double)(m_timeStamps.size() - 1));
+
+        getResultCapture().benchmarkEnded( { { m_name }, m_count, elapsed, (uint64_t)sigma } );
     }
 
 } // end namespace Catch
