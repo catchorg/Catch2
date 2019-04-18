@@ -205,4 +205,15 @@ if (NOT_SUBPROJECT)
         ${PKGCONFIG_INSTALL_DIR}
     )
 
+    # CPack/CMake started taking the package version from project version 3.12
+    # So we need to set the version manually for older CMake versions
+    if(${CMAKE_VERSION} VERSION_LESS "3.12.0")
+        set(CPACK_PACKAGE_VERSION ${PROJECT_VERSION})
+    endif()
+
+    set(CPACK_PACKAGE_CONTACT "https://github.com/catchorg/Catch2/")
+
+
+    include( CPack )
+
 endif(NOT_SUBPROJECT)
