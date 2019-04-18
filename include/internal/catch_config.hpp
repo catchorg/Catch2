@@ -85,7 +85,7 @@ namespace Catch {
         std::vector<std::string> const& getTestsOrTags() const override;
         std::vector<std::string> const& getSectionsToRun() const override;
 
-        virtual TestSpec const& testSpec() const override;
+        TestSpec const& testSpec() const override;
         bool hasTestFilters() const override;
 
         bool showHelp() const;
