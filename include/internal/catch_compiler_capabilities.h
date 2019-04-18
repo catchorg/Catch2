@@ -48,8 +48,7 @@
 #       define CATCH_INTERNAL_SUPPRESS_GLOBALS_WARNINGS \
             _Pragma( "clang diagnostic push" ) \
             _Pragma( "clang diagnostic ignored \"-Wexit-time-destructors\"" ) \
-            _Pragma( "clang diagnostic ignored \"-Wglobal-constructors\"")\
-            _Pragma( "clang diagnostic ignored \"-Wgnu-zero-variadic-macro-arguments\"")
+            _Pragma( "clang diagnostic ignored \"-Wglobal-constructors\"")
 #       define CATCH_INTERNAL_UNSUPPRESS_GLOBALS_WARNINGS \
             _Pragma( "clang diagnostic pop" )
 
