@@ -10,6 +10,7 @@
 #include "catch_capture.hpp"
 #include "catch_interfaces_reporter.h"
 #include "catch_context.h"
+#include <cmath>
 
 namespace Catch {
 
