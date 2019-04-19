@@ -16,28 +16,6 @@ namespace Catch {
 namespace Matchers {
 
     namespace Vector {
-        namespace Detail {
-            template <typename InputIterator, typename T>
-            size_t count(InputIterator first, InputIterator last, T const& item) {
-                size_t cnt = 0;
-                for (; first != last; ++first) {
-                    if (*first == item) {
-                        ++cnt;
-                    }
-                }
-                return cnt;
-            }
-            template <typename InputIterator, typename T>
-            bool contains(InputIterator first, InputIterator last, T const& item) {
-                for (; first != last; ++first) {
-                    if (*first == item) {
-                        return true;
-                    }
-                }
-                return false;
-            }
-        }
-
         template<typename T>
         struct ContainsElementMatcher : MatcherBase<std::vector<T>> {
 
@@ -121,28 +99,7 @@ namespace Matchers {
                 if (m_target.size() != vec.size()) {
                     return false;
                 }
-                auto lfirst = m_target.begin(), llast = m_target.end();
-                auto rfirst = vec.begin(), rlast = vec.end();
-                // Cut common prefix to optimize checking of permuted parts
-                while (lfirst != llast && *lfirst == *rfirst) {
-                    ++lfirst; ++rfirst;
-                }
-                if (lfirst == llast) {
-                    return true;
-                }
-
-                for (auto mid = lfirst; mid != llast; ++mid) {
-                    // Skip already counted items
-                    if (Detail::contains(lfirst, mid, *mid)) {
-                        continue;
-                    }
-                    size_t num_vec = Detail::count(rfirst, rlast, *mid);
-                    if (num_vec == 0 || Detail::count(lfirst, llast, *mid) != num_vec) {
-                        return false;
-                    }
-                }
-
-                return true;
+                return std::is_permutation(m_target.begin(), m_target.end(), vec.begin());
             }
 
             std::string describe() const override {
