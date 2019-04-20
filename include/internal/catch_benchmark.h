@@ -22,15 +22,17 @@ namespace Catch {
         std::string m_name;
         std::size_t m_count = 0;
         std::size_t m_iterationsToRun = 1;
+        std::size_t m_minSamples;
         uint64_t m_resolution;
         Timer m_timer;
 
         static auto getResolution() -> uint64_t;
     public:
         // Keep most of this inline as it's on the code path that is being timed
-        BenchmarkLooper( StringRef name )
+        BenchmarkLooper( StringRef name, size_t minSamples = 10 )
         :   m_name( name ),
-            m_resolution( getResolution() )
+            m_resolution( getResolution() ),
+            m_minSamples( minSamples )
         {
             reportStart();
             m_timer.start();
@@ -93,9 +95,7 @@ namespace Catch {
 
 } // end namespace Catch
 
-#define BENCHMARK( name ) \
-    for( Catch::BenchmarkLooper looper( name ); looper; looper.increment() )
-#define BENCHMARK_DEVIATION( name, timeStampsToSample ) \
-    for( Catch::BenchmarkDeviationLooper looper( name, timeStampsToSample ); looper; looper.increment() )
+#define BENCHMARK( ... ) \
+    for( Catch::BenchmarkLooper looper( __VA_ARGS__ ); looper; looper.increment() )
 
 #endif // TWOBLUECUBES_CATCH_BENCHMARK_H_INCLUDED
