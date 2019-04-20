@@ -31,8 +31,8 @@ namespace Catch {
         // Keep most of this inline as it's on the code path that is being timed
         BenchmarkLooper( StringRef name, size_t minSamples = 10 )
         :   m_name( name ),
-            m_resolution( getResolution() ),
-            m_minSamples( minSamples )
+            m_minSamples(minSamples),
+            m_resolution( getResolution() )
         {
             reportStart();
             m_timer.start();
