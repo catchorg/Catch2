@@ -67,10 +67,10 @@ TEST_CASE( "toString(enum class w/operator<<)", "[toString][enum][enumClass]" ) 
 
 enum class EnumClass3 { Value1, Value2, Value3, Value4 };
 
-STRINGIFY_ENUM( EnumClass3, EnumClass3::Value1, EnumClass3::Value2, EnumClass3::Value3 )
+REGISTER_ENUM( EnumClass3, EnumClass3::Value1, EnumClass3::Value2, EnumClass3::Value3 )
 
 
-TEST_CASE( "STRINGIFY_ENUM" ) {
+TEST_CASE( "REGISTER_ENUM" ) {
     using Catch::Detail::stringify;
     REQUIRE( stringify( EnumClass3::Value1 ) == "Value1" );
     REQUIRE( stringify( EnumClass3::Value2 ) == "Value2" );
