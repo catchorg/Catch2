@@ -648,11 +648,7 @@ struct ratio_string<std::milli> {
         } \
     };
 
-#ifdef CATCH_CONFIG_PREFIX_ALL
-#  define CATCH_REGISTER_ENUM( enumName, ... ) INTERNAL_CATCH_REGISTER_ENUM( enumName, __VA_ARGS__ )
-#else
-#  define REGISTER_ENUM( enumName, ... ) INTERNAL_CATCH_REGISTER_ENUM( enumName, __VA_ARGS__ )
-#endif
+#define CATCH_REGISTER_ENUM( enumName, ... ) INTERNAL_CATCH_REGISTER_ENUM( enumName, __VA_ARGS__ )
 
 #ifdef _MSC_VER
 #pragma warning(pop)

@@ -67,7 +67,7 @@ TEST_CASE( "toString(enum class w/operator<<)", "[toString][enum][enumClass]" ) 
 
 enum class EnumClass3 { Value1, Value2, Value3, Value4 };
 
-REGISTER_ENUM( EnumClass3, EnumClass3::Value1, EnumClass3::Value2, EnumClass3::Value3 )
+CATCH_REGISTER_ENUM( EnumClass3, EnumClass3::Value1, EnumClass3::Value2, EnumClass3::Value3 )
 
 
 TEST_CASE( "REGISTER_ENUM" ) {
