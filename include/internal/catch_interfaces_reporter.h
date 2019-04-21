@@ -161,10 +161,12 @@ namespace Catch {
 
     struct BenchmarkInfo {
         std::string name;
+        std::size_t samples;
     };
     struct BenchmarkStats {
         BenchmarkInfo info;
         std::size_t iterations;
+        std::size_t samples;
         uint64_t elapsedTimeInNanoseconds;
         uint64_t sigmaInNanoseconds;
     };

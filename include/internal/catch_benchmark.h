@@ -19,11 +19,18 @@ namespace Catch {
 
     class BenchmarkLooper {
 
+        struct MeasurementRecord {
+            uint64_t m_elapsedTime;
+            uint64_t m_iterations;
+        };
+
         std::string m_name;
         std::size_t m_count = 0;
         std::size_t m_iterationsToRun = 1;
+        std::size_t m_samples = 0;
         std::size_t m_minSamples;
         uint64_t m_resolution;
+        std::vector<MeasurementRecord> m_timeStamps;
         Timer m_timer;
 
         static auto getResolution() -> uint64_t;
@@ -35,53 +42,31 @@ namespace Catch {
             m_resolution( getResolution() )
         {
             reportStart();
+            m_timeStamps.reserve(minSamples);
             m_timer.start();
         }
 
         explicit operator bool() {
-            if( m_count < m_iterationsToRun )
-                return true;
-            return needsMoreIterations();
-        }
-
-        void increment() {
-            ++m_count;
-        }
-
-        void reportStart();
-        auto needsMoreIterations() -> bool;
-    };
-
-    class BenchmarkDeviationLooper {
-
-        std::string m_name;
-        std::size_t m_count = 0;
-        std::size_t m_timeStampsToSample;
-        Timer m_timer;
-        std::vector<uint64_t> m_timeStamps;
-
-        static auto getResolution() -> uint64_t;
-    public:
-        BenchmarkDeviationLooper( StringRef name, size_t timeStampsToSample )
-        :   m_name( name ),
-            m_timeStampsToSample( timeStampsToSample ),
-            m_timeStamps( timeStampsToSample )
-        {
-            reportStart();
-            m_timer.start();
-        }
-
-        explicit operator bool() {
-            if( m_count < m_timeStampsToSample )
-            {
-                m_timeStamps [ m_count ] = m_timer.getElapsedNanoseconds();
+            if (m_count < m_iterationsToRun) {
                 return true;
             }
-            else
-            {
-                reportEnd();
-                return false;
+            auto elapsed = m_timer.getElapsedNanoseconds();
+            // Exponentially increasing iterations until we're confident in our timer resolution
+            if (elapsed < m_resolution) {
+                m_iterationsToRun *= 10;
+                return true;
             }
+            // If this sample run is done, we need to save the results
+            // and start again
+            if (m_timeStamps.size() < m_minSamples) {
+                m_timeStamps.push_back({ elapsed, m_count });
+                // restart the outer iteration counter
+                m_count = 0;
+                m_timer.start();
+                return true;
+            }
+            reportEnd();
+            return false;
         }
 
         void increment() {
@@ -90,7 +75,6 @@ namespace Catch {
 
         void reportStart();
         void reportEnd();
-        auto needsMoreIterations() -> bool;
     };
 
 } // end namespace Catch

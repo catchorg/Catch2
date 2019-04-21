@@ -19,45 +19,27 @@ namespace Catch {
     }
 
     void BenchmarkLooper::reportStart() {
-        getResultCapture().benchmarkStarting( { m_name } );
+        getResultCapture().benchmarkStarting( { m_name, m_minSamples } );
     }
-    auto BenchmarkLooper::needsMoreIterations() -> bool {
-        auto elapsed = m_timer.getElapsedNanoseconds();
 
-        // Exponentially increasing iterations until we're confident in our timer resolution
-        if( elapsed < m_resolution ) {
-            m_iterationsToRun *= 10;
-            return true;
+    void BenchmarkLooper::reportEnd() {
+        uint64_t totalNs = 0;
+        uint64_t totalIterations = 0;
+        for (auto const& m : m_timeStamps) {
+            totalNs += m.m_elapsedTime;
+            totalIterations += m.m_iterations;
         }
-
-        getResultCapture().benchmarkEnded( { { m_name }, m_count, elapsed, 0 } );
-        return false;
-    }
-
-    void BenchmarkDeviationLooper::reportStart() {
-        getResultCapture().benchmarkStarting( { m_name } );
-    }
-    void BenchmarkDeviationLooper::reportEnd() {
-        auto elapsed = m_timer.getElapsedNanoseconds();
-        if (m_timeStampsToSample < 3)
-        {
-            getResultCapture().benchmarkEnded( { { m_name }, m_count, elapsed, 0 } );
-            return;
+        const auto meanNsPerIteration = static_cast<double>(totalNs) / totalIterations;
+        double stddev = 0;
+        for (auto const& m : m_timeStamps) {
+            const auto iterNs = static_cast<double>(m.m_elapsedTime) / m.m_iterations;
+            const auto diffFromMean = iterNs - meanNsPerIteration;
+            stddev += diffFromMean * diffFromMean * m.m_iterations;
         }
+        stddev /= totalIterations;
+        stddev = std::sqrt(stddev);
 
-        // Convert timestamps to delta timestamps
-        for (size_t i = 0; i + 1 < m_timeStamps.size(); ++i)
-            m_timeStamps[i] = m_timeStamps[i + 1] - m_timeStamps[i];
-        // Note N timestamps produce N-1 delta timestamps
-        m_timeStamps.pop_back();
-
-        double mean = (double)elapsed / (double)m_count;
-        double sigma = 0.0;
-        for (auto v: m_timeStamps)
-            sigma += (v - mean) * (v - mean);
-        sigma = std::sqrt(sigma / (double)(m_timeStamps.size() - 1));
-
-        getResultCapture().benchmarkEnded( { { m_name }, m_count, elapsed, (uint64_t)sigma } );
+        getResultCapture().benchmarkEnded({ { m_name, m_minSamples }, totalIterations, m_timeStamps.size(), totalNs, static_cast<uint64_t>(stddev) });
     }
 
 } // end namespace Catch

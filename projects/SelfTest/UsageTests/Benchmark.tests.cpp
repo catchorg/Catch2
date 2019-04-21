@@ -9,7 +9,7 @@ TEST_CASE( "benchmarked", "[!benchmark]" ) {
     std::vector<int> v;
     std::map<int, int> m;
     // Plain benchmarking will take a preset number of measurements
-    BENCHMARK( "Load up a vector" ) {
+    BENCHMARK( "Load up a vector", 256 ) {
         v = std::vector<int>();
         for(int i =0; i < size; ++i )
             v.push_back( i );
