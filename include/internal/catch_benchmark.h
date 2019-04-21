@@ -27,7 +27,6 @@ namespace Catch {
         std::string m_name;
         std::size_t m_count = 0;
         std::size_t m_iterationsToRun = 1;
-        std::size_t m_samples = 0;
         std::size_t m_minSamples;
         uint64_t m_resolution;
         std::vector<MeasurementRecord> m_timeStamps;

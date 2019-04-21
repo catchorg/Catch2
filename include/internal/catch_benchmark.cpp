@@ -39,7 +39,7 @@ namespace Catch {
         stddev /= totalIterations;
         stddev = std::sqrt(stddev);
 
-        getResultCapture().benchmarkEnded({ { m_name, m_minSamples }, totalIterations, m_timeStamps.size(), totalNs, static_cast<uint64_t>(stddev) });
+        getResultCapture().benchmarkEnded({ { m_name, m_minSamples }, static_cast<size_t>( totalIterations ), m_timeStamps.size(), totalNs, static_cast<uint64_t>(stddev) });
     }
 
 } // end namespace Catch
