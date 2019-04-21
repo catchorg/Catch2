@@ -8,21 +8,6 @@
 #include "internal/catch_suppress_warnings.h"
 #include "internal/catch_test_case_tracker.h"
 
-
-namespace Catch
-{
-    class LocalContext {
-
-    public:
-        TrackerContext& operator()() const {
-            return TrackerContext::instance();
-        }
-    };
-
-} // namespace Catch
-
-// -------------------
-
 #include "catch.hpp"
 
 using namespace Catch;
