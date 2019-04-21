@@ -14,7 +14,6 @@
 namespace Catch {
 
     IMutableEnumValuesRegistry::~IMutableEnumValuesRegistry() {}
-    IEnumInfo::~IEnumInfo() {}
 
     namespace Detail {
 
@@ -29,25 +28,17 @@ namespace Catch {
             return parsed;
         }
 
-        struct EnumInfo : IEnumInfo {
-            std::string m_name;
-            std::map<int, std::string> m_values;
-
-            ~EnumInfo();
-
-            std::string lookup( int value ) const override {
-                auto it = m_values.find( value );
-                if( it == m_values.end() ) {
-                    ReusableStringStream rss;
-                    rss << "{** unexpected value for " << m_name << ": " << value << "**}";
-                    return rss.str();
-                }
-                return it->second;
-            }
-        };
         EnumInfo::~EnumInfo() {}
 
-        IEnumInfo const& EnumValuesRegistry::registerEnum( StringRef enumName, StringRef allValueNames, std::vector<int> const& values ) {
+        StringRef EnumInfo::lookup( int value ) const {
+            for( auto const& valueToName : m_values ) {
+                if( valueToName.first == value )
+                    return valueToName.second;
+            }
+            return "{** unexpected enum value **}";
+        }
+
+        EnumInfo const& EnumValuesRegistry::registerEnum( StringRef enumName, StringRef allValueNames, std::vector<int> const& values ) {
             std::unique_ptr<EnumInfo> enumInfo( new EnumInfo );
             enumInfo->m_name = enumName;
 
@@ -55,7 +46,7 @@ namespace Catch {
             assert( valueNames.size() == values.size() );
             std::size_t i = 0;
             for( auto value : values )
-                enumInfo->m_values.insert({ value, valueNames[i++] });
+                enumInfo->m_values.push_back({ value, valueNames[i++] });
 
             EnumInfo* raw = enumInfo.get();
             m_enumInfos.push_back( std::move( enumInfo ) );
@@ -63,6 +54,5 @@ namespace Catch {
         }
 
     } // Detail
-
 } // Catch
 

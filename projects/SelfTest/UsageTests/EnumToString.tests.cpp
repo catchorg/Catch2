@@ -75,7 +75,7 @@ TEST_CASE( "STRINGIFY_ENUM" ) {
     REQUIRE( stringify( EnumClass3::Value1 ) == "Value1" );
     REQUIRE( stringify( EnumClass3::Value2 ) == "Value2" );
     REQUIRE( stringify( EnumClass3::Value3 ) == "Value3" );
-    REQUIRE( stringify( EnumClass3::Value4 ) == "{** unexpected value for EnumClass3: 3**}" );
+    REQUIRE( stringify( EnumClass3::Value4 ) == "{** unexpected enum value **}" );
 
     EnumClass3 ec3 = EnumClass3 ::Value2;
     REQUIRE( stringify( ec3 ) == "Value2" );
@@ -91,7 +91,7 @@ TEST_CASE( "EnumInfo" ) {
 
     CHECK( enumInfo.lookup(0) == "Value1" );
     CHECK( enumInfo.lookup(1) == "Value2" );
-    CHECK( enumInfo.lookup(3) == "{** unexpected value for EnumName: 3**}" );
+    CHECK( enumInfo.lookup(3) == "{** unexpected enum value **}" );
 }
 
 #include "internal/catch_enum_values_registry.h"

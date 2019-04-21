@@ -14,19 +14,24 @@
 
 namespace Catch {
 
-    struct IEnumInfo {
-        virtual ~IEnumInfo();
+    namespace Detail {
+        struct EnumInfo {
+            StringRef m_name;
+            std::vector<std::pair<int, std::string>> m_values;
 
-        virtual std::string lookup( int value ) const = 0;
-    };
+            ~EnumInfo();
+
+            StringRef lookup( int value ) const;
+        };
+    } // namespace Detail
 
     struct IMutableEnumValuesRegistry {
         virtual ~IMutableEnumValuesRegistry();
 
-        virtual IEnumInfo const& registerEnum( StringRef enumName, StringRef allEnums, std::vector<int> const& values ) = 0;
+        virtual Detail::EnumInfo const& registerEnum( StringRef enumName, StringRef allEnums, std::vector<int> const& values ) = 0;
 
         template<typename E>
-        IEnumInfo const& registerEnum( StringRef enumName, StringRef allEnums, std::initializer_list<E> values ) {
+        Detail::EnumInfo const& registerEnum( StringRef enumName, StringRef allEnums, std::initializer_list<E> values ) {
             std::vector<int> intValues;
             intValues.reserve( values.size() );
             for( auto enumValue : values )

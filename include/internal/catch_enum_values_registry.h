@@ -18,9 +18,9 @@ namespace Catch {
 
         class EnumValuesRegistry : public IMutableEnumValuesRegistry {
 
-            std::vector<std::unique_ptr<IEnumInfo>> m_enumInfos;
+            std::vector<std::unique_ptr<EnumInfo>> m_enumInfos;
 
-            IEnumInfo const& registerEnum(StringRef enumName, StringRef allEnums, std::vector<int> const& values) override;
+            EnumInfo const& registerEnum(StringRef enumName, StringRef allEnums, std::vector<int> const& values) override;
         };
 
         std::vector<std::string> parseEnums( StringRef enums );
