@@ -205,11 +205,12 @@ TEST_CASE( "replaceInPlace", "[Strings][StringManip]" ) {
 
 TEST_CASE( "splitString", "[Strings]" ) {
     using namespace Catch::Matchers;
-    using Catch::splitString;
+    using Catch::splitStringRef;
+    using Catch::StringRef;
 
-    CHECK_THAT( splitString("", ',' ), Equals(std::vector<std::string>() ) );
-    CHECK_THAT( splitString("abc", ',' ), Equals(std::vector<std::string>{"abc"} ) );
-    CHECK_THAT( splitString("abc,def", ',' ), Equals(std::vector<std::string>{"abc", "def"} ) );
+    CHECK_THAT( splitStringRef("", ',' ), Equals(std::vector<StringRef>() ) );
+    CHECK_THAT( splitStringRef("abc", ',' ), Equals(std::vector<StringRef>{"abc"} ) );
+    CHECK_THAT( splitStringRef("abc,def", ',' ), Equals(std::vector<StringRef>{"abc", "def"} ) );
 }
 
 

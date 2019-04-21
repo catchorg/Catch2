@@ -19,11 +19,11 @@ namespace Catch {
     namespace Detail {
 
         std::vector<std::string> parseEnums( StringRef enums ) {
-            auto enumValues = splitString( enums, ',' );
+            auto enumValues = splitStringRef( enums, ',' );
             std::vector<std::string> parsed;
             parsed.reserve( enumValues.size() );
             for( auto const& enumValue : enumValues ) {
-                auto identifiers = splitString( enumValue, ':' );
+                auto identifiers = splitStringRef( enumValue, ':' );
                 parsed.push_back( Catch::trim( identifiers.back() ) );
             }
             return parsed;

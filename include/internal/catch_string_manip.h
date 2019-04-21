@@ -22,8 +22,10 @@ namespace Catch {
     void toLowerInPlace( std::string& s );
     std::string toLower( std::string const& s );
     std::string trim( std::string const& str );
+
+    // !!! Be aware, returns refs into original string - make sure original string outlives them
+    std::vector<StringRef> splitStringRef( StringRef str, char delimiter );
     bool replaceInPlace( std::string& str, std::string const& replaceThis, std::string const& withThis );
-    std::vector<std::string> splitString( StringRef str, char delimiter );
 
     struct pluralise {
         pluralise( std::size_t count, std::string const& label );

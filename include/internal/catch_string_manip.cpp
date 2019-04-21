@@ -67,8 +67,8 @@ namespace Catch {
         return replaced;
     }
 
-    std::vector<std::string> splitString( StringRef str, char delimiter ) {
-        std::vector<std::string> subStrings;
+    std::vector<StringRef> splitStringRef( StringRef str, char delimiter ) {
+        std::vector<StringRef> subStrings;
         std::size_t start = 0;
         for(std::size_t pos = 0; pos < str.size(); ++pos ) {
             if( str[pos] == delimiter ) {
