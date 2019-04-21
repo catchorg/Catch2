@@ -6,6 +6,7 @@
 [Catch::StringMaker specialisation](#catchstringmaker-specialisation)<br>
 [Catch::is_range specialisation](#catchis_range-specialisation)<br>
 [Exceptions](#exceptions)<br>
+[Enums](#enums)<br>
 
 Catch needs to be able to convert types you use in assertions and logging expressions into strings (for logging and reporting purposes).
 Most built-in or std types are supported out of the box but there are two ways that you can tell Catch how to convert your own types (or other, third-party types) into strings.
@@ -65,6 +66,44 @@ CATCH_TRANSLATE_EXCEPTION( MyType& ex ) {
     return ex.message();
 }
 ```
+
+## Enums
+
+Enums that already have a `<<` overload for `std::ostream` will convert to strings as expected.
+If you only need to convert enums to strings for test reporting purposes you can provide a `StringMaker` specialisations as any other type.
+However, as a convenience, Catch provides the `REGISTER_ENUM` helper macro that will generate the `StringMaker` specialiation for you with minimal code.
+Simply provide it the (qualified) enum name, followed by all the enum values, and you're done!
+
+E.g.
+
+```
+enum class Fruits { Banana, Apple, Mango };
+
+CATCH_REGISTER_ENUM( Fruits, Fruits::Banana, Fruits::Apple, Fruits::Mango );
+
+TEST_CASE() {
+    REQUIRE( Fruits::Mango == Fruits::Apple );
+}
+```
+
+... or if the enum is in a namespace:
+```
+namespace Bikeshed {
+    enum class Colours { Red, Green, Blue };
+}
+
+// Important!: This macro must appear at top level scope - not inside a namespace
+// You can fully qualify the names, or use a using if you prefer
+CATCH_REGISTER_ENUM( Bikeshed::Colours,
+    Bikeshed::Colours::Red,
+    Bikeshed::Colours::Green,
+    Bikeshed::Colours::Blue );
+
+TEST_CASE() {
+    REQUIRE( Bikeshed::Colours::Red == Bikeshed::Colours::Blue );
+}
+```
+
 
 ---
 
