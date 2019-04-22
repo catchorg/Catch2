@@ -2,6 +2,7 @@
 
 # Release notes
 **Contents**<br>
+[2.7.2](#272)<br>
 [2.7.1](#271)<br>
 [2.7.0](#270)<br>
 [2.6.1](#261)<br>
@@ -21,6 +22,28 @@
 [2.0.1](#201)<br>
 [Older versions](#older-versions)<br>
 [Even Older versions](#even-older-versions)<br>
+
+
+## 2.7.2
+
+### Improvements
+* Added an approximate vector matcher (#1499)
+
+### Fixes
+* Filters will no longer be shown if there were none
+* Fixed compilation error when using Homebrew GCC on OS X (#1588, #1589)
+* Fixed the console reporter not showing messages that start with a newline (#1455, #1470)
+* Modified JUnit reporter's output so that rng seed and filters are reported according to the JUnit schema (#1598)
+* Fixed some obscure warnings and static analysis passes
+
+### Miscellaneous
+* Various improvements to `ParseAndAddCatchTests` (#1559, #1601)
+  * When a target is parsed, it receives `ParseAndAddCatchTests_TESTS` property which summarizes found tests
+  * Fixed problem with tests not being found if the `OptionalCatchTestLauncher` variables is used
+  * Including the script will no longer forcefully modify `CMAKE_MINIMUM_REQUIRED_VERSION`
+  * CMake object libraries are ignored when parsing to avoid needless warnings
+* `CatchAddTests` now adds test's tags to their CTest labels (#1600)
+* Added basic CPack support to our build
 
 ## 2.7.1
 
