@@ -38,9 +38,10 @@ namespace Catch {
             return "{** unexpected enum value **}";
         }
 
-        EnumInfo const& EnumValuesRegistry::registerEnum( StringRef enumName, StringRef allValueNames, std::vector<int> const& values ) {
+        std::unique_ptr<EnumInfo> makeEnumInfo( StringRef enumName, StringRef allValueNames, std::vector<int> const& values ) {
             std::unique_ptr<EnumInfo> enumInfo( new EnumInfo );
             enumInfo->m_name = enumName;
+            enumInfo->m_values.reserve( values.size() );
 
             const auto valueNames = Catch::Detail::parseEnums( allValueNames );
             assert( valueNames.size() == values.size() );
@@ -48,6 +49,11 @@ namespace Catch {
             for( auto value : values )
                 enumInfo->m_values.push_back({ value, valueNames[i++] });
 
+            return enumInfo;
+        }
+
+        EnumInfo const& EnumValuesRegistry::registerEnum( StringRef enumName, StringRef allValueNames, std::vector<int> const& values ) {
+            auto enumInfo = makeEnumInfo( enumName, allValueNames, values );
             EnumInfo* raw = enumInfo.get();
             m_enumInfos.push_back( std::move( enumInfo ) );
             return *raw;

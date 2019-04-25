@@ -22,6 +22,7 @@ set(TEST_SOURCES
         ${SELF_TEST_DIR}/IntrospectiveTests/Tag.tests.cpp
         ${SELF_TEST_DIR}/IntrospectiveTests/String.tests.cpp
         ${SELF_TEST_DIR}/IntrospectiveTests/Xml.tests.cpp
+        ${SELF_TEST_DIR}/IntrospectiveTests/ToString.tests.cpp
         ${SELF_TEST_DIR}/UsageTests/Approx.tests.cpp
         ${SELF_TEST_DIR}/UsageTests/BDD.tests.cpp
         ${SELF_TEST_DIR}/UsageTests/Benchmark.tests.cpp

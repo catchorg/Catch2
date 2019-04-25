@@ -16,11 +16,13 @@ namespace Catch {
 
     namespace Detail {
 
+        std::unique_ptr<EnumInfo> makeEnumInfo( StringRef enumName, StringRef allValueNames, std::vector<int> const& values );
+
         class EnumValuesRegistry : public IMutableEnumValuesRegistry {
 
             std::vector<std::unique_ptr<EnumInfo>> m_enumInfos;
 
-            EnumInfo const& registerEnum(StringRef enumName, StringRef allEnums, std::vector<int> const& values) override;
+            EnumInfo const& registerEnum( StringRef enumName, StringRef allEnums, std::vector<int> const& values) override;
         };
 
         std::vector<std::string> parseEnums( StringRef enums );
