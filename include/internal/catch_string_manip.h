@@ -11,6 +11,7 @@
 
 #include <string>
 #include <iosfwd>
+#include <vector>
 
 namespace Catch {
 

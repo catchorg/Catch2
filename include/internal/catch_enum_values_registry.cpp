@@ -10,6 +10,7 @@
 #include "catch_stream.h"
 
 #include <map>
+#include <cassert>
 
 namespace Catch {
 
