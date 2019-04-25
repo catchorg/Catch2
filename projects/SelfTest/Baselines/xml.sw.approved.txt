@@ -2049,6 +2049,42 @@ Nor would this
       </Info>
       <OverallResult success="true"/>
     </TestCase>
+    <TestCase name="CAPTURE parses string and character constants" tags="[capture][messages]" filename="projects/<exe-name>/UsageTests/Message.tests.cpp" >
+      <Info>
+        ("comma, in string", "escaped, \", ") := "escaped, ", "
+      </Info>
+      <Info>
+        "single quote in string,'," := "single quote in string,',"
+      </Info>
+      <Info>
+        "some escapes, \\,\\\\" := "some escapes, \,\\"
+      </Info>
+      <Info>
+        "some, ), unmatched, } prenheses {[&lt;" := "some, ), unmatched, } prenheses {[&lt;"
+      </Info>
+      <Info>
+        '"' := '"'
+      </Info>
+      <Info>
+        '\'' := '''
+      </Info>
+      <Info>
+        ',' := ','
+      </Info>
+      <Info>
+        '}' := '}'
+      </Info>
+      <Info>
+        ')' := ')'
+      </Info>
+      <Info>
+        '(' := '('
+      </Info>
+      <Info>
+        '{' := '{'
+      </Info>
+      <OverallResult success="true"/>
+    </TestCase>
     <TestCase name="Capture and info messages" filename="projects/<exe-name>/UsageTests/ToStringGeneral.tests.cpp" >
       <Section name="Capture should stringify like assertions" filename="projects/<exe-name>/UsageTests/ToStringGeneral.tests.cpp" >
         <Info>
@@ -13692,7 +13728,7 @@ loose text artifact
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="1303" failures="142" expectedFailures="21"/>
+    <OverallResults successes="1304" failures="142" expectedFailures="21"/>
   </Group>
-  <OverallResults successes="1303" failures="141" expectedFailures="21"/>
+  <OverallResults successes="1304" failures="141" expectedFailures="21"/>
 </Catch>
