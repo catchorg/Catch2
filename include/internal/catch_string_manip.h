@@ -7,12 +7,12 @@
 #ifndef TWOBLUECUBES_CATCH_STRING_MANIP_H_INCLUDED
 #define TWOBLUECUBES_CATCH_STRING_MANIP_H_INCLUDED
 
+#include "catch_stringref.h"
+
 #include <string>
 #include <iosfwd>
 
 namespace Catch {
-
-    class StringRef;
 
     bool startsWith( std::string const& s, std::string const& prefix );
     bool startsWith( std::string const& s, char prefix );
