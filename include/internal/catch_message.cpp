@@ -76,10 +76,18 @@ namespace Catch {
             }
             return names.substr(start, end - start + 1);
         };
+        auto skipq = [&] (size_t start, char quote) {
+            for (auto i = start + 1; i < names.size() ; ++i) {
+                if (names[i] == quote)
+                    return i;
+                if (names[i] == '\\')
+                    ++i;
+            }
+            assert(0 && "Mismatched quotes");
+        };
 
         size_t start = 0;
         std::stack<char> openings;
-        bool isquote = false;
         for (size_t pos = 0; pos < names.size(); ++pos) {
             char c = names[pos];
             switch (c) {
@@ -89,21 +97,20 @@ namespace Catch {
             // It is basically impossible to disambiguate between
             // comparison and start of template args in this context
 //            case '<':
-                if(!isquote)
-                    openings.push(c);
+                openings.push(c);
                 break;
             case ']':
             case '}':
             case ')':
 //           case '>':
-                if(!isquote)
-                    openings.pop();
+                openings.pop();
                 break;
             case '"':
-                isquote = !isquote;
+            case '\'':
+                pos = skipq(pos, c);
                 break;
             case ',':
-                if (start != pos && openings.size() == 0 && !isquote) {
+                if (start != pos && openings.size() == 0) {
                     m_messages.emplace_back(macroName, lineInfo, resultType);
                     m_messages.back().message = trimmed(start, pos);
                     m_messages.back().message += " := ";
