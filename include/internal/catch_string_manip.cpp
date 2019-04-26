@@ -6,11 +6,13 @@
  */
 
 #include "catch_string_manip.h"
+#include "catch_stringref.h"
 
 #include <algorithm>
 #include <ostream>
 #include <cstring>
 #include <cctype>
+#include <vector>
 
 namespace Catch {
 
@@ -63,6 +65,21 @@ namespace Catch {
                 i = std::string::npos;
         }
         return replaced;
+    }
+
+    std::vector<StringRef> splitStringRef( StringRef str, char delimiter ) {
+        std::vector<StringRef> subStrings;
+        std::size_t start = 0;
+        for(std::size_t pos = 0; pos < str.size(); ++pos ) {
+            if( str[pos] == delimiter ) {
+                if( pos - start > 1 )
+                    subStrings.push_back( str.substr( start, pos-start ) );
+                start = pos+1;
+            }
+        }
+        if( start < str.size() )
+            subStrings.push_back( str.substr( start, str.size()-start ) );
+        return subStrings;
     }
 
     pluralise::pluralise( std::size_t count, std::string const& label )

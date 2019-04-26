@@ -7,8 +7,11 @@
 #ifndef TWOBLUECUBES_CATCH_STRING_MANIP_H_INCLUDED
 #define TWOBLUECUBES_CATCH_STRING_MANIP_H_INCLUDED
 
+#include "catch_stringref.h"
+
 #include <string>
 #include <iosfwd>
+#include <vector>
 
 namespace Catch {
 
@@ -20,6 +23,9 @@ namespace Catch {
     void toLowerInPlace( std::string& s );
     std::string toLower( std::string const& s );
     std::string trim( std::string const& str );
+
+    // !!! Be aware, returns refs into original string - make sure original string outlives them
+    std::vector<StringRef> splitStringRef( StringRef str, char delimiter );
     bool replaceInPlace( std::string& str, std::string const& replaceThis, std::string const& withThis );
 
     struct pluralise {
