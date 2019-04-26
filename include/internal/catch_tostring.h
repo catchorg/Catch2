@@ -641,12 +641,14 @@ struct ratio_string<std::milli> {
 #endif // CATCH_CONFIG_ENABLE_CHRONO_STRINGMAKER
 
 #define INTERNAL_CATCH_REGISTER_ENUM( enumName, ... ) \
-    template<> struct Catch::StringMaker<enumName> { \
+namespace Catch { \
+    template<> struct StringMaker<enumName> { \
         static std::string convert( enumName value ) { \
             static const auto& enumInfo = ::Catch::getMutableRegistryHub().getMutableEnumValuesRegistry().registerEnum( #enumName, #__VA_ARGS__, { __VA_ARGS__ } ); \
             return enumInfo.lookup( static_cast<int>( value ) ); \
         } \
-    };
+    }; \
+}
 
 #define CATCH_REGISTER_ENUM( enumName, ... ) INTERNAL_CATCH_REGISTER_ENUM( enumName, __VA_ARGS__ )
 
