@@ -11,6 +11,7 @@
 #include "catch_interfaces_enum_values_registry.h"
 
 #include <vector>
+#include <memory>
 
 namespace Catch {
 
