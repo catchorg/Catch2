@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuitesloose text artifact
 >
-  <testsuite name="<exe-name>" errors="17" failures="125" tests="1446" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
+  <testsuite name="<exe-name>" errors="17" failures="125" tests="1466" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
     <properties>
       <property name="filters" value="~[!nonportable]~[!benchmark]~[approvals]"/>
       <property name="random-seed" value="1"/>
@@ -227,6 +227,7 @@ Exception.tests.cpp:<line number>
       </error>
     </testcase>
     <testcase classname="<exe-name>.global" name="Default scale is invisible to comparison" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="Directly creating an EnumInfo" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="EndsWith string matcher" time="{duration}">
       <failure message="&quot;this string contains 'abc' as a substring&quot; ends with: &quot;Substring&quot;" type="CHECK_THAT">
 Matchers.tests.cpp:<line number>
@@ -235,6 +236,8 @@ Matchers.tests.cpp:<line number>
 Matchers.tests.cpp:<line number>
       </failure>
     </testcase>
+    <testcase classname="<exe-name>.global" name="Enums can quickly have stringification enabled using REGISTER_ENUM" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="Enums in namespaces can quickly have stringification enabled using REGISTER_ENUM" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Epsilon only applies to Approx's value" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Equality checks that should fail" time="{duration}">
       <failure message="7 == 6" type="CHECK">
@@ -960,6 +963,9 @@ Message.tests.cpp:<line number>
     <testcase classname="<exe-name>.global" name="null strings" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="null_ptr" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="pair&lt;pair&lt;int,const char *,pair&lt;std::string,int> > -> toString" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="parseEnums/No enums" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="parseEnums/One enum value" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="parseEnums/Multiple enum values" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="pointer to class" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="print unscoped info if passing unscoped info is printed" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="prints unscoped info on failure" time="{duration}">
@@ -998,6 +1004,7 @@ Message.tests.cpp:<line number>
       </failure>
     </testcase>
     <testcase classname="<exe-name>.global" name="shortened hide tags are split apart" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="splitString" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="stacks unscoped info in loops" time="{duration}">
       <failure message="false" type="CHECK">
 Count 1 to 3...

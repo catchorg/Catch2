@@ -2224,6 +2224,29 @@ with expansion:
   0.00001 != Approx( 0.0000001 )
 
 -------------------------------------------------------------------------------
+Directly creating an EnumInfo
+-------------------------------------------------------------------------------
+ToString.tests.cpp:<line number>
+...............................................................................
+
+ToString.tests.cpp:<line number>: PASSED:
+  CHECK( enumInfo->lookup(0) == "Value1" )
+with expansion:
+  Value1 == "Value1"
+
+ToString.tests.cpp:<line number>: PASSED:
+  CHECK( enumInfo->lookup(1) == "Value2" )
+with expansion:
+  Value2 == "Value2"
+
+ToString.tests.cpp:<line number>: PASSED:
+  CHECK( enumInfo->lookup(3) == "{** unexpected enum value **}" )
+with expansion:
+  {** unexpected enum value **}
+  ==
+  "{** unexpected enum value **}"
+
+-------------------------------------------------------------------------------
 EndsWith string matcher
 -------------------------------------------------------------------------------
 Matchers.tests.cpp:<line number>
@@ -2239,6 +2262,56 @@ Matchers.tests.cpp:<line number>: FAILED:
 with expansion:
   "this string contains 'abc' as a substring" ends with: "this" (case
   insensitive)
+
+-------------------------------------------------------------------------------
+Enums can quickly have stringification enabled using REGISTER_ENUM
+-------------------------------------------------------------------------------
+EnumToString.tests.cpp:<line number>
+...............................................................................
+
+EnumToString.tests.cpp:<line number>: PASSED:
+  REQUIRE( stringify( EnumClass3::Value1 ) == "Value1" )
+with expansion:
+  "Value1" == "Value1"
+
+EnumToString.tests.cpp:<line number>: PASSED:
+  REQUIRE( stringify( EnumClass3::Value2 ) == "Value2" )
+with expansion:
+  "Value2" == "Value2"
+
+EnumToString.tests.cpp:<line number>: PASSED:
+  REQUIRE( stringify( EnumClass3::Value3 ) == "Value3" )
+with expansion:
+  "Value3" == "Value3"
+
+EnumToString.tests.cpp:<line number>: PASSED:
+  REQUIRE( stringify( EnumClass3::Value4 ) == "{** unexpected enum value **}" )
+with expansion:
+  "{** unexpected enum value **}"
+  ==
+  "{** unexpected enum value **}"
+
+EnumToString.tests.cpp:<line number>: PASSED:
+  REQUIRE( stringify( ec3 ) == "Value2" )
+with expansion:
+  "Value2" == "Value2"
+
+-------------------------------------------------------------------------------
+Enums in namespaces can quickly have stringification enabled using
+REGISTER_ENUM
+-------------------------------------------------------------------------------
+EnumToString.tests.cpp:<line number>
+...............................................................................
+
+EnumToString.tests.cpp:<line number>: PASSED:
+  REQUIRE( stringify( Bikeshed::Colours::Red ) == "Red" )
+with expansion:
+  "Red" == "Red"
+
+EnumToString.tests.cpp:<line number>: PASSED:
+  REQUIRE( stringify( Bikeshed::Colours::Blue ) == "Blue" )
+with expansion:
+  "Blue" == "Blue"
 
 -------------------------------------------------------------------------------
 Epsilon only applies to Approx's value
@@ -10131,6 +10204,62 @@ with expansion:
   "{ { 42, "Arthur" }, { "Ford", 24 } }"
 
 -------------------------------------------------------------------------------
+parseEnums
+  No enums
+-------------------------------------------------------------------------------
+ToString.tests.cpp:<line number>
+...............................................................................
+
+ToString.tests.cpp:<line number>: PASSED:
+  CHECK_THAT( parseEnums( "" ), Equals( std::vector<std::string>{} ) )
+with expansion:
+  {  } Equals: {  }
+
+-------------------------------------------------------------------------------
+parseEnums
+  One enum value
+-------------------------------------------------------------------------------
+ToString.tests.cpp:<line number>
+...............................................................................
+
+ToString.tests.cpp:<line number>: PASSED:
+  CHECK_THAT( parseEnums( "ClassName::EnumName::Value1" ), Equals(std::vector<std::string>{"Value1"} ) )
+with expansion:
+  { "Value1" } Equals: { "Value1" }
+
+ToString.tests.cpp:<line number>: PASSED:
+  CHECK_THAT( parseEnums( "Value1" ), Equals( std::vector<std::string>{"Value1"} ) )
+with expansion:
+  { "Value1" } Equals: { "Value1" }
+
+ToString.tests.cpp:<line number>: PASSED:
+  CHECK_THAT( parseEnums( "EnumName::Value1" ), Equals(std::vector<std::string>{"Value1"} ) )
+with expansion:
+  { "Value1" } Equals: { "Value1" }
+
+-------------------------------------------------------------------------------
+parseEnums
+  Multiple enum values
+-------------------------------------------------------------------------------
+ToString.tests.cpp:<line number>
+...............................................................................
+
+ToString.tests.cpp:<line number>: PASSED:
+  CHECK_THAT( parseEnums( "ClassName::EnumName::Value1, ClassName::EnumName::Value2" ), Equals( std::vector<std::string>{"Value1", "Value2"} ) )
+with expansion:
+  { "Value1", "Value2" } Equals: { "Value1", "Value2" }
+
+ToString.tests.cpp:<line number>: PASSED:
+  CHECK_THAT( parseEnums( "ClassName::EnumName::Value1, ClassName::EnumName::Value2, ClassName::EnumName::Value3" ), Equals( std::vector<std::string>{"Value1", "Value2", "Value3"} ) )
+with expansion:
+  { "Value1", "Value2", "Value3" } Equals: { "Value1", "Value2", "Value3" }
+
+ToString.tests.cpp:<line number>: PASSED:
+  CHECK_THAT( parseEnums( "ClassName::EnumName::Value1,ClassName::EnumName::Value2 , ClassName::EnumName::Value3" ), Equals( std::vector<std::string>{"Value1", "Value2", "Value3"} ) )
+with expansion:
+  { "Value1", "Value2", "Value3" } Equals: { "Value1", "Value2", "Value3" }
+
+-------------------------------------------------------------------------------
 pointer to class
 -------------------------------------------------------------------------------
 Tricky.tests.cpp:<line number>
@@ -10376,6 +10505,27 @@ Tag.tests.cpp:<line number>: PASSED:
   REQUIRE_THAT( testcase.tags, Catch::VectorContains(std::string("magic-tag")) && Catch::VectorContains(std::string(".")) )
 with expansion:
   { ".", "magic-tag" } ( Contains: "magic-tag" and Contains: "." )
+
+-------------------------------------------------------------------------------
+splitString
+-------------------------------------------------------------------------------
+String.tests.cpp:<line number>
+...............................................................................
+
+String.tests.cpp:<line number>: PASSED:
+  CHECK_THAT( splitStringRef("", ',' ), Equals(std::vector<StringRef>() ) )
+with expansion:
+  {  } Equals: {  }
+
+String.tests.cpp:<line number>: PASSED:
+  CHECK_THAT( splitStringRef("abc", ',' ), Equals(std::vector<StringRef>{"abc"} ) )
+with expansion:
+  { abc } Equals: { abc }
+
+String.tests.cpp:<line number>: PASSED:
+  CHECK_THAT( splitStringRef("abc,def", ',' ), Equals(std::vector<StringRef>{"abc", "def"} ) )
+with expansion:
+  { abc, def } Equals: { abc, def }
 
 -------------------------------------------------------------------------------
 stacks unscoped info in loops
@@ -11218,6 +11368,6 @@ Misc.tests.cpp:<line number>
 Misc.tests.cpp:<line number>: PASSED:
 
 ===============================================================================
-test cases:  260 |  177 passed |  79 failed |  4 failed as expected
-assertions: 1445 | 1283 passed | 141 failed | 21 failed as expected
+test cases:  265 |  182 passed |  79 failed |  4 failed as expected
+assertions: 1465 | 1303 passed | 141 failed | 21 failed as expected
 
