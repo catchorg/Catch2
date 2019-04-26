@@ -234,11 +234,32 @@ std::string StringMaker<std::nullptr_t>::convert(std::nullptr_t) {
     return "nullptr";
 }
 
+int StringMaker<float>::m_precision = 5;
+   
 std::string StringMaker<float>::convert(float value) {
-    return fpToString(value, 5) + 'f';
+    return fpToString(value, m_precision) + 'f';
 }
+
+void StringMaker<float>::setPrecision(int precision) {
+    m_precision = precision;
+}
+
+int StringMaker<float>::getPrecision() {
+    return m_precision;
+}
+
+int StringMaker<double>::m_precision = 10;
+    
 std::string StringMaker<double>::convert(double value) {
-    return fpToString(value, 10);
+    return fpToString(value, m_precision);
+}
+
+void StringMaker<double>::setPrecision(int precision) {
+    m_precision = precision;
+}
+
+int StringMaker<double>::getPrecision() {
+    return m_precision;
 }
 
 std::string ratio_string<std::atto>::symbol() { return "a"; }

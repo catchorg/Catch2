@@ -128,6 +128,29 @@ TEST_CASE("String views are stringified like other strings", "[toString][approva
 
 #endif
 
+//TEMPLATE_TEST_CASE("Floating-point precision can be set", "[toString][floatingPoint]", float, double)
+//{
+//    const auto oldPrecision = Catch::StringMaker<TestType>::getPrecision();
+//    const auto precision = GENERATE(-1, 0, 3, std::numeric_limits<TestType>::max_digits10);
+//    const auto expectedLength = unsigned(precision < 0 ? 3 : precision);
+//
+//    CAPTURE( precision );
+//
+//    if (precision >= 0)
+//    {
+//        Catch::StringMaker<TestType>::setPrecision(precision);
+//    }
+//
+//    // Expected to fail to demonstrate the problem
+//    const auto str = Catch::StringMaker<TestType>::convert(std::numeric_limits<TestType>::epsilon());
+//    CHECK(str.length() >= expectedLength);
+//
+//    if (precision >= 0)
+//    {
+//        Catch::StringMaker<TestType>::setPrecision(oldPrecision);
+//    }
+//}
+
 namespace {
 
 struct WhatException : std::exception {
