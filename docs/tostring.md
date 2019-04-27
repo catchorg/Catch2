@@ -79,7 +79,7 @@ E.g.
 ```cpp
 enum class Fruits { Banana, Apple, Mango };
 
-CATCH_REGISTER_ENUM( Fruits, Fruits::Banana, Fruits::Apple, Fruits::Mango );
+CATCH_REGISTER_ENUM( Fruits, Fruits::Banana, Fruits::Apple, Fruits::Mango )
 
 TEST_CASE() {
     REQUIRE( Fruits::Mango == Fruits::Apple );
