@@ -15,7 +15,7 @@ Most built-in or std types are supported out of the box but there are two ways t
 
 This is the standard way of providing string conversions in C++ - and the chances are you may already provide this for your own purposes. If you're not familiar with this idiom it involves writing a free function of the form:
 
-```
+```cpp
 std::ostream& operator << ( std::ostream& os, T const& value ) {
     os << convertMyTypeToString( value );
     return os;
