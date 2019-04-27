@@ -90,7 +90,7 @@ namespace Bikeshed {
 CATCH_REGISTER_ENUM( Bikeshed::Colours,
                      Bikeshed::Colours::Red,
                      Bikeshed::Colours::Green,
-                     Bikeshed::Colours::Blue );
+                     Bikeshed::Colours::Blue )
 
 TEST_CASE( "Enums in namespaces can quickly have stringification enabled using REGISTER_ENUM" ) {
     using Catch::Detail::stringify;

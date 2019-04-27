@@ -29,7 +29,7 @@ You should put this function in the same namespace as your type, or the global n
 ## Catch::StringMaker specialisation
 If you don't want to provide an ```operator <<``` overload, or you want to convert your type differently for testing purposes, you can provide a specialization for `Catch::StringMaker<T>`:
 
-```
+```cpp
 namespace Catch {
     template<>
     struct StringMaker<T> {
@@ -61,7 +61,7 @@ namespace Catch {
 
 By default all exceptions deriving from `std::exception` will be translated to strings by calling the `what()` method. For exception types that do not derive from `std::exception` - or if `what()` does not return a suitable string - use `CATCH_TRANSLATE_EXCEPTION`. This defines a function that takes your exception type, by reference, and returns a string. It can appear anywhere in the code - it doesn't have to be in the same translation unit. For example:
 
-```
+```cpp
 CATCH_TRANSLATE_EXCEPTION( MyType& ex ) {
     return ex.message();
 }
@@ -76,7 +76,7 @@ Simply provide it the (qualified) enum name, followed by all the enum values, an
 
 E.g.
 
-```
+```cpp
 enum class Fruits { Banana, Apple, Mango };
 
 CATCH_REGISTER_ENUM( Fruits, Fruits::Banana, Fruits::Apple, Fruits::Mango );
@@ -87,7 +87,7 @@ TEST_CASE() {
 ```
 
 ... or if the enum is in a namespace:
-```
+```cpp
 namespace Bikeshed {
     enum class Colours { Red, Green, Blue };
 }
@@ -97,7 +97,7 @@ namespace Bikeshed {
 CATCH_REGISTER_ENUM( Bikeshed::Colours,
     Bikeshed::Colours::Red,
     Bikeshed::Colours::Green,
-    Bikeshed::Colours::Blue );
+    Bikeshed::Colours::Blue )
 
 TEST_CASE() {
     REQUIRE( Bikeshed::Colours::Red == Bikeshed::Colours::Blue );
