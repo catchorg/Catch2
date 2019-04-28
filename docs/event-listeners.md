@@ -30,10 +30,12 @@ struct MyListener : Catch::TestEventListenerBase {
     using TestEventListenerBase::TestEventListenerBase; // inherit constructor
 
     void testCaseStarting( Catch::TestCaseInfo const& testInfo ) override {
+        TestEventListenerBase::testCaseStarting( testInfo );
         // Perform some setup before a test case is run
     }
     
     void testCaseEnded( Catch::TestCaseStats const& testCaseStats ) override {
+        TestEventListenerBase::testCaseEnded( testCaseStats );
         // Tear-down after a test case is run
     }
 };
