@@ -9,6 +9,7 @@
 #include "catch_message.h"
 #include "catch_interfaces_capture.h"
 #include "catch_uncaught_exceptions.h"
+#include "catch_enforce.h"
 
 #include <cassert>
 #include <stack>
@@ -83,7 +84,7 @@ namespace Catch {
                 if (names[i] == '\\')
                     ++i;
             }
-            assert(0 && "Mismatched quotes");
+            CATCH_INTERNAL_ERROR("CAPTURE parsing encountered unmatched parentheses");
         };
 
         size_t start = 0;
