@@ -9,6 +9,7 @@
 #include "catch_message.h"
 #include "catch_interfaces_capture.h"
 #include "catch_uncaught_exceptions.h"
+#include "catch_enforce.h"
 
 #include <cassert>
 #include <stack>
@@ -76,6 +77,15 @@ namespace Catch {
             }
             return names.substr(start, end - start + 1);
         };
+        auto skipq = [&] (size_t start, char quote) {
+            for (auto i = start + 1; i < names.size() ; ++i) {
+                if (names[i] == quote)
+                    return i;
+                if (names[i] == '\\')
+                    ++i;
+            }
+            CATCH_INTERNAL_ERROR("CAPTURE parsing encountered unmatched parentheses");
+        };
 
         size_t start = 0;
         std::stack<char> openings;
@@ -95,6 +105,10 @@ namespace Catch {
             case ')':
 //           case '>':
                 openings.pop();
+                break;
+            case '"':
+            case '\'':
+                pos = skipq(pos, c);
                 break;
             case ',':
                 if (start != pos && openings.size() == 0) {

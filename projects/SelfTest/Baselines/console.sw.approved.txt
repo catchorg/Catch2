@@ -1787,6 +1787,27 @@ with messages:
   (2, 3) := 3
 
 -------------------------------------------------------------------------------
+CAPTURE parses string and character constants
+-------------------------------------------------------------------------------
+Message.tests.cpp:<line number>
+...............................................................................
+
+Message.tests.cpp:<line number>: PASSED:
+with messages:
+  ("comma, in string", "escaped, \", ") := "escaped, ", "
+  "single quote in string,'," := "single quote in string,',"
+  "some escapes, \\,\\\\" := "some escapes, \,\\"
+  "some, ), unmatched, } prenheses {[<" := "some, ), unmatched, } prenheses {[
+  <"
+  '"' := '"'
+  '\'' := '''
+  ',' := ','
+  '}' := '}'
+  ')' := ')'
+  '(' := '('
+  '{' := '{'
+
+-------------------------------------------------------------------------------
 Capture and info messages
   Capture should stringify like assertions
 -------------------------------------------------------------------------------
@@ -11368,6 +11389,6 @@ Misc.tests.cpp:<line number>
 Misc.tests.cpp:<line number>: PASSED:
 
 ===============================================================================
-test cases:  265 |  182 passed |  79 failed |  4 failed as expected
-assertions: 1465 | 1303 passed | 141 failed | 21 failed as expected
+test cases:  266 |  183 passed |  79 failed |  4 failed as expected
+assertions: 1466 | 1304 passed | 141 failed | 21 failed as expected
 
