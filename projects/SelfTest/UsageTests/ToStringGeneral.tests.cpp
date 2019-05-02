@@ -128,28 +128,39 @@ TEST_CASE("String views are stringified like other strings", "[toString][approva
 
 #endif
 
-//TEMPLATE_TEST_CASE("Floating-point precision can be set", "[toString][floatingPoint]", float, double)
-//{
-//    const auto oldPrecision = Catch::StringMaker<TestType>::getPrecision();
-//    const auto precision = GENERATE(-1, 0, 3, std::numeric_limits<TestType>::max_digits10);
-//    const auto expectedLength = unsigned(precision < 0 ? 3 : precision);
-//
-//    CAPTURE( precision );
-//
-//    if (precision >= 0)
-//    {
-//        Catch::StringMaker<TestType>::setPrecision(precision);
-//    }
-//
-//    // Expected to fail to demonstrate the problem
-//    const auto str = Catch::StringMaker<TestType>::convert(std::numeric_limits<TestType>::epsilon());
-//    CHECK(str.length() >= expectedLength);
-//
-//    if (precision >= 0)
-//    {
-//        Catch::StringMaker<TestType>::setPrecision(oldPrecision);
-//    }
-//}
+TEST_CASE("Precision of floating point stringification can be set", "[toString][floatingPoint]") {
+    SECTION("Floats") {
+        using sm = Catch::StringMaker<float>;
+        const auto oldPrecision = sm::precision;
+
+        const float testFloat = 1.12345678901234567899f;
+        auto str1 = sm::convert(testFloat);
+        sm::precision = 5;
+        // "1." prefix = 2 chars, f suffix is another char
+        CHECK(str1.size() == 3 + 5);
+
+        sm::precision = 10;
+        auto str2 = sm::convert(testFloat);
+        REQUIRE(str2.size() == 3 + 10);
+        sm::precision = oldPrecision;
+    }
+    SECTION("Double") {
+        using sm = Catch::StringMaker<double>;
+        const auto oldPrecision = sm::precision;
+
+        const double testDouble = 1.123456789012345678901234567899;
+        sm::precision = 5;
+        auto str1 = sm::convert(testDouble);
+        // "1." prefix = 2 chars
+        CHECK(str1.size() == 2 + 5);
+
+        sm::precision = 15;
+        auto str2 = sm::convert(testDouble);
+        REQUIRE(str2.size() == 2 + 15);
+
+        sm::precision = oldPrecision;
+    }
+}
 
 namespace {
 

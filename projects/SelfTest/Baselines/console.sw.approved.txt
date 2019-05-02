@@ -6193,6 +6193,40 @@ with expansion:
   0 != 0x<hex digits>
 
 -------------------------------------------------------------------------------
+Precision of floating point stringification can be set
+  Floats
+-------------------------------------------------------------------------------
+ToStringGeneral.tests.cpp:<line number>
+...............................................................................
+
+ToStringGeneral.tests.cpp:<line number>: PASSED:
+  CHECK( str1.size() == 3 + 5 )
+with expansion:
+  8 == 8
+
+ToStringGeneral.tests.cpp:<line number>: PASSED:
+  REQUIRE( str2.size() == 3 + 10 )
+with expansion:
+  13 == 13
+
+-------------------------------------------------------------------------------
+Precision of floating point stringification can be set
+  Double
+-------------------------------------------------------------------------------
+ToStringGeneral.tests.cpp:<line number>
+...............................................................................
+
+ToStringGeneral.tests.cpp:<line number>: PASSED:
+  CHECK( str1.size() == 2 + 5 )
+with expansion:
+  7 == 7
+
+ToStringGeneral.tests.cpp:<line number>: PASSED:
+  REQUIRE( str2.size() == 2 + 15 )
+with expansion:
+  17 == 17
+
+-------------------------------------------------------------------------------
 Predicate matcher can accept const char*
 -------------------------------------------------------------------------------
 Matchers.tests.cpp:<line number>
@@ -11389,6 +11423,6 @@ Misc.tests.cpp:<line number>
 Misc.tests.cpp:<line number>: PASSED:
 
 ===============================================================================
-test cases:  266 |  183 passed |  79 failed |  4 failed as expected
-assertions: 1466 | 1304 passed | 141 failed | 21 failed as expected
+test cases:  267 |  184 passed |  79 failed |  4 failed as expected
+assertions: 1470 | 1308 passed | 141 failed | 21 failed as expected
 

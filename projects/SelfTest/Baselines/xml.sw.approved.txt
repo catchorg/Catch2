@@ -7778,6 +7778,47 @@ Nor would this
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
+    <TestCase name="Precision of floating point stringification can be set" tags="[floatingPoint][toString]" filename="projects/<exe-name>/UsageTests/ToStringGeneral.tests.cpp" >
+      <Section name="Floats" filename="projects/<exe-name>/UsageTests/ToStringGeneral.tests.cpp" >
+        <Expression success="true" type="CHECK" filename="projects/<exe-name>/UsageTests/ToStringGeneral.tests.cpp" >
+          <Original>
+            str1.size() == 3 + 5
+          </Original>
+          <Expanded>
+            8 == 8
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/UsageTests/ToStringGeneral.tests.cpp" >
+          <Original>
+            str2.size() == 3 + 10
+          </Original>
+          <Expanded>
+            13 == 13
+          </Expanded>
+        </Expression>
+        <OverallResults successes="2" failures="0" expectedFailures="0"/>
+      </Section>
+      <Section name="Double" filename="projects/<exe-name>/UsageTests/ToStringGeneral.tests.cpp" >
+        <Expression success="true" type="CHECK" filename="projects/<exe-name>/UsageTests/ToStringGeneral.tests.cpp" >
+          <Original>
+            str1.size() == 2 + 5
+          </Original>
+          <Expanded>
+            7 == 7
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/UsageTests/ToStringGeneral.tests.cpp" >
+          <Original>
+            str2.size() == 2 + 15
+          </Original>
+          <Expanded>
+            17 == 17
+          </Expanded>
+        </Expression>
+        <OverallResults successes="2" failures="0" expectedFailures="0"/>
+      </Section>
+      <OverallResult success="true"/>
+    </TestCase>
     <TestCase name="Predicate matcher can accept const char*" tags="[compilation][matchers]" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
       <Expression success="true" type="REQUIRE_THAT" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
         <Original>
@@ -13728,7 +13769,7 @@ loose text artifact
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="1304" failures="142" expectedFailures="21"/>
+    <OverallResults successes="1308" failures="142" expectedFailures="21"/>
   </Group>
-  <OverallResults successes="1304" failures="141" expectedFailures="21"/>
+  <OverallResults successes="1308" failures="141" expectedFailures="21"/>
 </Catch>

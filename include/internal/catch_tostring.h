@@ -261,19 +261,13 @@ namespace Catch {
     template<>
     struct StringMaker<float> {
         static std::string convert(float value);
-        static void setPrecision(int precision);
-        static int getPrecision();
-    private:
-        static int m_precision;
+        static int precision;
     };
 
     template<>
     struct StringMaker<double> {
         static std::string convert(double value);
-        static void setPrecision(int precision);
-        static int getPrecision();
-    private:
-        static int m_precision;
+        static int precision;
     };
 
     template <typename T>
