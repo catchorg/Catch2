@@ -7,6 +7,8 @@
 [Catch::is_range specialisation](#catchis_range-specialisation)<br>
 [Exceptions](#exceptions)<br>
 [Enums](#enums)<br>
+[Floating point precision](#floating-point-precision)<br>
+
 
 Catch needs to be able to convert types you use in assertions and logging expressions into strings (for logging and reporting purposes).
 Most built-in or std types are supported out of the box but there are two ways that you can tell Catch how to convert your own types (or other, third-party types) into strings.
@@ -104,6 +106,22 @@ TEST_CASE() {
 }
 ```
 
+## Floating point precision
+
+Catch provides a built-in `StringMaker` specialization for both `float`
+`double`. By default, it uses what we think is a reasonable precision,
+but you can customize it by modifying the `precision` static variable
+inside the `StringMaker` specialization, like so:
+
+```cpp
+        Catch::StringMaker<float>::precision = 15;
+        const float testFloat1 = 1.12345678901234567899f;
+        const float testFloat2 = 1.12345678991234567899f;
+        REQUIRE(testFloat1 == testFloat2);
+```
+
+This assertion will fail and print out the `testFloat1` and `testFloat2`
+to 15 decimal places.
 
 ---
 

@@ -261,10 +261,13 @@ namespace Catch {
     template<>
     struct StringMaker<float> {
         static std::string convert(float value);
+        static int precision;
     };
+
     template<>
     struct StringMaker<double> {
         static std::string convert(double value);
+        static int precision;
     };
 
     template <typename T>
