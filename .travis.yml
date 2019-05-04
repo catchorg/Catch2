@@ -301,10 +301,19 @@ before_script:
   # Regenerate single header file, so it is tested in the examples...
   - python scripts/generateSingleHeader.py
 
+  - |
+    if [[ ${CPP17} -eq 1 ]]; then
+      export CPP_STANDARD=17
+    elif [[ ${CPP14} -eq 1 ]]; then
+      export CPP_STANDARD=14
+    else
+      export CPP_STANDARD=11
+    fi
+
     # Use Debug builds for running Valgrind and building examples
-  - cmake -H. -BBuild-Debug -DCMAKE_BUILD_TYPE=Debug -Wdev -DUSE_CPP14=${CPP14} -DUSE_CPP17=${CPP17} -DCATCH_USE_VALGRIND=${VALGRIND} -DCATCH_BUILD_EXAMPLES=${EXAMPLES} -DCATCH_ENABLE_COVERAGE=${COVERAGE} -DCATCH_BUILD_EXTRA_TESTS=${EXTRAS}
+  - cmake -H. -BBuild-Debug -DCMAKE_BUILD_TYPE=Debug -Wdev -DCATCH_USE_VALGRIND=${VALGRIND} -DCATCH_BUILD_EXAMPLES=${EXAMPLES} -DCATCH_ENABLE_COVERAGE=${COVERAGE} -DCATCH_BUILD_EXTRA_TESTS=${EXTRAS} -DCMAKE_CXX_STANDARD=${CPP_STANDARD} -DCMAKE_CXX_STANDARD_REQUIRED=On -DCMAKE_CXX_EXTENSIONS=OFF
     # Don't bother with release build for coverage build
-  - cmake -H. -BBuild-Release -DCMAKE_BUILD_TYPE=Release -Wdev -DUSE_CPP14=${CPP14} -DUSE_CPP17=${CPP17}
+  - cmake -H. -BBuild-Release -DCMAKE_BUILD_TYPE=Release -Wdev -DCMAKE_CXX_STANDARD=${CPP_STANDARD} -DCMAKE_CXX_STANDARD_REQUIRED=On -DCMAKE_CXX_EXTENSIONS=OFF
 
 
 script:
