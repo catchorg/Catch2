@@ -109,7 +109,7 @@ TEST_CASE() {
 ## Floating point precision
 
 Catch provides a built-in `StringMaker` specialization for both `float`
-`double`. By default, it uses what we think is a reasonable precision,
+and `double`. By default, it uses what we think is a reasonable precision,
 but you can customize it by modifying the `precision` static variable
 inside the `StringMaker` specialization, like so:
 
