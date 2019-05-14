@@ -222,7 +222,13 @@ namespace Catch {
 
     void Colour::use( Code _colourCode ) {
         static IColourImpl* impl = platformColourInstance();
-        impl->use( _colourCode );
+        // Strictly speaking, this cannot possibly happen.
+        // However, under some conditions it does happen (see #1626),
+        // and this change is small enough that we can let practicality
+        // triumph over purity in this case.
+        if (impl != NULL) {
+            impl->use( _colourCode );
+        }
     }
 
     std::ostream& operator << ( std::ostream& os, Colour const& ) {
