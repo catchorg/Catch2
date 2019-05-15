@@ -134,6 +134,9 @@ namespace Catch {
 #if !defined(CATCH_CONFIG_DISABLE_EXCEPTIONS)
         const auto& exceptions = getRegistryHub().getStartupExceptionRegistry().getExceptions();
         if ( !exceptions.empty() ) {
+            config();
+            getCurrentMutableContext().setConfig(m_config);
+
             m_startupExceptions = true;
             Colour colourGuard( Colour::Red );
             Catch::cerr() << "Errors occurred during startup!" << '\n';
