@@ -92,6 +92,11 @@ TEST_CASE( "StringRef", "[Strings][StringRef]" ) {
             REQUIRE( isOwned( ss ) );
 
             REQUIRE( ss.currentData() != s.currentData() ); // different pointer value
+
+            SECTION( "Self-assignment after substring" ) {
+                ss = ss;
+                REQUIRE(isOwned(ss) == true);
+            }
         }
 
         SECTION( "non-zero-based substring") {

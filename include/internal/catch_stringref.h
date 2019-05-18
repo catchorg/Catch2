@@ -71,10 +71,12 @@ namespace Catch {
         }
 
         auto operator = ( StringRef const &other ) noexcept -> StringRef& {
-            delete[] m_data;
-            m_data = nullptr;
-            m_start = other.m_start;
-            m_size = other.m_size;
+            if( this != &other ) {
+                delete[] m_data;
+                m_data = nullptr;
+                m_start = other.m_start;
+                m_size = other.m_size;
+            }
             return *this;
         }
 
