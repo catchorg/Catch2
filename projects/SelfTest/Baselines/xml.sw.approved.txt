@@ -9179,9 +9179,20 @@ Message from section two
               "hello" != "hello world!"
             </Expanded>
           </Expression>
-          <OverallResults successes="7" failures="0" expectedFailures="0"/>
+          <Section name="Self-assignment after substring" filename="projects/<exe-name>/IntrospectiveTests/String.tests.cpp" >
+            <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/String.tests.cpp" >
+              <Original>
+                isOwned(ss) == true
+              </Original>
+              <Expanded>
+                true == true
+              </Expanded>
+            </Expression>
+            <OverallResults successes="1" failures="0" expectedFailures="0"/>
+          </Section>
+          <OverallResults successes="8" failures="0" expectedFailures="0"/>
         </Section>
-        <OverallResults successes="7" failures="0" expectedFailures="0"/>
+        <OverallResults successes="8" failures="0" expectedFailures="0"/>
       </Section>
       <Section name="Substrings" filename="projects/<exe-name>/IntrospectiveTests/String.tests.cpp" >
         <Section name="non-zero-based substring" filename="projects/<exe-name>/IntrospectiveTests/String.tests.cpp" >
@@ -13769,7 +13780,7 @@ loose text artifact
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="1308" failures="142" expectedFailures="21"/>
+    <OverallResults successes="1309" failures="142" expectedFailures="21"/>
   </Group>
-  <OverallResults successes="1308" failures="141" expectedFailures="21"/>
+  <OverallResults successes="1309" failures="141" expectedFailures="21"/>
 </Catch>

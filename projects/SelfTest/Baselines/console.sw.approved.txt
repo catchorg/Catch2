@@ -7370,6 +7370,20 @@ with expansion:
 -------------------------------------------------------------------------------
 StringRef
   Substrings
+  c_str() causes copy
+  Self-assignment after substring
+-------------------------------------------------------------------------------
+String.tests.cpp:<line number>
+...............................................................................
+
+String.tests.cpp:<line number>: PASSED:
+  REQUIRE( isOwned(ss) == true )
+with expansion:
+  true == true
+
+-------------------------------------------------------------------------------
+StringRef
+  Substrings
   non-zero-based substring
 -------------------------------------------------------------------------------
 String.tests.cpp:<line number>
@@ -11424,5 +11438,5 @@ Misc.tests.cpp:<line number>: PASSED:
 
 ===============================================================================
 test cases:  267 |  184 passed |  79 failed |  4 failed as expected
-assertions: 1470 | 1308 passed | 141 failed | 21 failed as expected
+assertions: 1471 | 1309 passed | 141 failed | 21 failed as expected
 
