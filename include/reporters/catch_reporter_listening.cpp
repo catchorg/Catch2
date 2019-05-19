@@ -42,7 +42,7 @@ namespace Catch {
         m_reporter->noMatchingTestCases( spec );
     }
 
-#ifndef CATCH_CONFIG_DISABLE_BENCHMARKING 
+#if defined(CATCH_CONFIG_ENABLE_BENCHMARKING)
     void ListeningReporter::benchmarkPreparing( std::string const& name ) {
 		for (auto const& listener : m_listeners) {
 			listener->benchmarkPreparing(name);
@@ -68,7 +68,7 @@ namespace Catch {
 		}
 		m_reporter->benchmarkFailed(error);
 	}
-#endif // CATCH_CONFIG_DISABLE_BENCHMARKING
+#endif // CATCH_CONFIG_ENABLE_BENCHMARKING
 
     void ListeningReporter::testRunStarting( TestRunInfo const& testRunInfo ) {
         for ( auto const& listener : m_listeners ) {

@@ -20,9 +20,15 @@
 #if defined(_MSC_VER)
 #pragma warning(push)
 #pragma warning(disable:4061) // Not all labels are EXPLICITLY handled in switch
- // Note that 4062 (not all labels are handled
- // and default is missing) is enabled
+ // Note that 4062 (not all labels are handled and default is missing) is enabled
 #endif
+
+#if defined(__clang__)
+#  pragma clang diagnostic push
+// For simplicity, benchmarking-only helpers are always enabled
+#  pragma clang diagnostic ignored "-Wunused-function"
+#endif
+
 
 
 namespace Catch {
@@ -287,7 +293,7 @@ public:
         if (!m_isOpen) {
             m_isOpen = true;
             *this << RowBreak();
-			
+
 			Columns headerCols;
 			Spacer spacer(2);
 			for (auto const& info : m_columnInfos) {
@@ -408,7 +414,7 @@ void ConsoleReporter::sectionEnded(SectionStats const& _sectionStats) {
     StreamingReporterBase::sectionEnded(_sectionStats);
 }
 
-#ifndef CATCH_CONFIG_DISABLE_BENCHMARKING 
+#if defined(CATCH_CONFIG_ENABLE_BENCHMARKING)
 void ConsoleReporter::benchmarkPreparing(std::string const& name) {
 	lazyPrintWithoutClosingBenchmarkTable();
 
@@ -446,7 +452,7 @@ void ConsoleReporter::benchmarkFailed(std::string const& error) {
         << "Benchmark failed (" << error << ")"
         << ColumnBreak() << RowBreak();
 }
-#endif // CATCH_CONFIG_DISABLE_BENCHMARKING
+#endif // CATCH_CONFIG_ENABLE_BENCHMARKING
 
 void ConsoleReporter::testCaseEnded(TestCaseStats const& _testCaseStats) {
     m_tablePrinter->close();
@@ -664,4 +670,8 @@ CATCH_REGISTER_REPORTER("console", ConsoleReporter)
 
 #if defined(_MSC_VER)
 #pragma warning(pop)
+#endif
+
+#if defined(__clang__)
+#  pragma clang diagnostic pop
 #endif

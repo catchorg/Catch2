@@ -231,7 +231,7 @@ namespace Catch {
         m_unfinishedSections.push_back(endInfo);
     }
 	
-#ifndef CATCH_CONFIG_DISABLE_BENCHMARKING 
+#if defined(CATCH_CONFIG_ENABLE_BENCHMARKING)
     void RunContext::benchmarkPreparing(std::string const& name) {
 		m_reporter->benchmarkPreparing(name);
 	}
@@ -244,7 +244,7 @@ namespace Catch {
 	void RunContext::benchmarkFailed(std::string const & error) {
 		m_reporter->benchmarkFailed(error);
 	}
-#endif // CATCH_CONFIG_DISABLE_BENCHMARKING
+#endif // CATCH_CONFIG_ENABLE_BENCHMARKING
 
     void RunContext::pushScopedMessage(MessageInfo const & message) {
         m_messages.push_back(message);

@@ -2,7 +2,7 @@
 
 #include <map>
 
-#ifndef CATCH_CONFIG_DISABLE_BENCHMARKING 
+#if defined(CATCH_CONFIG_ENABLE_BENCHMARKING)
 std::uint64_t Fibonacci(std::uint64_t number);
 
 std::uint64_t Fibonacci(std::uint64_t number) {
@@ -127,4 +127,4 @@ TEST_CASE("Benchmark containers", "[!benchmark]") {
         }
     }
 }
-#endif // CATCH_CONFIG_DISABLE_BENCHMARKING
+#endif // CATCH_CONFIG_ENABLE_BENCHMARKING

@@ -463,7 +463,6 @@ TEST_CASE( "Process can be configured on command line", "[config][command-line]"
         }
     }
 
-#ifndef CATCH_CONFIG_DISABLE_BENCHMARKING 
     SECTION("Benchmark options") {
         SECTION("samples") {
             CHECK(cli.parse({ "test", "--benchmark-samples=200" }));
@@ -489,5 +488,4 @@ TEST_CASE( "Process can be configured on command line", "[config][command-line]"
             REQUIRE(config.benchmarkNoAnalysis);
         }
     }
-#endif
 }

@@ -60,12 +60,10 @@ namespace Catch {
     bool Config::showInvisibles() const                { return m_data.showInvisibles; }
     Verbosity Config::verbosity() const                { return m_data.verbosity; }
 
-#ifndef CATCH_CONFIG_DISABLE_BENCHMARKING 
     bool Config::benchmarkNoAnalysis() const           { return m_data.benchmarkNoAnalysis; }
     int Config::benchmarkSamples() const               { return m_data.benchmarkSamples; }
     double Config::benchmarkConfidenceInterval() const { return m_data.benchmarkConfidenceInterval; }
     unsigned int Config::benchmarkResamples() const    { return m_data.benchmarkResamples; }
-#endif // CATCH_CONFIG_DISABLE_BENCHMARKING
 
     IStream const* Config::openStream() {
         return Catch::makeStream(m_data.outputFilename);

@@ -7,7 +7,7 @@
  */
 
 #include "catch.hpp"
-#ifndef CATCH_CONFIG_DISABLE_BENCHMARKING 
+#if defined(CATCH_CONFIG_ENABLE_BENCHMARKING)
 namespace {
     struct manual_clock {
     public:
@@ -402,4 +402,4 @@ TEST_CASE("run benchmark", "[benchmark]") {
 
     CHECK((end - start).count() == 2867251000);
 }
-#endif // CATCH_CONFIG_DISABLE_BENCHMARKING
+#endif // CATCH_CONFIG_ENABLE_BENCHMARKING

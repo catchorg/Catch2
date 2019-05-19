@@ -33,9 +33,6 @@
 #  if defined(CATCH_CONFIG_DISABLE_MATCHERS)
 #    undef CATCH_CONFIG_DISABLE_MATCHERS
 #  endif
-#  if defined(CATCH_CONFIG_DISABLE_BENCHMARKING)
-#    undef CATCH_CONFIG_DISABLE_BENCHMARKING
-#  endif
 #  if !defined(CATCH_CONFIG_ENABLE_CHRONO_STRINGMAKER)
 #    define CATCH_CONFIG_ENABLE_CHRONO_STRINGMAKER
 #  endif
@@ -77,12 +74,12 @@
 #include "internal/catch_objc.hpp"
 #endif
 
-#ifndef CATCH_CONFIG_DISABLE_BENCHMARKING
-#include "internal/benchmark/catch_benchmark.hpp"
-#endif
-
 #ifdef CATCH_CONFIG_EXTERNAL_INTERFACES
 #include "internal/catch_external_interfaces.h"
+#endif
+
+#if defined(CATCH_CONFIG_ENABLE_BENCHMARKING)
+#include "internal/benchmark/catch_benchmark.hpp"
 #endif
 
 #endif // ! CATCH_CONFIG_IMPL_ONLY
@@ -195,12 +192,12 @@
 #define CATCH_THEN( desc )      INTERNAL_CATCH_DYNAMIC_SECTION( "     Then: " << desc )
 #define CATCH_AND_THEN( desc )  INTERNAL_CATCH_DYNAMIC_SECTION( "      And: " << desc )
 
-#ifndef CATCH_CONFIG_DISABLE_BENCHMARKING
+#if defined(CATCH_CONFIG_ENABLE_BENCHMARKING)
 #define CATCH_BENCHMARK(...) \
     INTERNAL_CATCH_BENCHMARK(INTERNAL_CATCH_UNIQUE_NAME(____C_A_T_C_H____B_E_N_C_H____), INTERNAL_CATCH_GET_1_ARG(__VA_ARGS__,,), INTERNAL_CATCH_GET_2_ARG(__VA_ARGS__,,))
 #define CATCH_BENCHMARK_ADVANCED(name) \
     INTERNAL_CATCH_BENCHMARK_ADVANCED(INTERNAL_CATCH_UNIQUE_NAME(____C_A_T_C_H____B_E_N_C_H____), name)
-#endif // CATCH_CONFIG_DISABLE_BENCHMARKING
+#endif // CATCH_CONFIG_ENABLE_BENCHMARKING
 
 // If CATCH_CONFIG_PREFIX_ALL is not defined then the CATCH_ prefix is not required
 #else
@@ -297,12 +294,12 @@
 #define THEN( desc )      INTERNAL_CATCH_DYNAMIC_SECTION( "     Then: " << desc )
 #define AND_THEN( desc )  INTERNAL_CATCH_DYNAMIC_SECTION( "      And: " << desc )
 
-#ifndef CATCH_CONFIG_DISABLE_BENCHMARKING
+#if defined(CATCH_CONFIG_ENABLE_BENCHMARKING)
 #define BENCHMARK(...) \
     INTERNAL_CATCH_BENCHMARK(INTERNAL_CATCH_UNIQUE_NAME(____C_A_T_C_H____B_E_N_C_H____), INTERNAL_CATCH_GET_1_ARG(__VA_ARGS__,,), INTERNAL_CATCH_GET_2_ARG(__VA_ARGS__,,))
 #define BENCHMARK_ADVANCED(name) \
     INTERNAL_CATCH_BENCHMARK_ADVANCED(INTERNAL_CATCH_UNIQUE_NAME(____C_A_T_C_H____B_E_N_C_H____), name)
-#endif // CATCH_CONFIG_DISABLE_BENCHMARKING
+#endif // CATCH_CONFIG_ENABLE_BENCHMARKING
 
 using Catch::Detail::Approx;
 

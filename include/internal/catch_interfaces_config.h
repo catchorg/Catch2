@@ -77,12 +77,10 @@ namespace Catch {
         virtual std::vector<std::string> const& getSectionsToRun() const = 0;
         virtual Verbosity verbosity() const = 0;
 
-#ifndef CATCH_CONFIG_DISABLE_BENCHMARKING 
         virtual bool benchmarkNoAnalysis() const = 0;
         virtual int benchmarkSamples() const = 0;
         virtual double benchmarkConfidenceInterval() const = 0;
         virtual unsigned int benchmarkResamples() const = 0;
-#endif // CATCH_CONFIG_DISABLE_BENCHMARKING
     };
 
     using IConfigPtr = std::shared_ptr<IConfig const>;

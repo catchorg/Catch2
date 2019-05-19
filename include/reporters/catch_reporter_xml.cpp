@@ -219,7 +219,7 @@ namespace Catch {
         m_xml.endElement();
     }
 
-#ifndef CATCH_CONFIG_DISABLE_BENCHMARKING 
+#if defined(CATCH_CONFIG_ENABLE_BENCHMARKING)
     void XmlReporter::benchmarkStarting(BenchmarkInfo const &info) {
         m_xml.startElement("BenchmarkResults")
             .writeAttribute("name", info.name)
@@ -259,7 +259,7 @@ namespace Catch {
             writeAttribute("message", error);
         m_xml.endElement();
     }
-#endif // CATCH_CONFIG_DISABLE_BENCHMARKING
+#endif // CATCH_CONFIG_ENABLE_BENCHMARKING
 
     CATCH_REGISTER_REPORTER( "xml", XmlReporter )
 

@@ -16,12 +16,6 @@
 
 namespace Catch {
     namespace Benchmark {
-        template <unsigned Num, unsigned Den = 1>
-        using ratio = std::ratio<Num, Den>;
-        using milli = ratio<1, 1000>;
-        using micro = ratio<1, 1000000>;
-        using nano = ratio<1, 1000000000>;
-
         template <typename Clock>
         using ClockDuration = typename Clock::duration;
         template <typename Clock>
@@ -30,7 +24,7 @@ namespace Catch {
         template <typename Clock>
         using TimePoint = typename Clock::time_point;
 
-        using default_clock = std::chrono::high_resolution_clock;
+        using default_clock = std::chrono::steady_clock;
 
         template <typename Clock>
         struct now {
@@ -39,7 +33,7 @@ namespace Catch {
             }
         };
 
-        using fp_seconds = std::chrono::duration<double, ratio<1>>;
+        using fp_seconds = std::chrono::duration<double, std::ratio<1>>;
     } // namespace Benchmark
 } // namespace Catch
 
