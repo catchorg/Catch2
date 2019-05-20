@@ -9067,21 +9067,13 @@ Message from section two
         </Expression>
         <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/String.tests.cpp" >
           <Original>
-            isSubstring( original ) == false
-          </Original>
-          <Expanded>
-            false == false
-          </Expanded>
-        </Expression>
-        <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/String.tests.cpp" >
-          <Original>
             isOwned( original )
           </Original>
           <Expanded>
             true
           </Expanded>
         </Expression>
-        <OverallResults successes="5" failures="0" expectedFailures="0"/>
+        <OverallResults successes="4" failures="0" expectedFailures="0"/>
       </Section>
       <Section name="Substrings" filename="projects/<exe-name>/IntrospectiveTests/String.tests.cpp" >
         <Section name="zero-based substring" filename="projects/<exe-name>/IntrospectiveTests/String.tests.cpp" >
@@ -9157,38 +9149,38 @@ Message from section two
           </Expression>
           <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/String.tests.cpp" >
             <Original>
-              isSubstring( ss ) == false
-            </Original>
-            <Expanded>
-              false == false
-            </Expanded>
-          </Expression>
-          <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/String.tests.cpp" >
-            <Original>
               isOwned( ss )
             </Original>
             <Expanded>
               true
             </Expanded>
           </Expression>
-          <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/String.tests.cpp" >
-            <Original>
-              ss.currentData() != s.currentData()
-            </Original>
-            <Expanded>
-              "hello" != "hello world!"
-            </Expanded>
-          </Expression>
           <Section name="Self-assignment after substring" filename="projects/<exe-name>/IntrospectiveTests/String.tests.cpp" >
             <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/String.tests.cpp" >
               <Original>
-                isOwned(ss) == true
+                isOwned(ss) == false
               </Original>
               <Expanded>
-                true == true
+                false == false
               </Expanded>
             </Expression>
-            <OverallResults successes="1" failures="0" expectedFailures="0"/>
+            <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/String.tests.cpp" >
+              <Original>
+                ss == "hello"
+              </Original>
+              <Expanded>
+                hello == "hello"
+              </Expanded>
+            </Expression>
+            <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/String.tests.cpp" >
+              <Original>
+                rawChars == ss.currentData()
+              </Original>
+              <Expanded>
+                "hello world!" == "hello world!"
+              </Expanded>
+            </Expression>
+            <OverallResults successes="3" failures="0" expectedFailures="0"/>
           </Section>
           <OverallResults successes="8" failures="0" expectedFailures="0"/>
         </Section>
@@ -13780,7 +13772,7 @@ loose text artifact
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="1309" failures="142" expectedFailures="21"/>
+    <OverallResults successes="1308" failures="142" expectedFailures="21"/>
   </Group>
-  <OverallResults successes="1309" failures="141" expectedFailures="21"/>
+  <OverallResults successes="1308" failures="141" expectedFailures="21"/>
 </Catch>

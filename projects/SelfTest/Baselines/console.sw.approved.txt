@@ -7287,11 +7287,6 @@ with expansion:
   false == false
 
 String.tests.cpp:<line number>: PASSED:
-  REQUIRE( isSubstring( original ) == false )
-with expansion:
-  false == false
-
-String.tests.cpp:<line number>: PASSED:
   REQUIRE( isOwned( original ) )
 with expansion:
   true
@@ -7353,19 +7348,9 @@ with expansion:
   "hello" != "hello world!"
 
 String.tests.cpp:<line number>: PASSED:
-  REQUIRE( isSubstring( ss ) == false )
-with expansion:
-  false == false
-
-String.tests.cpp:<line number>: PASSED:
   REQUIRE( isOwned( ss ) )
 with expansion:
   true
-
-String.tests.cpp:<line number>: PASSED:
-  REQUIRE( ss.currentData() != s.currentData() )
-with expansion:
-  "hello" != "hello world!"
 
 -------------------------------------------------------------------------------
 StringRef
@@ -7377,9 +7362,19 @@ String.tests.cpp:<line number>
 ...............................................................................
 
 String.tests.cpp:<line number>: PASSED:
-  REQUIRE( isOwned(ss) == true )
+  REQUIRE( isOwned(ss) == false )
 with expansion:
-  true == true
+  false == false
+
+String.tests.cpp:<line number>: PASSED:
+  REQUIRE( ss == "hello" )
+with expansion:
+  hello == "hello"
+
+String.tests.cpp:<line number>: PASSED:
+  REQUIRE( rawChars == ss.currentData() )
+with expansion:
+  "hello world!" == "hello world!"
 
 -------------------------------------------------------------------------------
 StringRef
@@ -11438,5 +11433,5 @@ Misc.tests.cpp:<line number>: PASSED:
 
 ===============================================================================
 test cases:  267 |  184 passed |  79 failed |  4 failed as expected
-assertions: 1471 | 1309 passed | 141 failed | 21 failed as expected
+assertions: 1470 | 1308 passed | 141 failed | 21 failed as expected
 
