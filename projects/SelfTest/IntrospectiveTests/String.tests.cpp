@@ -94,7 +94,7 @@ TEST_CASE( "StringRef", "[Strings][StringRef]" ) {
             REQUIRE( ss.currentData() != s.currentData() ); // different pointer value
 
             SECTION( "Self-assignment after substring" ) {
-                ss = ss;
+                ss = *&ss; // the *& are there to suppress warnings (see: "Improvements to Clang's diagnostics" in https://rev.ng/gitlab/revng-bar-2019/clang/raw/master/docs/ReleaseNotes.rst)
                 REQUIRE(isOwned(ss) == true);
             }
         }
