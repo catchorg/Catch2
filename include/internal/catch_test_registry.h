@@ -120,7 +120,6 @@ struct AutoReg : NonCopyable {
             struct TestName{\
                 template<typename...Ts> \
                 TestName(Ts...names){\
-                    CATCH_INTERNAL_CHECK_UNIQUE_TYPES(CATCH_REC_LIST(INTERNAL_CATCH_REMOVE_PARENS, __VA_ARGS__)) \
                     using expander = int[];\
                     (void)expander{(Catch::AutoReg( Catch::makeTestInvoker( &TestFunc<Types> ), CATCH_INTERNAL_LINEINFO, Catch::StringRef(), Catch::NameAndTags{ names, Tags } ), 0)... };/* NOLINT */ \
                 }\
@@ -130,12 +129,6 @@ struct AutoReg : NonCopyable {
         CATCH_INTERNAL_UNSUPPRESS_GLOBALS_WARNINGS \
         template<typename TestType> \
         static void TestFunc()
-
-#if defined(CATCH_CPP17_OR_GREATER)
-#define CATCH_INTERNAL_CHECK_UNIQUE_TYPES(...) static_assert(Catch::is_unique<__VA_ARGS__>,"Duplicate type detected in declaration of template test case");
-#else
-#define CATCH_INTERNAL_CHECK_UNIQUE_TYPES(...) static_assert(Catch::is_unique<__VA_ARGS__>::value,"Duplicate type detected in declaration of template test case");
-#endif
 
 #ifndef CATCH_CONFIG_TRADITIONAL_MSVC_PREPROCESSOR
     #define INTERNAL_CATCH_TEMPLATE_TEST_CASE(Name, Tags, ...) \
@@ -158,7 +151,6 @@ struct AutoReg : NonCopyable {
             template<typename... Types>                               \
             struct TestName {                                         \
                 TestName() {                                          \
-                    CATCH_INTERNAL_CHECK_UNIQUE_TYPES(Types...)       \
                     int index = 0;                                    \
                     using expander = int[];                           \
                     constexpr char const* tmpl_types[] = {CATCH_REC_LIST(INTERNAL_CATCH_STRINGIZE_WITHOUT_PARENS, INTERNAL_CATCH_REMOVE_PARENS(TmplTypes))};\
@@ -197,7 +189,6 @@ struct AutoReg : NonCopyable {
             struct TestNameClass{\
                 template<typename...Ts> \
                 TestNameClass(Ts...names){\
-                    CATCH_INTERNAL_CHECK_UNIQUE_TYPES(CATCH_REC_LIST(INTERNAL_CATCH_REMOVE_PARENS, __VA_ARGS__)) \
                     using expander = int[];\
                     (void)expander{(Catch::AutoReg( Catch::makeTestInvoker( &TestName<Types>::test ), CATCH_INTERNAL_LINEINFO, #ClassName, Catch::NameAndTags{ names, Tags } ), 0)... };/* NOLINT */ \
                 }\
@@ -226,7 +217,6 @@ struct AutoReg : NonCopyable {
             template<typename...Types>\
             struct TestNameClass{\
                 TestNameClass(){\
-                    CATCH_INTERNAL_CHECK_UNIQUE_TYPES(Types...)\
                     int index = 0;\
                     using expander = int[];\
                     constexpr char const* tmpl_types[] = {CATCH_REC_LIST(INTERNAL_CATCH_STRINGIZE_WITHOUT_PARENS, INTERNAL_CATCH_REMOVE_PARENS(TmplTypes))};\
