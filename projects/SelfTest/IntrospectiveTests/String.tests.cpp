@@ -65,7 +65,6 @@ TEST_CASE( "StringRef", "[Strings][StringRef]" ) {
 
         original.c_str(); // Forces it to take ownership
 
-        REQUIRE( isSubstring( original ) == false );
         REQUIRE( isOwned( original ) );
     }
 
@@ -88,14 +87,13 @@ TEST_CASE( "StringRef", "[Strings][StringRef]" ) {
             REQUIRE( rawChars == s.currentData() ); // same pointer value
             REQUIRE( ss.c_str() != rawChars );
 
-            REQUIRE( isSubstring( ss ) == false );
             REQUIRE( isOwned( ss ) );
-
-            REQUIRE( ss.currentData() != s.currentData() ); // different pointer value
 
             SECTION( "Self-assignment after substring" ) {
                 ss = *&ss; // the *& are there to suppress warnings (see: "Improvements to Clang's diagnostics" in https://rev.ng/gitlab/revng-bar-2019/clang/raw/master/docs/ReleaseNotes.rst)
-                REQUIRE(isOwned(ss) == true);
+                REQUIRE( isOwned(ss) == false );
+                REQUIRE( ss == "hello" );
+                REQUIRE( rawChars == ss.currentData() ); // same pointer value
             }
         }
 

@@ -39,9 +39,11 @@ namespace Catch {
     }
 
     auto StringRef::c_str() const -> char const* {
-        if( isSubstring() )
-           const_cast<StringRef*>( this )->takeOwnership();
-        return m_start;
+        if( !isSubstring() )
+            return m_start;
+
+        const_cast<StringRef *>( this )->takeOwnership();
+        return m_data;
     }
     auto StringRef::currentData() const noexcept -> char const* {
         return m_start;
@@ -59,7 +61,6 @@ namespace Catch {
             m_data = new char[m_size+1];
             memcpy( m_data, m_start, m_size );
             m_data[m_size] = '\0';
-            m_start = m_data;
         }
     }
     auto StringRef::substr( size_type start, size_type size ) const noexcept -> StringRef {
