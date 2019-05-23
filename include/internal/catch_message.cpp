@@ -84,7 +84,7 @@ namespace Catch {
                 if (names[i] == '\\')
                     ++i;
             }
-            CATCH_INTERNAL_ERROR("CAPTURE parsing encountered unmatched parentheses");
+            CATCH_INTERNAL_ERROR("CAPTURE parsing encountered unmatched quote");
         };
 
         size_t start = 0;
