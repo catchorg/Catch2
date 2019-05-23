@@ -155,18 +155,36 @@ Class.tests.cpp:<line number>: passed: Template_Fixture_2<TestType>::m_a.size() 
 Class.tests.cpp:<line number>: passed: Template_Fixture_2<TestType>::m_a.size() == 0 for: 0 == 0
 Class.tests.cpp:<line number>: passed: Template_Fixture_2<TestType>::m_a.size() == 0 for: 0 == 0
 Class.tests.cpp:<line number>: passed: Template_Fixture_2<TestType>::m_a.size() == 0 for: 0 == 0
+Class.tests.cpp:<line number>: failed: Template_Fixture_2<TestType>{}.m_a.size() < 2 for: 6 < 2
+Class.tests.cpp:<line number>: failed: Template_Fixture_2<TestType>{}.m_a.size() < 2 for: 2 < 2
+Class.tests.cpp:<line number>: failed: Template_Fixture_2<TestType>{}.m_a.size() < 2 for: 6 < 2
+Class.tests.cpp:<line number>: failed: Template_Fixture_2<TestType>{}.m_a.size() < 2 for: 2 < 2
+Class.tests.cpp:<line number>: passed: Template_Fixture_2<TestType>{}.m_a.size() >= 2 for: 6 >= 2
+Class.tests.cpp:<line number>: passed: Template_Fixture_2<TestType>{}.m_a.size() >= 2 for: 2 >= 2
+Class.tests.cpp:<line number>: passed: Template_Fixture_2<TestType>{}.m_a.size() >= 2 for: 6 >= 2
+Class.tests.cpp:<line number>: passed: Template_Fixture_2<TestType>{}.m_a.size() >= 2 for: 2 >= 2
 Class.tests.cpp:<line number>: failed: Template_Fixture<TestType>::m_a == 2 for: 1.0 == 2
 Class.tests.cpp:<line number>: failed: Template_Fixture<TestType>::m_a == 2 for: 1.0f == 2
 Class.tests.cpp:<line number>: failed: Template_Fixture<TestType>::m_a == 2 for: 1 == 2
 Class.tests.cpp:<line number>: passed: Template_Fixture<TestType>::m_a == 1 for: 1.0 == 1
 Class.tests.cpp:<line number>: passed: Template_Fixture<TestType>::m_a == 1 for: 1.0f == 1
 Class.tests.cpp:<line number>: passed: Template_Fixture<TestType>::m_a == 1 for: 1 == 1
+Class.tests.cpp:<line number>: failed: Nttp_Fixture<V>::value == 0 for: 1 == 0
+Class.tests.cpp:<line number>: failed: Nttp_Fixture<V>::value == 0 for: 3 == 0
+Class.tests.cpp:<line number>: failed: Nttp_Fixture<V>::value == 0 for: 6 == 0
+Class.tests.cpp:<line number>: passed: Nttp_Fixture<V>::value > 0 for: 1 > 0
+Class.tests.cpp:<line number>: passed: Nttp_Fixture<V>::value > 0 for: 3 > 0
+Class.tests.cpp:<line number>: passed: Nttp_Fixture<V>::value > 0 for: 6 > 0
 Class.tests.cpp:<line number>: failed: m_a == 2 for: 1 == 2
 Class.tests.cpp:<line number>: passed: m_a == 1 for: 1 == 1
 Misc.tests.cpp:<line number>: passed: x.size() == 0 for: 0 == 0
 Misc.tests.cpp:<line number>: passed: x.size() == 0 for: 0 == 0
 Misc.tests.cpp:<line number>: passed: x.size() == 0 for: 0 == 0
 Misc.tests.cpp:<line number>: passed: x.size() == 0 for: 0 == 0
+Misc.tests.cpp:<line number>: passed: x.size() > 0 for: 42 > 0
+Misc.tests.cpp:<line number>: passed: x.size() > 0 for: 9 > 0
+Misc.tests.cpp:<line number>: passed: x.size() > 0 for: 42 > 0
+Misc.tests.cpp:<line number>: passed: x.size() > 0 for: 9 > 0
 Approx.tests.cpp:<line number>: passed: d == 1.23_a for: 1.23 == Approx( 1.23 )
 Approx.tests.cpp:<line number>: passed: d != 1.22_a for: 1.23 != Approx( 1.22 )
 Approx.tests.cpp:<line number>: passed: -d == -1.23_a for: -1.23 == Approx( -1.23 )
@@ -1126,6 +1144,74 @@ Misc.tests.cpp:<line number>: passed: v.size() == 5 for: 5 == 5
 Misc.tests.cpp:<line number>: passed: v.capacity() >= 5 for: 5 >= 5
 Misc.tests.cpp:<line number>: passed: v.size() == 5 for: 5 == 5
 Misc.tests.cpp:<line number>: passed: v.capacity() >= 5 for: 5 >= 5
+Misc.tests.cpp:<line number>: passed: v.size() == V for: 6 == 6
+Misc.tests.cpp:<line number>: passed: v.capacity() >= V for: 6 >= 6
+Misc.tests.cpp:<line number>: passed: v.size() == 2 * V for: 12 == 12
+Misc.tests.cpp:<line number>: passed: v.capacity() >= 2 * V for: 12 >= 12
+Misc.tests.cpp:<line number>: passed: v.size() == V for: 6 == 6
+Misc.tests.cpp:<line number>: passed: v.capacity() >= V for: 6 >= 6
+Misc.tests.cpp:<line number>: passed: v.size() == 0 for: 0 == 0
+Misc.tests.cpp:<line number>: passed: v.capacity() >= V for: 6 >= 6
+Misc.tests.cpp:<line number>: passed: v.capacity() == 0 for: 0 == 0
+Misc.tests.cpp:<line number>: passed: v.size() == V for: 6 == 6
+Misc.tests.cpp:<line number>: passed: v.capacity() >= V for: 6 >= 6
+Misc.tests.cpp:<line number>: passed: v.size() == V for: 6 == 6
+Misc.tests.cpp:<line number>: passed: v.capacity() >= 2 * V for: 12 >= 12
+Misc.tests.cpp:<line number>: passed: v.size() == V for: 6 == 6
+Misc.tests.cpp:<line number>: passed: v.capacity() >= V for: 6 >= 6
+Misc.tests.cpp:<line number>: passed: v.size() == V for: 6 == 6
+Misc.tests.cpp:<line number>: passed: v.capacity() >= V for: 6 >= 6
+Misc.tests.cpp:<line number>: passed: v.size() == V for: 4 == 4
+Misc.tests.cpp:<line number>: passed: v.capacity() >= V for: 4 >= 4
+Misc.tests.cpp:<line number>: passed: v.size() == 2 * V for: 8 == 8
+Misc.tests.cpp:<line number>: passed: v.capacity() >= 2 * V for: 8 >= 8
+Misc.tests.cpp:<line number>: passed: v.size() == V for: 4 == 4
+Misc.tests.cpp:<line number>: passed: v.capacity() >= V for: 4 >= 4
+Misc.tests.cpp:<line number>: passed: v.size() == 0 for: 0 == 0
+Misc.tests.cpp:<line number>: passed: v.capacity() >= V for: 4 >= 4
+Misc.tests.cpp:<line number>: passed: v.capacity() == 0 for: 0 == 0
+Misc.tests.cpp:<line number>: passed: v.size() == V for: 4 == 4
+Misc.tests.cpp:<line number>: passed: v.capacity() >= V for: 4 >= 4
+Misc.tests.cpp:<line number>: passed: v.size() == V for: 4 == 4
+Misc.tests.cpp:<line number>: passed: v.capacity() >= 2 * V for: 8 >= 8
+Misc.tests.cpp:<line number>: passed: v.size() == V for: 4 == 4
+Misc.tests.cpp:<line number>: passed: v.capacity() >= V for: 4 >= 4
+Misc.tests.cpp:<line number>: passed: v.size() == V for: 4 == 4
+Misc.tests.cpp:<line number>: passed: v.capacity() >= V for: 4 >= 4
+Misc.tests.cpp:<line number>: passed: v.size() == V for: 5 == 5
+Misc.tests.cpp:<line number>: passed: v.capacity() >= V for: 5 >= 5
+Misc.tests.cpp:<line number>: passed: v.size() == 2 * V for: 10 == 10
+Misc.tests.cpp:<line number>: passed: v.capacity() >= 2 * V for: 10 >= 10
+Misc.tests.cpp:<line number>: passed: v.size() == V for: 5 == 5
+Misc.tests.cpp:<line number>: passed: v.capacity() >= V for: 5 >= 5
+Misc.tests.cpp:<line number>: passed: v.size() == 0 for: 0 == 0
+Misc.tests.cpp:<line number>: passed: v.capacity() >= V for: 5 >= 5
+Misc.tests.cpp:<line number>: passed: v.capacity() == 0 for: 0 == 0
+Misc.tests.cpp:<line number>: passed: v.size() == V for: 5 == 5
+Misc.tests.cpp:<line number>: passed: v.capacity() >= V for: 5 >= 5
+Misc.tests.cpp:<line number>: passed: v.size() == V for: 5 == 5
+Misc.tests.cpp:<line number>: passed: v.capacity() >= 2 * V for: 10 >= 10
+Misc.tests.cpp:<line number>: passed: v.size() == V for: 5 == 5
+Misc.tests.cpp:<line number>: passed: v.capacity() >= V for: 5 >= 5
+Misc.tests.cpp:<line number>: passed: v.size() == V for: 5 == 5
+Misc.tests.cpp:<line number>: passed: v.capacity() >= V for: 5 >= 5
+Misc.tests.cpp:<line number>: passed: v.size() == V for: 15 == 15
+Misc.tests.cpp:<line number>: passed: v.capacity() >= V for: 15 >= 15
+Misc.tests.cpp:<line number>: passed: v.size() == 2 * V for: 30 == 30
+Misc.tests.cpp:<line number>: passed: v.capacity() >= 2 * V for: 30 >= 30
+Misc.tests.cpp:<line number>: passed: v.size() == V for: 15 == 15
+Misc.tests.cpp:<line number>: passed: v.capacity() >= V for: 15 >= 15
+Misc.tests.cpp:<line number>: passed: v.size() == 0 for: 0 == 0
+Misc.tests.cpp:<line number>: passed: v.capacity() >= V for: 15 >= 15
+Misc.tests.cpp:<line number>: passed: v.capacity() == 0 for: 0 == 0
+Misc.tests.cpp:<line number>: passed: v.size() == V for: 15 == 15
+Misc.tests.cpp:<line number>: passed: v.capacity() >= V for: 15 >= 15
+Misc.tests.cpp:<line number>: passed: v.size() == V for: 15 == 15
+Misc.tests.cpp:<line number>: passed: v.capacity() >= 2 * V for: 30 >= 30
+Misc.tests.cpp:<line number>: passed: v.size() == V for: 15 == 15
+Misc.tests.cpp:<line number>: passed: v.capacity() >= V for: 15 >= 15
+Misc.tests.cpp:<line number>: passed: v.size() == V for: 15 == 15
+Misc.tests.cpp:<line number>: passed: v.capacity() >= V for: 15 >= 15
 VariadicMacros.tests.cpp:<line number>: passed: with 1 message: 'no assertions'
 Tricky.tests.cpp:<line number>: passed: 0x<hex digits> == bit30and31 for: 3221225472 (0x<hex digits>) == 3221225472
 Message.tests.cpp:<line number>: failed - but was ok: 1 == 2
@@ -1543,5 +1629,5 @@ Misc.tests.cpp:<line number>: passed: v.size() == 5 for: 5 == 5
 Misc.tests.cpp:<line number>: passed: v.capacity() >= 5 for: 5 >= 5
 Misc.tests.cpp:<line number>: passed:
 Misc.tests.cpp:<line number>: passed:
-Failed 79 test cases, failed 141 assertions.
+Failed 86 test cases, failed 148 assertions.
 

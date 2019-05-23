@@ -164,6 +164,54 @@ with expansion:
   0 == 1
 
 -------------------------------------------------------------------------------
+A TEMPLATE_PRODUCT_TEST_CASE_METHOD_SIG based test run that fails -
+Template_Foo_2<float, 6>
+-------------------------------------------------------------------------------
+Class.tests.cpp:<line number>
+...............................................................................
+
+Class.tests.cpp:<line number>: FAILED:
+  REQUIRE( Template_Fixture_2<TestType>{}.m_a.size() < 2 )
+with expansion:
+  6 < 2
+
+-------------------------------------------------------------------------------
+A TEMPLATE_PRODUCT_TEST_CASE_METHOD_SIG based test run that fails -
+Template_Foo_2<int, 2>
+-------------------------------------------------------------------------------
+Class.tests.cpp:<line number>
+...............................................................................
+
+Class.tests.cpp:<line number>: FAILED:
+  REQUIRE( Template_Fixture_2<TestType>{}.m_a.size() < 2 )
+with expansion:
+  2 < 2
+
+-------------------------------------------------------------------------------
+A TEMPLATE_PRODUCT_TEST_CASE_METHOD_SIG based test run that fails - std::array
+<float, 6>
+-------------------------------------------------------------------------------
+Class.tests.cpp:<line number>
+...............................................................................
+
+Class.tests.cpp:<line number>: FAILED:
+  REQUIRE( Template_Fixture_2<TestType>{}.m_a.size() < 2 )
+with expansion:
+  6 < 2
+
+-------------------------------------------------------------------------------
+A TEMPLATE_PRODUCT_TEST_CASE_METHOD_SIG based test run that fails - std::array
+<int, 2>
+-------------------------------------------------------------------------------
+Class.tests.cpp:<line number>
+...............................................................................
+
+Class.tests.cpp:<line number>: FAILED:
+  REQUIRE( Template_Fixture_2<TestType>{}.m_a.size() < 2 )
+with expansion:
+  2 < 2
+
+-------------------------------------------------------------------------------
 A TEMPLATE_TEST_CASE_METHOD based test run that fails - double
 -------------------------------------------------------------------------------
 Class.tests.cpp:<line number>
@@ -195,6 +243,39 @@ Class.tests.cpp:<line number>: FAILED:
   REQUIRE( Template_Fixture<TestType>::m_a == 2 )
 with expansion:
   1 == 2
+
+-------------------------------------------------------------------------------
+A TEMPLATE_TEST_CASE_METHOD_SIG based test run that fails - 1
+-------------------------------------------------------------------------------
+Class.tests.cpp:<line number>
+...............................................................................
+
+Class.tests.cpp:<line number>: FAILED:
+  REQUIRE( Nttp_Fixture<V>::value == 0 )
+with expansion:
+  1 == 0
+
+-------------------------------------------------------------------------------
+A TEMPLATE_TEST_CASE_METHOD_SIG based test run that fails - 3
+-------------------------------------------------------------------------------
+Class.tests.cpp:<line number>
+...............................................................................
+
+Class.tests.cpp:<line number>: FAILED:
+  REQUIRE( Nttp_Fixture<V>::value == 0 )
+with expansion:
+  3 == 0
+
+-------------------------------------------------------------------------------
+A TEMPLATE_TEST_CASE_METHOD_SIG based test run that fails - 6
+-------------------------------------------------------------------------------
+Class.tests.cpp:<line number>
+...............................................................................
+
+Class.tests.cpp:<line number>: FAILED:
+  REQUIRE( Nttp_Fixture<V>::value == 0 )
+with expansion:
+  6 == 0
 
 -------------------------------------------------------------------------------
 A TEST_CASE_METHOD based test run that fails
@@ -1299,6 +1380,6 @@ due to unexpected exception with message:
   Why would you throw a std::string?
 
 ===============================================================================
-test cases:  267 |  200 passed |  63 failed |  4 failed as expected
-assertions: 1453 | 1308 passed | 124 failed | 21 failed as expected
+test cases:  289 |  215 passed |  70 failed |  4 failed as expected
+assertions: 1539 | 1387 passed | 131 failed | 21 failed as expected
 
