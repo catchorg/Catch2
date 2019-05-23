@@ -132,6 +132,7 @@
 #endif // CATCH_CONFIG_DISABLE_MATCHERS
 
 #define CATCH_INFO( msg ) INTERNAL_CATCH_INFO( "CATCH_INFO", msg )
+#define CATCH_UNSCOPED_INFO( msg ) INTERNAL_CATCH_UNSCOPED_INFO( "CATCH_UNSCOPED_INFO", msg )
 #define CATCH_WARN( msg ) INTERNAL_CATCH_MSG( "CATCH_WARN", Catch::ResultWas::Warning, Catch::ResultDisposition::ContinueOnFailure, msg )
 #define CATCH_CAPTURE( ... ) INTERNAL_CATCH_CAPTURE( INTERNAL_CATCH_UNIQUE_NAME(capturer), "CATCH_CAPTURE",__VA_ARGS__ )
 
@@ -305,9 +306,10 @@ using Catch::Detail::Approx;
 #define CATCH_REQUIRE_THAT( arg, matcher ) (void)(0)
 #endif // CATCH_CONFIG_DISABLE_MATCHERS
 
-#define CATCH_INFO( msg )    (void)(0)
-#define CATCH_WARN( msg )    (void)(0)
-#define CATCH_CAPTURE( msg ) (void)(0)
+#define CATCH_INFO( msg )          (void)(0)
+#define CATCH_UNSCOPED_INFO( msg ) (void)(0)
+#define CATCH_WARN( msg )          (void)(0)
+#define CATCH_CAPTURE( msg )       (void)(0)
 
 #define CATCH_TEST_CASE( ... ) INTERNAL_CATCH_TESTCASE_NO_REGISTRATION(INTERNAL_CATCH_UNIQUE_NAME( ____C_A_T_C_H____T_E_S_T____ ))
 #define CATCH_TEST_CASE_METHOD( className, ... ) INTERNAL_CATCH_TESTCASE_NO_REGISTRATION(INTERNAL_CATCH_UNIQUE_NAME( ____C_A_T_C_H____T_E_S_T____ ))
@@ -382,6 +384,7 @@ using Catch::Detail::Approx;
 #endif // CATCH_CONFIG_DISABLE_MATCHERS
 
 #define INFO( msg ) (void)(0)
+#define UNSCOPED_INFO( msg ) (void)(0)
 #define WARN( msg ) (void)(0)
 #define CAPTURE( msg ) (void)(0)
 
