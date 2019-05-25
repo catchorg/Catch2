@@ -18,7 +18,7 @@ class CatchConan(ConanFile):
         cmake.definitions["BUILD_TESTING"] = "OFF"
         cmake.definitions["CATCH_INSTALL_DOCS"] = "OFF"
         cmake.definitions["CATCH_INSTALL_HELPERS"] = "ON"
-        cmake.configure()
+        cmake.configure(build_folder='build')
         cmake.install()
 
         self.copy(pattern="LICENSE.txt", dst="licenses")
