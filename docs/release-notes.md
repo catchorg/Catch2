@@ -2,6 +2,7 @@
 
 # Release notes
 **Contents**<br>
+[2.8.0](#280)<br>
 [2.7.2](#272)<br>
 [2.7.1](#271)<br>
 [2.7.0](#270)<br>
@@ -22,6 +23,27 @@
 [2.0.1](#201)<br>
 [Older versions](#older-versions)<br>
 [Even Older versions](#even-older-versions)<br>
+
+
+## 2.8.0
+
+### Improvements
+* Templated test cases no longer check whether the provided types are unique (#1628)
+  * This allows you to e.g. test over `uint32_t`, `uint64_t`, and `size_t` without compilation failing
+* The precision of floating point stringification can be modified by user (#1612, #1614)
+* We now provide `REGISTER_ENUM` convenience macro for generating `StringMaker` specializations for enums
+  * See the "String conversion" documentation for details
+* Added new set of macros for template test cases that enables the use of NTTPs (#1531, #1609)
+  * See "Test cases and sections" documentation for details
+
+### Fixes
+* `UNSCOPED_INFO` macro now has a prefixed/disabled/prefixed+disabled versions (#1611)
+* Reporting errors at startup should no longer cause a segfault under certain circumstances (#1626)
+
+
+### Miscellaneous
+* CMake will now prevent you from attempting in-tree build (#1636, #1638)
+  * Previously it would break with an obscure error message during the build step
 
 
 ## 2.7.2
