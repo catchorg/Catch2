@@ -111,6 +111,19 @@ TEMPLATE_PRODUCT_TEST_CASE_METHOD_SIG(Template_Fixture_2, "A TEMPLATE_PRODUCT_TE
 }
 ```
 
+Catch2 also provides `TEMPLATE_LIST_TEST_CASE_METHOD` to support template fixtures with types specified in
+template type lists like `std::tuple`, `boost::mpl::list` or `boost::mp11::mp_list`. This test case works the same as `TEMPLATE_TEST_CASE_METHOD`,
+only difference is the source of types. This allows you to reuse the template type list in multiple test cases.
+
+Example:
+```cpp
+using MyTypes = std::tuple<int, char, double>;
+TEMPLATE_LIST_TEST_CASE_METHOD(Template_Fixture, "Template test case method with test types specified inside std::tuple", "[class][template][list]", MyTypes)
+{
+    REQUIRE( Template_Fixture<TestType>::m_a == 1 );
+}
+```
+
 ---
 
 [Home](Readme.md#top)
