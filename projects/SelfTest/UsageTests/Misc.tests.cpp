@@ -365,6 +365,12 @@ TEMPLATE_PRODUCT_TEST_CASE("Product with differing arities", "[template][product
     REQUIRE(std::tuple_size<TestType>::value >= 1);
 }
 
+using MyTypes = std::tuple<int, char, float>;
+TEMPLATE_LIST_TEST_CASE("Template test case with test types specified inside std::tuple", "[template][list]", MyTypes)
+{
+    REQUIRE(sizeof(TestType) > 0);
+}
+
 // https://github.com/philsquared/Catch/issues/166
 TEST_CASE("A couple of nested sections followed by a failure", "[failing][.]") {
     SECTION("Outer")

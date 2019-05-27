@@ -98,6 +98,12 @@ TEMPLATE_PRODUCT_TEST_CASE_METHOD_SIG(Template_Fixture_2, "A TEMPLATE_PRODUCT_TE
     REQUIRE(Template_Fixture_2<TestType>{}.m_a.size() >= 2);
 }
 
+using MyTypes = std::tuple<int, char, double>;
+TEMPLATE_LIST_TEST_CASE_METHOD(Template_Fixture, "Template test case method with test types specified inside std::tuple", "[class][template][list]", MyTypes)
+{
+    REQUIRE( Template_Fixture<TestType>::m_a == 1 );
+}
+
 // We should be able to write our tests within a different namespace
 namespace Inner
 {
