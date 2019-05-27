@@ -1078,6 +1078,12 @@ Tag.tests.cpp:<line number>: passed: registry.add( "[no ampersat]", "", Catch::S
 Tag.tests.cpp:<line number>: passed: registry.add( "[the @ is not at the start]", "", Catch::SourceLineInfo( "file", 3 ) )
 Tag.tests.cpp:<line number>: passed: registry.add( "@no square bracket at start]", "", Catch::SourceLineInfo( "file", 3 ) )
 Tag.tests.cpp:<line number>: passed: registry.add( "[@no square bracket at end", "", Catch::SourceLineInfo( "file", 3 ) )
+Class.tests.cpp:<line number>: passed: Template_Fixture<TestType>::m_a == 1 for: 1 == 1
+Class.tests.cpp:<line number>: passed: Template_Fixture<TestType>::m_a == 1 for: 1 == 1
+Class.tests.cpp:<line number>: passed: Template_Fixture<TestType>::m_a == 1 for: 1.0 == 1
+Misc.tests.cpp:<line number>: passed: sizeof(TestType) > 0 for: 4 > 0
+Misc.tests.cpp:<line number>: passed: sizeof(TestType) > 0 for: 1 > 0
+Misc.tests.cpp:<line number>: passed: sizeof(TestType) > 0 for: 4 > 0
 Misc.tests.cpp:<line number>: passed: v.size() == 5 for: 5 == 5
 Misc.tests.cpp:<line number>: passed: v.capacity() >= 5 for: 5 >= 5
 Misc.tests.cpp:<line number>: passed: v.size() == 10 for: 10 == 10
