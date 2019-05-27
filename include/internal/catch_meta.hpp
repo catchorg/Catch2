@@ -31,4 +31,8 @@ struct is_callable<Fun(Args...)> : decltype(is_callable_tester::test<Fun, Args..
 
 } // namespace Catch
 
+namespace mpl_{
+    struct na;
+}
+
 #endif // TWOBLUECUBES_CATCH_META_HPP_INCLUDED

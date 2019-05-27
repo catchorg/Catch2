@@ -107,6 +107,8 @@
     constexpr auto append(L1<E1...>, L2<E2...>) noexcept -> L1<E1...,E2...> { return {}; }\
     template< template<typename...> class L1, typename...E1, template<typename...> class L2, typename...E2, typename...Rest>\
     constexpr auto append(L1<E1...>, L2<E2...>, Rest...) noexcept -> decltype(append(L1<E1...,E2...>{}, Rest{}...)) { return {}; }\
+    template< template<typename...> class L1, typename...E1, typename...Rest>\
+    constexpr auto append(L1<E1...>, TypeList<mpl_::na>, Rest...) noexcept -> L1<E1...> { return {}; }\
     \
     template< template<typename...> class Container, template<typename...> class List, typename...elems>\
     constexpr auto rewrap(List<elems...>) noexcept -> TypeList<Container<elems...>> { return {}; }\
@@ -114,7 +116,9 @@
     constexpr auto rewrap(List<Elems...>,Elements...) noexcept -> decltype(append(TypeList<Container<Elems...>>{}, rewrap<Container>(Elements{}...))) { return {}; }\
     \
     template<template <typename...> class Final, template< typename...> class...Containers, typename...Types>\
-    constexpr auto create(TypeList<Types...>) noexcept -> decltype(append(Final<>{}, rewrap<Containers>(Types{}...)...)) { return {}; }
+    constexpr auto create(TypeList<Types...>) noexcept -> decltype(append(Final<>{}, rewrap<Containers>(Types{}...)...)) { return {}; }\
+    template<template <typename...> class Final, template <typename...> class List, typename...Ts>\
+    constexpr auto convert(List<Ts...>) noexcept -> decltype(append(Final<>{},TypeList<Ts>{}...)) { return {}; }
 
 #define INTERNAL_CATCH_NTTP_1(signature, ...)\
     template<INTERNAL_CATCH_REMOVE_PARENS(signature)> struct Nttp{};\
