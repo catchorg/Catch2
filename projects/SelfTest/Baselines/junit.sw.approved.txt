@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuitesloose text artifact
 >
-  <testsuite name="<exe-name>" errors="17" failures="132" tests="1557" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
+  <testsuite name="<exe-name>" errors="17" failures="132" tests="1565" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
     <properties>
       <property name="filters" value="~[!nonportable]~[!benchmark]~[approvals]"/>
       <property name="random-seed" value="1"/>
@@ -648,6 +648,10 @@ Message.tests.cpp:<line number>
     <testcase classname="<exe-name>.global" name="Process can be configured on command line/use-colour/yes" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Process can be configured on command line/use-colour/no" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Process can be configured on command line/use-colour/error" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="Process can be configured on command line/Benchmark options/samples" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="Process can be configured on command line/Benchmark options/resamples" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="Process can be configured on command line/Benchmark options/resamples" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="Process can be configured on command line/Benchmark options/resamples" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Product with differing arities - std::tuple&lt;int, double, float>" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Product with differing arities - std::tuple&lt;int, double>" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Product with differing arities - std::tuple&lt;int>" time="{duration}"/>

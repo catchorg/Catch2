@@ -8669,6 +8669,94 @@ Nor would this
         </Section>
         <OverallResults successes="2" failures="0" expectedFailures="0"/>
       </Section>
+      <Section name="Benchmark options" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
+        <Section name="samples" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
+          <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
+            <Original>
+              cli.parse({ "test", "--benchmark-samples=200" })
+            </Original>
+            <Expanded>
+              {?}
+            </Expanded>
+          </Expression>
+          <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
+            <Original>
+              config.benchmarkSamples == 200
+            </Original>
+            <Expanded>
+              200 == 200
+            </Expanded>
+          </Expression>
+          <OverallResults successes="2" failures="0" expectedFailures="0"/>
+        </Section>
+        <OverallResults successes="2" failures="0" expectedFailures="0"/>
+      </Section>
+      <Section name="Benchmark options" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
+        <Section name="resamples" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
+          <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
+            <Original>
+              cli.parse({ "test", "--benchmark-resamples=20000" })
+            </Original>
+            <Expanded>
+              {?}
+            </Expanded>
+          </Expression>
+          <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
+            <Original>
+              config.benchmarkResamples == 20000
+            </Original>
+            <Expanded>
+              20000 (0x<hex digits>) == 20000 (0x<hex digits>)
+            </Expanded>
+          </Expression>
+          <OverallResults successes="2" failures="0" expectedFailures="0"/>
+        </Section>
+        <OverallResults successes="2" failures="0" expectedFailures="0"/>
+      </Section>
+      <Section name="Benchmark options" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
+        <Section name="resamples" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
+          <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
+            <Original>
+              cli.parse({ "test", "--benchmark-confidence-interval=0.99" })
+            </Original>
+            <Expanded>
+              {?}
+            </Expanded>
+          </Expression>
+          <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
+            <Original>
+              config.benchmarkConfidenceInterval == Catch::Detail::Approx(0.99)
+            </Original>
+            <Expanded>
+              0.99 == Approx( 0.99 )
+            </Expanded>
+          </Expression>
+          <OverallResults successes="2" failures="0" expectedFailures="0"/>
+        </Section>
+        <OverallResults successes="2" failures="0" expectedFailures="0"/>
+      </Section>
+      <Section name="Benchmark options" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
+        <Section name="resamples" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
+          <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
+            <Original>
+              cli.parse({ "test", "--benchmark-no-analysis" })
+            </Original>
+            <Expanded>
+              {?}
+            </Expanded>
+          </Expression>
+          <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
+            <Original>
+              config.benchmarkNoAnalysis
+            </Original>
+            <Expanded>
+              true
+            </Expanded>
+          </Expression>
+          <OverallResults successes="2" failures="0" expectedFailures="0"/>
+        </Section>
+        <OverallResults successes="2" failures="0" expectedFailures="0"/>
+      </Section>
       <OverallResult success="true"/>
     </TestCase>
     <TestCase name="Product with differing arities - std::tuple&lt;int, double, float>" tags="[product][template]" filename="projects/<exe-name>/UsageTests/Misc.tests.cpp" >
@@ -14586,7 +14674,7 @@ loose text artifact
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="1387" failures="149" expectedFailures="21"/>
+    <OverallResults successes="1395" failures="149" expectedFailures="21"/>
   </Group>
-  <OverallResults successes="1387" failures="148" expectedFailures="21"/>
+  <OverallResults successes="1395" failures="148" expectedFailures="21"/>
 </Catch>

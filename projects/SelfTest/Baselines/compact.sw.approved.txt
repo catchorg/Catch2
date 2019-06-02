@@ -944,6 +944,14 @@ CmdLine.tests.cpp:<line number>: passed: cli.parse({"test", "--use-colour", "no"
 CmdLine.tests.cpp:<line number>: passed: config.useColour == UseColour::No for: 2 == 2
 CmdLine.tests.cpp:<line number>: passed: !result for: true
 CmdLine.tests.cpp:<line number>: passed: result.errorMessage(), Contains( "colour mode must be one of" ) for: "colour mode must be one of: auto, yes or no. 'wrong' not recognised" contains: "colour mode must be one of"
+CmdLine.tests.cpp:<line number>: passed: cli.parse({ "test", "--benchmark-samples=200" }) for: {?}
+CmdLine.tests.cpp:<line number>: passed: config.benchmarkSamples == 200 for: 200 == 200
+CmdLine.tests.cpp:<line number>: passed: cli.parse({ "test", "--benchmark-resamples=20000" }) for: {?}
+CmdLine.tests.cpp:<line number>: passed: config.benchmarkResamples == 20000 for: 20000 (0x<hex digits>) == 20000 (0x<hex digits>)
+CmdLine.tests.cpp:<line number>: passed: cli.parse({ "test", "--benchmark-confidence-interval=0.99" }) for: {?}
+CmdLine.tests.cpp:<line number>: passed: config.benchmarkConfidenceInterval == Catch::Detail::Approx(0.99) for: 0.99 == Approx( 0.99 )
+CmdLine.tests.cpp:<line number>: passed: cli.parse({ "test", "--benchmark-no-analysis" }) for: {?}
+CmdLine.tests.cpp:<line number>: passed: config.benchmarkNoAnalysis for: true
 Misc.tests.cpp:<line number>: passed: std::tuple_size<TestType>::value >= 1 for: 3 >= 1
 Misc.tests.cpp:<line number>: passed: std::tuple_size<TestType>::value >= 1 for: 2 >= 1
 Misc.tests.cpp:<line number>: passed: std::tuple_size<TestType>::value >= 1 for: 1 >= 1
