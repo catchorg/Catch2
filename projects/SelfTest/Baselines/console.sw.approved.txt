@@ -173,6 +173,43 @@ with expansion:
   true
 
 -------------------------------------------------------------------------------
+#1650 failing nested section tests should not interfere with names of other
+sections
+  Upper section
+  Lower section with success
+-------------------------------------------------------------------------------
+Misc.tests.cpp:<line number>
+...............................................................................
+
+Misc.tests.cpp:<line number>: PASSED:
+
+-------------------------------------------------------------------------------
+#1650 failing nested section tests should not interfere with names of other
+sections
+  Upper section
+  Lower section with failure
+-------------------------------------------------------------------------------
+Misc.tests.cpp:<line number>
+...............................................................................
+
+Misc.tests.cpp:<line number>: FAILED:
+explicitly with message:
+  Failure in lower section
+
+-------------------------------------------------------------------------------
+#1650 failing nested section tests should not interfere with names of other
+sections
+  Upper section
+  Second lower section with failure
+-------------------------------------------------------------------------------
+Misc.tests.cpp:<line number>
+...............................................................................
+
+Misc.tests.cpp:<line number>: FAILED:
+explicitly with message:
+  Failure in second lower section
+
+-------------------------------------------------------------------------------
 #748 - captures with unexpected exceptions
   outside assertions
 -------------------------------------------------------------------------------
@@ -12218,6 +12255,6 @@ Misc.tests.cpp:<line number>
 Misc.tests.cpp:<line number>: PASSED:
 
 ===============================================================================
-test cases:  289 |  199 passed |  86 failed |  4 failed as expected
-assertions: 1556 | 1387 passed | 148 failed | 21 failed as expected
+test cases:  290 |  199 passed |  87 failed |  4 failed as expected
+assertions: 1559 | 1388 passed | 150 failed | 21 failed as expected
 

@@ -21,6 +21,9 @@ This would not be caught previously
 Nor would this
 Tricky.tests.cpp:<line number>: failed: explicitly with 1 message: '1514'
 Compilation.tests.cpp:<line number>: passed: std::is_same<TypeList<int>, TypeList<int>>::value for: true
+Misc.tests.cpp:<line number>: passed:
+Misc.tests.cpp:<line number>: failed: explicitly with 1 message: 'Failure in lower section'
+Misc.tests.cpp:<line number>: failed: explicitly with 1 message: 'Failure in second lower section'
 Exception.tests.cpp:<line number>: failed: unexpected exception with message: 'answer := 42' with 1 message: 'expected exception'
 Exception.tests.cpp:<line number>: failed: unexpected exception with message: 'answer := 42'; expression was: thisThrows() with 1 message: 'expected exception'
 Exception.tests.cpp:<line number>: passed: thisThrows() with 1 message: 'answer := 42'
@@ -1629,5 +1632,5 @@ Misc.tests.cpp:<line number>: passed: v.size() == 5 for: 5 == 5
 Misc.tests.cpp:<line number>: passed: v.capacity() >= 5 for: 5 >= 5
 Misc.tests.cpp:<line number>: passed:
 Misc.tests.cpp:<line number>: passed:
-Failed 86 test cases, failed 148 assertions.
+Failed 87 test cases, failed 150 assertions.
 

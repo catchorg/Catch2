@@ -135,14 +135,18 @@ TEST_CASE( "even more nested SECTION tests", "[sections]" ) {
     }
 }
 
-TEST_CASE( "#1650 - failing nested section tests should not interfere with names of other sections",
-        "[.][failing][sections]"){
+TEST_CASE( "#1650 failing nested section tests should not interfere with names of other sections",
+           "[.][failing][sections]"){
+
     SECTION("Upper section"){
         SECTION("Lower section with success"){
             SUCCEED();
         }
         SECTION("Lower section with failure"){
-            FAIL();
+            FAIL("Failure in lower section");
+        }
+        SECTION("Second lower section with failure"){
+            FAIL("Failure in second lower section");
         }
     }
 }
