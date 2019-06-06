@@ -177,6 +177,33 @@ Nor would this
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
+    <TestCase name="#1650 failing nested section tests should not interfere with names of other sections" tags="[.][failing][sections]" filename="projects/<exe-name>/UsageTests/Misc.tests.cpp" >
+      <Section name="Upper section" filename="projects/<exe-name>/UsageTests/Misc.tests.cpp" >
+        <Section name="Lower section with success" filename="projects/<exe-name>/UsageTests/Misc.tests.cpp" >
+          <OverallResults successes="1" failures="0" expectedFailures="0"/>
+        </Section>
+        <OverallResults successes="1" failures="0" expectedFailures="0"/>
+      </Section>
+      <Section name="Upper section" filename="projects/<exe-name>/UsageTests/Misc.tests.cpp" >
+        <Section name="Lower section with failure" filename="projects/<exe-name>/UsageTests/Misc.tests.cpp" >
+          <Failure filename="projects/<exe-name>/UsageTests/Misc.tests.cpp" >
+            Failure in lower section
+          </Failure>
+          <OverallResults successes="0" failures="1" expectedFailures="0"/>
+        </Section>
+        <OverallResults successes="0" failures="1" expectedFailures="0"/>
+      </Section>
+      <Section name="Upper section" filename="projects/<exe-name>/UsageTests/Misc.tests.cpp" >
+        <Section name="Second lower section with failure" filename="projects/<exe-name>/UsageTests/Misc.tests.cpp" >
+          <Failure filename="projects/<exe-name>/UsageTests/Misc.tests.cpp" >
+            Failure in second lower section
+          </Failure>
+          <OverallResults successes="0" failures="1" expectedFailures="0"/>
+        </Section>
+        <OverallResults successes="0" failures="1" expectedFailures="0"/>
+      </Section>
+      <OverallResult success="false"/>
+    </TestCase>
     <TestCase name="#748 - captures with unexpected exceptions" tags="[!shouldfail][!throws][.][failing]" filename="projects/<exe-name>/UsageTests/Exception.tests.cpp" >
       <Section name="outside assertions" filename="projects/<exe-name>/UsageTests/Exception.tests.cpp" >
         <Info>
@@ -14586,7 +14613,7 @@ loose text artifact
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="1387" failures="149" expectedFailures="21"/>
+    <OverallResults successes="1388" failures="151" expectedFailures="21"/>
   </Group>
-  <OverallResults successes="1387" failures="148" expectedFailures="21"/>
+  <OverallResults successes="1388" failures="150" expectedFailures="21"/>
 </Catch>

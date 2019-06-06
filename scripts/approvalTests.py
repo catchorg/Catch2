@@ -48,6 +48,8 @@ errnoParser = re.compile(r'''
     \(\*__error\(\)\)
     |
     \(\*_errno\(\)\)
+    |
+    \(\*__errno\(\)\)
 ''', re.VERBOSE)
 sinceEpochParser = re.compile(r'\d+ .+ since epoch')
 infParser = re.compile(r'''
@@ -65,6 +67,8 @@ nanParser = re.compile(r'''
     \(\(float\)\(INFINITY\ \*\ 0\.0F\)\) # Yet another MSVC NAN macro
     |
     \(__builtin_nanf\ \(""\)\)           # Linux (ubuntu) NAN macro
+    |
+    \(__builtin_nanf \(""\)\)
     |
     __builtin_nanf\("0x<hex\ digits>"\)  # The weird content of the brackets is there because a different parser has already ran before this one
 ''', re.VERBOSE)

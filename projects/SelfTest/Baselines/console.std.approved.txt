@@ -29,6 +29,32 @@ explicitly with message:
   1514
 
 -------------------------------------------------------------------------------
+#1650 failing nested section tests should not interfere with names of other
+sections
+  Upper section
+  Lower section with failure
+-------------------------------------------------------------------------------
+Misc.tests.cpp:<line number>
+...............................................................................
+
+Misc.tests.cpp:<line number>: FAILED:
+explicitly with message:
+  Failure in lower section
+
+-------------------------------------------------------------------------------
+#1650 failing nested section tests should not interfere with names of other
+sections
+  Upper section
+  Second lower section with failure
+-------------------------------------------------------------------------------
+Misc.tests.cpp:<line number>
+...............................................................................
+
+Misc.tests.cpp:<line number>: FAILED:
+explicitly with message:
+  Failure in second lower section
+
+-------------------------------------------------------------------------------
 #748 - captures with unexpected exceptions
   outside assertions
 -------------------------------------------------------------------------------
@@ -1380,6 +1406,6 @@ due to unexpected exception with message:
   Why would you throw a std::string?
 
 ===============================================================================
-test cases:  289 |  215 passed |  70 failed |  4 failed as expected
-assertions: 1539 | 1387 passed | 131 failed | 21 failed as expected
+test cases:  290 |  215 passed |  71 failed |  4 failed as expected
+assertions: 1542 | 1388 passed | 133 failed | 21 failed as expected
 

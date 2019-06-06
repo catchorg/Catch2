@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuitesloose text artifact
 >
-  <testsuite name="<exe-name>" errors="17" failures="132" tests="1557" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
+  <testsuite name="<exe-name>" errors="17" failures="134" tests="1560" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
     <properties>
       <property name="filters" value="~[!nonportable]~[!benchmark]~[approvals]"/>
       <property name="random-seed" value="1"/>
@@ -28,6 +28,19 @@ Nor would this
       </system-err>
     </testcase>
     <testcase classname="<exe-name>.global" name="#1548" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="#1650 failing nested section tests should not interfere with names of other sections/Upper section/Lower section with success" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="#1650 failing nested section tests should not interfere with names of other sections/Upper section/Lower section with failure" time="{duration}">
+      <failure type="FAIL">
+Failure in lower section
+Misc.tests.cpp:<line number>
+      </failure>
+    </testcase>
+    <testcase classname="<exe-name>.global" name="#1650 failing nested section tests should not interfere with names of other sections/Upper section/Second lower section with failure" time="{duration}">
+      <failure type="FAIL">
+Failure in second lower section
+Misc.tests.cpp:<line number>
+      </failure>
+    </testcase>
     <testcase classname="<exe-name>.global" name="#748 - captures with unexpected exceptions/outside assertions" time="{duration}">
       <error type="TEST_CASE">
 expected exception
