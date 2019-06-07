@@ -18,12 +18,18 @@
 #include "catch_option.hpp"
 #include "catch_stringref.h"
 
+#if defined(CATCH_CONFIG_ENABLE_BENCHMARKING)
+#include "benchmark/catch_estimate.hpp"
+#include "benchmark/catch_outlier_classification.hpp"
+#endif // CATCH_CONFIG_ENABLE_BENCHMARKING
+
 
 #include <string>
 #include <iosfwd>
 #include <map>
 #include <set>
 #include <memory>
+#include <algorithm>
 
 namespace Catch {
 
@@ -159,14 +165,43 @@ namespace Catch {
         bool aborting;
     };
 
+#if defined(CATCH_CONFIG_ENABLE_BENCHMARKING)
     struct BenchmarkInfo {
         std::string name;
+        double estimatedDuration;
+        int iterations;
+        int samples;
+        unsigned int resamples;
+        double clockResolution;
+        double clockCost;
     };
+
+    template <class Duration>
     struct BenchmarkStats {
         BenchmarkInfo info;
-        std::size_t iterations;
-        uint64_t elapsedTimeInNanoseconds;
+
+        std::vector<Duration> samples;
+        Benchmark::Estimate<Duration> mean;
+        Benchmark::Estimate<Duration> standardDeviation;
+        Benchmark::OutlierClassification outliers;
+        double outlierVariance;
+
+        template <typename Duration2>
+        operator BenchmarkStats<Duration2>() const {
+            std::vector<Duration2> samples2;
+            samples2.reserve(samples.size());
+            std::transform(samples.begin(), samples.end(), std::back_inserter(samples2), [](Duration d) { return Duration2(d); });
+            return {
+                info,
+                std::move(samples2),
+                mean,
+                standardDeviation,
+                outliers,
+                outlierVariance,
+            };
+        }
     };
+#endif // CATCH_CONFIG_ENABLE_BENCHMARKING
 
     struct IStreamingReporter {
         virtual ~IStreamingReporter() = default;
@@ -185,16 +220,17 @@ namespace Catch {
         virtual void testCaseStarting( TestCaseInfo const& testInfo ) = 0;
         virtual void sectionStarting( SectionInfo const& sectionInfo ) = 0;
 
-        // *** experimental ***
+#if defined(CATCH_CONFIG_ENABLE_BENCHMARKING)
+        virtual void benchmarkPreparing( std::string const& ) {}
         virtual void benchmarkStarting( BenchmarkInfo const& ) {}
+        virtual void benchmarkEnded( BenchmarkStats<> const& ) {}
+        virtual void benchmarkFailed( std::string const& ) {}
+#endif // CATCH_CONFIG_ENABLE_BENCHMARKING
 
         virtual void assertionStarting( AssertionInfo const& assertionInfo ) = 0;
 
         // The return value indicates if the messages buffer should be cleared:
         virtual bool assertionEnded( AssertionStats const& assertionStats ) = 0;
-
-        // *** experimental ***
-        virtual void benchmarkEnded( BenchmarkStats const& ) {}
 
         virtual void sectionEnded( SectionStats const& sectionStats ) = 0;
         virtual void testCaseEnded( TestCaseStats const& testCaseStats ) = 0;

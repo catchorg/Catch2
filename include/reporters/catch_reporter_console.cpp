@@ -20,9 +20,15 @@
 #if defined(_MSC_VER)
 #pragma warning(push)
 #pragma warning(disable:4061) // Not all labels are EXPLICITLY handled in switch
- // Note that 4062 (not all labels are handled
- // and default is missing) is enabled
+ // Note that 4062 (not all labels are handled and default is missing) is enabled
 #endif
+
+#if defined(__clang__)
+#  pragma clang diagnostic push
+// For simplicity, benchmarking-only helpers are always enabled
+#  pragma clang diagnostic ignored "-Wunused-function"
+#endif
+
 
 
 namespace Catch {
@@ -208,6 +214,10 @@ class Duration {
     Unit m_units;
 
 public:
+	explicit Duration(double inNanoseconds, Unit units = Unit::Auto)
+        : Duration(static_cast<uint64_t>(inNanoseconds), units) {
+    }
+
     explicit Duration(uint64_t inNanoseconds, Unit units = Unit::Auto)
         : m_inNanoseconds(inNanoseconds),
         m_units(units) {
@@ -283,9 +293,15 @@ public:
         if (!m_isOpen) {
             m_isOpen = true;
             *this << RowBreak();
-            for (auto const& info : m_columnInfos)
-                *this << info.name << ColumnBreak();
-            *this << RowBreak();
+
+			Columns headerCols;
+			Spacer spacer(2);
+			for (auto const& info : m_columnInfos) {
+				headerCols += Column(info.name).width(static_cast<std::size_t>(info.width - 2));
+				headerCols += spacer;
+			}
+			m_os << headerCols << "\n";
+
             m_os << Catch::getLineOfChars<'-'>() << "\n";
         }
     }
@@ -340,9 +356,9 @@ ConsoleReporter::ConsoleReporter(ReporterConfig const& config)
     m_tablePrinter(new TablePrinter(config.stream(),
     {
         { "benchmark name", CATCH_CONFIG_CONSOLE_WIDTH - 32, ColumnInfo::Left },
-        { "iters", 8, ColumnInfo::Right },
-        { "elapsed ns", 14, ColumnInfo::Right },
-        { "average", 14, ColumnInfo::Right }
+        { "samples      mean       std dev", 14, ColumnInfo::Right },
+        { "iterations   low mean   low std dev", 14, ColumnInfo::Right },
+        { "estimated    high mean  high std dev", 14, ColumnInfo::Right }
     })) {}
 ConsoleReporter::~ConsoleReporter() = default;
 
@@ -374,6 +390,7 @@ bool ConsoleReporter::assertionEnded(AssertionStats const& _assertionStats) {
 }
 
 void ConsoleReporter::sectionStarting(SectionInfo const& _sectionInfo) {
+    m_tablePrinter->close();
     m_headerPrinted = false;
     StreamingReporterBase::sectionStarting(_sectionInfo);
 }
@@ -397,29 +414,45 @@ void ConsoleReporter::sectionEnded(SectionStats const& _sectionStats) {
     StreamingReporterBase::sectionEnded(_sectionStats);
 }
 
+#if defined(CATCH_CONFIG_ENABLE_BENCHMARKING)
+void ConsoleReporter::benchmarkPreparing(std::string const& name) {
+	lazyPrintWithoutClosingBenchmarkTable();
+
+	auto nameCol = Column(name).width(static_cast<std::size_t>(m_tablePrinter->columnInfos()[0].width - 2));
+
+	bool firstLine = true;
+	for (auto line : nameCol) {
+		if (!firstLine)
+			(*m_tablePrinter) << ColumnBreak() << ColumnBreak() << ColumnBreak();
+		else
+			firstLine = false;
+
+		(*m_tablePrinter) << line << ColumnBreak();
+	}
+}
 
 void ConsoleReporter::benchmarkStarting(BenchmarkInfo const& info) {
-    lazyPrintWithoutClosingBenchmarkTable();
-
-    auto nameCol = Column( info.name ).width( static_cast<std::size_t>( m_tablePrinter->columnInfos()[0].width - 2 ) );
-
-    bool firstLine = true;
-    for (auto line : nameCol) {
-        if (!firstLine)
-            (*m_tablePrinter) << ColumnBreak() << ColumnBreak() << ColumnBreak();
-        else
-            firstLine = false;
-
-        (*m_tablePrinter) << line << ColumnBreak();
-    }
+	(*m_tablePrinter) << info.samples << ColumnBreak()
+		<< info.iterations << ColumnBreak()
+		<< Duration(info.estimatedDuration) << ColumnBreak();
 }
-void ConsoleReporter::benchmarkEnded(BenchmarkStats const& stats) {
-    Duration average(stats.elapsedTimeInNanoseconds / stats.iterations);
+void ConsoleReporter::benchmarkEnded(BenchmarkStats<> const& stats) {
+	(*m_tablePrinter) << ColumnBreak()
+		<< Duration(stats.mean.point.count()) << ColumnBreak()
+		<< Duration(stats.mean.lower_bound.count()) << ColumnBreak()
+		<< Duration(stats.mean.upper_bound.count()) << ColumnBreak() << ColumnBreak()
+		<< Duration(stats.standardDeviation.point.count()) << ColumnBreak()
+		<< Duration(stats.standardDeviation.lower_bound.count()) << ColumnBreak()
+		<< Duration(stats.standardDeviation.upper_bound.count()) << ColumnBreak() << ColumnBreak() << ColumnBreak() << ColumnBreak() << ColumnBreak();
+}
+
+void ConsoleReporter::benchmarkFailed(std::string const& error) {
+	Colour colour(Colour::Red);
     (*m_tablePrinter)
-        << stats.iterations << ColumnBreak()
-        << stats.elapsedTimeInNanoseconds << ColumnBreak()
-        << average << ColumnBreak();
+        << "Benchmark failed (" << error << ")"
+        << ColumnBreak() << RowBreak();
 }
+#endif // CATCH_CONFIG_ENABLE_BENCHMARKING
 
 void ConsoleReporter::testCaseEnded(TestCaseStats const& _testCaseStats) {
     m_tablePrinter->close();
@@ -637,4 +670,8 @@ CATCH_REGISTER_REPORTER("console", ConsoleReporter)
 
 #if defined(_MSC_VER)
 #pragma warning(pop)
+#endif
+
+#if defined(__clang__)
+#  pragma clang diagnostic pop
 #endif

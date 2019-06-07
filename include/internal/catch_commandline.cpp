@@ -196,11 +196,19 @@ namespace Catch {
             | Opt( setWaitForKeypress, "start|exit|both" )
                 ["--wait-for-keypress"]
                 ( "waits for a keypress before exiting" )
-            | Opt( config.benchmarkResolutionMultiple, "multiplier" )
-                ["--benchmark-resolution-multiple"]
-                ( "multiple of clock resolution to run benchmarks" )
-
-            | Arg( config.testsOrTags, "test name|pattern|tags" )
+            | Opt( config.benchmarkSamples, "samples" )
+                ["--benchmark-samples"]
+                ( "number of samples to collect (default: 100)" )
+            | Opt( config.benchmarkResamples, "resamples" )
+                ["--benchmark-resamples"]
+                ( "number of resamples for the bootstrap (default: 100000)" )
+            | Opt( config.benchmarkConfidenceInterval, "confidence interval" )
+                ["--benchmark-confidence-interval"]
+                ( "confidence interval for the bootstrap (between 0 and 1, default: 0.95)" )
+            | Opt( config.benchmarkNoAnalysis )
+                ["--benchmark-no-analysis"]
+                ( "perform only measurements; do not perform any analysis" )
+			| Arg( config.testsOrTags, "test name|pattern|tags" )
                 ( "which test or tests to use" );
 
         return cli;

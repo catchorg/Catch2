@@ -116,6 +116,17 @@ set_tests_properties(
 )
 
 
+add_executable(BenchmarkingMacros ${TESTS_DIR}/X20-BenchmarkingMacros.cpp)
+target_compile_definitions( BenchmarkingMacros PRIVATE CATCH_CONFIG_ENABLE_BENCHMARKING )
+
+add_test(NAME BenchmarkingMacros COMMAND BenchmarkingMacros -r console -s)
+set_tests_properties(
+    BenchmarkingMacros
+  PROPERTIES
+    PASS_REGULAR_EXPRESSION "benchmark name                                  samples       iterations    estimated"
+)
+
+
 set( EXTRA_TEST_BINARIES
     PrefixedMacros
     DisabledMacros
@@ -123,6 +134,7 @@ set( EXTRA_TEST_BINARIES
     DisabledExceptions-CustomHandler
     FallbackStringifier
     DisableStringification
+    BenchmarkingMacros
 )
 
 # Shared config

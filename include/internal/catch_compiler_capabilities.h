@@ -118,9 +118,9 @@
 // some versions of cygwin (most) do not support std::to_string. Use the libstd check. 
 // https://gcc.gnu.org/onlinedocs/gcc-4.8.2/libstdc++/api/a01053_source.html line 2812-2813
 # if !((__cplusplus >= 201103L) && defined(_GLIBCXX_USE_C99) \
-	       && !defined(_GLIBCXX_HAVE_BROKEN_VSWPRINTF))
+           && !defined(_GLIBCXX_HAVE_BROKEN_VSWPRINTF))
 
-#	define CATCH_INTERNAL_CONFIG_NO_CPP11_TO_STRING
+#    define CATCH_INTERNAL_CONFIG_NO_CPP11_TO_STRING
 
 # endif
 #endif // __CYGWIN__
@@ -148,7 +148,11 @@
 #  if !defined(_MSVC_TRADITIONAL) || (defined(_MSVC_TRADITIONAL) && _MSVC_TRADITIONAL)
 #    define CATCH_INTERNAL_CONFIG_TRADITIONAL_MSVC_PREPROCESSOR
 #  endif
+#endif // _MSC_VER
 
+#if defined(_REENTRANT) || defined(_MSC_VER)
+// Enable async processing, as -pthread is specified or no additional linking is required
+# define CATCH_USE_ASYNC
 #endif // _MSC_VER
 
 ////////////////////////////////////////////////////////////////////////////////

@@ -219,6 +219,48 @@ namespace Catch {
         m_xml.endElement();
     }
 
+#if defined(CATCH_CONFIG_ENABLE_BENCHMARKING)
+    void XmlReporter::benchmarkStarting(BenchmarkInfo const &info) {
+        m_xml.startElement("BenchmarkResults")
+            .writeAttribute("name", info.name)
+            .writeAttribute("samples", info.samples)
+            .writeAttribute("resamples", info.resamples)
+            .writeAttribute("iterations", info.iterations)
+            .writeAttribute("clockResolution", static_cast<uint64_t>(info.clockResolution))
+            .writeAttribute("estimatedDuration", static_cast<uint64_t>(info.estimatedDuration))
+            .writeComment("All values in nano seconds");
+    }
+
+    void XmlReporter::benchmarkEnded(BenchmarkStats<> const& benchmarkStats) {
+        m_xml.startElement("mean")
+            .writeAttribute("value", static_cast<uint64_t>(benchmarkStats.mean.point.count()))
+            .writeAttribute("lowerBound", static_cast<uint64_t>(benchmarkStats.mean.lower_bound.count()))
+            .writeAttribute("upperBound", static_cast<uint64_t>(benchmarkStats.mean.upper_bound.count()))
+            .writeAttribute("ci", benchmarkStats.mean.confidence_interval);
+        m_xml.endElement();
+        m_xml.startElement("standardDeviation")
+            .writeAttribute("value", benchmarkStats.standardDeviation.point.count())
+            .writeAttribute("lowerBound", benchmarkStats.standardDeviation.lower_bound.count())
+            .writeAttribute("upperBound", benchmarkStats.standardDeviation.upper_bound.count())
+            .writeAttribute("ci", benchmarkStats.standardDeviation.confidence_interval);
+        m_xml.endElement();
+        m_xml.startElement("outliers")
+            .writeAttribute("variance", benchmarkStats.outlierVariance)
+            .writeAttribute("lowMild", benchmarkStats.outliers.low_mild)
+            .writeAttribute("lowSevere", benchmarkStats.outliers.low_severe)
+            .writeAttribute("highMild", benchmarkStats.outliers.high_mild)
+            .writeAttribute("highSevere", benchmarkStats.outliers.high_severe);
+        m_xml.endElement();
+        m_xml.endElement();
+    }
+
+    void XmlReporter::benchmarkFailed(std::string const &error) {
+        m_xml.scopedElement("failed").
+            writeAttribute("message", error);
+        m_xml.endElement();
+    }
+#endif // CATCH_CONFIG_ENABLE_BENCHMARKING
+
     CATCH_REGISTER_REPORTER( "xml", XmlReporter )
 
 } // end namespace Catch

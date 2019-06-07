@@ -462,4 +462,30 @@ TEST_CASE( "Process can be configured on command line", "[config][command-line]"
 #endif
         }
     }
+
+    SECTION("Benchmark options") {
+        SECTION("samples") {
+            CHECK(cli.parse({ "test", "--benchmark-samples=200" }));
+
+            REQUIRE(config.benchmarkSamples == 200);
+        }
+        
+        SECTION("resamples") {
+            CHECK(cli.parse({ "test", "--benchmark-resamples=20000" }));
+
+            REQUIRE(config.benchmarkResamples == 20000);
+        }
+
+        SECTION("resamples") {
+            CHECK(cli.parse({ "test", "--benchmark-confidence-interval=0.99" }));
+
+            REQUIRE(config.benchmarkConfidenceInterval == Catch::Detail::Approx(0.99));
+        }
+
+        SECTION("resamples") {
+            CHECK(cli.parse({ "test", "--benchmark-no-analysis" }));
+
+            REQUIRE(config.benchmarkNoAnalysis);
+        }
+    }
 }

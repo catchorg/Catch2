@@ -25,7 +25,7 @@ namespace Catch {
 
     Catch::IStream::~IStream() = default;
 
-    namespace detail { namespace {
+    namespace Detail { namespace {
         template<typename WriterF, std::size_t bufferSize=256>
         class StreamBufImpl : public std::streambuf {
             char data[bufferSize];
@@ -124,15 +124,15 @@ namespace Catch {
 
     auto makeStream( StringRef const &filename ) -> IStream const* {
         if( filename.empty() )
-            return new detail::CoutStream();
+            return new Detail::CoutStream();
         else if( filename[0] == '%' ) {
             if( filename == "%debug" )
-                return new detail::DebugOutStream();
+                return new Detail::DebugOutStream();
             else
                 CATCH_ERROR( "Unrecognised stream: '" << filename << "'" );
         }
         else
-            return new detail::FileStream( filename );
+            return new Detail::FileStream( filename );
     }
 
 

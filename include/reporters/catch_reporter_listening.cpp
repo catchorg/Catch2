@@ -42,18 +42,33 @@ namespace Catch {
         m_reporter->noMatchingTestCases( spec );
     }
 
+#if defined(CATCH_CONFIG_ENABLE_BENCHMARKING)
+    void ListeningReporter::benchmarkPreparing( std::string const& name ) {
+		for (auto const& listener : m_listeners) {
+			listener->benchmarkPreparing(name);
+		}
+		m_reporter->benchmarkPreparing(name);
+	}
     void ListeningReporter::benchmarkStarting( BenchmarkInfo const& benchmarkInfo ) {
         for ( auto const& listener : m_listeners ) {
             listener->benchmarkStarting( benchmarkInfo );
         }
         m_reporter->benchmarkStarting( benchmarkInfo );
     }
-    void ListeningReporter::benchmarkEnded( BenchmarkStats const& benchmarkStats ) {
+    void ListeningReporter::benchmarkEnded( BenchmarkStats<> const& benchmarkStats ) {
         for ( auto const& listener : m_listeners ) {
             listener->benchmarkEnded( benchmarkStats );
         }
         m_reporter->benchmarkEnded( benchmarkStats );
     }
+
+	void ListeningReporter::benchmarkFailed( std::string const& error ) {
+		for (auto const& listener : m_listeners) {
+			listener->benchmarkFailed(error);
+		}
+		m_reporter->benchmarkFailed(error);
+	}
+#endif // CATCH_CONFIG_ENABLE_BENCHMARKING
 
     void ListeningReporter::testRunStarting( TestRunInfo const& testRunInfo ) {
         for ( auto const& listener : m_listeners ) {

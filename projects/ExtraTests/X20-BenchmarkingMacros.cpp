@@ -1,38 +1,42 @@
-#include "catch.hpp"
+// X20-BenchmarkingMacros.cpp
+// Test that the benchmarking support macros compile properly with the single header
 
-#include <map>
+#define CATCH_CONFIG_MAIN
+#include <catch2/catch.hpp>
 
-#if defined(CATCH_CONFIG_ENABLE_BENCHMARKING)
 namespace {
-    std::uint64_t Fibonacci(std::uint64_t number) {
-        return number < 2 ? 1 : Fibonacci(number - 1) + Fibonacci(number - 2);
+std::uint64_t factorial(std::uint64_t number) {
+    if (number < 2) {
+        return 1;
     }
+    return number * factorial(number - 1);
+}
 }
 
-TEST_CASE("Benchmark Fibonacci", "[!benchmark]") {
-    CHECK(Fibonacci(0) == 1);
+TEST_CASE("Benchmark factorial", "[benchmark]") {
+    CHECK(factorial(0) == 1);
     // some more asserts..
-    CHECK(Fibonacci(5) == 8);
-    // some more asserts..
+    CHECK(factorial(10) == 3628800);
 
-    BENCHMARK("Fibonacci 20") {
-        return Fibonacci(20);
+    BENCHMARK("factorial 10") {
+        return factorial(10);
     };
 
-    BENCHMARK("Fibonacci 25") {
-        return Fibonacci(25);
+    CHECK(factorial(14) == 87178291200ull);
+    BENCHMARK("factorial 14") {
+        return factorial(14);
     };
-
-    BENCHMARK("Fibonacci 30") {
-        return Fibonacci(30);
-    };
-
-    BENCHMARK("Fibonacci 35") {
-        return Fibonacci(35);
-    };
+//
+//    BENCHMARK("factorial 20") {
+//        return factorial(20);
+//    };
+//
+//    BENCHMARK("factorial 35") {
+//        return factorial(35);
+//    };
 }
 
-TEST_CASE("Benchmark containers", "[!benchmark]") {
+TEST_CASE("Benchmark containers", "[.][benchmark]") {
     static const int size = 100;
 
     std::vector<int> v;
@@ -127,4 +131,3 @@ TEST_CASE("Benchmark containers", "[!benchmark]") {
         }
     }
 }
-#endif // CATCH_CONFIG_ENABLE_BENCHMARKING

@@ -6955,6 +6955,78 @@ with expansion:
   contains: "colour mode must be one of"
 
 -------------------------------------------------------------------------------
+Process can be configured on command line
+  Benchmark options
+  samples
+-------------------------------------------------------------------------------
+CmdLine.tests.cpp:<line number>
+...............................................................................
+
+CmdLine.tests.cpp:<line number>: PASSED:
+  CHECK( cli.parse({ "test", "--benchmark-samples=200" }) )
+with expansion:
+  {?}
+
+CmdLine.tests.cpp:<line number>: PASSED:
+  REQUIRE( config.benchmarkSamples == 200 )
+with expansion:
+  200 == 200
+
+-------------------------------------------------------------------------------
+Process can be configured on command line
+  Benchmark options
+  resamples
+-------------------------------------------------------------------------------
+CmdLine.tests.cpp:<line number>
+...............................................................................
+
+CmdLine.tests.cpp:<line number>: PASSED:
+  CHECK( cli.parse({ "test", "--benchmark-resamples=20000" }) )
+with expansion:
+  {?}
+
+CmdLine.tests.cpp:<line number>: PASSED:
+  REQUIRE( config.benchmarkResamples == 20000 )
+with expansion:
+  20000 (0x<hex digits>) == 20000 (0x<hex digits>)
+
+-------------------------------------------------------------------------------
+Process can be configured on command line
+  Benchmark options
+  resamples
+-------------------------------------------------------------------------------
+CmdLine.tests.cpp:<line number>
+...............................................................................
+
+CmdLine.tests.cpp:<line number>: PASSED:
+  CHECK( cli.parse({ "test", "--benchmark-confidence-interval=0.99" }) )
+with expansion:
+  {?}
+
+CmdLine.tests.cpp:<line number>: PASSED:
+  REQUIRE( config.benchmarkConfidenceInterval == Catch::Detail::Approx(0.99) )
+with expansion:
+  0.99 == Approx( 0.99 )
+
+-------------------------------------------------------------------------------
+Process can be configured on command line
+  Benchmark options
+  resamples
+-------------------------------------------------------------------------------
+CmdLine.tests.cpp:<line number>
+...............................................................................
+
+CmdLine.tests.cpp:<line number>: PASSED:
+  CHECK( cli.parse({ "test", "--benchmark-no-analysis" }) )
+with expansion:
+  {?}
+
+CmdLine.tests.cpp:<line number>: PASSED:
+  REQUIRE( config.benchmarkNoAnalysis )
+with expansion:
+  true
+
+-------------------------------------------------------------------------------
 Product with differing arities - std::tuple<int, double, float>
 -------------------------------------------------------------------------------
 Misc.tests.cpp:<line number>
@@ -12219,5 +12291,5 @@ Misc.tests.cpp:<line number>: PASSED:
 
 ===============================================================================
 test cases:  289 |  199 passed |  86 failed |  4 failed as expected
-assertions: 1556 | 1387 passed | 148 failed | 21 failed as expected
+assertions: 1564 | 1395 passed | 148 failed | 21 failed as expected
 

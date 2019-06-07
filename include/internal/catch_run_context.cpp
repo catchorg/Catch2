@@ -230,12 +230,21 @@ namespace Catch {
 
         m_unfinishedSections.push_back(endInfo);
     }
+	
+#if defined(CATCH_CONFIG_ENABLE_BENCHMARKING)
+    void RunContext::benchmarkPreparing(std::string const& name) {
+		m_reporter->benchmarkPreparing(name);
+	}
     void RunContext::benchmarkStarting( BenchmarkInfo const& info ) {
         m_reporter->benchmarkStarting( info );
     }
-    void RunContext::benchmarkEnded( BenchmarkStats const& stats ) {
+    void RunContext::benchmarkEnded( BenchmarkStats<> const& stats ) {
         m_reporter->benchmarkEnded( stats );
     }
+	void RunContext::benchmarkFailed(std::string const & error) {
+		m_reporter->benchmarkFailed(error);
+	}
+#endif // CATCH_CONFIG_ENABLE_BENCHMARKING
 
     void RunContext::pushScopedMessage(MessageInfo const & message) {
         m_messages.push_back(message);

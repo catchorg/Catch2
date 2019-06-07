@@ -50,6 +50,12 @@ namespace Catch {
 
         void testRunEnded(TestRunStats const& testRunStats) override;
 
+#if defined(CATCH_CONFIG_ENABLE_BENCHMARKING)
+        void benchmarkStarting(BenchmarkInfo const&) override;
+        void benchmarkEnded(BenchmarkStats<> const&) override;
+        void benchmarkFailed(std::string const&) override;
+#endif // CATCH_CONFIG_ENABLE_BENCHMARKING
+
     private:
         Timer m_testCaseTimer;
         XmlWriter m_xml;
