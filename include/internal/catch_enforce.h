@@ -11,8 +11,7 @@
 #include "catch_compiler_capabilities.h"
 #include "catch_stream.h"
 
-
-#include <stdexcept>
+#include <exception>
 
 namespace Catch {
 #if !defined(CATCH_CONFIG_DISABLE_EXCEPTIONS)
@@ -25,18 +24,30 @@ namespace Catch {
     [[noreturn]]
     void throw_exception(std::exception const& e);
 #endif
+
+    [[noreturn]]
+    void throw_logic_error(std::string const& msg);
+    [[noreturn]]
+    void throw_domain_error(std::string const& msg);
+    [[noreturn]]
+    void throw_runtime_error(std::string const& msg);
+
 } // namespace Catch;
 
-#define CATCH_PREPARE_EXCEPTION( type, msg ) \
-    type( ( Catch::ReusableStringStream() << msg ).str() )
-#define CATCH_INTERNAL_ERROR( msg ) \
-    Catch::throw_exception(CATCH_PREPARE_EXCEPTION( std::logic_error, CATCH_INTERNAL_LINEINFO << ": Internal Catch error: " << msg))
-#define CATCH_ERROR( msg ) \
-    Catch::throw_exception(CATCH_PREPARE_EXCEPTION( std::domain_error, msg ))
-#define CATCH_RUNTIME_ERROR( msg ) \
-    Catch::throw_exception(CATCH_PREPARE_EXCEPTION( std::runtime_error, msg ))
-#define CATCH_ENFORCE( condition, msg ) \
-    do{ if( !(condition) ) CATCH_ERROR( msg ); } while(false)
+#define CATCH_MAKE_MSG(...) \
+    (Catch::ReusableStringStream() << __VA_ARGS__).str()
+
+#define CATCH_INTERNAL_ERROR(...) \
+    Catch::throw_logic_error(CATCH_MAKE_MSG( CATCH_INTERNAL_LINEINFO << ": Internal Catch2 error: " << __VA_ARGS__));
+
+#define CATCH_ERROR(...) \
+    Catch::throw_domain_error(CATCH_MAKE_MSG( __VA_ARGS__ ));
+
+#define CATCH_RUNTIME_ERROR(...) \
+    Catch::throw_runtime_error(CATCH_MAKE_MSG( __VA_ARGS__ ));
+
+#define CATCH_ENFORCE( condition, ... ) \
+    do{ if( !(condition) ) CATCH_ERROR( __VA_ARGS__ ); } while(false)
 
 
 #endif // TWOBLUECUBES_CATCH_ENFORCE_H_INCLUDED

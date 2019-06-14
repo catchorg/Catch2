@@ -7,6 +7,9 @@
 
 #include "catch_enforce.h"
 
+#include <stdexcept>
+
+
 namespace Catch {
 #if defined(CATCH_CONFIG_DISABLE_EXCEPTIONS) && !defined(CATCH_CONFIG_DISABLE_EXCEPTIONS_CUSTOM_HANDLER)
     [[noreturn]]
@@ -16,4 +19,22 @@ namespace Catch {
         std::terminate();
     }
 #endif
+
+    [[noreturn]]
+    void throw_logic_error(std::string const& msg) {
+        throw_exception(std::logic_error(msg));
+    }
+
+    [[noreturn]]
+    void throw_domain_error(std::string const& msg) {
+        throw_exception(std::domain_error(msg));
+    }
+
+    [[noreturn]]
+    void throw_runtime_error(std::string const& msg) {
+        throw_exception(std::runtime_error(msg));
+    }
+
+
+
 } // namespace Catch;
