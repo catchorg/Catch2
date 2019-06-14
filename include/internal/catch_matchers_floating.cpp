@@ -14,6 +14,9 @@
 #include <cstdlib>
 #include <cstdint>
 #include <cstring>
+#include <sstream>
+#include <iomanip>
+#include <limits>
 
 namespace Catch {
 namespace Matchers {
@@ -74,7 +77,15 @@ bool almostEqualUlps(FP lhs, FP rhs, int maxUlpDiff) {
     return ulpDiff <= maxUlpDiff;
 }
 
+template <typename FP>
+FP step(FP start, FP direction, int steps) {
+    for (int i = 0; i < steps; ++i) {
+        start = std::nextafter(start, direction);
+    }
+    return start;
 }
+
+} // end anonymous namespace
 
 
 namespace Catch {
@@ -125,7 +136,29 @@ namespace Floating {
 #endif
 
     std::string WithinUlpsMatcher::describe() const {
-        return "is within " + Catch::to_string(m_ulps) + " ULPs of " + ::Catch::Detail::stringify(m_target) + ((m_type == FloatingPointKind::Float)? "f" : "");
+        std::stringstream ret;
+
+        ret << "is within " << m_ulps << " ULPs of " << ::Catch::Detail::stringify(m_target);
+
+        if (m_type == FloatingPointKind::Float) {
+            ret << 'f';
+        }
+
+        ret << " ([";
+        ret << std::fixed << std::setprecision(std::numeric_limits<double>::max_digits10);
+        if (m_type == FloatingPointKind::Double) {
+            ret << step(m_target, static_cast<double>(-INFINITY), m_ulps)
+                << ", "
+                << step(m_target, static_cast<double>(INFINITY), m_ulps);
+        } else {
+            ret << step<float>(static_cast<float>(m_target), -INFINITY, m_ulps)
+                << ", "
+                << step<float>(static_cast<float>(m_target), INFINITY, m_ulps);
+        }
+        ret << "])";
+
+        return ret.str();
+        //return "is within " + Catch::to_string(m_ulps) + " ULPs of " + ::Catch::Detail::stringify(m_target) + ((m_type == FloatingPointKind::Float)? "f" : "");
     }
 
 }// namespace Floating

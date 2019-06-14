@@ -2950,11 +2950,6 @@ with expansion:
   0.0 not is within 0.99 of 1.0
 
 Matchers.tests.cpp:<line number>: PASSED:
-  REQUIRE_THAT( NAN, !WithinAbs(NAN, 0) )
-with expansion:
-  nanf not is within 0.0 of nan
-
-Matchers.tests.cpp:<line number>: PASSED:
   REQUIRE_THAT( 11., !WithinAbs(10., 0.5) )
 with expansion:
   11.0 not is within 0.5 of 10.0
@@ -2984,37 +2979,32 @@ Matchers.tests.cpp:<line number>
 Matchers.tests.cpp:<line number>: PASSED:
   REQUIRE_THAT( 1., WithinULP(1., 0) )
 with expansion:
-  1.0 is within 0 ULPs of 1.0
+  1.0 is within 0 ULPs of 1.0 ([1.00000000000000000, 1.00000000000000000])
 
 Matchers.tests.cpp:<line number>: PASSED:
   REQUIRE_THAT( nextafter(1., 2.), WithinULP(1., 1) )
 with expansion:
-  1.0 is within 1 ULPs of 1.0
+  1.0 is within 1 ULPs of 1.0 ([0.99999999999999989, 1.00000000000000022])
 
 Matchers.tests.cpp:<line number>: PASSED:
   REQUIRE_THAT( nextafter(1., 0.), WithinULP(1., 1) )
 with expansion:
-  1.0 is within 1 ULPs of 1.0
+  1.0 is within 1 ULPs of 1.0 ([0.99999999999999989, 1.00000000000000022])
 
 Matchers.tests.cpp:<line number>: PASSED:
   REQUIRE_THAT( nextafter(1., 2.), !WithinULP(1., 0) )
 with expansion:
-  1.0 not is within 0 ULPs of 1.0
+  1.0 not is within 0 ULPs of 1.0 ([1.00000000000000000, 1.00000000000000000])
 
 Matchers.tests.cpp:<line number>: PASSED:
   REQUIRE_THAT( 1., WithinULP(1., 0) )
 with expansion:
-  1.0 is within 0 ULPs of 1.0
+  1.0 is within 0 ULPs of 1.0 ([1.00000000000000000, 1.00000000000000000])
 
 Matchers.tests.cpp:<line number>: PASSED:
   REQUIRE_THAT( -0., WithinULP(0., 0) )
 with expansion:
-  -0.0 is within 0 ULPs of 0.0
-
-Matchers.tests.cpp:<line number>: PASSED:
-  REQUIRE_THAT( NAN, !WithinULP(NAN, 123) )
-with expansion:
-  nanf not is within 123 ULPs of nanf
+  -0.0 is within 0 ULPs of 0.0 ([0.00000000000000000, 0.00000000000000000])
 
 -------------------------------------------------------------------------------
 Floating point matchers: double
@@ -3026,17 +3016,14 @@ Matchers.tests.cpp:<line number>
 Matchers.tests.cpp:<line number>: PASSED:
   REQUIRE_THAT( 1., WithinAbs(1., 0.5) || WithinULP(2., 1) )
 with expansion:
-  1.0 ( is within 0.5 of 1.0 or is within 1 ULPs of 2.0 )
+  1.0 ( is within 0.5 of 1.0 or is within 1 ULPs of 2.0 ([1.99999999999999978,
+  2.00000000000000044]) )
 
 Matchers.tests.cpp:<line number>: PASSED:
   REQUIRE_THAT( 1., WithinAbs(2., 0.5) || WithinULP(1., 0) )
 with expansion:
-  1.0 ( is within 0.5 of 2.0 or is within 0 ULPs of 1.0 )
-
-Matchers.tests.cpp:<line number>: PASSED:
-  REQUIRE_THAT( NAN, !(WithinAbs(NAN, 100) || WithinULP(NAN, 123)) )
-with expansion:
-  nanf not ( is within 100.0 of nan or is within 123 ULPs of nanf )
+  1.0 ( is within 0.5 of 2.0 or is within 0 ULPs of 1.0 ([1.00000000000000000,
+  1.00000000000000000]) )
 
 -------------------------------------------------------------------------------
 Floating point matchers: double
@@ -3090,11 +3077,6 @@ with expansion:
   0.0f is within 0.0 of -0.0
 
 Matchers.tests.cpp:<line number>: PASSED:
-  REQUIRE_THAT( NAN, !WithinAbs(NAN, 0) )
-with expansion:
-  nanf not is within 0.0 of nan
-
-Matchers.tests.cpp:<line number>: PASSED:
   REQUIRE_THAT( 11.f, !WithinAbs(10.f, 0.5f) )
 with expansion:
   11.0f not is within 0.5 of 10.0
@@ -3124,37 +3106,33 @@ Matchers.tests.cpp:<line number>
 Matchers.tests.cpp:<line number>: PASSED:
   REQUIRE_THAT( 1.f, WithinULP(1.f, 0) )
 with expansion:
-  1.0f is within 0 ULPs of 1.0f
+  1.0f is within 0 ULPs of 1.0f ([1.00000000000000000, 1.00000000000000000])
 
 Matchers.tests.cpp:<line number>: PASSED:
   REQUIRE_THAT( nextafter(1.f, 2.f), WithinULP(1.f, 1) )
 with expansion:
-  1.0f is within 1 ULPs of 1.0f
+  1.0f is within 1 ULPs of 1.0f ([0.99999994039535522, 1.00000011920928955])
 
 Matchers.tests.cpp:<line number>: PASSED:
   REQUIRE_THAT( nextafter(1.f, 0.f), WithinULP(1.f, 1) )
 with expansion:
-  1.0f is within 1 ULPs of 1.0f
+  1.0f is within 1 ULPs of 1.0f ([0.99999994039535522, 1.00000011920928955])
 
 Matchers.tests.cpp:<line number>: PASSED:
   REQUIRE_THAT( nextafter(1.f, 2.f), !WithinULP(1.f, 0) )
 with expansion:
-  1.0f not is within 0 ULPs of 1.0f
+  1.0f not is within 0 ULPs of 1.0f ([1.00000000000000000, 1.00000000000000000]
+  )
 
 Matchers.tests.cpp:<line number>: PASSED:
   REQUIRE_THAT( 1.f, WithinULP(1.f, 0) )
 with expansion:
-  1.0f is within 0 ULPs of 1.0f
+  1.0f is within 0 ULPs of 1.0f ([1.00000000000000000, 1.00000000000000000])
 
 Matchers.tests.cpp:<line number>: PASSED:
   REQUIRE_THAT( -0.f, WithinULP(0.f, 0) )
 with expansion:
-  -0.0f is within 0 ULPs of 0.0f
-
-Matchers.tests.cpp:<line number>: PASSED:
-  REQUIRE_THAT( NAN, !WithinULP(NAN, 123) )
-with expansion:
-  nanf not is within 123 ULPs of nanf
+  -0.0f is within 0 ULPs of 0.0f ([0.00000000000000000, 0.00000000000000000])
 
 -------------------------------------------------------------------------------
 Floating point matchers: float
@@ -3166,17 +3144,14 @@ Matchers.tests.cpp:<line number>
 Matchers.tests.cpp:<line number>: PASSED:
   REQUIRE_THAT( 1.f, WithinAbs(1.f, 0.5) || WithinULP(1.f, 1) )
 with expansion:
-  1.0f ( is within 0.5 of 1.0 or is within 1 ULPs of 1.0f )
+  1.0f ( is within 0.5 of 1.0 or is within 1 ULPs of 1.0f ([0.
+  99999994039535522, 1.00000011920928955]) )
 
 Matchers.tests.cpp:<line number>: PASSED:
   REQUIRE_THAT( 1.f, WithinAbs(2.f, 0.5) || WithinULP(1.f, 0) )
 with expansion:
-  1.0f ( is within 0.5 of 2.0 or is within 0 ULPs of 1.0f )
-
-Matchers.tests.cpp:<line number>: PASSED:
-  REQUIRE_THAT( NAN, !(WithinAbs(NAN, 100) || WithinULP(NAN, 123)) )
-with expansion:
-  nanf not ( is within 100.0 of nan or is within 123 ULPs of nanf )
+  1.0f ( is within 0.5 of 2.0 or is within 0 ULPs of 1.0f ([1.
+  00000000000000000, 1.00000000000000000]) )
 
 -------------------------------------------------------------------------------
 Floating point matchers: float
@@ -12291,5 +12266,5 @@ Misc.tests.cpp:<line number>: PASSED:
 
 ===============================================================================
 test cases:  289 |  199 passed |  86 failed |  4 failed as expected
-assertions: 1564 | 1395 passed | 148 failed | 21 failed as expected
+assertions: 1558 | 1389 passed | 148 failed | 21 failed as expected
 

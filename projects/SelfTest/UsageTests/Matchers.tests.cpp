@@ -347,7 +347,6 @@ namespace { namespace MatchersTests {
                 REQUIRE_THAT(0.f, !WithinAbs(1.f, 0.99f));
 
                 REQUIRE_THAT(0.f, WithinAbs(-0.f, 0));
-                REQUIRE_THAT(NAN, !WithinAbs(NAN, 0));
 
                 REQUIRE_THAT(11.f, !WithinAbs(10.f, 0.5f));
                 REQUIRE_THAT(10.f, !WithinAbs(11.f, 0.5f));
@@ -363,14 +362,10 @@ namespace { namespace MatchersTests {
 
                 REQUIRE_THAT(1.f, WithinULP(1.f, 0));
                 REQUIRE_THAT(-0.f, WithinULP(0.f, 0));
-
-                REQUIRE_THAT(NAN, !WithinULP(NAN, 123));
             }
             SECTION("Composed") {
                 REQUIRE_THAT(1.f, WithinAbs(1.f, 0.5) || WithinULP(1.f, 1));
                 REQUIRE_THAT(1.f, WithinAbs(2.f, 0.5) || WithinULP(1.f, 0));
-
-                REQUIRE_THAT(NAN, !(WithinAbs(NAN, 100) || WithinULP(NAN, 123)));
             }
             SECTION("Constructor validation") {
                 REQUIRE_NOTHROW(WithinAbs(1.f, 0.f));
@@ -389,8 +384,6 @@ namespace { namespace MatchersTests {
                 REQUIRE_THAT(0., !WithinAbs(1., 0.99));
                 REQUIRE_THAT(0., !WithinAbs(1., 0.99));
 
-                REQUIRE_THAT(NAN, !WithinAbs(NAN, 0));
-
                 REQUIRE_THAT(11., !WithinAbs(10., 0.5));
                 REQUIRE_THAT(10., !WithinAbs(11., 0.5));
                 REQUIRE_THAT(-10., WithinAbs(-10., 0.5));
@@ -405,14 +398,10 @@ namespace { namespace MatchersTests {
 
                 REQUIRE_THAT(1., WithinULP(1., 0));
                 REQUIRE_THAT(-0., WithinULP(0., 0));
-
-                REQUIRE_THAT(NAN, !WithinULP(NAN, 123));
             }
             SECTION("Composed") {
                 REQUIRE_THAT(1., WithinAbs(1., 0.5) || WithinULP(2., 1));
                 REQUIRE_THAT(1., WithinAbs(2., 0.5) || WithinULP(1., 0));
-
-                REQUIRE_THAT(NAN, !(WithinAbs(NAN, 100) || WithinULP(NAN, 123)));
             }
             SECTION("Constructor validation") {
                 REQUIRE_NOTHROW(WithinAbs(1., 0.));
@@ -421,6 +410,12 @@ namespace { namespace MatchersTests {
                 REQUIRE_NOTHROW(WithinULP(1., 0));
                 REQUIRE_THROWS_AS(WithinULP(1., -1), std::domain_error);
             }
+        }
+
+        TEST_CASE("Floating point matchers that are problematic in approvals", "[approvals][matchers][floating-point]") {
+            REQUIRE_THAT(NAN, !WithinAbs(NAN, 0));
+            REQUIRE_THAT(NAN, !(WithinAbs(NAN, 100) || WithinULP(NAN, 123)));
+            REQUIRE_THAT(NAN, !WithinULP(NAN, 123));
         }
 
         TEST_CASE("Arbitrary predicate matcher", "[matchers][generic]") {
