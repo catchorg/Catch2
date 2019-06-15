@@ -18,7 +18,7 @@
 #include <random>
 
 
-#if defined(CATCH_USE_ASYNC)
+#if defined(CATCH_CONFIG_USE_ASYNC)
 #include <future>
 #endif
 
@@ -185,7 +185,7 @@ namespace Catch {
                 auto mean = &Detail::mean<std::vector<double>::iterator>;
                 auto stddev = &standard_deviation;
 
-#ifdef CATCH_USE_ASYNC
+#if defined(CATCH_CONFIG_USE_ASYNC)
                 auto Estimate = [=](double(*f)(std::vector<double>::iterator, std::vector<double>::iterator)) {
                     auto seed = entropy();
                     return std::async(std::launch::async, [=] {

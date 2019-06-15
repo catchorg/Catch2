@@ -152,7 +152,7 @@
 
 #if defined(_REENTRANT) || defined(_MSC_VER)
 // Enable async processing, as -pthread is specified or no additional linking is required
-# define CATCH_USE_ASYNC
+# define CATCH_INTERNAL_CONFIG_USE_ASYNC
 #endif // _MSC_VER
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -270,6 +270,10 @@
 
 #if defined(CATCH_INTERNAL_CONFIG_POLYFILL_ISNAN) && !defined(CATCH_CONFIG_NO_POLYFILL_ISNAN) && !defined(CATCH_CONFIG_POLYFILL_ISNAN)
 #  define CATCH_CONFIG_POLYFILL_ISNAN
+#endif
+
+#if defined(CATCH_INTERNAL_CONFIG_USE_ASYNC)  && !defined(CATCH_CONFIG_NO_USE_ASYNC) && !defined(CATCH_CONFIG_USE_ASYNC)
+#  define CATCH_CONFIG_USE_ASYNC
 #endif
 
 #if !defined(CATCH_INTERNAL_SUPPRESS_PARENTHESES_WARNINGS)
