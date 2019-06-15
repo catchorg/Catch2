@@ -1,3 +1,4 @@
+<a id="top"></a>
 # Authoring benchmarks
 
 Writing benchmarks is not easy. Catch simplifies certain aspects but you'll
