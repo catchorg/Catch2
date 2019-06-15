@@ -53,7 +53,7 @@ def generate(v):
             out.write( line )
 
     def insertCpps():
-        dirs = [os.path.join( rootPath, s) for s in ['', 'internal', 'reporters']]
+        dirs = [os.path.join( rootPath, s) for s in ['', 'internal', 'reporters', 'internal/benchmark', 'internal/benchmark/detail']]
         cppFiles = []
         for dir in dirs:
             cppFiles += glob(os.path.join(dir, '*.cpp'))

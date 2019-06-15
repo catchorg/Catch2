@@ -101,7 +101,12 @@ set(BENCHMARK_HEADERS
         ${HEADER_DIR}/internal/benchmark/detail/catch_stats.hpp
         ${HEADER_DIR}/internal/benchmark/detail/catch_timing.hpp
 )
-SOURCE_GROUP("benchmark" FILES ${BENCHMARK_HEADERS})
+set(BENCHMARK_SOURCES
+    ${HEADER_DIR}/internal/benchmark/detail/catch_stats.cpp
+)
+
+SOURCE_GROUP("benchmark" FILES ${BENCHMARK_HEADERS} ${BENCHMARK_SOURCES})
+
 set(INTERNAL_HEADERS
         ${HEADER_DIR}/internal/catch_approx.h
         ${HEADER_DIR}/internal/catch_assertionhandler.h
@@ -291,7 +296,8 @@ set(HEADERS
         ${INTERNAL_HEADERS}
         ${REPORTER_HEADERS}
 		${BENCHMARK_HEADERS}
-        )
+        ${BENCHMARK_SOURCES}
+)
 
 # Provide some groupings for IDEs
 SOURCE_GROUP("Tests" FILES ${TEST_SOURCES})
@@ -328,7 +334,7 @@ endif()
 if ( CMAKE_CXX_COMPILER_ID MATCHES "Clang|AppleClang|GNU" )
     target_compile_options( SelfTest PRIVATE -Wall -Wextra -Wunreachable-code -Wpedantic -Wmissing-declarations )
     if (CATCH_ENABLE_WERROR)
-        target_compile_options( SelfTest PRIVATE -Werror)
+        target_compile_options( SelfTest PRIVATE -Werror )
     endif()
 endif()
 # Clang specific options go here
