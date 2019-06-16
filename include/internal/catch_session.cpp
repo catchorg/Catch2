@@ -288,8 +288,9 @@ namespace Catch {
                 applyFilenamesAsTags( *m_config );
 
             // Handle list request
-            if( Option<std::size_t> listed = list( m_config ) )
-                return static_cast<int>( *listed );
+            if (list(m_config)) {
+                return 0;
+            }
 
             TestGroup tests { m_config };
             auto const totals = tests.execute();

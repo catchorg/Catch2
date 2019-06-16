@@ -376,24 +376,33 @@ set_tests_properties(RunTests PROPERTIES
     FAIL_REGULAR_EXPRESSION "Filters:"
 )
 
-add_test(NAME ListTests COMMAND $<TARGET_FILE:SelfTest> --list-tests --verbosity high)
-set_tests_properties(ListTests PROPERTIES 
+# Because CTest does not allow us to check both return code _and_ expected
+# output in one test, we run these commands twice. First time we check
+# the output, the second time we check the exit code.
+add_test(NAME List::Tests::Output COMMAND $<TARGET_FILE:SelfTest> --list-tests --verbosity high)
+set_tests_properties(List::Tests::Output PROPERTIES
     PASS_REGULAR_EXPRESSION "[0-9]+ test cases"
     FAIL_REGULAR_EXPRESSION "Hidden Test"
 )
+add_test(NAME List::Tests::ExitCode COMMAND $<TARGET_FILE:SelfTest> --list-tests --verbosity high)
 
-add_test(NAME ListTags COMMAND $<TARGET_FILE:SelfTest> --list-tags)
-set_tests_properties(ListTags PROPERTIES 
-    PASS_REGULAR_EXPRESSION "[0-9]+ tags" 
+add_test(NAME List::Tags::Output COMMAND $<TARGET_FILE:SelfTest> --list-tags)
+set_tests_properties(List::Tags::Output PROPERTIES
+    PASS_REGULAR_EXPRESSION "[0-9]+ tags"
     FAIL_REGULAR_EXPRESSION "\\[\\.\\]")
+add_test(NAME List::Tags::ExitCode COMMAND $<TARGET_FILE:SelfTest> --list-tags)
 
-add_test(NAME ListReporters COMMAND $<TARGET_FILE:SelfTest> --list-reporters)
-set_tests_properties(ListReporters PROPERTIES PASS_REGULAR_EXPRESSION "Available reporters:")
+add_test(NAME List::Reporters::Output COMMAND $<TARGET_FILE:SelfTest> --list-reporters)
+set_tests_properties(List::Reporters::Output PROPERTIES PASS_REGULAR_EXPRESSION "Available reporters:")
+add_test(NAME List::Reporters::ExitCode COMMAND $<TARGET_FILE:SelfTest> --list-reporters)
 
-add_test(NAME ListTestNamesOnly COMMAND $<TARGET_FILE:SelfTest> --list-test-names-only)
-set_tests_properties(ListTestNamesOnly PROPERTIES 
+add_test(NAME List::Tests::NamesOnly::Output COMMAND $<TARGET_FILE:SelfTest> --list-test-names-only)
+set_tests_properties(List::Tests::NamesOnly::Output PROPERTIES
     PASS_REGULAR_EXPRESSION "Regex string matcher"
     FAIL_REGULAR_EXPRESSION "Hidden Test")
+add_test(NAME List::Tests::NamesOnly::ExitCode COMMAND $<TARGET_FILE:SelfTest> --list-test-names-only)
+
+
 
 add_test(NAME NoAssertions COMMAND $<TARGET_FILE:SelfTest> -w NoAssertions)
 set_tests_properties(NoAssertions PROPERTIES PASS_REGULAR_EXPRESSION "No assertions in test case")

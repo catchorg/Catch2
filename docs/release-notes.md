@@ -37,6 +37,8 @@
 
 ### Fixes
 * The `INFO` macro no longer contains superfluous semicolon (#1456)
+* The `--list*` family of command line flags now return 0 on success (#1410, #1146)
+
 
 ## 2.10.2
 
