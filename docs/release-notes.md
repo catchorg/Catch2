@@ -2,6 +2,7 @@
 
 # Release notes
 **Contents**<br>
+[2.9.0](#290)<br>
 [2.8.0](#280)<br>
 [2.7.2](#272)<br>
 [2.7.1](#271)<br>
@@ -23,6 +24,16 @@
 [2.0.1](#201)<br>
 [Older versions](#older-versions)<br>
 [Even Older versions](#even-older-versions)<br>
+
+## 2.9.0
+
+### Improvements
+* The experimental benchmarking support has been replaced by integrating Nonius code (#1616)
+  * This provides a much more featurefull micro-benchmarking support.
+  * Due to the compilation cost, it is disabled by default. See the documentation for details.
+  * As far as backwards compatibility is concerned, this feature is still considered experimental in that we might change the interface based on user feedback.
+* `WithinULP` matcher now shows the acceptable range (#1581)
+* Template test cases now support type lists (#1627)
 
 
 ## 2.8.0
