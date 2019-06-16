@@ -396,12 +396,6 @@ add_test(NAME List::Reporters::Output COMMAND $<TARGET_FILE:SelfTest> --list-rep
 set_tests_properties(List::Reporters::Output PROPERTIES PASS_REGULAR_EXPRESSION "Available reporters:")
 add_test(NAME List::Reporters::ExitCode COMMAND $<TARGET_FILE:SelfTest> --list-reporters)
 
-add_test(NAME List::Tests::NamesOnly::Output COMMAND $<TARGET_FILE:SelfTest> --list-test-names-only)
-set_tests_properties(List::Tests::NamesOnly::Output PROPERTIES
-    PASS_REGULAR_EXPRESSION "Regex string matcher"
-    FAIL_REGULAR_EXPRESSION "Hidden Test")
-add_test(NAME List::Tests::NamesOnly::ExitCode COMMAND $<TARGET_FILE:SelfTest> --list-test-names-only)
-
 
 
 add_test(NAME NoAssertions COMMAND $<TARGET_FILE:SelfTest> -w NoAssertions)

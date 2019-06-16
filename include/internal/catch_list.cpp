@@ -71,22 +71,6 @@ namespace Catch {
                 Catch::cout() << pluralise(matchedTestCases.size(), "matching test case") << '\n' << std::endl;
         }
 
-        void listTestsNamesOnly(Config const& config) {
-            TestSpec testSpec = config.testSpec();
-            std::size_t matchedTests = 0;
-            std::vector<TestCase> matchedTestCases = filterTests(getAllTestCasesSorted(config), testSpec, config);
-            for (auto const& testCaseInfo : matchedTestCases) {
-                matchedTests++;
-                if (startsWith(testCaseInfo.name, '#'))
-                    Catch::cout() << '"' << testCaseInfo.name << '"';
-                else
-                    Catch::cout() << testCaseInfo.name;
-                if (config.verbosity() >= Verbosity::High)
-                    Catch::cout() << "\t@" << testCaseInfo.lineInfo;
-                Catch::cout() << std::endl;
-            }
-        }
-
         void listTags(Config const& config) {
             TestSpec testSpec = config.testSpec();
             if (config.hasTestFilters())
@@ -171,10 +155,6 @@ namespace Catch {
         if (config->listTests()) {
             listed = true;
             listTests(*config);
-        }
-        if (config->listTestNamesOnly()) {
-            listed = true;
-            listTestsNamesOnly(*config);
         }
         if (config->listTags()) {
             listed = true;

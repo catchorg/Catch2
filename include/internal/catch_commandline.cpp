@@ -181,9 +181,6 @@ namespace Catch {
             | Opt( setVerbosity, "quiet|normal|high" )
                 ["-v"]["--verbosity"]
                 ( "set output verbosity" )
-            | Opt( config.listTestNamesOnly )
-                ["--list-test-names-only"]
-                ( "list all/matching test cases names only" )
             | Opt( config.listReporters )
                 ["--list-reporters"]
                 ( "list all reporters" )

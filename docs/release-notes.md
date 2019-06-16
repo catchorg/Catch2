@@ -32,8 +32,11 @@
 
 ## 3.0.0 (in progress)
 
-### Breaking changes
+### (Potentially) Breaking changes
 * `ANON_TEST_CASE` has been removed, use `TEST_CASE` with no arguments instead (#1220)
+* `--list*` commands no longer have non-zero return code (#1410)
+* `--list-test-names-only` has been removed (#1190)
+  * You should use verbosity-modifiers for `--list-tests` instead
 
 ### Fixes
 * The `INFO` macro no longer contains superfluous semicolon (#1456)

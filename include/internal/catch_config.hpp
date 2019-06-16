@@ -30,7 +30,6 @@ namespace Catch {
         bool listTests = false;
         bool listTags = false;
         bool listReporters = false;
-        bool listTestNamesOnly = false;
 
         bool showSuccessfulTests = false;
         bool shouldDebugBreak = false;
@@ -79,7 +78,6 @@ namespace Catch {
         std::string const& getFilename() const;
 
         bool listTests() const;
-        bool listTestNamesOnly() const;
         bool listTags() const;
         bool listReporters() const;
 

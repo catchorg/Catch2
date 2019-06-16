@@ -11,18 +11,6 @@ at least the next major release.
 
 ## Deprecations
 
-### `--list-*` return values
-
-The return codes of the `--list-*` family of command line arguments
-will no longer be equal to the number of tests/tags/etc found, instead
-it will be 0 for success and non-zero for failure.
-
-
-### `--list-test-names-only`
-
-`--list-test-names-only` command line argument will be removed.
-
-
 ### Secondary description amongst tags
 
 Currently, the tags part of `TEST_CASE` (and others) macro can also
