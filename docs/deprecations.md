@@ -23,12 +23,6 @@ it will be 0 for success and non-zero for failure.
 `--list-test-names-only` command line argument will be removed.
 
 
-### `ANON_TEST_CASE`
-
-`ANON_TEST_CASE` is scheduled for removal, as it can be fully replaced
-by a `TEST_CASE` with no arguments.
-
-
 ### Secondary description amongst tags
 
 Currently, the tags part of `TEST_CASE` (and others) macro can also

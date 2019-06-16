@@ -60,9 +60,6 @@ CATCH_TEST_CASE("PrefixedMacros") {
 
     CATCH_STATIC_REQUIRE( std::is_void<void>::value );
     CATCH_STATIC_REQUIRE_FALSE( std::is_void<int>::value );
-}
-
-CATCH_ANON_TEST_CASE() {
     CATCH_FAIL("");
 }
 

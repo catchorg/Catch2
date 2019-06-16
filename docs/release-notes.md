@@ -30,6 +30,11 @@
 [Older versions](#older-versions)<br>
 [Even Older versions](#even-older-versions)<br>
 
+## 3.0.0 (in progress)
+
+### Breaking changes
+* `ANON_TEST_CASE` has been removed, use `TEST_CASE` with no arguments instead.
+
 
 ## 2.10.2
 
@@ -146,6 +151,7 @@
 
 ### Fixes
 * Fix benchmarking compilation failure in files without `CATCH_CONFIG_EXTERNAL_INTERFACES` (or implementation)
+
 
 ## 2.9.0
 
