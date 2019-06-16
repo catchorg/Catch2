@@ -33,8 +33,10 @@
 ## 3.0.0 (in progress)
 
 ### Breaking changes
-* `ANON_TEST_CASE` has been removed, use `TEST_CASE` with no arguments instead.
+* `ANON_TEST_CASE` has been removed, use `TEST_CASE` with no arguments instead (#1220)
 
+### Fixes
+* The `INFO` macro no longer contains superfluous semicolon (#1456)
 
 ## 2.10.2
 

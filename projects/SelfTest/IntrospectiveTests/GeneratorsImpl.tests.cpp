@@ -181,9 +181,9 @@ TEST_CASE("Generators internals", "[generators][internals]") {
                     const auto step = .1;
 
                     auto gen = range(rangeStart, rangeEnd, step);
-                    auto expected = rangeStart; 
+                    auto expected = rangeStart;
                     while( (rangeEnd - expected) > step ) {
-                        INFO( "Current expected value is " << expected )
+                        INFO( "Current expected value is " << expected );
                         REQUIRE(gen.get() == Approx(expected));
                         REQUIRE(gen.next());
 
@@ -198,9 +198,9 @@ TEST_CASE("Generators internals", "[generators][internals]") {
                     const auto step = .3;
 
                     auto gen = range(rangeStart, rangeEnd, step);
-                    auto expected = rangeStart; 
+                    auto expected = rangeStart;
                     while( (rangeEnd - expected) > step ) {
-                       INFO( "Current expected value is " << expected )
+                       INFO( "Current expected value is " << expected );
                        REQUIRE(gen.get() == Approx(expected));
                        REQUIRE(gen.next());
 
@@ -214,16 +214,16 @@ TEST_CASE("Generators internals", "[generators][internals]") {
                     const auto step = .3;
 
                     auto gen = range(rangeStart, rangeEnd, step);
-                    auto expected = rangeStart; 
+                    auto expected = rangeStart;
                     while( (rangeEnd - expected) > step ) {
-                       INFO( "Current expected value is " << expected )
+                       INFO( "Current expected value is " << expected );
                        REQUIRE(gen.get() == Approx(expected));
                        REQUIRE(gen.next());
 
                        expected += step;
                     }
                     REQUIRE_FALSE(gen.next());
-                }                
+                }
             }
         }
         SECTION("Negative manual step") {
