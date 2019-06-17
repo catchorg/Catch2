@@ -136,8 +136,11 @@ if (NOT_SUBPROJECT)
     #
     # CMake does not provide a direct customization point for this in
     # `write_basic_package_version_file`, but it can be accomplished
-    # indirectly by temporarily undefining `CMAKE_SIZEOF_VOID_P`.
+    # indirectly by temporarily redefining `CMAKE_SIZEOF_VOID_P` to an
+    # empty string. Note that just undefining the variable could be
+    # insufficient in cases where the variable was already in CMake cache
     set(CATCH2_CMAKE_SIZEOF_VOID_P ${CMAKE_SIZEOF_VOID_P})
+    set(CMAKE_SIZEOF_VOID_P "")
     unset(CMAKE_SIZEOF_VOID_P)
     write_basic_package_version_file(
       "${CMAKE_CURRENT_BINARY_DIR}/Catch2ConfigVersion.cmake"
