@@ -59,10 +59,6 @@ namespace Catch {
     TestEventListenerBase::TestEventListenerBase(ReporterConfig const & _config)
         :StreamingReporterBase(_config) {}
 
-    std::set<Verbosity> TestEventListenerBase::getSupportedVerbosities() {
-        return { Verbosity::Quiet, Verbosity::Normal, Verbosity::High };
-    }
-
     void TestEventListenerBase::assertionStarting(AssertionInfo const &) {}
 
     bool TestEventListenerBase::assertionEnded(AssertionStats const &) {

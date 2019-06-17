@@ -30,11 +30,6 @@ namespace Catch {
         return m_preferences;
     }
 
-    std::set<Verbosity> ListeningReporter::getSupportedVerbosities() {
-        return std::set<Verbosity>{ };
-    }
-
-
     void ListeningReporter::noMatchingTestCases( std::string const& spec ) {
         for ( auto const& listener : m_listeners ) {
             listener->noMatchingTestCases( spec );

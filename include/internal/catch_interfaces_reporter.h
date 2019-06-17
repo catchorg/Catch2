@@ -208,7 +208,6 @@ namespace Catch {
 
         // Implementing class must also provide the following static methods:
         // static std::string getDescription();
-        // static std::set<Verbosity> getSupportedVerbosities()
 
         virtual ReporterPreferences getPreferences() const = 0;
 

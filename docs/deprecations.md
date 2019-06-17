@@ -29,18 +29,6 @@ method will be removed.
 
 ## Planned changes
 
-
-### Reporter verbosities
-
-The current implementation of verbosities, where the reporter is checked
-up-front whether it supports the requested verbosity, is fundamentally
-misguided and will be changed. The new implementation will no longer check
-whether the specified reporter supports the requested verbosity, instead
-it will be up to the reporters to deal with verbosities as they see fit
-(with an expectation that unsupported verbosities will be, at most,
-warnings, but not errors).
-
-
 ### Output format of `--list-*` command line parameters
 
 The various list operations will be piped through reporters. This means
