@@ -141,7 +141,6 @@ if (NOT_SUBPROJECT)
     # insufficient in cases where the variable was already in CMake cache
     set(CATCH2_CMAKE_SIZEOF_VOID_P ${CMAKE_SIZEOF_VOID_P})
     set(CMAKE_SIZEOF_VOID_P "")
-    unset(CMAKE_SIZEOF_VOID_P)
     write_basic_package_version_file(
       "${CMAKE_CURRENT_BINARY_DIR}/Catch2ConfigVersion.cmake"
       COMPATIBILITY
