@@ -74,7 +74,8 @@
 #include "internal/catch_objc.hpp"
 #endif
 
-#ifdef CATCH_CONFIG_EXTERNAL_INTERFACES
+// Benchmarking needs the externally-facing parts of reporters to work
+#if defined(CATCH_CONFIG_EXTERNAL_INTERFACES) || defined(CATCH_CONFIG_ENABLE_BENCHMARKING)
 #include "internal/catch_external_interfaces.h"
 #endif
 
