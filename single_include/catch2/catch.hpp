@@ -1,6 +1,6 @@
 /*
- *  Catch v2.9.0
- *  Generated: 2019-06-16 10:41:32.122746
+ *  Catch v2.9.1
+ *  Generated: 2019-06-17 11:59:24.363643
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2019 Two Blue Cubes Ltd. All rights reserved.
@@ -15,7 +15,7 @@
 
 #define CATCH_VERSION_MAJOR 2
 #define CATCH_VERSION_MINOR 9
-#define CATCH_VERSION_PATCH 0
+#define CATCH_VERSION_PATCH 1
 
 #ifdef __clang__
 #    pragma clang system_header
@@ -4810,7 +4810,8 @@ return @ desc; \
 // end catch_objc.hpp
 #endif
 
-#ifdef CATCH_CONFIG_EXTERNAL_INTERFACES
+// Benchmarking needs the externally-facing parts of reporters to work
+#if defined(CATCH_CONFIG_EXTERNAL_INTERFACES) || defined(CATCH_CONFIG_ENABLE_BENCHMARKING)
 // start catch_external_interfaces.h
 
 // start catch_reporter_bases.hpp
@@ -14413,7 +14414,7 @@ namespace Catch {
     }
 
     Version const& libraryVersion() {
-        static Version version( 2, 9, 0, "", 0 );
+        static Version version( 2, 9, 1, "", 0 );
         return version;
     }
 

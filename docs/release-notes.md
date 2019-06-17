@@ -2,6 +2,7 @@
 
 # Release notes
 **Contents**<br>
+[2.9.1](#291)<br>
 [2.9.0](#290)<br>
 [2.8.0](#280)<br>
 [2.7.2](#272)<br>
@@ -24,6 +25,11 @@
 [2.0.1](#201)<br>
 [Older versions](#older-versions)<br>
 [Even Older versions](#even-older-versions)<br>
+
+## 2.9.1
+
+### Fixes
+* Fix benchmarking compilation failure in files without `CATCH_CONFIG_EXTERNAL_INTERFACES` (or implementation)
 
 ## 2.9.0
 
