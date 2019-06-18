@@ -242,7 +242,7 @@ Test cases are ordered one of three ways:
 
 
 ### decl
-Declaration order. The order the tests were originally declared in. Note that ordering between files is not guaranteed and is implementation dependent.
+Declaration order (this is the default order if no --order argument is provided). The order the tests were originally declared in. Note that ordering between files is not guaranteed and is implementation dependent.
 
 ### lex
 Lexicographically sorted. Tests are sorted, alpha-numerically, by name.
@@ -256,7 +256,7 @@ Randomly sorted. Test names are sorted using ```std::random_shuffle()```. By def
 
 Sets a seed for the random number generator using ```std::srand()```. 
 If a number is provided this is used directly as the seed so the random pattern is repeatable.
-Alternatively if the keyword ```time``` is provided then the result of calling ```std::time(0)``` is used and so the pattern becomes unpredictable.
+Alternatively if the keyword ```time``` is provided then the result of calling ```std::time(0)``` is used and so the pattern becomes unpredictable. In some cases, you might need to pass the keyword ```time``` in double quotes instead of single quotes.
 
 In either case the actual value for the seed is printed as part of Catch's output so if an issue is discovered that is sensitive to test ordering the ordering can be reproduced - even if it was originally seeded from ```std::time(0)```.
 
