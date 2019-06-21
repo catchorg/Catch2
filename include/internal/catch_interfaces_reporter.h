@@ -33,6 +33,9 @@
 
 namespace Catch {
 
+    struct ReporterDescription;
+    struct TagInfo;
+
     struct ReporterConfig {
         explicit ReporterConfig( IConfigPtr const& _fullConfig );
 
@@ -244,6 +247,12 @@ namespace Catch {
         virtual void fatalErrorEncountered( StringRef name );
 
         virtual bool isMulti() const;
+
+        // Listing support
+        virtual void listReporters(std::vector<ReporterDescription> const& descriptions, Config const& config);
+        virtual void listTests(std::vector<TestCase> const& tests, Config const& config);
+        virtual void listTags(std::vector<TagInfo> const& tags, Config const& config);
+
     };
     using IStreamingReporterPtr = std::unique_ptr<IStreamingReporter>;
 

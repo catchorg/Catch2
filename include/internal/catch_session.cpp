@@ -62,14 +62,14 @@ namespace Catch {
 
         class TestGroup {
         public:
-            explicit TestGroup(std::shared_ptr<Config> const& config)
+            explicit TestGroup(IStreamingReporterPtr&& reporter, std::shared_ptr<Config> const& config)
             : m_config{config}
-            , m_context{config, makeReporter(config)}
+            , m_context{config, std::move(reporter)}
             {
                 auto const& allTestCases = getAllTestCasesSorted(*m_config);
                 m_matches = m_config->testSpec().matchesByFilter(allTestCases, *m_config);
                 auto const& invalidArgs = m_config->testSpec().getInvalidArgs();
-                
+
                 if (m_matches.empty() && invalidArgs.empty()) {
                     for (auto const& test : allTestCases)
                         if (!test.isHidden())
@@ -97,12 +97,12 @@ namespace Catch {
                         totals.error = -1;
                     }
                 }
-                
+
                 if (!invalidArgs.empty()) {
-                    for (auto const& invalidArg: invalidArgs)                   
+                    for (auto const& invalidArg: invalidArgs)
                          m_context.reporter().reportInvalidArguments(invalidArg);
-                }   
-                
+                }
+
                 m_context.testGroupEnded(m_config->name(), totals, 1, 1);
                 return totals;
             }
@@ -287,12 +287,15 @@ namespace Catch {
             if( m_configData.filenamesAsTags )
                 applyFilenamesAsTags( *m_config );
 
+            // Create reporter(s) so we can route listings through them
+            auto reporter = makeReporter(m_config);
+
             // Handle list request
-            if (list(m_config)) {
+            if (list(*reporter, m_config)) {
                 return 0;
             }
 
-            TestGroup tests { m_config };
+            TestGroup tests { std::move(reporter), m_config };
             auto const totals = tests.execute();
 
             if( m_config->warnAboutNoTests() && totals.error == -1 )

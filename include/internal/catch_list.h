@@ -10,9 +10,29 @@
 
 #include "catch_config.hpp"
 
+#include <set>
+#include <string>
+
+
 namespace Catch {
 
-    bool list( std::shared_ptr<Config> const& config );
+    struct IStreamingReporter;
+
+    struct ReporterDescription {
+        std::string name, description;
+    };
+
+    struct TagInfo {
+        void add(std::string const& spelling);
+        std::string all() const;
+
+        std::set<std::string> spellings;
+        std::size_t count = 0;
+    };
+
+    struct testClassInfo {};
+
+    bool list( IStreamingReporter& reporter, std::shared_ptr<Config> const& config );
 
 } // end namespace Catch
 
