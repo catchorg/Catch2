@@ -147,8 +147,8 @@ namespace Catch {
         for( auto const& child : groupNode.children )
             writeTestCase( *child );
 
-        xml.scopedElement( "system-out" ).writeText( trim( stdOutForSuite ), false );
-        xml.scopedElement( "system-err" ).writeText( trim( stdErrForSuite ), false );
+        xml.scopedElement( "system-out" ).writeText( trim( stdOutForSuite ), XmlFormatting::Newline );
+        xml.scopedElement( "system-err" ).writeText( trim( stdErrForSuite ), XmlFormatting::Newline );
     }
 
     void JunitReporter::writeTestCase( TestCaseNode const& testCaseNode ) {
@@ -197,9 +197,9 @@ namespace Catch {
             writeAssertions( sectionNode );
 
             if( !sectionNode.stdOut.empty() )
-                xml.scopedElement( "system-out" ).writeText( trim( sectionNode.stdOut ), false );
+                xml.scopedElement( "system-out" ).writeText( trim( sectionNode.stdOut ), XmlFormatting::Newline );
             if( !sectionNode.stdErr.empty() )
-                xml.scopedElement( "system-err" ).writeText( trim( sectionNode.stdErr ), false );
+                xml.scopedElement( "system-err" ).writeText( trim( sectionNode.stdErr ), XmlFormatting::Newline );
         }
         for( auto const& childNode : sectionNode.childSections )
             if( className.empty() )
@@ -271,7 +271,7 @@ namespace Catch {
                     rss << msg.message << '\n';
 
             rss << "at " << result.getSourceInfo();
-            xml.writeText( rss.str(), false );
+            xml.writeText( rss.str(), XmlFormatting::Newline );
         }
     }
 

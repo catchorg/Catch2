@@ -162,7 +162,7 @@ namespace Catch {
                         textRss << msg.message << "\n";
 
                 textRss << "at " << result.getSourceInfo();
-                xml.writeText(textRss.str(), false);
+                xml.writeText(textRss.str(), XmlFormatting::Newline);
             }
         }
 
