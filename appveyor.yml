@@ -7,7 +7,6 @@ branches:
 
 os:
   - Visual Studio 2017
-  - Visual Studio 2015
 
 environment:
     matrix:
@@ -34,18 +33,9 @@ environment:
 
 matrix:
     exclude:
-        - os: Visual Studio 2015
-          additional_flags: "/permissive- /std:c++latest"
-
-        - os: Visual Studio 2015
-          additional_flags: "/D_UNICODE /DUNICODE"
-
         # Exclude unwanted coverage configurations
         - coverage: 1
           platform: Win32
-
-        - coverage: 1
-          os: Visual Studio 2015
 
         - coverage: 1
           configuration: Release
@@ -53,9 +43,6 @@ matrix:
         # Exclude unwanted examples configurations
         - examples: 1
           platform: Win32
-
-        - examples: 1
-          os: Visual Studio 2015
 
         - examples: 1
           configuration: Release
