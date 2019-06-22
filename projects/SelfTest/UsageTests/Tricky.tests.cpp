@@ -390,12 +390,6 @@ TEST_CASE("Commas in various macros are allowed") {
     }
 }
 
-TEST_CASE( "null deref", "[.][failing][!nonportable]" ) {
-    CHECK( false );
-    int *x = NULL;
-    *x = 1;
-}
-
 TEST_CASE( "non-copyable objects", "[.][failing]" ) {
     // Thanks to Agustin Bergé (@k-ballo on the cpplang Slack) for raising this
     std::type_info const& ti = typeid(int);
