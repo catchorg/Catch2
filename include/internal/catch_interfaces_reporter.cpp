@@ -157,10 +157,6 @@ namespace Catch {
             Catch::cout() << Column(testCaseInfo.name).initialIndent(2).indent(4) << '\n';
             if (config.verbosity() >= Verbosity::High) {
                 Catch::cout() << Column(Catch::Detail::stringify(testCaseInfo.lineInfo)).indent(4) << std::endl;
-                std::string description = testCaseInfo.description;
-                if (description.empty())
-                    description = "(NO DESCRIPTION)";
-                Catch::cout() << Column(description).indent(4) << std::endl;
             }
             if (!testCaseInfo.tags.empty() && config.verbosity() > Verbosity::Quiet) {
                 Catch::cout() << Column(testCaseInfo.tagsAsString()).indent(6) << '\n';

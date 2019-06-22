@@ -57,16 +57,14 @@ namespace Catch {
 
         // Parse out tags
         std::vector<std::string> tags;
-        std::string desc, tag;
+        std::string tag;
         bool inTag = false;
         for (char c : nameAndTags.tags) {
             if( !inTag ) {
-                if( c == '[' )
+                if (c == '[') {
                     inTag = true;
-                else
-                    desc += c;
-            }
-            else {
+                }
+            } else {
                 if( c == ']' ) {
                     TestCaseInfo::SpecialProperties prop = parseSpecialTag( tag );
                     if( ( prop & TestCaseInfo::IsHidden ) != 0 )
@@ -92,7 +90,7 @@ namespace Catch {
             tags.push_back( "." );
         }
 
-        TestCaseInfo info( static_cast<std::string>(nameAndTags.name), _className, desc, tags, _lineInfo );
+        TestCaseInfo info( static_cast<std::string>(nameAndTags.name), _className, tags, _lineInfo );
         return TestCase( _testCase, std::move(info) );
     }
 
@@ -111,12 +109,10 @@ namespace Catch {
 
     TestCaseInfo::TestCaseInfo( std::string const& _name,
                                 std::string const& _className,
-                                std::string const& _description,
                                 std::vector<std::string> const& _tags,
                                 SourceLineInfo const& _lineInfo )
     :   name( _name ),
         className( _className ),
-        description( _description ),
         lineInfo( _lineInfo ),
         properties( None )
     {

@@ -37,7 +37,6 @@ namespace Catch {
 
         TestCaseInfo(   std::string const& _name,
                         std::string const& _className,
-                        std::string const& _description,
                         std::vector<std::string> const& _tags,
                         SourceLineInfo const& _lineInfo );
 
@@ -52,7 +51,6 @@ namespace Catch {
 
         std::string name;
         std::string className;
-        std::string description;
         std::vector<std::string> tags;
         std::vector<std::string> lcaseTags;
         SourceLineInfo lineInfo;

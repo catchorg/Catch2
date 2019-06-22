@@ -11,16 +11,6 @@ at least the next major release.
 
 ## Deprecations
 
-### Secondary description amongst tags
-
-Currently, the tags part of `TEST_CASE` (and others) macro can also
-contain text that is not part of tags. This text is then separated into
-a "description" of the test case, but the description is then never used
-apart from writing it out for `--list-tests -v high`.
-
-Because it isn't actually used nor documented, and brings complications
-to Catch2's internals, description support will be removed.
-
 ### SourceLineInfo::empty()
 
 There should be no reason to ever have an empty `SourceLineInfo`, so the

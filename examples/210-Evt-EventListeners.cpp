@@ -139,7 +139,6 @@ void print( std::ostream& os, int const level, std::string const& title, Catch::
 //
 //     std::string name;
 //     std::string className;
-//     std::string description;
 //     std::vector<std::string> tags;
 //     std::vector<std::string> lcaseTags;
 //     SourceLineInfo lineInfo;
@@ -155,7 +154,6 @@ void print( std::ostream& os, int const level, std::string const& title, Catch::
        << ws(level+1) << "- tagsAsString(): '"  << info.tagsAsString() << "'\n"
        << ws(level+1) << "- name: '"            << info.name << "'\n"
        << ws(level+1) << "- className: '"       << info.className << "'\n"
-       << ws(level+1) << "- description: '"     << info.description << "'\n"
        << ws(level+1) << "- tags: "             << info.tags << "\n"
        << ws(level+1) << "- lcaseTags: "        << info.lcaseTags << "\n";
     print( os, level+1 , "- lineInfo", info.lineInfo );
