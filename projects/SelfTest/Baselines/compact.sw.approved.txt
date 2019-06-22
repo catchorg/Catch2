@@ -962,7 +962,7 @@ CmdLine.tests.cpp:<line number>: passed: spec.matches( tcD ) == false for: false
 CmdLine.tests.cpp:<line number>: passed: spec.hasFilters() == true for: true == true
 CmdLine.tests.cpp:<line number>: passed: spec.matches( tcA ) == true for: true == true
 CmdLine.tests.cpp:<line number>: passed: spec.matches( tcB ) == false for: false == false
-CmdLine.tests.cpp:<line number>: passed: spec.matches( tcC ) == true for: true == true
+CmdLine.tests.cpp:<line number>: passed: spec.matches( tcC ) == false for: false == false
 CmdLine.tests.cpp:<line number>: passed: spec.hasFilters() == true for: true == true
 CmdLine.tests.cpp:<line number>: passed: spec.matches( tcA ) == false for: false == false
 CmdLine.tests.cpp:<line number>: passed: spec.matches( tcB ) == true for: true == true
@@ -980,7 +980,7 @@ CmdLine.tests.cpp:<line number>: passed: spec.matches( tcD ) == true for: true =
 CmdLine.tests.cpp:<line number>: passed: spec.hasFilters() == true for: true == true
 CmdLine.tests.cpp:<line number>: passed: spec.matches( tcA ) == true for: true == true
 CmdLine.tests.cpp:<line number>: passed: spec.matches( tcB ) == false for: false == false
-CmdLine.tests.cpp:<line number>: passed: spec.matches( tcC ) == true for: true == true
+CmdLine.tests.cpp:<line number>: passed: spec.matches( tcC ) == false for: false == false
 CmdLine.tests.cpp:<line number>: passed: spec.matches( tcD ) == true for: true == true
 CmdLine.tests.cpp:<line number>: passed: spec.hasFilters() == true for: true == true
 CmdLine.tests.cpp:<line number>: passed: spec.matches( tcA ) == true for: true == true

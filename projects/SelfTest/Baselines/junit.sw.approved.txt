@@ -3,7 +3,7 @@
 >
   <testsuite name="<exe-name>" errors="17" failures="132" tests="1713" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
     <properties>
-      <property name="filters" value="~[!nonportable]~[!benchmark]~[approvals]"/>
+      <property name="filters" value="~[!nonportable]~[!benchmark]~[approvals] *"/>
       <property name="random-seed" value="1"/>
     </properties>
     <testcase classname="<exe-name>.global" name="# A test name that starts with a #" time="{duration}"/>

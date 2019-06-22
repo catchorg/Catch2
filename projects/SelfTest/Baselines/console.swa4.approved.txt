@@ -1,4 +1,4 @@
-Filters: ~[!nonportable]~[!benchmark]~[approvals]
+Filters: ~[!nonportable]~[!benchmark]~[approvals] *
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 <exe-name> is a <version> host application.

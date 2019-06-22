@@ -27,20 +27,6 @@ will be added), which means that their failure will not fail the test,
 making the `else` actually useful.
 
 
-### Change semantics of `[.]` and tag exclusion
-
-Currently, given these 2 tests
-```cpp
-TEST_CASE("A", "[.][foo]") {}
-TEST_CASE("B", "[.][bar]") {}
-```
-specifying `[foo]` as the testspec will run test "A" and specifying
-`~[foo]` will run test "B", even though it is hidden. Also, specifying
-`~[baz]` will run both tests. This behaviour is often surprising and will
-be changed so that hidden tests are included in a run only if they
-positively match a testspec.
-
-
 ### Console Colour API
 
 The API for Catch2's console colour will be changed to take an extra

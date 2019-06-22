@@ -48,25 +48,30 @@ namespace Catch {
                          m_tag) != end(testCase.lcaseTags);
     }
 
-
-    TestSpec::ExcludedPattern::ExcludedPattern( PatternPtr const& underlyingPattern )
-    : Pattern( underlyingPattern->name() )
-    , m_underlyingPattern( underlyingPattern )
-    {}
-
-    bool TestSpec::ExcludedPattern::matches( TestCaseInfo const& testCase ) const {
-        return !m_underlyingPattern->matches( testCase );
-    }
-
-
     bool TestSpec::Filter::matches( TestCaseInfo const& testCase ) const {
-        return std::all_of( m_patterns.begin(), m_patterns.end(), [&]( PatternPtr const& p ){ return p->matches( testCase ); } );
+        bool should_use = !testCase.isHidden();
+        for (auto const& pattern : m_required) {
+            should_use = true;
+            if (!pattern->matches(testCase)) {
+                return false;
+            }
+        }
+        for (auto const& pattern : m_forbidden) {
+            if (pattern->matches(testCase)) {
+                return false;
+            }
+        }
+        return should_use;
     }
 
     std::string TestSpec::Filter::name() const {
         std::string name;
-        for( auto const& p : m_patterns )
+        for (auto const& p : m_required) {
             name += p->name();
+        }
+        for (auto const& p : m_forbidden) {
+            name += p->name();
+        }
         return name;
     }
 
@@ -91,7 +96,7 @@ namespace Catch {
         } );
         return matches;
     }
-    
+
     const TestSpec::vectorStrings& TestSpec::getInvalidArgs() const{
         return  (m_invalidArgs);
     }

@@ -195,19 +195,20 @@ print("  " + cmdPath)
 
 # ## Keep default reporters here ##
 # Standard console reporter
-approve("console.std", ["~[!nonportable]~[!benchmark]~[approvals]", "--order", "lex", "--rng-seed", "1"])
+approve("console.std", ["~[!nonportable]~[!benchmark]~[approvals] *", "--order", "lex", "--rng-seed", "1"])
 # console reporter, include passes, warn about No Assertions
-approve("console.sw", ["~[!nonportable]~[!benchmark]~[approvals]", "-s", "-w", "NoAssertions", "--order", "lex", "--rng-seed", "1"])
+approve("console.sw", ["~[!nonportable]~[!benchmark]~[approvals] *", "-s", "-w", "NoAssertions", "--order", "lex", "--rng-seed", "1"])
 # console reporter, include passes, warn about No Assertions, limit failures to first 4
-approve("console.swa4", ["~[!nonportable]~[!benchmark]~[approvals]", "-s", "-w", "NoAssertions", "-x", "4", "--order", "lex", "--rng-seed", "1"])
+approve("console.swa4", ["~[!nonportable]~[!benchmark]~[approvals] *", "-s", "-w", "NoAssertions", "-x", "4", "--order", "lex", "--rng-seed", "1"])
 # junit reporter, include passes, warn about No Assertions
-approve("junit.sw", ["~[!nonportable]~[!benchmark]~[approvals]", "-s", "-w", "NoAssertions", "-r", "junit", "--order", "lex", "--rng-seed", "1"])
+approve("junit.sw", ["~[!nonportable]~[!benchmark]~[approvals] *", "-s", "-w", "NoAssertions", "-r", "junit", "--order", "lex", "--rng-seed", "1"])
 # xml reporter, include passes, warn about No Assertions
-approve("xml.sw", ["~[!nonportable]~[!benchmark]~[approvals]", "-s", "-w", "NoAssertions", "-r", "xml", "--order", "lex", "--rng-seed", "1"])
+approve("xml.sw", ["~[!nonportable]~[!benchmark]~[approvals] *", "-s", "-w", "NoAssertions", "-r", "xml", "--order", "lex", "--rng-seed", "1"])
 # compact reporter, include passes, warn about No Assertions
-approve('compact.sw', ['~[!nonportable]~[!benchmark]~[approvals]', '-s', '-w', 'NoAssertions', '-r', 'compact', '--order', 'lex', "--rng-seed", "1"])
+approve('compact.sw', ['~[!nonportable]~[!benchmark]~[approvals] *', '-s', '-w', 'NoAssertions', '-r', 'compact', '--order', 'lex', "--rng-seed", "1"])
 # sonarqube reporter, include passes, warn about No Assertions
-approve("sonarqube.sw", ["~[!nonportable]~[!benchmark]~[approvals]", "-s", "-w", "NoAssertions", "-r", "sonarqube", "--order", "lex", "--rng-seed", "1"])
+approve("sonarqube.sw", ["~[!nonportable]~[!benchmark]~[approvals] *", "-s", "-w", "NoAssertions", "-r", "sonarqube", "--order", "lex", "--rng-seed", "1"])
+
 
 if overallResult != 0:
     print("If these differences are expected, run approve.py to approve new baselines.")

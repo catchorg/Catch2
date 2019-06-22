@@ -147,7 +147,7 @@ namespace Catch {
     }
 
     void TestSpecParser::addFilter() {
-        if( !m_currentFilter.m_patterns.empty() ) {
+        if( !m_currentFilter.m_required.empty() || !m_currentFilter.m_forbidden.empty() ) {
             m_testSpec.m_filters.push_back( m_currentFilter );
             m_currentFilter = TestSpec::Filter();
         }

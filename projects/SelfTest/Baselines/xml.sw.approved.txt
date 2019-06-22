@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Catch name="<exe-name>" filters="~[!nonportable]~[!benchmark]~[approvals]">
+<Catch name="<exe-name>" filters="~[!nonportable]~[!benchmark]~[approvals] *">
   <Randomness seed="1"/>
   <Group name="<exe-name>">
     <TestCase name="# A test name that starts with a #" filename="projects/<exe-name>/UsageTests/Misc.tests.cpp" >
@@ -8720,10 +8720,10 @@ Nor would this
         </Expression>
         <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
           <Original>
-            spec.matches( tcC ) == true
+            spec.matches( tcC ) == false
           </Original>
           <Expanded>
-            true == true
+            false == false
           </Expanded>
         </Expression>
         <OverallResults successes="4" failures="0" expectedFailures="0"/>
@@ -8876,10 +8876,10 @@ Nor would this
         </Expression>
         <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
           <Original>
-            spec.matches( tcC ) == true
+            spec.matches( tcC ) == false
           </Original>
           <Expanded>
-            true == true
+            false == false
           </Expanded>
         </Expression>
         <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >

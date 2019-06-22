@@ -53,7 +53,7 @@ namespace Catch {
         void revertBackToLastMode();
         void addFilter();
         bool separate();
-        
+
         template<typename T>
         void addPattern() {
             std::string token = m_patternName;
@@ -66,22 +66,24 @@ namespace Catch {
             }
             if( !token.empty() ) {
                 TestSpec::PatternPtr pattern = std::make_shared<T>( token, m_substring );
-                if( m_exclusion )
-                    pattern = std::make_shared<TestSpec::ExcludedPattern>( pattern );
-                m_currentFilter.m_patterns.push_back( pattern );
+                if (m_exclusion) {
+                    m_currentFilter.m_forbidden.push_back(pattern);
+                } else {
+                    m_currentFilter.m_required.push_back(pattern);
+                }
             }
             m_substring.clear();
             m_patternName.clear();
             m_exclusion = false;
             m_mode = None;
         }
-        
+
         inline void addCharToPattern(char c) {
             m_substring += c;
             m_patternName += c;
             m_realPatternPos++;
         }
-        
+
     };
     TestSpec parseTestSpec( std::string const& arg );
 

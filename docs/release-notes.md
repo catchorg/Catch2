@@ -42,6 +42,10 @@
   * XmlReporter outputs a machine-parseable XML
 * `TEST_CASE` description support has been removed
   * If the second argument has text outside tags, the text will be ignored.
+* Hidden test cases are no longer included just because they don't match an exclusion tag
+  * Previously, a `TEST_CASE("A", "[.foo]")` would be included by asking for `~[bar]`.
+
+
 
 ### Fixes
 * The `INFO` macro no longer contains superfluous semicolon (#1456)
