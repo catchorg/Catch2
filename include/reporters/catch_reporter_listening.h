@@ -54,6 +54,11 @@ namespace Catch {
         void skipTest( TestCaseInfo const& testInfo ) override;
         bool isMulti() const override;
 
+        void listReporters(std::vector<ReporterDescription> const& descriptions, Config const& config) override;
+        void listTests(std::vector<TestCase> const& tests, Config const& config) override;
+        void listTags(std::vector<TagInfo> const& tags, Config const& config) override;
+
+
     };
 
 } // end namespace Catch

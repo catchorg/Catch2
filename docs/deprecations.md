@@ -29,13 +29,6 @@ method will be removed.
 
 ## Planned changes
 
-### Output format of `--list-*` command line parameters
-
-The various list operations will be piped through reporters. This means
-that e.g. XML reporter will write the output as machine-parseable XML,
-while the Console reporter will keep the current, human-oriented output.
-
-
 ### `CHECKED_IF` and `CHECKED_ELSE`
 
 To make the `CHECKED_IF` and `CHECKED_ELSE` macros more useful, they will

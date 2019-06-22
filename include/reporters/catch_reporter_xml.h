@@ -57,6 +57,10 @@ namespace Catch {
         void benchmarkFailed(std::string const&) override;
 #endif // CATCH_CONFIG_ENABLE_BENCHMARKING
 
+        void listReporters(std::vector<ReporterDescription> const& descriptions, Config const& config) override;
+        void listTests(std::vector<TestCase> const& tests, Config const& config) override;
+        void listTags(std::vector<TagInfo> const& tags, Config const& config) override;
+
     private:
         Timer m_testCaseTimer;
         XmlWriter m_xml;

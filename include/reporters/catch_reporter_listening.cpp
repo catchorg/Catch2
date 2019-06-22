@@ -36,13 +36,13 @@ namespace Catch {
         }
         m_reporter->noMatchingTestCases( spec );
     }
-    
+
     void ListeningReporter::reportInvalidArguments(std::string const&arg){
         for ( auto const& listener : m_listeners ) {
             listener->reportInvalidArguments( arg );
         }
         m_reporter->reportInvalidArguments( arg );
-    }    
+    }
 
 #if defined(CATCH_CONFIG_ENABLE_BENCHMARKING)
     void ListeningReporter::benchmarkPreparing( std::string const& name ) {
@@ -154,6 +154,27 @@ namespace Catch {
 
     bool ListeningReporter::isMulti() const {
         return true;
+    }
+
+    void ListeningReporter::listReporters(std::vector<ReporterDescription> const& descriptions, Config const& config) {
+        for (auto const& listener : m_listeners) {
+            listener->listReporters(descriptions, config);
+        }
+        m_reporter->listReporters(descriptions, config);
+    }
+
+    void ListeningReporter::listTests(std::vector<TestCase> const& tests, Config const& config) {
+        for (auto const& listener : m_listeners) {
+            listener->listTests(tests, config);
+        }
+        m_reporter->listTests(tests, config);
+    }
+
+    void ListeningReporter::listTags(std::vector<TagInfo> const& tags, Config const& config) {
+        for (auto const& listener : m_listeners) {
+            listener->listTags(tags, config);
+        }
+        m_reporter->listTags(tags, config);
     }
 
 } // end namespace Catch

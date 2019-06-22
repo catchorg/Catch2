@@ -37,6 +37,9 @@
 * `--list*` commands no longer have non-zero return code (#1410)
 * `--list-test-names-only` has been removed (#1190)
   * You should use verbosity-modifiers for `--list-tests` instead
+* `--list*` commands are now piped through the reporters
+  * The top-level reporter interface provides default implementation that works just as the old one
+  * XmlReporter outputs a machine-parseable XML
 
 ### Fixes
 * The `INFO` macro no longer contains superfluous semicolon (#1456)

@@ -385,16 +385,32 @@ set_tests_properties(List::Tests::Output PROPERTIES
     FAIL_REGULAR_EXPRESSION "Hidden Test"
 )
 add_test(NAME List::Tests::ExitCode COMMAND $<TARGET_FILE:SelfTest> --list-tests --verbosity high)
+add_test(NAME List::Tests::XmlOutput COMMAND $<TARGET_FILE:SelfTest> --list-tests --verbosity high -r xml)
+set_tests_properties(List::Tests::XmlOutput PROPERTIES
+    PASS_REGULAR_EXPRESSION "<Line>[0-9]+</Line>"
+    FAIL_REGULAR_EXPRESSION "[0-9]+ test cases"
+)
 
 add_test(NAME List::Tags::Output COMMAND $<TARGET_FILE:SelfTest> --list-tags)
 set_tests_properties(List::Tags::Output PROPERTIES
     PASS_REGULAR_EXPRESSION "[0-9]+ tags"
     FAIL_REGULAR_EXPRESSION "\\[\\.\\]")
 add_test(NAME List::Tags::ExitCode COMMAND $<TARGET_FILE:SelfTest> --list-tags)
+add_test(NAME List::Tags::XmlOutput COMMAND $<TARGET_FILE:SelfTest> --list-tags -r xml)
+set_tests_properties(List::Tags::XmlOutput PROPERTIES
+    PASS_REGULAR_EXPRESSION "<Count>18</Count>"
+    FAIL_REGULAR_EXPRESSION "[0-9]+ tags"
+)
+
 
 add_test(NAME List::Reporters::Output COMMAND $<TARGET_FILE:SelfTest> --list-reporters)
 set_tests_properties(List::Reporters::Output PROPERTIES PASS_REGULAR_EXPRESSION "Available reporters:")
 add_test(NAME List::Reporters::ExitCode COMMAND $<TARGET_FILE:SelfTest> --list-reporters)
+add_test(NAME List::Reporters::XmlOutput COMMAND $<TARGET_FILE:SelfTest> --list-reporters -r xml)
+set_tests_properties(List::Reporters::XmlOutput PROPERTIES
+    PASS_REGULAR_EXPRESSION "<Name>compact</Name>"
+    FAIL_REGULAR_EXPRESSION "Available reporters:"
+)
 
 
 

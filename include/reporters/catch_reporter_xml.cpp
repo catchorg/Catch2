@@ -10,6 +10,7 @@
 
 #include "../internal/catch_capture.hpp"
 #include "../internal/catch_reporter_registrars.hpp"
+#include "../internal/catch_list.h"
 
 #if defined(_MSC_VER)
 #pragma warning(push)
@@ -263,6 +264,64 @@ namespace Catch {
         m_xml.endElement();
     }
 #endif // CATCH_CONFIG_ENABLE_BENCHMARKING
+
+    void XmlReporter::listReporters(std::vector<ReporterDescription> const& descriptions, Config const&) {
+        auto outerTag = m_xml.scopedElement("AvailableReporters");
+        for (auto const& reporter : descriptions) {
+            auto inner = m_xml.scopedElement("Reporter");
+            m_xml.startElement("Name", XmlFormatting::Indent)
+                 .writeText(reporter.name, XmlFormatting::None)
+                 .endElement(XmlFormatting::Newline);
+            m_xml.startElement("Description", XmlFormatting::Indent)
+                 .writeText(reporter.description, XmlFormatting::None)
+                 .endElement(XmlFormatting::Newline);
+        }
+    }
+
+    void XmlReporter::listTests(std::vector<TestCase> const& tests, Config const&) {
+        auto outerTag = m_xml.scopedElement("MatchingTests");
+        for (auto const& test : tests) {
+            auto innerTag = m_xml.scopedElement("TestCase");
+            auto const& testInfo = test.getTestCaseInfo();
+            m_xml.startElement("Name", XmlFormatting::Indent)
+                 .writeText(testInfo.name, XmlFormatting::None)
+                 .endElement(XmlFormatting::Newline);
+            m_xml.startElement("ClassName", XmlFormatting::Indent)
+                 .writeText(testInfo.className, XmlFormatting::None)
+                 .endElement(XmlFormatting::Newline);
+            m_xml.startElement("Description", XmlFormatting::Indent)
+                 .writeText(testInfo.description, XmlFormatting::None)
+                 .endElement(XmlFormatting::Newline);
+            m_xml.startElement("Tags", XmlFormatting::Indent)
+                 .writeText(testInfo.tagsAsString(), XmlFormatting::None)
+                 .endElement(XmlFormatting::Newline);
+
+            auto sourceTag = m_xml.scopedElement("SourceInfo");
+            m_xml.startElement("File", XmlFormatting::Indent)
+                 .writeText(testInfo.lineInfo.file, XmlFormatting::None)
+                 .endElement(XmlFormatting::Newline);
+            m_xml.startElement("Line", XmlFormatting::Indent)
+                 .writeText(std::to_string(testInfo.lineInfo.line), XmlFormatting::None)
+                 .endElement(XmlFormatting::Newline);
+        }
+    }
+
+    void XmlReporter::listTags(std::vector<TagInfo> const& tags, Config const&) {
+        auto outerTag = m_xml.scopedElement("TagsFromMatchingTests");
+        for (auto const& tag : tags) {
+            auto innerTag = m_xml.scopedElement("Tag");
+            m_xml.startElement("Count", XmlFormatting::Indent)
+                 .writeText(std::to_string(tag.count), XmlFormatting::None)
+                 .endElement(XmlFormatting::Newline);
+            auto aliasTag = m_xml.scopedElement("Aliases");
+            for (auto const& alias : tag.spellings) {
+                m_xml.startElement("Alias", XmlFormatting::Indent)
+                     .writeText(alias, XmlFormatting::None)
+                     .endElement(XmlFormatting::Newline);
+            }
+        }
+    }
+
 
     CATCH_REGISTER_REPORTER( "xml", XmlReporter )
 
