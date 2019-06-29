@@ -189,3 +189,18 @@ TEST_CASE( "#1394 nested", "[.][approvals][tracker]" ) {
         REQUIRE(1 == 0);
     }
 }
+
+// Selecting a "not last" section inside a test case via -c "section" would
+// previously only run the first subsection, instead of running all of them.
+// This allows us to check that `"#1670 regression check" -c A` leads to
+// 2 successful assertions.
+TEST_CASE("#1670 regression check", "[.approvals][tracker]") {
+    SECTION("A") {
+        SECTION("1") SUCCEED();
+        SECTION("2") SUCCEED();
+    }
+    SECTION("B") {
+        SECTION("1") SUCCEED();
+        SECTION("2") SUCCEED();
+    }
+}
