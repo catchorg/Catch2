@@ -139,7 +139,7 @@ namespace TestCaseTracking {
                 m_runState = CompletedSuccessfully;
                 break;
             case ExecutingChildren:
-                if( m_children.empty() || m_children.back()->isComplete() )
+                if( std::all_of(m_children.begin(), m_children.end(), [](ITrackerPtr const& t){ return t->isComplete(); }) )
                     m_runState = CompletedSuccessfully;
                 break;
 
