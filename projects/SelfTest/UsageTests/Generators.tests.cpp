@@ -167,6 +167,10 @@ TEST_CASE("Generators -- adapters", "[generators][generic]") {
             REQUIRE(chunk2.front() == chunk2.back());
             REQUIRE(chunk2.front() < 3);
         }
+        SECTION("Chunk size of zero") {
+            auto chunk2 = GENERATE(take(3, chunk(0, value(1))));
+            REQUIRE(chunk2.size() == 0);
+        }
         SECTION("Throws on too small generators") {
             using namespace Catch::Generators;
             REQUIRE_THROWS_AS(chunk(2, value(1)), Catch::GeneratorException);

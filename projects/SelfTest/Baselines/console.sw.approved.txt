@@ -3550,6 +3550,45 @@ with expansion:
 -------------------------------------------------------------------------------
 Generators -- adapters
   Chunking a generator into sized pieces
+  Chunk size of zero
+-------------------------------------------------------------------------------
+Generators.tests.cpp:<line number>
+...............................................................................
+
+Generators.tests.cpp:<line number>: PASSED:
+  REQUIRE( chunk2.size() == 0 )
+with expansion:
+  0 == 0
+
+-------------------------------------------------------------------------------
+Generators -- adapters
+  Chunking a generator into sized pieces
+  Chunk size of zero
+-------------------------------------------------------------------------------
+Generators.tests.cpp:<line number>
+...............................................................................
+
+Generators.tests.cpp:<line number>: PASSED:
+  REQUIRE( chunk2.size() == 0 )
+with expansion:
+  0 == 0
+
+-------------------------------------------------------------------------------
+Generators -- adapters
+  Chunking a generator into sized pieces
+  Chunk size of zero
+-------------------------------------------------------------------------------
+Generators.tests.cpp:<line number>
+...............................................................................
+
+Generators.tests.cpp:<line number>: PASSED:
+  REQUIRE( chunk2.size() == 0 )
+with expansion:
+  0 == 0
+
+-------------------------------------------------------------------------------
+Generators -- adapters
+  Chunking a generator into sized pieces
   Throws on too small generators
 -------------------------------------------------------------------------------
 Generators.tests.cpp:<line number>
@@ -12335,5 +12374,5 @@ Misc.tests.cpp:<line number>: PASSED:
 
 ===============================================================================
 test cases:  295 |  205 passed |  86 failed |  4 failed as expected
-assertions: 1564 | 1395 passed | 148 failed | 21 failed as expected
+assertions: 1567 | 1398 passed | 148 failed | 21 failed as expected
 
