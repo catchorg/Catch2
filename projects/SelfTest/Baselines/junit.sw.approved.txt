@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuitesloose text artifact
 >
-  <testsuite name="<exe-name>" errors="17" failures="132" tests="1565" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
+  <testsuite name="<exe-name>" errors="17" failures="132" tests="1568" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
     <properties>
       <property name="filters" value="~[!nonportable]~[!benchmark]~[approvals]"/>
       <property name="random-seed" value="1"/>
@@ -416,6 +416,7 @@ Message.tests.cpp:<line number>
     <testcase classname="<exe-name>.global" name="Generators -- adapters/Repeating a generator" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Generators -- adapters/Chunking a generator into sized pieces/Number of elements in source is divisible by chunk size" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Generators -- adapters/Chunking a generator into sized pieces/Number of elements in source is not divisible by chunk size" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="Generators -- adapters/Chunking a generator into sized pieces/Chunk size of zero" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Generators -- adapters/Chunking a generator into sized pieces/Throws on too small generators" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Generators -- simple/one" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Generators -- simple/two" time="{duration}"/>

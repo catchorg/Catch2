@@ -4261,6 +4261,48 @@ Nor would this
         <OverallResults successes="3" failures="0" expectedFailures="0"/>
       </Section>
       <Section name="Chunking a generator into sized pieces" filename="projects/<exe-name>/UsageTests/Generators.tests.cpp" >
+        <Section name="Chunk size of zero" filename="projects/<exe-name>/UsageTests/Generators.tests.cpp" >
+          <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/UsageTests/Generators.tests.cpp" >
+            <Original>
+              chunk2.size() == 0
+            </Original>
+            <Expanded>
+              0 == 0
+            </Expanded>
+          </Expression>
+          <OverallResults successes="1" failures="0" expectedFailures="0"/>
+        </Section>
+        <OverallResults successes="1" failures="0" expectedFailures="0"/>
+      </Section>
+      <Section name="Chunking a generator into sized pieces" filename="projects/<exe-name>/UsageTests/Generators.tests.cpp" >
+        <Section name="Chunk size of zero" filename="projects/<exe-name>/UsageTests/Generators.tests.cpp" >
+          <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/UsageTests/Generators.tests.cpp" >
+            <Original>
+              chunk2.size() == 0
+            </Original>
+            <Expanded>
+              0 == 0
+            </Expanded>
+          </Expression>
+          <OverallResults successes="1" failures="0" expectedFailures="0"/>
+        </Section>
+        <OverallResults successes="1" failures="0" expectedFailures="0"/>
+      </Section>
+      <Section name="Chunking a generator into sized pieces" filename="projects/<exe-name>/UsageTests/Generators.tests.cpp" >
+        <Section name="Chunk size of zero" filename="projects/<exe-name>/UsageTests/Generators.tests.cpp" >
+          <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/UsageTests/Generators.tests.cpp" >
+            <Original>
+              chunk2.size() == 0
+            </Original>
+            <Expanded>
+              0 == 0
+            </Expanded>
+          </Expression>
+          <OverallResults successes="1" failures="0" expectedFailures="0"/>
+        </Section>
+        <OverallResults successes="1" failures="0" expectedFailures="0"/>
+      </Section>
+      <Section name="Chunking a generator into sized pieces" filename="projects/<exe-name>/UsageTests/Generators.tests.cpp" >
         <Section name="Throws on too small generators" filename="projects/<exe-name>/UsageTests/Generators.tests.cpp" >
           <Expression success="true" type="REQUIRE_THROWS_AS" filename="projects/<exe-name>/UsageTests/Generators.tests.cpp" >
             <Original>
@@ -14692,7 +14734,7 @@ loose text artifact
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="1395" failures="149" expectedFailures="21"/>
+    <OverallResults successes="1398" failures="149" expectedFailures="21"/>
   </Group>
-  <OverallResults successes="1395" failures="148" expectedFailures="21"/>
+  <OverallResults successes="1398" failures="148" expectedFailures="21"/>
 </Catch>

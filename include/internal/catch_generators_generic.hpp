@@ -205,12 +205,14 @@ namespace Generators {
             m_chunk_size(size), m_generator(std::move(generator))
         {
             m_chunk.reserve(m_chunk_size);
-            m_chunk.push_back(m_generator.get());
-            for (size_t i = 1; i < m_chunk_size; ++i) {
-                if (!m_generator.next()) {
-                    Catch::throw_exception(GeneratorException("Not enough values to initialize the first chunk"));
-                }
+            if (m_chunk_size != 0) {
                 m_chunk.push_back(m_generator.get());
+                for (size_t i = 1; i < m_chunk_size; ++i) {
+                    if (!m_generator.next()) {
+                        Catch::throw_exception(GeneratorException("Not enough values to initialize the first chunk"));
+                    }
+                    m_chunk.push_back(m_generator.get());
+                }
             }
         }
         std::vector<T> const& get() const override {
