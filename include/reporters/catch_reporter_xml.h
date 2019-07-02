@@ -14,7 +14,7 @@
 
 
 namespace Catch {
-    class XmlReporter : public StreamingReporterBase<XmlReporter> {
+    class XmlReporter : public StreamingReporterBase {
     public:
         XmlReporter(ReporterConfig const& _config);
 

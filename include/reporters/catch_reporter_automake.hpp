@@ -16,7 +16,7 @@
 
 namespace Catch {
 
-    struct AutomakeReporter : StreamingReporterBase<AutomakeReporter> {
+    struct AutomakeReporter : StreamingReporterBase {
         AutomakeReporter( ReporterConfig const& _config )
           :   StreamingReporterBase( _config )
         {}

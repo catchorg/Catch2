@@ -14,7 +14,7 @@
 
 namespace Catch {
 
-    class JunitReporter : public CumulativeReporterBase<JunitReporter> {
+    class JunitReporter : public CumulativeReporterBase {
     public:
         JunitReporter(ReporterConfig const& _config);
 

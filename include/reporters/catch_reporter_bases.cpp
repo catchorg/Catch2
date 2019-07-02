@@ -66,4 +66,7 @@ namespace Catch {
     }
 
 
+    StreamingReporterBase::~StreamingReporterBase() = default;
+    CumulativeReporterBase::~CumulativeReporterBase() = default;
+
 } // end namespace Catch

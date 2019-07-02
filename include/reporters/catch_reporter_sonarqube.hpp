@@ -19,7 +19,7 @@
 
 namespace Catch {
 
-    struct SonarQubeReporter : CumulativeReporterBase<SonarQubeReporter> {
+    struct SonarQubeReporter : CumulativeReporterBase {
 
         SonarQubeReporter(ReporterConfig const& config)
         : CumulativeReporterBase(config)

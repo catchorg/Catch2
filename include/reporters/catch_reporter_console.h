@@ -23,7 +23,7 @@ namespace Catch {
     struct SummaryColumn;
     class TablePrinter;
 
-    struct ConsoleReporter : StreamingReporterBase<ConsoleReporter> {
+    struct ConsoleReporter : StreamingReporterBase {
         std::unique_ptr<TablePrinter> m_tablePrinter;
 
         ConsoleReporter(ReporterConfig const& config);
