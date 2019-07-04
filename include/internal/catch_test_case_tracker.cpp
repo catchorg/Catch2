@@ -8,6 +8,7 @@
 #include "catch_test_case_tracker.h"
 
 #include "catch_enforce.h"
+#include "catch_string_manip.h"
 
 #include <algorithm>
 #include <cassert>
@@ -190,7 +191,7 @@ namespace TestCaseTracking {
 
         if ((m_filters.empty() || m_filters[0] == "") ||
              std::find(m_filters.begin(), m_filters.end(),
-                       m_nameAndLocation.name) != m_filters.end())
+                       trim(m_nameAndLocation.name)) != m_filters.end())
             complete = TrackerBase::isComplete();
         return complete;
 
@@ -217,7 +218,7 @@ namespace TestCaseTracking {
     }
 
     void SectionTracker::tryOpen() {
-        if( !isComplete() && (m_filters.empty() || m_filters[0].empty() ||  m_filters[0] == m_nameAndLocation.name ) )
+        if( !isComplete() )
             open();
     }
 
@@ -225,7 +226,10 @@ namespace TestCaseTracking {
         if( !filters.empty() ) {
             m_filters.push_back(""); // Root - should never be consulted
             m_filters.push_back(""); // Test Case - not a section filter
-            m_filters.insert( m_filters.end(), filters.begin(), filters.end() );
+            std::transform(
+                filters.begin(), filters.end(),
+                std::back_inserter( m_filters ),
+                &trim );
         }
     }
     void SectionTracker::addNextFilters( std::vector<std::string> const& filters ) {
