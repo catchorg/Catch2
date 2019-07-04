@@ -28,7 +28,7 @@ namespace Catch
         virtual bool matches( std::string const& str ) const;
 
     private:
-        std::string adjustCase( std::string const& str ) const;
+        std::string normaliseString( std::string const& str ) const;
         CaseSensitive::Choice m_caseSensitivity;
         WildcardPosition m_wildcard = NoWildcard;
         std::string m_pattern;

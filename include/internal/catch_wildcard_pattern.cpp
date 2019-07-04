@@ -9,14 +9,12 @@
 #include "catch_enforce.h"
 #include "catch_string_manip.h"
 
-#include <sstream>
-
 namespace Catch {
 
     WildcardPattern::WildcardPattern( std::string const& pattern,
                                       CaseSensitive::Choice caseSensitivity )
     :   m_caseSensitivity( caseSensitivity ),
-        m_pattern( adjustCase( pattern ) )
+        m_pattern( normaliseString( pattern ) )
     {
         if( startsWith( m_pattern, '*' ) ) {
             m_pattern = m_pattern.substr( 1 );
@@ -31,19 +29,19 @@ namespace Catch {
     bool WildcardPattern::matches( std::string const& str ) const {
         switch( m_wildcard ) {
             case NoWildcard:
-                return m_pattern == adjustCase( str );
+                return m_pattern == normaliseString( str );
             case WildcardAtStart:
-                return endsWith( adjustCase( str ), m_pattern );
+                return endsWith( normaliseString( str ), m_pattern );
             case WildcardAtEnd:
-                return startsWith( adjustCase( str ), m_pattern );
+                return startsWith( normaliseString( str ), m_pattern );
             case WildcardAtBothEnds:
-                return contains( adjustCase( str ), m_pattern );
+                return contains( normaliseString( str ), m_pattern );
             default:
                 CATCH_INTERNAL_ERROR( "Unknown enum" );
         }
     }
 
-    std::string WildcardPattern::adjustCase( std::string const& str ) const {
-        return m_caseSensitivity == CaseSensitive::No ? toLower( str ) : str;
+    std::string WildcardPattern::normaliseString( std::string const& str ) const {
+        return trim( m_caseSensitivity == CaseSensitive::No ? toLower( str ) : str );
     }
 }

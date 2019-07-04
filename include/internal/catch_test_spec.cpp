@@ -24,7 +24,7 @@ namespace Catch {
     : m_wildcardPattern( toLower( name ), CaseSensitive::No )
     {}
     bool TestSpec::NamePattern::matches( TestCaseInfo const& testCase ) const {
-        return m_wildcardPattern.matches( toLower( testCase.name ) );
+        return m_wildcardPattern.matches( testCase.name );
     }
 
     TestSpec::TagPattern::TagPattern( std::string const& tag ) : m_tag( toLower( tag ) ) {}
