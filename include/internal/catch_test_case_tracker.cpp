@@ -15,6 +15,7 @@
 #include <stdexcept>
 #include <memory>
 #include <sstream>
+#include <iterator>
 
 #if defined(__clang__)
 #    pragma clang diagnostic push
