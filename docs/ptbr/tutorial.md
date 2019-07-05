@@ -7,7 +7,7 @@
 [Escrevendo testes](#writing-tests)<br>
 [Casos de testes e seções](#test-cases-and-sections)<br>
 [Estilo BDD](#bdd-style)<br>
-[Aumentando a escala](#scaling-up)<br>
+[Aumentando em escala](#scaling-up)<br>
 [Tipo de casos de teste parametrizados](#type-parametrised-test-cases)<br>
 [Próximos passos](#next-steps)<br>
 
