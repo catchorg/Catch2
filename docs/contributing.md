@@ -1,6 +1,12 @@
 <a id="top"></a>
 # Contributing to Catch
 
+**Contents**<br>
+[Branches](#branches)<br>
+[Directory structure](#directory-structure)<br>
+[Testing your changes](#testing-your-changes)<br>
+[Code constructs to watch out for](#code-constructs-to-watch-out-for)<br>
+
 So you want to contribute something to Catch? That's great! Whether it's a bug fix, a new feature, support for
 additional compilers - or just a fix to the documentation - all contributions are very welcome and very much appreciated.
 Of course so are bug reports and other comments and questions.
