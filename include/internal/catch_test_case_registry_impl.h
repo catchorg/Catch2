@@ -23,6 +23,8 @@ namespace Catch {
     struct IConfig;
 
     std::vector<TestCase> sortTests( IConfig const& config, std::vector<TestCase> const& unsortedTestCases );
+
+    bool isThrowSafe( TestCase const& testCase, IConfig const& config );
     bool matchTest( TestCase const& testCase, TestSpec const& testSpec, IConfig const& config );
 
     void enforceNoDuplicateTestCases( std::vector<TestCase> const& functions );

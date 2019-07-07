@@ -25,6 +25,7 @@
 
 #include <cstdlib>
 #include <iomanip>
+#include <set>
 
 namespace Catch {
 
@@ -58,42 +59,57 @@ namespace Catch {
             return ret;
         }
 
+        class TestSet {
+        public:
+            explicit TestSet(IConfig const& config, RunContext& context)
+            : m_context{context}
+            {
+                auto const& allTestCases = getAllTestCasesSorted(config);
+                m_matches = config.testSpec().matchesByFilter(allTestCases, config);
+
+                if (m_matches.empty()) {
+                    for (auto const& test : allTestCases)
+                        if (!test.isHidden())
+                            m_tests.emplace(&test);
+                } else {
+                    for (auto const& match : m_matches)
+                        std::copy(match.tests.begin(), match.tests.end(), std::inserter(m_tests, m_tests.begin()));
+                }
+            }
+
+            Totals execute() const {
+                Totals totals;
+                for (auto const& testCase : m_tests) {
+                    if (!m_context.aborting())
+                        totals += m_context.runTest(*testCase);
+                    else
+                        m_context.reporter().skipTest(*testCase);
+                }
+
+                for (auto const& match : m_matches) {
+                    if (match.tests.empty()) {
+                        m_context.reporter().noMatchingTestCases(match.name);
+                        totals.error = -1;
+                    }
+                }
+                return totals;
+            }
+
+        private:
+            using Tests = std::set<TestCase const*>;
+
+            RunContext& m_context;
+            Tests m_tests;
+            TestSpec::Matches m_matches;
+        };
 
         Catch::Totals runTests(std::shared_ptr<Config> const& config) {
-            auto reporter = makeReporter(config);
-
-            RunContext context(config, std::move(reporter));
-
-            Totals totals;
+            RunContext context(config, makeReporter(config));
 
             context.testGroupStarting(config->name(), 1, 1);
 
-            TestSpec testSpec = config->testSpec();
-
-            auto const& allTestCases = getAllTestCasesSorted(*config);
-            for (auto const& testCase : allTestCases) {
-                bool matching = (!testSpec.hasFilters() && !testCase.isHidden()) ||
-                                 (testSpec.hasFilters() && matchTest(testCase, testSpec, *config));
-
-                if (!context.aborting() && matching)
-                    totals += context.runTest(testCase);
-                else
-                    context.reporter().skipTest(testCase);
-            }
-
-            if (config->warnAboutNoTests() && totals.testCases.total() == 0) {
-                ReusableStringStream testConfig;
-
-                bool first = true;
-                for (const auto& input : config->getTestsOrTags()) {
-                    if (!first) { testConfig << ' '; }
-                    first = false;
-                    testConfig << input;
-                }
-
-                context.reporter().noMatchingTestCases(testConfig.str());
-                totals.error = -1;
-            }
+            TestSet testSet {*config, context};
+            auto const totals = testSet.execute();
 
             context.testGroupEnded(config->name(), totals, 1, 1);
             return totals;
@@ -275,6 +291,10 @@ namespace Catch {
                 return static_cast<int>( *listed );
 
             auto totals = runTests( m_config );
+
+            if( m_config->warnAboutNoTests() && totals.error == -1 )
+                return 2;
+
             // Note that on unices only the lower 8 bits are usually used, clamping
             // the return value to 255 prevents false negative when some multiple
             // of 256 tests has failed

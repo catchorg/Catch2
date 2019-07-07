@@ -36,8 +36,13 @@ namespace Catch {
         }
         return sorted;
     }
+
+    bool isThrowSafe( TestCase const& testCase, IConfig const& config ) {
+        return !testCase.throws() || config.allowThrows();
+    }
+
     bool matchTest( TestCase const& testCase, TestSpec const& testSpec, IConfig const& config ) {
-        return testSpec.matches( testCase ) && ( config.allowThrows() || !testCase.throws() );
+        return testSpec.matches( testCase ) && isThrowSafe( testCase, config );
     }
 
     void enforceNoDuplicateTestCases( std::vector<TestCase> const& functions ) {
