@@ -59,13 +59,14 @@ namespace Catch {
             return ret;
         }
 
-        class TestSet {
+        class TestGroup {
         public:
-            explicit TestSet(IConfig const& config, RunContext& context)
-            : m_context{context}
+            explicit TestGroup(std::shared_ptr<Config> const& config)
+            : m_config{*config}
+            , m_context{config, makeReporter(config)}
             {
-                auto const& allTestCases = getAllTestCasesSorted(config);
-                m_matches = config.testSpec().matchesByFilter(allTestCases, config);
+                auto const& allTestCases = getAllTestCasesSorted(m_config);
+                m_matches = m_config.testSpec().matchesByFilter(allTestCases, m_config);
 
                 if (m_matches.empty()) {
                     for (auto const& test : allTestCases)
@@ -77,8 +78,9 @@ namespace Catch {
                 }
             }
 
-            Totals execute() const {
+            Totals execute() {
                 Totals totals;
+                m_context.testGroupStarting(m_config.name(), 1, 1);
                 for (auto const& testCase : m_tests) {
                     if (!m_context.aborting())
                         totals += m_context.runTest(*testCase);
@@ -92,28 +94,18 @@ namespace Catch {
                         totals.error = -1;
                     }
                 }
+                m_context.testGroupEnded(m_config.name(), totals, 1, 1);
                 return totals;
             }
 
         private:
             using Tests = std::set<TestCase const*>;
 
-            RunContext& m_context;
+            Config const& m_config;
+            RunContext m_context;
             Tests m_tests;
             TestSpec::Matches m_matches;
         };
-
-        Catch::Totals runTests(std::shared_ptr<Config> const& config) {
-            RunContext context(config, makeReporter(config));
-
-            context.testGroupStarting(config->name(), 1, 1);
-
-            TestSet testSet {*config, context};
-            auto const totals = testSet.execute();
-
-            context.testGroupEnded(config->name(), totals, 1, 1);
-            return totals;
-        }
 
         void applyFilenamesAsTags(Catch::IConfig const& config) {
             auto& tests = const_cast<std::vector<TestCase>&>(getAllTestCasesSorted(config));
@@ -290,7 +282,8 @@ namespace Catch {
             if( Option<std::size_t> listed = list( m_config ) )
                 return static_cast<int>( *listed );
 
-            auto totals = runTests( m_config );
+            TestGroup tests { m_config };
+            auto const totals = tests.execute();
 
             if( m_config->warnAboutNoTests() && totals.error == -1 )
                 return 2;
