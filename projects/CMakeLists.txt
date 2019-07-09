@@ -392,8 +392,14 @@ set_tests_properties(ListTestNamesOnly PROPERTIES
 add_test(NAME NoAssertions COMMAND $<TARGET_FILE:SelfTest> -w NoAssertions)
 set_tests_properties(NoAssertions PROPERTIES PASS_REGULAR_EXPRESSION "No assertions in test case")
 
-add_test(NAME NoTest COMMAND $<TARGET_FILE:SelfTest> -w NoTests "___nonexistent_test___")
-set_tests_properties(NoTest PROPERTIES PASS_REGULAR_EXPRESSION "No test cases matched")
+add_test(NAME NoTest COMMAND $<TARGET_FILE:SelfTest> Tracker, "___nonexistent_test___")
+set_tests_properties(NoTest PROPERTIES
+    PASS_REGULAR_EXPRESSION "No test cases matched '___nonexistent_test___'"
+    FAIL_REGULAR_EXPRESSION "No tests ran"
+)
+
+add_test(NAME WarnAboutNoTests COMMAND $<TARGET_FILE:SelfTest> -w NoTests "___nonexistent_test___")
+set_tests_properties(WarnAboutNoTests PROPERTIES WILL_FAIL TRUE)
 
 add_test(NAME FilteredSection-1 COMMAND $<TARGET_FILE:SelfTest> \#1394 -c RunSection)
 set_tests_properties(FilteredSection-1 PROPERTIES FAIL_REGULAR_EXPRESSION "No tests ran")
