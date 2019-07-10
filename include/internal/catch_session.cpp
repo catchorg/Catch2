@@ -26,6 +26,7 @@
 #include <cstdlib>
 #include <iomanip>
 #include <set>
+#include <iterator>
 
 namespace Catch {
 
@@ -62,11 +63,11 @@ namespace Catch {
         class TestGroup {
         public:
             explicit TestGroup(std::shared_ptr<Config> const& config)
-            : m_config{*config}
+            : m_config{config}
             , m_context{config, makeReporter(config)}
             {
-                auto const& allTestCases = getAllTestCasesSorted(m_config);
-                m_matches = m_config.testSpec().matchesByFilter(allTestCases, m_config);
+                auto const& allTestCases = getAllTestCasesSorted(*m_config);
+                m_matches = m_config->testSpec().matchesByFilter(allTestCases, *m_config);
 
                 if (m_matches.empty()) {
                     for (auto const& test : allTestCases)
@@ -80,7 +81,7 @@ namespace Catch {
 
             Totals execute() {
                 Totals totals;
-                m_context.testGroupStarting(m_config.name(), 1, 1);
+                m_context.testGroupStarting(m_config->name(), 1, 1);
                 for (auto const& testCase : m_tests) {
                     if (!m_context.aborting())
                         totals += m_context.runTest(*testCase);
@@ -94,14 +95,14 @@ namespace Catch {
                         totals.error = -1;
                     }
                 }
-                m_context.testGroupEnded(m_config.name(), totals, 1, 1);
+                m_context.testGroupEnded(m_config->name(), totals, 1, 1);
                 return totals;
             }
 
         private:
             using Tests = std::set<TestCase const*>;
 
-            Config const& m_config;
+            std::shared_ptr<Config> m_config;
             RunContext m_context;
             Tests m_tests;
             TestSpec::Matches m_matches;
