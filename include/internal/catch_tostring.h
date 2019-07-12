@@ -211,7 +211,6 @@ namespace Catch {
     };
 
 #if defined(CATCH_CONFIG_CPP17_BYTE)
-#include <cstddef>
     template<>
     struct StringMaker<std::byte> {
         static std::string convert(std::byte value);
