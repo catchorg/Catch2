@@ -194,6 +194,8 @@ is very high and should not be encountered in practice._
 
 * **TEMPLATE_LIST_TEST_CASE(** _test name_, _tags_, _type list_ **)**
 
+> [Introduced](https://github.com/catchorg/Catch2/issues/1627) in Catch 2.9.0.
+
 _type list_ is a generic list of types on which test case should be instantiated.
 List can be `std::tuple`, `boost::mpl::list`, `boost::mp11::mp_list` or anything with
 `template <typename...>` signature.
