@@ -89,27 +89,30 @@ std::string windowsify_path(std::string path) {
     return path;
 }
 
-void exec_cmd(std::string const& cmd, int log_num, std::string const& path) {
+int exec_cmd(std::string const& cmd, int log_num, std::string const& path) {
     std::array<char, 128> buffer;
-#if defined(_WIN32)
+
     // cmd has already been escaped outside this function.
     auto real_cmd = "OpenCppCoverage --export_type binary:cov-report" + std::to_string(log_num)
         + ".bin --quiet " + "--sources " + escape_arg(path) + " --cover_children -- " + cmd;
     std::cout << "=== Marker ===: Cmd: " << real_cmd << '\n';
-    std::shared_ptr<FILE> pipe(_popen(real_cmd.c_str(), "r"), _pclose);
-#else // Just for testing, in the real world we will always work under WIN32
-    (void)log_num; (void)path;
-    std::shared_ptr<FILE> pipe(popen(cmd.c_str(), "r"), pclose);
-#endif
-
+    auto pipe = _popen(real_cmd.c_str(), "r");
+    
     if (!pipe) {
         throw std::runtime_error("popen() failed!");
     }
-    while (!feof(pipe.get())) {
-        if (fgets(buffer.data(), 128, pipe.get()) != nullptr) {
+    while (!feof(pipe)) {
+        if (fgets(buffer.data(), 128, pipe) != nullptr) {
             std::cout << buffer.data();
         }
     }
+    
+    auto ret = _pclose(pipe);
+    if (ret == -1) {
+        throw std::runtime_error("underlying error in pclose()");
+    }
+    
+    return ret;
 }
 
 // argv should be:
