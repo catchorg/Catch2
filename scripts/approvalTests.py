@@ -92,9 +92,10 @@ def diffFiles(fileA, fileB):
 
 
 def normalizeFilepath(line):
-    if catchPathSymbolic in line:
+    if catchPathSymbolic in line or catchPathSymbolic.lower() in line:
         # make paths relative to Catch root
         line = line.replace(catchPathSymbolic + os.sep, '')
+        line = line.replace(catchPathSymbolic.lower() + os.sep, '')
 
     m = langFilenameParser.match(line)
     if m:
