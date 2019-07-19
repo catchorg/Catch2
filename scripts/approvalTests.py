@@ -10,13 +10,13 @@ import re
 import difflib
 
 import scriptCommon
-from scriptCommon import catchPathSymbolic
+from scriptCommon import catchPath
 
 if os.name == 'nt':
     # Enable console colours on windows
     os.system('')
 
-rootPath = os.path.join(catchPathSymbolic, 'projects/SelfTest/Baselines')
+rootPath = os.path.join(catchPath, 'projects/SelfTest/Baselines')
 
 langFilenameParser = re.compile(r'(.+\.[ch]pp)')
 filelocParser = re.compile(r'''
@@ -92,9 +92,9 @@ def diffFiles(fileA, fileB):
 
 
 def normalizeFilepath(line):
-    if catchPathSymbolic in line:
+    if catchPath in line:
         # make paths relative to Catch root
-        line = line.replace(catchPathSymbolic + os.sep, '')
+        line = line.replace(catchPath + os.sep, '')
 
     m = langFilenameParser.match(line)
     if m:

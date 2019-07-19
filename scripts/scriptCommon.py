@@ -4,7 +4,6 @@ import subprocess
 
 
 catchPath = os.path.dirname(os.path.realpath( os.path.dirname(sys.argv[0])))
-catchPathSymbolic = os.path.dirname(os.path.dirname(sys.argv[0]))
 
 def getBuildExecutable():
     if os.name == 'nt':
