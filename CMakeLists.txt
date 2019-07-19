@@ -42,7 +42,7 @@ if(USE_WMAIN)
 endif()
 
 if (BUILD_TESTING AND CATCH_BUILD_TESTING AND NOT_SUBPROJECT)
-    find_package(PythonInterp)
+    find_package(Python3 COMPONENTS Interpreter)
     if (NOT PYTHONINTERP_FOUND)
         message(FATAL_ERROR "Python not found, but required for tests")
     endif()
