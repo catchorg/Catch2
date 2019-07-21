@@ -100,6 +100,13 @@ TEMPLATE_TEST_CASE_METHOD_SIG(Nttp_Fixture, "A TEMPLATE_TEST_CASE_METHOD_SIG bas
     REQUIRE(Nttp_Fixture<V>::value > 0);
 }
 
+template<typename T>
+struct Template_Fixture_2 {
+    Template_Fixture_2() {}
+
+    T m_a;
+};
+
 template< typename T, size_t V>
 struct Template_Foo_2 {
     size_t size() { return V; }
