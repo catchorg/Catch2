@@ -214,6 +214,8 @@ TEMPLATE_LIST_TEST_CASE("Template test case with test types specified inside std
 
 ## Signature based parametrised test cases
 
+> [Introduced](https://github.com/catchorg/Catch2/issues/1609) in Catch 2.8.0.
+
 In addition to [type parametrised test cases](#type-parametrised-test-cases) Catch2 also supports
 signature base parametrised test cases, in form of `TEMPLATE_TEST_CASE_SIG` and `TEMPLATE_PRODUCT_TEST_CASE_SIG`.
 These test cases have similar syntax like [type parametrised test cases](#type-parametrised-test-cases), with one
