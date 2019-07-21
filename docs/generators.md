@@ -96,6 +96,8 @@ scope and thus capturing references is dangerous. If you need to use
 variables inside the generator expression, make sure you thought through
 the lifetime implications and use `GENERATE_COPY` or `GENERATE_REF`.**
 
+> `GENERATE_COPY` and `GENERATE_REF` were introduced in Catch 2.7.1.
+
 You can also override the inferred type by using `as<type>` as the first
 argument to the macro. This can be useful when dealing with string literals,
 if you want them to come out as `std::string`:
