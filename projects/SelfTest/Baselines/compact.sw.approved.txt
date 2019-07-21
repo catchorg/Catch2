@@ -1084,6 +1084,9 @@ Tag.tests.cpp:<line number>: passed: registry.add( "[@no square bracket at end",
 Class.tests.cpp:<line number>: passed: Template_Fixture<TestType>::m_a == 1 for: 1 == 1
 Class.tests.cpp:<line number>: passed: Template_Fixture<TestType>::m_a == 1 for: 1 == 1
 Class.tests.cpp:<line number>: passed: Template_Fixture<TestType>::m_a == 1 for: 1.0 == 1
+Misc.tests.cpp:<line number>: passed: sizeof(TestType) > 0 for: 1 > 0
+Misc.tests.cpp:<line number>: passed: sizeof(TestType) > 0 for: 1 > 0
+Misc.tests.cpp:<line number>: passed: sizeof(TestType) > 0 for: 4 > 0
 Misc.tests.cpp:<line number>: passed: sizeof(TestType) > 0 for: 4 > 0
 Misc.tests.cpp:<line number>: passed: sizeof(TestType) > 0 for: 1 > 0
 Misc.tests.cpp:<line number>: passed: sizeof(TestType) > 0 for: 4 > 0
