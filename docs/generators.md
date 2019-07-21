@@ -49,6 +49,8 @@ a test case,
   * `RandomFloatGenerator<Float>` -- generates random Floats from range
   * `RangeGenerator<T>` -- generates all values inside a specific range
 
+> `ChunkGenerator<T>`, `RandomIntegerGenerator<Integral>`, `RandomFloatGenerator<Float>` and `RangeGenerator<T>` were introduced in Catch 2.7.0.
+
 The generators also have associated helper functions that infer their
 type, making their usage much nicer. These are
 
@@ -64,6 +66,7 @@ type, making their usage much nicer. These are
 * `range(start, end)` for `RangeGenerator<T>` with a step size of `1`
 * `range(start, end, step)` for `RangeGenerator<T>` with a custom step size
 
+> `chunk()`, `random()` and both `range()` functions were introduced in Catch 2.7.0.
 
 And can be used as shown in the example below to create a generator
 that returns 100 odd random number:
