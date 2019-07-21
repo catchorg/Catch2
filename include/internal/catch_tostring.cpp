@@ -170,6 +170,12 @@ std::string StringMaker<wchar_t *>::convert(wchar_t * str) {
 }
 #endif
 
+#if defined(CATCH_CONFIG_CPP17_BYTE)
+#include <cstddef>
+std::string StringMaker<std::byte>::convert(std::byte value) {
+    return ::Catch::Detail::stringify(std::to_integer<unsigned long long>(value));
+}
+#endif // defined(CATCH_CONFIG_CPP17_BYTE)
 
 std::string StringMaker<int>::convert(int value) {
     return ::Catch::Detail::stringify(static_cast<long long>(value));

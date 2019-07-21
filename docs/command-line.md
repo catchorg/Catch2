@@ -21,8 +21,8 @@
 [Identify framework and version according to the libIdentify standard](#identify-framework-and-version-according-to-the-libidentify-standard)<br>
 [Wait for key before continuing](#wait-for-key-before-continuing)<br>
 [Specify the number of benchmark samples to collect](#specify-the-number-of-benchmark-samples-to-collect)<br>
-[Specify the number of benchmark resamples for bootstrapping](#specify-the-number-of-resamples-for-bootstrapping)<br>
-[Specify the confidence interval for bootstrapping](#specify-the-confidence-interval-for-bootstrapping)<br>
+[Specify the number of resamples for bootstrapping](#specify-the-number-of-resamples-for-bootstrapping)<br>
+[Specify the confidence-interval for bootstrapping](#specify-the-confidence-interval-for-bootstrapping)<br>
 [Disable statistical analysis of collected benchmark samples](#disable-statistical-analysis-of-collected-benchmark-samples)<br>
 [Usage](#usage)<br>
 [Specify the section to run](#specify-the-section-to-run)<br>
