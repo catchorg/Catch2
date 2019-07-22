@@ -101,6 +101,8 @@ by types, in the form of `TEMPLATE_TEST_CASE`,
 
 * **TEMPLATE_TEST_CASE(** _test name_ , _tags_,  _type1_, _type2_, ..., _typen_ **)**
 
+> [Introduced](https://github.com/catchorg/Catch2/issues/1437) in Catch 2.5.0.
+
 _test name_ and _tag_ are exactly the same as they are in `TEST_CASE`,
 with the difference that the tag string must be provided (however, it
 can be empty). _type1_ through _typen_ is the list of types for which
