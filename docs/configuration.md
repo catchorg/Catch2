@@ -132,6 +132,8 @@ Catch's selection, by defining either `CATCH_CONFIG_CPP11_TO_STRING` or
     CATCH_CONFIG_CPP17_OPTIONAL             // Override std::optional support detection (checked by CATCH_CONFIG_ENABLE_OPTIONAL_STRINGMAKER)
     CATCH_CONFIG_CPP17_BYTE                 // Override std::byte support detection (Catch provides a StringMaker specialization by default)
 
+> `CATCH_CONFIG_CPP17_STRING_VIEW` was [introduced](https://github.com/catchorg/Catch2/issues/1376) in Catch 2.4.1.
+
 Catch contains basic compiler/standard detection and attempts to use
 some C++17 features whenever appropriate. This automatic detection
 can be manually overridden in both directions, that is, a feature
@@ -210,6 +212,8 @@ By default, Catch does not stringify some types from the standard library. This 
     CATCH_CONFIG_ENABLE_VARIANT_STRINGMAKER  // Provide StringMaker specialization for std::variant, std::monostate (on C++17)
     CATCH_CONFIG_ENABLE_OPTIONAL_STRINGMAKER // Provide StringMaker specialization for std::optional (on C++17)
     CATCH_CONFIG_ENABLE_ALL_STRINGMAKERS     // Defines all of the above
+
+> `CATCH_CONFIG_ENABLE_VARIANT_STRINGMAKER` was [introduced](https://github.com/catchorg/Catch2/issues/1380) in Catch 2.4.1.
 
 > `CATCH_CONFIG_ENABLE_OPTIONAL_STRINGMAKER` was [introduced](https://github.com/catchorg/Catch2/issues/1510) in Catch 2.6.0.
 
