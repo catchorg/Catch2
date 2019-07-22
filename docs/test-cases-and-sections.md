@@ -84,10 +84,11 @@ This macro maps onto ```TEST_CASE``` and works in the same way, except that the 
 
 These macros map onto ```SECTION```s except that the section names are the _something_s prefixed by "given: ", "when: " or "then: " respectively.
 
+* **AND_GIVEN(** _something_ **)**
 * **AND_WHEN(** _something_ **)**
 * **AND_THEN(** _something_ **)**
 
-Similar to ```WHEN``` and ```THEN``` except that the prefixes start with "and ". These are used to chain ```WHEN```s and ```THEN```s together.
+Similar to ```GIVEN```, ```WHEN``` and ```THEN``` except that the prefixes start with "and ". These are used to chain ```GIVEN```s, ```WHEN```s and ```THEN```s together.
 
 When any of these macros are used the console reporter recognises them and formats the test case header such that the Givens, Whens and Thens are aligned to aid readability.
 
