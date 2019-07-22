@@ -1,6 +1,8 @@
 <a id="top"></a>
 # Data Generators
 
+> Introduced in Catch 2.6.0.
+
 Data generators (also known as _data driven/parametrized test cases_)
 let you reuse the same set of assertions across different input values.
 In Catch2, this means that they respect the ordering and nesting
