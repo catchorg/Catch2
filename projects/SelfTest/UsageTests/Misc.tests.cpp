@@ -371,6 +371,16 @@ TEMPLATE_LIST_TEST_CASE("Template test case with test types specified inside std
     REQUIRE(sizeof(TestType) > 0);
 }
 
+struct NonDefaultConstructibleType {
+    NonDefaultConstructibleType() = delete;
+};
+
+using MyNonDefaultConstructibleTypes = std::tuple<NonDefaultConstructibleType, char, float>;
+TEMPLATE_LIST_TEST_CASE("Template test case with test types specified inside non-default-constructible std::tuple", "[template][list]", MyNonDefaultConstructibleTypes)
+{
+    REQUIRE(sizeof(TestType) > 0);
+}
+
 // https://github.com/philsquared/Catch/issues/166
 TEST_CASE("A couple of nested sections followed by a failure", "[failing][.]") {
     SECTION("Outer")

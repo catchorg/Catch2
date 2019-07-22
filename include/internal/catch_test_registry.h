@@ -247,7 +247,7 @@ struct AutoReg : NonCopyable {
             }                                                     \
         };\
         static int INTERNAL_CATCH_UNIQUE_NAME( globalRegistrar ) = [](){ \
-                using TestInit = decltype(convert<TestName>(TmplList {})); \
+                using TestInit = decltype(convert<TestName>(std::declval<TmplList>())); \
                 TestInit t;                                           \
                 t.reg_tests();                                        \
                 return 0;                                             \
@@ -374,7 +374,7 @@ struct AutoReg : NonCopyable {
                 }\
             };\
             static int INTERNAL_CATCH_UNIQUE_NAME( globalRegistrar ) = [](){\
-                using TestInit = decltype(convert<TestNameClass>(TmplList {}));\
+                using TestInit = decltype(convert<TestNameClass>(std::declval<TmplList>()));\
                 TestInit t;\
                 t.reg_tests();\
                 return 0;\

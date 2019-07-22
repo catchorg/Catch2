@@ -1380,6 +1380,6 @@ due to unexpected exception with message:
   Why would you throw a std::string?
 
 ===============================================================================
-test cases:  295 |  221 passed |  70 failed |  4 failed as expected
-assertions: 1550 | 1398 passed | 131 failed | 21 failed as expected
+test cases:  298 |  224 passed |  70 failed |  4 failed as expected
+assertions: 1553 | 1401 passed | 131 failed | 21 failed as expected
 
