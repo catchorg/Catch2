@@ -134,6 +134,8 @@ ANON_TEST_CASE() {
 
 * `DYNAMIC_SECTION`
 
+> Introduced in Catch 2.3.0.
+
 `DYNAMIC_SECTION` is a `SECTION` where the user can use `operator<<` to
 create the final name for that section. This can be useful with e.g.
 generators, or when creating a `SECTION` dynamically, within a loop.
