@@ -211,6 +211,7 @@ By default, Catch does not stringify some types from the standard library. This 
     CATCH_CONFIG_ENABLE_OPTIONAL_STRINGMAKER // Provide StringMaker specialization for std::optional (on C++17)
     CATCH_CONFIG_ENABLE_ALL_STRINGMAKERS     // Defines all of the above
 
+> `CATCH_CONFIG_ENABLE_OPTIONAL_STRINGMAKER` was [introduced](https://github.com/catchorg/Catch2/issues/1510) in Catch 2.6.0.
 
 ## Disabling exceptions
 
