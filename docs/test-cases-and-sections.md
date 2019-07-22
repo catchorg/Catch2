@@ -90,6 +90,8 @@ These macros map onto ```SECTION```s except that the section names are the _some
 
 Similar to ```GIVEN```, ```WHEN``` and ```THEN``` except that the prefixes start with "and ". These are used to chain ```GIVEN```s, ```WHEN```s and ```THEN```s together.
 
+> `AND_GIVEN` was [introduced](https://github.com/catchorg/Catch2/issues/1360) in Catch 2.4.0.
+
 When any of these macros are used the console reporter recognises them and formats the test case header such that the Givens, Whens and Thens are aligned to aid readability.
 
 Other than the additional prefixes and the formatting in the console reporter these macros behave exactly as ```TEST_CASE```s and ```SECTION```s. As such there is nothing enforcing the correct sequencing of these macros - that's up to the programmer!

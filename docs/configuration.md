@@ -219,6 +219,8 @@ By default, Catch does not stringify some types from the standard library. This 
 
 ## Disabling exceptions
 
+> Introduced in Catch 2.4.0.
+
 By default, Catch2 uses exceptions to signal errors and to abort tests
 when an assertion from the `REQUIRE` family of assertions fails. We also
 provide an experimental support for disabling exceptions. Catch2 should
