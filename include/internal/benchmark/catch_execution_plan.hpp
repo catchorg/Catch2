@@ -45,7 +45,7 @@ namespace Catch {
                 std::generate_n(std::back_inserter(times), cfg.benchmarkSamples(), [this, env] {
                     Detail::ChronometerModel<Clock> model;
                     this->benchmark(Chronometer(model, iterations_per_sample));
-                    auto sample_time = model.elapsed() - env.clock_cost.mean;
+                    auto sample_time = model.elapsed - env.clock_cost.mean;
                     if (sample_time < FloatDuration<Clock>::zero()) sample_time = FloatDuration<Clock>::zero();
                     return sample_time / iterations_per_sample;
                 });

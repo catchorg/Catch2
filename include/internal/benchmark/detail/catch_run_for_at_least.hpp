@@ -33,7 +33,7 @@ namespace Catch {
                 Detail::ChronometerModel<Clock> meter;
                 auto&& result = Detail::complete_invoke(fun, Chronometer(meter, iters));
 
-                return { meter.elapsed(), std::move(result), iters };
+                return { meter.elapsed, std::move(result), iters };
             }
 
             template <typename Clock, typename Fun>

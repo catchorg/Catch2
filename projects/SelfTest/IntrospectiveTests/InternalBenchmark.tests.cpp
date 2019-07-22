@@ -56,10 +56,19 @@ namespace {
 
     struct TestChronometerModel : Catch::Benchmark::Detail::ChronometerConcept {
         int started = 0;
-        int finished = 0;
+        int elapsed = 0;
 
         void start() override { ++started; }
-        void finish() override { ++finished; }
+        void finish() override { ++elapsed; }
+
+        // We'll call our elapsed ticks "nanoseconds".
+        DefaultClockDuration getElapsed() const override {
+            return std::chrono::nanoseconds{elapsed};
+        }
+
+        void setElapsed(DefaultClockDuration _elapsed) override {
+            elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(_elapsed).count();
+        }
     };
 } // namespace
 
@@ -107,15 +116,19 @@ TEST_CASE("benchmark function call", "[benchmark]") {
         auto meter = Catch::Benchmark::Chronometer{ model, 1 };
         auto fn = Catch::Benchmark::Detail::BenchmarkFunction{ [&] {
                 CHECK(model.started == 1);
-                CHECK(model.finished == 0);
+                CHECK(model.elapsed == 0);
                 ++called;
             } };
 
         fn(meter);
 
         CHECK(model.started == 1);
-        CHECK(model.finished == 1);
+        CHECK(model.elapsed == 1);
         CHECK(called == 1);
+
+        meter.setElapsed(std::chrono::nanoseconds{10});
+        CHECK(model.getElapsed() == std::chrono::nanoseconds{10});
+        CHECK(model.elapsed == 10);
     }
 
     SECTION("with chronometer") {
@@ -124,15 +137,19 @@ TEST_CASE("benchmark function call", "[benchmark]") {
         auto meter = Catch::Benchmark::Chronometer{ model, 1 };
         auto fn = Catch::Benchmark::Detail::BenchmarkFunction{ [&](Catch::Benchmark::Chronometer) {
                 CHECK(model.started == 0);
-                CHECK(model.finished == 0);
+                CHECK(model.elapsed == 0);
                 ++called;
             } };
 
         fn(meter);
 
         CHECK(model.started == 0);
-        CHECK(model.finished == 0);
+        CHECK(model.elapsed == 0);
         CHECK(called == 1);
+
+        model.setElapsed(std::chrono::nanoseconds{10});
+        CHECK(model.getElapsed() == std::chrono::nanoseconds{10});
+        CHECK(model.elapsed == 10);
     }
 }
 
@@ -350,20 +367,44 @@ TEST_CASE("run_for_at_least, int", "[benchmark]") {
 TEST_CASE("run_for_at_least, chronometer", "[benchmark]") {
     manual_clock::duration time(100);
 
-    int old_runs = 1;
-    auto Timing = Catch::Benchmark::Detail::run_for_at_least<manual_clock>(time, 1, [&old_runs](Catch::Benchmark::Chronometer meter) -> int {
-        CHECK(meter.runs() >= old_runs);
-        manual_clock::advance(100);
-        meter.measure([] {
-            manual_clock::advance(1);
-        });
-        old_runs = meter.runs();
-        return meter.runs() + 17;
-    });
+    SECTION("using Chronometer::measure") {
+        int old_runs = 1;
+        auto Timing = Catch::Benchmark::Detail::run_for_at_least<manual_clock>(time, 1, [&old_runs](Catch::Benchmark::Chronometer meter) -> int {
+            CHECK(meter.runs() >= old_runs);
+            manual_clock::advance(100);
+            meter.measure([] {
+                manual_clock::advance(1);
+            });
 
-    REQUIRE(Timing.elapsed >= time);
-    REQUIRE(Timing.result == Timing.iterations + 17);
-    REQUIRE(Timing.iterations >= time.count());
+            CHECK(meter.getElapsed() == std::chrono::nanoseconds{meter.runs()});
+
+            old_runs = meter.runs();
+            return meter.runs() + 17;
+        });
+
+        REQUIRE(Timing.elapsed >= time);
+        REQUIRE(Timing.result == Timing.iterations + 17);
+        REQUIRE(Timing.iterations >= time.count());
+    }
+
+    SECTION("using Chronometer::setElapsed") {
+        int old_runs = 1;
+        auto Timing = Catch::Benchmark::Detail::run_for_at_least<manual_clock>(time, 1, [&old_runs](Catch::Benchmark::Chronometer meter) -> int {
+            CHECK(meter.runs() >= old_runs);
+            manual_clock::advance(100);
+
+            meter.setElapsed(std::chrono::nanoseconds{meter.runs()});
+
+            CHECK(meter.getElapsed() == std::chrono::nanoseconds{meter.runs()});
+
+            old_runs = meter.runs();
+            return meter.runs() + 17;
+        });
+
+        REQUIRE(Timing.elapsed >= time);
+        REQUIRE(Timing.result == Timing.iterations + 17);
+        REQUIRE(Timing.iterations >= time.count());
+    }
 }
 
 
