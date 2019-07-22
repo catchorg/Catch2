@@ -59,6 +59,8 @@ TEST_CASE( "SUCCEED showcase" ) {
 
 * `STATIC_REQUIRE`
 
+> [Introduced](https://github.com/catchorg/Catch2/issues/1362) in Catch 2.4.2.
+
 `STATIC_REQUIRE( expr )` is a macro that can be used the same way as a
 `static_assert`, but also registers the success with Catch2, so it is
 reported as a success at runtime. The whole check can also be deferred
