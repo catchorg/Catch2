@@ -88,7 +88,7 @@
 
 ### Improvements
 * Reporters now print out the filters applied to test cases (#1550, #1585)
-* Added `GENERATE_COPY` and `GENERATE_VAR` macros that can use variables inside the generator expression
+* Added `GENERATE_COPY` and `GENERATE_REF` macros that can use variables inside the generator expression
   * Because of the significant danger of lifetime issues, the default `GENERATE` macro still does not allow variables
 * The `map` generator helper now deduces the mapped return type (#1576)
 
