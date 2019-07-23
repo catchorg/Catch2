@@ -75,7 +75,7 @@ namespace Catch {
                             m_tests.emplace(&test);
                 } else {
                     for (auto const& match : m_matches)
-                        std::copy(match.tests.begin(), match.tests.end(), std::inserter(m_tests, m_tests.begin()));
+                        m_tests.insert(match.tests.begin(), match.tests.end());
                 }
             }
 
