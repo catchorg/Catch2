@@ -103,6 +103,12 @@ endif()
 # provide a namespaced alias for clients to 'link' against if catch is included as a sub-project
 add_library(Catch2::Catch2 ALIAS Catch2)
 
+# Hacky support for compiling the impl into a static lib
+add_library(Catch2WithMain src/catch_with_main.cpp)
+target_link_libraries(Catch2WithMain PUBLIC Catch2)
+add_library(Catch2::Catch2WithMain ALIAS Catch2WithMain)
+
+
 # Only perform the installation steps when Catch is not being used as
 # a subproject via `add_subdirectory`, or the destinations will break,
 # see https://github.com/catchorg/Catch2/issues/1373
@@ -121,7 +127,7 @@ if (NOT_SUBPROJECT)
     # create and install an export set for catch target as Catch2::Catch
     install(
       TARGETS
-        Catch2
+        Catch2 Catch2WithMain
       EXPORT
         Catch2Targets
       DESTINATION
