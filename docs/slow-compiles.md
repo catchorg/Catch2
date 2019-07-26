@@ -64,6 +64,18 @@ tests-factorial.cpp:11: failed: Factorial(0) == 1 for: 0 == 1
 Failed 1 test case, failed 1 assertion.
 ```
 
+## Using the static library Catch2Main
+
+Catch also provides a static library that implements the runner. When
+Catch2 is included with `add_subdirectory` using CMake, it is possible to simply
+link against this library which also provides the include path for the header.
+
+```cmake
+add_executable(tests-factorial tests-factorial.cpp)
+
+target_link_libraries(tests-factorial Catch2::Main)
+```
+
 ## Other possible solutions
 You can also opt to sacrifice some features in order to speed-up Catch's compilation times. For details see the [documentation on Catch's compile-time configuration](configuration.md#other-toggles).
 
