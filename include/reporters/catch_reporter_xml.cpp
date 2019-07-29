@@ -220,10 +220,13 @@ namespace Catch {
     }
 
 #if defined(CATCH_CONFIG_ENABLE_BENCHMARKING)
-    void XmlReporter::benchmarkStarting(BenchmarkInfo const &info) {
+    void XmlReporter::benchmarkPreparing(std::string const& name) {
         m_xml.startElement("BenchmarkResults")
-            .writeAttribute("name", info.name)
-            .writeAttribute("samples", info.samples)
+            .writeAttribute("name", name);
+    }
+
+    void XmlReporter::benchmarkStarting(BenchmarkInfo const &info) {
+        m_xml.writeAttribute("samples", info.samples)
             .writeAttribute("resamples", info.resamples)
             .writeAttribute("iterations", info.iterations)
             .writeAttribute("clockResolution", static_cast<uint64_t>(info.clockResolution))
