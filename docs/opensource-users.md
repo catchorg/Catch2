@@ -112,6 +112,9 @@ SpECTRE is a code for multi-scale, multi-physics problems in astrophysics and gr
 ### [Standardese](https://github.com/foonathan/standardese)
 Standardese aims to be a nextgen Doxygen.
 
+### [PopHead](https://github.com/SPC-Some-Polish-Coders/PopHead)
+A 2D, Zombie, RPG game which is being made on our own engine.
+
 ---
 
 [Home](Readme.md#top)
