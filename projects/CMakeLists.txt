@@ -400,7 +400,11 @@ set_tests_properties(NoTest PROPERTIES
 )
 
 add_test(NAME WarnAboutNoTests COMMAND $<TARGET_FILE:SelfTest> -w NoTests "___nonexistent_test___")
-set_tests_properties(WarnAboutNoTests PROPERTIES WILL_FAIL TRUE)
+set_tests_properties(WarnAboutNoTests PROPERTIES
+    WILL_FAIL TRUE
+    # Failure is now expected, so test errors must be indicated as passing it
+    PASS_REGULAR_EXPRESSION "Helper failed with"
+)
 
 add_test(NAME FilteredSection-1 COMMAND $<TARGET_FILE:SelfTest> \#1394 -c RunSection)
 set_tests_properties(FilteredSection-1 PROPERTIES FAIL_REGULAR_EXPRESSION "No tests ran")
