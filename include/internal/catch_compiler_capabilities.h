@@ -184,6 +184,18 @@
     #define CATCH_INTERNAL_CONFIG_COUNTER
 #endif
 
+
+////////////////////////////////////////////////////////////////////////////////
+
+// RTX is a special version of Windows that is real time.
+// This means that it is detected as Windows, but does not provide
+// the same set of capabilities as real Windows does.
+#if defined(UNDER_RTSS) || defined(RTX64_BUILD)
+    #define CATCH_INTERNAL_CONFIG_NO_WINDOWS_SEH
+    #define CATCH_INTERNAL_CONFIG_NO_ASYNC
+    #define CATCH_CONFIG_COLOUR_NONE
+#endif
+
 ////////////////////////////////////////////////////////////////////////////////
 // Check if string_view is available and usable
 // The check is split apart to work around v140 (VS2015) preprocessor issue...
@@ -285,7 +297,7 @@
 #  define CATCH_CONFIG_POLYFILL_ISNAN
 #endif
 
-#if defined(CATCH_INTERNAL_CONFIG_USE_ASYNC)  && !defined(CATCH_CONFIG_NO_USE_ASYNC) && !defined(CATCH_CONFIG_USE_ASYNC)
+#if defined(CATCH_INTERNAL_CONFIG_USE_ASYNC)  && !defined(CATCH_INTERNAL_CONFIG_NO_ASYNC) && !defined(CATCH_CONFIG_NO_USE_ASYNC) && !defined(CATCH_CONFIG_USE_ASYNC)
 #  define CATCH_CONFIG_USE_ASYNC
 #endif
 
