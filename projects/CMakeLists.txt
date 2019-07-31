@@ -399,7 +399,7 @@ set_tests_properties(NoTest PROPERTIES
     FAIL_REGULAR_EXPRESSION "No tests ran"
 )
 
-add_test(NAME WarnAboutNoTests COMMAND ${CMAKE_COMMAND} -P ${CMAKE_CURRENT_SOURCE_DIR}/SelfTest/WarnAboutNoTests.cmake)
+add_test(NAME WarnAboutNoTests COMMAND ${CMAKE_COMMAND} -P ${CATCH_DIR}/projects/SelfTest/WarnAboutNoTests.cmake)
 
 add_test(NAME FilteredSection-1 COMMAND $<TARGET_FILE:SelfTest> \#1394 -c RunSection)
 set_tests_properties(FilteredSection-1 PROPERTIES FAIL_REGULAR_EXPRESSION "No tests ran")
