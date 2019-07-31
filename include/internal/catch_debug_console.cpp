@@ -20,7 +20,7 @@
         }
     }
 
-#elif CATCH_PLATFORM_WINDOWS
+#elif defined(CATCH_PLATFORM_WINDOWS)
 
     namespace Catch {
         void writeToDebugConsole( std::string const& text ) {
