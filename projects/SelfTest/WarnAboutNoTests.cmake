@@ -1,7 +1,7 @@
 # Workaround for a peculiarity where CTest disregards the return code from a
 # test command if a PASS_REGULAR_EXPRESSION is also set
 execute_process(
-    COMMAND ${CMAKE_CURRENT_BINARY_DIR}/SelfTest -w NoTests "___nonexistent_test___"
+    COMMAND ${CMAKE_ARGV3} -w NoTests "___nonexistent_test___"
     RESULT_VARIABLE ret
     OUTPUT_VARIABLE out
 )
