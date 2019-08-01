@@ -399,6 +399,12 @@ set_tests_properties(NoTest PROPERTIES
     FAIL_REGULAR_EXPRESSION "No tests ran"
 )
 
+add_test(NAME UnmatchedOutputFilter COMMAND $<TARGET_FILE:SelfTest> [this-tag-does-not-exist])
+set_tests_properties(UnmatchedOutputFilter
+  PROPERTIES
+    PASS_REGULAR_EXPRESSION "No test cases matched '\\[[this-tag-does-not-exist]\\]'"
+)
+
 add_test(NAME WarnAboutNoTests COMMAND ${CMAKE_COMMAND} -P ${CATCH_DIR}/projects/SelfTest/WarnAboutNoTests.cmake $<TARGET_FILE:SelfTest>)
 
 add_test(NAME FilteredSection-1 COMMAND $<TARGET_FILE:SelfTest> \#1394 -c RunSection)
