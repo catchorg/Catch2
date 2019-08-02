@@ -5,6 +5,7 @@
 [Branches](#branches)<br>
 [Directory structure](#directory-structure)<br>
 [Testing your changes](#testing-your-changes)<br>
+[Documenting your code](#documenting-your-code)<br>
 [Code constructs to watch out for](#code-constructs-to-watch-out-for)<br>
 
 So you want to contribute something to Catch? That's great! Whether it's a bug fix, a new feature, support for
@@ -79,6 +80,51 @@ _usually_, that you've added new tests but have not yet approved the changes
 they introduce. This is done with the `scripts/approve.py` script, but
 before you do so, you need to check that the introduced changes are indeed
 intentional.
+
+
+## Documenting your code
+
+If you have added new feature to Catch2, it needs documentation, so that
+other people can use it as well. This section collects some technical
+information that you will need for updating Catch2's documentation, and
+possibly some generic advise as well.
+
+First, the technicalities:
+
+* We introduced version tags to the documentation, which show users in
+which version a specific feature was introduced. This means that newly
+written documentation should be tagged with a placeholder, that will
+be replaced with the actual version upon release. There are 2 styles
+of placeholders used through the documentation, you should pick one that
+fits your text better (if in doubt, take a look at the existing version
+tags for other features).
+  * `> [Introduced](link-to-issue-or-PR) in Catch X.Y.Z` - this
+  placeholder is usually used after a section heading
+  * `> X (Y and Z) was [introduced](link-to-issue-or-PR) in Catch X.Y.Z`
+  - this placeholder is used when you need to tag a subpart of something,
+  e.g. list
+* Crosslinks to different pages should target the `top` anchor, like this
+`[link to contributing](contributing.md#top)`.
+* If you have introduced a new document, please add a a `top` anchor at
+the top, like this
+```markdown
+<a id="top"></a>
+# Contributing to Catch
+```
+* For pages with more than 4 subheadings, we provide a table of contents
+(ToC) at the top of the page. Because GitHub markdown does not support
+automatic generation of ToC, it has to be handled semi-manually. Thus,
+if you've added a new subheading to some page, you should add it to the
+ToC. This can be done either manually, or by running the
+`updateDocumentToC.py` script in the `scripts/` folder.
+
+
+Now, for the generic tips:
+  * Usage examples are good
+  * Don't be afraid to introduce new pages
+  * Try to be reasonably consistent with the surrounding documentation
+
+
 
 
 ## Code constructs to watch out for
