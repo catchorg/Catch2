@@ -105,11 +105,19 @@ tags for other features).
   e.g. list
 * Crosslinks to different pages should target the `top` anchor, like this
 `[link to contributing](contributing.md#top)`.
-* If you have introduced a new document, please add a a `top` anchor at
-the top, like this
+* If you have introduced a new document, there is a simple template you
+should use. It provides you with the top anchor mentioned above, and also
+with a backlink to the top of the documentation:
 ```markdown
 <a id="top"></a>
-# Contributing to Catch
+# Cool feature
+
+Text that explains how to use the cool feature.
+
+
+---
+
+[Home](Readme.md#top)
 ```
 * For pages with more than 4 subheadings, we provide a table of contents
 (ToC) at the top of the page. Because GitHub markdown does not support
