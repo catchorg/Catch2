@@ -100,29 +100,28 @@ def updateReadmeFile(version):
 
 
 def updateCmakeFile(version):
-    with open(cmakePath, 'r') as file:
+    with open(cmakePath, 'rb') as file:
         lines = file.readlines()
-    with open(cmakePath, 'w') as file:
+    replacementRegex = re.compile(b'project\\(Catch2 LANGUAGES CXX VERSION \\d+\\.\\d+\\.\\d+\\)')
+    replacement = 'project(Catch2 LANGUAGES CXX VERSION {0})'.format(version.getVersionString()).encode('ascii')
+    with open(cmakePath, 'wb') as file:
         for line in lines:
-            if 'project(Catch2 LANGUAGES CXX VERSION ' in line:
-                file.write('project(Catch2 LANGUAGES CXX VERSION {0})\n'.format(version.getVersionString()))
-            else:
-                file.write(line)
+            file.write(replacementRegex.sub(replacement, line))
 
 
 def updateVersionDefine(version):
-    with open(definePath, 'r') as file:
+    # First member of the tuple is the compiled regex object, the second is replacement if it matches
+    replacementRegexes = [(re.compile(b'#define CATCH_VERSION_MAJOR \\d+'),'#define CATCH_VERSION_MAJOR {}'.format(version.majorVersion).encode('ascii')),
+                          (re.compile(b'#define CATCH_VERSION_MINOR \\d+'),'#define CATCH_VERSION_MINOR {}'.format(version.minorVersion).encode('ascii')),
+                          (re.compile(b'#define CATCH_VERSION_PATCH \\d+'),'#define CATCH_VERSION_PATCH {}'.format(version.patchNumber).encode('ascii')),
+                         ]
+    with open(definePath, 'rb') as file:
         lines = file.readlines()
-    with open(definePath, 'w') as file:
+    with open(definePath, 'wb') as file:
         for line in lines:
-            if '#define CATCH_VERSION_MAJOR' in line:
-                file.write('#define CATCH_VERSION_MAJOR {}\n'.format(version.majorVersion))
-            elif '#define CATCH_VERSION_MINOR' in line:
-                file.write('#define CATCH_VERSION_MINOR {}\n'.format(version.minorVersion))
-            elif '#define CATCH_VERSION_PATCH' in line:
-                file.write('#define CATCH_VERSION_PATCH {}\n'.format(version.patchNumber))
-            else:
-                file.write(line)
+            for replacement in replacementRegexes:
+                line = replacement[0].sub(replacement[1], line)
+            file.write(line)
 
 
 def updateVersionPlaceholder(filename, version):
