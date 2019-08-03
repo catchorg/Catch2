@@ -4,6 +4,8 @@ import os
 import sys
 import re
 import string
+import glob
+import fnmatch
 
 from scriptCommon import catchPath
 
@@ -123,6 +125,25 @@ def updateVersionDefine(version):
                 file.write(line)
 
 
+def updateVersionPlaceholder(filename, version):
+    with open(filename, 'rb') as file:
+        lines = file.readlines()
+    placeholderRegex = re.compile(b'\) in Catch X.Y.Z')
+    replacement = '\) in Catch {}.{}.{}'.format(version.majorVersion, version.minorVersion, version.patchNumber).encode('ascii')
+    with open(filename, 'wb') as file:
+        for line in lines:
+            file.write(placeholderRegex.sub(replacement, line))
+
+
+def updateDocumentationVersionPlaceholders(version):
+    print('Updating version placeholder in documentation')
+    docsPath = os.path.join(catchPath, 'docs/')
+    for basePath, _, files in os.walk(docsPath):
+        for file in files:
+            if fnmatch.fnmatch(file, "*.md") and "contributing.md" != file:
+                updateVersionPlaceholder(os.path.join(basePath, file), version)
+
+
 def performUpdates(version):
     # First update version file, so we can regenerate single header and
     # have it ready for upload to wandbox, when updating readme
@@ -143,3 +164,4 @@ def performUpdates(version):
 
     updateReadmeFile(version)
     updateCmakeFile(version)
+    updateDocumentationVersionPlaceholders(version)
