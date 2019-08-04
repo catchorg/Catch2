@@ -27,8 +27,8 @@ namespace Catch {
     }
 
 
-    TestSpec::NamePattern::NamePattern( std::string const& name )
-    : Pattern( name )
+    TestSpec::NamePattern::NamePattern( std::string const& name, std::string const& filterString )
+    : Pattern( filterString )
     , m_wildcardPattern( toLower( name ), CaseSensitive::No )
     {}
 
@@ -37,8 +37,8 @@ namespace Catch {
     }
 
 
-    TestSpec::TagPattern::TagPattern( std::string const& tag )
-    : Pattern( tag )
+    TestSpec::TagPattern::TagPattern( std::string const& tag, std::string const& filterString )
+    : Pattern( filterString )
     , m_tag( toLower( tag ) )
     {}
 
@@ -66,8 +66,7 @@ namespace Catch {
     std::string TestSpec::Filter::name() const {
         std::string name;
         for( auto const& p : m_patterns )
-            name += p->name() + " ";
-        name.pop_back();
+            name += p->name();
         return name;
     }
 

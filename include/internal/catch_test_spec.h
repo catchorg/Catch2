@@ -38,7 +38,7 @@ namespace Catch {
 
         class NamePattern : public Pattern {
         public:
-            explicit NamePattern( std::string const& name );
+            explicit NamePattern( std::string const& name, std::string const& filterString );
             bool matches( TestCaseInfo const& testCase ) const override;
         private:
             WildcardPattern m_wildcardPattern;
@@ -46,7 +46,7 @@ namespace Catch {
 
         class TagPattern : public Pattern {
         public:
-            explicit TagPattern( std::string const& tag );
+            explicit TagPattern( std::string const& tag, std::string const& filterString );
             bool matches( TestCaseInfo const& testCase ) const override;
         private:
             std::string m_tag;
