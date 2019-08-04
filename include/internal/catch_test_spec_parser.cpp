@@ -108,6 +108,7 @@ namespace Catch {
             return addPattern<TestSpec::TagPattern>();
         case EscapedName:
             return startNewMode( Name );
+        case None:
         default:
             return startNewMode( None );
         }
@@ -124,6 +125,8 @@ namespace Catch {
                 return c == '~';
             case Name:
                 return c == '[';
+            case EscapedName:
+                return true;
             case QuotedName:
                 return c == '"';
             case Tag:
