@@ -440,12 +440,6 @@ TEST_CASE( "long long" ) {
     REQUIRE( l == std::numeric_limits<long long>::max() );
 }
 
-//TEST_CASE( "Divide by Zero signal handler", "[.][sig]" ) {
-//    int i = 0;
-//    int x = 10/i; // This should cause the signal to fire
-//    CHECK( x == 0 );
-//}
-
 TEST_CASE( "This test 'should' fail but doesn't", "[.][failing][!shouldfail]" ) {
     SUCCEED( "oops!" );
 }

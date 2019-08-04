@@ -50,6 +50,22 @@ with expansion:
   0 == 0
 
 -------------------------------------------------------------------------------
+#1027: Bitfields can be captured
+-------------------------------------------------------------------------------
+Compilation.tests.cpp:<line number>
+...............................................................................
+
+Compilation.tests.cpp:<line number>: PASSED:
+  REQUIRE( y.v == 0 )
+with expansion:
+  0 == 0
+
+Compilation.tests.cpp:<line number>: PASSED:
+  REQUIRE( 0 == y.v )
+with expansion:
+  0 == 0
+
+-------------------------------------------------------------------------------
 #1147
 -------------------------------------------------------------------------------
 Compilation.tests.cpp:<line number>
@@ -352,6 +368,6 @@ Condition.tests.cpp:<line number>: FAILED:
   CHECK( true != true )
 
 ===============================================================================
-test cases: 18 | 13 passed | 3 failed | 2 failed as expected
-assertions: 40 | 33 passed | 4 failed | 3 failed as expected
+test cases: 19 | 14 passed | 3 failed | 2 failed as expected
+assertions: 42 | 35 passed | 4 failed | 3 failed as expected
 

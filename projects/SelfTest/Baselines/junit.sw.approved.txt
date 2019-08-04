@@ -9,6 +9,7 @@
     <testcase classname="<exe-name>.global" name="# A test name that starts with a #" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="#1005: Comparing pointer to int and long (NULL can be either on various systems)" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="#1027" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="#1027: Bitfields can be captured" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="#1147" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="#1175 - Hidden Test" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="#1238" time="{duration}"/>
@@ -232,7 +233,6 @@ Exception.tests.cpp:<line number>
     <testcase classname="<exe-name>.global" name="Assertions then sections/A section/Another section" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Assertions then sections/A section/Another other section" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Assorted miscellaneous tests" time="{duration}"/>
-    <testcase classname="<exe-name>.global" name="Bitfields can be captured (#1027)" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="CAPTURE can deal with complex expressions" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="CAPTURE can deal with complex expressions involving commas" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="CAPTURE parses string and character constants" time="{duration}"/>

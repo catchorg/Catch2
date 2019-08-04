@@ -43,6 +43,25 @@
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
+    <TestCase name="#1027: Bitfields can be captured" filename="projects/<exe-name>/UsageTests/Compilation.tests.cpp" >
+      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/UsageTests/Compilation.tests.cpp" >
+        <Original>
+          y.v == 0
+        </Original>
+        <Expanded>
+          0 == 0
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/UsageTests/Compilation.tests.cpp" >
+        <Original>
+          0 == y.v
+        </Original>
+        <Expanded>
+          0 == 0
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
     <TestCase name="#1147" filename="projects/<exe-name>/UsageTests/Compilation.tests.cpp" >
       <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/UsageTests/Compilation.tests.cpp" >
         <Original>
@@ -2176,25 +2195,6 @@ Nor would this
         </Original>
         <Expanded>
           !(nanf == Approx( nan ))
-        </Expanded>
-      </Expression>
-      <OverallResult success="true"/>
-    </TestCase>
-    <TestCase name="Bitfields can be captured (#1027)" filename="projects/<exe-name>/UsageTests/Tricky.tests.cpp" >
-      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/UsageTests/Tricky.tests.cpp" >
-        <Original>
-          y.v == 0
-        </Original>
-        <Expanded>
-          0 == 0
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/UsageTests/Tricky.tests.cpp" >
-        <Original>
-          0 == y.v
-        </Original>
-        <Expanded>
-          0 == 0
         </Expanded>
       </Expression>
       <OverallResult success="true"/>

@@ -50,6 +50,22 @@ with expansion:
   0 == 0
 
 -------------------------------------------------------------------------------
+#1027: Bitfields can be captured
+-------------------------------------------------------------------------------
+Compilation.tests.cpp:<line number>
+...............................................................................
+
+Compilation.tests.cpp:<line number>: PASSED:
+  REQUIRE( y.v == 0 )
+with expansion:
+  0 == 0
+
+Compilation.tests.cpp:<line number>: PASSED:
+  REQUIRE( 0 == y.v )
+with expansion:
+  0 == 0
+
+-------------------------------------------------------------------------------
 #1147
 -------------------------------------------------------------------------------
 Compilation.tests.cpp:<line number>
@@ -1943,22 +1959,6 @@ Approx.tests.cpp:<line number>: PASSED:
   REQUIRE_FALSE( NAN == Approx(NAN) )
 with expansion:
   !(nanf == Approx( nan ))
-
--------------------------------------------------------------------------------
-Bitfields can be captured (#1027)
--------------------------------------------------------------------------------
-Tricky.tests.cpp:<line number>
-...............................................................................
-
-Tricky.tests.cpp:<line number>: PASSED:
-  REQUIRE( y.v == 0 )
-with expansion:
-  0 == 0
-
-Tricky.tests.cpp:<line number>: PASSED:
-  REQUIRE( 0 == y.v )
-with expansion:
-  0 == 0
 
 -------------------------------------------------------------------------------
 CAPTURE can deal with complex expressions
