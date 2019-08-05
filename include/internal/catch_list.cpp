@@ -84,9 +84,18 @@ namespace Catch {
     }
 
     std::string TagInfo::all() const {
-        std::string out;
-        for( auto const& spelling : spellings )
-            out += "[" + spelling + "]";
+        size_t size = 0;
+        for (auto const& spelling : spellings) {
+            // Add 2 for the brackes
+            size += spelling.size() + 2;
+        }
+
+        std::string out; out.reserve(size);
+        for (auto const& spelling : spellings) {
+            out += '[';
+            out += spelling;
+            out += ']';
+        }
         return out;
     }
 
