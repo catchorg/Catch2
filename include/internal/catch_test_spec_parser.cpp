@@ -14,64 +14,125 @@ namespace Catch {
     TestSpecParser& TestSpecParser::parse( std::string const& arg ) {
         m_mode = None;
         m_exclusion = false;
-        m_start = std::string::npos;
         m_arg = m_tagAliases->expandAliases( arg );
         m_escapeChars.clear();
+        m_substring.reserve(m_arg.size());
+        m_patternName.reserve(m_arg.size());
         for( m_pos = 0; m_pos < m_arg.size(); ++m_pos )
             visitChar( m_arg[m_pos] );
-        if( m_mode == Name )
-            addPattern<TestSpec::NamePattern>();
+        endMode();
         return *this;
     }
     TestSpec TestSpecParser::testSpec() {
         addFilter();
         return m_testSpec;
     }
-
     void TestSpecParser::visitChar( char c ) {
-        if( m_mode == None ) {
-            switch( c ) {
-            case ' ': return;
-            case '~': m_exclusion = true; return;
-            case '[': return startNewMode( Tag, ++m_pos );
-            case '"': return startNewMode( QuotedName, ++m_pos );
-            case '\\': return escape();
-            default: startNewMode( Name, m_pos ); break;
-            }
+        if( c == ',' ) {
+            endMode();
+            addFilter();
+            return;
         }
-        if( m_mode == Name ) {
-            if( c == ',' ) {
-                addPattern<TestSpec::NamePattern>();
-                addFilter();
-            }
-            else if( c == '[' ) {
-                if( subString() == "exclude:" )
-                    m_exclusion = true;
-                else
-                    addPattern<TestSpec::NamePattern>();
-                startNewMode( Tag, ++m_pos );
-            }
-            else if( c == '\\' )
-                escape();
+
+        switch( m_mode ) {
+        case None:
+            if( processNoneChar( c ) )
+                return;
+            break;
+        case Name:
+            processNameChar( c );
+            break;
+        case EscapedName:
+            endMode();
+            break;
+        default:
+        case Tag:
+        case QuotedName:
+            if( processOtherChar( c ) )
+                return;
+            break;
         }
-        else if( m_mode == EscapedName )
-            m_mode = Name;
-        else if( m_mode == QuotedName && c == '"' )
-            addPattern<TestSpec::NamePattern>();
-        else if( m_mode == Tag && c == ']' )
-            addPattern<TestSpec::TagPattern>();
+
+        m_substring += c;
+        if( !isControlChar( c ) )
+            m_patternName += c;
     }
-    void TestSpecParser::startNewMode( Mode mode, std::size_t start ) {
+    // Two of the processing methods return true to signal the caller to return
+    // without adding the given character to the current pattern strings
+    bool TestSpecParser::processNoneChar( char c ) {
+        switch( c ) {
+        case ' ':
+            return true;
+        case '~':
+            m_exclusion = true;
+            return false;
+        case '[':
+            startNewMode( Tag );
+            return false;
+        case '"':
+            startNewMode( QuotedName );
+            return false;
+        case '\\':
+            escape();
+            return true;
+        default:
+            startNewMode( Name );
+            return false;
+        }
+    }
+    void TestSpecParser::processNameChar( char c ) {
+        if( c == '[' ) {
+            if( m_substring == "exclude:" )
+                m_exclusion = true;
+            else
+                endMode();
+            startNewMode( Tag );
+        }
+    }
+    bool TestSpecParser::processOtherChar( char c ) {
+        if( !isControlChar( c ) )
+            return false;
+        m_substring += c;
+        endMode();
+        return true;
+    }
+    void TestSpecParser::startNewMode( Mode mode ) {
         m_mode = mode;
-        m_start = start;
+    }
+    void TestSpecParser::endMode() {
+        switch( m_mode ) {
+        case Name:
+        case QuotedName:
+            return addPattern<TestSpec::NamePattern>();
+        case Tag:
+            return addPattern<TestSpec::TagPattern>();
+        case EscapedName:
+            return startNewMode( Name );
+        case None:
+        default:
+            return startNewMode( None );
+        }
     }
     void TestSpecParser::escape() {
-        if( m_mode == None )
-            m_start = m_pos;
         m_mode = EscapedName;
         m_escapeChars.push_back( m_pos );
     }
-    std::string TestSpecParser::subString() const { return m_arg.substr( m_start, m_pos - m_start ); }
+    bool TestSpecParser::isControlChar( char c ) const {
+        switch( m_mode ) {
+            default:
+                return false;
+            case None:
+                return c == '~';
+            case Name:
+                return c == '[';
+            case EscapedName:
+                return true;
+            case QuotedName:
+                return c == '"';
+            case Tag:
+                return c == '[' || c == ']';
+        }
+    }
 
     void TestSpecParser::addFilter() {
         if( !m_currentFilter.m_patterns.empty() ) {

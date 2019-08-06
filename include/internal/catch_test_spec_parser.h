@@ -23,8 +23,10 @@ namespace Catch {
         enum Mode{ None, Name, QuotedName, Tag, EscapedName };
         Mode m_mode = None;
         bool m_exclusion = false;
-        std::size_t m_start = std::string::npos, m_pos = 0;
+        std::size_t m_pos = 0;
         std::string m_arg;
+        std::string m_substring;
+        std::string m_patternName;
         std::vector<std::size_t> m_escapeChars;
         TestSpec::Filter m_currentFilter;
         TestSpec m_testSpec;
@@ -38,26 +40,32 @@ namespace Catch {
 
     private:
         void visitChar( char c );
-        void startNewMode( Mode mode, std::size_t start );
+        void startNewMode( Mode mode );
+        bool processNoneChar( char c );
+        void processNameChar( char c );
+        bool processOtherChar( char c );
+        void endMode();
         void escape();
-        std::string subString() const;
+        bool isControlChar( char c ) const;
 
         template<typename T>
         void addPattern() {
-            std::string token = subString();
+            std::string token = m_patternName;
             for( std::size_t i = 0; i < m_escapeChars.size(); ++i )
-                token = token.substr( 0, m_escapeChars[i]-m_start-i ) + token.substr( m_escapeChars[i]-m_start-i+1 );
+                token = token.substr( 0, m_escapeChars[i] - i ) + token.substr( m_escapeChars[i] -i +1 );
             m_escapeChars.clear();
             if( startsWith( token, "exclude:" ) ) {
                 m_exclusion = true;
                 token = token.substr( 8 );
             }
             if( !token.empty() ) {
-                TestSpec::PatternPtr pattern = std::make_shared<T>( token );
+                TestSpec::PatternPtr pattern = std::make_shared<T>( token, m_substring );
                 if( m_exclusion )
                     pattern = std::make_shared<TestSpec::ExcludedPattern>( pattern );
                 m_currentFilter.m_patterns.push_back( pattern );
             }
+            m_substring.clear();
+            m_patternName.clear();
             m_exclusion = false;
             m_mode = None;
         }

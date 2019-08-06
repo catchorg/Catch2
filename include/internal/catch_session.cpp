@@ -25,6 +25,8 @@
 
 #include <cstdlib>
 #include <iomanip>
+#include <set>
+#include <iterator>
 
 namespace Catch {
 
@@ -58,46 +60,53 @@ namespace Catch {
             return ret;
         }
 
+        class TestGroup {
+        public:
+            explicit TestGroup(std::shared_ptr<Config> const& config)
+            : m_config{config}
+            , m_context{config, makeReporter(config)}
+            {
+                auto const& allTestCases = getAllTestCasesSorted(*m_config);
+                m_matches = m_config->testSpec().matchesByFilter(allTestCases, *m_config);
 
-        Catch::Totals runTests(std::shared_ptr<Config> const& config) {
-            auto reporter = makeReporter(config);
-
-            RunContext context(config, std::move(reporter));
-
-            Totals totals;
-
-            context.testGroupStarting(config->name(), 1, 1);
-
-            TestSpec testSpec = config->testSpec();
-
-            auto const& allTestCases = getAllTestCasesSorted(*config);
-            for (auto const& testCase : allTestCases) {
-                bool matching = (!testSpec.hasFilters() && !testCase.isHidden()) ||
-                                 (testSpec.hasFilters() && matchTest(testCase, testSpec, *config));
-
-                if (!context.aborting() && matching)
-                    totals += context.runTest(testCase);
-                else
-                    context.reporter().skipTest(testCase);
+                if (m_matches.empty()) {
+                    for (auto const& test : allTestCases)
+                        if (!test.isHidden())
+                            m_tests.emplace(&test);
+                } else {
+                    for (auto const& match : m_matches)
+                        m_tests.insert(match.tests.begin(), match.tests.end());
+                }
             }
 
-            if (config->warnAboutNoTests() && totals.testCases.total() == 0) {
-                ReusableStringStream testConfig;
-
-                bool first = true;
-                for (const auto& input : config->getTestsOrTags()) {
-                    if (!first) { testConfig << ' '; }
-                    first = false;
-                    testConfig << input;
+            Totals execute() {
+                Totals totals;
+                m_context.testGroupStarting(m_config->name(), 1, 1);
+                for (auto const& testCase : m_tests) {
+                    if (!m_context.aborting())
+                        totals += m_context.runTest(*testCase);
+                    else
+                        m_context.reporter().skipTest(*testCase);
                 }
 
-                context.reporter().noMatchingTestCases(testConfig.str());
-                totals.error = -1;
+                for (auto const& match : m_matches) {
+                    if (match.tests.empty()) {
+                        m_context.reporter().noMatchingTestCases(match.name);
+                        totals.error = -1;
+                    }
+                }
+                m_context.testGroupEnded(m_config->name(), totals, 1, 1);
+                return totals;
             }
 
-            context.testGroupEnded(config->name(), totals, 1, 1);
-            return totals;
-        }
+        private:
+            using Tests = std::set<TestCase const*>;
+
+            std::shared_ptr<Config> m_config;
+            RunContext m_context;
+            Tests m_tests;
+            TestSpec::Matches m_matches;
+        };
 
         void applyFilenamesAsTags(Catch::IConfig const& config) {
             auto& tests = const_cast<std::vector<TestCase>&>(getAllTestCasesSorted(config));
@@ -274,7 +283,12 @@ namespace Catch {
             if( Option<std::size_t> listed = list( m_config ) )
                 return static_cast<int>( *listed );
 
-            auto totals = runTests( m_config );
+            TestGroup tests { m_config };
+            auto const totals = tests.execute();
+
+            if( m_config->warnAboutNoTests() && totals.error == -1 )
+                return 2;
+
             // Note that on unices only the lower 8 bits are usually used, clamping
             // the return value to 255 prevents false negative when some multiple
             // of 256 tests has failed

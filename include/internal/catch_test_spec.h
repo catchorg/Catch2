@@ -22,17 +22,23 @@
 
 namespace Catch {
 
+    struct IConfig;
+
     class TestSpec {
-        struct Pattern {
+        class Pattern {
+        public:
+            explicit Pattern( std::string const& name );
             virtual ~Pattern();
             virtual bool matches( TestCaseInfo const& testCase ) const = 0;
+            std::string const& name() const;
+        private:
+            std::string const m_name;
         };
         using PatternPtr = std::shared_ptr<Pattern>;
 
         class NamePattern : public Pattern {
         public:
-            NamePattern( std::string const& name );
-            virtual ~NamePattern();
+            explicit NamePattern( std::string const& name, std::string const& filterString );
             bool matches( TestCaseInfo const& testCase ) const override;
         private:
             WildcardPattern m_wildcardPattern;
@@ -40,8 +46,7 @@ namespace Catch {
 
         class TagPattern : public Pattern {
         public:
-            TagPattern( std::string const& tag );
-            virtual ~TagPattern();
+            explicit TagPattern( std::string const& tag, std::string const& filterString );
             bool matches( TestCaseInfo const& testCase ) const override;
         private:
             std::string m_tag;
@@ -49,8 +54,7 @@ namespace Catch {
 
         class ExcludedPattern : public Pattern {
         public:
-            ExcludedPattern( PatternPtr const& underlyingPattern );
-            virtual ~ExcludedPattern();
+            explicit ExcludedPattern( PatternPtr const& underlyingPattern );
             bool matches( TestCaseInfo const& testCase ) const override;
         private:
             PatternPtr m_underlyingPattern;
@@ -60,11 +64,19 @@ namespace Catch {
             std::vector<PatternPtr> m_patterns;
 
             bool matches( TestCaseInfo const& testCase ) const;
+            std::string name() const;
         };
 
     public:
+        struct FilterMatch {
+            std::string name;
+            std::vector<TestCase const*> tests;
+        };
+        using Matches = std::vector<FilterMatch>;
+
         bool hasFilters() const;
         bool matches( TestCaseInfo const& testCase ) const;
+        Matches matchesByFilter( std::vector<TestCase> const& testCases, IConfig const& config ) const;
 
     private:
         std::vector<Filter> m_filters;

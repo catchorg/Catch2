@@ -7,6 +7,7 @@
 
 #include "catch_test_spec.h"
 #include "catch_string_manip.h"
+#include "catch_interfaces_config.h"
 
 #include <algorithm>
 #include <string>
@@ -15,45 +16,80 @@
 
 namespace Catch {
 
-    TestSpec::Pattern::~Pattern() = default;
-    TestSpec::NamePattern::~NamePattern() = default;
-    TestSpec::TagPattern::~TagPattern() = default;
-    TestSpec::ExcludedPattern::~ExcludedPattern() = default;
-
-    TestSpec::NamePattern::NamePattern( std::string const& name )
-    : m_wildcardPattern( toLower( name ), CaseSensitive::No )
+    TestSpec::Pattern::Pattern( std::string const& name )
+    : m_name( name )
     {}
+
+    TestSpec::Pattern::~Pattern() = default;
+
+    std::string const& TestSpec::Pattern::name() const {
+        return m_name;
+    }
+
+
+    TestSpec::NamePattern::NamePattern( std::string const& name, std::string const& filterString )
+    : Pattern( filterString )
+    , m_wildcardPattern( toLower( name ), CaseSensitive::No )
+    {}
+
     bool TestSpec::NamePattern::matches( TestCaseInfo const& testCase ) const {
         return m_wildcardPattern.matches( toLower( testCase.name ) );
     }
 
-    TestSpec::TagPattern::TagPattern( std::string const& tag ) : m_tag( toLower( tag ) ) {}
+
+    TestSpec::TagPattern::TagPattern( std::string const& tag, std::string const& filterString )
+    : Pattern( filterString )
+    , m_tag( toLower( tag ) )
+    {}
+
     bool TestSpec::TagPattern::matches( TestCaseInfo const& testCase ) const {
         return std::find(begin(testCase.lcaseTags),
                          end(testCase.lcaseTags),
                          m_tag) != end(testCase.lcaseTags);
     }
 
-    TestSpec::ExcludedPattern::ExcludedPattern( PatternPtr const& underlyingPattern ) : m_underlyingPattern( underlyingPattern ) {}
-    bool TestSpec::ExcludedPattern::matches( TestCaseInfo const& testCase ) const { return !m_underlyingPattern->matches( testCase ); }
+
+    TestSpec::ExcludedPattern::ExcludedPattern( PatternPtr const& underlyingPattern )
+    : Pattern( underlyingPattern->name() )
+    , m_underlyingPattern( underlyingPattern )
+    {}
+
+    bool TestSpec::ExcludedPattern::matches( TestCaseInfo const& testCase ) const {
+        return !m_underlyingPattern->matches( testCase );
+    }
+
 
     bool TestSpec::Filter::matches( TestCaseInfo const& testCase ) const {
-        // All patterns in a filter must match for the filter to be a match
-        for( auto const& pattern : m_patterns ) {
-            if( !pattern->matches( testCase ) )
-                return false;
-        }
-        return true;
+        return std::all_of( m_patterns.begin(), m_patterns.end(), [&]( PatternPtr const& p ){ return p->matches( testCase ); } );
     }
+
+    std::string TestSpec::Filter::name() const {
+        std::string name;
+        for( auto const& p : m_patterns )
+            name += p->name();
+        return name;
+    }
+
 
     bool TestSpec::hasFilters() const {
         return !m_filters.empty();
     }
+
     bool TestSpec::matches( TestCaseInfo const& testCase ) const {
-        // A TestSpec matches if any filter matches
-        for( auto const& filter : m_filters )
-            if( filter.matches( testCase ) )
-                return true;
-        return false;
+        return std::any_of( m_filters.begin(), m_filters.end(), [&]( Filter const& f ){ return f.matches( testCase ); } );
     }
+
+    TestSpec::Matches TestSpec::matchesByFilter( std::vector<TestCase> const& testCases, IConfig const& config ) const
+    {
+        Matches matches( m_filters.size() );
+        std::transform( m_filters.begin(), m_filters.end(), matches.begin(), [&]( Filter const& filter ){
+            std::vector<TestCase const*> currentMatches;
+            for( auto const& test : testCases )
+                if( isThrowSafe( test, config ) && filter.matches( test ) )
+                    currentMatches.emplace_back( &test );
+            return FilterMatch{ filter.name(), currentMatches };
+        } );
+        return matches;
+    }
+
 }
