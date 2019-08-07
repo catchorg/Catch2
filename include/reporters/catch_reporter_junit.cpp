@@ -12,6 +12,7 @@
 
 #include "../internal/catch_tostring.h"
 #include "../internal/catch_reporter_registrars.hpp"
+#include "../internal/catch_text.h"
 
 #include <cassert>
 #include <sstream>
@@ -244,10 +245,25 @@ namespace Catch {
 
             XmlWriter::ScopedElement e = xml.scopedElement( elementName );
 
-            xml.writeAttribute( "message", result.getExpandedExpression() );
+            xml.writeAttribute( "message", result.getExpression() );
             xml.writeAttribute( "type", result.getTestMacroName() );
 
             ReusableStringStream rss;
+            if (stats.totals.assertions.total() > 0) {
+                rss << "FAILED" << ":\n";
+                if (result.hasExpression()) {
+                    rss << "  ";
+                    rss << result.getExpressionInMacro();
+                    rss << '\n';
+                }
+                if (result.hasExpandedExpression()) {
+                    rss << "with expansion:\n";
+                    rss << Column(result.getExpandedExpression()).indent(2) << '\n';
+                }
+            } else {
+                rss << '\n';
+            }
+
             if( !result.getMessage().empty() )
                 rss << result.getMessage() << '\n';
             for( auto const& msg : stats.infoMessages )
