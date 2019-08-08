@@ -1,6 +1,6 @@
 /*
- *  Catch v2.9.1
- *  Generated: 2019-06-17 11:59:24.363643
+ *  Catch v2.9.2
+ *  Generated: 2019-08-08 13:35:12.279703
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2019 Two Blue Cubes Ltd. All rights reserved.
@@ -15,7 +15,7 @@
 
 #define CATCH_VERSION_MAJOR 2
 #define CATCH_VERSION_MINOR 9
-#define CATCH_VERSION_PATCH 1
+#define CATCH_VERSION_PATCH 2
 
 #ifdef __clang__
 #    pragma clang system_header
@@ -276,6 +276,17 @@ namespace Catch {
 #endif
 
 ////////////////////////////////////////////////////////////////////////////////
+
+// RTX is a special version of Windows that is real time.
+// This means that it is detected as Windows, but does not provide
+// the same set of capabilities as real Windows does.
+#if defined(UNDER_RTSS) || defined(RTX64_BUILD)
+    #define CATCH_INTERNAL_CONFIG_NO_WINDOWS_SEH
+    #define CATCH_INTERNAL_CONFIG_NO_ASYNC
+    #define CATCH_CONFIG_COLOUR_NONE
+#endif
+
+////////////////////////////////////////////////////////////////////////////////
 // Check if string_view is available and usable
 // The check is split apart to work around v140 (VS2015) preprocessor issue...
 #if defined(__has_include)
@@ -290,6 +301,14 @@ namespace Catch {
 #  if __has_include(<optional>) && defined(CATCH_CPP17_OR_GREATER)
 #    define CATCH_INTERNAL_CONFIG_CPP17_OPTIONAL
 #  endif // __has_include(<optional>) && defined(CATCH_CPP17_OR_GREATER)
+#endif // __has_include
+
+////////////////////////////////////////////////////////////////////////////////
+// Check if byte is available and usable
+#if defined(__has_include)
+#  if __has_include(<cstddef>) && defined(CATCH_CPP17_OR_GREATER)
+#    define CATCH_INTERNAL_CONFIG_CPP17_BYTE
+#  endif // __has_include(<cstddef>) && defined(CATCH_CPP17_OR_GREATER)
 #endif // __has_include
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -346,6 +365,10 @@ namespace Catch {
 #  define CATCH_CONFIG_CPP17_VARIANT
 #endif
 
+#if defined(CATCH_INTERNAL_CONFIG_CPP17_BYTE) && !defined(CATCH_CONFIG_NO_CPP17_BYTE) && !defined(CATCH_CONFIG_CPP17_BYTE)
+#  define CATCH_CONFIG_CPP17_BYTE
+#endif
+
 #if defined(CATCH_CONFIG_EXPERIMENTAL_REDIRECT)
 #  define CATCH_INTERNAL_CONFIG_NEW_CAPTURE
 #endif
@@ -362,7 +385,7 @@ namespace Catch {
 #  define CATCH_CONFIG_POLYFILL_ISNAN
 #endif
 
-#if defined(CATCH_INTERNAL_CONFIG_USE_ASYNC)  && !defined(CATCH_CONFIG_NO_USE_ASYNC) && !defined(CATCH_CONFIG_USE_ASYNC)
+#if defined(CATCH_INTERNAL_CONFIG_USE_ASYNC)  && !defined(CATCH_INTERNAL_CONFIG_NO_ASYNC) && !defined(CATCH_CONFIG_NO_USE_ASYNC) && !defined(CATCH_CONFIG_USE_ASYNC)
 #  define CATCH_CONFIG_USE_ASYNC
 #endif
 
@@ -515,6 +538,7 @@ namespace Catch {
         virtual std::vector<TestCase> const& getAllTestsSorted( IConfig const& config ) const = 0;
     };
 
+    bool isThrowSafe( TestCase const& testCase, IConfig const& config );
     bool matchTest( TestCase const& testCase, TestSpec const& testSpec, IConfig const& config );
     std::vector<TestCase> filterTests( std::vector<TestCase> const& testCases, TestSpec const& testSpec, IConfig const& config );
     std::vector<TestCase> const& getAllTestCasesSorted( IConfig const& config );
@@ -1153,7 +1177,7 @@ struct AutoReg : NonCopyable {
             }                                                     \
         };\
         static int INTERNAL_CATCH_UNIQUE_NAME( globalRegistrar ) = [](){ \
-                using TestInit = decltype(convert<TestName>(TmplList {})); \
+                using TestInit = decltype(convert<TestName>(std::declval<TmplList>())); \
                 TestInit t;                                           \
                 t.reg_tests();                                        \
                 return 0;                                             \
@@ -1279,7 +1303,7 @@ struct AutoReg : NonCopyable {
                 }\
             };\
             static int INTERNAL_CATCH_UNIQUE_NAME( globalRegistrar ) = [](){\
-                using TestInit = decltype(convert<TestNameClass>(TmplList {}));\
+                using TestInit = decltype(convert<TestNameClass>(std::declval<TmplList>()));\
                 TestInit t;\
                 t.reg_tests();\
                 return 0;\
@@ -1679,6 +1703,12 @@ namespace Catch {
         }
     };
 
+#if defined(CATCH_CONFIG_CPP17_BYTE)
+    template<>
+    struct StringMaker<std::byte> {
+        static std::string convert(std::byte value);
+    };
+#endif // defined(CATCH_CONFIG_CPP17_BYTE)
     template<>
     struct StringMaker<int> {
         static std::string convert(int value);
@@ -3180,6 +3210,15 @@ namespace Matchers {
             virtual bool match( ObjectT const& arg ) const = 0;
         };
 
+#if defined(__OBJC__)
+        // Hack to fix Catch GH issue #1661. Could use id for generic Object support.
+        // use of const for Object pointers is very uncommon and under ARC it causes some kind of signature mismatch that breaks compilation
+        template<>
+        struct MatcherMethod<NSString*> {
+            virtual bool match( NSString* arg ) const = 0;
+        };
+#endif
+
 #ifdef __clang__
 #    pragma clang diagnostic pop
 #endif
@@ -3829,6 +3868,9 @@ namespace Generators {
 
     template<typename T>
     class FixedValuesGenerator final : public IGenerator<T> {
+        static_assert(!std::is_same<T, bool>::value,
+            "ValuesGenerator does not support bools because of std::vector<bool>"
+            "specialization, use SingleValue Generator instead.");
         std::vector<T> m_values;
         size_t m_idx = 0;
     public:
@@ -4048,6 +4090,9 @@ namespace Generators {
 
     template <typename T>
     class RepeatGenerator : public IGenerator<T> {
+        static_assert(!std::is_same<T, bool>::value,
+            "RepeatGenerator currently does not support bools"
+            "because of std::vector<bool> specialization");
         GeneratorWrapper<T> m_generator;
         mutable std::vector<T> m_returned;
         size_t m_target_repeats;
@@ -4162,12 +4207,14 @@ namespace Generators {
             m_chunk_size(size), m_generator(std::move(generator))
         {
             m_chunk.reserve(m_chunk_size);
-            m_chunk.push_back(m_generator.get());
-            for (size_t i = 1; i < m_chunk_size; ++i) {
-                if (!m_generator.next()) {
-                    Catch::throw_exception(GeneratorException("Not enough values to initialize the first chunk"));
-                }
+            if (m_chunk_size != 0) {
                 m_chunk.push_back(m_generator.get());
+                for (size_t i = 1; i < m_chunk_size; ++i) {
+                    if (!m_generator.next()) {
+                        Catch::throw_exception(GeneratorException("Not enough values to initialize the first chunk"));
+                    }
+                    m_chunk.push_back(m_generator.get());
+                }
             }
         }
         std::vector<T> const& get() const override {
@@ -4711,7 +4758,7 @@ namespace Catch {
                     arcSafeRelease( m_substr );
                 }
 
-                bool match( NSString* const& str ) const override {
+                bool match( NSString* str ) const override {
                     return false;
                 }
 
@@ -4721,7 +4768,7 @@ namespace Catch {
             struct Equals : StringHolder {
                 Equals( NSString* substr ) : StringHolder( substr ){}
 
-                bool match( NSString* const& str ) const override {
+                bool match( NSString* str ) const override {
                     return  (str != nil || m_substr == nil ) &&
                             [str isEqualToString:m_substr];
                 }
@@ -4734,7 +4781,7 @@ namespace Catch {
             struct Contains : StringHolder {
                 Contains( NSString* substr ) : StringHolder( substr ){}
 
-                bool match( NSString* const& str ) const override {
+                bool match( NSString* str ) const override {
                     return  (str != nil || m_substr == nil ) &&
                             [str rangeOfString:m_substr].location != NSNotFound;
                 }
@@ -4747,7 +4794,7 @@ namespace Catch {
             struct StartsWith : StringHolder {
                 StartsWith( NSString* substr ) : StringHolder( substr ){}
 
-                bool match( NSString* const& str ) const override {
+                bool match( NSString* str ) const override {
                     return  (str != nil || m_substr == nil ) &&
                             [str rangeOfString:m_substr].location == 0;
                 }
@@ -4759,7 +4806,7 @@ namespace Catch {
             struct EndsWith : StringHolder {
                 EndsWith( NSString* substr ) : StringHolder( substr ){}
 
-                bool match( NSString* const& str ) const override {
+                bool match( NSString* str ) const override {
                     return  (str != nil || m_substr == nil ) &&
                             [str rangeOfString:m_substr].location == [str length] - [m_substr length];
                 }
@@ -4867,17 +4914,23 @@ namespace Catch
 
 namespace Catch {
 
+    struct IConfig;
+
     class TestSpec {
-        struct Pattern {
+        class Pattern {
+        public:
+            explicit Pattern( std::string const& name );
             virtual ~Pattern();
             virtual bool matches( TestCaseInfo const& testCase ) const = 0;
+            std::string const& name() const;
+        private:
+            std::string const m_name;
         };
         using PatternPtr = std::shared_ptr<Pattern>;
 
         class NamePattern : public Pattern {
         public:
-            NamePattern( std::string const& name );
-            virtual ~NamePattern();
+            explicit NamePattern( std::string const& name, std::string const& filterString );
             bool matches( TestCaseInfo const& testCase ) const override;
         private:
             WildcardPattern m_wildcardPattern;
@@ -4885,8 +4938,7 @@ namespace Catch {
 
         class TagPattern : public Pattern {
         public:
-            TagPattern( std::string const& tag );
-            virtual ~TagPattern();
+            explicit TagPattern( std::string const& tag, std::string const& filterString );
             bool matches( TestCaseInfo const& testCase ) const override;
         private:
             std::string m_tag;
@@ -4894,8 +4946,7 @@ namespace Catch {
 
         class ExcludedPattern : public Pattern {
         public:
-            ExcludedPattern( PatternPtr const& underlyingPattern );
-            virtual ~ExcludedPattern();
+            explicit ExcludedPattern( PatternPtr const& underlyingPattern );
             bool matches( TestCaseInfo const& testCase ) const override;
         private:
             PatternPtr m_underlyingPattern;
@@ -4905,11 +4956,19 @@ namespace Catch {
             std::vector<PatternPtr> m_patterns;
 
             bool matches( TestCaseInfo const& testCase ) const;
+            std::string name() const;
         };
 
     public:
+        struct FilterMatch {
+            std::string name;
+            std::vector<TestCase const*> tests;
+        };
+        using Matches = std::vector<FilterMatch>;
+
         bool hasFilters() const;
         bool matches( TestCaseInfo const& testCase ) const;
+        Matches matchesByFilter( std::vector<TestCase> const& testCases, IConfig const& config ) const;
 
     private:
         std::vector<Filter> m_filters;
@@ -4949,8 +5008,10 @@ namespace Catch {
         enum Mode{ None, Name, QuotedName, Tag, EscapedName };
         Mode m_mode = None;
         bool m_exclusion = false;
-        std::size_t m_start = std::string::npos, m_pos = 0;
+        std::size_t m_pos = 0;
         std::string m_arg;
+        std::string m_substring;
+        std::string m_patternName;
         std::vector<std::size_t> m_escapeChars;
         TestSpec::Filter m_currentFilter;
         TestSpec m_testSpec;
@@ -4964,26 +5025,32 @@ namespace Catch {
 
     private:
         void visitChar( char c );
-        void startNewMode( Mode mode, std::size_t start );
+        void startNewMode( Mode mode );
+        bool processNoneChar( char c );
+        void processNameChar( char c );
+        bool processOtherChar( char c );
+        void endMode();
         void escape();
-        std::string subString() const;
+        bool isControlChar( char c ) const;
 
         template<typename T>
         void addPattern() {
-            std::string token = subString();
+            std::string token = m_patternName;
             for( std::size_t i = 0; i < m_escapeChars.size(); ++i )
-                token = token.substr( 0, m_escapeChars[i]-m_start-i ) + token.substr( m_escapeChars[i]-m_start-i+1 );
+                token = token.substr( 0, m_escapeChars[i] - i ) + token.substr( m_escapeChars[i] -i +1 );
             m_escapeChars.clear();
             if( startsWith( token, "exclude:" ) ) {
                 m_exclusion = true;
                 token = token.substr( 8 );
             }
             if( !token.empty() ) {
-                TestSpec::PatternPtr pattern = std::make_shared<T>( token );
+                TestSpec::PatternPtr pattern = std::make_shared<T>( token, m_substring );
                 if( m_exclusion )
                     pattern = std::make_shared<TestSpec::ExcludedPattern>( pattern );
                 m_currentFilter.m_patterns.push_back( pattern );
             }
+            m_substring.clear();
+            m_patternName.clear();
             m_exclusion = false;
             m_mode = None;
         }
@@ -6126,6 +6193,7 @@ namespace Catch {
         void testRunEnded(TestRunStats const& testRunStats) override;
 
 #if defined(CATCH_CONFIG_ENABLE_BENCHMARKING)
+        void benchmarkPreparing(std::string const& name) override;
         void benchmarkStarting(BenchmarkInfo const&) override;
         void benchmarkEnded(BenchmarkStats<> const&) override;
         void benchmarkFailed(std::string const&) override;
@@ -9919,7 +9987,16 @@ namespace Catch {
 }
 
 // end catch_debug_console.h
-#ifdef CATCH_PLATFORM_WINDOWS
+#if defined(__ANDROID__)
+#include <android/log.h>
+
+    namespace Catch {
+        void writeToDebugConsole( std::string const& text ) {
+            __android_log_print( ANDROID_LOG_DEBUG, "Catch", text.c_str() );
+        }
+    }
+
+#elif defined(CATCH_PLATFORM_WINDOWS)
 
     namespace Catch {
         void writeToDebugConsole( std::string const& text ) {
@@ -10373,7 +10450,7 @@ namespace Catch {
 
     // 32kb for the alternate stack seems to be sufficient. However, this value
     // is experimentally determined, so that's not guaranteed.
-    constexpr static std::size_t sigStackSize = 32768 >= MINSIGSTKSZ ? 32768 : MINSIGSTKSZ;
+    static constexpr std::size_t sigStackSize = 32768 >= MINSIGSTKSZ ? 32768 : MINSIGSTKSZ;
 
     static SignalDefs signalDefs[] = {
         { SIGINT,  "SIGINT - Terminal interrupt signal" },
@@ -10811,9 +10888,18 @@ namespace Catch {
     }
 
     std::string TagInfo::all() const {
-        std::string out;
-        for( auto const& spelling : spellings )
-            out += "[" + spelling + "]";
+        size_t size = 0;
+        for (auto const& spelling : spellings) {
+            // Add 2 for the brackes
+            size += spelling.size() + 2;
+        }
+
+        std::string out; out.reserve(size);
+        for (auto const& spelling : spellings) {
+            out += '[';
+            out += spelling;
+            out += ']';
+        }
         return out;
     }
 
@@ -11660,6 +11746,8 @@ namespace Catch {
     struct IConfig;
 
     std::vector<TestCase> sortTests( IConfig const& config, std::vector<TestCase> const& unsortedTestCases );
+
+    bool isThrowSafe( TestCase const& testCase, IConfig const& config );
     bool matchTest( TestCase const& testCase, TestSpec const& testSpec, IConfig const& config );
 
     void enforceNoDuplicateTestCases( std::vector<TestCase> const& functions );
@@ -12503,7 +12591,7 @@ namespace Catch {
         void libIdentify();
 
         int applyCommandLine( int argc, char const * const * argv );
-    #if defined(CATCH_CONFIG_WCHAR) && defined(WIN32) && defined(UNICODE)
+    #if defined(CATCH_CONFIG_WCHAR) && defined(_WIN32) && defined(UNICODE)
         int applyCommandLine( int argc, wchar_t const * const * argv );
     #endif
 
@@ -12570,6 +12658,8 @@ namespace Catch {
 // end catch_version.h
 #include <cstdlib>
 #include <iomanip>
+#include <set>
+#include <iterator>
 
 namespace Catch {
 
@@ -12603,45 +12693,53 @@ namespace Catch {
             return ret;
         }
 
-        Catch::Totals runTests(std::shared_ptr<Config> const& config) {
-            auto reporter = makeReporter(config);
+        class TestGroup {
+        public:
+            explicit TestGroup(std::shared_ptr<Config> const& config)
+            : m_config{config}
+            , m_context{config, makeReporter(config)}
+            {
+                auto const& allTestCases = getAllTestCasesSorted(*m_config);
+                m_matches = m_config->testSpec().matchesByFilter(allTestCases, *m_config);
 
-            RunContext context(config, std::move(reporter));
-
-            Totals totals;
-
-            context.testGroupStarting(config->name(), 1, 1);
-
-            TestSpec testSpec = config->testSpec();
-
-            auto const& allTestCases = getAllTestCasesSorted(*config);
-            for (auto const& testCase : allTestCases) {
-                bool matching = (!testSpec.hasFilters() && !testCase.isHidden()) ||
-                                 (testSpec.hasFilters() && matchTest(testCase, testSpec, *config));
-
-                if (!context.aborting() && matching)
-                    totals += context.runTest(testCase);
-                else
-                    context.reporter().skipTest(testCase);
+                if (m_matches.empty()) {
+                    for (auto const& test : allTestCases)
+                        if (!test.isHidden())
+                            m_tests.emplace(&test);
+                } else {
+                    for (auto const& match : m_matches)
+                        m_tests.insert(match.tests.begin(), match.tests.end());
+                }
             }
 
-            if (config->warnAboutNoTests() && totals.testCases.total() == 0) {
-                ReusableStringStream testConfig;
-
-                bool first = true;
-                for (const auto& input : config->getTestsOrTags()) {
-                    if (!first) { testConfig << ' '; }
-                    first = false;
-                    testConfig << input;
+            Totals execute() {
+                Totals totals;
+                m_context.testGroupStarting(m_config->name(), 1, 1);
+                for (auto const& testCase : m_tests) {
+                    if (!m_context.aborting())
+                        totals += m_context.runTest(*testCase);
+                    else
+                        m_context.reporter().skipTest(*testCase);
                 }
 
-                context.reporter().noMatchingTestCases(testConfig.str());
-                totals.error = -1;
+                for (auto const& match : m_matches) {
+                    if (match.tests.empty()) {
+                        m_context.reporter().noMatchingTestCases(match.name);
+                        totals.error = -1;
+                    }
+                }
+                m_context.testGroupEnded(m_config->name(), totals, 1, 1);
+                return totals;
             }
 
-            context.testGroupEnded(config->name(), totals, 1, 1);
-            return totals;
-        }
+        private:
+            using Tests = std::set<TestCase const*>;
+
+            std::shared_ptr<Config> m_config;
+            RunContext m_context;
+            Tests m_tests;
+            TestSpec::Matches m_matches;
+        };
 
         void applyFilenamesAsTags(Catch::IConfig const& config) {
             auto& tests = const_cast<std::vector<TestCase>&>(getAllTestCasesSorted(config));
@@ -12741,7 +12839,7 @@ namespace Catch {
         return 0;
     }
 
-#if defined(CATCH_CONFIG_WCHAR) && defined(WIN32) && defined(UNICODE)
+#if defined(CATCH_CONFIG_WCHAR) && defined(_WIN32) && defined(UNICODE)
     int Session::applyCommandLine( int argc, wchar_t const * const * argv ) {
 
         char **utf8Argv = new char *[ argc ];
@@ -12818,7 +12916,12 @@ namespace Catch {
             if( Option<std::size_t> listed = list( m_config ) )
                 return static_cast<int>( *listed );
 
-            auto totals = runTests( m_config );
+            TestGroup tests { m_config };
+            auto const totals = tests.execute();
+
+            if( m_config->warnAboutNoTests() && totals.error == -1 )
+                return 2;
+
             // Note that on unices only the lower 8 bits are usually used, clamping
             // the return value to 255 prevents false negative when some multiple
             // of 256 tests has failed
@@ -13529,8 +13632,13 @@ namespace Catch {
         }
         return sorted;
     }
+
+    bool isThrowSafe( TestCase const& testCase, IConfig const& config ) {
+        return !testCase.throws() || config.allowThrows();
+    }
+
     bool matchTest( TestCase const& testCase, TestSpec const& testSpec, IConfig const& config ) {
-        return testSpec.matches( testCase ) && ( config.allowThrows() || !testCase.throws() );
+        return testSpec.matches( testCase ) && isThrowSafe( testCase, config );
     }
 
     void enforceNoDuplicateTestCases( std::vector<TestCase> const& functions ) {
@@ -13733,7 +13841,7 @@ namespace TestCaseTracking {
                 m_runState = CompletedSuccessfully;
                 break;
             case ExecutingChildren:
-                if( m_children.empty() || m_children.back()->isComplete() )
+                if( std::all_of(m_children.begin(), m_children.end(), [](ITrackerPtr const& t){ return t->isComplete(); }) )
                     m_runState = CompletedSuccessfully;
                 break;
 
@@ -13876,47 +13984,77 @@ namespace Catch {
 
 namespace Catch {
 
-    TestSpec::Pattern::~Pattern() = default;
-    TestSpec::NamePattern::~NamePattern() = default;
-    TestSpec::TagPattern::~TagPattern() = default;
-    TestSpec::ExcludedPattern::~ExcludedPattern() = default;
-
-    TestSpec::NamePattern::NamePattern( std::string const& name )
-    : m_wildcardPattern( toLower( name ), CaseSensitive::No )
+    TestSpec::Pattern::Pattern( std::string const& name )
+    : m_name( name )
     {}
+
+    TestSpec::Pattern::~Pattern() = default;
+
+    std::string const& TestSpec::Pattern::name() const {
+        return m_name;
+    }
+
+    TestSpec::NamePattern::NamePattern( std::string const& name, std::string const& filterString )
+    : Pattern( filterString )
+    , m_wildcardPattern( toLower( name ), CaseSensitive::No )
+    {}
+
     bool TestSpec::NamePattern::matches( TestCaseInfo const& testCase ) const {
         return m_wildcardPattern.matches( toLower( testCase.name ) );
     }
 
-    TestSpec::TagPattern::TagPattern( std::string const& tag ) : m_tag( toLower( tag ) ) {}
+    TestSpec::TagPattern::TagPattern( std::string const& tag, std::string const& filterString )
+    : Pattern( filterString )
+    , m_tag( toLower( tag ) )
+    {}
+
     bool TestSpec::TagPattern::matches( TestCaseInfo const& testCase ) const {
         return std::find(begin(testCase.lcaseTags),
                          end(testCase.lcaseTags),
                          m_tag) != end(testCase.lcaseTags);
     }
 
-    TestSpec::ExcludedPattern::ExcludedPattern( PatternPtr const& underlyingPattern ) : m_underlyingPattern( underlyingPattern ) {}
-    bool TestSpec::ExcludedPattern::matches( TestCaseInfo const& testCase ) const { return !m_underlyingPattern->matches( testCase ); }
+    TestSpec::ExcludedPattern::ExcludedPattern( PatternPtr const& underlyingPattern )
+    : Pattern( underlyingPattern->name() )
+    , m_underlyingPattern( underlyingPattern )
+    {}
+
+    bool TestSpec::ExcludedPattern::matches( TestCaseInfo const& testCase ) const {
+        return !m_underlyingPattern->matches( testCase );
+    }
 
     bool TestSpec::Filter::matches( TestCaseInfo const& testCase ) const {
-        // All patterns in a filter must match for the filter to be a match
-        for( auto const& pattern : m_patterns ) {
-            if( !pattern->matches( testCase ) )
-                return false;
-        }
-        return true;
+        return std::all_of( m_patterns.begin(), m_patterns.end(), [&]( PatternPtr const& p ){ return p->matches( testCase ); } );
+    }
+
+    std::string TestSpec::Filter::name() const {
+        std::string name;
+        for( auto const& p : m_patterns )
+            name += p->name();
+        return name;
     }
 
     bool TestSpec::hasFilters() const {
         return !m_filters.empty();
     }
+
     bool TestSpec::matches( TestCaseInfo const& testCase ) const {
-        // A TestSpec matches if any filter matches
-        for( auto const& filter : m_filters )
-            if( filter.matches( testCase ) )
-                return true;
-        return false;
+        return std::any_of( m_filters.begin(), m_filters.end(), [&]( Filter const& f ){ return f.matches( testCase ); } );
     }
+
+    TestSpec::Matches TestSpec::matchesByFilter( std::vector<TestCase> const& testCases, IConfig const& config ) const
+    {
+        Matches matches( m_filters.size() );
+        std::transform( m_filters.begin(), m_filters.end(), matches.begin(), [&]( Filter const& filter ){
+            std::vector<TestCase const*> currentMatches;
+            for( auto const& test : testCases )
+                if( isThrowSafe( test, config ) && filter.matches( test ) )
+                    currentMatches.emplace_back( &test );
+            return FilterMatch{ filter.name(), currentMatches };
+        } );
+        return matches;
+    }
+
 }
 // end catch_test_spec.cpp
 // start catch_test_spec_parser.cpp
@@ -13928,64 +14066,125 @@ namespace Catch {
     TestSpecParser& TestSpecParser::parse( std::string const& arg ) {
         m_mode = None;
         m_exclusion = false;
-        m_start = std::string::npos;
         m_arg = m_tagAliases->expandAliases( arg );
         m_escapeChars.clear();
+        m_substring.reserve(m_arg.size());
+        m_patternName.reserve(m_arg.size());
         for( m_pos = 0; m_pos < m_arg.size(); ++m_pos )
             visitChar( m_arg[m_pos] );
-        if( m_mode == Name )
-            addPattern<TestSpec::NamePattern>();
+        endMode();
         return *this;
     }
     TestSpec TestSpecParser::testSpec() {
         addFilter();
         return m_testSpec;
     }
-
     void TestSpecParser::visitChar( char c ) {
-        if( m_mode == None ) {
-            switch( c ) {
-            case ' ': return;
-            case '~': m_exclusion = true; return;
-            case '[': return startNewMode( Tag, ++m_pos );
-            case '"': return startNewMode( QuotedName, ++m_pos );
-            case '\\': return escape();
-            default: startNewMode( Name, m_pos ); break;
-            }
+        if( c == ',' ) {
+            endMode();
+            addFilter();
+            return;
         }
-        if( m_mode == Name ) {
-            if( c == ',' ) {
-                addPattern<TestSpec::NamePattern>();
-                addFilter();
-            }
-            else if( c == '[' ) {
-                if( subString() == "exclude:" )
-                    m_exclusion = true;
-                else
-                    addPattern<TestSpec::NamePattern>();
-                startNewMode( Tag, ++m_pos );
-            }
-            else if( c == '\\' )
-                escape();
+
+        switch( m_mode ) {
+        case None:
+            if( processNoneChar( c ) )
+                return;
+            break;
+        case Name:
+            processNameChar( c );
+            break;
+        case EscapedName:
+            endMode();
+            break;
+        default:
+        case Tag:
+        case QuotedName:
+            if( processOtherChar( c ) )
+                return;
+            break;
         }
-        else if( m_mode == EscapedName )
-            m_mode = Name;
-        else if( m_mode == QuotedName && c == '"' )
-            addPattern<TestSpec::NamePattern>();
-        else if( m_mode == Tag && c == ']' )
-            addPattern<TestSpec::TagPattern>();
+
+        m_substring += c;
+        if( !isControlChar( c ) )
+            m_patternName += c;
     }
-    void TestSpecParser::startNewMode( Mode mode, std::size_t start ) {
+    // Two of the processing methods return true to signal the caller to return
+    // without adding the given character to the current pattern strings
+    bool TestSpecParser::processNoneChar( char c ) {
+        switch( c ) {
+        case ' ':
+            return true;
+        case '~':
+            m_exclusion = true;
+            return false;
+        case '[':
+            startNewMode( Tag );
+            return false;
+        case '"':
+            startNewMode( QuotedName );
+            return false;
+        case '\\':
+            escape();
+            return true;
+        default:
+            startNewMode( Name );
+            return false;
+        }
+    }
+    void TestSpecParser::processNameChar( char c ) {
+        if( c == '[' ) {
+            if( m_substring == "exclude:" )
+                m_exclusion = true;
+            else
+                endMode();
+            startNewMode( Tag );
+        }
+    }
+    bool TestSpecParser::processOtherChar( char c ) {
+        if( !isControlChar( c ) )
+            return false;
+        m_substring += c;
+        endMode();
+        return true;
+    }
+    void TestSpecParser::startNewMode( Mode mode ) {
         m_mode = mode;
-        m_start = start;
+    }
+    void TestSpecParser::endMode() {
+        switch( m_mode ) {
+        case Name:
+        case QuotedName:
+            return addPattern<TestSpec::NamePattern>();
+        case Tag:
+            return addPattern<TestSpec::TagPattern>();
+        case EscapedName:
+            return startNewMode( Name );
+        case None:
+        default:
+            return startNewMode( None );
+        }
     }
     void TestSpecParser::escape() {
-        if( m_mode == None )
-            m_start = m_pos;
         m_mode = EscapedName;
         m_escapeChars.push_back( m_pos );
     }
-    std::string TestSpecParser::subString() const { return m_arg.substr( m_start, m_pos - m_start ); }
+    bool TestSpecParser::isControlChar( char c ) const {
+        switch( m_mode ) {
+            default:
+                return false;
+            case None:
+                return c == '~';
+            case Name:
+                return c == '[';
+            case EscapedName:
+                return true;
+            case QuotedName:
+                return c == '"';
+            case Tag:
+                return c == '[' || c == ']';
+        }
+    }
 
     void TestSpecParser::addFilter() {
         if( !m_currentFilter.m_patterns.empty() ) {
@@ -14225,6 +14424,13 @@ std::string StringMaker<wchar_t *>::convert(wchar_t * str) {
 }
 #endif
 
+#if defined(CATCH_CONFIG_CPP17_BYTE)
+#include <cstddef>
+std::string StringMaker<std::byte>::convert(std::byte value) {
+    return ::Catch::Detail::stringify(std::to_integer<unsigned long long>(value));
+}
+#endif // defined(CATCH_CONFIG_CPP17_BYTE)
+
 std::string StringMaker<int>::convert(int value) {
     return ::Catch::Detail::stringify(static_cast<long long>(value));
 }
@@ -14414,7 +14620,7 @@ namespace Catch {
     }
 
     Version const& libraryVersion() {
-        static Version version( 2, 9, 1, "", 0 );
+        static Version version( 2, 9, 2, "", 0 );
         return version;
     }
 
@@ -15001,24 +15207,25 @@ private:
         if (itMessage == messages.end())
             return;
 
-        // using messages.end() directly yields (or auto) compilation error:
-        std::vector<MessageInfo>::const_iterator itEnd = messages.end();
-        const std::size_t N = static_cast<std::size_t>(std::distance(itMessage, itEnd));
+        const auto itEnd = messages.cend();
+        const auto N = static_cast<std::size_t>(std::distance(itMessage, itEnd));
 
         {
             Colour colourGuard(colour);
             stream << " with " << pluralise(N, "message") << ':';
         }
 
-        for (; itMessage != itEnd; ) {
+        while (itMessage != itEnd) {
             // If this assertion is a warning ignore any INFO messages
             if (printInfoMessages || itMessage->type != ResultWas::Info) {
-                stream << " '" << itMessage->message << '\'';
-                if (++itMessage != itEnd) {
+                printMessage();
+                if (itMessage != itEnd) {
                     Colour colourGuard(dimColour());
                     stream << " and";
                 }
+                continue;
             }
+            ++itMessage;
         }
     }
 
@@ -16355,10 +16562,13 @@ namespace Catch {
     }
 
 #if defined(CATCH_CONFIG_ENABLE_BENCHMARKING)
-    void XmlReporter::benchmarkStarting(BenchmarkInfo const &info) {
+    void XmlReporter::benchmarkPreparing(std::string const& name) {
         m_xml.startElement("BenchmarkResults")
-            .writeAttribute("name", info.name)
-            .writeAttribute("samples", info.samples)
+            .writeAttribute("name", name);
+    }
+
+    void XmlReporter::benchmarkStarting(BenchmarkInfo const &info) {
+        m_xml.writeAttribute("samples", info.samples)
             .writeAttribute("resamples", info.resamples)
             .writeAttribute("iterations", info.iterations)
             .writeAttribute("clockResolution", static_cast<uint64_t>(info.clockResolution))

@@ -2,6 +2,7 @@
 
 # Release notes
 **Contents**<br>
+[2.9.2](#292)<br>
 [2.9.1](#291)<br>
 [2.9.0](#290)<br>
 [2.8.0](#280)<br>
@@ -25,6 +26,42 @@
 [2.0.1](#201)<br>
 [Older versions](#older-versions)<br>
 [Even Older versions](#even-older-versions)<br>
+
+
+## 2.9.2
+
+### Fixes
+* `ChunkGenerator` can now be used with chunks of size 0 (#1671)
+* Nested subsections are now run properly when specific section is run via the `-c` argument (#1670, #1673)
+* Catch2 now consistently uses `_WIN32` to detect Windows platform (#1676)
+* `TEMPLATE_LIST_TEST_CASE` now support non-default constructible type lists (#1697)
+* Fixed a crash in the XMLReporter when a benchmark throws exception during warmup (#1706)
+* Fixed a possible infinite loop in CompactReporter (#1715)
+* Fixed `-w NoTests` returning 0 even when no tests were matched (#1449, #1683, #1684)
+* Fixed matcher compilation under Obj-C++ (#1661)
+
+### Improvements
+* `RepeatGenerator` and `FixedValuesGenerator` now fail to compile when used with `bool` (#1692)
+  * Previously they would fail at runtime.
+* Catch2 now supports Android's debug logging for its debug output (#1710)
+* Catch2 now detects and configures itself for the RTX platform (#1693)
+  * You still need to pass `--benchmark-no-analysis` if you are using benchmarking under RTX
+* Removed a "storage class is not first" warning when compiling Catch2 with PGI compiler (#1717)
+
+### Miscellaneous
+* Documentation now contains indication when a specific feature was introduced (#1695)
+  * These start with Catch2 v2.3.0, (a bit over a year ago).
+  * `docs/contributing.md` has been updated to provide contributors guidance on how to add these to newly written documentation
+* Various other documentation improvements
+  * ToC fixes
+  * Documented `--order` and `--rng-seed` command line options
+  * Benchmarking documentation now clearly states that it requires opt-in
+  * Documented `CATCH_CONFIG_CPP17_OPTIONAL` and `CATCH_CONFIG_CPP17_BYTE` macros
+  * Properly documented built-in vector matchers
+  * Improved `*_THROWS_MATCHES` documentation a bit
+* CMake config file is now arch-independent even if `CMAKE_SIZEOF_VOID_P` is in CMake cache (#1660)
+* `CatchAddTests` now properly escapes `[` and `]` in test names (#1634, #1698)
+
 
 ## 2.9.1
 
