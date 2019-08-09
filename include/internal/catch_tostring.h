@@ -44,9 +44,9 @@ namespace Catch {
 
         template<typename T>
         class IsStreamInsertable {
-            template<typename SS, typename TT>
+            template<typename Stream, typename U>
             static auto test(int)
-                -> decltype(std::declval<SS&>() << std::declval<TT>(), std::true_type());
+                -> decltype(std::declval<Stream&>() << std::declval<U>(), std::true_type());
 
             template<typename, typename>
             static auto test(...)->std::false_type;
