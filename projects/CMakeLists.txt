@@ -17,6 +17,7 @@ endif(MSVC) #Temporary workaround
 set(TEST_SOURCES
         ${SELF_TEST_DIR}/TestMain.cpp
         ${SELF_TEST_DIR}/IntrospectiveTests/CmdLine.tests.cpp
+        ${SELF_TEST_DIR}/IntrospectiveTests/Details.tests.cpp
         ${SELF_TEST_DIR}/IntrospectiveTests/GeneratorsImpl.tests.cpp
         ${SELF_TEST_DIR}/IntrospectiveTests/InternalBenchmark.tests.cpp
         ${SELF_TEST_DIR}/IntrospectiveTests/PartTracker.tests.cpp

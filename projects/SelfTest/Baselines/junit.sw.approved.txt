@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuitesloose text artifact
 >
-  <testsuite name="<exe-name>" errors="17" failures="132" tests="1571" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
+  <testsuite name="<exe-name>" errors="17" failures="132" tests="1575" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
     <properties>
       <property name="filters" value="~[!nonportable]~[!benchmark]~[approvals]"/>
       <property name="random-seed" value="1"/>
@@ -241,6 +241,7 @@ Exception.tests.cpp:<line number>
     <testcase classname="<exe-name>.global" name="Character pretty printing/Specifically escaped" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Character pretty printing/General chars" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Character pretty printing/Low ASCII" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="Check that our error handling macros throw the right exceptions" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Commas in various macros are allowed" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Comparing function pointers" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Comparison with explicitly convertible types" time="{duration}"/>

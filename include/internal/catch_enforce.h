@@ -38,13 +38,13 @@ namespace Catch {
     (Catch::ReusableStringStream() << __VA_ARGS__).str()
 
 #define CATCH_INTERNAL_ERROR(...) \
-    Catch::throw_logic_error(CATCH_MAKE_MSG( CATCH_INTERNAL_LINEINFO << ": Internal Catch2 error: " << __VA_ARGS__));
+    Catch::throw_logic_error(CATCH_MAKE_MSG( CATCH_INTERNAL_LINEINFO << ": Internal Catch2 error: " << __VA_ARGS__))
 
 #define CATCH_ERROR(...) \
-    Catch::throw_domain_error(CATCH_MAKE_MSG( __VA_ARGS__ ));
+    Catch::throw_domain_error(CATCH_MAKE_MSG( __VA_ARGS__ ))
 
 #define CATCH_RUNTIME_ERROR(...) \
-    Catch::throw_runtime_error(CATCH_MAKE_MSG( __VA_ARGS__ ));
+    Catch::throw_runtime_error(CATCH_MAKE_MSG( __VA_ARGS__ ))
 
 #define CATCH_ENFORCE( condition, ... ) \
     do{ if( !(condition) ) CATCH_ERROR( __VA_ARGS__ ); } while(false)
