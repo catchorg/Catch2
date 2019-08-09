@@ -61,6 +61,10 @@
   * Improved `*_THROWS_MATCHES` documentation a bit
 * CMake config file is now arch-independent even if `CMAKE_SIZEOF_VOID_P` is in CMake cache (#1660)
 * `CatchAddTests` now properly escapes `[` and `]` in test names (#1634, #1698)
+* Reverted `CatchAddTests` adding tags as CTest labels (#1658)
+  * The script broke when test names were too long
+  * Overwriting `LABELS` caused trouble for users who set them manually
+  * CMake does not let users append to `LABELS` if the test name has spaces
 
 
 ## 2.9.1
