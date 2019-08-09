@@ -10,7 +10,7 @@
 #pragma warning(disable:4702) // unreachable code in the macro expansions
 #endif
 
-TEST_CASE("Check that our error handling macros throw the right exceptions", "[!throws][internals]") {
+TEST_CASE("Check that our error handling macros throw the right exceptions", "[!throws][internals][approvals]") {
     REQUIRE_THROWS_AS(CATCH_INTERNAL_ERROR(""), std::logic_error);
     REQUIRE_THROWS_AS(CATCH_ERROR(""), std::domain_error);
     REQUIRE_THROWS_AS(CATCH_RUNTIME_ERROR(""), std::runtime_error);

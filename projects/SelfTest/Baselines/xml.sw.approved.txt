@@ -2438,41 +2438,6 @@ Nor would this
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="Check that our error handling macros throw the right exceptions" tags="[!throws][internals]" filename="projects/<exe-name>/IntrospectiveTests/Details.tests.cpp" >
-      <Expression success="true" type="REQUIRE_THROWS_AS" filename="projects/<exe-name>/IntrospectiveTests/Details.tests.cpp" >
-        <Original>
-          Catch::throw_logic_error((Catch::ReusableStringStream() &lt;&lt; ::Catch::SourceLineInfo( "projects/<exe-name>/IntrospectiveTests/Details.tests.cpp", static_cast&lt;std::size_t>( 9 ) ) &lt;&lt; ": Internal Catch2 error: " &lt;&lt; "").str()), std::logic_error
-        </Original>
-        <Expanded>
-          Catch::throw_logic_error((Catch::ReusableStringStream() &lt;&lt; ::Catch::SourceLineInfo( "projects/<exe-name>/IntrospectiveTests/Details.tests.cpp", static_cast&lt;std::size_t>( 9 ) ) &lt;&lt; ": Internal Catch2 error: " &lt;&lt; "").str()), std::logic_error
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="REQUIRE_THROWS_AS" filename="projects/<exe-name>/IntrospectiveTests/Details.tests.cpp" >
-        <Original>
-          Catch::throw_domain_error((Catch::ReusableStringStream() &lt;&lt; "").str()), std::domain_error
-        </Original>
-        <Expanded>
-          Catch::throw_domain_error((Catch::ReusableStringStream() &lt;&lt; "").str()), std::domain_error
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="REQUIRE_THROWS_AS" filename="projects/<exe-name>/IntrospectiveTests/Details.tests.cpp" >
-        <Original>
-          Catch::throw_runtime_error((Catch::ReusableStringStream() &lt;&lt; "").str()), std::runtime_error
-        </Original>
-        <Expanded>
-          Catch::throw_runtime_error((Catch::ReusableStringStream() &lt;&lt; "").str()), std::runtime_error
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="REQUIRE_THROWS_AS" filename="projects/<exe-name>/IntrospectiveTests/Details.tests.cpp" >
-        <Original>
-          [](){do{ if( !(false) ) Catch::throw_domain_error((Catch::ReusableStringStream() &lt;&lt; "").str()); } while(false);}(), std::domain_error
-        </Original>
-        <Expanded>
-          [](){do{ if( !(false) ) Catch::throw_domain_error((Catch::ReusableStringStream() &lt;&lt; "").str()); } while(false);}(), std::domain_error
-        </Expanded>
-      </Expression>
-      <OverallResult success="true"/>
-    </TestCase>
     <TestCase name="Commas in various macros are allowed" filename="projects/<exe-name>/UsageTests/Tricky.tests.cpp" >
       <Expression success="true" type="REQUIRE_THROWS" filename="projects/<exe-name>/UsageTests/Tricky.tests.cpp" >
         <Original>
@@ -14802,7 +14767,7 @@ loose text artifact
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="1405" failures="149" expectedFailures="21"/>
+    <OverallResults successes="1401" failures="149" expectedFailures="21"/>
   </Group>
-  <OverallResults successes="1405" failures="148" expectedFailures="21"/>
+  <OverallResults successes="1401" failures="148" expectedFailures="21"/>
 </Catch>

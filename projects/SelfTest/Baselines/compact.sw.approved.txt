@@ -265,10 +265,6 @@ ToStringGeneral.tests.cpp:<line number>: passed: c == i for: 2 == 2
 ToStringGeneral.tests.cpp:<line number>: passed: c == i for: 3 == 3
 ToStringGeneral.tests.cpp:<line number>: passed: c == i for: 4 == 4
 ToStringGeneral.tests.cpp:<line number>: passed: c == i for: 5 == 5
-Details.tests.cpp:<line number>: passed: Catch::throw_logic_error((Catch::ReusableStringStream() << ::Catch::SourceLineInfo( "projects/<exe-name>/IntrospectiveTests/Details.tests.cpp", static_cast<std::size_t>( 9 ) ) << ": Internal Catch2 error: " << "").str()), std::logic_error
-Details.tests.cpp:<line number>: passed: Catch::throw_domain_error((Catch::ReusableStringStream() << "").str()), std::domain_error
-Details.tests.cpp:<line number>: passed: Catch::throw_runtime_error((Catch::ReusableStringStream() << "").str()), std::runtime_error
-Details.tests.cpp:<line number>: passed: [](){do{ if( !(false) ) Catch::throw_domain_error((Catch::ReusableStringStream() << "").str()); } while(false);}(), std::domain_error
 Tricky.tests.cpp:<line number>: passed: std::vector<constructor_throws>{constructor_throws{}, constructor_throws{}}
 Tricky.tests.cpp:<line number>: passed: std::vector<constructor_throws>{constructor_throws{}, constructor_throws{}}
 Tricky.tests.cpp:<line number>: passed: std::vector<int>{1, 2, 3} == std::vector<int>{1, 2, 3}

@@ -2129,24 +2129,6 @@ with expansion:
   5 == 5
 
 -------------------------------------------------------------------------------
-Check that our error handling macros throw the right exceptions
--------------------------------------------------------------------------------
-Details.tests.cpp:<line number>
-...............................................................................
-
-Details.tests.cpp:<line number>: PASSED:
-  REQUIRE_THROWS_AS( Catch::throw_logic_error((Catch::ReusableStringStream() << ::Catch::SourceLineInfo( "projects/<exe-name>/IntrospectiveTests/Details.tests.cpp", static_cast<std::size_t>( 9 ) ) << ": Internal Catch2 error: " << "").str()), std::logic_error )
-
-Details.tests.cpp:<line number>: PASSED:
-  REQUIRE_THROWS_AS( Catch::throw_domain_error((Catch::ReusableStringStream() << "").str()), std::domain_error )
-
-Details.tests.cpp:<line number>: PASSED:
-  REQUIRE_THROWS_AS( Catch::throw_runtime_error((Catch::ReusableStringStream() << "").str()), std::runtime_error )
-
-Details.tests.cpp:<line number>: PASSED:
-  REQUIRE_THROWS_AS( [](){do{ if( !(false) ) Catch::throw_domain_error((Catch::ReusableStringStream() << "").str()); } while(false);}(), std::domain_error )
-
--------------------------------------------------------------------------------
 Commas in various macros are allowed
 -------------------------------------------------------------------------------
 Tricky.tests.cpp:<line number>
@@ -12427,6 +12409,6 @@ Misc.tests.cpp:<line number>
 Misc.tests.cpp:<line number>: PASSED:
 
 ===============================================================================
-test cases:  299 |  209 passed |  86 failed |  4 failed as expected
-assertions: 1574 | 1405 passed | 148 failed | 21 failed as expected
+test cases:  298 |  208 passed |  86 failed |  4 failed as expected
+assertions: 1570 | 1401 passed | 148 failed | 21 failed as expected
 
