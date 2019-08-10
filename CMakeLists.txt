@@ -92,6 +92,10 @@ target_include_directories(Catch2
     $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
 )
 
+if (ANDROID)
+    target_link_libraries(Catch2 INTERFACE log)
+endif()
+
 # provide a namespaced alias for clients to 'link' against if catch is included as a sub-project
 add_library(Catch2::Catch2 ALIAS Catch2)
 
