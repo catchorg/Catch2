@@ -16,7 +16,7 @@
 
     namespace Catch {
         void writeToDebugConsole( std::string const& text ) {
-            __android_log_print( ANDROID_LOG_DEBUG, "Catch", text.c_str() );
+            __android_log_write( ANDROID_LOG_DEBUG, "Catch", text.c_str() );
         }
     }
 
