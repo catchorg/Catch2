@@ -1,4 +1,4 @@
-#include "internal/catch_interfaces_testcase.h"
+#include "catch_interfaces_testcase.h"
 
 namespace Catch {
     ITestInvoker::~ITestInvoker() = default;
