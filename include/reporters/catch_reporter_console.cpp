@@ -9,7 +9,7 @@
 #include "catch_reporter_console.h"
 
 #include "../internal/catch_reporter_registrars.hpp"
-#include "internal/catch_console_colour.h"
+#include "../internal/catch_console_colour.h"
 #include "../internal/catch_version.h"
 #include "../internal/catch_text.h"
 #include "../internal/catch_stringref.h"
