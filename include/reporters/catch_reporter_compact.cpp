@@ -8,7 +8,7 @@
 #include "catch_reporter_compact.h"
 
 #include "../internal/catch_reporter_registrars.hpp"
-#include "internal/catch_console_colour.h"
+#include "../internal/catch_console_colour.h"
 
 namespace {
 
