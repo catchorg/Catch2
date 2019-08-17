@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuitesloose text artifact
 >
-  <testsuite name="<exe-name>" errors="17" failures="132" tests="1571" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
+  <testsuite name="<exe-name>" errors="17" failures="132" tests="1572" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
     <properties>
       <property name="filters" value="~[!nonportable]~[!benchmark]~[approvals]"/>
       <property name="random-seed" value="1"/>
@@ -750,9 +750,10 @@ Misc.tests.cpp:<line number>
     <testcase classname="<exe-name>.Template_Fixture" name="Template test case method with test types specified inside std::tuple - MyTypes - 0" time="{duration}"/>
     <testcase classname="<exe-name>.Template_Fixture" name="Template test case method with test types specified inside std::tuple - MyTypes - 1" time="{duration}"/>
     <testcase classname="<exe-name>.Template_Fixture" name="Template test case method with test types specified inside std::tuple - MyTypes - 2" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="Template test case with test types specified inside non-copyable and non-movable std::tuple - NonCopyableAndNonMovableTypes - 0" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="Template test case with test types specified inside non-copyable and non-movable std::tuple - NonCopyableAndNonMovableTypes - 1" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Template test case with test types specified inside non-default-constructible std::tuple - MyNonDefaultConstructibleTypes - 0" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Template test case with test types specified inside non-default-constructible std::tuple - MyNonDefaultConstructibleTypes - 1" time="{duration}"/>
-    <testcase classname="<exe-name>.global" name="Template test case with test types specified inside non-default-constructible std::tuple - MyNonDefaultConstructibleTypes - 2" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Template test case with test types specified inside std::tuple - MyTypes - 0" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Template test case with test types specified inside std::tuple - MyTypes - 1" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Template test case with test types specified inside std::tuple - MyTypes - 2" time="{duration}"/>

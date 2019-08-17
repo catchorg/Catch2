@@ -8023,6 +8023,30 @@ with expansion:
   1.0 == 1
 
 -------------------------------------------------------------------------------
+Template test case with test types specified inside non-copyable and non-
+movable std::tuple - NonCopyableAndNonMovableTypes - 0
+-------------------------------------------------------------------------------
+Misc.tests.cpp:<line number>
+...............................................................................
+
+Misc.tests.cpp:<line number>: PASSED:
+  REQUIRE( sizeof(TestType) > 0 )
+with expansion:
+  1 > 0
+
+-------------------------------------------------------------------------------
+Template test case with test types specified inside non-copyable and non-
+movable std::tuple - NonCopyableAndNonMovableTypes - 1
+-------------------------------------------------------------------------------
+Misc.tests.cpp:<line number>
+...............................................................................
+
+Misc.tests.cpp:<line number>: PASSED:
+  REQUIRE( sizeof(TestType) > 0 )
+with expansion:
+  4 > 0
+
+-------------------------------------------------------------------------------
 Template test case with test types specified inside non-default-constructible
 std::tuple - MyNonDefaultConstructibleTypes - 0
 -------------------------------------------------------------------------------
@@ -8037,18 +8061,6 @@ with expansion:
 -------------------------------------------------------------------------------
 Template test case with test types specified inside non-default-constructible
 std::tuple - MyNonDefaultConstructibleTypes - 1
--------------------------------------------------------------------------------
-Misc.tests.cpp:<line number>
-...............................................................................
-
-Misc.tests.cpp:<line number>: PASSED:
-  REQUIRE( sizeof(TestType) > 0 )
-with expansion:
-  1 > 0
-
--------------------------------------------------------------------------------
-Template test case with test types specified inside non-default-constructible
-std::tuple - MyNonDefaultConstructibleTypes - 2
 -------------------------------------------------------------------------------
 Misc.tests.cpp:<line number>
 ...............................................................................
@@ -12409,6 +12421,6 @@ Misc.tests.cpp:<line number>
 Misc.tests.cpp:<line number>: PASSED:
 
 ===============================================================================
-test cases:  298 |  208 passed |  86 failed |  4 failed as expected
-assertions: 1570 | 1401 passed | 148 failed | 21 failed as expected
+test cases:  299 |  209 passed |  86 failed |  4 failed as expected
+assertions: 1571 | 1402 passed | 148 failed | 21 failed as expected
 
