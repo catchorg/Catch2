@@ -2,14 +2,14 @@
 # Tutorial
 
 **Conteúdo**<br>
-[Obtendo o Catch2](#getting-catch2)<br>
-[Onde por isto?](#where-to-put-it)<br>
-[Escrevendo testes](#writing-tests)<br>
-[Casos de testes e seções](#test-cases-and-sections)<br>
-[Estilo BDD](#bdd-style)<br>
-[Aumentando em escala](#scaling-up)<br>
-[Tipo de casos de teste parametrizados](#type-parametrised-test-cases)<br>
-[Próximos passos](#next-steps)<br>
+[Obtendo o Catch2](#obtendo-o-catch2)<br>
+[Onde por isto?](#onde-por-isto)<br>
+[Escrevendo testes](#escrevendo-testes)<br>
+[Casos de testes e seções](#casos-de-testes-e-secoes)<br>
+[Estilo BDD](#estilo-bdd)<br>
+[Aumentando em escala](#aumentando-em-escala)<br>
+[Tipos de casos de teste parametrizados](#tipos-de-casos-de-testes-parametrizados)<br>
+[Próximos passos](#proximos-passos)<br>
 
 ## Obtendo o Catch2
 
