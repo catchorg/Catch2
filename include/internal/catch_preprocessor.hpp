@@ -118,7 +118,7 @@
     template<template <typename...> class Final, template< typename...> class...Containers, typename...Types>\
     constexpr auto create(TypeList<Types...>) noexcept -> decltype(append(Final<>{}, rewrap<Containers>(Types{}...)...)) { return {}; }\
     template<template <typename...> class Final, template <typename...> class List, typename...Ts>\
-    constexpr auto convert(List<Ts...>) noexcept -> decltype(append(Final<>{},TypeList<Ts>{}...)) { return {}; }
+    constexpr auto convert(const List<Ts...>& ) noexcept -> decltype(append(Final<>{},TypeList<Ts>{}...)) { return {}; }
 
 #define INTERNAL_CATCH_NTTP_1(signature, ...)\
     template<INTERNAL_CATCH_REMOVE_PARENS(signature)> struct Nttp{};\
