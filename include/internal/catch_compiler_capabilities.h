@@ -163,7 +163,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 // Use variadic macros if the compiler supports them
-#if ( defined _MSC_VER && _MSC_VER > 1400 && !defined __EDGE__) || \
+#if ( defined _MSC_VER && _MSC_VER >= 1400 && !defined __EDGE__) || \
     ( defined __WAVE__ && __WAVE_HAS_VARIADICS ) || \
     ( defined __GNUC__ && __GNUC__ >= 3 ) || \
     ( !defined __cplusplus && __STDC_VERSION__ >= 199901L || __cplusplus >= 201103L )
