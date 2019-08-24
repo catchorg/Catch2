@@ -46,6 +46,7 @@ namespace Catch {
     {
         if( !IMutableContext::currentContext )
             IMutableContext::createContext();
+        // NOLINTNEXTLINE(clang-analyzer-core.uninitialized.UndefReturn)
         return *IMutableContext::currentContext;
     }
 
