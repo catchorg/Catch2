@@ -19,13 +19,13 @@ namespace Generators {
 template <typename Float>
 class RandomFloatingGenerator final : public IGenerator<Float> {
     // FIXME: What is the right seed?
-    std::minstd_rand m_rand;
+    std::minstd_rand &m_rand;
     std::uniform_real_distribution<Float> m_dist;
     Float m_current_number;
 public:
 
     RandomFloatingGenerator(Float a, Float b):
-        m_rand(getCurrentContext().getConfig()->rngSeed()),
+        m_rand(getCurrentContext().getRandomGenerator()),
         m_dist(a, b) {
         static_cast<void>(next());
     }
@@ -41,13 +41,13 @@ public:
 
 template <typename Integer>
 class RandomIntegerGenerator final : public IGenerator<Integer> {
-    std::minstd_rand m_rand;
+    std::minstd_rand &m_rand;
     std::uniform_int_distribution<Integer> m_dist;
     Integer m_current_number;
 public:
 
     RandomIntegerGenerator(Integer a, Integer b):
-        m_rand(getCurrentContext().getConfig()->rngSeed()),
+        m_rand(getCurrentContext().getRandomGenerator()),
         m_dist(a, b) {
         static_cast<void>(next());
     }

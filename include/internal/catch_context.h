@@ -7,7 +7,7 @@
  */
 #ifndef TWOBLUECUBES_CATCH_CONTEXT_H_INCLUDED
 #define TWOBLUECUBES_CATCH_CONTEXT_H_INCLUDED
-
+#include <random>
 #include <memory>
 
 namespace Catch {
@@ -26,6 +26,7 @@ namespace Catch {
         virtual IResultCapture* getResultCapture() = 0;
         virtual IRunner* getRunner() = 0;
         virtual IConfigPtr const& getConfig() const = 0;
+        virtual std::minstd_rand& getRandomGenerator()= 0;
     };
 
     struct IMutableContext : IContext

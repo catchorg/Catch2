@@ -7,7 +7,7 @@
  */
 #include "catch_context.h"
 #include "catch_common.h"
-
+#include "catch_interfaces_config.h"
 namespace Catch {
 
     class Context : public IMutableContext, NonCopyable {
@@ -35,14 +35,18 @@ namespace Catch {
         }
         void setConfig( IConfigPtr const& config ) override {
             m_config = config;
+            m_rand.seed(m_config->rngSeed());
         }
-
+        std::minstd_rand& getRandomGenerator() override {
+            return m_rand;
+	      }
         friend IMutableContext& getCurrentMutableContext();
 
     private:
         IConfigPtr m_config;
         IRunner* m_runner = nullptr;
         IResultCapture* m_resultCapture = nullptr;
+        std::minstd_rand m_rand;
     };
 
     IMutableContext *IMutableContext::currentContext = nullptr;
