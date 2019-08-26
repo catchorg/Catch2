@@ -39,7 +39,7 @@ namespace Catch {
         }
         std::minstd_rand& getRandomGenerator() override {
             return m_rand;
-	      }
+	}
         friend IMutableContext& getCurrentMutableContext();
 
     private:
