@@ -282,6 +282,7 @@ set(REPORTER_HEADERS
         ${HEADER_DIR}/reporters/catch_reporter_tap.hpp
         ${HEADER_DIR}/reporters/catch_reporter_teamcity.hpp
         ${HEADER_DIR}/reporters/catch_reporter_xml.h
+        ${HEADER_DIR}/reporters/catch_reporter_sonarqube.hpp
         )
 set(REPORTER_SOURCES
         ${HEADER_DIR}/reporters/catch_reporter_bases.cpp
