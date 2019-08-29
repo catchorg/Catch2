@@ -204,6 +204,8 @@ approve("junit.sw", ["~[!nonportable]~[!benchmark]~[approvals]", "-s", "-w", "No
 approve("xml.sw", ["~[!nonportable]~[!benchmark]~[approvals]", "-s", "-w", "NoAssertions", "-r", "xml", "--order", "lex", "--rng-seed", "1"])
 # compact reporter, include passes, warn about No Assertions
 approve('compact.sw', ['~[!nonportable]~[!benchmark]~[approvals]', '-s', '-w', 'NoAssertions', '-r', 'compact', '--order', 'lex', "--rng-seed", "1"])
+# sonarqube reporter, include passes, warn about No Assertions
+approve("sonarqube.sw", ["~[!nonportable]~[!benchmark]~[approvals]", "-s", "-w", "NoAssertions", "-r", "sonarqube", "--order", "lex", "--rng-seed", "1"])
 
 if overallResult != 0:
     print("If these differences are expected, run approve.py to approve new baselines.")
