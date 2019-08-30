@@ -80,7 +80,11 @@ bool almostEqualUlps(FP lhs, FP rhs, int maxUlpDiff) {
 template <typename FP>
 FP step(FP start, FP direction, int steps) {
     for (int i = 0; i < steps; ++i) {
+#ifndef __UCLIBC__
         start = std::nextafter(start, direction);
+#else
+        start = ::nextafterf(start, direction);
+#endif
     }
     return start;
 }
