@@ -7,11 +7,12 @@
  */
 
 #include "catch_debug_console.h"
+#include "catch_compiler_capabilities.h"
 #include "catch_stream.h"
 #include "catch_platform.h"
 #include "catch_windows_h_proxy.h"
 
-#if defined(__ANDROID__)
+#if defined(CATCH_CONFIG_ANDROID_LOGWRITE)
 #include <android/log.h>
 
     namespace Catch {
