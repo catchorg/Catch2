@@ -1299,6 +1299,18 @@ PartTracker.tests.cpp:<line number>: passed: s1.isComplete() == false for: false
 PartTracker.tests.cpp:<line number>: passed: s1.isComplete() for: true
 PartTracker.tests.cpp:<line number>: passed: testCase.isComplete() == false for: false == false
 PartTracker.tests.cpp:<line number>: passed: testCase.isComplete() for: true
+StringManip.tests.cpp:<line number>: passed: trim(std::string(no_whitespace)) == no_whitespace for: "There is no extra whitespace here"
+==
+"There is no extra whitespace here"
+StringManip.tests.cpp:<line number>: passed: trim(std::string(leading_whitespace)) == no_whitespace for: "There is no extra whitespace here"
+==
+"There is no extra whitespace here"
+StringManip.tests.cpp:<line number>: passed: trim(std::string(trailing_whitespace)) == no_whitespace for: "There is no extra whitespace here"
+==
+"There is no extra whitespace here"
+StringManip.tests.cpp:<line number>: passed: trim(std::string(whitespace_at_both_ends)) == no_whitespace for: "There is no extra whitespace here"
+==
+"There is no extra whitespace here"
 Exception.tests.cpp:<line number>: failed: unexpected exception with message: '3.14'
 Approx.tests.cpp:<line number>: passed: d == approx( 1.23 ) for: 1.23 == Approx( 1.23 )
 Approx.tests.cpp:<line number>: passed: d == approx( 1.22 ) for: 1.23 == Approx( 1.22 )

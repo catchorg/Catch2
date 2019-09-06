@@ -11813,6 +11813,49 @@ Message from section two
       </Section>
       <OverallResult success="true"/>
     </TestCase>
+    <TestCase name="Trim strings" tags="[string-manip]" filename="projects/<exe-name>/IntrospectiveTests/StringManip.tests.cpp" >
+      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/StringManip.tests.cpp" >
+        <Original>
+          trim(std::string(no_whitespace)) == no_whitespace
+        </Original>
+        <Expanded>
+          "There is no extra whitespace here"
+==
+"There is no extra whitespace here"
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/StringManip.tests.cpp" >
+        <Original>
+          trim(std::string(leading_whitespace)) == no_whitespace
+        </Original>
+        <Expanded>
+          "There is no extra whitespace here"
+==
+"There is no extra whitespace here"
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/StringManip.tests.cpp" >
+        <Original>
+          trim(std::string(trailing_whitespace)) == no_whitespace
+        </Original>
+        <Expanded>
+          "There is no extra whitespace here"
+==
+"There is no extra whitespace here"
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/StringManip.tests.cpp" >
+        <Original>
+          trim(std::string(whitespace_at_both_ends)) == no_whitespace
+        </Original>
+        <Expanded>
+          "There is no extra whitespace here"
+==
+"There is no extra whitespace here"
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
     <TestCase name="Unexpected exceptions can be translated" tags="[!throws][.][failing]" filename="projects/<exe-name>/UsageTests/Exception.tests.cpp" >
       <Exception filename="projects/<exe-name>/UsageTests/Exception.tests.cpp" >
         3.14
@@ -14778,7 +14821,7 @@ loose text artifact
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="1402" failures="149" expectedFailures="21"/>
+    <OverallResults successes="1406" failures="149" expectedFailures="21"/>
   </Group>
-  <OverallResults successes="1402" failures="148" expectedFailures="21"/>
+  <OverallResults successes="1406" failures="148" expectedFailures="21"/>
 </Catch>

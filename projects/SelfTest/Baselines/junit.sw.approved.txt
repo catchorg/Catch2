@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuitesloose text artifact
 >
-  <testsuite name="<exe-name>" errors="17" failures="132" tests="1572" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
+  <testsuite name="<exe-name>" errors="17" failures="132" tests="1576" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
     <properties>
       <property name="filters" value="~[!nonportable]~[!benchmark]~[approvals]"/>
       <property name="random-seed" value="1"/>
@@ -825,6 +825,7 @@ Exception.tests.cpp:<line number>
     <testcase classname="<exe-name>.global" name="Tracker/successfully close one section, then find another/Re-enter - skips S1 and enters S2/Successfully close S2" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Tracker/successfully close one section, then find another/Re-enter - skips S1 and enters S2/fail S2" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Tracker/open a nested section" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="Trim strings" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Unexpected exceptions can be translated" time="{duration}">
       <error type="TEST_CASE">
 3.14

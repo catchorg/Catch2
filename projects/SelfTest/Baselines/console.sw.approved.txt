@@ -9780,6 +9780,40 @@ with expansion:
   true
 
 -------------------------------------------------------------------------------
+Trim strings
+-------------------------------------------------------------------------------
+StringManip.tests.cpp:<line number>
+...............................................................................
+
+StringManip.tests.cpp:<line number>: PASSED:
+  REQUIRE( trim(std::string(no_whitespace)) == no_whitespace )
+with expansion:
+  "There is no extra whitespace here"
+  ==
+  "There is no extra whitespace here"
+
+StringManip.tests.cpp:<line number>: PASSED:
+  REQUIRE( trim(std::string(leading_whitespace)) == no_whitespace )
+with expansion:
+  "There is no extra whitespace here"
+  ==
+  "There is no extra whitespace here"
+
+StringManip.tests.cpp:<line number>: PASSED:
+  REQUIRE( trim(std::string(trailing_whitespace)) == no_whitespace )
+with expansion:
+  "There is no extra whitespace here"
+  ==
+  "There is no extra whitespace here"
+
+StringManip.tests.cpp:<line number>: PASSED:
+  REQUIRE( trim(std::string(whitespace_at_both_ends)) == no_whitespace )
+with expansion:
+  "There is no extra whitespace here"
+  ==
+  "There is no extra whitespace here"
+
+-------------------------------------------------------------------------------
 Unexpected exceptions can be translated
 -------------------------------------------------------------------------------
 Exception.tests.cpp:<line number>
@@ -12421,6 +12455,6 @@ Misc.tests.cpp:<line number>
 Misc.tests.cpp:<line number>: PASSED:
 
 ===============================================================================
-test cases:  299 |  209 passed |  86 failed |  4 failed as expected
-assertions: 1571 | 1402 passed | 148 failed | 21 failed as expected
+test cases:  300 |  210 passed |  86 failed |  4 failed as expected
+assertions: 1575 | 1406 passed | 148 failed | 21 failed as expected
 
