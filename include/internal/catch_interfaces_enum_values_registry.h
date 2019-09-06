@@ -32,6 +32,7 @@ namespace Catch {
 
         template<typename E>
         Detail::EnumInfo const& registerEnum( StringRef enumName, StringRef allEnums, std::initializer_list<E> values ) {
+            static_assert(sizeof(int) >= sizeof(E), "Cannot serialize enum to int");
             std::vector<int> intValues;
             intValues.reserve( values.size() );
             for( auto enumValue : values )
