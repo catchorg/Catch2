@@ -9,9 +9,6 @@
 
 #include "catch_matchers.h"
 
-#include <type_traits>
-#include <cmath>
-
 namespace Catch {
 namespace Matchers {
 

@@ -156,8 +156,9 @@ by using `_NO_` in the macro, e.g. `CATCH_CONFIG_NO_CPP17_UNCAUGHT_EXCEPTIONS`.
     CATCH_CONFIG_ENABLE_BENCHMARKING        // Enables the integrated benchmarking features (has a significant effect on compilation speed)
     CATCH_CONFIG_USE_ASYNC                  // Force parallel statistical processing of samples during benchmarking
     CATCH_CONFIG_ANDROID_LOGWRITE           // Use android's logging system for debug output
+    CATCH_CONFIG_GLOBAL_NEXTAFTER           // Use nextafter{,f,l} instead of std::nextafter
 
-> `CATCH_CONFIG_ANDROID_LOGWRITE` was [introduced](https://github.com/catchorg/Catch2/issues/1743) in Catch X.Y.Z
+> `CATCH_CONFIG_ANDROID_LOGWRITE` and `CATCH_CONFIG_GLOBAL_NEXTAFTER` were [introduced](https://github.com/catchorg/Catch2/issues/1743) in Catch X.Y.Z
 
 Currently Catch enables `CATCH_CONFIG_WINDOWS_SEH` only when compiled with MSVC, because some versions of MinGW do not have the necessary Win32 API support.
 

@@ -197,6 +197,10 @@
     #define CATCH_CONFIG_COLOUR_NONE
 #endif
 
+#if defined(__UCLIBC__)
+#define CATCH_INTERNAL_CONFIG_GLOBAL_NEXTAFTER
+#endif
+
 ////////////////////////////////////////////////////////////////////////////////
 // Check if string_view is available and usable
 // The check is split apart to work around v140 (VS2015) preprocessor issue...
@@ -304,6 +308,10 @@
 
 #if defined(CATCH_INTERNAL_CONFIG_ANDROID_LOGWRITE) && !defined(CATCH_CONFIG_NO_ANDROID_LOGWRITE) && !defined(CATCH_CONFIG_ANDROID_LOGWRITE)
 #  define CATCH_CONFIG_ANDROID_LOGWRITE
+#endif
+
+#if defined(CATCH_INTERNAL_CONFIG_GLOBAL_NEXTAFTER) && !defined(CATCH_CONFIG_NO_GLOBAL_NEXTAFTER) && !defined(CATCH_CONFIG_GLOBAL_NEXTAFTER)
+#  define CATCH_CONFIG_GLOBAL_NEXTAFTER
 #endif
 
 #if !defined(CATCH_INTERNAL_SUPPRESS_PARENTHESES_WARNINGS)

@@ -11,12 +11,15 @@
 #include "catch_to_string.hpp"
 #include "catch_tostring.h"
 
+#include <cmath>
 #include <cstdlib>
 #include <cstdint>
 #include <cstring>
 #include <sstream>
+#include <type_traits>
 #include <iomanip>
 #include <limits>
+
 
 namespace Catch {
 namespace Matchers {
@@ -77,10 +80,32 @@ bool almostEqualUlps(FP lhs, FP rhs, int maxUlpDiff) {
     return ulpDiff <= maxUlpDiff;
 }
 
+#if defined(CATCH_CONFIG_GLOBAL_NEXTAFTER)
+
+namespace Catch {
+    float nextafter(float x, float y) {
+        return ::nextafterf(x, y);
+    }
+
+    double nextafter(double x, double y) {
+        return ::nextafter(x, y);
+    }
+
+    long double nextafter(long double x, long double y) {
+        return ::nextafterl(x, y);
+    }
+} // end namespace Catch
+
+#endif
+
 template <typename FP>
 FP step(FP start, FP direction, int steps) {
     for (int i = 0; i < steps; ++i) {
+#if defined(CATCH_CONFIG_GLOBAL_NEXTAFTER)
+        start = Catch::nextafter(start, direction);
+#else
         start = std::nextafter(start, direction);
+#endif
     }
     return start;
 }
