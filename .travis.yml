@@ -9,8 +9,8 @@ common_sources: &all_sources
   - llvm-toolchain-trusty
   - llvm-toolchain-trusty-3.9
   - llvm-toolchain-trusty-4.0
-  - llvm-toolchain-trusty-5.0
-  - llvm-toolchain-trusty-6.0
+  - llvm-toolchain-xenial-5.0
+  - llvm-toolchain-xenial-6.0
 
 matrix:
   include:
@@ -60,6 +60,7 @@ matrix:
       env: COMPILER='clang++-4.0'
 
     - os: linux
+      dist: xenial
       compiler: clang
       addons:
           apt:
@@ -68,6 +69,7 @@ matrix:
       env: COMPILER='clang++-5.0'
 
     - os: linux
+      dist: xenial
       compiler: clang
       addons:
           apt:
@@ -153,6 +155,7 @@ matrix:
       env: COMPILER='clang++-4.0' CPP14=1
 
     - os: linux
+      dist: xenial
       compiler: clang
       addons:
           apt:
@@ -161,6 +164,7 @@ matrix:
       env: COMPILER='clang++-5.0' CPP14=1
 
     - os: linux
+      dist: xenial
       compiler: clang
       addons:
           apt:
@@ -255,6 +259,7 @@ matrix:
       env: COMPILER='g++-7' EXAMPLES=1 COVERAGE=1 EXTRAS=1 CPP17=1
 
     - os: linux
+      dist: xenial
       compiler: clang
       addons:
           apt:
@@ -263,6 +268,7 @@ matrix:
       env: COMPILER='clang++-6.0' CPP17=1
 
     - os: linux
+      dist: xenial
       compiler: clang
       addons:
           apt:
