@@ -8,7 +8,7 @@
 [Casos de testes e seções](#casos-de-testes-e-seções)<br>
 [Estilo BDD](#estilo-bdd)<br>
 [Aumentando em escala](#aumentando-em-escala)<br>
-[Tipos de casos de teste parametrizados](#tipos-de-casos-de-teste-parametrizados)<br>
+[Casos de testes de tipos parametrizados](#casos-de-testes-de-tipos-parametrizados)<br>
 [Próximos passos](#próximos-passos)<br>
 
 ## Obtendo o Catch2
@@ -253,11 +253,11 @@ O requisito é que o seguinte bloco de código ([ou equivalente](own-main.md#top
 #include "catch.hpp"
 ```
 
-aparece em _exatamente um_ arquivo de origem. Use quantos arquivos cpp adicionais (ou o que quer que você chame seus arquivos de implementação) como você precisa para seus testes, particionados, no entanto, faz mais sentido para o seu jeito de trabalhar. Cada arquivo adicional só precisa de `#include " catch.hpp "` - não repita o `#define`!
+aparece em _exatamente um_ arquivo de origem. Use quantos arquivos cpp adicionais (ou o que você quer que chame seus arquivos de implementação) quanto precisar para seus testes, particioná-los, no entanto, faz mais sentido para o seu jeito de trabalhar. Cada arquivo adicional só precisa de `#include " catch.hpp "` - não repita o `#define`!
 
-De fato isso é utilmente uma boa ideia para colocar o bloco com o `#define` [em seu próprio arquivo fonte](slow-compiles.md#top) (código exemplo [main](../examples/020-TestCase-1.cpp), [tests](../examples/020-TestCase-2.cpp)).
+De fato isso é utilmente uma boa ideia para colocar o bloco com o `#define` [em seu próprio arquivo fonte](own-main.md#top) (código exemplo [main](../examples/020-TestCase-1.cpp), [tests](../examples/020-TestCase-2.cpp)).
 
-Não escrva seus testes em arquivos de cabeçalho!
+Não escreva seus testes em arquivos de cabeçalho!
 
 
 ## Casos de Testes de tipos parametrizados
