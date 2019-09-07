@@ -427,6 +427,9 @@ set_tests_properties(VersionCheck PROPERTIES PASS_REGULAR_EXPRESSION "Catch v${P
 add_test(NAME LibIdentityTest COMMAND $<TARGET_FILE:SelfTest> --libidentify)
 set_tests_properties(LibIdentityTest PROPERTIES PASS_REGULAR_EXPRESSION "description:    A Catch2 test executable")
 
+add_test(NAME FilenameAsTagsTest COMMAND $<TARGET_FILE:SelfTest> -\# --list-tags)
+set_tests_properties(FilenameAsTagsTest PROPERTIES PASS_REGULAR_EXPRESSION "\\[#Approx.tests\\]")
+
 
 if (CATCH_USE_VALGRIND)
     add_test(NAME ValgrindRunTests COMMAND valgrind --leak-check=full --error-exitcode=1 $<TARGET_FILE:SelfTest>)
