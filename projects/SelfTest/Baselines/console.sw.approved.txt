@@ -11441,15 +11441,15 @@ with expansion:
 replaceInPlace
   replace single char
 -------------------------------------------------------------------------------
-String.tests.cpp:<line number>
+StringManip.tests.cpp:<line number>
 ...............................................................................
 
-String.tests.cpp:<line number>: PASSED:
-  CHECK( Catch::replaceInPlace( letters, "b", "z" ) )
+StringManip.tests.cpp:<line number>: PASSED:
+  CHECK( Catch::replaceInPlace(letters, "b", "z") )
 with expansion:
   true
 
-String.tests.cpp:<line number>: PASSED:
+StringManip.tests.cpp:<line number>: PASSED:
   CHECK( letters == "azcdefcg" )
 with expansion:
   "azcdefcg" == "azcdefcg"
@@ -11458,15 +11458,15 @@ with expansion:
 replaceInPlace
   replace two chars
 -------------------------------------------------------------------------------
-String.tests.cpp:<line number>
+StringManip.tests.cpp:<line number>
 ...............................................................................
 
-String.tests.cpp:<line number>: PASSED:
-  CHECK( Catch::replaceInPlace( letters, "c", "z" ) )
+StringManip.tests.cpp:<line number>: PASSED:
+  CHECK( Catch::replaceInPlace(letters, "c", "z") )
 with expansion:
   true
 
-String.tests.cpp:<line number>: PASSED:
+StringManip.tests.cpp:<line number>: PASSED:
   CHECK( letters == "abzdefzg" )
 with expansion:
   "abzdefzg" == "abzdefzg"
@@ -11475,15 +11475,15 @@ with expansion:
 replaceInPlace
   replace first char
 -------------------------------------------------------------------------------
-String.tests.cpp:<line number>
+StringManip.tests.cpp:<line number>
 ...............................................................................
 
-String.tests.cpp:<line number>: PASSED:
-  CHECK( Catch::replaceInPlace( letters, "a", "z" ) )
+StringManip.tests.cpp:<line number>: PASSED:
+  CHECK( Catch::replaceInPlace(letters, "a", "z") )
 with expansion:
   true
 
-String.tests.cpp:<line number>: PASSED:
+StringManip.tests.cpp:<line number>: PASSED:
   CHECK( letters == "zbcdefcg" )
 with expansion:
   "zbcdefcg" == "zbcdefcg"
@@ -11492,15 +11492,15 @@ with expansion:
 replaceInPlace
   replace last char
 -------------------------------------------------------------------------------
-String.tests.cpp:<line number>
+StringManip.tests.cpp:<line number>
 ...............................................................................
 
-String.tests.cpp:<line number>: PASSED:
-  CHECK( Catch::replaceInPlace( letters, "g", "z" ) )
+StringManip.tests.cpp:<line number>: PASSED:
+  CHECK( Catch::replaceInPlace(letters, "g", "z") )
 with expansion:
   true
 
-String.tests.cpp:<line number>: PASSED:
+StringManip.tests.cpp:<line number>: PASSED:
   CHECK( letters == "abcdefcz" )
 with expansion:
   "abcdefcz" == "abcdefcz"
@@ -11509,15 +11509,15 @@ with expansion:
 replaceInPlace
   replace all chars
 -------------------------------------------------------------------------------
-String.tests.cpp:<line number>
+StringManip.tests.cpp:<line number>
 ...............................................................................
 
-String.tests.cpp:<line number>: PASSED:
-  CHECK( Catch::replaceInPlace( letters, letters, "replaced" ) )
+StringManip.tests.cpp:<line number>: PASSED:
+  CHECK( Catch::replaceInPlace(letters, letters, "replaced") )
 with expansion:
   true
 
-String.tests.cpp:<line number>: PASSED:
+StringManip.tests.cpp:<line number>: PASSED:
   CHECK( letters == "replaced" )
 with expansion:
   "replaced" == "replaced"
@@ -11526,15 +11526,15 @@ with expansion:
 replaceInPlace
   replace no chars
 -------------------------------------------------------------------------------
-String.tests.cpp:<line number>
+StringManip.tests.cpp:<line number>
 ...............................................................................
 
-String.tests.cpp:<line number>: PASSED:
-  CHECK_FALSE( Catch::replaceInPlace( letters, "x", "z" ) )
+StringManip.tests.cpp:<line number>: PASSED:
+  CHECK_FALSE( Catch::replaceInPlace(letters, "x", "z") )
 with expansion:
   !false
 
-String.tests.cpp:<line number>: PASSED:
+StringManip.tests.cpp:<line number>: PASSED:
   CHECK( letters == letters )
 with expansion:
   "abcdefcg" == "abcdefcg"
@@ -11543,15 +11543,15 @@ with expansion:
 replaceInPlace
   escape '
 -------------------------------------------------------------------------------
-String.tests.cpp:<line number>
+StringManip.tests.cpp:<line number>
 ...............................................................................
 
-String.tests.cpp:<line number>: PASSED:
-  CHECK( Catch::replaceInPlace( s, "'", "|'" ) )
+StringManip.tests.cpp:<line number>: PASSED:
+  CHECK( Catch::replaceInPlace(s, "'", "|'") )
 with expansion:
   true
 
-String.tests.cpp:<line number>: PASSED:
+StringManip.tests.cpp:<line number>: PASSED:
   CHECK( s == "didn|'t" )
 with expansion:
   "didn|'t" == "didn|'t"
@@ -11602,21 +11602,21 @@ with expansion:
 -------------------------------------------------------------------------------
 splitString
 -------------------------------------------------------------------------------
-String.tests.cpp:<line number>
+StringManip.tests.cpp:<line number>
 ...............................................................................
 
-String.tests.cpp:<line number>: PASSED:
-  CHECK_THAT( splitStringRef("", ',' ), Equals(std::vector<StringRef>() ) )
+StringManip.tests.cpp:<line number>: PASSED:
+  CHECK_THAT( splitStringRef("", ','), Equals(std::vector<StringRef>()) )
 with expansion:
   {  } Equals: {  }
 
-String.tests.cpp:<line number>: PASSED:
-  CHECK_THAT( splitStringRef("abc", ',' ), Equals(std::vector<StringRef>{"abc"} ) )
+StringManip.tests.cpp:<line number>: PASSED:
+  CHECK_THAT( splitStringRef("abc", ','), Equals(std::vector<StringRef>{"abc"}) )
 with expansion:
   { abc } Equals: { abc }
 
-String.tests.cpp:<line number>: PASSED:
-  CHECK_THAT( splitStringRef("abc,def", ',' ), Equals(std::vector<StringRef>{"abc", "def"} ) )
+StringManip.tests.cpp:<line number>: PASSED:
+  CHECK_THAT( splitStringRef("abc,def", ','), Equals(std::vector<StringRef>{"abc", "def"}) )
 with expansion:
   { abc, def } Equals: { abc, def }
 

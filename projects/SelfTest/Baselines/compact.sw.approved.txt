@@ -1522,26 +1522,26 @@ Message.tests.cpp:<line number>: passed: true
 Misc.tests.cpp:<line number>: passed: a != b for: 1 != 2
 Misc.tests.cpp:<line number>: passed: b != a for: 2 != 1
 Misc.tests.cpp:<line number>: passed: a != b for: 1 != 2
-String.tests.cpp:<line number>: passed: Catch::replaceInPlace( letters, "b", "z" ) for: true
-String.tests.cpp:<line number>: passed: letters == "azcdefcg" for: "azcdefcg" == "azcdefcg"
-String.tests.cpp:<line number>: passed: Catch::replaceInPlace( letters, "c", "z" ) for: true
-String.tests.cpp:<line number>: passed: letters == "abzdefzg" for: "abzdefzg" == "abzdefzg"
-String.tests.cpp:<line number>: passed: Catch::replaceInPlace( letters, "a", "z" ) for: true
-String.tests.cpp:<line number>: passed: letters == "zbcdefcg" for: "zbcdefcg" == "zbcdefcg"
-String.tests.cpp:<line number>: passed: Catch::replaceInPlace( letters, "g", "z" ) for: true
-String.tests.cpp:<line number>: passed: letters == "abcdefcz" for: "abcdefcz" == "abcdefcz"
-String.tests.cpp:<line number>: passed: Catch::replaceInPlace( letters, letters, "replaced" ) for: true
-String.tests.cpp:<line number>: passed: letters == "replaced" for: "replaced" == "replaced"
-String.tests.cpp:<line number>: passed: !(Catch::replaceInPlace( letters, "x", "z" )) for: !false
-String.tests.cpp:<line number>: passed: letters == letters for: "abcdefcg" == "abcdefcg"
-String.tests.cpp:<line number>: passed: Catch::replaceInPlace( s, "'", "|'" ) for: true
-String.tests.cpp:<line number>: passed: s == "didn|'t" for: "didn|'t" == "didn|'t"
+StringManip.tests.cpp:<line number>: passed: Catch::replaceInPlace(letters, "b", "z") for: true
+StringManip.tests.cpp:<line number>: passed: letters == "azcdefcg" for: "azcdefcg" == "azcdefcg"
+StringManip.tests.cpp:<line number>: passed: Catch::replaceInPlace(letters, "c", "z") for: true
+StringManip.tests.cpp:<line number>: passed: letters == "abzdefzg" for: "abzdefzg" == "abzdefzg"
+StringManip.tests.cpp:<line number>: passed: Catch::replaceInPlace(letters, "a", "z") for: true
+StringManip.tests.cpp:<line number>: passed: letters == "zbcdefcg" for: "zbcdefcg" == "zbcdefcg"
+StringManip.tests.cpp:<line number>: passed: Catch::replaceInPlace(letters, "g", "z") for: true
+StringManip.tests.cpp:<line number>: passed: letters == "abcdefcz" for: "abcdefcz" == "abcdefcz"
+StringManip.tests.cpp:<line number>: passed: Catch::replaceInPlace(letters, letters, "replaced") for: true
+StringManip.tests.cpp:<line number>: passed: letters == "replaced" for: "replaced" == "replaced"
+StringManip.tests.cpp:<line number>: passed: !(Catch::replaceInPlace(letters, "x", "z")) for: !false
+StringManip.tests.cpp:<line number>: passed: letters == letters for: "abcdefcg" == "abcdefcg"
+StringManip.tests.cpp:<line number>: passed: Catch::replaceInPlace(s, "'", "|'") for: true
+StringManip.tests.cpp:<line number>: passed: s == "didn|'t" for: "didn|'t" == "didn|'t"
 Misc.tests.cpp:<line number>: failed: false with 1 message: '3'
 Message.tests.cpp:<line number>: failed: false with 2 messages: 'hi' and 'i := 7'
 Tag.tests.cpp:<line number>: passed: testcase.tags, Catch::VectorContains(std::string("magic-tag")) && Catch::VectorContains(std::string(".")) for: { ".", "magic-tag" } ( Contains: "magic-tag" and Contains: "." )
-String.tests.cpp:<line number>: passed: splitStringRef("", ',' ), Equals(std::vector<StringRef>() ) for: {  } Equals: {  }
-String.tests.cpp:<line number>: passed: splitStringRef("abc", ',' ), Equals(std::vector<StringRef>{"abc"} ) for: { abc } Equals: { abc }
-String.tests.cpp:<line number>: passed: splitStringRef("abc,def", ',' ), Equals(std::vector<StringRef>{"abc", "def"} ) for: { abc, def } Equals: { abc, def }
+StringManip.tests.cpp:<line number>: passed: splitStringRef("", ','), Equals(std::vector<StringRef>()) for: {  } Equals: {  }
+StringManip.tests.cpp:<line number>: passed: splitStringRef("abc", ','), Equals(std::vector<StringRef>{"abc"}) for: { abc } Equals: { abc }
+StringManip.tests.cpp:<line number>: passed: splitStringRef("abc,def", ','), Equals(std::vector<StringRef>{"abc", "def"}) for: { abc, def } Equals: { abc, def }
 Message.tests.cpp:<line number>: failed: false with 4 messages: 'Count 1 to 3...' and '1' and '2' and '3'
 Message.tests.cpp:<line number>: failed: false with 4 messages: 'Count 4 to 6...' and '4' and '5' and '6'
 ToStringGeneral.tests.cpp:<line number>: passed: Catch::Detail::stringify( emptyMap ) == "{  }" for: "{  }" == "{  }"

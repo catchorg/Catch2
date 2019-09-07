@@ -22,3 +22,46 @@ TEST_CASE("Trim strings", "[string-manip]") {
     REQUIRE(trim(StringRef(trailing_whitespace)) == StringRef(no_whitespace));
     REQUIRE(trim(StringRef(whitespace_at_both_ends)) == StringRef(no_whitespace));
 }
+
+TEST_CASE("replaceInPlace", "[string-manip]") {
+    std::string letters = "abcdefcg";
+    SECTION("replace single char") {
+        CHECK(Catch::replaceInPlace(letters, "b", "z"));
+        CHECK(letters == "azcdefcg");
+    }
+    SECTION("replace two chars") {
+        CHECK(Catch::replaceInPlace(letters, "c", "z"));
+        CHECK(letters == "abzdefzg");
+    }
+    SECTION("replace first char") {
+        CHECK(Catch::replaceInPlace(letters, "a", "z"));
+        CHECK(letters == "zbcdefcg");
+    }
+    SECTION("replace last char") {
+        CHECK(Catch::replaceInPlace(letters, "g", "z"));
+        CHECK(letters == "abcdefcz");
+    }
+    SECTION("replace all chars") {
+        CHECK(Catch::replaceInPlace(letters, letters, "replaced"));
+        CHECK(letters == "replaced");
+    }
+    SECTION("replace no chars") {
+        CHECK_FALSE(Catch::replaceInPlace(letters, "x", "z"));
+        CHECK(letters == letters);
+    }
+    SECTION("escape '") {
+        std::string s = "didn't";
+        CHECK(Catch::replaceInPlace(s, "'", "|'"));
+        CHECK(s == "didn|'t");
+    }
+}
+
+TEST_CASE("splitString", "[string-manip]") {
+    using namespace Catch::Matchers;
+    using Catch::splitStringRef;
+    using Catch::StringRef;
+
+    CHECK_THAT(splitStringRef("", ','), Equals(std::vector<StringRef>()));
+    CHECK_THAT(splitStringRef("abc", ','), Equals(std::vector<StringRef>{"abc"}));
+    CHECK_THAT(splitStringRef("abc,def", ','), Equals(std::vector<StringRef>{"abc", "def"}));
+}

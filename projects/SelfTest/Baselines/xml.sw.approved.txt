@@ -13732,17 +13732,17 @@ loose text artifact
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="replaceInPlace" tags="[StringManip][Strings]" filename="projects/<exe-name>/IntrospectiveTests/String.tests.cpp" >
-      <Section name="replace single char" filename="projects/<exe-name>/IntrospectiveTests/String.tests.cpp" >
-        <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/String.tests.cpp" >
+    <TestCase name="replaceInPlace" tags="[string-manip]" filename="projects/<exe-name>/IntrospectiveTests/StringManip.tests.cpp" >
+      <Section name="replace single char" filename="projects/<exe-name>/IntrospectiveTests/StringManip.tests.cpp" >
+        <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/StringManip.tests.cpp" >
           <Original>
-            Catch::replaceInPlace( letters, "b", "z" )
+            Catch::replaceInPlace(letters, "b", "z")
           </Original>
           <Expanded>
             true
           </Expanded>
         </Expression>
-        <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/String.tests.cpp" >
+        <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/StringManip.tests.cpp" >
           <Original>
             letters == "azcdefcg"
           </Original>
@@ -13752,16 +13752,16 @@ loose text artifact
         </Expression>
         <OverallResults successes="2" failures="0" expectedFailures="0"/>
       </Section>
-      <Section name="replace two chars" filename="projects/<exe-name>/IntrospectiveTests/String.tests.cpp" >
-        <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/String.tests.cpp" >
+      <Section name="replace two chars" filename="projects/<exe-name>/IntrospectiveTests/StringManip.tests.cpp" >
+        <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/StringManip.tests.cpp" >
           <Original>
-            Catch::replaceInPlace( letters, "c", "z" )
+            Catch::replaceInPlace(letters, "c", "z")
           </Original>
           <Expanded>
             true
           </Expanded>
         </Expression>
-        <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/String.tests.cpp" >
+        <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/StringManip.tests.cpp" >
           <Original>
             letters == "abzdefzg"
           </Original>
@@ -13771,16 +13771,16 @@ loose text artifact
         </Expression>
         <OverallResults successes="2" failures="0" expectedFailures="0"/>
       </Section>
-      <Section name="replace first char" filename="projects/<exe-name>/IntrospectiveTests/String.tests.cpp" >
-        <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/String.tests.cpp" >
+      <Section name="replace first char" filename="projects/<exe-name>/IntrospectiveTests/StringManip.tests.cpp" >
+        <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/StringManip.tests.cpp" >
           <Original>
-            Catch::replaceInPlace( letters, "a", "z" )
+            Catch::replaceInPlace(letters, "a", "z")
           </Original>
           <Expanded>
             true
           </Expanded>
         </Expression>
-        <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/String.tests.cpp" >
+        <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/StringManip.tests.cpp" >
           <Original>
             letters == "zbcdefcg"
           </Original>
@@ -13790,16 +13790,16 @@ loose text artifact
         </Expression>
         <OverallResults successes="2" failures="0" expectedFailures="0"/>
       </Section>
-      <Section name="replace last char" filename="projects/<exe-name>/IntrospectiveTests/String.tests.cpp" >
-        <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/String.tests.cpp" >
+      <Section name="replace last char" filename="projects/<exe-name>/IntrospectiveTests/StringManip.tests.cpp" >
+        <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/StringManip.tests.cpp" >
           <Original>
-            Catch::replaceInPlace( letters, "g", "z" )
+            Catch::replaceInPlace(letters, "g", "z")
           </Original>
           <Expanded>
             true
           </Expanded>
         </Expression>
-        <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/String.tests.cpp" >
+        <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/StringManip.tests.cpp" >
           <Original>
             letters == "abcdefcz"
           </Original>
@@ -13809,16 +13809,16 @@ loose text artifact
         </Expression>
         <OverallResults successes="2" failures="0" expectedFailures="0"/>
       </Section>
-      <Section name="replace all chars" filename="projects/<exe-name>/IntrospectiveTests/String.tests.cpp" >
-        <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/String.tests.cpp" >
+      <Section name="replace all chars" filename="projects/<exe-name>/IntrospectiveTests/StringManip.tests.cpp" >
+        <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/StringManip.tests.cpp" >
           <Original>
-            Catch::replaceInPlace( letters, letters, "replaced" )
+            Catch::replaceInPlace(letters, letters, "replaced")
           </Original>
           <Expanded>
             true
           </Expanded>
         </Expression>
-        <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/String.tests.cpp" >
+        <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/StringManip.tests.cpp" >
           <Original>
             letters == "replaced"
           </Original>
@@ -13828,16 +13828,16 @@ loose text artifact
         </Expression>
         <OverallResults successes="2" failures="0" expectedFailures="0"/>
       </Section>
-      <Section name="replace no chars" filename="projects/<exe-name>/IntrospectiveTests/String.tests.cpp" >
-        <Expression success="true" type="CHECK_FALSE" filename="projects/<exe-name>/IntrospectiveTests/String.tests.cpp" >
+      <Section name="replace no chars" filename="projects/<exe-name>/IntrospectiveTests/StringManip.tests.cpp" >
+        <Expression success="true" type="CHECK_FALSE" filename="projects/<exe-name>/IntrospectiveTests/StringManip.tests.cpp" >
           <Original>
-            !(Catch::replaceInPlace( letters, "x", "z" ))
+            !(Catch::replaceInPlace(letters, "x", "z"))
           </Original>
           <Expanded>
             !false
           </Expanded>
         </Expression>
-        <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/String.tests.cpp" >
+        <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/StringManip.tests.cpp" >
           <Original>
             letters == letters
           </Original>
@@ -13847,16 +13847,16 @@ loose text artifact
         </Expression>
         <OverallResults successes="2" failures="0" expectedFailures="0"/>
       </Section>
-      <Section name="escape '" filename="projects/<exe-name>/IntrospectiveTests/String.tests.cpp" >
-        <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/String.tests.cpp" >
+      <Section name="escape '" filename="projects/<exe-name>/IntrospectiveTests/StringManip.tests.cpp" >
+        <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/StringManip.tests.cpp" >
           <Original>
-            Catch::replaceInPlace( s, "'", "|'" )
+            Catch::replaceInPlace(s, "'", "|'")
           </Original>
           <Expanded>
             true
           </Expanded>
         </Expression>
-        <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/String.tests.cpp" >
+        <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/StringManip.tests.cpp" >
           <Original>
             s == "didn|'t"
           </Original>
@@ -13913,26 +13913,26 @@ loose text artifact
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="splitString" tags="[Strings]" filename="projects/<exe-name>/IntrospectiveTests/String.tests.cpp" >
-      <Expression success="true" type="CHECK_THAT" filename="projects/<exe-name>/IntrospectiveTests/String.tests.cpp" >
+    <TestCase name="splitString" tags="[string-manip]" filename="projects/<exe-name>/IntrospectiveTests/StringManip.tests.cpp" >
+      <Expression success="true" type="CHECK_THAT" filename="projects/<exe-name>/IntrospectiveTests/StringManip.tests.cpp" >
         <Original>
-          splitStringRef("", ',' ), Equals(std::vector&lt;StringRef>() )
+          splitStringRef("", ','), Equals(std::vector&lt;StringRef>())
         </Original>
         <Expanded>
           {  } Equals: {  }
         </Expanded>
       </Expression>
-      <Expression success="true" type="CHECK_THAT" filename="projects/<exe-name>/IntrospectiveTests/String.tests.cpp" >
+      <Expression success="true" type="CHECK_THAT" filename="projects/<exe-name>/IntrospectiveTests/StringManip.tests.cpp" >
         <Original>
-          splitStringRef("abc", ',' ), Equals(std::vector&lt;StringRef>{"abc"} )
+          splitStringRef("abc", ','), Equals(std::vector&lt;StringRef>{"abc"})
         </Original>
         <Expanded>
           { abc } Equals: { abc }
         </Expanded>
       </Expression>
-      <Expression success="true" type="CHECK_THAT" filename="projects/<exe-name>/IntrospectiveTests/String.tests.cpp" >
+      <Expression success="true" type="CHECK_THAT" filename="projects/<exe-name>/IntrospectiveTests/StringManip.tests.cpp" >
         <Original>
-          splitStringRef("abc,def", ',' ), Equals(std::vector&lt;StringRef>{"abc", "def"} )
+          splitStringRef("abc,def", ','), Equals(std::vector&lt;StringRef>{"abc", "def"})
         </Original>
         <Expanded>
           { abc, def } Equals: { abc, def }
