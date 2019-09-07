@@ -424,6 +424,9 @@ set_tests_properties(RegressionCheck-1670 PROPERTIES PASS_REGULAR_EXPRESSION "Pa
 add_test(NAME VersionCheck COMMAND $<TARGET_FILE:SelfTest> -h)
 set_tests_properties(VersionCheck PROPERTIES PASS_REGULAR_EXPRESSION "Catch v${PROJECT_VERSION}")
 
+add_test(NAME LibIdentityTest COMMAND $<TARGET_FILE:SelfTest> --libidentify)
+set_tests_properties(LibIdentityTest PROPERTIES PASS_REGULAR_EXPRESSION "description:    A Catch2 test executable")
+
 
 if (CATCH_USE_VALGRIND)
     add_test(NAME ValgrindRunTests COMMAND valgrind --leak-check=full --error-exitcode=1 $<TARGET_FILE:SelfTest>)
