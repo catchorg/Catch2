@@ -9667,33 +9667,6 @@ Message from section two
         </Section>
         <OverallResults successes="2" failures="0" expectedFailures="0"/>
       </Section>
-      <Section name="Counting utf-8 codepoints" filename="projects/<exe-name>/IntrospectiveTests/String.tests.cpp" >
-        <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/String.tests.cpp" >
-          <Original>
-            ascii.numberOfCharacters() == ascii.size()
-          </Original>
-          <Expanded>
-            39 == 39
-          </Expanded>
-        </Expression>
-        <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/String.tests.cpp" >
-          <Original>
-            simpleu8.numberOfCharacters() == 30
-          </Original>
-          <Expanded>
-            30 == 30
-          </Expanded>
-        </Expression>
-        <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/String.tests.cpp" >
-          <Original>
-            emojis.numberOfCharacters() == 9
-          </Original>
-          <Expanded>
-            9 == 9
-          </Expanded>
-        </Expression>
-        <OverallResults successes="3" failures="0" expectedFailures="0"/>
-      </Section>
       <OverallResult success="true"/>
     </TestCase>
     <TestCase name="Stringifying std::chrono::duration helpers" tags="[chrono][toString]" filename="projects/<exe-name>/UsageTests/ToStringChrono.tests.cpp" >
@@ -14861,7 +14834,7 @@ loose text artifact
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="1410" failures="149" expectedFailures="21"/>
+    <OverallResults successes="1407" failures="149" expectedFailures="21"/>
   </Group>
-  <OverallResults successes="1410" failures="148" expectedFailures="21"/>
+  <OverallResults successes="1407" failures="148" expectedFailures="21"/>
 </Catch>

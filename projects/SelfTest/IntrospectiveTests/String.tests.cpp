@@ -159,18 +159,6 @@ TEST_CASE( "StringRef", "[Strings][StringRef]" ) {
             REQUIRE( stdStr.size() == sr.size() );
         }
     }
-
-    SECTION( "Counting utf-8 codepoints" ) {
-        StringRef ascii = "just a plain old boring ascii string...";
-        REQUIRE(ascii.numberOfCharacters() == ascii.size());
-
-        StringRef simpleu8 = u8"Trocha češtiny nikoho nezabila";
-        REQUIRE(simpleu8.numberOfCharacters() == 30);
-
-        StringRef emojis = u8"Here be 👾";
-        REQUIRE(emojis.numberOfCharacters() == 9);
-    }
-
 }
 
 TEST_CASE( "replaceInPlace", "[Strings][StringManip]" ) {

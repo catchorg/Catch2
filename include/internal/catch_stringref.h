@@ -96,7 +96,6 @@ namespace Catch {
             return m_size;
         }
 
-        auto numberOfCharacters() const noexcept -> size_type;
         auto c_str() const -> char const*;
 
     public: // substrings and searches

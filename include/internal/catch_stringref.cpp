@@ -17,12 +17,6 @@
 #include <cstring>
 #include <cstdint>
 
-namespace {
-    const uint32_t byte_2_lead = 0xC0;
-    const uint32_t byte_3_lead = 0xE0;
-    const uint32_t byte_4_lead = 0xF0;
-}
-
 namespace Catch {
     StringRef::StringRef( char const* rawChars ) noexcept
     : StringRef( rawChars, static_cast<StringRef::size_type>(std::strlen(rawChars) ) )
@@ -80,22 +74,6 @@ namespace Catch {
 
     auto StringRef::operator[](size_type index) const noexcept -> char {
         return m_start[index];
-    }
-
-    auto StringRef::numberOfCharacters() const noexcept -> size_type {
-        size_type noChars = m_size;
-        // Make adjustments for uft encodings
-        for( size_type i=0; i < m_size; ++i ) {
-            char c = m_start[i];
-            if( ( c & byte_2_lead ) == byte_2_lead ) {
-                noChars--;
-                if (( c & byte_3_lead ) == byte_3_lead )
-                    noChars--;
-                if( ( c & byte_4_lead ) == byte_4_lead )
-                    noChars--;
-            }
-        }
-        return noChars;
     }
 
     auto operator + ( StringRef const& lhs, StringRef const& rhs ) -> std::string {
