@@ -36,7 +36,7 @@ namespace Catch {
                 if( valueToName.first == value )
                     return valueToName.second;
             }
-            return "{** unexpected enum value **}";
+            return "{** unexpected enum value **}"_sr;
         }
 
         std::unique_ptr<EnumInfo> makeEnumInfo( StringRef enumName, StringRef allValueNames, std::vector<int> const& values ) {
