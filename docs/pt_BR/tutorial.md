@@ -5,7 +5,7 @@
 [Obtendo o Catch2](#obtendo-o-catch2)<br>
 [Onde por isto?](#onde-por-isto)<br>
 [Escrevendo testes](#escrevendo-testes)<br>
-[Casos de testes e seções](#casos-de-testes-e-secoes)<br>
+[Casos de testes e seções](#casos-de-testes-e-seções)<br>
 [Estilo BDD](#estilo-bdd)<br>
 [Aumentando em escala](#aumentando-em-escala)<br>
 [Tipos de casos de teste parametrizados](#tipos-de-casos-de-testes-parametrizados)<br>
