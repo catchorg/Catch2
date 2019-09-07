@@ -22,7 +22,10 @@ namespace Catch {
     bool contains( std::string const& s, std::string const& infix );
     void toLowerInPlace( std::string& s );
     std::string toLower( std::string const& s );
+    //! Returns a new string without whitespace at the start/end
     std::string trim( std::string const& str );
+    //! Returns a substring of the original ref without whitespace. Beware lifetimes!
+    StringRef trim(StringRef ref);
 
     // !!! Be aware, returns refs into original string - make sure original string outlives them
     std::vector<StringRef> splitStringRef( StringRef str, char delimiter );

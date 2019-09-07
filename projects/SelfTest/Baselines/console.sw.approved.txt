@@ -9813,6 +9813,34 @@ with expansion:
   ==
   "There is no extra whitespace here"
 
+StringManip.tests.cpp:<line number>: PASSED:
+  REQUIRE( trim(StringRef(no_whitespace)) == StringRef(no_whitespace) )
+with expansion:
+  There is no extra whitespace here
+  ==
+  There is no extra whitespace here
+
+StringManip.tests.cpp:<line number>: PASSED:
+  REQUIRE( trim(StringRef(leading_whitespace)) == StringRef(no_whitespace) )
+with expansion:
+  There is no extra whitespace here
+  ==
+  There is no extra whitespace here
+
+StringManip.tests.cpp:<line number>: PASSED:
+  REQUIRE( trim(StringRef(trailing_whitespace)) == StringRef(no_whitespace) )
+with expansion:
+  There is no extra whitespace here
+  ==
+  There is no extra whitespace here
+
+StringManip.tests.cpp:<line number>: PASSED:
+  REQUIRE( trim(StringRef(whitespace_at_both_ends)) == StringRef(no_whitespace) )
+with expansion:
+  There is no extra whitespace here
+  ==
+  There is no extra whitespace here
+
 -------------------------------------------------------------------------------
 Unexpected exceptions can be translated
 -------------------------------------------------------------------------------
@@ -12456,5 +12484,5 @@ Misc.tests.cpp:<line number>: PASSED:
 
 ===============================================================================
 test cases:  300 |  210 passed |  86 failed |  4 failed as expected
-assertions: 1575 | 1406 passed | 148 failed | 21 failed as expected
+assertions: 1579 | 1410 passed | 148 failed | 21 failed as expected
 

@@ -1311,6 +1311,18 @@ StringManip.tests.cpp:<line number>: passed: trim(std::string(trailing_whitespac
 StringManip.tests.cpp:<line number>: passed: trim(std::string(whitespace_at_both_ends)) == no_whitespace for: "There is no extra whitespace here"
 ==
 "There is no extra whitespace here"
+StringManip.tests.cpp:<line number>: passed: trim(StringRef(no_whitespace)) == StringRef(no_whitespace) for: There is no extra whitespace here
+==
+There is no extra whitespace here
+StringManip.tests.cpp:<line number>: passed: trim(StringRef(leading_whitespace)) == StringRef(no_whitespace) for: There is no extra whitespace here
+==
+There is no extra whitespace here
+StringManip.tests.cpp:<line number>: passed: trim(StringRef(trailing_whitespace)) == StringRef(no_whitespace) for: There is no extra whitespace here
+==
+There is no extra whitespace here
+StringManip.tests.cpp:<line number>: passed: trim(StringRef(whitespace_at_both_ends)) == StringRef(no_whitespace) for: There is no extra whitespace here
+==
+There is no extra whitespace here
 Exception.tests.cpp:<line number>: failed: unexpected exception with message: '3.14'
 Approx.tests.cpp:<line number>: passed: d == approx( 1.23 ) for: 1.23 == Approx( 1.23 )
 Approx.tests.cpp:<line number>: passed: d == approx( 1.22 ) for: 1.23 == Approx( 1.22 )
