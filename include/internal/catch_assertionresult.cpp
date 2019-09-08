@@ -45,7 +45,7 @@ namespace Catch {
     }
 
     bool AssertionResult::hasExpression() const {
-        return m_info.capturedExpression[0] != 0;
+        return !m_info.capturedExpression.empty();
     }
 
     bool AssertionResult::hasMessage() const {
