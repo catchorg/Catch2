@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuitesloose text artifact
 >
-  <testsuite name="<exe-name>" errors="17" failures="132" tests="1577" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
+  <testsuite name="<exe-name>" errors="17" failures="132" tests="1575" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
     <properties>
       <property name="filters" value="~[!nonportable]~[!benchmark]~[approvals]"/>
       <property name="random-seed" value="1"/>
@@ -726,7 +726,6 @@ Matchers.tests.cpp:<line number>
     <testcase classname="<exe-name>.global" name="StringRef/from std::string/implicitly constructed" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="StringRef/from std::string/explicitly constructed" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="StringRef/from std::string/assigned" time="{duration}"/>
-    <testcase classname="<exe-name>.global" name="StringRef/to std::string/implicitly constructed" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="StringRef/to std::string/explicitly constructed" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="StringRef/to std::string/assigned" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Stringifying std::chrono::duration helpers" time="{duration}"/>

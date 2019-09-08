@@ -654,7 +654,7 @@ namespace Catch { \
     template<> struct StringMaker<enumName> { \
         static std::string convert( enumName value ) { \
             static const auto& enumInfo = ::Catch::getMutableRegistryHub().getMutableEnumValuesRegistry().registerEnum( #enumName, #__VA_ARGS__, { __VA_ARGS__ } ); \
-            return enumInfo.lookup( static_cast<int>( value ) ); \
+            return static_cast<std::string>(enumInfo.lookup( static_cast<int>( value ) )); \
         } \
     }; \
 }

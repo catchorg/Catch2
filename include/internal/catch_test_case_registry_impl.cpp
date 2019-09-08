@@ -105,7 +105,7 @@ namespace Catch {
     }
 
     std::string extractClassName( StringRef const& classOrQualifiedMethodName ) {
-        std::string className = classOrQualifiedMethodName;
+        std::string className(classOrQualifiedMethodName);
         if( startsWith( className, '&' ) )
         {
             std::size_t lastColons = className.rfind( "::" );

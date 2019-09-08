@@ -56,13 +56,13 @@ namespace Catch {
         if( isFalseTest( m_info.resultDisposition ) )
             return "!(" + m_info.capturedExpression + ")";
         else
-            return m_info.capturedExpression;
+            return static_cast<std::string>(m_info.capturedExpression);
     }
 
     std::string AssertionResult::getExpressionInMacro() const {
         std::string expr;
         if( m_info.macroName[0] == 0 )
-            expr = m_info.capturedExpression;
+            expr = static_cast<std::string>(m_info.capturedExpression);
         else {
             expr.reserve( m_info.macroName.size() + m_info.capturedExpression.size() + 4 );
             expr += m_info.macroName;

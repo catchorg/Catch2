@@ -142,11 +142,6 @@ TEST_CASE( "StringRef", "[Strings][StringRef]" ) {
     SECTION( "to std::string" ) {
         StringRef sr = "a stringref";
 
-        SECTION( "implicitly constructed" ) {
-            std::string stdStr = sr;
-            REQUIRE( stdStr == "a stringref" );
-            REQUIRE( stdStr.size() == sr.size() );
-        }
         SECTION( "explicitly constructed" ) {
             std::string stdStr( sr );
             REQUIRE( stdStr == "a stringref" );
@@ -154,7 +149,7 @@ TEST_CASE( "StringRef", "[Strings][StringRef]" ) {
         }
         SECTION( "assigned" ) {
             std::string stdStr;
-            stdStr = sr;
+            stdStr = static_cast<std::string>(sr);
             REQUIRE( stdStr == "a stringref" );
             REQUIRE( stdStr.size() == sr.size() );
         }

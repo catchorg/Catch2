@@ -7786,24 +7786,6 @@ with expansion:
 -------------------------------------------------------------------------------
 StringRef
   to std::string
-  implicitly constructed
--------------------------------------------------------------------------------
-String.tests.cpp:<line number>
-...............................................................................
-
-String.tests.cpp:<line number>: PASSED:
-  REQUIRE( stdStr == "a stringref" )
-with expansion:
-  "a stringref" == "a stringref"
-
-String.tests.cpp:<line number>: PASSED:
-  REQUIRE( stdStr.size() == sr.size() )
-with expansion:
-  11 == 11
-
--------------------------------------------------------------------------------
-StringRef
-  to std::string
   explicitly constructed
 -------------------------------------------------------------------------------
 String.tests.cpp:<line number>
@@ -12462,5 +12444,5 @@ Misc.tests.cpp:<line number>: PASSED:
 
 ===============================================================================
 test cases:  300 |  210 passed |  86 failed |  4 failed as expected
-assertions: 1576 | 1407 passed | 148 failed | 21 failed as expected
+assertions: 1574 | 1405 passed | 148 failed | 21 failed as expected
 

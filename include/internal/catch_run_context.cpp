@@ -230,7 +230,7 @@ namespace Catch {
 
         m_unfinishedSections.push_back(endInfo);
     }
-	
+
 #if defined(CATCH_CONFIG_ENABLE_BENCHMARKING)
     void RunContext::benchmarkPreparing(std::string const& name) {
 		m_reporter->benchmarkPreparing(name);
@@ -279,7 +279,7 @@ namespace Catch {
         // Don't rebuild the result -- the stringification itself can cause more fatal errors
         // Instead, fake a result data.
         AssertionResultData tempResult( ResultWas::FatalErrorCondition, { false } );
-        tempResult.message = message;
+        tempResult.message = static_cast<std::string>(message);
         AssertionResult result(m_lastAssertionInfo, tempResult);
 
         assertionEnded(result);
@@ -442,7 +442,7 @@ namespace Catch {
         m_lastAssertionInfo = info;
 
         AssertionResultData data( resultType, LazyExpression( false ) );
-        data.message = message;
+        data.message = static_cast<std::string>(message);
         AssertionResult assertionResult{ m_lastAssertionInfo, data };
         assertionEnded( assertionResult );
         if( !assertionResult.isOk() )

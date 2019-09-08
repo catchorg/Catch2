@@ -9602,28 +9602,6 @@ Message from section two
         <OverallResults successes="2" failures="0" expectedFailures="0"/>
       </Section>
       <Section name="to std::string" filename="projects/<exe-name>/IntrospectiveTests/String.tests.cpp" >
-        <Section name="implicitly constructed" filename="projects/<exe-name>/IntrospectiveTests/String.tests.cpp" >
-          <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/String.tests.cpp" >
-            <Original>
-              stdStr == "a stringref"
-            </Original>
-            <Expanded>
-              "a stringref" == "a stringref"
-            </Expanded>
-          </Expression>
-          <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/String.tests.cpp" >
-            <Original>
-              stdStr.size() == sr.size()
-            </Original>
-            <Expanded>
-              11 == 11
-            </Expanded>
-          </Expression>
-          <OverallResults successes="2" failures="0" expectedFailures="0"/>
-        </Section>
-        <OverallResults successes="2" failures="0" expectedFailures="0"/>
-      </Section>
-      <Section name="to std::string" filename="projects/<exe-name>/IntrospectiveTests/String.tests.cpp" >
         <Section name="explicitly constructed" filename="projects/<exe-name>/IntrospectiveTests/String.tests.cpp" >
           <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/String.tests.cpp" >
             <Original>
@@ -14834,7 +14812,7 @@ loose text artifact
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="1407" failures="149" expectedFailures="21"/>
+    <OverallResults successes="1405" failures="149" expectedFailures="21"/>
   </Group>
-  <OverallResults successes="1407" failures="148" expectedFailures="21"/>
+  <OverallResults successes="1405" failures="148" expectedFailures="21"/>
 </Catch>

@@ -23,6 +23,7 @@ namespace Catch {
     class StringRef {
     public:
         using size_type = std::size_t;
+        using const_iterator = const char*;
 
     private:
         friend struct StringRefTestAccess;
@@ -78,7 +79,7 @@ namespace Catch {
             return *this;
         }
 
-        operator std::string() const;
+        explicit operator std::string() const;
 
         void swap( StringRef& other ) noexcept;
 
@@ -104,6 +105,10 @@ namespace Catch {
         // Returns the current start pointer.
         // Note that the pointer can change when if the StringRef is a substring
         auto currentData() const noexcept -> char const*;
+
+    public: // iterators
+        const_iterator begin() const { return m_start; }
+        const_iterator end() const { return m_start + m_size; }
 
     private: // ownership queries - may not be consistent between calls
         auto isOwned() const noexcept -> bool;
