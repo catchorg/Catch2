@@ -1,25 +1,25 @@
 <a id="top"></a>
-# Test cases and sections
+# Casos de teste e Seções
 
-**Contents**<br>
+**Conteúdo**<br>
 [Tags](#tags)<br>
 [Tag aliases](#tag-aliases)<br>
-[BDD-style test cases](#bdd-style-test-cases)<br>
-[Type parametrised test cases](#type-parametrised-test-cases)<br>
-[Signature based parametrised test cases](#signature-based-parametrised-test-cases)<br>
+[Casos de teste no estilo BDD](#casos-de-teste-no-estilo-bdd)<br>
+[Casos de teste com tipos parametrizados](#casos-de-teste-com-tipos-parametrizados)<br>
+[Casos de teste parametrizados baseados em assinatura](#casos-de-teste-parametrizados-baseados-em-assinatura)<br>
 
-While Catch fully supports the traditional, xUnit, style of class-based fixtures containing test case methods this is not the preferred style.
+Embora o Catch ofereça suporte total ao estilo tradicional, xUnit, de acessórios baseados em classe que contêm métodos de caso de teste, esse não é o estilo preferido.
 
-Instead Catch provides a powerful mechanism for nesting test case sections within a test case. For a more detailed discussion see the [tutorial](tutorial.md#test-cases-and-sections).
+Ao invés disso, o Catch fornece um mecanismo poderoso para aninhar seções de casos de teste em um caso de teste. Para uma discussão mais detalhada, dê uma olhada em [tutorial](tutorial.md#test-cases-and-sections).
 
-Test cases and sections are very easy to use in practice:
+Casos de teste e Seções aõ muito fáceis de usar na prática:
 
 * **TEST_CASE(** _test name_ \[, _tags_ \] **)**
 * **SECTION(** _section name_ **)**
 
-_test name_ and _section name_ are free form, quoted, strings. The optional _tags_ argument is a quoted string containing one or more tags enclosed in square brackets. Tags are discussed below. Test names must be unique within the Catch executable.
+_test name_ e _section name_ são formas livres, citações, strings. Os argumentos _tags_ são opcionais, é uma string conntendo uma ou mais tags dentro de um par de colchetes. Tags são discutidas abaixo. Nomes de testes devem ser únicos dentro de um arquivo executável de testes de Catch.
 
-For examples see the [Tutorial](tutorial.md#top)
+Para exemplos, veja [Tutorial](tutorial.md#top)
 
 ## Tags
 
@@ -84,13 +84,10 @@ This macro maps onto ```TEST_CASE``` and works in the same way, except that the 
 
 These macros map onto ```SECTION```s except that the section names are the _something_s prefixed by "given: ", "when: " or "then: " respectively.
 
-* **AND_GIVEN(** _something_ **)**
 * **AND_WHEN(** _something_ **)**
 * **AND_THEN(** _something_ **)**
 
-Similar to ```GIVEN```, ```WHEN``` and ```THEN``` except that the prefixes start with "and ". These are used to chain ```GIVEN```s, ```WHEN```s and ```THEN```s together.
-
-> `AND_GIVEN` was [introduced](https://github.com/catchorg/Catch2/issues/1360) in Catch 2.4.0.
+Similar to ```WHEN``` and ```THEN``` except that the prefixes start with "and ". These are used to chain ```WHEN```s and ```THEN```s together.
 
 When any of these macros are used the console reporter recognises them and formats the test case header such that the Givens, Whens and Thens are aligned to aid readability.
 
@@ -103,8 +100,6 @@ by types, in the form of `TEMPLATE_TEST_CASE`,
 `TEMPLATE_PRODUCT_TEST_CASE` and `TEMPLATE_LIST_TEST_CASE`.
 
 * **TEMPLATE_TEST_CASE(** _test name_ , _tags_,  _type1_, _type2_, ..., _typen_ **)**
-
-> [Introduced](https://github.com/catchorg/Catch2/issues/1437) in Catch 2.5.0.
 
 _test name_ and _tag_ are exactly the same as they are in `TEST_CASE`,
 with the difference that the tag string must be provided (however, it
@@ -156,8 +151,6 @@ TEMPLATE_TEST_CASE( "vectors can be sized and resized", "[vector][template]", in
 
 * **TEMPLATE_PRODUCT_TEST_CASE(** _test name_ , _tags_, (_template-type1_, _template-type2_, ..., _template-typen_), (_template-arg1_, _template-arg2_, ..., _template-argm_) **)**
 
-> [Introduced](https://github.com/catchorg/Catch2/issues/1468) in Catch 2.6.0.
-
 _template-type1_ through _template-typen_ is list of template template
 types which should be combined with each of _template-arg1_ through
  _template-argm_, resulting in _n * m_ test cases. Inside the test case,
@@ -201,8 +194,6 @@ is very high and should not be encountered in practice._
 
 * **TEMPLATE_LIST_TEST_CASE(** _test name_, _tags_, _type list_ **)**
 
-> [Introduced](https://github.com/catchorg/Catch2/issues/1627) in Catch 2.9.0.
-
 _type list_ is a generic list of types on which test case should be instantiated.
 List can be `std::tuple`, `boost::mpl::list`, `boost::mp11::mp_list` or anything with
 `template <typename...>` signature.
@@ -220,8 +211,6 @@ TEMPLATE_LIST_TEST_CASE("Template test case with test types specified inside std
 
 
 ## Signature based parametrised test cases
-
-> [Introduced](https://github.com/catchorg/Catch2/issues/1609) in Catch 2.8.0.
 
 In addition to [type parametrised test cases](#type-parametrised-test-cases) Catch2 also supports
 signature base parametrised test cases, in form of `TEMPLATE_TEST_CASE_SIG` and `TEMPLATE_PRODUCT_TEST_CASE_SIG`.
