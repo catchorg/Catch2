@@ -1031,6 +1031,7 @@ String.tests.cpp:<line number>: passed: ss.size() == 6 for: 6 == 6
 String.tests.cpp:<line number>: passed: std::strcmp( ss.c_str(), "world!" ) == 0 for: 0 == 0
 String.tests.cpp:<line number>: passed: s.c_str() == s2.c_str() for: "hello world!" == "hello world!"
 String.tests.cpp:<line number>: passed: s.c_str() != ss.c_str() for: "hello world!" != "hello"
+String.tests.cpp:<line number>: passed: s.substr(s.size() + 1, 123).empty() for: true
 String.tests.cpp:<line number>: passed: StringRef("hello") == StringRef("hello") for: hello == hello
 String.tests.cpp:<line number>: passed: StringRef("hello") != StringRef("cello") for: hello != cello
 String.tests.cpp:<line number>: passed: sr == "a standard string" for: a standard string == "a standard string"

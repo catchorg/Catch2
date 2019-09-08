@@ -7714,6 +7714,19 @@ with expansion:
 
 -------------------------------------------------------------------------------
 StringRef
+  Substrings
+  Past the end substring
+-------------------------------------------------------------------------------
+String.tests.cpp:<line number>
+...............................................................................
+
+String.tests.cpp:<line number>: PASSED:
+  REQUIRE( s.substr(s.size() + 1, 123).empty() )
+with expansion:
+  true
+
+-------------------------------------------------------------------------------
+StringRef
   Comparisons
 -------------------------------------------------------------------------------
 String.tests.cpp:<line number>
@@ -12444,5 +12457,5 @@ Misc.tests.cpp:<line number>: PASSED:
 
 ===============================================================================
 test cases:  300 |  210 passed |  86 failed |  4 failed as expected
-assertions: 1574 | 1405 passed | 148 failed | 21 failed as expected
+assertions: 1575 | 1406 passed | 148 failed | 21 failed as expected
 

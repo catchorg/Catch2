@@ -111,6 +111,10 @@ TEST_CASE( "StringRef", "[Strings][StringRef]" ) {
         SECTION( "Pointer values of substring refs should not match" ) {
             REQUIRE( s.c_str() != ss.c_str() );
         }
+
+        SECTION("Past the end substring") {
+            REQUIRE(s.substr(s.size() + 1, 123).empty());
+        }
     }
 
     SECTION( "Comparisons" ) {
