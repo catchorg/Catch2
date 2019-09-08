@@ -10,6 +10,7 @@
 #include <cstddef>
 #include <string>
 #include <iosfwd>
+#include <cassert>
 
 namespace Catch {
 
@@ -79,7 +80,9 @@ namespace Catch {
             return *this;
         }
 
-        explicit operator std::string() const;
+        explicit operator std::string() const {
+            return std::string(m_start, m_size);
+        }
 
         void swap( StringRef& other ) noexcept;
 
@@ -87,7 +90,10 @@ namespace Catch {
         auto operator == ( StringRef const& other ) const noexcept -> bool;
         auto operator != ( StringRef const& other ) const noexcept -> bool;
 
-        auto operator[] ( size_type index ) const noexcept -> char;
+        auto operator[] ( size_type index ) const noexcept -> char {
+            assert(index < m_size);
+            return m_start[index];
+        }
 
     public: // named queries
         auto empty() const noexcept -> bool {

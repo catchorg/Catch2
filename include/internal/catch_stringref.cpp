@@ -22,10 +22,6 @@ namespace Catch {
     : StringRef( rawChars, static_cast<StringRef::size_type>(std::strlen(rawChars) ) )
     {}
 
-    StringRef::operator std::string() const {
-        return std::string( m_start, m_size );
-    }
-
     void StringRef::swap( StringRef& other ) noexcept {
         std::swap( m_start, other.m_start );
         std::swap( m_size, other.m_size );
@@ -70,10 +66,6 @@ namespace Catch {
     }
     auto StringRef::operator != ( StringRef const& other ) const noexcept -> bool {
         return !operator==( other );
-    }
-
-    auto StringRef::operator[](size_type index) const noexcept -> char {
-        return m_start[index];
     }
 
     auto operator << ( std::ostream& os, StringRef const& str ) -> std::ostream& {
