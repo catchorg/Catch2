@@ -115,10 +115,6 @@ namespace Catch {
         auto isSubstring() const noexcept -> bool;
     };
 
-    auto operator + ( StringRef const& lhs, StringRef const& rhs ) -> std::string;
-    auto operator + ( StringRef const& lhs, char const* rhs ) -> std::string;
-    auto operator + ( char const* lhs, StringRef const& rhs ) -> std::string;
-
     auto operator += ( std::string& lhs, StringRef const& sr ) -> std::string&;
     auto operator << ( std::ostream& os, StringRef const& sr ) -> std::ostream&;
 

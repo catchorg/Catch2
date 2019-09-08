@@ -53,10 +53,16 @@ namespace Catch {
     }
 
     std::string AssertionResult::getExpression() const {
-        if( isFalseTest( m_info.resultDisposition ) )
-            return "!(" + m_info.capturedExpression + ")";
-        else
-            return static_cast<std::string>(m_info.capturedExpression);
+        // Possibly overallocating by 3 characters should be basically free
+        std::string expr; expr.reserve(m_info.capturedExpression.size() + 3);
+        if (isFalseTest(m_info.resultDisposition)) {
+            expr += "!(";
+        }
+        expr += m_info.capturedExpression;
+        if (isFalseTest(m_info.resultDisposition)) {
+            expr += ')';
+        }
+        return expr;
     }
 
     std::string AssertionResult::getExpressionInMacro() const {

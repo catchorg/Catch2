@@ -76,20 +76,6 @@ namespace Catch {
         return m_start[index];
     }
 
-    auto operator + ( StringRef const& lhs, StringRef const& rhs ) -> std::string {
-        std::string str;
-        str.reserve( lhs.size() + rhs.size() );
-        str += lhs;
-        str += rhs;
-        return str;
-    }
-    auto operator + ( StringRef const& lhs, const char* rhs ) -> std::string {
-        return std::string( lhs ) + std::string( rhs );
-    }
-    auto operator + ( char const* lhs, StringRef const& rhs ) -> std::string {
-        return std::string( lhs ) + std::string( rhs );
-    }
-
     auto operator << ( std::ostream& os, StringRef const& str ) -> std::ostream& {
         return os.write(str.currentData(), str.size());
     }
