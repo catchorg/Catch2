@@ -17,7 +17,7 @@ namespace Catch {
     namespace Detail {
         struct EnumInfo {
             StringRef m_name;
-            std::vector<std::pair<int, std::string>> m_values;
+            std::vector<std::pair<int, StringRef>> m_values;
 
             ~EnumInfo();
 

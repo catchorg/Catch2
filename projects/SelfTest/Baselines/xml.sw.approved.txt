@@ -13552,7 +13552,7 @@ loose text artifact
       <Section name="No enums" filename="projects/<exe-name>/IntrospectiveTests/ToString.tests.cpp" >
         <Expression success="true" type="CHECK_THAT" filename="projects/<exe-name>/IntrospectiveTests/ToString.tests.cpp" >
           <Original>
-            parseEnums( "" ), Equals( std::vector&lt;std::string>{} )
+            parseEnums( "" ), Equals( std::vector&lt;Catch::StringRef>{} )
           </Original>
           <Expanded>
             {  } Equals: {  }
@@ -13563,26 +13563,26 @@ loose text artifact
       <Section name="One enum value" filename="projects/<exe-name>/IntrospectiveTests/ToString.tests.cpp" >
         <Expression success="true" type="CHECK_THAT" filename="projects/<exe-name>/IntrospectiveTests/ToString.tests.cpp" >
           <Original>
-            parseEnums( "ClassName::EnumName::Value1" ), Equals(std::vector&lt;std::string>{"Value1"} )
+            parseEnums( "ClassName::EnumName::Value1" ), Equals(std::vector&lt;Catch::StringRef>{"Value1"} )
           </Original>
           <Expanded>
-            { "Value1" } Equals: { "Value1" }
+            { Value1 } Equals: { Value1 }
           </Expanded>
         </Expression>
         <Expression success="true" type="CHECK_THAT" filename="projects/<exe-name>/IntrospectiveTests/ToString.tests.cpp" >
           <Original>
-            parseEnums( "Value1" ), Equals( std::vector&lt;std::string>{"Value1"} )
+            parseEnums( "Value1" ), Equals( std::vector&lt;Catch::StringRef>{"Value1"} )
           </Original>
           <Expanded>
-            { "Value1" } Equals: { "Value1" }
+            { Value1 } Equals: { Value1 }
           </Expanded>
         </Expression>
         <Expression success="true" type="CHECK_THAT" filename="projects/<exe-name>/IntrospectiveTests/ToString.tests.cpp" >
           <Original>
-            parseEnums( "EnumName::Value1" ), Equals(std::vector&lt;std::string>{"Value1"} )
+            parseEnums( "EnumName::Value1" ), Equals(std::vector&lt;Catch::StringRef>{"Value1"} )
           </Original>
           <Expanded>
-            { "Value1" } Equals: { "Value1" }
+            { Value1 } Equals: { Value1 }
           </Expanded>
         </Expression>
         <OverallResults successes="3" failures="0" expectedFailures="0"/>
@@ -13590,26 +13590,26 @@ loose text artifact
       <Section name="Multiple enum values" filename="projects/<exe-name>/IntrospectiveTests/ToString.tests.cpp" >
         <Expression success="true" type="CHECK_THAT" filename="projects/<exe-name>/IntrospectiveTests/ToString.tests.cpp" >
           <Original>
-            parseEnums( "ClassName::EnumName::Value1, ClassName::EnumName::Value2" ), Equals( std::vector&lt;std::string>{"Value1", "Value2"} )
+            parseEnums( "ClassName::EnumName::Value1, ClassName::EnumName::Value2" ), Equals( std::vector&lt;Catch::StringRef>{"Value1", "Value2"} )
           </Original>
           <Expanded>
-            { "Value1", "Value2" } Equals: { "Value1", "Value2" }
+            { Value1, Value2 } Equals: { Value1, Value2 }
           </Expanded>
         </Expression>
         <Expression success="true" type="CHECK_THAT" filename="projects/<exe-name>/IntrospectiveTests/ToString.tests.cpp" >
           <Original>
-            parseEnums( "ClassName::EnumName::Value1, ClassName::EnumName::Value2, ClassName::EnumName::Value3" ), Equals( std::vector&lt;std::string>{"Value1", "Value2", "Value3"} )
+            parseEnums( "ClassName::EnumName::Value1, ClassName::EnumName::Value2, ClassName::EnumName::Value3" ), Equals( std::vector&lt;Catch::StringRef>{"Value1", "Value2", "Value3"} )
           </Original>
           <Expanded>
-            { "Value1", "Value2", "Value3" } Equals: { "Value1", "Value2", "Value3" }
+            { Value1, Value2, Value3 } Equals: { Value1, Value2, Value3 }
           </Expanded>
         </Expression>
         <Expression success="true" type="CHECK_THAT" filename="projects/<exe-name>/IntrospectiveTests/ToString.tests.cpp" >
           <Original>
-            parseEnums( "ClassName::EnumName::Value1,ClassName::EnumName::Value2 , ClassName::EnumName::Value3" ), Equals( std::vector&lt;std::string>{"Value1", "Value2", "Value3"} )
+            parseEnums( "ClassName::EnumName::Value1,ClassName::EnumName::Value2 , ClassName::EnumName::Value3" ), Equals( std::vector&lt;Catch::StringRef>{"Value1", "Value2", "Value3"} )
           </Original>
           <Expanded>
-            { "Value1", "Value2", "Value3" } Equals: { "Value1", "Value2", "Value3" }
+            { Value1, Value2, Value3 } Equals: { Value1, Value2, Value3 }
           </Expanded>
         </Expression>
         <OverallResults successes="3" failures="0" expectedFailures="0"/>

@@ -26,7 +26,7 @@ namespace Catch {
             EnumInfo const& registerEnum( StringRef enumName, StringRef allEnums, std::vector<int> const& values) override;
         };
 
-        std::vector<std::string> parseEnums( StringRef enums );
+        std::vector<StringRef> parseEnums( StringRef enums );
 
     } // Detail
 

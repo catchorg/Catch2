@@ -18,13 +18,25 @@ namespace Catch {
 
     namespace Detail {
 
-        std::vector<std::string> parseEnums( StringRef enums ) {
+        namespace {
+            // Extracts the actual name part of an enum instance
+            // In other words, it returns the Blue part of Bikeshed::Colour::Blue
+            StringRef extractInstanceName(StringRef enumInstance) {
+                // Find last occurence of ":"
+                size_t name_start = enumInstance.size();
+                while (name_start > 0 && enumInstance[name_start - 1] != ':') {
+                    --name_start;
+                }
+                return enumInstance.substr(name_start, enumInstance.size() - name_start);
+            }
+        }
+
+        std::vector<StringRef> parseEnums( StringRef enums ) {
             auto enumValues = splitStringRef( enums, ',' );
-            std::vector<std::string> parsed;
+            std::vector<StringRef> parsed;
             parsed.reserve( enumValues.size() );
             for( auto const& enumValue : enumValues ) {
-                auto identifiers = splitStringRef( enumValue, ':' );
-                parsed.push_back( Catch::trim( identifiers.back() ) );
+                parsed.push_back(trim(extractInstanceName(enumValue)));
             }
             return parsed;
         }
@@ -54,10 +66,8 @@ namespace Catch {
         }
 
         EnumInfo const& EnumValuesRegistry::registerEnum( StringRef enumName, StringRef allValueNames, std::vector<int> const& values ) {
-            auto enumInfo = makeEnumInfo( enumName, allValueNames, values );
-            EnumInfo* raw = enumInfo.get();
-            m_enumInfos.push_back( std::move( enumInfo ) );
-            return *raw;
+            m_enumInfos.push_back(makeEnumInfo(enumName, allValueNames, values));
+            return *m_enumInfos.back();
         }
 
     } // Detail

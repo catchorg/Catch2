@@ -1505,13 +1505,13 @@ Tricky.tests.cpp:<line number>: passed: ptr.get() == 0 for: 0 == 0
 ToStringPair.tests.cpp:<line number>: passed: ::Catch::Detail::stringify( pair ) == "{ { 42, \"Arthur\" }, { \"Ford\", 24 } }" for: "{ { 42, "Arthur" }, { "Ford", 24 } }"
 ==
 "{ { 42, "Arthur" }, { "Ford", 24 } }"
-ToString.tests.cpp:<line number>: passed: parseEnums( "" ), Equals( std::vector<std::string>{} ) for: {  } Equals: {  }
-ToString.tests.cpp:<line number>: passed: parseEnums( "ClassName::EnumName::Value1" ), Equals(std::vector<std::string>{"Value1"} ) for: { "Value1" } Equals: { "Value1" }
-ToString.tests.cpp:<line number>: passed: parseEnums( "Value1" ), Equals( std::vector<std::string>{"Value1"} ) for: { "Value1" } Equals: { "Value1" }
-ToString.tests.cpp:<line number>: passed: parseEnums( "EnumName::Value1" ), Equals(std::vector<std::string>{"Value1"} ) for: { "Value1" } Equals: { "Value1" }
-ToString.tests.cpp:<line number>: passed: parseEnums( "ClassName::EnumName::Value1, ClassName::EnumName::Value2" ), Equals( std::vector<std::string>{"Value1", "Value2"} ) for: { "Value1", "Value2" } Equals: { "Value1", "Value2" }
-ToString.tests.cpp:<line number>: passed: parseEnums( "ClassName::EnumName::Value1, ClassName::EnumName::Value2, ClassName::EnumName::Value3" ), Equals( std::vector<std::string>{"Value1", "Value2", "Value3"} ) for: { "Value1", "Value2", "Value3" } Equals: { "Value1", "Value2", "Value3" }
-ToString.tests.cpp:<line number>: passed: parseEnums( "ClassName::EnumName::Value1,ClassName::EnumName::Value2 , ClassName::EnumName::Value3" ), Equals( std::vector<std::string>{"Value1", "Value2", "Value3"} ) for: { "Value1", "Value2", "Value3" } Equals: { "Value1", "Value2", "Value3" }
+ToString.tests.cpp:<line number>: passed: parseEnums( "" ), Equals( std::vector<Catch::StringRef>{} ) for: {  } Equals: {  }
+ToString.tests.cpp:<line number>: passed: parseEnums( "ClassName::EnumName::Value1" ), Equals(std::vector<Catch::StringRef>{"Value1"} ) for: { Value1 } Equals: { Value1 }
+ToString.tests.cpp:<line number>: passed: parseEnums( "Value1" ), Equals( std::vector<Catch::StringRef>{"Value1"} ) for: { Value1 } Equals: { Value1 }
+ToString.tests.cpp:<line number>: passed: parseEnums( "EnumName::Value1" ), Equals(std::vector<Catch::StringRef>{"Value1"} ) for: { Value1 } Equals: { Value1 }
+ToString.tests.cpp:<line number>: passed: parseEnums( "ClassName::EnumName::Value1, ClassName::EnumName::Value2" ), Equals( std::vector<Catch::StringRef>{"Value1", "Value2"} ) for: { Value1, Value2 } Equals: { Value1, Value2 }
+ToString.tests.cpp:<line number>: passed: parseEnums( "ClassName::EnumName::Value1, ClassName::EnumName::Value2, ClassName::EnumName::Value3" ), Equals( std::vector<Catch::StringRef>{"Value1", "Value2", "Value3"} ) for: { Value1, Value2, Value3 } Equals: { Value1, Value2, Value3 }
+ToString.tests.cpp:<line number>: passed: parseEnums( "ClassName::EnumName::Value1,ClassName::EnumName::Value2 , ClassName::EnumName::Value3" ), Equals( std::vector<Catch::StringRef>{"Value1", "Value2", "Value3"} ) for: { Value1, Value2, Value3 } Equals: { Value1, Value2, Value3 }
 Tricky.tests.cpp:<line number>: passed: p == 0 for: 0 == 0
 Message.tests.cpp:<line number>: passed: true with 1 message: 'this MAY be seen IF info is printed for passing assertions'
 Message.tests.cpp:<line number>: failed: false with 2 messages: 'this SHOULD be seen' and 'this SHOULD also be seen'
