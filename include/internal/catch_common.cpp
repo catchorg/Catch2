@@ -15,9 +15,6 @@
 
 namespace Catch {
 
-    bool SourceLineInfo::empty() const noexcept {
-        return file[0] == '\0';
-    }
     bool SourceLineInfo::operator == ( SourceLineInfo const& other ) const noexcept {
         return line == other.line && (file == other.file || std::strcmp(file, other.file) == 0);
     }

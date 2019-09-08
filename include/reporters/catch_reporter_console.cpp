@@ -530,11 +530,10 @@ void ConsoleReporter::printTestCaseAndSectionHeader() {
 
     SourceLineInfo lineInfo = m_sectionStack.back().lineInfo;
 
-    if (!lineInfo.empty()) {
-        stream << getLineOfChars<'-'>() << '\n';
-        Colour colourGuard(Colour::FileName);
-        stream << lineInfo << '\n';
-    }
+
+    stream << getLineOfChars<'-'>() << '\n';
+    Colour colourGuard(Colour::FileName);
+    stream << lineInfo << '\n';
     stream << getLineOfChars<'.'>() << '\n' << std::endl;
 }
 
