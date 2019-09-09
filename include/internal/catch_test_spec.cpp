@@ -33,7 +33,7 @@ namespace Catch {
     {}
 
     bool TestSpec::NamePattern::matches( TestCaseInfo const& testCase ) const {
-        return m_wildcardPattern.matches( toLower( testCase.name ) );
+        return m_wildcardPattern.matches( testCase.name );
     }
 
 

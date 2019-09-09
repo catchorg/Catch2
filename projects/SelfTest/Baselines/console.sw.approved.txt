@@ -6367,6 +6367,70 @@ with expansion:
   true == true
 
 -------------------------------------------------------------------------------
+Parse test names and tags
+  Leading and trailing spaces in test spec
+-------------------------------------------------------------------------------
+CmdLine.tests.cpp:<line number>
+...............................................................................
+
+CmdLine.tests.cpp:<line number>: PASSED:
+  CHECK( spec.matches( fakeTestCase( "  aardvark " ) ) )
+with expansion:
+  true
+
+CmdLine.tests.cpp:<line number>: PASSED:
+  CHECK( spec.matches( fakeTestCase( "  aardvark" ) ) )
+with expansion:
+  true
+
+CmdLine.tests.cpp:<line number>: PASSED:
+  CHECK( spec.matches( fakeTestCase( " aardvark " ) ) )
+with expansion:
+  true
+
+CmdLine.tests.cpp:<line number>: PASSED:
+  CHECK( spec.matches( fakeTestCase( "aardvark " ) ) )
+with expansion:
+  true
+
+CmdLine.tests.cpp:<line number>: PASSED:
+  CHECK( spec.matches( fakeTestCase( "aardvark" ) ) )
+with expansion:
+  true
+
+-------------------------------------------------------------------------------
+Parse test names and tags
+  Leading and trailing spaces in test name
+-------------------------------------------------------------------------------
+CmdLine.tests.cpp:<line number>
+...............................................................................
+
+CmdLine.tests.cpp:<line number>: PASSED:
+  CHECK( spec.matches( fakeTestCase( "  aardvark " ) ) )
+with expansion:
+  true
+
+CmdLine.tests.cpp:<line number>: PASSED:
+  CHECK( spec.matches( fakeTestCase( "  aardvark" ) ) )
+with expansion:
+  true
+
+CmdLine.tests.cpp:<line number>: PASSED:
+  CHECK( spec.matches( fakeTestCase( " aardvark " ) ) )
+with expansion:
+  true
+
+CmdLine.tests.cpp:<line number>: PASSED:
+  CHECK( spec.matches( fakeTestCase( "aardvark " ) ) )
+with expansion:
+  true
+
+CmdLine.tests.cpp:<line number>: PASSED:
+  CHECK( spec.matches( fakeTestCase( "aardvark" ) ) )
+with expansion:
+  true
+
+-------------------------------------------------------------------------------
 Pointers can be compared to null
 -------------------------------------------------------------------------------
 Condition.tests.cpp:<line number>
@@ -12457,5 +12521,5 @@ Misc.tests.cpp:<line number>: PASSED:
 
 ===============================================================================
 test cases:  300 |  210 passed |  86 failed |  4 failed as expected
-assertions: 1575 | 1406 passed | 148 failed | 21 failed as expected
+assertions: 1585 | 1416 passed | 148 failed | 21 failed as expected
 
