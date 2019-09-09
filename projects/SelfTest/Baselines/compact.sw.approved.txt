@@ -866,6 +866,16 @@ CmdLine.tests.cpp:<line number>: passed: spec.matches( tcA ) == false for: false
 CmdLine.tests.cpp:<line number>: passed: spec.matches( tcB ) == false for: false == false
 CmdLine.tests.cpp:<line number>: passed: spec.matches( tcC ) == false for: false == false
 CmdLine.tests.cpp:<line number>: passed: spec.matches( tcD ) == true for: true == true
+CmdLine.tests.cpp:<line number>: passed: spec.matches( fakeTestCase( "  aardvark " ) ) for: true
+CmdLine.tests.cpp:<line number>: passed: spec.matches( fakeTestCase( "  aardvark" ) ) for: true
+CmdLine.tests.cpp:<line number>: passed: spec.matches( fakeTestCase( " aardvark " ) ) for: true
+CmdLine.tests.cpp:<line number>: passed: spec.matches( fakeTestCase( "aardvark " ) ) for: true
+CmdLine.tests.cpp:<line number>: passed: spec.matches( fakeTestCase( "aardvark" ) ) for: true
+CmdLine.tests.cpp:<line number>: passed: spec.matches( fakeTestCase( "  aardvark " ) ) for: true
+CmdLine.tests.cpp:<line number>: passed: spec.matches( fakeTestCase( "  aardvark" ) ) for: true
+CmdLine.tests.cpp:<line number>: passed: spec.matches( fakeTestCase( " aardvark " ) ) for: true
+CmdLine.tests.cpp:<line number>: passed: spec.matches( fakeTestCase( "aardvark " ) ) for: true
+CmdLine.tests.cpp:<line number>: passed: spec.matches( fakeTestCase( "aardvark" ) ) for: true
 Condition.tests.cpp:<line number>: passed: p == 0 for: 0 == 0
 Condition.tests.cpp:<line number>: passed: p == pNULL for: 0 == 0
 Condition.tests.cpp:<line number>: passed: p != 0 for: 0x<hex digits> != 0

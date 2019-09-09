@@ -262,7 +262,24 @@ TEST_CASE( "Parse test names and tags" ) {
         CHECK( spec.matches( tcC ) == false );
         CHECK( spec.matches( tcD ) == true );
     }
+    SECTION( "Leading and trailing spaces in test spec" ) {
+        TestSpec spec = parseTestSpec( "\"  aardvark \"" );
+        CHECK( spec.matches( fakeTestCase( "  aardvark " ) ) );
+        CHECK( spec.matches( fakeTestCase( "  aardvark" ) ) );
+        CHECK( spec.matches( fakeTestCase( " aardvark " ) ) );
+        CHECK( spec.matches( fakeTestCase( "aardvark " ) ) );
+        CHECK( spec.matches( fakeTestCase( "aardvark" ) ) );
 
+    }
+    SECTION( "Leading and trailing spaces in test name" ) {
+        TestSpec spec = parseTestSpec( "aardvark" );
+        CHECK( spec.matches( fakeTestCase( "  aardvark " ) ) );
+        CHECK( spec.matches( fakeTestCase( "  aardvark" ) ) );
+        CHECK( spec.matches( fakeTestCase( " aardvark " ) ) );
+        CHECK( spec.matches( fakeTestCase( "aardvark " ) ) );
+        CHECK( spec.matches( fakeTestCase( "aardvark" ) ) );
+
+    }
 }
 
 TEST_CASE( "Process can be configured on command line", "[config][command-line]" ) {
