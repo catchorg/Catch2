@@ -29,6 +29,7 @@ filelocParser = re.compile(r'''
 lineNumberParser = re.compile(r' line="[0-9]*"')
 hexParser = re.compile(r'\b(0[xX][0-9a-fA-F]+)\b')
 durationsParser = re.compile(r' time="[0-9]*\.[0-9]*"')
+sonarqubeDurationParser = re.compile(r' duration="[0-9]+"')
 timestampsParser = re.compile(r'\d{4}-\d{2}-\d{2}T\d{2}\:\d{2}\:\d{2}Z')
 versionParser = re.compile(r'Catch v[0-9]+\.[0-9]+\.[0-9]+(-develop\.[0-9]+)?')
 nullParser = re.compile(r'\b(__null|nullptr)\b')
@@ -138,6 +139,7 @@ def filterLine(line, isCompact):
 
     # strip durations and timestamps
     line = durationsParser.sub(' time="{duration}"', line)
+    line = sonarqubeDurationParser.sub(' duration="{duration}"', line)
     line = timestampsParser.sub('{iso8601-timestamp}', line)
     line = specialCaseParser.sub('file:\g<1>', line)
     line = errnoParser.sub('errno', line)
