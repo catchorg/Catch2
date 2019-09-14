@@ -22,6 +22,7 @@ namespace Catch {
     class TestSpecParser {
         enum Mode{ None, Name, QuotedName, Tag, EscapedName };
         Mode m_mode = None;
+        Mode lastMode = None;
         bool m_exclusion = false;
         std::size_t m_pos = 0;
         std::string m_arg;
@@ -47,7 +48,9 @@ namespace Catch {
         void endMode();
         void escape();
         bool isControlChar( char c ) const;
-
+        void saveLastMode();
+        void revertBackToLastMode();
+        
         template<typename T>
         void addPattern() {
             std::string token = m_patternName;
