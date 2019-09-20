@@ -58,6 +58,7 @@ type, making their usage much nicer. These are
 
 * `value(T&&)` for `ValueGenerator<T>`
 * `values(std::initializer_list<T>)` for `ValuesGenerator<T>`
+* `table<Ts...>(std::initializer_list<std::tuple<Ts...>>)` for `ValuesGenerator<std::tuple<Ts...>>`
 * `filter(predicate, GeneratorWrapper<T>&&)` for `FilterGenerator<T, Predicate>`
 * `take(count, GeneratorWrapper<T>&&)` for `TakeGenerator<T>`
 * `repeat(repeats, GeneratorWrapper<T>&&)` for `RepeatGenerator<T>`
