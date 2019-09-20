@@ -12,7 +12,6 @@
 #include "catch_interfaces_testcase.h"
 #include "catch_compiler_capabilities.h"
 #include "catch_stringref.h"
-#include "catch_type_traits.hpp"
 #include "catch_preprocessor.hpp"
 #include "catch_meta.hpp"
 
