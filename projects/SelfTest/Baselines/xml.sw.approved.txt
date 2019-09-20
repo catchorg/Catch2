@@ -11269,6 +11269,9 @@ Message from section two
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
+    <TestCase name="Test with special, characters &quot;in name" tags="[cli][regression]" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
+      <OverallResult success="true"/>
+    </TestCase>
     <TestCase name="The NO_FAIL macro reports a failure but does not fail the test" tags="[messages]" filename="projects/<exe-name>/UsageTests/Message.tests.cpp" >
       <Expression success="false" type="CHECK_NOFAIL" filename="projects/<exe-name>/UsageTests/Message.tests.cpp" >
         <Original>
@@ -14912,7 +14915,7 @@ loose text artifact
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="1416" failures="149" expectedFailures="21"/>
+    <OverallResults successes="1417" failures="149" expectedFailures="21"/>
   </Group>
-  <OverallResults successes="1416" failures="148" expectedFailures="21"/>
+  <OverallResults successes="1417" failures="148" expectedFailures="21"/>
 </Catch>

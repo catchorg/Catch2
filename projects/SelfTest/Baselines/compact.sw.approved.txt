@@ -1235,6 +1235,7 @@ Misc.tests.cpp:<line number>: passed: v.size() == V for: 15 == 15
 Misc.tests.cpp:<line number>: passed: v.capacity() >= V for: 15 >= 15
 VariadicMacros.tests.cpp:<line number>: passed: with 1 message: 'no assertions'
 Tricky.tests.cpp:<line number>: passed: 0x<hex digits> == bit30and31 for: 3221225472 (0x<hex digits>) == 3221225472
+CmdLine.tests.cpp:<line number>: passed:
 Message.tests.cpp:<line number>: failed - but was ok: 1 == 2
 Misc.tests.cpp:<line number>: passed: with 1 message: 'oops!'
 Exception.tests.cpp:<line number>: failed: unexpected exception with message: 'For some reason someone is throwing a string literal!'

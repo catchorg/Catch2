@@ -9322,6 +9322,14 @@ with expansion:
   3221225472 (0x<hex digits>) == 3221225472
 
 -------------------------------------------------------------------------------
+Test with special, characters "in name
+-------------------------------------------------------------------------------
+CmdLine.tests.cpp:<line number>
+...............................................................................
+
+CmdLine.tests.cpp:<line number>: PASSED:
+
+-------------------------------------------------------------------------------
 The NO_FAIL macro reports a failure but does not fail the test
 -------------------------------------------------------------------------------
 Message.tests.cpp:<line number>
@@ -12520,6 +12528,6 @@ Misc.tests.cpp:<line number>
 Misc.tests.cpp:<line number>: PASSED:
 
 ===============================================================================
-test cases:  300 |  210 passed |  86 failed |  4 failed as expected
-assertions: 1585 | 1416 passed | 148 failed | 21 failed as expected
+test cases:  301 |  211 passed |  86 failed |  4 failed as expected
+assertions: 1586 | 1417 passed | 148 failed | 21 failed as expected
 
