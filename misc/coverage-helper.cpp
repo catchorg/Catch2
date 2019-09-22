@@ -29,7 +29,8 @@ std::string escape_arg(const std::string& arg) {
             escaped.append(num_backslashes * 2, '\\');
             break;
         } else if (*it == '"') {
-            escaped.append(num_backslashes * 2 + 1, '\\');
+            escaped.append((num_backslashes + 1) * 2, '\\');
+            escaped.push_back('"');
             escaped.push_back(*it);
         } else {
             escaped.append(num_backslashes, '\\');
@@ -97,7 +98,7 @@ int exec_cmd(std::string const& cmd, int log_num, std::string const& path) {
         + ".bin --quiet " + "--sources " + escape_arg(path) + " --cover_children -- " + cmd;
     std::cout << "=== Marker ===: Cmd: " << real_cmd << '\n';
     auto pipe = _popen(real_cmd.c_str(), "r");
-    
+
     if (!pipe) {
         throw std::runtime_error("popen() failed!");
     }
@@ -106,12 +107,12 @@ int exec_cmd(std::string const& cmd, int log_num, std::string const& path) {
             std::cout << buffer.data();
         }
     }
-    
+
     auto ret = _pclose(pipe);
     if (ret == -1) {
         throw std::runtime_error("underlying error in pclose()");
     }
-    
+
     return ret;
 }
 
@@ -127,7 +128,7 @@ int main(int argc, char** argv) {
     assert(sep - begin(args) == 2 && "Structure differs from expected!");
 
     auto num = parse_log_file_arg(args[1]);
-    
+
     auto cmdline = std::accumulate(++sep, end(args), std::string{}, [] (const std::string& lhs, const std::string& rhs) {
         return lhs + ' ' + escape_arg(rhs);
     });

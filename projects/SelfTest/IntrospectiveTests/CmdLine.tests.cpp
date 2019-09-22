@@ -506,3 +506,8 @@ TEST_CASE( "Process can be configured on command line", "[config][command-line]"
         }
     }
 }
+
+TEST_CASE("Test with special, characters \"in name", "[cli][regression]") {
+    // This test case succeeds if we can invoke it from the CLI
+    SUCCEED();
+}

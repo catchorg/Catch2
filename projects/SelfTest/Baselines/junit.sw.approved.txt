@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuitesloose text artifact
 >
-  <testsuite name="<exe-name>" errors="17" failures="132" tests="1586" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
+  <testsuite name="<exe-name>" errors="17" failures="132" tests="1587" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
     <properties>
       <property name="filters" value="~[!nonportable]~[!benchmark]~[approvals]"/>
       <property name="random-seed" value="1"/>
@@ -808,6 +808,7 @@ Misc.tests.cpp:<line number>
     <testcase classname="<exe-name>.global" name="TemplateTestSig: vectors can be sized and resized - std::string,15/reserving smaller does not change size or capacity" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Test case with one argument" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Test enum bit values" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="Test with special, characters &quot;in name" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="The NO_FAIL macro reports a failure but does not fail the test" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="This test 'should' fail but doesn't" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Thrown string literals are translated" time="{duration}">
