@@ -82,7 +82,7 @@ bool almostEqualUlps(FP lhs, FP rhs, int maxUlpDiff) {
 
 #if defined(CATCH_CONFIG_GLOBAL_NEXTAFTER)
 
-namespace Catch {
+namespace Impl {
     float nextafter(float x, float y) {
         return ::nextafterf(x, y);
     }
@@ -94,7 +94,7 @@ namespace Catch {
     long double nextafter(long double x, long double y) {
         return ::nextafterl(x, y);
     }
-} // end namespace Catch
+} // end namespace Impl
 
 #endif
 
@@ -102,7 +102,7 @@ template <typename FP>
 FP step(FP start, FP direction, int steps) {
     for (int i = 0; i < steps; ++i) {
 #if defined(CATCH_CONFIG_GLOBAL_NEXTAFTER)
-        start = Catch::nextafter(start, direction);
+        start = Impl::nextafter(start, direction);
 #else
         start = std::nextafter(start, direction);
 #endif
