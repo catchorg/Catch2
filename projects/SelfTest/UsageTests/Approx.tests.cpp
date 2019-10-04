@@ -185,6 +185,7 @@ TEST_CASE("Assorted miscellaneous tests", "[Approx][approvals]") {
     REQUIRE(INFINITY == Approx(INFINITY));
     REQUIRE(-INFINITY != Approx(INFINITY));
     REQUIRE(1 != Approx(INFINITY));
+    REQUIRE(INFINITY != Approx(1));
     REQUIRE(NAN != Approx(NAN));
     REQUIRE_FALSE(NAN == Approx(NAN));
 }
