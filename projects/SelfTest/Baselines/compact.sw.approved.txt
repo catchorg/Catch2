@@ -243,9 +243,6 @@ Tricky.tests.cpp:<line number>: passed: true
 Tricky.tests.cpp:<line number>: passed: true
 Tricky.tests.cpp:<line number>: passed: true
 Tricky.tests.cpp:<line number>: passed: true
-Approx.tests.cpp:<line number>: passed: INFINITY == Approx(INFINITY) for: inff == Approx( inf )
-Approx.tests.cpp:<line number>: passed: NAN != Approx(NAN) for: nanf != Approx( nan )
-Approx.tests.cpp:<line number>: passed: !(NAN == Approx(NAN)) for: !(nanf == Approx( nan ))
 Message.tests.cpp:<line number>: passed: with 7 messages: 'a := 1' and 'b := 2' and 'c := 3' and 'a + b := 3' and 'a+b := 3' and 'c > b := true' and 'a == 1 := true'
 Message.tests.cpp:<line number>: passed: with 7 messages: 'std::vector<int>{1, 2, 3}[0, 1, 2] := 3' and 'std::vector<int>{1, 2, 3}[(0, 1)] := 2' and 'std::vector<int>{1, 2, 3}[0] := 1' and '(helper_1436<int, int>{12, -12}) := { 12, -12 }' and '(helper_1436<int, int>(-12, 12)) := { -12, 12 }' and '(1, 2) := 2' and '(2, 3) := 3'
 Message.tests.cpp:<line number>: passed: with 11 messages: '("comma, in string", "escaped, \", ") := "escaped, ", "' and '"single quote in string,'," := "single quote in string,',"' and '"some escapes, \\,\\\\" := "some escapes, \,\\"' and '"some, ), unmatched, } prenheses {[<" := "some, ), unmatched, } prenheses {[<"' and ''"' := '"'' and ''\'' := '''' and '',' := ','' and ''}' := '}'' and '')' := ')'' and ''(' := '('' and ''{' := '{''
@@ -993,7 +990,6 @@ Approx.tests.cpp:<line number>: passed: d != 1.22_a for: 1.23 != Approx( 1.22 )
 Approx.tests.cpp:<line number>: passed: Approx( d ) == 1.23 for: Approx( 1.23 ) == 1.23
 Approx.tests.cpp:<line number>: passed: Approx( d ) != 1.22 for: Approx( 1.23 ) != 1.22
 Approx.tests.cpp:<line number>: passed: Approx( d ) != 1.24 for: Approx( 1.23 ) != 1.24
-Approx.tests.cpp:<line number>: passed: INFINITY == Approx(INFINITY) for: inff == Approx( inf )
 Message from section one
 Message from section two
 Matchers.tests.cpp:<line number>: failed: testStringForMatching(), StartsWith("This String") for: "this string contains 'abc' as a substring" starts with: "This String"

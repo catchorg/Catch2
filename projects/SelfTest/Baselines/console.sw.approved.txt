@@ -1940,27 +1940,6 @@ Tricky.tests.cpp:<line number>: PASSED:
   REQUIRE( true )
 
 -------------------------------------------------------------------------------
-Assorted miscellaneous tests
--------------------------------------------------------------------------------
-Approx.tests.cpp:<line number>
-...............................................................................
-
-Approx.tests.cpp:<line number>: PASSED:
-  REQUIRE( INFINITY == Approx(INFINITY) )
-with expansion:
-  inff == Approx( inf )
-
-Approx.tests.cpp:<line number>: PASSED:
-  REQUIRE( NAN != Approx(NAN) )
-with expansion:
-  nanf != Approx( nan )
-
-Approx.tests.cpp:<line number>: PASSED:
-  REQUIRE_FALSE( NAN == Approx(NAN) )
-with expansion:
-  !(nanf == Approx( nan ))
-
--------------------------------------------------------------------------------
 CAPTURE can deal with complex expressions
 -------------------------------------------------------------------------------
 Message.tests.cpp:<line number>
@@ -7418,11 +7397,6 @@ Approx.tests.cpp:<line number>: PASSED:
 with expansion:
   Approx( 1.23 ) != 1.24
 
-Approx.tests.cpp:<line number>: PASSED:
-  REQUIRE( INFINITY == Approx(INFINITY) )
-with expansion:
-  inff == Approx( inf )
-
 Message from section one
 -------------------------------------------------------------------------------
 Standard output from all sections is reported
@@ -12528,6 +12502,6 @@ Misc.tests.cpp:<line number>
 Misc.tests.cpp:<line number>: PASSED:
 
 ===============================================================================
-test cases:  301 |  211 passed |  86 failed |  4 failed as expected
-assertions: 1586 | 1417 passed | 148 failed | 21 failed as expected
+test cases:  300 |  210 passed |  86 failed |  4 failed as expected
+assertions: 1582 | 1413 passed | 148 failed | 21 failed as expected
 

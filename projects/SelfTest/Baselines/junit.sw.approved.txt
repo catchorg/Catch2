@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuitesloose text artifact
 >
-  <testsuite name="<exe-name>" errors="17" failures="132" tests="1587" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
+  <testsuite name="<exe-name>" errors="17" failures="132" tests="1583" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
     <properties>
       <property name="filters" value="~[!nonportable]~[!benchmark]~[approvals]"/>
       <property name="random-seed" value="1"/>
@@ -232,7 +232,6 @@ Exception.tests.cpp:<line number>
     <testcase classname="<exe-name>.global" name="Assertions then sections/A section" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Assertions then sections/A section/Another section" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Assertions then sections/A section/Another other section" time="{duration}"/>
-    <testcase classname="<exe-name>.global" name="Assorted miscellaneous tests" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="CAPTURE can deal with complex expressions" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="CAPTURE can deal with complex expressions involving commas" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="CAPTURE parses string and character constants" time="{duration}"/>

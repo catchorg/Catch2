@@ -61,8 +61,6 @@ TEST_CASE( "Some simple comparisons between doubles", "[Approx]" ) {
     REQUIRE( Approx( d ) == 1.23 );
     REQUIRE( Approx( d ) != 1.22 );
     REQUIRE( Approx( d ) != 1.24 );
-
-    REQUIRE(INFINITY == Approx(INFINITY));
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -183,8 +181,10 @@ TEST_CASE("Epsilon only applies to Approx's value", "[Approx]") {
     REQUIRE(101.01 != Approx(100).epsilon(0.01));
 }
 
-TEST_CASE("Assorted miscellaneous tests", "[Approx]") {
+TEST_CASE("Assorted miscellaneous tests", "[Approx][approvals]") {
     REQUIRE(INFINITY == Approx(INFINITY));
+    REQUIRE(-INFINITY != Approx(INFINITY));
+    REQUIRE(1 != Approx(INFINITY));
     REQUIRE(NAN != Approx(NAN));
     REQUIRE_FALSE(NAN == Approx(NAN));
 }

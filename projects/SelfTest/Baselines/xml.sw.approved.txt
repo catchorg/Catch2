@@ -2172,33 +2172,6 @@ Nor would this
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="Assorted miscellaneous tests" tags="[Approx]" filename="projects/<exe-name>/UsageTests/Approx.tests.cpp" >
-      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/UsageTests/Approx.tests.cpp" >
-        <Original>
-          INFINITY == Approx(INFINITY)
-        </Original>
-        <Expanded>
-          inff == Approx( inf )
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/UsageTests/Approx.tests.cpp" >
-        <Original>
-          NAN != Approx(NAN)
-        </Original>
-        <Expanded>
-          nanf != Approx( nan )
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="REQUIRE_FALSE" filename="projects/<exe-name>/UsageTests/Approx.tests.cpp" >
-        <Original>
-          !(NAN == Approx(NAN))
-        </Original>
-        <Expanded>
-          !(nanf == Approx( nan ))
-        </Expanded>
-      </Expression>
-      <OverallResult success="true"/>
-    </TestCase>
     <TestCase name="CAPTURE can deal with complex expressions" tags="[capture][messages]" filename="projects/<exe-name>/UsageTests/Message.tests.cpp" >
       <Info>
         a := 1
@@ -9168,14 +9141,6 @@ A string sent to stderr via clog
           Approx( 1.23 ) != 1.24
         </Expanded>
       </Expression>
-      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/UsageTests/Approx.tests.cpp" >
-        <Original>
-          INFINITY == Approx(INFINITY)
-        </Original>
-        <Expanded>
-          inff == Approx( inf )
-        </Expanded>
-      </Expression>
       <OverallResult success="true"/>
     </TestCase>
     <TestCase name="Standard output from all sections is reported" tags="[.][messages]" filename="projects/<exe-name>/UsageTests/Message.tests.cpp" >
@@ -14915,7 +14880,7 @@ loose text artifact
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="1417" failures="149" expectedFailures="21"/>
+    <OverallResults successes="1413" failures="149" expectedFailures="21"/>
   </Group>
-  <OverallResults successes="1417" failures="148" expectedFailures="21"/>
+  <OverallResults successes="1413" failures="148" expectedFailures="21"/>
 </Catch>
