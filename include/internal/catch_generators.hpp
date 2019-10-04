@@ -71,7 +71,7 @@ namespace Generators {
     template<typename T>
     class FixedValuesGenerator final : public IGenerator<T> {
         static_assert(!std::is_same<T, bool>::value,
-            "ValuesGenerator does not support bools because of std::vector<bool>"
+            "FixedValuesGenerator does not support bools because of std::vector<bool>"
             "specialization, use SingleValue Generator instead.");
         std::vector<T> m_values;
         size_t m_idx = 0;

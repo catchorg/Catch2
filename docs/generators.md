@@ -36,8 +36,8 @@ Catch2's provided generator functionality consists of three parts,
 * `GENERATE` macro,  that serves to integrate generator expression with
 a test case,
 * 2 fundamental generators
-  * `ValueGenerator<T>` -- contains only single element
-  * `ValuesGenerator<T>` -- contains multiple elements
+  * `SingleValueGenerator<T>` -- contains only single element
+  * `FixedValuesGenerator<T>` -- contains multiple elements
 * 5 generic generators that modify other generators
   * `FilterGenerator<T, Predicate>` -- filters out elements from a generator
   for which the predicate returns "false"
@@ -56,9 +56,9 @@ a test case,
 The generators also have associated helper functions that infer their
 type, making their usage much nicer. These are
 
-* `value(T&&)` for `ValueGenerator<T>`
-* `values(std::initializer_list<T>)` for `ValuesGenerator<T>`
-* `table<Ts...>(std::initializer_list<std::tuple<Ts...>>)` for `ValuesGenerator<std::tuple<Ts...>>`
+* `value(T&&)` for `SingleValueGenerator<T>`
+* `values(std::initializer_list<T>)` for `FixedValuesGenerator<T>`
+* `table<Ts...>(std::initializer_list<std::tuple<Ts...>>)` for `FixedValuesGenerator<std::tuple<Ts...>>`
 * `filter(predicate, GeneratorWrapper<T>&&)` for `FilterGenerator<T, Predicate>`
 * `take(count, GeneratorWrapper<T>&&)` for `TakeGenerator<T>`
 * `repeat(repeats, GeneratorWrapper<T>&&)` for `RepeatGenerator<T>`
@@ -90,7 +90,7 @@ Apart from registering generators with Catch2, the `GENERATE` macro has
 one more purpose, and that is to provide simple way of generating trivial
 generators, as seen in the first example on this page, where we used it
 as `auto i = GENERATE(1, 2, 3);`. This usage converted each of the three
-literals into a single `ValueGenerator<int>` and then placed them all in
+literals into a single `SingleValueGenerator<int>` and then placed them all in
 a special generator that concatenates other generators. It can also be
 used with other generators as arguments, such as `auto i = GENERATE(0, 2,
 take(100, random(300, 3000)));`. This is useful e.g. if you know that
