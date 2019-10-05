@@ -26,12 +26,12 @@ namespace Matchers {
         };
 
         struct WithinUlpsMatcher : MatcherBase<double> {
-            WithinUlpsMatcher(double target, int ulps, FloatingPointKind baseType);
+            WithinUlpsMatcher(double target, uint64_t ulps, FloatingPointKind baseType);
             bool match(double const& matchee) const override;
             std::string describe() const override;
         private:
             double m_target;
-            int m_ulps;
+            uint64_t m_ulps;
             FloatingPointKind m_type;
         };
 
@@ -40,8 +40,8 @@ namespace Matchers {
 
     // The following functions create the actual matcher objects.
     // This allows the types to be inferred
-    Floating::WithinUlpsMatcher WithinULP(double target, int maxUlpDiff);
-    Floating::WithinUlpsMatcher WithinULP(float target, int maxUlpDiff);
+    Floating::WithinUlpsMatcher WithinULP(double target, uint64_t maxUlpDiff);
+    Floating::WithinUlpsMatcher WithinULP(float target, uint64_t maxUlpDiff);
     Floating::WithinAbsMatcher WithinAbs(double target, double margin);
 
 } // namespace Matchers

@@ -34,34 +34,22 @@ enum class FloatingPointKind : uint8_t {
 
 namespace {
 
-template <typename T>
-struct Converter;
-
-template <>
-struct Converter<float> {
+int32_t convert(float f) {
     static_assert(sizeof(float) == sizeof(int32_t), "Important ULP matcher assumption violated");
-    Converter(float f) {
-        std::memcpy(&i, &f, sizeof(f));
-    }
     int32_t i;
-};
+    std::memcpy(&i, &f, sizeof(f));
+    return i;
+}
 
-template <>
-struct Converter<double> {
+int64_t convert(double d) {
     static_assert(sizeof(double) == sizeof(int64_t), "Important ULP matcher assumption violated");
-    Converter(double d) {
-        std::memcpy(&i, &d, sizeof(d));
-    }
     int64_t i;
-};
-
-template <typename T>
-auto convert(T t) -> Converter<T> {
-    return Converter<T>(t);
+    std::memcpy(&i, &d, sizeof(d));
+    return i;
 }
 
 template <typename FP>
-bool almostEqualUlps(FP lhs, FP rhs, int maxUlpDiff) {
+bool almostEqualUlps(FP lhs, FP rhs, uint64_t maxUlpDiff) {
     // Comparison with NaN should always be false.
     // This way we can rule it out before getting into the ugly details
     if (Catch::isnan(lhs) || Catch::isnan(rhs)) {
@@ -71,13 +59,13 @@ bool almostEqualUlps(FP lhs, FP rhs, int maxUlpDiff) {
     auto lc = convert(lhs);
     auto rc = convert(rhs);
 
-    if ((lc.i < 0) != (rc.i < 0)) {
+    if ((lc < 0) != (rc < 0)) {
         // Potentially we can have +0 and -0
         return lhs == rhs;
     }
 
-    auto ulpDiff = std::abs(lc.i - rc.i);
-    return ulpDiff <= maxUlpDiff;
+    auto ulpDiff = std::abs(lc - rc);
+    return static_cast<uint64_t>(ulpDiff) <= maxUlpDiff;
 }
 
 #if defined(CATCH_CONFIG_GLOBAL_NEXTAFTER)
@@ -99,8 +87,8 @@ namespace Catch {
 #endif
 
 template <typename FP>
-FP step(FP start, FP direction, int steps) {
-    for (int i = 0; i < steps; ++i) {
+FP step(FP start, FP direction, uint64_t steps) {
+    for (uint64_t i = 0; i < steps; ++i) {
 #if defined(CATCH_CONFIG_GLOBAL_NEXTAFTER)
         start = Catch::nextafter(start, direction);
 #else
@@ -133,10 +121,11 @@ namespace Floating {
     }
 
 
-    WithinUlpsMatcher::WithinUlpsMatcher(double target, int ulps, FloatingPointKind baseType)
+    WithinUlpsMatcher::WithinUlpsMatcher(double target, uint64_t ulps, FloatingPointKind baseType)
         :m_target{ target }, m_ulps{ ulps }, m_type{ baseType } {
-        CATCH_ENFORCE(ulps >= 0, "Invalid ULP setting: " << ulps << '.'
-            << " ULPs have to be non-negative.");
+        CATCH_ENFORCE(m_type == FloatingPointKind::Double
+                   || m_ulps < std::numeric_limits<uint32_t>::max(),
+            "Provided ULP is impossibly large for a float comparison.");
     }
 
 #if defined(__clang__)
@@ -190,11 +179,11 @@ namespace Floating {
 
 
 
-Floating::WithinUlpsMatcher WithinULP(double target, int maxUlpDiff) {
+Floating::WithinUlpsMatcher WithinULP(double target, uint64_t maxUlpDiff) {
     return Floating::WithinUlpsMatcher(target, maxUlpDiff, Floating::FloatingPointKind::Double);
 }
 
-Floating::WithinUlpsMatcher WithinULP(float target, int maxUlpDiff) {
+Floating::WithinUlpsMatcher WithinULP(float target, uint64_t maxUlpDiff) {
     return Floating::WithinUlpsMatcher(target, maxUlpDiff, Floating::FloatingPointKind::Float);
 }
 

@@ -3630,15 +3630,7 @@ Nor would this
             WithinULP(1., 0)
           </Expanded>
         </Expression>
-        <Expression success="true" type="REQUIRE_THROWS_AS" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
-          <Original>
-            WithinULP(1., -1), std::domain_error
-          </Original>
-          <Expanded>
-            WithinULP(1., -1), std::domain_error
-          </Expanded>
-        </Expression>
-        <OverallResults successes="4" failures="0" expectedFailures="0"/>
+        <OverallResults successes="3" failures="0" expectedFailures="0"/>
       </Section>
       <OverallResult success="true"/>
     </TestCase>
@@ -3815,10 +3807,10 @@ Nor would this
         </Expression>
         <Expression success="true" type="REQUIRE_THROWS_AS" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
           <Original>
-            WithinULP(1.f, -1), std::domain_error
+            WithinULP(1.f, static_cast&lt;uint64_t>(-1)), std::domain_error
           </Original>
           <Expanded>
-            WithinULP(1.f, -1), std::domain_error
+            WithinULP(1.f, static_cast&lt;uint64_t>(-1)), std::domain_error
           </Expanded>
         </Expression>
         <OverallResults successes="4" failures="0" expectedFailures="0"/>
@@ -14880,7 +14872,7 @@ loose text artifact
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="1413" failures="149" expectedFailures="21"/>
+    <OverallResults successes="1412" failures="149" expectedFailures="21"/>
   </Group>
-  <OverallResults successes="1413" failures="148" expectedFailures="21"/>
+  <OverallResults successes="1412" failures="148" expectedFailures="21"/>
 </Catch>

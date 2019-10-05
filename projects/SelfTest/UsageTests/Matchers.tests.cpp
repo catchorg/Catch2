@@ -372,7 +372,7 @@ namespace { namespace MatchersTests {
                 REQUIRE_THROWS_AS(WithinAbs(1.f, -1.f), std::domain_error);
 
                 REQUIRE_NOTHROW(WithinULP(1.f, 0));
-                REQUIRE_THROWS_AS(WithinULP(1.f, -1), std::domain_error);
+                REQUIRE_THROWS_AS(WithinULP(1.f, static_cast<uint64_t>(-1)), std::domain_error);
             }
         }
 
@@ -408,7 +408,6 @@ namespace { namespace MatchersTests {
                 REQUIRE_THROWS_AS(WithinAbs(1., -1.), std::domain_error);
 
                 REQUIRE_NOTHROW(WithinULP(1., 0));
-                REQUIRE_THROWS_AS(WithinULP(1., -1), std::domain_error);
             }
         }
 

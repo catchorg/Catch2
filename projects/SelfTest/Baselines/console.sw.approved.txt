@@ -3020,9 +3020,6 @@ Matchers.tests.cpp:<line number>: PASSED:
 Matchers.tests.cpp:<line number>: PASSED:
   REQUIRE_NOTHROW( WithinULP(1., 0) )
 
-Matchers.tests.cpp:<line number>: PASSED:
-  REQUIRE_THROWS_AS( WithinULP(1., -1), std::domain_error )
-
 -------------------------------------------------------------------------------
 Floating point matchers: float
   Margin
@@ -3149,7 +3146,7 @@ Matchers.tests.cpp:<line number>: PASSED:
   REQUIRE_NOTHROW( WithinULP(1.f, 0) )
 
 Matchers.tests.cpp:<line number>: PASSED:
-  REQUIRE_THROWS_AS( WithinULP(1.f, -1), std::domain_error )
+  REQUIRE_THROWS_AS( WithinULP(1.f, static_cast<uint64_t>(-1)), std::domain_error )
 
 -------------------------------------------------------------------------------
 Generators -- adapters
@@ -12503,5 +12500,5 @@ Misc.tests.cpp:<line number>: PASSED:
 
 ===============================================================================
 test cases:  300 |  210 passed |  86 failed |  4 failed as expected
-assertions: 1582 | 1413 passed | 148 failed | 21 failed as expected
+assertions: 1581 | 1412 passed | 148 failed | 21 failed as expected
 
