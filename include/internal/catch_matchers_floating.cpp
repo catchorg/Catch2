@@ -22,55 +22,51 @@
 
 
 namespace Catch {
-namespace Matchers {
-namespace Floating {
-enum class FloatingPointKind : uint8_t {
-    Float,
-    Double
-};
-}
-}
-}
-
 namespace {
 
-int32_t convert(float f) {
-    static_assert(sizeof(float) == sizeof(int32_t), "Important ULP matcher assumption violated");
-    int32_t i;
-    std::memcpy(&i, &f, sizeof(f));
-    return i;
-}
-
-int64_t convert(double d) {
-    static_assert(sizeof(double) == sizeof(int64_t), "Important ULP matcher assumption violated");
-    int64_t i;
-    std::memcpy(&i, &d, sizeof(d));
-    return i;
-}
-
-template <typename FP>
-bool almostEqualUlps(FP lhs, FP rhs, uint64_t maxUlpDiff) {
-    // Comparison with NaN should always be false.
-    // This way we can rule it out before getting into the ugly details
-    if (Catch::isnan(lhs) || Catch::isnan(rhs)) {
-        return false;
+    int32_t convert(float f) {
+        static_assert(sizeof(float) == sizeof(int32_t), "Important ULP matcher assumption violated");
+        int32_t i;
+        std::memcpy(&i, &f, sizeof(f));
+        return i;
     }
 
-    auto lc = convert(lhs);
-    auto rc = convert(rhs);
-
-    if ((lc < 0) != (rc < 0)) {
-        // Potentially we can have +0 and -0
-        return lhs == rhs;
+    int64_t convert(double d) {
+        static_assert(sizeof(double) == sizeof(int64_t), "Important ULP matcher assumption violated");
+        int64_t i;
+        std::memcpy(&i, &d, sizeof(d));
+        return i;
     }
 
-    auto ulpDiff = std::abs(lc - rc);
-    return static_cast<uint64_t>(ulpDiff) <= maxUlpDiff;
+    template <typename FP>
+    bool almostEqualUlps(FP lhs, FP rhs, uint64_t maxUlpDiff) {
+        // Comparison with NaN should always be false.
+        // This way we can rule it out before getting into the ugly details
+        if (Catch::isnan(lhs) || Catch::isnan(rhs)) {
+            return false;
+        }
+
+        auto lc = convert(lhs);
+        auto rc = convert(rhs);
+
+        if ((lc < 0) != (rc < 0)) {
+            // Potentially we can have +0 and -0
+            return lhs == rhs;
+        }
+
+        auto ulpDiff = std::abs(lc - rc);
+        return static_cast<uint64_t>(ulpDiff) <= maxUlpDiff;
+    }
 }
 
 #if defined(CATCH_CONFIG_GLOBAL_NEXTAFTER)
 
-namespace Catch {
+#if defined(__clang__)
+#pragma clang diagnostic push
+// The long double overload is currently unused
+#pragma clang diagnostic ignored "-Wunused-function"
+#endif
+
     float nextafter(float x, float y) {
         return ::nextafterf(x, y);
     }
@@ -82,9 +78,14 @@ namespace Catch {
     long double nextafter(long double x, long double y) {
         return ::nextafterl(x, y);
     }
-} // end namespace Catch
 
+#if defined(__clang__)
+#pragma clang diagnostic pop
 #endif
+
+#endif // ^^^ CATCH_CONFIG_GLOBAL_NEXTAFTER ^^^
+
+namespace {
 
 template <typename FP>
 FP step(FP start, FP direction, uint64_t steps) {
@@ -97,13 +98,17 @@ FP step(FP start, FP direction, uint64_t steps) {
     }
     return start;
 }
-
 } // end anonymous namespace
 
-
-namespace Catch {
 namespace Matchers {
 namespace Floating {
+
+    enum class FloatingPointKind : uint8_t {
+        Float,
+        Double
+    };
+
+
     WithinAbsMatcher::WithinAbsMatcher(double target, double margin)
         :m_target{ target }, m_margin{ margin } {
         CATCH_ENFORCE(margin >= 0, "Invalid margin: " << margin << '.'
