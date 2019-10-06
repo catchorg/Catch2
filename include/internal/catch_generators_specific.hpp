@@ -128,6 +128,39 @@ GeneratorWrapper<T> range(T const& start, T const& end) {
 }
 
 
+template <typename T>
+class IteratorGenerator final : public IGenerator<T> {
+    static_assert(!std::is_same<T, bool>::value,
+        "IteratorGenerator currently does not support bools"
+        "because of std::vector<bool> specialization");
+
+    std::vector<T> m_elems;
+    size_t m_current = 0;
+public:
+    template <typename InputIterator, typename InputSentinel>
+    IteratorGenerator(InputIterator first, InputSentinel last):m_elems(first, last) {
+        if (m_elems.empty()) {
+            Catch::throw_exception(GeneratorException("IteratorGenerator received no valid values"));
+        }
+    }
+
+    T const& get() const override {
+        return m_elems[m_current];
+    }
+
+    bool next() override {
+        ++m_current;
+        return m_current != m_elems.size();
+    }
+};
+
+template <typename InputIterator,
+          typename InputSentinel,
+          typename ResultType = typename std::iterator_traits<InputIterator>::value_type>
+GeneratorWrapper<ResultType> from_range(InputIterator from, InputSentinel to) {
+    return GeneratorWrapper<ResultType>(pf::make_unique<IteratorGenerator<ResultType>>(from, to));
+}
+
 } // namespace Generators
 } // namespace Catch
 

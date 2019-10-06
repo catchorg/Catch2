@@ -310,6 +310,12 @@ Condition.tests.cpp:<line number>: passed: 6 == uc for: 6 == 6
 Condition.tests.cpp:<line number>: passed: (std::numeric_limits<uint32_t>::max)() > ul for: 4294967295 (0x<hex digits>) > 4
 Matchers.tests.cpp:<line number>: failed: testStringForMatching(), Contains("not there", Catch::CaseSensitive::No) for: "this string contains 'abc' as a substring" contains: "not there" (case insensitive)
 Matchers.tests.cpp:<line number>: failed: testStringForMatching(), Contains("STRING") for: "this string contains 'abc' as a substring" contains: "STRING"
+Generators.tests.cpp:<line number>: passed: elem % 2 == 1 for: 1 == 1
+Generators.tests.cpp:<line number>: passed: elem % 2 == 1 for: 1 == 1
+Generators.tests.cpp:<line number>: passed: elem % 2 == 1 for: 1 == 1
+Generators.tests.cpp:<line number>: passed: elem % 2 == 1 for: 1 == 1
+Generators.tests.cpp:<line number>: passed: elem % 2 == 1 for: 1 == 1
+Generators.tests.cpp:<line number>: passed: elem % 2 == 1 for: 1 == 1
 Exception.tests.cpp:<line number>: failed: unexpected exception with message: 'custom exception - not std'; expression was: throwCustom()
 Exception.tests.cpp:<line number>: failed: unexpected exception with message: 'custom exception - not std'; expression was: throwCustom(), std::exception
 Exception.tests.cpp:<line number>: failed: unexpected exception with message: 'custom std exception'

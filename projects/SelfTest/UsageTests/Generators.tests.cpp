@@ -212,3 +212,28 @@ TEST_CASE("Nested generators and captured variables", "[generators]") {
     auto values = GENERATE_COPY(range(from, to));
     REQUIRE(values > -6);
 }
+
+namespace {
+    std::vector<int> make_data() {
+        return { 1, 3, 5, 7, 9, 11 };
+    }
+}
+
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wexit-time-destructors"
+#endif
+
+TEST_CASE("Copy and then generate a range", "[generators]") {
+    static auto data = make_data();
+
+    // It is important to notice that a generator is only initialized
+    // **once** per run. What this means is that modifying data will not
+    // modify the underlying generator.
+    auto elem = GENERATE_REF(from_range(data.begin(), data.end()));
+    REQUIRE(elem % 2 == 1);
+}
+
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif

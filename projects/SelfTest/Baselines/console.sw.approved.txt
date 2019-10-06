@@ -2382,6 +2382,72 @@ with expansion:
   "this string contains 'abc' as a substring" contains: "STRING"
 
 -------------------------------------------------------------------------------
+Copy and then generate a range
+-------------------------------------------------------------------------------
+Generators.tests.cpp:<line number>
+...............................................................................
+
+Generators.tests.cpp:<line number>: PASSED:
+  REQUIRE( elem % 2 == 1 )
+with expansion:
+  1 == 1
+
+-------------------------------------------------------------------------------
+Copy and then generate a range
+-------------------------------------------------------------------------------
+Generators.tests.cpp:<line number>
+...............................................................................
+
+Generators.tests.cpp:<line number>: PASSED:
+  REQUIRE( elem % 2 == 1 )
+with expansion:
+  1 == 1
+
+-------------------------------------------------------------------------------
+Copy and then generate a range
+-------------------------------------------------------------------------------
+Generators.tests.cpp:<line number>
+...............................................................................
+
+Generators.tests.cpp:<line number>: PASSED:
+  REQUIRE( elem % 2 == 1 )
+with expansion:
+  1 == 1
+
+-------------------------------------------------------------------------------
+Copy and then generate a range
+-------------------------------------------------------------------------------
+Generators.tests.cpp:<line number>
+...............................................................................
+
+Generators.tests.cpp:<line number>: PASSED:
+  REQUIRE( elem % 2 == 1 )
+with expansion:
+  1 == 1
+
+-------------------------------------------------------------------------------
+Copy and then generate a range
+-------------------------------------------------------------------------------
+Generators.tests.cpp:<line number>
+...............................................................................
+
+Generators.tests.cpp:<line number>: PASSED:
+  REQUIRE( elem % 2 == 1 )
+with expansion:
+  1 == 1
+
+-------------------------------------------------------------------------------
+Copy and then generate a range
+-------------------------------------------------------------------------------
+Generators.tests.cpp:<line number>
+...............................................................................
+
+Generators.tests.cpp:<line number>: PASSED:
+  REQUIRE( elem % 2 == 1 )
+with expansion:
+  1 == 1
+
+-------------------------------------------------------------------------------
 Custom exceptions can be translated when testing for nothrow
 -------------------------------------------------------------------------------
 Exception.tests.cpp:<line number>
@@ -12499,6 +12565,6 @@ Misc.tests.cpp:<line number>
 Misc.tests.cpp:<line number>: PASSED:
 
 ===============================================================================
-test cases:  300 |  210 passed |  86 failed |  4 failed as expected
-assertions: 1581 | 1412 passed | 148 failed | 21 failed as expected
+test cases:  301 |  211 passed |  86 failed |  4 failed as expected
+assertions: 1587 | 1418 passed | 148 failed | 21 failed as expected
 

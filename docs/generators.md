@@ -46,12 +46,15 @@ a test case,
   * `MapGenerator<T, U, Func>` -- returns the result of applying `Func`
   on elements from a different generator
   * `ChunkGenerator<T>` -- returns chunks (inside `std::vector`) of n elements from a generator
-* 3 specific purpose generators
+* 4 specific purpose generators
   * `RandomIntegerGenerator<Integral>` -- generates random Integrals from range
   * `RandomFloatGenerator<Float>` -- generates random Floats from range
   * `RangeGenerator<T>` -- generates all values inside a specific range
+  * `IteratorGenerator<T>` -- copies and returns values from an iterator range
 
 > `ChunkGenerator<T>`, `RandomIntegerGenerator<Integral>`, `RandomFloatGenerator<Float>` and `RangeGenerator<T>` were introduced in Catch 2.7.0.
+
+> `IteratorGenerator<T>` was introduced in Catch X.Y.Z.
 
 The generators also have associated helper functions that infer their
 type, making their usage much nicer. These are
@@ -68,8 +71,11 @@ type, making their usage much nicer. These are
 * `random(IntegerOrFloat a, IntegerOrFloat b)` for `RandomIntegerGenerator` or `RandomFloatGenerator`
 * `range(start, end)` for `RangeGenerator<T>` with a step size of `1`
 * `range(start, end, step)` for `RangeGenerator<T>` with a custom step size
+* `from_range(InputIterator from, InputIterator to)` for `IteratorGenerator<T>`
 
 > `chunk()`, `random()` and both `range()` functions were introduced in Catch 2.7.0.
+
+> `from_range` has been introduced in Catch X.Y.Z
 
 And can be used as shown in the example below to create a generator
 that returns 100 odd random number:
