@@ -7,6 +7,7 @@
  */
 #include "catch_context.h"
 #include "catch_common.h"
+#include "catch_random_number_generator.h"
 
 namespace Catch {
 
@@ -59,4 +60,11 @@ namespace Catch {
     IContext::~IContext() = default;
     IMutableContext::~IMutableContext() = default;
     Context::~Context() = default;
+
+
+    SimplePcg32& rng() {
+        static SimplePcg32 s_rng;
+        return s_rng;
+    }
+
 }

@@ -151,6 +151,8 @@ namespace Catch {
         bool m_includeSuccessfulResults;
     };
 
+    void seedRng(IConfig const& config);
+    unsigned int rngSeed();
 } // end namespace Catch
 
 #endif // TWOBLUECUBES_CATCH_RUNNER_IMPL_HPP_INCLUDED

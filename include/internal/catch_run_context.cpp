@@ -506,4 +506,16 @@ namespace Catch {
         else
             CATCH_INTERNAL_ERROR("No result capture instance");
     }
+
+    void seedRng(IConfig const& config) {
+        if (config.rngSeed() != 0) {
+            std::srand(config.rngSeed());
+            rng().seed(config.rngSeed());
+        }
+    }
+
+    unsigned int rngSeed() {
+        return getCurrentContext().getConfig()->rngSeed();
+    }
+
 }

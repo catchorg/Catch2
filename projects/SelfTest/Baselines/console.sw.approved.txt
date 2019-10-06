@@ -2180,6 +2180,32 @@ with expansion:
   0x<hex digits> == 0x<hex digits>
 
 -------------------------------------------------------------------------------
+Comparison ops
+-------------------------------------------------------------------------------
+RandomNumberGeneration.tests.cpp:<line number>
+...............................................................................
+
+RandomNumberGeneration.tests.cpp:<line number>: PASSED:
+  REQUIRE( SimplePcg32{} == SimplePcg32{} )
+with expansion:
+  {?} == {?}
+
+RandomNumberGeneration.tests.cpp:<line number>: PASSED:
+  REQUIRE( SimplePcg32{ 0 } != SimplePcg32{} )
+with expansion:
+  {?} != {?}
+
+RandomNumberGeneration.tests.cpp:<line number>: PASSED:
+  REQUIRE_FALSE( SimplePcg32{ 1 } == SimplePcg32{ 2 } )
+with expansion:
+  !({?} == {?})
+
+RandomNumberGeneration.tests.cpp:<line number>: PASSED:
+  REQUIRE_FALSE( SimplePcg32{ 1 } != SimplePcg32{ 1 } )
+with expansion:
+  !({?} != {?})
+
+-------------------------------------------------------------------------------
 Comparison with explicitly convertible types
 -------------------------------------------------------------------------------
 Approx.tests.cpp:<line number>
@@ -5493,6 +5519,125 @@ Condition.tests.cpp:<line number>: PASSED:
   REQUIRE( data.str_hello > "a" )
 with expansion:
   "hello" > "a"
+
+-------------------------------------------------------------------------------
+Our PCG implementation provides expected results for known seeds
+  Default seeded
+-------------------------------------------------------------------------------
+RandomNumberGeneration.tests.cpp:<line number>
+...............................................................................
+
+RandomNumberGeneration.tests.cpp:<line number>: PASSED:
+  REQUIRE( rng() == 0x<hex digits> )
+with expansion:
+  4242248763 (0x<hex digits>)
+  ==
+  4242248763 (0x<hex digits>)
+
+RandomNumberGeneration.tests.cpp:<line number>: PASSED:
+  REQUIRE( rng() == 0x<hex digits> )
+with expansion:
+  1867888929 (0x<hex digits>)
+  ==
+  1867888929 (0x<hex digits>)
+
+RandomNumberGeneration.tests.cpp:<line number>: PASSED:
+  REQUIRE( rng() == 0x<hex digits> )
+with expansion:
+  1276619030 (0x<hex digits>)
+  ==
+  1276619030 (0x<hex digits>)
+
+RandomNumberGeneration.tests.cpp:<line number>: PASSED:
+  REQUIRE( rng() == 0x<hex digits> )
+with expansion:
+  1911218783 (0x<hex digits>)
+  ==
+  1911218783 (0x<hex digits>)
+
+RandomNumberGeneration.tests.cpp:<line number>: PASSED:
+  REQUIRE( rng() == 0x<hex digits> )
+with expansion:
+  1827115164 (0x<hex digits>)
+  ==
+  1827115164 (0x<hex digits>)
+
+-------------------------------------------------------------------------------
+Our PCG implementation provides expected results for known seeds
+  Specific seed
+-------------------------------------------------------------------------------
+RandomNumberGeneration.tests.cpp:<line number>
+...............................................................................
+
+RandomNumberGeneration.tests.cpp:<line number>: PASSED:
+  REQUIRE( rng() == 0x<hex digits> )
+with expansion:
+  1472234645 (0x<hex digits>)
+  ==
+  1472234645 (0x<hex digits>)
+
+RandomNumberGeneration.tests.cpp:<line number>: PASSED:
+  REQUIRE( rng() == 0x<hex digits> )
+with expansion:
+  868832940 (0x<hex digits>)
+  ==
+  868832940 (0x<hex digits>)
+
+RandomNumberGeneration.tests.cpp:<line number>: PASSED:
+  REQUIRE( rng() == 0x<hex digits> )
+with expansion:
+  570883446 (0x<hex digits>)
+  ==
+  570883446 (0x<hex digits>)
+
+RandomNumberGeneration.tests.cpp:<line number>: PASSED:
+  REQUIRE( rng() == 0x<hex digits> )
+with expansion:
+  889299803 (0x<hex digits>)
+  ==
+  889299803 (0x<hex digits>)
+
+RandomNumberGeneration.tests.cpp:<line number>: PASSED:
+  REQUIRE( rng() == 0x<hex digits> )
+with expansion:
+  4261393167 (0x<hex digits>)
+  ==
+  4261393167 (0x<hex digits>)
+
+RandomNumberGeneration.tests.cpp:<line number>: PASSED:
+  REQUIRE( rng() == 0x<hex digits> )
+with expansion:
+  1472234645 (0x<hex digits>)
+  ==
+  1472234645 (0x<hex digits>)
+
+RandomNumberGeneration.tests.cpp:<line number>: PASSED:
+  REQUIRE( rng() == 0x<hex digits> )
+with expansion:
+  868832940 (0x<hex digits>)
+  ==
+  868832940 (0x<hex digits>)
+
+RandomNumberGeneration.tests.cpp:<line number>: PASSED:
+  REQUIRE( rng() == 0x<hex digits> )
+with expansion:
+  570883446 (0x<hex digits>)
+  ==
+  570883446 (0x<hex digits>)
+
+RandomNumberGeneration.tests.cpp:<line number>: PASSED:
+  REQUIRE( rng() == 0x<hex digits> )
+with expansion:
+  889299803 (0x<hex digits>)
+  ==
+  889299803 (0x<hex digits>)
+
+RandomNumberGeneration.tests.cpp:<line number>: PASSED:
+  REQUIRE( rng() == 0x<hex digits> )
+with expansion:
+  4261393167 (0x<hex digits>)
+  ==
+  4261393167 (0x<hex digits>)
 
 -------------------------------------------------------------------------------
 Output from all sections is reported
@@ -12565,6 +12710,6 @@ Misc.tests.cpp:<line number>
 Misc.tests.cpp:<line number>: PASSED:
 
 ===============================================================================
-test cases:  301 |  211 passed |  86 failed |  4 failed as expected
-assertions: 1587 | 1418 passed | 148 failed | 21 failed as expected
+test cases:  303 |  213 passed |  86 failed |  4 failed as expected
+assertions: 1606 | 1437 passed | 148 failed | 21 failed as expected
 

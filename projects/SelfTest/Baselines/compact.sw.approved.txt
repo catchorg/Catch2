@@ -276,6 +276,10 @@ Tricky.tests.cpp:<line number>: passed: true
 Tricky.tests.cpp:<line number>: passed: std::vector<int>{1, 2} == std::vector<int>{1, 2} for: { 1, 2 } == { 1, 2 }
 Tricky.tests.cpp:<line number>: passed: a for: 0x<hex digits>
 Tricky.tests.cpp:<line number>: passed: a == &foo for: 0x<hex digits> == 0x<hex digits>
+RandomNumberGeneration.tests.cpp:<line number>: passed: SimplePcg32{} == SimplePcg32{} for: {?} == {?}
+RandomNumberGeneration.tests.cpp:<line number>: passed: SimplePcg32{ 0 } != SimplePcg32{} for: {?} != {?}
+RandomNumberGeneration.tests.cpp:<line number>: passed: !(SimplePcg32{ 1 } == SimplePcg32{ 2 }) for: !({?} == {?})
+RandomNumberGeneration.tests.cpp:<line number>: passed: !(SimplePcg32{ 1 } != SimplePcg32{ 1 }) for: !({?} != {?})
 Approx.tests.cpp:<line number>: passed: td == Approx(10.0) for: StrongDoubleTypedef(10) == Approx( 10.0 )
 Approx.tests.cpp:<line number>: passed: Approx(10.0) == td for: Approx( 10.0 ) == StrongDoubleTypedef(10)
 Approx.tests.cpp:<line number>: passed: td != Approx(11.0) for: StrongDoubleTypedef(10) != Approx( 11.0 )
@@ -731,6 +735,51 @@ Condition.tests.cpp:<line number>: passed: data.str_hello < "hellp" for: "hello"
 Condition.tests.cpp:<line number>: passed: data.str_hello < "zebra" for: "hello" < "zebra"
 Condition.tests.cpp:<line number>: passed: data.str_hello > "hellm" for: "hello" > "hellm"
 Condition.tests.cpp:<line number>: passed: data.str_hello > "a" for: "hello" > "a"
+RandomNumberGeneration.tests.cpp:<line number>: passed: rng() == 0x<hex digits> for: 4242248763 (0x<hex digits>)
+==
+4242248763 (0x<hex digits>)
+RandomNumberGeneration.tests.cpp:<line number>: passed: rng() == 0x<hex digits> for: 1867888929 (0x<hex digits>)
+==
+1867888929 (0x<hex digits>)
+RandomNumberGeneration.tests.cpp:<line number>: passed: rng() == 0x<hex digits> for: 1276619030 (0x<hex digits>)
+==
+1276619030 (0x<hex digits>)
+RandomNumberGeneration.tests.cpp:<line number>: passed: rng() == 0x<hex digits> for: 1911218783 (0x<hex digits>)
+==
+1911218783 (0x<hex digits>)
+RandomNumberGeneration.tests.cpp:<line number>: passed: rng() == 0x<hex digits> for: 1827115164 (0x<hex digits>)
+==
+1827115164 (0x<hex digits>)
+RandomNumberGeneration.tests.cpp:<line number>: passed: rng() == 0x<hex digits> for: 1472234645 (0x<hex digits>)
+==
+1472234645 (0x<hex digits>)
+RandomNumberGeneration.tests.cpp:<line number>: passed: rng() == 0x<hex digits> for: 868832940 (0x<hex digits>)
+==
+868832940 (0x<hex digits>)
+RandomNumberGeneration.tests.cpp:<line number>: passed: rng() == 0x<hex digits> for: 570883446 (0x<hex digits>)
+==
+570883446 (0x<hex digits>)
+RandomNumberGeneration.tests.cpp:<line number>: passed: rng() == 0x<hex digits> for: 889299803 (0x<hex digits>)
+==
+889299803 (0x<hex digits>)
+RandomNumberGeneration.tests.cpp:<line number>: passed: rng() == 0x<hex digits> for: 4261393167 (0x<hex digits>)
+==
+4261393167 (0x<hex digits>)
+RandomNumberGeneration.tests.cpp:<line number>: passed: rng() == 0x<hex digits> for: 1472234645 (0x<hex digits>)
+==
+1472234645 (0x<hex digits>)
+RandomNumberGeneration.tests.cpp:<line number>: passed: rng() == 0x<hex digits> for: 868832940 (0x<hex digits>)
+==
+868832940 (0x<hex digits>)
+RandomNumberGeneration.tests.cpp:<line number>: passed: rng() == 0x<hex digits> for: 570883446 (0x<hex digits>)
+==
+570883446 (0x<hex digits>)
+RandomNumberGeneration.tests.cpp:<line number>: passed: rng() == 0x<hex digits> for: 889299803 (0x<hex digits>)
+==
+889299803 (0x<hex digits>)
+RandomNumberGeneration.tests.cpp:<line number>: passed: rng() == 0x<hex digits> for: 4261393167 (0x<hex digits>)
+==
+4261393167 (0x<hex digits>)
 Message.tests.cpp:<line number>: failed: explicitly with 1 message: 'Message from section one'
 Message.tests.cpp:<line number>: failed: explicitly with 1 message: 'Message from section two'
 CmdLine.tests.cpp:<line number>: passed: spec.hasFilters() == false for: false == false

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuitesloose text artifact
 >
-  <testsuite name="<exe-name>" errors="17" failures="132" tests="1588" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
+  <testsuite name="<exe-name>" errors="17" failures="132" tests="1607" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
     <properties>
       <property name="filters" value="~[!nonportable]~[!benchmark]~[approvals]"/>
       <property name="random-seed" value="1"/>
@@ -242,6 +242,7 @@ Exception.tests.cpp:<line number>
     <testcase classname="<exe-name>.global" name="Character pretty printing/Low ASCII" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Commas in various macros are allowed" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Comparing function pointers" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="Comparison ops" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Comparison with explicitly convertible types" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Comparisons between ints where one side is computed" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Comparisons between unsigned ints and negative signed ints match c++ standard behaviour" time="{duration}"/>
@@ -577,6 +578,8 @@ Condition.tests.cpp:<line number>
       </failure>
     </testcase>
     <testcase classname="<exe-name>.global" name="Ordering comparison checks that should succeed" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="Our PCG implementation provides expected results for known seeds/Default seeded" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="Our PCG implementation provides expected results for known seeds/Specific seed" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Output from all sections is reported/one" time="{duration}">
       <failure type="FAIL">
 Message from section one

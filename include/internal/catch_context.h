@@ -55,6 +55,9 @@ namespace Catch {
     }
 
     void cleanUpContext();
+
+    class SimplePcg32;
+    SimplePcg32& rng();
 }
 
 #endif // TWOBLUECUBES_CATCH_CONTEXT_H_INCLUDED
