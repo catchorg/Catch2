@@ -23,6 +23,9 @@ C++11 implementation of Approval Tests, for quick, convenient testing of legacy 
 ### [Azmq](https://github.com/zeromq/azmq)
 Boost Asio style bindings for ZeroMQ.
 
+### [Cataclysm: Dark Days Ahead](https://github.com/CleverRaven/Cataclysm-DDA)
+Post-apocalyptic survival RPG.
+
 ### [ChakraCore](https://github.com/Microsoft/ChakraCore)
 The core part of the Chakra JavaScript engine that powers Microsoft Edge.
 
