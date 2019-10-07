@@ -250,11 +250,36 @@ int const& TestGen::get() const {
 
 }
 
-TEST_CASE("GENERATE capture macros", "[generators][internals][.approvals]") {
+TEST_CASE("GENERATE capture macros", "[generators][internals][approvals]") {
     auto value = GENERATE(take(10, random(0, 10)));
 
     non_copyable nc; nc.value = value;
     // neither `GENERATE_COPY` nor plain `GENERATE` would compile here
     auto value2 = GENERATE_REF(Catch::Generators::GeneratorWrapper<int>(std::unique_ptr<Catch::Generators::IGenerator<int>>(new TestGen(nc))));
     REQUIRE(value == value2);
+}
+
+TEST_CASE("Multiple random generators in one test case output different values", "[generators][internals][approvals]") {
+    SECTION("Integer") {
+        auto random1 = Catch::Generators::random(0, 1000);
+        auto random2 = Catch::Generators::random(0, 1000);
+        size_t same = 0;
+        for (size_t i = 0; i < 1000; ++i) {
+            same += random1.get() == random2.get();
+            random1.next(); random2.next();
+        }
+        // 0.5% seems like a sane bound for random identical elements within 1000 runs
+        REQUIRE(same < 5);
+    }
+    SECTION("Float") {
+        auto random1 = Catch::Generators::random(0., 1000.);
+        auto random2 = Catch::Generators::random(0., 1000.);
+        size_t same = 0;
+        for (size_t i = 0; i < 1000; ++i) {
+            same += random1.get() == random2.get();
+            random1.next(); random2.next();
+        }
+        // 0.5% seems like a sane bound for random identical elements within 1000 runs
+        REQUIRE(same < 5);
+    }
 }

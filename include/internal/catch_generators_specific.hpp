@@ -10,6 +10,7 @@
 #include "catch_context.h"
 #include "catch_generators.hpp"
 #include "catch_interfaces_config.h"
+#include "catch_random_number_generator.h"
 
 #include <random>
 
@@ -18,14 +19,13 @@ namespace Generators {
 
 template <typename Float>
 class RandomFloatingGenerator final : public IGenerator<Float> {
-    // FIXME: What is the right seed?
-    std::minstd_rand m_rand;
+    Catch::SimplePcg32& m_rng;
     std::uniform_real_distribution<Float> m_dist;
     Float m_current_number;
 public:
 
     RandomFloatingGenerator(Float a, Float b):
-        m_rand(getCurrentContext().getConfig()->rngSeed()),
+        m_rng(rng()),
         m_dist(a, b) {
         static_cast<void>(next());
     }
@@ -34,20 +34,20 @@ public:
         return m_current_number;
     }
     bool next() override {
-        m_current_number = m_dist(m_rand);
+        m_current_number = m_dist(m_rng);
         return true;
     }
 };
 
 template <typename Integer>
 class RandomIntegerGenerator final : public IGenerator<Integer> {
-    std::minstd_rand m_rand;
+    Catch::SimplePcg32& m_rng;
     std::uniform_int_distribution<Integer> m_dist;
     Integer m_current_number;
 public:
 
     RandomIntegerGenerator(Integer a, Integer b):
-        m_rand(getCurrentContext().getConfig()->rngSeed()),
+        m_rng(rng()),
         m_dist(a, b) {
         static_cast<void>(next());
     }
@@ -56,7 +56,7 @@ public:
         return m_current_number;
     }
     bool next() override {
-        m_current_number = m_dist(m_rand);
+        m_current_number = m_dist(m_rng);
         return true;
     }
 };
