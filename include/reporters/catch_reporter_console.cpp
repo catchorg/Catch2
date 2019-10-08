@@ -331,8 +331,8 @@ public:
         tp.m_currentColumn++;
 
         auto colInfo = tp.m_columnInfos[tp.m_currentColumn];
-        auto padding = (strSize + 2 < static_cast<std::size_t>(colInfo.width))
-            ? std::string(colInfo.width - (strSize + 2), ' ')
+        auto padding = (strSize + 1 < static_cast<std::size_t>(colInfo.width))
+            ? std::string(colInfo.width - (strSize + 1), ' ')
             : std::string();
         if (colInfo.justification == ColumnInfo::Left)
             tp.m_os << colStr << padding << ' ';
@@ -353,12 +353,26 @@ public:
 ConsoleReporter::ConsoleReporter(ReporterConfig const& config)
     : StreamingReporterBase(config),
     m_tablePrinter(new TablePrinter(config.stream(),
-    {
-        { "benchmark name", CATCH_CONFIG_CONSOLE_WIDTH - 32, ColumnInfo::Left },
-        { "samples      mean       std dev", 14, ColumnInfo::Right },
-        { "iterations   low mean   low std dev", 14, ColumnInfo::Right },
-        { "estimated    high mean  high std dev", 14, ColumnInfo::Right }
-    })) {}
+        [&config]() -> std::vector<ColumnInfo> {
+        if (config.fullConfig()->benchmarkNoAnalysis())
+        {
+            return{
+                { "benchmark name", CATCH_CONFIG_CONSOLE_WIDTH - 43, ColumnInfo::Left },
+                { "     samples", 14, ColumnInfo::Right },
+                { "  iterations", 14, ColumnInfo::Right },
+                { "        mean", 14, ColumnInfo::Right }
+            };
+        }
+        else
+        {
+            return{
+                { "benchmark name", CATCH_CONFIG_CONSOLE_WIDTH - 32, ColumnInfo::Left },
+                { "samples      mean       std dev", 14, ColumnInfo::Right },
+                { "iterations   low mean   low std dev", 14, ColumnInfo::Right },
+                { "estimated    high mean  high std dev", 14, ColumnInfo::Right }
+            };
+        }
+    }())) {}
 ConsoleReporter::~ConsoleReporter() = default;
 
 std::string ConsoleReporter::getDescription() {
@@ -431,18 +445,26 @@ void ConsoleReporter::benchmarkPreparing(std::string const& name) {
 }
 
 void ConsoleReporter::benchmarkStarting(BenchmarkInfo const& info) {
-	(*m_tablePrinter) << info.samples << ColumnBreak()
-		<< info.iterations << ColumnBreak()
-		<< Duration(info.estimatedDuration) << ColumnBreak();
+    (*m_tablePrinter) << info.samples << ColumnBreak()
+        << info.iterations << ColumnBreak();
+    if (!m_config->benchmarkNoAnalysis())
+        (*m_tablePrinter) << Duration(info.estimatedDuration) << ColumnBreak();
 }
 void ConsoleReporter::benchmarkEnded(BenchmarkStats<> const& stats) {
-	(*m_tablePrinter) << ColumnBreak()
-		<< Duration(stats.mean.point.count()) << ColumnBreak()
-		<< Duration(stats.mean.lower_bound.count()) << ColumnBreak()
-		<< Duration(stats.mean.upper_bound.count()) << ColumnBreak() << ColumnBreak()
-		<< Duration(stats.standardDeviation.point.count()) << ColumnBreak()
-		<< Duration(stats.standardDeviation.lower_bound.count()) << ColumnBreak()
-		<< Duration(stats.standardDeviation.upper_bound.count()) << ColumnBreak() << ColumnBreak() << ColumnBreak() << ColumnBreak() << ColumnBreak();
+    if (m_config->benchmarkNoAnalysis())
+    {
+        (*m_tablePrinter) << Duration(stats.mean.point.count()) << ColumnBreak();
+    }
+    else
+    {
+        (*m_tablePrinter) << ColumnBreak()
+            << Duration(stats.mean.point.count()) << ColumnBreak()
+            << Duration(stats.mean.lower_bound.count()) << ColumnBreak()
+            << Duration(stats.mean.upper_bound.count()) << ColumnBreak() << ColumnBreak()
+            << Duration(stats.standardDeviation.point.count()) << ColumnBreak()
+            << Duration(stats.standardDeviation.lower_bound.count()) << ColumnBreak()
+            << Duration(stats.standardDeviation.upper_bound.count()) << ColumnBreak() << ColumnBreak() << ColumnBreak() << ColumnBreak() << ColumnBreak();
+    }
 }
 
 void ConsoleReporter::benchmarkFailed(std::string const& error) {
