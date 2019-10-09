@@ -433,6 +433,12 @@ set_tests_properties(FilenameAsTagsTest PROPERTIES PASS_REGULAR_EXPRESSION "\\[#
 add_test(NAME EscapeSpecialCharactersInTestNames COMMAND $<TARGET_FILE:SelfTest> "Test with special\\, characters \"in name")
 set_tests_properties(EscapeSpecialCharactersInTestNames PROPERTIES PASS_REGULAR_EXPRESSION "1 assertion in 1 test case")
 
+add_test(NAME SpecialCharactersInTestNamesFromFile COMMAND $<TARGET_FILE:SelfTest> "-f ${CATCH_DIR}/projects/SelfTest/Misc/special-characters-in-file.input")
+set_tests_properties(SpecialCharactersInTestNamesFromFile PROPERTIES PASS_REGULAR_EXPRESSION "1 assertion in 1 test case")
+
+add_test(NAME RunningTestsFromFile COMMAND $<TARGET_FILE:SelfTest> "-f ${CATCH_DIR}/projects/SelfTest/Misc/plain-old-tests.input")
+set_tests_properties(RunningTestsFromFile PROPERTIES PASS_REGULAR_EXPRESSION "6 assertions in 2 test cases")
+
 
 if (CATCH_USE_VALGRIND)
     add_test(NAME ValgrindRunTests COMMAND valgrind --leak-check=full --error-exitcode=1 $<TARGET_FILE:SelfTest>)
