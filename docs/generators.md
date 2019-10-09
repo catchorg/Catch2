@@ -72,6 +72,7 @@ type, making their usage much nicer. These are
 * `range(start, end)` for `RangeGenerator<T>` with a step size of `1`
 * `range(start, end, step)` for `RangeGenerator<T>` with a custom step size
 * `from_range(InputIterator from, InputIterator to)` for `IteratorGenerator<T>`
+* `from_range(Container const&)` for `IteratorGenerator<T>`
 
 > `chunk()`, `random()` and both `range()` functions were introduced in Catch 2.7.0.
 

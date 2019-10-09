@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuitesloose text artifact
 >
-  <testsuite name="<exe-name>" errors="17" failures="132" tests="1607" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
+  <testsuite name="<exe-name>" errors="17" failures="132" tests="1615" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
     <properties>
       <property name="filters" value="~[!nonportable]~[!benchmark]~[approvals]"/>
       <property name="random-seed" value="1"/>
@@ -255,7 +255,9 @@ Matchers.tests.cpp:<line number>
 Matchers.tests.cpp:<line number>
       </failure>
     </testcase>
-    <testcase classname="<exe-name>.global" name="Copy and then generate a range" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="Copy and then generate a range/from var and iterators" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="Copy and then generate a range/From a temporary container" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="Copy and then generate a range/Final validation" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Custom exceptions can be translated when testing for nothrow" time="{duration}">
       <error message="throwCustom()" type="REQUIRE_NOTHROW">
 custom exception - not std

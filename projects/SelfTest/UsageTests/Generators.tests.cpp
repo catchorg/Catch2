@@ -214,8 +214,14 @@ TEST_CASE("Nested generators and captured variables", "[generators]") {
 }
 
 namespace {
+    size_t call_count = 0;
+    size_t test_count = 0;
     std::vector<int> make_data() {
         return { 1, 3, 5, 7, 9, 11 };
+    }
+    std::vector<int> make_data_counted() {
+        ++call_count;
+        return make_data();
     }
 }
 
@@ -225,13 +231,24 @@ namespace {
 #endif
 
 TEST_CASE("Copy and then generate a range", "[generators]") {
-    static auto data = make_data();
+    SECTION("from var and iterators") {
+        static auto data = make_data();
 
-    // It is important to notice that a generator is only initialized
-    // **once** per run. What this means is that modifying data will not
-    // modify the underlying generator.
-    auto elem = GENERATE_REF(from_range(data.begin(), data.end()));
-    REQUIRE(elem % 2 == 1);
+        // It is important to notice that a generator is only initialized
+        // **once** per run. What this means is that modifying data will not
+        // modify the underlying generator.
+        auto elem = GENERATE_REF(from_range(data.begin(), data.end()));
+        REQUIRE(elem % 2 == 1);
+    }
+    SECTION("From a temporary container") {
+        auto elem = GENERATE(from_range(make_data_counted()));
+        ++test_count;
+        REQUIRE(elem % 2 == 1);
+    }
+    SECTION("Final validation") {
+        REQUIRE(call_count == 1);
+        REQUIRE(make_data().size() == test_count);
+    }
 }
 
 #if defined(__clang__)

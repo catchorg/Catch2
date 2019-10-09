@@ -2409,6 +2409,7 @@ with expansion:
 
 -------------------------------------------------------------------------------
 Copy and then generate a range
+  from var and iterators
 -------------------------------------------------------------------------------
 Generators.tests.cpp:<line number>
 ...............................................................................
@@ -2420,6 +2421,7 @@ with expansion:
 
 -------------------------------------------------------------------------------
 Copy and then generate a range
+  from var and iterators
 -------------------------------------------------------------------------------
 Generators.tests.cpp:<line number>
 ...............................................................................
@@ -2431,6 +2433,7 @@ with expansion:
 
 -------------------------------------------------------------------------------
 Copy and then generate a range
+  from var and iterators
 -------------------------------------------------------------------------------
 Generators.tests.cpp:<line number>
 ...............................................................................
@@ -2442,6 +2445,7 @@ with expansion:
 
 -------------------------------------------------------------------------------
 Copy and then generate a range
+  from var and iterators
 -------------------------------------------------------------------------------
 Generators.tests.cpp:<line number>
 ...............................................................................
@@ -2453,6 +2457,7 @@ with expansion:
 
 -------------------------------------------------------------------------------
 Copy and then generate a range
+  from var and iterators
 -------------------------------------------------------------------------------
 Generators.tests.cpp:<line number>
 ...............................................................................
@@ -2464,6 +2469,7 @@ with expansion:
 
 -------------------------------------------------------------------------------
 Copy and then generate a range
+  from var and iterators
 -------------------------------------------------------------------------------
 Generators.tests.cpp:<line number>
 ...............................................................................
@@ -2472,6 +2478,95 @@ Generators.tests.cpp:<line number>: PASSED:
   REQUIRE( elem % 2 == 1 )
 with expansion:
   1 == 1
+
+-------------------------------------------------------------------------------
+Copy and then generate a range
+  From a temporary container
+-------------------------------------------------------------------------------
+Generators.tests.cpp:<line number>
+...............................................................................
+
+Generators.tests.cpp:<line number>: PASSED:
+  REQUIRE( elem % 2 == 1 )
+with expansion:
+  1 == 1
+
+-------------------------------------------------------------------------------
+Copy and then generate a range
+  From a temporary container
+-------------------------------------------------------------------------------
+Generators.tests.cpp:<line number>
+...............................................................................
+
+Generators.tests.cpp:<line number>: PASSED:
+  REQUIRE( elem % 2 == 1 )
+with expansion:
+  1 == 1
+
+-------------------------------------------------------------------------------
+Copy and then generate a range
+  From a temporary container
+-------------------------------------------------------------------------------
+Generators.tests.cpp:<line number>
+...............................................................................
+
+Generators.tests.cpp:<line number>: PASSED:
+  REQUIRE( elem % 2 == 1 )
+with expansion:
+  1 == 1
+
+-------------------------------------------------------------------------------
+Copy and then generate a range
+  From a temporary container
+-------------------------------------------------------------------------------
+Generators.tests.cpp:<line number>
+...............................................................................
+
+Generators.tests.cpp:<line number>: PASSED:
+  REQUIRE( elem % 2 == 1 )
+with expansion:
+  1 == 1
+
+-------------------------------------------------------------------------------
+Copy and then generate a range
+  From a temporary container
+-------------------------------------------------------------------------------
+Generators.tests.cpp:<line number>
+...............................................................................
+
+Generators.tests.cpp:<line number>: PASSED:
+  REQUIRE( elem % 2 == 1 )
+with expansion:
+  1 == 1
+
+-------------------------------------------------------------------------------
+Copy and then generate a range
+  From a temporary container
+-------------------------------------------------------------------------------
+Generators.tests.cpp:<line number>
+...............................................................................
+
+Generators.tests.cpp:<line number>: PASSED:
+  REQUIRE( elem % 2 == 1 )
+with expansion:
+  1 == 1
+
+-------------------------------------------------------------------------------
+Copy and then generate a range
+  Final validation
+-------------------------------------------------------------------------------
+Generators.tests.cpp:<line number>
+...............................................................................
+
+Generators.tests.cpp:<line number>: PASSED:
+  REQUIRE( call_count == 1 )
+with expansion:
+  1 == 1
+
+Generators.tests.cpp:<line number>: PASSED:
+  REQUIRE( make_data().size() == test_count )
+with expansion:
+  6 == 6
 
 -------------------------------------------------------------------------------
 Custom exceptions can be translated when testing for nothrow
@@ -12711,5 +12806,5 @@ Misc.tests.cpp:<line number>: PASSED:
 
 ===============================================================================
 test cases:  303 |  213 passed |  86 failed |  4 failed as expected
-assertions: 1606 | 1437 passed | 148 failed | 21 failed as expected
+assertions: 1614 | 1445 passed | 148 failed | 21 failed as expected
 
