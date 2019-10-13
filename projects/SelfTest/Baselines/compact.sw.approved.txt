@@ -395,10 +395,10 @@ Exception.tests.cpp:<line number>: passed: thisThrows(), StartsWith( "expected" 
 Exception.tests.cpp:<line number>: passed: thisThrows(), EndsWith( "exception" ) for: "expected exception" ends with: "exception"
 Exception.tests.cpp:<line number>: passed: thisThrows(), Contains( "except" ) for: "expected exception" contains: "except"
 Exception.tests.cpp:<line number>: passed: thisThrows(), Contains( "exCept", Catch::CaseSensitive::No ) for: "expected exception" contains: "except" (case insensitive)
-Matchers.tests.cpp:<line number>: passed: throwsDerivedException(), DerivedException, Message("DerivedException::what") for: DerivedException::what
-Matchers.tests.cpp:<line number>: passed: throwsDerivedException(), DerivedException, !Message("derivedexception::what") for: DerivedException::what not
-Matchers.tests.cpp:<line number>: passed: throwsSpecialException(2), SpecialException, !Message("DerivedException::what") for: SpecialException::what not
-Matchers.tests.cpp:<line number>: passed: throwsSpecialException(2), SpecialException, Message("SpecialException::what") for: SpecialException::what
+Matchers.tests.cpp:<line number>: passed: throwsDerivedException(), DerivedException, Message("DerivedException::what") for: DerivedException::what exception message matches "DerivedException::what"
+Matchers.tests.cpp:<line number>: passed: throwsDerivedException(), DerivedException, !Message("derivedexception::what") for: DerivedException::what not exception message matches "derivedexception::what"
+Matchers.tests.cpp:<line number>: passed: throwsSpecialException(2), SpecialException, !Message("DerivedException::what") for: SpecialException::what not exception message matches "DerivedException::what"
+Matchers.tests.cpp:<line number>: passed: throwsSpecialException(2), SpecialException, Message("SpecialException::what") for: SpecialException::what exception message matches "SpecialException::what"
 Exception.tests.cpp:<line number>: failed: unexpected exception with message: 'expected exception'; expression was: thisThrows(), std::string
 Exception.tests.cpp:<line number>: failed: expected exception, got none; expression was: thisDoesntThrow(), std::domain_error
 Exception.tests.cpp:<line number>: failed: unexpected exception with message: 'expected exception'; expression was: thisThrows()

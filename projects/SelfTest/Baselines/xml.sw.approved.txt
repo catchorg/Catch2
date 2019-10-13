@@ -3567,7 +3567,7 @@ Nor would this
           throwsDerivedException(), DerivedException, Message("DerivedException::what")
         </Original>
         <Expanded>
-          DerivedException::what
+          DerivedException::what exception message matches "DerivedException::what"
         </Expanded>
       </Expression>
       <Expression success="true" type="REQUIRE_THROWS_MATCHES" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
@@ -3575,7 +3575,7 @@ Nor would this
           throwsDerivedException(), DerivedException, !Message("derivedexception::what")
         </Original>
         <Expanded>
-          DerivedException::what not
+          DerivedException::what not exception message matches "derivedexception::what"
         </Expanded>
       </Expression>
       <Expression success="true" type="REQUIRE_THROWS_MATCHES" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
@@ -3583,7 +3583,7 @@ Nor would this
           throwsSpecialException(2), SpecialException, !Message("DerivedException::what")
         </Original>
         <Expanded>
-          SpecialException::what not
+          SpecialException::what not exception message matches "DerivedException::what"
         </Expanded>
       </Expression>
       <Expression success="true" type="REQUIRE_THROWS_MATCHES" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
@@ -3591,7 +3591,7 @@ Nor would this
           throwsSpecialException(2), SpecialException, Message("SpecialException::what")
         </Original>
         <Expanded>
-          SpecialException::what
+          SpecialException::what exception message matches "SpecialException::what"
         </Expanded>
       </Expression>
       <OverallResult success="true"/>

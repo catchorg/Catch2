@@ -3015,22 +3015,22 @@ Matchers.tests.cpp:<line number>
 Matchers.tests.cpp:<line number>: PASSED:
   REQUIRE_THROWS_MATCHES( throwsDerivedException(), DerivedException, Message("DerivedException::what") )
 with expansion:
-  DerivedException::what
+  DerivedException::what exception message matches "DerivedException::what"
 
 Matchers.tests.cpp:<line number>: PASSED:
   REQUIRE_THROWS_MATCHES( throwsDerivedException(), DerivedException, !Message("derivedexception::what") )
 with expansion:
-  DerivedException::what not
+  DerivedException::what not exception message matches "derivedexception::what"
 
 Matchers.tests.cpp:<line number>: PASSED:
   REQUIRE_THROWS_MATCHES( throwsSpecialException(2), SpecialException, !Message("DerivedException::what") )
 with expansion:
-  SpecialException::what not
+  SpecialException::what not exception message matches "DerivedException::what"
 
 Matchers.tests.cpp:<line number>: PASSED:
   REQUIRE_THROWS_MATCHES( throwsSpecialException(2), SpecialException, Message("SpecialException::what") )
 with expansion:
-  SpecialException::what
+  SpecialException::what exception message matches "SpecialException::what"
 
 -------------------------------------------------------------------------------
 Expected exceptions that don't throw or unexpected exceptions fail the test
