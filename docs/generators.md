@@ -54,7 +54,7 @@ a test case,
 
 > `ChunkGenerator<T>`, `RandomIntegerGenerator<Integral>`, `RandomFloatGenerator<Float>` and `RangeGenerator<T>` were introduced in Catch 2.7.0.
 
-> `IteratorGenerator<T>` was introduced in Catch X.Y.Z.
+> `IteratorGenerator<T>` was introduced in Catch 2.10.0.
 
 The generators also have associated helper functions that infer their
 type, making their usage much nicer. These are
@@ -76,7 +76,7 @@ type, making their usage much nicer. These are
 
 > `chunk()`, `random()` and both `range()` functions were introduced in Catch 2.7.0.
 
-> `from_range` has been introduced in Catch X.Y.Z
+> `from_range` has been introduced in Catch 2.10.0
 
 And can be used as shown in the example below to create a generator
 that returns 100 odd random number:

@@ -90,7 +90,7 @@ the helpers for this matcher, `WithinRel(double target, double margin)`,
 `WithinRel(float target)`. The latter two provide a default epsilon of
 machine epsilon * 100.
 
-> `WithinRel` matcher was introduced in Catch X.Y.Z
+> `WithinRel` matcher was introduced in Catch 2.10.0
 
 ### Generic matchers
 Catch also aims to provide a set of generic matchers. Currently this set
@@ -120,7 +120,7 @@ is `ExceptionMessageMatcher`, and we also provide a helper function
 The matched exception must publicly derive from `std::exception` and
 the message matching is done _exactly_, including case.
 
-> `ExceptionMessageMatcher` was introduced in Catch X.Y.Z
+> `ExceptionMessageMatcher` was introduced in Catch 2.10.0
 
 Example use:
 ```cpp

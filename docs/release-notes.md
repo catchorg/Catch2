@@ -2,6 +2,7 @@
 
 # Release notes
 **Contents**<br>
+[2.10.0](#2100)<br>
 [2.9.2](#292)<br>
 [2.9.1](#291)<br>
 [2.9.0](#290)<br>
@@ -26,6 +27,50 @@
 [2.0.1](#201)<br>
 [Older versions](#older-versions)<br>
 [Even Older versions](#even-older-versions)<br>
+
+
+
+## 2.10.0
+
+### Fixes
+* `TEMPLATE_LIST_TEST_CASE` now properly handles non-copyable and non-movable types (#1729)
+* Fixed compilation error on Solaris caused by a system header defining macro `TT` (#1722, #1723)
+* `REGISTER_ENUM` will now fail at compilation time if the registered enum is too large
+* Removed use of `std::is_same_v` in C++17 mode (#1757)
+* Fixed parsing of escaped special characters when reading test specs from a file (#1767, #1769)
+
+
+### Improvements
+* Trailing and leading whitespace in test/section specs are now ignored.
+* Writing to Android debug log now uses `__android_log_write` instead of `__android_log_print`
+* Android logging support can now be turned on/off at compile time (#1743)
+  * The toggle is `CATCH_CONFIG_ANDROID_LOGWRITE`
+* Added a generator that returns elements of a range
+  * Use via `from_range(from, to)` or `from_range(container)`
+* Added support for CRTs that do not provide `std::nextafter` (#1739)
+  * They must still provide global `nextafter{f,l,}`
+  * Enabled via `CATCH_CONFIG_GLOBAL_NEXTAFTER`
+* Special cased `Approx(inf)` not to match non-infinite values
+  * Very strictly speaking this might be a breaking change, but it should match user expectations better
+* The output of benchmarking through the Console reporter when `--benchmark-no-analysis` is set is now much simpler (#1768)
+* Added a matcher that can be used for checking an exceptions message (#1649, #1728)
+  * The matcher helper function is called `Message`
+  * The exception must publicly derive from `std::exception`
+  * The matching is done exactly, including case and whitespace
+* Added a matcher that can be used for checking relative equality of floating point numbers (#1746)
+  * Unlike `Approx`, it considers both sides when determining the allowed margin
+  * Special cases `NaN` and `INFINITY` to match user expectations
+  * The matcher helper function is called `WithinRel`
+* The ULP matcher now allows for any possible distance between the two numbers
+* The random number generators now use Catch-global instance of RNG (#1734, #1736)
+  * This means that nested random number generators actually generate different numbers
+
+
+### Miscellaneous
+* In-repo PNGs have been optimized to lower overhead of using Catch2 via git clone
+* Catch2 now uses its own implementation of the URBG concept
+  * In the future we also plan to use our own implementation of the distributions from `<random>` to provide cross-platform repeatability of random results
+
 
 
 ## 2.9.2
