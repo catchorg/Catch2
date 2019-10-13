@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuitesloose text artifact
 >
-  <testsuite name="<exe-name>" errors="17" failures="132" tests="1633" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
+  <testsuite name="<exe-name>" errors="17" failures="132" tests="1637" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
     <properties>
       <property name="filters" value="~[!nonportable]~[!benchmark]~[approvals]"/>
       <property name="random-seed" value="1"/>
@@ -371,6 +371,7 @@ Matchers.tests.cpp:<line number>
     <testcase classname="<exe-name>.global" name="Exception messages can be tested for/exact match" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Exception messages can be tested for/different case" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Exception messages can be tested for/wildcarded" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="Exceptions matchers" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Expected exceptions that don't throw or unexpected exceptions fail the test" time="{duration}">
       <error message="thisThrows(), std::string" type="CHECK_THROWS_AS">
 expected exception

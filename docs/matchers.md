@@ -81,6 +81,22 @@ The second argument is an optional description of the predicate, and is
 used only during reporting of the result.
 
 
+### Exception matchers
+Catch2 also provides an exception matcher that can be used to verify
+that an exception's message exactly matches desired string. The matcher
+is `ExceptionMessageMatcher`, and we also provide a helper function
+`Message`.
+
+The matched exception must publicly derive from `std::exception` and
+the message matching is done _exactly_, including case.
+
+> `ExceptionMessageMatcher` was introduced in Catch X.Y.Z
+
+Example use:
+```cpp
+REQUIRE_THROWS_MATCHES(throwsDerivedException(),  DerivedException,  Message("DerivedException::what"));
+```
+
 ## Custom matchers
 It's easy to provide your own matchers to extend Catch or just to work with your own types.
 

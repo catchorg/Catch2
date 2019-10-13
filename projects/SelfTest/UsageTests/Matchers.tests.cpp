@@ -52,16 +52,27 @@ namespace { namespace MatchersTests {
         int i;
     };
 
+    struct DerivedException : std::exception {
+        char const* what() const noexcept override {
+            return "DerivedException::what";
+        }
+    };
+
     void doesNotThrow() {}
 
     [[noreturn]]
-    void throws(int i) {
+    void throwsSpecialException(int i) {
         throw SpecialException{i};
     }
 
     [[noreturn]]
     void throwsAsInt(int i) {
         throw i;
+    }
+
+    [[noreturn]]
+    void throwsDerivedException() {
+        throw DerivedException{};
     }
 
     class ExceptionMatcher : public Catch::MatcherBase<SpecialException> {
@@ -319,8 +330,8 @@ namespace { namespace MatchersTests {
         }
 
         TEST_CASE("Exception matchers that succeed", "[matchers][exceptions][!throws]") {
-            CHECK_THROWS_MATCHES(throws(1), SpecialException, ExceptionMatcher{1});
-            REQUIRE_THROWS_MATCHES(throws(2), SpecialException, ExceptionMatcher{2});
+            CHECK_THROWS_MATCHES(throwsSpecialException(1), SpecialException, ExceptionMatcher{1});
+            REQUIRE_THROWS_MATCHES(throwsSpecialException(2), SpecialException, ExceptionMatcher{2});
         }
 
         TEST_CASE("Exception matchers that fail", "[matchers][exceptions][!throws][.failing]") {
@@ -333,8 +344,8 @@ namespace { namespace MatchersTests {
                 REQUIRE_THROWS_MATCHES(throwsAsInt(1), SpecialException, ExceptionMatcher{1});
             }
             SECTION("Contents are wrong") {
-                CHECK_THROWS_MATCHES(throws(3), SpecialException, ExceptionMatcher{1});
-                REQUIRE_THROWS_MATCHES(throws(4), SpecialException, ExceptionMatcher{1});
+                CHECK_THROWS_MATCHES(throwsSpecialException(3), SpecialException, ExceptionMatcher{1});
+                REQUIRE_THROWS_MATCHES(throwsSpecialException(4), SpecialException, ExceptionMatcher{1});
             }
         }
 
@@ -531,6 +542,13 @@ namespace { namespace MatchersTests {
                 std::vector<double> v1({2., 4., 6.}), v2({1., 3., 5.});
                 CHECK_THAT(v1, Approx(v2));
             }
+        }
+
+        TEST_CASE("Exceptions matchers", "[matchers][exceptions][!throws]") {
+            REQUIRE_THROWS_MATCHES(throwsDerivedException(),  DerivedException,  Message("DerivedException::what"));
+            REQUIRE_THROWS_MATCHES(throwsDerivedException(),  DerivedException, !Message("derivedexception::what"));
+            REQUIRE_THROWS_MATCHES(throwsSpecialException(2), SpecialException, !Message("DerivedException::what"));
+            REQUIRE_THROWS_MATCHES(throwsSpecialException(2), SpecialException,  Message("SpecialException::what"));
         }
 
 } } // namespace MatchersTests

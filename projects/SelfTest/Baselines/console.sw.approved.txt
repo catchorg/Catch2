@@ -2930,12 +2930,12 @@ Matchers.tests.cpp:<line number>
 ...............................................................................
 
 Matchers.tests.cpp:<line number>: FAILED:
-  CHECK_THROWS_MATCHES( throws(3), SpecialException, ExceptionMatcher{1} )
+  CHECK_THROWS_MATCHES( throwsSpecialException(3), SpecialException, ExceptionMatcher{1} )
 with expansion:
   SpecialException::what special exception has value of 1
 
 Matchers.tests.cpp:<line number>: FAILED:
-  REQUIRE_THROWS_MATCHES( throws(4), SpecialException, ExceptionMatcher{1} )
+  REQUIRE_THROWS_MATCHES( throwsSpecialException(4), SpecialException, ExceptionMatcher{1} )
 with expansion:
   SpecialException::what special exception has value of 1
 
@@ -2946,12 +2946,12 @@ Matchers.tests.cpp:<line number>
 ...............................................................................
 
 Matchers.tests.cpp:<line number>: PASSED:
-  CHECK_THROWS_MATCHES( throws(1), SpecialException, ExceptionMatcher{1} )
+  CHECK_THROWS_MATCHES( throwsSpecialException(1), SpecialException, ExceptionMatcher{1} )
 with expansion:
   SpecialException::what special exception has value of 1
 
 Matchers.tests.cpp:<line number>: PASSED:
-  REQUIRE_THROWS_MATCHES( throws(2), SpecialException, ExceptionMatcher{2} )
+  REQUIRE_THROWS_MATCHES( throwsSpecialException(2), SpecialException, ExceptionMatcher{2} )
 with expansion:
   SpecialException::what special exception has value of 2
 
@@ -3005,6 +3005,32 @@ Exception.tests.cpp:<line number>: PASSED:
   REQUIRE_THROWS_WITH( thisThrows(), Contains( "exCept", Catch::CaseSensitive::No ) )
 with expansion:
   "expected exception" contains: "except" (case insensitive)
+
+-------------------------------------------------------------------------------
+Exceptions matchers
+-------------------------------------------------------------------------------
+Matchers.tests.cpp:<line number>
+...............................................................................
+
+Matchers.tests.cpp:<line number>: PASSED:
+  REQUIRE_THROWS_MATCHES( throwsDerivedException(), DerivedException, Message("DerivedException::what") )
+with expansion:
+  DerivedException::what
+
+Matchers.tests.cpp:<line number>: PASSED:
+  REQUIRE_THROWS_MATCHES( throwsDerivedException(), DerivedException, !Message("derivedexception::what") )
+with expansion:
+  DerivedException::what not
+
+Matchers.tests.cpp:<line number>: PASSED:
+  REQUIRE_THROWS_MATCHES( throwsSpecialException(2), SpecialException, !Message("DerivedException::what") )
+with expansion:
+  SpecialException::what not
+
+Matchers.tests.cpp:<line number>: PASSED:
+  REQUIRE_THROWS_MATCHES( throwsSpecialException(2), SpecialException, Message("SpecialException::what") )
+with expansion:
+  SpecialException::what
 
 -------------------------------------------------------------------------------
 Expected exceptions that don't throw or unexpected exceptions fail the test
@@ -12913,6 +12939,6 @@ Misc.tests.cpp:<line number>
 Misc.tests.cpp:<line number>: PASSED:
 
 ===============================================================================
-test cases:  303 |  213 passed |  86 failed |  4 failed as expected
-assertions: 1632 | 1463 passed | 148 failed | 21 failed as expected
+test cases:  304 |  214 passed |  86 failed |  4 failed as expected
+assertions: 1636 | 1467 passed | 148 failed | 21 failed as expected
 

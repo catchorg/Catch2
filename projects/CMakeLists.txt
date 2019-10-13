@@ -151,6 +151,7 @@ set(INTERNAL_HEADERS
         ${HEADER_DIR}/internal/catch_leak_detector.h
         ${HEADER_DIR}/internal/catch_list.h
         ${HEADER_DIR}/internal/catch_matchers.h
+        ${HEADER_DIR}/internal/catch_matchers_exception.hpp
         ${HEADER_DIR}/internal/catch_matchers_floating.h
         ${HEADER_DIR}/internal/catch_matchers_generic.hpp
         ${HEADER_DIR}/internal/catch_matchers_string.h
@@ -229,6 +230,7 @@ set(IMPL_SOURCES
         ${HEADER_DIR}/internal/catch_list.cpp
         ${HEADER_DIR}/internal/catch_leak_detector.cpp
         ${HEADER_DIR}/internal/catch_matchers.cpp
+        ${HEADER_DIR}/internal/catch_matchers_exception.cpp
         ${HEADER_DIR}/internal/catch_matchers_floating.cpp
         ${HEADER_DIR}/internal/catch_matchers_generic.cpp
         ${HEADER_DIR}/internal/catch_matchers_string.cpp

@@ -520,12 +520,12 @@ Matchers.tests.cpp:<line number>
 ...............................................................................
 
 Matchers.tests.cpp:<line number>: FAILED:
-  CHECK_THROWS_MATCHES( throws(3), SpecialException, ExceptionMatcher{1} )
+  CHECK_THROWS_MATCHES( throwsSpecialException(3), SpecialException, ExceptionMatcher{1} )
 with expansion:
   SpecialException::what special exception has value of 1
 
 Matchers.tests.cpp:<line number>: FAILED:
-  REQUIRE_THROWS_MATCHES( throws(4), SpecialException, ExceptionMatcher{1} )
+  REQUIRE_THROWS_MATCHES( throwsSpecialException(4), SpecialException, ExceptionMatcher{1} )
 with expansion:
   SpecialException::what special exception has value of 1
 
@@ -1380,6 +1380,6 @@ due to unexpected exception with message:
   Why would you throw a std::string?
 
 ===============================================================================
-test cases:  303 |  229 passed |  70 failed |  4 failed as expected
-assertions: 1615 | 1463 passed | 131 failed | 21 failed as expected
+test cases:  304 |  230 passed |  70 failed |  4 failed as expected
+assertions: 1619 | 1467 passed | 131 failed | 21 failed as expected
 

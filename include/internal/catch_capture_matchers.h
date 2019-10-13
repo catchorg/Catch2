@@ -10,6 +10,7 @@
 
 #include "catch_capture.hpp"
 #include "catch_matchers.h"
+#include "catch_matchers_exception.hpp"
 #include "catch_matchers_floating.h"
 #include "catch_matchers_generic.hpp"
 #include "catch_matchers_string.h"

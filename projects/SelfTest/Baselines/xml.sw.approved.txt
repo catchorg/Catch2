@@ -3464,7 +3464,7 @@ Nor would this
       <Section name="Contents are wrong" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
         <Expression success="false" type="CHECK_THROWS_MATCHES" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
           <Original>
-            throws(3), SpecialException, ExceptionMatcher{1}
+            throwsSpecialException(3), SpecialException, ExceptionMatcher{1}
           </Original>
           <Expanded>
             SpecialException::what special exception has value of 1
@@ -3472,7 +3472,7 @@ Nor would this
         </Expression>
         <Expression success="false" type="REQUIRE_THROWS_MATCHES" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
           <Original>
-            throws(4), SpecialException, ExceptionMatcher{1}
+            throwsSpecialException(4), SpecialException, ExceptionMatcher{1}
           </Original>
           <Expanded>
             SpecialException::what special exception has value of 1
@@ -3485,7 +3485,7 @@ Nor would this
     <TestCase name="Exception matchers that succeed" tags="[!throws][exceptions][matchers]" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
       <Expression success="true" type="CHECK_THROWS_MATCHES" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
         <Original>
-          throws(1), SpecialException, ExceptionMatcher{1}
+          throwsSpecialException(1), SpecialException, ExceptionMatcher{1}
         </Original>
         <Expanded>
           SpecialException::what special exception has value of 1
@@ -3493,7 +3493,7 @@ Nor would this
       </Expression>
       <Expression success="true" type="REQUIRE_THROWS_MATCHES" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
         <Original>
-          throws(2), SpecialException, ExceptionMatcher{2}
+          throwsSpecialException(2), SpecialException, ExceptionMatcher{2}
         </Original>
         <Expanded>
           SpecialException::what special exception has value of 2
@@ -3559,6 +3559,41 @@ Nor would this
         </Expression>
         <OverallResults successes="4" failures="0" expectedFailures="0"/>
       </Section>
+      <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="Exceptions matchers" tags="[!throws][exceptions][matchers]" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
+      <Expression success="true" type="REQUIRE_THROWS_MATCHES" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
+        <Original>
+          throwsDerivedException(), DerivedException, Message("DerivedException::what")
+        </Original>
+        <Expanded>
+          DerivedException::what
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE_THROWS_MATCHES" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
+        <Original>
+          throwsDerivedException(), DerivedException, !Message("derivedexception::what")
+        </Original>
+        <Expanded>
+          DerivedException::what not
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE_THROWS_MATCHES" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
+        <Original>
+          throwsSpecialException(2), SpecialException, !Message("DerivedException::what")
+        </Original>
+        <Expanded>
+          SpecialException::what not
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE_THROWS_MATCHES" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
+        <Original>
+          throwsSpecialException(2), SpecialException, Message("SpecialException::what")
+        </Original>
+        <Expanded>
+          SpecialException::what
+        </Expanded>
+      </Expression>
       <OverallResult success="true"/>
     </TestCase>
     <TestCase name="Expected exceptions that don't throw or unexpected exceptions fail the test" tags="[!throws][.][failing]" filename="projects/<exe-name>/UsageTests/Exception.tests.cpp" >
@@ -15376,7 +15411,7 @@ loose text artifact
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="1463" failures="149" expectedFailures="21"/>
+    <OverallResults successes="1467" failures="149" expectedFailures="21"/>
   </Group>
-  <OverallResults successes="1463" failures="148" expectedFailures="21"/>
+  <OverallResults successes="1467" failures="148" expectedFailures="21"/>
 </Catch>
