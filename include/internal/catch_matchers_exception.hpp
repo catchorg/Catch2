@@ -9,9 +9,6 @@
 
 #include "catch_matchers.h"
 
-#include <functional>
-#include <string>
-
 namespace Catch {
 namespace Matchers {
 namespace Exception {
