@@ -3657,6 +3657,52 @@ Nor would this
       <OverallResult success="true"/>
     </TestCase>
     <TestCase name="Floating point matchers: double" tags="[floating-point][matchers]" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
+      <Section name="Relative" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
+        <Expression success="true" type="REQUIRE_THAT" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
+          <Original>
+            10., WithinRel(11.1, 0.1)
+          </Original>
+          <Expanded>
+            10.0 and 11.1 are within 10% of each other
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE_THAT" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
+          <Original>
+            10., !WithinRel(11.2, 0.1)
+          </Original>
+          <Expanded>
+            10.0 not and 11.2 are within 10% of each other
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE_THAT" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
+          <Original>
+            1., !WithinRel(0., 0.99)
+          </Original>
+          <Expanded>
+            1.0 not and 0 are within 99% of each other
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE_THAT" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
+          <Original>
+            -0., WithinRel(0.)
+          </Original>
+          <Expanded>
+            -0.0 and 0 are within 2.22045e-12% of each other
+          </Expanded>
+        </Expression>
+        <Section name="Some subnormal values" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
+          <Expression success="true" type="REQUIRE_THAT" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
+            <Original>
+              v1, WithinRel(v2)
+            </Original>
+            <Expanded>
+              0.0 and 2.22507e-308 are within 2.22045e-12% of each other
+            </Expanded>
+          </Expression>
+          <OverallResults successes="1" failures="0" expectedFailures="0"/>
+        </Section>
+        <OverallResults successes="5" failures="0" expectedFailures="0"/>
+      </Section>
       <Section name="Margin" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
         <Expression success="true" type="REQUIRE_THAT" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
           <Original>
@@ -3792,7 +3838,15 @@ Nor would this
             1.0 ( is within 0.5 of 2.0 or is within 0 ULPs of 1.0 ([1.00000000000000000, 1.00000000000000000]) )
           </Expanded>
         </Expression>
-        <OverallResults successes="2" failures="0" expectedFailures="0"/>
+        <Expression success="true" type="REQUIRE_THAT" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
+          <Original>
+            0.0001, WithinAbs(0., 0.001) || WithinRel(0., 0.1)
+          </Original>
+          <Expanded>
+            0.0001 ( is within 0.001 of 0.0 or and 0 are within 10% of each other )
+          </Expanded>
+        </Expression>
+        <OverallResults successes="3" failures="0" expectedFailures="0"/>
       </Section>
       <Section name="Constructor validation" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
         <Expression success="true" type="REQUIRE_NOTHROW" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
@@ -3819,11 +3873,81 @@ Nor would this
             WithinULP(1., 0)
           </Expanded>
         </Expression>
-        <OverallResults successes="3" failures="0" expectedFailures="0"/>
+        <Expression success="true" type="REQUIRE_NOTHROW" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
+          <Original>
+            WithinRel(1., 0.)
+          </Original>
+          <Expanded>
+            WithinRel(1., 0.)
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE_THROWS_AS" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
+          <Original>
+            WithinRel(1., -0.2), std::domain_error
+          </Original>
+          <Expanded>
+            WithinRel(1., -0.2), std::domain_error
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE_THROWS_AS" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
+          <Original>
+            WithinRel(1., 1.), std::domain_error
+          </Original>
+          <Expanded>
+            WithinRel(1., 1.), std::domain_error
+          </Expanded>
+        </Expression>
+        <OverallResults successes="6" failures="0" expectedFailures="0"/>
       </Section>
       <OverallResult success="true"/>
     </TestCase>
     <TestCase name="Floating point matchers: float" tags="[floating-point][matchers]" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
+      <Section name="Relative" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
+        <Expression success="true" type="REQUIRE_THAT" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
+          <Original>
+            10.f, WithinRel(11.1f, 0.1f)
+          </Original>
+          <Expanded>
+            10.0f and 11.1 are within 10% of each other
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE_THAT" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
+          <Original>
+            10.f, !WithinRel(11.2f, 0.1f)
+          </Original>
+          <Expanded>
+            10.0f not and 11.2 are within 10% of each other
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE_THAT" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
+          <Original>
+            1.f, !WithinRel(0.f, 0.99f)
+          </Original>
+          <Expanded>
+            1.0f not and 0 are within 99% of each other
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE_THAT" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
+          <Original>
+            -0.f, WithinRel(0.f)
+          </Original>
+          <Expanded>
+            -0.0f and 0 are within 0.00119209% of each other
+          </Expanded>
+        </Expression>
+        <Section name="Some subnormal values" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
+          <Expression success="true" type="REQUIRE_THAT" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
+            <Original>
+              v1, WithinRel(v2)
+            </Original>
+            <Expanded>
+              0.0f and 1.17549e-38 are within 0.00119209% of each other
+            </Expanded>
+          </Expression>
+          <OverallResults successes="1" failures="0" expectedFailures="0"/>
+        </Section>
+        <OverallResults successes="5" failures="0" expectedFailures="0"/>
+      </Section>
       <Section name="Margin" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
         <Expression success="true" type="REQUIRE_THAT" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
           <Original>
@@ -3967,7 +4091,15 @@ Nor would this
             1.0f ( is within 0.5 of 2.0 or is within 0 ULPs of 1.0f ([1.00000000000000000, 1.00000000000000000]) )
           </Expanded>
         </Expression>
-        <OverallResults successes="2" failures="0" expectedFailures="0"/>
+        <Expression success="true" type="REQUIRE_THAT" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
+          <Original>
+            0.0001f, WithinAbs(0.f, 0.001f) || WithinRel(0.f, 0.1f)
+          </Original>
+          <Expanded>
+            0.0001f ( is within 0.001 of 0.0 or and 0 are within 10% of each other )
+          </Expanded>
+        </Expression>
+        <OverallResults successes="3" failures="0" expectedFailures="0"/>
       </Section>
       <Section name="Constructor validation" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
         <Expression success="true" type="REQUIRE_NOTHROW" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
@@ -4002,7 +4134,31 @@ Nor would this
             WithinULP(1.f, static_cast&lt;uint64_t>(-1)), std::domain_error
           </Expanded>
         </Expression>
-        <OverallResults successes="4" failures="0" expectedFailures="0"/>
+        <Expression success="true" type="REQUIRE_NOTHROW" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
+          <Original>
+            WithinRel(1.f, 0.f)
+          </Original>
+          <Expanded>
+            WithinRel(1.f, 0.f)
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE_THROWS_AS" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
+          <Original>
+            WithinRel(1.f, -0.2f), std::domain_error
+          </Original>
+          <Expanded>
+            WithinRel(1.f, -0.2f), std::domain_error
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE_THROWS_AS" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
+          <Original>
+            WithinRel(1.f, 1.f), std::domain_error
+          </Original>
+          <Expanded>
+            WithinRel(1.f, 1.f), std::domain_error
+          </Expanded>
+        </Expression>
+        <OverallResults successes="7" failures="0" expectedFailures="0"/>
       </Section>
       <OverallResult success="true"/>
     </TestCase>
@@ -15220,7 +15376,7 @@ loose text artifact
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="1445" failures="149" expectedFailures="21"/>
+    <OverallResults successes="1463" failures="149" expectedFailures="21"/>
   </Group>
-  <OverallResults successes="1445" failures="148" expectedFailures="21"/>
+  <OverallResults successes="1463" failures="148" expectedFailures="21"/>
 </Catch>

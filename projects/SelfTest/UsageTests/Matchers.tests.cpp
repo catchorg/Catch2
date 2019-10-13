@@ -339,6 +339,20 @@ namespace { namespace MatchersTests {
         }
 
         TEST_CASE("Floating point matchers: float", "[matchers][floating-point]") {
+            SECTION("Relative") {
+                REQUIRE_THAT(10.f,  WithinRel(11.1f, 0.1f));
+                REQUIRE_THAT(10.f, !WithinRel(11.2f, 0.1f));
+                REQUIRE_THAT( 1.f, !WithinRel(0.f, 0.99f));
+                REQUIRE_THAT(-0.f,  WithinRel(0.f));
+                SECTION("Some subnormal values") {
+                    auto v1 = std::numeric_limits<float>::min();
+                    auto v2 = v1;
+                    for (int i = 0; i < 5; ++i) {
+                        v2 = std::nextafter(v1, 0);
+                    }
+                    REQUIRE_THAT(v1, WithinRel(v2));
+                }
+            }
             SECTION("Margin") {
                 REQUIRE_THAT(1.f, WithinAbs(1.f, 0));
                 REQUIRE_THAT(0.f, WithinAbs(1.f, 1));
@@ -366,6 +380,7 @@ namespace { namespace MatchersTests {
             SECTION("Composed") {
                 REQUIRE_THAT(1.f, WithinAbs(1.f, 0.5) || WithinULP(1.f, 1));
                 REQUIRE_THAT(1.f, WithinAbs(2.f, 0.5) || WithinULP(1.f, 0));
+                REQUIRE_THAT(0.0001f, WithinAbs(0.f, 0.001f) || WithinRel(0.f, 0.1f));
             }
             SECTION("Constructor validation") {
                 REQUIRE_NOTHROW(WithinAbs(1.f, 0.f));
@@ -373,10 +388,28 @@ namespace { namespace MatchersTests {
 
                 REQUIRE_NOTHROW(WithinULP(1.f, 0));
                 REQUIRE_THROWS_AS(WithinULP(1.f, static_cast<uint64_t>(-1)), std::domain_error);
+
+                REQUIRE_NOTHROW(WithinRel(1.f, 0.f));
+                REQUIRE_THROWS_AS(WithinRel(1.f, -0.2f), std::domain_error);
+                REQUIRE_THROWS_AS(WithinRel(1.f, 1.f), std::domain_error);
             }
         }
 
         TEST_CASE("Floating point matchers: double", "[matchers][floating-point]") {
+            SECTION("Relative") {
+                REQUIRE_THAT(10., WithinRel(11.1, 0.1));
+                REQUIRE_THAT(10., !WithinRel(11.2, 0.1));
+                REQUIRE_THAT(1., !WithinRel(0., 0.99));
+                REQUIRE_THAT(-0., WithinRel(0.));
+                SECTION("Some subnormal values") {
+                    auto v1 = std::numeric_limits<double>::min();
+                    auto v2 = v1;
+                    for (int i = 0; i < 5; ++i) {
+                        v2 = std::nextafter(v1, 0);
+                    }
+                    REQUIRE_THAT(v1, WithinRel(v2));
+                }
+            }
             SECTION("Margin") {
                 REQUIRE_THAT(1., WithinAbs(1., 0));
                 REQUIRE_THAT(0., WithinAbs(1., 1));
@@ -402,12 +435,17 @@ namespace { namespace MatchersTests {
             SECTION("Composed") {
                 REQUIRE_THAT(1., WithinAbs(1., 0.5) || WithinULP(2., 1));
                 REQUIRE_THAT(1., WithinAbs(2., 0.5) || WithinULP(1., 0));
+                REQUIRE_THAT(0.0001, WithinAbs(0., 0.001) || WithinRel(0., 0.1));
             }
             SECTION("Constructor validation") {
                 REQUIRE_NOTHROW(WithinAbs(1., 0.));
                 REQUIRE_THROWS_AS(WithinAbs(1., -1.), std::domain_error);
 
                 REQUIRE_NOTHROW(WithinULP(1., 0));
+
+                REQUIRE_NOTHROW(WithinRel(1., 0.));
+                REQUIRE_THROWS_AS(WithinRel(1., -0.2), std::domain_error);
+                REQUIRE_THROWS_AS(WithinRel(1., 1.), std::domain_error);
             }
         }
 
@@ -415,6 +453,13 @@ namespace { namespace MatchersTests {
             REQUIRE_THAT(NAN, !WithinAbs(NAN, 0));
             REQUIRE_THAT(NAN, !(WithinAbs(NAN, 100) || WithinULP(NAN, 123)));
             REQUIRE_THAT(NAN, !WithinULP(NAN, 123));
+            REQUIRE_THAT(INFINITY, WithinRel(INFINITY));
+            REQUIRE_THAT(-INFINITY, !WithinRel(INFINITY));
+            REQUIRE_THAT(1., !WithinRel(INFINITY));
+            REQUIRE_THAT(INFINITY, !WithinRel(1.));
+            REQUIRE_THAT(NAN, !WithinRel(NAN));
+            REQUIRE_THAT(1., !WithinRel(NAN));
+            REQUIRE_THAT(NAN, !WithinRel(1.));
         }
 
         TEST_CASE("Arbitrary predicate matcher", "[matchers][generic]") {

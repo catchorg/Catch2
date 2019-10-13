@@ -11,6 +11,7 @@
 #include "catch_to_string.hpp"
 #include "catch_tostring.h"
 
+#include <algorithm>
 #include <cmath>
 #include <cstdlib>
 #include <cstdint>
@@ -57,7 +58,8 @@ namespace {
         auto ulpDiff = std::abs(lc - rc);
         return static_cast<uint64_t>(ulpDiff) <= maxUlpDiff;
     }
-}
+
+} //end anonymous namespace
 
 #if defined(CATCH_CONFIG_GLOBAL_NEXTAFTER)
 
@@ -98,6 +100,17 @@ FP step(FP start, FP direction, uint64_t steps) {
     }
     return start;
 }
+
+namespace {
+
+    // Performs equivalent check of std::fabs(lhs - rhs) <= margin
+    // But without the subtraction to allow for INFINITY in comparison
+    bool marginComparison(double lhs, double rhs, double margin) {
+        return (lhs + margin >= rhs) && (rhs + margin >= lhs);
+    }
+
+}
+
 } // end anonymous namespace
 
 namespace Matchers {
@@ -180,6 +193,25 @@ namespace Floating {
         //return "is within " + Catch::to_string(m_ulps) + " ULPs of " + ::Catch::Detail::stringify(m_target) + ((m_type == FloatingPointKind::Float)? "f" : "");
     }
 
+    WithinRelMatcher::WithinRelMatcher(double target, double epsilon):
+        m_target(target),
+        m_epsilon(epsilon){
+        CATCH_ENFORCE(m_epsilon >= 0., "Relative comparison with epsilon <  0 does not make sense.");
+        CATCH_ENFORCE(m_epsilon  < 1., "Relative comparison with epsilon >= 1 does not make sense.");
+    }
+
+    bool WithinRelMatcher::match(double const& matchee) const {
+        const auto relMargin = m_epsilon * std::max(std::fabs(matchee), std::fabs(m_target));
+        return marginComparison(matchee, m_target,
+                                std::isinf(relMargin)? 0 : relMargin);
+    }
+
+    std::string WithinRelMatcher::describe() const {
+        Catch::ReusableStringStream sstr;
+        sstr << "and " << m_target << " are within " << m_epsilon * 100. << "% of each other";
+        return sstr.str();
+    }
+
 }// namespace Floating
 
 
@@ -195,6 +227,23 @@ Floating::WithinUlpsMatcher WithinULP(float target, uint64_t maxUlpDiff) {
 Floating::WithinAbsMatcher WithinAbs(double target, double margin) {
     return Floating::WithinAbsMatcher(target, margin);
 }
+
+Floating::WithinRelMatcher WithinRel(double target, double eps) {
+    return Floating::WithinRelMatcher(target, eps);
+}
+
+Floating::WithinRelMatcher WithinRel(double target) {
+    return Floating::WithinRelMatcher(target, std::numeric_limits<double>::epsilon() * 100);
+}
+
+Floating::WithinRelMatcher WithinRel(float target, float eps) {
+    return Floating::WithinRelMatcher(target, eps);
+}
+
+Floating::WithinRelMatcher WithinRel(float target) {
+    return Floating::WithinRelMatcher(target, std::numeric_limits<float>::epsilon() * 100);
+}
+
 
 } // namespace Matchers
 } // namespace Catch

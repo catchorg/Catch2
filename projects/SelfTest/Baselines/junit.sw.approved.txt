@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuitesloose text artifact
 >
-  <testsuite name="<exe-name>" errors="17" failures="132" tests="1615" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
+  <testsuite name="<exe-name>" errors="17" failures="132" tests="1633" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
     <properties>
       <property name="filters" value="~[!nonportable]~[!benchmark]~[approvals]"/>
       <property name="random-seed" value="1"/>
@@ -402,10 +402,14 @@ Message.tests.cpp:<line number>
       </failure>
     </testcase>
     <testcase classname="<exe-name>.global" name="Factorials are computed" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="Floating point matchers: double/Relative" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="Floating point matchers: double/Relative/Some subnormal values" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Floating point matchers: double/Margin" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Floating point matchers: double/ULPs" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Floating point matchers: double/Composed" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Floating point matchers: double/Constructor validation" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="Floating point matchers: float/Relative" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="Floating point matchers: float/Relative/Some subnormal values" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Floating point matchers: float/Margin" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Floating point matchers: float/ULPs" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Floating point matchers: float/Composed" time="{duration}"/>

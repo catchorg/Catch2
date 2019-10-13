@@ -3090,6 +3090,46 @@ with expansion:
 
 -------------------------------------------------------------------------------
 Floating point matchers: double
+  Relative
+-------------------------------------------------------------------------------
+Matchers.tests.cpp:<line number>
+...............................................................................
+
+Matchers.tests.cpp:<line number>: PASSED:
+  REQUIRE_THAT( 10., WithinRel(11.1, 0.1) )
+with expansion:
+  10.0 and 11.1 are within 10% of each other
+
+Matchers.tests.cpp:<line number>: PASSED:
+  REQUIRE_THAT( 10., !WithinRel(11.2, 0.1) )
+with expansion:
+  10.0 not and 11.2 are within 10% of each other
+
+Matchers.tests.cpp:<line number>: PASSED:
+  REQUIRE_THAT( 1., !WithinRel(0., 0.99) )
+with expansion:
+  1.0 not and 0 are within 99% of each other
+
+Matchers.tests.cpp:<line number>: PASSED:
+  REQUIRE_THAT( -0., WithinRel(0.) )
+with expansion:
+  -0.0 and 0 are within 2.22045e-12% of each other
+
+-------------------------------------------------------------------------------
+Floating point matchers: double
+  Relative
+  Some subnormal values
+-------------------------------------------------------------------------------
+Matchers.tests.cpp:<line number>
+...............................................................................
+
+Matchers.tests.cpp:<line number>: PASSED:
+  REQUIRE_THAT( v1, WithinRel(v2) )
+with expansion:
+  0.0 and 2.22507e-308 are within 2.22045e-12% of each other
+
+-------------------------------------------------------------------------------
+Floating point matchers: double
   Margin
 -------------------------------------------------------------------------------
 Matchers.tests.cpp:<line number>
@@ -3191,6 +3231,11 @@ with expansion:
   1.0 ( is within 0.5 of 2.0 or is within 0 ULPs of 1.0 ([1.00000000000000000,
   1.00000000000000000]) )
 
+Matchers.tests.cpp:<line number>: PASSED:
+  REQUIRE_THAT( 0.0001, WithinAbs(0., 0.001) || WithinRel(0., 0.1) )
+with expansion:
+  0.0001 ( is within 0.001 of 0.0 or and 0 are within 10% of each other )
+
 -------------------------------------------------------------------------------
 Floating point matchers: double
   Constructor validation
@@ -3206,6 +3251,55 @@ Matchers.tests.cpp:<line number>: PASSED:
 
 Matchers.tests.cpp:<line number>: PASSED:
   REQUIRE_NOTHROW( WithinULP(1., 0) )
+
+Matchers.tests.cpp:<line number>: PASSED:
+  REQUIRE_NOTHROW( WithinRel(1., 0.) )
+
+Matchers.tests.cpp:<line number>: PASSED:
+  REQUIRE_THROWS_AS( WithinRel(1., -0.2), std::domain_error )
+
+Matchers.tests.cpp:<line number>: PASSED:
+  REQUIRE_THROWS_AS( WithinRel(1., 1.), std::domain_error )
+
+-------------------------------------------------------------------------------
+Floating point matchers: float
+  Relative
+-------------------------------------------------------------------------------
+Matchers.tests.cpp:<line number>
+...............................................................................
+
+Matchers.tests.cpp:<line number>: PASSED:
+  REQUIRE_THAT( 10.f, WithinRel(11.1f, 0.1f) )
+with expansion:
+  10.0f and 11.1 are within 10% of each other
+
+Matchers.tests.cpp:<line number>: PASSED:
+  REQUIRE_THAT( 10.f, !WithinRel(11.2f, 0.1f) )
+with expansion:
+  10.0f not and 11.2 are within 10% of each other
+
+Matchers.tests.cpp:<line number>: PASSED:
+  REQUIRE_THAT( 1.f, !WithinRel(0.f, 0.99f) )
+with expansion:
+  1.0f not and 0 are within 99% of each other
+
+Matchers.tests.cpp:<line number>: PASSED:
+  REQUIRE_THAT( -0.f, WithinRel(0.f) )
+with expansion:
+  -0.0f and 0 are within 0.00119209% of each other
+
+-------------------------------------------------------------------------------
+Floating point matchers: float
+  Relative
+  Some subnormal values
+-------------------------------------------------------------------------------
+Matchers.tests.cpp:<line number>
+...............................................................................
+
+Matchers.tests.cpp:<line number>: PASSED:
+  REQUIRE_THAT( v1, WithinRel(v2) )
+with expansion:
+  0.0f and 1.17549e-38 are within 0.00119209% of each other
 
 -------------------------------------------------------------------------------
 Floating point matchers: float
@@ -3316,6 +3410,11 @@ with expansion:
   1.0f ( is within 0.5 of 2.0 or is within 0 ULPs of 1.0f ([1.
   00000000000000000, 1.00000000000000000]) )
 
+Matchers.tests.cpp:<line number>: PASSED:
+  REQUIRE_THAT( 0.0001f, WithinAbs(0.f, 0.001f) || WithinRel(0.f, 0.1f) )
+with expansion:
+  0.0001f ( is within 0.001 of 0.0 or and 0 are within 10% of each other )
+
 -------------------------------------------------------------------------------
 Floating point matchers: float
   Constructor validation
@@ -3334,6 +3433,15 @@ Matchers.tests.cpp:<line number>: PASSED:
 
 Matchers.tests.cpp:<line number>: PASSED:
   REQUIRE_THROWS_AS( WithinULP(1.f, static_cast<uint64_t>(-1)), std::domain_error )
+
+Matchers.tests.cpp:<line number>: PASSED:
+  REQUIRE_NOTHROW( WithinRel(1.f, 0.f) )
+
+Matchers.tests.cpp:<line number>: PASSED:
+  REQUIRE_THROWS_AS( WithinRel(1.f, -0.2f), std::domain_error )
+
+Matchers.tests.cpp:<line number>: PASSED:
+  REQUIRE_THROWS_AS( WithinRel(1.f, 1.f), std::domain_error )
 
 -------------------------------------------------------------------------------
 Generators -- adapters
@@ -12806,5 +12914,5 @@ Misc.tests.cpp:<line number>: PASSED:
 
 ===============================================================================
 test cases:  303 |  213 passed |  86 failed |  4 failed as expected
-assertions: 1614 | 1445 passed | 148 failed | 21 failed as expected
+assertions: 1632 | 1463 passed | 148 failed | 21 failed as expected
 
