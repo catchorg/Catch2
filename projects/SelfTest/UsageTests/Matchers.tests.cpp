@@ -348,7 +348,7 @@ namespace { namespace MatchersTests {
                     auto v1 = std::numeric_limits<float>::min();
                     auto v2 = v1;
                     for (int i = 0; i < 5; ++i) {
-                        v2 = std::nextafter(v1, 0);
+                        v2 = std::nextafter(v1, 0.f);
                     }
                     REQUIRE_THAT(v1, WithinRel(v2));
                 }
