@@ -12,11 +12,11 @@ The first argument is the thing (object or value) under test. The second part is
 which consists of either a single matcher or one or more matchers combined using `&&`, `||` or `!` operators.
 
 For example, to assert that a string ends with a certain substring:
- 
+
  ```c++
 using Catch::Matchers::EndsWith; // or Catch::EndsWith
 std::string str = getStringFromSomewhere();
-REQUIRE_THAT( str, EndsWith( "as a service" ) ); 
+REQUIRE_THAT( str, EndsWith( "as a service" ) );
  ```
 
 The matcher objects can take multiple arguments, allowing more fine tuning.
@@ -24,19 +24,29 @@ The built-in string matchers, for example, take a second argument specifying whe
 case sensitive or not:
 
 ```c++
-REQUIRE_THAT( str, EndsWith( "as a service", Catch::CaseSensitive::No ) ); 
+REQUIRE_THAT( str, EndsWith( "as a service", Catch::CaseSensitive::No ) );
  ```
 
 And matchers can be combined:
 
 ```c++
-REQUIRE_THAT( str, 
-    EndsWith( "as a service" ) || 
-    (StartsWith( "Big data" ) && !Contains( "web scale" ) ) ); 
+REQUIRE_THAT( str,
+    EndsWith( "as a service" ) ||
+    (StartsWith( "Big data" ) && !Contains( "web scale" ) ) );
 ```
 
 ## Built in matchers
-Catch currently provides some matchers, they are in the `Catch::Matchers` and `Catch` namespaces.
+Catch2 provides some matchers by default. They can be found in the
+`Catch::Matchers::foo` namespace and are imported into the `Catch`
+namespace as well.
+
+There are two parts to each of the built-in matchers, the matcher
+type itself and a helper function that provides template argument
+deduction when creating templated matchers. As an example, the matcher
+for checking that two instances of `std::vector` are identical is
+`EqualsMatcher<T>`, but the user is expected to use the `Equals`
+helper function instead.
+
 
 ### String matchers
 The string matchers are `StartsWith`, `EndsWith`, `Contains`, `Equals` and `Matches`. The first four match a literal (sub)string against a result, while `Matches` takes and matches an ECMAScript regex. Do note that `Matches` matches the string as a whole, meaning that "abc" will not match against "abcd", but "abc.*" will.
@@ -57,10 +67,30 @@ These are
 
 
 ### Floating point matchers
-The floating point matchers are `WithinULP` and `WithinAbs`. `WithinAbs` accepts floating point numbers that are within a certain margin of target. `WithinULP` performs an [ULP](https://en.wikipedia.org/wiki/Unit_in_the_last_place)-based comparison of two floating point numbers and accepts them if they are less than certain number of ULPs apart.
+Catch2 provides 3 matchers for working with floating point numbers. These
+are `WithinAbsMatcher`, `WithinUlpsMatcher` and `WithinRelMatcher`.
 
-Do note that ULP-based checks only make sense when both compared numbers are of the same type and `WithinULP` will use type of its argument as the target type. This means that `WithinULP(1.f, 1)` will expect to compare `float`s, but `WithinULP(1., 1)` will expect to compare `double`s.
+The `WithinAbsMatcher` matcher accepts floating point numbers that are
+within a certain distance of target. It should be constructed with the
+`WithinAbs(double target, double margin)` helper.
 
+The `WithinUlpsMatcher` matcher accepts floating point numbers that are
+within a certain number of [ULPs](https://en.wikipedia.org/wiki/Unit_in_the_last_place)
+of the target. Because ULP comparisons need to be done differently for
+`float`s and for `double`s, there are two overloads of the helpers for
+this matcher, `WithinULP(float target, int64_t ULPs)`, and
+`WithinULP(double target, int64_t ULPs)`.
+
+The `WithinRelMatcher` matcher accepts floating point numbers that are
+_approximately equal_ with the target number with some specific tolerance.
+In other words, it checks that `|lhs - rhs| <= epsilon * max(|lhs|, |rhs|)`,
+with special casing for `INFINITY` and `NaN`. There are _4_ overloads of
+the helpers for this matcher, `WithinRel(double target, double margin)`,
+`WithinRel(float target, float margin)`, `WithinRel(double target)`, and
+`WithinRel(float target)`. The latter two provide a default epsilon of
+machine epsilon * 100.
+
+> `WithinRel` matcher was introduced in Catch X.Y.Z
 
 ### Generic matchers
 Catch also aims to provide a set of generic matchers. Currently this set
@@ -100,10 +130,10 @@ REQUIRE_THROWS_MATCHES(throwsDerivedException(),  DerivedException,  Message("De
 ## Custom matchers
 It's easy to provide your own matchers to extend Catch or just to work with your own types.
 
-You need to provide two things: 
+You need to provide two things:
 1. A matcher class, derived from `Catch::MatcherBase<T>` - where `T` is the type being tested.
 The constructor takes and stores any arguments needed (e.g. something to compare against) and you must
-override two methods: `match()` and `describe()`. 
+override two methods: `match()` and `describe()`.
 2. A simple builder function. This is what is actually called from the test code and allows overloading.
 
 Here's an example for asserting that an integer falls within a given range
@@ -148,7 +178,7 @@ TEST_CASE("Integers are within a range")
 ```
 
 Running this test gives the following in the console:
- 
+
 ```
 /**/TestFile.cpp:123: FAILED:
   CHECK_THAT( 100, IsBetween( 1, 10 ) )
