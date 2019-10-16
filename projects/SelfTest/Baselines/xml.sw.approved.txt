@@ -5813,6 +5813,778 @@ Nor would this
         <OverallResults successes="10" failures="0" expectedFailures="0"/>
       </Section>
       <Section name="Range" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+        <Section name="Positive manual step" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+          <Section name="Floating Point" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+            <Section name="Exact" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+              <Info>
+                Current expected value is -1
+              </Info>
+              <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+                <Original>
+                  gen.get() == Approx(expected)
+                </Original>
+                <Expanded>
+                  -1.0 == Approx( -1.0 )
+                </Expanded>
+              </Expression>
+              <Info>
+                Current expected value is -1
+              </Info>
+              <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+                <Original>
+                  gen.next()
+                </Original>
+                <Expanded>
+                  true
+                </Expanded>
+              </Expression>
+              <Info>
+                Current expected value is -0.9
+              </Info>
+              <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+                <Original>
+                  gen.get() == Approx(expected)
+                </Original>
+                <Expanded>
+                  -0.9 == Approx( -0.9 )
+                </Expanded>
+              </Expression>
+              <Info>
+                Current expected value is -0.9
+              </Info>
+              <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+                <Original>
+                  gen.next()
+                </Original>
+                <Expanded>
+                  true
+                </Expanded>
+              </Expression>
+              <Info>
+                Current expected value is -0.8
+              </Info>
+              <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+                <Original>
+                  gen.get() == Approx(expected)
+                </Original>
+                <Expanded>
+                  -0.8 == Approx( -0.8 )
+                </Expanded>
+              </Expression>
+              <Info>
+                Current expected value is -0.8
+              </Info>
+              <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+                <Original>
+                  gen.next()
+                </Original>
+                <Expanded>
+                  true
+                </Expanded>
+              </Expression>
+              <Info>
+                Current expected value is -0.7
+              </Info>
+              <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+                <Original>
+                  gen.get() == Approx(expected)
+                </Original>
+                <Expanded>
+                  -0.7 == Approx( -0.7 )
+                </Expanded>
+              </Expression>
+              <Info>
+                Current expected value is -0.7
+              </Info>
+              <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+                <Original>
+                  gen.next()
+                </Original>
+                <Expanded>
+                  true
+                </Expanded>
+              </Expression>
+              <Info>
+                Current expected value is -0.6
+              </Info>
+              <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+                <Original>
+                  gen.get() == Approx(expected)
+                </Original>
+                <Expanded>
+                  -0.6 == Approx( -0.6 )
+                </Expanded>
+              </Expression>
+              <Info>
+                Current expected value is -0.6
+              </Info>
+              <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+                <Original>
+                  gen.next()
+                </Original>
+                <Expanded>
+                  true
+                </Expanded>
+              </Expression>
+              <Info>
+                Current expected value is -0.5
+              </Info>
+              <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+                <Original>
+                  gen.get() == Approx(expected)
+                </Original>
+                <Expanded>
+                  -0.5 == Approx( -0.5 )
+                </Expanded>
+              </Expression>
+              <Info>
+                Current expected value is -0.5
+              </Info>
+              <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+                <Original>
+                  gen.next()
+                </Original>
+                <Expanded>
+                  true
+                </Expanded>
+              </Expression>
+              <Info>
+                Current expected value is -0.4
+              </Info>
+              <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+                <Original>
+                  gen.get() == Approx(expected)
+                </Original>
+                <Expanded>
+                  -0.4 == Approx( -0.4 )
+                </Expanded>
+              </Expression>
+              <Info>
+                Current expected value is -0.4
+              </Info>
+              <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+                <Original>
+                  gen.next()
+                </Original>
+                <Expanded>
+                  true
+                </Expanded>
+              </Expression>
+              <Info>
+                Current expected value is -0.3
+              </Info>
+              <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+                <Original>
+                  gen.get() == Approx(expected)
+                </Original>
+                <Expanded>
+                  -0.3 == Approx( -0.3 )
+                </Expanded>
+              </Expression>
+              <Info>
+                Current expected value is -0.3
+              </Info>
+              <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+                <Original>
+                  gen.next()
+                </Original>
+                <Expanded>
+                  true
+                </Expanded>
+              </Expression>
+              <Info>
+                Current expected value is -0.2
+              </Info>
+              <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+                <Original>
+                  gen.get() == Approx(expected)
+                </Original>
+                <Expanded>
+                  -0.2 == Approx( -0.2 )
+                </Expanded>
+              </Expression>
+              <Info>
+                Current expected value is -0.2
+              </Info>
+              <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+                <Original>
+                  gen.next()
+                </Original>
+                <Expanded>
+                  true
+                </Expanded>
+              </Expression>
+              <Info>
+                Current expected value is -0.1
+              </Info>
+              <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+                <Original>
+                  gen.get() == Approx(expected)
+                </Original>
+                <Expanded>
+                  -0.1 == Approx( -0.1 )
+                </Expanded>
+              </Expression>
+              <Info>
+                Current expected value is -0.1
+              </Info>
+              <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+                <Original>
+                  gen.next()
+                </Original>
+                <Expanded>
+                  true
+                </Expanded>
+              </Expression>
+              <Info>
+                Current expected value is -1.38778e-16
+              </Info>
+              <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+                <Original>
+                  gen.get() == Approx(expected)
+                </Original>
+                <Expanded>
+                  -0.0 == Approx( -0.0 )
+                </Expanded>
+              </Expression>
+              <Info>
+                Current expected value is -1.38778e-16
+              </Info>
+              <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+                <Original>
+                  gen.next()
+                </Original>
+                <Expanded>
+                  true
+                </Expanded>
+              </Expression>
+              <Info>
+                Current expected value is 0.1
+              </Info>
+              <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+                <Original>
+                  gen.get() == Approx(expected)
+                </Original>
+                <Expanded>
+                  0.1 == Approx( 0.1 )
+                </Expanded>
+              </Expression>
+              <Info>
+                Current expected value is 0.1
+              </Info>
+              <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+                <Original>
+                  gen.next()
+                </Original>
+                <Expanded>
+                  true
+                </Expanded>
+              </Expression>
+              <Info>
+                Current expected value is 0.2
+              </Info>
+              <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+                <Original>
+                  gen.get() == Approx(expected)
+                </Original>
+                <Expanded>
+                  0.2 == Approx( 0.2 )
+                </Expanded>
+              </Expression>
+              <Info>
+                Current expected value is 0.2
+              </Info>
+              <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+                <Original>
+                  gen.next()
+                </Original>
+                <Expanded>
+                  true
+                </Expanded>
+              </Expression>
+              <Info>
+                Current expected value is 0.3
+              </Info>
+              <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+                <Original>
+                  gen.get() == Approx(expected)
+                </Original>
+                <Expanded>
+                  0.3 == Approx( 0.3 )
+                </Expanded>
+              </Expression>
+              <Info>
+                Current expected value is 0.3
+              </Info>
+              <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+                <Original>
+                  gen.next()
+                </Original>
+                <Expanded>
+                  true
+                </Expanded>
+              </Expression>
+              <Info>
+                Current expected value is 0.4
+              </Info>
+              <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+                <Original>
+                  gen.get() == Approx(expected)
+                </Original>
+                <Expanded>
+                  0.4 == Approx( 0.4 )
+                </Expanded>
+              </Expression>
+              <Info>
+                Current expected value is 0.4
+              </Info>
+              <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+                <Original>
+                  gen.next()
+                </Original>
+                <Expanded>
+                  true
+                </Expanded>
+              </Expression>
+              <Info>
+                Current expected value is 0.5
+              </Info>
+              <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+                <Original>
+                  gen.get() == Approx(expected)
+                </Original>
+                <Expanded>
+                  0.5 == Approx( 0.5 )
+                </Expanded>
+              </Expression>
+              <Info>
+                Current expected value is 0.5
+              </Info>
+              <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+                <Original>
+                  gen.next()
+                </Original>
+                <Expanded>
+                  true
+                </Expanded>
+              </Expression>
+              <Info>
+                Current expected value is 0.6
+              </Info>
+              <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+                <Original>
+                  gen.get() == Approx(expected)
+                </Original>
+                <Expanded>
+                  0.6 == Approx( 0.6 )
+                </Expanded>
+              </Expression>
+              <Info>
+                Current expected value is 0.6
+              </Info>
+              <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+                <Original>
+                  gen.next()
+                </Original>
+                <Expanded>
+                  true
+                </Expanded>
+              </Expression>
+              <Info>
+                Current expected value is 0.7
+              </Info>
+              <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+                <Original>
+                  gen.get() == Approx(expected)
+                </Original>
+                <Expanded>
+                  0.7 == Approx( 0.7 )
+                </Expanded>
+              </Expression>
+              <Info>
+                Current expected value is 0.7
+              </Info>
+              <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+                <Original>
+                  gen.next()
+                </Original>
+                <Expanded>
+                  true
+                </Expanded>
+              </Expression>
+              <Info>
+                Current expected value is 0.8
+              </Info>
+              <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+                <Original>
+                  gen.get() == Approx(expected)
+                </Original>
+                <Expanded>
+                  0.8 == Approx( 0.8 )
+                </Expanded>
+              </Expression>
+              <Info>
+                Current expected value is 0.8
+              </Info>
+              <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+                <Original>
+                  gen.next()
+                </Original>
+                <Expanded>
+                  true
+                </Expanded>
+              </Expression>
+              <Info>
+                Current expected value is 0.9
+              </Info>
+              <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+                <Original>
+                  gen.get() == Approx(expected)
+                </Original>
+                <Expanded>
+                  0.9 == Approx( 0.9 )
+                </Expanded>
+              </Expression>
+              <Info>
+                Current expected value is 0.9
+              </Info>
+              <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+                <Original>
+                  gen.next()
+                </Original>
+                <Expanded>
+                  true
+                </Expanded>
+              </Expression>
+              <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+                <Original>
+                  gen.get() == Approx( rangeEnd )
+                </Original>
+                <Expanded>
+                  1.0 == Approx( 1.0 )
+                </Expanded>
+              </Expression>
+              <Expression success="true" type="REQUIRE_FALSE" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+                <Original>
+                  !(gen.next())
+                </Original>
+                <Expanded>
+                  !false
+                </Expanded>
+              </Expression>
+              <OverallResults successes="42" failures="0" expectedFailures="0"/>
+            </Section>
+            <OverallResults successes="42" failures="0" expectedFailures="0"/>
+          </Section>
+          <OverallResults successes="42" failures="0" expectedFailures="0"/>
+        </Section>
+        <OverallResults successes="42" failures="0" expectedFailures="0"/>
+      </Section>
+      <Section name="Range" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+        <Section name="Positive manual step" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+          <Section name="Floating Point" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+            <Section name="Slightly over end" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+              <Info>
+                Current expected value is -1
+              </Info>
+              <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+                <Original>
+                  gen.get() == Approx(expected)
+                </Original>
+                <Expanded>
+                  -1.0 == Approx( -1.0 )
+                </Expanded>
+              </Expression>
+              <Info>
+                Current expected value is -1
+              </Info>
+              <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+                <Original>
+                  gen.next()
+                </Original>
+                <Expanded>
+                  true
+                </Expanded>
+              </Expression>
+              <Info>
+                Current expected value is -0.7
+              </Info>
+              <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+                <Original>
+                  gen.get() == Approx(expected)
+                </Original>
+                <Expanded>
+                  -0.7 == Approx( -0.7 )
+                </Expanded>
+              </Expression>
+              <Info>
+                Current expected value is -0.7
+              </Info>
+              <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+                <Original>
+                  gen.next()
+                </Original>
+                <Expanded>
+                  true
+                </Expanded>
+              </Expression>
+              <Info>
+                Current expected value is -0.4
+              </Info>
+              <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+                <Original>
+                  gen.get() == Approx(expected)
+                </Original>
+                <Expanded>
+                  -0.4 == Approx( -0.4 )
+                </Expanded>
+              </Expression>
+              <Info>
+                Current expected value is -0.4
+              </Info>
+              <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+                <Original>
+                  gen.next()
+                </Original>
+                <Expanded>
+                  true
+                </Expanded>
+              </Expression>
+              <Info>
+                Current expected value is -0.1
+              </Info>
+              <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+                <Original>
+                  gen.get() == Approx(expected)
+                </Original>
+                <Expanded>
+                  -0.1 == Approx( -0.1 )
+                </Expanded>
+              </Expression>
+              <Info>
+                Current expected value is -0.1
+              </Info>
+              <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+                <Original>
+                  gen.next()
+                </Original>
+                <Expanded>
+                  true
+                </Expanded>
+              </Expression>
+              <Info>
+                Current expected value is 0.2
+              </Info>
+              <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+                <Original>
+                  gen.get() == Approx(expected)
+                </Original>
+                <Expanded>
+                  0.2 == Approx( 0.2 )
+                </Expanded>
+              </Expression>
+              <Info>
+                Current expected value is 0.2
+              </Info>
+              <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+                <Original>
+                  gen.next()
+                </Original>
+                <Expanded>
+                  true
+                </Expanded>
+              </Expression>
+              <Info>
+                Current expected value is 0.5
+              </Info>
+              <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+                <Original>
+                  gen.get() == Approx(expected)
+                </Original>
+                <Expanded>
+                  0.5 == Approx( 0.5 )
+                </Expanded>
+              </Expression>
+              <Info>
+                Current expected value is 0.5
+              </Info>
+              <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+                <Original>
+                  gen.next()
+                </Original>
+                <Expanded>
+                  true
+                </Expanded>
+              </Expression>
+              <Expression success="true" type="REQUIRE_FALSE" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+                <Original>
+                  !(gen.next())
+                </Original>
+                <Expanded>
+                  !false
+                </Expanded>
+              </Expression>
+              <OverallResults successes="13" failures="0" expectedFailures="0"/>
+            </Section>
+            <OverallResults successes="13" failures="0" expectedFailures="0"/>
+          </Section>
+          <OverallResults successes="13" failures="0" expectedFailures="0"/>
+        </Section>
+        <OverallResults successes="13" failures="0" expectedFailures="0"/>
+      </Section>
+      <Section name="Range" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+        <Section name="Positive manual step" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+          <Section name="Floating Point" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+            <Section name="Slightly under end" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+              <Info>
+                Current expected value is -1
+              </Info>
+              <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+                <Original>
+                  gen.get() == Approx(expected)
+                </Original>
+                <Expanded>
+                  -1.0 == Approx( -1.0 )
+                </Expanded>
+              </Expression>
+              <Info>
+                Current expected value is -1
+              </Info>
+              <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+                <Original>
+                  gen.next()
+                </Original>
+                <Expanded>
+                  true
+                </Expanded>
+              </Expression>
+              <Info>
+                Current expected value is -0.7
+              </Info>
+              <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+                <Original>
+                  gen.get() == Approx(expected)
+                </Original>
+                <Expanded>
+                  -0.7 == Approx( -0.7 )
+                </Expanded>
+              </Expression>
+              <Info>
+                Current expected value is -0.7
+              </Info>
+              <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+                <Original>
+                  gen.next()
+                </Original>
+                <Expanded>
+                  true
+                </Expanded>
+              </Expression>
+              <Info>
+                Current expected value is -0.4
+              </Info>
+              <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+                <Original>
+                  gen.get() == Approx(expected)
+                </Original>
+                <Expanded>
+                  -0.4 == Approx( -0.4 )
+                </Expanded>
+              </Expression>
+              <Info>
+                Current expected value is -0.4
+              </Info>
+              <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+                <Original>
+                  gen.next()
+                </Original>
+                <Expanded>
+                  true
+                </Expanded>
+              </Expression>
+              <Info>
+                Current expected value is -0.1
+              </Info>
+              <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+                <Original>
+                  gen.get() == Approx(expected)
+                </Original>
+                <Expanded>
+                  -0.1 == Approx( -0.1 )
+                </Expanded>
+              </Expression>
+              <Info>
+                Current expected value is -0.1
+              </Info>
+              <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+                <Original>
+                  gen.next()
+                </Original>
+                <Expanded>
+                  true
+                </Expanded>
+              </Expression>
+              <Info>
+                Current expected value is 0.2
+              </Info>
+              <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+                <Original>
+                  gen.get() == Approx(expected)
+                </Original>
+                <Expanded>
+                  0.2 == Approx( 0.2 )
+                </Expanded>
+              </Expression>
+              <Info>
+                Current expected value is 0.2
+              </Info>
+              <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+                <Original>
+                  gen.next()
+                </Original>
+                <Expanded>
+                  true
+                </Expanded>
+              </Expression>
+              <Info>
+                Current expected value is 0.5
+              </Info>
+              <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+                <Original>
+                  gen.get() == Approx(expected)
+                </Original>
+                <Expanded>
+                  0.5 == Approx( 0.5 )
+                </Expanded>
+              </Expression>
+              <Info>
+                Current expected value is 0.5
+              </Info>
+              <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+                <Original>
+                  gen.next()
+                </Original>
+                <Expanded>
+                  true
+                </Expanded>
+              </Expression>
+              <Expression success="true" type="REQUIRE_FALSE" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+                <Original>
+                  !(gen.next())
+                </Original>
+                <Expanded>
+                  !false
+                </Expanded>
+              </Expression>
+              <OverallResults successes="13" failures="0" expectedFailures="0"/>
+            </Section>
+            <OverallResults successes="13" failures="0" expectedFailures="0"/>
+          </Section>
+          <OverallResults successes="13" failures="0" expectedFailures="0"/>
+        </Section>
+        <OverallResults successes="13" failures="0" expectedFailures="0"/>
+      </Section>
+      <Section name="Range" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
         <Section name="Negative manual step" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
           <Section name="Integer" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
             <Section name="Exact" filename="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
@@ -15390,7 +16162,7 @@ loose text artifact
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="1475" failures="149" expectedFailures="21"/>
+    <OverallResults successes="1543" failures="149" expectedFailures="21"/>
   </Group>
-  <OverallResults successes="1475" failures="148" expectedFailures="21"/>
+  <OverallResults successes="1543" failures="148" expectedFailures="21"/>
 </Catch>

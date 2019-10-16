@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuitesloose text artifact
 >
-  <testsuite name="<exe-name>" errors="17" failures="132" tests="1645" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
+  <testsuite name="<exe-name>" errors="17" failures="132" tests="1713" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
     <properties>
       <property name="filters" value="~[!nonportable]~[!benchmark]~[approvals]"/>
       <property name="random-seed" value="1"/>
@@ -444,6 +444,9 @@ Message.tests.cpp:<line number>
     <testcase classname="<exe-name>.global" name="Generators internals/Range/Positive manual step/Integer/Exact" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Generators internals/Range/Positive manual step/Integer/Slightly over end" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Generators internals/Range/Positive manual step/Integer/Slightly under end" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="Generators internals/Range/Positive manual step/Floating Point/Exact" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="Generators internals/Range/Positive manual step/Floating Point/Slightly over end" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="Generators internals/Range/Positive manual step/Floating Point/Slightly under end" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Generators internals/Range/Negative manual step/Integer/Exact" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Generators internals/Range/Negative manual step/Integer/Slightly over end" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Generators internals/Range/Negative manual step/Integer/Slightly under end" time="{duration}"/>
