@@ -53,9 +53,6 @@ Open source Oracle Tuxedo-like XATMI middleware for C and C++.
 ### [Inja](https://github.com/pantor/inja)
 A header-only template engine for modern C++.
 
-### [JSON for Modern C++](https://github.com/nlohmann/json)
-A, single-header, JSON parsing library that takes advantage of what C++ has to offer.
-
 ### [libcluon](https://github.com/chrberger/libcluon)
 A single-header-only library written in C++14 to glue distributed software components (UDP, TCP, shared memory) supporting natively Protobuf, LCM/ZCM, MsgPack, and JSON for dynamic message transformations in-between. 
 
