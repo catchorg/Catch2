@@ -20,10 +20,10 @@ namespace Catch {
         using state_type = std::uint64_t;
     public:
         using result_type = std::uint32_t;
-        static constexpr result_type min() {
+        static constexpr result_type (min)() {
             return 0;
         }
-        static constexpr result_type max() {
+        static constexpr result_type (max)() {
             return static_cast<result_type>(-1);
         }
 

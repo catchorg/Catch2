@@ -142,7 +142,7 @@ namespace Floating {
     WithinUlpsMatcher::WithinUlpsMatcher(double target, uint64_t ulps, FloatingPointKind baseType)
         :m_target{ target }, m_ulps{ ulps }, m_type{ baseType } {
         CATCH_ENFORCE(m_type == FloatingPointKind::Double
-                   || m_ulps < std::numeric_limits<uint32_t>::max(),
+                   || m_ulps < (std::numeric_limits<uint32_t>::max)(),
             "Provided ULP is impossibly large for a float comparison.");
     }
 
@@ -201,7 +201,7 @@ namespace Floating {
     }
 
     bool WithinRelMatcher::match(double const& matchee) const {
-        const auto relMargin = m_epsilon * std::max(std::fabs(matchee), std::fabs(m_target));
+        const auto relMargin = m_epsilon * (std::max)(std::fabs(matchee), std::fabs(m_target));
         return marginComparison(matchee, m_target,
                                 std::isinf(relMargin)? 0 : relMargin);
     }
