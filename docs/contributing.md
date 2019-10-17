@@ -70,6 +70,10 @@ locally takes just a few minutes.
 $ cd debug-build
 $ ctest -j 2 --output-on-failure
 ```
+__Note:__ When running your tests with multi-configuration generators like
+Visual Studio, you might get errors "Test not available without configuration."
+You then have to pick one configuration (e.g. ` -C Debug`) in the `ctest` call.
+
 If you added new tests, approval tests are very likely to fail. If they
 do not, it means that your changes weren't run as part of them. This
 _might_ be intentional, but usually is not.
