@@ -383,6 +383,10 @@ void ConsoleReporter::noMatchingTestCases(std::string const& spec) {
     stream << "No test cases matched '" << spec << '\'' << std::endl;
 }
 
+void ConsoleReporter::reportInvalidArguments(std::string const&arg){
+    stream << "Invalid Filter: " << arg << std::endl;
+}
+
 void ConsoleReporter::assertionStarting(AssertionInfo const&) {}
 
 bool ConsoleReporter::assertionEnded(AssertionStats const& _assertionStats) {

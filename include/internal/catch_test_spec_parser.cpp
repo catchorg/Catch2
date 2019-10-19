@@ -20,8 +20,13 @@ namespace Catch {
         m_substring.reserve(m_arg.size());
         m_patternName.reserve(m_arg.size());
         m_realPatternPos = 0;
+        
         for( m_pos = 0; m_pos < m_arg.size(); ++m_pos )
-            visitChar( m_arg[m_pos] );
+          //if visitChar fails
+           if( !visitChar( m_arg[m_pos] ) ){ 
+               m_testSpec.m_invalidArgs.push_back(arg);
+               break;
+           }
         endMode();
         return *this;
     }
@@ -29,38 +34,32 @@ namespace Catch {
         addFilter();
         return m_testSpec;
     }
-    void TestSpecParser::visitChar( char c ) {
+    bool TestSpecParser::visitChar( char c ) {
         if( (m_mode != EscapedName) && (c == '\\') ) {
             escape();
-            m_substring += c;
-            m_patternName += c;
-            m_realPatternPos++;
-            return;
+            addCharToPattern(c);
+            return true;
         }else if((m_mode != EscapedName) && (c == ',') )  {
-            endMode();
-            addFilter();
-            return;
+            return separate();
         }
 
         switch( m_mode ) {
         case None:
             if( processNoneChar( c ) )
-                return;
+                return true;
             break;
         case Name:
             processNameChar( c );
             break;
         case EscapedName:
             endMode();
-            m_substring += c;
-            m_patternName += c;
-            m_realPatternPos++;
-            return;
+            addCharToPattern(c);
+            return true;
         default:
         case Tag:
         case QuotedName:
             if( processOtherChar( c ) )
-                return;
+                return true;
             break;
         }
 
@@ -69,6 +68,7 @@ namespace Catch {
             m_patternName += c;
             m_realPatternPos++;
         }
+        return true;
     }
     // Two of the processing methods return true to signal the caller to return
     // without adding the given character to the current pattern strings
@@ -159,6 +159,20 @@ namespace Catch {
     
     void TestSpecParser::revertBackToLastMode() {
       m_mode = lastMode;
+    }
+    
+    bool TestSpecParser::separate() {  
+      if( (m_mode==QuotedName) || (m_mode==Tag) ){
+         //invalid argument, signal failure to previous scope.
+         m_mode = None;
+         m_pos = m_arg.size();
+         m_substring.clear();
+         m_patternName.clear();
+         return false;
+      }
+      endMode();
+      addFilter();
+      return true; //success
     }
     
     TestSpec parseTestSpec( std::string const& arg ) {

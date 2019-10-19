@@ -214,6 +214,8 @@ namespace Catch {
 
         virtual void noMatchingTestCases( std::string const& spec ) = 0;
 
+        virtual void reportInvalidArguments(std::string const&) {}
+        
         virtual void testRunStarting( TestRunInfo const& testRunInfo ) = 0;
         virtual void testGroupStarting( GroupInfo const& groupInfo ) = 0;
 

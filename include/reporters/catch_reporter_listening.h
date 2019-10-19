@@ -28,7 +28,9 @@ namespace Catch {
         ReporterPreferences getPreferences() const override;
 
         void noMatchingTestCases( std::string const& spec ) override;
-
+        
+        void reportInvalidArguments(std::string const&arg) override;
+        
         static std::set<Verbosity> getSupportedVerbosities();
 
 #if defined(CATCH_CONFIG_ENABLE_BENCHMARKING)

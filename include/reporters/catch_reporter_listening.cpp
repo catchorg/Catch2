@@ -41,6 +41,13 @@ namespace Catch {
         }
         m_reporter->noMatchingTestCases( spec );
     }
+    
+    void ListeningReporter::reportInvalidArguments(std::string const&arg){
+        for ( auto const& listener : m_listeners ) {
+            listener->reportInvalidArguments( arg );
+        }
+        m_reporter->reportInvalidArguments( arg );
+    }    
 
 #if defined(CATCH_CONFIG_ENABLE_BENCHMARKING)
     void ListeningReporter::benchmarkPreparing( std::string const& name ) {

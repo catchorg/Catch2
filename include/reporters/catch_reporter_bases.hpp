@@ -51,6 +51,8 @@ namespace Catch {
 
         void noMatchingTestCases(std::string const&) override {}
 
+        void reportInvalidArguments(std::string const&) override {}
+        
         void testRunStarting(TestRunInfo const& _testRunInfo) override {
             currentTestRunInfo = _testRunInfo;
         }

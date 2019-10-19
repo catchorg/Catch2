@@ -49,9 +49,15 @@ namespace Catch {
                     if( !line.empty() && !startsWith( line, '#' ) ) {
                         if( !startsWith( line, '"' ) )
                             line = '"' + line + '"';
-                        config.testsOrTags.push_back( line + ',' );
+                        config.testsOrTags.push_back( line );
+                        config.testsOrTags.push_back( "," );
+                        
                     }
                 }
+                //Remove comma in the end
+                if(!config.testsOrTags.empty())
+                    config.testsOrTags.erase( config.testsOrTags.end()-1 );
+                
                 return ParserResult::ok( ParseResultType::Matched );
             };
         auto const setTestOrder = [&]( std::string const& order ) {

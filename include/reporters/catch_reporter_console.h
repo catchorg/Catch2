@@ -32,6 +32,8 @@ namespace Catch {
 
         void noMatchingTestCases(std::string const& spec) override;
 
+        void reportInvalidArguments(std::string const&arg) override;
+
         void assertionStarting(AssertionInfo const&) override;
 
         bool assertionEnded(AssertionStats const& _assertionStats) override;

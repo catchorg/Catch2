@@ -41,7 +41,7 @@ namespace Catch {
         TestSpec testSpec();
 
     private:
-        void visitChar( char c );
+        bool visitChar( char c );
         void startNewMode( Mode mode );
         bool processNoneChar( char c );
         void processNameChar( char c );
@@ -51,6 +51,8 @@ namespace Catch {
         bool isControlChar( char c ) const;
         void saveLastMode();
         void revertBackToLastMode();
+        void addFilter();
+        bool separate();
         
         template<typename T>
         void addPattern() {
@@ -73,8 +75,13 @@ namespace Catch {
             m_exclusion = false;
             m_mode = None;
         }
-
-        void addFilter();
+        
+        inline void addCharToPattern(char c) {
+            m_substring += c;
+            m_patternName += c;
+            m_realPatternPos++;
+        }
+        
     };
     TestSpec parseTestSpec( std::string const& arg );
 
