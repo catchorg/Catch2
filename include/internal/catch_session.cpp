@@ -68,8 +68,9 @@ namespace Catch {
             {
                 auto const& allTestCases = getAllTestCasesSorted(*m_config);
                 m_matches = m_config->testSpec().matchesByFilter(allTestCases, *m_config);
-
-                if (m_matches.empty()) {
+                auto const& invalidArgs = m_config->testSpec().getInvalidArgs();
+                
+                if (m_matches.empty() && invalidArgs.empty()) {
                     for (auto const& test : allTestCases)
                         if (!test.isHidden())
                             m_tests.emplace(&test);
@@ -80,6 +81,7 @@ namespace Catch {
             }
 
             Totals execute() {
+                auto const& invalidArgs = m_config->testSpec().getInvalidArgs();
                 Totals totals;
                 m_context.testGroupStarting(m_config->name(), 1, 1);
                 for (auto const& testCase : m_tests) {
@@ -95,6 +97,12 @@ namespace Catch {
                         totals.error = -1;
                     }
                 }
+                
+                if (!invalidArgs.empty()) {
+                    for (auto const& invalidArg: invalidArgs)                   
+                         m_context.reporter().reportInvalidArguments(invalidArg);
+                }   
+                
                 m_context.testGroupEnded(m_config->name(), totals, 1, 1);
                 return totals;
             }

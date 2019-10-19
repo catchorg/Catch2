@@ -91,5 +91,9 @@ namespace Catch {
         } );
         return matches;
     }
+    
+    const TestSpec::vectorStrings& TestSpec::getInvalidArgs() const{
+        return  (m_invalidArgs);
+    }
 
 }
