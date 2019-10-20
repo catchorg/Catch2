@@ -2,6 +2,7 @@
 
 # Release notes
 **Contents**<br>
+[2.10.1](#2101)<br>
 [2.10.0](#2100)<br>
 [2.9.2](#292)<br>
 [2.9.1](#291)<br>
@@ -27,6 +28,23 @@
 [2.0.1](#201)<br>
 [Older versions](#older-versions)<br>
 [Even Older versions](#even-older-versions)<br>
+
+
+## 2.10.1
+
+### Improvements
+* Catch2 now guards itself against `min` and `max` macros from `windows.h` (#1772)
+* Templated tests will now compile with ICC (#1748)
+* `WithinULP` matcher now uses scientific notation for stringification (#1760)
+
+
+### Fixes
+* Templated tests no longer trigger `-Wunused-templates` (#1762)
+* Suppressed clang-analyzer false positive in context getter (#1230, #1735)
+
+
+### Miscellaneous
+* CMake no longer prohibits in-tree build when Catch2 is used as a subproject (#1773, #1774)
 
 
 
