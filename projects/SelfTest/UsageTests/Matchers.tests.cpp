@@ -382,8 +382,9 @@ namespace { namespace MatchersTests {
                 REQUIRE_THAT(1.f, WithinULP(1.f, 0));
 
                 REQUIRE_THAT(nextafter(1.f, 2.f), WithinULP(1.f, 1));
-                REQUIRE_THAT(nextafter(1.f, 0.f), WithinULP(1.f, 1));
-                REQUIRE_THAT(nextafter(1.f, 2.f), !WithinULP(1.f, 0));
+                REQUIRE_THAT(0.f, WithinULP(nextafter(0.f, 1.f), 1));
+                REQUIRE_THAT(1.f, WithinULP(nextafter(1.f, 0.f), 1));
+                REQUIRE_THAT(1.f, !WithinULP(nextafter(1.f, 2.f), 0));
 
                 REQUIRE_THAT(1.f, WithinULP(1.f, 0));
                 REQUIRE_THAT(-0.f, WithinULP(0.f, 0));
@@ -437,8 +438,9 @@ namespace { namespace MatchersTests {
                 REQUIRE_THAT(1., WithinULP(1., 0));
 
                 REQUIRE_THAT(nextafter(1., 2.), WithinULP(1., 1));
-                REQUIRE_THAT(nextafter(1., 0.), WithinULP(1., 1));
-                REQUIRE_THAT(nextafter(1., 2.), !WithinULP(1., 0));
+                REQUIRE_THAT(0.,  WithinULP(nextafter(0., 1.), 1));
+                REQUIRE_THAT(1.,  WithinULP(nextafter(1., 0.), 1));
+                REQUIRE_THAT(1., !WithinULP(nextafter(1., 2.), 0));
 
                 REQUIRE_THAT(1., WithinULP(1., 0));
                 REQUIRE_THAT(-0., WithinULP(0., 0));

@@ -3811,7 +3811,7 @@ Nor would this
             1., WithinULP(1., 0)
           </Original>
           <Expanded>
-            1.0 is within 0 ULPs of 1.0 ([1.00000000000000000, 1.00000000000000000])
+            1.0 is within 0 ULPs of 1.0000000000000000e+00 ([1.0000000000000000e+00, 1.0000000000000000e+00])
           </Expanded>
         </Expression>
         <Expression success="true" type="REQUIRE_THAT" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
@@ -3819,23 +3819,31 @@ Nor would this
             nextafter(1., 2.), WithinULP(1., 1)
           </Original>
           <Expanded>
-            1.0 is within 1 ULPs of 1.0 ([0.99999999999999989, 1.00000000000000022])
+            1.0 is within 1 ULPs of 1.0000000000000000e+00 ([9.9999999999999989e-01, 1.0000000000000002e+00])
           </Expanded>
         </Expression>
         <Expression success="true" type="REQUIRE_THAT" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
           <Original>
-            nextafter(1., 0.), WithinULP(1., 1)
+            0., WithinULP(nextafter(0., 1.), 1)
           </Original>
           <Expanded>
-            1.0 is within 1 ULPs of 1.0 ([0.99999999999999989, 1.00000000000000022])
+            0.0 is within 1 ULPs of 4.9406564584124654e-324 ([0.0000000000000000e+00, 9.8813129168249309e-324])
           </Expanded>
         </Expression>
         <Expression success="true" type="REQUIRE_THAT" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
           <Original>
-            nextafter(1., 2.), !WithinULP(1., 0)
+            1., WithinULP(nextafter(1., 0.), 1)
           </Original>
           <Expanded>
-            1.0 not is within 0 ULPs of 1.0 ([1.00000000000000000, 1.00000000000000000])
+            1.0 is within 1 ULPs of 9.9999999999999989e-01 ([9.9999999999999978e-01, 1.0000000000000000e+00])
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE_THAT" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
+          <Original>
+            1., !WithinULP(nextafter(1., 2.), 0)
+          </Original>
+          <Expanded>
+            1.0 not is within 0 ULPs of 1.0000000000000002e+00 ([1.0000000000000002e+00, 1.0000000000000002e+00])
           </Expanded>
         </Expression>
         <Expression success="true" type="REQUIRE_THAT" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
@@ -3843,7 +3851,7 @@ Nor would this
             1., WithinULP(1., 0)
           </Original>
           <Expanded>
-            1.0 is within 0 ULPs of 1.0 ([1.00000000000000000, 1.00000000000000000])
+            1.0 is within 0 ULPs of 1.0000000000000000e+00 ([1.0000000000000000e+00, 1.0000000000000000e+00])
           </Expanded>
         </Expression>
         <Expression success="true" type="REQUIRE_THAT" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
@@ -3851,10 +3859,10 @@ Nor would this
             -0., WithinULP(0., 0)
           </Original>
           <Expanded>
-            -0.0 is within 0 ULPs of 0.0 ([0.00000000000000000, 0.00000000000000000])
+            -0.0 is within 0 ULPs of 0.0000000000000000e+00 ([0.0000000000000000e+00, 0.0000000000000000e+00])
           </Expanded>
         </Expression>
-        <OverallResults successes="6" failures="0" expectedFailures="0"/>
+        <OverallResults successes="7" failures="0" expectedFailures="0"/>
       </Section>
       <Section name="Composed" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
         <Expression success="true" type="REQUIRE_THAT" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
@@ -3862,7 +3870,7 @@ Nor would this
             1., WithinAbs(1., 0.5) || WithinULP(2., 1)
           </Original>
           <Expanded>
-            1.0 ( is within 0.5 of 1.0 or is within 1 ULPs of 2.0 ([1.99999999999999978, 2.00000000000000044]) )
+            1.0 ( is within 0.5 of 1.0 or is within 1 ULPs of 2.0000000000000000e+00 ([1.9999999999999998e+00, 2.0000000000000004e+00]) )
           </Expanded>
         </Expression>
         <Expression success="true" type="REQUIRE_THAT" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
@@ -3870,7 +3878,7 @@ Nor would this
             1., WithinAbs(2., 0.5) || WithinULP(1., 0)
           </Original>
           <Expanded>
-            1.0 ( is within 0.5 of 2.0 or is within 0 ULPs of 1.0 ([1.00000000000000000, 1.00000000000000000]) )
+            1.0 ( is within 0.5 of 2.0 or is within 0 ULPs of 1.0000000000000000e+00 ([1.0000000000000000e+00, 1.0000000000000000e+00]) )
           </Expanded>
         </Expression>
         <Expression success="true" type="REQUIRE_THAT" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
@@ -4064,7 +4072,7 @@ Nor would this
             1.f, WithinULP(1.f, 0)
           </Original>
           <Expanded>
-            1.0f is within 0 ULPs of 1.0f ([1.00000000000000000, 1.00000000000000000])
+            1.0f is within 0 ULPs of 1.00000000e+00f ([1.00000000e+00, 1.00000000e+00])
           </Expanded>
         </Expression>
         <Expression success="true" type="REQUIRE_THAT" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
@@ -4072,23 +4080,31 @@ Nor would this
             nextafter(1.f, 2.f), WithinULP(1.f, 1)
           </Original>
           <Expanded>
-            1.0f is within 1 ULPs of 1.0f ([0.99999994039535522, 1.00000011920928955])
+            1.0f is within 1 ULPs of 1.00000000e+00f ([9.99999940e-01, 1.00000012e+00])
           </Expanded>
         </Expression>
         <Expression success="true" type="REQUIRE_THAT" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
           <Original>
-            nextafter(1.f, 0.f), WithinULP(1.f, 1)
+            0.f, WithinULP(nextafter(0.f, 1.f), 1)
           </Original>
           <Expanded>
-            1.0f is within 1 ULPs of 1.0f ([0.99999994039535522, 1.00000011920928955])
+            0.0f is within 1 ULPs of 1.40129846e-45f ([0.00000000e+00, 2.80259693e-45])
           </Expanded>
         </Expression>
         <Expression success="true" type="REQUIRE_THAT" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
           <Original>
-            nextafter(1.f, 2.f), !WithinULP(1.f, 0)
+            1.f, WithinULP(nextafter(1.f, 0.f), 1)
           </Original>
           <Expanded>
-            1.0f not is within 0 ULPs of 1.0f ([1.00000000000000000, 1.00000000000000000])
+            1.0f is within 1 ULPs of 9.99999940e-01f ([9.99999881e-01, 1.00000000e+00])
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE_THAT" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
+          <Original>
+            1.f, !WithinULP(nextafter(1.f, 2.f), 0)
+          </Original>
+          <Expanded>
+            1.0f not is within 0 ULPs of 1.00000012e+00f ([1.00000012e+00, 1.00000012e+00])
           </Expanded>
         </Expression>
         <Expression success="true" type="REQUIRE_THAT" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
@@ -4096,7 +4112,7 @@ Nor would this
             1.f, WithinULP(1.f, 0)
           </Original>
           <Expanded>
-            1.0f is within 0 ULPs of 1.0f ([1.00000000000000000, 1.00000000000000000])
+            1.0f is within 0 ULPs of 1.00000000e+00f ([1.00000000e+00, 1.00000000e+00])
           </Expanded>
         </Expression>
         <Expression success="true" type="REQUIRE_THAT" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
@@ -4104,10 +4120,10 @@ Nor would this
             -0.f, WithinULP(0.f, 0)
           </Original>
           <Expanded>
-            -0.0f is within 0 ULPs of 0.0f ([0.00000000000000000, 0.00000000000000000])
+            -0.0f is within 0 ULPs of 0.00000000e+00f ([0.00000000e+00, 0.00000000e+00])
           </Expanded>
         </Expression>
-        <OverallResults successes="6" failures="0" expectedFailures="0"/>
+        <OverallResults successes="7" failures="0" expectedFailures="0"/>
       </Section>
       <Section name="Composed" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
         <Expression success="true" type="REQUIRE_THAT" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
@@ -4115,7 +4131,7 @@ Nor would this
             1.f, WithinAbs(1.f, 0.5) || WithinULP(1.f, 1)
           </Original>
           <Expanded>
-            1.0f ( is within 0.5 of 1.0 or is within 1 ULPs of 1.0f ([0.99999994039535522, 1.00000011920928955]) )
+            1.0f ( is within 0.5 of 1.0 or is within 1 ULPs of 1.00000000e+00f ([9.99999940e-01, 1.00000012e+00]) )
           </Expanded>
         </Expression>
         <Expression success="true" type="REQUIRE_THAT" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
@@ -4123,7 +4139,7 @@ Nor would this
             1.f, WithinAbs(2.f, 0.5) || WithinULP(1.f, 0)
           </Original>
           <Expanded>
-            1.0f ( is within 0.5 of 2.0 or is within 0 ULPs of 1.0f ([1.00000000000000000, 1.00000000000000000]) )
+            1.0f ( is within 0.5 of 2.0 or is within 0 ULPs of 1.00000000e+00f ([1.00000000e+00, 1.00000000e+00]) )
           </Expanded>
         </Expression>
         <Expression success="true" type="REQUIRE_THAT" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
@@ -15411,7 +15427,7 @@ loose text artifact
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="1467" failures="149" expectedFailures="21"/>
+    <OverallResults successes="1469" failures="149" expectedFailures="21"/>
   </Group>
-  <OverallResults successes="1467" failures="148" expectedFailures="21"/>
+  <OverallResults successes="1469" failures="148" expectedFailures="21"/>
 </Catch>

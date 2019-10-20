@@ -101,14 +101,17 @@ FP step(FP start, FP direction, uint64_t steps) {
     return start;
 }
 
-namespace {
+// Performs equivalent check of std::fabs(lhs - rhs) <= margin
+// But without the subtraction to allow for INFINITY in comparison
+bool marginComparison(double lhs, double rhs, double margin) {
+    return (lhs + margin >= rhs) && (rhs + margin >= lhs);
+}
 
-    // Performs equivalent check of std::fabs(lhs - rhs) <= margin
-    // But without the subtraction to allow for INFINITY in comparison
-    bool marginComparison(double lhs, double rhs, double margin) {
-        return (lhs + margin >= rhs) && (rhs + margin >= lhs);
-    }
-
+template <typename FloatingPoint>
+void write(std::ostream& out, FloatingPoint num) {
+    out << std::scientific
+        << std::setprecision(std::numeric_limits<FloatingPoint>::max_digits10 - 1)
+        << num;
 }
 
 } // end anonymous namespace
@@ -170,27 +173,28 @@ namespace Floating {
     std::string WithinUlpsMatcher::describe() const {
         std::stringstream ret;
 
-        ret << "is within " << m_ulps << " ULPs of " << ::Catch::Detail::stringify(m_target);
+        ret << "is within " << m_ulps << " ULPs of ";
 
         if (m_type == FloatingPointKind::Float) {
+            write(ret, static_cast<float>(m_target));
             ret << 'f';
+        } else {
+            write(ret, m_target);
         }
 
         ret << " ([";
-        ret << std::fixed << std::setprecision(std::numeric_limits<double>::max_digits10);
         if (m_type == FloatingPointKind::Double) {
-            ret << step(m_target, static_cast<double>(-INFINITY), m_ulps)
-                << ", "
-                << step(m_target, static_cast<double>(INFINITY), m_ulps);
+            write(ret, step(m_target, static_cast<double>(-INFINITY), m_ulps));
+            ret << ", ";
+            write(ret, step(m_target, static_cast<double>( INFINITY), m_ulps));
         } else {
-            ret << step<float>(static_cast<float>(m_target), -INFINITY, m_ulps)
-                << ", "
-                << step<float>(static_cast<float>(m_target), INFINITY, m_ulps);
+            write(ret, step(static_cast<float>(m_target), -INFINITY, m_ulps));
+            ret << ", ";
+            write(ret, step(static_cast<float>(m_target),  INFINITY, m_ulps));
         }
         ret << "])";
 
         return ret.str();
-        //return "is within " + Catch::to_string(m_ulps) + " ULPs of " + ::Catch::Detail::stringify(m_target) + ((m_type == FloatingPointKind::Float)? "f" : "");
     }
 
     WithinRelMatcher::WithinRelMatcher(double target, double epsilon):

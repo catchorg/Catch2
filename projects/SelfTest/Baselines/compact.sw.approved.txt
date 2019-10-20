@@ -424,14 +424,15 @@ Matchers.tests.cpp:<line number>: passed: 11., !WithinAbs(10., 0.5) for: 11.0 no
 Matchers.tests.cpp:<line number>: passed: 10., !WithinAbs(11., 0.5) for: 10.0 not is within 0.5 of 11.0
 Matchers.tests.cpp:<line number>: passed: -10., WithinAbs(-10., 0.5) for: -10.0 is within 0.5 of -10.0
 Matchers.tests.cpp:<line number>: passed: -10., WithinAbs(-9.6, 0.5) for: -10.0 is within 0.5 of -9.6
-Matchers.tests.cpp:<line number>: passed: 1., WithinULP(1., 0) for: 1.0 is within 0 ULPs of 1.0 ([1.00000000000000000, 1.00000000000000000])
-Matchers.tests.cpp:<line number>: passed: nextafter(1., 2.), WithinULP(1., 1) for: 1.0 is within 1 ULPs of 1.0 ([0.99999999999999989, 1.00000000000000022])
-Matchers.tests.cpp:<line number>: passed: nextafter(1., 0.), WithinULP(1., 1) for: 1.0 is within 1 ULPs of 1.0 ([0.99999999999999989, 1.00000000000000022])
-Matchers.tests.cpp:<line number>: passed: nextafter(1., 2.), !WithinULP(1., 0) for: 1.0 not is within 0 ULPs of 1.0 ([1.00000000000000000, 1.00000000000000000])
-Matchers.tests.cpp:<line number>: passed: 1., WithinULP(1., 0) for: 1.0 is within 0 ULPs of 1.0 ([1.00000000000000000, 1.00000000000000000])
-Matchers.tests.cpp:<line number>: passed: -0., WithinULP(0., 0) for: -0.0 is within 0 ULPs of 0.0 ([0.00000000000000000, 0.00000000000000000])
-Matchers.tests.cpp:<line number>: passed: 1., WithinAbs(1., 0.5) || WithinULP(2., 1) for: 1.0 ( is within 0.5 of 1.0 or is within 1 ULPs of 2.0 ([1.99999999999999978, 2.00000000000000044]) )
-Matchers.tests.cpp:<line number>: passed: 1., WithinAbs(2., 0.5) || WithinULP(1., 0) for: 1.0 ( is within 0.5 of 2.0 or is within 0 ULPs of 1.0 ([1.00000000000000000, 1.00000000000000000]) )
+Matchers.tests.cpp:<line number>: passed: 1., WithinULP(1., 0) for: 1.0 is within 0 ULPs of 1.0000000000000000e+00 ([1.0000000000000000e+00, 1.0000000000000000e+00])
+Matchers.tests.cpp:<line number>: passed: nextafter(1., 2.), WithinULP(1., 1) for: 1.0 is within 1 ULPs of 1.0000000000000000e+00 ([9.9999999999999989e-01, 1.0000000000000002e+00])
+Matchers.tests.cpp:<line number>: passed: 0., WithinULP(nextafter(0., 1.), 1) for: 0.0 is within 1 ULPs of 4.9406564584124654e-324 ([0.0000000000000000e+00, 9.8813129168249309e-324])
+Matchers.tests.cpp:<line number>: passed: 1., WithinULP(nextafter(1., 0.), 1) for: 1.0 is within 1 ULPs of 9.9999999999999989e-01 ([9.9999999999999978e-01, 1.0000000000000000e+00])
+Matchers.tests.cpp:<line number>: passed: 1., !WithinULP(nextafter(1., 2.), 0) for: 1.0 not is within 0 ULPs of 1.0000000000000002e+00 ([1.0000000000000002e+00, 1.0000000000000002e+00])
+Matchers.tests.cpp:<line number>: passed: 1., WithinULP(1., 0) for: 1.0 is within 0 ULPs of 1.0000000000000000e+00 ([1.0000000000000000e+00, 1.0000000000000000e+00])
+Matchers.tests.cpp:<line number>: passed: -0., WithinULP(0., 0) for: -0.0 is within 0 ULPs of 0.0000000000000000e+00 ([0.0000000000000000e+00, 0.0000000000000000e+00])
+Matchers.tests.cpp:<line number>: passed: 1., WithinAbs(1., 0.5) || WithinULP(2., 1) for: 1.0 ( is within 0.5 of 1.0 or is within 1 ULPs of 2.0000000000000000e+00 ([1.9999999999999998e+00, 2.0000000000000004e+00]) )
+Matchers.tests.cpp:<line number>: passed: 1., WithinAbs(2., 0.5) || WithinULP(1., 0) for: 1.0 ( is within 0.5 of 2.0 or is within 0 ULPs of 1.0000000000000000e+00 ([1.0000000000000000e+00, 1.0000000000000000e+00]) )
 Matchers.tests.cpp:<line number>: passed: 0.0001, WithinAbs(0., 0.001) || WithinRel(0., 0.1) for: 0.0001 ( is within 0.001 of 0.0 or and 0 are within 10% of each other )
 Matchers.tests.cpp:<line number>: passed: WithinAbs(1., 0.)
 Matchers.tests.cpp:<line number>: passed: WithinAbs(1., -1.), std::domain_error
@@ -453,14 +454,15 @@ Matchers.tests.cpp:<line number>: passed: 11.f, !WithinAbs(10.f, 0.5f) for: 11.0
 Matchers.tests.cpp:<line number>: passed: 10.f, !WithinAbs(11.f, 0.5f) for: 10.0f not is within 0.5 of 11.0
 Matchers.tests.cpp:<line number>: passed: -10.f, WithinAbs(-10.f, 0.5f) for: -10.0f is within 0.5 of -10.0
 Matchers.tests.cpp:<line number>: passed: -10.f, WithinAbs(-9.6f, 0.5f) for: -10.0f is within 0.5 of -9.6000003815
-Matchers.tests.cpp:<line number>: passed: 1.f, WithinULP(1.f, 0) for: 1.0f is within 0 ULPs of 1.0f ([1.00000000000000000, 1.00000000000000000])
-Matchers.tests.cpp:<line number>: passed: nextafter(1.f, 2.f), WithinULP(1.f, 1) for: 1.0f is within 1 ULPs of 1.0f ([0.99999994039535522, 1.00000011920928955])
-Matchers.tests.cpp:<line number>: passed: nextafter(1.f, 0.f), WithinULP(1.f, 1) for: 1.0f is within 1 ULPs of 1.0f ([0.99999994039535522, 1.00000011920928955])
-Matchers.tests.cpp:<line number>: passed: nextafter(1.f, 2.f), !WithinULP(1.f, 0) for: 1.0f not is within 0 ULPs of 1.0f ([1.00000000000000000, 1.00000000000000000])
-Matchers.tests.cpp:<line number>: passed: 1.f, WithinULP(1.f, 0) for: 1.0f is within 0 ULPs of 1.0f ([1.00000000000000000, 1.00000000000000000])
-Matchers.tests.cpp:<line number>: passed: -0.f, WithinULP(0.f, 0) for: -0.0f is within 0 ULPs of 0.0f ([0.00000000000000000, 0.00000000000000000])
-Matchers.tests.cpp:<line number>: passed: 1.f, WithinAbs(1.f, 0.5) || WithinULP(1.f, 1) for: 1.0f ( is within 0.5 of 1.0 or is within 1 ULPs of 1.0f ([0.99999994039535522, 1.00000011920928955]) )
-Matchers.tests.cpp:<line number>: passed: 1.f, WithinAbs(2.f, 0.5) || WithinULP(1.f, 0) for: 1.0f ( is within 0.5 of 2.0 or is within 0 ULPs of 1.0f ([1.00000000000000000, 1.00000000000000000]) )
+Matchers.tests.cpp:<line number>: passed: 1.f, WithinULP(1.f, 0) for: 1.0f is within 0 ULPs of 1.00000000e+00f ([1.00000000e+00, 1.00000000e+00])
+Matchers.tests.cpp:<line number>: passed: nextafter(1.f, 2.f), WithinULP(1.f, 1) for: 1.0f is within 1 ULPs of 1.00000000e+00f ([9.99999940e-01, 1.00000012e+00])
+Matchers.tests.cpp:<line number>: passed: 0.f, WithinULP(nextafter(0.f, 1.f), 1) for: 0.0f is within 1 ULPs of 1.40129846e-45f ([0.00000000e+00, 2.80259693e-45])
+Matchers.tests.cpp:<line number>: passed: 1.f, WithinULP(nextafter(1.f, 0.f), 1) for: 1.0f is within 1 ULPs of 9.99999940e-01f ([9.99999881e-01, 1.00000000e+00])
+Matchers.tests.cpp:<line number>: passed: 1.f, !WithinULP(nextafter(1.f, 2.f), 0) for: 1.0f not is within 0 ULPs of 1.00000012e+00f ([1.00000012e+00, 1.00000012e+00])
+Matchers.tests.cpp:<line number>: passed: 1.f, WithinULP(1.f, 0) for: 1.0f is within 0 ULPs of 1.00000000e+00f ([1.00000000e+00, 1.00000000e+00])
+Matchers.tests.cpp:<line number>: passed: -0.f, WithinULP(0.f, 0) for: -0.0f is within 0 ULPs of 0.00000000e+00f ([0.00000000e+00, 0.00000000e+00])
+Matchers.tests.cpp:<line number>: passed: 1.f, WithinAbs(1.f, 0.5) || WithinULP(1.f, 1) for: 1.0f ( is within 0.5 of 1.0 or is within 1 ULPs of 1.00000000e+00f ([9.99999940e-01, 1.00000012e+00]) )
+Matchers.tests.cpp:<line number>: passed: 1.f, WithinAbs(2.f, 0.5) || WithinULP(1.f, 0) for: 1.0f ( is within 0.5 of 2.0 or is within 0 ULPs of 1.00000000e+00f ([1.00000000e+00, 1.00000000e+00]) )
 Matchers.tests.cpp:<line number>: passed: 0.0001f, WithinAbs(0.f, 0.001f) || WithinRel(0.f, 0.1f) for: 0.0001f ( is within 0.001 of 0.0 or and 0 are within 10% of each other )
 Matchers.tests.cpp:<line number>: passed: WithinAbs(1.f, 0.f)
 Matchers.tests.cpp:<line number>: passed: WithinAbs(1.f, -1.f), std::domain_error
