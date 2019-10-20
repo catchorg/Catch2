@@ -50,7 +50,7 @@ more sections in that test case and must run the test case again.
 Compiling Catch2 with MinGW can be exceedingly slow, especially during
 the linking step. As far as we can tell, this is caused by deficiencies
 in its default linker. If you can tell MinGW to instead use lld, via
-`-fuse-ld=ldd`, the link time should drop down to reasonable length
+`-fuse-ld=lld`, the link time should drop down to reasonable length
 again.
 
 
