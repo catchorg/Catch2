@@ -4,39 +4,15 @@
 
 #include <cstring>
 
-namespace Catch {
-
-    // Implementation of test accessors
-    struct StringRefTestAccess {
-        static auto isOwned( StringRef const& stringRef ) -> bool {
-            return stringRef.isOwned();
-        }
-        static auto isSubstring( StringRef const& stringRef ) -> bool {
-            return stringRef.isSubstring();
-        }
-    };
-
-
-    namespace {
-    auto isOwned( StringRef const& stringRef ) -> bool {
-        return StringRefTestAccess::isOwned( stringRef );
-    }
-    auto isSubstring( StringRef const& stringRef ) -> bool {
-        return StringRefTestAccess::isSubstring( stringRef );
-    }
-    } // end anonymous namespace
-
-} // namespace Catch
-
 TEST_CASE( "StringRef", "[Strings][StringRef]" ) {
 
     using Catch::StringRef;
-    using Catch::isOwned; using Catch::isSubstring;
 
     SECTION( "Empty string" ) {
         StringRef empty;
         REQUIRE( empty.empty() );
         REQUIRE( empty.size() == 0 );
+        REQUIRE( empty.isNullTerminated() );
         REQUIRE( std::strcmp( empty.c_str(), "" ) == 0 );
     }
 
@@ -44,28 +20,22 @@ TEST_CASE( "StringRef", "[Strings][StringRef]" ) {
         StringRef s = "hello";
         REQUIRE( s.empty() == false );
         REQUIRE( s.size() == 5 );
-        REQUIRE( isSubstring( s ) == false );
+        REQUIRE( s.isNullTerminated() );
 
-        auto rawChars = s.currentData();
+        auto rawChars = s.data();
         REQUIRE( std::strcmp( rawChars, "hello" ) == 0 );
 
-        SECTION( "c_str() does not cause copy" ) {
-            REQUIRE( isOwned( s ) == false );
-
-            REQUIRE( s.c_str() == rawChars );
-
-            REQUIRE( isOwned( s ) == false );
-        }
+        REQUIRE_NOTHROW(s.c_str());
+        REQUIRE(s.c_str() == rawChars);
+        REQUIRE(s.data() == rawChars);
     }
     SECTION( "From sub-string" ) {
         StringRef original = StringRef( "original string" ).substr(0, 8);
         REQUIRE( original == "original" );
-        REQUIRE( isSubstring( original ) );
-        REQUIRE( isOwned( original ) == false );
 
-        original.c_str(); // Forces it to take ownership
-
-        REQUIRE( isOwned( original ) );
+        REQUIRE_FALSE(original.isNullTerminated());
+        REQUIRE_THROWS(original.c_str());
+        REQUIRE_NOTHROW(original.data());
     }
 
 
@@ -76,25 +46,8 @@ TEST_CASE( "StringRef", "[Strings][StringRef]" ) {
         SECTION( "zero-based substring" ) {
             REQUIRE( ss.empty() == false );
             REQUIRE( ss.size() == 5 );
-            REQUIRE( std::strcmp( ss.c_str(), "hello" ) == 0 );
+            REQUIRE( std::strncmp( ss.data(), "hello", 5 ) == 0 );
             REQUIRE( ss == "hello" );
-        }
-        SECTION( "c_str() causes copy" ) {
-            REQUIRE( isSubstring( ss ) );
-            REQUIRE( isOwned( ss ) == false );
-
-            auto rawChars = ss.currentData();
-            REQUIRE( rawChars == s.currentData() ); // same pointer value
-            REQUIRE( ss.c_str() != rawChars );
-
-            REQUIRE( isOwned( ss ) );
-
-            SECTION( "Self-assignment after substring" ) {
-                ss = *&ss; // the *& are there to suppress warnings (see: "Improvements to Clang's diagnostics" in https://rev.ng/gitlab/revng-bar-2019/clang/raw/master/docs/ReleaseNotes.rst)
-                REQUIRE( isOwned(ss) == false );
-                REQUIRE( ss == "hello" );
-                REQUIRE( rawChars == ss.currentData() ); // same pointer value
-            }
         }
 
         SECTION( "non-zero-based substring") {
@@ -105,21 +58,32 @@ TEST_CASE( "StringRef", "[Strings][StringRef]" ) {
 
         SECTION( "Pointer values of full refs should match" ) {
             StringRef s2 = s;
-            REQUIRE( s.c_str() == s2.c_str() );
+            REQUIRE( s.data() == s2.data() );
         }
 
-        SECTION( "Pointer values of substring refs should not match" ) {
-            REQUIRE( s.c_str() != ss.c_str() );
+        SECTION( "Pointer values of substring refs should also match" ) {
+            REQUIRE( s.data() == ss.data() );
         }
 
         SECTION("Past the end substring") {
             REQUIRE(s.substr(s.size() + 1, 123).empty());
         }
+
+        SECTION("Substring off the end are trimmed") {
+            ss = s.substr(6, 123);
+            REQUIRE(std::strcmp(ss.c_str(), "world!") == 0);
+        }
+        // TODO: substring into string + size is longer than end
     }
 
-    SECTION( "Comparisons" ) {
-        REQUIRE( StringRef("hello") == StringRef("hello") );
-        REQUIRE( StringRef("hello") != StringRef("cello") );
+    SECTION( "Comparisons are deep" ) {
+        char buffer1[] = "Hello";
+        char buffer2[] = "Hello";
+        CHECK(buffer1 != buffer2);
+
+        StringRef left(buffer1), right(buffer2);
+        REQUIRE( left == right );
+        REQUIRE(left != left.substr(0, 3));
     }
 
     SECTION( "from std::string" ) {
@@ -157,5 +121,30 @@ TEST_CASE( "StringRef", "[Strings][StringRef]" ) {
             REQUIRE( stdStr == "a stringref" );
             REQUIRE( stdStr.size() == sr.size() );
         }
+    }
+}
+
+TEST_CASE("StringRef at compilation time", "[Strings][StringRef][constexpr]") {
+    using Catch::StringRef;
+    SECTION("Simple constructors") {
+        STATIC_REQUIRE(StringRef{}.size() == 0);
+
+        STATIC_REQUIRE(StringRef{ "abc", 3 }.size() == 3);
+        STATIC_REQUIRE(StringRef{ "abc", 3 }.isNullTerminated());
+
+        STATIC_REQUIRE(StringRef{ "abc", 2 }.size() == 2);
+        STATIC_REQUIRE_FALSE(StringRef{ "abc", 2 }.isNullTerminated());
+    }
+    SECTION("UDL construction") {
+        constexpr auto sr1 = "abc"_catch_sr;
+        STATIC_REQUIRE_FALSE(sr1.empty());
+        STATIC_REQUIRE(sr1.size() == 3);
+        STATIC_REQUIRE(sr1.isNullTerminated());
+
+        using Catch::operator"" _sr;
+        constexpr auto sr2 = ""_sr;
+        STATIC_REQUIRE(sr2.empty());
+        STATIC_REQUIRE(sr2.size() == 0);
+        STATIC_REQUIRE(sr2.isNullTerminated());
     }
 }

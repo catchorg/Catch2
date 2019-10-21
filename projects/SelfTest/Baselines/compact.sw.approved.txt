@@ -1095,37 +1095,32 @@ Matchers.tests.cpp:<line number>: passed: testStringForMatching(), EndsWith("sub
 Matchers.tests.cpp:<line number>: passed: testStringForMatching(), EndsWith(" SuBsTrInG", Catch::CaseSensitive::No) for: "this string contains 'abc' as a substring" ends with: " substring" (case insensitive)
 String.tests.cpp:<line number>: passed: empty.empty() for: true
 String.tests.cpp:<line number>: passed: empty.size() == 0 for: 0 == 0
+String.tests.cpp:<line number>: passed: empty.isNullTerminated() for: true
 String.tests.cpp:<line number>: passed: std::strcmp( empty.c_str(), "" ) == 0 for: 0 == 0
 String.tests.cpp:<line number>: passed: s.empty() == false for: false == false
 String.tests.cpp:<line number>: passed: s.size() == 5 for: 5 == 5
-String.tests.cpp:<line number>: passed: isSubstring( s ) == false for: false == false
+String.tests.cpp:<line number>: passed: s.isNullTerminated() for: true
 String.tests.cpp:<line number>: passed: std::strcmp( rawChars, "hello" ) == 0 for: 0 == 0
-String.tests.cpp:<line number>: passed: isOwned( s ) == false for: false == false
+String.tests.cpp:<line number>: passed: s.c_str()
 String.tests.cpp:<line number>: passed: s.c_str() == rawChars for: "hello" == "hello"
-String.tests.cpp:<line number>: passed: isOwned( s ) == false for: false == false
+String.tests.cpp:<line number>: passed: s.data() == rawChars for: "hello" == "hello"
 String.tests.cpp:<line number>: passed: original == "original"
-String.tests.cpp:<line number>: passed: isSubstring( original ) for: true
-String.tests.cpp:<line number>: passed: isOwned( original ) == false for: false == false
-String.tests.cpp:<line number>: passed: isOwned( original ) for: true
+String.tests.cpp:<line number>: passed: !(original.isNullTerminated()) for: !false
+String.tests.cpp:<line number>: passed: original.c_str()
+String.tests.cpp:<line number>: passed: original.data()
 String.tests.cpp:<line number>: passed: ss.empty() == false for: false == false
 String.tests.cpp:<line number>: passed: ss.size() == 5 for: 5 == 5
-String.tests.cpp:<line number>: passed: std::strcmp( ss.c_str(), "hello" ) == 0 for: 0 == 0
+String.tests.cpp:<line number>: passed: std::strncmp( ss.data(), "hello", 5 ) == 0 for: 0 == 0
 String.tests.cpp:<line number>: passed: ss == "hello" for: hello == "hello"
-String.tests.cpp:<line number>: passed: isSubstring( ss ) for: true
-String.tests.cpp:<line number>: passed: isOwned( ss ) == false for: false == false
-String.tests.cpp:<line number>: passed: rawChars == s.currentData() for: "hello world!" == "hello world!"
-String.tests.cpp:<line number>: passed: ss.c_str() != rawChars for: "hello" != "hello world!"
-String.tests.cpp:<line number>: passed: isOwned( ss ) for: true
-String.tests.cpp:<line number>: passed: isOwned(ss) == false for: false == false
-String.tests.cpp:<line number>: passed: ss == "hello" for: hello == "hello"
-String.tests.cpp:<line number>: passed: rawChars == ss.currentData() for: "hello world!" == "hello world!"
 String.tests.cpp:<line number>: passed: ss.size() == 6 for: 6 == 6
 String.tests.cpp:<line number>: passed: std::strcmp( ss.c_str(), "world!" ) == 0 for: 0 == 0
-String.tests.cpp:<line number>: passed: s.c_str() == s2.c_str() for: "hello world!" == "hello world!"
-String.tests.cpp:<line number>: passed: s.c_str() != ss.c_str() for: "hello world!" != "hello"
+String.tests.cpp:<line number>: passed: s.data() == s2.data() for: "hello world!" == "hello world!"
+String.tests.cpp:<line number>: passed: s.data() == ss.data() for: "hello world!" == "hello world!"
 String.tests.cpp:<line number>: passed: s.substr(s.size() + 1, 123).empty() for: true
-String.tests.cpp:<line number>: passed: StringRef("hello") == StringRef("hello") for: hello == hello
-String.tests.cpp:<line number>: passed: StringRef("hello") != StringRef("cello") for: hello != cello
+String.tests.cpp:<line number>: passed: std::strcmp(ss.c_str(), "world!") == 0 for: 0 == 0
+String.tests.cpp:<line number>: passed: buffer1 != buffer2 for: "Hello" != "Hello"
+String.tests.cpp:<line number>: passed: left == right for: Hello == Hello
+String.tests.cpp:<line number>: passed: left != left.substr(0, 3) for: Hello != Hel
 String.tests.cpp:<line number>: passed: sr == "a standard string" for: a standard string == "a standard string"
 String.tests.cpp:<line number>: passed: sr.size() == stdStr.size() for: 17 == 17
 String.tests.cpp:<line number>: passed: sr == "a standard string" for: a standard string == "a standard string"
@@ -1136,6 +1131,17 @@ String.tests.cpp:<line number>: passed: stdStr == "a stringref" for: "a stringre
 String.tests.cpp:<line number>: passed: stdStr.size() == sr.size() for: 11 == 11
 String.tests.cpp:<line number>: passed: stdStr == "a stringref" for: "a stringref" == "a stringref"
 String.tests.cpp:<line number>: passed: stdStr.size() == sr.size() for: 11 == 11
+String.tests.cpp:<line number>: passed: with 1 message: 'StringRef{}.size() == 0'
+String.tests.cpp:<line number>: passed: with 1 message: 'StringRef{ "abc", 3 }.size() == 3'
+String.tests.cpp:<line number>: passed: with 1 message: 'StringRef{ "abc", 3 }.isNullTerminated()'
+String.tests.cpp:<line number>: passed: with 1 message: 'StringRef{ "abc", 2 }.size() == 2'
+String.tests.cpp:<line number>: passed: with 1 message: '!(StringRef{ "abc", 2 }.isNullTerminated())'
+String.tests.cpp:<line number>: passed: with 1 message: '!(sr1.empty())'
+String.tests.cpp:<line number>: passed: with 1 message: 'sr1.size() == 3'
+String.tests.cpp:<line number>: passed: with 1 message: 'sr1.isNullTerminated()'
+String.tests.cpp:<line number>: passed: with 1 message: 'sr2.empty()'
+String.tests.cpp:<line number>: passed: with 1 message: 'sr2.size() == 0'
+String.tests.cpp:<line number>: passed: with 1 message: 'sr2.isNullTerminated()'
 ToStringChrono.tests.cpp:<line number>: passed: minute == seconds for: 1 m == 60 s
 ToStringChrono.tests.cpp:<line number>: passed: hour != seconds for: 1 h != 60 s
 ToStringChrono.tests.cpp:<line number>: passed: micro != milli for: 1 us != 1 ms

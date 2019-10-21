@@ -9848,13 +9848,21 @@ Message from section two
         </Expression>
         <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/String.tests.cpp" >
           <Original>
+            empty.isNullTerminated()
+          </Original>
+          <Expanded>
+            true
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/String.tests.cpp" >
+          <Original>
             std::strcmp( empty.c_str(), "" ) == 0
           </Original>
           <Expanded>
             0 == 0
           </Expanded>
         </Expression>
-        <OverallResults successes="3" failures="0" expectedFailures="0"/>
+        <OverallResults successes="4" failures="0" expectedFailures="0"/>
       </Section>
       <Section name="From string literal" filename="projects/<exe-name>/IntrospectiveTests/String.tests.cpp" >
         <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/String.tests.cpp" >
@@ -9875,10 +9883,10 @@ Message from section two
         </Expression>
         <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/String.tests.cpp" >
           <Original>
-            isSubstring( s ) == false
+            s.isNullTerminated()
           </Original>
           <Expanded>
-            false == false
+            true
           </Expanded>
         </Expression>
         <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/String.tests.cpp" >
@@ -9889,33 +9897,30 @@ Message from section two
             0 == 0
           </Expanded>
         </Expression>
-        <Section name="c_str() does not cause copy" filename="projects/<exe-name>/IntrospectiveTests/String.tests.cpp" >
-          <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/String.tests.cpp" >
-            <Original>
-              isOwned( s ) == false
-            </Original>
-            <Expanded>
-              false == false
-            </Expanded>
-          </Expression>
-          <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/String.tests.cpp" >
-            <Original>
-              s.c_str() == rawChars
-            </Original>
-            <Expanded>
-              "hello" == "hello"
-            </Expanded>
-          </Expression>
-          <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/String.tests.cpp" >
-            <Original>
-              isOwned( s ) == false
-            </Original>
-            <Expanded>
-              false == false
-            </Expanded>
-          </Expression>
-          <OverallResults successes="3" failures="0" expectedFailures="0"/>
-        </Section>
+        <Expression success="true" type="REQUIRE_NOTHROW" filename="projects/<exe-name>/IntrospectiveTests/String.tests.cpp" >
+          <Original>
+            s.c_str()
+          </Original>
+          <Expanded>
+            s.c_str()
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/String.tests.cpp" >
+          <Original>
+            s.c_str() == rawChars
+          </Original>
+          <Expanded>
+            "hello" == "hello"
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/String.tests.cpp" >
+          <Original>
+            s.data() == rawChars
+          </Original>
+          <Expanded>
+            "hello" == "hello"
+          </Expanded>
+        </Expression>
         <OverallResults successes="7" failures="0" expectedFailures="0"/>
       </Section>
       <Section name="From sub-string" filename="projects/<exe-name>/IntrospectiveTests/String.tests.cpp" >
@@ -9927,28 +9932,28 @@ Message from section two
             original == "original"
           </Expanded>
         </Expression>
-        <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/String.tests.cpp" >
+        <Expression success="true" type="REQUIRE_FALSE" filename="projects/<exe-name>/IntrospectiveTests/String.tests.cpp" >
           <Original>
-            isSubstring( original )
+            !(original.isNullTerminated())
           </Original>
           <Expanded>
-            true
+            !false
           </Expanded>
         </Expression>
-        <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/String.tests.cpp" >
+        <Expression success="true" type="REQUIRE_THROWS" filename="projects/<exe-name>/IntrospectiveTests/String.tests.cpp" >
           <Original>
-            isOwned( original ) == false
+            original.c_str()
           </Original>
           <Expanded>
-            false == false
+            original.c_str()
           </Expanded>
         </Expression>
-        <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/String.tests.cpp" >
+        <Expression success="true" type="REQUIRE_NOTHROW" filename="projects/<exe-name>/IntrospectiveTests/String.tests.cpp" >
           <Original>
-            isOwned( original )
+            original.data()
           </Original>
           <Expanded>
-            true
+            original.data()
           </Expanded>
         </Expression>
         <OverallResults successes="4" failures="0" expectedFailures="0"/>
@@ -9973,7 +9978,7 @@ Message from section two
           </Expression>
           <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/String.tests.cpp" >
             <Original>
-              std::strcmp( ss.c_str(), "hello" ) == 0
+              std::strncmp( ss.data(), "hello", 5 ) == 0
             </Original>
             <Expanded>
               0 == 0
@@ -9990,79 +9995,6 @@ Message from section two
           <OverallResults successes="4" failures="0" expectedFailures="0"/>
         </Section>
         <OverallResults successes="4" failures="0" expectedFailures="0"/>
-      </Section>
-      <Section name="Substrings" filename="projects/<exe-name>/IntrospectiveTests/String.tests.cpp" >
-        <Section name="c_str() causes copy" filename="projects/<exe-name>/IntrospectiveTests/String.tests.cpp" >
-          <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/String.tests.cpp" >
-            <Original>
-              isSubstring( ss )
-            </Original>
-            <Expanded>
-              true
-            </Expanded>
-          </Expression>
-          <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/String.tests.cpp" >
-            <Original>
-              isOwned( ss ) == false
-            </Original>
-            <Expanded>
-              false == false
-            </Expanded>
-          </Expression>
-          <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/String.tests.cpp" >
-            <Original>
-              rawChars == s.currentData()
-            </Original>
-            <Expanded>
-              "hello world!" == "hello world!"
-            </Expanded>
-          </Expression>
-          <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/String.tests.cpp" >
-            <Original>
-              ss.c_str() != rawChars
-            </Original>
-            <Expanded>
-              "hello" != "hello world!"
-            </Expanded>
-          </Expression>
-          <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/String.tests.cpp" >
-            <Original>
-              isOwned( ss )
-            </Original>
-            <Expanded>
-              true
-            </Expanded>
-          </Expression>
-          <Section name="Self-assignment after substring" filename="projects/<exe-name>/IntrospectiveTests/String.tests.cpp" >
-            <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/String.tests.cpp" >
-              <Original>
-                isOwned(ss) == false
-              </Original>
-              <Expanded>
-                false == false
-              </Expanded>
-            </Expression>
-            <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/String.tests.cpp" >
-              <Original>
-                ss == "hello"
-              </Original>
-              <Expanded>
-                hello == "hello"
-              </Expanded>
-            </Expression>
-            <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/String.tests.cpp" >
-              <Original>
-                rawChars == ss.currentData()
-              </Original>
-              <Expanded>
-                "hello world!" == "hello world!"
-              </Expanded>
-            </Expression>
-            <OverallResults successes="3" failures="0" expectedFailures="0"/>
-          </Section>
-          <OverallResults successes="8" failures="0" expectedFailures="0"/>
-        </Section>
-        <OverallResults successes="8" failures="0" expectedFailures="0"/>
       </Section>
       <Section name="Substrings" filename="projects/<exe-name>/IntrospectiveTests/String.tests.cpp" >
         <Section name="non-zero-based substring" filename="projects/<exe-name>/IntrospectiveTests/String.tests.cpp" >
@@ -10090,7 +10022,7 @@ Message from section two
         <Section name="Pointer values of full refs should match" filename="projects/<exe-name>/IntrospectiveTests/String.tests.cpp" >
           <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/String.tests.cpp" >
             <Original>
-              s.c_str() == s2.c_str()
+              s.data() == s2.data()
             </Original>
             <Expanded>
               "hello world!" == "hello world!"
@@ -10101,13 +10033,13 @@ Message from section two
         <OverallResults successes="1" failures="0" expectedFailures="0"/>
       </Section>
       <Section name="Substrings" filename="projects/<exe-name>/IntrospectiveTests/String.tests.cpp" >
-        <Section name="Pointer values of substring refs should not match" filename="projects/<exe-name>/IntrospectiveTests/String.tests.cpp" >
+        <Section name="Pointer values of substring refs should also match" filename="projects/<exe-name>/IntrospectiveTests/String.tests.cpp" >
           <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/String.tests.cpp" >
             <Original>
-              s.c_str() != ss.c_str()
+              s.data() == ss.data()
             </Original>
             <Expanded>
-              "hello world!" != "hello"
+              "hello world!" == "hello world!"
             </Expanded>
           </Expression>
           <OverallResults successes="1" failures="0" expectedFailures="0"/>
@@ -10128,24 +10060,46 @@ Message from section two
         </Section>
         <OverallResults successes="1" failures="0" expectedFailures="0"/>
       </Section>
-      <Section name="Comparisons" filename="projects/<exe-name>/IntrospectiveTests/String.tests.cpp" >
-        <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/String.tests.cpp" >
+      <Section name="Substrings" filename="projects/<exe-name>/IntrospectiveTests/String.tests.cpp" >
+        <Section name="Substring off the end are trimmed" filename="projects/<exe-name>/IntrospectiveTests/String.tests.cpp" >
+          <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/String.tests.cpp" >
+            <Original>
+              std::strcmp(ss.c_str(), "world!") == 0
+            </Original>
+            <Expanded>
+              0 == 0
+            </Expanded>
+          </Expression>
+          <OverallResults successes="1" failures="0" expectedFailures="0"/>
+        </Section>
+        <OverallResults successes="1" failures="0" expectedFailures="0"/>
+      </Section>
+      <Section name="Comparisons are deep" filename="projects/<exe-name>/IntrospectiveTests/String.tests.cpp" >
+        <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/String.tests.cpp" >
           <Original>
-            StringRef("hello") == StringRef("hello")
+            buffer1 != buffer2
           </Original>
           <Expanded>
-            hello == hello
+            "Hello" != "Hello"
           </Expanded>
         </Expression>
         <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/String.tests.cpp" >
           <Original>
-            StringRef("hello") != StringRef("cello")
+            left == right
           </Original>
           <Expanded>
-            hello != cello
+            Hello == Hello
           </Expanded>
         </Expression>
-        <OverallResults successes="2" failures="0" expectedFailures="0"/>
+        <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/String.tests.cpp" >
+          <Original>
+            left != left.substr(0, 3)
+          </Original>
+          <Expanded>
+            Hello != Hel
+          </Expanded>
+        </Expression>
+        <OverallResults successes="3" failures="0" expectedFailures="0"/>
       </Section>
       <Section name="from std::string" filename="projects/<exe-name>/IntrospectiveTests/String.tests.cpp" >
         <Section name="implicitly constructed" filename="projects/<exe-name>/IntrospectiveTests/String.tests.cpp" >
@@ -10256,6 +10210,15 @@ Message from section two
           <OverallResults successes="2" failures="0" expectedFailures="0"/>
         </Section>
         <OverallResults successes="2" failures="0" expectedFailures="0"/>
+      </Section>
+      <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="StringRef at compilation time" tags="[StringRef][Strings][constexpr]" filename="projects/<exe-name>/IntrospectiveTests/String.tests.cpp" >
+      <Section name="Simple constructors" filename="projects/<exe-name>/IntrospectiveTests/String.tests.cpp" >
+        <OverallResults successes="5" failures="0" expectedFailures="0"/>
+      </Section>
+      <Section name="UDL construction" filename="projects/<exe-name>/IntrospectiveTests/String.tests.cpp" >
+        <OverallResults successes="6" failures="0" expectedFailures="0"/>
       </Section>
       <OverallResult success="true"/>
     </TestCase>
@@ -15427,7 +15390,7 @@ loose text artifact
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="1469" failures="149" expectedFailures="21"/>
+    <OverallResults successes="1475" failures="149" expectedFailures="21"/>
   </Group>
-  <OverallResults successes="1469" failures="148" expectedFailures="21"/>
+  <OverallResults successes="1475" failures="148" expectedFailures="21"/>
 </Catch>

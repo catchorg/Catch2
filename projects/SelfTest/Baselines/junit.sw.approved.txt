@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuitesloose text artifact
 >
-  <testsuite name="<exe-name>" errors="17" failures="132" tests="1639" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
+  <testsuite name="<exe-name>" errors="17" failures="132" tests="1645" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
     <properties>
       <property name="filters" value="~[!nonportable]~[!benchmark]~[approvals]"/>
       <property name="random-seed" value="1"/>
@@ -726,21 +726,21 @@ Matchers.tests.cpp:<line number>
     <testcase classname="<exe-name>.global" name="String matchers" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="StringRef/Empty string" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="StringRef/From string literal" time="{duration}"/>
-    <testcase classname="<exe-name>.global" name="StringRef/From string literal/c_str() does not cause copy" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="StringRef/From sub-string" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="StringRef/Substrings/zero-based substring" time="{duration}"/>
-    <testcase classname="<exe-name>.global" name="StringRef/Substrings/c_str() causes copy" time="{duration}"/>
-    <testcase classname="<exe-name>.global" name="StringRef/Substrings/c_str() causes copy/Self-assignment after substring" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="StringRef/Substrings/non-zero-based substring" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="StringRef/Substrings/Pointer values of full refs should match" time="{duration}"/>
-    <testcase classname="<exe-name>.global" name="StringRef/Substrings/Pointer values of substring refs should not match" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="StringRef/Substrings/Pointer values of substring refs should also match" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="StringRef/Substrings/Past the end substring" time="{duration}"/>
-    <testcase classname="<exe-name>.global" name="StringRef/Comparisons" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="StringRef/Substrings/Substring off the end are trimmed" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="StringRef/Comparisons are deep" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="StringRef/from std::string/implicitly constructed" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="StringRef/from std::string/explicitly constructed" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="StringRef/from std::string/assigned" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="StringRef/to std::string/explicitly constructed" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="StringRef/to std::string/assigned" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="StringRef at compilation time/Simple constructors" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="StringRef at compilation time/UDL construction" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Stringifying std::chrono::duration helpers" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Stringifying std::chrono::duration with weird ratios" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Stringifying std::chrono::time_point&lt;system_clock>" time="{duration}"/>

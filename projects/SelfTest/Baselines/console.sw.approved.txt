@@ -7996,6 +7996,11 @@ with expansion:
   0 == 0
 
 String.tests.cpp:<line number>: PASSED:
+  REQUIRE( empty.isNullTerminated() )
+with expansion:
+  true
+
+String.tests.cpp:<line number>: PASSED:
   REQUIRE( std::strcmp( empty.c_str(), "" ) == 0 )
 with expansion:
   0 == 0
@@ -8018,27 +8023,17 @@ with expansion:
   5 == 5
 
 String.tests.cpp:<line number>: PASSED:
-  REQUIRE( isSubstring( s ) == false )
+  REQUIRE( s.isNullTerminated() )
 with expansion:
-  false == false
+  true
 
 String.tests.cpp:<line number>: PASSED:
   REQUIRE( std::strcmp( rawChars, "hello" ) == 0 )
 with expansion:
   0 == 0
 
--------------------------------------------------------------------------------
-StringRef
-  From string literal
-  c_str() does not cause copy
--------------------------------------------------------------------------------
-String.tests.cpp:<line number>
-...............................................................................
-
 String.tests.cpp:<line number>: PASSED:
-  REQUIRE( isOwned( s ) == false )
-with expansion:
-  false == false
+  REQUIRE_NOTHROW( s.c_str() )
 
 String.tests.cpp:<line number>: PASSED:
   REQUIRE( s.c_str() == rawChars )
@@ -8046,9 +8041,9 @@ with expansion:
   "hello" == "hello"
 
 String.tests.cpp:<line number>: PASSED:
-  REQUIRE( isOwned( s ) == false )
+  REQUIRE( s.data() == rawChars )
 with expansion:
-  false == false
+  "hello" == "hello"
 
 -------------------------------------------------------------------------------
 StringRef
@@ -8061,19 +8056,15 @@ String.tests.cpp:<line number>: PASSED:
   REQUIRE( original == "original" )
 
 String.tests.cpp:<line number>: PASSED:
-  REQUIRE( isSubstring( original ) )
+  REQUIRE_FALSE( original.isNullTerminated() )
 with expansion:
-  true
+  !false
 
 String.tests.cpp:<line number>: PASSED:
-  REQUIRE( isOwned( original ) == false )
-with expansion:
-  false == false
+  REQUIRE_THROWS( original.c_str() )
 
 String.tests.cpp:<line number>: PASSED:
-  REQUIRE( isOwned( original ) )
-with expansion:
-  true
+  REQUIRE_NOTHROW( original.data() )
 
 -------------------------------------------------------------------------------
 StringRef
@@ -8094,7 +8085,7 @@ with expansion:
   5 == 5
 
 String.tests.cpp:<line number>: PASSED:
-  REQUIRE( std::strcmp( ss.c_str(), "hello" ) == 0 )
+  REQUIRE( std::strncmp( ss.data(), "hello", 5 ) == 0 )
 with expansion:
   0 == 0
 
@@ -8102,63 +8093,6 @@ String.tests.cpp:<line number>: PASSED:
   REQUIRE( ss == "hello" )
 with expansion:
   hello == "hello"
-
--------------------------------------------------------------------------------
-StringRef
-  Substrings
-  c_str() causes copy
--------------------------------------------------------------------------------
-String.tests.cpp:<line number>
-...............................................................................
-
-String.tests.cpp:<line number>: PASSED:
-  REQUIRE( isSubstring( ss ) )
-with expansion:
-  true
-
-String.tests.cpp:<line number>: PASSED:
-  REQUIRE( isOwned( ss ) == false )
-with expansion:
-  false == false
-
-String.tests.cpp:<line number>: PASSED:
-  REQUIRE( rawChars == s.currentData() )
-with expansion:
-  "hello world!" == "hello world!"
-
-String.tests.cpp:<line number>: PASSED:
-  REQUIRE( ss.c_str() != rawChars )
-with expansion:
-  "hello" != "hello world!"
-
-String.tests.cpp:<line number>: PASSED:
-  REQUIRE( isOwned( ss ) )
-with expansion:
-  true
-
--------------------------------------------------------------------------------
-StringRef
-  Substrings
-  c_str() causes copy
-  Self-assignment after substring
--------------------------------------------------------------------------------
-String.tests.cpp:<line number>
-...............................................................................
-
-String.tests.cpp:<line number>: PASSED:
-  REQUIRE( isOwned(ss) == false )
-with expansion:
-  false == false
-
-String.tests.cpp:<line number>: PASSED:
-  REQUIRE( ss == "hello" )
-with expansion:
-  hello == "hello"
-
-String.tests.cpp:<line number>: PASSED:
-  REQUIRE( rawChars == ss.currentData() )
-with expansion:
-  "hello world!" == "hello world!"
 
 -------------------------------------------------------------------------------
 StringRef
@@ -8187,22 +8121,22 @@ String.tests.cpp:<line number>
 ...............................................................................
 
 String.tests.cpp:<line number>: PASSED:
-  REQUIRE( s.c_str() == s2.c_str() )
+  REQUIRE( s.data() == s2.data() )
 with expansion:
   "hello world!" == "hello world!"
 
 -------------------------------------------------------------------------------
 StringRef
   Substrings
-  Pointer values of substring refs should not match
+  Pointer values of substring refs should also match
 -------------------------------------------------------------------------------
 String.tests.cpp:<line number>
 ...............................................................................
 
 String.tests.cpp:<line number>: PASSED:
-  REQUIRE( s.c_str() != ss.c_str() )
+  REQUIRE( s.data() == ss.data() )
 with expansion:
-  "hello world!" != "hello"
+  "hello world!" == "hello world!"
 
 -------------------------------------------------------------------------------
 StringRef
@@ -8219,20 +8153,38 @@ with expansion:
 
 -------------------------------------------------------------------------------
 StringRef
-  Comparisons
+  Substrings
+  Substring off the end are trimmed
 -------------------------------------------------------------------------------
 String.tests.cpp:<line number>
 ...............................................................................
 
 String.tests.cpp:<line number>: PASSED:
-  REQUIRE( StringRef("hello") == StringRef("hello") )
+  REQUIRE( std::strcmp(ss.c_str(), "world!") == 0 )
 with expansion:
-  hello == hello
+  0 == 0
+
+-------------------------------------------------------------------------------
+StringRef
+  Comparisons are deep
+-------------------------------------------------------------------------------
+String.tests.cpp:<line number>
+...............................................................................
 
 String.tests.cpp:<line number>: PASSED:
-  REQUIRE( StringRef("hello") != StringRef("cello") )
+  CHECK( buffer1 != buffer2 )
 with expansion:
-  hello != cello
+  "Hello" != "Hello"
+
+String.tests.cpp:<line number>: PASSED:
+  REQUIRE( left == right )
+with expansion:
+  Hello == Hello
+
+String.tests.cpp:<line number>: PASSED:
+  REQUIRE( left != left.substr(0, 3) )
+with expansion:
+  Hello != Hel
 
 -------------------------------------------------------------------------------
 StringRef
@@ -8323,6 +8275,64 @@ String.tests.cpp:<line number>: PASSED:
   REQUIRE( stdStr.size() == sr.size() )
 with expansion:
   11 == 11
+
+-------------------------------------------------------------------------------
+StringRef at compilation time
+  Simple constructors
+-------------------------------------------------------------------------------
+String.tests.cpp:<line number>
+...............................................................................
+
+String.tests.cpp:<line number>: PASSED:
+with message:
+  StringRef{}.size() == 0
+
+String.tests.cpp:<line number>: PASSED:
+with message:
+  StringRef{ "abc", 3 }.size() == 3
+
+String.tests.cpp:<line number>: PASSED:
+with message:
+  StringRef{ "abc", 3 }.isNullTerminated()
+
+String.tests.cpp:<line number>: PASSED:
+with message:
+  StringRef{ "abc", 2 }.size() == 2
+
+String.tests.cpp:<line number>: PASSED:
+with message:
+  !(StringRef{ "abc", 2 }.isNullTerminated())
+
+-------------------------------------------------------------------------------
+StringRef at compilation time
+  UDL construction
+-------------------------------------------------------------------------------
+String.tests.cpp:<line number>
+...............................................................................
+
+String.tests.cpp:<line number>: PASSED:
+with message:
+  !(sr1.empty())
+
+String.tests.cpp:<line number>: PASSED:
+with message:
+  sr1.size() == 3
+
+String.tests.cpp:<line number>: PASSED:
+with message:
+  sr1.isNullTerminated()
+
+String.tests.cpp:<line number>: PASSED:
+with message:
+  sr2.empty()
+
+String.tests.cpp:<line number>: PASSED:
+with message:
+  sr2.size() == 0
+
+String.tests.cpp:<line number>: PASSED:
+with message:
+  sr2.isNullTerminated()
 
 -------------------------------------------------------------------------------
 Stringifying std::chrono::duration helpers
@@ -12956,6 +12966,6 @@ Misc.tests.cpp:<line number>
 Misc.tests.cpp:<line number>: PASSED:
 
 ===============================================================================
-test cases:  304 |  214 passed |  86 failed |  4 failed as expected
-assertions: 1638 | 1469 passed | 148 failed | 21 failed as expected
+test cases:  305 |  215 passed |  86 failed |  4 failed as expected
+assertions: 1644 | 1475 passed | 148 failed | 21 failed as expected
 
