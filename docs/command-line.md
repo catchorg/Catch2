@@ -99,6 +99,7 @@ exclude:notThis         Matches all tests except, 'notThis'
 ~*private*              Matches all tests except those that contain 'private'
 a* ~ab* abc             Matches all tests that start with 'a', except those that
                         start with 'ab', except 'abc', which is included
+-# [#somefile]          Matches all tests from the file 'somefile.cpp'
 </pre>
 
 Names within square brackets are interpreted as tags.
