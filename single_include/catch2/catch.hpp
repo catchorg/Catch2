@@ -1,6 +1,6 @@
 /*
- *  Catch v2.10.1
- *  Generated: 2019-10-20 20:52:21.372334
+ *  Catch v2.10.2
+ *  Generated: 2019-10-24 17:49:11.459934
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2019 Two Blue Cubes Ltd. All rights reserved.
@@ -15,7 +15,7 @@
 
 #define CATCH_VERSION_MAJOR 2
 #define CATCH_VERSION_MINOR 10
-#define CATCH_VERSION_PATCH 1
+#define CATCH_VERSION_PATCH 2
 
 #ifdef __clang__
 #    pragma clang system_header
@@ -6073,9 +6073,9 @@ namespace Catch {
     CATCH_INTERNAL_UNSUPPRESS_GLOBALS_WARNINGS
 
 #define CATCH_REGISTER_LISTENER( listenerType ) \
-     CATCH_INTERNAL_SUPPRESS_GLOBALS_WARNINGS   \
-     namespace{ Catch::ListenerRegistrar<listenerType> catch_internal_RegistrarFor##listenerType; } \
-     CATCH_INTERNAL_SUPPRESS_GLOBALS_WARNINGS
+    CATCH_INTERNAL_SUPPRESS_GLOBALS_WARNINGS   \
+    namespace{ Catch::ListenerRegistrar<listenerType> catch_internal_RegistrarFor##listenerType; } \
+    CATCH_INTERNAL_UNSUPPRESS_GLOBALS_WARNINGS
 #else // CATCH_CONFIG_DISABLE
 
 #define CATCH_REGISTER_REPORTER(name, reporterType)
@@ -11431,9 +11431,10 @@ namespace Floating {
             ret << ", ";
             write(ret, step(m_target, static_cast<double>( INFINITY), m_ulps));
         } else {
-            write(ret, step(static_cast<float>(m_target), -INFINITY, m_ulps));
+            // We have to cast INFINITY to float because of MinGW, see #1782
+            write(ret, step(static_cast<float>(m_target), static_cast<float>(-INFINITY), m_ulps));
             ret << ", ";
-            write(ret, step(static_cast<float>(m_target),  INFINITY, m_ulps));
+            write(ret, step(static_cast<float>(m_target), static_cast<float>( INFINITY), m_ulps));
         }
         ret << "])";
 
@@ -14987,7 +14988,7 @@ namespace Catch {
     }
 
     Version const& libraryVersion() {
-        static Version version( 2, 10, 1, "", 0 );
+        static Version version( 2, 10, 2, "", 0 );
         return version;
     }
 

@@ -2,6 +2,7 @@
 
 # Release notes
 **Contents**<br>
+[2.10.2](#2102)<br>
 [2.10.1](#2101)<br>
 [2.10.0](#2100)<br>
 [2.9.2](#292)<br>
@@ -28,6 +29,17 @@
 [2.0.1](#201)<br>
 [Older versions](#older-versions)<br>
 [Even Older versions](#even-older-versions)<br>
+
+
+## 2.10.2
+
+### Improvements
+* Catch2 will now compile on platform where `INFINITY` is double (#1782)
+
+
+### Fixes
+* Warning suppressed during listener registration will no longer leak
+
 
 
 ## 2.10.1
