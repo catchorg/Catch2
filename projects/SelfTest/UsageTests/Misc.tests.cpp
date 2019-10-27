@@ -58,9 +58,11 @@ struct AutoTestReg {
         REGISTER_TEST_CASE( manuallyRegisteredTestFunction, "ManuallyRegistered" );
     }
 };
+
+CATCH_INTERNAL_START_WARNINGS_SUPPRESSION
 CATCH_INTERNAL_SUPPRESS_GLOBALS_WARNINGS
 static AutoTestReg autoTestReg;
-CATCH_INTERNAL_UNSUPPRESS_GLOBALS_WARNINGS
+CATCH_INTERNAL_STOP_WARNINGS_SUPPRESSION
 
 template<typename T>
 struct Foo {
