@@ -38,13 +38,11 @@ namespace Detail {
             enum Arch { Big, Little };
 
             static Arch which() {
-                union _{
-                    int asInt;
-                    char asChar[sizeof (int)];
-                } u;
-
-                u.asInt = 1;
-                return ( u.asChar[sizeof(int)-1] == 1 ) ? Big : Little;
+                int one = 1;
+                // If the lowest byte we read is non-zero, we can assume
+                // that little endian format is used.
+                auto value = *reinterpret_cast<char*>(&one);
+                return value ? Little : Big;
             }
         };
     }
@@ -241,13 +239,13 @@ std::string StringMaker<std::nullptr_t>::convert(std::nullptr_t) {
 }
 
 int StringMaker<float>::precision = 5;
-   
+
 std::string StringMaker<float>::convert(float value) {
     return fpToString(value, precision) + 'f';
 }
 
 int StringMaker<double>::precision = 10;
-    
+
 std::string StringMaker<double>::convert(double value) {
     return fpToString(value, precision);
 }
