@@ -93,6 +93,17 @@ positively match a testspec.
 The API for Catch2's console colour will be changed to take an extra
 argument, the stream to which the colour code should be applied.
 
+
+### Type erasure in the `PredicateMatcher`
+
+Currently, the `PredicateMatcher` uses `std::function` for type erasure,
+so that type of the matcher is always `PredicateMatcher<T>`, regardless
+of the type of the predicate. Because of the high compilation overhead
+of `std::function`, and the fact that the type erasure is used only rarely,
+`PredicateMatcher` will no longer be type erased in the future. Instead,
+the predicate type will be made part of the PredicateMatcher's type.
+
+
 ---
 
 [Home](Readme.md#top)
