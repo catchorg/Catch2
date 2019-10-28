@@ -9,9 +9,10 @@
 
 #include "catch_common.h"
 #include "catch_matchers.h"
+#include "catch_meta.hpp"
 
-#include <functional>
 #include <string>
+#include <utility>
 
 namespace Catch {
 namespace Matchers {
@@ -21,14 +22,14 @@ namespace Detail {
     std::string finalizeDescription(const std::string& desc);
 }
 
-template <typename T>
+template <typename T, typename Predicate>
 class PredicateMatcher : public MatcherBase<T> {
-    std::function<bool(T const&)> m_predicate;
+    Predicate m_predicate;
     std::string m_description;
 public:
 
-    PredicateMatcher(std::function<bool(T const&)> const& elem, std::string const& descr)
-        :m_predicate(std::move(elem)),
+    PredicateMatcher(Predicate&& elem, std::string const& descr)
+        :m_predicate(std::forward<Predicate>(elem)),
         m_description(Detail::finalizeDescription(descr))
     {}
 
@@ -47,9 +48,11 @@ public:
     // The user has to explicitly specify type to the function, because
     // inferring std::function<bool(T const&)> is hard (but possible) and
     // requires a lot of TMP.
-    template<typename T>
-    Generic::PredicateMatcher<T> Predicate(std::function<bool(T const&)> const& predicate, std::string const& description = "") {
-        return Generic::PredicateMatcher<T>(predicate, description);
+    template<typename T, typename Pred>
+    Generic::PredicateMatcher<T, Pred> Predicate(Pred&& predicate, std::string const& description = "") {
+        static_assert(is_callable<Pred(T)>::value, "Predicate not callable with argument T");
+        static_assert(std::is_same<bool, FunctionReturnType<Pred, T>>::value, "Predicate does not return bool");
+        return Generic::PredicateMatcher<T, Pred>(std::forward<Pred>(predicate), description);
     }
 
 } // namespace Matchers

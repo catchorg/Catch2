@@ -44,7 +44,8 @@
   * If the second argument has text outside tags, the text will be ignored.
 * Hidden test cases are no longer included just because they don't match an exclusion tag
   * Previously, a `TEST_CASE("A", "[.foo]")` would be included by asking for `~[bar]`.
-
+* `PredicateMatcher` is no longer type erased.
+  * This means that the type of the provided predicate is part of the `PredicateMatcher`'s type
 
 
 ### Fixes
