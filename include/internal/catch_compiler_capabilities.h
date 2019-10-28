@@ -43,38 +43,34 @@
 #  define CATCH_INTERNAL_CONFIG_CPP17_UNCAUGHT_EXCEPTIONS
 #endif
 
-#ifdef __clang__
+// We have to avoid both ICC and Clang, because they try to mask themselves
+// as gcc, and we want only GCC in this block
+#if defined(__GNUC__) && !defined(__clang__) && !defined(__ICC)
+#    define CATCH_INTERNAL_START_WARNINGS_SUPPRESSION _Pragma( "GCC diagnostic push" )
+#    define CATCH_INTERNAL_STOP_WARNINGS_SUPPRESSION  _Pragma( "GCC diagnostic pop" )
+#endif
 
-#       define CATCH_INTERNAL_SUPPRESS_GLOBALS_WARNINGS \
-            _Pragma( "clang diagnostic push" ) \
-            _Pragma( "clang diagnostic ignored \"-Wexit-time-destructors\"" ) \
-            _Pragma( "clang diagnostic ignored \"-Wglobal-constructors\"")
-#       define CATCH_INTERNAL_UNSUPPRESS_GLOBALS_WARNINGS \
-            _Pragma( "clang diagnostic pop" )
+#if defined(__clang__)
 
-#       define CATCH_INTERNAL_SUPPRESS_PARENTHESES_WARNINGS \
-            _Pragma( "clang diagnostic push" ) \
-            _Pragma( "clang diagnostic ignored \"-Wparentheses\"" )
-#       define CATCH_INTERNAL_UNSUPPRESS_PARENTHESES_WARNINGS \
-            _Pragma( "clang diagnostic pop" )
+#    define CATCH_INTERNAL_START_WARNINGS_SUPPRESSION _Pragma( "clang diagnostic push" )
+#    define CATCH_INTERNAL_STOP_WARNINGS_SUPPRESSION  _Pragma( "clang diagnostic pop" )
 
-#       define CATCH_INTERNAL_SUPPRESS_UNUSED_WARNINGS \
-            _Pragma( "clang diagnostic push" ) \
-            _Pragma( "clang diagnostic ignored \"-Wunused-variable\"" )
-#       define CATCH_INTERNAL_UNSUPPRESS_UNUSED_WARNINGS \
-            _Pragma( "clang diagnostic pop" )
+#    define CATCH_INTERNAL_SUPPRESS_GLOBALS_WARNINGS \
+         _Pragma( "clang diagnostic ignored \"-Wexit-time-destructors\"" ) \
+         _Pragma( "clang diagnostic ignored \"-Wglobal-constructors\"")
 
-#       define CATCH_INTERNAL_SUPPRESS_ZERO_VARIADIC_WARNINGS \
-            _Pragma( "clang diagnostic push" ) \
-            _Pragma( "clang diagnostic ignored \"-Wgnu-zero-variadic-macro-arguments\"" )
-#       define CATCH_INTERNAL_UNSUPPRESS_ZERO_VARIADIC_WARNINGS \
-            _Pragma( "clang diagnostic pop" )
+#    define CATCH_INTERNAL_SUPPRESS_PARENTHESES_WARNINGS \
+         _Pragma( "clang diagnostic ignored \"-Wparentheses\"" )
 
-#       define CATCH_INTERNAL_SUPPRESS_UNUSED_TEMPLATE_WARNINGS \
-            _Pragma( "clang diagnostic push" ) \
-            _Pragma( "clang diagnostic ignored \"-Wunused-template\"" )
-#       define CATCH_INTERNAL_UNSUPPRESS_UNUSED_TEMPLATE_WARNINGS \
-            _Pragma( "clang diagnostic pop" )
+#    define CATCH_INTERNAL_SUPPRESS_UNUSED_WARNINGS \
+         _Pragma( "clang diagnostic ignored \"-Wunused-variable\"" )
+
+#    define CATCH_INTERNAL_SUPPRESS_ZERO_VARIADIC_WARNINGS \
+         _Pragma( "clang diagnostic ignored \"-Wgnu-zero-variadic-macro-arguments\"" )
+
+#    define CATCH_INTERNAL_SUPPRESS_UNUSED_TEMPLATE_WARNINGS \
+         _Pragma( "clang diagnostic ignored \"-Wunused-template\"" )
+
 #endif // __clang__
 
 
@@ -133,8 +129,10 @@
 
 ////////////////////////////////////////////////////////////////////////////////
 // Visual C++
-#ifdef _MSC_VER
+#if defined(_MSC_VER)
 
+#  define CATCH_INTERNAL_START_WARNINGS_SUPPRESSION __pragma( warning(push) )
+#  define CATCH_INTERNAL_STOP_WARNINGS_SUPPRESSION  __pragma( warning(pop) )
 
 #  if _MSC_VER >= 1900 // Visual Studio 2015 or newer
 #    define CATCH_INTERNAL_CONFIG_CPP17_UNCAUGHT_EXCEPTIONS
@@ -309,34 +307,37 @@
 #  define CATCH_CONFIG_GLOBAL_NEXTAFTER
 #endif
 
+
+// Even if we do not think the compiler has that warning, we still have
+// to provide a macro that can be used by the code.
+#if !defined(CATCH_INTERNAL_START_WARNINGS_SUPPRESSION)
+#   define CATCH_INTERNAL_START_WARNINGS_SUPPRESSION
+#endif
+#if !defined(CATCH_INTERNAL_STOP_WARNINGS_SUPPRESSION)
+#   define CATCH_INTERNAL_STOP_WARNINGS_SUPPRESSION
+#endif
 #if !defined(CATCH_INTERNAL_SUPPRESS_PARENTHESES_WARNINGS)
 #   define CATCH_INTERNAL_SUPPRESS_PARENTHESES_WARNINGS
-#   define CATCH_INTERNAL_UNSUPPRESS_PARENTHESES_WARNINGS
 #endif
 #if !defined(CATCH_INTERNAL_SUPPRESS_GLOBALS_WARNINGS)
 #   define CATCH_INTERNAL_SUPPRESS_GLOBALS_WARNINGS
-#   define CATCH_INTERNAL_UNSUPPRESS_GLOBALS_WARNINGS
 #endif
 #if !defined(CATCH_INTERNAL_SUPPRESS_UNUSED_WARNINGS)
 #   define CATCH_INTERNAL_SUPPRESS_UNUSED_WARNINGS
-#   define CATCH_INTERNAL_UNSUPPRESS_UNUSED_WARNINGS
 #endif
 #if !defined(CATCH_INTERNAL_SUPPRESS_ZERO_VARIADIC_WARNINGS)
 #   define CATCH_INTERNAL_SUPPRESS_ZERO_VARIADIC_WARNINGS
-#   define CATCH_INTERNAL_UNSUPPRESS_ZERO_VARIADIC_WARNINGS
 #endif
+
 
 #if defined(__APPLE__) && defined(__apple_build_version__) && (__clang_major__ < 10)
 #   undef CATCH_INTERNAL_SUPPRESS_UNUSED_TEMPLATE_WARNINGS
-#   undef CATCH_INTERNAL_UNSUPPRESS_UNUSED_TEMPLATE_WARNINGS
 #elif defined(__clang__) && (__clang_major__ < 5)
 #   undef CATCH_INTERNAL_SUPPRESS_UNUSED_TEMPLATE_WARNINGS
-#   undef CATCH_INTERNAL_UNSUPPRESS_UNUSED_TEMPLATE_WARNINGS
 #endif
 
 #if !defined(CATCH_INTERNAL_SUPPRESS_UNUSED_TEMPLATE_WARNINGS)
 #   define CATCH_INTERNAL_SUPPRESS_UNUSED_TEMPLATE_WARNINGS
-#   define CATCH_INTERNAL_UNSUPPRESS_UNUSED_TEMPLATE_WARNINGS
 #endif
 
 #if defined(CATCH_CONFIG_DISABLE_EXCEPTIONS)
