@@ -183,24 +183,25 @@ matrix:
 
     # 5/ OSX Clang Builds
     - os: osx
-      osx_image: xcode8
-      compiler: clang
-      env: COMPILER='clang++'
-
-    - os: osx
-      osx_image: xcode9
-      compiler: clang
-      env: COMPILER='clang++'
-
-    - os: osx
-      osx_image: xcode9.1
-      compiler: clang
-      env: COMPILER='clang++'
-
-    - os: osx
-      osx_image: xcode9.1
+      osx_image: xcode9.4
       compiler: clang
       env: COMPILER='clang++' CPP14=1
+
+    - os: osx
+      osx_image: xcode10.3
+      compiler: clang
+      env: COMPILER='clang++' CPP14=1
+
+    - os: osx
+      osx_image: xcode11.2
+      compiler: clang
+      env: COMPILER='clang++' CPP14=1
+
+    - os: osx
+      osx_image: xcode11.2
+      compiler: clang
+      env: COMPILER='clang++' CPP14=1 EXAMPLES=1 COVERAGE=1 EXTRAS=1
+
 
     # 6/ Special builds -- examples, coverage, valgrind, etc.
     - os: linux
@@ -228,11 +229,6 @@ matrix:
           sources: *all_sources
           packages: ['valgrind', 'lcov', 'g++-7']
       env: COMPILER='g++-7' CPP14=1 VALGRIND=1
-
-    - os: osx
-      osx_image: xcode9.1
-      compiler: clang
-      env: COMPILER='clang++' CPP14=1 EXAMPLES=1 COVERAGE=1 EXTRAS=1
 
     # 7/ C++17 builds
     - os: linux
