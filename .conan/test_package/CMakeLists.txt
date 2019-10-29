@@ -8,4 +8,4 @@ find_package(Catch2 REQUIRED CONFIG)
 
 add_executable(${PROJECT_NAME} test_package.cpp)
 target_link_libraries(${PROJECT_NAME} CONAN_PKG::Catch2)
-set_target_properties(${PROJECT_NAME} PROPERTIES CXX_STANDARD 11)
+set_target_properties(${PROJECT_NAME} PROPERTIES CXX_STANDARD 14)
