@@ -44,7 +44,6 @@ struct NameAndTags {
 
 struct AutoReg : NonCopyable {
     AutoReg( ITestInvoker* invoker, SourceLineInfo const& lineInfo, StringRef const& classOrMethod, NameAndTags const& nameAndTags ) noexcept;
-    ~AutoReg();
 };
 
 } // end namespace Catch

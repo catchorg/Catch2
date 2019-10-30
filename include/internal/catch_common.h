@@ -38,10 +38,8 @@ namespace Catch {
         NonCopyable( NonCopyable && )                  = delete;
         NonCopyable& operator = ( NonCopyable const& ) = delete;
         NonCopyable& operator = ( NonCopyable && )     = delete;
-
     protected:
-        NonCopyable();
-        virtual ~NonCopyable();
+        NonCopyable() noexcept = default;
     };
 
     struct SourceLineInfo {

@@ -20,7 +20,7 @@ namespace Catch {
     public:
 
         Session();
-        ~Session() override;
+        ~Session();
 
         void showHelp() const;
         void libIdentify();
@@ -41,7 +41,7 @@ namespace Catch {
                 returnCode = run();
             return returnCode;
         }
-    
+
         int run();
 
         clara::Parser const& cli() const;

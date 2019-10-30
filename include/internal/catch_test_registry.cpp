@@ -32,6 +32,4 @@ namespace Catch {
             getMutableRegistryHub().registerStartupException();
         }
     }
-
-    AutoReg::~AutoReg() = default;
 }
