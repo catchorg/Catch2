@@ -9,14 +9,6 @@ either of these is a breaking change, and thus will not happen until
 at least the next major release.
 
 
-## Deprecations
-
-### SourceLineInfo::empty()
-
-There should be no reason to ever have an empty `SourceLineInfo`, so the
-method will be removed.
-
-
 ## Planned changes
 
 ### `CHECKED_IF` and `CHECKED_ELSE`

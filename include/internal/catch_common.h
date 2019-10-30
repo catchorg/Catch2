@@ -47,8 +47,8 @@ namespace Catch {
     struct SourceLineInfo {
 
         SourceLineInfo() = delete;
-        SourceLineInfo( char const* _file, std::size_t _line ) noexcept
-        :   file( _file ),
+        constexpr SourceLineInfo( char const* _file, std::size_t _line ) noexcept:
+            file( _file ),
             line( _line )
         {}
 
@@ -57,7 +57,6 @@ namespace Catch {
         SourceLineInfo( SourceLineInfo&& )              noexcept = default;
         SourceLineInfo& operator = ( SourceLineInfo&& ) noexcept = default;
 
-        bool empty() const noexcept { return file[0] == '\0'; }
         bool operator == ( SourceLineInfo const& other ) const noexcept;
         bool operator < ( SourceLineInfo const& other ) const noexcept;
 
