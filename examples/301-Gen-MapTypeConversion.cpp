@@ -29,7 +29,7 @@ public:
     }
 };
 
-std::string const& get() const {
+std::string const& LineGenerator::get() const {
     return m_line;
 }
 
