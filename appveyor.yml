@@ -1,67 +1,112 @@
-# version string format -- This will be overwritten later anyway
-version: "{build}"
+version: "{build}-{branch}"
 
+# If we ever get a backlog larger than clone_depth, builds will fail
+# spuriously. I do not think we will ever get 20 deep commits deep though.
+clone_depth: 20
+
+# We want to build everything, except for branches that are explicitly
+# for messing around with travis.
 branches:
   except:
     - /dev-travis.+/
 
-os:
-  - Visual Studio 2017
+
+# Sadly we cannot use the standard "dimensions" based approach towards
+# specifying the different builds, as there is no way to add one-offs
+# builds afterwards. This means that we will painfully specify each
+# build explicitly.
 
 environment:
-    matrix:
-        - additional_flags: "/permissive- /std:c++latest"
-          wmain: 0
+  matrix:
+    - FLAVOR: VS 2019 x64 Debug
+      APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
+      platform: x64
+      configuration: Debug
+    
+    - FLAVOR: VS 2019 x64 Release
+      APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
+      platform: x64
+      configuration: Release
 
-        - additional_flags: ""
-          wmain: 0
+    - FLAVOR: VS 2019 x64 Debug Coverage
+      APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
+      coverage: 1
+      platform: x64
+      configuration: Debug
 
-        - additional_flags: "/D_UNICODE /DUNICODE"
-          wmain: 1
-          coverage: 0
+    - FLAVOR: VS 2019 x64 Debug Examples
+      APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
+      examples: 1
+      platform: x64
+      configuration: Debug
 
-        # Have a coverage dimension
-        - additional_flags: ""
-          wmain: 0
-          coverage: 1
+    - FLAVOR: VS 2019 x64 Debug WMain
+      APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
+      wmain: 1
+      additional_flags: "/D_UNICODE /DUNICODE"
+      platform: x64
+      configuration: Debug
 
-        # Have an examples dimension
-        - additional_flags: ""
-          wmain: 0
-          examples: 1
+    - FLAVOR: VS 2019 Win32 Debug
+      APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
+      platform: Win32
+      configuration: Debug
 
+    - FLAVOR: VS 2019 x64 Debug Latest Strict
+      APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
+      additional_flags: "/permissive- /std:c++latest"
+      platform: x64
+      configuration: Debug
 
-matrix:
-    exclude:
-        # Exclude unwanted coverage configurations
-        - coverage: 1
-          platform: Win32
+    - FLAVOR: VS 2017 x64 Debug
+      APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+      platform: x64
+      configuration: Debug
+    
+    - FLAVOR: VS 2017 x64 Release
+      APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+      platform: x64
+      configuration: Release
 
-        - coverage: 1
-          configuration: Release
+    - FLAVOR: VS 2017 x64 Release Coverage
+      APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+      coverage: 1
+      platform: x64
+      configuration: Debug
 
-        # Exclude unwanted examples configurations
-        - examples: 1
-          platform: Win32
+    - FLAVOR: VS 2017 Win32 Debug
+      APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+      platform: Win32
+      configuration: Debug
 
-        - examples: 1
-          configuration: Release
+# This build causes error after 30 minutes, because the VS2017 image
+# tries to launch just-in-time debugger on call to std::terminate, which
+# is an expected part of the tests in this build.
+# We can reenable it, if we handle disabling that test in CMake.
+#    - FLAVOR: VS 2017 Win32 Debug Examples
+#      APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+#      examples: 1
+#      platform: Win32
+#      configuration: Debug
+
+    - FLAVOR: VS 2017 Win32 Debug WMain
+      APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+      wmain: 1
+      additional_flags: "/D_UNICODE /DUNICODE"
+      platform: Win32
+      configuration: Debug
+
+    - FLAVOR: VS 2017 x64 Debug Latest Strict
+      APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+      additional_flags: "/permissive- /std:c++latest"
+      platform: x64
+      configuration: Debug
 
 
 install:
   - ps: if (($env:CONFIGURATION) -eq "Debug" -And ($env:coverage) -eq "1" ) { python -m pip --disable-pip-version-check install codecov }
   - ps: if (($env:CONFIGURATION) -eq "Debug" -And ($env:coverage) -eq "1" ) { .\misc\installOpenCppCoverage.ps1 }
 
-# Win32 and x64 are CMake-compatible solution platform names.
-# This allows us to pass %PLATFORM% to CMake -A.
-platform:
-  - Win32
-  - x64
-
-# build Configurations, i.e. Debug, Release, etc.
-configuration:
-  - Debug
-  - Release
 
 #Cmake will autodetect the compiler, but we set the arch
 before_build:
