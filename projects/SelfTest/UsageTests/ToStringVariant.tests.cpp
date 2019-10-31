@@ -9,12 +9,12 @@
 // We need 2 types with non-trivial copies/moves
 struct MyType1 {
     MyType1() = default;
-    MyType1(MyType1 const&) { throw 1; }
+    [[noreturn]] MyType1(MyType1 const&) { throw 1; }
     MyType1& operator=(MyType1 const&) { throw 3; }
 };
 struct MyType2 {
     MyType2() = default;
-    MyType2(MyType2 const&) { throw 2; }
+    [[noreturn]] MyType2(MyType2 const&) { throw 2; }
     MyType2& operator=(MyType2 const&) { throw 4; }
 };
 
