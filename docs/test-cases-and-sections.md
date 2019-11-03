@@ -15,9 +15,17 @@ Instead Catch provides a powerful mechanism for nesting test case sections withi
 Test cases and sections are very easy to use in practice:
 
 * **TEST_CASE(** _test name_ \[, _tags_ \] **)**
-* **SECTION(** _section name_ **)**
+* **SECTION(** _section name_, \[, _section description_ \] **)**
 
-_test name_ and _section name_ are free form, quoted, strings. The optional _tags_ argument is a quoted string containing one or more tags enclosed in square brackets. Tags are discussed below. Test names must be unique within the Catch executable.
+
+_test name_ and _section name_ are free form, quoted, strings.
+The optional _tags_ argument is a quoted string containing one or more
+tags enclosed in square brackets, and are discussed below.
+_section description_ can be used to provide long form description
+of a section while keeping the _section name_ short for use with the
+[`-c` command line parameter](command-line.md#specify-the-section-to-run).
+
+**Test names must be unique within the Catch executable.**
 
 For examples see the [Tutorial](tutorial.md#top)
 

@@ -46,6 +46,9 @@
   * Previously, a `TEST_CASE("A", "[.foo]")` would be included by asking for `~[bar]`.
 * `PredicateMatcher` is no longer type erased.
   * This means that the type of the provided predicate is part of the `PredicateMatcher`'s type
+* `SectionInfo` no longer contains section description as a member (#1319)
+  * You can still write `SECTION("ShortName", "Long and wordy description")`, but the description is thrown away
+  * The description type now must be a `const char*` or implicitly convertible to it
 
 
 ### Fixes

@@ -9,6 +9,7 @@
 #define TWOBLUECUBES_CATCH_SECTION_INFO_H_INCLUDED
 
 #include "catch_common.h"
+#include "catch_stringref.h"
 #include "catch_totals.h"
 
 #include <string>
@@ -20,14 +21,15 @@ namespace Catch {
             (   SourceLineInfo const& _lineInfo,
                 std::string const& _name );
 
-        // Deprecated
+        // The last argument is ignored, so that people can write
+        // SECTION("ShortName", "Proper description that is long") and
+        // still use the `-c` flag comfortably.
         SectionInfo
             (   SourceLineInfo const& _lineInfo,
                 std::string const& _name,
-                std::string const& ) : SectionInfo( _lineInfo, _name ) {}
+                const char* const ) : SectionInfo( _lineInfo, _name ) {}
 
         std::string name;
-        std::string description; // !Deprecated: this will always be empty
         SourceLineInfo lineInfo;
     };
 
