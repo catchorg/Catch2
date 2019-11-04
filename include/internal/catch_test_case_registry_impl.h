@@ -45,7 +45,6 @@ namespace Catch {
         std::vector<TestCase> m_functions;
         mutable RunTests::InWhatOrder m_currentSortOrder = RunTests::InDeclarationOrder;
         mutable std::vector<TestCase> m_sortedFunctions;
-        std::ios_base::Init m_ostreamInit; // Forces cout/ cerr to be initialised
     };
 
     ///////////////////////////////////////////////////////////////////////////

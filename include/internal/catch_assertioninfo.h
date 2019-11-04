@@ -14,16 +14,13 @@
 
 namespace Catch {
 
-    struct AssertionInfo
-    {
+    struct AssertionInfo {
+        // AssertionInfo() = delete;
+
         StringRef macroName;
         SourceLineInfo lineInfo;
         StringRef capturedExpression;
         ResultDisposition::Flags resultDisposition;
-
-        // We want to delete this constructor but a compiler bug in 4.8 means
-        // the struct is then treated as non-aggregate
-        //AssertionInfo() = delete;
     };
 
 } // end namespace Catch
