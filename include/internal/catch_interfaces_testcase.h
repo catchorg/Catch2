@@ -19,19 +19,19 @@ namespace Catch {
         virtual ~ITestInvoker();
     };
 
-    class TestCase;
+    class TestCaseHandle;
     struct IConfig;
 
     struct ITestCaseRegistry {
         virtual ~ITestCaseRegistry();
-        virtual std::vector<TestCase> const& getAllTests() const = 0;
-        virtual std::vector<TestCase> const& getAllTestsSorted( IConfig const& config ) const = 0;
+        virtual std::vector<TestCaseHandle> const& getAllTests() const = 0;
+        virtual std::vector<TestCaseHandle> const& getAllTestsSorted( IConfig const& config ) const = 0;
     };
 
-    bool isThrowSafe( TestCase const& testCase, IConfig const& config );
-    bool matchTest( TestCase const& testCase, TestSpec const& testSpec, IConfig const& config );
-    std::vector<TestCase> filterTests( std::vector<TestCase> const& testCases, TestSpec const& testSpec, IConfig const& config );
-    std::vector<TestCase> const& getAllTestCasesSorted( IConfig const& config );
+    bool isThrowSafe( TestCaseHandle const& testCase, IConfig const& config );
+    bool matchTest( TestCaseHandle const& testCase, TestSpec const& testSpec, IConfig const& config );
+    std::vector<TestCaseHandle> filterTests( std::vector<TestCaseHandle> const& testCases, TestSpec const& testSpec, IConfig const& config );
+    std::vector<TestCaseHandle> const& getAllTestCasesSorted( IConfig const& config );
 
 }
 

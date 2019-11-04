@@ -15,13 +15,15 @@
 
 namespace Catch {
 
-    class TestCase;
+    class TestCaseHandle;
+    struct TestCaseInfo;
     struct ITestCaseRegistry;
     struct IExceptionTranslatorRegistry;
     struct IExceptionTranslator;
     struct IReporterRegistry;
     struct IReporterFactory;
     struct ITagAliasRegistry;
+    struct ITestInvoker;
     struct IMutableEnumValuesRegistry;
 
     class StartupExceptionRegistry;
@@ -44,7 +46,7 @@ namespace Catch {
         virtual ~IMutableRegistryHub();
         virtual void registerReporter( std::string const& name, IReporterFactoryPtr const& factory ) = 0;
         virtual void registerListener( IReporterFactoryPtr const& factory ) = 0;
-        virtual void registerTest( TestCase const& testInfo ) = 0;
+        virtual void registerTest(std::unique_ptr<TestCaseInfo>&& testInfo, std::unique_ptr<ITestInvoker>&& invoker) = 0;
         virtual void registerTranslator( const IExceptionTranslator* translator ) = 0;
         virtual void registerTagAlias( std::string const& alias, std::string const& tag, SourceLineInfo const& lineInfo ) = 0;
         virtual void registerStartupException() noexcept = 0;

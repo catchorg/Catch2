@@ -19,9 +19,9 @@
 
 namespace Catch {
 
-    std::vector<TestCase> sortTests( IConfig const& config, std::vector<TestCase> const& unsortedTestCases ) {
+    std::vector<TestCaseHandle> sortTests( IConfig const& config, std::vector<TestCaseHandle> const& unsortedTestCases ) {
 
-        std::vector<TestCase> sorted = unsortedTestCases;
+        std::vector<TestCaseHandle> sorted = unsortedTestCases;
 
         switch( config.runOrder() ) {
             case RunTests::InLexicographicalOrder:
@@ -38,53 +38,55 @@ namespace Catch {
         return sorted;
     }
 
-    bool isThrowSafe( TestCase const& testCase, IConfig const& config ) {
-        return !testCase.throws() || config.allowThrows();
+    bool isThrowSafe( TestCaseHandle const& testCase, IConfig const& config ) {
+        return !testCase.getTestCaseInfo().throws() || config.allowThrows();
     }
 
-    bool matchTest( TestCase const& testCase, TestSpec const& testSpec, IConfig const& config ) {
-        return testSpec.matches( testCase ) && isThrowSafe( testCase, config );
+    bool matchTest( TestCaseHandle const& testCase, TestSpec const& testSpec, IConfig const& config ) {
+        return testSpec.matches( testCase.getTestCaseInfo() ) && isThrowSafe( testCase, config );
     }
 
-    void enforceNoDuplicateTestCases( std::vector<TestCase> const& functions ) {
-        std::set<TestCase> seenFunctions;
+    void enforceNoDuplicateTestCases( std::vector<TestCaseHandle> const& functions ) {
+        std::set<TestCaseHandle> seenFunctions;
         for( auto const& function : functions ) {
             auto prev = seenFunctions.insert( function );
             CATCH_ENFORCE( prev.second,
-                    "error: TEST_CASE( \"" << function.name << "\" ) already defined.\n"
+                    "error: TEST_CASE( \"" << function.getTestCaseInfo().name << "\" ) already defined.\n"
                     << "\tFirst seen at " << prev.first->getTestCaseInfo().lineInfo << "\n"
                     << "\tRedefined at " << function.getTestCaseInfo().lineInfo );
         }
     }
 
-    std::vector<TestCase> filterTests( std::vector<TestCase> const& testCases, TestSpec const& testSpec, IConfig const& config ) {
-        std::vector<TestCase> filtered;
+    std::vector<TestCaseHandle> filterTests( std::vector<TestCaseHandle> const& testCases, TestSpec const& testSpec, IConfig const& config ) {
+        std::vector<TestCaseHandle> filtered;
         filtered.reserve( testCases.size() );
         for (auto const& testCase : testCases) {
-            if ((!testSpec.hasFilters() && !testCase.isHidden()) ||
+            if ((!testSpec.hasFilters() && !testCase.getTestCaseInfo().isHidden()) ||
                 (testSpec.hasFilters() && matchTest(testCase, testSpec, config))) {
                 filtered.push_back(testCase);
             }
         }
         return filtered;
     }
-    std::vector<TestCase> const& getAllTestCasesSorted( IConfig const& config ) {
+    std::vector<TestCaseHandle> const& getAllTestCasesSorted( IConfig const& config ) {
         return getRegistryHub().getTestCaseRegistry().getAllTestsSorted( config );
     }
 
-    void TestRegistry::registerTest( TestCase const& testCase ) {
-        m_functions.push_back( testCase );
+    void TestRegistry::registerTest(std::unique_ptr<TestCaseInfo> testInfo, std::unique_ptr<ITestInvoker> testInvoker) {
+        m_handles.emplace_back(testInfo.get(), testInvoker.get());
+        m_infos.push_back(std::move(testInfo));
+        m_invokers.push_back(std::move(testInvoker));
     }
 
-    std::vector<TestCase> const& TestRegistry::getAllTests() const {
-        return m_functions;
+    std::vector<TestCaseHandle> const& TestRegistry::getAllTests() const {
+        return m_handles;
     }
-    std::vector<TestCase> const& TestRegistry::getAllTestsSorted( IConfig const& config ) const {
+    std::vector<TestCaseHandle> const& TestRegistry::getAllTestsSorted( IConfig const& config ) const {
         if( m_sortedFunctions.empty() )
-            enforceNoDuplicateTestCases( m_functions );
+            enforceNoDuplicateTestCases( m_handles );
 
         if(  m_currentSortOrder != config.runOrder() || m_sortedFunctions.empty() ) {
-            m_sortedFunctions = sortTests( config, m_functions );
+            m_sortedFunctions = sortTests( config, m_handles );
             m_currentSortOrder = config.runOrder();
         }
         return m_sortedFunctions;
@@ -93,8 +95,6 @@ namespace Catch {
 
 
     ///////////////////////////////////////////////////////////////////////////
-    TestInvokerAsFunction::TestInvokerAsFunction( void(*testAsFunction)() ) noexcept : m_testAsFunction( testAsFunction ) {}
-
     void TestInvokerAsFunction::invoke() const {
         m_testAsFunction();
     }

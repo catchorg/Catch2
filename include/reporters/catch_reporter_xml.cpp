@@ -277,7 +277,7 @@ namespace Catch {
         }
     }
 
-    void XmlReporter::listTests(std::vector<TestCase> const& tests, Config const&) {
+    void XmlReporter::listTests(std::vector<TestCaseHandle> const& tests, Config const&) {
         auto outerTag = m_xml.scopedElement("MatchingTests");
         for (auto const& test : tests) {
             auto innerTag = m_xml.scopedElement("TestCase");

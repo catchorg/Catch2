@@ -49,8 +49,8 @@ namespace Catch {
             void registerListener( IReporterFactoryPtr const& factory ) override {
                 m_reporterRegistry.registerListener( factory );
             }
-            void registerTest( TestCase const& testInfo ) override {
-                m_testCaseRegistry.registerTest( testInfo );
+            void registerTest( std::unique_ptr<TestCaseInfo>&& testInfo, std::unique_ptr<ITestInvoker>&& invoker ) override {
+                m_testCaseRegistry.registerTest( std::move(testInfo), std::move(invoker) );
             }
             void registerTranslator( const IExceptionTranslator* translator ) override {
                 m_exceptionTranslatorRegistry.registerTranslator( translator );

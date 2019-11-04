@@ -53,10 +53,10 @@ namespace Catch {
         }
     }
 
-    TestCase makeTestCase(  ITestInvoker* _testCase,
-                            std::string const& _className,
-                            NameAndTags const& nameAndTags,
-                            SourceLineInfo const& _lineInfo )
+    std::unique_ptr<TestCaseInfo>
+        makeTestCaseInfo(std::string const& _className,
+                     NameAndTags const& nameAndTags,
+                     SourceLineInfo const& _lineInfo )
     {
         bool isHidden = false;
 
@@ -95,8 +95,8 @@ namespace Catch {
             tags.push_back( "." );
         }
 
-        TestCaseInfo info( static_cast<std::string>(nameAndTags.name), _className, tags, _lineInfo );
-        return TestCase( _testCase, std::move(info) );
+        return std::make_unique<TestCaseInfo>(static_cast<std::string>(nameAndTags.name),
+                                              _className, tags, _lineInfo);
     }
 
     void setTags( TestCaseInfo& testCaseInfo, std::vector<std::string> tags ) {
@@ -155,26 +155,18 @@ namespace Catch {
     }
 
 
-    TestCase::TestCase( ITestInvoker* testCase, TestCaseInfo&& info ) : TestCaseInfo( std::move(info) ), test( testCase ) {}
-
-
-    void TestCase::invoke() const {
-        test->invoke();
+    bool TestCaseHandle::operator == ( TestCaseHandle const& rhs ) const {
+        return m_invoker == rhs.m_invoker
+            && m_info->name == rhs.m_info->name
+            && m_info->className == rhs.m_info->className;
     }
 
-    bool TestCase::operator == ( TestCase const& other ) const {
-        return  test.get() == other.test.get() &&
-                name == other.name &&
-                className == other.className;
+    bool TestCaseHandle::operator < ( TestCaseHandle const& rhs ) const {
+        return m_info->name < rhs.m_info->name;
     }
 
-    bool TestCase::operator < ( TestCase const& other ) const {
-        return name < other.name;
-    }
-
-    TestCaseInfo const& TestCase::getTestCaseInfo() const
-    {
-        return *this;
+    TestCaseInfo const& TestCaseHandle::getTestCaseInfo() const {
+        return *m_info;
     }
 
 } // end namespace Catch

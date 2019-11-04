@@ -6418,12 +6418,12 @@ with expansion:
   false == false
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  CHECK( spec.matches( tcA ) == false )
+  CHECK( spec.matches( *tcA ) == false )
 with expansion:
   false == false
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  CHECK( spec.matches( tcB ) == false )
+  CHECK( spec.matches( *tcB ) == false )
 with expansion:
   false == false
 
@@ -6440,12 +6440,12 @@ with expansion:
   false == false
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  CHECK( spec.matches(tcA ) == false )
+  CHECK( spec.matches( *tcA ) == false )
 with expansion:
   false == false
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  CHECK( spec.matches( tcB ) == false )
+  CHECK( spec.matches( *tcB ) == false )
 with expansion:
   false == false
 
@@ -6462,12 +6462,12 @@ with expansion:
   false == false
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  CHECK( spec.matches( tcA ) == false )
+  CHECK( spec.matches( *tcA ) == false )
 with expansion:
   false == false
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  CHECK( spec.matches( tcB ) == false )
+  CHECK( spec.matches( *tcB ) == false )
 with expansion:
   false == false
 
@@ -6484,12 +6484,12 @@ with expansion:
   true == true
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  CHECK( spec.matches( tcA ) == false )
+  CHECK( spec.matches( *tcA ) == false )
 with expansion:
   false == false
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  CHECK( spec.matches( tcB ) == true )
+  CHECK( spec.matches( *tcB ) == true )
 with expansion:
   true == true
 
@@ -6506,12 +6506,12 @@ with expansion:
   true == true
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  CHECK( spec.matches( tcA ) == false )
+  CHECK( spec.matches( *tcA ) == false )
 with expansion:
   false == false
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  CHECK( spec.matches( tcB ) == true )
+  CHECK( spec.matches( *tcB ) == true )
 with expansion:
   true == true
 
@@ -6528,17 +6528,17 @@ with expansion:
   true == true
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  CHECK( spec.matches( tcA ) == false )
+  CHECK( spec.matches( *tcA ) == false )
 with expansion:
   false == false
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  CHECK( spec.matches( tcB ) == true )
+  CHECK( spec.matches( *tcB ) == true )
 with expansion:
   true == true
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  CHECK( spec.matches( tcC ) == false )
+  CHECK( spec.matches( *tcC ) == false )
 with expansion:
   false == false
 
@@ -6555,27 +6555,27 @@ with expansion:
   true == true
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  CHECK( spec.matches( tcA ) == false )
+  CHECK( spec.matches( *tcA ) == false )
 with expansion:
   false == false
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  CHECK( spec.matches( tcB ) == false )
+  CHECK( spec.matches( *tcB ) == false )
 with expansion:
   false == false
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  CHECK( spec.matches( tcC ) == true )
+  CHECK( spec.matches( *tcC ) == true )
 with expansion:
   true == true
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  CHECK( spec.matches( tcD ) == false )
+  CHECK( spec.matches( *tcD ) == false )
 with expansion:
   false == false
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  CHECK( parseTestSpec( "*a" ).matches( tcA ) == true )
+  CHECK( parseTestSpec( "*a" ).matches( *tcA ) == true )
 with expansion:
   true == true
 
@@ -6592,27 +6592,27 @@ with expansion:
   true == true
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  CHECK( spec.matches( tcA ) == false )
+  CHECK( spec.matches( *tcA ) == false )
 with expansion:
   false == false
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  CHECK( spec.matches( tcB ) == false )
+  CHECK( spec.matches( *tcB ) == false )
 with expansion:
   false == false
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  CHECK( spec.matches( tcC ) == true )
+  CHECK( spec.matches( *tcC ) == true )
 with expansion:
   true == true
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  CHECK( spec.matches( tcD ) == false )
+  CHECK( spec.matches( *tcD ) == false )
 with expansion:
   false == false
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  CHECK( parseTestSpec( "a*" ).matches( tcA ) == true )
+  CHECK( parseTestSpec( "a*" ).matches( *tcA ) == true )
 with expansion:
   true == true
 
@@ -6629,27 +6629,27 @@ with expansion:
   true == true
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  CHECK( spec.matches( tcA ) == false )
+  CHECK( spec.matches( *tcA ) == false )
 with expansion:
   false == false
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  CHECK( spec.matches( tcB ) == false )
+  CHECK( spec.matches( *tcB ) == false )
 with expansion:
   false == false
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  CHECK( spec.matches( tcC ) == true )
+  CHECK( spec.matches( *tcC ) == true )
 with expansion:
   true == true
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  CHECK( spec.matches( tcD ) == true )
+  CHECK( spec.matches( *tcD ) == true )
 with expansion:
   true == true
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  CHECK( parseTestSpec( "*a*" ).matches( tcA ) == true )
+  CHECK( parseTestSpec( "*a*" ).matches( *tcA ) == true )
 with expansion:
   true == true
 
@@ -6666,12 +6666,12 @@ with expansion:
   true == true
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  CHECK( spec.matches( tcA ) == true )
+  CHECK( spec.matches( *tcA ) == true )
 with expansion:
   true == true
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  CHECK( spec.matches( tcB ) == false )
+  CHECK( spec.matches( *tcB ) == false )
 with expansion:
   false == false
 
@@ -6688,12 +6688,12 @@ with expansion:
   true == true
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  CHECK( spec.matches( tcA ) == true )
+  CHECK( spec.matches( *tcA ) == true )
 with expansion:
   true == true
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  CHECK( spec.matches( tcB ) == false )
+  CHECK( spec.matches( *tcB ) == false )
 with expansion:
   false == false
 
@@ -6710,12 +6710,12 @@ with expansion:
   true == true
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  CHECK( spec.matches( tcA ) == true )
+  CHECK( spec.matches( *tcA ) == true )
 with expansion:
   true == true
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  CHECK( spec.matches( tcB ) == false )
+  CHECK( spec.matches( *tcB ) == false )
 with expansion:
   false == false
 
@@ -6732,22 +6732,22 @@ with expansion:
   true == true
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  CHECK( spec.matches( tcA ) == false )
+  CHECK( spec.matches( *tcA ) == false )
 with expansion:
   false == false
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  CHECK( spec.matches( tcB ) == false )
+  CHECK( spec.matches( *tcB ) == false )
 with expansion:
   false == false
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  CHECK( spec.matches( tcC ) == true )
+  CHECK( spec.matches( *tcC ) == true )
 with expansion:
   true == true
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  CHECK( spec.matches( tcD ) == true )
+  CHECK( spec.matches( *tcD ) == true )
 with expansion:
   true == true
 
@@ -6764,22 +6764,22 @@ with expansion:
   true == true
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  CHECK( spec.matches( tcA ) == true )
+  CHECK( spec.matches( *tcA ) == true )
 with expansion:
   true == true
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  CHECK( spec.matches( tcB ) == true )
+  CHECK( spec.matches( *tcB ) == true )
 with expansion:
   true == true
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  CHECK( spec.matches( tcC ) == true )
+  CHECK( spec.matches( *tcC ) == true )
 with expansion:
   true == true
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  CHECK( spec.matches( tcD ) == true )
+  CHECK( spec.matches( *tcD ) == true )
 with expansion:
   true == true
 
@@ -6796,17 +6796,17 @@ with expansion:
   true == true
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  CHECK( spec.matches( tcA ) == false )
+  CHECK( spec.matches( *tcA ) == false )
 with expansion:
   false == false
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  CHECK( spec.matches( tcB ) == true )
+  CHECK( spec.matches( *tcB ) == true )
 with expansion:
   true == true
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  CHECK( spec.matches( tcC ) == false )
+  CHECK( spec.matches( *tcC ) == false )
 with expansion:
   false == false
 
@@ -6823,17 +6823,17 @@ with expansion:
   true == true
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  CHECK( spec.matches( tcA ) == false )
+  CHECK( spec.matches( *tcA ) == false )
 with expansion:
   false == false
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  CHECK( spec.matches( tcB ) == true )
+  CHECK( spec.matches( *tcB ) == true )
 with expansion:
   true == true
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  CHECK( spec.matches( tcC ) == true )
+  CHECK( spec.matches( *tcC ) == true )
 with expansion:
   true == true
 
@@ -6850,17 +6850,17 @@ with expansion:
   true == true
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  CHECK( spec.matches( tcA ) == false )
+  CHECK( spec.matches( *tcA ) == false )
 with expansion:
   false == false
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  CHECK( spec.matches( tcB ) == false )
+  CHECK( spec.matches( *tcB ) == false )
 with expansion:
   false == false
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  CHECK( spec.matches( tcC ) == true )
+  CHECK( spec.matches( *tcC ) == true )
 with expansion:
   true == true
 
@@ -6877,17 +6877,17 @@ with expansion:
   true == true
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  CHECK( spec.matches( tcA ) == false )
+  CHECK( spec.matches( *tcA ) == false )
 with expansion:
   false == false
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  CHECK( spec.matches( tcB ) == false )
+  CHECK( spec.matches( *tcB ) == false )
 with expansion:
   false == false
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  CHECK( spec.matches( tcC ) == true )
+  CHECK( spec.matches( *tcC ) == true )
 with expansion:
   true == true
 
@@ -6904,22 +6904,22 @@ with expansion:
   true == true
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  CHECK( spec.matches( tcA ) == false )
+  CHECK( spec.matches( *tcA ) == false )
 with expansion:
   false == false
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  CHECK( spec.matches( tcB ) == false )
+  CHECK( spec.matches( *tcB ) == false )
 with expansion:
   false == false
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  CHECK( spec.matches( tcC ) == true )
+  CHECK( spec.matches( *tcC ) == true )
 with expansion:
   true == true
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  CHECK( spec.matches( tcD ) == false )
+  CHECK( spec.matches( *tcD ) == false )
 with expansion:
   false == false
 
@@ -6936,17 +6936,17 @@ with expansion:
   true == true
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  CHECK( spec.matches( tcA ) == true )
+  CHECK( spec.matches( *tcA ) == true )
 with expansion:
   true == true
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  CHECK( spec.matches( tcB ) == false )
+  CHECK( spec.matches( *tcB ) == false )
 with expansion:
   false == false
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  CHECK( spec.matches( tcC ) == false )
+  CHECK( spec.matches( *tcC ) == false )
 with expansion:
   false == false
 
@@ -6963,17 +6963,17 @@ with expansion:
   true == true
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  CHECK( spec.matches( tcA ) == false )
+  CHECK( spec.matches( *tcA ) == false )
 with expansion:
   false == false
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  CHECK( spec.matches( tcB ) == true )
+  CHECK( spec.matches( *tcB ) == true )
 with expansion:
   true == true
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  CHECK( spec.matches( tcC ) == false )
+  CHECK( spec.matches( *tcC ) == false )
 with expansion:
   false == false
 
@@ -6990,22 +6990,22 @@ with expansion:
   true == true
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  CHECK( spec.matches( tcA ) == false )
+  CHECK( spec.matches( *tcA ) == false )
 with expansion:
   false == false
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  CHECK( spec.matches( tcB ) == false )
+  CHECK( spec.matches( *tcB ) == false )
 with expansion:
   false == false
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  CHECK( spec.matches( tcC ) == false )
+  CHECK( spec.matches( *tcC ) == false )
 with expansion:
   false == false
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  CHECK( spec.matches( tcD ) == true )
+  CHECK( spec.matches( *tcD ) == true )
 with expansion:
   true == true
 
@@ -7022,22 +7022,22 @@ with expansion:
   true == true
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  CHECK( spec.matches( tcA ) == false )
+  CHECK( spec.matches( *tcA ) == false )
 with expansion:
   false == false
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  CHECK( spec.matches( tcB ) == false )
+  CHECK( spec.matches( *tcB ) == false )
 with expansion:
   false == false
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  CHECK( spec.matches( tcC ) == false )
+  CHECK( spec.matches( *tcC ) == false )
 with expansion:
   false == false
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  CHECK( spec.matches( tcD ) == true )
+  CHECK( spec.matches( *tcD ) == true )
 with expansion:
   true == true
 
@@ -7054,22 +7054,22 @@ with expansion:
   true == true
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  CHECK( spec.matches( tcA ) == true )
+  CHECK( spec.matches( *tcA ) == true )
 with expansion:
   true == true
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  CHECK( spec.matches( tcB ) == false )
+  CHECK( spec.matches( *tcB ) == false )
 with expansion:
   false == false
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  CHECK( spec.matches( tcC ) == false )
+  CHECK( spec.matches( *tcC ) == false )
 with expansion:
   false == false
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  CHECK( spec.matches( tcD ) == true )
+  CHECK( spec.matches( *tcD ) == true )
 with expansion:
   true == true
 
@@ -7086,22 +7086,22 @@ with expansion:
   true == true
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  CHECK( spec.matches( tcA ) == true )
+  CHECK( spec.matches( *tcA ) == true )
 with expansion:
   true == true
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  CHECK( spec.matches( tcB ) == true )
+  CHECK( spec.matches( *tcB ) == true )
 with expansion:
   true == true
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  CHECK( spec.matches( tcC ) == false )
+  CHECK( spec.matches( *tcC ) == false )
 with expansion:
   false == false
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  CHECK( spec.matches( tcD ) == false )
+  CHECK( spec.matches( *tcD ) == false )
 with expansion:
   false == false
 
@@ -7118,22 +7118,22 @@ with expansion:
   true == true
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  CHECK( spec.matches( tcA ) == true )
+  CHECK( spec.matches( *tcA ) == true )
 with expansion:
   true == true
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  CHECK( spec.matches( tcB ) == true )
+  CHECK( spec.matches( *tcB ) == true )
 with expansion:
   true == true
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  CHECK( spec.matches( tcC ) == true )
+  CHECK( spec.matches( *tcC ) == true )
 with expansion:
   true == true
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  CHECK( spec.matches( tcD ) == false )
+  CHECK( spec.matches( *tcD ) == false )
 with expansion:
   false == false
 
@@ -7150,22 +7150,22 @@ with expansion:
   true == true
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  CHECK( spec.matches( tcA ) == true )
+  CHECK( spec.matches( *tcA ) == true )
 with expansion:
   true == true
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  CHECK( spec.matches( tcB ) == true )
+  CHECK( spec.matches( *tcB ) == true )
 with expansion:
   true == true
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  CHECK( spec.matches( tcC ) == true )
+  CHECK( spec.matches( *tcC ) == true )
 with expansion:
   true == true
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  CHECK( spec.matches( tcD ) == false )
+  CHECK( spec.matches( *tcD ) == false )
 with expansion:
   false == false
 
@@ -7182,22 +7182,22 @@ with expansion:
   true == true
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  CHECK( spec.matches( tcA ) == false )
+  CHECK( spec.matches( *tcA ) == false )
 with expansion:
   false == false
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  CHECK( spec.matches( tcB ) == false )
+  CHECK( spec.matches( *tcB ) == false )
 with expansion:
   false == false
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  CHECK( spec.matches( tcC ) == true )
+  CHECK( spec.matches( *tcC ) == true )
 with expansion:
   true == true
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  CHECK( spec.matches( tcD ) == false )
+  CHECK( spec.matches( *tcD ) == false )
 with expansion:
   false == false
 
@@ -7214,22 +7214,22 @@ with expansion:
   false == false
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  CHECK( spec.matches( tcA ) == false )
+  CHECK( spec.matches( *tcA ) == false )
 with expansion:
   false == false
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  CHECK( spec.matches( tcB ) == false )
+  CHECK( spec.matches( *tcB ) == false )
 with expansion:
   false == false
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  CHECK( spec.matches( tcC ) == false )
+  CHECK( spec.matches( *tcC ) == false )
 with expansion:
   false == false
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  CHECK( spec.matches( tcD ) == false )
+  CHECK( spec.matches( *tcD ) == false )
 with expansion:
   false == false
 
@@ -7246,22 +7246,22 @@ with expansion:
   false == false
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  CHECK( spec.matches( tcA ) == false )
+  CHECK( spec.matches( *tcA ) == false )
 with expansion:
   false == false
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  CHECK( spec.matches( tcB ) == false )
+  CHECK( spec.matches( *tcB ) == false )
 with expansion:
   false == false
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  CHECK( spec.matches( tcC ) == false )
+  CHECK( spec.matches( *tcC ) == false )
 with expansion:
   false == false
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  CHECK( spec.matches( tcD ) == false )
+  CHECK( spec.matches( *tcD ) == false )
 with expansion:
   false == false
 
@@ -7278,22 +7278,22 @@ with expansion:
   true == true
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  CHECK( spec.matches( tcA ) == false )
+  CHECK( spec.matches( *tcA ) == false )
 with expansion:
   false == false
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  CHECK( spec.matches( tcB ) == false )
+  CHECK( spec.matches( *tcB ) == false )
 with expansion:
   false == false
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  CHECK( spec.matches( tcC ) == false )
+  CHECK( spec.matches( *tcC ) == false )
 with expansion:
   false == false
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  CHECK( spec.matches( tcD ) == true )
+  CHECK( spec.matches( *tcD ) == true )
 with expansion:
   true == true
 
@@ -7305,27 +7305,27 @@ CmdLine.tests.cpp:<line number>
 ...............................................................................
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  CHECK( spec.matches( fakeTestCase( "  aardvark " ) ) )
+  CHECK( spec.matches( *fakeTestCase( "  aardvark " ) ) )
 with expansion:
   true
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  CHECK( spec.matches( fakeTestCase( "  aardvark" ) ) )
+  CHECK( spec.matches( *fakeTestCase( "  aardvark" ) ) )
 with expansion:
   true
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  CHECK( spec.matches( fakeTestCase( " aardvark " ) ) )
+  CHECK( spec.matches( *fakeTestCase( " aardvark " ) ) )
 with expansion:
   true
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  CHECK( spec.matches( fakeTestCase( "aardvark " ) ) )
+  CHECK( spec.matches( *fakeTestCase( "aardvark " ) ) )
 with expansion:
   true
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  CHECK( spec.matches( fakeTestCase( "aardvark" ) ) )
+  CHECK( spec.matches( *fakeTestCase( "aardvark" ) ) )
 with expansion:
   true
 
@@ -7337,27 +7337,27 @@ CmdLine.tests.cpp:<line number>
 ...............................................................................
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  CHECK( spec.matches( fakeTestCase( "  aardvark " ) ) )
+  CHECK( spec.matches( *fakeTestCase( "  aardvark " ) ) )
 with expansion:
   true
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  CHECK( spec.matches( fakeTestCase( "  aardvark" ) ) )
+  CHECK( spec.matches( *fakeTestCase( "  aardvark" ) ) )
 with expansion:
   true
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  CHECK( spec.matches( fakeTestCase( " aardvark " ) ) )
+  CHECK( spec.matches( *fakeTestCase( " aardvark " ) ) )
 with expansion:
   true
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  CHECK( spec.matches( fakeTestCase( "aardvark " ) ) )
+  CHECK( spec.matches( *fakeTestCase( "aardvark " ) ) )
 with expansion:
   true
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  CHECK( spec.matches( fakeTestCase( "aardvark" ) ) )
+  CHECK( spec.matches( *fakeTestCase( "aardvark" ) ) )
 with expansion:
   true
 
@@ -7530,12 +7530,12 @@ with expansion:
   true
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  REQUIRE( cfg.testSpec().matches(fakeTestCase("notIncluded")) == false )
+  REQUIRE( cfg.testSpec().matches(*fakeTestCase("notIncluded")) == false )
 with expansion:
   false == false
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  REQUIRE( cfg.testSpec().matches(fakeTestCase("test1")) )
+  REQUIRE( cfg.testSpec().matches(*fakeTestCase("test1")) )
 with expansion:
   true
 
@@ -7558,12 +7558,12 @@ with expansion:
   true
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  REQUIRE( cfg.testSpec().matches(fakeTestCase("test1")) == false )
+  REQUIRE( cfg.testSpec().matches(*fakeTestCase("test1")) == false )
 with expansion:
   false == false
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  REQUIRE( cfg.testSpec().matches(fakeTestCase("alwaysIncluded")) )
+  REQUIRE( cfg.testSpec().matches(*fakeTestCase("alwaysIncluded")) )
 with expansion:
   true
 
@@ -7586,12 +7586,12 @@ with expansion:
   true
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  REQUIRE( cfg.testSpec().matches(fakeTestCase("test1")) == false )
+  REQUIRE( cfg.testSpec().matches(*fakeTestCase("test1")) == false )
 with expansion:
   false == false
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  REQUIRE( cfg.testSpec().matches(fakeTestCase("alwaysIncluded")) )
+  REQUIRE( cfg.testSpec().matches(*fakeTestCase("alwaysIncluded")) )
 with expansion:
   true
 
@@ -12341,7 +12341,7 @@ Tag.tests.cpp:<line number>
 ...............................................................................
 
 Tag.tests.cpp:<line number>: PASSED:
-  REQUIRE_THAT( testcase.tags, Catch::VectorContains(std::string("magic-tag")) && Catch::VectorContains(std::string(".")) )
+  REQUIRE_THAT( testcase->tags, Catch::VectorContains(std::string("magic-tag")) && Catch::VectorContains(std::string(".")) )
 with expansion:
   { ".", "magic-tag" } ( Contains: "magic-tag" and Contains: "." )
 

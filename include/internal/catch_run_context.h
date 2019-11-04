@@ -44,7 +44,7 @@ namespace Catch {
         void testGroupStarting( std::string const& testSpec, std::size_t groupIndex, std::size_t groupsCount );
         void testGroupEnded( std::string const& testSpec, Totals const& totals, std::size_t groupIndex, std::size_t groupsCount );
 
-        Totals runTest(TestCase const& testCase);
+        Totals runTest(TestCaseHandle const& testCase);
 
         IConfigPtr config() const;
         IStreamingReporter& reporter() const;
@@ -133,7 +133,7 @@ namespace Catch {
 
         TestRunInfo m_runInfo;
         IMutableContext& m_context;
-        TestCase const* m_activeTestCase = nullptr;
+        TestCaseHandle const* m_activeTestCase = nullptr;
         ITracker* m_testCaseTracker = nullptr;
         Option<AssertionResult> m_lastResult;
 

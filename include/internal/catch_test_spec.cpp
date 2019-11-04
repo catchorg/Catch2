@@ -84,13 +84,13 @@ namespace Catch {
         return std::any_of( m_filters.begin(), m_filters.end(), [&]( Filter const& f ){ return f.matches( testCase ); } );
     }
 
-    TestSpec::Matches TestSpec::matchesByFilter( std::vector<TestCase> const& testCases, IConfig const& config ) const
+    TestSpec::Matches TestSpec::matchesByFilter( std::vector<TestCaseHandle> const& testCases, IConfig const& config ) const
     {
         Matches matches( m_filters.size() );
         std::transform( m_filters.begin(), m_filters.end(), matches.begin(), [&]( Filter const& filter ){
-            std::vector<TestCase const*> currentMatches;
+            std::vector<TestCaseHandle const*> currentMatches;
             for( auto const& test : testCases )
-                if( isThrowSafe( test, config ) && filter.matches( test ) )
+                if( isThrowSafe( test, config ) && filter.matches( test.getTestCaseInfo() ) )
                     currentMatches.emplace_back( &test );
             return FilterMatch{ filter.name(), currentMatches };
         } );

@@ -152,16 +152,17 @@ namespace Catch {
 
         void testCaseEnded( TestCaseStats const& testCaseStats ) override {
             StreamingReporterBase::testCaseEnded( testCaseStats );
+            auto const& testCaseInfo = *testCaseStats.testInfo;
             if( !testCaseStats.stdOut.empty() )
                 stream << "##teamcity[testStdOut name='"
-                    << escape( testCaseStats.testInfo.name )
+                    << escape( testCaseInfo.name )
                     << "' out='" << escape( testCaseStats.stdOut ) << "']\n";
             if( !testCaseStats.stdErr.empty() )
                 stream << "##teamcity[testStdErr name='"
-                    << escape( testCaseStats.testInfo.name )
+                    << escape(testCaseInfo.name )
                     << "' out='" << escape( testCaseStats.stdErr ) << "']\n";
             stream << "##teamcity[testFinished name='"
-                    << escape( testCaseStats.testInfo.name ) << "' duration='"
+                    << escape(testCaseInfo.name ) << "' duration='"
                     << m_testTimer.getElapsedMilliseconds() << "']\n";
             stream.flush();
         }
