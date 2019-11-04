@@ -158,12 +158,6 @@ namespace Catch {
     TestCase::TestCase( ITestInvoker* testCase, TestCaseInfo&& info ) : TestCaseInfo( std::move(info) ), test( testCase ) {}
 
 
-    TestCase TestCase::withName( std::string const& _newName ) const {
-        TestCase other( *this );
-        other.name = _newName;
-        return other;
-    }
-
     void TestCase::invoke() const {
         test->invoke();
     }

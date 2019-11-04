@@ -62,8 +62,6 @@ namespace Catch {
 
         TestCase( ITestInvoker* testCase, TestCaseInfo&& info );
 
-        TestCase withName( std::string const& _newName ) const;
-
         void invoke() const;
 
         TestCaseInfo const& getTestCaseInfo() const;
