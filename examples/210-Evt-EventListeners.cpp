@@ -170,7 +170,7 @@ void print( std::ostream& os, int const level, std::string const& title, Catch::
 
 void print( std::ostream& os, int const level, std::string const& title, Catch::TestCaseStats const& info ) {
     os << ws(level  ) << title << ":\n";
-    print( os, level+1 , "- testInfo", info.testInfo );
+    print( os, level+1 , "- testInfo", *info.testInfo );
     print( os, level+1 , "- totals"  , info.totals   );
     os << ws(level+1) << "- stdOut: "   << info.stdOut << "\n"
        << ws(level+1) << "- stdErr: "   << info.stdErr << "\n"

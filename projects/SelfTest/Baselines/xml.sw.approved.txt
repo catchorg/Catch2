@@ -8031,7 +8031,7 @@ Nor would this
         </Expression>
         <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
           <Original>
-            spec.matches( tcA ) == false
+            spec.matches( *tcA ) == false
           </Original>
           <Expanded>
             false == false
@@ -8039,7 +8039,7 @@ Nor would this
         </Expression>
         <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
           <Original>
-            spec.matches( tcB ) == false
+            spec.matches( *tcB ) == false
           </Original>
           <Expanded>
             false == false
@@ -8058,7 +8058,7 @@ Nor would this
         </Expression>
         <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
           <Original>
-            spec.matches(tcA ) == false
+            spec.matches( *tcA ) == false
           </Original>
           <Expanded>
             false == false
@@ -8066,7 +8066,7 @@ Nor would this
         </Expression>
         <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
           <Original>
-            spec.matches( tcB ) == false
+            spec.matches( *tcB ) == false
           </Original>
           <Expanded>
             false == false
@@ -8085,7 +8085,7 @@ Nor would this
         </Expression>
         <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
           <Original>
-            spec.matches( tcA ) == false
+            spec.matches( *tcA ) == false
           </Original>
           <Expanded>
             false == false
@@ -8093,7 +8093,7 @@ Nor would this
         </Expression>
         <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
           <Original>
-            spec.matches( tcB ) == false
+            spec.matches( *tcB ) == false
           </Original>
           <Expanded>
             false == false
@@ -8112,7 +8112,7 @@ Nor would this
         </Expression>
         <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
           <Original>
-            spec.matches( tcA ) == false
+            spec.matches( *tcA ) == false
           </Original>
           <Expanded>
             false == false
@@ -8120,7 +8120,7 @@ Nor would this
         </Expression>
         <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
           <Original>
-            spec.matches( tcB ) == true
+            spec.matches( *tcB ) == true
           </Original>
           <Expanded>
             true == true
@@ -8139,7 +8139,7 @@ Nor would this
         </Expression>
         <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
           <Original>
-            spec.matches( tcA ) == false
+            spec.matches( *tcA ) == false
           </Original>
           <Expanded>
             false == false
@@ -8147,7 +8147,7 @@ Nor would this
         </Expression>
         <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
           <Original>
-            spec.matches( tcB ) == true
+            spec.matches( *tcB ) == true
           </Original>
           <Expanded>
             true == true
@@ -8166,7 +8166,7 @@ Nor would this
         </Expression>
         <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
           <Original>
-            spec.matches( tcA ) == false
+            spec.matches( *tcA ) == false
           </Original>
           <Expanded>
             false == false
@@ -8174,7 +8174,7 @@ Nor would this
         </Expression>
         <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
           <Original>
-            spec.matches( tcB ) == true
+            spec.matches( *tcB ) == true
           </Original>
           <Expanded>
             true == true
@@ -8182,7 +8182,7 @@ Nor would this
         </Expression>
         <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
           <Original>
-            spec.matches( tcC ) == false
+            spec.matches( *tcC ) == false
           </Original>
           <Expanded>
             false == false
@@ -8201,7 +8201,7 @@ Nor would this
         </Expression>
         <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
           <Original>
-            spec.matches( tcA ) == false
+            spec.matches( *tcA ) == false
           </Original>
           <Expanded>
             false == false
@@ -8209,7 +8209,7 @@ Nor would this
         </Expression>
         <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
           <Original>
-            spec.matches( tcB ) == false
+            spec.matches( *tcB ) == false
           </Original>
           <Expanded>
             false == false
@@ -8217,7 +8217,7 @@ Nor would this
         </Expression>
         <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
           <Original>
-            spec.matches( tcC ) == true
+            spec.matches( *tcC ) == true
           </Original>
           <Expanded>
             true == true
@@ -8225,7 +8225,7 @@ Nor would this
         </Expression>
         <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
           <Original>
-            spec.matches( tcD ) == false
+            spec.matches( *tcD ) == false
           </Original>
           <Expanded>
             false == false
@@ -8233,7 +8233,7 @@ Nor would this
         </Expression>
         <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
           <Original>
-            parseTestSpec( "*a" ).matches( tcA ) == true
+            parseTestSpec( "*a" ).matches( *tcA ) == true
           </Original>
           <Expanded>
             true == true
@@ -8252,7 +8252,7 @@ Nor would this
         </Expression>
         <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
           <Original>
-            spec.matches( tcA ) == false
+            spec.matches( *tcA ) == false
           </Original>
           <Expanded>
             false == false
@@ -8260,7 +8260,7 @@ Nor would this
         </Expression>
         <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
           <Original>
-            spec.matches( tcB ) == false
+            spec.matches( *tcB ) == false
           </Original>
           <Expanded>
             false == false
@@ -8268,7 +8268,7 @@ Nor would this
         </Expression>
         <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
           <Original>
-            spec.matches( tcC ) == true
+            spec.matches( *tcC ) == true
           </Original>
           <Expanded>
             true == true
@@ -8276,7 +8276,7 @@ Nor would this
         </Expression>
         <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
           <Original>
-            spec.matches( tcD ) == false
+            spec.matches( *tcD ) == false
           </Original>
           <Expanded>
             false == false
@@ -8284,7 +8284,7 @@ Nor would this
         </Expression>
         <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
           <Original>
-            parseTestSpec( "a*" ).matches( tcA ) == true
+            parseTestSpec( "a*" ).matches( *tcA ) == true
           </Original>
           <Expanded>
             true == true
@@ -8303,7 +8303,7 @@ Nor would this
         </Expression>
         <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
           <Original>
-            spec.matches( tcA ) == false
+            spec.matches( *tcA ) == false
           </Original>
           <Expanded>
             false == false
@@ -8311,7 +8311,7 @@ Nor would this
         </Expression>
         <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
           <Original>
-            spec.matches( tcB ) == false
+            spec.matches( *tcB ) == false
           </Original>
           <Expanded>
             false == false
@@ -8319,7 +8319,7 @@ Nor would this
         </Expression>
         <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
           <Original>
-            spec.matches( tcC ) == true
+            spec.matches( *tcC ) == true
           </Original>
           <Expanded>
             true == true
@@ -8327,7 +8327,7 @@ Nor would this
         </Expression>
         <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
           <Original>
-            spec.matches( tcD ) == true
+            spec.matches( *tcD ) == true
           </Original>
           <Expanded>
             true == true
@@ -8335,7 +8335,7 @@ Nor would this
         </Expression>
         <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
           <Original>
-            parseTestSpec( "*a*" ).matches( tcA ) == true
+            parseTestSpec( "*a*" ).matches( *tcA ) == true
           </Original>
           <Expanded>
             true == true
@@ -8354,7 +8354,7 @@ Nor would this
         </Expression>
         <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
           <Original>
-            spec.matches( tcA ) == true
+            spec.matches( *tcA ) == true
           </Original>
           <Expanded>
             true == true
@@ -8362,7 +8362,7 @@ Nor would this
         </Expression>
         <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
           <Original>
-            spec.matches( tcB ) == false
+            spec.matches( *tcB ) == false
           </Original>
           <Expanded>
             false == false
@@ -8381,7 +8381,7 @@ Nor would this
         </Expression>
         <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
           <Original>
-            spec.matches( tcA ) == true
+            spec.matches( *tcA ) == true
           </Original>
           <Expanded>
             true == true
@@ -8389,7 +8389,7 @@ Nor would this
         </Expression>
         <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
           <Original>
-            spec.matches( tcB ) == false
+            spec.matches( *tcB ) == false
           </Original>
           <Expanded>
             false == false
@@ -8408,7 +8408,7 @@ Nor would this
         </Expression>
         <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
           <Original>
-            spec.matches( tcA ) == true
+            spec.matches( *tcA ) == true
           </Original>
           <Expanded>
             true == true
@@ -8416,7 +8416,7 @@ Nor would this
         </Expression>
         <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
           <Original>
-            spec.matches( tcB ) == false
+            spec.matches( *tcB ) == false
           </Original>
           <Expanded>
             false == false
@@ -8435,7 +8435,7 @@ Nor would this
         </Expression>
         <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
           <Original>
-            spec.matches( tcA ) == false
+            spec.matches( *tcA ) == false
           </Original>
           <Expanded>
             false == false
@@ -8443,7 +8443,7 @@ Nor would this
         </Expression>
         <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
           <Original>
-            spec.matches( tcB ) == false
+            spec.matches( *tcB ) == false
           </Original>
           <Expanded>
             false == false
@@ -8451,7 +8451,7 @@ Nor would this
         </Expression>
         <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
           <Original>
-            spec.matches( tcC ) == true
+            spec.matches( *tcC ) == true
           </Original>
           <Expanded>
             true == true
@@ -8459,7 +8459,7 @@ Nor would this
         </Expression>
         <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
           <Original>
-            spec.matches( tcD ) == true
+            spec.matches( *tcD ) == true
           </Original>
           <Expanded>
             true == true
@@ -8478,7 +8478,7 @@ Nor would this
         </Expression>
         <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
           <Original>
-            spec.matches( tcA ) == true
+            spec.matches( *tcA ) == true
           </Original>
           <Expanded>
             true == true
@@ -8486,7 +8486,7 @@ Nor would this
         </Expression>
         <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
           <Original>
-            spec.matches( tcB ) == true
+            spec.matches( *tcB ) == true
           </Original>
           <Expanded>
             true == true
@@ -8494,7 +8494,7 @@ Nor would this
         </Expression>
         <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
           <Original>
-            spec.matches( tcC ) == true
+            spec.matches( *tcC ) == true
           </Original>
           <Expanded>
             true == true
@@ -8502,7 +8502,7 @@ Nor would this
         </Expression>
         <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
           <Original>
-            spec.matches( tcD ) == true
+            spec.matches( *tcD ) == true
           </Original>
           <Expanded>
             true == true
@@ -8521,7 +8521,7 @@ Nor would this
         </Expression>
         <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
           <Original>
-            spec.matches( tcA ) == false
+            spec.matches( *tcA ) == false
           </Original>
           <Expanded>
             false == false
@@ -8529,7 +8529,7 @@ Nor would this
         </Expression>
         <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
           <Original>
-            spec.matches( tcB ) == true
+            spec.matches( *tcB ) == true
           </Original>
           <Expanded>
             true == true
@@ -8537,7 +8537,7 @@ Nor would this
         </Expression>
         <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
           <Original>
-            spec.matches( tcC ) == false
+            spec.matches( *tcC ) == false
           </Original>
           <Expanded>
             false == false
@@ -8556,7 +8556,7 @@ Nor would this
         </Expression>
         <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
           <Original>
-            spec.matches( tcA ) == false
+            spec.matches( *tcA ) == false
           </Original>
           <Expanded>
             false == false
@@ -8564,7 +8564,7 @@ Nor would this
         </Expression>
         <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
           <Original>
-            spec.matches( tcB ) == true
+            spec.matches( *tcB ) == true
           </Original>
           <Expanded>
             true == true
@@ -8572,7 +8572,7 @@ Nor would this
         </Expression>
         <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
           <Original>
-            spec.matches( tcC ) == true
+            spec.matches( *tcC ) == true
           </Original>
           <Expanded>
             true == true
@@ -8591,7 +8591,7 @@ Nor would this
         </Expression>
         <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
           <Original>
-            spec.matches( tcA ) == false
+            spec.matches( *tcA ) == false
           </Original>
           <Expanded>
             false == false
@@ -8599,7 +8599,7 @@ Nor would this
         </Expression>
         <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
           <Original>
-            spec.matches( tcB ) == false
+            spec.matches( *tcB ) == false
           </Original>
           <Expanded>
             false == false
@@ -8607,7 +8607,7 @@ Nor would this
         </Expression>
         <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
           <Original>
-            spec.matches( tcC ) == true
+            spec.matches( *tcC ) == true
           </Original>
           <Expanded>
             true == true
@@ -8626,7 +8626,7 @@ Nor would this
         </Expression>
         <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
           <Original>
-            spec.matches( tcA ) == false
+            spec.matches( *tcA ) == false
           </Original>
           <Expanded>
             false == false
@@ -8634,7 +8634,7 @@ Nor would this
         </Expression>
         <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
           <Original>
-            spec.matches( tcB ) == false
+            spec.matches( *tcB ) == false
           </Original>
           <Expanded>
             false == false
@@ -8642,7 +8642,7 @@ Nor would this
         </Expression>
         <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
           <Original>
-            spec.matches( tcC ) == true
+            spec.matches( *tcC ) == true
           </Original>
           <Expanded>
             true == true
@@ -8661,7 +8661,7 @@ Nor would this
         </Expression>
         <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
           <Original>
-            spec.matches( tcA ) == false
+            spec.matches( *tcA ) == false
           </Original>
           <Expanded>
             false == false
@@ -8669,7 +8669,7 @@ Nor would this
         </Expression>
         <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
           <Original>
-            spec.matches( tcB ) == false
+            spec.matches( *tcB ) == false
           </Original>
           <Expanded>
             false == false
@@ -8677,7 +8677,7 @@ Nor would this
         </Expression>
         <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
           <Original>
-            spec.matches( tcC ) == true
+            spec.matches( *tcC ) == true
           </Original>
           <Expanded>
             true == true
@@ -8685,7 +8685,7 @@ Nor would this
         </Expression>
         <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
           <Original>
-            spec.matches( tcD ) == false
+            spec.matches( *tcD ) == false
           </Original>
           <Expanded>
             false == false
@@ -8704,7 +8704,7 @@ Nor would this
         </Expression>
         <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
           <Original>
-            spec.matches( tcA ) == true
+            spec.matches( *tcA ) == true
           </Original>
           <Expanded>
             true == true
@@ -8712,7 +8712,7 @@ Nor would this
         </Expression>
         <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
           <Original>
-            spec.matches( tcB ) == false
+            spec.matches( *tcB ) == false
           </Original>
           <Expanded>
             false == false
@@ -8720,7 +8720,7 @@ Nor would this
         </Expression>
         <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
           <Original>
-            spec.matches( tcC ) == false
+            spec.matches( *tcC ) == false
           </Original>
           <Expanded>
             false == false
@@ -8739,7 +8739,7 @@ Nor would this
         </Expression>
         <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
           <Original>
-            spec.matches( tcA ) == false
+            spec.matches( *tcA ) == false
           </Original>
           <Expanded>
             false == false
@@ -8747,7 +8747,7 @@ Nor would this
         </Expression>
         <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
           <Original>
-            spec.matches( tcB ) == true
+            spec.matches( *tcB ) == true
           </Original>
           <Expanded>
             true == true
@@ -8755,7 +8755,7 @@ Nor would this
         </Expression>
         <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
           <Original>
-            spec.matches( tcC ) == false
+            spec.matches( *tcC ) == false
           </Original>
           <Expanded>
             false == false
@@ -8774,7 +8774,7 @@ Nor would this
         </Expression>
         <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
           <Original>
-            spec.matches( tcA ) == false
+            spec.matches( *tcA ) == false
           </Original>
           <Expanded>
             false == false
@@ -8782,7 +8782,7 @@ Nor would this
         </Expression>
         <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
           <Original>
-            spec.matches( tcB ) == false
+            spec.matches( *tcB ) == false
           </Original>
           <Expanded>
             false == false
@@ -8790,7 +8790,7 @@ Nor would this
         </Expression>
         <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
           <Original>
-            spec.matches( tcC ) == false
+            spec.matches( *tcC ) == false
           </Original>
           <Expanded>
             false == false
@@ -8798,7 +8798,7 @@ Nor would this
         </Expression>
         <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
           <Original>
-            spec.matches( tcD ) == true
+            spec.matches( *tcD ) == true
           </Original>
           <Expanded>
             true == true
@@ -8817,7 +8817,7 @@ Nor would this
         </Expression>
         <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
           <Original>
-            spec.matches( tcA ) == false
+            spec.matches( *tcA ) == false
           </Original>
           <Expanded>
             false == false
@@ -8825,7 +8825,7 @@ Nor would this
         </Expression>
         <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
           <Original>
-            spec.matches( tcB ) == false
+            spec.matches( *tcB ) == false
           </Original>
           <Expanded>
             false == false
@@ -8833,7 +8833,7 @@ Nor would this
         </Expression>
         <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
           <Original>
-            spec.matches( tcC ) == false
+            spec.matches( *tcC ) == false
           </Original>
           <Expanded>
             false == false
@@ -8841,7 +8841,7 @@ Nor would this
         </Expression>
         <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
           <Original>
-            spec.matches( tcD ) == true
+            spec.matches( *tcD ) == true
           </Original>
           <Expanded>
             true == true
@@ -8860,7 +8860,7 @@ Nor would this
         </Expression>
         <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
           <Original>
-            spec.matches( tcA ) == true
+            spec.matches( *tcA ) == true
           </Original>
           <Expanded>
             true == true
@@ -8868,7 +8868,7 @@ Nor would this
         </Expression>
         <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
           <Original>
-            spec.matches( tcB ) == false
+            spec.matches( *tcB ) == false
           </Original>
           <Expanded>
             false == false
@@ -8876,7 +8876,7 @@ Nor would this
         </Expression>
         <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
           <Original>
-            spec.matches( tcC ) == false
+            spec.matches( *tcC ) == false
           </Original>
           <Expanded>
             false == false
@@ -8884,7 +8884,7 @@ Nor would this
         </Expression>
         <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
           <Original>
-            spec.matches( tcD ) == true
+            spec.matches( *tcD ) == true
           </Original>
           <Expanded>
             true == true
@@ -8903,7 +8903,7 @@ Nor would this
         </Expression>
         <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
           <Original>
-            spec.matches( tcA ) == true
+            spec.matches( *tcA ) == true
           </Original>
           <Expanded>
             true == true
@@ -8911,7 +8911,7 @@ Nor would this
         </Expression>
         <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
           <Original>
-            spec.matches( tcB ) == true
+            spec.matches( *tcB ) == true
           </Original>
           <Expanded>
             true == true
@@ -8919,7 +8919,7 @@ Nor would this
         </Expression>
         <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
           <Original>
-            spec.matches( tcC ) == false
+            spec.matches( *tcC ) == false
           </Original>
           <Expanded>
             false == false
@@ -8927,7 +8927,7 @@ Nor would this
         </Expression>
         <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
           <Original>
-            spec.matches( tcD ) == false
+            spec.matches( *tcD ) == false
           </Original>
           <Expanded>
             false == false
@@ -8946,7 +8946,7 @@ Nor would this
         </Expression>
         <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
           <Original>
-            spec.matches( tcA ) == true
+            spec.matches( *tcA ) == true
           </Original>
           <Expanded>
             true == true
@@ -8954,7 +8954,7 @@ Nor would this
         </Expression>
         <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
           <Original>
-            spec.matches( tcB ) == true
+            spec.matches( *tcB ) == true
           </Original>
           <Expanded>
             true == true
@@ -8962,7 +8962,7 @@ Nor would this
         </Expression>
         <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
           <Original>
-            spec.matches( tcC ) == true
+            spec.matches( *tcC ) == true
           </Original>
           <Expanded>
             true == true
@@ -8970,7 +8970,7 @@ Nor would this
         </Expression>
         <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
           <Original>
-            spec.matches( tcD ) == false
+            spec.matches( *tcD ) == false
           </Original>
           <Expanded>
             false == false
@@ -8989,7 +8989,7 @@ Nor would this
         </Expression>
         <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
           <Original>
-            spec.matches( tcA ) == true
+            spec.matches( *tcA ) == true
           </Original>
           <Expanded>
             true == true
@@ -8997,7 +8997,7 @@ Nor would this
         </Expression>
         <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
           <Original>
-            spec.matches( tcB ) == true
+            spec.matches( *tcB ) == true
           </Original>
           <Expanded>
             true == true
@@ -9005,7 +9005,7 @@ Nor would this
         </Expression>
         <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
           <Original>
-            spec.matches( tcC ) == true
+            spec.matches( *tcC ) == true
           </Original>
           <Expanded>
             true == true
@@ -9013,7 +9013,7 @@ Nor would this
         </Expression>
         <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
           <Original>
-            spec.matches( tcD ) == false
+            spec.matches( *tcD ) == false
           </Original>
           <Expanded>
             false == false
@@ -9032,7 +9032,7 @@ Nor would this
         </Expression>
         <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
           <Original>
-            spec.matches( tcA ) == false
+            spec.matches( *tcA ) == false
           </Original>
           <Expanded>
             false == false
@@ -9040,7 +9040,7 @@ Nor would this
         </Expression>
         <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
           <Original>
-            spec.matches( tcB ) == false
+            spec.matches( *tcB ) == false
           </Original>
           <Expanded>
             false == false
@@ -9048,7 +9048,7 @@ Nor would this
         </Expression>
         <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
           <Original>
-            spec.matches( tcC ) == true
+            spec.matches( *tcC ) == true
           </Original>
           <Expanded>
             true == true
@@ -9056,7 +9056,7 @@ Nor would this
         </Expression>
         <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
           <Original>
-            spec.matches( tcD ) == false
+            spec.matches( *tcD ) == false
           </Original>
           <Expanded>
             false == false
@@ -9075,7 +9075,7 @@ Nor would this
         </Expression>
         <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
           <Original>
-            spec.matches( tcA ) == false
+            spec.matches( *tcA ) == false
           </Original>
           <Expanded>
             false == false
@@ -9083,7 +9083,7 @@ Nor would this
         </Expression>
         <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
           <Original>
-            spec.matches( tcB ) == false
+            spec.matches( *tcB ) == false
           </Original>
           <Expanded>
             false == false
@@ -9091,7 +9091,7 @@ Nor would this
         </Expression>
         <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
           <Original>
-            spec.matches( tcC ) == false
+            spec.matches( *tcC ) == false
           </Original>
           <Expanded>
             false == false
@@ -9099,7 +9099,7 @@ Nor would this
         </Expression>
         <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
           <Original>
-            spec.matches( tcD ) == false
+            spec.matches( *tcD ) == false
           </Original>
           <Expanded>
             false == false
@@ -9118,7 +9118,7 @@ Nor would this
         </Expression>
         <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
           <Original>
-            spec.matches( tcA ) == false
+            spec.matches( *tcA ) == false
           </Original>
           <Expanded>
             false == false
@@ -9126,7 +9126,7 @@ Nor would this
         </Expression>
         <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
           <Original>
-            spec.matches( tcB ) == false
+            spec.matches( *tcB ) == false
           </Original>
           <Expanded>
             false == false
@@ -9134,7 +9134,7 @@ Nor would this
         </Expression>
         <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
           <Original>
-            spec.matches( tcC ) == false
+            spec.matches( *tcC ) == false
           </Original>
           <Expanded>
             false == false
@@ -9142,7 +9142,7 @@ Nor would this
         </Expression>
         <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
           <Original>
-            spec.matches( tcD ) == false
+            spec.matches( *tcD ) == false
           </Original>
           <Expanded>
             false == false
@@ -9161,7 +9161,7 @@ Nor would this
         </Expression>
         <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
           <Original>
-            spec.matches( tcA ) == false
+            spec.matches( *tcA ) == false
           </Original>
           <Expanded>
             false == false
@@ -9169,7 +9169,7 @@ Nor would this
         </Expression>
         <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
           <Original>
-            spec.matches( tcB ) == false
+            spec.matches( *tcB ) == false
           </Original>
           <Expanded>
             false == false
@@ -9177,7 +9177,7 @@ Nor would this
         </Expression>
         <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
           <Original>
-            spec.matches( tcC ) == false
+            spec.matches( *tcC ) == false
           </Original>
           <Expanded>
             false == false
@@ -9185,7 +9185,7 @@ Nor would this
         </Expression>
         <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
           <Original>
-            spec.matches( tcD ) == true
+            spec.matches( *tcD ) == true
           </Original>
           <Expanded>
             true == true
@@ -9196,7 +9196,7 @@ Nor would this
       <Section name="Leading and trailing spaces in test spec" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
         <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
           <Original>
-            spec.matches( fakeTestCase( "  aardvark " ) )
+            spec.matches( *fakeTestCase( "  aardvark " ) )
           </Original>
           <Expanded>
             true
@@ -9204,7 +9204,7 @@ Nor would this
         </Expression>
         <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
           <Original>
-            spec.matches( fakeTestCase( "  aardvark" ) )
+            spec.matches( *fakeTestCase( "  aardvark" ) )
           </Original>
           <Expanded>
             true
@@ -9212,7 +9212,7 @@ Nor would this
         </Expression>
         <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
           <Original>
-            spec.matches( fakeTestCase( " aardvark " ) )
+            spec.matches( *fakeTestCase( " aardvark " ) )
           </Original>
           <Expanded>
             true
@@ -9220,7 +9220,7 @@ Nor would this
         </Expression>
         <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
           <Original>
-            spec.matches( fakeTestCase( "aardvark " ) )
+            spec.matches( *fakeTestCase( "aardvark " ) )
           </Original>
           <Expanded>
             true
@@ -9228,7 +9228,7 @@ Nor would this
         </Expression>
         <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
           <Original>
-            spec.matches( fakeTestCase( "aardvark" ) )
+            spec.matches( *fakeTestCase( "aardvark" ) )
           </Original>
           <Expanded>
             true
@@ -9239,7 +9239,7 @@ Nor would this
       <Section name="Leading and trailing spaces in test name" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
         <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
           <Original>
-            spec.matches( fakeTestCase( "  aardvark " ) )
+            spec.matches( *fakeTestCase( "  aardvark " ) )
           </Original>
           <Expanded>
             true
@@ -9247,7 +9247,7 @@ Nor would this
         </Expression>
         <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
           <Original>
-            spec.matches( fakeTestCase( "  aardvark" ) )
+            spec.matches( *fakeTestCase( "  aardvark" ) )
           </Original>
           <Expanded>
             true
@@ -9255,7 +9255,7 @@ Nor would this
         </Expression>
         <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
           <Original>
-            spec.matches( fakeTestCase( " aardvark " ) )
+            spec.matches( *fakeTestCase( " aardvark " ) )
           </Original>
           <Expanded>
             true
@@ -9263,7 +9263,7 @@ Nor would this
         </Expression>
         <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
           <Original>
-            spec.matches( fakeTestCase( "aardvark " ) )
+            spec.matches( *fakeTestCase( "aardvark " ) )
           </Original>
           <Expanded>
             true
@@ -9271,7 +9271,7 @@ Nor would this
         </Expression>
         <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
           <Original>
-            spec.matches( fakeTestCase( "aardvark" ) )
+            spec.matches( *fakeTestCase( "aardvark" ) )
           </Original>
           <Expanded>
             true
@@ -9499,7 +9499,7 @@ Nor would this
           </Expression>
           <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
             <Original>
-              cfg.testSpec().matches(fakeTestCase("notIncluded")) == false
+              cfg.testSpec().matches(*fakeTestCase("notIncluded")) == false
             </Original>
             <Expanded>
               false == false
@@ -9507,7 +9507,7 @@ Nor would this
           </Expression>
           <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
             <Original>
-              cfg.testSpec().matches(fakeTestCase("test1"))
+              cfg.testSpec().matches(*fakeTestCase("test1"))
             </Original>
             <Expanded>
               true
@@ -9537,7 +9537,7 @@ Nor would this
           </Expression>
           <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
             <Original>
-              cfg.testSpec().matches(fakeTestCase("test1")) == false
+              cfg.testSpec().matches(*fakeTestCase("test1")) == false
             </Original>
             <Expanded>
               false == false
@@ -9545,7 +9545,7 @@ Nor would this
           </Expression>
           <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
             <Original>
-              cfg.testSpec().matches(fakeTestCase("alwaysIncluded"))
+              cfg.testSpec().matches(*fakeTestCase("alwaysIncluded"))
             </Original>
             <Expanded>
               true
@@ -9575,7 +9575,7 @@ Nor would this
           </Expression>
           <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
             <Original>
-              cfg.testSpec().matches(fakeTestCase("test1")) == false
+              cfg.testSpec().matches(*fakeTestCase("test1")) == false
             </Original>
             <Expanded>
               false == false
@@ -9583,7 +9583,7 @@ Nor would this
           </Expression>
           <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
             <Original>
-              cfg.testSpec().matches(fakeTestCase("alwaysIncluded"))
+              cfg.testSpec().matches(*fakeTestCase("alwaysIncluded"))
             </Original>
             <Expanded>
               true
@@ -14861,7 +14861,7 @@ loose text artifact
     <TestCase name="shortened hide tags are split apart" filename="projects/<exe-name>/IntrospectiveTests/Tag.tests.cpp" >
       <Expression success="true" type="REQUIRE_THAT" filename="projects/<exe-name>/IntrospectiveTests/Tag.tests.cpp" >
         <Original>
-          testcase.tags, Catch::VectorContains(std::string("magic-tag")) &amp;&amp; Catch::VectorContains(std::string("."))
+          testcase->tags, Catch::VectorContains(std::string("magic-tag")) &amp;&amp; Catch::VectorContains(std::string("."))
         </Original>
         <Expanded>
           { ".", "magic-tag" } ( Contains: "magic-tag" and Contains: "." )

@@ -12,19 +12,19 @@
 
 namespace Catch {
 
-    auto makeTestInvoker( void(*testAsFunction)() ) noexcept -> ITestInvoker* {
-        return new(std::nothrow) TestInvokerAsFunction( testAsFunction );
+    std::unique_ptr<ITestInvoker> makeTestInvoker( void(*testAsFunction)() ) {
+        return std::make_unique<TestInvokerAsFunction>( testAsFunction );
     }
 
-    AutoReg::AutoReg( ITestInvoker* invoker, SourceLineInfo const& lineInfo, StringRef const& classOrMethod, NameAndTags const& nameAndTags ) noexcept {
+    AutoReg::AutoReg( std::unique_ptr<ITestInvoker> invoker, SourceLineInfo const& lineInfo, StringRef const& classOrMethod, NameAndTags const& nameAndTags ) noexcept {
         CATCH_TRY {
             getMutableRegistryHub()
                     .registerTest(
-                        makeTestCase(
-                            invoker,
+                        makeTestCaseInfo(
                             extractClassName( classOrMethod ),
                             nameAndTags,
-                            lineInfo));
+                            lineInfo),
+                        std::move(invoker));
         } CATCH_CATCH_ALL {
             // Do not throw when constructing global objects, instead register the exception to be processed later
             getMutableRegistryHub().registerStartupException();

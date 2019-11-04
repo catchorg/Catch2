@@ -24,7 +24,7 @@ namespace Catch {
 
     struct ITestInvoker;
 
-    struct TestCaseInfo {
+    struct TestCaseInfo : NonCopyable {
         enum SpecialProperties{
             None = 0,
             IsHidden = 1 << 1,
@@ -57,24 +57,24 @@ namespace Catch {
         SpecialProperties properties;
     };
 
-    class TestCase : public TestCaseInfo {
+    class TestCaseHandle {
+        TestCaseInfo* m_info;
+        ITestInvoker* m_invoker;
     public:
+        TestCaseHandle(TestCaseInfo* info, ITestInvoker* invoker) :
+            m_info(info), m_invoker(invoker) {}
 
-        TestCase( ITestInvoker* testCase, TestCaseInfo&& info );
-
-        void invoke() const;
+        void invoke() const {
+            m_invoker->invoke();
+        }
 
         TestCaseInfo const& getTestCaseInfo() const;
 
-        bool operator == ( TestCase const& other ) const;
-        bool operator < ( TestCase const& other ) const;
-
-    private:
-        std::shared_ptr<ITestInvoker> test;
+        bool operator== ( TestCaseHandle const& rhs ) const;
+        bool operator < ( TestCaseHandle const& rhs ) const;
     };
 
-    TestCase makeTestCase(  ITestInvoker* testCase,
-                            std::string const& className,
+    std::unique_ptr<TestCaseInfo> makeTestCaseInfo(  std::string const& className,
                             NameAndTags const& nameAndTags,
                             SourceLineInfo const& lineInfo );
 }

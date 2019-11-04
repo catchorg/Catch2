@@ -163,7 +163,7 @@ namespace Catch {
         m_reporter->listReporters(descriptions, config);
     }
 
-    void ListeningReporter::listTests(std::vector<TestCase> const& tests, Config const& config) {
+    void ListeningReporter::listTests(std::vector<TestCaseHandle> const& tests, Config const& config) {
         for (auto const& listener : m_listeners) {
             listener->listTests(tests, config);
         }

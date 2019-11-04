@@ -72,7 +72,7 @@ namespace Catch {
 
                 if (m_matches.empty() && invalidArgs.empty()) {
                     for (auto const& test : allTestCases)
-                        if (!test.isHidden())
+                        if (!test.getTestCaseInfo().isHidden())
                             m_tests.emplace(&test);
                 } else {
                     for (auto const& match : m_matches)
@@ -88,7 +88,7 @@ namespace Catch {
                     if (!m_context.aborting())
                         totals += m_context.runTest(*testCase);
                     else
-                        m_context.reporter().skipTest(*testCase);
+                        m_context.reporter().skipTest(testCase->getTestCaseInfo());
                 }
 
                 for (auto const& match : m_matches) {
@@ -108,7 +108,7 @@ namespace Catch {
             }
 
         private:
-            using Tests = std::set<TestCase const*>;
+            using Tests = std::set<TestCaseHandle const*>;
 
             std::shared_ptr<Config> m_config;
             RunContext m_context;
@@ -117,11 +117,11 @@ namespace Catch {
         };
 
         void applyFilenamesAsTags(Catch::IConfig const& config) {
-            auto& tests = const_cast<std::vector<TestCase>&>(getAllTestCasesSorted(config));
-            for (auto& testCase : tests) {
-                auto tags = testCase.tags;
+            for (auto const& testCase : getAllTestCasesSorted(config)) {
+                // Yeah, sue me. This will be removed soon.
+                auto& testInfo = const_cast<TestCaseInfo&>(testCase.getTestCaseInfo());
 
-                std::string filename = testCase.lineInfo.file;
+                std::string filename = testInfo.lineInfo.file;
                 auto lastSlash = filename.find_last_of("\\/");
                 if (lastSlash != std::string::npos) {
                     filename.erase(0, lastSlash);
@@ -133,8 +133,9 @@ namespace Catch {
                     filename.erase(lastDot);
                 }
 
+                auto tags = testInfo.tags;
                 tags.push_back(std::move(filename));
-                setTags(testCase, tags);
+                setTags(testInfo, tags);
             }
         }
 

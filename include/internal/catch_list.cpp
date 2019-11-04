@@ -36,7 +36,7 @@ namespace Catch {
 
         void listTags(IStreamingReporter& reporter, Config const& config) {
             TestSpec testSpec = config.testSpec();
-            std::vector<TestCase> matchedTestCases = filterTests(getAllTestCasesSorted(config), testSpec, config);
+            std::vector<TestCaseHandle> matchedTestCases = filterTests(getAllTestCasesSorted(config), testSpec, config);
 
             std::map<std::string, TagInfo> tagCounts;
             for (auto const& testCase : matchedTestCases) {

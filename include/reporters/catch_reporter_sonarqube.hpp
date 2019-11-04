@@ -58,7 +58,7 @@ namespace Catch {
         void writeGroup(TestGroupNode const& groupNode) {
             std::map<std::string, TestGroupNode::ChildNodes> testsPerFile;
             for(auto const& child : groupNode.children)
-                testsPerFile[child->value.testInfo.lineInfo.file].push_back(child);
+                testsPerFile[child->value.testInfo->lineInfo.file].push_back(child);
 
             for(auto const& kv : testsPerFile)
                 writeTestFile(kv.first.c_str(), kv.second);
@@ -77,7 +77,7 @@ namespace Catch {
             // test case itself. That section may have 0-n nested sections
             assert(testCaseNode.children.size() == 1);
             SectionNode const& rootSection = *testCaseNode.children.front();
-            writeSection("", rootSection, testCaseNode.value.testInfo.okToFail());
+            writeSection("", rootSection, testCaseNode.value.testInfo->okToFail());
         }
 
         void writeSection(std::string const& rootName, SectionNode const& sectionNode, bool okToFail) {

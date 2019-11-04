@@ -93,7 +93,7 @@ namespace Catch {
         m_reporter->testGroupEnded(TestGroupStats(GroupInfo(testSpec, groupIndex, groupsCount), totals, aborting()));
     }
 
-    Totals RunContext::runTest(TestCase const& testCase) {
+    Totals RunContext::runTest(TestCaseHandle const& testCase) {
         Totals prevTotals = m_totals;
 
         std::string redirectedCout;

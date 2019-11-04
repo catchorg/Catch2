@@ -41,7 +41,7 @@ namespace Catch {
             } else {
                 stream << "FAIL";
             }
-            stream << ' ' << _testCaseStats.testInfo.name << '\n';
+            stream << ' ' << _testCaseStats.testInfo->name << '\n';
             StreamingReporterBase::testCaseEnded( _testCaseStats );
         }
 

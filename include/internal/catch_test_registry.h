@@ -15,6 +15,8 @@
 #include "catch_preprocessor.hpp"
 #include "catch_meta.hpp"
 
+#include <memory>
+
 namespace Catch {
 
 template<typename C>
@@ -29,11 +31,11 @@ public:
     }
 };
 
-auto makeTestInvoker( void(*testAsFunction)() ) noexcept -> ITestInvoker*;
+std::unique_ptr<ITestInvoker> makeTestInvoker( void(*testAsFunction)() );
 
 template<typename C>
-auto makeTestInvoker( void (C::*testAsMethod)() ) noexcept -> ITestInvoker* {
-    return new(std::nothrow) TestInvokerAsMethod<C>( testAsMethod );
+std::unique_ptr<ITestInvoker> makeTestInvoker( void (C::*testAsMethod)() ) {
+    return std::make_unique<TestInvokerAsMethod<C>>( testAsMethod );
 }
 
 struct NameAndTags {
@@ -45,7 +47,7 @@ struct NameAndTags {
 };
 
 struct AutoReg : NonCopyable {
-    AutoReg( ITestInvoker* invoker, SourceLineInfo const& lineInfo, StringRef const& classOrMethod, NameAndTags const& nameAndTags ) noexcept;
+    AutoReg( std::unique_ptr<ITestInvoker> invoker, SourceLineInfo const& lineInfo, StringRef const& classOrMethod, NameAndTags const& nameAndTags ) noexcept;
 };
 
 } // end namespace Catch

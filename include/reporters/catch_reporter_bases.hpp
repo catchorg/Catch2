@@ -45,7 +45,7 @@ namespace Catch {
         void noMatchingTestCases(std::string const&) override {}
 
         void reportInvalidArguments(std::string const&) override {}
-        
+
         void testRunStarting(TestRunInfo const& _testRunInfo) override {
             currentTestRunInfo = _testRunInfo;
         }
@@ -55,7 +55,7 @@ namespace Catch {
         }
 
         void testCaseStarting(TestCaseInfo const& _testInfo) override  {
-            currentTestCaseInfo = _testInfo;
+            currentTestCaseInfo = &_testInfo;
         }
         void sectionStarting(SectionInfo const& _sectionInfo) override {
             m_sectionStack.push_back(_sectionInfo);
@@ -65,13 +65,13 @@ namespace Catch {
             m_sectionStack.pop_back();
         }
         void testCaseEnded(TestCaseStats const& /* _testCaseStats */) override {
-            currentTestCaseInfo.reset();
+            currentTestCaseInfo = nullptr;
         }
         void testGroupEnded(TestGroupStats const& /* _testGroupStats */) override {
             currentGroupInfo.reset();
         }
         void testRunEnded(TestRunStats const& /* _testRunStats */) override {
-            currentTestCaseInfo.reset();
+            currentTestCaseInfo = nullptr;
             currentGroupInfo.reset();
             currentTestRunInfo.reset();
         }
@@ -86,7 +86,7 @@ namespace Catch {
 
         LazyStat<TestRunInfo> currentTestRunInfo;
         LazyStat<GroupInfo> currentGroupInfo;
-        LazyStat<TestCaseInfo> currentTestCaseInfo;
+        TestCaseInfo const* currentTestCaseInfo;
 
         std::vector<SectionInfo> m_sectionStack;
         ReporterPreferences m_reporterPrefs;
@@ -261,7 +261,7 @@ namespace Catch {
 
         // Event listeners should not use the default listing impl
         void listReporters(std::vector<ReporterDescription> const&, Config const&) override {}
-        void listTests(std::vector<TestCase> const&, Config const&) override {}
+        void listTests(std::vector<TestCaseHandle> const&, Config const&) override {}
         void listTags(std::vector<TagInfo> const&, Config const&) override {}
     };
 

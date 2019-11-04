@@ -63,14 +63,14 @@ namespace Catch {
     public:
         struct FilterMatch {
             std::string name;
-            std::vector<TestCase const*> tests;
+            std::vector<TestCaseHandle const*> tests;
         };
         using Matches = std::vector<FilterMatch>;
         using vectorStrings = std::vector<std::string>;
 
         bool hasFilters() const;
         bool matches( TestCaseInfo const& testCase ) const;
-        Matches matchesByFilter( std::vector<TestCase> const& testCases, IConfig const& config ) const;
+        Matches matchesByFilter( std::vector<TestCaseHandle> const& testCases, IConfig const& config ) const;
         const vectorStrings & getInvalidArgs() const;
 
     private:

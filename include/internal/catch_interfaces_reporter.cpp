@@ -76,7 +76,7 @@ namespace Catch {
                                    std::string const& _stdOut,
                                    std::string const& _stdErr,
                                    bool _aborting )
-    : testInfo( _testInfo ),
+    : testInfo( &_testInfo ),
         totals( _totals ),
         stdOut( _stdOut ),
         stdErr( _stdErr ),
@@ -141,14 +141,15 @@ namespace Catch {
         Catch::cout() << std::endl;
     }
 
-    void IStreamingReporter::listTests(std::vector<TestCase> const& tests, Config const& config) {
+    void IStreamingReporter::listTests(std::vector<TestCaseHandle> const& tests, Config const& config) {
         if (config.hasTestFilters())
             Catch::cout() << "Matching test cases:\n";
         else {
             Catch::cout() << "All available test cases:\n";
         }
 
-        for (auto const& testCaseInfo : tests) {
+        for (auto const& test : tests) {
+            auto const& testCaseInfo = test.getTestCaseInfo();
             Colour::Code colour = testCaseInfo.isHidden()
                 ? Colour::SecondaryText
                 : Colour::None;
