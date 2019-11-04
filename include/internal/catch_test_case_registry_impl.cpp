@@ -73,12 +73,6 @@ namespace Catch {
     }
 
     void TestRegistry::registerTest( TestCase const& testCase ) {
-        std::string name = testCase.getTestCaseInfo().name;
-        if( name.empty() ) {
-            ReusableStringStream rss;
-            rss << "Anonymous test case " << ++m_unnamedCount;
-            return registerTest( testCase.withName( rss.str() ) );
-        }
         m_functions.push_back( testCase );
     }
 

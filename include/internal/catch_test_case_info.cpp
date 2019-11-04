@@ -46,6 +46,11 @@ namespace Catch {
                           << "Tag names starting with non alphanumeric characters are reserved\n"
                           << _lineInfo );
         }
+
+        std::string makeDefaultName() {
+            static size_t counter = 0;
+            return "Anonymous test case " + std::to_string(++counter);
+        }
     }
 
     TestCase makeTestCase(  ITestInvoker* _testCase,
@@ -111,7 +116,7 @@ namespace Catch {
                                 std::string const& _className,
                                 std::vector<std::string> const& _tags,
                                 SourceLineInfo const& _lineInfo )
-    :   name( _name ),
+    :   name( _name.empty() ? makeDefaultName() : _name ),
         className( _className ),
         lineInfo( _lineInfo ),
         properties( None )
