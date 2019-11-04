@@ -79,7 +79,7 @@ TEST_CASE( "StringRef", "[Strings][StringRef]" ) {
     SECTION( "Comparisons are deep" ) {
         char buffer1[] = "Hello";
         char buffer2[] = "Hello";
-        CHECK(buffer1 != buffer2);
+        CHECK((char*)buffer1 != (char*)buffer2);
 
         StringRef left(buffer1), right(buffer2);
         REQUIRE( left == right );
