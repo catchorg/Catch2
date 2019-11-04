@@ -157,12 +157,6 @@
     <testCase name="XmlEncode/string with quotes" duration="{duration}"/>
     <testCase name="XmlEncode/string with control char (1)" duration="{duration}"/>
     <testCase name="XmlEncode/string with control char (x7F)" duration="{duration}"/>
-    <testCase name="XmlEncode: UTF-8/Valid utf-8 strings" duration="{duration}"/>
-    <testCase name="XmlEncode: UTF-8/Invalid utf-8 strings/Various broken strings" duration="{duration}"/>
-    <testCase name="XmlEncode: UTF-8/Invalid utf-8 strings/Overlong encodings" duration="{duration}"/>
-    <testCase name="XmlEncode: UTF-8/Invalid utf-8 strings/Surrogate pairs" duration="{duration}"/>
-    <testCase name="XmlEncode: UTF-8/Invalid utf-8 strings/Invalid start byte" duration="{duration}"/>
-    <testCase name="XmlEncode: UTF-8/Invalid utf-8 strings/Missing continuation byte(s)" duration="{duration}"/>
   </file>
   <file path="projects/<exe-name>/UsageTests/Approx.tests.cpp">
     <testCase name="A comparison that uses literals instead of the normal constructor" duration="{duration}"/>
