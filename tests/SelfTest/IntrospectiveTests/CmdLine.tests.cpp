@@ -19,7 +19,7 @@ namespace {
     auto fakeTestCase(const char* name, const char* desc = "") { return Catch::makeTestCaseInfo("", { name, desc }, CATCH_INTERNAL_LINEINFO); }
 }
 
-TEST_CASE( "Parse test names and tags" ) {
+TEST_CASE( "Parse test names and tags", "[command-line][test-spec]" ) {
 
     using Catch::parseTestSpec;
     using Catch::TestSpec;
@@ -280,7 +280,18 @@ TEST_CASE( "Parse test names and tags" ) {
         CHECK( spec.matches( *fakeTestCase( " aardvark " ) ) );
         CHECK( spec.matches( *fakeTestCase( "aardvark " ) ) );
         CHECK( spec.matches( *fakeTestCase( "aardvark" ) ) );
-
+    }
+    SECTION("Shortened hide tags are split apart when parsing") {
+        TestSpec spec = parseTestSpec("[.foo]");
+        CHECK(spec.matches(*fakeTestCase("hidden and foo", "[.][foo]")));
+        CHECK_FALSE(spec.matches(*fakeTestCase("only foo", "[foo]")));
+    }
+    SECTION("Shortened hide tags also properly handle exclusion") {
+        TestSpec spec = parseTestSpec("~[.foo]");
+        CHECK_FALSE(spec.matches(*fakeTestCase("hidden and foo", "[.][foo]")));
+        CHECK_FALSE(spec.matches(*fakeTestCase("only foo", "[foo]")));
+        CHECK_FALSE(spec.matches(*fakeTestCase("only hidden", "[.]")));
+        CHECK(spec.matches(*fakeTestCase("neither foo nor hidden", "[bar]")));
     }
 }
 

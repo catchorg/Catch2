@@ -1978,6 +1978,18 @@ ok {test-number} - spec.matches( *fakeTestCase( " aardvark " ) ) for: true
 ok {test-number} - spec.matches( *fakeTestCase( "aardvark " ) ) for: true
 # Parse test names and tags
 ok {test-number} - spec.matches( *fakeTestCase( "aardvark" ) ) for: true
+# Parse test names and tags
+ok {test-number} - spec.matches(*fakeTestCase("hidden and foo", "[.][foo]")) for: true
+# Parse test names and tags
+ok {test-number} - !(spec.matches(*fakeTestCase("only foo", "[foo]"))) for: !false
+# Parse test names and tags
+ok {test-number} - !(spec.matches(*fakeTestCase("hidden and foo", "[.][foo]"))) for: !false
+# Parse test names and tags
+ok {test-number} - !(spec.matches(*fakeTestCase("only foo", "[foo]"))) for: !false
+# Parse test names and tags
+ok {test-number} - !(spec.matches(*fakeTestCase("only hidden", "[.]"))) for: !false
+# Parse test names and tags
+ok {test-number} - spec.matches(*fakeTestCase("neither foo nor hidden", "[bar]")) for: true
 # Pointers can be compared to null
 ok {test-number} - p == 0 for: 0 == 0
 # Pointers can be compared to null
@@ -2928,9 +2940,9 @@ not ok {test-number} - unexpected exception with message: 'expected exception'; 
 # When unchecked exceptions are thrown from sections they are always failures
 not ok {test-number} - unexpected exception with message: 'unexpected exception'
 # Where the LHS is not a simple value
-warning 1461 - 'Uncomment the code in this test to check that it gives a sensible compiler error'
+warning 1467 - 'Uncomment the code in this test to check that it gives a sensible compiler error'
 # Where there is more to the expression after the RHS
-warning 1462 - 'Uncomment the code in this test to check that it gives a sensible compiler error'
+warning 1468 - 'Uncomment the code in this test to check that it gives a sensible compiler error'
 # X/level/0/a
 ok {test-number} -
 # X/level/0/b
@@ -3197,9 +3209,9 @@ ok {test-number} - s.result == 17 for: 17 == 17
 # measure
 ok {test-number} - s.iterations == 1 for: 1 == 1
 # mix info, unscoped info and warning
-warning 1595 - 'info' with 2 messages: 'unscoped info' and 'and warn may mix'
+warning 1601 - 'info' with 2 messages: 'unscoped info' and 'and warn may mix'
 # mix info, unscoped info and warning
-warning 1596 - 'info' with 2 messages: 'unscoped info' and 'they are not cleared after warnings'
+warning 1602 - 'info' with 2 messages: 'unscoped info' and 'they are not cleared after warnings'
 # more nested SECTION tests
 not ok {test-number} - a == b for: 1 == 2
 # more nested SECTION tests
@@ -3578,5 +3590,5 @@ ok {test-number} - q3 == 23. for: 23.0 == 23.0
 ok {test-number} -
 # xmlentitycheck
 ok {test-number} -
-1..1785
+1..1791
 

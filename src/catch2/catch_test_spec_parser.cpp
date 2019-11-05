@@ -113,9 +113,9 @@ namespace Catch {
         switch( m_mode ) {
         case Name:
         case QuotedName:
-            return addPattern<TestSpec::NamePattern>();
+            return addNamePattern();
         case Tag:
-            return addPattern<TestSpec::TagPattern>();
+            return addTagPattern();
         case EscapedName:
             revertBackToLastMode();
             return;
@@ -173,6 +173,63 @@ namespace Catch {
       endMode();
       addFilter();
       return true; //success
+    }
+
+    std::string TestSpecParser::preprocessPattern() {
+        std::string token = m_patternName;
+        for (std::size_t i = 0; i < m_escapeChars.size(); ++i)
+            token = token.substr(0, m_escapeChars[i] - i) + token.substr(m_escapeChars[i] - i + 1);
+        m_escapeChars.clear();
+        if (startsWith(token, "exclude:")) {
+            m_exclusion = true;
+            token = token.substr(8);
+        }
+
+        m_patternName.clear();
+
+        return token;
+    }
+
+    void TestSpecParser::addNamePattern() {
+        auto token = preprocessPattern();
+
+        if (!token.empty()) {
+            if (m_exclusion) {
+                m_currentFilter.m_forbidden.emplace_back(std::make_unique<TestSpec::NamePattern>(token, m_substring));
+            } else {
+                m_currentFilter.m_required.emplace_back(std::make_unique<TestSpec::NamePattern>(token, m_substring));
+            }
+        }
+        m_substring.clear();
+        m_exclusion = false;
+        m_mode = None;
+    }
+
+    void TestSpecParser::addTagPattern() {
+        auto token = preprocessPattern();
+
+        if (!token.empty()) {
+            // If the tag pattern is the "hide and tag" shorthand (e.g. [.foo])
+            // we have to create a separate hide tag and shorten the real one
+            if (token.size() > 1 && token[0] == '.') {
+                token.erase(token.begin());
+                if (m_exclusion) {
+                    m_currentFilter.m_forbidden.emplace_back(std::make_unique<TestSpec::TagPattern>(".", m_substring));
+                    m_currentFilter.m_forbidden.emplace_back(std::make_unique<TestSpec::TagPattern>(token, m_substring));
+                } else {
+                    m_currentFilter.m_required.emplace_back(std::make_unique<TestSpec::TagPattern>(".", m_substring));
+                    m_currentFilter.m_required.emplace_back(std::make_unique<TestSpec::TagPattern>(token, m_substring));
+                }
+            }
+            if (m_exclusion) {
+                m_currentFilter.m_forbidden.emplace_back(std::make_unique<TestSpec::TagPattern>(token, m_substring));
+            } else {
+                m_currentFilter.m_required.emplace_back(std::make_unique<TestSpec::TagPattern>(token, m_substring));
+            }
+        }
+        m_substring.clear();
+        m_exclusion = false;
+        m_mode = None;
     }
 
     TestSpec parseTestSpec( std::string const& arg ) {
