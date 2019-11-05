@@ -7362,6 +7362,50 @@ with expansion:
   true
 
 -------------------------------------------------------------------------------
+Parse test names and tags
+  Shortened hide tags are split apart when parsing
+-------------------------------------------------------------------------------
+CmdLine.tests.cpp:<line number>
+...............................................................................
+
+CmdLine.tests.cpp:<line number>: PASSED:
+  CHECK( spec.matches(fakeTestCase("hidden and foo", "[.][foo]")) )
+with expansion:
+  true
+
+CmdLine.tests.cpp:<line number>: PASSED:
+  CHECK_FALSE( spec.matches(fakeTestCase("only foo", "[foo]")) )
+with expansion:
+  !false
+
+-------------------------------------------------------------------------------
+Parse test names and tags
+  Shortened hide tags also properly handle exclusion
+-------------------------------------------------------------------------------
+CmdLine.tests.cpp:<line number>
+...............................................................................
+
+CmdLine.tests.cpp:<line number>: PASSED:
+  CHECK_FALSE( spec.matches(fakeTestCase("hidden and foo", "[.][foo]")) )
+with expansion:
+  !false
+
+CmdLine.tests.cpp:<line number>: PASSED:
+  CHECK_FALSE( spec.matches(fakeTestCase("only foo", "[foo]")) )
+with expansion:
+  !false
+
+CmdLine.tests.cpp:<line number>: PASSED:
+  CHECK_FALSE( spec.matches(fakeTestCase("only hidden", "[.]")) )
+with expansion:
+  !false
+
+CmdLine.tests.cpp:<line number>: PASSED:
+  CHECK( spec.matches(fakeTestCase("neither foo nor hidden", "[bar]")) )
+with expansion:
+  true
+
+-------------------------------------------------------------------------------
 Pointers can be compared to null
 -------------------------------------------------------------------------------
 Condition.tests.cpp:<line number>
@@ -13208,5 +13252,5 @@ Misc.tests.cpp:<line number>: PASSED:
 
 ===============================================================================
 test cases:  304 |  214 passed |  86 failed |  4 failed as expected
-assertions: 1670 | 1501 passed | 148 failed | 21 failed as expected
+assertions: 1676 | 1507 passed | 148 failed | 21 failed as expected
 

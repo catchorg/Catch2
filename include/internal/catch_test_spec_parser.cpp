@@ -20,10 +20,10 @@ namespace Catch {
         m_substring.reserve(m_arg.size());
         m_patternName.reserve(m_arg.size());
         m_realPatternPos = 0;
-        
+
         for( m_pos = 0; m_pos < m_arg.size(); ++m_pos )
           //if visitChar fails
-           if( !visitChar( m_arg[m_pos] ) ){ 
+           if( !visitChar( m_arg[m_pos] ) ){
                m_testSpec.m_invalidArgs.push_back(arg);
                break;
            }
@@ -113,9 +113,9 @@ namespace Catch {
         switch( m_mode ) {
         case Name:
         case QuotedName:
-            return addPattern<TestSpec::NamePattern>();
+            return addNamePattern();
         case Tag:
-            return addPattern<TestSpec::TagPattern>();
+            return addTagPattern();
         case EscapedName:
             revertBackToLastMode();
             return;
@@ -156,12 +156,12 @@ namespace Catch {
     void TestSpecParser::saveLastMode() {
       lastMode = m_mode;
     }
-    
+
     void TestSpecParser::revertBackToLastMode() {
       m_mode = lastMode;
     }
-    
-    bool TestSpecParser::separate() {  
+
+    bool TestSpecParser::separate() {
       if( (m_mode==QuotedName) || (m_mode==Tag) ){
          //invalid argument, signal failure to previous scope.
          m_mode = None;
@@ -174,7 +174,63 @@ namespace Catch {
       addFilter();
       return true; //success
     }
-    
+
+    std::string TestSpecParser::preprocessPattern() {
+        std::string token = m_patternName;
+        for (std::size_t i = 0; i < m_escapeChars.size(); ++i)
+            token = token.substr(0, m_escapeChars[i] - i) + token.substr(m_escapeChars[i] - i + 1);
+        m_escapeChars.clear();
+        if (startsWith(token, "exclude:")) {
+            m_exclusion = true;
+            token = token.substr(8);
+        }
+
+        m_patternName.clear();
+
+        return token;
+    }
+
+    void TestSpecParser::addNamePattern() {
+        auto token = preprocessPattern();
+
+        if (!token.empty()) {
+            TestSpec::PatternPtr pattern = std::make_shared<TestSpec::NamePattern>(token, m_substring);
+            if (m_exclusion)
+                pattern = std::make_shared<TestSpec::ExcludedPattern>(pattern);
+            m_currentFilter.m_patterns.push_back(pattern);
+        }
+        m_substring.clear();
+        m_exclusion = false;
+        m_mode = None;
+    }
+
+    void TestSpecParser::addTagPattern() {
+        auto token = preprocessPattern();
+
+        if (!token.empty()) {
+            // If the tag pattern is the "hide and tag" shorthand (e.g. [.foo])
+            // we have to create a separate hide tag and shorten the real one
+            if (token.size() > 1 && token[0] == '.') {
+                token.erase(token.begin());
+                TestSpec::PatternPtr pattern = std::make_shared<TestSpec::TagPattern>(".", m_substring);
+                if (m_exclusion) {
+                    pattern = std::make_shared<TestSpec::ExcludedPattern>(pattern);
+                }
+                m_currentFilter.m_patterns.push_back(pattern);
+            }
+
+            TestSpec::PatternPtr pattern = std::make_shared<TestSpec::TagPattern>(token, m_substring);
+
+            if (m_exclusion) {
+                pattern = std::make_shared<TestSpec::ExcludedPattern>(pattern);
+            }
+            m_currentFilter.m_patterns.push_back(pattern);
+        }
+        m_substring.clear();
+        m_exclusion = false;
+        m_mode = None;
+    }
+
     TestSpec parseTestSpec( std::string const& arg ) {
         return TestSpecParser( ITagAliasRegistry::get() ).parse( arg ).testSpec();
     }

@@ -8019,7 +8019,7 @@ Nor would this
       </Section>
       <OverallResult success="false"/>
     </TestCase>
-    <TestCase name="Parse test names and tags" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
+    <TestCase name="Parse test names and tags" tags="[command-line][test-spec]" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
       <Section name="Empty test spec should have no filters" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
         <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
           <Original>
@@ -9278,6 +9278,60 @@ Nor would this
           </Expanded>
         </Expression>
         <OverallResults successes="5" failures="0" expectedFailures="0"/>
+      </Section>
+      <Section name="Shortened hide tags are split apart when parsing" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
+        <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
+          <Original>
+            spec.matches(fakeTestCase("hidden and foo", "[.][foo]"))
+          </Original>
+          <Expanded>
+            true
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="CHECK_FALSE" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
+          <Original>
+            !(spec.matches(fakeTestCase("only foo", "[foo]")))
+          </Original>
+          <Expanded>
+            !false
+          </Expanded>
+        </Expression>
+        <OverallResults successes="2" failures="0" expectedFailures="0"/>
+      </Section>
+      <Section name="Shortened hide tags also properly handle exclusion" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
+        <Expression success="true" type="CHECK_FALSE" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
+          <Original>
+            !(spec.matches(fakeTestCase("hidden and foo", "[.][foo]")))
+          </Original>
+          <Expanded>
+            !false
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="CHECK_FALSE" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
+          <Original>
+            !(spec.matches(fakeTestCase("only foo", "[foo]")))
+          </Original>
+          <Expanded>
+            !false
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="CHECK_FALSE" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
+          <Original>
+            !(spec.matches(fakeTestCase("only hidden", "[.]")))
+          </Original>
+          <Expanded>
+            !false
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
+          <Original>
+            spec.matches(fakeTestCase("neither foo nor hidden", "[bar]"))
+          </Original>
+          <Expanded>
+            true
+          </Expanded>
+        </Expression>
+        <OverallResults successes="4" failures="0" expectedFailures="0"/>
       </Section>
       <OverallResult success="true"/>
     </TestCase>
@@ -15790,7 +15844,7 @@ loose text artifact
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="1501" failures="149" expectedFailures="21"/>
+    <OverallResults successes="1507" failures="149" expectedFailures="21"/>
   </Group>
-  <OverallResults successes="1501" failures="148" expectedFailures="21"/>
+  <OverallResults successes="1507" failures="148" expectedFailures="21"/>
 </Catch>

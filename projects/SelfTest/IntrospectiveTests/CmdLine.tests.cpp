@@ -17,7 +17,7 @@
 
 inline Catch::TestCase fakeTestCase(const char* name, const char* desc = "") { return Catch::makeTestCase(nullptr, "", { name, desc }, CATCH_INTERNAL_LINEINFO); }
 
-TEST_CASE( "Parse test names and tags" ) {
+TEST_CASE( "Parse test names and tags", "[command-line][test-spec]" ) {
 
     using Catch::parseTestSpec;
     using Catch::TestSpec;
@@ -269,7 +269,6 @@ TEST_CASE( "Parse test names and tags" ) {
         CHECK( spec.matches( fakeTestCase( " aardvark " ) ) );
         CHECK( spec.matches( fakeTestCase( "aardvark " ) ) );
         CHECK( spec.matches( fakeTestCase( "aardvark" ) ) );
-
     }
     SECTION( "Leading and trailing spaces in test name" ) {
         TestSpec spec = parseTestSpec( "aardvark" );
@@ -278,7 +277,18 @@ TEST_CASE( "Parse test names and tags" ) {
         CHECK( spec.matches( fakeTestCase( " aardvark " ) ) );
         CHECK( spec.matches( fakeTestCase( "aardvark " ) ) );
         CHECK( spec.matches( fakeTestCase( "aardvark" ) ) );
-
+    }
+    SECTION("Shortened hide tags are split apart when parsing") {
+        TestSpec spec = parseTestSpec("[.foo]");
+        CHECK(spec.matches(fakeTestCase("hidden and foo", "[.][foo]")));
+        CHECK_FALSE(spec.matches(fakeTestCase("only foo", "[foo]")));
+    }
+    SECTION("Shortened hide tags also properly handle exclusion") {
+        TestSpec spec = parseTestSpec("~[.foo]");
+        CHECK_FALSE(spec.matches(fakeTestCase("hidden and foo", "[.][foo]")));
+        CHECK_FALSE(spec.matches(fakeTestCase("only foo", "[foo]")));
+        CHECK_FALSE(spec.matches(fakeTestCase("only hidden", "[.]")));
+        CHECK(spec.matches(fakeTestCase("neither foo nor hidden", "[bar]")));
     }
 }
 
@@ -486,7 +496,7 @@ TEST_CASE( "Process can be configured on command line", "[config][command-line]"
 
             REQUIRE(config.benchmarkSamples == 200);
         }
-        
+
         SECTION("resamples") {
             CHECK(cli.parse({ "test", "--benchmark-resamples=20000" }));
 

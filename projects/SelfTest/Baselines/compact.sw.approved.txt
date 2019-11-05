@@ -1027,6 +1027,12 @@ CmdLine.tests.cpp:<line number>: passed: spec.matches( fakeTestCase( "  aardvark
 CmdLine.tests.cpp:<line number>: passed: spec.matches( fakeTestCase( " aardvark " ) ) for: true
 CmdLine.tests.cpp:<line number>: passed: spec.matches( fakeTestCase( "aardvark " ) ) for: true
 CmdLine.tests.cpp:<line number>: passed: spec.matches( fakeTestCase( "aardvark" ) ) for: true
+CmdLine.tests.cpp:<line number>: passed: spec.matches(fakeTestCase("hidden and foo", "[.][foo]")) for: true
+CmdLine.tests.cpp:<line number>: passed: !(spec.matches(fakeTestCase("only foo", "[foo]"))) for: !false
+CmdLine.tests.cpp:<line number>: passed: !(spec.matches(fakeTestCase("hidden and foo", "[.][foo]"))) for: !false
+CmdLine.tests.cpp:<line number>: passed: !(spec.matches(fakeTestCase("only foo", "[foo]"))) for: !false
+CmdLine.tests.cpp:<line number>: passed: !(spec.matches(fakeTestCase("only hidden", "[.]"))) for: !false
+CmdLine.tests.cpp:<line number>: passed: spec.matches(fakeTestCase("neither foo nor hidden", "[bar]")) for: true
 Condition.tests.cpp:<line number>: passed: p == 0 for: 0 == 0
 Condition.tests.cpp:<line number>: passed: p == pNULL for: 0 == 0
 Condition.tests.cpp:<line number>: passed: p != 0 for: 0x<hex digits> != 0
