@@ -138,7 +138,7 @@ add_executable( 207-Rpt-TeamCityReporter ${EXAMPLES_DIR}/207-Rpt-TeamCityReporte
 foreach( name ${TARGETS_ALL} )
     target_include_directories( ${name} PRIVATE ${HEADER_DIR} ${CATCH_DIR} )
 
-    set_property(TARGET ${name} PROPERTY CXX_STANDARD 11)
+    set_property(TARGET ${name} PROPERTY CXX_STANDARD 14)
     set_property(TARGET ${name} PROPERTY CXX_EXTENSIONS OFF)
 
     # Add desired warnings

@@ -315,7 +315,7 @@ add_executable(SelfTest ${TEST_SOURCES} ${IMPL_SOURCES} ${REPORTER_SOURCES} ${SU
 target_include_directories(SelfTest PRIVATE ${HEADER_DIR})
 
 # It took CMake until 3.8 to abandon the doomed approach of enumerating
-# required features so we just list C++11 features to support older ones.
+# required features so we just list bunch of C++11 and C++14 features.
 target_compile_features(SelfTest
   PRIVATE
     cxx_alignas
@@ -337,6 +337,7 @@ target_compile_features(SelfTest
     cxx_unicode_literals
     cxx_user_literals
     cxx_variadic_macros
+    cxx_variable_templates
 )
 
 

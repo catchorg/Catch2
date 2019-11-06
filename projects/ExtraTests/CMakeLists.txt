@@ -130,7 +130,7 @@ set_tests_properties(
 if (MSVC)
     # This test fails if it does not compile and succeeds otherwise
     add_executable(WindowsHeader ${TESTS_DIR}/X90-WindowsHeaderInclusion.cpp)
-    set_property( TARGET WindowsHeader PROPERTY CXX_STANDARD 11 )
+    set_property( TARGET WindowsHeader PROPERTY CXX_STANDARD 14 )
     set_property( TARGET WindowsHeader PROPERTY CXX_STANDARD_REQUIRED ON )
     set_property( TARGET WindowsHeader PROPERTY CXX_EXTENSIONS OFF )
     target_include_directories( WindowsHeader PRIVATE ${SINGLE_INCLUDE_PATH} )
@@ -149,7 +149,7 @@ set( EXTRA_TEST_BINARIES
 
 # Shared config
 foreach( test ${EXTRA_TEST_BINARIES} )
-    set_property( TARGET ${test} PROPERTY CXX_STANDARD 11 )
+    set_property( TARGET ${test} PROPERTY CXX_STANDARD 14 )
     set_property( TARGET ${test} PROPERTY CXX_STANDARD_REQUIRED ON )
     set_property( TARGET ${test} PROPERTY CXX_EXTENSIONS OFF )
     target_include_directories( ${test} PRIVATE ${SINGLE_INCLUDE_PATH} )
