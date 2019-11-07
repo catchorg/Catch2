@@ -312,7 +312,7 @@ namespace Catch {
             auto aliasTag = m_xml.scopedElement("Aliases");
             for (auto const& alias : tag.spellings) {
                 m_xml.startElement("Alias", XmlFormatting::Indent)
-                     .writeText(alias, XmlFormatting::None)
+                     .writeText(static_cast<std::string>(alias), XmlFormatting::None)
                      .endElement(XmlFormatting::Newline);
             }
         }

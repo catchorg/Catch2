@@ -38,14 +38,13 @@ namespace Catch {
             TestSpec testSpec = config.testSpec();
             std::vector<TestCaseHandle> matchedTestCases = filterTests(getAllTestCasesSorted(config), testSpec, config);
 
-            std::map<std::string, TagInfo> tagCounts;
+            std::map<StringRef, TagInfo> tagCounts;
             for (auto const& testCase : matchedTestCases) {
                 for (auto const& tagName : testCase.getTestCaseInfo().tags) {
-                    std::string lcaseTagName = toLower(tagName);
-                    auto countIt = tagCounts.find(lcaseTagName);
-                    if (countIt == tagCounts.end())
-                        countIt = tagCounts.insert(std::make_pair(lcaseTagName, TagInfo())).first;
-                    countIt->second.add(tagName);
+                    auto it = tagCounts.find(tagName.lowerCased);
+                    if (it == tagCounts.end())
+                        it = tagCounts.insert(std::make_pair(tagName.lowerCased, TagInfo())).first;
+                    it->second.add(tagName.original);
                 }
             }
 
@@ -71,16 +70,16 @@ namespace Catch {
 
     } // end anonymous namespace
 
-    void TagInfo::add( std::string const& spelling ) {
+    void TagInfo::add( StringRef spelling ) {
         ++count;
         spellings.insert( spelling );
     }
 
     std::string TagInfo::all() const {
-        size_t size = 0;
+        // 2 per tag for brackets '[' and ']'
+        size_t size =  spellings.size() * 2;
         for (auto const& spelling : spellings) {
-            // Add 2 for the brackes
-            size += spelling.size() + 2;
+            size += spelling.size();
         }
 
         std::string out; out.reserve(size);

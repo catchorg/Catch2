@@ -48,12 +48,17 @@ namespace Catch {
             return std::string(timeStamp);
         }
 
-        std::string fileNameTag(const std::vector<std::string> &tags) {
+        std::string fileNameTag(std::vector<Tag> const& tags) {
             auto it = std::find_if(begin(tags),
                                    end(tags),
-                                   [] (std::string const& tag) {return tag.front() == '#'; });
-            if (it != tags.end())
-                return it->substr(1);
+                                   [] (Tag const& tag) {
+                                       return tag.original.size() > 0
+                                           && tag.original[0] == '#'; });
+            if (it != tags.end()) {
+                return static_cast<std::string>(
+                    it->original.substr(1, it->original.size() - 1)
+                );
+            }
             return std::string();
         }
     } // anonymous namespace

@@ -58,6 +58,8 @@ namespace Catch {
             return m_start[index];
         }
 
+        bool operator<(StringRef const& rhs) const noexcept;
+
     public: // named queries
         constexpr auto empty() const noexcept -> bool {
             return m_size == 0;
@@ -90,7 +92,6 @@ namespace Catch {
 
     auto operator += ( std::string& lhs, StringRef const& sr ) -> std::string&;
     auto operator << ( std::ostream& os, StringRef const& sr ) -> std::ostream&;
-
 
     constexpr auto operator "" _sr( char const* rawChars, std::size_t size ) noexcept -> StringRef {
         return StringRef( rawChars, size );

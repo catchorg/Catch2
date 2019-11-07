@@ -9,10 +9,12 @@
 #define TWOBLUECUBES_CATCH_INTERFACES_TESTCASE_H_INCLUDED
 
 #include <vector>
+#include <memory>
 
 namespace Catch {
 
     class TestSpec;
+    struct TestCaseInfo;
 
     struct ITestInvoker {
         virtual void invoke () const = 0;
@@ -24,6 +26,7 @@ namespace Catch {
 
     struct ITestCaseRegistry {
         virtual ~ITestCaseRegistry();
+        virtual std::vector<std::unique_ptr<TestCaseInfo>> const& getAllInfos() const = 0;
         virtual std::vector<TestCaseHandle> const& getAllTests() const = 0;
         virtual std::vector<TestCaseHandle> const& getAllTestsSorted( IConfig const& config ) const = 0;
     };

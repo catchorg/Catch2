@@ -78,6 +78,10 @@ namespace Catch {
         m_invokers.push_back(std::move(testInvoker));
     }
 
+    std::vector<std::unique_ptr<TestCaseInfo>> const& TestRegistry::getAllInfos() const {
+        return m_infos;
+    }
+
     std::vector<TestCaseHandle> const& TestRegistry::getAllTests() const {
         return m_handles;
     }

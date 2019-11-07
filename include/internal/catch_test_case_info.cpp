@@ -20,27 +20,58 @@
 namespace Catch {
 
     namespace {
-        TestCaseInfo::SpecialProperties parseSpecialTag( std::string const& tag ) {
-            if( startsWith( tag, '.' ) ||
-                tag == "!hide" )
-                return TestCaseInfo::IsHidden;
-            else if( tag == "!throws" )
-                return TestCaseInfo::Throws;
-            else if( tag == "!shouldfail" )
-                return TestCaseInfo::ShouldFail;
-            else if( tag == "!mayfail" )
-                return TestCaseInfo::MayFail;
-            else if( tag == "!nonportable" )
-                return TestCaseInfo::NonPortable;
-            else if( tag == "!benchmark" )
-                return static_cast<TestCaseInfo::SpecialProperties>( TestCaseInfo::Benchmark | TestCaseInfo::IsHidden );
+        using TCP_underlying_type = uint8_t;
+        static_assert(sizeof(TestCaseProperties) == sizeof(TCP_underlying_type),
+                      "The size of the TestCaseProperties is different from the assumed size");
+
+        TestCaseProperties operator|(TestCaseProperties lhs, TestCaseProperties rhs) {
+            return static_cast<TestCaseProperties>(
+                static_cast<TCP_underlying_type>(lhs) | static_cast<TCP_underlying_type>(rhs)
+            );
+        }
+
+        TestCaseProperties& operator|=(TestCaseProperties& lhs, TestCaseProperties rhs) {
+            lhs = static_cast<TestCaseProperties>(
+                static_cast<TCP_underlying_type>(lhs) | static_cast<TCP_underlying_type>(rhs)
+            );
+            return lhs;
+        }
+
+        TestCaseProperties operator&(TestCaseProperties lhs, TestCaseProperties rhs) {
+            return static_cast<TestCaseProperties>(
+                static_cast<TCP_underlying_type>(lhs) & static_cast<TCP_underlying_type>(rhs)
+            );
+        }
+
+        bool applies(TestCaseProperties tcp) {
+            static_assert(static_cast<TCP_underlying_type>(TestCaseProperties::None) == 0,
+                          "TestCaseProperties::None must be equal to 0");
+            return tcp != TestCaseProperties::None;
+        }
+
+        TestCaseProperties parseSpecialTag( StringRef tag ) {
+            if( (!tag.empty() && tag[0] == '.')
+               || tag == "!hide"_sr )
+                return TestCaseProperties::IsHidden;
+            else if( tag == "!throws"_sr )
+                return TestCaseProperties::Throws;
+            else if( tag == "!shouldfail"_sr )
+                return TestCaseProperties::ShouldFail;
+            else if( tag == "!mayfail"_sr )
+                return TestCaseProperties::MayFail;
+            else if( tag == "!nonportable"_sr )
+                return TestCaseProperties::NonPortable;
+            else if( tag == "!benchmark"_sr )
+                return static_cast<TestCaseProperties>(TestCaseProperties::Benchmark | TestCaseProperties::IsHidden );
             else
-                return TestCaseInfo::None;
+                return TestCaseProperties::None;
         }
-        bool isReservedTag( std::string const& tag ) {
-            return parseSpecialTag( tag ) == TestCaseInfo::None && tag.size() > 0 && !std::isalnum( static_cast<unsigned char>(tag[0]) );
+        bool isReservedTag( StringRef tag ) {
+            return parseSpecialTag( tag ) == TestCaseProperties::None
+                && tag.size() > 0
+                && !std::isalnum( static_cast<unsigned char>(tag[0]) );
         }
-        void enforceNotReservedTag( std::string const& tag, SourceLineInfo const& _lineInfo ) {
+        void enforceNotReservedTag( StringRef tag, SourceLineInfo const& _lineInfo ) {
             CATCH_ENFORCE( !isReservedTag(tag),
                           "Tag name: [" << tag << "] is not allowed.\n"
                           << "Tag names starting with non alphanumeric characters are reserved\n"
@@ -51,90 +82,117 @@ namespace Catch {
             static size_t counter = 0;
             return "Anonymous test case " + std::to_string(++counter);
         }
+
+        StringRef extractFilenamePart(StringRef filename) {
+            size_t lastDot = filename.size();
+            while (lastDot > 0 && filename[lastDot - 1] != '.') {
+                --lastDot;
+            }
+            --lastDot;
+
+            size_t nameStart = lastDot;
+            while (nameStart > 0 && filename[nameStart - 1] != '/' && filename[nameStart - 1] != '\\') {
+                --nameStart;
+            }
+
+            return filename.substr(nameStart, lastDot - nameStart);
+        }
+
+        // Returns the upper bound on size of extra tags ([#file]+[.])
+        size_t sizeOfExtraTags(StringRef filepath) {
+            // [.] is 3, [#] is another 3
+            const size_t extras = 3 + 3;
+            return extractFilenamePart(filepath).size() + extras;
+        }
     }
 
     std::unique_ptr<TestCaseInfo>
         makeTestCaseInfo(std::string const& _className,
-                     NameAndTags const& nameAndTags,
-                     SourceLineInfo const& _lineInfo )
-    {
-        bool isHidden = false;
-
-        // Parse out tags
-        std::vector<std::string> tags;
-        std::string tag;
-        bool inTag = false;
-        for (char c : nameAndTags.tags) {
-            if( !inTag ) {
-                if (c == '[') {
-                    inTag = true;
-                }
-            } else {
-                if( c == ']' ) {
-                    TestCaseInfo::SpecialProperties prop = parseSpecialTag( tag );
-                    if( ( prop & TestCaseInfo::IsHidden ) != 0 )
-                        isHidden = true;
-                    else if( prop == TestCaseInfo::None )
-                        enforceNotReservedTag( tag, _lineInfo );
-
-                    // Merged hide tags like `[.approvals]` should be added as
-                    // `[.][approvals]`. The `[.]` is added at later point, so
-                    // we only strip the prefix
-                    if (startsWith(tag, '.') && tag.size() > 1) {
-                        tag.erase(0, 1);
-                    }
-                    tags.push_back( tag );
-                    tag.clear();
-                    inTag = false;
-                }
-                else
-                    tag += c;
-            }
-        }
-        if( isHidden ) {
-            tags.push_back( "." );
-        }
-
-        return std::make_unique<TestCaseInfo>(static_cast<std::string>(nameAndTags.name),
-                                              _className, tags, _lineInfo);
+                         NameAndTags const& nameAndTags,
+                         SourceLineInfo const& _lineInfo ) {
+        return std::make_unique<TestCaseInfo>(_className, nameAndTags, _lineInfo);
     }
 
-    void setTags( TestCaseInfo& testCaseInfo, std::vector<std::string> tags ) {
-        std::sort(begin(tags), end(tags));
-        tags.erase(std::unique(begin(tags), end(tags)), end(tags));
-        testCaseInfo.lcaseTags.clear();
-
-        for( auto const& tag : tags ) {
-            std::string lcaseTag = toLower( tag );
-            testCaseInfo.properties = static_cast<TestCaseInfo::SpecialProperties>( testCaseInfo.properties | parseSpecialTag( lcaseTag ) );
-            testCaseInfo.lcaseTags.push_back( lcaseTag );
-        }
-        testCaseInfo.tags = std::move(tags);
-    }
-
-    TestCaseInfo::TestCaseInfo( std::string const& _name,
-                                std::string const& _className,
-                                std::vector<std::string> const& _tags,
-                                SourceLineInfo const& _lineInfo )
-    :   name( _name.empty() ? makeDefaultName() : _name ),
+    TestCaseInfo::TestCaseInfo(std::string const& _className,
+                               NameAndTags const& _nameAndTags,
+                               SourceLineInfo const& _lineInfo):
+        name( _nameAndTags.name.empty() ? makeDefaultName() : _nameAndTags.name ),
         className( _className ),
-        lineInfo( _lineInfo ),
-        properties( None )
+        lineInfo( _lineInfo )
     {
-        setTags( *this, _tags );
+        StringRef originalTags = _nameAndTags.tags;
+        // We need to reserve enough space to store all of the tags
+        // (including optional hidden tag and filename tag)
+        auto requiredSize = originalTags.size() + sizeOfExtraTags(_lineInfo.file);
+        backingTags.reserve(requiredSize);
+        backingLCaseTags.reserve(requiredSize);
+
+        // We cannot copy the tags directly, as we need to normalize
+        // some tags, so that [.foo] is copied as [.][foo].
+        size_t tagStart = 0;
+        size_t tagEnd = 0;
+        bool inTag = false;
+        for (size_t idx = 0; idx < originalTags.size(); ++idx) {
+            auto c = originalTags[idx];
+            if (c == '[') {
+                assert(!inTag);
+                inTag = true;
+                tagStart = idx;
+            }
+            if (c == ']') {
+                assert(inTag);
+                inTag = false;
+                tagEnd = idx;
+                assert(tagStart < tagEnd);
+
+                // We need to check the tag for special meanings, copy
+                // it over to backing storage and actually reference the
+                // backing storage in the saved tags
+                StringRef tagStr = originalTags.substr(tagStart+1, tagEnd - tagStart - 1);
+                enforceNotReservedTag(tagStr, lineInfo);
+                properties |= parseSpecialTag(tagStr);
+                // When copying a tag to the backing storage, we need to
+                // check if it is a merged hide tag, such as [.foo], and
+                // if it is, we need to handle it as if it was [foo].
+                if (tagStr.size() > 1 && tagStr[0] == '.') {
+                    tagStr = tagStr.substr(1, tagStr.size() - 1);
+                }
+                // We skip over dealing with the [.] tag, as we will add
+                // it later unconditionally and then sort and unique all
+                // the tags.
+                internalAppendTag(tagStr);
+            }
+            (void)inTag; // Silence "set-but-unused" warning in release mode.
+        }
+        // Add [.] if relevant
+        if (isHidden()) {
+            internalAppendTag("."_sr);
+        }
+
+        // Sort and prepare tags
+        toLowerInPlace(backingLCaseTags);
+        std::sort(begin(tags), end(tags), [](Tag lhs, Tag rhs) { return lhs.lowerCased < rhs.lowerCased; });
+        tags.erase(std::unique(begin(tags), end(tags), [](Tag lhs, Tag rhs) {return lhs.lowerCased == rhs.lowerCased; }),
+                   end(tags));
     }
 
     bool TestCaseInfo::isHidden() const {
-        return ( properties & IsHidden ) != 0;
+        return applies( properties & TestCaseProperties::IsHidden );
     }
     bool TestCaseInfo::throws() const {
-        return ( properties & Throws ) != 0;
+        return applies( properties & TestCaseProperties::Throws );
     }
     bool TestCaseInfo::okToFail() const {
-        return ( properties & (ShouldFail | MayFail ) ) != 0;
+        return applies( properties & (TestCaseProperties::ShouldFail | TestCaseProperties::MayFail ) );
     }
     bool TestCaseInfo::expectedToFail() const {
-        return ( properties & (ShouldFail ) ) != 0;
+        return applies( properties & (TestCaseProperties::ShouldFail) );
+    }
+
+    void TestCaseInfo::addFilenameTag() {
+        std::string combined("#");
+        combined += extractFilenamePart(lineInfo.file);
+        internalAppendTag(combined);
     }
 
     std::string TestCaseInfo::tagsAsString() const {
@@ -142,16 +200,31 @@ namespace Catch {
         // '[' and ']' per tag
         std::size_t full_size = 2 * tags.size();
         for (const auto& tag : tags) {
-            full_size += tag.size();
+            full_size += tag.original.size();
         }
         ret.reserve(full_size);
         for (const auto& tag : tags) {
             ret.push_back('[');
-            ret.append(tag);
+            ret += tag.original;
             ret.push_back(']');
         }
 
         return ret;
+    }
+
+    void TestCaseInfo::internalAppendTag(StringRef tagStr) {
+        backingTags += '[';
+        const auto backingStart = backingTags.size();
+        backingTags += tagStr;
+        const auto backingEnd = backingTags.size();
+        backingTags += ']';
+        backingLCaseTags += '[';
+        // We append the tag to the lower-case backing storage as-is,
+        // because we will perform the lower casing later, in bulk
+        backingLCaseTags += tagStr;
+        backingLCaseTags += ']';
+        tags.emplace_back(StringRef(backingTags.c_str() + backingStart, backingEnd - backingStart),
+                          StringRef(backingLCaseTags.c_str() + backingStart, backingEnd - backingStart));
     }
 
 

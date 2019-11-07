@@ -1730,7 +1730,7 @@ Nor would this
       </Failure>
       <OverallResult success="false"/>
     </TestCase>
-    <TestCase name="A failing expression with a non streamable type is still captured" tags="[.][Tricky][failing]" filename="projects/<exe-name>/UsageTests/Tricky.tests.cpp" >
+    <TestCase name="A failing expression with a non streamable type is still captured" tags="[.][failing][Tricky]" filename="projects/<exe-name>/UsageTests/Tricky.tests.cpp" >
       <Expression success="false" type="CHECK" filename="projects/<exe-name>/UsageTests/Tricky.tests.cpp" >
         <Original>
           &amp;o1 == &amp;o2
@@ -2510,7 +2510,7 @@ Nor would this
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="Comparing function pointers" tags="[Tricky][function pointer]" filename="projects/<exe-name>/UsageTests/Tricky.tests.cpp" >
+    <TestCase name="Comparing function pointers" tags="[function pointer][Tricky]" filename="projects/<exe-name>/UsageTests/Tricky.tests.cpp" >
       <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/UsageTests/Tricky.tests.cpp" >
         <Original>
           a
@@ -10985,7 +10985,7 @@ Message from section two
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="StringRef at compilation time" tags="[StringRef][Strings][constexpr]" filename="projects/<exe-name>/IntrospectiveTests/String.tests.cpp" >
+    <TestCase name="StringRef at compilation time" tags="[constexpr][StringRef][Strings]" filename="projects/<exe-name>/IntrospectiveTests/String.tests.cpp" >
       <Section name="Simple constructors" filename="projects/<exe-name>/IntrospectiveTests/String.tests.cpp" >
         <OverallResults successes="5" failures="0" expectedFailures="0"/>
       </Section>
@@ -13709,13 +13709,13 @@ There is no extra whitespace here
     <TestCase name="When unchecked exceptions are thrown, but caught, they do not affect the test" tags="[!throws]" filename="projects/<exe-name>/UsageTests/Exception.tests.cpp" >
       <OverallResult success="false"/>
     </TestCase>
-    <TestCase name="Where the LHS is not a simple value" tags="[.][Tricky][failing]" filename="projects/<exe-name>/UsageTests/Tricky.tests.cpp" >
+    <TestCase name="Where the LHS is not a simple value" tags="[.][failing][Tricky]" filename="projects/<exe-name>/UsageTests/Tricky.tests.cpp" >
       <Warning>
         Uncomment the code in this test to check that it gives a sensible compiler error
       </Warning>
       <OverallResult success="false"/>
     </TestCase>
-    <TestCase name="Where there is more to the expression after the RHS" tags="[.][Tricky][failing]" filename="projects/<exe-name>/UsageTests/Tricky.tests.cpp" >
+    <TestCase name="Where there is more to the expression after the RHS" tags="[.][failing][Tricky]" filename="projects/<exe-name>/UsageTests/Tricky.tests.cpp" >
       <Warning>
         Uncomment the code in this test to check that it gives a sensible compiler error
       </Warning>
@@ -13724,7 +13724,7 @@ There is no extra whitespace here
     <TestCase name="X/level/0/a" tags="[Tricky]" filename="projects/<exe-name>/UsageTests/Tricky.tests.cpp" >
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="X/level/0/b" tags="[Tricky][fizz]" filename="projects/<exe-name>/UsageTests/Tricky.tests.cpp" >
+    <TestCase name="X/level/0/b" tags="[fizz][Tricky]" filename="projects/<exe-name>/UsageTests/Tricky.tests.cpp" >
       <OverallResult success="true"/>
     </TestCase>
     <TestCase name="X/level/1/a" tags="[Tricky]" filename="projects/<exe-name>/UsageTests/Tricky.tests.cpp" >
@@ -14504,7 +14504,7 @@ loose text artifact
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="parseEnums" tags="[Strings][enums]" filename="projects/<exe-name>/IntrospectiveTests/ToString.tests.cpp" >
+    <TestCase name="parseEnums" tags="[enums][Strings]" filename="projects/<exe-name>/IntrospectiveTests/ToString.tests.cpp" >
       <Section name="No enums" filename="projects/<exe-name>/IntrospectiveTests/ToString.tests.cpp" >
         <Expression success="true" type="CHECK_THAT" filename="projects/<exe-name>/IntrospectiveTests/ToString.tests.cpp" >
           <Original>
@@ -14861,10 +14861,10 @@ loose text artifact
     <TestCase name="shortened hide tags are split apart" filename="projects/<exe-name>/IntrospectiveTests/Tag.tests.cpp" >
       <Expression success="true" type="REQUIRE_THAT" filename="projects/<exe-name>/IntrospectiveTests/Tag.tests.cpp" >
         <Original>
-          testcase->tags, Catch::VectorContains(std::string("magic-tag")) &amp;&amp; Catch::VectorContains(std::string("."))
+          tags, Catch::VectorContains("magic-tag"_catch_sr) &amp;&amp; Catch::VectorContains("."_catch_sr)
         </Original>
         <Expanded>
-          { ".", "magic-tag" } ( Contains: "magic-tag" and Contains: "." )
+          { ., magic-tag } ( Contains: magic-tag and Contains: . )
         </Expanded>
       </Expression>
       <OverallResult success="true"/>
@@ -15050,7 +15050,7 @@ loose text artifact
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="string literals of different sizes can be compared" tags="[.][Tricky][failing]" filename="projects/<exe-name>/UsageTests/Tricky.tests.cpp" >
+    <TestCase name="string literals of different sizes can be compared" tags="[.][failing][Tricky]" filename="projects/<exe-name>/UsageTests/Tricky.tests.cpp" >
       <Expression success="false" type="REQUIRE" filename="projects/<exe-name>/UsageTests/Tricky.tests.cpp" >
         <Original>
           std::string( "first" ) == "second"

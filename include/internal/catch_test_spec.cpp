@@ -43,9 +43,11 @@ namespace Catch {
     {}
 
     bool TestSpec::TagPattern::matches( TestCaseInfo const& testCase ) const {
-        return std::find(begin(testCase.lcaseTags),
-                         end(testCase.lcaseTags),
-                         m_tag) != end(testCase.lcaseTags);
+        return std::find_if(begin(testCase.tags),
+                            end(testCase.tags),
+                            [&](Tag const& tag) {
+                                return tag.lowerCased == m_tag;
+                            }) != end(testCase.tags);
     }
 
     bool TestSpec::Filter::matches( TestCaseInfo const& testCase ) const {

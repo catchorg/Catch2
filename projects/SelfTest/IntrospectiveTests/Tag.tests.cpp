@@ -42,6 +42,12 @@ TEST_CASE( "Tag alias can be registered against tag patterns" ) {
 }
 
 TEST_CASE("shortened hide tags are split apart") {
+    using Catch::StringRef;
     auto testcase = Catch::makeTestCaseInfo("", {"fake test name", "[.magic-tag]"}, CATCH_INTERNAL_LINEINFO);
-    REQUIRE_THAT(testcase->tags, Catch::VectorContains(std::string("magic-tag")) && Catch::VectorContains(std::string(".")));
+    // Transform ...
+    std::vector<StringRef> tags;
+    for (auto const& tag : testcase->tags) {
+        tags.push_back(tag.original);
+    }
+    REQUIRE_THAT(tags, Catch::VectorContains("magic-tag"_catch_sr) && Catch::VectorContains("."_catch_sr));
 }

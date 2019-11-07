@@ -23,10 +23,10 @@ namespace Catch {
     };
 
     struct TagInfo {
-        void add(std::string const& spelling);
+        void add(StringRef spelling);
         std::string all() const;
 
-        std::set<std::string> spellings;
+        std::set<StringRef> spellings;
         std::size_t count = 0;
     };
 
