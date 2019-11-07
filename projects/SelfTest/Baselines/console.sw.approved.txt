@@ -12341,9 +12341,9 @@ Tag.tests.cpp:<line number>
 ...............................................................................
 
 Tag.tests.cpp:<line number>: PASSED:
-  REQUIRE_THAT( testcase->tags, Catch::VectorContains(std::string("magic-tag")) && Catch::VectorContains(std::string(".")) )
+  REQUIRE_THAT( tags, Catch::VectorContains("magic-tag"_catch_sr) && Catch::VectorContains("."_catch_sr) )
 with expansion:
-  { ".", "magic-tag" } ( Contains: "magic-tag" and Contains: "." )
+  { ., magic-tag } ( Contains: magic-tag and Contains: . )
 
 -------------------------------------------------------------------------------
 splitString

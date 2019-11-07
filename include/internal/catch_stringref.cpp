@@ -38,6 +38,13 @@ namespace Catch {
             && (std::memcmp( m_start, other.m_start, m_size ) == 0);
     }
 
+    bool StringRef::operator<(StringRef const& rhs) const noexcept {
+        if (m_size < rhs.m_size) {
+            return strncmp(m_start, rhs.m_start, m_size) <= 0;
+        }
+        return strncmp(m_start, rhs.m_start, rhs.m_size) < 0;
+    }
+
     auto operator << ( std::ostream& os, StringRef const& str ) -> std::ostream& {
         return os.write(str.data(), str.size());
     }

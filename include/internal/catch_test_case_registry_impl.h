@@ -37,6 +37,7 @@ namespace Catch {
 
         virtual void registerTest( std::unique_ptr<TestCaseInfo> testInfo, std::unique_ptr<ITestInvoker> testInvoker );
 
+        std::vector<std::unique_ptr<TestCaseInfo>> const& getAllInfos() const override;
         std::vector<TestCaseHandle> const& getAllTests() const override;
         std::vector<TestCaseHandle> const& getAllTestsSorted( IConfig const& config ) const override;
 

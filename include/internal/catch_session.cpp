@@ -116,26 +116,9 @@ namespace Catch {
             TestSpec::Matches m_matches;
         };
 
-        void applyFilenamesAsTags(Catch::IConfig const& config) {
-            for (auto const& testCase : getAllTestCasesSorted(config)) {
-                // Yeah, sue me. This will be removed soon.
-                auto& testInfo = const_cast<TestCaseInfo&>(testCase.getTestCaseInfo());
-
-                std::string filename = testInfo.lineInfo.file;
-                auto lastSlash = filename.find_last_of("\\/");
-                if (lastSlash != std::string::npos) {
-                    filename.erase(0, lastSlash);
-                    filename[0] = '#';
-                }
-
-                auto lastDot = filename.find_last_of('.');
-                if (lastDot != std::string::npos) {
-                    filename.erase(lastDot);
-                }
-
-                auto tags = testInfo.tags;
-                tags.push_back(std::move(filename));
-                setTags(testInfo, tags);
+        void applyFilenamesAsTags() {
+            for (auto const& testInfo : getRegistryHub().getTestCaseRegistry().getAllInfos()) {
+                testInfo->addFilenameTag();
             }
         }
 
@@ -285,8 +268,9 @@ namespace Catch {
 
             seedRng( *m_config );
 
-            if( m_configData.filenamesAsTags )
-                applyFilenamesAsTags( *m_config );
+            if (m_configData.filenamesAsTags) {
+                applyFilenamesAsTags();
+            }
 
             // Create reporter(s) so we can route listings through them
             auto reporter = makeReporter(m_config);
