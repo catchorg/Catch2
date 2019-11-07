@@ -16,8 +16,6 @@ namespace Catch {
         return new(std::nothrow) TestInvokerAsFunction( testAsFunction );
     }
 
-    NameAndTags::NameAndTags( StringRef const& name_ , StringRef const& tags_ ) noexcept : name( name_ ), tags( tags_ ) {}
-
     AutoReg::AutoReg( ITestInvoker* invoker, SourceLineInfo const& lineInfo, StringRef const& classOrMethod, NameAndTags const& nameAndTags ) noexcept {
         CATCH_TRY {
             getMutableRegistryHub()

@@ -37,7 +37,9 @@ auto makeTestInvoker( void (C::*testAsMethod)() ) noexcept -> ITestInvoker* {
 }
 
 struct NameAndTags {
-    NameAndTags( StringRef const& name_ = StringRef(), StringRef const& tags_ = StringRef() ) noexcept;
+    NameAndTags(StringRef const& name_ = StringRef(),
+                StringRef const& tags_ = StringRef()) noexcept:
+        name(name_), tags(tags_) {}
     StringRef name;
     StringRef tags;
 };
