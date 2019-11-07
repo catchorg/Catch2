@@ -108,14 +108,6 @@ matrix:
       addons:
         apt:
           sources: *all_sources
-          packages: ['g++-4.9']
-      env: COMPILER='g++-4.9' CPP14=1
-
-    - os: linux
-      compiler: gcc
-      addons:
-        apt:
-          sources: *all_sources
           packages: ['g++-5']
       env: COMPILER='g++-5' CPP14=1
 
