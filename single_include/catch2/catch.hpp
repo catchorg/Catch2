@@ -1,6 +1,6 @@
 /*
- *  Catch v2.10.2
- *  Generated: 2019-10-24 17:49:11.459934
+ *  Catch v2.11.0
+ *  Generated: 2019-11-15 15:01:56.628356
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2019 Two Blue Cubes Ltd. All rights reserved.
@@ -14,8 +14,8 @@
 
 
 #define CATCH_VERSION_MAJOR 2
-#define CATCH_VERSION_MINOR 10
-#define CATCH_VERSION_PATCH 2
+#define CATCH_VERSION_MINOR 11
+#define CATCH_VERSION_PATCH 0
 
 #ifdef __clang__
 #    pragma clang system_header
@@ -136,38 +136,34 @@ namespace Catch {
 #  define CATCH_INTERNAL_CONFIG_CPP17_UNCAUGHT_EXCEPTIONS
 #endif
 
-#ifdef __clang__
+// We have to avoid both ICC and Clang, because they try to mask themselves
+// as gcc, and we want only GCC in this block
+#if defined(__GNUC__) && !defined(__clang__) && !defined(__ICC)
+#    define CATCH_INTERNAL_START_WARNINGS_SUPPRESSION _Pragma( "GCC diagnostic push" )
+#    define CATCH_INTERNAL_STOP_WARNINGS_SUPPRESSION  _Pragma( "GCC diagnostic pop" )
+#endif
 
-#       define CATCH_INTERNAL_SUPPRESS_GLOBALS_WARNINGS \
-            _Pragma( "clang diagnostic push" ) \
-            _Pragma( "clang diagnostic ignored \"-Wexit-time-destructors\"" ) \
-            _Pragma( "clang diagnostic ignored \"-Wglobal-constructors\"")
-#       define CATCH_INTERNAL_UNSUPPRESS_GLOBALS_WARNINGS \
-            _Pragma( "clang diagnostic pop" )
+#if defined(__clang__)
 
-#       define CATCH_INTERNAL_SUPPRESS_PARENTHESES_WARNINGS \
-            _Pragma( "clang diagnostic push" ) \
-            _Pragma( "clang diagnostic ignored \"-Wparentheses\"" )
-#       define CATCH_INTERNAL_UNSUPPRESS_PARENTHESES_WARNINGS \
-            _Pragma( "clang diagnostic pop" )
+#    define CATCH_INTERNAL_START_WARNINGS_SUPPRESSION _Pragma( "clang diagnostic push" )
+#    define CATCH_INTERNAL_STOP_WARNINGS_SUPPRESSION  _Pragma( "clang diagnostic pop" )
 
-#       define CATCH_INTERNAL_SUPPRESS_UNUSED_WARNINGS \
-            _Pragma( "clang diagnostic push" ) \
-            _Pragma( "clang diagnostic ignored \"-Wunused-variable\"" )
-#       define CATCH_INTERNAL_UNSUPPRESS_UNUSED_WARNINGS \
-            _Pragma( "clang diagnostic pop" )
+#    define CATCH_INTERNAL_SUPPRESS_GLOBALS_WARNINGS \
+         _Pragma( "clang diagnostic ignored \"-Wexit-time-destructors\"" ) \
+         _Pragma( "clang diagnostic ignored \"-Wglobal-constructors\"")
 
-#       define CATCH_INTERNAL_SUPPRESS_ZERO_VARIADIC_WARNINGS \
-            _Pragma( "clang diagnostic push" ) \
-            _Pragma( "clang diagnostic ignored \"-Wgnu-zero-variadic-macro-arguments\"" )
-#       define CATCH_INTERNAL_UNSUPPRESS_ZERO_VARIADIC_WARNINGS \
-            _Pragma( "clang diagnostic pop" )
+#    define CATCH_INTERNAL_SUPPRESS_PARENTHESES_WARNINGS \
+         _Pragma( "clang diagnostic ignored \"-Wparentheses\"" )
 
-#       define CATCH_INTERNAL_SUPPRESS_UNUSED_TEMPLATE_WARNINGS \
-            _Pragma( "clang diagnostic push" ) \
-            _Pragma( "clang diagnostic ignored \"-Wunused-template\"" )
-#       define CATCH_INTERNAL_UNSUPPRESS_UNUSED_TEMPLATE_WARNINGS \
-            _Pragma( "clang diagnostic pop" )
+#    define CATCH_INTERNAL_SUPPRESS_UNUSED_WARNINGS \
+         _Pragma( "clang diagnostic ignored \"-Wunused-variable\"" )
+
+#    define CATCH_INTERNAL_SUPPRESS_ZERO_VARIADIC_WARNINGS \
+         _Pragma( "clang diagnostic ignored \"-Wgnu-zero-variadic-macro-arguments\"" )
+
+#    define CATCH_INTERNAL_SUPPRESS_UNUSED_TEMPLATE_WARNINGS \
+         _Pragma( "clang diagnostic ignored \"-Wunused-template\"" )
+
 #endif // __clang__
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -225,7 +221,10 @@ namespace Catch {
 
 ////////////////////////////////////////////////////////////////////////////////
 // Visual C++
-#ifdef _MSC_VER
+#if defined(_MSC_VER)
+
+#  define CATCH_INTERNAL_START_WARNINGS_SUPPRESSION __pragma( warning(push) )
+#  define CATCH_INTERNAL_STOP_WARNINGS_SUPPRESSION  __pragma( warning(pop) )
 
 #  if _MSC_VER >= 1900 // Visual Studio 2015 or newer
 #    define CATCH_INTERNAL_CONFIG_CPP17_UNCAUGHT_EXCEPTIONS
@@ -397,34 +396,35 @@ namespace Catch {
 #  define CATCH_CONFIG_GLOBAL_NEXTAFTER
 #endif
 
+// Even if we do not think the compiler has that warning, we still have
+// to provide a macro that can be used by the code.
+#if !defined(CATCH_INTERNAL_START_WARNINGS_SUPPRESSION)
+#   define CATCH_INTERNAL_START_WARNINGS_SUPPRESSION
+#endif
+#if !defined(CATCH_INTERNAL_STOP_WARNINGS_SUPPRESSION)
+#   define CATCH_INTERNAL_STOP_WARNINGS_SUPPRESSION
+#endif
 #if !defined(CATCH_INTERNAL_SUPPRESS_PARENTHESES_WARNINGS)
 #   define CATCH_INTERNAL_SUPPRESS_PARENTHESES_WARNINGS
-#   define CATCH_INTERNAL_UNSUPPRESS_PARENTHESES_WARNINGS
 #endif
 #if !defined(CATCH_INTERNAL_SUPPRESS_GLOBALS_WARNINGS)
 #   define CATCH_INTERNAL_SUPPRESS_GLOBALS_WARNINGS
-#   define CATCH_INTERNAL_UNSUPPRESS_GLOBALS_WARNINGS
 #endif
 #if !defined(CATCH_INTERNAL_SUPPRESS_UNUSED_WARNINGS)
 #   define CATCH_INTERNAL_SUPPRESS_UNUSED_WARNINGS
-#   define CATCH_INTERNAL_UNSUPPRESS_UNUSED_WARNINGS
 #endif
 #if !defined(CATCH_INTERNAL_SUPPRESS_ZERO_VARIADIC_WARNINGS)
 #   define CATCH_INTERNAL_SUPPRESS_ZERO_VARIADIC_WARNINGS
-#   define CATCH_INTERNAL_UNSUPPRESS_ZERO_VARIADIC_WARNINGS
 #endif
 
 #if defined(__APPLE__) && defined(__apple_build_version__) && (__clang_major__ < 10)
 #   undef CATCH_INTERNAL_SUPPRESS_UNUSED_TEMPLATE_WARNINGS
-#   undef CATCH_INTERNAL_UNSUPPRESS_UNUSED_TEMPLATE_WARNINGS
 #elif defined(__clang__) && (__clang_major__ < 5)
 #   undef CATCH_INTERNAL_SUPPRESS_UNUSED_TEMPLATE_WARNINGS
-#   undef CATCH_INTERNAL_UNSUPPRESS_UNUSED_TEMPLATE_WARNINGS
 #endif
 
 #if !defined(CATCH_INTERNAL_SUPPRESS_UNUSED_TEMPLATE_WARNINGS)
 #   define CATCH_INTERNAL_SUPPRESS_UNUSED_TEMPLATE_WARNINGS
-#   define CATCH_INTERNAL_UNSUPPRESS_UNUSED_TEMPLATE_WARNINGS
 #endif
 
 #if defined(CATCH_CONFIG_DISABLE_EXCEPTIONS)
@@ -530,9 +530,10 @@ namespace Catch {
 } // end namespace Catch
 
 #define CATCH_REGISTER_TAG_ALIAS( alias, spec ) \
+    CATCH_INTERNAL_START_WARNINGS_SUPPRESSION \
     CATCH_INTERNAL_SUPPRESS_GLOBALS_WARNINGS \
     namespace{ Catch::RegistrarForTagAliases INTERNAL_CATCH_UNIQUE_NAME( AutoRegisterTagAlias )( alias, spec, CATCH_INTERNAL_LINEINFO ); } \
-    CATCH_INTERNAL_UNSUPPRESS_GLOBALS_WARNINGS
+    CATCH_INTERNAL_STOP_WARNINGS_SUPPRESSION
 
 // end catch_tag_alias_autoregistrar.h
 // start catch_test_registry.h
@@ -578,49 +579,24 @@ namespace Catch {
 
     /// A non-owning string class (similar to the forthcoming std::string_view)
     /// Note that, because a StringRef may be a substring of another string,
-    /// it may not be null terminated. c_str() must return a null terminated
-    /// string, however, and so the StringRef will internally take ownership
-    /// (taking a copy), if necessary. In theory this ownership is not externally
-    /// visible - but it does mean (substring) StringRefs should not be shared between
-    /// threads.
+    /// it may not be null terminated.
     class StringRef {
     public:
         using size_type = std::size_t;
         using const_iterator = const char*;
 
     private:
-        friend struct StringRefTestAccess;
-
-        char const* m_start;
-        size_type m_size;
-
-        char* m_data = nullptr;
-
-        void takeOwnership();
-
         static constexpr char const* const s_empty = "";
 
-    public: // construction/ assignment
-        StringRef() noexcept
-        :   StringRef( s_empty, 0 )
-        {}
+        char const* m_start = s_empty;
+        size_type m_size = 0;
 
-        StringRef( StringRef const& other ) noexcept
-        :   m_start( other.m_start ),
-            m_size( other.m_size )
-        {}
-
-        StringRef( StringRef&& other ) noexcept
-        :   m_start( other.m_start ),
-            m_size( other.m_size ),
-            m_data( other.m_data )
-        {
-            other.m_data = nullptr;
-        }
+    public: // construction
+        constexpr StringRef() noexcept = default;
 
         StringRef( char const* rawChars ) noexcept;
 
-        StringRef( char const* rawChars, size_type size ) noexcept
+        constexpr StringRef( char const* rawChars, size_type size ) noexcept
         :   m_start( rawChars ),
             m_size( size )
         {}
@@ -630,27 +606,15 @@ namespace Catch {
             m_size( stdString.size() )
         {}
 
-        ~StringRef() noexcept {
-            delete[] m_data;
-        }
-
-        auto operator = ( StringRef const &other ) noexcept -> StringRef& {
-            delete[] m_data;
-            m_data = nullptr;
-            m_start = other.m_start;
-            m_size = other.m_size;
-            return *this;
-        }
-
         explicit operator std::string() const {
             return std::string(m_start, m_size);
         }
 
-        void swap( StringRef& other ) noexcept;
-
     public: // operators
         auto operator == ( StringRef const& other ) const noexcept -> bool;
-        auto operator != ( StringRef const& other ) const noexcept -> bool;
+        auto operator != (StringRef const& other) const noexcept -> bool {
+            return !(*this == other);
+        }
 
         auto operator[] ( size_type index ) const noexcept -> char {
             assert(index < m_size);
@@ -658,41 +622,44 @@ namespace Catch {
         }
 
     public: // named queries
-        auto empty() const noexcept -> bool {
+        constexpr auto empty() const noexcept -> bool {
             return m_size == 0;
         }
-        auto size() const noexcept -> size_type {
+        constexpr auto size() const noexcept -> size_type {
             return m_size;
         }
 
+        // Returns the current start pointer. If the StringRef is not
+        // null-terminated, throws std::domain_exception
         auto c_str() const -> char const*;
 
     public: // substrings and searches
-        auto substr( size_type start, size_type size ) const noexcept -> StringRef;
+        // Returns a substring of [start, start + length).
+        // If start + length > size(), then the substring is [start, size()).
+        // If start > size(), then the substring is empty.
+        auto substr( size_type start, size_type length ) const noexcept -> StringRef;
 
-        // Returns the current start pointer.
-        // Note that the pointer can change when if the StringRef is a substring
-        auto currentData() const noexcept -> char const*;
+        // Returns the current start pointer. May not be null-terminated.
+        auto data() const noexcept -> char const*;
+
+        constexpr auto isNullTerminated() const noexcept -> bool {
+            return m_start[m_size] == '\0';
+        }
 
     public: // iterators
-        const_iterator begin() const { return m_start; }
-        const_iterator end() const { return m_start + m_size; }
-
-    private: // ownership queries - may not be consistent between calls
-        auto isOwned() const noexcept -> bool;
-        auto isSubstring() const noexcept -> bool;
+        constexpr const_iterator begin() const { return m_start; }
+        constexpr const_iterator end() const { return m_start + m_size; }
     };
 
     auto operator += ( std::string& lhs, StringRef const& sr ) -> std::string&;
     auto operator << ( std::ostream& os, StringRef const& sr ) -> std::ostream&;
 
-    inline auto operator "" _sr( char const* rawChars, std::size_t size ) noexcept -> StringRef {
+    constexpr auto operator "" _sr( char const* rawChars, std::size_t size ) noexcept -> StringRef {
         return StringRef( rawChars, size );
     }
-
 } // namespace Catch
 
-inline auto operator "" _catch_sr( char const* rawChars, std::size_t size ) noexcept -> Catch::StringRef {
+constexpr auto operator "" _catch_sr( char const* rawChars, std::size_t size ) noexcept -> Catch::StringRef {
     return Catch::StringRef( rawChars, size );
 }
 
@@ -931,22 +898,33 @@ inline auto operator "" _catch_sr( char const* rawChars, std::size_t size ) noex
 #include <type_traits>
 
 namespace Catch {
-template<typename T>
-struct always_false : std::false_type {};
+    template<typename T>
+    struct always_false : std::false_type {};
 
-template <typename> struct true_given : std::true_type {};
-struct is_callable_tester {
+    template <typename> struct true_given : std::true_type {};
+    struct is_callable_tester {
+        template <typename Fun, typename... Args>
+        true_given<decltype(std::declval<Fun>()(std::declval<Args>()...))> static test(int);
+        template <typename...>
+        std::false_type static test(...);
+    };
+
+    template <typename T>
+    struct is_callable;
+
     template <typename Fun, typename... Args>
-    true_given<decltype(std::declval<Fun>()(std::declval<Args>()...))> static test(int);
-    template <typename...>
-    std::false_type static test(...);
-};
+    struct is_callable<Fun(Args...)> : decltype(is_callable_tester::test<Fun, Args...>(0)) {};
 
-template <typename T>
-struct is_callable;
-
-template <typename Fun, typename... Args>
-struct is_callable<Fun(Args...)> : decltype(is_callable_tester::test<Fun, Args...>(0)) {};
+#if defined(__cpp_lib_is_invocable) && __cpp_lib_is_invocable >= 201703
+    // std::result_of is deprecated in C++17 and removed in C++20. Hence, it is
+    // replaced with std::invoke_result here. Also *_t format is preferred over
+    // typename *::type format.
+    template <typename Func, typename U>
+    using FunctionReturnType = std::remove_reference_t<std::remove_cv_t<std::invoke_result_t<Func, U>>>;
+#else
+    template <typename Func, typename U>
+    using FunctionReturnType = typename std::remove_reference<typename std::remove_cv<typename std::result_of<Func(U)>::type>::type>::type;
+#endif
 
 } // namespace Catch
 
@@ -1045,21 +1023,24 @@ struct AutoReg : NonCopyable {
     ///////////////////////////////////////////////////////////////////////////////
     #define INTERNAL_CATCH_TESTCASE2( TestName, ... ) \
         static void TestName(); \
+        CATCH_INTERNAL_START_WARNINGS_SUPPRESSION \
         CATCH_INTERNAL_SUPPRESS_GLOBALS_WARNINGS \
         namespace{ Catch::AutoReg INTERNAL_CATCH_UNIQUE_NAME( autoRegistrar )( Catch::makeTestInvoker( &TestName ), CATCH_INTERNAL_LINEINFO, Catch::StringRef(), Catch::NameAndTags{ __VA_ARGS__ } ); } /* NOLINT */ \
-        CATCH_INTERNAL_UNSUPPRESS_GLOBALS_WARNINGS \
+        CATCH_INTERNAL_STOP_WARNINGS_SUPPRESSION \
         static void TestName()
     #define INTERNAL_CATCH_TESTCASE( ... ) \
         INTERNAL_CATCH_TESTCASE2( INTERNAL_CATCH_UNIQUE_NAME( ____C_A_T_C_H____T_E_S_T____ ), __VA_ARGS__ )
 
     ///////////////////////////////////////////////////////////////////////////////
     #define INTERNAL_CATCH_METHOD_AS_TEST_CASE( QualifiedMethod, ... ) \
+        CATCH_INTERNAL_START_WARNINGS_SUPPRESSION \
         CATCH_INTERNAL_SUPPRESS_GLOBALS_WARNINGS \
         namespace{ Catch::AutoReg INTERNAL_CATCH_UNIQUE_NAME( autoRegistrar )( Catch::makeTestInvoker( &QualifiedMethod ), CATCH_INTERNAL_LINEINFO, "&" #QualifiedMethod, Catch::NameAndTags{ __VA_ARGS__ } ); } /* NOLINT */ \
-        CATCH_INTERNAL_UNSUPPRESS_GLOBALS_WARNINGS
+        CATCH_INTERNAL_STOP_WARNINGS_SUPPRESSION
 
     ///////////////////////////////////////////////////////////////////////////////
     #define INTERNAL_CATCH_TEST_CASE_METHOD2( TestName, ClassName, ... )\
+        CATCH_INTERNAL_START_WARNINGS_SUPPRESSION \
         CATCH_INTERNAL_SUPPRESS_GLOBALS_WARNINGS \
         namespace{ \
             struct TestName : INTERNAL_CATCH_REMOVE_PARENS(ClassName) { \
@@ -1067,19 +1048,21 @@ struct AutoReg : NonCopyable {
             }; \
             Catch::AutoReg INTERNAL_CATCH_UNIQUE_NAME( autoRegistrar ) ( Catch::makeTestInvoker( &TestName::test ), CATCH_INTERNAL_LINEINFO, #ClassName, Catch::NameAndTags{ __VA_ARGS__ } ); /* NOLINT */ \
         } \
-        CATCH_INTERNAL_UNSUPPRESS_GLOBALS_WARNINGS \
+        CATCH_INTERNAL_STOP_WARNINGS_SUPPRESSION \
         void TestName::test()
     #define INTERNAL_CATCH_TEST_CASE_METHOD( ClassName, ... ) \
         INTERNAL_CATCH_TEST_CASE_METHOD2( INTERNAL_CATCH_UNIQUE_NAME( ____C_A_T_C_H____T_E_S_T____ ), ClassName, __VA_ARGS__ )
 
     ///////////////////////////////////////////////////////////////////////////////
     #define INTERNAL_CATCH_REGISTER_TESTCASE( Function, ... ) \
+        CATCH_INTERNAL_START_WARNINGS_SUPPRESSION \
         CATCH_INTERNAL_SUPPRESS_GLOBALS_WARNINGS \
         Catch::AutoReg INTERNAL_CATCH_UNIQUE_NAME( autoRegistrar )( Catch::makeTestInvoker( Function ), CATCH_INTERNAL_LINEINFO, Catch::StringRef(), Catch::NameAndTags{ __VA_ARGS__ } ); /* NOLINT */ \
-        CATCH_INTERNAL_UNSUPPRESS_GLOBALS_WARNINGS
+        CATCH_INTERNAL_STOP_WARNINGS_SUPPRESSION
 
     ///////////////////////////////////////////////////////////////////////////////
     #define INTERNAL_CATCH_TEMPLATE_TEST_CASE_2(TestName, TestFunc, Name, Tags, Signature, ... )\
+        CATCH_INTERNAL_START_WARNINGS_SUPPRESSION \
         CATCH_INTERNAL_SUPPRESS_GLOBALS_WARNINGS \
         CATCH_INTERNAL_SUPPRESS_ZERO_VARIADIC_WARNINGS \
         CATCH_INTERNAL_SUPPRESS_UNUSED_TEMPLATE_WARNINGS \
@@ -1104,9 +1087,7 @@ struct AutoReg : NonCopyable {
         }();\
         }\
         }\
-        CATCH_INTERNAL_UNSUPPRESS_GLOBALS_WARNINGS \
-        CATCH_INTERNAL_UNSUPPRESS_ZERO_VARIADIC_WARNINGS \
-        CATCH_INTERNAL_UNSUPPRESS_UNUSED_TEMPLATE_WARNINGS \
+        CATCH_INTERNAL_STOP_WARNINGS_SUPPRESSION \
         INTERNAL_CATCH_DEFINE_SIG_TEST(TestFunc,INTERNAL_CATCH_REMOVE_PARENS(Signature))
 
 #ifndef CATCH_CONFIG_TRADITIONAL_MSVC_PREPROCESSOR
@@ -1126,9 +1107,10 @@ struct AutoReg : NonCopyable {
 #endif
 
     #define INTERNAL_CATCH_TEMPLATE_PRODUCT_TEST_CASE2(TestName, TestFuncName, Name, Tags, Signature, TmplTypes, TypesList) \
+        CATCH_INTERNAL_START_WARNINGS_SUPPRESSION                      \
         CATCH_INTERNAL_SUPPRESS_GLOBALS_WARNINGS                      \
         CATCH_INTERNAL_SUPPRESS_ZERO_VARIADIC_WARNINGS                \
-        CATCH_INTERNAL_SUPPRESS_UNUSED_TEMPLATE_WARNINGS                       \
+        CATCH_INTERNAL_SUPPRESS_UNUSED_TEMPLATE_WARNINGS              \
         template<typename TestType> static void TestFuncName();       \
         namespace {\
         namespace INTERNAL_CATCH_MAKE_NAMESPACE(TestName) {                                     \
@@ -1153,9 +1135,7 @@ struct AutoReg : NonCopyable {
             }();                                                      \
         }                                                             \
         }                                                             \
-        CATCH_INTERNAL_UNSUPPRESS_GLOBALS_WARNINGS                    \
-        CATCH_INTERNAL_UNSUPPRESS_ZERO_VARIADIC_WARNINGS              \
-        CATCH_INTERNAL_UNSUPPRESS_UNUSED_TEMPLATE_WARNINGS                     \
+        CATCH_INTERNAL_STOP_WARNINGS_SUPPRESSION                       \
         template<typename TestType>                                   \
         static void TestFuncName()
 
@@ -1176,6 +1156,7 @@ struct AutoReg : NonCopyable {
 #endif
 
     #define INTERNAL_CATCH_TEMPLATE_LIST_TEST_CASE_2(TestName, TestFunc, Name, Tags, TmplList)\
+        CATCH_INTERNAL_START_WARNINGS_SUPPRESSION \
         CATCH_INTERNAL_SUPPRESS_GLOBALS_WARNINGS \
         CATCH_INTERNAL_SUPPRESS_UNUSED_TEMPLATE_WARNINGS \
         template<typename TestType> static void TestFunc();       \
@@ -1195,10 +1176,9 @@ struct AutoReg : NonCopyable {
                 TestInit t;                                           \
                 t.reg_tests();                                        \
                 return 0;                                             \
-            }();                                                        \
+            }();                                                      \
         }}\
-        CATCH_INTERNAL_UNSUPPRESS_GLOBALS_WARNINGS                    \
-        CATCH_INTERNAL_UNSUPPRESS_UNUSED_TEMPLATE_WARNINGS \
+        CATCH_INTERNAL_STOP_WARNINGS_SUPPRESSION                       \
         template<typename TestType>                                   \
         static void TestFunc()
 
@@ -1206,6 +1186,7 @@ struct AutoReg : NonCopyable {
         INTERNAL_CATCH_TEMPLATE_LIST_TEST_CASE_2( INTERNAL_CATCH_UNIQUE_NAME( ____C_A_T_C_H____T_E_M_P_L_A_T_E____T_E_S_T____ ), INTERNAL_CATCH_UNIQUE_NAME( ____C_A_T_C_H____T_E_M_P_L_A_T_E____T_E_S_T____F_U_N_C____ ), Name, Tags, TmplList )
 
     #define INTERNAL_CATCH_TEMPLATE_TEST_CASE_METHOD_2( TestNameClass, TestName, ClassName, Name, Tags, Signature, ... ) \
+        CATCH_INTERNAL_START_WARNINGS_SUPPRESSION \
         CATCH_INTERNAL_SUPPRESS_GLOBALS_WARNINGS \
         CATCH_INTERNAL_SUPPRESS_ZERO_VARIADIC_WARNINGS \
         CATCH_INTERNAL_SUPPRESS_UNUSED_TEMPLATE_WARNINGS \
@@ -1230,9 +1211,7 @@ struct AutoReg : NonCopyable {
         }();\
         }\
         }\
-        CATCH_INTERNAL_UNSUPPRESS_GLOBALS_WARNINGS\
-        CATCH_INTERNAL_UNSUPPRESS_ZERO_VARIADIC_WARNINGS\
-        CATCH_INTERNAL_UNSUPPRESS_UNUSED_TEMPLATE_WARNINGS\
+        CATCH_INTERNAL_STOP_WARNINGS_SUPPRESSION \
         INTERNAL_CATCH_DEFINE_SIG_TEST_METHOD(TestName, INTERNAL_CATCH_REMOVE_PARENS(Signature))
 
 #ifndef CATCH_CONFIG_TRADITIONAL_MSVC_PREPROCESSOR
@@ -1252,6 +1231,7 @@ struct AutoReg : NonCopyable {
 #endif
 
     #define INTERNAL_CATCH_TEMPLATE_PRODUCT_TEST_CASE_METHOD_2(TestNameClass, TestName, ClassName, Name, Tags, Signature, TmplTypes, TypesList)\
+        CATCH_INTERNAL_START_WARNINGS_SUPPRESSION \
         CATCH_INTERNAL_SUPPRESS_GLOBALS_WARNINGS \
         CATCH_INTERNAL_SUPPRESS_ZERO_VARIADIC_WARNINGS \
         CATCH_INTERNAL_SUPPRESS_UNUSED_TEMPLATE_WARNINGS \
@@ -1282,9 +1262,7 @@ struct AutoReg : NonCopyable {
             }(); \
         }\
         }\
-        CATCH_INTERNAL_UNSUPPRESS_GLOBALS_WARNINGS \
-        CATCH_INTERNAL_UNSUPPRESS_ZERO_VARIADIC_WARNINGS \
-        CATCH_INTERNAL_UNSUPPRESS_UNUSED_TEMPLATE_WARNINGS \
+        CATCH_INTERNAL_STOP_WARNINGS_SUPPRESSION \
         template<typename TestType> \
         void TestName<TestType>::test()
 
@@ -1305,6 +1283,7 @@ struct AutoReg : NonCopyable {
 #endif
 
     #define INTERNAL_CATCH_TEMPLATE_LIST_TEST_CASE_METHOD_2( TestNameClass, TestName, ClassName, Name, Tags, TmplList) \
+        CATCH_INTERNAL_START_WARNINGS_SUPPRESSION \
         CATCH_INTERNAL_SUPPRESS_GLOBALS_WARNINGS \
         CATCH_INTERNAL_SUPPRESS_UNUSED_TEMPLATE_WARNINGS \
         template<typename TestType> \
@@ -1329,8 +1308,7 @@ struct AutoReg : NonCopyable {
                 return 0;\
             }(); \
         }}\
-        CATCH_INTERNAL_UNSUPPRESS_GLOBALS_WARNINGS \
-        CATCH_INTERNAL_UNSUPPRESS_UNUSED_TEMPLATE_WARNINGS \
+        CATCH_INTERNAL_STOP_WARNINGS_SUPPRESSION \
         template<typename TestType> \
         void TestName<TestType>::test()
 
@@ -1436,7 +1414,7 @@ namespace Catch {
 
     auto makeStream( StringRef const &filename ) -> IStream const*;
 
-    class ReusableStringStream {
+    class ReusableStringStream : NonCopyable {
         std::size_t m_index;
         std::ostream* m_oss;
     public:
@@ -2684,9 +2662,10 @@ namespace Catch {
     do { \
         Catch::AssertionHandler catchAssertionHandler( macroName##_catch_sr, CATCH_INTERNAL_LINEINFO, CATCH_INTERNAL_STRINGIFY(__VA_ARGS__), resultDisposition ); \
         INTERNAL_CATCH_TRY { \
+            CATCH_INTERNAL_START_WARNINGS_SUPPRESSION \
             CATCH_INTERNAL_SUPPRESS_PARENTHESES_WARNINGS \
             catchAssertionHandler.handleExpr( Catch::Decomposer() <= __VA_ARGS__ ); \
-            CATCH_INTERNAL_UNSUPPRESS_PARENTHESES_WARNINGS \
+            CATCH_INTERNAL_STOP_WARNINGS_SUPPRESSION \
         } INTERNAL_CATCH_CATCH( catchAssertionHandler ) \
         INTERNAL_CATCH_REACT( catchAssertionHandler ) \
     } while( (void)0, (false) && static_cast<bool>( !!(__VA_ARGS__) ) ) // the expression here is never evaluated at runtime but it forces the compiler to give it a look
@@ -2907,14 +2886,16 @@ namespace Catch {
 } // end namespace Catch
 
 #define INTERNAL_CATCH_SECTION( ... ) \
+    CATCH_INTERNAL_START_WARNINGS_SUPPRESSION \
     CATCH_INTERNAL_SUPPRESS_UNUSED_WARNINGS \
     if( Catch::Section const& INTERNAL_CATCH_UNIQUE_NAME( catch_internal_Section ) = Catch::SectionInfo( CATCH_INTERNAL_LINEINFO, __VA_ARGS__ ) ) \
-    CATCH_INTERNAL_UNSUPPRESS_UNUSED_WARNINGS
+    CATCH_INTERNAL_STOP_WARNINGS_SUPPRESSION
 
 #define INTERNAL_CATCH_DYNAMIC_SECTION( ... ) \
+    CATCH_INTERNAL_START_WARNINGS_SUPPRESSION \
     CATCH_INTERNAL_SUPPRESS_UNUSED_WARNINGS \
     if( Catch::Section const& INTERNAL_CATCH_UNIQUE_NAME( catch_internal_Section ) = Catch::SectionInfo( CATCH_INTERNAL_LINEINFO, (Catch::ReusableStringStream() << __VA_ARGS__).str() ) ) \
-    CATCH_INTERNAL_UNSUPPRESS_UNUSED_WARNINGS
+    CATCH_INTERNAL_STOP_WARNINGS_SUPPRESSION
 
 // end catch_section.h
 // start catch_interfaces_exception.h
@@ -3032,9 +3013,10 @@ namespace Catch {
 ///////////////////////////////////////////////////////////////////////////////
 #define INTERNAL_CATCH_TRANSLATE_EXCEPTION2( translatorName, signature ) \
     static std::string translatorName( signature ); \
+    CATCH_INTERNAL_START_WARNINGS_SUPPRESSION \
     CATCH_INTERNAL_SUPPRESS_GLOBALS_WARNINGS \
     namespace{ Catch::ExceptionTranslatorRegistrar INTERNAL_CATCH_UNIQUE_NAME( catch_internal_ExceptionRegistrar )( &translatorName ); } \
-    CATCH_INTERNAL_UNSUPPRESS_GLOBALS_WARNINGS \
+    CATCH_INTERNAL_STOP_WARNINGS_SUPPRESSION \
     static std::string translatorName( signature )
 
 #define INTERNAL_CATCH_TRANSLATE_EXCEPTION( signature ) INTERNAL_CATCH_TRANSLATE_EXCEPTION2( INTERNAL_CATCH_UNIQUE_NAME( catch_internal_ExceptionTranslator ), signature )
@@ -4241,18 +4223,7 @@ namespace Generators {
         }
     };
 
-#if defined(__cpp_lib_is_invocable) && __cpp_lib_is_invocable >= 201703
-    // std::result_of is deprecated in C++17 and removed in C++20. Hence, it is
-    // replaced with std::invoke_result here. Also *_t format is preferred over
-    // typename *::type format.
-    template <typename Func, typename U>
-    using MapFunctionReturnType = std::remove_reference_t<std::remove_cv_t<std::invoke_result_t<Func, U>>>;
-#else
-    template <typename Func, typename U>
-    using MapFunctionReturnType = typename std::remove_reference<typename std::remove_cv<typename std::result_of<Func(U)>::type>::type>::type;
-#endif
-
-    template <typename Func, typename U, typename T = MapFunctionReturnType<Func, U>>
+    template <typename Func, typename U, typename T = FunctionReturnType<Func, U>>
     GeneratorWrapper<T> map(Func&& function, GeneratorWrapper<U>&& generator) {
         return GeneratorWrapper<T>(
             pf::make_unique<MapGenerator<T, U, Func>>(std::forward<Func>(function), std::move(generator))
@@ -4668,7 +4639,7 @@ public:
 
 template <typename T>
 GeneratorWrapper<T> range(T const& start, T const& end, T const& step) {
-    static_assert(std::is_integral<T>::value && !std::is_same<T, bool>::value, "Type must be an integer");
+    static_assert(std::is_arithmetic<T>::value && !std::is_same<T, bool>::value, "Type must be numeric");
     return GeneratorWrapper<T>(pf::make_unique<RangeGenerator<T>>(start, end, step));
 }
 
@@ -5203,27 +5174,12 @@ namespace Catch {
         void addFilter();
         bool separate();
 
-        template<typename T>
-        void addPattern() {
-            std::string token = m_patternName;
-            for( std::size_t i = 0; i < m_escapeChars.size(); ++i )
-                token = token.substr( 0, m_escapeChars[i] - i ) + token.substr( m_escapeChars[i] -i +1 );
-            m_escapeChars.clear();
-            if( startsWith( token, "exclude:" ) ) {
-                m_exclusion = true;
-                token = token.substr( 8 );
-            }
-            if( !token.empty() ) {
-                TestSpec::PatternPtr pattern = std::make_shared<T>( token, m_substring );
-                if( m_exclusion )
-                    pattern = std::make_shared<TestSpec::ExcludedPattern>( pattern );
-                m_currentFilter.m_patterns.push_back( pattern );
-            }
-            m_substring.clear();
-            m_patternName.clear();
-            m_exclusion = false;
-            m_mode = None;
-        }
+        // Handles common preprocessing of the pattern for name/tag patterns
+        std::string preprocessPattern();
+        // Adds the current pattern as a test name
+        void addNamePattern();
+        // Adds the current pattern as a tag
+        void addTagPattern();
 
         inline void addCharToPattern(char c) {
             m_substring += c;
@@ -6068,14 +6024,16 @@ namespace Catch {
 #if !defined(CATCH_CONFIG_DISABLE)
 
 #define CATCH_REGISTER_REPORTER( name, reporterType ) \
+    CATCH_INTERNAL_START_WARNINGS_SUPPRESSION         \
     CATCH_INTERNAL_SUPPRESS_GLOBALS_WARNINGS          \
     namespace{ Catch::ReporterRegistrar<reporterType> catch_internal_RegistrarFor##reporterType( name ); } \
-    CATCH_INTERNAL_UNSUPPRESS_GLOBALS_WARNINGS
+    CATCH_INTERNAL_STOP_WARNINGS_SUPPRESSION
 
 #define CATCH_REGISTER_LISTENER( listenerType ) \
-    CATCH_INTERNAL_SUPPRESS_GLOBALS_WARNINGS   \
+    CATCH_INTERNAL_START_WARNINGS_SUPPRESSION   \
+    CATCH_INTERNAL_SUPPRESS_GLOBALS_WARNINGS    \
     namespace{ Catch::ListenerRegistrar<listenerType> catch_internal_RegistrarFor##listenerType; } \
-    CATCH_INTERNAL_UNSUPPRESS_GLOBALS_WARNINGS
+    CATCH_INTERNAL_STOP_WARNINGS_SUPPRESSION
 #else // CATCH_CONFIG_DISABLE
 
 #define CATCH_REGISTER_REPORTER(name, reporterType)
@@ -6198,6 +6156,14 @@ namespace Catch {
 #include <vector>
 
 namespace Catch {
+    enum class XmlFormatting {
+        None = 0x00,
+        Indent = 0x01,
+        Newline = 0x02,
+    };
+
+    XmlFormatting operator | (XmlFormatting lhs, XmlFormatting rhs);
+    XmlFormatting operator & (XmlFormatting lhs, XmlFormatting rhs);
 
     class XmlEncode {
     public:
@@ -6219,14 +6185,14 @@ namespace Catch {
 
         class ScopedElement {
         public:
-            ScopedElement( XmlWriter* writer );
+            ScopedElement( XmlWriter* writer, XmlFormatting fmt );
 
             ScopedElement( ScopedElement&& other ) noexcept;
             ScopedElement& operator=( ScopedElement&& other ) noexcept;
 
             ~ScopedElement();
 
-            ScopedElement& writeText( std::string const& text, bool indent = true );
+            ScopedElement& writeText( std::string const& text, XmlFormatting fmt = XmlFormatting::Newline | XmlFormatting::Indent );
 
             template<typename T>
             ScopedElement& writeAttribute( std::string const& name, T const& attribute ) {
@@ -6236,6 +6202,7 @@ namespace Catch {
 
         private:
             mutable XmlWriter* m_writer = nullptr;
+            XmlFormatting m_fmt;
         };
 
         XmlWriter( std::ostream& os = Catch::cout() );
@@ -6244,11 +6211,11 @@ namespace Catch {
         XmlWriter( XmlWriter const& ) = delete;
         XmlWriter& operator=( XmlWriter const& ) = delete;
 
-        XmlWriter& startElement( std::string const& name );
+        XmlWriter& startElement( std::string const& name, XmlFormatting fmt = XmlFormatting::Newline | XmlFormatting::Indent);
 
-        ScopedElement scopedElement( std::string const& name );
+        ScopedElement scopedElement( std::string const& name, XmlFormatting fmt = XmlFormatting::Newline | XmlFormatting::Indent);
 
-        XmlWriter& endElement();
+        XmlWriter& endElement(XmlFormatting fmt = XmlFormatting::Newline | XmlFormatting::Indent);
 
         XmlWriter& writeAttribute( std::string const& name, std::string const& attribute );
 
@@ -6261,9 +6228,9 @@ namespace Catch {
             return writeAttribute( name, rss.str() );
         }
 
-        XmlWriter& writeText( std::string const& text, bool indent = true );
+        XmlWriter& writeText( std::string const& text, XmlFormatting fmt = XmlFormatting::Newline | XmlFormatting::Indent);
 
-        XmlWriter& writeComment( std::string const& text );
+        XmlWriter& writeComment(std::string const& text, XmlFormatting fmt = XmlFormatting::Newline | XmlFormatting::Indent);
 
         void writeStylesheetRef( std::string const& url );
 
@@ -6272,6 +6239,8 @@ namespace Catch {
         void ensureTagClosed();
 
     private:
+
+        void applyFormatting(XmlFormatting fmt);
 
         void writeDeclaration();
 
@@ -6394,6 +6363,12 @@ namespace Catch {
 #endif
 
 #if defined(CATCH_CONFIG_ENABLE_BENCHMARKING)
+// start catch_benchmarking_all.hpp
+
+// A proxy header that includes all of the benchmarking headers to allow
+// concise include of the benchmarking features. You should prefer the
+// individual includes in standard use.
+
 // start catch_benchmark.hpp
 
  // Benchmark
@@ -7296,7 +7271,7 @@ namespace Catch {
                     });
 
                     auto analysis = Detail::analyse(*cfg, env, samples.begin(), samples.end());
-                    BenchmarkStats<std::chrono::duration<double, std::nano>> stats{ info, analysis.samples, analysis.mean, analysis.standard_deviation, analysis.outliers, analysis.outlier_variance };
+                    BenchmarkStats<FloatDuration<Clock>> stats{ info, analysis.samples, analysis.mean, analysis.standard_deviation, analysis.outliers, analysis.outlier_variance };
                     getResultCapture().benchmarkEnded(stats);
 
                 } CATCH_CATCH_ALL{
@@ -7337,6 +7312,72 @@ namespace Catch {
         BenchmarkName = [&]
 
 // end catch_benchmark.hpp
+// start catch_constructor.hpp
+
+// Constructor and destructor helpers
+
+
+#include <type_traits>
+
+namespace Catch {
+    namespace Detail {
+        template <typename T, bool Destruct>
+        struct ObjectStorage
+        {
+            using TStorage = typename std::aligned_storage<sizeof(T), std::alignment_of<T>::value>::type;
+
+            ObjectStorage() : data() {}
+
+            ObjectStorage(const ObjectStorage& other)
+            {
+                new(&data) T(other.stored_object());
+            }
+
+            ObjectStorage(ObjectStorage&& other)
+            {
+                new(&data) T(std::move(other.stored_object()));
+            }
+
+            ~ObjectStorage() { destruct_on_exit<T>(); }
+
+            template <typename... Args>
+            void construct(Args&&... args)
+            {
+                new (&data) T(std::forward<Args>(args)...);
+            }
+
+            template <bool AllowManualDestruction = !Destruct>
+            typename std::enable_if<AllowManualDestruction>::type destruct()
+            {
+                stored_object().~T();
+            }
+
+        private:
+            // If this is a constructor benchmark, destruct the underlying object
+            template <typename U>
+            void destruct_on_exit(typename std::enable_if<Destruct, U>::type* = 0) { destruct<true>(); }
+            // Otherwise, don't
+            template <typename U>
+            void destruct_on_exit(typename std::enable_if<!Destruct, U>::type* = 0) { }
+
+            T& stored_object()
+            {
+                return *static_cast<T*>(static_cast<void*>(&data));
+            }
+
+            TStorage data;
+        };
+    }
+
+    template <typename T>
+    using storage_for = Detail::ObjectStorage<T, true>;
+
+    template <typename T>
+    using destructable_object = Detail::ObjectStorage<T, false>;
+}
+
+// end catch_constructor.hpp
+// end catch_benchmarking_all.hpp
 #endif
 
 #endif // ! CATCH_CONFIG_IMPL_ONLY
@@ -7675,9 +7716,10 @@ namespace Catch {
             }
 
             bootstrap_analysis analyse_samples(double confidence_level, int n_resamples, std::vector<double>::iterator first, std::vector<double>::iterator last) {
+                CATCH_INTERNAL_START_WARNINGS_SUPPRESSION
                 CATCH_INTERNAL_SUPPRESS_GLOBALS_WARNINGS
                 static std::random_device entropy;
-                CATCH_INTERNAL_UNSUPPRESS_GLOBALS_WARNINGS
+                CATCH_INTERNAL_STOP_WARNINGS_SUPPRESSION
 
                 auto n = static_cast<int>(last - first); // seriously, one can't use integral types without hell in C++
 
@@ -13623,11 +13665,7 @@ namespace Catch {
 // end catch_string_manip.cpp
 // start catch_stringref.cpp
 
-#if defined(__clang__)
-#    pragma clang diagnostic push
-#    pragma clang diagnostic ignored "-Wexit-time-destructors"
-#endif
-
+#include <algorithm>
 #include <ostream>
 #include <cstring>
 #include <cstdint>
@@ -13637,66 +13675,36 @@ namespace Catch {
     : StringRef( rawChars, static_cast<StringRef::size_type>(std::strlen(rawChars) ) )
     {}
 
-    void StringRef::swap( StringRef& other ) noexcept {
-        std::swap( m_start, other.m_start );
-        std::swap( m_size, other.m_size );
-        std::swap( m_data, other.m_data );
-    }
-
     auto StringRef::c_str() const -> char const* {
-        if( !isSubstring() )
-            return m_start;
-
-        const_cast<StringRef *>( this )->takeOwnership();
-        return m_data;
+        CATCH_ENFORCE(isNullTerminated(), "Called StringRef::c_str() on a non-null-terminated instance");
+        return m_start;
     }
-    auto StringRef::currentData() const noexcept -> char const* {
+    auto StringRef::data() const noexcept -> char const* {
         return m_start;
     }
 
-    auto StringRef::isOwned() const noexcept -> bool {
-        return m_data != nullptr;
-    }
-    auto StringRef::isSubstring() const noexcept -> bool {
-        return m_start[m_size] != '\0';
-    }
-
-    void StringRef::takeOwnership() {
-        if( !isOwned() ) {
-            m_data = new char[m_size+1];
-            memcpy( m_data, m_start, m_size );
-            m_data[m_size] = '\0';
+    auto StringRef::substr( size_type start, size_type size ) const noexcept -> StringRef {
+        if (start < m_size) {
+            return StringRef(m_start + start, (std::min)(m_size - start, size));
+        } else {
+            return StringRef();
         }
     }
-    auto StringRef::substr( size_type start, size_type size ) const noexcept -> StringRef {
-        if( start < m_size )
-            return StringRef( m_start+start, size );
-        else
-            return StringRef();
-    }
     auto StringRef::operator == ( StringRef const& other ) const noexcept -> bool {
-        return
-            size() == other.size() &&
-            (std::strncmp( m_start, other.m_start, size() ) == 0);
-    }
-    auto StringRef::operator != ( StringRef const& other ) const noexcept -> bool {
-        return !operator==( other );
+        return m_size == other.m_size
+            && (std::memcmp( m_start, other.m_start, m_size ) == 0);
     }
 
     auto operator << ( std::ostream& os, StringRef const& str ) -> std::ostream& {
-        return os.write(str.currentData(), str.size());
+        return os.write(str.data(), str.size());
     }
 
     auto operator+=( std::string& lhs, StringRef const& rhs ) -> std::string& {
-        lhs.append(rhs.currentData(), rhs.size());
+        lhs.append(rhs.data(), rhs.size());
         return lhs;
     }
 
 } // namespace Catch
-
-#if defined(__clang__)
-#    pragma clang diagnostic pop
-#endif
 // end catch_stringref.cpp
 // start catch_tag_alias.cpp
 
@@ -14499,9 +14507,9 @@ namespace Catch {
         switch( m_mode ) {
         case Name:
         case QuotedName:
-            return addPattern<TestSpec::NamePattern>();
+            return addNamePattern();
         case Tag:
-            return addPattern<TestSpec::TagPattern>();
+            return addTagPattern();
         case EscapedName:
             revertBackToLastMode();
             return;
@@ -14559,6 +14567,62 @@ namespace Catch {
       endMode();
       addFilter();
       return true; //success
+    }
+
+    std::string TestSpecParser::preprocessPattern() {
+        std::string token = m_patternName;
+        for (std::size_t i = 0; i < m_escapeChars.size(); ++i)
+            token = token.substr(0, m_escapeChars[i] - i) + token.substr(m_escapeChars[i] - i + 1);
+        m_escapeChars.clear();
+        if (startsWith(token, "exclude:")) {
+            m_exclusion = true;
+            token = token.substr(8);
+        }
+
+        m_patternName.clear();
+
+        return token;
+    }
+
+    void TestSpecParser::addNamePattern() {
+        auto token = preprocessPattern();
+
+        if (!token.empty()) {
+            TestSpec::PatternPtr pattern = std::make_shared<TestSpec::NamePattern>(token, m_substring);
+            if (m_exclusion)
+                pattern = std::make_shared<TestSpec::ExcludedPattern>(pattern);
+            m_currentFilter.m_patterns.push_back(pattern);
+        }
+        m_substring.clear();
+        m_exclusion = false;
+        m_mode = None;
+    }
+
+    void TestSpecParser::addTagPattern() {
+        auto token = preprocessPattern();
+
+        if (!token.empty()) {
+            // If the tag pattern is the "hide and tag" shorthand (e.g. [.foo])
+            // we have to create a separate hide tag and shorten the real one
+            if (token.size() > 1 && token[0] == '.') {
+                token.erase(token.begin());
+                TestSpec::PatternPtr pattern = std::make_shared<TestSpec::TagPattern>(".", m_substring);
+                if (m_exclusion) {
+                    pattern = std::make_shared<TestSpec::ExcludedPattern>(pattern);
+                }
+                m_currentFilter.m_patterns.push_back(pattern);
+            }
+
+            TestSpec::PatternPtr pattern = std::make_shared<TestSpec::TagPattern>(token, m_substring);
+
+            if (m_exclusion) {
+                pattern = std::make_shared<TestSpec::ExcludedPattern>(pattern);
+            }
+            m_currentFilter.m_patterns.push_back(pattern);
+        }
+        m_substring.clear();
+        m_exclusion = false;
+        m_mode = None;
     }
 
     TestSpec parseTestSpec( std::string const& arg ) {
@@ -14662,13 +14726,11 @@ namespace Detail {
             enum Arch { Big, Little };
 
             static Arch which() {
-                union _{
-                    int asInt;
-                    char asChar[sizeof (int)];
-                } u;
-
-                u.asInt = 1;
-                return ( u.asChar[sizeof(int)-1] == 1 ) ? Big : Little;
+                int one = 1;
+                // If the lowest byte we read is non-zero, we can assume
+                // that little endian format is used.
+                auto value = *reinterpret_cast<char*>(&one);
+                return value ? Little : Big;
             }
         };
     }
@@ -14988,7 +15050,7 @@ namespace Catch {
     }
 
     Version const& libraryVersion() {
-        static Version version( 2, 10, 2, "", 0 );
+        static Version version( 2, 11, 0, "", 0 );
         return version;
     }
 
@@ -15036,6 +15098,7 @@ namespace Catch {
 // start catch_xmlwriter.cpp
 
 #include <iomanip>
+#include <type_traits>
 
 using uchar = unsigned char;
 
@@ -15077,7 +15140,29 @@ namespace {
         os.flags(f);
     }
 
+    bool shouldNewline(XmlFormatting fmt) {
+        return !!(static_cast<std::underlying_type<XmlFormatting>::type>(fmt & XmlFormatting::Newline));
+    }
+
+    bool shouldIndent(XmlFormatting fmt) {
+        return !!(static_cast<std::underlying_type<XmlFormatting>::type>(fmt & XmlFormatting::Indent));
+    }
+
 } // anonymous namespace
+
+    XmlFormatting operator | (XmlFormatting lhs, XmlFormatting rhs) {
+        return static_cast<XmlFormatting>(
+            static_cast<std::underlying_type<XmlFormatting>::type>(lhs) |
+            static_cast<std::underlying_type<XmlFormatting>::type>(rhs)
+        );
+    }
+
+    XmlFormatting operator & (XmlFormatting lhs, XmlFormatting rhs) {
+        return static_cast<XmlFormatting>(
+            static_cast<std::underlying_type<XmlFormatting>::type>(lhs) &
+            static_cast<std::underlying_type<XmlFormatting>::type>(rhs)
+        );
+    }
 
     XmlEncode::XmlEncode( std::string const& str, ForWhat forWhat )
     :   m_str( str ),
@@ -15183,13 +15268,17 @@ namespace {
         return os;
     }
 
-    XmlWriter::ScopedElement::ScopedElement( XmlWriter* writer )
-    :   m_writer( writer )
+    XmlWriter::ScopedElement::ScopedElement( XmlWriter* writer, XmlFormatting fmt )
+    :   m_writer( writer ),
+        m_fmt(fmt)
     {}
 
     XmlWriter::ScopedElement::ScopedElement( ScopedElement&& other ) noexcept
-    :   m_writer( other.m_writer ){
+    :   m_writer( other.m_writer ),
+        m_fmt(other.m_fmt)
+    {
         other.m_writer = nullptr;
+        other.m_fmt = XmlFormatting::None;
     }
     XmlWriter::ScopedElement& XmlWriter::ScopedElement::operator=( ScopedElement&& other ) noexcept {
         if ( m_writer ) {
@@ -15197,16 +15286,19 @@ namespace {
         }
         m_writer = other.m_writer;
         other.m_writer = nullptr;
+        m_fmt = other.m_fmt;
+        other.m_fmt = XmlFormatting::None;
         return *this;
     }
 
     XmlWriter::ScopedElement::~ScopedElement() {
-        if( m_writer )
-            m_writer->endElement();
+        if (m_writer) {
+            m_writer->endElement(m_fmt);
+        }
     }
 
-    XmlWriter::ScopedElement& XmlWriter::ScopedElement::writeText( std::string const& text, bool indent ) {
-        m_writer->writeText( text, indent );
+    XmlWriter::ScopedElement& XmlWriter::ScopedElement::writeText( std::string const& text, XmlFormatting fmt ) {
+        m_writer->writeText( text, fmt );
         return *this;
     }
 
@@ -15216,37 +15308,47 @@ namespace {
     }
 
     XmlWriter::~XmlWriter() {
-        while( !m_tags.empty() )
+        while (!m_tags.empty()) {
             endElement();
+        }
+        newlineIfNecessary();
     }
 
-    XmlWriter& XmlWriter::startElement( std::string const& name ) {
+    XmlWriter& XmlWriter::startElement( std::string const& name, XmlFormatting fmt ) {
         ensureTagClosed();
         newlineIfNecessary();
-        m_os << m_indent << '<' << name;
+        if (shouldIndent(fmt)) {
+            m_os << m_indent;
+            m_indent += "  ";
+        }
+        m_os << '<' << name;
         m_tags.push_back( name );
-        m_indent += "  ";
         m_tagIsOpen = true;
+        applyFormatting(fmt);
         return *this;
     }
 
-    XmlWriter::ScopedElement XmlWriter::scopedElement( std::string const& name ) {
-        ScopedElement scoped( this );
-        startElement( name );
+    XmlWriter::ScopedElement XmlWriter::scopedElement( std::string const& name, XmlFormatting fmt ) {
+        ScopedElement scoped( this, fmt );
+        startElement( name, fmt );
         return scoped;
     }
 
-    XmlWriter& XmlWriter::endElement() {
-        newlineIfNecessary();
-        m_indent = m_indent.substr( 0, m_indent.size()-2 );
+    XmlWriter& XmlWriter::endElement(XmlFormatting fmt) {
+        m_indent = m_indent.substr(0, m_indent.size() - 2);
+
         if( m_tagIsOpen ) {
             m_os << "/>";
             m_tagIsOpen = false;
+        } else {
+            newlineIfNecessary();
+            if (shouldIndent(fmt)) {
+                m_os << m_indent;
+            }
+            m_os << "</" << m_tags.back() << ">";
         }
-        else {
-            m_os << m_indent << "</" << m_tags.back() << ">";
-        }
-        m_os << std::endl;
+        m_os << std::flush;
+        applyFormatting(fmt);
         m_tags.pop_back();
         return *this;
     }
@@ -15262,22 +15364,26 @@ namespace {
         return *this;
     }
 
-    XmlWriter& XmlWriter::writeText( std::string const& text, bool indent ) {
+    XmlWriter& XmlWriter::writeText( std::string const& text, XmlFormatting fmt) {
         if( !text.empty() ){
             bool tagWasOpen = m_tagIsOpen;
             ensureTagClosed();
-            if( tagWasOpen && indent )
+            if (tagWasOpen && shouldIndent(fmt)) {
                 m_os << m_indent;
+            }
             m_os << XmlEncode( text );
-            m_needsNewline = true;
+            applyFormatting(fmt);
         }
         return *this;
     }
 
-    XmlWriter& XmlWriter::writeComment( std::string const& text ) {
+    XmlWriter& XmlWriter::writeComment( std::string const& text, XmlFormatting fmt) {
         ensureTagClosed();
-        m_os << m_indent << "<!--" << text << "-->";
-        m_needsNewline = true;
+        if (shouldIndent(fmt)) {
+            m_os << m_indent;
+        }
+        m_os << "<!--" << text << "-->";
+        applyFormatting(fmt);
         return *this;
     }
 
@@ -15293,9 +15399,14 @@ namespace {
 
     void XmlWriter::ensureTagClosed() {
         if( m_tagIsOpen ) {
-            m_os << ">" << std::endl;
+            m_os << '>' << std::flush;
+            newlineIfNecessary();
             m_tagIsOpen = false;
         }
+    }
+
+    void XmlWriter::applyFormatting(XmlFormatting fmt) {
+        m_needsNewline = shouldNewline(fmt);
     }
 
     void XmlWriter::writeDeclaration() {
@@ -16476,8 +16587,8 @@ namespace Catch {
         for( auto const& child : groupNode.children )
             writeTestCase( *child );
 
-        xml.scopedElement( "system-out" ).writeText( trim( stdOutForSuite ), false );
-        xml.scopedElement( "system-err" ).writeText( trim( stdErrForSuite ), false );
+        xml.scopedElement( "system-out" ).writeText( trim( stdOutForSuite ), XmlFormatting::Newline );
+        xml.scopedElement( "system-err" ).writeText( trim( stdErrForSuite ), XmlFormatting::Newline );
     }
 
     void JunitReporter::writeTestCase( TestCaseNode const& testCaseNode ) {
@@ -16526,9 +16637,9 @@ namespace Catch {
             writeAssertions( sectionNode );
 
             if( !sectionNode.stdOut.empty() )
-                xml.scopedElement( "system-out" ).writeText( trim( sectionNode.stdOut ), false );
+                xml.scopedElement( "system-out" ).writeText( trim( sectionNode.stdOut ), XmlFormatting::Newline );
             if( !sectionNode.stdErr.empty() )
-                xml.scopedElement( "system-err" ).writeText( trim( sectionNode.stdErr ), false );
+                xml.scopedElement( "system-err" ).writeText( trim( sectionNode.stdErr ), XmlFormatting::Newline );
         }
         for( auto const& childNode : sectionNode.childSections )
             if( className.empty() )
@@ -16574,10 +16685,25 @@ namespace Catch {
 
             XmlWriter::ScopedElement e = xml.scopedElement( elementName );
 
-            xml.writeAttribute( "message", result.getExpandedExpression() );
+            xml.writeAttribute( "message", result.getExpression() );
             xml.writeAttribute( "type", result.getTestMacroName() );
 
             ReusableStringStream rss;
+            if (stats.totals.assertions.total() > 0) {
+                rss << "FAILED" << ":\n";
+                if (result.hasExpression()) {
+                    rss << "  ";
+                    rss << result.getExpressionInMacro();
+                    rss << '\n';
+                }
+                if (result.hasExpandedExpression()) {
+                    rss << "with expansion:\n";
+                    rss << Column(result.getExpandedExpression()).indent(2) << '\n';
+                }
+            } else {
+                rss << '\n';
+            }
+
             if( !result.getMessage().empty() )
                 rss << result.getMessage() << '\n';
             for( auto const& msg : stats.infoMessages )
@@ -16585,7 +16711,7 @@ namespace Catch {
                     rss << msg.message << '\n';
 
             rss << "at " << result.getSourceInfo();
-            xml.writeText( rss.str(), false );
+            xml.writeText( rss.str(), XmlFormatting::Newline );
         }
     }
 
@@ -16931,9 +17057,9 @@ namespace Catch {
             e.writeAttribute( "durationInSeconds", m_testCaseTimer.getElapsedSeconds() );
 
         if( !testCaseStats.stdOut.empty() )
-            m_xml.scopedElement( "StdOut" ).writeText( trim( testCaseStats.stdOut ), false );
+            m_xml.scopedElement( "StdOut" ).writeText( trim( testCaseStats.stdOut ), XmlFormatting::Newline );
         if( !testCaseStats.stdErr.empty() )
-            m_xml.scopedElement( "StdErr" ).writeText( trim( testCaseStats.stdErr ), false );
+            m_xml.scopedElement( "StdErr" ).writeText( trim( testCaseStats.stdErr ), XmlFormatting::Newline );
 
         m_xml.endElement();
     }
