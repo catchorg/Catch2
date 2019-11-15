@@ -80,7 +80,7 @@
 #endif
 
 #if defined(CATCH_CONFIG_ENABLE_BENCHMARKING)
-#include "internal/benchmark/catch_benchmark.hpp"
+#include "internal/benchmark/catch_benchmarking_all.hpp"
 #endif
 
 #endif // ! CATCH_CONFIG_IMPL_ONLY
