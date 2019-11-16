@@ -218,6 +218,12 @@ namespace { namespace CompilationTests {
         REQUIRE( y.v == 0 );
         REQUIRE( 0 == y.v );
     }
+    
+    TEST_CASE("#1319: Sections can have description (even if it is not saved", "[compilation]") {
+        SECTION("SectionName", "This is a long form section description") {
+            SUCCEED();
+        }
+    }
 
 
 }} // namespace CompilationTests

@@ -244,7 +244,6 @@ set(IMPL_SOURCES
         ${HEADER_DIR}/internal/catch_result_type.cpp
         ${HEADER_DIR}/internal/catch_run_context.cpp
         ${HEADER_DIR}/internal/catch_section.cpp
-        ${HEADER_DIR}/internal/catch_section_info.cpp
         ${HEADER_DIR}/internal/catch_session.cpp
         ${HEADER_DIR}/internal/catch_singletons.cpp
         ${HEADER_DIR}/internal/catch_startup_exception_registry.cpp

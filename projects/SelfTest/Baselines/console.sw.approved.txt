@@ -140,6 +140,15 @@ Compilation.tests.cpp:<line number>
 Compilation.tests.cpp:<line number>: PASSED:
 
 -------------------------------------------------------------------------------
+#1319: Sections can have description (even if it is not saved
+  SectionName
+-------------------------------------------------------------------------------
+Compilation.tests.cpp:<line number>
+...............................................................................
+
+Compilation.tests.cpp:<line number>: PASSED:
+
+-------------------------------------------------------------------------------
 #1403
 -------------------------------------------------------------------------------
 Compilation.tests.cpp:<line number>
@@ -13207,6 +13216,6 @@ Misc.tests.cpp:<line number>
 Misc.tests.cpp:<line number>: PASSED:
 
 ===============================================================================
-test cases:  304 |  214 passed |  86 failed |  4 failed as expected
-assertions: 1670 | 1501 passed | 148 failed | 21 failed as expected
+test cases:  305 |  215 passed |  86 failed |  4 failed as expected
+assertions: 1671 | 1502 passed | 148 failed | 21 failed as expected
 

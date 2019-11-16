@@ -150,6 +150,12 @@
     <TestCase name="#1245" tags="[compilation]" filename="projects/<exe-name>/UsageTests/Compilation.tests.cpp" >
       <OverallResult success="true"/>
     </TestCase>
+    <TestCase name="#1319: Sections can have description (even if it is not saved" tags="[compilation]" filename="projects/<exe-name>/UsageTests/Compilation.tests.cpp" >
+      <Section name="SectionName" filename="projects/<exe-name>/UsageTests/Compilation.tests.cpp" >
+        <OverallResults successes="1" failures="0" expectedFailures="0"/>
+      </Section>
+      <OverallResult success="true"/>
+    </TestCase>
     <TestCase name="#1403" tags="[compilation]" filename="projects/<exe-name>/UsageTests/Compilation.tests.cpp" >
       <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/UsageTests/Compilation.tests.cpp" >
         <Original>
@@ -15790,7 +15796,7 @@ loose text artifact
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="1501" failures="149" expectedFailures="21"/>
+    <OverallResults successes="1502" failures="149" expectedFailures="21"/>
   </Group>
-  <OverallResults successes="1501" failures="148" expectedFailures="21"/>
+  <OverallResults successes="1502" failures="148" expectedFailures="21"/>
 </Catch>

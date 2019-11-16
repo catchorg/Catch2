@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuitesloose text artifact
 >
-  <testsuite name="<exe-name>" errors="17" failures="132" tests="1671" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
+  <testsuite name="<exe-name>" errors="17" failures="132" tests="1672" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
     <properties>
       <property name="filters" value="~[!nonportable]~[!benchmark]~[approvals] *"/>
       <property name="random-seed" value="1"/>
@@ -14,6 +14,7 @@
     <testcase classname="<exe-name>.global" name="#1175 - Hidden Test" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="#1238" time="{duration}"/>
     <testcase classname="<exe-name>.(Fixture_1245&lt;int, int>)" name="#1245" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="#1319: Sections can have description (even if it is not saved/SectionName" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="#1403" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="#1455 - INFO and WARN can start with a linebreak" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="#1514: stderr/stdout is not captured in tests aborted by an exception" time="{duration}">
