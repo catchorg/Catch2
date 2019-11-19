@@ -1,5 +1,6 @@
 #include <catch2/catch_test_macros.hpp>
 #include <catch2/benchmark/catch_benchmark.hpp>
+#include <catch2/benchmark/catch_constructor.hpp>
 #include <catch2/catch_generators_specific.hpp>
 
 #include <map>
@@ -126,5 +127,19 @@ TEST_CASE("Benchmark containers", "[!benchmark]") {
         for (size_t i = 0; i < v.size(); ++i) {
             REQUIRE(v[i] == generated);
         }
+    }
+
+    SECTION("construct and destroy example") {
+        BENCHMARK_ADVANCED("construct")(Catch::Benchmark::Chronometer meter) {
+            std::vector<Catch::Benchmark::storage_for<std::string>> storage(meter.runs());
+            meter.measure([&](int i) { storage[i].construct("thing"); });
+        };
+
+        BENCHMARK_ADVANCED("destroy")(Catch::Benchmark::Chronometer meter) {
+            std::vector<Catch::Benchmark::destructable_object<std::string>> storage(meter.runs());
+            for(auto&& o : storage)
+                o.construct("thing");
+            meter.measure([&](int i) { storage[i].destruct(); });
+        };
     }
 }
