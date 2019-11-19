@@ -126,5 +126,19 @@ TEST_CASE("Benchmark containers", "[!benchmark]") {
             REQUIRE(v[i] == generated);
         }
     }
+
+    SECTION("construct and destroy example") {
+        BENCHMARK_ADVANCED("construct")(Catch::Benchmark::Chronometer meter) {
+            std::vector<Catch::Benchmark::storage_for<std::string>> storage(meter.runs());
+            meter.measure([&](int i) { storage[i].construct("thing"); });
+        };
+
+        BENCHMARK_ADVANCED("destroy")(Catch::Benchmark::Chronometer meter) {
+            std::vector<Catch::Benchmark::destructable_object<std::string>> storage(meter.runs());
+            for(auto&& o : storage)
+                o.construct("thing");
+            meter.measure([&](int i) { storage[i].destruct(); });
+        };
+    }
 }
 #endif // CATCH_CONFIG_ENABLE_BENCHMARKING
