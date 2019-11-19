@@ -23,6 +23,7 @@ def generate(v):
     blankParser = re.compile( r'^\s*$')
 
     seenHeaders = set([])
+    possibleHeaders = set([])
     rootPath = os.path.join( catchPath, 'include/' )
     outputPath = os.path.join( catchPath, 'single_include/catch2/catch.hpp' )
 
@@ -52,8 +53,20 @@ def generate(v):
         if globals['includeImpl'] or globals['implIfDefs'] == -1:
             out.write( line )
 
+    def getDirsToSearch( ):
+        return [os.path.join( rootPath, s) for s in ['', 'internal', 'reporters', 'internal/benchmark', 'internal/benchmark/detail']]
+
+    def collectPossibleHeaders():
+        dirs = getDirsToSearch()
+        for dir in dirs:
+            hpps = glob(os.path.join(dir, '*.hpp'))
+            hs = glob(os.path.join(dir, '*.h'))
+            possibleHeaders.update( hpp.rpartition( os.sep )[2] for hpp in hpps )
+            possibleHeaders.update( h.rpartition( os.sep )[2] for h in hs )
+
+
     def insertCpps():
-        dirs = [os.path.join( rootPath, s) for s in ['', 'internal', 'reporters', 'internal/benchmark', 'internal/benchmark/detail']]
+        dirs = getDirsToSearch()
         cppFiles = []
         for dir in dirs:
             cppFiles += glob(os.path.join(dir, '*.cpp'))
@@ -103,6 +116,13 @@ def generate(v):
                         write( line.rstrip() + "\n" )
         write( u'// end {}\n'.format(filename) )
 
+    def warnUnparsedHeaders():
+        unparsedHeaders = possibleHeaders.difference( seenHeaders )
+        # These headers aren't packaged into the unified header, exclude them from any warning
+        whitelist = ['catch.hpp', 'catch_reporter_teamcity.hpp', 'catch_with_main.hpp', 'catch_reporter_automake.hpp', 'catch_reporter_tap.hpp', 'catch_reporter_sonarqube.hpp']
+        unparsedHeaders = unparsedHeaders.difference( whitelist )
+        if unparsedHeaders:
+            print( "WARNING: unparsed headers detected\n{0}\n".format( unparsedHeaders ) )
 
     write( u"/*\n" )
     write( u" *  Catch v{0}\n".format( v.getVersionString() ) )
@@ -117,11 +137,13 @@ def generate(v):
     write( u"#ifndef TWOBLUECUBES_SINGLE_INCLUDE_CATCH_HPP_INCLUDED\n" )
     write( u"#define TWOBLUECUBES_SINGLE_INCLUDE_CATCH_HPP_INCLUDED\n" )
 
+    collectPossibleHeaders()
     parseFile( rootPath, 'catch.hpp' )
+    warnUnparsedHeaders()
 
     write( u"#endif // TWOBLUECUBES_SINGLE_INCLUDE_CATCH_HPP_INCLUDED\n\n" )
     out.close()
-    print ("Generated single include for Catch v{0}\n".format( v.getVersionString() ) )
+    print( "Generated single include for Catch v{0}\n".format( v.getVersionString() ) )
 
 
 if __name__ == '__main__':
