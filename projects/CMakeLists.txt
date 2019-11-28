@@ -72,7 +72,6 @@ CheckFileList(SURROGATE_SOURCES ${SELF_TEST_DIR}/SurrogateCpps)
 # Please keep these ordered alphabetically
 set(TOP_LEVEL_HEADERS
         ${HEADER_DIR}/catch.hpp
-        ${HEADER_DIR}/catch_with_main.hpp
         )
 CheckFileList(TOP_LEVEL_HEADERS ${HEADER_DIR})
 
