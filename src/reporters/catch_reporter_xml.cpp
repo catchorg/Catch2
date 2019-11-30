@@ -8,9 +8,9 @@
 
 #include "catch_reporter_xml.h"
 
-#include "../internal/catch_capture.hpp"
-#include "../internal/catch_reporter_registrars.hpp"
-#include "../internal/catch_list.h"
+#include "../catch_capture.hpp"
+#include "../catch_reporter_registrars.hpp"
+#include "../catch_list.h"
 
 #if defined(_MSC_VER)
 #pragma warning(push)

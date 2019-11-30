@@ -10,9 +10,9 @@
 
 #include "catch_reporter_junit.h"
 
-#include "../internal/catch_tostring.h"
-#include "../internal/catch_reporter_registrars.hpp"
-#include "../internal/catch_text.h"
+#include "../catch_tostring.h"
+#include "../catch_reporter_registrars.hpp"
+#include "../catch_text.h"
 
 #include <cassert>
 #include <sstream>

@@ -9,8 +9,8 @@
 
 #include "catch_reporter_bases.hpp"
 
-#include "../internal/catch_xmlwriter.h"
-#include "../internal/catch_timer.h"
+#include "../catch_xmlwriter.h"
+#include "../catch_timer.h"
 
 
 namespace Catch {

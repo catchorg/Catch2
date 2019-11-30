@@ -7,7 +7,7 @@
 
 #include "catch_interfaces_reporter.h"
 #include "catch_console_colour.h"
-#include "../reporters/catch_reporter_listening.h"
+#include "reporters/catch_reporter_listening.h"
 #include "catch_list.h"
 #include "catch_text.h"
 

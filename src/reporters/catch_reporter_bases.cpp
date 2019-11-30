@@ -6,8 +6,8 @@
  *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  */
 
-#include "../internal/catch_interfaces_reporter.h"
-#include "../internal/catch_errno_guard.h"
+#include "../catch_interfaces_reporter.h"
+#include "../catch_errno_guard.h"
 #include "catch_reporter_bases.hpp"
 
 #include <cstring>

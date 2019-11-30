@@ -7,7 +7,7 @@
 #ifndef TWOBLUECUBES_CATCH_MULTI_REPORTER_H_INCLUDED
 #define TWOBLUECUBES_CATCH_MULTI_REPORTER_H_INCLUDED
 
-#include "../internal/catch_interfaces_reporter.h"
+#include "../catch_interfaces_reporter.h"
 
 namespace Catch {
 
