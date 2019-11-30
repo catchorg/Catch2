@@ -1,5 +1,5 @@
 #include "catch.hpp"
-#include "internal/catch_xmlwriter.h"
+#include "catch_xmlwriter.h"
 
 #include <sstream>
 

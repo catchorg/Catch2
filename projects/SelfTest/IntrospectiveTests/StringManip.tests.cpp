@@ -1,4 +1,4 @@
-#include "internal/catch_string_manip.h"
+#include "catch_string_manip.h"
 
 #include "catch.hpp"
 

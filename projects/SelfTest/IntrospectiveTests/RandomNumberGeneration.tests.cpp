@@ -7,7 +7,7 @@
 
 #include "catch.hpp"
 
-#include "internal/catch_random_number_generator.h"
+#include "catch_random_number_generator.h"
 
 TEST_CASE("Our PCG implementation provides expected results for known seeds", "[rng]") {
     Catch::SimplePcg32 rng;

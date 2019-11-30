@@ -7,10 +7,10 @@
  */
 
 #include "catch.hpp"
-#include "internal/catch_test_spec_parser.h"
-#include "internal/catch_test_case_info.h"
-#include "internal/catch_config.hpp"
-#include "internal/catch_commandline.h"
+#include "catch_test_spec_parser.h"
+#include "catch_test_case_info.h"
+#include "catch_config.hpp"
+#include "catch_commandline.h"
 
 #ifdef __clang__
 #   pragma clang diagnostic ignored "-Wc++98-compat"

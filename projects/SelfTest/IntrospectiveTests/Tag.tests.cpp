@@ -7,7 +7,7 @@
  */
 
 #include "catch.hpp"
-#include "internal/catch_tag_alias_registry.h"
+#include "catch_tag_alias_registry.h"
 
 TEST_CASE( "Tag alias can be registered against tag patterns" ) {
 

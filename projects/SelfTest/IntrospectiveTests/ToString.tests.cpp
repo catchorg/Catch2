@@ -1,6 +1,6 @@
 #include "catch.hpp"
 
-#include "internal/catch_enum_values_registry.h"
+#include "catch_enum_values_registry.h"
 
 enum class EnumClass3 { Value1, Value2, Value3, Value4 };
 
