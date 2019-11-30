@@ -70,12 +70,6 @@ CheckFileList(SURROGATE_SOURCES ${SELF_TEST_DIR}/SurrogateCpps)
 
 
 # Please keep these ordered alphabetically
-set(TOP_LEVEL_HEADERS
-        ${HEADER_DIR}/catch.hpp
-        )
-CheckFileList(TOP_LEVEL_HEADERS ${HEADER_DIR})
-
-# Please keep these ordered alphabetically
 set(EXTERNAL_HEADERS
         ${HEADER_DIR}/external/clara.hpp
         )
@@ -84,7 +78,7 @@ CheckFileList(EXTERNAL_HEADERS ${HEADER_DIR}/external)
 
 # Please keep these ordered alphabetically
 set(BENCHMARK_HEADERS
-		${HEADER_DIR}/internal/benchmark/catch_benchmark.hpp
+        ${HEADER_DIR}/internal/benchmark/catch_benchmark.hpp
         ${HEADER_DIR}/internal/benchmark/catch_chronometer.hpp
         ${HEADER_DIR}/internal/benchmark/catch_clock.hpp
         ${HEADER_DIR}/internal/benchmark/catch_constructor.hpp
@@ -309,7 +303,8 @@ SOURCE_GROUP("Surrogates" FILES ${SURROGATE_SOURCES})
 
 include(CTest)
 
-add_executable(SelfTest ${TEST_SOURCES} ${IMPL_SOURCES} ${REPORTER_SOURCES} ${SURROGATE_SOURCES} ${HEADERS})
+add_executable(SelfTest ${TEST_SOURCES})
+target_link_libraries(SelfTest PRIVATE Catch2)
 target_include_directories(SelfTest PRIVATE ${HEADER_DIR})
 
 # It took CMake until 3.8 to abandon the doomed approach of enumerating
