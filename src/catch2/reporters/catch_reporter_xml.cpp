@@ -318,9 +318,6 @@ namespace Catch {
         }
     }
 
-
-    CATCH_REGISTER_REPORTER( "xml", XmlReporter )
-
 } // end namespace Catch
 
 #if defined(_MSC_VER)

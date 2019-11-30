@@ -13,24 +13,24 @@
 
 namespace Catch {
 
+    template <typename T>
+    class ReporterFactory : public IReporterFactory {
+
+        IStreamingReporterPtr create( ReporterConfig const& config ) const override {
+            return std::unique_ptr<T>( new T( config ) );
+        }
+
+        std::string getDescription() const override {
+            return T::getDescription();
+        }
+    };
+
+
     template<typename T>
     class ReporterRegistrar {
-
-        class ReporterFactory : public IReporterFactory {
-
-            IStreamingReporterPtr create( ReporterConfig const& config ) const override {
-                return std::unique_ptr<T>( new T( config ) );
-            }
-
-            std::string getDescription() const override {
-                return T::getDescription();
-            }
-        };
-
     public:
-
         explicit ReporterRegistrar( std::string const& name ) {
-            getMutableRegistryHub().registerReporter( name, std::make_shared<ReporterFactory>() );
+            getMutableRegistryHub().registerReporter( name, std::make_shared<ReporterFactory<T>>() );
         }
     };
 

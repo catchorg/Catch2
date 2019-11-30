@@ -688,8 +688,6 @@ void ConsoleReporter::printTestFilters() {
         stream << Colour(Colour::BrightYellow) << "Filters: " << serializeFilters( m_config->getTestsOrTags() ) << '\n';
 }
 
-CATCH_REGISTER_REPORTER("console", ConsoleReporter)
-
 } // end namespace Catch
 
 #if defined(_MSC_VER)

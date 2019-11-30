@@ -6,9 +6,21 @@
  */
 #include "catch_reporter_registry.h"
 
+#include <catch2/catch_reporter_registrars.hpp>
+#include <catch2/reporters/catch_reporter_compact.h>
+#include <catch2/reporters/catch_reporter_console.h>
+#include <catch2/reporters/catch_reporter_junit.h>
+#include <catch2/reporters/catch_reporter_xml.h>
+
 namespace Catch {
 
-    ReporterRegistry::~ReporterRegistry() = default;
+    ReporterRegistry::ReporterRegistry():
+        m_factories({
+                {"compact", std::make_shared<ReporterFactory<CompactReporter>>() },
+                {"console", std::make_shared<ReporterFactory<ConsoleReporter>>() },
+                {"junit", std::make_shared<ReporterFactory<JunitReporter>>() },
+                {"xml", std::make_shared<ReporterFactory<XmlReporter>>() },
+        }) {}
 
     IStreamingReporterPtr ReporterRegistry::create( std::string const& name, IConfigPtr const& config ) const {
         auto it =  m_factories.find( name );

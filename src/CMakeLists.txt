@@ -222,6 +222,6 @@ add_library(Catch2 STATIC
 
 target_include_directories(Catch2
   PUBLIC
-    $<BUILD_INTERFACE:${SOURCES_DIR}>
+    $<BUILD_INTERFACE:${SOURCES_DIR}/..>
     $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
 )

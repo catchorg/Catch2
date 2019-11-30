@@ -7,7 +7,6 @@
 
 #include "catch_reporter_compact.h"
 
-#include "../catch_reporter_registrars.hpp"
 #include "../catch_console_colour.h"
 
 namespace {
@@ -287,7 +286,5 @@ private:
         }
 
         CompactReporter::~CompactReporter() {}
-
-    CATCH_REGISTER_REPORTER( "compact", CompactReporter )
 
 } // end namespace Catch

@@ -280,6 +280,4 @@ namespace Catch {
         }
     }
 
-    CATCH_REGISTER_REPORTER( "junit", JunitReporter )
-
 } // end namespace Catch

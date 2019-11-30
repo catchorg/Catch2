@@ -15,10 +15,10 @@
 namespace Catch {
 
     class ReporterRegistry : public IReporterRegistry {
-
     public:
 
-        ~ReporterRegistry() override;
+        ReporterRegistry();
+        ~ReporterRegistry() override = default;
 
         IStreamingReporterPtr create( std::string const& name, IConfigPtr const& config ) const override;
 
