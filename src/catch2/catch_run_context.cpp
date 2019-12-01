@@ -1,10 +1,10 @@
-#include "catch_run_context.h"
-#include "catch_compiler_capabilities.h"
-#include "catch_context.h"
-#include "catch_enforce.h"
-#include "catch_random_number_generator.h"
-#include "catch_stream.h"
-#include "catch_output_redirect.h"
+#include <catch2/catch_run_context.h>
+#include <catch2/catch_compiler_capabilities.h>
+#include <catch2/catch_context.h>
+#include <catch2/catch_enforce.h>
+#include <catch2/catch_random_number_generator.h>
+#include <catch2/catch_stream.h>
+#include <catch2/catch_output_redirect.h>
 
 #include <cassert>
 #include <algorithm>

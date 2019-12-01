@@ -6,9 +6,9 @@
  *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  */
 
-#include "catch_section.h"
-#include "catch_capture.hpp"
-#include "catch_uncaught_exceptions.h"
+#include <catch2/catch_section.h>
+#include <catch2/catch_capture.hpp>
+#include <catch2/catch_uncaught_exceptions.h>
 
 namespace Catch {
 

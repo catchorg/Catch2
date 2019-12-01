@@ -5,10 +5,10 @@
  *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  */
 
-#include "catch_test_registry.h"
-#include "catch_compiler_capabilities.h"
-#include "catch_test_case_registry_impl.h"
-#include "catch_interfaces_registry_hub.h"
+#include <catch2/catch_test_registry.h>
+#include <catch2/catch_compiler_capabilities.h>
+#include <catch2/catch_test_case_registry_impl.h>
+#include <catch2/catch_interfaces_registry_hub.h>
 
 namespace Catch {
 

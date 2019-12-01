@@ -8,7 +8,7 @@
 #ifndef TWOBLUECUBES_CATCH_DEFAULT_MAIN_HPP_INCLUDED
 #define TWOBLUECUBES_CATCH_DEFAULT_MAIN_HPP_INCLUDED
 
-#include "catch_session.h"
+#include <catch2/catch_session.h>
 
 #ifndef __OBJC__
 

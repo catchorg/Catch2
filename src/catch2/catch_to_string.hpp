@@ -9,8 +9,8 @@
 
 #include <string>
 
-#include "catch_compiler_capabilities.h"
-#include "catch_stream.h"
+#include <catch2/catch_compiler_capabilities.h>
+#include <catch2/catch_stream.h>
 
 namespace Catch {
     template <typename T>

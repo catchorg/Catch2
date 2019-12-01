@@ -7,9 +7,9 @@
 #ifndef TWOBLUECUBES_CATCH_GENERATORS_HPP_INCLUDED
 #define TWOBLUECUBES_CATCH_GENERATORS_HPP_INCLUDED
 
-#include "catch_interfaces_generatortracker.h"
-#include "catch_common.h"
-#include "catch_enforce.h"
+#include <catch2/catch_interfaces_generatortracker.h>
+#include <catch2/catch_common.h>
+#include <catch2/catch_enforce.h>
 
 #include <memory>
 #include <vector>

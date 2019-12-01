@@ -5,9 +5,9 @@
  *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  */
 
-#include "catch_test_spec.h"
-#include "catch_string_manip.h"
-#include "catch_interfaces_config.h"
+#include <catch2/catch_test_spec.h>
+#include <catch2/catch_string_manip.h>
+#include <catch2/catch_interfaces_config.h>
 
 #include <algorithm>
 #include <string>

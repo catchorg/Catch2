@@ -8,11 +8,11 @@
 #ifndef TWOBLUECUBES_CATCH_MESSAGE_H_INCLUDED
 #define TWOBLUECUBES_CATCH_MESSAGE_H_INCLUDED
 
-#include "catch_result_type.h"
-#include "catch_common.h"
-#include "catch_stream.h"
-#include "catch_interfaces_capture.h"
-#include "catch_tostring.h"
+#include <catch2/catch_result_type.h>
+#include <catch2/catch_common.h>
+#include <catch2/catch_stream.h>
+#include <catch2/catch_interfaces_capture.h>
+#include <catch2/catch_tostring.h>
 
 #include <string>
 #include <vector>

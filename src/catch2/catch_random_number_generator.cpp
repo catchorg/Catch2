@@ -5,10 +5,10 @@
  *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  */
 
-#include "catch_random_number_generator.h"
-#include "catch_context.h"
-#include "catch_run_context.h"
-#include "catch_interfaces_config.h"
+#include <catch2/catch_random_number_generator.h>
+#include <catch2/catch_context.h>
+#include <catch2/catch_run_context.h>
+#include <catch2/catch_interfaces_config.h>
 
 namespace Catch {
 

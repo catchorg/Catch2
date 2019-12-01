@@ -5,9 +5,9 @@
  *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  */
 
-#include "catch_generators.hpp"
-#include "catch_random_number_generator.h"
-#include "catch_interfaces_capture.h"
+#include <catch2/catch_generators.hpp>
+#include <catch2/catch_random_number_generator.h>
+#include <catch2/catch_interfaces_capture.h>
 
 #include <limits>
 #include <set>

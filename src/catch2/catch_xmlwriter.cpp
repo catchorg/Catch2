@@ -5,9 +5,9 @@
  *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  */
 
-#include "catch_xmlwriter.h"
+#include <catch2/catch_xmlwriter.h>
 
-#include "catch_enforce.h"
+#include <catch2/catch_enforce.h>
 
 #include <iomanip>
 #include <type_traits>

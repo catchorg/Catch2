@@ -7,9 +7,9 @@
 #ifndef TWOBLUECUBES_CATCH_MATCHERS_GENERIC_HPP_INCLUDED
 #define TWOBLUECUBES_CATCH_MATCHERS_GENERIC_HPP_INCLUDED
 
-#include "catch_common.h"
-#include "catch_matchers.h"
-#include "catch_meta.hpp"
+#include <catch2/catch_common.h>
+#include <catch2/catch_matchers.h>
+#include <catch2/catch_meta.hpp>
 
 #include <string>
 #include <utility>

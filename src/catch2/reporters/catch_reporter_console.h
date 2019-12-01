@@ -8,7 +8,7 @@
 #ifndef TWOBLUECUBES_CATCH_REPORTER_CONSOLE_H_INCLUDED
 #define TWOBLUECUBES_CATCH_REPORTER_CONSOLE_H_INCLUDED
 
-#include "catch_reporter_bases.hpp"
+#include <catch2/reporters/catch_reporter_bases.hpp>
 
 #if defined(_MSC_VER)
 #pragma warning(push)

@@ -8,8 +8,8 @@
 #ifndef TWOBLUECUBES_CATCH_REPORTER_BASES_HPP_INCLUDED
 #define TWOBLUECUBES_CATCH_REPORTER_BASES_HPP_INCLUDED
 
-#include "../catch_enforce.h"
-#include "../catch_interfaces_reporter.h"
+#include <catch2/catch_enforce.h>
+#include <catch2/catch_interfaces_reporter.h>
 
 #include <algorithm>
 #include <cstring>

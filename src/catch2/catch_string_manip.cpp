@@ -5,8 +5,8 @@
  *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  */
 
-#include "catch_string_manip.h"
-#include "catch_stringref.h"
+#include <catch2/catch_string_manip.h>
+#include <catch2/catch_stringref.h>
 
 #include <algorithm>
 #include <ostream>

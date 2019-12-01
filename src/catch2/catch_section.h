@@ -8,10 +8,10 @@
 #ifndef TWOBLUECUBES_CATCH_SECTION_H_INCLUDED
 #define TWOBLUECUBES_CATCH_SECTION_H_INCLUDED
 
-#include "catch_compiler_capabilities.h"
-#include "catch_section_info.h"
-#include "catch_totals.h"
-#include "catch_timer.h"
+#include <catch2/catch_compiler_capabilities.h>
+#include <catch2/catch_section_info.h>
+#include <catch2/catch_totals.h>
+#include <catch2/catch_timer.h>
 
 #include <string>
 

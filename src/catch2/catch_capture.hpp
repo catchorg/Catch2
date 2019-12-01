@@ -8,10 +8,10 @@
 #ifndef TWOBLUECUBES_CATCH_CAPTURE_HPP_INCLUDED
 #define TWOBLUECUBES_CATCH_CAPTURE_HPP_INCLUDED
 
-#include "catch_assertionhandler.h"
-#include "catch_interfaces_capture.h"
-#include "catch_message.h"
-#include "catch_stringref.h"
+#include <catch2/catch_assertionhandler.h>
+#include <catch2/catch_interfaces_capture.h>
+#include <catch2/catch_message.h>
+#include <catch2/catch_stringref.h>
 
 #if !defined(CATCH_CONFIG_DISABLE)
 

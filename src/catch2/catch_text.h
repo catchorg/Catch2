@@ -8,7 +8,7 @@
 #ifndef TWOBLUECUBES_CATCH_TEXT_H_INCLUDED
 #define TWOBLUECUBES_CATCH_TEXT_H_INCLUDED
 
-#include "catch_clara.h"
+#include <catch2/catch_clara.h>
 
 namespace Catch {
     using namespace clara::TextFlow;

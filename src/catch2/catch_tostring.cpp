@@ -17,10 +17,10 @@
 #define CATCH_CONFIG_ENABLE_CHRONO_STRINGMAKER
 #endif
 
-#include "catch_tostring.h"
-#include "catch_interfaces_config.h"
-#include "catch_context.h"
-#include "catch_polyfills.hpp"
+#include <catch2/catch_tostring.h>
+#include <catch2/catch_interfaces_config.h>
+#include <catch2/catch_context.h>
+#include <catch2/catch_polyfills.hpp>
 
 #include <cmath>
 #include <iomanip>

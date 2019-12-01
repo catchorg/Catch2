@@ -13,15 +13,15 @@
 #endif
 
 
-#include "catch_console_colour.h"
-#include "catch_enforce.h"
-#include "catch_errno_guard.h"
-#include "catch_interfaces_config.h"
-#include "catch_stream.h"
-#include "catch_context.h"
-#include "catch_platform.h"
-#include "catch_debugger.h"
-#include "catch_windows_h_proxy.h"
+#include <catch2/catch_console_colour.h>
+#include <catch2/catch_enforce.h>
+#include <catch2/catch_errno_guard.h>
+#include <catch2/catch_interfaces_config.h>
+#include <catch2/catch_stream.h>
+#include <catch2/catch_context.h>
+#include <catch2/catch_platform.h>
+#include <catch2/catch_debugger.h>
+#include <catch2/catch_windows_h_proxy.h>
 
 #include <sstream>
 

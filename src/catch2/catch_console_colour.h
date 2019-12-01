@@ -8,7 +8,7 @@
 #ifndef TWOBLUECUBES_CATCH_CONSOLE_COLOUR_HPP_INCLUDED
 #define TWOBLUECUBES_CATCH_CONSOLE_COLOUR_HPP_INCLUDED
 
-#include "catch_common.h"
+#include <catch2/catch_common.h>
 
 namespace Catch {
 

@@ -10,20 +10,20 @@
 #ifndef TWOBLUECUBES_CATCH_BENCHMARK_HPP_INCLUDED
 #define TWOBLUECUBES_CATCH_BENCHMARK_HPP_INCLUDED
 
-#include "../catch_config.hpp"
-#include "../catch_context.h"
-#include "../catch_interfaces_reporter.h"
-#include "../catch_test_registry.h"
+#include <catch2/catch_config.hpp>
+#include <catch2/catch_context.h>
+#include <catch2/catch_interfaces_reporter.h>
+#include <catch2/catch_test_registry.h>
 
-#include "catch_chronometer.hpp"
-#include "catch_clock.hpp"
-#include "catch_environment.hpp"
-#include "catch_execution_plan.hpp"
-#include "detail/catch_estimate_clock.hpp"
-#include "detail/catch_complete_invoke.hpp"
-#include "detail/catch_analyse.hpp"
-#include "detail/catch_benchmark_function.hpp"
-#include "detail/catch_run_for_at_least.hpp"
+#include <catch2/benchmark/catch_chronometer.hpp>
+#include <catch2/benchmark/catch_clock.hpp>
+#include <catch2/benchmark/catch_environment.hpp>
+#include <catch2/benchmark/catch_execution_plan.hpp>
+#include <catch2/benchmark/detail/catch_estimate_clock.hpp>
+#include <catch2/benchmark/detail/catch_complete_invoke.hpp>
+#include <catch2/benchmark/detail/catch_analyse.hpp>
+#include <catch2/benchmark/detail/catch_benchmark_function.hpp>
+#include <catch2/benchmark/detail/catch_run_for_at_least.hpp>
 
 #include <algorithm>
 #include <functional>

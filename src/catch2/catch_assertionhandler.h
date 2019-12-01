@@ -8,9 +8,9 @@
 #ifndef TWOBLUECUBES_CATCH_ASSERTIONHANDLER_H_INCLUDED
 #define TWOBLUECUBES_CATCH_ASSERTIONHANDLER_H_INCLUDED
 
-#include "catch_assertioninfo.h"
-#include "catch_decomposer.h"
-#include "catch_interfaces_capture.h"
+#include <catch2/catch_assertioninfo.h>
+#include <catch2/catch_decomposer.h>
+#include <catch2/catch_interfaces_capture.h>
 
 namespace Catch {
 

@@ -7,9 +7,9 @@
 #ifndef TWOBLUECUBES_CATCH_ENFORCE_H_INCLUDED
 #define TWOBLUECUBES_CATCH_ENFORCE_H_INCLUDED
 
-#include "catch_common.h"
-#include "catch_compiler_capabilities.h"
-#include "catch_stream.h"
+#include <catch2/catch_common.h>
+#include <catch2/catch_compiler_capabilities.h>
+#include <catch2/catch_stream.h>
 
 #include <exception>
 

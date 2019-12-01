@@ -7,8 +7,8 @@
 #ifndef TWOBLUECUBES_CATCH_OUTPUT_REDIRECT_H
 #define TWOBLUECUBES_CATCH_OUTPUT_REDIRECT_H
 
-#include "catch_platform.h"
-#include "catch_stream.h"
+#include <catch2/catch_platform.h>
+#include <catch2/catch_stream.h>
 
 #include <cstdio>
 #include <iosfwd>

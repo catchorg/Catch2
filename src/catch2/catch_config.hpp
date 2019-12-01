@@ -8,11 +8,11 @@
 #ifndef TWOBLUECUBES_CATCH_CONFIG_HPP_INCLUDED
 #define TWOBLUECUBES_CATCH_CONFIG_HPP_INCLUDED
 
-#include "catch_test_spec_parser.h"
-#include "catch_interfaces_config.h"
+#include <catch2/catch_test_spec_parser.h>
+#include <catch2/catch_interfaces_config.h>
 
 // Libstdc++ doesn't like incomplete classes for unique_ptr
-#include "catch_stream.h"
+#include <catch2/catch_stream.h>
 
 #include <memory>
 #include <vector>

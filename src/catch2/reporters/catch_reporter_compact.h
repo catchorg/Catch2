@@ -9,7 +9,7 @@
 #define TWOBLUECUBES_CATCH_REPORTER_COMPACT_H_INCLUDED
 
 
-#include "catch_reporter_bases.hpp"
+#include <catch2/reporters/catch_reporter_bases.hpp>
 
 
 namespace Catch {

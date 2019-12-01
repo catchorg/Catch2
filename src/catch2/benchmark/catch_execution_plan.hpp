@@ -11,12 +11,12 @@
 #ifndef TWOBLUECUBES_CATCH_EXECUTION_PLAN_HPP_INCLUDED
 #define TWOBLUECUBES_CATCH_EXECUTION_PLAN_HPP_INCLUDED
 
-#include "../catch_config.hpp"
-#include "catch_clock.hpp"
-#include "catch_environment.hpp"
-#include "detail/catch_benchmark_function.hpp"
-#include "detail/catch_repeat.hpp"
-#include "detail/catch_run_for_at_least.hpp"
+#include <catch2/catch_config.hpp>
+#include <catch2/benchmark/catch_clock.hpp>
+#include <catch2/benchmark/catch_environment.hpp>
+#include <catch2/benchmark/detail/catch_benchmark_function.hpp>
+#include <catch2/benchmark/detail/catch_repeat.hpp>
+#include <catch2/benchmark/detail/catch_run_for_at_least.hpp>
 
 #include <algorithm>
 

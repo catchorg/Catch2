@@ -6,13 +6,13 @@
  *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  */
 
-#include "catch_reporter_bases.hpp"
+#include <catch2/reporters/catch_reporter_bases.hpp>
 
-#include "catch_reporter_junit.h"
+#include <catch2/reporters/catch_reporter_junit.h>
 
-#include "../catch_tostring.h"
-#include "../catch_reporter_registrars.hpp"
-#include "../catch_text.h"
+#include <catch2/catch_tostring.h>
+#include <catch2/catch_reporter_registrars.hpp>
+#include <catch2/catch_text.h>
 
 #include <cassert>
 #include <sstream>

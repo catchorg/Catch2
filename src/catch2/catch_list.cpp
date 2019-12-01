@@ -6,20 +6,20 @@
  *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  */
 
-#include "catch_list.h"
+#include <catch2/catch_list.h>
 
-#include "catch_interfaces_registry_hub.h"
-#include "catch_interfaces_reporter.h"
-#include "catch_interfaces_testcase.h"
+#include <catch2/catch_interfaces_registry_hub.h>
+#include <catch2/catch_interfaces_reporter.h>
+#include <catch2/catch_interfaces_testcase.h>
 
-#include "catch_context.h"
-#include "catch_stream.h"
-#include "catch_text.h"
+#include <catch2/catch_context.h>
+#include <catch2/catch_stream.h>
+#include <catch2/catch_text.h>
 
-#include "catch_console_colour.h"
-#include "catch_test_spec_parser.h"
-#include "catch_tostring.h"
-#include "catch_string_manip.h"
+#include <catch2/catch_console_colour.h>
+#include <catch2/catch_test_spec_parser.h>
+#include <catch2/catch_tostring.h>
+#include <catch2/catch_string_manip.h>
 
 #include <limits>
 #include <algorithm>

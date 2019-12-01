@@ -7,10 +7,10 @@
  *
  */
 
-#include "catch_debugger.h"
-#include "catch_errno_guard.h"
-#include "catch_stream.h"
-#include "catch_platform.h"
+#include <catch2/catch_debugger.h>
+#include <catch2/catch_errno_guard.h>
+#include <catch2/catch_stream.h>
+#include <catch2/catch_platform.h>
 
 #ifdef CATCH_PLATFORM_MAC
 

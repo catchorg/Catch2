@@ -5,23 +5,23 @@
  *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  */
 
-#include "catch_session.h"
-#include "catch_commandline.h"
-#include "catch_console_colour.h"
-#include "catch_enforce.h"
-#include "catch_list.h"
-#include "catch_context.h"
-#include "catch_run_context.h"
-#include "catch_stream.h"
-#include "catch_test_spec.h"
-#include "catch_version.h"
-#include "catch_interfaces_reporter.h"
-#include "catch_random_number_generator.h"
-#include "catch_startup_exception_registry.h"
-#include "catch_text.h"
-#include "catch_stream.h"
-#include "catch_windows_h_proxy.h"
-#include "reporters/catch_reporter_listening.h"
+#include <catch2/catch_session.h>
+#include <catch2/catch_commandline.h>
+#include <catch2/catch_console_colour.h>
+#include <catch2/catch_enforce.h>
+#include <catch2/catch_list.h>
+#include <catch2/catch_context.h>
+#include <catch2/catch_run_context.h>
+#include <catch2/catch_stream.h>
+#include <catch2/catch_test_spec.h>
+#include <catch2/catch_version.h>
+#include <catch2/catch_interfaces_reporter.h>
+#include <catch2/catch_random_number_generator.h>
+#include <catch2/catch_startup_exception_registry.h>
+#include <catch2/catch_text.h>
+#include <catch2/catch_stream.h>
+#include <catch2/catch_windows_h_proxy.h>
+#include <catch2/reporters/catch_reporter_listening.h>
 
 #include <cstdlib>
 #include <iomanip>

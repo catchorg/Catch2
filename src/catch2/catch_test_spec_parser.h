@@ -13,9 +13,9 @@
 #pragma clang diagnostic ignored "-Wpadded"
 #endif
 
-#include "catch_test_spec.h"
-#include "catch_string_manip.h"
-#include "catch_interfaces_tag_alias_registry.h"
+#include <catch2/catch_test_spec.h>
+#include <catch2/catch_string_manip.h>
+#include <catch2/catch_interfaces_tag_alias_registry.h>
 
 namespace Catch {
 

@@ -6,11 +6,11 @@
  *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  */
 
-#include "catch_tag_alias_registry.h"
-#include "catch_console_colour.h"
-#include "catch_enforce.h"
-#include "catch_interfaces_registry_hub.h"
-#include "catch_string_manip.h"
+#include <catch2/catch_tag_alias_registry.h>
+#include <catch2/catch_console_colour.h>
+#include <catch2/catch_enforce.h>
+#include <catch2/catch_interfaces_registry_hub.h>
+#include <catch2/catch_string_manip.h>
 
 #include <sstream>
 

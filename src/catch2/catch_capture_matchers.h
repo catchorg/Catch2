@@ -8,14 +8,14 @@
 #ifndef TWOBLUECUBES_CATCH_CAPTURE_MATCHERS_HPP_INCLUDED
 #define TWOBLUECUBES_CATCH_CAPTURE_MATCHERS_HPP_INCLUDED
 
-#include "catch_capture.hpp"
-#include "catch_matchers.h"
-#include "catch_matchers_exception.hpp"
-#include "catch_matchers_floating.h"
-#include "catch_matchers_generic.hpp"
-#include "catch_matchers_string.h"
-#include "catch_matchers_vector.h"
-#include "catch_stringref.h"
+#include <catch2/catch_capture.hpp>
+#include <catch2/catch_matchers.h>
+#include <catch2/catch_matchers_exception.hpp>
+#include <catch2/catch_matchers_floating.h>
+#include <catch2/catch_matchers_generic.hpp>
+#include <catch2/catch_matchers_string.h>
+#include <catch2/catch_matchers_vector.h>
+#include <catch2/catch_stringref.h>
 
 namespace Catch {
 

@@ -8,9 +8,9 @@
 #ifndef TWOBLUECUBES_CATCH_TEST_CASE_INFO_H_INCLUDED
 #define TWOBLUECUBES_CATCH_TEST_CASE_INFO_H_INCLUDED
 
-#include "catch_common.h"
-#include "catch_stringref.h"
-#include "catch_test_registry.h"
+#include <catch2/catch_common.h>
+#include <catch2/catch_stringref.h>
+#include <catch2/catch_test_registry.h>
 
 #include <string>
 #include <vector>

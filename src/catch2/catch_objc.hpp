@@ -8,7 +8,7 @@
 #ifndef TWOBLUECUBES_CATCH_OBJC_HPP_INCLUDED
 #define TWOBLUECUBES_CATCH_OBJC_HPP_INCLUDED
 
-#include "catch_objc_arc.hpp"
+#include <catch2/catch_objc_arc.hpp>
 
 #import <objc/runtime.h>
 
@@ -17,9 +17,9 @@
 // NB. Any general catch headers included here must be included
 // in catch.hpp first to make sure they are included by the single
 // header for non obj-usage
-#include "catch_test_case_info.h"
-#include "catch_string_manip.h"
-#include "catch_tostring.h"
+#include <catch2/catch_test_case_info.h>
+#include <catch2/catch_string_manip.h>
+#include <catch2/catch_tostring.h>
 
 ///////////////////////////////////////////////////////////////////////////////
 // This protocol is really only here for (self) documenting purposes, since

@@ -7,7 +7,7 @@
 #ifndef TWOBLUECUBES_CATCH_STRING_MANIP_H_INCLUDED
 #define TWOBLUECUBES_CATCH_STRING_MANIP_H_INCLUDED
 
-#include "catch_stringref.h"
+#include <catch2/catch_stringref.h>
 
 #include <string>
 #include <iosfwd>

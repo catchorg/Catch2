@@ -8,19 +8,19 @@
 #ifndef TWOBLUECUBES_CATCH_INTERFACES_REPORTER_H_INCLUDED
 #define TWOBLUECUBES_CATCH_INTERFACES_REPORTER_H_INCLUDED
 
-#include "catch_section_info.h"
-#include "catch_common.h"
-#include "catch_config.hpp"
-#include "catch_totals.h"
-#include "catch_test_case_info.h"
-#include "catch_assertionresult.h"
-#include "catch_message.h"
-#include "catch_option.hpp"
-#include "catch_stringref.h"
+#include <catch2/catch_section_info.h>
+#include <catch2/catch_common.h>
+#include <catch2/catch_config.hpp>
+#include <catch2/catch_totals.h>
+#include <catch2/catch_test_case_info.h>
+#include <catch2/catch_assertionresult.h>
+#include <catch2/catch_message.h>
+#include <catch2/catch_option.hpp>
+#include <catch2/catch_stringref.h>
 
 #if defined(CATCH_CONFIG_ENABLE_BENCHMARKING)
-#include "benchmark/catch_estimate.hpp"
-#include "benchmark/catch_outlier_classification.hpp"
+#include <catch2/benchmark/catch_estimate.hpp>
+#include <catch2/benchmark/catch_outlier_classification.hpp>
 #endif // CATCH_CONFIG_ENABLE_BENCHMARKING
 
 

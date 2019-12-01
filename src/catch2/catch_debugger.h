@@ -9,7 +9,7 @@
 #ifndef TWOBLUECUBES_CATCH_DEBUGGER_H_INCLUDED
 #define TWOBLUECUBES_CATCH_DEBUGGER_H_INCLUDED
 
-#include "catch_platform.h"
+#include <catch2/catch_platform.h>
 
 namespace Catch {
     bool isDebuggerActive();

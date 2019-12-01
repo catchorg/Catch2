@@ -10,9 +10,9 @@
 
 #if defined(CATCH_CONFIG_ENABLE_BENCHMARKING)
 
-#include "catch_stats.hpp"
+#include <catch2/benchmark/detail/catch_stats.hpp>
 
-#include "../../catch_compiler_capabilities.h"
+#include <catch2/catch_compiler_capabilities.h>
 
 #include <cassert>
 #include <random>

@@ -13,8 +13,8 @@
 #pragma clang diagnostic ignored "-Wpadded"
 #endif
 
-#include "catch_wildcard_pattern.h"
-#include "catch_test_case_info.h"
+#include <catch2/catch_wildcard_pattern.h>
+#include <catch2/catch_test_case_info.h>
 
 #include <string>
 #include <vector>

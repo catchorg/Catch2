@@ -5,11 +5,11 @@
  * file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  */
 
-#include "catch_matchers_floating.h"
-#include "catch_enforce.h"
-#include "catch_polyfills.hpp"
-#include "catch_to_string.hpp"
-#include "catch_tostring.h"
+#include <catch2/catch_matchers_floating.h>
+#include <catch2/catch_enforce.h>
+#include <catch2/catch_polyfills.hpp>
+#include <catch2/catch_to_string.hpp>
+#include <catch2/catch_tostring.h>
 
 #include <algorithm>
 #include <cmath>

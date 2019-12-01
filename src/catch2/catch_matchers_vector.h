@@ -8,8 +8,8 @@
 #ifndef TWOBLUECUBES_CATCH_MATCHERS_VECTOR_H_INCLUDED
 #define TWOBLUECUBES_CATCH_MATCHERS_VECTOR_H_INCLUDED
 
-#include "catch_matchers.h"
-#include "catch_approx.h"
+#include <catch2/catch_matchers.h>
+#include <catch2/catch_approx.h>
 
 #include <algorithm>
 

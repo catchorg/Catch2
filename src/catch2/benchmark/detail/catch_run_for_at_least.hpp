@@ -11,12 +11,12 @@
 #ifndef TWOBLUECUBES_CATCH_RUN_FOR_AT_LEAST_HPP_INCLUDED
 #define TWOBLUECUBES_CATCH_RUN_FOR_AT_LEAST_HPP_INCLUDED
 
-#include "../catch_clock.hpp"
-#include "../catch_chronometer.hpp"
-#include "catch_measure.hpp"
-#include "catch_complete_invoke.hpp"
-#include "catch_timing.hpp"
-#include "../../catch_meta.hpp"
+#include <catch2/benchmark/catch_clock.hpp>
+#include <catch2/benchmark/catch_chronometer.hpp>
+#include <catch2/benchmark/detail/catch_measure.hpp>
+#include <catch2/benchmark/detail/catch_complete_invoke.hpp>
+#include <catch2/benchmark/detail/catch_timing.hpp>
+#include <catch2/catch_meta.hpp>
 
 #include <utility>
 #include <type_traits>

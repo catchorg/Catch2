@@ -8,7 +8,7 @@
 #ifndef TWOBLUECUBES_CATCH_WINDOWS_H_PROXY_H_INCLUDED
 #define TWOBLUECUBES_CATCH_WINDOWS_H_PROXY_H_INCLUDED
 
-#include "catch_platform.h"
+#include <catch2/catch_platform.h>
 
 #if defined(CATCH_PLATFORM_WINDOWS)
 

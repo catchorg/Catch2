@@ -11,12 +11,12 @@
 #ifndef TWOBLUECUBES_CATCH_DETAIL_ESTIMATE_CLOCK_HPP_INCLUDED
 #define TWOBLUECUBES_CATCH_DETAIL_ESTIMATE_CLOCK_HPP_INCLUDED
 
-#include "../catch_clock.hpp"
-#include "../catch_environment.hpp"
-#include "catch_stats.hpp"
-#include "catch_measure.hpp"
-#include "catch_run_for_at_least.hpp"
-#include "../catch_clock.hpp"
+#include <catch2/benchmark/catch_clock.hpp>
+#include <catch2/benchmark/catch_environment.hpp>
+#include <catch2/benchmark/detail/catch_stats.hpp>
+#include <catch2/benchmark/detail/catch_measure.hpp>
+#include <catch2/benchmark/detail/catch_run_for_at_least.hpp>
+#include <catch2/benchmark/catch_clock.hpp>
 
 #include <algorithm>
 #include <iterator>

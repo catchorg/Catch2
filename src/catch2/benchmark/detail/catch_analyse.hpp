@@ -11,9 +11,9 @@
 #ifndef TWOBLUECUBES_CATCH_DETAIL_ANALYSE_HPP_INCLUDED
 #define TWOBLUECUBES_CATCH_DETAIL_ANALYSE_HPP_INCLUDED
 
-#include "../catch_clock.hpp"
-#include "../catch_sample_analysis.hpp"
-#include "catch_stats.hpp"
+#include <catch2/benchmark/catch_clock.hpp>
+#include <catch2/benchmark/catch_sample_analysis.hpp>
+#include <catch2/benchmark/detail/catch_stats.hpp>
 
 #include <algorithm>
 #include <iterator>

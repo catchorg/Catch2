@@ -7,7 +7,7 @@
 #ifndef TWOBLUECUBES_CATCH_TAG_ALIAS_AUTOREGISTRAR_H_INCLUDED
 #define TWOBLUECUBES_CATCH_TAG_ALIAS_AUTOREGISTRAR_H_INCLUDED
 
-#include "catch_common.h"
+#include <catch2/catch_common.h>
 
 namespace Catch {
 

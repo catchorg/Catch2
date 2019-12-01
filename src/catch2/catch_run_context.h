@@ -8,20 +8,20 @@
 #ifndef TWOBLUECUBES_CATCH_RUNNER_IMPL_HPP_INCLUDED
 #define TWOBLUECUBES_CATCH_RUNNER_IMPL_HPP_INCLUDED
 
-#include "catch_interfaces_generatortracker.h"
-#include "catch_interfaces_runner.h"
-#include "catch_interfaces_reporter.h"
-#include "catch_interfaces_exception.h"
-#include "catch_config.hpp"
-#include "catch_test_registry.h"
-#include "catch_test_case_info.h"
-#include "catch_capture.hpp"
-#include "catch_totals.h"
-#include "catch_test_spec.h"
-#include "catch_test_case_tracker.h"
-#include "catch_timer.h"
-#include "catch_assertionhandler.h"
-#include "catch_fatal_condition.h"
+#include <catch2/catch_interfaces_generatortracker.h>
+#include <catch2/catch_interfaces_runner.h>
+#include <catch2/catch_interfaces_reporter.h>
+#include <catch2/catch_interfaces_exception.h>
+#include <catch2/catch_config.hpp>
+#include <catch2/catch_test_registry.h>
+#include <catch2/catch_test_case_info.h>
+#include <catch2/catch_capture.hpp>
+#include <catch2/catch_totals.h>
+#include <catch2/catch_test_spec.h>
+#include <catch2/catch_test_case_tracker.h>
+#include <catch2/catch_timer.h>
+#include <catch2/catch_assertionhandler.h>
+#include <catch2/catch_fatal_condition.h>
 
 #include <string>
 

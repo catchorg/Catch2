@@ -5,7 +5,7 @@
  * file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  */
 
-#include "catch_matchers.h"
+#include <catch2/catch_matchers.h>
 
 namespace Catch {
 namespace Matchers {

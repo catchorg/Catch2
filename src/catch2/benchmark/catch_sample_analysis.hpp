@@ -11,9 +11,9 @@
 #ifndef TWOBLUECUBES_CATCH_BENCHMARK_RESULTS_HPP_INCLUDED
 #define TWOBLUECUBES_CATCH_BENCHMARK_RESULTS_HPP_INCLUDED
 
-#include "catch_clock.hpp"
-#include "catch_estimate.hpp"
-#include "catch_outlier_classification.hpp"
+#include <catch2/benchmark/catch_clock.hpp>
+#include <catch2/benchmark/catch_estimate.hpp>
+#include <catch2/benchmark/catch_outlier_classification.hpp>
 
 #include <algorithm>
 #include <vector>

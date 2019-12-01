@@ -8,8 +8,8 @@
 #ifndef TWOBLUECUBES_CATCH_TEST_CASE_TRACKER_HPP_INCLUDED
 #define TWOBLUECUBES_CATCH_TEST_CASE_TRACKER_HPP_INCLUDED
 
-#include "catch_compiler_capabilities.h"
-#include "catch_common.h"
+#include <catch2/catch_compiler_capabilities.h>
+#include <catch2/catch_common.h>
 
 #include <string>
 #include <vector>

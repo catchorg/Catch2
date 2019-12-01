@@ -5,11 +5,11 @@
  *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  */
 
-#include "catch_interfaces_reporter.h"
-#include "catch_console_colour.h"
-#include "reporters/catch_reporter_listening.h"
-#include "catch_list.h"
-#include "catch_text.h"
+#include <catch2/catch_interfaces_reporter.h>
+#include <catch2/catch_console_colour.h>
+#include <catch2/reporters/catch_reporter_listening.h>
+#include <catch2/catch_list.h>
+#include <catch2/catch_text.h>
 
 #include <algorithm>
 #include <iomanip>

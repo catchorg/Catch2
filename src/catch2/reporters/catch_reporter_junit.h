@@ -8,9 +8,9 @@
 #define TWOBLUECUBES_CATCH_REPORTER_JUNIT_H_INCLUDED
 
 
-#include "catch_reporter_bases.hpp"
-#include "../catch_xmlwriter.h"
-#include "../catch_timer.h"
+#include <catch2/reporters/catch_reporter_bases.hpp>
+#include <catch2/catch_xmlwriter.h>
+#include <catch2/catch_timer.h>
 
 namespace Catch {
 

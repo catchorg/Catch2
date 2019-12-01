@@ -6,9 +6,9 @@
  *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  */
 
-#include "catch_common.h"
-#include "catch_context.h"
-#include "catch_interfaces_config.h"
+#include <catch2/catch_common.h>
+#include <catch2/catch_context.h>
+#include <catch2/catch_interfaces_config.h>
 
 #include <cstring>
 #include <ostream>

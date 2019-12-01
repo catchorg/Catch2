@@ -19,7 +19,7 @@
 #    pragma GCC system_header
 #endif
 
-#include "catch_suppress_warnings.h"
+#include <catch2/catch_suppress_warnings.h>
 
 #if defined(CATCH_CONFIG_MAIN) || defined(CATCH_CONFIG_RUNNER)
 #  define CATCH_IMPL
@@ -39,7 +39,7 @@
 #endif
 
 #if !defined(CATCH_CONFIG_IMPL_ONLY)
-#include "catch_platform.h"
+#include <catch2/catch_platform.h>
 
 #ifdef CATCH_IMPL
 #  ifndef CLARA_CONFIG_MAIN
@@ -48,49 +48,49 @@
 #  endif
 #endif
 
-#include "catch_user_interfaces.h"
-#include "catch_tag_alias_autoregistrar.h"
-#include "catch_test_registry.h"
-#include "catch_capture.hpp"
-#include "catch_section.h"
-#include "catch_interfaces_exception.h"
-#include "catch_approx.h"
-#include "catch_compiler_capabilities.h"
-#include "catch_string_manip.h"
+#include <catch2/catch_user_interfaces.h>
+#include <catch2/catch_tag_alias_autoregistrar.h>
+#include <catch2/catch_test_registry.h>
+#include <catch2/catch_capture.hpp>
+#include <catch2/catch_section.h>
+#include <catch2/catch_interfaces_exception.h>
+#include <catch2/catch_approx.h>
+#include <catch2/catch_compiler_capabilities.h>
+#include <catch2/catch_string_manip.h>
 
 #ifndef CATCH_CONFIG_DISABLE_MATCHERS
-#include "catch_capture_matchers.h"
+#include <catch2/catch_capture_matchers.h>
 #endif
-#include "catch_generators.hpp"
-#include "catch_generators_generic.hpp"
-#include "catch_generators_specific.hpp"
+#include <catch2/catch_generators.hpp>
+#include <catch2/catch_generators_generic.hpp>
+#include <catch2/catch_generators_specific.hpp>
 
 // These files are included here so the single_include script doesn't put them
 // in the conditionally compiled sections
-#include "catch_test_case_info.h"
-#include "catch_interfaces_runner.h"
+#include <catch2/catch_test_case_info.h>
+#include <catch2/catch_interfaces_runner.h>
 
 #ifdef __OBJC__
-#include "catch_objc.hpp"
+#include <catch2/catch_objc.hpp>
 #endif
 
 // Benchmarking needs the externally-facing parts of reporters to work
 #if defined(CATCH_CONFIG_EXTERNAL_INTERFACES) || defined(CATCH_CONFIG_ENABLE_BENCHMARKING)
-#include "catch_external_interfaces.h"
+#include <catch2/catch_external_interfaces.h>
 #endif
 
 #if defined(CATCH_CONFIG_ENABLE_BENCHMARKING)
-#include "benchmark/catch_benchmark.hpp"
+#include <catch2/benchmark/catch_benchmark.hpp>
 #endif
 
 #endif // ! CATCH_CONFIG_IMPL_ONLY
 
 #ifdef CATCH_IMPL
-#include "catch_impl.hpp"
+#include <catch2/catch_impl.hpp>
 #endif
 
 #ifdef CATCH_CONFIG_MAIN
-#include "catch_default_main.hpp"
+#include <catch2/catch_default_main.hpp>
 #endif
 
 
@@ -485,6 +485,6 @@ using Catch::Detail::Approx;
 
 #endif // ! CATCH_CONFIG_IMPL_ONLY
 
-#include "catch_reenable_warnings.h"
+#include <catch2/catch_reenable_warnings.h>
 
 #endif // TWOBLUECUBES_CATCH_HPP_INCLUDED

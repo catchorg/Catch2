@@ -13,16 +13,16 @@
 #include <cstddef>
 #include <type_traits>
 #include <string>
-#include "catch_compiler_capabilities.h"
-#include "catch_stream.h"
-#include "catch_interfaces_enum_values_registry.h"
+#include <catch2/catch_compiler_capabilities.h>
+#include <catch2/catch_stream.h>
+#include <catch2/catch_interfaces_enum_values_registry.h>
 
 #ifdef CATCH_CONFIG_CPP17_STRING_VIEW
 #include <string_view>
 #endif
 
 #ifdef __OBJC__
-#include "catch_objc_arc.hpp"
+#include <catch2/catch_objc_arc.hpp>
 #endif
 
 #ifdef _MSC_VER

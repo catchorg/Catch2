@@ -8,7 +8,7 @@
 #ifndef TWOBLUECUBES_CATCH_REPORTER_REGISTRY_H_INCLUDED
 #define TWOBLUECUBES_CATCH_REPORTER_REGISTRY_H_INCLUDED
 
-#include "catch_interfaces_reporter.h"
+#include <catch2/catch_interfaces_reporter.h>
 
 #include <map>
 

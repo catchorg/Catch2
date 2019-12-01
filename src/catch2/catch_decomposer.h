@@ -8,9 +8,9 @@
 #ifndef TWOBLUECUBES_CATCH_DECOMPOSER_H_INCLUDED
 #define TWOBLUECUBES_CATCH_DECOMPOSER_H_INCLUDED
 
-#include "catch_tostring.h"
-#include "catch_stringref.h"
-#include "catch_meta.hpp"
+#include <catch2/catch_tostring.h>
+#include <catch2/catch_stringref.h>
+#include <catch2/catch_meta.hpp>
 
 #include <iosfwd>
 

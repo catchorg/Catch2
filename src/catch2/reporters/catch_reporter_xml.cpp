@@ -6,11 +6,11 @@
  *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  */
 
-#include "catch_reporter_xml.h"
+#include <catch2/reporters/catch_reporter_xml.h>
 
-#include "../catch_capture.hpp"
-#include "../catch_reporter_registrars.hpp"
-#include "../catch_list.h"
+#include <catch2/catch_capture.hpp>
+#include <catch2/catch_reporter_registrars.hpp>
+#include <catch2/catch_list.h>
 
 #if defined(_MSC_VER)
 #pragma warning(push)

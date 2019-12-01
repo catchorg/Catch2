@@ -8,7 +8,7 @@
 #ifndef TWOBLUECUBES_CATCH_EXCEPTION_TRANSLATOR_REGISTRY_HPP_INCLUDED
 #define TWOBLUECUBES_CATCH_EXCEPTION_TRANSLATOR_REGISTRY_HPP_INCLUDED
 
-#include "catch_interfaces_exception.h"
+#include <catch2/catch_interfaces_exception.h>
 #include <vector>
 #include <string>
 #include <memory>

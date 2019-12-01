@@ -23,7 +23,7 @@
 #pragma clang diagnostic ignored "-Wshadow"
 #endif
 
-#include "external/clara.hpp"
+#include <catch2/external/clara.hpp>
 
 #ifdef __clang__
 #pragma clang diagnostic pop

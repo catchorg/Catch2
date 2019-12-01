@@ -7,10 +7,10 @@
  *
  */
 
-#include "catch_fatal_condition.h"
+#include <catch2/catch_fatal_condition.h>
 
-#include "catch_context.h"
-#include "catch_interfaces_capture.h"
+#include <catch2/catch_context.h>
+#include <catch2/catch_interfaces_capture.h>
 
 #if defined(__GNUC__)
 #    pragma GCC diagnostic push

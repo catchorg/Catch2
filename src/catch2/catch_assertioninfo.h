@@ -8,9 +8,9 @@
 #ifndef TWOBLUECUBES_CATCH_ASSERTIONINFO_H_INCLUDED
 #define TWOBLUECUBES_CATCH_ASSERTIONINFO_H_INCLUDED
 
-#include "catch_result_type.h"
-#include "catch_common.h"
-#include "catch_stringref.h"
+#include <catch2/catch_result_type.h>
+#include <catch2/catch_common.h>
+#include <catch2/catch_stringref.h>
 
 namespace Catch {
 

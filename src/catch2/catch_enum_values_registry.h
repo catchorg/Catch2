@@ -8,7 +8,7 @@
 #ifndef TWOBLUECUBES_CATCH_ENUMVALUESREGISTRY_H_INCLUDED
 #define TWOBLUECUBES_CATCH_ENUMVALUESREGISTRY_H_INCLUDED
 
-#include "catch_interfaces_enum_values_registry.h"
+#include <catch2/catch_interfaces_enum_values_registry.h>
 
 #include <vector>
 #include <memory>

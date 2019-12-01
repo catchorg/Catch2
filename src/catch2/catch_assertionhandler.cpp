@@ -6,15 +6,15 @@
  *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  */
 
-#include "catch_assertionhandler.h"
-#include "catch_assertionresult.h"
-#include "catch_interfaces_runner.h"
-#include "catch_interfaces_config.h"
-#include "catch_context.h"
-#include "catch_debugger.h"
-#include "catch_interfaces_registry_hub.h"
-#include "catch_capture_matchers.h"
-#include "catch_run_context.h"
+#include <catch2/catch_assertionhandler.h>
+#include <catch2/catch_assertionresult.h>
+#include <catch2/catch_interfaces_runner.h>
+#include <catch2/catch_interfaces_config.h>
+#include <catch2/catch_context.h>
+#include <catch2/catch_debugger.h>
+#include <catch2/catch_interfaces_registry_hub.h>
+#include <catch2/catch_capture_matchers.h>
+#include <catch2/catch_run_context.h>
 
 namespace Catch {
 
