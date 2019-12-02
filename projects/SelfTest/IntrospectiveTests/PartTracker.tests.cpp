@@ -5,10 +5,10 @@
  *  Distributed under the Boost Software License, Version 1.0. (See accompanying
  *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  */
-#include "catch_suppress_warnings.h"
-#include "catch_test_case_tracker.h"
+#include <catch2/catch_suppress_warnings.h>
+#include <catch2/catch_test_case_tracker.h>
 
-#include "catch.hpp"
+#include <catch2/catch.hpp>
 
 using namespace Catch;
 

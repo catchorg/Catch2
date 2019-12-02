@@ -6,7 +6,7 @@
  */
 
 #define CATCH_CONFIG_ENABLE_PAIR_STRINGMAKER
-#include "catch.hpp"
+#include <catch2/catch.hpp>
 
 #include <map>
 #include <set>

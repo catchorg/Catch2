@@ -88,8 +88,6 @@ include(CTest)
 
 add_executable(SelfTest ${TEST_SOURCES})
 target_link_libraries(SelfTest PRIVATE Catch2)
-# Fixme!
-target_include_directories(SelfTest PRIVATE ${SOURCES_DIR})
 
 # It took CMake until 3.8 to abandon the doomed approach of enumerating
 # required features so we just list bunch of C++11 and C++14 features.

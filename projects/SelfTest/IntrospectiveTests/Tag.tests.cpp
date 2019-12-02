@@ -6,8 +6,8 @@
  *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  */
 
-#include "catch.hpp"
-#include "catch_tag_alias_registry.h"
+#include <catch2/catch.hpp>
+#include <catch2/catch_tag_alias_registry.h>
 
 TEST_CASE( "Tag alias can be registered against tag patterns" ) {
 

@@ -1,5 +1,5 @@
 #define CATCH_CONFIG_ENABLE_VARIANT_STRINGMAKER
-#include "catch.hpp"
+#include <catch2/catch.hpp>
 
 #if defined(CATCH_CONFIG_CPP17_VARIANT)
 

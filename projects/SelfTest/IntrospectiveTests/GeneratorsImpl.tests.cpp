@@ -1,4 +1,4 @@
-#include "catch.hpp"
+#include <catch2/catch.hpp>
 
 // Tests of generator implementation details
 TEST_CASE("Generators internals", "[generators][internals]") {

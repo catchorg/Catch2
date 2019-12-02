@@ -1,4 +1,4 @@
-#include "catch.hpp"
+#include <catch2/catch.hpp>
 
 #if defined(CATCH_CONFIG_CPP17_BYTE)
 

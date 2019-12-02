@@ -1,2 +1,2 @@
-#include "catch_suppress_warnings.h"
-#include "catch_interfaces_reporter.h"
+#include <catch2/catch_suppress_warnings.h>
+#include <catch2/catch_interfaces_reporter.h>

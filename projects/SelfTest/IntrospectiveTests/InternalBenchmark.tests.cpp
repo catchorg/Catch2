@@ -6,7 +6,7 @@
  *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  */
 
-#include "catch.hpp"
+#include <catch2/catch.hpp>
 #if defined(CATCH_CONFIG_ENABLE_BENCHMARKING)
 namespace {
     struct manual_clock {

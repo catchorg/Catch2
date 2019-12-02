@@ -26,7 +26,7 @@ std::ostream& operator<<(std::ostream& o, truthy) {
 
 } // end anonymous namespace
 
-#include "catch.hpp"
+#include <catch2/catch.hpp>
 
 TEST_CASE( "Reconstruction should be based on stringification: #914" , "[Decomposition][failing][.]") {
     CHECK(truthy(false));

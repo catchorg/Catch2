@@ -30,7 +30,7 @@ std::ostream& operator<<(std::ostream& out, foo::helper_1403 const&) {
 }
 ///////////////////////////////
 
-#include "catch.hpp"
+#include <catch2/catch.hpp>
 
 #include <cstring>
 

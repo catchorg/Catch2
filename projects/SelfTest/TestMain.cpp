@@ -7,13 +7,13 @@
  */
 
 #define CATCH_CONFIG_MAIN
-#include "catch.hpp"
+#include <catch2/catch.hpp>
 
 // These reporters are not included in the single include, so must be included separately in the main file
-#include "reporters/catch_reporter_teamcity.hpp"
-#include "reporters/catch_reporter_tap.hpp"
-#include "reporters/catch_reporter_automake.hpp"
-#include "reporters/catch_reporter_sonarqube.hpp"
+#include <catch2/reporters/catch_reporter_teamcity.hpp>
+#include <catch2/reporters/catch_reporter_tap.hpp>
+#include <catch2/reporters/catch_reporter_automake.hpp>
+#include <catch2/reporters/catch_reporter_sonarqube.hpp>
 
 
 // Some example tag aliases

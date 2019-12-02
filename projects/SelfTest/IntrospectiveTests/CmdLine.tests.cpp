@@ -6,11 +6,11 @@
  *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  */
 
-#include "catch.hpp"
-#include "catch_test_spec_parser.h"
-#include "catch_test_case_info.h"
-#include "catch_config.hpp"
-#include "catch_commandline.h"
+#include <catch2/catch.hpp>
+#include <catch2/catch_test_spec_parser.h>
+#include <catch2/catch_test_case_info.h>
+#include <catch2/catch_config.hpp>
+#include <catch2/catch_commandline.h>
 
 #ifdef __clang__
 #   pragma clang diagnostic ignored "-Wc++98-compat"

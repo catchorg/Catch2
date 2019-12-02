@@ -3,7 +3,7 @@
  *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  */
 
-#include "catch.hpp"
+#include <catch2/catch.hpp>
 
 #if defined(_MSC_VER)
 #pragma warning(push)

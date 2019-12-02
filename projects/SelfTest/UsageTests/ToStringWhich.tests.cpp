@@ -13,7 +13,7 @@ std::string fallbackStringifier(T const&) {
 }
 
 #define CATCH_CONFIG_FALLBACK_STRINGIFIER fallbackStringifier
-#include "catch.hpp"
+#include <catch2/catch.hpp>
 
 
 

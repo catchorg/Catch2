@@ -5,9 +5,9 @@
  *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  */
 
-#include "catch.hpp"
+#include <catch2/catch.hpp>
 
-#include "catch_random_number_generator.h"
+#include <catch2/catch_random_number_generator.h>
 
 TEST_CASE("Our PCG implementation provides expected results for known seeds", "[rng]") {
     Catch::SimplePcg32 rng;

@@ -15,7 +15,7 @@
                                  // that is triggered when compiling as Win32|Release
 #endif
 
-#include "catch.hpp"
+#include <catch2/catch.hpp>
 
 #include <stdio.h>
 #include <sstream>

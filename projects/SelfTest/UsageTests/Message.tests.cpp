@@ -6,7 +6,7 @@
  *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  */
 
-#include "catch.hpp"
+#include <catch2/catch.hpp>
 #include <iostream>
 
 TEST_CASE( "INFO and WARN do not abort tests", "[messages][.]" ) {
