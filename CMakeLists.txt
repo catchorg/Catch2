@@ -26,11 +26,11 @@ include(CTest)
 # Basic paths
 set(CATCH_DIR ${CMAKE_CURRENT_SOURCE_DIR})
 set(SOURCES_DIR ${CATCH_DIR}/src/catch2)
-set(SELF_TEST_DIR ${CATCH_DIR}/projects/SelfTest)
-set(BENCHMARK_DIR ${CATCH_DIR}/projects/Benchmark)
+set(SELF_TEST_DIR ${CATCH_DIR}/tests/SelfTest)
+set(BENCHMARK_DIR ${CATCH_DIR}/tests/Benchmark)
 
 add_subdirectory(src)
-add_subdirectory(projects)
+add_subdirectory(tests)
 
 #option(CATCH_USE_VALGRIND "Perform SelfTests with Valgrind" OFF)
 #option(CATCH_BUILD_TESTING "Build SelfTest project" ON)

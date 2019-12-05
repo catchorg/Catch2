@@ -16,7 +16,7 @@ if os.name == 'nt':
     # Enable console colours on windows
     os.system('')
 
-rootPath = os.path.join(catchPath, 'projects/SelfTest/Baselines')
+rootPath = os.path.join(catchPath, 'tests/SelfTest/Baselines')
 
 langFilenameParser = re.compile(r'(.+\.[ch]pp)')
 filelocParser = re.compile(r'''

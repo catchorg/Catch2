@@ -7,7 +7,7 @@ include(MiscFunctions)
 ####
 if (MSVC)
 configure_file(${CATCH_DIR}/misc/SelfTest.vcxproj.user
-               ${CMAKE_BINARY_DIR}/projects
+               ${CMAKE_BINARY_DIR}/tests
                COPYONLY)
 endif(MSVC) #Temporary workaround
 
@@ -199,7 +199,7 @@ set_tests_properties(NoTest PROPERTIES
     FAIL_REGULAR_EXPRESSION "No tests ran"
 )
 
-add_test(NAME WarnAboutNoTests COMMAND ${CMAKE_COMMAND} -P ${CATCH_DIR}/projects/SelfTest/WarnAboutNoTests.cmake $<TARGET_FILE:SelfTest>)
+add_test(NAME WarnAboutNoTests COMMAND ${CMAKE_COMMAND} -P ${SELF_TEST_DIR}/WarnAboutNoTests.cmake $<TARGET_FILE:SelfTest>)
 
 add_test(NAME UnmatchedOutputFilter COMMAND $<TARGET_FILE:SelfTest> [this-tag-does-not-exist] -w NoTests)
 set_tests_properties(UnmatchedOutputFilter
@@ -234,19 +234,19 @@ set_tests_properties(EscapeSpecialCharactersInTestNames PROPERTIES PASS_REGULAR_
 add_test(NAME NegativeSpecNoHiddenTests COMMAND $<TARGET_FILE:SelfTest> --list-tests ~[approval])
 set_tests_properties(NegativeSpecNoHiddenTests PROPERTIES FAIL_REGULAR_EXPRESSION "\\[\\.\\]")
 
-add_test(NAME TestsInFile::SimpleSpecs COMMAND $<TARGET_FILE:SelfTest> "-f ${CATCH_DIR}/projects/SelfTest/Misc/plain-old-tests.input")
+add_test(NAME TestsInFile::SimpleSpecs COMMAND $<TARGET_FILE:SelfTest> "-f ${SELF_TEST_DIR}/Misc/plain-old-tests.input")
 set_tests_properties(TestsInFile::SimpleSpecs PROPERTIES PASS_REGULAR_EXPRESSION "6 assertions in 2 test cases")
 
-add_test(NAME TestsInFile::EscapeSpecialCharacters COMMAND $<TARGET_FILE:SelfTest> "-f ${CATCH_DIR}/projects/SelfTest/Misc/special-characters-in-file.input")
+add_test(NAME TestsInFile::EscapeSpecialCharacters COMMAND $<TARGET_FILE:SelfTest> "-f ${SELF_TEST_DIR}/Misc/special-characters-in-file.input")
 set_tests_properties(TestsInFile::EscapeSpecialCharacters PROPERTIES PASS_REGULAR_EXPRESSION "1 assertion in 1 test case")
 
 # CTest does not allow us to create an AND of required regular expressions,
 # so we have to split the test into 2 parts and look for parts of the expected
 # output separately.
-add_test(NAME TestsInFile::InvalidTestNames-1 COMMAND $<TARGET_FILE:SelfTest> "-f ${CATCH_DIR}/projects/SelfTest/Misc/invalid-test-names.input")
+add_test(NAME TestsInFile::InvalidTestNames-1 COMMAND $<TARGET_FILE:SelfTest> "-f ${SELF_TEST_DIR}/Misc/invalid-test-names.input")
 set_tests_properties(TestsInFile::InvalidTestNames-1 PROPERTIES PASS_REGULAR_EXPRESSION "Invalid Filter: \"Test with special, characters in \\\\\" name\"")
 
-add_test(NAME TestsInFile::InvalidTestNames-2 COMMAND $<TARGET_FILE:SelfTest> "-f ${CATCH_DIR}/projects/SelfTest/Misc/invalid-test-names.input")
+add_test(NAME TestsInFile::InvalidTestNames-2 COMMAND $<TARGET_FILE:SelfTest> "-f ${SELF_TEST_DIR}/Misc/invalid-test-names.input")
 set_tests_properties(TestsInFile::InvalidTestNames-2 PROPERTIES PASS_REGULAR_EXPRESSION "No tests ran")
 
 

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testExecutions version="1"loose text artifact
 >
-  <file path="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp">
+  <file path="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp">
     <testCase name="Parse test names and tags/Empty test spec should have no filters" duration="{duration}"/>
     <testCase name="Parse test names and tags/Test spec from empty string should have no filters" duration="{duration}"/>
     <testCase name="Parse test names and tags/Test spec from just a comma should have no filters" duration="{duration}"/>
@@ -66,7 +66,7 @@
     <testCase name="Process can be configured on command line/Benchmark options/resamples" duration="{duration}"/>
     <testCase name="Test with special, characters &quot;in name" duration="{duration}"/>
   </file>
-  <file path="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp">
+  <file path="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp">
     <testCase name="Generators internals/Single value" duration="{duration}"/>
     <testCase name="Generators internals/Preset values" duration="{duration}"/>
     <testCase name="Generators internals/Generator combinator" duration="{duration}"/>
@@ -90,7 +90,7 @@
     <testCase name="Generators internals/Range/Negative manual step/Integer/Slightly over end" duration="{duration}"/>
     <testCase name="Generators internals/Range/Negative manual step/Integer/Slightly under end" duration="{duration}"/>
   </file>
-  <file path="projects/<exe-name>/IntrospectiveTests/PartTracker.tests.cpp">
+  <file path="tests/<exe-name>/IntrospectiveTests/PartTracker.tests.cpp">
     <testCase name="Tracker" duration="{duration}"/>
     <testCase name="Tracker/successfully close one section" duration="{duration}"/>
     <testCase name="Tracker/fail one section" duration="{duration}"/>
@@ -102,12 +102,12 @@
     <testCase name="Tracker/successfully close one section, then find another/Re-enter - skips S1 and enters S2/fail S2" duration="{duration}"/>
     <testCase name="Tracker/open a nested section" duration="{duration}"/>
   </file>
-  <file path="projects/<exe-name>/IntrospectiveTests/RandomNumberGeneration.tests.cpp">
+  <file path="tests/<exe-name>/IntrospectiveTests/RandomNumberGeneration.tests.cpp">
     <testCase name="Comparison ops" duration="{duration}"/>
     <testCase name="Our PCG implementation provides expected results for known seeds/Default seeded" duration="{duration}"/>
     <testCase name="Our PCG implementation provides expected results for known seeds/Specific seed" duration="{duration}"/>
   </file>
-  <file path="projects/<exe-name>/IntrospectiveTests/String.tests.cpp">
+  <file path="tests/<exe-name>/IntrospectiveTests/String.tests.cpp">
     <testCase name="StringRef/Empty string" duration="{duration}"/>
     <testCase name="StringRef/From string literal" duration="{duration}"/>
     <testCase name="StringRef/From sub-string" duration="{duration}"/>
@@ -126,7 +126,7 @@
     <testCase name="StringRef at compilation time/Simple constructors" duration="{duration}"/>
     <testCase name="StringRef at compilation time/UDL construction" duration="{duration}"/>
   </file>
-  <file path="projects/<exe-name>/IntrospectiveTests/StringManip.tests.cpp">
+  <file path="tests/<exe-name>/IntrospectiveTests/StringManip.tests.cpp">
     <testCase name="Trim strings" duration="{duration}"/>
     <testCase name="replaceInPlace/replace single char" duration="{duration}"/>
     <testCase name="replaceInPlace/replace two chars" duration="{duration}"/>
@@ -137,18 +137,18 @@
     <testCase name="replaceInPlace/escape '" duration="{duration}"/>
     <testCase name="splitString" duration="{duration}"/>
   </file>
-  <file path="projects/<exe-name>/IntrospectiveTests/Tag.tests.cpp">
+  <file path="tests/<exe-name>/IntrospectiveTests/Tag.tests.cpp">
     <testCase name="Tag alias can be registered against tag patterns/The same tag alias can only be registered once" duration="{duration}"/>
     <testCase name="Tag alias can be registered against tag patterns/Tag aliases must be of the form [@name]" duration="{duration}"/>
     <testCase name="shortened hide tags are split apart" duration="{duration}"/>
   </file>
-  <file path="projects/<exe-name>/IntrospectiveTests/ToString.tests.cpp">
+  <file path="tests/<exe-name>/IntrospectiveTests/ToString.tests.cpp">
     <testCase name="Directly creating an EnumInfo" duration="{duration}"/>
     <testCase name="parseEnums/No enums" duration="{duration}"/>
     <testCase name="parseEnums/One enum value" duration="{duration}"/>
     <testCase name="parseEnums/Multiple enum values" duration="{duration}"/>
   </file>
-  <file path="projects/<exe-name>/IntrospectiveTests/Xml.tests.cpp">
+  <file path="tests/<exe-name>/IntrospectiveTests/Xml.tests.cpp">
     <testCase name="XmlEncode/normal string" duration="{duration}"/>
     <testCase name="XmlEncode/empty string" duration="{duration}"/>
     <testCase name="XmlEncode/string with ampersand" duration="{duration}"/>
@@ -158,7 +158,7 @@
     <testCase name="XmlEncode/string with control char (1)" duration="{duration}"/>
     <testCase name="XmlEncode/string with control char (x7F)" duration="{duration}"/>
   </file>
-  <file path="projects/<exe-name>/UsageTests/Approx.tests.cpp">
+  <file path="tests/<exe-name>/UsageTests/Approx.tests.cpp">
     <testCase name="A comparison that uses literals instead of the normal constructor" duration="{duration}"/>
     <testCase name="Absolute margin" duration="{duration}"/>
     <testCase name="Approx setters validate their arguments" duration="{duration}"/>
@@ -176,7 +176,7 @@
     <testCase name="Some simple comparisons between doubles" duration="{duration}"/>
     <testCase name="Use a custom approx" duration="{duration}"/>
   </file>
-  <file path="projects/<exe-name>/UsageTests/BDD.tests.cpp">
+  <file path="tests/<exe-name>/UsageTests/BDD.tests.cpp">
     <testCase name="Scenario: BDD tests requiring Fixtures to provide commonly-accessed data or methods/Given: No operations precede me" duration="{duration}"/>
     <testCase name="Scenario: BDD tests requiring Fixtures to provide commonly-accessed data or methods/Given: No operations precede me/When: We get the count/Then: Subsequently values are higher" duration="{duration}"/>
     <testCase name="Scenario: Do that thing with the thing/Given: This stuff exists/And given: And some assumption/When: I do this/Then: it should do this" duration="{duration}"/>
@@ -187,7 +187,7 @@
     <testCase name="Scenario: Vector resizing affects size and capacity/Given: an empty vector/When: it is made larger/Then: the size and capacity go up/And when: it is made smaller again/Then: the size goes down but the capacity stays the same" duration="{duration}"/>
     <testCase name="Scenario: Vector resizing affects size and capacity/Given: an empty vector/When: we reserve more space/Then: The capacity is increased but the size remains the same" duration="{duration}"/>
   </file>
-  <file path="projects/<exe-name>/UsageTests/Class.tests.cpp">
+  <file path="tests/<exe-name>/UsageTests/Class.tests.cpp">
     <testCase name="A METHOD_AS_TEST_CASE based test run that fails" duration="{duration}">
       <failure message="REQUIRE(s == &quot;world&quot;)">
 FAILED:
@@ -352,7 +352,7 @@ Class.tests.cpp:<line number>
     <testCase name="Template test case method with test types specified inside std::tuple - MyTypes - 1" duration="{duration}"/>
     <testCase name="Template test case method with test types specified inside std::tuple - MyTypes - 2" duration="{duration}"/>
   </file>
-  <file path="projects/<exe-name>/UsageTests/Compilation.tests.cpp">
+  <file path="tests/<exe-name>/UsageTests/Compilation.tests.cpp">
     <testCase name="#1027" duration="{duration}"/>
     <testCase name="#1027: Bitfields can be captured" duration="{duration}"/>
     <testCase name="#1147" duration="{duration}"/>
@@ -366,7 +366,7 @@ Class.tests.cpp:<line number>
     <testCase name="#872" duration="{duration}"/>
     <testCase name="Optionally static assertions" duration="{duration}"/>
   </file>
-  <file path="projects/<exe-name>/UsageTests/Condition.tests.cpp">
+  <file path="tests/<exe-name>/UsageTests/Condition.tests.cpp">
     <testCase name="'Not' checks that should fail" duration="{duration}">
       <failure message="CHECK(false != false)">
 FAILED:
@@ -695,7 +695,7 @@ Condition.tests.cpp:<line number>
     <testCase name="comparisons between const int variables" duration="{duration}"/>
     <testCase name="comparisons between int variables" duration="{duration}"/>
   </file>
-  <file path="projects/<exe-name>/UsageTests/Decomposition.tests.cpp">
+  <file path="tests/<exe-name>/UsageTests/Decomposition.tests.cpp">
     <testCase name="#1005: Comparing pointer to int and long (NULL can be either on various systems)" duration="{duration}"/>
     <testCase name="Reconstruction should be based on stringification: #914" duration="{duration}">
       <failure message="CHECK(truthy(false))">
@@ -707,7 +707,7 @@ Decomposition.tests.cpp:<line number>
       </failure>
     </testCase>
   </file>
-  <file path="projects/<exe-name>/UsageTests/EnumToString.tests.cpp">
+  <file path="tests/<exe-name>/UsageTests/EnumToString.tests.cpp">
     <testCase name="Enums can quickly have stringification enabled using REGISTER_ENUM" duration="{duration}"/>
     <testCase name="Enums in namespaces can quickly have stringification enabled using REGISTER_ENUM" duration="{duration}"/>
     <testCase name="toString(enum class w/operator&lt;&lt;)" duration="{duration}"/>
@@ -715,7 +715,7 @@ Decomposition.tests.cpp:<line number>
     <testCase name="toString(enum w/operator&lt;&lt;)" duration="{duration}"/>
     <testCase name="toString(enum)" duration="{duration}"/>
   </file>
-  <file path="projects/<exe-name>/UsageTests/Exception.tests.cpp">
+  <file path="tests/<exe-name>/UsageTests/Exception.tests.cpp">
     <testCase name="#748 - captures with unexpected exceptions/outside assertions" duration="{duration}">
       <skipped message="TEST_CASE()">
 FAILED:
@@ -864,7 +864,7 @@ Exception.tests.cpp:<line number>
       </error>
     </testCase>
   </file>
-  <file path="projects/<exe-name>/UsageTests/Generators.tests.cpp">
+  <file path="tests/<exe-name>/UsageTests/Generators.tests.cpp">
     <testCase name="3x3x3 ints" duration="{duration}"/>
     <testCase name="Copy and then generate a range/from var and iterators" duration="{duration}"/>
     <testCase name="Copy and then generate a range/From a temporary container" duration="{duration}"/>
@@ -886,7 +886,7 @@ Exception.tests.cpp:<line number>
     <testCase name="strlen3" duration="{duration}"/>
     <testCase name="tables" duration="{duration}"/>
   </file>
-  <file path="projects/<exe-name>/UsageTests/Matchers.tests.cpp">
+  <file path="tests/<exe-name>/UsageTests/Matchers.tests.cpp">
     <testCase name="Arbitrary predicate matcher/Function pointer" duration="{duration}"/>
     <testCase name="Arbitrary predicate matcher/Lambdas + different type" duration="{duration}"/>
     <testCase name="Contains string matcher" duration="{duration}">
@@ -1178,7 +1178,7 @@ Matchers.tests.cpp:<line number>
       </failure>
     </testCase>
   </file>
-  <file path="projects/<exe-name>/UsageTests/Message.tests.cpp">
+  <file path="tests/<exe-name>/UsageTests/Message.tests.cpp">
     <testCase name="#1455 - INFO and WARN can start with a linebreak" duration="{duration}"/>
     <testCase name="CAPTURE can deal with complex expressions" duration="{duration}"/>
     <testCase name="CAPTURE can deal with complex expressions involving commas" duration="{duration}"/>
@@ -1336,7 +1336,7 @@ Message.tests.cpp:<line number>
       </failure>
     </testCase>
   </file>
-  <file path="projects/<exe-name>/UsageTests/Misc.tests.cpp">
+  <file path="tests/<exe-name>/UsageTests/Misc.tests.cpp">
     <testCase name="# A test name that starts with a #" duration="{duration}"/>
     <testCase name="#1175 - Hidden Test" duration="{duration}"/>
     <testCase name="#835 -- errno should not be touched by Catch" duration="{duration}">
@@ -1601,12 +1601,12 @@ Misc.tests.cpp:<line number>
     <testCase name="xmlentitycheck/embedded xml: &lt;test>it should be possible to embed xml characters, such as &lt;, &quot; or &amp;, or even whole &lt;xml>documents&lt;/xml> within an attribute&lt;/test>" duration="{duration}"/>
     <testCase name="xmlentitycheck/encoded chars: these should all be encoded: &amp;&amp;&amp;&quot;&quot;&quot;&lt;&lt;&lt;&amp;&quot;&lt;&lt;&amp;&quot;" duration="{duration}"/>
   </file>
-  <file path="projects/<exe-name>/UsageTests/ToStringChrono.tests.cpp">
+  <file path="tests/<exe-name>/UsageTests/ToStringChrono.tests.cpp">
     <testCase name="Stringifying std::chrono::duration helpers" duration="{duration}"/>
     <testCase name="Stringifying std::chrono::duration with weird ratios" duration="{duration}"/>
     <testCase name="Stringifying std::chrono::time_point&lt;system_clock>" duration="{duration}"/>
   </file>
-  <file path="projects/<exe-name>/UsageTests/ToStringGeneral.tests.cpp">
+  <file path="tests/<exe-name>/UsageTests/ToStringGeneral.tests.cpp">
     <testCase name="Capture and info messages/Capture should stringify like assertions" duration="{duration}"/>
     <testCase name="Capture and info messages/Info should NOT stringify the way assertions do" duration="{duration}"/>
     <testCase name="Character pretty printing/Specifically escaped" duration="{duration}"/>
@@ -1625,13 +1625,13 @@ Misc.tests.cpp:<line number>
     <testCase name="std::set is convertible string/single item" duration="{duration}"/>
     <testCase name="std::set is convertible string/several items" duration="{duration}"/>
   </file>
-  <file path="projects/<exe-name>/UsageTests/ToStringPair.tests.cpp">
+  <file path="tests/<exe-name>/UsageTests/ToStringPair.tests.cpp">
     <testCase name="pair&lt;pair&lt;int,const char *,pair&lt;std::string,int> > -> toString" duration="{duration}"/>
     <testCase name="std::pair&lt;int,const std::string> -> toString" duration="{duration}"/>
     <testCase name="std::pair&lt;int,std::string> -> toString" duration="{duration}"/>
     <testCase name="std::vector&lt;std::pair&lt;std::string,int> > -> toString" duration="{duration}"/>
   </file>
-  <file path="projects/<exe-name>/UsageTests/ToStringTuple.tests.cpp">
+  <file path="tests/<exe-name>/UsageTests/ToStringTuple.tests.cpp">
     <testCase name="tuple&lt;>" duration="{duration}"/>
     <testCase name="tuple&lt;float,int>" duration="{duration}"/>
     <testCase name="tuple&lt;int>" duration="{duration}"/>
@@ -1639,7 +1639,7 @@ Misc.tests.cpp:<line number>
     <testCase name="tuple&lt;string,string>" duration="{duration}"/>
     <testCase name="tuple&lt;tuple&lt;int>,tuple&lt;>,float>" duration="{duration}"/>
   </file>
-  <file path="projects/<exe-name>/UsageTests/ToStringVector.tests.cpp">
+  <file path="tests/<exe-name>/UsageTests/ToStringVector.tests.cpp">
     <testCase name="array&lt;int, N> -> toString" duration="{duration}"/>
     <testCase name="vec&lt;vec&lt;string,alloc>> -> toString" duration="{duration}"/>
     <testCase name="vector&lt;bool> -> toString" duration="{duration}"/>
@@ -1647,7 +1647,7 @@ Misc.tests.cpp:<line number>
     <testCase name="vector&lt;int> -> toString" duration="{duration}"/>
     <testCase name="vector&lt;string> -> toString" duration="{duration}"/>
   </file>
-  <file path="projects/<exe-name>/UsageTests/ToStringWhich.tests.cpp">
+  <file path="tests/<exe-name>/UsageTests/ToStringWhich.tests.cpp">
     <testCase name="stringify ranges" duration="{duration}"/>
     <testCase name="stringify( has_maker )" duration="{duration}"/>
     <testCase name="stringify( has_maker_and_operator )" duration="{duration}"/>
@@ -1658,7 +1658,7 @@ Misc.tests.cpp:<line number>
     <testCase name="stringify( vectors&lt;has_maker_and_operator> )" duration="{duration}"/>
     <testCase name="stringify( vectors&lt;has_operator> )" duration="{duration}"/>
   </file>
-  <file path="projects/<exe-name>/UsageTests/Tricky.tests.cpp">
+  <file path="tests/<exe-name>/UsageTests/Tricky.tests.cpp">
     <testCase name="#1514: stderr/stdout is not captured in tests aborted by an exception" duration="{duration}">
       <failure message="FAIL()">
 FAILED:
@@ -1717,7 +1717,7 @@ Tricky.tests.cpp:<line number>
       </failure>
     </testCase>
   </file>
-  <file path="projects/<exe-name>/UsageTests/VariadicMacros.tests.cpp">
+  <file path="tests/<exe-name>/UsageTests/VariadicMacros.tests.cpp">
     <testCase name="Anonymous test case 1" duration="{duration}"/>
     <testCase name="Test case with one argument" duration="{duration}"/>
     <testCase name="Variadic macros/Section with one argument" duration="{duration}"/>

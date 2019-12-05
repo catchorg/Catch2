@@ -8,7 +8,7 @@ import shutil
 import glob
 from scriptCommon import catchPath
 
-rootPath = os.path.join( catchPath, 'projects/SelfTest/Baselines' )
+rootPath = os.path.join( catchPath, 'tests/SelfTest/Baselines' )
 
 if len(sys.argv) > 1:
     files = [os.path.join( rootPath, f ) for f in sys.argv[1:]]
