@@ -39,7 +39,7 @@ add_subdirectory(tests)
 #option(CATCH_ENABLE_COVERAGE "Generate coverage for codecov.io" OFF)
 #option(CATCH_ENABLE_WERROR "Enable all warnings as errors" ON)
 #option(CATCH_INSTALL_DOCS "Install documentation alongside library" ON)
-#option(CATCH_INSTALL_HELPERS "Install contrib alongside library" ON)
+#option(CATCH_INSTALL_EXTRAS "Install extras alongside library" ON)
 #
 #
 #set_property(GLOBAL PROPERTY USE_FOLDERS ON)
@@ -188,9 +188,9 @@ add_subdirectory(tests)
 #    # Install CMake scripts
 #    install(
 #      FILES
-#        "contrib/ParseAndAddCatchTests.cmake"
-#        "contrib/Catch.cmake"
-#        "contrib/CatchAddTests.cmake"
+#        "extras/ParseAndAddCatchTests.cmake"
+#        "extras/Catch.cmake"
+#        "extras/CatchAddTests.cmake"
 #      DESTINATION
 #        ${CATCH_CMAKE_CONFIG_DESTINATION}
 #    )
@@ -198,8 +198,8 @@ add_subdirectory(tests)
 #    # Install debugger helpers
 #    install(
 #      FILES
-#        "contrib/gdbinit"
-#        "contrib/lldbinit"
+#        "extras/gdbinit"
+#        "extras/lldbinit"
 #      DESTINATION
 #        ${CMAKE_INSTALL_DATAROOTDIR}/Catch2
 #    )
