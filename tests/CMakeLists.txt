@@ -6,7 +6,7 @@ include(MiscFunctions)
 # until 3.13 (not yet released)
 ####
 if (MSVC)
-configure_file(${CATCH_DIR}/misc/SelfTest.vcxproj.user
+configure_file(${CATCH_DIR}/tools/misc/SelfTest.vcxproj.user
                ${CMAKE_BINARY_DIR}/tests
                COPYONLY)
 endif(MSVC) #Temporary workaround

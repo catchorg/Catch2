@@ -8,7 +8,7 @@ SETLOCAL EnableDelayedExpansion
 if "%CONFIGURATION%"=="Debug" (
   if "%coverage%"=="1" (
     @REM # coverage needs to build the special helper as well as the main
-    cmake -Hmisc -Bbuild-misc -A%PLATFORM% || exit /b !ERRORLEVEL!
+    cmake -Htools/misc -Bbuild-misc -A%PLATFORM% || exit /b !ERRORLEVEL!
     cmake --build build-misc || exit /b !ERRORLEVEL!
     cmake -H. -BBuild -A%PLATFORM% -DUSE_WMAIN=%wmain% -DMEMORYCHECK_COMMAND=build-misc\Debug\CoverageHelper.exe -DMEMORYCHECK_COMMAND_OPTIONS=--sep-- -DMEMORYCHECK_TYPE=Valgrind || exit /b !ERRORLEVEL! || exit /b !ERRORLEVEL!
   ) else (

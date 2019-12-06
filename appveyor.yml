@@ -18,7 +18,7 @@ init:
 
 install:
   - ps: if (($env:CONFIGURATION) -eq "Debug" -And ($env:coverage) -eq "1" ) { pip --disable-pip-version-check install codecov }
-  - ps: if (($env:CONFIGURATION) -eq "Debug" -And ($env:coverage) -eq "1" ) { .\misc\installOpenCppCoverage.ps1 }
+  - ps: if (($env:CONFIGURATION) -eq "Debug" -And ($env:coverage) -eq "1" ) { .\tools\misc\installOpenCppCoverage.ps1 }
 
 
 before_build:
