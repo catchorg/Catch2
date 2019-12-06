@@ -35,7 +35,7 @@ While these files are not essential to compilation they help to keep the impleme
 At time of writing this set is not complete but has reasonable coverage.
 If you add additional headers please try to remember to add a surrogate cpp for it.
 
-The other directories are `scripts` which contains a set of python scripts to help in testing Catch as well as
+The other directories are `tools/scripts` which contains a set of python scripts to help in testing Catch as well as
 generating the single include, and `docs`, which contains the documentation as a set of markdown files.
 
 __When submitting a pull request please do not include changes to the single include, or to the version number file
