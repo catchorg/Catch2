@@ -10,8 +10,6 @@
 - Fixture: [Sections](../examples/100-Fix-Section.cpp)
 - Fixture: [Class-based fixtures](../examples/110-Fix-ClassFixture.cpp)
 - BDD: [SCENARIO, GIVEN, WHEN, THEN](../examples/120-Bdd-ScenarioGivenWhenThen.cpp)
-- Report: [Catch-provided main](../examples/200-Rpt-CatchMain.cpp)
-- Report: [TeamCity reporter](../examples/207-Rpt-TeamCityReporter.cpp)
 - Listener: [Listeners](../examples/210-Evt-EventListeners.cpp)
 - Configuration: [Provide your own output streams](../examples/231-Cfg-OutputStreams.cpp)
 - Generators: [Create your own generator](../examples/300-Gen-OwnGenerator.cpp)

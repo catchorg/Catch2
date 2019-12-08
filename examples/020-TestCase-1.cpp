@@ -4,7 +4,7 @@
 // source code of Catch itself and reuse the resulting object file for linking.
 
 // Let Catch provide main():
-#define CATCH_CONFIG_MAIN
+#include <catch2/catch_default_main.hpp>
 
 #include <catch2/catch.hpp>
 

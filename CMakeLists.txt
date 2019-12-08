@@ -6,6 +6,10 @@ if(NOT DEFINED PROJECT_NAME)
   set(NOT_SUBPROJECT ON)
 endif()
 
+option(CATCH_BUILD_TESTING "Build SelfTest project" ON)
+option(CATCH_BUILD_EXAMPLES "Build documentation examples" OFF)
+
+
 # Catch2's build breaks if done in-tree. You probably should not build
 # things in tree anyway, but we can allow projects that include Catch2
 # as a subproject to build in-tree as long as it is not in our tree.
@@ -28,19 +32,30 @@ set(CATCH_DIR ${CMAKE_CURRENT_SOURCE_DIR})
 set(SOURCES_DIR ${CATCH_DIR}/src/catch2)
 set(SELF_TEST_DIR ${CATCH_DIR}/tests/SelfTest)
 set(BENCHMARK_DIR ${CATCH_DIR}/tests/Benchmark)
+set(EXAMPLES_DIR ${CATCH_DIR}/examples)
 
 add_subdirectory(src)
-add_subdirectory(tests)
+
+# Build tests only if requested
+if (BUILD_TESTING AND CATCH_BUILD_TESTING AND NOT_SUBPROJECT)
+    find_package(PythonInterp)
+    if (NOT PYTHONINTERP_FOUND)
+        message(FATAL_ERROR "Python not found, but required for tests")
+    endif()
+    add_subdirectory(tests)
+endif()
+
+if(CATCH_BUILD_EXAMPLES)
+    add_subdirectory(examples)
+endif()
+
 
 #option(CATCH_USE_VALGRIND "Perform SelfTests with Valgrind" OFF)
-#option(CATCH_BUILD_TESTING "Build SelfTest project" ON)
-#option(CATCH_BUILD_EXAMPLES "Build documentation examples" OFF)
 #option(CATCH_BUILD_EXTRA_TESTS "Build extra tests" OFF)
 #option(CATCH_ENABLE_COVERAGE "Generate coverage for codecov.io" OFF)
 #option(CATCH_ENABLE_WERROR "Enable all warnings as errors" ON)
 #option(CATCH_INSTALL_DOCS "Install documentation alongside library" ON)
 #option(CATCH_INSTALL_EXTRAS "Install extras alongside library" ON)
-#
 #
 #set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 #
@@ -54,10 +69,6 @@ add_subdirectory(tests)
 #        message(FATAL_ERROR "Python not found, but required for tests")
 #    endif()
 #    add_subdirectory(projects)
-#endif()
-#
-#if(CATCH_BUILD_EXAMPLES)
-#    add_subdirectory(examples)
 #endif()
 #
 #if(CATCH_BUILD_EXTRA_TESTS)
