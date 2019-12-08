@@ -8,11 +8,10 @@
 #ifndef TWOBLUECUBES_CATCH_REPORTER_TEAMCITY_HPP_INCLUDED
 #define TWOBLUECUBES_CATCH_REPORTER_TEAMCITY_HPP_INCLUDED
 
-// Don't #include any Catch headers here - we can assume they are already
-// included before this header.
-// This is not good practice in general but is necessary in this case so this
-// file can be distributed as a single header that works with the main
-// Catch single header.
+#include <catch2/catch_config.hpp>
+#include <catch2/catch_text.h>
+#include <catch2/catch_timer.h>
+#include <catch2/reporters/catch_reporter_bases.hpp>
 
 #include <cstring>
 
@@ -46,8 +45,7 @@ namespace Catch {
             return "Reports test results as TeamCity service messages";
         }
 
-        void skipTest( TestCaseInfo const& /* testInfo */ ) override {
-        }
+        void skipTest( TestCaseInfo const& /* testInfo */ ) override {}
 
         void noMatchingTestCases( std::string const& /* spec */ ) override {}
 
@@ -204,12 +202,6 @@ namespace Catch {
         bool m_headerPrintedForThisSection = false;
         Timer m_testTimer;
     };
-
-#ifdef CATCH_IMPL
-    TeamCityReporter::~TeamCityReporter() {}
-#endif
-
-    CATCH_REGISTER_REPORTER( "teamcity", TeamCityReporter )
 
 } // end namespace Catch
 

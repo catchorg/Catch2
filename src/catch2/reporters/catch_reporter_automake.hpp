@@ -8,11 +8,7 @@
 #ifndef TWOBLUECUBES_CATCH_REPORTER_AUTOMAKE_HPP_INCLUDED
 #define TWOBLUECUBES_CATCH_REPORTER_AUTOMAKE_HPP_INCLUDED
 
-// Don't #include any Catch headers here - we can assume they are already
-// included before this header.
-// This is not good practice in general but is necessary in this case so this
-// file can be distributed as a single header that works with the main
-// Catch single header.
+#include <catch2/reporters/catch_reporter_bases.hpp>
 
 namespace Catch {
 
@@ -50,12 +46,6 @@ namespace Catch {
         }
 
     };
-
-#ifdef CATCH_IMPL
-    AutomakeReporter::~AutomakeReporter() {}
-#endif
-
-    CATCH_REGISTER_REPORTER( "automake", AutomakeReporter)
 
 } // end namespace Catch
 

@@ -21,32 +21,8 @@
 
 #include <catch2/catch_suppress_warnings.h>
 
-#if defined(CATCH_CONFIG_MAIN) || defined(CATCH_CONFIG_RUNNER)
-#  define CATCH_IMPL
-#  define CATCH_CONFIG_ALL_PARTS
-#endif
-
-// In the impl file, we want to have access to all parts of the headers
-// Can also be used to sanely support PCHs
-#if defined(CATCH_CONFIG_ALL_PARTS)
-#  define CATCH_CONFIG_EXTERNAL_INTERFACES
-#  if defined(CATCH_CONFIG_DISABLE_MATCHERS)
-#    undef CATCH_CONFIG_DISABLE_MATCHERS
-#  endif
-#  if !defined(CATCH_CONFIG_ENABLE_CHRONO_STRINGMAKER)
-#    define CATCH_CONFIG_ENABLE_CHRONO_STRINGMAKER
-#  endif
-#endif
-
 #if !defined(CATCH_CONFIG_IMPL_ONLY)
 #include <catch2/catch_platform.h>
-
-#ifdef CATCH_IMPL
-#  ifndef CLARA_CONFIG_MAIN
-#    define CLARA_CONFIG_MAIN_NOT_DEFINED
-#    define CLARA_CONFIG_MAIN
-#  endif
-#endif
 
 #include <catch2/catch_user_interfaces.h>
 #include <catch2/catch_tag_alias_autoregistrar.h>
@@ -74,25 +50,13 @@
 #include <catch2/catch_objc.hpp>
 #endif
 
-// Benchmarking needs the externally-facing parts of reporters to work
-#if defined(CATCH_CONFIG_EXTERNAL_INTERFACES) || defined(CATCH_CONFIG_ENABLE_BENCHMARKING)
 #include <catch2/catch_external_interfaces.h>
-#endif
 
 #if defined(CATCH_CONFIG_ENABLE_BENCHMARKING)
 #include <catch2/benchmark/catch_benchmark.hpp>
 #endif
 
 #endif // ! CATCH_CONFIG_IMPL_ONLY
-
-#ifdef CATCH_IMPL
-#include <catch2/catch_impl.hpp>
-#endif
-
-#ifdef CATCH_CONFIG_MAIN
-#include <catch2/catch_default_main.hpp>
-#endif
-
 
 #if !defined(CATCH_CONFIG_IMPL_ONLY)
 

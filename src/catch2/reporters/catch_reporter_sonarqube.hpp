@@ -8,12 +8,8 @@
 #ifndef CATCH_REPORTER_SONARQUBE_HPP_INCLUDED
 #define CATCH_REPORTER_SONARQUBE_HPP_INCLUDED
 
-
-// Don't #include any Catch headers here - we can assume they are already
-// included before this header.
-// This is not good practice in general but is necessary in this case so this
-// file can be distributed as a single header that works with the main
-// Catch single header.
+#include <catch2/catch_xmlwriter.h>
+#include <catch2/reporters/catch_reporter_bases.hpp>
 
 #include <map>
 
@@ -170,11 +166,6 @@ namespace Catch {
         XmlWriter xml;
     };
 
-#ifdef CATCH_IMPL
-    SonarQubeReporter::~SonarQubeReporter() {}
-#endif
-
-    CATCH_REGISTER_REPORTER( "sonarqube", SonarQubeReporter )
 
 } // end namespace Catch
 

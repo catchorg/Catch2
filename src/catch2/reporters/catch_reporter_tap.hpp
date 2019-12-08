@@ -8,12 +8,8 @@
 #ifndef TWOBLUECUBES_CATCH_REPORTER_TAP_HPP_INCLUDED
 #define TWOBLUECUBES_CATCH_REPORTER_TAP_HPP_INCLUDED
 
-
-// Don't #include any Catch headers here - we can assume they are already
-// included before this header.
-// This is not good practice in general but is necessary in this case so this
-// file can be distributed as a single header that works with the main
-// Catch single header.
+#include <catch2/catch_console_colour.h>
+#include <catch2/reporters/catch_reporter_bases.hpp>
 
 #include <algorithm>
 
@@ -241,12 +237,6 @@ namespace Catch {
             }
         }
     };
-
-#ifdef CATCH_IMPL
-    TAPReporter::~TAPReporter() {}
-#endif
-
-    CATCH_REGISTER_REPORTER( "tap", TAPReporter )
 
 } // end namespace Catch
 

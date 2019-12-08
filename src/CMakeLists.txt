@@ -195,17 +195,21 @@ set(REPORTER_HEADERS
     ${SOURCES_DIR}/reporters/catch_reporter_console.h
     ${SOURCES_DIR}/reporters/catch_reporter_junit.h
     ${SOURCES_DIR}/reporters/catch_reporter_listening.h
+    ${SOURCES_DIR}/reporters/catch_reporter_sonarqube.hpp
     ${SOURCES_DIR}/reporters/catch_reporter_tap.hpp
     ${SOURCES_DIR}/reporters/catch_reporter_teamcity.hpp
     ${SOURCES_DIR}/reporters/catch_reporter_xml.h
-    ${SOURCES_DIR}/reporters/catch_reporter_sonarqube.hpp
 )
 set(REPORTER_SOURCES
+    ${SOURCES_DIR}/reporters/catch_reporter_automake.cpp
     ${SOURCES_DIR}/reporters/catch_reporter_bases.cpp
     ${SOURCES_DIR}/reporters/catch_reporter_compact.cpp
     ${SOURCES_DIR}/reporters/catch_reporter_console.cpp
     ${SOURCES_DIR}/reporters/catch_reporter_junit.cpp
     ${SOURCES_DIR}/reporters/catch_reporter_listening.cpp
+    ${SOURCES_DIR}/reporters/catch_reporter_sonarqube.cpp
+    ${SOURCES_DIR}/reporters/catch_reporter_tap.cpp
+    ${SOURCES_DIR}/reporters/catch_reporter_teamcity.cpp
     ${SOURCES_DIR}/reporters/catch_reporter_xml.cpp
 )
 set(REPORTER_FILES ${REPORTER_HEADERS} ${REPORTER_SOURCES})

@@ -7,18 +7,26 @@
 #include <catch2/catch_reporter_registry.h>
 
 #include <catch2/catch_reporter_registrars.hpp>
+#include <catch2/reporters/catch_reporter_automake.hpp>
 #include <catch2/reporters/catch_reporter_compact.h>
 #include <catch2/reporters/catch_reporter_console.h>
 #include <catch2/reporters/catch_reporter_junit.h>
+#include <catch2/reporters/catch_reporter_sonarqube.hpp>
+#include <catch2/reporters/catch_reporter_tap.hpp>
+#include <catch2/reporters/catch_reporter_teamcity.hpp>
 #include <catch2/reporters/catch_reporter_xml.h>
 
 namespace Catch {
 
     ReporterRegistry::ReporterRegistry():
         m_factories({
+                {"automake", std::make_shared<ReporterFactory<AutomakeReporter>>() },
                 {"compact", std::make_shared<ReporterFactory<CompactReporter>>() },
                 {"console", std::make_shared<ReporterFactory<ConsoleReporter>>() },
                 {"junit", std::make_shared<ReporterFactory<JunitReporter>>() },
+                {"sonarqube", std::make_shared<ReporterFactory<SonarQubeReporter>>() },
+                {"tap", std::make_shared<ReporterFactory<TAPReporter>>() },
+                {"teamcity", std::make_shared<ReporterFactory<TeamCityReporter>>() },
                 {"xml", std::make_shared<ReporterFactory<XmlReporter>>() },
         }) {}
 
