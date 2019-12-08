@@ -17,8 +17,11 @@ add_executable( 020-MultiFile
   020-TestCase-2.cpp
 )
 
-# TODO: How to handle differently configured libraries?
-#       Needed in 231-Cfg-OutputStreams
+add_executable(231-Cfg_OutputStreams
+    231-Cfg-OutputStreams.cpp
+)
+StampOutLibrary(231-Cfg_OutputStreams)
+target_compile_definitions(Catch2_231-Cfg_OutputStreams PUBLIC CATCH_CONFIG_NOSTDOUT)
 
 # These examples use the standard separate compilation
 set( SOURCES_IDIOMATIC_EXAMPLES

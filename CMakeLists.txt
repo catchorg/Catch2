@@ -34,7 +34,8 @@ set(SELF_TEST_DIR ${CATCH_DIR}/tests/SelfTest)
 set(BENCHMARK_DIR ${CATCH_DIR}/tests/Benchmark)
 set(EXAMPLES_DIR ${CATCH_DIR}/examples)
 
-add_subdirectory(src)
+# We need to bring-in the variables defined there to this scope
+include(src/CMakeLists.txt)
 
 # Build tests only if requested
 if (BUILD_TESTING AND CATCH_BUILD_TESTING AND NOT_SUBPROJECT)

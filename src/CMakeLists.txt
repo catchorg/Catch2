@@ -229,3 +229,20 @@ target_include_directories(Catch2
     $<BUILD_INTERFACE:${SOURCES_DIR}/..>
     $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
 )
+
+function(StampOutLibrary target)
+    add_library(Catch2_${target} STATIC
+      ${REPORTER_FILES}
+      ${INTERNAL_FILES}
+      ${BENCHMARK_HEADERS}
+      ${BENCHMARK_SOURCES}
+    )
+
+    target_include_directories(Catch2_${target}
+      PUBLIC
+        $<BUILD_INTERFACE:${SOURCES_DIR}/..>
+        $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
+    )
+
+    target_link_libraries(${target} Catch2_${target})
+endfunction()

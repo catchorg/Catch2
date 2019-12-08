@@ -6,10 +6,12 @@
 // there is no important difference between having `std::cerr` buffered
 // or unbuffered.
 
-#define CATCH_CONFIG_NOSTDOUT
-#define CATCH_CONFIG_MAIN
+#include <catch2/catch_default_main.hpp>
+
 #include <catch2/catch.hpp>
 
+#include <sstream>
+#include <cstdio>
 
 class out_buff : public std::stringbuf {
     std::FILE* m_stream;
