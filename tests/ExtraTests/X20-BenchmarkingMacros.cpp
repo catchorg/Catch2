@@ -1,7 +1,7 @@
 // X20-BenchmarkingMacros.cpp
 // Test that the benchmarking support macros compile properly with the single header
 
-#define CATCH_CONFIG_MAIN
+#include <catch2/catch_default_main.hpp>
 #include <catch2/catch.hpp>
 
 namespace {

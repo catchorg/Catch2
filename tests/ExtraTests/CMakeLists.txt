@@ -1,8 +1,6 @@
 #
 # Build extra tests.
 #
-# Requires CATCH_BUILD_EXTRA_TESTS to be defined 'true', see ../CMakeLists.txt.
-#
 
 cmake_minimum_required( VERSION 3.5 )
 
@@ -11,13 +9,13 @@ project( Catch2ExtraTests LANGUAGES CXX )
 message( STATUS "Extra tests included" )
 
 # define folders used:
-
-set( TESTS_DIR   ${CATCH_DIR}/projects/ExtraTests )
-set( SINGLE_INCLUDE_PATH ${CATCH_DIR}/single_include )
-
+set( TESTS_DIR   ${CATCH_DIR}/tests/ExtraTests )
 
 add_executable(PrefixedMacros ${TESTS_DIR}/X01-PrefixedMacros.cpp)
-target_compile_definitions( PrefixedMacros PRIVATE CATCH_CONFIG_PREFIX_ALL )
+target_compile_definitions( PrefixedMacros PRIVATE CATCH_CONFIG_PREFIX_ALL CATCH_CONFIG_RUNTIME_STATIC_REQUIRE )
+# Macro configuration does not touch the compiled parts, so we can link
+# it against the main library
+target_link_libraries( PrefixedMacros Catch2 )
 
 add_test(NAME CATCH_CONFIG_PREFIX_ALL COMMAND PrefixedMacros -s)
 set_tests_properties(
@@ -30,8 +28,12 @@ set_tests_properties(
     " REQUIRE; REQUIRE_FALSE; REQUIRE_THROWS; REQUIRE_THROWS_AS; REQUIRE_THROWS_WITH; REQUIRE_THROWS_MATCHES; REQUIRE_NOTHROW; CHECK; CHECK_FALSE; CHECKED_IF; CHECKED_ELSE; CHECK_NOFAIL; CHECK_THROWS; CHECK_THROWS_AS; CHECK_THROWS_WITH; CHECK_THROWS_MATCHES; CHECK_NOTHROW; REQUIRE_THAT; CHECK_THAT"
 )
 
+
 add_executable(DisabledMacros ${TESTS_DIR}/X02-DisabledMacros.cpp)
 target_compile_definitions( DisabledMacros PRIVATE CATCH_CONFIG_DISABLE )
+# Macro configuration does not touch the compiled parts, so we can link
+# it against the main library
+target_link_libraries( DisabledMacros Catch2 )
 
 add_test(NAME CATCH_CONFIG_DISABLE-1 COMMAND DisabledMacros -s)
 set_tests_properties(
@@ -47,19 +49,19 @@ set_tests_properties(
     PASS_REGULAR_EXPRESSION "0 test cases"
 )
 
-
 add_executable( DisabledExceptions-DefaultHandler ${TESTS_DIR}/X03-DisabledExceptions-DefaultHandler.cpp )
 add_executable( DisabledExceptions-CustomHandler ${TESTS_DIR}/X04-DisabledExceptions-CustomHandler.cpp )
 
 foreach(target DisabledExceptions-DefaultHandler DisabledExceptions-CustomHandler)
-target_compile_options( ${target}
-  PRIVATE
-    $<$<CXX_COMPILER_ID:MSVC>:/EHs-c-;/D_HAS_EXCEPTIONS=0>
-    $<$<OR:$<CXX_COMPILER_ID:Clang>,$<CXX_COMPILER_ID:GNU>,$<CXX_COMPILER_ID:AppleClang>>:-fno-exceptions>
-#    $<$<CXX_COMPILER_ID:Clang>:-fno-exceptions>
-#    $<$<CXX_COMPILER_ID:GNU>:-fno-exceptions>
-)
+  StampOutLibrary(${target})
+  target_compile_options( Catch2_${target}
+    PUBLIC
+      $<$<CXX_COMPILER_ID:MSVC>:/EHs-c-;/D_HAS_EXCEPTIONS=0>
+      $<$<OR:$<CXX_COMPILER_ID:Clang>,$<CXX_COMPILER_ID:GNU>,$<CXX_COMPILER_ID:AppleClang>>:-fno-exceptions>
+  )
+  target_link_libraries(${target} Catch2_${target})
 endforeach()
+target_compile_definitions( Catch2_DisabledExceptions-CustomHandler PUBLIC CATCH_CONFIG_DISABLE_EXCEPTIONS_CUSTOM_HANDLER )
 
 
 add_test(NAME CATCH_CONFIG_DISABLE_EXCEPTIONS-1 COMMAND DisabledExceptions-DefaultHandler "Tests that run")
@@ -96,6 +98,7 @@ set_tests_properties(
 
 add_executable(FallbackStringifier ${TESTS_DIR}/X10-FallbackStringifier.cpp)
 target_compile_definitions( FallbackStringifier PRIVATE CATCH_CONFIG_FALLBACK_STRINGIFIER=fallbackStringifier )
+target_link_libraries( FallbackStringifier Catch2 )
 
 add_test(NAME FallbackStringifier COMMAND FallbackStringifier -r compact -s)
 set_tests_properties(
@@ -107,6 +110,7 @@ set_tests_properties(
 
 add_executable(DisableStringification ${TESTS_DIR}/X11-DisableStringification.cpp)
 target_compile_definitions( DisableStringification PRIVATE CATCH_CONFIG_DISABLE_STRINGIFICATION )
+target_link_libraries(DisableStringification Catch2)
 add_test(NAME CATCH_CONFIG_DISABLE_STRINGIFICATION COMMAND DisableStringification -r compact -s)
 set_tests_properties(
     CATCH_CONFIG_DISABLE_STRINGIFICATION
@@ -117,7 +121,9 @@ set_tests_properties(
 
 
 add_executable(BenchmarkingMacros ${TESTS_DIR}/X20-BenchmarkingMacros.cpp)
-target_compile_definitions( BenchmarkingMacros PRIVATE CATCH_CONFIG_ENABLE_BENCHMARKING )
+StampOutLibrary(BenchmarkingMacros)
+target_compile_definitions( Catch2_BenchmarkingMacros PUBLIC CATCH_CONFIG_ENABLE_BENCHMARKING )
+target_link_libraries( BenchmarkingMacros Catch2_BenchmarkingMacros )
 
 add_test(NAME BenchmarkingMacros COMMAND BenchmarkingMacros -r console -s)
 set_tests_properties(
@@ -133,7 +139,7 @@ if (MSVC)
     set_property( TARGET WindowsHeader PROPERTY CXX_STANDARD 14 )
     set_property( TARGET WindowsHeader PROPERTY CXX_STANDARD_REQUIRED ON )
     set_property( TARGET WindowsHeader PROPERTY CXX_EXTENSIONS OFF )
-    target_include_directories( WindowsHeader PRIVATE ${SINGLE_INCLUDE_PATH} )
+    target_link_libraries( WindowsHeader Catch2 )
     add_test(NAME WindowsHeader COMMAND WindowsHeader -r compact)
 endif()
 
@@ -152,7 +158,4 @@ foreach( test ${EXTRA_TEST_BINARIES} )
     set_property( TARGET ${test} PROPERTY CXX_STANDARD 14 )
     set_property( TARGET ${test} PROPERTY CXX_STANDARD_REQUIRED ON )
     set_property( TARGET ${test} PROPERTY CXX_EXTENSIONS OFF )
-    target_include_directories( ${test} PRIVATE ${SINGLE_INCLUDE_PATH} )
 endforeach()
-
-

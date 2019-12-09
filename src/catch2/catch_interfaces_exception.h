@@ -9,6 +9,7 @@
 #define TWOBLUECUBES_CATCH_INTERFACES_EXCEPTION_H_INCLUDED
 
 #include <catch2/catch_interfaces_registry_hub.h>
+#include <catch2/catch_compiler_capabilities.h>
 
 #if defined(CATCH_CONFIG_DISABLE)
     #define INTERNAL_CATCH_TRANSLATE_EXCEPTION_NO_REG( translatorName, signature) \
@@ -46,6 +47,7 @@ namespace Catch {
             {}
 
             std::string translate( ExceptionTranslators::const_iterator it, ExceptionTranslators::const_iterator itEnd ) const override {
+#if !defined(CATCH_CONFIG_DISABLE_EXCEPTIONS)
                 try {
                     if( it == itEnd )
                         std::rethrow_exception(std::current_exception());
@@ -55,6 +57,9 @@ namespace Catch {
                 catch( T& ex ) {
                     return m_translateFunction( ex );
                 }
+#else
+                return "You should never get here!";
+#endif
             }
 
         protected:

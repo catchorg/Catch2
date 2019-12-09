@@ -4,7 +4,7 @@
 // wrong.
 
 #include <windows.h>
-#define CATCH_CONFIG_MAIN
+#include <catch2/catch_default_main.hpp>
 #include <catch2/catch.hpp>
 
 TEST_CASE("Catch2 did survive compilation with windows.h", "[compile-test]") {

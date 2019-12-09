@@ -1,10 +1,9 @@
 // X11-DisableStringification.cpp
 // Test that Catch's prefixed macros compile and run properly.
 
-#define CATCH_CONFIG_MAIN
+#include <catch2/catch_default_main.hpp>
 // This won't provide full coverage, but it might be worth checking
 // the other branch as well
-#define CATCH_CONFIG_RUNTIME_STATIC_REQUIRE
 #include <catch2/catch.hpp>
 
 #include <type_traits>
