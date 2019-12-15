@@ -181,7 +181,7 @@ TEST_CASE("Generators internals", "[generators][internals]") {
                     const auto step = .1;
 
                     auto gen = range(rangeStart, rangeEnd, step);
-                    auto expected = rangeStart; 
+                    auto expected = rangeStart;
                     while( (rangeEnd - expected) > step ) {
                         INFO( "Current expected value is " << expected )
                         REQUIRE(gen.get() == Approx(expected));
@@ -198,7 +198,7 @@ TEST_CASE("Generators internals", "[generators][internals]") {
                     const auto step = .3;
 
                     auto gen = range(rangeStart, rangeEnd, step);
-                    auto expected = rangeStart; 
+                    auto expected = rangeStart;
                     while( (rangeEnd - expected) > step ) {
                        INFO( "Current expected value is " << expected )
                        REQUIRE(gen.get() == Approx(expected));
@@ -214,7 +214,7 @@ TEST_CASE("Generators internals", "[generators][internals]") {
                     const auto step = .3;
 
                     auto gen = range(rangeStart, rangeEnd, step);
-                    auto expected = rangeStart; 
+                    auto expected = rangeStart;
                     while( (rangeEnd - expected) > step ) {
                        INFO( "Current expected value is " << expected )
                        REQUIRE(gen.get() == Approx(expected));
@@ -223,7 +223,7 @@ TEST_CASE("Generators internals", "[generators][internals]") {
                        expected += step;
                     }
                     REQUIRE_FALSE(gen.next());
-                }                
+                }
             }
         }
         SECTION("Negative manual step") {
@@ -309,6 +309,21 @@ TEST_CASE("GENERATE capture macros", "[generators][internals][approvals]") {
     // neither `GENERATE_COPY` nor plain `GENERATE` would compile here
     auto value2 = GENERATE_REF(Catch::Generators::GeneratorWrapper<int>(std::unique_ptr<Catch::Generators::IGenerator<int>>(new TestGen(nc))));
     REQUIRE(value == value2);
+}
+
+TEST_CASE("#1809 - GENERATE_COPY and SingleValueGenerator does not compile", "[generators][compilation][approvals]") {
+    // Verify Issue #1809 fix, only needs to compile.
+    auto a = GENERATE_COPY(1, 2);
+    (void)a;
+    auto b = GENERATE_COPY(as<long>{}, 1, 2);
+    (void)b;
+    int i = 1;
+    int j = 2;
+    auto c = GENERATE_COPY(i, j);
+    (void)c;
+    auto d = GENERATE_COPY(as<long>{}, i, j);
+    (void)d;
+    SUCCEED();
 }
 
 TEST_CASE("Multiple random generators in one test case output different values", "[generators][internals][approvals]") {
