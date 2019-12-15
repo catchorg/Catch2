@@ -315,6 +315,21 @@ TEST_CASE("GENERATE capture macros", "[generators][internals][approvals]") {
     REQUIRE(value == value2);
 }
 
+TEST_CASE("#1809 - GENERATE_COPY and SingleValueGenerator does not compile", "[generators][compilation][approvals]") {
+    // Verify Issue #1809 fix, only needs to compile.
+    auto a = GENERATE_COPY(1, 2);
+    (void)a;
+    auto b = GENERATE_COPY(as<long>{}, 1, 2);
+    (void)b;
+    int i = 1;
+    int j = 2;
+    auto c = GENERATE_COPY(i, j);
+    (void)c;
+    auto d = GENERATE_COPY(as<long>{}, i, j);
+    (void)d;
+    SUCCEED();
+}
+
 TEST_CASE("Multiple random generators in one test case output different values", "[generators][internals][approvals]") {
     SECTION("Integer") {
         auto random1 = Catch::Generators::random(0, 1000);
