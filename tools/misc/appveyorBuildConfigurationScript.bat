@@ -13,7 +13,6 @@ if "%CONFIGURATION%"=="Debug" (
     cmake -H. -BBuild -A%PLATFORM% -DUSE_WMAIN=%wmain% -DMEMORYCHECK_COMMAND=build-misc\Debug\CoverageHelper.exe -DMEMORYCHECK_COMMAND_OPTIONS=--sep-- -DMEMORYCHECK_TYPE=Valgrind || exit /b !ERRORLEVEL! || exit /b !ERRORLEVEL!
   ) else (
     @REM # We know that coverage is 0
-    python scripts\generateSingleHeader.py || exit /b !ERRORLEVEL!
     cmake -H. -BBuild -A%PLATFORM% -DUSE_WMAIN=%wmain% -DCATCH_BUILD_EXAMPLES=%examples% -DCATCH_BUILD_EXTRA_TESTS=%examples% || exit /b !ERRORLEVEL!
   )
 )
