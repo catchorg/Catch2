@@ -20,8 +20,8 @@ add_executable( 020-MultiFile
 add_executable(231-Cfg_OutputStreams
     231-Cfg-OutputStreams.cpp
 )
-StampOutLibrary(231-Cfg_OutputStreams)
-target_compile_definitions(Catch2_231-Cfg_OutputStreams PUBLIC CATCH_CONFIG_NOSTDOUT)
+target_link_libraries(231-Cfg_OutputStreams Catch2_buildall_interface)
+target_compile_definitions(231-Cfg_OutputStreams PUBLIC CATCH_CONFIG_NOSTDOUT)
 
 # These examples use the standard separate compilation
 set( SOURCES_IDIOMATIC_EXAMPLES

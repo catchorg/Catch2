@@ -53,15 +53,14 @@ add_executable( DisabledExceptions-DefaultHandler ${TESTS_DIR}/X03-DisabledExcep
 add_executable( DisabledExceptions-CustomHandler ${TESTS_DIR}/X04-DisabledExceptions-CustomHandler.cpp )
 
 foreach(target DisabledExceptions-DefaultHandler DisabledExceptions-CustomHandler)
-  StampOutLibrary(${target})
-  target_compile_options( Catch2_${target}
+  target_compile_options( ${target}
     PUBLIC
       $<$<CXX_COMPILER_ID:MSVC>:/EHs-c-;/D_HAS_EXCEPTIONS=0>
       $<$<OR:$<CXX_COMPILER_ID:Clang>,$<CXX_COMPILER_ID:GNU>,$<CXX_COMPILER_ID:AppleClang>>:-fno-exceptions>
   )
-  target_link_libraries(${target} Catch2_${target})
+  target_link_libraries(${target} Catch2_buildall_interface)
 endforeach()
-target_compile_definitions( Catch2_DisabledExceptions-CustomHandler PUBLIC CATCH_CONFIG_DISABLE_EXCEPTIONS_CUSTOM_HANDLER )
+target_compile_definitions( DisabledExceptions-CustomHandler PUBLIC CATCH_CONFIG_DISABLE_EXCEPTIONS_CUSTOM_HANDLER )
 
 
 add_test(NAME CATCH_CONFIG_DISABLE_EXCEPTIONS-1 COMMAND DisabledExceptions-DefaultHandler "Tests that run")
@@ -121,9 +120,8 @@ set_tests_properties(
 
 
 add_executable(BenchmarkingMacros ${TESTS_DIR}/X20-BenchmarkingMacros.cpp)
-StampOutLibrary(BenchmarkingMacros)
-target_compile_definitions( Catch2_BenchmarkingMacros PUBLIC CATCH_CONFIG_ENABLE_BENCHMARKING )
-target_link_libraries( BenchmarkingMacros Catch2_BenchmarkingMacros )
+target_compile_definitions( BenchmarkingMacros PUBLIC CATCH_CONFIG_ENABLE_BENCHMARKING )
+target_link_libraries( BenchmarkingMacros Catch2_buildall_interface )
 
 add_test(NAME BenchmarkingMacros COMMAND BenchmarkingMacros -r console -s)
 set_tests_properties(

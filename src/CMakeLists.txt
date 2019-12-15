@@ -230,19 +230,20 @@ target_include_directories(Catch2
     $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
 )
 
-function(StampOutLibrary target)
-    add_library(Catch2_${target} STATIC
+# Some tests require a full recompilation of Catch2 lib with different
+# compilation flags. They can link against this target to recompile all
+# the sources into the binary.
+if (CATCH_BUILD_EXAMPLES OR CATCH_BUILD_EXTRA_TESTS)
+    add_library(Catch2_buildall_interface INTERFACE)
+    target_sources(Catch2_buildall_interface INTERFACE
       ${REPORTER_FILES}
       ${INTERNAL_FILES}
       ${BENCHMARK_HEADERS}
       ${BENCHMARK_SOURCES}
     )
-
-    target_include_directories(Catch2_${target}
-      PUBLIC
+    target_include_directories(Catch2_buildall_interface
+      INTERFACE
         $<BUILD_INTERFACE:${SOURCES_DIR}/..>
         $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
     )
-
-    target_link_libraries(${target} Catch2_${target})
-endfunction()
+endif()
