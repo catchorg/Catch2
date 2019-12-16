@@ -29,6 +29,7 @@ set(BENCHMARK_SOURCES
 SOURCE_GROUP("benchmark" FILES ${BENCHMARK_HEADERS} ${BENCHMARK_SOURCES})
 
 set(INTERNAL_HEADERS
+    ${SOURCES_DIR}/catch.hpp
     ${SOURCES_DIR}/catch_approx.h
     ${SOURCES_DIR}/catch_assertionhandler.h
     ${SOURCES_DIR}/catch_assertioninfo.h
@@ -224,11 +225,68 @@ add_library(Catch2 STATIC
   ${BENCHMARK_SOURCES}
 )
 
+# provide a namespaced alias for clients to 'link' against if catch is included as a sub-project
+add_library(Catch2::Catch2 ALIAS Catch2)
+if (ANDROID)
+    target_link_libraries(Catch2 INTERFACE log)
+endif()
+
+
 target_include_directories(Catch2
   PUBLIC
     $<BUILD_INTERFACE:${SOURCES_DIR}/..>
     $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
 )
+
+# depend on bunch of C++11 and C++14 features to have C++14 enabled by default
+target_compile_features(Catch2
+  INTERFACE
+    cxx_alignas
+    cxx_alignof
+    cxx_attributes
+    cxx_auto_type
+    cxx_constexpr
+    cxx_defaulted_functions
+    cxx_deleted_functions
+    cxx_final
+    cxx_lambdas
+    cxx_noexcept
+    cxx_override
+    cxx_range_for
+    cxx_rvalue_references
+    cxx_static_assert
+    cxx_strong_enums
+    cxx_trailing_return_types
+    cxx_unicode_literals
+    cxx_user_literals
+    cxx_variable_templates
+    cxx_variadic_macros
+)
+
+if (NOT_SUBPROJECT)
+    # create and install an export set for catch target as Catch2::Catch
+    install(
+      TARGETS
+        Catch2
+      EXPORT
+        Catch2Targets
+      DESTINATION
+        ${CMAKE_INSTALL_LIBDIR}
+    )
+
+
+    install(
+      EXPORT
+        Catch2Targets
+      NAMESPACE
+        Catch2::
+      DESTINATION
+        ${CATCH_CMAKE_CONFIG_DESTINATION}
+    )
+    # This installs the headers
+    install(DIRECTORY ${SOURCES_DIR} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR} FILES_MATCHING PATTERN "*.h*")
+    # TODO: Also install the helper main
+endif()
 
 # Some tests require a full recompilation of Catch2 lib with different
 # compilation flags. They can link against this target to recompile all
