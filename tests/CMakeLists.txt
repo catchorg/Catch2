@@ -75,7 +75,7 @@ set(HEADERS
         ${EXTERNAL_HEADERS}
         ${INTERNAL_HEADERS}
         ${REPORTER_HEADERS}
-		${BENCHMARK_HEADERS}
+        ${BENCHMARK_HEADERS}
         ${BENCHMARK_SOURCES}
 )
 
@@ -88,33 +88,6 @@ include(CTest)
 
 add_executable(SelfTest ${TEST_SOURCES})
 target_link_libraries(SelfTest PRIVATE Catch2)
-
-# It took CMake until 3.8 to abandon the doomed approach of enumerating
-# required features so we just list bunch of C++11 and C++14 features.
-target_compile_features(SelfTest
-  PRIVATE
-    cxx_alignas
-    cxx_alignof
-    cxx_attributes
-    cxx_auto_type
-    cxx_constexpr
-    cxx_defaulted_functions
-    cxx_deleted_functions
-    cxx_final
-    cxx_lambdas
-    cxx_noexcept
-    cxx_override
-    cxx_range_for
-    cxx_rvalue_references
-    cxx_static_assert
-    cxx_strong_enums
-    cxx_trailing_return_types
-    cxx_unicode_literals
-    cxx_user_literals
-    cxx_variadic_macros
-    cxx_variable_templates
-)
-
 
 if (CATCH_ENABLE_COVERAGE)
     set(ENABLE_COVERAGE ON CACHE BOOL "Enable coverage build." FORCE)
