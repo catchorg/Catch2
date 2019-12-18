@@ -167,7 +167,7 @@ namespace {
 
     bool useColourOnPlatform() {
         return
-#ifdef CATCH_PLATFORM_MAC
+#if defined(CATCH_PLATFORM_MAC) || defined(CATCH_PLATFORM_IPHONE)
             !isDebuggerActive() &&
 #endif
 #if !(defined(__DJGPP__) && defined(__STRICT_ANSI__))
