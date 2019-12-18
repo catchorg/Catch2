@@ -266,7 +266,7 @@ add_library(Catch2Main STATIC
     ${SOURCES_DIR}/catch_main.cpp
 )
 add_library(Catch2::Catch2Main ALIAS Catch2Main)
-target_link_libraries(Catch2Main INTERFACE Catch2)
+target_link_libraries(Catch2Main PUBLIC Catch2)
 
 
 
