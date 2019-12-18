@@ -9,6 +9,7 @@ endif()
 option(CATCH_BUILD_TESTING "Build SelfTest project" ON)
 option(CATCH_BUILD_EXAMPLES "Build documentation examples" OFF)
 option(CATCH_BUILD_EXTRA_TESTS "Build extra tests" OFF)
+option(CATCH_ENABLE_COVERAGE "Generate coverage for codecov.io" OFF)
 option(CATCH_INSTALL_DOCS "Install documentation alongside library" ON)
 option(CATCH_INSTALL_EXTRAS "Install extras alongside library" ON)
 
@@ -61,7 +62,6 @@ if(CATCH_BUILD_EXTRA_TESTS)
 endif()
 
 #option(CATCH_USE_VALGRIND "Perform SelfTests with Valgrind" OFF)
-#option(CATCH_ENABLE_COVERAGE "Generate coverage for codecov.io" OFF)
 #option(CATCH_ENABLE_WERROR "Enable all warnings as errors" ON)
 #
 #set_property(GLOBAL PROPERTY USE_FOLDERS ON)
