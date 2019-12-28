@@ -31,6 +31,18 @@
 [Older versions](#older-versions)<br>
 [Even Older versions](#even-older-versions)<br>
 
+## 2.11.1
+
+### Improvements
+* Breaking into debugger is supported on iOS (#1817)
+* `google-build-using-namespace` clang-tidy warning is suppressed (#1799)
+
+### Fixes
+* Clang on Windows is no longer assumed to implement MSVC's traditional preprocessor (#1806)
+* `ObjectStorage` now behaves properly in `const` contexts (#1820)
+* `GENERATE_COPY(a, b)` now compiles properly (#1809, #1815)
+* Some more cleanups in the benchmarking support
+
 
 ## 2.11.0
 
