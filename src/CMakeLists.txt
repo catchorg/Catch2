@@ -115,6 +115,7 @@ set(INTERNAL_HEADERS
     ${SOURCES_DIR}/catch_uncaught_exceptions.h
     ${SOURCES_DIR}/catch_user_interfaces.h
     ${SOURCES_DIR}/catch_version.h
+    ${SOURCES_DIR}/catch_version_macros.hpp
     ${SOURCES_DIR}/catch_wildcard_pattern.h
     ${SOURCES_DIR}/catch_windows_h_proxy.h
     ${SOURCES_DIR}/catch_xmlwriter.h

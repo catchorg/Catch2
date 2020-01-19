@@ -12,7 +12,7 @@ from scriptCommon import catchPath
 versionParser = re.compile( r'(\s*static\sVersion\sversion)\s*\(\s*(.*)\s*,\s*(.*)\s*,\s*(.*)\s*,\s*\"(.*)\"\s*,\s*(.*)\s*\).*' )
 rootPath = os.path.join( catchPath, 'src/catch2' )
 versionPath = os.path.join( rootPath, "catch_version.cpp" )
-definePath = os.path.join(rootPath, 'catch.hpp')
+definePath = os.path.join(rootPath, 'catch_version_macros.hpp')
 readmePath = os.path.join( catchPath, "README.md" )
 cmakePath = os.path.join(catchPath, 'CMakeLists.txt')
 
