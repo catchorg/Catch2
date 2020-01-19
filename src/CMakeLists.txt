@@ -104,6 +104,7 @@ set(INTERNAL_HEADERS
     ${SOURCES_DIR}/catch_test_case_info.h
     ${SOURCES_DIR}/catch_test_case_registry_impl.h
     ${SOURCES_DIR}/catch_test_case_tracker.h
+    ${SOURCES_DIR}/catch_test_macros.hpp
     ${SOURCES_DIR}/catch_test_registry.h
     ${SOURCES_DIR}/catch_test_spec.h
     ${SOURCES_DIR}/catch_test_spec_parser.h
