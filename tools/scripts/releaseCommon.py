@@ -10,8 +10,8 @@ import fnmatch
 from scriptCommon import catchPath
 
 versionParser = re.compile( r'(\s*static\sVersion\sversion)\s*\(\s*(.*)\s*,\s*(.*)\s*,\s*(.*)\s*,\s*\"(.*)\"\s*,\s*(.*)\s*\).*' )
-rootPath = os.path.join( catchPath, 'include/' )
-versionPath = os.path.join( rootPath, "internal/catch_version.cpp" )
+rootPath = os.path.join( catchPath, 'src/catch2' )
+versionPath = os.path.join( rootPath, "catch_version.cpp" )
 definePath = os.path.join(rootPath, 'catch.hpp')
 readmePath = os.path.join( catchPath, "README.md" )
 cmakePath = os.path.join(catchPath, 'CMakeLists.txt')
@@ -149,18 +149,18 @@ def performUpdates(version):
     version.updateVersionFile()
     updateVersionDefine(version)
 
-    import generateSingleHeader
-    generateSingleHeader.generate(version)
+    # import generateSingleHeader
+    # generateSingleHeader.generate(version)
 
-    # Then copy the reporters to single include folder to keep them in sync
-    # We probably should have some kind of convention to select which reporters need to be copied automagically,
-    # but this works for now
-    import shutil
-    for rep in ('automake', 'tap', 'teamcity', 'sonarqube'):
-        sourceFile = os.path.join(catchPath, 'include/reporters/catch_reporter_{}.hpp'.format(rep))
-        destFile = os.path.join(catchPath, 'single_include', 'catch2', 'catch_reporter_{}.hpp'.format(rep))
-        shutil.copyfile(sourceFile, destFile)
+    # # Then copy the reporters to single include folder to keep them in sync
+    # # We probably should have some kind of convention to select which reporters need to be copied automagically,
+    # # but this works for now
+    # import shutil
+    # for rep in ('automake', 'tap', 'teamcity', 'sonarqube'):
+    #     sourceFile = os.path.join(catchPath, 'include/reporters/catch_reporter_{}.hpp'.format(rep))
+    #     destFile = os.path.join(catchPath, 'single_include', 'catch2', 'catch_reporter_{}.hpp'.format(rep))
+    #     shutil.copyfile(sourceFile, destFile)
 
-    updateReadmeFile(version)
+    # updateReadmeFile(version)
     updateCmakeFile(version)
     updateDocumentationVersionPlaceholders(version)
