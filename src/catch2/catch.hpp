@@ -11,14 +11,6 @@
 
 #include <catch2/catch_version_macros.hpp>
 
-#ifdef __clang__
-#    pragma clang system_header
-#elif defined __GNUC__
-#    pragma GCC system_header
-#endif
-
-
-
 #include <catch2/catch_suppress_warnings.h>
 
 #if !defined(CATCH_CONFIG_IMPL_ONLY)

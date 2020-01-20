@@ -1,5 +1,5 @@
 #define CATCH_CONFIG_ENABLE_PAIR_STRINGMAKER
-#include <catch2/catch.hpp>
+#include <catch2/catch_test_macros.hpp>
 
 TEST_CASE( "std::pair<int,std::string> -> toString", "[toString][pair]" ) {
     std::pair<int,std::string> value( 34, "xyzzy" );

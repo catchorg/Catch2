@@ -1,7 +1,4 @@
 /*
- *  Created by Phil on 09/11/2010.
- *  Copyright 2010 Two Blue Cubes Ltd. All rights reserved.
- *
  *  Distributed under the Boost Software License, Version 1.0. (See accompanying
  *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  */
@@ -15,7 +12,7 @@
                                  // that is triggered when compiling as Win32|Release
 #endif
 
-#include <catch2/catch.hpp>
+#include <catch2/catch_test_macros.hpp>
 
 #include <stdio.h>
 #include <sstream>

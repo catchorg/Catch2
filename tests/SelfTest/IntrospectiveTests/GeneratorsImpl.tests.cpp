@@ -1,4 +1,7 @@
-#include <catch2/catch.hpp>
+#include <catch2/catch_approx.h>
+#include <catch2/catch_test_macros.hpp>
+#include <catch2/catch_generators_generic.hpp>
+#include <catch2/catch_generators_specific.hpp>
 
 // Tests of generator implementation details
 TEST_CASE("Generators internals", "[generators][internals]") {
@@ -175,6 +178,7 @@ TEST_CASE("Generators internals", "[generators][internals]") {
             }
 
             SECTION("Floating Point") {
+                using Catch::Detail::Approx;
                 SECTION("Exact") {
                     const auto rangeStart = -1.;
                     const auto rangeEnd = 1.;

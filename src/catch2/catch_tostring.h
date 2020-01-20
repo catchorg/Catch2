@@ -649,6 +649,8 @@ struct ratio_string<std::milli> {
 }
 #endif // CATCH_CONFIG_ENABLE_CHRONO_STRINGMAKER
 
+#include <catch2/catch_interfaces_registry_hub.h>
+
 #define INTERNAL_CATCH_REGISTER_ENUM( enumName, ... ) \
 namespace Catch { \
     template<> struct StringMaker<enumName> { \

@@ -1,12 +1,10 @@
 /*
- *  Created by Martin on 17/02/2017.
- *
  *  Distributed under the Boost Software License, Version 1.0. (See accompanying
  *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  */
 
 #define CATCH_CONFIG_ENABLE_PAIR_STRINGMAKER
-#include <catch2/catch.hpp>
+#include <catch2/catch_test_macros.hpp>
 
 #include <map>
 #include <set>

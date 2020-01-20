@@ -23,6 +23,14 @@
 #pragma warning(disable:4800) // Forcing result to true or false
 #endif
 
+#ifdef __clang__
+#  pragma clang diagnostic push
+#  pragma clang diagnostic ignored "-Wsign-compare"
+#elif defined __GNUC__
+#  pragma GCC diagnostic push
+#  pragma clang diagnostic ignored "-Wsign-compare"
+#endif
+
 namespace Catch {
 
     struct ITransientExpression {
@@ -242,6 +250,11 @@ namespace Catch {
 
 #ifdef _MSC_VER
 #pragma warning(pop)
+#endif
+#ifdef __clang__
+#  pragma clang diagnostic pop
+#elif defined __GNUC__
+#  pragma GCC diagnostic pop
 #endif
 
 #endif // TWOBLUECUBES_CATCH_DECOMPOSER_H_INCLUDED

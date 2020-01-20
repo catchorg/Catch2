@@ -1,4 +1,6 @@
-#include <catch2/catch.hpp>
+#include <catch2/catch_test_macros.hpp>
+#include <catch2/catch_generators_generic.hpp>
+#include <catch2/catch_generators_specific.hpp>
 
 #include <cstring>
 

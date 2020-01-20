@@ -1,7 +1,4 @@
 /*
- *  Created by Martin on 27/5/2017.
- *  Copyright 2017 Two Blue Cubes Ltd. All rights reserved.
- *
  *  Distributed under the Boost Software License, Version 1.0. (See accompanying
  *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  */
@@ -26,7 +23,7 @@ std::ostream& operator<<(std::ostream& o, truthy) {
 
 } // end anonymous namespace
 
-#include <catch2/catch.hpp>
+#include <catch2/catch_test_macros.hpp>
 
 TEST_CASE( "Reconstruction should be based on stringification: #914" , "[Decomposition][failing][.]") {
     CHECK(truthy(false));

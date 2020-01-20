@@ -1,7 +1,4 @@
 /*
- *  Created by Phil on 08/11/2010.
- *  Copyright 2010 Two Blue Cubes Ltd. All rights reserved.
- *
  *  Distributed under the Boost Software License, Version 1.0. (See accompanying
  *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  */
@@ -11,10 +8,13 @@
 // Wdouble-promotion is not supported until 3.8
 #   if (__clang_major__ > 3) || (__clang_major__ == 3 && __clang_minor__ > 7)
 #       pragma clang diagnostic ignored "-Wdouble-promotion"
-#   endif    
+#   endif
 #endif
 
-#include <catch2/catch.hpp>
+#include <catch2/catch_approx.h>
+#include <catch2/catch_test_macros.hpp>
+
+using Catch::Detail::Approx;
 
 #include <string>
 #include <limits>

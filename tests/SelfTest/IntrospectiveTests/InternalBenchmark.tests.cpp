@@ -391,7 +391,7 @@ TEST_CASE("measure", "[benchmark]") {
 TEST_CASE("run benchmark", "[benchmark]") {
     counting_clock::set_rate(1000);
     auto start = counting_clock::now();
-    
+
     Catch::Benchmark::Benchmark bench{ "Test Benchmark", [](Catch::Benchmark::Chronometer meter) {
         counting_clock::set_rate(100000);
         meter.measure([] { return counting_clock::now(); });

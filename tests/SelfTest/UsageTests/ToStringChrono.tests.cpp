@@ -1,5 +1,5 @@
 #define CATCH_CONFIG_ENABLE_CHRONO_STRINGMAKER
-#include <catch2/catch.hpp>
+#include <catch2/catch_test_macros.hpp>
 
 #include <chrono>
 #include <cstdint>

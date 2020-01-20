@@ -6,9 +6,12 @@
  *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  */
 
-#include <catch2/catch.hpp>
+#include <catch2/catch_test_macros.hpp>
+#include <catch2/catch_approx.h>
 
 #include <cmath>
+
+using Catch::Detail::Approx;
 
 namespace { namespace ApproxTests {
 

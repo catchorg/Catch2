@@ -1,6 +1,4 @@
 /*
- *  Created by Martin on 17/02/2017.
- *
  *  Distributed under the Boost Software License, Version 1.0. (See accompanying
  *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  */
@@ -30,7 +28,8 @@ std::ostream& operator<<(std::ostream& out, foo::helper_1403 const&) {
 }
 ///////////////////////////////
 
-#include <catch2/catch.hpp>
+#include <catch2/catch_test_macros.hpp>
+#include <catch2/catch_matchers_string.h>
 
 #include <cstring>
 
@@ -218,7 +217,7 @@ namespace { namespace CompilationTests {
         REQUIRE( y.v == 0 );
         REQUIRE( 0 == y.v );
     }
-    
+
     TEST_CASE("#1319: Sections can have description (even if it is not saved", "[compilation]") {
         SECTION("SectionName", "This is a long form section description") {
             SUCCEED();

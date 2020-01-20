@@ -10,11 +10,6 @@
 
 #include <catch2/catch_capture.hpp>
 #include <catch2/catch_matchers.h>
-#include <catch2/catch_matchers_exception.hpp>
-#include <catch2/catch_matchers_floating.h>
-#include <catch2/catch_matchers_generic.hpp>
-#include <catch2/catch_matchers_string.h>
-#include <catch2/catch_matchers_vector.h>
 #include <catch2/catch_stringref.h>
 
 namespace Catch {
