@@ -12,8 +12,6 @@
 #include <iomanip>
 #include <type_traits>
 
-using uchar = unsigned char;
-
 namespace Catch {
 
 namespace {
@@ -87,7 +85,7 @@ namespace {
         // (see: http://www.w3.org/TR/xml/#syntax)
 
         for( std::size_t idx = 0; idx < m_str.size(); ++ idx ) {
-            uchar c = m_str[idx];
+            unsigned char c = m_str[idx];
             switch (c) {
             case '<':   os << "&lt;"; break;
             case '&':   os << "&amp;"; break;
@@ -147,7 +145,7 @@ namespace {
                 bool valid = true;
                 uint32_t value = headerValue(c);
                 for (std::size_t n = 1; n < encBytes; ++n) {
-                    uchar nc = m_str[idx + n];
+                    unsigned char nc = m_str[idx + n];
                     valid &= ((nc & 0xC0) == 0x80);
                     value = (value << 6) | (nc & 0x3F);
                 }
