@@ -1692,14 +1692,14 @@ ToStringWhich.tests.cpp:<line number>: passed: ::Catch::Detail::stringify(string
 ==
 "stringmaker(streamable_range)"
 ToStringWhich.tests.cpp:<line number>: passed: ::Catch::Detail::stringify(just_range{}) == "{ 1, 2, 3, 4 }" for: "{ 1, 2, 3, 4 }" == "{ 1, 2, 3, 4 }"
-ToStringWhich.tests.cpp:<line number>: passed: ::Catch::Detail::stringify(disabled_range{}) == "{ !!! }" for: "{ !!! }" == "{ !!! }"
+ToStringWhich.tests.cpp:<line number>: passed: ::Catch::Detail::stringify(disabled_range{}) == "{?}" for: "{?}" == "{?}"
 ToStringWhich.tests.cpp:<line number>: passed: ::Catch::Detail::stringify( item ) == "StringMaker<has_maker>" for: "StringMaker<has_maker>"
 ==
 "StringMaker<has_maker>"
 ToStringWhich.tests.cpp:<line number>: passed: ::Catch::Detail::stringify( item ) == "StringMaker<has_maker_and_operator>" for: "StringMaker<has_maker_and_operator>"
 ==
 "StringMaker<has_maker_and_operator>"
-ToStringWhich.tests.cpp:<line number>: passed: ::Catch::Detail::stringify(item) == "{ !!! }" for: "{ !!! }" == "{ !!! }"
+ToStringWhich.tests.cpp:<line number>: passed: ::Catch::Detail::stringify(item) == "{?}" for: "{?}" == "{?}"
 ToStringWhich.tests.cpp:<line number>: passed: ::Catch::Detail::stringify( item ) == "operator<<( has_operator )" for: "operator<<( has_operator )"
 ==
 "operator<<( has_operator )"

@@ -3,16 +3,6 @@
  * for various types
  */
 
-// Replace fallback stringifier for this TU
-// We should avoid ODR violations because these specific types aren't
-// present in different TUs
-#include <string>
-template <typename T>
-std::string fallbackStringifier(T const&) {
-    return "{ !!! }";
-}
-
-#define CATCH_CONFIG_FALLBACK_STRINGIFIER fallbackStringifier
 #include <catch2/catch_test_macros.hpp>
 
 
@@ -85,7 +75,7 @@ TEST_CASE( "stringify( has_maker_and_operator )", "[toString]" ) {
 
 TEST_CASE("stringify( has_neither )", "[toString]") {
     has_neither item;
-    REQUIRE( ::Catch::Detail::stringify(item) == "{ !!! }" );
+    REQUIRE( ::Catch::Detail::stringify(item) == "{?}" );
 }
 
 // Call the templated operator
@@ -189,5 +179,5 @@ TEST_CASE("stringify ranges", "[toString]") {
     REQUIRE(::Catch::Detail::stringify(streamable_range{}) == "op<<(streamable_range)");
     REQUIRE(::Catch::Detail::stringify(stringmaker_range{}) == "stringmaker(streamable_range)");
     REQUIRE(::Catch::Detail::stringify(just_range{}) == "{ 1, 2, 3, 4 }");
-    REQUIRE(::Catch::Detail::stringify(disabled_range{}) == "{ !!! }");
+    REQUIRE(::Catch::Detail::stringify(disabled_range{}) == "{?}");
 }

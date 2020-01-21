@@ -15098,10 +15098,10 @@ loose text artifact
       </Expression>
       <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/UsageTests/ToStringWhich.tests.cpp" >
         <Original>
-          ::Catch::Detail::stringify(disabled_range{}) == "{ !!! }"
+          ::Catch::Detail::stringify(disabled_range{}) == "{?}"
         </Original>
         <Expanded>
-          "{ !!! }" == "{ !!! }"
+          "{?}" == "{?}"
         </Expanded>
       </Expression>
       <OverallResult success="true"/>
@@ -15135,10 +15135,10 @@ loose text artifact
     <TestCase name="stringify( has_neither )" tags="[toString]" filename="tests/<exe-name>/UsageTests/ToStringWhich.tests.cpp" >
       <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/UsageTests/ToStringWhich.tests.cpp" >
         <Original>
-          ::Catch::Detail::stringify(item) == "{ !!! }"
+          ::Catch::Detail::stringify(item) == "{?}"
         </Original>
         <Expanded>
-          "{ !!! }" == "{ !!! }"
+          "{?}" == "{?}"
         </Expanded>
       </Expression>
       <OverallResult success="true"/>

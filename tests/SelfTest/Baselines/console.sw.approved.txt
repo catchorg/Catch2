@@ -12545,9 +12545,9 @@ with expansion:
   "{ 1, 2, 3, 4 }" == "{ 1, 2, 3, 4 }"
 
 ToStringWhich.tests.cpp:<line number>: PASSED:
-  REQUIRE( ::Catch::Detail::stringify(disabled_range{}) == "{ !!! }" )
+  REQUIRE( ::Catch::Detail::stringify(disabled_range{}) == "{?}" )
 with expansion:
-  "{ !!! }" == "{ !!! }"
+  "{?}" == "{?}"
 
 -------------------------------------------------------------------------------
 stringify( has_maker )
@@ -12582,9 +12582,9 @@ ToStringWhich.tests.cpp:<line number>
 ...............................................................................
 
 ToStringWhich.tests.cpp:<line number>: PASSED:
-  REQUIRE( ::Catch::Detail::stringify(item) == "{ !!! }" )
+  REQUIRE( ::Catch::Detail::stringify(item) == "{?}" )
 with expansion:
-  "{ !!! }" == "{ !!! }"
+  "{?}" == "{?}"
 
 -------------------------------------------------------------------------------
 stringify( has_operator )
