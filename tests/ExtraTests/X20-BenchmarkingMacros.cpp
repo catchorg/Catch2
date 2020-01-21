@@ -2,7 +2,9 @@
 // Test that the benchmarking support macros compile properly with the single header
 
 #include <catch2/catch_default_main.hpp>
-#include <catch2/catch.hpp>
+#include <catch2/catch_test_macros.hpp>
+#include <catch2/benchmark/catch_benchmark.hpp>
+#include <catch2/catch_generators_specific.hpp>
 
 namespace {
 std::uint64_t factorial(std::uint64_t number) {

@@ -1,5 +1,5 @@
 #include <catch2/catch_default_main.hpp>
-#include <catch2/catch.hpp>
+#include <catch2/catch_test_macros.hpp>
 
 TEST_CASE("Tests that run") {
     // All of these should be run and be reported
