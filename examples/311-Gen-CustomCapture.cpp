@@ -9,7 +9,9 @@
 // per-variable custom capture list, this example shows how to achieve
 // that.
 
-#include <catch2/catch.hpp>
+#include <catch2/catch_test_macros.hpp>
+#include <catch2/catch_generators_generic.hpp>
+#include <catch2/catch_generators_specific.hpp>
 
 TEST_CASE("Generate random doubles across different ranges",
           "[generator][example][advanced]") {
@@ -23,7 +25,7 @@ TEST_CASE("Generate random doubles across different ranges",
     }));
 
     auto r2(r1);
-    
+
     // This will take r1 by reference and r2 by value.
     // Note that there are no advantages for doing so in this example,
     // it is done only for expository purposes.

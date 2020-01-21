@@ -10,7 +10,9 @@
 // Let Catch provide the required interfaces:
 #define CATCH_CONFIG_EXTERNAL_INTERFACES
 
-#include <catch2/catch.hpp>
+#include <catch2/catch_test_macros.hpp>
+#include <catch2/reporters/catch_reporter_bases.hpp>
+#include <catch2/catch_reporter_registrars.hpp>
 #include <iostream>
 
 // -----------------------------------------------------------------------
@@ -306,7 +308,7 @@ char const * dashed_line =
 struct MyListener : Catch::TestEventListenerBase {
 
     using TestEventListenerBase::TestEventListenerBase; // inherit constructor
-    
+
     // Get rid of Wweak-tables
     ~MyListener();
 

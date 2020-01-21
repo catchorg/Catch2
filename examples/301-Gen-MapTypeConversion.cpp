@@ -1,9 +1,9 @@
 // 301-Gen-MapTypeConversion.cpp
 // Shows how to use map to modify generator's return type.
 
-// TODO
 
-#include <catch2/catch.hpp>
+#include <catch2/catch_test_macros.hpp>
+#include <catch2/catch_generators_generic.hpp>
 
 #include <string>
 #include <sstream>
@@ -23,7 +23,7 @@ public:
     }
 
     std::string const& get() const override;
-    
+
     bool next() override {
         return !!std::getline(m_stream, m_line);
     }
@@ -49,7 +49,7 @@ Catch::Generators::GeneratorWrapper<std::string> lines(std::string /* ignored fo
 TEST_CASE("filter can convert types inside the generator expression", "[example][generator]") {
     auto num = GENERATE(map<int>([](std::string const& line) { return std::stoi(line); },
                                  lines("fake-file")));
-                                 
+
     REQUIRE(num > 0);
 }
 

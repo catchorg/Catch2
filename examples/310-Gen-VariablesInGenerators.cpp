@@ -6,7 +6,9 @@
 // _WILL_ outlive the variables -- thus they should be either captured
 // by value directly, or copied by the generators during construction.
 
-#include <catch2/catch.hpp>
+#include <catch2/catch_test_macros.hpp>
+#include <catch2/catch_generators_generic.hpp>
+#include <catch2/catch_generators_specific.hpp>
 
 TEST_CASE("Generate random doubles across different ranges",
           "[generator][example][advanced]") {
