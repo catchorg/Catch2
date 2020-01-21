@@ -89,7 +89,7 @@ namespace Catch {
             }
         }
         if( isHidden ) {
-            tags.push_back( "." );
+            tags.emplace_back( "." );
         }
 
         TestCaseInfo info( static_cast<std::string>(nameAndTags.name), _className, desc, tags, _lineInfo );

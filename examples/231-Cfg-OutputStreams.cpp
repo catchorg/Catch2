@@ -16,7 +16,7 @@ class out_buff : public std::stringbuf {
 public:
     out_buff(std::FILE* stream):m_stream(stream) {}
     ~out_buff();
-    int sync() {
+    int sync() override {
         int ret = 0;
         for (unsigned char c : str()) {
             if (putc(c, m_stream) == EOF) {
