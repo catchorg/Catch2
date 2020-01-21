@@ -60,7 +60,7 @@ namespace Catch {
             assert( valueNames.size() == values.size() );
             std::size_t i = 0;
             for( auto value : values )
-                enumInfo->m_values.push_back({ value, valueNames[i++] });
+                enumInfo->m_values.emplace_back(value, valueNames[i++]);
 
             return enumInfo;
         }

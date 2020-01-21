@@ -50,14 +50,13 @@ namespace Catch {
                         if( !startsWith( line, '"' ) )
                             line = '"' + line + '"';
                         config.testsOrTags.push_back( line );
-                        config.testsOrTags.push_back( "," );
-                        
+                        config.testsOrTags.emplace_back( "," );
                     }
                 }
                 //Remove comma in the end
                 if(!config.testsOrTags.empty())
                     config.testsOrTags.erase( config.testsOrTags.end()-1 );
-                
+
                 return ParserResult::ok( ParseResultType::Matched );
             };
         auto const setTestOrder = [&]( std::string const& order ) {
@@ -214,7 +213,7 @@ namespace Catch {
             | Opt( config.benchmarkNoAnalysis )
                 ["--benchmark-no-analysis"]
                 ( "perform only measurements; do not perform any analysis" )
-			| Arg( config.testsOrTags, "test name|pattern|tags" )
+            | Arg( config.testsOrTags, "test name|pattern|tags" )
                 ( "which test or tests to use" );
 
         return cli;

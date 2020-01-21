@@ -69,7 +69,7 @@ namespace Catch {
                 auto const& allTestCases = getAllTestCasesSorted(*m_config);
                 m_matches = m_config->testSpec().matchesByFilter(allTestCases, *m_config);
                 auto const& invalidArgs = m_config->testSpec().getInvalidArgs();
-                
+
                 if (m_matches.empty() && invalidArgs.empty()) {
                     for (auto const& test : allTestCases)
                         if (!test.isHidden())
@@ -97,12 +97,12 @@ namespace Catch {
                         totals.error = -1;
                     }
                 }
-                
+
                 if (!invalidArgs.empty()) {
-                    for (auto const& invalidArg: invalidArgs)                   
+                    for (auto const& invalidArg: invalidArgs)
                          m_context.reporter().reportInvalidArguments(invalidArg);
-                }   
-                
+                }
+
                 m_context.testGroupEnded(m_config->name(), totals, 1, 1);
                 return totals;
             }
@@ -220,11 +220,11 @@ namespace Catch {
         char **utf8Argv = new char *[ argc ];
 
         for ( int i = 0; i < argc; ++i ) {
-            int bufSize = WideCharToMultiByte( CP_UTF8, 0, argv[i], -1, NULL, 0, NULL, NULL );
+            int bufSize = WideCharToMultiByte( CP_UTF8, 0, argv[i], -1, nullptr, 0, nullptr, nullptr );
 
             utf8Argv[ i ] = new char[ bufSize ];
 
-            WideCharToMultiByte( CP_UTF8, 0, argv[i], -1, utf8Argv[i], bufSize, NULL, NULL );
+            WideCharToMultiByte( CP_UTF8, 0, argv[i], -1, utf8Argv[i], bufSize, nullptr, nullptr );
         }
 
         int returnCode = applyCommandLine( argc, utf8Argv );
