@@ -17,9 +17,9 @@ TEST_CASE( "vector<string> -> toString", "[toString][vector]" )
 {
     std::vector<std::string> vv;
     REQUIRE( ::Catch::Detail::stringify(vv) == "{  }" );
-    vv.push_back( "hello" );
+    vv.emplace_back( "hello" );
     REQUIRE( ::Catch::Detail::stringify(vv) == "{ \"hello\" }" );
-    vv.push_back( "world" );
+    vv.emplace_back( "world" );
     REQUIRE( ::Catch::Detail::stringify(vv) == "{ \"hello\", \"world\" }" );
 }
 

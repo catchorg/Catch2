@@ -30,7 +30,7 @@ std::ostream& operator<<(std::ostream& out, Catch::Tag t) {
 template< typename T >
 std::ostream& operator<<( std::ostream& os, std::vector<T> const& v ) {
     os << "{ ";
-    for ( auto x : v )
+    for ( const auto& x : v )
         os << x << ", ";
     return os << "}";
 }
@@ -63,7 +63,7 @@ void print( std::ostream& os, int const level, Catch::MessageInfo const& info ) 
 
 void print( std::ostream& os, int const level, std::string const& title, std::vector<Catch::MessageInfo> const& v ) {
     os << ws(level  ) << title << ":\n";
-    for ( auto x : v )
+    for ( const auto& x : v )
     {
         os << ws(level+1) << "{\n";
         print( os, level+2, x );
