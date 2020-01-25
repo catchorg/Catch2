@@ -16,14 +16,14 @@
 
 namespace Catch {
 
-    ReporterConfig::ReporterConfig( IConfigPtr const& _fullConfig )
+    ReporterConfig::ReporterConfig( IConfig const* _fullConfig )
     :   m_stream( &_fullConfig->stream() ), m_fullConfig( _fullConfig ) {}
 
-    ReporterConfig::ReporterConfig( IConfigPtr const& _fullConfig, std::ostream& _stream )
+    ReporterConfig::ReporterConfig( IConfig const* _fullConfig, std::ostream& _stream )
     :   m_stream( &_stream ), m_fullConfig( _fullConfig ) {}
 
     std::ostream& ReporterConfig::stream() const { return *m_stream; }
-    IConfigPtr ReporterConfig::fullConfig() const { return m_fullConfig; }
+    IConfig const * ReporterConfig::fullConfig() const { return m_fullConfig; }
 
 
     TestRunInfo::TestRunInfo( std::string const& _name ) : name( _name ) {}

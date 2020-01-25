@@ -51,7 +51,7 @@ namespace Catch {
         BeforeExit = 2,
         BeforeStartAndExit = BeforeStart | BeforeExit
     }; };
-    
+
     class TestSpec;
 
     struct IConfig : NonCopyable {

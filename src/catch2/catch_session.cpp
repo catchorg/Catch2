@@ -33,14 +33,14 @@ namespace Catch {
     namespace {
         const int MaxExitCode = 255;
 
-        IStreamingReporterPtr createReporter(std::string const& reporterName, IConfigPtr const& config) {
+        IStreamingReporterPtr createReporter(std::string const& reporterName, IConfig const* config) {
             auto reporter = Catch::getRegistryHub().getReporterRegistry().create(reporterName, config);
             CATCH_ENFORCE(reporter, "No reporter registered with name: '" << reporterName << "'");
 
             return reporter;
         }
 
-        IStreamingReporterPtr makeReporter(std::shared_ptr<Config> const& config) {
+        IStreamingReporterPtr makeReporter(Config const* config) {
             if (Catch::getRegistryHub().getReporterRegistry().getListeners().empty()) {
                 return createReporter(config->getReporterName(), config);
             }
@@ -273,7 +273,7 @@ namespace Catch {
             }
 
             // Create reporter(s) so we can route listings through them
-            auto reporter = makeReporter(m_config);
+            auto reporter = makeReporter(m_config.get());
 
             // Handle list request
             if (list(*reporter, m_config)) {

@@ -37,16 +37,16 @@ namespace Catch {
     struct TagInfo;
 
     struct ReporterConfig {
-        explicit ReporterConfig( IConfigPtr const& _fullConfig );
+        explicit ReporterConfig( IConfig const* _fullConfig );
 
-        ReporterConfig( IConfigPtr const& _fullConfig, std::ostream& _stream );
+        ReporterConfig( IConfig const* _fullConfig, std::ostream& _stream );
 
         std::ostream& stream() const;
-        IConfigPtr fullConfig() const;
+        IConfig const* fullConfig() const;
 
     private:
         std::ostream* m_stream;
-        IConfigPtr m_fullConfig;
+        IConfig const* m_fullConfig;
     };
 
     struct ReporterPreferences {
@@ -268,7 +268,7 @@ namespace Catch {
         using Listeners = std::vector<IReporterFactoryPtr>;
 
         virtual ~IReporterRegistry();
-        virtual IStreamingReporterPtr create( std::string const& name, IConfigPtr const& config ) const = 0;
+        virtual IStreamingReporterPtr create( std::string const& name, IConfig const* config ) const = 0;
         virtual FactoryMap const& getFactories() const = 0;
         virtual Listeners const& getListeners() const = 0;
     };
