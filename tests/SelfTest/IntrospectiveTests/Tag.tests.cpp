@@ -22,14 +22,12 @@ TEST_CASE( "Tag alias can be registered against tag patterns" ) {
             FAIL( "expected exception" );
         }
         catch( std::exception& ex ) {
-#ifndef CATCH_CONFIG_DISABLE_MATCHERS
             std::string what = ex.what();
             using namespace Catch::Matchers;
             CHECK_THAT( what, Contains( "[@zzz]" ) );
             CHECK_THAT( what, Contains( "file" ) );
             CHECK_THAT( what, Contains( "2" ) );
             CHECK_THAT( what, Contains( "10" ) );
-#endif
         }
     }
 

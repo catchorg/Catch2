@@ -26,9 +26,7 @@
 #include <catch2/catch_compiler_capabilities.h>
 #include <catch2/catch_string_manip.h>
 
-#ifndef CATCH_CONFIG_DISABLE_MATCHERS
 #include <catch2/catch_capture_matchers.h>
-#endif
 #include <catch2/catch_generators.hpp>
 #include <catch2/catch_generators_generic.hpp>
 #include <catch2/catch_generators_specific.hpp>

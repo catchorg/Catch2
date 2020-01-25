@@ -146,7 +146,6 @@ by using `_NO_` in the macro, e.g. `CATCH_CONFIG_NO_CPP17_UNCAUGHT_EXCEPTIONS`.
     CATCH_CONFIG_COUNTER                    // Use __COUNTER__ to generate unique names for test cases
     CATCH_CONFIG_WINDOWS_SEH                // Enable SEH handling on Windows
     CATCH_CONFIG_FAST_COMPILE               // Sacrifices some (rather minor) features for compilation speed
-    CATCH_CONFIG_DISABLE_MATCHERS           // Do not compile Matchers in this compilation unit
     CATCH_CONFIG_POSIX_SIGNALS              // Enable handling POSIX signals
     CATCH_CONFIG_WINDOWS_CRTDBG             // Enable leak checking using Windows's CRT Debug Heap
     CATCH_CONFIG_DISABLE_STRINGIFICATION    // Disable stringifying the original expression
@@ -182,11 +181,6 @@ should not lead to false negatives.
 
 `CATCH_CONFIG_FAST_COMPILE` has to be either defined, or not defined,
 in all translation units that are linked into single test binary.
-
-### `CATCH_CONFIG_DISABLE_MATCHERS`
-When `CATCH_CONFIG_DISABLE_MATCHERS` is defined, all mentions of Catch's Matchers are ifdef-ed away from the translation unit. Doing so will speed up compilation of that TU.
-
-_Note: If you define `CATCH_CONFIG_DISABLE_MATCHERS` in the same file as Catch's main is implemented, your test executable will fail to link if you use Matchers anywhere._
 
 ### `CATCH_CONFIG_DISABLE_STRINGIFICATION`
 This toggle enables a workaround for VS 2017 bug. For details see [known limitations](limitations.md#visual-studio-2017----raw-string-literal-in-assert-fails-to-compile).

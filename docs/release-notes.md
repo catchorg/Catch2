@@ -50,10 +50,13 @@
   * You can still write `SECTION("ShortName", "Long and wordy description")`, but the description is thrown away
   * The description type now must be a `const char*` or implicitly convertible to it
 
-
 ### Fixes
 * The `INFO` macro no longer contains superfluous semicolon (#1456)
 * The `--list*` family of command line flags now return 0 on success (#1410, #1146)
+
+### Other changes
+* `CATCH_CONFIG_DISABLE_MATCHERS` no longer exists.
+  * If you do not want to use Matchers in a TU, do not include their header.
 
 
 ## 2.10.2

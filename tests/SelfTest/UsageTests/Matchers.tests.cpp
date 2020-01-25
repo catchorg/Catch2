@@ -22,8 +22,6 @@
 
 namespace { namespace MatchersTests {
 
-#ifndef CATCH_CONFIG_DISABLE_MATCHERS
-
 #ifndef MATCHERS_TEST_HELPERS_INCLUDED // Don't compile this more than once per TU
 #define MATCHERS_TEST_HELPERS_INCLUDED
 
@@ -557,8 +555,6 @@ namespace { namespace MatchersTests {
         }
 
 } } // namespace MatchersTests
-
-#endif // CATCH_CONFIG_DISABLE_MATCHERS
 
 #ifdef __clang__
 #pragma clang diagnostic pop

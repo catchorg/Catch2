@@ -162,8 +162,6 @@ TEST_CASE("thrown std::strings are translated", "[.][failing][!throws]") {
 }
 
 
-#ifndef CATCH_CONFIG_DISABLE_MATCHERS
-
 TEST_CASE( "Exception messages can be tested for", "[!throws]" ) {
     using namespace Catch::Matchers;
     SECTION( "exact match" )
@@ -177,8 +175,6 @@ TEST_CASE( "Exception messages can be tested for", "[!throws]" ) {
         REQUIRE_THROWS_WITH( thisThrows(), Contains( "exCept", Catch::CaseSensitive::No ) );
     }
 }
-
-#endif
 
 TEST_CASE( "Mismatching exception messages failing the test", "[.][failing][!throws]" ) {
     REQUIRE_THROWS_WITH( thisThrows(), "expected exception" );
