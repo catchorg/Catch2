@@ -85,7 +85,7 @@ if __name__ == "__main__":
         reference=settings.reference,
         channel=settings.channel,
         upload=settings.upload,
-        upload_only_when_stable=settings.upload_only_when_stable,
+        upload_only_when_stable=False,
         stable_branch_pattern=settings.stable_branch_pattern,
         login_username=settings.login_username,
         username=settings.username,
