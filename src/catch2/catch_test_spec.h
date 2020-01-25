@@ -25,6 +25,7 @@ namespace Catch {
     struct IConfig;
 
     class TestSpec {
+
         class Pattern {
         public:
             explicit Pattern( std::string const& name );
@@ -34,7 +35,6 @@ namespace Catch {
         private:
             std::string const m_name;
         };
-        using PatternPtr = std::shared_ptr<Pattern>;
 
         class NamePattern : public Pattern {
         public:
@@ -53,8 +53,8 @@ namespace Catch {
         };
 
         struct Filter {
-            std::vector<PatternPtr> m_required;
-            std::vector<PatternPtr> m_forbidden;
+            std::vector<std::unique_ptr<Pattern>> m_required;
+            std::vector<std::unique_ptr<Pattern>> m_forbidden;
 
             bool matches( TestCaseInfo const& testCase ) const;
             std::string name() const;

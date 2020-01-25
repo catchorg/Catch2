@@ -20,10 +20,10 @@ namespace Catch {
         m_substring.reserve(m_arg.size());
         m_patternName.reserve(m_arg.size());
         m_realPatternPos = 0;
-        
+
         for( m_pos = 0; m_pos < m_arg.size(); ++m_pos )
           //if visitChar fails
-           if( !visitChar( m_arg[m_pos] ) ){ 
+           if( !visitChar( m_arg[m_pos] ) ){
                m_testSpec.m_invalidArgs.push_back(arg);
                break;
            }
@@ -32,7 +32,7 @@ namespace Catch {
     }
     TestSpec TestSpecParser::testSpec() {
         addFilter();
-        return m_testSpec;
+        return std::move(m_testSpec);
     }
     bool TestSpecParser::visitChar( char c ) {
         if( (m_mode != EscapedName) && (c == '\\') ) {
@@ -148,7 +148,7 @@ namespace Catch {
 
     void TestSpecParser::addFilter() {
         if( !m_currentFilter.m_required.empty() || !m_currentFilter.m_forbidden.empty() ) {
-            m_testSpec.m_filters.push_back( m_currentFilter );
+            m_testSpec.m_filters.push_back( std::move(m_currentFilter) );
             m_currentFilter = TestSpec::Filter();
         }
     }
@@ -156,12 +156,12 @@ namespace Catch {
     void TestSpecParser::saveLastMode() {
       lastMode = m_mode;
     }
-    
+
     void TestSpecParser::revertBackToLastMode() {
       m_mode = lastMode;
     }
-    
-    bool TestSpecParser::separate() {  
+
+    bool TestSpecParser::separate() {
       if( (m_mode==QuotedName) || (m_mode==Tag) ){
          //invalid argument, signal failure to previous scope.
          m_mode = None;
@@ -174,7 +174,7 @@ namespace Catch {
       addFilter();
       return true; //success
     }
-    
+
     TestSpec parseTestSpec( std::string const& arg ) {
         return TestSpecParser( ITagAliasRegistry::get() ).parse( arg ).testSpec();
     }

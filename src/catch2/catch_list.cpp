@@ -29,13 +29,13 @@ namespace Catch {
     namespace {
 
         void listTests(IStreamingReporter& reporter, Config const& config) {
-            TestSpec testSpec = config.testSpec();
+            auto const& testSpec = config.testSpec();
             auto matchedTestCases = filterTests(getAllTestCasesSorted(config), testSpec, config);
             reporter.listTests(matchedTestCases, config);
         }
 
         void listTags(IStreamingReporter& reporter, Config const& config) {
-            TestSpec testSpec = config.testSpec();
+            auto const& testSpec = config.testSpec();
             std::vector<TestCaseHandle> matchedTestCases = filterTests(getAllTestCasesSorted(config), testSpec, config);
 
             std::map<StringRef, TagInfo> tagCounts;

@@ -65,11 +65,10 @@ namespace Catch {
                 token = token.substr( 8 );
             }
             if( !token.empty() ) {
-                TestSpec::PatternPtr pattern = std::make_shared<T>( token, m_substring );
                 if (m_exclusion) {
-                    m_currentFilter.m_forbidden.push_back(pattern);
+                    m_currentFilter.m_forbidden.emplace_back(std::make_unique<T>(token, m_substring));
                 } else {
-                    m_currentFilter.m_required.push_back(pattern);
+                    m_currentFilter.m_required.emplace_back(std::make_unique<T>(token, m_substring));
                 }
             }
             m_substring.clear();
