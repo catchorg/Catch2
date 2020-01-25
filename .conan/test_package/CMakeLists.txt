@@ -14,6 +14,6 @@ find_package(Catch2 REQUIRED CONFIG)
 add_executable(${PROJECT_NAME} test_package.cpp)
 # Note: Conan 1.21 doesn't support granular target generation yet.
 # The Main library would be included into the unified target.
-# It's controlled by the `no_main` option in the recipe.
+# It's controlled by the `with_main` option in the recipe.
 target_link_libraries(${PROJECT_NAME} Catch2::Catch2)
 set_target_properties(${PROJECT_NAME} PROPERTIES CXX_STANDARD 14)

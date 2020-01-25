@@ -15,8 +15,8 @@ class CatchConan(ConanFile):
 
     settings = "os", "compiler", "build_type", "arch"
 
-    options = {"no_main": [True, False]}
-    default_options = {"no_main": False}
+    options = {"with_main": [True, False]}
+    default_options = {"with_main": True}
 
     def _configure_cmake(self):
         cmake = CMake(self)
@@ -36,10 +36,10 @@ class CatchConan(ConanFile):
         cmake.install()
 
     def package_id(self):
-        del self.info.options.no_main
+        del self.info.options.with_main
 
     def package_info(self):
-        self.cpp_info.libs = ['Catch2'] if self.options.no_main else [
-            'Catch2Main', 'Catch2']
+        self.cpp_info.libs = [
+            'Catch2Main', 'Catch2'] if self.options.with_main else ['Catch2']
         self.cpp_info.names["cmake_find_package"] = "Catch2"
         self.cpp_info.names["cmake_find_package_multi"] = "Catch2"
