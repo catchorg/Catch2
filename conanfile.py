@@ -4,7 +4,7 @@ from conans import ConanFile, CMake
 
 class CatchConan(ConanFile):
     name = "catch2"
-    description = "A modern, C++-native, header-only, framework for unit-tests, TDD and BDD"
+    description = "A modern, C++-native, framework for unit-tests, TDD and BDD"
     topics = ("conan", "catch2", "unit-test", "tdd", "bdd")
     url = "https://github.com/catchorg/Catch2"
     homepage = url
