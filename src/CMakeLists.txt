@@ -77,6 +77,7 @@ set(INTERNAL_HEADERS
     ${SOURCES_DIR}/catch_matchers_floating.h
     ${SOURCES_DIR}/catch_matchers_generic.hpp
     ${SOURCES_DIR}/catch_matchers_string.h
+    ${SOURCES_DIR}/catch_matchers_templates.hpp
     ${SOURCES_DIR}/catch_matchers_vector.h
     ${SOURCES_DIR}/catch_message.h
     ${SOURCES_DIR}/catch_meta.hpp
@@ -159,6 +160,7 @@ set(IMPL_SOURCES
     ${SOURCES_DIR}/catch_matchers_floating.cpp
     ${SOURCES_DIR}/catch_matchers_generic.cpp
     ${SOURCES_DIR}/catch_matchers_string.cpp
+    ${SOURCES_DIR}/catch_matchers_templates.cpp
     ${SOURCES_DIR}/catch_message.cpp
     ${SOURCES_DIR}/catch_output_redirect.cpp
     ${SOURCES_DIR}/catch_registry_hub.cpp
