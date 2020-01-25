@@ -9,9 +9,15 @@ class CatchConan(ConanFile):
     url = "https://github.com/catchorg/Catch2"
     homepage = url
     license = "BSL-1.0"
+
     exports = "LICENSE.txt"
     exports_sources = ("src/*", "CMakeLists.txt", "CMake/*", "extras/*")
+
     settings = "os", "compiler", "build_type", "arch"
+
+    options = {"no_main": [True, False]}
+    default_options = {"no_main": False}
+
     generators = "cmake"
 
     def _configure_cmake(self):
@@ -31,7 +37,11 @@ class CatchConan(ConanFile):
         cmake = self._configure_cmake()
         cmake.install()
 
+    def package_id(self):
+        del self.info.options.no_main
+
     def package_info(self):
-        self.cpp_info.libs = ['Catch2Main', 'Catch2']
+        self.cpp_info.libs = ['Catch2'] if self.options.no_main else [
+            'Catch2Main', 'Catch2']
         self.cpp_info.names["cmake_find_package"] = "Catch2"
         self.cpp_info.names["cmake_find_package_multi"] = "Catch2"
