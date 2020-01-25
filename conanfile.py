@@ -18,8 +18,6 @@ class CatchConan(ConanFile):
     options = {"no_main": [True, False]}
     default_options = {"no_main": False}
 
-    generators = "cmake"
-
     def _configure_cmake(self):
         cmake = CMake(self)
         cmake.definitions["BUILD_TESTING"] = "OFF"
