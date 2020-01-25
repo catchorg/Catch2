@@ -28,7 +28,7 @@ namespace Catch {
 
     class StartupExceptionRegistry;
 
-    using IReporterFactoryPtr = std::shared_ptr<IReporterFactory>;
+    using IReporterFactoryPtr = std::unique_ptr<IReporterFactory>;
 
     struct IRegistryHub {
         virtual ~IRegistryHub();
@@ -44,8 +44,8 @@ namespace Catch {
 
     struct IMutableRegistryHub {
         virtual ~IMutableRegistryHub();
-        virtual void registerReporter( std::string const& name, IReporterFactoryPtr const& factory ) = 0;
-        virtual void registerListener( IReporterFactoryPtr const& factory ) = 0;
+        virtual void registerReporter( std::string const& name, IReporterFactoryPtr factory ) = 0;
+        virtual void registerListener( IReporterFactoryPtr factory ) = 0;
         virtual void registerTest(std::unique_ptr<TestCaseInfo>&& testInfo, std::unique_ptr<ITestInvoker>&& invoker) = 0;
         virtual void registerTranslator( const IExceptionTranslator* translator ) = 0;
         virtual void registerTagAlias( std::string const& alias, std::string const& tag, SourceLineInfo const& lineInfo ) = 0;

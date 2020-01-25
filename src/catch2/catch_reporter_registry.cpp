@@ -18,17 +18,21 @@
 
 namespace Catch {
 
-    ReporterRegistry::ReporterRegistry():
-        m_factories({
-                {"automake", std::make_shared<ReporterFactory<AutomakeReporter>>() },
-                {"compact", std::make_shared<ReporterFactory<CompactReporter>>() },
-                {"console", std::make_shared<ReporterFactory<ConsoleReporter>>() },
-                {"junit", std::make_shared<ReporterFactory<JunitReporter>>() },
-                {"sonarqube", std::make_shared<ReporterFactory<SonarQubeReporter>>() },
-                {"tap", std::make_shared<ReporterFactory<TAPReporter>>() },
-                {"teamcity", std::make_shared<ReporterFactory<TeamCityReporter>>() },
-                {"xml", std::make_shared<ReporterFactory<XmlReporter>>() },
-        }) {}
+    ReporterRegistry::ReporterRegistry() {
+        // Because it is impossible to move out of initializer list,
+        // we have to add the elements manually
+        m_factories["automake"] = std::make_unique<ReporterFactory<AutomakeReporter>>();
+        m_factories["compact"] = std::make_unique<ReporterFactory<CompactReporter>>();
+        m_factories["console"] = std::make_unique<ReporterFactory<ConsoleReporter>>();
+        m_factories["junit"] = std::make_unique<ReporterFactory<JunitReporter>>();
+        m_factories["sonarqube"] = std::make_unique<ReporterFactory<SonarQubeReporter>>();
+        m_factories["tap"] = std::make_unique<ReporterFactory<TAPReporter>>();
+        m_factories["teamcity"] = std::make_unique<ReporterFactory<TeamCityReporter>>();
+        m_factories["xml"] = std::make_unique<ReporterFactory<XmlReporter>>();
+    }
+
+    ReporterRegistry::~ReporterRegistry() = default;
+
 
     IStreamingReporterPtr ReporterRegistry::create( std::string const& name, IConfigPtr const& config ) const {
         auto it =  m_factories.find( name );
@@ -37,11 +41,11 @@ namespace Catch {
         return it->second->create( ReporterConfig( config ) );
     }
 
-    void ReporterRegistry::registerReporter( std::string const& name, IReporterFactoryPtr const& factory ) {
-        m_factories.emplace(name, factory);
+    void ReporterRegistry::registerReporter( std::string const& name, IReporterFactoryPtr factory ) {
+        m_factories.emplace(name, std::move(factory));
     }
-    void ReporterRegistry::registerListener( IReporterFactoryPtr const& factory ) {
-        m_listeners.push_back( factory );
+    void ReporterRegistry::registerListener( IReporterFactoryPtr factory ) {
+        m_listeners.push_back( std::move(factory) );
     }
 
     IReporterRegistry::FactoryMap const& ReporterRegistry::getFactories() const {

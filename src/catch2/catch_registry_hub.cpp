@@ -43,11 +43,11 @@ namespace Catch {
             }
 
         public: // IMutableRegistryHub
-            void registerReporter( std::string const& name, IReporterFactoryPtr const& factory ) override {
-                m_reporterRegistry.registerReporter( name, factory );
+            void registerReporter( std::string const& name, IReporterFactoryPtr factory ) override {
+                m_reporterRegistry.registerReporter( name, std::move(factory) );
             }
-            void registerListener( IReporterFactoryPtr const& factory ) override {
-                m_reporterRegistry.registerListener( factory );
+            void registerListener( IReporterFactoryPtr factory ) override {
+                m_reporterRegistry.registerListener( std::move(factory) );
             }
             void registerTest( std::unique_ptr<TestCaseInfo>&& testInfo, std::unique_ptr<ITestInvoker>&& invoker ) override {
                 m_testCaseRegistry.registerTest( std::move(testInfo), std::move(invoker) );

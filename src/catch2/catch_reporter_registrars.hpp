@@ -17,7 +17,7 @@ namespace Catch {
     class ReporterFactory : public IReporterFactory {
 
         IStreamingReporterPtr create( ReporterConfig const& config ) const override {
-            return std::unique_ptr<T>( new T( config ) );
+            return std::make_unique<T>( config );
         }
 
         std::string getDescription() const override {
@@ -50,7 +50,7 @@ namespace Catch {
     public:
 
         ListenerRegistrar() {
-            getMutableRegistryHub().registerListener( std::make_shared<ListenerFactory>() );
+            getMutableRegistryHub().registerListener( std::make_unique<ListenerFactory>() );
         }
     };
 }

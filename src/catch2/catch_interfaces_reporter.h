@@ -261,7 +261,7 @@ namespace Catch {
         virtual IStreamingReporterPtr create( ReporterConfig const& config ) const = 0;
         virtual std::string getDescription() const = 0;
     };
-    using IReporterFactoryPtr = std::shared_ptr<IReporterFactory>;
+    using IReporterFactoryPtr = std::unique_ptr<IReporterFactory>;
 
     struct IReporterRegistry {
         using FactoryMap = std::map<std::string, IReporterFactoryPtr>;
