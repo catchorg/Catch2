@@ -4,9 +4,11 @@
 #include <catch2/catch_common.h>
 #include <catch2/catch_matchers.h>
 
+#include <array>
 #include <string>
 #include <vector>
 #include <type_traits>
+#include <utility>
 
 namespace Catch {
 namespace Matchers {
