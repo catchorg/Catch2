@@ -79,7 +79,7 @@ namespace Matchers {
         >;
 
         template<typename... Ts>
-        using are_generic_matchers = std::conjunction<is_generic_matcher<Ts>...>;
+        using are_generic_matchers = conjunction<is_generic_matcher<Ts>...>;
 
         template<typename T>
         using is_matcher = std::is_base_of<
