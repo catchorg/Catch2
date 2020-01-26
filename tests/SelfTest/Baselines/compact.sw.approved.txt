@@ -263,6 +263,8 @@ ToStringGeneral.tests.cpp:<line number>: passed: c == i for: 2 == 2
 ToStringGeneral.tests.cpp:<line number>: passed: c == i for: 3 == 3
 ToStringGeneral.tests.cpp:<line number>: passed: c == i for: 4 == 4
 ToStringGeneral.tests.cpp:<line number>: passed: c == i for: 5 == 5
+Matchers.tests.cpp:<line number>: passed: vec, Predicate<std::vector<int>>([](auto const& vec) { return std::all_of(vec.begin(), vec.end(), [](int elem) { return elem % 2 == 1; }); }, "All elements are odd") && !EqualsRange(a) for: { 1, 3, 5 } ( matches predicate: "All elements are odd" and not Equals: { 5, 3, 1 } )
+Matchers.tests.cpp:<line number>: passed: container, EqualsRange(a) || EqualsRange(b) || EqualsRange(c) for: { 1, 2, 3 } ( Equals: { 1, 2, 3 } or Equals: { 0, 1, 2 } or Equals: { 4, 5, 6 } )
 Tricky.tests.cpp:<line number>: passed: std::vector<constructor_throws>{constructor_throws{}, constructor_throws{}}
 Tricky.tests.cpp:<line number>: passed: std::vector<constructor_throws>{constructor_throws{}, constructor_throws{}}
 Tricky.tests.cpp:<line number>: passed: std::vector<int>{1, 2, 3} == std::vector<int>{1, 2, 3}

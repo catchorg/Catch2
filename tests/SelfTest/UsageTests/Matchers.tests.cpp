@@ -9,10 +9,12 @@
 #include <catch2/catch_matchers_generic.hpp>
 #include <catch2/catch_matchers_string.h>
 #include <catch2/catch_matchers_vector.h>
+#include <catch2/catch_matchers_templates.hpp>
 
-#include <sstream>
 #include <algorithm>
 #include <cmath>
+#include <list>
+#include <sstream>
 
 #ifdef __clang__
 #pragma clang diagnostic push
@@ -555,6 +557,58 @@ namespace { namespace MatchersTests {
         }
 
 } } // namespace MatchersTests
+
+template<typename Range>
+struct EqualsRangeMatcher : Catch::MatcherGenericBase {
+
+    EqualsRangeMatcher(Range const& range) : range{ range } {}
+
+    template<typename OtherRange>
+    bool match(OtherRange const& other) const {
+        using std::begin;
+        using std::end;
+
+        return std::equal(begin(range), end(range), begin(other), end(other));
+    }
+
+    std::string describe() const override {
+        return "Equals: " + Catch::rangeToString(range);
+    }
+
+private:
+    Range const& range;
+};
+
+template<typename Range>
+auto EqualsRange(const Range& range) -> EqualsRangeMatcher<Range> {
+    return EqualsRangeMatcher<Range>{range};
+}
+
+TEST_CASE("Combining templated matchers", "[matchers][templated]") {
+    std::array<int, 3> container{ 1,2,3 };
+
+    std::array<int, 3> a{ 1,2,3 };
+    std::vector<int> b{ 0,1,2 };
+    std::list<int> c{ 4,5,6 };
+
+    REQUIRE_THAT(container, EqualsRange(a) || EqualsRange(b) || EqualsRange(c));
+}
+
+TEST_CASE("Combining templated and concrete matchers", "[matchers][templated]") {
+    using namespace Catch::Matchers;
+    std::vector<int> vec{ 1, 3, 5 };
+
+    std::array<int, 3> a{ 5, 3, 1 };
+
+    REQUIRE_THAT(vec,
+                 Predicate<std::vector<int>>([](auto const& vec) {
+                     return std::all_of(vec.begin(), vec.end(), [](int elem) {
+                         return elem % 2 == 1;
+                     });
+                 }, "All elements are odd") &&
+                 !EqualsRange(a));
+}
+
 
 #ifdef __clang__
 #pragma clang diagnostic pop

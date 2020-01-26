@@ -85,6 +85,8 @@ Nor would this
 :test-result: PASS CAPTURE parses string and character constants
 :test-result: PASS Capture and info messages
 :test-result: PASS Character pretty printing
+:test-result: PASS Combining templated and concrete matchers
+:test-result: PASS Combining templated matchers
 :test-result: PASS Commas in various macros are allowed
 :test-result: PASS Comparing function pointers
 :test-result: PASS Comparison ops

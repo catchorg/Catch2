@@ -2117,6 +2117,30 @@ with expansion:
   5 == 5
 
 -------------------------------------------------------------------------------
+Combining templated and concrete matchers
+-------------------------------------------------------------------------------
+Matchers.tests.cpp:<line number>
+...............................................................................
+
+Matchers.tests.cpp:<line number>: PASSED:
+  REQUIRE_THAT( vec, Predicate<std::vector<int>>([](auto const& vec) { return std::all_of(vec.begin(), vec.end(), [](int elem) { return elem % 2 == 1; }); }, "All elements are odd") && !EqualsRange(a) )
+with expansion:
+  { 1, 3, 5 } ( matches predicate: "All elements are odd" and not Equals: { 5,
+  3, 1 } )
+
+-------------------------------------------------------------------------------
+Combining templated matchers
+-------------------------------------------------------------------------------
+Matchers.tests.cpp:<line number>
+...............................................................................
+
+Matchers.tests.cpp:<line number>: PASSED:
+  REQUIRE_THAT( container, EqualsRange(a) || EqualsRange(b) || EqualsRange(c) )
+with expansion:
+  { 1, 2, 3 } ( Equals: { 1, 2, 3 } or Equals: { 0, 1, 2 } or Equals: { 4, 5, 6
+  } )
+
+-------------------------------------------------------------------------------
 Commas in various macros are allowed
 -------------------------------------------------------------------------------
 Tricky.tests.cpp:<line number>
@@ -14053,6 +14077,6 @@ Misc.tests.cpp:<line number>
 Misc.tests.cpp:<line number>: PASSED:
 
 ===============================================================================
-test cases:  320 |  230 passed |  86 failed |  4 failed as expected
-assertions: 1809 | 1640 passed | 148 failed | 21 failed as expected
+test cases:  322 |  232 passed |  86 failed |  4 failed as expected
+assertions: 1811 | 1642 passed | 148 failed | 21 failed as expected
 
