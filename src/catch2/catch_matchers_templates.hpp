@@ -23,20 +23,20 @@ namespace Matchers {
         std::vector<void const*> vector_cat(void const* lhs, std::vector<void const*> const& rhs);
 
 
-        template<typename T>
-        using is_generic_matcher = std::is_base_of<
-            Catch::Matchers::Impl::MatcherGenericBase,
-            typename std::remove_cv<typename std::remove_reference<T>::type>::type
-        >;
+        #ifdef CATCH_CPP17_OR_GREATER
 
-        template<typename... Ts>
-        using are_generic_matchers = std::conjunction<is_generic_matcher<Ts>...>;
+        using std::conjunction;
 
-        template<typename T>
-        using is_matcher = std::is_base_of<
-            Catch::Matchers::Impl::MatcherUntypedBase,
-            typename std::remove_cv<typename std::remove_reference<T>::type>::type
-        >;
+        #else // CATCH_CPP17_OR_GREATER
+
+        template<typename... Cond>
+        struct conjunction : std::true_type {};
+
+        template<typename Cond, typename... Rest>
+        struct conjunction : std::integral_constant<bool, Cond::value && conjunction<Rest...>::value> {};
+
+        #endif // CATCH_CPP17_OR_GREATER
+
 
         #ifdef CATCH_CPP14_OR_GREATER
 
@@ -44,7 +44,8 @@ namespace Matchers {
         using std::index_sequence_for;
         using std::make_index_sequence;
 
-        #else
+        #else // CATCH_CPP14_OR_GREATER
+
         /* C++14 index_sequence for C++11 */
 
         template<typename T, T... Ints>
@@ -68,7 +69,24 @@ namespace Matchers {
         template<typename... T>
         using index_sequence_for = make_index_sequence<sizeof...(T)>;
 
-        #endif
+        #endif // CATCH_CPP14_OR_GREATER
+
+
+        template<typename T>
+        using is_generic_matcher = std::is_base_of<
+            Catch::Matchers::Impl::MatcherGenericBase,
+            typename std::remove_cv<typename std::remove_reference<T>::type>::type
+        >;
+
+        template<typename... Ts>
+        using are_generic_matchers = std::conjunction<is_generic_matcher<Ts>...>;
+
+        template<typename T>
+        using is_matcher = std::is_base_of<
+            Catch::Matchers::Impl::MatcherUntypedBase,
+            typename std::remove_cv<typename std::remove_reference<T>::type>::type
+        >;
+
 
         template<typename..., typename Arg>
         bool match_all_of(Arg const&, std::vector<void const*> const&, index_sequence<>) {
