@@ -6,6 +6,7 @@
 
 #include <string>
 #include <vector>
+#include <type_traits>
 
 namespace Catch {
 namespace Matchers {
