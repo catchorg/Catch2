@@ -33,7 +33,7 @@ namespace Matchers {
         struct conjunction : std::true_type {};
 
         template<typename Cond, typename... Rest>
-        struct conjunction : std::integral_constant<bool, Cond::value && conjunction<Rest...>::value> {};
+        struct conjunction<Cond, Rest...> : std::integral_constant<bool, Cond::value && conjunction<Rest...>::value> {};
 
         #endif // CATCH_CPP17_OR_GREATER
 
