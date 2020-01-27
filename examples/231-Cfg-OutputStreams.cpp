@@ -10,12 +10,13 @@
 #define CATCH_CONFIG_MAIN
 #include <catch2/catch.hpp>
 
+
 class out_buff : public std::stringbuf {
     std::FILE* m_stream;
 public:
-    out_buff(std::FILE* stream) :m_stream(stream) {}
-    ~out_buff() { pubsync(); }
-    int sync() {
+    out_buff(std::FILE* stream):m_stream(stream) {}
+    ~out_buff();
+    int sync() override {
         int ret = 0;
         for (unsigned char c : str()) {
             if (putc(c, m_stream) == EOF) {
@@ -28,6 +29,12 @@ public:
         return ret;
     }
 };
+
+out_buff::~out_buff() { pubsync(); }
+
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wexit-time-destructors" // static variables in cout/cerr/clog
+#endif
 
 namespace Catch {
     std::ostream& cout() {

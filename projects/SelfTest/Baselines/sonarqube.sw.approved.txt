@@ -35,6 +35,8 @@
     <testCase name="Parse test names and tags/quoted string followed by tag exclusion" duration="{duration}"/>
     <testCase name="Parse test names and tags/Leading and trailing spaces in test spec" duration="{duration}"/>
     <testCase name="Parse test names and tags/Leading and trailing spaces in test name" duration="{duration}"/>
+    <testCase name="Parse test names and tags/Shortened hide tags are split apart when parsing" duration="{duration}"/>
+    <testCase name="Parse test names and tags/Shortened hide tags also properly handle exclusion" duration="{duration}"/>
     <testCase name="Process can be configured on command line/empty args don't cause a crash" duration="{duration}"/>
     <testCase name="Process can be configured on command line/default - no arguments" duration="{duration}"/>
     <testCase name="Process can be configured on command line/test lists/Specify one test case using" duration="{duration}"/>
@@ -157,12 +159,6 @@
     <testCase name="XmlEncode/string with quotes" duration="{duration}"/>
     <testCase name="XmlEncode/string with control char (1)" duration="{duration}"/>
     <testCase name="XmlEncode/string with control char (x7F)" duration="{duration}"/>
-    <testCase name="XmlEncode: UTF-8/Valid utf-8 strings" duration="{duration}"/>
-    <testCase name="XmlEncode: UTF-8/Invalid utf-8 strings/Various broken strings" duration="{duration}"/>
-    <testCase name="XmlEncode: UTF-8/Invalid utf-8 strings/Overlong encodings" duration="{duration}"/>
-    <testCase name="XmlEncode: UTF-8/Invalid utf-8 strings/Surrogate pairs" duration="{duration}"/>
-    <testCase name="XmlEncode: UTF-8/Invalid utf-8 strings/Invalid start byte" duration="{duration}"/>
-    <testCase name="XmlEncode: UTF-8/Invalid utf-8 strings/Missing continuation byte(s)" duration="{duration}"/>
   </file>
   <file path="projects/<exe-name>/UsageTests/Approx.tests.cpp">
     <testCase name="A comparison that uses literals instead of the normal constructor" duration="{duration}"/>

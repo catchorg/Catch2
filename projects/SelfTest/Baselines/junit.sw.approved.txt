@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuitesloose text artifact
 >
-  <testsuite name="<exe-name>" errors="17" failures="132" tests="1713" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
+  <testsuite name="<exe-name>" errors="17" failures="132" tests="1677" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
     <properties>
       <property name="filters" value="~[!nonportable]~[!benchmark]~[approvals]"/>
       <property name="random-seed" value="1"/>
@@ -982,6 +982,8 @@ Message.tests.cpp:<line number>
     <testcase classname="<exe-name>.global" name="Parse test names and tags/quoted string followed by tag exclusion" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Parse test names and tags/Leading and trailing spaces in test spec" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Parse test names and tags/Leading and trailing spaces in test name" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="Parse test names and tags/Shortened hide tags are split apart when parsing" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="Parse test names and tags/Shortened hide tags also properly handle exclusion" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Pointers can be compared to null" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Precision of floating point stringification can be set/Floats" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Precision of floating point stringification can be set/Double" time="{duration}"/>
@@ -1402,12 +1404,6 @@ Exception.tests.cpp:<line number>
     <testcase classname="<exe-name>.global" name="XmlEncode/string with quotes" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="XmlEncode/string with control char (1)" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="XmlEncode/string with control char (x7F)" time="{duration}"/>
-    <testcase classname="<exe-name>.global" name="XmlEncode: UTF-8/Valid utf-8 strings" time="{duration}"/>
-    <testcase classname="<exe-name>.global" name="XmlEncode: UTF-8/Invalid utf-8 strings/Various broken strings" time="{duration}"/>
-    <testcase classname="<exe-name>.global" name="XmlEncode: UTF-8/Invalid utf-8 strings/Overlong encodings" time="{duration}"/>
-    <testcase classname="<exe-name>.global" name="XmlEncode: UTF-8/Invalid utf-8 strings/Surrogate pairs" time="{duration}"/>
-    <testcase classname="<exe-name>.global" name="XmlEncode: UTF-8/Invalid utf-8 strings/Invalid start byte" time="{duration}"/>
-    <testcase classname="<exe-name>.global" name="XmlEncode: UTF-8/Invalid utf-8 strings/Missing continuation byte(s)" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="array&lt;int, N> -> toString" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="atomic if" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="boolean member" time="{duration}"/>

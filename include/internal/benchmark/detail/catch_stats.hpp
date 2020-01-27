@@ -23,6 +23,7 @@
 #include <cmath>
 #include <utility>
 #include <cstddef>
+#include <random>
 
 namespace Catch {
     namespace Benchmark {

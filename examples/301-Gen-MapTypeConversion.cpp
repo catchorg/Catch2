@@ -22,14 +22,16 @@ public:
         }
     }
 
-    std::string const& get() const override {
-        return m_line;
-    }
+    std::string const& get() const override;
     
     bool next() override {
         return !!std::getline(m_stream, m_line);
     }
 };
+
+std::string const& LineGenerator::get() const {
+    return m_line;
+}
 
 // This helper function provides a nicer UX when instantiating the generator
 // Notice that it returns an instance of GeneratorWrapper<std::string>, which

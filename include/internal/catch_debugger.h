@@ -19,6 +19,17 @@ namespace Catch {
 
     #define CATCH_TRAP() __asm__("int $3\n" : : ) /* NOLINT */
 
+#elif defined(CATCH_PLATFORM_IPHONE)
+
+    // use inline assembler
+    #if defined(__i386__) || defined(__x86_64__)
+        #define CATCH_TRAP()  __asm__("int $3")
+    #elif defined(__aarch64__)
+        #define CATCH_TRAP()  __asm__(".inst 0xd4200000")
+    #elif defined(__arm__)
+        #define CATCH_TRAP()  __asm__(".inst 0xe7f001f0")
+    #endif
+
 #elif defined(CATCH_PLATFORM_LINUX)
     // If we can use inline assembler, do it because this allows us to break
     // directly at the location of the failing check instead of breaking inside

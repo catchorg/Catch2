@@ -7362,6 +7362,50 @@ with expansion:
   true
 
 -------------------------------------------------------------------------------
+Parse test names and tags
+  Shortened hide tags are split apart when parsing
+-------------------------------------------------------------------------------
+CmdLine.tests.cpp:<line number>
+...............................................................................
+
+CmdLine.tests.cpp:<line number>: PASSED:
+  CHECK( spec.matches(fakeTestCase("hidden and foo", "[.][foo]")) )
+with expansion:
+  true
+
+CmdLine.tests.cpp:<line number>: PASSED:
+  CHECK_FALSE( spec.matches(fakeTestCase("only foo", "[foo]")) )
+with expansion:
+  !false
+
+-------------------------------------------------------------------------------
+Parse test names and tags
+  Shortened hide tags also properly handle exclusion
+-------------------------------------------------------------------------------
+CmdLine.tests.cpp:<line number>
+...............................................................................
+
+CmdLine.tests.cpp:<line number>: PASSED:
+  CHECK_FALSE( spec.matches(fakeTestCase("hidden and foo", "[.][foo]")) )
+with expansion:
+  !false
+
+CmdLine.tests.cpp:<line number>: PASSED:
+  CHECK_FALSE( spec.matches(fakeTestCase("only foo", "[foo]")) )
+with expansion:
+  !false
+
+CmdLine.tests.cpp:<line number>: PASSED:
+  CHECK_FALSE( spec.matches(fakeTestCase("only hidden", "[.]")) )
+with expansion:
+  !false
+
+CmdLine.tests.cpp:<line number>: PASSED:
+  CHECK( spec.matches(fakeTestCase("neither foo nor hidden", "[bar]")) )
+with expansion:
+  true
+
+-------------------------------------------------------------------------------
 Pointers can be compared to null
 -------------------------------------------------------------------------------
 Condition.tests.cpp:<line number>
@@ -8670,7 +8714,7 @@ String.tests.cpp:<line number>
 ...............................................................................
 
 String.tests.cpp:<line number>: PASSED:
-  CHECK( buffer1 != buffer2 )
+  CHECK( (char*)buffer1 != (char*)buffer2 )
 with expansion:
   "Hello" != "Hello"
 
@@ -11422,263 +11466,6 @@ with expansion:
   "[\x7F]" == "[\x7F]"
 
 -------------------------------------------------------------------------------
-XmlEncode: UTF-8
-  Valid utf-8 strings
--------------------------------------------------------------------------------
-Xml.tests.cpp:<line number>
-...............................................................................
-
-Xml.tests.cpp:<line number>: PASSED:
-  CHECK( encode(u8"Here be üëæ") == u8"Here be üëæ" )
-with expansion:
-  "Here be üëæ" == "Here be üëæ"
-
-Xml.tests.cpp:<line number>: PASSED:
-  CHECK( encode(u8"≈°≈°") == u8"≈°≈°" )
-with expansion:
-  "≈°≈°" == "≈°≈°"
-
-Xml.tests.cpp:<line number>: PASSED:
-  CHECK( encode("\xDF\xBF") == "\xDF\xBF" )
-with expansion:
-  "ﬂø" == "ﬂø"
-
-Xml.tests.cpp:<line number>: PASSED:
-  CHECK( encode("\xE0\xA0\x80") == "\xE0\xA0\x80" )
-with expansion:
-  "‡†Ä" == "‡†Ä"
-
-Xml.tests.cpp:<line number>: PASSED:
-  CHECK( encode("\xED\x9F\xBF") == "\xED\x9F\xBF" )
-with expansion:
-  "Ìüø" == "Ìüø"
-
-Xml.tests.cpp:<line number>: PASSED:
-  CHECK( encode("\xEE\x80\x80") == "\xEE\x80\x80" )
-with expansion:
-  "ÓÄÄ" == "ÓÄÄ"
-
-Xml.tests.cpp:<line number>: PASSED:
-  CHECK( encode("\xEF\xBF\xBF") == "\xEF\xBF\xBF" )
-with expansion:
-  "Ôøø" == "Ôøø"
-
-Xml.tests.cpp:<line number>: PASSED:
-  CHECK( encode("\xF0\x90\x80\x80") == "\xF0\x90\x80\x80" )
-with expansion:
-  "êÄÄ" == "êÄÄ"
-
-Xml.tests.cpp:<line number>: PASSED:
-  CHECK( encode("\xF4\x8F\xBF\xBF") == "\xF4\x8F\xBF\xBF" )
-with expansion:
-  "Ùèøø" == "Ùèøø"
-
--------------------------------------------------------------------------------
-XmlEncode: UTF-8
-  Invalid utf-8 strings
-  Various broken strings
--------------------------------------------------------------------------------
-Xml.tests.cpp:<line number>
-...............................................................................
-
-Xml.tests.cpp:<line number>: PASSED:
-  CHECK( encode("Here \xFF be üëæ") == u8"Here \\xFF be üëæ" )
-with expansion:
-  "Here \xFF be üëæ" == "Here \xFF be üëæ"
-
-Xml.tests.cpp:<line number>: PASSED:
-  CHECK( encode("\xFF") == "\\xFF" )
-with expansion:
-  "\xFF" == "\xFF"
-
-Xml.tests.cpp:<line number>: PASSED:
-  CHECK( encode("\xC5\xC5\xA0") == u8"\\xC5≈†" )
-with expansion:
-  "\xC5≈†" == "\xC5≈†"
-
-Xml.tests.cpp:<line number>: PASSED:
-  CHECK( encode("\xF4\x90\x80\x80") == u8"\\xF4\\x90\\x80\\x80" )
-with expansion:
-  "\xF4\x90\x80\x80" == "\xF4\x90\x80\x80"
-
--------------------------------------------------------------------------------
-XmlEncode: UTF-8
-  Invalid utf-8 strings
-  Overlong encodings
--------------------------------------------------------------------------------
-Xml.tests.cpp:<line number>
-...............................................................................
-
-Xml.tests.cpp:<line number>: PASSED:
-  CHECK( encode("\xC0\x80") == u8"\\xC0\\x80" )
-with expansion:
-  "\xC0\x80" == "\xC0\x80"
-
-Xml.tests.cpp:<line number>: PASSED:
-  CHECK( encode("\xF0\x80\x80\x80") == u8"\\xF0\\x80\\x80\\x80" )
-with expansion:
-  "\xF0\x80\x80\x80" == "\xF0\x80\x80\x80"
-
-Xml.tests.cpp:<line number>: PASSED:
-  CHECK( encode("\xC1\xBF") == u8"\\xC1\\xBF" )
-with expansion:
-  "\xC1\xBF" == "\xC1\xBF"
-
-Xml.tests.cpp:<line number>: PASSED:
-  CHECK( encode("\xE0\x9F\xBF") == u8"\\xE0\\x9F\\xBF" )
-with expansion:
-  "\xE0\x9F\xBF" == "\xE0\x9F\xBF"
-
-Xml.tests.cpp:<line number>: PASSED:
-  CHECK( encode("\xF0\x8F\xBF\xBF") == u8"\\xF0\\x8F\\xBF\\xBF" )
-with expansion:
-  "\xF0\x8F\xBF\xBF" == "\xF0\x8F\xBF\xBF"
-
--------------------------------------------------------------------------------
-XmlEncode: UTF-8
-  Invalid utf-8 strings
-  Surrogate pairs
--------------------------------------------------------------------------------
-Xml.tests.cpp:<line number>
-...............................................................................
-
-Xml.tests.cpp:<line number>: PASSED:
-  CHECK( encode("\xED\xA0\x80") == "\xED\xA0\x80" )
-with expansion:
-  "Ì†Ä" == "Ì†Ä"
-
-Xml.tests.cpp:<line number>: PASSED:
-  CHECK( encode("\xED\xAF\xBF") == "\xED\xAF\xBF" )
-with expansion:
-  "ÌØø" == "ÌØø"
-
-Xml.tests.cpp:<line number>: PASSED:
-  CHECK( encode("\xED\xB0\x80") == "\xED\xB0\x80" )
-with expansion:
-  "Ì∞Ä" == "Ì∞Ä"
-
-Xml.tests.cpp:<line number>: PASSED:
-  CHECK( encode("\xED\xBF\xBF") == "\xED\xBF\xBF" )
-with expansion:
-  "Ìøø" == "Ìøø"
-
--------------------------------------------------------------------------------
-XmlEncode: UTF-8
-  Invalid utf-8 strings
-  Invalid start byte
--------------------------------------------------------------------------------
-Xml.tests.cpp:<line number>
-...............................................................................
-
-Xml.tests.cpp:<line number>: PASSED:
-  CHECK( encode("\x80") == u8"\\x80" )
-with expansion:
-  "\x80" == "\x80"
-
-Xml.tests.cpp:<line number>: PASSED:
-  CHECK( encode("\x81") == u8"\\x81" )
-with expansion:
-  "\x81" == "\x81"
-
-Xml.tests.cpp:<line number>: PASSED:
-  CHECK( encode("\xBC") == u8"\\xBC" )
-with expansion:
-  "\xBC" == "\xBC"
-
-Xml.tests.cpp:<line number>: PASSED:
-  CHECK( encode("\xBF") == u8"\\xBF" )
-with expansion:
-  "\xBF" == "\xBF"
-
-Xml.tests.cpp:<line number>: PASSED:
-  CHECK( encode("\xF5\x80\x80\x80") == u8"\\xF5\\x80\\x80\\x80" )
-with expansion:
-  "\xF5\x80\x80\x80" == "\xF5\x80\x80\x80"
-
-Xml.tests.cpp:<line number>: PASSED:
-  CHECK( encode("\xF6\x80\x80\x80") == u8"\\xF6\\x80\\x80\\x80" )
-with expansion:
-  "\xF6\x80\x80\x80" == "\xF6\x80\x80\x80"
-
-Xml.tests.cpp:<line number>: PASSED:
-  CHECK( encode("\xF7\x80\x80\x80") == u8"\\xF7\\x80\\x80\\x80" )
-with expansion:
-  "\xF7\x80\x80\x80" == "\xF7\x80\x80\x80"
-
--------------------------------------------------------------------------------
-XmlEncode: UTF-8
-  Invalid utf-8 strings
-  Missing continuation byte(s)
--------------------------------------------------------------------------------
-Xml.tests.cpp:<line number>
-...............................................................................
-
-Xml.tests.cpp:<line number>: PASSED:
-  CHECK( encode("\xDE") == u8"\\xDE" )
-with expansion:
-  "\xDE" == "\xDE"
-
-Xml.tests.cpp:<line number>: PASSED:
-  CHECK( encode("\xDF") == u8"\\xDF" )
-with expansion:
-  "\xDF" == "\xDF"
-
-Xml.tests.cpp:<line number>: PASSED:
-  CHECK( encode("\xE0") == u8"\\xE0" )
-with expansion:
-  "\xE0" == "\xE0"
-
-Xml.tests.cpp:<line number>: PASSED:
-  CHECK( encode("\xEF") == u8"\\xEF" )
-with expansion:
-  "\xEF" == "\xEF"
-
-Xml.tests.cpp:<line number>: PASSED:
-  CHECK( encode("\xF0") == u8"\\xF0" )
-with expansion:
-  "\xF0" == "\xF0"
-
-Xml.tests.cpp:<line number>: PASSED:
-  CHECK( encode("\xF4") == u8"\\xF4" )
-with expansion:
-  "\xF4" == "\xF4"
-
-Xml.tests.cpp:<line number>: PASSED:
-  CHECK( encode("\xE0\x80") == u8"\\xE0\\x80" )
-with expansion:
-  "\xE0\x80" == "\xE0\x80"
-
-Xml.tests.cpp:<line number>: PASSED:
-  CHECK( encode("\xE0\xBF") == u8"\\xE0\\xBF" )
-with expansion:
-  "\xE0\xBF" == "\xE0\xBF"
-
-Xml.tests.cpp:<line number>: PASSED:
-  CHECK( encode("\xE1\x80") == u8"\\xE1\\x80" )
-with expansion:
-  "\xE1\x80" == "\xE1\x80"
-
-Xml.tests.cpp:<line number>: PASSED:
-  CHECK( encode("\xF0\x80") == u8"\\xF0\\x80" )
-with expansion:
-  "\xF0\x80" == "\xF0\x80"
-
-Xml.tests.cpp:<line number>: PASSED:
-  CHECK( encode("\xF4\x80") == u8"\\xF4\\x80" )
-with expansion:
-  "\xF4\x80" == "\xF4\x80"
-
-Xml.tests.cpp:<line number>: PASSED:
-  CHECK( encode("\xF0\x80\x80") == u8"\\xF0\\x80\\x80" )
-with expansion:
-  "\xF0\x80\x80" == "\xF0\x80\x80"
-
-Xml.tests.cpp:<line number>: PASSED:
-  CHECK( encode("\xF4\x80\x80") == u8"\\xF4\\x80\\x80" )
-with expansion:
-  "\xF4\x80\x80" == "\xF4\x80\x80"
-
--------------------------------------------------------------------------------
 array<int, N> -> toString
 -------------------------------------------------------------------------------
 ToStringVector.tests.cpp:<line number>
@@ -13464,6 +13251,6 @@ Misc.tests.cpp:<line number>
 Misc.tests.cpp:<line number>: PASSED:
 
 ===============================================================================
-test cases:  305 |  215 passed |  86 failed |  4 failed as expected
-assertions: 1712 | 1543 passed | 148 failed | 21 failed as expected
+test cases:  304 |  214 passed |  86 failed |  4 failed as expected
+assertions: 1676 | 1507 passed | 148 failed | 21 failed as expected
 

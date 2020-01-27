@@ -8019,7 +8019,7 @@ Nor would this
       </Section>
       <OverallResult success="false"/>
     </TestCase>
-    <TestCase name="Parse test names and tags" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
+    <TestCase name="Parse test names and tags" tags="[command-line][test-spec]" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
       <Section name="Empty test spec should have no filters" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
         <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
           <Original>
@@ -9278,6 +9278,60 @@ Nor would this
           </Expanded>
         </Expression>
         <OverallResults successes="5" failures="0" expectedFailures="0"/>
+      </Section>
+      <Section name="Shortened hide tags are split apart when parsing" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
+        <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
+          <Original>
+            spec.matches(fakeTestCase("hidden and foo", "[.][foo]"))
+          </Original>
+          <Expanded>
+            true
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="CHECK_FALSE" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
+          <Original>
+            !(spec.matches(fakeTestCase("only foo", "[foo]")))
+          </Original>
+          <Expanded>
+            !false
+          </Expanded>
+        </Expression>
+        <OverallResults successes="2" failures="0" expectedFailures="0"/>
+      </Section>
+      <Section name="Shortened hide tags also properly handle exclusion" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
+        <Expression success="true" type="CHECK_FALSE" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
+          <Original>
+            !(spec.matches(fakeTestCase("hidden and foo", "[.][foo]")))
+          </Original>
+          <Expanded>
+            !false
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="CHECK_FALSE" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
+          <Original>
+            !(spec.matches(fakeTestCase("only foo", "[foo]")))
+          </Original>
+          <Expanded>
+            !false
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="CHECK_FALSE" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
+          <Original>
+            !(spec.matches(fakeTestCase("only hidden", "[.]")))
+          </Original>
+          <Expanded>
+            !false
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
+          <Original>
+            spec.matches(fakeTestCase("neither foo nor hidden", "[bar]"))
+          </Original>
+          <Expanded>
+            true
+          </Expanded>
+        </Expression>
+        <OverallResults successes="4" failures="0" expectedFailures="0"/>
       </Section>
       <OverallResult success="true"/>
     </TestCase>
@@ -10849,7 +10903,7 @@ Message from section two
       <Section name="Comparisons are deep" filename="projects/<exe-name>/IntrospectiveTests/String.tests.cpp" >
         <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/String.tests.cpp" >
           <Original>
-            buffer1 != buffer2
+            (char*)buffer1 != (char*)buffer2
           </Original>
           <Expanded>
             "Hello" != "Hello"
@@ -13846,378 +13900,6 @@ There is no extra whitespace here
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="XmlEncode: UTF-8" tags="[UTF-8][XML]" filename="projects/<exe-name>/IntrospectiveTests/Xml.tests.cpp" >
-      <Section name="Valid utf-8 strings" filename="projects/<exe-name>/IntrospectiveTests/Xml.tests.cpp" >
-        <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/Xml.tests.cpp" >
-          <Original>
-            encode(u8"Here be üëæ") == u8"Here be üëæ"
-          </Original>
-          <Expanded>
-            "Here be üëæ" == "Here be üëæ"
-          </Expanded>
-        </Expression>
-        <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/Xml.tests.cpp" >
-          <Original>
-            encode(u8"≈°≈°") == u8"≈°≈°"
-          </Original>
-          <Expanded>
-            "≈°≈°" == "≈°≈°"
-          </Expanded>
-        </Expression>
-        <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/Xml.tests.cpp" >
-          <Original>
-            encode("\xDF\xBF") == "\xDF\xBF"
-          </Original>
-          <Expanded>
-            "ﬂø" == "ﬂø"
-          </Expanded>
-        </Expression>
-        <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/Xml.tests.cpp" >
-          <Original>
-            encode("\xE0\xA0\x80") == "\xE0\xA0\x80"
-          </Original>
-          <Expanded>
-            "‡†Ä" == "‡†Ä"
-          </Expanded>
-        </Expression>
-        <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/Xml.tests.cpp" >
-          <Original>
-            encode("\xED\x9F\xBF") == "\xED\x9F\xBF"
-          </Original>
-          <Expanded>
-            "Ìüø" == "Ìüø"
-          </Expanded>
-        </Expression>
-        <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/Xml.tests.cpp" >
-          <Original>
-            encode("\xEE\x80\x80") == "\xEE\x80\x80"
-          </Original>
-          <Expanded>
-            "ÓÄÄ" == "ÓÄÄ"
-          </Expanded>
-        </Expression>
-        <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/Xml.tests.cpp" >
-          <Original>
-            encode("\xEF\xBF\xBF") == "\xEF\xBF\xBF"
-          </Original>
-          <Expanded>
-            "Ôøø" == "Ôøø"
-          </Expanded>
-        </Expression>
-        <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/Xml.tests.cpp" >
-          <Original>
-            encode("\xF0\x90\x80\x80") == "\xF0\x90\x80\x80"
-          </Original>
-          <Expanded>
-            "êÄÄ" == "êÄÄ"
-          </Expanded>
-        </Expression>
-        <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/Xml.tests.cpp" >
-          <Original>
-            encode("\xF4\x8F\xBF\xBF") == "\xF4\x8F\xBF\xBF"
-          </Original>
-          <Expanded>
-            "Ùèøø" == "Ùèøø"
-          </Expanded>
-        </Expression>
-        <OverallResults successes="9" failures="0" expectedFailures="0"/>
-      </Section>
-      <Section name="Invalid utf-8 strings" filename="projects/<exe-name>/IntrospectiveTests/Xml.tests.cpp" >
-        <Section name="Various broken strings" filename="projects/<exe-name>/IntrospectiveTests/Xml.tests.cpp" >
-          <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/Xml.tests.cpp" >
-            <Original>
-              encode("Here \xFF be üëæ") == u8"Here \\xFF be üëæ"
-            </Original>
-            <Expanded>
-              "Here \xFF be üëæ" == "Here \xFF be üëæ"
-            </Expanded>
-          </Expression>
-          <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/Xml.tests.cpp" >
-            <Original>
-              encode("\xFF") == "\\xFF"
-            </Original>
-            <Expanded>
-              "\xFF" == "\xFF"
-            </Expanded>
-          </Expression>
-          <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/Xml.tests.cpp" >
-            <Original>
-              encode("\xC5\xC5\xA0") == u8"\\xC5≈†"
-            </Original>
-            <Expanded>
-              "\xC5≈†" == "\xC5≈†"
-            </Expanded>
-          </Expression>
-          <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/Xml.tests.cpp" >
-            <Original>
-              encode("\xF4\x90\x80\x80") == u8"\\xF4\\x90\\x80\\x80"
-            </Original>
-            <Expanded>
-              "\xF4\x90\x80\x80" == "\xF4\x90\x80\x80"
-            </Expanded>
-          </Expression>
-          <OverallResults successes="4" failures="0" expectedFailures="0"/>
-        </Section>
-        <OverallResults successes="4" failures="0" expectedFailures="0"/>
-      </Section>
-      <Section name="Invalid utf-8 strings" filename="projects/<exe-name>/IntrospectiveTests/Xml.tests.cpp" >
-        <Section name="Overlong encodings" filename="projects/<exe-name>/IntrospectiveTests/Xml.tests.cpp" >
-          <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/Xml.tests.cpp" >
-            <Original>
-              encode("\xC0\x80") == u8"\\xC0\\x80"
-            </Original>
-            <Expanded>
-              "\xC0\x80" == "\xC0\x80"
-            </Expanded>
-          </Expression>
-          <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/Xml.tests.cpp" >
-            <Original>
-              encode("\xF0\x80\x80\x80") == u8"\\xF0\\x80\\x80\\x80"
-            </Original>
-            <Expanded>
-              "\xF0\x80\x80\x80" == "\xF0\x80\x80\x80"
-            </Expanded>
-          </Expression>
-          <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/Xml.tests.cpp" >
-            <Original>
-              encode("\xC1\xBF") == u8"\\xC1\\xBF"
-            </Original>
-            <Expanded>
-              "\xC1\xBF" == "\xC1\xBF"
-            </Expanded>
-          </Expression>
-          <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/Xml.tests.cpp" >
-            <Original>
-              encode("\xE0\x9F\xBF") == u8"\\xE0\\x9F\\xBF"
-            </Original>
-            <Expanded>
-              "\xE0\x9F\xBF" == "\xE0\x9F\xBF"
-            </Expanded>
-          </Expression>
-          <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/Xml.tests.cpp" >
-            <Original>
-              encode("\xF0\x8F\xBF\xBF") == u8"\\xF0\\x8F\\xBF\\xBF"
-            </Original>
-            <Expanded>
-              "\xF0\x8F\xBF\xBF" == "\xF0\x8F\xBF\xBF"
-            </Expanded>
-          </Expression>
-          <OverallResults successes="5" failures="0" expectedFailures="0"/>
-        </Section>
-        <OverallResults successes="5" failures="0" expectedFailures="0"/>
-      </Section>
-      <Section name="Invalid utf-8 strings" filename="projects/<exe-name>/IntrospectiveTests/Xml.tests.cpp" >
-        <Section name="Surrogate pairs" filename="projects/<exe-name>/IntrospectiveTests/Xml.tests.cpp" >
-          <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/Xml.tests.cpp" >
-            <Original>
-              encode("\xED\xA0\x80") == "\xED\xA0\x80"
-            </Original>
-            <Expanded>
-              "Ì†Ä" == "Ì†Ä"
-            </Expanded>
-          </Expression>
-          <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/Xml.tests.cpp" >
-            <Original>
-              encode("\xED\xAF\xBF") == "\xED\xAF\xBF"
-            </Original>
-            <Expanded>
-              "ÌØø" == "ÌØø"
-            </Expanded>
-          </Expression>
-          <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/Xml.tests.cpp" >
-            <Original>
-              encode("\xED\xB0\x80") == "\xED\xB0\x80"
-            </Original>
-            <Expanded>
-              "Ì∞Ä" == "Ì∞Ä"
-            </Expanded>
-          </Expression>
-          <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/Xml.tests.cpp" >
-            <Original>
-              encode("\xED\xBF\xBF") == "\xED\xBF\xBF"
-            </Original>
-            <Expanded>
-              "Ìøø" == "Ìøø"
-            </Expanded>
-          </Expression>
-          <OverallResults successes="4" failures="0" expectedFailures="0"/>
-        </Section>
-        <OverallResults successes="4" failures="0" expectedFailures="0"/>
-      </Section>
-      <Section name="Invalid utf-8 strings" filename="projects/<exe-name>/IntrospectiveTests/Xml.tests.cpp" >
-        <Section name="Invalid start byte" filename="projects/<exe-name>/IntrospectiveTests/Xml.tests.cpp" >
-          <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/Xml.tests.cpp" >
-            <Original>
-              encode("\x80") == u8"\\x80"
-            </Original>
-            <Expanded>
-              "\x80" == "\x80"
-            </Expanded>
-          </Expression>
-          <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/Xml.tests.cpp" >
-            <Original>
-              encode("\x81") == u8"\\x81"
-            </Original>
-            <Expanded>
-              "\x81" == "\x81"
-            </Expanded>
-          </Expression>
-          <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/Xml.tests.cpp" >
-            <Original>
-              encode("\xBC") == u8"\\xBC"
-            </Original>
-            <Expanded>
-              "\xBC" == "\xBC"
-            </Expanded>
-          </Expression>
-          <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/Xml.tests.cpp" >
-            <Original>
-              encode("\xBF") == u8"\\xBF"
-            </Original>
-            <Expanded>
-              "\xBF" == "\xBF"
-            </Expanded>
-          </Expression>
-          <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/Xml.tests.cpp" >
-            <Original>
-              encode("\xF5\x80\x80\x80") == u8"\\xF5\\x80\\x80\\x80"
-            </Original>
-            <Expanded>
-              "\xF5\x80\x80\x80" == "\xF5\x80\x80\x80"
-            </Expanded>
-          </Expression>
-          <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/Xml.tests.cpp" >
-            <Original>
-              encode("\xF6\x80\x80\x80") == u8"\\xF6\\x80\\x80\\x80"
-            </Original>
-            <Expanded>
-              "\xF6\x80\x80\x80" == "\xF6\x80\x80\x80"
-            </Expanded>
-          </Expression>
-          <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/Xml.tests.cpp" >
-            <Original>
-              encode("\xF7\x80\x80\x80") == u8"\\xF7\\x80\\x80\\x80"
-            </Original>
-            <Expanded>
-              "\xF7\x80\x80\x80" == "\xF7\x80\x80\x80"
-            </Expanded>
-          </Expression>
-          <OverallResults successes="7" failures="0" expectedFailures="0"/>
-        </Section>
-        <OverallResults successes="7" failures="0" expectedFailures="0"/>
-      </Section>
-      <Section name="Invalid utf-8 strings" filename="projects/<exe-name>/IntrospectiveTests/Xml.tests.cpp" >
-        <Section name="Missing continuation byte(s)" filename="projects/<exe-name>/IntrospectiveTests/Xml.tests.cpp" >
-          <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/Xml.tests.cpp" >
-            <Original>
-              encode("\xDE") == u8"\\xDE"
-            </Original>
-            <Expanded>
-              "\xDE" == "\xDE"
-            </Expanded>
-          </Expression>
-          <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/Xml.tests.cpp" >
-            <Original>
-              encode("\xDF") == u8"\\xDF"
-            </Original>
-            <Expanded>
-              "\xDF" == "\xDF"
-            </Expanded>
-          </Expression>
-          <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/Xml.tests.cpp" >
-            <Original>
-              encode("\xE0") == u8"\\xE0"
-            </Original>
-            <Expanded>
-              "\xE0" == "\xE0"
-            </Expanded>
-          </Expression>
-          <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/Xml.tests.cpp" >
-            <Original>
-              encode("\xEF") == u8"\\xEF"
-            </Original>
-            <Expanded>
-              "\xEF" == "\xEF"
-            </Expanded>
-          </Expression>
-          <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/Xml.tests.cpp" >
-            <Original>
-              encode("\xF0") == u8"\\xF0"
-            </Original>
-            <Expanded>
-              "\xF0" == "\xF0"
-            </Expanded>
-          </Expression>
-          <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/Xml.tests.cpp" >
-            <Original>
-              encode("\xF4") == u8"\\xF4"
-            </Original>
-            <Expanded>
-              "\xF4" == "\xF4"
-            </Expanded>
-          </Expression>
-          <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/Xml.tests.cpp" >
-            <Original>
-              encode("\xE0\x80") == u8"\\xE0\\x80"
-            </Original>
-            <Expanded>
-              "\xE0\x80" == "\xE0\x80"
-            </Expanded>
-          </Expression>
-          <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/Xml.tests.cpp" >
-            <Original>
-              encode("\xE0\xBF") == u8"\\xE0\\xBF"
-            </Original>
-            <Expanded>
-              "\xE0\xBF" == "\xE0\xBF"
-            </Expanded>
-          </Expression>
-          <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/Xml.tests.cpp" >
-            <Original>
-              encode("\xE1\x80") == u8"\\xE1\\x80"
-            </Original>
-            <Expanded>
-              "\xE1\x80" == "\xE1\x80"
-            </Expanded>
-          </Expression>
-          <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/Xml.tests.cpp" >
-            <Original>
-              encode("\xF0\x80") == u8"\\xF0\\x80"
-            </Original>
-            <Expanded>
-              "\xF0\x80" == "\xF0\x80"
-            </Expanded>
-          </Expression>
-          <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/Xml.tests.cpp" >
-            <Original>
-              encode("\xF4\x80") == u8"\\xF4\\x80"
-            </Original>
-            <Expanded>
-              "\xF4\x80" == "\xF4\x80"
-            </Expanded>
-          </Expression>
-          <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/Xml.tests.cpp" >
-            <Original>
-              encode("\xF0\x80\x80") == u8"\\xF0\\x80\\x80"
-            </Original>
-            <Expanded>
-              "\xF0\x80\x80" == "\xF0\x80\x80"
-            </Expanded>
-          </Expression>
-          <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/Xml.tests.cpp" >
-            <Original>
-              encode("\xF4\x80\x80") == u8"\\xF4\\x80\\x80"
-            </Original>
-            <Expanded>
-              "\xF4\x80\x80" == "\xF4\x80\x80"
-            </Expanded>
-          </Expression>
-          <OverallResults successes="13" failures="0" expectedFailures="0"/>
-        </Section>
-        <OverallResults successes="13" failures="0" expectedFailures="0"/>
-      </Section>
-      <OverallResult success="true"/>
-    </TestCase>
     <TestCase name="array&lt;int, N> -> toString" tags="[array][containers][toString]" filename="projects/<exe-name>/UsageTests/ToStringVector.tests.cpp" >
       <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/UsageTests/ToStringVector.tests.cpp" >
         <Original>
@@ -16162,7 +15844,7 @@ loose text artifact
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="1543" failures="149" expectedFailures="21"/>
+    <OverallResults successes="1507" failures="149" expectedFailures="21"/>
   </Group>
-  <OverallResults successes="1543" failures="148" expectedFailures="21"/>
+  <OverallResults successes="1507" failures="148" expectedFailures="21"/>
 </Catch>

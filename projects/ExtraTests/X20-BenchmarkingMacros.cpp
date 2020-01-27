@@ -26,14 +26,6 @@ TEST_CASE("Benchmark factorial", "[benchmark]") {
     BENCHMARK("factorial 14") {
         return factorial(14);
     };
-//
-//    BENCHMARK("factorial 20") {
-//        return factorial(20);
-//    };
-//
-//    BENCHMARK("factorial 35") {
-//        return factorial(35);
-//    };
 }
 
 TEST_CASE("Benchmark containers", "[.][benchmark]") {
