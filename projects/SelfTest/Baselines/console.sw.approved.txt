@@ -8046,7 +8046,7 @@ with expansion:
 -------------------------------------------------------------------------------
 Process can be configured on command line
   Benchmark options
-  resamples
+  confidence-interval
 -------------------------------------------------------------------------------
 CmdLine.tests.cpp:<line number>
 ...............................................................................
@@ -8064,7 +8064,7 @@ with expansion:
 -------------------------------------------------------------------------------
 Process can be configured on command line
   Benchmark options
-  resamples
+  no-analysis
 -------------------------------------------------------------------------------
 CmdLine.tests.cpp:<line number>
 ...............................................................................
@@ -8078,6 +8078,24 @@ CmdLine.tests.cpp:<line number>: PASSED:
   REQUIRE( config.benchmarkNoAnalysis )
 with expansion:
   true
+
+-------------------------------------------------------------------------------
+Process can be configured on command line
+  Benchmark options
+  warmup-time
+-------------------------------------------------------------------------------
+CmdLine.tests.cpp:<line number>
+...............................................................................
+
+CmdLine.tests.cpp:<line number>: PASSED:
+  CHECK( cli.parse({ "test", "--benchmark-warmup-time=10" }) )
+with expansion:
+  {?}
+
+CmdLine.tests.cpp:<line number>: PASSED:
+  REQUIRE( config.benchmarkWarmupTime == 10 )
+with expansion:
+  10 == 10
 
 -------------------------------------------------------------------------------
 Product with differing arities - std::tuple<int, double, float>
@@ -13285,5 +13303,5 @@ Misc.tests.cpp:<line number>: PASSED:
 
 ===============================================================================
 test cases:  305 |  215 passed |  86 failed |  4 failed as expected
-assertions: 1679 | 1510 passed | 148 failed | 21 failed as expected
+assertions: 1681 | 1512 passed | 148 failed | 21 failed as expected
 

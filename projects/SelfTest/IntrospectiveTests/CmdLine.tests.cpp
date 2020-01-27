@@ -503,16 +503,22 @@ TEST_CASE( "Process can be configured on command line", "[config][command-line]"
             REQUIRE(config.benchmarkResamples == 20000);
         }
 
-        SECTION("resamples") {
+        SECTION("confidence-interval") {
             CHECK(cli.parse({ "test", "--benchmark-confidence-interval=0.99" }));
 
             REQUIRE(config.benchmarkConfidenceInterval == Catch::Detail::Approx(0.99));
         }
 
-        SECTION("resamples") {
+        SECTION("no-analysis") {
             CHECK(cli.parse({ "test", "--benchmark-no-analysis" }));
 
             REQUIRE(config.benchmarkNoAnalysis);
+        }
+
+        SECTION("warmup-time") {
+            CHECK(cli.parse({ "test", "--benchmark-warmup-time=10" }));
+
+            REQUIRE(config.benchmarkWarmupTime == 10);
         }
     }
 }
