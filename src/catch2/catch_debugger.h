@@ -48,10 +48,12 @@ namespace Catch {
     #define CATCH_TRAP() DebugBreak()
 #endif
 
-#ifdef CATCH_TRAP
-    #define CATCH_BREAK_INTO_DEBUGGER() []{ if( Catch::isDebuggerActive() ) { CATCH_TRAP(); } }()
-#else
-    #define CATCH_BREAK_INTO_DEBUGGER() []{}()
+#ifndef CATCH_BREAK_INTO_DEBUGGER
+    #ifdef CATCH_TRAP
+        #define CATCH_BREAK_INTO_DEBUGGER() []{ if( Catch::isDebuggerActive() ) { CATCH_TRAP(); } }()
+    #else
+        #define CATCH_BREAK_INTO_DEBUGGER() []{}()
+    #endif
 #endif
 
 #endif // TWOBLUECUBES_CATCH_DEBUGGER_H_INCLUDED
