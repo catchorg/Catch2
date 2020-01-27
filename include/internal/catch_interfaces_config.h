@@ -11,6 +11,7 @@
 #include "catch_common.h"
 #include "catch_option.hpp"
 
+#include <chrono>
 #include <iosfwd>
 #include <string>
 #include <vector>
@@ -81,6 +82,7 @@ namespace Catch {
         virtual int benchmarkSamples() const = 0;
         virtual double benchmarkConfidenceInterval() const = 0;
         virtual unsigned int benchmarkResamples() const = 0;
+        virtual std::chrono::milliseconds benchmarkWarmupTime() const = 0;
     };
 
     using IConfigPtr = std::shared_ptr<IConfig const>;

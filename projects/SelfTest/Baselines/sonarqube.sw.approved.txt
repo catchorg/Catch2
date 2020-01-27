@@ -64,8 +64,9 @@
     <testCase name="Process can be configured on command line/use-colour/error" duration="{duration}"/>
     <testCase name="Process can be configured on command line/Benchmark options/samples" duration="{duration}"/>
     <testCase name="Process can be configured on command line/Benchmark options/resamples" duration="{duration}"/>
-    <testCase name="Process can be configured on command line/Benchmark options/resamples" duration="{duration}"/>
-    <testCase name="Process can be configured on command line/Benchmark options/resamples" duration="{duration}"/>
+    <testCase name="Process can be configured on command line/Benchmark options/confidence-interval" duration="{duration}"/>
+    <testCase name="Process can be configured on command line/Benchmark options/no-analysis" duration="{duration}"/>
+    <testCase name="Process can be configured on command line/Benchmark options/warmup-time" duration="{duration}"/>
     <testCase name="Test with special, characters &quot;in name" duration="{duration}"/>
   </file>
   <file path="projects/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp">

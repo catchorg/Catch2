@@ -72,10 +72,11 @@ namespace Catch {
     bool Config::showInvisibles() const                { return m_data.showInvisibles; }
     Verbosity Config::verbosity() const                { return m_data.verbosity; }
 
-    bool Config::benchmarkNoAnalysis() const           { return m_data.benchmarkNoAnalysis; }
-    int Config::benchmarkSamples() const               { return m_data.benchmarkSamples; }
-    double Config::benchmarkConfidenceInterval() const { return m_data.benchmarkConfidenceInterval; }
-    unsigned int Config::benchmarkResamples() const    { return m_data.benchmarkResamples; }
+    bool Config::benchmarkNoAnalysis() const                      { return m_data.benchmarkNoAnalysis; }
+    int Config::benchmarkSamples() const                          { return m_data.benchmarkSamples; }
+    double Config::benchmarkConfidenceInterval() const            { return m_data.benchmarkConfidenceInterval; }
+    unsigned int Config::benchmarkResamples() const               { return m_data.benchmarkResamples; }
+    std::chrono::milliseconds Config::benchmarkWarmupTime() const { return std::chrono::milliseconds(m_data.benchmarkWarmupTime); }
 
     IStream const* Config::openStream() {
         return Catch::makeStream(m_data.outputFilename);

@@ -213,6 +213,9 @@ namespace Catch {
             | Opt( config.benchmarkNoAnalysis )
                 ["--benchmark-no-analysis"]
                 ( "perform only measurements; do not perform any analysis" )
+            | Opt( config.benchmarkWarmupTime, "benchmarkWarmupTime" )
+                ["--benchmark-warmup-time"]
+                ( "amount of time in milliseconds spent on warming up each test (default: 100)" )
             | Arg( config.testsOrTags, "test name|pattern|tags" )
                 ( "which test or tests to use" );
 

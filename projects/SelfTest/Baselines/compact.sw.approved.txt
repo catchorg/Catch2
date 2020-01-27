@@ -1116,6 +1116,8 @@ CmdLine.tests.cpp:<line number>: passed: cli.parse({ "test", "--benchmark-confid
 CmdLine.tests.cpp:<line number>: passed: config.benchmarkConfidenceInterval == Catch::Detail::Approx(0.99) for: 0.99 == Approx( 0.99 )
 CmdLine.tests.cpp:<line number>: passed: cli.parse({ "test", "--benchmark-no-analysis" }) for: {?}
 CmdLine.tests.cpp:<line number>: passed: config.benchmarkNoAnalysis for: true
+CmdLine.tests.cpp:<line number>: passed: cli.parse({ "test", "--benchmark-warmup-time=10" }) for: {?}
+CmdLine.tests.cpp:<line number>: passed: config.benchmarkWarmupTime == 10 for: 10 == 10
 Misc.tests.cpp:<line number>: passed: std::tuple_size<TestType>::value >= 1 for: 3 >= 1
 Misc.tests.cpp:<line number>: passed: std::tuple_size<TestType>::value >= 1 for: 2 >= 1
 Misc.tests.cpp:<line number>: passed: std::tuple_size<TestType>::value >= 1 for: 1 >= 1

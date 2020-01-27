@@ -10140,7 +10140,7 @@ Nor would this
         <OverallResults successes="2" failures="0" expectedFailures="0"/>
       </Section>
       <Section name="Benchmark options" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-        <Section name="resamples" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
+        <Section name="confidence-interval" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
           <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
             <Original>
               cli.parse({ "test", "--benchmark-confidence-interval=0.99" })
@@ -10162,7 +10162,7 @@ Nor would this
         <OverallResults successes="2" failures="0" expectedFailures="0"/>
       </Section>
       <Section name="Benchmark options" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-        <Section name="resamples" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
+        <Section name="no-analysis" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
           <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
             <Original>
               cli.parse({ "test", "--benchmark-no-analysis" })
@@ -10177,6 +10177,28 @@ Nor would this
             </Original>
             <Expanded>
               true
+            </Expanded>
+          </Expression>
+          <OverallResults successes="2" failures="0" expectedFailures="0"/>
+        </Section>
+        <OverallResults successes="2" failures="0" expectedFailures="0"/>
+      </Section>
+      <Section name="Benchmark options" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
+        <Section name="warmup-time" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
+          <Expression success="true" type="CHECK" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
+            <Original>
+              cli.parse({ "test", "--benchmark-warmup-time=10" })
+            </Original>
+            <Expanded>
+              {?}
+            </Expanded>
+          </Expression>
+          <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
+            <Original>
+              config.benchmarkWarmupTime == 10
+            </Original>
+            <Expanded>
+              10 == 10
             </Expanded>
           </Expression>
           <OverallResults successes="2" failures="0" expectedFailures="0"/>
@@ -15871,7 +15893,7 @@ loose text artifact
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="1510" failures="149" expectedFailures="21"/>
+    <OverallResults successes="1512" failures="149" expectedFailures="21"/>
   </Group>
-  <OverallResults successes="1510" failures="148" expectedFailures="21"/>
+  <OverallResults successes="1512" failures="148" expectedFailures="21"/>
 </Catch>
