@@ -24,6 +24,7 @@
 [Specify the number of resamples for bootstrapping](#specify-the-number-of-resamples-for-bootstrapping)<br>
 [Specify the confidence-interval for bootstrapping](#specify-the-confidence-interval-for-bootstrapping)<br>
 [Disable statistical analysis of collected benchmark samples](#disable-statistical-analysis-of-collected-benchmark-samples)<br>
+[Specify the amount of time in milliseconds spent on warming up each test](#specify-the-amount-of-time-in-milliseconds-spent-on-warming-up-each-test)<br>
 [Usage](#usage)<br>
 [Specify the section to run](#specify-the-section-to-run)<br>
 [Filenames as tags](#filenames-as-tags)<br>
@@ -64,6 +65,7 @@ Click one of the following links to take you straight to that option - or scroll
 <a href="#benchmark-resamples">                         `    --benchmark-resamples`</a><br />
 <a href="#benchmark-confidence-interval">               `    --benchmark-confidence-interval`</a><br />
 <a href="#benchmark-no-analysis">                       `    --benchmark-no-analysis`</a><br />
+<a href="#benchmark-warmup-time">                       `    --benchmark-warmup-time`</a><br />
 <a href="#use-colour">                                  `    --use-colour`</a><br />
 
 </br>
@@ -316,6 +318,14 @@ Must be between 0 and 1 and defaults to 0.95.
 
 When this flag is specified no bootstrapping or any other statistical analysis is performed.
 Instead the user code is only measured and the plain mean from the samples is reported.
+
+<a id="benchmark-warmup-time"></a>
+## Specify the amount of time in milliseconds spent on warming up each test
+<pre>--benchmark-warmup-time</pre>
+
+> [Introduced](https://github.com/catchorg/Catch2/pull/1844) in Catch X.Y.Z.
+
+Configure the amount of time spent warming up each test.
 
 <a id="usage"></a>
 ## Usage

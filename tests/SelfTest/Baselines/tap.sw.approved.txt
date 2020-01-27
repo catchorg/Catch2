@@ -2226,6 +2226,10 @@ ok {test-number} - config.benchmarkConfidenceInterval == Catch::Approx(0.99) for
 ok {test-number} - cli.parse({ "test", "--benchmark-no-analysis" }) for: {?}
 # Process can be configured on command line
 ok {test-number} - config.benchmarkNoAnalysis for: true
+# Process can be configured on command line
+ok {test-number} - cli.parse({ "test", "--benchmark-warmup-time=10" }) for: {?}
+# Process can be configured on command line
+ok {test-number} - config.benchmarkWarmupTime == 10 for: 10 == 10
 # Product with differing arities - std::tuple<int, double, float>
 ok {test-number} - std::tuple_size<TestType>::value >= 1 for: 3 >= 1
 # Product with differing arities - std::tuple<int, double>
@@ -3680,5 +3684,5 @@ ok {test-number} - q3 == 23. for: 23.0 == 23.0
 ok {test-number} -
 # xmlentitycheck
 ok {test-number} -
-1..1836
+1..1838
 
