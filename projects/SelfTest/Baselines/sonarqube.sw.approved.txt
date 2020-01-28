@@ -142,6 +142,9 @@
   <file path="projects/<exe-name>/IntrospectiveTests/Tag.tests.cpp">
     <testCase name="Tag alias can be registered against tag patterns/The same tag alias can only be registered once" duration="{duration}"/>
     <testCase name="Tag alias can be registered against tag patterns/Tag aliases must be of the form [@name]" duration="{duration}"/>
+    <testCase name="adding a hide tag implicitly enables all others/[!hide]" duration="{duration}"/>
+    <testCase name="adding a hide tag implicitly enables all others/[.]" duration="{duration}"/>
+    <testCase name="adding a hide tag implicitly enables all others/[.foo]" duration="{duration}"/>
     <testCase name="shortened hide tags are split apart" duration="{duration}"/>
   </file>
   <file path="projects/<exe-name>/IntrospectiveTests/ToString.tests.cpp">

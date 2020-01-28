@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuitesloose text artifact
 >
-  <testsuite name="<exe-name>" errors="17" failures="132" tests="1677" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
+  <testsuite name="<exe-name>" errors="17" failures="132" tests="1683" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
     <properties>
       <property name="filters" value="~[!nonportable]~[!benchmark]~[approvals]"/>
       <property name="random-seed" value="1"/>
@@ -1404,6 +1404,9 @@ Exception.tests.cpp:<line number>
     <testcase classname="<exe-name>.global" name="XmlEncode/string with quotes" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="XmlEncode/string with control char (1)" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="XmlEncode/string with control char (x7F)" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="adding a hide tag implicitly enables all others/[!hide]" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="adding a hide tag implicitly enables all others/[.]" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="adding a hide tag implicitly enables all others/[.foo]" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="array&lt;int, N> -> toString" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="atomic if" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="boolean member" time="{duration}"/>

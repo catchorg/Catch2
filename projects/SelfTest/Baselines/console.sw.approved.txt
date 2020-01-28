@@ -11466,6 +11466,57 @@ with expansion:
   "[\x7F]" == "[\x7F]"
 
 -------------------------------------------------------------------------------
+adding a hide tag implicitly enables all others
+  [!hide]
+-------------------------------------------------------------------------------
+Tag.tests.cpp:<line number>
+...............................................................................
+
+Tag.tests.cpp:<line number>: PASSED:
+  REQUIRE_THAT( testcase.tags, Catch::VectorContains(std::string(".")) )
+with expansion:
+  { "!hide", "." } Contains: "."
+
+Tag.tests.cpp:<line number>: PASSED:
+  REQUIRE_THAT( testcase.tags, Catch::VectorContains(std::string("!hide")) )
+with expansion:
+  { "!hide", "." } Contains: "!hide"
+
+-------------------------------------------------------------------------------
+adding a hide tag implicitly enables all others
+  [.]
+-------------------------------------------------------------------------------
+Tag.tests.cpp:<line number>
+...............................................................................
+
+Tag.tests.cpp:<line number>: PASSED:
+  REQUIRE_THAT( testcase.tags, Catch::VectorContains(std::string(".")) )
+with expansion:
+  { "!hide", "." } Contains: "."
+
+Tag.tests.cpp:<line number>: PASSED:
+  REQUIRE_THAT( testcase.tags, Catch::VectorContains(std::string("!hide")) )
+with expansion:
+  { "!hide", "." } Contains: "!hide"
+
+-------------------------------------------------------------------------------
+adding a hide tag implicitly enables all others
+  [.foo]
+-------------------------------------------------------------------------------
+Tag.tests.cpp:<line number>
+...............................................................................
+
+Tag.tests.cpp:<line number>: PASSED:
+  REQUIRE_THAT( testcase.tags, Catch::VectorContains(std::string(".")) )
+with expansion:
+  { "!hide", ".", "foo" } Contains: "."
+
+Tag.tests.cpp:<line number>: PASSED:
+  REQUIRE_THAT( testcase.tags, Catch::VectorContains(std::string("!hide")) )
+with expansion:
+  { "!hide", ".", "foo" } Contains: "!hide"
+
+-------------------------------------------------------------------------------
 array<int, N> -> toString
 -------------------------------------------------------------------------------
 ToStringVector.tests.cpp:<line number>
@@ -13251,6 +13302,6 @@ Misc.tests.cpp:<line number>
 Misc.tests.cpp:<line number>: PASSED:
 
 ===============================================================================
-test cases:  304 |  214 passed |  86 failed |  4 failed as expected
-assertions: 1676 | 1507 passed | 148 failed | 21 failed as expected
+test cases:  305 |  215 passed |  86 failed |  4 failed as expected
+assertions: 1682 | 1513 passed | 148 failed | 21 failed as expected
 
