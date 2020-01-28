@@ -160,7 +160,7 @@ ParseAndAddCatchTests(foo)
 * `PARSE_CATCH_TESTS_VERBOSE` -- When `ON`, the script prints debug
 messages. Defaults to `OFF`.
 * `PARSE_CATCH_TESTS_NO_HIDDEN_TESTS` -- When `ON`, hidden tests (tests
-tagged with any of `[!hide]`, `[.]` or `[.foo]`) will not be registered.
+tagged with either of `[.]` or `[.foo]`) will not be registered.
 Defaults to `OFF`.
 * `PARSE_CATCH_TESTS_ADD_FIXTURE_IN_TEST_NAME` -- When `ON`, adds fixture
 class name to the test name in CTest. Defaults to `ON`.

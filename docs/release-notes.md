@@ -49,6 +49,8 @@
 * `SectionInfo` no longer contains section description as a member (#1319)
   * You can still write `SECTION("ShortName", "Long and wordy description")`, but the description is thrown away
   * The description type now must be a `const char*` or implicitly convertible to it
+* The `[!hide]` tag has been removed.
+  * Use `[.]` or `[.foo]` instead.
 
 ### Fixes
 * The `INFO` macro no longer contains superfluous semicolon (#1456)

@@ -50,8 +50,7 @@ namespace Catch {
         }
 
         TestCaseProperties parseSpecialTag( StringRef tag ) {
-            if( (!tag.empty() && tag[0] == '.')
-               || tag == "!hide"_sr )
+            if( !tag.empty() && tag[0] == '.' )
                 return TestCaseProperties::IsHidden;
             else if( tag == "!throws"_sr )
                 return TestCaseProperties::Throws;
