@@ -11467,54 +11467,36 @@ with expansion:
 
 -------------------------------------------------------------------------------
 adding a hide tag implicitly enables all others
-  [!hide]
 -------------------------------------------------------------------------------
 Tag.tests.cpp:<line number>
 ...............................................................................
 
 Tag.tests.cpp:<line number>: PASSED:
-  REQUIRE_THAT( testcase.tags, Catch::VectorContains(std::string(".")) )
+  REQUIRE_THAT( testcase.tags, VectorContains(std::string(".")) && VectorContains(std::string("!hide")) )
 with expansion:
-  { "!hide", "." } Contains: "."
-
-Tag.tests.cpp:<line number>: PASSED:
-  REQUIRE_THAT( testcase.tags, Catch::VectorContains(std::string("!hide")) )
-with expansion:
-  { "!hide", "." } Contains: "!hide"
+  { "!hide", "." } ( Contains: "." and Contains: "!hide" )
 
 -------------------------------------------------------------------------------
 adding a hide tag implicitly enables all others
-  [.]
 -------------------------------------------------------------------------------
 Tag.tests.cpp:<line number>
 ...............................................................................
 
 Tag.tests.cpp:<line number>: PASSED:
-  REQUIRE_THAT( testcase.tags, Catch::VectorContains(std::string(".")) )
+  REQUIRE_THAT( testcase.tags, VectorContains(std::string(".")) && VectorContains(std::string("!hide")) )
 with expansion:
-  { "!hide", "." } Contains: "."
-
-Tag.tests.cpp:<line number>: PASSED:
-  REQUIRE_THAT( testcase.tags, Catch::VectorContains(std::string("!hide")) )
-with expansion:
-  { "!hide", "." } Contains: "!hide"
+  { "!hide", "." } ( Contains: "." and Contains: "!hide" )
 
 -------------------------------------------------------------------------------
 adding a hide tag implicitly enables all others
-  [.foo]
 -------------------------------------------------------------------------------
 Tag.tests.cpp:<line number>
 ...............................................................................
 
 Tag.tests.cpp:<line number>: PASSED:
-  REQUIRE_THAT( testcase.tags, Catch::VectorContains(std::string(".")) )
+  REQUIRE_THAT( testcase.tags, VectorContains(std::string(".")) && VectorContains(std::string("!hide")) )
 with expansion:
-  { "!hide", ".", "foo" } Contains: "."
-
-Tag.tests.cpp:<line number>: PASSED:
-  REQUIRE_THAT( testcase.tags, Catch::VectorContains(std::string("!hide")) )
-with expansion:
-  { "!hide", ".", "foo" } Contains: "!hide"
+  { "!hide", ".", "foo" } ( Contains: "." and Contains: "!hide" )
 
 -------------------------------------------------------------------------------
 array<int, N> -> toString
@@ -13303,5 +13285,5 @@ Misc.tests.cpp:<line number>: PASSED:
 
 ===============================================================================
 test cases:  305 |  215 passed |  86 failed |  4 failed as expected
-assertions: 1682 | 1513 passed | 148 failed | 21 failed as expected
+assertions: 1679 | 1510 passed | 148 failed | 21 failed as expected
 

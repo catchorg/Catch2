@@ -13900,64 +13900,31 @@ There is no extra whitespace here
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="adding a hide tag implicitly enables all others" filename="projects/<exe-name>/IntrospectiveTests/Tag.tests.cpp" >
-      <Section name="[!hide]" filename="projects/<exe-name>/IntrospectiveTests/Tag.tests.cpp" >
-        <Expression success="true" type="REQUIRE_THAT" filename="projects/<exe-name>/IntrospectiveTests/Tag.tests.cpp" >
-          <Original>
-            testcase.tags, Catch::VectorContains(std::string("."))
-          </Original>
-          <Expanded>
-            { "!hide", "." } Contains: "."
-          </Expanded>
-        </Expression>
-        <Expression success="true" type="REQUIRE_THAT" filename="projects/<exe-name>/IntrospectiveTests/Tag.tests.cpp" >
-          <Original>
-            testcase.tags, Catch::VectorContains(std::string("!hide"))
-          </Original>
-          <Expanded>
-            { "!hide", "." } Contains: "!hide"
-          </Expanded>
-        </Expression>
-        <OverallResults successes="2" failures="0" expectedFailures="0"/>
-      </Section>
-      <Section name="[.]" filename="projects/<exe-name>/IntrospectiveTests/Tag.tests.cpp" >
-        <Expression success="true" type="REQUIRE_THAT" filename="projects/<exe-name>/IntrospectiveTests/Tag.tests.cpp" >
-          <Original>
-            testcase.tags, Catch::VectorContains(std::string("."))
-          </Original>
-          <Expanded>
-            { "!hide", "." } Contains: "."
-          </Expanded>
-        </Expression>
-        <Expression success="true" type="REQUIRE_THAT" filename="projects/<exe-name>/IntrospectiveTests/Tag.tests.cpp" >
-          <Original>
-            testcase.tags, Catch::VectorContains(std::string("!hide"))
-          </Original>
-          <Expanded>
-            { "!hide", "." } Contains: "!hide"
-          </Expanded>
-        </Expression>
-        <OverallResults successes="2" failures="0" expectedFailures="0"/>
-      </Section>
-      <Section name="[.foo]" filename="projects/<exe-name>/IntrospectiveTests/Tag.tests.cpp" >
-        <Expression success="true" type="REQUIRE_THAT" filename="projects/<exe-name>/IntrospectiveTests/Tag.tests.cpp" >
-          <Original>
-            testcase.tags, Catch::VectorContains(std::string("."))
-          </Original>
-          <Expanded>
-            { "!hide", ".", "foo" } Contains: "."
-          </Expanded>
-        </Expression>
-        <Expression success="true" type="REQUIRE_THAT" filename="projects/<exe-name>/IntrospectiveTests/Tag.tests.cpp" >
-          <Original>
-            testcase.tags, Catch::VectorContains(std::string("!hide"))
-          </Original>
-          <Expanded>
-            { "!hide", ".", "foo" } Contains: "!hide"
-          </Expanded>
-        </Expression>
-        <OverallResults successes="2" failures="0" expectedFailures="0"/>
-      </Section>
+    <TestCase name="adding a hide tag implicitly enables all others" tags="[tags]" filename="projects/<exe-name>/IntrospectiveTests/Tag.tests.cpp" >
+      <Expression success="true" type="REQUIRE_THAT" filename="projects/<exe-name>/IntrospectiveTests/Tag.tests.cpp" >
+        <Original>
+          testcase.tags, VectorContains(std::string(".")) &amp;&amp; VectorContains(std::string("!hide"))
+        </Original>
+        <Expanded>
+          { "!hide", "." } ( Contains: "." and Contains: "!hide" )
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE_THAT" filename="projects/<exe-name>/IntrospectiveTests/Tag.tests.cpp" >
+        <Original>
+          testcase.tags, VectorContains(std::string(".")) &amp;&amp; VectorContains(std::string("!hide"))
+        </Original>
+        <Expanded>
+          { "!hide", "." } ( Contains: "." and Contains: "!hide" )
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE_THAT" filename="projects/<exe-name>/IntrospectiveTests/Tag.tests.cpp" >
+        <Original>
+          testcase.tags, VectorContains(std::string(".")) &amp;&amp; VectorContains(std::string("!hide"))
+        </Original>
+        <Expanded>
+          { "!hide", ".", "foo" } ( Contains: "." and Contains: "!hide" )
+        </Expanded>
+      </Expression>
       <OverallResult success="true"/>
     </TestCase>
     <TestCase name="array&lt;int, N> -> toString" tags="[array][containers][toString]" filename="projects/<exe-name>/UsageTests/ToStringVector.tests.cpp" >
@@ -15904,7 +15871,7 @@ loose text artifact
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="1513" failures="149" expectedFailures="21"/>
+    <OverallResults successes="1510" failures="149" expectedFailures="21"/>
   </Group>
-  <OverallResults successes="1513" failures="148" expectedFailures="21"/>
+  <OverallResults successes="1510" failures="148" expectedFailures="21"/>
 </Catch>
