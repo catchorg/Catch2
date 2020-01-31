@@ -89,7 +89,8 @@ namespace Catch {
             }
         }
         if( isHidden ) {
-            tags.emplace_back( "." );
+            // Add all "hidden" tags to make them behave identically
+            tags.insert( tags.end(), { ".", "!hide" } );
         }
 
         TestCaseInfo info( static_cast<std::string>(nameAndTags.name), _className, desc, tags, _lineInfo );

@@ -11466,6 +11466,39 @@ with expansion:
   "[\x7F]" == "[\x7F]"
 
 -------------------------------------------------------------------------------
+adding a hide tag implicitly enables all others
+-------------------------------------------------------------------------------
+Tag.tests.cpp:<line number>
+...............................................................................
+
+Tag.tests.cpp:<line number>: PASSED:
+  REQUIRE_THAT( testcase.tags, VectorContains(std::string(".")) && VectorContains(std::string("!hide")) )
+with expansion:
+  { "!hide", "." } ( Contains: "." and Contains: "!hide" )
+
+-------------------------------------------------------------------------------
+adding a hide tag implicitly enables all others
+-------------------------------------------------------------------------------
+Tag.tests.cpp:<line number>
+...............................................................................
+
+Tag.tests.cpp:<line number>: PASSED:
+  REQUIRE_THAT( testcase.tags, VectorContains(std::string(".")) && VectorContains(std::string("!hide")) )
+with expansion:
+  { "!hide", "." } ( Contains: "." and Contains: "!hide" )
+
+-------------------------------------------------------------------------------
+adding a hide tag implicitly enables all others
+-------------------------------------------------------------------------------
+Tag.tests.cpp:<line number>
+...............................................................................
+
+Tag.tests.cpp:<line number>: PASSED:
+  REQUIRE_THAT( testcase.tags, VectorContains(std::string(".")) && VectorContains(std::string("!hide")) )
+with expansion:
+  { "!hide", ".", "foo" } ( Contains: "." and Contains: "!hide" )
+
+-------------------------------------------------------------------------------
 array<int, N> -> toString
 -------------------------------------------------------------------------------
 ToStringVector.tests.cpp:<line number>
@@ -12387,7 +12420,7 @@ Tag.tests.cpp:<line number>
 Tag.tests.cpp:<line number>: PASSED:
   REQUIRE_THAT( testcase.tags, Catch::VectorContains(std::string("magic-tag")) && Catch::VectorContains(std::string(".")) )
 with expansion:
-  { ".", "magic-tag" } ( Contains: "magic-tag" and Contains: "." )
+  { "!hide", ".", "magic-tag" } ( Contains: "magic-tag" and Contains: "." )
 
 -------------------------------------------------------------------------------
 splitString
@@ -13251,6 +13284,6 @@ Misc.tests.cpp:<line number>
 Misc.tests.cpp:<line number>: PASSED:
 
 ===============================================================================
-test cases:  304 |  214 passed |  86 failed |  4 failed as expected
-assertions: 1676 | 1507 passed | 148 failed | 21 failed as expected
+test cases:  305 |  215 passed |  86 failed |  4 failed as expected
+assertions: 1679 | 1510 passed | 148 failed | 21 failed as expected
 

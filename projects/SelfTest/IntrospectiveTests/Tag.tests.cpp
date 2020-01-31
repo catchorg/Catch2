@@ -45,3 +45,10 @@ TEST_CASE("shortened hide tags are split apart") {
     auto testcase = Catch::makeTestCase(nullptr, "", {"fake test name", "[.magic-tag]"}, CATCH_INTERNAL_LINEINFO);
     REQUIRE_THAT(testcase.tags, Catch::VectorContains(std::string("magic-tag")) && Catch::VectorContains(std::string(".")));
 }
+
+TEST_CASE("adding a hide tag implicitly enables all others", "[tags]") {
+    using Catch::VectorContains;
+    auto tag = GENERATE(as<char const*>{}, "[!hide]", "[.]", "[.foo]");
+    auto testcase = Catch::makeTestCase(nullptr, "", {"fake test name", tag}, CATCH_INTERNAL_LINEINFO);
+    REQUIRE_THAT(testcase.tags, VectorContains(std::string(".")) && VectorContains(std::string("!hide")));
+}
