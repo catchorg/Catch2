@@ -15,6 +15,7 @@ coverage:
 
 codecov:
   branch: master
+  max_report_age: off
 
 comment:
   layout: "diff"
