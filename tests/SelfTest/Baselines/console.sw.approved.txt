@@ -2611,6 +2611,24 @@ with expansion:
   4294967295 (0x<hex digits>) > 4
 
 -------------------------------------------------------------------------------
+Composed matchers are distinct
+-------------------------------------------------------------------------------
+Matchers.tests.cpp:<line number>
+...............................................................................
+
+Matchers.tests.cpp:<line number>: PASSED:
+  REQUIRE_THAT( testStringForMatching2(), !composed1 )
+with expansion:
+  "some completely different text that contains one common word" not (
+  contains: "string" or contains: "random" )
+
+Matchers.tests.cpp:<line number>: PASSED:
+  REQUIRE_THAT( testStringForMatching2(), composed2 )
+with expansion:
+  "some completely different text that contains one common word" ( contains:
+  "string" or contains: "random" or contains: "different" )
+
+-------------------------------------------------------------------------------
 Contains string matcher
 -------------------------------------------------------------------------------
 Matchers.tests.cpp:<line number>
@@ -14300,6 +14318,6 @@ Misc.tests.cpp:<line number>
 Misc.tests.cpp:<line number>: PASSED:
 
 ===============================================================================
-test cases:  328 |  238 passed |  86 failed |  4 failed as expected
-assertions: 1846 | 1677 passed | 148 failed | 21 failed as expected
+test cases:  329 |  239 passed |  86 failed |  4 failed as expected
+assertions: 1848 | 1679 passed | 148 failed | 21 failed as expected
 

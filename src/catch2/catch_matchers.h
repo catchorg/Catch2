@@ -91,9 +91,10 @@ namespace Matchers {
                 return description;
             }
 
-            MatchAllOf<ArgT>& operator && ( MatcherBase<ArgT> const& other ) {
-                m_matchers.push_back( &other );
-                return *this;
+            MatchAllOf<ArgT> operator && ( MatcherBase<ArgT> const& other ) {
+                auto copy(*this);
+                copy.m_matchers.push_back( &other );
+                return copy;
             }
 
             std::vector<MatcherBase<ArgT> const*> m_matchers;
@@ -124,9 +125,10 @@ namespace Matchers {
                 return description;
             }
 
-            MatchAnyOf<ArgT>& operator || ( MatcherBase<ArgT> const& other ) {
-                m_matchers.push_back( &other );
-                return *this;
+            MatchAnyOf<ArgT> operator || ( MatcherBase<ArgT> const& other ) {
+                auto copy(*this);
+                copy.m_matchers.push_back( &other );
+                return copy;
             }
 
             std::vector<MatcherBase<ArgT> const*> m_matchers;

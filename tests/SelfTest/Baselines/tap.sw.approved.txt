@@ -686,6 +686,10 @@ ok {test-number} - 5 == c for: 5 == 5
 ok {test-number} - 6 == uc for: 6 == 6
 # Comparisons with int literals don't warn when mixing signed/ unsigned
 ok {test-number} - (std::numeric_limits<uint32_t>::max)() > ul for: 4294967295 (0x<hex digits>) > 4
+# Composed matchers are distinct
+ok {test-number} - testStringForMatching2(), !composed1 for: "some completely different text that contains one common word" not ( contains: "string" or contains: "random" )
+# Composed matchers are distinct
+ok {test-number} - testStringForMatching2(), composed2 for: "some completely different text that contains one common word" ( contains: "string" or contains: "random" or contains: "different" )
 # Contains string matcher
 not ok {test-number} - testStringForMatching(), Contains("not there", Catch::CaseSensitive::No) for: "this string contains 'abc' as a substring" contains: "not there" (case insensitive)
 # Contains string matcher
@@ -3684,5 +3688,5 @@ ok {test-number} - q3 == 23. for: 23.0 == 23.0
 ok {test-number} -
 # xmlentitycheck
 ok {test-number} -
-1..1838
+1..1840
 

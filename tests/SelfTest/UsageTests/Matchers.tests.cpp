@@ -556,6 +556,16 @@ namespace { namespace MatchersTests {
             REQUIRE_THROWS_MATCHES(throwsSpecialException(2), SpecialException,  Message("SpecialException::what"));
         }
 
+        TEST_CASE("Composed matchers are distinct", "[matchers][composed]") {
+            auto m1 = Contains("string");
+            auto m2 = Contains("random");
+            auto composed1 = m1 || m2;
+            auto m3 = Contains("different");
+            auto composed2 = composed1 || m3;
+            REQUIRE_THAT(testStringForMatching2(), !composed1);
+            REQUIRE_THAT(testStringForMatching2(), composed2);
+        }
+
 
     template<typename Range>
     struct EqualsRangeMatcher : Catch::MatcherGenericBase {

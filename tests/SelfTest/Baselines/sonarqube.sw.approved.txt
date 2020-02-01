@@ -923,6 +923,7 @@ Exception.tests.cpp:<line number>
     <testCase name="Combining only templated matchers" duration="{duration}"/>
     <testCase name="Combining templated and concrete matchers" duration="{duration}"/>
     <testCase name="Combining templated matchers" duration="{duration}"/>
+    <testCase name="Composed matchers are distinct" duration="{duration}"/>
     <testCase name="Contains string matcher" duration="{duration}">
       <failure message="CHECK_THAT(testStringForMatching(), Contains(&quot;not there&quot;, Catch::CaseSensitive::No))">
 FAILED:
