@@ -3,6 +3,7 @@
 
 #include <catch2/catch_common.h>
 #include <catch2/catch_matchers.h>
+#include <catch2/catch_stringref.h>
 
 #include <array>
 #include <string>
@@ -82,26 +83,15 @@ namespace Matchers {
             return static_cast<T const*>(matchers[Idx])->match(arg) || match_any_of<MatcherTs...>(arg, matchers, index_sequence<Indices...>{});
         }
 
+        std::string describe_multi_matcher(StringRef combine, std::string const* descriptions_begin, std::string const* descriptions_end);
 
         template<typename... MatcherTs, std::size_t... Idx>
-        std::string describe_multi_matcher(std::string const& combine, std::vector<void const*> const& matchers, index_sequence<Idx...>) {
-            std::array<std::string, sizeof...(MatcherTs)> descriptions {
+        std::string describe_multi_matcher(StringRef combine, std::vector<void const*> const& matchers, index_sequence<Idx...>) {
+            std::array<std::string, sizeof...(MatcherTs)> descriptions {{
                 static_cast<MatcherTs const*>(matchers[Idx])->toString()...
-            };
+            }};
 
-            std::string description;
-            description.reserve( 4 + descriptions.size() * 32 );
-            description += "( ";
-            bool first = true;
-            for( auto const& desc : descriptions ) {
-                if( first )
-                    first = false;
-                else
-                    description += combine;
-                description += desc;
-            }
-            description += " )";
-            return description;
+            return describe_multi_matcher(combine, descriptions.data(), descriptions.data() + descriptions.size());
         }
 
 
@@ -116,7 +106,7 @@ namespace Matchers {
             }
 
             std::string describe() const override {
-                return describe_multi_matcher<MatcherTs...>(" and ", m_matchers, index_sequence_for<MatcherTs...>{});
+                return describe_multi_matcher<MatcherTs...>(" and "_sr, m_matchers, index_sequence_for<MatcherTs...>{});
             }
 
             std::vector<void const*> m_matchers;
@@ -134,7 +124,7 @@ namespace Matchers {
             }
 
             std::string describe() const override {
-                return describe_multi_matcher<MatcherTs...>(" or ", m_matchers, index_sequence_for<MatcherTs...>{});
+                return describe_multi_matcher<MatcherTs...>(" or "_sr, m_matchers, index_sequence_for<MatcherTs...>{});
             }
 
             std::vector<void const*> m_matchers;
