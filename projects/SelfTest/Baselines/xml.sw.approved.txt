@@ -2832,6 +2832,25 @@ Nor would this
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
+    <TestCase name="Composed matchers are distinct" tags="[composed][matchers]" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
+      <Expression success="true" type="REQUIRE_THAT" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
+        <Original>
+          testStringForMatching2(), !composed1
+        </Original>
+        <Expanded>
+          "some completely different text that contains one common word" not ( contains: "string" or contains: "random" )
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE_THAT" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
+        <Original>
+          testStringForMatching2(), composed2
+        </Original>
+        <Expanded>
+          "some completely different text that contains one common word" ( contains: "string" or contains: "random" or contains: "different" )
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
     <TestCase name="Contains string matcher" tags="[!hide][.][failing][matchers]" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
       <Expression success="false" type="CHECK_THAT" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
         <Original>
@@ -15893,7 +15912,7 @@ loose text artifact
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="1512" failures="149" expectedFailures="21"/>
+    <OverallResults successes="1514" failures="149" expectedFailures="21"/>
   </Group>
-  <OverallResults successes="1512" failures="148" expectedFailures="21"/>
+  <OverallResults successes="1514" failures="148" expectedFailures="21"/>
 </Catch>

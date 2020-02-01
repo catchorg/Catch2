@@ -312,6 +312,8 @@ Condition.tests.cpp:<line number>: passed: 4 == ul for: 4 == 4
 Condition.tests.cpp:<line number>: passed: 5 == c for: 5 == 5
 Condition.tests.cpp:<line number>: passed: 6 == uc for: 6 == 6
 Condition.tests.cpp:<line number>: passed: (std::numeric_limits<uint32_t>::max)() > ul for: 4294967295 (0x<hex digits>) > 4
+Matchers.tests.cpp:<line number>: passed: testStringForMatching2(), !composed1 for: "some completely different text that contains one common word" not ( contains: "string" or contains: "random" )
+Matchers.tests.cpp:<line number>: passed: testStringForMatching2(), composed2 for: "some completely different text that contains one common word" ( contains: "string" or contains: "random" or contains: "different" )
 Matchers.tests.cpp:<line number>: failed: testStringForMatching(), Contains("not there", Catch::CaseSensitive::No) for: "this string contains 'abc' as a substring" contains: "not there" (case insensitive)
 Matchers.tests.cpp:<line number>: failed: testStringForMatching(), Contains("STRING") for: "this string contains 'abc' as a substring" contains: "STRING"
 Generators.tests.cpp:<line number>: passed: elem % 2 == 1 for: 1 == 1

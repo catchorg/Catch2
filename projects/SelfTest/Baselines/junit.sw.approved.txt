@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuitesloose text artifact
 >
-  <testsuite name="<exe-name>" errors="17" failures="132" tests="1682" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
+  <testsuite name="<exe-name>" errors="17" failures="132" tests="1684" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
     <properties>
       <property name="filters" value="~[!nonportable]~[!benchmark]~[approvals]"/>
       <property name="random-seed" value="1"/>
@@ -356,6 +356,7 @@ Exception.tests.cpp:<line number>
     <testcase classname="<exe-name>.global" name="Comparisons between ints where one side is computed" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Comparisons between unsigned ints and negative signed ints match c++ standard behaviour" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Comparisons with int literals don't warn when mixing signed/ unsigned" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="Composed matchers are distinct" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Contains string matcher" time="{duration}">
       <failure message="testStringForMatching(), Contains(&quot;not there&quot;, Catch::CaseSensitive::No)" type="CHECK_THAT">
 FAILED:
