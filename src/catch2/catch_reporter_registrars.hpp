@@ -40,7 +40,7 @@ namespace Catch {
         class ListenerFactory : public IReporterFactory {
 
             IStreamingReporterPtr create( ReporterConfig const& config ) const override {
-                return std::unique_ptr<T>( new T( config ) );
+                return std::make_unique<T>(config);
             }
             std::string getDescription() const override {
                 return std::string();

@@ -68,7 +68,7 @@ typename std::enable_if<std::is_integral<T>::value && !std::is_same<T, bool>::va
 GeneratorWrapper<T>>::type
 random(T a, T b) {
     return GeneratorWrapper<T>(
-        pf::make_unique<RandomIntegerGenerator<T>>(a, b)
+        std::make_unique<RandomIntegerGenerator<T>>(a, b)
     );
 }
 
@@ -77,7 +77,7 @@ typename std::enable_if<std::is_floating_point<T>::value,
 GeneratorWrapper<T>>::type
 random(T a, T b) {
     return GeneratorWrapper<T>(
-        pf::make_unique<RandomFloatingGenerator<T>>(a, b)
+        std::make_unique<RandomFloatingGenerator<T>>(a, b)
     );
 }
 
@@ -118,13 +118,13 @@ public:
 template <typename T>
 GeneratorWrapper<T> range(T const& start, T const& end, T const& step) {
     static_assert(std::is_arithmetic<T>::value && !std::is_same<T, bool>::value, "Type must be numeric");
-    return GeneratorWrapper<T>(pf::make_unique<RangeGenerator<T>>(start, end, step));
+    return GeneratorWrapper<T>(std::make_unique<RangeGenerator<T>>(start, end, step));
 }
 
 template <typename T>
 GeneratorWrapper<T> range(T const& start, T const& end) {
     static_assert(std::is_integral<T>::value && !std::is_same<T, bool>::value, "Type must be an integer");
-    return GeneratorWrapper<T>(pf::make_unique<RangeGenerator<T>>(start, end));
+    return GeneratorWrapper<T>(std::make_unique<RangeGenerator<T>>(start, end));
 }
 
 
@@ -158,13 +158,13 @@ template <typename InputIterator,
           typename InputSentinel,
           typename ResultType = typename std::iterator_traits<InputIterator>::value_type>
 GeneratorWrapper<ResultType> from_range(InputIterator from, InputSentinel to) {
-    return GeneratorWrapper<ResultType>(pf::make_unique<IteratorGenerator<ResultType>>(from, to));
+    return GeneratorWrapper<ResultType>(std::make_unique<IteratorGenerator<ResultType>>(from, to));
 }
 
 template <typename Container,
           typename ResultType = typename Container::value_type>
 GeneratorWrapper<ResultType> from_range(Container const& cnt) {
-    return GeneratorWrapper<ResultType>(pf::make_unique<IteratorGenerator<ResultType>>(cnt.begin(), cnt.end()));
+    return GeneratorWrapper<ResultType>(std::make_unique<IteratorGenerator<ResultType>>(cnt.begin(), cnt.end()));
 }
 
 

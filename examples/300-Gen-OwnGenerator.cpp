@@ -40,7 +40,9 @@ int const& RandomIntGenerator::get() const {
 // Notice that it returns an instance of GeneratorWrapper<int>, which
 // is a value-wrapper around std::unique_ptr<IGenerator<int>>.
 Catch::Generators::GeneratorWrapper<int> random(int low, int high) {
-    return Catch::Generators::GeneratorWrapper<int>(std::unique_ptr<Catch::Generators::IGenerator<int>>(new RandomIntGenerator(low, high)));
+    return Catch::Generators::GeneratorWrapper<int>(
+        std::make_unique<RandomIntGenerator>(low, high)
+    );
 }
 
 // The two sections in this test case are equivalent, but the first one

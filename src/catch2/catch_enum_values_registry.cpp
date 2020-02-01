@@ -52,7 +52,7 @@ namespace Catch {
         }
 
         std::unique_ptr<EnumInfo> makeEnumInfo( StringRef enumName, StringRef allValueNames, std::vector<int> const& values ) {
-            std::unique_ptr<EnumInfo> enumInfo( new EnumInfo );
+            auto enumInfo = std::make_unique<EnumInfo>();
             enumInfo->m_name = enumName;
             enumInfo->m_values.reserve( values.size() );
 

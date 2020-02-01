@@ -33,14 +33,6 @@ public:
 
 namespace Generators {
 
-    // !TBD move this into its own location?
-    namespace pf{
-        template<typename T, typename... Args>
-        std::unique_ptr<T> make_unique( Args&&... args ) {
-            return std::unique_ptr<T>(new T(std::forward<Args>(args)...));
-        }
-    }
-
     template<typename T>
     struct IGenerator : GeneratorUntypedBase {
         virtual ~IGenerator() = default;
@@ -104,11 +96,11 @@ namespace Generators {
 
     template <typename T>
     GeneratorWrapper<T> value(T&& value) {
-        return GeneratorWrapper<T>(pf::make_unique<SingleValueGenerator<T>>(std::forward<T>(value)));
+        return GeneratorWrapper<T>(std::make_unique<SingleValueGenerator<T>>(std::forward<T>(value)));
     }
     template <typename T>
     GeneratorWrapper<T> values(std::initializer_list<T> values) {
-        return GeneratorWrapper<T>(pf::make_unique<FixedValuesGenerator<T>>(values));
+        return GeneratorWrapper<T>(std::make_unique<FixedValuesGenerator<T>>(values));
     }
 
     template<typename T>
@@ -193,7 +185,7 @@ namespace Generators {
 
         IGeneratorTracker& tracker = acquireGeneratorTracker( lineInfo );
         if (!tracker.hasGenerator()) {
-            tracker.setGenerator(pf::make_unique<Generators<UnderlyingType>>(generatorExpression()));
+            tracker.setGenerator(std::make_unique<Generators<UnderlyingType>>(generatorExpression()));
         }
 
         auto const& generator = static_cast<IGenerator<UnderlyingType> const&>( *tracker.getGenerator() );

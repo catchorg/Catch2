@@ -108,7 +108,7 @@ namespace Catch {
             mutable std::ostream m_os;
         public:
             DebugOutStream()
-            :   m_streamBuf( new StreamBufImpl<OutputDebugWriter>() ),
+            :   m_streamBuf( std::make_unique<StreamBufImpl<OutputDebugWriter>>() ),
                 m_os( m_streamBuf.get() )
             {}
 
