@@ -585,9 +585,9 @@ auto EqualsRange(const Range& range) -> EqualsRangeMatcher<Range> {
 }
 
 TEST_CASE("Combining templated matchers", "[matchers][templated]") {
-    std::array<int, 3> container{ 1,2,3 };
+    std::array<int, 3> container{{ 1,2,3 }};
 
-    std::array<int, 3> a{ 1,2,3 };
+    std::array<int, 3> a{{ 1,2,3 }};
     std::vector<int> b{ 0,1,2 };
     std::list<int> c{ 4,5,6 };
 

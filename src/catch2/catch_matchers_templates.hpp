@@ -19,7 +19,9 @@ namespace Matchers {
         template<typename... MatcherTs> struct MatchAnyOfGeneric;
         template<typename MatcherT> struct MatchNotOfGeneric;
 
-        struct MatcherGenericBase : MatcherUntypedBase {};
+        struct MatcherGenericBase : MatcherUntypedBase {
+            virtual ~MatcherGenericBase();
+        };
 
         std::vector<void const*> vector_cat(std::vector<void const*> && lhs, std::vector<void const*> && rhs);
         std::vector<void const*> vector_cat(std::vector<void const*> && lhs, void const* rhs);

@@ -17,6 +17,9 @@ namespace Matchers {
             rhs.insert(rhs.begin(), lhs);
             return std::move(rhs);
         }
+
+        MatcherGenericBase::~MatcherGenericBase() {}
+
         std::string describe_multi_matcher(StringRef combine, std::string const* descriptions_begin, std::string const* descriptions_end) {
             std::string description;
             std::size_t combined_size = 4;
