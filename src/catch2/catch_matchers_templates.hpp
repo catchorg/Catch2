@@ -20,9 +20,9 @@ namespace Matchers {
 
         struct MatcherGenericBase : MatcherUntypedBase {};
 
-        std::vector<void const*> vector_cat(std::vector<void const*> const & lhs, std::vector<void const*> const& rhs);
-        std::vector<void const*> vector_cat(std::vector<void const*> const & lhs, void const* rhs);
-        std::vector<void const*> vector_cat(void const* lhs, std::vector<void const*> const& rhs);
+        std::vector<void const*> vector_cat(std::vector<void const*> && lhs, std::vector<void const*> && rhs);
+        std::vector<void const*> vector_cat(std::vector<void const*> && lhs, void const* rhs);
+        std::vector<void const*> vector_cat(void const* lhs, std::vector<void const*> && rhs);
 
 
         #ifdef CATCH_CPP17_OR_GREATER
@@ -206,38 +206,38 @@ namespace Matchers {
         // avoid deep nesting of matcher templates
         template<typename... MatchersLHS, typename... MatchersRHS>
         MatchAllOfGeneric<MatchersLHS..., MatchersRHS...>
-        operator && (MatchAllOfGeneric<MatchersLHS...> const& lhs, MatchAllOfGeneric<MatchersRHS...> const& rhs) {
-            return MatchAllOfGeneric<MatchersLHS..., MatchersRHS...>{vector_cat(lhs.m_matchers, rhs.m_matchers)};
+        operator && (MatchAllOfGeneric<MatchersLHS...> && lhs, MatchAllOfGeneric<MatchersRHS...> && rhs) {
+            return MatchAllOfGeneric<MatchersLHS..., MatchersRHS...>{vector_cat(std::move(lhs.m_matchers), std::move(rhs.m_matchers))};
         }
 
         template<typename... MatchersLHS, typename MatcherRHS>
         typename std::enable_if<is_matcher<MatcherRHS>::value, MatchAllOfGeneric<MatchersLHS..., MatcherRHS>>::type
-        operator && (MatchAllOfGeneric<MatchersLHS...> const& lhs, MatcherRHS const& rhs) {
-            return MatchAllOfGeneric<MatchersLHS..., MatcherRHS>{vector_cat(lhs.m_matchers, static_cast<void const*>(&rhs))};
+        operator && (MatchAllOfGeneric<MatchersLHS...> && lhs, MatcherRHS const& rhs) {
+            return MatchAllOfGeneric<MatchersLHS..., MatcherRHS>{vector_cat(std::move(lhs.m_matchers), static_cast<void const*>(&rhs))};
         }
 
         template<typename MatcherLHS, typename... MatchersRHS>
         typename std::enable_if<is_matcher<MatcherLHS>::value, MatchAllOfGeneric<MatcherLHS, MatchersRHS...>>::type
-        operator && (MatcherLHS const& lhs, MatchAllOfGeneric<MatchersRHS...> const& rhs) {
-            return MatchAllOfGeneric<MatcherLHS, MatchersRHS...>{vector_cat(static_cast<void const*>(&lhs), rhs.m_matchers)};
+        operator && (MatcherLHS const& lhs, MatchAllOfGeneric<MatchersRHS...> && rhs) {
+            return MatchAllOfGeneric<MatcherLHS, MatchersRHS...>{vector_cat(static_cast<void const*>(&lhs), std::move(rhs.m_matchers))};
         }
 
         template<typename... MatchersLHS, typename... MatchersRHS>
         MatchAnyOfGeneric<MatchersLHS..., MatchersRHS...>
-        operator || (MatchAnyOfGeneric<MatchersLHS...> const& lhs, MatchAnyOfGeneric<MatchersRHS...> const& rhs) {
-            return MatchAnyOfGeneric<MatchersLHS..., MatchersRHS...>{vector_cat(lhs.m_matchers, rhs.m_matchers)};
+        operator || (MatchAnyOfGeneric<MatchersLHS...> && lhs, MatchAnyOfGeneric<MatchersRHS...> && rhs) {
+            return MatchAnyOfGeneric<MatchersLHS..., MatchersRHS...>{vector_cat(std::move(lhs.m_matchers), std::move(rhs.m_matchers))};
         }
 
         template<typename... MatchersLHS, typename MatcherRHS>
         typename std::enable_if<is_matcher<MatcherRHS>::value, MatchAnyOfGeneric<MatchersLHS..., MatcherRHS>>::type
-        operator || (MatchAnyOfGeneric<MatchersLHS...> const& lhs, MatcherRHS const& rhs) {
-            return MatchAnyOfGeneric<MatchersLHS..., MatcherRHS>{vector_cat(lhs.m_matchers, static_cast<void const*>(&rhs))};
+        operator || (MatchAnyOfGeneric<MatchersLHS...> && lhs, MatcherRHS const& rhs) {
+            return MatchAnyOfGeneric<MatchersLHS..., MatcherRHS>{vector_cat(std::move(lhs.m_matchers), static_cast<void const*>(&rhs))};
         }
 
         template<typename MatcherLHS, typename... MatchersRHS>
         typename std::enable_if<is_matcher<MatcherLHS>::value, MatchAnyOfGeneric<MatcherLHS, MatchersRHS...>>::type
-        operator || (MatcherLHS const& lhs, MatchAnyOfGeneric<MatchersRHS...> const& rhs) {
-            return MatchAnyOfGeneric<MatcherLHS, MatchersRHS...>{vector_cat(static_cast<void const*>(&lhs), rhs.m_matchers)};
+        operator || (MatcherLHS const& lhs, MatchAnyOfGeneric<MatchersRHS...> && rhs) {
+            return MatchAnyOfGeneric<MatcherLHS, MatchersRHS...>{vector_cat(static_cast<void const*>(&lhs), std::move(rhs.m_matchers))};
         }
 
         template<typename MatcherT>

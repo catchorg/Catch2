@@ -3,22 +3,19 @@
 namespace Catch {
 namespace Matchers {
     namespace Impl {
-        std::vector<const void*> vector_cat(std::vector<void const*> const& lhs, std::vector<void const*> const& rhs) {
-            auto copy = lhs;
-            copy.insert(copy.end(), rhs.begin(), rhs.end());
-            return copy;
+        std::vector<const void*> vector_cat(std::vector<void const*> && lhs, std::vector<void const*> && rhs) {
+            lhs.insert(lhs.end(), rhs.begin(), rhs.end());
+            return std::move(lhs);
         }
 
-        std::vector<const void*> vector_cat(std::vector<void const*> const& lhs, void const* rhs) {
-            auto copy = lhs;
-            copy.push_back(rhs);
-            return copy;
+        std::vector<const void*> vector_cat(std::vector<void const*> && lhs, void const* rhs) {
+            lhs.push_back(rhs);
+            return std::move(lhs);
         }
 
-        std::vector<const void*> vector_cat(void const* lhs, std::vector<void const*> const& rhs) {
-            auto copy = rhs;
-            copy.insert(copy.begin(), lhs);
-            return copy;
+        std::vector<const void*> vector_cat(void const* lhs, std::vector<void const*> && rhs) {
+            rhs.insert(rhs.begin(), lhs);
+            return std::move(rhs);
         }
     }
 } // namespace Matchers

@@ -609,6 +609,12 @@ TEST_CASE("Combining templated and concrete matchers", "[matchers][templated]") 
                  !EqualsRange(a));
 }
 
+TEST_CASE("Combining concrete matchers does not use templated matchers", "[matchers][templated]") {
+    using Catch::Matchers::StartsWith;
+    using Catch::Matchers::EndsWith;
+
+    STATIC_REQUIRE(std::is_same<decltype(StartsWith("foo") || StartsWith("bar") && EndsWith("bar") && !EndsWith("foo")), Catch::Matchers::Impl::MatchAnyOf<std::string>>::value);
+}
 
 #ifdef __clang__
 #pragma clang diagnostic pop
