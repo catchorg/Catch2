@@ -16,13 +16,13 @@ namespace Catch {
 
     template<typename ArgT, typename MatcherT>
     class MatchExpr : public ITransientExpression {
-        ArgT const& m_arg;
+        ArgT && m_arg;
         MatcherT m_matcher;
         StringRef m_matcherString;
     public:
-        MatchExpr( ArgT const& arg, MatcherT const& matcher, StringRef const& matcherString )
-        :   ITransientExpression{ true, matcher.match( arg ) },
-            m_arg( arg ),
+        MatchExpr( ArgT && arg, MatcherT const& matcher, StringRef const& matcherString )
+        :   ITransientExpression{ true, matcher.match( arg ) }, // not forwarding arg here on purpose
+            m_arg( std::forward<ArgT>(arg) ),
             m_matcher( matcher ),
             m_matcherString( matcherString )
         {}
@@ -42,8 +42,8 @@ namespace Catch {
     void handleExceptionMatchExpr( AssertionHandler& handler, StringMatcher const& matcher, StringRef const& matcherString  );
 
     template<typename ArgT, typename MatcherT>
-    auto makeMatchExpr( ArgT const& arg, MatcherT const& matcher, StringRef const& matcherString  ) -> MatchExpr<ArgT, MatcherT> {
-        return MatchExpr<ArgT, MatcherT>( arg, matcher, matcherString );
+    auto makeMatchExpr( ArgT && arg, MatcherT const& matcher, StringRef const& matcherString  ) -> MatchExpr<ArgT, MatcherT> {
+        return MatchExpr<ArgT, MatcherT>( std::forward<ArgT>(arg), matcher, matcherString );
     }
 
 } // namespace Catch

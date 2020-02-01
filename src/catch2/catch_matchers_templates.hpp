@@ -62,23 +62,23 @@ namespace Matchers {
 
 
         template<typename..., typename Arg>
-        bool match_all_of(Arg const&, std::vector<void const*> const&, index_sequence<>) {
+        bool match_all_of(Arg&&, std::vector<void const*> const&, index_sequence<>) {
             return true;
         }
 
         template<typename T, typename... MatcherTs, typename Arg, std::size_t Idx, std::size_t... Indices>
-        bool match_all_of(Arg const& arg, std::vector<void const*> const& matchers, index_sequence<Idx, Indices...>) {
+        bool match_all_of(Arg&& arg, std::vector<void const*> const& matchers, index_sequence<Idx, Indices...>) {
             return static_cast<T const*>(matchers[Idx])->match(arg) && match_all_of<MatcherTs...>(arg, matchers, index_sequence<Indices...>{});
         }
 
 
         template<typename..., typename Arg>
-        bool match_any_of(Arg const&, std::vector<void const*> const&, index_sequence<>) {
+        bool match_any_of(Arg&&, std::vector<void const*> const&, index_sequence<>) {
             return false;
         }
 
         template<typename T, typename... MatcherTs, typename Arg, std::size_t Idx, std::size_t... Indices>
-        bool match_any_of(Arg const& arg, std::vector<void const*> const& matchers, index_sequence<Idx, Indices...>) {
+        bool match_any_of(Arg&& arg, std::vector<void const*> const& matchers, index_sequence<Idx, Indices...>) {
             return static_cast<T const*>(matchers[Idx])->match(arg) || match_any_of<MatcherTs...>(arg, matchers, index_sequence<Indices...>{});
         }
 
@@ -111,7 +111,7 @@ namespace Matchers {
             explicit MatchAllOfGeneric(std::vector<void const*> && matchers) : m_matchers{std::move(matchers)} {}
 
             template<typename Arg>
-            bool match(const Arg& arg) const {
+            bool match(Arg&& arg) const {
                 return match_all_of<MatcherTs...>(arg, m_matchers, index_sequence_for<MatcherTs...>{});
             }
 
@@ -129,7 +129,7 @@ namespace Matchers {
             explicit MatchAnyOfGeneric(std::vector<void const*> && matchers) : m_matchers{std::move(matchers)} {}
 
             template<typename Arg>
-            bool match(const Arg& arg) const {
+            bool match(Arg&& arg) const {
                 return match_any_of<MatcherTs...>(arg, m_matchers, index_sequence_for<MatcherTs...>{});
             }
 
@@ -146,7 +146,7 @@ namespace Matchers {
             explicit MatchNotOfGeneric(MatcherT const& matcher) : m_matcher{matcher} {}
 
             template<typename Arg>
-            bool match(const Arg& arg) const {
+            bool match(Arg&& arg) const {
                 return !m_matcher.match(arg);
             }
 
