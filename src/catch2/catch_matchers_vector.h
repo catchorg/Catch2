@@ -107,17 +107,17 @@ namespace Matchers {
             std::string describe() const override {
                 return "is approx: " + ::Catch::Detail::stringify( m_comparator );
             }
-            template <typename = typename std::enable_if<std::is_constructible<double, T>::value>::type>
+            template <typename = std::enable_if_t<std::is_constructible<double, T>::value>>
             ApproxMatcher& epsilon( T const& newEpsilon ) {
                 approx.epsilon(newEpsilon);
                 return *this;
             }
-            template <typename = typename std::enable_if<std::is_constructible<double, T>::value>::type>
+            template <typename = std::enable_if_t<std::is_constructible<double, T>::value>>
             ApproxMatcher& margin( T const& newMargin ) {
                 approx.margin(newMargin);
                 return *this;
             }
-            template <typename = typename std::enable_if<std::is_constructible<double, T>::value>::type>
+            template <typename = std::enable_if_t<std::is_constructible<double, T>::value>>
             ApproxMatcher& scale( T const& newScale ) {
                 approx.scale(newScale);
                 return *this;

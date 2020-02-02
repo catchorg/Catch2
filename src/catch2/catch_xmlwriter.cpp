@@ -53,26 +53,26 @@ namespace {
     }
 
     bool shouldNewline(XmlFormatting fmt) {
-        return !!(static_cast<std::underlying_type<XmlFormatting>::type>(fmt & XmlFormatting::Newline));
+        return !!(static_cast<std::underlying_type_t<XmlFormatting>>(fmt & XmlFormatting::Newline));
     }
 
     bool shouldIndent(XmlFormatting fmt) {
-        return !!(static_cast<std::underlying_type<XmlFormatting>::type>(fmt & XmlFormatting::Indent));
+        return !!(static_cast<std::underlying_type_t<XmlFormatting>>(fmt & XmlFormatting::Indent));
     }
 
 } // anonymous namespace
 
     XmlFormatting operator | (XmlFormatting lhs, XmlFormatting rhs) {
         return static_cast<XmlFormatting>(
-            static_cast<std::underlying_type<XmlFormatting>::type>(lhs) |
-            static_cast<std::underlying_type<XmlFormatting>::type>(rhs)
+            static_cast<std::underlying_type_t<XmlFormatting>>(lhs) |
+            static_cast<std::underlying_type_t<XmlFormatting>>(rhs)
         );
     }
 
     XmlFormatting operator & (XmlFormatting lhs, XmlFormatting rhs) {
         return static_cast<XmlFormatting>(
-            static_cast<std::underlying_type<XmlFormatting>::type>(lhs) &
-            static_cast<std::underlying_type<XmlFormatting>::type>(rhs)
+            static_cast<std::underlying_type_t<XmlFormatting>>(lhs) &
+            static_cast<std::underlying_type_t<XmlFormatting>>(rhs)
         );
     }
 

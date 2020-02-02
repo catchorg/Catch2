@@ -59,23 +59,23 @@ namespace Catch {
         std::string convertUnknownEnumToString( E e );
 
         template<typename T>
-        typename std::enable_if<
+        std::enable_if_t<
             !std::is_enum<T>::value && !std::is_base_of<std::exception, T>::value,
-        std::string>::type convertUnstreamable( T const& ) {
+        std::string> convertUnstreamable( T const& ) {
             return Detail::unprintableString;
         }
         template<typename T>
-        typename std::enable_if<
+        std::enable_if_t<
             !std::is_enum<T>::value && std::is_base_of<std::exception, T>::value,
-         std::string>::type convertUnstreamable(T const& ex) {
+         std::string> convertUnstreamable(T const& ex) {
             return ex.what();
         }
 
 
         template<typename T>
-        typename std::enable_if<
-            std::is_enum<T>::value
-        , std::string>::type convertUnstreamable( T const& value ) {
+        std::enable_if_t<
+            std::is_enum<T>::value,
+        std::string> convertUnstreamable( T const& value ) {
             return convertUnknownEnumToString( value );
         }
 
@@ -99,7 +99,7 @@ namespace Catch {
     struct StringMaker {
         template <typename Fake = T>
         static
-        typename std::enable_if<::Catch::Detail::IsStreamInsertable<Fake>::value, std::string>::type
+        std::enable_if_t<::Catch::Detail::IsStreamInsertable<Fake>::value, std::string>
             convert(const Fake& value) {
                 ReusableStringStream rss;
                 // NB: call using the function-like syntax to avoid ambiguity with
@@ -110,7 +110,7 @@ namespace Catch {
 
         template <typename Fake = T>
         static
-        typename std::enable_if<!::Catch::Detail::IsStreamInsertable<Fake>::value, std::string>::type
+        std::enable_if_t<!::Catch::Detail::IsStreamInsertable<Fake>::value, std::string>
             convert( const Fake& value ) {
 #if !defined(CATCH_CONFIG_FALLBACK_STRINGIFIER)
             return Detail::convertUnstreamable(value);
@@ -126,12 +126,12 @@ namespace Catch {
         // Should be preferably called fully qualified, like ::Catch::Detail::stringify
         template <typename T>
         std::string stringify(const T& e) {
-            return ::Catch::StringMaker<typename std::remove_cv<typename std::remove_reference<T>::type>::type>::convert(e);
+            return ::Catch::StringMaker<std::remove_cv_t<std::remove_reference_t<T>>>::convert(e);
         }
 
         template<typename E>
         std::string convertUnknownEnumToString( E e ) {
-            return ::Catch::Detail::stringify(static_cast<typename std::underlying_type<E>::type>(e));
+            return ::Catch::Detail::stringify(static_cast<std::underlying_type_t<E>>(e));
         }
 
 #if defined(_MANAGED)
@@ -515,7 +515,7 @@ namespace Catch {
     }
 
     template<typename R>
-    struct StringMaker<R, typename std::enable_if<is_range<R>::value && !::Catch::Detail::IsStreamInsertable<R>::value>::type> {
+    struct StringMaker<R, std::enable_if_t<is_range<R>::value && !::Catch::Detail::IsStreamInsertable<R>::value>> {
         static std::string convert( R const& range ) {
             return rangeToString( range );
         }

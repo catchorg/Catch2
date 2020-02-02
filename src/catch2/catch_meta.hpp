@@ -38,7 +38,7 @@ namespace Catch {
     using FunctionReturnType = std::remove_reference_t<std::remove_cv_t<std::invoke_result_t<Func, U>>>;
 #else
     template <typename Func, typename U>
-    using FunctionReturnType = typename std::remove_reference<typename std::remove_cv<typename std::result_of<Func(U)>::type>::type>::type;
+    using FunctionReturnType = std::remove_reference_t<std::remove_cv_t<std::result_of_t<Func(U)>>>;
 #endif
 
 } // namespace Catch

@@ -64,8 +64,8 @@ public:
 // TODO: Ideally this would be also constrained against the various char types,
 //       but I don't expect users to run into that in practice.
 template <typename T>
-typename std::enable_if<std::is_integral<T>::value && !std::is_same<T, bool>::value,
-GeneratorWrapper<T>>::type
+std::enable_if_t<std::is_integral<T>::value && !std::is_same<T, bool>::value,
+GeneratorWrapper<T>>
 random(T a, T b) {
     return GeneratorWrapper<T>(
         std::make_unique<RandomIntegerGenerator<T>>(a, b)
@@ -73,8 +73,8 @@ random(T a, T b) {
 }
 
 template <typename T>
-typename std::enable_if<std::is_floating_point<T>::value,
-GeneratorWrapper<T>>::type
+std::enable_if_t<std::is_floating_point<T>::value,
+GeneratorWrapper<T>>
 random(T a, T b) {
     return GeneratorWrapper<T>(
         std::make_unique<RandomFloatingGenerator<T>>(a, b)

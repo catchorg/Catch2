@@ -32,7 +32,7 @@ namespace Detail {
 
         Approx operator-() const;
 
-        template <typename T, typename = typename std::enable_if<std::is_constructible<double, T>::value>::type>
+        template <typename T, typename = std::enable_if_t<std::is_constructible<double, T>::value>>
         Approx operator()( T const& value ) {
             Approx approx( static_cast<double>(value) );
             approx.m_epsilon = m_epsilon;
@@ -41,67 +41,67 @@ namespace Detail {
             return approx;
         }
 
-        template <typename T, typename = typename std::enable_if<std::is_constructible<double, T>::value>::type>
+        template <typename T, typename = std::enable_if_t<std::is_constructible<double, T>::value>>
         explicit Approx( T const& value ): Approx(static_cast<double>(value))
         {}
 
 
-        template <typename T, typename = typename std::enable_if<std::is_constructible<double, T>::value>::type>
+        template <typename T, typename = std::enable_if_t<std::is_constructible<double, T>::value>>
         friend bool operator == ( const T& lhs, Approx const& rhs ) {
             auto lhs_v = static_cast<double>(lhs);
             return rhs.equalityComparisonImpl(lhs_v);
         }
 
-        template <typename T, typename = typename std::enable_if<std::is_constructible<double, T>::value>::type>
+        template <typename T, typename = std::enable_if_t<std::is_constructible<double, T>::value>>
         friend bool operator == ( Approx const& lhs, const T& rhs ) {
             return operator==( rhs, lhs );
         }
 
-        template <typename T, typename = typename std::enable_if<std::is_constructible<double, T>::value>::type>
+        template <typename T, typename = std::enable_if_t<std::is_constructible<double, T>::value>>
         friend bool operator != ( T const& lhs, Approx const& rhs ) {
             return !operator==( lhs, rhs );
         }
 
-        template <typename T, typename = typename std::enable_if<std::is_constructible<double, T>::value>::type>
+        template <typename T, typename = std::enable_if_t<std::is_constructible<double, T>::value>>
         friend bool operator != ( Approx const& lhs, T const& rhs ) {
             return !operator==( rhs, lhs );
         }
 
-        template <typename T, typename = typename std::enable_if<std::is_constructible<double, T>::value>::type>
+        template <typename T, typename = std::enable_if_t<std::is_constructible<double, T>::value>>
         friend bool operator <= ( T const& lhs, Approx const& rhs ) {
             return static_cast<double>(lhs) < rhs.m_value || lhs == rhs;
         }
 
-        template <typename T, typename = typename std::enable_if<std::is_constructible<double, T>::value>::type>
+        template <typename T, typename = std::enable_if_t<std::is_constructible<double, T>::value>>
         friend bool operator <= ( Approx const& lhs, T const& rhs ) {
             return lhs.m_value < static_cast<double>(rhs) || lhs == rhs;
         }
 
-        template <typename T, typename = typename std::enable_if<std::is_constructible<double, T>::value>::type>
+        template <typename T, typename = std::enable_if_t<std::is_constructible<double, T>::value>>
         friend bool operator >= ( T const& lhs, Approx const& rhs ) {
             return static_cast<double>(lhs) > rhs.m_value || lhs == rhs;
         }
 
-        template <typename T, typename = typename std::enable_if<std::is_constructible<double, T>::value>::type>
+        template <typename T, typename = std::enable_if_t<std::is_constructible<double, T>::value>>
         friend bool operator >= ( Approx const& lhs, T const& rhs ) {
             return lhs.m_value > static_cast<double>(rhs) || lhs == rhs;
         }
 
-        template <typename T, typename = typename std::enable_if<std::is_constructible<double, T>::value>::type>
+        template <typename T, typename = std::enable_if_t<std::is_constructible<double, T>::value>>
         Approx& epsilon( T const& newEpsilon ) {
             double epsilonAsDouble = static_cast<double>(newEpsilon);
             setEpsilon(epsilonAsDouble);
             return *this;
         }
 
-        template <typename T, typename = typename std::enable_if<std::is_constructible<double, T>::value>::type>
+        template <typename T, typename = std::enable_if_t<std::is_constructible<double, T>::value>>
         Approx& margin( T const& newMargin ) {
             double marginAsDouble = static_cast<double>(newMargin);
             setMargin(marginAsDouble);
             return *this;
         }
 
-        template <typename T, typename = typename std::enable_if<std::is_constructible<double, T>::value>::type>
+        template <typename T, typename = std::enable_if_t<std::is_constructible<double, T>::value>>
         Approx& scale( T const& newScale ) {
             m_scale = static_cast<double>(newScale);
             return *this;

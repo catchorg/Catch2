@@ -149,7 +149,7 @@ namespace Generators {
 
 
     template<typename... Ts>
-    GeneratorWrapper<std::tuple<Ts...>> table( std::initializer_list<std::tuple<typename std::decay<Ts>::type...>> tuples ) {
+    GeneratorWrapper<std::tuple<Ts...>> table( std::initializer_list<std::tuple<std::decay_t<Ts>...>> tuples ) {
         return values<std::tuple<Ts...>>( tuples );
     }
 
