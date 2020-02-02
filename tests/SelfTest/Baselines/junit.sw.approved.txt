@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuitesloose text artifact
 >
-  <testsuite name="<exe-name>" errors="17" failures="132" tests="1812" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
+  <testsuite name="<exe-name>" errors="17" failures="132" tests="1843" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
     <properties>
       <property name="filters" value="~[!nonportable]~[!benchmark]~[approvals] *"/>
       <property name="random-seed" value="1"/>
@@ -350,6 +350,11 @@ Exception.tests.cpp:<line number>
     <testcase classname="<exe-name>.global" name="Character pretty printing/Specifically escaped" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Character pretty printing/General chars" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Character pretty printing/Low ASCII" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="Combining MatchAllOfGeneric does not nest" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="Combining MatchAnyOfGeneric does not nest" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="Combining MatchNotOfGeneric does not nest" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="Combining concrete matchers does not use templated matchers" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="Combining only templated matchers" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Combining templated and concrete matchers" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Combining templated matchers" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Commas in various macros are allowed" time="{duration}"/>
@@ -952,6 +957,7 @@ Message from section two
 Message.tests.cpp:<line number>
       </failure>
     </testcase>
+    <testcase classname="<exe-name>.global" name="Overloaded address-of operator is not used" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Parse test names and tags/Empty test spec should have no filters" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Parse test names and tags/Test spec from empty string should have no filters" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Parse test names and tags/Test spec from just a comma should have no filters" time="{duration}"/>

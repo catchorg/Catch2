@@ -6,10 +6,11 @@
 #include <catch2/catch_stringref.h>
 
 #include <array>
+#include <memory>
 #include <string>
-#include <vector>
 #include <type_traits>
 #include <utility>
+#include <vector>
 
 namespace Catch {
 namespace Matchers {
@@ -99,7 +100,7 @@ namespace Matchers {
 
         template<typename... MatcherTs>
         struct MatchAllOfGeneric : MatcherGenericBase {
-            MatchAllOfGeneric(MatcherTs const&... matchers) : m_matchers{&matchers...} {}
+            MatchAllOfGeneric(MatcherTs const&... matchers) : m_matchers{std::addressof(matchers)...} {}
             explicit MatchAllOfGeneric(std::vector<void const*> && matchers) : m_matchers{std::move(matchers)} {}
 
             template<typename Arg>
@@ -117,7 +118,7 @@ namespace Matchers {
 
         template<typename... MatcherTs>
         struct MatchAnyOfGeneric : MatcherGenericBase {
-            MatchAnyOfGeneric(MatcherTs const&... matchers) : m_matchers{&matchers...} {}
+            MatchAnyOfGeneric(MatcherTs const&... matchers) : m_matchers{std::addressof(matchers)...} {}
             explicit MatchAnyOfGeneric(std::vector<void const*> && matchers) : m_matchers{std::move(matchers)} {}
 
             template<typename Arg>
