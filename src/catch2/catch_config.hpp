@@ -11,9 +11,6 @@
 #include <catch2/catch_test_spec_parser.h>
 #include <catch2/catch_interfaces_config.h>
 
-// Libstdc++ doesn't like incomplete classes for unique_ptr
-#include <catch2/catch_stream.h>
-
 #include <memory>
 #include <vector>
 #include <string>
@@ -73,7 +70,7 @@ namespace Catch {
 
         Config() = default;
         Config( ConfigData const& data );
-        virtual ~Config() = default;
+        ~Config() override; // = default in the cpp file
 
         std::string const& getFilename() const;
 

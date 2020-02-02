@@ -7,6 +7,7 @@
 
 #include <catch2/catch_config.hpp>
 #include <catch2/catch_enforce.h>
+#include <catch2/catch_stream.h>
 #include <catch2/catch_stringref.h>
 
 namespace Catch {
@@ -35,6 +36,9 @@ namespace Catch {
         }
         m_testSpec = parser.testSpec();
     }
+
+    Config::~Config() = default;
+
 
     std::string const& Config::getFilename() const {
         return m_data.outputFilename ;
