@@ -748,6 +748,13 @@ namespace { namespace MatchersTests {
         }
     };
 
+    struct EvilCommaOperatorUsed : std::exception {
+        EvilCommaOperatorUsed() {}
+        const char* what() const noexcept override {
+            return "overloaded comma operator of matcher was used";
+        }
+    };
+
     struct EvilMatcher : Catch::MatcherGenericBase {
         std::string describe() const override {
             return "equals: 45";
@@ -760,11 +767,74 @@ namespace { namespace MatchersTests {
         EvilMatcher const* operator& () const {
             throw EvilAddressOfOperatorUsed();
         }
+
+        int operator,(EvilMatcher const&) const {
+            throw EvilCommaOperatorUsed();
+        }
     };
 
-    TEST_CASE("Overloaded address-of operator is not used", "[matchers][templated]") {
-        REQUIRE_NOTHROW(EvilMatcher() || EvilMatcher());
-        REQUIRE_NOTHROW(EvilMatcher() && EvilMatcher());
+    TEST_CASE("Overloaded comma or address-of operators are not used", "[matchers][templated]") {
+        REQUIRE_THROWS_AS((EvilMatcher(), EvilMatcher()), EvilCommaOperatorUsed);
+        REQUIRE_THROWS_AS(&EvilMatcher(), EvilAddressOfOperatorUsed);
+        REQUIRE_NOTHROW(EvilMatcher() || EvilMatcher() && !EvilMatcher());
+        REQUIRE_NOTHROW((EvilMatcher() && EvilMatcher()) || !EvilMatcher());
+    }
+
+    struct ImmovableMatcher : Catch::MatcherGenericBase {
+        ImmovableMatcher() = default;
+        ImmovableMatcher(ImmovableMatcher const&) = delete;
+        ImmovableMatcher(ImmovableMatcher &&) = delete;
+        ImmovableMatcher& operator=(ImmovableMatcher const&) = delete;
+        ImmovableMatcher& operator=(ImmovableMatcher &&) = delete;
+
+        std::string describe() const override {
+            return "always false";
+        }
+
+        template<typename T>
+        bool match(T&&) const {
+            return false;
+        }
+    };
+
+    struct MatcherWasMovedOrCopied : std::exception {
+        MatcherWasMovedOrCopied() {}
+        const char* what() const noexcept override {
+            return "attempted to copy or move a matcher";
+        }
+    };
+
+    struct ThrowOnCopyOrMoveMatcher : Catch::MatcherGenericBase {
+        ThrowOnCopyOrMoveMatcher() = default;
+        ThrowOnCopyOrMoveMatcher(ThrowOnCopyOrMoveMatcher const&) {
+            throw MatcherWasMovedOrCopied();
+        }
+        ThrowOnCopyOrMoveMatcher(ThrowOnCopyOrMoveMatcher &&) {
+            throw MatcherWasMovedOrCopied();
+        }
+        ThrowOnCopyOrMoveMatcher& operator=(ThrowOnCopyOrMoveMatcher const&) {
+            throw MatcherWasMovedOrCopied();
+        }
+        ThrowOnCopyOrMoveMatcher& operator=(ThrowOnCopyOrMoveMatcher &&) {
+            throw MatcherWasMovedOrCopied();
+        }
+
+        std::string describe() const override {
+            return "always false";
+        }
+
+        template<typename T>
+        bool match(T&&) const {
+            return false;
+        }
+    };
+
+    TEST_CASE("Matchers are not moved or copied", "[matchers][templated]") {
+        REQUIRE_NOTHROW((ThrowOnCopyOrMoveMatcher() && ThrowOnCopyOrMoveMatcher()) || !ThrowOnCopyOrMoveMatcher());
+    }
+
+    TEST_CASE("Immovable matchers can be used", "[matchers][templated]") {
+        REQUIRE_THAT(123, (ImmovableMatcher() && ImmovableMatcher()) || !ImmovableMatcher());
     }
 
 } } // namespace MatchersTests

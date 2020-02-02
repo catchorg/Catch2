@@ -778,6 +778,7 @@ Message.tests.cpp:<line number>: passed: i < 10 for: 7 < 10 with 2 messages: 'cu
 Message.tests.cpp:<line number>: passed: i < 10 for: 8 < 10 with 2 messages: 'current counter 8' and 'i := 8'
 Message.tests.cpp:<line number>: passed: i < 10 for: 9 < 10 with 2 messages: 'current counter 9' and 'i := 9'
 Message.tests.cpp:<line number>: failed: i < 10 for: 10 < 10 with 2 messages: 'current counter 10' and 'i := 10'
+Matchers.tests.cpp:<line number>: passed: 123, (ImmovableMatcher() && ImmovableMatcher()) || !ImmovableMatcher() for: 123 ( ( always false and always false ) or not always false )
 Condition.tests.cpp:<line number>: failed: data.int_seven != 7 for: 7 != 7
 Condition.tests.cpp:<line number>: failed: data.float_nine_point_one != Approx( 9.1f ) for: 9.1f != Approx( 9.1000003815 )
 Condition.tests.cpp:<line number>: failed: data.double_pi != Approx( 3.1415926535 ) for: 3.1415926535 != Approx( 3.1415926535 )
@@ -799,6 +800,7 @@ Approx.tests.cpp:<line number>: passed: d <= Approx( 1.23 ) for: 1.23 <= Approx(
 Approx.tests.cpp:<line number>: passed: !(d <= Approx( 1.22 )) for: !(1.23 <= Approx( 1.22 ))
 Approx.tests.cpp:<line number>: passed: d <= Approx( 1.22 ).epsilon(0.1) for: 1.23 <= Approx( 1.22 )
 Misc.tests.cpp:<line number>: passed: with 1 message: 'was called'
+Matchers.tests.cpp:<line number>: passed: (ThrowOnCopyOrMoveMatcher() && ThrowOnCopyOrMoveMatcher()) || !ThrowOnCopyOrMoveMatcher()
 Matchers.tests.cpp:<line number>: passed: testStringForMatching(), Contains("string") && Contains("abc") && Contains("substring") && Contains("contains") for: "this string contains 'abc' as a substring" ( contains: "string" and contains: "abc" and contains: "substring" and contains: "contains" )
 Matchers.tests.cpp:<line number>: passed: testStringForMatching(), Contains("string") || Contains("different") || Contains("random") for: "this string contains 'abc' as a substring" ( contains: "string" or contains: "different" or contains: "random" )
 Matchers.tests.cpp:<line number>: passed: testStringForMatching2(), Contains("string") || Contains("different") || Contains("random") for: "some completely different text that contains one common word" ( contains: "string" or contains: "different" or contains: "random" )
@@ -914,8 +916,10 @@ RandomNumberGeneration.tests.cpp:<line number>: passed: rng() == 0x<hex digits> 
 4261393167 (0x<hex digits>)
 Message.tests.cpp:<line number>: failed: explicitly with 1 message: 'Message from section one'
 Message.tests.cpp:<line number>: failed: explicitly with 1 message: 'Message from section two'
-Matchers.tests.cpp:<line number>: passed: EvilMatcher() || EvilMatcher()
-Matchers.tests.cpp:<line number>: passed: EvilMatcher() && EvilMatcher()
+Matchers.tests.cpp:<line number>: passed: (EvilMatcher(), EvilMatcher()), EvilCommaOperatorUsed
+Matchers.tests.cpp:<line number>: passed: &EvilMatcher(), EvilAddressOfOperatorUsed
+Matchers.tests.cpp:<line number>: passed: EvilMatcher() || EvilMatcher() && !EvilMatcher()
+Matchers.tests.cpp:<line number>: passed: (EvilMatcher() && EvilMatcher()) || !EvilMatcher()
 CmdLine.tests.cpp:<line number>: passed: spec.hasFilters() == false for: false == false
 CmdLine.tests.cpp:<line number>: passed: spec.matches( *tcA ) == false for: false == false
 CmdLine.tests.cpp:<line number>: passed: spec.matches( *tcB ) == false for: false == false

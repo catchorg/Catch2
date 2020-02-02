@@ -134,10 +134,12 @@ Nor would this
 :test-result: FAIL INFO gets logged on failure
 :test-result: FAIL INFO gets logged on failure, even if captured before successful assertions
 :test-result: FAIL INFO is reset for each loop
+:test-result: PASS Immovable matchers can be used
 :test-result: XFAIL Inequality checks that should fail
 :test-result: PASS Inequality checks that should succeed
 :test-result: PASS Less-than inequalities with different epsilons
 :test-result: PASS ManuallyRegistered
+:test-result: PASS Matchers are not moved or copied
 :test-result: PASS Matchers can be (AllOf) composed with the && operator
 :test-result: PASS Matchers can be (AnyOf) composed with the || operator
 :test-result: PASS Matchers can be composed with both && and ||
@@ -154,7 +156,7 @@ Nor would this
 :test-result: PASS Ordering comparison checks that should succeed
 :test-result: PASS Our PCG implementation provides expected results for known seeds
 :test-result: FAIL Output from all sections is reported
-:test-result: PASS Overloaded address-of operator is not used
+:test-result: PASS Overloaded comma or address-of operators are not used
 :test-result: PASS Parse test names and tags
 :test-result: PASS Pointers can be compared to null
 :test-result: PASS Precision of floating point stringification can be set

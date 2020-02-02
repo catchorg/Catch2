@@ -5840,6 +5840,17 @@ with messages:
   i := 10
 
 -------------------------------------------------------------------------------
+Immovable matchers can be used
+-------------------------------------------------------------------------------
+Matchers.tests.cpp:<line number>
+...............................................................................
+
+Matchers.tests.cpp:<line number>: PASSED:
+  REQUIRE_THAT( 123, (ImmovableMatcher() && ImmovableMatcher()) || !ImmovableMatcher() )
+with expansion:
+  123 ( ( always false and always false ) or not always false )
+
+-------------------------------------------------------------------------------
 Inequality checks that should fail
 -------------------------------------------------------------------------------
 Condition.tests.cpp:<line number>
@@ -5966,6 +5977,15 @@ Misc.tests.cpp:<line number>
 Misc.tests.cpp:<line number>: PASSED:
 with message:
   was called
+
+-------------------------------------------------------------------------------
+Matchers are not moved or copied
+-------------------------------------------------------------------------------
+Matchers.tests.cpp:<line number>
+...............................................................................
+
+Matchers.tests.cpp:<line number>: PASSED:
+  REQUIRE_NOTHROW( (ThrowOnCopyOrMoveMatcher() && ThrowOnCopyOrMoveMatcher()) || !ThrowOnCopyOrMoveMatcher() )
 
 -------------------------------------------------------------------------------
 Matchers can be (AllOf) composed with the && operator
@@ -6626,16 +6646,22 @@ explicitly with message:
   Message from section two
 
 -------------------------------------------------------------------------------
-Overloaded address-of operator is not used
+Overloaded comma or address-of operators are not used
 -------------------------------------------------------------------------------
 Matchers.tests.cpp:<line number>
 ...............................................................................
 
 Matchers.tests.cpp:<line number>: PASSED:
-  REQUIRE_NOTHROW( EvilMatcher() || EvilMatcher() )
+  REQUIRE_THROWS_AS( (EvilMatcher(), EvilMatcher()), EvilCommaOperatorUsed )
 
 Matchers.tests.cpp:<line number>: PASSED:
-  REQUIRE_NOTHROW( EvilMatcher() && EvilMatcher() )
+  REQUIRE_THROWS_AS( &EvilMatcher(), EvilAddressOfOperatorUsed )
+
+Matchers.tests.cpp:<line number>: PASSED:
+  REQUIRE_NOTHROW( EvilMatcher() || EvilMatcher() && !EvilMatcher() )
+
+Matchers.tests.cpp:<line number>: PASSED:
+  REQUIRE_NOTHROW( (EvilMatcher() && EvilMatcher()) || !EvilMatcher() )
 
 -------------------------------------------------------------------------------
 Parse test names and tags
@@ -14276,6 +14302,6 @@ Misc.tests.cpp:<line number>
 Misc.tests.cpp:<line number>: PASSED:
 
 ===============================================================================
-test cases:  328 |  238 passed |  86 failed |  4 failed as expected
-assertions: 1842 | 1673 passed | 148 failed | 21 failed as expected
+test cases:  330 |  240 passed |  86 failed |  4 failed as expected
+assertions: 1846 | 1677 passed | 148 failed | 21 failed as expected
 

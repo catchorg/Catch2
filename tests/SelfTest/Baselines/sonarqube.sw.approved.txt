@@ -1027,6 +1027,8 @@ Matchers.tests.cpp:<line number>
     <testCase name="Floating point matchers: float/ULPs" duration="{duration}"/>
     <testCase name="Floating point matchers: float/Composed" duration="{duration}"/>
     <testCase name="Floating point matchers: float/Constructor validation" duration="{duration}"/>
+    <testCase name="Immovable matchers can be used" duration="{duration}"/>
+    <testCase name="Matchers are not moved or copied" duration="{duration}"/>
     <testCase name="Matchers can be (AllOf) composed with the &amp;&amp; operator" duration="{duration}"/>
     <testCase name="Matchers can be (AnyOf) composed with the || operator" duration="{duration}"/>
     <testCase name="Matchers can be composed with both &amp;&amp; and ||" duration="{duration}"/>
@@ -1049,7 +1051,7 @@ with expansion:
 Matchers.tests.cpp:<line number>
       </failure>
     </testCase>
-    <testCase name="Overloaded address-of operator is not used" duration="{duration}"/>
+    <testCase name="Overloaded comma or address-of operators are not used" duration="{duration}"/>
     <testCase name="Predicate matcher can accept const char*" duration="{duration}"/>
     <testCase name="Regex string matcher" duration="{duration}">
       <failure message="CHECK_THAT(testStringForMatching(), Matches(&quot;this STRING contains 'abc' as a substring&quot;))">

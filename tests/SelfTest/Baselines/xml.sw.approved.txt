@@ -7292,6 +7292,17 @@ Nor would this
       </Expression>
       <OverallResult success="false"/>
     </TestCase>
+    <TestCase name="Immovable matchers can be used" tags="[matchers][templated]" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
+      <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
+        <Original>
+          123, (ImmovableMatcher() &amp;&amp; ImmovableMatcher()) || !ImmovableMatcher()
+        </Original>
+        <Expanded>
+          123 ( ( always false and always false ) or not always false )
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
     <TestCase name="Inequality checks that should fail" tags="[!shouldfail][.][failing]" filename="tests/<exe-name>/UsageTests/Condition.tests.cpp" >
       <Expression success="false" type="CHECK" filename="tests/<exe-name>/UsageTests/Condition.tests.cpp" >
         <Original>
@@ -7462,6 +7473,17 @@ Nor would this
       <OverallResult success="true"/>
     </TestCase>
     <TestCase name="ManuallyRegistered" filename="tests/<exe-name>/UsageTests/Misc.tests.cpp" >
+      <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="Matchers are not moved or copied" tags="[matchers][templated]" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
+      <Expression success="true" type="REQUIRE_NOTHROW" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
+        <Original>
+          (ThrowOnCopyOrMoveMatcher() &amp;&amp; ThrowOnCopyOrMoveMatcher()) || !ThrowOnCopyOrMoveMatcher()
+        </Original>
+        <Expanded>
+          (ThrowOnCopyOrMoveMatcher() &amp;&amp; ThrowOnCopyOrMoveMatcher()) || !ThrowOnCopyOrMoveMatcher()
+        </Expanded>
+      </Expression>
       <OverallResult success="true"/>
     </TestCase>
     <TestCase name="Matchers can be (AllOf) composed with the &amp;&amp; operator" tags="[matchers][operator&amp;&amp;][operators]" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
@@ -8198,21 +8220,37 @@ Nor would this
       </Section>
       <OverallResult success="false"/>
     </TestCase>
-    <TestCase name="Overloaded address-of operator is not used" tags="[matchers][templated]" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
-      <Expression success="true" type="REQUIRE_NOTHROW" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
+    <TestCase name="Overloaded comma or address-of operators are not used" tags="[matchers][templated]" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
+      <Expression success="true" type="REQUIRE_THROWS_AS" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
         <Original>
-          EvilMatcher() || EvilMatcher()
+          (EvilMatcher(), EvilMatcher()), EvilCommaOperatorUsed
         </Original>
         <Expanded>
-          EvilMatcher() || EvilMatcher()
+          (EvilMatcher(), EvilMatcher()), EvilCommaOperatorUsed
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE_THROWS_AS" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
+        <Original>
+          &amp;EvilMatcher(), EvilAddressOfOperatorUsed
+        </Original>
+        <Expanded>
+          &amp;EvilMatcher(), EvilAddressOfOperatorUsed
         </Expanded>
       </Expression>
       <Expression success="true" type="REQUIRE_NOTHROW" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
         <Original>
-          EvilMatcher() &amp;&amp; EvilMatcher()
+          EvilMatcher() || EvilMatcher() &amp;&amp; !EvilMatcher()
         </Original>
         <Expanded>
-          EvilMatcher() &amp;&amp; EvilMatcher()
+          EvilMatcher() || EvilMatcher() &amp;&amp; !EvilMatcher()
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE_NOTHROW" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
+        <Original>
+          (EvilMatcher() &amp;&amp; EvilMatcher()) || !EvilMatcher()
+        </Original>
+        <Expanded>
+          (EvilMatcher() &amp;&amp; EvilMatcher()) || !EvilMatcher()
         </Expanded>
       </Expression>
       <OverallResult success="true"/>
@@ -17101,7 +17139,7 @@ loose text artifact
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="1673" failures="149" expectedFailures="21"/>
+    <OverallResults successes="1677" failures="149" expectedFailures="21"/>
   </Group>
-  <OverallResults successes="1673" failures="148" expectedFailures="21"/>
+  <OverallResults successes="1677" failures="148" expectedFailures="21"/>
 </Catch>
