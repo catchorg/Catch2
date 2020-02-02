@@ -29,7 +29,7 @@ filelocParser = re.compile(r'''
 lineNumberParser = re.compile(r' line="[0-9]*"')
 hexParser = re.compile(r'\b(0[xX][0-9a-fA-F]+)\b')
 durationsParser = re.compile(r' time="[0-9]*\.[0-9]*"')
-sonarqubeDurationParser = re.compile(r' duration="[0-9]+"')
+sonarqubeDurationParser = re.compile(r''' duration=["'][0-9]+["']''')
 timestampsParser = re.compile(r'\d{4}-\d{2}-\d{2}T\d{2}\:\d{2}\:\d{2}Z')
 versionParser = re.compile(r'Catch v[0-9]+\.[0-9]+\.[0-9]+(-\w*\.[0-9]+)?')
 nullParser = re.compile(r'\b(__null|nullptr)\b')
@@ -193,21 +193,19 @@ print("Running approvals against executable:")
 print("  " + cmdPath)
 
 
-# ## Keep default reporters here ##
+## special cases first:
 # Standard console reporter
 approve("console.std", ["~[!nonportable]~[!benchmark]~[approvals] *", "--order", "lex", "--rng-seed", "1"])
-# console reporter, include passes, warn about No Assertions
-approve("console.sw", ["~[!nonportable]~[!benchmark]~[approvals] *", "-s", "-w", "NoAssertions", "--order", "lex", "--rng-seed", "1"])
 # console reporter, include passes, warn about No Assertions, limit failures to first 4
 approve("console.swa4", ["~[!nonportable]~[!benchmark]~[approvals] *", "-s", "-w", "NoAssertions", "-x", "4", "--order", "lex", "--rng-seed", "1"])
-# junit reporter, include passes, warn about No Assertions
-approve("junit.sw", ["~[!nonportable]~[!benchmark]~[approvals] *", "-s", "-w", "NoAssertions", "-r", "junit", "--order", "lex", "--rng-seed", "1"])
-# xml reporter, include passes, warn about No Assertions
-approve("xml.sw", ["~[!nonportable]~[!benchmark]~[approvals] *", "-s", "-w", "NoAssertions", "-r", "xml", "--order", "lex", "--rng-seed", "1"])
-# compact reporter, include passes, warn about No Assertions
-approve('compact.sw', ['~[!nonportable]~[!benchmark]~[approvals] *', '-s', '-w', 'NoAssertions', '-r', 'compact', '--order', 'lex', "--rng-seed", "1"])
-# sonarqube reporter, include passes, warn about No Assertions
-approve("sonarqube.sw", ["~[!nonportable]~[!benchmark]~[approvals] *", "-s", "-w", "NoAssertions", "-r", "sonarqube", "--order", "lex", "--rng-seed", "1"])
+
+## Common reporter checks: include passes, warn about No Assertions
+reporters = ('console', 'junit', 'xml', 'compact', 'sonarqube', 'tap', 'teamcity', 'automake')
+for reporter in reporters:
+    filename = '{}.sw'.format(reporter)
+    common_args = ["~[!nonportable]~[!benchmark]~[approvals] *", "-s", "-w", "NoAssertions", "--order", "lex", "--rng-seed", "1"]
+    reporter_args = ['-r', reporter]
+    approve(filename, common_args + reporter_args)
 
 
 if overallResult != 0:
