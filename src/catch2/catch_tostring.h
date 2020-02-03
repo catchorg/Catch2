@@ -351,13 +351,12 @@ namespace Catch {
 
 //////////////////////////////////////////////////////
 // Separate std-lib types stringification, so it can be selectively enabled
-// This means that we do not bring in
+// This means that we do not bring in their headers
 
 #if defined(CATCH_CONFIG_ENABLE_ALL_STRINGMAKERS)
 #  define CATCH_CONFIG_ENABLE_PAIR_STRINGMAKER
 #  define CATCH_CONFIG_ENABLE_TUPLE_STRINGMAKER
 #  define CATCH_CONFIG_ENABLE_VARIANT_STRINGMAKER
-#  define CATCH_CONFIG_ENABLE_CHRONO_STRINGMAKER
 #  define CATCH_CONFIG_ENABLE_OPTIONAL_STRINGMAKER
 #endif
 
@@ -532,7 +531,6 @@ namespace Catch {
 } // namespace Catch
 
 // Separate std::chrono::duration specialization
-#if defined(CATCH_CONFIG_ENABLE_CHRONO_STRINGMAKER)
 #include <ctime>
 #include <ratio>
 #include <chrono>
@@ -552,29 +550,31 @@ std::string ratio_string<Ratio>::symbol() {
         << Ratio::den << ']';
     return rss.str();
 }
+
+
 template <>
 struct ratio_string<std::atto> {
-    static std::string symbol();
+    static std::string symbol() { return "a"; }
 };
 template <>
 struct ratio_string<std::femto> {
-    static std::string symbol();
+    static std::string symbol() { return "f"; }
 };
 template <>
 struct ratio_string<std::pico> {
-    static std::string symbol();
+    static std::string symbol() { return "p"; }
 };
 template <>
 struct ratio_string<std::nano> {
-    static std::string symbol();
+    static std::string symbol() { return "n"; }
 };
 template <>
 struct ratio_string<std::micro> {
-    static std::string symbol();
+    static std::string symbol() { return "u"; }
 };
 template <>
 struct ratio_string<std::milli> {
-    static std::string symbol();
+    static std::string symbol() { return "m"; }
 };
 
     ////////////
@@ -647,7 +647,6 @@ struct ratio_string<std::milli> {
         }
     };
 }
-#endif // CATCH_CONFIG_ENABLE_CHRONO_STRINGMAKER
 
 #include <catch2/catch_interfaces_registry_hub.h>
 

@@ -206,7 +206,6 @@ By default, Catch does not stringify some types from the standard library. This 
 
     CATCH_CONFIG_ENABLE_PAIR_STRINGMAKER     // Provide StringMaker specialization for std::pair
     CATCH_CONFIG_ENABLE_TUPLE_STRINGMAKER    // Provide StringMaker specialization for std::tuple
-    CATCH_CONFIG_ENABLE_CHRONO_STRINGMAKER   // Provide StringMaker specialization for std::chrono::duration, std::chrono::timepoint
     CATCH_CONFIG_ENABLE_VARIANT_STRINGMAKER  // Provide StringMaker specialization for std::variant, std::monostate (on C++17)
     CATCH_CONFIG_ENABLE_OPTIONAL_STRINGMAKER // Provide StringMaker specialization for std::optional (on C++17)
     CATCH_CONFIG_ENABLE_ALL_STRINGMAKERS     // Defines all of the above

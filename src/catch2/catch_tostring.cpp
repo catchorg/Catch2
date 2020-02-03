@@ -12,10 +12,6 @@
 #    pragma clang diagnostic ignored "-Wglobal-constructors"
 #endif
 
-// Enable specific decls locally
-#if !defined(CATCH_CONFIG_ENABLE_CHRONO_STRINGMAKER)
-#define CATCH_CONFIG_ENABLE_CHRONO_STRINGMAKER
-#endif
 
 #include <catch2/catch_tostring.h>
 #include <catch2/catch_interfaces_config.h>
@@ -249,13 +245,6 @@ int StringMaker<double>::precision = 10;
 std::string StringMaker<double>::convert(double value) {
     return fpToString(value, precision);
 }
-
-std::string ratio_string<std::atto>::symbol() { return "a"; }
-std::string ratio_string<std::femto>::symbol() { return "f"; }
-std::string ratio_string<std::pico>::symbol() { return "p"; }
-std::string ratio_string<std::nano>::symbol() { return "n"; }
-std::string ratio_string<std::micro>::symbol() { return "u"; }
-std::string ratio_string<std::milli>::symbol() { return "m"; }
 
 } // end namespace Catch
 
