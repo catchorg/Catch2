@@ -163,7 +163,7 @@ set_tests_properties(List::Reporters::XmlOutput PROPERTIES
 
 
 
-add_test(NAME NoAssertions COMMAND $<TARGET_FILE:SelfTest> -w NoAssertions)
+add_test(NAME NoAssertions COMMAND $<TARGET_FILE:SelfTest> -w NoAssertions "An empty test with no assertions")
 set_tests_properties(NoAssertions PROPERTIES PASS_REGULAR_EXPRESSION "No assertions in test case")
 
 add_test(NAME NoTest COMMAND $<TARGET_FILE:SelfTest> Tracker, "___nonexistent_test___")
