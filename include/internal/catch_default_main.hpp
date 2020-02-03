@@ -9,10 +9,11 @@
 #define TWOBLUECUBES_CATCH_DEFAULT_MAIN_HPP_INCLUDED
 
 #include "catch_session.h"
+#include "catch_platform.h"
 
 #ifndef __OBJC__
 
-#if defined(CATCH_CONFIG_WCHAR) && defined(WIN32) && defined(_UNICODE) && !defined(DO_NOT_USE_WMAIN)
+#if defined(CATCH_CONFIG_WCHAR) && defined(CATCH_PLATFORM_WINDOWS) && defined(_UNICODE) && !defined(DO_NOT_USE_WMAIN)
 // Standard C/C++ Win32 Unicode wmain entry point
 extern "C" int wmain (int argc, wchar_t * argv[], wchar_t * []) {
 #else
