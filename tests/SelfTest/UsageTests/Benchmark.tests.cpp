@@ -1,8 +1,9 @@
-#include <catch2/catch.hpp>
+#include <catch2/catch_test_macros.hpp>
+#include <catch2/benchmark/catch_benchmark.hpp>
+#include <catch2/catch_generators_specific.hpp>
 
 #include <map>
 
-#if defined(CATCH_CONFIG_ENABLE_BENCHMARKING)
 namespace {
     std::uint64_t Fibonacci(std::uint64_t number) {
         return number < 2 ? 1 : Fibonacci(number - 1) + Fibonacci(number - 2);
@@ -127,4 +128,3 @@ TEST_CASE("Benchmark containers", "[!benchmark]") {
         }
     }
 }
-#endif // CATCH_CONFIG_ENABLE_BENCHMARKING

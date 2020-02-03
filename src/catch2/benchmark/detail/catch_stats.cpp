@@ -8,8 +8,6 @@
 
 // Statistical analysis tools
 
-#if defined(CATCH_CONFIG_ENABLE_BENCHMARKING)
-
 #include <catch2/benchmark/detail/catch_stats.hpp>
 
 #include <catch2/catch_compiler_capabilities.h>
@@ -220,5 +218,3 @@ namespace Catch {
         } // namespace Detail
     } // namespace Benchmark
 } // namespace Catch
-
-#endif // CATCH_CONFIG_ENABLE_BENCHMARKING

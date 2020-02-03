@@ -42,10 +42,6 @@
 
 #include <catch2/catch_external_interfaces.h>
 
-#if defined(CATCH_CONFIG_ENABLE_BENCHMARKING)
-#include <catch2/benchmark/catch_benchmark.hpp>
-#endif
-
 #endif // ! CATCH_CONFIG_IMPL_ONLY
 
 #if !defined(CATCH_CONFIG_IMPL_ONLY)

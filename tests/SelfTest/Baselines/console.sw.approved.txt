@@ -11431,6 +11431,77 @@ with expansion:
   "[\x7F]" == "[\x7F]"
 
 -------------------------------------------------------------------------------
+analyse no analysis
+-------------------------------------------------------------------------------
+InternalBenchmark.tests.cpp:<line number>
+...............................................................................
+
+InternalBenchmark.tests.cpp:<line number>: PASSED:
+  CHECK( analysis.mean.point.count() == 23 )
+with expansion:
+  23.0 == 23
+
+InternalBenchmark.tests.cpp:<line number>: PASSED:
+  CHECK( analysis.mean.lower_bound.count() == 23 )
+with expansion:
+  23.0 == 23
+
+InternalBenchmark.tests.cpp:<line number>: PASSED:
+  CHECK( analysis.mean.upper_bound.count() == 23 )
+with expansion:
+  23.0 == 23
+
+InternalBenchmark.tests.cpp:<line number>: PASSED:
+  CHECK( analysis.standard_deviation.point.count() == 0 )
+with expansion:
+  0.0 == 0
+
+InternalBenchmark.tests.cpp:<line number>: PASSED:
+  CHECK( analysis.standard_deviation.lower_bound.count() == 0 )
+with expansion:
+  0.0 == 0
+
+InternalBenchmark.tests.cpp:<line number>: PASSED:
+  CHECK( analysis.standard_deviation.upper_bound.count() == 0 )
+with expansion:
+  0.0 == 0
+
+InternalBenchmark.tests.cpp:<line number>: PASSED:
+  CHECK( analysis.outliers.total() == 0 )
+with expansion:
+  0 == 0
+
+InternalBenchmark.tests.cpp:<line number>: PASSED:
+  CHECK( analysis.outliers.low_mild == 0 )
+with expansion:
+  0 == 0
+
+InternalBenchmark.tests.cpp:<line number>: PASSED:
+  CHECK( analysis.outliers.low_severe == 0 )
+with expansion:
+  0 == 0
+
+InternalBenchmark.tests.cpp:<line number>: PASSED:
+  CHECK( analysis.outliers.high_mild == 0 )
+with expansion:
+  0 == 0
+
+InternalBenchmark.tests.cpp:<line number>: PASSED:
+  CHECK( analysis.outliers.high_severe == 0 )
+with expansion:
+  0 == 0
+
+InternalBenchmark.tests.cpp:<line number>: PASSED:
+  CHECK( analysis.outliers.samples_seen == 0 )
+with expansion:
+  0 == 0
+
+InternalBenchmark.tests.cpp:<line number>: PASSED:
+  CHECK( analysis.outlier_variance == 0 )
+with expansion:
+  0.0 == 0
+
+-------------------------------------------------------------------------------
 array<int, N> -> toString
 -------------------------------------------------------------------------------
 ToStringVector.tests.cpp:<line number>
@@ -11461,6 +11532,70 @@ Misc.tests.cpp:<line number>: PASSED:
   REQUIRE( x == 0 )
 with expansion:
   0 == 0
+
+-------------------------------------------------------------------------------
+benchmark function call
+  without chronometer
+-------------------------------------------------------------------------------
+InternalBenchmark.tests.cpp:<line number>
+...............................................................................
+
+InternalBenchmark.tests.cpp:<line number>: PASSED:
+  CHECK( model.started == 1 )
+with expansion:
+  1 == 1
+
+InternalBenchmark.tests.cpp:<line number>: PASSED:
+  CHECK( model.finished == 0 )
+with expansion:
+  0 == 0
+
+InternalBenchmark.tests.cpp:<line number>: PASSED:
+  CHECK( model.started == 1 )
+with expansion:
+  1 == 1
+
+InternalBenchmark.tests.cpp:<line number>: PASSED:
+  CHECK( model.finished == 1 )
+with expansion:
+  1 == 1
+
+InternalBenchmark.tests.cpp:<line number>: PASSED:
+  CHECK( called == 1 )
+with expansion:
+  1 == 1
+
+-------------------------------------------------------------------------------
+benchmark function call
+  with chronometer
+-------------------------------------------------------------------------------
+InternalBenchmark.tests.cpp:<line number>
+...............................................................................
+
+InternalBenchmark.tests.cpp:<line number>: PASSED:
+  CHECK( model.started == 0 )
+with expansion:
+  0 == 0
+
+InternalBenchmark.tests.cpp:<line number>: PASSED:
+  CHECK( model.finished == 0 )
+with expansion:
+  0 == 0
+
+InternalBenchmark.tests.cpp:<line number>: PASSED:
+  CHECK( model.started == 0 )
+with expansion:
+  0 == 0
+
+InternalBenchmark.tests.cpp:<line number>: PASSED:
+  CHECK( model.finished == 0 )
+with expansion:
+  0 == 0
+
+InternalBenchmark.tests.cpp:<line number>: PASSED:
+  CHECK( called == 1 )
+with expansion:
+  1 == 1
 
 -------------------------------------------------------------------------------
 boolean member
@@ -11538,6 +11673,228 @@ with expansion:
   false
 
 -------------------------------------------------------------------------------
+classify_outliers
+  none
+-------------------------------------------------------------------------------
+InternalBenchmark.tests.cpp:<line number>
+...............................................................................
+
+InternalBenchmark.tests.cpp:<line number>: PASSED:
+  REQUIRE( o.samples_seen == static_cast<int>(x.size()) )
+with expansion:
+  6 == 6
+
+InternalBenchmark.tests.cpp:<line number>: PASSED:
+  REQUIRE( o.low_severe == los )
+with expansion:
+  0 == 0
+
+InternalBenchmark.tests.cpp:<line number>: PASSED:
+  REQUIRE( o.low_mild == lom )
+with expansion:
+  0 == 0
+
+InternalBenchmark.tests.cpp:<line number>: PASSED:
+  REQUIRE( o.high_mild == him )
+with expansion:
+  0 == 0
+
+InternalBenchmark.tests.cpp:<line number>: PASSED:
+  REQUIRE( o.high_severe == his )
+with expansion:
+  0 == 0
+
+InternalBenchmark.tests.cpp:<line number>: PASSED:
+  REQUIRE( o.total() == los + lom + him + his )
+with expansion:
+  0 == 0
+
+-------------------------------------------------------------------------------
+classify_outliers
+  low severe
+-------------------------------------------------------------------------------
+InternalBenchmark.tests.cpp:<line number>
+...............................................................................
+
+InternalBenchmark.tests.cpp:<line number>: PASSED:
+  REQUIRE( o.samples_seen == static_cast<int>(x.size()) )
+with expansion:
+  6 == 6
+
+InternalBenchmark.tests.cpp:<line number>: PASSED:
+  REQUIRE( o.low_severe == los )
+with expansion:
+  1 == 1
+
+InternalBenchmark.tests.cpp:<line number>: PASSED:
+  REQUIRE( o.low_mild == lom )
+with expansion:
+  0 == 0
+
+InternalBenchmark.tests.cpp:<line number>: PASSED:
+  REQUIRE( o.high_mild == him )
+with expansion:
+  0 == 0
+
+InternalBenchmark.tests.cpp:<line number>: PASSED:
+  REQUIRE( o.high_severe == his )
+with expansion:
+  0 == 0
+
+InternalBenchmark.tests.cpp:<line number>: PASSED:
+  REQUIRE( o.total() == los + lom + him + his )
+with expansion:
+  1 == 1
+
+-------------------------------------------------------------------------------
+classify_outliers
+  low mild
+-------------------------------------------------------------------------------
+InternalBenchmark.tests.cpp:<line number>
+...............................................................................
+
+InternalBenchmark.tests.cpp:<line number>: PASSED:
+  REQUIRE( o.samples_seen == static_cast<int>(x.size()) )
+with expansion:
+  6 == 6
+
+InternalBenchmark.tests.cpp:<line number>: PASSED:
+  REQUIRE( o.low_severe == los )
+with expansion:
+  0 == 0
+
+InternalBenchmark.tests.cpp:<line number>: PASSED:
+  REQUIRE( o.low_mild == lom )
+with expansion:
+  1 == 1
+
+InternalBenchmark.tests.cpp:<line number>: PASSED:
+  REQUIRE( o.high_mild == him )
+with expansion:
+  0 == 0
+
+InternalBenchmark.tests.cpp:<line number>: PASSED:
+  REQUIRE( o.high_severe == his )
+with expansion:
+  0 == 0
+
+InternalBenchmark.tests.cpp:<line number>: PASSED:
+  REQUIRE( o.total() == los + lom + him + his )
+with expansion:
+  1 == 1
+
+-------------------------------------------------------------------------------
+classify_outliers
+  high mild
+-------------------------------------------------------------------------------
+InternalBenchmark.tests.cpp:<line number>
+...............................................................................
+
+InternalBenchmark.tests.cpp:<line number>: PASSED:
+  REQUIRE( o.samples_seen == static_cast<int>(x.size()) )
+with expansion:
+  6 == 6
+
+InternalBenchmark.tests.cpp:<line number>: PASSED:
+  REQUIRE( o.low_severe == los )
+with expansion:
+  0 == 0
+
+InternalBenchmark.tests.cpp:<line number>: PASSED:
+  REQUIRE( o.low_mild == lom )
+with expansion:
+  0 == 0
+
+InternalBenchmark.tests.cpp:<line number>: PASSED:
+  REQUIRE( o.high_mild == him )
+with expansion:
+  1 == 1
+
+InternalBenchmark.tests.cpp:<line number>: PASSED:
+  REQUIRE( o.high_severe == his )
+with expansion:
+  0 == 0
+
+InternalBenchmark.tests.cpp:<line number>: PASSED:
+  REQUIRE( o.total() == los + lom + him + his )
+with expansion:
+  1 == 1
+
+-------------------------------------------------------------------------------
+classify_outliers
+  high severe
+-------------------------------------------------------------------------------
+InternalBenchmark.tests.cpp:<line number>
+...............................................................................
+
+InternalBenchmark.tests.cpp:<line number>: PASSED:
+  REQUIRE( o.samples_seen == static_cast<int>(x.size()) )
+with expansion:
+  6 == 6
+
+InternalBenchmark.tests.cpp:<line number>: PASSED:
+  REQUIRE( o.low_severe == los )
+with expansion:
+  0 == 0
+
+InternalBenchmark.tests.cpp:<line number>: PASSED:
+  REQUIRE( o.low_mild == lom )
+with expansion:
+  0 == 0
+
+InternalBenchmark.tests.cpp:<line number>: PASSED:
+  REQUIRE( o.high_mild == him )
+with expansion:
+  0 == 0
+
+InternalBenchmark.tests.cpp:<line number>: PASSED:
+  REQUIRE( o.high_severe == his )
+with expansion:
+  1 == 1
+
+InternalBenchmark.tests.cpp:<line number>: PASSED:
+  REQUIRE( o.total() == los + lom + him + his )
+with expansion:
+  1 == 1
+
+-------------------------------------------------------------------------------
+classify_outliers
+  mixed
+-------------------------------------------------------------------------------
+InternalBenchmark.tests.cpp:<line number>
+...............................................................................
+
+InternalBenchmark.tests.cpp:<line number>: PASSED:
+  REQUIRE( o.samples_seen == static_cast<int>(x.size()) )
+with expansion:
+  6 == 6
+
+InternalBenchmark.tests.cpp:<line number>: PASSED:
+  REQUIRE( o.low_severe == los )
+with expansion:
+  1 == 1
+
+InternalBenchmark.tests.cpp:<line number>: PASSED:
+  REQUIRE( o.low_mild == lom )
+with expansion:
+  0 == 0
+
+InternalBenchmark.tests.cpp:<line number>: PASSED:
+  REQUIRE( o.high_mild == him )
+with expansion:
+  1 == 1
+
+InternalBenchmark.tests.cpp:<line number>: PASSED:
+  REQUIRE( o.high_severe == his )
+with expansion:
+  0 == 0
+
+InternalBenchmark.tests.cpp:<line number>: PASSED:
+  REQUIRE( o.total() == los + lom + him + his )
+with expansion:
+  2 == 2
+
+-------------------------------------------------------------------------------
 comparisons between const int variables
 -------------------------------------------------------------------------------
 Condition.tests.cpp:<line number>
@@ -11588,6 +11945,43 @@ Condition.tests.cpp:<line number>: PASSED:
   REQUIRE( long_var == unsigned_long_var )
 with expansion:
   1 == 1
+
+-------------------------------------------------------------------------------
+erfc_inv
+-------------------------------------------------------------------------------
+InternalBenchmark.tests.cpp:<line number>
+...............................................................................
+
+InternalBenchmark.tests.cpp:<line number>: PASSED:
+  CHECK( erfc_inv(1.103560) == Approx(-0.09203687623843015) )
+with expansion:
+  -0.0920368762 == Approx( -0.0920368762 )
+
+InternalBenchmark.tests.cpp:<line number>: PASSED:
+  CHECK( erfc_inv(1.067400) == Approx(-0.05980291115763361) )
+with expansion:
+  -0.0598029112 == Approx( -0.0598029112 )
+
+InternalBenchmark.tests.cpp:<line number>: PASSED:
+  CHECK( erfc_inv(0.050000) == Approx(1.38590382434967796) )
+with expansion:
+  1.3859038243 == Approx( 1.3859038243 )
+
+-------------------------------------------------------------------------------
+estimate_clock_resolution
+-------------------------------------------------------------------------------
+InternalBenchmark.tests.cpp:<line number>
+...............................................................................
+
+InternalBenchmark.tests.cpp:<line number>: PASSED:
+  REQUIRE( res.mean.count() == rate )
+with expansion:
+  2000.0 == 2000 (0x<hex digits>)
+
+InternalBenchmark.tests.cpp:<line number>: PASSED:
+  REQUIRE( res.outliers.total() == 0 )
+with expansion:
+  0 == 0
 
 -------------------------------------------------------------------------------
 even more nested SECTION tests
@@ -11871,6 +12265,63 @@ with message:
   Testing if fib[7] (21) is even
 
 -------------------------------------------------------------------------------
+mean
+-------------------------------------------------------------------------------
+InternalBenchmark.tests.cpp:<line number>
+...............................................................................
+
+InternalBenchmark.tests.cpp:<line number>: PASSED:
+  REQUIRE( m == 19. )
+with expansion:
+  19.0 == 19.0
+
+-------------------------------------------------------------------------------
+measure
+-------------------------------------------------------------------------------
+InternalBenchmark.tests.cpp:<line number>
+...............................................................................
+
+InternalBenchmark.tests.cpp:<line number>: PASSED:
+  CHECK( x == 17 )
+with expansion:
+  17 == 17
+
+InternalBenchmark.tests.cpp:<line number>: PASSED:
+  CHECK( x == 23 )
+with expansion:
+  23 == 23
+
+InternalBenchmark.tests.cpp:<line number>: PASSED:
+  CHECK( r.elapsed.count() == 42 )
+with expansion:
+  42 == 42
+
+InternalBenchmark.tests.cpp:<line number>: PASSED:
+  CHECK( r.result == 23 )
+with expansion:
+  23 == 23
+
+InternalBenchmark.tests.cpp:<line number>: PASSED:
+  CHECK( r.iterations == 1 )
+with expansion:
+  1 == 1
+
+InternalBenchmark.tests.cpp:<line number>: PASSED:
+  CHECK( s.elapsed.count() == 69 )
+with expansion:
+  69 == 69
+
+InternalBenchmark.tests.cpp:<line number>: PASSED:
+  CHECK( s.result == 17 )
+with expansion:
+  17 == 17
+
+InternalBenchmark.tests.cpp:<line number>: PASSED:
+  CHECK( s.iterations == 1 )
+with expansion:
+  1 == 1
+
+-------------------------------------------------------------------------------
 mix info, unscoped info and warning
 -------------------------------------------------------------------------------
 Message.tests.cpp:<line number>
@@ -11979,6 +12430,58 @@ Tricky.tests.cpp:<line number>: PASSED:
   CHECK( ti == typeid(int) )
 with expansion:
   {?} == {?}
+
+-------------------------------------------------------------------------------
+normal_cdf
+-------------------------------------------------------------------------------
+InternalBenchmark.tests.cpp:<line number>
+...............................................................................
+
+InternalBenchmark.tests.cpp:<line number>: PASSED:
+  CHECK( normal_cdf(0.000000) == Approx(0.50000000000000000) )
+with expansion:
+  0.5 == Approx( 0.5 )
+
+InternalBenchmark.tests.cpp:<line number>: PASSED:
+  CHECK( normal_cdf(1.000000) == Approx(0.84134474606854293) )
+with expansion:
+  0.8413447461 == Approx( 0.8413447461 )
+
+InternalBenchmark.tests.cpp:<line number>: PASSED:
+  CHECK( normal_cdf(-1.000000) == Approx(0.15865525393145705) )
+with expansion:
+  0.1586552539 == Approx( 0.1586552539 )
+
+InternalBenchmark.tests.cpp:<line number>: PASSED:
+  CHECK( normal_cdf(2.809729) == Approx(0.99752083845315409) )
+with expansion:
+  0.9975208385 == Approx( 0.9975208385 )
+
+InternalBenchmark.tests.cpp:<line number>: PASSED:
+  CHECK( normal_cdf(-1.352570) == Approx(0.08809652095066035) )
+with expansion:
+  0.088096521 == Approx( 0.088096521 )
+
+-------------------------------------------------------------------------------
+normal_quantile
+-------------------------------------------------------------------------------
+InternalBenchmark.tests.cpp:<line number>
+...............................................................................
+
+InternalBenchmark.tests.cpp:<line number>: PASSED:
+  CHECK( normal_quantile(0.551780) == Approx(0.13015979861484198) )
+with expansion:
+  0.1301597986 == Approx( 0.1301597986 )
+
+InternalBenchmark.tests.cpp:<line number>: PASSED:
+  CHECK( normal_quantile(0.533700) == Approx(0.08457408802851875) )
+with expansion:
+  0.084574088 == Approx( 0.084574088 )
+
+InternalBenchmark.tests.cpp:<line number>: PASSED:
+  CHECK( normal_quantile(0.025000) == Approx(-1.95996398454005449) )
+with expansion:
+  -1.9599639845 == Approx( -1.9599639845 )
 
 -------------------------------------------------------------------------------
 not allowed
@@ -12310,6 +12813,184 @@ StringManip.tests.cpp:<line number>: PASSED:
   CHECK( s == "didn|'t" )
 with expansion:
   "didn|'t" == "didn|'t"
+
+-------------------------------------------------------------------------------
+resolution
+-------------------------------------------------------------------------------
+InternalBenchmark.tests.cpp:<line number>
+...............................................................................
+
+InternalBenchmark.tests.cpp:<line number>: PASSED:
+  REQUIRE( res.size() == count )
+with expansion:
+  10 == 10
+
+InternalBenchmark.tests.cpp:<line number>: PASSED:
+  REQUIRE( res[i] == rate )
+with expansion:
+  1000.0 == 1000 (0x<hex digits>)
+
+InternalBenchmark.tests.cpp:<line number>: PASSED:
+  REQUIRE( res[i] == rate )
+with expansion:
+  1000.0 == 1000 (0x<hex digits>)
+
+InternalBenchmark.tests.cpp:<line number>: PASSED:
+  REQUIRE( res[i] == rate )
+with expansion:
+  1000.0 == 1000 (0x<hex digits>)
+
+InternalBenchmark.tests.cpp:<line number>: PASSED:
+  REQUIRE( res[i] == rate )
+with expansion:
+  1000.0 == 1000 (0x<hex digits>)
+
+InternalBenchmark.tests.cpp:<line number>: PASSED:
+  REQUIRE( res[i] == rate )
+with expansion:
+  1000.0 == 1000 (0x<hex digits>)
+
+InternalBenchmark.tests.cpp:<line number>: PASSED:
+  REQUIRE( res[i] == rate )
+with expansion:
+  1000.0 == 1000 (0x<hex digits>)
+
+InternalBenchmark.tests.cpp:<line number>: PASSED:
+  REQUIRE( res[i] == rate )
+with expansion:
+  1000.0 == 1000 (0x<hex digits>)
+
+InternalBenchmark.tests.cpp:<line number>: PASSED:
+  REQUIRE( res[i] == rate )
+with expansion:
+  1000.0 == 1000 (0x<hex digits>)
+
+InternalBenchmark.tests.cpp:<line number>: PASSED:
+  REQUIRE( res[i] == rate )
+with expansion:
+  1000.0 == 1000 (0x<hex digits>)
+
+-------------------------------------------------------------------------------
+run_for_at_least, chronometer
+-------------------------------------------------------------------------------
+InternalBenchmark.tests.cpp:<line number>
+...............................................................................
+
+InternalBenchmark.tests.cpp:<line number>: PASSED:
+  CHECK( meter.runs() >= old_runs )
+with expansion:
+  1 >= 1
+
+InternalBenchmark.tests.cpp:<line number>: PASSED:
+  CHECK( meter.runs() >= old_runs )
+with expansion:
+  2 >= 1
+
+InternalBenchmark.tests.cpp:<line number>: PASSED:
+  CHECK( meter.runs() >= old_runs )
+with expansion:
+  4 >= 2
+
+InternalBenchmark.tests.cpp:<line number>: PASSED:
+  CHECK( meter.runs() >= old_runs )
+with expansion:
+  8 >= 4
+
+InternalBenchmark.tests.cpp:<line number>: PASSED:
+  CHECK( meter.runs() >= old_runs )
+with expansion:
+  16 >= 8
+
+InternalBenchmark.tests.cpp:<line number>: PASSED:
+  CHECK( meter.runs() >= old_runs )
+with expansion:
+  32 >= 16
+
+InternalBenchmark.tests.cpp:<line number>: PASSED:
+  CHECK( meter.runs() >= old_runs )
+with expansion:
+  64 >= 32
+
+InternalBenchmark.tests.cpp:<line number>: PASSED:
+  CHECK( meter.runs() >= old_runs )
+with expansion:
+  128 >= 64
+
+InternalBenchmark.tests.cpp:<line number>: PASSED:
+  REQUIRE( Timing.elapsed >= time )
+with expansion:
+  128 ns >= 100 ns
+
+InternalBenchmark.tests.cpp:<line number>: PASSED:
+  REQUIRE( Timing.result == Timing.iterations + 17 )
+with expansion:
+  145 == 145
+
+InternalBenchmark.tests.cpp:<line number>: PASSED:
+  REQUIRE( Timing.iterations >= time.count() )
+with expansion:
+  128 >= 100
+
+-------------------------------------------------------------------------------
+run_for_at_least, int
+-------------------------------------------------------------------------------
+InternalBenchmark.tests.cpp:<line number>
+...............................................................................
+
+InternalBenchmark.tests.cpp:<line number>: PASSED:
+  CHECK( x >= old_x )
+with expansion:
+  1 >= 1
+
+InternalBenchmark.tests.cpp:<line number>: PASSED:
+  CHECK( x >= old_x )
+with expansion:
+  2 >= 1
+
+InternalBenchmark.tests.cpp:<line number>: PASSED:
+  CHECK( x >= old_x )
+with expansion:
+  4 >= 2
+
+InternalBenchmark.tests.cpp:<line number>: PASSED:
+  CHECK( x >= old_x )
+with expansion:
+  8 >= 4
+
+InternalBenchmark.tests.cpp:<line number>: PASSED:
+  CHECK( x >= old_x )
+with expansion:
+  16 >= 8
+
+InternalBenchmark.tests.cpp:<line number>: PASSED:
+  CHECK( x >= old_x )
+with expansion:
+  32 >= 16
+
+InternalBenchmark.tests.cpp:<line number>: PASSED:
+  CHECK( x >= old_x )
+with expansion:
+  64 >= 32
+
+InternalBenchmark.tests.cpp:<line number>: PASSED:
+  CHECK( x >= old_x )
+with expansion:
+  128 >= 64
+
+InternalBenchmark.tests.cpp:<line number>: PASSED:
+  REQUIRE( Timing.elapsed >= time )
+with expansion:
+  128 ns >= 100 ns
+
+InternalBenchmark.tests.cpp:<line number>: PASSED:
+  REQUIRE( Timing.result == Timing.iterations + 17 )
+with expansion:
+  145 == 145
+
+InternalBenchmark.tests.cpp:<line number>: PASSED:
+  REQUIRE( Timing.iterations >= time.count() )
+with expansion:
+  128 >= 100
 
 -------------------------------------------------------------------------------
 second tag
@@ -12947,6 +13628,32 @@ with expansion:
   "{ { 42 }, { }, 1.2f }"
 
 -------------------------------------------------------------------------------
+uniform samples
+-------------------------------------------------------------------------------
+InternalBenchmark.tests.cpp:<line number>
+...............................................................................
+
+InternalBenchmark.tests.cpp:<line number>: PASSED:
+  CHECK( e.point == 23 )
+with expansion:
+  23.0 == 23
+
+InternalBenchmark.tests.cpp:<line number>: PASSED:
+  CHECK( e.upper_bound == 23 )
+with expansion:
+  23.0 == 23
+
+InternalBenchmark.tests.cpp:<line number>: PASSED:
+  CHECK( e.lower_bound == 23 )
+with expansion:
+  23.0 == 23
+
+InternalBenchmark.tests.cpp:<line number>: PASSED:
+  CHECK( e.confidence_interval == 0.95 )
+with expansion:
+  0.95 == 0.95
+
+-------------------------------------------------------------------------------
 vec<vec<string,alloc>> -> toString
 -------------------------------------------------------------------------------
 ToStringVector.tests.cpp:<line number>
@@ -13196,6 +13903,43 @@ with expansion:
   5 >= 5
 
 -------------------------------------------------------------------------------
+warmup
+-------------------------------------------------------------------------------
+InternalBenchmark.tests.cpp:<line number>
+...............................................................................
+
+InternalBenchmark.tests.cpp:<line number>: PASSED:
+  REQUIRE( (iterations * rate) > Catch::Benchmark::Detail::warmup_time.count() )
+with expansion:
+  160000000 (0x<hex digits>) > 100
+
+InternalBenchmark.tests.cpp:<line number>: PASSED:
+  REQUIRE( (end - start) > Catch::Benchmark::Detail::warmup_time )
+with expansion:
+  310016000 ns > 100 ms
+
+-------------------------------------------------------------------------------
+weighted_average_quantile
+-------------------------------------------------------------------------------
+InternalBenchmark.tests.cpp:<line number>
+...............................................................................
+
+InternalBenchmark.tests.cpp:<line number>: PASSED:
+  REQUIRE( q1 == 14.5 )
+with expansion:
+  14.5 == 14.5
+
+InternalBenchmark.tests.cpp:<line number>: PASSED:
+  REQUIRE( med == 18. )
+with expansion:
+  18.0 == 18.0
+
+InternalBenchmark.tests.cpp:<line number>: PASSED:
+  REQUIRE( q3 == 23. )
+with expansion:
+  23.0 == 23.0
+
+-------------------------------------------------------------------------------
 xmlentitycheck
   embedded xml: <test>it should be possible to embed xml characters, such as <,
                 " or &, or even whole <xml>documents</xml> within an attribute
@@ -13216,6 +13960,6 @@ Misc.tests.cpp:<line number>
 Misc.tests.cpp:<line number>: PASSED:
 
 ===============================================================================
-test cases:  305 |  215 passed |  86 failed |  4 failed as expected
-assertions: 1671 | 1502 passed | 148 failed | 21 failed as expected
+test cases:  320 |  230 passed |  86 failed |  4 failed as expected
+assertions: 1793 | 1624 passed | 148 failed | 21 failed as expected
 

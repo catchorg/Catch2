@@ -6,8 +6,15 @@
  *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  */
 
-#include <catch2/catch.hpp>
-#if defined(CATCH_CONFIG_ENABLE_BENCHMARKING)
+#include <catch2/catch_test_macros.hpp>
+#include <catch2/catch_approx.h>
+#include <catch2/catch_config.hpp>
+#include <catch2/benchmark/catch_benchmark.hpp>
+#include <catch2/benchmark/catch_chronometer.hpp>
+#include <catch2/benchmark/detail/catch_analyse.hpp>
+#include <catch2/benchmark/detail/catch_benchmark_function.hpp>
+#include <catch2/benchmark/detail/catch_estimate_clock.hpp>
+
 namespace {
     struct manual_clock {
     public:
@@ -90,10 +97,10 @@ TEST_CASE("resolution", "[benchmark]") {
 }
 
 TEST_CASE("estimate_clock_resolution", "[benchmark]") {
-    auto rate = 1000;
+    auto rate = 2'000;
     counting_clock::set_rate(rate);
 
-    int iters = 160000;
+    int iters = 160'000;
     auto res = Catch::Benchmark::Detail::estimate_clock_resolution<counting_clock>(iters);
 
     REQUIRE(res.mean.count() == rate);
@@ -154,6 +161,7 @@ TEST_CASE("uniform samples", "[benchmark]") {
 
 TEST_CASE("normal_cdf", "[benchmark]") {
     using Catch::Benchmark::Detail::normal_cdf;
+    using Catch::Approx;
     CHECK(normal_cdf(0.000000) == Approx(0.50000000000000000));
     CHECK(normal_cdf(1.000000) == Approx(0.84134474606854293));
     CHECK(normal_cdf(-1.000000) == Approx(0.15865525393145705));
@@ -163,6 +171,7 @@ TEST_CASE("normal_cdf", "[benchmark]") {
 
 TEST_CASE("erfc_inv", "[benchmark]") {
     using Catch::Benchmark::Detail::erfc_inv;
+    using Catch::Approx;
     CHECK(erfc_inv(1.103560) == Approx(-0.09203687623843015));
     CHECK(erfc_inv(1.067400) == Approx(-0.05980291115763361));
     CHECK(erfc_inv(0.050000) == Approx(1.38590382434967796));
@@ -170,6 +179,7 @@ TEST_CASE("erfc_inv", "[benchmark]") {
 
 TEST_CASE("normal_quantile", "[benchmark]") {
     using Catch::Benchmark::Detail::normal_quantile;
+    using Catch::Approx;
     CHECK(normal_quantile(0.551780) == Approx(0.13015979861484198));
     CHECK(normal_quantile(0.533700) == Approx(0.08457408802851875));
     CHECK(normal_quantile(0.025000) == Approx(-1.95996398454005449));
@@ -255,7 +265,7 @@ TEST_CASE("classify_outliers", "[benchmark]") {
     }
 }
 
-TEST_CASE("analyse", "[benchmark]") {
+TEST_CASE("analyse", "[approvals][benchmark]") {
     Catch::ConfigData data{};
     data.benchmarkConfidenceInterval = 0.95;
     data.benchmarkNoAnalysis = false;
@@ -388,7 +398,7 @@ TEST_CASE("measure", "[benchmark]") {
     CHECK(s.iterations == 1);
 }
 
-TEST_CASE("run benchmark", "[benchmark]") {
+TEST_CASE("run benchmark", "[benchmark][approvals]") {
     counting_clock::set_rate(1000);
     auto start = counting_clock::now();
 
@@ -402,4 +412,3 @@ TEST_CASE("run benchmark", "[benchmark]") {
 
     CHECK((end - start).count() == 2867251000);
 }
-#endif // CATCH_CONFIG_ENABLE_BENCHMARKING

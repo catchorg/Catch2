@@ -18,10 +18,8 @@
 #include <catch2/catch_option.hpp>
 #include <catch2/catch_stringref.h>
 
-#if defined(CATCH_CONFIG_ENABLE_BENCHMARKING)
 #include <catch2/benchmark/catch_estimate.hpp>
 #include <catch2/benchmark/catch_outlier_classification.hpp>
-#endif // CATCH_CONFIG_ENABLE_BENCHMARKING
 
 
 #include <string>
@@ -168,7 +166,7 @@ namespace Catch {
         bool aborting;
     };
 
-#if defined(CATCH_CONFIG_ENABLE_BENCHMARKING)
+
     struct BenchmarkInfo {
         std::string name;
         double estimatedDuration;
@@ -204,7 +202,6 @@ namespace Catch {
             };
         }
     };
-#endif // CATCH_CONFIG_ENABLE_BENCHMARKING
 
     struct IStreamingReporter {
         virtual ~IStreamingReporter() = default;
@@ -224,12 +221,10 @@ namespace Catch {
         virtual void testCaseStarting( TestCaseInfo const& testInfo ) = 0;
         virtual void sectionStarting( SectionInfo const& sectionInfo ) = 0;
 
-#if defined(CATCH_CONFIG_ENABLE_BENCHMARKING)
         virtual void benchmarkPreparing( std::string const& ) {}
         virtual void benchmarkStarting( BenchmarkInfo const& ) {}
         virtual void benchmarkEnded( BenchmarkStats<> const& ) {}
         virtual void benchmarkFailed( std::string const& ) {}
-#endif // CATCH_CONFIG_ENABLE_BENCHMARKING
 
         virtual void assertionStarting( AssertionInfo const& assertionInfo ) = 0;
 

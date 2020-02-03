@@ -15,6 +15,9 @@
 #   include <atomic> // atomic_thread_fence
 #endif
 
+#include <type_traits>
+#include <utility>
+
 namespace Catch {
     namespace Benchmark {
 #if defined(__GNUC__) || defined(__clang__)

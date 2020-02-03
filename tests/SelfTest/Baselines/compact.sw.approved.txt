@@ -1562,10 +1562,33 @@ Xml.tests.cpp:<line number>: passed: encode( stringWithQuotes, Catch::XmlEncode:
 "don't &quot;quote&quot; me on that"
 Xml.tests.cpp:<line number>: passed: encode( "[\x01]" ) == "[\\x01]" for: "[\x01]" == "[\x01]"
 Xml.tests.cpp:<line number>: passed: encode( "[\x7F]" ) == "[\\x7F]" for: "[\x7F]" == "[\x7F]"
+InternalBenchmark.tests.cpp:<line number>: passed: analysis.mean.point.count() == 23 for: 23.0 == 23
+InternalBenchmark.tests.cpp:<line number>: passed: analysis.mean.lower_bound.count() == 23 for: 23.0 == 23
+InternalBenchmark.tests.cpp:<line number>: passed: analysis.mean.upper_bound.count() == 23 for: 23.0 == 23
+InternalBenchmark.tests.cpp:<line number>: passed: analysis.standard_deviation.point.count() == 0 for: 0.0 == 0
+InternalBenchmark.tests.cpp:<line number>: passed: analysis.standard_deviation.lower_bound.count() == 0 for: 0.0 == 0
+InternalBenchmark.tests.cpp:<line number>: passed: analysis.standard_deviation.upper_bound.count() == 0 for: 0.0 == 0
+InternalBenchmark.tests.cpp:<line number>: passed: analysis.outliers.total() == 0 for: 0 == 0
+InternalBenchmark.tests.cpp:<line number>: passed: analysis.outliers.low_mild == 0 for: 0 == 0
+InternalBenchmark.tests.cpp:<line number>: passed: analysis.outliers.low_severe == 0 for: 0 == 0
+InternalBenchmark.tests.cpp:<line number>: passed: analysis.outliers.high_mild == 0 for: 0 == 0
+InternalBenchmark.tests.cpp:<line number>: passed: analysis.outliers.high_severe == 0 for: 0 == 0
+InternalBenchmark.tests.cpp:<line number>: passed: analysis.outliers.samples_seen == 0 for: 0 == 0
+InternalBenchmark.tests.cpp:<line number>: passed: analysis.outlier_variance == 0 for: 0.0 == 0
 ToStringVector.tests.cpp:<line number>: passed: Catch::Detail::stringify( empty ) == "{  }" for: "{  }" == "{  }"
 ToStringVector.tests.cpp:<line number>: passed: Catch::Detail::stringify( oneValue ) == "{ 42 }" for: "{ 42 }" == "{ 42 }"
 ToStringVector.tests.cpp:<line number>: passed: Catch::Detail::stringify( twoValues ) == "{ 42, 250 }" for: "{ 42, 250 }" == "{ 42, 250 }"
 Misc.tests.cpp:<line number>: passed: x == 0 for: 0 == 0
+InternalBenchmark.tests.cpp:<line number>: passed: model.started == 1 for: 1 == 1
+InternalBenchmark.tests.cpp:<line number>: passed: model.finished == 0 for: 0 == 0
+InternalBenchmark.tests.cpp:<line number>: passed: model.started == 1 for: 1 == 1
+InternalBenchmark.tests.cpp:<line number>: passed: model.finished == 1 for: 1 == 1
+InternalBenchmark.tests.cpp:<line number>: passed: called == 1 for: 1 == 1
+InternalBenchmark.tests.cpp:<line number>: passed: model.started == 0 for: 0 == 0
+InternalBenchmark.tests.cpp:<line number>: passed: model.finished == 0 for: 0 == 0
+InternalBenchmark.tests.cpp:<line number>: passed: model.started == 0 for: 0 == 0
+InternalBenchmark.tests.cpp:<line number>: passed: model.finished == 0 for: 0 == 0
+InternalBenchmark.tests.cpp:<line number>: passed: called == 1 for: 1 == 1
 Tricky.tests.cpp:<line number>: passed: obj.prop != 0 for: 0x<hex digits> != 0
 Misc.tests.cpp:<line number>: passed: flag for: true
 Misc.tests.cpp:<line number>: passed: testCheckedElse( true ) for: true
@@ -1575,6 +1598,42 @@ Misc.tests.cpp:<line number>: passed: flag for: true
 Misc.tests.cpp:<line number>: passed: testCheckedIf( true ) for: true
 Misc.tests.cpp:<line number>: failed: flag for: false
 Misc.tests.cpp:<line number>: failed: testCheckedIf( false ) for: false
+InternalBenchmark.tests.cpp:<line number>: passed: o.samples_seen == static_cast<int>(x.size()) for: 6 == 6
+InternalBenchmark.tests.cpp:<line number>: passed: o.low_severe == los for: 0 == 0
+InternalBenchmark.tests.cpp:<line number>: passed: o.low_mild == lom for: 0 == 0
+InternalBenchmark.tests.cpp:<line number>: passed: o.high_mild == him for: 0 == 0
+InternalBenchmark.tests.cpp:<line number>: passed: o.high_severe == his for: 0 == 0
+InternalBenchmark.tests.cpp:<line number>: passed: o.total() == los + lom + him + his for: 0 == 0
+InternalBenchmark.tests.cpp:<line number>: passed: o.samples_seen == static_cast<int>(x.size()) for: 6 == 6
+InternalBenchmark.tests.cpp:<line number>: passed: o.low_severe == los for: 1 == 1
+InternalBenchmark.tests.cpp:<line number>: passed: o.low_mild == lom for: 0 == 0
+InternalBenchmark.tests.cpp:<line number>: passed: o.high_mild == him for: 0 == 0
+InternalBenchmark.tests.cpp:<line number>: passed: o.high_severe == his for: 0 == 0
+InternalBenchmark.tests.cpp:<line number>: passed: o.total() == los + lom + him + his for: 1 == 1
+InternalBenchmark.tests.cpp:<line number>: passed: o.samples_seen == static_cast<int>(x.size()) for: 6 == 6
+InternalBenchmark.tests.cpp:<line number>: passed: o.low_severe == los for: 0 == 0
+InternalBenchmark.tests.cpp:<line number>: passed: o.low_mild == lom for: 1 == 1
+InternalBenchmark.tests.cpp:<line number>: passed: o.high_mild == him for: 0 == 0
+InternalBenchmark.tests.cpp:<line number>: passed: o.high_severe == his for: 0 == 0
+InternalBenchmark.tests.cpp:<line number>: passed: o.total() == los + lom + him + his for: 1 == 1
+InternalBenchmark.tests.cpp:<line number>: passed: o.samples_seen == static_cast<int>(x.size()) for: 6 == 6
+InternalBenchmark.tests.cpp:<line number>: passed: o.low_severe == los for: 0 == 0
+InternalBenchmark.tests.cpp:<line number>: passed: o.low_mild == lom for: 0 == 0
+InternalBenchmark.tests.cpp:<line number>: passed: o.high_mild == him for: 1 == 1
+InternalBenchmark.tests.cpp:<line number>: passed: o.high_severe == his for: 0 == 0
+InternalBenchmark.tests.cpp:<line number>: passed: o.total() == los + lom + him + his for: 1 == 1
+InternalBenchmark.tests.cpp:<line number>: passed: o.samples_seen == static_cast<int>(x.size()) for: 6 == 6
+InternalBenchmark.tests.cpp:<line number>: passed: o.low_severe == los for: 0 == 0
+InternalBenchmark.tests.cpp:<line number>: passed: o.low_mild == lom for: 0 == 0
+InternalBenchmark.tests.cpp:<line number>: passed: o.high_mild == him for: 0 == 0
+InternalBenchmark.tests.cpp:<line number>: passed: o.high_severe == his for: 1 == 1
+InternalBenchmark.tests.cpp:<line number>: passed: o.total() == los + lom + him + his for: 1 == 1
+InternalBenchmark.tests.cpp:<line number>: passed: o.samples_seen == static_cast<int>(x.size()) for: 6 == 6
+InternalBenchmark.tests.cpp:<line number>: passed: o.low_severe == los for: 1 == 1
+InternalBenchmark.tests.cpp:<line number>: passed: o.low_mild == lom for: 0 == 0
+InternalBenchmark.tests.cpp:<line number>: passed: o.high_mild == him for: 1 == 1
+InternalBenchmark.tests.cpp:<line number>: passed: o.high_severe == his for: 0 == 0
+InternalBenchmark.tests.cpp:<line number>: passed: o.total() == los + lom + him + his for: 2 == 2
 Condition.tests.cpp:<line number>: passed: unsigned_char_var == 1 for: 1 == 1
 Condition.tests.cpp:<line number>: passed: unsigned_short_var == 1 for: 1 == 1
 Condition.tests.cpp:<line number>: passed: unsigned_int_var == 1 for: 1 == 1
@@ -1583,6 +1642,11 @@ Condition.tests.cpp:<line number>: passed: long_var == unsigned_char_var for: 1 
 Condition.tests.cpp:<line number>: passed: long_var == unsigned_short_var for: 1 == 1
 Condition.tests.cpp:<line number>: passed: long_var == unsigned_int_var for: 1 == 1
 Condition.tests.cpp:<line number>: passed: long_var == unsigned_long_var for: 1 == 1
+InternalBenchmark.tests.cpp:<line number>: passed: erfc_inv(1.103560) == Approx(-0.09203687623843015) for: -0.0920368762 == Approx( -0.0920368762 )
+InternalBenchmark.tests.cpp:<line number>: passed: erfc_inv(1.067400) == Approx(-0.05980291115763361) for: -0.0598029112 == Approx( -0.0598029112 )
+InternalBenchmark.tests.cpp:<line number>: passed: erfc_inv(0.050000) == Approx(1.38590382434967796) for: 1.3859038243 == Approx( 1.3859038243 )
+InternalBenchmark.tests.cpp:<line number>: passed: res.mean.count() == rate for: 2000.0 == 2000 (0x<hex digits>)
+InternalBenchmark.tests.cpp:<line number>: passed: res.outliers.total() == 0 for: 0 == 0
 Misc.tests.cpp:<line number>: passed:
 Misc.tests.cpp:<line number>: passed:
 Misc.tests.cpp:<line number>: passed:
@@ -1610,6 +1674,15 @@ Misc.tests.cpp:<line number>: failed: ( fib[i] % 2 ) == 0 for: 1 == 0 with 1 mes
 Misc.tests.cpp:<line number>: passed: ( fib[i] % 2 ) == 0 for: 0 == 0 with 1 message: 'Testing if fib[5] (8) is even'
 Misc.tests.cpp:<line number>: failed: ( fib[i] % 2 ) == 0 for: 1 == 0 with 1 message: 'Testing if fib[6] (13) is even'
 Misc.tests.cpp:<line number>: failed: ( fib[i] % 2 ) == 0 for: 1 == 0 with 1 message: 'Testing if fib[7] (21) is even'
+InternalBenchmark.tests.cpp:<line number>: passed: m == 19. for: 19.0 == 19.0
+InternalBenchmark.tests.cpp:<line number>: passed: x == 17 for: 17 == 17
+InternalBenchmark.tests.cpp:<line number>: passed: x == 23 for: 23 == 23
+InternalBenchmark.tests.cpp:<line number>: passed: r.elapsed.count() == 42 for: 42 == 42
+InternalBenchmark.tests.cpp:<line number>: passed: r.result == 23 for: 23 == 23
+InternalBenchmark.tests.cpp:<line number>: passed: r.iterations == 1 for: 1 == 1
+InternalBenchmark.tests.cpp:<line number>: passed: s.elapsed.count() == 69 for: 69 == 69
+InternalBenchmark.tests.cpp:<line number>: passed: s.result == 17 for: 17 == 17
+InternalBenchmark.tests.cpp:<line number>: passed: s.iterations == 1 for: 1 == 1
 Message.tests.cpp:<line number>: warning: 'info' with 2 messages: 'unscoped info' and 'and warn may mix'
 Message.tests.cpp:<line number>: warning: 'info' with 2 messages: 'unscoped info' and 'they are not cleared after warnings'
 Misc.tests.cpp:<line number>: failed: a == b for: 1 == 2
@@ -1620,6 +1693,14 @@ Misc.tests.cpp:<line number>: passed: b != a for: 2 != 1
 Misc.tests.cpp:<line number>: passed: a != b for: 1 != 2
 Tricky.tests.cpp:<line number>: passed: s == "7" for: "7" == "7"
 Tricky.tests.cpp:<line number>: passed: ti == typeid(int) for: {?} == {?}
+InternalBenchmark.tests.cpp:<line number>: passed: normal_cdf(0.000000) == Approx(0.50000000000000000) for: 0.5 == Approx( 0.5 )
+InternalBenchmark.tests.cpp:<line number>: passed: normal_cdf(1.000000) == Approx(0.84134474606854293) for: 0.8413447461 == Approx( 0.8413447461 )
+InternalBenchmark.tests.cpp:<line number>: passed: normal_cdf(-1.000000) == Approx(0.15865525393145705) for: 0.1586552539 == Approx( 0.1586552539 )
+InternalBenchmark.tests.cpp:<line number>: passed: normal_cdf(2.809729) == Approx(0.99752083845315409) for: 0.9975208385 == Approx( 0.9975208385 )
+InternalBenchmark.tests.cpp:<line number>: passed: normal_cdf(-1.352570) == Approx(0.08809652095066035) for: 0.088096521 == Approx( 0.088096521 )
+InternalBenchmark.tests.cpp:<line number>: passed: normal_quantile(0.551780) == Approx(0.13015979861484198) for: 0.1301597986 == Approx( 0.1301597986 )
+InternalBenchmark.tests.cpp:<line number>: passed: normal_quantile(0.533700) == Approx(0.08457408802851875) for: 0.084574088 == Approx( 0.084574088 )
+InternalBenchmark.tests.cpp:<line number>: passed: normal_quantile(0.025000) == Approx(-1.95996398454005449) for: -1.9599639845 == Approx( -1.9599639845 )
 Misc.tests.cpp:<line number>: passed:
 Message.tests.cpp:<line number>: passed: true with 1 message: 'this MAY be seen only for the FIRST assertion IF info is printed for passing assertions'
 Message.tests.cpp:<line number>: passed: true with 1 message: 'this MAY be seen only for the SECOND assertion IF info is printed for passing assertions'
@@ -1661,6 +1742,38 @@ StringManip.tests.cpp:<line number>: passed: !(Catch::replaceInPlace(letters, "x
 StringManip.tests.cpp:<line number>: passed: letters == letters for: "abcdefcg" == "abcdefcg"
 StringManip.tests.cpp:<line number>: passed: Catch::replaceInPlace(s, "'", "|'") for: true
 StringManip.tests.cpp:<line number>: passed: s == "didn|'t" for: "didn|'t" == "didn|'t"
+InternalBenchmark.tests.cpp:<line number>: passed: res.size() == count for: 10 == 10
+InternalBenchmark.tests.cpp:<line number>: passed: res[i] == rate for: 1000.0 == 1000 (0x<hex digits>)
+InternalBenchmark.tests.cpp:<line number>: passed: res[i] == rate for: 1000.0 == 1000 (0x<hex digits>)
+InternalBenchmark.tests.cpp:<line number>: passed: res[i] == rate for: 1000.0 == 1000 (0x<hex digits>)
+InternalBenchmark.tests.cpp:<line number>: passed: res[i] == rate for: 1000.0 == 1000 (0x<hex digits>)
+InternalBenchmark.tests.cpp:<line number>: passed: res[i] == rate for: 1000.0 == 1000 (0x<hex digits>)
+InternalBenchmark.tests.cpp:<line number>: passed: res[i] == rate for: 1000.0 == 1000 (0x<hex digits>)
+InternalBenchmark.tests.cpp:<line number>: passed: res[i] == rate for: 1000.0 == 1000 (0x<hex digits>)
+InternalBenchmark.tests.cpp:<line number>: passed: res[i] == rate for: 1000.0 == 1000 (0x<hex digits>)
+InternalBenchmark.tests.cpp:<line number>: passed: res[i] == rate for: 1000.0 == 1000 (0x<hex digits>)
+InternalBenchmark.tests.cpp:<line number>: passed: meter.runs() >= old_runs for: 1 >= 1
+InternalBenchmark.tests.cpp:<line number>: passed: meter.runs() >= old_runs for: 2 >= 1
+InternalBenchmark.tests.cpp:<line number>: passed: meter.runs() >= old_runs for: 4 >= 2
+InternalBenchmark.tests.cpp:<line number>: passed: meter.runs() >= old_runs for: 8 >= 4
+InternalBenchmark.tests.cpp:<line number>: passed: meter.runs() >= old_runs for: 16 >= 8
+InternalBenchmark.tests.cpp:<line number>: passed: meter.runs() >= old_runs for: 32 >= 16
+InternalBenchmark.tests.cpp:<line number>: passed: meter.runs() >= old_runs for: 64 >= 32
+InternalBenchmark.tests.cpp:<line number>: passed: meter.runs() >= old_runs for: 128 >= 64
+InternalBenchmark.tests.cpp:<line number>: passed: Timing.elapsed >= time for: 128 ns >= 100 ns
+InternalBenchmark.tests.cpp:<line number>: passed: Timing.result == Timing.iterations + 17 for: 145 == 145
+InternalBenchmark.tests.cpp:<line number>: passed: Timing.iterations >= time.count() for: 128 >= 100
+InternalBenchmark.tests.cpp:<line number>: passed: x >= old_x for: 1 >= 1
+InternalBenchmark.tests.cpp:<line number>: passed: x >= old_x for: 2 >= 1
+InternalBenchmark.tests.cpp:<line number>: passed: x >= old_x for: 4 >= 2
+InternalBenchmark.tests.cpp:<line number>: passed: x >= old_x for: 8 >= 4
+InternalBenchmark.tests.cpp:<line number>: passed: x >= old_x for: 16 >= 8
+InternalBenchmark.tests.cpp:<line number>: passed: x >= old_x for: 32 >= 16
+InternalBenchmark.tests.cpp:<line number>: passed: x >= old_x for: 64 >= 32
+InternalBenchmark.tests.cpp:<line number>: passed: x >= old_x for: 128 >= 64
+InternalBenchmark.tests.cpp:<line number>: passed: Timing.elapsed >= time for: 128 ns >= 100 ns
+InternalBenchmark.tests.cpp:<line number>: passed: Timing.result == Timing.iterations + 17 for: 145 == 145
+InternalBenchmark.tests.cpp:<line number>: passed: Timing.iterations >= time.count() for: 128 >= 100
 Misc.tests.cpp:<line number>: failed: false with 1 message: '3'
 Message.tests.cpp:<line number>: failed: false with 2 messages: 'hi' and 'i := 7'
 Tag.tests.cpp:<line number>: passed: tags, Catch::VectorContains("magic-tag"_catch_sr) && Catch::VectorContains("."_catch_sr) for: { ., magic-tag } ( Contains: magic-tag and Contains: . )
@@ -1753,6 +1866,10 @@ ToStringTuple.tests.cpp:<line number>: passed: "{ \"hello\", \"world\" }" == ::C
 ToStringTuple.tests.cpp:<line number>: passed: "{ { 42 }, { }, 1.2f }" == ::Catch::Detail::stringify(value) for: "{ { 42 }, { }, 1.2f }"
 ==
 "{ { 42 }, { }, 1.2f }"
+InternalBenchmark.tests.cpp:<line number>: passed: e.point == 23 for: 23.0 == 23
+InternalBenchmark.tests.cpp:<line number>: passed: e.upper_bound == 23 for: 23.0 == 23
+InternalBenchmark.tests.cpp:<line number>: passed: e.lower_bound == 23 for: 23.0 == 23
+InternalBenchmark.tests.cpp:<line number>: passed: e.confidence_interval == 0.95 for: 0.95 == 0.95
 ToStringVector.tests.cpp:<line number>: passed: ::Catch::Detail::stringify(v) == "{  }" for: "{  }" == "{  }"
 ToStringVector.tests.cpp:<line number>: passed: ::Catch::Detail::stringify(v) == "{ { \"hello\" }, { \"world\" } }" for: "{ { "hello" }, { "world" } }"
 ==
@@ -1788,6 +1905,11 @@ Misc.tests.cpp:<line number>: passed: v.size() == 5 for: 5 == 5
 Misc.tests.cpp:<line number>: passed: v.capacity() >= 5 for: 5 >= 5
 Misc.tests.cpp:<line number>: passed: v.size() == 5 for: 5 == 5
 Misc.tests.cpp:<line number>: passed: v.capacity() >= 5 for: 5 >= 5
+InternalBenchmark.tests.cpp:<line number>: passed: (iterations * rate) > Catch::Benchmark::Detail::warmup_time.count() for: 160000000 (0x<hex digits>) > 100
+InternalBenchmark.tests.cpp:<line number>: passed: (end - start) > Catch::Benchmark::Detail::warmup_time for: 310016000 ns > 100 ms
+InternalBenchmark.tests.cpp:<line number>: passed: q1 == 14.5 for: 14.5 == 14.5
+InternalBenchmark.tests.cpp:<line number>: passed: med == 18. for: 18.0 == 18.0
+InternalBenchmark.tests.cpp:<line number>: passed: q3 == 23. for: 23.0 == 23.0
 Misc.tests.cpp:<line number>: passed:
 Misc.tests.cpp:<line number>: passed:
 Failed 86 test cases, failed 148 assertions.

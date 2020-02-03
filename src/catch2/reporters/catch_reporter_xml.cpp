@@ -219,7 +219,6 @@ namespace Catch {
         m_xml.endElement();
     }
 
-#if defined(CATCH_CONFIG_ENABLE_BENCHMARKING)
     void XmlReporter::benchmarkPreparing(std::string const& name) {
         m_xml.startElement("BenchmarkResults")
             .writeAttribute("name", name);
@@ -262,7 +261,6 @@ namespace Catch {
             writeAttribute("message", error);
         m_xml.endElement();
     }
-#endif // CATCH_CONFIG_ENABLE_BENCHMARKING
 
     void XmlReporter::listReporters(std::vector<ReporterDescription> const& descriptions, Config const&) {
         auto outerTag = m_xml.scopedElement("AvailableReporters");

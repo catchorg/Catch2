@@ -90,6 +90,29 @@
     <testCase name="Generators internals/Range/Negative manual step/Integer/Slightly over end" duration="{duration}"/>
     <testCase name="Generators internals/Range/Negative manual step/Integer/Slightly under end" duration="{duration}"/>
   </file>
+  <file path="tests/<exe-name>/IntrospectiveTests/InternalBenchmark.tests.cpp">
+    <testCase name="analyse no analysis" duration="{duration}"/>
+    <testCase name="benchmark function call/without chronometer" duration="{duration}"/>
+    <testCase name="benchmark function call/with chronometer" duration="{duration}"/>
+    <testCase name="classify_outliers/none" duration="{duration}"/>
+    <testCase name="classify_outliers/low severe" duration="{duration}"/>
+    <testCase name="classify_outliers/low mild" duration="{duration}"/>
+    <testCase name="classify_outliers/high mild" duration="{duration}"/>
+    <testCase name="classify_outliers/high severe" duration="{duration}"/>
+    <testCase name="classify_outliers/mixed" duration="{duration}"/>
+    <testCase name="erfc_inv" duration="{duration}"/>
+    <testCase name="estimate_clock_resolution" duration="{duration}"/>
+    <testCase name="mean" duration="{duration}"/>
+    <testCase name="measure" duration="{duration}"/>
+    <testCase name="normal_cdf" duration="{duration}"/>
+    <testCase name="normal_quantile" duration="{duration}"/>
+    <testCase name="resolution" duration="{duration}"/>
+    <testCase name="run_for_at_least, chronometer" duration="{duration}"/>
+    <testCase name="run_for_at_least, int" duration="{duration}"/>
+    <testCase name="uniform samples" duration="{duration}"/>
+    <testCase name="warmup" duration="{duration}"/>
+    <testCase name="weighted_average_quantile" duration="{duration}"/>
+  </file>
   <file path="tests/<exe-name>/IntrospectiveTests/PartTracker.tests.cpp">
     <testCase name="Tracker" duration="{duration}"/>
     <testCase name="Tracker/successfully close one section" duration="{duration}"/>

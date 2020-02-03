@@ -39,11 +39,9 @@ namespace Catch {
             template <typename Clock, typename Fun>
             using run_for_at_least_argument_t = typename std::conditional<is_callable<Fun(Chronometer)>::value, Chronometer, int>::type;
 
-            struct optimized_away_error : std::exception {
-                const char* what() const noexcept override {
-                    return "could not measure benchmark, maybe it was optimized away";
-                }
-            };
+
+            [[noreturn]]
+            void throw_optimized_away_error();
 
             template <typename Clock, typename Fun>
             TimingOf<Clock, Fun(run_for_at_least_argument_t<Clock, Fun>)> run_for_at_least(ClockDuration<Clock> how_long, int seed, Fun&& fun) {
@@ -56,7 +54,7 @@ namespace Catch {
                     }
                     iters *= 2;
                 }
-                throw optimized_away_error{};
+                throw_optimized_away_error();
             }
         } // namespace Detail
     } // namespace Benchmark

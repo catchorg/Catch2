@@ -12,6 +12,8 @@
 #define TWOBLUECUBES_CATCH_DETAIL_COMPLETE_INVOKE_HPP_INCLUDED
 
 #include <catch2/catch_enforce.h>
+#include <catch2/catch_interfaces_capture.h>
+#include <catch2/catch_interfaces_registry_hub.h>
 
 #include <type_traits>
 #include <utility>
@@ -51,7 +53,7 @@ namespace Catch {
                 return CompleteInvoker<ResultOf_t<Fun(Args...)>>::invoke(std::forward<Fun>(fun), std::forward<Args>(args)...);
             }
 
-            const std::string benchmarkErrorMsg = "a benchmark failed to run successfully";
+            extern const std::string benchmarkErrorMsg;
         } // namespace Detail
 
         template <typename Fun>

@@ -31,12 +31,10 @@ namespace Catch {
 
         void reportInvalidArguments(std::string const&arg) override;
 
-#if defined(CATCH_CONFIG_ENABLE_BENCHMARKING)
         void benchmarkPreparing(std::string const& name) override;
         void benchmarkStarting( BenchmarkInfo const& benchmarkInfo ) override;
         void benchmarkEnded( BenchmarkStats<> const& benchmarkStats ) override;
         void benchmarkFailed(std::string const&) override;
-#endif // CATCH_CONFIG_ENABLE_BENCHMARKING
 
         void testRunStarting( TestRunInfo const& testRunInfo ) override;
         void testGroupStarting( GroupInfo const& groupInfo ) override;

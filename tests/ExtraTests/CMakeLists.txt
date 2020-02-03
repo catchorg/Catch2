@@ -120,7 +120,6 @@ set_tests_properties(
 
 
 add_executable(BenchmarkingMacros ${TESTS_DIR}/X20-BenchmarkingMacros.cpp)
-target_compile_definitions( BenchmarkingMacros PUBLIC CATCH_CONFIG_ENABLE_BENCHMARKING )
 target_link_libraries( BenchmarkingMacros Catch2_buildall_interface )
 
 add_test(NAME BenchmarkingMacros COMMAND BenchmarkingMacros -r console -s)

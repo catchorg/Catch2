@@ -29,11 +29,9 @@ namespace Catch {
     struct ITransientExpression;
     struct IGeneratorTracker;
 
-#if defined(CATCH_CONFIG_ENABLE_BENCHMARKING)
     struct BenchmarkInfo;
     template <typename Duration = std::chrono::duration<double, std::nano>>
     struct BenchmarkStats;
-#endif // CATCH_CONFIG_ENABLE_BENCHMARKING
 
     struct IResultCapture {
 
@@ -46,12 +44,10 @@ namespace Catch {
 
         virtual auto acquireGeneratorTracker( SourceLineInfo const& lineInfo ) -> IGeneratorTracker& = 0;
 
-#if defined(CATCH_CONFIG_ENABLE_BENCHMARKING)
         virtual void benchmarkPreparing( std::string const& name ) = 0;
         virtual void benchmarkStarting( BenchmarkInfo const& info ) = 0;
         virtual void benchmarkEnded( BenchmarkStats<> const& stats ) = 0;
         virtual void benchmarkFailed( std::string const& error ) = 0;
-#endif // CATCH_CONFIG_ENABLE_BENCHMARKING
 
         virtual void pushScopedMessage( MessageInfo const& message ) = 0;
         virtual void popScopedMessage( MessageInfo const& message ) = 0;

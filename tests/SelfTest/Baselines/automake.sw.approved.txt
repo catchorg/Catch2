@@ -229,15 +229,20 @@ Message from section two
 :test-result: PASS X/level/1/a
 :test-result: PASS X/level/1/b
 :test-result: PASS XmlEncode
+:test-result: PASS analyse no analysis
 :test-result: PASS array<int, N> -> toString
 :test-result: PASS atomic if
+:test-result: PASS benchmark function call
 :test-result: PASS boolean member
 :test-result: PASS checkedElse
 :test-result: FAIL checkedElse, failing
 :test-result: PASS checkedIf
 :test-result: FAIL checkedIf, failing
+:test-result: PASS classify_outliers
 :test-result: PASS comparisons between const int variables
 :test-result: PASS comparisons between int variables
+:test-result: PASS erfc_inv
+:test-result: PASS estimate_clock_resolution
 :test-result: PASS even more nested SECTION tests
 :test-result: FAIL first tag
 loose text artifact
@@ -249,11 +254,15 @@ loose text artifact
 :test-result: PASS long long
 :test-result: FAIL looped SECTION tests
 :test-result: FAIL looped tests
+:test-result: PASS mean
+:test-result: PASS measure
 :test-result: FAIL mix info, unscoped info and warning
 :test-result: FAIL more nested SECTION tests
 :test-result: PASS nested SECTION tests
 :test-result: PASS non streamable - with conv. op
 :test-result: PASS non-copyable objects
+:test-result: PASS normal_cdf
+:test-result: PASS normal_quantile
 :test-result: PASS not allowed
 :test-result: FAIL not prints unscoped info from previous failures
 :test-result: PASS null strings
@@ -266,6 +275,9 @@ loose text artifact
 :test-result: FAIL prints unscoped info only for the first assertion
 :test-result: PASS random SECTION tests
 :test-result: PASS replaceInPlace
+:test-result: PASS resolution
+:test-result: PASS run_for_at_least, chronometer
+:test-result: PASS run_for_at_least, int
 :test-result: FAIL second tag
 :test-result: FAIL send a single char to INFO
 :test-result: FAIL sends information to INFO
@@ -304,10 +316,13 @@ loose text artifact
 :test-result: PASS tuple<0,int,const char *>
 :test-result: PASS tuple<string,string>
 :test-result: PASS tuple<tuple<int>,tuple<>,float>
+:test-result: PASS uniform samples
 :test-result: PASS vec<vec<string,alloc>> -> toString
 :test-result: PASS vector<bool> -> toString
 :test-result: PASS vector<int,allocator> -> toString
 :test-result: PASS vector<int> -> toString
 :test-result: PASS vector<string> -> toString
 :test-result: PASS vectors can be sized and resized
+:test-result: PASS warmup
+:test-result: PASS weighted_average_quantile
 :test-result: PASS xmlentitycheck

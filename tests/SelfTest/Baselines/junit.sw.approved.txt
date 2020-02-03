@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuitesloose text artifact
 >
-  <testsuite name="<exe-name>" errors="17" failures="132" tests="1672" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
+  <testsuite name="<exe-name>" errors="17" failures="132" tests="1794" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
     <properties>
       <property name="filters" value="~[!nonportable]~[!benchmark]~[approvals] *"/>
       <property name="random-seed" value="1"/>
@@ -1403,8 +1403,11 @@ Exception.tests.cpp:<line number>
     <testcase classname="<exe-name>.global" name="XmlEncode/string with quotes" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="XmlEncode/string with control char (1)" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="XmlEncode/string with control char (x7F)" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="analyse no analysis" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="array&lt;int, N> -> toString" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="atomic if" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="benchmark function call/without chronometer" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="benchmark function call/with chronometer" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="boolean member" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="checkedElse" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="checkedElse, failing" time="{duration}">
@@ -1440,8 +1443,16 @@ with expansion:
 Misc.tests.cpp:<line number>
       </failure>
     </testcase>
+    <testcase classname="<exe-name>.global" name="classify_outliers/none" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="classify_outliers/low severe" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="classify_outliers/low mild" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="classify_outliers/high mild" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="classify_outliers/high severe" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="classify_outliers/mixed" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="comparisons between const int variables" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="comparisons between int variables" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="erfc_inv" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="estimate_clock_resolution" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="even more nested SECTION tests/c/d (leaf)" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="even more nested SECTION tests/c/e (leaf)" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="even more nested SECTION tests/f (leaf)" time="{duration}"/>
@@ -1536,6 +1547,8 @@ Testing if fib[7] (21) is even
 Misc.tests.cpp:<line number>
       </failure>
     </testcase>
+    <testcase classname="<exe-name>.global" name="mean" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="measure" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="mix info, unscoped info and warning" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="more nested SECTION tests/equal/doesn't equal" time="{duration}">
       <failure message="a == b" type="REQUIRE">
@@ -1552,6 +1565,8 @@ Misc.tests.cpp:<line number>
     <testcase classname="<exe-name>.global" name="nested SECTION tests/doesn't equal/not equal" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="non streamable - with conv. op" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="non-copyable objects" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="normal_cdf" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="normal_quantile" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="not allowed" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="not prints unscoped info from previous failures" time="{duration}">
       <failure message="false" type="REQUIRE">
@@ -1595,6 +1610,9 @@ Message.tests.cpp:<line number>
     <testcase classname="<exe-name>.global" name="replaceInPlace/replace all chars" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="replaceInPlace/replace no chars" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="replaceInPlace/escape '" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="resolution" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="run_for_at_least, chronometer" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="run_for_at_least, int" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="send a single char to INFO" time="{duration}">
       <failure message="false" type="REQUIRE">
 FAILED:
@@ -1684,6 +1702,7 @@ Exception.tests.cpp:<line number>
     <testcase classname="<exe-name>.global" name="tuple&lt;0,int,const char *>" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="tuple&lt;string,string>" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="tuple&lt;tuple&lt;int>,tuple&lt;>,float>" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="uniform samples" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="vec&lt;vec&lt;string,alloc>> -> toString" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="vector&lt;bool> -> toString" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="vector&lt;int,allocator> -> toString" time="{duration}"/>
@@ -1695,6 +1714,8 @@ Exception.tests.cpp:<line number>
     <testcase classname="<exe-name>.global" name="vectors can be sized and resized/resizing smaller changes size but not capacity/We can use the 'swap trick' to reset the capacity" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="vectors can be sized and resized/reserving bigger changes capacity but not size" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="vectors can be sized and resized/reserving smaller does not change size or capacity" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="warmup" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="weighted_average_quantile" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="xmlentitycheck/embedded xml: &lt;test>it should be possible to embed xml characters, such as &lt;, &quot; or &amp;, or even whole &lt;xml>documents&lt;/xml> within an attribute&lt;/test>" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="xmlentitycheck/encoded chars: these should all be encoded: &amp;&amp;&amp;&quot;&quot;&quot;&lt;&lt;&lt;&amp;&quot;&lt;&lt;&amp;&quot;" time="{duration}"/>
     <system-out>

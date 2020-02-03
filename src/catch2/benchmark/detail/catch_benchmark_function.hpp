@@ -1,4 +1,4 @@
-    /*
+/*
  *  Created by Joachim on 16/04/2019.
  *  Adapted from donated nonius code.
  *
@@ -41,7 +41,7 @@ namespace Catch {
                 struct callable {
                     virtual void call(Chronometer meter) const = 0;
                     virtual callable* clone() const = 0;
-                    virtual ~callable() = default;
+                    virtual ~callable(); // = default;
                 };
                 template <typename Fun>
                 struct model : public callable {

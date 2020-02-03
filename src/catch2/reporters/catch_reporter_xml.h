@@ -50,12 +50,10 @@ namespace Catch {
 
         void testRunEnded(TestRunStats const& testRunStats) override;
 
-#if defined(CATCH_CONFIG_ENABLE_BENCHMARKING)
         void benchmarkPreparing(std::string const& name) override;
         void benchmarkStarting(BenchmarkInfo const&) override;
         void benchmarkEnded(BenchmarkStats<> const&) override;
         void benchmarkFailed(std::string const&) override;
-#endif // CATCH_CONFIG_ENABLE_BENCHMARKING
 
         void listReporters(std::vector<ReporterDescription> const& descriptions, Config const& config) override;
         void listTests(std::vector<TestCaseHandle> const& tests, Config const& config) override;

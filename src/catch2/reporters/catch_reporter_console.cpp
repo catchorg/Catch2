@@ -431,7 +431,6 @@ void ConsoleReporter::sectionEnded(SectionStats const& _sectionStats) {
     StreamingReporterBase::sectionEnded(_sectionStats);
 }
 
-#if defined(CATCH_CONFIG_ENABLE_BENCHMARKING)
 void ConsoleReporter::benchmarkPreparing(std::string const& name) {
 	lazyPrintWithoutClosingBenchmarkTable();
 
@@ -477,7 +476,6 @@ void ConsoleReporter::benchmarkFailed(std::string const& error) {
         << "Benchmark failed (" << error << ')'
         << ColumnBreak() << RowBreak();
 }
-#endif // CATCH_CONFIG_ENABLE_BENCHMARKING
 
 void ConsoleReporter::testCaseEnded(TestCaseStats const& _testCaseStats) {
     m_tablePrinter->close();

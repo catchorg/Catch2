@@ -13852,6 +13852,113 @@ There is no extra whitespace here
       </Section>
       <OverallResult success="true"/>
     </TestCase>
+    <TestCase name="analyse no analysis" tags="[benchmark]" filename="tests/<exe-name>/IntrospectiveTests/InternalBenchmark.tests.cpp" >
+      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/InternalBenchmark.tests.cpp" >
+        <Original>
+          analysis.mean.point.count() == 23
+        </Original>
+        <Expanded>
+          23.0 == 23
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/InternalBenchmark.tests.cpp" >
+        <Original>
+          analysis.mean.lower_bound.count() == 23
+        </Original>
+        <Expanded>
+          23.0 == 23
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/InternalBenchmark.tests.cpp" >
+        <Original>
+          analysis.mean.upper_bound.count() == 23
+        </Original>
+        <Expanded>
+          23.0 == 23
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/InternalBenchmark.tests.cpp" >
+        <Original>
+          analysis.standard_deviation.point.count() == 0
+        </Original>
+        <Expanded>
+          0.0 == 0
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/InternalBenchmark.tests.cpp" >
+        <Original>
+          analysis.standard_deviation.lower_bound.count() == 0
+        </Original>
+        <Expanded>
+          0.0 == 0
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/InternalBenchmark.tests.cpp" >
+        <Original>
+          analysis.standard_deviation.upper_bound.count() == 0
+        </Original>
+        <Expanded>
+          0.0 == 0
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/InternalBenchmark.tests.cpp" >
+        <Original>
+          analysis.outliers.total() == 0
+        </Original>
+        <Expanded>
+          0 == 0
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/InternalBenchmark.tests.cpp" >
+        <Original>
+          analysis.outliers.low_mild == 0
+        </Original>
+        <Expanded>
+          0 == 0
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/InternalBenchmark.tests.cpp" >
+        <Original>
+          analysis.outliers.low_severe == 0
+        </Original>
+        <Expanded>
+          0 == 0
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/InternalBenchmark.tests.cpp" >
+        <Original>
+          analysis.outliers.high_mild == 0
+        </Original>
+        <Expanded>
+          0 == 0
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/InternalBenchmark.tests.cpp" >
+        <Original>
+          analysis.outliers.high_severe == 0
+        </Original>
+        <Expanded>
+          0 == 0
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/InternalBenchmark.tests.cpp" >
+        <Original>
+          analysis.outliers.samples_seen == 0
+        </Original>
+        <Expanded>
+          0 == 0
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/InternalBenchmark.tests.cpp" >
+        <Original>
+          analysis.outlier_variance == 0
+        </Original>
+        <Expanded>
+          0.0 == 0
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
     <TestCase name="array&lt;int, N> -> toString" tags="[array][containers][toString]" filename="tests/<exe-name>/UsageTests/ToStringVector.tests.cpp" >
       <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/UsageTests/ToStringVector.tests.cpp" >
         <Original>
@@ -13888,6 +13995,95 @@ There is no extra whitespace here
           0 == 0
         </Expanded>
       </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="benchmark function call" tags="[benchmark]" filename="tests/<exe-name>/IntrospectiveTests/InternalBenchmark.tests.cpp" >
+      <Section name="without chronometer" filename="tests/<exe-name>/IntrospectiveTests/InternalBenchmark.tests.cpp" >
+        <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/InternalBenchmark.tests.cpp" >
+          <Original>
+            model.started == 1
+          </Original>
+          <Expanded>
+            1 == 1
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/InternalBenchmark.tests.cpp" >
+          <Original>
+            model.finished == 0
+          </Original>
+          <Expanded>
+            0 == 0
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/InternalBenchmark.tests.cpp" >
+          <Original>
+            model.started == 1
+          </Original>
+          <Expanded>
+            1 == 1
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/InternalBenchmark.tests.cpp" >
+          <Original>
+            model.finished == 1
+          </Original>
+          <Expanded>
+            1 == 1
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/InternalBenchmark.tests.cpp" >
+          <Original>
+            called == 1
+          </Original>
+          <Expanded>
+            1 == 1
+          </Expanded>
+        </Expression>
+        <OverallResults successes="5" failures="0" expectedFailures="0"/>
+      </Section>
+      <Section name="with chronometer" filename="tests/<exe-name>/IntrospectiveTests/InternalBenchmark.tests.cpp" >
+        <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/InternalBenchmark.tests.cpp" >
+          <Original>
+            model.started == 0
+          </Original>
+          <Expanded>
+            0 == 0
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/InternalBenchmark.tests.cpp" >
+          <Original>
+            model.finished == 0
+          </Original>
+          <Expanded>
+            0 == 0
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/InternalBenchmark.tests.cpp" >
+          <Original>
+            model.started == 0
+          </Original>
+          <Expanded>
+            0 == 0
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/InternalBenchmark.tests.cpp" >
+          <Original>
+            model.finished == 0
+          </Original>
+          <Expanded>
+            0 == 0
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/InternalBenchmark.tests.cpp" >
+          <Original>
+            called == 1
+          </Original>
+          <Expanded>
+            1 == 1
+          </Expanded>
+        </Expression>
+        <OverallResults successes="5" failures="0" expectedFailures="0"/>
+      </Section>
       <OverallResult success="true"/>
     </TestCase>
     <TestCase name="boolean member" tags="[Tricky]" filename="tests/<exe-name>/UsageTests/Tricky.tests.cpp" >
@@ -13977,6 +14173,315 @@ There is no extra whitespace here
       </Expression>
       <OverallResult success="false"/>
     </TestCase>
+    <TestCase name="classify_outliers" tags="[benchmark]" filename="tests/<exe-name>/IntrospectiveTests/InternalBenchmark.tests.cpp" >
+      <Section name="none" filename="tests/<exe-name>/IntrospectiveTests/InternalBenchmark.tests.cpp" >
+        <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/InternalBenchmark.tests.cpp" >
+          <Original>
+            o.samples_seen == static_cast&lt;int>(x.size())
+          </Original>
+          <Expanded>
+            6 == 6
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/InternalBenchmark.tests.cpp" >
+          <Original>
+            o.low_severe == los
+          </Original>
+          <Expanded>
+            0 == 0
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/InternalBenchmark.tests.cpp" >
+          <Original>
+            o.low_mild == lom
+          </Original>
+          <Expanded>
+            0 == 0
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/InternalBenchmark.tests.cpp" >
+          <Original>
+            o.high_mild == him
+          </Original>
+          <Expanded>
+            0 == 0
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/InternalBenchmark.tests.cpp" >
+          <Original>
+            o.high_severe == his
+          </Original>
+          <Expanded>
+            0 == 0
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/InternalBenchmark.tests.cpp" >
+          <Original>
+            o.total() == los + lom + him + his
+          </Original>
+          <Expanded>
+            0 == 0
+          </Expanded>
+        </Expression>
+        <OverallResults successes="6" failures="0" expectedFailures="0"/>
+      </Section>
+      <Section name="low severe" filename="tests/<exe-name>/IntrospectiveTests/InternalBenchmark.tests.cpp" >
+        <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/InternalBenchmark.tests.cpp" >
+          <Original>
+            o.samples_seen == static_cast&lt;int>(x.size())
+          </Original>
+          <Expanded>
+            6 == 6
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/InternalBenchmark.tests.cpp" >
+          <Original>
+            o.low_severe == los
+          </Original>
+          <Expanded>
+            1 == 1
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/InternalBenchmark.tests.cpp" >
+          <Original>
+            o.low_mild == lom
+          </Original>
+          <Expanded>
+            0 == 0
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/InternalBenchmark.tests.cpp" >
+          <Original>
+            o.high_mild == him
+          </Original>
+          <Expanded>
+            0 == 0
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/InternalBenchmark.tests.cpp" >
+          <Original>
+            o.high_severe == his
+          </Original>
+          <Expanded>
+            0 == 0
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/InternalBenchmark.tests.cpp" >
+          <Original>
+            o.total() == los + lom + him + his
+          </Original>
+          <Expanded>
+            1 == 1
+          </Expanded>
+        </Expression>
+        <OverallResults successes="6" failures="0" expectedFailures="0"/>
+      </Section>
+      <Section name="low mild" filename="tests/<exe-name>/IntrospectiveTests/InternalBenchmark.tests.cpp" >
+        <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/InternalBenchmark.tests.cpp" >
+          <Original>
+            o.samples_seen == static_cast&lt;int>(x.size())
+          </Original>
+          <Expanded>
+            6 == 6
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/InternalBenchmark.tests.cpp" >
+          <Original>
+            o.low_severe == los
+          </Original>
+          <Expanded>
+            0 == 0
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/InternalBenchmark.tests.cpp" >
+          <Original>
+            o.low_mild == lom
+          </Original>
+          <Expanded>
+            1 == 1
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/InternalBenchmark.tests.cpp" >
+          <Original>
+            o.high_mild == him
+          </Original>
+          <Expanded>
+            0 == 0
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/InternalBenchmark.tests.cpp" >
+          <Original>
+            o.high_severe == his
+          </Original>
+          <Expanded>
+            0 == 0
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/InternalBenchmark.tests.cpp" >
+          <Original>
+            o.total() == los + lom + him + his
+          </Original>
+          <Expanded>
+            1 == 1
+          </Expanded>
+        </Expression>
+        <OverallResults successes="6" failures="0" expectedFailures="0"/>
+      </Section>
+      <Section name="high mild" filename="tests/<exe-name>/IntrospectiveTests/InternalBenchmark.tests.cpp" >
+        <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/InternalBenchmark.tests.cpp" >
+          <Original>
+            o.samples_seen == static_cast&lt;int>(x.size())
+          </Original>
+          <Expanded>
+            6 == 6
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/InternalBenchmark.tests.cpp" >
+          <Original>
+            o.low_severe == los
+          </Original>
+          <Expanded>
+            0 == 0
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/InternalBenchmark.tests.cpp" >
+          <Original>
+            o.low_mild == lom
+          </Original>
+          <Expanded>
+            0 == 0
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/InternalBenchmark.tests.cpp" >
+          <Original>
+            o.high_mild == him
+          </Original>
+          <Expanded>
+            1 == 1
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/InternalBenchmark.tests.cpp" >
+          <Original>
+            o.high_severe == his
+          </Original>
+          <Expanded>
+            0 == 0
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/InternalBenchmark.tests.cpp" >
+          <Original>
+            o.total() == los + lom + him + his
+          </Original>
+          <Expanded>
+            1 == 1
+          </Expanded>
+        </Expression>
+        <OverallResults successes="6" failures="0" expectedFailures="0"/>
+      </Section>
+      <Section name="high severe" filename="tests/<exe-name>/IntrospectiveTests/InternalBenchmark.tests.cpp" >
+        <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/InternalBenchmark.tests.cpp" >
+          <Original>
+            o.samples_seen == static_cast&lt;int>(x.size())
+          </Original>
+          <Expanded>
+            6 == 6
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/InternalBenchmark.tests.cpp" >
+          <Original>
+            o.low_severe == los
+          </Original>
+          <Expanded>
+            0 == 0
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/InternalBenchmark.tests.cpp" >
+          <Original>
+            o.low_mild == lom
+          </Original>
+          <Expanded>
+            0 == 0
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/InternalBenchmark.tests.cpp" >
+          <Original>
+            o.high_mild == him
+          </Original>
+          <Expanded>
+            0 == 0
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/InternalBenchmark.tests.cpp" >
+          <Original>
+            o.high_severe == his
+          </Original>
+          <Expanded>
+            1 == 1
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/InternalBenchmark.tests.cpp" >
+          <Original>
+            o.total() == los + lom + him + his
+          </Original>
+          <Expanded>
+            1 == 1
+          </Expanded>
+        </Expression>
+        <OverallResults successes="6" failures="0" expectedFailures="0"/>
+      </Section>
+      <Section name="mixed" filename="tests/<exe-name>/IntrospectiveTests/InternalBenchmark.tests.cpp" >
+        <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/InternalBenchmark.tests.cpp" >
+          <Original>
+            o.samples_seen == static_cast&lt;int>(x.size())
+          </Original>
+          <Expanded>
+            6 == 6
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/InternalBenchmark.tests.cpp" >
+          <Original>
+            o.low_severe == los
+          </Original>
+          <Expanded>
+            1 == 1
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/InternalBenchmark.tests.cpp" >
+          <Original>
+            o.low_mild == lom
+          </Original>
+          <Expanded>
+            0 == 0
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/InternalBenchmark.tests.cpp" >
+          <Original>
+            o.high_mild == him
+          </Original>
+          <Expanded>
+            1 == 1
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/InternalBenchmark.tests.cpp" >
+          <Original>
+            o.high_severe == his
+          </Original>
+          <Expanded>
+            0 == 0
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/InternalBenchmark.tests.cpp" >
+          <Original>
+            o.total() == los + lom + him + his
+          </Original>
+          <Expanded>
+            2 == 2
+          </Expanded>
+        </Expression>
+        <OverallResults successes="6" failures="0" expectedFailures="0"/>
+      </Section>
+      <OverallResult success="true"/>
+    </TestCase>
     <TestCase name="comparisons between const int variables" filename="tests/<exe-name>/UsageTests/Condition.tests.cpp" >
       <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/UsageTests/Condition.tests.cpp" >
         <Original>
@@ -14043,6 +14548,52 @@ There is no extra whitespace here
         </Original>
         <Expanded>
           1 == 1
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="erfc_inv" tags="[benchmark]" filename="tests/<exe-name>/IntrospectiveTests/InternalBenchmark.tests.cpp" >
+      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/InternalBenchmark.tests.cpp" >
+        <Original>
+          erfc_inv(1.103560) == Approx(-0.09203687623843015)
+        </Original>
+        <Expanded>
+          -0.0920368762 == Approx( -0.0920368762 )
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/InternalBenchmark.tests.cpp" >
+        <Original>
+          erfc_inv(1.067400) == Approx(-0.05980291115763361)
+        </Original>
+        <Expanded>
+          -0.0598029112 == Approx( -0.0598029112 )
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/InternalBenchmark.tests.cpp" >
+        <Original>
+          erfc_inv(0.050000) == Approx(1.38590382434967796)
+        </Original>
+        <Expanded>
+          1.3859038243 == Approx( 1.3859038243 )
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="estimate_clock_resolution" tags="[benchmark]" filename="tests/<exe-name>/IntrospectiveTests/InternalBenchmark.tests.cpp" >
+      <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/InternalBenchmark.tests.cpp" >
+        <Original>
+          res.mean.count() == rate
+        </Original>
+        <Expanded>
+          2000.0 == 2000 (0x<hex digits>)
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/InternalBenchmark.tests.cpp" >
+        <Original>
+          res.outliers.total() == 0
+        </Original>
+        <Expanded>
+          0 == 0
         </Expanded>
       </Expression>
       <OverallResult success="true"/>
@@ -14307,6 +14858,84 @@ loose text artifact
       </Expression>
       <OverallResult success="false"/>
     </TestCase>
+    <TestCase name="mean" tags="[benchmark]" filename="tests/<exe-name>/IntrospectiveTests/InternalBenchmark.tests.cpp" >
+      <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/InternalBenchmark.tests.cpp" >
+        <Original>
+          m == 19.
+        </Original>
+        <Expanded>
+          19.0 == 19.0
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="measure" tags="[benchmark]" filename="tests/<exe-name>/IntrospectiveTests/InternalBenchmark.tests.cpp" >
+      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/InternalBenchmark.tests.cpp" >
+        <Original>
+          x == 17
+        </Original>
+        <Expanded>
+          17 == 17
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/InternalBenchmark.tests.cpp" >
+        <Original>
+          x == 23
+        </Original>
+        <Expanded>
+          23 == 23
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/InternalBenchmark.tests.cpp" >
+        <Original>
+          r.elapsed.count() == 42
+        </Original>
+        <Expanded>
+          42 == 42
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/InternalBenchmark.tests.cpp" >
+        <Original>
+          r.result == 23
+        </Original>
+        <Expanded>
+          23 == 23
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/InternalBenchmark.tests.cpp" >
+        <Original>
+          r.iterations == 1
+        </Original>
+        <Expanded>
+          1 == 1
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/InternalBenchmark.tests.cpp" >
+        <Original>
+          s.elapsed.count() == 69
+        </Original>
+        <Expanded>
+          69 == 69
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/InternalBenchmark.tests.cpp" >
+        <Original>
+          s.result == 17
+        </Original>
+        <Expanded>
+          17 == 17
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/InternalBenchmark.tests.cpp" >
+        <Original>
+          s.iterations == 1
+        </Original>
+        <Expanded>
+          1 == 1
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
     <TestCase name="mix info, unscoped info and warning" tags="[info][unscoped]" filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
       <Info>
         info
@@ -14424,6 +15053,76 @@ loose text artifact
         </Original>
         <Expanded>
           {?} == {?}
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="normal_cdf" tags="[benchmark]" filename="tests/<exe-name>/IntrospectiveTests/InternalBenchmark.tests.cpp" >
+      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/InternalBenchmark.tests.cpp" >
+        <Original>
+          normal_cdf(0.000000) == Approx(0.50000000000000000)
+        </Original>
+        <Expanded>
+          0.5 == Approx( 0.5 )
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/InternalBenchmark.tests.cpp" >
+        <Original>
+          normal_cdf(1.000000) == Approx(0.84134474606854293)
+        </Original>
+        <Expanded>
+          0.8413447461 == Approx( 0.8413447461 )
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/InternalBenchmark.tests.cpp" >
+        <Original>
+          normal_cdf(-1.000000) == Approx(0.15865525393145705)
+        </Original>
+        <Expanded>
+          0.1586552539 == Approx( 0.1586552539 )
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/InternalBenchmark.tests.cpp" >
+        <Original>
+          normal_cdf(2.809729) == Approx(0.99752083845315409)
+        </Original>
+        <Expanded>
+          0.9975208385 == Approx( 0.9975208385 )
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/InternalBenchmark.tests.cpp" >
+        <Original>
+          normal_cdf(-1.352570) == Approx(0.08809652095066035)
+        </Original>
+        <Expanded>
+          0.088096521 == Approx( 0.088096521 )
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="normal_quantile" tags="[benchmark]" filename="tests/<exe-name>/IntrospectiveTests/InternalBenchmark.tests.cpp" >
+      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/InternalBenchmark.tests.cpp" >
+        <Original>
+          normal_quantile(0.551780) == Approx(0.13015979861484198)
+        </Original>
+        <Expanded>
+          0.1301597986 == Approx( 0.1301597986 )
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/InternalBenchmark.tests.cpp" >
+        <Original>
+          normal_quantile(0.533700) == Approx(0.08457408802851875)
+        </Original>
+        <Expanded>
+          0.084574088 == Approx( 0.084574088 )
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/InternalBenchmark.tests.cpp" >
+        <Original>
+          normal_quantile(0.025000) == Approx(-1.95996398454005449)
+        </Original>
+        <Expanded>
+          -1.9599639845 == Approx( -1.9599639845 )
         </Expanded>
       </Expression>
       <OverallResult success="true"/>
@@ -14828,6 +15527,271 @@ loose text artifact
         </Expression>
         <OverallResults successes="2" failures="0" expectedFailures="0"/>
       </Section>
+      <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="resolution" tags="[benchmark]" filename="tests/<exe-name>/IntrospectiveTests/InternalBenchmark.tests.cpp" >
+      <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/InternalBenchmark.tests.cpp" >
+        <Original>
+          res.size() == count
+        </Original>
+        <Expanded>
+          10 == 10
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/InternalBenchmark.tests.cpp" >
+        <Original>
+          res[i] == rate
+        </Original>
+        <Expanded>
+          1000.0 == 1000 (0x<hex digits>)
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/InternalBenchmark.tests.cpp" >
+        <Original>
+          res[i] == rate
+        </Original>
+        <Expanded>
+          1000.0 == 1000 (0x<hex digits>)
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/InternalBenchmark.tests.cpp" >
+        <Original>
+          res[i] == rate
+        </Original>
+        <Expanded>
+          1000.0 == 1000 (0x<hex digits>)
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/InternalBenchmark.tests.cpp" >
+        <Original>
+          res[i] == rate
+        </Original>
+        <Expanded>
+          1000.0 == 1000 (0x<hex digits>)
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/InternalBenchmark.tests.cpp" >
+        <Original>
+          res[i] == rate
+        </Original>
+        <Expanded>
+          1000.0 == 1000 (0x<hex digits>)
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/InternalBenchmark.tests.cpp" >
+        <Original>
+          res[i] == rate
+        </Original>
+        <Expanded>
+          1000.0 == 1000 (0x<hex digits>)
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/InternalBenchmark.tests.cpp" >
+        <Original>
+          res[i] == rate
+        </Original>
+        <Expanded>
+          1000.0 == 1000 (0x<hex digits>)
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/InternalBenchmark.tests.cpp" >
+        <Original>
+          res[i] == rate
+        </Original>
+        <Expanded>
+          1000.0 == 1000 (0x<hex digits>)
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/InternalBenchmark.tests.cpp" >
+        <Original>
+          res[i] == rate
+        </Original>
+        <Expanded>
+          1000.0 == 1000 (0x<hex digits>)
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="run_for_at_least, chronometer" tags="[benchmark]" filename="tests/<exe-name>/IntrospectiveTests/InternalBenchmark.tests.cpp" >
+      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/InternalBenchmark.tests.cpp" >
+        <Original>
+          meter.runs() >= old_runs
+        </Original>
+        <Expanded>
+          1 >= 1
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/InternalBenchmark.tests.cpp" >
+        <Original>
+          meter.runs() >= old_runs
+        </Original>
+        <Expanded>
+          2 >= 1
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/InternalBenchmark.tests.cpp" >
+        <Original>
+          meter.runs() >= old_runs
+        </Original>
+        <Expanded>
+          4 >= 2
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/InternalBenchmark.tests.cpp" >
+        <Original>
+          meter.runs() >= old_runs
+        </Original>
+        <Expanded>
+          8 >= 4
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/InternalBenchmark.tests.cpp" >
+        <Original>
+          meter.runs() >= old_runs
+        </Original>
+        <Expanded>
+          16 >= 8
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/InternalBenchmark.tests.cpp" >
+        <Original>
+          meter.runs() >= old_runs
+        </Original>
+        <Expanded>
+          32 >= 16
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/InternalBenchmark.tests.cpp" >
+        <Original>
+          meter.runs() >= old_runs
+        </Original>
+        <Expanded>
+          64 >= 32
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/InternalBenchmark.tests.cpp" >
+        <Original>
+          meter.runs() >= old_runs
+        </Original>
+        <Expanded>
+          128 >= 64
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/InternalBenchmark.tests.cpp" >
+        <Original>
+          Timing.elapsed >= time
+        </Original>
+        <Expanded>
+          128 ns >= 100 ns
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/InternalBenchmark.tests.cpp" >
+        <Original>
+          Timing.result == Timing.iterations + 17
+        </Original>
+        <Expanded>
+          145 == 145
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/InternalBenchmark.tests.cpp" >
+        <Original>
+          Timing.iterations >= time.count()
+        </Original>
+        <Expanded>
+          128 >= 100
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="run_for_at_least, int" tags="[benchmark]" filename="tests/<exe-name>/IntrospectiveTests/InternalBenchmark.tests.cpp" >
+      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/InternalBenchmark.tests.cpp" >
+        <Original>
+          x >= old_x
+        </Original>
+        <Expanded>
+          1 >= 1
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/InternalBenchmark.tests.cpp" >
+        <Original>
+          x >= old_x
+        </Original>
+        <Expanded>
+          2 >= 1
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/InternalBenchmark.tests.cpp" >
+        <Original>
+          x >= old_x
+        </Original>
+        <Expanded>
+          4 >= 2
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/InternalBenchmark.tests.cpp" >
+        <Original>
+          x >= old_x
+        </Original>
+        <Expanded>
+          8 >= 4
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/InternalBenchmark.tests.cpp" >
+        <Original>
+          x >= old_x
+        </Original>
+        <Expanded>
+          16 >= 8
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/InternalBenchmark.tests.cpp" >
+        <Original>
+          x >= old_x
+        </Original>
+        <Expanded>
+          32 >= 16
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/InternalBenchmark.tests.cpp" >
+        <Original>
+          x >= old_x
+        </Original>
+        <Expanded>
+          64 >= 32
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/InternalBenchmark.tests.cpp" >
+        <Original>
+          x >= old_x
+        </Original>
+        <Expanded>
+          128 >= 64
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/InternalBenchmark.tests.cpp" >
+        <Original>
+          Timing.elapsed >= time
+        </Original>
+        <Expanded>
+          128 ns >= 100 ns
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/InternalBenchmark.tests.cpp" >
+        <Original>
+          Timing.result == Timing.iterations + 17
+        </Original>
+        <Expanded>
+          145 == 145
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/InternalBenchmark.tests.cpp" >
+        <Original>
+          Timing.iterations >= time.count()
+        </Original>
+        <Expanded>
+          128 >= 100
+        </Expanded>
+      </Expression>
       <OverallResult success="true"/>
     </TestCase>
     <TestCase name="second tag" tags="[tag2]" filename="tests/<exe-name>/UsageTests/Misc.tests.cpp" >
@@ -15502,6 +16466,41 @@ loose text artifact
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
+    <TestCase name="uniform samples" tags="[benchmark]" filename="tests/<exe-name>/IntrospectiveTests/InternalBenchmark.tests.cpp" >
+      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/InternalBenchmark.tests.cpp" >
+        <Original>
+          e.point == 23
+        </Original>
+        <Expanded>
+          23.0 == 23
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/InternalBenchmark.tests.cpp" >
+        <Original>
+          e.upper_bound == 23
+        </Original>
+        <Expanded>
+          23.0 == 23
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/InternalBenchmark.tests.cpp" >
+        <Original>
+          e.lower_bound == 23
+        </Original>
+        <Expanded>
+          23.0 == 23
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/InternalBenchmark.tests.cpp" >
+        <Original>
+          e.confidence_interval == 0.95
+        </Original>
+        <Expanded>
+          0.95 == 0.95
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
     <TestCase name="vec&lt;vec&lt;string,alloc>> -> toString" tags="[toString][vector,allocator]" filename="tests/<exe-name>/UsageTests/ToStringVector.tests.cpp" >
       <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/UsageTests/ToStringVector.tests.cpp" >
         <Original>
@@ -15787,6 +16786,52 @@ loose text artifact
       </Section>
       <OverallResult success="true"/>
     </TestCase>
+    <TestCase name="warmup" tags="[benchmark]" filename="tests/<exe-name>/IntrospectiveTests/InternalBenchmark.tests.cpp" >
+      <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/InternalBenchmark.tests.cpp" >
+        <Original>
+          (iterations * rate) > Catch::Benchmark::Detail::warmup_time.count()
+        </Original>
+        <Expanded>
+          160000000 (0x<hex digits>) > 100
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/InternalBenchmark.tests.cpp" >
+        <Original>
+          (end - start) > Catch::Benchmark::Detail::warmup_time
+        </Original>
+        <Expanded>
+          310016000 ns > 100 ms
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="weighted_average_quantile" tags="[benchmark]" filename="tests/<exe-name>/IntrospectiveTests/InternalBenchmark.tests.cpp" >
+      <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/InternalBenchmark.tests.cpp" >
+        <Original>
+          q1 == 14.5
+        </Original>
+        <Expanded>
+          14.5 == 14.5
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/InternalBenchmark.tests.cpp" >
+        <Original>
+          med == 18.
+        </Original>
+        <Expanded>
+          18.0 == 18.0
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/InternalBenchmark.tests.cpp" >
+        <Original>
+          q3 == 23.
+        </Original>
+        <Expanded>
+          23.0 == 23.0
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
     <TestCase name="xmlentitycheck" filename="tests/<exe-name>/UsageTests/Misc.tests.cpp" >
       <Section name="embedded xml: &lt;test>it should be possible to embed xml characters, such as &lt;, &quot; or &amp;, or even whole &lt;xml>documents&lt;/xml> within an attribute&lt;/test>" filename="tests/<exe-name>/UsageTests/Misc.tests.cpp" >
         <OverallResults successes="1" failures="0" expectedFailures="0"/>
@@ -15796,7 +16841,7 @@ loose text artifact
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="1502" failures="149" expectedFailures="21"/>
+    <OverallResults successes="1624" failures="149" expectedFailures="21"/>
   </Group>
-  <OverallResults successes="1502" failures="148" expectedFailures="21"/>
+  <OverallResults successes="1624" failures="148" expectedFailures="21"/>
 </Catch>
