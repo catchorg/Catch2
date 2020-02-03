@@ -70,6 +70,8 @@ nanParser = re.compile(r'''
     __builtin_nanf\("0x<hex\ digits>"\)  # The weird content of the brackets is there because a different parser has already ran before this one
 ''', re.VERBOSE)
 
+# The weird OR is there to always have at least empty string for group 1
+tapTestNumParser = re.compile(r'^(not |)?ok (\d+) -')
 
 if len(sys.argv) == 2:
     cmdPath = sys.argv[1]
@@ -124,6 +126,9 @@ def filterLine(line, isCompact):
     if isCompact:
         line = line.replace(': FAILED', ': failed')
         line = line.replace(': PASSED', ': passed')
+
+    # strip out the test order number in TAP to avoid massive diffs for every change
+    line = tapTestNumParser.sub("\g<1>ok {test-number} -", line)
 
     # strip Catch version number
     line = versionParser.sub("<version>", line)
