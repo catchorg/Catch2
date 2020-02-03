@@ -128,6 +128,8 @@ set_tests_properties(
     BenchmarkingMacros
   PROPERTIES
     PASS_REGULAR_EXPRESSION "benchmark name                                  samples       iterations    estimated"
+    COST 80 # We know that this is either the most, or second most,
+   # expensive test in the test suite, so we give it high estimate for CI runs
 )
 
 # This test touches windows.h, so it should only be compiled under msvc

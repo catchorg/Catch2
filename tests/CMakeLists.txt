@@ -187,7 +187,12 @@ set_tests_properties(FilteredSection-2 PROPERTIES FAIL_REGULAR_EXPRESSION "No te
 
 # AppVeyor has a Python 2.7 in path, but doesn't have .py files as autorunnable
 add_test(NAME ApprovalTests COMMAND ${PYTHON_EXECUTABLE} ${CATCH_DIR}/tools/scripts/approvalTests.py $<TARGET_FILE:SelfTest>)
-set_tests_properties(ApprovalTests PROPERTIES FAIL_REGULAR_EXPRESSION "Results differed")
+set_tests_properties(ApprovalTests
+  PROPERTIES
+    FAIL_REGULAR_EXPRESSION "Results differed"
+    COST 120 # We know that this is either the most, or second most,
+    # expensive test in the test suite, so we give it high estimate for CI runs
+)
 
 add_test(NAME RegressionCheck-1670 COMMAND $<TARGET_FILE:SelfTest> "#1670 regression check" -c A -r compact)
 set_tests_properties(RegressionCheck-1670 PROPERTIES PASS_REGULAR_EXPRESSION "Passed 1 test case with 2 assertions.")
