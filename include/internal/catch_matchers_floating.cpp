@@ -59,15 +59,7 @@ namespace {
         return static_cast<uint64_t>(ulpDiff) <= maxUlpDiff;
     }
 
-} //end anonymous namespace
-
 #if defined(CATCH_CONFIG_GLOBAL_NEXTAFTER)
-
-#if defined(__clang__)
-#pragma clang diagnostic push
-// The long double overload is currently unused
-#pragma clang diagnostic ignored "-Wunused-function"
-#endif
 
     float nextafter(float x, float y) {
         return ::nextafterf(x, y);
@@ -77,17 +69,7 @@ namespace {
         return ::nextafter(x, y);
     }
 
-    long double nextafter(long double x, long double y) {
-        return ::nextafterl(x, y);
-    }
-
-#if defined(__clang__)
-#pragma clang diagnostic pop
-#endif
-
 #endif // ^^^ CATCH_CONFIG_GLOBAL_NEXTAFTER ^^^
-
-namespace {
 
 template <typename FP>
 FP step(FP start, FP direction, uint64_t steps) {
