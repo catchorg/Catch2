@@ -13,7 +13,6 @@
 #include <type_traits>
 
 namespace Catch {
-namespace Detail {
 
     class Approx {
     private:
@@ -115,16 +114,15 @@ namespace Detail {
         double m_scale;
         double m_value;
     };
-} // end namespace Detail
 
 namespace literals {
-    Detail::Approx operator "" _a(long double val);
-    Detail::Approx operator "" _a(unsigned long long val);
+    Approx operator "" _a(long double val);
+    Approx operator "" _a(unsigned long long val);
 } // end namespace literals
 
 template<>
-struct StringMaker<Catch::Detail::Approx> {
-    static std::string convert(Catch::Detail::Approx const& value);
+struct StringMaker<Catch::Approx> {
+    static std::string convert(Catch::Approx const& value);
 };
 
 } // end namespace Catch

@@ -23,7 +23,6 @@ bool marginComparison(double lhs, double rhs, double margin) {
 }
 
 namespace Catch {
-namespace Detail {
 
     Approx::Approx ( double value )
     :   m_epsilon( std::numeric_limits<float>::epsilon()*100 ),
@@ -70,18 +69,16 @@ namespace Detail {
         m_epsilon = newEpsilon;
     }
 
-} // end namespace Detail
-
 namespace literals {
-    Detail::Approx operator "" _a(long double val) {
-        return Detail::Approx(val);
+    Approx operator "" _a(long double val) {
+        return Approx(val);
     }
-    Detail::Approx operator "" _a(unsigned long long val) {
-        return Detail::Approx(val);
+    Approx operator "" _a(unsigned long long val) {
+        return Approx(val);
     }
 } // end namespace literals
 
-std::string StringMaker<Catch::Detail::Approx>::convert(Catch::Detail::Approx const& value) {
+std::string StringMaker<Catch::Approx>::convert(Catch::Approx const& value) {
     return value.toString();
 }
 

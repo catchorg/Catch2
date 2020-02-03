@@ -11,7 +11,7 @@
 
 #include <cmath>
 
-using Catch::Detail::Approx;
+using Catch::Approx;
 
 namespace { namespace ApproxTests {
 

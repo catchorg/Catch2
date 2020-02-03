@@ -60,6 +60,4 @@
 
 #include <catch2/catch_reenable_warnings.h>
 
-using Catch::Detail::Approx;
-
 #endif // TWOBLUECUBES_CATCH_HPP_INCLUDED

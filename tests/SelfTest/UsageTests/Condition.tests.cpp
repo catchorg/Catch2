@@ -14,7 +14,7 @@
 #include <catch2/catch_approx.h>
 #include <catch2/catch_test_macros.hpp>
 
-using Catch::Detail::Approx;
+using Catch::Approx;
 
 #include <string>
 #include <limits>

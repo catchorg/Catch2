@@ -2139,7 +2139,7 @@ ok 1067 - config.benchmarkResamples == 20000 for: 20000 (0x<hex digits>) == 2000
 # Process can be configured on command line
 ok 1068 - cli.parse({ "test", "--benchmark-confidence-interval=0.99" }) for: {?}
 # Process can be configured on command line
-ok 1069 - config.benchmarkConfidenceInterval == Catch::Detail::Approx(0.99) for: 0.99 == Approx( 0.99 )
+ok 1069 - config.benchmarkConfidenceInterval == Catch::Approx(0.99) for: 0.99 == Approx( 0.99 )
 # Process can be configured on command line
 ok 1070 - cli.parse({ "test", "--benchmark-no-analysis" }) for: {?}
 # Process can be configured on command line

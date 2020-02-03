@@ -178,7 +178,7 @@ TEST_CASE("Generators internals", "[generators][internals]") {
             }
 
             SECTION("Floating Point") {
-                using Catch::Detail::Approx;
+                using Catch::Approx;
                 SECTION("Exact") {
                     const auto rangeStart = -1.;
                     const auto rangeEnd = 1.;

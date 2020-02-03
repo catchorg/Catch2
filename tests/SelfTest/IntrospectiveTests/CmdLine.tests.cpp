@@ -489,7 +489,7 @@ TEST_CASE( "Process can be configured on command line", "[config][command-line]"
         SECTION("resamples") {
             CHECK(cli.parse({ "test", "--benchmark-confidence-interval=0.99" }));
 
-            REQUIRE(config.benchmarkConfidenceInterval == Catch::Detail::Approx(0.99));
+            REQUIRE(config.benchmarkConfidenceInterval == Catch::Approx(0.99));
         }
 
         SECTION("resamples") {

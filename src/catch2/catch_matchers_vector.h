@@ -124,7 +124,7 @@ namespace Matchers {
             }
 
             std::vector<T> const& m_comparator;
-            mutable Catch::Detail::Approx approx = Catch::Detail::Approx::custom();
+            mutable Catch::Approx approx = Catch::Approx::custom();
         };
 
         template<typename T>
