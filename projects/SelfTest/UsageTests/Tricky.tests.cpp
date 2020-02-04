@@ -17,7 +17,7 @@
 
 #include "catch.hpp"
 
-#include <stdio.h>
+#include <cstdio>
 #include <sstream>
 #include <iostream>
 
