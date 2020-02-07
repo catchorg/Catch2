@@ -5,8 +5,8 @@
 
 #include <catch2/reporters/catch_reporter_teamcity.hpp>
 
+#include <catch2/catch_enforce.h>
 #include <catch2/catch_text.h>
-
 
 namespace Catch {
 
