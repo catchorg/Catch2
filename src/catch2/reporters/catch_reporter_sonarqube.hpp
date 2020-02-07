@@ -1,17 +1,13 @@
 /*
- *  Created by Daniel Garcia on 2018-12-04.
- *  Copyright Social Point SL. All rights reserved.
- *
  *  Distributed under the Boost Software License, Version 1.0. (See accompanying
  *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  */
 #ifndef CATCH_REPORTER_SONARQUBE_HPP_INCLUDED
 #define CATCH_REPORTER_SONARQUBE_HPP_INCLUDED
 
-#include <catch2/catch_xmlwriter.h>
 #include <catch2/reporters/catch_reporter_bases.hpp>
 
-#include <map>
+#include <catch2/catch_xmlwriter.h>
 
 namespace Catch {
 
@@ -27,140 +23,31 @@ namespace Catch {
         ~SonarQubeReporter() override;
 
         static std::string getDescription() {
-            return "Reports test results in the Generic Test Data SonarQube XML format";
-        }
-
-        static std::set<Verbosity> getSupportedVerbosities() {
-            return { Verbosity::Normal };
+            using namespace std::string_literals;
+            return "Reports test results in the Generic Test Data SonarQube XML format"s;
         }
 
         void noMatchingTestCases(std::string const& /*spec*/) override {}
 
-        void testRunStarting(TestRunInfo const& testRunInfo) override {
-            CumulativeReporterBase::testRunStarting(testRunInfo);
-            xml.startElement("testExecutions");
-            xml.writeAttribute("version", "1");
-        }
+        void testRunStarting(TestRunInfo const& testRunInfo) override;
 
-        void testGroupEnded(TestGroupStats const& testGroupStats) override {
-            CumulativeReporterBase::testGroupEnded(testGroupStats);
-            writeGroup(*m_testGroups.back());
-        }
+        void testGroupEnded(TestGroupStats const& testGroupStats) override;
 
         void testRunEndedCumulative() override {
             xml.endElement();
         }
 
-        void writeGroup(TestGroupNode const& groupNode) {
-            std::map<std::string, TestGroupNode::ChildNodes> testsPerFile;
-            for(auto const& child : groupNode.children)
-                testsPerFile[child->value.testInfo->lineInfo.file].push_back(child);
+        void writeGroup(TestGroupNode const& groupNode);
 
-            for(auto const& kv : testsPerFile)
-                writeTestFile(kv.first.c_str(), kv.second);
-        }
+        void writeTestFile(std::string const& filename, TestGroupNode::ChildNodes const& testCaseNodes);
 
-        void writeTestFile(const char* filename, TestGroupNode::ChildNodes const& testCaseNodes) {
-            XmlWriter::ScopedElement e = xml.scopedElement("file");
-            xml.writeAttribute("path", filename);
+        void writeTestCase(TestCaseNode const& testCaseNode);
 
-            for(auto const& child : testCaseNodes)
-                writeTestCase(*child);
-        }
+        void writeSection(std::string const& rootName, SectionNode const& sectionNode, bool okToFail);
 
-        void writeTestCase(TestCaseNode const& testCaseNode) {
-            // All test cases have exactly one section - which represents the
-            // test case itself. That section may have 0-n nested sections
-            assert(testCaseNode.children.size() == 1);
-            SectionNode const& rootSection = *testCaseNode.children.front();
-            writeSection("", rootSection, testCaseNode.value.testInfo->okToFail());
-        }
+        void writeAssertions(SectionNode const& sectionNode, bool okToFail);
 
-        void writeSection(std::string const& rootName, SectionNode const& sectionNode, bool okToFail) {
-            std::string name = trim(sectionNode.stats.sectionInfo.name);
-            if(!rootName.empty())
-                name = rootName + '/' + name;
-
-            if(!sectionNode.assertions.empty() || !sectionNode.stdOut.empty() || !sectionNode.stdErr.empty()) {
-                XmlWriter::ScopedElement e = xml.scopedElement("testCase");
-                xml.writeAttribute("name", name);
-                xml.writeAttribute("duration", static_cast<long>(sectionNode.stats.durationInSeconds * 1000));
-
-                writeAssertions(sectionNode, okToFail);
-            }
-
-            for(auto const& childNode : sectionNode.childSections)
-                writeSection(name, *childNode, okToFail);
-        }
-
-        void writeAssertions(SectionNode const& sectionNode, bool okToFail) {
-            for(auto const& assertion : sectionNode.assertions)
-                writeAssertion( assertion, okToFail);
-        }
-
-        void writeAssertion(AssertionStats const& stats, bool okToFail) {
-            AssertionResult const& result = stats.assertionResult;
-            if(!result.isOk()) {
-                std::string elementName;
-                if(okToFail) {
-                    elementName = "skipped";
-                }
-                else {
-                    switch(result.getResultType()) {
-                        case ResultWas::ThrewException:
-                        case ResultWas::FatalErrorCondition:
-                            elementName = "error";
-                            break;
-                        case ResultWas::ExplicitFailure:
-                            elementName = "failure";
-                            break;
-                        case ResultWas::ExpressionFailed:
-                            elementName = "failure";
-                            break;
-                        case ResultWas::DidntThrowException:
-                            elementName = "failure";
-                            break;
-
-                            // We should never see these here:
-                        case ResultWas::Info:
-                        case ResultWas::Warning:
-                        case ResultWas::Ok:
-                        case ResultWas::Unknown:
-                        case ResultWas::FailureBit:
-                        case ResultWas::Exception:
-                            elementName = "internalError";
-                            break;
-                    }
-                }
-
-                XmlWriter::ScopedElement e = xml.scopedElement(elementName);
-
-                ReusableStringStream messageRss;
-                messageRss << result.getTestMacroName() << "(" << result.getExpression() << ")";
-                xml.writeAttribute("message", messageRss.str());
-
-                ReusableStringStream textRss;
-                if (stats.totals.assertions.total() > 0) {
-                    textRss << "FAILED:\n";
-                    if (result.hasExpression()) {
-                        textRss << "\t" << result.getExpressionInMacro() << "\n";
-                    }
-                    if (result.hasExpandedExpression()) {
-                        textRss << "with expansion:\n\t" << result.getExpandedExpression() << "\n";
-                    }
-                }
-
-                if(!result.getMessage().empty())
-                    textRss << result.getMessage() << "\n";
-
-                for(auto const& msg : stats.infoMessages)
-                    if(msg.type == ResultWas::Info)
-                        textRss << msg.message << "\n";
-
-                textRss << "at " << result.getSourceInfo();
-                xml.writeText(textRss.str(), XmlFormatting::Newline);
-            }
-        }
+        void writeAssertion(AssertionStats const& stats, bool okToFail);
 
     private:
         XmlWriter xml;
