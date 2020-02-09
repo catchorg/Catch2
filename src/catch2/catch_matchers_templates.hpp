@@ -6,6 +6,7 @@
 #include <catch2/catch_stringref.h>
 
 #include <array>
+#include <algorithm>
 #include <memory>
 #include <string>
 #include <type_traits>
@@ -24,10 +25,28 @@ namespace Matchers {
             virtual ~MatcherGenericBase();
         };
 
-        std::vector<void const*> vector_cat(std::vector<void const*> && lhs, std::vector<void const*> && rhs);
-        std::vector<void const*> vector_cat(std::vector<void const*> && lhs, void const* rhs);
-        std::vector<void const*> vector_cat(void const* lhs, std::vector<void const*> && rhs);
+        template<std::size_t N, std::size_t M>
+        std::array<void const*, N + M> array_cat(std::array<void const*, N> && lhs, std::array<void const*, M> && rhs) {
+            std::array<void const*, N + M> arr{};
+            std::copy_n(lhs.begin(), N, arr.begin());
+            std::copy_n(rhs.begin(), M, arr.begin() + N);
+            return arr;
+        }
 
+        template<std::size_t N>
+        std::array<void const*, N+1> array_cat(std::array<void const*, N> && lhs, void const* rhs) {
+            std::array<void const*, N+1> arr{};
+            std::copy_n(lhs.begin(), N, arr.begin());
+            arr[N] = rhs;
+            return arr;
+        }
+
+        template<std::size_t N>
+        std::array<void const*, N+1> array_cat(void const* lhs, std::array<void const*, N> && rhs) {
+            std::array<void const*, N+1> arr{lhs};
+            std::copy_n(rhs.begin(), N, arr.begin() + 1);
+            return arr;
+        }
 
         #ifdef CATCH_CPP17_OR_GREATER
 
@@ -65,31 +84,31 @@ namespace Matchers {
         >;
 
 
-        template<typename..., typename Arg>
-        bool match_all_of(Arg&&, std::vector<void const*> const&, index_sequence<>) {
+        template<std::size_t N, typename Arg>
+        bool match_all_of(Arg&&, std::array<void const*, N> const&, index_sequence<>) {
             return true;
         }
 
-        template<typename T, typename... MatcherTs, typename Arg, std::size_t Idx, std::size_t... Indices>
-        bool match_all_of(Arg&& arg, std::vector<void const*> const& matchers, index_sequence<Idx, Indices...>) {
+        template<typename T, typename... MatcherTs, std::size_t N, typename Arg, std::size_t Idx, std::size_t... Indices>
+        bool match_all_of(Arg&& arg, std::array<void const*, N> const& matchers, index_sequence<Idx, Indices...>) {
             return static_cast<T const*>(matchers[Idx])->match(arg) && match_all_of<MatcherTs...>(arg, matchers, index_sequence<Indices...>{});
         }
 
 
-        template<typename..., typename Arg>
-        bool match_any_of(Arg&&, std::vector<void const*> const&, index_sequence<>) {
+        template<std::size_t N, typename Arg>
+        bool match_any_of(Arg&&, std::array<void const*, N> const&, index_sequence<>) {
             return false;
         }
 
-        template<typename T, typename... MatcherTs, typename Arg, std::size_t Idx, std::size_t... Indices>
-        bool match_any_of(Arg&& arg, std::vector<void const*> const& matchers, index_sequence<Idx, Indices...>) {
+        template<typename T, typename... MatcherTs, std::size_t N, typename Arg, std::size_t Idx, std::size_t... Indices>
+        bool match_any_of(Arg&& arg, std::array<void const*, N> const& matchers, index_sequence<Idx, Indices...>) {
             return static_cast<T const*>(matchers[Idx])->match(arg) || match_any_of<MatcherTs...>(arg, matchers, index_sequence<Indices...>{});
         }
 
         std::string describe_multi_matcher(StringRef combine, std::string const* descriptions_begin, std::string const* descriptions_end);
 
         template<typename... MatcherTs, std::size_t... Idx>
-        std::string describe_multi_matcher(StringRef combine, std::vector<void const*> const& matchers, index_sequence<Idx...>) {
+        std::string describe_multi_matcher(StringRef combine, std::array<void const*, sizeof...(MatcherTs)> const& matchers, index_sequence<Idx...>) {
             std::array<std::string, sizeof...(MatcherTs)> descriptions {{
                 static_cast<MatcherTs const*>(matchers[Idx])->toString()...
             }};
@@ -101,7 +120,7 @@ namespace Matchers {
         template<typename... MatcherTs>
         struct MatchAllOfGeneric : MatcherGenericBase {
             MatchAllOfGeneric(MatcherTs const&... matchers) : m_matchers{std::addressof(matchers)...} {}
-            explicit MatchAllOfGeneric(std::vector<void const*> && matchers) : m_matchers{std::move(matchers)} {}
+            explicit MatchAllOfGeneric(std::array<void const*, sizeof...(MatcherTs)> matchers) : m_matchers{matchers} {}
 
             template<typename Arg>
             bool match(Arg&& arg) const {
@@ -112,14 +131,14 @@ namespace Matchers {
                 return describe_multi_matcher<MatcherTs...>(" and "_sr, m_matchers, index_sequence_for<MatcherTs...>{});
             }
 
-            std::vector<void const*> m_matchers;
+            std::array<void const*, sizeof...(MatcherTs)> m_matchers;
         };
 
 
         template<typename... MatcherTs>
         struct MatchAnyOfGeneric : MatcherGenericBase {
             MatchAnyOfGeneric(MatcherTs const&... matchers) : m_matchers{std::addressof(matchers)...} {}
-            explicit MatchAnyOfGeneric(std::vector<void const*> && matchers) : m_matchers{std::move(matchers)} {}
+            explicit MatchAnyOfGeneric(std::array<void const*, sizeof...(MatcherTs)> matchers) : m_matchers{matchers} {}
 
             template<typename Arg>
             bool match(Arg&& arg) const {
@@ -130,7 +149,7 @@ namespace Matchers {
                 return describe_multi_matcher<MatcherTs...>(" or "_sr, m_matchers, index_sequence_for<MatcherTs...>{});
             }
 
-            std::vector<void const*> m_matchers;
+            std::array<void const*, sizeof...(MatcherTs)> m_matchers;
         };
 
 
@@ -200,37 +219,37 @@ namespace Matchers {
         template<typename... MatchersLHS, typename... MatchersRHS>
         MatchAllOfGeneric<MatchersLHS..., MatchersRHS...>
         operator && (MatchAllOfGeneric<MatchersLHS...> && lhs, MatchAllOfGeneric<MatchersRHS...> && rhs) {
-            return MatchAllOfGeneric<MatchersLHS..., MatchersRHS...>{vector_cat(std::move(lhs.m_matchers), std::move(rhs.m_matchers))};
+            return MatchAllOfGeneric<MatchersLHS..., MatchersRHS...>{array_cat(std::move(lhs.m_matchers), std::move(rhs.m_matchers))};
         }
 
         template<typename... MatchersLHS, typename MatcherRHS>
         typename std::enable_if<is_matcher<MatcherRHS>::value, MatchAllOfGeneric<MatchersLHS..., MatcherRHS>>::type
         operator && (MatchAllOfGeneric<MatchersLHS...> && lhs, MatcherRHS const& rhs) {
-            return MatchAllOfGeneric<MatchersLHS..., MatcherRHS>{vector_cat(std::move(lhs.m_matchers), static_cast<void const*>(&rhs))};
+            return MatchAllOfGeneric<MatchersLHS..., MatcherRHS>{array_cat(std::move(lhs.m_matchers), static_cast<void const*>(&rhs))};
         }
 
         template<typename MatcherLHS, typename... MatchersRHS>
         typename std::enable_if<is_matcher<MatcherLHS>::value, MatchAllOfGeneric<MatcherLHS, MatchersRHS...>>::type
         operator && (MatcherLHS const& lhs, MatchAllOfGeneric<MatchersRHS...> && rhs) {
-            return MatchAllOfGeneric<MatcherLHS, MatchersRHS...>{vector_cat(static_cast<void const*>(&lhs), std::move(rhs.m_matchers))};
+            return MatchAllOfGeneric<MatcherLHS, MatchersRHS...>{array_cat(static_cast<void const*>(&lhs), std::move(rhs.m_matchers))};
         }
 
         template<typename... MatchersLHS, typename... MatchersRHS>
         MatchAnyOfGeneric<MatchersLHS..., MatchersRHS...>
         operator || (MatchAnyOfGeneric<MatchersLHS...> && lhs, MatchAnyOfGeneric<MatchersRHS...> && rhs) {
-            return MatchAnyOfGeneric<MatchersLHS..., MatchersRHS...>{vector_cat(std::move(lhs.m_matchers), std::move(rhs.m_matchers))};
+            return MatchAnyOfGeneric<MatchersLHS..., MatchersRHS...>{array_cat(std::move(lhs.m_matchers), std::move(rhs.m_matchers))};
         }
 
         template<typename... MatchersLHS, typename MatcherRHS>
         typename std::enable_if<is_matcher<MatcherRHS>::value, MatchAnyOfGeneric<MatchersLHS..., MatcherRHS>>::type
         operator || (MatchAnyOfGeneric<MatchersLHS...> && lhs, MatcherRHS const& rhs) {
-            return MatchAnyOfGeneric<MatchersLHS..., MatcherRHS>{vector_cat(std::move(lhs.m_matchers), static_cast<void const*>(&rhs))};
+            return MatchAnyOfGeneric<MatchersLHS..., MatcherRHS>{array_cat(std::move(lhs.m_matchers), static_cast<void const*>(&rhs))};
         }
 
         template<typename MatcherLHS, typename... MatchersRHS>
         typename std::enable_if<is_matcher<MatcherLHS>::value, MatchAnyOfGeneric<MatcherLHS, MatchersRHS...>>::type
         operator || (MatcherLHS const& lhs, MatchAnyOfGeneric<MatchersRHS...> && rhs) {
-            return MatchAnyOfGeneric<MatcherLHS, MatchersRHS...>{vector_cat(static_cast<void const*>(&lhs), std::move(rhs.m_matchers))};
+            return MatchAnyOfGeneric<MatcherLHS, MatchersRHS...>{array_cat(static_cast<void const*>(&lhs), std::move(rhs.m_matchers))};
         }
 
         template<typename MatcherT>
