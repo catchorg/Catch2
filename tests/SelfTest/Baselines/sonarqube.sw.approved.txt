@@ -912,6 +912,12 @@ Exception.tests.cpp:<line number>
   <file path="tests/<exe-name>/UsageTests/Matchers.tests.cpp">
     <testCase name="Arbitrary predicate matcher/Function pointer" duration="{duration}"/>
     <testCase name="Arbitrary predicate matcher/Lambdas + different type" duration="{duration}"/>
+    <testCase name="Combining MatchAllOf does not nest" duration="{duration}"/>
+    <testCase name="Combining MatchAnyOf does not nest" duration="{duration}"/>
+    <testCase name="Combining MatchNotOf does not nest" duration="{duration}"/>
+    <testCase name="Combining generic and non-generic matchers" duration="{duration}"/>
+    <testCase name="Combining generic matchers" duration="{duration}"/>
+    <testCase name="Combining only templated matchers" duration="{duration}"/>
     <testCase name="Contains string matcher" duration="{duration}">
       <failure message="CHECK_THAT(testStringForMatching(), Contains(&quot;not there&quot;, Catch::CaseSensitive::No))">
 FAILED:
@@ -1017,6 +1023,8 @@ Matchers.tests.cpp:<line number>
     <testCase name="Floating point matchers: float/ULPs" duration="{duration}"/>
     <testCase name="Floating point matchers: float/Composed" duration="{duration}"/>
     <testCase name="Floating point matchers: float/Constructor validation" duration="{duration}"/>
+    <testCase name="Immovable matchers can be used" duration="{duration}"/>
+    <testCase name="Matchers are not moved or copied" duration="{duration}"/>
     <testCase name="Matchers can be (AllOf) composed with the &amp;&amp; operator" duration="{duration}"/>
     <testCase name="Matchers can be (AnyOf) composed with the || operator" duration="{duration}"/>
     <testCase name="Matchers can be composed with both &amp;&amp; and ||" duration="{duration}"/>
@@ -1039,6 +1047,7 @@ with expansion:
 Matchers.tests.cpp:<line number>
       </failure>
     </testCase>
+    <testCase name="Overloaded comma or address-of operators are not used" duration="{duration}"/>
     <testCase name="Predicate matcher can accept const char*" duration="{duration}"/>
     <testCase name="Regex string matcher" duration="{duration}">
       <failure message="CHECK_THAT(testStringForMatching(), Matches(&quot;this STRING contains 'abc' as a substring&quot;))">

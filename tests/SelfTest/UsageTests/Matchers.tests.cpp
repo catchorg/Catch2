@@ -13,6 +13,8 @@
 #include <sstream>
 #include <algorithm>
 #include <cmath>
+#include <list>
+#include <array>
 
 #ifdef __clang__
 #pragma clang diagnostic push
@@ -76,7 +78,7 @@ namespace { namespace MatchersTests {
         throw DerivedException{};
     }
 
-    class ExceptionMatcher : public Catch::MatcherBase<ExceptionMatcher> {
+    class ExceptionMatcher : public Catch::MatcherBaseGeneric<ExceptionMatcher> {
         int m_expected;
     public:
         ExceptionMatcher(int i) : m_expected(i) {}
@@ -565,7 +567,260 @@ namespace { namespace MatchersTests {
           REQUIRE_THAT(s, Predicate([](S &s){ return s.value() == 42;}));
         }
 
-} } // namespace MatchersTests
+
+    template<typename Range>
+    struct EqualsRangeMatcher : Catch::MatcherBaseGeneric<EqualsRangeMatcher<Range>> {
+
+        EqualsRangeMatcher(Range const& range) : range{ range } {}
+
+        template<typename OtherRange>
+        bool match(OtherRange const& other) const {
+            using std::begin;
+            using std::end;
+
+            return std::equal(begin(range), end(range), begin(other), end(other));
+        }
+
+        std::string describe() const {
+            return "Equals: " + Catch::rangeToString(range);
+        }
+
+    private:
+        Range const& range;
+    };
+
+    template<typename Range>
+    auto EqualsRange(const Range& range) -> EqualsRangeMatcher<Range> {
+        return EqualsRangeMatcher<Range>{range};
+    }
+
+    TEST_CASE("Combining generic matchers", "[matchers][templated]") {
+        std::array<int, 3> container{{ 1,2,3 }};
+
+        std::array<int, 3> a{{ 1,2,3 }};
+        std::vector<int> b{ 0,1,2 };
+        std::list<int> c{ 4,5,6 };
+
+        REQUIRE_THAT(container, EqualsRange(a) || EqualsRange(b) || EqualsRange(c));
+    }
+
+    template<typename Predicate>
+    class AllOfMatcher : public Catch::MatcherBase<std::vector<int>> {
+        Predicate m_predicate;
+        std::string m_description;
+
+    public:
+        template<typename _Predicate = Predicate>
+        AllOfMatcher(_Predicate &&predicate, const std::string &description) 
+            : m_predicate{std::forward<_Predicate>(predicate)},
+            m_description{description}
+        {}
+
+        bool match(const std::vector<int> &vec) const override {
+            return std::all_of(vec.begin(), vec.end(), m_predicate);
+        }
+
+        std::string describe() const override {
+            return "all of are " + m_description;
+        }
+
+    };
+
+    template<typename Predicate>
+    AllOfMatcher<Predicate> AllOf(Predicate &&predicate, const std::string &description) {
+        return {predicate, description};
+    }
+
+    TEST_CASE("Combining generic and non-generic matchers", "[matchers][templated]") {
+        using namespace Catch::Matchers;
+        std::vector<int> vec{ 1, 3, 5 };
+
+        std::array<int, 3> a{{ 5, 3, 1 }};
+
+        REQUIRE_THAT(vec, AllOf([](int elem) {
+                              return elem % 2 == 1;
+                          }, "odd") &&
+                          !EqualsRange(a));
+    }
+
+    struct MatcherA : Catch::MatcherBaseGeneric<MatcherA> {
+        std::string describe() const { return "equals: (int) 1 or (float) 1.0f"; }
+        bool match(int i) const { return i == 1; }
+        bool match(float f) const { return f == 1.0f; }
+    };
+
+    struct MatcherB : Catch::MatcherBaseGeneric<MatcherB> {
+        std::string describe() const { return "equals: (long long) 1"; }
+        bool match(long long l) const { return l == 1ll; }
+    };
+
+    struct MatcherC : Catch::MatcherBaseGeneric<MatcherC> {
+        std::string describe() const { return "equals: (T) 1"; }
+        template<typename T>
+        bool match(T t) const { return t == T{1}; }
+    };
+
+    struct MatcherD : Catch::MatcherBaseGeneric<MatcherD> {
+        std::string describe() const { return "equals: true"; }
+        bool match(bool b) const { return b == true; }
+    };
+
+    template<typename Expected, typename Actual>
+    void has_type(Actual &&)
+    {
+        STATIC_REQUIRE(std::is_same<Expected, Actual>::value);
+    }
+
+    TEST_CASE("Combining only templated matchers", "[matchers][templated]") {
+        has_type<Catch::Matchers::Impl::MatchAnyOf<MatcherA, MatcherB>>(MatcherA() || MatcherB());
+
+        REQUIRE_THAT(1, MatcherA() || MatcherB());
+
+        has_type<Catch::Matchers::Impl::MatchAllOf<MatcherA, MatcherB>>(MatcherA() && MatcherB());
+
+        REQUIRE_THAT(1, MatcherA() && MatcherB());
+
+        has_type<Catch::Matchers::Impl::MatchAnyOf<MatcherA, Catch::Matchers::Impl::MatchNotOf<MatcherB>>>(MatcherA() || !MatcherB());
+
+        REQUIRE_THAT(1, MatcherA() || !MatcherB());
+    }
+
+    TEST_CASE("Combining MatchAnyOf does not nest", "[matchers][templated]") {
+        has_type<Catch::Matchers::Impl::MatchAnyOf<MatcherA, MatcherB, MatcherC>>(MatcherA() || MatcherB() || MatcherC());
+
+        REQUIRE_THAT(1, MatcherA() || MatcherB() || MatcherC());
+
+        has_type<Catch::Matchers::Impl::MatchAnyOf<MatcherA, MatcherB, MatcherC, MatcherD>>(MatcherA() || MatcherB() || MatcherC() || MatcherD());
+
+        REQUIRE_THAT(1, MatcherA() || MatcherB() || MatcherC() || MatcherD());
+    }
+
+    TEST_CASE("Combining MatchAllOf does not nest", "[matchers][templated]") {
+        has_type<Catch::Matchers::Impl::MatchAllOf<MatcherA, MatcherB, MatcherC>>(MatcherA() && MatcherB() && MatcherC());
+
+        REQUIRE_THAT(1, MatcherA() && MatcherB() && MatcherC());
+
+        has_type<Catch::Matchers::Impl::MatchAllOf<MatcherA, MatcherB, MatcherC, MatcherD>>(MatcherA() && MatcherB() && MatcherC() && MatcherD());
+
+        REQUIRE_THAT(1, MatcherA() && MatcherB() && MatcherC() && MatcherD());
+    }
+
+    TEST_CASE("Combining MatchNotOf does not nest", "[matchers][templated]") {
+        has_type<Catch::Matchers::Impl::MatchNotOf<MatcherA>>(!MatcherA());
+
+        REQUIRE_THAT(0, !MatcherA());
+
+        has_type<MatcherA const&>(!!MatcherA());
+
+        REQUIRE_THAT(1, !!MatcherA());
+
+        has_type<Catch::Matchers::Impl::MatchNotOf<MatcherA>>(!!!MatcherA());
+
+        REQUIRE_THAT(0, !!!MatcherA());
+
+        has_type<MatcherA const &>(!!!!MatcherA());
+
+        REQUIRE_THAT(1, !!!!MatcherA());
+    }
+
+    struct EvilAddressOfOperatorUsed : std::exception {
+        EvilAddressOfOperatorUsed() {}
+        const char* what() const noexcept override {
+            return "overloaded address-of operator of matcher was used instead of std::addressof";
+        }
+    };
+
+    struct EvilCommaOperatorUsed : std::exception {
+        EvilCommaOperatorUsed() {}
+        const char* what() const noexcept override {
+            return "overloaded comma operator of matcher was used";
+        }
+    };
+
+    struct EvilMatcher : Catch::MatcherBaseGeneric<EvilMatcher> {
+        std::string describe() const {
+            return "equals: 45";
+        }
+
+        bool match(int i) const {
+            return i == 45;
+        }
+
+        EvilMatcher const* operator& () const {
+            throw EvilAddressOfOperatorUsed();
+        }
+
+        int operator,(EvilMatcher const&) const {
+            throw EvilCommaOperatorUsed();
+        }
+    };
+
+    TEST_CASE("Overloaded comma or address-of operators are not used", "[matchers][templated]") {
+        REQUIRE_THROWS_AS((EvilMatcher(), EvilMatcher()), EvilCommaOperatorUsed);
+        REQUIRE_THROWS_AS(&EvilMatcher(), EvilAddressOfOperatorUsed);
+        REQUIRE_NOTHROW(EvilMatcher() || EvilMatcher() && !EvilMatcher());
+        REQUIRE_NOTHROW((EvilMatcher() && EvilMatcher()) || !EvilMatcher());
+    }
+
+    struct ImmovableMatcher : Catch::MatcherBaseGeneric<ImmovableMatcher> {
+        ImmovableMatcher() = default;
+        ImmovableMatcher(ImmovableMatcher const&) = delete;
+        ImmovableMatcher(ImmovableMatcher &&) = delete;
+        ImmovableMatcher& operator=(ImmovableMatcher const&) = delete;
+        ImmovableMatcher& operator=(ImmovableMatcher &&) = delete;
+
+        std::string describe() const {
+            return "always false";
+        }
+
+        template<typename T>
+        bool match(T&&) const {
+            return false;
+        }
+    };
+
+    struct MatcherWasMovedOrCopied : std::exception {
+        MatcherWasMovedOrCopied() {}
+        const char* what() const noexcept override {
+            return "attempted to copy or move a matcher";
+        }
+    };
+
+    struct ThrowOnCopyOrMoveMatcher : Catch::MatcherBaseGeneric<ThrowOnCopyOrMoveMatcher> {
+        ThrowOnCopyOrMoveMatcher() = default;
+        ThrowOnCopyOrMoveMatcher(ThrowOnCopyOrMoveMatcher const&) {
+            throw MatcherWasMovedOrCopied();
+        }
+        ThrowOnCopyOrMoveMatcher(ThrowOnCopyOrMoveMatcher &&) {
+            throw MatcherWasMovedOrCopied();
+        }
+        ThrowOnCopyOrMoveMatcher& operator=(ThrowOnCopyOrMoveMatcher const&) {
+            throw MatcherWasMovedOrCopied();
+        }
+        ThrowOnCopyOrMoveMatcher& operator=(ThrowOnCopyOrMoveMatcher &&) {
+            throw MatcherWasMovedOrCopied();
+        }
+
+        std::string describe() const {
+            return "always false";
+        }
+
+        template<typename T>
+        bool match(T&&) const {
+            return false;
+        }
+    };
+
+    TEST_CASE("Matchers are not moved or copied", "[matchers][templated]") {
+        REQUIRE_NOTHROW((ThrowOnCopyOrMoveMatcher() && ThrowOnCopyOrMoveMatcher()) || !ThrowOnCopyOrMoveMatcher());
+    }
+
+    TEST_CASE("Immovable matchers can be used", "[matchers][templated]") {
+        REQUIRE_THAT(123, (ImmovableMatcher() && ImmovableMatcher()) || !ImmovableMatcher());
+    }
+
+} 
+} // namespace MatchersTests
 
 #ifdef __clang__
 #pragma clang diagnostic pop

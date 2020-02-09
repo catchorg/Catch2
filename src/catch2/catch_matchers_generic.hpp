@@ -23,13 +23,14 @@ namespace Detail {
 }
 
 template <typename Predicate>
-class PredicateMatcher : public MatcherBase<PredicateMatcher<Predicate>> {
+class PredicateMatcher : public MatcherBaseGeneric<PredicateMatcher<Predicate>> {
     Predicate m_predicate;
     std::string m_description;
 public:
 
-    PredicateMatcher(Predicate&& elem, std::string const& descr)
-        :m_predicate(std::forward<Predicate>(elem)),
+    template<typename _Predicate = Predicate>
+    PredicateMatcher(_Predicate&& elem, std::string const& descr)
+        :m_predicate(std::forward<_Predicate>(elem)),
         m_description(Detail::finalizeDescription(descr))
     {}
 
@@ -51,6 +52,13 @@ public:
     // The user has to explicitly specify type to the function, because
     // inferring std::function<bool(T const&)> is hard (but possible) and
     // requires a lot of TMP.
+    template<typename T, typename Pred>
+    Generic::PredicateMatcher<Pred> Predicate(Pred&& predicate, std::string const& description = "") {
+        static_assert(is_callable<Pred(T)>::value, "Predicate not callable with argument T");
+        static_assert(std::is_same<bool, FunctionReturnType<Pred, T>>::value, "Predicate does not return bool");
+        return Generic::PredicateMatcher<Pred>(std::forward<Pred>(predicate), description);
+    }
+
     template<typename Pred>
     Generic::PredicateMatcher<Pred> Predicate(Pred&& predicate, std::string const& description = "") {
         return Generic::PredicateMatcher<Pred>(std::forward<Pred>(predicate), description);

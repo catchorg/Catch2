@@ -13,7 +13,7 @@ namespace Catch {
 namespace Matchers {
 namespace Exception {
 
-class ExceptionMessageMatcher : public MatcherBase<ExceptionMessageMatcher> {
+class ExceptionMessageMatcher : public MatcherBaseGeneric<ExceptionMessageMatcher> {
     std::string m_message;
 public:
 

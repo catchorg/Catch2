@@ -147,7 +147,7 @@ REQUIRE_THROWS_MATCHES(throwsDerivedException(),  DerivedException,  Message("De
 It's easy to provide your own matchers to extend Catch or just to work with your own types.
 
 You need to provide two things:
-1. A matcher class, derived from `Catch::MatcherBase<T>` - where `T` is the matcher class.
+1. A matcher class, derived from `Catch::MatcherBaseGeneric<T>` - where `T` is the matcher class.
 The constructor takes and stores any arguments needed (e.g. something to compare against) and you must
 provide two methods: `match()` and `describe()`.
 2. A simple builder function. This is what is actually called from the test code and allows overloading.
@@ -157,7 +157,7 @@ Here's an example for asserting that an integer falls within a given range
 
 ```c++
 // The matcher class
-class IntRange : public Catch::MatcherBase<IntRange> {
+class IntRange : public Catch::MatcherBaseGeneric<IntRange> {
     int m_begin, m_end;
 public:
     IntRange( int begin, int end ) : m_begin( begin ), m_end( end ) {}

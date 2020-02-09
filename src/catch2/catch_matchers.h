@@ -22,11 +22,11 @@ namespace Matchers {
         template<typename Matcher> struct MatchNotOf;
 
         template<typename Derived>
-        class MatcherBase {
+        class MatcherBaseGeneric {
         public:
-            MatcherBase() = default;
-            MatcherBase ( MatcherBase const& ) = default;
-            MatcherBase& operator = ( MatcherBase const& ) = delete;
+            MatcherBaseGeneric() = default;
+            MatcherBaseGeneric ( MatcherBaseGeneric const& ) = default;
+            MatcherBaseGeneric& operator = ( MatcherBaseGeneric const& ) = delete;
             std::string toString() const;
 
             template<typename Other>
@@ -44,17 +44,14 @@ namespace Matchers {
         };
 
         template<typename Derived>
-        std::string MatcherBase<Derived>::toString() const {
+        std::string MatcherBaseGeneric<Derived>::toString() const {
             if( m_cachedToString.empty() )
                 m_cachedToString = derived().describe();
             return m_cachedToString;
         }
 
         template<typename... Matchers>
-        using Tuple = std::tuple<typename std::add_lvalue_reference<typename std::add_const<Matchers>::type>::type ...>;
-
-        template<typename... Matchers>
-        struct MatchAllOf : MatcherBase<MatchAllOf<Matchers...>> {
+        struct MatchAllOf : MatcherBaseGeneric<MatchAllOf<Matchers...>> {
             MatchAllOf( Matchers const &... matchers ) : m_matchers{matchers...}
             {}
 
@@ -112,11 +109,11 @@ namespace Matchers {
                 return and_helper(other, makeIndexSequence<sizeof...(Matchers)>());
             }
 
-            Tuple<Matchers...> m_matchers;
+            std::tuple<Matchers...> m_matchers;
         };
 
         template<typename... Matchers>
-        struct MatchAnyOf : MatcherBase<MatchAnyOf<Matchers...>> {
+        struct MatchAnyOf : MatcherBaseGeneric<MatchAnyOf<Matchers...>> {
             MatchAnyOf( Matchers const &... matchers ) : m_matchers{matchers...}
             {}
 
@@ -174,11 +171,11 @@ namespace Matchers {
                 return or_helper(other, makeIndexSequence<sizeof...(Matchers)>());
             }
 
-            Tuple<Matchers...> m_matchers;
+            std::tuple<Matchers...> m_matchers;
         };
 
         template<typename Matcher>
-        struct MatchNotOf : MatcherBase<MatchNotOf<Matcher>> {
+        struct MatchNotOf : MatcherBaseGeneric<MatchNotOf<Matcher>> {
 
             MatchNotOf( Matcher const& underlyingMatcher ) : m_underlyingMatcher( underlyingMatcher ) {}
 
@@ -195,26 +192,54 @@ namespace Matchers {
 
         template<typename Derived>
         template<typename Other>
-        MatchAllOf<Derived, Other> MatcherBase<Derived>::operator && ( Other const& other ) const {
+        MatchAllOf<Derived, Other> MatcherBaseGeneric<Derived>::operator && ( Other const& other ) const {
             return {derived(), other};
         }
 
         template<typename Derived>
         template<typename Other>
-        MatchAnyOf<Derived, Other> MatcherBase<Derived>::operator || ( Other const& other ) const {
+        MatchAnyOf<Derived, Other> MatcherBaseGeneric<Derived>::operator || ( Other const& other ) const {
             return {derived(), other};
         }
         
         template<typename Derived>
-        MatchNotOf<Derived> MatcherBase<Derived>::operator ! () const {
+        MatchNotOf<Derived> MatcherBaseGeneric<Derived>::operator ! () const {
             return {derived()};
         }
+
+        template<typename Derived>
+        Derived const& operator ! (MatchNotOf<Derived> const& matcher) {
+            return matcher.m_underlyingMatcher;
+        }
+        
+
+        template<typename ObjectT>
+        struct MatcherMethod {
+            virtual bool match( ObjectT const& arg ) const = 0;
+        };
+
+#if defined(__OBJC__)
+        // Hack to fix Catch GH issue #1661. Could use id for generic Object support.
+        // use of const for Object pointers is very uncommon and under ARC it causes some kind of signature mismatch that breaks compilation
+        template<>
+        struct MatcherMethod<NSString*> {
+            virtual bool match( NSString* arg ) const = 0;
+        };
+#endif
+
+        // for backward compatibility
+        template<typename T>
+        struct MatcherBase : MatcherBaseGeneric<MatcherBase<T>>, MatcherMethod<T> {
+            virtual ~MatcherBase() = default;
+            virtual std::string describe() const = 0;
+        };
 
     } // namespace Impl
 
 } // namespace Matchers
 
 using namespace Matchers;
+using Matchers::Impl::MatcherBaseGeneric;
 using Matchers::Impl::MatcherBase;
 
 } // namespace Catch

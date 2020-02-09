@@ -42,7 +42,7 @@ namespace Catch {
     // There is another overload, in catch_assertionhandler.h/.cpp, that only takes a string and infers
     // the Equals matcher (so the header does not mention matchers)
     template<typename StringMatcher,
-        typename = typename std::enable_if<std::is_base_of<MatcherBase<StringMatcher>, StringMatcher>::value>::type>
+        typename = typename std::enable_if<std::is_base_of<MatcherBaseGeneric<StringMatcher>, StringMatcher>::value>::type>
     void handleExceptionMatchExpr( AssertionHandler& handler, StringMatcher const& matcher, StringRef const& matcherString  ) {
         std::string exceptionMessage = Catch::translateActiveException();
         MatchExpr<std::string const&, StringMatcher const&> expr( exceptionMessage, matcher, matcherString );

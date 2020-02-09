@@ -28,7 +28,7 @@ namespace Matchers {
         };
 
         template<typename Derived>
-        struct StringMatcherBase : MatcherBase<Derived> {
+        struct StringMatcherBase : MatcherBaseGeneric<Derived> {
             StringMatcherBase( std::string const& operation, CasedString const& comparator );
             std::string describe() const ;
 
@@ -73,7 +73,7 @@ namespace Matchers {
             bool match( std::string const& source ) const ;
         };
 
-        struct RegexMatcher : MatcherBase<RegexMatcher> {
+        struct RegexMatcher : MatcherBaseGeneric<RegexMatcher> {
             RegexMatcher( std::string regex, CaseSensitive::Choice caseSensitivity );
             bool match( std::string const& matchee ) const ;
             std::string describe() const ;

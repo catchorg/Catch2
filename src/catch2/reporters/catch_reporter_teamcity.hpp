@@ -33,7 +33,7 @@ namespace Catch {
 
         void skipTest( TestCaseInfo const& /* testInfo */ ) override {}
 
-        void nomatchingTestCases( std::string const& /* spec */ )  {}
+        void noMatchingTestCases( std::string const& /* spec */ )  {}
 
         void testGroupStarting(GroupInfo const& groupInfo) override;
         void testGroupEnded(TestGroupStats const& testGroupStats) override;

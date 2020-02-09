@@ -18,7 +18,7 @@ namespace Matchers {
 
     namespace Vector {
         template<typename T>
-        struct ContainsElementMatcher : MatcherBase<ContainsElementMatcher<T>> {
+        struct ContainsElementMatcher : MatcherBaseGeneric<ContainsElementMatcher<T>> {
 
             ContainsElementMatcher(T const &comparator) : m_comparator( comparator) {}
 
@@ -39,7 +39,7 @@ namespace Matchers {
         };
 
         template<typename T>
-        struct ContainsMatcher : MatcherBase<ContainsMatcher<T>> {
+        struct ContainsMatcher : MatcherBaseGeneric<ContainsMatcher<T>> {
 
             ContainsMatcher(std::vector<T> const &comparator) : m_comparator( comparator ) {}
 
@@ -69,7 +69,7 @@ namespace Matchers {
         };
 
         template<typename T>
-        struct EqualsMatcher : MatcherBase<EqualsMatcher<T>> {
+        struct EqualsMatcher : MatcherBaseGeneric<EqualsMatcher<T>> {
 
             EqualsMatcher(std::vector<T> const &comparator) : m_comparator( comparator ) {}
 
@@ -92,7 +92,7 @@ namespace Matchers {
         };
 
         template<typename T>
-        struct ApproxMatcher : MatcherBase<ApproxMatcher<T>> {
+        struct ApproxMatcher : MatcherBaseGeneric<ApproxMatcher<T>> {
 
             ApproxMatcher(std::vector<T> const& comparator) : m_comparator( comparator ) {}
 
@@ -128,7 +128,7 @@ namespace Matchers {
         };
 
         template<typename T>
-        struct UnorderedEqualsMatcher : MatcherBase<UnorderedEqualsMatcher<T>> {
+        struct UnorderedEqualsMatcher : MatcherBaseGeneric<UnorderedEqualsMatcher<T>> {
             UnorderedEqualsMatcher(std::vector<T> const& target) : m_target(target) {}
             bool match(std::vector<T> const& vec) const  {
                 // Note: This is a reimplementation of std::is_permutation,
