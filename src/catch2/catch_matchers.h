@@ -109,7 +109,7 @@ namespace Matchers {
                 return and_helper(other, makeIndexSequence<sizeof...(Matchers)>());
             }
 
-            std::tuple<Matchers...> m_matchers;
+            std::tuple<Matchers const&...> m_matchers;
         };
 
         template<typename... Matchers>
@@ -171,7 +171,7 @@ namespace Matchers {
                 return or_helper(other, makeIndexSequence<sizeof...(Matchers)>());
             }
 
-            std::tuple<Matchers...> m_matchers;
+            std::tuple<Matchers  const&...> m_matchers;
         };
 
         template<typename Matcher>
