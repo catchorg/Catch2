@@ -40,8 +40,6 @@
 #include <catch2/catch_objc.hpp>
 #endif
 
-#include <catch2/catch_external_interfaces.h>
-
 #endif // ! CATCH_CONFIG_IMPL_ONLY
 
 #if !defined(CATCH_CONFIG_IMPL_ONLY)

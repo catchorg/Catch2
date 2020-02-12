@@ -55,7 +55,6 @@ set(INTERNAL_HEADERS
     ${SOURCES_DIR}/catch_enum_values_registry.h
     ${SOURCES_DIR}/catch_errno_guard.h
     ${SOURCES_DIR}/catch_exception_translator_registry.h
-    ${SOURCES_DIR}/catch_external_interfaces.h
     ${SOURCES_DIR}/catch_fatal_condition.h
     ${SOURCES_DIR}/catch_generators.hpp
     ${SOURCES_DIR}/catch_generators_generic.hpp
