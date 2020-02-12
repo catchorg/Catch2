@@ -806,9 +806,11 @@ namespace { namespace MatchersTests {
 
     struct ThrowOnCopyOrMoveMatcher : Catch::MatcherGenericBase {
         ThrowOnCopyOrMoveMatcher() = default;
+        [[noreturn]]
         ThrowOnCopyOrMoveMatcher(ThrowOnCopyOrMoveMatcher const&) {
             throw MatcherWasMovedOrCopied();
         }
+        [[noreturn]]
         ThrowOnCopyOrMoveMatcher(ThrowOnCopyOrMoveMatcher &&) {
             throw MatcherWasMovedOrCopied();
         }
