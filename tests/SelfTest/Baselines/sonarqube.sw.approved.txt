@@ -1027,8 +1027,6 @@ Matchers.tests.cpp:<line number>
     <testCase name="Floating point matchers: float/ULPs" duration="{duration}"/>
     <testCase name="Floating point matchers: float/Composed" duration="{duration}"/>
     <testCase name="Floating point matchers: float/Constructor validation" duration="{duration}"/>
-    <testCase name="Immovable matchers can be used" duration="{duration}"/>
-    <testCase name="Matchers are not moved or copied" duration="{duration}"/>
     <testCase name="Matchers can be (AllOf) composed with the &amp;&amp; operator" duration="{duration}"/>
     <testCase name="Matchers can be (AnyOf) composed with the || operator" duration="{duration}"/>
     <testCase name="Matchers can be composed with both &amp;&amp; and ||" duration="{duration}"/>

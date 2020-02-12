@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuitesloose text artifact
 >
-  <testsuite name="<exe-name>" errors="17" failures="132" tests="1847" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
+  <testsuite name="<exe-name>" errors="17" failures="132" tests="1845" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
     <properties>
       <property name="filters" value="~[!nonportable]~[!benchmark]~[approvals] *"/>
       <property name="random-seed" value="1"/>
@@ -722,7 +722,6 @@ i := 10
 Message.tests.cpp:<line number>
       </failure>
     </testcase>
-    <testcase classname="<exe-name>.global" name="Immovable matchers can be used" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Inequality checks that should fail" time="{duration}">
       <failure message="data.int_seven != 7" type="CHECK">
 FAILED:
@@ -763,7 +762,6 @@ Condition.tests.cpp:<line number>
     <testcase classname="<exe-name>.global" name="Inequality checks that should succeed" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Less-than inequalities with different epsilons" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="ManuallyRegistered" time="{duration}"/>
-    <testcase classname="<exe-name>.global" name="Matchers are not moved or copied" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Matchers can be (AllOf) composed with the &amp;&amp; operator" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Matchers can be (AnyOf) composed with the || operator" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Matchers can be composed with both &amp;&amp; and ||" time="{duration}"/>

@@ -7292,17 +7292,6 @@ Nor would this
       </Expression>
       <OverallResult success="false"/>
     </TestCase>
-    <TestCase name="Immovable matchers can be used" tags="[matchers][templated]" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
-      <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
-        <Original>
-          123, (ImmovableMatcher() &amp;&amp; ImmovableMatcher()) || !ImmovableMatcher()
-        </Original>
-        <Expanded>
-          123 ( ( always false and always false ) or not always false )
-        </Expanded>
-      </Expression>
-      <OverallResult success="true"/>
-    </TestCase>
     <TestCase name="Inequality checks that should fail" tags="[!shouldfail][.][failing]" filename="tests/<exe-name>/UsageTests/Condition.tests.cpp" >
       <Expression success="false" type="CHECK" filename="tests/<exe-name>/UsageTests/Condition.tests.cpp" >
         <Original>
@@ -7473,17 +7462,6 @@ Nor would this
       <OverallResult success="true"/>
     </TestCase>
     <TestCase name="ManuallyRegistered" filename="tests/<exe-name>/UsageTests/Misc.tests.cpp" >
-      <OverallResult success="true"/>
-    </TestCase>
-    <TestCase name="Matchers are not moved or copied" tags="[matchers][templated]" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
-      <Expression success="true" type="REQUIRE_NOTHROW" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
-        <Original>
-          (ThrowOnCopyOrMoveMatcher() &amp;&amp; ThrowOnCopyOrMoveMatcher()) || !ThrowOnCopyOrMoveMatcher()
-        </Original>
-        <Expanded>
-          (ThrowOnCopyOrMoveMatcher() &amp;&amp; ThrowOnCopyOrMoveMatcher()) || !ThrowOnCopyOrMoveMatcher()
-        </Expanded>
-      </Expression>
       <OverallResult success="true"/>
     </TestCase>
     <TestCase name="Matchers can be (AllOf) composed with the &amp;&amp; operator" tags="[matchers][operator&amp;&amp;][operators]" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
@@ -17139,7 +17117,7 @@ loose text artifact
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="1677" failures="149" expectedFailures="21"/>
+    <OverallResults successes="1675" failures="149" expectedFailures="21"/>
   </Group>
-  <OverallResults successes="1677" failures="148" expectedFailures="21"/>
+  <OverallResults successes="1675" failures="148" expectedFailures="21"/>
 </Catch>

@@ -1538,8 +1538,6 @@ ok {test-number} - i < 10 for: 8 < 10 with 2 messages: 'current counter 8' and '
 ok {test-number} - i < 10 for: 9 < 10 with 2 messages: 'current counter 9' and 'i := 9'
 # INFO is reset for each loop
 not ok {test-number} - i < 10 for: 10 < 10 with 2 messages: 'current counter 10' and 'i := 10'
-# Immovable matchers can be used
-ok {test-number} - 123, (ImmovableMatcher() && ImmovableMatcher()) || !ImmovableMatcher() for: 123 ( ( always false and always false ) or not always false )
 # Inequality checks that should fail
 not ok {test-number} - data.int_seven != 7 for: 7 != 7
 # Inequality checks that should fail
@@ -1582,8 +1580,6 @@ ok {test-number} - !(d <= Approx( 1.22 )) for: !(1.23 <= Approx( 1.22 ))
 ok {test-number} - d <= Approx( 1.22 ).epsilon(0.1) for: 1.23 <= Approx( 1.22 )
 # ManuallyRegistered
 ok {test-number} - with 1 message: 'was called'
-# Matchers are not moved or copied
-ok {test-number} - (ThrowOnCopyOrMoveMatcher() && ThrowOnCopyOrMoveMatcher()) || !ThrowOnCopyOrMoveMatcher()
 # Matchers can be (AllOf) composed with the && operator
 ok {test-number} - testStringForMatching(), Contains("string") && Contains("abc") && Contains("substring") && Contains("contains") for: "this string contains 'abc' as a substring" ( contains: "string" and contains: "abc" and contains: "substring" and contains: "contains" )
 # Matchers can be (AnyOf) composed with the || operator
@@ -3684,5 +3680,5 @@ ok {test-number} - q3 == 23. for: 23.0 == 23.0
 ok {test-number} -
 # xmlentitycheck
 ok {test-number} -
-1..1838
+1..1836
 

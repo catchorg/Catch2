@@ -829,12 +829,25 @@ namespace { namespace MatchersTests {
         }
     };
 
-    TEST_CASE("Matchers are not moved or copied", "[matchers][templated]") {
+    TEST_CASE("Matchers are not moved or copied", "[matchers][templated][approvals]") {
         REQUIRE_NOTHROW((ThrowOnCopyOrMoveMatcher() && ThrowOnCopyOrMoveMatcher()) || !ThrowOnCopyOrMoveMatcher());
     }
 
-    TEST_CASE("Immovable matchers can be used", "[matchers][templated]") {
+    TEST_CASE("Immovable matchers can be used", "[matchers][templated][approvals]") {
         REQUIRE_THAT(123, (ImmovableMatcher() && ImmovableMatcher()) || !ImmovableMatcher());
+    }
+
+    struct ReferencingMatcher : Catch::MatcherGenericBase {
+        std::string describe() const override {
+            return "takes reference";
+        }
+        bool match(int& i) const {
+            return i == 22;
+        }
+    };
+
+    TEST_CASE("Matchers can take references", "[matchers][templated][approvals]") {
+        REQUIRE_THAT(22, ReferencingMatcher{});
     }
 
 } } // namespace MatchersTests
