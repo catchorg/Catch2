@@ -93,12 +93,14 @@ namespace Catch {
                 auto keypressLc = toLower( keypress );
                 if( keypressLc == "start" )
                     config.waitForKeypress = WaitForKeypress::BeforeStart;
+                else if( keypressLc == "never" )
+                    config.waitForKeypress = WaitForKeypress::Never;
                 else if( keypressLc == "exit" )
                     config.waitForKeypress = WaitForKeypress::BeforeExit;
                 else if( keypressLc == "both" )
                     config.waitForKeypress = WaitForKeypress::BeforeStartAndExit;
                 else
-                    return ParserResult::runtimeError( "keypress argument must be one of: start, exit or both. '" + keypress + "' not recognised" );
+                    return ParserResult::runtimeError( "keypress argument must be one of: never, start, exit or both. '" + keypress + "' not recognised" );
             return ParserResult::ok( ParseResultType::Matched );
             };
         auto const setVerbosity = [&]( std::string const& verbosity ) {
@@ -198,7 +200,7 @@ namespace Catch {
             | Opt( config.libIdentify )
                 ["--libidentify"]
                 ( "report name and version according to libidentify standard" )
-            | Opt( setWaitForKeypress, "start|exit|both" )
+            | Opt( setWaitForKeypress, "never|start|exit|both" )
                 ["--wait-for-keypress"]
                 ( "waits for a keypress before exiting" )
             | Opt( config.benchmarkSamples, "samples" )
