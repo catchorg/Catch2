@@ -78,7 +78,7 @@ type, making their usage much nicer. These are
 
 > `from_range` has been introduced in Catch 2.10.0
 
-> `range()` for floating point numbers has been introduced in Catch X.Y.Z
+> `range()` for floating point numbers has been introduced in Catch 2.11.0
 
 And can be used as shown in the example below to create a generator
 that returns 100 odd random number:
