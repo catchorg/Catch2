@@ -71,7 +71,7 @@ nanParser = re.compile(r'''
 ''', re.VERBOSE)
 
 # The weird OR is there to always have at least empty string for group 1
-tapTestNumParser = re.compile(r'^(not |)?ok (\d+) -')
+tapTestNumParser = re.compile(r'^((?:not ok)|(?:ok)|(?:warning)|(?:info)) (\d+) -')
 
 if len(sys.argv) == 2:
     cmdPath = sys.argv[1]
@@ -128,7 +128,7 @@ def filterLine(line, isCompact):
         line = line.replace(': PASSED', ': passed')
 
     # strip out the test order number in TAP to avoid massive diffs for every change
-    line = tapTestNumParser.sub("\g<1>ok {test-number} -", line)
+    line = tapTestNumParser.sub("\g<1> {test-number} -", line)
 
     # strip Catch version number
     line = versionParser.sub("<version>", line)

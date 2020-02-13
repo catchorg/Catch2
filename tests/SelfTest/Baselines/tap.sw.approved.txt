@@ -37,7 +37,7 @@ ok {test-number} -
 # #1403
 ok {test-number} - h1 == h2 for: [1403 helper] == [1403 helper]
 # #1455 - INFO and WARN can start with a linebreak
-warning 20 - '
+warning {test-number} - '
 This info message starts with a linebreak' with 1 message: '
 This warning message starts with a linebreak'
 This would not be caught previously
@@ -795,7 +795,7 @@ not ok {test-number} - explicitly
 # FAIL_CHECK does not abort the test
 not ok {test-number} - explicitly with 1 message: 'This is a failure'
 # FAIL_CHECK does not abort the test
-warning 397 - 'This message appears in the output'
+warning {test-number} - 'This message appears in the output'
 # Factorials are computed
 ok {test-number} - Factorial(0) == 1 for: 1 == 1
 # Factorials are computed
@@ -1443,7 +1443,7 @@ ok {test-number} - !(d >= Approx( 1.24 )) for: !(1.23 >= Approx( 1.24 ))
 # Greater-than inequalities with different epsilons
 ok {test-number} - d >= Approx( 1.24 ).epsilon(0.1) for: 1.23 >= Approx( 1.24 )
 # INFO and WARN do not abort tests
-warning 721 - 'this is a message' with 1 message: 'this is a warning'
+warning {test-number} - 'this is a message' with 1 message: 'this is a warning'
 # INFO gets logged on failure
 not ok {test-number} - a == 1 for: 2 == 1 with 2 messages: 'this message should be logged' and 'so should this'
 # INFO gets logged on failure, even if captured before successful assertions
@@ -1569,7 +1569,7 @@ ok {test-number} - values > -6 for: 98 > -6
 # Nested generators and captured variables
 ok {test-number} - values > -6 for: 99 > -6
 # Nice descriptive name
-warning 784 - 'This one ran'
+warning {test-number} - 'This one ran'
 # Non-std exceptions can be translated
 not ok {test-number} - unexpected exception with message: 'custom exception'
 # Objects that evaluated in boolean contexts can be checked
@@ -2940,9 +2940,9 @@ not ok {test-number} - unexpected exception with message: 'expected exception'; 
 # When unchecked exceptions are thrown from sections they are always failures
 not ok {test-number} - unexpected exception with message: 'unexpected exception'
 # Where the LHS is not a simple value
-warning 1467 - 'Uncomment the code in this test to check that it gives a sensible compiler error'
+warning {test-number} - 'Uncomment the code in this test to check that it gives a sensible compiler error'
 # Where there is more to the expression after the RHS
-warning 1468 - 'Uncomment the code in this test to check that it gives a sensible compiler error'
+warning {test-number} - 'Uncomment the code in this test to check that it gives a sensible compiler error'
 # X/level/0/a
 ok {test-number} -
 # X/level/0/b
@@ -3209,9 +3209,9 @@ ok {test-number} - s.result == 17 for: 17 == 17
 # measure
 ok {test-number} - s.iterations == 1 for: 1 == 1
 # mix info, unscoped info and warning
-warning 1601 - 'info' with 2 messages: 'unscoped info' and 'and warn may mix'
+warning {test-number} - 'info' with 2 messages: 'unscoped info' and 'and warn may mix'
 # mix info, unscoped info and warning
-warning 1602 - 'info' with 2 messages: 'unscoped info' and 'they are not cleared after warnings'
+warning {test-number} - 'info' with 2 messages: 'unscoped info' and 'they are not cleared after warnings'
 # more nested SECTION tests
 not ok {test-number} - a == b for: 1 == 2
 # more nested SECTION tests
