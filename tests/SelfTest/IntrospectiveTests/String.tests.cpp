@@ -130,7 +130,7 @@ TEST_CASE("StringRef at compilation time", "[Strings][StringRef][constexpr]") {
     //  * substr
     using Catch::StringRef;
     SECTION("Simple constructors") {
-        constexpr StringRef empty;
+        constexpr StringRef empty{};
         STATIC_REQUIRE(empty.size() == 0);
         STATIC_REQUIRE(empty.begin() == empty.end());
 
