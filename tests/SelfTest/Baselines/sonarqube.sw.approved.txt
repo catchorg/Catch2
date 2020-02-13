@@ -142,6 +142,7 @@
     <testCase name="StringRef/Substrings/Pointer values of substring refs should also match" duration="{duration}"/>
     <testCase name="StringRef/Substrings/Past the end substring" duration="{duration}"/>
     <testCase name="StringRef/Substrings/Substring off the end are trimmed" duration="{duration}"/>
+    <testCase name="StringRef/Substrings/substring start after the end is empty" duration="{duration}"/>
     <testCase name="StringRef/Comparisons are deep" duration="{duration}"/>
     <testCase name="StringRef/from std::string/implicitly constructed" duration="{duration}"/>
     <testCase name="StringRef/from std::string/explicitly constructed" duration="{duration}"/>

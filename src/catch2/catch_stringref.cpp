@@ -22,17 +22,7 @@ namespace Catch {
         CATCH_ENFORCE(isNullTerminated(), "Called StringRef::c_str() on a non-null-terminated instance");
         return m_start;
     }
-    auto StringRef::data() const noexcept -> char const* {
-        return m_start;
-    }
 
-    auto StringRef::substr( size_type start, size_type size ) const noexcept -> StringRef {
-        if (start < m_size) {
-            return StringRef(m_start + start, (std::min)(m_size - start, size));
-        } else {
-            return StringRef();
-        }
-    }
     auto StringRef::operator == ( StringRef const& other ) const noexcept -> bool {
         return m_size == other.m_size
             && (std::memcmp( m_start, other.m_start, m_size ) == 0);

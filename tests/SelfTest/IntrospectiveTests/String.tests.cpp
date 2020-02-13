@@ -72,7 +72,9 @@ TEST_CASE( "StringRef", "[Strings][StringRef]" ) {
             ss = s.substr(6, 123);
             REQUIRE(std::strcmp(ss.c_str(), "world!") == 0);
         }
-        // TODO: substring into string + size is longer than end
+        SECTION("substring start after the end is empty") {
+            REQUIRE(s.substr(1'000'000, 1).empty());
+        }
     }
 
     SECTION( "Comparisons are deep" ) {
@@ -124,15 +126,32 @@ TEST_CASE( "StringRef", "[Strings][StringRef]" ) {
 }
 
 TEST_CASE("StringRef at compilation time", "[Strings][StringRef][constexpr]") {
+    //TODO:
+    //  * substr
     using Catch::StringRef;
     SECTION("Simple constructors") {
-        STATIC_REQUIRE(StringRef{}.size() == 0);
+        constexpr StringRef empty;
+        STATIC_REQUIRE(empty.size() == 0);
+        STATIC_REQUIRE(empty.begin() == empty.end());
 
-        STATIC_REQUIRE(StringRef{ "abc", 3 }.size() == 3);
-        STATIC_REQUIRE(StringRef{ "abc", 3 }.isNullTerminated());
+        constexpr char const* const abc = "abc";
 
-        STATIC_REQUIRE(StringRef{ "abc", 2 }.size() == 2);
-        STATIC_REQUIRE_FALSE(StringRef{ "abc", 2 }.isNullTerminated());
+        constexpr StringRef stringref(abc, 3);
+        STATIC_REQUIRE(stringref.size() == 3);
+        STATIC_REQUIRE(stringref.isNullTerminated());
+        STATIC_REQUIRE(stringref.data() == abc);
+        STATIC_REQUIRE(stringref.begin() == abc);
+        STATIC_REQUIRE(stringref.begin() != stringref.end());
+        STATIC_REQUIRE(stringref.substr(10, 0).empty());
+        STATIC_REQUIRE(stringref.substr(2, 1).data() == abc + 2);
+
+
+        constexpr StringRef shortened(abc, 2);
+        STATIC_REQUIRE(shortened.size() == 2);
+        STATIC_REQUIRE(shortened.data() == abc);
+        STATIC_REQUIRE(shortened.begin() != shortened.end());
+        STATIC_REQUIRE_FALSE(shortened.isNullTerminated());
+        STATIC_REQUIRE_FALSE(shortened.substr(1, 3).isNullTerminated());
     }
     SECTION("UDL construction") {
         constexpr auto sr1 = "abc"_catch_sr;

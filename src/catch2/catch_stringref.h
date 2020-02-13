@@ -74,12 +74,21 @@ namespace Catch {
 
     public: // substrings and searches
         // Returns a substring of [start, start + length).
-        // If start + length > size(), then the substring is [start, size()).
+        // If start + length > size(), then the substring is [start, start + size()).
         // If start > size(), then the substring is empty.
-        auto substr( size_type start, size_type length ) const noexcept -> StringRef;
+        constexpr StringRef substr(size_type start, size_type length) const noexcept {
+            if (start < m_size) {
+                const auto shortened_size = m_size - start;
+                return StringRef(m_start + start, (shortened_size < length) ? shortened_size : length);
+            } else {
+                return StringRef();
+            }
+        }
 
         // Returns the current start pointer. May not be null-terminated.
-        auto data() const noexcept -> char const*;
+        constexpr char const* data() const noexcept {
+            return m_start;
+        }
 
         constexpr auto isNullTerminated() const noexcept -> bool {
             return m_start[m_size] == '\0';

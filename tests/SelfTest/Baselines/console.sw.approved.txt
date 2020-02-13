@@ -8717,6 +8717,19 @@ with expansion:
 
 -------------------------------------------------------------------------------
 StringRef
+  Substrings
+  substring start after the end is empty
+-------------------------------------------------------------------------------
+String.tests.cpp:<line number>
+...............................................................................
+
+String.tests.cpp:<line number>: PASSED:
+  REQUIRE( s.substr(1'000'000, 1).empty() )
+with expansion:
+  true
+
+-------------------------------------------------------------------------------
+StringRef
   Comparisons are deep
 -------------------------------------------------------------------------------
 String.tests.cpp:<line number>
@@ -8836,23 +8849,59 @@ String.tests.cpp:<line number>
 
 String.tests.cpp:<line number>: PASSED:
 with message:
-  StringRef{}.size() == 0
+  empty.size() == 0
 
 String.tests.cpp:<line number>: PASSED:
 with message:
-  StringRef{ "abc", 3 }.size() == 3
+  empty.begin() == empty.end()
 
 String.tests.cpp:<line number>: PASSED:
 with message:
-  StringRef{ "abc", 3 }.isNullTerminated()
+  stringref.size() == 3
 
 String.tests.cpp:<line number>: PASSED:
 with message:
-  StringRef{ "abc", 2 }.size() == 2
+  stringref.isNullTerminated()
 
 String.tests.cpp:<line number>: PASSED:
 with message:
-  !(StringRef{ "abc", 2 }.isNullTerminated())
+  stringref.data() == abc
+
+String.tests.cpp:<line number>: PASSED:
+with message:
+  stringref.begin() == abc
+
+String.tests.cpp:<line number>: PASSED:
+with message:
+  stringref.begin() != stringref.end()
+
+String.tests.cpp:<line number>: PASSED:
+with message:
+  stringref.substr(10, 0).empty()
+
+String.tests.cpp:<line number>: PASSED:
+with message:
+  stringref.substr(2, 1).data() == abc + 2
+
+String.tests.cpp:<line number>: PASSED:
+with message:
+  shortened.size() == 2
+
+String.tests.cpp:<line number>: PASSED:
+with message:
+  shortened.data() == abc
+
+String.tests.cpp:<line number>: PASSED:
+with message:
+  shortened.begin() != shortened.end()
+
+String.tests.cpp:<line number>: PASSED:
+with message:
+  !(shortened.isNullTerminated())
+
+String.tests.cpp:<line number>: PASSED:
+with message:
+  !(shortened.substr(1, 3).isNullTerminated())
 
 -------------------------------------------------------------------------------
 StringRef at compilation time
@@ -14005,5 +14054,5 @@ Misc.tests.cpp:<line number>: PASSED:
 
 ===============================================================================
 test cases:  320 |  230 passed |  86 failed |  4 failed as expected
-assertions: 1799 | 1630 passed | 148 failed | 21 failed as expected
+assertions: 1809 | 1640 passed | 148 failed | 21 failed as expected
 

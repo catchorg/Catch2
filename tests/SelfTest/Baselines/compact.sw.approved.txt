@@ -1193,6 +1193,7 @@ String.tests.cpp:<line number>: passed: s.data() == s2.data() for: "hello world!
 String.tests.cpp:<line number>: passed: s.data() == ss.data() for: "hello world!" == "hello world!"
 String.tests.cpp:<line number>: passed: s.substr(s.size() + 1, 123).empty() for: true
 String.tests.cpp:<line number>: passed: std::strcmp(ss.c_str(), "world!") == 0 for: 0 == 0
+String.tests.cpp:<line number>: passed: s.substr(1'000'000, 1).empty() for: true
 String.tests.cpp:<line number>: passed: (char*)buffer1 != (char*)buffer2 for: "Hello" != "Hello"
 String.tests.cpp:<line number>: passed: left == right for: Hello == Hello
 String.tests.cpp:<line number>: passed: left != left.substr(0, 3) for: Hello != Hel
@@ -1206,11 +1207,20 @@ String.tests.cpp:<line number>: passed: stdStr == "a stringref" for: "a stringre
 String.tests.cpp:<line number>: passed: stdStr.size() == sr.size() for: 11 == 11
 String.tests.cpp:<line number>: passed: stdStr == "a stringref" for: "a stringref" == "a stringref"
 String.tests.cpp:<line number>: passed: stdStr.size() == sr.size() for: 11 == 11
-String.tests.cpp:<line number>: passed: with 1 message: 'StringRef{}.size() == 0'
-String.tests.cpp:<line number>: passed: with 1 message: 'StringRef{ "abc", 3 }.size() == 3'
-String.tests.cpp:<line number>: passed: with 1 message: 'StringRef{ "abc", 3 }.isNullTerminated()'
-String.tests.cpp:<line number>: passed: with 1 message: 'StringRef{ "abc", 2 }.size() == 2'
-String.tests.cpp:<line number>: passed: with 1 message: '!(StringRef{ "abc", 2 }.isNullTerminated())'
+String.tests.cpp:<line number>: passed: with 1 message: 'empty.size() == 0'
+String.tests.cpp:<line number>: passed: with 1 message: 'empty.begin() == empty.end()'
+String.tests.cpp:<line number>: passed: with 1 message: 'stringref.size() == 3'
+String.tests.cpp:<line number>: passed: with 1 message: 'stringref.isNullTerminated()'
+String.tests.cpp:<line number>: passed: with 1 message: 'stringref.data() == abc'
+String.tests.cpp:<line number>: passed: with 1 message: 'stringref.begin() == abc'
+String.tests.cpp:<line number>: passed: with 1 message: 'stringref.begin() != stringref.end()'
+String.tests.cpp:<line number>: passed: with 1 message: 'stringref.substr(10, 0).empty()'
+String.tests.cpp:<line number>: passed: with 1 message: 'stringref.substr(2, 1).data() == abc + 2'
+String.tests.cpp:<line number>: passed: with 1 message: 'shortened.size() == 2'
+String.tests.cpp:<line number>: passed: with 1 message: 'shortened.data() == abc'
+String.tests.cpp:<line number>: passed: with 1 message: 'shortened.begin() != shortened.end()'
+String.tests.cpp:<line number>: passed: with 1 message: '!(shortened.isNullTerminated())'
+String.tests.cpp:<line number>: passed: with 1 message: '!(shortened.substr(1, 3).isNullTerminated())'
 String.tests.cpp:<line number>: passed: with 1 message: '!(sr1.empty())'
 String.tests.cpp:<line number>: passed: with 1 message: 'sr1.size() == 3'
 String.tests.cpp:<line number>: passed: with 1 message: 'sr1.isNullTerminated()'

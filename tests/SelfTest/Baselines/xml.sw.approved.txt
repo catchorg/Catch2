@@ -10906,6 +10906,20 @@ Message from section two
         </Section>
         <OverallResults successes="1" failures="0" expectedFailures="0"/>
       </Section>
+      <Section name="Substrings" filename="tests/<exe-name>/IntrospectiveTests/String.tests.cpp" >
+        <Section name="substring start after the end is empty" filename="tests/<exe-name>/IntrospectiveTests/String.tests.cpp" >
+          <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/String.tests.cpp" >
+            <Original>
+              s.substr(1'000'000, 1).empty()
+            </Original>
+            <Expanded>
+              true
+            </Expanded>
+          </Expression>
+          <OverallResults successes="1" failures="0" expectedFailures="0"/>
+        </Section>
+        <OverallResults successes="1" failures="0" expectedFailures="0"/>
+      </Section>
       <Section name="Comparisons are deep" filename="tests/<exe-name>/IntrospectiveTests/String.tests.cpp" >
         <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/String.tests.cpp" >
           <Original>
@@ -11047,7 +11061,7 @@ Message from section two
     </TestCase>
     <TestCase name="StringRef at compilation time" tags="[constexpr][StringRef][Strings]" filename="tests/<exe-name>/IntrospectiveTests/String.tests.cpp" >
       <Section name="Simple constructors" filename="tests/<exe-name>/IntrospectiveTests/String.tests.cpp" >
-        <OverallResults successes="5" failures="0" expectedFailures="0"/>
+        <OverallResults successes="14" failures="0" expectedFailures="0"/>
       </Section>
       <Section name="UDL construction" filename="tests/<exe-name>/IntrospectiveTests/String.tests.cpp" >
         <OverallResults successes="6" failures="0" expectedFailures="0"/>
@@ -16895,7 +16909,7 @@ loose text artifact
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="1630" failures="149" expectedFailures="21"/>
+    <OverallResults successes="1640" failures="149" expectedFailures="21"/>
   </Group>
-  <OverallResults successes="1630" failures="148" expectedFailures="21"/>
+  <OverallResults successes="1640" failures="148" expectedFailures="21"/>
 </Catch>
