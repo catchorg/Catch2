@@ -414,7 +414,24 @@ TEST_CASE( "Process can be configured on command line", "[config][command-line]"
             REQUIRE_THAT(result.errorMessage(), Contains("convert") && Contains("oops"));
 #endif
         }
+
+     SECTION("wait-for-keypress") {
+        SECTION("never is an accepted option") {
+            CHECK(cli.parse({"test", "--wait-for-keypress", "never"}));
+
+            REQUIRE(config.waitForKeypress == Catch::WaitForKeypress::Never);
+        }
+
+        SECTION("invalid options are reported") {
+            auto result = cli.parse({"test", "--wait-for-keypress", "sometimes"});
+            CHECK(!result);
+
+#ifndef CATCH_CONFIG_DISABLE_MATCHERS
+            REQUIRE_THAT(result.errorMessage(), Contains("never") && Contains("both"));
+#endif
+        }
     }
+   }
 
     SECTION("nothrow") {
         SECTION("-e") {
