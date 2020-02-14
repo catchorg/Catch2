@@ -56,6 +56,7 @@ set(INTERNAL_HEADERS
     ${SOURCES_DIR}/catch_errno_guard.h
     ${SOURCES_DIR}/catch_exception_translator_registry.h
     ${SOURCES_DIR}/catch_fatal_condition.h
+    ${SOURCES_DIR}/catch_generator_exception.hpp
     ${SOURCES_DIR}/catch_generators.hpp
     ${SOURCES_DIR}/catch_generators_generic.hpp
     ${SOURCES_DIR}/catch_generators_specific.hpp
@@ -142,6 +143,7 @@ set(IMPL_SOURCES
     ${SOURCES_DIR}/catch_errno_guard.cpp
     ${SOURCES_DIR}/catch_exception_translator_registry.cpp
     ${SOURCES_DIR}/catch_fatal_condition.cpp
+    ${SOURCES_DIR}/catch_generator_exception.cpp
     ${SOURCES_DIR}/catch_generators.cpp
     ${SOURCES_DIR}/catch_interfaces_capture.cpp
     ${SOURCES_DIR}/catch_interfaces_config.cpp

@@ -17,11 +17,9 @@ namespace Catch {
     class Approx {
     private:
         bool equalityComparisonImpl(double other) const;
-        // Validates the new margin (margin >= 0)
-        // out-of-line to avoid including stdexcept in the header
+        //! Sets and validates the new margin (margin >= 0)
         void setMargin(double margin);
-        // Validates the new epsilon (0 < epsilon < 1)
-        // out-of-line to avoid including stdexcept in the header
+        //! Sets and validates the new epsilon (0 < epsilon < 1)
         void setEpsilon(double epsilon);
 
     public:

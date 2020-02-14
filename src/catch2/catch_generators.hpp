@@ -9,29 +9,24 @@
 
 #include <catch2/catch_interfaces_generatortracker.h>
 #include <catch2/catch_common.h>
-#include <catch2/catch_enforce.h>
 
 #include <memory>
 #include <vector>
 #include <cassert>
 #include <tuple>
 #include <utility>
-#include <exception>
 
 namespace Catch {
 
-class GeneratorException : public std::exception {
-    const char* const m_msg = "";
-
-public:
-    GeneratorException(const char* msg):
-        m_msg(msg)
-    {}
-
-    const char* what() const noexcept override final;
-};
-
 namespace Generators {
+
+namespace Detail {
+
+    //! Throws GeneratorException with the provided message
+    [[noreturn]]
+    void throw_generator_exception(char const * msg);
+
+} // end namespace detail
 
     template<typename T>
     struct IGenerator : GeneratorUntypedBase {

@@ -140,7 +140,7 @@ public:
     template <typename InputIterator, typename InputSentinel>
     IteratorGenerator(InputIterator first, InputSentinel last):m_elems(first, last) {
         if (m_elems.empty()) {
-            Catch::throw_exception(GeneratorException("IteratorGenerator received no valid values"));
+            Detail::throw_generator_exception("IteratorGenerator received no valid values");
         }
     }
 

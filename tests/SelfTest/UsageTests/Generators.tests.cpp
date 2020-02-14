@@ -1,4 +1,5 @@
 #include <catch2/catch_test_macros.hpp>
+#include <catch2/catch_generator_exception.hpp>
 #include <catch2/catch_generators_generic.hpp>
 #include <catch2/catch_generators_specific.hpp>
 

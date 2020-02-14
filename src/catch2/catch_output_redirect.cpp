@@ -12,7 +12,6 @@
 #include <cstring>
 #include <fstream>
 #include <sstream>
-#include <stdexcept>
 
 #if defined(CATCH_CONFIG_NEW_CAPTURE)
     #if defined(_MSC_VER)

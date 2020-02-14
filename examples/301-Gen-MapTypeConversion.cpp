@@ -18,7 +18,7 @@ public:
     LineGenerator() {
         m_stream.str("1\n2\n3\n4\n");
         if (!next()) {
-            throw Catch::GeneratorException("Couldn't read a single line");
+            Catch::Generators::Detail::throw_generator_exception("Couldn't read a single line");
         }
     }
 

@@ -65,7 +65,7 @@ namespace Generators {
                 // filter. In that case we throw an exception.
                 auto has_initial_value = next();
                 if (!has_initial_value) {
-                    Catch::throw_exception(GeneratorException("No valid value found in filtered generator"));
+                    Detail::throw_generator_exception("No valid value found in filtered generator");
                 }
             }
         }
@@ -202,7 +202,7 @@ namespace Generators {
                 m_chunk.push_back(m_generator.get());
                 for (size_t i = 1; i < m_chunk_size; ++i) {
                     if (!m_generator.next()) {
-                        Catch::throw_exception(GeneratorException("Not enough values to initialize the first chunk"));
+                        Detail::throw_generator_exception("Not enough values to initialize the first chunk");
                     }
                     m_chunk.push_back(m_generator.get());
                 }

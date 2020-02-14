@@ -6,7 +6,8 @@
  */
 
 #include <catch2/catch_generators.hpp>
-#include <catch2/catch_random_number_generator.h>
+#include <catch2/catch_enforce.h>
+#include <catch2/catch_generator_exception.hpp>
 #include <catch2/catch_interfaces_capture.h>
 
 #include <limits>
@@ -16,11 +17,15 @@ namespace Catch {
 
 IGeneratorTracker::~IGeneratorTracker() {}
 
-const char* GeneratorException::what() const noexcept {
-    return m_msg;
-}
-
 namespace Generators {
+
+namespace Detail {
+
+    [[noreturn]]
+    void throw_generator_exception(char const* msg) {
+        Catch::throw_exception(GeneratorException{ msg });
+    }
+} // end namespace Detail
 
     GeneratorUntypedBase::~GeneratorUntypedBase() {}
 
