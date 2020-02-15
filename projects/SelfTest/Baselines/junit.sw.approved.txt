@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuitesloose text artifact
 >
-  <testsuite name="<exe-name>" errors="17" failures="132" tests="1684" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
+  <testsuite name="<exe-name>" errors="17" failures="132" tests="1694" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
     <properties>
       <property name="filters" value="~[!nonportable]~[!benchmark]~[approvals]"/>
       <property name="random-seed" value="1"/>
@@ -1004,6 +1004,8 @@ Message.tests.cpp:<line number>
     <testcase classname="<exe-name>.global" name="Process can be configured on command line/abort/-a aborts after first failure" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Process can be configured on command line/abort/-x 2 aborts after two failures" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Process can be configured on command line/abort/-x must be numeric" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="Process can be configured on command line/abort/wait-for-keypress/Accepted options" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="Process can be configured on command line/abort/wait-for-keypress/invalid options are reported" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Process can be configured on command line/nothrow/-e" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Process can be configured on command line/nothrow/--nothrow" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Process can be configured on command line/output filename/-o filename" time="{duration}"/>

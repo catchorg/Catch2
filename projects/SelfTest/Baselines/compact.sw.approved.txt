@@ -1088,6 +1088,16 @@ CmdLine.tests.cpp:<line number>: passed: cli.parse({"test", "-x", "2"}) for: {?}
 CmdLine.tests.cpp:<line number>: passed: config.abortAfter == 2 for: 2 == 2
 CmdLine.tests.cpp:<line number>: passed: !result for: true
 CmdLine.tests.cpp:<line number>: passed: result.errorMessage(), Contains("convert") && Contains("oops") for: "Unable to convert 'oops' to destination type" ( contains: "convert" and contains: "oops" )
+CmdLine.tests.cpp:<line number>: passed: cli.parse({"test", "--wait-for-keypress", std::get<0>(input)}) for: {?}
+CmdLine.tests.cpp:<line number>: passed: config.waitForKeypress == std::get<1>(input) for: 0 == 0
+CmdLine.tests.cpp:<line number>: passed: cli.parse({"test", "--wait-for-keypress", std::get<0>(input)}) for: {?}
+CmdLine.tests.cpp:<line number>: passed: config.waitForKeypress == std::get<1>(input) for: 1 == 1
+CmdLine.tests.cpp:<line number>: passed: cli.parse({"test", "--wait-for-keypress", std::get<0>(input)}) for: {?}
+CmdLine.tests.cpp:<line number>: passed: config.waitForKeypress == std::get<1>(input) for: 2 == 2
+CmdLine.tests.cpp:<line number>: passed: cli.parse({"test", "--wait-for-keypress", std::get<0>(input)}) for: {?}
+CmdLine.tests.cpp:<line number>: passed: config.waitForKeypress == std::get<1>(input) for: 3 == 3
+CmdLine.tests.cpp:<line number>: passed: !result for: true
+CmdLine.tests.cpp:<line number>: passed: result.errorMessage(), Contains("never") && Contains("both") for: "keypress argument must be one of: never, start, exit or both. 'sometimes' not recognised" ( contains: "never" and contains: "both" )
 CmdLine.tests.cpp:<line number>: passed: cli.parse({"test", "-e"}) for: {?}
 CmdLine.tests.cpp:<line number>: passed: config.noThrow for: true
 CmdLine.tests.cpp:<line number>: passed: cli.parse({"test", "--nothrow"}) for: {?}

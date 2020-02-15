@@ -7836,6 +7836,102 @@ with expansion:
 
 -------------------------------------------------------------------------------
 Process can be configured on command line
+  abort
+  wait-for-keypress
+  Accepted options
+-------------------------------------------------------------------------------
+CmdLine.tests.cpp:<line number>
+...............................................................................
+
+CmdLine.tests.cpp:<line number>: PASSED:
+  CHECK( cli.parse({"test", "--wait-for-keypress", std::get<0>(input)}) )
+with expansion:
+  {?}
+
+CmdLine.tests.cpp:<line number>: PASSED:
+  REQUIRE( config.waitForKeypress == std::get<1>(input) )
+with expansion:
+  0 == 0
+
+-------------------------------------------------------------------------------
+Process can be configured on command line
+  abort
+  wait-for-keypress
+  Accepted options
+-------------------------------------------------------------------------------
+CmdLine.tests.cpp:<line number>
+...............................................................................
+
+CmdLine.tests.cpp:<line number>: PASSED:
+  CHECK( cli.parse({"test", "--wait-for-keypress", std::get<0>(input)}) )
+with expansion:
+  {?}
+
+CmdLine.tests.cpp:<line number>: PASSED:
+  REQUIRE( config.waitForKeypress == std::get<1>(input) )
+with expansion:
+  1 == 1
+
+-------------------------------------------------------------------------------
+Process can be configured on command line
+  abort
+  wait-for-keypress
+  Accepted options
+-------------------------------------------------------------------------------
+CmdLine.tests.cpp:<line number>
+...............................................................................
+
+CmdLine.tests.cpp:<line number>: PASSED:
+  CHECK( cli.parse({"test", "--wait-for-keypress", std::get<0>(input)}) )
+with expansion:
+  {?}
+
+CmdLine.tests.cpp:<line number>: PASSED:
+  REQUIRE( config.waitForKeypress == std::get<1>(input) )
+with expansion:
+  2 == 2
+
+-------------------------------------------------------------------------------
+Process can be configured on command line
+  abort
+  wait-for-keypress
+  Accepted options
+-------------------------------------------------------------------------------
+CmdLine.tests.cpp:<line number>
+...............................................................................
+
+CmdLine.tests.cpp:<line number>: PASSED:
+  CHECK( cli.parse({"test", "--wait-for-keypress", std::get<0>(input)}) )
+with expansion:
+  {?}
+
+CmdLine.tests.cpp:<line number>: PASSED:
+  REQUIRE( config.waitForKeypress == std::get<1>(input) )
+with expansion:
+  3 == 3
+
+-------------------------------------------------------------------------------
+Process can be configured on command line
+  abort
+  wait-for-keypress
+  invalid options are reported
+-------------------------------------------------------------------------------
+CmdLine.tests.cpp:<line number>
+...............................................................................
+
+CmdLine.tests.cpp:<line number>: PASSED:
+  CHECK( !result )
+with expansion:
+  true
+
+CmdLine.tests.cpp:<line number>: PASSED:
+  REQUIRE_THAT( result.errorMessage(), Contains("never") && Contains("both") )
+with expansion:
+  "keypress argument must be one of: never, start, exit or both. 'sometimes'
+  not recognised" ( contains: "never" and contains: "both" )
+
+-------------------------------------------------------------------------------
+Process can be configured on command line
   nothrow
   -e
 -------------------------------------------------------------------------------
@@ -13321,5 +13417,5 @@ Misc.tests.cpp:<line number>: PASSED:
 
 ===============================================================================
 test cases:  306 |  216 passed |  86 failed |  4 failed as expected
-assertions: 1683 | 1514 passed | 148 failed | 21 failed as expected
+assertions: 1693 | 1524 passed | 148 failed | 21 failed as expected
 

@@ -414,7 +414,31 @@ TEST_CASE( "Process can be configured on command line", "[config][command-line]"
             REQUIRE_THAT(result.errorMessage(), Contains("convert") && Contains("oops"));
 #endif
         }
+
+     SECTION("wait-for-keypress") {
+        SECTION("Accepted options") {
+            using tuple_type = std::tuple<char const*, Catch::WaitForKeypress::When>;
+            auto input = GENERATE(table<char const*, Catch::WaitForKeypress::When>({
+                tuple_type{"never", Catch::WaitForKeypress::Never},
+                tuple_type{"start", Catch::WaitForKeypress::BeforeStart},
+                tuple_type{"exit",  Catch::WaitForKeypress::BeforeExit},
+                tuple_type{"both",  Catch::WaitForKeypress::BeforeStartAndExit},
+            }));
+            CHECK(cli.parse({"test", "--wait-for-keypress", std::get<0>(input)}));
+
+            REQUIRE(config.waitForKeypress == std::get<1>(input));
+        }
+
+        SECTION("invalid options are reported") {
+            auto result = cli.parse({"test", "--wait-for-keypress", "sometimes"});
+            CHECK(!result);
+
+#ifndef CATCH_CONFIG_DISABLE_MATCHERS
+            REQUIRE_THAT(result.errorMessage(), Contains("never") && Contains("both"));
+#endif
+        }
     }
+   }
 
     SECTION("nothrow") {
         SECTION("-e") {
