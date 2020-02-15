@@ -416,10 +416,16 @@ TEST_CASE( "Process can be configured on command line", "[config][command-line]"
         }
 
      SECTION("wait-for-keypress") {
-        SECTION("never is an accepted option") {
-            CHECK(cli.parse({"test", "--wait-for-keypress", "never"}));
+        SECTION("Accepted options") {
+            auto input = GENERATE(table<char const*, Catch::WaitForKeypress::When>({
+                {"never", Catch::WaitForKeypress::Never},
+                {"start", Catch::WaitForKeypress::BeforeStart},
+                {"exit",  Catch::WaitForKeypress::BeforeExit},
+                {"both",  Catch::WaitForKeypress::BeforeStartAndExit},
+            }));
+            CHECK(cli.parse({"test", "--wait-for-keypress", std::get<0>(input)}));
 
-            REQUIRE(config.waitForKeypress == Catch::WaitForKeypress::Never);
+            REQUIRE(config.waitForKeypress == std::get<1>(input));
         }
 
         SECTION("invalid options are reported") {

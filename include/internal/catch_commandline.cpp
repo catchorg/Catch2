@@ -91,10 +91,10 @@ namespace Catch {
             };
         auto const setWaitForKeypress = [&]( std::string const& keypress ) {
                 auto keypressLc = toLower( keypress );
-                if( keypressLc == "start" )
-                    config.waitForKeypress = WaitForKeypress::BeforeStart;
-                else if( keypressLc == "never" )
+                if (keypressLc == "never")
                     config.waitForKeypress = WaitForKeypress::Never;
+                else if( keypressLc == "start" )
+                    config.waitForKeypress = WaitForKeypress::BeforeStart;
                 else if( keypressLc == "exit" )
                     config.waitForKeypress = WaitForKeypress::BeforeExit;
                 else if( keypressLc == "both" )
