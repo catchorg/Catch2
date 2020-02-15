@@ -52,6 +52,8 @@
     <testCase name="Process can be configured on command line/abort/-a aborts after first failure" duration="{duration}"/>
     <testCase name="Process can be configured on command line/abort/-x 2 aborts after two failures" duration="{duration}"/>
     <testCase name="Process can be configured on command line/abort/-x must be numeric" duration="{duration}"/>
+    <testCase name="Process can be configured on command line/abort/wait-for-keypress/Accepted options" duration="{duration}"/>
+    <testCase name="Process can be configured on command line/abort/wait-for-keypress/invalid options are reported" duration="{duration}"/>
     <testCase name="Process can be configured on command line/nothrow/-e" duration="{duration}"/>
     <testCase name="Process can be configured on command line/nothrow/--nothrow" duration="{duration}"/>
     <testCase name="Process can be configured on command line/output filename/-o filename" duration="{duration}"/>

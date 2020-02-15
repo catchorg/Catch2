@@ -2171,6 +2171,26 @@ ok {test-number} - !result for: true
 # Process can be configured on command line
 ok {test-number} - result.errorMessage(), Contains("convert") && Contains("oops") for: "Unable to convert 'oops' to destination type" ( contains: "convert" and contains: "oops" )
 # Process can be configured on command line
+ok {test-number} - cli.parse({"test", "--wait-for-keypress", std::get<0>(input)}) for: {?}
+# Process can be configured on command line
+ok {test-number} - config.waitForKeypress == std::get<1>(input) for: 0 == 0
+# Process can be configured on command line
+ok {test-number} - cli.parse({"test", "--wait-for-keypress", std::get<0>(input)}) for: {?}
+# Process can be configured on command line
+ok {test-number} - config.waitForKeypress == std::get<1>(input) for: 1 == 1
+# Process can be configured on command line
+ok {test-number} - cli.parse({"test", "--wait-for-keypress", std::get<0>(input)}) for: {?}
+# Process can be configured on command line
+ok {test-number} - config.waitForKeypress == std::get<1>(input) for: 2 == 2
+# Process can be configured on command line
+ok {test-number} - cli.parse({"test", "--wait-for-keypress", std::get<0>(input)}) for: {?}
+# Process can be configured on command line
+ok {test-number} - config.waitForKeypress == std::get<1>(input) for: 3 == 3
+# Process can be configured on command line
+ok {test-number} - !result for: true
+# Process can be configured on command line
+ok {test-number} - result.errorMessage(), Contains("never") && Contains("both") for: "keypress argument must be one of: never, start, exit or both. 'sometimes' not recognised" ( contains: "never" and contains: "both" )
+# Process can be configured on command line
 ok {test-number} - cli.parse({"test", "-e"}) for: {?}
 # Process can be configured on command line
 ok {test-number} - config.noThrow for: true
@@ -3688,5 +3708,5 @@ ok {test-number} - q3 == 23. for: 23.0 == 23.0
 ok {test-number} -
 # xmlentitycheck
 ok {test-number} -
-1..1840
+1..1850
 

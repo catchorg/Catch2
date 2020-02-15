@@ -10092,6 +10092,131 @@ Nor would this
         </Section>
         <OverallResults successes="2" failures="0" expectedFailures="0"/>
       </Section>
+      <Section name="abort" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
+        <Section name="wait-for-keypress" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
+          <Section name="Accepted options" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
+            <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
+              <Original>
+                cli.parse({"test", "--wait-for-keypress", std::get&lt;0>(input)})
+              </Original>
+              <Expanded>
+                {?}
+              </Expanded>
+            </Expression>
+            <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
+              <Original>
+                config.waitForKeypress == std::get&lt;1>(input)
+              </Original>
+              <Expanded>
+                0 == 0
+              </Expanded>
+            </Expression>
+            <OverallResults successes="2" failures="0" expectedFailures="0"/>
+          </Section>
+          <OverallResults successes="2" failures="0" expectedFailures="0"/>
+        </Section>
+        <OverallResults successes="2" failures="0" expectedFailures="0"/>
+      </Section>
+      <Section name="abort" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
+        <Section name="wait-for-keypress" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
+          <Section name="Accepted options" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
+            <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
+              <Original>
+                cli.parse({"test", "--wait-for-keypress", std::get&lt;0>(input)})
+              </Original>
+              <Expanded>
+                {?}
+              </Expanded>
+            </Expression>
+            <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
+              <Original>
+                config.waitForKeypress == std::get&lt;1>(input)
+              </Original>
+              <Expanded>
+                1 == 1
+              </Expanded>
+            </Expression>
+            <OverallResults successes="2" failures="0" expectedFailures="0"/>
+          </Section>
+          <OverallResults successes="2" failures="0" expectedFailures="0"/>
+        </Section>
+        <OverallResults successes="2" failures="0" expectedFailures="0"/>
+      </Section>
+      <Section name="abort" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
+        <Section name="wait-for-keypress" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
+          <Section name="Accepted options" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
+            <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
+              <Original>
+                cli.parse({"test", "--wait-for-keypress", std::get&lt;0>(input)})
+              </Original>
+              <Expanded>
+                {?}
+              </Expanded>
+            </Expression>
+            <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
+              <Original>
+                config.waitForKeypress == std::get&lt;1>(input)
+              </Original>
+              <Expanded>
+                2 == 2
+              </Expanded>
+            </Expression>
+            <OverallResults successes="2" failures="0" expectedFailures="0"/>
+          </Section>
+          <OverallResults successes="2" failures="0" expectedFailures="0"/>
+        </Section>
+        <OverallResults successes="2" failures="0" expectedFailures="0"/>
+      </Section>
+      <Section name="abort" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
+        <Section name="wait-for-keypress" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
+          <Section name="Accepted options" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
+            <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
+              <Original>
+                cli.parse({"test", "--wait-for-keypress", std::get&lt;0>(input)})
+              </Original>
+              <Expanded>
+                {?}
+              </Expanded>
+            </Expression>
+            <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
+              <Original>
+                config.waitForKeypress == std::get&lt;1>(input)
+              </Original>
+              <Expanded>
+                3 == 3
+              </Expanded>
+            </Expression>
+            <OverallResults successes="2" failures="0" expectedFailures="0"/>
+          </Section>
+          <OverallResults successes="2" failures="0" expectedFailures="0"/>
+        </Section>
+        <OverallResults successes="2" failures="0" expectedFailures="0"/>
+      </Section>
+      <Section name="abort" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
+        <Section name="wait-for-keypress" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
+          <Section name="invalid options are reported" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
+            <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
+              <Original>
+                !result
+              </Original>
+              <Expanded>
+                true
+              </Expanded>
+            </Expression>
+            <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
+              <Original>
+                result.errorMessage(), Contains("never") &amp;&amp; Contains("both")
+              </Original>
+              <Expanded>
+                "keypress argument must be one of: never, start, exit or both. 'sometimes' not recognised" ( contains: "never" and contains: "both" )
+              </Expanded>
+            </Expression>
+            <OverallResults successes="2" failures="0" expectedFailures="0"/>
+          </Section>
+          <OverallResults successes="2" failures="0" expectedFailures="0"/>
+        </Section>
+        <OverallResults successes="2" failures="0" expectedFailures="0"/>
+      </Section>
       <Section name="nothrow" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
         <Section name="-e" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
           <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
@@ -17158,7 +17283,7 @@ loose text artifact
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="1679" failures="149" expectedFailures="21"/>
+    <OverallResults successes="1689" failures="149" expectedFailures="21"/>
   </Group>
-  <OverallResults successes="1679" failures="148" expectedFailures="21"/>
+  <OverallResults successes="1689" failures="148" expectedFailures="21"/>
 </Catch>

@@ -271,7 +271,7 @@ See [The LibIdentify repo for more information and examples](https://github.com/
 
 <a id="wait-for-keypress"></a>
 ## Wait for key before continuing
-<pre>--wait-for-keypress &lt;start|exit|both&gt;</pre>
+<pre>--wait-for-keypress &lt;never|start|exit|both&gt;</pre>
 
 Will cause the executable to print a message and wait until the return/ enter key is pressed before continuing -
 either before running any tests, after running all tests - or both, depending on the argument.
