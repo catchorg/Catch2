@@ -26,8 +26,10 @@ namespace Catch {
         #define CATCH_TRAP()  __asm__("int $3")
     #elif defined(__aarch64__)
         #define CATCH_TRAP()  __asm__(".inst 0xd4200000")
-    #elif defined(__arm__)
+    #elif defined(__arm__) && !defined(__thumb__)
         #define CATCH_TRAP()  __asm__(".inst 0xe7f001f0")
+    #elif defined(__arm__) &&  defined(__thumb__)
+        #define CATCH_TRAP()  __asm__(".inst 0xde01")
     #endif
 
 #elif defined(CATCH_PLATFORM_LINUX)
