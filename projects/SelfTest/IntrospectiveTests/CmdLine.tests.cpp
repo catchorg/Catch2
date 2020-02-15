@@ -417,11 +417,12 @@ TEST_CASE( "Process can be configured on command line", "[config][command-line]"
 
      SECTION("wait-for-keypress") {
         SECTION("Accepted options") {
+            using tuple_type = std::tuple<char const*, Catch::WaitForKeypress::When>;
             auto input = GENERATE(table<char const*, Catch::WaitForKeypress::When>({
-                {"never", Catch::WaitForKeypress::Never},
-                {"start", Catch::WaitForKeypress::BeforeStart},
-                {"exit",  Catch::WaitForKeypress::BeforeExit},
-                {"both",  Catch::WaitForKeypress::BeforeStartAndExit},
+                tuple_type{"never", Catch::WaitForKeypress::Never},
+                tuple_type{"start", Catch::WaitForKeypress::BeforeStart},
+                tuple_type{"exit",  Catch::WaitForKeypress::BeforeExit},
+                tuple_type{"both",  Catch::WaitForKeypress::BeforeStartAndExit},
             }));
             CHECK(cli.parse({"test", "--wait-for-keypress", std::get<0>(input)}));
 
