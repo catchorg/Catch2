@@ -9,10 +9,12 @@
 #include <catch2/catch_matchers_generic.hpp>
 #include <catch2/catch_matchers_string.h>
 #include <catch2/catch_matchers_vector.h>
+#include <catch2/catch_matchers_templates.hpp>
 
-#include <sstream>
 #include <algorithm>
 #include <cmath>
+#include <list>
+#include <sstream>
 
 #ifdef __clang__
 #pragma clang diagnostic push
@@ -553,6 +555,302 @@ namespace { namespace MatchersTests {
             REQUIRE_THROWS_MATCHES(throwsSpecialException(2), SpecialException, !Message("DerivedException::what"));
             REQUIRE_THROWS_MATCHES(throwsSpecialException(2), SpecialException,  Message("SpecialException::what"));
         }
+
+
+    template<typename Range>
+    struct EqualsRangeMatcher : Catch::MatcherGenericBase {
+
+        EqualsRangeMatcher(Range const& range) : range{ range } {}
+
+        template<typename OtherRange>
+        bool match(OtherRange const& other) const {
+            using std::begin;
+            using std::end;
+
+            return std::equal(begin(range), end(range), begin(other), end(other));
+        }
+
+        std::string describe() const override {
+            return "Equals: " + Catch::rangeToString(range);
+        }
+
+    private:
+        Range const& range;
+    };
+
+    template<typename Range>
+    auto EqualsRange(const Range& range) -> EqualsRangeMatcher<Range> {
+        return EqualsRangeMatcher<Range>{range};
+    }
+
+    TEST_CASE("Combining templated matchers", "[matchers][templated]") {
+        std::array<int, 3> container{{ 1,2,3 }};
+
+        std::array<int, 3> a{{ 1,2,3 }};
+        std::vector<int> b{ 0,1,2 };
+        std::list<int> c{ 4,5,6 };
+
+        REQUIRE_THAT(container, EqualsRange(a) || EqualsRange(b) || EqualsRange(c));
+    }
+
+    TEST_CASE("Combining templated and concrete matchers", "[matchers][templated]") {
+        using namespace Catch::Matchers;
+        std::vector<int> vec{ 1, 3, 5 };
+
+        std::array<int, 3> a{{ 5, 3, 1 }};
+
+        REQUIRE_THAT(vec,
+                    Predicate<std::vector<int>>([](auto const& vec) {
+                        return std::all_of(vec.begin(), vec.end(), [](int elem) {
+                            return elem % 2 == 1;
+                        });
+                    }, "All elements are odd") &&
+                    !EqualsRange(a));
+
+        const std::string str = "foobar";
+        const std::array<char, 6> arr{{ 'f', 'o', 'o', 'b', 'a', 'r' }};
+        const std::array<char, 6> bad_arr{{ 'o', 'o', 'f', 'b', 'a', 'r' }};
+
+        using Catch::Matchers::StartsWith;
+        using Catch::Matchers::EndsWith;
+
+        REQUIRE_THAT(str, StartsWith("foo") && EqualsRange(arr) && EndsWith("bar"));
+        REQUIRE_THAT(str, StartsWith("foo") && !EqualsRange(bad_arr) && EndsWith("bar"));
+
+        REQUIRE_THAT(str, EqualsRange(arr) && StartsWith("foo") && EndsWith("bar"));
+        REQUIRE_THAT(str, !EqualsRange(bad_arr) && StartsWith("foo") && EndsWith("bar"));
+
+        REQUIRE_THAT(str, EqualsRange(bad_arr) || (StartsWith("foo") && EndsWith("bar")));
+        REQUIRE_THAT(str, (StartsWith("foo") && EndsWith("bar")) || EqualsRange(bad_arr));
+    }
+
+    TEST_CASE("Combining concrete matchers does not use templated matchers", "[matchers][templated]") {
+        using Catch::Matchers::StartsWith;
+        using Catch::Matchers::EndsWith;
+
+        STATIC_REQUIRE(std::is_same<
+            decltype(StartsWith("foo") || (StartsWith("bar") && EndsWith("bar") && !EndsWith("foo"))),
+            Catch::Matchers::Impl::MatchAnyOf<std::string>
+        >::value);
+    }
+
+    struct MatcherA : Catch::MatcherGenericBase {
+        std::string describe() const override { return "equals: (int) 1 or (float) 1.0f"; }
+        bool match(int i) const { return i == 1; }
+        bool match(float f) const { return f == 1.0f; }
+    };
+
+    struct MatcherB : Catch::MatcherGenericBase {
+        std::string describe() const override { return "equals: (long long) 1"; }
+        bool match(long long l) const { return l == 1ll; }
+    };
+
+    struct MatcherC : Catch::MatcherGenericBase {
+        std::string describe() const override { return "equals: (T) 1"; }
+        template<typename T>
+        bool match(T t) const { return t == T{1}; }
+    };
+
+    struct MatcherD : Catch::MatcherGenericBase {
+        std::string describe() const override { return "equals: true"; }
+        bool match(bool b) const { return b == true; }
+    };
+
+    TEST_CASE("Combining only templated matchers", "[matchers][templated]") {
+        STATIC_REQUIRE(std::is_same<
+            decltype(MatcherA() || MatcherB()),
+            Catch::Matchers::Impl::MatchAnyOfGeneric<MatcherA, MatcherB>
+        >::value);
+
+        REQUIRE_THAT(1, MatcherA() || MatcherB());
+
+        STATIC_REQUIRE(std::is_same<
+            decltype(MatcherA() && MatcherB()),
+            Catch::Matchers::Impl::MatchAllOfGeneric<MatcherA, MatcherB>
+        >::value);
+
+        REQUIRE_THAT(1, MatcherA() && MatcherB());
+
+        STATIC_REQUIRE(std::is_same<
+            decltype(MatcherA() || !MatcherB()),
+            Catch::Matchers::Impl::MatchAnyOfGeneric<MatcherA, Catch::Matchers::Impl::MatchNotOfGeneric<MatcherB>>
+        >::value);
+
+        REQUIRE_THAT(1, MatcherA() || !MatcherB());
+    }
+
+    TEST_CASE("Combining MatchAnyOfGeneric does not nest", "[matchers][templated]") {
+        STATIC_REQUIRE(std::is_same<
+            decltype(MatcherA() || MatcherB() || MatcherC()),
+            Catch::Matchers::Impl::MatchAnyOfGeneric<MatcherA, MatcherB, MatcherC>
+        >::value);
+
+        REQUIRE_THAT(1, MatcherA() || MatcherB() || MatcherC());
+
+        STATIC_REQUIRE(std::is_same<
+            decltype(MatcherA() || MatcherB() || MatcherC() || MatcherD()),
+            Catch::Matchers::Impl::MatchAnyOfGeneric<MatcherA, MatcherB, MatcherC, MatcherD>
+        >::value);
+
+        REQUIRE_THAT(1, MatcherA() || MatcherB() || MatcherC() || MatcherD());
+    }
+
+    TEST_CASE("Combining MatchAllOfGeneric does not nest", "[matchers][templated]") {
+        STATIC_REQUIRE(std::is_same<
+            decltype(MatcherA() && MatcherB() && MatcherC()),
+            Catch::Matchers::Impl::MatchAllOfGeneric<MatcherA, MatcherB, MatcherC>
+        >::value);
+
+        REQUIRE_THAT(1, MatcherA() && MatcherB() && MatcherC());
+
+        STATIC_REQUIRE(std::is_same<
+            decltype(MatcherA() && MatcherB() && MatcherC() && MatcherD()),
+            Catch::Matchers::Impl::MatchAllOfGeneric<MatcherA, MatcherB, MatcherC, MatcherD>
+        >::value);
+
+        REQUIRE_THAT(1, MatcherA() && MatcherB() && MatcherC() && MatcherD());
+    }
+
+    TEST_CASE("Combining MatchNotOfGeneric does not nest", "[matchers][templated]") {
+        STATIC_REQUIRE(std::is_same<
+            decltype(!MatcherA()),
+            Catch::Matchers::Impl::MatchNotOfGeneric<MatcherA>
+        >::value);
+
+        REQUIRE_THAT(0, !MatcherA());
+
+        STATIC_REQUIRE(std::is_same<
+            decltype(!!MatcherA()),
+            MatcherA const&
+        >::value);
+
+        REQUIRE_THAT(1, !!MatcherA());
+
+        STATIC_REQUIRE(std::is_same<
+            decltype(!!!MatcherA()),
+            Catch::Matchers::Impl::MatchNotOfGeneric<MatcherA>
+        >::value);
+
+        REQUIRE_THAT(0, !!!MatcherA());
+
+        STATIC_REQUIRE(std::is_same<
+            decltype(!!!!MatcherA()),
+            MatcherA const &
+        >::value);
+
+        REQUIRE_THAT(1, !!!!MatcherA());
+    }
+
+    struct EvilAddressOfOperatorUsed : std::exception {
+        EvilAddressOfOperatorUsed() {}
+        const char* what() const noexcept override {
+            return "overloaded address-of operator of matcher was used instead of std::addressof";
+        }
+    };
+
+    struct EvilCommaOperatorUsed : std::exception {
+        EvilCommaOperatorUsed() {}
+        const char* what() const noexcept override {
+            return "overloaded comma operator of matcher was used";
+        }
+    };
+
+    struct EvilMatcher : Catch::MatcherGenericBase {
+        std::string describe() const override {
+            return "equals: 45";
+        }
+
+        bool match(int i) const {
+            return i == 45;
+        }
+
+        EvilMatcher const* operator& () const {
+            throw EvilAddressOfOperatorUsed();
+        }
+
+        int operator,(EvilMatcher const&) const {
+            throw EvilCommaOperatorUsed();
+        }
+    };
+
+    TEST_CASE("Overloaded comma or address-of operators are not used", "[matchers][templated]") {
+        REQUIRE_THROWS_AS((EvilMatcher(), EvilMatcher()), EvilCommaOperatorUsed);
+        REQUIRE_THROWS_AS(&EvilMatcher(), EvilAddressOfOperatorUsed);
+        REQUIRE_NOTHROW(EvilMatcher() || EvilMatcher() && !EvilMatcher());
+        REQUIRE_NOTHROW((EvilMatcher() && EvilMatcher()) || !EvilMatcher());
+    }
+
+    struct ImmovableMatcher : Catch::MatcherGenericBase {
+        ImmovableMatcher() = default;
+        ImmovableMatcher(ImmovableMatcher const&) = delete;
+        ImmovableMatcher(ImmovableMatcher &&) = delete;
+        ImmovableMatcher& operator=(ImmovableMatcher const&) = delete;
+        ImmovableMatcher& operator=(ImmovableMatcher &&) = delete;
+
+        std::string describe() const override {
+            return "always false";
+        }
+
+        template<typename T>
+        bool match(T&&) const {
+            return false;
+        }
+    };
+
+    struct MatcherWasMovedOrCopied : std::exception {
+        MatcherWasMovedOrCopied() {}
+        const char* what() const noexcept override {
+            return "attempted to copy or move a matcher";
+        }
+    };
+
+    struct ThrowOnCopyOrMoveMatcher : Catch::MatcherGenericBase {
+        ThrowOnCopyOrMoveMatcher() = default;
+        [[noreturn]]
+        ThrowOnCopyOrMoveMatcher(ThrowOnCopyOrMoveMatcher const&) {
+            throw MatcherWasMovedOrCopied();
+        }
+        [[noreturn]]
+        ThrowOnCopyOrMoveMatcher(ThrowOnCopyOrMoveMatcher &&) {
+            throw MatcherWasMovedOrCopied();
+        }
+        ThrowOnCopyOrMoveMatcher& operator=(ThrowOnCopyOrMoveMatcher const&) {
+            throw MatcherWasMovedOrCopied();
+        }
+        ThrowOnCopyOrMoveMatcher& operator=(ThrowOnCopyOrMoveMatcher &&) {
+            throw MatcherWasMovedOrCopied();
+        }
+
+        std::string describe() const override {
+            return "always false";
+        }
+
+        template<typename T>
+        bool match(T&&) const {
+            return false;
+        }
+    };
+
+    TEST_CASE("Matchers are not moved or copied", "[matchers][templated][approvals]") {
+        REQUIRE_NOTHROW((ThrowOnCopyOrMoveMatcher() && ThrowOnCopyOrMoveMatcher()) || !ThrowOnCopyOrMoveMatcher());
+    }
+
+    TEST_CASE("Immovable matchers can be used", "[matchers][templated][approvals]") {
+        REQUIRE_THAT(123, (ImmovableMatcher() && ImmovableMatcher()) || !ImmovableMatcher());
+    }
+
+    struct ReferencingMatcher : Catch::MatcherGenericBase {
+        std::string describe() const override {
+            return "takes reference";
+        }
+        bool match(int& i) const {
+            return i == 22;
+        }
+    };
+
+    TEST_CASE("Matchers can take references", "[matchers][templated][approvals]") {
+        REQUIRE_THAT(22, ReferencingMatcher{});
+    }
 
 } } // namespace MatchersTests
 

@@ -85,6 +85,13 @@ Nor would this
 :test-result: PASS CAPTURE parses string and character constants
 :test-result: PASS Capture and info messages
 :test-result: PASS Character pretty printing
+:test-result: PASS Combining MatchAllOfGeneric does not nest
+:test-result: PASS Combining MatchAnyOfGeneric does not nest
+:test-result: PASS Combining MatchNotOfGeneric does not nest
+:test-result: PASS Combining concrete matchers does not use templated matchers
+:test-result: PASS Combining only templated matchers
+:test-result: PASS Combining templated and concrete matchers
+:test-result: PASS Combining templated matchers
 :test-result: PASS Commas in various macros are allowed
 :test-result: PASS Comparing function pointers
 :test-result: PASS Comparison ops
@@ -147,6 +154,7 @@ Nor would this
 :test-result: PASS Ordering comparison checks that should succeed
 :test-result: PASS Our PCG implementation provides expected results for known seeds
 :test-result: FAIL Output from all sections is reported
+:test-result: PASS Overloaded comma or address-of operators are not used
 :test-result: PASS Parse test names and tags
 :test-result: PASS Pointers can be compared to null
 :test-result: PASS Precision of floating point stringification can be set

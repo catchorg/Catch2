@@ -2417,6 +2417,179 @@ Nor would this
       </Section>
       <OverallResult success="true"/>
     </TestCase>
+    <TestCase name="Combining MatchAllOfGeneric does not nest" tags="[matchers][templated]" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
+      <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
+        <Original>
+          1, MatcherA() &amp;&amp; MatcherB() &amp;&amp; MatcherC()
+        </Original>
+        <Expanded>
+          1 ( equals: (int) 1 or (float) 1.0f and equals: (long long) 1 and equals: (T) 1 )
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
+        <Original>
+          1, MatcherA() &amp;&amp; MatcherB() &amp;&amp; MatcherC() &amp;&amp; MatcherD()
+        </Original>
+        <Expanded>
+          1 ( equals: (int) 1 or (float) 1.0f and equals: (long long) 1 and equals: (T) 1 and equals: true )
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="Combining MatchAnyOfGeneric does not nest" tags="[matchers][templated]" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
+      <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
+        <Original>
+          1, MatcherA() || MatcherB() || MatcherC()
+        </Original>
+        <Expanded>
+          1 ( equals: (int) 1 or (float) 1.0f or equals: (long long) 1 or equals: (T) 1 )
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
+        <Original>
+          1, MatcherA() || MatcherB() || MatcherC() || MatcherD()
+        </Original>
+        <Expanded>
+          1 ( equals: (int) 1 or (float) 1.0f or equals: (long long) 1 or equals: (T) 1 or equals: true )
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="Combining MatchNotOfGeneric does not nest" tags="[matchers][templated]" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
+      <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
+        <Original>
+          0, !MatcherA()
+        </Original>
+        <Expanded>
+          0 not equals: (int) 1 or (float) 1.0f
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
+        <Original>
+          1, !!MatcherA()
+        </Original>
+        <Expanded>
+          1 equals: (int) 1 or (float) 1.0f
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
+        <Original>
+          0, !!!MatcherA()
+        </Original>
+        <Expanded>
+          0 not equals: (int) 1 or (float) 1.0f
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
+        <Original>
+          1, !!!!MatcherA()
+        </Original>
+        <Expanded>
+          1 equals: (int) 1 or (float) 1.0f
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="Combining concrete matchers does not use templated matchers" tags="[matchers][templated]" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
+      <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="Combining only templated matchers" tags="[matchers][templated]" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
+      <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
+        <Original>
+          1, MatcherA() || MatcherB()
+        </Original>
+        <Expanded>
+          1 ( equals: (int) 1 or (float) 1.0f or equals: (long long) 1 )
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
+        <Original>
+          1, MatcherA() &amp;&amp; MatcherB()
+        </Original>
+        <Expanded>
+          1 ( equals: (int) 1 or (float) 1.0f and equals: (long long) 1 )
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
+        <Original>
+          1, MatcherA() || !MatcherB()
+        </Original>
+        <Expanded>
+          1 ( equals: (int) 1 or (float) 1.0f or not equals: (long long) 1 )
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="Combining templated and concrete matchers" tags="[matchers][templated]" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
+      <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
+        <Original>
+          vec, Predicate&lt;std::vector&lt;int>>([](auto const&amp; vec) { return std::all_of(vec.begin(), vec.end(), [](int elem) { return elem % 2 == 1; }); }, "All elements are odd") &amp;&amp; !EqualsRange(a)
+        </Original>
+        <Expanded>
+          { 1, 3, 5 } ( matches predicate: "All elements are odd" and not Equals: { 5, 3, 1 } )
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
+        <Original>
+          str, StartsWith("foo") &amp;&amp; EqualsRange(arr) &amp;&amp; EndsWith("bar")
+        </Original>
+        <Expanded>
+          "foobar" ( starts with: "foo" and Equals: { 'f', 'o', 'o', 'b', 'a', 'r' } and ends with: "bar" )
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
+        <Original>
+          str, StartsWith("foo") &amp;&amp; !EqualsRange(bad_arr) &amp;&amp; EndsWith("bar")
+        </Original>
+        <Expanded>
+          "foobar" ( starts with: "foo" and not Equals: { 'o', 'o', 'f', 'b', 'a', 'r' } and ends with: "bar" )
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
+        <Original>
+          str, EqualsRange(arr) &amp;&amp; StartsWith("foo") &amp;&amp; EndsWith("bar")
+        </Original>
+        <Expanded>
+          "foobar" ( Equals: { 'f', 'o', 'o', 'b', 'a', 'r' } and starts with: "foo" and ends with: "bar" )
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
+        <Original>
+          str, !EqualsRange(bad_arr) &amp;&amp; StartsWith("foo") &amp;&amp; EndsWith("bar")
+        </Original>
+        <Expanded>
+          "foobar" ( not Equals: { 'o', 'o', 'f', 'b', 'a', 'r' } and starts with: "foo" and ends with: "bar" )
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
+        <Original>
+          str, EqualsRange(bad_arr) || (StartsWith("foo") &amp;&amp; EndsWith("bar"))
+        </Original>
+        <Expanded>
+          "foobar" ( Equals: { 'o', 'o', 'f', 'b', 'a', 'r' } or ( starts with: "foo" and ends with: "bar" ) )
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
+        <Original>
+          str, (StartsWith("foo") &amp;&amp; EndsWith("bar")) || EqualsRange(bad_arr)
+        </Original>
+        <Expanded>
+          "foobar" ( ( starts with: "foo" and ends with: "bar" ) or Equals: { 'o', 'o', 'f', 'b', 'a', 'r' } )
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="Combining templated matchers" tags="[matchers][templated]" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
+      <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
+        <Original>
+          container, EqualsRange(a) || EqualsRange(b) || EqualsRange(c)
+        </Original>
+        <Expanded>
+          { 1, 2, 3 } ( Equals: { 1, 2, 3 } or Equals: { 0, 1, 2 } or Equals: { 4, 5, 6 } )
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
     <TestCase name="Commas in various macros are allowed" filename="tests/<exe-name>/UsageTests/Tricky.tests.cpp" >
       <Expression success="true" type="REQUIRE_THROWS" filename="tests/<exe-name>/UsageTests/Tricky.tests.cpp" >
         <Original>
@@ -8024,6 +8197,41 @@ Nor would this
         <OverallResults successes="0" failures="1" expectedFailures="0"/>
       </Section>
       <OverallResult success="false"/>
+    </TestCase>
+    <TestCase name="Overloaded comma or address-of operators are not used" tags="[matchers][templated]" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
+      <Expression success="true" type="REQUIRE_THROWS_AS" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
+        <Original>
+          (EvilMatcher(), EvilMatcher()), EvilCommaOperatorUsed
+        </Original>
+        <Expanded>
+          (EvilMatcher(), EvilMatcher()), EvilCommaOperatorUsed
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE_THROWS_AS" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
+        <Original>
+          &amp;EvilMatcher(), EvilAddressOfOperatorUsed
+        </Original>
+        <Expanded>
+          &amp;EvilMatcher(), EvilAddressOfOperatorUsed
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE_NOTHROW" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
+        <Original>
+          EvilMatcher() || EvilMatcher() &amp;&amp; !EvilMatcher()
+        </Original>
+        <Expanded>
+          EvilMatcher() || EvilMatcher() &amp;&amp; !EvilMatcher()
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE_NOTHROW" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
+        <Original>
+          (EvilMatcher() &amp;&amp; EvilMatcher()) || !EvilMatcher()
+        </Original>
+        <Expanded>
+          (EvilMatcher() &amp;&amp; EvilMatcher()) || !EvilMatcher()
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
     </TestCase>
     <TestCase name="Parse test names and tags" tags="[command-line][test-spec]" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
       <Section name="Empty test spec should have no filters" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
@@ -16909,7 +17117,7 @@ loose text artifact
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="1640" failures="149" expectedFailures="21"/>
+    <OverallResults successes="1675" failures="149" expectedFailures="21"/>
   </Group>
-  <OverallResults successes="1640" failures="148" expectedFailures="21"/>
+  <OverallResults successes="1675" failures="148" expectedFailures="21"/>
 </Catch>
