@@ -2,6 +2,7 @@
 
 # Release notes
 **Contents**<br>
+[2.11.1](#2111)<br>
 [2.11.0](#2110)<br>
 [2.10.2](#2102)<br>
 [2.10.1](#2101)<br>
@@ -62,6 +63,22 @@
   * If you do not want to use Matchers in a TU, do not include their header.
 * `CATCH_CONFIG_ENABLE_CHRONO_STRINGMAKER` no longer exists.
   * `StringMaker` specializations for <chrono> are always provided
+
+
+
+## 2.11.1
+
+### Improvements
+* Breaking into debugger is supported on iOS (#1817)
+* `google-build-using-namespace` clang-tidy warning is suppressed (#1799)
+
+### Fixes
+* Clang on Windows is no longer assumed to implement MSVC's traditional preprocessor (#1806)
+* `ObjectStorage` now behaves properly in `const` contexts (#1820)
+* `GENERATE_COPY(a, b)` now compiles properly (#1809, #1815)
+* Some more cleanups in the benchmarking support
+
+
 
 ## 2.11.0
 
