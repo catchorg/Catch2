@@ -90,11 +90,19 @@ target_compile_features(Catch2
     cxx_variadic_macros
 )
 
-target_include_directories(Catch2
-  INTERFACE
-    $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}/single_include>
-    $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
-)
+if (NOT_SUBPROJECT)
+  target_include_directories(Catch2
+    INTERFACE
+      $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}/single_include>
+      $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
+  )
+else()
+  target_include_directories(Catch2
+    SYSTEM INTERFACE
+      $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}/single_include>
+      $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
+  )
+endif()
 
 if (ANDROID)
     target_link_libraries(Catch2 INTERFACE log)
