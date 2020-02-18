@@ -142,13 +142,14 @@ if (MSVC)
     add_test(NAME WindowsHeader COMMAND WindowsHeader -r compact)
 endif()
 
-add_executable(DebugBreakMacros ${TESTS_DIR}/X12-CustomDebugBreakMacro.cpp)
-add_test(NAME DebugBreakMacros COMMAND DebugBreakMacros --break)
-set_tests_properties(
-    DebugBreakMacros
-  PROPERTIES
-    PASS_REGULAR_EXPRESSION "Pretty please, break into debugger"
-)
+#add_executable(DebugBreakMacros ${TESTS_DIR}/X12-CustomDebugBreakMacro.cpp)
+#target_link_libraries(DebugBreakMacros Catch2)
+#add_test(NAME DebugBreakMacros COMMAND DebugBreakMacros --break)
+#set_tests_properties(
+#    DebugBreakMacros
+#  PROPERTIES
+#    PASS_REGULAR_EXPRESSION "Pretty please, break into debugger"
+#)
 
 set( EXTRA_TEST_BINARIES
     PrefixedMacros
@@ -158,7 +159,7 @@ set( EXTRA_TEST_BINARIES
     FallbackStringifier
     DisableStringification
     BenchmarkingMacros
-    DebugBreakMacros
+#    DebugBreakMacros
 )
 
 # Shared config
