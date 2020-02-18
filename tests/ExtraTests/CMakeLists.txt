@@ -119,18 +119,6 @@ set_tests_properties(
 )
 
 
-add_executable(BenchmarkingMacros ${TESTS_DIR}/X20-BenchmarkingMacros.cpp)
-target_link_libraries( BenchmarkingMacros Catch2_buildall_interface )
-
-add_test(NAME BenchmarkingMacros COMMAND BenchmarkingMacros -r console -s)
-set_tests_properties(
-    BenchmarkingMacros
-  PROPERTIES
-    PASS_REGULAR_EXPRESSION "benchmark name                                  samples       iterations    estimated"
-    COST 80 # We know that this is either the most, or second most,
-   # expensive test in the test suite, so we give it high estimate for CI runs
-)
-
 # This test touches windows.h, so it should only be compiled under msvc
 if (MSVC)
     # This test fails if it does not compile and succeeds otherwise
@@ -158,7 +146,6 @@ set( EXTRA_TEST_BINARIES
     DisabledExceptions-CustomHandler
     FallbackStringifier
     DisableStringification
-    BenchmarkingMacros
 #    DebugBreakMacros
 )
 

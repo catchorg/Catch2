@@ -123,6 +123,7 @@ endif()
 add_test(NAME RunTests COMMAND $<TARGET_FILE:SelfTest>)
 set_tests_properties(RunTests PROPERTIES
     FAIL_REGULAR_EXPRESSION "Filters:"
+    COST 60
 )
 
 # Because CTest does not allow us to check both return code _and_ expected
