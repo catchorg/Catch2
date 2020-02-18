@@ -9,7 +9,6 @@
 
 namespace Catch {
 namespace Matchers {
-    namespace Impl {
 
         std::string MatcherUntypedBase::toString() const {
             if( m_cachedToString.empty() )
@@ -19,10 +18,5 @@ namespace Matchers {
 
         MatcherUntypedBase::~MatcherUntypedBase() = default;
 
-    } // namespace Impl
 } // namespace Matchers
-
-using namespace Matchers;
-using Matchers::Impl::MatcherBase;
-
 } // namespace Catch

@@ -271,7 +271,7 @@ Compilation.tests.cpp:<line number>: PASSED:
   REQUIRE_NOTHROW( throws_int(false) )
 
 Compilation.tests.cpp:<line number>: PASSED:
-  REQUIRE_THAT( "aaa", Catch::EndsWith("aaa") )
+  REQUIRE_THAT( "aaa", Catch::Matchers::EndsWith("aaa") )
 with expansion:
   "aaa" ends with: "aaa"
 
@@ -2125,7 +2125,7 @@ Matchers.tests.cpp:<line number>
 Matchers.tests.cpp:<line number>: PASSED:
 with message:
   std::is_same< decltype(MatcherA() && MatcherB() && MatcherC()), Catch::
-  Matchers::Impl::MatchAllOfGeneric<MatcherA, MatcherB, MatcherC> >::value
+  Matchers::Detail::MatchAllOfGeneric<MatcherA, MatcherB, MatcherC> >::value
 
 Matchers.tests.cpp:<line number>: PASSED:
   REQUIRE_THAT( 1, MatcherA() && MatcherB() && MatcherC() )
@@ -2136,7 +2136,7 @@ with expansion:
 Matchers.tests.cpp:<line number>: PASSED:
 with message:
   std::is_same< decltype(MatcherA() && MatcherB() && MatcherC() && MatcherD()),
-  Catch::Matchers::Impl::MatchAllOfGeneric<MatcherA, MatcherB, MatcherC,
+  Catch::Matchers::Detail::MatchAllOfGeneric<MatcherA, MatcherB, MatcherC,
   MatcherD> >::value
 
 Matchers.tests.cpp:<line number>: PASSED:
@@ -2154,7 +2154,7 @@ Matchers.tests.cpp:<line number>
 Matchers.tests.cpp:<line number>: PASSED:
 with message:
   std::is_same< decltype(MatcherA() || MatcherB() || MatcherC()), Catch::
-  Matchers::Impl::MatchAnyOfGeneric<MatcherA, MatcherB, MatcherC> >::value
+  Matchers::Detail::MatchAnyOfGeneric<MatcherA, MatcherB, MatcherC> >::value
 
 Matchers.tests.cpp:<line number>: PASSED:
   REQUIRE_THAT( 1, MatcherA() || MatcherB() || MatcherC() )
@@ -2165,7 +2165,7 @@ with expansion:
 Matchers.tests.cpp:<line number>: PASSED:
 with message:
   std::is_same< decltype(MatcherA() || MatcherB() || MatcherC() || MatcherD()),
-  Catch::Matchers::Impl::MatchAnyOfGeneric<MatcherA, MatcherB, MatcherC,
+  Catch::Matchers::Detail::MatchAnyOfGeneric<MatcherA, MatcherB, MatcherC,
   MatcherD> >::value
 
 Matchers.tests.cpp:<line number>: PASSED:
@@ -2182,8 +2182,8 @@ Matchers.tests.cpp:<line number>
 
 Matchers.tests.cpp:<line number>: PASSED:
 with message:
-  std::is_same< decltype(!MatcherA()), Catch::Matchers::Impl::MatchNotOfGeneric
-  <MatcherA> >::value
+  std::is_same< decltype(!MatcherA()), Catch::Matchers::Detail::
+  MatchNotOfGeneric<MatcherA> >::value
 
 Matchers.tests.cpp:<line number>: PASSED:
   REQUIRE_THAT( 0, !MatcherA() )
@@ -2201,7 +2201,7 @@ with expansion:
 
 Matchers.tests.cpp:<line number>: PASSED:
 with message:
-  std::is_same< decltype(!!!MatcherA()), Catch::Matchers::Impl::
+  std::is_same< decltype(!!!MatcherA()), Catch::Matchers::Detail::
   MatchNotOfGeneric<MatcherA> >::value
 
 Matchers.tests.cpp:<line number>: PASSED:
@@ -2227,8 +2227,8 @@ Matchers.tests.cpp:<line number>
 Matchers.tests.cpp:<line number>: PASSED:
 with message:
   std::is_same< decltype(StartsWith("foo") || (StartsWith("bar") && EndsWith
-  ("bar") && !EndsWith("foo"))), Catch::Matchers::Impl::MatchAnyOf<std::string>
-  >::value
+  ("bar") && !EndsWith("foo"))), Catch::Matchers::Detail::MatchAnyOf<std::
+  string> >::value
 
 -------------------------------------------------------------------------------
 Combining only templated matchers
@@ -2238,7 +2238,7 @@ Matchers.tests.cpp:<line number>
 
 Matchers.tests.cpp:<line number>: PASSED:
 with message:
-  std::is_same< decltype(MatcherA() || MatcherB()), Catch::Matchers::Impl::
+  std::is_same< decltype(MatcherA() || MatcherB()), Catch::Matchers::Detail::
   MatchAnyOfGeneric<MatcherA, MatcherB> >::value
 
 Matchers.tests.cpp:<line number>: PASSED:
@@ -2248,7 +2248,7 @@ with expansion:
 
 Matchers.tests.cpp:<line number>: PASSED:
 with message:
-  std::is_same< decltype(MatcherA() && MatcherB()), Catch::Matchers::Impl::
+  std::is_same< decltype(MatcherA() && MatcherB()), Catch::Matchers::Detail::
   MatchAllOfGeneric<MatcherA, MatcherB> >::value
 
 Matchers.tests.cpp:<line number>: PASSED:
@@ -2258,8 +2258,8 @@ with expansion:
 
 Matchers.tests.cpp:<line number>: PASSED:
 with message:
-  std::is_same< decltype(MatcherA() || !MatcherB()), Catch::Matchers::Impl::
-  MatchAnyOfGeneric<MatcherA, Catch::Matchers::Impl::MatchNotOfGeneric
+  std::is_same< decltype(MatcherA() || !MatcherB()), Catch::Matchers::Detail::
+  MatchAnyOfGeneric<MatcherA, Catch::Matchers::Detail::MatchNotOfGeneric
   <MatcherB>> >::value
 
 Matchers.tests.cpp:<line number>: PASSED:
@@ -2609,24 +2609,6 @@ Condition.tests.cpp:<line number>: PASSED:
   REQUIRE( (std::numeric_limits<uint32_t>::max)() > ul )
 with expansion:
   4294967295 (0x<hex digits>) > 4
-
--------------------------------------------------------------------------------
-Composed matchers are distinct
--------------------------------------------------------------------------------
-Matchers.tests.cpp:<line number>
-...............................................................................
-
-Matchers.tests.cpp:<line number>: PASSED:
-  REQUIRE_THAT( testStringForMatching2(), !composed1 )
-with expansion:
-  "some completely different text that contains one common word" not (
-  contains: "string" or contains: "random" )
-
-Matchers.tests.cpp:<line number>: PASSED:
-  REQUIRE_THAT( testStringForMatching2(), composed2 )
-with expansion:
-  "some completely different text that contains one common word" ( contains:
-  "string" or contains: "random" or contains: "different" )
 
 -------------------------------------------------------------------------------
 Contains string matcher
@@ -13485,7 +13467,7 @@ Tag.tests.cpp:<line number>
 ...............................................................................
 
 Tag.tests.cpp:<line number>: PASSED:
-  REQUIRE_THAT( tags, Catch::VectorContains("magic-tag"_catch_sr) && Catch::VectorContains("."_catch_sr) )
+  REQUIRE_THAT( tags, VectorContains("magic-tag"_catch_sr) && VectorContains("."_catch_sr) )
 with expansion:
   { ., magic-tag } ( Contains: magic-tag and Contains: . )
 
@@ -14414,6 +14396,6 @@ Misc.tests.cpp:<line number>
 Misc.tests.cpp:<line number>: PASSED:
 
 ===============================================================================
-test cases:  329 |  239 passed |  86 failed |  4 failed as expected
-assertions: 1858 | 1689 passed | 148 failed | 21 failed as expected
+test cases:  328 |  238 passed |  86 failed |  4 failed as expected
+assertions: 1856 | 1687 passed | 148 failed | 21 failed as expected
 

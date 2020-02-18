@@ -79,7 +79,7 @@ namespace { namespace CompilationTests {
         REQUIRE_THROWS(throws_int(true));
         CHECK_THROWS_AS(throws_int(true), int);
         REQUIRE_NOTHROW(throws_int(false));
-        REQUIRE_THAT("aaa", Catch::EndsWith("aaa"));
+        REQUIRE_THAT("aaa", Catch::Matchers::EndsWith("aaa"));
         return true;
     }
 

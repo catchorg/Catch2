@@ -78,7 +78,7 @@ namespace { namespace MatchersTests {
         throw DerivedException{};
     }
 
-    class ExceptionMatcher : public Catch::MatcherBase<SpecialException> {
+    class ExceptionMatcher : public Catch::Matchers::MatcherBase<SpecialException> {
         int m_expected;
     public:
         ExceptionMatcher(int i) : m_expected(i) {}
@@ -556,19 +556,8 @@ namespace { namespace MatchersTests {
             REQUIRE_THROWS_MATCHES(throwsSpecialException(2), SpecialException,  Message("SpecialException::what"));
         }
 
-        TEST_CASE("Composed matchers are distinct", "[matchers][composed]") {
-            auto m1 = Contains("string");
-            auto m2 = Contains("random");
-            auto composed1 = m1 || m2;
-            auto m3 = Contains("different");
-            auto composed2 = composed1 || m3;
-            REQUIRE_THAT(testStringForMatching2(), !composed1);
-            REQUIRE_THAT(testStringForMatching2(), composed2);
-        }
-
-
     template<typename Range>
-    struct EqualsRangeMatcher : Catch::MatcherGenericBase {
+    struct EqualsRangeMatcher : Catch::Matchers::MatcherGenericBase {
 
         EqualsRangeMatcher(Range const& range) : range{ range } {}
 
@@ -604,7 +593,6 @@ namespace { namespace MatchersTests {
     }
 
     TEST_CASE("Combining templated and concrete matchers", "[matchers][templated]") {
-        using namespace Catch::Matchers;
         std::vector<int> vec{ 1, 3, 5 };
 
         std::array<int, 3> a{{ 5, 3, 1 }};
@@ -640,28 +628,28 @@ namespace { namespace MatchersTests {
 
         STATIC_REQUIRE(std::is_same<
             decltype(StartsWith("foo") || (StartsWith("bar") && EndsWith("bar") && !EndsWith("foo"))),
-            Catch::Matchers::Impl::MatchAnyOf<std::string>
+            Catch::Matchers::Detail::MatchAnyOf<std::string>
         >::value);
     }
 
-    struct MatcherA : Catch::MatcherGenericBase {
+    struct MatcherA : Catch::Matchers::MatcherGenericBase {
         std::string describe() const override { return "equals: (int) 1 or (float) 1.0f"; }
         bool match(int i) const { return i == 1; }
         bool match(float f) const { return f == 1.0f; }
     };
 
-    struct MatcherB : Catch::MatcherGenericBase {
+    struct MatcherB : Catch::Matchers::MatcherGenericBase {
         std::string describe() const override { return "equals: (long long) 1"; }
         bool match(long long l) const { return l == 1ll; }
     };
 
-    struct MatcherC : Catch::MatcherGenericBase {
+    struct MatcherC : Catch::Matchers::MatcherGenericBase {
         std::string describe() const override { return "equals: (T) 1"; }
         template<typename T>
         bool match(T t) const { return t == T{1}; }
     };
 
-    struct MatcherD : Catch::MatcherGenericBase {
+    struct MatcherD : Catch::Matchers::MatcherGenericBase {
         std::string describe() const override { return "equals: true"; }
         bool match(bool b) const { return b == true; }
     };
@@ -669,21 +657,21 @@ namespace { namespace MatchersTests {
     TEST_CASE("Combining only templated matchers", "[matchers][templated]") {
         STATIC_REQUIRE(std::is_same<
             decltype(MatcherA() || MatcherB()),
-            Catch::Matchers::Impl::MatchAnyOfGeneric<MatcherA, MatcherB>
+            Catch::Matchers::Detail::MatchAnyOfGeneric<MatcherA, MatcherB>
         >::value);
 
         REQUIRE_THAT(1, MatcherA() || MatcherB());
 
         STATIC_REQUIRE(std::is_same<
             decltype(MatcherA() && MatcherB()),
-            Catch::Matchers::Impl::MatchAllOfGeneric<MatcherA, MatcherB>
+            Catch::Matchers::Detail::MatchAllOfGeneric<MatcherA, MatcherB>
         >::value);
 
         REQUIRE_THAT(1, MatcherA() && MatcherB());
 
         STATIC_REQUIRE(std::is_same<
             decltype(MatcherA() || !MatcherB()),
-            Catch::Matchers::Impl::MatchAnyOfGeneric<MatcherA, Catch::Matchers::Impl::MatchNotOfGeneric<MatcherB>>
+            Catch::Matchers::Detail::MatchAnyOfGeneric<MatcherA, Catch::Matchers::Detail::MatchNotOfGeneric<MatcherB>>
         >::value);
 
         REQUIRE_THAT(1, MatcherA() || !MatcherB());
@@ -692,14 +680,14 @@ namespace { namespace MatchersTests {
     TEST_CASE("Combining MatchAnyOfGeneric does not nest", "[matchers][templated]") {
         STATIC_REQUIRE(std::is_same<
             decltype(MatcherA() || MatcherB() || MatcherC()),
-            Catch::Matchers::Impl::MatchAnyOfGeneric<MatcherA, MatcherB, MatcherC>
+            Catch::Matchers::Detail::MatchAnyOfGeneric<MatcherA, MatcherB, MatcherC>
         >::value);
 
         REQUIRE_THAT(1, MatcherA() || MatcherB() || MatcherC());
 
         STATIC_REQUIRE(std::is_same<
             decltype(MatcherA() || MatcherB() || MatcherC() || MatcherD()),
-            Catch::Matchers::Impl::MatchAnyOfGeneric<MatcherA, MatcherB, MatcherC, MatcherD>
+            Catch::Matchers::Detail::MatchAnyOfGeneric<MatcherA, MatcherB, MatcherC, MatcherD>
         >::value);
 
         REQUIRE_THAT(1, MatcherA() || MatcherB() || MatcherC() || MatcherD());
@@ -708,14 +696,14 @@ namespace { namespace MatchersTests {
     TEST_CASE("Combining MatchAllOfGeneric does not nest", "[matchers][templated]") {
         STATIC_REQUIRE(std::is_same<
             decltype(MatcherA() && MatcherB() && MatcherC()),
-            Catch::Matchers::Impl::MatchAllOfGeneric<MatcherA, MatcherB, MatcherC>
+            Catch::Matchers::Detail::MatchAllOfGeneric<MatcherA, MatcherB, MatcherC>
         >::value);
 
         REQUIRE_THAT(1, MatcherA() && MatcherB() && MatcherC());
 
         STATIC_REQUIRE(std::is_same<
             decltype(MatcherA() && MatcherB() && MatcherC() && MatcherD()),
-            Catch::Matchers::Impl::MatchAllOfGeneric<MatcherA, MatcherB, MatcherC, MatcherD>
+            Catch::Matchers::Detail::MatchAllOfGeneric<MatcherA, MatcherB, MatcherC, MatcherD>
         >::value);
 
         REQUIRE_THAT(1, MatcherA() && MatcherB() && MatcherC() && MatcherD());
@@ -724,7 +712,7 @@ namespace { namespace MatchersTests {
     TEST_CASE("Combining MatchNotOfGeneric does not nest", "[matchers][templated]") {
         STATIC_REQUIRE(std::is_same<
             decltype(!MatcherA()),
-            Catch::Matchers::Impl::MatchNotOfGeneric<MatcherA>
+            Catch::Matchers::Detail::MatchNotOfGeneric<MatcherA>
         >::value);
 
         REQUIRE_THAT(0, !MatcherA());
@@ -738,7 +726,7 @@ namespace { namespace MatchersTests {
 
         STATIC_REQUIRE(std::is_same<
             decltype(!!!MatcherA()),
-            Catch::Matchers::Impl::MatchNotOfGeneric<MatcherA>
+            Catch::Matchers::Detail::MatchNotOfGeneric<MatcherA>
         >::value);
 
         REQUIRE_THAT(0, !!!MatcherA());
@@ -765,7 +753,7 @@ namespace { namespace MatchersTests {
         }
     };
 
-    struct EvilMatcher : Catch::MatcherGenericBase {
+    struct EvilMatcher : Catch::Matchers::MatcherGenericBase {
         std::string describe() const override {
             return "equals: 45";
         }
@@ -790,7 +778,7 @@ namespace { namespace MatchersTests {
         REQUIRE_NOTHROW((EvilMatcher() && EvilMatcher()) || !EvilMatcher());
     }
 
-    struct ImmovableMatcher : Catch::MatcherGenericBase {
+    struct ImmovableMatcher : Catch::Matchers::MatcherGenericBase {
         ImmovableMatcher() = default;
         ImmovableMatcher(ImmovableMatcher const&) = delete;
         ImmovableMatcher(ImmovableMatcher &&) = delete;
@@ -814,7 +802,7 @@ namespace { namespace MatchersTests {
         }
     };
 
-    struct ThrowOnCopyOrMoveMatcher : Catch::MatcherGenericBase {
+    struct ThrowOnCopyOrMoveMatcher : Catch::Matchers::MatcherGenericBase {
         ThrowOnCopyOrMoveMatcher() = default;
         [[noreturn]]
         ThrowOnCopyOrMoveMatcher(ThrowOnCopyOrMoveMatcher const&) {
@@ -849,7 +837,7 @@ namespace { namespace MatchersTests {
         REQUIRE_THAT(123, (ImmovableMatcher() && ImmovableMatcher()) || !ImmovableMatcher());
     }
 
-    struct ReferencingMatcher : Catch::MatcherGenericBase {
+    struct ReferencingMatcher : Catch::Matchers::MatcherGenericBase {
         std::string describe() const override {
             return "takes reference";
         }

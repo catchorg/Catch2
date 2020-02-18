@@ -15,11 +15,11 @@
 
 namespace Catch {
 namespace Matchers {
-    namespace Impl {
 
-        template<typename ArgT> struct MatchAllOf;
-        template<typename ArgT> struct MatchAnyOf;
-        template<typename ArgT> struct MatchNotOf;
+#ifdef __clang__
+#    pragma clang diagnostic push
+#    pragma clang diagnostic ignored "-Wnon-virtual-dtor"
+#endif
 
         class MatcherUntypedBase {
         public:
@@ -29,15 +29,10 @@ namespace Matchers {
             std::string toString() const;
 
         protected:
-            virtual ~MatcherUntypedBase();
+            virtual ~MatcherUntypedBase(); // = default;
             virtual std::string describe() const = 0;
             mutable std::string m_cachedToString;
         };
-
-#ifdef __clang__
-#    pragma clang diagnostic push
-#    pragma clang diagnostic ignored "-Wnon-virtual-dtor"
-#endif
 
         template<typename ObjectT>
         struct MatcherMethod {
@@ -58,16 +53,19 @@ namespace Matchers {
 #endif
 
         template<typename T>
-        struct MatcherBase : MatcherUntypedBase, MatcherMethod<T> {
+        struct MatcherBase : MatcherUntypedBase, MatcherMethod<T> {};
 
-
-            MatchAllOf<T> operator && ( MatcherBase const& other ) const;
-            MatchAnyOf<T> operator || ( MatcherBase const& other ) const;
-            MatchNotOf<T> operator ! () const;
-        };
+    namespace Detail {
 
         template<typename ArgT>
         struct MatchAllOf : MatcherBase<ArgT> {
+            MatchAllOf() = default;
+            MatchAllOf(MatchAllOf const&) = delete;
+            MatchAllOf& operator=(MatchAllOf const&) = delete;
+            MatchAllOf(MatchAllOf&&) = default;
+            MatchAllOf& operator=(MatchAllOf&&) = default;
+
+
             bool match( ArgT const& arg ) const override {
                 for( auto matcher : m_matchers ) {
                     if (!matcher->match(arg))
@@ -91,16 +89,35 @@ namespace Matchers {
                 return description;
             }
 
-            MatchAllOf<ArgT> operator && ( MatcherBase<ArgT> const& other ) {
-                auto copy(*this);
-                copy.m_matchers.push_back( &other );
-                return copy;
+            friend MatchAllOf operator&& (MatchAllOf&& lhs, MatcherBase<ArgT> const& rhs) {
+                lhs.m_matchers.push_back(&rhs);
+                return std::move(lhs);
+            }
+            friend MatchAllOf operator&& (MatcherBase<ArgT> const& lhs, MatchAllOf&& rhs) {
+                rhs.m_matchers.insert(rhs.m_matchers.begin(), &lhs);
+                return std::move(rhs);
             }
 
+        private:
             std::vector<MatcherBase<ArgT> const*> m_matchers;
         };
+
+        //! lvalue overload is intentionally deleted, users should
+        //! not be trying to compose stored composition matchers
+        template<typename ArgT>
+        MatchAllOf<ArgT> operator&& (MatchAllOf<ArgT> const& lhs, MatcherBase<ArgT> const& rhs) = delete;
+        //! lvalue overload is intentionally deleted, users should
+        //! not be trying to compose stored composition matchers
+        template<typename ArgT>
+        MatchAllOf<ArgT> operator&& (MatcherBase<ArgT> const& lhs, MatchAllOf<ArgT> const& rhs) = delete;
+
         template<typename ArgT>
         struct MatchAnyOf : MatcherBase<ArgT> {
+            MatchAnyOf() = default;
+            MatchAnyOf(MatchAnyOf const&) = delete;
+            MatchAnyOf& operator=(MatchAnyOf const&) = delete;
+            MatchAnyOf(MatchAnyOf&&) = default;
+            MatchAnyOf& operator=(MatchAnyOf&&) = default;
 
             bool match( ArgT const& arg ) const override {
                 for( auto matcher : m_matchers ) {
@@ -125,19 +142,34 @@ namespace Matchers {
                 return description;
             }
 
-            MatchAnyOf<ArgT> operator || ( MatcherBase<ArgT> const& other ) {
-                auto copy(*this);
-                copy.m_matchers.push_back( &other );
-                return copy;
+            friend MatchAnyOf operator|| (MatchAnyOf&& lhs, MatcherBase<ArgT> const& rhs) {
+                lhs.m_matchers.push_back(&rhs);
+                return std::move(lhs);
+            }
+            friend MatchAnyOf operator|| (MatcherBase<ArgT> const& lhs, MatchAnyOf&& rhs) {
+                rhs.m_matchers.insert(rhs.m_matchers.begin(), &lhs);
+                return std::move(rhs);
             }
 
+        private:
             std::vector<MatcherBase<ArgT> const*> m_matchers;
         };
+
+        //! lvalue overload is intentionally deleted, users should
+        //! not be trying to compose stored composition matchers
+        template<typename ArgT>
+        MatchAnyOf<ArgT> operator|| (MatchAnyOf<ArgT> const& lhs, MatcherBase<ArgT> const& rhs) = delete;
+        //! lvalue overload is intentionally deleted, users should
+        //! not be trying to compose stored composition matchers
+        template<typename ArgT>
+        MatchAnyOf<ArgT> operator|| (MatcherBase<ArgT> const& lhs, MatchAnyOf<ArgT> const& rhs) = delete;
 
         template<typename ArgT>
         struct MatchNotOf : MatcherBase<ArgT> {
 
-            MatchNotOf( MatcherBase<ArgT> const& underlyingMatcher ) : m_underlyingMatcher( underlyingMatcher ) {}
+            explicit MatchNotOf( MatcherBase<ArgT> const& underlyingMatcher ):
+                m_underlyingMatcher( underlyingMatcher )
+            {}
 
             bool match( ArgT const& arg ) const override {
                 return !m_underlyingMatcher.match( arg );
@@ -146,29 +178,29 @@ namespace Matchers {
             std::string describe() const override {
                 return "not " + m_underlyingMatcher.toString();
             }
+
+        private:
             MatcherBase<ArgT> const& m_underlyingMatcher;
         };
 
-        template<typename T>
-        MatchAllOf<T> MatcherBase<T>::operator && ( MatcherBase const& other ) const {
-            return MatchAllOf<T>() && *this && other;
-        }
-        template<typename T>
-        MatchAnyOf<T> MatcherBase<T>::operator || ( MatcherBase const& other ) const {
-            return MatchAnyOf<T>() || *this || other;
-        }
-        template<typename T>
-        MatchNotOf<T> MatcherBase<T>::operator ! () const {
-            return MatchNotOf<T>( *this );
-        }
+    } // namespace Detail
 
-    } // namespace Impl
+    template <typename T>
+    Detail::MatchAllOf<T> operator&& (MatcherBase<T> const& lhs, MatcherBase<T> const& rhs) {
+        return Detail::MatchAllOf<T>{} && lhs && rhs;
+    }
+    template <typename T>
+    Detail::MatchAnyOf<T> operator|| (MatcherBase<T> const& lhs, MatcherBase<T> const& rhs) {
+        return Detail::MatchAnyOf<T>{} || lhs || rhs;
+    }
+
+    template <typename T>
+    Detail::MatchNotOf<T> operator! (MatcherBase<T> const& matcher) {
+        return Detail::MatchNotOf<T>{ matcher };
+    }
+
 
 } // namespace Matchers
-
-using namespace Matchers;
-using Matchers::Impl::MatcherBase;
-
 } // namespace Catch
 
 #endif // TWOBLUECUBES_CATCH_MATCHERS_HPP_INCLUDED

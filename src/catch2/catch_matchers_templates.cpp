@@ -2,8 +2,9 @@
 
 namespace Catch {
 namespace Matchers {
-    namespace Impl {
-        MatcherGenericBase::~MatcherGenericBase() {}
+    MatcherGenericBase::~MatcherGenericBase() = default;
+
+    namespace Detail {
 
         std::string describe_multi_matcher(StringRef combine, std::string const* descriptions_begin, std::string const* descriptions_end) {
             std::string description;
@@ -27,6 +28,7 @@ namespace Matchers {
             description += " )";
             return description;
         }
-    }
+
+    } // namespace Detail
 } // namespace Matchers
 } // namespace Catch

@@ -299,7 +299,7 @@ Nor would this
       </Expression>
       <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/Compilation.tests.cpp" >
         <Original>
-          "aaa", Catch::EndsWith("aaa")
+          "aaa", Catch::Matchers::EndsWith("aaa")
         </Original>
         <Expanded>
           "aaa" ends with: "aaa"
@@ -3007,25 +3007,6 @@ Nor would this
         </Original>
         <Expanded>
           4294967295 (0x<hex digits>) > 4
-        </Expanded>
-      </Expression>
-      <OverallResult success="true"/>
-    </TestCase>
-    <TestCase name="Composed matchers are distinct" tags="[composed][matchers]" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
-      <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
-        <Original>
-          testStringForMatching2(), !composed1
-        </Original>
-        <Expanded>
-          "some completely different text that contains one common word" not ( contains: "string" or contains: "random" )
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
-        <Original>
-          testStringForMatching2(), composed2
-        </Original>
-        <Expanded>
-          "some completely different text that contains one common word" ( contains: "string" or contains: "random" or contains: "different" )
         </Expanded>
       </Expression>
       <OverallResult success="true"/>
@@ -16273,7 +16254,7 @@ loose text artifact
     <TestCase name="shortened hide tags are split apart" filename="tests/<exe-name>/IntrospectiveTests/Tag.tests.cpp" >
       <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/IntrospectiveTests/Tag.tests.cpp" >
         <Original>
-          tags, Catch::VectorContains("magic-tag"_catch_sr) &amp;&amp; Catch::VectorContains("."_catch_sr)
+          tags, VectorContains("magic-tag"_catch_sr) &amp;&amp; VectorContains("."_catch_sr)
         </Original>
         <Expanded>
           { ., magic-tag } ( Contains: magic-tag and Contains: . )
@@ -17283,7 +17264,7 @@ loose text artifact
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="1689" failures="149" expectedFailures="21"/>
+    <OverallResults successes="1687" failures="149" expectedFailures="21"/>
   </Group>
-  <OverallResults successes="1689" failures="148" expectedFailures="21"/>
+  <OverallResults successes="1687" failures="148" expectedFailures="21"/>
 </Catch>

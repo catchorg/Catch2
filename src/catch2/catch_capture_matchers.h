@@ -17,7 +17,7 @@ namespace Catch {
     template<typename ArgT, typename MatcherT>
     class MatchExpr : public ITransientExpression {
         ArgT && m_arg;
-        MatcherT m_matcher;
+        MatcherT const& m_matcher;
         StringRef m_matcherString;
     public:
         MatchExpr( ArgT && arg, MatcherT const& matcher, StringRef const& matcherString )
@@ -37,7 +37,7 @@ namespace Catch {
         }
     };
 
-    using StringMatcher = Matchers::Impl::MatcherBase<std::string>;
+    using StringMatcher = Matchers::MatcherBase<std::string>;
 
     void handleExceptionMatchExpr( AssertionHandler& handler, StringMatcher const& matcher, StringRef const& matcherString  );
 

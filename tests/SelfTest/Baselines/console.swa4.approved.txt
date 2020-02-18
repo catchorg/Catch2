@@ -271,7 +271,7 @@ Compilation.tests.cpp:<line number>: PASSED:
   REQUIRE_NOTHROW( throws_int(false) )
 
 Compilation.tests.cpp:<line number>: PASSED:
-  REQUIRE_THAT( "aaa", Catch::EndsWith("aaa") )
+  REQUIRE_THAT( "aaa", Catch::Matchers::EndsWith("aaa") )
 with expansion:
   "aaa" ends with: "aaa"
 

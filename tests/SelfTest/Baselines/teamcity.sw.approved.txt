@@ -231,8 +231,6 @@ Exception.tests.cpp:<line number>|nunexpected exception with message:|n  "unexpe
 ##teamcity[testFinished name='Comparisons between unsigned ints and negative signed ints match c++ standard behaviour' duration="{duration}"]
 ##teamcity[testStarted name='Comparisons with int literals don|'t warn when mixing signed/ unsigned']
 ##teamcity[testFinished name='Comparisons with int literals don|'t warn when mixing signed/ unsigned' duration="{duration}"]
-##teamcity[testStarted name='Composed matchers are distinct']
-##teamcity[testFinished name='Composed matchers are distinct' duration="{duration}"]
 ##teamcity[testStarted name='Contains string matcher']
 Matchers.tests.cpp:<line number>|nexpression failed|n  CHECK_THAT( testStringForMatching(), Contains("not there", Catch::CaseSensitive::No) )|nwith expansion:|n  "this string contains |'abc|' as a substring" contains: "not there" (case insensitive)|n']
 Matchers.tests.cpp:<line number>|nexpression failed|n  CHECK_THAT( testStringForMatching(), Contains("STRING") )|nwith expansion:|n  "this string contains |'abc|' as a substring" contains: "STRING"|n']

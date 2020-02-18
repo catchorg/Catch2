@@ -53,6 +53,7 @@
   * The description type now must be a `const char*` or implicitly convertible to it
 * The `[!hide]` tag has been removed.
   * Use `[.]` or `[.foo]` instead.
+* Lvalues of composed matchers cannot be composed further
 
 ### Fixes
 * The `INFO` macro no longer contains superfluous semicolon (#1456)
