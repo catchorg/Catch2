@@ -170,6 +170,11 @@ namespace Matchers {
                 return "not " + m_matcher.toString();
             }
 
+            //! Negating negation can just unwrap and return underlying matcher
+            friend MatcherT const& operator ! (Detail::MatchNotOfGeneric<MatcherT> const& matcher) {
+                return matcher.m_matcher;
+            }
+        private:
             MatcherT const& m_matcher;
         };
     } // namespace Detail
@@ -190,6 +195,7 @@ namespace Matchers {
         return { lhs, rhs };
     }
 
+    //! Wrap provided generic matcher in generic negator
     template<typename MatcherT>
     typename std::enable_if<Detail::is_generic_matcher<MatcherT>::value, Detail::MatchNotOfGeneric<MatcherT>>::type
         operator ! (MatcherT const& matcher) {
@@ -259,12 +265,6 @@ namespace Matchers {
         operator || (MatcherLHS const& lhs, Detail::MatchAnyOfGeneric<MatchersRHS...>&& rhs) {
         return Detail::MatchAnyOfGeneric<MatcherLHS, MatchersRHS...>{Detail::array_cat(static_cast<void const*>(std::addressof(lhs)), std::move(rhs.m_matchers))};
     }
-
-    template<typename MatcherT>
-    MatcherT const& operator ! (Detail::MatchNotOfGeneric<MatcherT> const& matcher) {
-        return matcher.m_matcher;
-    }
-
 
 } // namespace Matchers
 } // namespace Catch
