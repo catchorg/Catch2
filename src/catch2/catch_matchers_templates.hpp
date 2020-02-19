@@ -108,6 +108,11 @@ namespace Matchers {
 
         template<typename... MatcherTs>
         struct MatchAllOfGeneric final : MatcherGenericBase {
+            MatchAllOfGeneric(MatchAllOfGeneric const&) = delete;
+            MatchAllOfGeneric& operator=(MatchAllOfGeneric const&) = delete;
+            MatchAllOfGeneric(MatchAllOfGeneric&&) = default;
+            MatchAllOfGeneric& operator=(MatchAllOfGeneric&&) = default;
+
             MatchAllOfGeneric(MatcherTs const&... matchers) : m_matchers{std::addressof(matchers)...} {}
             explicit MatchAllOfGeneric(std::array<void const*, sizeof...(MatcherTs)> matchers) : m_matchers{matchers} {}
 
@@ -126,6 +131,11 @@ namespace Matchers {
 
         template<typename... MatcherTs>
         struct MatchAnyOfGeneric final : MatcherGenericBase {
+            MatchAnyOfGeneric(MatchAnyOfGeneric const&) = delete;
+            MatchAnyOfGeneric& operator=(MatchAnyOfGeneric const&) = delete;
+            MatchAnyOfGeneric(MatchAnyOfGeneric&&) = default;
+            MatchAnyOfGeneric& operator=(MatchAnyOfGeneric&&) = default;
+
             MatchAnyOfGeneric(MatcherTs const&... matchers) : m_matchers{std::addressof(matchers)...} {}
             explicit MatchAnyOfGeneric(std::array<void const*, sizeof...(MatcherTs)> matchers) : m_matchers{matchers} {}
 
@@ -144,6 +154,11 @@ namespace Matchers {
 
         template<typename MatcherT>
         struct MatchNotOfGeneric final : MatcherGenericBase {
+            MatchNotOfGeneric(MatchNotOfGeneric const&) = delete;
+            MatchNotOfGeneric& operator=(MatchNotOfGeneric const&) = delete;
+            MatchNotOfGeneric(MatchNotOfGeneric&&) = default;
+            MatchNotOfGeneric& operator=(MatchNotOfGeneric&&) = default;
+
             explicit MatchNotOfGeneric(MatcherT const& matcher) : m_matcher{matcher} {}
 
             template<typename Arg>
