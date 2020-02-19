@@ -180,24 +180,22 @@ namespace Matchers {
     } // namespace Detail
 
 
-    // FIXME: enable_if_t
-
     // compose only generic matchers
     template<typename MatcherLHS, typename MatcherRHS>
-    typename std::enable_if<Detail::are_generic_matchers<MatcherLHS, MatcherRHS>::value, Detail::MatchAllOfGeneric<MatcherLHS, MatcherRHS>>::type
+    std::enable_if_t<Detail::are_generic_matchers<MatcherLHS, MatcherRHS>::value, Detail::MatchAllOfGeneric<MatcherLHS, MatcherRHS>>
         operator && (MatcherLHS const& lhs, MatcherRHS const& rhs) {
         return { lhs, rhs };
     }
 
     template<typename MatcherLHS, typename MatcherRHS>
-    typename std::enable_if<Detail::are_generic_matchers<MatcherLHS, MatcherRHS>::value, Detail::MatchAnyOfGeneric<MatcherLHS, MatcherRHS>>::type
+    std::enable_if_t<Detail::are_generic_matchers<MatcherLHS, MatcherRHS>::value, Detail::MatchAnyOfGeneric<MatcherLHS, MatcherRHS>>
         operator || (MatcherLHS const& lhs, MatcherRHS const& rhs) {
         return { lhs, rhs };
     }
 
     //! Wrap provided generic matcher in generic negator
     template<typename MatcherT>
-    typename std::enable_if<Detail::is_generic_matcher<MatcherT>::value, Detail::MatchNotOfGeneric<MatcherT>>::type
+    std::enable_if_t<Detail::is_generic_matcher<MatcherT>::value, Detail::MatchNotOfGeneric<MatcherT>>
         operator ! (MatcherT const& matcher) {
         return Detail::MatchNotOfGeneric<MatcherT>{matcher};
     }
@@ -205,25 +203,25 @@ namespace Matchers {
 
     // compose mixed generic and non-generic matchers
     template<typename MatcherLHS, typename ArgRHS>
-    typename std::enable_if<Detail::is_generic_matcher<MatcherLHS>::value, Detail::MatchAllOfGeneric<MatcherLHS, MatcherBase<ArgRHS>>>::type
+    std::enable_if_t<Detail::is_generic_matcher<MatcherLHS>::value, Detail::MatchAllOfGeneric<MatcherLHS, MatcherBase<ArgRHS>>>
         operator && (MatcherLHS const& lhs, MatcherBase<ArgRHS> const& rhs) {
         return { lhs, rhs };
     }
 
     template<typename ArgLHS, typename MatcherRHS>
-    typename std::enable_if<Detail::is_generic_matcher<MatcherRHS>::value, Detail::MatchAllOfGeneric<MatcherBase<ArgLHS>, MatcherRHS>>::type
+    std::enable_if_t<Detail::is_generic_matcher<MatcherRHS>::value, Detail::MatchAllOfGeneric<MatcherBase<ArgLHS>, MatcherRHS>>
         operator && (MatcherBase<ArgLHS> const& lhs, MatcherRHS const& rhs) {
         return { lhs, rhs };
     }
 
     template<typename MatcherLHS, typename ArgRHS>
-    typename std::enable_if<Detail::is_generic_matcher<MatcherLHS>::value, Detail::MatchAnyOfGeneric<MatcherLHS, MatcherBase<ArgRHS>>>::type
+    std::enable_if_t<Detail::is_generic_matcher<MatcherLHS>::value, Detail::MatchAnyOfGeneric<MatcherLHS, MatcherBase<ArgRHS>>>
         operator || (MatcherLHS const& lhs, MatcherBase<ArgRHS> const& rhs) {
         return { lhs, rhs };
     }
 
     template<typename ArgLHS, typename MatcherRHS>
-    typename std::enable_if<Detail::is_generic_matcher<MatcherRHS>::value, Detail::MatchAnyOfGeneric<MatcherBase<ArgLHS>, MatcherRHS>>::type
+    std::enable_if_t<Detail::is_generic_matcher<MatcherRHS>::value, Detail::MatchAnyOfGeneric<MatcherBase<ArgLHS>, MatcherRHS>>
         operator || (MatcherBase<ArgLHS> const& lhs, MatcherRHS const& rhs) {
         return { lhs, rhs };
     }
@@ -237,13 +235,13 @@ namespace Matchers {
     }
 
     template<typename... MatchersLHS, typename MatcherRHS>
-    typename std::enable_if<Detail::is_matcher<MatcherRHS>::value, Detail::MatchAllOfGeneric<MatchersLHS..., MatcherRHS>>::type
+    std::enable_if_t<Detail::is_matcher<MatcherRHS>::value, Detail::MatchAllOfGeneric<MatchersLHS..., MatcherRHS>>
         operator && (Detail::MatchAllOfGeneric<MatchersLHS...>&& lhs, MatcherRHS const& rhs) {
         return Detail::MatchAllOfGeneric<MatchersLHS..., MatcherRHS>{Detail::array_cat(std::move(lhs.m_matchers), static_cast<void const*>(&rhs))};
     }
 
     template<typename MatcherLHS, typename... MatchersRHS>
-    typename std::enable_if<Detail::is_matcher<MatcherLHS>::value, Detail::MatchAllOfGeneric<MatcherLHS, MatchersRHS...>>::type
+    std::enable_if_t<Detail::is_matcher<MatcherLHS>::value, Detail::MatchAllOfGeneric<MatcherLHS, MatchersRHS...>>
         operator && (MatcherLHS const& lhs, Detail::MatchAllOfGeneric<MatchersRHS...>&& rhs) {
         return Detail::MatchAllOfGeneric<MatcherLHS, MatchersRHS...>{Detail::array_cat(static_cast<void const*>(std::addressof(lhs)), std::move(rhs.m_matchers))};
     }
@@ -255,13 +253,13 @@ namespace Matchers {
     }
 
     template<typename... MatchersLHS, typename MatcherRHS>
-    typename std::enable_if<Detail::is_matcher<MatcherRHS>::value, Detail::MatchAnyOfGeneric<MatchersLHS..., MatcherRHS>>::type
+    std::enable_if_t<Detail::is_matcher<MatcherRHS>::value, Detail::MatchAnyOfGeneric<MatchersLHS..., MatcherRHS>>
         operator || (Detail::MatchAnyOfGeneric<MatchersLHS...>&& lhs, MatcherRHS const& rhs) {
         return Detail::MatchAnyOfGeneric<MatchersLHS..., MatcherRHS>{Detail::array_cat(std::move(lhs.m_matchers), static_cast<void const*>(std::addressof(rhs)))};
     }
 
     template<typename MatcherLHS, typename... MatchersRHS>
-    typename std::enable_if<Detail::is_matcher<MatcherLHS>::value, Detail::MatchAnyOfGeneric<MatcherLHS, MatchersRHS...>>::type
+    std::enable_if_t<Detail::is_matcher<MatcherLHS>::value, Detail::MatchAnyOfGeneric<MatcherLHS, MatchersRHS...>>
         operator || (MatcherLHS const& lhs, Detail::MatchAnyOfGeneric<MatchersRHS...>&& rhs) {
         return Detail::MatchAnyOfGeneric<MatcherLHS, MatchersRHS...>{Detail::array_cat(static_cast<void const*>(std::addressof(lhs)), std::move(rhs.m_matchers))};
     }
