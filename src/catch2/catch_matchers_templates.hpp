@@ -107,7 +107,7 @@ namespace Matchers {
 
 
         template<typename... MatcherTs>
-        struct MatchAllOfGeneric : MatcherGenericBase {
+        struct MatchAllOfGeneric final : MatcherGenericBase {
             MatchAllOfGeneric(MatcherTs const&... matchers) : m_matchers{std::addressof(matchers)...} {}
             explicit MatchAllOfGeneric(std::array<void const*, sizeof...(MatcherTs)> matchers) : m_matchers{matchers} {}
 
@@ -125,7 +125,7 @@ namespace Matchers {
 
 
         template<typename... MatcherTs>
-        struct MatchAnyOfGeneric : MatcherGenericBase {
+        struct MatchAnyOfGeneric final : MatcherGenericBase {
             MatchAnyOfGeneric(MatcherTs const&... matchers) : m_matchers{std::addressof(matchers)...} {}
             explicit MatchAnyOfGeneric(std::array<void const*, sizeof...(MatcherTs)> matchers) : m_matchers{matchers} {}
 
@@ -143,7 +143,7 @@ namespace Matchers {
 
 
         template<typename MatcherT>
-        struct MatchNotOfGeneric : MatcherGenericBase {
+        struct MatchNotOfGeneric final : MatcherGenericBase {
             explicit MatchNotOfGeneric(MatcherT const& matcher) : m_matcher{matcher} {}
 
             template<typename Arg>

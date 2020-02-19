@@ -58,7 +58,7 @@ namespace Matchers {
     namespace Detail {
 
         template<typename ArgT>
-        struct MatchAllOf : MatcherBase<ArgT> {
+        struct MatchAllOf final : MatcherBase<ArgT> {
             MatchAllOf() = default;
             MatchAllOf(MatchAllOf const&) = delete;
             MatchAllOf& operator=(MatchAllOf const&) = delete;
@@ -112,7 +112,7 @@ namespace Matchers {
         MatchAllOf<ArgT> operator&& (MatcherBase<ArgT> const& lhs, MatchAllOf<ArgT> const& rhs) = delete;
 
         template<typename ArgT>
-        struct MatchAnyOf : MatcherBase<ArgT> {
+        struct MatchAnyOf final : MatcherBase<ArgT> {
             MatchAnyOf() = default;
             MatchAnyOf(MatchAnyOf const&) = delete;
             MatchAnyOf& operator=(MatchAnyOf const&) = delete;
@@ -165,7 +165,7 @@ namespace Matchers {
         MatchAnyOf<ArgT> operator|| (MatcherBase<ArgT> const& lhs, MatchAnyOf<ArgT> const& rhs) = delete;
 
         template<typename ArgT>
-        struct MatchNotOf : MatcherBase<ArgT> {
+        struct MatchNotOf final : MatcherBase<ArgT> {
 
             explicit MatchNotOf( MatcherBase<ArgT> const& underlyingMatcher ):
                 m_underlyingMatcher( underlyingMatcher )
