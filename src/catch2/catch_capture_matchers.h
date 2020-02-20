@@ -1,7 +1,4 @@
 /*
- *  Created by Phil on 9/8/2017
- *  Copyright 2017 Two Blue Cubes Ltd. All rights reserved.
- *
  *  Distributed under the Boost Software License, Version 1.0. (See accompanying
  *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  */
@@ -9,7 +6,6 @@
 #define TWOBLUECUBES_CATCH_CAPTURE_MATCHERS_HPP_INCLUDED
 
 #include <catch2/catch_capture.hpp>
-#include <catch2/catch_matchers.h>
 #include <catch2/catch_stringref.h>
 
 namespace Catch {
@@ -36,6 +32,11 @@ namespace Catch {
                 os << matcherAsString;
         }
     };
+
+    namespace Matchers {
+    template <typename ArgT>
+    struct MatcherBase;
+    }
 
     using StringMatcher = Matchers::MatcherBase<std::string>;
 
@@ -79,5 +80,6 @@ namespace Catch {
             catchAssertionHandler.handleThrowingCallSkipped(); \
         INTERNAL_CATCH_REACT( catchAssertionHandler ) \
     } while( false )
+
 
 #endif // TWOBLUECUBES_CATCH_CAPTURE_MATCHERS_HPP_INCLUDED
