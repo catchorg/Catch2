@@ -29,7 +29,7 @@ std::ostream& operator<<(std::ostream& out, foo::helper_1403 const&) {
 ///////////////////////////////
 
 #include <catch2/catch_test_macros.hpp>
-#include <catch2/catch_matchers_string.h>
+#include <catch2/matchers/catch_matchers_string.h>
 
 #include <cstring>
 

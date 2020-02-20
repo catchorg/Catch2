@@ -7,7 +7,7 @@
 #ifndef TWOBLUECUBES_CATCH_MATCHERS_FLOATING_H_INCLUDED
 #define TWOBLUECUBES_CATCH_MATCHERS_FLOATING_H_INCLUDED
 
-#include <catch2/catch_matchers.h>
+#include <catch2/matchers/catch_matchers.h>
 
 namespace Catch {
 namespace Matchers {

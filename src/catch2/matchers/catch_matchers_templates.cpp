@@ -1,4 +1,4 @@
-#include <catch2/catch_matchers_templates.hpp>
+#include <catch2/matchers/catch_matchers_templates.hpp>
 
 namespace Catch {
 namespace Matchers {

@@ -39,7 +39,7 @@ set(INTERNAL_HEADERS
     ${SOURCES_DIR}/catch_assertioninfo.h
     ${SOURCES_DIR}/catch_assertionresult.h
     ${SOURCES_DIR}/catch_capture.hpp
-    ${SOURCES_DIR}/catch_capture_matchers.h
+    ${SOURCES_DIR}/internal/catch_capture_matchers.h
     ${SOURCES_DIR}/catch_clara.h
     ${SOURCES_DIR}/catch_commandline.h
     ${SOURCES_DIR}/catch_common.h
@@ -72,13 +72,13 @@ set(INTERNAL_HEADERS
     ${SOURCES_DIR}/catch_interfaces_testcase.h
     ${SOURCES_DIR}/catch_leak_detector.h
     ${SOURCES_DIR}/catch_list.h
-    ${SOURCES_DIR}/catch_matchers.h
-    ${SOURCES_DIR}/catch_matchers_exception.hpp
-    ${SOURCES_DIR}/catch_matchers_floating.h
-    ${SOURCES_DIR}/catch_matchers_generic.hpp
-    ${SOURCES_DIR}/catch_matchers_string.h
-    ${SOURCES_DIR}/catch_matchers_templates.hpp
-    ${SOURCES_DIR}/catch_matchers_vector.h
+    ${SOURCES_DIR}/matchers/catch_matchers.h
+    ${SOURCES_DIR}/matchers/catch_matchers_exception.hpp
+    ${SOURCES_DIR}/matchers/catch_matchers_floating.h
+    ${SOURCES_DIR}/matchers/catch_matchers_generic.hpp
+    ${SOURCES_DIR}/matchers/catch_matchers_string.h
+    ${SOURCES_DIR}/matchers/catch_matchers_templates.hpp
+    ${SOURCES_DIR}/matchers/catch_matchers_vector.h
     ${SOURCES_DIR}/catch_message.h
     ${SOURCES_DIR}/catch_meta.hpp
     ${SOURCES_DIR}/catch_objc.hpp
@@ -130,7 +130,7 @@ set(IMPL_SOURCES
     ${SOURCES_DIR}/catch_approx.cpp
     ${SOURCES_DIR}/catch_assertionhandler.cpp
     ${SOURCES_DIR}/catch_assertionresult.cpp
-    ${SOURCES_DIR}/catch_capture_matchers.cpp
+    ${SOURCES_DIR}/internal/catch_capture_matchers.cpp
     ${SOURCES_DIR}/catch_commandline.cpp
     ${SOURCES_DIR}/catch_common.cpp
     ${SOURCES_DIR}/catch_config.cpp
@@ -155,12 +155,12 @@ set(IMPL_SOURCES
     ${SOURCES_DIR}/catch_interfaces_testcase.cpp
     ${SOURCES_DIR}/catch_list.cpp
     ${SOURCES_DIR}/catch_leak_detector.cpp
-    ${SOURCES_DIR}/catch_matchers.cpp
-    ${SOURCES_DIR}/catch_matchers_exception.cpp
-    ${SOURCES_DIR}/catch_matchers_floating.cpp
-    ${SOURCES_DIR}/catch_matchers_generic.cpp
-    ${SOURCES_DIR}/catch_matchers_string.cpp
-    ${SOURCES_DIR}/catch_matchers_templates.cpp
+    ${SOURCES_DIR}/matchers/catch_matchers.cpp
+    ${SOURCES_DIR}/matchers/catch_matchers_exception.cpp
+    ${SOURCES_DIR}/matchers/catch_matchers_floating.cpp
+    ${SOURCES_DIR}/matchers/catch_matchers_generic.cpp
+    ${SOURCES_DIR}/matchers/catch_matchers_string.cpp
+    ${SOURCES_DIR}/matchers/catch_matchers_templates.cpp
     ${SOURCES_DIR}/catch_message.cpp
     ${SOURCES_DIR}/catch_output_redirect.cpp
     ${SOURCES_DIR}/catch_registry_hub.cpp

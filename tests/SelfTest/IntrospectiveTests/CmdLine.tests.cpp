@@ -5,7 +5,7 @@
 
 #include <catch2/catch_approx.h>
 #include <catch2/catch_test_macros.hpp>
-#include <catch2/catch_matchers_string.h>
+#include <catch2/matchers/catch_matchers_string.h>
 #include <catch2/catch_test_spec_parser.h>
 #include <catch2/catch_test_case_info.h>
 #include <catch2/catch_config.hpp>

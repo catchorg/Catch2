@@ -1,12 +1,9 @@
 /*
- *  Created by Phil Nash on 08/02/2017.
- *  Copyright (c) 2017 Two Blue Cubes Ltd. All rights reserved.
- *
  * Distributed under the Boost Software License, Version 1.0. (See accompanying
  * file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  */
 
-#include <catch2/catch_matchers_string.h>
+#include <catch2/matchers/catch_matchers_string.h>
 #include <catch2/catch_string_manip.h>
 #include <catch2/catch_tostring.h>
 

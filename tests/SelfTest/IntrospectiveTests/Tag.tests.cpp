@@ -3,8 +3,8 @@
  *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  */
 
-#include <catch2/catch_matchers_string.h>
-#include <catch2/catch_matchers_vector.h>
+#include <catch2/matchers/catch_matchers_string.h>
+#include <catch2/matchers/catch_matchers_vector.h>
 #include <catch2/catch_tag_alias_registry.h>
 #include <catch2/catch_test_macros.hpp>
 #include <catch2/catch_test_case_info.h>
