@@ -56,17 +56,8 @@ foreach( name ${ALL_EXAMPLE_TARGETS} )
     target_link_libraries( ${name} Catch2 )
     set_property(TARGET ${name} PROPERTY CXX_STANDARD 14)
     set_property(TARGET ${name} PROPERTY CXX_EXTENSIONS OFF)
-
-    # Add desired warnings
-    if ( CMAKE_CXX_COMPILER_ID MATCHES "Clang|AppleClang|GNU" )
-        target_compile_options( ${name}  PRIVATE -Wall -Wextra -Wunreachable-code )
-    endif()
-    # Clang specific warning go here
-    if ( CMAKE_CXX_COMPILER_ID MATCHES "Clang" )
-        # Actually keep these
-        target_compile_options( ${name}  PRIVATE -Wweak-vtables -Wexit-time-destructors -Wglobal-constructors -Wmissing-noreturn )
-    endif()
-    if ( CMAKE_CXX_COMPILER_ID MATCHES "MSVC" )
-        target_compile_options( ${name}  PRIVATE /W4 /w44265 /WX )
-    endif()
 endforeach()
+
+
+list(APPEND CATCH_WARNING_TARGETS ${ALL_EXAMPLE_TARGETS})
+set(CATCH_WARNING_TARGETS ${CATCH_WARNING_TARGETS} PARENT_SCOPE)

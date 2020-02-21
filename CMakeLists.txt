@@ -6,16 +6,18 @@ if(NOT DEFINED PROJECT_NAME)
   set(NOT_SUBPROJECT ON)
 endif()
 
-option(CATCH_BUILD_TESTING "Build SelfTest project" ON)
-option(CATCH_BUILD_EXAMPLES "Build documentation examples" OFF)
-option(CATCH_BUILD_EXTRA_TESTS "Build extra tests" OFF)
-option(CATCH_ENABLE_COVERAGE "Generate coverage for codecov.io" OFF)
 option(CATCH_INSTALL_DOCS "Install documentation alongside library" ON)
 option(CATCH_INSTALL_EXTRAS "Install extras alongside library" ON)
+option(CATCH_DEVELOPMENT_BUILD "Build tests, enable warnings, enable Werror, etc" ON)
 
+include(CMakeDependentOption)
+cmake_dependent_option(CATCH_BUILD_TESTING "Build the SelfTest project" ON "CATCH_DEVELOPMENT_BUILD" OFF)
+cmake_dependent_option(CATCH_BUILD_EXAMPLES "Build code examples" OFF "CATCH_DEVELOPMENT_BUILD" OFF)
+cmake_dependent_option(CATCH_BUILD_EXTRA_TESTS "Build extra tests" OFF "CATCH_DEVELOPMENT_BUILD" OFF)
+cmake_dependent_option(CATCH_ENABLE_COVERAGE "Generate coverage for codecov.io" OFF "CATCH_DEVELOPMENT_BUILD" OFF)
+cmake_dependent_option(CATCH_ENABLE_WERROR "Enables Werror during build" ON "CATCH_DEVELOPMENT_BUILD" OFF)
 
 set(CATCH_CMAKE_CONFIG_DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake/Catch2")
-
 
 # Catch2's build breaks if done in-tree. You probably should not build
 # things in tree anyway, but we can allow projects that include Catch2
@@ -29,7 +31,6 @@ project(Catch2 LANGUAGES CXX VERSION 3.0.0)
 
 # Provide path for scripts
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/CMake")
-
 include(GNUInstallDirs)
 include(CMakePackageConfigHelpers)
 include(CTest)
@@ -60,6 +61,12 @@ endif()
 if(CATCH_BUILD_EXTRA_TESTS)
     add_subdirectory(tests/ExtraTests)
 endif()
+
+
+if (CATCH_DEVELOPMENT_BUILD)
+    add_warnings_to_targets("${CATCH_WARNING_TARGETS}")
+endif()
+
 
 #option(CATCH_USE_VALGRIND "Perform SelfTests with Valgrind" OFF)
 #option(CATCH_ENABLE_WERROR "Enable all warnings as errors" ON)

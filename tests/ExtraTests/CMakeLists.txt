@@ -128,6 +128,7 @@ if (MSVC)
     set_property( TARGET WindowsHeader PROPERTY CXX_EXTENSIONS OFF )
     target_link_libraries( WindowsHeader Catch2 )
     add_test(NAME WindowsHeader COMMAND WindowsHeader -r compact)
+    list(APPEND CATCH_WARNING_TARGETS ${EXTRA_TEST_BINARIES} WindowsHeader)
 endif()
 
 #add_executable(DebugBreakMacros ${TESTS_DIR}/X12-CustomDebugBreakMacro.cpp)
@@ -155,3 +156,9 @@ foreach( test ${EXTRA_TEST_BINARIES} )
     set_property( TARGET ${test} PROPERTY CXX_STANDARD_REQUIRED ON )
     set_property( TARGET ${test} PROPERTY CXX_EXTENSIONS OFF )
 endforeach()
+
+# Notice that we are modifying EXTRA_TEST_BINARIES destructively, do not
+# use it after this point!
+list(FILTER EXTRA_TEST_BINARIES EXCLUDE REGEX "DisabledExceptions.*")
+list(APPEND CATCH_WARNING_TARGETS ${EXTRA_TEST_BINARIES})
+set(CATCH_WARNING_TARGETS ${CATCH_WARNING_TARGETS} PARENT_SCOPE)

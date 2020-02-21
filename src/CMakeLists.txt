@@ -233,7 +233,6 @@ add_library(Catch2 STATIC
   ${BENCHMARK_HEADERS}
   ${BENCHMARK_SOURCES}
 )
-add_library(Catch2::Catch2 ALIAS Catch2)
 
 if (ANDROID)
     target_link_libraries(Catch2 INTERFACE log)
@@ -278,7 +277,6 @@ add_library(Catch2::Catch2Main ALIAS Catch2Main)
 target_link_libraries(Catch2Main PUBLIC Catch2)
 
 
-
 if (NOT_SUBPROJECT)
     # create and install an export set for catch target as Catch2::Catch
     install(
@@ -320,4 +318,30 @@ if (CATCH_BUILD_EXAMPLES OR CATCH_BUILD_EXTRA_TESTS)
         $<BUILD_INTERFACE:${SOURCES_DIR}/..>
         $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
     )
+    target_compile_features(Catch2_buildall_interface
+      INTERFACE
+        cxx_alignas
+        cxx_alignof
+        cxx_attributes
+        cxx_auto_type
+        cxx_constexpr
+        cxx_defaulted_functions
+        cxx_deleted_functions
+        cxx_final
+        cxx_lambdas
+        cxx_noexcept
+        cxx_override
+        cxx_range_for
+        cxx_rvalue_references
+        cxx_static_assert
+        cxx_strong_enums
+        cxx_trailing_return_types
+        cxx_unicode_literals
+        cxx_user_literals
+        cxx_variable_templates
+        cxx_variadic_macros
+    )
 endif()
+
+list(APPEND CATCH_WARNING_TARGETS Catch2 Catch2Main)
+set(CATCH_WARNING_TARGETS ${CATCH_WARNING_TARGETS} PARENT_SCOPE)

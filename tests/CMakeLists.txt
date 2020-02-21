@@ -97,28 +97,6 @@ if (CATCH_ENABLE_COVERAGE)
     coverage_evaluate()
 endif()
 
-# Add per compiler options
-if ( CMAKE_CXX_COMPILER_ID MATCHES "Clang|AppleClang|GNU" )
-    target_compile_options( SelfTest PRIVATE -Wall -Wextra -Wunreachable-code -Wpedantic -Wmissing-declarations )
-    if (CATCH_ENABLE_WERROR)
-        target_compile_options( SelfTest PRIVATE -Werror )
-    endif()
-endif()
-# Clang specific options go here
-if ( CMAKE_CXX_COMPILER_ID MATCHES "Clang" )
-    target_compile_options( SelfTest PRIVATE -Wweak-vtables -Wexit-time-destructors -Wglobal-constructors -Wmissing-noreturn )
-endif()
-if ( CMAKE_CXX_COMPILER_ID MATCHES "MSVC" )
-    STRING(REGEX REPLACE "/W[0-9]" "/W4" CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS}) # override default warning level
-    target_compile_options( SelfTest PRIVATE /w44265 /w44061 /w44062 /w45038 )
-    if (CATCH_ENABLE_WERROR)
-        target_compile_options( SelfTest PRIVATE /WX)
-    endif()
-    # Force MSVC to consider everything as encoded in utf-8
-    target_compile_options( SelfTest PRIVATE /utf-8 )
-endif()
-
-
 # configure unit tests via CTest
 add_test(NAME RunTests COMMAND $<TARGET_FILE:SelfTest>)
 set_tests_properties(RunTests PROPERTIES
@@ -241,3 +219,6 @@ if (CATCH_USE_VALGRIND)
     add_test(NAME ValgrindListTags COMMAND valgrind --leak-check=full --error-exitcode=1 $<TARGET_FILE:SelfTest> --list-tags)
     set_tests_properties(ValgrindListTags PROPERTIES PASS_REGULAR_EXPRESSION "definitely lost: 0 bytes in 0 blocks")
 endif()
+
+list(APPEND CATCH_WARNING_TARGETS SelfTest)
+set(CATCH_WARNING_TARGETS ${CATCH_WARNING_TARGETS} PARENT_SCOPE)
