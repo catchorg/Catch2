@@ -8,7 +8,10 @@
 namespace Catch {
     namespace Benchmark {
         namespace Detail {
+            CATCH_INTERNAL_START_WARNINGS_SUPPRESSION
+            CATCH_INTERNAL_SUPPRESS_GLOBALS_WARNINGS
             const std::string benchmarkErrorMsg = "a benchmark failed to run successfully";
+            CATCH_INTERNAL_STOP_WARNINGS_SUPPRESSION
         } // namespace Detail
     } // namespace Benchmark
 } // namespace Catch
