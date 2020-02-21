@@ -54,6 +54,8 @@
 * The `[!hide]` tag has been removed.
   * Use `[.]` or `[.foo]` instead.
 * Lvalues of composed matchers cannot be composed further
+* Uses of `REGISTER_TEST_CASE` macro need to be followed by a semicolon
+  * This does not change `TEST_CASE` and friends in any way
 
 ### Fixes
 * The `INFO` macro no longer contains superfluous semicolon (#1456)

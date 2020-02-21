@@ -140,10 +140,12 @@ struct AutoReg : NonCopyable {
 
     ///////////////////////////////////////////////////////////////////////////////
     #define INTERNAL_CATCH_REGISTER_TESTCASE( Function, ... ) \
-        CATCH_INTERNAL_START_WARNINGS_SUPPRESSION \
-        CATCH_INTERNAL_SUPPRESS_GLOBALS_WARNINGS \
-        Catch::AutoReg INTERNAL_CATCH_UNIQUE_NAME( autoRegistrar )( Catch::makeTestInvoker( Function ), CATCH_INTERNAL_LINEINFO, Catch::StringRef(), Catch::NameAndTags{ __VA_ARGS__ } ); /* NOLINT */ \
-        CATCH_INTERNAL_STOP_WARNINGS_SUPPRESSION
+        do { \
+            CATCH_INTERNAL_START_WARNINGS_SUPPRESSION \
+            CATCH_INTERNAL_SUPPRESS_GLOBALS_WARNINGS \
+            Catch::AutoReg INTERNAL_CATCH_UNIQUE_NAME( autoRegistrar )( Catch::makeTestInvoker( Function ), CATCH_INTERNAL_LINEINFO, Catch::StringRef(), Catch::NameAndTags{ __VA_ARGS__ } ); /* NOLINT */ \
+            CATCH_INTERNAL_STOP_WARNINGS_SUPPRESSION \
+        } while(false)
 
     ///////////////////////////////////////////////////////////////////////////////
     #define INTERNAL_CATCH_TEMPLATE_TEST_CASE_2(TestName, TestFunc, Name, Tags, Signature, ... )\
