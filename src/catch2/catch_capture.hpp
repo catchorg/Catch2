@@ -13,6 +13,12 @@
 #include <catch2/catch_message.h>
 #include <catch2/catch_stringref.h>
 
+// We need this suppression to leak, because it took until GCC 9
+// for the front end to handle local suppression via _Pragma properly
+#if defined(__GNUC__) && !defined(__clang__) && !defined(__ICC) && __GNUC__ < 9
+  #pragma GCC diagnostic ignored "-Wparentheses"
+#endif
+
 #if !defined(CATCH_CONFIG_DISABLE)
 
 #if !defined(CATCH_CONFIG_DISABLE_STRINGIFICATION)
