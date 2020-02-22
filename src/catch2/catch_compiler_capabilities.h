@@ -53,6 +53,9 @@
 // for older versions of GCC.
 #    define CATCH_INTERNAL_SUPPRESS_PARENTHESES_WARNINGS \
          _Pragma( "GCC diagnostic ignored \"-Wparentheses\"" )
+
+#    define CATCH_INTERNAL_SUPPRESS_UNUSED_WARNINGS \
+         _Pragma( "GCC diagnostic ignored \"-Wunused-variable\"" )
 #endif
 
 #if defined(__clang__)
