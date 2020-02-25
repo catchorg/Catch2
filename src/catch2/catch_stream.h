@@ -39,11 +39,27 @@ namespace Catch {
 
         auto str() const -> std::string;
 
+#if defined(__GNUC__) && !defined(__clang__)
+#pragma GCC diagnostic push
+// Old versions of GCC do not understand -Wnonnull-compare
+#pragma GCC diagnostic ignored "-Wpragmas"
+// Streaming a function pointer triggers Waddress and Wnonnull-compare
+// on GCC, because it implicitly converts it to bool and then decides
+// that the check it uses (a? true : false) is tautological and cannot
+// be null...
+#pragma GCC diagnostic ignored "-Waddress"
+#pragma GCC diagnostic ignored "-Wnonnull-compare"
+#endif
+
         template<typename T>
         auto operator << ( T const& value ) -> ReusableStringStream& {
             *m_oss << value;
             return *this;
         }
+
+#if defined(__GNUC__) && !defined(__clang__)
+#pragma GCC diagnostic pop
+#endif
         auto get() -> std::ostream& { return *m_oss; }
     };
 }
