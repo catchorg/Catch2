@@ -19,6 +19,8 @@
 // 1. Printing of listener data:
 //
 
+
+namespace {
 std::string ws(int const level) {
     return std::string( 2 * level, ' ' );
 }
@@ -34,7 +36,6 @@ std::ostream& operator<<( std::ostream& os, std::vector<T> const& v ) {
         os << x << ", ";
     return os << "}";
 }
-
 // struct SourceLineInfo {
 //     char const* file;
 //     std::size_t line;
@@ -281,8 +282,8 @@ void print( std::ostream& os, int const level, std::string const& title, Catch::
     print( os, level+1 , "- getSourceInfo(): ", info.getSourceInfo() );
     os << ws(level+1) << "- getTestMacroName(): '"  << info.getTestMacroName() << "'\n";
 
-//    print( os, level+1 , "- *** m_info (AssertionInfo)", info.m_info );
-//    print( os, level+1 , "- *** m_resultData (AssertionResultData)", info.m_resultData );
+    print( os, level+1 , "- *** m_info (AssertionInfo)", info.m_info );
+    print( os, level+1 , "- *** m_resultData (AssertionResultData)", info.m_resultData );
 }
 
 // struct AssertionStats {
@@ -304,6 +305,7 @@ void print( std::ostream& os, int const level, std::string const& title, Catch::
 
 char const * dashed_line =
     "--------------------------------------------------------------------------";
+
 
 struct MyListener : Catch::TestEventListenerBase {
 
@@ -374,6 +376,8 @@ struct MyListener : Catch::TestEventListenerBase {
         return true;
     }
 };
+
+} // end anonymous namespace
 
 CATCH_REGISTER_LISTENER( MyListener )
 

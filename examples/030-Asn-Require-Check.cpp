@@ -12,7 +12,7 @@
 
 #include <catch2/catch.hpp>
 
-std::string one() {
+static std::string one() {
     return "1";
 }
 

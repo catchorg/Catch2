@@ -11,11 +11,13 @@
 #include <type_traits>
 #include <stdexcept>
 
-[[noreturn]]
-void this_throws() {
-    throw std::runtime_error("Some msg");
+namespace {
+    [[noreturn]]
+    void this_throws() {
+        throw std::runtime_error("Some msg");
+    }
+    void this_doesnt_throw() {}
 }
-void this_doesnt_throw() {}
 
 CATCH_TEST_CASE("PrefixedMacros") {
     using namespace Catch::Matchers;

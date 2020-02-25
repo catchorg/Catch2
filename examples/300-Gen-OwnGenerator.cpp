@@ -10,6 +10,8 @@
 
 #include <random>
 
+namespace {
+
 // This class shows how to implement a simple generator for Catch tests
 class RandomIntGenerator : public Catch::Generators::IGenerator<int> {
     std::minstd_rand m_rand;
@@ -44,6 +46,8 @@ Catch::Generators::GeneratorWrapper<int> random(int low, int high) {
         std::make_unique<RandomIntGenerator>(low, high)
     );
 }
+
+} // end anonymous namespaces
 
 // The two sections in this test case are equivalent, but the first one
 // is much more readable/nicer to use

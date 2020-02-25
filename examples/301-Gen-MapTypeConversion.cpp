@@ -8,6 +8,8 @@
 #include <string>
 #include <sstream>
 
+namespace {
+
 // Returns a line from a stream. You could have it e.g. read lines from
 // a file, but to avoid problems with paths in examples, we will use
 // a fixed stringstream.
@@ -42,6 +44,7 @@ Catch::Generators::GeneratorWrapper<std::string> lines(std::string /* ignored fo
     );
 }
 
+} // end anonymous namespace
 
 
 TEST_CASE("filter can convert types inside the generator expression", "[example][generator]") {

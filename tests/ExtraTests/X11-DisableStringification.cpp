@@ -7,9 +7,11 @@
 #include <catch2/catch_default_main.hpp>
 #include <catch2/catch_test_macros.hpp>
 
-struct Hidden {};
+namespace {
+    struct Hidden {};
 
-bool operator==(Hidden, Hidden) { return true; }
+    bool operator==(Hidden, Hidden) { return true; }
+}
 
 TEST_CASE("DisableStringification") {
     REQUIRE( Hidden{} == Hidden{} );
