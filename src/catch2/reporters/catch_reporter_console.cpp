@@ -211,15 +211,11 @@ class Duration {
     static const uint64_t s_nanosecondsInASecond = 1000 * s_nanosecondsInAMillisecond;
     static const uint64_t s_nanosecondsInAMinute = 60 * s_nanosecondsInASecond;
 
-    uint64_t m_inNanoseconds;
+    double m_inNanoseconds;
     Unit m_units;
 
 public:
-	explicit Duration(double inNanoseconds, Unit units = Unit::Auto)
-        : Duration(static_cast<uint64_t>(inNanoseconds), units) {
-    }
-
-    explicit Duration(uint64_t inNanoseconds, Unit units = Unit::Auto)
+    explicit Duration(double inNanoseconds, Unit units = Unit::Auto)
         : m_inNanoseconds(inNanoseconds),
         m_units(units) {
         if (m_units == Unit::Auto) {
@@ -248,7 +244,7 @@ public:
         case Unit::Minutes:
             return m_inNanoseconds / static_cast<double>(s_nanosecondsInAMinute);
         default:
-            return static_cast<double>(m_inNanoseconds);
+            return m_inNanoseconds;
         }
     }
     StringRef unitsAsString() const {
