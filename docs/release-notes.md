@@ -57,9 +57,17 @@
 * Uses of `REGISTER_TEST_CASE` macro need to be followed by a semicolon
   * This does not change `TEST_CASE` and friends in any way
 
+
+### Improvements
+* Matchers have been extended with the ability to use different signatures of `match` (#1307, #1553, #1554, #1843)
+  * This includes having templated `match` member function
+  * See the [rewritten Matchers documentation](matchers.md#top) for details
+
+
 ### Fixes
 * The `INFO` macro no longer contains superfluous semicolon (#1456)
 * The `--list*` family of command line flags now return 0 on success (#1410, #1146)
+
 
 ### Other changes
 * `CATCH_CONFIG_DISABLE_MATCHERS` no longer exists.
