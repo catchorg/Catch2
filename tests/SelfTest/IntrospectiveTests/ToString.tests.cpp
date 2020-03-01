@@ -1,5 +1,5 @@
 #include <catch2/catch_enum_values_registry.h>
-#include <catch2/matchers/catch_matchers_vector.h>
+#include <catch2/matchers/catch_matchers_vector.hpp>
 #include <catch2/catch_test_macros.hpp>
 
 enum class EnumClass3 { Value1, Value2, Value3, Value4 };

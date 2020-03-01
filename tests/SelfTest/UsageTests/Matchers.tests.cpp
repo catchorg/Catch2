@@ -5,10 +5,10 @@
 
 #include <catch2/catch_test_macros.hpp>
 #include <catch2/matchers/catch_matchers_exception.hpp>
-#include <catch2/matchers/catch_matchers_floating.h>
+#include <catch2/matchers/catch_matchers_floating.hpp>
 #include <catch2/matchers/catch_matchers_generic.hpp>
-#include <catch2/matchers/catch_matchers_string.h>
-#include <catch2/matchers/catch_matchers_vector.h>
+#include <catch2/matchers/catch_matchers_string.hpp>
+#include <catch2/matchers/catch_matchers_vector.hpp>
 #include <catch2/matchers/catch_matchers_templates.hpp>
 
 #include <algorithm>

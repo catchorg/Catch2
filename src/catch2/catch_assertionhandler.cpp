@@ -16,7 +16,7 @@
 #include <catch2/catch_interfaces_registry_hub.h>
 #include <catch2/internal/catch_capture_matchers.h>
 #include <catch2/catch_run_context.h>
-#include <catch2/matchers/catch_matchers_string.h>
+#include <catch2/matchers/catch_matchers_string.hpp>
 
 namespace Catch {
 
