@@ -3,7 +3,7 @@
  * file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  */
 
-#include <catch2/matchers/catch_matchers_string.h>
+#include <catch2/matchers/catch_matchers_string.hpp>
 #include <catch2/catch_string_manip.h>
 #include <catch2/catch_tostring.h>
 

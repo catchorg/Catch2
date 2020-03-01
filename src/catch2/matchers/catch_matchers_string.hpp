@@ -8,7 +8,7 @@
 #ifndef TWOBLUECUBES_CATCH_MATCHERS_STRING_H_INCLUDED
 #define TWOBLUECUBES_CATCH_MATCHERS_STRING_H_INCLUDED
 
-#include <catch2/matchers/catch_matchers.h>
+#include <catch2/matchers/catch_matchers.hpp>
 
 #include <string>
 

@@ -72,13 +72,13 @@ set(INTERNAL_HEADERS
     ${SOURCES_DIR}/catch_interfaces_testcase.h
     ${SOURCES_DIR}/catch_leak_detector.h
     ${SOURCES_DIR}/catch_list.h
-    ${SOURCES_DIR}/matchers/catch_matchers.h
+    ${SOURCES_DIR}/matchers/catch_matchers.hpp
     ${SOURCES_DIR}/matchers/catch_matchers_exception.hpp
-    ${SOURCES_DIR}/matchers/catch_matchers_floating.h
+    ${SOURCES_DIR}/matchers/catch_matchers_floating.hpp
     ${SOURCES_DIR}/matchers/catch_matchers_generic.hpp
-    ${SOURCES_DIR}/matchers/catch_matchers_string.h
+    ${SOURCES_DIR}/matchers/catch_matchers_string.hpp
     ${SOURCES_DIR}/matchers/catch_matchers_templates.hpp
-    ${SOURCES_DIR}/matchers/catch_matchers_vector.h
+    ${SOURCES_DIR}/matchers/catch_matchers_vector.hpp
     ${SOURCES_DIR}/catch_message.h
     ${SOURCES_DIR}/catch_meta.hpp
     ${SOURCES_DIR}/catch_objc.hpp

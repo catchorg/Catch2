@@ -47,8 +47,8 @@ _both_ ends with the suffix "as a service" _and_ contains the string
 
 
 Both of the string matchers used in the examples above live in the
-`catch_matchers_string.h` header, so to compile the code above also
-requires `#include <catch2/matchers/catch_matchers_string.h>`.
+`catch_matchers_string.hpp` header, so to compile the code above also
+requires `#include <catch2/matchers/catch_matchers_string.hpp>`.
 
 **IMPORTANT**: The combining operators do not take ownership of the
 matcher objects being combined. This means that if you store combined
@@ -108,7 +108,7 @@ the regex `"abc"` will not match input string `"abcd"`. To match
 The second argument sets whether the matching should be case-sensitive
 or not. By default, it is case-sensitive.
 
-> `std::string` matchers live in `catch2/matchers/catch_matchers_string.h`
+> `std::string` matchers live in `catch2/matchers/catch_matchers_string.hpp`
 
 
 ### Vector matchers
@@ -136,7 +136,7 @@ An example usage:
 This assertions will pass, because the elements given to the matchers
 are a permutation of the ones in `some_vec`.
 
-> vector matchers live in `catch2/matchers/catch_matchers_vector.h`
+> vector matchers live in `catch2/matchers/catch_matchers_vector.hpp`
 
 
 ### Floating point matchers
@@ -187,7 +187,7 @@ to zero, we would write this assertion:
 ```
 
 
-> floating point matchers live in `catch2/matchers/catch_matchers_floating.h`
+> floating point matchers live in `catch2/matchers/catch_matchers_floating.hpp`
 
 
 ### Miscellaneous matchers
@@ -223,7 +223,7 @@ Catch2 provides an utility macro for asserting that an expression
 throws exception of specific type, and that the exception has desired
 properties. The macro is `REQUIRE_THROWS_MATCHES(expr, ExceptionType, Matcher)`.
 
-> `REQUIRE_THROWS_MATCHES` macro lives in `catch2/matchers/catch_matchers.h`
+> `REQUIRE_THROWS_MATCHES` macro lives in `catch2/matchers/catch_matchers.hpp`
 
 
 Catch2 currently provides only one matcher for exceptions,
@@ -311,7 +311,7 @@ written using the new style, combining old style matchers should
 generally compile faster. Also note that you can combine old and new
 style matchers arbitrarily.
 
-> `MatcherBase` lives in `catch2/matchers/catch_matchers.h`
+> `MatcherBase` lives in `catch2/matchers/catch_matchers.hpp`
 
 
 ## Writing custom matchers (new style)

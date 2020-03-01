@@ -3,7 +3,7 @@
  *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  */
 #include <catch2/internal/catch_capture_matchers.h>
-#include <catch2/matchers/catch_matchers.h>
+#include <catch2/matchers/catch_matchers.hpp>
 #include <catch2/catch_interfaces_registry_hub.h>
 
 namespace Catch {
