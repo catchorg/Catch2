@@ -1,77 +1,123 @@
 <a id="top"></a>
 # Matchers
 
-Matchers are an alternative way to do assertions which are easily extensible and composable.
-This makes them well suited to use with more complex types (such as collections) or your own custom types.
-Matchers were first popularised by the [Hamcrest](https://en.wikipedia.org/wiki/Hamcrest) family of frameworks.
+**Contents**<br>
+[Using Matchers](#using-matchers)<br>
+[Built-in matchers](#built-in-matchers)<br>
+[Writing custom matchers (old style)](#writing-custom-matchers-old-style)<br>
+[Writing custom matchers (new style)](#writing-custom-matchers-new-style)<br>
 
-## In use
+Matchers, as popularized by the [Hamcrest](https://en.wikipedia.org/wiki/Hamcrest)
+framework are an alternative way to write assertions, useful for tests
+where you work with complex types or need to assert more complex
+properties. Matchers are easily composable and users can write their
+own and combine them with the Catch2-provided matchers seamlessly.
 
-Matchers are introduced with the `REQUIRE_THAT` or `CHECK_THAT` macros, which take two arguments.
-The first argument is the thing (object or value) under test. The second part is a match _expression_,
-which consists of either a single matcher or one or more matchers combined using `&&`, `||` or `!` operators.
 
-For example, to assert that a string ends with a certain substring:
+## Using Matchers
 
- ```c++
-using Catch::Matchers::EndsWith; // or Catch::EndsWith
-std::string str = getStringFromSomewhere();
-REQUIRE_THAT( str, EndsWith( "as a service" ) );
-```
+Matchers are most commonly used in tandem with the `REQUIRE_THAT` or
+`CHECK_THAT` macros. The `REQUIRE_THAT` macro takes two arguments,
+the first one is the input (object/value) to test, the second argument
+is the matcher itself.
 
-The matcher objects can take multiple arguments, allowing more fine tuning.
-The built-in string matchers, for example, take a second argument specifying whether the comparison is
-case sensitive or not:
-
-```c++
-REQUIRE_THAT( str, EndsWith( "as a service", Catch::CaseSensitive::No ) );
- ```
-
-And matchers can be combined:
-
-```c++
-REQUIRE_THAT( str,
-    EndsWith( "as a service" ) ||
-    (StartsWith( "Big data" ) && !Contains( "web scale" ) ) );
-```
-
-_The combining operators do not take ownership of the matcher objects.
-This means that if you store the combined object, you have to ensure that
-the matcher objects outlive its last use. What this means is that code
-like this leads to a use-after-free and (hopefully) a crash:_
+For example, to assert that a string ends with the "as a service"
+substring, you can write the following assertion
 
 ```cpp
+using Catch::Matchers::EndsWith;
+
+REQUIRE_THAT( getSomeString(), EndsWith("as a service") );
+```
+
+Individual matchers can also be combined using the C++ logical
+operators, that is `&&`, `||`, and `!`, like so:
+
+```cpp
+using Catch::Matchers::EndsWith;
+using Catch::Matchers::Contains;
+
+REQUIRE_THAT( getSomeString(),
+              EndsWith("as a service") && Contains("web scale"));
+```
+
+The example above asserts that the string returned from `getSomeString`
+_both_ ends with the suffix "as a service" _and_ contains the string
+"web scale" somewhere.
+
+
+Both of the string matchers used in the examples above live in the
+`catch_matchers_string.h` header, so to compile the code above also
+requires `#include <catch2/matchers/catch_matchers_string.h>`.
+
+**IMPORTANT**: The combining operators do not take ownership of the
+matcher objects being combined. This means that if you store combined
+matcher object, you have to ensure that the matchers being combined
+outlive its last use. What this means is that the following code leads
+to a use-after-free (UAF):
+
+```cpp
+#include <catch2/catch_test_macros.hpp>
+#include <catch2/matchers/catch_matchers_string.h>
+
 TEST_CASE("Bugs, bugs, bugs", "[Bug]"){
     std::string str = "Bugs as a service";
 
-    auto match_expression = Catch::EndsWith( "as a service" ) ||
-        (Catch::StartsWith( "Big data" ) && !Catch::Contains( "web scale" ) );
+    auto match_expression = Catch::Matchers::EndsWith( "as a service" ) ||
+        (Catch::Matchers::StartsWith( "Big data" ) && !Catch::Matchers::Contains( "web scale" ) );
     REQUIRE_THAT(str, match_expression);
 }
 ```
 
 
-## Built in matchers
-Catch2 provides some matchers by default. They can be found in the
-`Catch::Matchers::foo` namespace and are imported into the `Catch`
-namespace as well.
+## Built-in matchers
 
-There are two parts to each of the built-in matchers, the matcher
-type itself and a helper function that provides template argument
-deduction when creating templated matchers. As an example, the matcher
-for checking that two instances of `std::vector` are identical is
-`EqualsMatcher<T>`, but the user is expected to use the `Equals`
-helper function instead.
+Every matcher provided by Catch2 is split into 2 parts, a factory
+function that lives in the `Catch::Matchers` namespace, and the actual
+matcher type that is in some deeper namespace and should not be used by
+the user. In the examples above, we used `Catch::Matchers::Contains`.
+This is the factory function for the
+`Catch::Matchers::StdString::ContainsMatcher` type that does the actual
+matching.
+
+Out of the box, Catch2 provides the following matchers:
 
 
-### String matchers
-The string matchers are `StartsWith`, `EndsWith`, `Contains`, `Equals` and `Matches`. The first four match a literal (sub)string against a result, while `Matches` takes and matches an ECMAScript regex. Do note that `Matches` matches the string as a whole, meaning that "abc" will not match against "abcd", but "abc.*" will.
+### `std::string` matchers
 
-Each of the provided `std::string` matchers also takes an optional second argument, that decides case sensitivity (by-default, they are case sensitive).
+Catch2 provides 5 different matchers that work with `std::string`,
+* `StartsWith(std::string str, CaseSensitive)`,
+* `EndsWith(std::string str, CaseSensitive)`,
+* `Contains(std::string str, CaseSensitive)`,
+* `Equals(std::string str, CaseSensitive)`, and
+* `Matches(std::string str, CaseSensitive)`.
+
+The first three should be fairly self-explanatory, they succeed if
+the argument starts with `str`, ends with `str`, or contains `str`
+somewhere inside it.
+
+The `Equals` matcher matches a string if (and only if) the argument
+string is equal to `str`.
+
+Finally, the `Matches` matcher performs an ECMASCript regex match using
+`str` against the argument string. It is important to know that
+the match is performed agains the string as a whole, meaning that
+the regex `"abc"` will not match input string `"abcd"`. To match
+`"abcd"`, you need to use e.g. `"abc.*"` as your regex.
+
+The second argument sets whether the matching should be case-sensitive
+or not. By default, it is case-sensitive.
+
+> `std::string` matchers live in `catch2/matchers/catch_matchers_string.h`
 
 
 ### Vector matchers
-Catch2 currently provides 5 built-in matchers that work on `std::vector`.
+
+_Vector matchers have been deprecated in favour of the generic
+range matchers with the same functionality._
+
+Catch2 provides 5 built-in matchers that work on `std::vector`.
+
 These are
 
  * `Contains` which checks whether a specified vector is present in the result
@@ -81,40 +127,82 @@ These are
  * `Approx` which checks whether the result is "approx-equal" (order matters, but comparison is done via `Approx`) to a specific vector
 > Approx matcher was [introduced](https://github.com/catchorg/Catch2/issues/1499) in Catch 2.7.2.
 
+An example usage:
+```cpp
+    std::vector<int> some_vec{ 1, 2, 3 };
+    REQUIRE_THAT(some_vec, Catch::Matchers::UnorderedEquals(std::vector<int>{ 3, 2, 1 }));
+```
+
+This assertions will pass, because the elements given to the matchers
+are a permutation of the ones in `some_vec`.
+
+> vector matchers live in `catch2/matchers/catch_matchers_vector.h`
+
 
 ### Floating point matchers
-Catch2 provides 3 matchers for working with floating point numbers. These
-are `WithinAbsMatcher`, `WithinUlpsMatcher` and `WithinRelMatcher`.
 
-The `WithinAbsMatcher` matcher accepts floating point numbers that are
-within a certain distance of target. It should be constructed with the
-`WithinAbs(double target, double margin)` helper.
+Catch2 provides 3 matchers that target floating point numbers. These
+are:
 
-The `WithinUlpsMatcher` matcher accepts floating point numbers that are
-within a certain number of [ULPs](https://en.wikipedia.org/wiki/Unit_in_the_last_place)
-of the target. Because ULP comparisons need to be done differently for
-`float`s and for `double`s, there are two overloads of the helpers for
-this matcher, `WithinULP(float target, int64_t ULPs)`, and
-`WithinULP(double target, int64_t ULPs)`.
-
-The `WithinRelMatcher` matcher accepts floating point numbers that are
-_approximately equal_ with the target number with some specific tolerance.
-In other words, it checks that `|lhs - rhs| <= epsilon * max(|lhs|, |rhs|)`,
-with special casing for `INFINITY` and `NaN`. There are _4_ overloads of
-the helpers for this matcher, `WithinRel(double target, double margin)`,
-`WithinRel(float target, float margin)`, `WithinRel(double target)`, and
-`WithinRel(float target)`. The latter two provide a default epsilon of
-machine epsilon * 100.
+* `WithinAbs(double target, double margin)`,
+* `WithinUlps(FloatingPoint target, uint64_t maxUlpDiff)`, and
+* `WithinRel(FloatingPoint target, FloatingPoint eps)`.
 
 > `WithinRel` matcher was introduced in Catch 2.10.0
 
-### Generic matchers
-Catch also aims to provide a set of generic matchers. Currently this set
-contains only a matcher that takes arbitrary callable predicate and applies
-it onto the provided object.
 
-Because of type inference limitations, the argument type of the predicate
-has to be provided explicitly. Example:
+`WithinAbs` creates a matcher that accepts floating point numbers whose
+difference with `target` is less than the `margin`.
+
+`WithinULP` creates a matcher that accepts floating point numbers that
+are no more than `maxUlpDiff`
+[ULPs](https://en.wikipedia.org/wiki/Unit_in_the_last_place)
+away from the `target` value. The short version of what this means
+is that there is no more than `maxUlpDiff - 1` representeable floating
+point numbers between the argument for matching and the `target` value.
+
+`WithinRel` creates a matcher that accepts floating point numbers that
+are _approximately equal_ with the `target` with tolerance of `eps.`
+Specifically, it matches if
+`|arg - target| <= eps * max(|arg|, |target|)` holds. If you do not
+specify `eps`, `std::numeric_limits<FloatingPoint>::epsilon * 100`
+is used as the default.
+
+
+In practice, you will often want to combine multiple of these matchers,
+together for an assertion, because all 3 options have edge cases where
+they behave differently than you would expect. As an example, under
+the `WithinRel` matcher, a `0.` only ever matches a `0.` (or `-0.`),
+regardless of the relative tolerance specified. Thus, if you want to
+handle numbers that are "close enough to 0 to be 0", you have to combine
+it with the `WithinAbs` matcher.
+
+For example, to check that our computation matches known good value
+within 0.1%, or is close enough (no different to 5 decimal places)
+to zero, we would write this assertion:
+```cpp
+    REQUIRE_THAT( computation(input),
+        Catch::Matchers::WithinRel(expected, 0.001)
+     || Catch::Matchers::WithinAbs(0, 0.000001) );
+```
+
+
+> floating point matchers live in `catch2/matchers/catch_matchers_floating.h`
+
+
+### Miscellaneous matchers
+
+Catch2 also provides some matchers and matcher utilities that do not
+quite fit into other categories.
+
+The first one of them is the `Predicate(Callable pred, std::string description)`
+matcher. It creates a matcher object that calls `pred` for the provided
+argument. The `description` argument allows users to set what the
+resulting matcher should self-describe as if required.
+
+Do note that you will need to explicitly specify the type of the
+argument, like in this example:
+
 ```cpp
 REQUIRE_THAT("Hello olleH",
              Predicate<std::string>(
@@ -123,84 +211,175 @@ REQUIRE_THAT("Hello olleH",
 );
 ```
 
-The second argument is an optional description of the predicate, and is
-used only during reporting of the result.
+> the predicate matcher lives in `catch2/matchers/catch_matchers_generic.hpp`
 
 
-### Exception matchers
-Catch2 also provides an exception matcher that can be used to verify
-that an exception's message exactly matches desired string. The matcher
-is `ExceptionMessageMatcher`, and we also provide a helper function
-`Message`.
+The other miscellaneous matcher utility is exception matching.
 
-The matched exception must publicly derive from `std::exception` and
-the message matching is done _exactly_, including case.
 
-> `ExceptionMessageMatcher` was introduced in Catch 2.10.0
+#### Matching exceptions
+
+Catch2 provides an utility macro for asserting that an expression
+throws exception of specific type, and that the exception has desired
+properties. The macro is `REQUIRE_THROWS_MATCHES(expr, ExceptionType, Matcher)`.
+
+> `REQUIRE_THROWS_MATCHES` macro lives in `catch2/matchers/catch_matchers.h`
+
+
+Catch2 currently provides only one matcher for exceptions,
+`Message(std::string message)`. `Message` checks that the exception's
+message, as returned from `what` is exactly equal to `message`.
 
 Example use:
 ```cpp
 REQUIRE_THROWS_MATCHES(throwsDerivedException(),  DerivedException,  Message("DerivedException::what"));
 ```
 
-## Custom matchers
-It's easy to provide your own matchers to extend Catch or just to work with your own types.
+Note that `DerivedException` in the example above has to derive from
+`std::exception` for the example to work.
 
-You need to provide two things:
-1. A matcher class, derived from `Catch::MatcherBase<T>` - where `T` is the type being tested.
-The constructor takes and stores any arguments needed (e.g. something to compare against) and you must
-override two methods: `match()` and `describe()`.
-2. A simple builder function. This is what is actually called from the test code and allows overloading.
+> the exception message matcher lives in `catch2/matchers/catch_matchers_exception.hpp`
 
-Here's an example for asserting that an integer falls within a given range
-(note that it is all inline for the sake of keeping the example short):
+
+
+## Writing custom matchers (old style)
+
+The old style of writing matchers has been introduced back in Catch
+Classic. To create an old-style matcher, you have to create your own
+type that derives from `Catch::Matchers::MatcherBase<ArgT>`, where
+`ArgT` is the type your matcher works for. Your type has to override
+two methods, `bool match(ArgT const&) const`,
+and `std::string describe() const`.
+
+As the name suggests, `match` decides whether the provided argument
+is matched (accepted) by the matcher. `describe` then provides a
+human-oriented description of what the matcher does.
+
+We also recommend that you create factory function, just like Catch2
+does, but that is mostly useful for template argument deduction for
+templated matchers (assuming you do not have CTAD available).
+
+To combine these into an example, let's say that you want to write
+a matcher that decides whether the provided argument is a number
+within certain range. We will call it `IsBetweenMatcher<T>`:
 
 ```c++
-// The matcher class
-class IntRange : public Catch::MatcherBase<int> {
-    int m_begin, m_end;
-public:
-    IntRange( int begin, int end ) : m_begin( begin ), m_end( end ) {}
+#include <catch2/catch_test_macros.hpp>
+#include <catch2/matchers/catch_matchers.h>
+// ...
 
-    // Performs the test for this matcher
-    bool match( int const& i ) const override {
-        return i >= m_begin && i <= m_end;
+
+template <typename T>
+class IsBetweenMatcher : public Catch::Matchers::MatcherBase<T> {
+    T m_begin, m_end;
+public:
+    IsBetweenMatcher(T begin, T end) : m_begin(begin), m_end(end) {}
+
+    bool match(T const& in) const override {
+        return in >= m_begin && in <= m_end;
     }
 
-    // Produces a string describing what this matcher does. It should
-    // include any provided data (the begin/ end in this case) and
-    // be written as if it were stating a fact (in the output it will be
-    // preceded by the value under test).
-    virtual std::string describe() const override {
+    std::string describe() const override {
         std::ostringstream ss;
         ss << "is between " << m_begin << " and " << m_end;
         return ss.str();
     }
 };
 
-// The builder function
-inline IntRange IsBetween( int begin, int end ) {
-    return IntRange( begin, end );
+template <typename T>
+IsBetweenMatcher<T> IsBetween(T begin, T end) {
+    return { begin, end };
 }
 
 // ...
 
-// Usage
-TEST_CASE("Integers are within a range")
-{
-    CHECK_THAT( 3, IsBetween( 1, 10 ) );
-    CHECK_THAT( 100, IsBetween( 1, 10 ) );
+TEST_CASE("Numbers are within range") {
+    // infers `double` for the argument type of the matcher
+    CHECK_THAT(3., IsBetween(1., 10.));
+    // infers `int` for the argument type of the matcher
+    CHECK_THAT(100, IsBetween(1, 10));
 }
 ```
 
-Running this test gives the following in the console:
+Obviously, the code above can be improved somewhat, for example you
+might want to `static_assert` over the fact that `T` is an arithmetic
+type... or generalize the matcher to cover any type for which the user
+can provide a comparison function object.
 
+Note that while any matcher written using the old style can also be
+written using the new style, combining old style matchers should
+generally compile faster. Also note that you can combine old and new
+style matchers arbitrarily.
+
+> `MatcherBase` lives in `catch2/matchers/catch_matchers.h`
+
+
+## Writing custom matchers (new style)
+
+The new style of writing matchers has been introduced in Catch2 v3.
+To create a new-style matcher, you have to create your own type that
+derives from `Catch::Matchers::MatcherGenericBase`. Your type has to
+also provide two methods, `bool match( ... ) const` and overriden
+`std::string describe() const`.
+
+Unlike with old-style matchers, there are no requirements on how
+the `match` member function takes its argument. This means that the
+argument can be taken by value or by mutating reference, but also that
+the matcher's `match` member function can be templated.
+
+This allows you to write more complex matcher, such as a matcher that
+can compare one range-like (something that responds to `begin` and
+`end`) object to another, like in the following example:
+
+```cpp
+#include <catch2/catch_test_macros.hpp>
+#include <catch2/matchers/catch_matchers_templates.hpp>
+// ...
+
+template<typename Range>
+struct EqualsRangeMatcher : Catch::Matchers::MatcherGenericBase {
+    EqualsRangeMatcher(Range const& range):
+        range{ range }
+    {}
+
+    template<typename OtherRange>
+    bool match(OtherRange const& other) const {
+        using std::begin; using std::end;
+
+        return std::equal(begin(range), end(range), begin(other), end(other));
+    }
+
+    std::string describe() const override {
+        return "Equals: " + Catch::rangeToString(range);
+    }
+
+private:
+    Range const& range;
+};
+
+template<typename Range>
+auto EqualsRange(const Range& range) -> EqualsRangeMatcher<Range> {
+    return EqualsRangeMatcher<Range>{range};
+}
+
+TEST_CASE("Combining templated matchers", "[matchers][templated]") {
+    std::array<int, 3> container{{ 1,2,3 }};
+
+    std::array<int, 3> a{{ 1,2,3 }};
+    std::vector<int> b{ 0,1,2 };
+    std::list<int> c{ 4,5,6 };
+
+    REQUIRE_THAT(container, EqualsRange(a) || EqualsRange(b) || EqualsRange(c));
+}
 ```
-/**/TestFile.cpp:123: FAILED:
-  CHECK_THAT( 100, IsBetween( 1, 10 ) )
-with expansion:
-  100 is between 1 and 10
-```
+
+Do note that while you can rewrite any matcher from the old style to
+a new style matcher, combining new style matchers is more expensive
+in terms of compilation time. Also note that you can combine old style
+and new style matchers arbitrarily.
+
+> `MatcherGenericBase` lives in `catch2/matchers/catch_matchers_templates.hpp`
+
 
 ---
 
