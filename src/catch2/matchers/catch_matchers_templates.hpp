@@ -60,7 +60,7 @@ namespace Matchers {
         template<typename T>
         using is_generic_matcher = std::is_base_of<
             Catch::Matchers::MatcherGenericBase,
-            typename std::remove_cv<typename std::remove_reference<T>::type>::type
+            std::remove_cv_t<std::remove_reference_t<T>>
         >;
 
         template<typename... Ts>
@@ -69,7 +69,7 @@ namespace Matchers {
         template<typename T>
         using is_matcher = std::is_base_of<
             Catch::Matchers::MatcherUntypedBase,
-            typename std::remove_cv<typename std::remove_reference<T>::type>::type
+            std::remove_cv_t<std::remove_reference_t<T>>
         >;
 
 
