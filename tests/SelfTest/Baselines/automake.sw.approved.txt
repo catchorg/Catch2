@@ -80,6 +80,7 @@ Nor would this
 :test-result: PASS Approximate comparisons with mixed numeric types
 :test-result: PASS Arbitrary predicate matcher
 :test-result: PASS Assertions then sections
+:test-result: PASS Basic use of the Contains range matcher
 :test-result: PASS CAPTURE can deal with complex expressions
 :test-result: PASS CAPTURE can deal with complex expressions involving commas
 :test-result: PASS CAPTURE parses string and character constants

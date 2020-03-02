@@ -73,6 +73,7 @@ set(INTERNAL_HEADERS
     ${SOURCES_DIR}/catch_leak_detector.h
     ${SOURCES_DIR}/catch_list.h
     ${SOURCES_DIR}/matchers/catch_matchers.hpp
+    ${SOURCES_DIR}/matchers/catch_matchers_contains.hpp
     ${SOURCES_DIR}/matchers/catch_matchers_exception.hpp
     ${SOURCES_DIR}/matchers/catch_matchers_floating.hpp
     ${SOURCES_DIR}/matchers/catch_matchers_generic.hpp

@@ -1949,6 +1949,108 @@ Tricky.tests.cpp:<line number>: PASSED:
   REQUIRE( true )
 
 -------------------------------------------------------------------------------
+Basic use of the Contains range matcher
+  Different argument ranges, same element type, default comparison
+-------------------------------------------------------------------------------
+MatchersRanges.tests.cpp:<line number>
+...............................................................................
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  REQUIRE_THAT( a, Contains(1) )
+with expansion:
+  { 1, 2, 3 } contains element 1
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  REQUIRE_THAT( b, Contains(1) )
+with expansion:
+  { 0, 1, 2 } contains element 1
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  REQUIRE_THAT( c, !Contains(1) )
+with expansion:
+  { 4, 5, 6 } not contains element 1
+
+-------------------------------------------------------------------------------
+Basic use of the Contains range matcher
+  Different argument ranges, same element type, custom comparison
+-------------------------------------------------------------------------------
+MatchersRanges.tests.cpp:<line number>
+...............................................................................
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  REQUIRE_THAT( a, Contains(0, close_enough) )
+with expansion:
+  { 1, 2, 3 } contains element 0
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  REQUIRE_THAT( b, Contains(0, close_enough) )
+with expansion:
+  { 0, 1, 2 } contains element 0
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  REQUIRE_THAT( c, !Contains(0, close_enough) )
+with expansion:
+  { 4, 5, 6 } not contains element 0
+
+-------------------------------------------------------------------------------
+Basic use of the Contains range matcher
+  Different element type, custom comparisons
+-------------------------------------------------------------------------------
+MatchersRanges.tests.cpp:<line number>
+...............................................................................
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  REQUIRE_THAT( a, Contains(4, [](auto&& lhs, size_t sz) { return lhs.size() == sz; }) )
+with expansion:
+  { "abc", "abcd", "abcde" } contains element 4
+
+-------------------------------------------------------------------------------
+Basic use of the Contains range matcher
+  Can handle type that requires ADL-found free function begin and end
+-------------------------------------------------------------------------------
+MatchersRanges.tests.cpp:<line number>
+...............................................................................
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  REQUIRE_THAT( in, Contains(1) )
+with expansion:
+  { 1, 2, 3, 4, 5 } contains element 1
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  REQUIRE_THAT( in, !Contains(8) )
+with expansion:
+  { 1, 2, 3, 4, 5 } not contains element 8
+
+-------------------------------------------------------------------------------
+Basic use of the Contains range matcher
+  Initialization with move only types
+-------------------------------------------------------------------------------
+MatchersRanges.tests.cpp:<line number>
+...............................................................................
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  REQUIRE_THAT( in, Contains(MoveOnlyTestElement{ 2 }) )
+with expansion:
+  { 1, 2, 3 } contains element 2
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  REQUIRE_THAT( in, !Contains(MoveOnlyTestElement{ 9 }) )
+with expansion:
+  { 1, 2, 3 } not contains element 9
+
+-------------------------------------------------------------------------------
+Basic use of the Contains range matcher
+  Matching using matcher
+-------------------------------------------------------------------------------
+MatchersRanges.tests.cpp:<line number>
+...............................................................................
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  REQUIRE_THAT( in, Contains(Catch::Matchers::WithinAbs(0.5, 0.5)) )
+with expansion:
+  { 1.0, 2.0, 3.0, 0.0 } contains element matching is within 0.5 of 0.5
+
+-------------------------------------------------------------------------------
 CAPTURE can deal with complex expressions
 -------------------------------------------------------------------------------
 Message.tests.cpp:<line number>
@@ -14396,6 +14498,6 @@ Misc.tests.cpp:<line number>
 Misc.tests.cpp:<line number>: PASSED:
 
 ===============================================================================
-test cases:  328 |  238 passed |  86 failed |  4 failed as expected
-assertions: 1856 | 1687 passed | 148 failed | 21 failed as expected
+test cases:  329 |  239 passed |  86 failed |  4 failed as expected
+assertions: 1868 | 1699 passed | 148 failed | 21 failed as expected
 

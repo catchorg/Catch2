@@ -2178,6 +2178,123 @@ Nor would this
       </Section>
       <OverallResult success="true"/>
     </TestCase>
+    <TestCase name="Basic use of the Contains range matcher" tags="[contains][matchers][templated]" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
+      <Section name="Different argument ranges, same element type, default comparison" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
+        <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
+          <Original>
+            a, Contains(1)
+          </Original>
+          <Expanded>
+            { 1, 2, 3 } contains element 1
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
+          <Original>
+            b, Contains(1)
+          </Original>
+          <Expanded>
+            { 0, 1, 2 } contains element 1
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
+          <Original>
+            c, !Contains(1)
+          </Original>
+          <Expanded>
+            { 4, 5, 6 } not contains element 1
+          </Expanded>
+        </Expression>
+        <OverallResults successes="3" failures="0" expectedFailures="0"/>
+      </Section>
+      <Section name="Different argument ranges, same element type, custom comparison" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
+        <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
+          <Original>
+            a, Contains(0, close_enough)
+          </Original>
+          <Expanded>
+            { 1, 2, 3 } contains element 0
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
+          <Original>
+            b, Contains(0, close_enough)
+          </Original>
+          <Expanded>
+            { 0, 1, 2 } contains element 0
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
+          <Original>
+            c, !Contains(0, close_enough)
+          </Original>
+          <Expanded>
+            { 4, 5, 6 } not contains element 0
+          </Expanded>
+        </Expression>
+        <OverallResults successes="3" failures="0" expectedFailures="0"/>
+      </Section>
+      <Section name="Different element type, custom comparisons" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
+        <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
+          <Original>
+            a, Contains(4, [](auto&amp;&amp; lhs, size_t sz) { return lhs.size() == sz; })
+          </Original>
+          <Expanded>
+            { "abc", "abcd", "abcde" } contains element 4
+          </Expanded>
+        </Expression>
+        <OverallResults successes="1" failures="0" expectedFailures="0"/>
+      </Section>
+      <Section name="Can handle type that requires ADL-found free function begin and end" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
+        <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
+          <Original>
+            in, Contains(1)
+          </Original>
+          <Expanded>
+            { 1, 2, 3, 4, 5 } contains element 1
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
+          <Original>
+            in, !Contains(8)
+          </Original>
+          <Expanded>
+            { 1, 2, 3, 4, 5 } not contains element 8
+          </Expanded>
+        </Expression>
+        <OverallResults successes="2" failures="0" expectedFailures="0"/>
+      </Section>
+      <Section name="Initialization with move only types" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
+        <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
+          <Original>
+            in, Contains(MoveOnlyTestElement{ 2 })
+          </Original>
+          <Expanded>
+            { 1, 2, 3 } contains element 2
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
+          <Original>
+            in, !Contains(MoveOnlyTestElement{ 9 })
+          </Original>
+          <Expanded>
+            { 1, 2, 3 } not contains element 9
+          </Expanded>
+        </Expression>
+        <OverallResults successes="2" failures="0" expectedFailures="0"/>
+      </Section>
+      <Section name="Matching using matcher" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
+        <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
+          <Original>
+            in, Contains(Catch::Matchers::WithinAbs(0.5, 0.5))
+          </Original>
+          <Expanded>
+            { 1.0, 2.0, 3.0, 0.0 } contains element matching is within 0.5 of 0.5
+          </Expanded>
+        </Expression>
+        <OverallResults successes="1" failures="0" expectedFailures="0"/>
+      </Section>
+      <OverallResult success="true"/>
+    </TestCase>
     <TestCase name="CAPTURE can deal with complex expressions" tags="[capture][messages]" filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
       <Info>
         a := 1
@@ -17264,7 +17381,7 @@ loose text artifact
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="1687" failures="149" expectedFailures="21"/>
+    <OverallResults successes="1699" failures="149" expectedFailures="21"/>
   </Group>
-  <OverallResults successes="1687" failures="148" expectedFailures="21"/>
+  <OverallResults successes="1699" failures="148" expectedFailures="21"/>
 </Catch>
