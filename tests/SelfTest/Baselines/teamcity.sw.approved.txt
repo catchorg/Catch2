@@ -193,6 +193,8 @@ Exception.tests.cpp:<line number>|nunexpected exception with message:|n  "unexpe
 ##teamcity[testFinished name='Arbitrary predicate matcher' duration="{duration}"]
 ##teamcity[testStarted name='Assertions then sections']
 ##teamcity[testFinished name='Assertions then sections' duration="{duration}"]
+##teamcity[testStarted name='Basic use of the Contains range matcher']
+##teamcity[testFinished name='Basic use of the Contains range matcher' duration="{duration}"]
 ##teamcity[testStarted name='CAPTURE can deal with complex expressions']
 ##teamcity[testFinished name='CAPTURE can deal with complex expressions' duration="{duration}"]
 ##teamcity[testStarted name='CAPTURE can deal with complex expressions involving commas']

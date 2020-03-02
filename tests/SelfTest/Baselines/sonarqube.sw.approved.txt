@@ -1215,6 +1215,14 @@ Matchers.tests.cpp:<line number>
       </failure>
     </testCase>
   </file>
+  <file path="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp">
+    <testCase name="Basic use of the Contains range matcher/Different argument ranges, same element type, default comparison" duration="{duration}"/>
+    <testCase name="Basic use of the Contains range matcher/Different argument ranges, same element type, custom comparison" duration="{duration}"/>
+    <testCase name="Basic use of the Contains range matcher/Different element type, custom comparisons" duration="{duration}"/>
+    <testCase name="Basic use of the Contains range matcher/Can handle type that requires ADL-found free function begin and end" duration="{duration}"/>
+    <testCase name="Basic use of the Contains range matcher/Initialization with move only types" duration="{duration}"/>
+    <testCase name="Basic use of the Contains range matcher/Matching using matcher" duration="{duration}"/>
+  </file>
   <file path="tests/<exe-name>/UsageTests/Message.tests.cpp">
     <testCase name="#1455 - INFO and WARN can start with a linebreak" duration="{duration}"/>
     <testCase name="CAPTURE can deal with complex expressions" duration="{duration}"/>
