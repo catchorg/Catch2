@@ -35,24 +35,24 @@ namespace Matchers {
             std::string m_operation;
         };
 
-        struct EqualsMatcher : StringMatcherBase {
+        struct EqualsMatcher final : StringMatcherBase {
             EqualsMatcher( CasedString const& comparator );
             bool match( std::string const& source ) const override;
         };
-        struct ContainsMatcher : StringMatcherBase {
+        struct ContainsMatcher final : StringMatcherBase {
             ContainsMatcher( CasedString const& comparator );
             bool match( std::string const& source ) const override;
         };
-        struct StartsWithMatcher : StringMatcherBase {
+        struct StartsWithMatcher final : StringMatcherBase {
             StartsWithMatcher( CasedString const& comparator );
             bool match( std::string const& source ) const override;
         };
-        struct EndsWithMatcher : StringMatcherBase {
+        struct EndsWithMatcher final : StringMatcherBase {
             EndsWithMatcher( CasedString const& comparator );
             bool match( std::string const& source ) const override;
         };
 
-        struct RegexMatcher : MatcherBase<std::string> {
+        struct RegexMatcher final : MatcherBase<std::string> {
             RegexMatcher( std::string regex, CaseSensitive::Choice caseSensitivity );
             bool match( std::string const& matchee ) const override;
             std::string describe() const override;

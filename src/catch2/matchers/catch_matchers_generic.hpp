@@ -23,7 +23,7 @@ namespace Detail {
 }
 
 template <typename T, typename Predicate>
-class PredicateMatcher : public MatcherBase<T> {
+class PredicateMatcher final : public MatcherBase<T> {
     Predicate m_predicate;
     std::string m_description;
 public:
