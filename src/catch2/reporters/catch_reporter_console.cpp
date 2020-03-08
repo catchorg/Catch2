@@ -250,20 +250,20 @@ public:
             return static_cast<double>(m_inNanoseconds);
         }
     }
-    auto unitsAsString() const -> std::string {
+    StringRef unitsAsString() const {
         switch (m_units) {
         case Unit::Nanoseconds:
-            return "ns";
+            return "ns"_sr;
         case Unit::Microseconds:
-            return "us";
+            return "us"_sr;
         case Unit::Milliseconds:
-            return "ms";
+            return "ms"_sr;
         case Unit::Seconds:
-            return "s";
+            return "s"_sr;
         case Unit::Minutes:
-            return "m";
+            return "m"_sr;
         default:
-            return "** internal error **";
+            return "** internal error **"_sr;
         }
 
     }
