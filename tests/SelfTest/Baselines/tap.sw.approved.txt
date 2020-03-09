@@ -510,6 +510,22 @@ ok {test-number} - in, Contains(MoveOnlyTestElement{ 2 }) for: { 1, 2, 3 } conta
 ok {test-number} - in, !Contains(MoveOnlyTestElement{ 9 }) for: { 1, 2, 3 } not contains element 9
 # Basic use of the Contains range matcher
 ok {test-number} - in, Contains(Catch::Matchers::WithinAbs(0.5, 0.5)) for: { 1.0, 2.0, 3.0, 0.0 } contains element matching is within 0.5 of 0.5
+# Basic use of the Empty range matcher
+ok {test-number} - empty_array, IsEmpty() for: {  } is empty
+# Basic use of the Empty range matcher
+ok {test-number} - non_empty_array, !IsEmpty() for: { 0.0 } not is empty
+# Basic use of the Empty range matcher
+ok {test-number} - empty_vec, IsEmpty() for: {  } is empty
+# Basic use of the Empty range matcher
+ok {test-number} - non_empty_vec, !IsEmpty() for: { 'a', 'b', 'c' } not is empty
+# Basic use of the Empty range matcher
+ok {test-number} - inner_lists_are_empty, !IsEmpty() for: { {  } } not is empty
+# Basic use of the Empty range matcher
+ok {test-number} - inner_lists_are_empty.front(), IsEmpty() for: {  } is empty
+# Basic use of the Empty range matcher
+ok {test-number} - has_empty{}, !IsEmpty() for: {?} not is empty
+# Basic use of the Empty range matcher
+ok {test-number} - unrelated::ADL_empty{}, IsEmpty() for: {?} is empty
 # CAPTURE can deal with complex expressions
 ok {test-number} - with 7 messages: 'a := 1' and 'b := 2' and 'c := 3' and 'a + b := 3' and 'a+b := 3' and 'c > b := true' and 'a == 1 := true'
 # CAPTURE can deal with complex expressions involving commas
@@ -2973,6 +2989,24 @@ ok {test-number} - trim(StringRef(trailing_whitespace)) == StringRef(no_whitespa
 ok {test-number} - trim(StringRef(whitespace_at_both_ends)) == StringRef(no_whitespace) for: There is no extra whitespace here == There is no extra whitespace here
 # Unexpected exceptions can be translated
 not ok {test-number} - unexpected exception with message: '3.14'
+# Usage of the SizeIs range matcher
+ok {test-number} - empty_vec, SizeIs(0) for: {  } has size == 0
+# Usage of the SizeIs range matcher
+ok {test-number} - empty_vec, !SizeIs(2) for: {  } not has size == 2
+# Usage of the SizeIs range matcher
+ok {test-number} - empty_vec, SizeIs(Lt(2)) for: {  } size matches is less than 2
+# Usage of the SizeIs range matcher
+ok {test-number} - arr, SizeIs(2) for: { 0, 0 } has size == 2
+# Usage of the SizeIs range matcher
+ok {test-number} - arr, SizeIs( Lt(3)) for: { 0, 0 } size matches is less than 3
+# Usage of the SizeIs range matcher
+ok {test-number} - arr, !SizeIs(!Lt(3)) for: { 0, 0 } not size matches not is less than 3
+# Usage of the SizeIs range matcher
+ok {test-number} - map, SizeIs(3) for: { {?}, {?}, {?} } has size == 3
+# Usage of the SizeIs range matcher
+ok {test-number} - unrelated::ADL_size{}, SizeIs(12) for: {?} has size == 12
+# Usage of the SizeIs range matcher
+ok {test-number} - has_size{}, SizeIs(13) for: {?} has size == 13
 # Use a custom approx
 ok {test-number} - d == approx( 1.23 ) for: 1.23 == Approx( 1.23 )
 # Use a custom approx
@@ -3728,5 +3762,5 @@ ok {test-number} - q3 == 23. for: 23.0 == 23.0
 ok {test-number} -
 # xmlentitycheck
 ok {test-number} -
-1..1860
+1..1877
 

@@ -81,6 +81,7 @@ Nor would this
 :test-result: PASS Arbitrary predicate matcher
 :test-result: PASS Assertions then sections
 :test-result: PASS Basic use of the Contains range matcher
+:test-result: PASS Basic use of the Empty range matcher
 :test-result: PASS CAPTURE can deal with complex expressions
 :test-result: PASS CAPTURE can deal with complex expressions involving commas
 :test-result: PASS CAPTURE parses string and character constants
@@ -218,6 +219,7 @@ Message from section two
 :test-result: PASS Tracker
 :test-result: PASS Trim strings
 :test-result: FAIL Unexpected exceptions can be translated
+:test-result: PASS Usage of the SizeIs range matcher
 :test-result: PASS Use a custom approx
 :test-result: PASS Variadic macros
 :test-result: PASS Vector Approx matcher

@@ -58,8 +58,10 @@
   * This does not change `TEST_CASE` and friends in any way
 * `IStreamingReporter::IsMulti` member function was removed
   * This is _very_ unlikely to actually affect anyone, as it was default-implemented in the interface, and only used internally
+* Various classes not designed for user-extension have been made final
+  * `ListeningReporter` is now `final`
+  * Concrete Matchers (e.g. `UnorderedEquals` vector matcher) are now `final`
 * `ListeningReporter` is now final
-
 
 
 ### Improvements

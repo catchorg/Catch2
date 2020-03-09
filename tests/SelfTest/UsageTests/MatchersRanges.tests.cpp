@@ -2,14 +2,17 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
 #include <catch2/catch_test_macros.hpp>
+#include <catch2/matchers/catch_matchers_container_properties.hpp>
 #include <catch2/matchers/catch_matchers_contains.hpp>
 #include <catch2/matchers/catch_matchers_floating.hpp>
 
 #include <array>
 #include <cmath>
 #include <list>
+#include <map>
 #include <vector>
 
+namespace {
 namespace unrelated {
     class needs_ADL_begin {
         std::array<int, 5> elements{ {1, 2, 3, 4, 5} };
@@ -27,6 +30,7 @@ namespace unrelated {
             return rhs.End();
         }
     };
+} // end unrelated namespace
 } // end anon namespace
 
 struct MoveOnlyTestElement {
@@ -103,5 +107,113 @@ TEST_CASE("Basic use of the Contains range matcher", "[matchers][templated][cont
         std::array<double, 4> in{ {1, 2, 3} };
 
         REQUIRE_THAT(in, Contains(Catch::Matchers::WithinAbs(0.5, 0.5)));
+    }
+}
+
+namespace {
+
+    struct has_empty {
+        bool empty() const { return false; }
+    };
+
+namespace unrelated {
+    struct ADL_empty {
+        bool Empty() const { return true; }
+
+        friend bool empty(ADL_empty e) {
+            return e.Empty();
+        }
+    };
+
+} // end namespace unrelated
+} // end unnamed namespace
+
+TEST_CASE("Basic use of the Empty range matcher", "[matchers][templated][empty]") {
+    using Catch::Matchers::IsEmpty;
+    SECTION("Simple, std-provided containers") {
+        std::array<int, 0> empty_array{};
+        std::array<double, 1> non_empty_array{};
+        REQUIRE_THAT(empty_array, IsEmpty());
+        REQUIRE_THAT(non_empty_array, !IsEmpty());
+
+        std::vector<std::string> empty_vec;
+        std::vector<char> non_empty_vec{ 'a', 'b', 'c' };
+        REQUIRE_THAT(empty_vec, IsEmpty());
+        REQUIRE_THAT(non_empty_vec, !IsEmpty());
+
+        std::list<std::list<std::list<int>>> inner_lists_are_empty;
+        inner_lists_are_empty.push_back({});
+        REQUIRE_THAT(inner_lists_are_empty, !IsEmpty());
+        REQUIRE_THAT(inner_lists_are_empty.front(), IsEmpty());
+    }
+    SECTION("Type with empty") {
+        REQUIRE_THAT(has_empty{}, !IsEmpty());
+    }
+    SECTION("Type requires ADL found empty free function") {
+        REQUIRE_THAT(unrelated::ADL_empty{}, IsEmpty());
+    }
+}
+
+namespace {
+    class LessThanMatcher final : public Catch::Matchers::MatcherBase<size_t> {
+        size_t m_target;
+    public:
+        explicit LessThanMatcher(size_t target):
+            m_target(target)
+        {}
+
+        bool match(size_t const& size) const override {
+            return size < m_target;
+        }
+
+        std::string describe() const override {
+            return "is less than " + std::to_string(m_target);
+        }
+    };
+
+    LessThanMatcher Lt(size_t sz) {
+        return LessThanMatcher{ sz };
+    }
+
+    namespace unrelated {
+        struct ADL_size {
+            size_t sz() const {
+                return 12;
+            }
+            friend size_t size(ADL_size s) {
+                return s.sz();
+            }
+        };
+    } // end namespace unrelated
+
+    struct has_size {
+        size_t size() const {
+            return 13;
+        }
+    };
+
+} // end unnamed namespace
+
+TEST_CASE("Usage of the SizeIs range matcher", "[matchers][templated][size]") {
+    using Catch::Matchers::SizeIs;
+    SECTION("Some with stdlib containers") {
+        std::vector<int> empty_vec;
+        REQUIRE_THAT(empty_vec,  SizeIs(0));
+        REQUIRE_THAT(empty_vec, !SizeIs(2));
+        REQUIRE_THAT(empty_vec,  SizeIs(Lt(2)));
+
+        std::array<int, 2> arr{};
+        REQUIRE_THAT(arr,  SizeIs(2));
+        REQUIRE_THAT(arr,  SizeIs( Lt(3)));
+        REQUIRE_THAT(arr, !SizeIs(!Lt(3)));
+
+        std::map<int, int> map{ {1, 1}, {2, 2}, {3, 3} };
+        REQUIRE_THAT(map, SizeIs(3));
+    }
+    SECTION("Type requires ADL found size free function") {
+        REQUIRE_THAT(unrelated::ADL_size{}, SizeIs(12));
+    }
+    SECTION("Type has size member") {
+        REQUIRE_THAT(has_size{}, SizeIs(13));
     }
 }

@@ -33,13 +33,14 @@ set(BENCHMARK_SOURCES
 SOURCE_GROUP("benchmark" FILES ${BENCHMARK_HEADERS} ${BENCHMARK_SOURCES})
 
 set(INTERNAL_HEADERS
+    ${SOURCES_DIR}/internal/catch_capture_matchers.h
+    ${SOURCES_DIR}/internal/catch_container_nonmembers.hpp
     ${SOURCES_DIR}/catch.hpp
     ${SOURCES_DIR}/catch_approx.h
     ${SOURCES_DIR}/catch_assertionhandler.h
     ${SOURCES_DIR}/catch_assertioninfo.h
     ${SOURCES_DIR}/catch_assertionresult.h
     ${SOURCES_DIR}/catch_capture.hpp
-    ${SOURCES_DIR}/internal/catch_capture_matchers.h
     ${SOURCES_DIR}/catch_clara.h
     ${SOURCES_DIR}/catch_commandline.h
     ${SOURCES_DIR}/catch_common.h
@@ -73,6 +74,7 @@ set(INTERNAL_HEADERS
     ${SOURCES_DIR}/catch_leak_detector.h
     ${SOURCES_DIR}/catch_list.h
     ${SOURCES_DIR}/matchers/catch_matchers.hpp
+    ${SOURCES_DIR}/matchers/catch_matchers_container_properties.hpp
     ${SOURCES_DIR}/matchers/catch_matchers_contains.hpp
     ${SOURCES_DIR}/matchers/catch_matchers_exception.hpp
     ${SOURCES_DIR}/matchers/catch_matchers_floating.hpp
@@ -157,6 +159,7 @@ set(IMPL_SOURCES
     ${SOURCES_DIR}/catch_list.cpp
     ${SOURCES_DIR}/catch_leak_detector.cpp
     ${SOURCES_DIR}/matchers/catch_matchers.cpp
+    ${SOURCES_DIR}/matchers/catch_matchers_container_properties.cpp
     ${SOURCES_DIR}/matchers/catch_matchers_exception.cpp
     ${SOURCES_DIR}/matchers/catch_matchers_floating.cpp
     ${SOURCES_DIR}/matchers/catch_matchers_generic.cpp
