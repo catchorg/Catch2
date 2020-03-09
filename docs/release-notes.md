@@ -56,10 +56,15 @@
 * Lvalues of composed matchers cannot be composed further
 * Uses of `REGISTER_TEST_CASE` macro need to be followed by a semicolon
   * This does not change `TEST_CASE` and friends in any way
+* `IStreamingReporter::IsMulti` member function was removed
+  * This is _very_ unlikely to actually affect anyone, as it was default-implemented in the interface, and only used internally
+* `ListeningReporter` is now final
+
 
 ### Fixes
 * The `INFO` macro no longer contains superfluous semicolon (#1456)
 * The `--list*` family of command line flags now return 0 on success (#1410, #1146)
+
 
 ### Other changes
 * `CATCH_CONFIG_DISABLE_MATCHERS` no longer exists.
