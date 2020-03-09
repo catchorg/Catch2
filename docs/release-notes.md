@@ -56,6 +56,8 @@
 * Lvalues of composed matchers cannot be composed further
 * Uses of `REGISTER_TEST_CASE` macro need to be followed by a semicolon
   * This does not change `TEST_CASE` and friends in any way
+* Concrete matchers provided by Catch2 are now `final`
+  * This means e.g. the `UnorderedEquals` vector matcher
 
 
 ### Improvements

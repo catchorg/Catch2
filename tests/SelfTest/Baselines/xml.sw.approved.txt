@@ -2295,6 +2295,82 @@ Nor would this
       </Section>
       <OverallResult success="true"/>
     </TestCase>
+    <TestCase name="Basic use of the Empty range matcher" tags="[empty][matchers][templated]" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
+      <Section name="Simple, std-provided containers" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
+        <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
+          <Original>
+            empty_array, IsEmpty()
+          </Original>
+          <Expanded>
+            {  } is empty
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
+          <Original>
+            non_empty_array, !IsEmpty()
+          </Original>
+          <Expanded>
+            { 0.0 } not is empty
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
+          <Original>
+            empty_vec, IsEmpty()
+          </Original>
+          <Expanded>
+            {  } is empty
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
+          <Original>
+            non_empty_vec, !IsEmpty()
+          </Original>
+          <Expanded>
+            { 'a', 'b', 'c' } not is empty
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
+          <Original>
+            inner_lists_are_empty, !IsEmpty()
+          </Original>
+          <Expanded>
+            { {  } } not is empty
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
+          <Original>
+            inner_lists_are_empty.front(), IsEmpty()
+          </Original>
+          <Expanded>
+            {  } is empty
+          </Expanded>
+        </Expression>
+        <OverallResults successes="6" failures="0" expectedFailures="0"/>
+      </Section>
+      <Section name="Type with empty" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
+        <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
+          <Original>
+            has_empty{}, !IsEmpty()
+          </Original>
+          <Expanded>
+            {?} not is empty
+          </Expanded>
+        </Expression>
+        <OverallResults successes="1" failures="0" expectedFailures="0"/>
+      </Section>
+      <Section name="Type requires ADL found empty free function" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
+        <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
+          <Original>
+            unrelated::ADL_empty{}, IsEmpty()
+          </Original>
+          <Expanded>
+            {?} is empty
+          </Expanded>
+        </Expression>
+        <OverallResults successes="1" failures="0" expectedFailures="0"/>
+      </Section>
+      <OverallResult success="true"/>
+    </TestCase>
     <TestCase name="CAPTURE can deal with complex expressions" tags="[capture][messages]" filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
       <Info>
         a := 1
@@ -13749,6 +13825,90 @@ There is no extra whitespace here
       </Exception>
       <OverallResult success="false"/>
     </TestCase>
+    <TestCase name="Usage of the SizeIs range matcher" tags="[matchers][size][templated]" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
+      <Section name="Some with stdlib containers" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
+        <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
+          <Original>
+            empty_vec, SizeIs(0)
+          </Original>
+          <Expanded>
+            {  } has size == 0
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
+          <Original>
+            empty_vec, !SizeIs(2)
+          </Original>
+          <Expanded>
+            {  } not has size == 2
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
+          <Original>
+            empty_vec, SizeIs(Lt(2))
+          </Original>
+          <Expanded>
+            {  } size matches is less than 2
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
+          <Original>
+            arr, SizeIs(2)
+          </Original>
+          <Expanded>
+            { 0, 0 } has size == 2
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
+          <Original>
+            arr, SizeIs( Lt(3))
+          </Original>
+          <Expanded>
+            { 0, 0 } size matches is less than 3
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
+          <Original>
+            arr, !SizeIs(!Lt(3))
+          </Original>
+          <Expanded>
+            { 0, 0 } not size matches not is less than 3
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
+          <Original>
+            map, SizeIs(3)
+          </Original>
+          <Expanded>
+            { {?}, {?}, {?} } has size == 3
+          </Expanded>
+        </Expression>
+        <OverallResults successes="7" failures="0" expectedFailures="0"/>
+      </Section>
+      <Section name="Type requires ADL found size free function" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
+        <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
+          <Original>
+            unrelated::ADL_size{}, SizeIs(12)
+          </Original>
+          <Expanded>
+            {?} has size == 12
+          </Expanded>
+        </Expression>
+        <OverallResults successes="1" failures="0" expectedFailures="0"/>
+      </Section>
+      <Section name="Type has size member" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
+        <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
+          <Original>
+            has_size{}, SizeIs(13)
+          </Original>
+          <Expanded>
+            {?} has size == 13
+          </Expanded>
+        </Expression>
+        <OverallResults successes="1" failures="0" expectedFailures="0"/>
+      </Section>
+      <OverallResult success="true"/>
+    </TestCase>
     <TestCase name="Use a custom approx" tags="[Approx][custom]" filename="tests/<exe-name>/UsageTests/Approx.tests.cpp" >
       <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/UsageTests/Approx.tests.cpp" >
         <Original>
@@ -17381,7 +17541,7 @@ loose text artifact
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="1699" failures="149" expectedFailures="21"/>
+    <OverallResults successes="1716" failures="149" expectedFailures="21"/>
   </Group>
-  <OverallResults successes="1699" failures="148" expectedFailures="21"/>
+  <OverallResults successes="1716" failures="148" expectedFailures="21"/>
 </Catch>

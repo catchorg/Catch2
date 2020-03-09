@@ -2051,6 +2051,67 @@ with expansion:
   { 1.0, 2.0, 3.0, 0.0 } contains element matching is within 0.5 of 0.5
 
 -------------------------------------------------------------------------------
+Basic use of the Empty range matcher
+  Simple, std-provided containers
+-------------------------------------------------------------------------------
+MatchersRanges.tests.cpp:<line number>
+...............................................................................
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  REQUIRE_THAT( empty_array, IsEmpty() )
+with expansion:
+  {  } is empty
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  REQUIRE_THAT( non_empty_array, !IsEmpty() )
+with expansion:
+  { 0.0 } not is empty
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  REQUIRE_THAT( empty_vec, IsEmpty() )
+with expansion:
+  {  } is empty
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  REQUIRE_THAT( non_empty_vec, !IsEmpty() )
+with expansion:
+  { 'a', 'b', 'c' } not is empty
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  REQUIRE_THAT( inner_lists_are_empty, !IsEmpty() )
+with expansion:
+  { {  } } not is empty
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  REQUIRE_THAT( inner_lists_are_empty.front(), IsEmpty() )
+with expansion:
+  {  } is empty
+
+-------------------------------------------------------------------------------
+Basic use of the Empty range matcher
+  Type with empty
+-------------------------------------------------------------------------------
+MatchersRanges.tests.cpp:<line number>
+...............................................................................
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  REQUIRE_THAT( has_empty{}, !IsEmpty() )
+with expansion:
+  {?} not is empty
+
+-------------------------------------------------------------------------------
+Basic use of the Empty range matcher
+  Type requires ADL found empty free function
+-------------------------------------------------------------------------------
+MatchersRanges.tests.cpp:<line number>
+...............................................................................
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  REQUIRE_THAT( unrelated::ADL_empty{}, IsEmpty() )
+with expansion:
+  {?} is empty
+
+-------------------------------------------------------------------------------
 CAPTURE can deal with complex expressions
 -------------------------------------------------------------------------------
 Message.tests.cpp:<line number>
@@ -11380,6 +11441,72 @@ due to unexpected exception with message:
   3.14
 
 -------------------------------------------------------------------------------
+Usage of the SizeIs range matcher
+  Some with stdlib containers
+-------------------------------------------------------------------------------
+MatchersRanges.tests.cpp:<line number>
+...............................................................................
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  REQUIRE_THAT( empty_vec, SizeIs(0) )
+with expansion:
+  {  } has size == 0
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  REQUIRE_THAT( empty_vec, !SizeIs(2) )
+with expansion:
+  {  } not has size == 2
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  REQUIRE_THAT( empty_vec, SizeIs(Lt(2)) )
+with expansion:
+  {  } size matches is less than 2
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  REQUIRE_THAT( arr, SizeIs(2) )
+with expansion:
+  { 0, 0 } has size == 2
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  REQUIRE_THAT( arr, SizeIs( Lt(3)) )
+with expansion:
+  { 0, 0 } size matches is less than 3
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  REQUIRE_THAT( arr, !SizeIs(!Lt(3)) )
+with expansion:
+  { 0, 0 } not size matches not is less than 3
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  REQUIRE_THAT( map, SizeIs(3) )
+with expansion:
+  { {?}, {?}, {?} } has size == 3
+
+-------------------------------------------------------------------------------
+Usage of the SizeIs range matcher
+  Type requires ADL found size free function
+-------------------------------------------------------------------------------
+MatchersRanges.tests.cpp:<line number>
+...............................................................................
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  REQUIRE_THAT( unrelated::ADL_size{}, SizeIs(12) )
+with expansion:
+  {?} has size == 12
+
+-------------------------------------------------------------------------------
+Usage of the SizeIs range matcher
+  Type has size member
+-------------------------------------------------------------------------------
+MatchersRanges.tests.cpp:<line number>
+...............................................................................
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  REQUIRE_THAT( has_size{}, SizeIs(13) )
+with expansion:
+  {?} has size == 13
+
+-------------------------------------------------------------------------------
 Use a custom approx
 -------------------------------------------------------------------------------
 Approx.tests.cpp:<line number>
@@ -14498,6 +14625,6 @@ Misc.tests.cpp:<line number>
 Misc.tests.cpp:<line number>: PASSED:
 
 ===============================================================================
-test cases:  329 |  239 passed |  86 failed |  4 failed as expected
-assertions: 1868 | 1699 passed | 148 failed | 21 failed as expected
+test cases:  331 |  241 passed |  86 failed |  4 failed as expected
+assertions: 1885 | 1716 passed | 148 failed | 21 failed as expected
 

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuitesloose text artifact
 >
-  <testsuite name="<exe-name>" errors="17" failures="132" tests="1869" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
+  <testsuite name="<exe-name>" errors="17" failures="132" tests="1886" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
     <properties>
       <property name="filters" value="~[!nonportable]~[!benchmark]~[approvals] *"/>
       <property name="random-seed" value="1"/>
@@ -348,6 +348,9 @@ Exception.tests.cpp:<line number>
     <testcase classname="<exe-name>.global" name="Basic use of the Contains range matcher/Can handle type that requires ADL-found free function begin and end" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Basic use of the Contains range matcher/Initialization with move only types" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Basic use of the Contains range matcher/Matching using matcher" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="Basic use of the Empty range matcher/Simple, std-provided containers" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="Basic use of the Empty range matcher/Type with empty" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="Basic use of the Empty range matcher/Type requires ADL found empty free function" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="CAPTURE can deal with complex expressions" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="CAPTURE can deal with complex expressions involving commas" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="CAPTURE parses string and character constants" time="{duration}"/>
@@ -1249,6 +1252,9 @@ FAILED:
 Exception.tests.cpp:<line number>
       </error>
     </testcase>
+    <testcase classname="<exe-name>.global" name="Usage of the SizeIs range matcher/Some with stdlib containers" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="Usage of the SizeIs range matcher/Type requires ADL found size free function" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="Usage of the SizeIs range matcher/Type has size member" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Use a custom approx" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Variadic macros/Section with one argument" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Vector Approx matcher/Empty vector is roughly equal to an empty vector" time="{duration}"/>
