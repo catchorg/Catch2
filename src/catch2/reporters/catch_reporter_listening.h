@@ -50,7 +50,6 @@ namespace Catch {
         void testRunEnded( TestRunStats const& testRunStats ) override;
 
         void skipTest( TestCaseInfo const& testInfo ) override;
-        bool isMulti() const override;
 
         void listReporters(std::vector<ReporterDescription> const& descriptions, Config const& config) override;
         void listTests(std::vector<TestCaseHandle> const& tests, Config const& config) override;

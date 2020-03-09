@@ -150,10 +150,6 @@ namespace Catch {
         m_reporter->skipTest( testInfo );
     }
 
-    bool ListeningReporter::isMulti() const {
-        return true;
-    }
-
     void ListeningReporter::listReporters(std::vector<ReporterDescription> const& descriptions, Config const& config) {
         for (auto const& listener : m_listeners) {
             listener->listReporters(descriptions, config);

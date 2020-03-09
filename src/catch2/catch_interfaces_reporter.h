@@ -241,8 +241,6 @@ namespace Catch {
         // Default empty implementation provided
         virtual void fatalErrorEncountered( StringRef name );
 
-        virtual bool isMulti() const;
-
         // Listing support
         virtual void listReporters(std::vector<ReporterDescription> const& descriptions, Config const& config);
         virtual void listTests(std::vector<TestCaseHandle> const& tests, Config const& config);

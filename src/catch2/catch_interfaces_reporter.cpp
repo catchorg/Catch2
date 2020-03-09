@@ -112,7 +112,6 @@ namespace Catch {
     TestRunStats::~TestRunStats() = default;
 
     void IStreamingReporter::fatalErrorEncountered( StringRef ) {}
-    bool IStreamingReporter::isMulti() const { return false; }
 
     void IStreamingReporter::listReporters(std::vector<ReporterDescription> const& descriptions, Config const& config) {
         Catch::cout() << "Available reporters:\n";
