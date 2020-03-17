@@ -54,20 +54,6 @@ set(TEST_SOURCES
         )
 CheckFileList(TEST_SOURCES ${SELF_TEST_DIR})
 
-# A set of impl files that just #include a single header
-# Please keep these ordered alphabetically
-set(SURROGATE_SOURCES
-        ${SELF_TEST_DIR}/SurrogateCpps/catch_console_colour.cpp
-        ${SELF_TEST_DIR}/SurrogateCpps/catch_debugger.cpp
-        ${SELF_TEST_DIR}/SurrogateCpps/catch_interfaces_reporter.cpp
-        ${SELF_TEST_DIR}/SurrogateCpps/catch_option.cpp
-        ${SELF_TEST_DIR}/SurrogateCpps/catch_stream.cpp
-        ${SELF_TEST_DIR}/SurrogateCpps/catch_test_case_tracker.cpp
-        ${SELF_TEST_DIR}/SurrogateCpps/catch_test_spec.cpp
-        ${SELF_TEST_DIR}/SurrogateCpps/catch_xmlwriter.cpp
-        )
-CheckFileList(SURROGATE_SOURCES ${SELF_TEST_DIR}/SurrogateCpps)
-
 
 # Specify the headers, too, so CLion recognises them as project files
 set(HEADERS
@@ -82,7 +68,6 @@ set(HEADERS
 # Provide some groupings for IDEs
 #SOURCE_GROUP("benchmark" FILES ${BENCHMARK_HEADERS} ${BENCHMARK_SOURCES})
 #SOURCE_GROUP("Tests" FILES ${TEST_SOURCES})
-#SOURCE_GROUP("Surrogates" FILES ${SURROGATE_SOURCES})
 
 include(CTest)
 
