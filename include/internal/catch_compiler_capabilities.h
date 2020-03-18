@@ -48,12 +48,18 @@
 #if defined(__GNUC__) && !defined(__clang__) && !defined(__ICC)
 #    define CATCH_INTERNAL_START_WARNINGS_SUPPRESSION _Pragma( "GCC diagnostic push" )
 #    define CATCH_INTERNAL_STOP_WARNINGS_SUPPRESSION  _Pragma( "GCC diagnostic pop" )
+
+#    define CATCH_INTERNAL_IGNORE_BUT_WARN(...) (void)__builtin_constant_p(__VA_ARGS__)
+
 #endif
 
 #if defined(__clang__)
 
 #    define CATCH_INTERNAL_START_WARNINGS_SUPPRESSION _Pragma( "clang diagnostic push" )
 #    define CATCH_INTERNAL_STOP_WARNINGS_SUPPRESSION  _Pragma( "clang diagnostic pop" )
+
+#    define CATCH_INTERNAL_IGNORE_BUT_WARN(...) (void)__builtin_constant_p(__VA_ARGS__)
+
 
 #    define CATCH_INTERNAL_SUPPRESS_GLOBALS_WARNINGS \
          _Pragma( "clang diagnostic ignored \"-Wexit-time-destructors\"" ) \
@@ -133,6 +139,8 @@
 
 #  define CATCH_INTERNAL_START_WARNINGS_SUPPRESSION __pragma( warning(push) )
 #  define CATCH_INTERNAL_STOP_WARNINGS_SUPPRESSION  __pragma( warning(pop) )
+
+#  define CATCH_INTERNAL_IGNORE_BUT_WARN(...) (void)sizeof(__VA_ARGS__)
 
 #  if _MSC_VER >= 1900 // Visual Studio 2015 or newer
 #    define CATCH_INTERNAL_CONFIG_CPP17_UNCAUGHT_EXCEPTIONS
@@ -332,6 +340,11 @@
 #   define CATCH_INTERNAL_SUPPRESS_ZERO_VARIADIC_WARNINGS
 #endif
 
+// The goal of this macro is to avoid evaluation of the arguments, but
+// still have the compiler warn on problems inside...
+#if !defined(CATCH_INTERNAL_IGNORE_BUT_WARN)
+#   define CATCH_INTERNAL_IGNORE_BUT_WARN(...)
+#endif
 
 #if defined(__APPLE__) && defined(__apple_build_version__) && (__clang_major__ < 10)
 #   undef CATCH_INTERNAL_SUPPRESS_UNUSED_TEMPLATE_WARNINGS
