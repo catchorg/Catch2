@@ -5,7 +5,7 @@
 // This won't provide full coverage, but it might be worth checking
 // the other branch as well
 #include <catch2/catch_test_macros.hpp>
-#include <catch2/matchers/catch_matchers_generic.hpp>
+#include <catch2/matchers/catch_matchers_predicate.hpp>
 #include <catch2/matchers/catch_matchers_string.hpp>
 
 #include <type_traits>

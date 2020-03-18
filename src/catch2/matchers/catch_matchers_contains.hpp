@@ -5,7 +5,7 @@
 #ifndef TWOBLUECUBES_CATCH_MATCHERS_CONTAINS_HPP_INCLUDED
 #define TWOBLUECUBES_CATCH_MATCHERS_CONTAINS_HPP_INCLUDED
 
-#include <catch2/matchers/catch_matchers_templates.hpp>
+#include <catch2/matchers/catch_matchers_templated.hpp>
 
 #include <algorithm>
 #include <functional>

@@ -1,4 +1,4 @@
-#include <catch2/matchers/catch_matchers_generic.hpp>
+#include <catch2/matchers/catch_matchers_predicate.hpp>
 
 std::string Catch::Matchers::Generic::Detail::finalizeDescription(const std::string& desc) {
     if (desc.empty()) {

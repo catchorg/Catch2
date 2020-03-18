@@ -78,9 +78,9 @@ set(INTERNAL_HEADERS
     ${SOURCES_DIR}/matchers/catch_matchers_contains.hpp
     ${SOURCES_DIR}/matchers/catch_matchers_exception.hpp
     ${SOURCES_DIR}/matchers/catch_matchers_floating.hpp
-    ${SOURCES_DIR}/matchers/catch_matchers_generic.hpp
+    ${SOURCES_DIR}/matchers/catch_matchers_predicate.hpp
     ${SOURCES_DIR}/matchers/catch_matchers_string.hpp
-    ${SOURCES_DIR}/matchers/catch_matchers_templates.hpp
+    ${SOURCES_DIR}/matchers/catch_matchers_templated.hpp
     ${SOURCES_DIR}/matchers/catch_matchers_vector.hpp
     ${SOURCES_DIR}/catch_message.h
     ${SOURCES_DIR}/catch_meta.hpp
@@ -162,9 +162,9 @@ set(IMPL_SOURCES
     ${SOURCES_DIR}/matchers/catch_matchers_container_properties.cpp
     ${SOURCES_DIR}/matchers/catch_matchers_exception.cpp
     ${SOURCES_DIR}/matchers/catch_matchers_floating.cpp
-    ${SOURCES_DIR}/matchers/catch_matchers_generic.cpp
+    ${SOURCES_DIR}/matchers/catch_matchers_predicate.cpp
     ${SOURCES_DIR}/matchers/catch_matchers_string.cpp
-    ${SOURCES_DIR}/matchers/catch_matchers_templates.cpp
+    ${SOURCES_DIR}/matchers/catch_matchers_templated.cpp
     ${SOURCES_DIR}/catch_message.cpp
     ${SOURCES_DIR}/catch_output_redirect.cpp
     ${SOURCES_DIR}/catch_registry_hub.cpp
