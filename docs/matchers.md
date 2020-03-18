@@ -211,7 +211,7 @@ REQUIRE_THAT("Hello olleH",
 );
 ```
 
-> the predicate matcher lives in `catch2/matchers/catch_matchers_generic.hpp`
+> the predicate matcher lives in `catch2/matchers/catch_matchers_predicate.hpp`
 
 
 The other miscellaneous matcher utility is exception matching.
@@ -333,7 +333,7 @@ can compare one range-like (something that responds to `begin` and
 
 ```cpp
 #include <catch2/catch_test_macros.hpp>
-#include <catch2/matchers/catch_matchers_templates.hpp>
+#include <catch2/matchers/catch_matchers_templated.hpp>
 // ...
 
 template<typename Range>
@@ -378,7 +378,7 @@ a new style matcher, combining new style matchers is more expensive
 in terms of compilation time. Also note that you can combine old style
 and new style matchers arbitrarily.
 
-> `MatcherGenericBase` lives in `catch2/matchers/catch_matchers_templates.hpp`
+> `MatcherGenericBase` lives in `catch2/matchers/catch_matchers_templated.hpp`
 
 
 ---

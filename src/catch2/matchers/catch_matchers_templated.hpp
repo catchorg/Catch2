@@ -1,5 +1,8 @@
-#ifndef TWOBLUECUBES_CATCH_MATCHERS_TEMPLATES_HPP_INCLUDED
-#define TWOBLUECUBES_CATCH_MATCHERS_TEMPLATES_HPP_INCLUDED
+// Distributed under the Boost Software License, Version 1.0. (See accompanying
+// file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
+
+#ifndef TWOBLUECUBES_CATCH_MATCHERS_TEMPLATED_HPP_INCLUDED
+#define TWOBLUECUBES_CATCH_MATCHERS_TEMPLATED_HPP_INCLUDED
 
 #include <catch2/catch_common.h>
 #include <catch2/matchers/catch_matchers.hpp>
