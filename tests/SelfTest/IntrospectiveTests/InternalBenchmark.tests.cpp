@@ -300,7 +300,7 @@ TEST_CASE("analyse", "[approvals][benchmark]") {
     CHECK(analysis.outliers.low_severe == 0);
     CHECK(analysis.outliers.high_mild == 0);
     CHECK(analysis.outliers.high_severe == 0);
-    CHECK(analysis.outliers.samples_seen == samples.size());
+    CHECK(analysis.outliers.samples_seen == static_cast<int>(samples.size()));
 
     CHECK(analysis.outlier_variance < 0.5);
     CHECK(analysis.outlier_variance > 0);
