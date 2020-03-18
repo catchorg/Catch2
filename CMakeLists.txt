@@ -17,8 +17,6 @@ cmake_dependent_option(CATCH_BUILD_EXTRA_TESTS "Build extra tests" OFF "CATCH_DE
 cmake_dependent_option(CATCH_ENABLE_COVERAGE "Generate coverage for codecov.io" OFF "CATCH_DEVELOPMENT_BUILD" OFF)
 cmake_dependent_option(CATCH_ENABLE_WERROR "Enables Werror during build" ON "CATCH_DEVELOPMENT_BUILD" OFF)
 
-set(CATCH_CMAKE_CONFIG_DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake/Catch2")
-
 # Catch2's build breaks if done in-tree. You probably should not build
 # things in tree anyway, but we can allow projects that include Catch2
 # as a subproject to build in-tree as long as it is not in our tree.
@@ -34,6 +32,11 @@ list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/CMake")
 include(GNUInstallDirs)
 include(CMakePackageConfigHelpers)
 include(CTest)
+
+# This variable is used in some subdirectories, so we need it here, rather
+# than later in the install block
+set(CATCH_CMAKE_CONFIG_DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake/Catch2")
+
 
 # Basic paths
 set(CATCH_DIR ${CMAKE_CURRENT_SOURCE_DIR})
@@ -84,7 +87,6 @@ endif()
 # a subproject via `add_subdirectory`, or the destinations will break,
 # see https://github.com/catchorg/Catch2/issues/1373
 if (NOT_SUBPROJECT)
-
     configure_package_config_file(
         ${CMAKE_CURRENT_LIST_DIR}/CMake/Catch2Config.cmake.in
         ${CMAKE_CURRENT_BINARY_DIR}/Catch2Config.cmake
@@ -163,9 +165,15 @@ if (NOT_SUBPROJECT)
       ${CMAKE_CURRENT_BINARY_DIR}/catch2.pc
       @ONLY
     )
+    configure_file(
+      ${CMAKE_CURRENT_SOURCE_DIR}/CMake/catch2-main.pc.in
+      ${CMAKE_CURRENT_BINARY_DIR}/catch2-main.pc
+      @ONLY
+    )
     install(
       FILES
         "${CMAKE_CURRENT_BINARY_DIR}/catch2.pc"
+        "${CMAKE_CURRENT_BINARY_DIR}/catch2-main.pc"
       DESTINATION
         ${PKGCONFIG_INSTALL_DIR}
     )

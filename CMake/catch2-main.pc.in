@@ -1,0 +1,10 @@
+includedir=@CMAKE_INSTALL_FULL_INCLUDEDIR@
+libdir=@CMAKE_INSTALL_FULL_LIBDIR@
+pkg_version=@Catch2_VERSION@
+
+Name: Catch2-Main
+Description: Links in the default main function for Catch2
+Version: ${pkg_version}
+Requires: catch2 = ${pkg_version}
+Cflags: -I${includedir}
+Libs: -L${libdir} -lCatch2Main
