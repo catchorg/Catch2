@@ -3,10 +3,14 @@
 import json
 import os
 import urllib.request
+import urllib.parse
+
 
 from scriptCommon import catchPath
 
 def upload(options):
+#    request_blah = urllib.request.Request('https://
+
     request = urllib.request.Request('https://melpon.org/wandbox/api/compile.json', method='POST')
     json_bytes = json.dumps(options).encode('utf-8')
     request.add_header('Content-Type', 'application/json; charset=utf-8')
