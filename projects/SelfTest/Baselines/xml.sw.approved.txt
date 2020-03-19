@@ -7266,6 +7266,17 @@ Nor would this
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
+    <TestCase name="Lambdas in assertions" filename="projects/<exe-name>/UsageTests/Compilation.tests.cpp" >
+      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/UsageTests/Compilation.tests.cpp" >
+        <Original>
+          []() { return true; }()
+        </Original>
+        <Expanded>
+          true
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
     <TestCase name="Less-than inequalities with different epsilons" tags="[Approx]" filename="projects/<exe-name>/UsageTests/Approx.tests.cpp" >
       <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/UsageTests/Approx.tests.cpp" >
         <Original>
@@ -16037,7 +16048,7 @@ loose text artifact
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="1524" failures="149" expectedFailures="21"/>
+    <OverallResults successes="1525" failures="149" expectedFailures="21"/>
   </Group>
-  <OverallResults successes="1524" failures="148" expectedFailures="21"/>
+  <OverallResults successes="1525" failures="148" expectedFailures="21"/>
 </Catch>

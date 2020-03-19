@@ -369,6 +369,7 @@ Class.tests.cpp:<line number>
     <testCase name="#809" duration="{duration}"/>
     <testCase name="#833" duration="{duration}"/>
     <testCase name="#872" duration="{duration}"/>
+    <testCase name="Lambdas in assertions" duration="{duration}"/>
     <testCase name="Optionally static assertions" duration="{duration}"/>
   </file>
   <file path="projects/<exe-name>/UsageTests/Condition.tests.cpp">

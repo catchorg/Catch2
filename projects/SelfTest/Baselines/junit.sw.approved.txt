@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuitesloose text artifact
 >
-  <testsuite name="<exe-name>" errors="17" failures="132" tests="1694" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
+  <testsuite name="<exe-name>" errors="17" failures="132" tests="1695" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
     <properties>
       <property name="filters" value="~[!nonportable]~[!benchmark]~[approvals]"/>
       <property name="random-seed" value="1"/>
@@ -753,6 +753,7 @@ Condition.tests.cpp:<line number>
       </failure>
     </testcase>
     <testcase classname="<exe-name>.global" name="Inequality checks that should succeed" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="Lambdas in assertions" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Less-than inequalities with different epsilons" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="ManuallyRegistered" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Matchers can be (AllOf) composed with the &amp;&amp; operator" time="{duration}"/>

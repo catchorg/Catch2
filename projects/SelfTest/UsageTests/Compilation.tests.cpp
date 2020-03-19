@@ -228,6 +228,9 @@ namespace { namespace CompilationTests {
         REQUIRE( 0 == y.v );
     }
 
+    TEST_CASE("Lambdas in assertions") {
+        REQUIRE([]() { return true; }());
+    }
 
 }} // namespace CompilationTests
 
