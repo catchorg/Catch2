@@ -123,7 +123,7 @@ add_test(NAME BenchmarkingMacros COMMAND BenchmarkingMacros -r console -s)
 set_tests_properties(
     BenchmarkingMacros
   PROPERTIES
-    PASS_REGULAR_EXPRESSION "benchmark name                                  samples       iterations    estimated"
+    PASS_REGULAR_EXPRESSION "benchmark name[\\r\\n\\t ]+samples[\\r\\n\\t ]+iterations[\\r\\n\\t ]+estimated"
 )
 
 # This test touches windows.h, so it should only be compiled under msvc

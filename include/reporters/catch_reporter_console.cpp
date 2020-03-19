@@ -362,7 +362,7 @@ ConsoleReporter::ConsoleReporter(ReporterConfig const& config)
         else
         {
             return{
-                { "benchmark name", CATCH_CONFIG_CONSOLE_WIDTH - 32, ColumnInfo::Left },
+                { "benchmark name", CATCH_CONFIG_CONSOLE_WIDTH - 43, ColumnInfo::Left },
                 { "samples      mean       std dev", 14, ColumnInfo::Right },
                 { "iterations   low mean   low std dev", 14, ColumnInfo::Right },
                 { "estimated    high mean  high std dev", 14, ColumnInfo::Right }
