@@ -323,7 +323,7 @@ Instead the user code is only measured and the plain mean from the samples is re
 ## Specify the amount of time in milliseconds spent on warming up each test
 <pre>--benchmark-warmup-time</pre>
 
-> [Introduced](https://github.com/catchorg/Catch2/pull/1844) in Catch X.Y.Z.
+> [Introduced](https://github.com/catchorg/Catch2/pull/1844) in Catch 2.11.2.
 
 Configure the amount of time spent warming up each test.
 

@@ -260,7 +260,7 @@ namespace Catch {
 
 ## Overriding Catch's debug break (`-b`)
 
-> [Introduced](https://github.com/catchorg/Catch2/pull/1846) in Catch X.Y.Z.
+> [Introduced](https://github.com/catchorg/Catch2/pull/1846) in Catch 2.11.2.
 
 You can override Catch2's break-into-debugger code by defining the
 `CATCH_BREAK_INTO_DEBUGGER()` macro. This can be used if e.g. Catch2 does

@@ -2,6 +2,7 @@
 
 # Release notes
 **Contents**<br>
+[2.11.2](#2112)<br>
 [2.11.1](#2111)<br>
 [2.11.0](#2110)<br>
 [2.10.2](#2102)<br>
@@ -31,6 +32,32 @@
 [2.0.1](#201)<br>
 [Older versions](#older-versions)<br>
 [Even Older versions](#even-older-versions)<br>
+
+
+## 2.11.2
+
+### Improvements
+* GCC and Clang now issue warnings for suspicious code in assertions (#1880)
+  * E.g. `REQUIRE( int != unsigned int )` will now issue mixed signedness comparison warning
+  * This has always worked on MSVC, but it now also works for GCC and current Clang versions
+* Colorization of "Test filters" output should be more robust now
+* `--wait-for-keypress` now also accepts `never` as an option (#1866)
+* Reporters no longer round-off nanoseconds when reporting benchmarking results (#1876)
+* Catch2's debug break now supports iOS while using Thumb instruction set (#1862)
+* It is now possible to customize benchmark's warm-up time when running the test binary (#1844)
+  * `--benchmark-warmup-time {ms}`
+* User can now specify how Catch2 should break into debugger (#1846)
+
+### Fixes
+* Fixes missing `<random>` include in benchmarking (#1831)
+* Fixed missing `<iterator>` include in benchmarking (#1874)
+* Hidden test cases are now also tagged with `[!hide]` as per documentation (#1847)
+* Detection of whether libc provides `std::nextafter` has been improved (#1854)
+* Detection of `wmain` no longer incorrectly looks for `WIN32` macro (#1849)
+  * Now it just detects Windows platform
+* Composing already-composed matchers no longer modifies the partially-composed matcher expression
+  * This bug has been present for the last ~2 years and nobody reported it
+
 
 ## 2.11.1
 
