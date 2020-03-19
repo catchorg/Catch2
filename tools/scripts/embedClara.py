@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 # Execute this script any time you import a new copy of Clara into the third_party area
 import os
