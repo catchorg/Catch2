@@ -2,6 +2,7 @@
 
 # Release notes
 **Contents**<br>
+[2.11.3](#2113)<br>
 [2.11.2](#2112)<br>
 [2.11.1](#2111)<br>
 [2.11.0](#2110)<br>
@@ -32,6 +33,11 @@
 [2.0.1](#201)<br>
 [Older versions](#older-versions)<br>
 [Even Older versions](#even-older-versions)<br>
+
+## 2.11.3
+
+### Fixes
+* Fixed compilation error caused by lambdas in assertions under MSVC
 
 
 ## 2.11.2

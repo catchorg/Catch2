@@ -1,6 +1,6 @@
 /*
- *  Catch v2.11.2
- *  Generated: 2020-03-19 12:35:04.038733
+ *  Catch v2.11.3
+ *  Generated: 2020-03-19 13:44:21.042491
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2020 Two Blue Cubes Ltd. All rights reserved.
@@ -15,7 +15,7 @@
 
 #define CATCH_VERSION_MAJOR 2
 #define CATCH_VERSION_MINOR 11
-#define CATCH_VERSION_PATCH 2
+#define CATCH_VERSION_PATCH 3
 
 #ifdef __clang__
 #    pragma clang system_header
@@ -230,8 +230,6 @@ namespace Catch {
 
 #  define CATCH_INTERNAL_START_WARNINGS_SUPPRESSION __pragma( warning(push) )
 #  define CATCH_INTERNAL_STOP_WARNINGS_SUPPRESSION  __pragma( warning(pop) )
-
-#  define CATCH_INTERNAL_IGNORE_BUT_WARN(...) (void)sizeof(__VA_ARGS__)
 
 #  if _MSC_VER >= 1900 // Visual Studio 2015 or newer
 #    define CATCH_INTERNAL_CONFIG_CPP17_UNCAUGHT_EXCEPTIONS
@@ -2685,7 +2683,7 @@ namespace Catch {
             CATCH_INTERNAL_STOP_WARNINGS_SUPPRESSION \
         } INTERNAL_CATCH_CATCH( catchAssertionHandler ) \
         INTERNAL_CATCH_REACT( catchAssertionHandler ) \
-    } while( false )
+    } while( (void)0, (false) && static_cast<bool>( !!(__VA_ARGS__) ) )
 
 ///////////////////////////////////////////////////////////////////////////////
 #define INTERNAL_CATCH_IF( macroName, resultDisposition, ... ) \
@@ -15081,7 +15079,7 @@ namespace Catch {
     }
 
     Version const& libraryVersion() {
-        static Version version( 2, 11, 2, "", 0 );
+        static Version version( 2, 11, 3, "", 0 );
         return version;
     }
 
