@@ -1,16 +1,18 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 import json
 import os
-import urllib2
+import urllib.request
 
 from scriptCommon import catchPath
 
 def upload(options):
-    request = urllib2.Request('http://melpon.org/wandbox/api/compile.json')
-    request.add_header('Content-Type', 'application/json')
-    response = urllib2.urlopen(request, json.dumps(options))
-    return json.loads(response.read())
+    request = urllib.request.Request('https://melpon.org/wandbox/api/compile.json', method='POST')
+    json_bytes = json.dumps(options).encode('utf-8')
+    request.add_header('Content-Type', 'application/json; charset=utf-8')
+    request.add_header('Content-Length', len(json_bytes))
+    response = urllib.request.urlopen(request, json_bytes)
+    return json.loads(response.read().decode('utf-8'))
 
 main_file = '''
 #define CATCH_CONFIG_MAIN  // This tells Catch to provide a main() - only do this in one cpp file
