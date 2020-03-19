@@ -231,6 +231,9 @@ namespace { namespace CompilationTests {
         }
     }
 
+    TEST_CASE("Lambdas in assertions") {
+        REQUIRE([]() { return true; }());
+    }
 
 }} // namespace CompilationTests
 

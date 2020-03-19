@@ -6117,6 +6117,17 @@ with expansion:
   5 != 6
 
 -------------------------------------------------------------------------------
+Lambdas in assertions
+-------------------------------------------------------------------------------
+Compilation.tests.cpp:<line number>
+...............................................................................
+
+Compilation.tests.cpp:<line number>: PASSED:
+  REQUIRE( []() { return true; }() )
+with expansion:
+  true
+
+-------------------------------------------------------------------------------
 Less-than inequalities with different epsilons
 -------------------------------------------------------------------------------
 Approx.tests.cpp:<line number>
@@ -14647,6 +14658,6 @@ Misc.tests.cpp:<line number>
 Misc.tests.cpp:<line number>: PASSED:
 
 ===============================================================================
-test cases:  331 |  241 passed |  86 failed |  4 failed as expected
-assertions: 1889 | 1720 passed | 148 failed | 21 failed as expected
+test cases:  332 |  242 passed |  86 failed |  4 failed as expected
+assertions: 1890 | 1721 passed | 148 failed | 21 failed as expected
 
