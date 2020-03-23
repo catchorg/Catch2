@@ -35,7 +35,7 @@ namespace Catch {
 
 #elif defined ( CATCH_CONFIG_POSIX_SIGNALS )
 
-#include <signal.h>
+#include <csignal>
 
 namespace Catch {
 
