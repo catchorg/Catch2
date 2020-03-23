@@ -4145,7 +4145,7 @@ namespace Generators {
             if (!success) {
                 return false;
             }
-            while (!m_predicate(m_generator.get()) && (success = m_generator.next()));
+            while (!m_predicate(m_generator.get()) && (success = m_generator.next()) == true);
             return success;
         }
     };
