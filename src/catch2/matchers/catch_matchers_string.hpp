@@ -15,64 +15,60 @@
 namespace Catch {
 namespace Matchers {
 
-    namespace StdString {
+    struct CasedString {
+        CasedString( std::string const& str, CaseSensitive::Choice caseSensitivity );
+        std::string adjustString( std::string const& str ) const;
+        std::string caseSensitivitySuffix() const;
 
-        struct CasedString
-        {
-            CasedString( std::string const& str, CaseSensitive::Choice caseSensitivity );
-            std::string adjustString( std::string const& str ) const;
-            std::string caseSensitivitySuffix() const;
+        CaseSensitive::Choice m_caseSensitivity;
+        std::string m_str;
+    };
 
-            CaseSensitive::Choice m_caseSensitivity;
-            std::string m_str;
-        };
+    struct StringMatcherBase : MatcherBase<std::string> {
+        StringMatcherBase( std::string const& operation, CasedString const& comparator );
+        std::string describe() const override;
 
-        struct StringMatcherBase : MatcherBase<std::string> {
-            StringMatcherBase( std::string const& operation, CasedString const& comparator );
-            std::string describe() const override;
+        CasedString m_comparator;
+        std::string m_operation;
+    };
 
-            CasedString m_comparator;
-            std::string m_operation;
-        };
+    struct StringEqualsMatcher final : StringMatcherBase {
+        StringEqualsMatcher( CasedString const& comparator );
+        bool match( std::string const& source ) const override;
+    };
+    struct StringContainsMatcher final : StringMatcherBase {
+        StringContainsMatcher( CasedString const& comparator );
+        bool match( std::string const& source ) const override;
+    };
+    struct StartsWithMatcher final : StringMatcherBase {
+        StartsWithMatcher( CasedString const& comparator );
+        bool match( std::string const& source ) const override;
+    };
+    struct EndsWithMatcher final : StringMatcherBase {
+        EndsWithMatcher( CasedString const& comparator );
+        bool match( std::string const& source ) const override;
+    };
 
-        struct EqualsMatcher final : StringMatcherBase {
-            EqualsMatcher( CasedString const& comparator );
-            bool match( std::string const& source ) const override;
-        };
-        struct ContainsMatcher final : StringMatcherBase {
-            ContainsMatcher( CasedString const& comparator );
-            bool match( std::string const& source ) const override;
-        };
-        struct StartsWithMatcher final : StringMatcherBase {
-            StartsWithMatcher( CasedString const& comparator );
-            bool match( std::string const& source ) const override;
-        };
-        struct EndsWithMatcher final : StringMatcherBase {
-            EndsWithMatcher( CasedString const& comparator );
-            bool match( std::string const& source ) const override;
-        };
+    struct RegexMatcher final : MatcherBase<std::string> {
+        RegexMatcher( std::string regex, CaseSensitive::Choice caseSensitivity );
+        bool match( std::string const& matchee ) const override;
+        std::string describe() const override;
 
-        struct RegexMatcher final : MatcherBase<std::string> {
-            RegexMatcher( std::string regex, CaseSensitive::Choice caseSensitivity );
-            bool match( std::string const& matchee ) const override;
-            std::string describe() const override;
+    private:
+        std::string m_regex;
+        CaseSensitive::Choice m_caseSensitivity;
+    };
 
-        private:
-            std::string m_regex;
-            CaseSensitive::Choice m_caseSensitivity;
-        };
-
-    } // namespace StdString
-
-
-    // The following functions create the actual matcher objects.
-    // This allows the types to be inferred
-
-    StdString::EqualsMatcher Equals( std::string const& str, CaseSensitive::Choice caseSensitivity = CaseSensitive::Yes );
-    StdString::ContainsMatcher Contains( std::string const& str, CaseSensitive::Choice caseSensitivity = CaseSensitive::Yes );
-    StdString::EndsWithMatcher EndsWith( std::string const& str, CaseSensitive::Choice caseSensitivity = CaseSensitive::Yes );
-    StdString::StartsWithMatcher StartsWith( std::string const& str, CaseSensitive::Choice caseSensitivity = CaseSensitive::Yes );
-    StdString::RegexMatcher Matches( std::string const& regex, CaseSensitive::Choice caseSensitivity = CaseSensitive::Yes );
+    //! Creates matcher that accepts strings that are exactly equal to `str`
+    StringEqualsMatcher Equals( std::string const& str, CaseSensitive::Choice caseSensitivity = CaseSensitive::Yes );
+    //! Creates matcher that accepts strings that contain `str`
+    StringContainsMatcher Contains( std::string const& str, CaseSensitive::Choice caseSensitivity = CaseSensitive::Yes );
+    //! Creates matcher that accepts strings that _end_ with `str`
+    EndsWithMatcher EndsWith( std::string const& str, CaseSensitive::Choice caseSensitivity = CaseSensitive::Yes );
+    //! Creates matcher that accepts strings that _start_ with `str`
+    StartsWithMatcher StartsWith( std::string const& str, CaseSensitive::Choice caseSensitivity = CaseSensitive::Yes );
+    //! Creates matcher that accepts strings matching `regex`
+    RegexMatcher Matches( std::string const& regex, CaseSensitive::Choice caseSensitivity = CaseSensitive::Yes );
 
 } // namespace Matchers
 } // namespace Catch
