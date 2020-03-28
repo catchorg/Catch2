@@ -99,12 +99,14 @@ void write(std::ostream& out, FloatingPoint num) {
 } // end anonymous namespace
 
 namespace Matchers {
-namespace Floating {
+namespace Detail {
 
     enum class FloatingPointKind : uint8_t {
         Float,
         Double
     };
+
+} // end namespace Detail
 
 
     WithinAbsMatcher::WithinAbsMatcher(double target, double margin)
@@ -124,9 +126,9 @@ namespace Floating {
     }
 
 
-    WithinUlpsMatcher::WithinUlpsMatcher(double target, uint64_t ulps, FloatingPointKind baseType)
+    WithinUlpsMatcher::WithinUlpsMatcher(double target, uint64_t ulps, Detail::FloatingPointKind baseType)
         :m_target{ target }, m_ulps{ ulps }, m_type{ baseType } {
-        CATCH_ENFORCE(m_type == FloatingPointKind::Double
+        CATCH_ENFORCE(m_type == Detail::FloatingPointKind::Double
                    || m_ulps < (std::numeric_limits<uint32_t>::max)(),
             "Provided ULP is impossibly large for a float comparison.");
     }
@@ -139,12 +141,12 @@ namespace Floating {
 
     bool WithinUlpsMatcher::match(double const& matchee) const {
         switch (m_type) {
-        case FloatingPointKind::Float:
+        case Detail::FloatingPointKind::Float:
             return almostEqualUlps<float>(static_cast<float>(matchee), static_cast<float>(m_target), m_ulps);
-        case FloatingPointKind::Double:
+        case Detail::FloatingPointKind::Double:
             return almostEqualUlps<double>(matchee, m_target, m_ulps);
         default:
-            CATCH_INTERNAL_ERROR( "Unknown FloatingPointKind value" );
+            CATCH_INTERNAL_ERROR( "Unknown Detail::FloatingPointKind value" );
         }
     }
 
@@ -157,7 +159,7 @@ namespace Floating {
 
         ret << "is within " << m_ulps << " ULPs of ";
 
-        if (m_type == FloatingPointKind::Float) {
+        if (m_type == Detail::FloatingPointKind::Float) {
             write(ret, static_cast<float>(m_target));
             ret << 'f';
         } else {
@@ -165,7 +167,7 @@ namespace Floating {
         }
 
         ret << " ([";
-        if (m_type == FloatingPointKind::Double) {
+        if (m_type == Detail::FloatingPointKind::Double) {
             write(ret, step(m_target, static_cast<double>(-INFINITY), m_ulps));
             ret << ", ";
             write(ret, step(m_target, static_cast<double>( INFINITY), m_ulps));
@@ -199,39 +201,35 @@ namespace Floating {
         return sstr.str();
     }
 
-}// namespace Floating
 
-
-
-Floating::WithinUlpsMatcher WithinULP(double target, uint64_t maxUlpDiff) {
-    return Floating::WithinUlpsMatcher(target, maxUlpDiff, Floating::FloatingPointKind::Double);
+WithinUlpsMatcher WithinULP(double target, uint64_t maxUlpDiff) {
+    return WithinUlpsMatcher(target, maxUlpDiff, Detail::FloatingPointKind::Double);
 }
 
-Floating::WithinUlpsMatcher WithinULP(float target, uint64_t maxUlpDiff) {
-    return Floating::WithinUlpsMatcher(target, maxUlpDiff, Floating::FloatingPointKind::Float);
+WithinUlpsMatcher WithinULP(float target, uint64_t maxUlpDiff) {
+    return WithinUlpsMatcher(target, maxUlpDiff, Detail::FloatingPointKind::Float);
 }
 
-Floating::WithinAbsMatcher WithinAbs(double target, double margin) {
-    return Floating::WithinAbsMatcher(target, margin);
+WithinAbsMatcher WithinAbs(double target, double margin) {
+    return WithinAbsMatcher(target, margin);
 }
 
-Floating::WithinRelMatcher WithinRel(double target, double eps) {
-    return Floating::WithinRelMatcher(target, eps);
+WithinRelMatcher WithinRel(double target, double eps) {
+    return WithinRelMatcher(target, eps);
 }
 
-Floating::WithinRelMatcher WithinRel(double target) {
-    return Floating::WithinRelMatcher(target, std::numeric_limits<double>::epsilon() * 100);
+WithinRelMatcher WithinRel(double target) {
+    return WithinRelMatcher(target, std::numeric_limits<double>::epsilon() * 100);
 }
 
-Floating::WithinRelMatcher WithinRel(float target, float eps) {
-    return Floating::WithinRelMatcher(target, eps);
+WithinRelMatcher WithinRel(float target, float eps) {
+    return WithinRelMatcher(target, eps);
 }
 
-Floating::WithinRelMatcher WithinRel(float target) {
-    return Floating::WithinRelMatcher(target, std::numeric_limits<float>::epsilon() * 100);
+WithinRelMatcher WithinRel(float target) {
+    return WithinRelMatcher(target, std::numeric_limits<float>::epsilon() * 100);
 }
 
 
 } // namespace Matchers
 } // namespace Catch
-
