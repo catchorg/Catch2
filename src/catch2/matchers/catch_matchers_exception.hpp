@@ -11,7 +11,6 @@
 
 namespace Catch {
 namespace Matchers {
-namespace Exception {
 
 class ExceptionMessageMatcher final : public MatcherBase<std::exception> {
     std::string m_message;
@@ -26,9 +25,8 @@ public:
     std::string describe() const override;
 };
 
-} // namespace Exception
-
-Exception::ExceptionMessageMatcher Message(std::string const& message);
+//! Creates a matcher that checks whether a std derived exception has the provided message
+ExceptionMessageMatcher Message(std::string const& message);
 
 } // namespace Matchers
 } // namespace Catch

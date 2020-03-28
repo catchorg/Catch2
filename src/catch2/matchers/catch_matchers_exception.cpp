@@ -10,7 +10,6 @@
 
 namespace Catch {
 namespace Matchers {
-namespace Exception {
 
 bool ExceptionMessageMatcher::match(std::exception const& ex) const {
     return ex.what() == m_message;
@@ -20,11 +19,9 @@ std::string ExceptionMessageMatcher::describe() const {
     return "exception message matches \"" + m_message + "\"";
 }
 
-}
-Exception::ExceptionMessageMatcher Message(std::string const& message) {
-    return Exception::ExceptionMessageMatcher(message);
+ExceptionMessageMatcher Message(std::string const& message) {
+    return ExceptionMessageMatcher(message);
 }
 
-// namespace Exception
 } // namespace Matchers
 } // namespace Catch
