@@ -41,7 +41,7 @@ namespace Matchers {
 
         template<std::size_t N>
         std::array<void const*, N+1> array_cat(void const* lhs, std::array<void const*, N> && rhs) {
-            std::array<void const*, N+1> arr{lhs};
+            std::array<void const*, N + 1> arr{ {lhs} };
             std::copy_n(rhs.begin(), N, arr.begin() + 1);
             return arr;
         }
@@ -129,6 +129,7 @@ namespace Matchers {
             }
 
             std::array<void const*, sizeof...(MatcherTs)> m_matchers;
+
         };
 
 

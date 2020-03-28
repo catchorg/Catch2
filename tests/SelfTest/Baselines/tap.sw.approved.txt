@@ -565,21 +565,29 @@ ok {test-number} - c == i for: 4 == 4
 # Character pretty printing
 ok {test-number} - c == i for: 5 == 5
 # Combining MatchAllOfGeneric does not nest
-ok {test-number} - with 1 message: 'std::is_same< decltype(MatcherA() && MatcherB() && MatcherC()), Catch::Matchers::Detail::MatchAllOfGeneric<MatcherA, MatcherB, MatcherC> >::value'
+ok {test-number} - with 1 message: 'std::is_same< decltype((MatcherA() && MatcherB()) && MatcherC()), Catch::Matchers::Detail::MatchAllOfGeneric<MatcherA, MatcherB, MatcherC> >::value'
 # Combining MatchAllOfGeneric does not nest
-ok {test-number} - 1, MatcherA() && MatcherB() && MatcherC() for: 1 ( equals: (int) 1 or (float) 1.0f and equals: (long long) 1 and equals: (T) 1 )
+ok {test-number} - 1, (MatcherA() && MatcherB()) && MatcherC() for: 1 ( equals: (int) 1 or (float) 1.0f and equals: (long long) 1 and equals: (T) 1 )
 # Combining MatchAllOfGeneric does not nest
-ok {test-number} - with 1 message: 'std::is_same< decltype(MatcherA() && MatcherB() && MatcherC() && MatcherD()), Catch::Matchers::Detail::MatchAllOfGeneric<MatcherA, MatcherB, MatcherC, MatcherD> >::value'
+ok {test-number} - with 1 message: 'std::is_same< decltype(MatcherA() && (MatcherB() && MatcherC())), Catch::Matchers::Detail::MatchAllOfGeneric<MatcherA, MatcherB, MatcherC> >::value'
 # Combining MatchAllOfGeneric does not nest
-ok {test-number} - 1, MatcherA() && MatcherB() && MatcherC() && MatcherD() for: 1 ( equals: (int) 1 or (float) 1.0f and equals: (long long) 1 and equals: (T) 1 and equals: true )
+ok {test-number} - 1, MatcherA() && (MatcherB() && MatcherC()) for: 1 ( equals: (int) 1 or (float) 1.0f and equals: (long long) 1 and equals: (T) 1 )
+# Combining MatchAllOfGeneric does not nest
+ok {test-number} - with 1 message: 'std::is_same< decltype((MatcherA() && MatcherB()) && (MatcherC() && MatcherD())), Catch::Matchers::Detail::MatchAllOfGeneric<MatcherA, MatcherB, MatcherC, MatcherD> >::value'
+# Combining MatchAllOfGeneric does not nest
+ok {test-number} - 1, (MatcherA() && MatcherB()) && (MatcherC() && MatcherD()) for: 1 ( equals: (int) 1 or (float) 1.0f and equals: (long long) 1 and equals: (T) 1 and equals: true )
 # Combining MatchAnyOfGeneric does not nest
-ok {test-number} - with 1 message: 'std::is_same< decltype(MatcherA() || MatcherB() || MatcherC()), Catch::Matchers::Detail::MatchAnyOfGeneric<MatcherA, MatcherB, MatcherC> >::value'
+ok {test-number} - with 1 message: 'std::is_same< decltype((MatcherA() || MatcherB()) || MatcherC()), Catch::Matchers::Detail::MatchAnyOfGeneric<MatcherA, MatcherB, MatcherC> >::value'
 # Combining MatchAnyOfGeneric does not nest
-ok {test-number} - 1, MatcherA() || MatcherB() || MatcherC() for: 1 ( equals: (int) 1 or (float) 1.0f or equals: (long long) 1 or equals: (T) 1 )
+ok {test-number} - 1, (MatcherA() || MatcherB()) || MatcherC() for: 1 ( equals: (int) 1 or (float) 1.0f or equals: (long long) 1 or equals: (T) 1 )
 # Combining MatchAnyOfGeneric does not nest
-ok {test-number} - with 1 message: 'std::is_same< decltype(MatcherA() || MatcherB() || MatcherC() || MatcherD()), Catch::Matchers::Detail::MatchAnyOfGeneric<MatcherA, MatcherB, MatcherC, MatcherD> >::value'
+ok {test-number} - with 1 message: 'std::is_same< decltype(MatcherA() || (MatcherB() || MatcherC())), Catch::Matchers::Detail::MatchAnyOfGeneric<MatcherA, MatcherB, MatcherC> >::value'
 # Combining MatchAnyOfGeneric does not nest
-ok {test-number} - 1, MatcherA() || MatcherB() || MatcherC() || MatcherD() for: 1 ( equals: (int) 1 or (float) 1.0f or equals: (long long) 1 or equals: (T) 1 or equals: true )
+ok {test-number} - 1, MatcherA() || (MatcherB() || MatcherC()) for: 1 ( equals: (int) 1 or (float) 1.0f or equals: (long long) 1 or equals: (T) 1 )
+# Combining MatchAnyOfGeneric does not nest
+ok {test-number} - with 1 message: 'std::is_same< decltype((MatcherA() || MatcherB()) || (MatcherC() || MatcherD())), Catch::Matchers::Detail::MatchAnyOfGeneric<MatcherA, MatcherB, MatcherC, MatcherD> >::value'
+# Combining MatchAnyOfGeneric does not nest
+ok {test-number} - 1, (MatcherA() || MatcherB()) || (MatcherC() || MatcherD()) for: 1 ( equals: (int) 1 or (float) 1.0f or equals: (long long) 1 or equals: (T) 1 or equals: true )
 # Combining MatchNotOfGeneric does not nest
 ok {test-number} - with 1 message: 'std::is_same< decltype(!MatcherA()), Catch::Matchers::Detail::MatchNotOfGeneric<MatcherA> >::value'
 # Combining MatchNotOfGeneric does not nest
@@ -3762,5 +3770,5 @@ ok {test-number} - q3 == 23. for: 23.0 == 23.0
 ok {test-number} -
 # xmlentitycheck
 ok {test-number} -
-1..1877
+1..1881
 

@@ -2613,7 +2613,7 @@ Nor would this
     <TestCase name="Combining MatchAllOfGeneric does not nest" tags="[matchers][templated]" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
       <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
         <Original>
-          1, MatcherA() &amp;&amp; MatcherB() &amp;&amp; MatcherC()
+          1, (MatcherA() &amp;&amp; MatcherB()) &amp;&amp; MatcherC()
         </Original>
         <Expanded>
           1 ( equals: (int) 1 or (float) 1.0f and equals: (long long) 1 and equals: (T) 1 )
@@ -2621,7 +2621,15 @@ Nor would this
       </Expression>
       <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
         <Original>
-          1, MatcherA() &amp;&amp; MatcherB() &amp;&amp; MatcherC() &amp;&amp; MatcherD()
+          1, MatcherA() &amp;&amp; (MatcherB() &amp;&amp; MatcherC())
+        </Original>
+        <Expanded>
+          1 ( equals: (int) 1 or (float) 1.0f and equals: (long long) 1 and equals: (T) 1 )
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
+        <Original>
+          1, (MatcherA() &amp;&amp; MatcherB()) &amp;&amp; (MatcherC() &amp;&amp; MatcherD())
         </Original>
         <Expanded>
           1 ( equals: (int) 1 or (float) 1.0f and equals: (long long) 1 and equals: (T) 1 and equals: true )
@@ -2632,7 +2640,7 @@ Nor would this
     <TestCase name="Combining MatchAnyOfGeneric does not nest" tags="[matchers][templated]" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
       <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
         <Original>
-          1, MatcherA() || MatcherB() || MatcherC()
+          1, (MatcherA() || MatcherB()) || MatcherC()
         </Original>
         <Expanded>
           1 ( equals: (int) 1 or (float) 1.0f or equals: (long long) 1 or equals: (T) 1 )
@@ -2640,7 +2648,15 @@ Nor would this
       </Expression>
       <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
         <Original>
-          1, MatcherA() || MatcherB() || MatcherC() || MatcherD()
+          1, MatcherA() || (MatcherB() || MatcherC())
+        </Original>
+        <Expanded>
+          1 ( equals: (int) 1 or (float) 1.0f or equals: (long long) 1 or equals: (T) 1 )
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
+        <Original>
+          1, (MatcherA() || MatcherB()) || (MatcherC() || MatcherD())
         </Original>
         <Expanded>
           1 ( equals: (int) 1 or (float) 1.0f or equals: (long long) 1 or equals: (T) 1 or equals: true )
@@ -17541,7 +17557,7 @@ loose text artifact
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="1716" failures="149" expectedFailures="21"/>
+    <OverallResults successes="1720" failures="149" expectedFailures="21"/>
   </Group>
-  <OverallResults successes="1716" failures="148" expectedFailures="21"/>
+  <OverallResults successes="1720" failures="148" expectedFailures="21"/>
 </Catch>

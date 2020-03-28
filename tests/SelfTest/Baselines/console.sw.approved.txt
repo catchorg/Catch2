@@ -2287,23 +2287,34 @@ Matchers.tests.cpp:<line number>
 
 Matchers.tests.cpp:<line number>: PASSED:
 with message:
-  std::is_same< decltype(MatcherA() && MatcherB() && MatcherC()), Catch::
+  std::is_same< decltype((MatcherA() && MatcherB()) && MatcherC()), Catch::
   Matchers::Detail::MatchAllOfGeneric<MatcherA, MatcherB, MatcherC> >::value
 
 Matchers.tests.cpp:<line number>: PASSED:
-  REQUIRE_THAT( 1, MatcherA() && MatcherB() && MatcherC() )
+  REQUIRE_THAT( 1, (MatcherA() && MatcherB()) && MatcherC() )
 with expansion:
   1 ( equals: (int) 1 or (float) 1.0f and equals: (long long) 1 and equals: (T)
   1 )
 
 Matchers.tests.cpp:<line number>: PASSED:
 with message:
-  std::is_same< decltype(MatcherA() && MatcherB() && MatcherC() && MatcherD()),
-  Catch::Matchers::Detail::MatchAllOfGeneric<MatcherA, MatcherB, MatcherC,
-  MatcherD> >::value
+  std::is_same< decltype(MatcherA() && (MatcherB() && MatcherC())), Catch::
+  Matchers::Detail::MatchAllOfGeneric<MatcherA, MatcherB, MatcherC> >::value
 
 Matchers.tests.cpp:<line number>: PASSED:
-  REQUIRE_THAT( 1, MatcherA() && MatcherB() && MatcherC() && MatcherD() )
+  REQUIRE_THAT( 1, MatcherA() && (MatcherB() && MatcherC()) )
+with expansion:
+  1 ( equals: (int) 1 or (float) 1.0f and equals: (long long) 1 and equals: (T)
+  1 )
+
+Matchers.tests.cpp:<line number>: PASSED:
+with message:
+  std::is_same< decltype((MatcherA() && MatcherB()) && (MatcherC() && MatcherD
+  ())), Catch::Matchers::Detail::MatchAllOfGeneric<MatcherA, MatcherB,
+  MatcherC, MatcherD> >::value
+
+Matchers.tests.cpp:<line number>: PASSED:
+  REQUIRE_THAT( 1, (MatcherA() && MatcherB()) && (MatcherC() && MatcherD()) )
 with expansion:
   1 ( equals: (int) 1 or (float) 1.0f and equals: (long long) 1 and equals: (T)
   1 and equals: true )
@@ -2316,23 +2327,34 @@ Matchers.tests.cpp:<line number>
 
 Matchers.tests.cpp:<line number>: PASSED:
 with message:
-  std::is_same< decltype(MatcherA() || MatcherB() || MatcherC()), Catch::
+  std::is_same< decltype((MatcherA() || MatcherB()) || MatcherC()), Catch::
   Matchers::Detail::MatchAnyOfGeneric<MatcherA, MatcherB, MatcherC> >::value
 
 Matchers.tests.cpp:<line number>: PASSED:
-  REQUIRE_THAT( 1, MatcherA() || MatcherB() || MatcherC() )
+  REQUIRE_THAT( 1, (MatcherA() || MatcherB()) || MatcherC() )
 with expansion:
   1 ( equals: (int) 1 or (float) 1.0f or equals: (long long) 1 or equals: (T) 1
   )
 
 Matchers.tests.cpp:<line number>: PASSED:
 with message:
-  std::is_same< decltype(MatcherA() || MatcherB() || MatcherC() || MatcherD()),
-  Catch::Matchers::Detail::MatchAnyOfGeneric<MatcherA, MatcherB, MatcherC,
-  MatcherD> >::value
+  std::is_same< decltype(MatcherA() || (MatcherB() || MatcherC())), Catch::
+  Matchers::Detail::MatchAnyOfGeneric<MatcherA, MatcherB, MatcherC> >::value
 
 Matchers.tests.cpp:<line number>: PASSED:
-  REQUIRE_THAT( 1, MatcherA() || MatcherB() || MatcherC() || MatcherD() )
+  REQUIRE_THAT( 1, MatcherA() || (MatcherB() || MatcherC()) )
+with expansion:
+  1 ( equals: (int) 1 or (float) 1.0f or equals: (long long) 1 or equals: (T) 1
+  )
+
+Matchers.tests.cpp:<line number>: PASSED:
+with message:
+  std::is_same< decltype((MatcherA() || MatcherB()) || (MatcherC() || MatcherD
+  ())), Catch::Matchers::Detail::MatchAnyOfGeneric<MatcherA, MatcherB,
+  MatcherC, MatcherD> >::value
+
+Matchers.tests.cpp:<line number>: PASSED:
+  REQUIRE_THAT( 1, (MatcherA() || MatcherB()) || (MatcherC() || MatcherD()) )
 with expansion:
   1 ( equals: (int) 1 or (float) 1.0f or equals: (long long) 1 or equals: (T) 1
   or equals: true )
@@ -14626,5 +14648,5 @@ Misc.tests.cpp:<line number>: PASSED:
 
 ===============================================================================
 test cases:  331 |  241 passed |  86 failed |  4 failed as expected
-assertions: 1885 | 1716 passed | 148 failed | 21 failed as expected
+assertions: 1889 | 1720 passed | 148 failed | 21 failed as expected
 
