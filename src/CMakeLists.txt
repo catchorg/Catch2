@@ -35,7 +35,6 @@ SOURCE_GROUP("benchmark" FILES ${BENCHMARK_HEADERS} ${BENCHMARK_SOURCES})
 set(INTERNAL_HEADERS
     ${SOURCES_DIR}/internal/catch_capture_matchers.h
     ${SOURCES_DIR}/internal/catch_container_nonmembers.hpp
-    ${SOURCES_DIR}/catch.hpp
     ${SOURCES_DIR}/catch_approx.h
     ${SOURCES_DIR}/catch_assertionhandler.h
     ${SOURCES_DIR}/catch_assertioninfo.h

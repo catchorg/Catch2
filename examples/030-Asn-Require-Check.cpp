@@ -10,7 +10,7 @@
 
 // main() provided in 000-CatchMain.cpp
 
-#include <catch2/catch.hpp>
+#include <catch2/catch_test_macros.hpp>
 
 static std::string one() {
     return "1";
