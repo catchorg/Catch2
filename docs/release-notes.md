@@ -61,7 +61,10 @@
 * Various classes not designed for user-extension have been made final
   * `ListeningReporter` is now `final`
   * Concrete Matchers (e.g. `UnorderedEquals` vector matcher) are now `final`
-* `ListeningReporter` is now final
+* Matcher namespacing has been redone
+  * Matcher types are no longer in deeply nested namespaces
+  * Matcher factory functions are no longer brought into `Catch` namespace
+  * This means that all public-facing matcher-related functionality is now in `Catch::Matchers` namespace
 
 
 ### Improvements
