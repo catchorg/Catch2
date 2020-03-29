@@ -86,6 +86,9 @@ A small, single-header-only, library for wrapping and composing columns of text.
 ### [thor](https://github.com/xorz57/thor)
 Wrapper Library for CUDA.
 
+### [toml++](https://github.com/marzer/tomlplusplus)
+A header-only TOML parser and serializer for modern C++.
+
 ### [Trompeloeil](https://github.com/rollbear/trompeloeil)
 A thread-safe header-only mocking framework for C++14.
 
