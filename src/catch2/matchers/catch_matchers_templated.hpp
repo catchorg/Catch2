@@ -130,6 +130,32 @@ namespace Matchers {
 
             std::array<void const*, sizeof...(MatcherTs)> m_matchers;
 
+            //! Avoids type nesting for `GenericAllOf && GenericAllOf` case
+            template<typename... MatchersRHS>
+            friend
+            MatchAllOfGeneric<MatcherTs..., MatchersRHS...> operator && (
+                    MatchAllOfGeneric<MatcherTs...>&& lhs,
+                    MatchAllOfGeneric<MatchersRHS...>&& rhs) {
+                return MatchAllOfGeneric<MatcherTs..., MatchersRHS...>{array_cat(std::move(lhs.m_matchers), std::move(rhs.m_matchers))};
+            }
+
+            //! Avoids type nesting for `GenericAllOf && some matcher` case
+            template<typename MatcherRHS>
+            friend std::enable_if_t<is_matcher<MatcherRHS>::value,
+            MatchAllOfGeneric<MatcherTs..., MatcherRHS>> operator && (
+                    MatchAllOfGeneric<MatcherTs...>&& lhs,
+                    MatcherRHS const& rhs) {
+                return MatchAllOfGeneric<MatcherTs..., MatcherRHS>{array_cat(std::move(lhs.m_matchers), static_cast<void const*>(&rhs))};
+            }
+
+            //! Avoids type nesting for `some matcher && GenericAllOf` case
+            template<typename MatcherLHS>
+            friend std::enable_if_t<is_matcher<MatcherLHS>::value,
+            MatchAllOfGeneric<MatcherLHS, MatcherTs...>> operator && (
+                    MatcherLHS const& lhs,
+                    MatchAllOfGeneric<MatcherTs...>&& rhs) {
+                return MatchAllOfGeneric<MatcherLHS, MatcherTs...>{array_cat(static_cast<void const*>(std::addressof(lhs)), std::move(rhs.m_matchers))};
+            }
         };
 
 
@@ -153,6 +179,32 @@ namespace Matchers {
             }
 
             std::array<void const*, sizeof...(MatcherTs)> m_matchers;
+
+            //! Avoids type nesting for `GenericAnyOf || GenericAnyOf` case
+            template<typename... MatchersRHS>
+            friend MatchAnyOfGeneric<MatcherTs..., MatchersRHS...> operator || (
+                    MatchAnyOfGeneric<MatcherTs...>&& lhs,
+                    MatchAnyOfGeneric<MatchersRHS...>&& rhs) {
+                return MatchAnyOfGeneric<MatcherTs..., MatchersRHS...>{array_cat(std::move(lhs.m_matchers), std::move(rhs.m_matchers))};
+            }
+
+            //! Avoids type nesting for `GenericAnyOf || some matcher` case
+            template<typename MatcherRHS>
+            friend std::enable_if_t<is_matcher<MatcherRHS>::value,
+            MatchAnyOfGeneric<MatcherTs..., MatcherRHS>> operator || (
+                    MatchAnyOfGeneric<MatcherTs...>&& lhs,
+                    MatcherRHS const& rhs) {
+                return MatchAnyOfGeneric<MatcherTs..., MatcherRHS>{array_cat(std::move(lhs.m_matchers), static_cast<void const*>(std::addressof(rhs)))};
+            }
+
+            //! Avoids type nesting for `some matcher || GenericAnyOf` case
+            template<typename MatcherLHS>
+            friend std::enable_if_t<is_matcher<MatcherLHS>::value,
+            MatchAnyOfGeneric<MatcherLHS, MatcherTs...>> operator || (
+                MatcherLHS const& lhs,
+                MatchAnyOfGeneric<MatcherTs...>&& rhs) {
+                return MatchAnyOfGeneric<MatcherLHS, MatcherTs...>{array_cat(static_cast<void const*>(std::addressof(lhs)), std::move(rhs.m_matchers))};
+            }
         };
 
 
@@ -175,7 +227,7 @@ namespace Matchers {
             }
 
             //! Negating negation can just unwrap and return underlying matcher
-            friend MatcherT const& operator ! (Detail::MatchNotOfGeneric<MatcherT> const& matcher) {
+            friend MatcherT const& operator ! (MatchNotOfGeneric<MatcherT> const& matcher) {
                 return matcher.m_matcher;
             }
         private:
@@ -228,44 +280,6 @@ namespace Matchers {
     std::enable_if_t<Detail::is_generic_matcher<MatcherRHS>::value, Detail::MatchAnyOfGeneric<MatcherBase<ArgLHS>, MatcherRHS>>
         operator || (MatcherBase<ArgLHS> const& lhs, MatcherRHS const& rhs) {
         return { lhs, rhs };
-    }
-
-
-    // avoid deep nesting of matcher templates
-    template<typename... MatchersLHS, typename... MatchersRHS>
-    Detail::MatchAllOfGeneric<MatchersLHS..., MatchersRHS...>
-        operator && (Detail::MatchAllOfGeneric<MatchersLHS...>&& lhs, Detail::MatchAllOfGeneric<MatchersRHS...>&& rhs) {
-        return Detail::MatchAllOfGeneric<MatchersLHS..., MatchersRHS...>{Detail::array_cat(std::move(lhs.m_matchers), std::move(rhs.m_matchers))};
-    }
-
-    template<typename... MatchersLHS, typename MatcherRHS>
-    std::enable_if_t<Detail::is_matcher<MatcherRHS>::value, Detail::MatchAllOfGeneric<MatchersLHS..., MatcherRHS>>
-        operator && (Detail::MatchAllOfGeneric<MatchersLHS...>&& lhs, MatcherRHS const& rhs) {
-        return Detail::MatchAllOfGeneric<MatchersLHS..., MatcherRHS>{Detail::array_cat(std::move(lhs.m_matchers), static_cast<void const*>(&rhs))};
-    }
-
-    template<typename MatcherLHS, typename... MatchersRHS>
-    std::enable_if_t<Detail::is_matcher<MatcherLHS>::value, Detail::MatchAllOfGeneric<MatcherLHS, MatchersRHS...>>
-        operator && (MatcherLHS const& lhs, Detail::MatchAllOfGeneric<MatchersRHS...>&& rhs) {
-        return Detail::MatchAllOfGeneric<MatcherLHS, MatchersRHS...>{Detail::array_cat(static_cast<void const*>(std::addressof(lhs)), std::move(rhs.m_matchers))};
-    }
-
-    template<typename... MatchersLHS, typename... MatchersRHS>
-    Detail::MatchAnyOfGeneric<MatchersLHS..., MatchersRHS...>
-        operator || (Detail::MatchAnyOfGeneric<MatchersLHS...>&& lhs, Detail::MatchAnyOfGeneric<MatchersRHS...>&& rhs) {
-        return Detail::MatchAnyOfGeneric<MatchersLHS..., MatchersRHS...>{Detail::array_cat(std::move(lhs.m_matchers), std::move(rhs.m_matchers))};
-    }
-
-    template<typename... MatchersLHS, typename MatcherRHS>
-    std::enable_if_t<Detail::is_matcher<MatcherRHS>::value, Detail::MatchAnyOfGeneric<MatchersLHS..., MatcherRHS>>
-        operator || (Detail::MatchAnyOfGeneric<MatchersLHS...>&& lhs, MatcherRHS const& rhs) {
-        return Detail::MatchAnyOfGeneric<MatchersLHS..., MatcherRHS>{Detail::array_cat(std::move(lhs.m_matchers), static_cast<void const*>(std::addressof(rhs)))};
-    }
-
-    template<typename MatcherLHS, typename... MatchersRHS>
-    std::enable_if_t<Detail::is_matcher<MatcherLHS>::value, Detail::MatchAnyOfGeneric<MatcherLHS, MatchersRHS...>>
-        operator || (MatcherLHS const& lhs, Detail::MatchAnyOfGeneric<MatchersRHS...>&& rhs) {
-        return Detail::MatchAnyOfGeneric<MatcherLHS, MatchersRHS...>{Detail::array_cat(static_cast<void const*>(std::addressof(lhs)), std::move(rhs.m_matchers))};
     }
 
 } // namespace Matchers
