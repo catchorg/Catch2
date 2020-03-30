@@ -4,7 +4,7 @@
  */
 
 #include <catch2/catch_test_macros.hpp>
-#include <catch2/catch_enforce.h>
+#include <catch2/internal/catch_enforce.hpp>
 
 #if defined(_MSC_VER)
 #pragma warning(push)

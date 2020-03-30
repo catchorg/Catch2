@@ -16,7 +16,7 @@
 #include <catch2/benchmark/detail/catch_measure.hpp>
 #include <catch2/benchmark/detail/catch_complete_invoke.hpp>
 #include <catch2/benchmark/detail/catch_timing.hpp>
-#include <catch2/catch_meta.hpp>
+#include <catch2/internal/catch_meta.hpp>
 
 #include <utility>
 #include <type_traits>

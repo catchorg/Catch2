@@ -17,9 +17,9 @@
 // NB. Any general catch headers included here must be included
 // in catch.hpp first to make sure they are included by the single
 // header for non obj-usage
-#include <catch2/catch_test_case_info.h>
-#include <catch2/catch_string_manip.h>
-#include <catch2/catch_tostring.h>
+#include <catch2/catch_test_case_info.hpp>
+#include <catch2/internal/catch_string_manip.hpp>
+#include <catch2/catch_tostring.hpp>
 
 ///////////////////////////////////////////////////////////////////////////////
 // This protocol is really only here for (self) documenting purposes, since

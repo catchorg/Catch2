@@ -5,22 +5,21 @@
  *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  */
 
-#include <catch2/catch_session.h>
-#include <catch2/catch_commandline.h>
-#include <catch2/catch_console_colour.h>
-#include <catch2/catch_enforce.h>
-#include <catch2/catch_list.h>
-#include <catch2/catch_context.h>
-#include <catch2/catch_run_context.h>
-#include <catch2/catch_stream.h>
-#include <catch2/catch_test_spec.h>
-#include <catch2/catch_version.h>
-#include <catch2/catch_interfaces_reporter.h>
-#include <catch2/catch_random_number_generator.h>
-#include <catch2/catch_startup_exception_registry.h>
-#include <catch2/catch_text.h>
-#include <catch2/catch_stream.h>
-#include <catch2/catch_windows_h_proxy.h>
+#include <catch2/catch_session.hpp>
+#include <catch2/internal/catch_console_colour.hpp>
+#include <catch2/internal/catch_enforce.hpp>
+#include <catch2/internal/catch_list.hpp>
+#include <catch2/internal/catch_context.hpp>
+#include <catch2/internal/catch_run_context.hpp>
+#include <catch2/internal/catch_stream.hpp>
+#include <catch2/catch_test_spec.hpp>
+#include <catch2/catch_version.hpp>
+#include <catch2/interfaces/catch_interfaces_reporter.hpp>
+#include <catch2/internal/catch_random_number_generator.hpp>
+#include <catch2/internal/catch_startup_exception_registry.hpp>
+#include <catch2/internal/catch_text.hpp>
+#include <catch2/internal/catch_stream.hpp>
+#include <catch2/internal/catch_windows_h_proxy.hpp>
 #include <catch2/reporters/catch_reporter_listening.hpp>
 
 #include <cstdlib>

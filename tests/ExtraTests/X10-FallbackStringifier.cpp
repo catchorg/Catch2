@@ -9,7 +9,7 @@ std::string fallbackStringifier(T const&) {
     return "{ !!! }";
 }
 
-#include <catch2/catch_default_main.hpp>
+#include <catch2/internal/catch_default_main.hpp>
 #include <catch2/catch_test_macros.hpp>
 
 struct foo {

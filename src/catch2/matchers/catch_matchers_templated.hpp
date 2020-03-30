@@ -4,9 +4,9 @@
 #ifndef TWOBLUECUBES_CATCH_MATCHERS_TEMPLATED_HPP_INCLUDED
 #define TWOBLUECUBES_CATCH_MATCHERS_TEMPLATED_HPP_INCLUDED
 
-#include <catch2/catch_common.h>
+#include <catch2/internal/catch_common.hpp>
 #include <catch2/matchers/catch_matchers.hpp>
-#include <catch2/catch_stringref.h>
+#include <catch2/catch_stringref.hpp>
 
 #include <array>
 #include <algorithm>

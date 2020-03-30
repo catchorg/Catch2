@@ -3,7 +3,7 @@
  *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  */
 
-#include <catch2/catch_tag_alias_autoregistrar.h>
+#include <catch2/catch_tag_alias_autoregistrar.hpp>
 
 // Some example tag aliases
 CATCH_REGISTER_TAG_ALIAS( "[@nhf]", "[failing]~[.]" )
@@ -25,4 +25,4 @@ struct TestListener : Catch::TestEventListenerBase {
 
 CATCH_REGISTER_LISTENER( TestListener )
 
-#include <catch2/catch_default_main.hpp>
+#include <catch2/internal/catch_default_main.hpp>

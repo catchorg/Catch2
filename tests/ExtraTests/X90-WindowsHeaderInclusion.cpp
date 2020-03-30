@@ -4,7 +4,7 @@
 // wrong.
 
 #include <windows.h>
-#include <catch2/catch_default_main.hpp>
+#include <catch2/internal/catch_default_main.hpp>
 #include <catch2/catch_test_macros.hpp>
 
 TEST_CASE("Catch2 did survive compilation with windows.h", "[compile-test]") {

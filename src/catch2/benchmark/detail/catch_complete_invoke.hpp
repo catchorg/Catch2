@@ -11,9 +11,9 @@
 #ifndef TWOBLUECUBES_CATCH_DETAIL_COMPLETE_INVOKE_HPP_INCLUDED
 #define TWOBLUECUBES_CATCH_DETAIL_COMPLETE_INVOKE_HPP_INCLUDED
 
-#include <catch2/catch_enforce.h>
-#include <catch2/catch_interfaces_capture.h>
-#include <catch2/catch_interfaces_registry_hub.h>
+#include <catch2/internal/catch_enforce.hpp>
+#include <catch2/interfaces/catch_interfaces_capture.hpp>
+#include <catch2/interfaces/catch_interfaces_registry_hub.hpp>
 
 #include <type_traits>
 #include <utility>

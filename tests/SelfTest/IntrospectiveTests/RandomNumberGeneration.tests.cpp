@@ -4,7 +4,7 @@
  */
 
 #include <catch2/catch_test_macros.hpp>
-#include <catch2/catch_random_number_generator.h>
+#include <catch2/internal/catch_random_number_generator.hpp>
 
 TEST_CASE("Our PCG implementation provides expected results for known seeds", "[rng]") {
     Catch::SimplePcg32 rng;

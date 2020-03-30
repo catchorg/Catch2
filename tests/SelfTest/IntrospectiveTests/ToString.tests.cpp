@@ -1,4 +1,4 @@
-#include <catch2/catch_enum_values_registry.h>
+#include <catch2/internal/catch_enum_values_registry.hpp>
 #include <catch2/matchers/catch_matchers_vector.hpp>
 #include <catch2/catch_test_macros.hpp>
 

@@ -5,8 +5,8 @@
 #ifndef TWOBLUECUBES_CATCH_MATCHERS_HPP_INCLUDED
 #define TWOBLUECUBES_CATCH_MATCHERS_HPP_INCLUDED
 
-#include <catch2/catch_common.h>
-#include <catch2/internal/catch_capture_matchers.h>
+#include <catch2/internal/catch_common.hpp>
+#include <catch2/internal/catch_capture_matchers.hpp>
 
 #include <string>
 #include <vector>

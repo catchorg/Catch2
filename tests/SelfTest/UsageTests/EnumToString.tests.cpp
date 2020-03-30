@@ -1,5 +1,5 @@
 #include <catch2/catch_test_macros.hpp>
-#include <catch2/catch_enum_values_registry.h>
+#include <catch2/internal/catch_enum_values_registry.hpp>
 
 
 namespace {

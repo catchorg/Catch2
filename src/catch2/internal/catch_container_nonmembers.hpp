@@ -4,7 +4,7 @@
 #ifndef TWOBLUECUBES_CATCH_CONTAINER_NONMEMBERS_HPP_INCLUDED
 #define TWOBLUECUBES_CATCH_CONTAINER_NONMEMBERS_HPP_INCLUDED
 
-#include <catch2/catch_compiler_capabilities.h>
+#include <catch2/internal/catch_compiler_capabilities.hpp>
 
 
 // We want a simple polyfill over `std::empty`, `std::size` and so on

@@ -6,7 +6,7 @@
  *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  */
 
-#include <catch2/catch_timer.h>
+#include <catch2/catch_timer.hpp>
 
 #include <chrono>
 

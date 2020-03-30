@@ -1,6 +1,6 @@
-#include <catch2/catch_tag_alias_autoregistrar.h>
-#include <catch2/catch_compiler_capabilities.h>
-#include <catch2/catch_interfaces_registry_hub.h>
+#include <catch2/catch_tag_alias_autoregistrar.hpp>
+#include <catch2/internal/catch_compiler_capabilities.hpp>
+#include <catch2/interfaces/catch_interfaces_registry_hub.hpp>
 
 namespace Catch {
 

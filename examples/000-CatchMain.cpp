@@ -4,7 +4,7 @@
 // of a testing binary, and other test files to link against it.
 
 // Let Catch provide main():
-#include <catch2/catch_default_main.hpp>
+#include <catch2/internal/catch_default_main.hpp>
 
 // That's it
 

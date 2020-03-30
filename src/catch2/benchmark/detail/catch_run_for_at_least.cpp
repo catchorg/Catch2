@@ -7,7 +7,7 @@
 #include <catch2/benchmark/detail/catch_run_for_at_least.hpp>
 
 #include <exception>
-#include <catch2/catch_enforce.h>
+#include <catch2/internal/catch_enforce.hpp>
 
 namespace Catch {
     namespace Benchmark {

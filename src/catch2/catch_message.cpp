@@ -6,10 +6,10 @@
  *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  */
 
-#include <catch2/catch_message.h>
-#include <catch2/catch_interfaces_capture.h>
-#include <catch2/catch_uncaught_exceptions.h>
-#include <catch2/catch_enforce.h>
+#include <catch2/catch_message.hpp>
+#include <catch2/interfaces/catch_interfaces_capture.hpp>
+#include <catch2/internal/catch_uncaught_exceptions.hpp>
+#include <catch2/internal/catch_enforce.hpp>
 
 #include <cassert>
 #include <stack>

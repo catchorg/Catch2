@@ -3,7 +3,7 @@
 
 #include <catch2/matchers/catch_matchers_container_properties.hpp>
 
-#include <catch2/catch_stream.h>
+#include <catch2/internal/catch_stream.hpp>
 
 namespace Catch {
 namespace Matchers {

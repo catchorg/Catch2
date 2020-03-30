@@ -4,7 +4,7 @@
  */
 
 #include <catch2/catch_test_macros.hpp>
-#include <catch2/catch_test_case_tracker.h>
+#include <catch2/internal/catch_test_case_tracker.hpp>
 
 
 using namespace Catch;

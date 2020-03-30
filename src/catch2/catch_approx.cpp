@@ -6,8 +6,8 @@
  *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  */
 
-#include <catch2/catch_approx.h>
-#include <catch2/catch_enforce.h>
+#include <catch2/catch_approx.hpp>
+#include <catch2/internal/catch_enforce.hpp>
 
 #include <cmath>
 #include <limits>

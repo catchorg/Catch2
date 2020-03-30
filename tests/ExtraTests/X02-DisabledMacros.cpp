@@ -2,7 +2,7 @@
 // Test that CATCH_CONFIG_DISABLE turns off TEST_CASE autoregistration
 // and expressions in assertion macros are not run.
 
-#include <catch2/catch_default_main.hpp>
+#include <catch2/internal/catch_default_main.hpp>
 #include <catch2/catch_test_macros.hpp>
 
 #include <iostream>

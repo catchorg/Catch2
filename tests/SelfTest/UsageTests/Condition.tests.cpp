@@ -11,7 +11,7 @@
 #   endif
 #endif
 
-#include <catch2/catch_approx.h>
+#include <catch2/catch_approx.hpp>
 #include <catch2/catch_test_macros.hpp>
 
 using Catch::Approx;

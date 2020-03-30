@@ -9,7 +9,7 @@
 #ifndef TWOBLUECUBES_CATCH_REPORTER_REGISTRARS_HPP_INCLUDED
 #define TWOBLUECUBES_CATCH_REPORTER_REGISTRARS_HPP_INCLUDED
 
-#include <catch2/catch_interfaces_registry_hub.h>
+#include <catch2/interfaces/catch_interfaces_registry_hub.hpp>
 
 namespace Catch {
 

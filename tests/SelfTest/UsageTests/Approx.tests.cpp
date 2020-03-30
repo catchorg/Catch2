@@ -7,7 +7,7 @@
  */
 
 #include <catch2/catch_test_macros.hpp>
-#include <catch2/catch_approx.h>
+#include <catch2/catch_approx.hpp>
 
 #include <cmath>
 

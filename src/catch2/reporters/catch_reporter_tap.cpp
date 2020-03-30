@@ -4,7 +4,8 @@
  */
 
 #include <catch2/reporters/catch_reporter_tap.hpp>
-#include <catch2/catch_console_colour.h>
+#include <catch2/internal/catch_console_colour.hpp>
+#include <catch2/internal/catch_string_manip.hpp>
 
 #include <algorithm>
 

@@ -5,9 +5,9 @@
 
 #include <catch2/matchers/catch_matchers_string.hpp>
 #include <catch2/matchers/catch_matchers_vector.hpp>
-#include <catch2/catch_tag_alias_registry.h>
+#include <catch2/internal/catch_tag_alias_registry.hpp>
 #include <catch2/catch_test_macros.hpp>
-#include <catch2/catch_test_case_info.h>
+#include <catch2/catch_test_case_info.hpp>
 
 TEST_CASE( "Tag alias can be registered against tag patterns" ) {
 
