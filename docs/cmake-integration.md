@@ -6,6 +6,7 @@
 [Automatic test registration](#automatic-test-registration)<br>
 [CMake project options](#cmake-project-options)<br>
 [Installing Catch2 from git repository](#installing-catch2-from-git-repository)<br>
+[Installing Catch2 from vcpkg](#installing-catch2-from-vcpkg)<br>
 
 Because we use CMake to build Catch2, we also provide a couple of
 integration points for our users.
@@ -220,7 +221,7 @@ when configuring the build, and then modify your calls to
 [find_package](https://cmake.org/cmake/help/latest/command/find_package.html)
 accordingly.
 
-## Installing Catch2 from VCPKG
+## Installing Catch2 from vcpkg
 
 Alternatively, you can build and install Catch2 using [vcpkg](https://github.com/microsoft/vcpkg/) dependency manager:
 ```
