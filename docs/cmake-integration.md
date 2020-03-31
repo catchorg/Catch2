@@ -220,6 +220,19 @@ when configuring the build, and then modify your calls to
 [find_package](https://cmake.org/cmake/help/latest/command/find_package.html)
 accordingly.
 
+## Installing Catch2 from VCPKG
+
+Alternatively, you can build and install Catch2 using [vcpkg](https://github.com/microsoft/vcpkg/) dependency manager:
+```
+git clone https://github.com/Microsoft/vcpkg.git
+cd vcpkg
+./bootstrap-vcpkg.sh
+./vcpkg integrate install
+./vcpkg install catch2
+```
+
+The catch2 port in vcpkg is kept up to date by microsoft team members and community contributors.
+If the version is out of date, please [create an issue or pull request](https://github.com/Microsoft/vcpkg) on the vcpkg repository.
 
 ---
 
