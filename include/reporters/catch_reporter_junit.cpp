@@ -193,6 +193,7 @@ namespace Catch {
                 xml.writeAttribute( "name", name );
             }
             xml.writeAttribute( "time", ::Catch::Detail::stringify( sectionNode.stats.durationInSeconds ) );
+            xml.writeAttribute( "status", "run" );
 
             writeAssertions( sectionNode );
 
