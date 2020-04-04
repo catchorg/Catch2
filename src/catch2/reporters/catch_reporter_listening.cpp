@@ -6,7 +6,7 @@
  *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  */
 
- #include <catch2/reporters/catch_reporter_listening.h>
+ #include <catch2/reporters/catch_reporter_listening.hpp>
 #include <cassert>
 
 namespace Catch {

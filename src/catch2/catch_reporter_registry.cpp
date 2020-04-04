@@ -8,13 +8,13 @@
 
 #include <catch2/catch_reporter_registrars.hpp>
 #include <catch2/reporters/catch_reporter_automake.hpp>
-#include <catch2/reporters/catch_reporter_compact.h>
-#include <catch2/reporters/catch_reporter_console.h>
-#include <catch2/reporters/catch_reporter_junit.h>
+#include <catch2/reporters/catch_reporter_compact.hpp>
+#include <catch2/reporters/catch_reporter_console.hpp>
+#include <catch2/reporters/catch_reporter_junit.hpp>
 #include <catch2/reporters/catch_reporter_sonarqube.hpp>
 #include <catch2/reporters/catch_reporter_tap.hpp>
 #include <catch2/reporters/catch_reporter_teamcity.hpp>
-#include <catch2/reporters/catch_reporter_xml.h>
+#include <catch2/reporters/catch_reporter_xml.hpp>
 
 namespace Catch {
 

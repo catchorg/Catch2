@@ -204,14 +204,14 @@ CheckFileList(INTERNAL_FILES ${SOURCES_DIR}/internal)
 set(REPORTER_HEADERS
     ${SOURCES_DIR}/reporters/catch_reporter_automake.hpp
     ${SOURCES_DIR}/reporters/catch_reporter_bases.hpp
-    ${SOURCES_DIR}/reporters/catch_reporter_compact.h
-    ${SOURCES_DIR}/reporters/catch_reporter_console.h
-    ${SOURCES_DIR}/reporters/catch_reporter_junit.h
-    ${SOURCES_DIR}/reporters/catch_reporter_listening.h
+    ${SOURCES_DIR}/reporters/catch_reporter_compact.hpp
+    ${SOURCES_DIR}/reporters/catch_reporter_console.hpp
+    ${SOURCES_DIR}/reporters/catch_reporter_junit.hpp
+    ${SOURCES_DIR}/reporters/catch_reporter_listening.hpp
     ${SOURCES_DIR}/reporters/catch_reporter_sonarqube.hpp
     ${SOURCES_DIR}/reporters/catch_reporter_tap.hpp
     ${SOURCES_DIR}/reporters/catch_reporter_teamcity.hpp
-    ${SOURCES_DIR}/reporters/catch_reporter_xml.h
+    ${SOURCES_DIR}/reporters/catch_reporter_xml.hpp
 )
 set(REPORTER_SOURCES
     ${SOURCES_DIR}/reporters/catch_reporter_automake.cpp

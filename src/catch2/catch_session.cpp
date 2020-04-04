@@ -21,7 +21,7 @@
 #include <catch2/catch_text.h>
 #include <catch2/catch_stream.h>
 #include <catch2/catch_windows_h_proxy.h>
-#include <catch2/reporters/catch_reporter_listening.h>
+#include <catch2/reporters/catch_reporter_listening.hpp>
 
 #include <cstdlib>
 #include <iomanip>

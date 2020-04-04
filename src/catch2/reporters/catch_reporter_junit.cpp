@@ -8,7 +8,7 @@
 
 #include <catch2/reporters/catch_reporter_bases.hpp>
 
-#include <catch2/reporters/catch_reporter_junit.h>
+#include <catch2/reporters/catch_reporter_junit.hpp>
 
 #include <catch2/catch_tostring.h>
 #include <catch2/catch_reporter_registrars.hpp>

@@ -7,7 +7,6 @@
 
 #include <catch2/catch_interfaces_reporter.h>
 #include <catch2/catch_console_colour.h>
-#include <catch2/reporters/catch_reporter_listening.h>
 #include <catch2/catch_list.h>
 #include <catch2/catch_text.h>
 

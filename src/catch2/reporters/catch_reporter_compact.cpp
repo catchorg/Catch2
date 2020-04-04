@@ -5,7 +5,7 @@
  *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  */
 
-#include <catch2/reporters/catch_reporter_compact.h>
+#include <catch2/reporters/catch_reporter_compact.hpp>
 
 #include <catch2/catch_console_colour.h>
 
