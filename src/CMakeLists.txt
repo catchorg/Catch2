@@ -91,7 +91,6 @@ set(INTERNAL_HEADERS
     ${SOURCES_DIR}/catch_polyfills.hpp
     ${SOURCES_DIR}/catch_preprocessor.hpp
     ${SOURCES_DIR}/catch_random_number_generator.h
-    ${SOURCES_DIR}/catch_reenable_warnings.h
     ${SOURCES_DIR}/catch_reporter_registrars.hpp
     ${SOURCES_DIR}/catch_reporter_registry.h
     ${SOURCES_DIR}/catch_result_type.h
@@ -104,7 +103,6 @@ set(INTERNAL_HEADERS
     ${SOURCES_DIR}/catch_stream.h
     ${SOURCES_DIR}/catch_stringref.h
     ${SOURCES_DIR}/catch_string_manip.h
-    ${SOURCES_DIR}/catch_suppress_warnings.h
     ${SOURCES_DIR}/catch_tag_alias.h
     ${SOURCES_DIR}/catch_tag_alias_autoregistrar.h
     ${SOURCES_DIR}/catch_tag_alias_registry.h
