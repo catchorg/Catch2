@@ -60,7 +60,6 @@ set(INTERNAL_HEADERS
     ${SOURCES_DIR}/catch_generators.hpp
     ${SOURCES_DIR}/catch_generators_generic.hpp
     ${SOURCES_DIR}/catch_generators_specific.hpp
-    ${SOURCES_DIR}/catch_impl.hpp
     ${SOURCES_DIR}/catch_interfaces_capture.h
     ${SOURCES_DIR}/catch_interfaces_config.h
     ${SOURCES_DIR}/catch_interfaces_enum_values_registry.h

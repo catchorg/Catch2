@@ -9,7 +9,16 @@
 #define TWOBLUECUBES_CATCH_DEFAULT_MAIN_HPP_INCLUDED
 
 #include <catch2/catch_session.h>
+#include <catch2/catch_compiler_capabilities.h>
+#include <catch2/catch_leak_detector.h>
 #include <catch2/catch_platform.h>
+
+namespace Catch {
+    CATCH_INTERNAL_START_WARNINGS_SUPPRESSION
+    CATCH_INTERNAL_SUPPRESS_GLOBALS_WARNINGS
+    LeakDetector leakDetector;
+    CATCH_INTERNAL_STOP_WARNINGS_SUPPRESSION
+}
 
 #ifndef __OBJC__
 
@@ -20,6 +29,10 @@ extern "C" int wmain (int argc, wchar_t * argv[], wchar_t * []) {
 // Standard C/C++ main entry point
 int main (int argc, char * argv[]) {
 #endif
+
+    // We want to force the linker not to discard the global variable
+    // and its constructor, as it (optionally) registers leak detector
+    (void)&Catch::leakDetector;
 
     return Catch::Session().run( argc, argv );
 }
