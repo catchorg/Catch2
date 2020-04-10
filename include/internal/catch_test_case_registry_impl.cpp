@@ -15,27 +15,66 @@
 #include "catch_string_manip.h"
 #include "catch_test_case_info.h"
 
+#include <algorithm>
+#include <iterator>
+#include <random>
 #include <sstream>
 
 namespace Catch {
 
+    struct HashTest {
+        explicit HashTest( Catch::SimplePcg32& rng ) {
+            basis = rng();
+            basis <<= 32;
+            basis |= rng();
+        }
+
+        uint64_t basis;
+
+        uint64_t operator()( TestCase const& t ) const {
+            // Modified FNV-1a hash
+            static constexpr uint64_t prime = 1099511628211;
+            uint64_t hash = basis;
+            for( const char c : t.name ) {
+                hash ^= c;
+                hash *= prime;
+            }
+            return hash;
+        }
+    };
+
     std::vector<TestCase> sortTests( IConfig const& config, std::vector<TestCase> const& unsortedTestCases ) {
-
-        std::vector<TestCase> sorted = unsortedTestCases;
-
         switch( config.runOrder() ) {
-            case RunTests::InLexicographicalOrder:
+            case RunTests::InLexicographicalOrder: {
+                std::vector<TestCase> sorted = unsortedTestCases;
                 std::sort( sorted.begin(), sorted.end() );
-                break;
-            case RunTests::InRandomOrder:
+                return sorted;
+            }
+            case RunTests::InRandomOrder: {
                 seedRng( config );
-                std::shuffle( sorted.begin(), sorted.end(), rng() );
-                break;
+                HashTest h( rng() );
+                std::vector<std::tuple<uint64_t, std::string, TestCase const*>> indexed_tests;
+                indexed_tests.reserve( unsortedTestCases.size() );
+                std::transform( unsortedTestCases.begin(), unsortedTestCases.end(),
+                    std::back_inserter( indexed_tests ),
+                    [&]( TestCase const& t ) {
+                      return std::make_tuple( h(t), t.name, &t );
+                    } );
+                std::sort( indexed_tests.begin(), indexed_tests.end() );
+                std::vector<TestCase> sorted;
+                sorted.reserve( unsortedTestCases.size() );
+                std::transform( indexed_tests.begin(), indexed_tests.end(),
+                    std::back_inserter( sorted ),
+                    []( std::tuple<uint64_t, std::string, TestCase const*> const& t ) {
+                        return *std::get<2>( t );
+                    } );
+                return sorted;
+            }
             case RunTests::InDeclarationOrder:
                 // already in declaration order
                 break;
         }
-        return sorted;
+        return unsortedTestCases;
     }
 
     bool isThrowSafe( TestCase const& testCase, IConfig const& config ) {
