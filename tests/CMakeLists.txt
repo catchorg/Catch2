@@ -198,6 +198,9 @@ set_tests_properties(TagAlias PROPERTIES
   FAIL_REGULAR_EXPRESSION "0 matching test cases"
 )
 
+add_test(NAME RandomTestOrdering COMMAND ${PYTHON_EXECUTABLE}
+  ${CATCH_DIR}/tests/TestScripts/testRandomOrder.py $<TARGET_FILE:SelfTest>)
+
 if (CATCH_USE_VALGRIND)
     add_test(NAME ValgrindRunTests COMMAND valgrind --leak-check=full --error-exitcode=1 $<TARGET_FILE:SelfTest>)
     add_test(NAME ValgrindListTests COMMAND valgrind --leak-check=full --error-exitcode=1 $<TARGET_FILE:SelfTest> --list-tests --verbosity high)
