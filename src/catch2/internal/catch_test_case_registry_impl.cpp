@@ -16,27 +16,70 @@
 #include <catch2/catch_test_case_info.hpp>
 #include <catch2/catch_test_spec.hpp>
 
+#include <algorithm>
+#include <iterator>
+#include <random>
 #include <sstream>
 
 namespace Catch {
 
-    std::vector<TestCaseHandle> sortTests( IConfig const& config, std::vector<TestCaseHandle> const& unsortedTestCases ) {
-
-        std::vector<TestCaseHandle> sorted = unsortedTestCases;
-
-        switch( config.runOrder() ) {
-            case RunTests::InLexicographicalOrder:
-                std::sort( sorted.begin(), sorted.end() );
-                break;
-            case RunTests::InRandomOrder:
-                seedRng( config );
-                std::shuffle( sorted.begin(), sorted.end(), rng() );
-                break;
-            case RunTests::InDeclarationOrder:
-                // already in declaration order
-                break;
+namespace {
+    struct HashTest {
+        explicit HashTest(SimplePcg32& rng) {
+            basis = rng();
+            basis <<= 32;
+            basis |= rng();
         }
-        return sorted;
+
+        uint64_t basis;
+
+        uint64_t operator()(TestCaseInfo const& t) const {
+            // Modified FNV-1a hash
+            static constexpr uint64_t prime = 1099511628211;
+            uint64_t hash = basis;
+            for (const char c : t.name) {
+                hash ^= c;
+                hash *= prime;
+            }
+            return hash;
+        }
+    };
+} // end anonymous namespace
+
+    std::vector<TestCaseHandle> sortTests( IConfig const& config, std::vector<TestCaseHandle> const& unsortedTestCases ) {
+        switch (config.runOrder()) {
+        case RunTests::InDeclarationOrder:
+            return unsortedTestCases;
+
+        case RunTests::InLexicographicalOrder: {
+            std::vector<TestCaseHandle> sorted = unsortedTestCases;
+            std::sort(sorted.begin(), sorted.end());
+            return sorted;
+        }
+        case RunTests::InRandomOrder: {
+            seedRng(config);
+            HashTest h(rng());
+            std::vector<std::pair<uint64_t, TestCaseHandle>> indexed_tests;
+            indexed_tests.reserve(unsortedTestCases.size());
+
+            for (auto const& handle : unsortedTestCases) {
+                indexed_tests.emplace_back(h(handle.getTestCaseInfo()), handle);
+            }
+
+            std::sort(indexed_tests.begin(), indexed_tests.end());
+
+            std::vector<TestCaseHandle> randomized;
+            randomized.reserve(indexed_tests.size());
+
+            for (auto const& indexed : indexed_tests) {
+                randomized.push_back(indexed.second);
+            }
+
+            return randomized;
+        }
+        }
+
+        CATCH_INTERNAL_ERROR("Unknown test order value!");
     }
 
     bool isThrowSafe( TestCaseHandle const& testCase, IConfig const& config ) {
