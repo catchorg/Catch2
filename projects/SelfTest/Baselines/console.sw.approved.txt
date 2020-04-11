@@ -11204,6 +11204,11 @@ Matchers.tests.cpp:<line number>: PASSED:
 with expansion:
   { 1, 2, 3 } Contains: 2
 
+Matchers.tests.cpp:<line number>: PASSED:
+  CHECK_THAT( v5, (VectorContains<int, CustomAllocator<int>>(2)) )
+with expansion:
+  { 1, 2, 3 } Contains: 2
+
 -------------------------------------------------------------------------------
 Vector matchers
   Contains (vector)
@@ -11213,6 +11218,11 @@ Matchers.tests.cpp:<line number>
 
 Matchers.tests.cpp:<line number>: PASSED:
   CHECK_THAT( v, Contains(v2) )
+with expansion:
+  { 1, 2, 3 } Contains: { 1, 2 }
+
+Matchers.tests.cpp:<line number>: PASSED:
+  CHECK_THAT( v5, (Contains<int, std::allocator<int>, CustomAllocator<int>>(v2)) )
 with expansion:
   { 1, 2, 3 } Contains: { 1, 2 }
 
@@ -11230,6 +11240,16 @@ Matchers.tests.cpp:<line number>: PASSED:
   CHECK_THAT( empty, Contains(empty) )
 with expansion:
   {  } Contains: {  }
+
+Matchers.tests.cpp:<line number>: PASSED:
+  CHECK_THAT( v5, (Contains<int, std::allocator<int>, CustomAllocator<int>>(v2)) )
+with expansion:
+  { 1, 2, 3 } Contains: { 1, 2, 3 }
+
+Matchers.tests.cpp:<line number>: PASSED:
+  CHECK_THAT( v5, Contains(v6) )
+with expansion:
+  { 1, 2, 3 } Contains: { 1, 2 }
 
 -------------------------------------------------------------------------------
 Vector matchers
@@ -11265,6 +11285,16 @@ Matchers.tests.cpp:<line number>: PASSED:
 with expansion:
   { 1, 2, 3 } Equals: { 1, 2, 3 }
 
+Matchers.tests.cpp:<line number>: PASSED:
+  CHECK_THAT( v5, (Equals<int, std::allocator<int>, CustomAllocator<int>>(v2)) )
+with expansion:
+  { 1, 2, 3 } Equals: { 1, 2, 3 }
+
+Matchers.tests.cpp:<line number>: PASSED:
+  CHECK_THAT( v5, Equals(v6) )
+with expansion:
+  { 1, 2, 3 } Equals: { 1, 2, 3 }
+
 -------------------------------------------------------------------------------
 Vector matchers
   UnorderedEquals
@@ -11291,6 +11321,16 @@ Matchers.tests.cpp:<line number>: PASSED:
   REQUIRE_THAT( permuted, UnorderedEquals(v) )
 with expansion:
   { 2, 3, 1 } UnorderedEquals: { 1, 2, 3 }
+
+Matchers.tests.cpp:<line number>: PASSED:
+  CHECK_THAT( v5, (UnorderedEquals<int, std::allocator<int>, CustomAllocator<int>>(permuted)) )
+with expansion:
+  { 1, 2, 3 } UnorderedEquals: { 2, 3, 1 }
+
+Matchers.tests.cpp:<line number>: PASSED:
+  CHECK_THAT( v5_permuted, UnorderedEquals(v5) )
+with expansion:
+  { 1, 3, 2 } UnorderedEquals: { 1, 2, 3 }
 
 -------------------------------------------------------------------------------
 Vector matchers that fail
@@ -13449,5 +13489,5 @@ Misc.tests.cpp:<line number>: PASSED:
 
 ===============================================================================
 test cases:  308 |  218 passed |  86 failed |  4 failed as expected
-assertions: 1697 | 1528 passed | 148 failed | 21 failed as expected
+assertions: 1705 | 1536 passed | 148 failed | 21 failed as expected
 
