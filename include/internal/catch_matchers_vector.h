@@ -17,12 +17,12 @@ namespace Catch {
 namespace Matchers {
 
     namespace Vector {
-        template<typename T>
-        struct ContainsElementMatcher : MatcherBase<std::vector<T>> {
+        template<typename T, typename Alloc>
+        struct ContainsElementMatcher : MatcherBase<std::vector<T, Alloc>> {
 
             ContainsElementMatcher(T const &comparator) : m_comparator( comparator) {}
 
-            bool match(std::vector<T> const &v) const override {
+            bool match(std::vector<T, Alloc> const &v) const override {
                 for (auto const& el : v) {
                     if (el == m_comparator) {
                         return true;
@@ -38,12 +38,12 @@ namespace Matchers {
             T const& m_comparator;
         };
 
-        template<typename T>
-        struct ContainsMatcher : MatcherBase<std::vector<T>> {
+        template<typename T, typename AllocComp, typename AllocMatch>
+        struct ContainsMatcher : MatcherBase<std::vector<T, AllocMatch>> {
 
-            ContainsMatcher(std::vector<T> const &comparator) : m_comparator( comparator ) {}
+            ContainsMatcher(std::vector<T, AllocComp> const &comparator) : m_comparator( comparator ) {}
 
-            bool match(std::vector<T> const &v) const override {
+            bool match(std::vector<T, AllocMatch> const &v) const override {
                 // !TBD: see note in EqualsMatcher
                 if (m_comparator.size() > v.size())
                     return false;
@@ -65,18 +65,18 @@ namespace Matchers {
                 return "Contains: " + ::Catch::Detail::stringify( m_comparator );
             }
 
-            std::vector<T> const& m_comparator;
+            std::vector<T, AllocComp> const& m_comparator;
         };
 
-        template<typename T>
-        struct EqualsMatcher : MatcherBase<std::vector<T>> {
+        template<typename T, typename AllocComp, typename AllocMatch>
+        struct EqualsMatcher : MatcherBase<std::vector<T, AllocMatch>> {
 
-            EqualsMatcher(std::vector<T> const &comparator) : m_comparator( comparator ) {}
+            EqualsMatcher(std::vector<T, AllocComp> const &comparator) : m_comparator( comparator ) {}
 
-            bool match(std::vector<T> const &v) const override {
+            bool match(std::vector<T, AllocMatch> const &v) const override {
                 // !TBD: This currently works if all elements can be compared using !=
                 // - a more general approach would be via a compare template that defaults
-                // to using !=. but could be specialised for, e.g. std::vector<T> etc
+                // to using !=. but could be specialised for, e.g. std::vector<T, Alloc> etc
                 // - then just call that directly
                 if (m_comparator.size() != v.size())
                     return false;
@@ -88,15 +88,15 @@ namespace Matchers {
             std::string describe() const override {
                 return "Equals: " + ::Catch::Detail::stringify( m_comparator );
             }
-            std::vector<T> const& m_comparator;
+            std::vector<T, AllocComp> const& m_comparator;
         };
 
-        template<typename T>
-        struct ApproxMatcher : MatcherBase<std::vector<T>> {
+        template<typename T, typename AllocComp, typename AllocMatch>
+        struct ApproxMatcher : MatcherBase<std::vector<T, AllocMatch>> {
 
-            ApproxMatcher(std::vector<T> const& comparator) : m_comparator( comparator ) {}
+            ApproxMatcher(std::vector<T, AllocComp> const& comparator) : m_comparator( comparator ) {}
 
-            bool match(std::vector<T> const &v) const override {
+            bool match(std::vector<T, AllocMatch> const &v) const override {
                 if (m_comparator.size() != v.size())
                     return false;
                 for (std::size_t i = 0; i < v.size(); ++i)
@@ -123,14 +123,14 @@ namespace Matchers {
                 return *this;
             }
 
-            std::vector<T> const& m_comparator;
+            std::vector<T, AllocComp> const& m_comparator;
             mutable Catch::Detail::Approx approx = Catch::Detail::Approx::custom();
         };
 
-        template<typename T>
-        struct UnorderedEqualsMatcher : MatcherBase<std::vector<T>> {
-            UnorderedEqualsMatcher(std::vector<T> const& target) : m_target(target) {}
-            bool match(std::vector<T> const& vec) const override {
+        template<typename T, typename AllocComp, typename AllocMatch>
+        struct UnorderedEqualsMatcher : MatcherBase<std::vector<T, AllocMatch>> {
+            UnorderedEqualsMatcher(std::vector<T, AllocComp> const& target) : m_target(target) {}
+            bool match(std::vector<T, AllocMatch> const& vec) const override {
                 // Note: This is a reimplementation of std::is_permutation,
                 //       because I don't want to include <algorithm> inside the common path
                 if (m_target.size() != vec.size()) {
@@ -143,7 +143,7 @@ namespace Matchers {
                 return "UnorderedEquals: " + ::Catch::Detail::stringify(m_target);
             }
         private:
-            std::vector<T> const& m_target;
+            std::vector<T, AllocComp> const& m_target;
         };
 
     } // namespace Vector
@@ -151,29 +151,29 @@ namespace Matchers {
     // The following functions create the actual matcher objects.
     // This allows the types to be inferred
 
-    template<typename T>
-    Vector::ContainsMatcher<T> Contains( std::vector<T> const& comparator ) {
-        return Vector::ContainsMatcher<T>( comparator );
+    template<typename T, typename AllocComp, typename AllocMatch = AllocComp>
+    Vector::ContainsMatcher<T, AllocComp, AllocMatch> Contains( std::vector<T, AllocComp> const& comparator ) {
+        return Vector::ContainsMatcher<T, AllocComp, AllocMatch>( comparator );
     }
 
-    template<typename T>
-    Vector::ContainsElementMatcher<T> VectorContains( T const& comparator ) {
-        return Vector::ContainsElementMatcher<T>( comparator );
+    template<typename T, typename Alloc = std::allocator<T>>
+    Vector::ContainsElementMatcher<T, Alloc> VectorContains( T const& comparator ) {
+        return Vector::ContainsElementMatcher<T, Alloc>( comparator );
     }
 
-    template<typename T>
-    Vector::EqualsMatcher<T> Equals( std::vector<T> const& comparator ) {
-        return Vector::EqualsMatcher<T>( comparator );
+    template<typename T, typename AllocComp, typename AllocMatch = AllocComp>
+    Vector::EqualsMatcher<T, AllocComp, AllocMatch> Equals( std::vector<T, AllocComp> const& comparator ) {
+        return Vector::EqualsMatcher<T, AllocComp, AllocMatch>( comparator );
     }
 
-    template<typename T>
-    Vector::ApproxMatcher<T> Approx( std::vector<T> const& comparator ) {
-        return Vector::ApproxMatcher<T>( comparator );
+    template<typename T, typename AllocComp, typename AllocMatch = AllocComp>
+    Vector::ApproxMatcher<T, AllocComp, AllocMatch> Approx( std::vector<T, AllocComp> const& comparator ) {
+        return Vector::ApproxMatcher<T, AllocComp, AllocMatch>( comparator );
     }
 
-    template<typename T>
-    Vector::UnorderedEqualsMatcher<T> UnorderedEquals(std::vector<T> const& target) {
-        return Vector::UnorderedEqualsMatcher<T>(target);
+    template<typename T, typename AllocComp, typename AllocMatch = AllocComp>
+    Vector::UnorderedEqualsMatcher<T, AllocComp, AllocMatch> UnorderedEquals(std::vector<T, AllocComp> const& target) {
+        return Vector::UnorderedEqualsMatcher<T, AllocComp, AllocMatch>( target );
     }
 
 } // namespace Matchers
