@@ -189,6 +189,27 @@ with expansion:
   true
 
 -------------------------------------------------------------------------------
+#1905 -- test spec parser properly clears internal state between compound tests
+-------------------------------------------------------------------------------
+CmdLine.tests.cpp:<line number>
+...............................................................................
+
+CmdLine.tests.cpp:<line number>: PASSED:
+  REQUIRE( spec.matches(fakeTestCase("spec . char")) )
+with expansion:
+  true
+
+CmdLine.tests.cpp:<line number>: PASSED:
+  REQUIRE( spec.matches(fakeTestCase("spec , char")) )
+with expansion:
+  true
+
+CmdLine.tests.cpp:<line number>: PASSED:
+  REQUIRE_FALSE( spec.matches(fakeTestCase(R"(spec \, char)")) )
+with expansion:
+  !false
+
+-------------------------------------------------------------------------------
 #748 - captures with unexpected exceptions
   outside assertions
 -------------------------------------------------------------------------------
@@ -13427,6 +13448,6 @@ Misc.tests.cpp:<line number>
 Misc.tests.cpp:<line number>: PASSED:
 
 ===============================================================================
-test cases:  307 |  217 passed |  86 failed |  4 failed as expected
-assertions: 1694 | 1525 passed | 148 failed | 21 failed as expected
+test cases:  308 |  218 passed |  86 failed |  4 failed as expected
+assertions: 1697 | 1528 passed | 148 failed | 21 failed as expected
 

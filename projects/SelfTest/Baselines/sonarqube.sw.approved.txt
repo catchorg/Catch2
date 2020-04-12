@@ -2,6 +2,7 @@
 <testExecutions version="1"loose text artifact
 >
   <file path="projects/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp">
+    <testCase name="#1905 -- test spec parser properly clears internal state between compound tests" duration="{duration}"/>
     <testCase name="Parse test names and tags/Empty test spec should have no filters" duration="{duration}"/>
     <testCase name="Parse test names and tags/Test spec from empty string should have no filters" duration="{duration}"/>
     <testCase name="Parse test names and tags/Test spec from just a comma should have no filters" duration="{duration}"/>

@@ -292,6 +292,17 @@ TEST_CASE( "Parse test names and tags", "[command-line][test-spec]" ) {
     }
 }
 
+TEST_CASE("#1905 -- test spec parser properly clears internal state between compound tests", "[command-line][test-spec]") {
+    using Catch::parseTestSpec;
+    using Catch::TestSpec;
+    // We ask for one of 2 different tests and the latter one of them has a , in name that needs escaping
+    TestSpec spec = parseTestSpec(R"("spec . char","spec \, char")");
+
+    REQUIRE(spec.matches(fakeTestCase("spec . char")));
+    REQUIRE(spec.matches(fakeTestCase("spec , char")));
+    REQUIRE_FALSE(spec.matches(fakeTestCase(R"(spec \, char)")));
+}
+
 TEST_CASE( "Process can be configured on command line", "[config][command-line]" ) {
 
 #ifndef CATCH_CONFIG_DISABLE_MATCHERS

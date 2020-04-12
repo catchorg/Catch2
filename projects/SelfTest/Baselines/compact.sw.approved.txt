@@ -23,6 +23,9 @@ This would not be caught previously
 Nor would this
 Tricky.tests.cpp:<line number>: failed: explicitly with 1 message: '1514'
 Compilation.tests.cpp:<line number>: passed: std::is_same<TypeList<int>, TypeList<int>>::value for: true
+CmdLine.tests.cpp:<line number>: passed: spec.matches(fakeTestCase("spec . char")) for: true
+CmdLine.tests.cpp:<line number>: passed: spec.matches(fakeTestCase("spec , char")) for: true
+CmdLine.tests.cpp:<line number>: passed: !(spec.matches(fakeTestCase(R"(spec \, char)"))) for: !false
 Exception.tests.cpp:<line number>: failed: unexpected exception with message: 'answer := 42' with 1 message: 'expected exception'
 Exception.tests.cpp:<line number>: failed: unexpected exception with message: 'answer := 42'; expression was: thisThrows() with 1 message: 'expected exception'
 Exception.tests.cpp:<line number>: passed: thisThrows() with 1 message: 'answer := 42'
