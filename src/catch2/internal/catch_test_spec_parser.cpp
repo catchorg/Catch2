@@ -170,6 +170,7 @@ namespace Catch {
          m_pos = m_arg.size();
          m_substring.clear();
          m_patternName.clear();
+         m_realPatternPos = 0;
          return false;
       }
       endMode();
@@ -188,6 +189,7 @@ namespace Catch {
         }
 
         m_patternName.clear();
+        m_realPatternPos = 0;
 
         return token;
     }

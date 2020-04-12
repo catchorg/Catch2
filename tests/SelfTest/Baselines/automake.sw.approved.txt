@@ -13,6 +13,7 @@ This would not be caught previously
 Nor would this
 :test-result: FAIL #1514: stderr/stdout is not captured in tests aborted by an exception
 :test-result: PASS #1548
+:test-result: PASS #1905 -- test spec parser properly clears internal state between compound tests
 :test-result: XFAIL #748 - captures with unexpected exceptions
 :test-result: PASS #809
 :test-result: PASS #833
