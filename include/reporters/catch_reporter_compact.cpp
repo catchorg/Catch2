@@ -275,8 +275,9 @@ private:
         }
 
         void CompactReporter::sectionEnded(SectionStats const& _sectionStats) {
-            if (m_config->showDurations() == ShowDurations::Always) {
-                stream << getFormattedDuration(_sectionStats.durationInSeconds) << " s: " << _sectionStats.sectionInfo.name << std::endl;
+            double dur = _sectionStats.durationInSeconds;
+            if ( shouldShowDuration( *m_config, dur ) ) {
+                stream << getFormattedDuration( dur ) << " s: " << _sectionStats.sectionInfo.name << std::endl;
             }
         }
 
