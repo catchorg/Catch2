@@ -39,7 +39,7 @@
 
 #endif
 
-#if defined(CATCH_CPP17_OR_GREATER)
+#if defined(__cpp_lib_uncaught_exceptions)
 #  define CATCH_INTERNAL_CONFIG_CPP17_UNCAUGHT_EXCEPTIONS
 #endif
 
