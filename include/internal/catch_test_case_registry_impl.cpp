@@ -16,63 +16,75 @@
 #include "catch_test_case_info.h"
 
 #include <algorithm>
-#include <iterator>
-#include <random>
 #include <sstream>
 
 namespace Catch {
 
-    struct HashTest {
-        explicit HashTest( Catch::SimplePcg32& rng ) {
-            basis = rng();
-            basis <<= 32;
-            basis |= rng();
-        }
-
-        uint64_t basis;
-
-        uint64_t operator()( TestCase const& t ) const {
-            // Modified FNV-1a hash
-            static constexpr uint64_t prime = 1099511628211;
-            uint64_t hash = basis;
-            for( const char c : t.name ) {
-                hash ^= c;
-                hash *= prime;
+    namespace {
+        struct TestHasher {
+            explicit TestHasher(Catch::SimplePcg32& rng) {
+                basis = rng();
+                basis <<= 32;
+                basis |= rng();
             }
-            return hash;
-        }
-    };
+
+            uint64_t basis;
+
+            uint64_t operator()(TestCase const& t) const {
+                // Modified FNV-1a hash
+                static constexpr uint64_t prime = 1099511628211;
+                uint64_t hash = basis;
+                for (const char c : t.name) {
+                    hash ^= c;
+                    hash *= prime;
+                }
+                return hash;
+            }
+        };
+    } // end unnamed namespace
+
 
     std::vector<TestCase> sortTests( IConfig const& config, std::vector<TestCase> const& unsortedTestCases ) {
         switch( config.runOrder() ) {
+            case RunTests::InDeclarationOrder:
+                // already in declaration order
+                break;
+
             case RunTests::InLexicographicalOrder: {
                 std::vector<TestCase> sorted = unsortedTestCases;
                 std::sort( sorted.begin(), sorted.end() );
                 return sorted;
             }
+
             case RunTests::InRandomOrder: {
                 seedRng( config );
-                HashTest h( rng() );
-                std::vector<std::tuple<uint64_t, std::string, TestCase const*>> indexed_tests;
+                TestHasher h( rng() );
+
+                using hashedTest = std::pair<uint64_t, TestCase const*>;
+                std::vector<hashedTest> indexed_tests;
                 indexed_tests.reserve( unsortedTestCases.size() );
-                std::transform( unsortedTestCases.begin(), unsortedTestCases.end(),
-                    std::back_inserter( indexed_tests ),
-                    [&]( TestCase const& t ) {
-                      return std::make_tuple( h(t), t.name, &t );
-                    } );
-                std::sort( indexed_tests.begin(), indexed_tests.end() );
+
+                for (auto const& testCase : unsortedTestCases) {
+                    indexed_tests.emplace_back(h(testCase), &testCase);
+                }
+
+                std::sort(indexed_tests.begin(), indexed_tests.end(),
+                          [](hashedTest const& lhs, hashedTest const& rhs) {
+                          if (lhs.first == rhs.first) {
+                              return lhs.second->name < rhs.second->name;
+                          }
+                          return lhs.first < rhs.first;
+                });
+
                 std::vector<TestCase> sorted;
-                sorted.reserve( unsortedTestCases.size() );
-                std::transform( indexed_tests.begin(), indexed_tests.end(),
-                    std::back_inserter( sorted ),
-                    []( std::tuple<uint64_t, std::string, TestCase const*> const& t ) {
-                        return *std::get<2>( t );
-                    } );
+                sorted.reserve( indexed_tests.size() );
+
+                for (auto const& hashed : indexed_tests) {
+                    sorted.emplace_back(*hashed.second);
+                }
+
                 return sorted;
             }
-            case RunTests::InDeclarationOrder:
-                // already in declaration order
-                break;
         }
         return unsortedTestCases;
     }
