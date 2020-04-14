@@ -1,7 +1,16 @@
 #!/usr/bin/env python3
 
+"""
+This test script verifies that the random ordering of tests inside
+Catch2 is invariant in regards to subsetting. This is done by running
+the binary 3 times, once with all tests selected, and twice with smaller
+subsets of tests selected, and verifying that the selected tests are in
+the same relative order.
+"""
+
 import subprocess
 import sys
+import random
 
 def list_tests(self_test_exe, tags, rng_seed):
     cmd = [self_test_exe, '--list-test-names-only', '--order', 'rand',
@@ -34,20 +43,17 @@ def check_is_sublist_of(shorter, longer):
 def main():
     self_test_exe, = sys.argv[1:]
 
-    list_one_tag = list_tests(self_test_exe, ['generators'], 1)
-    list_two_tags = list_tests(self_test_exe, ['generators', 'matchers'], 1)
-    list_all = list_tests(self_test_exe, [], 1)
+    # We want a random seed for the test, but want to avoid 0,
+    # because it has special meaning
+    seed = random.randint(1, 2 ** 32 - 1)
+
+    list_one_tag = list_tests(self_test_exe, ['generators'], seed)
+    list_two_tags = list_tests(self_test_exe, ['generators', 'matchers'], seed)
+    list_all = list_tests(self_test_exe, [], seed)
 
     # First, verify that restricting to a subset yields the same order
     check_is_sublist_of(list_two_tags, list_all)
     check_is_sublist_of(list_one_tag, list_two_tags)
-
-    # Second, verify that different seeds yield different orders
-    num_seeds = 100
-    seeds = range(1, num_seeds + 1) # Avoid zero since that's special
-    lists = {tuple(list_tests(self_test_exe, [], seed)) for seed in seeds}
-    assert len(lists) == num_seeds, (
-            'Got {} distict lists from {} seeds'.format(len(lists), num_seeds))
 
 if __name__ == '__main__':
     sys.exit(main())
