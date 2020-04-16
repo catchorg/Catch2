@@ -3054,6 +3054,8 @@ ok {test-number} - empty, Approx(empty) for: {  } is approx: {  }
 # Vector Approx matcher
 ok {test-number} - v1, Approx(v1) for: { 1.0, 2.0, 3.0 } is approx: { 1.0, 2.0, 3.0 }
 # Vector Approx matcher
+ok {test-number} - v1, Approx<double>({ 1., 2., 3. }) for: { 1.0, 2.0, 3.0 } is approx: { 1.0, 2.0, 3.0 }
+# Vector Approx matcher
 ok {test-number} - v1, !Approx(temp) for: { 1.0, 2.0, 3.0 } not is approx: { 1.0, 2.0, 3.0, 4.0 }
 # Vector Approx matcher
 ok {test-number} - v1, !Approx(v2) for: { 1.0, 2.0, 3.0 } not is approx: { 1.5, 2.5, 3.5 }
@@ -3072,7 +3074,13 @@ ok {test-number} - v, VectorContains(1) for: { 1, 2, 3 } Contains: 1
 # Vector matchers
 ok {test-number} - v, VectorContains(2) for: { 1, 2, 3 } Contains: 2
 # Vector matchers
+ok {test-number} - v5, (VectorContains<int, CustomAllocator<int>>(2)) for: { 1, 2, 3 } Contains: 2
+# Vector matchers
 ok {test-number} - v, Contains(v2) for: { 1, 2, 3 } Contains: { 1, 2 }
+# Vector matchers
+ok {test-number} - v, Contains<int>({ 1, 2 }) for: { 1, 2, 3 } Contains: { 1, 2 }
+# Vector matchers
+ok {test-number} - v5, (Contains<int, std::allocator<int>, CustomAllocator<int>>(v2)) for: { 1, 2, 3 } Contains: { 1, 2 }
 # Vector matchers
 ok {test-number} - v, Contains(v2) for: { 1, 2, 3 } Contains: { 1, 2, 3 }
 # Vector matchers
@@ -3080,21 +3088,37 @@ ok {test-number} - v, Contains(empty) for: { 1, 2, 3 } Contains: {  }
 # Vector matchers
 ok {test-number} - empty, Contains(empty) for: {  } Contains: {  }
 # Vector matchers
+ok {test-number} - v5, (Contains<int, std::allocator<int>, CustomAllocator<int>>(v2)) for: { 1, 2, 3 } Contains: { 1, 2, 3 }
+# Vector matchers
+ok {test-number} - v5, Contains(v6) for: { 1, 2, 3 } Contains: { 1, 2 }
+# Vector matchers
 ok {test-number} - v, VectorContains(1) && VectorContains(2) for: { 1, 2, 3 } ( Contains: 1 and Contains: 2 )
 # Vector matchers
 ok {test-number} - v, Equals(v) for: { 1, 2, 3 } Equals: { 1, 2, 3 }
 # Vector matchers
 ok {test-number} - empty, Equals(empty) for: {  } Equals: {  }
 # Vector matchers
+ok {test-number} - v, Equals<int>({ 1, 2, 3 }) for: { 1, 2, 3 } Equals: { 1, 2, 3 }
+# Vector matchers
 ok {test-number} - v, Equals(v2) for: { 1, 2, 3 } Equals: { 1, 2, 3 }
 # Vector matchers
+ok {test-number} - v5, (Equals<int, std::allocator<int>, CustomAllocator<int>>(v2)) for: { 1, 2, 3 } Equals: { 1, 2, 3 }
+# Vector matchers
+ok {test-number} - v5, Equals(v6) for: { 1, 2, 3 } Equals: { 1, 2, 3 }
+# Vector matchers
 ok {test-number} - v, UnorderedEquals(v) for: { 1, 2, 3 } UnorderedEquals: { 1, 2, 3 }
+# Vector matchers
+ok {test-number} - v, UnorderedEquals<int>({ 3, 2, 1 }) for: { 1, 2, 3 } UnorderedEquals: { 3, 2, 1 }
 # Vector matchers
 ok {test-number} - empty, UnorderedEquals(empty) for: {  } UnorderedEquals: {  }
 # Vector matchers
 ok {test-number} - permuted, UnorderedEquals(v) for: { 1, 3, 2 } UnorderedEquals: { 1, 2, 3 }
 # Vector matchers
 ok {test-number} - permuted, UnorderedEquals(v) for: { 2, 3, 1 } UnorderedEquals: { 1, 2, 3 }
+# Vector matchers
+ok {test-number} - v5, (UnorderedEquals<int, std::allocator<int>, CustomAllocator<int>>(permuted)) for: { 1, 2, 3 } UnorderedEquals: { 2, 3, 1 }
+# Vector matchers
+ok {test-number} - v5_permuted, UnorderedEquals(v5) for: { 1, 3, 2 } UnorderedEquals: { 1, 2, 3 }
 # Vector matchers that fail
 not ok {test-number} - v, VectorContains(-1) for: { 1, 2, 3 } Contains: -1
 # Vector matchers that fail
@@ -3786,5 +3810,5 @@ ok {test-number} - q3 == 23. for: 23.0 == 23.0
 ok {test-number} -
 # xmlentitycheck
 ok {test-number} -
-1..1889
+1..1901
 

@@ -11676,6 +11676,11 @@ Matchers.tests.cpp:<line number>: PASSED:
 with expansion:
   { 1.0, 2.0, 3.0 } is approx: { 1.0, 2.0, 3.0 }
 
+Matchers.tests.cpp:<line number>: PASSED:
+  REQUIRE_THAT( v1, Approx<double>({ 1., 2., 3. }) )
+with expansion:
+  { 1.0, 2.0, 3.0 } is approx: { 1.0, 2.0, 3.0 }
+
 -------------------------------------------------------------------------------
 Vector Approx matcher
   Vectors with elements
@@ -11758,6 +11763,11 @@ Matchers.tests.cpp:<line number>: PASSED:
 with expansion:
   { 1, 2, 3 } Contains: 2
 
+Matchers.tests.cpp:<line number>: PASSED:
+  CHECK_THAT( v5, (VectorContains<int, CustomAllocator<int>>(2)) )
+with expansion:
+  { 1, 2, 3 } Contains: 2
+
 -------------------------------------------------------------------------------
 Vector matchers
   Contains (vector)
@@ -11767,6 +11777,16 @@ Matchers.tests.cpp:<line number>
 
 Matchers.tests.cpp:<line number>: PASSED:
   CHECK_THAT( v, Contains(v2) )
+with expansion:
+  { 1, 2, 3 } Contains: { 1, 2 }
+
+Matchers.tests.cpp:<line number>: PASSED:
+  CHECK_THAT( v, Contains<int>({ 1, 2 }) )
+with expansion:
+  { 1, 2, 3 } Contains: { 1, 2 }
+
+Matchers.tests.cpp:<line number>: PASSED:
+  CHECK_THAT( v5, (Contains<int, std::allocator<int>, CustomAllocator<int>>(v2)) )
 with expansion:
   { 1, 2, 3 } Contains: { 1, 2 }
 
@@ -11784,6 +11804,16 @@ Matchers.tests.cpp:<line number>: PASSED:
   CHECK_THAT( empty, Contains(empty) )
 with expansion:
   {  } Contains: {  }
+
+Matchers.tests.cpp:<line number>: PASSED:
+  CHECK_THAT( v5, (Contains<int, std::allocator<int>, CustomAllocator<int>>(v2)) )
+with expansion:
+  { 1, 2, 3 } Contains: { 1, 2, 3 }
+
+Matchers.tests.cpp:<line number>: PASSED:
+  CHECK_THAT( v5, Contains(v6) )
+with expansion:
+  { 1, 2, 3 } Contains: { 1, 2 }
 
 -------------------------------------------------------------------------------
 Vector matchers
@@ -11815,7 +11845,22 @@ with expansion:
   {  } Equals: {  }
 
 Matchers.tests.cpp:<line number>: PASSED:
+  CHECK_THAT( v, Equals<int>({ 1, 2, 3 }) )
+with expansion:
+  { 1, 2, 3 } Equals: { 1, 2, 3 }
+
+Matchers.tests.cpp:<line number>: PASSED:
   CHECK_THAT( v, Equals(v2) )
+with expansion:
+  { 1, 2, 3 } Equals: { 1, 2, 3 }
+
+Matchers.tests.cpp:<line number>: PASSED:
+  CHECK_THAT( v5, (Equals<int, std::allocator<int>, CustomAllocator<int>>(v2)) )
+with expansion:
+  { 1, 2, 3 } Equals: { 1, 2, 3 }
+
+Matchers.tests.cpp:<line number>: PASSED:
+  CHECK_THAT( v5, Equals(v6) )
 with expansion:
   { 1, 2, 3 } Equals: { 1, 2, 3 }
 
@@ -11832,6 +11877,11 @@ with expansion:
   { 1, 2, 3 } UnorderedEquals: { 1, 2, 3 }
 
 Matchers.tests.cpp:<line number>: PASSED:
+  CHECK_THAT( v, UnorderedEquals<int>({ 3, 2, 1 }) )
+with expansion:
+  { 1, 2, 3 } UnorderedEquals: { 3, 2, 1 }
+
+Matchers.tests.cpp:<line number>: PASSED:
   CHECK_THAT( empty, UnorderedEquals(empty) )
 with expansion:
   {  } UnorderedEquals: {  }
@@ -11845,6 +11895,16 @@ Matchers.tests.cpp:<line number>: PASSED:
   REQUIRE_THAT( permuted, UnorderedEquals(v) )
 with expansion:
   { 2, 3, 1 } UnorderedEquals: { 1, 2, 3 }
+
+Matchers.tests.cpp:<line number>: PASSED:
+  CHECK_THAT( v5, (UnorderedEquals<int, std::allocator<int>, CustomAllocator<int>>(permuted)) )
+with expansion:
+  { 1, 2, 3 } UnorderedEquals: { 2, 3, 1 }
+
+Matchers.tests.cpp:<line number>: PASSED:
+  CHECK_THAT( v5_permuted, UnorderedEquals(v5) )
+with expansion:
+  { 1, 3, 2 } UnorderedEquals: { 1, 2, 3 }
 
 -------------------------------------------------------------------------------
 Vector matchers that fail
@@ -14714,5 +14774,5 @@ Misc.tests.cpp:<line number>: PASSED:
 
 ===============================================================================
 test cases:  334 |  244 passed |  86 failed |  4 failed as expected
-assertions: 1897 | 1728 passed | 148 failed | 21 failed as expected
+assertions: 1909 | 1740 passed | 148 failed | 21 failed as expected
 
