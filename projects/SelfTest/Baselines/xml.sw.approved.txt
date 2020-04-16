@@ -13657,12 +13657,28 @@ There is no extra whitespace here
             { 1, 2, 3 } Contains: 2
           </Expanded>
         </Expression>
-        <OverallResults successes="2" failures="0" expectedFailures="0"/>
+        <Expression success="true" type="CHECK_THAT" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
+          <Original>
+            v5, (VectorContains&lt;int, CustomAllocator&lt;int>>(2))
+          </Original>
+          <Expanded>
+            { 1, 2, 3 } Contains: 2
+          </Expanded>
+        </Expression>
+        <OverallResults successes="3" failures="0" expectedFailures="0"/>
       </Section>
       <Section name="Contains (vector)" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
         <Expression success="true" type="CHECK_THAT" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
           <Original>
             v, Contains(v2)
+          </Original>
+          <Expanded>
+            { 1, 2, 3 } Contains: { 1, 2 }
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="CHECK_THAT" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
+          <Original>
+            v5, (Contains&lt;int, std::allocator&lt;int>, CustomAllocator&lt;int>>(v2))
           </Original>
           <Expanded>
             { 1, 2, 3 } Contains: { 1, 2 }
@@ -13692,7 +13708,23 @@ There is no extra whitespace here
             {  } Contains: {  }
           </Expanded>
         </Expression>
-        <OverallResults successes="4" failures="0" expectedFailures="0"/>
+        <Expression success="true" type="CHECK_THAT" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
+          <Original>
+            v5, (Contains&lt;int, std::allocator&lt;int>, CustomAllocator&lt;int>>(v2))
+          </Original>
+          <Expanded>
+            { 1, 2, 3 } Contains: { 1, 2, 3 }
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="CHECK_THAT" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
+          <Original>
+            v5, Contains(v6)
+          </Original>
+          <Expanded>
+            { 1, 2, 3 } Contains: { 1, 2 }
+          </Expanded>
+        </Expression>
+        <OverallResults successes="7" failures="0" expectedFailures="0"/>
       </Section>
       <Section name="Contains (element), composed" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
         <Expression success="true" type="CHECK_THAT" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
@@ -13730,7 +13762,23 @@ There is no extra whitespace here
             { 1, 2, 3 } Equals: { 1, 2, 3 }
           </Expanded>
         </Expression>
-        <OverallResults successes="3" failures="0" expectedFailures="0"/>
+        <Expression success="true" type="CHECK_THAT" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
+          <Original>
+            v5, (Equals&lt;int, std::allocator&lt;int>, CustomAllocator&lt;int>>(v2))
+          </Original>
+          <Expanded>
+            { 1, 2, 3 } Equals: { 1, 2, 3 }
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="CHECK_THAT" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
+          <Original>
+            v5, Equals(v6)
+          </Original>
+          <Expanded>
+            { 1, 2, 3 } Equals: { 1, 2, 3 }
+          </Expanded>
+        </Expression>
+        <OverallResults successes="5" failures="0" expectedFailures="0"/>
       </Section>
       <Section name="UnorderedEquals" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
         <Expression success="true" type="CHECK_THAT" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
@@ -13765,7 +13813,23 @@ There is no extra whitespace here
             { 2, 3, 1 } UnorderedEquals: { 1, 2, 3 }
           </Expanded>
         </Expression>
-        <OverallResults successes="4" failures="0" expectedFailures="0"/>
+        <Expression success="true" type="CHECK_THAT" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
+          <Original>
+            v5, (UnorderedEquals&lt;int, std::allocator&lt;int>, CustomAllocator&lt;int>>(permuted))
+          </Original>
+          <Expanded>
+            { 1, 2, 3 } UnorderedEquals: { 2, 3, 1 }
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="CHECK_THAT" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
+          <Original>
+            v5_permuted, UnorderedEquals(v5)
+          </Original>
+          <Expanded>
+            { 1, 3, 2 } UnorderedEquals: { 1, 2, 3 }
+          </Expanded>
+        </Expression>
+        <OverallResults successes="6" failures="0" expectedFailures="0"/>
       </Section>
       <OverallResult success="true"/>
     </TestCase>
@@ -16075,7 +16139,7 @@ loose text artifact
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="1528" failures="149" expectedFailures="21"/>
+    <OverallResults successes="1536" failures="149" expectedFailures="21"/>
   </Group>
-  <OverallResults successes="1528" failures="148" expectedFailures="21"/>
+  <OverallResults successes="1536" failures="148" expectedFailures="21"/>
 </Catch>
