@@ -26,6 +26,10 @@ Compilation.tests.cpp:<line number>: passed: std::is_same<TypeList<int>, TypeLis
 CmdLine.tests.cpp:<line number>: passed: spec.matches(fakeTestCase("spec . char")) for: true
 CmdLine.tests.cpp:<line number>: passed: spec.matches(fakeTestCase("spec , char")) for: true
 CmdLine.tests.cpp:<line number>: passed: !(spec.matches(fakeTestCase(R"(spec \, char)"))) for: !false
+CmdLine.tests.cpp:<line number>: passed: spec.matches(fakeTestCase(R"(spec {a} char)")) for: true
+CmdLine.tests.cpp:<line number>: passed: spec.matches(fakeTestCase(R"(spec [a] char)")) for: true
+CmdLine.tests.cpp:<line number>: passed: !(spec.matches(fakeTestCase("differs but has similar tag", "[a]"))) for: !false
+CmdLine.tests.cpp:<line number>: passed: spec.matches(fakeTestCase(R"(spec \ char)")) for: true
 Exception.tests.cpp:<line number>: failed: unexpected exception with message: 'answer := 42' with 1 message: 'expected exception'
 Exception.tests.cpp:<line number>: failed: unexpected exception with message: 'answer := 42'; expression was: thisThrows() with 1 message: 'expected exception'
 Exception.tests.cpp:<line number>: passed: thisThrows() with 1 message: 'answer := 42'

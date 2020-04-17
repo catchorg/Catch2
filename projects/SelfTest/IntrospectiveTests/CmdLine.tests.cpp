@@ -303,6 +303,24 @@ TEST_CASE("#1905 -- test spec parser properly clears internal state between comp
     REQUIRE_FALSE(spec.matches(fakeTestCase(R"(spec \, char)")));
 }
 
+TEST_CASE("#1912 -- test spec parser handles escaping", "[command-line][test-spec]") {
+    using Catch::parseTestSpec;
+    using Catch::TestSpec;
+
+    SECTION("Various parentheses") {
+        TestSpec spec = parseTestSpec(R"(spec {a} char,spec \[a] char)");
+
+        REQUIRE(spec.matches(fakeTestCase(R"(spec {a} char)")));
+        REQUIRE(spec.matches(fakeTestCase(R"(spec [a] char)")));
+        REQUIRE_FALSE(spec.matches(fakeTestCase("differs but has similar tag", "[a]")));
+    }
+    SECTION("backslash in test name") {
+        TestSpec spec = parseTestSpec(R"(spec \\ char)");
+
+        REQUIRE(spec.matches(fakeTestCase(R"(spec \ char)")));
+    }
+}
+
 TEST_CASE( "Process can be configured on command line", "[config][command-line]" ) {
 
 #ifndef CATCH_CONFIG_DISABLE_MATCHERS

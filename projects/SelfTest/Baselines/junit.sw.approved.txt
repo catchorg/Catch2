@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuitesloose text artifact
 >
-  <testsuite name="<exe-name>" errors="17" failures="132" tests="1706" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
+  <testsuite name="<exe-name>" errors="17" failures="132" tests="1710" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
     <properties>
       <property name="filters" value="~[!nonportable]~[!benchmark]~[approvals]"/>
       <property name="random-seed" value="1"/>
@@ -31,6 +31,8 @@ Nor would this
     </testcase>
     <testcase classname="<exe-name>.global" name="#1548" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="#1905 -- test spec parser properly clears internal state between compound tests" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="#1912 -- test spec parser handles escaping/Various parentheses" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="#1912 -- test spec parser handles escaping/backslash in test name" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="#748 - captures with unexpected exceptions/outside assertions" time="{duration}">
       <error type="TEST_CASE">
 FAILED:
