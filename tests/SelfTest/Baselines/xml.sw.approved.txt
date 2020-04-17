@@ -229,6 +229,47 @@ Nor would this
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
+    <TestCase name="#1912 -- test spec parser handles escaping" tags="[command-line][test-spec]" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
+      <Section name="Various parentheses" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
+        <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
+          <Original>
+            spec.matches(*fakeTestCase(R"(spec {a} char)"))
+          </Original>
+          <Expanded>
+            true
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
+          <Original>
+            spec.matches(*fakeTestCase(R"(spec [a] char)"))
+          </Original>
+          <Expanded>
+            true
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE_FALSE" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
+          <Original>
+            !(spec.matches(*fakeTestCase("differs but has similar tag", "[a]")))
+          </Original>
+          <Expanded>
+            !false
+          </Expanded>
+        </Expression>
+        <OverallResults successes="3" failures="0" expectedFailures="0"/>
+      </Section>
+      <Section name="backslash in test name" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
+        <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
+          <Original>
+            spec.matches(*fakeTestCase(R"(spec \ char)"))
+          </Original>
+          <Expanded>
+            true
+          </Expanded>
+        </Expression>
+        <OverallResults successes="1" failures="0" expectedFailures="0"/>
+      </Section>
+      <OverallResult success="true"/>
+    </TestCase>
     <TestCase name="#748 - captures with unexpected exceptions" tags="[!shouldfail][!throws][.][failing]" filename="tests/<exe-name>/UsageTests/Exception.tests.cpp" >
       <Section name="outside assertions" filename="tests/<exe-name>/UsageTests/Exception.tests.cpp" >
         <Info>
@@ -17595,7 +17636,7 @@ loose text artifact
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="1724" failures="149" expectedFailures="21"/>
+    <OverallResults successes="1728" failures="149" expectedFailures="21"/>
   </Group>
-  <OverallResults successes="1724" failures="148" expectedFailures="21"/>
+  <OverallResults successes="1728" failures="148" expectedFailures="21"/>
 </Catch>

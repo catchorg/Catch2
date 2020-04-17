@@ -219,6 +219,40 @@ with expansion:
   !false
 
 -------------------------------------------------------------------------------
+#1912 -- test spec parser handles escaping
+  Various parentheses
+-------------------------------------------------------------------------------
+CmdLine.tests.cpp:<line number>
+...............................................................................
+
+CmdLine.tests.cpp:<line number>: PASSED:
+  REQUIRE( spec.matches(*fakeTestCase(R"(spec {a} char)")) )
+with expansion:
+  true
+
+CmdLine.tests.cpp:<line number>: PASSED:
+  REQUIRE( spec.matches(*fakeTestCase(R"(spec [a] char)")) )
+with expansion:
+  true
+
+CmdLine.tests.cpp:<line number>: PASSED:
+  REQUIRE_FALSE( spec.matches(*fakeTestCase("differs but has similar tag", "[a]")) )
+with expansion:
+  !false
+
+-------------------------------------------------------------------------------
+#1912 -- test spec parser handles escaping
+  backslash in test name
+-------------------------------------------------------------------------------
+CmdLine.tests.cpp:<line number>
+...............................................................................
+
+CmdLine.tests.cpp:<line number>: PASSED:
+  REQUIRE( spec.matches(*fakeTestCase(R"(spec \ char)")) )
+with expansion:
+  true
+
+-------------------------------------------------------------------------------
 #748 - captures with unexpected exceptions
   outside assertions
 -------------------------------------------------------------------------------
@@ -14679,6 +14713,6 @@ Misc.tests.cpp:<line number>
 Misc.tests.cpp:<line number>: PASSED:
 
 ===============================================================================
-test cases:  333 |  243 passed |  86 failed |  4 failed as expected
-assertions: 1893 | 1724 passed | 148 failed | 21 failed as expected
+test cases:  334 |  244 passed |  86 failed |  4 failed as expected
+assertions: 1897 | 1728 passed | 148 failed | 21 failed as expected
 

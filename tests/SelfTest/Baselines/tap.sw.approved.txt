@@ -52,6 +52,14 @@ ok {test-number} - spec.matches(*fakeTestCase("spec . char")) for: true
 ok {test-number} - spec.matches(*fakeTestCase("spec , char")) for: true
 # #1905 -- test spec parser properly clears internal state between compound tests
 ok {test-number} - !(spec.matches(*fakeTestCase(R"(spec \, char)"))) for: !false
+# #1912 -- test spec parser handles escaping
+ok {test-number} - spec.matches(*fakeTestCase(R"(spec {a} char)")) for: true
+# #1912 -- test spec parser handles escaping
+ok {test-number} - spec.matches(*fakeTestCase(R"(spec [a] char)")) for: true
+# #1912 -- test spec parser handles escaping
+ok {test-number} - !(spec.matches(*fakeTestCase("differs but has similar tag", "[a]"))) for: !false
+# #1912 -- test spec parser handles escaping
+ok {test-number} - spec.matches(*fakeTestCase(R"(spec \ char)")) for: true
 # #748 - captures with unexpected exceptions
 not ok {test-number} - unexpected exception with message: 'answer := 42' with 1 message: 'expected exception'
 # #748 - captures with unexpected exceptions
@@ -3778,5 +3786,5 @@ ok {test-number} - q3 == 23. for: 23.0 == 23.0
 ok {test-number} -
 # xmlentitycheck
 ok {test-number} -
-1..1885
+1..1889
 
