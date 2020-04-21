@@ -260,6 +260,8 @@ Randomly sorted. The order is dependent on Catch2's random seed (see
 is that as long as the random seed is fixed, running only some tests
 (e.g. via tag) does not change their relative order.
 
+> The subset stability was introduced in Catch2 v2.12.0
+
 
 <a id="rng-seed"></a>
 ## Specify a seed for the Random Number Generator
