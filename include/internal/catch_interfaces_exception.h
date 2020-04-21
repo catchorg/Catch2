@@ -46,6 +46,9 @@ namespace Catch {
             {}
 
             std::string translate( ExceptionTranslators::const_iterator it, ExceptionTranslators::const_iterator itEnd ) const override {
+#if defined(CATCH_CONFIG_DISABLE_EXCEPTIONS)
+                return "";
+#else
                 try {
                     if( it == itEnd )
                         std::rethrow_exception(std::current_exception());
@@ -55,6 +58,7 @@ namespace Catch {
                 catch( T& ex ) {
                     return m_translateFunction( ex );
                 }
+#endif
             }
 
         protected:
