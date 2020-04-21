@@ -1529,6 +1529,7 @@ Approx.tests.cpp:<line number>: passed: approx( d ) != 1.25 for: Approx( 1.23 ) 
 VariadicMacros.tests.cpp:<line number>: passed: with 1 message: 'no assertions'
 Matchers.tests.cpp:<line number>: passed: empty, Approx(empty) for: {  } is approx: {  }
 Matchers.tests.cpp:<line number>: passed: v1, Approx(v1) for: { 1.0, 2.0, 3.0 } is approx: { 1.0, 2.0, 3.0 }
+Matchers.tests.cpp:<line number>: passed: v1, Approx<double>({ 1., 2., 3. }) for: { 1.0, 2.0, 3.0 } is approx: { 1.0, 2.0, 3.0 }
 Matchers.tests.cpp:<line number>: passed: v1, !Approx(temp) for: { 1.0, 2.0, 3.0 } not is approx: { 1.0, 2.0, 3.0, 4.0 }
 Matchers.tests.cpp:<line number>: passed: v1, !Approx(v2) for: { 1.0, 2.0, 3.0 } not is approx: { 1.5, 2.5, 3.5 }
 Matchers.tests.cpp:<line number>: passed: v1, Approx(v2).margin(0.5) for: { 1.0, 2.0, 3.0 } is approx: { 1.5, 2.5, 3.5 }
@@ -1540,6 +1541,7 @@ Matchers.tests.cpp:<line number>: passed: v, VectorContains(1) for: { 1, 2, 3 } 
 Matchers.tests.cpp:<line number>: passed: v, VectorContains(2) for: { 1, 2, 3 } Contains: 2
 Matchers.tests.cpp:<line number>: passed: v5, (VectorContains<int, CustomAllocator<int>>(2)) for: { 1, 2, 3 } Contains: 2
 Matchers.tests.cpp:<line number>: passed: v, Contains(v2) for: { 1, 2, 3 } Contains: { 1, 2 }
+Matchers.tests.cpp:<line number>: passed: v, Contains<int>({ 1, 2 }) for: { 1, 2, 3 } Contains: { 1, 2 }
 Matchers.tests.cpp:<line number>: passed: v5, (Contains<int, std::allocator<int>, CustomAllocator<int>>(v2)) for: { 1, 2, 3 } Contains: { 1, 2 }
 Matchers.tests.cpp:<line number>: passed: v, Contains(v2) for: { 1, 2, 3 } Contains: { 1, 2, 3 }
 Matchers.tests.cpp:<line number>: passed: v, Contains(empty) for: { 1, 2, 3 } Contains: {  }
@@ -1549,10 +1551,12 @@ Matchers.tests.cpp:<line number>: passed: v5, Contains(v6) for: { 1, 2, 3 } Cont
 Matchers.tests.cpp:<line number>: passed: v, VectorContains(1) && VectorContains(2) for: { 1, 2, 3 } ( Contains: 1 and Contains: 2 )
 Matchers.tests.cpp:<line number>: passed: v, Equals(v) for: { 1, 2, 3 } Equals: { 1, 2, 3 }
 Matchers.tests.cpp:<line number>: passed: empty, Equals(empty) for: {  } Equals: {  }
+Matchers.tests.cpp:<line number>: passed: v, Equals<int>({ 1, 2, 3 }) for: { 1, 2, 3 } Equals: { 1, 2, 3 }
 Matchers.tests.cpp:<line number>: passed: v, Equals(v2) for: { 1, 2, 3 } Equals: { 1, 2, 3 }
 Matchers.tests.cpp:<line number>: passed: v5, (Equals<int, std::allocator<int>, CustomAllocator<int>>(v2)) for: { 1, 2, 3 } Equals: { 1, 2, 3 }
 Matchers.tests.cpp:<line number>: passed: v5, Equals(v6) for: { 1, 2, 3 } Equals: { 1, 2, 3 }
 Matchers.tests.cpp:<line number>: passed: v, UnorderedEquals(v) for: { 1, 2, 3 } UnorderedEquals: { 1, 2, 3 }
+Matchers.tests.cpp:<line number>: passed: v, UnorderedEquals<int>({ 3, 2, 1 }) for: { 1, 2, 3 } UnorderedEquals: { 3, 2, 1 }
 Matchers.tests.cpp:<line number>: passed: empty, UnorderedEquals(empty) for: {  } UnorderedEquals: {  }
 Matchers.tests.cpp:<line number>: passed: permuted, UnorderedEquals(v) for: { 1, 3, 2 } UnorderedEquals: { 1, 2, 3 }
 Matchers.tests.cpp:<line number>: passed: permuted, UnorderedEquals(v) for: { 2, 3, 1 } UnorderedEquals: { 1, 2, 3 }

@@ -13624,9 +13624,17 @@ There is no extra whitespace here
               { 1.0, 2.0, 3.0 } is approx: { 1.0, 2.0, 3.0 }
             </Expanded>
           </Expression>
-          <OverallResults successes="1" failures="0" expectedFailures="0"/>
+          <Expression success="true" type="REQUIRE_THAT" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
+            <Original>
+              v1, Approx&lt;double>({ 1., 2., 3. })
+            </Original>
+            <Expanded>
+              { 1.0, 2.0, 3.0 } is approx: { 1.0, 2.0, 3.0 }
+            </Expanded>
+          </Expression>
+          <OverallResults successes="2" failures="0" expectedFailures="0"/>
         </Section>
-        <OverallResults successes="1" failures="0" expectedFailures="0"/>
+        <OverallResults successes="2" failures="0" expectedFailures="0"/>
       </Section>
       <Section name="Vectors with elements" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
         <Section name="Different length" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
@@ -13746,6 +13754,14 @@ There is no extra whitespace here
         </Expression>
         <Expression success="true" type="CHECK_THAT" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
           <Original>
+            v, Contains&lt;int>({ 1, 2 })
+          </Original>
+          <Expanded>
+            { 1, 2, 3 } Contains: { 1, 2 }
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="CHECK_THAT" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
+          <Original>
             v5, (Contains&lt;int, std::allocator&lt;int>, CustomAllocator&lt;int>>(v2))
           </Original>
           <Expanded>
@@ -13792,7 +13808,7 @@ There is no extra whitespace here
             { 1, 2, 3 } Contains: { 1, 2 }
           </Expanded>
         </Expression>
-        <OverallResults successes="7" failures="0" expectedFailures="0"/>
+        <OverallResults successes="8" failures="0" expectedFailures="0"/>
       </Section>
       <Section name="Contains (element), composed" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
         <Expression success="true" type="CHECK_THAT" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
@@ -13824,6 +13840,14 @@ There is no extra whitespace here
         </Expression>
         <Expression success="true" type="CHECK_THAT" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
           <Original>
+            v, Equals&lt;int>({ 1, 2, 3 })
+          </Original>
+          <Expanded>
+            { 1, 2, 3 } Equals: { 1, 2, 3 }
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="CHECK_THAT" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
+          <Original>
             v, Equals(v2)
           </Original>
           <Expanded>
@@ -13846,7 +13870,7 @@ There is no extra whitespace here
             { 1, 2, 3 } Equals: { 1, 2, 3 }
           </Expanded>
         </Expression>
-        <OverallResults successes="5" failures="0" expectedFailures="0"/>
+        <OverallResults successes="6" failures="0" expectedFailures="0"/>
       </Section>
       <Section name="UnorderedEquals" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
         <Expression success="true" type="CHECK_THAT" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
@@ -13855,6 +13879,14 @@ There is no extra whitespace here
           </Original>
           <Expanded>
             { 1, 2, 3 } UnorderedEquals: { 1, 2, 3 }
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="CHECK_THAT" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
+          <Original>
+            v, UnorderedEquals&lt;int>({ 3, 2, 1 })
+          </Original>
+          <Expanded>
+            { 1, 2, 3 } UnorderedEquals: { 3, 2, 1 }
           </Expanded>
         </Expression>
         <Expression success="true" type="CHECK_THAT" filename="projects/<exe-name>/UsageTests/Matchers.tests.cpp" >
@@ -13897,7 +13929,7 @@ There is no extra whitespace here
             { 1, 3, 2 } UnorderedEquals: { 1, 2, 3 }
           </Expanded>
         </Expression>
-        <OverallResults successes="6" failures="0" expectedFailures="0"/>
+        <OverallResults successes="7" failures="0" expectedFailures="0"/>
       </Section>
       <OverallResult success="true"/>
     </TestCase>
@@ -16207,7 +16239,7 @@ loose text artifact
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="1543" failures="149" expectedFailures="21"/>
+    <OverallResults successes="1547" failures="149" expectedFailures="21"/>
   </Group>
-  <OverallResults successes="1543" failures="148" expectedFailures="21"/>
+  <OverallResults successes="1547" failures="148" expectedFailures="21"/>
 </Catch>

@@ -288,6 +288,7 @@ namespace { namespace MatchersTests {
             }
             SECTION("Contains (vector)") {
                 CHECK_THAT(v, Contains(v2));
+                CHECK_THAT(v, Contains<int>({ 1, 2 }));
                 CHECK_THAT(v5, (Contains<int, std::allocator<int>, CustomAllocator<int>>(v2)));
 
                 v2.push_back(3); // now exactly matches
@@ -307,10 +308,10 @@ namespace { namespace MatchersTests {
 
                 // Same vector
                 CHECK_THAT(v, Equals(v));
-
                 CHECK_THAT(empty, Equals(empty));
 
                 // Different vector with same elements
+                CHECK_THAT(v, Equals<int>({ 1, 2, 3 }));
                 v2.push_back(3);
                 CHECK_THAT(v, Equals(v2));
 
@@ -321,6 +322,7 @@ namespace { namespace MatchersTests {
             }
             SECTION("UnorderedEquals") {
                 CHECK_THAT(v, UnorderedEquals(v));
+                CHECK_THAT(v, UnorderedEquals<int>({ 3, 2, 1 }));
                 CHECK_THAT(empty, UnorderedEquals(empty));
 
                 auto permuted = v;
@@ -580,6 +582,7 @@ namespace { namespace MatchersTests {
                 std::vector<double> v1({1., 2., 3.});
                 SECTION("A vector is approx equal to itself") {
                     REQUIRE_THAT(v1, Approx(v1));
+                    REQUIRE_THAT(v1, Approx<double>({ 1., 2., 3. }));
                 }
                 std::vector<double> v2({1.5, 2.5, 3.5});
                 SECTION("Different length") {
@@ -614,7 +617,7 @@ namespace { namespace MatchersTests {
             REQUIRE_THROWS_MATCHES(throwsSpecialException(2), SpecialException, !Message("DerivedException::what"));
             REQUIRE_THROWS_MATCHES(throwsSpecialException(2), SpecialException,  Message("SpecialException::what"));
         }
-        
+
         TEST_CASE("Composed matchers are distinct", "[matchers][composed]") {
             auto m1 = Contains("string");
             auto m2 = Contains("random");

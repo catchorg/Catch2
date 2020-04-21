@@ -151,7 +151,7 @@ namespace Matchers {
     // The following functions create the actual matcher objects.
     // This allows the types to be inferred
 
-    template<typename T, typename AllocComp, typename AllocMatch = AllocComp>
+    template<typename T, typename AllocComp = std::allocator<T>, typename AllocMatch = AllocComp>
     Vector::ContainsMatcher<T, AllocComp, AllocMatch> Contains( std::vector<T, AllocComp> const& comparator ) {
         return Vector::ContainsMatcher<T, AllocComp, AllocMatch>( comparator );
     }
@@ -161,17 +161,17 @@ namespace Matchers {
         return Vector::ContainsElementMatcher<T, Alloc>( comparator );
     }
 
-    template<typename T, typename AllocComp, typename AllocMatch = AllocComp>
+    template<typename T, typename AllocComp = std::allocator<T>, typename AllocMatch = AllocComp>
     Vector::EqualsMatcher<T, AllocComp, AllocMatch> Equals( std::vector<T, AllocComp> const& comparator ) {
         return Vector::EqualsMatcher<T, AllocComp, AllocMatch>( comparator );
     }
 
-    template<typename T, typename AllocComp, typename AllocMatch = AllocComp>
+    template<typename T, typename AllocComp = std::allocator<T>, typename AllocMatch = AllocComp>
     Vector::ApproxMatcher<T, AllocComp, AllocMatch> Approx( std::vector<T, AllocComp> const& comparator ) {
         return Vector::ApproxMatcher<T, AllocComp, AllocMatch>( comparator );
     }
 
-    template<typename T, typename AllocComp, typename AllocMatch = AllocComp>
+    template<typename T, typename AllocComp = std::allocator<T>, typename AllocMatch = AllocComp>
     Vector::UnorderedEqualsMatcher<T, AllocComp, AllocMatch> UnorderedEquals(std::vector<T, AllocComp> const& target) {
         return Vector::UnorderedEqualsMatcher<T, AllocComp, AllocMatch>( target );
     }
