@@ -2,6 +2,7 @@
 
 # Release notes
 **Contents**<br>
+[2.12.0](#2120)<br>
 [2.11.3](#2113)<br>
 [2.11.2](#2112)<br>
 [2.11.1](#2111)<br>
@@ -33,6 +34,28 @@
 [2.0.1](#201)<br>
 [Older versions](#older-versions)<br>
 [Even Older versions](#even-older-versions)<br>
+
+## 2.12.0
+
+### Improvements
+* Running tests in random order (`--order rand`) has been reworked significantly (#1908)
+  * Given same seed, all platforms now produce the same order
+  * Given same seed, the relative order of tests does not change if you select only a subset of them
+* Vector matchers support custom allocators (#1909)
+* `|` and `&` (bitwise or and bitwise and) are now supported in `CHECK` and `REQUIRE`
+  * The resulting type must be convertible to `bool`
+
+### Fixes
+* Fixed computation of benchmarking column widths in ConsoleReporter (#1885, #1886)
+* Suppressed clang-tidy's `cppcoreguidelines-pro-type-vararg` in assertions (#1901)
+  * It was a false positive trigered by the new warning support workaround
+* Fixed bug in test specification parser handling of OR'd patterns using escaping (#1905)
+
+### Miscellaneous
+* Worked around IBM XL's codegen bug (#1907)
+  * It would emit code for _destructors_ of temporaries in an unevaluated context
+* Improved detection of stdlib's support for `std::uncaught_exceptions` (#1911)
+
 
 ## 2.11.3
 
