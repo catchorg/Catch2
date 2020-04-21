@@ -15,6 +15,7 @@
 #include "catch_interfaces_registry_hub.h"
 #include "catch_capture_matchers.h"
 #include "catch_run_context.h"
+#include "catch_enforce.h"
 
 namespace Catch {
 
