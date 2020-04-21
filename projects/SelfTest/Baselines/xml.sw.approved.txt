@@ -2202,6 +2202,22 @@ Nor would this
           Val: 1 &amp; Val: 1
         </Expanded>
       </Expression>
+      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/UsageTests/Compilation.tests.cpp" >
+        <Original>
+          lhs ^ rhs
+        </Original>
+        <Expanded>
+          Val: 1 ^ Val: 2
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE_FALSE" filename="projects/<exe-name>/UsageTests/Compilation.tests.cpp" >
+        <Original>
+          !(lhs ^ lhs)
+        </Original>
+        <Expanded>
+          !(Val: 1 ^ Val: 1)
+        </Expanded>
+      </Expression>
       <OverallResult success="true"/>
     </TestCase>
     <TestCase name="Assertions then sections" tags="[Tricky]" filename="projects/<exe-name>/UsageTests/Tricky.tests.cpp" >
@@ -16239,7 +16255,7 @@ loose text artifact
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="1547" failures="149" expectedFailures="21"/>
+    <OverallResults successes="1549" failures="149" expectedFailures="21"/>
   </Group>
-  <OverallResults successes="1547" failures="148" expectedFailures="21"/>
+  <OverallResults successes="1549" failures="148" expectedFailures="21"/>
 </Catch>

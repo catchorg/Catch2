@@ -247,6 +247,8 @@ Matchers.tests.cpp:<line number>: passed: "This wouldn't pass", !Predicate<std::
 Compilation.tests.cpp:<line number>: passed: lhs | rhs for: Val: 1 | Val: 2
 Compilation.tests.cpp:<line number>: passed: !(lhs & rhs) for: !(Val: 1 & Val: 2)
 Compilation.tests.cpp:<line number>: passed: HasBitOperators{ 1 } & HasBitOperators{ 1 } for: Val: 1 & Val: 1
+Compilation.tests.cpp:<line number>: passed: lhs ^ rhs for: Val: 1 ^ Val: 2
+Compilation.tests.cpp:<line number>: passed: !(lhs ^ lhs) for: !(Val: 1 ^ Val: 1)
 Tricky.tests.cpp:<line number>: passed: true
 Tricky.tests.cpp:<line number>: passed: true
 Tricky.tests.cpp:<line number>: passed: true
