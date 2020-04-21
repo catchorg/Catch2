@@ -195,6 +195,8 @@ Exception.tests.cpp:<line number>|nunexpected exception with message:|n  "unexpe
 ##teamcity[testFinished name='Approximate comparisons with mixed numeric types' duration="{duration}"]
 ##teamcity[testStarted name='Arbitrary predicate matcher']
 ##teamcity[testFinished name='Arbitrary predicate matcher' duration="{duration}"]
+##teamcity[testStarted name='Assertion macros support bit operators and bool conversions']
+##teamcity[testFinished name='Assertion macros support bit operators and bool conversions' duration="{duration}"]
 ##teamcity[testStarted name='Assertions then sections']
 ##teamcity[testFinished name='Assertions then sections' duration="{duration}"]
 ##teamcity[testStarted name='Basic use of the Contains range matcher']

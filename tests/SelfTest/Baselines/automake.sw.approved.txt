@@ -81,6 +81,7 @@ Nor would this
 :test-result: PASS Approximate comparisons with ints
 :test-result: PASS Approximate comparisons with mixed numeric types
 :test-result: PASS Arbitrary predicate matcher
+:test-result: PASS Assertion macros support bit operators and bool conversions
 :test-result: PASS Assertions then sections
 :test-result: PASS Basic use of the Contains range matcher
 :test-result: PASS Basic use of the Empty range matcher
