@@ -2,6 +2,7 @@
 
 # Release notes
 **Contents**<br>
+[2.12.1](#2121)<br>
 [2.12.0](#2120)<br>
 [2.11.3](#2113)<br>
 [2.11.2](#2112)<br>
@@ -34,6 +35,15 @@
 [2.0.1](#201)<br>
 [Older versions](#older-versions)<br>
 [Even Older versions](#even-older-versions)<br>
+
+## 2.12.1
+
+### Fixes
+* Vector matchers now support initializer list literals better
+
+### Improvements
+* Added support for `^` (bitwise xor) to `CHECK` and `REQUIRE`
+
 
 ## 2.12.0
 

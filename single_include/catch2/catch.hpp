@@ -1,6 +1,6 @@
 /*
- *  Catch v2.12.0
- *  Generated: 2020-04-21 16:27:54.138031
+ *  Catch v2.12.1
+ *  Generated: 2020-04-21 19:29:20.964532
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2020 Two Blue Cubes Ltd. All rights reserved.
@@ -15,7 +15,7 @@
 
 #define CATCH_VERSION_MAJOR 2
 #define CATCH_VERSION_MINOR 12
-#define CATCH_VERSION_PATCH 0
+#define CATCH_VERSION_PATCH 1
 
 #ifdef __clang__
 #    pragma clang system_header
@@ -2377,6 +2377,10 @@ namespace Catch {
         auto operator & (RhsT const& rhs) -> BinaryExpr<LhsT, RhsT const&> const {
             return { static_cast<bool>(m_lhs & rhs), m_lhs, "&", rhs };
         }
+        template <typename RhsT>
+        auto operator ^ (RhsT const& rhs) -> BinaryExpr<LhsT, RhsT const&> const {
+            return { static_cast<bool>(m_lhs ^ rhs), m_lhs, "^", rhs };
+        }
 
         template<typename RhsT>
         auto operator && ( RhsT const& ) -> BinaryExpr<LhsT, RhsT const&> const {
@@ -3730,7 +3734,7 @@ namespace Matchers {
     // The following functions create the actual matcher objects.
     // This allows the types to be inferred
 
-    template<typename T, typename AllocComp, typename AllocMatch = AllocComp>
+    template<typename T, typename AllocComp = std::allocator<T>, typename AllocMatch = AllocComp>
     Vector::ContainsMatcher<T, AllocComp, AllocMatch> Contains( std::vector<T, AllocComp> const& comparator ) {
         return Vector::ContainsMatcher<T, AllocComp, AllocMatch>( comparator );
     }
@@ -3740,17 +3744,17 @@ namespace Matchers {
         return Vector::ContainsElementMatcher<T, Alloc>( comparator );
     }
 
-    template<typename T, typename AllocComp, typename AllocMatch = AllocComp>
+    template<typename T, typename AllocComp = std::allocator<T>, typename AllocMatch = AllocComp>
     Vector::EqualsMatcher<T, AllocComp, AllocMatch> Equals( std::vector<T, AllocComp> const& comparator ) {
         return Vector::EqualsMatcher<T, AllocComp, AllocMatch>( comparator );
     }
 
-    template<typename T, typename AllocComp, typename AllocMatch = AllocComp>
+    template<typename T, typename AllocComp = std::allocator<T>, typename AllocMatch = AllocComp>
     Vector::ApproxMatcher<T, AllocComp, AllocMatch> Approx( std::vector<T, AllocComp> const& comparator ) {
         return Vector::ApproxMatcher<T, AllocComp, AllocMatch>( comparator );
     }
 
-    template<typename T, typename AllocComp, typename AllocMatch = AllocComp>
+    template<typename T, typename AllocComp = std::allocator<T>, typename AllocMatch = AllocComp>
     Vector::UnorderedEqualsMatcher<T, AllocComp, AllocMatch> UnorderedEquals(std::vector<T, AllocComp> const& target) {
         return Vector::UnorderedEqualsMatcher<T, AllocComp, AllocMatch>( target );
     }
@@ -15155,7 +15159,7 @@ namespace Catch {
     }
 
     Version const& libraryVersion() {
-        static Version version( 2, 12, 0, "", 0 );
+        static Version version( 2, 12, 1, "", 0 );
         return version;
     }
 
