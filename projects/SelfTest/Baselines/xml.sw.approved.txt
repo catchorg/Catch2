@@ -2177,6 +2177,33 @@ Nor would this
       </Section>
       <OverallResult success="true"/>
     </TestCase>
+    <TestCase name="Assertion macros support bit operators and bool conversions" tags="[bitops][compilation]" filename="projects/<exe-name>/UsageTests/Compilation.tests.cpp" >
+      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/UsageTests/Compilation.tests.cpp" >
+        <Original>
+          lhs | rhs
+        </Original>
+        <Expanded>
+          Val: 1 | Val: 2
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE_FALSE" filename="projects/<exe-name>/UsageTests/Compilation.tests.cpp" >
+        <Original>
+          !(lhs &amp; rhs)
+        </Original>
+        <Expanded>
+          !(Val: 1 &amp; Val: 2)
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/UsageTests/Compilation.tests.cpp" >
+        <Original>
+          HasBitOperators{ 1 } &amp; HasBitOperators{ 1 }
+        </Original>
+        <Expanded>
+          Val: 1 &amp; Val: 1
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
     <TestCase name="Assertions then sections" tags="[Tricky]" filename="projects/<exe-name>/UsageTests/Tricky.tests.cpp" >
       <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/UsageTests/Tricky.tests.cpp" >
         <Original>
@@ -16180,7 +16207,7 @@ loose text artifact
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="1540" failures="149" expectedFailures="21"/>
+    <OverallResults successes="1543" failures="149" expectedFailures="21"/>
   </Group>
-  <OverallResults successes="1540" failures="148" expectedFailures="21"/>
+  <OverallResults successes="1543" failures="148" expectedFailures="21"/>
 </Catch>

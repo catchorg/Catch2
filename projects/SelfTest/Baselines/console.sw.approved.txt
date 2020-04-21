@@ -1935,6 +1935,27 @@ with expansion:
   "This wouldn't pass" not matches undescribed predicate
 
 -------------------------------------------------------------------------------
+Assertion macros support bit operators and bool conversions
+-------------------------------------------------------------------------------
+Compilation.tests.cpp:<line number>
+...............................................................................
+
+Compilation.tests.cpp:<line number>: PASSED:
+  REQUIRE( lhs | rhs )
+with expansion:
+  Val: 1 | Val: 2
+
+Compilation.tests.cpp:<line number>: PASSED:
+  REQUIRE_FALSE( lhs & rhs )
+with expansion:
+  !(Val: 1 & Val: 2)
+
+Compilation.tests.cpp:<line number>: PASSED:
+  REQUIRE( HasBitOperators{ 1 } & HasBitOperators{ 1 } )
+with expansion:
+  Val: 1 & Val: 1
+
+-------------------------------------------------------------------------------
 Assertions then sections
 -------------------------------------------------------------------------------
 Tricky.tests.cpp:<line number>
@@ -13522,6 +13543,6 @@ Misc.tests.cpp:<line number>
 Misc.tests.cpp:<line number>: PASSED:
 
 ===============================================================================
-test cases:  309 |  219 passed |  86 failed |  4 failed as expected
-assertions: 1709 | 1540 passed | 148 failed | 21 failed as expected
+test cases:  310 |  220 passed |  86 failed |  4 failed as expected
+assertions: 1712 | 1543 passed | 148 failed | 21 failed as expected
 

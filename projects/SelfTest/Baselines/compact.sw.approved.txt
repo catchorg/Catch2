@@ -244,6 +244,9 @@ Matchers.tests.cpp:<line number>: passed: 1, Predicate<int>(alwaysTrue, "always 
 Matchers.tests.cpp:<line number>: passed: 1, !Predicate<int>(alwaysFalse, "always false") for: 1 not matches predicate: "always false"
 Matchers.tests.cpp:<line number>: passed: "Hello olleH", Predicate<std::string>( [] (std::string const& str) -> bool { return str.front() == str.back(); }, "First and last character should be equal") for: "Hello olleH" matches predicate: "First and last character should be equal"
 Matchers.tests.cpp:<line number>: passed: "This wouldn't pass", !Predicate<std::string>( [] (std::string const& str) -> bool { return str.front() == str.back(); } ) for: "This wouldn't pass" not matches undescribed predicate
+Compilation.tests.cpp:<line number>: passed: lhs | rhs for: Val: 1 | Val: 2
+Compilation.tests.cpp:<line number>: passed: !(lhs & rhs) for: !(Val: 1 & Val: 2)
+Compilation.tests.cpp:<line number>: passed: HasBitOperators{ 1 } & HasBitOperators{ 1 } for: Val: 1 & Val: 1
 Tricky.tests.cpp:<line number>: passed: true
 Tricky.tests.cpp:<line number>: passed: true
 Tricky.tests.cpp:<line number>: passed: true

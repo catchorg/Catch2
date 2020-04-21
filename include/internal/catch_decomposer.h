@@ -200,6 +200,14 @@ namespace Catch {
         auto operator <= ( RhsT const& rhs ) -> BinaryExpr<LhsT, RhsT const&> const {
             return { static_cast<bool>(m_lhs <= rhs), m_lhs, "<=", rhs };
         }
+        template <typename RhsT>
+        auto operator | (RhsT const& rhs) -> BinaryExpr<LhsT, RhsT const&> const {
+            return { static_cast<bool>(m_lhs | rhs), m_lhs, "|", rhs };
+        }
+        template <typename RhsT>
+        auto operator & (RhsT const& rhs) -> BinaryExpr<LhsT, RhsT const&> const {
+            return { static_cast<bool>(m_lhs & rhs), m_lhs, "&", rhs };
+        }
 
         template<typename RhsT>
         auto operator && ( RhsT const& ) -> BinaryExpr<LhsT, RhsT const&> const {

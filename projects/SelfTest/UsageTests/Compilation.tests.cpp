@@ -234,3 +234,31 @@ namespace { namespace CompilationTests {
 
 }} // namespace CompilationTests
 
+namespace {
+    struct HasBitOperators {
+        int value;
+
+        friend HasBitOperators operator| (HasBitOperators lhs, HasBitOperators rhs) {
+            return { lhs.value | rhs.value };
+        }
+        friend HasBitOperators operator& (HasBitOperators lhs, HasBitOperators rhs) {
+            return { lhs.value & rhs.value };
+        }
+        explicit operator bool() const {
+            return !!value;
+        }
+
+        friend std::ostream& operator<<(std::ostream& out, HasBitOperators val) {
+            out << "Val: " << val.value;
+            return out;
+        }
+    };
+}
+
+TEST_CASE("Assertion macros support bit operators and bool conversions", "[compilation][bitops]") {
+    HasBitOperators lhs{ 1 }, rhs{ 2 };
+    REQUIRE(lhs | rhs);
+    REQUIRE_FALSE(lhs & rhs);
+    REQUIRE(HasBitOperators{ 1 } & HasBitOperators{ 1 });
+}
+

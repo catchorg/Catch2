@@ -372,6 +372,7 @@ Class.tests.cpp:<line number>
     <testCase name="#809" duration="{duration}"/>
     <testCase name="#833" duration="{duration}"/>
     <testCase name="#872" duration="{duration}"/>
+    <testCase name="Assertion macros support bit operators and bool conversions" duration="{duration}"/>
     <testCase name="Lambdas in assertions" duration="{duration}"/>
     <testCase name="Optionally static assertions" duration="{duration}"/>
   </file>
