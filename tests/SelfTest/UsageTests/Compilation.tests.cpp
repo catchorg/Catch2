@@ -247,6 +247,9 @@ namespace {
         friend HasBitOperators operator& (HasBitOperators lhs, HasBitOperators rhs) {
             return { lhs.value & rhs.value };
         }
+        friend HasBitOperators operator^ (HasBitOperators lhs, HasBitOperators rhs) {
+            return { lhs.value ^ rhs.value };
+        }
         explicit operator bool() const {
             return !!value;
         }
@@ -263,5 +266,7 @@ TEST_CASE("Assertion macros support bit operators and bool conversions", "[compi
     REQUIRE(lhs | rhs);
     REQUIRE_FALSE(lhs & rhs);
     REQUIRE(HasBitOperators{ 1 } & HasBitOperators{ 1 });
+    REQUIRE(lhs ^ rhs);
+    REQUIRE_FALSE(lhs ^ lhs);
 }
 

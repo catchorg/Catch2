@@ -494,6 +494,10 @@ ok {test-number} - lhs | rhs for: Val: 1 | Val: 2
 ok {test-number} - !(lhs & rhs) for: !(Val: 1 & Val: 2)
 # Assertion macros support bit operators and bool conversions
 ok {test-number} - HasBitOperators{ 1 } & HasBitOperators{ 1 } for: Val: 1 & Val: 1
+# Assertion macros support bit operators and bool conversions
+ok {test-number} - lhs ^ rhs for: Val: 1 ^ Val: 2
+# Assertion macros support bit operators and bool conversions
+ok {test-number} - !(lhs ^ lhs) for: !(Val: 1 ^ Val: 1)
 # Assertions then sections
 ok {test-number} - true
 # Assertions then sections
@@ -3816,5 +3820,5 @@ ok {test-number} - q3 == 23. for: 23.0 == 23.0
 ok {test-number} -
 # xmlentitycheck
 ok {test-number} -
-1..1904
+1..1906
 

@@ -1964,6 +1964,16 @@ Compilation.tests.cpp:<line number>: PASSED:
 with expansion:
   Val: 1 & Val: 1
 
+Compilation.tests.cpp:<line number>: PASSED:
+  REQUIRE( lhs ^ rhs )
+with expansion:
+  Val: 1 ^ Val: 2
+
+Compilation.tests.cpp:<line number>: PASSED:
+  REQUIRE_FALSE( lhs ^ lhs )
+with expansion:
+  !(Val: 1 ^ Val: 1)
+
 -------------------------------------------------------------------------------
 Assertions then sections
 -------------------------------------------------------------------------------
@@ -14795,5 +14805,5 @@ Misc.tests.cpp:<line number>: PASSED:
 
 ===============================================================================
 test cases:  335 |  245 passed |  86 failed |  4 failed as expected
-assertions: 1912 | 1743 passed | 148 failed | 21 failed as expected
+assertions: 1914 | 1745 passed | 148 failed | 21 failed as expected
 
