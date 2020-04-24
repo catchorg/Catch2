@@ -175,7 +175,6 @@ set(IMPL_SOURCES
     ${SOURCES_DIR}/internal/catch_stream.cpp
     ${SOURCES_DIR}/internal/catch_stringref.cpp
     ${SOURCES_DIR}/internal/catch_string_manip.cpp
-    ${SOURCES_DIR}/catch_tag_alias.cpp
     ${SOURCES_DIR}/catch_tag_alias_autoregistrar.cpp
     ${SOURCES_DIR}/internal/catch_tag_alias_registry.cpp
     ${SOURCES_DIR}/catch_test_case_info.cpp
