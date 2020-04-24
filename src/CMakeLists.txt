@@ -84,8 +84,6 @@ set(INTERNAL_HEADERS
     ${SOURCES_DIR}/matchers/catch_matchers_vector.hpp
     ${SOURCES_DIR}/catch_message.hpp
     ${SOURCES_DIR}/internal/catch_meta.hpp
-    ${SOURCES_DIR}/catch_objc.hpp
-    ${SOURCES_DIR}/catch_objc_arc.hpp
     ${SOURCES_DIR}/internal/catch_option.hpp
     ${SOURCES_DIR}/internal/catch_output_redirect.hpp
     ${SOURCES_DIR}/internal/catch_platform.hpp

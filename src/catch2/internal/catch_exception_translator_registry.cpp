@@ -11,10 +11,6 @@
 #include <catch2/internal/catch_compiler_capabilities.hpp>
 #include <catch2/internal/catch_enforce.hpp>
 
-#ifdef __OBJC__
-#import "Foundation/Foundation.h"
-#endif
-
 namespace Catch {
 
     ExceptionTranslatorRegistry::~ExceptionTranslatorRegistry() {
@@ -27,15 +23,6 @@ namespace Catch {
 #if !defined(CATCH_CONFIG_DISABLE_EXCEPTIONS)
     std::string ExceptionTranslatorRegistry::translateActiveException() const {
         try {
-#ifdef __OBJC__
-            // In Objective-C try objective-c exceptions first
-            @try {
-                return tryTranslators();
-            }
-            @catch (NSException *exception) {
-                return Catch::Detail::stringify( [exception description] );
-            }
-#else
             // Compiling a mixed mode project with MSVC means that CLR
             // exceptions will be caught in (...) as well. However, these
             // do not fill-in std::current_exception and thus lead to crash
@@ -48,7 +35,6 @@ namespace Catch {
                 return "Non C++ exception. Possibly a CLR exception.";
             }
             return tryTranslators();
-#endif
         }
         catch( TestFailureException& ) {
             std::rethrow_exception(std::current_exception());

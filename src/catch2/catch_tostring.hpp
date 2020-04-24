@@ -21,10 +21,6 @@
 #include <string_view>
 #endif
 
-#ifdef __OBJC__
-#include <catch2/catch_objc_arc.hpp>
-#endif
-
 #ifdef _MSC_VER
 #pragma warning(push)
 #pragma warning(disable:4180) // We attempt to stream a function (address) by const&, which MSVC complains about but is harmless
@@ -322,30 +318,6 @@ namespace Catch {
             return rss.str();
         }
     }
-
-#ifdef __OBJC__
-    template<>
-    struct StringMaker<NSString*> {
-        static std::string convert(NSString * nsstring) {
-            if (!nsstring)
-                return "nil";
-            return std::string("@") + [nsstring UTF8String];
-        }
-    };
-    template<>
-    struct StringMaker<NSObject*> {
-        static std::string convert(NSObject* nsObject) {
-            return ::Catch::Detail::stringify([nsObject description]);
-        }
-
-    };
-    namespace Detail {
-        inline std::string stringify( NSString* nsstring ) {
-            return StringMaker<NSString*>::convert( nsstring );
-        }
-
-    } // namespace Detail
-#endif // __OBJC__
 
 } // namespace Catch
 

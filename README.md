@@ -19,10 +19,7 @@ before moving to Catch2. You might also like to read [this blog post](https://le
 
 ## What's the Catch?
 
-Catch2 is a multi-paradigm test framework for C++. which also supports
-Objective-C (and maybe C).
-It is primarily distributed as a single header file, although certain
-extensions may require additional headers.
+Catch2 is a multi-paradigm test framework for C++.
 
 ## How to use it
 This documentation comprises these three parts:

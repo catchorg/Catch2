@@ -20,8 +20,6 @@ namespace Catch {
     CATCH_INTERNAL_STOP_WARNINGS_SUPPRESSION
 }
 
-#ifndef __OBJC__
-
 #if defined(CATCH_CONFIG_WCHAR) && defined(CATCH_PLATFORM_WINDOWS) && defined(_UNICODE) && !defined(DO_NOT_USE_WMAIN)
 // Standard C/C++ Win32 Unicode wmain entry point
 extern "C" int wmain (int argc, wchar_t * argv[], wchar_t * []) {
@@ -36,25 +34,5 @@ int main (int argc, char * argv[]) {
 
     return Catch::Session().run( argc, argv );
 }
-
-#else // __OBJC__
-
-// Objective-C entry point
-int main (int argc, char * const argv[]) {
-#if !CATCH_ARC_ENABLED
-    NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
-#endif
-
-    Catch::registerTestMethods();
-    int result = Catch::Session().run( argc, (char**)argv );
-
-#if !CATCH_ARC_ENABLED
-    [pool drain];
-#endif
-
-    return result;
-}
-
-#endif // __OBJC__
 
 #endif // TWOBLUECUBES_CATCH_DEFAULT_MAIN_HPP_INCLUDED
