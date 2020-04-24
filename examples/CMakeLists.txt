@@ -42,7 +42,6 @@ set( TARGETS_IDIOMATIC_EXAMPLES ${BASENAMES_IDIOMATIC_EXAMPLES} )
 
 foreach( name ${TARGETS_IDIOMATIC_EXAMPLES} )
     add_executable( ${name}
-      000-CatchMain.cpp
       ${EXAMPLES_DIR}/${name}.cpp )
 endforeach()
 
@@ -53,7 +52,7 @@ set(ALL_EXAMPLE_TARGETS
 )
 
 foreach( name ${ALL_EXAMPLE_TARGETS} )
-    target_link_libraries( ${name} Catch2 )
+    target_link_libraries( ${name} Catch2 Catch2Main )
     set_property(TARGET ${name} PROPERTY CXX_STANDARD 14)
     set_property(TARGET ${name} PROPERTY CXX_EXTENSIONS OFF)
 endforeach()
