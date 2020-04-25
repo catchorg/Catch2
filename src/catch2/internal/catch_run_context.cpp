@@ -2,7 +2,7 @@
 #include <catch2/internal/catch_compiler_capabilities.hpp>
 #include <catch2/internal/catch_context.hpp>
 #include <catch2/internal/catch_enforce.hpp>
-#include <catch2/internal/catch_fatal_condition.hpp>
+#include <catch2/internal/catch_fatal_condition_handler.hpp>
 #include <catch2/internal/catch_random_number_generator.hpp>
 #include <catch2/internal/catch_stream.hpp>
 #include <catch2/catch_timer.hpp>
@@ -377,9 +377,11 @@ namespace Catch {
     }
 
     void RunContext::invokeActiveTestCase() {
-        FatalConditionHandler fatalConditionHandler; // Handle signals
+        // We need to register a handler for signals/structured exceptions
+        // before running the tests themselves, or the binary can crash
+        // without failed test being reported.
+        FatalConditionHandler _;
         m_activeTestCase->invoke();
-        fatalConditionHandler.reset();
     }
 
     void RunContext::handleUnfinishedSections() {

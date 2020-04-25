@@ -23,7 +23,7 @@ namespace Catch {
         static LONG CALLBACK handleVectoredException(PEXCEPTION_POINTERS ExceptionInfo);
         FatalConditionHandler();
         static void reset();
-        ~FatalConditionHandler();
+        ~FatalConditionHandler() { reset(); }
 
     private:
         static bool isSet;
@@ -49,7 +49,7 @@ namespace Catch {
         static void handleSignal( int sig );
 
         FatalConditionHandler();
-        ~FatalConditionHandler();
+        ~FatalConditionHandler() { reset(); }
         static void reset();
     };
 
@@ -59,9 +59,7 @@ namespace Catch {
 #else
 
 namespace Catch {
-    struct FatalConditionHandler {
-        void reset();
-    };
+    struct FatalConditionHandler {};
 }
 
 #endif

@@ -7,7 +7,7 @@
  *
  */
 
-#include <catch2/internal/catch_fatal_condition.hpp>
+#include <catch2/internal/catch_fatal_condition_handler.hpp>
 
 #include <catch2/internal/catch_context.hpp>
 #include <catch2/interfaces/catch_interfaces_capture.hpp>
@@ -75,10 +75,6 @@ namespace Catch {
         }
     }
 
-    FatalConditionHandler::~FatalConditionHandler() {
-        reset();
-    }
-
 bool FatalConditionHandler::isSet = false;
 ULONG FatalConditionHandler::guaranteeSize = 0;
 PVOID FatalConditionHandler::exceptionHandlerHandle = nullptr;
@@ -94,7 +90,7 @@ namespace Catch {
         int id;
         const char* name;
     };
-    
+
     // 32kb for the alternate stack seems to be sufficient. However, this value
     // is experimentally determined, so that's not guaranteed.
     static constexpr std::size_t sigStackSize = 32768 >= MINSIGSTKSZ ? 32768 : MINSIGSTKSZ;
@@ -138,11 +134,6 @@ namespace Catch {
         }
     }
 
-
-    FatalConditionHandler::~FatalConditionHandler() {
-        reset();
-    }
-
     void FatalConditionHandler::reset() {
         if( isSet ) {
             // Set signals back to previous values -- hopefully nobody overwrote them in the meantime
@@ -162,12 +153,6 @@ namespace Catch {
 
 
 } // namespace Catch
-
-#else
-
-namespace Catch {
-    void FatalConditionHandler::reset() {}
-}
 
 #endif // signals/SEH handling
 
