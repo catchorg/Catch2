@@ -8,7 +8,7 @@ endif()
 
 option(CATCH_INSTALL_DOCS "Install documentation alongside library" ON)
 option(CATCH_INSTALL_EXTRAS "Install extras alongside library" ON)
-option(CATCH_DEVELOPMENT_BUILD "Build tests, enable warnings, enable Werror, etc" ON)
+option(CATCH_DEVELOPMENT_BUILD "Build tests, enable warnings, enable Werror, etc" OFF)
 
 include(CMakeDependentOption)
 cmake_dependent_option(CATCH_BUILD_TESTING "Build the SelfTest project" ON "CATCH_DEVELOPMENT_BUILD" OFF)
