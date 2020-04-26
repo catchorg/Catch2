@@ -4,6 +4,7 @@
  */
 
 #include <catch2/catch_test_macros.hpp>
+#include <catch2/catch_template_test_macros.hpp>
 
 #ifdef __clang__
 #   pragma clang diagnostic ignored "-Wc++98-compat"

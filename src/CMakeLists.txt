@@ -108,7 +108,9 @@ set(INTERNAL_HEADERS
     ${SOURCES_DIR}/catch_test_case_info.hpp
     ${SOURCES_DIR}/internal/catch_test_case_registry_impl.hpp
     ${SOURCES_DIR}/internal/catch_test_case_tracker.hpp
+    ${SOURCES_DIR}/catch_template_test_macros.hpp
     ${SOURCES_DIR}/catch_test_macros.hpp
+    ${SOURCES_DIR}/internal/catch_template_test_registry.hpp
     ${SOURCES_DIR}/internal/catch_test_registry.hpp
     ${SOURCES_DIR}/catch_test_spec.hpp
     ${SOURCES_DIR}/internal/catch_test_spec_parser.hpp
