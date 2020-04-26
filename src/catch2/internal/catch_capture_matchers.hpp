@@ -5,7 +5,7 @@
 #ifndef TWOBLUECUBES_CATCH_CAPTURE_MATCHERS_HPP_INCLUDED
 #define TWOBLUECUBES_CATCH_CAPTURE_MATCHERS_HPP_INCLUDED
 
-#include <catch2/internal/catch_capture.hpp>
+#include <catch2/internal/catch_test_macro_impl.hpp>
 #include <catch2/catch_stringref.hpp>
 
 namespace Catch {

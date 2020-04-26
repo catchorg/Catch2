@@ -15,7 +15,7 @@
 #include <catch2/catch_config.hpp>
 #include <catch2/internal/catch_test_registry.hpp>
 #include <catch2/catch_test_case_info.hpp>
-#include <catch2/internal/catch_capture.hpp>
+#include <catch2/internal/catch_test_macro_impl.hpp>
 #include <catch2/catch_totals.hpp>
 #include <catch2/catch_test_spec.hpp>
 #include <catch2/internal/catch_test_case_tracker.hpp>

@@ -6,7 +6,7 @@
 #ifndef TWOBLUECUBES_CATCH_TEST_MACROS_HPP_INCLUDED
 #define TWOBLUECUBES_CATCH_TEST_MACROS_HPP_INCLUDED
 
-#include <catch2/internal/catch_capture.hpp>
+#include <catch2/internal/catch_test_macro_impl.hpp>
 #include <catch2/interfaces/catch_interfaces_exception.hpp>
 #include <catch2/internal/catch_preprocessor.hpp>
 #include <catch2/internal/catch_section.hpp>
