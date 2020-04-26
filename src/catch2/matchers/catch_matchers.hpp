@@ -6,7 +6,7 @@
 #define TWOBLUECUBES_CATCH_MATCHERS_HPP_INCLUDED
 
 #include <catch2/internal/catch_common.hpp>
-#include <catch2/internal/catch_capture_matchers.hpp>
+#include <catch2/matchers/internal/catch_matchers_impl.hpp>
 
 #include <string>
 #include <vector>

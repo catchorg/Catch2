@@ -34,8 +34,8 @@ namespace Catch {
     };
 
     namespace Matchers {
-    template <typename ArgT>
-    struct MatcherBase;
+        template <typename ArgT>
+        struct MatcherBase;
     }
 
     using StringMatcher = Matchers::MatcherBase<std::string>;

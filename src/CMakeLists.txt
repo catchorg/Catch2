@@ -33,7 +33,7 @@ set(BENCHMARK_SOURCES
 SOURCE_GROUP("benchmark" FILES ${BENCHMARK_HEADERS} ${BENCHMARK_SOURCES})
 
 set(INTERNAL_HEADERS
-    ${SOURCES_DIR}/internal/catch_capture_matchers.hpp
+    ${SOURCES_DIR}/matchers/internal/catch_matchers_impl.hpp
     ${SOURCES_DIR}/internal/catch_container_nonmembers.hpp
     ${SOURCES_DIR}/catch_approx.hpp
     ${SOURCES_DIR}/internal/catch_assertionhandler.hpp
@@ -130,7 +130,7 @@ set(IMPL_SOURCES
     ${SOURCES_DIR}/catch_approx.cpp
     ${SOURCES_DIR}/internal/catch_assertionhandler.cpp
     ${SOURCES_DIR}/catch_assertion_result.cpp
-    ${SOURCES_DIR}/internal/catch_capture_matchers.cpp
+    ${SOURCES_DIR}/matchers/internal/catch_matchers_impl.cpp
     ${SOURCES_DIR}/internal/catch_commandline.cpp
     ${SOURCES_DIR}/internal/catch_common.cpp
     ${SOURCES_DIR}/catch_config.cpp
