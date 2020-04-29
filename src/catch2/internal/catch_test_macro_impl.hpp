@@ -10,7 +10,6 @@
 
 #include <catch2/internal/catch_assertionhandler.hpp>
 #include <catch2/interfaces/catch_interfaces_capture.hpp>
-#include <catch2/catch_message.hpp>
 #include <catch2/catch_stringref.hpp>
 
 // We need this suppression to leak, because it took until GCC 9
@@ -120,26 +119,6 @@
     } while( false )
 
 
-///////////////////////////////////////////////////////////////////////////////
-#define INTERNAL_CATCH_MSG( macroName, messageType, resultDisposition, ... ) \
-    do { \
-        Catch::AssertionHandler catchAssertionHandler( macroName##_catch_sr, CATCH_INTERNAL_LINEINFO, Catch::StringRef(), resultDisposition ); \
-        catchAssertionHandler.handleMessage( messageType, ( Catch::MessageStream() << __VA_ARGS__ + ::Catch::StreamEndStop() ).m_stream.str() ); \
-        INTERNAL_CATCH_REACT( catchAssertionHandler ) \
-    } while( false )
-
-///////////////////////////////////////////////////////////////////////////////
-#define INTERNAL_CATCH_CAPTURE( varName, macroName, ... ) \
-    auto varName = Catch::Capturer( macroName, CATCH_INTERNAL_LINEINFO, Catch::ResultWas::Info, #__VA_ARGS__ ); \
-    varName.captureValues( 0, __VA_ARGS__ )
-
-///////////////////////////////////////////////////////////////////////////////
-#define INTERNAL_CATCH_INFO( macroName, log ) \
-    Catch::ScopedMessage INTERNAL_CATCH_UNIQUE_NAME( scopedMessage )( Catch::MessageBuilder( macroName##_catch_sr, CATCH_INTERNAL_LINEINFO, Catch::ResultWas::Info ) << log )
-
-///////////////////////////////////////////////////////////////////////////////
-#define INTERNAL_CATCH_UNSCOPED_INFO( macroName, log ) \
-    Catch::getResultCapture().emplaceUnscopedMessage( Catch::MessageBuilder( macroName##_catch_sr, CATCH_INTERNAL_LINEINFO, Catch::ResultWas::Info ) << log )
 
 ///////////////////////////////////////////////////////////////////////////////
 // Although this is matcher-based, it can be used with just a string
