@@ -127,8 +127,8 @@ Catch's selection, by defining either `CATCH_CONFIG_CPP11_TO_STRING` or
 
 ## C++17 toggles
 
-    CATCH_CONFIG_CPP17_UNCAUGHT_EXCEPTIONS  // Use std::uncaught_exceptions instead of std::uncaught_exception
-    CATCH_CONFIG_CPP17_STRING_VIEW          // Override std::string_view support detection(Catch provides a StringMaker specialization by default)
+    CATCH_CONFIG_CPP17_UNCAUGHT_EXCEPTIONS  // Override std::uncaught_exceptions (instead of std::uncaught_exception) support detection
+    CATCH_CONFIG_CPP17_STRING_VIEW          // Override std::string_view support detection (Catch provides a StringMaker specialization by default)
     CATCH_CONFIG_CPP17_VARIANT              // Override std::variant support detection (checked by CATCH_CONFIG_ENABLE_VARIANT_STRINGMAKER)
     CATCH_CONFIG_CPP17_OPTIONAL             // Override std::optional support detection (checked by CATCH_CONFIG_ENABLE_OPTIONAL_STRINGMAKER)
     CATCH_CONFIG_CPP17_BYTE                 // Override std::byte support detection (Catch provides a StringMaker specialization by default)
