@@ -3,8 +3,6 @@
 ##teamcity[testFinished name='# A test name that starts with a #' duration="{duration}"]
 ##teamcity[testStarted name='#1005: Comparing pointer to int and long (NULL can be either on various systems)']
 ##teamcity[testFinished name='#1005: Comparing pointer to int and long (NULL can be either on various systems)' duration="{duration}"]
-##teamcity[testStarted name='#1027']
-##teamcity[testFinished name='#1027' duration="{duration}"]
 ##teamcity[testStarted name='#1027: Bitfields can be captured']
 ##teamcity[testFinished name='#1027: Bitfields can be captured' duration="{duration}"]
 ##teamcity[testStarted name='#1147']

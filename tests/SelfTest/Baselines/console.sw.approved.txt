@@ -34,22 +34,6 @@ with expansion:
   0 == 0
 
 -------------------------------------------------------------------------------
-#1027
--------------------------------------------------------------------------------
-Compilation.tests.cpp:<line number>
-...............................................................................
-
-Compilation.tests.cpp:<line number>: PASSED:
-  REQUIRE( y.v == 0 )
-with expansion:
-  0 == 0
-
-Compilation.tests.cpp:<line number>: PASSED:
-  REQUIRE( 0 == y.v )
-with expansion:
-  0 == 0
-
--------------------------------------------------------------------------------
 #1027: Bitfields can be captured
 -------------------------------------------------------------------------------
 Compilation.tests.cpp:<line number>
@@ -14804,6 +14788,6 @@ Misc.tests.cpp:<line number>
 Misc.tests.cpp:<line number>: PASSED:
 
 ===============================================================================
-test cases:  335 |  245 passed |  86 failed |  4 failed as expected
-assertions: 1914 | 1745 passed | 148 failed | 21 failed as expected
+test cases:  334 |  244 passed |  86 failed |  4 failed as expected
+assertions: 1912 | 1743 passed | 148 failed | 21 failed as expected
 

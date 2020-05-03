@@ -61,10 +61,6 @@ namespace { namespace CompilationTests {
         return val == f.i;
     }
 
-    struct Y {
-        uint32_t v : 1;
-    };
-
     void throws_int(bool b) {
         if (b) {
             throw 1;
@@ -142,9 +138,11 @@ namespace { namespace CompilationTests {
         REQUIRE (x == 4);
     }
 
-
-    TEST_CASE("#1027") {
-        Y y{0};
+    TEST_CASE("#1027: Bitfields can be captured") {
+        struct Y {
+            uint32_t v : 1;
+        };
+        Y y{ 0 };
         REQUIRE(y.v == 0);
         REQUIRE(0 == y.v);
     }
@@ -215,15 +213,6 @@ namespace { namespace CompilationTests {
 #if defined (_MSC_VER)
 #pragma warning(pop)
 #endif
-
-    TEST_CASE( "#1027: Bitfields can be captured" ) {
-        struct Y {
-            uint32_t v : 1;
-        };
-        Y y{ 0 };
-        REQUIRE( y.v == 0 );
-        REQUIRE( 0 == y.v );
-    }
 
     TEST_CASE("#1319: Sections can have description (even if it is not saved", "[compilation]") {
         SECTION("SectionName", "This is a long form section description") {

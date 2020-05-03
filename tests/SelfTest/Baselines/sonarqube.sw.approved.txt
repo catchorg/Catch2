@@ -385,7 +385,6 @@ Class.tests.cpp:<line number>
     <testCase name="Template test case method with test types specified inside std::tuple - MyTypes - 2" duration="{duration}"/>
   </file>
   <file path="tests/<exe-name>/UsageTests/Compilation.tests.cpp">
-    <testCase name="#1027" duration="{duration}"/>
     <testCase name="#1027: Bitfields can be captured" duration="{duration}"/>
     <testCase name="#1147" duration="{duration}"/>
     <testCase name="#1238" duration="{duration}"/>

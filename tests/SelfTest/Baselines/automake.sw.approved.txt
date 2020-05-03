@@ -1,6 +1,5 @@
 :test-result: PASS # A test name that starts with a #
 :test-result: PASS #1005: Comparing pointer to int and long (NULL can be either on various systems)
-:test-result: PASS #1027
 :test-result: PASS #1027: Bitfields can be captured
 :test-result: PASS #1147
 :test-result: PASS #1175 - Hidden Test

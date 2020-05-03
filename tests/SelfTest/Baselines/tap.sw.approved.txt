@@ -4,10 +4,6 @@ ok {test-number} - with 1 message: 'yay'
 ok {test-number} - fptr == 0 for: 0 == 0
 # #1005: Comparing pointer to int and long (NULL can be either on various systems)
 ok {test-number} - fptr == 0l for: 0 == 0
-# #1027
-ok {test-number} - y.v == 0 for: 0 == 0
-# #1027
-ok {test-number} - 0 == y.v for: 0 == 0
 # #1027: Bitfields can be captured
 ok {test-number} - y.v == 0 for: 0 == 0
 # #1027: Bitfields can be captured
@@ -3820,5 +3816,5 @@ ok {test-number} - q3 == 23. for: 23.0 == 23.0
 ok {test-number} -
 # xmlentitycheck
 ok {test-number} -
-1..1906
+1..1904
 
