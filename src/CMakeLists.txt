@@ -269,19 +269,22 @@ target_include_directories(Catch2
 )
 
 
-add_library(Catch2Main STATIC
+add_library(Catch2WithMain STATIC
     ${SOURCES_DIR}/internal/catch_main.cpp
 )
-add_library(Catch2::Catch2Main ALIAS Catch2Main)
-target_link_libraries(Catch2Main PUBLIC Catch2)
-
+add_library(Catch2::Catch2WithMain ALIAS Catch2WithMain)
+target_link_libraries(Catch2WithMain PUBLIC Catch2)
+set_target_properties(Catch2WithMain
+  PROPERTIES
+    OUTPUT_NAME "Catch2Main"
+)
 
 if (NOT_SUBPROJECT)
     # create and install an export set for catch target as Catch2::Catch
     install(
       TARGETS
         Catch2
-        Catch2Main
+        Catch2WithMain
       EXPORT
         Catch2Targets
       DESTINATION
@@ -342,5 +345,5 @@ if (CATCH_BUILD_EXAMPLES OR CATCH_BUILD_EXTRA_TESTS)
     )
 endif()
 
-list(APPEND CATCH_WARNING_TARGETS Catch2 Catch2Main)
+list(APPEND CATCH_WARNING_TARGETS Catch2 Catch2WithMain)
 set(CATCH_WARNING_TARGETS ${CATCH_WARNING_TARGETS} PARENT_SCOPE)

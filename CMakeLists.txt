@@ -166,14 +166,14 @@ if (NOT_SUBPROJECT)
       @ONLY
     )
     configure_file(
-      ${CMAKE_CURRENT_SOURCE_DIR}/CMake/catch2-main.pc.in
-      ${CMAKE_CURRENT_BINARY_DIR}/catch2-main.pc
+      ${CMAKE_CURRENT_SOURCE_DIR}/CMake/catch2-with-main.pc.in
+      ${CMAKE_CURRENT_BINARY_DIR}/catch2-with-main.pc
       @ONLY
     )
     install(
       FILES
         "${CMAKE_CURRENT_BINARY_DIR}/catch2.pc"
-        "${CMAKE_CURRENT_BINARY_DIR}/catch2-main.pc"
+        "${CMAKE_CURRENT_BINARY_DIR}/catch2-with-main.pc"
       DESTINATION
         ${PKGCONFIG_INSTALL_DIR}
     )
