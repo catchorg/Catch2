@@ -4,7 +4,6 @@
 // and preprocessor token pasting. In other words, hopefully this test
 // will be deleted soon :-)
 
-#include <catch2/internal/catch_default_main.hpp>
 #include <catch2/catch_test_macros.hpp>
 
 namespace {

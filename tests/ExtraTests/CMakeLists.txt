@@ -15,7 +15,7 @@ add_executable(PrefixedMacros ${TESTS_DIR}/X01-PrefixedMacros.cpp)
 target_compile_definitions( PrefixedMacros PRIVATE CATCH_CONFIG_PREFIX_ALL CATCH_CONFIG_RUNTIME_STATIC_REQUIRE )
 # Macro configuration does not touch the compiled parts, so we can link
 # it against the main library
-target_link_libraries( PrefixedMacros Catch2 )
+target_link_libraries( PrefixedMacros Catch2WithMain )
 
 add_test(NAME CATCH_CONFIG_PREFIX_ALL COMMAND PrefixedMacros -s)
 set_tests_properties(
@@ -33,7 +33,7 @@ add_executable(DisabledMacros ${TESTS_DIR}/X02-DisabledMacros.cpp)
 target_compile_definitions( DisabledMacros PRIVATE CATCH_CONFIG_DISABLE )
 # Macro configuration does not touch the compiled parts, so we can link
 # it against the main library
-target_link_libraries( DisabledMacros Catch2 )
+target_link_libraries( DisabledMacros Catch2WithMain )
 
 add_test(NAME CATCH_CONFIG_DISABLE-1 COMMAND DisabledMacros -s)
 set_tests_properties(
@@ -97,7 +97,7 @@ set_tests_properties(
 
 add_executable(FallbackStringifier ${TESTS_DIR}/X10-FallbackStringifier.cpp)
 target_compile_definitions( FallbackStringifier PRIVATE CATCH_CONFIG_FALLBACK_STRINGIFIER=fallbackStringifier )
-target_link_libraries( FallbackStringifier Catch2 )
+target_link_libraries( FallbackStringifier Catch2WithMain )
 
 add_test(NAME FallbackStringifier COMMAND FallbackStringifier -r compact -s)
 set_tests_properties(
@@ -109,7 +109,7 @@ set_tests_properties(
 
 add_executable(DisableStringification ${TESTS_DIR}/X11-DisableStringification.cpp)
 target_compile_definitions( DisableStringification PRIVATE CATCH_CONFIG_DISABLE_STRINGIFICATION )
-target_link_libraries(DisableStringification Catch2)
+target_link_libraries(DisableStringification Catch2WithMain)
 add_test(NAME CATCH_CONFIG_DISABLE_STRINGIFICATION COMMAND DisableStringification -r compact -s)
 set_tests_properties(
     CATCH_CONFIG_DISABLE_STRINGIFICATION
@@ -126,7 +126,7 @@ if (MSVC)
     set_property( TARGET WindowsHeader PROPERTY CXX_STANDARD 14 )
     set_property( TARGET WindowsHeader PROPERTY CXX_STANDARD_REQUIRED ON )
     set_property( TARGET WindowsHeader PROPERTY CXX_EXTENSIONS OFF )
-    target_link_libraries( WindowsHeader Catch2 )
+    target_link_libraries( WindowsHeader Catch2WithMain )
     add_test(NAME WindowsHeader COMMAND WindowsHeader -r compact)
     list(APPEND CATCH_WARNING_TARGETS ${EXTRA_TEST_BINARIES} WindowsHeader)
 endif()

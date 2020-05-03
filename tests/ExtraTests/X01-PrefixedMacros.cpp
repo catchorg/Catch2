@@ -1,9 +1,8 @@
-// X11-DisableStringification.cpp
+// X01-DisableStringification.cpp
 // Test that Catch's prefixed macros compile and run properly.
-
-#include <catch2/internal/catch_default_main.hpp>
 // This won't provide full coverage, but it might be worth checking
 // the other branch as well
+
 #include <catch2/catch_test_macros.hpp>
 #include <catch2/matchers/catch_matchers_predicate.hpp>
 #include <catch2/matchers/catch_matchers_string.hpp>
