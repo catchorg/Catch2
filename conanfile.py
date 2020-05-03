@@ -40,6 +40,6 @@ class CatchConan(ConanFile):
 
     def package_info(self):
         self.cpp_info.libs = [
-            'Catch2WithMain', 'Catch2'] if self.options.with_main else ['Catch2']
+            'Catch2Main', 'Catch2'] if self.options.with_main else ['Catch2']
         self.cpp_info.names["cmake_find_package"] = "Catch2"
         self.cpp_info.names["cmake_find_package_multi"] = "Catch2"
