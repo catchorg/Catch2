@@ -3,6 +3,7 @@ include(MiscFunctions)
 # Please keep these ordered alphabetically
 set(BENCHMARK_HEADERS
     ${SOURCES_DIR}/benchmark/catch_benchmark.hpp
+    ${SOURCES_DIR}/benchmark/catch_benchmark_all.hpp
     ${SOURCES_DIR}/benchmark/catch_chronometer.hpp
     ${SOURCES_DIR}/benchmark/catch_clock.hpp
     ${SOURCES_DIR}/benchmark/catch_constructor.hpp
@@ -33,6 +34,10 @@ set(BENCHMARK_SOURCES
 SOURCE_GROUP("benchmark" FILES ${BENCHMARK_HEADERS} ${BENCHMARK_SOURCES})
 
 set(INTERNAL_HEADERS
+    ${SOURCES_DIR}/catch_all.hpp
+    ${SOURCES_DIR}/matchers/catch_matchers_all.hpp
+    ${SOURCES_DIR}/generators/catch_generators_all.hpp
+    ${SOURCES_DIR}/interfaces/catch_interfaces_all.hpp
     ${SOURCES_DIR}/matchers/internal/catch_matchers_impl.hpp
     ${SOURCES_DIR}/internal/catch_container_nonmembers.hpp
     ${SOURCES_DIR}/catch_approx.hpp
@@ -198,6 +203,7 @@ CheckFileList(INTERNAL_FILES ${SOURCES_DIR}/internal)
 
 # Please keep these ordered alphabetically
 set(REPORTER_HEADERS
+    ${SOURCES_DIR}/reporters/catch_reporters_all.hpp
     ${SOURCES_DIR}/reporters/catch_reporter_automake.hpp
     ${SOURCES_DIR}/reporters/catch_reporter_bases.hpp
     ${SOURCES_DIR}/reporters/catch_reporter_compact.hpp
