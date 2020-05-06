@@ -199,7 +199,6 @@ set(IMPL_SOURCES
     ${SOURCES_DIR}/internal/catch_xmlwriter.cpp
 )
 set(INTERNAL_FILES ${IMPL_SOURCES} ${INTERNAL_HEADERS})
-CheckFileList(INTERNAL_FILES ${SOURCES_DIR}/internal)
 
 # Please keep these ordered alphabetically
 set(REPORTER_HEADERS
@@ -228,7 +227,6 @@ set(REPORTER_SOURCES
     ${SOURCES_DIR}/reporters/catch_reporter_xml.cpp
 )
 set(REPORTER_FILES ${REPORTER_HEADERS} ${REPORTER_SOURCES})
-CheckFileList(REPORTER_FILES ${SOURCES_DIR}/reporters)
 
 # Fixme: STATIC because for dynamic, we would need to handle visibility
 # and I don't want to do the annotations right now

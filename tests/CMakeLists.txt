@@ -53,7 +53,6 @@ set(TEST_SOURCES
         ${SELF_TEST_DIR}/UsageTests/MatchersRanges.tests.cpp
         ${SELF_TEST_DIR}/UsageTests/Matchers.tests.cpp
         )
-CheckFileList(TEST_SOURCES ${SELF_TEST_DIR})
 
 
 # Specify the headers, too, so CLion recognises them as project files
