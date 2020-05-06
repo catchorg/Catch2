@@ -134,25 +134,25 @@ if (NOT_SUBPROJECT)
       )
     endif()
 
-    if(CATCH_INSTALL_HELPERS)
-    # Install CMake scripts
-    install(
-      FILES
-        "extras/ParseAndAddCatchTests.cmake"
-        "extras/Catch.cmake"
-        "extras/CatchAddTests.cmake"
-      DESTINATION
-        ${CATCH_CMAKE_CONFIG_DESTINATION}
-    )
-
-    # Install debugger helpers
-    install(
-      FILES
-        "extras/gdbinit"
-        "extras/lldbinit"
-      DESTINATION
-        ${CMAKE_INSTALL_DATAROOTDIR}/Catch2
-    )
+    if(CATCH_INSTALL_EXTRAS)
+        # Install CMake scripts
+        install(
+          FILES
+            "extras/ParseAndAddCatchTests.cmake"
+            "extras/Catch.cmake"
+            "extras/CatchAddTests.cmake"
+          DESTINATION
+            ${CATCH_CMAKE_CONFIG_DESTINATION}
+        )
+    
+        # Install debugger helpers
+        install(
+          FILES
+            "extras/gdbinit"
+            "extras/lldbinit"
+          DESTINATION
+            ${CMAKE_INSTALL_DATAROOTDIR}/Catch2
+        )
     endif()
 
     ## Provide some pkg-config integration
