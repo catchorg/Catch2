@@ -50,7 +50,7 @@ add_subdirectory(src)
 
 # Build tests only if requested
 if (BUILD_TESTING AND CATCH_BUILD_TESTING AND NOT_SUBPROJECT)
-    find_package(PythonInterp)
+    find_package(PythonInterp 3 REQUIRED)
     if (NOT PYTHONINTERP_FOUND)
         message(FATAL_ERROR "Python not found, but required for tests")
     endif()

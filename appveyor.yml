@@ -13,7 +13,7 @@ branches:
 
 # We need a more up to date pip because Python 2.7 is EOL soon
 init:
-  - set PATH=C:\Python35\Scripts;%PATH%
+  - set PATH=C:\Python35;C:\Python35\Scripts;%PATH%
 
 
 install:
