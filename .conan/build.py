@@ -31,7 +31,7 @@ class BuilderSettings(object):
             not match the stable pattern. Otherwise it will upload to stable
             channel.
         """
-        return os.getenv("CONAN_UPLOAD", "https://api.bintray.com/conan/catchorg/Catch2")
+        return os.getenv("CONAN_UPLOAD", "https://api.bintray.com/conan/catchorg/catch2")
 
     @property
     def upload_only_when_stable(self):
