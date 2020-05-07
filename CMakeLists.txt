@@ -37,6 +37,14 @@ include(CTest)
 # than later in the install block
 set(CATCH_CMAKE_CONFIG_DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake/Catch2")
 
+# We have some Windows builds that test `wmain` entry point,
+# and we need this change to be present in all binaries that
+# are built during these tests, so this is required here, before
+# the subdirectories are added.
+if(CATCH_TEST_USE_WMAIN)
+    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /ENTRY:wmainCRTStartup")
+endif()
+
 
 # Basic paths
 set(CATCH_DIR ${CMAKE_CURRENT_SOURCE_DIR})
@@ -76,9 +84,6 @@ endif()
 #
 #set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 #
-#if(USE_WMAIN)
-#    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /ENTRY:wmainCRTStartup")
-#endif()
 #
 #
 #

@@ -24,5 +24,3 @@ struct TestListener : Catch::TestEventListenerBase {
 #include <catch2/catch_reporter_registrars.hpp>
 
 CATCH_REGISTER_LISTENER( TestListener )
-
-#include <catch2/internal/catch_default_main.hpp>

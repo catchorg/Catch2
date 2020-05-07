@@ -55,7 +55,6 @@ set(INTERNAL_HEADERS
     ${SOURCES_DIR}/internal/catch_debug_console.hpp
     ${SOURCES_DIR}/internal/catch_debugger.hpp
     ${SOURCES_DIR}/internal/catch_decomposer.hpp
-    ${SOURCES_DIR}/internal/catch_default_main.hpp
     ${SOURCES_DIR}/internal/catch_enforce.hpp
     ${SOURCES_DIR}/internal/catch_enum_values_registry.hpp
     ${SOURCES_DIR}/internal/catch_errno_guard.hpp
@@ -318,6 +317,8 @@ if (CATCH_BUILD_EXAMPLES OR CATCH_BUILD_EXTRA_TESTS)
       ${INTERNAL_FILES}
       ${BENCHMARK_HEADERS}
       ${BENCHMARK_SOURCES}
+      # Also include main entry point
+      ${SOURCES_DIR}/internal/catch_main.cpp
     )
     target_include_directories(Catch2_buildall_interface
       INTERFACE

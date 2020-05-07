@@ -15,7 +15,7 @@ endif(MSVC) #Temporary workaround
 # define the sources of the self test
 # Please keep these ordered alphabetically
 set(TEST_SOURCES
-        ${SELF_TEST_DIR}/TestMain.cpp
+        ${SELF_TEST_DIR}/TestRegistrations.cpp
         ${SELF_TEST_DIR}/IntrospectiveTests/CmdLine.tests.cpp
         ${SELF_TEST_DIR}/IntrospectiveTests/Details.tests.cpp
         ${SELF_TEST_DIR}/IntrospectiveTests/GeneratorsImpl.tests.cpp
@@ -72,7 +72,7 @@ set(HEADERS
 include(CTest)
 
 add_executable(SelfTest ${TEST_SOURCES})
-target_link_libraries(SelfTest PRIVATE Catch2)
+target_link_libraries(SelfTest PRIVATE Catch2WithMain)
 
 if (CATCH_ENABLE_COVERAGE)
     set(ENABLE_COVERAGE ON CACHE BOOL "Enable coverage build." FORCE)

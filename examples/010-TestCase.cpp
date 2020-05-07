@@ -1,8 +1,4 @@
 // 010-TestCase.cpp
-
-// Let Catch provide main():
-#include <catch2/internal/catch_default_main.hpp>
-
 // And write tests in the same file:
 #include <catch2/catch_test_macros.hpp>
 
