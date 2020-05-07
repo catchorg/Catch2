@@ -17,9 +17,9 @@ namespace Catch {
 namespace Matchers {
 
     template<typename T, typename Alloc>
-    struct ContainsElementMatcher final : MatcherBase<std::vector<T, Alloc>> {
+    struct VectorContainsElementMatcher final : MatcherBase<std::vector<T, Alloc>> {
 
-        ContainsElementMatcher(T const& comparator):
+        VectorContainsElementMatcher(T const& comparator):
             m_comparator(comparator)
         {}
 
@@ -168,8 +168,8 @@ namespace Matchers {
 
     //! Creates a matcher that matches vectors that contain `comparator` as an element
     template<typename T, typename Alloc = std::allocator<T>>
-    ContainsElementMatcher<T, Alloc> VectorContains( T const& comparator ) {
-        return ContainsElementMatcher<T, Alloc>(comparator);
+    VectorContainsElementMatcher<T, Alloc> VectorContains( T const& comparator ) {
+        return VectorContainsElementMatcher<T, Alloc>(comparator);
     }
 
     //! Creates a matcher that matches vectors that are exactly equal to `comparator`
