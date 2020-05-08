@@ -28,3 +28,4 @@ Build
 cmake-build-*
 benchmark-dir
 .conan/test_package/build
+bazel-*
