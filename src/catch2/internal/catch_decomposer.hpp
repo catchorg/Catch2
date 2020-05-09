@@ -178,47 +178,47 @@ namespace Catch {
 
         template<typename RhsT>
         auto operator == ( RhsT const& rhs ) -> BinaryExpr<LhsT, RhsT const&> const {
-            return { compareEqual( m_lhs, rhs ), m_lhs, "==", rhs };
+            return { compareEqual( m_lhs, rhs ), m_lhs, "=="_sr, rhs };
         }
         auto operator == ( bool rhs ) -> BinaryExpr<LhsT, bool> const {
-            return { m_lhs == rhs, m_lhs, "==", rhs };
+            return { m_lhs == rhs, m_lhs, "=="_sr, rhs };
         }
 
         template<typename RhsT>
         auto operator != ( RhsT const& rhs ) -> BinaryExpr<LhsT, RhsT const&> const {
-            return { compareNotEqual( m_lhs, rhs ), m_lhs, "!=", rhs };
+            return { compareNotEqual( m_lhs, rhs ), m_lhs, "!="_sr, rhs };
         }
         auto operator != ( bool rhs ) -> BinaryExpr<LhsT, bool> const {
-            return { m_lhs != rhs, m_lhs, "!=", rhs };
+            return { m_lhs != rhs, m_lhs, "!="_sr, rhs };
         }
 
         template<typename RhsT>
         auto operator > ( RhsT const& rhs ) -> BinaryExpr<LhsT, RhsT const&> const {
-            return { static_cast<bool>(m_lhs > rhs), m_lhs, ">", rhs };
+            return { static_cast<bool>(m_lhs > rhs), m_lhs, ">"_sr, rhs };
         }
         template<typename RhsT>
         auto operator < ( RhsT const& rhs ) -> BinaryExpr<LhsT, RhsT const&> const {
-            return { static_cast<bool>(m_lhs < rhs), m_lhs, "<", rhs };
+            return { static_cast<bool>(m_lhs < rhs), m_lhs, "<"_sr, rhs };
         }
         template<typename RhsT>
         auto operator >= ( RhsT const& rhs ) -> BinaryExpr<LhsT, RhsT const&> const {
-            return { static_cast<bool>(m_lhs >= rhs), m_lhs, ">=", rhs };
+            return { static_cast<bool>(m_lhs >= rhs), m_lhs, ">="_sr, rhs };
         }
         template<typename RhsT>
         auto operator <= ( RhsT const& rhs ) -> BinaryExpr<LhsT, RhsT const&> const {
-            return { static_cast<bool>(m_lhs <= rhs), m_lhs, "<=", rhs };
+            return { static_cast<bool>(m_lhs <= rhs), m_lhs, "<="_sr, rhs };
         }
         template <typename RhsT>
         auto operator | (RhsT const& rhs) -> BinaryExpr<LhsT, RhsT const&> const {
-            return { static_cast<bool>(m_lhs | rhs), m_lhs, "|", rhs };
+            return { static_cast<bool>(m_lhs | rhs), m_lhs, "|"_sr, rhs };
         }
         template <typename RhsT>
         auto operator & (RhsT const& rhs) -> BinaryExpr<LhsT, RhsT const&> const {
-            return { static_cast<bool>(m_lhs & rhs), m_lhs, "&", rhs };
+            return { static_cast<bool>(m_lhs & rhs), m_lhs, "&"_sr, rhs };
         }
         template <typename RhsT>
         auto operator ^ (RhsT const& rhs) -> BinaryExpr<LhsT, RhsT const&> const {
-            return { static_cast<bool>(m_lhs ^ rhs), m_lhs, "^", rhs };
+            return { static_cast<bool>(m_lhs ^ rhs), m_lhs, "^"_sr, rhs };
         }
 
         template<typename RhsT>
