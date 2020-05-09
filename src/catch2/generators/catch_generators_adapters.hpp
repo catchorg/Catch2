@@ -14,7 +14,7 @@ namespace Catch {
 namespace Generators {
 
     template <typename T>
-    class TakeGenerator : public IGenerator<T> {
+    class TakeGenerator final : public IGenerator<T> {
         GeneratorWrapper<T> m_generator;
         size_t m_returned = 0;
         size_t m_target;
@@ -51,7 +51,7 @@ namespace Generators {
 
 
     template <typename T, typename Predicate>
-    class FilterGenerator : public IGenerator<T> {
+    class FilterGenerator final : public IGenerator<T> {
         GeneratorWrapper<T> m_generator;
         Predicate m_predicate;
     public:
@@ -91,7 +91,7 @@ namespace Generators {
     }
 
     template <typename T>
-    class RepeatGenerator : public IGenerator<T> {
+    class RepeatGenerator final : public IGenerator<T> {
         static_assert(!std::is_same<T, bool>::value,
             "RepeatGenerator currently does not support bools"
             "because of std::vector<bool> specialization");
@@ -147,7 +147,7 @@ namespace Generators {
     }
 
     template <typename T, typename U, typename Func>
-    class MapGenerator : public IGenerator<T> {
+    class MapGenerator final : public IGenerator<T> {
         // TBD: provide static assert for mapping function, for friendly error message
         GeneratorWrapper<U> m_generator;
         Func m_function;
