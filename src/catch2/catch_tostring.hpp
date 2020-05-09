@@ -239,7 +239,10 @@ namespace Catch {
 
     template<>
     struct StringMaker<bool> {
-        static std::string convert(bool b);
+        static std::string convert(bool b) {
+            using namespace std::string_literals;
+            return b ? "true"s : "false"s;
+        }
     };
 
     template<>
@@ -257,7 +260,10 @@ namespace Catch {
 
     template<>
     struct StringMaker<std::nullptr_t> {
-        static std::string convert(std::nullptr_t);
+        static std::string convert(std::nullptr_t) {
+            using namespace std::string_literals;
+            return "nullptr"s;
+        }
     };
 
     template<>
@@ -512,17 +518,13 @@ namespace Catch {
 
 template <class Ratio>
 struct ratio_string {
-    static std::string symbol();
+    static std::string symbol() {
+        Catch::ReusableStringStream rss;
+        rss << '[' << Ratio::num << '/'
+            << Ratio::den << ']';
+        return rss.str();
+    }
 };
-
-template <class Ratio>
-std::string ratio_string<Ratio>::symbol() {
-    Catch::ReusableStringStream rss;
-    rss << '[' << Ratio::num << '/'
-        << Ratio::den << ']';
-    return rss.str();
-}
-
 
 template <>
 struct ratio_string<std::atto> {

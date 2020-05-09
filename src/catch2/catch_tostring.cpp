@@ -201,11 +201,6 @@ std::string StringMaker<unsigned long long>::convert(unsigned long long value) {
     return rss.str();
 }
 
-
-std::string StringMaker<bool>::convert(bool b) {
-    return b ? "true" : "false";
-}
-
 std::string StringMaker<signed char>::convert(signed char value) {
     if (value == '\r') {
         return "'\\r'";
@@ -228,10 +223,6 @@ std::string StringMaker<char>::convert(char c) {
 }
 std::string StringMaker<unsigned char>::convert(unsigned char c) {
     return ::Catch::Detail::stringify(static_cast<char>(c));
-}
-
-std::string StringMaker<std::nullptr_t>::convert(std::nullptr_t) {
-    return "nullptr";
 }
 
 int StringMaker<float>::precision = 5;
