@@ -36,11 +36,11 @@
 #include <catch2/catch_totals.hpp>
 #include <catch2/catch_version.hpp>
 #include <catch2/catch_version_macros.hpp>
-#include <catch2/external/catch_external_all.hpp>
 #include <catch2/generators/catch_generators_all.hpp>
 #include <catch2/interfaces/catch_interfaces_all.hpp>
 #include <catch2/internal/catch_assertionhandler.hpp>
 #include <catch2/internal/catch_clara.hpp>
+#include <catch2/internal/catch_clara_upstream.hpp>
 #include <catch2/internal/catch_commandline.hpp>
 #include <catch2/internal/catch_common.hpp>
 #include <catch2/internal/catch_compiler_capabilities.hpp>

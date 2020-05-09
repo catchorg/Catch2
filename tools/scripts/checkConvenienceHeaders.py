@@ -13,7 +13,6 @@ The top level header is called `catch_all.hpp`.
 """
 
 internal_dirs = ['detail', 'internal']
-excluded_dirs = ['external']
 
 from scriptCommon import catchPath
 from glob import glob
@@ -44,8 +43,6 @@ def folders_in_folder(folder):
 def collated_includes(folder):
     base = headers_in_folder(folder)
     for subfolder in folders_in_folder(folder):
-        if folder in excluded_dirs:
-            continue
         if subfolder.name in internal_dirs:
             base.extend(headers_in_folder(subfolder.path))
         else:
@@ -98,7 +95,7 @@ def verify_convenience_header(folder):
         header_name = 'catch_all.hpp'
     else:
         header_name = 'catch_{}_all.hpp'.format('_'.join(path_pieces))
-        
+
     # 1) Does it exist?
     full_path = path + '/' + header_name
     if not os.path.isfile(full_path):
@@ -116,7 +113,7 @@ def verify_convenience_header(folder):
     for duplicate in duplicated:
         errors_found = True
         print("'{}': Duplicated include: '{}'".format(header_name, duplicate))
-    
+
     target_includes = normalize_includes(collated_includes(path))
     # Avoid requiring the convenience header to include itself
     target_includes = [x for x in target_includes if header_name not in x]
@@ -132,15 +129,15 @@ def verify_convenience_header(folder):
     for include in file_incs:
         if include not in desired_set:
             errors_found = True
-            print("'{}': superfluous include '{}'".format(header_name, include))        
-       
-    
+            print("'{}': superfluous include '{}'".format(header_name, include))
+
+
 
 def walk_source_folders(current):
     verify_convenience_header(current)
     for folder in folders_in_folder(current.path):
         fname = folder.name
-        if fname not in internal_dirs and fname not in excluded_dirs:
+        if fname not in internal_dirs:
             walk_source_folders(folder)
 
 # This is an ugly hack because we cannot instantiate DirEntry manually
