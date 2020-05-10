@@ -50,19 +50,15 @@ namespace Catch {
             line( _line )
         {}
 
-        SourceLineInfo( SourceLineInfo const& other )            = default;
-        SourceLineInfo& operator = ( SourceLineInfo const& )     = default;
-        SourceLineInfo( SourceLineInfo&& )              noexcept = default;
-        SourceLineInfo& operator = ( SourceLineInfo&& ) noexcept = default;
-
         bool operator == ( SourceLineInfo const& other ) const noexcept;
         bool operator < ( SourceLineInfo const& other ) const noexcept;
 
         char const* file;
         std::size_t line;
+
+        friend std::ostream& operator << (std::ostream& os, SourceLineInfo const& info);
     };
 
-    std::ostream& operator << ( std::ostream& os, SourceLineInfo const& info );
 
     // Bring in operator<< from global namespace into Catch namespace
     // This is necessary because the overload of operator<< above makes
