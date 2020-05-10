@@ -41,7 +41,27 @@ namespace Detail {
                 return value ? Little : Big;
             }
         };
-    }
+
+        template<typename T>
+        std::string fpToString(T value, int precision) {
+            if (Catch::isnan(value)) {
+                return "nan";
+            }
+
+            ReusableStringStream rss;
+            rss << std::setprecision(precision)
+                << std::fixed
+                << value;
+            std::string d = rss.str();
+            std::size_t i = d.find_last_not_of('0');
+            if (i != std::string::npos && i != d.size() - 1) {
+                if (d[i] == '.')
+                    i++;
+                d = d.substr(0, i + 1);
+            }
+            return d;
+        }
+    } // end unnamed namespace
 
     std::string rawMemoryToString( const void *object, std::size_t size ) {
         // Reverse order for little endian architectures
@@ -58,28 +78,8 @@ namespace Detail {
              rss << std::setw(2) << static_cast<unsigned>(bytes[i]);
        return rss.str();
     }
-}
+} // end Detail namespace
 
-
-template<typename T>
-std::string fpToString( T value, int precision ) {
-    if (Catch::isnan(value)) {
-        return "nan";
-    }
-
-    ReusableStringStream rss;
-    rss << std::setprecision( precision )
-        << std::fixed
-        << value;
-    std::string d = rss.str();
-    std::size_t i = d.find_last_not_of( '0' );
-    if( i != std::string::npos && i != d.size()-1 ) {
-        if( d[i] == '.' )
-            i++;
-        d = d.substr( 0, i+1 );
-    }
-    return d;
-}
 
 
 //// ======================================================= ////
@@ -228,13 +228,13 @@ std::string StringMaker<unsigned char>::convert(unsigned char c) {
 int StringMaker<float>::precision = 5;
 
 std::string StringMaker<float>::convert(float value) {
-    return fpToString(value, precision) + 'f';
+    return Detail::fpToString(value, precision) + 'f';
 }
 
 int StringMaker<double>::precision = 10;
 
 std::string StringMaker<double>::convert(double value) {
-    return fpToString(value, precision);
+    return Detail::fpToString(value, precision);
 }
 
 } // end namespace Catch
