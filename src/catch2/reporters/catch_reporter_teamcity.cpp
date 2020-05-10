@@ -22,7 +22,7 @@ namespace Catch {
                 i = 0;
             os << Column(_string)
                   .indent(indent + i)
-                  .initialIndent(indent) << "\n";
+                  .initialIndent(indent) << '\n';
         }
 
         std::string escape(std::string const& str) {
@@ -152,20 +152,20 @@ namespace Catch {
         assert(!m_sectionStack.empty());
 
         if (m_sectionStack.size() > 1) {
-            os << getLineOfChars<'-'>() << '\n';
+            os << lineOfChars('-') << '\n';
 
             std::vector<SectionInfo>::const_iterator
                 it = m_sectionStack.begin() + 1, // Skip first section (test case)
                 itEnd = m_sectionStack.end();
             for (; it != itEnd; ++it)
                 printHeaderString(os, it->name);
-            os << getLineOfChars<'-'>() << '\n';
+            os << lineOfChars('-') << '\n';
         }
 
         SourceLineInfo lineInfo = m_sectionStack.front().lineInfo;
 
         os << lineInfo << '\n';
-        os << getLineOfChars<'.'>() << "\n\n";
+        os << lineOfChars('.') << "\n\n";
     }
 
 } // end namespace Catch

@@ -241,16 +241,14 @@ namespace Catch {
         ReporterPreferences m_reporterPrefs;
     };
 
-    template<char C>
-    char const* getLineOfChars() {
-        static char line[CATCH_CONFIG_CONSOLE_WIDTH] = {0};
-        if( !*line ) {
-            std::memset( line, C, CATCH_CONFIG_CONSOLE_WIDTH-1 );
-            line[CATCH_CONFIG_CONSOLE_WIDTH-1] = 0;
-        }
-        return line;
-    }
+    struct lineOfChars {
+        char c;
+        constexpr lineOfChars(char c):
+            c(c)
+        {}
 
+        friend std::ostream& operator<< (std::ostream& out, lineOfChars value);
+    };
 
     struct TestEventListenerBase : StreamingReporterBase {
         TestEventListenerBase( ReporterConfig const& _config );

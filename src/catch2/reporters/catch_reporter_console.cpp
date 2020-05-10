@@ -300,7 +300,7 @@ public:
 			}
 			m_os << headerCols << '\n';
 
-            m_os << Catch::getLineOfChars<'-'>() << '\n';
+            m_os << lineOfChars('-') << '\n';
         }
     }
     void close() {
@@ -519,7 +519,7 @@ void ConsoleReporter::lazyPrintWithoutClosingBenchmarkTable() {
     }
 }
 void ConsoleReporter::lazyPrintRunInfo() {
-    stream << '\n' << getLineOfChars<'~'>() << '\n';
+    stream << '\n' << lineOfChars('~') << '\n';
     Colour colour(Colour::SecondaryText);
     stream << currentTestRunInfo->name
         << " is a Catch v" << libraryVersion() << " host application.\n"
@@ -553,18 +553,18 @@ void ConsoleReporter::printTestCaseAndSectionHeader() {
     SourceLineInfo lineInfo = m_sectionStack.back().lineInfo;
 
 
-    stream << getLineOfChars<'-'>() << '\n';
+    stream << lineOfChars('-') << '\n';
     Colour colourGuard(Colour::FileName);
     stream << lineInfo << '\n';
-    stream << getLineOfChars<'.'>() << '\n' << std::endl;
+    stream << lineOfChars('.') << '\n' << std::endl;
 }
 
 void ConsoleReporter::printClosedHeader(std::string const& _name) {
     printOpenHeader(_name);
-    stream << getLineOfChars<'.'>() << '\n';
+    stream << lineOfChars('.') << '\n';
 }
 void ConsoleReporter::printOpenHeader(std::string const& _name) {
-    stream << getLineOfChars<'-'>() << '\n';
+    stream << lineOfChars('-') << '\n';
     {
         Colour colourGuard(Colour::Headers);
         printHeaderString(_name);
@@ -676,7 +676,7 @@ void ConsoleReporter::printTotalsDivider(Totals const& totals) {
     stream << '\n';
 }
 void ConsoleReporter::printSummaryDivider() {
-    stream << getLineOfChars<'-'>() << '\n';
+    stream << lineOfChars('-') << '\n';
 }
 
 void ConsoleReporter::printTestFilters() {

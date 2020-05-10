@@ -10,6 +10,7 @@
 #include <catch2/internal/catch_errno_guard.hpp>
 #include <catch2/reporters/catch_reporter_bases.hpp>
 #include <catch2/internal/catch_stream.hpp>
+#include <catch2/catch_config.hpp>
 
 #include <cstring>
 #include <cfloat>
@@ -69,5 +70,13 @@ namespace Catch {
 
     StreamingReporterBase::~StreamingReporterBase() = default;
     CumulativeReporterBase::~CumulativeReporterBase() = default;
+
+
+    std::ostream& operator<<(std::ostream& out, lineOfChars value) {
+        for (size_t idx = 0; idx < CATCH_CONFIG_CONSOLE_WIDTH - 1; ++idx) {
+            out.put(value.c);
+        }
+        return out;
+    }
 
 } // end namespace Catch
