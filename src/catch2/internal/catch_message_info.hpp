@@ -20,8 +20,12 @@ namespace Catch {
         ResultWas::OfType type;
         unsigned int sequence;
 
-        bool operator == ( MessageInfo const& other ) const;
-        bool operator < ( MessageInfo const& other ) const;
+        bool operator == (MessageInfo const& other) const {
+            return sequence == other.sequence;
+        }
+        bool operator < (MessageInfo const& other) const {
+            return sequence < other.sequence;
+        }
     private:
         static unsigned int globalCount;
     };

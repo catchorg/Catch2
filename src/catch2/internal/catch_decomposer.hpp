@@ -49,7 +49,10 @@ namespace Catch {
 
         bool m_isBinaryExpression;
         bool m_result;
-
+        friend std::ostream& operator<<(std::ostream& out, ITransientExpression const& expr) {
+            expr.streamReconstructedExpression(out);
+            return out;
+        }
     };
 
     void formatReconstructedExpression( std::ostream &os, std::string const& lhs, StringRef op, std::string const& rhs );

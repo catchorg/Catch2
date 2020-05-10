@@ -171,3 +171,54 @@ namespace Catch {
 Catch::LeakDetector::~LeakDetector() {
     Catch::cleanUp();
 }
+
+
+/////////////////////////////////////////////
+// vvv formerly catch_message_info.cpp vvv //
+/////////////////////////////////////////////
+
+#include <catch2/internal/catch_message_info.hpp>
+
+namespace Catch {
+
+    MessageInfo::MessageInfo(   StringRef const& _macroName,
+                                SourceLineInfo const& _lineInfo,
+                                ResultWas::OfType _type )
+    :   macroName( _macroName ),
+        lineInfo( _lineInfo ),
+        type( _type ),
+        sequence( ++globalCount )
+    {}
+
+    // This may need protecting if threading support is added
+    unsigned int MessageInfo::globalCount = 0;
+
+} // end namespace Catch
+
+
+
+
+//////////////////////////////////////////
+// vvv formerly catch_lazy_expr.cpp vvv //
+//////////////////////////////////////////
+#include <catch2/internal/catch_lazy_expr.hpp>
+#include <catch2/internal/catch_decomposer.hpp>
+
+namespace Catch {
+
+    auto operator << (std::ostream& os, LazyExpression const& lazyExpr) -> std::ostream& {
+        if (lazyExpr.m_isNegated)
+            os << "!";
+
+        if (lazyExpr) {
+            if (lazyExpr.m_isNegated && lazyExpr.m_transientExpression->isBinaryExpression())
+                os << "(" << *lazyExpr.m_transientExpression << ")";
+            else
+                os << *lazyExpr.m_transientExpression;
+        } else {
+            os << "{** error - unchecked empty expression requested **}";
+        }
+        return os;
+    }
+
+} // namespace Catch

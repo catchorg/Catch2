@@ -148,13 +148,11 @@ set(IMPL_SOURCES
     ${SOURCES_DIR}/generators/internal/catch_generators_combined_tu.cpp
     ${SOURCES_DIR}/interfaces/catch_interfaces_combined_tu.cpp
     ${SOURCES_DIR}/interfaces/catch_interfaces_reporter.cpp
-    ${SOURCES_DIR}/internal/catch_lazy_expr.cpp
     ${SOURCES_DIR}/internal/catch_list.cpp
     ${SOURCES_DIR}/matchers/catch_matchers_floating.cpp
     ${SOURCES_DIR}/matchers/catch_matchers_string.cpp
     ${SOURCES_DIR}/matchers/catch_matchers_templated.cpp
     ${SOURCES_DIR}/catch_message.cpp
-    ${SOURCES_DIR}/internal/catch_message_info.cpp
     ${SOURCES_DIR}/internal/catch_output_redirect.cpp
     ${SOURCES_DIR}/catch_registry_hub.cpp
     ${SOURCES_DIR}/internal/catch_combined_tu.cpp
