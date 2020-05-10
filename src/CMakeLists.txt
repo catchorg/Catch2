@@ -104,8 +104,8 @@ set(INTERNAL_HEADERS
     ${SOURCES_DIR}/internal/catch_singletons.hpp
     ${SOURCES_DIR}/internal/catch_startup_exception_registry.hpp
     ${SOURCES_DIR}/internal/catch_stream.hpp
-    ${SOURCES_DIR}/catch_stringref.hpp
     ${SOURCES_DIR}/internal/catch_string_manip.hpp
+    ${SOURCES_DIR}/internal/catch_stringref.hpp
     ${SOURCES_DIR}/catch_tag_alias.hpp
     ${SOURCES_DIR}/catch_tag_alias_autoregistrar.hpp
     ${SOURCES_DIR}/internal/catch_tag_alias_registry.hpp

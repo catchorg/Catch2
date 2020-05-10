@@ -8,7 +8,7 @@
 #ifndef TWOBLUECUBES_CATCH_INTERFACESENUMVALUESREGISTRY_H_INCLUDED
 #define TWOBLUECUBES_CATCH_INTERFACESENUMVALUESREGISTRY_H_INCLUDED
 
-#include <catch2/catch_stringref.hpp>
+#include <catch2/internal/catch_stringref.hpp>
 
 #include <vector>
 

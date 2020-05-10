@@ -9,7 +9,7 @@
 #define TWOBLUECUBES_CATCH_LIST_H_INCLUDED
 
 #include <catch2/catch_config.hpp>
-#include <catch2/catch_stringref.hpp>
+#include <catch2/internal/catch_stringref.hpp>
 
 #include <set>
 #include <string>

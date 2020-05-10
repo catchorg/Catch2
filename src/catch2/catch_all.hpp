@@ -24,7 +24,6 @@
 #include <catch2/catch_reporter_registrars.hpp>
 #include <catch2/catch_section_info.hpp>
 #include <catch2/catch_session.hpp>
-#include <catch2/catch_stringref.hpp>
 #include <catch2/catch_tag_alias.hpp>
 #include <catch2/catch_tag_alias_autoregistrar.hpp>
 #include <catch2/catch_template_test_macros.hpp>
@@ -72,6 +71,7 @@
 #include <catch2/internal/catch_startup_exception_registry.hpp>
 #include <catch2/internal/catch_stream.hpp>
 #include <catch2/internal/catch_string_manip.hpp>
+#include <catch2/internal/catch_stringref.hpp>
 #include <catch2/internal/catch_tag_alias_registry.hpp>
 #include <catch2/internal/catch_template_test_registry.hpp>
 #include <catch2/internal/catch_test_case_registry_impl.hpp>

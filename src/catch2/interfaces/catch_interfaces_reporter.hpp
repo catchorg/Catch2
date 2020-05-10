@@ -16,7 +16,7 @@
 #include <catch2/catch_assertion_result.hpp>
 #include <catch2/catch_message.hpp>
 #include <catch2/internal/catch_option.hpp>
-#include <catch2/catch_stringref.hpp>
+#include <catch2/internal/catch_stringref.hpp>
 
 #include <catch2/benchmark/catch_estimate.hpp>
 #include <catch2/benchmark/catch_outlier_classification.hpp>

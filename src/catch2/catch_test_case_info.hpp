@@ -9,7 +9,7 @@
 #define TWOBLUECUBES_CATCH_TEST_CASE_INFO_H_INCLUDED
 
 #include <catch2/internal/catch_common.hpp>
-#include <catch2/catch_stringref.hpp>
+#include <catch2/internal/catch_stringref.hpp>
 #include <catch2/internal/catch_test_registry.hpp>
 
 #include <string>

@@ -9,7 +9,7 @@
 #define TWOBLUECUBES_CATCH_DECOMPOSER_H_INCLUDED
 
 #include <catch2/catch_tostring.hpp>
-#include <catch2/catch_stringref.hpp>
+#include <catch2/internal/catch_stringref.hpp>
 #include <catch2/internal/catch_meta.hpp>
 
 #include <iosfwd>

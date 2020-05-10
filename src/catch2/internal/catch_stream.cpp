@@ -11,7 +11,7 @@
 #include <catch2/internal/catch_enforce.hpp>
 #include <catch2/internal/catch_stream.hpp>
 #include <catch2/internal/catch_debug_console.hpp>
-#include <catch2/catch_stringref.hpp>
+#include <catch2/internal/catch_stringref.hpp>
 #include <catch2/internal/catch_singletons.hpp>
 
 #include <cstdio>

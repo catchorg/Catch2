@@ -6,7 +6,7 @@
  */
 
 #include <catch2/internal/catch_string_manip.hpp>
-#include <catch2/catch_stringref.hpp>
+#include <catch2/internal/catch_stringref.hpp>
 
 #include <algorithm>
 #include <ostream>
