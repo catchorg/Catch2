@@ -9494,6 +9494,10 @@ with message:
 
 String.tests.cpp:<line number>: PASSED:
 with message:
+  stringref[1] == 'b'
+
+String.tests.cpp:<line number>: PASSED:
+with message:
   shortened.size() == 2
 
 String.tests.cpp:<line number>: PASSED:
@@ -14789,5 +14793,5 @@ Misc.tests.cpp:<line number>: PASSED:
 
 ===============================================================================
 test cases:  334 |  244 passed |  86 failed |  4 failed as expected
-assertions: 1912 | 1743 passed | 148 failed | 21 failed as expected
+assertions: 1913 | 1744 passed | 148 failed | 21 failed as expected
 

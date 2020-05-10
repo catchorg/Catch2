@@ -53,7 +53,7 @@ namespace Catch {
             return !(*this == other);
         }
 
-        auto operator[] ( size_type index ) const noexcept -> char {
+        constexpr auto operator[] ( size_type index ) const noexcept -> char {
             assert(index < m_size);
             return m_start[index];
         }
@@ -97,10 +97,12 @@ namespace Catch {
     public: // iterators
         constexpr const_iterator begin() const { return m_start; }
         constexpr const_iterator end() const { return m_start + m_size; }
+
+
+        friend std::string& operator += (std::string& lhs, StringRef const& sr);
+        friend std::ostream& operator << (std::ostream& os, StringRef const& sr);
     };
 
-    auto operator += ( std::string& lhs, StringRef const& sr ) -> std::string&;
-    auto operator << ( std::ostream& os, StringRef const& sr ) -> std::ostream&;
 
     constexpr auto operator "" _sr( char const* rawChars, std::size_t size ) noexcept -> StringRef {
         return StringRef( rawChars, size );

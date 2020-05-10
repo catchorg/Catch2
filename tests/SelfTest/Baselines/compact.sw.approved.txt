@@ -1298,6 +1298,7 @@ String.tests.cpp:<line number>: passed: with 1 message: 'stringref.begin() == ab
 String.tests.cpp:<line number>: passed: with 1 message: 'stringref.begin() != stringref.end()'
 String.tests.cpp:<line number>: passed: with 1 message: 'stringref.substr(10, 0).empty()'
 String.tests.cpp:<line number>: passed: with 1 message: 'stringref.substr(2, 1).data() == abc + 2'
+String.tests.cpp:<line number>: passed: with 1 message: 'stringref[1] == 'b''
 String.tests.cpp:<line number>: passed: with 1 message: 'shortened.size() == 2'
 String.tests.cpp:<line number>: passed: with 1 message: 'shortened.data() == abc'
 String.tests.cpp:<line number>: passed: with 1 message: 'shortened.begin() != shortened.end()'
