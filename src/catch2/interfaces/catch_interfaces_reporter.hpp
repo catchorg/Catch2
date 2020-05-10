@@ -99,10 +99,6 @@ namespace Catch {
                         Counts const& _assertions,
                         double _durationInSeconds,
                         bool _missingAssertions );
-        SectionStats( SectionStats const& )              = default;
-        SectionStats( SectionStats && )                  = default;
-        SectionStats& operator = ( SectionStats const& ) = default;
-        SectionStats& operator = ( SectionStats && )     = default;
 
         SectionInfo sectionInfo;
         Counts assertions;
@@ -117,11 +113,6 @@ namespace Catch {
                         std::string const& _stdErr,
                         bool _aborting );
 
-        TestCaseStats( TestCaseStats const& )              = default;
-        TestCaseStats( TestCaseStats && )                  = default;
-        TestCaseStats& operator = ( TestCaseStats const& ) = default;
-        TestCaseStats& operator = ( TestCaseStats && )     = default;
-
         TestCaseInfo const * testInfo;
         Totals totals;
         std::string stdOut;
@@ -135,11 +126,6 @@ namespace Catch {
                         bool _aborting );
         TestGroupStats( GroupInfo const& _groupInfo );
 
-        TestGroupStats( TestGroupStats const& )              = default;
-        TestGroupStats( TestGroupStats && )                  = default;
-        TestGroupStats& operator = ( TestGroupStats const& ) = default;
-        TestGroupStats& operator = ( TestGroupStats && )     = default;
-
         GroupInfo groupInfo;
         Totals totals;
         bool aborting;
@@ -149,11 +135,6 @@ namespace Catch {
         TestRunStats(   TestRunInfo const& _runInfo,
                         Totals const& _totals,
                         bool _aborting );
-
-        TestRunStats( TestRunStats const& )              = default;
-        TestRunStats( TestRunStats && )                  = default;
-        TestRunStats& operator = ( TestRunStats const& ) = default;
-        TestRunStats& operator = ( TestRunStats && )     = default;
 
         TestRunInfo runInfo;
         Totals totals;
