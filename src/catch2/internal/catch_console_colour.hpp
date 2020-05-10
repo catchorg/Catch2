@@ -60,9 +60,10 @@ namespace Catch {
 
     private:
         bool m_moved = false;
+
+        friend std::ostream& operator << (std::ostream& os, Colour const&);
     };
 
-    std::ostream& operator << ( std::ostream& os, Colour const& );
 
 } // end namespace Catch
 
