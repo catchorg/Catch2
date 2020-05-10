@@ -12,7 +12,6 @@
 
 #include <memory>
 #include <vector>
-#include <cassert>
 #include <tuple>
 #include <utility>
 

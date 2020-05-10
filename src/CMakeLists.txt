@@ -24,10 +24,7 @@ set(BENCHMARK_HEADERS
     ${SOURCES_DIR}/benchmark/detail/catch_timing.hpp
 )
 set(BENCHMARK_SOURCES
-    ${SOURCES_DIR}/benchmark/catch_chronometer.cpp
-    ${SOURCES_DIR}/benchmark/detail/catch_benchmark_function.cpp
-    ${SOURCES_DIR}/benchmark/detail/catch_complete_invoke.cpp
-    ${SOURCES_DIR}/benchmark/detail/catch_run_for_at_least.cpp
+    ${SOURCES_DIR}/benchmark/internal/catch_benchmark_combined_tu.cpp
     ${SOURCES_DIR}/benchmark/detail/catch_stats.cpp
 )
 
@@ -134,7 +131,7 @@ set(IMPL_SOURCES
     ${SOURCES_DIR}/catch_approx.cpp
     ${SOURCES_DIR}/internal/catch_assertionhandler.cpp
     ${SOURCES_DIR}/catch_assertion_result.cpp
-    ${SOURCES_DIR}/matchers/internal/catch_matchers_impl.cpp
+    ${SOURCES_DIR}/matchers/internal/catch_matchers_combined_tu.cpp
     ${SOURCES_DIR}/internal/catch_commandline.cpp
     ${SOURCES_DIR}/internal/catch_common.cpp
     ${SOURCES_DIR}/catch_config.cpp
@@ -142,34 +139,21 @@ set(IMPL_SOURCES
     ${SOURCES_DIR}/internal/catch_context.cpp
     ${SOURCES_DIR}/internal/catch_debug_console.cpp
     ${SOURCES_DIR}/internal/catch_debugger.cpp
-    ${SOURCES_DIR}/internal/catch_decomposer.cpp
     ${SOURCES_DIR}/internal/catch_enforce.cpp
     ${SOURCES_DIR}/internal/catch_enum_values_registry.cpp
-    ${SOURCES_DIR}/internal/catch_errno_guard.cpp
     ${SOURCES_DIR}/internal/catch_exception_translator_registry.cpp
     ${SOURCES_DIR}/internal/catch_fatal_condition_handler.cpp
-    ${SOURCES_DIR}/generators/catch_generator_exception.cpp
-    ${SOURCES_DIR}/generators/catch_generators.cpp
-    ${SOURCES_DIR}/interfaces/catch_interfaces_capture.cpp
-    ${SOURCES_DIR}/interfaces/catch_interfaces_config.cpp
-    ${SOURCES_DIR}/interfaces/catch_interfaces_exception.cpp
-    ${SOURCES_DIR}/interfaces/catch_interfaces_registry_hub.cpp
+    ${SOURCES_DIR}/generators/internal/catch_generators_combined_tu.cpp
+    ${SOURCES_DIR}/interfaces/catch_interfaces_combined_tu.cpp
     ${SOURCES_DIR}/interfaces/catch_interfaces_reporter.cpp
-    ${SOURCES_DIR}/interfaces/catch_interfaces_runner.cpp
-    ${SOURCES_DIR}/interfaces/catch_interfaces_testcase.cpp
     ${SOURCES_DIR}/internal/catch_list.cpp
-    ${SOURCES_DIR}/internal/catch_leak_detector.cpp
-    ${SOURCES_DIR}/matchers/catch_matchers.cpp
-    ${SOURCES_DIR}/matchers/catch_matchers_container_properties.cpp
-    ${SOURCES_DIR}/matchers/catch_matchers_exception.cpp
     ${SOURCES_DIR}/matchers/catch_matchers_floating.cpp
-    ${SOURCES_DIR}/matchers/catch_matchers_predicate.cpp
     ${SOURCES_DIR}/matchers/catch_matchers_string.cpp
     ${SOURCES_DIR}/matchers/catch_matchers_templated.cpp
     ${SOURCES_DIR}/catch_message.cpp
     ${SOURCES_DIR}/internal/catch_output_redirect.cpp
     ${SOURCES_DIR}/catch_registry_hub.cpp
-    ${SOURCES_DIR}/internal/catch_polyfills.cpp
+    ${SOURCES_DIR}/internal/catch_combined_tu.cpp
     ${SOURCES_DIR}/internal/catch_random_number_generator.cpp
     ${SOURCES_DIR}/internal/catch_reporter_registry.cpp
     ${SOURCES_DIR}/internal/catch_result_type.cpp
@@ -177,11 +161,9 @@ set(IMPL_SOURCES
     ${SOURCES_DIR}/internal/catch_section.cpp
     ${SOURCES_DIR}/catch_session.cpp
     ${SOURCES_DIR}/internal/catch_singletons.cpp
-    ${SOURCES_DIR}/internal/catch_startup_exception_registry.cpp
     ${SOURCES_DIR}/internal/catch_stream.cpp
     ${SOURCES_DIR}/internal/catch_stringref.cpp
     ${SOURCES_DIR}/internal/catch_string_manip.cpp
-    ${SOURCES_DIR}/catch_tag_alias_autoregistrar.cpp
     ${SOURCES_DIR}/internal/catch_tag_alias_registry.cpp
     ${SOURCES_DIR}/catch_test_case_info.cpp
     ${SOURCES_DIR}/internal/catch_test_case_registry_impl.cpp
@@ -192,7 +174,6 @@ set(IMPL_SOURCES
     ${SOURCES_DIR}/catch_timer.cpp
     ${SOURCES_DIR}/catch_tostring.cpp
     ${SOURCES_DIR}/catch_totals.cpp
-    ${SOURCES_DIR}/internal/catch_uncaught_exceptions.cpp
     ${SOURCES_DIR}/catch_version.cpp
     ${SOURCES_DIR}/internal/catch_wildcard_pattern.cpp
     ${SOURCES_DIR}/internal/catch_xmlwriter.cpp
