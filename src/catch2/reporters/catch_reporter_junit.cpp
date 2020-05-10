@@ -16,7 +16,6 @@
 #include <catch2/internal/catch_text.hpp>
 
 #include <cassert>
-#include <sstream>
 #include <ctime>
 #include <algorithm>
 

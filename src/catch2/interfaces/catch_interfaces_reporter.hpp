@@ -25,7 +25,6 @@
 #include <string>
 #include <iosfwd>
 #include <map>
-#include <set>
 #include <memory>
 #include <algorithm>
 
