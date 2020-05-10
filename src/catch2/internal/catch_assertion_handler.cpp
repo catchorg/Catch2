@@ -26,12 +26,6 @@ namespace Catch {
         }
     }
 
-    LazyExpression::LazyExpression( bool isNegated )
-    :   m_isNegated( isNegated )
-    {}
-
-    LazyExpression::LazyExpression( LazyExpression const& other ) : m_isNegated( other.m_isNegated ) {}
-
     auto operator << ( std::ostream& os, LazyExpression const& lazyExpr ) -> std::ostream& {
         if( lazyExpr.m_isNegated )
             os << "!";

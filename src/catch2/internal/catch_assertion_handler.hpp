@@ -27,8 +27,10 @@ namespace Catch {
         ITransientExpression const* m_transientExpression = nullptr;
         bool m_isNegated;
     public:
-        LazyExpression( bool isNegated );
-        LazyExpression( LazyExpression const& other );
+        LazyExpression( bool isNegated ):
+            m_isNegated(isNegated)
+        {}
+        LazyExpression(LazyExpression const& other) = default;
         LazyExpression& operator = ( LazyExpression const& ) = delete;
 
         explicit operator bool() const {
