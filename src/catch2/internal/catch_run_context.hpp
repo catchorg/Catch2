@@ -20,7 +20,7 @@
 #include <catch2/catch_totals.hpp>
 #include <catch2/catch_test_spec.hpp>
 #include <catch2/internal/catch_test_case_tracker.hpp>
-#include <catch2/internal/catch_assertionhandler.hpp>
+#include <catch2/internal/catch_assertion_handler.hpp>
 
 #include <string>
 

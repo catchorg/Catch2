@@ -31,7 +31,9 @@ namespace Catch {
         LazyExpression( LazyExpression const& other );
         LazyExpression& operator = ( LazyExpression const& ) = delete;
 
-        explicit operator bool() const;
+        explicit operator bool() const {
+            return m_transientExpression != nullptr;
+        }
 
         friend auto operator << ( std::ostream& os, LazyExpression const& lazyExpr ) -> std::ostream&;
     };

@@ -6,7 +6,7 @@
  *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  */
 
-#include <catch2/internal/catch_assertionhandler.hpp>
+#include <catch2/internal/catch_assertion_handler.hpp>
 #include <catch2/catch_assertion_result.hpp>
 #include <catch2/interfaces/catch_interfaces_runner.hpp>
 #include <catch2/interfaces/catch_interfaces_config.hpp>
@@ -31,10 +31,6 @@ namespace Catch {
     {}
 
     LazyExpression::LazyExpression( LazyExpression const& other ) : m_isNegated( other.m_isNegated ) {}
-
-    LazyExpression::operator bool() const {
-        return m_transientExpression != nullptr;
-    }
 
     auto operator << ( std::ostream& os, LazyExpression const& lazyExpr ) -> std::ostream& {
         if( lazyExpr.m_isNegated )

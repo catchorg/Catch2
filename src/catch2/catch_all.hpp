@@ -37,7 +37,7 @@
 #include <catch2/catch_version_macros.hpp>
 #include <catch2/generators/catch_generators_all.hpp>
 #include <catch2/interfaces/catch_interfaces_all.hpp>
-#include <catch2/internal/catch_assertionhandler.hpp>
+#include <catch2/internal/catch_assertion_handler.hpp>
 #include <catch2/internal/catch_clara.hpp>
 #include <catch2/internal/catch_clara_upstream.hpp>
 #include <catch2/internal/catch_commandline.hpp>

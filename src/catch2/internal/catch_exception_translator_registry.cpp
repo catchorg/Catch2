@@ -7,7 +7,7 @@
  */
 
 #include <catch2/internal/catch_exception_translator_registry.hpp>
-#include <catch2/internal/catch_assertionhandler.hpp>
+#include <catch2/internal/catch_assertion_handler.hpp>
 #include <catch2/internal/catch_compiler_capabilities.hpp>
 #include <catch2/internal/catch_enforce.hpp>
 

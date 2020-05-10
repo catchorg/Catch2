@@ -38,7 +38,7 @@ set(INTERNAL_HEADERS
     ${SOURCES_DIR}/matchers/internal/catch_matchers_impl.hpp
     ${SOURCES_DIR}/internal/catch_container_nonmembers.hpp
     ${SOURCES_DIR}/catch_approx.hpp
-    ${SOURCES_DIR}/internal/catch_assertionhandler.hpp
+    ${SOURCES_DIR}/internal/catch_assertion_handler.hpp
     ${SOURCES_DIR}/catch_assertion_info.hpp
     ${SOURCES_DIR}/catch_assertion_result.hpp
     ${SOURCES_DIR}/internal/catch_test_macro_impl.hpp
@@ -130,7 +130,7 @@ set(INTERNAL_HEADERS
 )
 set(IMPL_SOURCES
     ${SOURCES_DIR}/catch_approx.cpp
-    ${SOURCES_DIR}/internal/catch_assertionhandler.cpp
+    ${SOURCES_DIR}/internal/catch_assertion_handler.cpp
     ${SOURCES_DIR}/catch_assertion_result.cpp
     ${SOURCES_DIR}/matchers/internal/catch_matchers_combined_tu.cpp
     ${SOURCES_DIR}/internal/catch_commandline.cpp
