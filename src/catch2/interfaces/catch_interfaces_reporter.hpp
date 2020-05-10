@@ -14,7 +14,7 @@
 #include <catch2/catch_totals.hpp>
 #include <catch2/catch_test_case_info.hpp>
 #include <catch2/catch_assertion_result.hpp>
-#include <catch2/catch_message.hpp>
+#include <catch2/internal/catch_message_info.hpp>
 #include <catch2/internal/catch_option.hpp>
 #include <catch2/internal/catch_stringref.hpp>
 

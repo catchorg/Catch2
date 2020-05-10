@@ -84,6 +84,7 @@ set(INTERNAL_HEADERS
     ${SOURCES_DIR}/matchers/catch_matchers_templated.hpp
     ${SOURCES_DIR}/matchers/catch_matchers_vector.hpp
     ${SOURCES_DIR}/catch_message.hpp
+    ${SOURCES_DIR}/internal/catch_message_info.hpp
     ${SOURCES_DIR}/internal/catch_meta.hpp
     ${SOURCES_DIR}/internal/catch_option.hpp
     ${SOURCES_DIR}/internal/catch_output_redirect.hpp
@@ -151,6 +152,7 @@ set(IMPL_SOURCES
     ${SOURCES_DIR}/matchers/catch_matchers_string.cpp
     ${SOURCES_DIR}/matchers/catch_matchers_templated.cpp
     ${SOURCES_DIR}/catch_message.cpp
+    ${SOURCES_DIR}/internal/catch_message_info.cpp
     ${SOURCES_DIR}/internal/catch_output_redirect.cpp
     ${SOURCES_DIR}/catch_registry_hub.cpp
     ${SOURCES_DIR}/internal/catch_combined_tu.cpp
