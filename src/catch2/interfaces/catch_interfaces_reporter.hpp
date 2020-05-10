@@ -88,7 +88,6 @@ namespace Catch {
         AssertionStats( AssertionStats && )                  = default;
         AssertionStats& operator = ( AssertionStats const& ) = delete;
         AssertionStats& operator = ( AssertionStats && )     = delete;
-        virtual ~AssertionStats();
 
         AssertionResult assertionResult;
         std::vector<MessageInfo> infoMessages;
@@ -104,7 +103,6 @@ namespace Catch {
         SectionStats( SectionStats && )                  = default;
         SectionStats& operator = ( SectionStats const& ) = default;
         SectionStats& operator = ( SectionStats && )     = default;
-        virtual ~SectionStats();
 
         SectionInfo sectionInfo;
         Counts assertions;
@@ -123,7 +121,6 @@ namespace Catch {
         TestCaseStats( TestCaseStats && )                  = default;
         TestCaseStats& operator = ( TestCaseStats const& ) = default;
         TestCaseStats& operator = ( TestCaseStats && )     = default;
-        virtual ~TestCaseStats();
 
         TestCaseInfo const * testInfo;
         Totals totals;
@@ -142,7 +139,6 @@ namespace Catch {
         TestGroupStats( TestGroupStats && )                  = default;
         TestGroupStats& operator = ( TestGroupStats const& ) = default;
         TestGroupStats& operator = ( TestGroupStats && )     = default;
-        virtual ~TestGroupStats();
 
         GroupInfo groupInfo;
         Totals totals;
@@ -158,7 +154,6 @@ namespace Catch {
         TestRunStats( TestRunStats && )                  = default;
         TestRunStats& operator = ( TestRunStats const& ) = default;
         TestRunStats& operator = ( TestRunStats && )     = default;
-        virtual ~TestRunStats();
 
         TestRunInfo runInfo;
         Totals totals;
