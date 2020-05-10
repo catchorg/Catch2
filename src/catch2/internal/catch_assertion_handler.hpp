@@ -11,6 +11,7 @@
 #include <catch2/catch_assertion_info.hpp>
 #include <catch2/internal/catch_decomposer.hpp>
 #include <catch2/interfaces/catch_interfaces_capture.hpp>
+#include <catch2/internal/catch_lazy_expr.hpp>
 
 namespace Catch {
 
@@ -18,27 +19,6 @@ namespace Catch {
     struct AssertionResultData;
     struct IResultCapture;
     class RunContext;
-
-    class LazyExpression {
-        friend class AssertionHandler;
-        friend struct AssertionStats;
-        friend class RunContext;
-
-        ITransientExpression const* m_transientExpression = nullptr;
-        bool m_isNegated;
-    public:
-        LazyExpression( bool isNegated ):
-            m_isNegated(isNegated)
-        {}
-        LazyExpression(LazyExpression const& other) = default;
-        LazyExpression& operator = ( LazyExpression const& ) = delete;
-
-        explicit operator bool() const {
-            return m_transientExpression != nullptr;
-        }
-
-        friend auto operator << ( std::ostream& os, LazyExpression const& lazyExpr ) -> std::ostream&;
-    };
 
     struct AssertionReaction {
         bool shouldDebugBreak = false;

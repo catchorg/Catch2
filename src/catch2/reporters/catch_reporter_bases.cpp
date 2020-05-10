@@ -9,6 +9,7 @@
 #include <catch2/interfaces/catch_interfaces_reporter.hpp>
 #include <catch2/internal/catch_errno_guard.hpp>
 #include <catch2/reporters/catch_reporter_bases.hpp>
+#include <catch2/internal/catch_stream.hpp>
 
 #include <cstring>
 #include <cfloat>

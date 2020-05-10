@@ -7,8 +7,10 @@
  */
 
 #include <catch2/catch_assertion_result.hpp>
+#include <catch2/internal/catch_stream.hpp>
 
 namespace Catch {
+
     AssertionResultData::AssertionResultData(ResultWas::OfType _resultType, LazyExpression const & _lazyExpression):
         lazyExpression(_lazyExpression),
         resultType(_resultType) {}

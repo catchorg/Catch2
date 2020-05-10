@@ -72,6 +72,7 @@ set(INTERNAL_HEADERS
     ${SOURCES_DIR}/interfaces/catch_interfaces_runner.hpp
     ${SOURCES_DIR}/interfaces/catch_interfaces_tag_alias_registry.hpp
     ${SOURCES_DIR}/interfaces/catch_interfaces_testcase.hpp
+    ${SOURCES_DIR}/internal/catch_lazy_expr.hpp
     ${SOURCES_DIR}/internal/catch_leak_detector.hpp
     ${SOURCES_DIR}/internal/catch_list.hpp
     ${SOURCES_DIR}/matchers/catch_matchers.hpp
@@ -147,6 +148,7 @@ set(IMPL_SOURCES
     ${SOURCES_DIR}/generators/internal/catch_generators_combined_tu.cpp
     ${SOURCES_DIR}/interfaces/catch_interfaces_combined_tu.cpp
     ${SOURCES_DIR}/interfaces/catch_interfaces_reporter.cpp
+    ${SOURCES_DIR}/internal/catch_lazy_expr.cpp
     ${SOURCES_DIR}/internal/catch_list.cpp
     ${SOURCES_DIR}/matchers/catch_matchers_floating.cpp
     ${SOURCES_DIR}/matchers/catch_matchers_string.cpp

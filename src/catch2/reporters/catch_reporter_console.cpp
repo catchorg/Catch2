@@ -13,6 +13,7 @@
 #include <catch2/internal/catch_string_manip.hpp>
 #include <catch2/catch_version.hpp>
 #include <catch2/internal/catch_text.hpp>
+#include <catch2/internal/catch_stream.hpp>
 #include <catch2/internal/catch_stringref.hpp>
 
 #include <cfloat>
