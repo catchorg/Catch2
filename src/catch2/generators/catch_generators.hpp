@@ -29,7 +29,7 @@ namespace Detail {
 
     template<typename T>
     struct IGenerator : GeneratorUntypedBase {
-        virtual ~IGenerator() = default;
+        ~IGenerator() override = default;
 
         // Returns the current element of the generator
         //

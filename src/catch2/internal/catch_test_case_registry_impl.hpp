@@ -33,7 +33,7 @@ namespace Catch {
 
     class TestRegistry : public ITestCaseRegistry {
     public:
-        virtual ~TestRegistry() = default;
+        ~TestRegistry() override = default;
 
         virtual void registerTest( std::unique_ptr<TestCaseInfo> testInfo, std::unique_ptr<ITestInvoker> testInvoker );
 
