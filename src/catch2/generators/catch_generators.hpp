@@ -30,6 +30,10 @@ namespace Detail {
     template<typename T>
     struct IGenerator : GeneratorUntypedBase {
         ~IGenerator() override = default;
+        IGenerator() = default;
+        IGenerator(IGenerator const&) = default;
+        IGenerator& operator=(IGenerator const&) = default;
+
 
         // Returns the current element of the generator
         //

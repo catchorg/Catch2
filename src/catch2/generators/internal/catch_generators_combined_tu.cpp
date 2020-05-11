@@ -36,7 +36,7 @@ namespace Catch {
 
 namespace Catch {
 
-IGeneratorTracker::~IGeneratorTracker() {}
+    IGeneratorTracker::~IGeneratorTracker() = default;
 
 namespace Generators {
 
@@ -48,7 +48,7 @@ namespace Detail {
     }
 } // end namespace Detail
 
-    GeneratorUntypedBase::~GeneratorUntypedBase() {}
+    GeneratorUntypedBase::~GeneratorUntypedBase() = default;
 
     auto acquireGeneratorTracker( SourceLineInfo const& lineInfo ) -> IGeneratorTracker& {
         return getResultCapture().acquireGeneratorTracker( lineInfo );

@@ -42,6 +42,10 @@ namespace Catch {
                     virtual void call(Chronometer meter) const = 0;
                     virtual callable* clone() const = 0;
                     virtual ~callable(); // = default;
+
+                    callable() = default;
+                    callable(callable const&) = default;
+                    callable& operator=(callable const&) = default;
                 };
                 template <typename Fun>
                 struct model : public callable {

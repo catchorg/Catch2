@@ -43,9 +43,13 @@ namespace Catch {
             m_result( result )
         {}
 
+        ITransientExpression() = default;
+        ITransientExpression(ITransientExpression const&) = default;
+        ITransientExpression& operator=(ITransientExpression const&) = default;
+
         // We don't actually need a virtual destructor, but many static analysers
         // complain if it's not here :-(
-        virtual ~ITransientExpression();
+        virtual ~ITransientExpression(); // = default;
 
         bool m_isBinaryExpression;
         bool m_result;

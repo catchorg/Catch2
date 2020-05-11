@@ -17,8 +17,13 @@ namespace Matchers {
     class MatcherUntypedBase {
     public:
         MatcherUntypedBase() = default;
+
         MatcherUntypedBase(MatcherUntypedBase const&) = default;
+        MatcherUntypedBase(MatcherUntypedBase&&) = default;
+
         MatcherUntypedBase& operator = (MatcherUntypedBase const&) = delete;
+        MatcherUntypedBase& operator = (MatcherUntypedBase&&) = delete;
+
         std::string toString() const;
 
     protected:

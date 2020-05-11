@@ -23,6 +23,10 @@ namespace Catch {
                 virtual void start() = 0;
                 virtual void finish() = 0;
                 virtual ~ChronometerConcept(); // = default;
+
+                ChronometerConcept() = default;
+                ChronometerConcept(ChronometerConcept const&) = default;
+                ChronometerConcept& operator=(ChronometerConcept const&) = default;
             };
             template <typename Clock>
             struct ChronometerModel final : public ChronometerConcept {
