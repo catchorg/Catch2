@@ -218,6 +218,7 @@ add_library(Catch2 STATIC
   ${BENCHMARK_HEADERS}
   ${BENCHMARK_SOURCES}
 )
+add_library(Catch2::Catch2 ALIAS Catch2)
 
 if (ANDROID)
     target_link_libraries(Catch2 INTERFACE log)
