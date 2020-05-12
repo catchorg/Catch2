@@ -62,6 +62,10 @@ namespace Catch {
         size_t m_captured = 0;
     public:
         Capturer( StringRef macroName, SourceLineInfo const& lineInfo, ResultWas::OfType resultType, StringRef names );
+
+        Capturer(Capturer const&) = delete;
+        Capturer& operator=(Capturer const&) = delete;
+
         ~Capturer();
 
         void captureValue( size_t index, std::string const& value );
@@ -90,7 +94,7 @@ namespace Catch {
 
 ///////////////////////////////////////////////////////////////////////////////
 #define INTERNAL_CATCH_CAPTURE( varName, macroName, ... ) \
-    auto varName = Catch::Capturer( macroName, CATCH_INTERNAL_LINEINFO, Catch::ResultWas::Info, #__VA_ARGS__ ); \
+    Catch::Capturer varName( macroName, CATCH_INTERNAL_LINEINFO, Catch::ResultWas::Info, #__VA_ARGS__ ); \
     varName.captureValues( 0, __VA_ARGS__ )
 
 ///////////////////////////////////////////////////////////////////////////////
