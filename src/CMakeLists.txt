@@ -43,6 +43,7 @@ set(INTERNAL_HEADERS
     ${SOURCES_DIR}/catch_assertion_result.hpp
     ${SOURCES_DIR}/internal/catch_test_macro_impl.hpp
     ${SOURCES_DIR}/internal/catch_clara.hpp
+    ${SOURCES_DIR}/internal/catch_clara_upstream.hpp
     ${SOURCES_DIR}/internal/catch_commandline.hpp
     ${SOURCES_DIR}/internal/catch_common.hpp
     ${SOURCES_DIR}/internal/catch_compiler_capabilities.hpp

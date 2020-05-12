@@ -21,6 +21,7 @@
 #pragma clang diagnostic ignored "-Wweak-vtables"
 #pragma clang diagnostic ignored "-Wexit-time-destructors"
 #pragma clang diagnostic ignored "-Wshadow"
+#pragma clang diagnostic ignored "-Wdeprecated"
 #endif
 
 #include <catch2/internal/catch_clara_upstream.hpp>
