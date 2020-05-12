@@ -12,9 +12,12 @@
 namespace Catch {
 
     namespace {
+        // Yes, this has to be outside the class and namespaced by naming.
+        // Making older compiler happy is hard.
+        static constexpr StringRef tapFailedString = "not ok"_sr;
+        static constexpr StringRef tapPassedString = "ok"_sr;
+
         class TapAssertionPrinter {
-            static constexpr StringRef failedString = "not ok"_sr;
-            static constexpr StringRef passedString = "ok"_sr;
         public:
             TapAssertionPrinter& operator= (TapAssertionPrinter const&) = delete;
             TapAssertionPrinter(TapAssertionPrinter const&) = delete;
@@ -31,7 +34,7 @@ namespace Catch {
 
                 switch (result.getResultType()) {
                 case ResultWas::Ok:
-                    printResultType(passedString);
+                    printResultType(tapPassedString);
                     printOriginalExpression();
                     printReconstructedExpression();
                     if (!result.hasExpression())
@@ -41,9 +44,9 @@ namespace Catch {
                     break;
                 case ResultWas::ExpressionFailed:
                     if (result.isOk()) {
-                        printResultType(passedString);
+                        printResultType(tapPassedString);
                     } else {
-                        printResultType(failedString);
+                        printResultType(tapFailedString);
                     }
                     printOriginalExpression();
                     printReconstructedExpression();
@@ -53,21 +56,21 @@ namespace Catch {
                     printRemainingMessages();
                     break;
                 case ResultWas::ThrewException:
-                    printResultType(failedString);
+                    printResultType(tapFailedString);
                     printIssue("unexpected exception with message:"_sr);
                     printMessage();
                     printExpressionWas();
                     printRemainingMessages();
                     break;
                 case ResultWas::FatalErrorCondition:
-                    printResultType(failedString);
+                    printResultType(tapFailedString);
                     printIssue("fatal error condition with message:"_sr);
                     printMessage();
                     printExpressionWas();
                     printRemainingMessages();
                     break;
                 case ResultWas::DidntThrowException:
-                    printResultType(failedString);
+                    printResultType(tapFailedString);
                     printIssue("expected exception, got none"_sr);
                     printExpressionWas();
                     printRemainingMessages();
@@ -83,7 +86,7 @@ namespace Catch {
                     printRemainingMessages();
                     break;
                 case ResultWas::ExplicitFailure:
-                    printResultType(failedString);
+                    printResultType(tapFailedString);
                     printIssue("explicitly"_sr);
                     printRemainingMessages(Colour::None);
                     break;
@@ -184,9 +187,6 @@ namespace Catch {
             bool printInfoMessages;
             std::size_t counter;
         };
-
-        constexpr StringRef TapAssertionPrinter::failedString;
-        constexpr StringRef TapAssertionPrinter::passedString;
 
     } // End anonymous namespace
 
