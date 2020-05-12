@@ -50,6 +50,17 @@ function(add_warnings_to_targets targets)
           "-Wstrict-aliasing"
           "-Wreturn-std-move"
           "-Wmissing-braces"
+          "-Wdeprecated"
+          "-Wvla"
+          "-Wundef"
+          "-Wmisleading-indentation"
+          "-Wcatch-value"
+          "-Wabsolute-value"
+          "-Wreturn-std-move"
+          "-Wunused-parameter"
+          "-Wunused-function"
+          "-Wcall-to-pure-virtual-from-ctor-dtor"
+          "-Wdeprecated-register"
         )
         foreach(warning ${CHECKED_WARNING_FLAGS})
             add_cxx_flag_if_supported_to_targets(${warning} "${targets}")
