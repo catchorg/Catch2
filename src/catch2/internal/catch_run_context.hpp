@@ -105,7 +105,7 @@ namespace Catch {
 
     public:
         // !TBD We need to do this another way!
-        bool aborting() const final;
+        bool aborting() const override;
 
     private:
 

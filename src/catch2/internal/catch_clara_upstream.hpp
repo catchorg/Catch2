@@ -705,7 +705,7 @@ namespace detail {
     };
     struct BoundFlagRefBase : BoundRef {
         virtual auto setFlag( bool flag ) -> ParserResult = 0;
-        virtual auto isFlag() const -> bool { return true; }
+        bool isFlag() const override { return true; }
     };
 
     template<typename T>

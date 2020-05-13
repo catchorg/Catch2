@@ -61,6 +61,7 @@ function(add_warnings_to_targets targets)
           "-Wunused-function"
           "-Wcall-to-pure-virtual-from-ctor-dtor"
           "-Wdeprecated-register"
+          "-Wsuggest-override"
         )
         foreach(warning ${CHECKED_WARNING_FLAGS})
             add_cxx_flag_if_supported_to_targets(${warning} "${targets}")
