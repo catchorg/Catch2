@@ -2,6 +2,7 @@
 
 # Release notes
 **Contents**<br>
+[3.0.1](#301)<br>
 [2.12.1](#2121)<br>
 [2.12.0](#2120)<br>
 [2.11.3](#2113)<br>
@@ -36,6 +37,110 @@
 [Older versions](#older-versions)<br>
 [Even Older versions](#even-older-versions)<br>
 
+
+## 3.0.1 (in progress)
+
+**Catch2 now uses statically compiled library as its distribution model.
+This also means that to get all of Catch2's functionality in a test file,
+you have to include multiple headers.**
+
+For quick'n'dirty migration, you can replace the old `#include <catch2/catch.hpp>`
+with `#include <catch2/catch_all.hpp>`. This is a (one of) convenience
+header(s) that brings in _all_ of headers in Catch2. By doing this,
+you should be able to migrate instantly, but at the cost of (significantly)
+increased compilation times. You should prefer piecemeal including
+headers that are actually required by your test code.
+
+The basic set of functionality (`TEST_CASE`, `SECTION`, `REQUIRE`) is in
+`catch2/catch_test_macros.hpp`. Matchers are in `matchers` subfolder,
+generators in `generators` subfolder, and so on.
+
+Note that documentation has not yet been updated to account for the
+new design.
+
+
+### FAQ
+
+* Why is Catch2 moving to separate headers?
+  * The short answer is future extensibility and scalability. The long answer is complex and can be found on my blog, but at the most basic level, it is that providing single-header distribution is at odds with providing variety of useful features. When Catch2 was distributed in a single header, adding a new Matcher would cause overhead for everyone, but was useful only to a subset of users. This meant that the barrier to entry for new Matchers/Generators/etc is high in single header model, but much smaller in the new model.
+* Will Catch2 again distribute single-header version in the future?
+  * No. But I intend to provide sqlite-style distribution option, with 1 header and 1 "unity" .cpp file. Do note that the header will have similar problem to the `catch_all.hpp` header.
+* Why the big breaking change caused by replacing `catch.hpp` with `catch_all.hpp`?
+  * The convenience header `catch_all.hpp` exists for two reasons. One of them is to provide a way for quick migration from Catch2, the second one is to provide a simple way to test things with Catch2. Using it for migration has one drawback in that it is **big**. This means that including it _will_ cause significant compile time drag, and so using it to migrate should be a concious decision by the user, not something they can just stumble into unknowingly.
+
+
+### (Potentially) Breaking changes
+* **Catch2 now uses statically compiled library as its distribution model**
+  * **Including `catch.hpp` no longer works**
+* `ANON_TEST_CASE` has been removed, use `TEST_CASE` with no arguments instead (#1220)
+* `--list*` commands no longer have non-zero return code (#1410)
+* `--list-test-names-only` has been removed (#1190)
+  * You should use verbosity-modifiers for `--list-tests` instead
+* `--list*` commands are now piped through the reporters
+  * The top-level reporter interface provides default implementation that works just as the old one
+  * XmlReporter outputs a machine-parseable XML
+* `TEST_CASE` description support has been removed
+  * If the second argument has text outside tags, the text will be ignored.
+* Hidden test cases are no longer included just because they don't match an exclusion tag
+  * Previously, a `TEST_CASE("A", "[.foo]")` would be included by asking for `~[bar]`.
+* `PredicateMatcher` is no longer type erased.
+  * This means that the type of the provided predicate is part of the `PredicateMatcher`'s type
+* `SectionInfo` no longer contains section description as a member (#1319)
+  * You can still write `SECTION("ShortName", "Long and wordy description")`, but the description is thrown away
+  * The description type now must be a `const char*` or be implicitly convertible to it
+* The `[!hide]` tag has been removed.
+  * Use `[.]` or `[.foo]` instead.
+* Lvalues of composed matchers cannot be composed further
+* Uses of `REGISTER_TEST_CASE` macro need to be followed by a semicolon
+  * This does not change `TEST_CASE` and friends in any way
+* `IStreamingReporter::IsMulti` member function was removed
+  * This is _very_ unlikely to actually affect anyone, as it was default-implemented in the interface, and only used internally
+* Various classes not designed for user-extension have been made final
+  * `ListeningReporter` is now `final`
+  * Concrete Matchers (e.g. `UnorderedEquals` vector matcher) are now `final`
+  * All Generators are now `final`
+* Matcher namespacing has been redone
+  * Matcher types are no longer in deeply nested namespaces
+  * Matcher factory functions are no longer brought into `Catch` namespace
+  * This means that all public-facing matcher-related functionality is now in `Catch::Matchers` namespace
+* Defining `CATCH_CONFIG_MAIN` will no longer create main in that TU.
+  * Link with `libCatch2Main.a`, or the proper CMake/pkg-config target
+  * If you want to write custom main, include `catch2/catch_session.hpp`
+* `CATCH_CONFIG_EXTERNAL_INTERFACES` has been removed.
+  * You should instead include the appropriate headers as needed.
+* `CATCH_CONFIG_IMPL` has been removed.
+  * The implementation is now compiled into a static library.
+
+
+
+### Improvements
+* Matchers have been extended with the ability to use different signatures of `match` (#1307, #1553, #1554, #1843)
+  * This includes having templated `match` member function
+  * See the [rewritten Matchers documentation](matchers.md#top) for details
+  * Catch2 currently provides _some_ generic matchers, but there should be more before final release of v3
+    * So far, `IsEmpty`, `SizeIs`, and `Contains` are provided.
+    * At least `ElementsAre` and `UnorderedElementsAre` are planned.
+
+
+### Fixes
+* The `INFO` macro no longer contains superfluous semicolon (#1456)
+* The `--list*` family of command line flags now return 0 on success (#1410, #1146)
+
+
+### Other changes
+* `CATCH_CONFIG_DISABLE_MATCHERS` no longer exists.
+  * If you do not want to use Matchers in a TU, do not include their header.
+* `CATCH_CONFIG_ENABLE_CHRONO_STRINGMAKER` no longer exists.
+  * `StringMaker` specializations for <chrono> are always provided
+* Catch2's CMake now provides 2 targets, `Catch2` and `Catch2WithMain`.
+  * `Catch2` is the statically compiled implementation by itself
+  * `Catch2WithMain` also links in the default main
+* Catch2's pkg-config integration also provides 2 packages
+  * `catch2` is the statically compiled implementation by itself
+  * `catch2-with-main` also links in the default main
+
+
+
 ## 2.12.1
 
 ### Fixes
@@ -43,6 +148,7 @@
 
 ### Improvements
 * Added support for `^` (bitwise xor) to `CHECK` and `REQUIRE`
+
 
 
 ## 2.12.0
@@ -67,64 +173,11 @@
 * Improved detection of stdlib's support for `std::uncaught_exceptions` (#1911)
 
 
+
 ## 2.11.3
 
 ### Fixes
 * Fixed compilation error caused by lambdas in assertions under MSVC
-
-
-## 3.0.0 (in progress)
-
-### (Potentially) Breaking changes
-* `ANON_TEST_CASE` has been removed, use `TEST_CASE` with no arguments instead (#1220)
-* `--list*` commands no longer have non-zero return code (#1410)
-* `--list-test-names-only` has been removed (#1190)
-  * You should use verbosity-modifiers for `--list-tests` instead
-* `--list*` commands are now piped through the reporters
-  * The top-level reporter interface provides default implementation that works just as the old one
-  * XmlReporter outputs a machine-parseable XML
-* `TEST_CASE` description support has been removed
-  * If the second argument has text outside tags, the text will be ignored.
-* Hidden test cases are no longer included just because they don't match an exclusion tag
-  * Previously, a `TEST_CASE("A", "[.foo]")` would be included by asking for `~[bar]`.
-* `PredicateMatcher` is no longer type erased.
-  * This means that the type of the provided predicate is part of the `PredicateMatcher`'s type
-* `SectionInfo` no longer contains section description as a member (#1319)
-  * You can still write `SECTION("ShortName", "Long and wordy description")`, but the description is thrown away
-  * The description type now must be a `const char*` or implicitly convertible to it
-* The `[!hide]` tag has been removed.
-  * Use `[.]` or `[.foo]` instead.
-* Lvalues of composed matchers cannot be composed further
-* Uses of `REGISTER_TEST_CASE` macro need to be followed by a semicolon
-  * This does not change `TEST_CASE` and friends in any way
-* `IStreamingReporter::IsMulti` member function was removed
-  * This is _very_ unlikely to actually affect anyone, as it was default-implemented in the interface, and only used internally
-* Various classes not designed for user-extension have been made final
-  * `ListeningReporter` is now `final`
-  * Concrete Matchers (e.g. `UnorderedEquals` vector matcher) are now `final`
-* Matcher namespacing has been redone
-  * Matcher types are no longer in deeply nested namespaces
-  * Matcher factory functions are no longer brought into `Catch` namespace
-  * This means that all public-facing matcher-related functionality is now in `Catch::Matchers` namespace
-
-
-### Improvements
-* Matchers have been extended with the ability to use different signatures of `match` (#1307, #1553, #1554, #1843)
-  * This includes having templated `match` member function
-  * See the [rewritten Matchers documentation](matchers.md#top) for details
-
-
-### Fixes
-* The `INFO` macro no longer contains superfluous semicolon (#1456)
-* The `--list*` family of command line flags now return 0 on success (#1410, #1146)
-
-
-### Other changes
-* `CATCH_CONFIG_DISABLE_MATCHERS` no longer exists.
-  * If you do not want to use Matchers in a TU, do not include their header.
-* `CATCH_CONFIG_ENABLE_CHRONO_STRINGMAKER` no longer exists.
-  * `StringMaker` specializations for <chrono> are always provided
-
 
 
 ## 2.11.2
