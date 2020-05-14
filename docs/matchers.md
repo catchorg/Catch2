@@ -241,6 +241,35 @@ Note that `DerivedException` in the example above has to derive from
 > the exception message matcher lives in `catch2/matchers/catch_matchers_exception.hpp`
 
 
+### Generic range Matchers
+
+> Generic range matchers were introduced in Catch X.Y.Z
+
+Catch2 also provides some matchers that use the new style matchers
+definitions to handle generic range-like types. These are:
+
+* `IsEmpty()`
+* `SizeIs(size_t target_size)`
+* `SizeIs(Matcher size_matcher)`
+* `Contains(T&& target_element, Comparator = std::equal_to<>{})`
+* `Contains(Matcher element_matcher)`
+
+`IsEmpty` should be self-explanatory. It successfully matches objects
+that are empty according to either `std::empty`, or ADL-found `empty`
+free function.
+
+`SizeIs` checks range's size. If constructed with `size_t` arg, the
+matchers accepts ranges whose size is exactly equal to the arg. If
+constructed from another matcher, then the resulting matcher accepts
+ranges whose size is accepted by the provided matcher.
+
+`Contains` accepts ranges that contain specific element. There are
+again two variants, one that accepts the desired element directly,
+in which case a range is accepted if any of its elements is equal to
+the target element. The other variant is constructed from a matcher,
+in which case a range is accepted if any of its elements is accepted
+by the provided matcher.
+
 
 ## Writing custom matchers (old style)
 
@@ -316,7 +345,8 @@ style matchers arbitrarily.
 
 ## Writing custom matchers (new style)
 
-The new style of writing matchers has been introduced in Catch2 v3.
+> New style matchers were introduced in Catch X.Y.Z
+
 To create a new-style matcher, you have to create your own type that
 derives from `Catch::Matchers::MatcherGenericBase`. Your type has to
 also provide two methods, `bool match( ... ) const` and overriden
