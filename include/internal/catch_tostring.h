@@ -469,11 +469,11 @@ namespace Catch {
 #endif // CATCH_CONFIG_ENABLE_VARIANT_STRINGMAKER
 
 namespace Catch {
-    namespace detail {
-        // Import begin/ end from std here
-        using std::begin;
-        using std::end;
+    // Import begin/ end from std here
+    using std::begin;
+    using std::end;
 
+    namespace detail {
         template <typename...>
         struct void_type {
             using type = void;
