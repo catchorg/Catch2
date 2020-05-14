@@ -2,8 +2,6 @@
 # Compile-time configuration
 
 **Contents**<br>
-[main()/ implementation](#main-implementation)<br>
-[Reporter / Listener interfaces](#reporter--listener-interfaces)<br>
 [Prefixing Catch macros](#prefixing-catch-macros)<br>
 [Terminal colour](#terminal-colour)<br>
 [Console width](#console-width)<br>
@@ -22,20 +20,6 @@ Catch is designed to "just work" as much as possible. For most people the only c
 
 Nonetheless there are still some occasions where finer control is needed. For these occasions Catch exposes a set of macros for configuring how it is built.
 
-## main()/ implementation
-
-    CATCH_CONFIG_MAIN      // Designates this as implementation file and defines main()
-    CATCH_CONFIG_RUNNER    // Designates this as implementation file
-
-Although Catch is header only it still, internally, maintains a distinction between interface headers and headers that contain implementation. Only one source file in your test project should compile the implementation headers and this is controlled through the use of one of these macros - one of these identifiers should be defined before including Catch in *exactly one implementation file in your project*.
-
-## Reporter / Listener interfaces
-
-    CATCH_CONFIG_EXTERNAL_INTERFACES  // Brings in necessary headers for Reporter/Listener implementation
-
-Brings in various parts of Catch that are required for user defined Reporters and Listeners. This means that new Reporters and Listeners can be defined in this file as well as in the main file.
-
-Implied by both `CATCH_CONFIG_MAIN` and `CATCH_CONFIG_RUNNER`.
 
 ## Prefixing Catch macros
 
