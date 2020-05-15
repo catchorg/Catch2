@@ -131,7 +131,7 @@ new design.
 * `CATCH_CONFIG_DISABLE_MATCHERS` no longer exists.
   * If you do not want to use Matchers in a TU, do not include their header.
 * `CATCH_CONFIG_ENABLE_CHRONO_STRINGMAKER` no longer exists.
-  * `StringMaker` specializations for <chrono> are always provided
+  * `StringMaker` specializations for `<chrono>` are always provided
 * Catch2's CMake now provides 2 targets, `Catch2` and `Catch2WithMain`.
   * `Catch2` is the statically compiled implementation by itself
   * `Catch2WithMain` also links in the default main
