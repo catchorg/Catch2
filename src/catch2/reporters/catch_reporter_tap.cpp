@@ -8,6 +8,7 @@
 #include <catch2/internal/catch_string_manip.hpp>
 
 #include <algorithm>
+#include <ostream>
 
 namespace Catch {
 

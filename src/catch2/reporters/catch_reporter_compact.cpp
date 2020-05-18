@@ -10,6 +10,8 @@
 #include <catch2/internal/catch_console_colour.hpp>
 #include <catch2/internal/catch_string_manip.hpp>
 
+#include <ostream>
+
 namespace {
 
 #ifdef CATCH_PLATFORM_MAC

@@ -16,7 +16,7 @@
 #include <cstdio>
 #include <cassert>
 #include <memory>
-#include <ostream>
+#include <iosfwd>
 
 namespace Catch {
     void prepareExpandedExpression(AssertionResult& result);

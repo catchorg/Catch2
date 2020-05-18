@@ -15,6 +15,7 @@
 #include <cstring>
 #include <cfloat>
 #include <cstdio>
+#include <ostream>
 #include <cassert>
 #include <memory>
 
