@@ -107,9 +107,6 @@ namespace Catch {
             bool operator == (SectionNode const& other) const {
                 return stats.sectionInfo.lineInfo == other.stats.sectionInfo.lineInfo;
             }
-            bool operator == (std::shared_ptr<SectionNode> const& other) const {
-                return operator==(*other);
-            }
 
             SectionStats stats;
             using ChildSections = std::vector<std::shared_ptr<SectionNode>>;
