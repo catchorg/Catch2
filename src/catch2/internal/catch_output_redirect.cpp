@@ -10,7 +10,6 @@
 
 #include <cstdio>
 #include <cstring>
-#include <fstream>
 #include <sstream>
 
 #if defined(CATCH_CONFIG_NEW_CAPTURE)

@@ -15,7 +15,6 @@
 #include <iostream>
 #include <cerrno>
 #include <limits>
-#include <sstream>
 #include <array>
 
 namespace { namespace MiscTests {
