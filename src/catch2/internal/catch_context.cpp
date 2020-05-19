@@ -21,8 +21,8 @@ namespace Catch {
             return m_runner;
         }
 
-        IConfigPtr const& getConfig() const override {
-            return m_config;
+        IConfig const* getConfig() const override {
+            return m_config.get();
         }
 
         ~Context() override;

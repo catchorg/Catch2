@@ -51,7 +51,7 @@ namespace Catch {
 
             template <typename Clock = default_clock>
             void run() {
-                IConfigPtr cfg = getCurrentContext().getConfig();
+                auto const* cfg = getCurrentContext().getConfig();
 
                 auto env = Detail::measure_environment<Clock>();
 

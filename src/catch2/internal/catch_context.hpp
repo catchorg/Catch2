@@ -25,7 +25,7 @@ namespace Catch {
 
         virtual IResultCapture* getResultCapture() = 0;
         virtual IRunner* getRunner() = 0;
-        virtual IConfigPtr const& getConfig() const = 0;
+        virtual IConfig const* getConfig() const = 0;
     };
 
     struct IMutableContext : IContext

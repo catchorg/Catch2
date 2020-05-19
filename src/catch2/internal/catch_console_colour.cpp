@@ -105,10 +105,9 @@ namespace {
     IColourImpl* platformColourInstance() {
         static Win32ColourImpl s_instance;
 
-        IConfigPtr config = getCurrentContext().getConfig();
-        UseColour::YesOrNo colourMode = config
-            ? config->useColour()
-            : UseColour::Auto;
+        auto const* config = getCurrentContext().getConfig();
+        UseColour::YesOrNo colourMode = config?
+            config->useColour() : UseColour::Auto;
         if( colourMode == UseColour::Auto )
             colourMode = UseColour::Yes;
         return colourMode == UseColour::Yes
@@ -179,7 +178,7 @@ namespace {
     }
     IColourImpl* platformColourInstance() {
         ErrnoGuard guard;
-        IConfigPtr config = getCurrentContext().getConfig();
+        auto const* config = getCurrentContext().getConfig();
         UseColour::YesOrNo colourMode = config
             ? config->useColour()
             : UseColour::Auto;
