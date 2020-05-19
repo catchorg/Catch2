@@ -18,12 +18,10 @@
 #include <algorithm>
 #include <functional>
 #include <vector>
-#include <iterator>
 #include <numeric>
 #include <cmath>
 #include <utility>
 #include <cstddef>
-#include <random>
 
 namespace Catch {
     namespace Benchmark {
@@ -61,23 +59,6 @@ namespace Catch {
                 auto count = last - first;
                 double sum = std::accumulate(first, last, 0.);
                 return sum / count;
-            }
-
-            template <typename URng, typename Iterator, typename Estimator>
-            sample resample(URng& rng, int resamples, Iterator first, Iterator last, Estimator& estimator) {
-                auto n = last - first;
-                std::uniform_int_distribution<decltype(n)> dist(0, n - 1);
-
-                sample out;
-                out.reserve(resamples);
-                std::generate_n(std::back_inserter(out), resamples, [n, first, &estimator, &dist, &rng] {
-                    std::vector<double> resampled;
-                    resampled.reserve(n);
-                    std::generate_n(std::back_inserter(resampled), n, [first, &dist, &rng] { return first[dist(rng)]; });
-                    return estimator(resampled.begin(), resampled.end());
-                });
-                std::sort(out.begin(), out.end());
-                return out;
             }
 
             template <typename Estimator, typename Iterator>

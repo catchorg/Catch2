@@ -21,6 +21,27 @@
 #endif
 
 namespace {
+
+using Catch::Benchmark::Detail::sample;
+
+     template <typename URng, typename Estimator>
+     sample resample(URng& rng, int resamples, std::vector<double>::iterator first, std::vector<double>::iterator last, Estimator& estimator) {
+         auto n = last - first;
+         std::uniform_int_distribution<decltype(n)> dist(0, n - 1);
+
+         sample out;
+         out.reserve(resamples);
+         std::generate_n(std::back_inserter(out), resamples, [n, first, &estimator, &dist, &rng] {
+             std::vector<double> resampled;
+             resampled.reserve(n);
+             std::generate_n(std::back_inserter(resampled), n, [first, &dist, &rng] { return first[dist(rng)]; });
+             return estimator(resampled.begin(), resampled.end());
+         });
+         std::sort(out.begin(), out.end());
+         return out;
+     }
+
+
     double erf_inv(double x) {
         // Code accompanying the article "Approximating the erfinv function" in GPU Computing Gems, Volume 2
         double w, p;
