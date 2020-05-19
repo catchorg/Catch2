@@ -136,9 +136,6 @@ namespace Catch {
         return deltaTotals;
     }
 
-    IStreamingReporter& RunContext::reporter() const {
-        return *m_reporter;
-    }
 
     void RunContext::assertionEnded(AssertionResult const & result) {
         if (result.getResultType() == ResultWas::Ok) {

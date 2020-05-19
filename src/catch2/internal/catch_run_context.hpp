@@ -45,8 +45,6 @@ namespace Catch {
 
         Totals runTest(TestCaseHandle const& testCase);
 
-        IStreamingReporter& reporter() const;
-
     public: // IResultCapture
 
         // Assertion handlers

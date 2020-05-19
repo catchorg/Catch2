@@ -61,10 +61,11 @@ namespace Catch {
 
         class TestGroup {
         public:
-            explicit TestGroup(IStreamingReporterPtr&& reporter, std::shared_ptr<Config> const& config)
-            : m_config{config}
-            , m_context{config, std::move(reporter)}
-            {
+            explicit TestGroup(IStreamingReporterPtr&& reporter, std::shared_ptr<Config> const& config):
+                m_reporter(reporter.get()),
+                m_config{config},
+                m_context{config, std::move(reporter)} {
+
                 auto const& allTestCases = getAllTestCasesSorted(*m_config);
                 m_matches = m_config->testSpec().matchesByFilter(allTestCases, *m_config);
                 auto const& invalidArgs = m_config->testSpec().getInvalidArgs();
@@ -87,19 +88,19 @@ namespace Catch {
                     if (!m_context.aborting())
                         totals += m_context.runTest(*testCase);
                     else
-                        m_context.reporter().skipTest(testCase->getTestCaseInfo());
+                        m_reporter->skipTest(testCase->getTestCaseInfo());
                 }
 
                 for (auto const& match : m_matches) {
                     if (match.tests.empty()) {
-                        m_context.reporter().noMatchingTestCases(match.name);
+                        m_reporter->noMatchingTestCases(match.name);
                         totals.error = -1;
                     }
                 }
 
                 if (!invalidArgs.empty()) {
                     for (auto const& invalidArg: invalidArgs)
-                         m_context.reporter().reportInvalidArguments(invalidArg);
+                         m_reporter->reportInvalidArguments(invalidArg);
                 }
 
                 m_context.testGroupEnded(m_config->name(), totals, 1, 1);
@@ -109,6 +110,7 @@ namespace Catch {
         private:
             using Tests = std::set<TestCaseHandle const*>;
 
+            IStreamingReporter* m_reporter;
             std::shared_ptr<Config> m_config;
             RunContext m_context;
             Tests m_tests;
