@@ -122,15 +122,15 @@ TEST_CASE( "When unchecked exceptions are thrown, but caught, they do not affect
 }
 
 
-CATCH_TRANSLATE_EXCEPTION( CustomException& ex ) {
+CATCH_TRANSLATE_EXCEPTION( CustomException const& ex ) {
     return ex.getMessage();
 }
 
-CATCH_TRANSLATE_EXCEPTION( CustomStdException& ex ) {
+CATCH_TRANSLATE_EXCEPTION( CustomStdException const& ex ) {
     return ex.getMessage();
 }
 
-CATCH_TRANSLATE_EXCEPTION( double& ex ) {
+CATCH_TRANSLATE_EXCEPTION( double const& ex ) {
     return Catch::Detail::stringify( ex );
 }
 

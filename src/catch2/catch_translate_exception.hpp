@@ -12,7 +12,7 @@ namespace Catch {
         class ExceptionTranslator : public IExceptionTranslator {
         public:
 
-            ExceptionTranslator( std::string(*translateFunction)( T& ) )
+            ExceptionTranslator( std::string(*translateFunction)( T const& ) )
             : m_translateFunction( translateFunction )
             {}
 
@@ -24,7 +24,7 @@ namespace Catch {
                     else
                         return (*it)->translate( it+1, itEnd );
                 }
-                catch( T& ex ) {
+                catch( T const& ex ) {
                     return m_translateFunction( ex );
                 }
 #else
@@ -33,12 +33,12 @@ namespace Catch {
             }
 
         protected:
-            std::string(*m_translateFunction)( T& );
+            std::string(*m_translateFunction)( T const& );
         };
 
     public:
         template<typename T>
-        ExceptionTranslatorRegistrar( std::string(*translateFunction)( T& ) ) {
+        ExceptionTranslatorRegistrar( std::string(*translateFunction)( T const& ) ) {
             getMutableRegistryHub().registerTranslator
                 ( new ExceptionTranslator<T>( translateFunction ) );
         }

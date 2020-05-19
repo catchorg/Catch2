@@ -64,7 +64,7 @@ namespace Catch {
 By default all exceptions deriving from `std::exception` will be translated to strings by calling the `what()` method. For exception types that do not derive from `std::exception` - or if `what()` does not return a suitable string - use `CATCH_TRANSLATE_EXCEPTION`. This defines a function that takes your exception type, by reference, and returns a string. It can appear anywhere in the code - it doesn't have to be in the same translation unit. For example:
 
 ```cpp
-CATCH_TRANSLATE_EXCEPTION( MyType& ex ) {
+CATCH_TRANSLATE_EXCEPTION( MyType const& ex ) {
     return ex.message();
 }
 ```
