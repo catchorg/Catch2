@@ -14,7 +14,6 @@
 #include <catch2/benchmark/catch_clock.hpp>
 #include <catch2/benchmark/detail/catch_complete_invoke.hpp>
 
-#include <tuple>
 #include <type_traits>
 
 namespace Catch {
