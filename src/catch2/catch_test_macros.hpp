@@ -8,7 +8,6 @@
 
 #include <catch2/internal/catch_test_macro_impl.hpp>
 #include <catch2/catch_message.hpp>
-#include <catch2/interfaces/catch_interfaces_exception.hpp>
 #include <catch2/internal/catch_preprocessor.hpp>
 #include <catch2/internal/catch_section.hpp>
 #include <catch2/internal/catch_test_registry.hpp>
@@ -201,13 +200,6 @@
   #define AND_THEN( desc )
 
 #endif // ^^ unprefixed, disabled
-
-// This macro is always prefixed
-#if !defined(CATCH_CONFIG_DISABLE)
-  #define CATCH_TRANSLATE_EXCEPTION( signature ) INTERNAL_CATCH_TRANSLATE_EXCEPTION( signature )
-#else
-  #define CATCH_TRANSLATE_EXCEPTION( signature ) INTERNAL_CATCH_TRANSLATE_EXCEPTION_NO_REG( INTERNAL_CATCH_UNIQUE_NAME( catch_internal_ExceptionTranslator ), signature )
-#endif
 
 // end of user facing macros
 

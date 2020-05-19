@@ -123,6 +123,7 @@ set(INTERNAL_HEADERS
     ${SOURCES_DIR}/internal/catch_to_string.hpp
     ${SOURCES_DIR}/catch_tostring.hpp
     ${SOURCES_DIR}/catch_totals.hpp
+    ${SOURCES_DIR}/catch_translate_exception.hpp
     ${SOURCES_DIR}/internal/catch_uncaught_exceptions.hpp
     ${SOURCES_DIR}/catch_version.hpp
     ${SOURCES_DIR}/catch_version_macros.hpp

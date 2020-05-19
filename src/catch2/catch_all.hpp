@@ -33,6 +33,7 @@
 #include <catch2/catch_timer.hpp>
 #include <catch2/catch_tostring.hpp>
 #include <catch2/catch_totals.hpp>
+#include <catch2/catch_translate_exception.hpp>
 #include <catch2/catch_version.hpp>
 #include <catch2/catch_version_macros.hpp>
 #include <catch2/generators/catch_generators_all.hpp>

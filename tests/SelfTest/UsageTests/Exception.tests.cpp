@@ -4,6 +4,7 @@
  */
 
 #include <catch2/catch_test_macros.hpp>
+#include <catch2/catch_translate_exception.hpp>
 #include <catch2/matchers/catch_matchers_string.hpp>
 
 #include <string>
