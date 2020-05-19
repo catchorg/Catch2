@@ -22,7 +22,7 @@ namespace Catch {
         }
 
         IConfig const* getConfig() const override {
-            return m_config.get();
+            return m_config;
         }
 
         ~Context() override;
@@ -34,14 +34,14 @@ namespace Catch {
         void setRunner( IRunner* runner ) override {
             m_runner = runner;
         }
-        void setConfig( IConfigPtr const& config ) override {
+        void setConfig( IConfig const* config ) override {
             m_config = config;
         }
 
         friend IMutableContext& getCurrentMutableContext();
 
     private:
-        IConfigPtr m_config;
+        IConfig const* m_config = nullptr;
         IRunner* m_runner = nullptr;
         IResultCapture* m_resultCapture = nullptr;
     };

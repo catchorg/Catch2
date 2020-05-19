@@ -53,7 +53,7 @@ namespace Catch {
 
         clara::Parser m_cli;
         ConfigData m_configData;
-        std::shared_ptr<Config> m_config;
+        std::unique_ptr<Config> m_config;
         bool m_startupExceptions = false;
     };
 

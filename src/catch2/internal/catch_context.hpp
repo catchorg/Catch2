@@ -33,7 +33,7 @@ namespace Catch {
         virtual ~IMutableContext();
         virtual void setResultCapture( IResultCapture* resultCapture ) = 0;
         virtual void setRunner( IRunner* runner ) = 0;
-        virtual void setConfig( IConfigPtr const& config ) = 0;
+        virtual void setConfig( IConfig const* config ) = 0;
 
     private:
         static IMutableContext *currentContext;

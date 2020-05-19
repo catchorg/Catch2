@@ -137,7 +137,7 @@ namespace Catch {
         const auto& exceptions = getRegistryHub().getStartupExceptionRegistry().getExceptions();
         if ( !exceptions.empty() ) {
             config();
-            getCurrentMutableContext().setConfig(m_config);
+            getCurrentMutableContext().setConfig(m_config.get());
 
             m_startupExceptions = true;
             Colour colourGuard( Colour::Red );
@@ -181,7 +181,7 @@ namespace Catch {
         auto result = m_cli.parse( clara::Args( argc, argv ) );
         if( !result ) {
             config();
-            getCurrentMutableContext().setConfig(m_config);
+            getCurrentMutableContext().setConfig(m_config.get());
             Catch::cerr()
                 << Colour( Colour::Red )
                 << "\nError(s) in input:\n"
@@ -252,7 +252,7 @@ namespace Catch {
     }
     Config& Session::config() {
         if( !m_config )
-            m_config = std::make_shared<Config>( m_configData );
+            m_config = std::make_unique<Config>( m_configData );
         return *m_config;
     }
 
@@ -274,7 +274,7 @@ namespace Catch {
             }
 
             // Set up global config instance before we start calling into other functions
-            getCurrentMutableContext().setConfig(m_config);
+            getCurrentMutableContext().setConfig(m_config.get());
 
             // Create reporter(s) so we can route listings through them
             auto reporter = makeReporter(m_config.get());
