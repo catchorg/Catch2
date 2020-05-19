@@ -31,7 +31,7 @@ namespace Catch {
         std::size_t count = 0;
     };
 
-    bool list( IStreamingReporter& reporter, std::shared_ptr<Config> const& config );
+    bool list( IStreamingReporter& reporter, Config const& config );
 
 } // end namespace Catch
 

@@ -273,11 +273,14 @@ namespace Catch {
                 applyFilenamesAsTags();
             }
 
+            // Set up global config instance before we start calling into other functions
+            getCurrentMutableContext().setConfig(m_config);
+
             // Create reporter(s) so we can route listings through them
             auto reporter = makeReporter(m_config.get());
 
             // Handle list request
-            if (list(*reporter, m_config)) {
+            if (list(*reporter, *m_config)) {
                 return 0;
             }
 

@@ -90,20 +90,19 @@ namespace Catch {
         return out;
     }
 
-    bool list( IStreamingReporter& reporter, std::shared_ptr<Config> const& config ) {
+    bool list( IStreamingReporter& reporter, Config const& config ) {
         bool listed = false;
-        getCurrentMutableContext().setConfig( config );
-        if (config->listTests()) {
+        if (config.listTests()) {
             listed = true;
-            listTests(reporter, *config);
+            listTests(reporter, config);
         }
-        if (config->listTags()) {
+        if (config.listTags()) {
             listed = true;
-            listTags(reporter, *config);
+            listTags(reporter, config);
         }
-        if (config->listReporters()) {
+        if (config.listReporters()) {
             listed = true;
-            listReporters(reporter, *config);
+            listReporters(reporter, config);
         }
         return listed;
     }
