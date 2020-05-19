@@ -30,7 +30,7 @@ namespace Catch {
     class ReporterRegistrar {
     public:
         explicit ReporterRegistrar( std::string const& name ) {
-            getMutableRegistryHub().registerReporter( name, std::make_shared<ReporterFactory<T>>() );
+            getMutableRegistryHub().registerReporter( name, std::make_unique<ReporterFactory<T>>() );
         }
     };
 
