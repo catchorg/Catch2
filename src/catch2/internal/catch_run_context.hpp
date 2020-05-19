@@ -45,7 +45,6 @@ namespace Catch {
 
         Totals runTest(TestCaseHandle const& testCase);
 
-        IConfigPtr config() const;
         IStreamingReporter& reporter() const;
 
     public: // IResultCapture

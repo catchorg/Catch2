@@ -136,10 +136,6 @@ namespace Catch {
         return deltaTotals;
     }
 
-    IConfigPtr RunContext::config() const {
-        return m_config;
-    }
-
     IStreamingReporter& RunContext::reporter() const {
         return *m_reporter;
     }
