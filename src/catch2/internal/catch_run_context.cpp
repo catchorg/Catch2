@@ -69,7 +69,7 @@ namespace Catch {
         GeneratorTracker::~GeneratorTracker() {}
     }
 
-    RunContext::RunContext(IConfigPtr const& _config, IStreamingReporterPtr&& reporter)
+    RunContext::RunContext(IConfig const* _config, IStreamingReporterPtr&& reporter)
     :   m_runInfo(_config->name()),
         m_context(getCurrentMutableContext()),
         m_config(_config),
@@ -78,7 +78,6 @@ namespace Catch {
         m_includeSuccessfulResults( m_config->includeSuccessfulResults() || m_reporter->getPreferences().shouldReportAllAssertions )
     {
         m_context.setRunner(this);
-        m_context.setConfig(m_config);
         m_context.setResultCapture(this);
         m_reporter->testRunStarting(m_runInfo);
     }

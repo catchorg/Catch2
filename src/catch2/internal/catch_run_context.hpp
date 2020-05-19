@@ -36,7 +36,7 @@ namespace Catch {
         RunContext( RunContext const& ) = delete;
         RunContext& operator =( RunContext const& ) = delete;
 
-        explicit RunContext( IConfigPtr const& _config, IStreamingReporterPtr&& reporter );
+        explicit RunContext( IConfig const* _config, IStreamingReporterPtr&& reporter );
 
         ~RunContext() override;
 
@@ -131,7 +131,7 @@ namespace Catch {
         ITracker* m_testCaseTracker = nullptr;
         Option<AssertionResult> m_lastResult;
 
-        IConfigPtr m_config;
+        IConfig const* m_config;
         Totals m_totals;
         IStreamingReporterPtr m_reporter;
         std::vector<MessageInfo> m_messages;

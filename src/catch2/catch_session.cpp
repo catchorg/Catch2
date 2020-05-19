@@ -61,7 +61,7 @@ namespace Catch {
 
         class TestGroup {
         public:
-            explicit TestGroup(IStreamingReporterPtr&& reporter, std::shared_ptr<Config> const& config):
+            explicit TestGroup(IStreamingReporterPtr&& reporter, Config const* config):
                 m_reporter(reporter.get()),
                 m_config{config},
                 m_context{config, std::move(reporter)} {
@@ -111,7 +111,7 @@ namespace Catch {
             using Tests = std::set<TestCaseHandle const*>;
 
             IStreamingReporter* m_reporter;
-            std::shared_ptr<Config> m_config;
+            Config const* m_config;
             RunContext m_context;
             Tests m_tests;
             TestSpec::Matches m_matches;
@@ -284,7 +284,7 @@ namespace Catch {
                 return 0;
             }
 
-            TestGroup tests { std::move(reporter), m_config };
+            TestGroup tests { std::move(reporter), m_config.get() };
             auto const totals = tests.execute();
 
             if( m_config->warnAboutNoTests() && totals.error == -1 )
