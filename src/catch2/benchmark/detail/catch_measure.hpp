@@ -21,7 +21,7 @@ namespace Catch {
     namespace Benchmark {
         namespace Detail {
             template <typename Clock, typename Fun, typename... Args>
-            TimingOf<Clock, Fun(Args...)> measure(Fun&& fun, Args&&... args) {
+            TimingOf<Clock, Fun, Args...> measure(Fun&& fun, Args&&... args) {
                 auto start = Clock::now();
                 auto&& r = Detail::complete_invoke(fun, std::forward<Args>(args)...);
                 auto end = Clock::now();
