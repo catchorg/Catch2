@@ -26,7 +26,7 @@ namespace Catch {
             int iterations;
         };
         template <typename Clock, typename Sig>
-        using TimingOf = Timing<ClockDuration<Clock>, Detail::CompleteType_t<Detail::ResultOf_t<Sig>>>;
+        using TimingOf = Timing<ClockDuration<Clock>, Detail::CompleteType_t<FunctionReturnType<Sig>>>;
     } // namespace Benchmark
 } // namespace Catch
 

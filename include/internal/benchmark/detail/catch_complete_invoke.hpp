@@ -12,6 +12,7 @@
 #define TWOBLUECUBES_CATCH_DETAIL_COMPLETE_INVOKE_HPP_INCLUDED
 
 #include "../../catch_enforce.h"
+#include "../../catch_meta.hpp"
 
 #include <type_traits>
 #include <utility>
@@ -42,20 +43,18 @@ namespace Catch {
                     return {};
                 }
             };
-            template <typename Sig>
-            using ResultOf_t = typename std::result_of<Sig>::type;
 
             // invoke and not return void :(
             template <typename Fun, typename... Args>
-            CompleteType_t<ResultOf_t<Fun(Args...)>> complete_invoke(Fun&& fun, Args&&... args) {
-                return CompleteInvoker<ResultOf_t<Fun(Args...)>>::invoke(std::forward<Fun>(fun), std::forward<Args>(args)...);
+            CompleteType_t<FunctionReturnType<Fun(Args...)>> complete_invoke(Fun&& fun, Args&&... args) {
+                return CompleteInvoker<FunctionReturnType<Fun(Args...)>>::invoke(std::forward<Fun>(fun), std::forward<Args>(args)...);
             }
 
             const std::string benchmarkErrorMsg = "a benchmark failed to run successfully";
         } // namespace Detail
 
         template <typename Fun>
-        Detail::CompleteType_t<Detail::ResultOf_t<Fun()>> user_code(Fun&& fun) {
+        Detail::CompleteType_t<FunctionReturnType<Fun()>> user_code(Fun&& fun) {
             CATCH_TRY{
                 return Detail::complete_invoke(std::forward<Fun>(fun));
             } CATCH_CATCH_ALL{
