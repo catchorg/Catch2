@@ -3021,6 +3021,10 @@ ok {test-number} - trim(StringRef(trailing_whitespace)) == StringRef(no_whitespa
 ok {test-number} - trim(StringRef(whitespace_at_both_ends)) == StringRef(no_whitespace) for: There is no extra whitespace here == There is no extra whitespace here
 # Unexpected exceptions can be translated
 not ok {test-number} - unexpected exception with message: '3.14'
+# Upcasting special member functions
+ok {test-number} - bptr->i == 3 for: 3 == 3
+# Upcasting special member functions
+ok {test-number} - bptr->i == 3 for: 3 == 3
 # Usage of the SizeIs range matcher
 ok {test-number} - empty_vec, SizeIs(0) for: {  } has size == 0
 # Usage of the SizeIs range matcher
@@ -3418,6 +3422,12 @@ ok {test-number} - ( fib[i] % 2 ) == 0 for: 0 == 0 with 1 message: 'Testing if f
 not ok {test-number} - ( fib[i] % 2 ) == 0 for: 1 == 0 with 1 message: 'Testing if fib[6] (13) is even'
 # looped tests
 not ok {test-number} - ( fib[i] % 2 ) == 0 for: 1 == 0 with 1 message: 'Testing if fib[7] (21) is even'
+# make_unique reimplementation
+ok {test-number} - !(lval.has_moved) for: !false
+# make_unique reimplementation
+ok {test-number} - rval.has_moved for: true
+# make_unique reimplementation
+ok {test-number} - *ptr == std::tuple<int, double, int>{1, 2., 3} for: {?} == {?}
 # mean
 ok {test-number} - m == 19. for: 19.0 == 19.0
 # measure
@@ -3742,6 +3752,52 @@ ok {test-number} - e.upper_bound == 23 for: 23.0 == 23
 ok {test-number} - e.lower_bound == 23 for: 23.0 == 23
 # uniform samples
 ok {test-number} - e.confidence_interval == 0.95 for: 0.95 == 0.95
+# unique_ptr reimplementation: basic functionality
+ok {test-number} - !(ptr) for: !{?}
+# unique_ptr reimplementation: basic functionality
+ok {test-number} - ptr.get() == 0 for: 0 == 0
+# unique_ptr reimplementation: basic functionality
+ok {test-number} - ptr for: {?}
+# unique_ptr reimplementation: basic functionality
+ok {test-number} - *ptr == 0 for: 0 == 0
+# unique_ptr reimplementation: basic functionality
+ok {test-number} - ptr.get() == naked_ptr for: 0x<hex digits> == 0x<hex digits>
+# unique_ptr reimplementation: basic functionality
+ok {test-number} - !(ptr) for: !{?}
+# unique_ptr reimplementation: basic functionality
+ok {test-number} - ptr.get() == 0 for: 0 == 0
+# unique_ptr reimplementation: basic functionality
+ok {test-number} - ptr for: {?}
+# unique_ptr reimplementation: basic functionality
+ok {test-number} - *ptr == 0 for: 0 == 0
+# unique_ptr reimplementation: basic functionality
+ok {test-number} - ptr.get() == naked_ptr for: 0x<hex digits> == 0x<hex digits>
+# unique_ptr reimplementation: basic functionality
+ok {test-number} - ptr for: {?}
+# unique_ptr reimplementation: basic functionality
+ok {test-number} - ptr.get() != 0 for: 0x<hex digits> != 0
+# unique_ptr reimplementation: basic functionality
+ok {test-number} - *ptr == 2 for: 2 == 2
+# unique_ptr reimplementation: basic functionality
+ok {test-number} - !(ptr) for: !{?}
+# unique_ptr reimplementation: basic functionality
+ok {test-number} - ptr.get() == 0 for: 0 == 0
+# unique_ptr reimplementation: basic functionality
+ok {test-number} - !(ptr1) for: !{?}
+# unique_ptr reimplementation: basic functionality
+ok {test-number} - ptr2 for: {?}
+# unique_ptr reimplementation: basic functionality
+ok {test-number} - *ptr2 == 1 for: 1 == 1
+# unique_ptr reimplementation: basic functionality
+ok {test-number} - !(ptr2) for: !{?}
+# unique_ptr reimplementation: basic functionality
+ok {test-number} - ptr1 for: {?}
+# unique_ptr reimplementation: basic functionality
+ok {test-number} - *ptr1 == 2 for: 2 == 2
+# unique_ptr reimplementation: basic functionality
+ok {test-number} - *ptr1 == 2 for: 2 == 2
+# unique_ptr reimplementation: basic functionality
+ok {test-number} - *ptr2 == 1 for: 1 == 1
 # vec<vec<string,alloc>> -> toString
 ok {test-number} - ::Catch::Detail::stringify(v) == "{  }" for: "{  }" == "{  }"
 # vec<vec<string,alloc>> -> toString
@@ -3818,5 +3874,5 @@ ok {test-number} - q3 == 23. for: 23.0 == 23.0
 ok {test-number} -
 # xmlentitycheck
 ok {test-number} -
-1..1905
+1..1933
 

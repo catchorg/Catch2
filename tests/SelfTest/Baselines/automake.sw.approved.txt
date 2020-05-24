@@ -222,6 +222,7 @@ Message from section two
 :test-result: PASS Tracker
 :test-result: PASS Trim strings
 :test-result: FAIL Unexpected exceptions can be translated
+:test-result: PASS Upcasting special member functions
 :test-result: PASS Usage of the SizeIs range matcher
 :test-result: PASS Use a custom approx
 :test-result: PASS Variadic macros
@@ -268,6 +269,7 @@ loose text artifact
 :test-result: PASS long long
 :test-result: FAIL looped SECTION tests
 :test-result: FAIL looped tests
+:test-result: PASS make_unique reimplementation
 :test-result: PASS mean
 :test-result: PASS measure
 :test-result: FAIL mix info, unscoped info and warning
@@ -331,6 +333,7 @@ loose text artifact
 :test-result: PASS tuple<string,string>
 :test-result: PASS tuple<tuple<int>,tuple<>,float>
 :test-result: PASS uniform samples
+:test-result: PASS unique_ptr reimplementation: basic functionality
 :test-result: PASS vec<vec<string,alloc>> -> toString
 :test-result: PASS vector<bool> -> toString
 :test-result: PASS vector<int,allocator> -> toString

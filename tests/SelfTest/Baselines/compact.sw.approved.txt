@@ -1587,6 +1587,8 @@ StringManip.tests.cpp:<line number>: passed: trim(StringRef(whitespace_at_both_e
 ==
 There is no extra whitespace here
 Exception.tests.cpp:<line number>: failed: unexpected exception with message: '3.14'
+UniquePtr.tests.cpp:<line number>: passed: bptr->i == 3 for: 3 == 3
+UniquePtr.tests.cpp:<line number>: passed: bptr->i == 3 for: 3 == 3
 MatchersRanges.tests.cpp:<line number>: passed: empty_vec, SizeIs(0) for: {  } has size == 0
 MatchersRanges.tests.cpp:<line number>: passed: empty_vec, !SizeIs(2) for: {  } not has size == 2
 MatchersRanges.tests.cpp:<line number>: passed: empty_vec, SizeIs(Lt(2)) for: {  } size matches is less than 2
@@ -1794,6 +1796,9 @@ Misc.tests.cpp:<line number>: failed: ( fib[i] % 2 ) == 0 for: 1 == 0 with 1 mes
 Misc.tests.cpp:<line number>: passed: ( fib[i] % 2 ) == 0 for: 0 == 0 with 1 message: 'Testing if fib[5] (8) is even'
 Misc.tests.cpp:<line number>: failed: ( fib[i] % 2 ) == 0 for: 1 == 0 with 1 message: 'Testing if fib[6] (13) is even'
 Misc.tests.cpp:<line number>: failed: ( fib[i] % 2 ) == 0 for: 1 == 0 with 1 message: 'Testing if fib[7] (21) is even'
+UniquePtr.tests.cpp:<line number>: passed: !(lval.has_moved) for: !false
+UniquePtr.tests.cpp:<line number>: passed: rval.has_moved for: true
+UniquePtr.tests.cpp:<line number>: passed: *ptr == std::tuple<int, double, int>{1, 2., 3} for: {?} == {?}
 InternalBenchmark.tests.cpp:<line number>: passed: m == 19. for: 19.0 == 19.0
 InternalBenchmark.tests.cpp:<line number>: passed: x == 17 for: 17 == 17
 InternalBenchmark.tests.cpp:<line number>: passed: x == 23 for: 23 == 23
@@ -1990,6 +1995,29 @@ InternalBenchmark.tests.cpp:<line number>: passed: e.point == 23 for: 23.0 == 23
 InternalBenchmark.tests.cpp:<line number>: passed: e.upper_bound == 23 for: 23.0 == 23
 InternalBenchmark.tests.cpp:<line number>: passed: e.lower_bound == 23 for: 23.0 == 23
 InternalBenchmark.tests.cpp:<line number>: passed: e.confidence_interval == 0.95 for: 0.95 == 0.95
+UniquePtr.tests.cpp:<line number>: passed: !(ptr) for: !{?}
+UniquePtr.tests.cpp:<line number>: passed: ptr.get() == 0 for: 0 == 0
+UniquePtr.tests.cpp:<line number>: passed: ptr for: {?}
+UniquePtr.tests.cpp:<line number>: passed: *ptr == 0 for: 0 == 0
+UniquePtr.tests.cpp:<line number>: passed: ptr.get() == naked_ptr for: 0x<hex digits> == 0x<hex digits>
+UniquePtr.tests.cpp:<line number>: passed: !(ptr) for: !{?}
+UniquePtr.tests.cpp:<line number>: passed: ptr.get() == 0 for: 0 == 0
+UniquePtr.tests.cpp:<line number>: passed: ptr for: {?}
+UniquePtr.tests.cpp:<line number>: passed: *ptr == 0 for: 0 == 0
+UniquePtr.tests.cpp:<line number>: passed: ptr.get() == naked_ptr for: 0x<hex digits> == 0x<hex digits>
+UniquePtr.tests.cpp:<line number>: passed: ptr for: {?}
+UniquePtr.tests.cpp:<line number>: passed: ptr.get() != 0 for: 0x<hex digits> != 0
+UniquePtr.tests.cpp:<line number>: passed: *ptr == 2 for: 2 == 2
+UniquePtr.tests.cpp:<line number>: passed: !(ptr) for: !{?}
+UniquePtr.tests.cpp:<line number>: passed: ptr.get() == 0 for: 0 == 0
+UniquePtr.tests.cpp:<line number>: passed: !(ptr1) for: !{?}
+UniquePtr.tests.cpp:<line number>: passed: ptr2 for: {?}
+UniquePtr.tests.cpp:<line number>: passed: *ptr2 == 1 for: 1 == 1
+UniquePtr.tests.cpp:<line number>: passed: !(ptr2) for: !{?}
+UniquePtr.tests.cpp:<line number>: passed: ptr1 for: {?}
+UniquePtr.tests.cpp:<line number>: passed: *ptr1 == 2 for: 2 == 2
+UniquePtr.tests.cpp:<line number>: passed: *ptr1 == 2 for: 2 == 2
+UniquePtr.tests.cpp:<line number>: passed: *ptr2 == 1 for: 1 == 1
 ToStringVector.tests.cpp:<line number>: passed: ::Catch::Detail::stringify(v) == "{  }" for: "{  }" == "{  }"
 ToStringVector.tests.cpp:<line number>: passed: ::Catch::Detail::stringify(v) == "{ { \"hello\" }, { \"world\" } }" for: "{ { "hello" }, { "world" } }"
 ==

@@ -11548,6 +11548,30 @@ due to unexpected exception with message:
   3.14
 
 -------------------------------------------------------------------------------
+Upcasting special member functions
+  Move constructor
+-------------------------------------------------------------------------------
+UniquePtr.tests.cpp:<line number>
+...............................................................................
+
+UniquePtr.tests.cpp:<line number>: PASSED:
+  REQUIRE( bptr->i == 3 )
+with expansion:
+  3 == 3
+
+-------------------------------------------------------------------------------
+Upcasting special member functions
+  move assignment
+-------------------------------------------------------------------------------
+UniquePtr.tests.cpp:<line number>
+...............................................................................
+
+UniquePtr.tests.cpp:<line number>: PASSED:
+  REQUIRE( bptr->i == 3 )
+with expansion:
+  3 == 3
+
+-------------------------------------------------------------------------------
 Usage of the SizeIs range matcher
   Some with stdlib containers
 -------------------------------------------------------------------------------
@@ -13097,6 +13121,42 @@ with message:
   Testing if fib[7] (21) is even
 
 -------------------------------------------------------------------------------
+make_unique reimplementation
+  From lvalue copies
+-------------------------------------------------------------------------------
+UniquePtr.tests.cpp:<line number>
+...............................................................................
+
+UniquePtr.tests.cpp:<line number>: PASSED:
+  REQUIRE_FALSE( lval.has_moved )
+with expansion:
+  !false
+
+-------------------------------------------------------------------------------
+make_unique reimplementation
+  From rvalue moves
+-------------------------------------------------------------------------------
+UniquePtr.tests.cpp:<line number>
+...............................................................................
+
+UniquePtr.tests.cpp:<line number>: PASSED:
+  REQUIRE( rval.has_moved )
+with expansion:
+  true
+
+-------------------------------------------------------------------------------
+make_unique reimplementation
+  Variadic constructor
+-------------------------------------------------------------------------------
+UniquePtr.tests.cpp:<line number>
+...............................................................................
+
+UniquePtr.tests.cpp:<line number>: PASSED:
+  REQUIRE( *ptr == std::tuple<int, double, int>{1, 2., 3} )
+with expansion:
+  {?} == {?}
+
+-------------------------------------------------------------------------------
 mean
 -------------------------------------------------------------------------------
 InternalBenchmark.tests.cpp:<line number>
@@ -14486,6 +14546,186 @@ with expansion:
   0.95 == 0.95
 
 -------------------------------------------------------------------------------
+unique_ptr reimplementation: basic functionality
+  Default constructed unique_ptr is empty
+-------------------------------------------------------------------------------
+UniquePtr.tests.cpp:<line number>
+...............................................................................
+
+UniquePtr.tests.cpp:<line number>: PASSED:
+  REQUIRE_FALSE( ptr )
+with expansion:
+  !{?}
+
+UniquePtr.tests.cpp:<line number>: PASSED:
+  REQUIRE( ptr.get() == 0 )
+with expansion:
+  0 == 0
+
+-------------------------------------------------------------------------------
+unique_ptr reimplementation: basic functionality
+  Take ownership of allocation
+-------------------------------------------------------------------------------
+UniquePtr.tests.cpp:<line number>
+...............................................................................
+
+UniquePtr.tests.cpp:<line number>: PASSED:
+  REQUIRE( ptr )
+with expansion:
+  {?}
+
+UniquePtr.tests.cpp:<line number>: PASSED:
+  REQUIRE( *ptr == 0 )
+with expansion:
+  0 == 0
+
+UniquePtr.tests.cpp:<line number>: PASSED:
+  REQUIRE( ptr.get() == naked_ptr )
+with expansion:
+  0x<hex digits> == 0x<hex digits>
+
+-------------------------------------------------------------------------------
+unique_ptr reimplementation: basic functionality
+  Take ownership of allocation
+  Plain reset deallocates
+-------------------------------------------------------------------------------
+UniquePtr.tests.cpp:<line number>
+...............................................................................
+
+UniquePtr.tests.cpp:<line number>: PASSED:
+  REQUIRE_FALSE( ptr )
+with expansion:
+  !{?}
+
+UniquePtr.tests.cpp:<line number>: PASSED:
+  REQUIRE( ptr.get() == 0 )
+with expansion:
+  0 == 0
+
+-------------------------------------------------------------------------------
+unique_ptr reimplementation: basic functionality
+  Take ownership of allocation
+-------------------------------------------------------------------------------
+UniquePtr.tests.cpp:<line number>
+...............................................................................
+
+UniquePtr.tests.cpp:<line number>: PASSED:
+  REQUIRE( ptr )
+with expansion:
+  {?}
+
+UniquePtr.tests.cpp:<line number>: PASSED:
+  REQUIRE( *ptr == 0 )
+with expansion:
+  0 == 0
+
+UniquePtr.tests.cpp:<line number>: PASSED:
+  REQUIRE( ptr.get() == naked_ptr )
+with expansion:
+  0x<hex digits> == 0x<hex digits>
+
+-------------------------------------------------------------------------------
+unique_ptr reimplementation: basic functionality
+  Take ownership of allocation
+  Reset replaces ownership
+-------------------------------------------------------------------------------
+UniquePtr.tests.cpp:<line number>
+...............................................................................
+
+UniquePtr.tests.cpp:<line number>: PASSED:
+  REQUIRE( ptr )
+with expansion:
+  {?}
+
+UniquePtr.tests.cpp:<line number>: PASSED:
+  REQUIRE( ptr.get() != 0 )
+with expansion:
+  0x<hex digits> != 0
+
+UniquePtr.tests.cpp:<line number>: PASSED:
+  REQUIRE( *ptr == 2 )
+with expansion:
+  2 == 2
+
+-------------------------------------------------------------------------------
+unique_ptr reimplementation: basic functionality
+  Release releases ownership
+-------------------------------------------------------------------------------
+UniquePtr.tests.cpp:<line number>
+...............................................................................
+
+UniquePtr.tests.cpp:<line number>: PASSED:
+  CHECK_FALSE( ptr )
+with expansion:
+  !{?}
+
+UniquePtr.tests.cpp:<line number>: PASSED:
+  CHECK( ptr.get() == 0 )
+with expansion:
+  0 == 0
+
+-------------------------------------------------------------------------------
+unique_ptr reimplementation: basic functionality
+  Move constructor
+-------------------------------------------------------------------------------
+UniquePtr.tests.cpp:<line number>
+...............................................................................
+
+UniquePtr.tests.cpp:<line number>: PASSED:
+  REQUIRE_FALSE( ptr1 )
+with expansion:
+  !{?}
+
+UniquePtr.tests.cpp:<line number>: PASSED:
+  REQUIRE( ptr2 )
+with expansion:
+  {?}
+
+UniquePtr.tests.cpp:<line number>: PASSED:
+  REQUIRE( *ptr2 == 1 )
+with expansion:
+  1 == 1
+
+-------------------------------------------------------------------------------
+unique_ptr reimplementation: basic functionality
+  Move assignment
+-------------------------------------------------------------------------------
+UniquePtr.tests.cpp:<line number>
+...............................................................................
+
+UniquePtr.tests.cpp:<line number>: PASSED:
+  REQUIRE_FALSE( ptr2 )
+with expansion:
+  !{?}
+
+UniquePtr.tests.cpp:<line number>: PASSED:
+  REQUIRE( ptr1 )
+with expansion:
+  {?}
+
+UniquePtr.tests.cpp:<line number>: PASSED:
+  REQUIRE( *ptr1 == 2 )
+with expansion:
+  2 == 2
+
+-------------------------------------------------------------------------------
+unique_ptr reimplementation: basic functionality
+  free swap
+-------------------------------------------------------------------------------
+UniquePtr.tests.cpp:<line number>
+...............................................................................
+
+UniquePtr.tests.cpp:<line number>: PASSED:
+  REQUIRE( *ptr1 == 2 )
+with expansion:
+  2 == 2
+
+UniquePtr.tests.cpp:<line number>: PASSED:
+  REQUIRE( *ptr2 == 1 )
+with expansion:
+  1 == 1
+
+-------------------------------------------------------------------------------
 vec<vec<string,alloc>> -> toString
 -------------------------------------------------------------------------------
 ToStringVector.tests.cpp:<line number>
@@ -14792,6 +15032,6 @@ Misc.tests.cpp:<line number>
 Misc.tests.cpp:<line number>: PASSED:
 
 ===============================================================================
-test cases:  334 |  244 passed |  86 failed |  4 failed as expected
-assertions: 1913 | 1744 passed | 148 failed | 21 failed as expected
+test cases:  337 |  247 passed |  86 failed |  4 failed as expected
+assertions: 1941 | 1772 passed | 148 failed | 21 failed as expected
 

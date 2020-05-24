@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuitesloose text artifact
 >
-  <testsuite name="<exe-name>" errors="17" failures="132" tests="1914" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
+  <testsuite name="<exe-name>" errors="17" failures="132" tests="1942" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
     <properties>
       <property name="filters" value="~[!nonportable]~[!benchmark]~[approvals] *"/>
       <property name="random-seed" value="1"/>
@@ -1256,6 +1256,8 @@ FAILED:
 Exception.tests.cpp:<line number>
       </error>
     </testcase>
+    <testcase classname="<exe-name>.global" name="Upcasting special member functions/Move constructor" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="Upcasting special member functions/move assignment" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Usage of the SizeIs range matcher/Some with stdlib containers" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Usage of the SizeIs range matcher/Type requires ADL found size free function" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="Usage of the SizeIs range matcher/Type has size member" time="{duration}"/>
@@ -1577,6 +1579,9 @@ Testing if fib[7] (21) is even
 Misc.tests.cpp:<line number>
       </failure>
     </testcase>
+    <testcase classname="<exe-name>.global" name="make_unique reimplementation/From lvalue copies" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="make_unique reimplementation/From rvalue moves" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="make_unique reimplementation/Variadic constructor" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="mean" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="measure" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="mix info, unscoped info and warning" time="{duration}"/>
@@ -1733,6 +1738,14 @@ Exception.tests.cpp:<line number>
     <testcase classname="<exe-name>.global" name="tuple&lt;string,string>" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="tuple&lt;tuple&lt;int>,tuple&lt;>,float>" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="uniform samples" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="unique_ptr reimplementation: basic functionality/Default constructed unique_ptr is empty" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="unique_ptr reimplementation: basic functionality/Take ownership of allocation" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="unique_ptr reimplementation: basic functionality/Take ownership of allocation/Plain reset deallocates" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="unique_ptr reimplementation: basic functionality/Take ownership of allocation/Reset replaces ownership" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="unique_ptr reimplementation: basic functionality/Release releases ownership" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="unique_ptr reimplementation: basic functionality/Move constructor" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="unique_ptr reimplementation: basic functionality/Move assignment" time="{duration}"/>
+    <testcase classname="<exe-name>.global" name="unique_ptr reimplementation: basic functionality/free swap" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="vec&lt;vec&lt;string,alloc>> -> toString" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="vector&lt;bool> -> toString" time="{duration}"/>
     <testcase classname="<exe-name>.global" name="vector&lt;int,allocator> -> toString" time="{duration}"/>

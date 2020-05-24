@@ -180,6 +180,21 @@
     <testCase name="parseEnums/One enum value" duration="{duration}"/>
     <testCase name="parseEnums/Multiple enum values" duration="{duration}"/>
   </file>
+  <file path="tests/<exe-name>/IntrospectiveTests/UniquePtr.tests.cpp">
+    <testCase name="Upcasting special member functions/Move constructor" duration="{duration}"/>
+    <testCase name="Upcasting special member functions/move assignment" duration="{duration}"/>
+    <testCase name="make_unique reimplementation/From lvalue copies" duration="{duration}"/>
+    <testCase name="make_unique reimplementation/From rvalue moves" duration="{duration}"/>
+    <testCase name="make_unique reimplementation/Variadic constructor" duration="{duration}"/>
+    <testCase name="unique_ptr reimplementation: basic functionality/Default constructed unique_ptr is empty" duration="{duration}"/>
+    <testCase name="unique_ptr reimplementation: basic functionality/Take ownership of allocation" duration="{duration}"/>
+    <testCase name="unique_ptr reimplementation: basic functionality/Take ownership of allocation/Plain reset deallocates" duration="{duration}"/>
+    <testCase name="unique_ptr reimplementation: basic functionality/Take ownership of allocation/Reset replaces ownership" duration="{duration}"/>
+    <testCase name="unique_ptr reimplementation: basic functionality/Release releases ownership" duration="{duration}"/>
+    <testCase name="unique_ptr reimplementation: basic functionality/Move constructor" duration="{duration}"/>
+    <testCase name="unique_ptr reimplementation: basic functionality/Move assignment" duration="{duration}"/>
+    <testCase name="unique_ptr reimplementation: basic functionality/free swap" duration="{duration}"/>
+  </file>
   <file path="tests/<exe-name>/IntrospectiveTests/Xml.tests.cpp">
     <testCase name="XmlEncode/normal string" duration="{duration}"/>
     <testCase name="XmlEncode/empty string" duration="{duration}"/>

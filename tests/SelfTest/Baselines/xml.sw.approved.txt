@@ -13944,6 +13944,31 @@ There is no extra whitespace here
       </Exception>
       <OverallResult success="false"/>
     </TestCase>
+    <TestCase name="Upcasting special member functions" tags="[internals][unique-ptr]" filename="tests/<exe-name>/IntrospectiveTests/UniquePtr.tests.cpp" >
+      <Section name="Move constructor" filename="tests/<exe-name>/IntrospectiveTests/UniquePtr.tests.cpp" >
+        <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/UniquePtr.tests.cpp" >
+          <Original>
+            bptr->i == 3
+          </Original>
+          <Expanded>
+            3 == 3
+          </Expanded>
+        </Expression>
+        <OverallResults successes="1" failures="0" expectedFailures="0"/>
+      </Section>
+      <Section name="move assignment" filename="tests/<exe-name>/IntrospectiveTests/UniquePtr.tests.cpp" >
+        <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/UniquePtr.tests.cpp" >
+          <Original>
+            bptr->i == 3
+          </Original>
+          <Expanded>
+            3 == 3
+          </Expanded>
+        </Expression>
+        <OverallResults successes="1" failures="0" expectedFailures="0"/>
+      </Section>
+      <OverallResult success="true"/>
+    </TestCase>
     <TestCase name="Usage of the SizeIs range matcher" tags="[matchers][size][templated]" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
       <Section name="Some with stdlib containers" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
         <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
@@ -15773,6 +15798,42 @@ loose text artifact
       </Expression>
       <OverallResult success="false"/>
     </TestCase>
+    <TestCase name="make_unique reimplementation" tags="[internals][unique-ptr]" filename="tests/<exe-name>/IntrospectiveTests/UniquePtr.tests.cpp" >
+      <Section name="From lvalue copies" filename="tests/<exe-name>/IntrospectiveTests/UniquePtr.tests.cpp" >
+        <Expression success="true" type="REQUIRE_FALSE" filename="tests/<exe-name>/IntrospectiveTests/UniquePtr.tests.cpp" >
+          <Original>
+            !(lval.has_moved)
+          </Original>
+          <Expanded>
+            !false
+          </Expanded>
+        </Expression>
+        <OverallResults successes="1" failures="0" expectedFailures="0"/>
+      </Section>
+      <Section name="From rvalue moves" filename="tests/<exe-name>/IntrospectiveTests/UniquePtr.tests.cpp" >
+        <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/UniquePtr.tests.cpp" >
+          <Original>
+            rval.has_moved
+          </Original>
+          <Expanded>
+            true
+          </Expanded>
+        </Expression>
+        <OverallResults successes="1" failures="0" expectedFailures="0"/>
+      </Section>
+      <Section name="Variadic constructor" filename="tests/<exe-name>/IntrospectiveTests/UniquePtr.tests.cpp" >
+        <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/UniquePtr.tests.cpp" >
+          <Original>
+            *ptr == std::tuple&lt;int, double, int>{1, 2., 3}
+          </Original>
+          <Expanded>
+            {?} == {?}
+          </Expanded>
+        </Expression>
+        <OverallResults successes="1" failures="0" expectedFailures="0"/>
+      </Section>
+      <OverallResult success="true"/>
+    </TestCase>
     <TestCase name="mean" tags="[benchmark]" filename="tests/<exe-name>/IntrospectiveTests/InternalBenchmark.tests.cpp" >
       <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/InternalBenchmark.tests.cpp" >
         <Original>
@@ -17416,6 +17477,220 @@ loose text artifact
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
+    <TestCase name="unique_ptr reimplementation: basic functionality" tags="[internals][unique-ptr]" filename="tests/<exe-name>/IntrospectiveTests/UniquePtr.tests.cpp" >
+      <Section name="Default constructed unique_ptr is empty" filename="tests/<exe-name>/IntrospectiveTests/UniquePtr.tests.cpp" >
+        <Expression success="true" type="REQUIRE_FALSE" filename="tests/<exe-name>/IntrospectiveTests/UniquePtr.tests.cpp" >
+          <Original>
+            !(ptr)
+          </Original>
+          <Expanded>
+            !{?}
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/UniquePtr.tests.cpp" >
+          <Original>
+            ptr.get() == 0
+          </Original>
+          <Expanded>
+            0 == 0
+          </Expanded>
+        </Expression>
+        <OverallResults successes="2" failures="0" expectedFailures="0"/>
+      </Section>
+      <Section name="Take ownership of allocation" filename="tests/<exe-name>/IntrospectiveTests/UniquePtr.tests.cpp" >
+        <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/UniquePtr.tests.cpp" >
+          <Original>
+            ptr
+          </Original>
+          <Expanded>
+            {?}
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/UniquePtr.tests.cpp" >
+          <Original>
+            *ptr == 0
+          </Original>
+          <Expanded>
+            0 == 0
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/UniquePtr.tests.cpp" >
+          <Original>
+            ptr.get() == naked_ptr
+          </Original>
+          <Expanded>
+            0x<hex digits> == 0x<hex digits>
+          </Expanded>
+        </Expression>
+        <Section name="Plain reset deallocates" filename="tests/<exe-name>/IntrospectiveTests/UniquePtr.tests.cpp" >
+          <Expression success="true" type="REQUIRE_FALSE" filename="tests/<exe-name>/IntrospectiveTests/UniquePtr.tests.cpp" >
+            <Original>
+              !(ptr)
+            </Original>
+            <Expanded>
+              !{?}
+            </Expanded>
+          </Expression>
+          <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/UniquePtr.tests.cpp" >
+            <Original>
+              ptr.get() == 0
+            </Original>
+            <Expanded>
+              0 == 0
+            </Expanded>
+          </Expression>
+          <OverallResults successes="2" failures="0" expectedFailures="0"/>
+        </Section>
+        <OverallResults successes="5" failures="0" expectedFailures="0"/>
+      </Section>
+      <Section name="Take ownership of allocation" filename="tests/<exe-name>/IntrospectiveTests/UniquePtr.tests.cpp" >
+        <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/UniquePtr.tests.cpp" >
+          <Original>
+            ptr
+          </Original>
+          <Expanded>
+            {?}
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/UniquePtr.tests.cpp" >
+          <Original>
+            *ptr == 0
+          </Original>
+          <Expanded>
+            0 == 0
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/UniquePtr.tests.cpp" >
+          <Original>
+            ptr.get() == naked_ptr
+          </Original>
+          <Expanded>
+            0x<hex digits> == 0x<hex digits>
+          </Expanded>
+        </Expression>
+        <Section name="Reset replaces ownership" filename="tests/<exe-name>/IntrospectiveTests/UniquePtr.tests.cpp" >
+          <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/UniquePtr.tests.cpp" >
+            <Original>
+              ptr
+            </Original>
+            <Expanded>
+              {?}
+            </Expanded>
+          </Expression>
+          <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/UniquePtr.tests.cpp" >
+            <Original>
+              ptr.get() != 0
+            </Original>
+            <Expanded>
+              0x<hex digits> != 0
+            </Expanded>
+          </Expression>
+          <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/UniquePtr.tests.cpp" >
+            <Original>
+              *ptr == 2
+            </Original>
+            <Expanded>
+              2 == 2
+            </Expanded>
+          </Expression>
+          <OverallResults successes="3" failures="0" expectedFailures="0"/>
+        </Section>
+        <OverallResults successes="6" failures="0" expectedFailures="0"/>
+      </Section>
+      <Section name="Release releases ownership" filename="tests/<exe-name>/IntrospectiveTests/UniquePtr.tests.cpp" >
+        <Expression success="true" type="CHECK_FALSE" filename="tests/<exe-name>/IntrospectiveTests/UniquePtr.tests.cpp" >
+          <Original>
+            !(ptr)
+          </Original>
+          <Expanded>
+            !{?}
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/UniquePtr.tests.cpp" >
+          <Original>
+            ptr.get() == 0
+          </Original>
+          <Expanded>
+            0 == 0
+          </Expanded>
+        </Expression>
+        <OverallResults successes="2" failures="0" expectedFailures="0"/>
+      </Section>
+      <Section name="Move constructor" filename="tests/<exe-name>/IntrospectiveTests/UniquePtr.tests.cpp" >
+        <Expression success="true" type="REQUIRE_FALSE" filename="tests/<exe-name>/IntrospectiveTests/UniquePtr.tests.cpp" >
+          <Original>
+            !(ptr1)
+          </Original>
+          <Expanded>
+            !{?}
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/UniquePtr.tests.cpp" >
+          <Original>
+            ptr2
+          </Original>
+          <Expanded>
+            {?}
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/UniquePtr.tests.cpp" >
+          <Original>
+            *ptr2 == 1
+          </Original>
+          <Expanded>
+            1 == 1
+          </Expanded>
+        </Expression>
+        <OverallResults successes="3" failures="0" expectedFailures="0"/>
+      </Section>
+      <Section name="Move assignment" filename="tests/<exe-name>/IntrospectiveTests/UniquePtr.tests.cpp" >
+        <Expression success="true" type="REQUIRE_FALSE" filename="tests/<exe-name>/IntrospectiveTests/UniquePtr.tests.cpp" >
+          <Original>
+            !(ptr2)
+          </Original>
+          <Expanded>
+            !{?}
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/UniquePtr.tests.cpp" >
+          <Original>
+            ptr1
+          </Original>
+          <Expanded>
+            {?}
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/UniquePtr.tests.cpp" >
+          <Original>
+            *ptr1 == 2
+          </Original>
+          <Expanded>
+            2 == 2
+          </Expanded>
+        </Expression>
+        <OverallResults successes="3" failures="0" expectedFailures="0"/>
+      </Section>
+      <Section name="free swap" filename="tests/<exe-name>/IntrospectiveTests/UniquePtr.tests.cpp" >
+        <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/UniquePtr.tests.cpp" >
+          <Original>
+            *ptr1 == 2
+          </Original>
+          <Expanded>
+            2 == 2
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/UniquePtr.tests.cpp" >
+          <Original>
+            *ptr2 == 1
+          </Original>
+          <Expanded>
+            1 == 1
+          </Expanded>
+        </Expression>
+        <OverallResults successes="2" failures="0" expectedFailures="0"/>
+      </Section>
+      <OverallResult success="true"/>
+    </TestCase>
     <TestCase name="vec&lt;vec&lt;string,alloc>> -> toString" tags="[toString][vector,allocator]" filename="tests/<exe-name>/UsageTests/ToStringVector.tests.cpp" >
       <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/UsageTests/ToStringVector.tests.cpp" >
         <Original>
@@ -17756,7 +18031,7 @@ loose text artifact
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="1744" failures="149" expectedFailures="21"/>
+    <OverallResults successes="1772" failures="149" expectedFailures="21"/>
   </Group>
-  <OverallResults successes="1744" failures="148" expectedFailures="21"/>
+  <OverallResults successes="1772" failures="148" expectedFailures="21"/>
 </Catch>
