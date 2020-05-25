@@ -9,19 +9,19 @@
 #define TWOBLUECUBES_CATCH_ENUMVALUESREGISTRY_H_INCLUDED
 
 #include <catch2/interfaces/catch_interfaces_enum_values_registry.hpp>
+#include <catch2/internal/catch_unique_ptr.hpp>
 
 #include <vector>
-#include <memory>
 
 namespace Catch {
 
     namespace Detail {
 
-        std::unique_ptr<EnumInfo> makeEnumInfo( StringRef enumName, StringRef allValueNames, std::vector<int> const& values );
+        Catch::Detail::unique_ptr<EnumInfo> makeEnumInfo( StringRef enumName, StringRef allValueNames, std::vector<int> const& values );
 
         class EnumValuesRegistry : public IMutableEnumValuesRegistry {
 
-            std::vector<std::unique_ptr<EnumInfo>> m_enumInfos;
+            std::vector<Catch::Detail::unique_ptr<EnumInfo>> m_enumInfos;
 
             EnumInfo const& registerEnum( StringRef enumName, StringRef allEnums, std::vector<int> const& values) override;
         };

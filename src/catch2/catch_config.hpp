@@ -10,8 +10,8 @@
 
 #include <catch2/catch_test_spec.hpp>
 #include <catch2/interfaces/catch_interfaces_config.hpp>
+#include <catch2/internal/catch_unique_ptr.hpp>
 
-#include <memory>
 #include <vector>
 #include <string>
 
@@ -116,7 +116,7 @@ namespace Catch {
         IStream const* openStream();
         ConfigData m_data;
 
-        std::unique_ptr<IStream const> m_stream;
+        Detail::unique_ptr<IStream const> m_stream;
         TestSpec m_testSpec;
         bool m_hasTestFilters = false;
     };

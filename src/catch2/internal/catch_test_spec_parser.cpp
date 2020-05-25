@@ -199,9 +199,9 @@ namespace Catch {
 
         if (!token.empty()) {
             if (m_exclusion) {
-                m_currentFilter.m_forbidden.emplace_back(std::make_unique<TestSpec::NamePattern>(token, m_substring));
+                m_currentFilter.m_forbidden.emplace_back(Detail::make_unique<TestSpec::NamePattern>(token, m_substring));
             } else {
-                m_currentFilter.m_required.emplace_back(std::make_unique<TestSpec::NamePattern>(token, m_substring));
+                m_currentFilter.m_required.emplace_back(Detail::make_unique<TestSpec::NamePattern>(token, m_substring));
             }
         }
         m_substring.clear();
@@ -218,17 +218,17 @@ namespace Catch {
             if (token.size() > 1 && token[0] == '.') {
                 token.erase(token.begin());
                 if (m_exclusion) {
-                    m_currentFilter.m_forbidden.emplace_back(std::make_unique<TestSpec::TagPattern>(".", m_substring));
-                    m_currentFilter.m_forbidden.emplace_back(std::make_unique<TestSpec::TagPattern>(token, m_substring));
+                    m_currentFilter.m_forbidden.emplace_back(Detail::make_unique<TestSpec::TagPattern>(".", m_substring));
+                    m_currentFilter.m_forbidden.emplace_back(Detail::make_unique<TestSpec::TagPattern>(token, m_substring));
                 } else {
-                    m_currentFilter.m_required.emplace_back(std::make_unique<TestSpec::TagPattern>(".", m_substring));
-                    m_currentFilter.m_required.emplace_back(std::make_unique<TestSpec::TagPattern>(token, m_substring));
+                    m_currentFilter.m_required.emplace_back(Detail::make_unique<TestSpec::TagPattern>(".", m_substring));
+                    m_currentFilter.m_required.emplace_back(Detail::make_unique<TestSpec::TagPattern>(token, m_substring));
                 }
             }
             if (m_exclusion) {
-                m_currentFilter.m_forbidden.emplace_back(std::make_unique<TestSpec::TagPattern>(token, m_substring));
+                m_currentFilter.m_forbidden.emplace_back(Detail::make_unique<TestSpec::TagPattern>(token, m_substring));
             } else {
-                m_currentFilter.m_required.emplace_back(std::make_unique<TestSpec::TagPattern>(token, m_substring));
+                m_currentFilter.m_required.emplace_back(Detail::make_unique<TestSpec::TagPattern>(token, m_substring));
             }
         }
         m_substring.clear();

@@ -11,8 +11,7 @@
 #include <catch2/internal/catch_commandline.hpp>
 #include <catch2/catch_config.hpp>
 #include <catch2/internal/catch_text.hpp>
-
-#include <memory>
+#include <catch2/internal/catch_unique_ptr.hpp>
 
 namespace Catch {
 
@@ -53,7 +52,7 @@ namespace Catch {
 
         clara::Parser m_cli;
         ConfigData m_configData;
-        std::unique_ptr<Config> m_config;
+        Detail::unique_ptr<Config> m_config;
         bool m_startupExceptions = false;
     };
 

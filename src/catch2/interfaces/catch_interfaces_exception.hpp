@@ -10,6 +10,7 @@
 
 #include <catch2/interfaces/catch_interfaces_registry_hub.hpp>
 #include <catch2/internal/catch_compiler_capabilities.hpp>
+#include <catch2/internal/catch_unique_ptr.hpp>
 
 #include <string>
 #include <vector>
@@ -18,7 +19,7 @@ namespace Catch {
     using exceptionTranslateFunction = std::string(*)();
 
     struct IExceptionTranslator;
-    using ExceptionTranslators = std::vector<std::unique_ptr<IExceptionTranslator const>>;
+    using ExceptionTranslators = std::vector<Detail::unique_ptr<IExceptionTranslator const>>;
 
     struct IExceptionTranslator {
         virtual ~IExceptionTranslator();

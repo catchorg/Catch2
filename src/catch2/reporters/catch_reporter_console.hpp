@@ -9,6 +9,7 @@
 #define TWOBLUECUBES_CATCH_REPORTER_CONSOLE_H_INCLUDED
 
 #include <catch2/reporters/catch_reporter_bases.hpp>
+#include <catch2/internal/catch_unique_ptr.hpp>
 
 #if defined(_MSC_VER)
 #pragma warning(push)
@@ -24,7 +25,7 @@ namespace Catch {
     class TablePrinter;
 
     struct ConsoleReporter : StreamingReporterBase {
-        std::unique_ptr<TablePrinter> m_tablePrinter;
+        Detail::unique_ptr<TablePrinter> m_tablePrinter;
 
         ConsoleReporter(ReporterConfig const& config);
         ~ConsoleReporter() override;

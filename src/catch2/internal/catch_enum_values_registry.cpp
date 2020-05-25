@@ -51,8 +51,8 @@ namespace Catch {
             return "{** unexpected enum value **}"_sr;
         }
 
-        std::unique_ptr<EnumInfo> makeEnumInfo( StringRef enumName, StringRef allValueNames, std::vector<int> const& values ) {
-            auto enumInfo = std::make_unique<EnumInfo>();
+        Catch::Detail::unique_ptr<EnumInfo> makeEnumInfo( StringRef enumName, StringRef allValueNames, std::vector<int> const& values ) {
+            auto enumInfo = Catch::Detail::make_unique<EnumInfo>();
             enumInfo->m_name = enumName;
             enumInfo->m_values.reserve( values.size() );
 

@@ -14,11 +14,11 @@
 #include <catch2/benchmark/catch_chronometer.hpp>
 #include <catch2/benchmark/detail/catch_complete_invoke.hpp>
 #include <catch2/internal/catch_meta.hpp>
+#include <catch2/internal/catch_unique_ptr.hpp>
 
 #include <cassert>
 #include <type_traits>
 #include <utility>
-#include <memory>
 
 namespace Catch {
     namespace Benchmark {
@@ -100,7 +100,7 @@ namespace Catch {
                 void operator()(Chronometer meter) const { f->call(meter); }
 
             private:
-                std::unique_ptr<callable> f;
+                Catch::Detail::unique_ptr<callable> f;
             };
         } // namespace Detail
     } // namespace Benchmark

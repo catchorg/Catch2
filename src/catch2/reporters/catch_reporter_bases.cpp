@@ -17,7 +17,6 @@
 #include <cstdio>
 #include <ostream>
 #include <cassert>
-#include <memory>
 
 namespace Catch {
     void prepareExpandedExpression(AssertionResult& result) {

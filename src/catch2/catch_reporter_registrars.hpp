@@ -10,6 +10,7 @@
 #define TWOBLUECUBES_CATCH_REPORTER_REGISTRARS_HPP_INCLUDED
 
 #include <catch2/interfaces/catch_interfaces_registry_hub.hpp>
+#include <catch2/internal/catch_unique_ptr.hpp>
 
 namespace Catch {
 
@@ -17,7 +18,7 @@ namespace Catch {
     class ReporterFactory : public IReporterFactory {
 
         IStreamingReporterPtr create( ReporterConfig const& config ) const override {
-            return std::make_unique<T>( config );
+            return Detail::make_unique<T>( config );
         }
 
         std::string getDescription() const override {
@@ -30,7 +31,7 @@ namespace Catch {
     class ReporterRegistrar {
     public:
         explicit ReporterRegistrar( std::string const& name ) {
-            getMutableRegistryHub().registerReporter( name, std::make_unique<ReporterFactory<T>>() );
+            getMutableRegistryHub().registerReporter( name, Detail::make_unique<ReporterFactory<T>>() );
         }
     };
 
@@ -40,7 +41,7 @@ namespace Catch {
         class ListenerFactory : public IReporterFactory {
 
             IStreamingReporterPtr create( ReporterConfig const& config ) const override {
-                return std::make_unique<T>(config);
+                return Detail::make_unique<T>(config);
             }
             std::string getDescription() const override {
                 return std::string();
@@ -50,7 +51,7 @@ namespace Catch {
     public:
 
         ListenerRegistrar() {
-            getMutableRegistryHub().registerListener( std::make_unique<ListenerFactory>() );
+            getMutableRegistryHub().registerListener( Detail::make_unique<ListenerFactory>() );
         }
     };
 }

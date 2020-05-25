@@ -313,7 +313,7 @@ TEST_CASE("GENERATE capture macros", "[generators][internals][approvals]") {
 
     non_copyable nc; nc.value = value;
     // neither `GENERATE_COPY` nor plain `GENERATE` would compile here
-    auto value2 = GENERATE_REF(Catch::Generators::GeneratorWrapper<int>(std::unique_ptr<Catch::Generators::IGenerator<int>>(new TestGen(nc))));
+    auto value2 = GENERATE_REF(Catch::Generators::GeneratorWrapper<int>(Catch::Detail::make_unique<TestGen>(nc)));
     REQUIRE(value == value2);
 }
 

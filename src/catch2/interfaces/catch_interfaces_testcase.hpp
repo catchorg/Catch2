@@ -9,7 +9,6 @@
 #define TWOBLUECUBES_CATCH_INTERFACES_TESTCASE_H_INCLUDED
 
 #include <vector>
-#include <memory>
 
 namespace Catch {
 
@@ -26,7 +25,8 @@ namespace Catch {
 
     struct ITestCaseRegistry {
         virtual ~ITestCaseRegistry();
-        virtual std::vector<std::unique_ptr<TestCaseInfo>> const& getAllInfos() const = 0;
+        // TODO: this exists only for adding filenames to test cases -- let's expose this in a saner way later
+        virtual std::vector<TestCaseInfo* > const& getAllInfos() const = 0;
         virtual std::vector<TestCaseHandle> const& getAllTests() const = 0;
         virtual std::vector<TestCaseHandle> const& getAllTestsSorted( IConfig const& config ) const = 0;
     };

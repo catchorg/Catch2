@@ -46,7 +46,7 @@ namespace Generators {
 
     template <typename T>
     GeneratorWrapper<T> take(size_t target, GeneratorWrapper<T>&& generator) {
-        return GeneratorWrapper<T>(std::make_unique<TakeGenerator<T>>(target, std::move(generator)));
+        return GeneratorWrapper<T>(Catch::Detail::make_unique<TakeGenerator<T>>(target, std::move(generator)));
     }
 
 
@@ -87,7 +87,7 @@ namespace Generators {
 
     template <typename T, typename Predicate>
     GeneratorWrapper<T> filter(Predicate&& pred, GeneratorWrapper<T>&& generator) {
-        return GeneratorWrapper<T>(std::unique_ptr<IGenerator<T>>(std::make_unique<FilterGenerator<T, Predicate>>(std::forward<Predicate>(pred), std::move(generator))));
+        return GeneratorWrapper<T>(Catch::Detail::make_unique<FilterGenerator<T, Predicate>>(std::forward<Predicate>(pred), std::move(generator)));
     }
 
     template <typename T>
@@ -143,7 +143,7 @@ namespace Generators {
 
     template <typename T>
     GeneratorWrapper<T> repeat(size_t repeats, GeneratorWrapper<T>&& generator) {
-        return GeneratorWrapper<T>(std::make_unique<RepeatGenerator<T>>(repeats, std::move(generator)));
+        return GeneratorWrapper<T>(Catch::Detail::make_unique<RepeatGenerator<T>>(repeats, std::move(generator)));
     }
 
     template <typename T, typename U, typename Func>
@@ -176,14 +176,14 @@ namespace Generators {
     template <typename Func, typename U, typename T = FunctionReturnType<Func, U>>
     GeneratorWrapper<T> map(Func&& function, GeneratorWrapper<U>&& generator) {
         return GeneratorWrapper<T>(
-            std::make_unique<MapGenerator<T, U, Func>>(std::forward<Func>(function), std::move(generator))
+            Catch::Detail::make_unique<MapGenerator<T, U, Func>>(std::forward<Func>(function), std::move(generator))
         );
     }
 
     template <typename T, typename U, typename Func>
     GeneratorWrapper<T> map(Func&& function, GeneratorWrapper<U>&& generator) {
         return GeneratorWrapper<T>(
-            std::make_unique<MapGenerator<T, U, Func>>(std::forward<Func>(function), std::move(generator))
+            Catch::Detail::make_unique<MapGenerator<T, U, Func>>(std::forward<Func>(function), std::move(generator))
         );
     }
 
@@ -226,7 +226,7 @@ namespace Generators {
     template <typename T>
     GeneratorWrapper<std::vector<T>> chunk(size_t size, GeneratorWrapper<T>&& generator) {
         return GeneratorWrapper<std::vector<T>>(
-            std::make_unique<ChunkGenerator<T>>(size, std::move(generator))
+            Catch::Detail::make_unique<ChunkGenerator<T>>(size, std::move(generator))
         );
     }
 

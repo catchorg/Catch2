@@ -16,6 +16,7 @@
 #include <cerrno>
 #include <limits>
 #include <array>
+#include <tuple>
 
 namespace { namespace MiscTests {
 

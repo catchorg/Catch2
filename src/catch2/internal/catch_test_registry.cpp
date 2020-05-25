@@ -13,11 +13,11 @@
 
 namespace Catch {
 
-    std::unique_ptr<ITestInvoker> makeTestInvoker( void(*testAsFunction)() ) {
-        return std::make_unique<TestInvokerAsFunction>( testAsFunction );
+    Detail::unique_ptr<ITestInvoker> makeTestInvoker( void(*testAsFunction)() ) {
+        return Detail::unique_ptr<ITestInvoker>( new TestInvokerAsFunction( testAsFunction ));
     }
 
-    AutoReg::AutoReg( std::unique_ptr<ITestInvoker> invoker, SourceLineInfo const& lineInfo, StringRef const& classOrMethod, NameAndTags const& nameAndTags ) noexcept {
+    AutoReg::AutoReg( Detail::unique_ptr<ITestInvoker> invoker, SourceLineInfo const& lineInfo, StringRef const& classOrMethod, NameAndTags const& nameAndTags ) noexcept {
         CATCH_TRY {
             getMutableRegistryHub()
                     .registerTest(
@@ -25,7 +25,8 @@ namespace Catch {
                             extractClassName( classOrMethod ),
                             nameAndTags,
                             lineInfo),
-                        std::move(invoker));
+                        std::move(invoker)
+                    );
         } CATCH_CATCH_ALL {
             // Do not throw when constructing global objects, instead register the exception to be processed later
             getMutableRegistryHub().registerStartupException();

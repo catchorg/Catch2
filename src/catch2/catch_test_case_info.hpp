@@ -11,10 +11,11 @@
 #include <catch2/internal/catch_common.hpp>
 #include <catch2/internal/catch_stringref.hpp>
 #include <catch2/internal/catch_test_registry.hpp>
+#include <catch2/internal/catch_unique_ptr.hpp>
+
 
 #include <string>
 #include <vector>
-#include <memory>
 
 #ifdef __clang__
 #pragma clang diagnostic push
@@ -90,7 +91,7 @@ namespace Catch {
         bool operator < ( TestCaseHandle const& rhs ) const;
     };
 
-    std::unique_ptr<TestCaseInfo> makeTestCaseInfo(  std::string const& className,
+    Detail::unique_ptr<TestCaseInfo> makeTestCaseInfo(  std::string const& className,
                             NameAndTags const& nameAndTags,
                             SourceLineInfo const& lineInfo );
 }

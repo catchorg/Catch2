@@ -40,7 +40,7 @@ std::string const& LineGenerator::get() const {
 // is a value-wrapper around std::unique_ptr<IGenerator<std::string>>.
 Catch::Generators::GeneratorWrapper<std::string> lines(std::string /* ignored for example */) {
     return Catch::Generators::GeneratorWrapper<std::string>(
-        std::make_unique<LineGenerator>()
+        new LineGenerator()
     );
 }
 

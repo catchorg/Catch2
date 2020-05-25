@@ -67,7 +67,7 @@ std::enable_if_t<std::is_integral<T>::value && !std::is_same<T, bool>::value,
 GeneratorWrapper<T>>
 random(T a, T b) {
     return GeneratorWrapper<T>(
-        std::make_unique<RandomIntegerGenerator<T>>(a, b)
+        Catch::Detail::make_unique<RandomIntegerGenerator<T>>(a, b)
     );
 }
 
@@ -76,7 +76,7 @@ std::enable_if_t<std::is_floating_point<T>::value,
 GeneratorWrapper<T>>
 random(T a, T b) {
     return GeneratorWrapper<T>(
-        std::make_unique<RandomFloatingGenerator<T>>(a, b)
+        Catch::Detail::make_unique<RandomFloatingGenerator<T>>(a, b)
     );
 }
 

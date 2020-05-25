@@ -9,9 +9,9 @@
 #define TWOBLUECUBES_CATCH_INTERFACES_REGISTRY_HUB_H_INCLUDED
 
 #include <catch2/internal/catch_common.hpp>
+#include <catch2/internal/catch_unique_ptr.hpp>
 
 #include <string>
-#include <memory>
 
 namespace Catch {
 
@@ -28,7 +28,7 @@ namespace Catch {
 
     class StartupExceptionRegistry;
 
-    using IReporterFactoryPtr = std::unique_ptr<IReporterFactory>;
+    using IReporterFactoryPtr = Detail::unique_ptr<IReporterFactory>;
 
     struct IRegistryHub {
         virtual ~IRegistryHub();
@@ -46,7 +46,7 @@ namespace Catch {
         virtual ~IMutableRegistryHub();
         virtual void registerReporter( std::string const& name, IReporterFactoryPtr factory ) = 0;
         virtual void registerListener( IReporterFactoryPtr factory ) = 0;
-        virtual void registerTest(std::unique_ptr<TestCaseInfo>&& testInfo, std::unique_ptr<ITestInvoker>&& invoker) = 0;
+        virtual void registerTest(Detail::unique_ptr<TestCaseInfo>&& testInfo, Detail::unique_ptr<ITestInvoker>&& invoker) = 0;
         virtual void registerTranslator( const IExceptionTranslator* translator ) = 0;
         virtual void registerTagAlias( std::string const& alias, std::string const& tag, SourceLineInfo const& lineInfo ) = 0;
         virtual void registerStartupException() noexcept = 0;

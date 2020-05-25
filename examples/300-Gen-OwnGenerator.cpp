@@ -43,7 +43,9 @@ int const& RandomIntGenerator::get() const {
 // is a value-wrapper around std::unique_ptr<IGenerator<int>>.
 Catch::Generators::GeneratorWrapper<int> random(int low, int high) {
     return Catch::Generators::GeneratorWrapper<int>(
-        std::make_unique<RandomIntGenerator>(low, high)
+        new RandomIntGenerator(low, high)
+        // Another possibility:
+        // Catch::Detail::make_unique<RandomIntGenerator>(low, high)
     );
 }
 
@@ -58,7 +60,7 @@ TEST_CASE("Generating random ints", "[example][generator]") {
         REQUIRE(i <= 100);
     }
     SECTION("Creating the random generator directly") {
-        auto i = GENERATE(take(100, GeneratorWrapper<int>(std::unique_ptr<IGenerator<int>>(new RandomIntGenerator(-100, 100)))));
+        auto i = GENERATE(take(100, GeneratorWrapper<int>(Catch::Detail::make_unique<RandomIntGenerator>(-100, 100))));
         REQUIRE(i >= -100);
         REQUIRE(i <= 100);
     }

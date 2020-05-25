@@ -12,8 +12,7 @@
 #include <catch2/interfaces/catch_interfaces_testcase.hpp>
 #include <catch2/internal/catch_compiler_capabilities.hpp>
 #include <catch2/internal/catch_stringref.hpp>
-
-#include <memory>
+#include <catch2/internal/catch_unique_ptr.hpp>
 
 // GCC 5 and older do not properly handle disabling unused-variable warning
 // with a _Pragma. This means that we have to leak the suppression to the
@@ -38,11 +37,11 @@ public:
     }
 };
 
-std::unique_ptr<ITestInvoker> makeTestInvoker( void(*testAsFunction)() );
+Detail::unique_ptr<ITestInvoker> makeTestInvoker( void(*testAsFunction)() );
 
 template<typename C>
-std::unique_ptr<ITestInvoker> makeTestInvoker( void (C::*testAsMethod)() ) {
-    return std::make_unique<TestInvokerAsMethod<C>>( testAsMethod );
+Detail::unique_ptr<ITestInvoker> makeTestInvoker( void (C::*testAsMethod)() ) {
+    return Detail::unique_ptr<ITestInvoker>( new TestInvokerAsMethod<C>(testAsMethod) );
 }
 
 struct NameAndTags {
@@ -54,7 +53,7 @@ struct NameAndTags {
 };
 
 struct AutoReg : NonCopyable {
-    AutoReg( std::unique_ptr<ITestInvoker> invoker, SourceLineInfo const& lineInfo, StringRef const& classOrMethod, NameAndTags const& nameAndTags ) noexcept;
+    AutoReg( Detail::unique_ptr<ITestInvoker> invoker, SourceLineInfo const& lineInfo, StringRef const& classOrMethod, NameAndTags const& nameAndTags ) noexcept;
 };
 
 } // end namespace Catch

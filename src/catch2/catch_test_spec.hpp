@@ -13,11 +13,11 @@
 #pragma clang diagnostic ignored "-Wpadded"
 #endif
 
+#include <catch2/internal/catch_unique_ptr.hpp>
 #include <catch2/internal/catch_wildcard_pattern.hpp>
 
 #include <string>
 #include <vector>
-#include <memory>
 
 namespace Catch {
 
@@ -54,8 +54,8 @@ namespace Catch {
         };
 
         struct Filter {
-            std::vector<std::unique_ptr<Pattern>> m_required;
-            std::vector<std::unique_ptr<Pattern>> m_forbidden;
+            std::vector<Detail::unique_ptr<Pattern>> m_required;
+            std::vector<Detail::unique_ptr<Pattern>> m_forbidden;
 
             bool matches( TestCaseInfo const& testCase ) const;
             std::string name() const;

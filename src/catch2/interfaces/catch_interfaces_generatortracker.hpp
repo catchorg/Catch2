@@ -8,7 +8,7 @@
 #ifndef TWOBLUECUBES_CATCH_INTERFACES_GENERATORTRACKER_INCLUDED
 #define TWOBLUECUBES_CATCH_INTERFACES_GENERATORTRACKER_INCLUDED
 
-#include <memory>
+#include <catch2/internal/catch_unique_ptr.hpp>
 
 namespace Catch {
 
@@ -29,7 +29,7 @@ namespace Catch {
             // can be retrieved).
             virtual bool next() = 0;
         };
-        using GeneratorBasePtr = std::unique_ptr<GeneratorUntypedBase>;
+        using GeneratorBasePtr = Catch::Detail::unique_ptr<GeneratorUntypedBase>;
 
     } // namespace Generators
 

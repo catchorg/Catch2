@@ -49,7 +49,7 @@ namespace Catch {
             void registerListener( IReporterFactoryPtr factory ) override {
                 m_reporterRegistry.registerListener( std::move(factory) );
             }
-            void registerTest( std::unique_ptr<TestCaseInfo>&& testInfo, std::unique_ptr<ITestInvoker>&& invoker ) override {
+            void registerTest( Detail::unique_ptr<TestCaseInfo>&& testInfo, Detail::unique_ptr<ITestInvoker>&& invoker ) override {
                 m_testCaseRegistry.registerTest( std::move(testInfo), std::move(invoker) );
             }
             void registerTranslator( const IExceptionTranslator* translator ) override {

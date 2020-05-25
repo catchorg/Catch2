@@ -13,19 +13,20 @@
 #include <catch2/internal/catch_debug_console.hpp>
 #include <catch2/internal/catch_stringref.hpp>
 #include <catch2/internal/catch_singletons.hpp>
+#include <catch2/internal/catch_unique_ptr.hpp>
 
 #include <cstdio>
 #include <iostream>
 #include <fstream>
 #include <sstream>
 #include <vector>
-#include <memory>
 
 namespace Catch {
 
     Catch::IStream::~IStream() = default;
 
-    namespace Detail { namespace {
+namespace Detail {
+    namespace {
         template<typename WriterF, std::size_t bufferSize=256>
         class StreamBufImpl : public std::streambuf {
             char data[bufferSize];
@@ -104,11 +105,11 @@ namespace Catch {
         ///////////////////////////////////////////////////////////////////////////
 
         class DebugOutStream : public IStream {
-            std::unique_ptr<StreamBufImpl<OutputDebugWriter>> m_streamBuf;
+            Detail::unique_ptr<StreamBufImpl<OutputDebugWriter>> m_streamBuf;
             mutable std::ostream m_os;
         public:
             DebugOutStream()
-            :   m_streamBuf( std::make_unique<StreamBufImpl<OutputDebugWriter>>() ),
+            :   m_streamBuf( Detail::make_unique<StreamBufImpl<OutputDebugWriter>>() ),
                 m_os( m_streamBuf.get() )
             {}
 
@@ -118,7 +119,8 @@ namespace Catch {
             std::ostream& stream() const override { return m_os; }
         };
 
-    }} // namespace anon::detail
+    } // unnamed namespace
+} // namespace Detail
 
     ///////////////////////////////////////////////////////////////////////////
 
@@ -138,13 +140,13 @@ namespace Catch {
 
     // This class encapsulates the idea of a pool of ostringstreams that can be reused.
     struct StringStreams {
-        std::vector<std::unique_ptr<std::ostringstream>> m_streams;
+        std::vector<Detail::unique_ptr<std::ostringstream>> m_streams;
         std::vector<std::size_t> m_unused;
         std::ostringstream m_referenceStream; // Used for copy state/ flags from
 
         auto add() -> std::size_t {
             if( m_unused.empty() ) {
-                m_streams.push_back( std::unique_ptr<std::ostringstream>( new std::ostringstream ) );
+                m_streams.push_back( Detail::unique_ptr<std::ostringstream>( new std::ostringstream ) );
                 return m_streams.size()-1;
             }
             else {
