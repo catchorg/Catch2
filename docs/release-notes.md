@@ -2,6 +2,7 @@
 
 # Release notes
 **Contents**<br>
+[2.12.2](#2122)<br>
 [2.12.1](#2121)<br>
 [2.12.0](#2120)<br>
 [2.11.3](#2113)<br>
@@ -35,6 +36,20 @@
 [2.0.1](#201)<br>
 [Older versions](#older-versions)<br>
 [Even Older versions](#even-older-versions)<br>
+
+
+## 2.12.2
+
+### Fixes
+* Fixed compilation failure if `is_range` ADL found deleted function (#1929)
+* Fixed potential UB in `CAPTURE` if the expression contained non-ASCII characters (#1925)
+
+### Improvements
+* `std::result_of` is not used if `std::invoke_result` is available (#1934)
+* JUnit reporter writes out `status` attribute for tests (#1899)
+* Suppresed clang-tidy's `hicpp-vararg` warning (#1921)
+  * Catch2 was already suppressing the `cppcoreguidelines-pro-type-vararg` alias of the warning
+
 
 ## 2.12.1
 
