@@ -18,7 +18,7 @@ namespace Catch {
 
     namespace {
         char toLowerCh(char c) {
-            return static_cast<char>( std::tolower( c ) );
+            return static_cast<char>( std::tolower( static_cast<unsigned char>(c) ) );
         }
     }
 
