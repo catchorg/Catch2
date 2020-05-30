@@ -14,7 +14,6 @@
 #include <iosfwd>
 #include <string>
 #include <vector>
-#include <memory>
 
 namespace Catch {
 
@@ -83,8 +82,6 @@ namespace Catch {
         virtual unsigned int benchmarkResamples() const = 0;
         virtual std::chrono::milliseconds benchmarkWarmupTime() const = 0;
     };
-
-    using IConfigPtr = std::shared_ptr<IConfig const>;
 }
 
 #endif // TWOBLUECUBES_CATCH_INTERFACES_CONFIG_H_INCLUDED

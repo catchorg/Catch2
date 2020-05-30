@@ -8,16 +8,12 @@
 #ifndef TWOBLUECUBES_CATCH_CONTEXT_H_INCLUDED
 #define TWOBLUECUBES_CATCH_CONTEXT_H_INCLUDED
 
-#include <memory>
-
 namespace Catch {
 
     struct IResultCapture;
     struct IRunner;
     struct IConfig;
     struct IMutableContext;
-
-    using IConfigPtr = std::shared_ptr<IConfig const>;
 
     struct IContext
     {
