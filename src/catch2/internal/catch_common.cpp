@@ -33,8 +33,4 @@ namespace Catch {
         return os;
     }
 
-    std::string StreamEndStop::operator+() const {
-        return std::string();
-    }
-
 } // end namespace Catch

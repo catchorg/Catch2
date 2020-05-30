@@ -9,6 +9,7 @@
 #define TWOBLUECUBES_CATCH_COMMON_H_INCLUDED
 
 #include <catch2/internal/catch_compiler_capabilities.hpp>
+#include <catch2/internal/catch_stringref.hpp>
 
 #define INTERNAL_CATCH_UNIQUE_NAME_LINE2( name, line ) name##line
 #define INTERNAL_CATCH_UNIQUE_NAME_LINE( name, line ) INTERNAL_CATCH_UNIQUE_NAME_LINE2( name, line )
@@ -70,12 +71,15 @@ namespace Catch {
     // as well as
     //    >> stuff +StreamEndStop
     struct StreamEndStop {
-        std::string operator+() const;
+        StringRef operator+() const {
+            return StringRef();
+        }
+
+        template<typename T>
+        friend T const& operator + ( T const& value, StreamEndStop ) {
+            return value;
+        }
     };
-    template<typename T>
-    T const& operator + ( T const& value, StreamEndStop ) {
-        return value;
-    }
 }
 
 #define CATCH_INTERNAL_LINEINFO \
