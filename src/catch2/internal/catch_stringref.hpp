@@ -101,6 +101,7 @@ namespace Catch {
 
         friend std::string& operator += (std::string& lhs, StringRef const& sr);
         friend std::ostream& operator << (std::ostream& os, StringRef const& sr);
+        friend std::string operator+(StringRef lhs, StringRef rhs);
     };
 
 

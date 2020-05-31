@@ -155,6 +155,8 @@
     <testCase name="StringRef/from std::string/assigned" duration="{duration}"/>
     <testCase name="StringRef/to std::string/explicitly constructed" duration="{duration}"/>
     <testCase name="StringRef/to std::string/assigned" duration="{duration}"/>
+    <testCase name="StringRef/std::string += StringRef" duration="{duration}"/>
+    <testCase name="StringRef/StringRef + StringRef" duration="{duration}"/>
     <testCase name="StringRef at compilation time/Simple constructors" duration="{duration}"/>
     <testCase name="StringRef at compilation time/UDL construction" duration="{duration}"/>
   </file>

@@ -9450,6 +9450,32 @@ with expansion:
   11 == 11
 
 -------------------------------------------------------------------------------
+StringRef
+  std::string += StringRef
+-------------------------------------------------------------------------------
+String.tests.cpp:<line number>
+...............................................................................
+
+String.tests.cpp:<line number>: PASSED:
+  REQUIRE( lhs == "some string += the stringref contents" )
+with expansion:
+  "some string += the stringref contents"
+  ==
+  "some string += the stringref contents"
+
+-------------------------------------------------------------------------------
+StringRef
+  StringRef + StringRef
+-------------------------------------------------------------------------------
+String.tests.cpp:<line number>
+...............................................................................
+
+String.tests.cpp:<line number>: PASSED:
+  REQUIRE( together == "abrakadabra" )
+with expansion:
+  "abrakadabra" == "abrakadabra"
+
+-------------------------------------------------------------------------------
 StringRef at compilation time
   Simple constructors
 -------------------------------------------------------------------------------
@@ -15033,5 +15059,5 @@ Misc.tests.cpp:<line number>: PASSED:
 
 ===============================================================================
 test cases:  337 |  247 passed |  86 failed |  4 failed as expected
-assertions: 1941 | 1772 passed | 148 failed | 21 failed as expected
+assertions: 1943 | 1774 passed | 148 failed | 21 failed as expected
 

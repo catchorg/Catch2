@@ -39,6 +39,14 @@ namespace Catch {
         return os.write(str.data(), str.size());
     }
 
+    std::string operator+(StringRef lhs, StringRef rhs) {
+        std::string ret;
+        ret.reserve(lhs.size() + rhs.size());
+        ret += lhs;
+        ret += rhs;
+        return ret;
+    }
+
     auto operator+=( std::string& lhs, StringRef const& rhs ) -> std::string& {
         lhs.append(rhs.data(), rhs.size());
         return lhs;

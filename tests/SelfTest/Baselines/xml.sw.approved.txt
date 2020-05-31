@@ -11724,6 +11724,30 @@ Message from section two
         </Section>
         <OverallResults successes="2" failures="0" expectedFailures="0"/>
       </Section>
+      <Section name="std::string += StringRef" filename="tests/<exe-name>/IntrospectiveTests/String.tests.cpp" >
+        <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/String.tests.cpp" >
+          <Original>
+            lhs == "some string += the stringref contents"
+          </Original>
+          <Expanded>
+            "some string += the stringref contents"
+==
+"some string += the stringref contents"
+          </Expanded>
+        </Expression>
+        <OverallResults successes="1" failures="0" expectedFailures="0"/>
+      </Section>
+      <Section name="StringRef + StringRef" filename="tests/<exe-name>/IntrospectiveTests/String.tests.cpp" >
+        <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/String.tests.cpp" >
+          <Original>
+            together == "abrakadabra"
+          </Original>
+          <Expanded>
+            "abrakadabra" == "abrakadabra"
+          </Expanded>
+        </Expression>
+        <OverallResults successes="1" failures="0" expectedFailures="0"/>
+      </Section>
       <OverallResult success="true"/>
     </TestCase>
     <TestCase name="StringRef at compilation time" tags="[constexpr][StringRef][Strings]" filename="tests/<exe-name>/IntrospectiveTests/String.tests.cpp" >
@@ -18031,7 +18055,7 @@ loose text artifact
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="1772" failures="149" expectedFailures="21"/>
+    <OverallResults successes="1774" failures="149" expectedFailures="21"/>
   </Group>
-  <OverallResults successes="1772" failures="148" expectedFailures="21"/>
+  <OverallResults successes="1774" failures="148" expectedFailures="21"/>
 </Catch>

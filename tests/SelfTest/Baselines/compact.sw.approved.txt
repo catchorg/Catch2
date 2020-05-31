@@ -1289,6 +1289,10 @@ String.tests.cpp:<line number>: passed: stdStr == "a stringref" for: "a stringre
 String.tests.cpp:<line number>: passed: stdStr.size() == sr.size() for: 11 == 11
 String.tests.cpp:<line number>: passed: stdStr == "a stringref" for: "a stringref" == "a stringref"
 String.tests.cpp:<line number>: passed: stdStr.size() == sr.size() for: 11 == 11
+String.tests.cpp:<line number>: passed: lhs == "some string += the stringref contents" for: "some string += the stringref contents"
+==
+"some string += the stringref contents"
+String.tests.cpp:<line number>: passed: together == "abrakadabra" for: "abrakadabra" == "abrakadabra"
 String.tests.cpp:<line number>: passed: with 1 message: 'empty.size() == 0'
 String.tests.cpp:<line number>: passed: with 1 message: 'empty.begin() == empty.end()'
 String.tests.cpp:<line number>: passed: with 1 message: 'stringref.size() == 3'

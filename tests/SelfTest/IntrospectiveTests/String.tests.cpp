@@ -4,7 +4,6 @@
 #include <cstring>
 
 TEST_CASE( "StringRef", "[Strings][StringRef]" ) {
-
     using Catch::StringRef;
 
     SECTION( "Empty string" ) {
@@ -122,6 +121,18 @@ TEST_CASE( "StringRef", "[Strings][StringRef]" ) {
             REQUIRE( stdStr == "a stringref" );
             REQUIRE( stdStr.size() == sr.size() );
         }
+    }
+
+    SECTION("std::string += StringRef") {
+        StringRef sr = "the stringref contents";
+        std::string lhs("some string += ");
+        lhs += sr;
+        REQUIRE(lhs == "some string += the stringref contents");
+    }
+    SECTION("StringRef + StringRef") {
+        StringRef sr1 = "abraka", sr2 = "dabra";
+        std::string together = sr1 + sr2;
+        REQUIRE(together == "abrakadabra");
     }
 }
 

@@ -2491,6 +2491,10 @@ ok {test-number} - stdStr.size() == sr.size() for: 11 == 11
 ok {test-number} - stdStr == "a stringref" for: "a stringref" == "a stringref"
 # StringRef
 ok {test-number} - stdStr.size() == sr.size() for: 11 == 11
+# StringRef
+ok {test-number} - lhs == "some string += the stringref contents" for: "some string += the stringref contents" == "some string += the stringref contents"
+# StringRef
+ok {test-number} - together == "abrakadabra" for: "abrakadabra" == "abrakadabra"
 # StringRef at compilation time
 ok {test-number} - with 1 message: 'empty.size() == 0'
 # StringRef at compilation time
@@ -3874,5 +3878,5 @@ ok {test-number} - q3 == 23. for: 23.0 == 23.0
 ok {test-number} -
 # xmlentitycheck
 ok {test-number} -
-1..1933
+1..1935
 
