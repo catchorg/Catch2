@@ -7,27 +7,27 @@
 
 #include <catch2/reporters/catch_reporter_compact.hpp>
 
+#include <catch2/internal/catch_compiler_capabilities.hpp>
 #include <catch2/internal/catch_console_colour.hpp>
 #include <catch2/internal/catch_string_manip.hpp>
+#include <catch2/internal/catch_stringref.hpp>
 
 #include <ostream>
 
 namespace {
 
-#ifdef CATCH_PLATFORM_MAC
-    const char* failedString() { return "FAILED"; }
-    const char* passedString() { return "PASSED"; }
-#else
-    const char* failedString() { return "failed"; }
-    const char* passedString() { return "passed"; }
-#endif
-
     // Colour::LightGrey
     Catch::Colour::Code dimColour() { return Catch::Colour::FileName; }
 
-    std::string bothOrAll( std::size_t count ) {
-        return count == 1 ? std::string() :
-               count == 2 ? "both " : "all " ;
+    Catch::StringRef bothOrAll( std::size_t count ) {
+        switch (count) {
+        case 1:
+            return Catch::StringRef{};
+        case 2:
+            return "both "_catch_sr;
+        default:
+            return "all "_catch_sr;
+        }
     }
 
 } // anon namespace
@@ -35,6 +35,15 @@ namespace {
 
 namespace Catch {
 namespace {
+
+#ifdef CATCH_PLATFORM_MAC
+    static constexpr Catch::StringRef compactFailedString = "FAILED"_sr;
+    static constexpr Catch::StringRef compactPassedString = "PASSED"_sr;
+#else
+    static constexpr Catch::StringRef compactFailedString = "failed"_sr;
+    static constexpr Catch::StringRef compactPassedString = "passed"_sr;
+#endif
+
 // Colour, message variants:
 // - white: No tests ran.
 // -   red: Failed [both/all] N test cases, failed [both/all] M assertions.
@@ -46,9 +55,9 @@ void printTotals(std::ostream& out, const Totals& totals) {
         out << "No tests ran.";
     } else if (totals.testCases.failed == totals.testCases.total()) {
         Colour colour(Colour::ResultError);
-        const std::string qualify_assertions_failed =
+        const StringRef qualify_assertions_failed =
             totals.assertions.failed == totals.assertions.total() ?
-            bothOrAll(totals.assertions.failed) : std::string();
+            bothOrAll(totals.assertions.failed) : StringRef{};
         out <<
             "Failed " << bothOrAll(totals.testCases.failed)
             << pluralise(totals.testCases.failed, "test case") << ", "
@@ -92,7 +101,7 @@ public:
 
         switch (result.getResultType()) {
         case ResultWas::Ok:
-            printResultType(Colour::ResultSuccess, passedString());
+            printResultType(Colour::ResultSuccess, compactPassedString);
             printOriginalExpression();
             printReconstructedExpression();
             if (!result.hasExpression())
@@ -102,45 +111,45 @@ public:
             break;
         case ResultWas::ExpressionFailed:
             if (result.isOk())
-                printResultType(Colour::ResultSuccess, failedString() + std::string(" - but was ok"));
+                printResultType(Colour::ResultSuccess, compactFailedString + " - but was ok"_sr);
             else
-                printResultType(Colour::Error, failedString());
+                printResultType(Colour::Error, compactFailedString);
             printOriginalExpression();
             printReconstructedExpression();
             printRemainingMessages();
             break;
         case ResultWas::ThrewException:
-            printResultType(Colour::Error, failedString());
+            printResultType(Colour::Error, compactFailedString);
             printIssue("unexpected exception with message:");
             printMessage();
             printExpressionWas();
             printRemainingMessages();
             break;
         case ResultWas::FatalErrorCondition:
-            printResultType(Colour::Error, failedString());
+            printResultType(Colour::Error, compactFailedString);
             printIssue("fatal error condition with message:");
             printMessage();
             printExpressionWas();
             printRemainingMessages();
             break;
         case ResultWas::DidntThrowException:
-            printResultType(Colour::Error, failedString());
+            printResultType(Colour::Error, compactFailedString);
             printIssue("expected exception, got none");
             printExpressionWas();
             printRemainingMessages();
             break;
         case ResultWas::Info:
-            printResultType(Colour::None, "info");
+            printResultType(Colour::None, "info"_sr);
             printMessage();
             printRemainingMessages();
             break;
         case ResultWas::Warning:
-            printResultType(Colour::None, "warning");
+            printResultType(Colour::None, "warning"_sr);
             printMessage();
             printRemainingMessages();
             break;
         case ResultWas::ExplicitFailure:
-            printResultType(Colour::Error, failedString());
+            printResultType(Colour::Error, compactFailedString);
             printIssue("explicitly");
             printRemainingMessages(Colour::None);
             break;
@@ -159,7 +168,7 @@ private:
         stream << result.getSourceInfo() << ':';
     }
 
-    void printResultType(Colour::Code colour, std::string const& passOrFail) const {
+    void printResultType(Colour::Code colour, StringRef passOrFail) const {
         if (!passOrFail.empty()) {
             {
                 Colour colourGuard(colour);
@@ -169,7 +178,7 @@ private:
         }
     }
 
-    void printIssue(std::string const& issue) const {
+    void printIssue(char const* issue) const {
         stream << ' ' << issue;
     }
 
