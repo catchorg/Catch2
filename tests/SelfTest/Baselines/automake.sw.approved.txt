@@ -14,6 +14,8 @@ Nor would this
 :test-result: PASS #1548
 :test-result: PASS #1905 -- test spec parser properly clears internal state between compound tests
 :test-result: PASS #1912 -- test spec parser handles escaping
+:test-result: PASS #1913 - GENERATE inside a for loop should not keep recreating the generator
+:test-result: PASS #1913 - GENERATEs can share a line
 :test-result: XFAIL #748 - captures with unexpected exceptions
 :test-result: PASS #809
 :test-result: PASS #833

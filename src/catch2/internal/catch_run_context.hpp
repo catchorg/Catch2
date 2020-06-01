@@ -76,7 +76,7 @@ namespace Catch {
         void sectionEnded( SectionEndInfo const& endInfo ) override;
         void sectionEndedEarly( SectionEndInfo const& endInfo ) override;
 
-        auto acquireGeneratorTracker( SourceLineInfo const& lineInfo ) -> IGeneratorTracker& override;
+        auto acquireGeneratorTracker( StringRef generatorName, SourceLineInfo const& lineInfo ) -> IGeneratorTracker& override;
 
         void benchmarkPreparing( std::string const& name ) override;
         void benchmarkStarting( BenchmarkInfo const& info ) override;

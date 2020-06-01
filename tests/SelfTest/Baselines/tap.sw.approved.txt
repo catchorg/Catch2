@@ -56,6 +56,18 @@ ok {test-number} - spec.matches(*fakeTestCase(R"(spec [a] char)")) for: true
 ok {test-number} - !(spec.matches(*fakeTestCase("differs but has similar tag", "[a]"))) for: !false
 # #1912 -- test spec parser handles escaping
 ok {test-number} - spec.matches(*fakeTestCase(R"(spec \ char)")) for: true
+# #1913 - GENERATE inside a for loop should not keep recreating the generator
+ok {test-number} - counter < 7 for: 3 < 7
+# #1913 - GENERATE inside a for loop should not keep recreating the generator
+ok {test-number} - counter < 7 for: 6 < 7
+# #1913 - GENERATEs can share a line
+ok {test-number} - i != j for: 1 != 3
+# #1913 - GENERATEs can share a line
+ok {test-number} - i != j for: 1 != 4
+# #1913 - GENERATEs can share a line
+ok {test-number} - i != j for: 2 != 3
+# #1913 - GENERATEs can share a line
+ok {test-number} - i != j for: 2 != 4
 # #748 - captures with unexpected exceptions
 not ok {test-number} - unexpected exception with message: 'answer := 42' with 1 message: 'expected exception'
 # #748 - captures with unexpected exceptions
@@ -3878,5 +3890,5 @@ ok {test-number} - q3 == 23. for: 23.0 == 23.0
 ok {test-number} -
 # xmlentitycheck
 ok {test-number} -
-1..1935
+1..1941
 

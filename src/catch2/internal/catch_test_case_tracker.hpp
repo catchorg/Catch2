@@ -23,6 +23,10 @@ namespace TestCaseTracking {
         SourceLineInfo location;
 
         NameAndLocation( std::string const& _name, SourceLineInfo const& _location );
+        friend bool operator==(NameAndLocation const& lhs, NameAndLocation const& rhs) {
+            return lhs.name == rhs.name
+                && lhs.location == rhs.location;
+        }
     };
 
     struct ITracker;

@@ -50,8 +50,8 @@ namespace Detail {
 
     GeneratorUntypedBase::~GeneratorUntypedBase() = default;
 
-    auto acquireGeneratorTracker( SourceLineInfo const& lineInfo ) -> IGeneratorTracker& {
-        return getResultCapture().acquireGeneratorTracker( lineInfo );
+    auto acquireGeneratorTracker(StringRef generatorName, SourceLineInfo const& lineInfo ) -> IGeneratorTracker& {
+        return getResultCapture().acquireGeneratorTracker( generatorName, lineInfo );
     }
 
 } // namespace Generators
