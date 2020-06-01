@@ -244,6 +244,72 @@ with expansion:
   true
 
 -------------------------------------------------------------------------------
+#1913 - GENERATE inside a for loop should not keep recreating the generator
+-------------------------------------------------------------------------------
+Generators.tests.cpp:<line number>
+...............................................................................
+
+Generators.tests.cpp:<line number>: PASSED:
+  REQUIRE( counter < 7 )
+with expansion:
+  3 < 7
+
+-------------------------------------------------------------------------------
+#1913 - GENERATE inside a for loop should not keep recreating the generator
+-------------------------------------------------------------------------------
+Generators.tests.cpp:<line number>
+...............................................................................
+
+Generators.tests.cpp:<line number>: PASSED:
+  REQUIRE( counter < 7 )
+with expansion:
+  6 < 7
+
+-------------------------------------------------------------------------------
+#1913 - GENERATEs can share a line
+-------------------------------------------------------------------------------
+Generators.tests.cpp:<line number>
+...............................................................................
+
+Generators.tests.cpp:<line number>: PASSED:
+  REQUIRE( i != j )
+with expansion:
+  1 != 3
+
+-------------------------------------------------------------------------------
+#1913 - GENERATEs can share a line
+-------------------------------------------------------------------------------
+Generators.tests.cpp:<line number>
+...............................................................................
+
+Generators.tests.cpp:<line number>: PASSED:
+  REQUIRE( i != j )
+with expansion:
+  1 != 4
+
+-------------------------------------------------------------------------------
+#1913 - GENERATEs can share a line
+-------------------------------------------------------------------------------
+Generators.tests.cpp:<line number>
+...............................................................................
+
+Generators.tests.cpp:<line number>: PASSED:
+  REQUIRE( i != j )
+with expansion:
+  2 != 3
+
+-------------------------------------------------------------------------------
+#1913 - GENERATEs can share a line
+-------------------------------------------------------------------------------
+Generators.tests.cpp:<line number>
+...............................................................................
+
+Generators.tests.cpp:<line number>: PASSED:
+  REQUIRE( i != j )
+with expansion:
+  2 != 4
+
+-------------------------------------------------------------------------------
 #748 - captures with unexpected exceptions
   outside assertions
 -------------------------------------------------------------------------------
@@ -423,6 +489,6 @@ Condition.tests.cpp:<line number>: FAILED:
   CHECK( true != true )
 
 ===============================================================================
-test cases: 21 | 16 passed | 3 failed | 2 failed as expected
-assertions: 49 | 42 passed | 4 failed | 3 failed as expected
+test cases: 23 | 18 passed | 3 failed | 2 failed as expected
+assertions: 55 | 48 passed | 4 failed | 3 failed as expected
 

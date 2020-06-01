@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuitesloose text artifact
 >
-  <testsuite name="<exe-name>" errors="17" failures="132" tests="1719" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
+  <testsuite name="<exe-name>" errors="17" failures="132" tests="1725" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
     <properties>
       <property name="filters" value="~[!nonportable]~[!benchmark]~[approvals]"/>
       <property name="random-seed" value="1"/>
@@ -33,6 +33,8 @@ Nor would this
     <testcase classname="<exe-name>.global" name="#1905 -- test spec parser properly clears internal state between compound tests" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="#1912 -- test spec parser handles escaping/Various parentheses" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="#1912 -- test spec parser handles escaping/backslash in test name" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="#1913 - GENERATE inside a for loop should not keep recreating the generator" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="#1913 - GENERATEs can share a line" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="#748 - captures with unexpected exceptions/outside assertions" time="{duration}" status="run">
       <error type="TEST_CASE">
 FAILED:

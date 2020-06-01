@@ -30,6 +30,12 @@ CmdLine.tests.cpp:<line number>: passed: spec.matches(fakeTestCase(R"(spec {a} c
 CmdLine.tests.cpp:<line number>: passed: spec.matches(fakeTestCase(R"(spec [a] char)")) for: true
 CmdLine.tests.cpp:<line number>: passed: !(spec.matches(fakeTestCase("differs but has similar tag", "[a]"))) for: !false
 CmdLine.tests.cpp:<line number>: passed: spec.matches(fakeTestCase(R"(spec \ char)")) for: true
+Generators.tests.cpp:<line number>: passed: counter < 7 for: 3 < 7
+Generators.tests.cpp:<line number>: passed: counter < 7 for: 6 < 7
+Generators.tests.cpp:<line number>: passed: i != j for: 1 != 3
+Generators.tests.cpp:<line number>: passed: i != j for: 1 != 4
+Generators.tests.cpp:<line number>: passed: i != j for: 2 != 3
+Generators.tests.cpp:<line number>: passed: i != j for: 2 != 4
 Exception.tests.cpp:<line number>: failed: unexpected exception with message: 'answer := 42' with 1 message: 'expected exception'
 Exception.tests.cpp:<line number>: failed: unexpected exception with message: 'answer := 42'; expression was: thisThrows() with 1 message: 'expected exception'
 Exception.tests.cpp:<line number>: passed: thisThrows() with 1 message: 'answer := 42'
