@@ -264,6 +264,60 @@ Nor would this
       </Section>
       <OverallResult success="true"/>
     </TestCase>
+    <TestCase name="#1913 - GENERATE inside a for loop should not keep recreating the generator" tags="[generators][regression]" filename="projects/<exe-name>/UsageTests/Generators.tests.cpp" >
+      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/UsageTests/Generators.tests.cpp" >
+        <Original>
+          counter &lt; 7
+        </Original>
+        <Expanded>
+          3 &lt; 7
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/UsageTests/Generators.tests.cpp" >
+        <Original>
+          counter &lt; 7
+        </Original>
+        <Expanded>
+          6 &lt; 7
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="#1913 - GENERATEs can share a line" tags="[generators][regression]" filename="projects/<exe-name>/UsageTests/Generators.tests.cpp" >
+      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/UsageTests/Generators.tests.cpp" >
+        <Original>
+          i != j
+        </Original>
+        <Expanded>
+          1 != 3
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/UsageTests/Generators.tests.cpp" >
+        <Original>
+          i != j
+        </Original>
+        <Expanded>
+          1 != 4
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/UsageTests/Generators.tests.cpp" >
+        <Original>
+          i != j
+        </Original>
+        <Expanded>
+          2 != 3
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE" filename="projects/<exe-name>/UsageTests/Generators.tests.cpp" >
+        <Original>
+          i != j
+        </Original>
+        <Expanded>
+          2 != 4
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
     <TestCase name="#748 - captures with unexpected exceptions" tags="[!hide][!shouldfail][!throws][.][failing]" filename="projects/<exe-name>/UsageTests/Exception.tests.cpp" >
       <Section name="outside assertions" filename="projects/<exe-name>/UsageTests/Exception.tests.cpp" >
         <Info>
@@ -16255,7 +16309,7 @@ loose text artifact
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="1549" failures="149" expectedFailures="21"/>
+    <OverallResults successes="1555" failures="149" expectedFailures="21"/>
   </Group>
-  <OverallResults successes="1549" failures="148" expectedFailures="21"/>
+  <OverallResults successes="1555" failures="148" expectedFailures="21"/>
 </Catch>

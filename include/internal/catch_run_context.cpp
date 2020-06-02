@@ -25,12 +25,27 @@ namespace Catch {
                 std::shared_ptr<GeneratorTracker> tracker;
 
                 ITracker& currentTracker = ctx.currentTracker();
-                if( TestCaseTracking::ITrackerPtr childTracker = currentTracker.findChild( nameAndLocation ) ) {
+                // Under specific circumstances, the generator we want
+                // to acquire is also the current tracker. If this is
+                // the case, we have to avoid looking through current
+                // tracker's children, and instead return the current
+                // tracker.
+                // A case where this check is important is e.g.
+                //     for (int i = 0; i < 5; ++i) {
+                //         int n = GENERATE(1, 2);
+                //     }
+                //
+                // without it, the code above creates 5 nested generators.
+                if (currentTracker.nameAndLocation() == nameAndLocation) {
+                    auto thisTracker = currentTracker.parent().findChild(nameAndLocation);
+                    assert(thisTracker);
+                    assert(thisTracker->isGeneratorTracker());
+                    tracker = std::static_pointer_cast<GeneratorTracker>(thisTracker);
+                } else if ( TestCaseTracking::ITrackerPtr childTracker = currentTracker.findChild( nameAndLocation ) ) {
                     assert( childTracker );
                     assert( childTracker->isGeneratorTracker() );
                     tracker = std::static_pointer_cast<GeneratorTracker>( childTracker );
-                }
-                else {
+                } else {
                     tracker = std::make_shared<GeneratorTracker>( nameAndLocation, ctx, &currentTracker );
                     currentTracker.addChild( tracker );
                 }
@@ -187,9 +202,10 @@ namespace Catch {
 
         return true;
     }
-    auto RunContext::acquireGeneratorTracker( SourceLineInfo const& lineInfo ) -> IGeneratorTracker& {
+    auto RunContext::acquireGeneratorTracker( StringRef generatorName, SourceLineInfo const& lineInfo ) -> IGeneratorTracker& {
         using namespace Generators;
-        GeneratorTracker& tracker = GeneratorTracker::acquire( m_trackerContext, TestCaseTracking::NameAndLocation( "generator", lineInfo ) );
+        GeneratorTracker& tracker = GeneratorTracker::acquire(m_trackerContext,
+                                                              TestCaseTracking::NameAndLocation( static_cast<std::string>(generatorName), lineInfo ) );
         assert( tracker.isOpen() );
         m_lastAssertionInfo.lineInfo = lineInfo;
         return tracker;
@@ -233,17 +249,17 @@ namespace Catch {
 
 #if defined(CATCH_CONFIG_ENABLE_BENCHMARKING)
     void RunContext::benchmarkPreparing(std::string const& name) {
-		m_reporter->benchmarkPreparing(name);
-	}
+        m_reporter->benchmarkPreparing(name);
+    }
     void RunContext::benchmarkStarting( BenchmarkInfo const& info ) {
         m_reporter->benchmarkStarting( info );
     }
     void RunContext::benchmarkEnded( BenchmarkStats<> const& stats ) {
         m_reporter->benchmarkEnded( stats );
     }
-	void RunContext::benchmarkFailed(std::string const & error) {
-		m_reporter->benchmarkFailed(error);
-	}
+    void RunContext::benchmarkFailed(std::string const & error) {
+        m_reporter->benchmarkFailed(error);
+    }
 #endif // CATCH_CONFIG_ENABLE_BENCHMARKING
 
     void RunContext::pushScopedMessage(MessageInfo const & message) {

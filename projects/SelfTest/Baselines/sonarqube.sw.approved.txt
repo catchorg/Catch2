@@ -875,6 +875,8 @@ Exception.tests.cpp:<line number>
     </testCase>
   </file>
   <file path="projects/<exe-name>/UsageTests/Generators.tests.cpp">
+    <testCase name="#1913 - GENERATE inside a for loop should not keep recreating the generator" duration="{duration}"/>
+    <testCase name="#1913 - GENERATEs can share a line" duration="{duration}"/>
     <testCase name="3x3x3 ints" duration="{duration}"/>
     <testCase name="Copy and then generate a range/from var and iterators" duration="{duration}"/>
     <testCase name="Copy and then generate a range/From a temporary container" duration="{duration}"/>

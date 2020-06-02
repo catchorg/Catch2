@@ -251,6 +251,22 @@ TEST_CASE("Copy and then generate a range", "[generators]") {
     }
 }
 
+TEST_CASE("#1913 - GENERATE inside a for loop should not keep recreating the generator", "[regression][generators]") {
+    static int counter = 0;
+    for (int i = 0; i < 3; ++i) {
+        int _ = GENERATE(1, 2);
+        (void)_;
+        ++counter;
+    }
+    // There should be at most 6 (3 * 2) counter increments
+    REQUIRE(counter < 7);
+}
+
+TEST_CASE("#1913 - GENERATEs can share a line", "[regression][generators]") {
+    int i = GENERATE(1, 2); int j = GENERATE(3, 4);
+    REQUIRE(i != j);
+}
+
 #if defined(__clang__)
 #pragma clang diagnostic pop
 #endif
