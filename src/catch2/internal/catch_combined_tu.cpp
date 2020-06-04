@@ -73,7 +73,9 @@ namespace Catch {
 
 namespace Catch {
     bool uncaught_exceptions() {
-#if defined(CATCH_CONFIG_CPP17_UNCAUGHT_EXCEPTIONS) || (defined(__cpp_lib_uncaught_exceptions) && !defined(CATCH_CONFIG_NO_CPP17_UNCAUGHT_EXCEPTIONS))
+#if defined(CATCH_CONFIG_DISABLE_EXCEPTIONS)
+        return false;
+#elif defined(CATCH_CONFIG_CPP17_UNCAUGHT_EXCEPTIONS) || (defined(__cpp_lib_uncaught_exceptions) && !defined(CATCH_CONFIG_NO_CPP17_UNCAUGHT_EXCEPTIONS))
         return std::uncaught_exceptions() > 0;
 #else
         return std::uncaught_exception();
@@ -122,7 +124,8 @@ namespace Catch {
 #include <catch2/internal/catch_compiler_capabilities.hpp>
 
 namespace Catch {
-void StartupExceptionRegistry::add( std::exception_ptr const& exception ) noexcept {
+#if !defined(CATCH_CONFIG_DISABLE_EXCEPTIONS)
+    void StartupExceptionRegistry::add( std::exception_ptr const& exception ) noexcept {
         CATCH_TRY {
             m_exceptions.push_back(exception);
         } CATCH_CATCH_ALL {
@@ -134,6 +137,7 @@ void StartupExceptionRegistry::add( std::exception_ptr const& exception ) noexce
     std::vector<std::exception_ptr> const& StartupExceptionRegistry::getExceptions() const noexcept {
         return m_exceptions;
     }
+#endif
 
 } // end namespace Catch
 
