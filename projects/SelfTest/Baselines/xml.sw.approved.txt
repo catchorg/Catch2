@@ -16376,6 +16376,8 @@ loose text artifact
       <OverallResult success="true"/>
     </TestCase>
     <OverallResults successes="1564" failures="149" expectedFailures="21"/>
+    <OverallResultsCases successes="226" failures="86" expectedFailures="4"/>
   </Group>
   <OverallResults successes="1564" failures="148" expectedFailures="21"/>
+  <OverallResultsCases successes="226" failures="86" expectedFailures="4"/>
 </Catch>
