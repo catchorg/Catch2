@@ -12,17 +12,36 @@ are run once per each value in a generator.
 This is best explained with an example:
 ```cpp
 TEST_CASE("Generators") {
-    auto i = GENERATE(1, 2, 3);
+    auto i = GENERATE(1, 2);
     SECTION("one") {
-        auto j = GENERATE( -3, -2, -1 );
+        auto j = GENERATE(-3, -2);
         REQUIRE(j < i);
+    }
+    SECTION("two") {
+        auto k = GENERATE(4, 5, 6);
+        REQUIRE(j != k);
     }
 }
 ```
 
-The assertion in this test case will be run 9 times, because there
-are 3 possible values for `i` (1, 2, and 3) and there are 3 possible
-values for `j` (-3, -2, and -1).
+The `SECTION` "one" will be run 4 (2*2) times, because the outer
+generator has 2 elements in it, and the inner generator also has 2
+elements in it. The `SECTION` "two" will be run 6 (2*3) times. The
+sections will be run in order "one", "one", "two", "two", "two", "one",
+...
+
+It is also possible to have multiple generators at the same level of
+nesting. The result is the same as when generators are inside nested
+sections, that is, the result will be a cartesian product of all
+elements. This means that in the snippet below, the test case will be
+run 6 (2*3) times.
+
+```cpp
+TEST_CASE("Generators") {
+    auto i = GENERATE(1, 2);
+    auto j = GENERATE(3, 4, 5);
+}
+```
 
 
 There are 2 parts to generators in Catch2, the `GENERATE` macro together
