@@ -318,6 +318,15 @@ Nor would this
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
+    <TestCase name="#1954 - 7 arg template test case sig compiles - 1, 1, 1, 1, 1, 0, 0" tags="[!hide][.][compilation][regression]" filename="projects/<exe-name>/UsageTests/Misc.tests.cpp" >
+      <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="#1954 - 7 arg template test case sig compiles - 5, 1, 1, 1, 1, 0, 0" tags="[!hide][.][compilation][regression]" filename="projects/<exe-name>/UsageTests/Misc.tests.cpp" >
+      <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="#1954 - 7 arg template test case sig compiles - 5, 3, 1, 1, 1, 0, 0" tags="[!hide][.][compilation][regression]" filename="projects/<exe-name>/UsageTests/Misc.tests.cpp" >
+      <OverallResult success="true"/>
+    </TestCase>
     <TestCase name="#748 - captures with unexpected exceptions" tags="[!hide][!shouldfail][!throws][.][failing]" filename="projects/<exe-name>/UsageTests/Exception.tests.cpp" >
       <Section name="outside assertions" filename="projects/<exe-name>/UsageTests/Exception.tests.cpp" >
         <Info>
@@ -16309,7 +16318,7 @@ loose text artifact
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="1555" failures="149" expectedFailures="21"/>
+    <OverallResults successes="1558" failures="149" expectedFailures="21"/>
   </Group>
-  <OverallResults successes="1555" failures="148" expectedFailures="21"/>
+  <OverallResults successes="1558" failures="148" expectedFailures="21"/>
 </Catch>
