@@ -68,6 +68,12 @@ ok {test-number} - i != j for: 1 != 4
 ok {test-number} - i != j for: 2 != 3
 # #1913 - GENERATEs can share a line
 ok {test-number} - i != j for: 2 != 4
+# #1954 - 7 arg template test case sig compiles - 1, 1, 1, 1, 1, 0, 0
+ok {test-number} -
+# #1954 - 7 arg template test case sig compiles - 5, 1, 1, 1, 1, 0, 0
+ok {test-number} -
+# #1954 - 7 arg template test case sig compiles - 5, 3, 1, 1, 1, 0, 0
+ok {test-number} -
 # #748 - captures with unexpected exceptions
 not ok {test-number} - unexpected exception with message: 'answer := 42' with 1 message: 'expected exception'
 # #748 - captures with unexpected exceptions
@@ -3890,5 +3896,5 @@ ok {test-number} - q3 == 23. for: 23.0 == 23.0
 ok {test-number} -
 # xmlentitycheck
 ok {test-number} -
-1..1941
+1..1944
 

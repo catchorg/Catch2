@@ -16,6 +16,9 @@ Nor would this
 :test-result: PASS #1912 -- test spec parser handles escaping
 :test-result: PASS #1913 - GENERATE inside a for loop should not keep recreating the generator
 :test-result: PASS #1913 - GENERATEs can share a line
+:test-result: PASS #1954 - 7 arg template test case sig compiles - 1, 1, 1, 1, 1, 0, 0
+:test-result: PASS #1954 - 7 arg template test case sig compiles - 5, 1, 1, 1, 1, 0, 0
+:test-result: PASS #1954 - 7 arg template test case sig compiles - 5, 3, 1, 1, 1, 0, 0
 :test-result: XFAIL #748 - captures with unexpected exceptions
 :test-result: PASS #809
 :test-result: PASS #833

@@ -1413,6 +1413,9 @@ Message.tests.cpp:<line number>
   <file path="tests/<exe-name>/UsageTests/Misc.tests.cpp">
     <testCase name="# A test name that starts with a #" duration="{duration}"/>
     <testCase name="#1175 - Hidden Test" duration="{duration}"/>
+    <testCase name="#1954 - 7 arg template test case sig compiles - 1, 1, 1, 1, 1, 0, 0" duration="{duration}"/>
+    <testCase name="#1954 - 7 arg template test case sig compiles - 5, 1, 1, 1, 1, 0, 0" duration="{duration}"/>
+    <testCase name="#1954 - 7 arg template test case sig compiles - 5, 3, 1, 1, 1, 0, 0" duration="{duration}"/>
     <testCase name="#835 -- errno should not be touched by Catch" duration="{duration}">
       <skipped message="CHECK(f() == 0)">
 FAILED:
