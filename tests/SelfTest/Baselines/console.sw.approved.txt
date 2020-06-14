@@ -2956,6 +2956,52 @@ with expansion:
   4294967295 (0x<hex digits>) > 4
 
 -------------------------------------------------------------------------------
+Composed matchers shortcircuit
+  &&
+-------------------------------------------------------------------------------
+Matchers.tests.cpp:<line number>
+...............................................................................
+
+Matchers.tests.cpp:<line number>: PASSED:
+  CHECK_THAT( 1, !(first && second) )
+with expansion:
+  1 not ( CheckedTestingMatcher set to fail and CheckedTestingMatcher set to
+  fail )
+
+Matchers.tests.cpp:<line number>: PASSED:
+  REQUIRE( first.matchCalled )
+with expansion:
+  true
+
+Matchers.tests.cpp:<line number>: PASSED:
+  REQUIRE( !second.matchCalled )
+with expansion:
+  true
+
+-------------------------------------------------------------------------------
+Composed matchers shortcircuit
+  ||
+-------------------------------------------------------------------------------
+Matchers.tests.cpp:<line number>
+...............................................................................
+
+Matchers.tests.cpp:<line number>: PASSED:
+  CHECK_THAT( 1, first || second )
+with expansion:
+  1 ( CheckedTestingMatcher set to succeed or CheckedTestingMatcher set to fail
+  )
+
+Matchers.tests.cpp:<line number>: PASSED:
+  REQUIRE( first.matchCalled )
+with expansion:
+  true
+
+Matchers.tests.cpp:<line number>: PASSED:
+  REQUIRE( !second.matchCalled )
+with expansion:
+  true
+
+-------------------------------------------------------------------------------
 Contains string matcher
 -------------------------------------------------------------------------------
 Matchers.tests.cpp:<line number>
@@ -15148,6 +15194,6 @@ Misc.tests.cpp:<line number>
 Misc.tests.cpp:<line number>: PASSED:
 
 ===============================================================================
-test cases:  342 |  252 passed |  86 failed |  4 failed as expected
-assertions: 1952 | 1783 passed | 148 failed | 21 failed as expected
+test cases:  343 |  253 passed |  86 failed |  4 failed as expected
+assertions: 1958 | 1789 passed | 148 failed | 21 failed as expected
 

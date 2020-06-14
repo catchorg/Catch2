@@ -772,6 +772,18 @@ ok {test-number} - 5 == c for: 5 == 5
 ok {test-number} - 6 == uc for: 6 == 6
 # Comparisons with int literals don't warn when mixing signed/ unsigned
 ok {test-number} - (std::numeric_limits<uint32_t>::max)() > ul for: 4294967295 (0x<hex digits>) > 4
+# Composed matchers shortcircuit
+ok {test-number} - 1, !(first && second) for: 1 not ( CheckedTestingMatcher set to fail and CheckedTestingMatcher set to fail )
+# Composed matchers shortcircuit
+ok {test-number} - first.matchCalled for: true
+# Composed matchers shortcircuit
+ok {test-number} - !second.matchCalled for: true
+# Composed matchers shortcircuit
+ok {test-number} - 1, first || second for: 1 ( CheckedTestingMatcher set to succeed or CheckedTestingMatcher set to fail )
+# Composed matchers shortcircuit
+ok {test-number} - first.matchCalled for: true
+# Composed matchers shortcircuit
+ok {test-number} - !second.matchCalled for: true
 # Contains string matcher
 not ok {test-number} - testStringForMatching(), Contains("not there", Catch::CaseSensitive::No) for: "this string contains 'abc' as a substring" contains: "not there" (case insensitive)
 # Contains string matcher
@@ -3896,5 +3908,5 @@ ok {test-number} - q3 == 23. for: 23.0 == 23.0
 ok {test-number} -
 # xmlentitycheck
 ok {test-number} -
-1..1944
+1..1950
 

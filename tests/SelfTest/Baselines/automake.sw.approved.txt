@@ -108,6 +108,7 @@ Nor would this
 :test-result: PASS Comparisons between ints where one side is computed
 :test-result: PASS Comparisons between unsigned ints and negative signed ints match c++ standard behaviour
 :test-result: PASS Comparisons with int literals don't warn when mixing signed/ unsigned
+:test-result: PASS Composed matchers shortcircuit
 :test-result: FAIL Contains string matcher
 :test-result: PASS Copy and then generate a range
 :test-result: FAIL Custom exceptions can be translated when testing for nothrow
