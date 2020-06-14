@@ -902,6 +902,8 @@ Exception.tests.cpp:<line number>
     <testCase name="Arbitrary predicate matcher/Function pointer" duration="{duration}"/>
     <testCase name="Arbitrary predicate matcher/Lambdas + different type" duration="{duration}"/>
     <testCase name="Composed matchers are distinct" duration="{duration}"/>
+    <testCase name="Composed matchers shortcircuit/&amp;&amp;" duration="{duration}"/>
+    <testCase name="Composed matchers shortcircuit/||" duration="{duration}"/>
     <testCase name="Contains string matcher" duration="{duration}">
       <failure message="CHECK_THAT(testStringForMatching(), Contains(&quot;not there&quot;, Catch::CaseSensitive::No))">
 FAILED:

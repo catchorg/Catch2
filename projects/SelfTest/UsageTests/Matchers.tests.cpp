@@ -628,6 +628,45 @@ namespace { namespace MatchersTests {
             REQUIRE_THAT(testStringForMatching2(), composed2);
         }
 
+        struct CheckedTestingMatcher : Catch::MatcherBase<int> {
+            mutable bool matchCalled = false;
+            bool matchSucceeds = false;
+
+            bool match(int const&) const override {
+                matchCalled = true;
+                return matchSucceeds;
+            }
+            std::string describe() const override {
+                return "CheckedTestingMatcher set to " + (matchSucceeds ? std::string("succeed") : std::string("fail"));
+            }
+        };
+
+        TEST_CASE("Composed matchers shortcircuit", "[matchers][composed]") {
+            // Check that if first returns false, second is not touched
+            CheckedTestingMatcher first, second;
+            SECTION("&&") {
+                first.matchSucceeds = false;
+                // This assertion doesn't actually test anything, we just
+                // want the composed matcher's `match` being called.
+                CHECK_THAT(1, !(first && second));
+
+                // These two assertions are the important ones
+                REQUIRE(first.matchCalled);
+                REQUIRE(!second.matchCalled);
+            }
+            // Check that if first returns true, second is not touched
+            SECTION("||") {
+                first.matchSucceeds = true;
+                // This assertion doesn't actually test anything, we just
+                // want the composed matcher's `match` being called.
+                CHECK_THAT(1, first || second);
+
+                // These two assertions are the important ones
+                REQUIRE(first.matchCalled);
+                REQUIRE(!second.matchCalled);
+            }
+        }
+
 } } // namespace MatchersTests
 
 #endif // CATCH_CONFIG_DISABLE_MATCHERS
