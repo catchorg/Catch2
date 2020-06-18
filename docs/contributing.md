@@ -6,6 +6,7 @@
 [Directory structure](#directory-structure)<br>
 [Testing your changes](#testing-your-changes)<br>
 [Documenting your code](#documenting-your-code)<br>
+[Examples](#examples)<br>
 [Code constructs to watch out for](#code-constructs-to-watch-out-for)<br>
 
 So you want to contribute something to Catch? That's great! Whether it's a bug fix, a new feature, support for
@@ -123,6 +124,7 @@ Text that explains how to use the cool feature.
 
 [Home](Readme.md#top)
 ```
+
 * For pages with more than 4 subheadings, we provide a table of contents
 (ToC) at the top of the page. Because GitHub markdown does not support
 automatic generation of ToC, it has to be handled semi-manually. Thus,
@@ -136,8 +138,31 @@ Now, for the generic tips:
   * Don't be afraid to introduce new pages
   * Try to be reasonably consistent with the surrounding documentation
 
+## Examples
 
+The examples/ directory contains some example tests which should compile and
+run to show how to use Catch2. The code being tested should be trivial as the
+purpose of the examples is to show how the tests work.
 
+The examples in the `examples/` directory are not built by default. To compile
+them add `-DCATCH_BUILD_EXAMPLES=ON` to your cmake command line. There will
+then be an `examples/` directory in your build directory, containing the
+resulting test programs.
+
+In general each file in `examples/` compiles to a stand-alone test program for
+clarity.
+
+The examples are compiled against the local copy of the _single header_ version
+of catch. If you are building from git then this might not be up to date with
+changes in the _full source_ version. Before trying to build the examples, go
+to the top level of the source tree, and run the python script to prepare the
+single header version (this requires Python3 to be installed):
+
+```
+./scripts/generateSingleHeader.py
+```
+__When submitting a pull request please do not include changes to the single
+include. This means do not include them in your git commits!__
 
 ## Code constructs to watch out for
 
