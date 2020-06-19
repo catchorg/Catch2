@@ -46,6 +46,7 @@ set( SOURCES_IDIOMATIC_TESTS
     210-Evt-EventListeners.cpp
     300-Gen-OwnGenerator.cpp
     301-Gen-MapTypeConversion.cpp
+    302-Gen-Table.cpp
     310-Gen-VariablesInGenerators.cpp
     311-Gen-CustomCapture.cpp
 )
