@@ -1,7 +1,9 @@
 // 301-Gen-MapTypeConversion.cpp
 // Shows how to use map to modify generator's return type.
 
-// TODO
+// Specifically we wrap a std::string returning generator with a generator
+// that converts the strings using stoi, so the returned type is actually
+// an int.
 
 #include <catch2/catch.hpp>
 
