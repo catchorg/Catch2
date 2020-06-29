@@ -2,6 +2,7 @@
 
 # Release notes
 **Contents**<br>
+[2.12.3](#2123)<br>
 [2.12.2](#2122)<br>
 [2.12.1](#2121)<br>
 [2.12.0](#2120)<br>
@@ -36,6 +37,26 @@
 [2.0.1](#201)<br>
 [Older versions](#older-versions)<br>
 [Even Older versions](#even-older-versions)<br>
+
+
+## 2.12.3
+
+### Fixes
+* `GENERATE` nested in a for loop no longer creates multiple generators (#1913)
+* Fixed copy paste error breaking `TEMPLATE_TEST_CASE_SIG` for 6 or more arguments (#1954)
+* Fixed potential UB when handling non-ASCII characters in CLI args (#1943)
+
+### Improvements
+* There can be multiple calls to `GENERATE` on a single line
+* Improved `fno-except` support for platforms that do not provide shims for exception-related std functions (#1950)
+  * E.g. the Green Hills C++ compiler
+* XmlReporter now also reports test-case-level statistics (#1958)
+  * This is done via a new element, `OverallResultsCases`
+
+### Miscellaneous
+* Added `.clang-format` file to the repo (#1182, #1920)
+* Rewrote contributing docs
+  * They should explain the different levels of testing and so on much better
 
 
 ## 2.12.2
