@@ -36,6 +36,48 @@ Generators.tests.cpp:<line number>: passed: i != j for: 1 != 3
 Generators.tests.cpp:<line number>: passed: i != j for: 1 != 4
 Generators.tests.cpp:<line number>: passed: i != j for: 2 != 3
 Generators.tests.cpp:<line number>: passed: i != j for: 2 != 4
+PartTracker.tests.cpp:<line number>: passed: with 1 message: 'A'
+PartTracker.tests.cpp:<line number>: passed: m for: 1
+PartTracker.tests.cpp:<line number>: passed: m for: 2
+PartTracker.tests.cpp:<line number>: passed: m for: 3
+PartTracker.tests.cpp:<line number>: passed: 1
+PartTracker.tests.cpp:<line number>: passed: m for: 2
+PartTracker.tests.cpp:<line number>: passed: m for: 3
+PartTracker.tests.cpp:<line number>: passed: m for: 1
+PartTracker.tests.cpp:<line number>: passed: m for: 2
+PartTracker.tests.cpp:<line number>: passed: m for: 3
+PartTracker.tests.cpp:<line number>: passed: with 1 message: 'A'
+PartTracker.tests.cpp:<line number>: passed: with 3 messages: 'i := 1' and 'j := 3' and 'k := 5'
+PartTracker.tests.cpp:<line number>: passed: with 1 message: 'B'
+PartTracker.tests.cpp:<line number>: passed: with 3 messages: 'i := 1' and 'j := 3' and 'k := 6'
+PartTracker.tests.cpp:<line number>: passed: with 1 message: 'B'
+PartTracker.tests.cpp:<line number>: passed: with 3 messages: 'i := 1' and 'j := 4' and 'k := 5'
+PartTracker.tests.cpp:<line number>: passed: with 3 messages: 'i := 1' and 'j := 4' and 'k := 6'
+PartTracker.tests.cpp:<line number>: passed: with 1 message: 'A'
+PartTracker.tests.cpp:<line number>: passed: with 3 messages: 'i := 2' and 'j := 3' and 'k := 5'
+PartTracker.tests.cpp:<line number>: passed: with 1 message: 'B'
+PartTracker.tests.cpp:<line number>: passed: with 3 messages: 'i := 2' and 'j := 3' and 'k := 6'
+PartTracker.tests.cpp:<line number>: passed: with 1 message: 'B'
+PartTracker.tests.cpp:<line number>: passed: with 3 messages: 'i := 2' and 'j := 4' and 'k := 5'
+PartTracker.tests.cpp:<line number>: passed: with 3 messages: 'i := 2' and 'j := 4' and 'k := 6'
+PartTracker.tests.cpp:<line number>: passed: m for: 1
+PartTracker.tests.cpp:<line number>: passed: n for: 1
+PartTracker.tests.cpp:<line number>: passed: m for: 1
+PartTracker.tests.cpp:<line number>: passed: n for: 2
+PartTracker.tests.cpp:<line number>: passed: m for: 1
+PartTracker.tests.cpp:<line number>: passed: n for: 3
+PartTracker.tests.cpp:<line number>: passed: m for: 2
+PartTracker.tests.cpp:<line number>: passed: n for: 1
+PartTracker.tests.cpp:<line number>: passed: m for: 2
+PartTracker.tests.cpp:<line number>: passed: n for: 2
+PartTracker.tests.cpp:<line number>: passed: m for: 2
+PartTracker.tests.cpp:<line number>: passed: n for: 3
+PartTracker.tests.cpp:<line number>: passed: m for: 3
+PartTracker.tests.cpp:<line number>: passed: n for: 1
+PartTracker.tests.cpp:<line number>: passed: m for: 3
+PartTracker.tests.cpp:<line number>: passed: n for: 2
+PartTracker.tests.cpp:<line number>: passed: m for: 3
+PartTracker.tests.cpp:<line number>: passed: n for: 3
 Misc.tests.cpp:<line number>: passed:
 Misc.tests.cpp:<line number>: passed:
 Misc.tests.cpp:<line number>: passed:

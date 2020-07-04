@@ -50,7 +50,7 @@ namespace Catch {
                     currentTracker.addChild( tracker );
                 }
 
-                if( !ctx.completedCycle() && !tracker->isComplete() ) {
+                if( !tracker->isComplete() ) {
                     tracker->open();
                 }
 
@@ -64,8 +64,28 @@ namespace Catch {
             }
             void close() override {
                 TrackerBase::close();
-                // Generator interface only finds out if it has another item on atual move
-                if (m_runState == CompletedSuccessfully && m_generator->next()) {
+                // If a generator has a child (it is followed by a section)
+                // and none of its children have started, then we must wait
+                // until later to start consuming its values.
+                // This catches cases where `GENERATE` is placed between two
+                // `SECTION`s.
+                // **The check for m_children.empty cannot be removed**.
+                // doing so would break `GENERATE` _not_ followed by `SECTION`s.
+                const bool should_wait_for_child =
+                    !m_children.empty() &&
+                    std::find_if( m_children.begin(),
+                                  m_children.end(),
+                                  []( TestCaseTracking::ITrackerPtr tracker ) {
+                                      return tracker->hasStarted();
+                                  } ) == m_children.end();
+
+                // This check is a bit tricky, because m_generator->next()
+                // has a side-effect, where it consumes generator's current
+                // value, but we do not want to invoke the side-effect if
+                // this generator is still waiting for any child to start.
+                if ( should_wait_for_child ||
+                     ( m_runState == CompletedSuccessfully &&
+                       m_generator->next() ) ) {
                     m_children.clear();
                     m_runState = Executing;
                 }
@@ -206,7 +226,6 @@ namespace Catch {
         using namespace Generators;
         GeneratorTracker& tracker = GeneratorTracker::acquire(m_trackerContext,
                                                               TestCaseTracking::NameAndLocation( static_cast<std::string>(generatorName), lineInfo ) );
-        assert( tracker.isOpen() );
         m_lastAssertionInfo.lineInfo = lineInfo;
         return tracker;
     }

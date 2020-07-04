@@ -267,6 +267,7 @@ TEST_CASE("#1913 - GENERATEs can share a line", "[regression][generators]") {
     REQUIRE(i != j);
 }
 
+
 #if defined(__clang__)
 #pragma clang diagnostic pop
 #endif
