@@ -24,9 +24,9 @@ TEST_CASE("Generators") {
 }
 ```
 
-The `SECTION` "one" will be run 4 (2*2) times, because the outer
+The `SECTION` "one" will be run 4 (2\*2) times, because the outer
 generator has 2 elements in it, and the inner generator also has 2
-elements in it. The `SECTION` "two" will be run 6 (2*3) times. The
+elements in it. The `SECTION` "two" will be run 6 (2\*3) times. The
 sections will be run in order "one", "one", "two", "two", "two", "one",
 ...
 
@@ -34,7 +34,7 @@ It is also possible to have multiple generators at the same level of
 nesting. The result is the same as when generators are inside nested
 sections, that is, the result will be a cartesian product of all
 elements. This means that in the snippet below, the test case will be
-run 6 (2*3) times.
+run 6 (2\*3) times.
 
 ```cpp
 TEST_CASE("Generators") {
