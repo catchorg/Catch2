@@ -11,7 +11,7 @@
 
 #define CATCH_VERSION_MAJOR 2
 #define CATCH_VERSION_MINOR 12
-#define CATCH_VERSION_PATCH 3
+#define CATCH_VERSION_PATCH 4
 
 #ifdef __clang__
 #    pragma clang system_header

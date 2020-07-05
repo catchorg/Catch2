@@ -2,6 +2,7 @@
 
 # Release notes
 **Contents**<br>
+[2.12.4](#2124)<br>
 [2.12.3](#2123)<br>
 [2.12.2](#2122)<br>
 [2.12.1](#2121)<br>
@@ -37,6 +38,12 @@
 [2.0.1](#201)<br>
 [Older versions](#older-versions)<br>
 [Even Older versions](#even-older-versions)<br>
+
+
+## 2.12.4
+
+### Improvements
+* Added support for MacOS on ARM (#1971)
 
 
 ## 2.12.3

@@ -1,6 +1,6 @@
 /*
- *  Catch v2.12.3
- *  Generated: 2020-06-29 20:47:52.374964
+ *  Catch v2.12.4
+ *  Generated: 2020-07-05 11:47:18.451282
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2020 Two Blue Cubes Ltd. All rights reserved.
@@ -15,7 +15,7 @@
 
 #define CATCH_VERSION_MAJOR 2
 #define CATCH_VERSION_MINOR 12
-#define CATCH_VERSION_PATCH 3
+#define CATCH_VERSION_PATCH 4
 
 #ifdef __clang__
 #    pragma clang system_header
@@ -7927,7 +7927,11 @@ namespace Catch {
 
 #ifdef CATCH_PLATFORM_MAC
 
-    #define CATCH_TRAP() __asm__("int $3\n" : : ) /* NOLINT */
+    #if defined(__i386__) || defined(__x86_64__)
+        #define CATCH_TRAP() __asm__("int $3\n" : : ) /* NOLINT */
+    #elif defined(__aarch64__)
+        #define CATCH_TRAP()  __asm__(".inst 0xd4200000")
+    #endif
 
 #elif defined(CATCH_PLATFORM_IPHONE)
 
@@ -15202,7 +15206,7 @@ namespace Catch {
     }
 
     Version const& libraryVersion() {
-        static Version version( 2, 12, 3, "", 0 );
+        static Version version( 2, 12, 4, "", 0 );
         return version;
     }
 
