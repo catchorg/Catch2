@@ -279,7 +279,26 @@ namespace Catch {
     template <typename T>
     struct StringMaker<T*> {
         template <typename U>
-        static std::string convert(U* p) {
+        static typename std::enable_if<
+            ::Catch::Detail::IsStreamInsertable<U>::value,
+            std::string>::type
+        convert(U* p) {
+            if (p) {
+                ReusableStringStream rss;
+                // NB: call using the function-like syntax to avoid ambiguity with
+                // user-defined templated operator<< under clang.
+                rss.operator<<(*p);
+                return rss.str();
+            } else {
+                return "nullptr";
+            }
+        }
+
+        template <typename U>
+        static typename std::enable_if<
+            !::Catch::Detail::IsStreamInsertable<U>::value,
+            std::string>::type
+        convert(U* p) {
             if (p) {
                 return ::Catch::Detail::rawMemoryToString(p);
             } else {

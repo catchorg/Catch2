@@ -71,6 +71,12 @@ TEST_CASE( "stringify( has_operator )", "[toString]" ) {
     REQUIRE( ::Catch::Detail::stringify( item ) == "operator<<( has_operator )" );
 }
 
+// Uses the operator also for pointer types
+TEST_CASE( "stringify( &has_operator )", "[toString]" ) {
+    has_operator item;
+    REQUIRE( ::Catch::Detail::stringify( &item ) == "operator<<( has_operator )" );
+}
+
 // Call the stringmaker
 TEST_CASE( "stringify( has_maker )", "[toString]" ) {
     has_maker item;
