@@ -24,7 +24,8 @@ namespace Catch {
     // Returns double formatted as %.3f (format expected on output)
     std::string getFormattedDuration( double duration );
 
-    bool shouldShowDuration( IConfig const &, double duration );
+    //! Should the reporter show
+    bool shouldShowDuration( IConfig const& config, double duration );
 
     std::string serializeFilters( std::vector<std::string> const& container );
 

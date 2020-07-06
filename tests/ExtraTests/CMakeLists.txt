@@ -30,6 +30,15 @@ set_tests_properties(
     PASS_REGULAR_EXPRESSION "s: sleep_for_100ms"
 )
 
+# -d no overrides the threshold, so we should never see any tests even
+# with ridiculously low min duration threshold
+add_test(NAME MinDuration::DurationOverrideNo COMMAND $<TARGET_FILE:SelfTest> --min-duration 0.0001 -d no [min_duration_test])
+set_tests_properties(
+    MinDuration::DurationOverrideNo
+  PROPERTIES
+    FAIL_REGULAR_EXPRESSION "sleep_for_200ms"
+)
+
 
 # ------------ end of duration reporting tests
 

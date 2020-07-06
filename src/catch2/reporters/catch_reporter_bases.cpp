@@ -44,10 +44,14 @@ namespace Catch {
     }
 
     bool shouldShowDuration( IConfig const& config, double duration ) {
-      if( config.showDurations() == ShowDurations::Always )
-        return true;
-      double min = config.minDuration();
-      return min >= 0 && duration >= min;
+        if ( config.showDurations() == ShowDurations::Always ) {
+            return true;
+        }
+        if ( config.showDurations() == ShowDurations::Never ) {
+            return false;
+        }
+        const double min = config.minDuration();
+        return min >= 0 && duration >= min;
     }
 
     std::string serializeFilters( std::vector<std::string> const& container ) {
