@@ -10,6 +10,31 @@ project( Catch2ExtraTests LANGUAGES CXX )
 
 message( STATUS "Extra tests included" )
 
+# The MinDuration reporting tests do not need separate compilation, but
+# they have non-trivial execution time, so they are categorized as
+# extra tests, so that they are run less.
+add_test(NAME MinDuration::SimpleThreshold COMMAND $<TARGET_FILE:SelfTest> --min-duration 0.15 [min_duration_test])
+set_tests_properties(
+    MinDuration::SimpleThreshold
+  PROPERTIES
+    PASS_REGULAR_EXPRESSION "s: sleep_for_200ms"
+    FAIL_REGULAR_EXPRESSION "sleep_for_100ms"
+    RUN_SERIAL ON  # The test is timing sensitive, so we want to run it
+    # serially to avoid false positives on oversubscribed machines
+)
+
+# -d yes overrides the threshold, so we should see the faster test even
+# with a ridiculous high min duration threshold
+add_test(NAME MinDuration::DurationOverrideYes COMMAND $<TARGET_FILE:SelfTest> --min-duration 1.0 -d yes [min_duration_test])
+set_tests_properties(
+    MinDuration::DurationOverrideYes
+  PROPERTIES
+    PASS_REGULAR_EXPRESSION "s: sleep_for_100ms"
+)
+
+
+# ------------ end of duration reporting tests
+
 # define folders used:
 
 set( TESTS_DIR   ${CATCH_DIR}/projects/ExtraTests )
