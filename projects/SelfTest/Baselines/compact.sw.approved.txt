@@ -36,6 +36,9 @@ Generators.tests.cpp:<line number>: passed: i != j for: 1 != 3
 Generators.tests.cpp:<line number>: passed: i != j for: 1 != 4
 Generators.tests.cpp:<line number>: passed: i != j for: 2 != 3
 Generators.tests.cpp:<line number>: passed: i != j for: 2 != 4
+Misc.tests.cpp:<line number>: passed:
+Misc.tests.cpp:<line number>: passed:
+Misc.tests.cpp:<line number>: passed:
 Exception.tests.cpp:<line number>: failed: unexpected exception with message: 'answer := 42' with 1 message: 'expected exception'
 Exception.tests.cpp:<line number>: failed: unexpected exception with message: 'answer := 42'; expression was: thisThrows() with 1 message: 'expected exception'
 Exception.tests.cpp:<line number>: passed: thisThrows() with 1 message: 'answer := 42'
@@ -332,6 +335,12 @@ Condition.tests.cpp:<line number>: passed: 6 == uc for: 6 == 6
 Condition.tests.cpp:<line number>: passed: (std::numeric_limits<uint32_t>::max)() > ul for: 4294967295 (0x<hex digits>) > 4
 Matchers.tests.cpp:<line number>: passed: testStringForMatching2(), !composed1 for: "some completely different text that contains one common word" not ( contains: "string" or contains: "random" )
 Matchers.tests.cpp:<line number>: passed: testStringForMatching2(), composed2 for: "some completely different text that contains one common word" ( contains: "string" or contains: "random" or contains: "different" )
+Matchers.tests.cpp:<line number>: passed: 1, !(first && second) for: 1 not ( CheckedTestingMatcher set to fail and CheckedTestingMatcher set to fail )
+Matchers.tests.cpp:<line number>: passed: first.matchCalled for: true
+Matchers.tests.cpp:<line number>: passed: !second.matchCalled for: true
+Matchers.tests.cpp:<line number>: passed: 1, first || second for: 1 ( CheckedTestingMatcher set to succeed or CheckedTestingMatcher set to fail )
+Matchers.tests.cpp:<line number>: passed: first.matchCalled for: true
+Matchers.tests.cpp:<line number>: passed: !second.matchCalled for: true
 Matchers.tests.cpp:<line number>: failed: testStringForMatching(), Contains("not there", Catch::CaseSensitive::No) for: "this string contains 'abc' as a substring" contains: "not there" (case insensitive)
 Matchers.tests.cpp:<line number>: failed: testStringForMatching(), Contains("STRING") for: "this string contains 'abc' as a substring" contains: "STRING"
 Generators.tests.cpp:<line number>: passed: elem % 2 == 1 for: 1 == 1

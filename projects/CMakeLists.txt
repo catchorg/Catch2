@@ -27,6 +27,7 @@ set(TEST_SOURCES
         ${SELF_TEST_DIR}/IntrospectiveTests/StringManip.tests.cpp
         ${SELF_TEST_DIR}/IntrospectiveTests/Xml.tests.cpp
         ${SELF_TEST_DIR}/IntrospectiveTests/ToString.tests.cpp
+        ${SELF_TEST_DIR}/TimingTests/Sleep.tests.cpp
         ${SELF_TEST_DIR}/UsageTests/Approx.tests.cpp
         ${SELF_TEST_DIR}/UsageTests/BDD.tests.cpp
         ${SELF_TEST_DIR}/UsageTests/Benchmark.tests.cpp
@@ -453,6 +454,9 @@ set_tests_properties(TestsInFile::InvalidTestNames-2 PROPERTIES PASS_REGULAR_EXP
 
 add_test(NAME RandomTestOrdering COMMAND ${PYTHON_EXECUTABLE}
   ${CATCH_DIR}/projects/TestScripts/testRandomOrder.py $<TARGET_FILE:SelfTest>)
+
+add_test(NAME TestTimeThreshold COMMAND ${PYTHON_EXECUTABLE}
+  ${CATCH_DIR}/projects/TestScripts/testTimeThreshold.py $<TARGET_FILE:SelfTest>)
 
 if (CATCH_USE_VALGRIND)
     add_test(NAME ValgrindRunTests COMMAND valgrind --leak-check=full --error-exitcode=1 $<TARGET_FILE:SelfTest>)

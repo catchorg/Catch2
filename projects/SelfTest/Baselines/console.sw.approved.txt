@@ -310,6 +310,30 @@ with expansion:
   2 != 4
 
 -------------------------------------------------------------------------------
+#1954 - 7 arg template test case sig compiles - 1, 1, 1, 1, 1, 0, 0
+-------------------------------------------------------------------------------
+Misc.tests.cpp:<line number>
+...............................................................................
+
+Misc.tests.cpp:<line number>: PASSED:
+
+-------------------------------------------------------------------------------
+#1954 - 7 arg template test case sig compiles - 5, 1, 1, 1, 1, 0, 0
+-------------------------------------------------------------------------------
+Misc.tests.cpp:<line number>
+...............................................................................
+
+Misc.tests.cpp:<line number>: PASSED:
+
+-------------------------------------------------------------------------------
+#1954 - 7 arg template test case sig compiles - 5, 3, 1, 1, 1, 0, 0
+-------------------------------------------------------------------------------
+Misc.tests.cpp:<line number>
+...............................................................................
+
+Misc.tests.cpp:<line number>: PASSED:
+
+-------------------------------------------------------------------------------
 #748 - captures with unexpected exceptions
   outside assertions
 -------------------------------------------------------------------------------
@@ -2559,6 +2583,52 @@ Matchers.tests.cpp:<line number>: PASSED:
 with expansion:
   "some completely different text that contains one common word" ( contains:
   "string" or contains: "random" or contains: "different" )
+
+-------------------------------------------------------------------------------
+Composed matchers shortcircuit
+  &&
+-------------------------------------------------------------------------------
+Matchers.tests.cpp:<line number>
+...............................................................................
+
+Matchers.tests.cpp:<line number>: PASSED:
+  CHECK_THAT( 1, !(first && second) )
+with expansion:
+  1 not ( CheckedTestingMatcher set to fail and CheckedTestingMatcher set to
+  fail )
+
+Matchers.tests.cpp:<line number>: PASSED:
+  REQUIRE( first.matchCalled )
+with expansion:
+  true
+
+Matchers.tests.cpp:<line number>: PASSED:
+  REQUIRE( !second.matchCalled )
+with expansion:
+  true
+
+-------------------------------------------------------------------------------
+Composed matchers shortcircuit
+  ||
+-------------------------------------------------------------------------------
+Matchers.tests.cpp:<line number>
+...............................................................................
+
+Matchers.tests.cpp:<line number>: PASSED:
+  CHECK_THAT( 1, first || second )
+with expansion:
+  1 ( CheckedTestingMatcher set to succeed or CheckedTestingMatcher set to fail
+  )
+
+Matchers.tests.cpp:<line number>: PASSED:
+  REQUIRE( first.matchCalled )
+with expansion:
+  true
+
+Matchers.tests.cpp:<line number>: PASSED:
+  REQUIRE( !second.matchCalled )
+with expansion:
+  true
 
 -------------------------------------------------------------------------------
 Contains string matcher
@@ -13639,6 +13709,6 @@ Misc.tests.cpp:<line number>
 Misc.tests.cpp:<line number>: PASSED:
 
 ===============================================================================
-test cases:  312 |  222 passed |  86 failed |  4 failed as expected
-assertions: 1724 | 1555 passed | 148 failed | 21 failed as expected
+test cases:  316 |  226 passed |  86 failed |  4 failed as expected
+assertions: 1733 | 1564 passed | 148 failed | 21 failed as expected
 

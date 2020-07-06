@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuitesloose text artifact
 >
-  <testsuite name="<exe-name>" errors="17" failures="132" tests="1725" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
+  <testsuite name="<exe-name>" errors="17" failures="132" tests="1734" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
     <properties>
       <property name="filters" value="~[!nonportable]~[!benchmark]~[approvals]"/>
       <property name="random-seed" value="1"/>
@@ -35,6 +35,9 @@ Nor would this
     <testcase classname="<exe-name>.global" name="#1912 -- test spec parser handles escaping/backslash in test name" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="#1913 - GENERATE inside a for loop should not keep recreating the generator" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="#1913 - GENERATEs can share a line" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="#1954 - 7 arg template test case sig compiles - 1, 1, 1, 1, 1, 0, 0" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="#1954 - 7 arg template test case sig compiles - 5, 1, 1, 1, 1, 0, 0" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="#1954 - 7 arg template test case sig compiles - 5, 3, 1, 1, 1, 0, 0" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="#748 - captures with unexpected exceptions/outside assertions" time="{duration}" status="run">
       <error type="TEST_CASE">
 FAILED:
@@ -363,6 +366,8 @@ Exception.tests.cpp:<line number>
     <testcase classname="<exe-name>.global" name="Comparisons between unsigned ints and negative signed ints match c++ standard behaviour" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Comparisons with int literals don't warn when mixing signed/ unsigned" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Composed matchers are distinct" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Composed matchers shortcircuit/&amp;&amp;" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Composed matchers shortcircuit/||" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Contains string matcher" time="{duration}" status="run">
       <failure message="testStringForMatching(), Contains(&quot;not there&quot;, Catch::CaseSensitive::No)" type="CHECK_THAT">
 FAILED:

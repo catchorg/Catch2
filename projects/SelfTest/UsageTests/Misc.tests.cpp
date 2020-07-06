@@ -484,4 +484,10 @@ TEST_CASE( "#1175 - Hidden Test", "[.]" ) {
   SUCCEED();
 }
 
+TEMPLATE_TEST_CASE_SIG("#1954 - 7 arg template test case sig compiles", "[regression][.compilation]",
+                       ((int Tnx, int Tnu, int Tny, int Tph, int Tch, int Tineq, int Teq), Tnx, Tnu, Tny, Tph, Tch, Tineq, Teq),
+                       (1, 1, 1, 1, 1, 0, 0), (5, 1, 1, 1, 1, 0, 0), (5, 3, 1, 1, 1, 0, 0)) {
+    SUCCEED();
+}
+
 }} // namespace MiscTests

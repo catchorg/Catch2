@@ -9,6 +9,7 @@
 #include "catch_startup_exception_registry.h"
 #include "catch_compiler_capabilities.h"
 
+#if !defined(CATCH_CONFIG_DISABLE_EXCEPTIONS)
 namespace Catch {
 void StartupExceptionRegistry::add( std::exception_ptr const& exception ) noexcept {
         CATCH_TRY {
@@ -24,3 +25,4 @@ void StartupExceptionRegistry::add( std::exception_ptr const& exception ) noexce
     }
 
 } // end namespace Catch
+#endif
