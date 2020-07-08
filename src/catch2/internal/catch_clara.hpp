@@ -25,10 +25,19 @@
   #pragma clang diagnostic ignored "-Wdeprecated"
 #endif
 
+#if defined(__GNUC__)
+  #pragma GCC diagnostic push
+  #pragma GCC diagnostic ignored "-Wsign-conversion"
+#endif
+
 #include <catch2/internal/catch_clara_upstream.hpp>
 
 #if defined(__clang__)
   #pragma clang diagnostic pop
+#endif
+
+#if defined(__GNUC__)
+  #pragma GCC diagnostic pop
 #endif
 
 
