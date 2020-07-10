@@ -23,6 +23,7 @@
   #pragma clang diagnostic ignored "-Wexit-time-destructors"
   #pragma clang diagnostic ignored "-Wshadow"
   #pragma clang diagnostic ignored "-Wdeprecated"
+  #pragma clang diagnostic ignored "-Wextra-semi"
 #endif
 
 #if defined(__GNUC__)
