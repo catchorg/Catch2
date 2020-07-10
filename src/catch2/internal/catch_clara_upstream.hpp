@@ -860,12 +860,12 @@ namespace detail {
         auto optional() -> DerivedT & {
             m_optionality = Optionality::Optional;
             return static_cast<DerivedT &>( *this );
-        };
+        }
 
         auto required() -> DerivedT & {
             m_optionality = Optionality::Required;
             return static_cast<DerivedT &>( *this );
-        };
+        }
 
         auto isOptional() const -> bool {
             return m_optionality == Optionality::Optional;
