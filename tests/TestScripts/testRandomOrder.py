@@ -16,9 +16,9 @@ import xml.etree.ElementTree as ET
 def list_tests(self_test_exe, tags, rng_seed):
     cmd = [self_test_exe, '--reporter', 'xml', '--list-tests', '--order', 'rand',
             '--rng-seed', str(rng_seed)]
-    tags_arg = ','.join('[{}]'.format(t) for t in tags)
+    tags_arg = ','.join('[{}]~[.]'.format(t) for t in tags)
     if tags_arg:
-        cmd.append(tags_arg + '~[.]')
+        cmd.append(tags_arg)
     process = subprocess.Popen(
             cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     stdout, stderr = process.communicate()
