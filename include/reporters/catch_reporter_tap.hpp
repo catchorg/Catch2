@@ -23,8 +23,8 @@ namespace Catch {
 
         using StreamingReporterBase::StreamingReporterBase;
 
-        TAPReporter( ReporterConfig const& config )
-        	: StreamingReporterBase( config ) {
+        TAPReporter( ReporterConfig const& config ):
+            StreamingReporterBase( config ) {
             m_reporterPrefs.shouldReportAllAssertions = true;
         }
 
