@@ -245,10 +245,6 @@ private:
             return "Reports test results on a single line, suitable for IDEs";
         }
 
-        ReporterPreferences CompactReporter::getPreferences() const {
-            return m_reporterPrefs;
-        }
-
         void CompactReporter::noMatchingTestCases( std::string const& spec ) {
             stream << "No test cases matched '" << spec << '\'' << std::endl;
         }

@@ -310,6 +310,424 @@ with expansion:
   2 != 4
 
 -------------------------------------------------------------------------------
+#1938 - GENERATE after a section
+  A
+-------------------------------------------------------------------------------
+PartTracker.tests.cpp:<line number>
+...............................................................................
+
+PartTracker.tests.cpp:<line number>: PASSED:
+with message:
+  A
+
+-------------------------------------------------------------------------------
+#1938 - GENERATE after a section
+  B
+-------------------------------------------------------------------------------
+PartTracker.tests.cpp:<line number>
+...............................................................................
+
+PartTracker.tests.cpp:<line number>: PASSED:
+  REQUIRE( m )
+with expansion:
+  1
+
+-------------------------------------------------------------------------------
+#1938 - GENERATE after a section
+  B
+-------------------------------------------------------------------------------
+PartTracker.tests.cpp:<line number>
+...............................................................................
+
+PartTracker.tests.cpp:<line number>: PASSED:
+  REQUIRE( m )
+with expansion:
+  2
+
+-------------------------------------------------------------------------------
+#1938 - GENERATE after a section
+  B
+-------------------------------------------------------------------------------
+PartTracker.tests.cpp:<line number>
+...............................................................................
+
+PartTracker.tests.cpp:<line number>: PASSED:
+  REQUIRE( m )
+with expansion:
+  3
+
+-------------------------------------------------------------------------------
+#1938 - Section followed by flat generate
+  A
+-------------------------------------------------------------------------------
+PartTracker.tests.cpp:<line number>
+...............................................................................
+
+PartTracker.tests.cpp:<line number>: PASSED:
+  REQUIRE( 1 )
+
+-------------------------------------------------------------------------------
+#1938 - Section followed by flat generate
+-------------------------------------------------------------------------------
+PartTracker.tests.cpp:<line number>
+...............................................................................
+
+PartTracker.tests.cpp:<line number>: PASSED:
+  REQUIRE( m )
+with expansion:
+  2
+
+-------------------------------------------------------------------------------
+#1938 - Section followed by flat generate
+-------------------------------------------------------------------------------
+PartTracker.tests.cpp:<line number>
+...............................................................................
+
+PartTracker.tests.cpp:<line number>: PASSED:
+  REQUIRE( m )
+with expansion:
+  3
+
+-------------------------------------------------------------------------------
+#1938 - flat generate
+-------------------------------------------------------------------------------
+PartTracker.tests.cpp:<line number>
+...............................................................................
+
+PartTracker.tests.cpp:<line number>: PASSED:
+  REQUIRE( m )
+with expansion:
+  1
+
+-------------------------------------------------------------------------------
+#1938 - flat generate
+-------------------------------------------------------------------------------
+PartTracker.tests.cpp:<line number>
+...............................................................................
+
+PartTracker.tests.cpp:<line number>: PASSED:
+  REQUIRE( m )
+with expansion:
+  2
+
+-------------------------------------------------------------------------------
+#1938 - flat generate
+-------------------------------------------------------------------------------
+PartTracker.tests.cpp:<line number>
+...............................................................................
+
+PartTracker.tests.cpp:<line number>: PASSED:
+  REQUIRE( m )
+with expansion:
+  3
+
+-------------------------------------------------------------------------------
+#1938 - mixed sections and generates
+  A
+-------------------------------------------------------------------------------
+PartTracker.tests.cpp:<line number>
+...............................................................................
+
+PartTracker.tests.cpp:<line number>: PASSED:
+with message:
+  A
+
+-------------------------------------------------------------------------------
+#1938 - mixed sections and generates
+-------------------------------------------------------------------------------
+PartTracker.tests.cpp:<line number>
+...............................................................................
+
+PartTracker.tests.cpp:<line number>: PASSED:
+with messages:
+  i := 1
+  j := 3
+  k := 5
+
+-------------------------------------------------------------------------------
+#1938 - mixed sections and generates
+  B
+-------------------------------------------------------------------------------
+PartTracker.tests.cpp:<line number>
+...............................................................................
+
+PartTracker.tests.cpp:<line number>: PASSED:
+with message:
+  B
+
+-------------------------------------------------------------------------------
+#1938 - mixed sections and generates
+-------------------------------------------------------------------------------
+PartTracker.tests.cpp:<line number>
+...............................................................................
+
+PartTracker.tests.cpp:<line number>: PASSED:
+with messages:
+  i := 1
+  j := 3
+  k := 6
+
+-------------------------------------------------------------------------------
+#1938 - mixed sections and generates
+  B
+-------------------------------------------------------------------------------
+PartTracker.tests.cpp:<line number>
+...............................................................................
+
+PartTracker.tests.cpp:<line number>: PASSED:
+with message:
+  B
+
+-------------------------------------------------------------------------------
+#1938 - mixed sections and generates
+-------------------------------------------------------------------------------
+PartTracker.tests.cpp:<line number>
+...............................................................................
+
+PartTracker.tests.cpp:<line number>: PASSED:
+with messages:
+  i := 1
+  j := 4
+  k := 5
+
+-------------------------------------------------------------------------------
+#1938 - mixed sections and generates
+-------------------------------------------------------------------------------
+PartTracker.tests.cpp:<line number>
+...............................................................................
+
+PartTracker.tests.cpp:<line number>: PASSED:
+with messages:
+  i := 1
+  j := 4
+  k := 6
+
+-------------------------------------------------------------------------------
+#1938 - mixed sections and generates
+  A
+-------------------------------------------------------------------------------
+PartTracker.tests.cpp:<line number>
+...............................................................................
+
+PartTracker.tests.cpp:<line number>: PASSED:
+with message:
+  A
+
+-------------------------------------------------------------------------------
+#1938 - mixed sections and generates
+-------------------------------------------------------------------------------
+PartTracker.tests.cpp:<line number>
+...............................................................................
+
+PartTracker.tests.cpp:<line number>: PASSED:
+with messages:
+  i := 2
+  j := 3
+  k := 5
+
+-------------------------------------------------------------------------------
+#1938 - mixed sections and generates
+  B
+-------------------------------------------------------------------------------
+PartTracker.tests.cpp:<line number>
+...............................................................................
+
+PartTracker.tests.cpp:<line number>: PASSED:
+with message:
+  B
+
+-------------------------------------------------------------------------------
+#1938 - mixed sections and generates
+-------------------------------------------------------------------------------
+PartTracker.tests.cpp:<line number>
+...............................................................................
+
+PartTracker.tests.cpp:<line number>: PASSED:
+with messages:
+  i := 2
+  j := 3
+  k := 6
+
+-------------------------------------------------------------------------------
+#1938 - mixed sections and generates
+  B
+-------------------------------------------------------------------------------
+PartTracker.tests.cpp:<line number>
+...............................................................................
+
+PartTracker.tests.cpp:<line number>: PASSED:
+with message:
+  B
+
+-------------------------------------------------------------------------------
+#1938 - mixed sections and generates
+-------------------------------------------------------------------------------
+PartTracker.tests.cpp:<line number>
+...............................................................................
+
+PartTracker.tests.cpp:<line number>: PASSED:
+with messages:
+  i := 2
+  j := 4
+  k := 5
+
+-------------------------------------------------------------------------------
+#1938 - mixed sections and generates
+-------------------------------------------------------------------------------
+PartTracker.tests.cpp:<line number>
+...............................................................................
+
+PartTracker.tests.cpp:<line number>: PASSED:
+with messages:
+  i := 2
+  j := 4
+  k := 6
+
+-------------------------------------------------------------------------------
+#1938 - nested generate
+-------------------------------------------------------------------------------
+PartTracker.tests.cpp:<line number>
+...............................................................................
+
+PartTracker.tests.cpp:<line number>: PASSED:
+  REQUIRE( m )
+with expansion:
+  1
+
+PartTracker.tests.cpp:<line number>: PASSED:
+  REQUIRE( n )
+with expansion:
+  1
+
+-------------------------------------------------------------------------------
+#1938 - nested generate
+-------------------------------------------------------------------------------
+PartTracker.tests.cpp:<line number>
+...............................................................................
+
+PartTracker.tests.cpp:<line number>: PASSED:
+  REQUIRE( m )
+with expansion:
+  1
+
+PartTracker.tests.cpp:<line number>: PASSED:
+  REQUIRE( n )
+with expansion:
+  2
+
+-------------------------------------------------------------------------------
+#1938 - nested generate
+-------------------------------------------------------------------------------
+PartTracker.tests.cpp:<line number>
+...............................................................................
+
+PartTracker.tests.cpp:<line number>: PASSED:
+  REQUIRE( m )
+with expansion:
+  1
+
+PartTracker.tests.cpp:<line number>: PASSED:
+  REQUIRE( n )
+with expansion:
+  3
+
+-------------------------------------------------------------------------------
+#1938 - nested generate
+-------------------------------------------------------------------------------
+PartTracker.tests.cpp:<line number>
+...............................................................................
+
+PartTracker.tests.cpp:<line number>: PASSED:
+  REQUIRE( m )
+with expansion:
+  2
+
+PartTracker.tests.cpp:<line number>: PASSED:
+  REQUIRE( n )
+with expansion:
+  1
+
+-------------------------------------------------------------------------------
+#1938 - nested generate
+-------------------------------------------------------------------------------
+PartTracker.tests.cpp:<line number>
+...............................................................................
+
+PartTracker.tests.cpp:<line number>: PASSED:
+  REQUIRE( m )
+with expansion:
+  2
+
+PartTracker.tests.cpp:<line number>: PASSED:
+  REQUIRE( n )
+with expansion:
+  2
+
+-------------------------------------------------------------------------------
+#1938 - nested generate
+-------------------------------------------------------------------------------
+PartTracker.tests.cpp:<line number>
+...............................................................................
+
+PartTracker.tests.cpp:<line number>: PASSED:
+  REQUIRE( m )
+with expansion:
+  2
+
+PartTracker.tests.cpp:<line number>: PASSED:
+  REQUIRE( n )
+with expansion:
+  3
+
+-------------------------------------------------------------------------------
+#1938 - nested generate
+-------------------------------------------------------------------------------
+PartTracker.tests.cpp:<line number>
+...............................................................................
+
+PartTracker.tests.cpp:<line number>: PASSED:
+  REQUIRE( m )
+with expansion:
+  3
+
+PartTracker.tests.cpp:<line number>: PASSED:
+  REQUIRE( n )
+with expansion:
+  1
+
+-------------------------------------------------------------------------------
+#1938 - nested generate
+-------------------------------------------------------------------------------
+PartTracker.tests.cpp:<line number>
+...............................................................................
+
+PartTracker.tests.cpp:<line number>: PASSED:
+  REQUIRE( m )
+with expansion:
+  3
+
+PartTracker.tests.cpp:<line number>: PASSED:
+  REQUIRE( n )
+with expansion:
+  2
+
+-------------------------------------------------------------------------------
+#1938 - nested generate
+-------------------------------------------------------------------------------
+PartTracker.tests.cpp:<line number>
+...............................................................................
+
+PartTracker.tests.cpp:<line number>: PASSED:
+  REQUIRE( m )
+with expansion:
+  3
+
+PartTracker.tests.cpp:<line number>: PASSED:
+  REQUIRE( n )
+with expansion:
+  3
+
+-------------------------------------------------------------------------------
 #1954 - 7 arg template test case sig compiles - 1, 1, 1, 1, 1, 0, 0
 -------------------------------------------------------------------------------
 Misc.tests.cpp:<line number>
@@ -513,6 +931,6 @@ Condition.tests.cpp:<line number>: FAILED:
   CHECK( true != true )
 
 ===============================================================================
-test cases: 26 | 21 passed | 3 failed | 2 failed as expected
-assertions: 58 | 51 passed | 4 failed | 3 failed as expected
+test cases:  31 | 26 passed | 3 failed | 2 failed as expected
+assertions: 100 | 93 passed | 4 failed | 3 failed as expected
 

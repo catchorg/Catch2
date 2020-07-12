@@ -12,6 +12,38 @@ are run once per each value in a generator.
 This is best explained with an example:
 ```cpp
 TEST_CASE("Generators") {
+    auto i = GENERATE(1, 3, 5);
+    REQUIRE(is_odd(i));
+}
+```
+
+The "Generators" `TEST_CASE` will be entered 3 times, and the value of
+`i` will be 1, 3, and 5 in turn. `GENERATE`s can also be used multiple
+times at the same scope, in which case the result will be a cartesian
+product of all elements in the generators. This means that in the snippet
+below, the test case will be run 6 (2\*3) times.
+
+```cpp
+TEST_CASE("Generators") {
+    auto i = GENERATE(1, 2);
+    auto j = GENERATE(3, 4, 5);
+}
+```
+
+There are 2 parts to generators in Catch2, the `GENERATE` macro together
+with the already provided generators, and the `IGenerator<T>` interface
+that allows users to implement their own generators.
+
+
+## Combining `GENERATE` and `SECTION`.
+
+`GENERATE` can be seen as an implicit `SECTION`, that goes from the place
+`GENERATE` is used, to the end of the scope. This can be used for various
+effects. The simplest usage is shown below, where the `SECTION` "one"
+runs 4 (2\*2) times, and `SECTION` "two" is run 6 times (2\*3).
+
+```
+TEST_CASE("Generators") {
     auto i = GENERATE(1, 2);
     SECTION("one") {
         auto j = GENERATE(-3, -2);
@@ -24,29 +56,43 @@ TEST_CASE("Generators") {
 }
 ```
 
-The `SECTION` "one" will be run 4 (2\*2) times, because the outer
-generator has 2 elements in it, and the inner generator also has 2
-elements in it. The `SECTION` "two" will be run 6 (2\*3) times. The
-sections will be run in order "one", "one", "two", "two", "two", "one",
-...
+The specific order of the `SECTION`s will be "one", "one", "two", "two",
+"two", "one"...
 
-It is also possible to have multiple generators at the same level of
-nesting. The result is the same as when generators are inside nested
-sections, that is, the result will be a cartesian product of all
-elements. This means that in the snippet below, the test case will be
-run 6 (2\*3) times.
+
+The fact that `GENERATE` introduces a virtual `SECTION` can als obe used
+to make a generator replay only some `SECTION`s, without having to
+explicitly add a `SECTION`. As an example, the code below reports 3
+assertions, because the "first" section is run once, but the "second"
+section is run twice.
 
 ```cpp
-TEST_CASE("Generators") {
-    auto i = GENERATE(1, 2);
-    auto j = GENERATE(3, 4, 5);
+TEST_CASE("GENERATE between SECTIONs") {
+    SECTION("first") { REQUIRE(true); }
+    auto _ = GENERATE(1, 2);
+    SECTION("second") { REQUIRE(true); }
 }
 ```
 
+This can lead to surprisingly complex test flows. As an example, the test
+below will report 14 assertions:
 
-There are 2 parts to generators in Catch2, the `GENERATE` macro together
-with the already provided generators, and the `IGenerator<T>` interface
-that allows users to implement their own generators.
+```cpp
+TEST_CASE("Complex mix of sections and generates") {
+    auto i = GENERATE(1, 2);
+    SECTION("A") {
+        SUCCEED("A");
+    }
+    auto j = GENERATE(3, 4);
+    SECTION("B") {
+        SUCCEED("B");
+    }
+    auto k = GENERATE(5, 6);
+    SUCCEED();
+}
+```
+
+> The ability to place `GENERATE` between two `SECTION`s was [introduced](https://github.com/catchorg/Catch2/issues/1938) in Catch 2.13.0.
 
 ## Provided generators
 
