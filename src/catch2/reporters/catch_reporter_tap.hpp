@@ -11,17 +11,15 @@ namespace Catch {
 
     struct TAPReporter : StreamingReporterBase {
 
-        using StreamingReporterBase::StreamingReporterBase;
-
+        TAPReporter( ReporterConfig const& config ):
+            StreamingReporterBase( config ) {
+            m_reporterPrefs.shouldReportAllAssertions = true;
+        }
         ~TAPReporter() override;
 
         static std::string getDescription() {
             using namespace std::string_literals;
             return "Reports test results in TAP format, suitable for test harnesses"s;
-        }
-
-        ReporterPreferences getPreferences() const override {
-            return m_reporterPrefs;
         }
 
         void noMatchingTestCases(std::string const& spec) override;

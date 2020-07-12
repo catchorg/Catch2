@@ -209,10 +209,9 @@ namespace Catch {
     }
 
     void TAPReporter::testRunEnded(TestRunStats const& _testRunStats) {
+        stream << "1.." << _testRunStats.totals.assertions.total();
         if (_testRunStats.totals.testCases.total() == 0) {
-            stream << "1..0 # Skipped: No tests ran.";
-        } else {
-            stream << "1.." << counter;
+            stream << " # Skipped: No tests ran.";
         }
         stream << "\n\n" << std::flush;
         StreamingReporterBase::testRunEnded(_testRunStats);
