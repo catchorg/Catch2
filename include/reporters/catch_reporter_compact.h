@@ -22,8 +22,6 @@ namespace Catch {
 
         static std::string getDescription();
 
-        ReporterPreferences getPreferences() const override;
-
         void noMatchingTestCases(std::string const& spec) override;
 
         void assertionStarting(AssertionInfo const&) override;
