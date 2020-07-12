@@ -224,7 +224,13 @@ When set to ```yes``` Catch will report the duration of each test case, in milli
 
 <pre>-D, --min-duration &lt;value></pre>
 
-When set, Catch will report the duration of each test case that took more than &lt;value> seconds, in milliseconds.
+> `--min-duration` was [introduced](https://github.com/catchorg/Catch2/pull/1910) in Catch X.Y.Z
+
+When set, Catch will report the duration of each test case that took more
+than &lt;value> seconds, in milliseconds. This option is overriden by both
+`-d yes` and `-d no`, so that either all durations are reported, or none
+are.
+
 
 <a id="input-file"></a>
 ## Load test names to run from a file
