@@ -3,6 +3,7 @@
 # Release notes
 **Contents**<br>
 [3.0.1](#301)<br>
+[2.13.0](#2130)<br>
 [2.12.4](#2124)<br>
 [2.12.3](#2123)<br>
 [2.12.2](#2122)<br>
@@ -142,6 +143,19 @@ new design.
   * `catch2` is the statically compiled implementation by itself
   * `catch2-with-main` also links in the default main
 
+
+
+## 2.13.0
+
+### Improvements
+* `GENERATE` can now follow a `SECTION` at the same level of nesting (#1938)
+  * The `SECTION`(s) before the `GENERATE` will not be run multiple times, the following ones will.
+* Added `-D`/`--min-duration` command line flag (#1910)
+  * If a test takes longer to finish than the provided value, its name and duration will be printed.
+  * This flag is overriden by setting `-d`/`--duration`.
+
+### Fixes
+* `TAPReporter` no longer skips successful assertions (#1983)
 
 
 ## 2.12.4

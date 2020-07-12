@@ -92,7 +92,7 @@ TEST_CASE("Complex mix of sections and generates") {
 }
 ```
 
-> The ability to place `GENERATE` between two `SECTION`s was [introduced](https://github.com/catchorg/Catch2/issues/1938) in Catch X.Y.Z.
+> The ability to place `GENERATE` between two `SECTION`s was [introduced](https://github.com/catchorg/Catch2/issues/1938) in Catch 2.13.0.
 
 ## Provided generators
 
