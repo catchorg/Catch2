@@ -3,6 +3,7 @@
 # Release notes
 **Contents**<br>
 [3.0.1](#301)<br>
+[2.12.4](#2124)<br>
 [2.12.3](#2123)<br>
 [2.12.2](#2122)<br>
 [2.12.1](#2121)<br>
@@ -141,6 +142,12 @@ new design.
   * `catch2` is the statically compiled implementation by itself
   * `catch2-with-main` also links in the default main
 
+
+
+## 2.12.4
+
+### Improvements
+* Added support for MacOS on ARM (#1971)
 
 
 ## 2.12.3
