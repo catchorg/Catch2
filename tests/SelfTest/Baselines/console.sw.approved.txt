@@ -3419,16 +3419,15 @@ with expansion:
 
 -------------------------------------------------------------------------------
 Composed matchers shortcircuit
-  &&
+  MatchAllOf
 -------------------------------------------------------------------------------
 Matchers.tests.cpp:<line number>
 ...............................................................................
 
 Matchers.tests.cpp:<line number>: PASSED:
-  CHECK_THAT( 1, !(first && second) )
+  CHECK_FALSE( matcher.match( 1 ) )
 with expansion:
-  1 not ( CheckedTestingMatcher set to fail and CheckedTestingMatcher set to
-  fail )
+  !false
 
 Matchers.tests.cpp:<line number>: PASSED:
   REQUIRE( first.matchCalled )
@@ -3442,16 +3441,15 @@ with expansion:
 
 -------------------------------------------------------------------------------
 Composed matchers shortcircuit
-  ||
+  MatchAnyOf
 -------------------------------------------------------------------------------
 Matchers.tests.cpp:<line number>
 ...............................................................................
 
 Matchers.tests.cpp:<line number>: PASSED:
-  CHECK_THAT( 1, first || second )
+  CHECK( matcher.match( 1 ) )
 with expansion:
-  1 ( CheckedTestingMatcher set to succeed or CheckedTestingMatcher set to fail
-  )
+  true
 
 Matchers.tests.cpp:<line number>: PASSED:
   REQUIRE( first.matchCalled )

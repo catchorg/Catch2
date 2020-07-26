@@ -392,8 +392,8 @@ Exception.tests.cpp:<line number>
     <testcase classname="<exe-name>.global" name="Comparisons with int literals don't warn when mixing signed/ unsigned" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Composed generic matchers shortcircuit/MatchAllOf" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Composed generic matchers shortcircuit/MatchAnyOf" time="{duration}" status="run"/>
-    <testcase classname="<exe-name>.global" name="Composed matchers shortcircuit/&amp;&amp;" time="{duration}" status="run"/>
-    <testcase classname="<exe-name>.global" name="Composed matchers shortcircuit/||" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Composed matchers shortcircuit/MatchAllOf" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Composed matchers shortcircuit/MatchAnyOf" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Contains string matcher" time="{duration}" status="run">
       <failure message="testStringForMatching(), Contains(&quot;not there&quot;, Catch::CaseSensitive::No)" type="CHECK_THAT">
 FAILED:

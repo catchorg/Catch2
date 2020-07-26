@@ -3769,13 +3769,13 @@ Nor would this
       <OverallResult success="true"/>
     </TestCase>
     <TestCase name="Composed matchers shortcircuit" tags="[composed][matchers]" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
-      <Section name="&amp;&amp;" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
-        <Expression success="true" type="CHECK_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
+      <Section name="MatchAllOf" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
+        <Expression success="true" type="CHECK_FALSE" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
           <Original>
-            1, !(first &amp;&amp; second)
+            !(matcher.match( 1 ))
           </Original>
           <Expanded>
-            1 not ( CheckedTestingMatcher set to fail and CheckedTestingMatcher set to fail )
+            !false
           </Expanded>
         </Expression>
         <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
@@ -3796,13 +3796,13 @@ Nor would this
         </Expression>
         <OverallResults successes="3" failures="0" expectedFailures="0"/>
       </Section>
-      <Section name="||" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
-        <Expression success="true" type="CHECK_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
+      <Section name="MatchAnyOf" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
+        <Expression success="true" type="CHECK" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
           <Original>
-            1, first || second
+            matcher.match( 1 )
           </Original>
           <Expanded>
-            1 ( CheckedTestingMatcher set to succeed or CheckedTestingMatcher set to fail )
+            true
           </Expanded>
         </Expression>
         <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >

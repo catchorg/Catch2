@@ -638,22 +638,24 @@ namespace { namespace MatchersTests {
         TEST_CASE("Composed matchers shortcircuit", "[matchers][composed]") {
             // Check that if first returns false, second is not touched
             CheckedTestingMatcher first, second;
-            SECTION("&&") {
+            SECTION("MatchAllOf") {
                 first.matchSucceeds = false;
-                // This assertion doesn't actually test anything, we just
-                // want the composed matcher's `match` being called.
-                CHECK_THAT(1, !(first && second));
+
+                Detail::MatchAllOf<int> matcher =
+                    Detail::MatchAllOf<int>{} && first && second;
+                CHECK_FALSE( matcher.match( 1 ) );
 
                 // These two assertions are the important ones
                 REQUIRE(first.matchCalled);
                 REQUIRE(!second.matchCalled);
             }
             // Check that if first returns true, second is not touched
-            SECTION("||") {
+            SECTION("MatchAnyOf") {
                 first.matchSucceeds = true;
-                // This assertion doesn't actually test anything, we just
-                // want the composed matcher's `match` being called.
-                CHECK_THAT(1, first || second);
+
+                Detail::MatchAnyOf<int> matcher =
+                    Detail::MatchAnyOf<int>{} || first || second;
+                CHECK( matcher.match( 1 ) );
 
                 // These two assertions are the important ones
                 REQUIRE(first.matchCalled);

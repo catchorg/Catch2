@@ -959,8 +959,8 @@ Exception.tests.cpp:<line number>
     <testCase name="Combining templated matchers" duration="{duration}"/>
     <testCase name="Composed generic matchers shortcircuit/MatchAllOf" duration="{duration}"/>
     <testCase name="Composed generic matchers shortcircuit/MatchAnyOf" duration="{duration}"/>
-    <testCase name="Composed matchers shortcircuit/&amp;&amp;" duration="{duration}"/>
-    <testCase name="Composed matchers shortcircuit/||" duration="{duration}"/>
+    <testCase name="Composed matchers shortcircuit/MatchAllOf" duration="{duration}"/>
+    <testCase name="Composed matchers shortcircuit/MatchAnyOf" duration="{duration}"/>
     <testCase name="Contains string matcher" duration="{duration}">
       <failure message="CHECK_THAT(testStringForMatching(), Contains(&quot;not there&quot;, Catch::CaseSensitive::No))">
 FAILED:

@@ -869,13 +869,13 @@ ok {test-number} - first.matchCalled for: true
 # Composed generic matchers shortcircuit
 ok {test-number} - !second.matchCalled for: true
 # Composed matchers shortcircuit
-ok {test-number} - 1, !(first && second) for: 1 not ( CheckedTestingMatcher set to fail and CheckedTestingMatcher set to fail )
+ok {test-number} - !(matcher.match( 1 )) for: !false
 # Composed matchers shortcircuit
 ok {test-number} - first.matchCalled for: true
 # Composed matchers shortcircuit
 ok {test-number} - !second.matchCalled for: true
 # Composed matchers shortcircuit
-ok {test-number} - 1, first || second for: 1 ( CheckedTestingMatcher set to succeed or CheckedTestingMatcher set to fail )
+ok {test-number} - matcher.match( 1 ) for: true
 # Composed matchers shortcircuit
 ok {test-number} - first.matchCalled for: true
 # Composed matchers shortcircuit
