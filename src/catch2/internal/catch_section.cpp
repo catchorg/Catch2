@@ -16,7 +16,11 @@ namespace Catch {
     :   m_info( info ),
         m_sectionIncluded( getResultCapture().sectionStarted( m_info, m_assertions ) )
     {
-        m_timer.start();
+        // Non-"included" sections will not use the timing information
+        // anyway, so don't bother with the potential syscall.
+        if (m_sectionIncluded) {
+            m_timer.start();
+        }
     }
 
     Section::~Section() {
