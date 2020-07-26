@@ -661,6 +661,49 @@ namespace { namespace MatchersTests {
             }
         }
 
+        struct CheckedTestingGenericMatcher : Catch::Matchers::MatcherGenericBase {
+            mutable bool matchCalled = false;
+            bool matchSucceeds = false;
+
+            bool match(int const&) const {
+                matchCalled = true;
+                return matchSucceeds;
+            }
+            std::string describe() const override {
+                return "CheckedTestingGenericMatcher set to " + (matchSucceeds ? std::string("succeed") : std::string("fail"));
+            }
+        };
+
+        TEST_CASE("Composed generic matchers shortcircuit", "[matchers][composed][generic]") {
+            // Check that if first returns false, second is not touched
+            CheckedTestingGenericMatcher first, second;
+            SECTION("MatchAllOf") {
+                first.matchSucceeds = false;
+
+                Detail::MatchAllOfGeneric<CheckedTestingGenericMatcher,
+                                          CheckedTestingGenericMatcher>
+                    matcher{ first, second };
+
+                CHECK_FALSE( matcher.match( 1 ) );
+
+                // These two assertions are the important ones
+                REQUIRE(first.matchCalled);
+                REQUIRE(!second.matchCalled);
+            }
+            // Check that if first returns true, second is not touched
+            SECTION("MatchAnyOf") {
+                first.matchSucceeds = true;
+
+                Detail::MatchAnyOfGeneric<CheckedTestingGenericMatcher,
+                                          CheckedTestingGenericMatcher>
+                    matcher{ first, second };
+                CHECK(matcher.match(1));
+
+                // These two assertions are the important ones
+                REQUIRE(first.matchCalled);
+                REQUIRE(!second.matchCalled);
+            }
+        }
 
 
     template<typename Range>

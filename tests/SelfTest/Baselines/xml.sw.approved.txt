@@ -3711,6 +3711,63 @@ Nor would this
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
+    <TestCase name="Composed generic matchers shortcircuit" tags="[composed][generic][matchers]" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
+      <Section name="MatchAllOf" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
+        <Expression success="true" type="CHECK_FALSE" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
+          <Original>
+            !(matcher.match( 1 ))
+          </Original>
+          <Expanded>
+            !false
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
+          <Original>
+            first.matchCalled
+          </Original>
+          <Expanded>
+            true
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
+          <Original>
+            !second.matchCalled
+          </Original>
+          <Expanded>
+            true
+          </Expanded>
+        </Expression>
+        <OverallResults successes="3" failures="0" expectedFailures="0"/>
+      </Section>
+      <Section name="MatchAnyOf" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
+        <Expression success="true" type="CHECK" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
+          <Original>
+            matcher.match(1)
+          </Original>
+          <Expanded>
+            true
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
+          <Original>
+            first.matchCalled
+          </Original>
+          <Expanded>
+            true
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
+          <Original>
+            !second.matchCalled
+          </Original>
+          <Expanded>
+            true
+          </Expanded>
+        </Expression>
+        <OverallResults successes="3" failures="0" expectedFailures="0"/>
+      </Section>
+      <OverallResult success="true"/>
+    </TestCase>
     <TestCase name="Composed matchers shortcircuit" tags="[composed][matchers]" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
       <Section name="&amp;&amp;" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
         <Expression success="true" type="CHECK_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
@@ -18511,9 +18568,9 @@ loose text artifact
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="1831" failures="149" expectedFailures="21"/>
-    <OverallResultsCases successes="258" failures="86" expectedFailures="4"/>
+    <OverallResults successes="1837" failures="149" expectedFailures="21"/>
+    <OverallResultsCases successes="259" failures="86" expectedFailures="4"/>
   </Group>
-  <OverallResults successes="1831" failures="148" expectedFailures="21"/>
-  <OverallResultsCases successes="258" failures="86" expectedFailures="4"/>
+  <OverallResults successes="1837" failures="148" expectedFailures="21"/>
+  <OverallResultsCases successes="259" failures="86" expectedFailures="4"/>
 </Catch>

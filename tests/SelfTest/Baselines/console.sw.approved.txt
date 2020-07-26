@@ -3374,6 +3374,50 @@ with expansion:
   4294967295 (0x<hex digits>) > 4
 
 -------------------------------------------------------------------------------
+Composed generic matchers shortcircuit
+  MatchAllOf
+-------------------------------------------------------------------------------
+Matchers.tests.cpp:<line number>
+...............................................................................
+
+Matchers.tests.cpp:<line number>: PASSED:
+  CHECK_FALSE( matcher.match( 1 ) )
+with expansion:
+  !false
+
+Matchers.tests.cpp:<line number>: PASSED:
+  REQUIRE( first.matchCalled )
+with expansion:
+  true
+
+Matchers.tests.cpp:<line number>: PASSED:
+  REQUIRE( !second.matchCalled )
+with expansion:
+  true
+
+-------------------------------------------------------------------------------
+Composed generic matchers shortcircuit
+  MatchAnyOf
+-------------------------------------------------------------------------------
+Matchers.tests.cpp:<line number>
+...............................................................................
+
+Matchers.tests.cpp:<line number>: PASSED:
+  CHECK( matcher.match(1) )
+with expansion:
+  true
+
+Matchers.tests.cpp:<line number>: PASSED:
+  REQUIRE( first.matchCalled )
+with expansion:
+  true
+
+Matchers.tests.cpp:<line number>: PASSED:
+  REQUIRE( !second.matchCalled )
+with expansion:
+  true
+
+-------------------------------------------------------------------------------
 Composed matchers shortcircuit
   &&
 -------------------------------------------------------------------------------
@@ -15612,6 +15656,6 @@ Misc.tests.cpp:<line number>
 Misc.tests.cpp:<line number>: PASSED:
 
 ===============================================================================
-test cases:  348 |  258 passed |  86 failed |  4 failed as expected
-assertions: 2000 | 1831 passed | 148 failed | 21 failed as expected
+test cases:  349 |  259 passed |  86 failed |  4 failed as expected
+assertions: 2006 | 1837 passed | 148 failed | 21 failed as expected
 
