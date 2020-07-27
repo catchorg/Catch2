@@ -67,14 +67,8 @@ namespace Catch {
         void testCaseEnded(TestCaseStats const& /* _testCaseStats */) override {
             currentTestCaseInfo = nullptr;
         }
-        void testGroupEnded(TestGroupStats const& /* _testGroupStats */) override {
-            currentGroupInfo.reset();
-        }
-        void testRunEnded(TestRunStats const& /* _testRunStats */) override {
-            currentTestCaseInfo = nullptr;
-            currentGroupInfo.reset();
-            currentTestRunInfo.reset();
-        }
+        void testGroupEnded( TestGroupStats const& ) override;
+        void testRunEnded( TestRunStats const& /* _testRunStats */ ) override;
 
         void skipTest(TestCaseInfo const&) override {
             // Don't do anything with this by default.

@@ -99,6 +99,18 @@ namespace Catch {
 
 
     StreamingReporterBase::~StreamingReporterBase() = default;
+
+    void StreamingReporterBase::testGroupEnded( TestGroupStats const& ) {
+        currentGroupInfo.reset();
+    }
+
+    void StreamingReporterBase::testRunEnded( TestRunStats const& ) {
+        currentTestCaseInfo = nullptr;
+        currentGroupInfo.reset();
+        currentTestRunInfo.reset();
+    }
+
+
     CumulativeReporterBase::~CumulativeReporterBase() = default;
 
     void
