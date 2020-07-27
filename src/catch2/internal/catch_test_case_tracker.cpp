@@ -31,6 +31,23 @@ namespace TestCaseTracking {
 
     ITracker::~ITracker() = default;
 
+    void ITracker::addChild( ITrackerPtr const& child ) {
+        m_children.push_back( child );
+    }
+
+    ITrackerPtr ITracker::findChild( NameAndLocation const& nameAndLocation ) {
+        auto it = std::find_if(
+            m_children.begin(),
+            m_children.end(),
+            [&nameAndLocation]( ITrackerPtr const& tracker ) {
+                return tracker->nameAndLocation().location ==
+                           nameAndLocation.location &&
+                       tracker->nameAndLocation().name == nameAndLocation.name;
+            } );
+        return ( it != m_children.end() ) ? *it : nullptr;
+    }
+
+
 
     ITracker& TrackerContext::startRun() {
         m_rootTracker = std::make_shared<SectionTracker>( NameAndLocation( "{root}", CATCH_INTERNAL_LINEINFO ), *this, nullptr );
@@ -79,26 +96,7 @@ namespace TestCaseTracking {
     bool TrackerBase::isOpen() const {
         return m_runState != NotStarted && !isComplete();
     }
-    bool TrackerBase::hasChildren() const {
-        return !m_children.empty();
-    }
 
-
-    void TrackerBase::addChild( ITrackerPtr const& child ) {
-        m_children.push_back( child );
-    }
-
-    ITrackerPtr TrackerBase::findChild( NameAndLocation const& nameAndLocation ) {
-        auto it = std::find_if( m_children.begin(), m_children.end(),
-            [&nameAndLocation]( ITrackerPtr const& tracker ){
-                return
-                    tracker->nameAndLocation().location == nameAndLocation.location &&
-                    tracker->nameAndLocation().name == nameAndLocation.name;
-            } );
-        return( it != m_children.end() )
-            ? *it
-            : nullptr;
-    }
     ITracker& TrackerBase::parent() {
         assert( m_parent ); // Should always be non-null except for root
         return *m_parent;

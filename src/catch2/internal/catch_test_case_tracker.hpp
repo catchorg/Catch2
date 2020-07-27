@@ -36,6 +36,11 @@ namespace TestCaseTracking {
     class  ITracker {
         NameAndLocation m_nameAndLocation;
 
+        using Children = std::vector<ITrackerPtr>;
+
+    protected:
+        Children m_children;
+
     public:
         ITracker(NameAndLocation const& nameAndLoc) :
             m_nameAndLocation(nameAndLoc)
@@ -54,7 +59,6 @@ namespace TestCaseTracking {
         virtual bool isComplete() const = 0; // Successfully completed or failed
         virtual bool isSuccessfullyCompleted() const = 0;
         virtual bool isOpen() const = 0; // Started but not complete
-        virtual bool hasChildren() const = 0;
         virtual bool hasStarted() const = 0;
 
         virtual ITracker& parent() = 0;
@@ -64,8 +68,20 @@ namespace TestCaseTracking {
         virtual void fail() = 0;
         virtual void markAsNeedingAnotherRun() = 0;
 
-        virtual void addChild( ITrackerPtr const& child ) = 0;
-        virtual ITrackerPtr findChild( NameAndLocation const& nameAndLocation ) = 0;
+        //! Register a nested ITracker
+        void addChild( ITrackerPtr const& child );
+        /**
+         * Returns ptr to specific child if register with this tracker.
+         *
+         * Returns nullptr if not found.
+         */
+        ITrackerPtr findChild( NameAndLocation const& nameAndLocation );
+        //! Have any children been added?
+        bool hasChildren() const {
+            return !m_children.empty();
+        }
+
+
         virtual void openChild() = 0;
 
         // Debug/ checking
@@ -109,10 +125,8 @@ namespace TestCaseTracking {
             Failed
         };
 
-        using Children = std::vector<ITrackerPtr>;
         TrackerContext& m_ctx;
         ITracker* m_parent;
-        Children m_children;
         CycleState m_runState = NotStarted;
 
     public:
@@ -121,14 +135,10 @@ namespace TestCaseTracking {
         bool isComplete() const override;
         bool isSuccessfullyCompleted() const override;
         bool isOpen() const override;
-        bool hasChildren() const override;
         bool hasStarted() const override {
             return m_runState != NotStarted;
         }
 
-        void addChild( ITrackerPtr const& child ) override;
-
-        ITrackerPtr findChild( NameAndLocation const& nameAndLocation ) override;
         ITracker& parent() override;
 
         void openChild() override;
