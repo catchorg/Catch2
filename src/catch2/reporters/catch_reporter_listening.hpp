@@ -15,7 +15,6 @@ namespace Catch {
         using Reporters = std::vector<IStreamingReporterPtr>;
         Reporters m_listeners;
         IStreamingReporterPtr m_reporter = nullptr;
-        ReporterPreferences m_preferences;
 
     public:
         ListeningReporter();
@@ -24,8 +23,6 @@ namespace Catch {
         void addReporter( IStreamingReporterPtr&& reporter );
 
     public: // IStreamingReporter
-
-        ReporterPreferences getPreferences() const override;
 
         void noMatchingTestCases( std::string const& spec ) override;
 

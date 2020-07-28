@@ -13,7 +13,7 @@ namespace Catch {
 
         TAPReporter( ReporterConfig const& config ):
             StreamingReporterBase( config ) {
-            m_reporterPrefs.shouldReportAllAssertions = true;
+            m_preferences.shouldReportAllAssertions = true;
         }
         ~TAPReporter() override;
 

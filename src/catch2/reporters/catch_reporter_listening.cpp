@@ -26,10 +26,6 @@ namespace Catch {
         m_preferences.shouldRedirectStdOut = m_reporter->getPreferences().shouldRedirectStdOut;
     }
 
-    ReporterPreferences ListeningReporter::getPreferences() const {
-        return m_preferences;
-    }
-
     void ListeningReporter::noMatchingTestCases( std::string const& spec ) {
         for ( auto const& listener : m_listeners ) {
             listener->noMatchingTestCases( spec );

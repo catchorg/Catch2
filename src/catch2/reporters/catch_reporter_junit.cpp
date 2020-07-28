@@ -67,8 +67,8 @@ namespace Catch {
         :   CumulativeReporterBase( _config ),
             xml( _config.stream() )
         {
-            m_reporterPrefs.shouldRedirectStdOut = true;
-            m_reporterPrefs.shouldReportAllAssertions = true;
+            m_preferences.shouldRedirectStdOut = true;
+            m_preferences.shouldReportAllAssertions = true;
         }
 
     JunitReporter::~JunitReporter() {}

@@ -21,7 +21,7 @@ namespace Catch {
         TeamCityReporter( ReporterConfig const& _config )
         :   StreamingReporterBase( _config )
         {
-            m_reporterPrefs.shouldRedirectStdOut = true;
+            m_preferences.shouldRedirectStdOut = true;
         }
 
         ~TeamCityReporter() override;

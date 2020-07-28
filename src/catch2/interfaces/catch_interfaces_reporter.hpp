@@ -46,11 +46,6 @@ namespace Catch {
         IConfig const* m_fullConfig;
     };
 
-    struct ReporterPreferences {
-        bool shouldRedirectStdOut = false;
-        bool shouldReportAllAssertions = false;
-    };
-
     template<typename T>
     struct LazyStat : Option<T> {
         LazyStat& operator=( T const& _value ) {
@@ -178,13 +173,32 @@ namespace Catch {
         }
     };
 
+    //! By setting up its preferences, a reporter can modify Catch2's behaviour
+    //! in some regards, e.g. it can request Catch2 to capture writes to
+    //! stdout/stderr during test execution, and pass them to the reporter.
+    struct ReporterPreferences {
+        //! Catch2 should redirect writes to stdout and pass them to the
+        //! reporter
+        bool shouldRedirectStdOut = false;
+        //! Catch2 should call `Reporter::assertionEnded` even for passing
+        //! assertions
+        bool shouldReportAllAssertions = false;
+    };
+
+
     struct IStreamingReporter {
+    protected:
+        //! Derived classes can set up their preferences here
+        ReporterPreferences m_preferences;
+    public:
         virtual ~IStreamingReporter() = default;
 
         // Implementing class must also provide the following static methods:
         // static std::string getDescription();
 
-        virtual ReporterPreferences getPreferences() const = 0;
+        ReporterPreferences const& getPreferences() const {
+            return m_preferences;
+        }
 
         virtual void noMatchingTestCases( std::string const& spec ) = 0;
 

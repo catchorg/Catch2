@@ -23,8 +23,8 @@ namespace Catch {
     :   StreamingReporterBase( _config ),
         m_xml(_config.stream())
     {
-        m_reporterPrefs.shouldRedirectStdOut = true;
-        m_reporterPrefs.shouldReportAllAssertions = true;
+        m_preferences.shouldRedirectStdOut = true;
+        m_preferences.shouldReportAllAssertions = true;
     }
 
     XmlReporter::~XmlReporter() = default;

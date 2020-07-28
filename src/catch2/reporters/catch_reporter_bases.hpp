@@ -29,16 +29,10 @@ namespace Catch {
 
     struct StreamingReporterBase : IStreamingReporter {
 
-        StreamingReporterBase( ReporterConfig const& _config )
-        :   m_config( _config.fullConfig() ),
-            stream( _config.stream() )
-        {
-            m_reporterPrefs.shouldRedirectStdOut = false;
+        StreamingReporterBase( ReporterConfig const& _config ):
+            m_config( _config.fullConfig() ), stream( _config.stream() ) {
         }
 
-        ReporterPreferences getPreferences() const override {
-            return m_reporterPrefs;
-        }
 
         ~StreamingReporterBase() override;
 
@@ -83,7 +77,6 @@ namespace Catch {
         TestCaseInfo const* currentTestCaseInfo;
 
         std::vector<SectionInfo> m_sectionStack;
-        ReporterPreferences m_reporterPrefs;
     };
 
     struct CumulativeReporterBase : IStreamingReporter {
@@ -117,17 +110,9 @@ namespace Catch {
         using TestGroupNode = Node<TestGroupStats, TestCaseNode>;
         using TestRunNode = Node<TestRunStats, TestGroupNode>;
 
-        CumulativeReporterBase( ReporterConfig const& _config )
-        :   m_config( _config.fullConfig() ),
-            stream( _config.stream() )
-        {
-            m_reporterPrefs.shouldRedirectStdOut = false;
-        }
+        CumulativeReporterBase( ReporterConfig const& _config ):
+            m_config( _config.fullConfig() ), stream( _config.stream() ) {}
         ~CumulativeReporterBase() override;
-
-        ReporterPreferences getPreferences() const override {
-            return m_reporterPrefs;
-        }
 
         void testRunStarting( TestRunInfo const& ) override {}
         void testGroupStarting( GroupInfo const& ) override {}
@@ -159,7 +144,6 @@ namespace Catch {
         std::shared_ptr<SectionNode> m_rootSection;
         std::shared_ptr<SectionNode> m_deepestSection;
         std::vector<std::shared_ptr<SectionNode>> m_sectionStack;
-        ReporterPreferences m_reporterPrefs;
     };
 
     struct lineOfChars {
