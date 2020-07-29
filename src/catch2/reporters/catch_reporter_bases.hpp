@@ -10,13 +10,10 @@
 
 #include <catch2/interfaces/catch_interfaces_reporter.hpp>
 
-#include <algorithm>
-#include <cstring>
-#include <cfloat>
-#include <cstdio>
-#include <cassert>
-#include <memory>
 #include <iosfwd>
+#include <memory>
+#include <string>
+#include <vector>
 
 namespace Catch {
     // Returns double formatted as %.3f (format expected on output)

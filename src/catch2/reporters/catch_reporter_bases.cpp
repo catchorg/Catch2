@@ -12,6 +12,7 @@
 #include <catch2/internal/catch_stream.hpp>
 #include <catch2/catch_config.hpp>
 
+#include <algorithm>
 #include <cstring>
 #include <cfloat>
 #include <cstdio>
