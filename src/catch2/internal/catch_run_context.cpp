@@ -1,3 +1,4 @@
+#include <catch2/interfaces/catch_interfaces_generatortracker.hpp>
 #include <catch2/internal/catch_run_context.hpp>
 #include <catch2/internal/catch_compiler_capabilities.hpp>
 #include <catch2/internal/catch_context.hpp>
