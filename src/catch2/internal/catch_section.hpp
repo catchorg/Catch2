@@ -28,7 +28,6 @@ namespace Catch {
     private:
         SectionInfo m_info;
 
-        std::string m_name;
         Counts m_assertions;
         bool m_sectionIncluded;
         Timer m_timer;
