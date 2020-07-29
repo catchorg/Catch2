@@ -6,6 +6,7 @@
 #include <catch2/reporters/catch_reporter_sonarqube.hpp>
 
 #include <catch2/internal/catch_string_manip.hpp>
+#include <catch2/catch_test_case_info.hpp>
 
 #include <map>
 

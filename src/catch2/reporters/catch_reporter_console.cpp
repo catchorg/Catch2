@@ -15,6 +15,7 @@
 #include <catch2/internal/catch_text.hpp>
 #include <catch2/internal/catch_stream.hpp>
 #include <catch2/internal/catch_stringref.hpp>
+#include <catch2/catch_test_case_info.hpp>
 
 #include <cfloat>
 #include <cstdio>

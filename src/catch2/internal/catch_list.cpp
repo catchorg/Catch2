@@ -19,6 +19,7 @@
 #include <catch2/internal/catch_test_spec_parser.hpp>
 #include <catch2/catch_tostring.hpp>
 #include <catch2/internal/catch_string_manip.hpp>
+#include <catch2/catch_test_case_info.hpp>
 
 #include <limits>
 #include <algorithm>

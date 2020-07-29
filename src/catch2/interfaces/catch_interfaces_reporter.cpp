@@ -11,6 +11,7 @@
 #include <catch2/internal/catch_list.hpp>
 #include <catch2/internal/catch_text.hpp>
 #include <catch2/internal/catch_string_manip.hpp>
+#include <catch2/catch_test_case_info.hpp>
 
 #include <algorithm>
 #include <iomanip>

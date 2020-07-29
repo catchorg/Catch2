@@ -8,6 +8,7 @@
 #include <catch2/internal/catch_string_manip.hpp>
 #include <catch2/internal/catch_enforce.hpp>
 #include <catch2/internal/catch_text.hpp>
+#include <catch2/catch_test_case_info.hpp>
 
 namespace Catch {
 

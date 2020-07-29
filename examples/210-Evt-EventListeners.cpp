@@ -5,14 +5,10 @@
 // 2. My listener and registration
 // 3. Test cases
 
-// main() provided in 000-CatchMain.cpp
-
-// Let Catch provide the required interfaces:
-#define CATCH_CONFIG_EXTERNAL_INTERFACES
-
 #include <catch2/catch_test_macros.hpp>
 #include <catch2/reporters/catch_reporter_bases.hpp>
 #include <catch2/catch_reporter_registrars.hpp>
+#include <catch2/catch_test_case_info.hpp>
 #include <iostream>
 
 // -----------------------------------------------------------------------

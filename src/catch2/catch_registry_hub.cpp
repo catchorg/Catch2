@@ -17,6 +17,7 @@
 #include <catch2/internal/catch_startup_exception_registry.hpp>
 #include <catch2/internal/catch_singletons.hpp>
 #include <catch2/internal/catch_enum_values_registry.hpp>
+#include <catch2/catch_test_case_info.hpp>
 
 namespace Catch {
 

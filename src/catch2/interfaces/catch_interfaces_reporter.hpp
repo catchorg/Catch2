@@ -12,7 +12,6 @@
 #include <catch2/internal/catch_common.hpp>
 #include <catch2/catch_config.hpp>
 #include <catch2/catch_totals.hpp>
-#include <catch2/catch_test_case_info.hpp>
 #include <catch2/catch_assertion_result.hpp>
 #include <catch2/internal/catch_message_info.hpp>
 #include <catch2/internal/catch_option.hpp>
@@ -32,6 +31,7 @@ namespace Catch {
 
     struct ReporterDescription;
     struct TagInfo;
+    struct TestCaseInfo;
 
     struct ReporterConfig {
         explicit ReporterConfig( IConfig const* _fullConfig );

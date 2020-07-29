@@ -10,6 +10,7 @@
 
 #include <catch2/internal/catch_string_manip.hpp>
 #include <catch2/internal/catch_list.hpp>
+#include <catch2/catch_test_case_info.hpp>
 
 #if defined(_MSC_VER)
 #pragma warning(push)
