@@ -19,7 +19,7 @@ namespace Catch {
 
     class Section : NonCopyable {
     public:
-        Section( SectionInfo const& info );
+        Section( SectionInfo&& info );
         ~Section();
 
         // This indicates whether the section should be executed or not
