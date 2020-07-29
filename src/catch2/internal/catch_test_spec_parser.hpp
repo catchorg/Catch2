@@ -14,9 +14,13 @@
 #endif
 
 #include <catch2/catch_test_spec.hpp>
-#include <catch2/interfaces/catch_interfaces_tag_alias_registry.hpp>
+
+#include <vector>
+#include <string>
 
 namespace Catch {
+
+    struct ITagAliasRegistry;
 
     class TestSpecParser {
         enum Mode{ None, Name, QuotedName, Tag, EscapedName };

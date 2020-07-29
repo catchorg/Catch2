@@ -10,14 +10,13 @@
 
 #include <catch2/interfaces/catch_interfaces_runner.hpp>
 #include <catch2/interfaces/catch_interfaces_reporter.hpp>
-#include <catch2/catch_config.hpp>
 #include <catch2/internal/catch_test_registry.hpp>
 #include <catch2/catch_test_case_info.hpp>
-#include <catch2/internal/catch_test_macro_impl.hpp>
 #include <catch2/catch_message.hpp>
 #include <catch2/catch_totals.hpp>
 #include <catch2/internal/catch_test_case_tracker.hpp>
-#include <catch2/internal/catch_assertion_handler.hpp>
+#include <catch2/catch_assertion_info.hpp>
+#include <catch2/catch_assertion_result.hpp>
 
 #include <string>
 
@@ -25,6 +24,7 @@ namespace Catch {
 
     struct IMutableContext;
     struct IGeneratorTracker;
+    struct IConfig;
 
     ///////////////////////////////////////////////////////////////////////////
 

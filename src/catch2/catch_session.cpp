@@ -18,14 +18,11 @@
 #include <catch2/internal/catch_random_number_generator.hpp>
 #include <catch2/internal/catch_startup_exception_registry.hpp>
 #include <catch2/internal/catch_text.hpp>
-#include <catch2/internal/catch_stream.hpp>
 #include <catch2/internal/catch_windows_h_proxy.hpp>
 #include <catch2/reporters/catch_reporter_listening.hpp>
 
-#include <cstdlib>
 #include <iomanip>
 #include <set>
-#include <iterator>
 
 namespace Catch {
 

@@ -13,7 +13,6 @@
 #include <algorithm>
 #include <cassert>
 #include <memory>
-#include <sstream>
 
 #if defined(__clang__)
 #    pragma clang diagnostic push

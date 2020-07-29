@@ -10,7 +10,6 @@
 
 #include <catch2/internal/catch_commandline.hpp>
 #include <catch2/catch_config.hpp>
-#include <catch2/internal/catch_text.hpp>
 #include <catch2/internal/catch_unique_ptr.hpp>
 
 namespace Catch {

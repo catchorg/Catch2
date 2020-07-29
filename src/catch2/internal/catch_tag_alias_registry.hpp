@@ -12,6 +12,7 @@
 #include <catch2/catch_tag_alias.hpp>
 
 #include <map>
+#include <string>
 
 namespace Catch {
 

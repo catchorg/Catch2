@@ -9,7 +9,6 @@
 #include <catch2/internal/catch_string_manip.hpp>
 #include <catch2/internal/catch_stream.hpp>
 
-#include <map>
 #include <cassert>
 
 namespace Catch {

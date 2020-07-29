@@ -7,8 +7,6 @@
  */
 
 #include <catch2/internal/catch_assertion_handler.hpp>
-#include <catch2/catch_assertion_result.hpp>
-#include <catch2/interfaces/catch_interfaces_runner.hpp>
 #include <catch2/interfaces/catch_interfaces_config.hpp>
 #include <catch2/internal/catch_context.hpp>
 #include <catch2/internal/catch_enforce.hpp>

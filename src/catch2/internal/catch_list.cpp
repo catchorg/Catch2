@@ -13,17 +13,11 @@
 #include <catch2/interfaces/catch_interfaces_testcase.hpp>
 
 #include <catch2/internal/catch_context.hpp>
+#include <catch2/catch_config.hpp>
 #include <catch2/internal/catch_stream.hpp>
-
-#include <catch2/internal/catch_console_colour.hpp>
 #include <catch2/internal/catch_test_spec_parser.hpp>
-#include <catch2/catch_tostring.hpp>
 #include <catch2/internal/catch_string_manip.hpp>
 #include <catch2/catch_test_case_info.hpp>
-
-#include <limits>
-#include <algorithm>
-#include <set>
 
 namespace Catch {
     namespace {

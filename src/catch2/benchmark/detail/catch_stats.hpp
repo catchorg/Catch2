@@ -11,17 +11,15 @@
 #ifndef TWOBLUECUBES_CATCH_DETAIL_ANALYSIS_HPP_INCLUDED
 #define TWOBLUECUBES_CATCH_DETAIL_ANALYSIS_HPP_INCLUDED
 
-#include <catch2/benchmark/catch_clock.hpp>
 #include <catch2/benchmark/catch_estimate.hpp>
 #include <catch2/benchmark/catch_outlier_classification.hpp>
 
 #include <algorithm>
-#include <functional>
 #include <vector>
 #include <numeric>
+#include <tuple>
 #include <cmath>
 #include <utility>
-#include <cstddef>
 
 namespace Catch {
     namespace Benchmark {
@@ -64,7 +62,8 @@ namespace Catch {
             template <typename Estimator, typename Iterator>
             sample jackknife(Estimator&& estimator, Iterator first, Iterator last) {
                 auto n = last - first;
-                auto second = std::next(first);
+                auto second = first;
+                ++second;
                 sample results;
                 results.reserve(n);
 

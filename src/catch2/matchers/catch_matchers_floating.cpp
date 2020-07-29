@@ -17,7 +17,6 @@
 #include <cstdint>
 #include <cstring>
 #include <sstream>
-#include <type_traits>
 #include <iomanip>
 #include <limits>
 

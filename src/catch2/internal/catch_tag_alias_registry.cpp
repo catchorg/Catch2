@@ -12,8 +12,6 @@
 #include <catch2/interfaces/catch_interfaces_registry_hub.hpp>
 #include <catch2/internal/catch_string_manip.hpp>
 
-#include <sstream>
-
 namespace Catch {
 
     TagAliasRegistry::~TagAliasRegistry() {}

@@ -17,9 +17,7 @@
 #include <catch2/catch_test_spec.hpp>
 
 #include <algorithm>
-#include <iterator>
-#include <random>
-#include <sstream>
+#include <set>
 
 namespace Catch {
 

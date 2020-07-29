@@ -23,7 +23,7 @@
 #include <catch2/internal/catch_debugger.hpp>
 #include <catch2/internal/catch_windows_h_proxy.hpp>
 
-#include <sstream>
+#include <ostream>
 
 namespace Catch {
     namespace {

@@ -10,6 +10,7 @@
 
 #include <catch2/interfaces/catch_interfaces_enum_values_registry.hpp>
 #include <catch2/internal/catch_unique_ptr.hpp>
+#include <catch2/internal/catch_stringref.hpp>
 
 #include <vector>
 

@@ -9,6 +9,9 @@
 #ifndef TWOBLUECUBES_CATCH_CLARA_H_INCLUDED
 #define TWOBLUECUBES_CATCH_CLARA_H_INCLUDED
 
+// For CATCH_CONFIG_CONSOLE_WIDTH. We should refactor this out somewhere else.
+#include <catch2/catch_config.hpp>
+
 // Use Catch's value for console width (store Clara's off to the side, if present)
 #ifdef CLARA_CONFIG_CONSOLE_WIDTH
 #define CATCH_TEMP_CLARA_CONFIG_CONSOLE_WIDTH CATCH_CLARA_TEXTFLOW_CONFIG_CONSOLE_WIDTH

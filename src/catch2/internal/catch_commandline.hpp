@@ -8,10 +8,11 @@
 #ifndef TWOBLUECUBES_CATCH_COMMANDLINE_HPP_INCLUDED
 #define TWOBLUECUBES_CATCH_COMMANDLINE_HPP_INCLUDED
 
-#include <catch2/catch_config.hpp>
 #include <catch2/internal/catch_clara.hpp>
 
 namespace Catch {
+
+    struct ConfigData;
 
     clara::Parser makeCommandLineParser( ConfigData& config );
 

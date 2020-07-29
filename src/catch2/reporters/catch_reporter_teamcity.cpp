@@ -10,6 +10,8 @@
 #include <catch2/internal/catch_text.hpp>
 #include <catch2/catch_test_case_info.hpp>
 
+#include <cassert>
+
 namespace Catch {
 
     namespace {

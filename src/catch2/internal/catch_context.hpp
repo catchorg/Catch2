@@ -13,7 +13,6 @@ namespace Catch {
     struct IResultCapture;
     struct IRunner;
     struct IConfig;
-    struct IMutableContext;
 
     struct IContext
     {

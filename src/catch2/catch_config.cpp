@@ -11,6 +11,8 @@
 #include <catch2/internal/catch_stringref.hpp>
 #include <catch2/internal/catch_string_manip.hpp>
 #include <catch2/internal/catch_test_spec_parser.hpp>
+#include <catch2/interfaces/catch_interfaces_tag_alias_registry.hpp>
+
 
 namespace Catch {
 

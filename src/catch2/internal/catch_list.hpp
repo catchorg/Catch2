@@ -8,7 +8,6 @@
 #ifndef TWOBLUECUBES_CATCH_LIST_H_INCLUDED
 #define TWOBLUECUBES_CATCH_LIST_H_INCLUDED
 
-#include <catch2/catch_config.hpp>
 #include <catch2/internal/catch_stringref.hpp>
 
 #include <set>
@@ -18,6 +17,8 @@
 namespace Catch {
 
     struct IStreamingReporter;
+    class Config;
+
 
     struct ReporterDescription {
         std::string name, description;

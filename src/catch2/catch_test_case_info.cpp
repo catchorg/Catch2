@@ -12,10 +12,9 @@
 #include <catch2/interfaces/catch_interfaces_testcase.hpp>
 #include <catch2/internal/catch_string_manip.hpp>
 
+#include <cassert>
 #include <cctype>
-#include <exception>
 #include <algorithm>
-#include <sstream>
 
 namespace Catch {
 
