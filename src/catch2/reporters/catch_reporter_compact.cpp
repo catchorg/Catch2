@@ -7,6 +7,7 @@
 
 #include <catch2/reporters/catch_reporter_compact.hpp>
 
+#include <catch2/interfaces/catch_interfaces_config.hpp>
 #include <catch2/internal/catch_compiler_capabilities.hpp>
 #include <catch2/internal/catch_console_colour.hpp>
 #include <catch2/internal/catch_string_manip.hpp>

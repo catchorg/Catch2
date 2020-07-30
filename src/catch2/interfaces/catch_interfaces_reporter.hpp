@@ -10,7 +10,6 @@
 
 #include <catch2/catch_section_info.hpp>
 #include <catch2/internal/catch_common.hpp>
-#include <catch2/catch_config.hpp>
 #include <catch2/catch_totals.hpp>
 #include <catch2/catch_assertion_result.hpp>
 #include <catch2/internal/catch_message_info.hpp>
@@ -23,6 +22,7 @@
 
 
 #include <string>
+#include <vector>
 #include <iosfwd>
 #include <map>
 #include <algorithm>
@@ -32,6 +32,9 @@ namespace Catch {
     struct ReporterDescription;
     struct TagInfo;
     struct TestCaseInfo;
+    class TestCaseHandle;
+    struct IConfig;
+    class Config;
 
     struct ReporterConfig {
         explicit ReporterConfig( IConfig const* _fullConfig );
