@@ -190,8 +190,8 @@ function(ParseAndAddCatchTests_ParseFile SourceFile TestTarget)
             string(REPLACE "," "\\," Name ${Name})
 
             # Work around CMake 3.18.0 change in `add_test()`, before the escaped quotes were neccessary,
-            # beginning with CMake 3.18.0 the escaped double quotes confuse the call
-            if(${CMAKE_VERSION} VERSION_LESS "3.18")
+            # only with CMake 3.18.0 the escaped double quotes confuse the call. This change is reverted in 3.18.1
+            if(NOT ${CMAKE_VERSION} VERSION_EQUAL "3.18")
                 set(CTestName "\"${CTestName}\"")
             endif()
             # Add the test and set its properties
