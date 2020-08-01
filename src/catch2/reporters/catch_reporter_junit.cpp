@@ -13,7 +13,7 @@
 #include <catch2/catch_tostring.hpp>
 #include <catch2/internal/catch_string_manip.hpp>
 #include <catch2/catch_reporter_registrars.hpp>
-#include <catch2/internal/catch_text.hpp>
+#include <catch2/internal/catch_textflow.hpp>
 #include <catch2/interfaces/catch_interfaces_config.hpp>
 #include <catch2/catch_test_case_info.hpp>
 
@@ -266,7 +266,7 @@ namespace Catch {
                 }
                 if (result.hasExpandedExpression()) {
                     rss << "with expansion:\n";
-                    rss << Column(result.getExpandedExpression()).indent(2) << '\n';
+                    rss << TextFlow::Column(result.getExpandedExpression()).indent(2) << '\n';
                 }
             } else {
                 rss << '\n';

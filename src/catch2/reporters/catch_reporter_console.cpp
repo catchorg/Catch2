@@ -14,12 +14,11 @@
 #include <catch2/internal/catch_console_colour.hpp>
 #include <catch2/internal/catch_string_manip.hpp>
 #include <catch2/catch_version.hpp>
-#include <catch2/internal/catch_text.hpp>
+#include <catch2/internal/catch_textflow.hpp>
 #include <catch2/internal/catch_stream.hpp>
 #include <catch2/internal/catch_stringref.hpp>
 #include <catch2/catch_test_case_info.hpp>
 #include <catch2/internal/catch_console_width.hpp>
-#include <catch2/internal/catch_stream.hpp>
 
 #include <cfloat>
 #include <cstdio>
@@ -152,7 +151,7 @@ private:
         if (result.hasExpandedExpression()) {
             stream << "with expansion:\n";
             Colour colourGuard(Colour::ReconstructedExpression);
-            stream << Column(result.getExpandedExpression()).indent(2) << '\n';
+            stream << TextFlow::Column(result.getExpandedExpression()).indent(2) << '\n';
         }
     }
     void printMessage() const {
@@ -161,7 +160,7 @@ private:
         for (auto const& msg : messages) {
             // If this assertion is a warning ignore any INFO messages
             if (printInfoMessages || msg.type != ResultWas::Info)
-                stream << Column(msg.message).indent(2) << '\n';
+                stream << TextFlow::Column(msg.message).indent(2) << '\n';
         }
     }
     void printSourceInfo() const {
@@ -297,10 +296,10 @@ public:
             m_isOpen = true;
             *this << RowBreak();
 
-			Columns headerCols;
-			Spacer spacer(2);
+			TextFlow::Columns headerCols;
+			auto spacer = TextFlow::Spacer(2);
 			for (auto const& info : m_columnInfos) {
-				headerCols += Column(info.name).width(static_cast<std::size_t>(info.width - 2));
+				headerCols += TextFlow::Column(info.name).width(static_cast<std::size_t>(info.width - 2));
 				headerCols += spacer;
 			}
 			m_os << headerCols << '\n';
@@ -438,7 +437,7 @@ void ConsoleReporter::sectionEnded(SectionStats const& _sectionStats) {
 void ConsoleReporter::benchmarkPreparing(std::string const& name) {
 	lazyPrintWithoutClosingBenchmarkTable();
 
-	auto nameCol = Column(name).width(static_cast<std::size_t>(m_tablePrinter->columnInfos()[0].width - 2));
+	auto nameCol = TextFlow::Column(name).width(static_cast<std::size_t>(m_tablePrinter->columnInfos()[0].width - 2));
 
 	bool firstLine = true;
 	for (auto line : nameCol) {
@@ -585,7 +584,7 @@ void ConsoleReporter::printHeaderString(std::string const& _string, std::size_t 
         i += 2;
     else
         i = 0;
-    stream << Column(_string).indent(indent + i).initialIndent(indent) << '\n';
+    stream << TextFlow::Column(_string).indent(indent + i).initialIndent(indent) << '\n';
 }
 
 struct SummaryColumn {

@@ -7,7 +7,7 @@
 
 #include <catch2/internal/catch_string_manip.hpp>
 #include <catch2/internal/catch_enforce.hpp>
-#include <catch2/internal/catch_text.hpp>
+#include <catch2/internal/catch_textflow.hpp>
 #include <catch2/catch_test_case_info.hpp>
 
 #include <cassert>
@@ -23,7 +23,7 @@ namespace Catch {
                 i += 2;
             else
                 i = 0;
-            os << Column(_string)
+            os << TextFlow::Column(_string)
                   .indent(indent + i)
                   .initialIndent(indent) << '\n';
         }

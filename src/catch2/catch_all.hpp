@@ -83,7 +83,7 @@
 #include <catch2/internal/catch_test_macro_impl.hpp>
 #include <catch2/internal/catch_test_registry.hpp>
 #include <catch2/internal/catch_test_spec_parser.hpp>
-#include <catch2/internal/catch_text.hpp>
+#include <catch2/internal/catch_textflow.hpp>
 #include <catch2/internal/catch_to_string.hpp>
 #include <catch2/internal/catch_uncaught_exceptions.hpp>
 #include <catch2/internal/catch_unique_ptr.hpp>

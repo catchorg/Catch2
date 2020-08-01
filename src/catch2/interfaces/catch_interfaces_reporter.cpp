@@ -9,11 +9,13 @@
 #include <catch2/interfaces/catch_interfaces_config.hpp>
 #include <catch2/catch_config.hpp>
 #include <catch2/internal/catch_console_colour.hpp>
+#include <catch2/internal/catch_console_width.hpp>
 #include <catch2/catch_message.hpp>
 #include <catch2/internal/catch_list.hpp>
-#include <catch2/internal/catch_text.hpp>
+#include <catch2/internal/catch_textflow.hpp>
 #include <catch2/internal/catch_string_manip.hpp>
 #include <catch2/catch_test_case_info.hpp>
+#include <catch2/internal/catch_textflow.hpp>
 
 #include <algorithm>
 #include <iomanip>
@@ -117,15 +119,15 @@ namespace Catch {
         for (auto const& desc : descriptions) {
             if (config.verbosity() == Verbosity::Quiet) {
                 Catch::cout()
-                    << Column(desc.name)
+                    << TextFlow::Column(desc.name)
                     .indent(2)
                     .width(5 + maxNameLen) << '\n';
             } else {
                 Catch::cout()
-                    << Column(desc.name + ":")
+                    << TextFlow::Column(desc.name + ":")
                     .indent(2)
                     .width(5 + maxNameLen)
-                    + Column(desc.description)
+                    + TextFlow::Column(desc.description)
                     .initialIndent(0)
                     .indent(2)
                     .width(CATCH_CONFIG_CONSOLE_WIDTH - maxNameLen - 8)
@@ -149,12 +151,12 @@ namespace Catch {
                 : Colour::None;
             Colour colourGuard(colour);
 
-            Catch::cout() << Column(testCaseInfo.name).initialIndent(2).indent(4) << '\n';
+            Catch::cout() << TextFlow::Column(testCaseInfo.name).initialIndent(2).indent(4) << '\n';
             if (config.verbosity() >= Verbosity::High) {
-                Catch::cout() << Column(Catch::Detail::stringify(testCaseInfo.lineInfo)).indent(4) << std::endl;
+                Catch::cout() << TextFlow::Column(Catch::Detail::stringify(testCaseInfo.lineInfo)).indent(4) << std::endl;
             }
             if (!testCaseInfo.tags.empty() && config.verbosity() > Verbosity::Quiet) {
-                Catch::cout() << Column(testCaseInfo.tagsAsString()).indent(6) << '\n';
+                Catch::cout() << TextFlow::Column(testCaseInfo.tagsAsString()).indent(6) << '\n';
             }
         }
 
@@ -176,7 +178,7 @@ namespace Catch {
             ReusableStringStream rss;
             rss << "  " << std::setw(2) << tagCount.count << "  ";
             auto str = rss.str();
-            auto wrapper = Column(tagCount.all())
+            auto wrapper = TextFlow::Column(tagCount.all())
                 .initialIndent(0)
                 .indent(str.size())
                 .width(CATCH_CONFIG_CONSOLE_WIDTH - 10);

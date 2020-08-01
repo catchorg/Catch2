@@ -119,7 +119,7 @@ set(INTERNAL_HEADERS
     ${SOURCES_DIR}/internal/catch_test_registry.hpp
     ${SOURCES_DIR}/catch_test_spec.hpp
     ${SOURCES_DIR}/internal/catch_test_spec_parser.hpp
-    ${SOURCES_DIR}/internal/catch_text.hpp
+    ${SOURCES_DIR}/internal/catch_textflow.hpp
     ${SOURCES_DIR}/catch_timer.hpp
     ${SOURCES_DIR}/internal/catch_to_string.hpp
     ${SOURCES_DIR}/catch_tostring.hpp
@@ -175,6 +175,7 @@ set(IMPL_SOURCES
     ${SOURCES_DIR}/internal/catch_test_case_registry_impl.cpp
     ${SOURCES_DIR}/internal/catch_test_case_tracker.cpp
     ${SOURCES_DIR}/internal/catch_test_registry.cpp
+    ${SOURCES_DIR}/internal/catch_textflow.cpp
     ${SOURCES_DIR}/catch_test_spec.cpp
     ${SOURCES_DIR}/internal/catch_test_spec_parser.cpp
     ${SOURCES_DIR}/catch_timer.cpp

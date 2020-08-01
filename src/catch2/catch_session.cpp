@@ -17,7 +17,7 @@
 #include <catch2/interfaces/catch_interfaces_reporter.hpp>
 #include <catch2/internal/catch_random_number_generator.hpp>
 #include <catch2/internal/catch_startup_exception_registry.hpp>
-#include <catch2/internal/catch_text.hpp>
+#include <catch2/internal/catch_textflow.hpp>
 #include <catch2/internal/catch_windows_h_proxy.hpp>
 #include <catch2/reporters/catch_reporter_listening.hpp>
 
@@ -144,7 +144,7 @@ namespace Catch {
                 try {
                     std::rethrow_exception(ex_ptr);
                 } catch ( std::exception const& ex ) {
-                    Catch::cerr() << Column( ex.what() ).indent(2) << '\n';
+                    Catch::cerr() << TextFlow::Column( ex.what() ).indent(2) << '\n';
                 }
             }
         }
@@ -182,7 +182,7 @@ namespace Catch {
             Catch::cerr()
                 << Colour( Colour::Red )
                 << "\nError(s) in input:\n"
-                << Column( result.errorMessage() ).indent( 2 )
+                << TextFlow::Column( result.errorMessage() ).indent( 2 )
                 << "\n\n";
             Catch::cerr() << "Run with -? for usage\n" << std::endl;
             return MaxExitCode;
