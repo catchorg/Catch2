@@ -15,10 +15,6 @@
 #include <vector>
 #include <string>
 
-#ifndef CATCH_CONFIG_CONSOLE_WIDTH
-#define CATCH_CONFIG_CONSOLE_WIDTH 80
-#endif
-
 namespace Catch {
 
     struct IStream;
