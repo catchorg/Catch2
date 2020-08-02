@@ -37,7 +37,10 @@ namespace Catch {
         ReusableStringStream();
         ~ReusableStringStream();
 
-        auto str() const -> std::string;
+        //! Returns the serialized state
+        std::string str() const;
+        //! Sets internal state to `str`
+        void str(std::string const& str);
 
 #if defined(__GNUC__) && !defined(__clang__)
 #pragma GCC diagnostic push

@@ -173,8 +173,12 @@ namespace Detail {
         Singleton<StringStreams>::getMutable().release( m_index );
     }
 
-    auto ReusableStringStream::str() const -> std::string {
+    std::string ReusableStringStream::str() const {
         return static_cast<std::ostringstream*>( m_oss )->str();
+    }
+
+    void ReusableStringStream::str( std::string const& str ) {
+        static_cast<std::ostringstream*>( m_oss )->str( str );
     }
 
 
