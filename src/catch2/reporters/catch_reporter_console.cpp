@@ -18,6 +18,8 @@
 #include <catch2/internal/catch_stream.hpp>
 #include <catch2/internal/catch_stringref.hpp>
 #include <catch2/catch_test_case_info.hpp>
+#include <catch2/internal/catch_console_width.hpp>
+#include <catch2/internal/catch_stream.hpp>
 
 #include <cfloat>
 #include <cstdio>
@@ -277,7 +279,7 @@ public:
 class TablePrinter {
     std::ostream& m_os;
     std::vector<ColumnInfo> m_columnInfos;
-    std::ostringstream m_oss;
+    ReusableStringStream m_oss;
     int m_currentColumn = -1;
     bool m_isOpen = false;
 
