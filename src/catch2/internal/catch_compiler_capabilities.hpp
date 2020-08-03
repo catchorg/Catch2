@@ -240,7 +240,10 @@
 
   // Check if byte is available and usable
   #  if __has_include(<cstddef>) && defined(CATCH_CPP17_OR_GREATER)
-  #    define CATCH_INTERNAL_CONFIG_CPP17_BYTE
+  #    include <cstddef>
+  #    if __cpp_lib_byte > 0
+  #      define CATCH_INTERNAL_CONFIG_CPP17_BYTE
+  #    endif
   #  endif // __has_include(<cstddef>) && defined(CATCH_CPP17_OR_GREATER)
 
   // Check if variant is available and usable
