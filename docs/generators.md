@@ -60,7 +60,7 @@ The specific order of the `SECTION`s will be "one", "one", "two", "two",
 "two", "one"...
 
 
-The fact that `GENERATE` introduces a virtual `SECTION` can als obe used
+The fact that `GENERATE` introduces a virtual `SECTION` can also be used
 to make a generator replay only some `SECTION`s, without having to
 explicitly add a `SECTION`. As an example, the code below reports 3
 assertions, because the "first" section is run once, but the "second"
