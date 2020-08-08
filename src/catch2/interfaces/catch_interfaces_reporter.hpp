@@ -25,7 +25,6 @@
 #include <vector>
 #include <iosfwd>
 #include <map>
-#include <algorithm>
 
 namespace Catch {
 
@@ -164,7 +163,9 @@ namespace Catch {
         operator BenchmarkStats<Duration2>() const {
             std::vector<Duration2> samples2;
             samples2.reserve(samples.size());
-            std::transform(samples.begin(), samples.end(), std::back_inserter(samples2), [](Duration d) { return Duration2(d); });
+            for (auto const& sample : samples) {
+                samples2.push_back(Duration2(sample));
+            }
             return {
                 info,
                 std::move(samples2),

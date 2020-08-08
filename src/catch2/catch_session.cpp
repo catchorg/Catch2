@@ -21,6 +21,7 @@
 #include <catch2/internal/catch_windows_h_proxy.hpp>
 #include <catch2/reporters/catch_reporter_listening.hpp>
 
+#include <algorithm>
 #include <iomanip>
 #include <set>
 
