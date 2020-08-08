@@ -176,7 +176,7 @@ namespace Catch {
         if( m_startupExceptions )
             return 1;
 
-        auto result = m_cli.parse( clara::Args( argc, argv ) );
+        auto result = m_cli.parse( Clara::Args( argc, argv ) );
         if( !result ) {
             config();
             getCurrentMutableContext().setConfig(m_config.get());
@@ -239,10 +239,10 @@ namespace Catch {
         return exitCode;
     }
 
-    clara::Parser const& Session::cli() const {
+    Clara::Parser const& Session::cli() const {
         return m_cli;
     }
-    void Session::cli( clara::Parser const& newParser ) {
+    void Session::cli( Clara::Parser const& newParser ) {
         m_cli = newParser;
     }
     ConfigData& Session::configData() {

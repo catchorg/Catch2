@@ -40,7 +40,6 @@
 #include <catch2/interfaces/catch_interfaces_all.hpp>
 #include <catch2/internal/catch_assertion_handler.hpp>
 #include <catch2/internal/catch_clara.hpp>
-#include <catch2/internal/catch_clara_upstream.hpp>
 #include <catch2/internal/catch_commandline.hpp>
 #include <catch2/internal/catch_common.hpp>
 #include <catch2/internal/catch_compiler_capabilities.hpp>

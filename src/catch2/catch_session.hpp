@@ -42,14 +42,14 @@ namespace Catch {
 
         int run();
 
-        clara::Parser const& cli() const;
-        void cli( clara::Parser const& newParser );
+        Clara::Parser const& cli() const;
+        void cli( Clara::Parser const& newParser );
         ConfigData& configData();
         Config& config();
     private:
         int runInternal();
 
-        clara::Parser m_cli;
+        Clara::Parser m_cli;
         ConfigData m_configData;
         Detail::unique_ptr<Config> m_config;
         bool m_startupExceptions = false;

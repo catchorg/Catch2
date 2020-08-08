@@ -19,9 +19,9 @@
 
 namespace Catch {
 
-    clara::Parser makeCommandLineParser( ConfigData& config ) {
+    Clara::Parser makeCommandLineParser( ConfigData& config ) {
 
-        using namespace clara;
+        using namespace Clara;
 
         auto const setWarning = [&]( std::string const& warning ) {
                 auto warningSet = [&]() {
@@ -68,12 +68,12 @@ namespace Catch {
                 else if( startsWith( "random", order ) )
                     config.runOrder = RunTests::InRandomOrder;
                 else
-                    return clara::ParserResult::runtimeError( "Unrecognised ordering: '" + order + "'" );
+                    return ParserResult::runtimeError( "Unrecognised ordering: '" + order + "'" );
                 return ParserResult::ok( ParseResultType::Matched );
             };
         auto const setRngSeed = [&]( std::string const& seed ) {
                 if( seed != "time" )
-                    return clara::detail::convertInto( seed, config.rngSeed );
+                    return Clara::Detail::convertInto( seed, config.rngSeed );
                 config.rngSeed = static_cast<unsigned int>( std::time(nullptr) );
                 return ParserResult::ok( ParseResultType::Matched );
             };

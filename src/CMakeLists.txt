@@ -44,7 +44,6 @@ set(INTERNAL_HEADERS
     ${SOURCES_DIR}/catch_assertion_result.hpp
     ${SOURCES_DIR}/internal/catch_test_macro_impl.hpp
     ${SOURCES_DIR}/internal/catch_clara.hpp
-    ${SOURCES_DIR}/internal/catch_clara_upstream.hpp
     ${SOURCES_DIR}/internal/catch_commandline.hpp
     ${SOURCES_DIR}/internal/catch_common.hpp
     ${SOURCES_DIR}/internal/catch_compiler_capabilities.hpp
@@ -138,6 +137,7 @@ set(IMPL_SOURCES
     ${SOURCES_DIR}/internal/catch_assertion_handler.cpp
     ${SOURCES_DIR}/catch_assertion_result.cpp
     ${SOURCES_DIR}/matchers/internal/catch_matchers_combined_tu.cpp
+    ${SOURCES_DIR}/internal/catch_clara.cpp
     ${SOURCES_DIR}/internal/catch_commandline.cpp
     ${SOURCES_DIR}/internal/catch_common.cpp
     ${SOURCES_DIR}/catch_config.cpp
