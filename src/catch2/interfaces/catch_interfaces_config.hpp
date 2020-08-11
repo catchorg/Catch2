@@ -39,11 +39,11 @@ namespace Catch {
         LexicographicallySorted,
         Randomized
     };
-    struct UseColour { enum YesOrNo {
+    enum class UseColour {
         Auto,
         Yes,
         No
-    }; };
+    };
     struct WaitForKeypress { enum When {
         Never,
         BeforeStart = 1,
@@ -73,7 +73,7 @@ namespace Catch {
         virtual std::vector<std::string> const& getTestsOrTags() const = 0;
         virtual TestRunOrder runOrder() const = 0;
         virtual unsigned int rngSeed() const = 0;
-        virtual UseColour::YesOrNo useColour() const = 0;
+        virtual UseColour useColour() const = 0;
         virtual std::vector<std::string> const& getSectionsToRun() const = 0;
         virtual Verbosity verbosity() const = 0;
 

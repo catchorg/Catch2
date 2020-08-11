@@ -46,7 +46,7 @@ namespace Catch {
         ShowDurations showDurations = ShowDurations::DefaultForReporter;
         double minDuration = -1;
         TestRunOrder runOrder = TestRunOrder::Declared;
-        UseColour::YesOrNo useColour = UseColour::Auto;
+        UseColour useColour = UseColour::Auto;
         WaitForKeypress::When waitForKeypress = WaitForKeypress::Never;
 
         std::string outputFilename;
@@ -98,7 +98,7 @@ namespace Catch {
         double minDuration() const override;
         TestRunOrder runOrder() const override;
         unsigned int rngSeed() const override;
-        UseColour::YesOrNo useColour() const override;
+        UseColour useColour() const override;
         bool shouldDebugBreak() const override;
         int abortAfter() const override;
         bool showInvisibles() const override;

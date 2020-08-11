@@ -74,7 +74,7 @@ namespace Catch {
     double Config::minDuration() const                 { return m_data.minDuration; }
     TestRunOrder Config::runOrder() const              { return m_data.runOrder; }
     unsigned int Config::rngSeed() const               { return m_data.rngSeed; }
-    UseColour::YesOrNo Config::useColour() const       { return m_data.useColour; }
+    UseColour Config::useColour() const                { return m_data.useColour; }
     bool Config::shouldDebugBreak() const              { return m_data.shouldDebugBreak; }
     int Config::abortAfter() const                     { return m_data.abortAfter; }
     bool Config::showInvisibles() const                { return m_data.showInvisibles; }
