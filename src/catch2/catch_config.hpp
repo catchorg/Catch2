@@ -45,7 +45,7 @@ namespace Catch {
         WarnAbout::What warnings = WarnAbout::Nothing;
         ShowDurations showDurations = ShowDurations::DefaultForReporter;
         double minDuration = -1;
-        RunTests::InWhatOrder runOrder = RunTests::InDeclarationOrder;
+        TestRunOrder runOrder = TestRunOrder::Declared;
         UseColour::YesOrNo useColour = UseColour::Auto;
         WaitForKeypress::When waitForKeypress = WaitForKeypress::Never;
 
@@ -96,7 +96,7 @@ namespace Catch {
         bool warnAboutNoTests() const override;
         ShowDurations showDurations() const override;
         double minDuration() const override;
-        RunTests::InWhatOrder runOrder() const override;
+        TestRunOrder runOrder() const override;
         unsigned int rngSeed() const override;
         UseColour::YesOrNo useColour() const override;
         bool shouldDebugBreak() const override;

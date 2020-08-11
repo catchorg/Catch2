@@ -34,11 +34,11 @@ namespace Catch {
         Always,
         Never
     };
-    struct RunTests { enum InWhatOrder {
-        InDeclarationOrder,
-        InLexicographicalOrder,
-        InRandomOrder
-    }; };
+    enum class TestRunOrder {
+        Declared,
+        LexicographicallySorted,
+        Randomized
+    };
     struct UseColour { enum YesOrNo {
         Auto,
         Yes,
@@ -71,7 +71,7 @@ namespace Catch {
         virtual TestSpec const& testSpec() const = 0;
         virtual bool hasTestFilters() const = 0;
         virtual std::vector<std::string> const& getTestsOrTags() const = 0;
-        virtual RunTests::InWhatOrder runOrder() const = 0;
+        virtual TestRunOrder runOrder() const = 0;
         virtual unsigned int rngSeed() const = 0;
         virtual UseColour::YesOrNo useColour() const = 0;
         virtual std::vector<std::string> const& getSectionsToRun() const = 0;

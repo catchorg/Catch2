@@ -62,11 +62,11 @@ namespace Catch {
             };
         auto const setTestOrder = [&]( std::string const& order ) {
                 if( startsWith( "declared", order ) )
-                    config.runOrder = RunTests::InDeclarationOrder;
+                    config.runOrder = TestRunOrder::Declared;
                 else if( startsWith( "lexical", order ) )
-                    config.runOrder = RunTests::InLexicographicalOrder;
+                    config.runOrder = TestRunOrder::LexicographicallySorted;
                 else if( startsWith( "random", order ) )
-                    config.runOrder = RunTests::InRandomOrder;
+                    config.runOrder = TestRunOrder::Randomized;
                 else
                     return ParserResult::runtimeError( "Unrecognised ordering: '" + order + "'" );
                 return ParserResult::ok( ParseResultType::Matched );

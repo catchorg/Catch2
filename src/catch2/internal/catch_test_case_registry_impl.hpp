@@ -47,7 +47,7 @@ namespace Catch {
 
         std::vector<Detail::unique_ptr<ITestInvoker>> m_invokers;
         std::vector<TestCaseHandle> m_handles;
-        mutable RunTests::InWhatOrder m_currentSortOrder = RunTests::InDeclarationOrder;
+        mutable TestRunOrder m_currentSortOrder = TestRunOrder::Declared;
         mutable std::vector<TestCaseHandle> m_sortedFunctions;
     };
 

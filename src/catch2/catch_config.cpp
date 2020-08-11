@@ -72,7 +72,7 @@ namespace Catch {
     bool Config::warnAboutNoTests() const              { return !!(m_data.warnings & WarnAbout::NoTests); }
     ShowDurations Config::showDurations() const        { return m_data.showDurations; }
     double Config::minDuration() const                 { return m_data.minDuration; }
-    RunTests::InWhatOrder Config::runOrder() const     { return m_data.runOrder; }
+    TestRunOrder Config::runOrder() const              { return m_data.runOrder; }
     unsigned int Config::rngSeed() const               { return m_data.rngSeed; }
     UseColour::YesOrNo Config::useColour() const       { return m_data.useColour; }
     bool Config::shouldDebugBreak() const              { return m_data.shouldDebugBreak; }

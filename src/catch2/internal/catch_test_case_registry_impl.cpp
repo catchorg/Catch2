@@ -46,15 +46,15 @@ namespace {
 
     std::vector<TestCaseHandle> sortTests( IConfig const& config, std::vector<TestCaseHandle> const& unsortedTestCases ) {
         switch (config.runOrder()) {
-        case RunTests::InDeclarationOrder:
+        case TestRunOrder::Declared:
             return unsortedTestCases;
 
-        case RunTests::InLexicographicalOrder: {
+        case TestRunOrder::LexicographicallySorted: {
             std::vector<TestCaseHandle> sorted = unsortedTestCases;
             std::sort(sorted.begin(), sorted.end());
             return sorted;
         }
-        case RunTests::InRandomOrder: {
+        case TestRunOrder::Randomized: {
             seedRng(config);
             HashTest h(rng());
             std::vector<std::pair<uint64_t, TestCaseHandle>> indexed_tests;
