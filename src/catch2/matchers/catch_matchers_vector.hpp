@@ -116,17 +116,17 @@ namespace Matchers {
         }
         template <typename = std::enable_if_t<std::is_constructible<double, T>::value>>
         ApproxMatcher& epsilon( T const& newEpsilon ) {
-            approx.epsilon(newEpsilon);
+            approx.epsilon(static_cast<double>(newEpsilon));
             return *this;
         }
         template <typename = std::enable_if_t<std::is_constructible<double, T>::value>>
         ApproxMatcher& margin( T const& newMargin ) {
-            approx.margin(newMargin);
+            approx.margin(static_cast<double>(newMargin));
             return *this;
         }
         template <typename = std::enable_if_t<std::is_constructible<double, T>::value>>
         ApproxMatcher& scale( T const& newScale ) {
-            approx.scale(newScale);
+            approx.scale(static_cast<double>(newScale));
             return *this;
         }
 
