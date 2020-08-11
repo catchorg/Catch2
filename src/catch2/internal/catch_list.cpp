@@ -22,13 +22,13 @@
 namespace Catch {
     namespace {
 
-        void listTests(IStreamingReporter& reporter, Config const& config) {
+        void listTests(IStreamingReporter& reporter, IConfig const& config) {
             auto const& testSpec = config.testSpec();
             auto matchedTestCases = filterTests(getAllTestCasesSorted(config), testSpec, config);
             reporter.listTests(matchedTestCases, config);
         }
 
-        void listTags(IStreamingReporter& reporter, Config const& config) {
+        void listTags(IStreamingReporter& reporter, IConfig const& config) {
             auto const& testSpec = config.testSpec();
             std::vector<TestCaseHandle> matchedTestCases = filterTests(getAllTestCasesSorted(config), testSpec, config);
 
@@ -50,7 +50,7 @@ namespace Catch {
             reporter.listTags(infos, config);
         }
 
-        void listReporters(IStreamingReporter& reporter, Config const& config) {
+        void listReporters(IStreamingReporter& reporter, IConfig const& config) {
             std::vector<ReporterDescription> descriptions;
 
             IReporterRegistry::FactoryMap const& factories = getRegistryHub().getReporterRegistry().getFactories();

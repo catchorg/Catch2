@@ -11,7 +11,7 @@
 #include <catch2/internal/catch_errno_guard.hpp>
 #include <catch2/reporters/catch_reporter_bases.hpp>
 #include <catch2/internal/catch_stream.hpp>
-#include <catch2/catch_config.hpp>
+#include <catch2/interfaces/catch_interfaces_config.hpp>
 
 #include <algorithm>
 #include <cstring>

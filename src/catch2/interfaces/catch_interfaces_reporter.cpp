@@ -7,7 +7,6 @@
 
 #include <catch2/interfaces/catch_interfaces_reporter.hpp>
 #include <catch2/interfaces/catch_interfaces_config.hpp>
-#include <catch2/catch_config.hpp>
 #include <catch2/internal/catch_console_colour.hpp>
 #include <catch2/internal/catch_console_width.hpp>
 #include <catch2/catch_message.hpp>
@@ -110,7 +109,7 @@ namespace Catch {
 
     void IStreamingReporter::fatalErrorEncountered( StringRef ) {}
 
-    void IStreamingReporter::listReporters(std::vector<ReporterDescription> const& descriptions, Config const& config) {
+    void IStreamingReporter::listReporters(std::vector<ReporterDescription> const& descriptions, IConfig const& config) {
         Catch::cout() << "Available reporters:\n";
         const auto maxNameLen = std::max_element(descriptions.begin(), descriptions.end(),
             [](ReporterDescription const& lhs, ReporterDescription const& rhs) { return lhs.name.size() < rhs.name.size(); })
@@ -137,10 +136,10 @@ namespace Catch {
         Catch::cout() << std::endl;
     }
 
-    void IStreamingReporter::listTests(std::vector<TestCaseHandle> const& tests, Config const& config) {
-        if (config.hasTestFilters())
+    void IStreamingReporter::listTests(std::vector<TestCaseHandle> const& tests, IConfig const& config) {
+        if (config.hasTestFilters()) {
             Catch::cout() << "Matching test cases:\n";
-        else {
+        } else {
             Catch::cout() << "All available test cases:\n";
         }
 
@@ -167,7 +166,7 @@ namespace Catch {
         }
     }
 
-    void IStreamingReporter::listTags(std::vector<TagInfo> const& tags, Config const& config) {
+    void IStreamingReporter::listTags(std::vector<TagInfo> const& tags, IConfig const& config) {
         if (config.hasTestFilters()) {
             Catch::cout() << "Tags for matching test cases:\n";
         } else {

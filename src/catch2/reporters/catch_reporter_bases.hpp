@@ -159,9 +159,9 @@ namespace Catch {
         bool assertionEnded(AssertionStats const&) override;
 
         // Event listeners should not use the default listing impl
-        void listReporters(std::vector<ReporterDescription> const&, Config const&) override {}
-        void listTests(std::vector<TestCaseHandle> const&, Config const&) override {}
-        void listTags(std::vector<TagInfo> const&, Config const&) override {}
+        void listReporters(std::vector<ReporterDescription> const&, IConfig const&) override {}
+        void listTests(std::vector<TestCaseHandle> const&, IConfig const&) override {}
+        void listTags(std::vector<TagInfo> const&, IConfig const&) override {}
     };
 
 } // end namespace Catch

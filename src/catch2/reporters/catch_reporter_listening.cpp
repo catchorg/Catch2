@@ -147,21 +147,21 @@ namespace Catch {
         m_reporter->skipTest( testInfo );
     }
 
-    void ListeningReporter::listReporters(std::vector<ReporterDescription> const& descriptions, Config const& config) {
+    void ListeningReporter::listReporters(std::vector<ReporterDescription> const& descriptions, IConfig const& config) {
         for (auto const& listener : m_listeners) {
             listener->listReporters(descriptions, config);
         }
         m_reporter->listReporters(descriptions, config);
     }
 
-    void ListeningReporter::listTests(std::vector<TestCaseHandle> const& tests, Config const& config) {
+    void ListeningReporter::listTests(std::vector<TestCaseHandle> const& tests, IConfig const& config) {
         for (auto const& listener : m_listeners) {
             listener->listTests(tests, config);
         }
         m_reporter->listTests(tests, config);
     }
 
-    void ListeningReporter::listTags(std::vector<TagInfo> const& tags, Config const& config) {
+    void ListeningReporter::listTags(std::vector<TagInfo> const& tags, IConfig const& config) {
         for (auto const& listener : m_listeners) {
             listener->listTags(tags, config);
         }

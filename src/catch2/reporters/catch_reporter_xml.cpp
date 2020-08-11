@@ -272,7 +272,7 @@ namespace Catch {
         m_xml.endElement();
     }
 
-    void XmlReporter::listReporters(std::vector<ReporterDescription> const& descriptions, Config const&) {
+    void XmlReporter::listReporters(std::vector<ReporterDescription> const& descriptions, IConfig const&) {
         auto outerTag = m_xml.scopedElement("AvailableReporters");
         for (auto const& reporter : descriptions) {
             auto inner = m_xml.scopedElement("Reporter");
@@ -285,7 +285,7 @@ namespace Catch {
         }
     }
 
-    void XmlReporter::listTests(std::vector<TestCaseHandle> const& tests, Config const&) {
+    void XmlReporter::listTests(std::vector<TestCaseHandle> const& tests, IConfig const&) {
         auto outerTag = m_xml.scopedElement("MatchingTests");
         for (auto const& test : tests) {
             auto innerTag = m_xml.scopedElement("TestCase");
@@ -310,7 +310,7 @@ namespace Catch {
         }
     }
 
-    void XmlReporter::listTags(std::vector<TagInfo> const& tags, Config const&) {
+    void XmlReporter::listTags(std::vector<TagInfo> const& tags, IConfig const&) {
         auto outerTag = m_xml.scopedElement("TagsFromMatchingTests");
         for (auto const& tag : tags) {
             auto innerTag = m_xml.scopedElement("Tag");

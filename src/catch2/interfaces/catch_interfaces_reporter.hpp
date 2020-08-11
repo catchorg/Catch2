@@ -234,10 +234,12 @@ namespace Catch {
         // Default empty implementation provided
         virtual void fatalErrorEncountered( StringRef name );
 
-        // Listing support
-        virtual void listReporters(std::vector<ReporterDescription> const& descriptions, Config const& config);
-        virtual void listTests(std::vector<TestCaseHandle> const& tests, Config const& config);
-        virtual void listTags(std::vector<TagInfo> const& tags, Config const& config);
+        //! Writes out information about provided reporters using reporter-specific format
+        virtual void listReporters(std::vector<ReporterDescription> const& descriptions, IConfig const& config);
+        //! Writes out information about provided tests using reporter-specific format
+        virtual void listTests(std::vector<TestCaseHandle> const& tests, IConfig const& config);
+        //! Writes out information about the provided tags using reporter-specific format
+        virtual void listTags(std::vector<TagInfo> const& tags, IConfig const& config);
 
     };
     using IStreamingReporterPtr = Detail::unique_ptr<IStreamingReporter>;

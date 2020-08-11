@@ -55,9 +55,9 @@ namespace Catch {
         void benchmarkEnded(BenchmarkStats<> const&) override;
         void benchmarkFailed(std::string const&) override;
 
-        void listReporters(std::vector<ReporterDescription> const& descriptions, Config const& config) override;
-        void listTests(std::vector<TestCaseHandle> const& tests, Config const& config) override;
-        void listTags(std::vector<TagInfo> const& tags, Config const& config) override;
+        void listReporters(std::vector<ReporterDescription> const& descriptions, IConfig const& config) override;
+        void listTests(std::vector<TestCaseHandle> const& tests, IConfig const& config) override;
+        void listTags(std::vector<TagInfo> const& tags, IConfig const& config) override;
 
     private:
         Timer m_testCaseTimer;
