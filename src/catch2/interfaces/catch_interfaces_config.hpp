@@ -29,11 +29,11 @@ namespace Catch {
         NoTests = 0x02
     }; };
 
-    struct ShowDurations { enum OrNot {
+    enum class ShowDurations {
         DefaultForReporter,
         Always,
         Never
-    }; };
+    };
     struct RunTests { enum InWhatOrder {
         InDeclarationOrder,
         InLexicographicalOrder,
@@ -66,7 +66,7 @@ namespace Catch {
         virtual bool warnAboutNoTests() const = 0;
         virtual int abortAfter() const = 0;
         virtual bool showInvisibles() const = 0;
-        virtual ShowDurations::OrNot showDurations() const = 0;
+        virtual ShowDurations showDurations() const = 0;
         virtual double minDuration() const = 0;
         virtual TestSpec const& testSpec() const = 0;
         virtual bool hasTestFilters() const = 0;

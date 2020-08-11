@@ -43,7 +43,7 @@ namespace Catch {
 
         Verbosity verbosity = Verbosity::Normal;
         WarnAbout::What warnings = WarnAbout::Nothing;
-        ShowDurations::OrNot showDurations = ShowDurations::DefaultForReporter;
+        ShowDurations showDurations = ShowDurations::DefaultForReporter;
         double minDuration = -1;
         RunTests::InWhatOrder runOrder = RunTests::InDeclarationOrder;
         UseColour::YesOrNo useColour = UseColour::Auto;
@@ -94,7 +94,7 @@ namespace Catch {
         bool includeSuccessfulResults() const override;
         bool warnAboutMissingAssertions() const override;
         bool warnAboutNoTests() const override;
-        ShowDurations::OrNot showDurations() const override;
+        ShowDurations showDurations() const override;
         double minDuration() const override;
         RunTests::InWhatOrder runOrder() const override;
         unsigned int rngSeed() const override;
