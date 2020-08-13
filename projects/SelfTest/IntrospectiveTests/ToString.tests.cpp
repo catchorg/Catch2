@@ -4,6 +4,14 @@
 
 enum class EnumClass3 { Value1, Value2, Value3, Value4 };
 
+struct UsesSentinel {
+    using const_iterator = int const*;
+    using const_sentinel = std::nullptr_t;
+
+    bool operator==(int) const { return false; }
+    const_iterator begin() const { return nullptr; }
+    const_iterator end() const { return nullptr; }
+};
 
 TEST_CASE( "parseEnums", "[Strings][enums]" ) {
     using namespace Catch::Matchers;
@@ -39,4 +47,8 @@ TEST_CASE( "Directly creating an EnumInfo" ) {
     CHECK( enumInfo->lookup(0) == "Value1" );
     CHECK( enumInfo->lookup(1) == "Value2" );
     CHECK( enumInfo->lookup(3) == "{** unexpected enum value **}" );
+}
+
+TEST_CASE("Range type with sentinel") {
+    CHECK( UsesSentinel{} == 0 );
 }
