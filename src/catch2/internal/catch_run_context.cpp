@@ -1,19 +1,18 @@
+#include <catch2/internal/catch_run_context.hpp>
+
 #include <catch2/interfaces/catch_interfaces_generatortracker.hpp>
 #include <catch2/interfaces/catch_interfaces_config.hpp>
-#include <catch2/internal/catch_run_context.hpp>
 #include <catch2/internal/catch_compiler_capabilities.hpp>
 #include <catch2/internal/catch_context.hpp>
 #include <catch2/internal/catch_enforce.hpp>
 #include <catch2/internal/catch_fatal_condition_handler.hpp>
 #include <catch2/internal/catch_random_number_generator.hpp>
-#include <catch2/internal/catch_stream.hpp>
 #include <catch2/catch_timer.hpp>
 #include <catch2/internal/catch_output_redirect.hpp>
 #include <catch2/internal/catch_assertion_handler.hpp>
 
 #include <cassert>
 #include <algorithm>
-#include <sstream>
 
 namespace Catch {
 
