@@ -13,7 +13,6 @@
 #include <catch2/interfaces/catch_interfaces_registry_hub.hpp>
 #include <catch2/interfaces/catch_interfaces_reporter.hpp>
 
-#include <algorithm>
 #include <fstream>
 #include <ctime>
 
