@@ -8,7 +8,6 @@ struct UsesSentinel {
     using const_iterator = int const*;
     using const_sentinel = std::nullptr_t;
 
-    bool operator==(int) const { return false; }
     const_iterator begin() const { return nullptr; }
     const_iterator end() const { return nullptr; }
 };
@@ -50,5 +49,5 @@ TEST_CASE( "Directly creating an EnumInfo" ) {
 }
 
 TEST_CASE("Range type with sentinel") {
-    CHECK( UsesSentinel{} == 0 );
+    CHECK( Catch::Detail::stringify(UsesSentinel{}) == "{  }" );
 }
