@@ -21,10 +21,10 @@ namespace Matchers {
                ? toLower( str )
                : str;
     }
-    std::string CasedString::caseSensitivitySuffix() const {
-        return m_caseSensitivity == CaseSensitive::No
-               ? " (case insensitive)"
-               : std::string();
+    StringRef CasedString::caseSensitivitySuffix() const {
+        return m_caseSensitivity == CaseSensitive::Yes
+                   ? StringRef()
+                   : " (case insensitive)"_sr;
     }
 
 

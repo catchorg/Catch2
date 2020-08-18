@@ -10,6 +10,7 @@
 
 #include <catch2/matchers/catch_matchers.hpp>
 #include <catch2/internal/catch_case_sensitive.hpp>
+#include <catch2/internal/catch_stringref.hpp>
 
 #include <string>
 
@@ -19,7 +20,7 @@ namespace Matchers {
     struct CasedString {
         CasedString( std::string const& str, CaseSensitive caseSensitivity );
         std::string adjustString( std::string const& str ) const;
-        std::string caseSensitivitySuffix() const;
+        StringRef caseSensitivitySuffix() const;
 
         CaseSensitive m_caseSensitivity;
         std::string m_str;
