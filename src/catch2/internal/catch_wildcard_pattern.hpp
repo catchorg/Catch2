@@ -8,8 +8,9 @@
 #ifndef TWOBLUECUBES_CATCH_WILDCARD_PATTERN_HPP_INCLUDED
 #define TWOBLUECUBES_CATCH_WILDCARD_PATTERN_HPP_INCLUDED
 
-#include <catch2/internal/catch_common.hpp>
+#include <catch2/internal/catch_case_sensitive.hpp>
 
+#include <string>
 
 namespace Catch
 {

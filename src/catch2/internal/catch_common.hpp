@@ -27,11 +27,6 @@ std::ostream& operator<<(std::ostream&, Catch_global_namespace_dummy);
 
 namespace Catch {
 
-    struct CaseSensitive { enum Choice {
-        Yes,
-        No
-    }; };
-
     struct SourceLineInfo {
 
         SourceLineInfo() = delete;

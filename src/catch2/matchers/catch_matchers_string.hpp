@@ -9,6 +9,7 @@
 #define TWOBLUECUBES_CATCH_MATCHERS_STRING_H_INCLUDED
 
 #include <catch2/matchers/catch_matchers.hpp>
+#include <catch2/internal/catch_case_sensitive.hpp>
 
 #include <string>
 

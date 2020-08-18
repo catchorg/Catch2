@@ -39,6 +39,7 @@
 #include <catch2/generators/catch_generators_all.hpp>
 #include <catch2/interfaces/catch_interfaces_all.hpp>
 #include <catch2/internal/catch_assertion_handler.hpp>
+#include <catch2/internal/catch_case_sensitive.hpp>
 #include <catch2/internal/catch_clara.hpp>
 #include <catch2/internal/catch_commandline.hpp>
 #include <catch2/internal/catch_common.hpp>
