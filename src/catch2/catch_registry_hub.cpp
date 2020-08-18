@@ -18,13 +18,15 @@
 #include <catch2/internal/catch_singletons.hpp>
 #include <catch2/internal/catch_enum_values_registry.hpp>
 #include <catch2/catch_test_case_info.hpp>
+#include <catch2/internal/catch_noncopyable.hpp>
 
 namespace Catch {
 
     namespace {
 
-        class RegistryHub : public IRegistryHub, public IMutableRegistryHub,
-                            private NonCopyable {
+        class RegistryHub : public IRegistryHub,
+                            public IMutableRegistryHub,
+                            private Detail::NonCopyable {
 
         public: // IRegistryHub
             RegistryHub() = default;

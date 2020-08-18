@@ -9,7 +9,7 @@
 #ifndef TWOBLUECUBES_CATCH_STREAM_H_INCLUDED
 #define TWOBLUECUBES_CATCH_STREAM_H_INCLUDED
 
-#include <catch2/internal/catch_common.hpp>
+#include <catch2/internal/catch_noncopyable.hpp>
 
 #include <iosfwd>
 #include <cstddef>
@@ -30,7 +30,7 @@ namespace Catch {
 
     auto makeStream( StringRef const &filename ) -> IStream const*;
 
-    class ReusableStringStream : NonCopyable {
+    class ReusableStringStream : Detail::NonCopyable {
         std::size_t m_index;
         std::ostream* m_oss;
     public:

@@ -8,7 +8,6 @@
 #ifndef TWOBLUECUBES_CATCH_INTERFACES_REGISTRY_HUB_H_INCLUDED
 #define TWOBLUECUBES_CATCH_INTERFACES_REGISTRY_HUB_H_INCLUDED
 
-#include <catch2/internal/catch_common.hpp>
 #include <catch2/internal/catch_unique_ptr.hpp>
 
 #include <string>
@@ -25,6 +24,7 @@ namespace Catch {
     struct ITagAliasRegistry;
     struct ITestInvoker;
     struct IMutableEnumValuesRegistry;
+    struct SourceLineInfo;
 
     class StartupExceptionRegistry;
 

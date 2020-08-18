@@ -60,6 +60,7 @@
 #include <catch2/internal/catch_list.hpp>
 #include <catch2/internal/catch_message_info.hpp>
 #include <catch2/internal/catch_meta.hpp>
+#include <catch2/internal/catch_noncopyable.hpp>
 #include <catch2/internal/catch_option.hpp>
 #include <catch2/internal/catch_output_redirect.hpp>
 #include <catch2/internal/catch_platform.hpp>

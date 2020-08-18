@@ -30,6 +30,8 @@
 #    endif
 #endif
 
+#include <catch2/internal/catch_noncopyable.hpp>
+
 #include <cassert>
 #include <cctype>
 #include <memory>
@@ -286,15 +288,7 @@ namespace Catch {
             }
 #endif // CLARA_CONFIG_OPTIONAL_TYPE
 
-            struct NonCopyable {
-                NonCopyable() = default;
-                NonCopyable( NonCopyable const& ) = delete;
-                NonCopyable( NonCopyable&& ) = delete;
-                NonCopyable& operator=( NonCopyable const& ) = delete;
-                NonCopyable& operator=( NonCopyable&& ) = delete;
-            };
-
-            struct BoundRef : NonCopyable {
+            struct BoundRef : Catch::Detail::NonCopyable {
                 virtual ~BoundRef() = default;
                 virtual auto isContainer() const -> bool { return false; }
                 virtual auto isFlag() const -> bool { return false; }

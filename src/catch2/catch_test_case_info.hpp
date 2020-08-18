@@ -9,6 +9,7 @@
 #define TWOBLUECUBES_CATCH_TEST_CASE_INFO_H_INCLUDED
 
 #include <catch2/internal/catch_common.hpp>
+#include <catch2/internal/catch_noncopyable.hpp>
 #include <catch2/internal/catch_stringref.hpp>
 #include <catch2/internal/catch_test_registry.hpp>
 #include <catch2/internal/catch_unique_ptr.hpp>
@@ -44,7 +45,7 @@ namespace Catch {
     };
 
 
-    struct TestCaseInfo : NonCopyable {
+    struct TestCaseInfo : Detail::NonCopyable {
 
         TestCaseInfo(std::string const& _className,
                      NameAndTags const& _tags,

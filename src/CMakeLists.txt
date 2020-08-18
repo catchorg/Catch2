@@ -38,6 +38,7 @@ set(INTERNAL_HEADERS
     ${SOURCES_DIR}/matchers/internal/catch_matchers_impl.hpp
     ${SOURCES_DIR}/internal/catch_console_width.hpp
     ${SOURCES_DIR}/internal/catch_container_nonmembers.hpp
+    ${SOURCES_DIR}/internal/catch_noncopyable.hpp
     ${SOURCES_DIR}/catch_approx.hpp
     ${SOURCES_DIR}/internal/catch_assertion_handler.hpp
     ${SOURCES_DIR}/catch_assertion_info.hpp

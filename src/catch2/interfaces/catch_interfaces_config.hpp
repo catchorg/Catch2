@@ -8,7 +8,7 @@
 #ifndef TWOBLUECUBES_CATCH_INTERFACES_CONFIG_H_INCLUDED
 #define TWOBLUECUBES_CATCH_INTERFACES_CONFIG_H_INCLUDED
 
-#include <catch2/internal/catch_common.hpp>
+#include <catch2/internal/catch_noncopyable.hpp>
 
 #include <chrono>
 #include <iosfwd>
@@ -53,7 +53,7 @@ namespace Catch {
 
     class TestSpec;
 
-    struct IConfig : NonCopyable {
+    struct IConfig : Detail::NonCopyable {
 
         virtual ~IConfig();
 

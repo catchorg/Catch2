@@ -32,15 +32,6 @@ namespace Catch {
         No
     }; };
 
-    class NonCopyable {
-        NonCopyable( NonCopyable const& )              = delete;
-        NonCopyable( NonCopyable && )                  = delete;
-        NonCopyable& operator = ( NonCopyable const& ) = delete;
-        NonCopyable& operator = ( NonCopyable && )     = delete;
-    protected:
-        NonCopyable() noexcept = default;
-    };
-
     struct SourceLineInfo {
 
         SourceLineInfo() = delete;
