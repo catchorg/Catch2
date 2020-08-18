@@ -17,11 +17,11 @@ namespace Catch {
 namespace Matchers {
 
     struct CasedString {
-        CasedString( std::string const& str, CaseSensitive::Choice caseSensitivity );
+        CasedString( std::string const& str, CaseSensitive caseSensitivity );
         std::string adjustString( std::string const& str ) const;
         std::string caseSensitivitySuffix() const;
 
-        CaseSensitive::Choice m_caseSensitivity;
+        CaseSensitive m_caseSensitivity;
         std::string m_str;
     };
 
@@ -51,25 +51,25 @@ namespace Matchers {
     };
 
     struct RegexMatcher final : MatcherBase<std::string> {
-        RegexMatcher( std::string regex, CaseSensitive::Choice caseSensitivity );
+        RegexMatcher( std::string regex, CaseSensitive caseSensitivity );
         bool match( std::string const& matchee ) const override;
         std::string describe() const override;
 
     private:
         std::string m_regex;
-        CaseSensitive::Choice m_caseSensitivity;
+        CaseSensitive m_caseSensitivity;
     };
 
     //! Creates matcher that accepts strings that are exactly equal to `str`
-    StringEqualsMatcher Equals( std::string const& str, CaseSensitive::Choice caseSensitivity = CaseSensitive::Yes );
+    StringEqualsMatcher Equals( std::string const& str, CaseSensitive caseSensitivity = CaseSensitive::Yes );
     //! Creates matcher that accepts strings that contain `str`
-    StringContainsMatcher Contains( std::string const& str, CaseSensitive::Choice caseSensitivity = CaseSensitive::Yes );
+    StringContainsMatcher Contains( std::string const& str, CaseSensitive caseSensitivity = CaseSensitive::Yes );
     //! Creates matcher that accepts strings that _end_ with `str`
-    EndsWithMatcher EndsWith( std::string const& str, CaseSensitive::Choice caseSensitivity = CaseSensitive::Yes );
+    EndsWithMatcher EndsWith( std::string const& str, CaseSensitive caseSensitivity = CaseSensitive::Yes );
     //! Creates matcher that accepts strings that _start_ with `str`
-    StartsWithMatcher StartsWith( std::string const& str, CaseSensitive::Choice caseSensitivity = CaseSensitive::Yes );
+    StartsWithMatcher StartsWith( std::string const& str, CaseSensitive caseSensitivity = CaseSensitive::Yes );
     //! Creates matcher that accepts strings matching `regex`
-    RegexMatcher Matches( std::string const& regex, CaseSensitive::Choice caseSensitivity = CaseSensitive::Yes );
+    RegexMatcher Matches( std::string const& regex, CaseSensitive caseSensitivity = CaseSensitive::Yes );
 
 } // namespace Matchers
 } // namespace Catch

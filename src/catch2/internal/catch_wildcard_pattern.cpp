@@ -12,7 +12,7 @@
 namespace Catch {
 
     WildcardPattern::WildcardPattern( std::string const& pattern,
-                                      CaseSensitive::Choice caseSensitivity )
+                                      CaseSensitive caseSensitivity )
     :   m_caseSensitivity( caseSensitivity ),
         m_pattern( normaliseString( pattern ) )
     {

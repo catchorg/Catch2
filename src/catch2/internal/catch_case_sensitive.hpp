@@ -3,9 +3,7 @@
 
 namespace Catch {
 
-    struct CaseSensitive {
-        enum Choice { Yes, No };
-    };
+    enum class CaseSensitive { Yes, No };
 
 } // namespace Catch
 

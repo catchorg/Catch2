@@ -24,13 +24,13 @@ namespace Catch
 
     public:
 
-        WildcardPattern( std::string const& pattern, CaseSensitive::Choice caseSensitivity );
+        WildcardPattern( std::string const& pattern, CaseSensitive caseSensitivity );
         virtual ~WildcardPattern() = default;
         virtual bool matches( std::string const& str ) const;
 
     private:
         std::string normaliseString( std::string const& str ) const;
-        CaseSensitive::Choice m_caseSensitivity;
+        CaseSensitive m_caseSensitivity;
         WildcardPosition m_wildcard = NoWildcard;
         std::string m_pattern;
     };

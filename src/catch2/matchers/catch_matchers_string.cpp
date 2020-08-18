@@ -12,7 +12,7 @@
 namespace Catch {
 namespace Matchers {
 
-    CasedString::CasedString( std::string const& str, CaseSensitive::Choice caseSensitivity )
+    CasedString::CasedString( std::string const& str, CaseSensitive caseSensitivity )
     :   m_caseSensitivity( caseSensitivity ),
         m_str( adjustString( str ) )
     {}
@@ -74,11 +74,11 @@ namespace Matchers {
 
 
 
-    RegexMatcher::RegexMatcher(std::string regex, CaseSensitive::Choice caseSensitivity): m_regex(std::move(regex)), m_caseSensitivity(caseSensitivity) {}
+    RegexMatcher::RegexMatcher(std::string regex, CaseSensitive caseSensitivity): m_regex(std::move(regex)), m_caseSensitivity(caseSensitivity) {}
 
     bool RegexMatcher::match(std::string const& matchee) const {
         auto flags = std::regex::ECMAScript; // ECMAScript is the default syntax option anyway
-        if (m_caseSensitivity == CaseSensitive::Choice::No) {
+        if (m_caseSensitivity == CaseSensitive::No) {
             flags |= std::regex::icase;
         }
         auto reg = std::regex(m_regex, flags);
@@ -86,24 +86,24 @@ namespace Matchers {
     }
 
     std::string RegexMatcher::describe() const {
-        return "matches " + ::Catch::Detail::stringify(m_regex) + ((m_caseSensitivity == CaseSensitive::Choice::Yes)? " case sensitively" : " case insensitively");
+        return "matches " + ::Catch::Detail::stringify(m_regex) + ((m_caseSensitivity == CaseSensitive::Yes)? " case sensitively" : " case insensitively");
     }
 
 
-    StringEqualsMatcher Equals( std::string const& str, CaseSensitive::Choice caseSensitivity ) {
+    StringEqualsMatcher Equals( std::string const& str, CaseSensitive caseSensitivity ) {
         return StringEqualsMatcher( CasedString( str, caseSensitivity) );
     }
-    StringContainsMatcher Contains( std::string const& str, CaseSensitive::Choice caseSensitivity ) {
+    StringContainsMatcher Contains( std::string const& str, CaseSensitive caseSensitivity ) {
         return StringContainsMatcher( CasedString( str, caseSensitivity) );
     }
-    EndsWithMatcher EndsWith( std::string const& str, CaseSensitive::Choice caseSensitivity ) {
+    EndsWithMatcher EndsWith( std::string const& str, CaseSensitive caseSensitivity ) {
         return EndsWithMatcher( CasedString( str, caseSensitivity) );
     }
-    StartsWithMatcher StartsWith( std::string const& str, CaseSensitive::Choice caseSensitivity ) {
+    StartsWithMatcher StartsWith( std::string const& str, CaseSensitive caseSensitivity ) {
         return StartsWithMatcher( CasedString( str, caseSensitivity) );
     }
 
-    RegexMatcher Matches(std::string const& regex, CaseSensitive::Choice caseSensitivity) {
+    RegexMatcher Matches(std::string const& regex, CaseSensitive caseSensitivity) {
         return RegexMatcher(regex, caseSensitivity);
     }
 
