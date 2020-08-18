@@ -1203,6 +1203,7 @@ CmdLine.tests.cpp:<line number>: passed: config.benchmarkWarmupTime == 10 for: 1
 Misc.tests.cpp:<line number>: passed: std::tuple_size<TestType>::value >= 1 for: 3 >= 1
 Misc.tests.cpp:<line number>: passed: std::tuple_size<TestType>::value >= 1 for: 2 >= 1
 Misc.tests.cpp:<line number>: passed: std::tuple_size<TestType>::value >= 1 for: 1 >= 1
+ToString.tests.cpp:<line number>: passed: Catch::Detail::stringify(UsesSentinel{}) == "{  }" for: "{  }" == "{  }"
 Decomposition.tests.cpp:<line number>: failed: truthy(false) for: Hey, its truthy!
 Matchers.tests.cpp:<line number>: failed: testStringForMatching(), Matches("this STRING contains 'abc' as a substring") for: "this string contains 'abc' as a substring" matches "this STRING contains 'abc' as a substring" case sensitively
 Matchers.tests.cpp:<line number>: failed: testStringForMatching(), Matches("contains 'abc' as a substring") for: "this string contains 'abc' as a substring" matches "contains 'abc' as a substring" case sensitively

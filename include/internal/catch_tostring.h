@@ -309,8 +309,8 @@ namespace Catch {
 #endif
 
     namespace Detail {
-        template<typename InputIterator>
-        std::string rangeToString(InputIterator first, InputIterator last) {
+        template<typename InputIterator, typename Sentinel = InputIterator>
+        std::string rangeToString(InputIterator first, Sentinel last) {
             ReusableStringStream rss;
             rss << "{ ";
             if (first != last) {

@@ -162,6 +162,7 @@
   </file>
   <file path="projects/<exe-name>/IntrospectiveTests/ToString.tests.cpp">
     <testCase name="Directly creating an EnumInfo" duration="{duration}"/>
+    <testCase name="Range type with sentinel" duration="{duration}"/>
     <testCase name="parseEnums/No enums" duration="{duration}"/>
     <testCase name="parseEnums/One enum value" duration="{duration}"/>
     <testCase name="parseEnums/Multiple enum values" duration="{duration}"/>
