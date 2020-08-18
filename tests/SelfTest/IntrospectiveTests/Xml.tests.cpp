@@ -1,10 +1,10 @@
 #include <catch2/catch_test_macros.hpp>
 #include <catch2/internal/catch_xmlwriter.hpp>
 
-#include <sstream>
+#include <catch2/internal/catch_stream.hpp>
 
-inline std::string encode( std::string const& str, Catch::XmlEncode::ForWhat forWhat = Catch::XmlEncode::ForTextNodes ) {
-    std::ostringstream oss;
+static std::string encode( std::string const& str, Catch::XmlEncode::ForWhat forWhat = Catch::XmlEncode::ForTextNodes ) {
+    Catch::ReusableStringStream oss;
     oss << Catch::XmlEncode( str, forWhat );
     return oss.str();
 }
