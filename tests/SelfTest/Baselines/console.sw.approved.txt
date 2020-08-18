@@ -9327,6 +9327,17 @@ with expansion:
   1 >= 1
 
 -------------------------------------------------------------------------------
+Range type with sentinel
+-------------------------------------------------------------------------------
+ToString.tests.cpp:<line number>
+...............................................................................
+
+ToString.tests.cpp:<line number>: PASSED:
+  CHECK( Catch::Detail::stringify(UsesSentinel{}) == "{  }" )
+with expansion:
+  "{  }" == "{  }"
+
+-------------------------------------------------------------------------------
 Reconstruction should be based on stringification: #914
 -------------------------------------------------------------------------------
 Decomposition.tests.cpp:<line number>
@@ -15654,6 +15665,6 @@ Misc.tests.cpp:<line number>
 Misc.tests.cpp:<line number>: PASSED:
 
 ===============================================================================
-test cases:  349 |  259 passed |  86 failed |  4 failed as expected
-assertions: 2006 | 1837 passed | 148 failed | 21 failed as expected
+test cases:  350 |  260 passed |  86 failed |  4 failed as expected
+assertions: 2007 | 1838 passed | 148 failed | 21 failed as expected
 

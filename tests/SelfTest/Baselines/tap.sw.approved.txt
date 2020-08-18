@@ -2452,6 +2452,8 @@ ok {test-number} - std::tuple_size<TestType>::value >= 1 for: 3 >= 1
 ok {test-number} - std::tuple_size<TestType>::value >= 1 for: 2 >= 1
 # Product with differing arities - std::tuple<int>
 ok {test-number} - std::tuple_size<TestType>::value >= 1 for: 1 >= 1
+# Range type with sentinel
+ok {test-number} - Catch::Detail::stringify(UsesSentinel{}) == "{  }" for: "{  }" == "{  }"
 # Reconstruction should be based on stringification: #914
 not ok {test-number} - truthy(false) for: Hey, its truthy!
 # Regex string matcher
@@ -4004,5 +4006,5 @@ ok {test-number} - q3 == 23. for: 23.0 == 23.0
 ok {test-number} -
 # xmlentitycheck
 ok {test-number} -
-1..2006
+1..2007
 

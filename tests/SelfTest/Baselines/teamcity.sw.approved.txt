@@ -461,6 +461,8 @@ Message.tests.cpp:<line number>|nexplicit failure with message:|n  "Message from
 ##teamcity[testFinished name='Product with differing arities - std::tuple<int, double>' duration="{duration}"]
 ##teamcity[testStarted name='Product with differing arities - std::tuple<int>']
 ##teamcity[testFinished name='Product with differing arities - std::tuple<int>' duration="{duration}"]
+##teamcity[testStarted name='Range type with sentinel']
+##teamcity[testFinished name='Range type with sentinel' duration="{duration}"]
 ##teamcity[testStarted name='Reconstruction should be based on stringification: #914']
 Decomposition.tests.cpp:<line number>|nexpression failed|n  CHECK( truthy(false) )|nwith expansion:|n  Hey, its truthy!|n']
 ##teamcity[testFinished name='Reconstruction should be based on stringification: #914' duration="{duration}"]

@@ -11404,6 +11404,17 @@ Nor would this
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
+    <TestCase name="Range type with sentinel" filename="tests/<exe-name>/IntrospectiveTests/ToString.tests.cpp" >
+      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/ToString.tests.cpp" >
+        <Original>
+          Catch::Detail::stringify(UsesSentinel{}) == "{  }"
+        </Original>
+        <Expanded>
+          "{  }" == "{  }"
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
     <TestCase name="Reconstruction should be based on stringification: #914" tags="[.][Decomposition][failing]" filename="tests/<exe-name>/UsageTests/Decomposition.tests.cpp" >
       <Expression success="false" type="CHECK" filename="tests/<exe-name>/UsageTests/Decomposition.tests.cpp" >
         <Original>
@@ -18568,9 +18579,9 @@ loose text artifact
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="1837" failures="149" expectedFailures="21"/>
-    <OverallResultsCases successes="259" failures="86" expectedFailures="4"/>
+    <OverallResults successes="1838" failures="149" expectedFailures="21"/>
+    <OverallResultsCases successes="260" failures="86" expectedFailures="4"/>
   </Group>
-  <OverallResults successes="1837" failures="148" expectedFailures="21"/>
-  <OverallResultsCases successes="259" failures="86" expectedFailures="4"/>
+  <OverallResults successes="1838" failures="148" expectedFailures="21"/>
+  <OverallResultsCases successes="260" failures="86" expectedFailures="4"/>
 </Catch>
