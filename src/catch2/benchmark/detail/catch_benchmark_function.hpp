@@ -81,14 +81,15 @@ namespace Catch {
                     BenchmarkFunction(Fun&& fun)
                     : f(new model<typename std::decay<Fun>::type>(std::forward<Fun>(fun))) {}
 
-                BenchmarkFunction(BenchmarkFunction&& that)
-                    : f(std::move(that.f)) {}
+                BenchmarkFunction( BenchmarkFunction&& that ) noexcept:
+                    f( std::move( that.f ) ) {}
 
                 BenchmarkFunction(BenchmarkFunction const& that)
                     : f(that.f->clone()) {}
 
-                BenchmarkFunction& operator=(BenchmarkFunction&& that) {
-                    f = std::move(that.f);
+                BenchmarkFunction&
+                operator=( BenchmarkFunction&& that ) noexcept {
+                    f = std::move( that.f );
                     return *this;
                 }
 

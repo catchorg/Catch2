@@ -71,7 +71,7 @@ namespace Catch {
 
         LazyStat<TestRunInfo> currentTestRunInfo;
         LazyStat<GroupInfo> currentGroupInfo;
-        TestCaseInfo const* currentTestCaseInfo;
+        TestCaseInfo const* currentTestCaseInfo = nullptr;
 
         std::vector<SectionInfo> m_sectionStack;
     };

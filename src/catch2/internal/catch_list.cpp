@@ -41,7 +41,7 @@ namespace Catch {
             }
 
             std::vector<TagInfo> infos; infos.reserve(tagCounts.size());
-            for (auto const& tagc : tagCounts) {
+            for (auto& tagc : tagCounts) {
                 infos.push_back(std::move(tagc.second));
             }
 

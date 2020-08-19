@@ -49,11 +49,11 @@ namespace Catch {
     public:
         explicit ScopedMessage( MessageBuilder const& builder );
         ScopedMessage( ScopedMessage& duplicate ) = delete;
-        ScopedMessage( ScopedMessage&& old );
+        ScopedMessage( ScopedMessage&& old ) noexcept;
         ~ScopedMessage();
 
         MessageInfo m_info;
-        bool m_moved;
+        bool m_moved = false;
     };
 
     class Capturer {

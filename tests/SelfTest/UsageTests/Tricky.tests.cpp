@@ -185,7 +185,7 @@ struct Obj
 {
     Obj():prop(&p){}
 
-    int p;
+    int p = 0;
     int* prop;
 };
 

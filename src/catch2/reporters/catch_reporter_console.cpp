@@ -192,8 +192,9 @@ std::size_t& findMax(std::size_t& i, std::size_t& j, std::size_t& k) {
         return k;
 }
 
+enum class Justification { Left, Right };
+
 struct ColumnInfo {
-    enum Justification { Left, Right };
     std::string name;
     int width;
     Justification justification;
@@ -335,7 +336,7 @@ public:
         auto padding = (strSize + 1 < static_cast<std::size_t>(colInfo.width))
             ? std::string(colInfo.width - (strSize + 1), ' ')
             : std::string();
-        if (colInfo.justification == ColumnInfo::Left)
+        if (colInfo.justification == Justification::Left)
             tp.m_os << colStr << padding << ' ';
         else
             tp.m_os << padding << colStr << ' ';
@@ -358,19 +359,19 @@ ConsoleReporter::ConsoleReporter(ReporterConfig const& config)
         if (config.fullConfig()->benchmarkNoAnalysis())
         {
             return{
-                { "benchmark name", CATCH_CONFIG_CONSOLE_WIDTH - 43, ColumnInfo::Left },
-                { "     samples", 14, ColumnInfo::Right },
-                { "  iterations", 14, ColumnInfo::Right },
-                { "        mean", 14, ColumnInfo::Right }
+                { "benchmark name", CATCH_CONFIG_CONSOLE_WIDTH - 43, Justification::Left },
+                { "     samples", 14, Justification::Right },
+                { "  iterations", 14, Justification::Right },
+                { "        mean", 14, Justification::Right }
             };
         }
         else
         {
             return{
-                { "benchmark name", CATCH_CONFIG_CONSOLE_WIDTH - 43, ColumnInfo::Left },
-                { "samples      mean       std dev", 14, ColumnInfo::Right },
-                { "iterations   low mean   low std dev", 14, ColumnInfo::Right },
-                { "estimated    high mean  high std dev", 14, ColumnInfo::Right }
+                { "benchmark name", CATCH_CONFIG_CONSOLE_WIDTH - 43, Justification::Left },
+                { "samples      mean       std dev", 14, Justification::Right },
+                { "iterations   low mean   low std dev", 14, Justification::Right },
+                { "estimated    high mean  high std dev", 14, Justification::Right }
             };
         }
     }())) {}

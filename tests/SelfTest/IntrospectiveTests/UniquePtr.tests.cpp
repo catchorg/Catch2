@@ -104,10 +104,10 @@ namespace {
         move_detector(move_detector const& rhs) = default;
         move_detector& operator=(move_detector const& rhs) = default;
 
-        move_detector(move_detector&& rhs) {
+        move_detector(move_detector&& rhs) noexcept {
             rhs.has_moved = true;
         }
-        move_detector& operator=(move_detector&& rhs) {
+        move_detector& operator=(move_detector&& rhs) noexcept {
             rhs.has_moved = true;
             return *this;
         }
