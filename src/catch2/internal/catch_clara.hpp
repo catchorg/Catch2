@@ -121,17 +121,22 @@ namespace Catch {
                 TokenStream& operator++();
             };
 
-            class ResultBase {
-            public:
-                enum Type { Ok, LogicError, RuntimeError };
+            //! Denotes type of a parsing result
+            enum class ResultType {
+                Ok,          ///< No errors
+                LogicError,  ///< Error in user-specified arguments for
+                             ///< construction
+                RuntimeError ///< Error in parsing inputs
+            };
 
+            class ResultBase {
             protected:
-                ResultBase( Type type ): m_type( type ) {}
+                ResultBase( ResultType type ): m_type( type ) {}
                 virtual ~ResultBase() = default;
 
                 virtual void enforceOk() const = 0;
 
-                Type m_type;
+                ResultType m_type;
             };
 
             template <typename T> class ResultValueBase : public ResultBase {
@@ -142,30 +147,30 @@ namespace Catch {
                 }
 
             protected:
-                ResultValueBase( Type type ): ResultBase( type ) {}
+                ResultValueBase( ResultType type ): ResultBase( type ) {}
 
                 ResultValueBase( ResultValueBase const& other ):
                     ResultBase( other ) {
-                    if ( m_type == ResultBase::Ok )
+                    if ( m_type == ResultType::Ok )
                         new ( &m_value ) T( other.m_value );
                 }
 
-                ResultValueBase( Type, T const& value ): ResultBase( Ok ) {
+                ResultValueBase( ResultType, T const& value ): ResultBase( ResultType::Ok ) {
                     new ( &m_value ) T( value );
                 }
 
                 auto operator=( ResultValueBase const& other )
                     -> ResultValueBase& {
-                    if ( m_type == ResultBase::Ok )
+                    if ( m_type == ResultType::Ok )
                         m_value.~T();
                     ResultBase::operator=( other );
-                    if ( m_type == ResultBase::Ok )
+                    if ( m_type == ResultType::Ok )
                         new ( &m_value ) T( other.m_value );
                     return *this;
                 }
 
                 ~ResultValueBase() override {
-                    if ( m_type == Ok )
+                    if ( m_type == ResultType::Ok )
                         m_value.~T();
                 }
 
@@ -186,27 +191,27 @@ namespace Catch {
                 explicit BasicResult( BasicResult<U> const& other ):
                     ResultValueBase<T>( other.type() ),
                     m_errorMessage( other.errorMessage() ) {
-                    assert( type() != ResultBase::Ok );
+                    assert( type() != ResultType::Ok );
                 }
 
                 template <typename U>
                 static auto ok( U const& value ) -> BasicResult {
-                    return { ResultBase::Ok, value };
+                    return { ResultType::Ok, value };
                 }
-                static auto ok() -> BasicResult { return { ResultBase::Ok }; }
+                static auto ok() -> BasicResult { return { ResultType::Ok }; }
                 static auto logicError( std::string const& message )
                     -> BasicResult {
-                    return { ResultBase::LogicError, message };
+                    return { ResultType::LogicError, message };
                 }
                 static auto runtimeError( std::string const& message )
                     -> BasicResult {
-                    return { ResultBase::RuntimeError, message };
+                    return { ResultType::RuntimeError, message };
                 }
 
                 explicit operator bool() const {
-                    return m_type == ResultBase::Ok;
+                    return m_type == ResultType::Ok;
                 }
-                auto type() const -> ResultBase::Type { return m_type; }
+                auto type() const -> ResultType { return m_type; }
                 auto errorMessage() const -> std::string {
                     return m_errorMessage;
                 }
@@ -216,19 +221,19 @@ namespace Catch {
 
                     // Errors shouldn't reach this point, but if they do
                     // the actual error message will be in m_errorMessage
-                    assert( m_type != ResultBase::LogicError );
-                    assert( m_type != ResultBase::RuntimeError );
-                    if ( m_type != ResultBase::Ok )
+                    assert( m_type != ResultType::LogicError );
+                    assert( m_type != ResultType::RuntimeError );
+                    if ( m_type != ResultType::Ok )
                         std::abort();
                 }
 
                 std::string
                     m_errorMessage; // Only populated if resultType is an error
 
-                BasicResult( ResultBase::Type type,
+                BasicResult( ResultType type,
                              std::string const& message ):
                     ResultValueBase<T>( type ), m_errorMessage( message ) {
-                    assert( m_type != ResultBase::Ok );
+                    assert( m_type != ResultType::Ok );
                 }
 
                 using ResultValueBase<T>::ResultValueBase;
