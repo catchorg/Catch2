@@ -111,6 +111,8 @@ namespace Catch {
                 return ParserResult::ok( ParseResultType::Matched );
             }
 
+            size_t ParserBase::cardinality() const { return 1; }
+
             InternalParseResult ParserBase::parse( Args const& args ) const {
                 return parse( args.exeName(), TokenStream( args ) );
             }
@@ -124,7 +126,15 @@ namespace Catch {
                 return ParserResult::ok( ParseResultType::Matched );
             }
 
-        } // namespace Detail
+            ResultBase::~ResultBase() = default;
+
+            bool BoundRef::isContainer() const { return false; }
+
+            bool BoundRef::isFlag() const { return false; }
+
+            bool BoundFlagRefBase::isFlag() const { return true; }
+
+} // namespace Detail
 
         Detail::InternalParseResult Arg::parse(std::string const&,
                                                Detail::TokenStream const& tokens) const {

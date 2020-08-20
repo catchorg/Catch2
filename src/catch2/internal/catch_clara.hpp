@@ -132,7 +132,13 @@ namespace Catch {
             class ResultBase {
             protected:
                 ResultBase( ResultType type ): m_type( type ) {}
-                virtual ~ResultBase() = default;
+                virtual ~ResultBase(); // = default;
+
+
+                ResultBase(ResultBase const&) = default;
+                ResultBase& operator=(ResultBase const&) = default;
+                ResultBase(ResultBase&&) = default;
+                ResultBase& operator=(ResultBase&&) = default;
 
                 virtual void enforceOk() const = 0;
 
@@ -295,8 +301,8 @@ namespace Catch {
 
             struct BoundRef : Catch::Detail::NonCopyable {
                 virtual ~BoundRef() = default;
-                virtual auto isContainer() const -> bool { return false; }
-                virtual auto isFlag() const -> bool { return false; }
+                virtual bool isContainer() const;
+                virtual bool isFlag() const;
             };
             struct BoundValueRefBase : BoundRef {
                 virtual auto setValue( std::string const& arg )
@@ -304,7 +310,7 @@ namespace Catch {
             };
             struct BoundFlagRefBase : BoundRef {
                 virtual auto setFlag( bool flag ) -> ParserResult = 0;
-                bool isFlag() const override { return true; }
+                bool isFlag() const override;
             };
 
             template <typename T> struct BoundValueRef : BoundValueRefBase {
@@ -312,8 +318,7 @@ namespace Catch {
 
                 explicit BoundValueRef( T& ref ): m_ref( ref ) {}
 
-                auto setValue( std::string const& arg )
-                    -> ParserResult override {
+                ParserResult setValue( std::string const& arg ) override {
                     return convertInto( arg, m_ref );
                 }
             };
@@ -419,7 +424,7 @@ namespace Catch {
                 virtual auto parse( std::string const& exeName,
                                     TokenStream const& tokens ) const
                     -> InternalParseResult = 0;
-                virtual auto cardinality() const -> size_t { return 1; }
+                virtual size_t cardinality() const;
 
                 InternalParseResult parse( Args const& args ) const;
             };
