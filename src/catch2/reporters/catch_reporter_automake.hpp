@@ -5,7 +5,7 @@
 #ifndef TWOBLUECUBES_CATCH_REPORTER_AUTOMAKE_HPP_INCLUDED
 #define TWOBLUECUBES_CATCH_REPORTER_AUTOMAKE_HPP_INCLUDED
 
-#include <catch2/reporters/catch_reporter_bases.hpp>
+#include <catch2/reporters/catch_reporter_streaming_base.hpp>
 
 namespace Catch {
 

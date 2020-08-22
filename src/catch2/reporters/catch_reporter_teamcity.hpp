@@ -5,8 +5,8 @@
 #ifndef TWOBLUECUBES_CATCH_REPORTER_TEAMCITY_HPP_INCLUDED
 #define TWOBLUECUBES_CATCH_REPORTER_TEAMCITY_HPP_INCLUDED
 
+#include <catch2/reporters/catch_reporter_streaming_base.hpp>
 #include <catch2/catch_timer.hpp>
-#include <catch2/reporters/catch_reporter_bases.hpp>
 
 #include <cstring>
 

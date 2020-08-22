@@ -7,7 +7,7 @@
 #ifndef TWOBLUECUBES_CATCH_REPORTER_XML_H_INCLUDED
 #define TWOBLUECUBES_CATCH_REPORTER_XML_H_INCLUDED
 
-#include <catch2/reporters/catch_reporter_bases.hpp>
+#include <catch2/reporters/catch_reporter_streaming_base.hpp>
 
 #include <catch2/internal/catch_xmlwriter.hpp>
 #include <catch2/catch_timer.hpp>

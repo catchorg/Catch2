@@ -6,10 +6,9 @@
  *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  */
 
-#include <catch2/reporters/catch_reporter_bases.hpp>
-
 #include <catch2/reporters/catch_reporter_junit.hpp>
 
+#include <catch2/reporters/catch_reporter_streaming_base.hpp>
 #include <catch2/catch_tostring.hpp>
 #include <catch2/internal/catch_string_manip.hpp>
 #include <catch2/internal/catch_textflow.hpp>

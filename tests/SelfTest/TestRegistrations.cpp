@@ -15,7 +15,7 @@ CATCH_REGISTER_TAG_ALIAS( "[@tricky]", "[tricky]~[.]" )
 #   pragma clang diagnostic ignored "-Wc++98-compat"
 #endif
 
-#include <catch2/reporters/catch_reporter_bases.hpp>
+#include <catch2/reporters/catch_reporter_streaming_base.hpp>
 
 struct TestListener : Catch::TestEventListenerBase {
     using TestEventListenerBase::TestEventListenerBase;

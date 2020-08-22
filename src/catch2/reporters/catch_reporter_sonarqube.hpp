@@ -5,7 +5,7 @@
 #ifndef CATCH_REPORTER_SONARQUBE_HPP_INCLUDED
 #define CATCH_REPORTER_SONARQUBE_HPP_INCLUDED
 
-#include <catch2/reporters/catch_reporter_bases.hpp>
+#include <catch2/reporters/catch_reporter_cumulative_base.hpp>
 
 #include <catch2/internal/catch_xmlwriter.hpp>
 

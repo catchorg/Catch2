@@ -6,7 +6,7 @@
 // 3. Test cases
 
 #include <catch2/catch_test_macros.hpp>
-#include <catch2/reporters/catch_reporter_bases.hpp>
+#include <catch2/reporters/catch_reporter_streaming_base.hpp>
 #include <catch2/catch_reporter_registrars.hpp>
 #include <catch2/catch_test_case_info.hpp>
 #include <iostream>

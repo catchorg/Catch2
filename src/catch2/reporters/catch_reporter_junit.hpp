@@ -8,7 +8,7 @@
 #define TWOBLUECUBES_CATCH_REPORTER_JUNIT_H_INCLUDED
 
 
-#include <catch2/reporters/catch_reporter_bases.hpp>
+#include <catch2/reporters/catch_reporter_cumulative_base.hpp>
 #include <catch2/internal/catch_xmlwriter.hpp>
 #include <catch2/catch_timer.hpp>
 
