@@ -24,7 +24,6 @@
 #include <string>
 #include <vector>
 #include <iosfwd>
-#include <map>
 
 namespace Catch {
 
@@ -33,7 +32,6 @@ namespace Catch {
     struct TestCaseInfo;
     class TestCaseHandle;
     struct IConfig;
-    class Config;
 
     struct ReporterConfig {
         explicit ReporterConfig( IConfig const* _fullConfig );
@@ -250,16 +248,6 @@ namespace Catch {
         virtual std::string getDescription() const = 0;
     };
     using IReporterFactoryPtr = Detail::unique_ptr<IReporterFactory>;
-
-    struct IReporterRegistry {
-        using FactoryMap = std::map<std::string, IReporterFactoryPtr>;
-        using Listeners = std::vector<IReporterFactoryPtr>;
-
-        virtual ~IReporterRegistry();
-        virtual IStreamingReporterPtr create( std::string const& name, IConfig const* config ) const = 0;
-        virtual FactoryMap const& getFactories() const = 0;
-        virtual Listeners const& getListeners() const = 0;
-    };
 
 } // end namespace Catch
 

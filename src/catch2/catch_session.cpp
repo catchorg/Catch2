@@ -19,6 +19,7 @@
 #include <catch2/internal/catch_textflow.hpp>
 #include <catch2/internal/catch_windows_h_proxy.hpp>
 #include <catch2/reporters/catch_reporter_listening.hpp>
+#include <catch2/interfaces/catch_interfaces_reporter_registry.hpp>
 
 #include <algorithm>
 #include <iomanip>

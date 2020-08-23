@@ -9,6 +9,7 @@
 #define TWOBLUECUBES_CATCH_REPORTER_REGISTRY_H_INCLUDED
 
 #include <catch2/interfaces/catch_interfaces_reporter.hpp>
+#include <catch2/interfaces/catch_interfaces_reporter_registry.hpp>
 
 #include <map>
 

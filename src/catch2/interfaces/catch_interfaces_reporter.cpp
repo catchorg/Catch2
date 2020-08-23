@@ -187,6 +187,5 @@ namespace Catch {
     }
 
     IReporterFactory::~IReporterFactory() = default;
-    IReporterRegistry::~IReporterRegistry() = default;
 
 } // end namespace Catch
