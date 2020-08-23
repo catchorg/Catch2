@@ -18,6 +18,7 @@
 #include <catch2/internal/catch_stringref.hpp>
 #include <catch2/catch_test_case_info.hpp>
 #include <catch2/internal/catch_console_width.hpp>
+#include <catch2/reporters/catch_reporter_helpers.hpp>
 
 #include <cfloat>
 #include <cstdio>

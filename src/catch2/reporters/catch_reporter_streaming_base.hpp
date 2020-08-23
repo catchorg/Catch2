@@ -8,14 +8,7 @@
 #include <vector>
 
 namespace Catch {
-    // Returns double formatted as %.3f (format expected on output)
-    std::string getFormattedDuration( double duration );
-
-    //! Should the reporter show
-    bool shouldShowDuration( IConfig const& config, double duration );
-
-    std::string serializeFilters( std::vector<std::string> const& container );
-
+        
     struct StreamingReporterBase : IStreamingReporter {
 
         StreamingReporterBase( ReporterConfig const& _config ):
@@ -62,15 +55,6 @@ namespace Catch {
         TestCaseInfo const* currentTestCaseInfo = nullptr;
 
         std::vector<SectionInfo> m_sectionStack;
-    };
-
-    struct lineOfChars {
-        char c;
-        constexpr lineOfChars(char c):
-            c(c)
-        {}
-
-        friend std::ostream& operator<< (std::ostream& out, lineOfChars value);
     };
 
     struct TestEventListenerBase : StreamingReporterBase {

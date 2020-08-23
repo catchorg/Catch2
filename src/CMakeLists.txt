@@ -198,6 +198,7 @@ set(REPORTER_HEADERS
     ${SOURCES_DIR}/reporters/catch_reporter_compact.hpp
     ${SOURCES_DIR}/reporters/catch_reporter_console.hpp
     ${SOURCES_DIR}/reporters/catch_reporter_cumulative_base.hpp
+    ${SOURCES_DIR}/reporters/catch_reporter_helpers.hpp
     ${SOURCES_DIR}/reporters/catch_reporter_junit.hpp
     ${SOURCES_DIR}/reporters/catch_reporter_listening.hpp
     ${SOURCES_DIR}/reporters/catch_reporter_sonarqube.hpp
@@ -208,6 +209,7 @@ set(REPORTER_HEADERS
 )
 set(REPORTER_SOURCES
     ${SOURCES_DIR}/reporters/catch_reporter_automake.cpp
+    ${SOURCES_DIR}/reporters/catch_reporter_combined_tu.cpp
     ${SOURCES_DIR}/reporters/catch_reporter_compact.cpp
     ${SOURCES_DIR}/reporters/catch_reporter_console.cpp
     ${SOURCES_DIR}/reporters/catch_reporter_cumulative_base.cpp

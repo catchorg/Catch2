@@ -5,6 +5,7 @@
 
 #include <catch2/reporters/catch_reporter_teamcity.hpp>
 
+#include <catch2/reporters/catch_reporter_helpers.hpp>
 #include <catch2/internal/catch_string_manip.hpp>
 #include <catch2/internal/catch_enforce.hpp>
 #include <catch2/internal/catch_textflow.hpp>
