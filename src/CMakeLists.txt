@@ -72,6 +72,7 @@ set(INTERNAL_HEADERS
     ${SOURCES_DIR}/interfaces/catch_interfaces_generatortracker.hpp
     ${SOURCES_DIR}/interfaces/catch_interfaces_registry_hub.hpp
     ${SOURCES_DIR}/interfaces/catch_interfaces_reporter.hpp
+    ${SOURCES_DIR}/interfaces/catch_interfaces_reporter_factory.hpp
     ${SOURCES_DIR}/interfaces/catch_interfaces_reporter_registry.hpp
     ${SOURCES_DIR}/interfaces/catch_interfaces_runner.hpp
     ${SOURCES_DIR}/interfaces/catch_interfaces_tag_alias_registry.hpp

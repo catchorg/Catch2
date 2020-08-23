@@ -186,6 +186,4 @@ namespace Catch {
         Catch::cout() << pluralise(tags.size(), "tag") << '\n' << std::endl;
     }
 
-    IReporterFactory::~IReporterFactory() = default;
-
 } // end namespace Catch

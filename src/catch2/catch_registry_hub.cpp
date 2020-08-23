@@ -19,6 +19,7 @@
 #include <catch2/internal/catch_enum_values_registry.hpp>
 #include <catch2/catch_test_case_info.hpp>
 #include <catch2/internal/catch_noncopyable.hpp>
+#include <catch2/interfaces/catch_interfaces_reporter_factory.hpp>
 
 namespace Catch {
 

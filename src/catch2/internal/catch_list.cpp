@@ -12,6 +12,7 @@
 #include <catch2/interfaces/catch_interfaces_reporter.hpp>
 #include <catch2/interfaces/catch_interfaces_reporter_registry.hpp>
 #include <catch2/interfaces/catch_interfaces_testcase.hpp>
+#include <catch2/interfaces/catch_interfaces_reporter_factory.hpp>
 
 #include <catch2/internal/catch_context.hpp>
 #include <catch2/catch_config.hpp>

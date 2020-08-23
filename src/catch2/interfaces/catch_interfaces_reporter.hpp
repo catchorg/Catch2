@@ -242,13 +242,6 @@ namespace Catch {
     };
     using IStreamingReporterPtr = Detail::unique_ptr<IStreamingReporter>;
 
-    struct IReporterFactory {
-        virtual ~IReporterFactory();
-        virtual IStreamingReporterPtr create( ReporterConfig const& config ) const = 0;
-        virtual std::string getDescription() const = 0;
-    };
-    using IReporterFactoryPtr = Detail::unique_ptr<IReporterFactory>;
-
 } // end namespace Catch
 
 #endif // TWOBLUECUBES_CATCH_INTERFACES_REPORTER_H_INCLUDED
