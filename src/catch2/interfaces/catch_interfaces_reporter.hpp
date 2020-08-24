@@ -13,7 +13,6 @@
 #include <catch2/catch_totals.hpp>
 #include <catch2/catch_assertion_result.hpp>
 #include <catch2/internal/catch_message_info.hpp>
-#include <catch2/internal/catch_option.hpp>
 #include <catch2/internal/catch_stringref.hpp>
 #include <catch2/internal/catch_unique_ptr.hpp>
 
@@ -44,20 +43,6 @@ namespace Catch {
     private:
         std::ostream* m_stream;
         IConfig const* m_fullConfig;
-    };
-
-    template<typename T>
-    struct LazyStat : Option<T> {
-        LazyStat& operator=( T const& _value ) {
-            Option<T>::operator=( _value );
-            used = false;
-            return *this;
-        }
-        void reset() {
-            Option<T>::reset();
-            used = false;
-        }
-        bool used = false;
     };
 
     struct TestRunInfo {

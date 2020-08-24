@@ -3,12 +3,29 @@
 
 #include <catch2/interfaces/catch_interfaces_reporter.hpp>
 
+#include <catch2/internal/catch_option.hpp>
+
 #include <iosfwd>
 #include <string>
 #include <vector>
 
 namespace Catch {
-        
+
+    template<typename T>
+    struct LazyStat : Option<T> {
+        LazyStat& operator=(T const& _value) {
+            Option<T>::operator=(_value);
+            used = false;
+            return *this;
+        }
+        void reset() {
+            Option<T>::reset();
+            used = false;
+        }
+        bool used = false;
+    };
+
+
     struct StreamingReporterBase : IStreamingReporter {
 
         StreamingReporterBase( ReporterConfig const& _config ):

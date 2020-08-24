@@ -17,6 +17,7 @@
 #include <catch2/internal/catch_test_case_tracker.hpp>
 #include <catch2/catch_assertion_info.hpp>
 #include <catch2/catch_assertion_result.hpp>
+#include <catch2/internal/catch_option.hpp>
 
 #include <string>
 
