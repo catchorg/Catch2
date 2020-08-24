@@ -2,16 +2,6 @@
 
 namespace Catch {
 
-    TestEventListenerBase::TestEventListenerBase(
-        ReporterConfig const& _config ):
-        StreamingReporterBase( _config ) {}
-
-    void TestEventListenerBase::assertionStarting( AssertionInfo const& ) {}
-
-    bool TestEventListenerBase::assertionEnded( AssertionStats const& ) {
-        return false;
-    }
-
     StreamingReporterBase::~StreamingReporterBase() = default;
 
     void

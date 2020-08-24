@@ -81,4 +81,33 @@ namespace Catch {
         }
         return out;
     }
+
+} // namespace Catch
+
+
+#include <catch2/reporters/catch_reporter_event_listener.hpp>
+
+namespace Catch {
+    void EventListenerBase::assertionStarting( AssertionInfo const& ) {}
+
+    bool EventListenerBase::assertionEnded( AssertionStats const& ) {
+        return false;
+    }
+    void
+    EventListenerBase::listReporters( std::vector<ReporterDescription> const&,
+                                      IConfig const& ) {}
+    void EventListenerBase::listTests( std::vector<TestCaseHandle> const&,
+                                       IConfig const& ) {}
+    void EventListenerBase::listTags( std::vector<TagInfo> const&,
+                                      IConfig const& ) {}
+    void EventListenerBase::noMatchingTestCases( std::string const& ) {}
+    void EventListenerBase::testRunStarting( TestRunInfo const& ) {}
+    void EventListenerBase::testGroupStarting( GroupInfo const& ) {}
+    void EventListenerBase::testCaseStarting( TestCaseInfo const& ) {}
+    void EventListenerBase::sectionStarting( SectionInfo const& ) {}
+    void EventListenerBase::sectionEnded( SectionStats const& ) {}
+    void EventListenerBase::testCaseEnded( TestCaseStats const& ) {}
+    void EventListenerBase::testGroupEnded( TestGroupStats const& ) {}
+    void EventListenerBase::testRunEnded( TestRunStats const& ) {}
+    void EventListenerBase::skipTest( TestCaseInfo const& ) {}
 } // namespace Catch

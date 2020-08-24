@@ -6,7 +6,7 @@
 // 3. Test cases
 
 #include <catch2/catch_test_macros.hpp>
-#include <catch2/reporters/catch_reporter_streaming_base.hpp>
+#include <catch2/reporters/catch_reporter_event_listener.hpp>
 #include <catch2/catch_reporter_registrars.hpp>
 #include <catch2/catch_test_case_info.hpp>
 #include <iostream>
@@ -303,9 +303,9 @@ char const * dashed_line =
     "--------------------------------------------------------------------------";
 
 
-struct MyListener : Catch::TestEventListenerBase {
+struct MyListener : Catch::EventListenerBase {
 
-    using TestEventListenerBase::TestEventListenerBase; // inherit constructor
+    using EventListenerBase::EventListenerBase; // inherit constructor
 
     // Get rid of Wweak-tables
     ~MyListener();

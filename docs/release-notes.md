@@ -114,6 +114,9 @@ new design.
   * You should instead include the appropriate headers as needed.
 * `CATCH_CONFIG_IMPL` has been removed.
   * The implementation is now compiled into a static library.
+* Event Listener interface has changed
+  * `TestEventListenerBase` was renamed to `EventListenerBase`
+  * `EventListenerBase` now directly derives from `IStreamingReporter`, instead of deriving from `StreamingReporterBase`
 
 
 

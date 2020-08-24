@@ -74,18 +74,6 @@ namespace Catch {
         std::vector<SectionInfo> m_sectionStack;
     };
 
-    struct TestEventListenerBase : StreamingReporterBase {
-        TestEventListenerBase( ReporterConfig const& _config );
-
-        void assertionStarting(AssertionInfo const&) override;
-        bool assertionEnded(AssertionStats const&) override;
-
-        // Event listeners should not use the default listing impl
-        void listReporters(std::vector<ReporterDescription> const&, IConfig const&) override {}
-        void listTests(std::vector<TestCaseHandle> const&, IConfig const&) override {}
-        void listTags(std::vector<TagInfo> const&, IConfig const&) override {}
-    };
-
 } // end namespace Catch
 
 #endif // CATCH_REPORTER_STREAMING_BASE_HPP_INCLUDED
