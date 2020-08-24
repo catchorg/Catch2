@@ -10,13 +10,14 @@
  * of Catch2 has its own combined TU like this.
  */
 
+#include <catch2/reporters/catch_reporter_helpers.hpp>
 #include <catch2/interfaces/catch_interfaces_config.hpp>
 #include <catch2/internal/catch_console_width.hpp>
 #include <catch2/internal/catch_errno_guard.hpp>
-#include <catch2/internal/catch_stream.hpp>
-#include <catch2/reporters/catch_reporter_helpers.hpp>
+
 #include <cfloat>
 #include <cstdio>
+#include <ostream>
 
 namespace Catch {
 
@@ -52,18 +53,26 @@ namespace Catch {
         return min >= 0 && duration >= min;
     }
 
-    std::string serializeFilters( std::vector<std::string> const& container ) {
-        ReusableStringStream oss;
-        bool first = true;
-        for ( auto&& filter : container ) {
-            if ( !first )
-                oss << ' ';
-            else
-                first = false;
-
-            oss << filter;
+    std::string serializeFilters( std::vector<std::string> const& filters ) {
+        // We add a ' ' separator between each filter
+        size_t serialized_size = filters.size() - 1;
+        for (auto const& filter : filters) {
+            serialized_size += filter.size();
         }
-        return oss.str();
+
+        std::string serialized;
+        serialized.reserve(serialized_size);
+        bool first = true;
+
+        for (auto const& filter : filters) {
+            if (!first) {
+                serialized.push_back(' ');
+            }
+            first = false;
+            serialized.append(filter);
+        }
+
+        return serialized;
     }
 
     std::ostream& operator<<( std::ostream& out, lineOfChars value ) {

@@ -15,7 +15,7 @@ namespace Catch {
     //! Should the reporter show
     bool shouldShowDuration( IConfig const& config, double duration );
 
-    std::string serializeFilters( std::vector<std::string> const& container );
+    std::string serializeFilters( std::vector<std::string> const& filters );
 
     struct lineOfChars {
         char c;
