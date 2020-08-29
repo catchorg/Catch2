@@ -1,14 +1,7 @@
-/*
- *  Created by Joachim on 16/04/2019.
- *  Adapted from donated nonius code.
- *
- *  Distributed under the Boost Software License, Version 1.0. (See accompanying
- *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
- */
+// Adapted from donated nonius code.
 
- // Benchmark
-#ifndef TWOBLUECUBES_CATCH_BENCHMARK_HPP_INCLUDED
-#define TWOBLUECUBES_CATCH_BENCHMARK_HPP_INCLUDED
+#ifndef CATCH_BENCHMARK_HPP_INCLUDED
+#define CATCH_BENCHMARK_HPP_INCLUDED
 
 #include <catch2/interfaces/catch_interfaces_config.hpp>
 #include <catch2/internal/catch_context.hpp>
@@ -134,4 +127,4 @@ namespace Catch {
 
 #endif
 
-#endif // TWOBLUECUBES_CATCH_BENCHMARK_HPP_INCLUDED
+#endif // CATCH_BENCHMARK_HPP_INCLUDED

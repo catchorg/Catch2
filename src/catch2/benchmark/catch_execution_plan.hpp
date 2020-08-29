@@ -1,15 +1,7 @@
-/*
- *  Created by Joachim on 16/04/2019.
- *  Adapted from donated nonius code.
- *
- *  Distributed under the Boost Software License, Version 1.0. (See accompanying
- *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
- */
+// Adapted from donated nonius code.
 
- // Execution plan
-
-#ifndef TWOBLUECUBES_CATCH_EXECUTION_PLAN_HPP_INCLUDED
-#define TWOBLUECUBES_CATCH_EXECUTION_PLAN_HPP_INCLUDED
+#ifndef CATCH_EXECUTION_PLAN_HPP_INCLUDED
+#define CATCH_EXECUTION_PLAN_HPP_INCLUDED
 
 #include <catch2/interfaces/catch_interfaces_config.hpp>
 #include <catch2/benchmark/catch_clock.hpp>
@@ -55,4 +47,4 @@ namespace Catch {
     } // namespace Benchmark
 } // namespace Catch
 
-#endif // TWOBLUECUBES_CATCH_EXECUTION_PLAN_HPP_INCLUDED
+#endif // CATCH_EXECUTION_PLAN_HPP_INCLUDED

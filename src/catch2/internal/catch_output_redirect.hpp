@@ -1,11 +1,5 @@
-/*
- *  Created by Martin on 28/04/2018.
- *
- *  Distributed under the Boost Software License, Version 1.0. (See accompanying
- *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
- */
-#ifndef TWOBLUECUBES_CATCH_OUTPUT_REDIRECT_H
-#define TWOBLUECUBES_CATCH_OUTPUT_REDIRECT_H
+#ifndef CATCH_OUTPUT_REDIRECT_HPP_INCLUDED
+#define CATCH_OUTPUT_REDIRECT_HPP_INCLUDED
 
 #include <catch2/internal/catch_platform.hpp>
 #include <catch2/internal/catch_stream.hpp>
@@ -113,4 +107,4 @@ namespace Catch {
 
 } // end namespace Catch
 
-#endif // TWOBLUECUBES_CATCH_OUTPUT_REDIRECT_H
+#endif // CATCH_OUTPUT_REDIRECT_HPP_INCLUDED

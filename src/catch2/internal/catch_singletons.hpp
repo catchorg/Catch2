@@ -1,11 +1,5 @@
-/*
- *  Created by Phil Nash on 15/6/2018.
- *
- *  Distributed under the Boost Software License, Version 1.0. (See accompanying
- *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
- */
-#ifndef TWOBLUECUBES_CATCH_SINGLETONS_HPP_INCLUDED
-#define TWOBLUECUBES_CATCH_SINGLETONS_HPP_INCLUDED
+#ifndef CATCH_SINGLETONS_HPP_INCLUDED
+#define CATCH_SINGLETONS_HPP_INCLUDED
 
 namespace Catch {
 
@@ -41,4 +35,4 @@ namespace Catch {
 
 } // namespace Catch
 
-#endif // TWOBLUECUBES_CATCH_SINGLETONS_HPP_INCLUDED
+#endif // CATCH_SINGLETONS_HPP_INCLUDED

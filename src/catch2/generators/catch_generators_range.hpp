@@ -1,11 +1,5 @@
-/*
- *  Created by Martin on 15/6/2018.
- *
- *  Distributed under the Boost Software License, Version 1.0. (See accompanying
- *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
- */
-#ifndef TWOBLUECUBES_CATCH_GENERATORS_RANGE_HPP_INCLUDED
-#define TWOBLUECUBES_CATCH_GENERATORS_RANGE_HPP_INCLUDED
+#ifndef CATCH_GENERATORS_RANGE_HPP_INCLUDED
+#define CATCH_GENERATORS_RANGE_HPP_INCLUDED
 
 #include <catch2/generators/catch_generators.hpp>
 
@@ -106,4 +100,4 @@ GeneratorWrapper<ResultType> from_range(Container const& cnt) {
 } // namespace Catch
 
 
-#endif // TWOBLUECUBES_CATCH_GENERATORS_RANGE_HPP_INCLUDED
+#endif // CATCH_GENERATORS_RANGE_HPP_INCLUDED

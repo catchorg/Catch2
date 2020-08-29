@@ -1,11 +1,5 @@
-/*
- *  Copyright 2016 Two Blue Cubes Ltd. All rights reserved.
- *
- *  Distributed under the Boost Software License, Version 1.0. (See accompanying
- *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
- */
-#ifndef CATCH_STRINGREF_H_INCLUDED
-#define CATCH_STRINGREF_H_INCLUDED
+#ifndef CATCH_STRINGREF_HPP_INCLUDED
+#define CATCH_STRINGREF_HPP_INCLUDED
 
 #include <cstddef>
 #include <string>
@@ -114,4 +108,4 @@ constexpr auto operator "" _catch_sr( char const* rawChars, std::size_t size ) n
     return Catch::StringRef( rawChars, size );
 }
 
-#endif // CATCH_STRINGREF_H_INCLUDED
+#endif // CATCH_STRINGREF_HPP_INCLUDED

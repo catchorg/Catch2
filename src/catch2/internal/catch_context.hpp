@@ -1,12 +1,5 @@
-/*
- *  Created by Phil on 31/12/2010.
- *  Copyright 2010 Two Blue Cubes Ltd. All rights reserved.
- *
- *  Distributed under the Boost Software License, Version 1.0. (See accompanying
- *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
- */
-#ifndef TWOBLUECUBES_CATCH_CONTEXT_H_INCLUDED
-#define TWOBLUECUBES_CATCH_CONTEXT_H_INCLUDED
+#ifndef CATCH_CONTEXT_HPP_INCLUDED
+#define CATCH_CONTEXT_HPP_INCLUDED
 
 namespace Catch {
 
@@ -56,4 +49,4 @@ namespace Catch {
     SimplePcg32& rng();
 }
 
-#endif // TWOBLUECUBES_CATCH_CONTEXT_H_INCLUDED
+#endif // CATCH_CONTEXT_HPP_INCLUDED

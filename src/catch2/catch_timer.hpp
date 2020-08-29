@@ -1,12 +1,5 @@
-/*
- *  Created by Phil on 05/08/2013.
- *  Copyright 2013 Two Blue Cubes Ltd. All rights reserved.
- *
- *  Distributed under the Boost Software License, Version 1.0. (See accompanying
- *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
- */
-#ifndef TWOBLUECUBES_CATCH_TIMER_H_INCLUDED
-#define TWOBLUECUBES_CATCH_TIMER_H_INCLUDED
+#ifndef CATCH_TIMER_HPP_INCLUDED
+#define CATCH_TIMER_HPP_INCLUDED
 
 #include <cstdint>
 
@@ -27,4 +20,4 @@ namespace Catch {
 
 } // namespace Catch
 
-#endif // TWOBLUECUBES_CATCH_TIMER_H_INCLUDED
+#endif // CATCH_TIMER_HPP_INCLUDED

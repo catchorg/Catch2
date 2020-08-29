@@ -1,5 +1,5 @@
-#ifndef CATCH_CLARA_TEXTFLOW_HPP_INCLUDED
-#define CATCH_CLARA_TEXTFLOW_HPP_INCLUDED
+#ifndef CATCH_TEXTFLOW_HPP_INCLUDED
+#define CATCH_TEXTFLOW_HPP_INCLUDED
 
 #include <cassert>
 #include <catch2/internal/catch_console_width.hpp>
@@ -141,4 +141,4 @@ namespace Catch {
 
     } // namespace TextFlow
 } // namespace Catch
-#endif // CATCH_CLARA_TEXTFLOW_HPP_INCLUDED
+#endif // CATCH_TEXTFLOW_HPP_INCLUDED

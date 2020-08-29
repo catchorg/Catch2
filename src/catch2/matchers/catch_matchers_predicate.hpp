@@ -1,11 +1,5 @@
-/*
- *  Created by Martin Hořeňovský on 03/04/2017.
- *
- * Distributed under the Boost Software License, Version 1.0. (See accompanying
- * file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
- */
-#ifndef TWOBLUECUBES_CATCH_MATCHERS_GENERIC_HPP_INCLUDED
-#define TWOBLUECUBES_CATCH_MATCHERS_GENERIC_HPP_INCLUDED
+#ifndef CATCH_MATCHERS_PREDICATE_HPP_INCLUDED
+#define CATCH_MATCHERS_PREDICATE_HPP_INCLUDED
 
 #include <catch2/internal/catch_common.hpp>
 #include <catch2/matchers/catch_matchers.hpp>
@@ -56,4 +50,4 @@ public:
 } // namespace Matchers
 } // namespace Catch
 
-#endif // TWOBLUECUBES_CATCH_MATCHERS_GENERIC_HPP_INCLUDED
+#endif // CATCH_MATCHERS_PREDICATE_HPP_INCLUDED

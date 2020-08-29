@@ -1,11 +1,5 @@
-/*
- *  Distributed under the Boost Software License, Version 1.0. (See accompanying
- *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
- */
-
-
-#ifndef TWOBLUECUBES_CATCH_TEMPLATE_TEST_MACROS_HPP_INCLUDED
-#define TWOBLUECUBES_CATCH_TEMPLATE_TEST_MACROS_HPP_INCLUDED
+#ifndef CATCH_TEMPLATE_TEST_MACROS_HPP_INCLUDED
+#define CATCH_TEMPLATE_TEST_MACROS_HPP_INCLUDED
 
 #include <catch2/catch_test_macros.hpp>
 #include <catch2/internal/catch_template_test_registry.hpp>
@@ -111,4 +105,4 @@
 #endif // end of user facing macro declarations
 
 
-#endif // TWOBLUECUBES_CATCH_TEMPLATE_TEST_MACROS_HPP_INCLUDED
+#endif // CATCH_TEMPLATE_TEST_MACROS_HPP_INCLUDED

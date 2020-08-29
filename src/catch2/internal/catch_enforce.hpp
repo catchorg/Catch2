@@ -1,11 +1,5 @@
-/*
- *  Created by Martin on 01/08/2017.
- *
- *  Distributed under the Boost Software License, Version 1.0. (See accompanying
- *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
- */
-#ifndef TWOBLUECUBES_CATCH_ENFORCE_H_INCLUDED
-#define TWOBLUECUBES_CATCH_ENFORCE_H_INCLUDED
+#ifndef CATCH_ENFORCE_HPP_INCLUDED
+#define CATCH_ENFORCE_HPP_INCLUDED
 
 #include <catch2/internal/catch_common.hpp>
 #include <catch2/internal/catch_compiler_capabilities.hpp>
@@ -50,4 +44,4 @@ namespace Catch {
     do{ if( !(condition) ) CATCH_ERROR( __VA_ARGS__ ); } while(false)
 
 
-#endif // TWOBLUECUBES_CATCH_ENFORCE_H_INCLUDED
+#endif // CATCH_ENFORCE_HPP_INCLUDED

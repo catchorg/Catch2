@@ -1,12 +1,5 @@
-/*
- *  Created by Martin on 16/01/2017.
- *
- *  Distributed under the Boost Software License, Version 1.0. (See accompanying
- *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
- */
-
-#ifndef TWOBLUECUBES_CATCH_WINDOWS_H_PROXY_H_INCLUDED
-#define TWOBLUECUBES_CATCH_WINDOWS_H_PROXY_H_INCLUDED
+#ifndef CATCH_WINDOWS_H_PROXY_HPP_INCLUDED
+#define CATCH_WINDOWS_H_PROXY_HPP_INCLUDED
 
 #include <catch2/internal/catch_platform.hpp>
 
@@ -36,4 +29,4 @@
 
 #endif // defined(CATCH_PLATFORM_WINDOWS)
 
-#endif // TWOBLUECUBES_CATCH_WINDOWS_H_PROXY_H_INCLUDED
+#endif // CATCH_WINDOWS_H_PROXY_HPP_INCLUDED

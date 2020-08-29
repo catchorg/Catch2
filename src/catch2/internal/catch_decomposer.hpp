@@ -1,12 +1,5 @@
-/*
- *  Created by Phil Nash on 8/8/2017.
- *  Copyright 2017 Two Blue Cubes Ltd. All rights reserved.
- *
- *  Distributed under the Boost Software License, Version 1.0. (See accompanying
- *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
- */
-#ifndef TWOBLUECUBES_CATCH_DECOMPOSER_H_INCLUDED
-#define TWOBLUECUBES_CATCH_DECOMPOSER_H_INCLUDED
+#ifndef CATCH_DECOMPOSER_HPP_INCLUDED
+#define CATCH_DECOMPOSER_HPP_INCLUDED
 
 #include <catch2/catch_tostring.hpp>
 #include <catch2/internal/catch_stringref.hpp>
@@ -276,4 +269,4 @@ namespace Catch {
 #  pragma GCC diagnostic pop
 #endif
 
-#endif // TWOBLUECUBES_CATCH_DECOMPOSER_H_INCLUDED
+#endif // CATCH_DECOMPOSER_HPP_INCLUDED

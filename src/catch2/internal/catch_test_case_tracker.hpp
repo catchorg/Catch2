@@ -1,12 +1,5 @@
-/*
- *  Created by Phil Nash on 23/7/2013
- *  Copyright 2013 Two Blue Cubes Ltd. All rights reserved.
- *
- *  Distributed under the Boost Software License, Version 1.0. (See accompanying
- *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
- */
-#ifndef TWOBLUECUBES_CATCH_TEST_CASE_TRACKER_HPP_INCLUDED
-#define TWOBLUECUBES_CATCH_TEST_CASE_TRACKER_HPP_INCLUDED
+#ifndef CATCH_TEST_CASE_TRACKER_HPP_INCLUDED
+#define CATCH_TEST_CASE_TRACKER_HPP_INCLUDED
 
 #include <catch2/internal/catch_compiler_capabilities.hpp>
 #include <catch2/internal/catch_common.hpp>
@@ -183,4 +176,4 @@ using TestCaseTracking::SectionTracker;
 
 } // namespace Catch
 
-#endif // TWOBLUECUBES_CATCH_TEST_CASE_TRACKER_HPP_INCLUDED
+#endif // CATCH_TEST_CASE_TRACKER_HPP_INCLUDED

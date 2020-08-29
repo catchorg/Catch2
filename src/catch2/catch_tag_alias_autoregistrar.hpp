@@ -1,11 +1,5 @@
-/*
- *  Created by Martin on 27/07/2017.
- *
- *  Distributed under the Boost Software License, Version 1.0. (See accompanying
- *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
- */
-#ifndef TWOBLUECUBES_CATCH_TAG_ALIAS_AUTOREGISTRAR_H_INCLUDED
-#define TWOBLUECUBES_CATCH_TAG_ALIAS_AUTOREGISTRAR_H_INCLUDED
+#ifndef CATCH_TAG_ALIAS_AUTOREGISTRAR_HPP_INCLUDED
+#define CATCH_TAG_ALIAS_AUTOREGISTRAR_HPP_INCLUDED
 
 #include <catch2/internal/catch_common.hpp>
 
@@ -23,4 +17,4 @@ namespace Catch {
     namespace{ Catch::RegistrarForTagAliases INTERNAL_CATCH_UNIQUE_NAME( AutoRegisterTagAlias )( alias, spec, CATCH_INTERNAL_LINEINFO ); } \
     CATCH_INTERNAL_STOP_WARNINGS_SUPPRESSION
 
-#endif // TWOBLUECUBES_CATCH_TAG_ALIAS_AUTOREGISTRAR_H_INCLUDED
+#endif // CATCH_TAG_ALIAS_AUTOREGISTRAR_HPP_INCLUDED

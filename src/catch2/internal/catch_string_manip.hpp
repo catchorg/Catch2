@@ -1,11 +1,5 @@
-/*
- *  Created by Martin on 25/07/2017.
- *
- *  Distributed under the Boost Software License, Version 1.0. (See accompanying
- *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
- */
-#ifndef TWOBLUECUBES_CATCH_STRING_MANIP_H_INCLUDED
-#define TWOBLUECUBES_CATCH_STRING_MANIP_H_INCLUDED
+#ifndef CATCH_STRING_MANIP_HPP_INCLUDED
+#define CATCH_STRING_MANIP_HPP_INCLUDED
 
 #include <catch2/internal/catch_stringref.hpp>
 
@@ -41,5 +35,4 @@ namespace Catch {
     };
 }
 
-#endif // TWOBLUECUBES_CATCH_STRING_MANIP_H_INCLUDED
-
+#endif // CATCH_STRING_MANIP_HPP_INCLUDED

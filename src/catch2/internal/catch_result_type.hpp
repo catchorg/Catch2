@@ -1,12 +1,5 @@
-/*
- *  Created by Phil on 07/01/2011.
- *  Copyright 2011 Two Blue Cubes Ltd. All rights reserved.
- *
- *  Distributed under the Boost Software License, Version 1.0. (See accompanying
- *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
- */
-#ifndef TWOBLUECUBES_CATCH_RESULT_TYPE_H_INCLUDED
-#define TWOBLUECUBES_CATCH_RESULT_TYPE_H_INCLUDED
+#ifndef CATCH_RESULT_TYPE_HPP_INCLUDED
+#define CATCH_RESULT_TYPE_HPP_INCLUDED
 
 namespace Catch {
 
@@ -52,4 +45,4 @@ namespace Catch {
 
 } // end namespace Catch
 
-#endif // TWOBLUECUBES_CATCH_RESULT_TYPE_H_INCLUDED
+#endif // CATCH_RESULT_TYPE_HPP_INCLUDED

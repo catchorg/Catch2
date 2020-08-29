@@ -1,12 +1,5 @@
-/*
- *  Created by Phil Nash on 23/02/2012.
- *  Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved.
- *
- *  Distributed under the Boost Software License, Version 1.0. (See accompanying
- *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
- */
-#ifndef TWOBLUECUBES_CATCH_TOTALS_HPP_INCLUDED
-#define TWOBLUECUBES_CATCH_TOTALS_HPP_INCLUDED
+#ifndef CATCH_TOTALS_HPP_INCLUDED
+#define CATCH_TOTALS_HPP_INCLUDED
 
 #include <cstddef>
 
@@ -38,4 +31,4 @@ namespace Catch {
     };
 }
 
-#endif // TWOBLUECUBES_CATCH_TOTALS_HPP_INCLUDED
+#endif // CATCH_TOTALS_HPP_INCLUDED

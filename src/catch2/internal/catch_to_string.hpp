@@ -1,11 +1,5 @@
-/*
- *  Created by Martin on 9/5/2018.
- *
- *  Distributed under the Boost Software License, Version 1.0. (See accompanying
- *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
- */
-#ifndef TWOBLUECUBES_CATCH_TO_STRING_H_INCLUDED
-#define TWOBLUECUBES_CATCH_TO_STRING_H_INCLUDED
+#ifndef CATCH_TO_STRING_HPP_INCLUDED
+#define CATCH_TO_STRING_HPP_INCLUDED
 
 #include <string>
 
@@ -25,4 +19,4 @@ namespace Catch {
     }
 } // end namespace Catch
 
-#endif // TWOBLUECUBES_CATCH_TO_STRING_H_INCLUDED
+#endif // CATCH_TO_STRING_HPP_INCLUDED

@@ -1,12 +1,5 @@
-/*
- *  Created by Phil on 27/6/2014.
- *  Copyright 2014 Two Blue Cubes Ltd. All rights reserved.
- *
- *  Distributed under the Boost Software License, Version 1.0. (See accompanying
- *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
- */
-#ifndef TWOBLUECUBES_CATCH_TAG_ALIAS_H_INCLUDED
-#define TWOBLUECUBES_CATCH_TAG_ALIAS_H_INCLUDED
+#ifndef CATCH_TAG_ALIAS_HPP_INCLUDED
+#define CATCH_TAG_ALIAS_HPP_INCLUDED
 
 #include <catch2/internal/catch_common.hpp>
 
@@ -26,4 +19,4 @@ namespace Catch {
 
 } // end namespace Catch
 
-#endif // TWOBLUECUBES_CATCH_TAG_ALIAS_H_INCLUDED
+#endif // CATCH_TAG_ALIAS_HPP_INCLUDED

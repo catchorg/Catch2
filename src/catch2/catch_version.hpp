@@ -1,12 +1,5 @@
-/*
- *  Created by Phil on 13/11/2012.
- *  Copyright 2012 Two Blue Cubes Ltd. All rights reserved.
- *
- *  Distributed under the Boost Software License, Version 1.0. (See accompanying
- *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
- */
-#ifndef TWOBLUECUBES_CATCH_VERSION_H_INCLUDED
-#define TWOBLUECUBES_CATCH_VERSION_H_INCLUDED
+#ifndef CATCH_VERSION_HPP_INCLUDED
+#define CATCH_VERSION_HPP_INCLUDED
 
 #include <iosfwd>
 
@@ -36,4 +29,4 @@ namespace Catch {
     Version const& libraryVersion();
 }
 
-#endif // TWOBLUECUBES_CATCH_VERSION_H_INCLUDED
+#endif // CATCH_VERSION_HPP_INCLUDED

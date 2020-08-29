@@ -1,12 +1,5 @@
- /*
- *  Created by Phil on 22/10/2010.
- *  Copyright 2010 Two Blue Cubes Ltd. All rights reserved.
- *
- *  Distributed under the Boost Software License, Version 1.0. (See accompanying
- *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
- */
-#ifndef TWOBLUECUBES_CATCH_RUNNER_IMPL_HPP_INCLUDED
-#define TWOBLUECUBES_CATCH_RUNNER_IMPL_HPP_INCLUDED
+#ifndef CATCH_RUN_CONTEXT_HPP_INCLUDED
+#define CATCH_RUN_CONTEXT_HPP_INCLUDED
 
 #include <catch2/interfaces/catch_interfaces_runner.hpp>
 #include <catch2/interfaces/catch_interfaces_reporter.hpp>
@@ -148,4 +141,4 @@ namespace Catch {
     unsigned int rngSeed();
 } // end namespace Catch
 
-#endif // TWOBLUECUBES_CATCH_RUNNER_IMPL_HPP_INCLUDED
+#endif // CATCH_RUN_CONTEXT_HPP_INCLUDED

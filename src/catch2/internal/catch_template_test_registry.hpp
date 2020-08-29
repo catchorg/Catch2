@@ -1,9 +1,5 @@
-/*
- *  Distributed under the Boost Software License, Version 1.0. (See accompanying
- *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
- */
-#ifndef TWOBLUECUBES_CATCH_TEMPLATE_TEST_REGISTRY_HPP_INCLUDED
-#define TWOBLUECUBES_CATCH_TEMPLATE_TEST_REGISTRY_HPP_INCLUDED
+#ifndef CATCH_TEMPLATE_TEST_REGISTRY_HPP_INCLUDED
+#define CATCH_TEMPLATE_TEST_REGISTRY_HPP_INCLUDED
 
 #include <catch2/internal/catch_test_registry.hpp>
 #include <catch2/internal/catch_compiler_capabilities.hpp>
@@ -325,4 +321,4 @@
         INTERNAL_CATCH_TEMPLATE_LIST_TEST_CASE_METHOD_2( INTERNAL_CATCH_UNIQUE_NAME( ____C_A_T_C_H____T_E_M_P_L_A_T_E____T_E_S_T____ ), INTERNAL_CATCH_UNIQUE_NAME( ____C_A_T_C_H____T_E_M_P_L_A_T_E____T_E_S_T____F_U_N_C____ ), ClassName, Name, Tags, TmplList )
 
 
-#endif // TWOBLUECUBES_CATCH_TEST_REGISTRY_HPP_INCLUDED
+#endif // CATCH_TEMPLATE_TEST_REGISTRY_HPP_INCLUDED

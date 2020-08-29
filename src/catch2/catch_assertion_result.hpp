@@ -1,12 +1,5 @@
-/*
- *  Created by Phil on 28/10/2010.
- *  Copyright 2010 Two Blue Cubes Ltd. All rights reserved.
- *
- *  Distributed under the Boost Software License, Version 1.0. (See accompanying
- *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
- */
-#ifndef TWOBLUECUBES_CATCH_ASSERTIONRESULT_H_INCLUDED
-#define TWOBLUECUBES_CATCH_ASSERTIONRESULT_H_INCLUDED
+#ifndef CATCH_ASSERTION_RESULT_HPP_INCLUDED
+#define CATCH_ASSERTION_RESULT_HPP_INCLUDED
 
 #include <string>
 #include <catch2/catch_assertion_info.hpp>
@@ -56,4 +49,4 @@ namespace Catch {
 
 } // end namespace Catch
 
-#endif // TWOBLUECUBES_CATCH_ASSERTIONRESULT_H_INCLUDED
+#endif // CATCH_ASSERTION_RESULT_HPP_INCLUDED

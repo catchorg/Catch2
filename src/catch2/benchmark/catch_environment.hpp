@@ -1,15 +1,7 @@
-/*
- *  Created by Joachim on 16/04/2019.
- *  Adapted from donated nonius code.
- *
- *  Distributed under the Boost Software License, Version 1.0. (See accompanying
- *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
- */
+// Adapted from donated nonius code.
 
-// Environment information
-
-#ifndef TWOBLUECUBES_CATCH_ENVIRONMENT_HPP_INCLUDED
-#define TWOBLUECUBES_CATCH_ENVIRONMENT_HPP_INCLUDED
+#ifndef CATCH_ENVIRONMENT_HPP_INCLUDED
+#define CATCH_ENVIRONMENT_HPP_INCLUDED
 
 #include <catch2/benchmark/catch_clock.hpp>
 #include <catch2/benchmark/catch_outlier_classification.hpp>
@@ -35,4 +27,4 @@ namespace Catch {
     } // namespace Benchmark
 } // namespace Catch
 
-#endif // TWOBLUECUBES_CATCH_ENVIRONMENT_HPP_INCLUDED
+#endif // CATCH_ENVIRONMENT_HPP_INCLUDED

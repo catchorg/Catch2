@@ -1,11 +1,5 @@
-/*
- *  Created by Martin on 14/11/2017.
- *
- *  Distributed under the Boost Software License, Version 1.0. (See accompanying
- *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
- */
-#ifndef TWOBLUECUBES_CATCH_REPORTER_JUNIT_H_INCLUDED
-#define TWOBLUECUBES_CATCH_REPORTER_JUNIT_H_INCLUDED
+#ifndef CATCH_REPORTER_JUNIT_HPP_INCLUDED
+#define CATCH_REPORTER_JUNIT_HPP_INCLUDED
 
 
 #include <catch2/reporters/catch_reporter_cumulative_base.hpp>
@@ -58,4 +52,4 @@ namespace Catch {
 
 } // end namespace Catch
 
-#endif // TWOBLUECUBES_CATCH_REPORTER_JUNIT_H_INCLUDED
+#endif // CATCH_REPORTER_JUNIT_HPP_INCLUDED

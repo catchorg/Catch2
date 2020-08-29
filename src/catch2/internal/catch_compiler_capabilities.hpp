@@ -1,12 +1,5 @@
-/*
- *  Created by Phil on 15/04/2013.
- *  Copyright 2013 Two Blue Cubes Ltd. All rights reserved.
- *
- *  Distributed under the Boost Software License, Version 1.0. (See accompanying
- *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
- */
-#ifndef TWOBLUECUBES_CATCH_COMPILER_CAPABILITIES_HPP_INCLUDED
-#define TWOBLUECUBES_CATCH_COMPILER_CAPABILITIES_HPP_INCLUDED
+#ifndef CATCH_COMPILER_CAPABILITIES_HPP_INCLUDED
+#define CATCH_COMPILER_CAPABILITIES_HPP_INCLUDED
 
 // Detect a number of compiler features - by compiler
 // The following features are defined:
@@ -377,5 +370,4 @@
 #define CATCH_CONFIG_TRADITIONAL_MSVC_PREPROCESSOR
 #endif
 
-#endif // TWOBLUECUBES_CATCH_COMPILER_CAPABILITIES_HPP_INCLUDED
-
+#endif // CATCH_COMPILER_CAPABILITIES_HPP_INCLUDED

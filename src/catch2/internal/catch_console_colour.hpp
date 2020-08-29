@@ -1,12 +1,5 @@
-/*
- *  Created by Phil on 25/2/2012.
- *  Copyright 2012 Two Blue Cubes Ltd. All rights reserved.
- *
- *  Distributed under the Boost Software License, Version 1.0. (See accompanying
- *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
- */
-#ifndef TWOBLUECUBES_CATCH_CONSOLE_COLOUR_HPP_INCLUDED
-#define TWOBLUECUBES_CATCH_CONSOLE_COLOUR_HPP_INCLUDED
+#ifndef CATCH_CONSOLE_COLOUR_HPP_INCLUDED
+#define CATCH_CONSOLE_COLOUR_HPP_INCLUDED
 
 #include <catch2/internal/catch_common.hpp>
 
@@ -67,4 +60,4 @@ namespace Catch {
 
 } // end namespace Catch
 
-#endif // TWOBLUECUBES_CATCH_CONSOLE_COLOUR_HPP_INCLUDED
+#endif // CATCH_CONSOLE_COLOUR_HPP_INCLUDED
