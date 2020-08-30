@@ -1,12 +1,3 @@
-/*
- *  Created by Phil on 17/01/2011.
- *  Copyright 2011 Two Blue Cubes Ltd. All rights reserved.
- *
- *  Distributed under the Boost Software License, Version 1.0. (See accompanying
- *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
- *
- */
-
 #include <catch2/internal/catch_common.hpp>
 #include <catch2/internal/catch_enforce.hpp>
 #include <catch2/internal/catch_stream.hpp>

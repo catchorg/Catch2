@@ -1,11 +1,3 @@
-/*
- *  Created by Phil on 5/08/2015.
- *  Copyright 2015 Two Blue Cubes Ltd. All rights reserved.
- *
- *  Distributed under the Boost Software License, Version 1.0. (See accompanying
- *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
- */
-
 #include <catch2/reporters/catch_reporter_listening.hpp>
 
 #include <cassert>
