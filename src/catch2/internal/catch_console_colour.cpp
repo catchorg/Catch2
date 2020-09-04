@@ -157,8 +157,10 @@ namespace {
 
     private:
         void setColour( const char* _escapeCode ) {
+            // The escape sequence must be flushed to console, otherwise if
+            // stdin and stderr are intermixed, we'd get accidentally coloured output.
             getCurrentContext().getConfig()->stream()
-                << '\033' << _escapeCode;
+                << '\033' << _escapeCode << std::flush;
         }
     };
 
