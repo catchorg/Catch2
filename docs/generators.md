@@ -40,7 +40,8 @@ that allows users to implement their own generators.
 `GENERATE` can be seen as an implicit `SECTION`, that goes from the place
 `GENERATE` is used, to the end of the scope. This can be used for various
 effects. The simplest usage is shown below, where the `SECTION` "one"
-runs 4 (2\*2) times, and `SECTION` "two" is run 6 times (2\*3).
+runs 4 (2\*2) times, and `SECTION` "two" is run 6 times (2\*3), and
+`SECTION_IF` "only one" runs only once.
 
 ```
 TEST_CASE("Generators") {
@@ -52,6 +53,9 @@ TEST_CASE("Generators") {
     SECTION("two") {
         auto k = GENERATE(4, 5, 6);
         REQUIRE(j != k);
+    }
+    SECTION_IF(i == 1, "only one") {
+        REQUIRE(i == 1);
     }
 }
 ```
