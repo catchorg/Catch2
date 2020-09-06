@@ -711,22 +711,22 @@ namespace { namespace MatchersTests {
     template<typename Range>
     struct EqualsRangeMatcher : Catch::Matchers::MatcherGenericBase {
 
-        EqualsRangeMatcher(Range const& range) : range{ range } {}
+        EqualsRangeMatcher(Range const& range) : m_range{ range } {}
 
         template<typename OtherRange>
         bool match(OtherRange const& other) const {
             using std::begin;
             using std::end;
 
-            return std::equal(begin(range), end(range), begin(other), end(other));
+            return std::equal(begin(m_range), end(m_range), begin(other), end(other));
         }
 
         std::string describe() const override {
-            return "Equals: " + Catch::rangeToString(range);
+            return "Equals: " + Catch::rangeToString(m_range);
         }
 
     private:
-        Range const& range;
+        Range const& m_range;
     };
 
     template<typename Range>
@@ -750,8 +750,8 @@ namespace { namespace MatchersTests {
         std::array<int, 3> a{{ 5, 3, 1 }};
 
         REQUIRE_THAT(vec,
-                    Predicate<std::vector<int>>([](auto const& vec) {
-                        return std::all_of(vec.begin(), vec.end(), [](int elem) {
+                    Predicate<std::vector<int>>([](auto const& v) {
+                        return std::all_of(v.begin(), v.end(), [](int elem) {
                             return elem % 2 == 1;
                         });
                     }, "All elements are odd") &&
@@ -948,7 +948,7 @@ namespace { namespace MatchersTests {
     TEST_CASE("Overloaded comma or address-of operators are not used", "[matchers][templated]") {
         REQUIRE_THROWS_AS((EvilMatcher(), EvilMatcher()), EvilCommaOperatorUsed);
         REQUIRE_THROWS_AS(&EvilMatcher(), EvilAddressOfOperatorUsed);
-        REQUIRE_NOTHROW(EvilMatcher() || EvilMatcher() && !EvilMatcher());
+        REQUIRE_NOTHROW(EvilMatcher() || (EvilMatcher() && !EvilMatcher()));
         REQUIRE_NOTHROW((EvilMatcher() && EvilMatcher()) || !EvilMatcher());
     }
 

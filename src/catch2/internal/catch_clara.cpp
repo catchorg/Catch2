@@ -78,8 +78,8 @@ namespace Catch {
             TokenStream::TokenStream( Args const& args ):
                 TokenStream( args.m_args.begin(), args.m_args.end() ) {}
 
-            TokenStream::TokenStream( Iterator it, Iterator itEnd ):
-                it( it ), itEnd( itEnd ) {
+            TokenStream::TokenStream( Iterator it_, Iterator itEnd_ ):
+                it( it_ ), itEnd( itEnd_ ) {
                 loadBuffer();
             }
 

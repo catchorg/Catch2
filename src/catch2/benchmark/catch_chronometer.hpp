@@ -44,11 +44,11 @@ namespace Catch {
             template <typename Fun>
             void measure(Fun&& fun) { measure(std::forward<Fun>(fun), is_callable<Fun(int)>()); }
 
-            int runs() const { return k; }
+            int runs() const { return repeats; }
 
-            Chronometer(Detail::ChronometerConcept& meter, int k)
+            Chronometer(Detail::ChronometerConcept& meter, int repeats_)
                 : impl(&meter)
-                , k(k) {}
+                , repeats(repeats_) {}
 
         private:
             template <typename Fun>
@@ -60,13 +60,13 @@ namespace Catch {
             void measure(Fun&& fun, std::true_type) {
                 Detail::optimizer_barrier();
                 impl->start();
-                for (int i = 0; i < k; ++i) invoke_deoptimized(fun, i);
+                for (int i = 0; i < repeats; ++i) invoke_deoptimized(fun, i);
                 impl->finish();
                 Detail::optimizer_barrier();
             }
 
             Detail::ChronometerConcept* impl;
-            int k;
+            int repeats;
         };
     } // namespace Benchmark
 } // namespace Catch

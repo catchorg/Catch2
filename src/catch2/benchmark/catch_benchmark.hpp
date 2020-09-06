@@ -33,12 +33,12 @@
 namespace Catch {
     namespace Benchmark {
         struct Benchmark {
-            Benchmark(std::string &&name)
-                : name(std::move(name)) {}
+            Benchmark(std::string&& benchmarkName)
+                : name(std::move(benchmarkName)) {}
 
             template <class FUN>
-            Benchmark(std::string &&name, FUN &&func)
-                : fun(std::move(func)), name(std::move(name)) {}
+            Benchmark(std::string&& benchmarkName , FUN &&func)
+                : fun(std::move(func)), name(std::move(benchmarkName)) {}
 
             template <typename Clock>
             ExecutionPlan<FloatDuration<Clock>> prepare(const IConfig &cfg, Environment<FloatDuration<Clock>> env) const {

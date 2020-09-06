@@ -68,7 +68,7 @@ TEST_CASE("unique_ptr reimplementation: basic functionality", "[internals][uniqu
 namespace {
     struct base {
         int i;
-        base(int i) :i(i) {}
+        base(int i_) :i(i_) {}
     };
     struct derived : base { using base::base; };
     struct unrelated {};

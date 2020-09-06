@@ -48,8 +48,8 @@ namespace Catch {
                 };
                 template <typename Fun>
                 struct model : public callable {
-                    model(Fun&& fun) : fun(std::move(fun)) {}
-                    model(Fun const& fun) : fun(fun) {}
+                    model(Fun&& fun_) : fun(std::move(fun_)) {}
+                    model(Fun const& fun_) : fun(fun_) {}
 
                     model<Fun>* clone() const override { return new model<Fun>(*this); }
 

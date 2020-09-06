@@ -26,7 +26,7 @@ namespace Catch {
 
     struct lineOfChars {
         char c;
-        constexpr lineOfChars( char c ): c( c ) {}
+        constexpr lineOfChars( char c_ ): c( c_ ) {}
 
         friend std::ostream& operator<<( std::ostream& out, lineOfChars value );
     };

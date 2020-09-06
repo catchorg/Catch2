@@ -3037,7 +3037,7 @@ Matchers.tests.cpp:<line number>
 ...............................................................................
 
 Matchers.tests.cpp:<line number>: PASSED:
-  REQUIRE_THAT( vec, Predicate<std::vector<int>>([](auto const& vec) { return std::all_of(vec.begin(), vec.end(), [](int elem) { return elem % 2 == 1; }); }, "All elements are odd") && !EqualsRange(a) )
+  REQUIRE_THAT( vec, Predicate<std::vector<int>>([](auto const& v) { return std::all_of(v.begin(), v.end(), [](int elem) { return elem % 2 == 1; }); }, "All elements are odd") && !EqualsRange(a) )
 with expansion:
   { 1, 3, 5 } ( matches predicate: "All elements are odd" and not Equals: { 5,
   3, 1 } )
@@ -7500,7 +7500,7 @@ Matchers.tests.cpp:<line number>: PASSED:
   REQUIRE_THROWS_AS( &EvilMatcher(), EvilAddressOfOperatorUsed )
 
 Matchers.tests.cpp:<line number>: PASSED:
-  REQUIRE_NOTHROW( EvilMatcher() || EvilMatcher() && !EvilMatcher() )
+  REQUIRE_NOTHROW( EvilMatcher() || (EvilMatcher() && !EvilMatcher()) )
 
 Matchers.tests.cpp:<line number>: PASSED:
   REQUIRE_NOTHROW( (EvilMatcher() && EvilMatcher()) || !EvilMatcher() )
