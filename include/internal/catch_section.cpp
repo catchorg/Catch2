@@ -31,7 +31,7 @@ namespace Catch {
 
     // This indicates whether the section should be executed or not
     Section::operator bool() const {
-        return m_sectionIncluded;
+        return m_sectionIncluded && m_info.exeCondition;
     }
 
 

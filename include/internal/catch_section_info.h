@@ -18,7 +18,8 @@ namespace Catch {
     struct SectionInfo {
         SectionInfo
             (   SourceLineInfo const& _lineInfo,
-                std::string const& _name );
+                std::string const& _name,
+                bool _exeCondition = true );
 
         // Deprecated
         SectionInfo
@@ -29,6 +30,9 @@ namespace Catch {
         std::string name;
         std::string description; // !Deprecated: this will always be empty
         SourceLineInfo lineInfo;
+
+        // Support for conditional executions of sections. #1821.
+        bool exeCondition;
     };
 
     struct SectionEndInfo {
