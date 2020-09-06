@@ -8,6 +8,15 @@
 #ifndef CATCH_TEMPLATE_TEST_MACROS_HPP_INCLUDED
 #define CATCH_TEMPLATE_TEST_MACROS_HPP_INCLUDED
 
+// We need this suppression to leak, because it took until GCC 10
+// for the front end to handle local suppression via _Pragma properly
+// inside templates (so `TEMPLATE_TEST_CASE` and co).
+// **THIS IS DIFFERENT FOR STANDARD TESTS, WHERE GCC 9 IS SUFFICIENT**
+#if defined(__GNUC__) && !defined(__clang__) && !defined(__ICC) && __GNUC__ < 10
+#pragma GCC diagnostic ignored "-Wparentheses"
+#endif
+
+
 #include <catch2/catch_test_macros.hpp>
 #include <catch2/internal/catch_template_test_registry.hpp>
 #include <catch2/internal/catch_preprocessor.hpp>
