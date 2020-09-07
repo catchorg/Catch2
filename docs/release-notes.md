@@ -3,6 +3,7 @@
 # Release notes
 **Contents**<br>
 [3.0.1](#301)<br>
+[2.13.1](#2131)<br>
 [2.13.0](#2130)<br>
 [2.12.4](#2124)<br>
 [2.12.3](#2123)<br>
@@ -146,6 +147,17 @@ new design.
   * `catch2` is the statically compiled implementation by itself
   * `catch2-with-main` also links in the default main
 
+
+## 2.13.1
+
+### Improvements
+* `ParseAndAddCatchTests` handles CMake v3.18.0 correctly (#1984)
+* Improved autodetection of `std::byte` (#1992)
+* Simplified implementation of templated test cases (#2007)
+  * This should have a tiny positive effect on its compilation throughput
+
+### Fixes
+* Automatic stringification of ranges handles sentinel ranges properly (#2004)
 
 
 ## 2.13.0
