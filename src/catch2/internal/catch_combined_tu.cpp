@@ -152,8 +152,8 @@ namespace Catch {
 //////////////////////////////////////////////
 // vvv formerly catch_leak_detector.cpp vvv //
 //////////////////////////////////////////////
- #include <catch2/internal/catch_leak_detector.hpp>
- #include <catch2/interfaces/catch_interfaces_registry_hub.hpp>
+#include <catch2/internal/catch_leak_detector.hpp>
+#include <catch2/interfaces/catch_interfaces_registry_hub.hpp>
 
 
 #ifdef CATCH_CONFIG_WINDOWS_CRTDBG
