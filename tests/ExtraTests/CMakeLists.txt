@@ -203,3 +203,24 @@ endforeach()
 list(FILTER EXTRA_TEST_BINARIES EXCLUDE REGEX "DisabledExceptions.*")
 list(APPEND CATCH_WARNING_TARGETS ${EXTRA_TEST_BINARIES})
 set(CATCH_WARNING_TARGETS ${CATCH_WARNING_TARGETS} PARENT_SCOPE)
+
+
+# This sets up a one-off executable that compiles against the amalgamated
+# files, and then runs it for a super simple check that the amalgamated
+# files are usable.
+add_executable(AmalgamatedTestCompilation
+  ${TESTS_DIR}/X91-AmalgamatedCatch.cpp
+  ${CATCH_DIR}/extras/catch_amalgamated.hpp
+  ${CATCH_DIR}/extras/catch_amalgamated.cpp
+)
+target_include_directories(AmalgamatedTestCompilation PRIVATE ${CATCH_DIR}/extras)
+set_property( TARGET AmalgamatedTestCompilation PROPERTY CXX_STANDARD 14 )
+set_property( TARGET AmalgamatedTestCompilation PROPERTY CXX_STANDARD_REQUIRED ON )
+set_property( TARGET AmalgamatedTestCompilation PROPERTY CXX_EXTENSIONS OFF )
+
+add_test(NAME AmalgamatedFileTest COMMAND AmalgamatedTestCompilation)
+set_tests_properties(
+    AmalgamatedFileTest
+  PROPERTIES
+    PASS_REGULAR_EXPRESSION "All tests passed \\(14 assertions in 3 test cases\\)"
+)
