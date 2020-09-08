@@ -102,15 +102,11 @@ environment:
       platform: Win32
       configuration: Debug
 
-# This build causes error after 30 minutes, because the VS2017 image
-# tries to launch just-in-time debugger on call to std::terminate, which
-# is an expected part of the tests in this build.
-# We can reenable it, if we handle disabling that test in CMake.
-#    - FLAVOR: VS 2017 Win32 Debug Examples
-#      APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-#      examples: 1
-#      platform: Win32
-#      configuration: Debug
+    - FLAVOR: VS 2017 Win32 Debug Examples
+      APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+      examples: 1
+      platform: Win32
+      configuration: Debug
 
     - FLAVOR: VS 2017 Win32 Debug WMain
       APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
