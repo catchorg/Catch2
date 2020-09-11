@@ -51,7 +51,7 @@ TEST_CASE("Generators") {
     }
     SECTION("two") {
         auto k = GENERATE(4, 5, 6);
-        REQUIRE(j != k);
+        REQUIRE(i != k);
     }
 }
 ```
