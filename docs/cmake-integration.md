@@ -97,6 +97,10 @@ catch_discover_tests(target
                      [TEST_SUFFIX suffix]
                      [PROPERTIES name1 value1...]
                      [TEST_LIST var]
+                     [REPORTER reporter]
+                     [OUTPUT_DIR dir]
+                     [OUTPUT_PREFIX prefix]
+                     [OUTPUT_SUFFIX suffix]
 )
 ```
 
@@ -142,6 +146,32 @@ Make the list of tests available in the variable `var`, rather than the
 default `<target>_TESTS`.  This can be useful when the same test
 executable is being used in multiple calls to `catch_discover_tests()`.
 Note that this variable is only available in CTest.
+
+* `REPORTER reporter`
+
+Use the specified reporter when running the test case. The reporter will
+be passed to the test runner as `--reporter reporter`.
+
+* `OUTPUT_DIR dir`
+
+If specified, the parameter is passed along as
+`--out dir/<test_name>` to test executable. The actual file name is the
+same as the test name. This should be used instead of
+`EXTRA_ARGS --out foo` to avoid race conditions writing the result output
+when using parallel test execution.
+
+* `OUTPUT_PREFIX prefix`
+
+May be used in conjunction with `OUTPUT_DIR`.
+If specified, `prefix` is added to each output file name, like so
+`--out dir/prefix<test_name>`.
+
+* `OUTPUT_SUFFIX suffix`
+
+May be used in conjunction with `OUTPUT_DIR`.
+If specified, `suffix` is added to each output file name, like so
+`--out dir/<test_name>suffix`. This can be used to add a file extension to
+the output file name e.g. ".xml".
 
 
 ### `ParseAndAddCatchTests.cmake`
