@@ -36,6 +36,21 @@ add_subdirectory(lib/Catch2)
 target_link_libraries(tests Catch2::Catch2)
 ```
 
+Another possibility is to use [FetchContent](https://cmake.org/cmake/help/latest/module/FetchContent.html):
+```cmake
+Include(FetchContent)
+
+FetchContent_Declare(
+  Catch2
+  GIT_REPOSITORY https://github.com/catchorg/Catch2.git
+  GIT_TAG        v2.13.1)
+
+FetchContent_MakeAvailable(Catch2)
+```
+```cmake
+target_link_libraries(tests Catch2::Catch2)
+```
+
 ## Automatic test registration
 
 Catch2's repository also contains two CMake scripts that help users
