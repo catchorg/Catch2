@@ -46,8 +46,7 @@ FetchContent_Declare(
   GIT_TAG        v2.13.1)
 
 FetchContent_MakeAvailable(Catch2)
-```
-```cmake
+
 target_link_libraries(tests Catch2::Catch2)
 ```
 
