@@ -2,6 +2,7 @@
 
 # Release notes
 **Contents**<br>
+[2.13.1](#2131)<br>
 [2.13.0](#2130)<br>
 [2.12.4](#2124)<br>
 [2.12.3](#2123)<br>
@@ -39,6 +40,19 @@
 [2.0.1](#201)<br>
 [Older versions](#older-versions)<br>
 [Even Older versions](#even-older-versions)<br>
+
+
+## 2.13.1
+
+### Improvements
+* `ParseAndAddCatchTests` handles CMake v3.18.0 correctly (#1984)
+* Improved autodetection of `std::byte` (#1992)
+* Simplified implementation of templated test cases (#2007)
+  * This should have a tiny positive effect on its compilation throughput
+
+### Fixes
+* Automatic stringification of ranges handles sentinel ranges properly (#2004)
+
 
 ## 2.13.0
 

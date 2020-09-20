@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.5)
 # detect if Catch is being bundled,
 # disable testsuite in that case
 if(NOT DEFINED PROJECT_NAME)
-  set(NOT_SUBPROJECT ON)
+    set(NOT_SUBPROJECT ON)
 endif()
 
 # Catch2's build breaks if done in-tree. You probably should not build
@@ -14,14 +14,12 @@ if (CMAKE_BINARY_DIR STREQUAL CMAKE_CURRENT_SOURCE_DIR)
 endif()
 
 
-project(Catch2 LANGUAGES CXX VERSION 2.13.0)
+project(Catch2 LANGUAGES CXX VERSION 2.13.1)
 
 # Provide path for scripts
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/CMake")
 
 include(GNUInstallDirs)
-include(CMakePackageConfigHelpers)
-include(CTest)
 
 option(CATCH_USE_VALGRIND "Perform SelfTests with Valgrind" OFF)
 option(CATCH_BUILD_TESTING "Build SelfTest project" ON)
@@ -33,8 +31,6 @@ option(CATCH_INSTALL_DOCS "Install documentation alongside library" ON)
 option(CATCH_INSTALL_HELPERS "Install contrib alongside library" ON)
 
 
-set_property(GLOBAL PROPERTY USE_FOLDERS ON)
-
 # define some folders
 set(CATCH_DIR ${CMAKE_CURRENT_SOURCE_DIR})
 set(SELF_TEST_DIR ${CATCH_DIR}/projects/SelfTest)
@@ -45,12 +41,16 @@ if(USE_WMAIN)
     set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /ENTRY:wmainCRTStartup")
 endif()
 
-if (BUILD_TESTING AND CATCH_BUILD_TESTING AND NOT_SUBPROJECT)
-    find_package(PythonInterp)
-    if (NOT PYTHONINTERP_FOUND)
-        message(FATAL_ERROR "Python not found, but required for tests")
+if(NOT_SUBPROJECT)
+    include(CTest)
+    set_property(GLOBAL PROPERTY USE_FOLDERS ON)
+    if(BUILD_TESTING AND CATCH_BUILD_TESTING)
+        find_package(PythonInterp)
+        if (NOT PYTHONINTERP_FOUND)
+            message(FATAL_ERROR "Python not found, but required for tests")
+        endif()
+        add_subdirectory(projects)
     endif()
-    add_subdirectory(projects)
 endif()
 
 if(CATCH_BUILD_EXAMPLES)
@@ -107,6 +107,7 @@ add_library(Catch2::Catch2 ALIAS Catch2)
 # a subproject via `add_subdirectory`, or the destinations will break,
 # see https://github.com/catchorg/Catch2/issues/1373
 if (NOT_SUBPROJECT)
+    include(CMakePackageConfigHelpers)
     set(CATCH_CMAKE_CONFIG_DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake/Catch2")
 
     configure_package_config_file(
