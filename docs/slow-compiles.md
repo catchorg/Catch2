@@ -75,11 +75,26 @@ implementation and C++ linking limitations.
 As with the `Catch2` target, the `Catch2WithMain` CMake target can be used
 either from a subdirectory, or from installed build.
 
+
 ### CMake
 ```cmake
 add_executable(tests-factorial tests-factorial.cpp)
 
 target_link_libraries(tests-factorial Catch2::Catch2WithMain)
+```
+
+### bazel
+```python
+cc_test(
+    name = "hello_world_test",
+    srcs = [
+        "test/hello_world_test.cpp",
+    ],
+    deps = [
+        "lib_hello_world",
+        "@catch2//:catch2_with_main",
+    ],
+)
 ```
 
 

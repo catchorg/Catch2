@@ -3,8 +3,15 @@ load("@rules_cc//cc:defs.bzl", "cc_library")
 
 # Header-only rule to export catch2/catch.hpp.
 cc_library(
-  name = "catch2",
-  hdrs = ["single_include/catch2/catch.hpp"],
-  visibility = ["//visibility:public"],
-  includes = ["single_include/"],
+    name = "catch2",
+    hdrs = ["single_include/catch2/catch.hpp"],
+    includes = ["single_include/"],
+    visibility = ["//visibility:public"],
+)
+
+cc_library(
+    name = "catch2_with_main",
+    srcs = ["src/catch_with_main.cpp"],
+    visibility = ["//visibility:public"],
+    deps = ["//:catch2"],
 )
