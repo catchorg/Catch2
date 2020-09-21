@@ -65,15 +65,25 @@ Failed 1 test case, failed 1 assertion.
 ```
 
 ## Using the static library Catch2Main
-
-Catch also provides a static library that implements the runner. When
-Catch2 is included with `add_subdirectory` using CMake, it is possible to simply
-link against this library which also provides the include path for the header.
-
+Catch also provides a static library that implements the runner.
+### CMake
 ```cmake
 add_executable(tests-factorial tests-factorial.cpp)
 
 target_link_libraries(tests-factorial Catch2::Main)
+```
+### bazel
+```python
+cc_test(
+    name = "hello_world_test",
+    srcs = [
+        "test/hello_world_test.cpp",
+    ],
+    deps = [
+        "lib_hello_world",
+        "@catch2//:catch2_main",
+    ],
+)
 ```
 
 ## Other possible solutions
