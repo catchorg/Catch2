@@ -15,11 +15,13 @@ cd $BUILDDIR
 cmake $CATCHROOT \
   -DCMAKE_CXX_COMPILER=clang++ \
   -DCMAKE_CXX_FLAGS="-fsanitize=fuzzer-no-link,address,undefined -O3 -g" \
+  -DCATCH_DEVELOPMENT_BUILD=On \
   -DCATCH_BUILD_EXAMPLES=Off \
   -DCATCH_BUILD_EXTRA_TESTS=Off \
   -DCATCH_BUILD_TESTING=Off \
   -DBUILD_TESTING=Off \
+  -DCATCH_ENABLE_WERROR=Off \
   -DCATCH_BUILD_FUZZERS=On
 
-cmake --build . -j 4
+cmake --build . -j $(nproc)
 
