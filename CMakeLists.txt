@@ -14,6 +14,7 @@ include(CMakeDependentOption)
 cmake_dependent_option(CATCH_BUILD_TESTING "Build the SelfTest project" ON "CATCH_DEVELOPMENT_BUILD" OFF)
 cmake_dependent_option(CATCH_BUILD_EXAMPLES "Build code examples" OFF "CATCH_DEVELOPMENT_BUILD" OFF)
 cmake_dependent_option(CATCH_BUILD_EXTRA_TESTS "Build extra tests" OFF "CATCH_DEVELOPMENT_BUILD" OFF)
+cmake_dependent_option(CATCH_BUILD_FUZZERS "Build fuzzers" OFF "CATCH_DEVELOPMENT_BUILD" OFF)
 cmake_dependent_option(CATCH_ENABLE_COVERAGE "Generate coverage for codecov.io" OFF "CATCH_DEVELOPMENT_BUILD" OFF)
 cmake_dependent_option(CATCH_ENABLE_WERROR "Enables Werror during build" ON "CATCH_DEVELOPMENT_BUILD" OFF)
 
@@ -73,6 +74,9 @@ if(CATCH_BUILD_EXTRA_TESTS)
     add_subdirectory(tests/ExtraTests)
 endif()
 
+if(CATCH_BUILD_FUZZERS)
+    add_subdirectory(fuzzing)
+endif()
 
 if (CATCH_DEVELOPMENT_BUILD)
     add_warnings_to_targets("${CATCH_WARNING_TARGETS}")
