@@ -42,7 +42,7 @@ that allows users to implement their own generators.
 effects. The simplest usage is shown below, where the `SECTION` "one"
 runs 4 (2\*2) times, and `SECTION` "two" is run 6 times (2\*3).
 
-```
+```cpp
 TEST_CASE("Generators") {
     auto i = GENERATE(1, 2);
     SECTION("one") {
