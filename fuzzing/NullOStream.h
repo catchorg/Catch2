@@ -1,6 +1,7 @@
 #pragma once
 
-#include <iostream>
+#include <ostream>
+#include <streambuf>
 
 // from https://stackoverflow.com/a/8244052
 class NullStreambuf : public std::streambuf {
@@ -16,5 +17,4 @@ public:
   NullStreambuf *rdbuf() { return this; }
   virtual void avoidOutOfLineVirtualCompilerWarning();
 };
-
 
