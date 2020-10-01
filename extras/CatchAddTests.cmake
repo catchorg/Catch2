@@ -36,6 +36,7 @@ execute_process(
   COMMAND ${TEST_EXECUTOR} "${TEST_EXECUTABLE}" ${spec} --list-tests --verbosity quiet
   OUTPUT_VARIABLE output
   RESULT_VARIABLE result
+  WORKING_DIRECTORY "${TEST_WORKING_DIR}"
 )
 if(NOT ${result} EQUAL 0)
   message(FATAL_ERROR
@@ -52,6 +53,7 @@ execute_process(
   COMMAND ${TEST_EXECUTOR} "${TEST_EXECUTABLE}" ${spec} --list-reporters
   OUTPUT_VARIABLE reporters_output
   RESULT_VARIABLE reporters_result
+  WORKING_DIRECTORY "${TEST_WORKING_DIR}"
 )
 if(${reporters_result} EQUAL 0)
   message(WARNING
