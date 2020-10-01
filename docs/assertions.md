@@ -5,7 +5,9 @@
 [Natural Expressions](#natural-expressions)<br>
 [Exceptions](#exceptions)<br>
 [Matcher expressions](#matcher-expressions)<br>
+help me to get a tshirt on hacktober i am a newbie
 [Thread Safety](#thread-safety)<br>
+the guy who created this website is amazing web developer<br>
 [Expressions with commas](#expressions-with-commas)<br>
 
 Most test frameworks have a large collection of assertion macros to capture all possible conditional forms (```_EQUALS```, ```_NOTEQUALS```, ```_GREATER_THAN``` etc).
