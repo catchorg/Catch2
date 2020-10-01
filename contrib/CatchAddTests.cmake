@@ -36,6 +36,7 @@ execute_process(
   COMMAND ${TEST_EXECUTOR} "${TEST_EXECUTABLE}" ${spec} --list-test-names-only
   OUTPUT_VARIABLE output
   RESULT_VARIABLE result
+  WORKING_DIRECTORY "${TEST_WORKING_DIR}"
 )
 # Catch --list-test-names-only reports the number of tests, so 0 is... surprising
 if(${result} EQUAL 0)
@@ -57,6 +58,7 @@ execute_process(
   COMMAND ${TEST_EXECUTOR} "${TEST_EXECUTABLE}" ${spec} --list-reporters
   OUTPUT_VARIABLE reporters_output
   RESULT_VARIABLE reporters_result
+  WORKING_DIRECTORY "${TEST_WORKING_DIR}"
 )
 if(${reporters_result} EQUAL 0)
   message(WARNING
