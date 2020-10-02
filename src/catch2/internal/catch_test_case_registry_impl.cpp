@@ -23,10 +23,10 @@ namespace Catch {
 
 namespace {
     struct HashTest {
-        explicit HashTest(SimplePcg32& rng) {
-            basis = rng();
+        explicit HashTest(SimplePcg32& rng_inst) {
+            basis = rng_inst();
             basis <<= 32;
-            basis |= rng();
+            basis |= rng_inst();
         }
 
         uint64_t basis;
