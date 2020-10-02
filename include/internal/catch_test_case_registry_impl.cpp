@@ -22,10 +22,10 @@ namespace Catch {
 
     namespace {
         struct TestHasher {
-            explicit TestHasher(Catch::SimplePcg32& rng) {
-                basis = rng();
+            explicit TestHasher(Catch::SimplePcg32& rng_instance) {
+                basis = rng_instance();
                 basis <<= 32;
-                basis |= rng();
+                basis |= rng_instance();
             }
 
             uint64_t basis;
