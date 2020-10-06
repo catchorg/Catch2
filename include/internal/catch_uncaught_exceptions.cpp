@@ -8,6 +8,8 @@
 
 #include "catch_compiler_capabilities.h"
 #include "catch_uncaught_exceptions.h"
+#include "catch_config_uncaught_exceptions.hpp"
+
 #include <exception>
 
 namespace Catch {

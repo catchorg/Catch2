@@ -39,10 +39,6 @@
 
 #endif
 
-#if defined(__cpp_lib_uncaught_exceptions)
-#  define CATCH_INTERNAL_CONFIG_CPP17_UNCAUGHT_EXCEPTIONS
-#endif
-
 // We have to avoid both ICC and Clang, because they try to mask themselves
 // as gcc, and we want only GCC in this block
 #if defined(__GNUC__) && !defined(__clang__) && !defined(__ICC) && !defined(__CUDACC__)
@@ -153,9 +149,6 @@
 #  define CATCH_INTERNAL_START_WARNINGS_SUPPRESSION __pragma( warning(push) )
 #  define CATCH_INTERNAL_STOP_WARNINGS_SUPPRESSION  __pragma( warning(pop) )
 
-#  if _MSC_VER >= 1900 // Visual Studio 2015 or newer
-#    define CATCH_INTERNAL_CONFIG_CPP17_UNCAUGHT_EXCEPTIONS
-#  endif
 
 // Universal Windows platform does not support SEH
 // Or console colours (or console at all...)
@@ -285,10 +278,6 @@
 
 #if defined(CATCH_INTERNAL_CONFIG_CPP17_OPTIONAL) && !defined(CATCH_CONFIG_NO_CPP17_OPTIONAL) && !defined(CATCH_CONFIG_CPP17_OPTIONAL)
 #  define CATCH_CONFIG_CPP17_OPTIONAL
-#endif
-
-#if defined(CATCH_INTERNAL_CONFIG_CPP17_UNCAUGHT_EXCEPTIONS) && !defined(CATCH_CONFIG_NO_CPP17_UNCAUGHT_EXCEPTIONS) && !defined(CATCH_CONFIG_CPP17_UNCAUGHT_EXCEPTIONS)
-#  define CATCH_CONFIG_CPP17_UNCAUGHT_EXCEPTIONS
 #endif
 
 #if defined(CATCH_INTERNAL_CONFIG_CPP17_STRING_VIEW) && !defined(CATCH_CONFIG_NO_CPP17_STRING_VIEW) && !defined(CATCH_CONFIG_CPP17_STRING_VIEW)

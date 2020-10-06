@@ -124,6 +124,7 @@ set(INTERNAL_HEADERS
         ${HEADER_DIR}/internal/catch_common.h
         ${HEADER_DIR}/internal/catch_compiler_capabilities.h
         ${HEADER_DIR}/internal/catch_config.hpp
+        ${HEADER_DIR}/internal/catch_config_uncaught_exceptions.hpp
         ${HEADER_DIR}/internal/catch_console_colour.h
         ${HEADER_DIR}/internal/catch_context.h
         ${HEADER_DIR}/internal/catch_debug_console.h
