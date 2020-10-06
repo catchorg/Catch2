@@ -76,13 +76,15 @@ namespace Catch {
 
 #include <catch2/internal/catch_compiler_capabilities.hpp>
 #include <catch2/internal/catch_uncaught_exceptions.hpp>
+#include <catch2/internal/catch_config_uncaught_exceptions.hpp>
+
 #include <exception>
 
 namespace Catch {
     bool uncaught_exceptions() {
 #if defined(CATCH_CONFIG_DISABLE_EXCEPTIONS)
         return false;
-#elif defined(CATCH_CONFIG_CPP17_UNCAUGHT_EXCEPTIONS) || (defined(__cpp_lib_uncaught_exceptions) && !defined(CATCH_CONFIG_NO_CPP17_UNCAUGHT_EXCEPTIONS))
+#elif defined(CATCH_CONFIG_CPP17_UNCAUGHT_EXCEPTIONS)
         return std::uncaught_exceptions() > 0;
 #else
         return std::uncaught_exception();
