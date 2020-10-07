@@ -9,7 +9,7 @@
 [![Join the chat in Discord: https://discord.gg/4CWS9zD](https://img.shields.io/badge/Discord-Chat!-brightgreen.svg)](https://discord.gg/4CWS9zD)
 
 
-<a href="https://github.com/catchorg/Catch2/releases/download/v2.13.1/catch.hpp">The latest version of the single header can be downloaded directly using this link</a>
+<a href="https://github.com/catchorg/Catch2/releases/download/v2.13.2/catch.hpp">The latest version of the single header can be downloaded directly using this link</a>
 
 ## Catch2 is released!
 
