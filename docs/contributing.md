@@ -81,7 +81,7 @@ and run all tests in the `Debug` compilation.
 1. Regenerate the amalgamated distribution
 ```
 $ cd Catch2
-$ ./tools/scripts/generateAmalgamatedFiles.py
+$ ./scripts/generateAmalgamatedFiles.py
 ```
 2. Configure the full test build
 ```
