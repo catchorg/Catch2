@@ -46,6 +46,7 @@
 
 ## 3.0.1 (in progress)
 
+
 **Catch2 now uses statically compiled library as its distribution model.
 This also means that to get all of Catch2's functionality in a test file,
 you have to include multiple headers.**
@@ -70,7 +71,7 @@ new design.
 * Why is Catch2 moving to separate headers?
   * The short answer is future extensibility and scalability. The long answer is complex and can be found on my blog, but at the most basic level, it is that providing single-header distribution is at odds with providing variety of useful features. When Catch2 was distributed in a single header, adding a new Matcher would cause overhead for everyone, but was useful only to a subset of users. This meant that the barrier to entry for new Matchers/Generators/etc is high in single header model, but much smaller in the new model.
 * Will Catch2 again distribute single-header version in the future?
-  * No. But I intend to provide sqlite-style distribution option, with 1 header and 1 "unity" .cpp file. Do note that the header will have similar problem to the `catch_all.hpp` header.
+  * No. But we do provide sqlite-style amalgamated distribution option. This means that you can download just 1 .cpp file and 1 header and place them next to your own sources. However, doing this has downsides similar to using the `catch_all.hpp` header.
 * Why the big breaking change caused by replacing `catch.hpp` with `catch_all.hpp`?
   * The convenience header `catch_all.hpp` exists for two reasons. One of them is to provide a way for quick migration from Catch2, the second one is to provide a simple way to test things with Catch2. Using it for migration has one drawback in that it is **big**. This means that including it _will_ cause significant compile time drag, and so using it to migrate should be a concious decision by the user, not something they can just stumble into unknowingly.
 
@@ -129,6 +130,9 @@ new design.
   * Catch2 currently provides _some_ generic matchers, but there should be more before final release of v3
     * So far, `IsEmpty`, `SizeIs`, and `Contains` are provided.
     * At least `ElementsAre` and `UnorderedElementsAre` are planned.
+* Some runtime performance improvements
+* Significant compilation time improvements
+  * including `catch_test_macros.hpp` is 80% cheaper than including `catch.hpp`
 
 
 ### Fixes
@@ -147,6 +151,7 @@ new design.
 * Catch2's pkg-config integration also provides 2 packages
   * `catch2` is the statically compiled implementation by itself
   * `catch2-with-main` also links in the default main
+
 
 
 ## 2.13.2

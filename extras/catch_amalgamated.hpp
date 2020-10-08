@@ -5,8 +5,8 @@
 
 // SPDX-License-Identifier: BSL-1.0
 
-//  Catch v3.0.0-preview.2
-//  Generated: 2020-09-07 20:00:03.521464
+//  Catch v3.0.0-preview.3
+//  Generated: 2020-10-08 13:59:26.309308
 //  ----------------------------------------------------------
 //  This file is an amalgamation of multiple different files.
 //  You probably shouldn't edit it directly.
@@ -289,7 +289,7 @@ namespace Catch {
 
 // We have to avoid both ICC and Clang, because they try to mask themselves
 // as gcc, and we want only GCC in this block
-#if defined(__GNUC__) && !defined(__clang__) && !defined(__ICC)
+#if defined(__GNUC__) && !defined(__clang__) && !defined(__ICC) && !defined(__CUDACC__)
 #    define CATCH_INTERNAL_START_WARNINGS_SUPPRESSION _Pragma( "GCC diagnostic push" )
 #    define CATCH_INTERNAL_STOP_WARNINGS_SUPPRESSION  _Pragma( "GCC diagnostic pop" )
 
@@ -321,7 +321,7 @@ namespace Catch {
 // ```
 //
 // Therefore, `CATCH_INTERNAL_IGNORE_BUT_WARN` is not implemented.
-#  if !defined(__ibmxl__)
+#  if !defined(__ibmxl__) && !defined(__CUDACC__)
 #    define CATCH_INTERNAL_IGNORE_BUT_WARN(...) (void)__builtin_constant_p(__VA_ARGS__) /* NOLINT(cppcoreguidelines-pro-type-vararg, hicpp-vararg) */
 #  endif
 
@@ -7470,6 +7470,45 @@ namespace Catch {
 #endif // CATCH_INTERFACES_TAG_ALIAS_REGISTRY_HPP_INCLUDED
 
 #endif // CATCH_INTERFACES_ALL_HPP_INCLUDED
+
+
+
+/** \file
+ * Wrapper for UNCAUGHT_EXCEPTIONS configuration option
+ *
+ * For some functionality, Catch2 requires to know whether there is
+ * an active exception. Because `std::uncaught_exception` is deprecated
+ * in C++17, we want to use `std::uncaught_exceptions` if possible.
+ */
+
+#ifndef CATCH_CONFIG_UNCAUGHT_EXCEPTIONS_HPP
+#define CATCH_CONFIG_UNCAUGHT_EXCEPTIONS_HPP
+
+#if defined(_MSC_VER)
+#  if _MSC_VER >= 1900 // Visual Studio 2015 or newer
+#    define CATCH_INTERNAL_CONFIG_CPP17_UNCAUGHT_EXCEPTIONS
+#  endif
+#endif
+
+
+#include <exception>
+
+#if defined(__cpp_lib_uncaught_exceptions) \
+    && !defined(CATCH_INTERNAL_CONFIG_CPP17_UNCAUGHT_EXCEPTIONS)
+
+#  define CATCH_INTERNAL_CONFIG_CPP17_UNCAUGHT_EXCEPTIONS
+#endif // __cpp_lib_uncaught_exceptions
+
+
+#if defined(CATCH_INTERNAL_CONFIG_CPP17_UNCAUGHT_EXCEPTIONS) \
+    && !defined(CATCH_CONFIG_NO_CPP17_UNCAUGHT_EXCEPTIONS) \
+    && !defined(CATCH_CONFIG_CPP17_UNCAUGHT_EXCEPTIONS)
+
+#  define CATCH_CONFIG_CPP17_UNCAUGHT_EXCEPTIONS
+#endif
+
+
+#endif // CATCH_CONFIG_UNCAUGHT_EXCEPTIONS_HPP
 
 
 #ifndef CATCH_CONSOLE_COLOUR_HPP_INCLUDED

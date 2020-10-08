@@ -5,8 +5,8 @@
 
 // SPDX-License-Identifier: BSL-1.0
 
-//  Catch v3.0.0-preview.2
-//  Generated: 2020-09-07 20:00:04.097397
+//  Catch v3.0.0-preview.3
+//  Generated: 2020-10-08 13:59:26.616931
 //  ----------------------------------------------------------
 //  This file is an amalgamation of multiple different files.
 //  You probably shouldn't edit it directly.
@@ -1784,7 +1784,7 @@ namespace Catch {
     }
 
     Version const& libraryVersion() {
-        static Version version( 3, 0, 0, "preview", 2 );
+        static Version version( 3, 0, 0, "preview", 3 );
         return version;
     }
 
@@ -2678,13 +2678,14 @@ namespace Catch {
 // vvv formerly catch_uncaught_exceptions.cpp vvv //
 ////////////////////////////////////////////////////
 
+
 #include <exception>
 
 namespace Catch {
     bool uncaught_exceptions() {
 #if defined(CATCH_CONFIG_DISABLE_EXCEPTIONS)
         return false;
-#elif defined(CATCH_CONFIG_CPP17_UNCAUGHT_EXCEPTIONS) || (defined(__cpp_lib_uncaught_exceptions) && !defined(CATCH_CONFIG_NO_CPP17_UNCAUGHT_EXCEPTIONS))
+#elif defined(CATCH_CONFIG_CPP17_UNCAUGHT_EXCEPTIONS)
         return std::uncaught_exceptions() > 0;
 #else
         return std::uncaught_exception();
@@ -3988,7 +3989,7 @@ namespace Catch {
         if (tmpnam_s(m_buffer)) {
             CATCH_RUNTIME_ERROR("Could not get a temp filename");
         }
-        if (fopen_s(&m_file, m_buffer, "w")) {
+        if (fopen_s(&m_file, m_buffer, "w+")) {
             char buffer[100];
             if (strerror_s(buffer, errno)) {
                 CATCH_RUNTIME_ERROR("Could not translate errno to a string");
@@ -5188,10 +5189,10 @@ namespace Catch {
 
 namespace {
     struct HashTest {
-        explicit HashTest(SimplePcg32& rng) {
-            basis = rng();
+        explicit HashTest(SimplePcg32& rng_inst) {
+            basis = rng_inst();
             basis <<= 32;
-            basis |= rng();
+            basis |= rng_inst();
         }
 
         uint64_t basis;
