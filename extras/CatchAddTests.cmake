@@ -55,11 +55,7 @@ execute_process(
   RESULT_VARIABLE reporters_result
   WORKING_DIRECTORY "${TEST_WORKING_DIR}"
 )
-if(${reporters_result} EQUAL 0)
-  message(WARNING
-    "Test executable '${TEST_EXECUTABLE}' contains no reporters!\n"
-  )
-elseif(${reporters_result} LESS 0)
+if(NOT ${reporters_result} EQUAL 0)
   message(FATAL_ERROR
     "Error running test executable '${TEST_EXECUTABLE}':\n"
     "  Result: ${reporters_result}\n"
