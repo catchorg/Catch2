@@ -108,7 +108,8 @@ function(ParseAndAddCatchTests_ParseFile SourceFile TestTarget)
     ParseAndAddCatchTests_RemoveComments(Contents)
 
     # Find definition of test names
-    string(REGEX MATCHALL "[ \t]*(CATCH_)?(TEMPLATE_)?(TEST_CASE_METHOD|SCENARIO|TEST_CASE)[ \t]*\\([ \t\n]*\"[^\"]*\"[ \t\n]*,[ \t\n]*\"[^\"]*\"([^\(\)]+(\\([^\)]*\\))*)*\\)+[ \t\n]*{+[ \t]*(//[^\n]*[Tt][Ii][Mm][Ee][Oo][Uu][Tt][ \t]*[0-9]+)*" Tests "${Contents}")
+    # https://regex101.com/r/JygOND/1
+    string(REGEX MATCHALL "[ \t]*(CATCH_)?(TEMPLATE_)?(TEST_CASE_METHOD|SCENARIO|TEST_CASE)[ \t]*\\([ \t\n]*\"[^\"]*\"[ \t\n]*(,[ \t\n]*\"[^\"]*\")?(,[ \t\n]*[^\,\)]*)*\\)[ \t\n]*\{+[ \t]*(//[^\n]*[Tt][Ii][Mm][Ee][Oo][Uu][Tt][ \t]*[0-9]+)*" Tests "${Contents}")
 
     if(PARSE_CATCH_TESTS_ADD_TO_CONFIGURE_DEPENDS AND Tests)
       ParseAndAddCatchTests_PrintDebugMessage("Adding ${SourceFile} to CMAKE_CONFIGURE_DEPENDS property")
