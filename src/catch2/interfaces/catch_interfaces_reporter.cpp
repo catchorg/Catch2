@@ -21,6 +21,24 @@
 
 namespace Catch {
 
+    namespace {
+        void listTestNamesOnly( std::vector<TestCaseHandle> const& tests ) {
+            for ( auto const& test : tests ) {
+                auto const& testCaseInfo = test.getTestCaseInfo();
+
+                if ( startsWith( testCaseInfo.name, '#' ) ) {
+                    Catch::cout() << '"' << testCaseInfo.name << '"';
+                } else {
+                    Catch::cout() << testCaseInfo.name;
+                }
+
+                Catch::cout() << '\n';
+            }
+            Catch::cout() << std::flush;
+        }
+    } // end unnamed namespace
+
+
     ReporterConfig::ReporterConfig( IConfig const* _fullConfig )
     :   m_stream( &_fullConfig->stream() ), m_fullConfig( _fullConfig ) {}
 
@@ -137,6 +155,14 @@ namespace Catch {
     }
 
     void IStreamingReporter::listTests(std::vector<TestCaseHandle> const& tests, IConfig const& config) {
+        // We special case this to provide the equivalent of old
+        // `--list-test-names-only`, which could then be used by the
+        // `--input-file` option.
+        if (config.verbosity() == Verbosity::Quiet) {
+            listTestNamesOnly(tests);
+            return;
+        }
+
         if (config.hasTestFilters()) {
             Catch::cout() << "Matching test cases:\n";
         } else {

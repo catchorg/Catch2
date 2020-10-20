@@ -99,6 +99,15 @@ set_tests_properties(List::Tests::Output PROPERTIES
     PASS_REGULAR_EXPRESSION "[0-9]+ test cases"
     FAIL_REGULAR_EXPRESSION "Hidden Test"
 )
+# This should be equivalent to the old --list-test-names-only and be usable
+# with --input-file.
+add_test(NAME List::Tests::Quiet COMMAND $<TARGET_FILE:SelfTest> --list-tests --verbosity quiet)
+# Sadly we cannot ask for start-of-line and end-of-line in a ctest regex,
+# so we fail if we see space/tab at the start...
+set_tests_properties(List::Tests::Quiet PROPERTIES
+    PASS_REGULAR_EXPRESSION "\"#1905 -- test spec parser properly clears internal state between compound tests\"[\r\n]"
+    FAIL_REGULAR_EXPRESSION "[ \t]\"#1905 -- test spec parser properly clears internal state between compound tests\""
+)
 add_test(NAME List::Tests::ExitCode COMMAND $<TARGET_FILE:SelfTest> --list-tests --verbosity high)
 add_test(NAME List::Tests::XmlOutput COMMAND $<TARGET_FILE:SelfTest> --list-tests --verbosity high -r xml)
 set_tests_properties(List::Tests::XmlOutput PROPERTIES
