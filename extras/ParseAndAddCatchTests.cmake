@@ -198,10 +198,10 @@ function(ParseAndAddCatchTests_ParseFile SourceFile TestTarget)
                 set(CTestName "\"${CTestName}\"")
             endif()
 
-	    # Handle template test cases
-	    if("${TestTypeAndFixture}" MATCHES ".*TEMPLATE_.*")
-	      set(Name "${Name} - *")
-	    endif()
+            # Handle template test cases
+            if("${TestTypeAndFixture}" MATCHES ".*TEMPLATE_.*")
+              set(Name "${Name} - *")
+            endif()
 
             # Add the test and set its properties
             add_test(NAME "${CTestName}" COMMAND ${OptionalCatchTestLauncher} $<TARGET_FILE:${TestTarget}> ${Name} ${AdditionalCatchParameters})
