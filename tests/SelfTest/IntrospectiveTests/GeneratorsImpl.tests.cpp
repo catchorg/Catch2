@@ -358,3 +358,33 @@ TEST_CASE("Multiple random generators in one test case output different values",
         REQUIRE(same < 200);
     }
 }
+
+TEST_CASE("#2040 - infinite compilation recursion in GENERATE with MSVC", "[generators][compilation][approvals]") {
+    int x = 42;
+    auto test = GENERATE_COPY(1, x, 2 * x);
+    CHECK(test < 100);
+}
+
+namespace {
+    static bool always_true(int) {
+        return true;
+    }
+
+    static bool is_even(int n) {
+        return n % 2 == 0;
+    }
+
+    static bool is_multiple_of_3(int n) {
+        return n % 3 == 0;
+    }
+}
+
+TEST_CASE("GENERATE handles function (pointers)", "[generators][compilation][approvals]") {
+    auto f = GENERATE(always_true, is_even, is_multiple_of_3);
+    REQUIRE(f(6));
+}
+
+TEST_CASE("GENERATE decays arrays", "[generators][compilation][approvals]") {
+    auto str = GENERATE("abc", "def", "gh");
+    STATIC_REQUIRE(std::is_same<decltype(str), const char*>::value);
+}
