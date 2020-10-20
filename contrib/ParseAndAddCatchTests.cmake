@@ -120,6 +120,14 @@ function(ParseAndAddCatchTests_ParseFile SourceFile TestTarget)
       )
     endif()
 
+    # check CMP0110 policy for new add_test() behavior
+    if(POLICY CMP0110)
+        cmake_policy(GET CMP0110 _cmp0110_value) # new add_test() behavior
+    else()
+        # just to be thorough explicitly set the variable
+        set(_cmp0110_value)
+    endif()
+
     foreach(TestName ${Tests})
         # Strip newlines
         string(REGEX REPLACE "\\\\\n|\n" "" TestName "${TestName}")
@@ -194,7 +202,11 @@ function(ParseAndAddCatchTests_ParseFile SourceFile TestTarget)
 
             # Work around CMake 3.18.0 change in `add_test()`, before the escaped quotes were neccessary,
             # only with CMake 3.18.0 the escaped double quotes confuse the call. This change is reverted in 3.18.1
-            if(NOT ${CMAKE_VERSION} VERSION_EQUAL "3.18")
+            # And properly introduced in 3.19 with the CMP0110 policy
+            if(_cmp0110_value STREQUAL "NEW" OR ${CMAKE_VERSION} VERSION_EQUAL "3.18")
+                ParseAndAddCatchTests_PrintDebugMessage("CMP0110 set to NEW, no need for add_test(\"\") workaround")
+            else()
+                ParseAndAddCatchTests_PrintDebugMessage("CMP0110 set to OLD adding \"\" for add_test() workaround")
                 set(CTestName "\"${CTestName}\"")
             endif()
 
