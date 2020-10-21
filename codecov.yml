@@ -19,7 +19,7 @@ coverage:
 
 
 codecov:
-  branch: master
+  branch: v2.x
 
 comment:
   layout: "diff"
