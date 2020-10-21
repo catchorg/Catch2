@@ -782,7 +782,7 @@ than `single_include/catch.hpp`.**
 * CLR objects (`T^`) can now be stringified (#1216)
   * This affects code compiled as C++/CLI
 * Added `PredicateMatcher`, a matcher that takes an arbitrary predicate function (#1236)
-  * See [documentation for details](https://github.com/catchorg/Catch2/blob/master/docs/matchers.md)
+  * See [documentation for details](https://github.com/catchorg/Catch2/blob/devel/docs/matchers.md)
 
 ### Others
 * Modified CMake-installed pkg-config to allow `#include <catch.hpp>`(#1239)
@@ -810,7 +810,7 @@ than `single_include/catch.hpp`.**
 * Added an option to warn (+ exit with error) when no tests were ran (#1158)
   * Use as `-w NoTests`
 * Added provisional support for Emscripten (#1114)
-* [Added a way to override the fallback stringifier](https://github.com/catchorg/Catch2/blob/master/docs/configuration.md#fallback-stringifier) (#1024)
+* [Added a way to override the fallback stringifier](https://github.com/catchorg/Catch2/blob/devel/docs/configuration.md#fallback-stringifier) (#1024)
   * This allows project's own stringification machinery to be easily reused for Catch
 * `Catch::Session::run()` now accepts `char const * const *`, allowing it to accept array of string literals (#1031, #1178)
   * The embedded version of Clara was bumped to v1.1.3
