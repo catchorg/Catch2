@@ -230,6 +230,14 @@ namespace TestCaseTracking {
             m_filters.insert( m_filters.end(), filters.begin()+1, filters.end() );
     }
 
+    std::vector<std::string> const& SectionTracker::getFilters() const {
+        return m_filters;
+    }
+
+    std::string const& SectionTracker::trimmedName() const {
+        return m_trimmed_name;
+    }
+
 } // namespace TestCaseTracking
 
 using TestCaseTracking::ITracker;

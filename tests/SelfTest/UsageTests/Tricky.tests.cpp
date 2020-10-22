@@ -13,6 +13,8 @@
 #endif
 
 #include <catch2/catch_test_macros.hpp>
+#include <catch2/generators/catch_generators.hpp>
+#include <catch2/generators/catch_generators_range.hpp>
 
 #include <cstdio>
 #include <sstream>
@@ -398,4 +400,29 @@ TEST_CASE("#1514: stderr/stdout is not captured in tests aborted by an exception
     std::clog << "Nor would this\n" << std::flush;
     // FAIL aborts the test by throwing a Catch exception
     FAIL("1514");
+}
+
+
+TEST_CASE( "#2025: -c shouldn't cause infinite loop", "[sections][generators][regression][.approvals]" ) {
+    SECTION( "Check cursor from buffer offset" ) {
+        auto bufPos = GENERATE_REF( range( 0, 44 ) );
+        WHEN( "Buffer position is " << bufPos ) { REQUIRE( 1 == 1 ); }
+    }
+}
+
+TEST_CASE("#2025: original repro", "[sections][generators][regression][.approvals]") {
+    auto fov = GENERATE(true, false);
+    DYNAMIC_SECTION("fov_" << fov) {
+        std::cout << "inside with fov: " << fov << '\n';
+    }
+}
+
+TEST_CASE("#2025: same-level sections", "[sections][generators][regression][.approvals]") {
+    SECTION("A") {
+        SUCCEED();
+    }
+    auto i = GENERATE(1, 2, 3);
+    SECTION("B") {
+        REQUIRE(i < 4);
+    }
 }
