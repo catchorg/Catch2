@@ -190,6 +190,9 @@ namespace Catch {
         std::string combined("#");
         combined += extractFilenamePart(lineInfo.file);
         internalAppendTag(combined);
+        // TBD: Running this over all tags again is inefficient, but
+        //      simple enough. In practice, the overhead is small enough.
+        toLowerInPlace(backingLCaseTags);
     }
 
     std::string TestCaseInfo::tagsAsString() const {
