@@ -163,6 +163,10 @@ namespace TestCaseTracking {
 
         void addInitialFilters( std::vector<std::string> const& filters );
         void addNextFilters( std::vector<std::string> const& filters );
+        //! Returns filters active in this tracker
+        std::vector<std::string> const& getFilters() const;
+        //! Returns whitespace-trimmed name of the tracked section
+        std::string const& trimmedName() const;
     };
 
 } // namespace TestCaseTracking

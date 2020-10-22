@@ -71,13 +71,53 @@ namespace Catch {
                 // `SECTION`s.
                 // **The check for m_children.empty cannot be removed**.
                 // doing so would break `GENERATE` _not_ followed by `SECTION`s.
-                const bool should_wait_for_child =
-                    !m_children.empty() &&
-                    std::find_if( m_children.begin(),
-                                  m_children.end(),
-                                  []( TestCaseTracking::ITrackerPtr tracker ) {
-                                      return tracker->hasStarted();
-                                  } ) == m_children.end();
+                const bool should_wait_for_child = [&]() {
+                    // No children -> nobody to wait for
+                    if ( m_children.empty() ) {
+                        return false;
+                    }
+                    // If at least one child started executing, don't wait
+                    if ( std::find_if(
+                             m_children.begin(),
+                             m_children.end(),
+                             []( TestCaseTracking::ITrackerPtr tracker ) {
+                                 return tracker->hasStarted();
+                             } ) != m_children.end() ) {
+                        return false;
+                    }
+
+                    // No children have started. We need to check if they _can_
+                    // start, and thus we should wait for them, or they cannot
+                    // start (due to filters), and we shouldn't wait for them
+                    auto* parent = m_parent;
+                    // This is safe: there is always at least one section
+                    // tracker in a test case tracking tree
+                    while ( !parent->isSectionTracker() ) {
+                        parent = &( parent->parent() );
+                    }
+                    assert( parent &&
+                            "Missing root (test case) level section" );
+
+                    auto const& parentSection =
+                        static_cast<SectionTracker&>( *parent );
+                    auto const& filters = parentSection.getFilters();
+                    // No filters -> no restrictions on running sections
+                    if ( filters.empty() ) {
+                        return true;
+                    }
+
+                    for ( auto const& child : m_children ) {
+                        if ( child->isSectionTracker() &&
+                             std::find( filters.begin(),
+                                        filters.end(),
+                                        static_cast<SectionTracker&>( *child )
+                                            .trimmedName() ) !=
+                                 filters.end() ) {
+                            return true;
+                        }
+                    }
+                    return false;
+                }();
 
                 // This check is a bit tricky, because m_generator->next()
                 // has a side-effect, where it consumes generator's current
