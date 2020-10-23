@@ -56,7 +56,7 @@ By default a console width of 80 is assumed but this can be controlled by defini
     CATCH_CONFIG_NOSTDOUT
 
 To support platforms that do not provide `std::cout`, `std::cerr` and
-`std::clog`, Catch does not usem the directly, but rather calls
+`std::clog`, Catch does not use them directly, but rather calls
 `Catch::cout`, `Catch::cerr` and `Catch::clog`. You can replace their
 implementation by defining `CATCH_CONFIG_NOSTDOUT` and implementing
 them yourself, their signatures are:
