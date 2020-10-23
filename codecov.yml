@@ -15,7 +15,7 @@ coverage:
 
 
 codecov:
-  branch: master
+  branch: devel
   max_report_age: off
 
 comment:
