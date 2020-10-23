@@ -78,23 +78,30 @@ the invocation of CMake configuration step.
 Bringing this all together, the steps below should configure, build,
 and run all tests in the `Debug` compilation.
 
-1. Regenerate the amalgamated distribution
+<!-- snippet: catch2-build-and-test -->
+<a id='snippet-catch2-build-and-test'></a>
+```sh
+# 1. Regenerate the amalgamated distribution
+./tools/scripts/generateAmalgamatedFiles.py
+
+# 2. Configure the full test build
+cmake -Bdebug-build -H. -DCMAKE_BUILD_TYPE=Debug -DCATCH_BUILD_EXAMPLES=ON -DCATCH_BUILD_EXTRA_TESTS=ON
+
+# 3. Run the actual build
+cmake --build debug-build
+
+# 4. Run the tests using CTest
+cd debug-build
+ctest -j 4 --output-on-failure -C Debug
 ```
-$ cd Catch2
-$ ./tools/scripts/generateAmalgamatedFiles.py
-```
-2. Configure the full test build
-```
-$ cmake -Bdebug-build -H. -DCMAKE_BUILD_TYPE=Debug -DCATCH_BUILD_EXAMPLES=ON -DCATCH_BUILD_EXTRA_TESTS=ON
-```
-3. Run the actual build
-```
-$ cmake --build debug-build
-```
-4. Run the tests using CTest
-```
-$ cd debug-build
-$ ctest -j 4 --output-on-failure -C Debug
+<sup><a href='/tools/scripts/buildAndTest.sh#L6-L19' title='File snippet `catch2-build-and-test` was extracted from'>snippet source</a> | <a href='#snippet-catch2-build-and-test' title='Navigate to start of snippet `catch2-build-and-test`'>anchor</a></sup>
+<!-- endSnippet -->
+
+For convenience, the above commands are in the script `tools/scripts/buildAndTest.sh`, and can be run like this:
+
+```bash
+cd Catch2
+./tools/scripts/buildAndTest.sh
 ```
 
 If you added new tests, you will likely see `ApprovalTests` failure.
