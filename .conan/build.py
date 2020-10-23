@@ -26,8 +26,8 @@ class BuilderSettings(object):
         """ Set Catch2 repository to be used on upload.
             The upload server address could be customized by env var
             CONAN_UPLOAD. If not defined, the method will check the branch name.
-            Only master or CONAN_STABLE_BRANCH_PATTERN will be accepted.
-            The master branch will be pushed to testing channel, because it does
+            Only devel or CONAN_STABLE_BRANCH_PATTERN will be accepted.
+            The devel branch will be pushed to testing channel, because it does
             not match the stable pattern. Otherwise it will upload to stable
             channel.
         """

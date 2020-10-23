@@ -110,7 +110,7 @@ int main( int argc, char* argv[] )
 }
 ```
 
-See the [Clara documentation](https://github.com/philsquared/Clara/blob/master/README.md) for more details.
+See the [Clara documentation](https://github.com/philsquared/Clara/blob/devel/README.md) for more details.
 
 
 ## Version detection

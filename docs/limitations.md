@@ -151,7 +151,7 @@ VS 2015 has a known bug where `__LINE__` macro can be improperly expanded under 
 A workaround is to compile the binary in Release mode.
 
 ### Clang/G++ -- skipping leaf sections after an exception
-Some versions of `libc++` and `libstdc++` (or their runtimes) have a bug with `std::uncaught_exception()` getting stuck returning `true` after rethrow, even if there are no active exceptions. One such case is this snippet, which skipped the sections "a" and "b", when compiled against `libcxxrt` from master
+Some versions of `libc++` and `libstdc++` (or their runtimes) have a bug with `std::uncaught_exception()` getting stuck returning `true` after rethrow, even if there are no active exceptions. One such case is this snippet, which skipped the sections "a" and "b", when compiled against `libcxxrt` from devel
 ```cpp
 #define CATCH_CONFIG_MAIN
 #include <catch.hpp>
