@@ -209,7 +209,12 @@ set_tests_properties(FilenameAsTagsTest PROPERTIES PASS_REGULAR_EXPRESSION "\\[#
 
 # Check that the filename tags can also be matched against (#2064)
 add_test(NAME FilenameAsTagsMatching COMMAND $<TARGET_FILE:SelfTest> -\# --list-tags [\#Approx.tests])
-set_tests_properties(FilenameAsTagsMatching PROPERTIES PASS_REGULAR_EXPRESSION "\\[#Approx.tests\\]")
+set_tests_properties(FilenameAsTagsMatching
+  PROPERTIES
+    PASS_REGULAR_EXPRESSION "\\[#Approx.tests\\]"
+    # Avoids false positives by looking for start of line (newline) before the 0
+    FAIL_REGULAR_EXPRESSION "[\r\n]0 tag"
+)
 
 add_test(NAME EscapeSpecialCharactersInTestNames COMMAND $<TARGET_FILE:SelfTest> "Test with special\\, characters \"in name")
 set_tests_properties(EscapeSpecialCharactersInTestNames PROPERTIES PASS_REGULAR_EXPRESSION "1 assertion in 1 test case")
