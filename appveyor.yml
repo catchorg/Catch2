@@ -18,10 +18,13 @@ init:
 
 install:
   - ps: if (($env:CONFIGURATION) -eq "Debug" -And ($env:coverage) -eq "1" ) { pip --disable-pip-version-check install codecov }
+  # This removes our changes to PATH. Keep this step last!
   - ps: if (($env:CONFIGURATION) -eq "Debug" -And ($env:coverage) -eq "1" ) { .\tools\misc\installOpenCppCoverage.ps1 }
 
 
 before_build:
+  # We need to modify PATH again, because it was reset since the "init" step
+  - set PATH=C:\Python35;C:\Python35\Scripts;%PATH%
   - set CXXFLAGS=%additional_flags%
   # If we are building examples/extra-tests, we need to regenerate the amalgamated files
   - cmd: if "%examples%"=="1" ( python .\tools\scripts\generateAmalgamatedFiles.py )
