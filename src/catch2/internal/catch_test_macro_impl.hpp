@@ -56,7 +56,7 @@
             CATCH_INTERNAL_STOP_WARNINGS_SUPPRESSION \
         } INTERNAL_CATCH_CATCH( catchAssertionHandler ) \
         INTERNAL_CATCH_REACT( catchAssertionHandler ) \
-    } while( (void)0, (false) && static_cast<bool>( !!(__VA_ARGS__) ) )
+    } while( (void)0, (false) && static_cast<const bool&>( !!(__VA_ARGS__) ) )
 
 ///////////////////////////////////////////////////////////////////////////////
 #define INTERNAL_CATCH_IF( macroName, resultDisposition, ... ) \
