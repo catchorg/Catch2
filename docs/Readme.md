@@ -34,6 +34,7 @@ FAQ:
  
 Other:
 * [Why Catch?](why-catch.md#top)
+* [Migrating from v2 to v3](migrate-v2-to-v3.md#top)
 * [Open Source Projects using Catch](opensource-users.md#top)
 * [Commercial Projects using Catch](commercial-users.md#top)
 * [Contributing](contributing.md#top)

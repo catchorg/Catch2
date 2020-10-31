@@ -18,6 +18,11 @@ find that parts of this documentation are likely still stuck on v2.
 For stable (and documentation-matching) version of Catch2, [go to the
 `v2.x` branch](https://github.com/catchorg/Catch2/tree/v2.x).
 
+For migrating from the v2 releases to v3, you should look at [our
+documentation](docs/migrate-v2-to-v3.md#top). It provides a simple
+guidelines on getting started, and collects most common migration
+problems.
+
 
 ## What's the Catch2?
 
