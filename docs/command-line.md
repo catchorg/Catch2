@@ -127,7 +127,7 @@ The bundled reporters are:
 -r junit
 </pre>
 
-The JUnit reporter is an xml format that follows the structure of the JUnit XML Report ANT task, as consumed by a number of third-party tools, including Continuous Integration servers such as Hudson. If not otherwise needed, the standard XML reporter is preferred as this is a streaming reporter, whereas the Junit reporter needs to hold all its results until the end so it can write the overall results into attributes of the root node.
+The JUnit reporter is an xml format that follows the structure of the JUnit XML Report ANT task, as consumed by a number of third-party tools, including Continuous Integration servers such as Jenkins. If not otherwise needed, the standard XML reporter is preferred as this is a streaming reporter, whereas the Junit reporter needs to hold all its results until the end so it can write the overall results into attributes of the root node.
 
 <a id="breaking-into-the-debugger"></a>
 ## Breaking into the debugger
