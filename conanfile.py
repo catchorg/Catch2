@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-from conans import ConanFile, CMake
+from conans import ConanFile, CMake, tools
 
 
 class CatchConan(ConanFile):
@@ -18,6 +18,8 @@ class CatchConan(ConanFile):
     options = {"with_main": [True, False]}
     default_options = {"with_main": True}
 
+    generators = "cmake"
+
     def _configure_cmake(self):
         cmake = CMake(self)
         cmake.definitions["BUILD_TESTING"] = "OFF"
@@ -27,6 +29,12 @@ class CatchConan(ConanFile):
         return cmake
 
     def build(self):
+        line_to_replace = 'list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/CMake")'
+        tools.replace_in_file("CMakeLists.txt", line_to_replace,
+                              '''{}
+include({}/conanbuildinfo.cmake)
+conan_basic_setup()'''.format(line_to_replace, self.install_folder))
+
         cmake = self._configure_cmake()
         cmake.build()
 
