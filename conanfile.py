@@ -29,11 +29,13 @@ class CatchConan(ConanFile):
         return cmake
 
     def build(self):
+        # We need this workaround until the toolchains feature
+        # to inject stuff like MD/MT
         line_to_replace = 'list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/CMake")'
         tools.replace_in_file("CMakeLists.txt", line_to_replace,
                               '''{}
-include({}/conanbuildinfo.cmake)
-conan_basic_setup()'''.format(line_to_replace, self.install_folder))
+include("{}/conanbuildinfo.cmake")
+conan_basic_setup()'''.format(line_to_replace, self.install_folder.replace("\\", "/")))
 
         cmake = self._configure_cmake()
         cmake.build()
