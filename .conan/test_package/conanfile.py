@@ -6,7 +6,7 @@ import os
 
 class TestPackageConan(ConanFile):
     settings = "os", "compiler", "build_type", "arch"
-    generators = "cmake_find_package_multi"
+    generators = "cmake_find_package_multi", "cmake"
 
     def build(self):
         cmake = CMake(self)
@@ -14,6 +14,7 @@ class TestPackageConan(ConanFile):
         cmake.build()
 
     def test(self):
-        assert os.path.isfile(os.path.join(self.deps_cpp_info["catch2"].rootpath, "licenses", "LICENSE.txt"))
+        assert os.path.isfile(os.path.join(
+            self.deps_cpp_info["catch2"].rootpath, "licenses", "LICENSE.txt"))
         bin_path = os.path.join("bin", "test_package")
         self.run("%s -s" % bin_path, run_environment=True)
