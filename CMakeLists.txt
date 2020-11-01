@@ -25,6 +25,11 @@ if (CMAKE_BINARY_DIR STREQUAL CMAKE_CURRENT_SOURCE_DIR)
     message(FATAL_ERROR "Building in-source is not supported! Create a build dir and remove ${CMAKE_SOURCE_DIR}/CMakeCache.txt")
 endif()
 
+if(CMAKE_VERSION VERSION_GREATER 3.8)
+  # Enable IPO for CMake versions that support it
+  cmake_policy(SET CMP0069 NEW)
+endif()
+
 
 project(Catch2 LANGUAGES CXX VERSION 3.0.0)
 
