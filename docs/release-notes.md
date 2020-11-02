@@ -3,6 +3,7 @@
 # Release notes
 **Contents**<br>
 [3.0.1](#301)<br>
+[2.13.3](#2133)<br>
 [2.13.2](#2132)<br>
 [2.13.1](#2131)<br>
 [2.13.0](#2130)<br>
@@ -152,6 +153,17 @@ new design.
   * `catch2` is the statically compiled implementation by itself
   * `catch2-with-main` also links in the default main
 
+
+
+## 2.13.3
+
+### Fixes
+* Fixed possible infinite loop when combining generators with section filter (`-c` option) (#2025)
+
+### Miscellaneous
+* Fixed `ParseAndAddCatchTests` not finding `TEST_CASE`s without tags (#2055, #2056)
+* `ParseAndAddCatchTests` supports `CMP0110` policy for changing behaviour of `add_test` (#2057)
+  * This was the shortlived change in CMake 3.18.0 that temporarily broke `ParseAndAddCatchTests`
 
 
 ## 2.13.2
