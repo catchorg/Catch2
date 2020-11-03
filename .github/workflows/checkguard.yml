@@ -1,0 +1,24 @@
+name: checkguard
+
+# Run this workflow every time a new commit pushed to your repository
+on: push
+
+jobs:
+  # Set the job key. The key is displayed as the job name
+  # when a job name is not provided
+  checkguard:
+    # Name the Job
+    name: Check include guard naming convention
+    # Set the type of machine to run on
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checks out a copy of your repository on the ubuntu-latest machine
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - id: files
+        uses: jitterbit/get-changed-files@v1
+      - run: |
+          pip install guardonce
+          checkguard --version
