@@ -1,0 +1,33 @@
+name: Check header guards
+
+# Run this workflow every time a new commit pushed to your repository
+
+on: [push, pull_request]
+
+jobs:
+  # Set the job key. The key is displayed as the job name
+  # when a job name is not provided
+  checkguard:
+    # Name the Job
+    name: Check include guard naming convention
+    # Set the type of machine to run on
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Setup Dependencies
+        uses: actions/setup-python@v2
+        with:
+            python-version: '3.7'
+      - name: Install checkguard
+        run: pip install guardonce
+
+      - name: Run checkguard
+        run: |
+          wrong_files=$(checkguard -r src/catch2/ -p "name | append _INCLUDED | upper")
+          if [[ $wrong_files ]]; then
+            echo "Files with wrong header guard:"
+            echo $wrong_files
+            exit 1
+          fi
