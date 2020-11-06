@@ -14,8 +14,8 @@
  * in C++17, we want to use `std::uncaught_exceptions` if possible.
  */
 
-#ifndef CATCH_CONFIG_UNCAUGHT_EXCEPTIONS_HPP
-#define CATCH_CONFIG_UNCAUGHT_EXCEPTIONS_HPP
+#ifndef CATCH_CONFIG_UNCAUGHT_EXCEPTIONS_HPP_INCLUDED
+#define CATCH_CONFIG_UNCAUGHT_EXCEPTIONS_HPP_INCLUDED
 
 #if defined(_MSC_VER)
 #  if _MSC_VER >= 1900 // Visual Studio 2015 or newer
@@ -41,4 +41,4 @@
 #endif
 
 
-#endif // CATCH_CONFIG_UNCAUGHT_EXCEPTIONS_HPP
+#endif // CATCH_CONFIG_UNCAUGHT_EXCEPTIONS_HPP_INCLUDED
