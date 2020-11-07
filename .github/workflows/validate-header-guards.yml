@@ -5,16 +5,13 @@ name: Check header guards
 on: [push, pull_request]
 
 jobs:
-  # Set the job key. The key is displayed as the job name
-  # when a job name is not provided
-  checkguard:
-    # Name the Job
-    name: Check include guard naming convention
+  build:
     # Set the type of machine to run on
     runs-on: ubuntu-latest
-
     steps:
-      - uses: actions/checkout@v2
+
+      - name: Checkout source code
+        uses: actions/checkout@v2
 
       - name: Setup Dependencies
         uses: actions/setup-python@v2
@@ -23,7 +20,8 @@ jobs:
       - name: Install checkguard
         run: pip install guardonce
 
-      - name: Run checkguard
+        # Check include guard naming convention
+      - name: checkguard
         run: |
           wrong_files=$(checkguard -r src/catch2/ -p "name | append _INCLUDED | upper")
           if [[ $wrong_files ]]; then
@@ -31,3 +29,8 @@ jobs:
             echo $wrong_files
             exit 1
           fi
+
+        # Check duplicate files for include guard conflicts
+      - name: checknames
+        run: |
+          python tools/scripts/checkDuplicateFilenames.py
