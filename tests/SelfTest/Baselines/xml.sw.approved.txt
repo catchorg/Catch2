@@ -3101,6 +3101,25 @@ Nor would this
       </Section>
       <OverallResult success="true"/>
     </TestCase>
+    <TestCase name="Clara::Arg supports single-arg parse the way Opt does" tags="[arg][clara]" filename="tests/<exe-name>/IntrospectiveTests/Clara.tests.cpp" >
+      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/Clara.tests.cpp" >
+        <Original>
+          name.empty()
+        </Original>
+        <Expanded>
+          true
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/Clara.tests.cpp" >
+        <Original>
+          name == "foo"
+        </Original>
+        <Expanded>
+          "foo" == "foo"
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
     <TestCase name="Combining MatchAllOfGeneric does not nest" tags="[matchers][templated]" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
       <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
         <Original>
@@ -18579,9 +18598,9 @@ loose text artifact
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="1838" failures="149" expectedFailures="21"/>
-    <OverallResultsCases successes="260" failures="86" expectedFailures="4"/>
+    <OverallResults successes="1840" failures="149" expectedFailures="21"/>
+    <OverallResultsCases successes="261" failures="86" expectedFailures="4"/>
   </Group>
-  <OverallResults successes="1838" failures="148" expectedFailures="21"/>
-  <OverallResultsCases successes="260" failures="86" expectedFailures="4"/>
+  <OverallResults successes="1840" failures="148" expectedFailures="21"/>
+  <OverallResultsCases successes="261" failures="86" expectedFailures="4"/>
 </Catch>

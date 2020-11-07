@@ -686,6 +686,10 @@ ok {test-number} - c == i for: 3 == 3
 ok {test-number} - c == i for: 4 == 4
 # Character pretty printing
 ok {test-number} - c == i for: 5 == 5
+# Clara::Arg supports single-arg parse the way Opt does
+ok {test-number} - name.empty() for: true
+# Clara::Arg supports single-arg parse the way Opt does
+ok {test-number} - name == "foo" for: "foo" == "foo"
 # Combining MatchAllOfGeneric does not nest
 ok {test-number} - with 1 message: 'std::is_same< decltype((MatcherA() && MatcherB()) && MatcherC()), Catch::Matchers::Detail::MatchAllOfGeneric<MatcherA, MatcherB, MatcherC> >::value'
 # Combining MatchAllOfGeneric does not nest
@@ -4006,5 +4010,5 @@ ok {test-number} - q3 == 23. for: 23.0 == 23.0
 ok {test-number} -
 # xmlentitycheck
 ok {test-number} -
-1..2007
+1..2009
 

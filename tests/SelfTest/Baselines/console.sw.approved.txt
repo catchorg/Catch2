@@ -2858,6 +2858,22 @@ with expansion:
   5 == 5
 
 -------------------------------------------------------------------------------
+Clara::Arg supports single-arg parse the way Opt does
+-------------------------------------------------------------------------------
+Clara.tests.cpp:<line number>
+...............................................................................
+
+Clara.tests.cpp:<line number>: PASSED:
+  CHECK( name.empty() )
+with expansion:
+  true
+
+Clara.tests.cpp:<line number>: PASSED:
+  REQUIRE( name == "foo" )
+with expansion:
+  "foo" == "foo"
+
+-------------------------------------------------------------------------------
 Combining MatchAllOfGeneric does not nest
 -------------------------------------------------------------------------------
 Matchers.tests.cpp:<line number>
@@ -15665,6 +15681,6 @@ Misc.tests.cpp:<line number>
 Misc.tests.cpp:<line number>: PASSED:
 
 ===============================================================================
-test cases:  350 |  260 passed |  86 failed |  4 failed as expected
-assertions: 2007 | 1838 passed | 148 failed | 21 failed as expected
+test cases:  351 |  261 passed |  86 failed |  4 failed as expected
+assertions: 2009 | 1840 passed | 148 failed | 21 failed as expected
 

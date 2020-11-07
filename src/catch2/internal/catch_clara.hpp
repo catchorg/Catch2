@@ -494,6 +494,7 @@ namespace Catch {
         class Arg : public Detail::ParserRefImpl<Arg> {
         public:
             using ParserRefImpl::ParserRefImpl;
+            using ParserBase::parse;
 
             Detail::InternalParseResult
                 parse(std::string const&,

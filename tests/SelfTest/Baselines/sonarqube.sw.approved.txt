@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testExecutions version="1"loose text artifact
 >
+  <file path="tests/<exe-name>/IntrospectiveTests/Clara.tests.cpp">
+    <testCase name="Clara::Arg supports single-arg parse the way Opt does" duration="{duration}"/>
+  </file>
   <file path="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp">
     <testCase name="#1905 -- test spec parser properly clears internal state between compound tests" duration="{duration}"/>
     <testCase name="#1912 -- test spec parser handles escaping/Various parentheses" duration="{duration}"/>

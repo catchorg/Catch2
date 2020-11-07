@@ -99,6 +99,7 @@ Nor would this
 :test-result: PASS CAPTURE parses string and character constants
 :test-result: PASS Capture and info messages
 :test-result: PASS Character pretty printing
+:test-result: PASS Clara::Arg supports single-arg parse the way Opt does
 :test-result: PASS Combining MatchAllOfGeneric does not nest
 :test-result: PASS Combining MatchAnyOfGeneric does not nest
 :test-result: PASS Combining MatchNotOfGeneric does not nest

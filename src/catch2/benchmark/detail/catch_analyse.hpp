@@ -50,7 +50,7 @@ namespace Catch {
                         analysis.outlier_variance,
                     };
                 } else {
-                    std::vector<Duration> samples; 
+                    std::vector<Duration> samples;
                     samples.reserve(last - first);
 
                     Duration mean = Duration(0);

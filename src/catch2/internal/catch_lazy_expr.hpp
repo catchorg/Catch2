@@ -11,7 +11,7 @@
 #include <iosfwd>
 
 namespace Catch {
-        
+
     struct ITransientExpression;
 
     class LazyExpression {
