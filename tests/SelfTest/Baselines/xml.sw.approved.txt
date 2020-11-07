@@ -3101,7 +3101,7 @@ Nor would this
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <TestCase name="Clara::Arg supports single-arg parse the way Opt does" tags="[arg][clara]" filename="tests/<exe-name>/IntrospectiveTests/Clara.tests.cpp" >
+    <TestCase name="Clara::Arg supports single-arg parse the way Opt does" tags="[arg][clara][compilation]" filename="tests/<exe-name>/IntrospectiveTests/Clara.tests.cpp" >
       <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/Clara.tests.cpp" >
         <Original>
           name.empty()
