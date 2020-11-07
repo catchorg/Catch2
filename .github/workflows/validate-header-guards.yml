@@ -34,3 +34,6 @@ jobs:
       - name: checknames
         run: |
           python tools/scripts/checkDuplicateFilenames.py
+      - name: checklicense
+        run: |
+          python tools/scripts/checkLicense.py
