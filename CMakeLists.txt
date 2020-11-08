@@ -104,11 +104,11 @@ endif()
 add_library(Catch2::Catch2 ALIAS Catch2)
 
 if (NOT NOT_SUBPROJECT)
-    add_library(Catch2Main src/catch_with_main.cpp)
+    add_library(Catch2WithMain src/catch_with_main.cpp)
 
-    target_link_libraries(Catch2Main Catch2)
+    target_link_libraries(Catch2WithMain PUBLIC Catch2)
 
-    add_library(Catch2::Main ALIAS Catch2Main)
+    add_library(Catch2::Catch2WithMain ALIAS Catch2WithMain)
 endif ()
 
 # Only perform the installation steps when Catch is not being used as

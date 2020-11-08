@@ -70,7 +70,7 @@ Catch also provides a static library that implements the runner.
 ```cmake
 add_executable(tests-factorial tests-factorial.cpp)
 
-target_link_libraries(tests-factorial Catch2::Main)
+target_link_libraries(tests-factorial Catch2::Catch2WithMain)
 ```
 ### bazel
 ```python
@@ -81,7 +81,7 @@ cc_test(
     ],
     deps = [
         "lib_hello_world",
-        "@catch2//:catch2_main",
+        "@catch2//:catch2_with_main",
     ],
 )
 ```
