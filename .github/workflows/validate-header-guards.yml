@@ -1,7 +1,5 @@
 name: Check header guards
 
-# Run this workflow every time a new commit pushed to your repository
-
 on: [push, pull_request]
 
 jobs:
@@ -20,8 +18,7 @@ jobs:
       - name: Install checkguard
         run: pip install guardonce
 
-        # Check include guard naming convention
-      - name: checkguard
+      - name: Check that include guards are properly named
         run: |
           wrong_files=$(checkguard -r src/catch2/ -p "name | append _INCLUDED | upper")
           if [[ $wrong_files ]]; then
@@ -30,10 +27,10 @@ jobs:
             exit 1
           fi
 
-        # Check duplicate files for include guard conflicts
-      - name: checknames
+      - name: Check that there are no duplicated filenames
         run: |
           python tools/scripts/checkDuplicateFilenames.py
-      - name: checklicense
+
+      - name: Check that all source files have the correct license header
         run: |
           python tools/scripts/checkLicense.py
