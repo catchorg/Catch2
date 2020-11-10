@@ -29,8 +29,8 @@ jobs:
 
       - name: Check that there are no duplicated filenames
         run: |
-          python tools/scripts/checkDuplicateFilenames.py
+          ./tools/scripts/checkDuplicateFilenames.py
 
       - name: Check that all source files have the correct license header
         run: |
-          python tools/scripts/checkLicense.py
+          ./tools/scripts/checkLicense.py
