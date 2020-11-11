@@ -105,9 +105,9 @@ namespace Catch {
     }
 
     void CumulativeReporterBase::testRunEnded( TestRunStats const& testRunStats ) {
-        auto node = std::make_shared<TestRunNode>( testRunStats );
+        auto node = Detail::make_unique<TestRunNode>( testRunStats );
         node->children.swap( m_testGroups );
-        m_testRuns.push_back( node );
+        m_testRuns.push_back( std::move(node) );
         testRunEndedCumulative();
     }
 

@@ -9,6 +9,7 @@
 #define CATCH_REPORTER_CUMULATIVE_BASE_HPP_INCLUDED
 
 #include <catch2/interfaces/catch_interfaces_reporter.hpp>
+#include <catch2/internal/catch_unique_ptr.hpp>
 
 #include <iosfwd>
 #include <memory>
@@ -77,7 +78,7 @@ namespace Catch {
         std::vector<std::shared_ptr<TestCaseNode>> m_testCases;
         std::vector<std::shared_ptr<TestGroupNode>> m_testGroups;
 
-        std::vector<std::shared_ptr<TestRunNode>> m_testRuns;
+        std::vector<Detail::unique_ptr<TestRunNode>> m_testRuns;
 
         std::shared_ptr<SectionNode> m_rootSection;
         std::shared_ptr<SectionNode> m_deepestSection;
