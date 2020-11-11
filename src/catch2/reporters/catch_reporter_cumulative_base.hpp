@@ -81,7 +81,7 @@ namespace Catch {
         std::vector<Detail::unique_ptr<TestRunNode>> m_testRuns;
 
         std::shared_ptr<SectionNode> m_rootSection;
-        std::shared_ptr<SectionNode> m_deepestSection;
+        SectionNode* m_deepestSection = nullptr;
         std::vector<std::shared_ptr<SectionNode>> m_sectionStack;
     };
 
