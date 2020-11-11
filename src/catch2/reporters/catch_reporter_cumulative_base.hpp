@@ -74,7 +74,6 @@ namespace Catch {
         IConfig const* m_config;
         std::ostream& stream;
         std::vector<AssertionStats> m_assertions;
-        std::vector<std::vector<std::shared_ptr<SectionNode>>> m_sections;
         std::vector<std::shared_ptr<TestCaseNode>> m_testCases;
         std::vector<std::shared_ptr<TestGroupNode>> m_testGroups;
 
