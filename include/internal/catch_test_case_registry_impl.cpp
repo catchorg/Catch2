@@ -24,10 +24,10 @@ namespace Catch {
         struct TestHasher {
             using hash_t = uint64_t;
 
-            explicit TestHasher(hash_t seed): m_seed{seed} {
-            }
+            explicit TestHasher( hash_t hashSuffix ):
+                m_hashSuffix{ hashSuffix } {}
 
-            hash_t operator()(TestCase const& t) const {
+            uint32_t operator()( TestCase const& t ) const {
                 // FNV-1a hash with multiplication fold.
                 const hash_t prime = 1099511628211u;
                 hash_t hash = 14695981039346656037u;
@@ -35,14 +35,15 @@ namespace Catch {
                     hash ^= c;
                     hash *= prime;
                 }
-                hash ^= m_seed;
+                hash ^= m_hashSuffix;
                 hash *= prime;
                 const uint32_t low{ static_cast<uint32_t>( hash ) };
                 const uint32_t high{ static_cast<uint32_t>( hash >> 32 ) };
-                return hash_t{ low * high };
+                return low * high;
             }
+
         private:
-            hash_t m_seed;
+            hash_t m_hashSuffix;
         };
     } // end unnamed namespace
 
