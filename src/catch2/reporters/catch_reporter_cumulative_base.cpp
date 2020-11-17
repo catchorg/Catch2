@@ -29,9 +29,6 @@ namespace Catch {
             SectionInfo const& m_other;
         };
 
-        void prepareExpandedExpression( AssertionResult& result ) {
-            result.getExpandedExpression();
-        }
     } // namespace
 
 
@@ -71,8 +68,8 @@ namespace Catch {
         // Our section stack copy of the assertionResult will likely outlive the
         // temporary, so it must be expanded or discarded now to avoid calling
         // a destroyed object later.
-        prepareExpandedExpression(
-            const_cast<AssertionResult&>( assertionStats.assertionResult ) );
+        static_cast<void>(
+            assertionStats.assertionResult.getExpandedExpression() );
         SectionNode& sectionNode = *m_sectionStack.back();
         sectionNode.assertions.push_back( assertionStats );
         return true;
