@@ -36,10 +36,8 @@ namespace Catch {
             }
 
             SectionStats stats;
-            using ChildSections = std::vector<std::shared_ptr<SectionNode>>;
-            using Assertions = std::vector<AssertionStats>;
-            ChildSections childSections;
-            Assertions assertions;
+            std::vector<std::shared_ptr<SectionNode>> childSections;
+            std::vector<AssertionStats> assertions;
             std::string stdOut;
             std::string stdErr;
         };
