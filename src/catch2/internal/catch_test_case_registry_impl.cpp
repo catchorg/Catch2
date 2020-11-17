@@ -22,24 +22,27 @@
 namespace Catch {
 
 namespace {
-    struct HashTest {
-        explicit HashTest(SimplePcg32& rng_inst) {
-            basis = rng_inst();
-            basis <<= 32;
-            basis |= rng_inst();
-        }
+    struct TestHasher {
+        using hash_t = uint64_t;
 
-        uint64_t basis;
+        explicit TestHasher( hash_t hashSuffix ):
+            m_hashSuffix( hashSuffix ) {}
 
-        uint64_t operator()(TestCaseInfo const& t) const {
-            // Modified FNV-1a hash
-            static constexpr uint64_t prime = 1099511628211;
-            uint64_t hash = basis;
+        uint64_t m_hashSuffix;
+
+        uint32_t operator()( TestCaseInfo const& t ) const {
+            // FNV-1a hash with multiplication fold.
+            const hash_t prime = 1099511628211u;
+            hash_t hash = 14695981039346656037u;
             for (const char c : t.name) {
                 hash ^= c;
                 hash *= prime;
             }
-            return hash;
+            hash ^= m_hashSuffix;
+            hash *= prime;
+            const uint32_t low{ static_cast<uint32_t>(hash) };
+            const uint32_t high{ static_cast<uint32_t>(hash >> 32) };
+            return low * high;
         }
     };
 } // end anonymous namespace
@@ -56,8 +59,8 @@ namespace {
         }
         case TestRunOrder::Randomized: {
             seedRng(config);
-            HashTest h(rng());
-            std::vector<std::pair<uint64_t, TestCaseHandle>> indexed_tests;
+            TestHasher h{ config.rngSeed() };
+            std::vector<std::pair<TestHasher::hash_t, TestCaseHandle>> indexed_tests;
             indexed_tests.reserve(unsortedTestCases.size());
 
             for (auto const& handle : unsortedTestCases) {
