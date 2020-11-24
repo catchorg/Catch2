@@ -104,7 +104,7 @@ endif()
 add_library(Catch2::Catch2 ALIAS Catch2)
 
 # Hacky support for compiling the impl into a static lib
-add_library(Catch2WithMain src/catch_with_main.cpp)
+add_library(Catch2WithMain ${CMAKE_CURRENT_LIST_DIR}/src/catch_with_main.cpp)
 target_link_libraries(Catch2WithMain PUBLIC Catch2)
 add_library(Catch2::Catch2WithMain ALIAS Catch2WithMain)
 

@@ -10,7 +10,7 @@ class CatchConan(ConanFile):
     homepage = url
     license = "BSL-1.0"
     exports = "LICENSE.txt"
-    exports_sources = ("single_include/*", "CMakeLists.txt", "CMake/*", "contrib/*")
+    exports_sources = ("single_include/*", "CMakeLists.txt", "CMake/*", "contrib/*", "src/*")
     generators = "cmake"
 
     def package(self):
