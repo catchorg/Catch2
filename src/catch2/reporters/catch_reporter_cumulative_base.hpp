@@ -22,7 +22,6 @@ namespace Catch {
         template<typename T, typename ChildNodeT>
         struct Node {
             explicit Node( T const& _value ) : value( _value ) {}
-            virtual ~Node() = default;
 
             using ChildNodes = std::vector<std::shared_ptr<ChildNodeT>>;
             T value;
