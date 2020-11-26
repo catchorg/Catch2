@@ -64,12 +64,15 @@ namespace Catch {
         void testCaseEnded( TestCaseStats const& testCaseStats ) override;
         void testGroupEnded( TestGroupStats const& testGroupStats ) override;
         void testRunEnded( TestRunStats const& testRunStats ) override;
+        //! Customization point: called after last test finishes (testRunEnded has been handled)
         virtual void testRunEndedCumulative() = 0;
 
         void skipTest(TestCaseInfo const&) override {}
 
         IConfig const* m_config;
         std::ostream& stream;
+        // Note: We rely on pointer identity being stable, which is why
+        //       which is why we store around pointers rather than values.
         std::vector<std::shared_ptr<TestCaseNode>> m_testCases;
         std::vector<std::shared_ptr<TestGroupNode>> m_testGroups;
 
