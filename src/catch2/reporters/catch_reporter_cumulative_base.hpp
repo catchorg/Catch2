@@ -73,7 +73,7 @@ namespace Catch {
         std::vector<std::shared_ptr<TestCaseNode>> m_testCases;
         std::vector<std::shared_ptr<TestGroupNode>> m_testGroups;
 
-        std::vector<Detail::unique_ptr<TestRunNode>> m_testRuns;
+        std::vector<TestRunNode> m_testRuns;
 
         std::shared_ptr<SectionNode> m_rootSection;
         SectionNode* m_deepestSection = nullptr;

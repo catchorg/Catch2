@@ -103,9 +103,8 @@ namespace Catch {
     }
 
     void CumulativeReporterBase::testRunEnded( TestRunStats const& testRunStats ) {
-        auto node = Detail::make_unique<TestRunNode>( testRunStats );
-        node->children.swap( m_testGroups );
-        m_testRuns.push_back( std::move(node) );
+        m_testRuns.emplace_back( testRunStats );
+        m_testRuns.back().children.swap( m_testGroups );
         testRunEndedCumulative();
     }
 
