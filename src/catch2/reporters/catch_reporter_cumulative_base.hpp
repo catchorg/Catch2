@@ -80,7 +80,7 @@ namespace Catch {
 
         std::shared_ptr<SectionNode> m_rootSection;
         SectionNode* m_deepestSection = nullptr;
-        std::vector<std::shared_ptr<SectionNode>> m_sectionStack;
+        std::vector<SectionNode*> m_sectionStack;
     };
 
 } // end namespace Catch

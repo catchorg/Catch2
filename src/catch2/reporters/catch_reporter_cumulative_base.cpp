@@ -57,7 +57,7 @@ namespace Catch {
         }
 
         m_deepestSection = node.get();
-        m_sectionStack.push_back( std::move(node) );
+        m_sectionStack.push_back( node.get() );
     }
 
     bool CumulativeReporterBase::assertionEnded(
