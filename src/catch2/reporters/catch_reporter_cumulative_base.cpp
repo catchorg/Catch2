@@ -17,7 +17,7 @@ namespace Catch {
             BySectionInfo( BySectionInfo const& other ):
                 m_other( other.m_other ) {}
             bool operator()(
-                std::shared_ptr<CumulativeReporterBase::SectionNode> const&
+                Detail::unique_ptr<CumulativeReporterBase::SectionNode> const&
                     node ) const {
                 return (
                     ( node->stats.sectionInfo.name == m_other.name ) &&
@@ -37,27 +37,30 @@ namespace Catch {
     void
     CumulativeReporterBase::sectionStarting( SectionInfo const& sectionInfo ) {
         SectionStats incompleteStats( sectionInfo, Counts(), 0, false );
-        std::shared_ptr<SectionNode> node;
+        SectionNode* node;
         if ( m_sectionStack.empty() ) {
-            if ( !m_rootSection )
+            if ( !m_rootSection ) {
                 m_rootSection =
-                    std::make_shared<SectionNode>( incompleteStats );
-            node = m_rootSection;
+                    Detail::make_unique<SectionNode>( incompleteStats );
+            }
+            node = m_rootSection.get();
         } else {
             SectionNode& parentNode = *m_sectionStack.back();
             auto it = std::find_if( parentNode.childSections.begin(),
                                     parentNode.childSections.end(),
                                     BySectionInfo( sectionInfo ) );
             if ( it == parentNode.childSections.end() ) {
-                node = std::make_shared<SectionNode>( incompleteStats );
-                parentNode.childSections.push_back( node );
+                auto newNode =
+                    Detail::make_unique<SectionNode>( incompleteStats );
+                node = newNode.get();
+                parentNode.childSections.push_back( std::move( newNode ) );
             } else {
-                node = *it;
+                node = it->get();
             }
         }
 
-        m_deepestSection = node.get();
-        m_sectionStack.push_back( node.get() );
+        m_deepestSection = node;
+        m_sectionStack.push_back( node );
     }
 
     bool CumulativeReporterBase::assertionEnded(
@@ -84,11 +87,10 @@ namespace Catch {
 
     void CumulativeReporterBase::testCaseEnded(
         TestCaseStats const& testCaseStats ) {
-        auto node = std::make_shared<TestCaseNode>( testCaseStats );
+        auto node = Detail::make_unique<TestCaseNode>( testCaseStats );
         assert( m_sectionStack.size() == 0 );
-        node->children.push_back( m_rootSection );
-        m_testCases.push_back( node );
-        m_rootSection.reset();
+        node->children.push_back( std::move(m_rootSection) );
+        m_testCases.push_back( std::move(node) );
 
         assert( m_deepestSection );
         m_deepestSection->stdOut = testCaseStats.stdOut;
@@ -97,9 +99,9 @@ namespace Catch {
 
     void CumulativeReporterBase::testGroupEnded(
         TestGroupStats const& testGroupStats ) {
-        auto node = std::make_shared<TestGroupNode>( testGroupStats );
+        auto node = Detail::make_unique<TestGroupNode>( testGroupStats );
         node->children.swap( m_testCases );
-        m_testGroups.push_back( node );
+        m_testGroups.push_back( std::move(node) );
     }
 
     void CumulativeReporterBase::testRunEnded( TestRunStats const& testRunStats ) {

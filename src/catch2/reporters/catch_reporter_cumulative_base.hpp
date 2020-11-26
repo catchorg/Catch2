@@ -23,7 +23,7 @@ namespace Catch {
         struct Node {
             explicit Node( T const& _value ) : value( _value ) {}
 
-            using ChildNodes = std::vector<std::shared_ptr<ChildNodeT>>;
+            using ChildNodes = std::vector<Detail::unique_ptr<ChildNodeT>>;
             T value;
             ChildNodes children;
         };
@@ -35,7 +35,7 @@ namespace Catch {
             }
 
             SectionStats stats;
-            std::vector<std::shared_ptr<SectionNode>> childSections;
+            std::vector<Detail::unique_ptr<SectionNode>> childSections;
             std::vector<AssertionStats> assertions;
             std::string stdOut;
             std::string stdErr;
@@ -73,12 +73,12 @@ namespace Catch {
         std::ostream& stream;
         // Note: We rely on pointer identity being stable, which is why
         //       which is why we store around pointers rather than values.
-        std::vector<std::shared_ptr<TestCaseNode>> m_testCases;
-        std::vector<std::shared_ptr<TestGroupNode>> m_testGroups;
+        std::vector<Detail::unique_ptr<TestCaseNode>> m_testCases;
+        std::vector<Detail::unique_ptr<TestGroupNode>> m_testGroups;
 
         std::vector<TestRunNode> m_testRuns;
 
-        std::shared_ptr<SectionNode> m_rootSection;
+        Detail::unique_ptr<SectionNode> m_rootSection;
         SectionNode* m_deepestSection = nullptr;
         std::vector<SectionNode*> m_sectionStack;
     };

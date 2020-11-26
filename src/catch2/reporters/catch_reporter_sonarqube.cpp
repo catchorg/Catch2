@@ -28,15 +28,17 @@ namespace Catch {
     }
 
     void SonarQubeReporter::writeGroup(TestGroupNode const& groupNode) {
-        std::map<std::string, TestGroupNode::ChildNodes> testsPerFile;
-        for (auto const& child : groupNode.children)
-            testsPerFile[child->value.testInfo->lineInfo.file].push_back(child);
+        std::map<std::string, std::vector<TestCaseNode const*>> testsPerFile;
+        for ( auto const& child : groupNode.children ) {
+            testsPerFile[child->value.testInfo->lineInfo.file].push_back(
+                child.get() );
+        }
 
         for (auto const& kv : testsPerFile)
             writeTestFile(kv.first, kv.second);
     }
 
-    void SonarQubeReporter::writeTestFile(std::string const& filename, TestGroupNode::ChildNodes const& testCaseNodes) {
+    void SonarQubeReporter::writeTestFile(std::string const& filename, std::vector<TestCaseNode const*> const& testCaseNodes) {
         XmlWriter::ScopedElement e = xml.scopedElement("file");
         xml.writeAttribute("path", filename);
 
