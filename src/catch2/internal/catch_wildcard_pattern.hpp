@@ -25,8 +25,7 @@ namespace Catch
     public:
 
         WildcardPattern( std::string const& pattern, CaseSensitive caseSensitivity );
-        virtual ~WildcardPattern() = default;
-        virtual bool matches( std::string const& str ) const;
+        bool matches( std::string const& str ) const;
 
     private:
         std::string normaliseString( std::string const& str ) const;
