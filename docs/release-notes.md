@@ -121,7 +121,8 @@ new design.
 * Event Listener interface has changed
   * `TestEventListenerBase` was renamed to `EventListenerBase`
   * `EventListenerBase` now directly derives from `IStreamingReporter`, instead of deriving from `StreamingReporterBase`
-
+* `GENERATE` decays its arguments (#2012, #2040)
+  * This means that `str` in `auto str = GENERATE("aa", "bb", "cc");` is inferred to `char const*` rather than `const char[2]`.
 
 
 ### Improvements
