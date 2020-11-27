@@ -9,7 +9,6 @@
 #define CATCH_INTERFACES_REPORTER_HPP_INCLUDED
 
 #include <catch2/catch_section_info.hpp>
-#include <catch2/internal/catch_common.hpp>
 #include <catch2/catch_totals.hpp>
 #include <catch2/catch_assertion_result.hpp>
 #include <catch2/internal/catch_message_info.hpp>

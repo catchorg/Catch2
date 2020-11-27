@@ -49,7 +49,6 @@
 #include <catch2/internal/catch_case_sensitive.hpp>
 #include <catch2/internal/catch_clara.hpp>
 #include <catch2/internal/catch_commandline.hpp>
-#include <catch2/internal/catch_common.hpp>
 #include <catch2/internal/catch_compiler_capabilities.hpp>
 #include <catch2/internal/catch_config_uncaught_exceptions.hpp>
 #include <catch2/internal/catch_console_colour.hpp>
@@ -81,6 +80,7 @@
 #include <catch2/internal/catch_run_context.hpp>
 #include <catch2/internal/catch_section.hpp>
 #include <catch2/internal/catch_singletons.hpp>
+#include <catch2/internal/catch_source_line_info.hpp>
 #include <catch2/internal/catch_startup_exception_registry.hpp>
 #include <catch2/internal/catch_stream.hpp>
 #include <catch2/internal/catch_stream_end_stop.hpp>

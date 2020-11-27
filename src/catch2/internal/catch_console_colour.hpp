@@ -8,7 +8,7 @@
 #ifndef CATCH_CONSOLE_COLOUR_HPP_INCLUDED
 #define CATCH_CONSOLE_COLOUR_HPP_INCLUDED
 
-#include <catch2/internal/catch_common.hpp>
+#include <iosfwd>
 
 namespace Catch {
 

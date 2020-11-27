@@ -5,10 +5,13 @@
 //        https://www.boost.org/LICENSE_1_0.txt)
 
 // SPDX-License-Identifier: BSL-1.0
-#ifndef CATCH_COMMON_HPP_INCLUDED
-#define CATCH_COMMON_HPP_INCLUDED
+#ifndef CATCH_SOURCE_LINE_INFO_HPP_INCLUDED
+#define CATCH_SOURCE_LINE_INFO_HPP_INCLUDED
 
 #include <catch2/internal/catch_compiler_capabilities.hpp>
+
+#include <cstddef>
+#include <iosfwd>
 
 #define INTERNAL_CATCH_UNIQUE_NAME_LINE2( name, line ) name##line
 #define INTERNAL_CATCH_UNIQUE_NAME_LINE( name, line ) INTERNAL_CATCH_UNIQUE_NAME_LINE2( name, line )
@@ -17,8 +20,6 @@
 #else
 #  define INTERNAL_CATCH_UNIQUE_NAME( name ) INTERNAL_CATCH_UNIQUE_NAME_LINE( name, __LINE__ )
 #endif
-
-#include <iosfwd>
 
 // We need a dummy global operator<< so we can bring it into Catch namespace later
 struct Catch_global_namespace_dummy {};
@@ -53,4 +54,4 @@ namespace Catch {
 #define CATCH_INTERNAL_LINEINFO \
     ::Catch::SourceLineInfo( __FILE__, static_cast<std::size_t>( __LINE__ ) )
 
-#endif // CATCH_COMMON_HPP_INCLUDED
+#endif // CATCH_SOURCE_LINE_INFO_HPP_INCLUDED

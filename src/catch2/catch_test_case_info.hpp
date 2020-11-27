@@ -8,7 +8,7 @@
 #ifndef CATCH_TEST_CASE_INFO_HPP_INCLUDED
 #define CATCH_TEST_CASE_INFO_HPP_INCLUDED
 
-#include <catch2/internal/catch_common.hpp>
+#include <catch2/internal/catch_source_line_info.hpp>
 #include <catch2/internal/catch_noncopyable.hpp>
 #include <catch2/internal/catch_stringref.hpp>
 #include <catch2/internal/catch_test_registry.hpp>

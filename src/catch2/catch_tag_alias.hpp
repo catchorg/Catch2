@@ -8,7 +8,7 @@
 #ifndef CATCH_TAG_ALIAS_HPP_INCLUDED
 #define CATCH_TAG_ALIAS_HPP_INCLUDED
 
-#include <catch2/internal/catch_common.hpp>
+#include <catch2/internal/catch_source_line_info.hpp>
 
 #include <string>
 

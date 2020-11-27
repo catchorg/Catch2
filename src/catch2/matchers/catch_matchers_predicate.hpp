@@ -8,7 +8,6 @@
 #ifndef CATCH_MATCHERS_PREDICATE_HPP_INCLUDED
 #define CATCH_MATCHERS_PREDICATE_HPP_INCLUDED
 
-#include <catch2/internal/catch_common.hpp>
 #include <catch2/matchers/catch_matchers.hpp>
 #include <catch2/internal/catch_meta.hpp>
 

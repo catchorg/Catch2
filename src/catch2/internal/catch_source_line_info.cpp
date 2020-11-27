@@ -5,7 +5,7 @@
 //        https://www.boost.org/LICENSE_1_0.txt)
 
 // SPDX-License-Identifier: BSL-1.0
-#include <catch2/internal/catch_common.hpp>
+#include <catch2/internal/catch_source_line_info.hpp>
 
 #include <cstring>
 #include <ostream>

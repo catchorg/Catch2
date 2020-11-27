@@ -15,7 +15,7 @@
 //        and reports that calls to XmlEncode's op << are ambiguous between
 //        the declaration and definition.
 //        It also has to be in the header.
-#include <catch2/internal/catch_common.hpp>
+#include <catch2/internal/catch_source_line_info.hpp>
 
 
 #include <vector>

@@ -8,12 +8,13 @@
 #ifndef CATCH_ASSERTION_RESULT_HPP_INCLUDED
 #define CATCH_ASSERTION_RESULT_HPP_INCLUDED
 
-#include <string>
 #include <catch2/catch_assertion_info.hpp>
 #include <catch2/internal/catch_result_type.hpp>
-#include <catch2/internal/catch_common.hpp>
+#include <catch2/internal/catch_source_line_info.hpp>
 #include <catch2/internal/catch_stringref.hpp>
 #include <catch2/internal/catch_lazy_expr.hpp>
+
+#include <string>
 
 namespace Catch {
 

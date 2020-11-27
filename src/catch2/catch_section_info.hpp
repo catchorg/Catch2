@@ -8,7 +8,7 @@
 #ifndef CATCH_SECTION_INFO_HPP_INCLUDED
 #define CATCH_SECTION_INFO_HPP_INCLUDED
 
-#include <catch2/internal/catch_common.hpp>
+#include <catch2/internal/catch_source_line_info.hpp>
 #include <catch2/internal/catch_stringref.hpp>
 #include <catch2/catch_totals.hpp>
 
