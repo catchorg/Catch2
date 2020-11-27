@@ -90,6 +90,7 @@
 #include <catch2/internal/catch_template_test_registry.hpp>
 #include <catch2/internal/catch_test_case_registry_impl.hpp>
 #include <catch2/internal/catch_test_case_tracker.hpp>
+#include <catch2/internal/catch_test_failure_exception.hpp>
 #include <catch2/internal/catch_test_macro_impl.hpp>
 #include <catch2/internal/catch_test_registry.hpp>
 #include <catch2/internal/catch_test_spec_parser.hpp>

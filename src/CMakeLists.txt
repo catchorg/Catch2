@@ -44,6 +44,7 @@ set(INTERNAL_HEADERS
     ${SOURCES_DIR}/catch_assertion_info.hpp
     ${SOURCES_DIR}/catch_assertion_result.hpp
     ${SOURCES_DIR}/internal/catch_test_macro_impl.hpp
+    ${SOURCES_DIR}/internal/catch_test_failure_exception.hpp
     ${SOURCES_DIR}/internal/catch_case_sensitive.hpp
     ${SOURCES_DIR}/internal/catch_clara.hpp
     ${SOURCES_DIR}/internal/catch_commandline.hpp

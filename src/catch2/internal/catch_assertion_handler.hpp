@@ -15,7 +15,6 @@
 
 namespace Catch {
 
-    struct TestFailureException{};
     struct AssertionResultData;
     struct IResultCapture;
     class RunContext;

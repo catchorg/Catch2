@@ -6,9 +6,9 @@
 
 // SPDX-License-Identifier: BSL-1.0
 #include <catch2/internal/catch_exception_translator_registry.hpp>
-#include <catch2/internal/catch_assertion_handler.hpp>
 #include <catch2/internal/catch_compiler_capabilities.hpp>
 #include <catch2/internal/catch_enforce.hpp>
+#include <catch2/internal/catch_test_failure_exception.hpp>
 
 namespace Catch {
 

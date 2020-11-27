@@ -10,6 +10,7 @@
 #include <catch2/internal/catch_context.hpp>
 #include <catch2/internal/catch_enforce.hpp>
 #include <catch2/internal/catch_debugger.hpp>
+#include <catch2/internal/catch_test_failure_exception.hpp>
 #include <catch2/interfaces/catch_interfaces_registry_hub.hpp>
 #include <catch2/internal/catch_run_context.hpp>
 #include <catch2/matchers/catch_matchers_string.hpp>

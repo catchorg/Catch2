@@ -17,6 +17,7 @@
 #include <catch2/catch_timer.hpp>
 #include <catch2/internal/catch_output_redirect.hpp>
 #include <catch2/internal/catch_assertion_handler.hpp>
+#include <catch2/internal/catch_test_failure_exception.hpp>
 
 #include <cassert>
 #include <algorithm>
