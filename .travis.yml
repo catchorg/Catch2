@@ -127,14 +127,6 @@ matrix:
           packages: ['g++-7', 'lcov']
       env: COMPILER='g++-7' CPP14=1 EXAMPLES=1 COVERAGE=1 EXTRAS=1
 
-    - os: linux
-      compiler: gcc
-      addons:
-        apt:
-          sources: *all_sources
-          packages: ['g++-8']
-      env: COMPILER='g++-8' CPP17=1
-
     # OSX Clang Builds
     - os: osx
       osx_image: xcode9.4

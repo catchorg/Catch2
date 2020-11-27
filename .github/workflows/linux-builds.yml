@@ -1,0 +1,48 @@
+name: Linux builds
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-20.04
+    strategy:
+      matrix:
+        cxx: 
+#          - g++-6
+          - g++-7
+          - g++-8
+          - g++-9
+          - g++-10
+#          - clang++-7
+          - clang++-8
+          - clang++-9
+#          - clang++-10
+        build_type: [Debug, Release]
+        std: [14]
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Prepare environment
+      run: sudo apt install ninja-build
+
+    - name: Configure build
+      working-directory: ${{runner.workspace}}
+      env:
+        CXX: ${{matrix.cxx}}
+        CXXFLAGS: ${{matrix.cxxflags}}
+      # Note: $GITHUB_WORKSPACE is distinct from ${{runner.workspace}}.
+      #       This is important
+      run: |
+        cmake -Bbuild -H$GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=${{matrix.build_type}} \
+              -DCMAKE_CXX_STANDARD=${{matrix.std}} -DCATCH_DEVELOPMENT_BUILD=ON \
+              -G Ninja
+
+    - name: Build tests + lib
+      working-directory: ${{runner.workspace}}/build
+      run: ninja
+
+    - name: Run tests
+      working-directory: ${{runner.workspace}}/build
+      # Hardcode 2 cores we know are there
+      run: ctest -C ${{matrix.build_type}} -j 2
