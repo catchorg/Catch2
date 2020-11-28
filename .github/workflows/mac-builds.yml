@@ -11,7 +11,7 @@ jobs:
           - g++-9
           - clang++
         build_type: [Debug, Release]
-        std: [14]
+        std: [14, 17]
         include:
           - build_type: Debug
             examples: ON
