@@ -127,13 +127,6 @@ matrix:
           packages: ['g++-7', 'lcov']
       env: COMPILER='g++-7' CPP14=1 EXAMPLES=1 COVERAGE=1 EXTRAS=1
 
-    # OSX Clang Builds
-    - os: osx
-      osx_image: xcode11.2
-      compiler: clang
-      env: COMPILER='clang++' CPP14=1 EXAMPLES=1 COVERAGE=1 EXTRAS=1
-
-
 
     # Special builds, e.g. conan
     - language: python

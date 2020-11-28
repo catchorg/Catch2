@@ -12,6 +12,10 @@ jobs:
           - clang++
         build_type: [Debug, Release]
         std: [14]
+        include:
+          - build_type: Debug
+            examples: ON
+            extra_tests: ON
 
     steps:
     - uses: actions/checkout@v2
@@ -24,8 +28,10 @@ jobs:
       # Note: $GITHUB_WORKSPACE is distinct from ${{runner.workspace}}.
       #       This is important
       run: |
-        cmake -Bbuild -H$GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=${{matrix.build_type}} \
-              -DCMAKE_CXX_STANDARD=${{matrix.std}} -DCATCH_DEVELOPMENT_BUILD=ON
+        cmake -Bbuild -H$GITHUB_WORKSPACE \
+              -DCMAKE_BUILD_TYPE=${{matrix.build_type}} -DCMAKE_CXX_STANDARD=${{matrix.std}} \
+              -DCATCH_DEVELOPMENT_BUILD=ON -DCATCH_BUILD_EXAMPLES=${{matrix.examples}} \
+              -DCATCH_BUILD_EXTRA_TESTS=${{matrix.examples}}
 
     - name: Build tests + lib
       working-directory: ${{runner.workspace}}/build
