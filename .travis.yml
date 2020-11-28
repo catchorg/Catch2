@@ -129,21 +129,6 @@ matrix:
 
     # OSX Clang Builds
     - os: osx
-      osx_image: xcode9.4
-      compiler: clang
-      env: COMPILER='clang++' CPP14=1
-
-    - os: osx
-      osx_image: xcode10.3
-      compiler: clang
-      env: COMPILER='clang++' CPP14=1
-
-    - os: osx
-      osx_image: xcode11.2
-      compiler: clang
-      env: COMPILER='clang++' CPP14=1
-
-    - os: osx
       osx_image: xcode11.2
       compiler: clang
       env: COMPILER='clang++' CPP14=1 EXAMPLES=1 COVERAGE=1 EXTRAS=1

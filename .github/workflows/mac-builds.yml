@@ -1,30 +1,20 @@
-name: Linux builds
+name: Mac builds
 
 on: [push, pull_request]
 
 jobs:
   build:
-    runs-on: ubuntu-20.04
+    runs-on: macos-10.15
     strategy:
       matrix:
         cxx:
-#          - g++-6
-          - g++-7
-          - g++-8
           - g++-9
-          - g++-10
-#          - clang++-7
-          - clang++-8
-          - clang++-9
-#          - clang++-10
+          - clang++
         build_type: [Debug, Release]
         std: [14]
 
     steps:
     - uses: actions/checkout@v2
-
-    - name: Prepare environment
-      run: sudo apt install ninja-build
 
     - name: Configure build
       working-directory: ${{runner.workspace}}
@@ -35,14 +25,15 @@ jobs:
       #       This is important
       run: |
         cmake -Bbuild -H$GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=${{matrix.build_type}} \
-              -DCMAKE_CXX_STANDARD=${{matrix.std}} -DCATCH_DEVELOPMENT_BUILD=ON \
-              -G Ninja
+              -DCMAKE_CXX_STANDARD=${{matrix.std}} -DCATCH_DEVELOPMENT_BUILD=ON
 
     - name: Build tests + lib
       working-directory: ${{runner.workspace}}/build
-      run: ninja
+      run: make -j 2
 
     - name: Run tests
+      env:
+          CTEST_OUTPUT_ON_FAILURE: 1
       working-directory: ${{runner.workspace}}/build
       # Hardcode 2 cores we know are there
       run: ctest -C ${{matrix.build_type}} -j 2
