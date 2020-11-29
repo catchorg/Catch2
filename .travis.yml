@@ -61,13 +61,6 @@ matrix:
               packages: ['clang-5.0']
       env: COMPILER='clang++-5.0' CPP14=1
 
-    - os: linux
-      compiler: clang
-      addons:
-          apt:
-              sources: *all_sources
-              packages: ['clang-6.0']
-      env: COMPILER='clang++-6.0' CPP14=1
 
     - os: linux
       compiler: clang
@@ -77,21 +70,6 @@ matrix:
               packages: ['clang-6.0', 'libstdc++-8-dev']
       env: COMPILER='clang++-6.0' CPP17=1
 
-    - os: linux
-      compiler: clang
-      addons:
-          apt:
-              sources: *all_sources
-              packages: ['clang-7']
-      env: COMPILER='clang++-7' CPP14=1
-
-    - os: linux
-      compiler: clang
-      addons:
-          apt:
-              sources: *all_sources
-              packages: ['clang-8']
-      env: COMPILER='clang++-8' CPP14=1
 
     - os: linux
       compiler: clang
