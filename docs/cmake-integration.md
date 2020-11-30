@@ -54,7 +54,7 @@ target_link_libraries(tests Catch2::Catch2)
 
 Catch2's repository also contains two CMake scripts that help users
 with automatically registering their `TEST_CASE`s with CTest. They
-can be found in the `contrib` folder, and are
+can be found in the `extras` folder, and are
 
 1) `Catch.cmake` (and its dependency `CatchAddTests.cmake`)
 2) `ParseAndAddCatchTests.cmake`
