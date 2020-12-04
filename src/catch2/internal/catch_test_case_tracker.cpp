@@ -34,7 +34,7 @@ namespace TestCaseTracking {
         m_children.push_back( child );
     }
 
-    ITrackerPtr ITracker::findChild( NameAndLocation const& nameAndLocation ) {
+    ITracker* ITracker::findChild( NameAndLocation const& nameAndLocation ) {
         auto it = std::find_if(
             m_children.begin(),
             m_children.end(),
@@ -43,7 +43,7 @@ namespace TestCaseTracking {
                            nameAndLocation.location &&
                        tracker->nameAndLocation().name == nameAndLocation.name;
             } );
-        return ( it != m_children.end() ) ? *it : nullptr;
+        return ( it != m_children.end() ) ? it->get() : nullptr;
     }
 
 
@@ -195,17 +195,19 @@ namespace TestCaseTracking {
     bool SectionTracker::isSectionTracker() const { return true; }
 
     SectionTracker& SectionTracker::acquire( TrackerContext& ctx, NameAndLocation const& nameAndLocation ) {
-        std::shared_ptr<SectionTracker> section;
+        SectionTracker* section;
 
         ITracker& currentTracker = ctx.currentTracker();
-        if( ITrackerPtr childTracker = currentTracker.findChild( nameAndLocation ) ) {
+        if ( ITracker* childTracker =
+                 currentTracker.findChild( nameAndLocation ) ) {
             assert( childTracker );
             assert( childTracker->isSectionTracker() );
-            section = std::static_pointer_cast<SectionTracker>( childTracker );
-        }
-        else {
-            section = std::make_shared<SectionTracker>( nameAndLocation, ctx, &currentTracker );
-            currentTracker.addChild( section );
+            section = static_cast<SectionTracker*>( childTracker );
+        } else {
+            auto newSection = std::make_shared<SectionTracker>(
+                nameAndLocation, ctx, &currentTracker );
+            section = newSection.get();
+            currentTracker.addChild( std::move( newSection ) );
         }
         if( !ctx.completedCycle() )
             section->tryOpen();

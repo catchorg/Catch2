@@ -75,7 +75,7 @@ namespace TestCaseTracking {
          *
          * Returns nullptr if not found.
          */
-        ITrackerPtr findChild( NameAndLocation const& nameAndLocation );
+        ITracker* findChild( NameAndLocation const& nameAndLocation );
         //! Have any children been added?
         bool hasChildren() const {
             return !m_children.empty();

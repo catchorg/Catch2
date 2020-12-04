@@ -34,7 +34,7 @@ namespace Catch {
             ~GeneratorTracker();
 
             static GeneratorTracker& acquire( TrackerContext& ctx, TestCaseTracking::NameAndLocation const& nameAndLocation ) {
-                std::shared_ptr<GeneratorTracker> tracker;
+                GeneratorTracker* tracker;
 
                 ITracker& currentTracker = ctx.currentTracker();
                 // Under specific circumstances, the generator we want
@@ -48,18 +48,22 @@ namespace Catch {
                 //     }
                 //
                 // without it, the code above creates 5 nested generators.
-                if (currentTracker.nameAndLocation() == nameAndLocation) {
-                    auto thisTracker = currentTracker.parent().findChild(nameAndLocation);
-                    assert(thisTracker);
-                    assert(thisTracker->isGeneratorTracker());
-                    tracker = std::static_pointer_cast<GeneratorTracker>(thisTracker);
-                } else if ( TestCaseTracking::ITrackerPtr childTracker = currentTracker.findChild( nameAndLocation ) ) {
+                if ( currentTracker.nameAndLocation() == nameAndLocation ) {
+                    auto thisTracker =
+                        currentTracker.parent().findChild( nameAndLocation );
+                    assert( thisTracker );
+                    assert( thisTracker->isGeneratorTracker() );
+                    tracker = static_cast<GeneratorTracker*>( thisTracker );
+                } else if ( ITracker* childTracker =
+                                currentTracker.findChild( nameAndLocation ) ) {
                     assert( childTracker );
                     assert( childTracker->isGeneratorTracker() );
-                    tracker = std::static_pointer_cast<GeneratorTracker>( childTracker );
+                    tracker = static_cast<GeneratorTracker*>( childTracker );
                 } else {
-                    tracker = std::make_shared<GeneratorTracker>( nameAndLocation, ctx, &currentTracker );
-                    currentTracker.addChild( tracker );
+                    auto newTracker = std::make_shared<GeneratorTracker>(
+                        nameAndLocation, ctx, &currentTracker );
+                    tracker = newTracker.get();
+                    currentTracker.addChild( std::move(newTracker) );
                 }
 
                 if( !tracker->isComplete() ) {
