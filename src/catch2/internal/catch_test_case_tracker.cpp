@@ -12,7 +12,6 @@
 
 #include <algorithm>
 #include <cassert>
-#include <memory>
 
 #if defined(__clang__)
 #    pragma clang diagnostic push
@@ -30,8 +29,8 @@ namespace TestCaseTracking {
 
     ITracker::~ITracker() = default;
 
-    void ITracker::addChild( ITrackerPtr const& child ) {
-        m_children.push_back( child );
+    void ITracker::addChild( ITrackerPtr&& child ) {
+        m_children.push_back( std::move(child) );
     }
 
     ITracker* ITracker::findChild( NameAndLocation const& nameAndLocation ) {
@@ -50,7 +49,10 @@ namespace TestCaseTracking {
 
     ITracker& TrackerContext::startRun() {
         using namespace std::string_literals;
-        m_rootTracker = std::make_shared<SectionTracker>( NameAndLocation( "{root}"s, CATCH_INTERNAL_LINEINFO ), *this, nullptr );
+        m_rootTracker = Catch::Detail::make_unique<SectionTracker>(
+            NameAndLocation( "{root}"s, CATCH_INTERNAL_LINEINFO ),
+            *this,
+            nullptr );
         m_currentTracker = nullptr;
         m_runState = Executing;
         return *m_rootTracker;
@@ -204,7 +206,7 @@ namespace TestCaseTracking {
             assert( childTracker->isSectionTracker() );
             section = static_cast<SectionTracker*>( childTracker );
         } else {
-            auto newSection = std::make_shared<SectionTracker>(
+            auto newSection = Catch::Detail::make_unique<SectionTracker>(
                 nameAndLocation, ctx, &currentTracker );
             section = newSection.get();
             currentTracker.addChild( std::move( newSection ) );

@@ -10,10 +10,10 @@
 
 #include <catch2/internal/catch_compiler_capabilities.hpp>
 #include <catch2/internal/catch_source_line_info.hpp>
+#include <catch2/internal/catch_unique_ptr.hpp>
 
 #include <string>
 #include <vector>
-#include <memory>
 
 namespace Catch {
 namespace TestCaseTracking {
@@ -31,7 +31,7 @@ namespace TestCaseTracking {
 
     class ITracker;
 
-    using ITrackerPtr = std::shared_ptr<ITracker>;
+    using ITrackerPtr = Catch::Detail::unique_ptr<ITracker>;
 
     class  ITracker {
         NameAndLocation m_nameAndLocation;
@@ -69,7 +69,7 @@ namespace TestCaseTracking {
         virtual void markAsNeedingAnotherRun() = 0;
 
         //! Register a nested ITracker
-        void addChild( ITrackerPtr const& child );
+        void addChild( ITrackerPtr&& child );
         /**
          * Returns ptr to specific child if register with this tracker.
          *
