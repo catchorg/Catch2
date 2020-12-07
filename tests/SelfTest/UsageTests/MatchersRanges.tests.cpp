@@ -5,6 +5,8 @@
 #include <catch2/matchers/catch_matchers_container_properties.hpp>
 #include <catch2/matchers/catch_matchers_contains.hpp>
 #include <catch2/matchers/catch_matchers_floating_point.hpp>
+#include <catch2/matchers/catch_matchers_quantifiers.hpp>
+#include <catch2/matchers/catch_matchers_string.hpp>
 
 #include <array>
 #include <cmath>
@@ -215,5 +217,58 @@ TEST_CASE("Usage of the SizeIs range matcher", "[matchers][templated][size]") {
     }
     SECTION("Type has size member") {
         REQUIRE_THAT(has_size{}, SizeIs(13));
+    }
+}
+
+TEST_CASE("Usage of the quantifiers matchers", "[matchers][templated][quantifiers]") {
+    using Catch::Matchers::AllMatch;
+    using Catch::Matchers::AnyMatch;
+    using Catch::Matchers::Contains;
+    using Catch::Matchers::EndsWith;
+    using Catch::Matchers::IsEmpty;
+    using Catch::Matchers::NoneMatch;
+    using Catch::Matchers::SizeIs;
+    using Catch::Matchers::StartsWith;
+    std::array<std::array<int, 5>, 5> int_arr_arr{{
+                                            {{ 0, 1, 2, 3, 5 }},
+                                            {{ 4,-3,-2, 5, 0 }},
+                                            {{ 0, 0, 0, 5, 0 }},
+                                            {{ 0,-5, 0, 5, 0 }},
+                                            {{ 1, 0, 0,-1, 5 }}
+    }};
+    std::vector<std::string> string_vector{ "Command+", "Catch2+", "CMake+", "C++", "Console+" };
+    std::list<std::vector<int>> int_vectors_list{ { 1, 2 }, { 3, 4 }, { 5, 6 } };
+
+    SECTION("Usage of the AllMatch range matcher") {
+        REQUIRE_THAT(int_arr_arr, AllMatch(Contains(0)));
+        REQUIRE_THAT(int_arr_arr, AllMatch(SizeIs(5)));
+
+        REQUIRE_THAT(string_vector, AllMatch(StartsWith("C")));
+        REQUIRE_THAT(string_vector, AllMatch(EndsWith("+")));
+
+        REQUIRE_THAT(int_vectors_list, AllMatch(!IsEmpty()));
+        REQUIRE_THAT(int_vectors_list, AllMatch(SizeIs(2)));
+    }
+
+    SECTION("Usage of the AnyMatch range matcher") {
+        REQUIRE_THAT(int_arr_arr, AnyMatch(Contains(-2)));
+        REQUIRE_THAT(int_arr_arr, AnyMatch(SizeIs(5)));
+
+        REQUIRE_THAT(string_vector, AnyMatch(StartsWith("CMak")));
+        REQUIRE_THAT(string_vector, AnyMatch(EndsWith("++")));
+
+        REQUIRE_THAT(int_vectors_list, AnyMatch(Contains(4)));
+        REQUIRE_THAT(int_vectors_list, AnyMatch(SizeIs(2)));
+    }
+
+    SECTION("Usage of the NoneMatch range matcher") {
+        REQUIRE_THAT(int_arr_arr, NoneMatch(Contains(-6)));
+        REQUIRE_THAT(int_arr_arr, NoneMatch(SizeIs(42)));
+
+        REQUIRE_THAT(string_vector, NoneMatch(StartsWith("abd")));
+        REQUIRE_THAT(string_vector, NoneMatch(EndsWith("#!--")));
+
+        REQUIRE_THAT(int_vectors_list, NoneMatch(IsEmpty()));
+        REQUIRE_THAT(int_vectors_list, NoneMatch(SizeIs(3)));
     }
 }

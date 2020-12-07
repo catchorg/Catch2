@@ -88,6 +88,7 @@ set(INTERNAL_HEADERS
     ${SOURCES_DIR}/matchers/catch_matchers_exception.hpp
     ${SOURCES_DIR}/matchers/catch_matchers_floating_point.hpp
     ${SOURCES_DIR}/matchers/catch_matchers_predicate.hpp
+    ${SOURCES_DIR}/matchers/catch_matchers_quantifiers.hpp
     ${SOURCES_DIR}/matchers/catch_matchers_string.hpp
     ${SOURCES_DIR}/matchers/catch_matchers_templated.hpp
     ${SOURCES_DIR}/matchers/catch_matchers_vector.hpp
