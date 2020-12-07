@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuitesloose text artifact
 >
-  <testsuite name="<exe-name>" errors="17" failures="132" tests="2010" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
+  <testsuite name="<exe-name>" errors="17" failures="132" tests="2028" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
     <properties>
       <property name="filters" value="~[!nonportable]~[!benchmark]~[approvals] *"/>
       <property name="random-seed" value="1"/>
@@ -1283,6 +1283,9 @@ Exception.tests.cpp:<line number>
     <testcase classname="<exe-name>.global" name="Usage of the SizeIs range matcher/Some with stdlib containers" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Usage of the SizeIs range matcher/Type requires ADL found size free function" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Usage of the SizeIs range matcher/Type has size member" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Usage of the quantifiers matchers/Usage of the AllMatch range matcher" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Usage of the quantifiers matchers/Usage of the AnyMatch range matcher" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Usage of the quantifiers matchers/Usage of the NoneMatch range matcher" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Use a custom approx" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Variadic macros/Section with one argument" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Vector Approx matcher/Empty vector is roughly equal to an empty vector" time="{duration}" status="run"/>
