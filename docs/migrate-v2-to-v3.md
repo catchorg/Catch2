@@ -19,7 +19,7 @@ dealing with consuming libraries in your build system of choice.
 
 However, we recommend doing 2, and taking extra time to migrate to v3
 properly. This lets you reap the benefits of significantly improved
-compilation times in the v3 version. The basic steps to do se are:
+compilation times in the v3 version. The basic steps to do so are:
 
 1. Change your CMakeLists.txt to link against `Catch2WithMain` target if
 you use Catch2's default main. (If you do not, keep linking against
