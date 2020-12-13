@@ -5,8 +5,8 @@
 //        https://www.boost.org/LICENSE_1_0.txt)
 
 // SPDX-License-Identifier: BSL-1.0
-#ifndef CATCH_MATCHERS_FLOATING_HPP_INCLUDED
-#define CATCH_MATCHERS_FLOATING_HPP_INCLUDED
+#ifndef CATCH_MATCHERS_FLOATING_POINT_HPP_INCLUDED
+#define CATCH_MATCHERS_FLOATING_POINT_HPP_INCLUDED
 
 #include <catch2/matchers/catch_matchers.hpp>
 
@@ -70,4 +70,4 @@ namespace Matchers {
 } // namespace Matchers
 } // namespace Catch
 
-#endif // CATCH_MATCHERS_FLOATING_HPP_INCLUDED
+#endif // CATCH_MATCHERS_FLOATING_POINT_HPP_INCLUDED
