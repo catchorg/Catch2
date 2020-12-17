@@ -241,6 +241,7 @@ endfunction()
 
 # entry point
 function(ParseAndAddCatchTests TestTarget)
+    message(DEPRECATION "ParseAndAddCatchTest: function deprecated because of possibility of missed test cases. Consider using 'catch_discover_tests' from 'Catch.cmake'")
     ParseAndAddCatchTests_PrintDebugMessage("Started parsing ${TestTarget}")
     get_target_property(SourceFiles ${TestTarget} SOURCES)
     ParseAndAddCatchTests_PrintDebugMessage("Found the following sources: ${SourceFiles}")
