@@ -60,7 +60,7 @@ with automatically registering their `TEST_CASE`s with CTest. They
 can be found in the `extras` folder, and are
 
 1) `Catch.cmake` (and its dependency `CatchAddTests.cmake`)
-2) `ParseAndAddCatchTests.cmake`
+2) `ParseAndAddCatchTests.cmake` (deprecated)
 
 If Catch2 has been installed in system, both of these can be used after
 doing `find_package(Catch2 REQUIRED)`. Otherwise you need to add them
@@ -179,10 +179,17 @@ the output file name e.g. ".xml".
 
 ### `ParseAndAddCatchTests.cmake`
 
+⚠ This script is [deprecated](https://github.com/catchorg/Catch2/pull/2120)
+in Catch X.Y.Z and superseded by the above approach using `catch_discover_tests`.
+See [#2092](https://github.com/catchorg/Catch2/issues/2092) for details.
+
 `ParseAndAddCatchTests` works by parsing all implementation files
 associated with the provided target, and registering them via CTest's
 `add_test`. This approach has some limitations, such as the fact that
-commented-out tests will be registered anyway.
+commented-out tests will be registered anyway. More serious, only a
+subset of the assertion macros currently available in Catch can be
+detected by this script and tests with any macros that cannot be
+parsed are *silently ignored*.
 
 
 #### Usage
