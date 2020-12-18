@@ -12133,7 +12133,7 @@ Message from section two
       <Section name="Comparisons are deep" filename="tests/<exe-name>/IntrospectiveTests/String.tests.cpp" >
         <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/String.tests.cpp" >
           <Original>
-            (char*)buffer1 != (char*)buffer2
+            reinterpret_cast&lt;char*>(buffer1) != reinterpret_cast&lt;char*>(buffer2)
           </Original>
           <Expanded>
             "Hello" != "Hello"

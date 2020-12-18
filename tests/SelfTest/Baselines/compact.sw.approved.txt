@@ -1342,7 +1342,7 @@ String.tests.cpp:<line number>: passed: s.data() == ss.data() for: "hello world!
 String.tests.cpp:<line number>: passed: s.substr(s.size() + 1, 123).empty() for: true
 String.tests.cpp:<line number>: passed: std::strcmp(ss.c_str(), "world!") == 0 for: 0 == 0
 String.tests.cpp:<line number>: passed: s.substr(1'000'000, 1).empty() for: true
-String.tests.cpp:<line number>: passed: (char*)buffer1 != (char*)buffer2 for: "Hello" != "Hello"
+String.tests.cpp:<line number>: passed: reinterpret_cast<char*>(buffer1) != reinterpret_cast<char*>(buffer2) for: "Hello" != "Hello"
 String.tests.cpp:<line number>: passed: left == right for: Hello == Hello
 String.tests.cpp:<line number>: passed: left != left.substr(0, 3) for: Hello != Hel
 String.tests.cpp:<line number>: passed: sr == "a standard string" for: a standard string == "a standard string"

@@ -9968,7 +9968,7 @@ String.tests.cpp:<line number>
 ...............................................................................
 
 String.tests.cpp:<line number>: PASSED:
-  CHECK( (char*)buffer1 != (char*)buffer2 )
+  CHECK( reinterpret_cast<char*>(buffer1) != reinterpret_cast<char*>(buffer2) )
 with expansion:
   "Hello" != "Hello"
 
