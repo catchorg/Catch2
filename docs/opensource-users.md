@@ -53,6 +53,9 @@ Template Library of Tree Data Structures.
 ### [Fuxedo](https://github.com/fuxedo/fuxedo)
 Open source Oracle Tuxedo-like XATMI middleware for C and C++.
 
+### [HIP CPU Runtime](https://github.com/ROCm-Developer-Tools/HIP-CPU)
+A header-only library that allows CPUs to execute unmodified HIP code. It is generic and does not assume a particular CPU vendor or architecture.
+
 ### [Inja](https://github.com/pantor/inja)
 A header-only template engine for modern C++.
 
