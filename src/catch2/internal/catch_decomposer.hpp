@@ -183,60 +183,53 @@ namespace Catch {
     public:
         explicit ExprLhs( LhsT lhs ) : m_lhs( lhs ) {}
 
-        template<typename RhsT>
-        auto operator == ( RhsT const& rhs ) -> BinaryExpr<LhsT, RhsT const&> const {
-            return { compareEqual( m_lhs, rhs ), m_lhs, "=="_sr, rhs };
+        template<typename RhsT, std::enable_if_t<!std::is_arithmetic<std::remove_reference_t<RhsT>>::value, int> = 0>
+        friend auto operator == ( ExprLhs && lhs, RhsT && rhs ) -> BinaryExpr<LhsT, RhsT const&> {
+            return { compareEqual( lhs.m_lhs, rhs ), lhs.m_lhs, "=="_sr, rhs };
         }
-        auto operator == ( bool rhs ) -> BinaryExpr<LhsT, bool> const {
-            return { m_lhs == rhs, m_lhs, "=="_sr, rhs };
-        }
-
-        template<typename RhsT>
-        auto operator != ( RhsT const& rhs ) -> BinaryExpr<LhsT, RhsT const&> const {
-            return { compareNotEqual( m_lhs, rhs ), m_lhs, "!="_sr, rhs };
-        }
-        auto operator != ( bool rhs ) -> BinaryExpr<LhsT, bool> const {
-            return { m_lhs != rhs, m_lhs, "!="_sr, rhs };
+        template<typename RhsT, std::enable_if_t<std::is_arithmetic<RhsT>::value, int> = 0>
+        friend auto operator == ( ExprLhs && lhs, RhsT rhs ) -> BinaryExpr<LhsT, RhsT> {
+            return { compareEqual( lhs.m_lhs, rhs ), lhs.m_lhs, "=="_sr, rhs };
         }
 
-        template<typename RhsT>
-        auto operator > ( RhsT const& rhs ) -> BinaryExpr<LhsT, RhsT const&> const {
-            return { static_cast<bool>(m_lhs > rhs), m_lhs, ">"_sr, rhs };
+        template<typename RhsT, std::enable_if_t<!std::is_arithmetic<std::remove_reference_t<RhsT>>::value, int> = 0>
+        friend auto operator != ( ExprLhs && lhs, RhsT && rhs ) -> BinaryExpr<LhsT, RhsT const&> {
+            return { compareNotEqual( lhs.m_lhs, rhs ), lhs.m_lhs, "!="_sr, rhs };
         }
-        template<typename RhsT>
-        auto operator < ( RhsT const& rhs ) -> BinaryExpr<LhsT, RhsT const&> const {
-            return { static_cast<bool>(m_lhs < rhs), m_lhs, "<"_sr, rhs };
-        }
-        template<typename RhsT>
-        auto operator >= ( RhsT const& rhs ) -> BinaryExpr<LhsT, RhsT const&> const {
-            return { static_cast<bool>(m_lhs >= rhs), m_lhs, ">="_sr, rhs };
-        }
-        template<typename RhsT>
-        auto operator <= ( RhsT const& rhs ) -> BinaryExpr<LhsT, RhsT const&> const {
-            return { static_cast<bool>(m_lhs <= rhs), m_lhs, "<="_sr, rhs };
-        }
-        template <typename RhsT>
-        auto operator | (RhsT const& rhs) -> BinaryExpr<LhsT, RhsT const&> const {
-            return { static_cast<bool>(m_lhs | rhs), m_lhs, "|"_sr, rhs };
-        }
-        template <typename RhsT>
-        auto operator & (RhsT const& rhs) -> BinaryExpr<LhsT, RhsT const&> const {
-            return { static_cast<bool>(m_lhs & rhs), m_lhs, "&"_sr, rhs };
-        }
-        template <typename RhsT>
-        auto operator ^ (RhsT const& rhs) -> BinaryExpr<LhsT, RhsT const&> const {
-            return { static_cast<bool>(m_lhs ^ rhs), m_lhs, "^"_sr, rhs };
+        template<typename RhsT, std::enable_if_t<std::is_arithmetic<RhsT>::value, int> = 0>
+        friend auto operator != ( ExprLhs && lhs, RhsT rhs ) -> BinaryExpr<LhsT, RhsT> {
+            return { compareNotEqual( lhs.m_lhs, rhs ), lhs.m_lhs, "!="_sr, rhs };
         }
 
+    #define CATCH_INTERNAL_DEFINE_EXPRESSION_OPERATOR(op) \
+        template<typename RhsT, std::enable_if_t<!std::is_arithmetic<std::remove_reference_t<RhsT>>::value, int> = 0> \
+        friend auto operator op ( ExprLhs && lhs, RhsT && rhs ) -> BinaryExpr<LhsT, RhsT const&> { \
+            return { static_cast<bool>(lhs.m_lhs op rhs), lhs.m_lhs, #op##_sr, rhs }; \
+        } \
+        template<typename RhsT, std::enable_if_t<std::is_arithmetic<RhsT>::value, int> = 0> \
+        friend auto operator op ( ExprLhs && lhs, RhsT rhs ) -> BinaryExpr<LhsT, RhsT> { \
+            return { static_cast<bool>(lhs.m_lhs op rhs), lhs.m_lhs, #op##_sr, rhs }; \
+        }
+
+        CATCH_INTERNAL_DEFINE_EXPRESSION_OPERATOR(<)
+        CATCH_INTERNAL_DEFINE_EXPRESSION_OPERATOR(>)
+        CATCH_INTERNAL_DEFINE_EXPRESSION_OPERATOR(<=)
+        CATCH_INTERNAL_DEFINE_EXPRESSION_OPERATOR(>=)
+        CATCH_INTERNAL_DEFINE_EXPRESSION_OPERATOR(|)
+        CATCH_INTERNAL_DEFINE_EXPRESSION_OPERATOR(&)
+        CATCH_INTERNAL_DEFINE_EXPRESSION_OPERATOR(^)
+
+    #undef CATCH_INTERNAL_DEFINE_EXPRESSION_OPERATOR
+
         template<typename RhsT>
-        auto operator && ( RhsT const& ) -> BinaryExpr<LhsT, RhsT const&> const {
+        friend auto operator && ( ExprLhs &&, RhsT && ) -> BinaryExpr<LhsT, RhsT const&> {
             static_assert(always_false<RhsT>::value,
             "operator&& is not supported inside assertions, "
             "wrap the expression inside parentheses, or decompose it");
         }
 
         template<typename RhsT>
-        auto operator || ( RhsT const& ) -> BinaryExpr<LhsT, RhsT const&> const {
+        friend auto operator || ( ExprLhs &&, RhsT && ) -> BinaryExpr<LhsT, RhsT const&> {
             static_assert(always_false<RhsT>::value,
             "operator|| is not supported inside assertions, "
             "wrap the expression inside parentheses, or decompose it");
@@ -247,21 +240,15 @@ namespace Catch {
         }
     };
 
-    void handleExpression( ITransientExpression const& expr );
-
-    template<typename T>
-    void handleExpression( ExprLhs<T> const& expr ) {
-        handleExpression( expr.makeUnaryExpr() );
-    }
-
     struct Decomposer {
-        template<typename T>
-        auto operator <= ( T const& lhs ) -> ExprLhs<T const&> {
-            return ExprLhs<T const&>{ lhs };
+        template<typename T, std::enable_if_t<!std::is_arithmetic<std::remove_reference_t<T>>::value, int> = 0>
+        friend auto operator <= ( Decomposer &&, T && lhs ) -> ExprLhs<T const&> {
+            return ExprLhs<const T&>{ lhs };
         }
 
-        auto operator <=( bool value ) -> ExprLhs<bool> {
-            return ExprLhs<bool>{ value };
+        template<typename T, std::enable_if_t<std::is_arithmetic<T>::value, int> = 0>
+        friend auto operator <= ( Decomposer &&, T value ) -> ExprLhs<T> {
+            return ExprLhs<T>{ value };
         }
     };
 
