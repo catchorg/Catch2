@@ -277,3 +277,42 @@ namespace {
 TEST_CASE("Immovable types are supported in basic assertions", "[compilation][.approvals]") {
     REQUIRE(ImmovableType{} == ImmovableType{});
 }
+
+namespace adl {
+
+struct always_true {
+    explicit operator bool() const { return true; }
+};
+
+#define COMPILATION_TEST_DEFINE_UNIVERSAL_OPERATOR(op) \
+template <class T, class U> \
+auto operator op (T&&, U&&) { \
+    return always_true{}; \
+}
+
+COMPILATION_TEST_DEFINE_UNIVERSAL_OPERATOR(==)
+COMPILATION_TEST_DEFINE_UNIVERSAL_OPERATOR(!=)
+COMPILATION_TEST_DEFINE_UNIVERSAL_OPERATOR(<)
+COMPILATION_TEST_DEFINE_UNIVERSAL_OPERATOR(>)
+COMPILATION_TEST_DEFINE_UNIVERSAL_OPERATOR(<=)
+COMPILATION_TEST_DEFINE_UNIVERSAL_OPERATOR(>=)
+COMPILATION_TEST_DEFINE_UNIVERSAL_OPERATOR(|)
+COMPILATION_TEST_DEFINE_UNIVERSAL_OPERATOR(&)
+COMPILATION_TEST_DEFINE_UNIVERSAL_OPERATOR(^)
+
+#undef COMPILATION_TEST_DEFINE_UNIVERSAL_OPERATOR
+
+}
+
+TEST_CASE("ADL universal operators don't hijack expression deconstruction", "[compilation][.approvals]") {
+    REQUIRE(adl::always_true{});
+    REQUIRE(0 == adl::always_true{});
+    REQUIRE(0 != adl::always_true{});
+    REQUIRE(0 < adl::always_true{});
+    REQUIRE(0 > adl::always_true{});
+    REQUIRE(0 <= adl::always_true{});
+    REQUIRE(0 >= adl::always_true{});
+    REQUIRE(0 | adl::always_true{});
+    REQUIRE(0 & adl::always_true{});
+    REQUIRE(0 ^ adl::always_true{});
+}
