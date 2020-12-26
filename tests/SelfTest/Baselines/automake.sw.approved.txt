@@ -237,8 +237,10 @@ Message from section two
 :test-result: PASS Trim strings
 :test-result: FAIL Unexpected exceptions can be translated
 :test-result: PASS Upcasting special member functions
+:test-result: PASS Usage of AllMatch range matcher
+:test-result: PASS Usage of AnyMatch range matcher
+:test-result: PASS Usage of NoneMatch range matcher
 :test-result: PASS Usage of the SizeIs range matcher
-:test-result: PASS Usage of the quantifiers matchers
 :test-result: PASS Use a custom approx
 :test-result: PASS Variadic macros
 :test-result: PASS Vector Approx matcher

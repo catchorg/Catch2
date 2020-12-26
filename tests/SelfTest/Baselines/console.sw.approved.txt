@@ -12221,6 +12221,330 @@ with expansion:
   3 == 3
 
 -------------------------------------------------------------------------------
+Usage of AllMatch range matcher
+  Basic usage
+-------------------------------------------------------------------------------
+MatchersRanges.tests.cpp:<line number>
+...............................................................................
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  REQUIRE_THAT( data, AllMatch(SizeIs(5)) )
+with expansion:
+  { { 0, 1, 2, 3, 5 }, { 4, -3, -2, 5, 0 }, { 0, 0, 0, 5, 0 }, { 0, -5, 0, 5, 0
+  }, { 1, 0, 0, -1, 5 } } all match has size == 5
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  REQUIRE_THAT( data, !AllMatch(Contains(0) && Contains(1)) )
+with expansion:
+  { { 0, 1, 2, 3, 5 }, { 4, -3, -2, 5, 0 }, { 0, 0, 0, 5, 0 }, { 0, -5, 0, 5, 0
+  }, { 1, 0, 0, -1, 5 } } not all match ( contains element 0 and contains
+  element 1 )
+
+-------------------------------------------------------------------------------
+Usage of AllMatch range matcher
+  Type requires ADL found begin and end
+-------------------------------------------------------------------------------
+MatchersRanges.tests.cpp:<line number>
+...............................................................................
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  REQUIRE_THAT( needs_adl, AllMatch( Predicate<int>( []( int elem ) { return elem < 6; } ) ) )
+with expansion:
+  { 1, 2, 3, 4, 5 } all match matches undescribed predicate
+
+-------------------------------------------------------------------------------
+Usage of AllMatch range matcher
+  Shortcircuiting
+  All are read
+-------------------------------------------------------------------------------
+MatchersRanges.tests.cpp:<line number>
+...............................................................................
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  REQUIRE_THAT( mocked, allMatch )
+with expansion:
+  { 1, 2, 3, 4, 5 } all match matches undescribed predicate
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  REQUIRE( mocked.derefed[0] )
+with expansion:
+  true
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  REQUIRE( mocked.derefed[1] )
+with expansion:
+  true
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  REQUIRE( mocked.derefed[2] )
+with expansion:
+  true
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  REQUIRE( mocked.derefed[3] )
+with expansion:
+  true
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  REQUIRE( mocked.derefed[4] )
+with expansion:
+  true
+
+-------------------------------------------------------------------------------
+Usage of AllMatch range matcher
+  Shortcircuiting
+  Short-circuited
+-------------------------------------------------------------------------------
+MatchersRanges.tests.cpp:<line number>
+...............................................................................
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  REQUIRE_THAT( mocked, !allMatch )
+with expansion:
+  { 1, 2, 3, 4, 5 } not all match matches undescribed predicate
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  REQUIRE( mocked.derefed[0] )
+with expansion:
+  true
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  REQUIRE( mocked.derefed[1] )
+with expansion:
+  true
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  REQUIRE( mocked.derefed[2] )
+with expansion:
+  true
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  REQUIRE_FALSE( mocked.derefed[3] )
+with expansion:
+  !false
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  REQUIRE_FALSE( mocked.derefed[4] )
+with expansion:
+  !false
+
+-------------------------------------------------------------------------------
+Usage of AnyMatch range matcher
+  Basic usage
+-------------------------------------------------------------------------------
+MatchersRanges.tests.cpp:<line number>
+...............................................................................
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  REQUIRE_THAT( data, AnyMatch(SizeIs(5)) )
+with expansion:
+  { { 0, 1, 2, 3, 5 }, { 4, -3, -2, 5, 0 }, { 0, 0, 0, 5, 0 }, { 0, -5, 0, 5, 0
+  }, { 1, 0, 0, -1, 5 } } any match has size == 5
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  REQUIRE_THAT( data, !AnyMatch(Contains(0) && Contains(10)) )
+with expansion:
+  { { 0, 1, 2, 3, 5 }, { 4, -3, -2, 5, 0 }, { 0, 0, 0, 5, 0 }, { 0, -5, 0, 5, 0
+  }, { 1, 0, 0, -1, 5 } } not any match ( contains element 0 and contains
+  element 10 )
+
+-------------------------------------------------------------------------------
+Usage of AnyMatch range matcher
+  Type requires ADL found begin and end
+-------------------------------------------------------------------------------
+MatchersRanges.tests.cpp:<line number>
+...............................................................................
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  REQUIRE_THAT( needs_adl, AnyMatch( Predicate<int>( []( int elem ) { return elem < 3; } ) ) )
+with expansion:
+  { 1, 2, 3, 4, 5 } any match matches undescribed predicate
+
+-------------------------------------------------------------------------------
+Usage of AnyMatch range matcher
+  Shortcircuiting
+  All are read
+-------------------------------------------------------------------------------
+MatchersRanges.tests.cpp:<line number>
+...............................................................................
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  REQUIRE_THAT( mocked, !anyMatch )
+with expansion:
+  { 1, 2, 3, 4, 5 } not any match matches undescribed predicate
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  REQUIRE( mocked.derefed[0] )
+with expansion:
+  true
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  REQUIRE( mocked.derefed[1] )
+with expansion:
+  true
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  REQUIRE( mocked.derefed[2] )
+with expansion:
+  true
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  REQUIRE( mocked.derefed[3] )
+with expansion:
+  true
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  REQUIRE( mocked.derefed[4] )
+with expansion:
+  true
+
+-------------------------------------------------------------------------------
+Usage of AnyMatch range matcher
+  Shortcircuiting
+  Short-circuited
+-------------------------------------------------------------------------------
+MatchersRanges.tests.cpp:<line number>
+...............................................................................
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  REQUIRE_THAT( mocked, anyMatch )
+with expansion:
+  { 1, 2, 3, 4, 5 } any match matches undescribed predicate
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  REQUIRE( mocked.derefed[0] )
+with expansion:
+  true
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  REQUIRE_FALSE( mocked.derefed[1] )
+with expansion:
+  !false
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  REQUIRE_FALSE( mocked.derefed[2] )
+with expansion:
+  !false
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  REQUIRE_FALSE( mocked.derefed[3] )
+with expansion:
+  !false
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  REQUIRE_FALSE( mocked.derefed[4] )
+with expansion:
+  !false
+
+-------------------------------------------------------------------------------
+Usage of NoneMatch range matcher
+  Basic usage
+-------------------------------------------------------------------------------
+MatchersRanges.tests.cpp:<line number>
+...............................................................................
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  REQUIRE_THAT( data, NoneMatch(SizeIs(6)) )
+with expansion:
+  { { 0, 1, 2, 3, 5 }, { 4, -3, -2, 5, 0 }, { 0, 0, 0, 5, 0 }, { 0, -5, 0, 5, 0
+  }, { 1, 0, 0, -1, 5 } } none match has size == 6
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  REQUIRE_THAT( data, !NoneMatch(Contains(0) && Contains(1)) )
+with expansion:
+  { { 0, 1, 2, 3, 5 }, { 4, -3, -2, 5, 0 }, { 0, 0, 0, 5, 0 }, { 0, -5, 0, 5, 0
+  }, { 1, 0, 0, -1, 5 } } not none match ( contains element 0 and contains
+  element 1 )
+
+-------------------------------------------------------------------------------
+Usage of NoneMatch range matcher
+  Type requires ADL found begin and end
+-------------------------------------------------------------------------------
+MatchersRanges.tests.cpp:<line number>
+...............................................................................
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  REQUIRE_THAT( needs_adl, NoneMatch( Predicate<int>( []( int elem ) { return elem > 6; } ) ) )
+with expansion:
+  { 1, 2, 3, 4, 5 } none match matches undescribed predicate
+
+-------------------------------------------------------------------------------
+Usage of NoneMatch range matcher
+  Shortcircuiting
+  All are read
+-------------------------------------------------------------------------------
+MatchersRanges.tests.cpp:<line number>
+...............................................................................
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  REQUIRE_THAT( mocked, noneMatch )
+with expansion:
+  { 1, 2, 3, 4, 5 } none match matches undescribed predicate
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  REQUIRE( mocked.derefed[0] )
+with expansion:
+  true
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  REQUIRE( mocked.derefed[1] )
+with expansion:
+  true
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  REQUIRE( mocked.derefed[2] )
+with expansion:
+  true
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  REQUIRE( mocked.derefed[3] )
+with expansion:
+  true
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  REQUIRE( mocked.derefed[4] )
+with expansion:
+  true
+
+-------------------------------------------------------------------------------
+Usage of NoneMatch range matcher
+  Shortcircuiting
+  Short-circuited
+-------------------------------------------------------------------------------
+MatchersRanges.tests.cpp:<line number>
+...............................................................................
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  REQUIRE_THAT( mocked, !noneMatch )
+with expansion:
+  { 1, 2, 3, 4, 5 } not none match matches undescribed predicate
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  REQUIRE( mocked.derefed[0] )
+with expansion:
+  true
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  REQUIRE_FALSE( mocked.derefed[1] )
+with expansion:
+  !false
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  REQUIRE_FALSE( mocked.derefed[2] )
+with expansion:
+  !false
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  REQUIRE_FALSE( mocked.derefed[3] )
+with expansion:
+  !false
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  REQUIRE_FALSE( mocked.derefed[4] )
+with expansion:
+  !false
+
+-------------------------------------------------------------------------------
 Usage of the SizeIs range matcher
   Some with stdlib containers
 -------------------------------------------------------------------------------
@@ -12285,129 +12609,6 @@ MatchersRanges.tests.cpp:<line number>: PASSED:
   REQUIRE_THAT( has_size{}, SizeIs(13) )
 with expansion:
   {?} has size == 13
-
--------------------------------------------------------------------------------
-Usage of the quantifiers matchers
-  Usage of the AllMatch range matcher
--------------------------------------------------------------------------------
-MatchersRanges.tests.cpp:<line number>
-...............................................................................
-
-MatchersRanges.tests.cpp:<line number>: PASSED:
-  REQUIRE_THAT( int_arr_arr, AllMatch(Contains(0)) )
-with expansion:
-  { { 0, 1, 2, 3, 5 }, { 4, -3, -2, 5, 0 }, { 0, 0, 0, 5, 0 }, { 0, -5, 0, 5, 0
-  }, { 1, 0, 0, -1, 5 } } all match contains element 0
-
-MatchersRanges.tests.cpp:<line number>: PASSED:
-  REQUIRE_THAT( int_arr_arr, AllMatch(SizeIs(5)) )
-with expansion:
-  { { 0, 1, 2, 3, 5 }, { 4, -3, -2, 5, 0 }, { 0, 0, 0, 5, 0 }, { 0, -5, 0, 5, 0
-  }, { 1, 0, 0, -1, 5 } } all match has size == 5
-
-MatchersRanges.tests.cpp:<line number>: PASSED:
-  REQUIRE_THAT( string_vector, AllMatch(StartsWith("C")) )
-with expansion:
-  { "Command+", "Catch2+", "CMake+", "C++", "Console+" } all match starts with:
-  "C"
-
-MatchersRanges.tests.cpp:<line number>: PASSED:
-  REQUIRE_THAT( string_vector, AllMatch(EndsWith("+")) )
-with expansion:
-  { "Command+", "Catch2+", "CMake+", "C++", "Console+" } all match ends with:
-  "+"
-
-MatchersRanges.tests.cpp:<line number>: PASSED:
-  REQUIRE_THAT( int_vectors_list, AllMatch(!IsEmpty()) )
-with expansion:
-  { { 1, 2 }, { 3, 4 }, { 5, 6 } } all match not is empty
-
-MatchersRanges.tests.cpp:<line number>: PASSED:
-  REQUIRE_THAT( int_vectors_list, AllMatch(SizeIs(2)) )
-with expansion:
-  { { 1, 2 }, { 3, 4 }, { 5, 6 } } all match has size == 2
-
--------------------------------------------------------------------------------
-Usage of the quantifiers matchers
-  Usage of the AnyMatch range matcher
--------------------------------------------------------------------------------
-MatchersRanges.tests.cpp:<line number>
-...............................................................................
-
-MatchersRanges.tests.cpp:<line number>: PASSED:
-  REQUIRE_THAT( int_arr_arr, AnyMatch(Contains(-2)) )
-with expansion:
-  { { 0, 1, 2, 3, 5 }, { 4, -3, -2, 5, 0 }, { 0, 0, 0, 5, 0 }, { 0, -5, 0, 5, 0
-  }, { 1, 0, 0, -1, 5 } } any match contains element -2
-
-MatchersRanges.tests.cpp:<line number>: PASSED:
-  REQUIRE_THAT( int_arr_arr, AnyMatch(SizeIs(5)) )
-with expansion:
-  { { 0, 1, 2, 3, 5 }, { 4, -3, -2, 5, 0 }, { 0, 0, 0, 5, 0 }, { 0, -5, 0, 5, 0
-  }, { 1, 0, 0, -1, 5 } } any match has size == 5
-
-MatchersRanges.tests.cpp:<line number>: PASSED:
-  REQUIRE_THAT( string_vector, AnyMatch(StartsWith("CMak")) )
-with expansion:
-  { "Command+", "Catch2+", "CMake+", "C++", "Console+" } any match starts with:
-  "CMak"
-
-MatchersRanges.tests.cpp:<line number>: PASSED:
-  REQUIRE_THAT( string_vector, AnyMatch(EndsWith("++")) )
-with expansion:
-  { "Command+", "Catch2+", "CMake+", "C++", "Console+" } any match ends with:
-  "++"
-
-MatchersRanges.tests.cpp:<line number>: PASSED:
-  REQUIRE_THAT( int_vectors_list, AnyMatch(Contains(4)) )
-with expansion:
-  { { 1, 2 }, { 3, 4 }, { 5, 6 } } any match contains element 4
-
-MatchersRanges.tests.cpp:<line number>: PASSED:
-  REQUIRE_THAT( int_vectors_list, AnyMatch(SizeIs(2)) )
-with expansion:
-  { { 1, 2 }, { 3, 4 }, { 5, 6 } } any match has size == 2
-
--------------------------------------------------------------------------------
-Usage of the quantifiers matchers
-  Usage of the NoneMatch range matcher
--------------------------------------------------------------------------------
-MatchersRanges.tests.cpp:<line number>
-...............................................................................
-
-MatchersRanges.tests.cpp:<line number>: PASSED:
-  REQUIRE_THAT( int_arr_arr, NoneMatch(Contains(-6)) )
-with expansion:
-  { { 0, 1, 2, 3, 5 }, { 4, -3, -2, 5, 0 }, { 0, 0, 0, 5, 0 }, { 0, -5, 0, 5, 0
-  }, { 1, 0, 0, -1, 5 } } none match contains element -6
-
-MatchersRanges.tests.cpp:<line number>: PASSED:
-  REQUIRE_THAT( int_arr_arr, NoneMatch(SizeIs(42)) )
-with expansion:
-  { { 0, 1, 2, 3, 5 }, { 4, -3, -2, 5, 0 }, { 0, 0, 0, 5, 0 }, { 0, -5, 0, 5, 0
-  }, { 1, 0, 0, -1, 5 } } none match has size == 42
-
-MatchersRanges.tests.cpp:<line number>: PASSED:
-  REQUIRE_THAT( string_vector, NoneMatch(StartsWith("abd")) )
-with expansion:
-  { "Command+", "Catch2+", "CMake+", "C++", "Console+" } none match starts
-  with: "abd"
-
-MatchersRanges.tests.cpp:<line number>: PASSED:
-  REQUIRE_THAT( string_vector, NoneMatch(EndsWith("#!--")) )
-with expansion:
-  { "Command+", "Catch2+", "CMake+", "C++", "Console+" } none match ends with:
-  "#!--"
-
-MatchersRanges.tests.cpp:<line number>: PASSED:
-  REQUIRE_THAT( int_vectors_list, NoneMatch(IsEmpty()) )
-with expansion:
-  { { 1, 2 }, { 3, 4 }, { 5, 6 } } none match is empty
-
-MatchersRanges.tests.cpp:<line number>: PASSED:
-  REQUIRE_THAT( int_vectors_list, NoneMatch(SizeIs(3)) )
-with expansion:
-  { { 1, 2 }, { 3, 4 }, { 5, 6 } } none match has size == 3
 
 -------------------------------------------------------------------------------
 Use a custom approx
@@ -15804,6 +16005,6 @@ Misc.tests.cpp:<line number>
 Misc.tests.cpp:<line number>: PASSED:
 
 ===============================================================================
-test cases:  352 |  262 passed |  86 failed |  4 failed as expected
-assertions: 2027 | 1858 passed | 148 failed | 21 failed as expected
+test cases:  354 |  264 passed |  86 failed |  4 failed as expected
+assertions: 2054 | 1885 passed | 148 failed | 21 failed as expected
 

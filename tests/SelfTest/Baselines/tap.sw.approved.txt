@@ -3161,6 +3161,96 @@ not ok {test-number} - unexpected exception with message: '3.14'
 ok {test-number} - bptr->i == 3 for: 3 == 3
 # Upcasting special member functions
 ok {test-number} - bptr->i == 3 for: 3 == 3
+# Usage of AllMatch range matcher
+ok {test-number} - data, AllMatch(SizeIs(5)) for: { { 0, 1, 2, 3, 5 }, { 4, -3, -2, 5, 0 }, { 0, 0, 0, 5, 0 }, { 0, -5, 0, 5, 0 }, { 1, 0, 0, -1, 5 } } all match has size == 5
+# Usage of AllMatch range matcher
+ok {test-number} - data, !AllMatch(Contains(0) && Contains(1)) for: { { 0, 1, 2, 3, 5 }, { 4, -3, -2, 5, 0 }, { 0, 0, 0, 5, 0 }, { 0, -5, 0, 5, 0 }, { 1, 0, 0, -1, 5 } } not all match ( contains element 0 and contains element 1 )
+# Usage of AllMatch range matcher
+ok {test-number} - needs_adl, AllMatch( Predicate<int>( []( int elem ) { return elem < 6; } ) ) for: { 1, 2, 3, 4, 5 } all match matches undescribed predicate
+# Usage of AllMatch range matcher
+ok {test-number} - mocked, allMatch for: { 1, 2, 3, 4, 5 } all match matches undescribed predicate
+# Usage of AllMatch range matcher
+ok {test-number} - mocked.derefed[0] for: true
+# Usage of AllMatch range matcher
+ok {test-number} - mocked.derefed[1] for: true
+# Usage of AllMatch range matcher
+ok {test-number} - mocked.derefed[2] for: true
+# Usage of AllMatch range matcher
+ok {test-number} - mocked.derefed[3] for: true
+# Usage of AllMatch range matcher
+ok {test-number} - mocked.derefed[4] for: true
+# Usage of AllMatch range matcher
+ok {test-number} - mocked, !allMatch for: { 1, 2, 3, 4, 5 } not all match matches undescribed predicate
+# Usage of AllMatch range matcher
+ok {test-number} - mocked.derefed[0] for: true
+# Usage of AllMatch range matcher
+ok {test-number} - mocked.derefed[1] for: true
+# Usage of AllMatch range matcher
+ok {test-number} - mocked.derefed[2] for: true
+# Usage of AllMatch range matcher
+ok {test-number} - !(mocked.derefed[3]) for: !false
+# Usage of AllMatch range matcher
+ok {test-number} - !(mocked.derefed[4]) for: !false
+# Usage of AnyMatch range matcher
+ok {test-number} - data, AnyMatch(SizeIs(5)) for: { { 0, 1, 2, 3, 5 }, { 4, -3, -2, 5, 0 }, { 0, 0, 0, 5, 0 }, { 0, -5, 0, 5, 0 }, { 1, 0, 0, -1, 5 } } any match has size == 5
+# Usage of AnyMatch range matcher
+ok {test-number} - data, !AnyMatch(Contains(0) && Contains(10)) for: { { 0, 1, 2, 3, 5 }, { 4, -3, -2, 5, 0 }, { 0, 0, 0, 5, 0 }, { 0, -5, 0, 5, 0 }, { 1, 0, 0, -1, 5 } } not any match ( contains element 0 and contains element 10 )
+# Usage of AnyMatch range matcher
+ok {test-number} - needs_adl, AnyMatch( Predicate<int>( []( int elem ) { return elem < 3; } ) ) for: { 1, 2, 3, 4, 5 } any match matches undescribed predicate
+# Usage of AnyMatch range matcher
+ok {test-number} - mocked, !anyMatch for: { 1, 2, 3, 4, 5 } not any match matches undescribed predicate
+# Usage of AnyMatch range matcher
+ok {test-number} - mocked.derefed[0] for: true
+# Usage of AnyMatch range matcher
+ok {test-number} - mocked.derefed[1] for: true
+# Usage of AnyMatch range matcher
+ok {test-number} - mocked.derefed[2] for: true
+# Usage of AnyMatch range matcher
+ok {test-number} - mocked.derefed[3] for: true
+# Usage of AnyMatch range matcher
+ok {test-number} - mocked.derefed[4] for: true
+# Usage of AnyMatch range matcher
+ok {test-number} - mocked, anyMatch for: { 1, 2, 3, 4, 5 } any match matches undescribed predicate
+# Usage of AnyMatch range matcher
+ok {test-number} - mocked.derefed[0] for: true
+# Usage of AnyMatch range matcher
+ok {test-number} - !(mocked.derefed[1]) for: !false
+# Usage of AnyMatch range matcher
+ok {test-number} - !(mocked.derefed[2]) for: !false
+# Usage of AnyMatch range matcher
+ok {test-number} - !(mocked.derefed[3]) for: !false
+# Usage of AnyMatch range matcher
+ok {test-number} - !(mocked.derefed[4]) for: !false
+# Usage of NoneMatch range matcher
+ok {test-number} - data, NoneMatch(SizeIs(6)) for: { { 0, 1, 2, 3, 5 }, { 4, -3, -2, 5, 0 }, { 0, 0, 0, 5, 0 }, { 0, -5, 0, 5, 0 }, { 1, 0, 0, -1, 5 } } none match has size == 6
+# Usage of NoneMatch range matcher
+ok {test-number} - data, !NoneMatch(Contains(0) && Contains(1)) for: { { 0, 1, 2, 3, 5 }, { 4, -3, -2, 5, 0 }, { 0, 0, 0, 5, 0 }, { 0, -5, 0, 5, 0 }, { 1, 0, 0, -1, 5 } } not none match ( contains element 0 and contains element 1 )
+# Usage of NoneMatch range matcher
+ok {test-number} - needs_adl, NoneMatch( Predicate<int>( []( int elem ) { return elem > 6; } ) ) for: { 1, 2, 3, 4, 5 } none match matches undescribed predicate
+# Usage of NoneMatch range matcher
+ok {test-number} - mocked, noneMatch for: { 1, 2, 3, 4, 5 } none match matches undescribed predicate
+# Usage of NoneMatch range matcher
+ok {test-number} - mocked.derefed[0] for: true
+# Usage of NoneMatch range matcher
+ok {test-number} - mocked.derefed[1] for: true
+# Usage of NoneMatch range matcher
+ok {test-number} - mocked.derefed[2] for: true
+# Usage of NoneMatch range matcher
+ok {test-number} - mocked.derefed[3] for: true
+# Usage of NoneMatch range matcher
+ok {test-number} - mocked.derefed[4] for: true
+# Usage of NoneMatch range matcher
+ok {test-number} - mocked, !noneMatch for: { 1, 2, 3, 4, 5 } not none match matches undescribed predicate
+# Usage of NoneMatch range matcher
+ok {test-number} - mocked.derefed[0] for: true
+# Usage of NoneMatch range matcher
+ok {test-number} - !(mocked.derefed[1]) for: !false
+# Usage of NoneMatch range matcher
+ok {test-number} - !(mocked.derefed[2]) for: !false
+# Usage of NoneMatch range matcher
+ok {test-number} - !(mocked.derefed[3]) for: !false
+# Usage of NoneMatch range matcher
+ok {test-number} - !(mocked.derefed[4]) for: !false
 # Usage of the SizeIs range matcher
 ok {test-number} - empty_vec, SizeIs(0) for: {  } has size == 0
 # Usage of the SizeIs range matcher
@@ -3179,42 +3269,6 @@ ok {test-number} - map, SizeIs(3) for: { {?}, {?}, {?} } has size == 3
 ok {test-number} - unrelated::ADL_size{}, SizeIs(12) for: {?} has size == 12
 # Usage of the SizeIs range matcher
 ok {test-number} - has_size{}, SizeIs(13) for: {?} has size == 13
-# Usage of the quantifiers matchers
-ok {test-number} - int_arr_arr, AllMatch(Contains(0)) for: { { 0, 1, 2, 3, 5 }, { 4, -3, -2, 5, 0 }, { 0, 0, 0, 5, 0 }, { 0, -5, 0, 5, 0 }, { 1, 0, 0, -1, 5 } } all match contains element 0
-# Usage of the quantifiers matchers
-ok {test-number} - int_arr_arr, AllMatch(SizeIs(5)) for: { { 0, 1, 2, 3, 5 }, { 4, -3, -2, 5, 0 }, { 0, 0, 0, 5, 0 }, { 0, -5, 0, 5, 0 }, { 1, 0, 0, -1, 5 } } all match has size == 5
-# Usage of the quantifiers matchers
-ok {test-number} - string_vector, AllMatch(StartsWith("C")) for: { "Command+", "Catch2+", "CMake+", "C++", "Console+" } all match starts with: "C"
-# Usage of the quantifiers matchers
-ok {test-number} - string_vector, AllMatch(EndsWith("+")) for: { "Command+", "Catch2+", "CMake+", "C++", "Console+" } all match ends with: "+"
-# Usage of the quantifiers matchers
-ok {test-number} - int_vectors_list, AllMatch(!IsEmpty()) for: { { 1, 2 }, { 3, 4 }, { 5, 6 } } all match not is empty
-# Usage of the quantifiers matchers
-ok {test-number} - int_vectors_list, AllMatch(SizeIs(2)) for: { { 1, 2 }, { 3, 4 }, { 5, 6 } } all match has size == 2
-# Usage of the quantifiers matchers
-ok {test-number} - int_arr_arr, AnyMatch(Contains(-2)) for: { { 0, 1, 2, 3, 5 }, { 4, -3, -2, 5, 0 }, { 0, 0, 0, 5, 0 }, { 0, -5, 0, 5, 0 }, { 1, 0, 0, -1, 5 } } any match contains element -2
-# Usage of the quantifiers matchers
-ok {test-number} - int_arr_arr, AnyMatch(SizeIs(5)) for: { { 0, 1, 2, 3, 5 }, { 4, -3, -2, 5, 0 }, { 0, 0, 0, 5, 0 }, { 0, -5, 0, 5, 0 }, { 1, 0, 0, -1, 5 } } any match has size == 5
-# Usage of the quantifiers matchers
-ok {test-number} - string_vector, AnyMatch(StartsWith("CMak")) for: { "Command+", "Catch2+", "CMake+", "C++", "Console+" } any match starts with: "CMak"
-# Usage of the quantifiers matchers
-ok {test-number} - string_vector, AnyMatch(EndsWith("++")) for: { "Command+", "Catch2+", "CMake+", "C++", "Console+" } any match ends with: "++"
-# Usage of the quantifiers matchers
-ok {test-number} - int_vectors_list, AnyMatch(Contains(4)) for: { { 1, 2 }, { 3, 4 }, { 5, 6 } } any match contains element 4
-# Usage of the quantifiers matchers
-ok {test-number} - int_vectors_list, AnyMatch(SizeIs(2)) for: { { 1, 2 }, { 3, 4 }, { 5, 6 } } any match has size == 2
-# Usage of the quantifiers matchers
-ok {test-number} - int_arr_arr, NoneMatch(Contains(-6)) for: { { 0, 1, 2, 3, 5 }, { 4, -3, -2, 5, 0 }, { 0, 0, 0, 5, 0 }, { 0, -5, 0, 5, 0 }, { 1, 0, 0, -1, 5 } } none match contains element -6
-# Usage of the quantifiers matchers
-ok {test-number} - int_arr_arr, NoneMatch(SizeIs(42)) for: { { 0, 1, 2, 3, 5 }, { 4, -3, -2, 5, 0 }, { 0, 0, 0, 5, 0 }, { 0, -5, 0, 5, 0 }, { 1, 0, 0, -1, 5 } } none match has size == 42
-# Usage of the quantifiers matchers
-ok {test-number} - string_vector, NoneMatch(StartsWith("abd")) for: { "Command+", "Catch2+", "CMake+", "C++", "Console+" } none match starts with: "abd"
-# Usage of the quantifiers matchers
-ok {test-number} - string_vector, NoneMatch(EndsWith("#!--")) for: { "Command+", "Catch2+", "CMake+", "C++", "Console+" } none match ends with: "#!--"
-# Usage of the quantifiers matchers
-ok {test-number} - int_vectors_list, NoneMatch(IsEmpty()) for: { { 1, 2 }, { 3, 4 }, { 5, 6 } } none match is empty
-# Usage of the quantifiers matchers
-ok {test-number} - int_vectors_list, NoneMatch(SizeIs(3)) for: { { 1, 2 }, { 3, 4 }, { 5, 6 } } none match has size == 3
 # Use a custom approx
 ok {test-number} - d == approx( 1.23 ) for: 1.23 == Approx( 1.23 )
 # Use a custom approx
@@ -4046,5 +4100,5 @@ ok {test-number} - q3 == 23. for: 23.0 == 23.0
 ok {test-number} -
 # xmlentitycheck
 ok {test-number} -
-1..2027
+1..2054
 
