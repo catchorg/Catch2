@@ -231,6 +231,9 @@ definitions to handle generic range-like types. These are:
 * `AllTrue()`
 * `NoneTrue()`
 * `AnyTrue()`
+* `ElementsAre(TargetRangeLike&&, Comparator = std::equal_to<>{})`
+* `UnorderedElementsAre(TargetRangeLike&&, Comparator = std::equal_to<>{})`
+
 
 `IsEmpty` should be self-explanatory. It successfully matches objects
 that are empty according to either `std::empty`, or ADL-found `empty`
@@ -256,6 +259,26 @@ respectively.
 all, none, or any of the contained elements are `true`, respectively.
 It works for ranges of `bool`s and ranges of elements (explicitly)
 convertible to `bool`.
+
+`ElementsAre` compares the range that the matcher is constructed with
+(the "target range") against the range to be tested. If the two ranges
+compare equal (according to `std::equal`, which uses `operator==` to
+determine equality), the match succeeds. The ranges do not need to be
+the same type, and the element types do not need to be the same (e.g.
+you may compare `std::vector<int>` to `std::array<char>`). The
+containers do not need to be the same length.
+
+`UnorderedElementsAre` is similar to `ElementsAre`, but the order
+does not matter. For example "1, 2, 3" would match "3, 2, 1". This
+matcher succeeds if `std::is_permuation` returns true. As for
+`ElementsAre`, this uses `operator==` to determine equality.
+
+Both `ElementsAre` and `UnorderedElementsAre` optionally accept a
+predicate which can be used to compare the containers element-wise.
+
+To check a container elementwise against a given matcher, use
+`AllMatch`.
+
 
 ## Writing custom matchers (old style)
 

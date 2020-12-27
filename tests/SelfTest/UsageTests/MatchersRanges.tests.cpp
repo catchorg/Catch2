@@ -9,6 +9,7 @@
 #include <catch2/catch_test_macros.hpp>
 #include <catch2/matchers/catch_matchers_container_properties.hpp>
 #include <catch2/matchers/catch_matchers_contains.hpp>
+#include <catch2/matchers/catch_matchers_elements_are.hpp>
 #include <catch2/matchers/catch_matchers_floating_point.hpp>
 #include <catch2/matchers/catch_matchers_quantifiers.hpp>
 #include <catch2/matchers/catch_matchers_predicate.hpp>
@@ -832,3 +833,219 @@ TEST_CASE( "The quantifier range matchers support types with different types ret
 }
 
 #endif
+
+TEST_CASE( "Usage of ElementsAre range matcher", "[matchers][templated][quantifiers]" ) {
+    using Catch::Matchers::ElementsAre;
+
+    // In these tests, the types are always the same - type conversion is in the next section
+    SECTION( "Basic usage" ) {
+        SECTION( "Empty container matches empty container" ) {
+            const std::vector<int> empty_vector;
+            CHECK_THAT( empty_vector, ElementsAre( empty_vector ) );
+        }
+        SECTION( "Empty container does not match non-empty container" ) {
+            const std::vector<int> empty_vector;
+            const std::vector<int> non_empty_vector{ 1 };
+            CHECK_THAT( empty_vector, !ElementsAre( non_empty_vector ) );
+            // ...and in reverse
+            CHECK_THAT( non_empty_vector, !ElementsAre( empty_vector ) );
+        }
+        SECTION( "Two equal 1-length non-empty containers" ) {
+            const std::array<int, 1> non_empty_array{ { 1 } };
+            CHECK_THAT( non_empty_array, ElementsAre( non_empty_array ) );
+        }
+        SECTION( "Two equal-sized, equal, non-empty containers" ) {
+            const std::array<int, 3> array_a{ { 1, 2, 3 } };
+            CHECK_THAT( array_a, ElementsAre( array_a ) );
+        }
+        SECTION( "Two equal-sized, non-equal, non-empty containers" ) {
+            const std::array<int, 3> array_a{ { 1, 2, 3 } };
+            const std::array<int, 3> array_b{ { 2, 2, 3 } };
+            const std::array<int, 3> array_c{ { 1, 2, 2 } };
+            CHECK_THAT( array_a, !ElementsAre( array_b ) );
+            CHECK_THAT( array_a, !ElementsAre( array_c ) );
+        }
+        SECTION( "Two non-equal-sized, non-empty containers (with same first "
+                 "elements)" ) {
+            const std::vector<int> vector_a{ 1, 2, 3 };
+            const std::vector<int> vector_b{ 1, 2, 3, 4 };
+            CHECK_THAT( vector_a, !ElementsAre( vector_b ) );
+        }
+    }
+
+    SECTION( "Custom predicate" ) {
+
+        auto close_enough = []( int lhs, int rhs ) {
+            return std::abs( lhs - rhs ) <= 1;
+        };
+
+        SECTION( "Two equal non-empty containers (close enough)" ) {
+            const std::vector<int> vector_a{ { 1, 2, 3 } };
+            const std::vector<int> vector_a_plus_1{ { 2, 3, 4 } };
+            CHECK_THAT( vector_a, ElementsAre( vector_a_plus_1, close_enough ) );
+        }
+        SECTION( "Two non-equal non-empty containers (close enough)" ) {
+            const std::vector<int> vector_a{ { 1, 2, 3 } };
+            const std::vector<int> vector_b{ { 3, 3, 4 } };
+            CHECK_THAT( vector_a, !ElementsAre( vector_b, close_enough ) );
+        }
+    }
+
+    // Cannot usefully test short-circuits, as the complexiy of std::equal is
+    // only guaranteed to be O(n) or better (even if many implementations
+    // short-circuit if the range lengths differ for
+    // LegacyRandomAccessIterators)
+}
+
+TEST_CASE( "Usage of UnorderedElementsAre range matcher",
+           "[matchers][templated][quantifiers]" ) {
+    using Catch::Matchers::UnorderedElementsAre;
+
+    // In these tests, the types are always the same - type conversion is in the
+    // next section
+    SECTION( "Basic usage" ) {
+        SECTION( "Empty container matches empty container" ) {
+            const std::vector<int> empty_vector;
+            CHECK_THAT( empty_vector, UnorderedElementsAre( empty_vector ) );
+        }
+        SECTION( "Empty container does not match non-empty container" ) {
+            const std::vector<int> empty_vector;
+            const std::vector<int> non_empty_vector{ 1 };
+            CHECK_THAT( empty_vector,
+                        !UnorderedElementsAre( non_empty_vector ) );
+            // ...and in reverse
+            CHECK_THAT( non_empty_vector,
+                        !UnorderedElementsAre( empty_vector ) );
+        }
+        SECTION( "Two equal 1-length non-empty containers" ) {
+            const std::array<int, 1> non_empty_array{ { 1 } };
+            CHECK_THAT( non_empty_array,
+                        UnorderedElementsAre( non_empty_array ) );
+        }
+        SECTION( "Two equal-sized, equal, non-empty containers" ) {
+            const std::array<int, 3> array_a{ { 1, 2, 3 } };
+            CHECK_THAT( array_a, UnorderedElementsAre( array_a ) );
+        }
+        SECTION( "Two equal-sized, non-equal, non-empty containers" ) {
+            const std::array<int, 3> array_a{ { 1, 2, 3 } };
+            const std::array<int, 3> array_b{ { 2, 2, 3 } };
+            CHECK_THAT( array_a, !UnorderedElementsAre( array_b ) );
+        }
+        SECTION( "Two non-equal-sized, non-empty containers" ) {
+            const std::vector<int> vector_a{ 1, 2, 3 };
+            const std::vector<int> vector_b{ 1, 2, 3, 4 };
+            CHECK_THAT( vector_a, !UnorderedElementsAre( vector_b ) );
+        }
+    }
+
+    SECTION( "Custom predicate" ) {
+
+        auto close_enough = []( int lhs, int rhs ) {
+            return std::abs( lhs - rhs ) <= 1;
+        };
+
+        SECTION( "Two equal non-empty containers (close enough)" ) {
+            const std::vector<int> vector_a{ { 1, 10, 20 } };
+            const std::vector<int> vector_a_plus_1{ { 11, 21, 2 } };
+            CHECK_THAT( vector_a,
+                        UnorderedElementsAre( vector_a_plus_1, close_enough ) );
+        }
+        SECTION( "Two non-equal non-empty containers (close enough)" ) {
+            const std::vector<int> vector_a{ { 1, 10, 21 } };
+            const std::vector<int> vector_b{ { 11, 21, 3 } };
+            CHECK_THAT( vector_a,
+                        !UnorderedElementsAre( vector_b, close_enough ) );
+        }
+    }
+
+    // As above with ElementsAre, short cicuiting and other optimisations
+    // are left to the STL implementation
+}
+
+/**
+ * Return true if the type given has a random access iterator type.
+ */
+template <typename Container>
+static constexpr bool ContainerIsRandomAccess( const Container& ) {
+    using array_iter_category = typename std::iterator_traits<
+        typename Container::iterator>::iterator_category;
+
+    return std::is_base_of<std::random_access_iterator_tag,
+                           array_iter_category>::value;
+}
+
+TEST_CASE( "Type conversions of ElementsAre and similar",
+           "[matchers][templated][quantifiers]" ) {
+    using Catch::Matchers::ElementsAre;
+    using Catch::Matchers::UnorderedElementsAre;
+
+    // In these test, we can always test ElementsAre and
+    // UnorderedElementsAre in the same way, since we're mostly
+    // testing the template type deductions (and ElementsAre
+    // implies UnorderedElementsAre)
+
+    SECTION( "Container conversions" ) {
+        SECTION( "Two equal containers of different container types" ) {
+            const std::array<int, 3> array_int_a{ { 1, 2, 3 } };
+            const std::vector<int> vector_int_a{ 1, 2, 3 };
+            CHECK_THAT( array_int_a, ElementsAre( vector_int_a ) );
+            CHECK_THAT( array_int_a, UnorderedElementsAre( vector_int_a ) );
+        }
+        SECTION( "Two equal containers of different container types "
+                    "(differ in array N)" ) {
+            const std::array<int, 3> array_int_3{ { 1, 2, 3 } };
+            const std::array<int, 4> array_int_4{ { 1, 2, 3, 4 } };
+            CHECK_THAT( array_int_3, !ElementsAre( array_int_4 ) );
+            CHECK_THAT( array_int_3, !UnorderedElementsAre( array_int_4 ) );
+        }
+        SECTION( "Two equal containers of different container types and value "
+                    "types" ) {
+            const std::array<int, 3> array_int_a{ { 1, 2, 3 } };
+            const std::vector<int> vector_char_a{ 1, 2, 3 };
+            CHECK_THAT( array_int_a, ElementsAre( vector_char_a ) );
+            CHECK_THAT( array_int_a, UnorderedElementsAre( vector_char_a ) );
+        }
+        SECTION( "Two equal containers, one random access, one not" ) {
+            const std::array<int, 3> array_int_a{ { 1, 2, 3 } };
+            const std::list<int> list_char_a{ 1, 2, 3 };
+
+            // Verify these types really are different in random access nature
+            STATIC_REQUIRE( ContainerIsRandomAccess( array_int_a ) !=
+                            ContainerIsRandomAccess( list_char_a ) );
+
+            CHECK_THAT( array_int_a, ElementsAre( list_char_a ) );
+            CHECK_THAT( array_int_a, UnorderedElementsAre( list_char_a ) );
+        }
+    }
+
+    SECTION( "Value type" ) {
+        SECTION( "Two equal containers of different value types" ) {
+            const std::vector<int> vector_int_a{ 1, 2, 3 };
+            const std::vector<char> vector_char_a{ 1, 2, 3 };
+            CHECK_THAT( vector_int_a, ElementsAre( vector_char_a ) );
+            CHECK_THAT( vector_int_a, UnorderedElementsAre( vector_char_a ) );
+        }
+        SECTION( "Two non-equal containers of different value types" ) {
+            const std::vector<int> vector_int_a{ 1, 2, 3 };
+            const std::vector<char> vector_char_b{ 1, 2, 2 };
+            CHECK_THAT( vector_int_a, !ElementsAre( vector_char_b ) );
+            CHECK_THAT( vector_int_a, !UnorderedElementsAre( vector_char_b ) );
+        }
+    } 
+
+    SECTION( "Custom predicate" ) {
+
+        auto close_enough = []( int lhs, int rhs ) {
+            return std::abs( lhs - rhs ) <= 1;
+        };
+
+        SECTION( "Two equal non-empty containers (close enough)" ) {
+            const std::vector<int> vector_a{ { 1, 2, 3 } };
+            const std::array<char, 3> array_a_plus_1{ { 2, 3, 4 } };
+            CHECK_THAT( vector_a,
+                        ElementsAre( array_a_plus_1, close_enough ) );
+            CHECK_THAT( vector_a,
+                        UnorderedElementsAre( array_a_plus_1, close_enough ) );
+        }
+    }
+}
