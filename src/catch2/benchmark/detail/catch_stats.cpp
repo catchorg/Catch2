@@ -182,7 +182,7 @@ namespace Catch {
                     double k0 = -n * nd;
                     double k1 = sb2 - n * sg2 + nd;
                     double det = k1 * k1 - 4 * sg2 * k0;
-                    return (int)(-2. * k0 / (k1 + std::sqrt(det)));
+                    return static_cast<int>(-2. * k0 / (k1 + std::sqrt(det)));
                 };
 
                 auto var_out = [n, sb2, sg2](double c) {

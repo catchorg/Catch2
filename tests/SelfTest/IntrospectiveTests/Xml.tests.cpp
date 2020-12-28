@@ -41,7 +41,7 @@ TEST_CASE( "XmlEncode", "[XML]" ) {
 
 // Thanks to Peter Bindels (dascandy) for some of the tests
 TEST_CASE("XmlEncode: UTF-8", "[XML][UTF-8][approvals]") {
-#define ESC(lit) (char*)(lit)
+#define ESC(lit) reinterpret_cast<const char*>(lit)
     SECTION("Valid utf-8 strings") {
         CHECK(encode(ESC(u8"Here be 👾")) == ESC(u8"Here be 👾"));
         CHECK(encode(ESC(u8"šš")) == ESC(u8"šš"));

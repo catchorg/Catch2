@@ -63,6 +63,7 @@ function(add_warnings_to_targets targets)
           "-Wdeprecated-register"
           "-Wsuggest-override"
           "-Wshadow"
+          "-Wold-style-cast"
         )
         foreach(warning ${CHECKED_WARNING_FLAGS})
             add_cxx_flag_if_supported_to_targets(${warning} "${targets}")

@@ -2598,7 +2598,7 @@ ok {test-number} - std::strcmp(ss.c_str(), "world!") == 0 for: 0 == 0
 # StringRef
 ok {test-number} - s.substr(1'000'000, 1).empty() for: true
 # StringRef
-ok {test-number} - (char*)buffer1 != (char*)buffer2 for: "Hello" != "Hello"
+ok {test-number} - reinterpret_cast<char*>(buffer1) != reinterpret_cast<char*>(buffer2) for: "Hello" != "Hello"
 # StringRef
 ok {test-number} - left == right for: Hello == Hello
 # StringRef

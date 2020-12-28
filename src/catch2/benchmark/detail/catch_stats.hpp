@@ -102,7 +102,7 @@ namespace Catch {
 
                 double accel = sum_cubes / (6 * std::pow(sum_squares, 1.5));
                 int n = static_cast<int>(resample.size());
-                double prob_n = std::count_if(resample.begin(), resample.end(), [point](double x) { return x < point; }) / (double)n;
+                double prob_n = std::count_if(resample.begin(), resample.end(), [point](double x) { return x < point; }) / static_cast<double>(n);
                 // degenerate case with uniform samples
                 if (prob_n == 0) return { point, point, point, confidence_level };
 
