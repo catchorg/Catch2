@@ -51,6 +51,7 @@ set(INTERNAL_HEADERS
     ${SOURCES_DIR}/internal/catch_source_line_info.hpp
     ${SOURCES_DIR}/internal/catch_compiler_capabilities.hpp
     ${SOURCES_DIR}/catch_config.hpp
+    ${SOURCES_DIR}/internal/catch_config_android_logwrite.hpp
     ${SOURCES_DIR}/internal/catch_config_uncaught_exceptions.hpp
     ${SOURCES_DIR}/internal/catch_console_colour.hpp
     ${SOURCES_DIR}/internal/catch_context.hpp
