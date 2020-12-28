@@ -25,7 +25,8 @@ This means that if Catch2 has been installed on the system, it should be
 enough to do:
 ```cmake
 find_package(Catch2 REQUIRED)
-target_link_libraries(tests Catch2::Catch2)
+add_executable(tests test.cpp)
+target_link_libraries(tests PRIVATE Catch2::Catch2)
 ```
 
 
@@ -33,7 +34,8 @@ This target is also provided when Catch2 is used as a subdirectory.
 Assuming that Catch2 has been cloned to `lib/Catch2`:
 ```cmake
 add_subdirectory(lib/Catch2)
-target_link_libraries(tests Catch2::Catch2)
+add_executable(tests test.cpp)
+target_link_libraries(tests PRIVATE Catch2::Catch2)
 ```
 
 Another possibility is to use [FetchContent](https://cmake.org/cmake/help/latest/module/FetchContent.html):
@@ -47,7 +49,8 @@ FetchContent_Declare(
 
 FetchContent_MakeAvailable(Catch2)
 
-target_link_libraries(tests Catch2::Catch2)
+add_executable(tests test.cpp)
+target_link_libraries(tests PRIVATE Catch2::Catch2)
 ```
 
 ## Automatic test registration
@@ -78,7 +81,7 @@ project(baz LANGUAGES CXX VERSION 0.0.1)
 
 find_package(Catch2 REQUIRED)
 add_executable(foo test.cpp)
-target_link_libraries(foo Catch2::Catch2)
+target_link_libraries(foo PRIVATE Catch2::Catch2)
 
 include(CTest)
 include(Catch)
@@ -191,7 +194,7 @@ project(baz LANGUAGES CXX VERSION 0.0.1)
 
 find_package(Catch2 REQUIRED)
 add_executable(foo test.cpp)
-target_link_libraries(foo Catch2::Catch2)
+target_link_libraries(foo PRIVATE Catch2::Catch2)
 
 include(CTest)
 include(ParseAndAddCatchTests)
