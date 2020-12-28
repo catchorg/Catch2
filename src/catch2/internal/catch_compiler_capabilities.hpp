@@ -118,7 +118,6 @@
 // Android somehow still does not support std::to_string
 #if defined(__ANDROID__)
 #    define CATCH_INTERNAL_CONFIG_NO_CPP11_TO_STRING
-#    define CATCH_INTERNAL_CONFIG_ANDROID_LOGWRITE
 #endif
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -318,10 +317,6 @@
 
 #if defined(CATCH_INTERNAL_CONFIG_USE_ASYNC)  && !defined(CATCH_INTERNAL_CONFIG_NO_ASYNC) && !defined(CATCH_CONFIG_NO_USE_ASYNC) && !defined(CATCH_CONFIG_USE_ASYNC)
 #  define CATCH_CONFIG_USE_ASYNC
-#endif
-
-#if defined(CATCH_INTERNAL_CONFIG_ANDROID_LOGWRITE) && !defined(CATCH_CONFIG_NO_ANDROID_LOGWRITE) && !defined(CATCH_CONFIG_ANDROID_LOGWRITE)
-#  define CATCH_CONFIG_ANDROID_LOGWRITE
 #endif
 
 #if defined(CATCH_INTERNAL_CONFIG_GLOBAL_NEXTAFTER) && !defined(CATCH_CONFIG_NO_GLOBAL_NEXTAFTER) && !defined(CATCH_CONFIG_GLOBAL_NEXTAFTER)
