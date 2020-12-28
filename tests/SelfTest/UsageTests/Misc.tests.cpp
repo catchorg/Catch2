@@ -5,6 +5,7 @@
 
 #include <catch2/catch_test_macros.hpp>
 #include <catch2/catch_template_test_macros.hpp>
+#include <catch2/internal/catch_config_wchar.hpp>
 
 #ifdef __clang__
 #   pragma clang diagnostic ignored "-Wc++98-compat"
@@ -423,7 +424,7 @@ TEST_CASE( "Tabs and newlines show in output", "[.][whitespace][failing]" ) {
 }
 
 
-#ifdef CATCH_CONFIG_WCHAR
+#if defined(CATCH_CONFIG_WCHAR)
 TEST_CASE( "toString on const wchar_t const pointer returns the string contents", "[toString]" ) {
         const wchar_t * const s = L"wide load";
         std::string result = ::Catch::Detail::stringify( s );
@@ -447,7 +448,7 @@ TEST_CASE( "toString on wchar_t returns the string contents", "[toString]" ) {
         std::string result = ::Catch::Detail::stringify( s );
         CHECK( result == "\"wide load\"" );
 }
-#endif
+#endif // CATCH_CONFIG_WCHAR
 
 TEST_CASE( "long long" ) {
     long long l = std::numeric_limits<long long>::max();

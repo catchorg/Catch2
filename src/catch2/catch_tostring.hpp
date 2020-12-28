@@ -14,6 +14,7 @@
 #include <type_traits>
 #include <string>
 #include <catch2/internal/catch_compiler_capabilities.hpp>
+#include <catch2/internal/catch_config_wchar.hpp>
 #include <catch2/internal/catch_stream.hpp>
 #include <catch2/interfaces/catch_interfaces_enum_values_registry.hpp>
 
@@ -162,7 +163,7 @@ namespace Catch {
         static std::string convert(char * str);
     };
 
-#ifdef CATCH_CONFIG_WCHAR
+#if defined(CATCH_CONFIG_WCHAR)
     template<>
     struct StringMaker<std::wstring> {
         static std::string convert(const std::wstring& wstr);
@@ -183,7 +184,7 @@ namespace Catch {
     struct StringMaker<wchar_t *> {
         static std::string convert(wchar_t * str);
     };
-#endif
+#endif // CATCH_CONFIG_WCHAR
 
     // TBD: Should we use `strnlen` to ensure that we don't go out of the buffer,
     //      while keeping string semantics?
