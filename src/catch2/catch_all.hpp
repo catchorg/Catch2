@@ -51,7 +51,9 @@
 #include <catch2/internal/catch_commandline.hpp>
 #include <catch2/internal/catch_compiler_capabilities.hpp>
 #include <catch2/internal/catch_config_android_logwrite.hpp>
+#include <catch2/internal/catch_config_counter.hpp>
 #include <catch2/internal/catch_config_uncaught_exceptions.hpp>
+#include <catch2/internal/catch_config_wchar.hpp>
 #include <catch2/internal/catch_console_colour.hpp>
 #include <catch2/internal/catch_console_width.hpp>
 #include <catch2/internal/catch_container_nonmembers.hpp>
