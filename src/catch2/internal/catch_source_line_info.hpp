@@ -8,7 +8,7 @@
 #ifndef CATCH_SOURCE_LINE_INFO_HPP_INCLUDED
 #define CATCH_SOURCE_LINE_INFO_HPP_INCLUDED
 
-#include <catch2/internal/catch_compiler_capabilities.hpp>
+#include <catch2/internal/catch_config_counter.hpp>
 
 #include <cstddef>
 #include <iosfwd>

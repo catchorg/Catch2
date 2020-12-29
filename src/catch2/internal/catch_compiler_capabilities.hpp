@@ -11,7 +11,6 @@
 // Detect a number of compiler features - by compiler
 // The following features are defined:
 //
-// CATCH_CONFIG_COUNTER : is the __COUNTER__ macro supported?
 // CATCH_CONFIG_WINDOWS_SEH : is Windows SEH supported?
 // CATCH_CONFIG_POSIX_SIGNALS : are POSIX signals supported?
 // CATCH_CONFIG_DISABLE_EXCEPTIONS : Are exceptions enabled?
@@ -195,18 +194,6 @@
 
 ////////////////////////////////////////////////////////////////////////////////
 
-// Use of __COUNTER__ is suppressed during code analysis in
-// CLion/AppCode 2017.2.x and former, because __COUNTER__ is not properly
-// handled by it.
-// Otherwise all supported compilers support COUNTER macro,
-// but user still might want to turn it off
-#if ( !defined(__JETBRAINS_IDE__) || __JETBRAINS_IDE__ >= 20170300L )
-    #define CATCH_INTERNAL_CONFIG_COUNTER
-#endif
-
-
-////////////////////////////////////////////////////////////////////////////////
-
 // RTX is a special version of Windows that is real time.
 // This means that it is detected as Windows, but does not provide
 // the same set of capabilities as real Windows does.
@@ -258,9 +245,6 @@
 #endif // defined(__has_include)
 
 
-#if defined(CATCH_INTERNAL_CONFIG_COUNTER) && !defined(CATCH_CONFIG_NO_COUNTER) && !defined(CATCH_CONFIG_COUNTER)
-#   define CATCH_CONFIG_COUNTER
-#endif
 #if defined(CATCH_INTERNAL_CONFIG_WINDOWS_SEH) && !defined(CATCH_CONFIG_NO_WINDOWS_SEH) && !defined(CATCH_CONFIG_WINDOWS_SEH) && !defined(CATCH_INTERNAL_CONFIG_NO_WINDOWS_SEH)
 #   define CATCH_CONFIG_WINDOWS_SEH
 #endif
