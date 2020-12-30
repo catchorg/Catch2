@@ -24,7 +24,6 @@
 #   define CATCH_PLATFORM_IPHONE
 #  endif
 # endif
-#endif
 
 #elif defined(linux) || defined(__linux) || defined(__linux__)
 #  define CATCH_PLATFORM_LINUX
