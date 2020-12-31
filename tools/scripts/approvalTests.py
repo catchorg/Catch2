@@ -44,7 +44,7 @@ specialCaseParser = re.compile(r'file\((\d+)\)')
 
 # errno macro expands into various names depending on platform, so we need to fix them up as well
 errnoParser = re.compile(r'''
-    \(\*__errno_location\ \(\)\)
+    \(\*__errno_location\s*\(\)\)
     |
     \(\*__error\(\)\)
     |
