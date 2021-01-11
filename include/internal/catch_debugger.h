@@ -27,6 +27,9 @@ namespace Catch{
         #define CATCH_TRAP() \
                 __asm__("li r0, 20\nsc\nnop\nli r0, 37\nli r4, 2\nsc\nnop\n" \
                 : : : "memory","r0","r3","r4" ) /* NOLINT */
+    #elif defined(__aarch64__)
+        // Backport of https://github.com/catchorg/Catch2/commit/a25c1a24af8bffd35727a888a307ff0280cf9387
+        #define CATCH_TRAP() __asm__(".inst 0xd4200000")
     #else
         #define CATCH_TRAP() __asm__("int $3\n" : : /* NOLINT */ )
     #endif
