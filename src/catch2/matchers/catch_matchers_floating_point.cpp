@@ -66,7 +66,7 @@ namespace {
           return INFINITE_DISTANCE;
         if(a > b) // Ensure a < b
             return -ulpDistance(b, a);
-        if(a == b) // This also ensure ulpDistance(-0f, +0f) == 0
+        if(a == b) // This also ensures ulpDistance(-0f, +0f) == 0
             return 0;
         if(a == 0) // Ensure a != 0
             return 1 + std::abs(ulpDistance((b < 0) ? -EPSILON_0 : EPSILON_0, b));
