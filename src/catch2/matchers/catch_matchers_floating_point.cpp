@@ -167,7 +167,7 @@ namespace Detail {
     WithinUlpsMatcher::WithinUlpsMatcher(double target, uint64_t ulps, Detail::FloatingPointKind baseType)
         :m_target{ target }, m_ulps{ ulps }, m_type{ baseType } {
         CATCH_ENFORCE(m_type == Detail::FloatingPointKind::Double
-                   || m_ulps < (std::numeric_limits<uint32_t>::max)(),
+                   || m_ulps <= (std::numeric_limits<uint32_t>::max)(),
             "Provided ULP is impossibly large for a float comparison.");
     }
 

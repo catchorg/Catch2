@@ -603,6 +603,14 @@ namespace { namespace MatchersTests {
             REQUIRE_THAT(NAN, !WithinRel(NAN));
             REQUIRE_THAT(1., !WithinRel(NAN));
             REQUIRE_THAT(NAN, !WithinRel(1.));
+            REQUIRE_THAT(INFINITY, WithinULP(INFINITY, 0));
+            REQUIRE_THAT(-INFINITY, WithinULP(-INFINITY, 0));
+            REQUIRE_THAT(INFINITY, !WithinULP(-INFINITY, 0));
+            REQUIRE_THAT(-INFINITY, !WithinULP(INFINITY, 0));
+            REQUIRE_THAT(-INFINITY, !WithinULP(static_cast<float>(INFINITY), std::numeric_limits<uint32_t>::max()));
+            REQUIRE_THAT(INFINITY, !WithinULP(static_cast<float>(-INFINITY), std::numeric_limits<uint32_t>::max()));
+            REQUIRE_THAT(1., !WithinULP(INFINITY, std::numeric_limits<uint32_t>::max()));
+            REQUIRE_THAT(1., !WithinULP(-INFINITY, std::numeric_limits<uint32_t>::max()));
         }
 
         TEST_CASE("Arbitrary predicate matcher", "[matchers][generic]") {
