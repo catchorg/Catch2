@@ -176,7 +176,12 @@ namespace Catch {
     protected:
         //! Derived classes can set up their preferences here
         ReporterPreferences m_preferences;
+        //! The test run's config as filled in from CLI and defaults
+        IConfig const* m_config;
+
     public:
+        IStreamingReporter( IConfig const* config ): m_config( config ) {}
+
         virtual ~IStreamingReporter() = default;
 
         // Implementing class must also provide the following static methods:

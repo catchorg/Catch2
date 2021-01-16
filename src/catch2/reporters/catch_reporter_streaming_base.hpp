@@ -36,8 +36,8 @@ namespace Catch {
     struct StreamingReporterBase : IStreamingReporter {
 
         StreamingReporterBase( ReporterConfig const& _config ):
-            m_config( _config.fullConfig() ), stream( _config.stream() ) {
-        }
+            IStreamingReporter( _config.fullConfig() ),
+            stream( _config.stream() ) {}
 
 
         ~StreamingReporterBase() override;
@@ -71,7 +71,6 @@ namespace Catch {
             // It can optionally be overridden in the derived class.
         }
 
-        IConfig const* m_config;
         std::ostream& stream;
 
         LazyStat<TestRunInfo> currentTestRunInfo;

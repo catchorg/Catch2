@@ -11,11 +11,6 @@
 
 namespace Catch {
 
-    ListeningReporter::ListeningReporter() {
-        // We will assume that listeners will always want all assertions
-        m_preferences.shouldReportAllAssertions = true;
-    }
-
     void ListeningReporter::addListener( IStreamingReporterPtr&& listener ) {
         m_listeners.push_back( std::move( listener ) );
     }

@@ -18,7 +18,12 @@ namespace Catch {
         IStreamingReporterPtr m_reporter = nullptr;
 
     public:
-        ListeningReporter();
+        ListeningReporter( IConfig const* config ):
+            IStreamingReporter( config ) {
+            // We will assume that listeners will always want all assertions
+            m_preferences.shouldReportAllAssertions = true;
+        }
+
 
         void addListener( IStreamingReporterPtr&& listener );
         void addReporter( IStreamingReporterPtr&& reporter );

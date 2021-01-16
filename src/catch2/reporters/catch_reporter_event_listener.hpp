@@ -20,11 +20,9 @@ namespace Catch {
      * member functions it actually cares about.
      */
     class EventListenerBase : public IStreamingReporter {
-        IConfig const* m_config;
-
     public:
         EventListenerBase( ReporterConfig const& config ):
-            m_config( config.fullConfig() ) {}
+            IStreamingReporter( config.fullConfig() ) {}
 
         void assertionStarting( AssertionInfo const& assertionInfo ) override;
         bool assertionEnded( AssertionStats const& assertionStats ) override;
