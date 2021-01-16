@@ -186,10 +186,10 @@ namespace Catch {
             }
         }
 
-        if (!m_config->hasTestFilters()) {
-            Catch::cout() << pluralise(tests.size(), "test case") << '\n' << std::endl;
-        } else {
+        if (m_config->hasTestFilters()) {
             Catch::cout() << pluralise(tests.size(), "matching test case") << '\n' << std::endl;
+        } else {
+            Catch::cout() << pluralise(tests.size(), "test case") << '\n' << std::endl;
         }
     }
 
