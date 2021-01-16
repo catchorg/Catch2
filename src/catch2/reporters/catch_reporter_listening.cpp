@@ -141,25 +141,25 @@ namespace Catch {
         m_reporter->skipTest( testInfo );
     }
 
-    void ListeningReporter::listReporters(std::vector<ReporterDescription> const& descriptions, IConfig const& config) {
+    void ListeningReporter::listReporters(std::vector<ReporterDescription> const& descriptions) {
         for (auto const& listener : m_listeners) {
-            listener->listReporters(descriptions, config);
+            listener->listReporters(descriptions);
         }
-        m_reporter->listReporters(descriptions, config);
+        m_reporter->listReporters(descriptions);
     }
 
-    void ListeningReporter::listTests(std::vector<TestCaseHandle> const& tests, IConfig const& config) {
+    void ListeningReporter::listTests(std::vector<TestCaseHandle> const& tests) {
         for (auto const& listener : m_listeners) {
-            listener->listTests(tests, config);
+            listener->listTests(tests);
         }
-        m_reporter->listTests(tests, config);
+        m_reporter->listTests(tests);
     }
 
-    void ListeningReporter::listTags(std::vector<TagInfo> const& tags, IConfig const& config) {
+    void ListeningReporter::listTags(std::vector<TagInfo> const& tags) {
         for (auto const& listener : m_listeners) {
-            listener->listTags(tags, config);
+            listener->listTags(tags);
         }
-        m_reporter->listTags(tags, config);
+        m_reporter->listTags(tags);
     }
 
 } // end namespace Catch

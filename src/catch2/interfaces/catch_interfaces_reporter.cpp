@@ -127,14 +127,14 @@ namespace Catch {
 
     void IStreamingReporter::fatalErrorEncountered( StringRef ) {}
 
-    void IStreamingReporter::listReporters(std::vector<ReporterDescription> const& descriptions, IConfig const& config) {
+    void IStreamingReporter::listReporters(std::vector<ReporterDescription> const& descriptions) {
         Catch::cout() << "Available reporters:\n";
         const auto maxNameLen = std::max_element(descriptions.begin(), descriptions.end(),
             [](ReporterDescription const& lhs, ReporterDescription const& rhs) { return lhs.name.size() < rhs.name.size(); })
             ->name.size();
 
         for (auto const& desc : descriptions) {
-            if (config.verbosity() == Verbosity::Quiet) {
+            if (m_config->verbosity() == Verbosity::Quiet) {
                 Catch::cout()
                     << TextFlow::Column(desc.name)
                     .indent(2)
@@ -154,16 +154,16 @@ namespace Catch {
         Catch::cout() << std::endl;
     }
 
-    void IStreamingReporter::listTests(std::vector<TestCaseHandle> const& tests, IConfig const& config) {
+    void IStreamingReporter::listTests(std::vector<TestCaseHandle> const& tests) {
         // We special case this to provide the equivalent of old
         // `--list-test-names-only`, which could then be used by the
         // `--input-file` option.
-        if (config.verbosity() == Verbosity::Quiet) {
+        if (m_config->verbosity() == Verbosity::Quiet) {
             listTestNamesOnly(tests);
             return;
         }
 
-        if (config.hasTestFilters()) {
+        if (m_config->hasTestFilters()) {
             Catch::cout() << "Matching test cases:\n";
         } else {
             Catch::cout() << "All available test cases:\n";
@@ -177,23 +177,24 @@ namespace Catch {
             Colour colourGuard(colour);
 
             Catch::cout() << TextFlow::Column(testCaseInfo.name).initialIndent(2).indent(4) << '\n';
-            if (config.verbosity() >= Verbosity::High) {
+            if (m_config->verbosity() >= Verbosity::High) {
                 Catch::cout() << TextFlow::Column(Catch::Detail::stringify(testCaseInfo.lineInfo)).indent(4) << std::endl;
             }
-            if (!testCaseInfo.tags.empty() && config.verbosity() > Verbosity::Quiet) {
+            if ( !testCaseInfo.tags.empty() &&
+                 m_config->verbosity() > Verbosity::Quiet ) {
                 Catch::cout() << TextFlow::Column(testCaseInfo.tagsAsString()).indent(6) << '\n';
             }
         }
 
-        if (!config.hasTestFilters()) {
+        if (!m_config->hasTestFilters()) {
             Catch::cout() << pluralise(tests.size(), "test case") << '\n' << std::endl;
         } else {
             Catch::cout() << pluralise(tests.size(), "matching test case") << '\n' << std::endl;
         }
     }
 
-    void IStreamingReporter::listTags(std::vector<TagInfo> const& tags, IConfig const& config) {
-        if (config.hasTestFilters()) {
+    void IStreamingReporter::listTags(std::vector<TagInfo> const& tags) {
+        if (m_config->hasTestFilters()) {
             Catch::cout() << "Tags for matching test cases:\n";
         } else {
             Catch::cout() << "All available tags:\n";

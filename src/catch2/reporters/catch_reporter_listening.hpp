@@ -54,9 +54,9 @@ namespace Catch {
 
         void skipTest( TestCaseInfo const& testInfo ) override;
 
-        void listReporters(std::vector<ReporterDescription> const& descriptions, IConfig const& config) override;
-        void listTests(std::vector<TestCaseHandle> const& tests, IConfig const& config) override;
-        void listTags(std::vector<TagInfo> const& tags, IConfig const& config) override;
+        void listReporters(std::vector<ReporterDescription> const& descriptions) override;
+        void listTests(std::vector<TestCaseHandle> const& tests) override;
+        void listTags(std::vector<TagInfo> const& tags) override;
 
 
     };

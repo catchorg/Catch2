@@ -100,13 +100,10 @@ namespace Catch {
     bool EventListenerBase::assertionEnded( AssertionStats const& ) {
         return false;
     }
-    void
-    EventListenerBase::listReporters( std::vector<ReporterDescription> const&,
-                                      IConfig const& ) {}
-    void EventListenerBase::listTests( std::vector<TestCaseHandle> const&,
-                                       IConfig const& ) {}
-    void EventListenerBase::listTags( std::vector<TagInfo> const&,
-                                      IConfig const& ) {}
+    void EventListenerBase::listReporters(
+        std::vector<ReporterDescription> const& ) {}
+    void EventListenerBase::listTests( std::vector<TestCaseHandle> const& ) {}
+    void EventListenerBase::listTags( std::vector<TagInfo> const& ) {}
     void EventListenerBase::noMatchingTestCases( std::string const& ) {}
     void EventListenerBase::testRunStarting( TestRunInfo const& ) {}
     void EventListenerBase::testGroupStarting( GroupInfo const& ) {}
