@@ -54,7 +54,8 @@ namespace {
             return lhs == rhs;
         }
 
-        auto ulpDiff = std::abs(lc - rc);
+        // static cast as a workaround for IBM XLC
+        auto ulpDiff = std::abs(static_cast<FP>(lc - rc));
         return static_cast<uint64_t>(ulpDiff) <= maxUlpDiff;
     }
 
