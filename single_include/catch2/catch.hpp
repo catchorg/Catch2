@@ -7054,8 +7054,8 @@ namespace Catch {
                 double b2 = bias - z1;
                 double a1 = a(b1);
                 double a2 = a(b2);
-                auto lo = std::max(cumn(a1), 0);
-                auto hi = std::min(cumn(a2), n - 1);
+                auto lo = (std::max)(cumn(a1), 0);
+                auto hi = (std::min)(cumn(a2), n - 1);
 
                 return { point, resample[lo], resample[hi], confidence_level };
             }
@@ -7124,7 +7124,7 @@ namespace Catch {
             }
             template <typename Clock>
             EnvironmentEstimate<FloatDuration<Clock>> estimate_clock_cost(FloatDuration<Clock> resolution) {
-                auto time_limit = std::min(resolution * clock_cost_estimation_tick_limit, FloatDuration<Clock>(clock_cost_estimation_time_limit));
+                auto time_limit = (std::min)(resolution * clock_cost_estimation_tick_limit, FloatDuration<Clock>(clock_cost_estimation_time_limit));
                 auto time_clock = [](int k) {
                     return Detail::measure<Clock>([k] {
                         for (int i = 0; i < k; ++i) {
@@ -7290,7 +7290,7 @@ namespace Catch {
             template <typename Clock>
             ExecutionPlan<FloatDuration<Clock>> prepare(const IConfig &cfg, Environment<FloatDuration<Clock>> env) const {
                 auto min_time = env.clock_resolution.mean * Detail::minimum_ticks;
-                auto run_time = std::max(min_time, std::chrono::duration_cast<decltype(min_time)>(cfg.benchmarkWarmupTime()));
+                auto run_time = (std::max)(min_time, std::chrono::duration_cast<decltype(min_time)>(cfg.benchmarkWarmupTime()));
                 auto&& test = Detail::run_for_at_least<Clock>(std::chrono::duration_cast<ClockDuration<Clock>>(run_time), 1, fun);
                 int new_iters = static_cast<int>(std::ceil(min_time * test.iterations / test.elapsed));
                 return { new_iters, test.elapsed / test.iterations * new_iters * cfg.benchmarkSamples(), fun, std::chrono::duration_cast<FloatDuration<Clock>>(cfg.benchmarkWarmupTime()), Detail::warmup_iterations };
@@ -7771,7 +7771,7 @@ namespace Catch {
                 double sb = stddev.point;
                 double mn = mean.point / n;
                 double mg_min = mn / 2.;
-                double sg = std::min(mg_min / 4., sb / std::sqrt(n));
+                double sg = (std::min)(mg_min / 4., sb / std::sqrt(n));
                 double sg2 = sg * sg;
                 double sb2 = sb * sb;
 
@@ -7790,7 +7790,7 @@ namespace Catch {
                     return (nc / n) * (sb2 - nc * sg2);
                 };
 
-                return std::min(var_out(1), var_out(std::min(c_max(0.), c_max(mg_min)))) / sb2;
+                return (std::min)(var_out(1), var_out((std::min)(c_max(0.), c_max(mg_min)))) / sb2;
             }
 
             bootstrap_analysis analyse_samples(double confidence_level, int n_resamples, std::vector<double>::iterator first, std::vector<double>::iterator last) {
@@ -17878,4 +17878,3 @@ using Catch::Detail::Approx;
 // end catch_reenable_warnings.h
 // end catch.hpp
 #endif // TWOBLUECUBES_SINGLE_INCLUDE_CATCH_HPP_INCLUDED
-
