@@ -152,7 +152,7 @@ namespace Catch {
                 double sb = stddev.point;
                 double mn = mean.point / n;
                 double mg_min = mn / 2.;
-                double sg = std::min(mg_min / 4., sb / std::sqrt(n));
+                double sg = (std::min)(mg_min / 4., sb / std::sqrt(n));
                 double sg2 = sg * sg;
                 double sb2 = sb * sb;
 
@@ -171,7 +171,7 @@ namespace Catch {
                     return (nc / n) * (sb2 - nc * sg2);
                 };
 
-                return std::min(var_out(1), var_out(std::min(c_max(0.), c_max(mg_min)))) / sb2;
+                return (std::min)(var_out(1), var_out((std::min)(c_max(0.), c_max(mg_min)))) / sb2;
             }
 
 

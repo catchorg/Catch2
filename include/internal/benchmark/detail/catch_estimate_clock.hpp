@@ -68,7 +68,9 @@ namespace Catch {
             }
             template <typename Clock>
             EnvironmentEstimate<FloatDuration<Clock>> estimate_clock_cost(FloatDuration<Clock> resolution) {
-                auto time_limit = std::min(resolution * clock_cost_estimation_tick_limit, FloatDuration<Clock>(clock_cost_estimation_time_limit));
+                auto time_limit = (std::min)(
+                    resolution * clock_cost_estimation_tick_limit,
+                    FloatDuration<Clock>(clock_cost_estimation_time_limit));
                 auto time_clock = [](int k) {
                     return Detail::measure<Clock>([k] {
                         for (int i = 0; i < k; ++i) {
