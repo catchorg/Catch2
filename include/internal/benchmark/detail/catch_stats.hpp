@@ -138,8 +138,8 @@ namespace Catch {
                 double b2 = bias - z1;
                 double a1 = a(b1);
                 double a2 = a(b2);
-                auto lo = std::max(cumn(a1), 0);
-                auto hi = std::min(cumn(a2), n - 1);
+                auto lo = (std::max)(cumn(a1), 0);
+                auto hi = (std::min)(cumn(a2), n - 1);
 
                 return { point, resample[lo], resample[hi], confidence_level };
             }
