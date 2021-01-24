@@ -48,6 +48,19 @@ set(SURROGATE_TEST_SOURCES
   surr_catch_generators_all.cpp
   surr_catch_generators_random.cpp
   surr_catch_generators_range.cpp
+  surr_catch_interfaces_all.cpp
+  surr_catch_interfaces_capture.cpp
+  surr_catch_interfaces_config.cpp
+  surr_catch_interfaces_enum_values_registry.cpp
+  surr_catch_interfaces_exception.cpp
+  surr_catch_interfaces_generatortracker.cpp
+  surr_catch_interfaces_registry_hub.cpp
+  surr_catch_interfaces_reporter.cpp
+  #surr_catch_interfaces_reporter_factory.cpp # This does not build
+  surr_catch_interfaces_reporter_registry.cpp
+  surr_catch_interfaces_runner.cpp
+  surr_catch_interfaces_tag_alias_registry.cpp
+  surr_catch_interfaces_testcase.cpp
   )
 
 add_executable(SurrogateTUsTest ${SURROGATE_TEST_SOURCES})
