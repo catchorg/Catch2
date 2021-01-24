@@ -21,6 +21,27 @@ set(SURROGATE_TEST_SOURCES
   surr_catch_run_for_at_least.cpp
   surr_catch_stats.cpp
   surr_catch_timing.cpp
+  surr_catch_all.cpp
+  surr_catch_approx.cpp
+  surr_catch_assertion_info.cpp
+  surr_catch_assertion_result.cpp
+  surr_catch_config.cpp
+  surr_catch_message.cpp
+  #surr_catch_reporter_registrars.cpp #This does not build
+  surr_catch_section_info.cpp
+  surr_catch_session.cpp
+  surr_catch_tag_alias.cpp
+  surr_catch_tag_alias_autoregistrar.cpp
+  surr_catch_template_test_macros.cpp
+  surr_catch_test_case_info.cpp
+  surr_catch_test_macros.cpp
+  surr_catch_test_spec.cpp
+  surr_catch_timer.cpp
+  surr_catch_tostring.cpp
+  surr_catch_totals.cpp
+  surr_catch_translate_exception.cpp
+  surr_catch_version.cpp
+  surr_catch_version_macros.cpp
   )
 
 add_executable(SurrogateTUsTest ${SURROGATE_TEST_SOURCES})
