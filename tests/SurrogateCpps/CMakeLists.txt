@@ -42,6 +42,12 @@ set(SURROGATE_TEST_SOURCES
   surr_catch_translate_exception.cpp
   surr_catch_version.cpp
   surr_catch_version_macros.cpp
+  surr_catch_generator_exception.cpp
+  surr_catch_generators.cpp
+  surr_catch_generators_adapters.cpp
+  surr_catch_generators_all.cpp
+  surr_catch_generators_random.cpp
+  surr_catch_generators_range.cpp
   )
 
 add_executable(SurrogateTUsTest ${SURROGATE_TEST_SOURCES})
