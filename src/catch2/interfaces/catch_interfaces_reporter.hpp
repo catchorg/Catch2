@@ -222,11 +222,11 @@ namespace Catch {
         virtual void fatalErrorEncountered( StringRef name );
 
         //! Writes out information about provided reporters using reporter-specific format
-        virtual void listReporters(std::vector<ReporterDescription> const& descriptions);
+        virtual void listReporters(std::vector<ReporterDescription> const& descriptions) = 0;
         //! Writes out information about provided tests using reporter-specific format
-        virtual void listTests(std::vector<TestCaseHandle> const& tests);
+        virtual void listTests(std::vector<TestCaseHandle> const& tests) = 0;
         //! Writes out information about the provided tags using reporter-specific format
-        virtual void listTags(std::vector<TagInfo> const& tags);
+        virtual void listTags(std::vector<TagInfo> const& tags) = 0;
 
     };
     using IStreamingReporterPtr = Detail::unique_ptr<IStreamingReporter>;

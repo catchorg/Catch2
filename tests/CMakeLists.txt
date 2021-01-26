@@ -23,6 +23,7 @@ set(TEST_SOURCES
         ${SELF_TEST_DIR}/IntrospectiveTests/InternalBenchmark.tests.cpp
         ${SELF_TEST_DIR}/IntrospectiveTests/PartTracker.tests.cpp
         ${SELF_TEST_DIR}/IntrospectiveTests/RandomNumberGeneration.tests.cpp
+        ${SELF_TEST_DIR}/IntrospectiveTests/Reporters.tests.cpp
         ${SELF_TEST_DIR}/IntrospectiveTests/Tag.tests.cpp
         ${SELF_TEST_DIR}/IntrospectiveTests/String.tests.cpp
         ${SELF_TEST_DIR}/IntrospectiveTests/StringManip.tests.cpp

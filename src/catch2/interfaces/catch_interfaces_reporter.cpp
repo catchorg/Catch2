@@ -108,20 +108,4 @@ namespace Catch {
 
     void IStreamingReporter::fatalErrorEncountered( StringRef ) {}
 
-    void IStreamingReporter::listReporters(std::vector<ReporterDescription> const& descriptions) {
-        defaultListReporters(
-            Catch::cout(), descriptions, m_config->verbosity() );
-    }
-
-    void IStreamingReporter::listTests(std::vector<TestCaseHandle> const& tests) {
-        defaultListTests( Catch::cout(),
-                          tests,
-                          m_config->hasTestFilters(),
-                          m_config->verbosity() );
-    }
-
-    void IStreamingReporter::listTags(std::vector<TagInfo> const& tags) {
-        defaultListTags( Catch::cout(), tags, m_config->hasTestFilters() );
-    }
-
 } // end namespace Catch

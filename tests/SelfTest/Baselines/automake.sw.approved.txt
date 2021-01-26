@@ -185,6 +185,7 @@ Nor would this
 :test-result: FAIL Reconstruction should be based on stringification: #914
 :test-result: FAIL Regex string matcher
 :test-result: PASS Regression test #1
+:test-result: PASS Reporter's write listings to provided stream
 :test-result: PASS SUCCEED counts as a test pass
 :test-result: PASS SUCCEED does not require an argument
 :test-result: PASS Scenario: BDD tests requiring Fixtures to provide commonly-accessed data or methods
@@ -231,6 +232,7 @@ Message from section two
 :test-result: PASS Test enum bit values
 :test-result: PASS Test with special, characters "in name
 :test-result: FAIL The NO_FAIL macro reports a failure but does not fail the test
+:test-result: PASS The default listing implementation write to provided stream
 :test-result: FAIL This test 'should' fail but doesn't
 :test-result: FAIL Thrown string literals are translated
 :test-result: PASS Tracker

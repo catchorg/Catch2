@@ -71,6 +71,10 @@ namespace Catch {
             // It can optionally be overridden in the derived class.
         }
 
+        void listReporters( std::vector<ReporterDescription> const& descriptions ) override;
+        void listTests( std::vector<TestCaseHandle> const& tests ) override;
+        void listTags( std::vector<TagInfo> const& tags ) override;
+
         std::ostream& stream;
 
         LazyStat<TestRunInfo> currentTestRunInfo;

@@ -69,6 +69,11 @@ namespace Catch {
 
         void skipTest(TestCaseInfo const&) override {}
 
+        void listReporters( std::vector<ReporterDescription> const& descriptions ) override;
+        void listTests( std::vector<TestCaseHandle> const& tests ) override;
+        void listTags( std::vector<TagInfo> const& tags ) override;
+
+
         std::ostream& stream;
         // Note: We rely on pointer identity being stable, which is why
         //       which is why we store around pointers rather than values.

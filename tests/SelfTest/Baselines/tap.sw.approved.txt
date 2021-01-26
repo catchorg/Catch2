@@ -2468,6 +2468,102 @@ not ok {test-number} - testStringForMatching(), Matches("contains 'abc' as a sub
 not ok {test-number} - testStringForMatching(), Matches("this string contains 'abc' as a") for: "this string contains 'abc' as a substring" matches "this string contains 'abc' as a" case sensitively
 # Regression test #1
 ok {test-number} - actual, !UnorderedEquals(expected) for: { 'a', 'b' } not UnorderedEquals: { 'c', 'b' }
+# Reporter's write listings to provided stream
+ok {test-number} - !(factories.empty()) for: !false
+# Reporter's write listings to provided stream
+ok {test-number} - listingString, Contains("fakeTag"s) for: "All available tags:    1  [fakeTag] 1 tag  " contains: "fakeTag" with 1 message: 'Tested reporter: automake'
+# Reporter's write listings to provided stream
+ok {test-number} - !(factories.empty()) for: !false
+# Reporter's write listings to provided stream
+ok {test-number} - listingString, Contains("fake reporter"s) for: "Available reporters:   fake reporter:  fake description  " contains: "fake reporter" with 1 message: 'Tested reporter: automake'
+# Reporter's write listings to provided stream
+ok {test-number} - !(factories.empty()) for: !false
+# Reporter's write listings to provided stream
+ok {test-number} - listingString, Contains( "fake test name"s ) && Contains( "fakeTestTag"s ) for: "All available test cases:   fake test name       [fakeTestTag] 1 test case  " ( contains: "fake test name" and contains: "fakeTestTag" ) with 1 message: 'Tested reporter: automake'
+# Reporter's write listings to provided stream
+ok {test-number} - !(factories.empty()) for: !false
+# Reporter's write listings to provided stream
+ok {test-number} - listingString, Contains("fakeTag"s) for: "All available tags:    1  [fakeTag] 1 tag  " contains: "fakeTag" with 1 message: 'Tested reporter: compact'
+# Reporter's write listings to provided stream
+ok {test-number} - !(factories.empty()) for: !false
+# Reporter's write listings to provided stream
+ok {test-number} - listingString, Contains("fake reporter"s) for: "Available reporters:   fake reporter:  fake description  " contains: "fake reporter" with 1 message: 'Tested reporter: compact'
+# Reporter's write listings to provided stream
+ok {test-number} - !(factories.empty()) for: !false
+# Reporter's write listings to provided stream
+ok {test-number} - listingString, Contains( "fake test name"s ) && Contains( "fakeTestTag"s ) for: "All available test cases:   fake test name       [fakeTestTag] 1 test case  " ( contains: "fake test name" and contains: "fakeTestTag" ) with 1 message: 'Tested reporter: compact'
+# Reporter's write listings to provided stream
+ok {test-number} - !(factories.empty()) for: !false
+# Reporter's write listings to provided stream
+ok {test-number} - listingString, Contains("fakeTag"s) for: "All available tags:    1  [fakeTag] 1 tag  " contains: "fakeTag" with 1 message: 'Tested reporter: console'
+# Reporter's write listings to provided stream
+ok {test-number} - !(factories.empty()) for: !false
+# Reporter's write listings to provided stream
+ok {test-number} - listingString, Contains("fake reporter"s) for: "Available reporters:   fake reporter:  fake description  " contains: "fake reporter" with 1 message: 'Tested reporter: console'
+# Reporter's write listings to provided stream
+ok {test-number} - !(factories.empty()) for: !false
+# Reporter's write listings to provided stream
+ok {test-number} - listingString, Contains( "fake test name"s ) && Contains( "fakeTestTag"s ) for: "All available test cases:   fake test name       [fakeTestTag] 1 test case  " ( contains: "fake test name" and contains: "fakeTestTag" ) with 1 message: 'Tested reporter: console'
+# Reporter's write listings to provided stream
+ok {test-number} - !(factories.empty()) for: !false
+# Reporter's write listings to provided stream
+ok {test-number} - listingString, Contains("fakeTag"s) for: "<?xml version="1.0" encoding="UTF-8"?> All available tags:    1  [fakeTag] 1 tag  " contains: "fakeTag" with 1 message: 'Tested reporter: junit'
+# Reporter's write listings to provided stream
+ok {test-number} - !(factories.empty()) for: !false
+# Reporter's write listings to provided stream
+ok {test-number} - listingString, Contains("fake reporter"s) for: "<?xml version="1.0" encoding="UTF-8"?> Available reporters:   fake reporter:  fake description  " contains: "fake reporter" with 1 message: 'Tested reporter: junit'
+# Reporter's write listings to provided stream
+ok {test-number} - !(factories.empty()) for: !false
+# Reporter's write listings to provided stream
+ok {test-number} - listingString, Contains( "fake test name"s ) && Contains( "fakeTestTag"s ) for: "<?xml version="1.0" encoding="UTF-8"?> All available test cases:   fake test name       [fakeTestTag] 1 test case  " ( contains: "fake test name" and contains: "fakeTestTag" ) with 1 message: 'Tested reporter: junit'
+# Reporter's write listings to provided stream
+ok {test-number} - !(factories.empty()) for: !false
+# Reporter's write listings to provided stream
+ok {test-number} - listingString, Contains("fakeTag"s) for: "<?xml version="1.0" encoding="UTF-8"?> All available tags:    1  [fakeTag] 1 tag  " contains: "fakeTag" with 1 message: 'Tested reporter: sonarqube'
+# Reporter's write listings to provided stream
+ok {test-number} - !(factories.empty()) for: !false
+# Reporter's write listings to provided stream
+ok {test-number} - listingString, Contains("fake reporter"s) for: "<?xml version="1.0" encoding="UTF-8"?> Available reporters:   fake reporter:  fake description  " contains: "fake reporter" with 1 message: 'Tested reporter: sonarqube'
+# Reporter's write listings to provided stream
+ok {test-number} - !(factories.empty()) for: !false
+# Reporter's write listings to provided stream
+ok {test-number} - listingString, Contains( "fake test name"s ) && Contains( "fakeTestTag"s ) for: "<?xml version="1.0" encoding="UTF-8"?> All available test cases:   fake test name       [fakeTestTag] 1 test case  " ( contains: "fake test name" and contains: "fakeTestTag" ) with 1 message: 'Tested reporter: sonarqube'
+# Reporter's write listings to provided stream
+ok {test-number} - !(factories.empty()) for: !false
+# Reporter's write listings to provided stream
+ok {test-number} - listingString, Contains("fakeTag"s) for: "All available tags:    1  [fakeTag] 1 tag  " contains: "fakeTag" with 1 message: 'Tested reporter: tap'
+# Reporter's write listings to provided stream
+ok {test-number} - !(factories.empty()) for: !false
+# Reporter's write listings to provided stream
+ok {test-number} - listingString, Contains("fake reporter"s) for: "Available reporters:   fake reporter:  fake description  " contains: "fake reporter" with 1 message: 'Tested reporter: tap'
+# Reporter's write listings to provided stream
+ok {test-number} - !(factories.empty()) for: !false
+# Reporter's write listings to provided stream
+ok {test-number} - listingString, Contains( "fake test name"s ) && Contains( "fakeTestTag"s ) for: "All available test cases:   fake test name       [fakeTestTag] 1 test case  " ( contains: "fake test name" and contains: "fakeTestTag" ) with 1 message: 'Tested reporter: tap'
+# Reporter's write listings to provided stream
+ok {test-number} - !(factories.empty()) for: !false
+# Reporter's write listings to provided stream
+ok {test-number} - listingString, Contains("fakeTag"s) for: "All available tags:    1  [fakeTag] 1 tag  " contains: "fakeTag" with 1 message: 'Tested reporter: teamcity'
+# Reporter's write listings to provided stream
+ok {test-number} - !(factories.empty()) for: !false
+# Reporter's write listings to provided stream
+ok {test-number} - listingString, Contains("fake reporter"s) for: "Available reporters:   fake reporter:  fake description  " contains: "fake reporter" with 1 message: 'Tested reporter: teamcity'
+# Reporter's write listings to provided stream
+ok {test-number} - !(factories.empty()) for: !false
+# Reporter's write listings to provided stream
+ok {test-number} - listingString, Contains( "fake test name"s ) && Contains( "fakeTestTag"s ) for: "All available test cases:   fake test name       [fakeTestTag] 1 test case  " ( contains: "fake test name" and contains: "fakeTestTag" ) with 1 message: 'Tested reporter: teamcity'
+# Reporter's write listings to provided stream
+ok {test-number} - !(factories.empty()) for: !false
+# Reporter's write listings to provided stream
+ok {test-number} - listingString, Contains("fakeTag"s) for: "<?xml version="1.0" encoding="UTF-8"?> <TagsFromMatchingTests>   <Tag>     <Count>1</Count>     <Aliases>       <Alias>fakeTag</Alias>     </Aliases>   </Tag> </TagsFromMatchingTests>" contains: "fakeTag" with 1 message: 'Tested reporter: xml'
+# Reporter's write listings to provided stream
+ok {test-number} - !(factories.empty()) for: !false
+# Reporter's write listings to provided stream
+ok {test-number} - listingString, Contains("fake reporter"s) for: "<?xml version="1.0" encoding="UTF-8"?> <AvailableReporters>   <Reporter>     <Name>fake reporter</Name>     <Description>fake description</Description>   </Reporter> </AvailableReporters>" contains: "fake reporter" with 1 message: 'Tested reporter: xml'
+# Reporter's write listings to provided stream
+ok {test-number} - !(factories.empty()) for: !false
+# Reporter's write listings to provided stream
+ok {test-number} - listingString, Contains( "fake test name"s ) && Contains( "fakeTestTag"s ) for: "<?xml version="1.0" encoding="UTF-8"?> <MatchingTests>   <TestCase>     <Name>fake test name</Name>     <ClassName/>     <Tags>[fakeTestTag]</Tags>     <SourceInfo>       <File>fake-file.cpp</File>       <Line>123456789</Line>     </SourceInfo>   </TestCase> </MatchingTests>" ( contains: "fake test name" and contains: "fakeTestTag" ) with 1 message: 'Tested reporter: xml'
 # SUCCEED counts as a test pass
 ok {test-number} - with 1 message: 'this is a success'
 # SUCCEED does not require an argument
@@ -3001,6 +3097,12 @@ ok {test-number} - 0x<hex digits> == bit30and31 for: 3221225472 (0x<hex digits>)
 ok {test-number} -
 # The NO_FAIL macro reports a failure but does not fail the test
 ok {test-number} - 1 == 2  # TODO
+# The default listing implementation write to provided stream
+ok {test-number} - listingString, Contains("[fakeTag]"s) for: "All available tags:    1  [fakeTag] 1 tag  " contains: "[fakeTag]"
+# The default listing implementation write to provided stream
+ok {test-number} - listingString, Contains("fake reporter"s) for: "Available reporters:   fake reporter:  fake description  " contains: "fake reporter"
+# The default listing implementation write to provided stream
+ok {test-number} - listingString, Contains( "fake test name"s ) && Contains( "fakeTestTag"s ) for: "All available test cases:   fake test name       [fakeTestTag] 1 test case  " ( contains: "fake test name" and contains: "fakeTestTag" )
 # This test 'should' fail but doesn't
 ok {test-number} - with 1 message: 'oops!'
 # Thrown string literals are translated
@@ -4100,5 +4202,5 @@ ok {test-number} - q3 == 23. for: 23.0 == 23.0
 ok {test-number} -
 # xmlentitycheck
 ok {test-number} -
-1..2054
+1..2105
 

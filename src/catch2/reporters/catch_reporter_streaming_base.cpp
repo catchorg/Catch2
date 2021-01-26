@@ -6,6 +6,7 @@
 
 // SPDX-License-Identifier: BSL-1.0
 #include <catch2/reporters/catch_reporter_streaming_base.hpp>
+#include <catch2/reporters/catch_reporter_helpers.hpp>
 
 namespace Catch {
 
@@ -29,6 +30,21 @@ namespace Catch {
         currentTestCaseInfo = nullptr;
         currentGroupInfo.reset();
         currentTestRunInfo.reset();
+    }
+
+    void StreamingReporterBase::listReporters(std::vector<ReporterDescription> const& descriptions) {
+        defaultListReporters( stream, descriptions, m_config->verbosity() );
+    }
+
+    void StreamingReporterBase::listTests(std::vector<TestCaseHandle> const& tests) {
+        defaultListTests(stream,
+                         tests,
+                         m_config->hasTestFilters(),
+                         m_config->verbosity());
+    }
+
+    void StreamingReporterBase::listTags(std::vector<TagInfo> const& tags) {
+        defaultListTags( stream, tags, m_config->hasTestFilters() );
     }
 
 } // end namespace Catch
