@@ -22,28 +22,22 @@ namespace Catch {
 
     namespace {
         std::string getCurrentTimestamp() {
-            // Beware, this is not reentrant because of backward compatibility issues
-            // Also, UTC only, again because of backward compatibility (%z is C++11)
             time_t rawtime;
             std::time(&rawtime);
-            auto const timeStampSize = sizeof("2017-01-16T17:06:45Z");
 
-#ifdef _MSC_VER
             std::tm timeInfo = {};
+#ifdef _MSC_VER
             gmtime_s(&timeInfo, &rawtime);
 #else
-            std::tm* timeInfo;
-            timeInfo = std::gmtime(&rawtime);
+            gmtime_r(&rawtime, &timeInfo);
 #endif
 
+            auto const timeStampSize = sizeof("2017-01-16T17:06:45Z");
             char timeStamp[timeStampSize];
             const char * const fmt = "%Y-%m-%dT%H:%M:%SZ";
 
-#ifdef _MSC_VER
             std::strftime(timeStamp, timeStampSize, fmt, &timeInfo);
-#else
-            std::strftime(timeStamp, timeStampSize, fmt, timeInfo);
-#endif
+
             return std::string(timeStamp);
         }
 
