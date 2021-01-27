@@ -9400,6 +9400,721 @@ with expansion:
   { 'a', 'b' } not UnorderedEquals: { 'c', 'b' }
 
 -------------------------------------------------------------------------------
+Reporter's write listings to provided stream
+-------------------------------------------------------------------------------
+Reporters.tests.cpp:<line number>
+...............................................................................
+
+Reporters.tests.cpp:<line number>: PASSED:
+  REQUIRE_FALSE( factories.empty() )
+with expansion:
+  !false
+
+-------------------------------------------------------------------------------
+Reporter's write listings to provided stream
+  automake reporter lists tags
+-------------------------------------------------------------------------------
+Reporters.tests.cpp:<line number>
+...............................................................................
+
+Reporters.tests.cpp:<line number>: PASSED:
+  REQUIRE_THAT( listingString, Contains("fakeTag"s) )
+with expansion:
+  "All available tags:
+     1  [fakeTag]
+  1 tag
+
+" contains: "fakeTag"
+with message:
+  Tested reporter: automake
+
+-------------------------------------------------------------------------------
+Reporter's write listings to provided stream
+-------------------------------------------------------------------------------
+Reporters.tests.cpp:<line number>
+...............................................................................
+
+Reporters.tests.cpp:<line number>: PASSED:
+  REQUIRE_FALSE( factories.empty() )
+with expansion:
+  !false
+
+-------------------------------------------------------------------------------
+Reporter's write listings to provided stream
+  automake reporter lists reporters
+-------------------------------------------------------------------------------
+Reporters.tests.cpp:<line number>
+...............................................................................
+
+Reporters.tests.cpp:<line number>: PASSED:
+  REQUIRE_THAT( listingString, Contains("fake reporter"s) )
+with expansion:
+  "Available reporters:
+    fake reporter:  fake description
+
+" contains: "fake reporter"
+with message:
+  Tested reporter: automake
+
+-------------------------------------------------------------------------------
+Reporter's write listings to provided stream
+-------------------------------------------------------------------------------
+Reporters.tests.cpp:<line number>
+...............................................................................
+
+Reporters.tests.cpp:<line number>: PASSED:
+  REQUIRE_FALSE( factories.empty() )
+with expansion:
+  !false
+
+-------------------------------------------------------------------------------
+Reporter's write listings to provided stream
+  automake reporter lists tests
+-------------------------------------------------------------------------------
+Reporters.tests.cpp:<line number>
+...............................................................................
+
+Reporters.tests.cpp:<line number>: PASSED:
+  REQUIRE_THAT( listingString, Contains( "fake test name"s ) && Contains( "fakeTestTag"s ) )
+with expansion:
+  "All available test cases:
+    fake test name
+        [fakeTestTag]
+  1 test case
+
+" ( contains: "fake test name" and contains: "fakeTestTag" )
+with message:
+  Tested reporter: automake
+
+-------------------------------------------------------------------------------
+Reporter's write listings to provided stream
+-------------------------------------------------------------------------------
+Reporters.tests.cpp:<line number>
+...............................................................................
+
+Reporters.tests.cpp:<line number>: PASSED:
+  REQUIRE_FALSE( factories.empty() )
+with expansion:
+  !false
+
+-------------------------------------------------------------------------------
+Reporter's write listings to provided stream
+  compact reporter lists tags
+-------------------------------------------------------------------------------
+Reporters.tests.cpp:<line number>
+...............................................................................
+
+Reporters.tests.cpp:<line number>: PASSED:
+  REQUIRE_THAT( listingString, Contains("fakeTag"s) )
+with expansion:
+  "All available tags:
+     1  [fakeTag]
+  1 tag
+
+" contains: "fakeTag"
+with message:
+  Tested reporter: compact
+
+-------------------------------------------------------------------------------
+Reporter's write listings to provided stream
+-------------------------------------------------------------------------------
+Reporters.tests.cpp:<line number>
+...............................................................................
+
+Reporters.tests.cpp:<line number>: PASSED:
+  REQUIRE_FALSE( factories.empty() )
+with expansion:
+  !false
+
+-------------------------------------------------------------------------------
+Reporter's write listings to provided stream
+  compact reporter lists reporters
+-------------------------------------------------------------------------------
+Reporters.tests.cpp:<line number>
+...............................................................................
+
+Reporters.tests.cpp:<line number>: PASSED:
+  REQUIRE_THAT( listingString, Contains("fake reporter"s) )
+with expansion:
+  "Available reporters:
+    fake reporter:  fake description
+
+" contains: "fake reporter"
+with message:
+  Tested reporter: compact
+
+-------------------------------------------------------------------------------
+Reporter's write listings to provided stream
+-------------------------------------------------------------------------------
+Reporters.tests.cpp:<line number>
+...............................................................................
+
+Reporters.tests.cpp:<line number>: PASSED:
+  REQUIRE_FALSE( factories.empty() )
+with expansion:
+  !false
+
+-------------------------------------------------------------------------------
+Reporter's write listings to provided stream
+  compact reporter lists tests
+-------------------------------------------------------------------------------
+Reporters.tests.cpp:<line number>
+...............................................................................
+
+Reporters.tests.cpp:<line number>: PASSED:
+  REQUIRE_THAT( listingString, Contains( "fake test name"s ) && Contains( "fakeTestTag"s ) )
+with expansion:
+  "All available test cases:
+    fake test name
+        [fakeTestTag]
+  1 test case
+
+" ( contains: "fake test name" and contains: "fakeTestTag" )
+with message:
+  Tested reporter: compact
+
+-------------------------------------------------------------------------------
+Reporter's write listings to provided stream
+-------------------------------------------------------------------------------
+Reporters.tests.cpp:<line number>
+...............................................................................
+
+Reporters.tests.cpp:<line number>: PASSED:
+  REQUIRE_FALSE( factories.empty() )
+with expansion:
+  !false
+
+-------------------------------------------------------------------------------
+Reporter's write listings to provided stream
+  console reporter lists tags
+-------------------------------------------------------------------------------
+Reporters.tests.cpp:<line number>
+...............................................................................
+
+Reporters.tests.cpp:<line number>: PASSED:
+  REQUIRE_THAT( listingString, Contains("fakeTag"s) )
+with expansion:
+  "All available tags:
+     1  [fakeTag]
+  1 tag
+
+" contains: "fakeTag"
+with message:
+  Tested reporter: console
+
+-------------------------------------------------------------------------------
+Reporter's write listings to provided stream
+-------------------------------------------------------------------------------
+Reporters.tests.cpp:<line number>
+...............................................................................
+
+Reporters.tests.cpp:<line number>: PASSED:
+  REQUIRE_FALSE( factories.empty() )
+with expansion:
+  !false
+
+-------------------------------------------------------------------------------
+Reporter's write listings to provided stream
+  console reporter lists reporters
+-------------------------------------------------------------------------------
+Reporters.tests.cpp:<line number>
+...............................................................................
+
+Reporters.tests.cpp:<line number>: PASSED:
+  REQUIRE_THAT( listingString, Contains("fake reporter"s) )
+with expansion:
+  "Available reporters:
+    fake reporter:  fake description
+
+" contains: "fake reporter"
+with message:
+  Tested reporter: console
+
+-------------------------------------------------------------------------------
+Reporter's write listings to provided stream
+-------------------------------------------------------------------------------
+Reporters.tests.cpp:<line number>
+...............................................................................
+
+Reporters.tests.cpp:<line number>: PASSED:
+  REQUIRE_FALSE( factories.empty() )
+with expansion:
+  !false
+
+-------------------------------------------------------------------------------
+Reporter's write listings to provided stream
+  console reporter lists tests
+-------------------------------------------------------------------------------
+Reporters.tests.cpp:<line number>
+...............................................................................
+
+Reporters.tests.cpp:<line number>: PASSED:
+  REQUIRE_THAT( listingString, Contains( "fake test name"s ) && Contains( "fakeTestTag"s ) )
+with expansion:
+  "All available test cases:
+    fake test name
+        [fakeTestTag]
+  1 test case
+
+" ( contains: "fake test name" and contains: "fakeTestTag" )
+with message:
+  Tested reporter: console
+
+-------------------------------------------------------------------------------
+Reporter's write listings to provided stream
+-------------------------------------------------------------------------------
+Reporters.tests.cpp:<line number>
+...............................................................................
+
+Reporters.tests.cpp:<line number>: PASSED:
+  REQUIRE_FALSE( factories.empty() )
+with expansion:
+  !false
+
+-------------------------------------------------------------------------------
+Reporter's write listings to provided stream
+  junit reporter lists tags
+-------------------------------------------------------------------------------
+Reporters.tests.cpp:<line number>
+...............................................................................
+
+Reporters.tests.cpp:<line number>: PASSED:
+  REQUIRE_THAT( listingString, Contains("fakeTag"s) )
+with expansion:
+  "<?xml version="1.0" encoding="UTF-8"?>
+  All available tags:
+     1  [fakeTag]
+  1 tag
+
+" contains: "fakeTag"
+with message:
+  Tested reporter: junit
+
+-------------------------------------------------------------------------------
+Reporter's write listings to provided stream
+-------------------------------------------------------------------------------
+Reporters.tests.cpp:<line number>
+...............................................................................
+
+Reporters.tests.cpp:<line number>: PASSED:
+  REQUIRE_FALSE( factories.empty() )
+with expansion:
+  !false
+
+-------------------------------------------------------------------------------
+Reporter's write listings to provided stream
+  junit reporter lists reporters
+-------------------------------------------------------------------------------
+Reporters.tests.cpp:<line number>
+...............................................................................
+
+Reporters.tests.cpp:<line number>: PASSED:
+  REQUIRE_THAT( listingString, Contains("fake reporter"s) )
+with expansion:
+  "<?xml version="1.0" encoding="UTF-8"?>
+  Available reporters:
+    fake reporter:  fake description
+
+" contains: "fake reporter"
+with message:
+  Tested reporter: junit
+
+-------------------------------------------------------------------------------
+Reporter's write listings to provided stream
+-------------------------------------------------------------------------------
+Reporters.tests.cpp:<line number>
+...............................................................................
+
+Reporters.tests.cpp:<line number>: PASSED:
+  REQUIRE_FALSE( factories.empty() )
+with expansion:
+  !false
+
+-------------------------------------------------------------------------------
+Reporter's write listings to provided stream
+  junit reporter lists tests
+-------------------------------------------------------------------------------
+Reporters.tests.cpp:<line number>
+...............................................................................
+
+Reporters.tests.cpp:<line number>: PASSED:
+  REQUIRE_THAT( listingString, Contains( "fake test name"s ) && Contains( "fakeTestTag"s ) )
+with expansion:
+  "<?xml version="1.0" encoding="UTF-8"?>
+  All available test cases:
+    fake test name
+        [fakeTestTag]
+  1 test case
+
+" ( contains: "fake test name" and contains: "fakeTestTag" )
+with message:
+  Tested reporter: junit
+
+-------------------------------------------------------------------------------
+Reporter's write listings to provided stream
+-------------------------------------------------------------------------------
+Reporters.tests.cpp:<line number>
+...............................................................................
+
+Reporters.tests.cpp:<line number>: PASSED:
+  REQUIRE_FALSE( factories.empty() )
+with expansion:
+  !false
+
+-------------------------------------------------------------------------------
+Reporter's write listings to provided stream
+  sonarqube reporter lists tags
+-------------------------------------------------------------------------------
+Reporters.tests.cpp:<line number>
+...............................................................................
+
+Reporters.tests.cpp:<line number>: PASSED:
+  REQUIRE_THAT( listingString, Contains("fakeTag"s) )
+with expansion:
+  "<?xml version="1.0" encoding="UTF-8"?>
+  All available tags:
+     1  [fakeTag]
+  1 tag
+
+" contains: "fakeTag"
+with message:
+  Tested reporter: sonarqube
+
+-------------------------------------------------------------------------------
+Reporter's write listings to provided stream
+-------------------------------------------------------------------------------
+Reporters.tests.cpp:<line number>
+...............................................................................
+
+Reporters.tests.cpp:<line number>: PASSED:
+  REQUIRE_FALSE( factories.empty() )
+with expansion:
+  !false
+
+-------------------------------------------------------------------------------
+Reporter's write listings to provided stream
+  sonarqube reporter lists reporters
+-------------------------------------------------------------------------------
+Reporters.tests.cpp:<line number>
+...............................................................................
+
+Reporters.tests.cpp:<line number>: PASSED:
+  REQUIRE_THAT( listingString, Contains("fake reporter"s) )
+with expansion:
+  "<?xml version="1.0" encoding="UTF-8"?>
+  Available reporters:
+    fake reporter:  fake description
+
+" contains: "fake reporter"
+with message:
+  Tested reporter: sonarqube
+
+-------------------------------------------------------------------------------
+Reporter's write listings to provided stream
+-------------------------------------------------------------------------------
+Reporters.tests.cpp:<line number>
+...............................................................................
+
+Reporters.tests.cpp:<line number>: PASSED:
+  REQUIRE_FALSE( factories.empty() )
+with expansion:
+  !false
+
+-------------------------------------------------------------------------------
+Reporter's write listings to provided stream
+  sonarqube reporter lists tests
+-------------------------------------------------------------------------------
+Reporters.tests.cpp:<line number>
+...............................................................................
+
+Reporters.tests.cpp:<line number>: PASSED:
+  REQUIRE_THAT( listingString, Contains( "fake test name"s ) && Contains( "fakeTestTag"s ) )
+with expansion:
+  "<?xml version="1.0" encoding="UTF-8"?>
+  All available test cases:
+    fake test name
+        [fakeTestTag]
+  1 test case
+
+" ( contains: "fake test name" and contains: "fakeTestTag" )
+with message:
+  Tested reporter: sonarqube
+
+-------------------------------------------------------------------------------
+Reporter's write listings to provided stream
+-------------------------------------------------------------------------------
+Reporters.tests.cpp:<line number>
+...............................................................................
+
+Reporters.tests.cpp:<line number>: PASSED:
+  REQUIRE_FALSE( factories.empty() )
+with expansion:
+  !false
+
+-------------------------------------------------------------------------------
+Reporter's write listings to provided stream
+  tap reporter lists tags
+-------------------------------------------------------------------------------
+Reporters.tests.cpp:<line number>
+...............................................................................
+
+Reporters.tests.cpp:<line number>: PASSED:
+  REQUIRE_THAT( listingString, Contains("fakeTag"s) )
+with expansion:
+  "All available tags:
+     1  [fakeTag]
+  1 tag
+
+" contains: "fakeTag"
+with message:
+  Tested reporter: tap
+
+-------------------------------------------------------------------------------
+Reporter's write listings to provided stream
+-------------------------------------------------------------------------------
+Reporters.tests.cpp:<line number>
+...............................................................................
+
+Reporters.tests.cpp:<line number>: PASSED:
+  REQUIRE_FALSE( factories.empty() )
+with expansion:
+  !false
+
+-------------------------------------------------------------------------------
+Reporter's write listings to provided stream
+  tap reporter lists reporters
+-------------------------------------------------------------------------------
+Reporters.tests.cpp:<line number>
+...............................................................................
+
+Reporters.tests.cpp:<line number>: PASSED:
+  REQUIRE_THAT( listingString, Contains("fake reporter"s) )
+with expansion:
+  "Available reporters:
+    fake reporter:  fake description
+
+" contains: "fake reporter"
+with message:
+  Tested reporter: tap
+
+-------------------------------------------------------------------------------
+Reporter's write listings to provided stream
+-------------------------------------------------------------------------------
+Reporters.tests.cpp:<line number>
+...............................................................................
+
+Reporters.tests.cpp:<line number>: PASSED:
+  REQUIRE_FALSE( factories.empty() )
+with expansion:
+  !false
+
+-------------------------------------------------------------------------------
+Reporter's write listings to provided stream
+  tap reporter lists tests
+-------------------------------------------------------------------------------
+Reporters.tests.cpp:<line number>
+...............................................................................
+
+Reporters.tests.cpp:<line number>: PASSED:
+  REQUIRE_THAT( listingString, Contains( "fake test name"s ) && Contains( "fakeTestTag"s ) )
+with expansion:
+  "All available test cases:
+    fake test name
+        [fakeTestTag]
+  1 test case
+
+" ( contains: "fake test name" and contains: "fakeTestTag" )
+with message:
+  Tested reporter: tap
+
+-------------------------------------------------------------------------------
+Reporter's write listings to provided stream
+-------------------------------------------------------------------------------
+Reporters.tests.cpp:<line number>
+...............................................................................
+
+Reporters.tests.cpp:<line number>: PASSED:
+  REQUIRE_FALSE( factories.empty() )
+with expansion:
+  !false
+
+-------------------------------------------------------------------------------
+Reporter's write listings to provided stream
+  teamcity reporter lists tags
+-------------------------------------------------------------------------------
+Reporters.tests.cpp:<line number>
+...............................................................................
+
+Reporters.tests.cpp:<line number>: PASSED:
+  REQUIRE_THAT( listingString, Contains("fakeTag"s) )
+with expansion:
+  "All available tags:
+     1  [fakeTag]
+  1 tag
+
+" contains: "fakeTag"
+with message:
+  Tested reporter: teamcity
+
+-------------------------------------------------------------------------------
+Reporter's write listings to provided stream
+-------------------------------------------------------------------------------
+Reporters.tests.cpp:<line number>
+...............................................................................
+
+Reporters.tests.cpp:<line number>: PASSED:
+  REQUIRE_FALSE( factories.empty() )
+with expansion:
+  !false
+
+-------------------------------------------------------------------------------
+Reporter's write listings to provided stream
+  teamcity reporter lists reporters
+-------------------------------------------------------------------------------
+Reporters.tests.cpp:<line number>
+...............................................................................
+
+Reporters.tests.cpp:<line number>: PASSED:
+  REQUIRE_THAT( listingString, Contains("fake reporter"s) )
+with expansion:
+  "Available reporters:
+    fake reporter:  fake description
+
+" contains: "fake reporter"
+with message:
+  Tested reporter: teamcity
+
+-------------------------------------------------------------------------------
+Reporter's write listings to provided stream
+-------------------------------------------------------------------------------
+Reporters.tests.cpp:<line number>
+...............................................................................
+
+Reporters.tests.cpp:<line number>: PASSED:
+  REQUIRE_FALSE( factories.empty() )
+with expansion:
+  !false
+
+-------------------------------------------------------------------------------
+Reporter's write listings to provided stream
+  teamcity reporter lists tests
+-------------------------------------------------------------------------------
+Reporters.tests.cpp:<line number>
+...............................................................................
+
+Reporters.tests.cpp:<line number>: PASSED:
+  REQUIRE_THAT( listingString, Contains( "fake test name"s ) && Contains( "fakeTestTag"s ) )
+with expansion:
+  "All available test cases:
+    fake test name
+        [fakeTestTag]
+  1 test case
+
+" ( contains: "fake test name" and contains: "fakeTestTag" )
+with message:
+  Tested reporter: teamcity
+
+-------------------------------------------------------------------------------
+Reporter's write listings to provided stream
+-------------------------------------------------------------------------------
+Reporters.tests.cpp:<line number>
+...............................................................................
+
+Reporters.tests.cpp:<line number>: PASSED:
+  REQUIRE_FALSE( factories.empty() )
+with expansion:
+  !false
+
+-------------------------------------------------------------------------------
+Reporter's write listings to provided stream
+  xml reporter lists tags
+-------------------------------------------------------------------------------
+Reporters.tests.cpp:<line number>
+...............................................................................
+
+Reporters.tests.cpp:<line number>: PASSED:
+  REQUIRE_THAT( listingString, Contains("fakeTag"s) )
+with expansion:
+  "<?xml version="1.0" encoding="UTF-8"?>
+  <TagsFromMatchingTests>
+    <Tag>
+      <Count>1</Count>
+      <Aliases>
+        <Alias>fakeTag</Alias>
+      </Aliases>
+    </Tag>
+  </TagsFromMatchingTests>" contains: "fakeTag"
+with message:
+  Tested reporter: xml
+
+-------------------------------------------------------------------------------
+Reporter's write listings to provided stream
+-------------------------------------------------------------------------------
+Reporters.tests.cpp:<line number>
+...............................................................................
+
+Reporters.tests.cpp:<line number>: PASSED:
+  REQUIRE_FALSE( factories.empty() )
+with expansion:
+  !false
+
+-------------------------------------------------------------------------------
+Reporter's write listings to provided stream
+  xml reporter lists reporters
+-------------------------------------------------------------------------------
+Reporters.tests.cpp:<line number>
+...............................................................................
+
+Reporters.tests.cpp:<line number>: PASSED:
+  REQUIRE_THAT( listingString, Contains("fake reporter"s) )
+with expansion:
+  "<?xml version="1.0" encoding="UTF-8"?>
+  <AvailableReporters>
+    <Reporter>
+      <Name>fake reporter</Name>
+      <Description>fake description</Description>
+    </Reporter>
+  </AvailableReporters>" contains: "fake reporter"
+with message:
+  Tested reporter: xml
+
+-------------------------------------------------------------------------------
+Reporter's write listings to provided stream
+-------------------------------------------------------------------------------
+Reporters.tests.cpp:<line number>
+...............................................................................
+
+Reporters.tests.cpp:<line number>: PASSED:
+  REQUIRE_FALSE( factories.empty() )
+with expansion:
+  !false
+
+-------------------------------------------------------------------------------
+Reporter's write listings to provided stream
+  xml reporter lists tests
+-------------------------------------------------------------------------------
+Reporters.tests.cpp:<line number>
+...............................................................................
+
+Reporters.tests.cpp:<line number>: PASSED:
+  REQUIRE_THAT( listingString, Contains( "fake test name"s ) && Contains( "fakeTestTag"s ) )
+with expansion:
+  "<?xml version="1.0" encoding="UTF-8"?>
+  <MatchingTests>
+    <TestCase>
+      <Name>fake test name</Name>
+      <ClassName/>
+      <Tags>[fakeTestTag]</Tags>
+      <SourceInfo>
+        <File>fake-file.cpp</File>
+        <Line>123456789</Line>
+      </SourceInfo>
+    </TestCase>
+  </MatchingTests>" ( contains: "fake test name" and contains: "fakeTestTag" )
+with message:
+  Tested reporter: xml
+
+-------------------------------------------------------------------------------
 SUCCEED counts as a test pass
 -------------------------------------------------------------------------------
 Message.tests.cpp:<line number>
@@ -11640,6 +12355,54 @@ Message.tests.cpp:<line number>: FAILED - but was ok:
 
 
 No assertions in test case 'The NO_FAIL macro reports a failure but does not fail the test'
+
+-------------------------------------------------------------------------------
+The default listing implementation write to provided stream
+  Listing tags
+-------------------------------------------------------------------------------
+Reporters.tests.cpp:<line number>
+...............................................................................
+
+Reporters.tests.cpp:<line number>: PASSED:
+  REQUIRE_THAT( listingString, Contains("[fakeTag]"s) )
+with expansion:
+  "All available tags:
+     1  [fakeTag]
+  1 tag
+
+" contains: "[fakeTag]"
+
+-------------------------------------------------------------------------------
+The default listing implementation write to provided stream
+  Listing reporters
+-------------------------------------------------------------------------------
+Reporters.tests.cpp:<line number>
+...............................................................................
+
+Reporters.tests.cpp:<line number>: PASSED:
+  REQUIRE_THAT( listingString, Contains("fake reporter"s) )
+with expansion:
+  "Available reporters:
+    fake reporter:  fake description
+
+" contains: "fake reporter"
+
+-------------------------------------------------------------------------------
+The default listing implementation write to provided stream
+  Listing tests
+-------------------------------------------------------------------------------
+Reporters.tests.cpp:<line number>
+...............................................................................
+
+Reporters.tests.cpp:<line number>: PASSED:
+  REQUIRE_THAT( listingString, Contains( "fake test name"s ) && Contains( "fakeTestTag"s ) )
+with expansion:
+  "All available test cases:
+    fake test name
+        [fakeTestTag]
+  1 test case
+
+" ( contains: "fake test name" and contains: "fakeTestTag" )
 
 -------------------------------------------------------------------------------
 This test 'should' fail but doesn't
@@ -16005,6 +16768,6 @@ Misc.tests.cpp:<line number>
 Misc.tests.cpp:<line number>: PASSED:
 
 ===============================================================================
-test cases:  354 |  264 passed |  86 failed |  4 failed as expected
-assertions: 2054 | 1885 passed | 148 failed | 21 failed as expected
+test cases:  356 |  266 passed |  86 failed |  4 failed as expected
+assertions: 2105 | 1936 passed | 148 failed | 21 failed as expected
 

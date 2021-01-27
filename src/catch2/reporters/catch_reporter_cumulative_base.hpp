@@ -46,7 +46,8 @@ namespace Catch {
         using TestRunNode = Node<TestRunStats, TestGroupNode>;
 
         CumulativeReporterBase( ReporterConfig const& _config ):
-            m_config( _config.fullConfig() ), stream( _config.stream() ) {}
+            IStreamingReporter( _config.fullConfig() ),
+            stream( _config.stream() ) {}
         ~CumulativeReporterBase() override;
 
         void testRunStarting( TestRunInfo const& ) override {}
@@ -68,7 +69,11 @@ namespace Catch {
 
         void skipTest(TestCaseInfo const&) override {}
 
-        IConfig const* m_config;
+        void listReporters( std::vector<ReporterDescription> const& descriptions ) override;
+        void listTests( std::vector<TestCaseHandle> const& tests ) override;
+        void listTags( std::vector<TagInfo> const& tags ) override;
+
+
         std::ostream& stream;
         // Note: We rely on pointer identity being stable, which is why
         //       which is why we store around pointers rather than values.

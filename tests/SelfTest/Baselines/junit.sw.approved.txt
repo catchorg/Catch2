@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuitesloose text artifact
 >
-  <testsuite name="<exe-name>" errors="17" failures="132" tests="2055" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
+  <testsuite name="<exe-name>" errors="17" failures="132" tests="2106" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
     <properties>
       <property name="filters" value="~[!nonportable]~[!benchmark]~[approvals] *"/>
       <property name="random-seed" value="1"/>
@@ -1101,6 +1101,31 @@ Matchers.tests.cpp:<line number>
       </failure>
     </testcase>
     <testcase classname="<exe-name>.global" name="Regression test #1" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Reporter's write listings to provided stream" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Reporter's write listings to provided stream/automake reporter lists tags" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Reporter's write listings to provided stream/automake reporter lists reporters" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Reporter's write listings to provided stream/automake reporter lists tests" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Reporter's write listings to provided stream/compact reporter lists tags" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Reporter's write listings to provided stream/compact reporter lists reporters" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Reporter's write listings to provided stream/compact reporter lists tests" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Reporter's write listings to provided stream/console reporter lists tags" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Reporter's write listings to provided stream/console reporter lists reporters" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Reporter's write listings to provided stream/console reporter lists tests" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Reporter's write listings to provided stream/junit reporter lists tags" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Reporter's write listings to provided stream/junit reporter lists reporters" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Reporter's write listings to provided stream/junit reporter lists tests" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Reporter's write listings to provided stream/sonarqube reporter lists tags" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Reporter's write listings to provided stream/sonarqube reporter lists reporters" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Reporter's write listings to provided stream/sonarqube reporter lists tests" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Reporter's write listings to provided stream/tap reporter lists tags" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Reporter's write listings to provided stream/tap reporter lists reporters" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Reporter's write listings to provided stream/tap reporter lists tests" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Reporter's write listings to provided stream/teamcity reporter lists tags" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Reporter's write listings to provided stream/teamcity reporter lists reporters" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Reporter's write listings to provided stream/teamcity reporter lists tests" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Reporter's write listings to provided stream/xml reporter lists tags" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Reporter's write listings to provided stream/xml reporter lists reporters" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Reporter's write listings to provided stream/xml reporter lists tests" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="SUCCEED counts as a test pass" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="SUCCEED does not require an argument" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.Fixture" name="Scenario: BDD tests requiring Fixtures to provide commonly-accessed data or methods/Given: No operations precede me" time="{duration}" status="run"/>
@@ -1252,6 +1277,9 @@ Misc.tests.cpp:<line number>
     <testcase classname="<exe-name>.global" name="Test enum bit values" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Test with special, characters &quot;in name" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="The NO_FAIL macro reports a failure but does not fail the test" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="The default listing implementation write to provided stream/Listing tags" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="The default listing implementation write to provided stream/Listing reporters" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="The default listing implementation write to provided stream/Listing tests" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="This test 'should' fail but doesn't" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Thrown string literals are translated" time="{duration}" status="run">
       <error type="TEST_CASE">

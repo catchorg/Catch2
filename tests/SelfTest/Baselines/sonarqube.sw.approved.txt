@@ -150,6 +150,36 @@
     <testCase name="Our PCG implementation provides expected results for known seeds/Default seeded" duration="{duration}"/>
     <testCase name="Our PCG implementation provides expected results for known seeds/Specific seed" duration="{duration}"/>
   </file>
+  <file path="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp">
+    <testCase name="Reporter's write listings to provided stream" duration="{duration}"/>
+    <testCase name="Reporter's write listings to provided stream/automake reporter lists tags" duration="{duration}"/>
+    <testCase name="Reporter's write listings to provided stream/automake reporter lists reporters" duration="{duration}"/>
+    <testCase name="Reporter's write listings to provided stream/automake reporter lists tests" duration="{duration}"/>
+    <testCase name="Reporter's write listings to provided stream/compact reporter lists tags" duration="{duration}"/>
+    <testCase name="Reporter's write listings to provided stream/compact reporter lists reporters" duration="{duration}"/>
+    <testCase name="Reporter's write listings to provided stream/compact reporter lists tests" duration="{duration}"/>
+    <testCase name="Reporter's write listings to provided stream/console reporter lists tags" duration="{duration}"/>
+    <testCase name="Reporter's write listings to provided stream/console reporter lists reporters" duration="{duration}"/>
+    <testCase name="Reporter's write listings to provided stream/console reporter lists tests" duration="{duration}"/>
+    <testCase name="Reporter's write listings to provided stream/junit reporter lists tags" duration="{duration}"/>
+    <testCase name="Reporter's write listings to provided stream/junit reporter lists reporters" duration="{duration}"/>
+    <testCase name="Reporter's write listings to provided stream/junit reporter lists tests" duration="{duration}"/>
+    <testCase name="Reporter's write listings to provided stream/sonarqube reporter lists tags" duration="{duration}"/>
+    <testCase name="Reporter's write listings to provided stream/sonarqube reporter lists reporters" duration="{duration}"/>
+    <testCase name="Reporter's write listings to provided stream/sonarqube reporter lists tests" duration="{duration}"/>
+    <testCase name="Reporter's write listings to provided stream/tap reporter lists tags" duration="{duration}"/>
+    <testCase name="Reporter's write listings to provided stream/tap reporter lists reporters" duration="{duration}"/>
+    <testCase name="Reporter's write listings to provided stream/tap reporter lists tests" duration="{duration}"/>
+    <testCase name="Reporter's write listings to provided stream/teamcity reporter lists tags" duration="{duration}"/>
+    <testCase name="Reporter's write listings to provided stream/teamcity reporter lists reporters" duration="{duration}"/>
+    <testCase name="Reporter's write listings to provided stream/teamcity reporter lists tests" duration="{duration}"/>
+    <testCase name="Reporter's write listings to provided stream/xml reporter lists tags" duration="{duration}"/>
+    <testCase name="Reporter's write listings to provided stream/xml reporter lists reporters" duration="{duration}"/>
+    <testCase name="Reporter's write listings to provided stream/xml reporter lists tests" duration="{duration}"/>
+    <testCase name="The default listing implementation write to provided stream/Listing tags" duration="{duration}"/>
+    <testCase name="The default listing implementation write to provided stream/Listing reporters" duration="{duration}"/>
+    <testCase name="The default listing implementation write to provided stream/Listing tests" duration="{duration}"/>
+  </file>
   <file path="tests/<exe-name>/IntrospectiveTests/String.tests.cpp">
     <testCase name="StringRef/Empty string" duration="{duration}"/>
     <testCase name="StringRef/From string literal" duration="{duration}"/>

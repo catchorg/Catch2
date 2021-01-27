@@ -176,7 +176,12 @@ namespace Catch {
     protected:
         //! Derived classes can set up their preferences here
         ReporterPreferences m_preferences;
+        //! The test run's config as filled in from CLI and defaults
+        IConfig const* m_config;
+
     public:
+        IStreamingReporter( IConfig const* config ): m_config( config ) {}
+
         virtual ~IStreamingReporter() = default;
 
         // Implementing class must also provide the following static methods:
@@ -217,11 +222,11 @@ namespace Catch {
         virtual void fatalErrorEncountered( StringRef name );
 
         //! Writes out information about provided reporters using reporter-specific format
-        virtual void listReporters(std::vector<ReporterDescription> const& descriptions, IConfig const& config);
+        virtual void listReporters(std::vector<ReporterDescription> const& descriptions) = 0;
         //! Writes out information about provided tests using reporter-specific format
-        virtual void listTests(std::vector<TestCaseHandle> const& tests, IConfig const& config);
+        virtual void listTests(std::vector<TestCaseHandle> const& tests) = 0;
         //! Writes out information about the provided tags using reporter-specific format
-        virtual void listTags(std::vector<TagInfo> const& tags, IConfig const& config);
+        virtual void listTags(std::vector<TagInfo> const& tags) = 0;
 
     };
     using IStreamingReporterPtr = Detail::unique_ptr<IStreamingReporter>;

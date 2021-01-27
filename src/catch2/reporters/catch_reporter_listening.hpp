@@ -18,7 +18,12 @@ namespace Catch {
         IStreamingReporterPtr m_reporter = nullptr;
 
     public:
-        ListeningReporter();
+        ListeningReporter( IConfig const* config ):
+            IStreamingReporter( config ) {
+            // We will assume that listeners will always want all assertions
+            m_preferences.shouldReportAllAssertions = true;
+        }
+
 
         void addListener( IStreamingReporterPtr&& listener );
         void addReporter( IStreamingReporterPtr&& reporter );
@@ -49,9 +54,9 @@ namespace Catch {
 
         void skipTest( TestCaseInfo const& testInfo ) override;
 
-        void listReporters(std::vector<ReporterDescription> const& descriptions, IConfig const& config) override;
-        void listTests(std::vector<TestCaseHandle> const& tests, IConfig const& config) override;
-        void listTags(std::vector<TagInfo> const& tags, IConfig const& config) override;
+        void listReporters(std::vector<ReporterDescription> const& descriptions) override;
+        void listTests(std::vector<TestCaseHandle> const& tests) override;
+        void listTags(std::vector<TagInfo> const& tags) override;
 
 
     };

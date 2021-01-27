@@ -21,12 +21,39 @@
 #include <catch2/interfaces/catch_interfaces_config.hpp>
 #include <catch2/internal/catch_console_width.hpp>
 #include <catch2/internal/catch_errno_guard.hpp>
+#include <catch2/internal/catch_textflow.hpp>
+#include <catch2/internal/catch_stream.hpp>
+#include <catch2/internal/catch_string_manip.hpp>
+#include <catch2/internal/catch_console_colour.hpp>
+#include <catch2/catch_tostring.hpp>
+#include <catch2/catch_test_case_info.hpp>
 
+#include <algorithm>
 #include <cfloat>
 #include <cstdio>
 #include <ostream>
+#include <iomanip>
 
 namespace Catch {
+
+    namespace {
+        void listTestNamesOnly(std::ostream& out,
+                               std::vector<TestCaseHandle> const& tests) {
+            for (auto const& test : tests) {
+                auto const& testCaseInfo = test.getTestCaseInfo();
+
+                if (startsWith(testCaseInfo.name, '#')) {
+                    out << '"' << testCaseInfo.name << '"';
+                } else {
+                    out << testCaseInfo.name;
+                }
+
+                out << '\n';
+            }
+            out << std::flush;
+        }
+    } // end unnamed namespace
+
 
     // Because formatting using c++ streams is stateful, drop down to C is
     // required Alternatively we could use stringstream, but its performance
@@ -89,6 +116,101 @@ namespace Catch {
         return out;
     }
 
+    void
+    defaultListReporters( std::ostream& out,
+                          std::vector<ReporterDescription> const& descriptions,
+                          Verbosity verbosity ) {
+        out << "Available reporters:\n";
+        const auto maxNameLen =
+            std::max_element( descriptions.begin(),
+                              descriptions.end(),
+                              []( ReporterDescription const& lhs,
+                                  ReporterDescription const& rhs ) {
+                                  return lhs.name.size() < rhs.name.size();
+                              } )
+                ->name.size();
+
+        for ( auto const& desc : descriptions ) {
+            if ( verbosity == Verbosity::Quiet ) {
+                out << TextFlow::Column( desc.name )
+                           .indent( 2 )
+                           .width( 5 + maxNameLen )
+                    << '\n';
+            } else {
+                out << TextFlow::Column( desc.name + ":" )
+                               .indent( 2 )
+                               .width( 5 + maxNameLen ) +
+                           TextFlow::Column( desc.description )
+                               .initialIndent( 0 )
+                               .indent( 2 )
+                               .width( CATCH_CONFIG_CONSOLE_WIDTH - maxNameLen - 8 )
+                    << '\n';
+            }
+        }
+        out << '\n' << std::flush;
+    }
+
+    void defaultListTags( std::ostream& out,
+                          std::vector<TagInfo> const& tags,
+                          bool isFiltered ) {
+        if ( isFiltered ) {
+            out << "Tags for matching test cases:\n";
+        } else {
+            out << "All available tags:\n";
+        }
+
+        for ( auto const& tagCount : tags ) {
+            ReusableStringStream rss;
+            rss << "  " << std::setw( 2 ) << tagCount.count << "  ";
+            auto str = rss.str();
+            auto wrapper = TextFlow::Column( tagCount.all() )
+                               .initialIndent( 0 )
+                               .indent( str.size() )
+                               .width( CATCH_CONFIG_CONSOLE_WIDTH - 10 );
+            out << str << wrapper << '\n';
+        }
+        out << pluralise( tags.size(), "tag" ) << '\n' << std::endl;
+    }
+
+    void defaultListTests(std::ostream& out, std::vector<TestCaseHandle> const& tests, bool isFiltered, Verbosity verbosity) {
+        // We special case this to provide the equivalent of old
+        // `--list-test-names-only`, which could then be used by the
+        // `--input-file` option.
+        if (verbosity == Verbosity::Quiet) {
+            listTestNamesOnly(out, tests);
+            return;
+        }
+
+        if (isFiltered) {
+            out << "Matching test cases:\n";
+        } else {
+            out << "All available test cases:\n";
+        }
+
+        for (auto const& test : tests) {
+            auto const& testCaseInfo = test.getTestCaseInfo();
+            Colour::Code colour = testCaseInfo.isHidden()
+                ? Colour::SecondaryText
+                : Colour::None;
+            Colour colourGuard(colour);
+
+            out << TextFlow::Column(testCaseInfo.name).initialIndent(2).indent(4) << '\n';
+            if (verbosity >= Verbosity::High) {
+                out << TextFlow::Column(Catch::Detail::stringify(testCaseInfo.lineInfo)).indent(4) << std::endl;
+            }
+            if (!testCaseInfo.tags.empty() &&
+                verbosity > Verbosity::Quiet) {
+                out << TextFlow::Column(testCaseInfo.tagsAsString()).indent(6) << '\n';
+            }
+        }
+
+        if (isFiltered) {
+            out << pluralise(tests.size(), "matching test case") << '\n' << std::endl;
+        } else {
+            out << pluralise(tests.size(), "test case") << '\n' << std::endl;
+        }
+    }
+
 } // namespace Catch
 
 
@@ -100,13 +222,10 @@ namespace Catch {
     bool EventListenerBase::assertionEnded( AssertionStats const& ) {
         return false;
     }
-    void
-    EventListenerBase::listReporters( std::vector<ReporterDescription> const&,
-                                      IConfig const& ) {}
-    void EventListenerBase::listTests( std::vector<TestCaseHandle> const&,
-                                       IConfig const& ) {}
-    void EventListenerBase::listTags( std::vector<TagInfo> const&,
-                                      IConfig const& ) {}
+    void EventListenerBase::listReporters(
+        std::vector<ReporterDescription> const& ) {}
+    void EventListenerBase::listTests( std::vector<TestCaseHandle> const& ) {}
+    void EventListenerBase::listTags( std::vector<TagInfo> const& ) {}
     void EventListenerBase::noMatchingTestCases( std::string const& ) {}
     void EventListenerBase::testRunStarting( TestRunInfo const& ) {}
     void EventListenerBase::testGroupStarting( GroupInfo const& ) {}

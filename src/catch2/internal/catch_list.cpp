@@ -24,7 +24,7 @@ namespace Catch {
         void listTests(IStreamingReporter& reporter, IConfig const& config) {
             auto const& testSpec = config.testSpec();
             auto matchedTestCases = filterTests(getAllTestCasesSorted(config), testSpec, config);
-            reporter.listTests(matchedTestCases, config);
+            reporter.listTests(matchedTestCases);
         }
 
         void listTags(IStreamingReporter& reporter, IConfig const& config) {
@@ -46,10 +46,10 @@ namespace Catch {
                 infos.push_back(std::move(tagc.second));
             }
 
-            reporter.listTags(infos, config);
+            reporter.listTags(infos);
         }
 
-        void listReporters(IStreamingReporter& reporter, IConfig const& config) {
+        void listReporters(IStreamingReporter& reporter) {
             std::vector<ReporterDescription> descriptions;
 
             IReporterRegistry::FactoryMap const& factories = getRegistryHub().getReporterRegistry().getFactories();
@@ -58,7 +58,7 @@ namespace Catch {
                 descriptions.push_back({ fac.first, fac.second->getDescription() });
             }
 
-            reporter.listReporters(descriptions, config);
+            reporter.listReporters(descriptions);
         }
 
     } // end anonymous namespace
@@ -96,7 +96,7 @@ namespace Catch {
         }
         if (config.listReporters()) {
             listed = true;
-            listReporters(reporter, config);
+            listReporters(reporter);
         }
         return listed;
     }
