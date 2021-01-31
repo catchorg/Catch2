@@ -1,0 +1,1 @@
+#include <catch2/internal/catch_exception_translator_registry.hpp>

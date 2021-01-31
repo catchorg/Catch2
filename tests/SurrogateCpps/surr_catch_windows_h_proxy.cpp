@@ -1,0 +1,1 @@
+#include <catch2/internal/catch_windows_h_proxy.hpp>

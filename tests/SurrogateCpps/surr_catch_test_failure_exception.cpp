@@ -1,0 +1,1 @@
+#include <catch2/internal/catch_test_failure_exception.hpp>

@@ -1,0 +1,1 @@
+#include <catch2/internal/catch_tag_alias_registry.hpp>

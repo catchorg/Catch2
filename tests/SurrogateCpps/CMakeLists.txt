@@ -87,7 +87,67 @@ set(SURROGATE_TEST_SOURCES
   surr_catch_matchers_templated.cpp
   surr_catch_matchers_vector.cpp
   surr_catch_matchers_impl.cpp
+  surr_catch_assertion_handler.cpp
+  surr_catch_case_sensitive.cpp
+  surr_catch_clara.cpp
+  surr_catch_commandline.cpp
+  surr_catch_compiler_capabilities.cpp
+  surr_catch_config_android_logwrite.cpp
+  surr_catch_config_counter.cpp
+  surr_catch_config_uncaught_exceptions.cpp
+  surr_catch_config_wchar.cpp
+  surr_catch_console_colour.cpp
+  surr_catch_console_width.cpp
+  #surr_catch_container_nonmembers.cpp
+  surr_catch_context.cpp
+  surr_catch_debug_console.cpp
+  surr_catch_debugger.cpp
+  surr_catch_decomposer.cpp
+  surr_catch_enforce.cpp
+  surr_catch_enum_values_registry.cpp
+  surr_catch_errno_guard.cpp
+  surr_catch_exception_translator_registry.cpp
+  surr_catch_fatal_condition_handler.cpp
+  surr_catch_lazy_expr.cpp
+  surr_catch_leak_detector.cpp
+  surr_catch_list.cpp
+  surr_catch_message_info.cpp
+  surr_catch_meta.cpp
+  surr_catch_noncopyable.cpp
+  surr_catch_option.cpp
+  surr_catch_output_redirect.cpp
+  surr_catch_platform.cpp
+  surr_catch_polyfills.cpp
+  surr_catch_preprocessor.cpp
+  surr_catch_random_number_generator.cpp
+  surr_catch_reporter_registry.cpp
+  surr_catch_result_type.cpp
+  surr_catch_run_context.cpp
+  surr_catch_section.cpp
+  surr_catch_singletons.cpp
+  surr_catch_source_line_info.cpp
+  surr_catch_startup_exception_registry.cpp
+  surr_catch_stream.cpp
+  surr_catch_stream_end_stop.cpp
+  surr_catch_string_manip.cpp
+  surr_catch_stringref.cpp
+  surr_catch_tag_alias_registry.cpp
+  surr_catch_template_test_registry.cpp
+  surr_catch_test_case_registry_impl.cpp
+  surr_catch_test_case_tracker.cpp
+  surr_catch_test_failure_exception.cpp
+  surr_catch_test_macro_impl.cpp
+  surr_catch_test_registry.cpp
+  surr_catch_test_spec_parser.cpp
+  surr_catch_textflow.cpp
+  surr_catch_to_string.cpp
+  surr_catch_uncaught_exceptions.cpp
+  surr_catch_unique_ptr.cpp
+  surr_catch_wildcard_pattern.cpp
+  surr_catch_windows_h_proxy.cpp
+  surr_catch_xmlwriter.cpp
   )
+
 add_executable(SurrogateTUsTest ${SURROGATE_TEST_SOURCES})
 target_link_libraries(SurrogateTUsTest PRIVATE Catch2WithMain)
 

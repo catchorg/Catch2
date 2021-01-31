@@ -1,0 +1,1 @@
+#include <catch2/internal/catch_case_sensitive.hpp>
