@@ -75,6 +75,18 @@ set(SURROGATE_TEST_SOURCES
   surr_catch_reporter_teamcity.cpp
   surr_catch_reporter_xml.cpp
   surr_catch_reporters_all.cpp
+  surr_catch_matchers.cpp
+  surr_catch_matchers_all.cpp
+  surr_catch_matchers_container_properties.cpp
+  surr_catch_matchers_contains.cpp
+  surr_catch_matchers_exception.cpp
+  surr_catch_matchers_floating_point.cpp
+  surr_catch_matchers_predicate.cpp
+  surr_catch_matchers_quantifiers.cpp
+  surr_catch_matchers_string.cpp
+  surr_catch_matchers_templated.cpp
+  surr_catch_matchers_vector.cpp
+  surr_catch_matchers_impl.cpp
   )
 add_executable(SurrogateTUsTest ${SURROGATE_TEST_SOURCES})
 target_link_libraries(SurrogateTUsTest PRIVATE Catch2WithMain)
