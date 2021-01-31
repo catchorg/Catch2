@@ -61,8 +61,21 @@ set(SURROGATE_TEST_SOURCES
   surr_catch_interfaces_runner.cpp
   surr_catch_interfaces_tag_alias_registry.cpp
   surr_catch_interfaces_testcase.cpp
+  surr_catch_reporter_automake.cpp
+  surr_catch_reporter_compact.cpp
+  surr_catch_reporter_console.cpp
+  surr_catch_reporter_cumulative_base.cpp
+  surr_catch_reporter_event_listener.cpp
+  surr_catch_reporter_helpers.cpp
+  surr_catch_reporter_junit.cpp
+  surr_catch_reporter_listening.cpp
+  surr_catch_reporter_sonarqube.cpp
+  surr_catch_reporter_streaming_base.cpp
+  surr_catch_reporter_tap.cpp
+  surr_catch_reporter_teamcity.cpp
+  surr_catch_reporter_xml.cpp
+  surr_catch_reporters_all.cpp
   )
-
 add_executable(SurrogateTUsTest ${SURROGATE_TEST_SOURCES})
 target_link_libraries(SurrogateTUsTest PRIVATE Catch2WithMain)
 
