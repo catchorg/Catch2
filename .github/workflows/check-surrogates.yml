@@ -1,0 +1,20 @@
+name: Check surrogate files
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    # Set the type of machine to run on
+    runs-on: ubuntu-20.04
+    steps:
+
+      - name: Checkout source code
+        uses: actions/checkout@v2
+
+      - name: Setup Dependencies
+        uses: actions/setup-python@v2
+        with:
+            python-version: '3.7'
+      - name: Check each header for its respective surrogate
+        run: |
+          ./tools/scripts/checkSurrogateExists.py
