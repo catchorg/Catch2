@@ -224,3 +224,14 @@ set_tests_properties(
   PROPERTIES
     PASS_REGULAR_EXPRESSION "All tests passed \\(14 assertions in 3 test cases\\)"
 )
+
+add_executable(SurrogateCatchBenchmark
+  ${TESTS_DIR}/surr_catch_benchmark.cpp
+)
+
+target_include_directories(SurrogateCatchBenchmark PUBLIC ${CATCH_DIR}/src/)
+set_property( TARGET SurrogateCatchBenchmark PROPERTY CXX_STANDARD 14 )
+set_property( TARGET SurrogateCatchBenchmark PROPERTY CXX_STANDARD_REQUIRED ON )
+set_property( TARGET SurrogateCatchBenchmark PROPERTY CXX_EXTENSIONS OFF )
+
+add_test(NAME SurrogateCatchBenchmarkTest COMMAND SurrogateCatchBenchmark)
