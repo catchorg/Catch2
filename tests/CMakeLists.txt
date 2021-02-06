@@ -263,4 +263,6 @@ endif()
 list(APPEND CATCH_WARNING_TARGETS SelfTest)
 set(CATCH_WARNING_TARGETS ${CATCH_WARNING_TARGETS} PARENT_SCOPE)
 
-add_subdirectory(SurrogateCpps)
+if(CATCH_BUILD_SURROGATES)
+    add_subdirectory(SurrogateCpps)
+endif()
