@@ -164,18 +164,35 @@ def filterLine(line, isCompact):
     return line
 
 
-def approve(baseName, args):
-    global overallResult
+def get_rawResultsPath(baseName):
+    return os.path.join(rootPath, '_{0}.tmp'.format(baseName))
+
+
+def get_baselinesPath(baseName):
+    return os.path.join(rootPath, '{0}.approved.txt'.format(baseName))
+
+
+def get_filteredResultsPath(baseName):
+    return os.path.join(rootPath, '{0}.unapproved.txt'.format(baseName))
+
+
+def run_test(baseName, args):
     args[0:0] = [cmdPath]
     if not os.path.exists(cmdPath):
         raise Exception("Executable doesn't exist at " + cmdPath)
-    baselinesPath = os.path.join(rootPath, '{0}.approved.txt'.format(baseName))
-    rawResultsPath = os.path.join(rootPath, '_{0}.tmp'.format(baseName))
-    filteredResultsPath = os.path.join(rootPath, '{0}.unapproved.txt'.format(baseName))
 
+    print(args)
+    rawResultsPath = get_rawResultsPath(baseName)
     f = open(rawResultsPath, 'w')
     subprocess.call(args, stdout=f, stderr=f)
     f.close()
+
+
+def check_outputs(baseName):
+    global overallResult
+    rawResultsPath = get_rawResultsPath(baseName)
+    baselinesPath = get_baselinesPath(baseName)
+    filteredResultsPath = get_filteredResultsPath(baseName)
 
     rawFile = io.open(rawResultsPath, 'r', encoding='utf-8', errors='surrogateescape')
     filteredFile = io.open(filteredResultsPath, 'w', encoding='utf-8', errors='surrogateescape')
@@ -204,6 +221,11 @@ def approve(baseName, args):
             overallResult = 1
 
 
+def approve(baseName, args):
+    run_test(baseName, args)
+    check_outputs(baseName)
+
+
 print("Running approvals against executable:")
 print("  " + cmdPath)
 
@@ -221,6 +243,19 @@ for reporter in reporters:
     common_args = ["~[!nonportable]~[!benchmark]~[approvals] *", "-s", "-w", "NoAssertions", "--order", "lex", "--rng-seed", "1"]
     reporter_args = ['-r', reporter]
     approve(filename, common_args + reporter_args)
+
+## All reporters at the same time
+
+common_args = ["~[!nonportable]~[!benchmark]~[approvals] *", "-s", "-w", "NoAssertions", "--order", "lex", "--rng-seed", "1"]
+filenames = ['{}.sw.multi'.format(reporter) for reporter in reporters]
+reporter_args = []
+for reporter, filename in zip(reporters, filenames):
+    reporter_args += ['-r', '{}::{}'.format(reporter, get_rawResultsPath(filename))]
+
+run_test("default.sw.multi", common_args + reporter_args)
+check_outputs("default.sw.multi")
+for reporter, filename in zip(reporters, filenames):
+    check_outputs(filename)
 
 
 if overallResult != 0:
