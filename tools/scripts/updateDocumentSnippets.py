@@ -19,5 +19,5 @@ import subprocess
 
 os.chdir(catchPath)
 
-subprocess.run('dotnet tool update  -g MarkdownSnippets.Tool --version 21.2.0', shell=True, check=True)
+subprocess.run('dotnet tool update  -g MarkdownSnippets.Tool', shell=True, check=True)
 subprocess.run('mdsnippets', shell=True, check=True)
