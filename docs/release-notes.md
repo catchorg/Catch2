@@ -123,19 +123,35 @@ new design.
   * `EventListenerBase` now directly derives from `IStreamingReporter`, instead of deriving from `StreamingReporterBase`
 * `GENERATE` decays its arguments (#2012, #2040)
   * This means that `str` in `auto str = GENERATE("aa", "bb", "cc");` is inferred to `char const*` rather than `const char[2]`.
-
+* `--list-*` flags write their output to file specified by the `-o` flag
 
 ### Improvements
 * Matchers have been extended with the ability to use different signatures of `match` (#1307, #1553, #1554, #1843)
   * This includes having templated `match` member function
   * See the [rewritten Matchers documentation](matchers.md#top) for details
   * Catch2 currently provides _some_ generic matchers, but there should be more before final release of v3
-    * So far, `IsEmpty`, `SizeIs`, and `Contains` are provided.
-    * At least `ElementsAre` and `UnorderedElementsAre` are planned.
-* Some runtime performance improvements
+    * `IsEmpty`, `SizeIs` which check that the range has specific properties
+    * `Contains`, which checks whether a range contains a specific element
+    * `AllMatch`, `AnyMatch`, `NoneMatch` range matchers, which apply matchers over a range of elements
 * Significant compilation time improvements
   * including `catch_test_macros.hpp` is 80% cheaper than including `catch.hpp`
+* Some runtime performance optimizations
+  * In all tested cases the v3 branch was faster, so the table below shows the speedup of v3 to v2 at the same task
+<a id="v3-runtime-optimization-table"></a>
 
+|                   task                      |  debug build | release build |
+|:------------------------------------------- | ------------:| -------------:|
+| Run 1M `REQUIRE(true)`                      |  1.10 ± 0.01 |   1.02 ± 0.06 |
+| Run 100 tests, 3^3 sections, 1 REQUIRE each |  1.27 ± 0.01 |   1.04 ± 0.01 |
+| Run 3k tests, no names, no tags             |  1.29 ± 0.01 |   1.05 ± 0.01 |
+| Run 3k tests, names, tags                   |  1.49 ± 0.01 |   1.22 ± 0.01 |
+| Run 1 out of 3k tests no names, no tags     |  1.68 ± 0.02 |   1.19 ± 0.22 |
+| Run 1 out of 3k tests, names, tags          |  1.79 ± 0.02 |   2.06 ± 0.23 |
+
+
+
+* POSIX platforms use `gmtime_r`, rather than `gmtime` when constructing a date string (#2008, #2165)
+* `--list-*` flags write their output to file specified by the `-o` flag (#2061, #2163)
 
 ### Fixes
 * The `INFO` macro no longer contains superfluous semicolon (#1456)
