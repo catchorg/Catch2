@@ -17,6 +17,8 @@ cmake_dependent_option(CATCH_BUILD_EXTRA_TESTS "Build extra tests" OFF "CATCH_DE
 cmake_dependent_option(CATCH_BUILD_FUZZERS "Build fuzzers" OFF "CATCH_DEVELOPMENT_BUILD" OFF)
 cmake_dependent_option(CATCH_ENABLE_COVERAGE "Generate coverage for codecov.io" OFF "CATCH_DEVELOPMENT_BUILD" OFF)
 cmake_dependent_option(CATCH_ENABLE_WERROR "Enables Werror during build" ON "CATCH_DEVELOPMENT_BUILD" OFF)
+cmake_dependent_option(CATCH_BUILD_SURROGATES "Enable generating and building surrogate TUs for the main headers" OFF "CATCH_DEVELOPMENT_BUILD" OFF)
+
 
 # Catch2's build breaks if done in-tree. You probably should not build
 # things in tree anyway, but we can allow projects that include Catch2
