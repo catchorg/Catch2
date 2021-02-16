@@ -20,6 +20,7 @@ jobs:
           - clang++-10
         build_type: [Debug, Release]
         std: [14]
+        surrogates: [OFF]
         include:
         # cannot be installed on ubuntu-20.04 be default?
 #          - cxx: g++-6
@@ -30,6 +31,13 @@ jobs:
             other_pkgs: clang-7
           - cxx: clang++-10
             other_pkgs: clang-10
+        # We want one build to build surrogates -- but not more, to
+        # avoid trouble with long compilation/CI times.
+          - cxx: clang++-10
+            build_type: Debug
+            std: 14
+            other_pkgs: clang-10
+            surrogates: ON
 
     steps:
     - uses: actions/checkout@v2
@@ -47,7 +55,7 @@ jobs:
       run: |
         cmake -Bbuild -H$GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=${{matrix.build_type}} \
               -DCMAKE_CXX_STANDARD=${{matrix.std}} -DCATCH_DEVELOPMENT_BUILD=ON \
-              -G Ninja
+              -DCATCH_BUILD_SURROGATES=${{matrix.surrogates}} -G Ninja
 
     - name: Build tests + lib
       working-directory: ${{runner.workspace}}/build
