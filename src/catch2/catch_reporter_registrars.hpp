@@ -9,10 +9,14 @@
 #define CATCH_REPORTER_REGISTRARS_HPP_INCLUDED
 
 #include <catch2/interfaces/catch_interfaces_registry_hub.hpp>
+#include <catch2/interfaces/catch_interfaces_reporter.hpp>
 #include <catch2/interfaces/catch_interfaces_reporter_factory.hpp>
 #include <catch2/internal/catch_unique_ptr.hpp>
 
 namespace Catch {
+
+    struct IStreamingReporter;
+    using IStreamingReporterPtr = Detail::unique_ptr<IStreamingReporter>;
 
     template <typename T>
     class ReporterFactory : public IReporterFactory {
