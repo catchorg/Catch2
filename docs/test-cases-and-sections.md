@@ -90,13 +90,77 @@ This macro maps onto ```TEST_CASE``` and works in the same way, except that the 
 * **WHEN(** _something_ **)**
 * **THEN(** _something_ **)**
 
-These macros map onto ```SECTION```s except that the section names are the _something_s prefixed by "given: ", "when: " or "then: " respectively.
+These macros map onto ```SECTION```s except that the section names are the _something_s prefixed by "given: ", "when: " or "then: " respectively. These macros also map onto the AAA or A<sup>3</sup> test pattern (standing either for [Assemble-Activate-Assert](http://wiki.c2.com/?AssembleActivateAssert) or [Arrange-Act-Assert](http://wiki.c2.com/?ArrangeActAssert)), and in this context, the macros provide both code documentation and reporting of these parts of a test case without the need for extra comments or code to do so.
+
+Semantically, a `GIVEN` clause may have multiple _independent_ `WHEN` clauses within it. This allows a test to have, e.g., one set of "given" objects and multiple subtests using those objects in various ways in each of the `WHEN` clauses without repeating the initialisation from the `GIVEN` clause. When there are _dependent_ clauses -- such as a second `WHEN` clause that should only happen _after_ the previous `WHEN` clause has been executed and validated -- there are additional macros starting with `AND_`:
 
 * **AND_GIVEN(** _something_ **)**
 * **AND_WHEN(** _something_ **)**
 * **AND_THEN(** _something_ **)**
 
-Similar to ```GIVEN```, ```WHEN``` and ```THEN``` except that the prefixes start with "and ". These are used to chain ```GIVEN```s, ```WHEN```s and ```THEN```s together.
+These are used to chain ```GIVEN```s, ```WHEN```s and ```THEN```s together. The `AND_*` clause is placed _inside_ the clause on which it depends. There can be multiple _independent_ clauses that are all _dependent_ on a single outer clause, e.g.,
+
+```cpp
+GIVEN("A node") {
+  auto node = make_node();
+
+  // Validate assumption of the GIVEN clause
+  THEN("Node is not running without initialisation") {
+      REQUIRE_FALSE( node.is_running() ); 
+  }
+
+  // Validate one use case for the GIVEN objects
+  WHEN("Subscribe is called on an uninitialised node") {
+    const auto subscription = node.subscribe( []{} );
+
+    THEN("The subscription fails") {
+      REQUIRE_FALSE( subscription );
+    }
+  }
+
+  // Validate another use case for the GIVEN objects
+  WHEN("Node is initialized") {
+    node.init();
+
+    THEN("Node is running") {
+      REQUIRE( node.is_running() ); 
+    }
+
+    // Validate a case dependent on the containing WHEN clause
+    AND_WHEN("Subscribe is called") {
+      const auto subscription = node.subscribe( []{} );
+
+      THEN("The subscription succeeds") {
+        REQUIRE( subscription );
+      }
+    }
+
+    // Validate a case dependent on the containing WHEN clause
+    AND_GIVEN("A callback") {
+      auto count = 0U;
+      const auto callback = [&] { ++count; };
+
+      WHEN("Subscribed to the node updates") {
+        const auto subscription = node.subscribe( callback );
+
+        THEN("No callback is automatically issued") {
+          REQUIRE( subscription );
+          REQUIRE( count == 0U );
+        }
+
+        // Validate a case dependent on the containing WHEN clause
+        AND_WHEN("An update happens") {
+          node.update();
+
+          THEN("We get a callback") {
+            REQUIRE( count == 1U );
+          }
+        }
+      }
+    }
+  }
+}
+```
 
 > `AND_GIVEN` was [introduced](https://github.com/catchorg/Catch2/issues/1360) in Catch2 2.4.0.
 
