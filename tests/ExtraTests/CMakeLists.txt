@@ -11,11 +11,11 @@ message( STATUS "Extra tests included" )
 # The MinDuration reporting tests do not need separate compilation, but
 # they have non-trivial execution time, so they are categorized as
 # extra tests, so that they are run less.
-add_test(NAME MinDuration::SimpleThreshold COMMAND $<TARGET_FILE:SelfTest> --min-duration 0.245 [min_duration_test])
+add_test(NAME MinDuration::SimpleThreshold COMMAND $<TARGET_FILE:SelfTest> --min-duration 0.950 [min_duration_test])
 set_tests_properties(
     MinDuration::SimpleThreshold
   PROPERTIES
-    PASS_REGULAR_EXPRESSION "s: sleep_for_250ms"
+    PASS_REGULAR_EXPRESSION "s: sleep_for_1000ms"
     FAIL_REGULAR_EXPRESSION "sleep_for_100ms"
     RUN_SERIAL ON  # The test is timing sensitive, so we want to run it
     # serially to avoid false positives on oversubscribed machines
