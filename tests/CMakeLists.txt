@@ -1,5 +1,66 @@
 include(MiscFunctions)
 
+if (CATCH_BUILD_SURROGATES)
+  message(STATUS "Configuring targets for surrogate TUs")
+
+  # If the folder does not exist before we ask for output redirect to
+  # a file, it won't work.
+  file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/surrogates)
+
+  # Creates target to generate the surrogate TU for provided header.
+  # Returns the path to the generated file.
+  function(createSurrogateFileTarget sourceHeader pathToFile)
+    set(pathPrefix ${PROJECT_SOURCE_DIR}/src)
+
+    file(RELATIVE_PATH includePath ${pathPrefix} ${sourceHeader})
+
+    get_filename_component(basicFileName "${sourceHeader}" NAME_WE)
+
+    set(surrogateFilePath ${CMAKE_CURRENT_BINARY_DIR}/surrogates/surrogate_${basicFileName}.cpp)
+
+    add_custom_command(
+      OUTPUT ${surrogateFilePath}
+      COMMAND cmake -E echo "\#include <${includePath}>" > "${surrogateFilePath}"
+      VERBATIM
+    )
+
+    set(${pathToFile} ${surrogateFilePath} PARENT_SCOPE)
+  endfunction()
+
+  # Extracts all non-helper (e.g. catch_all.hpp) headers from the
+  # Catch2 target, and returns them through the argument.
+  function(ExtractCatch2Headers OutArg)
+    get_target_property(targetSources Catch2 SOURCES)
+    foreach(Source ${targetSources})
+      string(REGEX MATCH "^.*\\.hpp$" isHeader ${Source})
+      string(REGEX MATCH "_all.hpp" isAllHeader ${Source})
+      if(isHeader AND NOT isAllHeader)
+        list(APPEND AllHeaders ${Source})
+      endif()
+    endforeach()
+    set(${OutArg} ${AllHeaders} PARENT_SCOPE)
+  endfunction()
+
+
+  ExtractCatch2Headers(mainHeaders)
+
+  if (NOT mainHeaders)
+    message(FATAL_ERROR "No headers in the main target were detected. Something is broken.")
+  endif()
+
+  foreach(header ${mainHeaders})
+    createSurrogateFileTarget(${header} pathToGeneratedFile)
+    list(APPEND surrogateFiles ${pathToGeneratedFile})
+  endforeach()
+
+
+  add_executable(Catch2SurrogateTarget
+    ${surrogateFiles}
+  )
+  target_link_libraries(Catch2SurrogateTarget PRIVATE Catch2WithMain)
+
+endif(CATCH_BUILD_SURROGATES)
+
 ####
 # Temporary workaround for VS toolset changes in 2017
 # We need to disable <UseFullPaths> property, but CMake doesn't support it

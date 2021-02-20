@@ -10,6 +10,8 @@
 
 #include <catch2/internal/catch_compiler_capabilities.hpp>
 
+#include <cstddef>
+#include <initializer_list>
 
 // We want a simple polyfill over `std::empty`, `std::size` and so on
 // for C++14 or C++ libraries with incomplete support.

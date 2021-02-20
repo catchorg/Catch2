@@ -11,6 +11,7 @@
 #define CATCH_CONSTRUCTOR_HPP_INCLUDED
 
 #include <type_traits>
+#include <utility>
 
 namespace Catch {
     namespace Benchmark {

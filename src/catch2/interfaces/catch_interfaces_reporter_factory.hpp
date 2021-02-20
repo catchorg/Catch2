@@ -8,9 +8,16 @@
 #ifndef CATCH_INTERFACES_REPORTER_FACTORY_HPP_INCLUDED
 #define CATCH_INTERFACES_REPORTER_FACTORY_HPP_INCLUDED
 
+#include <catch2/internal/catch_unique_ptr.hpp>
+
+#include <string>
+
 namespace Catch {
 
     struct ReporterConfig;
+    struct IStreamingReporter;
+    using IStreamingReporterPtr = Detail::unique_ptr<IStreamingReporter>;
+
 
     struct IReporterFactory {
         virtual ~IReporterFactory(); // = default

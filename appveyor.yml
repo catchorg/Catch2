@@ -51,8 +51,9 @@ test_script:
 # build explicitly.
 environment:
   matrix:
-    - FLAVOR: VS 2019 x64 Debug
+    - FLAVOR: VS 2019 x64 Debug Surrogates
       APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
+      surrogates: 1
       platform: x64
       configuration: Debug
     
