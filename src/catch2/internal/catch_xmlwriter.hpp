@@ -10,13 +10,6 @@
 
 #include <catch2/internal/catch_stream.hpp>
 
-// FixMe: Without this include (and something inside it), MSVC goes crazy
-//        and reports that calls to XmlEncode's op << are ambiguous between
-//        the declaration and definition.
-//        It also has to be in the header.
-#include <catch2/internal/catch_source_line_info.hpp>
-
-
 #include <vector>
 
 namespace Catch {

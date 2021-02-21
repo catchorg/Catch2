@@ -5,9 +5,11 @@
 //        https://www.boost.org/LICENSE_1_0.txt)
 
 // SPDX-License-Identifier: BSL-1.0
-#include <catch2/internal/catch_xmlwriter.hpp>
-
+// Note: swapping these two includes around causes MSVC to error out
+//       while in /permissive- mode. No, I don't know why.
+//       Tested on VS 2019, 18.{3, 4}.x
 #include <catch2/internal/catch_enforce.hpp>
+#include <catch2/internal/catch_xmlwriter.hpp>
 
 #include <iomanip>
 #include <type_traits>
