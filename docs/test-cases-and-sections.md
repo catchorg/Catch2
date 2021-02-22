@@ -108,8 +108,32 @@ executed and validated -- there are additional macros starting with `AND_`:
 
 These are used to chain ```GIVEN```s, ```WHEN```s and ```THEN```s together. The `AND_*` clause is placed 
 _inside_ the clause on which it depends. There can be multiple _independent_ clauses that are all _dependent_ 
-on a single outer clause. See [this working example](https://godbolt.org/z/cMjsx4) (with an intentional 
-failure to demonstrate the reporting output).
+on a single outer clause. 
+```cpp
+SCENARIO( "vector can be sized and resized" ) {
+    GIVEN( "An empty vector" ) {
+        auto v = std::vector<std::string>{};
+
+        // Validate assumption of the GIVEN clause
+        THEN( "The size and capacity start at 0" ) {
+            REQUIRE( v.size() == 0 );
+            REQUIRE( v.capacity() == 0 );
+        }
+
+        // Validate one use case for the GIVEN object
+        WHEN( "push_back() is called" ) {
+            v.push_back("hullo");
+
+            THEN( "The size changes" ) {
+                REQUIRE( v.size() == 1 );
+                REQUIRE( v.capacity() >= 1 );
+            }
+        }
+    }
+}
+```
+See [this working example](https://godbolt.org/z/cMjsx4), with an intentional failure to demonstrate the reporting 
+output.
 
 > `AND_GIVEN` was [introduced](https://github.com/catchorg/Catch2/issues/1360) in Catch2 2.4.0.
 
