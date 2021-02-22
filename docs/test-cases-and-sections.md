@@ -132,7 +132,7 @@ SCENARIO( "vector can be sized and resized" ) {
     }
 }
 ```
-See [this working example](https://godbolt.org/z/cMjsx4), with an intentional failure to demonstrate the reporting 
+See [this working example](https://godbolt.org/z/e5vPPM), with an intentional failure to demonstrate the reporting 
 output.
 
 > `AND_GIVEN` was [introduced](https://github.com/catchorg/Catch2/issues/1360) in Catch2 2.4.0.
