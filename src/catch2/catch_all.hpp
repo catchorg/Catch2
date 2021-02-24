@@ -100,6 +100,7 @@
 #include <catch2/internal/catch_textflow.hpp>
 #include <catch2/internal/catch_to_string.hpp>
 #include <catch2/internal/catch_uncaught_exceptions.hpp>
+#include <catch2/internal/catch_unique_name.hpp>
 #include <catch2/internal/catch_unique_ptr.hpp>
 #include <catch2/internal/catch_wildcard_pattern.hpp>
 #include <catch2/internal/catch_windows_h_proxy.hpp>

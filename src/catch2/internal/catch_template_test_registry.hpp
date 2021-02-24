@@ -12,6 +12,8 @@
 #include <catch2/internal/catch_compiler_capabilities.hpp>
 #include <catch2/internal/catch_preprocessor.hpp>
 #include <catch2/internal/catch_meta.hpp>
+#include <catch2/internal/catch_unique_name.hpp>
+
 
 // GCC 5 and older do not properly handle disabling unused-variable warning
 // with a _Pragma. This means that we have to leak the suppression to the

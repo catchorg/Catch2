@@ -65,6 +65,7 @@ set(INTERNAL_HEADERS
     ${SOURCES_DIR}/internal/catch_errno_guard.hpp
     ${SOURCES_DIR}/internal/catch_exception_translator_registry.hpp
     ${SOURCES_DIR}/internal/catch_fatal_condition_handler.hpp
+    ${SOURCES_DIR}/internal/catch_unique_name.hpp
     ${SOURCES_DIR}/generators/catch_generator_exception.hpp
     ${SOURCES_DIR}/generators/catch_generators.hpp
     ${SOURCES_DIR}/generators/catch_generators_adapters.hpp

@@ -13,8 +13,7 @@
 #include <catch2/catch_section_info.hpp>
 #include <catch2/catch_timer.hpp>
 #include <catch2/catch_totals.hpp>
-
-#include <string>
+#include <catch2/internal/catch_unique_name.hpp>
 
 namespace Catch {
 

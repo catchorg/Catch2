@@ -11,6 +11,7 @@
 #include <catch2/internal/catch_assertion_handler.hpp>
 #include <catch2/interfaces/catch_interfaces_capture.hpp>
 #include <catch2/internal/catch_stringref.hpp>
+#include <catch2/internal/catch_source_line_info.hpp>
 
 // We need this suppression to leak, because it took until GCC 9
 // for the front end to handle local suppression via _Pragma properly

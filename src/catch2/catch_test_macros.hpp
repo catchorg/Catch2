@@ -13,6 +13,8 @@
 #include <catch2/internal/catch_preprocessor.hpp>
 #include <catch2/internal/catch_section.hpp>
 #include <catch2/internal/catch_test_registry.hpp>
+#include <catch2/internal/catch_unique_name.hpp>
+
 
 // All of our user-facing macros support configuration toggle, that
 // forces them to be defined prefixed with CATCH_. We also like to

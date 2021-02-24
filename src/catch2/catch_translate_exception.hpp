@@ -9,6 +9,8 @@
 #define CATCH_TRANSLATE_EXCEPTION_HPP_INCLUDED
 
 #include <catch2/interfaces/catch_interfaces_exception.hpp>
+#include <catch2/internal/catch_compiler_capabilities.hpp>
+#include <catch2/internal/catch_unique_name.hpp>
 
 #include <exception>
 

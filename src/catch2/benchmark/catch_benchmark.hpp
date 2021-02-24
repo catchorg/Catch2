@@ -13,6 +13,7 @@
 #include <catch2/interfaces/catch_interfaces_config.hpp>
 #include <catch2/internal/catch_context.hpp>
 #include <catch2/interfaces/catch_interfaces_reporter.hpp>
+#include <catch2/internal/catch_unique_name.hpp>
 
 #include <catch2/benchmark/catch_chronometer.hpp>
 #include <catch2/benchmark/catch_clock.hpp>

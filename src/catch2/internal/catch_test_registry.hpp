@@ -13,6 +13,7 @@
 #include <catch2/interfaces/catch_interfaces_testcase.hpp>
 #include <catch2/internal/catch_stringref.hpp>
 #include <catch2/internal/catch_unique_ptr.hpp>
+#include <catch2/internal/catch_unique_name.hpp>
 
 // GCC 5 and older do not properly handle disabling unused-variable warning
 // with a _Pragma. This means that we have to leak the suppression to the
