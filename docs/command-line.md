@@ -93,7 +93,8 @@ Inclusions and exclusions are evaluated in left-to-right order.
 
 Test case examples:
 
-<pre>thisTestOnly            Matches the test case called, 'thisTestOnly'
+```
+thisTestOnly            Matches the test case called, 'thisTestOnly'
 "this test only"        Matches the test case called, 'this test only'
 these*                  Matches all cases starting with 'these'
 exclude:notThis         Matches all tests except, 'notThis'
@@ -101,8 +102,9 @@ exclude:notThis         Matches all tests except, 'notThis'
 ~*private*              Matches all tests except those that contain 'private'
 a* ~ab* abc             Matches all tests that start with 'a', except those that
                         start with 'ab', except 'abc', which is included
+~[tag1]                 Matches all tests except those tagged with '[tag1]'
 -# [#somefile]          Matches all tests from the file 'somefile.cpp'
-</pre>
+```
 
 Names within square brackets are interpreted as tags.
 A series of tags form an AND expression whereas a comma-separated sequence forms an OR expression. e.g.:
