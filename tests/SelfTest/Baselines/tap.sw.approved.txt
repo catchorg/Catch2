@@ -2792,6 +2792,10 @@ ok {test-number} - original == "original"
 # StringRef
 ok {test-number} - original.data()
 # StringRef
+ok {test-number} - original.begin() == copy.begin() for: "original string" == "original string"
+# StringRef
+ok {test-number} - original.begin() == copy.begin() for: "original string" == "original string"
+# StringRef
 ok {test-number} - ss.empty() == false for: false == false
 # StringRef
 ok {test-number} - ss.size() == 5 for: 5 == 5
@@ -4402,5 +4406,5 @@ ok {test-number} - q3 == 23. for: 23.0 == 23.0
 ok {test-number} -
 # xmlentitycheck
 ok {test-number} -
-1..2200
+1..2202
 

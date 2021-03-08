@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuitesloose text artifact
 >
-  <testsuite name="<exe-name>" errors="17" failures="129" tests="2200" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
+  <testsuite name="<exe-name>" errors="17" failures="129" tests="2202" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
     <properties>
       <property name="random-seed" value="1"/>
       <property name="filters" value="~[!nonportable]~[!benchmark]~[approvals] *"/>
@@ -1235,6 +1235,8 @@ Matchers.tests.cpp:<line number>
     <testcase classname="<exe-name>.global" name="StringRef/Empty string" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="StringRef/From string literal" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="StringRef/From sub-string" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="StringRef/Copy construction is shallow" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="StringRef/Copy assignment is shallow" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="StringRef/Substrings/zero-based substring" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="StringRef/Substrings/non-zero-based substring" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="StringRef/Substrings/Pointer values of full refs should match" time="{duration}" status="run"/>

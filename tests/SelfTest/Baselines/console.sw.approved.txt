@@ -11081,6 +11081,30 @@ String.tests.cpp:<line number>: PASSED:
 
 -------------------------------------------------------------------------------
 StringRef
+  Copy construction is shallow
+-------------------------------------------------------------------------------
+String.tests.cpp:<line number>
+...............................................................................
+
+String.tests.cpp:<line number>: PASSED:
+  REQUIRE( original.begin() == copy.begin() )
+with expansion:
+  "original string" == "original string"
+
+-------------------------------------------------------------------------------
+StringRef
+  Copy assignment is shallow
+-------------------------------------------------------------------------------
+String.tests.cpp:<line number>
+...............................................................................
+
+String.tests.cpp:<line number>: PASSED:
+  REQUIRE( original.begin() == copy.begin() )
+with expansion:
+  "original string" == "original string"
+
+-------------------------------------------------------------------------------
+StringRef
   Substrings
   zero-based substring
 -------------------------------------------------------------------------------
@@ -17541,5 +17565,5 @@ Misc.tests.cpp:<line number>: PASSED:
 
 ===============================================================================
 test cases:  384 |  291 passed |  86 failed |  7 failed as expected
-assertions: 2200 | 2027 passed | 146 failed | 27 failed as expected
+assertions: 2202 | 2029 passed | 146 failed | 27 failed as expected
 

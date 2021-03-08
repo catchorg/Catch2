@@ -13222,6 +13222,28 @@ Message from section two
       </Expression>
       <OverallResults successes="2" failures="0" expectedFailures="0"/>
     </Section>
+    <Section name="Copy construction is shallow" filename="tests/<exe-name>/IntrospectiveTests/String.tests.cpp" >
+      <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/String.tests.cpp" >
+        <Original>
+          original.begin() == copy.begin()
+        </Original>
+        <Expanded>
+          "original string" == "original string"
+        </Expanded>
+      </Expression>
+      <OverallResults successes="1" failures="0" expectedFailures="0"/>
+    </Section>
+    <Section name="Copy assignment is shallow" filename="tests/<exe-name>/IntrospectiveTests/String.tests.cpp" >
+      <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/String.tests.cpp" >
+        <Original>
+          original.begin() == copy.begin()
+        </Original>
+        <Expanded>
+          "original string" == "original string"
+        </Expanded>
+      </Expression>
+      <OverallResults successes="1" failures="0" expectedFailures="0"/>
+    </Section>
     <Section name="Substrings" filename="tests/<exe-name>/IntrospectiveTests/String.tests.cpp" >
       <Section name="zero-based substring" filename="tests/<exe-name>/IntrospectiveTests/String.tests.cpp" >
         <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/String.tests.cpp" >
@@ -20573,6 +20595,6 @@ loose text artifact
     </Section>
     <OverallResult success="true"/>
   </TestCase>
-  <OverallResults successes="2027" failures="146" expectedFailures="27"/>
+  <OverallResults successes="2029" failures="146" expectedFailures="27"/>
   <OverallResultsCases successes="291" failures="86" expectedFailures="7"/>
 </Catch2TestRun>

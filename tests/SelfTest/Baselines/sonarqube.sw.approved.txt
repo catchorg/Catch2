@@ -210,6 +210,8 @@
     <testCase name="StringRef/Empty string" duration="{duration}"/>
     <testCase name="StringRef/From string literal" duration="{duration}"/>
     <testCase name="StringRef/From sub-string" duration="{duration}"/>
+    <testCase name="StringRef/Copy construction is shallow" duration="{duration}"/>
+    <testCase name="StringRef/Copy assignment is shallow" duration="{duration}"/>
     <testCase name="StringRef/Substrings/zero-based substring" duration="{duration}"/>
     <testCase name="StringRef/Substrings/non-zero-based substring" duration="{duration}"/>
     <testCase name="StringRef/Substrings/Pointer values of full refs should match" duration="{duration}"/>

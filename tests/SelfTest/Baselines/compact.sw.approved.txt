@@ -1554,6 +1554,8 @@ String.tests.cpp:<line number>: passed: std::strcmp( rawChars, "hello" ) == 0 fo
 String.tests.cpp:<line number>: passed: s.data() == rawChars for: "hello" == "hello"
 String.tests.cpp:<line number>: passed: original == "original"
 String.tests.cpp:<line number>: passed: original.data()
+String.tests.cpp:<line number>: passed: original.begin() == copy.begin() for: "original string" == "original string"
+String.tests.cpp:<line number>: passed: original.begin() == copy.begin() for: "original string" == "original string"
 String.tests.cpp:<line number>: passed: ss.empty() == false for: false == false
 String.tests.cpp:<line number>: passed: ss.size() == 5 for: 5 == 5
 String.tests.cpp:<line number>: passed: std::strncmp( ss.data(), "hello", 5 ) == 0 for: 0 == 0

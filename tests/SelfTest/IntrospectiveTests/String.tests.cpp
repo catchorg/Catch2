@@ -29,7 +29,17 @@ TEST_CASE( "StringRef", "[Strings][StringRef]" ) {
 
         REQUIRE_NOTHROW(original.data());
     }
-
+    SECTION( "Copy construction is shallow" ) {
+        StringRef original = StringRef( "original string" );
+        StringRef copy = original;
+        REQUIRE(original.begin() == copy.begin());
+    }
+    SECTION( "Copy assignment is shallow" ) {
+        StringRef original = StringRef( "original string" );
+        StringRef copy;
+        copy = original;
+        REQUIRE(original.begin() == copy.begin());
+    }
 
     SECTION( "Substrings" ) {
         StringRef s = "hello world!";
