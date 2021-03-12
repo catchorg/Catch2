@@ -59,7 +59,7 @@ TEST_CASE( "SUCCEED showcase" ) {
 
 * `STATIC_REQUIRE`
 
-> [Introduced](https://github.com/catchorg/Catch2/issues/1362) in Catch 2.4.2.
+> [Introduced](https://github.com/catchorg/Catch2/issues/1362) in Catch2 2.4.2.
 
 `STATIC_REQUIRE( expr )` is a macro that can be used the same way as a
 `static_assert`, but also registers the success with Catch2, so it is
@@ -134,7 +134,7 @@ ANON_TEST_CASE() {
 
 * `DYNAMIC_SECTION`
 
-> Introduced in Catch 2.3.0.
+> Introduced in Catch2 2.3.0.
 
 `DYNAMIC_SECTION` is a `SECTION` where the user can use `operator<<` to
 create the final name for that section. This can be useful with e.g.

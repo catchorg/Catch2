@@ -1,7 +1,7 @@
 <a id="top"></a>
 # Authoring benchmarks
 
-> [Introduced](https://github.com/catchorg/Catch2/issues/1616) in Catch 2.9.0.
+> [Introduced](https://github.com/catchorg/Catch2/issues/1616) in Catch2 2.9.0.
 
 Writing benchmarks is not easy. Catch simplifies certain aspects but you'll
 always need to take care about various aspects. Understanding a few things about

@@ -1,7 +1,7 @@
 <a id="top"></a>
 # Data Generators
 
-> Introduced in Catch 2.6.0.
+> Introduced in Catch2 2.6.0.
 
 Data generators (also known as _data driven/parametrized test cases_)
 let you reuse the same set of assertions across different input values.
@@ -92,7 +92,7 @@ TEST_CASE("Complex mix of sections and generates") {
 }
 ```
 
-> The ability to place `GENERATE` between two `SECTION`s was [introduced](https://github.com/catchorg/Catch2/issues/1938) in Catch 2.13.0.
+> The ability to place `GENERATE` between two `SECTION`s was [introduced](https://github.com/catchorg/Catch2/issues/1938) in Catch2 2.13.0.
 
 ## Provided generators
 
@@ -117,9 +117,9 @@ a test case,
   * `RangeGenerator<T>` -- generates all values inside an arithmetic range
   * `IteratorGenerator<T>` -- copies and returns values from an iterator range
 
-> `ChunkGenerator<T>`, `RandomIntegerGenerator<Integral>`, `RandomFloatGenerator<Float>` and `RangeGenerator<T>` were introduced in Catch 2.7.0.
+> `ChunkGenerator<T>`, `RandomIntegerGenerator<Integral>`, `RandomFloatGenerator<Float>` and `RangeGenerator<T>` were introduced in Catch2 2.7.0.
 
-> `IteratorGenerator<T>` was introduced in Catch 2.10.0.
+> `IteratorGenerator<T>` was introduced in Catch2 2.10.0.
 
 The generators also have associated helper functions that infer their
 type, making their usage much nicer. These are
@@ -139,11 +139,11 @@ type, making their usage much nicer. These are
 * `from_range(InputIterator from, InputIterator to)` for `IteratorGenerator<T>`
 * `from_range(Container const&)` for `IteratorGenerator<T>`
 
-> `chunk()`, `random()` and both `range()` functions were introduced in Catch 2.7.0.
+> `chunk()`, `random()` and both `range()` functions were introduced in Catch2 2.7.0.
 
-> `from_range` has been introduced in Catch 2.10.0
+> `from_range` has been introduced in Catch2 2.10.0
 
-> `range()` for floating point numbers has been introduced in Catch 2.11.0
+> `range()` for floating point numbers has been introduced in Catch2 2.11.0
 
 And can be used as shown in the example below to create a generator
 that returns 100 odd random number:
@@ -176,7 +176,7 @@ scope and thus capturing references is dangerous. If you need to use
 variables inside the generator expression, make sure you thought through
 the lifetime implications and use `GENERATE_COPY` or `GENERATE_REF`.**
 
-> `GENERATE_COPY` and `GENERATE_REF` were introduced in Catch 2.7.1.
+> `GENERATE_COPY` and `GENERATE_REF` were introduced in Catch2 2.7.1.
 
 You can also override the inferred type by using `as<type>` as the first
 argument to the macro. This can be useful when dealing with string literals,

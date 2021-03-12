@@ -125,7 +125,7 @@ These are
  * `Equals` which checks whether the result is exactly equal (order matters) to a specific vector
  * `UnorderedEquals` which checks whether the result is equal to a specific vector under a permutation
  * `Approx` which checks whether the result is "approx-equal" (order matters, but comparison is done via `Approx`) to a specific vector
-> Approx matcher was [introduced](https://github.com/catchorg/Catch2/issues/1499) in Catch 2.7.2.
+> Approx matcher was [introduced](https://github.com/catchorg/Catch2/issues/1499) in Catch2 2.7.2.
 
 An example usage:
 ```cpp
@@ -148,7 +148,7 @@ are:
 * `WithinUlps(FloatingPoint target, uint64_t maxUlpDiff)`, and
 * `WithinRel(FloatingPoint target, FloatingPoint eps)`.
 
-> `WithinRel` matcher was introduced in Catch 2.10.0
+> `WithinRel` matcher was introduced in Catch2 2.10.0
 
 
 `WithinAbs` creates a matcher that accepts floating point numbers whose
@@ -243,7 +243,7 @@ Note that `DerivedException` in the example above has to derive from
 
 ### Generic range Matchers
 
-> Generic range matchers were introduced in Catch X.Y.Z
+> Generic range matchers were introduced in Catch2 X.Y.Z
 
 Catch2 also provides some matchers that use the new style matchers
 definitions to handle generic range-like types. These are:
@@ -345,7 +345,7 @@ style matchers arbitrarily.
 
 ## Writing custom matchers (new style)
 
-> New style matchers were introduced in Catch X.Y.Z
+> New style matchers were introduced in Catch2 X.Y.Z
 
 To create a new-style matcher, you have to create your own type that
 derives from `Catch::Matchers::MatcherGenericBase`. Your type has to
