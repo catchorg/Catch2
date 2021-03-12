@@ -226,7 +226,7 @@ When set to ```yes``` Catch will report the duration of each test case, in milli
 
 <pre>-D, --min-duration &lt;value></pre>
 
-> `--min-duration` was [introduced](https://github.com/catchorg/Catch2/pull/1910) in Catch 2.13.0
+> `--min-duration` was [introduced](https://github.com/catchorg/Catch2/pull/1910) in Catch2 2.13.0
 
 When set, Catch will report the duration of each test case that took more
 than &lt;value> seconds, in milliseconds. This option is overriden by both
@@ -302,7 +302,7 @@ either before running any tests, after running all tests - or both, depending on
 ## Specify the number of benchmark samples to collect
 <pre>--benchmark-samples &lt;# of samples&gt;</pre>
 
-> [Introduced](https://github.com/catchorg/Catch2/issues/1616) in Catch 2.9.0.
+> [Introduced](https://github.com/catchorg/Catch2/issues/1616) in Catch2 2.9.0.
 
 When running benchmarks a number of "samples" is collected. This is the base data for later statistical analysis.
 Per sample a clock resolution dependent number of iterations of the user code is run, which is independent of the number of samples. Defaults to 100.
@@ -311,7 +311,7 @@ Per sample a clock resolution dependent number of iterations of the user code is
 ## Specify the number of resamples for bootstrapping
 <pre>--benchmark-resamples &lt;# of resamples&gt;</pre>
 
-> [Introduced](https://github.com/catchorg/Catch2/issues/1616) in Catch 2.9.0.
+> [Introduced](https://github.com/catchorg/Catch2/issues/1616) in Catch2 2.9.0.
 
 After the measurements are performed, statistical [bootstrapping] is performed
 on the samples. The number of resamples for that bootstrapping is configurable
@@ -326,7 +326,7 @@ defaults to 95%).
 ## Specify the confidence-interval for bootstrapping
 <pre>--benchmark-confidence-interval &lt;confidence-interval&gt;</pre>
 
-> [Introduced](https://github.com/catchorg/Catch2/issues/1616) in Catch 2.9.0.
+> [Introduced](https://github.com/catchorg/Catch2/issues/1616) in Catch2 2.9.0.
 
 The confidence-interval is used for statistical bootstrapping on the samples to
 calculate the upper and lower bounds of mean and standard deviation.
@@ -336,7 +336,7 @@ Must be between 0 and 1 and defaults to 0.95.
 ## Disable statistical analysis of collected benchmark samples
 <pre>--benchmark-no-analysis</pre>
 
-> [Introduced](https://github.com/catchorg/Catch2/issues/1616) in Catch 2.9.0.
+> [Introduced](https://github.com/catchorg/Catch2/issues/1616) in Catch2 2.9.0.
 
 When this flag is specified no bootstrapping or any other statistical analysis is performed.
 Instead the user code is only measured and the plain mean from the samples is reported.
@@ -345,7 +345,7 @@ Instead the user code is only measured and the plain mean from the samples is re
 ## Specify the amount of time in milliseconds spent on warming up each test
 <pre>--benchmark-warmup-time</pre>
 
-> [Introduced](https://github.com/catchorg/Catch2/pull/1844) in Catch 2.11.2.
+> [Introduced](https://github.com/catchorg/Catch2/pull/1844) in Catch2 2.11.2.
 
 Configure the amount of time spent warming up each test.
 

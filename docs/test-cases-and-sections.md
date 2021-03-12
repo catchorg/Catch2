@@ -98,7 +98,7 @@ These macros map onto ```SECTION```s except that the section names are the _some
 
 Similar to ```GIVEN```, ```WHEN``` and ```THEN``` except that the prefixes start with "and ". These are used to chain ```GIVEN```s, ```WHEN```s and ```THEN```s together.
 
-> `AND_GIVEN` was [introduced](https://github.com/catchorg/Catch2/issues/1360) in Catch 2.4.0.
+> `AND_GIVEN` was [introduced](https://github.com/catchorg/Catch2/issues/1360) in Catch2 2.4.0.
 
 When any of these macros are used the console reporter recognises them and formats the test case header such that the Givens, Whens and Thens are aligned to aid readability.
 
@@ -112,7 +112,7 @@ by types, in the form of `TEMPLATE_TEST_CASE`,
 
 * **TEMPLATE_TEST_CASE(** _test name_ , _tags_,  _type1_, _type2_, ..., _typen_ **)**
 
-> [Introduced](https://github.com/catchorg/Catch2/issues/1437) in Catch 2.5.0.
+> [Introduced](https://github.com/catchorg/Catch2/issues/1437) in Catch2 2.5.0.
 
 _test name_ and _tag_ are exactly the same as they are in `TEST_CASE`,
 with the difference that the tag string must be provided (however, it
@@ -164,7 +164,7 @@ TEMPLATE_TEST_CASE( "vectors can be sized and resized", "[vector][template]", in
 
 * **TEMPLATE_PRODUCT_TEST_CASE(** _test name_ , _tags_, (_template-type1_, _template-type2_, ..., _template-typen_), (_template-arg1_, _template-arg2_, ..., _template-argm_) **)**
 
-> [Introduced](https://github.com/catchorg/Catch2/issues/1468) in Catch 2.6.0.
+> [Introduced](https://github.com/catchorg/Catch2/issues/1468) in Catch2 2.6.0.
 
 _template-type1_ through _template-typen_ is list of template template
 types which should be combined with each of _template-arg1_ through
@@ -209,7 +209,7 @@ is very high and should not be encountered in practice._
 
 * **TEMPLATE_LIST_TEST_CASE(** _test name_, _tags_, _type list_ **)**
 
-> [Introduced](https://github.com/catchorg/Catch2/issues/1627) in Catch 2.9.0.
+> [Introduced](https://github.com/catchorg/Catch2/issues/1627) in Catch2 2.9.0.
 
 _type list_ is a generic list of types on which test case should be instantiated.
 List can be `std::tuple`, `boost::mpl::list`, `boost::mp11::mp_list` or anything with
@@ -229,7 +229,7 @@ TEMPLATE_LIST_TEST_CASE("Template test case with test types specified inside std
 
 ## Signature based parametrised test cases
 
-> [Introduced](https://github.com/catchorg/Catch2/issues/1609) in Catch 2.8.0.
+> [Introduced](https://github.com/catchorg/Catch2/issues/1609) in Catch2 2.8.0.
 
 In addition to [type parametrised test cases](#type-parametrised-test-cases) Catch2 also supports
 signature base parametrised test cases, in form of `TEMPLATE_TEST_CASE_SIG` and `TEMPLATE_PRODUCT_TEST_CASE_SIG`.

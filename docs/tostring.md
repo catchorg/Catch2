@@ -71,7 +71,7 @@ CATCH_TRANSLATE_EXCEPTION( MyType const& ex ) {
 
 ## Enums
 
-> Introduced in Catch 2.8.0.
+> Introduced in Catch2 2.8.0.
 
 Enums that already have a `<<` overload for `std::ostream` will convert to strings as expected.
 If you only need to convert enums to strings for test reporting purposes you can provide a `StringMaker` specialisations as any other type.
@@ -110,7 +110,7 @@ TEST_CASE() {
 
 ## Floating point precision
 
-> [Introduced](https://github.com/catchorg/Catch2/issues/1614) in Catch 2.8.0.
+> [Introduced](https://github.com/catchorg/Catch2/issues/1614) in Catch2 2.8.0.
 
 Catch provides a built-in `StringMaker` specialization for both `float`
 and `double`. By default, it uses what we think is a reasonable precision,

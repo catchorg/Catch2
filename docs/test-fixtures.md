@@ -88,7 +88,7 @@ the limit is very high and should not be encountered in practice._
 
 ## Signature-based parametrised test fixtures
 
-> [Introduced](https://github.com/catchorg/Catch2/issues/1609) in Catch 2.8.0.
+> [Introduced](https://github.com/catchorg/Catch2/issues/1609) in Catch2 2.8.0.
 
 Catch2 also provides `TEMPLATE_TEST_CASE_METHOD_SIG` and `TEMPLATE_PRODUCT_TEST_CASE_METHOD_SIG` to support
 fixtures using non-type template parameters. These test cases work similar to `TEMPLATE_TEST_CASE_METHOD` and `TEMPLATE_PRODUCT_TEST_CASE_METHOD`,

@@ -147,9 +147,9 @@ be replaced with the actual version upon release. There are 2 styles
 of placeholders used through the documentation, you should pick one that
 fits your text better (if in doubt, take a look at the existing version
 tags for other features).
-  * `> [Introduced](link-to-issue-or-PR) in Catch X.Y.Z` - this
+  * `> [Introduced](link-to-issue-or-PR) in Catch2 X.Y.Z` - this
   placeholder is usually used after a section heading
-  * `> X (Y and Z) was [introduced](link-to-issue-or-PR) in Catch X.Y.Z`
+  * `> X (Y and Z) was [introduced](link-to-issue-or-PR) in Catch2 X.Y.Z`
   - this placeholder is used when you need to tag a subpart of something,
   e.g. a list
 
