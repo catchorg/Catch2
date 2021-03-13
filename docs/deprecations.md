@@ -12,14 +12,6 @@ at least the next major release.
 
 ## Planned changes
 
-### `CHECKED_IF` and `CHECKED_ELSE`
-
-To make the `CHECKED_IF` and `CHECKED_ELSE` macros more useful, they will
-be marked as "OK to fail" (`Catch::ResultDisposition::SuppressFail` flag
-will be added), which means that their failure will not fail the test,
-making the `else` actually useful.
-
-
 ### Console Colour API
 
 The API for Catch2's console colour will be changed to take an extra

@@ -15,6 +15,8 @@ stringification machinery to the _expr_ and records the result. As with
 evaluates to `true`. `CHECKED_ELSE( expr )` work similarly, but the block
 is entered only if the _expr_ evaluated to `false`.
 
+Fail suppression was [introduced](https://github.com/catchorg/Catch2/pull/2187) in Catch2 X.Y.Z.
+
 Example:
 ```cpp
 int a = ...;
