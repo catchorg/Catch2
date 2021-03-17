@@ -26,7 +26,7 @@ namespace Catch {
             std::time(&rawtime);
 
             std::tm timeInfo = {};
-#ifdef _MSC_VER
+#if defined (_MSC_VER) || defined (__MINGW32__)
             gmtime_s(&timeInfo, &rawtime);
 #else
             gmtime_r(&rawtime, &timeInfo);
