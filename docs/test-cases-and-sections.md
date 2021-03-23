@@ -132,8 +132,21 @@ SCENARIO( "vector can be sized and resized" ) {
     }
 }
 ```
-See [this working example](https://godbolt.org/z/e5vPPM), with an intentional failure to demonstrate the reporting 
-output.
+
+This code will result in two runs through the scenario:
+```
+Scenario : vector can be sized and resized
+  Given  : An empty vector
+  Then   : The size and capacity start at 0
+
+Scenario : vector can be sized and resized
+  Given  : An empty vector
+  When   : push_back() is called
+  Then   : The size changes
+```
+
+See also [runnable example on godbolt](https://godbolt.org/z/e5vPPM),
+with a more complicated (and failing) example.
 
 > `AND_GIVEN` was [introduced](https://github.com/catchorg/Catch2/issues/1360) in Catch2 2.4.0.
 
