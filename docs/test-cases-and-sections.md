@@ -90,13 +90,50 @@ This macro maps onto ```TEST_CASE``` and works in the same way, except that the 
 * **WHEN(** _something_ **)**
 * **THEN(** _something_ **)**
 
-These macros map onto ```SECTION```s except that the section names are the _something_s prefixed by "given: ", "when: " or "then: " respectively.
+These macros map onto ```SECTION```s except that the section names are the _something_ texts prefixed by 
+"given: ", "when: " or "then: " respectively. These macros also map onto the AAA or A<sup>3</sup> test pattern 
+(standing either for [Assemble-Activate-Assert](http://wiki.c2.com/?AssembleActivateAssert) or 
+[Arrange-Act-Assert](http://wiki.c2.com/?ArrangeActAssert)), and in this context, the macros provide both code 
+documentation and reporting of these parts of a test case without the need for extra comments or code to do so.
+
+Semantically, a `GIVEN` clause may have multiple _independent_ `WHEN` clauses within it. This allows a test 
+to have, e.g., one set of "given" objects and multiple subtests using those objects in various ways in each 
+of the `WHEN` clauses without repeating the initialisation from the `GIVEN` clause. When there are _dependent_ 
+clauses -- such as a second `WHEN` clause that should only happen _after_ the previous `WHEN` clause has been 
+executed and validated -- there are additional macros starting with `AND_`:
 
 * **AND_GIVEN(** _something_ **)**
 * **AND_WHEN(** _something_ **)**
 * **AND_THEN(** _something_ **)**
 
-Similar to ```GIVEN```, ```WHEN``` and ```THEN``` except that the prefixes start with "and ". These are used to chain ```GIVEN```s, ```WHEN```s and ```THEN```s together.
+These are used to chain ```GIVEN```s, ```WHEN```s and ```THEN```s together. The `AND_*` clause is placed 
+_inside_ the clause on which it depends. There can be multiple _independent_ clauses that are all _dependent_ 
+on a single outer clause. 
+```cpp
+SCENARIO( "vector can be sized and resized" ) {
+    GIVEN( "An empty vector" ) {
+        auto v = std::vector<std::string>{};
+
+        // Validate assumption of the GIVEN clause
+        THEN( "The size and capacity start at 0" ) {
+            REQUIRE( v.size() == 0 );
+            REQUIRE( v.capacity() == 0 );
+        }
+
+        // Validate one use case for the GIVEN object
+        WHEN( "push_back() is called" ) {
+            v.push_back("hullo");
+
+            THEN( "The size changes" ) {
+                REQUIRE( v.size() == 1 );
+                REQUIRE( v.capacity() >= 1 );
+            }
+        }
+    }
+}
+```
+See [this working example](https://godbolt.org/z/e5vPPM), with an intentional failure to demonstrate the reporting 
+output.
 
 > `AND_GIVEN` was [introduced](https://github.com/catchorg/Catch2/issues/1360) in Catch2 2.4.0.
 
