@@ -5,7 +5,6 @@
 //        https://www.boost.org/LICENSE_1_0.txt)
 
 // SPDX-License-Identifier: BSL-1.0
-#include <catch2/internal/catch_enforce.hpp>
 #include <catch2/internal/catch_stringref.hpp>
 
 #include <algorithm>
@@ -17,11 +16,6 @@ namespace Catch {
     StringRef::StringRef( char const* rawChars ) noexcept
     : StringRef( rawChars, static_cast<StringRef::size_type>(std::strlen(rawChars) ) )
     {}
-
-    auto StringRef::c_str() const -> char const* {
-        CATCH_ENFORCE(isNullTerminated(), "Called StringRef::c_str() on a non-null-terminated instance");
-        return m_start;
-    }
 
     auto StringRef::operator == ( StringRef const& other ) const noexcept -> bool {
         return m_size == other.m_size

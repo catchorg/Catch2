@@ -2646,29 +2646,17 @@ ok {test-number} - empty.empty() for: true
 # StringRef
 ok {test-number} - empty.size() == 0 for: 0 == 0
 # StringRef
-ok {test-number} - empty.isNullTerminated() for: true
-# StringRef
-ok {test-number} - std::strcmp( empty.c_str(), "" ) == 0 for: 0 == 0
+ok {test-number} - std::strcmp( empty.data(), "" ) == 0 for: 0 == 0
 # StringRef
 ok {test-number} - s.empty() == false for: false == false
 # StringRef
 ok {test-number} - s.size() == 5 for: 5 == 5
 # StringRef
-ok {test-number} - s.isNullTerminated() for: true
-# StringRef
 ok {test-number} - std::strcmp( rawChars, "hello" ) == 0 for: 0 == 0
-# StringRef
-ok {test-number} - s.c_str()
-# StringRef
-ok {test-number} - s.c_str() == rawChars for: "hello" == "hello"
 # StringRef
 ok {test-number} - s.data() == rawChars for: "hello" == "hello"
 # StringRef
 ok {test-number} - original == "original"
-# StringRef
-ok {test-number} - !(original.isNullTerminated()) for: !false
-# StringRef
-ok {test-number} - original.c_str()
 # StringRef
 ok {test-number} - original.data()
 # StringRef
@@ -2682,7 +2670,7 @@ ok {test-number} - ss == "hello" for: hello == "hello"
 # StringRef
 ok {test-number} - ss.size() == 6 for: 6 == 6
 # StringRef
-ok {test-number} - std::strcmp( ss.c_str(), "world!" ) == 0 for: 0 == 0
+ok {test-number} - std::strcmp( ss.data(), "world!" ) == 0 for: 0 == 0
 # StringRef
 ok {test-number} - s.data() == s2.data() for: "hello world!" == "hello world!"
 # StringRef
@@ -2690,7 +2678,7 @@ ok {test-number} - s.data() == ss.data() for: "hello world!" == "hello world!"
 # StringRef
 ok {test-number} - s.substr(s.size() + 1, 123).empty() for: true
 # StringRef
-ok {test-number} - std::strcmp(ss.c_str(), "world!") == 0 for: 0 == 0
+ok {test-number} - std::strcmp(ss.data(), "world!") == 0 for: 0 == 0
 # StringRef
 ok {test-number} - s.substr(1'000'000, 1).empty() for: true
 # StringRef
@@ -2730,8 +2718,6 @@ ok {test-number} - with 1 message: 'empty.begin() == empty.end()'
 # StringRef at compilation time
 ok {test-number} - with 1 message: 'stringref.size() == 3'
 # StringRef at compilation time
-ok {test-number} - with 1 message: 'stringref.isNullTerminated()'
-# StringRef at compilation time
 ok {test-number} - with 1 message: 'stringref.data() == abc'
 # StringRef at compilation time
 ok {test-number} - with 1 message: 'stringref.begin() == abc'
@@ -2750,21 +2736,13 @@ ok {test-number} - with 1 message: 'shortened.data() == abc'
 # StringRef at compilation time
 ok {test-number} - with 1 message: 'shortened.begin() != shortened.end()'
 # StringRef at compilation time
-ok {test-number} - with 1 message: '!(shortened.isNullTerminated())'
-# StringRef at compilation time
-ok {test-number} - with 1 message: '!(shortened.substr(1, 3).isNullTerminated())'
-# StringRef at compilation time
 ok {test-number} - with 1 message: '!(sr1.empty())'
 # StringRef at compilation time
 ok {test-number} - with 1 message: 'sr1.size() == 3'
 # StringRef at compilation time
-ok {test-number} - with 1 message: 'sr1.isNullTerminated()'
-# StringRef at compilation time
 ok {test-number} - with 1 message: 'sr2.empty()'
 # StringRef at compilation time
 ok {test-number} - with 1 message: 'sr2.size() == 0'
-# StringRef at compilation time
-ok {test-number} - with 1 message: 'sr2.isNullTerminated()'
 # Stringifying std::chrono::duration helpers
 ok {test-number} - minute == seconds for: 1 m == 60 s
 # Stringifying std::chrono::duration helpers
@@ -4202,5 +4180,5 @@ ok {test-number} - q3 == 23. for: 23.0 == 23.0
 ok {test-number} -
 # xmlentitycheck
 ok {test-number} -
-1..2105
+1..2094
 

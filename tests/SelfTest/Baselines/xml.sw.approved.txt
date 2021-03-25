@@ -12536,21 +12536,13 @@ Message from section two
         </Expression>
         <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/String.tests.cpp" >
           <Original>
-            empty.isNullTerminated()
-          </Original>
-          <Expanded>
-            true
-          </Expanded>
-        </Expression>
-        <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/String.tests.cpp" >
-          <Original>
-            std::strcmp( empty.c_str(), "" ) == 0
+            std::strcmp( empty.data(), "" ) == 0
           </Original>
           <Expanded>
             0 == 0
           </Expanded>
         </Expression>
-        <OverallResults successes="4" failures="0" expectedFailures="0"/>
+        <OverallResults successes="3" failures="0" expectedFailures="0"/>
       </Section>
       <Section name="From string literal" filename="tests/<exe-name>/IntrospectiveTests/String.tests.cpp" >
         <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/String.tests.cpp" >
@@ -12571,34 +12563,10 @@ Message from section two
         </Expression>
         <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/String.tests.cpp" >
           <Original>
-            s.isNullTerminated()
-          </Original>
-          <Expanded>
-            true
-          </Expanded>
-        </Expression>
-        <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/String.tests.cpp" >
-          <Original>
             std::strcmp( rawChars, "hello" ) == 0
           </Original>
           <Expanded>
             0 == 0
-          </Expanded>
-        </Expression>
-        <Expression success="true" type="REQUIRE_NOTHROW" filename="tests/<exe-name>/IntrospectiveTests/String.tests.cpp" >
-          <Original>
-            s.c_str()
-          </Original>
-          <Expanded>
-            s.c_str()
-          </Expanded>
-        </Expression>
-        <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/String.tests.cpp" >
-          <Original>
-            s.c_str() == rawChars
-          </Original>
-          <Expanded>
-            "hello" == "hello"
           </Expanded>
         </Expression>
         <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/String.tests.cpp" >
@@ -12609,7 +12577,7 @@ Message from section two
             "hello" == "hello"
           </Expanded>
         </Expression>
-        <OverallResults successes="7" failures="0" expectedFailures="0"/>
+        <OverallResults successes="4" failures="0" expectedFailures="0"/>
       </Section>
       <Section name="From sub-string" filename="tests/<exe-name>/IntrospectiveTests/String.tests.cpp" >
         <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/String.tests.cpp" >
@@ -12620,22 +12588,6 @@ Message from section two
             original == "original"
           </Expanded>
         </Expression>
-        <Expression success="true" type="REQUIRE_FALSE" filename="tests/<exe-name>/IntrospectiveTests/String.tests.cpp" >
-          <Original>
-            !(original.isNullTerminated())
-          </Original>
-          <Expanded>
-            !false
-          </Expanded>
-        </Expression>
-        <Expression success="true" type="REQUIRE_THROWS" filename="tests/<exe-name>/IntrospectiveTests/String.tests.cpp" >
-          <Original>
-            original.c_str()
-          </Original>
-          <Expanded>
-            original.c_str()
-          </Expanded>
-        </Expression>
         <Expression success="true" type="REQUIRE_NOTHROW" filename="tests/<exe-name>/IntrospectiveTests/String.tests.cpp" >
           <Original>
             original.data()
@@ -12644,7 +12596,7 @@ Message from section two
             original.data()
           </Expanded>
         </Expression>
-        <OverallResults successes="4" failures="0" expectedFailures="0"/>
+        <OverallResults successes="2" failures="0" expectedFailures="0"/>
       </Section>
       <Section name="Substrings" filename="tests/<exe-name>/IntrospectiveTests/String.tests.cpp" >
         <Section name="zero-based substring" filename="tests/<exe-name>/IntrospectiveTests/String.tests.cpp" >
@@ -12696,7 +12648,7 @@ Message from section two
           </Expression>
           <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/String.tests.cpp" >
             <Original>
-              std::strcmp( ss.c_str(), "world!" ) == 0
+              std::strcmp( ss.data(), "world!" ) == 0
             </Original>
             <Expanded>
               0 == 0
@@ -12752,7 +12704,7 @@ Message from section two
         <Section name="Substring off the end are trimmed" filename="tests/<exe-name>/IntrospectiveTests/String.tests.cpp" >
           <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/String.tests.cpp" >
             <Original>
-              std::strcmp(ss.c_str(), "world!") == 0
+              std::strcmp(ss.data(), "world!") == 0
             </Original>
             <Expanded>
               0 == 0
@@ -12941,10 +12893,10 @@ Message from section two
     </TestCase>
     <TestCase name="StringRef at compilation time" tags="[constexpr][StringRef][Strings]" filename="tests/<exe-name>/IntrospectiveTests/String.tests.cpp" >
       <Section name="Simple constructors" filename="tests/<exe-name>/IntrospectiveTests/String.tests.cpp" >
-        <OverallResults successes="15" failures="0" expectedFailures="0"/>
+        <OverallResults successes="12" failures="0" expectedFailures="0"/>
       </Section>
       <Section name="UDL construction" filename="tests/<exe-name>/IntrospectiveTests/String.tests.cpp" >
-        <OverallResults successes="6" failures="0" expectedFailures="0"/>
+        <OverallResults successes="4" failures="0" expectedFailures="0"/>
       </Section>
       <OverallResult success="true"/>
     </TestCase>
@@ -19715,9 +19667,9 @@ loose text artifact
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="1936" failures="149" expectedFailures="21"/>
+    <OverallResults successes="1925" failures="149" expectedFailures="21"/>
     <OverallResultsCases successes="266" failures="86" expectedFailures="4"/>
   </Group>
-  <OverallResults successes="1936" failures="148" expectedFailures="21"/>
+  <OverallResults successes="1925" failures="148" expectedFailures="21"/>
   <OverallResultsCases successes="266" failures="86" expectedFailures="4"/>
 </Catch>

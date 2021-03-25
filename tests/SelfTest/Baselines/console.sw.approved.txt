@@ -10494,12 +10494,7 @@ with expansion:
   0 == 0
 
 String.tests.cpp:<line number>: PASSED:
-  REQUIRE( empty.isNullTerminated() )
-with expansion:
-  true
-
-String.tests.cpp:<line number>: PASSED:
-  REQUIRE( std::strcmp( empty.c_str(), "" ) == 0 )
+  REQUIRE( std::strcmp( empty.data(), "" ) == 0 )
 with expansion:
   0 == 0
 
@@ -10521,22 +10516,9 @@ with expansion:
   5 == 5
 
 String.tests.cpp:<line number>: PASSED:
-  REQUIRE( s.isNullTerminated() )
-with expansion:
-  true
-
-String.tests.cpp:<line number>: PASSED:
   REQUIRE( std::strcmp( rawChars, "hello" ) == 0 )
 with expansion:
   0 == 0
-
-String.tests.cpp:<line number>: PASSED:
-  REQUIRE_NOTHROW( s.c_str() )
-
-String.tests.cpp:<line number>: PASSED:
-  REQUIRE( s.c_str() == rawChars )
-with expansion:
-  "hello" == "hello"
 
 String.tests.cpp:<line number>: PASSED:
   REQUIRE( s.data() == rawChars )
@@ -10552,14 +10534,6 @@ String.tests.cpp:<line number>
 
 String.tests.cpp:<line number>: PASSED:
   REQUIRE( original == "original" )
-
-String.tests.cpp:<line number>: PASSED:
-  REQUIRE_FALSE( original.isNullTerminated() )
-with expansion:
-  !false
-
-String.tests.cpp:<line number>: PASSED:
-  REQUIRE_THROWS( original.c_str() )
 
 String.tests.cpp:<line number>: PASSED:
   REQUIRE_NOTHROW( original.data() )
@@ -10606,7 +10580,7 @@ with expansion:
   6 == 6
 
 String.tests.cpp:<line number>: PASSED:
-  REQUIRE( std::strcmp( ss.c_str(), "world!" ) == 0 )
+  REQUIRE( std::strcmp( ss.data(), "world!" ) == 0 )
 with expansion:
   0 == 0
 
@@ -10658,7 +10632,7 @@ String.tests.cpp:<line number>
 ...............................................................................
 
 String.tests.cpp:<line number>: PASSED:
-  REQUIRE( std::strcmp(ss.c_str(), "world!") == 0 )
+  REQUIRE( std::strcmp(ss.data(), "world!") == 0 )
 with expansion:
   0 == 0
 
@@ -10834,10 +10808,6 @@ with message:
 
 String.tests.cpp:<line number>: PASSED:
 with message:
-  stringref.isNullTerminated()
-
-String.tests.cpp:<line number>: PASSED:
-with message:
   stringref.data() == abc
 
 String.tests.cpp:<line number>: PASSED:
@@ -10872,14 +10842,6 @@ String.tests.cpp:<line number>: PASSED:
 with message:
   shortened.begin() != shortened.end()
 
-String.tests.cpp:<line number>: PASSED:
-with message:
-  !(shortened.isNullTerminated())
-
-String.tests.cpp:<line number>: PASSED:
-with message:
-  !(shortened.substr(1, 3).isNullTerminated())
-
 -------------------------------------------------------------------------------
 StringRef at compilation time
   UDL construction
@@ -10897,19 +10859,11 @@ with message:
 
 String.tests.cpp:<line number>: PASSED:
 with message:
-  sr1.isNullTerminated()
-
-String.tests.cpp:<line number>: PASSED:
-with message:
   sr2.empty()
 
 String.tests.cpp:<line number>: PASSED:
 with message:
   sr2.size() == 0
-
-String.tests.cpp:<line number>: PASSED:
-with message:
-  sr2.isNullTerminated()
 
 -------------------------------------------------------------------------------
 Stringifying std::chrono::duration helpers
@@ -16769,5 +16723,5 @@ Misc.tests.cpp:<line number>: PASSED:
 
 ===============================================================================
 test cases:  356 |  266 passed |  86 failed |  4 failed as expected
-assertions: 2105 | 1936 passed | 148 failed | 21 failed as expected
+assertions: 2094 | 1925 passed | 148 failed | 21 failed as expected
 

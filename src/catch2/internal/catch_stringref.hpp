@@ -69,10 +69,6 @@ namespace Catch {
             return m_size;
         }
 
-        // Returns the current start pointer. If the StringRef is not
-        // null-terminated, throws std::domain_exception
-        auto c_str() const -> char const*;
-
     public: // substrings and searches
         // Returns a substring of [start, start + length).
         // If start + length > size(), then the substring is [start, start + size()).
@@ -89,10 +85,6 @@ namespace Catch {
         // Returns the current start pointer. May not be null-terminated.
         constexpr char const* data() const noexcept {
             return m_start;
-        }
-
-        constexpr auto isNullTerminated() const noexcept -> bool {
-            return m_start[m_size] == '\0';
         }
 
     public: // iterators

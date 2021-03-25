@@ -10,29 +10,23 @@ TEST_CASE( "StringRef", "[Strings][StringRef]" ) {
         StringRef empty;
         REQUIRE( empty.empty() );
         REQUIRE( empty.size() == 0 );
-        REQUIRE( empty.isNullTerminated() );
-        REQUIRE( std::strcmp( empty.c_str(), "" ) == 0 );
+        REQUIRE( std::strcmp( empty.data(), "" ) == 0 );
     }
 
     SECTION( "From string literal" ) {
         StringRef s = "hello";
         REQUIRE( s.empty() == false );
         REQUIRE( s.size() == 5 );
-        REQUIRE( s.isNullTerminated() );
 
         auto rawChars = s.data();
         REQUIRE( std::strcmp( rawChars, "hello" ) == 0 );
 
-        REQUIRE_NOTHROW(s.c_str());
-        REQUIRE(s.c_str() == rawChars);
         REQUIRE(s.data() == rawChars);
     }
     SECTION( "From sub-string" ) {
         StringRef original = StringRef( "original string" ).substr(0, 8);
         REQUIRE( original == "original" );
 
-        REQUIRE_FALSE(original.isNullTerminated());
-        REQUIRE_THROWS(original.c_str());
         REQUIRE_NOTHROW(original.data());
     }
 
@@ -51,7 +45,7 @@ TEST_CASE( "StringRef", "[Strings][StringRef]" ) {
         SECTION( "non-zero-based substring") {
             ss = s.substr( 6, 6 );
             REQUIRE( ss.size() == 6 );
-            REQUIRE( std::strcmp( ss.c_str(), "world!" ) == 0 );
+            REQUIRE( std::strcmp( ss.data(), "world!" ) == 0 );
         }
 
         SECTION( "Pointer values of full refs should match" ) {
@@ -69,7 +63,7 @@ TEST_CASE( "StringRef", "[Strings][StringRef]" ) {
 
         SECTION("Substring off the end are trimmed") {
             ss = s.substr(6, 123);
-            REQUIRE(std::strcmp(ss.c_str(), "world!") == 0);
+            REQUIRE(std::strcmp(ss.data(), "world!") == 0);
         }
         SECTION("substring start after the end is empty") {
             REQUIRE(s.substr(1'000'000, 1).empty());
@@ -147,7 +141,6 @@ TEST_CASE("StringRef at compilation time", "[Strings][StringRef][constexpr]") {
 
         constexpr StringRef stringref(abc, 3);
         STATIC_REQUIRE(stringref.size() == 3);
-        STATIC_REQUIRE(stringref.isNullTerminated());
         STATIC_REQUIRE(stringref.data() == abc);
         STATIC_REQUIRE(stringref.begin() == abc);
         STATIC_REQUIRE(stringref.begin() != stringref.end());
@@ -160,19 +153,15 @@ TEST_CASE("StringRef at compilation time", "[Strings][StringRef][constexpr]") {
         STATIC_REQUIRE(shortened.size() == 2);
         STATIC_REQUIRE(shortened.data() == abc);
         STATIC_REQUIRE(shortened.begin() != shortened.end());
-        STATIC_REQUIRE_FALSE(shortened.isNullTerminated());
-        STATIC_REQUIRE_FALSE(shortened.substr(1, 3).isNullTerminated());
     }
     SECTION("UDL construction") {
         constexpr auto sr1 = "abc"_catch_sr;
         STATIC_REQUIRE_FALSE(sr1.empty());
         STATIC_REQUIRE(sr1.size() == 3);
-        STATIC_REQUIRE(sr1.isNullTerminated());
 
         using Catch::operator"" _sr;
         constexpr auto sr2 = ""_sr;
         STATIC_REQUIRE(sr2.empty());
         STATIC_REQUIRE(sr2.size() == 0);
-        STATIC_REQUIRE(sr2.isNullTerminated());
     }
 }
