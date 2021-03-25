@@ -13,6 +13,7 @@
 #include <iosfwd>
 #include <cstddef>
 #include <ostream>
+#include <string>
 
 namespace Catch {
 
@@ -20,14 +21,12 @@ namespace Catch {
     std::ostream& cerr();
     std::ostream& clog();
 
-    class StringRef;
-
     struct IStream {
         virtual ~IStream();
         virtual std::ostream& stream() const = 0;
     };
 
-    auto makeStream( StringRef const &filename ) -> IStream const*;
+    auto makeStream( std::string const& filename ) -> IStream const*;
 
     class ReusableStringStream : Detail::NonCopyable {
         std::size_t m_index;

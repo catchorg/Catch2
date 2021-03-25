@@ -74,7 +74,7 @@ namespace Detail {
         class FileStream : public IStream {
             mutable std::ofstream m_ofs;
         public:
-            FileStream( StringRef filename ) {
+            FileStream( std::string const& filename ) {
                 m_ofs.open( filename.c_str() );
                 CATCH_ENFORCE( !m_ofs.fail(), "Unable to open file: '" << filename << "'" );
             }
@@ -121,7 +121,7 @@ namespace Detail {
 
     ///////////////////////////////////////////////////////////////////////////
 
-    auto makeStream( StringRef const &filename ) -> IStream const* {
+    auto makeStream( std::string const& filename ) -> IStream const* {
         if( filename.empty() )
             return new Detail::CoutStream();
         else if( filename[0] == '%' ) {
