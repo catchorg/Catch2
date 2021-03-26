@@ -288,6 +288,12 @@ set_target_properties(Catch2WithMain
     OUTPUT_NAME "Catch2Main"
 )
 
+if (NOT CMAKE_CXX_STANDARD
+    AND "cxx_std_17" IN_LIST CMAKE_CXX_COMPILE_FEATURES)
+  target_compile_features(Catch2 PRIVATE cxx_std_17)
+  target_compile_features(Catch2WithMain PRIVATE cxx_std_17)
+endif()
+
 if (NOT_SUBPROJECT)
     # create and install an export set for catch target as Catch2::Catch
     install(
