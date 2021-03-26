@@ -58,12 +58,12 @@ TEST_CASE("tables", "[generators]") {
 
 // Structured bindings make the table utility much nicer to use
 TEST_CASE( "strlen2", "[approvals][generators]" ) {
-    auto [test_input, expected] = GENERATE( table<std::string, size_t>({
-            {"one", 3},
-            {"two", 3},
-            {"three", 5},
-            {"four", 4}
-        }));
+    using tuple_type = std::tuple<std::string, int>; // see above workaround
+    auto [test_input, expected] =
+        GENERATE( table<std::string, size_t>( { tuple_type{ "one", 3 },
+                                                tuple_type{ "two", 3 },
+                                                tuple_type{ "three", 5 },
+                                                tuple_type{ "four", 4 } } ) );
 
     REQUIRE( test_input.size() == expected );
 }
@@ -99,11 +99,9 @@ TEST_CASE( "strlen3", "[generators]" ) {
 static auto eatCucumbers( int start, int eat ) -> int { return start-eat; }
 
 SCENARIO("Eating cucumbers", "[generators][approvals]") {
-
-    auto [start, eat, left] = GENERATE( table<int,int,int> ({
-            { 12, 5, 7 },
-            { 20, 5, 15 }
-        }));
+    using tuple_type = std::tuple<int, int, int>;
+    auto [start, eat, left] = GENERATE( table<int, int, int>(
+        { tuple_type{ 12, 5, 7 }, tuple_type{ 20, 5, 15 } } ) );
 
     GIVEN( "there are " << start << " cucumbers" )
     WHEN( "I eat " << eat << " cucumbers" )

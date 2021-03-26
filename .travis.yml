@@ -264,6 +264,15 @@ matrix:
       addons:
           apt:
               sources: *all_sources
+              packages: ['clang-5.0']
+      env: COMPILER='clang++-5.0' CPP17=1
+
+    - os: linux
+      dist: xenial
+      compiler: clang
+      addons:
+          apt:
+              sources: *all_sources
               packages: ['clang-6.0', 'libstdc++-8-dev']
       env: COMPILER='clang++-6.0' CPP17=1
 
