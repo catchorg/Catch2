@@ -61,6 +61,13 @@ matrix:
               packages: ['clang-5.0']
       env: COMPILER='clang++-5.0' CPP14=1
 
+    - os: linux
+      compiler: clang
+      addons:
+          apt:
+              sources: *all_sources
+              packages: ['clang-5.0']
+      env: COMPILER='clang++-5.0' CPP17=1
 
     - os: linux
       compiler: clang

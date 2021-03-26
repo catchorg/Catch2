@@ -55,11 +55,11 @@ namespace Matchers {
             return arr;
         }
 
-        #ifdef CATCH_CPP17_OR_GREATER
+#if defined( __cpp_lib_logical_traits ) && __cpp_lib_logical_traits >= 201510
 
         using std::conjunction;
 
-        #else // CATCH_CPP17_OR_GREATER
+#else // __cpp_lib_logical_traits
 
         template<typename... Cond>
         struct conjunction : std::true_type {};
@@ -67,7 +67,7 @@ namespace Matchers {
         template<typename Cond, typename... Rest>
         struct conjunction<Cond, Rest...> : std::integral_constant<bool, Cond::value && conjunction<Rest...>::value> {};
 
-        #endif // CATCH_CPP17_OR_GREATER
+#endif // __cpp_lib_logical_traits
 
         template<typename T>
         using is_generic_matcher = std::is_base_of<
