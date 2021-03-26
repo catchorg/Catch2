@@ -108,6 +108,11 @@ add_library(Catch2WithMain ${CMAKE_CURRENT_LIST_DIR}/src/catch_with_main.cpp)
 target_link_libraries(Catch2WithMain PUBLIC Catch2)
 add_library(Catch2::Catch2WithMain ALIAS Catch2WithMain)
 
+if (NOT CMAKE_CXX_STANDARD
+    AND "cxx_std_17" IN_LIST CMAKE_CXX_COMPILE_FEATURES)
+  target_compile_features(Catch2WithMain PRIVATE cxx_std_17)
+endif()
+
 # Make the build reproducible on versions of g++ and clang that supports -ffile-prefix-map
 if(("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU" AND NOT ${CMAKE_CXX_COMPILER_VERSION} VERSION_LESS 8) OR
    ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang" AND NOT ${CMAKE_CXX_COMPILER_VERSION} VERSION_LESS 10))
