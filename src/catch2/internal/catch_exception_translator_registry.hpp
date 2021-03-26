@@ -17,7 +17,7 @@ namespace Catch {
     class ExceptionTranslatorRegistry : public IExceptionTranslatorRegistry {
     public:
         ~ExceptionTranslatorRegistry();
-        virtual void registerTranslator( const IExceptionTranslator* translator );
+        void registerTranslator( const IExceptionTranslator* translator );
         std::string translateActiveException() const override;
         std::string tryTranslators() const;
 
