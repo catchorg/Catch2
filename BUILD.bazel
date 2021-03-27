@@ -13,5 +13,5 @@ cc_library(
     name = "catch2_with_main",
     srcs = ["src/catch_with_main.cpp"],
     visibility = ["//visibility:public"],
-    deps = ["//:catch2"],
+    deps = [":catch2"],
 )
