@@ -10,57 +10,60 @@
 
 #include <catch2/internal/catch_platform.hpp>
 #include <catch2/internal/catch_compiler_capabilities.hpp>
-#include <catch2/internal/catch_windows_h_proxy.hpp>
 
-
-#if defined( CATCH_CONFIG_WINDOWS_SEH )
+#include <cassert>
 
 namespace Catch {
 
-    struct FatalConditionHandler {
+    /**
+     * Wrapper for platform-specific fatal error (signals/SEH) handlers
+     *
+     * Tries to be cooperative with other handlers, and not step over
+     * other handlers. This means that unknown structured exceptions
+     * are passed on, previous signal handlers are called, and so on.
+     *
+     * Can only be instantiated once, and assumes that once a signal
+     * is caught, the binary will end up terminating. Thus, there
+     */
+    class FatalConditionHandler {
+        bool m_started = false;
 
-        static LONG CALLBACK handleVectoredException(PEXCEPTION_POINTERS ExceptionInfo);
+        // Install/disengage implementation for specific platform.
+        // Should be if-defed to work on current platform, can assume
+        // engage-disengage 1:1 pairing.
+        void engage_platform();
+        void disengage_platform();
+    public:
+        // Should also have platform-specific implementations as needed
         FatalConditionHandler();
-        static void reset();
-        ~FatalConditionHandler() { reset(); }
+        ~FatalConditionHandler();
 
-    private:
-        static bool isSet;
-        static ULONG guaranteeSize;
-        static PVOID exceptionHandlerHandle;
+        void engage() {
+            assert(!m_started && "Handler cannot be installed twice.");
+            m_started = true;
+            engage_platform();
+        }
+
+        void disengage() {
+            assert(m_started && "Handler cannot be uninstalled without being installed first");
+            m_started = false;
+            disengage_platform();
+        }
     };
 
-} // namespace Catch
-
-#elif defined ( CATCH_CONFIG_POSIX_SIGNALS )
-
-#include <signal.h>
-
-namespace Catch {
-
-    struct FatalConditionHandler {
-
-        static bool isSet;
-        static struct sigaction oldSigActions[];
-        static stack_t oldSigStack;
-        static char altStackMem[];
-
-        static void handleSignal( int sig );
-
-        FatalConditionHandler();
-        ~FatalConditionHandler() { reset(); }
-        static void reset();
+    //! Simple RAII guard for (dis)engaging the FatalConditionHandler
+    class FatalConditionHandlerGuard {
+        FatalConditionHandler* m_handler;
+    public:
+        FatalConditionHandlerGuard(FatalConditionHandler* handler):
+            m_handler(handler) {
+            m_handler->engage();
+        }
+        ~FatalConditionHandlerGuard() {
+            m_handler->disengage();
+        }
     };
 
-} // namespace Catch
-
-
-#else
-
-namespace Catch {
-    struct FatalConditionHandler {};
-}
-
-#endif
+} // end namespace Catch
 
 #endif // CATCH_FATAL_CONDITION_HANDLER_HPP_INCLUDED
