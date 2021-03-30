@@ -39,9 +39,9 @@
 
 #endif
 
-// We have to avoid both ICC and Clang, because they try to mask themselves
-// as gcc, and we want only GCC in this block
-#if defined(__GNUC__) && !defined(__clang__) && !defined(__ICC) && !defined(__CUDACC__)
+// Only GCC compiler should be used in this block, so other compilers trying to
+// mask themselves as GCC should be ignored.
+#if defined(__GNUC__) && !defined(__clang__) && !defined(__ICC) && !defined(__CUDACC__) && !defined(__LCC__)
 #    define CATCH_INTERNAL_START_WARNINGS_SUPPRESSION _Pragma( "GCC diagnostic push" )
 #    define CATCH_INTERNAL_STOP_WARNINGS_SUPPRESSION  _Pragma( "GCC diagnostic pop" )
 
