@@ -200,22 +200,26 @@ std::string StringMaker<unsigned long long>::convert(unsigned long long value) {
     return rss.str();
 }
 
-std::string StringMaker<signed char>::convert(signed char value) {
-    if (value == '\r') {
+sstd::string StringMaker<signed char>::convert(signed char value) {
+    switch (value) {
+      case '\r':
         return "'\\r'";
-    } else if (value == '\f') {
+        break;
+      case '\f':
         return "'\\f'";
-    } else if (value == '\n') {
+        break;
+      case '\n':
         return "'\\n'";
-    } else if (value == '\t') {
+        break;
+      case '\t':
         return "'\\t'";
-    } else if ('\0' <= value && value < ' ') {
-        return ::Catch::Detail::stringify(static_cast<unsigned int>(value));
-    } else {
-        char chstr[] = "' '";
-        chstr[1] = value;
-        return chstr;
     }
+    if('\0' <= value && value < ' ') 
+      return ::Catch::Detail::stringify(static_cast<unsigned int>(value));
+
+    char chstr[] = "' '";
+    chstr[1] = value;
+    return chstr;
 }
 std::string StringMaker<char>::convert(char c) {
     return ::Catch::Detail::stringify(static_cast<signed char>(c));
