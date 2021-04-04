@@ -16,16 +16,14 @@
 
 namespace Catch {
 
-    /**
-     * Wrapper for platform-specific fatal error (signals/SEH) handlers
-     *
-     * Tries to be cooperative with other handlers, and not step over
-     * other handlers. This means that unknown structured exceptions
-     * are passed on, previous signal handlers are called, and so on.
-     *
-     * Can only be instantiated once, and assumes that once a signal
-     * is caught, the binary will end up terminating. Thus, there
-     */
+    // Wrapper for platform-specific fatal error (signals/SEH) handlers
+    //
+    // Tries to be cooperative with other handlers, and not step over
+    // other handlers. This means that unknown structured exceptions
+    // are passed on, previous signal handlers are called, and so on.
+    //
+    // Can only be instantiated once, and assumes that once a signal
+    // is caught, the binary will end up terminating. Thus, there
     class FatalConditionHandler {
         bool m_started = false;
 
