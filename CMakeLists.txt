@@ -4,6 +4,8 @@ cmake_minimum_required(VERSION 3.5)
 # disable testsuite in that case
 if(NOT DEFINED PROJECT_NAME)
     set(NOT_SUBPROJECT ON)
+else()
+    set(NOT_SUBPROJECT OFF)
 endif()
 
 # Catch2's build breaks if done in-tree. You probably should not build
