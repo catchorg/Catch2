@@ -48,7 +48,7 @@ TEST_CASE("Table allows pre-computed test inputs and outputs", "[example][genera
  * (technically C++17 but does not require -std in GCC/Clang). See
  *   https://stackoverflow.com/questions/12436586/tuple-vector-and-initializer-list
  *
- * - In C++17 mode std::tie() and the preceeding variable delcarations can be
+ * - In C++17 mode std::tie() and the preceding variable delcarations can be
  * replaced by structured bindings: auto [test_input, expected] = GENERATE(
  * table<std::string, size_t>({ ...
  */

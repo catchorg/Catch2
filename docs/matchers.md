@@ -101,7 +101,7 @@ string is equal to `str`.
 
 Finally, the `Matches` matcher performs an ECMASCript regex match using
 `str` against the argument string. It is important to know that
-the match is performed agains the string as a whole, meaning that
+the match is performed against the string as a whole, meaning that
 the regex `"abc"` will not match input string `"abcd"`. To match
 `"abcd"`, you need to use e.g. `"abc.*"` as your regex.
 

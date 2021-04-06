@@ -200,7 +200,7 @@ function(ParseAndAddCatchTests_ParseFile SourceFile TestTarget)
             # Escape commas in the test spec
             string(REPLACE "," "\\," Name ${Name})
 
-            # Work around CMake 3.18.0 change in `add_test()`, before the escaped quotes were neccessary,
+            # Work around CMake 3.18.0 change in `add_test()`, before the escaped quotes were necessary,
             # only with CMake 3.18.0 the escaped double quotes confuse the call. This change is reverted in 3.18.1
             # And properly introduced in 3.19 with the CMP0110 policy
             if(_cmp0110_value STREQUAL "NEW" OR ${CMAKE_VERSION} VERSION_EQUAL "3.18")
