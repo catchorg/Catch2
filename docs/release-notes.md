@@ -74,7 +74,7 @@ new design.
 * Will Catch2 again distribute single-header version in the future?
   * No. But we do provide sqlite-style amalgamated distribution option. This means that you can download just 1 .cpp file and 1 header and place them next to your own sources. However, doing this has downsides similar to using the `catch_all.hpp` header.
 * Why the big breaking change caused by replacing `catch.hpp` with `catch_all.hpp`?
-  * The convenience header `catch_all.hpp` exists for two reasons. One of them is to provide a way for quick migration from Catch2, the second one is to provide a simple way to test things with Catch2. Using it for migration has one drawback in that it is **big**. This means that including it _will_ cause significant compile time drag, and so using it to migrate should be a concious decision by the user, not something they can just stumble into unknowingly.
+  * The convenience header `catch_all.hpp` exists for two reasons. One of them is to provide a way for quick migration from Catch2, the second one is to provide a simple way to test things with Catch2. Using it for migration has one drawback in that it is **big**. This means that including it _will_ cause significant compile time drag, and so using it to migrate should be a conscious decision by the user, not something they can just stumble into unknowingly.
 
 
 ### (Potentially) Breaking changes
