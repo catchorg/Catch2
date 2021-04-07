@@ -26,7 +26,7 @@ Ongoing development happens in the `v2.x` branch for Catch2 v2, and in
 
 Commits should be small and atomic. A commit is atomic when, after it is
 applied, the codebase, tests and all, still works as expected. Small
-commits are also prefered, as they make later operations with git history,
+commits are also preferred, as they make later operations with git history,
 whether it is bisecting, reverting, or something else, easier.
 
 _When submitting a pull request please do not include changes to the
