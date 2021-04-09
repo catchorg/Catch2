@@ -182,6 +182,15 @@ TEST_CASE( "checkedElse, failing", "[failing][.]" ) {
     REQUIRE( testCheckedElse( false ) );
 }
 
+TEST_CASE("Testing checked-if", "[checked-if]") {
+    CHECKED_IF(true) {
+        SUCCEED();
+    }
+    CHECKED_IF(false) {
+        FAIL();
+    }
+}
+
 TEST_CASE( "xmlentitycheck" ) {
     SECTION( "embedded xml: <test>it should be possible to embed xml characters, such as <, \" or &, or even whole <xml>documents</xml> within an attribute</test>" ) {
         SUCCEED(); // We need this here to stop it failing due to no tests
