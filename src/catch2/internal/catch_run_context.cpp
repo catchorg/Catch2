@@ -230,9 +230,9 @@ namespace Catch {
         if (result.getResultType() == ResultWas::Ok) {
             m_totals.assertions.passed++;
             m_lastAssertionPassed = true;
-        } else if (!result.isOk()) {
+        } else if (!result.succeeded()) {
             m_lastAssertionPassed = false;
-            if( m_activeTestCase->getTestCaseInfo().okToFail() )
+            if( m_activeTestCase->getTestCaseInfo().okToFail() || result.isOk() )
                 m_totals.assertions.failedButOk++;
             else
                 m_totals.assertions.failed++;
