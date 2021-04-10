@@ -2,6 +2,7 @@
 
 # Release notes
 **Contents**<br>
+[2.13.5](#2135)<br>
 [2.13.4](#2134)<br>
 [2.13.3](#2133)<br>
 [2.13.2](#2132)<br>
@@ -43,6 +44,27 @@
 [2.0.1](#201)<br>
 [Older versions](#older-versions)<br>
 [Even Older versions](#even-older-versions)<br>
+
+
+## 2.13.5
+
+### Improvements
+* Detection of MAC and IPHONE platforms has been improved (#2140, #2157)
+* Added workaround for bug in XLC 16.1.0.1 (#2155)
+* Add detection for LCC when it is masquerading as GCC (#2199)
+* Modified posix signal handling so it supports newer libcs (#2178)
+  * `MINSIGSTKSZ` was no longer usable in constexpr context.
+
+### Fixes
+* Fixed compilation of benchmarking when `min` and `max` macros are defined (#2159)
+  * Including `windows.h` without `NOMINMAX` remains a really bad idea, don't do it
+
+### Miscellaneous
+* `Catch2WithMain` target (static library) is no longer built by default (#2142)
+  * Building it by default was at best unnecessary overhead for people not using it, and at worst it caused trouble with install paths
+  * To have it built, set CMake option `CATCH_BUILD_STATIC_LIBRARY` to `ON`
+* The check whether Catch2 is being built as a subproject is now more reliable (#2202, #2204)
+  * The problem was that if the variable name used internally was defined the project including Catch2 as subproject, it would not be properly overwritten for Catch2's CMake.
 
 
 ## 2.13.4
