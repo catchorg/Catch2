@@ -232,7 +232,9 @@ namespace Catch {
             m_lastAssertionPassed = true;
         } else if (!result.succeeded()) {
             m_lastAssertionPassed = false;
-            if( m_activeTestCase->getTestCaseInfo().okToFail() || result.isOk() )
+            if (result.isOk()) {
+            }
+            else if( m_activeTestCase->getTestCaseInfo().okToFail() )
                 m_totals.assertions.failedButOk++;
             else
                 m_totals.assertions.failed++;
