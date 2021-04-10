@@ -12299,6 +12299,20 @@ CmdLine.tests.cpp:<line number>
 CmdLine.tests.cpp:<line number>: PASSED:
 
 -------------------------------------------------------------------------------
+Testing checked-if
+-------------------------------------------------------------------------------
+Misc.tests.cpp:<line number>
+...............................................................................
+
+Misc.tests.cpp:<line number>: PASSED:
+  CHECKED_IF( true )
+
+Misc.tests.cpp:<line number>: PASSED:
+
+Misc.tests.cpp:<line number>: FAILED - but was ok:
+  CHECKED_IF( false )
+
+-------------------------------------------------------------------------------
 The NO_FAIL macro reports a failure but does not fail the test
 -------------------------------------------------------------------------------
 Message.tests.cpp:<line number>
@@ -14176,7 +14190,7 @@ checkedElse, failing
 Misc.tests.cpp:<line number>
 ...............................................................................
 
-Misc.tests.cpp:<line number>: FAILED:
+Misc.tests.cpp:<line number>: FAILED - but was ok:
   CHECKED_ELSE( flag )
 with expansion:
   false
@@ -14208,7 +14222,7 @@ checkedIf, failing
 Misc.tests.cpp:<line number>
 ...............................................................................
 
-Misc.tests.cpp:<line number>: FAILED:
+Misc.tests.cpp:<line number>: FAILED - but was ok:
   CHECKED_IF( flag )
 with expansion:
   false
@@ -16722,6 +16736,6 @@ Misc.tests.cpp:<line number>
 Misc.tests.cpp:<line number>: PASSED:
 
 ===============================================================================
-test cases:  356 |  266 passed |  86 failed |  4 failed as expected
-assertions: 2094 | 1925 passed | 148 failed | 21 failed as expected
+test cases:  357 |  267 passed |  86 failed |  4 failed as expected
+assertions: 2094 | 1927 passed | 146 failed | 21 failed as expected
 

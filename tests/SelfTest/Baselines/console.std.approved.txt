@@ -1136,11 +1136,6 @@ Misc.tests.cpp:<line number>
 ...............................................................................
 
 Misc.tests.cpp:<line number>: FAILED:
-  CHECKED_ELSE( flag )
-with expansion:
-  false
-
-Misc.tests.cpp:<line number>: FAILED:
   REQUIRE( testCheckedElse( false ) )
 with expansion:
   false
@@ -1150,11 +1145,6 @@ checkedIf, failing
 -------------------------------------------------------------------------------
 Misc.tests.cpp:<line number>
 ...............................................................................
-
-Misc.tests.cpp:<line number>: FAILED:
-  CHECKED_IF( flag )
-with expansion:
-  false
 
 Misc.tests.cpp:<line number>: FAILED:
   REQUIRE( testCheckedIf( false ) )
@@ -1380,6 +1370,6 @@ due to unexpected exception with message:
   Why would you throw a std::string?
 
 ===============================================================================
-test cases:  356 |  282 passed |  70 failed |  4 failed as expected
-assertions: 2077 | 1925 passed | 131 failed | 21 failed as expected
+test cases:  357 |  283 passed |  70 failed |  4 failed as expected
+assertions: 2077 | 1927 passed | 129 failed | 21 failed as expected
 
