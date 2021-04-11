@@ -3,6 +3,7 @@
 # Release notes
 **Contents**<br>
 [3.0.1](#301)<br>
+[2.13.4](#2134)<br>
 [2.13.3](#2133)<br>
 [2.13.2](#2132)<br>
 [2.13.1](#2131)<br>
@@ -170,6 +171,21 @@ new design.
   * `catch2` is the statically compiled implementation by itself
   * `catch2-with-main` also links in the default main
 
+
+## 2.13.4
+
+### Improvements
+* Improved the hashing algorithm used for shuffling test cases (#2070)
+  * `TEST_CASE`s that differ only in the last character should be properly shuffled
+  * Note that this means that v2.13.4 gives you a different order of test cases than 2.13.3, even given the same seed.
+
+### Miscellaneous
+* Deprecated `ParseAndAddCatchTests` CMake integration (#2092)
+  * It is impossible to implement it properly for all the different test case variants Catch2 provides, and there are better options provided.
+  * Use `catch_discover_tests` instead, which uses runtime information about available tests.
+* Fixed bug in `catch_discover_tests` that would cause it to fail when used in specific project structures (#2119)
+* Added Bazel build file
+* Added an experimental static library target to CMake
 
 
 ## 2.13.3

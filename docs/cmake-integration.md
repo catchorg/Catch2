@@ -180,7 +180,7 @@ the output file name e.g. ".xml".
 ### `ParseAndAddCatchTests.cmake`
 
 ⚠ This script is [deprecated](https://github.com/catchorg/Catch2/pull/2120)
-in Catch X.Y.Z and superseded by the above approach using `catch_discover_tests`.
+in Catch2 2.13.4 and superseded by the above approach using `catch_discover_tests`.
 See [#2092](https://github.com/catchorg/Catch2/issues/2092) for details.
 
 `ParseAndAddCatchTests` works by parsing all implementation files
