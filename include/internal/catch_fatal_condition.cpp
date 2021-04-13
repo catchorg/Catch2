@@ -40,8 +40,8 @@ namespace Catch {
 
     // If neither SEH nor signal handling is required, the handler impls
     // do not have to do anything, and can be empty.
-    FatalConditionHandler::engage_platform() {}
-    FatalConditionHandler::disengage_platform() {}
+    void FatalConditionHandler::engage_platform() {}
+    void FatalConditionHandler::disengage_platform() {}
     FatalConditionHandler::FatalConditionHandler() = default;
     FatalConditionHandler::~FatalConditionHandler() = default;
 
