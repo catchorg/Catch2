@@ -16,7 +16,10 @@ set(tests)
 
 function(add_command NAME)
   set(_args "")
-  foreach(_arg ${ARGN})
+  # use ARGV* instead of ARGN, because ARGN splits arrays into multiple arguments
+  math(EXPR _last_arg ${ARGC}-1)
+  foreach(_n RANGE 1 ${_last_arg})
+    set(_arg "${ARGV${_n}}")
     if(_arg MATCHES "[^-./:a-zA-Z0-9_]")
       set(_args "${_args} [==[${_arg}]==]") # form a bracket_argument
     else()
