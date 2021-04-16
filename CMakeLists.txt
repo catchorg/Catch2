@@ -4,6 +4,8 @@ cmake_minimum_required(VERSION 3.5)
 # disable testsuite in that case
 if(NOT DEFINED PROJECT_NAME)
   set(NOT_SUBPROJECT ON)
+else()
+  set(NOT_SUBPROJECT OFF)
 endif()
 
 option(CATCH_INSTALL_DOCS "Install documentation alongside library" ON)
