@@ -1,6 +1,6 @@
 /*
- *  Catch v2.13.5
- *  Generated: 2021-04-10 23:43:17.560525
+ *  Catch v2.13.6
+ *  Generated: 2021-04-16 18:23:38.044268
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2021 Two Blue Cubes Ltd. All rights reserved.
@@ -15,7 +15,7 @@
 
 #define CATCH_VERSION_MAJOR 2
 #define CATCH_VERSION_MINOR 13
-#define CATCH_VERSION_PATCH 5
+#define CATCH_VERSION_PATCH 6
 
 #ifdef __clang__
 #    pragma clang system_header
@@ -10751,8 +10751,8 @@ namespace Catch {
 
     // If neither SEH nor signal handling is required, the handler impls
     // do not have to do anything, and can be empty.
-    FatalConditionHandler::engage_platform() {}
-    FatalConditionHandler::disengage_platform() {}
+    void FatalConditionHandler::engage_platform() {}
+    void FatalConditionHandler::disengage_platform() {}
     FatalConditionHandler::FatalConditionHandler() = default;
     FatalConditionHandler::~FatalConditionHandler() = default;
 
@@ -15376,7 +15376,7 @@ namespace Catch {
     }
 
     Version const& libraryVersion() {
-        static Version version( 2, 13, 5, "", 0 );
+        static Version version( 2, 13, 6, "", 0 );
         return version;
     }
 
