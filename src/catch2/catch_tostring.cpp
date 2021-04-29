@@ -42,14 +42,14 @@ namespace Detail {
         };
 
         template<typename T>
-        std::string fpToString(T value, int precision) {
+        std::string fpToString(T value, int precision, std::ios_base &(*format)(std::ios_base &)) {
             if (Catch::isnan(value)) {
                 return "nan";
             }
 
             ReusableStringStream rss;
             rss << std::setprecision(precision)
-                << std::fixed
+                << format
                 << value;
             std::string d = rss.str();
             std::size_t i = d.find_last_not_of('0');
@@ -225,15 +225,17 @@ std::string StringMaker<unsigned char>::convert(unsigned char c) {
 }
 
 int StringMaker<float>::precision = 5;
+std::ios_base &(*StringMaker<float>::format)(std::ios_base &) = std::fixed;
 
 std::string StringMaker<float>::convert(float value) {
-    return Detail::fpToString(value, precision) + 'f';
+    return Detail::fpToString(value, precision, format) + 'f';
 }
 
 int StringMaker<double>::precision = 10;
+std::ios_base &(*StringMaker<double>::format)(std::ios_base &) = std::fixed;
 
 std::string StringMaker<double>::convert(double value) {
-    return Detail::fpToString(value, precision);
+    return Detail::fpToString(value, precision, format);
 }
 
 } // end namespace Catch
@@ -241,4 +243,3 @@ std::string StringMaker<double>::convert(double value) {
 #if defined(__clang__)
 #    pragma clang diagnostic pop
 #endif
-

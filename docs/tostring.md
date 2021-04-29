@@ -127,6 +127,17 @@ inside the `StringMaker` specialization, like so:
 This assertion will fail and print out the `testFloat1` and `testFloat2`
 to 15 decimal places.
 
+`StringMaker<float>` and `StringMaker<double>` default to using fixed output,
+but can be set to use scientific notation by modifying the `format` static
+variable:
+
+```cpp
+        Catch::StringMaker<float>::format = std::scientific;
+        const float testFloat1 = 1e-5f;
+        const float testFloat2 = 1e-6f;
+        REQUIRE(testFloat1 == testFloat2);
+```
+
 ---
 
 [Home](Readme.md#top)
