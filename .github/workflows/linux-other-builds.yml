@@ -1,0 +1,86 @@
+# The builds in this file are more complex (e.g. they need custom CMake
+# configuration) and thus are unsuitable to the simple build matrix
+# approach used in simple-builds
+name: Linux builds (complex)
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    name: ${{matrix.build_description}}, ${{matrix.cxx}}, C++${{matrix.std}} ${{matrix.build_type}}
+    runs-on: ubuntu-20.04
+    strategy:
+      matrix:
+        # We add builds one by one in this case, because there are no
+        # dimensions that are shared across the builds
+        include:
+
+          # Single surrogate header build
+          - cxx: clang++-10
+            build_description: Surrogates build
+            build_type: Debug
+            std: 14
+            other_pkgs: clang-10
+            cmake_configurations: -DCATCH_BUILD_SURROGATES=ON
+
+          # Extras and examples with gcc-7
+          - cxx: g++-7
+            build_description: Extras + Examples
+            build_type: Debug
+            std: 14
+            other_pkgs: g++-7
+            cmake_configurations: -DCATCH_BUILD_EXTRA_TESTS=ON -DCATCH_BUILD_EXAMPLES=ON
+          - cxx: g++-7
+            build_description: Extras + Examples
+            build_type: Release
+            std: 14
+            other_pkgs: g++-7
+            cmake_configurations: -DCATCH_BUILD_EXTRA_TESTS=ON -DCATCH_BUILD_EXAMPLES=ON
+
+          # Extras and examples with Clang-10
+          - cxx: clang++-10
+            build_description: Extras + Examples
+            build_type: Debug
+            std: 17
+            other_pkgs: clang-10
+            cmake_configurations: -DCATCH_BUILD_EXTRA_TESTS=ON -DCATCH_BUILD_EXAMPLES=ON
+          - cxx: clang++-10
+            build_description: Extras + Examples
+            build_type: Release
+            std: 17
+            other_pkgs: clang-10
+            cmake_configurations: -DCATCH_BUILD_EXTRA_TESTS=ON -DCATCH_BUILD_EXAMPLES=ON
+
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Prepare environment
+      run: sudo apt-get install -y ninja-build ${{matrix.other_pkgs}}
+
+    - name: Configure build
+      working-directory: ${{runner.workspace}}
+      env:
+        CXX: ${{matrix.cxx}}
+        CXXFLAGS: ${{matrix.cxxflags}}
+      # Note: $GITHUB_WORKSPACE is distinct from ${{runner.workspace}}.
+      #       This is important
+      run: |
+        cmake -Bbuild -H$GITHUB_WORKSPACE \
+              -DCMAKE_BUILD_TYPE=${{matrix.build_type}} \
+              -DCMAKE_CXX_STANDARD=${{matrix.std}} \
+              -DCMAKE_CXX_EXTENSIONS=OFF \
+              -DCATCH_DEVELOPMENT_BUILD=ON \
+              ${{matrix.cmake_configurations}} \
+              -G Ninja
+
+    - name: Build tests + lib
+      working-directory: ${{runner.workspace}}/build
+      run: ninja
+
+    - name: Run tests
+      env:
+          CTEST_OUTPUT_ON_FAILURE: 1
+      working-directory: ${{runner.workspace}}/build
+      # Hardcode 2 cores we know are there
+      run: ctest -C ${{matrix.build_type}} -j 2
