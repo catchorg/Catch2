@@ -71,15 +71,6 @@ matrix:
       env: COMPILER='clang++-6.0' CPP17=1
 
 
-    - os: linux
-      compiler: clang
-      addons:
-          apt:
-              sources: *all_sources
-              packages: ['clang-8', 'libstdc++-8-dev']
-      env: COMPILER='clang++-8' CPP17=1 EXAMPLES=1 COVERAGE=1 EXTRAS=1
-
-
     # GCC builds
     - os: linux
       compiler: gcc
@@ -96,14 +87,6 @@ matrix:
           sources: *all_sources
           packages: ['g++-6']
       env: COMPILER='g++-6' CPP14=1
-
-    - os: linux
-      compiler: gcc
-      addons:
-        apt:
-          sources: *all_sources
-          packages: ['g++-7', 'lcov']
-      env: COMPILER='g++-7' CPP14=1 EXAMPLES=1 COVERAGE=1 EXTRAS=1
 
 
     # Special builds, e.g. conan

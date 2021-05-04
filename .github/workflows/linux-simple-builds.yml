@@ -1,9 +1,10 @@
-name: Linux builds
+name: Linux builds (basic)
 
 on: [push, pull_request]
 
 jobs:
   build:
+    name: ${{matrix.cxx}}, C++${{matrix.std}}, ${{matrix.build_type}}
     runs-on: ubuntu-20.04
     strategy:
       matrix:
@@ -20,35 +21,42 @@ jobs:
           - clang++-10
         build_type: [Debug, Release]
         std: [14]
-        surrogates: [OFF]
         include:
         # cannot be installed on ubuntu-20.04 be default?
 #          - cxx: g++-6
 #            other_pkgs: g++-6
+          - cxx: g++-7
+            other_pkgs: g++-7
+          - cxx: g++-8
+            other_pkgs: g++-8
           - cxx: clang++-6.0
             other_pkgs: clang-6.0
           - cxx: clang++-7
             other_pkgs: clang-7
+          - cxx: clang++-8
+            other_pkgs: clang-8
           - cxx: clang++-10
             other_pkgs: clang-10
-        # We want one build to build surrogates -- but not more, to
-        # avoid trouble with long compilation/CI times.
-          - cxx: clang++-10
-            build_type: Debug
-            std: 14
-            other_pkgs: clang-10
-            surrogates: ON
-        # Clang 10 + C++17
+          # Clang 6 + C++17
+          # does not work with the default libstdc++ version thanks
+          # to a disagreement on variant implementation.
+          # - cxx: clang++-6.0
+          #   build_type: Debug
+          #   std: 17
+          #   other_pkgs: clang-6.0
+          # - cxx: clang++-6.0
+          #   build_type: Release
+          #   std: 17
+          #   other_pkgs: clang-6.0
+          # Clang 10 + C++17
           - cxx: clang++-10
             build_type: Debug
             std: 17
             other_pkgs: clang-10
-            surrogates: OFF
           - cxx: clang++-10
             build_type: Release
             std: 17
             other_pkgs: clang-10
-            surrogates: OFF
 
     steps:
     - uses: actions/checkout@v2
@@ -69,7 +77,6 @@ jobs:
               -DCMAKE_CXX_STANDARD=${{matrix.std}} \
               -DCMAKE_CXX_EXTENSIONS=OFF \
               -DCATCH_DEVELOPMENT_BUILD=ON \
-              -DCATCH_BUILD_SURROGATES=${{matrix.surrogates}} \
               -G Ninja
 
     - name: Build tests + lib
