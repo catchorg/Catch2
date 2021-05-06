@@ -301,6 +301,10 @@ if (NOT_SUBPROJECT)
         Catch2WithMain
       EXPORT
         Catch2Targets
+      # This will not be needed from cmake 3.14 on
+      LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+      ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+      RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
     )
 
 
