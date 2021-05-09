@@ -88,20 +88,6 @@ matrix:
           packages: ['g++-6']
       env: COMPILER='g++-6' CPP14=1
 
-
-    # Special builds, e.g. conan
-    - language: python
-      python:
-        - "3.7"
-      install:
-        - pip install conan-package-tools
-      env:
-        - CONAN_GCC_VERSIONS=8
-        - CONAN_DOCKER_IMAGE=conanio/gcc8
-        - CPP14=1
-      script:
-        - python .conan/build.py
-
 before_script:
   - export CXX=${COMPILER}
   - cd ${TRAVIS_BUILD_DIR}
