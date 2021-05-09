@@ -3,6 +3,7 @@
 # Release notes
 **Contents**<br>
 [3.0.1](#301)<br>
+[2.13.6](#2136)<br>
 [2.13.5](#2135)<br>
 [2.13.4](#2134)<br>
 [2.13.3](#2133)<br>
@@ -171,6 +172,15 @@ new design.
 * Catch2's pkg-config integration also provides 2 packages
   * `catch2` is the statically compiled implementation by itself
   * `catch2-with-main` also links in the default main
+
+
+## 2.13.6
+
+### Fixes
+* Disabling all signal handlers no longer breaks compilation  (#2212, #2213)
+
+### Miscellaneous
+* `catch_discover_tests` should handle escaped semicolon (`;`) better (#2214, #2215)
 
 
 ## 2.13.5
