@@ -1583,17 +1583,23 @@ Misc.tests.cpp:<line number>
     <testCase name="TemplateTestSig: vectors can be sized and resized - std::string,15/resizing smaller changes size but not capacity/We can use the 'swap trick' to reset the capacity" duration="{duration}"/>
     <testCase name="TemplateTestSig: vectors can be sized and resized - std::string,15/reserving bigger changes capacity but not size" duration="{duration}"/>
     <testCase name="TemplateTestSig: vectors can be sized and resized - std::string,15/reserving smaller does not change size or capacity" duration="{duration}"/>
+    <testCase name="Testing checked-if" duration="{duration}"/>
+    <testCase name="Testing checked-if 2" duration="{duration}">
+      <skipped message="FAIL()">
+FAILED:
+Misc.tests.cpp:<line number>
+      </skipped>
+    </testCase>
+    <testCase name="Testing checked-if 3" duration="{duration}">
+      <skipped message="FAIL()">
+FAILED:
+Misc.tests.cpp:<line number>
+      </skipped>
+    </testCase>
     <testCase name="This test 'should' fail but doesn't" duration="{duration}"/>
     <testCase name="atomic if" duration="{duration}"/>
     <testCase name="checkedElse" duration="{duration}"/>
     <testCase name="checkedElse, failing" duration="{duration}">
-      <failure message="CHECKED_ELSE(flag)">
-FAILED:
-	CHECKED_ELSE( flag )
-with expansion:
-	false
-Misc.tests.cpp:<line number>
-      </failure>
       <failure message="REQUIRE(testCheckedElse( false ))">
 FAILED:
 	REQUIRE( testCheckedElse( false ) )
@@ -1604,13 +1610,6 @@ Misc.tests.cpp:<line number>
     </testCase>
     <testCase name="checkedIf" duration="{duration}"/>
     <testCase name="checkedIf, failing" duration="{duration}">
-      <failure message="CHECKED_IF(flag)">
-FAILED:
-	CHECKED_IF( flag )
-with expansion:
-	false
-Misc.tests.cpp:<line number>
-      </failure>
       <failure message="REQUIRE(testCheckedIf( false ))">
 FAILED:
 	REQUIRE( testCheckedIf( false ) )

@@ -14425,6 +14425,65 @@ Message from section two
     <TestCase name="Test with special, characters &quot;in name" tags="[cli][regression]" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
       <OverallResult success="true"/>
     </TestCase>
+    <TestCase name="Testing checked-if" tags="[checked-if]" filename="tests/<exe-name>/UsageTests/Misc.tests.cpp" >
+      <Expression success="true" type="CHECKED_IF" filename="tests/<exe-name>/UsageTests/Misc.tests.cpp" >
+        <Original>
+          true
+        </Original>
+        <Expanded>
+          true
+        </Expanded>
+      </Expression>
+      <Expression success="false" type="CHECKED_IF" filename="tests/<exe-name>/UsageTests/Misc.tests.cpp" >
+        <Original>
+          false
+        </Original>
+        <Expanded>
+          false
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECKED_ELSE" filename="tests/<exe-name>/UsageTests/Misc.tests.cpp" >
+        <Original>
+          true
+        </Original>
+        <Expanded>
+          true
+        </Expanded>
+      </Expression>
+      <Expression success="false" type="CHECKED_ELSE" filename="tests/<exe-name>/UsageTests/Misc.tests.cpp" >
+        <Original>
+          false
+        </Original>
+        <Expanded>
+          false
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="Testing checked-if 2" tags="[!shouldfail][checked-if]" filename="tests/<exe-name>/UsageTests/Misc.tests.cpp" >
+      <Expression success="true" type="CHECKED_IF" filename="tests/<exe-name>/UsageTests/Misc.tests.cpp" >
+        <Original>
+          true
+        </Original>
+        <Expanded>
+          true
+        </Expanded>
+      </Expression>
+      <Failure filename="tests/<exe-name>/UsageTests/Misc.tests.cpp" />
+      <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="Testing checked-if 3" tags="[!shouldfail][checked-if]" filename="tests/<exe-name>/UsageTests/Misc.tests.cpp" >
+      <Expression success="false" type="CHECKED_ELSE" filename="tests/<exe-name>/UsageTests/Misc.tests.cpp" >
+        <Original>
+          false
+        </Original>
+        <Expanded>
+          false
+        </Expanded>
+      </Expression>
+      <Failure filename="tests/<exe-name>/UsageTests/Misc.tests.cpp" />
+      <OverallResult success="true"/>
+    </TestCase>
     <TestCase name="The NO_FAIL macro reports a failure but does not fail the test" tags="[messages]" filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
       <Expression success="false" type="CHECK_NOFAIL" filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
         <Original>
@@ -19667,9 +19726,9 @@ loose text artifact
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="1925" failures="149" expectedFailures="21"/>
-    <OverallResultsCases successes="266" failures="86" expectedFailures="4"/>
+    <OverallResults successes="1930" failures="147" expectedFailures="23"/>
+    <OverallResultsCases successes="267" failures="86" expectedFailures="6"/>
   </Group>
-  <OverallResults successes="1925" failures="148" expectedFailures="21"/>
-  <OverallResultsCases successes="266" failures="86" expectedFailures="4"/>
+  <OverallResults successes="1930" failures="146" expectedFailures="23"/>
+  <OverallResultsCases successes="267" failures="86" expectedFailures="6"/>
 </Catch>

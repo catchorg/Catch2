@@ -182,6 +182,39 @@ TEST_CASE( "checkedElse, failing", "[failing][.]" ) {
     REQUIRE( testCheckedElse( false ) );
 }
 
+TEST_CASE("Testing checked-if", "[checked-if]") {
+    CHECKED_IF(true) {
+        SUCCEED();
+    }
+    CHECKED_IF(false) {
+        FAIL();
+    }
+    CHECKED_ELSE(true) {
+        FAIL();
+    }
+    CHECKED_ELSE(false) {
+        SUCCEED();
+    }
+}
+
+TEST_CASE("Testing checked-if 2", "[checked-if][!shouldfail]") {
+    CHECKED_IF(true) {
+        FAIL();
+    }
+    // If the checked if is not entered, this passes and the test
+    // fails, because of the [!shouldfail] tag.
+    SUCCEED();
+}
+
+TEST_CASE("Testing checked-if 3", "[checked-if][!shouldfail]") {
+    CHECKED_ELSE(false) {
+        FAIL();
+    }
+    // If the checked false is not entered, this passes and the test
+    // fails, because of the [!shouldfail] tag.
+    SUCCEED();
+}
+
 TEST_CASE( "xmlentitycheck" ) {
     SECTION( "embedded xml: <test>it should be possible to embed xml characters, such as <, \" or &, or even whole <xml>documents</xml> within an attribute</test>" ) {
         SUCCEED(); // We need this here to stop it failing due to no tests

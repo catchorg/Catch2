@@ -1714,6 +1714,16 @@ Misc.tests.cpp:<line number>: passed: v.capacity() >= V for: 15 >= 15
 VariadicMacros.tests.cpp:<line number>: passed: with 1 message: 'no assertions'
 Tricky.tests.cpp:<line number>: passed: 0x<hex digits> == bit30and31 for: 3221225472 (0x<hex digits>) == 3221225472
 CmdLine.tests.cpp:<line number>: passed:
+Misc.tests.cpp:<line number>: passed: true
+Misc.tests.cpp:<line number>: passed:
+Misc.tests.cpp:<line number>: failed - but was ok: false
+Misc.tests.cpp:<line number>: passed: true
+Misc.tests.cpp:<line number>: failed - but was ok: false
+Misc.tests.cpp:<line number>: passed:
+Misc.tests.cpp:<line number>: passed: true
+Misc.tests.cpp:<line number>: failed: explicitly
+Misc.tests.cpp:<line number>: failed - but was ok: false
+Misc.tests.cpp:<line number>: failed: explicitly
 Message.tests.cpp:<line number>: failed - but was ok: 1 == 2
 Reporters.tests.cpp:<line number>: passed: listingString, Contains("[fakeTag]"s) for: "All available tags:
    1  [fakeTag]
@@ -1996,11 +2006,11 @@ InternalBenchmark.tests.cpp:<line number>: passed: called == 1 for: 1 == 1
 Tricky.tests.cpp:<line number>: passed: obj.prop != 0 for: 0x<hex digits> != 0
 Misc.tests.cpp:<line number>: passed: flag for: true
 Misc.tests.cpp:<line number>: passed: testCheckedElse( true ) for: true
-Misc.tests.cpp:<line number>: failed: flag for: false
+Misc.tests.cpp:<line number>: failed - but was ok: flag for: false
 Misc.tests.cpp:<line number>: failed: testCheckedElse( false ) for: false
 Misc.tests.cpp:<line number>: passed: flag for: true
 Misc.tests.cpp:<line number>: passed: testCheckedIf( true ) for: true
-Misc.tests.cpp:<line number>: failed: flag for: false
+Misc.tests.cpp:<line number>: failed - but was ok: flag for: false
 Misc.tests.cpp:<line number>: failed: testCheckedIf( false ) for: false
 InternalBenchmark.tests.cpp:<line number>: passed: o.samples_seen == static_cast<int>(x.size()) for: 6 == 6
 InternalBenchmark.tests.cpp:<line number>: passed: o.low_severe == los for: 0 == 0
@@ -2342,5 +2352,5 @@ InternalBenchmark.tests.cpp:<line number>: passed: med == 18. for: 18.0 == 18.0
 InternalBenchmark.tests.cpp:<line number>: passed: q3 == 23. for: 23.0 == 23.0
 Misc.tests.cpp:<line number>: passed:
 Misc.tests.cpp:<line number>: passed:
-Failed 86 test cases, failed 148 assertions.
+Failed 86 test cases, failed 146 assertions.
 

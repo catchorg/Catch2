@@ -3073,6 +3073,26 @@ ok {test-number} - with 1 message: 'no assertions'
 ok {test-number} - 0x<hex digits> == bit30and31 for: 3221225472 (0x<hex digits>) == 3221225472
 # Test with special, characters "in name
 ok {test-number} -
+# Testing checked-if
+ok {test-number} - true
+# Testing checked-if
+ok {test-number} -
+# Testing checked-if
+ok {test-number} - false  # TODO
+# Testing checked-if
+ok {test-number} - true
+# Testing checked-if
+ok {test-number} - false  # TODO
+# Testing checked-if
+ok {test-number} -
+# Testing checked-if 2
+ok {test-number} - true
+# Testing checked-if 2
+not ok {test-number} - explicitly
+# Testing checked-if 3
+ok {test-number} - false  # TODO
+# Testing checked-if 3
+not ok {test-number} - explicitly
 # The NO_FAIL macro reports a failure but does not fail the test
 ok {test-number} - 1 == 2  # TODO
 # The default listing implementation write to provided stream
@@ -3570,7 +3590,7 @@ ok {test-number} - flag for: true
 # checkedElse
 ok {test-number} - testCheckedElse( true ) for: true
 # checkedElse, failing
-not ok {test-number} - flag for: false
+ok {test-number} - flag for: false  # TODO
 # checkedElse, failing
 not ok {test-number} - testCheckedElse( false ) for: false
 # checkedIf
@@ -3578,7 +3598,7 @@ ok {test-number} - flag for: true
 # checkedIf
 ok {test-number} - testCheckedIf( true ) for: true
 # checkedIf, failing
-not ok {test-number} - flag for: false
+ok {test-number} - flag for: false  # TODO
 # checkedIf, failing
 not ok {test-number} - testCheckedIf( false ) for: false
 # classify_outliers
@@ -4180,5 +4200,5 @@ ok {test-number} - q3 == 23. for: 23.0 == 23.0
 ok {test-number} -
 # xmlentitycheck
 ok {test-number} -
-1..2094
+1..2099
 

@@ -231,6 +231,9 @@ Message from section two
 :test-result: PASS Test case with one argument
 :test-result: PASS Test enum bit values
 :test-result: PASS Test with special, characters "in name
+:test-result: PASS Testing checked-if
+:test-result: XFAIL Testing checked-if 2
+:test-result: XFAIL Testing checked-if 3
 :test-result: FAIL The NO_FAIL macro reports a failure but does not fail the test
 :test-result: PASS The default listing implementation write to provided stream
 :test-result: FAIL This test 'should' fail but doesn't

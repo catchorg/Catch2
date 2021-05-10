@@ -15,6 +15,8 @@ stringification machinery to the _expr_ and records the result. As with
 evaluates to `true`. `CHECKED_ELSE( expr )` work similarly, but the block
 is entered only if the _expr_ evaluated to `false`.
 
+> `CHECKED_X` macros were changed to not count as failure in Catch2 X.Y.Z.
+
 Example:
 ```cpp
 int a = ...;
