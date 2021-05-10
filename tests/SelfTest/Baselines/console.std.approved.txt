@@ -923,6 +923,22 @@ with expansion:
   "
 
 -------------------------------------------------------------------------------
+Testing checked-if 2
+-------------------------------------------------------------------------------
+Misc.tests.cpp:<line number>
+...............................................................................
+
+Misc.tests.cpp:<line number>: FAILED:
+
+-------------------------------------------------------------------------------
+Testing checked-if 3
+-------------------------------------------------------------------------------
+Misc.tests.cpp:<line number>
+...............................................................................
+
+Misc.tests.cpp:<line number>: FAILED:
+
+-------------------------------------------------------------------------------
 Thrown string literals are translated
 -------------------------------------------------------------------------------
 Exception.tests.cpp:<line number>
@@ -1370,6 +1386,6 @@ due to unexpected exception with message:
   Why would you throw a std::string?
 
 ===============================================================================
-test cases:  357 |  283 passed |  70 failed |  4 failed as expected
-assertions: 2077 | 1927 passed | 129 failed | 21 failed as expected
+test cases:  359 |  283 passed |  70 failed |  6 failed as expected
+assertions: 2082 | 1930 passed | 129 failed | 23 failed as expected
 

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuitesloose text artifact
 >
-  <testsuite name="<exe-name>" errors="17" failures="130" tests="2095" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
+  <testsuite name="<exe-name>" errors="17" failures="130" tests="2100" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
     <properties>
       <property name="filters" value="~[!nonportable]~[!benchmark]~[approvals] *"/>
       <property name="random-seed" value="1"/>
@@ -1277,6 +1277,18 @@ Misc.tests.cpp:<line number>
     <testcase classname="<exe-name>.global" name="Test enum bit values" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Test with special, characters &quot;in name" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Testing checked-if" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Testing checked-if 2" time="{duration}" status="run">
+      <failure type="FAIL">
+FAILED:
+Misc.tests.cpp:<line number>
+      </failure>
+    </testcase>
+    <testcase classname="<exe-name>.global" name="Testing checked-if 3" time="{duration}" status="run">
+      <failure type="FAIL">
+FAILED:
+Misc.tests.cpp:<line number>
+      </failure>
+    </testcase>
     <testcase classname="<exe-name>.global" name="The NO_FAIL macro reports a failure but does not fail the test" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="The default listing implementation write to provided stream/Listing tags" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="The default listing implementation write to provided stream/Listing reporters" time="{duration}" status="run"/>

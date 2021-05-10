@@ -3079,6 +3079,20 @@ ok {test-number} - true
 ok {test-number} -
 # Testing checked-if
 ok {test-number} - false  # TODO
+# Testing checked-if
+ok {test-number} - true
+# Testing checked-if
+ok {test-number} - false  # TODO
+# Testing checked-if
+ok {test-number} -
+# Testing checked-if 2
+ok {test-number} - true
+# Testing checked-if 2
+not ok {test-number} - explicitly
+# Testing checked-if 3
+ok {test-number} - false  # TODO
+# Testing checked-if 3
+not ok {test-number} - explicitly
 # The NO_FAIL macro reports a failure but does not fail the test
 ok {test-number} - 1 == 2  # TODO
 # The default listing implementation write to provided stream
@@ -4186,5 +4200,5 @@ ok {test-number} - q3 == 23. for: 23.0 == 23.0
 ok {test-number} -
 # xmlentitycheck
 ok {test-number} -
-1..2094
+1..2099
 

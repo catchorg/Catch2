@@ -12312,6 +12312,36 @@ Misc.tests.cpp:<line number>: PASSED:
 Misc.tests.cpp:<line number>: FAILED - but was ok:
   CHECKED_IF( false )
 
+Misc.tests.cpp:<line number>: PASSED:
+  CHECKED_ELSE( true )
+
+Misc.tests.cpp:<line number>: FAILED - but was ok:
+  CHECKED_ELSE( false )
+
+Misc.tests.cpp:<line number>: PASSED:
+
+-------------------------------------------------------------------------------
+Testing checked-if 2
+-------------------------------------------------------------------------------
+Misc.tests.cpp:<line number>
+...............................................................................
+
+Misc.tests.cpp:<line number>: PASSED:
+  CHECKED_IF( true )
+
+Misc.tests.cpp:<line number>: FAILED:
+
+-------------------------------------------------------------------------------
+Testing checked-if 3
+-------------------------------------------------------------------------------
+Misc.tests.cpp:<line number>
+...............................................................................
+
+Misc.tests.cpp:<line number>: FAILED - but was ok:
+  CHECKED_ELSE( false )
+
+Misc.tests.cpp:<line number>: FAILED:
+
 -------------------------------------------------------------------------------
 The NO_FAIL macro reports a failure but does not fail the test
 -------------------------------------------------------------------------------
@@ -16736,6 +16766,6 @@ Misc.tests.cpp:<line number>
 Misc.tests.cpp:<line number>: PASSED:
 
 ===============================================================================
-test cases:  357 |  267 passed |  86 failed |  4 failed as expected
-assertions: 2094 | 1927 passed | 146 failed | 21 failed as expected
+test cases:  359 |  267 passed |  86 failed |  6 failed as expected
+assertions: 2099 | 1930 passed | 146 failed | 23 failed as expected
 

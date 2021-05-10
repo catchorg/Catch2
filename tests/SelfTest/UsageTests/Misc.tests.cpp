@@ -189,6 +189,30 @@ TEST_CASE("Testing checked-if", "[checked-if]") {
     CHECKED_IF(false) {
         FAIL();
     }
+    CHECKED_ELSE(true) {
+        FAIL();
+    }
+    CHECKED_ELSE(false) {
+        SUCCEED();
+    }
+}
+
+TEST_CASE("Testing checked-if 2", "[checked-if][!shouldfail]") {
+    CHECKED_IF(true) {
+        FAIL();
+    }
+    // If the checked if is not entered, this passes and the test
+    // fails, because of the [!shouldfail] tag.
+    SUCCEED();
+}
+
+TEST_CASE("Testing checked-if 3", "[checked-if][!shouldfail]") {
+    CHECKED_ELSE(false) {
+        FAIL();
+    }
+    // If the checked false is not entered, this passes and the test
+    // fails, because of the [!shouldfail] tag.
+    SUCCEED();
 }
 
 TEST_CASE( "xmlentitycheck" ) {

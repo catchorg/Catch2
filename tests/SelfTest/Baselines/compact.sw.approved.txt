@@ -1717,6 +1717,13 @@ CmdLine.tests.cpp:<line number>: passed:
 Misc.tests.cpp:<line number>: passed: true
 Misc.tests.cpp:<line number>: passed:
 Misc.tests.cpp:<line number>: failed - but was ok: false
+Misc.tests.cpp:<line number>: passed: true
+Misc.tests.cpp:<line number>: failed - but was ok: false
+Misc.tests.cpp:<line number>: passed:
+Misc.tests.cpp:<line number>: passed: true
+Misc.tests.cpp:<line number>: failed: explicitly
+Misc.tests.cpp:<line number>: failed - but was ok: false
+Misc.tests.cpp:<line number>: failed: explicitly
 Message.tests.cpp:<line number>: failed - but was ok: 1 == 2
 Reporters.tests.cpp:<line number>: passed: listingString, Contains("[fakeTag]"s) for: "All available tags:
    1  [fakeTag]
