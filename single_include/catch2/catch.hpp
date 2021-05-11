@@ -5612,6 +5612,8 @@ namespace Catch {
         double clockCost;
     };
 
+#include <iterator>
+	
     template <class Duration>
     struct BenchmarkStats {
         BenchmarkInfo info;
