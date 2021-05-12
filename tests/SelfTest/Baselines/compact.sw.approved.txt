@@ -2253,6 +2253,8 @@ Generators.tests.cpp:<line number>: passed: strlen(std::get<0>(data)) == static_
 Generators.tests.cpp:<line number>: passed: strlen(std::get<0>(data)) == static_cast<size_t>(std::get<1>(data)) for: 6 == 6
 Generators.tests.cpp:<line number>: passed: strlen(std::get<0>(data)) == static_cast<size_t>(std::get<1>(data)) for: 5 == 5
 Generators.tests.cpp:<line number>: passed: strlen(std::get<0>(data)) == static_cast<size_t>(std::get<1>(data)) for: 6 == 6
+Tag.tests.cpp:<line number>: passed: testcase->tags.size() == 1 for: 1 == 1
+Tag.tests.cpp:<line number>: passed: testcase->tags[0].original == "magic.tag"_catch_sr for: magic.tag == magic.tag
 Exception.tests.cpp:<line number>: failed: unexpected exception with message: 'Why would you throw a std::string?'
 Misc.tests.cpp:<line number>: passed: result == "\"wide load\"" for: ""wide load"" == ""wide load""
 Misc.tests.cpp:<line number>: passed: result == "\"wide load\"" for: ""wide load"" == ""wide load""

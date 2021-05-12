@@ -822,6 +822,8 @@ Tricky.tests.cpp:<line number>|nexpression failed|n  REQUIRE( std::string( "firs
 ##teamcity[testFinished name='strlen3' duration="{duration}"]
 ##teamcity[testStarted name='tables']
 ##teamcity[testFinished name='tables' duration="{duration}"]
+##teamcity[testStarted name='tags with dots in later positions are not parsed as hidden']
+##teamcity[testFinished name='tags with dots in later positions are not parsed as hidden' duration="{duration}"]
 ##teamcity[testStarted name='thrown std::strings are translated']
 Exception.tests.cpp:<line number>|nunexpected exception with message:|n  "Why would you throw a std::string?"']
 ##teamcity[testFinished name='thrown std::strings are translated' duration="{duration}"]

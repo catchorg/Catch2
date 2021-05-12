@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuitesloose text artifact
 >
-  <testsuite name="<exe-name>" errors="17" failures="130" tests="2100" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
+  <testsuite name="<exe-name>" errors="17" failures="130" tests="2102" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
     <properties>
       <property name="filters" value="~[!nonportable]~[!benchmark]~[approvals] *"/>
       <property name="random-seed" value="1"/>
@@ -1777,6 +1777,7 @@ Tricky.tests.cpp:<line number>
     <testcase classname="<exe-name>.global" name="stringify( vectors&lt;has_operator> )" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="strlen3" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="tables" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="tags with dots in later positions are not parsed as hidden" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="thrown std::strings are translated" time="{duration}" status="run">
       <error type="TEST_CASE">
 FAILED:

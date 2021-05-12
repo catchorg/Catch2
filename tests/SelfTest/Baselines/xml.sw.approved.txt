@@ -18499,7 +18499,7 @@ loose text artifact
       </Expression>
       <OverallResult success="false"/>
     </TestCase>
-    <TestCase name="shortened hide tags are split apart" filename="tests/<exe-name>/IntrospectiveTests/Tag.tests.cpp" >
+    <TestCase name="shortened hide tags are split apart" tags="[tags]" filename="tests/<exe-name>/IntrospectiveTests/Tag.tests.cpp" >
       <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/IntrospectiveTests/Tag.tests.cpp" >
         <Original>
           tags, VectorContains("magic-tag"_catch_sr) &amp;&amp; VectorContains("."_catch_sr)
@@ -18909,6 +18909,25 @@ loose text artifact
         </Original>
         <Expanded>
           6 == 6
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="tags with dots in later positions are not parsed as hidden" tags="[tags]" filename="tests/<exe-name>/IntrospectiveTests/Tag.tests.cpp" >
+      <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/Tag.tests.cpp" >
+        <Original>
+          testcase->tags.size() == 1
+        </Original>
+        <Expanded>
+          1 == 1
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/Tag.tests.cpp" >
+        <Original>
+          testcase->tags[0].original == "magic.tag"_catch_sr
+        </Original>
+        <Expanded>
+          magic.tag == magic.tag
         </Expanded>
       </Expression>
       <OverallResult success="true"/>
@@ -19726,9 +19745,9 @@ loose text artifact
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="1930" failures="147" expectedFailures="23"/>
-    <OverallResultsCases successes="267" failures="86" expectedFailures="6"/>
+    <OverallResults successes="1932" failures="147" expectedFailures="23"/>
+    <OverallResultsCases successes="268" failures="86" expectedFailures="6"/>
   </Group>
-  <OverallResults successes="1930" failures="146" expectedFailures="23"/>
-  <OverallResultsCases successes="267" failures="86" expectedFailures="6"/>
+  <OverallResults successes="1932" failures="146" expectedFailures="23"/>
+  <OverallResultsCases successes="268" failures="86" expectedFailures="6"/>
 </Catch>

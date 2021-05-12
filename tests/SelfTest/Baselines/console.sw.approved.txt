@@ -16047,6 +16047,22 @@ with expansion:
   6 == 6
 
 -------------------------------------------------------------------------------
+tags with dots in later positions are not parsed as hidden
+-------------------------------------------------------------------------------
+Tag.tests.cpp:<line number>
+...............................................................................
+
+Tag.tests.cpp:<line number>: PASSED:
+  REQUIRE( testcase->tags.size() == 1 )
+with expansion:
+  1 == 1
+
+Tag.tests.cpp:<line number>: PASSED:
+  REQUIRE( testcase->tags[0].original == "magic.tag"_catch_sr )
+with expansion:
+  magic.tag == magic.tag
+
+-------------------------------------------------------------------------------
 thrown std::strings are translated
 -------------------------------------------------------------------------------
 Exception.tests.cpp:<line number>
@@ -16766,6 +16782,6 @@ Misc.tests.cpp:<line number>
 Misc.tests.cpp:<line number>: PASSED:
 
 ===============================================================================
-test cases:  359 |  267 passed |  86 failed |  6 failed as expected
-assertions: 2099 | 1930 passed | 146 failed | 23 failed as expected
+test cases:  360 |  268 passed |  86 failed |  6 failed as expected
+assertions: 2101 | 1932 passed | 146 failed | 23 failed as expected
 

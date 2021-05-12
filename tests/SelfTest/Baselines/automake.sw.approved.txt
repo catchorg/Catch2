@@ -339,6 +339,7 @@ loose text artifact
 :test-result: PASS stringify( vectors<has_operator> )
 :test-result: PASS strlen3
 :test-result: PASS tables
+:test-result: PASS tags with dots in later positions are not parsed as hidden
 :test-result: FAIL thrown std::strings are translated
 :test-result: PASS toString on const wchar_t const pointer returns the string contents
 :test-result: PASS toString on const wchar_t pointer returns the string contents

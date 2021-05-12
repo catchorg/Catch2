@@ -217,6 +217,7 @@
     <testCase name="Tag alias can be registered against tag patterns/The same tag alias can only be registered once" duration="{duration}"/>
     <testCase name="Tag alias can be registered against tag patterns/Tag aliases must be of the form [@name]" duration="{duration}"/>
     <testCase name="shortened hide tags are split apart" duration="{duration}"/>
+    <testCase name="tags with dots in later positions are not parsed as hidden" duration="{duration}"/>
   </file>
   <file path="tests/<exe-name>/IntrospectiveTests/ToString.tests.cpp">
     <testCase name="Directly creating an EnumInfo" duration="{duration}"/>

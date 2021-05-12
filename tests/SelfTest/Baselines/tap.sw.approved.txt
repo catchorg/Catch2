@@ -4026,6 +4026,10 @@ ok {test-number} - strlen(std::get<0>(data)) == static_cast<size_t>(std::get<1>(
 ok {test-number} - strlen(std::get<0>(data)) == static_cast<size_t>(std::get<1>(data)) for: 5 == 5
 # tables
 ok {test-number} - strlen(std::get<0>(data)) == static_cast<size_t>(std::get<1>(data)) for: 6 == 6
+# tags with dots in later positions are not parsed as hidden
+ok {test-number} - testcase->tags.size() == 1 for: 1 == 1
+# tags with dots in later positions are not parsed as hidden
+ok {test-number} - testcase->tags[0].original == "magic.tag"_catch_sr for: magic.tag == magic.tag
 # thrown std::strings are translated
 not ok {test-number} - unexpected exception with message: 'Why would you throw a std::string?'
 # toString on const wchar_t const pointer returns the string contents
@@ -4200,5 +4204,5 @@ ok {test-number} - q3 == 23. for: 23.0 == 23.0
 ok {test-number} -
 # xmlentitycheck
 ok {test-number} -
-1..2099
+1..2101
 
