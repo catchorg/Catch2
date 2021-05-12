@@ -17,14 +17,14 @@ namespace Catch {
 
     struct ITestInvoker {
         virtual void invoke () const = 0;
-        virtual ~ITestInvoker();
+        virtual ~ITestInvoker(); // = default
     };
 
     class TestCaseHandle;
     struct IConfig;
 
     struct ITestCaseRegistry {
-        virtual ~ITestCaseRegistry();
+        virtual ~ITestCaseRegistry(); // = default
         // TODO: this exists only for adding filenames to test cases -- let's expose this in a saner way later
         virtual std::vector<TestCaseInfo* > const& getAllInfos() const = 0;
         virtual std::vector<TestCaseHandle> const& getAllTests() const = 0;

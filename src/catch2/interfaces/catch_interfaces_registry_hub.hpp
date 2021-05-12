@@ -31,7 +31,7 @@ namespace Catch {
     using IReporterFactoryPtr = Detail::unique_ptr<IReporterFactory>;
 
     struct IRegistryHub {
-        virtual ~IRegistryHub();
+        virtual ~IRegistryHub(); // = default
 
         virtual IReporterRegistry const& getReporterRegistry() const = 0;
         virtual ITestCaseRegistry const& getTestCaseRegistry() const = 0;
@@ -43,7 +43,7 @@ namespace Catch {
     };
 
     struct IMutableRegistryHub {
-        virtual ~IMutableRegistryHub();
+        virtual ~IMutableRegistryHub(); // = default
         virtual void registerReporter( std::string const& name, IReporterFactoryPtr factory ) = 0;
         virtual void registerListener( IReporterFactoryPtr factory ) = 0;
         virtual void registerTest(Detail::unique_ptr<TestCaseInfo>&& testInfo, Detail::unique_ptr<ITestInvoker>&& invoker) = 0;

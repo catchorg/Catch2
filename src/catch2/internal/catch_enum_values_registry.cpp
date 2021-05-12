@@ -13,7 +13,7 @@
 
 namespace Catch {
 
-    IMutableEnumValuesRegistry::~IMutableEnumValuesRegistry() {}
+    IMutableEnumValuesRegistry::~IMutableEnumValuesRegistry() = default;
 
     namespace Detail {
 

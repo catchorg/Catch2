@@ -11,7 +11,7 @@
 namespace Catch {
 
     struct ISingleton {
-        virtual ~ISingleton();
+        virtual ~ISingleton(); // = default
     };
 
 

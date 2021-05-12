@@ -20,7 +20,7 @@ namespace Catch {
         }
     }
 
-    ISingleton::~ISingleton() {}
+    ISingleton::~ISingleton() = default;
 
     void addSingleton(ISingleton* singleton ) {
         getSingletons()->push_back( singleton );

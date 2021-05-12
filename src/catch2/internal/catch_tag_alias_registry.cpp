@@ -46,7 +46,7 @@ namespace Catch {
                       << "\tRedefined at: " << lineInfo );
     }
 
-    ITagAliasRegistry::~ITagAliasRegistry() {}
+    ITagAliasRegistry::~ITagAliasRegistry() = default;
 
     ITagAliasRegistry const& ITagAliasRegistry::get() {
         return getRegistryHub().getTagAliasRegistry();

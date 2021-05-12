@@ -15,7 +15,7 @@ namespace Catch {
     struct TagAlias;
 
     struct ITagAliasRegistry {
-        virtual ~ITagAliasRegistry();
+        virtual ~ITagAliasRegistry(); // = default
         // Nullptr if not present
         virtual TagAlias const* find( std::string const& alias ) const = 0;
         virtual std::string expandAliases( std::string const& unexpandedTestSpec ) const = 0;

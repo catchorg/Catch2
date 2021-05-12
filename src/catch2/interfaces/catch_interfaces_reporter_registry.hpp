@@ -27,7 +27,7 @@ namespace Catch {
         using FactoryMap = std::map<std::string, IReporterFactoryPtr>;
         using Listeners = std::vector<IReporterFactoryPtr>;
 
-        virtual ~IReporterRegistry();
+        virtual ~IReporterRegistry(); // = default
         virtual IStreamingReporterPtr create( std::string const& name, IConfig const* config ) const = 0;
         virtual FactoryMap const& getFactories() const = 0;
         virtual Listeners const& getListeners() const = 0;

@@ -51,7 +51,7 @@ namespace TestCaseTracking {
             return m_nameAndLocation;
         }
 
-        virtual ~ITracker();
+        virtual ~ITracker(); // = default
 
 
         // dynamic queries

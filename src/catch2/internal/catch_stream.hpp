@@ -22,7 +22,7 @@ namespace Catch {
     std::ostream& clog();
 
     struct IStream {
-        virtual ~IStream();
+        virtual ~IStream(); // = default
         virtual std::ostream& stream() const = 0;
     };
 
