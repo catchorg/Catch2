@@ -80,7 +80,6 @@ set(INTERNAL_HEADERS
     ${SOURCES_DIR}/interfaces/catch_interfaces_reporter.hpp
     ${SOURCES_DIR}/interfaces/catch_interfaces_reporter_factory.hpp
     ${SOURCES_DIR}/interfaces/catch_interfaces_reporter_registry.hpp
-    ${SOURCES_DIR}/interfaces/catch_interfaces_runner.hpp
     ${SOURCES_DIR}/interfaces/catch_interfaces_tag_alias_registry.hpp
     ${SOURCES_DIR}/interfaces/catch_interfaces_testcase.hpp
     ${SOURCES_DIR}/internal/catch_lazy_expr.hpp

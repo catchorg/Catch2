@@ -17,9 +17,6 @@ namespace Catch {
         IResultCapture* getResultCapture() override {
             return m_resultCapture;
         }
-        IRunner* getRunner() override {
-            return m_runner;
-        }
 
         IConfig const* getConfig() const override {
             return m_config;
@@ -31,9 +28,6 @@ namespace Catch {
         void setResultCapture( IResultCapture* resultCapture ) override {
             m_resultCapture = resultCapture;
         }
-        void setRunner( IRunner* runner ) override {
-            m_runner = runner;
-        }
         void setConfig( IConfig const* config ) override {
             m_config = config;
         }
@@ -42,7 +36,6 @@ namespace Catch {
 
     private:
         IConfig const* m_config = nullptr;
-        IRunner* m_runner = nullptr;
         IResultCapture* m_resultCapture = nullptr;
     };
 

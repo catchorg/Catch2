@@ -8,7 +8,6 @@
 #ifndef CATCH_RUN_CONTEXT_HPP_INCLUDED
 #define CATCH_RUN_CONTEXT_HPP_INCLUDED
 
-#include <catch2/interfaces/catch_interfaces_runner.hpp>
 #include <catch2/interfaces/catch_interfaces_reporter.hpp>
 #include <catch2/internal/catch_test_registry.hpp>
 #include <catch2/internal/catch_fatal_condition_handler.hpp>
@@ -30,7 +29,7 @@ namespace Catch {
 
     ///////////////////////////////////////////////////////////////////////////
 
-    class RunContext : public IResultCapture, public IRunner {
+    class RunContext : public IResultCapture {
 
     public:
         RunContext( RunContext const& ) = delete;
@@ -102,7 +101,7 @@ namespace Catch {
 
     public:
         // !TBD We need to do this another way!
-        bool aborting() const override;
+        bool aborting() const;
 
     private:
 
