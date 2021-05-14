@@ -46,9 +46,9 @@ Detail::unique_ptr<ITestInvoker> makeTestInvoker( void (C::*testAsMethod)() ) {
 }
 
 struct NameAndTags {
-    NameAndTags(StringRef name_ = StringRef(),
-                StringRef tags_ = StringRef()) noexcept:
-        name(name_), tags(tags_) {}
+    constexpr NameAndTags( StringRef name_ = StringRef(),
+                           StringRef tags_ = StringRef() ) noexcept:
+        name( name_ ), tags( tags_ ) {}
     StringRef name;
     StringRef tags;
 };
