@@ -17,7 +17,7 @@
 namespace Catch {
 
     struct MessageInfo {
-        MessageInfo(    StringRef const& _macroName,
+        MessageInfo(    StringRef _macroName,
                         SourceLineInfo const& _lineInfo,
                         ResultWas::OfType _type );
 

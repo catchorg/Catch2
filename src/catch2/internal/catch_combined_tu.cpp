@@ -194,7 +194,7 @@ Catch::LeakDetector::~LeakDetector() {
 
 namespace Catch {
 
-    MessageInfo::MessageInfo(   StringRef const& _macroName,
+    MessageInfo::MessageInfo(   StringRef _macroName,
                                 SourceLineInfo const& _lineInfo,
                                 ResultWas::OfType _type )
     :   macroName( _macroName ),
