@@ -54,7 +54,7 @@ namespace Catch {
         void handleMessage
                 (   AssertionInfo const& info,
                     ResultWas::OfType resultType,
-                    StringRef const& message,
+                    StringRef message,
                     AssertionReaction& reaction ) override;
         void handleUnexpectedExceptionNotThrown
                 (   AssertionInfo const& info,

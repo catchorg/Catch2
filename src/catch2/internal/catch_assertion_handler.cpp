@@ -18,7 +18,7 @@
 namespace Catch {
 
     AssertionHandler::AssertionHandler
-        (   StringRef const& macroName,
+        (   StringRef macroName,
             SourceLineInfo const& lineInfo,
             StringRef capturedExpression,
             ResultDisposition::Flags resultDisposition )
@@ -29,7 +29,7 @@ namespace Catch {
     void AssertionHandler::handleExpr( ITransientExpression const& expr ) {
         m_resultCapture.handleExpr( m_assertionInfo, expr, m_reaction );
     }
-    void AssertionHandler::handleMessage(ResultWas::OfType resultType, StringRef const& message) {
+    void AssertionHandler::handleMessage(ResultWas::OfType resultType, StringRef message) {
         m_resultCapture.handleMessage( m_assertionInfo, resultType, message, m_reaction );
     }
 
@@ -80,7 +80,7 @@ namespace Catch {
 
     // This is the overload that takes a string and infers the Equals matcher from it
     // The more general overload, that takes any string matcher, is in catch_capture_matchers.cpp
-    void handleExceptionMatchExpr( AssertionHandler& handler, std::string const& str, StringRef const& matcherString  ) {
+    void handleExceptionMatchExpr( AssertionHandler& handler, std::string const& str, StringRef matcherString  ) {
         handleExceptionMatchExpr( handler, Matchers::Equals( str ), matcherString );
     }
 

@@ -149,7 +149,7 @@ namespace {
         m_testAsFunction();
     }
 
-    std::string extractClassName( StringRef const& classOrQualifiedMethodName ) {
+    std::string extractClassName( StringRef classOrQualifiedMethodName ) {
         std::string className(classOrQualifiedMethodName);
         if( startsWith( className, '&' ) )
         {

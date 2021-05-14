@@ -46,15 +46,15 @@ Detail::unique_ptr<ITestInvoker> makeTestInvoker( void (C::*testAsMethod)() ) {
 }
 
 struct NameAndTags {
-    NameAndTags(StringRef const& name_ = StringRef(),
-                StringRef const& tags_ = StringRef()) noexcept:
+    NameAndTags(StringRef name_ = StringRef(),
+                StringRef tags_ = StringRef()) noexcept:
         name(name_), tags(tags_) {}
     StringRef name;
     StringRef tags;
 };
 
 struct AutoReg : Detail::NonCopyable {
-    AutoReg( Detail::unique_ptr<ITestInvoker> invoker, SourceLineInfo const& lineInfo, StringRef const& classOrMethod, NameAndTags const& nameAndTags ) noexcept;
+    AutoReg( Detail::unique_ptr<ITestInvoker> invoker, SourceLineInfo const& lineInfo, StringRef classOrMethod, NameAndTags const& nameAndTags ) noexcept;
 };
 
 } // end namespace Catch

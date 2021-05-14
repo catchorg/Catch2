@@ -519,7 +519,7 @@ namespace Catch {
     void RunContext::handleMessage(
             AssertionInfo const& info,
             ResultWas::OfType resultType,
-            StringRef const& message,
+            StringRef message,
             AssertionReaction& reaction
     ) {
         m_reporter->assertionStarting( info );

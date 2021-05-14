@@ -64,7 +64,7 @@ namespace Catch {
     };
 
 
-    std::string extractClassName( StringRef const& classOrQualifiedMethodName );
+    std::string extractClassName( StringRef classOrQualifiedMethodName );
 
     ///////////////////////////////////////////////////////////////////////////
 

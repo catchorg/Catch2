@@ -19,7 +19,7 @@ namespace Catch {
         MatcherT const& m_matcher;
         StringRef m_matcherString;
     public:
-        MatchExpr( ArgT && arg, MatcherT const& matcher, StringRef const& matcherString )
+        MatchExpr( ArgT && arg, MatcherT const& matcher, StringRef matcherString )
         :   ITransientExpression{ true, matcher.match( arg ) }, // not forwarding arg here on purpose
             m_arg( std::forward<ArgT>(arg) ),
             m_matcher( matcher ),
@@ -43,10 +43,10 @@ namespace Catch {
 
     using StringMatcher = Matchers::MatcherBase<std::string>;
 
-    void handleExceptionMatchExpr( AssertionHandler& handler, StringMatcher const& matcher, StringRef const& matcherString  );
+    void handleExceptionMatchExpr( AssertionHandler& handler, StringMatcher const& matcher, StringRef matcherString  );
 
     template<typename ArgT, typename MatcherT>
-    auto makeMatchExpr( ArgT && arg, MatcherT const& matcher, StringRef const& matcherString  ) -> MatchExpr<ArgT, MatcherT> {
+    auto makeMatchExpr( ArgT && arg, MatcherT const& matcher, StringRef matcherString  ) -> MatchExpr<ArgT, MatcherT> {
         return MatchExpr<ArgT, MatcherT>( std::forward<ArgT>(arg), matcher, matcherString );
     }
 

@@ -32,7 +32,7 @@ namespace Catch {
 
     public:
         AssertionHandler
-            (   StringRef const& macroName,
+            (   StringRef macroName,
                 SourceLineInfo const& lineInfo,
                 StringRef capturedExpression,
                 ResultDisposition::Flags resultDisposition );
@@ -49,7 +49,7 @@ namespace Catch {
         }
         void handleExpr( ITransientExpression const& expr );
 
-        void handleMessage(ResultWas::OfType resultType, StringRef const& message);
+        void handleMessage(ResultWas::OfType resultType, StringRef message);
 
         void handleExceptionThrownAsExpected();
         void handleUnexpectedExceptionNotThrown();
@@ -64,7 +64,7 @@ namespace Catch {
         auto allowThrows() const -> bool;
     };
 
-    void handleExceptionMatchExpr( AssertionHandler& handler, std::string const& str, StringRef const& matcherString );
+    void handleExceptionMatchExpr( AssertionHandler& handler, std::string const& str, StringRef matcherString );
 
 } // namespace Catch
 
