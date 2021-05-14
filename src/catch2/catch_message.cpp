@@ -17,13 +17,6 @@ namespace Catch {
 
     ////////////////////////////////////////////////////////////////////////////
 
-    Catch::MessageBuilder::MessageBuilder( StringRef const& macroName,
-                                           SourceLineInfo const& lineInfo,
-                                           ResultWas::OfType type )
-        :m_info(macroName, lineInfo, type) {}
-
-    ////////////////////////////////////////////////////////////////////////////
-
 
     ScopedMessage::ScopedMessage( MessageBuilder const& builder ):
         m_info( builder.m_info ) {

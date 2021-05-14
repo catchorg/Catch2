@@ -34,9 +34,11 @@ namespace Catch {
     };
 
     struct MessageBuilder : MessageStream {
-        MessageBuilder( StringRef const& macroName,
+        MessageBuilder( StringRef macroName,
                         SourceLineInfo const& lineInfo,
-                        ResultWas::OfType type );
+                        ResultWas::OfType type ):
+            m_info(macroName, lineInfo, type) {}
+
 
         template<typename T>
         MessageBuilder& operator << ( T const& value ) {
