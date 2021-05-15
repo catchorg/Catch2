@@ -30,7 +30,7 @@
 namespace Catch {
     namespace Detail {
 
-        extern const std::string unprintableString;
+        constexpr StringRef unprintableString = "{?}"_sr;
 
         std::string rawMemoryToString( const void *object, std::size_t size );
 
@@ -59,7 +59,7 @@ namespace Catch {
         std::enable_if_t<
             !std::is_enum<T>::value && !std::is_base_of<std::exception, T>::value,
         std::string> convertUnstreamable( T const& ) {
-            return Detail::unprintableString;
+            return std::string(Detail::unprintableString);
         }
         template<typename T>
         std::enable_if_t<

@@ -5,12 +5,6 @@
 //        https://www.boost.org/LICENSE_1_0.txt)
 
 // SPDX-License-Identifier: BSL-1.0
-#if defined(__clang__)
-#    pragma clang diagnostic push
-#    pragma clang diagnostic ignored "-Wexit-time-destructors"
-#    pragma clang diagnostic ignored "-Wglobal-constructors"
-#endif
-
 
 #include <catch2/catch_tostring.hpp>
 #include <catch2/interfaces/catch_interfaces_config.hpp>
@@ -23,8 +17,6 @@
 namespace Catch {
 
 namespace Detail {
-
-    const std::string unprintableString = "{?}";
 
     namespace {
         const int hexThreshold = 255;
@@ -237,8 +229,3 @@ std::string StringMaker<double>::convert(double value) {
 }
 
 } // end namespace Catch
-
-#if defined(__clang__)
-#    pragma clang diagnostic pop
-#endif
-
