@@ -26,13 +26,10 @@ namespace Catch {
             m_matcherString( matcherString )
         {}
 
-        void streamReconstructedExpression( std::ostream &os ) const override {
-            auto matcherAsString = m_matcher.toString();
-            os << Catch::Detail::stringify( m_arg ) << ' ';
-            if( matcherAsString == Detail::unprintableString )
-                os << m_matcherString;
-            else
-                os << matcherAsString;
+        void streamReconstructedExpression( std::ostream& os ) const override {
+            os << Catch::Detail::stringify( m_arg )
+               << ' '
+               << m_matcher.toString();
         }
     };
 
