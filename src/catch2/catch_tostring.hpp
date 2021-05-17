@@ -625,7 +625,7 @@ struct ratio_string<std::milli> {
 #else
             std::strftime(timeStamp, timeStampSize, fmt, timeInfo);
 #endif
-            return std::string(timeStamp);
+            return std::string(timeStamp, timeStampSize - 1);
         }
     };
 }
