@@ -1532,6 +1532,12 @@ String.tests.cpp:<line number>: passed: with 1 message: '!(sr1.empty())'
 String.tests.cpp:<line number>: passed: with 1 message: 'sr1.size() == 3'
 String.tests.cpp:<line number>: passed: with 1 message: 'sr2.empty()'
 String.tests.cpp:<line number>: passed: with 1 message: 'sr2.size() == 0'
+ToString.tests.cpp:<line number>: passed: ::Catch::Detail::stringify( with_null_terminator ) == R"("abc")"s for: ""abc"" == ""abc""
+ToString.tests.cpp:<line number>: passed: ::Catch::Detail::stringify( no_null_terminator ) == R"("abc")"s for: ""abc"" == ""abc""
+ToString.tests.cpp:<line number>: passed: ::Catch::Detail::stringify( with_null_terminator ) == R"("abc")"s for: ""abc"" == ""abc""
+ToString.tests.cpp:<line number>: passed: ::Catch::Detail::stringify( no_null_terminator ) == R"("abc")"s for: ""abc"" == ""abc""
+ToString.tests.cpp:<line number>: passed: ::Catch::Detail::stringify( with_null_terminator ) == R"("abc")"s for: ""abc"" == ""abc""
+ToString.tests.cpp:<line number>: passed: ::Catch::Detail::stringify( no_null_terminator ) == R"("abc")"s for: ""abc"" == ""abc""
 ToStringChrono.tests.cpp:<line number>: passed: minute == seconds for: 1 m == 60 s
 ToStringChrono.tests.cpp:<line number>: passed: hour != seconds for: 1 h != 60 s
 ToStringChrono.tests.cpp:<line number>: passed: micro != milli for: 1 us != 1 ms

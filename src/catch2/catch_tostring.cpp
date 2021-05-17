@@ -54,6 +54,48 @@ namespace Detail {
         }
     } // end unnamed namespace
 
+    std::string convertIntoString(StringRef string, bool escape_invisibles) {
+        std::string ret;
+        // This is enough for the "don't escape invisibles" case, and a good
+        // lower bound on the "escape invisibles" case.
+        ret.reserve(string.size() + 2);
+
+        if (!escape_invisibles) {
+            ret += '"';
+            ret += string;
+            ret += '"';
+            return ret;
+        }
+
+        ret += '"';
+        for (char c : string) {
+            switch (c) {
+            case '\r':
+                ret.append("\\r");
+                break;
+            case '\n':
+                ret.append("\\n");
+                break;
+            case '\t':
+                ret.append("\\t");
+                break;
+            case '\f':
+                ret.append("\\f");
+                break;
+            default:
+                ret.push_back(c);
+                break;
+            }
+        }
+        ret += '"';
+
+        return ret;
+    }
+
+    std::string convertIntoString(StringRef string) {
+        return convertIntoString(string, getCurrentContext().getConfig()->showInvisibles());
+    }
+
     std::string rawMemoryToString( const void *object, std::size_t size ) {
         // Reverse order for little endian architectures
         int i = 0, end = static_cast<int>( size ), inc = 1;
@@ -80,44 +122,25 @@ namespace Detail {
 //// ======================================================= ////
 
 std::string StringMaker<std::string>::convert(const std::string& str) {
-    if (!getCurrentContext().getConfig()->showInvisibles()) {
-        return '"' + str + '"';
-    }
-
-    std::string s("\"");
-    for (char c : str) {
-        switch (c) {
-        case '\n':
-            s.append("\\n");
-            break;
-        case '\t':
-            s.append("\\t");
-            break;
-        default:
-            s.push_back(c);
-            break;
-        }
-    }
-    s.append("\"");
-    return s;
+    return Detail::convertIntoString( str );
 }
 
 #ifdef CATCH_CONFIG_CPP17_STRING_VIEW
 std::string StringMaker<std::string_view>::convert(std::string_view str) {
-    return ::Catch::Detail::stringify(std::string{ str });
+    return Detail::convertIntoString( StringRef( str.data(), str.size() ) );
 }
 #endif
 
 std::string StringMaker<char const*>::convert(char const* str) {
     if (str) {
-        return ::Catch::Detail::stringify(std::string{ str });
+        return Detail::convertIntoString( str );
     } else {
         return{ "{null string}" };
     }
 }
 std::string StringMaker<char*>::convert(char* str) {
     if (str) {
-        return ::Catch::Detail::stringify(std::string{ str });
+        return Detail::convertIntoString( str );
     } else {
         return{ "{null string}" };
     }

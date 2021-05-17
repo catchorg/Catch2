@@ -10866,6 +10866,54 @@ with message:
   sr2.size() == 0
 
 -------------------------------------------------------------------------------
+Stringifying char arrays with statically known sizes - char
+-------------------------------------------------------------------------------
+ToString.tests.cpp:<line number>
+...............................................................................
+
+ToString.tests.cpp:<line number>: PASSED:
+  CHECK( ::Catch::Detail::stringify( with_null_terminator ) == R"("abc")"s )
+with expansion:
+  ""abc"" == ""abc""
+
+ToString.tests.cpp:<line number>: PASSED:
+  CHECK( ::Catch::Detail::stringify( no_null_terminator ) == R"("abc")"s )
+with expansion:
+  ""abc"" == ""abc""
+
+-------------------------------------------------------------------------------
+Stringifying char arrays with statically known sizes - signed char
+-------------------------------------------------------------------------------
+ToString.tests.cpp:<line number>
+...............................................................................
+
+ToString.tests.cpp:<line number>: PASSED:
+  CHECK( ::Catch::Detail::stringify( with_null_terminator ) == R"("abc")"s )
+with expansion:
+  ""abc"" == ""abc""
+
+ToString.tests.cpp:<line number>: PASSED:
+  CHECK( ::Catch::Detail::stringify( no_null_terminator ) == R"("abc")"s )
+with expansion:
+  ""abc"" == ""abc""
+
+-------------------------------------------------------------------------------
+Stringifying char arrays with statically known sizes - unsigned char
+-------------------------------------------------------------------------------
+ToString.tests.cpp:<line number>
+...............................................................................
+
+ToString.tests.cpp:<line number>: PASSED:
+  CHECK( ::Catch::Detail::stringify( with_null_terminator ) == R"("abc")"s )
+with expansion:
+  ""abc"" == ""abc""
+
+ToString.tests.cpp:<line number>: PASSED:
+  CHECK( ::Catch::Detail::stringify( no_null_terminator ) == R"("abc")"s )
+with expansion:
+  ""abc"" == ""abc""
+
+-------------------------------------------------------------------------------
 Stringifying std::chrono::duration helpers
 -------------------------------------------------------------------------------
 ToStringChrono.tests.cpp:<line number>
@@ -16782,6 +16830,6 @@ Misc.tests.cpp:<line number>
 Misc.tests.cpp:<line number>: PASSED:
 
 ===============================================================================
-test cases:  360 |  268 passed |  86 failed |  6 failed as expected
-assertions: 2101 | 1932 passed | 146 failed | 23 failed as expected
+test cases:  363 |  271 passed |  86 failed |  6 failed as expected
+assertions: 2107 | 1938 passed | 146 failed | 23 failed as expected
 

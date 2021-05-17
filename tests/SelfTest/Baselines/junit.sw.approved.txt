@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuitesloose text artifact
 >
-  <testsuite name="<exe-name>" errors="17" failures="130" tests="2102" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
+  <testsuite name="<exe-name>" errors="17" failures="130" tests="2108" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
     <properties>
       <property name="filters" value="~[!nonportable]~[!benchmark]~[approvals] *"/>
       <property name="random-seed" value="1"/>
@@ -1194,6 +1194,9 @@ Matchers.tests.cpp:<line number>
     <testcase classname="<exe-name>.global" name="StringRef/StringRef + StringRef" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="StringRef at compilation time/Simple constructors" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="StringRef at compilation time/UDL construction" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Stringifying char arrays with statically known sizes - char" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Stringifying char arrays with statically known sizes - signed char" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Stringifying char arrays with statically known sizes - unsigned char" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Stringifying std::chrono::duration helpers" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Stringifying std::chrono::duration with weird ratios" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Stringifying std::chrono::time_point&lt;system_clock>" time="{duration}" status="run"/>

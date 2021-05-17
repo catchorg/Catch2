@@ -222,6 +222,9 @@
   <file path="tests/<exe-name>/IntrospectiveTests/ToString.tests.cpp">
     <testCase name="Directly creating an EnumInfo" duration="{duration}"/>
     <testCase name="Range type with sentinel" duration="{duration}"/>
+    <testCase name="Stringifying char arrays with statically known sizes - char" duration="{duration}"/>
+    <testCase name="Stringifying char arrays with statically known sizes - signed char" duration="{duration}"/>
+    <testCase name="Stringifying char arrays with statically known sizes - unsigned char" duration="{duration}"/>
     <testCase name="parseEnums/No enums" duration="{duration}"/>
     <testCase name="parseEnums/One enum value" duration="{duration}"/>
     <testCase name="parseEnums/Multiple enum values" duration="{duration}"/>

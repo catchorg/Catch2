@@ -205,6 +205,9 @@ Message from section two
 :test-result: PASS String matchers
 :test-result: PASS StringRef
 :test-result: PASS StringRef at compilation time
+:test-result: PASS Stringifying char arrays with statically known sizes - char
+:test-result: PASS Stringifying char arrays with statically known sizes - signed char
+:test-result: PASS Stringifying char arrays with statically known sizes - unsigned char
 :test-result: PASS Stringifying std::chrono::duration helpers
 :test-result: PASS Stringifying std::chrono::duration with weird ratios
 :test-result: PASS Stringifying std::chrono::time_point<system_clock>

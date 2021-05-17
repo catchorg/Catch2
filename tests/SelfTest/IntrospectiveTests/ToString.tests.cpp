@@ -1,6 +1,7 @@
 #include <catch2/internal/catch_enum_values_registry.hpp>
 #include <catch2/matchers/catch_matchers_vector.hpp>
 #include <catch2/catch_test_macros.hpp>
+#include <catch2/catch_template_test_macros.hpp>
 
 enum class EnumClass3 { Value1, Value2, Value3, Value4 };
 
@@ -50,4 +51,39 @@ TEST_CASE( "Directly creating an EnumInfo" ) {
 
 TEST_CASE("Range type with sentinel") {
     CHECK( Catch::Detail::stringify(UsesSentinel{}) == "{  }" );
+}
+
+TEST_CASE("convertIntoString stringification helper", "[toString][approvals]") {
+    using namespace std::string_literals;
+    using Catch::Detail::convertIntoString;
+    using namespace Catch;
+
+    SECTION("No escaping") {
+        CHECK(convertIntoString(""_sr, false) == R"("")"s);
+        CHECK(convertIntoString("abcd"_sr, false) == R"("abcd")"s);
+        CHECK(convertIntoString("ab\ncd"_sr, false) == "\"ab\ncd\""s);
+        CHECK(convertIntoString("ab\r\ncd"_sr, false) == "\"ab\r\ncd\""s);
+        CHECK(convertIntoString("ab\"cd"_sr, false) == R"("ab"cd")"s);
+    }
+    SECTION("Escaping invisibles") {
+        CHECK(convertIntoString(""_sr, true) == R"("")"s);
+        CHECK(convertIntoString("ab\ncd"_sr, true) == R"("ab\ncd")"s);
+        CHECK(convertIntoString("ab\r\ncd"_sr, true) == R"("ab\r\ncd")"s);
+        CHECK(convertIntoString("ab\tcd"_sr, true) == R"("ab\tcd")"s);
+        CHECK(convertIntoString("ab\fcd"_sr, true) == R"("ab\fcd")"s);
+        CHECK(convertIntoString("ab\"cd"_sr, true) == R"("ab"cd")"s);
+    }
+}
+
+TEMPLATE_TEST_CASE( "Stringifying char arrays with statically known sizes",
+                    "[toString]",
+                    char,
+                    signed char,
+                    unsigned char ) {
+    using namespace std::string_literals;
+    TestType with_null_terminator[10] = "abc";
+    CHECK( ::Catch::Detail::stringify( with_null_terminator ) == R"("abc")"s );
+
+    TestType no_null_terminator[3] = { 'a', 'b', 'c' };
+    CHECK( ::Catch::Detail::stringify( no_null_terminator ) == R"("abc")"s );
 }

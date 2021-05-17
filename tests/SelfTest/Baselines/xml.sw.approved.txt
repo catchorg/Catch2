@@ -12900,6 +12900,63 @@ Message from section two
       </Section>
       <OverallResult success="true"/>
     </TestCase>
+    <TestCase name="Stringifying char arrays with statically known sizes - char" tags="[toString]" filename="tests/<exe-name>/IntrospectiveTests/ToString.tests.cpp" >
+      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/ToString.tests.cpp" >
+        <Original>
+          ::Catch::Detail::stringify( with_null_terminator ) == R"("abc")"s
+        </Original>
+        <Expanded>
+          ""abc"" == ""abc""
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/ToString.tests.cpp" >
+        <Original>
+          ::Catch::Detail::stringify( no_null_terminator ) == R"("abc")"s
+        </Original>
+        <Expanded>
+          ""abc"" == ""abc""
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="Stringifying char arrays with statically known sizes - signed char" tags="[toString]" filename="tests/<exe-name>/IntrospectiveTests/ToString.tests.cpp" >
+      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/ToString.tests.cpp" >
+        <Original>
+          ::Catch::Detail::stringify( with_null_terminator ) == R"("abc")"s
+        </Original>
+        <Expanded>
+          ""abc"" == ""abc""
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/ToString.tests.cpp" >
+        <Original>
+          ::Catch::Detail::stringify( no_null_terminator ) == R"("abc")"s
+        </Original>
+        <Expanded>
+          ""abc"" == ""abc""
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="Stringifying char arrays with statically known sizes - unsigned char" tags="[toString]" filename="tests/<exe-name>/IntrospectiveTests/ToString.tests.cpp" >
+      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/ToString.tests.cpp" >
+        <Original>
+          ::Catch::Detail::stringify( with_null_terminator ) == R"("abc")"s
+        </Original>
+        <Expanded>
+          ""abc"" == ""abc""
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/ToString.tests.cpp" >
+        <Original>
+          ::Catch::Detail::stringify( no_null_terminator ) == R"("abc")"s
+        </Original>
+        <Expanded>
+          ""abc"" == ""abc""
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
     <TestCase name="Stringifying std::chrono::duration helpers" tags="[chrono][toString]" filename="tests/<exe-name>/UsageTests/ToStringChrono.tests.cpp" >
       <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/UsageTests/ToStringChrono.tests.cpp" >
         <Original>
@@ -19745,9 +19802,9 @@ loose text artifact
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="1932" failures="147" expectedFailures="23"/>
-    <OverallResultsCases successes="268" failures="86" expectedFailures="6"/>
+    <OverallResults successes="1938" failures="147" expectedFailures="23"/>
+    <OverallResultsCases successes="271" failures="86" expectedFailures="6"/>
   </Group>
-  <OverallResults successes="1932" failures="146" expectedFailures="23"/>
-  <OverallResultsCases successes="268" failures="86" expectedFailures="6"/>
+  <OverallResults successes="1938" failures="146" expectedFailures="23"/>
+  <OverallResultsCases successes="271" failures="86" expectedFailures="6"/>
 </Catch>

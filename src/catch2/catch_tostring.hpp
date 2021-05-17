@@ -13,6 +13,7 @@
 #include <cstddef>
 #include <type_traits>
 #include <string>
+#include <string.h>
 #include <catch2/internal/catch_compiler_capabilities.hpp>
 #include <catch2/internal/catch_config_wchar.hpp>
 #include <catch2/internal/catch_stream.hpp>
@@ -31,6 +32,13 @@ namespace Catch {
     namespace Detail {
 
         constexpr StringRef unprintableString = "{?}"_sr;
+
+        //! Encases `string in quotes, and optionally escapes invisibles
+        std::string convertIntoString( StringRef string, bool escapeInvisibles );
+
+        //! Encases `string` in quotes, and escapes invisibles if user requested
+        //! it via CLI
+        std::string convertIntoString( StringRef string );
 
         std::string rawMemoryToString( const void *object, std::size_t size );
 
@@ -186,24 +194,31 @@ namespace Catch {
     };
 #endif // CATCH_CONFIG_WCHAR
 
-    // TBD: Should we use `strnlen` to ensure that we don't go out of the buffer,
-    //      while keeping string semantics?
     template<int SZ>
     struct StringMaker<char[SZ]> {
         static std::string convert(char const* str) {
-            return ::Catch::Detail::stringify(std::string{ str });
+            // Note that `strnlen` is not actually part of standard C++,
+            // but both POSIX and Windows cstdlib provide it.
+            return Detail::convertIntoString(
+                StringRef( str, strnlen( str, SZ ) ) );
         }
     };
     template<int SZ>
     struct StringMaker<signed char[SZ]> {
         static std::string convert(signed char const* str) {
-            return ::Catch::Detail::stringify(std::string{ reinterpret_cast<char const *>(str) });
+            // See the plain `char const*` overload
+            auto reinterpreted = reinterpret_cast<char const*>(str);
+            return Detail::convertIntoString(
+                StringRef(reinterpreted, strnlen(reinterpreted, SZ)));
         }
     };
     template<int SZ>
     struct StringMaker<unsigned char[SZ]> {
         static std::string convert(unsigned char const* str) {
-            return ::Catch::Detail::stringify(std::string{ reinterpret_cast<char const *>(str) });
+            // See the plain `char const*` overload
+            auto reinterpreted = reinterpret_cast<char const*>(str);
+            return Detail::convertIntoString(
+                StringRef(reinterpreted, strnlen(reinterpreted, SZ)));
         }
     };
 

@@ -2743,6 +2743,18 @@ ok {test-number} - with 1 message: 'sr1.size() == 3'
 ok {test-number} - with 1 message: 'sr2.empty()'
 # StringRef at compilation time
 ok {test-number} - with 1 message: 'sr2.size() == 0'
+# Stringifying char arrays with statically known sizes - char
+ok {test-number} - ::Catch::Detail::stringify( with_null_terminator ) == R"("abc")"s for: ""abc"" == ""abc""
+# Stringifying char arrays with statically known sizes - char
+ok {test-number} - ::Catch::Detail::stringify( no_null_terminator ) == R"("abc")"s for: ""abc"" == ""abc""
+# Stringifying char arrays with statically known sizes - signed char
+ok {test-number} - ::Catch::Detail::stringify( with_null_terminator ) == R"("abc")"s for: ""abc"" == ""abc""
+# Stringifying char arrays with statically known sizes - signed char
+ok {test-number} - ::Catch::Detail::stringify( no_null_terminator ) == R"("abc")"s for: ""abc"" == ""abc""
+# Stringifying char arrays with statically known sizes - unsigned char
+ok {test-number} - ::Catch::Detail::stringify( with_null_terminator ) == R"("abc")"s for: ""abc"" == ""abc""
+# Stringifying char arrays with statically known sizes - unsigned char
+ok {test-number} - ::Catch::Detail::stringify( no_null_terminator ) == R"("abc")"s for: ""abc"" == ""abc""
 # Stringifying std::chrono::duration helpers
 ok {test-number} - minute == seconds for: 1 m == 60 s
 # Stringifying std::chrono::duration helpers
@@ -4204,5 +4216,5 @@ ok {test-number} - q3 == 23. for: 23.0 == 23.0
 ok {test-number} -
 # xmlentitycheck
 ok {test-number} -
-1..2101
+1..2107
 
