@@ -64,7 +64,11 @@ namespace Detail {
             assert(m_ptr);
             return *m_ptr;
         }
-        T* operator->() const noexcept {
+        T* operator->() noexcept {
+            assert(m_ptr);
+            return m_ptr;
+        }
+        T const* operator->() const noexcept {
             assert(m_ptr);
             return m_ptr;
         }
