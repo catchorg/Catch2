@@ -56,7 +56,7 @@ namespace Catch {
                     }
                     iters *= 2;
                 }
-                throw optimized_away_error{};
+                Catch::throw_exception(optimized_away_error{});
             }
         } // namespace Detail
     } // namespace Benchmark
