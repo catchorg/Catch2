@@ -19,6 +19,7 @@
 #include "detail/catch_run_for_at_least.hpp"
 
 #include <algorithm>
+#include <iterator>
 
 namespace Catch {
     namespace Benchmark {
