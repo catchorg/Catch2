@@ -46,7 +46,7 @@ namespace Catch {
 #else
             std::strftime(timeStamp, timeStampSize, fmt, timeInfo);
 #endif
-            return std::string(timeStamp);
+            return std::string(timeStamp, timeStampSize-1);
         }
 
         std::string fileNameTag(const std::vector<std::string> &tags) {
