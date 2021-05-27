@@ -29,12 +29,18 @@ jobs:
             other_pkgs: g++-7
           - cxx: g++-8
             other_pkgs: g++-8
+          - cxx: g++-9
+            other_pkgs: g++-9
+          - cxx: g++-10
+            other_pkgs: g++-10
           - cxx: clang++-6.0
             other_pkgs: clang-6.0
           - cxx: clang++-7
             other_pkgs: clang-7
           - cxx: clang++-8
             other_pkgs: clang-8
+          - cxx: clang++-9
+            other_pkgs: clang-9
           - cxx: clang++-10
             other_pkgs: clang-10
           # Clang 6 + C++17
