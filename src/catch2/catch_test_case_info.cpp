@@ -146,6 +146,7 @@ namespace Catch {
                 // it over to backing storage and actually reference the
                 // backing storage in the saved tags
                 StringRef tagStr = originalTags.substr(tagStart+1, tagEnd - tagStart - 1);
+                CATCH_ENFORCE(!tagStr.empty(), "Empty tags are not allowed");
                 enforceNotReservedTag(tagStr, lineInfo);
                 properties |= parseSpecialTag(tagStr);
                 // When copying a tag to the backing storage, we need to

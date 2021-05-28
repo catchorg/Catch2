@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuitesloose text artifact
 >
-  <testsuite name="<exe-name>" errors="17" failures="130" tests="2109" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
+  <testsuite name="<exe-name>" errors="17" failures="130" tests="2110" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
     <properties>
       <property name="filters" value="~[!nonportable]~[!benchmark]~[approvals] *"/>
       <property name="random-seed" value="1"/>
@@ -1548,6 +1548,7 @@ Misc.tests.cpp:<line number>
     <testcase classname="<exe-name>.global" name="classify_outliers/mixed" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="comparisons between const int variables" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="comparisons between int variables" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="empty tags are not allowed" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="erfc_inv" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="estimate_clock_resolution" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="even more nested SECTION tests/c/d (leaf)" time="{duration}" status="run"/>

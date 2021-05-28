@@ -2065,6 +2065,7 @@ Condition.tests.cpp:<line number>: passed: long_var == unsigned_char_var for: 1 
 Condition.tests.cpp:<line number>: passed: long_var == unsigned_short_var for: 1 == 1
 Condition.tests.cpp:<line number>: passed: long_var == unsigned_int_var for: 1 == 1
 Condition.tests.cpp:<line number>: passed: long_var == unsigned_long_var for: 1 == 1
+Tag.tests.cpp:<line number>: passed: Catch::TestCaseInfo("", { "test with an empty tag", "[]" }, dummySourceLineInfo)
 InternalBenchmark.tests.cpp:<line number>: passed: erfc_inv(1.103560) == Approx(-0.09203687623843015) for: -0.0920368762 == Approx( -0.0920368762 )
 InternalBenchmark.tests.cpp:<line number>: passed: erfc_inv(1.067400) == Approx(-0.05980291115763361) for: -0.0598029112 == Approx( -0.0598029112 )
 InternalBenchmark.tests.cpp:<line number>: passed: erfc_inv(0.050000) == Approx(1.38590382434967796) for: 1.3859038243 == Approx( 1.3859038243 )

@@ -3703,6 +3703,8 @@ ok {test-number} - long_var == unsigned_short_var for: 1 == 1
 ok {test-number} - long_var == unsigned_int_var for: 1 == 1
 # comparisons between int variables
 ok {test-number} - long_var == unsigned_long_var for: 1 == 1
+# empty tags are not allowed
+ok {test-number} - Catch::TestCaseInfo("", { "test with an empty tag", "[]" }, dummySourceLineInfo)
 # erfc_inv
 ok {test-number} - erfc_inv(1.103560) == Approx(-0.09203687623843015) for: -0.0920368762 == Approx( -0.0920368762 )
 # erfc_inv
@@ -4218,5 +4220,5 @@ ok {test-number} - q3 == 23. for: 23.0 == 23.0
 ok {test-number} -
 # xmlentitycheck
 ok {test-number} -
-1..2108
+1..2109
 

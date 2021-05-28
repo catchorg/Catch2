@@ -39,6 +39,9 @@ TEST_CASE( "Tag alias can be registered against tag patterns" ) {
     }
 }
 
+// Dummy line info for creating dummy test cases below
+constexpr Catch::SourceLineInfo dummySourceLineInfo = CATCH_INTERNAL_LINEINFO;
+
 TEST_CASE("shortened hide tags are split apart", "[tags]") {
     using Catch::StringRef;
     using Catch::Matchers::VectorContains;
@@ -59,4 +62,10 @@ TEST_CASE("tags with dots in later positions are not parsed as hidden", "[tags]"
 
     REQUIRE(testcase->tags.size() == 1);
     REQUIRE(testcase->tags[0].original == "magic.tag"_catch_sr);
+}
+
+TEST_CASE( "empty tags are not allowed", "[tags]" ) {
+    REQUIRE_THROWS(
+        Catch::TestCaseInfo("", { "test with an empty tag", "[]" }, dummySourceLineInfo)
+    );
 }

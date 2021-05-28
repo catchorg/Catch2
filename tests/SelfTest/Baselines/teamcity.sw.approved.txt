@@ -690,6 +690,8 @@ Misc.tests.cpp:<line number>|nexpression failed|n  REQUIRE( testCheckedIf( false
 ##teamcity[testFinished name='comparisons between const int variables' duration="{duration}"]
 ##teamcity[testStarted name='comparisons between int variables']
 ##teamcity[testFinished name='comparisons between int variables' duration="{duration}"]
+##teamcity[testStarted name='empty tags are not allowed']
+##teamcity[testFinished name='empty tags are not allowed' duration="{duration}"]
 ##teamcity[testStarted name='erfc_inv']
 ##teamcity[testFinished name='erfc_inv' duration="{duration}"]
 ##teamcity[testStarted name='estimate_clock_resolution']

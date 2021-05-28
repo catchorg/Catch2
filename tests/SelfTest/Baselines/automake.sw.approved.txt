@@ -282,6 +282,7 @@ Message from section two
 :test-result: PASS classify_outliers
 :test-result: PASS comparisons between const int variables
 :test-result: PASS comparisons between int variables
+:test-result: PASS empty tags are not allowed
 :test-result: PASS erfc_inv
 :test-result: PASS estimate_clock_resolution
 :test-result: PASS even more nested SECTION tests

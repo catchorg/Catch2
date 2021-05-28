@@ -14598,6 +14598,15 @@ with expansion:
   1 == 1
 
 -------------------------------------------------------------------------------
+empty tags are not allowed
+-------------------------------------------------------------------------------
+Tag.tests.cpp:<line number>
+...............................................................................
+
+Tag.tests.cpp:<line number>: PASSED:
+  REQUIRE_THROWS( Catch::TestCaseInfo("", { "test with an empty tag", "[]" }, dummySourceLineInfo) )
+
+-------------------------------------------------------------------------------
 erfc_inv
 -------------------------------------------------------------------------------
 InternalBenchmark.tests.cpp:<line number>
@@ -16843,6 +16852,6 @@ Misc.tests.cpp:<line number>
 Misc.tests.cpp:<line number>: PASSED:
 
 ===============================================================================
-test cases:  364 |  272 passed |  86 failed |  6 failed as expected
-assertions: 2108 | 1939 passed | 146 failed | 23 failed as expected
+test cases:  365 |  273 passed |  86 failed |  6 failed as expected
+assertions: 2109 | 1940 passed | 146 failed | 23 failed as expected
 

@@ -17257,6 +17257,17 @@ There is no extra whitespace here
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
+    <TestCase name="empty tags are not allowed" tags="[tags]" filename="tests/<exe-name>/IntrospectiveTests/Tag.tests.cpp" >
+      <Expression success="true" type="REQUIRE_THROWS" filename="tests/<exe-name>/IntrospectiveTests/Tag.tests.cpp" >
+        <Original>
+          Catch::TestCaseInfo("", { "test with an empty tag", "[]" }, dummySourceLineInfo)
+        </Original>
+        <Expanded>
+          Catch::TestCaseInfo("", { "test with an empty tag", "[]" }, dummySourceLineInfo)
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
     <TestCase name="erfc_inv" tags="[benchmark]" filename="tests/<exe-name>/IntrospectiveTests/InternalBenchmark.tests.cpp" >
       <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/InternalBenchmark.tests.cpp" >
         <Original>
@@ -19815,9 +19826,9 @@ loose text artifact
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="1939" failures="147" expectedFailures="23"/>
-    <OverallResultsCases successes="272" failures="86" expectedFailures="6"/>
+    <OverallResults successes="1940" failures="147" expectedFailures="23"/>
+    <OverallResultsCases successes="273" failures="86" expectedFailures="6"/>
   </Group>
-  <OverallResults successes="1939" failures="146" expectedFailures="23"/>
-  <OverallResultsCases successes="272" failures="86" expectedFailures="6"/>
+  <OverallResults successes="1940" failures="146" expectedFailures="23"/>
+  <OverallResultsCases successes="273" failures="86" expectedFailures="6"/>
 </Catch>
