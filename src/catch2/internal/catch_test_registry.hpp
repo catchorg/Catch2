@@ -42,7 +42,7 @@ Detail::unique_ptr<ITestInvoker> makeTestInvoker( void(*testAsFunction)() );
 
 template<typename C>
 Detail::unique_ptr<ITestInvoker> makeTestInvoker( void (C::*testAsMethod)() ) {
-    return Detail::unique_ptr<ITestInvoker>( new TestInvokerAsMethod<C>(testAsMethod) );
+    return Detail::make_unique<TestInvokerAsMethod<C>>( testAsMethod );
 }
 
 struct NameAndTags {

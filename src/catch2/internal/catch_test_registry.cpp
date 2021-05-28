@@ -14,7 +14,7 @@
 namespace Catch {
 
     Detail::unique_ptr<ITestInvoker> makeTestInvoker( void(*testAsFunction)() ) {
-        return Detail::unique_ptr<ITestInvoker>( new TestInvokerAsFunction( testAsFunction ));
+        return Detail::make_unique<TestInvokerAsFunction>( testAsFunction );
     }
 
     AutoReg::AutoReg( Detail::unique_ptr<ITestInvoker> invoker, SourceLineInfo const& lineInfo, StringRef classOrMethod, NameAndTags const& nameAndTags ) noexcept {
