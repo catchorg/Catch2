@@ -45,11 +45,11 @@ constexpr Catch::SourceLineInfo dummySourceLineInfo = CATCH_INTERNAL_LINEINFO;
 TEST_CASE("shortened hide tags are split apart", "[tags]") {
     using Catch::StringRef;
     using Catch::Matchers::VectorContains;
-    auto testcase = Catch::makeTestCaseInfo("", {"fake test name", "[.magic-tag]"}, CATCH_INTERNAL_LINEINFO);
+    Catch::TestCaseInfo testcase("", {"fake test name", "[.magic-tag]"}, dummySourceLineInfo);
 
     // Extract parsed tags into strings
     std::vector<StringRef> tags;
-    for (auto const& tag : testcase->tags) {
+    for (auto const& tag : testcase.tags) {
         tags.push_back(tag.lowerCased);
     }
     REQUIRE_THAT(tags, VectorContains("magic-tag"_catch_sr) && VectorContains("."_catch_sr));
@@ -58,10 +58,10 @@ TEST_CASE("shortened hide tags are split apart", "[tags]") {
 TEST_CASE("tags with dots in later positions are not parsed as hidden", "[tags]") {
     using Catch::StringRef;
     using Catch::Matchers::VectorContains;
-    auto testcase = Catch::makeTestCaseInfo("", { "fake test name", "[magic.tag]" }, CATCH_INTERNAL_LINEINFO);
+    Catch::TestCaseInfo testcase("", { "fake test name", "[magic.tag]" }, dummySourceLineInfo);
 
-    REQUIRE(testcase->tags.size() == 1);
-    REQUIRE(testcase->tags[0].original == "magic.tag"_catch_sr);
+    REQUIRE(testcase.tags.size() == 1);
+    REQUIRE(testcase.tags[0].original == "magic.tag"_catch_sr);
 }
 
 TEST_CASE( "empty tags are not allowed", "[tags]" ) {

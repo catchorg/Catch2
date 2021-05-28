@@ -18997,7 +18997,7 @@ loose text artifact
     <TestCase name="tags with dots in later positions are not parsed as hidden" tags="[tags]" filename="tests/<exe-name>/IntrospectiveTests/Tag.tests.cpp" >
       <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/Tag.tests.cpp" >
         <Original>
-          testcase->tags.size() == 1
+          testcase.tags.size() == 1
         </Original>
         <Expanded>
           1 == 1
@@ -19005,7 +19005,7 @@ loose text artifact
       </Expression>
       <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/Tag.tests.cpp" >
         <Original>
-          testcase->tags[0].original == "magic.tag"_catch_sr
+          testcase.tags[0].original == "magic.tag"_catch_sr
         </Original>
         <Expanded>
           magic.tag == magic.tag

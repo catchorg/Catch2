@@ -16123,12 +16123,12 @@ Tag.tests.cpp:<line number>
 ...............................................................................
 
 Tag.tests.cpp:<line number>: PASSED:
-  REQUIRE( testcase->tags.size() == 1 )
+  REQUIRE( testcase.tags.size() == 1 )
 with expansion:
   1 == 1
 
 Tag.tests.cpp:<line number>: PASSED:
-  REQUIRE( testcase->tags[0].original == "magic.tag"_catch_sr )
+  REQUIRE( testcase.tags[0].original == "magic.tag"_catch_sr )
 with expansion:
   magic.tag == magic.tag
 
