@@ -950,7 +950,7 @@ namespace Catch {
 #include <iosfwd>
 
 namespace Catch {
-        
+
     struct ITransientExpression;
 
     class LazyExpression {
@@ -1430,7 +1430,7 @@ namespace Catch {
         double outlierVariance;
 
         template <typename Duration2>
-        operator BenchmarkStats<Duration2>() const {
+        explicit operator BenchmarkStats<Duration2>() const {
             std::vector<Duration2> samples2;
             samples2.reserve(samples.size());
             for (auto const& sample : samples) {
@@ -2575,7 +2575,7 @@ namespace Catch {
                         analysis.outlier_variance,
                     };
                 } else {
-                    std::vector<Duration> samples; 
+                    std::vector<Duration> samples;
                     samples.reserve(last - first);
 
                     Duration mean = Duration(0);
