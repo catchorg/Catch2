@@ -77,7 +77,7 @@ namespace {
     }
 
 
-    XmlEncode::XmlEncode( std::string const& str, ForWhat forWhat )
+    XmlEncode::XmlEncode( StringRef str, ForWhat forWhat )
     :   m_str( str ),
         m_forWhat( forWhat )
     {}

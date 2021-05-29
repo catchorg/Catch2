@@ -9,6 +9,7 @@
 #define CATCH_XMLWRITER_HPP_INCLUDED
 
 #include <catch2/internal/catch_stream.hpp>
+#include <catch2/internal/catch_stringref.hpp>
 
 #include <vector>
 
@@ -22,18 +23,24 @@ namespace Catch {
     XmlFormatting operator | (XmlFormatting lhs, XmlFormatting rhs);
     XmlFormatting operator & (XmlFormatting lhs, XmlFormatting rhs);
 
+    /**
+     * Helper for XML-encoding text (escaping angle brackets, quotes, etc)
+     *
+     * Note: doesn't take ownership of passed strings, and thus the
+     *       encoded string must outlive the encoding instance.
+     */
     class XmlEncode {
     public:
         enum ForWhat { ForTextNodes, ForAttributes };
 
-        XmlEncode( std::string const& str, ForWhat forWhat = ForTextNodes );
+        XmlEncode( StringRef str, ForWhat forWhat = ForTextNodes );
 
         void encodeTo( std::ostream& os ) const;
 
         friend std::ostream& operator << ( std::ostream& os, XmlEncode const& xmlEncode );
 
     private:
-        std::string m_str;
+        StringRef m_str;
         ForWhat m_forWhat;
     };
 
