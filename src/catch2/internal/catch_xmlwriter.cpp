@@ -211,7 +211,8 @@ namespace {
         }
     }
 
-    XmlWriter::ScopedElement& XmlWriter::ScopedElement::writeText( std::string const& text, XmlFormatting fmt ) {
+    XmlWriter::ScopedElement&
+    XmlWriter::ScopedElement::writeText( StringRef text, XmlFormatting fmt ) {
         m_writer->writeText( text, fmt );
         return *this;
     }

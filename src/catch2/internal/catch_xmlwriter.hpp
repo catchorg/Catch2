@@ -56,10 +56,14 @@ namespace Catch {
 
             ~ScopedElement();
 
-            ScopedElement& writeText( std::string const& text, XmlFormatting fmt = XmlFormatting::Newline | XmlFormatting::Indent );
+            ScopedElement&
+            writeText( StringRef text,
+                       XmlFormatting fmt = XmlFormatting::Newline |
+                                           XmlFormatting::Indent );
 
             template<typename T>
-            ScopedElement& writeAttribute( std::string const& name, T const& attribute ) {
+            ScopedElement& writeAttribute( StringRef name,
+                                           T const& attribute ) {
                 m_writer->writeAttribute( name, attribute );
                 return *this;
             }
