@@ -267,18 +267,19 @@ namespace {
         return *this;
     }
 
-    XmlWriter& XmlWriter::writeAttribute( std::string const& name, std::string const& attribute ) {
+    XmlWriter& XmlWriter::writeAttribute( StringRef name,
+                                          StringRef attribute ) {
         if( !name.empty() && !attribute.empty() )
             m_os << ' ' << name << "=\"" << XmlEncode( attribute, XmlEncode::ForAttributes ) << '"';
         return *this;
     }
 
-    XmlWriter& XmlWriter::writeAttribute( std::string const& name, bool attribute ) {
+    XmlWriter& XmlWriter::writeAttribute( StringRef name, bool attribute ) {
         m_os << ' ' << name << "=\"" << ( attribute ? "true" : "false" ) << '"';
         return *this;
     }
 
-    XmlWriter& XmlWriter::writeText( std::string const& text, XmlFormatting fmt) {
+    XmlWriter& XmlWriter::writeText( StringRef text, XmlFormatting fmt ) {
         if( !text.empty() ){
             bool tagWasOpen = m_tagIsOpen;
             ensureTagClosed();
@@ -291,7 +292,7 @@ namespace {
         return *this;
     }
 
-    XmlWriter& XmlWriter::writeComment( std::string const& text, XmlFormatting fmt) {
+    XmlWriter& XmlWriter::writeComment( StringRef text, XmlFormatting fmt ) {
         ensureTagClosed();
         if (shouldIndent(fmt)) {
             m_os << m_indent;
@@ -301,7 +302,7 @@ namespace {
         return *this;
     }
 
-    void XmlWriter::writeStylesheetRef( std::string const& url ) {
+    void XmlWriter::writeStylesheetRef( StringRef url ) {
         m_os << R"(<?xml-stylesheet type="text/xsl" href=")" << url << R"("?>)" << '\n';
     }
 

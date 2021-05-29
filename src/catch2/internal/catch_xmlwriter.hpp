@@ -81,22 +81,32 @@ namespace Catch {
 
         XmlWriter& endElement(XmlFormatting fmt = XmlFormatting::Newline | XmlFormatting::Indent);
 
-        XmlWriter& writeAttribute( std::string const& name, std::string const& attribute );
+        //! The attribute content is XML-encoded
+        XmlWriter& writeAttribute( StringRef name, StringRef attribute );
 
-        XmlWriter& writeAttribute( std::string const& name, bool attribute );
+        //! Writes the attribute as "true/false"
+        XmlWriter& writeAttribute( StringRef name, bool attribute );
 
+        //! The attribute value must provide op<<(ostream&, T). Resulting
+        //! serialization is XML-encoded
         template<typename T>
-        XmlWriter& writeAttribute( std::string const& name, T const& attribute ) {
+        XmlWriter& writeAttribute( StringRef name, T const& attribute ) {
             ReusableStringStream rss;
             rss << attribute;
-            return writeAttribute( name, rss.str() );
+            // We need to explicitly convert the string to StringRef to
+            // guarantee the right overload is picked
+            return writeAttribute( name, StringRef(rss.str()) );
         }
 
-        XmlWriter& writeText( std::string const& text, XmlFormatting fmt = XmlFormatting::Newline | XmlFormatting::Indent);
+        XmlWriter& writeText( StringRef text,
+                              XmlFormatting fmt = XmlFormatting::Newline |
+                                                  XmlFormatting::Indent );
 
-        XmlWriter& writeComment(std::string const& text, XmlFormatting fmt = XmlFormatting::Newline | XmlFormatting::Indent);
+        XmlWriter& writeComment( StringRef text,
+                                 XmlFormatting fmt = XmlFormatting::Newline |
+                                                     XmlFormatting::Indent );
 
-        void writeStylesheetRef( std::string const& url );
+        void writeStylesheetRef( StringRef url );
 
         XmlWriter& writeBlankLine();
 
