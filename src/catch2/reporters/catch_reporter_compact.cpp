@@ -19,9 +19,9 @@
 namespace {
 
     // Colour::LightGrey
-    Catch::Colour::Code dimColour() { return Catch::Colour::FileName; }
+    constexpr Catch::Colour::Code dimColour() { return Catch::Colour::FileName; }
 
-    Catch::StringRef bothOrAll( std::size_t count ) {
+    constexpr Catch::StringRef bothOrAll( std::size_t count ) {
         switch (count) {
         case 1:
             return Catch::StringRef{};
