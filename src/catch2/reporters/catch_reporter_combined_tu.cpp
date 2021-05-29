@@ -205,10 +205,11 @@ namespace Catch {
         }
 
         if (isFiltered) {
-            out << pluralise(tests.size(), "matching test case") << "\n\n" << std::flush;
+            out << pluralise(tests.size(), "matching test case");
         } else {
-            out << pluralise(tests.size(), "test case") << "\n\n" << std::flush;
+            out << pluralise(tests.size(), "test case");
         }
+        out << "\n\n" << std::flush;
     }
 
 } // namespace Catch
