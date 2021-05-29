@@ -302,7 +302,7 @@ namespace {
     }
 
     void XmlWriter::writeStylesheetRef( std::string const& url ) {
-        m_os << "<?xml-stylesheet type=\"text/xsl\" href=\"" << url << "\"?>\n";
+        m_os << R"(<?xml-stylesheet type="text/xsl" href=")" << url << R"("?>)" << '\n';
     }
 
     XmlWriter& XmlWriter::writeBlankLine() {
@@ -324,7 +324,7 @@ namespace {
     }
 
     void XmlWriter::writeDeclaration() {
-        m_os << "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
+        m_os << R"(<?xml version="1.0" encoding="UTF-8"?>)" << '\n';
     }
 
     void XmlWriter::newlineIfNecessary() {
