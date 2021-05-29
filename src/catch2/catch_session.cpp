@@ -161,16 +161,16 @@ namespace Catch {
 
     void Session::showHelp() const {
         Catch::cout()
-                << "\nCatch v" << libraryVersion() << "\n"
-                << m_cli << std::endl
-                << "For more detailed usage please see the project docs\n" << std::endl;
+                << "\nCatch v" << libraryVersion() << '\n'
+                << m_cli << '\n'
+                << "For more detailed usage please see the project docs\n\n" << std::flush;
     }
     void Session::libIdentify() {
         Catch::cout()
                 << std::left << std::setw(16) << "description: " << "A Catch2 test executable\n"
                 << std::left << std::setw(16) << "category: " << "testframework\n"
                 << std::left << std::setw(16) << "framework: " << "Catch Test\n"
-                << std::left << std::setw(16) << "version: " << libraryVersion() << std::endl;
+                << std::left << std::setw(16) << "version: " << libraryVersion() << '\n' << std::flush;
     }
 
     int Session::applyCommandLine( int argc, char const * const * argv ) {
@@ -186,7 +186,7 @@ namespace Catch {
                 << "\nError(s) in input:\n"
                 << TextFlow::Column( result.errorMessage() ).indent( 2 )
                 << "\n\n";
-            Catch::cerr() << "Run with -? for usage\n" << std::endl;
+            Catch::cerr() << "Run with -? for usage\n\n" << std::flush;
             return MaxExitCode;
         }
 
@@ -229,12 +229,12 @@ namespace Catch {
 
     int Session::run() {
         if( ( m_configData.waitForKeypress & WaitForKeypress::BeforeStart ) != 0 ) {
-            Catch::cout() << "...waiting for enter/ return before starting" << std::endl;
+            Catch::cout() << "...waiting for enter/ return before starting\n" << std::flush;
             static_cast<void>(std::getchar());
         }
         int exitCode = runInternal();
         if( ( m_configData.waitForKeypress & WaitForKeypress::BeforeExit ) != 0 ) {
-            Catch::cout() << "...waiting for enter/ return before exiting, with code: " << exitCode << std::endl;
+            Catch::cout() << "...waiting for enter/ return before exiting, with code: " << exitCode << '\n' << std::flush;
             static_cast<void>(std::getchar());
         }
         return exitCode;
@@ -296,7 +296,7 @@ namespace Catch {
         }
 #if !defined(CATCH_CONFIG_DISABLE_EXCEPTIONS)
         catch( std::exception& ex ) {
-            Catch::cerr() << ex.what() << std::endl;
+            Catch::cerr() << ex.what() << '\n' << std::flush;
             return MaxExitCode;
         }
 #endif

@@ -169,7 +169,7 @@ namespace Catch {
                                .width( CATCH_CONFIG_CONSOLE_WIDTH - 10 );
             out << str << wrapper << '\n';
         }
-        out << pluralise( tags.size(), "tag" ) << '\n' << std::endl;
+        out << pluralise(tags.size(), "tag") << "\n\n" << std::flush;
     }
 
     void defaultListTests(std::ostream& out, std::vector<TestCaseHandle> const& tests, bool isFiltered, Verbosity verbosity) {
@@ -196,7 +196,7 @@ namespace Catch {
 
             out << TextFlow::Column(testCaseInfo.name).initialIndent(2).indent(4) << '\n';
             if (verbosity >= Verbosity::High) {
-                out << TextFlow::Column(Catch::Detail::stringify(testCaseInfo.lineInfo)).indent(4) << std::endl;
+                out << TextFlow::Column(Catch::Detail::stringify(testCaseInfo.lineInfo)).indent(4) << '\n' << std::flush;
             }
             if (!testCaseInfo.tags.empty() &&
                 verbosity > Verbosity::Quiet) {
@@ -205,9 +205,9 @@ namespace Catch {
         }
 
         if (isFiltered) {
-            out << pluralise(tests.size(), "matching test case") << '\n' << std::endl;
+            out << pluralise(tests.size(), "matching test case") << "\n\n" << std::flush;
         } else {
-            out << pluralise(tests.size(), "test case") << '\n' << std::endl;
+            out << pluralise(tests.size(), "test case") << "\n\n" << std::flush;
         }
     }
 

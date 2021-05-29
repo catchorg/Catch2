@@ -310,7 +310,7 @@ public:
     void close() {
         if (m_isOpen) {
             *this << RowBreak();
-            m_os << std::endl;
+            m_os << '\n' << std::flush;
             m_isOpen = false;
         }
     }
@@ -382,11 +382,11 @@ std::string ConsoleReporter::getDescription() {
 }
 
 void ConsoleReporter::noMatchingTestCases(std::string const& spec) {
-    stream << "No test cases matched '" << spec << '\'' << std::endl;
+    stream << "No test cases matched '" << spec << "'\n";
 }
 
-void ConsoleReporter::reportInvalidArguments(std::string const&arg){
-    stream << "Invalid Filter: " << arg << std::endl;
+void ConsoleReporter::reportInvalidArguments(std::string const& arg) {
+    stream << "Invalid Filter: " << arg << '\n';
 }
 
 void ConsoleReporter::assertionStarting(AssertionInfo const&) {}
@@ -404,7 +404,7 @@ bool ConsoleReporter::assertionEnded(AssertionStats const& _assertionStats) {
 
     ConsoleAssertionPrinter printer(stream, _assertionStats, includeResults);
     printer.print();
-    stream << std::endl;
+    stream << '\n' << std::flush;
     return true;
 }
 
@@ -422,11 +422,11 @@ void ConsoleReporter::sectionEnded(SectionStats const& _sectionStats) {
             stream << "\nNo assertions in section";
         else
             stream << "\nNo assertions in test case";
-        stream << " '" << _sectionStats.sectionInfo.name << "'\n" << std::endl;
+        stream << " '" << _sectionStats.sectionInfo.name << "'\n\n" << std::flush;
     }
     double dur = _sectionStats.durationInSeconds;
     if (shouldShowDuration(*m_config, dur)) {
-        stream << getFormattedDuration(dur) << " s: " << _sectionStats.sectionInfo.name << std::endl;
+        stream << getFormattedDuration(dur) << " s: " << _sectionStats.sectionInfo.name << '\n' << std::flush;
     }
     if (m_headerPrinted) {
         m_headerPrinted = false;
@@ -490,14 +490,14 @@ void ConsoleReporter::testGroupEnded(TestGroupStats const& _testGroupStats) {
         printSummaryDivider();
         stream << "Summary for group '" << _testGroupStats.groupInfo.name << "':\n";
         printTotals(_testGroupStats.totals);
-        stream << '\n' << std::endl;
+        stream << "\n\n" << std::flush;
     }
     StreamingReporterBase::testGroupEnded(_testGroupStats);
 }
 void ConsoleReporter::testRunEnded(TestRunStats const& _testRunStats) {
     printTotalsDivider(_testRunStats.totals);
     printTotals(_testRunStats.totals);
-    stream << std::endl;
+    stream << '\n' << std::flush;
     StreamingReporterBase::testRunEnded(_testRunStats);
 }
 void ConsoleReporter::testRunStarting(TestRunInfo const& _testInfo) {
@@ -561,7 +561,7 @@ void ConsoleReporter::printTestCaseAndSectionHeader() {
     stream << lineOfChars('-') << '\n';
     Colour colourGuard(Colour::FileName);
     stream << lineInfo << '\n';
-    stream << lineOfChars('.') << '\n' << std::endl;
+    stream << lineOfChars('.') << "\n\n" << std::flush;
 }
 
 void ConsoleReporter::printClosedHeader(std::string const& _name) {

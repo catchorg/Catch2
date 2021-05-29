@@ -329,7 +329,7 @@ namespace {
 
     void XmlWriter::newlineIfNecessary() {
         if( m_needsNewline ) {
-            m_os << std::endl;
+            m_os << '\n' << std::flush;
             m_needsNewline = false;
         }
     }

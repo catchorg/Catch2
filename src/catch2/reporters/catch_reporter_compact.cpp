@@ -259,7 +259,7 @@ private:
         }
 
         void CompactReporter::noMatchingTestCases( std::string const& spec ) {
-            stream << "No test cases matched '" << spec << '\'' << std::endl;
+            stream << "No test cases matched '" << spec << "'\n";
         }
 
         void CompactReporter::assertionStarting( AssertionInfo const& ) {}
@@ -279,20 +279,20 @@ private:
             AssertionPrinter printer( stream, _assertionStats, printInfoMessages );
             printer.print();
 
-            stream << std::endl;
+            stream << '\n' << std::flush;
             return true;
         }
 
         void CompactReporter::sectionEnded(SectionStats const& _sectionStats) {
             double dur = _sectionStats.durationInSeconds;
             if ( shouldShowDuration( *m_config, dur ) ) {
-                stream << getFormattedDuration( dur ) << " s: " << _sectionStats.sectionInfo.name << std::endl;
+                stream << getFormattedDuration( dur ) << " s: " << _sectionStats.sectionInfo.name << '\n' << std::flush;
             }
         }
 
         void CompactReporter::testRunEnded( TestRunStats const& _testRunStats ) {
             printTotals( stream, _testRunStats.totals );
-            stream << '\n' << std::endl;
+            stream << "\n\n" << std::flush;
             StreamingReporterBase::testRunEnded( _testRunStats );
         }
 
