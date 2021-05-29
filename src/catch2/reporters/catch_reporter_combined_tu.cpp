@@ -196,7 +196,7 @@ namespace Catch {
 
             out << TextFlow::Column(testCaseInfo.name).initialIndent(2).indent(4) << '\n';
             if (verbosity >= Verbosity::High) {
-                out << TextFlow::Column(Catch::Detail::stringify(testCaseInfo.lineInfo)).indent(4) << '\n' << std::flush;
+                out << TextFlow::Column(Catch::Detail::stringify(testCaseInfo.lineInfo)).indent(4) << '\n';
             }
             if (!testCaseInfo.tags.empty() &&
                 verbosity > Verbosity::Quiet) {
