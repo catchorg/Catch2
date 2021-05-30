@@ -269,6 +269,7 @@ Message from section two
 :test-result: PASS X/level/1/a
 :test-result: PASS X/level/1/b
 :test-result: PASS XmlEncode
+:test-result: PASS XmlWriter writes boolean attributes as true/false
 :test-result: PASS analyse no analysis
 :test-result: PASS array<int, N> -> toString
 :test-result: PASS atomic if

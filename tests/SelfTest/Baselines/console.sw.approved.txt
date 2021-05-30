@@ -14069,6 +14069,19 @@ with expansion:
   "[\x7F]" == "[\x7F]"
 
 -------------------------------------------------------------------------------
+XmlWriter writes boolean attributes as true/false
+-------------------------------------------------------------------------------
+Xml.tests.cpp:<line number>
+...............................................................................
+
+Xml.tests.cpp:<line number>: PASSED:
+  REQUIRE_THAT( stream.str(), Contains(R"(attr1="true")") && Contains(R"(attr2="false")") )
+with expansion:
+  "<?xml version="1.0" encoding="UTF-8"?>
+  <Element1 attr1="true" attr2="false"/>
+  " ( contains: "attr1="true"" and contains: "attr2="false"" )
+
+-------------------------------------------------------------------------------
 analyse no analysis
 -------------------------------------------------------------------------------
 InternalBenchmark.tests.cpp:<line number>
@@ -16830,6 +16843,6 @@ Misc.tests.cpp:<line number>
 Misc.tests.cpp:<line number>: PASSED:
 
 ===============================================================================
-test cases:  363 |  271 passed |  86 failed |  6 failed as expected
-assertions: 2107 | 1938 passed | 146 failed | 23 failed as expected
+test cases:  364 |  272 passed |  86 failed |  6 failed as expected
+assertions: 2108 | 1939 passed | 146 failed | 23 failed as expected
 

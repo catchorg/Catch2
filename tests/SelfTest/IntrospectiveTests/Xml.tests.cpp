@@ -2,6 +2,9 @@
 #include <catch2/internal/catch_xmlwriter.hpp>
 
 #include <catch2/internal/catch_stream.hpp>
+#include <catch2/matchers/catch_matchers_string.hpp>
+
+#include <sstream>
 
 static std::string encode( std::string const& str, Catch::XmlEncode::ForWhat forWhat = Catch::XmlEncode::ForTextNodes ) {
     Catch::ReusableStringStream oss;
@@ -111,4 +114,20 @@ TEST_CASE("XmlEncode: UTF-8", "[XML][UTF-8][approvals]") {
         }
     }
 #undef ESC
+}
+
+TEST_CASE("XmlWriter writes boolean attributes as true/false", "[XML][XmlWriter]") {
+    using Catch::Matchers::Contains;
+    std::stringstream stream;
+    {
+        Catch::XmlWriter xml(stream);
+
+        xml.scopedElement("Element1")
+            .writeAttribute("attr1", true)
+            .writeAttribute("attr2", false);
+    }
+
+    REQUIRE_THAT( stream.str(),
+                  Contains(R"(attr1="true")") &&
+                  Contains(R"(attr2="false")") );
 }

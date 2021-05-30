@@ -253,6 +253,7 @@
     <testCase name="XmlEncode/string with quotes" duration="{duration}"/>
     <testCase name="XmlEncode/string with control char (1)" duration="{duration}"/>
     <testCase name="XmlEncode/string with control char (x7F)" duration="{duration}"/>
+    <testCase name="XmlWriter writes boolean attributes as true/false" duration="{duration}"/>
   </file>
   <file path="tests/<exe-name>/UsageTests/Approx.tests.cpp">
     <testCase name="A comparison that uses literals instead of the normal constructor" duration="{duration}"/>

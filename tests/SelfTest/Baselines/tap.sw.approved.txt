@@ -3541,6 +3541,8 @@ ok {test-number} - encode( stringWithQuotes, Catch::XmlEncode::ForAttributes ) =
 ok {test-number} - encode( "[\x01]" ) == "[\\x01]" for: "[\x01]" == "[\x01]"
 # XmlEncode
 ok {test-number} - encode( "[\x7F]" ) == "[\\x7F]" for: "[\x7F]" == "[\x7F]"
+# XmlWriter writes boolean attributes as true/false
+ok {test-number} - stream.str(), Contains(R"(attr1="true")") && Contains(R"(attr2="false")") for: "<?xml version="1.0" encoding="UTF-8"?> <Element1 attr1="true" attr2="false"/> " ( contains: "attr1="true"" and contains: "attr2="false"" )
 # analyse no analysis
 ok {test-number} - analysis.mean.point.count() == 23 for: 23.0 == 23
 # analyse no analysis
@@ -4216,5 +4218,5 @@ ok {test-number} - q3 == 23. for: 23.0 == 23.0
 ok {test-number} -
 # xmlentitycheck
 ok {test-number} -
-1..2107
+1..2108
 

@@ -1982,6 +1982,9 @@ Xml.tests.cpp:<line number>: passed: encode( stringWithQuotes, Catch::XmlEncode:
 "don't &quot;quote&quot; me on that"
 Xml.tests.cpp:<line number>: passed: encode( "[\x01]" ) == "[\\x01]" for: "[\x01]" == "[\x01]"
 Xml.tests.cpp:<line number>: passed: encode( "[\x7F]" ) == "[\\x7F]" for: "[\x7F]" == "[\x7F]"
+Xml.tests.cpp:<line number>: passed: stream.str(), Contains(R"(attr1="true")") && Contains(R"(attr2="false")") for: "<?xml version="1.0" encoding="UTF-8"?>
+<Element1 attr1="true" attr2="false"/>
+" ( contains: "attr1="true"" and contains: "attr2="false"" )
 InternalBenchmark.tests.cpp:<line number>: passed: analysis.mean.point.count() == 23 for: 23.0 == 23
 InternalBenchmark.tests.cpp:<line number>: passed: analysis.mean.lower_bound.count() == 23 for: 23.0 == 23
 InternalBenchmark.tests.cpp:<line number>: passed: analysis.mean.upper_bound.count() == 23 for: 23.0 == 23

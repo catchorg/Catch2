@@ -662,6 +662,8 @@ Exception.tests.cpp:<line number>|nunexpected exception with message:|n  "unexpe
 ##teamcity[testFinished name='X/level/1/b' duration="{duration}"]
 ##teamcity[testStarted name='XmlEncode']
 ##teamcity[testFinished name='XmlEncode' duration="{duration}"]
+##teamcity[testStarted name='XmlWriter writes boolean attributes as true/false']
+##teamcity[testFinished name='XmlWriter writes boolean attributes as true/false' duration="{duration}"]
 ##teamcity[testStarted name='analyse no analysis']
 ##teamcity[testFinished name='analyse no analysis' duration="{duration}"]
 ##teamcity[testStarted name='array<int, N> -> toString']
