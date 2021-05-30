@@ -19,7 +19,7 @@ namespace Catch {
     void SonarQubeReporter::testRunStarting(TestRunInfo const& testRunInfo) {
         CumulativeReporterBase::testRunStarting(testRunInfo);
         xml.startElement("testExecutions");
-        xml.writeAttribute("version", '1');
+        xml.writeAttribute("version"_sr, '1');
     }
 
     void SonarQubeReporter::testGroupEnded(TestGroupStats const& testGroupStats) {
@@ -40,7 +40,7 @@ namespace Catch {
 
     void SonarQubeReporter::writeTestFile(std::string const& filename, std::vector<TestCaseNode const*> const& testCaseNodes) {
         XmlWriter::ScopedElement e = xml.scopedElement("file");
-        xml.writeAttribute("path", filename);
+        xml.writeAttribute("path"_sr, filename);
 
         for (auto const& child : testCaseNodes)
             writeTestCase(*child);
@@ -61,8 +61,8 @@ namespace Catch {
 
         if (!sectionNode.assertions.empty() || !sectionNode.stdOut.empty() || !sectionNode.stdErr.empty()) {
             XmlWriter::ScopedElement e = xml.scopedElement("testCase");
-            xml.writeAttribute("name", name);
-            xml.writeAttribute("duration", static_cast<long>(sectionNode.stats.durationInSeconds * 1000));
+            xml.writeAttribute("name"_sr, name);
+            xml.writeAttribute("duration"_sr, static_cast<long>(sectionNode.stats.durationInSeconds * 1000));
 
             writeAssertions(sectionNode, okToFail);
         }
@@ -114,7 +114,7 @@ namespace Catch {
 
             ReusableStringStream messageRss;
             messageRss << result.getTestMacroName() << "(" << result.getExpression() << ")";
-            xml.writeAttribute("message", messageRss.str());
+            xml.writeAttribute("message"_sr, messageRss.str());
 
             ReusableStringStream textRss;
             if (stats.totals.assertions.total() > 0) {

@@ -115,29 +115,29 @@ namespace Catch {
         XmlWriter::ScopedElement e = xml.scopedElement( "testsuite" );
 
         TestGroupStats const& stats = groupNode.value;
-        xml.writeAttribute( "name", stats.groupInfo.name );
-        xml.writeAttribute( "errors", unexpectedExceptions );
-        xml.writeAttribute( "failures", stats.totals.assertions.failed-unexpectedExceptions );
-        xml.writeAttribute( "tests", stats.totals.assertions.total() );
-        xml.writeAttribute( "hostname", "tbd" ); // !TBD
+        xml.writeAttribute( "name"_sr, stats.groupInfo.name );
+        xml.writeAttribute( "errors"_sr, unexpectedExceptions );
+        xml.writeAttribute( "failures"_sr, stats.totals.assertions.failed-unexpectedExceptions );
+        xml.writeAttribute( "tests"_sr, stats.totals.assertions.total() );
+        xml.writeAttribute( "hostname"_sr, "tbd"_sr ); // !TBD
         if( m_config->showDurations() == ShowDurations::Never )
-            xml.writeAttribute( "time", "" );
+            xml.writeAttribute( "time"_sr, ""_sr );
         else
-            xml.writeAttribute( "time", suiteTime );
-        xml.writeAttribute( "timestamp", getCurrentTimestamp() );
+            xml.writeAttribute( "time"_sr, suiteTime );
+        xml.writeAttribute( "timestamp"_sr, getCurrentTimestamp() );
 
         // Write properties if there are any
         if (m_config->hasTestFilters() || m_config->rngSeed() != 0) {
             auto properties = xml.scopedElement("properties");
             if (m_config->hasTestFilters()) {
                 xml.scopedElement("property")
-                    .writeAttribute("name", "filters")
-                    .writeAttribute("value", serializeFilters(m_config->getTestsOrTags()));
+                    .writeAttribute("name"_sr, "filters"_sr)
+                    .writeAttribute("value"_sr, serializeFilters(m_config->getTestsOrTags()));
             }
             if (m_config->rngSeed() != 0) {
                 xml.scopedElement("property")
-                    .writeAttribute("name", "random-seed")
-                    .writeAttribute("value", m_config->rngSeed());
+                    .writeAttribute("name"_sr, "random-seed"_sr)
+                    .writeAttribute("value"_sr, m_config->rngSeed());
             }
         }
 
@@ -183,19 +183,19 @@ namespace Catch {
             !sectionNode.stdErr.empty() ) {
             XmlWriter::ScopedElement e = xml.scopedElement( "testcase" );
             if( className.empty() ) {
-                xml.writeAttribute( "classname", name );
-                xml.writeAttribute( "name", "root" );
+                xml.writeAttribute( "classname"_sr, name );
+                xml.writeAttribute( "name"_sr, "root"_sr );
             }
             else {
-                xml.writeAttribute( "classname", className );
-                xml.writeAttribute( "name", name );
+                xml.writeAttribute( "classname"_sr, className );
+                xml.writeAttribute( "name"_sr, name );
             }
-            xml.writeAttribute( "time", ::Catch::Detail::stringify( sectionNode.stats.durationInSeconds ) );
+            xml.writeAttribute( "time"_sr, ::Catch::Detail::stringify( sectionNode.stats.durationInSeconds ) );
             // This is not ideal, but it should be enough to mimic gtest's
             // junit output.
             // Ideally the JUnit reporter would also handle `skipTest`
             // events and write those out appropriately.
-            xml.writeAttribute( "status", "run" );
+            xml.writeAttribute( "status"_sr, "run"_sr );
 
             writeAssertions( sectionNode );
 
@@ -244,8 +244,8 @@ namespace Catch {
 
             XmlWriter::ScopedElement e = xml.scopedElement( elementName );
 
-            xml.writeAttribute( "message", result.getExpression() );
-            xml.writeAttribute( "type", result.getTestMacroName() );
+            xml.writeAttribute( "message"_sr, result.getExpression() );
+            xml.writeAttribute( "type"_sr, result.getTestMacroName() );
 
             ReusableStringStream rss;
             if (stats.totals.assertions.total() > 0) {
