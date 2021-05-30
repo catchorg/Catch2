@@ -434,10 +434,12 @@ void ConsoleReporter::sectionEnded(SectionStats const& _sectionStats) {
     StreamingReporterBase::sectionEnded(_sectionStats);
 }
 
-void ConsoleReporter::benchmarkPreparing(std::string const& name) {
+void ConsoleReporter::benchmarkPreparing( StringRef name ) {
 	lazyPrintWithoutClosingBenchmarkTable();
 
-	auto nameCol = TextFlow::Column(name).width(static_cast<std::size_t>(m_tablePrinter->columnInfos()[0].width - 2));
+	auto nameCol = TextFlow::Column( static_cast<std::string>( name ) )
+                       .width( static_cast<std::size_t>(
+                           m_tablePrinter->columnInfos()[0].width - 2 ) );
 
 	bool firstLine = true;
 	for (auto line : nameCol) {
@@ -473,7 +475,7 @@ void ConsoleReporter::benchmarkEnded(BenchmarkStats<> const& stats) {
     }
 }
 
-void ConsoleReporter::benchmarkFailed(std::string const& error) {
+void ConsoleReporter::benchmarkFailed( StringRef error ) {
 	Colour colour(Colour::Red);
     (*m_tablePrinter)
         << "Benchmark failed (" << error << ')'

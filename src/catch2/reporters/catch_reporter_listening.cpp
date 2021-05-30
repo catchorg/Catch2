@@ -35,7 +35,7 @@ namespace Catch {
         m_reporter->reportInvalidArguments( arg );
     }
 
-    void ListeningReporter::benchmarkPreparing( std::string const& name ) {
+    void ListeningReporter::benchmarkPreparing( StringRef name ) {
         for (auto& listener : m_listeners) {
             listener->benchmarkPreparing(name);
         }
@@ -54,7 +54,7 @@ namespace Catch {
         m_reporter->benchmarkEnded( benchmarkStats );
     }
 
-    void ListeningReporter::benchmarkFailed( std::string const& error ) {
+    void ListeningReporter::benchmarkFailed( StringRef error ) {
         for (auto& listener : m_listeners) {
             listener->benchmarkFailed(error);
         }

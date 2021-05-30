@@ -51,10 +51,10 @@ namespace Catch {
 
         void testRunEnded(TestRunStats const& testRunStats) override;
 
-        void benchmarkPreparing(std::string const& name) override;
+        void benchmarkPreparing( StringRef name ) override;
         void benchmarkStarting(BenchmarkInfo const&) override;
         void benchmarkEnded(BenchmarkStats<> const&) override;
-        void benchmarkFailed(std::string const&) override;
+        void benchmarkFailed( StringRef error ) override;
 
         void listReporters(std::vector<ReporterDescription> const& descriptions) override;
         void listTests(std::vector<TestCaseHandle> const& tests) override;

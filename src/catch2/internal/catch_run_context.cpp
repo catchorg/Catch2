@@ -316,7 +316,7 @@ namespace Catch {
         m_unfinishedSections.push_back(endInfo);
     }
 
-    void RunContext::benchmarkPreparing(std::string const& name) {
+    void RunContext::benchmarkPreparing( StringRef name ) {
         m_reporter->benchmarkPreparing(name);
     }
     void RunContext::benchmarkStarting( BenchmarkInfo const& info ) {
@@ -325,8 +325,8 @@ namespace Catch {
     void RunContext::benchmarkEnded( BenchmarkStats<> const& stats ) {
         m_reporter->benchmarkEnded( stats );
     }
-    void RunContext::benchmarkFailed(std::string const & error) {
-        m_reporter->benchmarkFailed(error);
+    void RunContext::benchmarkFailed( StringRef error ) {
+        m_reporter->benchmarkFailed( error );
     }
 
     void RunContext::pushScopedMessage(MessageInfo const & message) {

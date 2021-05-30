@@ -77,10 +77,10 @@ namespace Catch {
 
         auto acquireGeneratorTracker( StringRef generatorName, SourceLineInfo const& lineInfo ) -> IGeneratorTracker& override;
 
-        void benchmarkPreparing( std::string const& name ) override;
+        void benchmarkPreparing( StringRef name ) override;
         void benchmarkStarting( BenchmarkInfo const& info ) override;
         void benchmarkEnded( BenchmarkStats<> const& stats ) override;
-        void benchmarkFailed( std::string const& error ) override;
+        void benchmarkFailed( StringRef error ) override;
 
         void pushScopedMessage( MessageInfo const& message ) override;
         void popScopedMessage( MessageInfo const& message ) override;

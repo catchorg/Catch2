@@ -229,9 +229,9 @@ namespace Catch {
         m_xml.endElement();
     }
 
-    void XmlReporter::benchmarkPreparing(std::string const& name) {
+    void XmlReporter::benchmarkPreparing( StringRef name ) {
         m_xml.startElement("BenchmarkResults")
-            .writeAttribute("name"_sr, name);
+             .writeAttribute("name"_sr, name);
     }
 
     void XmlReporter::benchmarkStarting(BenchmarkInfo const &info) {
@@ -266,7 +266,7 @@ namespace Catch {
         m_xml.endElement();
     }
 
-    void XmlReporter::benchmarkFailed(std::string const &error) {
+    void XmlReporter::benchmarkFailed(StringRef error) {
         m_xml.scopedElement("failed").
             writeAttribute("message"_sr, error);
         m_xml.endElement();

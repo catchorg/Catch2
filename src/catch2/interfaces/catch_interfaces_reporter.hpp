@@ -201,10 +201,10 @@ namespace Catch {
         virtual void testCaseStarting( TestCaseInfo const& testInfo ) = 0;
         virtual void sectionStarting( SectionInfo const& sectionInfo ) = 0;
 
-        virtual void benchmarkPreparing( std::string const& ) {}
+        virtual void benchmarkPreparing( StringRef ) {}
         virtual void benchmarkStarting( BenchmarkInfo const& ) {}
         virtual void benchmarkEnded( BenchmarkStats<> const& ) {}
-        virtual void benchmarkFailed( std::string const& ) {}
+        virtual void benchmarkFailed( StringRef ) {}
 
         virtual void assertionStarting( AssertionInfo const& assertionInfo ) = 0;
 

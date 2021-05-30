@@ -34,10 +34,10 @@ namespace Catch {
 
         void reportInvalidArguments(std::string const&arg) override;
 
-        void benchmarkPreparing(std::string const& name) override;
+        void benchmarkPreparing( StringRef name ) override;
         void benchmarkStarting( BenchmarkInfo const& benchmarkInfo ) override;
         void benchmarkEnded( BenchmarkStats<> const& benchmarkStats ) override;
-        void benchmarkFailed(std::string const&) override;
+        void benchmarkFailed( StringRef error ) override;
 
         void testRunStarting( TestRunInfo const& testRunInfo ) override;
         void testGroupStarting( GroupInfo const& groupInfo ) override;

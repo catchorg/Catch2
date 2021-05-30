@@ -44,10 +44,10 @@ namespace Catch {
 
         virtual auto acquireGeneratorTracker( StringRef generatorName, SourceLineInfo const& lineInfo ) -> IGeneratorTracker& = 0;
 
-        virtual void benchmarkPreparing( std::string const& name ) = 0;
+        virtual void benchmarkPreparing( StringRef name ) = 0;
         virtual void benchmarkStarting( BenchmarkInfo const& info ) = 0;
         virtual void benchmarkEnded( BenchmarkStats<> const& stats ) = 0;
-        virtual void benchmarkFailed( std::string const& error ) = 0;
+        virtual void benchmarkFailed( StringRef error ) = 0;
 
         virtual void pushScopedMessage( MessageInfo const& message ) = 0;
         virtual void popScopedMessage( MessageInfo const& message ) = 0;
