@@ -57,7 +57,6 @@ namespace Catch {
 
             template <typename RangeLike>
             bool match(RangeLike&& rng) const {
-                using std::begin; using std::endl;
                 for (auto&& elem : rng) {
                     if (m_matcher.match(elem)) {
                         return true;
