@@ -217,6 +217,14 @@ namespace {
         return *this;
     }
 
+    XmlWriter::ScopedElement&
+    XmlWriter::ScopedElement::writeAttribute( StringRef name,
+                                              StringRef attribute ) {
+        m_writer->writeAttribute( name, attribute );
+        return *this;
+    }
+
+
     XmlWriter::XmlWriter( std::ostream& os ) : m_os( os )
     {
         writeDeclaration();
@@ -276,7 +284,13 @@ namespace {
     }
 
     XmlWriter& XmlWriter::writeAttribute( StringRef name, bool attribute ) {
-        m_os << ' ' << name << "=\"" << ( attribute ? "true" : "false" ) << '"';
+        writeAttribute(name, (attribute ? "true"_sr : "false"_sr));
+        return *this;
+    }
+
+    XmlWriter& XmlWriter::writeAttribute( StringRef name,
+                                          char const* attribute ) {
+        writeAttribute( name, StringRef( attribute ) );
         return *this;
     }
 

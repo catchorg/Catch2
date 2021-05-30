@@ -61,7 +61,15 @@ namespace Catch {
                        XmlFormatting fmt = XmlFormatting::Newline |
                                            XmlFormatting::Indent );
 
-            template<typename T>
+            ScopedElement& writeAttribute( StringRef name,
+                                           StringRef attribute );
+            template <typename T,
+                      // Without this SFINAE, this overload is a better match
+                      // for `std::string`, `char const*`, `char const[N]` args.
+                      // While it would still work, it would cause code bloat
+                      // and multiple iteration over the strings
+                      typename = typename std::enable_if_t<
+                          !std::is_convertible<T, StringRef>::value>>
             ScopedElement& writeAttribute( StringRef name,
                                            T const& attribute ) {
                 m_writer->writeAttribute( name, attribute );
@@ -91,15 +99,22 @@ namespace Catch {
         //! Writes the attribute as "true/false"
         XmlWriter& writeAttribute( StringRef name, bool attribute );
 
-        //! The attribute value must provide op<<(ostream&, T). Resulting
+        //! The attribute content is XML-encoded
+        XmlWriter& writeAttribute( StringRef name, char const* attribute );
+
+        //! The attribute value must provide op<<(ostream&, T). The resulting
         //! serialization is XML-encoded
-        template<typename T>
+        template <typename T,
+                  // Without this SFINAE, this overload is a better match
+                  // for `std::string`, `char const*`, `char const[N]` args.
+                  // While it would still work, it would cause code bloat
+                  // and multiple iteration over the strings
+                  typename = typename std::enable_if_t<
+                      !std::is_convertible<T, StringRef>::value>>
         XmlWriter& writeAttribute( StringRef name, T const& attribute ) {
             ReusableStringStream rss;
             rss << attribute;
-            // We need to explicitly convert the string to StringRef to
-            // guarantee the right overload is picked
-            return writeAttribute( name, StringRef(rss.str()) );
+            return writeAttribute( name, rss.str() );
         }
 
         XmlWriter& writeText( StringRef text,
