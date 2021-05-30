@@ -69,11 +69,13 @@ namespace Catch {
         // Save previous errno, to prevent sprintf from overwriting it
         ErrnoGuard guard;
 #ifdef _MSC_VER
-        sprintf_s( buffer, "%.3f", duration );
+        size_t printedLength = static_cast<size_t>(
+            sprintf_s( buffer, "%.3f", duration ) );
 #else
-        std::snprintf( buffer, maxDoubleSize, "%.3f", duration );
+        size_t printedLength = static_cast<size_t>(
+            std::snprintf( buffer, maxDoubleSize, "%.3f", duration ) );
 #endif
-        return std::string( buffer );
+        return std::string( buffer, printedLength );
     }
 
     bool shouldShowDuration( IConfig const& config, double duration ) {
