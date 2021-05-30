@@ -113,26 +113,26 @@ namespace Catch {
             XmlWriter::ScopedElement e = xml.scopedElement(elementName);
 
             ReusableStringStream messageRss;
-            messageRss << result.getTestMacroName() << "(" << result.getExpression() << ")";
+            messageRss << result.getTestMacroName() << '(' << result.getExpression() << ')';
             xml.writeAttribute("message"_sr, messageRss.str());
 
             ReusableStringStream textRss;
             if (stats.totals.assertions.total() > 0) {
                 textRss << "FAILED:\n";
                 if (result.hasExpression()) {
-                    textRss << "\t" << result.getExpressionInMacro() << "\n";
+                    textRss << '\t' << result.getExpressionInMacro() << '\n';
                 }
                 if (result.hasExpandedExpression()) {
-                    textRss << "with expansion:\n\t" << result.getExpandedExpression() << "\n";
+                    textRss << "with expansion:\n\t" << result.getExpandedExpression() << '\n';
                 }
             }
 
             if (!result.getMessage().empty())
-                textRss << result.getMessage() << "\n";
+                textRss << result.getMessage() << '\n';
 
             for (auto const& msg : stats.infoMessages)
                 if (msg.type == ResultWas::Info)
-                    textRss << msg.message << "\n";
+                    textRss << msg.message << '\n';
 
             textRss << "at " << result.getSourceInfo();
             xml.writeText(textRss.str(), XmlFormatting::Newline);
