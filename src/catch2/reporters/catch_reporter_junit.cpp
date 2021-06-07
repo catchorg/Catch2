@@ -168,12 +168,13 @@ namespace Catch {
         if ( !m_config->name().empty() )
             className = static_cast<std::string>(m_config->name()) + '.' + className;
 
-        writeSection( className, "", rootSection );
+        writeSection( className, "", rootSection, stats.testInfo->okToFail() );
     }
 
-    void JunitReporter::writeSection(  std::string const& className,
-                        std::string const& rootName,
-                        SectionNode const& sectionNode ) {
+    void JunitReporter::writeSection( std::string const& className,
+                                      std::string const& rootName,
+                                      SectionNode const& sectionNode,
+                                      bool testOkToFail) {
         std::string name = trim( sectionNode.stats.sectionInfo.name );
         if( !rootName.empty() )
             name = rootName + '/' + name;
@@ -197,7 +198,13 @@ namespace Catch {
             // events and write those out appropriately.
             xml.writeAttribute( "status"_sr, "run"_sr );
 
+            if (sectionNode.stats.assertions.failedButOk) {
+                xml.scopedElement("skipped")
+                    .writeAttribute("message", "TEST_CASE tagged with !mayfail");
+            }
+
             writeAssertions( sectionNode );
+
 
             if( !sectionNode.stdOut.empty() )
                 xml.scopedElement( "system-out" ).writeText( trim( sectionNode.stdOut ), XmlFormatting::Newline );
@@ -206,9 +213,9 @@ namespace Catch {
         }
         for( auto const& childNode : sectionNode.childSections )
             if( className.empty() )
-                writeSection( name, "", *childNode );
+                writeSection( name, "", *childNode, testOkToFail );
             else
-                writeSection( className, name, *childNode );
+                writeSection( className, name, *childNode, testOkToFail );
     }
 
     void JunitReporter::writeAssertions( SectionNode const& sectionNode ) {

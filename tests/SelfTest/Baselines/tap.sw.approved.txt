@@ -1804,6 +1804,14 @@ not ok {test-number} - testStringForMatching(), ( ContainsSubstring( "string" ) 
 ok {test-number} - testStringForMatching(), !ContainsSubstring( "different" ) for: "this string contains 'abc' as a substring" not contains: "different"
 # Matchers can be negated (Not) with the ! operator - failing
 not ok {test-number} - testStringForMatching(), !ContainsSubstring( "substring" ) for: "this string contains 'abc' as a substring" not contains: "substring"
+# Mayfail test case with nested sections
+not ok {test-number} - explicitly
+# Mayfail test case with nested sections
+not ok {test-number} - explicitly
+# Mayfail test case with nested sections
+not ok {test-number} - explicitly
+# Mayfail test case with nested sections
+not ok {test-number} - explicitly
 # Mismatching exception messages failing the test
 ok {test-number} - thisThrows(), "expected exception" for: "expected exception" equals: "expected exception"
 # Mismatching exception messages failing the test
@@ -4256,5 +4264,5 @@ ok {test-number} - q3 == 23. for: 23.0 == 23.0
 ok {test-number} -
 # xmlentitycheck
 ok {test-number} -
-1..2127
+1..2131
 

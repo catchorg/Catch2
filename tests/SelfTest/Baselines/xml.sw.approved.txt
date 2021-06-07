@@ -8426,6 +8426,43 @@ Nor would this
     </Expression>
     <OverallResult success="false"/>
   </TestCase>
+  <TestCase name="Mayfail test case with nested sections" tags="[!mayfail]" filename="tests/<exe-name>/UsageTests/Condition.tests.cpp" >
+    <Section name="A" filename="tests/<exe-name>/UsageTests/Condition.tests.cpp" >
+      <Section name="1" filename="tests/<exe-name>/UsageTests/Condition.tests.cpp" >
+        <Failure filename="tests/<exe-name>/UsageTests/Condition.tests.cpp" />
+        <OverallResults successes="0" failures="0" expectedFailures="1"/>
+      </Section>
+      <OverallResults successes="0" failures="0" expectedFailures="1"/>
+    </Section>
+    <Section name="A" filename="tests/<exe-name>/UsageTests/Condition.tests.cpp" >
+      <Section name="2" filename="tests/<exe-name>/UsageTests/Condition.tests.cpp" >
+        <Failure filename="tests/<exe-name>/UsageTests/Condition.tests.cpp" />
+        <OverallResults successes="0" failures="0" expectedFailures="1"/>
+      </Section>
+      <OverallResults successes="0" failures="0" expectedFailures="1"/>
+    </Section>
+    <Section name="A" filename="tests/<exe-name>/UsageTests/Condition.tests.cpp" >
+      <OverallResults successes="0" failures="0" expectedFailures="0"/>
+    </Section>
+    <Section name="B" filename="tests/<exe-name>/UsageTests/Condition.tests.cpp" >
+      <Section name="1" filename="tests/<exe-name>/UsageTests/Condition.tests.cpp" >
+        <Failure filename="tests/<exe-name>/UsageTests/Condition.tests.cpp" />
+        <OverallResults successes="0" failures="0" expectedFailures="1"/>
+      </Section>
+      <OverallResults successes="0" failures="0" expectedFailures="1"/>
+    </Section>
+    <Section name="B" filename="tests/<exe-name>/UsageTests/Condition.tests.cpp" >
+      <Section name="2" filename="tests/<exe-name>/UsageTests/Condition.tests.cpp" >
+        <Failure filename="tests/<exe-name>/UsageTests/Condition.tests.cpp" />
+        <OverallResults successes="0" failures="0" expectedFailures="1"/>
+      </Section>
+      <OverallResults successes="0" failures="0" expectedFailures="1"/>
+    </Section>
+    <Section name="B" filename="tests/<exe-name>/UsageTests/Condition.tests.cpp" >
+      <OverallResults successes="0" failures="0" expectedFailures="0"/>
+    </Section>
+    <OverallResult success="true"/>
+  </TestCase>
   <TestCase name="Mismatching exception messages failing the test" tags="[!throws][.][failing]" filename="tests/<exe-name>/UsageTests/Exception.tests.cpp" >
     <Expression success="true" type="REQUIRE_THROWS_WITH" filename="tests/<exe-name>/UsageTests/Exception.tests.cpp" >
       <Original>
@@ -19990,6 +20027,6 @@ loose text artifact
     </Section>
     <OverallResult success="true"/>
   </TestCase>
-  <OverallResults successes="1958" failures="146" expectedFailures="23"/>
-  <OverallResultsCases successes="279" failures="86" expectedFailures="6"/>
+  <OverallResults successes="1958" failures="146" expectedFailures="27"/>
+  <OverallResultsCases successes="279" failures="86" expectedFailures="7"/>
 </Catch2TestRun>

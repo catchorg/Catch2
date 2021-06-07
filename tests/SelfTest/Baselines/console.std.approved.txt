@@ -695,6 +695,46 @@ with expansion:
   "this string contains 'abc' as a substring" not contains: "substring"
 
 -------------------------------------------------------------------------------
+Mayfail test case with nested sections
+  A
+  1
+-------------------------------------------------------------------------------
+Condition.tests.cpp:<line number>
+...............................................................................
+
+Condition.tests.cpp:<line number>: FAILED:
+
+-------------------------------------------------------------------------------
+Mayfail test case with nested sections
+  A
+  2
+-------------------------------------------------------------------------------
+Condition.tests.cpp:<line number>
+...............................................................................
+
+Condition.tests.cpp:<line number>: FAILED:
+
+-------------------------------------------------------------------------------
+Mayfail test case with nested sections
+  B
+  1
+-------------------------------------------------------------------------------
+Condition.tests.cpp:<line number>
+...............................................................................
+
+Condition.tests.cpp:<line number>: FAILED:
+
+-------------------------------------------------------------------------------
+Mayfail test case with nested sections
+  B
+  2
+-------------------------------------------------------------------------------
+Condition.tests.cpp:<line number>
+...............................................................................
+
+Condition.tests.cpp:<line number>: FAILED:
+
+-------------------------------------------------------------------------------
 Mismatching exception messages failing the test
 -------------------------------------------------------------------------------
 Exception.tests.cpp:<line number>
@@ -1386,6 +1426,6 @@ due to unexpected exception with message:
   Why would you throw a std::string?
 
 ===============================================================================
-test cases:  371 |  295 passed |  70 failed |  6 failed as expected
-assertions: 2110 | 1958 passed | 129 failed | 23 failed as expected
+test cases:  372 |  295 passed |  70 failed |  7 failed as expected
+assertions: 2114 | 1958 passed | 129 failed | 27 failed as expected
 

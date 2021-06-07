@@ -164,6 +164,7 @@ Nor would this
 :test-result: FAIL Matchers can be composed with both && and || - failing
 :test-result: PASS Matchers can be negated (Not) with the ! operator
 :test-result: FAIL Matchers can be negated (Not) with the ! operator - failing
+:test-result: XFAIL Mayfail test case with nested sections
 :test-result: FAIL Mismatching exception messages failing the test
 :test-result: PASS Nested generators and captured variables
 :test-result: FAIL Nice descriptive name
