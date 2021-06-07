@@ -259,3 +259,21 @@ TEST_CASE("Assertion macros support bit operators and bool conversions", "[compi
     REQUIRE_FALSE(lhs ^ lhs);
 }
 
+namespace {
+    struct ImmovableType {
+        ImmovableType() = default;
+
+        ImmovableType(ImmovableType const&) = delete;
+        ImmovableType& operator=(ImmovableType const&) = delete;
+        ImmovableType(ImmovableType&&) = delete;
+        ImmovableType& operator=(ImmovableType&&) = delete;
+
+        friend bool operator==(ImmovableType const&, ImmovableType const&) {
+            return true;
+        }
+    };
+}
+
+TEST_CASE("Immovable types are supported in basic assertions", "[compilation][.approvals]") {
+    REQUIRE(ImmovableType{} == ImmovableType{});
+}
