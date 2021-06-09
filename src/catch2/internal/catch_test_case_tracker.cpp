@@ -45,6 +45,8 @@ namespace TestCaseTracking {
         return ( it != m_children.end() ) ? it->get() : nullptr;
     }
 
+    bool ITracker::isSectionTracker() const { return false; }
+    bool ITracker::isGeneratorTracker() const { return false; }
 
 
     ITracker& TrackerContext::startRun() {
@@ -105,9 +107,6 @@ namespace TestCaseTracking {
                 m_parent->openChild();
         }
     }
-
-    bool TrackerBase::isSectionTracker() const { return false; }
-    bool TrackerBase::isGeneratorTracker() const { return false; }
 
     void TrackerBase::open() {
         m_runState = Executing;

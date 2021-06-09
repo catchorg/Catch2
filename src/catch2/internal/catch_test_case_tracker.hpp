@@ -86,9 +86,20 @@ namespace TestCaseTracking {
 
         virtual void openChild() = 0;
 
-        // Debug/ checking
-        virtual bool isSectionTracker() const = 0;
-        virtual bool isGeneratorTracker() const = 0;
+        /**
+         * Returns true if the instance is a section tracker
+         *
+         * Subclasses should override to true if they are, replaces RTTI
+         * for internal debug checks.
+         */
+        virtual bool isSectionTracker() const;
+        /**
+         * Returns true if the instance is a generator tracker
+         *
+         * Subclasses should override to true if they are, replaces RTTI
+         * for internal debug checks.
+         */
+        virtual bool isGeneratorTracker() const;
     };
 
     class TrackerContext {
@@ -141,9 +152,6 @@ namespace TestCaseTracking {
         }
 
         void openChild() override;
-
-        bool isSectionTracker() const override;
-        bool isGeneratorTracker() const override;
 
         void open();
 
