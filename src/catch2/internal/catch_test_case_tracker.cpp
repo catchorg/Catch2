@@ -84,9 +84,8 @@ namespace TestCaseTracking {
 
 
     TrackerBase::TrackerBase( NameAndLocation const& nameAndLocation, TrackerContext& ctx, ITracker* parent ):
-        ITracker(nameAndLocation),
-        m_ctx( ctx ),
-        m_parent( parent )
+        ITracker(nameAndLocation, parent),
+        m_ctx( ctx )
     {}
 
     bool TrackerBase::isComplete() const {
@@ -97,11 +96,6 @@ namespace TestCaseTracking {
     }
     bool TrackerBase::isOpen() const {
         return m_runState != NotStarted && !isComplete();
-    }
-
-    ITracker* TrackerBase::parent() {
-        assert( m_parent ); // Should always be non-null except for root
-        return m_parent;
     }
 
     void TrackerBase::openChild() {

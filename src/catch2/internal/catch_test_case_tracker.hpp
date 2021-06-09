@@ -38,17 +38,22 @@ namespace TestCaseTracking {
         using Children = std::vector<ITrackerPtr>;
 
     protected:
+        ITracker* m_parent = nullptr;
         Children m_children;
 
     public:
-        ITracker(NameAndLocation const& nameAndLoc) :
-            m_nameAndLocation(nameAndLoc)
+        ITracker( NameAndLocation const& nameAndLoc, ITracker* parent ):
+            m_nameAndLocation( nameAndLoc ),
+            m_parent( parent )
         {}
 
 
         // static queries
         NameAndLocation const& nameAndLocation() const {
             return m_nameAndLocation;
+        }
+        ITracker* parent() const {
+            return m_parent;
         }
 
         virtual ~ITracker(); // = default
@@ -59,8 +64,6 @@ namespace TestCaseTracking {
         virtual bool isSuccessfullyCompleted() const = 0;
         virtual bool isOpen() const = 0; // Started but not complete
         virtual bool hasStarted() const = 0;
-
-        virtual ITracker* parent() = 0;
 
         // actions
         virtual void close() = 0; // Successfully complete
@@ -125,7 +128,6 @@ namespace TestCaseTracking {
         };
 
         TrackerContext& m_ctx;
-        ITracker* m_parent;
         CycleState m_runState = NotStarted;
 
     public:
@@ -137,8 +139,6 @@ namespace TestCaseTracking {
         bool hasStarted() const override {
             return m_runState != NotStarted;
         }
-
-        ITracker* parent() override;
 
         void openChild() override;
 
