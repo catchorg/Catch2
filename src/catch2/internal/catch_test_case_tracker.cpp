@@ -244,10 +244,6 @@ namespace TestCaseTracking {
 
 } // namespace TestCaseTracking
 
-using TestCaseTracking::ITracker;
-using TestCaseTracking::TrackerContext;
-using TestCaseTracking::SectionTracker;
-
 } // namespace Catch
 
 #if defined(__clang__)

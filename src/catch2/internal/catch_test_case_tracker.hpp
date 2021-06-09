@@ -32,7 +32,7 @@ namespace TestCaseTracking {
 
     using ITrackerPtr = Catch::Detail::unique_ptr<ITracker>;
 
-    class  ITracker {
+    class ITracker {
         NameAndLocation m_nameAndLocation;
 
         using Children = std::vector<ITrackerPtr>;

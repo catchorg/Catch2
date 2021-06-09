@@ -156,7 +156,7 @@ namespace Catch {
                 m_generator = std::move( generator );
             }
         };
-        GeneratorTracker::~GeneratorTracker() {}
+        GeneratorTracker::~GeneratorTracker() = default;
     }
 
     RunContext::RunContext(IConfig const* _config, IStreamingReporterPtr&& reporter)
