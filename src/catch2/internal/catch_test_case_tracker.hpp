@@ -60,7 +60,7 @@ namespace TestCaseTracking {
         virtual bool isOpen() const = 0; // Started but not complete
         virtual bool hasStarted() const = 0;
 
-        virtual ITracker& parent() = 0;
+        virtual ITracker* parent() = 0;
 
         // actions
         virtual void close() = 0; // Successfully complete
@@ -138,7 +138,7 @@ namespace TestCaseTracking {
             return m_runState != NotStarted;
         }
 
-        ITracker& parent() override;
+        ITracker* parent() override;
 
         void openChild() override;
 

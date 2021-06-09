@@ -99,9 +99,9 @@ namespace TestCaseTracking {
         return m_runState != NotStarted && !isComplete();
     }
 
-    ITracker& TrackerBase::parent() {
+    ITracker* TrackerBase::parent() {
         assert( m_parent ); // Should always be non-null except for root
-        return *m_parent;
+        return m_parent;
     }
 
     void TrackerBase::openChild() {
@@ -176,7 +176,7 @@ namespace TestCaseTracking {
     {
         if( parent ) {
             while( !parent->isSectionTracker() )
-                parent = &parent->parent();
+                parent = parent->parent();
 
             SectionTracker& parentSection = static_cast<SectionTracker&>( *parent );
             addNextFilters( parentSection.m_filters );

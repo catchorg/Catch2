@@ -50,7 +50,7 @@ namespace Catch {
                 // without it, the code above creates 5 nested generators.
                 if ( currentTracker.nameAndLocation() == nameAndLocation ) {
                     auto thisTracker =
-                        currentTracker.parent().findChild( nameAndLocation );
+                        currentTracker.parent()->findChild( nameAndLocation );
                     assert( thisTracker );
                     assert( thisTracker->isGeneratorTracker() );
                     tracker = static_cast<GeneratorTracker*>( thisTracker );
@@ -110,7 +110,7 @@ namespace Catch {
                     // This is safe: there is always at least one section
                     // tracker in a test case tracking tree
                     while ( !parent->isSectionTracker() ) {
-                        parent = &( parent->parent() );
+                        parent = parent->parent();
                     }
                     assert( parent &&
                             "Missing root (test case) level section" );
