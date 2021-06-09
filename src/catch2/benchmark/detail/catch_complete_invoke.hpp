@@ -10,6 +10,7 @@
 #ifndef CATCH_COMPLETE_INVOKE_HPP_INCLUDED
 #define CATCH_COMPLETE_INVOKE_HPP_INCLUDED
 
+#include <catch2/internal/catch_test_failure_exception.hpp>
 #include <catch2/internal/catch_enforce.hpp>
 #include <catch2/internal/catch_meta.hpp>
 #include <catch2/interfaces/catch_interfaces_capture.hpp>
@@ -51,17 +52,11 @@ namespace Catch {
                 return CompleteInvoker<FunctionReturnType<Fun, Args...>>::invoke(std::forward<Fun>(fun), std::forward<Args>(args)...);
             }
 
-            extern const std::string benchmarkErrorMsg;
         } // namespace Detail
 
         template <typename Fun>
         Detail::CompleteType_t<FunctionReturnType<Fun>> user_code(Fun&& fun) {
-            CATCH_TRY{
-                return Detail::complete_invoke(std::forward<Fun>(fun));
-            } CATCH_CATCH_ALL{
-                getResultCapture().benchmarkFailed(translateActiveException());
-                CATCH_RUNTIME_ERROR(Detail::benchmarkErrorMsg);
-            }
+            return Detail::complete_invoke(std::forward<Fun>(fun));
         }
     } // namespace Benchmark
 } // namespace Catch

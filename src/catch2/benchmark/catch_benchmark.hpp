@@ -81,10 +81,13 @@ namespace Catch {
                     auto analysis = Detail::analyse(*cfg, env, samples.begin(), samples.end());
                     BenchmarkStats<FloatDuration<Clock>> stats{ info, analysis.samples, analysis.mean, analysis.standard_deviation, analysis.outliers, analysis.outlier_variance };
                     getResultCapture().benchmarkEnded(stats);
-
+                } CATCH_CATCH_ANON (TestFailureException) {
+                    getResultCapture().benchmarkFailed("Benchmark failed due to failed assertion"_sr);
                 } CATCH_CATCH_ALL{
-                    if (translateActiveException() != Detail::benchmarkErrorMsg) // benchmark errors have been reported, otherwise rethrow.
-                        std::rethrow_exception(std::current_exception());
+                    getResultCapture().benchmarkFailed(translateActiveException());
+                    // We let the exception go further up so that the
+                    // test case is marked as failed.
+                    std::rethrow_exception(std::current_exception());
                 }
             }
 

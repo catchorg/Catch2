@@ -315,6 +315,50 @@ add_test(NAME CheckConvenienceHeaders
     ${PYTHON_EXECUTABLE} ${CATCH_DIR}/tools/scripts/checkConvenienceHeaders.py
 )
 
+
+add_test(NAME "Benchmarking::FailureReporting::OptimizedOut"
+  COMMAND
+    $<TARGET_FILE:SelfTest> "Failing benchmarks" -c "empty" -r xml
+  # This test only makes sense with the optimizer being enabled when
+  # the tests are being compiled.
+  CONFIGURATIONS Release
+)
+set_tests_properties("Benchmarking::FailureReporting::OptimizedOut"
+  PROPERTIES
+    PASS_REGULAR_EXPRESSION "could not measure benchmark\, maybe it was optimized away"
+    FAIL_REGULAR_EXPRESSION "successes=\"1\""
+)
+
+add_test(NAME "Benchmarking::FailureReporting::ThrowingBenchmark"
+  COMMAND
+    $<TARGET_FILE:SelfTest> "Failing benchmarks" -c "throw" -r xml
+)
+set_tests_properties("Benchmarking::FailureReporting::ThrowingBenchmark"
+  PROPERTIES
+    PASS_REGULAR_EXPRESSION "<failed message=\"just a plain literal"
+    FAIL_REGULAR_EXPRESSION "successes=\"1\""
+)
+
+add_test(NAME "Benchmarking::FailureReporting::FailedAssertion"
+  COMMAND
+    $<TARGET_FILE:SelfTest> "Failing benchmarks" -c "assert" -r xml
+)
+set_tests_properties("Benchmarking::FailureReporting::FailedAssertion"
+  PROPERTIES
+    PASS_REGULAR_EXPRESSION "<Expression success=\"false\""
+    FAIL_REGULAR_EXPRESSION "successes=\"1\""
+)
+
+add_test(NAME "Benchmarking::FailureReporting::FailMacro"
+  COMMAND
+    $<TARGET_FILE:SelfTest> "Failing benchmarks" -c "fail" -r xml
+)
+set_tests_properties("Benchmarking::FailureReporting::FailMacro"
+  PROPERTIES
+    PASS_REGULAR_EXPRESSION "This benchmark only fails\, nothing else"
+    FAIL_REGULAR_EXPRESSION "successes=\"1\""
+)
+
 if (CATCH_USE_VALGRIND)
     add_test(NAME ValgrindRunTests COMMAND valgrind --leak-check=full --error-exitcode=1 $<TARGET_FILE:SelfTest>)
     add_test(NAME ValgrindListTests COMMAND valgrind --leak-check=full --error-exitcode=1 $<TARGET_FILE:SelfTest> --list-tests --verbosity high)

@@ -47,26 +47,6 @@ namespace Catch {
 } // namespace Catch
 
 
-////////////////////////////////////////////////
-// vvv formerly catch_complete_invoke.cpp vvv //
-////////////////////////////////////////////////
-
-#include <catch2/benchmark/detail/catch_complete_invoke.hpp>
-
-namespace Catch {
-    namespace Benchmark {
-        namespace Detail {
-            CATCH_INTERNAL_START_WARNINGS_SUPPRESSION
-            CATCH_INTERNAL_SUPPRESS_GLOBALS_WARNINGS
-            const std::string benchmarkErrorMsg = "a benchmark failed to run successfully";
-            CATCH_INTERNAL_STOP_WARNINGS_SUPPRESSION
-        } // namespace Detail
-    } // namespace Benchmark
-} // namespace Catch
-
-
-
-
 /////////////////////////////////////////////////
 // vvv formerly catch_run_for_at_least.cpp vvv //
 /////////////////////////////////////////////////

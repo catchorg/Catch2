@@ -412,3 +412,24 @@ TEST_CASE("run benchmark", "[benchmark][approvals]") {
 
     CHECK((end - start).count() == 2867251000);
 }
+
+TEST_CASE("Failing benchmarks", "[!benchmark][.approvals]") {
+    SECTION("empty", "Benchmark that has been optimized away (because it is empty)") {
+        BENCHMARK("Empty benchmark") {};
+    }
+    SECTION("throw", "Benchmark that throws an exception") {
+        BENCHMARK("Throwing benchmark") {
+            throw "just a plain literal, bleh";
+        };
+    }
+    SECTION("assert", "Benchmark that asserts inside") {
+        BENCHMARK("Asserting benchmark") {
+            REQUIRE(1 == 2);
+        };
+    }
+    SECTION("fail", "Benchmark that fails inside") {
+        BENCHMARK("FAIL'd benchmark") {
+            FAIL("This benchmark only fails, nothing else");
+        };
+    }
+}
