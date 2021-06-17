@@ -38,8 +38,18 @@ namespace TestCaseTracking {
         using Children = std::vector<ITrackerPtr>;
 
     protected:
+        enum CycleState {
+            NotStarted,
+            Executing,
+            ExecutingChildren,
+            NeedsAnotherRun,
+            CompletedSuccessfully,
+            Failed
+        };
+
         ITracker* m_parent = nullptr;
         Children m_children;
+        CycleState m_runState = NotStarted;
 
     public:
         ITracker( NameAndLocation const& nameAndLoc, ITracker* parent ):
@@ -60,15 +70,20 @@ namespace TestCaseTracking {
 
 
         // dynamic queries
-        virtual bool isComplete() const = 0; // Successfully completed or failed
-        virtual bool isSuccessfullyCompleted() const = 0;
-        virtual bool isOpen() const = 0; // Started but not complete
-        virtual bool hasStarted() const = 0;
+
+        //! Returns true if tracker run to completion (successfully or not)
+        virtual bool isComplete() const = 0;
+        //! Returns true if tracker run to completion succesfully
+        bool isSuccessfullyCompleted() const;
+        //! Returns true if tracker has started but hasn't been completed
+        bool isOpen() const;
+        //! Returns true iff tracker has started
+        bool hasStarted() const;
 
         // actions
         virtual void close() = 0; // Successfully complete
         virtual void fail() = 0;
-        virtual void markAsNeedingAnotherRun() = 0;
+        void markAsNeedingAnotherRun();
 
         //! Register a nested ITracker
         void addChild( ITrackerPtr&& child );
@@ -84,7 +99,8 @@ namespace TestCaseTracking {
         }
 
 
-        virtual void openChild() = 0;
+        //! Marks tracker as executing a child, doing se recursively up the tree
+        void openChild();
 
         /**
          * Returns true if the instance is a section tracker
@@ -129,35 +145,18 @@ namespace TestCaseTracking {
 
     class TrackerBase : public ITracker {
     protected:
-        enum CycleState {
-            NotStarted,
-            Executing,
-            ExecutingChildren,
-            NeedsAnotherRun,
-            CompletedSuccessfully,
-            Failed
-        };
 
         TrackerContext& m_ctx;
-        CycleState m_runState = NotStarted;
 
     public:
         TrackerBase( NameAndLocation const& nameAndLocation, TrackerContext& ctx, ITracker* parent );
 
         bool isComplete() const override;
-        bool isSuccessfullyCompleted() const override;
-        bool isOpen() const override;
-        bool hasStarted() const override {
-            return m_runState != NotStarted;
-        }
-
-        void openChild() override;
 
         void open();
 
         void close() override;
         void fail() override;
-        void markAsNeedingAnotherRun() override;
 
     private:
         void moveToParent();

@@ -29,6 +29,10 @@ namespace TestCaseTracking {
 
     ITracker::~ITracker() = default;
 
+    void ITracker::markAsNeedingAnotherRun() {
+        m_runState = NeedsAnotherRun;
+    }
+
     void ITracker::addChild( ITrackerPtr&& child ) {
         m_children.push_back( std::move(child) );
     }
@@ -48,6 +52,24 @@ namespace TestCaseTracking {
     bool ITracker::isSectionTracker() const { return false; }
     bool ITracker::isGeneratorTracker() const { return false; }
 
+    bool ITracker::isSuccessfullyCompleted() const {
+        return m_runState == CompletedSuccessfully;
+    }
+
+    bool ITracker::isOpen() const {
+        return m_runState != NotStarted && !isComplete();
+    }
+
+    bool ITracker::hasStarted() const { return m_runState != NotStarted; }
+
+    void ITracker::openChild() {
+        if (m_runState != ExecutingChildren) {
+            m_runState = ExecutingChildren;
+            if (m_parent) {
+                m_parent->openChild();
+            }
+        }
+    }
 
     ITracker& TrackerContext::startRun() {
         using namespace std::string_literals;
@@ -93,20 +115,6 @@ namespace TestCaseTracking {
     bool TrackerBase::isComplete() const {
         return m_runState == CompletedSuccessfully || m_runState == Failed;
     }
-    bool TrackerBase::isSuccessfullyCompleted() const {
-        return m_runState == CompletedSuccessfully;
-    }
-    bool TrackerBase::isOpen() const {
-        return m_runState != NotStarted && !isComplete();
-    }
-
-    void TrackerBase::openChild() {
-        if( m_runState != ExecutingChildren ) {
-            m_runState = ExecutingChildren;
-            if( m_parent )
-                m_parent->openChild();
-        }
-    }
 
     void TrackerBase::open() {
         m_runState = Executing;
@@ -150,9 +158,6 @@ namespace TestCaseTracking {
             m_parent->markAsNeedingAnotherRun();
         moveToParent();
         m_ctx.completeCycle();
-    }
-    void TrackerBase::markAsNeedingAnotherRun() {
-        m_runState = NeedsAnotherRun;
     }
 
     void TrackerBase::moveToParent() {
