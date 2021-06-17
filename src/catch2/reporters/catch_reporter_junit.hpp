@@ -38,13 +38,14 @@ namespace Catch {
 
         void testRunEndedCumulative() override;
 
+    private:
         void writeGroup(TestGroupNode const& groupNode, double suiteTime);
 
         void writeTestCase(TestCaseNode const& testCaseNode);
 
-        void writeSection(std::string const& className,
-                          std::string const& rootName,
-                          SectionNode const& sectionNode);
+        void writeSection( std::string const& className,
+                           std::string const& rootName,
+                           SectionNode const& sectionNode );
 
         void writeAssertions(SectionNode const& sectionNode);
         void writeAssertion(AssertionStats const& stats);
