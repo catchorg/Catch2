@@ -63,9 +63,6 @@ namespace Catch {
         void invoke() const override;
     };
 
-
-    std::string extractClassName( StringRef classOrQualifiedMethodName );
-
     ///////////////////////////////////////////////////////////////////////////
 
 

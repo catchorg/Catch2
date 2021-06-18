@@ -12,7 +12,6 @@
 #include <catch2/interfaces/catch_interfaces_registry_hub.hpp>
 #include <catch2/internal/catch_random_number_generator.hpp>
 #include <catch2/internal/catch_run_context.hpp>
-#include <catch2/internal/catch_string_manip.hpp>
 #include <catch2/catch_test_case_info.hpp>
 #include <catch2/catch_test_spec.hpp>
 
@@ -147,19 +146,6 @@ namespace {
     ///////////////////////////////////////////////////////////////////////////
     void TestInvokerAsFunction::invoke() const {
         m_testAsFunction();
-    }
-
-    std::string extractClassName( StringRef classOrQualifiedMethodName ) {
-        std::string className(classOrQualifiedMethodName);
-        if( startsWith( className, '&' ) )
-        {
-            std::size_t lastColons = className.rfind( "::" );
-            std::size_t penultimateColons = className.rfind( "::", lastColons-1 );
-            if( penultimateColons == std::string::npos )
-                penultimateColons = 1;
-            className = className.substr( penultimateColons, lastColons-penultimateColons );
-        }
-        return className;
     }
 
 } // end namespace Catch
