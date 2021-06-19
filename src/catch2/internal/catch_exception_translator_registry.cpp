@@ -15,8 +15,8 @@ namespace Catch {
     ExceptionTranslatorRegistry::~ExceptionTranslatorRegistry() {
     }
 
-    void ExceptionTranslatorRegistry::registerTranslator( const IExceptionTranslator* translator ) {
-        m_translators.push_back( Detail::unique_ptr<const IExceptionTranslator>( translator ) );
+    void ExceptionTranslatorRegistry::registerTranslator( Detail::unique_ptr<IExceptionTranslator>&& translator ) {
+        m_translators.push_back( std::move( translator ) );
     }
 
 #if !defined(CATCH_CONFIG_DISABLE_EXCEPTIONS)

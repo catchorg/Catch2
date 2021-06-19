@@ -56,8 +56,8 @@ namespace Catch {
             void registerTest( Detail::unique_ptr<TestCaseInfo>&& testInfo, Detail::unique_ptr<ITestInvoker>&& invoker ) override {
                 m_testCaseRegistry.registerTest( std::move(testInfo), std::move(invoker) );
             }
-            void registerTranslator( const IExceptionTranslator* translator ) override {
-                m_exceptionTranslatorRegistry.registerTranslator( translator );
+            void registerTranslator( Detail::unique_ptr<IExceptionTranslator>&& translator ) override {
+                m_exceptionTranslatorRegistry.registerTranslator( std::move(translator) );
             }
             void registerTagAlias( std::string const& alias, std::string const& tag, SourceLineInfo const& lineInfo ) override {
                 m_tagAliasRegistry.add( alias, tag, lineInfo );
