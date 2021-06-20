@@ -13,13 +13,9 @@
 
 using Catch::Approx;
 
-namespace { namespace ApproxTests {
-
-#ifndef APPROX_TEST_HELPERS_INCLUDED // Don't compile this more than once per TU
-#define APPROX_TEST_HELPERS_INCLUDED
-
-    inline double divide( double a, double b ) {
-        return a/b;
+namespace {
+    static double divide(double a, double b) {
+        return a / b;
     }
 
     class StrongDoubleTypedef {
@@ -30,11 +26,10 @@ namespace { namespace ApproxTests {
         explicit operator double() const { return d_; }
     };
 
-    inline std::ostream& operator<<( std::ostream& os, StrongDoubleTypedef td ) {
+    static std::ostream& operator<<(std::ostream& os, StrongDoubleTypedef td) {
         return os << "StrongDoubleTypedef(" << static_cast<double>(td) << ")";
     }
-
-#endif
+} // end unnamed namespace
 
 using namespace Catch::literals;
 
@@ -214,5 +209,3 @@ TEST_CASE( "Comparison with explicitly convertible types", "[Approx]" )
   REQUIRE(Approx(11.0) >= td);
 
 }
-
-}} // namespace ApproxTests

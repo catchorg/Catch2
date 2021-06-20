@@ -7,68 +7,47 @@
 #include <catch2/catch_template_test_macros.hpp>
 #include <array>
 
-namespace{ namespace ClassTests {
+namespace {
 
-#ifndef CLASS_TEST_HELPERS_INCLUDED // Don't compile this more than once per TU
-#define CLASS_TEST_HELPERS_INCLUDED
+    class TestClass {
+        std::string s;
 
-class TestClass
-{
-    std::string s;
+    public:
+        TestClass(): s( "hello" ) {}
 
-public:
-    TestClass()
-    : s( "hello" )
-    {}
+        void succeedingCase() { REQUIRE( s == "hello" ); }
+        void failingCase() { REQUIRE( s == "world" ); }
+    };
 
-    void succeedingCase()
-    {
-        REQUIRE( s == "hello" );
-    }
-    void failingCase()
-    {
-        REQUIRE( s == "world" );
-    }
-};
+    struct Fixture {
+        Fixture(): m_a( 1 ) {}
 
-struct Fixture
-{
-    Fixture() : m_a( 1 ) {}
+        int m_a;
+    };
 
-    int m_a;
-};
+    template <typename T> struct Template_Fixture {
+        Template_Fixture(): m_a( 1 ) {}
 
-template< typename T >
-struct Template_Fixture {
-    Template_Fixture(): m_a(1) {}
+        T m_a;
+    };
 
-    T m_a;
-};
+    template <typename T> struct Template_Fixture_2 {
+        Template_Fixture_2() {}
 
-template<typename T>
-struct Template_Fixture_2 {
-    Template_Fixture_2() {}
+        T m_a;
+    };
 
-    T m_a;
-};
+    template <typename T> struct Template_Foo {
+        size_t size() { return 0; }
+    };
 
-template< typename T>
-struct Template_Foo {
-    size_t size() { return 0; }
-};
+    template <typename T, size_t V> struct Template_Foo_2 {
+        size_t size() { return V; }
+    };
 
-template< typename T, size_t V>
-struct Template_Foo_2 {
-    size_t size() { return V; }
-};
+    template <int V> struct Nttp_Fixture { int value = V; };
 
-template <int V>
-struct Nttp_Fixture{
-    int value = V;
-};
-#endif
-
-
+} // end unnamed namespace
 
 METHOD_AS_TEST_CASE( TestClass::succeedingCase, "A METHOD_AS_TEST_CASE based test run that succeeds", "[class]" )
 METHOD_AS_TEST_CASE( TestClass::failingCase, "A METHOD_AS_TEST_CASE based test run that fails", "[.][class][failing]" )
@@ -129,7 +108,3 @@ namespace Inner
         REQUIRE(Template_Fixture_2<TestType>{}.m_a.size() < 2);
     }
 }
-
-
-
-}} // namespace ClassTests

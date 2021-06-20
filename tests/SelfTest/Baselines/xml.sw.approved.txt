@@ -2526,7 +2526,7 @@ Nor would this
       <Section name="Function pointer" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
         <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
           <Original>
-            1, Predicate&lt;int>(alwaysTrue, "always true")
+            1, Predicate&lt;int>( alwaysTrue, "always true" )
           </Original>
           <Expanded>
             1 matches predicate: "always true"
@@ -2534,7 +2534,7 @@ Nor would this
         </Expression>
         <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
           <Original>
-            1, !Predicate&lt;int>(alwaysFalse, "always false")
+            1, !Predicate&lt;int>( alwaysFalse, "always false" )
           </Original>
           <Expanded>
             1 not matches predicate: "always false"
@@ -2545,7 +2545,7 @@ Nor would this
       <Section name="Lambdas + different type" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
         <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
           <Original>
-            "Hello olleH", Predicate&lt;std::string>( [] (std::string const&amp; str) -> bool { return str.front() == str.back(); }, "First and last character should be equal")
+            "Hello olleH", Predicate&lt;std::string>( []( std::string const&amp; str ) -> bool { return str.front() == str.back(); }, "First and last character should be equal" )
           </Original>
           <Expanded>
             "Hello olleH" matches predicate: "First and last character should be equal"
@@ -2553,7 +2553,7 @@ Nor would this
         </Expression>
         <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
           <Original>
-            "This wouldn't pass", !Predicate&lt;std::string>( [] (std::string const&amp; str) -> bool { return str.front() == str.back(); } )
+            "This wouldn't pass", !Predicate&lt;std::string>( []( std::string const&amp; str ) -> bool { return str.front() == str.back(); } )
           </Original>
           <Expanded>
             "This wouldn't pass" not matches undescribed predicate
@@ -3123,7 +3123,7 @@ Nor would this
     <TestCase name="Combining MatchAllOfGeneric does not nest" tags="[matchers][templated]" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
       <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
         <Original>
-          1, (MatcherA() &amp;&amp; MatcherB()) &amp;&amp; MatcherC()
+          1, ( MatcherA() &amp;&amp; MatcherB() ) &amp;&amp; MatcherC()
         </Original>
         <Expanded>
           1 ( equals: (int) 1 or (float) 1.0f and equals: (long long) 1 and equals: (T) 1 )
@@ -3131,7 +3131,7 @@ Nor would this
       </Expression>
       <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
         <Original>
-          1, MatcherA() &amp;&amp; (MatcherB() &amp;&amp; MatcherC())
+          1, MatcherA() &amp;&amp; ( MatcherB() &amp;&amp; MatcherC() )
         </Original>
         <Expanded>
           1 ( equals: (int) 1 or (float) 1.0f and equals: (long long) 1 and equals: (T) 1 )
@@ -3139,7 +3139,7 @@ Nor would this
       </Expression>
       <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
         <Original>
-          1, (MatcherA() &amp;&amp; MatcherB()) &amp;&amp; (MatcherC() &amp;&amp; MatcherD())
+          1, ( MatcherA() &amp;&amp; MatcherB() ) &amp;&amp; ( MatcherC() &amp;&amp; MatcherD() )
         </Original>
         <Expanded>
           1 ( equals: (int) 1 or (float) 1.0f and equals: (long long) 1 and equals: (T) 1 and equals: true )
@@ -3150,7 +3150,7 @@ Nor would this
     <TestCase name="Combining MatchAnyOfGeneric does not nest" tags="[matchers][templated]" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
       <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
         <Original>
-          1, (MatcherA() || MatcherB()) || MatcherC()
+          1, ( MatcherA() || MatcherB() ) || MatcherC()
         </Original>
         <Expanded>
           1 ( equals: (int) 1 or (float) 1.0f or equals: (long long) 1 or equals: (T) 1 )
@@ -3158,7 +3158,7 @@ Nor would this
       </Expression>
       <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
         <Original>
-          1, MatcherA() || (MatcherB() || MatcherC())
+          1, MatcherA() || ( MatcherB() || MatcherC() )
         </Original>
         <Expanded>
           1 ( equals: (int) 1 or (float) 1.0f or equals: (long long) 1 or equals: (T) 1 )
@@ -3166,7 +3166,7 @@ Nor would this
       </Expression>
       <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
         <Original>
-          1, (MatcherA() || MatcherB()) || (MatcherC() || MatcherD())
+          1, ( MatcherA() || MatcherB() ) || ( MatcherC() || MatcherD() )
         </Original>
         <Expanded>
           1 ( equals: (int) 1 or (float) 1.0f or equals: (long long) 1 or equals: (T) 1 or equals: true )
@@ -3242,7 +3242,7 @@ Nor would this
     <TestCase name="Combining templated and concrete matchers" tags="[matchers][templated]" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
       <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
         <Original>
-          vec, Predicate&lt;std::vector&lt;int>>([](auto const&amp; v) { return std::all_of(v.begin(), v.end(), [](int elem) { return elem % 2 == 1; }); }, "All elements are odd") &amp;&amp; !EqualsRange(a)
+          vec, Predicate&lt;std::vector&lt;int>>( []( auto const&amp; v ) { return std::all_of( v.begin(), v.end(), []( int elem ) { return elem % 2 == 1; } ); }, "All elements are odd" ) &amp;&amp; !EqualsRange( a )
         </Original>
         <Expanded>
           { 1, 3, 5 } ( matches predicate: "All elements are odd" and not Equals: { 5, 3, 1 } )
@@ -3250,7 +3250,7 @@ Nor would this
       </Expression>
       <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
         <Original>
-          str, StartsWith("foo") &amp;&amp; EqualsRange(arr) &amp;&amp; EndsWith("bar")
+          str, StartsWith( "foo" ) &amp;&amp; EqualsRange( arr ) &amp;&amp; EndsWith( "bar" )
         </Original>
         <Expanded>
           "foobar" ( starts with: "foo" and Equals: { 'f', 'o', 'o', 'b', 'a', 'r' } and ends with: "bar" )
@@ -3258,7 +3258,7 @@ Nor would this
       </Expression>
       <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
         <Original>
-          str, StartsWith("foo") &amp;&amp; !EqualsRange(bad_arr) &amp;&amp; EndsWith("bar")
+          str, StartsWith( "foo" ) &amp;&amp; !EqualsRange( bad_arr ) &amp;&amp; EndsWith( "bar" )
         </Original>
         <Expanded>
           "foobar" ( starts with: "foo" and not Equals: { 'o', 'o', 'f', 'b', 'a', 'r' } and ends with: "bar" )
@@ -3266,7 +3266,7 @@ Nor would this
       </Expression>
       <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
         <Original>
-          str, EqualsRange(arr) &amp;&amp; StartsWith("foo") &amp;&amp; EndsWith("bar")
+          str, EqualsRange( arr ) &amp;&amp; StartsWith( "foo" ) &amp;&amp; EndsWith( "bar" )
         </Original>
         <Expanded>
           "foobar" ( Equals: { 'f', 'o', 'o', 'b', 'a', 'r' } and starts with: "foo" and ends with: "bar" )
@@ -3274,7 +3274,7 @@ Nor would this
       </Expression>
       <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
         <Original>
-          str, !EqualsRange(bad_arr) &amp;&amp; StartsWith("foo") &amp;&amp; EndsWith("bar")
+          str, !EqualsRange( bad_arr ) &amp;&amp; StartsWith( "foo" ) &amp;&amp; EndsWith( "bar" )
         </Original>
         <Expanded>
           "foobar" ( not Equals: { 'o', 'o', 'f', 'b', 'a', 'r' } and starts with: "foo" and ends with: "bar" )
@@ -3282,7 +3282,7 @@ Nor would this
       </Expression>
       <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
         <Original>
-          str, EqualsRange(bad_arr) || (StartsWith("foo") &amp;&amp; EndsWith("bar"))
+          str, EqualsRange( bad_arr ) || ( StartsWith( "foo" ) &amp;&amp; EndsWith( "bar" ) )
         </Original>
         <Expanded>
           "foobar" ( Equals: { 'o', 'o', 'f', 'b', 'a', 'r' } or ( starts with: "foo" and ends with: "bar" ) )
@@ -3290,7 +3290,7 @@ Nor would this
       </Expression>
       <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
         <Original>
-          str, (StartsWith("foo") &amp;&amp; EndsWith("bar")) || EqualsRange(bad_arr)
+          str, ( StartsWith( "foo" ) &amp;&amp; EndsWith( "bar" ) ) || EqualsRange( bad_arr )
         </Original>
         <Expanded>
           "foobar" ( ( starts with: "foo" and ends with: "bar" ) or Equals: { 'o', 'o', 'f', 'b', 'a', 'r' } )
@@ -3301,7 +3301,7 @@ Nor would this
     <TestCase name="Combining templated matchers" tags="[matchers][templated]" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
       <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
         <Original>
-          container, EqualsRange(a) || EqualsRange(b) || EqualsRange(c)
+          container, EqualsRange( a ) || EqualsRange( b ) || EqualsRange( c )
         </Original>
         <Expanded>
           { 1, 2, 3 } ( Equals: { 1, 2, 3 } or Equals: { 0, 1, 2 } or Equals: { 4, 5, 6 } )
@@ -3761,7 +3761,7 @@ Nor would this
       <Section name="MatchAnyOf" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
         <Expression success="true" type="CHECK" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
           <Original>
-            matcher.match(1)
+            matcher.match( 1 )
           </Original>
           <Expanded>
             true
@@ -3847,7 +3847,7 @@ Nor would this
     <TestCase name="Contains string matcher" tags="[.][failing][matchers]" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
       <Expression success="false" type="CHECK_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
         <Original>
-          testStringForMatching(), Contains("not there", Catch::CaseSensitive::No)
+          testStringForMatching(), Contains( "not there", Catch::CaseSensitive::No )
         </Original>
         <Expanded>
           "this string contains 'abc' as a substring" contains: "not there" (case insensitive)
@@ -3855,7 +3855,7 @@ Nor would this
       </Expression>
       <Expression success="false" type="CHECK_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
         <Original>
-          testStringForMatching(), Contains("STRING")
+          testStringForMatching(), Contains( "STRING" )
         </Original>
         <Expanded>
           "this string contains 'abc' as a substring" contains: "STRING"
@@ -4102,7 +4102,7 @@ Nor would this
     <TestCase name="EndsWith string matcher" tags="[.][failing][matchers]" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
       <Expression success="false" type="CHECK_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
         <Original>
-          testStringForMatching(), EndsWith("Substring")
+          testStringForMatching(), EndsWith( "Substring" )
         </Original>
         <Expanded>
           "this string contains 'abc' as a substring" ends with: "Substring"
@@ -4110,7 +4110,7 @@ Nor would this
       </Expression>
       <Expression success="false" type="CHECK_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
         <Original>
-          testStringForMatching(), EndsWith("this", Catch::CaseSensitive::No)
+          testStringForMatching(), EndsWith( "this", Catch::CaseSensitive::No )
         </Original>
         <Expanded>
           "this string contains 'abc' as a substring" ends with: "this" (case insensitive)
@@ -4362,7 +4362,7 @@ Nor would this
     <TestCase name="Equals" tags="[matchers]" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
       <Expression success="true" type="CHECK_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
         <Original>
-          testStringForMatching(), Equals("this string contains 'abc' as a substring")
+          testStringForMatching(), Equals( "this string contains 'abc' as a substring" )
         </Original>
         <Expanded>
           "this string contains 'abc' as a substring" equals: "this string contains 'abc' as a substring"
@@ -4370,7 +4370,7 @@ Nor would this
       </Expression>
       <Expression success="true" type="CHECK_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
         <Original>
-          testStringForMatching(), Equals("this string contains 'ABC' as a substring", Catch::CaseSensitive::No)
+          testStringForMatching(), Equals( "this string contains 'ABC' as a substring", Catch::CaseSensitive::No )
         </Original>
         <Expanded>
           "this string contains 'abc' as a substring" equals: "this string contains 'abc' as a substring" (case insensitive)
@@ -4381,7 +4381,7 @@ Nor would this
     <TestCase name="Equals string matcher" tags="[.][failing][matchers]" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
       <Expression success="false" type="CHECK_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
         <Original>
-          testStringForMatching(), Equals("this string contains 'ABC' as a substring")
+          testStringForMatching(), Equals( "this string contains 'ABC' as a substring" )
         </Original>
         <Expanded>
           "this string contains 'abc' as a substring" equals: "this string contains 'ABC' as a substring"
@@ -4389,7 +4389,7 @@ Nor would this
       </Expression>
       <Expression success="false" type="CHECK_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
         <Original>
-          testStringForMatching(), Equals("something else", Catch::CaseSensitive::No)
+          testStringForMatching(), Equals( "something else", Catch::CaseSensitive::No )
         </Original>
         <Expanded>
           "this string contains 'abc' as a substring" equals: "something else" (case insensitive)
@@ -4432,18 +4432,18 @@ Nor would this
       <Section name="No exception" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
         <Expression success="false" type="CHECK_THROWS_MATCHES" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
           <Original>
-            doesNotThrow(), SpecialException, ExceptionMatcher{1}
+            doesNotThrow(), SpecialException, ExceptionMatcher{ 1 }
           </Original>
           <Expanded>
-            doesNotThrow(), SpecialException, ExceptionMatcher{1}
+            doesNotThrow(), SpecialException, ExceptionMatcher{ 1 }
           </Expanded>
         </Expression>
         <Expression success="false" type="REQUIRE_THROWS_MATCHES" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
           <Original>
-            doesNotThrow(), SpecialException, ExceptionMatcher{1}
+            doesNotThrow(), SpecialException, ExceptionMatcher{ 1 }
           </Original>
           <Expanded>
-            doesNotThrow(), SpecialException, ExceptionMatcher{1}
+            doesNotThrow(), SpecialException, ExceptionMatcher{ 1 }
           </Expanded>
         </Expression>
         <OverallResults successes="0" failures="2" expectedFailures="0"/>
@@ -4451,10 +4451,10 @@ Nor would this
       <Section name="Type mismatch" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
         <Expression success="false" type="CHECK_THROWS_MATCHES" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
           <Original>
-            throwsAsInt(1), SpecialException, ExceptionMatcher{1}
+            throwsAsInt( 1 ), SpecialException, ExceptionMatcher{ 1 }
           </Original>
           <Expanded>
-            throwsAsInt(1), SpecialException, ExceptionMatcher{1}
+            throwsAsInt( 1 ), SpecialException, ExceptionMatcher{ 1 }
           </Expanded>
           <Exception filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
             Unknown exception
@@ -4462,10 +4462,10 @@ Nor would this
         </Expression>
         <Expression success="false" type="REQUIRE_THROWS_MATCHES" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
           <Original>
-            throwsAsInt(1), SpecialException, ExceptionMatcher{1}
+            throwsAsInt( 1 ), SpecialException, ExceptionMatcher{ 1 }
           </Original>
           <Expanded>
-            throwsAsInt(1), SpecialException, ExceptionMatcher{1}
+            throwsAsInt( 1 ), SpecialException, ExceptionMatcher{ 1 }
           </Expanded>
           <Exception filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
             Unknown exception
@@ -4476,7 +4476,7 @@ Nor would this
       <Section name="Contents are wrong" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
         <Expression success="false" type="CHECK_THROWS_MATCHES" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
           <Original>
-            throwsSpecialException(3), SpecialException, ExceptionMatcher{1}
+            throwsSpecialException( 3 ), SpecialException, ExceptionMatcher{ 1 }
           </Original>
           <Expanded>
             SpecialException::what special exception has value of 1
@@ -4484,7 +4484,7 @@ Nor would this
         </Expression>
         <Expression success="false" type="REQUIRE_THROWS_MATCHES" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
           <Original>
-            throwsSpecialException(4), SpecialException, ExceptionMatcher{1}
+            throwsSpecialException( 4 ), SpecialException, ExceptionMatcher{ 1 }
           </Original>
           <Expanded>
             SpecialException::what special exception has value of 1
@@ -4497,7 +4497,7 @@ Nor would this
     <TestCase name="Exception matchers that succeed" tags="[!throws][exceptions][matchers]" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
       <Expression success="true" type="CHECK_THROWS_MATCHES" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
         <Original>
-          throwsSpecialException(1), SpecialException, ExceptionMatcher{1}
+          throwsSpecialException( 1 ), SpecialException, ExceptionMatcher{ 1 }
         </Original>
         <Expanded>
           SpecialException::what special exception has value of 1
@@ -4505,7 +4505,7 @@ Nor would this
       </Expression>
       <Expression success="true" type="REQUIRE_THROWS_MATCHES" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
         <Original>
-          throwsSpecialException(2), SpecialException, ExceptionMatcher{2}
+          throwsSpecialException( 2 ), SpecialException, ExceptionMatcher{ 2 }
         </Original>
         <Expanded>
           SpecialException::what special exception has value of 2
@@ -4576,7 +4576,7 @@ Nor would this
     <TestCase name="Exceptions matchers" tags="[!throws][exceptions][matchers]" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
       <Expression success="true" type="REQUIRE_THROWS_MATCHES" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
         <Original>
-          throwsDerivedException(), DerivedException, Message("DerivedException::what")
+          throwsDerivedException(), DerivedException, Message( "DerivedException::what" )
         </Original>
         <Expanded>
           DerivedException::what exception message matches "DerivedException::what"
@@ -4584,7 +4584,7 @@ Nor would this
       </Expression>
       <Expression success="true" type="REQUIRE_THROWS_MATCHES" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
         <Original>
-          throwsDerivedException(), DerivedException, !Message("derivedexception::what")
+          throwsDerivedException(), DerivedException, !Message( "derivedexception::what" )
         </Original>
         <Expanded>
           DerivedException::what not exception message matches "derivedexception::what"
@@ -4592,7 +4592,7 @@ Nor would this
       </Expression>
       <Expression success="true" type="REQUIRE_THROWS_MATCHES" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
         <Original>
-          throwsSpecialException(2), SpecialException, !Message("DerivedException::what")
+          throwsSpecialException( 2 ), SpecialException, !Message( "DerivedException::what" )
         </Original>
         <Expanded>
           SpecialException::what not exception message matches "DerivedException::what"
@@ -4600,7 +4600,7 @@ Nor would this
       </Expression>
       <Expression success="true" type="REQUIRE_THROWS_MATCHES" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
         <Original>
-          throwsSpecialException(2), SpecialException, Message("SpecialException::what")
+          throwsSpecialException( 2 ), SpecialException, Message( "SpecialException::what" )
         </Original>
         <Expanded>
           SpecialException::what exception message matches "SpecialException::what"
@@ -4707,7 +4707,7 @@ Nor would this
       <Section name="Relative" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
         <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
           <Original>
-            10., WithinRel(11.1, 0.1)
+            10., WithinRel( 11.1, 0.1 )
           </Original>
           <Expanded>
             10.0 and 11.1 are within 10% of each other
@@ -4715,7 +4715,7 @@ Nor would this
         </Expression>
         <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
           <Original>
-            10., !WithinRel(11.2, 0.1)
+            10., !WithinRel( 11.2, 0.1 )
           </Original>
           <Expanded>
             10.0 not and 11.2 are within 10% of each other
@@ -4723,7 +4723,7 @@ Nor would this
         </Expression>
         <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
           <Original>
-            1., !WithinRel(0., 0.99)
+            1., !WithinRel( 0., 0.99 )
           </Original>
           <Expanded>
             1.0 not and 0 are within 99% of each other
@@ -4731,7 +4731,7 @@ Nor would this
         </Expression>
         <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
           <Original>
-            -0., WithinRel(0.)
+            -0., WithinRel( 0. )
           </Original>
           <Expanded>
             -0.0 and 0 are within 2.22045e-12% of each other
@@ -4740,7 +4740,7 @@ Nor would this
         <Section name="Some subnormal values" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
           <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
             <Original>
-              v1, WithinRel(v2)
+              v1, WithinRel( v2 )
             </Original>
             <Expanded>
               0.0 and 2.22507e-308 are within 2.22045e-12% of each other
@@ -4753,7 +4753,7 @@ Nor would this
       <Section name="Margin" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
         <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
           <Original>
-            1., WithinAbs(1., 0)
+            1., WithinAbs( 1., 0 )
           </Original>
           <Expanded>
             1.0 is within 0.0 of 1.0
@@ -4761,7 +4761,7 @@ Nor would this
         </Expression>
         <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
           <Original>
-            0., WithinAbs(1., 1)
+            0., WithinAbs( 1., 1 )
           </Original>
           <Expanded>
             0.0 is within 1.0 of 1.0
@@ -4769,7 +4769,7 @@ Nor would this
         </Expression>
         <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
           <Original>
-            0., !WithinAbs(1., 0.99)
+            0., !WithinAbs( 1., 0.99 )
           </Original>
           <Expanded>
             0.0 not is within 0.99 of 1.0
@@ -4777,7 +4777,7 @@ Nor would this
         </Expression>
         <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
           <Original>
-            0., !WithinAbs(1., 0.99)
+            0., !WithinAbs( 1., 0.99 )
           </Original>
           <Expanded>
             0.0 not is within 0.99 of 1.0
@@ -4785,7 +4785,7 @@ Nor would this
         </Expression>
         <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
           <Original>
-            11., !WithinAbs(10., 0.5)
+            11., !WithinAbs( 10., 0.5 )
           </Original>
           <Expanded>
             11.0 not is within 0.5 of 10.0
@@ -4793,7 +4793,7 @@ Nor would this
         </Expression>
         <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
           <Original>
-            10., !WithinAbs(11., 0.5)
+            10., !WithinAbs( 11., 0.5 )
           </Original>
           <Expanded>
             10.0 not is within 0.5 of 11.0
@@ -4801,7 +4801,7 @@ Nor would this
         </Expression>
         <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
           <Original>
-            -10., WithinAbs(-10., 0.5)
+            -10., WithinAbs( -10., 0.5 )
           </Original>
           <Expanded>
             -10.0 is within 0.5 of -10.0
@@ -4809,7 +4809,7 @@ Nor would this
         </Expression>
         <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
           <Original>
-            -10., WithinAbs(-9.6, 0.5)
+            -10., WithinAbs( -9.6, 0.5 )
           </Original>
           <Expanded>
             -10.0 is within 0.5 of -9.6
@@ -4820,7 +4820,7 @@ Nor would this
       <Section name="ULPs" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
         <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
           <Original>
-            1., WithinULP(1., 0)
+            1., WithinULP( 1., 0 )
           </Original>
           <Expanded>
             1.0 is within 0 ULPs of 1.0000000000000000e+00 ([1.0000000000000000e+00, 1.0000000000000000e+00])
@@ -4828,7 +4828,7 @@ Nor would this
         </Expression>
         <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
           <Original>
-            nextafter(1., 2.), WithinULP(1., 1)
+            nextafter( 1., 2. ), WithinULP( 1., 1 )
           </Original>
           <Expanded>
             1.0 is within 1 ULPs of 1.0000000000000000e+00 ([9.9999999999999989e-01, 1.0000000000000002e+00])
@@ -4836,7 +4836,7 @@ Nor would this
         </Expression>
         <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
           <Original>
-            0., WithinULP(nextafter(0., 1.), 1)
+            0., WithinULP( nextafter( 0., 1. ), 1 )
           </Original>
           <Expanded>
             0.0 is within 1 ULPs of 4.9406564584124654e-324 ([0.0000000000000000e+00, 9.8813129168249309e-324])
@@ -4844,7 +4844,7 @@ Nor would this
         </Expression>
         <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
           <Original>
-            1., WithinULP(nextafter(1., 0.), 1)
+            1., WithinULP( nextafter( 1., 0. ), 1 )
           </Original>
           <Expanded>
             1.0 is within 1 ULPs of 9.9999999999999989e-01 ([9.9999999999999978e-01, 1.0000000000000000e+00])
@@ -4852,7 +4852,7 @@ Nor would this
         </Expression>
         <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
           <Original>
-            1., !WithinULP(nextafter(1., 2.), 0)
+            1., !WithinULP( nextafter( 1., 2. ), 0 )
           </Original>
           <Expanded>
             1.0 not is within 0 ULPs of 1.0000000000000002e+00 ([1.0000000000000002e+00, 1.0000000000000002e+00])
@@ -4860,7 +4860,7 @@ Nor would this
         </Expression>
         <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
           <Original>
-            1., WithinULP(1., 0)
+            1., WithinULP( 1., 0 )
           </Original>
           <Expanded>
             1.0 is within 0 ULPs of 1.0000000000000000e+00 ([1.0000000000000000e+00, 1.0000000000000000e+00])
@@ -4868,7 +4868,7 @@ Nor would this
         </Expression>
         <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
           <Original>
-            -0., WithinULP(0., 0)
+            -0., WithinULP( 0., 0 )
           </Original>
           <Expanded>
             -0.0 is within 0 ULPs of 0.0000000000000000e+00 ([0.0000000000000000e+00, 0.0000000000000000e+00])
@@ -4879,7 +4879,7 @@ Nor would this
       <Section name="Composed" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
         <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
           <Original>
-            1., WithinAbs(1., 0.5) || WithinULP(2., 1)
+            1., WithinAbs( 1., 0.5 ) || WithinULP( 2., 1 )
           </Original>
           <Expanded>
             1.0 ( is within 0.5 of 1.0 or is within 1 ULPs of 2.0000000000000000e+00 ([1.9999999999999998e+00, 2.0000000000000004e+00]) )
@@ -4887,7 +4887,7 @@ Nor would this
         </Expression>
         <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
           <Original>
-            1., WithinAbs(2., 0.5) || WithinULP(1., 0)
+            1., WithinAbs( 2., 0.5 ) || WithinULP( 1., 0 )
           </Original>
           <Expanded>
             1.0 ( is within 0.5 of 2.0 or is within 0 ULPs of 1.0000000000000000e+00 ([1.0000000000000000e+00, 1.0000000000000000e+00]) )
@@ -4895,7 +4895,7 @@ Nor would this
         </Expression>
         <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
           <Original>
-            0.0001, WithinAbs(0., 0.001) || WithinRel(0., 0.1)
+            0.0001, WithinAbs( 0., 0.001 ) || WithinRel( 0., 0.1 )
           </Original>
           <Expanded>
             0.0001 ( is within 0.001 of 0.0 or and 0 are within 10% of each other )
@@ -4906,50 +4906,50 @@ Nor would this
       <Section name="Constructor validation" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
         <Expression success="true" type="REQUIRE_NOTHROW" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
           <Original>
-            WithinAbs(1., 0.)
+            WithinAbs( 1., 0. )
           </Original>
           <Expanded>
-            WithinAbs(1., 0.)
+            WithinAbs( 1., 0. )
           </Expanded>
         </Expression>
         <Expression success="true" type="REQUIRE_THROWS_AS" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
           <Original>
-            WithinAbs(1., -1.), std::domain_error
+            WithinAbs( 1., -1. ), std::domain_error
           </Original>
           <Expanded>
-            WithinAbs(1., -1.), std::domain_error
+            WithinAbs( 1., -1. ), std::domain_error
           </Expanded>
         </Expression>
         <Expression success="true" type="REQUIRE_NOTHROW" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
           <Original>
-            WithinULP(1., 0)
+            WithinULP( 1., 0 )
           </Original>
           <Expanded>
-            WithinULP(1., 0)
+            WithinULP( 1., 0 )
           </Expanded>
         </Expression>
         <Expression success="true" type="REQUIRE_NOTHROW" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
           <Original>
-            WithinRel(1., 0.)
+            WithinRel( 1., 0. )
           </Original>
           <Expanded>
-            WithinRel(1., 0.)
+            WithinRel( 1., 0. )
           </Expanded>
         </Expression>
         <Expression success="true" type="REQUIRE_THROWS_AS" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
           <Original>
-            WithinRel(1., -0.2), std::domain_error
+            WithinRel( 1., -0.2 ), std::domain_error
           </Original>
           <Expanded>
-            WithinRel(1., -0.2), std::domain_error
+            WithinRel( 1., -0.2 ), std::domain_error
           </Expanded>
         </Expression>
         <Expression success="true" type="REQUIRE_THROWS_AS" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
           <Original>
-            WithinRel(1., 1.), std::domain_error
+            WithinRel( 1., 1. ), std::domain_error
           </Original>
           <Expanded>
-            WithinRel(1., 1.), std::domain_error
+            WithinRel( 1., 1. ), std::domain_error
           </Expanded>
         </Expression>
         <OverallResults successes="6" failures="0" expectedFailures="0"/>
@@ -4960,7 +4960,7 @@ Nor would this
       <Section name="Relative" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
         <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
           <Original>
-            10.f, WithinRel(11.1f, 0.1f)
+            10.f, WithinRel( 11.1f, 0.1f )
           </Original>
           <Expanded>
             10.0f and 11.1 are within 10% of each other
@@ -4968,7 +4968,7 @@ Nor would this
         </Expression>
         <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
           <Original>
-            10.f, !WithinRel(11.2f, 0.1f)
+            10.f, !WithinRel( 11.2f, 0.1f )
           </Original>
           <Expanded>
             10.0f not and 11.2 are within 10% of each other
@@ -4976,7 +4976,7 @@ Nor would this
         </Expression>
         <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
           <Original>
-            1.f, !WithinRel(0.f, 0.99f)
+            1.f, !WithinRel( 0.f, 0.99f )
           </Original>
           <Expanded>
             1.0f not and 0 are within 99% of each other
@@ -4984,7 +4984,7 @@ Nor would this
         </Expression>
         <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
           <Original>
-            -0.f, WithinRel(0.f)
+            -0.f, WithinRel( 0.f )
           </Original>
           <Expanded>
             -0.0f and 0 are within 0.00119209% of each other
@@ -4993,7 +4993,7 @@ Nor would this
         <Section name="Some subnormal values" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
           <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
             <Original>
-              v1, WithinRel(v2)
+              v1, WithinRel( v2 )
             </Original>
             <Expanded>
               0.0f and 1.17549e-38 are within 0.00119209% of each other
@@ -5006,7 +5006,7 @@ Nor would this
       <Section name="Margin" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
         <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
           <Original>
-            1.f, WithinAbs(1.f, 0)
+            1.f, WithinAbs( 1.f, 0 )
           </Original>
           <Expanded>
             1.0f is within 0.0 of 1.0
@@ -5014,7 +5014,7 @@ Nor would this
         </Expression>
         <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
           <Original>
-            0.f, WithinAbs(1.f, 1)
+            0.f, WithinAbs( 1.f, 1 )
           </Original>
           <Expanded>
             0.0f is within 1.0 of 1.0
@@ -5022,7 +5022,7 @@ Nor would this
         </Expression>
         <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
           <Original>
-            0.f, !WithinAbs(1.f, 0.99f)
+            0.f, !WithinAbs( 1.f, 0.99f )
           </Original>
           <Expanded>
             0.0f not is within 0.9900000095 of 1.0
@@ -5030,7 +5030,7 @@ Nor would this
         </Expression>
         <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
           <Original>
-            0.f, !WithinAbs(1.f, 0.99f)
+            0.f, !WithinAbs( 1.f, 0.99f )
           </Original>
           <Expanded>
             0.0f not is within 0.9900000095 of 1.0
@@ -5038,7 +5038,7 @@ Nor would this
         </Expression>
         <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
           <Original>
-            0.f, WithinAbs(-0.f, 0)
+            0.f, WithinAbs( -0.f, 0 )
           </Original>
           <Expanded>
             0.0f is within 0.0 of -0.0
@@ -5046,7 +5046,7 @@ Nor would this
         </Expression>
         <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
           <Original>
-            11.f, !WithinAbs(10.f, 0.5f)
+            11.f, !WithinAbs( 10.f, 0.5f )
           </Original>
           <Expanded>
             11.0f not is within 0.5 of 10.0
@@ -5054,7 +5054,7 @@ Nor would this
         </Expression>
         <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
           <Original>
-            10.f, !WithinAbs(11.f, 0.5f)
+            10.f, !WithinAbs( 11.f, 0.5f )
           </Original>
           <Expanded>
             10.0f not is within 0.5 of 11.0
@@ -5062,7 +5062,7 @@ Nor would this
         </Expression>
         <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
           <Original>
-            -10.f, WithinAbs(-10.f, 0.5f)
+            -10.f, WithinAbs( -10.f, 0.5f )
           </Original>
           <Expanded>
             -10.0f is within 0.5 of -10.0
@@ -5070,7 +5070,7 @@ Nor would this
         </Expression>
         <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
           <Original>
-            -10.f, WithinAbs(-9.6f, 0.5f)
+            -10.f, WithinAbs( -9.6f, 0.5f )
           </Original>
           <Expanded>
             -10.0f is within 0.5 of -9.6000003815
@@ -5081,7 +5081,7 @@ Nor would this
       <Section name="ULPs" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
         <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
           <Original>
-            1.f, WithinULP(1.f, 0)
+            1.f, WithinULP( 1.f, 0 )
           </Original>
           <Expanded>
             1.0f is within 0 ULPs of 1.00000000e+00f ([1.00000000e+00, 1.00000000e+00])
@@ -5089,7 +5089,7 @@ Nor would this
         </Expression>
         <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
           <Original>
-            nextafter(1.f, 2.f), WithinULP(1.f, 1)
+            nextafter( 1.f, 2.f ), WithinULP( 1.f, 1 )
           </Original>
           <Expanded>
             1.0f is within 1 ULPs of 1.00000000e+00f ([9.99999940e-01, 1.00000012e+00])
@@ -5097,7 +5097,7 @@ Nor would this
         </Expression>
         <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
           <Original>
-            0.f, WithinULP(nextafter(0.f, 1.f), 1)
+            0.f, WithinULP( nextafter( 0.f, 1.f ), 1 )
           </Original>
           <Expanded>
             0.0f is within 1 ULPs of 1.40129846e-45f ([0.00000000e+00, 2.80259693e-45])
@@ -5105,7 +5105,7 @@ Nor would this
         </Expression>
         <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
           <Original>
-            1.f, WithinULP(nextafter(1.f, 0.f), 1)
+            1.f, WithinULP( nextafter( 1.f, 0.f ), 1 )
           </Original>
           <Expanded>
             1.0f is within 1 ULPs of 9.99999940e-01f ([9.99999881e-01, 1.00000000e+00])
@@ -5113,7 +5113,7 @@ Nor would this
         </Expression>
         <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
           <Original>
-            1.f, !WithinULP(nextafter(1.f, 2.f), 0)
+            1.f, !WithinULP( nextafter( 1.f, 2.f ), 0 )
           </Original>
           <Expanded>
             1.0f not is within 0 ULPs of 1.00000012e+00f ([1.00000012e+00, 1.00000012e+00])
@@ -5121,7 +5121,7 @@ Nor would this
         </Expression>
         <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
           <Original>
-            1.f, WithinULP(1.f, 0)
+            1.f, WithinULP( 1.f, 0 )
           </Original>
           <Expanded>
             1.0f is within 0 ULPs of 1.00000000e+00f ([1.00000000e+00, 1.00000000e+00])
@@ -5129,7 +5129,7 @@ Nor would this
         </Expression>
         <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
           <Original>
-            -0.f, WithinULP(0.f, 0)
+            -0.f, WithinULP( 0.f, 0 )
           </Original>
           <Expanded>
             -0.0f is within 0 ULPs of 0.00000000e+00f ([0.00000000e+00, 0.00000000e+00])
@@ -5140,7 +5140,7 @@ Nor would this
       <Section name="Composed" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
         <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
           <Original>
-            1.f, WithinAbs(1.f, 0.5) || WithinULP(1.f, 1)
+            1.f, WithinAbs( 1.f, 0.5 ) || WithinULP( 1.f, 1 )
           </Original>
           <Expanded>
             1.0f ( is within 0.5 of 1.0 or is within 1 ULPs of 1.00000000e+00f ([9.99999940e-01, 1.00000012e+00]) )
@@ -5148,7 +5148,7 @@ Nor would this
         </Expression>
         <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
           <Original>
-            1.f, WithinAbs(2.f, 0.5) || WithinULP(1.f, 0)
+            1.f, WithinAbs( 2.f, 0.5 ) || WithinULP( 1.f, 0 )
           </Original>
           <Expanded>
             1.0f ( is within 0.5 of 2.0 or is within 0 ULPs of 1.00000000e+00f ([1.00000000e+00, 1.00000000e+00]) )
@@ -5156,7 +5156,7 @@ Nor would this
         </Expression>
         <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
           <Original>
-            0.0001f, WithinAbs(0.f, 0.001f) || WithinRel(0.f, 0.1f)
+            0.0001f, WithinAbs( 0.f, 0.001f ) || WithinRel( 0.f, 0.1f )
           </Original>
           <Expanded>
             0.0001f ( is within 0.001 of 0.0 or and 0 are within 10% of each other )
@@ -5167,58 +5167,58 @@ Nor would this
       <Section name="Constructor validation" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
         <Expression success="true" type="REQUIRE_NOTHROW" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
           <Original>
-            WithinAbs(1.f, 0.f)
+            WithinAbs( 1.f, 0.f )
           </Original>
           <Expanded>
-            WithinAbs(1.f, 0.f)
+            WithinAbs( 1.f, 0.f )
           </Expanded>
         </Expression>
         <Expression success="true" type="REQUIRE_THROWS_AS" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
           <Original>
-            WithinAbs(1.f, -1.f), std::domain_error
+            WithinAbs( 1.f, -1.f ), std::domain_error
           </Original>
           <Expanded>
-            WithinAbs(1.f, -1.f), std::domain_error
+            WithinAbs( 1.f, -1.f ), std::domain_error
           </Expanded>
         </Expression>
         <Expression success="true" type="REQUIRE_NOTHROW" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
           <Original>
-            WithinULP(1.f, 0)
+            WithinULP( 1.f, 0 )
           </Original>
           <Expanded>
-            WithinULP(1.f, 0)
+            WithinULP( 1.f, 0 )
           </Expanded>
         </Expression>
         <Expression success="true" type="REQUIRE_THROWS_AS" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
           <Original>
-            WithinULP(1.f, static_cast&lt;uint64_t>(-1)), std::domain_error
+            WithinULP( 1.f, static_cast&lt;uint64_t>( -1 ) ), std::domain_error
           </Original>
           <Expanded>
-            WithinULP(1.f, static_cast&lt;uint64_t>(-1)), std::domain_error
+            WithinULP( 1.f, static_cast&lt;uint64_t>( -1 ) ), std::domain_error
           </Expanded>
         </Expression>
         <Expression success="true" type="REQUIRE_NOTHROW" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
           <Original>
-            WithinRel(1.f, 0.f)
+            WithinRel( 1.f, 0.f )
           </Original>
           <Expanded>
-            WithinRel(1.f, 0.f)
+            WithinRel( 1.f, 0.f )
           </Expanded>
         </Expression>
         <Expression success="true" type="REQUIRE_THROWS_AS" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
           <Original>
-            WithinRel(1.f, -0.2f), std::domain_error
+            WithinRel( 1.f, -0.2f ), std::domain_error
           </Original>
           <Expanded>
-            WithinRel(1.f, -0.2f), std::domain_error
+            WithinRel( 1.f, -0.2f ), std::domain_error
           </Expanded>
         </Expression>
         <Expression success="true" type="REQUIRE_THROWS_AS" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
           <Original>
-            WithinRel(1.f, 1.f), std::domain_error
+            WithinRel( 1.f, 1.f ), std::domain_error
           </Original>
           <Expanded>
-            WithinRel(1.f, 1.f), std::domain_error
+            WithinRel( 1.f, 1.f ), std::domain_error
           </Expanded>
         </Expression>
         <OverallResults successes="7" failures="0" expectedFailures="0"/>
@@ -8311,7 +8311,7 @@ Nor would this
     <TestCase name="Matchers can be (AllOf) composed with the &amp;&amp; operator" tags="[matchers][operator&amp;&amp;][operators]" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
       <Expression success="true" type="CHECK_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
         <Original>
-          testStringForMatching(), Contains("string") &amp;&amp; Contains("abc") &amp;&amp; Contains("substring") &amp;&amp; Contains("contains")
+          testStringForMatching(), Contains( "string" ) &amp;&amp; Contains( "abc" ) &amp;&amp; Contains( "substring" ) &amp;&amp; Contains( "contains" )
         </Original>
         <Expanded>
           "this string contains 'abc' as a substring" ( contains: "string" and contains: "abc" and contains: "substring" and contains: "contains" )
@@ -8322,7 +8322,7 @@ Nor would this
     <TestCase name="Matchers can be (AnyOf) composed with the || operator" tags="[matchers][operators][operator||]" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
       <Expression success="true" type="CHECK_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
         <Original>
-          testStringForMatching(), Contains("string") || Contains("different") || Contains("random")
+          testStringForMatching(), Contains( "string" ) || Contains( "different" ) || Contains( "random" )
         </Original>
         <Expanded>
           "this string contains 'abc' as a substring" ( contains: "string" or contains: "different" or contains: "random" )
@@ -8330,7 +8330,7 @@ Nor would this
       </Expression>
       <Expression success="true" type="CHECK_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
         <Original>
-          testStringForMatching2(), Contains("string") || Contains("different") || Contains("random")
+          testStringForMatching2(), Contains( "string" ) || Contains( "different" ) || Contains( "random" )
         </Original>
         <Expanded>
           "some completely different text that contains one common word" ( contains: "string" or contains: "different" or contains: "random" )
@@ -8341,7 +8341,7 @@ Nor would this
     <TestCase name="Matchers can be composed with both &amp;&amp; and ||" tags="[matchers][operator&amp;&amp;][operators][operator||]" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
       <Expression success="true" type="CHECK_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
         <Original>
-          testStringForMatching(), (Contains("string") || Contains("different")) &amp;&amp; Contains("substring")
+          testStringForMatching(), ( Contains( "string" ) || Contains( "different" ) ) &amp;&amp; Contains( "substring" )
         </Original>
         <Expanded>
           "this string contains 'abc' as a substring" ( ( contains: "string" or contains: "different" ) and contains: "substring" )
@@ -8352,7 +8352,7 @@ Nor would this
     <TestCase name="Matchers can be composed with both &amp;&amp; and || - failing" tags="[.][failing][matchers][operator&amp;&amp;][operators][operator||]" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
       <Expression success="false" type="CHECK_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
         <Original>
-          testStringForMatching(), (Contains("string") || Contains("different")) &amp;&amp; Contains("random")
+          testStringForMatching(), ( Contains( "string" ) || Contains( "different" ) ) &amp;&amp; Contains( "random" )
         </Original>
         <Expanded>
           "this string contains 'abc' as a substring" ( ( contains: "string" or contains: "different" ) and contains: "random" )
@@ -8363,7 +8363,7 @@ Nor would this
     <TestCase name="Matchers can be negated (Not) with the ! operator" tags="[matchers][not][operators]" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
       <Expression success="true" type="CHECK_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
         <Original>
-          testStringForMatching(), !Contains("different")
+          testStringForMatching(), !Contains( "different" )
         </Original>
         <Expanded>
           "this string contains 'abc' as a substring" not contains: "different"
@@ -8374,7 +8374,7 @@ Nor would this
     <TestCase name="Matchers can be negated (Not) with the ! operator - failing" tags="[.][failing][matchers][not][operators]" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
       <Expression success="false" type="CHECK_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
         <Original>
-          testStringForMatching(), !Contains("substring")
+          testStringForMatching(), !Contains( "substring" )
         </Original>
         <Expanded>
           "this string contains 'abc' as a substring" not contains: "substring"
@@ -9045,10 +9045,10 @@ Nor would this
     <TestCase name="Overloaded comma or address-of operators are not used" tags="[matchers][templated]" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
       <Expression success="true" type="REQUIRE_THROWS_AS" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
         <Original>
-          (EvilMatcher(), EvilMatcher()), EvilCommaOperatorUsed
+          ( EvilMatcher(), EvilMatcher() ), EvilCommaOperatorUsed
         </Original>
         <Expanded>
-          (EvilMatcher(), EvilMatcher()), EvilCommaOperatorUsed
+          ( EvilMatcher(), EvilMatcher() ), EvilCommaOperatorUsed
         </Expanded>
       </Expression>
       <Expression success="true" type="REQUIRE_THROWS_AS" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
@@ -9061,18 +9061,18 @@ Nor would this
       </Expression>
       <Expression success="true" type="REQUIRE_NOTHROW" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
         <Original>
-          EvilMatcher() || (EvilMatcher() &amp;&amp; !EvilMatcher())
+          EvilMatcher() || ( EvilMatcher() &amp;&amp; !EvilMatcher() )
         </Original>
         <Expanded>
-          EvilMatcher() || (EvilMatcher() &amp;&amp; !EvilMatcher())
+          EvilMatcher() || ( EvilMatcher() &amp;&amp; !EvilMatcher() )
         </Expanded>
       </Expression>
       <Expression success="true" type="REQUIRE_NOTHROW" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
         <Original>
-          (EvilMatcher() &amp;&amp; EvilMatcher()) || !EvilMatcher()
+          ( EvilMatcher() &amp;&amp; EvilMatcher() ) || !EvilMatcher()
         </Original>
         <Expanded>
-          (EvilMatcher() &amp;&amp; EvilMatcher()) || !EvilMatcher()
+          ( EvilMatcher() &amp;&amp; EvilMatcher() ) || !EvilMatcher()
         </Expanded>
       </Expression>
       <OverallResult success="true"/>
@@ -10504,7 +10504,7 @@ Nor would this
     <TestCase name="Predicate matcher can accept const char*" tags="[compilation][matchers]" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
       <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
         <Original>
-          "foo", Predicate&lt;const char*>([] (const char* const&amp;) { return true; })
+          "foo", Predicate&lt;const char*>( []( const char* const&amp; ) { return true; } )
         </Original>
         <Expanded>
           "foo" matches undescribed predicate
@@ -11448,7 +11448,7 @@ Nor would this
     <TestCase name="Regex string matcher" tags="[.][failing][matchers]" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
       <Expression success="false" type="CHECK_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
         <Original>
-          testStringForMatching(), Matches("this STRING contains 'abc' as a substring")
+          testStringForMatching(), Matches( "this STRING contains 'abc' as a substring" )
         </Original>
         <Expanded>
           "this string contains 'abc' as a substring" matches "this STRING contains 'abc' as a substring" case sensitively
@@ -11456,7 +11456,7 @@ Nor would this
       </Expression>
       <Expression success="false" type="CHECK_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
         <Original>
-          testStringForMatching(), Matches("contains 'abc' as a substring")
+          testStringForMatching(), Matches( "contains 'abc' as a substring" )
         </Original>
         <Expanded>
           "this string contains 'abc' as a substring" matches "contains 'abc' as a substring" case sensitively
@@ -11464,7 +11464,7 @@ Nor would this
       </Expression>
       <Expression success="false" type="CHECK_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
         <Original>
-          testStringForMatching(), Matches("this string contains 'abc' as a")
+          testStringForMatching(), Matches( "this string contains 'abc' as a" )
         </Original>
         <Expanded>
           "this string contains 'abc' as a substring" matches "this string contains 'abc' as a" case sensitively
@@ -11475,7 +11475,7 @@ Nor would this
     <TestCase name="Regression test #1" tags="[matchers][vector]" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
       <Expression success="true" type="CHECK_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
         <Original>
-          actual, !UnorderedEquals(expected)
+          actual, !UnorderedEquals( expected )
         </Original>
         <Expanded>
           { 'a', 'b' } not UnorderedEquals: { 'c', 'b' }
@@ -12395,7 +12395,7 @@ Message from section two
     <TestCase name="StartsWith string matcher" tags="[.][failing][matchers]" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
       <Expression success="false" type="CHECK_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
         <Original>
-          testStringForMatching(), StartsWith("This String")
+          testStringForMatching(), StartsWith( "This String" )
         </Original>
         <Expanded>
           "this string contains 'abc' as a substring" starts with: "This String"
@@ -12403,7 +12403,7 @@ Message from section two
       </Expression>
       <Expression success="false" type="CHECK_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
         <Original>
-          testStringForMatching(), StartsWith("string", Catch::CaseSensitive::No)
+          testStringForMatching(), StartsWith( "string", Catch::CaseSensitive::No )
         </Original>
         <Expanded>
           "this string contains 'abc' as a substring" starts with: "string" (case insensitive)
@@ -12452,7 +12452,7 @@ Message from section two
     <TestCase name="String matchers" tags="[matchers]" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
       <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
         <Original>
-          testStringForMatching(), Contains("string")
+          testStringForMatching(), Contains( "string" )
         </Original>
         <Expanded>
           "this string contains 'abc' as a substring" contains: "string"
@@ -12460,7 +12460,7 @@ Message from section two
       </Expression>
       <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
         <Original>
-          testStringForMatching(), Contains("string", Catch::CaseSensitive::No)
+          testStringForMatching(), Contains( "string", Catch::CaseSensitive::No )
         </Original>
         <Expanded>
           "this string contains 'abc' as a substring" contains: "string" (case insensitive)
@@ -12468,7 +12468,7 @@ Message from section two
       </Expression>
       <Expression success="true" type="CHECK_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
         <Original>
-          testStringForMatching(), Contains("abc")
+          testStringForMatching(), Contains( "abc" )
         </Original>
         <Expanded>
           "this string contains 'abc' as a substring" contains: "abc"
@@ -12476,7 +12476,7 @@ Message from section two
       </Expression>
       <Expression success="true" type="CHECK_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
         <Original>
-          testStringForMatching(), Contains("aBC", Catch::CaseSensitive::No)
+          testStringForMatching(), Contains( "aBC", Catch::CaseSensitive::No )
         </Original>
         <Expanded>
           "this string contains 'abc' as a substring" contains: "abc" (case insensitive)
@@ -12484,7 +12484,7 @@ Message from section two
       </Expression>
       <Expression success="true" type="CHECK_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
         <Original>
-          testStringForMatching(), StartsWith("this")
+          testStringForMatching(), StartsWith( "this" )
         </Original>
         <Expanded>
           "this string contains 'abc' as a substring" starts with: "this"
@@ -12492,7 +12492,7 @@ Message from section two
       </Expression>
       <Expression success="true" type="CHECK_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
         <Original>
-          testStringForMatching(), StartsWith("THIS", Catch::CaseSensitive::No)
+          testStringForMatching(), StartsWith( "THIS", Catch::CaseSensitive::No )
         </Original>
         <Expanded>
           "this string contains 'abc' as a substring" starts with: "this" (case insensitive)
@@ -12500,7 +12500,7 @@ Message from section two
       </Expression>
       <Expression success="true" type="CHECK_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
         <Original>
-          testStringForMatching(), EndsWith("substring")
+          testStringForMatching(), EndsWith( "substring" )
         </Original>
         <Expanded>
           "this string contains 'abc' as a substring" ends with: "substring"
@@ -12508,7 +12508,7 @@ Message from section two
       </Expression>
       <Expression success="true" type="CHECK_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
         <Original>
-          testStringForMatching(), EndsWith(" SuBsTrInG", Catch::CaseSensitive::No)
+          testStringForMatching(), EndsWith( " SuBsTrInG", Catch::CaseSensitive::No )
         </Original>
         <Expanded>
           "this string contains 'abc' as a substring" ends with: " substring" (case insensitive)
@@ -15882,7 +15882,7 @@ There is no extra whitespace here
       <Section name="Empty vector is roughly equal to an empty vector" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
         <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
           <Original>
-            empty, Approx(empty)
+            empty, Approx( empty )
           </Original>
           <Expanded>
             {  } is approx: {  }
@@ -15894,7 +15894,7 @@ There is no extra whitespace here
         <Section name="A vector is approx equal to itself" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
           <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
             <Original>
-              v1, Approx(v1)
+              v1, Approx( v1 )
             </Original>
             <Expanded>
               { 1.0, 2.0, 3.0 } is approx: { 1.0, 2.0, 3.0 }
@@ -15902,7 +15902,7 @@ There is no extra whitespace here
           </Expression>
           <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
             <Original>
-              v1, Approx&lt;double>({ 1., 2., 3. })
+              v1, Approx&lt;double>( { 1., 2., 3. } )
             </Original>
             <Expanded>
               { 1.0, 2.0, 3.0 } is approx: { 1.0, 2.0, 3.0 }
@@ -15916,7 +15916,7 @@ There is no extra whitespace here
         <Section name="Different length" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
           <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
             <Original>
-              v1, !Approx(temp)
+              v1, !Approx( temp )
             </Original>
             <Expanded>
               { 1.0, 2.0, 3.0 } not is approx: { 1.0, 2.0, 3.0, 4.0 }
@@ -15930,7 +15930,7 @@ There is no extra whitespace here
         <Section name="Same length, different elements" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
           <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
             <Original>
-              v1, !Approx(v2)
+              v1, !Approx( v2 )
             </Original>
             <Expanded>
               { 1.0, 2.0, 3.0 } not is approx: { 1.5, 2.5, 3.5 }
@@ -15938,7 +15938,7 @@ There is no extra whitespace here
           </Expression>
           <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
             <Original>
-              v1, Approx(v2).margin(0.5)
+              v1, Approx( v2 ).margin( 0.5 )
             </Original>
             <Expanded>
               { 1.0, 2.0, 3.0 } is approx: { 1.5, 2.5, 3.5 }
@@ -15946,7 +15946,7 @@ There is no extra whitespace here
           </Expression>
           <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
             <Original>
-              v1, Approx(v2).epsilon(0.5)
+              v1, Approx( v2 ).epsilon( 0.5 )
             </Original>
             <Expanded>
               { 1.0, 2.0, 3.0 } is approx: { 1.5, 2.5, 3.5 }
@@ -15954,7 +15954,7 @@ There is no extra whitespace here
           </Expression>
           <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
             <Original>
-              v1, Approx(v2).epsilon(0.1).scale(500)
+              v1, Approx( v2 ).epsilon( 0.1 ).scale( 500 )
             </Original>
             <Expanded>
               { 1.0, 2.0, 3.0 } is approx: { 1.5, 2.5, 3.5 }
@@ -15970,7 +15970,7 @@ There is no extra whitespace here
       <Section name="Empty and non empty vectors are not approx equal" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
         <Expression success="false" type="CHECK_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
           <Original>
-            empty, Approx(t1)
+            empty, Approx( t1 )
           </Original>
           <Expanded>
             {  } is approx: { 1.0, 2.0 }
@@ -15981,7 +15981,7 @@ There is no extra whitespace here
       <Section name="Just different vectors" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
         <Expression success="false" type="CHECK_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
           <Original>
-            v1, Approx(v2)
+            v1, Approx( v2 )
           </Original>
           <Expanded>
             { 2.0, 4.0, 6.0 } is approx: { 1.0, 3.0, 5.0 }
@@ -15995,7 +15995,7 @@ There is no extra whitespace here
       <Section name="Contains (element)" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
         <Expression success="true" type="CHECK_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
           <Original>
-            v, VectorContains(1)
+            v, VectorContains( 1 )
           </Original>
           <Expanded>
             { 1, 2, 3 } Contains: 1
@@ -16003,7 +16003,7 @@ There is no extra whitespace here
         </Expression>
         <Expression success="true" type="CHECK_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
           <Original>
-            v, VectorContains(2)
+            v, VectorContains( 2 )
           </Original>
           <Expanded>
             { 1, 2, 3 } Contains: 2
@@ -16011,7 +16011,7 @@ There is no extra whitespace here
         </Expression>
         <Expression success="true" type="CHECK_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
           <Original>
-            v5, (VectorContains&lt;int, CustomAllocator&lt;int>>(2))
+            v5, ( VectorContains&lt;int, CustomAllocator&lt;int>>( 2 ) )
           </Original>
           <Expanded>
             { 1, 2, 3 } Contains: 2
@@ -16022,7 +16022,7 @@ There is no extra whitespace here
       <Section name="Contains (vector)" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
         <Expression success="true" type="CHECK_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
           <Original>
-            v, Contains(v2)
+            v, Contains( v2 )
           </Original>
           <Expanded>
             { 1, 2, 3 } Contains: { 1, 2 }
@@ -16030,7 +16030,7 @@ There is no extra whitespace here
         </Expression>
         <Expression success="true" type="CHECK_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
           <Original>
-            v, Contains&lt;int>({ 1, 2 })
+            v, Contains&lt;int>( { 1, 2 } )
           </Original>
           <Expanded>
             { 1, 2, 3 } Contains: { 1, 2 }
@@ -16038,7 +16038,7 @@ There is no extra whitespace here
         </Expression>
         <Expression success="true" type="CHECK_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
           <Original>
-            v5, (Contains&lt;int, std::allocator&lt;int>, CustomAllocator&lt;int>>(v2))
+            v5, ( Contains&lt;int, std::allocator&lt;int>, CustomAllocator&lt;int>>( v2 ) )
           </Original>
           <Expanded>
             { 1, 2, 3 } Contains: { 1, 2 }
@@ -16046,7 +16046,7 @@ There is no extra whitespace here
         </Expression>
         <Expression success="true" type="CHECK_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
           <Original>
-            v, Contains(v2)
+            v, Contains( v2 )
           </Original>
           <Expanded>
             { 1, 2, 3 } Contains: { 1, 2, 3 }
@@ -16054,7 +16054,7 @@ There is no extra whitespace here
         </Expression>
         <Expression success="true" type="CHECK_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
           <Original>
-            v, Contains(empty)
+            v, Contains( empty )
           </Original>
           <Expanded>
             { 1, 2, 3 } Contains: {  }
@@ -16062,7 +16062,7 @@ There is no extra whitespace here
         </Expression>
         <Expression success="true" type="CHECK_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
           <Original>
-            empty, Contains(empty)
+            empty, Contains( empty )
           </Original>
           <Expanded>
             {  } Contains: {  }
@@ -16070,7 +16070,7 @@ There is no extra whitespace here
         </Expression>
         <Expression success="true" type="CHECK_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
           <Original>
-            v5, (Contains&lt;int, std::allocator&lt;int>, CustomAllocator&lt;int>>(v2))
+            v5, ( Contains&lt;int, std::allocator&lt;int>, CustomAllocator&lt;int>>( v2 ) )
           </Original>
           <Expanded>
             { 1, 2, 3 } Contains: { 1, 2, 3 }
@@ -16078,7 +16078,7 @@ There is no extra whitespace here
         </Expression>
         <Expression success="true" type="CHECK_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
           <Original>
-            v5, Contains(v6)
+            v5, Contains( v6 )
           </Original>
           <Expanded>
             { 1, 2, 3 } Contains: { 1, 2 }
@@ -16089,7 +16089,7 @@ There is no extra whitespace here
       <Section name="Contains (element), composed" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
         <Expression success="true" type="CHECK_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
           <Original>
-            v, VectorContains(1) &amp;&amp; VectorContains(2)
+            v, VectorContains( 1 ) &amp;&amp; VectorContains( 2 )
           </Original>
           <Expanded>
             { 1, 2, 3 } ( Contains: 1 and Contains: 2 )
@@ -16100,7 +16100,7 @@ There is no extra whitespace here
       <Section name="Equals" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
         <Expression success="true" type="CHECK_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
           <Original>
-            v, Equals(v)
+            v, Equals( v )
           </Original>
           <Expanded>
             { 1, 2, 3 } Equals: { 1, 2, 3 }
@@ -16108,7 +16108,7 @@ There is no extra whitespace here
         </Expression>
         <Expression success="true" type="CHECK_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
           <Original>
-            empty, Equals(empty)
+            empty, Equals( empty )
           </Original>
           <Expanded>
             {  } Equals: {  }
@@ -16116,7 +16116,7 @@ There is no extra whitespace here
         </Expression>
         <Expression success="true" type="CHECK_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
           <Original>
-            v, Equals&lt;int>({ 1, 2, 3 })
+            v, Equals&lt;int>( { 1, 2, 3 } )
           </Original>
           <Expanded>
             { 1, 2, 3 } Equals: { 1, 2, 3 }
@@ -16124,7 +16124,7 @@ There is no extra whitespace here
         </Expression>
         <Expression success="true" type="CHECK_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
           <Original>
-            v, Equals(v2)
+            v, Equals( v2 )
           </Original>
           <Expanded>
             { 1, 2, 3 } Equals: { 1, 2, 3 }
@@ -16132,7 +16132,7 @@ There is no extra whitespace here
         </Expression>
         <Expression success="true" type="CHECK_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
           <Original>
-            v5, (Equals&lt;int, std::allocator&lt;int>, CustomAllocator&lt;int>>(v2))
+            v5, ( Equals&lt;int, std::allocator&lt;int>, CustomAllocator&lt;int>>( v2 ) )
           </Original>
           <Expanded>
             { 1, 2, 3 } Equals: { 1, 2, 3 }
@@ -16140,7 +16140,7 @@ There is no extra whitespace here
         </Expression>
         <Expression success="true" type="CHECK_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
           <Original>
-            v5, Equals(v6)
+            v5, Equals( v6 )
           </Original>
           <Expanded>
             { 1, 2, 3 } Equals: { 1, 2, 3 }
@@ -16151,7 +16151,7 @@ There is no extra whitespace here
       <Section name="UnorderedEquals" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
         <Expression success="true" type="CHECK_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
           <Original>
-            v, UnorderedEquals(v)
+            v, UnorderedEquals( v )
           </Original>
           <Expanded>
             { 1, 2, 3 } UnorderedEquals: { 1, 2, 3 }
@@ -16159,7 +16159,7 @@ There is no extra whitespace here
         </Expression>
         <Expression success="true" type="CHECK_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
           <Original>
-            v, UnorderedEquals&lt;int>({ 3, 2, 1 })
+            v, UnorderedEquals&lt;int>( { 3, 2, 1 } )
           </Original>
           <Expanded>
             { 1, 2, 3 } UnorderedEquals: { 3, 2, 1 }
@@ -16167,7 +16167,7 @@ There is no extra whitespace here
         </Expression>
         <Expression success="true" type="CHECK_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
           <Original>
-            empty, UnorderedEquals(empty)
+            empty, UnorderedEquals( empty )
           </Original>
           <Expanded>
             {  } UnorderedEquals: {  }
@@ -16175,7 +16175,7 @@ There is no extra whitespace here
         </Expression>
         <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
           <Original>
-            permuted, UnorderedEquals(v)
+            permuted, UnorderedEquals( v )
           </Original>
           <Expanded>
             { 1, 3, 2 } UnorderedEquals: { 1, 2, 3 }
@@ -16183,7 +16183,7 @@ There is no extra whitespace here
         </Expression>
         <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
           <Original>
-            permuted, UnorderedEquals(v)
+            permuted, UnorderedEquals( v )
           </Original>
           <Expanded>
             { 2, 3, 1 } UnorderedEquals: { 1, 2, 3 }
@@ -16191,7 +16191,7 @@ There is no extra whitespace here
         </Expression>
         <Expression success="true" type="CHECK_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
           <Original>
-            v5, (UnorderedEquals&lt;int, std::allocator&lt;int>, CustomAllocator&lt;int>>(permuted))
+            v5, ( UnorderedEquals&lt;int, std::allocator&lt;int>, CustomAllocator&lt;int>>( permuted ) )
           </Original>
           <Expanded>
             { 1, 2, 3 } UnorderedEquals: { 2, 3, 1 }
@@ -16199,7 +16199,7 @@ There is no extra whitespace here
         </Expression>
         <Expression success="true" type="CHECK_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
           <Original>
-            v5_permuted, UnorderedEquals(v5)
+            v5_permuted, UnorderedEquals( v5 )
           </Original>
           <Expanded>
             { 1, 3, 2 } UnorderedEquals: { 1, 2, 3 }
@@ -16213,7 +16213,7 @@ There is no extra whitespace here
       <Section name="Contains (element)" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
         <Expression success="false" type="CHECK_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
           <Original>
-            v, VectorContains(-1)
+            v, VectorContains( -1 )
           </Original>
           <Expanded>
             { 1, 2, 3 } Contains: -1
@@ -16221,7 +16221,7 @@ There is no extra whitespace here
         </Expression>
         <Expression success="false" type="CHECK_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
           <Original>
-            empty, VectorContains(1)
+            empty, VectorContains( 1 )
           </Original>
           <Expanded>
             {  } Contains: 1
@@ -16232,7 +16232,7 @@ There is no extra whitespace here
       <Section name="Contains (vector)" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
         <Expression success="false" type="CHECK_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
           <Original>
-            empty, Contains(v)
+            empty, Contains( v )
           </Original>
           <Expanded>
             {  } Contains: { 1, 2, 3 }
@@ -16240,7 +16240,7 @@ There is no extra whitespace here
         </Expression>
         <Expression success="false" type="CHECK_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
           <Original>
-            v, Contains(v2)
+            v, Contains( v2 )
           </Original>
           <Expanded>
             { 1, 2, 3 } Contains: { 1, 2, 4 }
@@ -16251,7 +16251,7 @@ There is no extra whitespace here
       <Section name="Equals" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
         <Expression success="false" type="CHECK_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
           <Original>
-            v, Equals(v2)
+            v, Equals( v2 )
           </Original>
           <Expanded>
             { 1, 2, 3 } Equals: { 1, 2 }
@@ -16259,7 +16259,7 @@ There is no extra whitespace here
         </Expression>
         <Expression success="false" type="CHECK_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
           <Original>
-            v2, Equals(v)
+            v2, Equals( v )
           </Original>
           <Expanded>
             { 1, 2 } Equals: { 1, 2, 3 }
@@ -16267,7 +16267,7 @@ There is no extra whitespace here
         </Expression>
         <Expression success="false" type="CHECK_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
           <Original>
-            empty, Equals(v)
+            empty, Equals( v )
           </Original>
           <Expanded>
             {  } Equals: { 1, 2, 3 }
@@ -16275,7 +16275,7 @@ There is no extra whitespace here
         </Expression>
         <Expression success="false" type="CHECK_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
           <Original>
-            v, Equals(empty)
+            v, Equals( empty )
           </Original>
           <Expanded>
             { 1, 2, 3 } Equals: {  }
@@ -16286,7 +16286,7 @@ There is no extra whitespace here
       <Section name="UnorderedEquals" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
         <Expression success="false" type="CHECK_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
           <Original>
-            v, UnorderedEquals(empty)
+            v, UnorderedEquals( empty )
           </Original>
           <Expanded>
             { 1, 2, 3 } UnorderedEquals: {  }
@@ -16294,7 +16294,7 @@ There is no extra whitespace here
         </Expression>
         <Expression success="false" type="CHECK_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
           <Original>
-            empty, UnorderedEquals(v)
+            empty, UnorderedEquals( v )
           </Original>
           <Expanded>
             {  } UnorderedEquals: { 1, 2, 3 }
@@ -16302,7 +16302,7 @@ There is no extra whitespace here
         </Expression>
         <Expression success="false" type="CHECK_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
           <Original>
-            permuted, UnorderedEquals(v)
+            permuted, UnorderedEquals( v )
           </Original>
           <Expanded>
             { 1, 3 } UnorderedEquals: { 1, 2, 3 }
@@ -16310,7 +16310,7 @@ There is no extra whitespace here
         </Expression>
         <Expression success="false" type="CHECK_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
           <Original>
-            permuted, UnorderedEquals(v)
+            permuted, UnorderedEquals( v )
           </Original>
           <Expanded>
             { 3, 1 } UnorderedEquals: { 1, 2, 3 }

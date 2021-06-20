@@ -20,54 +20,49 @@
 #pragma clang diagnostic ignored "-Wunreachable-code"
 #endif
 
-namespace { namespace ExceptionTests {
+namespace {
 
-#ifndef EXCEPTION_TEST_HELPERS_INCLUDED // Don't compile this more than once per TU
-#define EXCEPTION_TEST_HELPERS_INCLUDED
-
-int thisThrows() {
-    throw std::domain_error( "expected exception" );
-    return 1;
-}
-
-int thisDoesntThrow() {
-    return 0;
-}
-
-class CustomException {
-public:
-    explicit CustomException( const std::string& msg )
-    : m_msg( msg )
-    {}
-
-    std::string getMessage() const {
-        return m_msg;
+    int thisThrows() {
+        throw std::domain_error("expected exception");
+        return 1;
     }
 
-private:
-    std::string m_msg;
-};
-
-class CustomStdException : public std::exception {
-public:
-    explicit CustomStdException( const std::string& msg )
-    : m_msg( msg )
-    {}
-    ~CustomStdException() noexcept override {}
-
-    std::string getMessage() const {
-        return m_msg;
+    int thisDoesntThrow() {
+        return 0;
     }
 
-private:
-    std::string m_msg;
-};
+    class CustomException {
+    public:
+        explicit CustomException(const std::string& msg)
+            : m_msg(msg) {}
 
-[[noreturn]] void throwCustom() {
-    throw CustomException( "custom exception - not std" );
+        std::string getMessage() const {
+            return m_msg;
+        }
+
+    private:
+        std::string m_msg;
+    };
+
+    class CustomStdException : public std::exception {
+    public:
+        explicit CustomStdException(const std::string& msg)
+            : m_msg(msg) {}
+        ~CustomStdException() noexcept override {}
+
+        std::string getMessage() const {
+            return m_msg;
+        }
+
+    private:
+        std::string m_msg;
+    };
+
+    [[noreturn]] void throwCustom() {
+        throw CustomException("custom exception - not std");
+    }
+
 }
-
-#endif
 
 TEST_CASE( "When checked exceptions are thrown they can be expected or unexpected", "[!throws]" ) {
     REQUIRE_THROWS_AS( thisThrows(), std::domain_error );
@@ -197,8 +192,6 @@ TEST_CASE( "#748 - captures with unexpected exceptions", "[.][failing][!throws][
         REQUIRE_THROWS( thisThrows() );
     }
 }
-
-}} // namespace ExceptionTests
 
 #ifdef __clang__
 #pragma clang diagnostic pop

@@ -2409,12 +2409,12 @@ Matchers.tests.cpp:<line number>
 ...............................................................................
 
 Matchers.tests.cpp:<line number>: PASSED:
-  REQUIRE_THAT( 1, Predicate<int>(alwaysTrue, "always true") )
+  REQUIRE_THAT( 1, Predicate<int>( alwaysTrue, "always true" ) )
 with expansion:
   1 matches predicate: "always true"
 
 Matchers.tests.cpp:<line number>: PASSED:
-  REQUIRE_THAT( 1, !Predicate<int>(alwaysFalse, "always false") )
+  REQUIRE_THAT( 1, !Predicate<int>( alwaysFalse, "always false" ) )
 with expansion:
   1 not matches predicate: "always false"
 
@@ -2426,12 +2426,12 @@ Matchers.tests.cpp:<line number>
 ...............................................................................
 
 Matchers.tests.cpp:<line number>: PASSED:
-  REQUIRE_THAT( "Hello olleH", Predicate<std::string>( [] (std::string const& str) -> bool { return str.front() == str.back(); }, "First and last character should be equal") )
+  REQUIRE_THAT( "Hello olleH", Predicate<std::string>( []( std::string const& str ) -> bool { return str.front() == str.back(); }, "First and last character should be equal" ) )
 with expansion:
   "Hello olleH" matches predicate: "First and last character should be equal"
 
 Matchers.tests.cpp:<line number>: PASSED:
-  REQUIRE_THAT( "This wouldn't pass", !Predicate<std::string>( [] (std::string const& str) -> bool { return str.front() == str.back(); } ) )
+  REQUIRE_THAT( "This wouldn't pass", !Predicate<std::string>( []( std::string const& str ) -> bool { return str.front() == str.back(); } ) )
 with expansion:
   "This wouldn't pass" not matches undescribed predicate
 
@@ -2881,34 +2881,34 @@ Matchers.tests.cpp:<line number>
 
 Matchers.tests.cpp:<line number>: PASSED:
 with message:
-  std::is_same< decltype((MatcherA() && MatcherB()) && MatcherC()), Catch::
-  Matchers::Detail::MatchAllOfGeneric<MatcherA, MatcherB, MatcherC> >::value
+  std::is_same< decltype( ( MatcherA() && MatcherB() ) && MatcherC() ), Catch::
+  Matchers::Detail:: MatchAllOfGeneric<MatcherA, MatcherB, MatcherC>>::value
 
 Matchers.tests.cpp:<line number>: PASSED:
-  REQUIRE_THAT( 1, (MatcherA() && MatcherB()) && MatcherC() )
+  REQUIRE_THAT( 1, ( MatcherA() && MatcherB() ) && MatcherC() )
 with expansion:
   1 ( equals: (int) 1 or (float) 1.0f and equals: (long long) 1 and equals: (T)
   1 )
 
 Matchers.tests.cpp:<line number>: PASSED:
 with message:
-  std::is_same< decltype(MatcherA() && (MatcherB() && MatcherC())), Catch::
-  Matchers::Detail::MatchAllOfGeneric<MatcherA, MatcherB, MatcherC> >::value
+  std::is_same< decltype( MatcherA() && ( MatcherB() && MatcherC() ) ), Catch::
+  Matchers::Detail:: MatchAllOfGeneric<MatcherA, MatcherB, MatcherC>>::value
 
 Matchers.tests.cpp:<line number>: PASSED:
-  REQUIRE_THAT( 1, MatcherA() && (MatcherB() && MatcherC()) )
+  REQUIRE_THAT( 1, MatcherA() && ( MatcherB() && MatcherC() ) )
 with expansion:
   1 ( equals: (int) 1 or (float) 1.0f and equals: (long long) 1 and equals: (T)
   1 )
 
 Matchers.tests.cpp:<line number>: PASSED:
 with message:
-  std::is_same< decltype((MatcherA() && MatcherB()) && (MatcherC() && MatcherD
-  ())), Catch::Matchers::Detail::MatchAllOfGeneric<MatcherA, MatcherB,
-  MatcherC, MatcherD> >::value
+  std::is_same< decltype( ( MatcherA() && MatcherB() ) && ( MatcherC() &&
+  MatcherD() ) ), Catch::Matchers::Detail:: MatchAllOfGeneric<MatcherA,
+  MatcherB, MatcherC, MatcherD>>:: value
 
 Matchers.tests.cpp:<line number>: PASSED:
-  REQUIRE_THAT( 1, (MatcherA() && MatcherB()) && (MatcherC() && MatcherD()) )
+  REQUIRE_THAT( 1, ( MatcherA() && MatcherB() ) && ( MatcherC() && MatcherD() ) )
 with expansion:
   1 ( equals: (int) 1 or (float) 1.0f and equals: (long long) 1 and equals: (T)
   1 and equals: true )
@@ -2921,34 +2921,34 @@ Matchers.tests.cpp:<line number>
 
 Matchers.tests.cpp:<line number>: PASSED:
 with message:
-  std::is_same< decltype((MatcherA() || MatcherB()) || MatcherC()), Catch::
-  Matchers::Detail::MatchAnyOfGeneric<MatcherA, MatcherB, MatcherC> >::value
+  std::is_same< decltype( ( MatcherA() || MatcherB() ) || MatcherC() ), Catch::
+  Matchers::Detail:: MatchAnyOfGeneric<MatcherA, MatcherB, MatcherC>>::value
 
 Matchers.tests.cpp:<line number>: PASSED:
-  REQUIRE_THAT( 1, (MatcherA() || MatcherB()) || MatcherC() )
+  REQUIRE_THAT( 1, ( MatcherA() || MatcherB() ) || MatcherC() )
 with expansion:
   1 ( equals: (int) 1 or (float) 1.0f or equals: (long long) 1 or equals: (T) 1
   )
 
 Matchers.tests.cpp:<line number>: PASSED:
 with message:
-  std::is_same< decltype(MatcherA() || (MatcherB() || MatcherC())), Catch::
-  Matchers::Detail::MatchAnyOfGeneric<MatcherA, MatcherB, MatcherC> >::value
+  std::is_same< decltype( MatcherA() || ( MatcherB() || MatcherC() ) ), Catch::
+  Matchers::Detail:: MatchAnyOfGeneric<MatcherA, MatcherB, MatcherC>>::value
 
 Matchers.tests.cpp:<line number>: PASSED:
-  REQUIRE_THAT( 1, MatcherA() || (MatcherB() || MatcherC()) )
+  REQUIRE_THAT( 1, MatcherA() || ( MatcherB() || MatcherC() ) )
 with expansion:
   1 ( equals: (int) 1 or (float) 1.0f or equals: (long long) 1 or equals: (T) 1
   )
 
 Matchers.tests.cpp:<line number>: PASSED:
 with message:
-  std::is_same< decltype((MatcherA() || MatcherB()) || (MatcherC() || MatcherD
-  ())), Catch::Matchers::Detail::MatchAnyOfGeneric<MatcherA, MatcherB,
-  MatcherC, MatcherD> >::value
+  std::is_same< decltype( ( MatcherA() || MatcherB() ) || ( MatcherC() ||
+  MatcherD() ) ), Catch::Matchers::Detail:: MatchAnyOfGeneric<MatcherA,
+  MatcherB, MatcherC, MatcherD>>:: value
 
 Matchers.tests.cpp:<line number>: PASSED:
-  REQUIRE_THAT( 1, (MatcherA() || MatcherB()) || (MatcherC() || MatcherD()) )
+  REQUIRE_THAT( 1, ( MatcherA() || MatcherB() ) || ( MatcherC() || MatcherD() ) )
 with expansion:
   1 ( equals: (int) 1 or (float) 1.0f or equals: (long long) 1 or equals: (T) 1
   or equals: true )
@@ -2961,8 +2961,8 @@ Matchers.tests.cpp:<line number>
 
 Matchers.tests.cpp:<line number>: PASSED:
 with message:
-  std::is_same< decltype(!MatcherA()), Catch::Matchers::Detail::
-  MatchNotOfGeneric<MatcherA> >::value
+  std::is_same< decltype( !MatcherA() ), Catch::Matchers::Detail::
+  MatchNotOfGeneric<MatcherA>>::value
 
 Matchers.tests.cpp:<line number>: PASSED:
   REQUIRE_THAT( 0, !MatcherA() )
@@ -2971,7 +2971,7 @@ with expansion:
 
 Matchers.tests.cpp:<line number>: PASSED:
 with message:
-  std::is_same< decltype(!!MatcherA()), MatcherA const& >::value
+  std::is_same<decltype( !!MatcherA() ), MatcherA const&>::value
 
 Matchers.tests.cpp:<line number>: PASSED:
   REQUIRE_THAT( 1, !!MatcherA() )
@@ -2980,8 +2980,8 @@ with expansion:
 
 Matchers.tests.cpp:<line number>: PASSED:
 with message:
-  std::is_same< decltype(!!!MatcherA()), Catch::Matchers::Detail::
-  MatchNotOfGeneric<MatcherA> >::value
+  std::is_same< decltype( !!!MatcherA() ), Catch::Matchers::Detail::
+  MatchNotOfGeneric<MatcherA>>::value
 
 Matchers.tests.cpp:<line number>: PASSED:
   REQUIRE_THAT( 0, !!!MatcherA() )
@@ -2990,7 +2990,7 @@ with expansion:
 
 Matchers.tests.cpp:<line number>: PASSED:
 with message:
-  std::is_same< decltype(!!!!MatcherA()), MatcherA const & >::value
+  std::is_same<decltype( !!!!MatcherA() ), MatcherA const&>::value
 
 Matchers.tests.cpp:<line number>: PASSED:
   REQUIRE_THAT( 1, !!!!MatcherA() )
@@ -3005,9 +3005,9 @@ Matchers.tests.cpp:<line number>
 
 Matchers.tests.cpp:<line number>: PASSED:
 with message:
-  std::is_same< decltype(StartsWith("foo") || (StartsWith("bar") && EndsWith
-  ("bar") && !EndsWith("foo"))), Catch::Matchers::Detail::MatchAnyOf<std::
-  string> >::value
+  std::is_same<decltype( StartsWith( "foo" ) || ( StartsWith( "bar" ) &&
+  EndsWith( "bar" ) && !EndsWith( "foo" ) ) ), Catch::Matchers::Detail::
+  MatchAnyOf<std::string>>::value
 
 -------------------------------------------------------------------------------
 Combining only templated matchers
@@ -3017,8 +3017,8 @@ Matchers.tests.cpp:<line number>
 
 Matchers.tests.cpp:<line number>: PASSED:
 with message:
-  std::is_same< decltype(MatcherA() || MatcherB()), Catch::Matchers::Detail::
-  MatchAnyOfGeneric<MatcherA, MatcherB> >::value
+  std::is_same<decltype( MatcherA() || MatcherB() ), Catch::Matchers::Detail::
+  MatchAnyOfGeneric<MatcherA, MatcherB>>::value
 
 Matchers.tests.cpp:<line number>: PASSED:
   REQUIRE_THAT( 1, MatcherA() || MatcherB() )
@@ -3027,8 +3027,8 @@ with expansion:
 
 Matchers.tests.cpp:<line number>: PASSED:
 with message:
-  std::is_same< decltype(MatcherA() && MatcherB()), Catch::Matchers::Detail::
-  MatchAllOfGeneric<MatcherA, MatcherB> >::value
+  std::is_same<decltype( MatcherA() && MatcherB() ), Catch::Matchers::Detail::
+  MatchAllOfGeneric<MatcherA, MatcherB>>::value
 
 Matchers.tests.cpp:<line number>: PASSED:
   REQUIRE_THAT( 1, MatcherA() && MatcherB() )
@@ -3037,9 +3037,9 @@ with expansion:
 
 Matchers.tests.cpp:<line number>: PASSED:
 with message:
-  std::is_same< decltype(MatcherA() || !MatcherB()), Catch::Matchers::Detail::
-  MatchAnyOfGeneric<MatcherA, Catch::Matchers::Detail::MatchNotOfGeneric
-  <MatcherB>> >::value
+  std::is_same< decltype( MatcherA() || !MatcherB() ), Catch::Matchers::Detail:
+  :MatchAnyOfGeneric< MatcherA, Catch::Matchers::Detail::MatchNotOfGeneric
+  <MatcherB>>>::value
 
 Matchers.tests.cpp:<line number>: PASSED:
   REQUIRE_THAT( 1, MatcherA() || !MatcherB() )
@@ -3053,43 +3053,43 @@ Matchers.tests.cpp:<line number>
 ...............................................................................
 
 Matchers.tests.cpp:<line number>: PASSED:
-  REQUIRE_THAT( vec, Predicate<std::vector<int>>([](auto const& v) { return std::all_of(v.begin(), v.end(), [](int elem) { return elem % 2 == 1; }); }, "All elements are odd") && !EqualsRange(a) )
+  REQUIRE_THAT( vec, Predicate<std::vector<int>>( []( auto const& v ) { return std::all_of( v.begin(), v.end(), []( int elem ) { return elem % 2 == 1; } ); }, "All elements are odd" ) && !EqualsRange( a ) )
 with expansion:
   { 1, 3, 5 } ( matches predicate: "All elements are odd" and not Equals: { 5,
   3, 1 } )
 
 Matchers.tests.cpp:<line number>: PASSED:
-  REQUIRE_THAT( str, StartsWith("foo") && EqualsRange(arr) && EndsWith("bar") )
+  REQUIRE_THAT( str, StartsWith( "foo" ) && EqualsRange( arr ) && EndsWith( "bar" ) )
 with expansion:
   "foobar" ( starts with: "foo" and Equals: { 'f', 'o', 'o', 'b', 'a', 'r' }
   and ends with: "bar" )
 
 Matchers.tests.cpp:<line number>: PASSED:
-  REQUIRE_THAT( str, StartsWith("foo") && !EqualsRange(bad_arr) && EndsWith("bar") )
+  REQUIRE_THAT( str, StartsWith( "foo" ) && !EqualsRange( bad_arr ) && EndsWith( "bar" ) )
 with expansion:
   "foobar" ( starts with: "foo" and not Equals: { 'o', 'o', 'f', 'b', 'a', 'r'
   } and ends with: "bar" )
 
 Matchers.tests.cpp:<line number>: PASSED:
-  REQUIRE_THAT( str, EqualsRange(arr) && StartsWith("foo") && EndsWith("bar") )
+  REQUIRE_THAT( str, EqualsRange( arr ) && StartsWith( "foo" ) && EndsWith( "bar" ) )
 with expansion:
   "foobar" ( Equals: { 'f', 'o', 'o', 'b', 'a', 'r' } and starts with: "foo"
   and ends with: "bar" )
 
 Matchers.tests.cpp:<line number>: PASSED:
-  REQUIRE_THAT( str, !EqualsRange(bad_arr) && StartsWith("foo") && EndsWith("bar") )
+  REQUIRE_THAT( str, !EqualsRange( bad_arr ) && StartsWith( "foo" ) && EndsWith( "bar" ) )
 with expansion:
   "foobar" ( not Equals: { 'o', 'o', 'f', 'b', 'a', 'r' } and starts with:
   "foo" and ends with: "bar" )
 
 Matchers.tests.cpp:<line number>: PASSED:
-  REQUIRE_THAT( str, EqualsRange(bad_arr) || (StartsWith("foo") && EndsWith("bar")) )
+  REQUIRE_THAT( str, EqualsRange( bad_arr ) || ( StartsWith( "foo" ) && EndsWith( "bar" ) ) )
 with expansion:
   "foobar" ( Equals: { 'o', 'o', 'f', 'b', 'a', 'r' } or ( starts with: "foo"
   and ends with: "bar" ) )
 
 Matchers.tests.cpp:<line number>: PASSED:
-  REQUIRE_THAT( str, (StartsWith("foo") && EndsWith("bar")) || EqualsRange(bad_arr) )
+  REQUIRE_THAT( str, ( StartsWith( "foo" ) && EndsWith( "bar" ) ) || EqualsRange( bad_arr ) )
 with expansion:
   "foobar" ( ( starts with: "foo" and ends with: "bar" ) or Equals: { 'o', 'o',
   'f', 'b', 'a', 'r' } )
@@ -3101,7 +3101,7 @@ Matchers.tests.cpp:<line number>
 ...............................................................................
 
 Matchers.tests.cpp:<line number>: PASSED:
-  REQUIRE_THAT( container, EqualsRange(a) || EqualsRange(b) || EqualsRange(c) )
+  REQUIRE_THAT( container, EqualsRange( a ) || EqualsRange( b ) || EqualsRange( c ) )
 with expansion:
   { 1, 2, 3 } ( Equals: { 1, 2, 3 } or Equals: { 0, 1, 2 } or Equals: { 4, 5, 6
   } )
@@ -3419,7 +3419,7 @@ Matchers.tests.cpp:<line number>
 ...............................................................................
 
 Matchers.tests.cpp:<line number>: PASSED:
-  CHECK( matcher.match(1) )
+  CHECK( matcher.match( 1 ) )
 with expansion:
   true
 
@@ -3484,13 +3484,13 @@ Matchers.tests.cpp:<line number>
 ...............................................................................
 
 Matchers.tests.cpp:<line number>: FAILED:
-  CHECK_THAT( testStringForMatching(), Contains("not there", Catch::CaseSensitive::No) )
+  CHECK_THAT( testStringForMatching(), Contains( "not there", Catch::CaseSensitive::No ) )
 with expansion:
   "this string contains 'abc' as a substring" contains: "not there" (case
   insensitive)
 
 Matchers.tests.cpp:<line number>: FAILED:
-  CHECK_THAT( testStringForMatching(), Contains("STRING") )
+  CHECK_THAT( testStringForMatching(), Contains( "STRING" ) )
 with expansion:
   "this string contains 'abc' as a substring" contains: "STRING"
 
@@ -3733,12 +3733,12 @@ Matchers.tests.cpp:<line number>
 ...............................................................................
 
 Matchers.tests.cpp:<line number>: FAILED:
-  CHECK_THAT( testStringForMatching(), EndsWith("Substring") )
+  CHECK_THAT( testStringForMatching(), EndsWith( "Substring" ) )
 with expansion:
   "this string contains 'abc' as a substring" ends with: "Substring"
 
 Matchers.tests.cpp:<line number>: FAILED:
-  CHECK_THAT( testStringForMatching(), EndsWith("this", Catch::CaseSensitive::No) )
+  CHECK_THAT( testStringForMatching(), EndsWith( "this", Catch::CaseSensitive::No ) )
 with expansion:
   "this string contains 'abc' as a substring" ends with: "this" (case
   insensitive)
@@ -3923,13 +3923,13 @@ Matchers.tests.cpp:<line number>
 ...............................................................................
 
 Matchers.tests.cpp:<line number>: PASSED:
-  CHECK_THAT( testStringForMatching(), Equals("this string contains 'abc' as a substring") )
+  CHECK_THAT( testStringForMatching(), Equals( "this string contains 'abc' as a substring" ) )
 with expansion:
   "this string contains 'abc' as a substring" equals: "this string contains
   'abc' as a substring"
 
 Matchers.tests.cpp:<line number>: PASSED:
-  CHECK_THAT( testStringForMatching(), Equals("this string contains 'ABC' as a substring", Catch::CaseSensitive::No) )
+  CHECK_THAT( testStringForMatching(), Equals( "this string contains 'ABC' as a substring", Catch::CaseSensitive::No ) )
 with expansion:
   "this string contains 'abc' as a substring" equals: "this string contains
   'abc' as a substring" (case insensitive)
@@ -3941,13 +3941,13 @@ Matchers.tests.cpp:<line number>
 ...............................................................................
 
 Matchers.tests.cpp:<line number>: FAILED:
-  CHECK_THAT( testStringForMatching(), Equals("this string contains 'ABC' as a substring") )
+  CHECK_THAT( testStringForMatching(), Equals( "this string contains 'ABC' as a substring" ) )
 with expansion:
   "this string contains 'abc' as a substring" equals: "this string contains
   'ABC' as a substring"
 
 Matchers.tests.cpp:<line number>: FAILED:
-  CHECK_THAT( testStringForMatching(), Equals("something else", Catch::CaseSensitive::No) )
+  CHECK_THAT( testStringForMatching(), Equals( "something else", Catch::CaseSensitive::No ) )
 with expansion:
   "this string contains 'abc' as a substring" equals: "something else" (case
   insensitive)
@@ -3985,11 +3985,11 @@ Matchers.tests.cpp:<line number>
 ...............................................................................
 
 Matchers.tests.cpp:<line number>: FAILED:
-  CHECK_THROWS_MATCHES( doesNotThrow(), SpecialException, ExceptionMatcher{1} )
+  CHECK_THROWS_MATCHES( doesNotThrow(), SpecialException, ExceptionMatcher{ 1 } )
 because no exception was thrown where one was expected:
 
 Matchers.tests.cpp:<line number>: FAILED:
-  REQUIRE_THROWS_MATCHES( doesNotThrow(), SpecialException, ExceptionMatcher{1} )
+  REQUIRE_THROWS_MATCHES( doesNotThrow(), SpecialException, ExceptionMatcher{ 1 } )
 because no exception was thrown where one was expected:
 
 -------------------------------------------------------------------------------
@@ -4000,12 +4000,12 @@ Matchers.tests.cpp:<line number>
 ...............................................................................
 
 Matchers.tests.cpp:<line number>: FAILED:
-  CHECK_THROWS_MATCHES( throwsAsInt(1), SpecialException, ExceptionMatcher{1} )
+  CHECK_THROWS_MATCHES( throwsAsInt( 1 ), SpecialException, ExceptionMatcher{ 1 } )
 due to unexpected exception with message:
   Unknown exception
 
 Matchers.tests.cpp:<line number>: FAILED:
-  REQUIRE_THROWS_MATCHES( throwsAsInt(1), SpecialException, ExceptionMatcher{1} )
+  REQUIRE_THROWS_MATCHES( throwsAsInt( 1 ), SpecialException, ExceptionMatcher{ 1 } )
 due to unexpected exception with message:
   Unknown exception
 
@@ -4017,12 +4017,12 @@ Matchers.tests.cpp:<line number>
 ...............................................................................
 
 Matchers.tests.cpp:<line number>: FAILED:
-  CHECK_THROWS_MATCHES( throwsSpecialException(3), SpecialException, ExceptionMatcher{1} )
+  CHECK_THROWS_MATCHES( throwsSpecialException( 3 ), SpecialException, ExceptionMatcher{ 1 } )
 with expansion:
   SpecialException::what special exception has value of 1
 
 Matchers.tests.cpp:<line number>: FAILED:
-  REQUIRE_THROWS_MATCHES( throwsSpecialException(4), SpecialException, ExceptionMatcher{1} )
+  REQUIRE_THROWS_MATCHES( throwsSpecialException( 4 ), SpecialException, ExceptionMatcher{ 1 } )
 with expansion:
   SpecialException::what special exception has value of 1
 
@@ -4033,12 +4033,12 @@ Matchers.tests.cpp:<line number>
 ...............................................................................
 
 Matchers.tests.cpp:<line number>: PASSED:
-  CHECK_THROWS_MATCHES( throwsSpecialException(1), SpecialException, ExceptionMatcher{1} )
+  CHECK_THROWS_MATCHES( throwsSpecialException( 1 ), SpecialException, ExceptionMatcher{ 1 } )
 with expansion:
   SpecialException::what special exception has value of 1
 
 Matchers.tests.cpp:<line number>: PASSED:
-  REQUIRE_THROWS_MATCHES( throwsSpecialException(2), SpecialException, ExceptionMatcher{2} )
+  REQUIRE_THROWS_MATCHES( throwsSpecialException( 2 ), SpecialException, ExceptionMatcher{ 2 } )
 with expansion:
   SpecialException::what special exception has value of 2
 
@@ -4100,22 +4100,22 @@ Matchers.tests.cpp:<line number>
 ...............................................................................
 
 Matchers.tests.cpp:<line number>: PASSED:
-  REQUIRE_THROWS_MATCHES( throwsDerivedException(), DerivedException, Message("DerivedException::what") )
+  REQUIRE_THROWS_MATCHES( throwsDerivedException(), DerivedException, Message( "DerivedException::what" ) )
 with expansion:
   DerivedException::what exception message matches "DerivedException::what"
 
 Matchers.tests.cpp:<line number>: PASSED:
-  REQUIRE_THROWS_MATCHES( throwsDerivedException(), DerivedException, !Message("derivedexception::what") )
+  REQUIRE_THROWS_MATCHES( throwsDerivedException(), DerivedException, !Message( "derivedexception::what" ) )
 with expansion:
   DerivedException::what not exception message matches "derivedexception::what"
 
 Matchers.tests.cpp:<line number>: PASSED:
-  REQUIRE_THROWS_MATCHES( throwsSpecialException(2), SpecialException, !Message("DerivedException::what") )
+  REQUIRE_THROWS_MATCHES( throwsSpecialException( 2 ), SpecialException, !Message( "DerivedException::what" ) )
 with expansion:
   SpecialException::what not exception message matches "DerivedException::what"
 
 Matchers.tests.cpp:<line number>: PASSED:
-  REQUIRE_THROWS_MATCHES( throwsSpecialException(2), SpecialException, Message("SpecialException::what") )
+  REQUIRE_THROWS_MATCHES( throwsSpecialException( 2 ), SpecialException, Message( "SpecialException::what" ) )
 with expansion:
   SpecialException::what exception message matches "SpecialException::what"
 
@@ -4209,22 +4209,22 @@ Matchers.tests.cpp:<line number>
 ...............................................................................
 
 Matchers.tests.cpp:<line number>: PASSED:
-  REQUIRE_THAT( 10., WithinRel(11.1, 0.1) )
+  REQUIRE_THAT( 10., WithinRel( 11.1, 0.1 ) )
 with expansion:
   10.0 and 11.1 are within 10% of each other
 
 Matchers.tests.cpp:<line number>: PASSED:
-  REQUIRE_THAT( 10., !WithinRel(11.2, 0.1) )
+  REQUIRE_THAT( 10., !WithinRel( 11.2, 0.1 ) )
 with expansion:
   10.0 not and 11.2 are within 10% of each other
 
 Matchers.tests.cpp:<line number>: PASSED:
-  REQUIRE_THAT( 1., !WithinRel(0., 0.99) )
+  REQUIRE_THAT( 1., !WithinRel( 0., 0.99 ) )
 with expansion:
   1.0 not and 0 are within 99% of each other
 
 Matchers.tests.cpp:<line number>: PASSED:
-  REQUIRE_THAT( -0., WithinRel(0.) )
+  REQUIRE_THAT( -0., WithinRel( 0. ) )
 with expansion:
   -0.0 and 0 are within 2.22045e-12% of each other
 
@@ -4237,7 +4237,7 @@ Matchers.tests.cpp:<line number>
 ...............................................................................
 
 Matchers.tests.cpp:<line number>: PASSED:
-  REQUIRE_THAT( v1, WithinRel(v2) )
+  REQUIRE_THAT( v1, WithinRel( v2 ) )
 with expansion:
   0.0 and 2.22507e-308 are within 2.22045e-12% of each other
 
@@ -4249,42 +4249,42 @@ Matchers.tests.cpp:<line number>
 ...............................................................................
 
 Matchers.tests.cpp:<line number>: PASSED:
-  REQUIRE_THAT( 1., WithinAbs(1., 0) )
+  REQUIRE_THAT( 1., WithinAbs( 1., 0 ) )
 with expansion:
   1.0 is within 0.0 of 1.0
 
 Matchers.tests.cpp:<line number>: PASSED:
-  REQUIRE_THAT( 0., WithinAbs(1., 1) )
+  REQUIRE_THAT( 0., WithinAbs( 1., 1 ) )
 with expansion:
   0.0 is within 1.0 of 1.0
 
 Matchers.tests.cpp:<line number>: PASSED:
-  REQUIRE_THAT( 0., !WithinAbs(1., 0.99) )
+  REQUIRE_THAT( 0., !WithinAbs( 1., 0.99 ) )
 with expansion:
   0.0 not is within 0.99 of 1.0
 
 Matchers.tests.cpp:<line number>: PASSED:
-  REQUIRE_THAT( 0., !WithinAbs(1., 0.99) )
+  REQUIRE_THAT( 0., !WithinAbs( 1., 0.99 ) )
 with expansion:
   0.0 not is within 0.99 of 1.0
 
 Matchers.tests.cpp:<line number>: PASSED:
-  REQUIRE_THAT( 11., !WithinAbs(10., 0.5) )
+  REQUIRE_THAT( 11., !WithinAbs( 10., 0.5 ) )
 with expansion:
   11.0 not is within 0.5 of 10.0
 
 Matchers.tests.cpp:<line number>: PASSED:
-  REQUIRE_THAT( 10., !WithinAbs(11., 0.5) )
+  REQUIRE_THAT( 10., !WithinAbs( 11., 0.5 ) )
 with expansion:
   10.0 not is within 0.5 of 11.0
 
 Matchers.tests.cpp:<line number>: PASSED:
-  REQUIRE_THAT( -10., WithinAbs(-10., 0.5) )
+  REQUIRE_THAT( -10., WithinAbs( -10., 0.5 ) )
 with expansion:
   -10.0 is within 0.5 of -10.0
 
 Matchers.tests.cpp:<line number>: PASSED:
-  REQUIRE_THAT( -10., WithinAbs(-9.6, 0.5) )
+  REQUIRE_THAT( -10., WithinAbs( -9.6, 0.5 ) )
 with expansion:
   -10.0 is within 0.5 of -9.6
 
@@ -4296,43 +4296,43 @@ Matchers.tests.cpp:<line number>
 ...............................................................................
 
 Matchers.tests.cpp:<line number>: PASSED:
-  REQUIRE_THAT( 1., WithinULP(1., 0) )
+  REQUIRE_THAT( 1., WithinULP( 1., 0 ) )
 with expansion:
   1.0 is within 0 ULPs of 1.0000000000000000e+00 ([1.0000000000000000e+00, 1.
   0000000000000000e+00])
 
 Matchers.tests.cpp:<line number>: PASSED:
-  REQUIRE_THAT( nextafter(1., 2.), WithinULP(1., 1) )
+  REQUIRE_THAT( nextafter( 1., 2. ), WithinULP( 1., 1 ) )
 with expansion:
   1.0 is within 1 ULPs of 1.0000000000000000e+00 ([9.9999999999999989e-01, 1.
   0000000000000002e+00])
 
 Matchers.tests.cpp:<line number>: PASSED:
-  REQUIRE_THAT( 0., WithinULP(nextafter(0., 1.), 1) )
+  REQUIRE_THAT( 0., WithinULP( nextafter( 0., 1. ), 1 ) )
 with expansion:
   0.0 is within 1 ULPs of 4.9406564584124654e-324 ([0.0000000000000000e+00, 9.
   8813129168249309e-324])
 
 Matchers.tests.cpp:<line number>: PASSED:
-  REQUIRE_THAT( 1., WithinULP(nextafter(1., 0.), 1) )
+  REQUIRE_THAT( 1., WithinULP( nextafter( 1., 0. ), 1 ) )
 with expansion:
   1.0 is within 1 ULPs of 9.9999999999999989e-01 ([9.9999999999999978e-01, 1.
   0000000000000000e+00])
 
 Matchers.tests.cpp:<line number>: PASSED:
-  REQUIRE_THAT( 1., !WithinULP(nextafter(1., 2.), 0) )
+  REQUIRE_THAT( 1., !WithinULP( nextafter( 1., 2. ), 0 ) )
 with expansion:
   1.0 not is within 0 ULPs of 1.0000000000000002e+00 ([1.0000000000000002e+00,
   1.0000000000000002e+00])
 
 Matchers.tests.cpp:<line number>: PASSED:
-  REQUIRE_THAT( 1., WithinULP(1., 0) )
+  REQUIRE_THAT( 1., WithinULP( 1., 0 ) )
 with expansion:
   1.0 is within 0 ULPs of 1.0000000000000000e+00 ([1.0000000000000000e+00, 1.
   0000000000000000e+00])
 
 Matchers.tests.cpp:<line number>: PASSED:
-  REQUIRE_THAT( -0., WithinULP(0., 0) )
+  REQUIRE_THAT( -0., WithinULP( 0., 0 ) )
 with expansion:
   -0.0 is within 0 ULPs of 0.0000000000000000e+00 ([0.0000000000000000e+00, 0.
   0000000000000000e+00])
@@ -4345,19 +4345,19 @@ Matchers.tests.cpp:<line number>
 ...............................................................................
 
 Matchers.tests.cpp:<line number>: PASSED:
-  REQUIRE_THAT( 1., WithinAbs(1., 0.5) || WithinULP(2., 1) )
+  REQUIRE_THAT( 1., WithinAbs( 1., 0.5 ) || WithinULP( 2., 1 ) )
 with expansion:
   1.0 ( is within 0.5 of 1.0 or is within 1 ULPs of 2.0000000000000000e+00 ([1.
   9999999999999998e+00, 2.0000000000000004e+00]) )
 
 Matchers.tests.cpp:<line number>: PASSED:
-  REQUIRE_THAT( 1., WithinAbs(2., 0.5) || WithinULP(1., 0) )
+  REQUIRE_THAT( 1., WithinAbs( 2., 0.5 ) || WithinULP( 1., 0 ) )
 with expansion:
   1.0 ( is within 0.5 of 2.0 or is within 0 ULPs of 1.0000000000000000e+00 ([1.
   0000000000000000e+00, 1.0000000000000000e+00]) )
 
 Matchers.tests.cpp:<line number>: PASSED:
-  REQUIRE_THAT( 0.0001, WithinAbs(0., 0.001) || WithinRel(0., 0.1) )
+  REQUIRE_THAT( 0.0001, WithinAbs( 0., 0.001 ) || WithinRel( 0., 0.1 ) )
 with expansion:
   0.0001 ( is within 0.001 of 0.0 or and 0 are within 10% of each other )
 
@@ -4369,22 +4369,22 @@ Matchers.tests.cpp:<line number>
 ...............................................................................
 
 Matchers.tests.cpp:<line number>: PASSED:
-  REQUIRE_NOTHROW( WithinAbs(1., 0.) )
+  REQUIRE_NOTHROW( WithinAbs( 1., 0. ) )
 
 Matchers.tests.cpp:<line number>: PASSED:
-  REQUIRE_THROWS_AS( WithinAbs(1., -1.), std::domain_error )
+  REQUIRE_THROWS_AS( WithinAbs( 1., -1. ), std::domain_error )
 
 Matchers.tests.cpp:<line number>: PASSED:
-  REQUIRE_NOTHROW( WithinULP(1., 0) )
+  REQUIRE_NOTHROW( WithinULP( 1., 0 ) )
 
 Matchers.tests.cpp:<line number>: PASSED:
-  REQUIRE_NOTHROW( WithinRel(1., 0.) )
+  REQUIRE_NOTHROW( WithinRel( 1., 0. ) )
 
 Matchers.tests.cpp:<line number>: PASSED:
-  REQUIRE_THROWS_AS( WithinRel(1., -0.2), std::domain_error )
+  REQUIRE_THROWS_AS( WithinRel( 1., -0.2 ), std::domain_error )
 
 Matchers.tests.cpp:<line number>: PASSED:
-  REQUIRE_THROWS_AS( WithinRel(1., 1.), std::domain_error )
+  REQUIRE_THROWS_AS( WithinRel( 1., 1. ), std::domain_error )
 
 -------------------------------------------------------------------------------
 Floating point matchers: float
@@ -4394,22 +4394,22 @@ Matchers.tests.cpp:<line number>
 ...............................................................................
 
 Matchers.tests.cpp:<line number>: PASSED:
-  REQUIRE_THAT( 10.f, WithinRel(11.1f, 0.1f) )
+  REQUIRE_THAT( 10.f, WithinRel( 11.1f, 0.1f ) )
 with expansion:
   10.0f and 11.1 are within 10% of each other
 
 Matchers.tests.cpp:<line number>: PASSED:
-  REQUIRE_THAT( 10.f, !WithinRel(11.2f, 0.1f) )
+  REQUIRE_THAT( 10.f, !WithinRel( 11.2f, 0.1f ) )
 with expansion:
   10.0f not and 11.2 are within 10% of each other
 
 Matchers.tests.cpp:<line number>: PASSED:
-  REQUIRE_THAT( 1.f, !WithinRel(0.f, 0.99f) )
+  REQUIRE_THAT( 1.f, !WithinRel( 0.f, 0.99f ) )
 with expansion:
   1.0f not and 0 are within 99% of each other
 
 Matchers.tests.cpp:<line number>: PASSED:
-  REQUIRE_THAT( -0.f, WithinRel(0.f) )
+  REQUIRE_THAT( -0.f, WithinRel( 0.f ) )
 with expansion:
   -0.0f and 0 are within 0.00119209% of each other
 
@@ -4422,7 +4422,7 @@ Matchers.tests.cpp:<line number>
 ...............................................................................
 
 Matchers.tests.cpp:<line number>: PASSED:
-  REQUIRE_THAT( v1, WithinRel(v2) )
+  REQUIRE_THAT( v1, WithinRel( v2 ) )
 with expansion:
   0.0f and 1.17549e-38 are within 0.00119209% of each other
 
@@ -4434,47 +4434,47 @@ Matchers.tests.cpp:<line number>
 ...............................................................................
 
 Matchers.tests.cpp:<line number>: PASSED:
-  REQUIRE_THAT( 1.f, WithinAbs(1.f, 0) )
+  REQUIRE_THAT( 1.f, WithinAbs( 1.f, 0 ) )
 with expansion:
   1.0f is within 0.0 of 1.0
 
 Matchers.tests.cpp:<line number>: PASSED:
-  REQUIRE_THAT( 0.f, WithinAbs(1.f, 1) )
+  REQUIRE_THAT( 0.f, WithinAbs( 1.f, 1 ) )
 with expansion:
   0.0f is within 1.0 of 1.0
 
 Matchers.tests.cpp:<line number>: PASSED:
-  REQUIRE_THAT( 0.f, !WithinAbs(1.f, 0.99f) )
+  REQUIRE_THAT( 0.f, !WithinAbs( 1.f, 0.99f ) )
 with expansion:
   0.0f not is within 0.9900000095 of 1.0
 
 Matchers.tests.cpp:<line number>: PASSED:
-  REQUIRE_THAT( 0.f, !WithinAbs(1.f, 0.99f) )
+  REQUIRE_THAT( 0.f, !WithinAbs( 1.f, 0.99f ) )
 with expansion:
   0.0f not is within 0.9900000095 of 1.0
 
 Matchers.tests.cpp:<line number>: PASSED:
-  REQUIRE_THAT( 0.f, WithinAbs(-0.f, 0) )
+  REQUIRE_THAT( 0.f, WithinAbs( -0.f, 0 ) )
 with expansion:
   0.0f is within 0.0 of -0.0
 
 Matchers.tests.cpp:<line number>: PASSED:
-  REQUIRE_THAT( 11.f, !WithinAbs(10.f, 0.5f) )
+  REQUIRE_THAT( 11.f, !WithinAbs( 10.f, 0.5f ) )
 with expansion:
   11.0f not is within 0.5 of 10.0
 
 Matchers.tests.cpp:<line number>: PASSED:
-  REQUIRE_THAT( 10.f, !WithinAbs(11.f, 0.5f) )
+  REQUIRE_THAT( 10.f, !WithinAbs( 11.f, 0.5f ) )
 with expansion:
   10.0f not is within 0.5 of 11.0
 
 Matchers.tests.cpp:<line number>: PASSED:
-  REQUIRE_THAT( -10.f, WithinAbs(-10.f, 0.5f) )
+  REQUIRE_THAT( -10.f, WithinAbs( -10.f, 0.5f ) )
 with expansion:
   -10.0f is within 0.5 of -10.0
 
 Matchers.tests.cpp:<line number>: PASSED:
-  REQUIRE_THAT( -10.f, WithinAbs(-9.6f, 0.5f) )
+  REQUIRE_THAT( -10.f, WithinAbs( -9.6f, 0.5f ) )
 with expansion:
   -10.0f is within 0.5 of -9.6000003815
 
@@ -4486,38 +4486,38 @@ Matchers.tests.cpp:<line number>
 ...............................................................................
 
 Matchers.tests.cpp:<line number>: PASSED:
-  REQUIRE_THAT( 1.f, WithinULP(1.f, 0) )
+  REQUIRE_THAT( 1.f, WithinULP( 1.f, 0 ) )
 with expansion:
   1.0f is within 0 ULPs of 1.00000000e+00f ([1.00000000e+00, 1.00000000e+00])
 
 Matchers.tests.cpp:<line number>: PASSED:
-  REQUIRE_THAT( nextafter(1.f, 2.f), WithinULP(1.f, 1) )
+  REQUIRE_THAT( nextafter( 1.f, 2.f ), WithinULP( 1.f, 1 ) )
 with expansion:
   1.0f is within 1 ULPs of 1.00000000e+00f ([9.99999940e-01, 1.00000012e+00])
 
 Matchers.tests.cpp:<line number>: PASSED:
-  REQUIRE_THAT( 0.f, WithinULP(nextafter(0.f, 1.f), 1) )
+  REQUIRE_THAT( 0.f, WithinULP( nextafter( 0.f, 1.f ), 1 ) )
 with expansion:
   0.0f is within 1 ULPs of 1.40129846e-45f ([0.00000000e+00, 2.80259693e-45])
 
 Matchers.tests.cpp:<line number>: PASSED:
-  REQUIRE_THAT( 1.f, WithinULP(nextafter(1.f, 0.f), 1) )
+  REQUIRE_THAT( 1.f, WithinULP( nextafter( 1.f, 0.f ), 1 ) )
 with expansion:
   1.0f is within 1 ULPs of 9.99999940e-01f ([9.99999881e-01, 1.00000000e+00])
 
 Matchers.tests.cpp:<line number>: PASSED:
-  REQUIRE_THAT( 1.f, !WithinULP(nextafter(1.f, 2.f), 0) )
+  REQUIRE_THAT( 1.f, !WithinULP( nextafter( 1.f, 2.f ), 0 ) )
 with expansion:
   1.0f not is within 0 ULPs of 1.00000012e+00f ([1.00000012e+00, 1.00000012e+
   00])
 
 Matchers.tests.cpp:<line number>: PASSED:
-  REQUIRE_THAT( 1.f, WithinULP(1.f, 0) )
+  REQUIRE_THAT( 1.f, WithinULP( 1.f, 0 ) )
 with expansion:
   1.0f is within 0 ULPs of 1.00000000e+00f ([1.00000000e+00, 1.00000000e+00])
 
 Matchers.tests.cpp:<line number>: PASSED:
-  REQUIRE_THAT( -0.f, WithinULP(0.f, 0) )
+  REQUIRE_THAT( -0.f, WithinULP( 0.f, 0 ) )
 with expansion:
   -0.0f is within 0 ULPs of 0.00000000e+00f ([0.00000000e+00, 0.00000000e+00])
 
@@ -4529,19 +4529,19 @@ Matchers.tests.cpp:<line number>
 ...............................................................................
 
 Matchers.tests.cpp:<line number>: PASSED:
-  REQUIRE_THAT( 1.f, WithinAbs(1.f, 0.5) || WithinULP(1.f, 1) )
+  REQUIRE_THAT( 1.f, WithinAbs( 1.f, 0.5 ) || WithinULP( 1.f, 1 ) )
 with expansion:
   1.0f ( is within 0.5 of 1.0 or is within 1 ULPs of 1.00000000e+00f ([9.
   99999940e-01, 1.00000012e+00]) )
 
 Matchers.tests.cpp:<line number>: PASSED:
-  REQUIRE_THAT( 1.f, WithinAbs(2.f, 0.5) || WithinULP(1.f, 0) )
+  REQUIRE_THAT( 1.f, WithinAbs( 2.f, 0.5 ) || WithinULP( 1.f, 0 ) )
 with expansion:
   1.0f ( is within 0.5 of 2.0 or is within 0 ULPs of 1.00000000e+00f ([1.
   00000000e+00, 1.00000000e+00]) )
 
 Matchers.tests.cpp:<line number>: PASSED:
-  REQUIRE_THAT( 0.0001f, WithinAbs(0.f, 0.001f) || WithinRel(0.f, 0.1f) )
+  REQUIRE_THAT( 0.0001f, WithinAbs( 0.f, 0.001f ) || WithinRel( 0.f, 0.1f ) )
 with expansion:
   0.0001f ( is within 0.001 of 0.0 or and 0 are within 10% of each other )
 
@@ -4553,25 +4553,25 @@ Matchers.tests.cpp:<line number>
 ...............................................................................
 
 Matchers.tests.cpp:<line number>: PASSED:
-  REQUIRE_NOTHROW( WithinAbs(1.f, 0.f) )
+  REQUIRE_NOTHROW( WithinAbs( 1.f, 0.f ) )
 
 Matchers.tests.cpp:<line number>: PASSED:
-  REQUIRE_THROWS_AS( WithinAbs(1.f, -1.f), std::domain_error )
+  REQUIRE_THROWS_AS( WithinAbs( 1.f, -1.f ), std::domain_error )
 
 Matchers.tests.cpp:<line number>: PASSED:
-  REQUIRE_NOTHROW( WithinULP(1.f, 0) )
+  REQUIRE_NOTHROW( WithinULP( 1.f, 0 ) )
 
 Matchers.tests.cpp:<line number>: PASSED:
-  REQUIRE_THROWS_AS( WithinULP(1.f, static_cast<uint64_t>(-1)), std::domain_error )
+  REQUIRE_THROWS_AS( WithinULP( 1.f, static_cast<uint64_t>( -1 ) ), std::domain_error )
 
 Matchers.tests.cpp:<line number>: PASSED:
-  REQUIRE_NOTHROW( WithinRel(1.f, 0.f) )
+  REQUIRE_NOTHROW( WithinRel( 1.f, 0.f ) )
 
 Matchers.tests.cpp:<line number>: PASSED:
-  REQUIRE_THROWS_AS( WithinRel(1.f, -0.2f), std::domain_error )
+  REQUIRE_THROWS_AS( WithinRel( 1.f, -0.2f ), std::domain_error )
 
 Matchers.tests.cpp:<line number>: PASSED:
-  REQUIRE_THROWS_AS( WithinRel(1.f, 1.f), std::domain_error )
+  REQUIRE_THROWS_AS( WithinRel( 1.f, 1.f ), std::domain_error )
 
 -------------------------------------------------------------------------------
 Generators -- adapters
@@ -6852,7 +6852,7 @@ Matchers.tests.cpp:<line number>
 ...............................................................................
 
 Matchers.tests.cpp:<line number>: PASSED:
-  CHECK_THAT( testStringForMatching(), Contains("string") && Contains("abc") && Contains("substring") && Contains("contains") )
+  CHECK_THAT( testStringForMatching(), Contains( "string" ) && Contains( "abc" ) && Contains( "substring" ) && Contains( "contains" ) )
 with expansion:
   "this string contains 'abc' as a substring" ( contains: "string" and
   contains: "abc" and contains: "substring" and contains: "contains" )
@@ -6864,13 +6864,13 @@ Matchers.tests.cpp:<line number>
 ...............................................................................
 
 Matchers.tests.cpp:<line number>: PASSED:
-  CHECK_THAT( testStringForMatching(), Contains("string") || Contains("different") || Contains("random") )
+  CHECK_THAT( testStringForMatching(), Contains( "string" ) || Contains( "different" ) || Contains( "random" ) )
 with expansion:
   "this string contains 'abc' as a substring" ( contains: "string" or contains:
   "different" or contains: "random" )
 
 Matchers.tests.cpp:<line number>: PASSED:
-  CHECK_THAT( testStringForMatching2(), Contains("string") || Contains("different") || Contains("random") )
+  CHECK_THAT( testStringForMatching2(), Contains( "string" ) || Contains( "different" ) || Contains( "random" ) )
 with expansion:
   "some completely different text that contains one common word" ( contains:
   "string" or contains: "different" or contains: "random" )
@@ -6882,7 +6882,7 @@ Matchers.tests.cpp:<line number>
 ...............................................................................
 
 Matchers.tests.cpp:<line number>: PASSED:
-  CHECK_THAT( testStringForMatching(), (Contains("string") || Contains("different")) && Contains("substring") )
+  CHECK_THAT( testStringForMatching(), ( Contains( "string" ) || Contains( "different" ) ) && Contains( "substring" ) )
 with expansion:
   "this string contains 'abc' as a substring" ( ( contains: "string" or
   contains: "different" ) and contains: "substring" )
@@ -6894,7 +6894,7 @@ Matchers.tests.cpp:<line number>
 ...............................................................................
 
 Matchers.tests.cpp:<line number>: FAILED:
-  CHECK_THAT( testStringForMatching(), (Contains("string") || Contains("different")) && Contains("random") )
+  CHECK_THAT( testStringForMatching(), ( Contains( "string" ) || Contains( "different" ) ) && Contains( "random" ) )
 with expansion:
   "this string contains 'abc' as a substring" ( ( contains: "string" or
   contains: "different" ) and contains: "random" )
@@ -6906,7 +6906,7 @@ Matchers.tests.cpp:<line number>
 ...............................................................................
 
 Matchers.tests.cpp:<line number>: PASSED:
-  CHECK_THAT( testStringForMatching(), !Contains("different") )
+  CHECK_THAT( testStringForMatching(), !Contains( "different" ) )
 with expansion:
   "this string contains 'abc' as a substring" not contains: "different"
 
@@ -6917,7 +6917,7 @@ Matchers.tests.cpp:<line number>
 ...............................................................................
 
 Matchers.tests.cpp:<line number>: FAILED:
-  CHECK_THAT( testStringForMatching(), !Contains("substring") )
+  CHECK_THAT( testStringForMatching(), !Contains( "substring" ) )
 with expansion:
   "this string contains 'abc' as a substring" not contains: "substring"
 
@@ -7510,16 +7510,16 @@ Matchers.tests.cpp:<line number>
 ...............................................................................
 
 Matchers.tests.cpp:<line number>: PASSED:
-  REQUIRE_THROWS_AS( (EvilMatcher(), EvilMatcher()), EvilCommaOperatorUsed )
+  REQUIRE_THROWS_AS( ( EvilMatcher(), EvilMatcher() ), EvilCommaOperatorUsed )
 
 Matchers.tests.cpp:<line number>: PASSED:
   REQUIRE_THROWS_AS( &EvilMatcher(), EvilAddressOfOperatorUsed )
 
 Matchers.tests.cpp:<line number>: PASSED:
-  REQUIRE_NOTHROW( EvilMatcher() || (EvilMatcher() && !EvilMatcher()) )
+  REQUIRE_NOTHROW( EvilMatcher() || ( EvilMatcher() && !EvilMatcher() ) )
 
 Matchers.tests.cpp:<line number>: PASSED:
-  REQUIRE_NOTHROW( (EvilMatcher() && EvilMatcher()) || !EvilMatcher() )
+  REQUIRE_NOTHROW( ( EvilMatcher() && EvilMatcher() ) || !EvilMatcher() )
 
 -------------------------------------------------------------------------------
 Parse test names and tags
@@ -8608,7 +8608,7 @@ Matchers.tests.cpp:<line number>
 ...............................................................................
 
 Matchers.tests.cpp:<line number>: PASSED:
-  REQUIRE_THAT( "foo", Predicate<const char*>([] (const char* const&) { return true; }) )
+  REQUIRE_THAT( "foo", Predicate<const char*>( []( const char* const& ) { return true; } ) )
 with expansion:
   "foo" matches undescribed predicate
 
@@ -9371,19 +9371,19 @@ Matchers.tests.cpp:<line number>
 ...............................................................................
 
 Matchers.tests.cpp:<line number>: FAILED:
-  CHECK_THAT( testStringForMatching(), Matches("this STRING contains 'abc' as a substring") )
+  CHECK_THAT( testStringForMatching(), Matches( "this STRING contains 'abc' as a substring" ) )
 with expansion:
   "this string contains 'abc' as a substring" matches "this STRING contains
   'abc' as a substring" case sensitively
 
 Matchers.tests.cpp:<line number>: FAILED:
-  CHECK_THAT( testStringForMatching(), Matches("contains 'abc' as a substring") )
+  CHECK_THAT( testStringForMatching(), Matches( "contains 'abc' as a substring" ) )
 with expansion:
   "this string contains 'abc' as a substring" matches "contains 'abc' as a
   substring" case sensitively
 
 Matchers.tests.cpp:<line number>: FAILED:
-  CHECK_THAT( testStringForMatching(), Matches("this string contains 'abc' as a") )
+  CHECK_THAT( testStringForMatching(), Matches( "this string contains 'abc' as a" ) )
 with expansion:
   "this string contains 'abc' as a substring" matches "this string contains
   'abc' as a" case sensitively
@@ -9395,7 +9395,7 @@ Matchers.tests.cpp:<line number>
 ...............................................................................
 
 Matchers.tests.cpp:<line number>: PASSED:
-  CHECK_THAT( actual, !UnorderedEquals(expected) )
+  CHECK_THAT( actual, !UnorderedEquals( expected ) )
 with expansion:
   { 'a', 'b' } not UnorderedEquals: { 'c', 'b' }
 
@@ -10378,12 +10378,12 @@ Matchers.tests.cpp:<line number>
 ...............................................................................
 
 Matchers.tests.cpp:<line number>: FAILED:
-  CHECK_THAT( testStringForMatching(), StartsWith("This String") )
+  CHECK_THAT( testStringForMatching(), StartsWith( "This String" ) )
 with expansion:
   "this string contains 'abc' as a substring" starts with: "This String"
 
 Matchers.tests.cpp:<line number>: FAILED:
-  CHECK_THAT( testStringForMatching(), StartsWith("string", Catch::CaseSensitive::No) )
+  CHECK_THAT( testStringForMatching(), StartsWith( "string", Catch::CaseSensitive::No ) )
 with expansion:
   "this string contains 'abc' as a substring" starts with: "string" (case
   insensitive)
@@ -10433,45 +10433,45 @@ Matchers.tests.cpp:<line number>
 ...............................................................................
 
 Matchers.tests.cpp:<line number>: PASSED:
-  REQUIRE_THAT( testStringForMatching(), Contains("string") )
+  REQUIRE_THAT( testStringForMatching(), Contains( "string" ) )
 with expansion:
   "this string contains 'abc' as a substring" contains: "string"
 
 Matchers.tests.cpp:<line number>: PASSED:
-  REQUIRE_THAT( testStringForMatching(), Contains("string", Catch::CaseSensitive::No) )
+  REQUIRE_THAT( testStringForMatching(), Contains( "string", Catch::CaseSensitive::No ) )
 with expansion:
   "this string contains 'abc' as a substring" contains: "string" (case
   insensitive)
 
 Matchers.tests.cpp:<line number>: PASSED:
-  CHECK_THAT( testStringForMatching(), Contains("abc") )
+  CHECK_THAT( testStringForMatching(), Contains( "abc" ) )
 with expansion:
   "this string contains 'abc' as a substring" contains: "abc"
 
 Matchers.tests.cpp:<line number>: PASSED:
-  CHECK_THAT( testStringForMatching(), Contains("aBC", Catch::CaseSensitive::No) )
+  CHECK_THAT( testStringForMatching(), Contains( "aBC", Catch::CaseSensitive::No ) )
 with expansion:
   "this string contains 'abc' as a substring" contains: "abc" (case
   insensitive)
 
 Matchers.tests.cpp:<line number>: PASSED:
-  CHECK_THAT( testStringForMatching(), StartsWith("this") )
+  CHECK_THAT( testStringForMatching(), StartsWith( "this" ) )
 with expansion:
   "this string contains 'abc' as a substring" starts with: "this"
 
 Matchers.tests.cpp:<line number>: PASSED:
-  CHECK_THAT( testStringForMatching(), StartsWith("THIS", Catch::CaseSensitive::No) )
+  CHECK_THAT( testStringForMatching(), StartsWith( "THIS", Catch::CaseSensitive::No ) )
 with expansion:
   "this string contains 'abc' as a substring" starts with: "this" (case
   insensitive)
 
 Matchers.tests.cpp:<line number>: PASSED:
-  CHECK_THAT( testStringForMatching(), EndsWith("substring") )
+  CHECK_THAT( testStringForMatching(), EndsWith( "substring" ) )
 with expansion:
   "this string contains 'abc' as a substring" ends with: "substring"
 
 Matchers.tests.cpp:<line number>: PASSED:
-  CHECK_THAT( testStringForMatching(), EndsWith(" SuBsTrInG", Catch::CaseSensitive::No) )
+  CHECK_THAT( testStringForMatching(), EndsWith( " SuBsTrInG", Catch::CaseSensitive::No ) )
 with expansion:
   "this string contains 'abc' as a substring" ends with: " substring" (case
   insensitive)
@@ -13484,7 +13484,7 @@ Matchers.tests.cpp:<line number>
 ...............................................................................
 
 Matchers.tests.cpp:<line number>: PASSED:
-  REQUIRE_THAT( empty, Approx(empty) )
+  REQUIRE_THAT( empty, Approx( empty ) )
 with expansion:
   {  } is approx: {  }
 
@@ -13497,12 +13497,12 @@ Matchers.tests.cpp:<line number>
 ...............................................................................
 
 Matchers.tests.cpp:<line number>: PASSED:
-  REQUIRE_THAT( v1, Approx(v1) )
+  REQUIRE_THAT( v1, Approx( v1 ) )
 with expansion:
   { 1.0, 2.0, 3.0 } is approx: { 1.0, 2.0, 3.0 }
 
 Matchers.tests.cpp:<line number>: PASSED:
-  REQUIRE_THAT( v1, Approx<double>({ 1., 2., 3. }) )
+  REQUIRE_THAT( v1, Approx<double>( { 1., 2., 3. } ) )
 with expansion:
   { 1.0, 2.0, 3.0 } is approx: { 1.0, 2.0, 3.0 }
 
@@ -13515,7 +13515,7 @@ Matchers.tests.cpp:<line number>
 ...............................................................................
 
 Matchers.tests.cpp:<line number>: PASSED:
-  REQUIRE_THAT( v1, !Approx(temp) )
+  REQUIRE_THAT( v1, !Approx( temp ) )
 with expansion:
   { 1.0, 2.0, 3.0 } not is approx: { 1.0, 2.0, 3.0, 4.0 }
 
@@ -13528,22 +13528,22 @@ Matchers.tests.cpp:<line number>
 ...............................................................................
 
 Matchers.tests.cpp:<line number>: PASSED:
-  REQUIRE_THAT( v1, !Approx(v2) )
+  REQUIRE_THAT( v1, !Approx( v2 ) )
 with expansion:
   { 1.0, 2.0, 3.0 } not is approx: { 1.5, 2.5, 3.5 }
 
 Matchers.tests.cpp:<line number>: PASSED:
-  REQUIRE_THAT( v1, Approx(v2).margin(0.5) )
+  REQUIRE_THAT( v1, Approx( v2 ).margin( 0.5 ) )
 with expansion:
   { 1.0, 2.0, 3.0 } is approx: { 1.5, 2.5, 3.5 }
 
 Matchers.tests.cpp:<line number>: PASSED:
-  REQUIRE_THAT( v1, Approx(v2).epsilon(0.5) )
+  REQUIRE_THAT( v1, Approx( v2 ).epsilon( 0.5 ) )
 with expansion:
   { 1.0, 2.0, 3.0 } is approx: { 1.5, 2.5, 3.5 }
 
 Matchers.tests.cpp:<line number>: PASSED:
-  REQUIRE_THAT( v1, Approx(v2).epsilon(0.1).scale(500) )
+  REQUIRE_THAT( v1, Approx( v2 ).epsilon( 0.1 ).scale( 500 ) )
 with expansion:
   { 1.0, 2.0, 3.0 } is approx: { 1.5, 2.5, 3.5 }
 
@@ -13555,7 +13555,7 @@ Matchers.tests.cpp:<line number>
 ...............................................................................
 
 Matchers.tests.cpp:<line number>: FAILED:
-  CHECK_THAT( empty, Approx(t1) )
+  CHECK_THAT( empty, Approx( t1 ) )
 with expansion:
   {  } is approx: { 1.0, 2.0 }
 
@@ -13567,7 +13567,7 @@ Matchers.tests.cpp:<line number>
 ...............................................................................
 
 Matchers.tests.cpp:<line number>: FAILED:
-  CHECK_THAT( v1, Approx(v2) )
+  CHECK_THAT( v1, Approx( v2 ) )
 with expansion:
   { 2.0, 4.0, 6.0 } is approx: { 1.0, 3.0, 5.0 }
 
@@ -13579,17 +13579,17 @@ Matchers.tests.cpp:<line number>
 ...............................................................................
 
 Matchers.tests.cpp:<line number>: PASSED:
-  CHECK_THAT( v, VectorContains(1) )
+  CHECK_THAT( v, VectorContains( 1 ) )
 with expansion:
   { 1, 2, 3 } Contains: 1
 
 Matchers.tests.cpp:<line number>: PASSED:
-  CHECK_THAT( v, VectorContains(2) )
+  CHECK_THAT( v, VectorContains( 2 ) )
 with expansion:
   { 1, 2, 3 } Contains: 2
 
 Matchers.tests.cpp:<line number>: PASSED:
-  CHECK_THAT( v5, (VectorContains<int, CustomAllocator<int>>(2)) )
+  CHECK_THAT( v5, ( VectorContains<int, CustomAllocator<int>>( 2 ) ) )
 with expansion:
   { 1, 2, 3 } Contains: 2
 
@@ -13601,42 +13601,42 @@ Matchers.tests.cpp:<line number>
 ...............................................................................
 
 Matchers.tests.cpp:<line number>: PASSED:
-  CHECK_THAT( v, Contains(v2) )
+  CHECK_THAT( v, Contains( v2 ) )
 with expansion:
   { 1, 2, 3 } Contains: { 1, 2 }
 
 Matchers.tests.cpp:<line number>: PASSED:
-  CHECK_THAT( v, Contains<int>({ 1, 2 }) )
+  CHECK_THAT( v, Contains<int>( { 1, 2 } ) )
 with expansion:
   { 1, 2, 3 } Contains: { 1, 2 }
 
 Matchers.tests.cpp:<line number>: PASSED:
-  CHECK_THAT( v5, (Contains<int, std::allocator<int>, CustomAllocator<int>>(v2)) )
+  CHECK_THAT( v5, ( Contains<int, std::allocator<int>, CustomAllocator<int>>( v2 ) ) )
 with expansion:
   { 1, 2, 3 } Contains: { 1, 2 }
 
 Matchers.tests.cpp:<line number>: PASSED:
-  CHECK_THAT( v, Contains(v2) )
+  CHECK_THAT( v, Contains( v2 ) )
 with expansion:
   { 1, 2, 3 } Contains: { 1, 2, 3 }
 
 Matchers.tests.cpp:<line number>: PASSED:
-  CHECK_THAT( v, Contains(empty) )
+  CHECK_THAT( v, Contains( empty ) )
 with expansion:
   { 1, 2, 3 } Contains: {  }
 
 Matchers.tests.cpp:<line number>: PASSED:
-  CHECK_THAT( empty, Contains(empty) )
+  CHECK_THAT( empty, Contains( empty ) )
 with expansion:
   {  } Contains: {  }
 
 Matchers.tests.cpp:<line number>: PASSED:
-  CHECK_THAT( v5, (Contains<int, std::allocator<int>, CustomAllocator<int>>(v2)) )
+  CHECK_THAT( v5, ( Contains<int, std::allocator<int>, CustomAllocator<int>>( v2 ) ) )
 with expansion:
   { 1, 2, 3 } Contains: { 1, 2, 3 }
 
 Matchers.tests.cpp:<line number>: PASSED:
-  CHECK_THAT( v5, Contains(v6) )
+  CHECK_THAT( v5, Contains( v6 ) )
 with expansion:
   { 1, 2, 3 } Contains: { 1, 2 }
 
@@ -13648,7 +13648,7 @@ Matchers.tests.cpp:<line number>
 ...............................................................................
 
 Matchers.tests.cpp:<line number>: PASSED:
-  CHECK_THAT( v, VectorContains(1) && VectorContains(2) )
+  CHECK_THAT( v, VectorContains( 1 ) && VectorContains( 2 ) )
 with expansion:
   { 1, 2, 3 } ( Contains: 1 and Contains: 2 )
 
@@ -13660,32 +13660,32 @@ Matchers.tests.cpp:<line number>
 ...............................................................................
 
 Matchers.tests.cpp:<line number>: PASSED:
-  CHECK_THAT( v, Equals(v) )
+  CHECK_THAT( v, Equals( v ) )
 with expansion:
   { 1, 2, 3 } Equals: { 1, 2, 3 }
 
 Matchers.tests.cpp:<line number>: PASSED:
-  CHECK_THAT( empty, Equals(empty) )
+  CHECK_THAT( empty, Equals( empty ) )
 with expansion:
   {  } Equals: {  }
 
 Matchers.tests.cpp:<line number>: PASSED:
-  CHECK_THAT( v, Equals<int>({ 1, 2, 3 }) )
+  CHECK_THAT( v, Equals<int>( { 1, 2, 3 } ) )
 with expansion:
   { 1, 2, 3 } Equals: { 1, 2, 3 }
 
 Matchers.tests.cpp:<line number>: PASSED:
-  CHECK_THAT( v, Equals(v2) )
+  CHECK_THAT( v, Equals( v2 ) )
 with expansion:
   { 1, 2, 3 } Equals: { 1, 2, 3 }
 
 Matchers.tests.cpp:<line number>: PASSED:
-  CHECK_THAT( v5, (Equals<int, std::allocator<int>, CustomAllocator<int>>(v2)) )
+  CHECK_THAT( v5, ( Equals<int, std::allocator<int>, CustomAllocator<int>>( v2 ) ) )
 with expansion:
   { 1, 2, 3 } Equals: { 1, 2, 3 }
 
 Matchers.tests.cpp:<line number>: PASSED:
-  CHECK_THAT( v5, Equals(v6) )
+  CHECK_THAT( v5, Equals( v6 ) )
 with expansion:
   { 1, 2, 3 } Equals: { 1, 2, 3 }
 
@@ -13697,37 +13697,37 @@ Matchers.tests.cpp:<line number>
 ...............................................................................
 
 Matchers.tests.cpp:<line number>: PASSED:
-  CHECK_THAT( v, UnorderedEquals(v) )
+  CHECK_THAT( v, UnorderedEquals( v ) )
 with expansion:
   { 1, 2, 3 } UnorderedEquals: { 1, 2, 3 }
 
 Matchers.tests.cpp:<line number>: PASSED:
-  CHECK_THAT( v, UnorderedEquals<int>({ 3, 2, 1 }) )
+  CHECK_THAT( v, UnorderedEquals<int>( { 3, 2, 1 } ) )
 with expansion:
   { 1, 2, 3 } UnorderedEquals: { 3, 2, 1 }
 
 Matchers.tests.cpp:<line number>: PASSED:
-  CHECK_THAT( empty, UnorderedEquals(empty) )
+  CHECK_THAT( empty, UnorderedEquals( empty ) )
 with expansion:
   {  } UnorderedEquals: {  }
 
 Matchers.tests.cpp:<line number>: PASSED:
-  REQUIRE_THAT( permuted, UnorderedEquals(v) )
+  REQUIRE_THAT( permuted, UnorderedEquals( v ) )
 with expansion:
   { 1, 3, 2 } UnorderedEquals: { 1, 2, 3 }
 
 Matchers.tests.cpp:<line number>: PASSED:
-  REQUIRE_THAT( permuted, UnorderedEquals(v) )
+  REQUIRE_THAT( permuted, UnorderedEquals( v ) )
 with expansion:
   { 2, 3, 1 } UnorderedEquals: { 1, 2, 3 }
 
 Matchers.tests.cpp:<line number>: PASSED:
-  CHECK_THAT( v5, (UnorderedEquals<int, std::allocator<int>, CustomAllocator<int>>(permuted)) )
+  CHECK_THAT( v5, ( UnorderedEquals<int, std::allocator<int>, CustomAllocator<int>>( permuted ) ) )
 with expansion:
   { 1, 2, 3 } UnorderedEquals: { 2, 3, 1 }
 
 Matchers.tests.cpp:<line number>: PASSED:
-  CHECK_THAT( v5_permuted, UnorderedEquals(v5) )
+  CHECK_THAT( v5_permuted, UnorderedEquals( v5 ) )
 with expansion:
   { 1, 3, 2 } UnorderedEquals: { 1, 2, 3 }
 
@@ -13739,12 +13739,12 @@ Matchers.tests.cpp:<line number>
 ...............................................................................
 
 Matchers.tests.cpp:<line number>: FAILED:
-  CHECK_THAT( v, VectorContains(-1) )
+  CHECK_THAT( v, VectorContains( -1 ) )
 with expansion:
   { 1, 2, 3 } Contains: -1
 
 Matchers.tests.cpp:<line number>: FAILED:
-  CHECK_THAT( empty, VectorContains(1) )
+  CHECK_THAT( empty, VectorContains( 1 ) )
 with expansion:
   {  } Contains: 1
 
@@ -13756,12 +13756,12 @@ Matchers.tests.cpp:<line number>
 ...............................................................................
 
 Matchers.tests.cpp:<line number>: FAILED:
-  CHECK_THAT( empty, Contains(v) )
+  CHECK_THAT( empty, Contains( v ) )
 with expansion:
   {  } Contains: { 1, 2, 3 }
 
 Matchers.tests.cpp:<line number>: FAILED:
-  CHECK_THAT( v, Contains(v2) )
+  CHECK_THAT( v, Contains( v2 ) )
 with expansion:
   { 1, 2, 3 } Contains: { 1, 2, 4 }
 
@@ -13773,22 +13773,22 @@ Matchers.tests.cpp:<line number>
 ...............................................................................
 
 Matchers.tests.cpp:<line number>: FAILED:
-  CHECK_THAT( v, Equals(v2) )
+  CHECK_THAT( v, Equals( v2 ) )
 with expansion:
   { 1, 2, 3 } Equals: { 1, 2 }
 
 Matchers.tests.cpp:<line number>: FAILED:
-  CHECK_THAT( v2, Equals(v) )
+  CHECK_THAT( v2, Equals( v ) )
 with expansion:
   { 1, 2 } Equals: { 1, 2, 3 }
 
 Matchers.tests.cpp:<line number>: FAILED:
-  CHECK_THAT( empty, Equals(v) )
+  CHECK_THAT( empty, Equals( v ) )
 with expansion:
   {  } Equals: { 1, 2, 3 }
 
 Matchers.tests.cpp:<line number>: FAILED:
-  CHECK_THAT( v, Equals(empty) )
+  CHECK_THAT( v, Equals( empty ) )
 with expansion:
   { 1, 2, 3 } Equals: {  }
 
@@ -13800,22 +13800,22 @@ Matchers.tests.cpp:<line number>
 ...............................................................................
 
 Matchers.tests.cpp:<line number>: FAILED:
-  CHECK_THAT( v, UnorderedEquals(empty) )
+  CHECK_THAT( v, UnorderedEquals( empty ) )
 with expansion:
   { 1, 2, 3 } UnorderedEquals: {  }
 
 Matchers.tests.cpp:<line number>: FAILED:
-  CHECK_THAT( empty, UnorderedEquals(v) )
+  CHECK_THAT( empty, UnorderedEquals( v ) )
 with expansion:
   {  } UnorderedEquals: { 1, 2, 3 }
 
 Matchers.tests.cpp:<line number>: FAILED:
-  CHECK_THAT( permuted, UnorderedEquals(v) )
+  CHECK_THAT( permuted, UnorderedEquals( v ) )
 with expansion:
   { 1, 3 } UnorderedEquals: { 1, 2, 3 }
 
 Matchers.tests.cpp:<line number>: FAILED:
-  CHECK_THAT( permuted, UnorderedEquals(v) )
+  CHECK_THAT( permuted, UnorderedEquals( v ) )
 with expansion:
   { 3, 1 } UnorderedEquals: { 1, 2, 3 }
 

@@ -579,13 +579,13 @@ ok {test-number} - 1.234f == Approx( dMedium ) for: 1.234f == Approx( 1.234 )
 # Approximate comparisons with mixed numeric types
 ok {test-number} - dMedium == Approx( 1.234f ) for: 1.234 == Approx( 1.2339999676 )
 # Arbitrary predicate matcher
-ok {test-number} - 1, Predicate<int>(alwaysTrue, "always true") for: 1 matches predicate: "always true"
+ok {test-number} - 1, Predicate<int>( alwaysTrue, "always true" ) for: 1 matches predicate: "always true"
 # Arbitrary predicate matcher
-ok {test-number} - 1, !Predicate<int>(alwaysFalse, "always false") for: 1 not matches predicate: "always false"
+ok {test-number} - 1, !Predicate<int>( alwaysFalse, "always false" ) for: 1 not matches predicate: "always false"
 # Arbitrary predicate matcher
-ok {test-number} - "Hello olleH", Predicate<std::string>( [] (std::string const& str) -> bool { return str.front() == str.back(); }, "First and last character should be equal") for: "Hello olleH" matches predicate: "First and last character should be equal"
+ok {test-number} - "Hello olleH", Predicate<std::string>( []( std::string const& str ) -> bool { return str.front() == str.back(); }, "First and last character should be equal" ) for: "Hello olleH" matches predicate: "First and last character should be equal"
 # Arbitrary predicate matcher
-ok {test-number} - "This wouldn't pass", !Predicate<std::string>( [] (std::string const& str) -> bool { return str.front() == str.back(); } ) for: "This wouldn't pass" not matches undescribed predicate
+ok {test-number} - "This wouldn't pass", !Predicate<std::string>( []( std::string const& str ) -> bool { return str.front() == str.back(); } ) for: "This wouldn't pass" not matches undescribed predicate
 # Assertion macros support bit operators and bool conversions
 ok {test-number} - lhs | rhs for: Val: 1 | Val: 2
 # Assertion macros support bit operators and bool conversions
@@ -691,75 +691,75 @@ ok {test-number} - name.empty() for: true
 # Clara::Arg supports single-arg parse the way Opt does
 ok {test-number} - name == "foo" for: "foo" == "foo"
 # Combining MatchAllOfGeneric does not nest
-ok {test-number} - with 1 message: 'std::is_same< decltype((MatcherA() && MatcherB()) && MatcherC()), Catch::Matchers::Detail::MatchAllOfGeneric<MatcherA, MatcherB, MatcherC> >::value'
+ok {test-number} - with 1 message: 'std::is_same< decltype( ( MatcherA() && MatcherB() ) && MatcherC() ), Catch::Matchers::Detail:: MatchAllOfGeneric<MatcherA, MatcherB, MatcherC>>::value'
 # Combining MatchAllOfGeneric does not nest
-ok {test-number} - 1, (MatcherA() && MatcherB()) && MatcherC() for: 1 ( equals: (int) 1 or (float) 1.0f and equals: (long long) 1 and equals: (T) 1 )
+ok {test-number} - 1, ( MatcherA() && MatcherB() ) && MatcherC() for: 1 ( equals: (int) 1 or (float) 1.0f and equals: (long long) 1 and equals: (T) 1 )
 # Combining MatchAllOfGeneric does not nest
-ok {test-number} - with 1 message: 'std::is_same< decltype(MatcherA() && (MatcherB() && MatcherC())), Catch::Matchers::Detail::MatchAllOfGeneric<MatcherA, MatcherB, MatcherC> >::value'
+ok {test-number} - with 1 message: 'std::is_same< decltype( MatcherA() && ( MatcherB() && MatcherC() ) ), Catch::Matchers::Detail:: MatchAllOfGeneric<MatcherA, MatcherB, MatcherC>>::value'
 # Combining MatchAllOfGeneric does not nest
-ok {test-number} - 1, MatcherA() && (MatcherB() && MatcherC()) for: 1 ( equals: (int) 1 or (float) 1.0f and equals: (long long) 1 and equals: (T) 1 )
+ok {test-number} - 1, MatcherA() && ( MatcherB() && MatcherC() ) for: 1 ( equals: (int) 1 or (float) 1.0f and equals: (long long) 1 and equals: (T) 1 )
 # Combining MatchAllOfGeneric does not nest
-ok {test-number} - with 1 message: 'std::is_same< decltype((MatcherA() && MatcherB()) && (MatcherC() && MatcherD())), Catch::Matchers::Detail::MatchAllOfGeneric<MatcherA, MatcherB, MatcherC, MatcherD> >::value'
+ok {test-number} - with 1 message: 'std::is_same< decltype( ( MatcherA() && MatcherB() ) && ( MatcherC() && MatcherD() ) ), Catch::Matchers::Detail:: MatchAllOfGeneric<MatcherA, MatcherB, MatcherC, MatcherD>>:: value'
 # Combining MatchAllOfGeneric does not nest
-ok {test-number} - 1, (MatcherA() && MatcherB()) && (MatcherC() && MatcherD()) for: 1 ( equals: (int) 1 or (float) 1.0f and equals: (long long) 1 and equals: (T) 1 and equals: true )
+ok {test-number} - 1, ( MatcherA() && MatcherB() ) && ( MatcherC() && MatcherD() ) for: 1 ( equals: (int) 1 or (float) 1.0f and equals: (long long) 1 and equals: (T) 1 and equals: true )
 # Combining MatchAnyOfGeneric does not nest
-ok {test-number} - with 1 message: 'std::is_same< decltype((MatcherA() || MatcherB()) || MatcherC()), Catch::Matchers::Detail::MatchAnyOfGeneric<MatcherA, MatcherB, MatcherC> >::value'
+ok {test-number} - with 1 message: 'std::is_same< decltype( ( MatcherA() || MatcherB() ) || MatcherC() ), Catch::Matchers::Detail:: MatchAnyOfGeneric<MatcherA, MatcherB, MatcherC>>::value'
 # Combining MatchAnyOfGeneric does not nest
-ok {test-number} - 1, (MatcherA() || MatcherB()) || MatcherC() for: 1 ( equals: (int) 1 or (float) 1.0f or equals: (long long) 1 or equals: (T) 1 )
+ok {test-number} - 1, ( MatcherA() || MatcherB() ) || MatcherC() for: 1 ( equals: (int) 1 or (float) 1.0f or equals: (long long) 1 or equals: (T) 1 )
 # Combining MatchAnyOfGeneric does not nest
-ok {test-number} - with 1 message: 'std::is_same< decltype(MatcherA() || (MatcherB() || MatcherC())), Catch::Matchers::Detail::MatchAnyOfGeneric<MatcherA, MatcherB, MatcherC> >::value'
+ok {test-number} - with 1 message: 'std::is_same< decltype( MatcherA() || ( MatcherB() || MatcherC() ) ), Catch::Matchers::Detail:: MatchAnyOfGeneric<MatcherA, MatcherB, MatcherC>>::value'
 # Combining MatchAnyOfGeneric does not nest
-ok {test-number} - 1, MatcherA() || (MatcherB() || MatcherC()) for: 1 ( equals: (int) 1 or (float) 1.0f or equals: (long long) 1 or equals: (T) 1 )
+ok {test-number} - 1, MatcherA() || ( MatcherB() || MatcherC() ) for: 1 ( equals: (int) 1 or (float) 1.0f or equals: (long long) 1 or equals: (T) 1 )
 # Combining MatchAnyOfGeneric does not nest
-ok {test-number} - with 1 message: 'std::is_same< decltype((MatcherA() || MatcherB()) || (MatcherC() || MatcherD())), Catch::Matchers::Detail::MatchAnyOfGeneric<MatcherA, MatcherB, MatcherC, MatcherD> >::value'
+ok {test-number} - with 1 message: 'std::is_same< decltype( ( MatcherA() || MatcherB() ) || ( MatcherC() || MatcherD() ) ), Catch::Matchers::Detail:: MatchAnyOfGeneric<MatcherA, MatcherB, MatcherC, MatcherD>>:: value'
 # Combining MatchAnyOfGeneric does not nest
-ok {test-number} - 1, (MatcherA() || MatcherB()) || (MatcherC() || MatcherD()) for: 1 ( equals: (int) 1 or (float) 1.0f or equals: (long long) 1 or equals: (T) 1 or equals: true )
+ok {test-number} - 1, ( MatcherA() || MatcherB() ) || ( MatcherC() || MatcherD() ) for: 1 ( equals: (int) 1 or (float) 1.0f or equals: (long long) 1 or equals: (T) 1 or equals: true )
 # Combining MatchNotOfGeneric does not nest
-ok {test-number} - with 1 message: 'std::is_same< decltype(!MatcherA()), Catch::Matchers::Detail::MatchNotOfGeneric<MatcherA> >::value'
+ok {test-number} - with 1 message: 'std::is_same< decltype( !MatcherA() ), Catch::Matchers::Detail::MatchNotOfGeneric<MatcherA>>::value'
 # Combining MatchNotOfGeneric does not nest
 ok {test-number} - 0, !MatcherA() for: 0 not equals: (int) 1 or (float) 1.0f
 # Combining MatchNotOfGeneric does not nest
-ok {test-number} - with 1 message: 'std::is_same< decltype(!!MatcherA()), MatcherA const& >::value'
+ok {test-number} - with 1 message: 'std::is_same<decltype( !!MatcherA() ), MatcherA const&>::value'
 # Combining MatchNotOfGeneric does not nest
 ok {test-number} - 1, !!MatcherA() for: 1 equals: (int) 1 or (float) 1.0f
 # Combining MatchNotOfGeneric does not nest
-ok {test-number} - with 1 message: 'std::is_same< decltype(!!!MatcherA()), Catch::Matchers::Detail::MatchNotOfGeneric<MatcherA> >::value'
+ok {test-number} - with 1 message: 'std::is_same< decltype( !!!MatcherA() ), Catch::Matchers::Detail::MatchNotOfGeneric<MatcherA>>::value'
 # Combining MatchNotOfGeneric does not nest
 ok {test-number} - 0, !!!MatcherA() for: 0 not equals: (int) 1 or (float) 1.0f
 # Combining MatchNotOfGeneric does not nest
-ok {test-number} - with 1 message: 'std::is_same< decltype(!!!!MatcherA()), MatcherA const & >::value'
+ok {test-number} - with 1 message: 'std::is_same<decltype( !!!!MatcherA() ), MatcherA const&>::value'
 # Combining MatchNotOfGeneric does not nest
 ok {test-number} - 1, !!!!MatcherA() for: 1 equals: (int) 1 or (float) 1.0f
 # Combining concrete matchers does not use templated matchers
-ok {test-number} - with 1 message: 'std::is_same< decltype(StartsWith("foo") || (StartsWith("bar") && EndsWith("bar") && !EndsWith("foo"))), Catch::Matchers::Detail::MatchAnyOf<std::string> >::value'
+ok {test-number} - with 1 message: 'std::is_same<decltype( StartsWith( "foo" ) || ( StartsWith( "bar" ) && EndsWith( "bar" ) && !EndsWith( "foo" ) ) ), Catch::Matchers::Detail::MatchAnyOf<std::string>>::value'
 # Combining only templated matchers
-ok {test-number} - with 1 message: 'std::is_same< decltype(MatcherA() || MatcherB()), Catch::Matchers::Detail::MatchAnyOfGeneric<MatcherA, MatcherB> >::value'
+ok {test-number} - with 1 message: 'std::is_same<decltype( MatcherA() || MatcherB() ), Catch::Matchers::Detail:: MatchAnyOfGeneric<MatcherA, MatcherB>>::value'
 # Combining only templated matchers
 ok {test-number} - 1, MatcherA() || MatcherB() for: 1 ( equals: (int) 1 or (float) 1.0f or equals: (long long) 1 )
 # Combining only templated matchers
-ok {test-number} - with 1 message: 'std::is_same< decltype(MatcherA() && MatcherB()), Catch::Matchers::Detail::MatchAllOfGeneric<MatcherA, MatcherB> >::value'
+ok {test-number} - with 1 message: 'std::is_same<decltype( MatcherA() && MatcherB() ), Catch::Matchers::Detail:: MatchAllOfGeneric<MatcherA, MatcherB>>::value'
 # Combining only templated matchers
 ok {test-number} - 1, MatcherA() && MatcherB() for: 1 ( equals: (int) 1 or (float) 1.0f and equals: (long long) 1 )
 # Combining only templated matchers
-ok {test-number} - with 1 message: 'std::is_same< decltype(MatcherA() || !MatcherB()), Catch::Matchers::Detail::MatchAnyOfGeneric<MatcherA, Catch::Matchers::Detail::MatchNotOfGeneric<MatcherB>> >::value'
+ok {test-number} - with 1 message: 'std::is_same< decltype( MatcherA() || !MatcherB() ), Catch::Matchers::Detail::MatchAnyOfGeneric< MatcherA, Catch::Matchers::Detail::MatchNotOfGeneric<MatcherB>>>::value'
 # Combining only templated matchers
 ok {test-number} - 1, MatcherA() || !MatcherB() for: 1 ( equals: (int) 1 or (float) 1.0f or not equals: (long long) 1 )
 # Combining templated and concrete matchers
-ok {test-number} - vec, Predicate<std::vector<int>>([](auto const& v) { return std::all_of(v.begin(), v.end(), [](int elem) { return elem % 2 == 1; }); }, "All elements are odd") && !EqualsRange(a) for: { 1, 3, 5 } ( matches predicate: "All elements are odd" and not Equals: { 5, 3, 1 } )
+ok {test-number} - vec, Predicate<std::vector<int>>( []( auto const& v ) { return std::all_of( v.begin(), v.end(), []( int elem ) { return elem % 2 == 1; } ); }, "All elements are odd" ) && !EqualsRange( a ) for: { 1, 3, 5 } ( matches predicate: "All elements are odd" and not Equals: { 5, 3, 1 } )
 # Combining templated and concrete matchers
-ok {test-number} - str, StartsWith("foo") && EqualsRange(arr) && EndsWith("bar") for: "foobar" ( starts with: "foo" and Equals: { 'f', 'o', 'o', 'b', 'a', 'r' } and ends with: "bar" )
+ok {test-number} - str, StartsWith( "foo" ) && EqualsRange( arr ) && EndsWith( "bar" ) for: "foobar" ( starts with: "foo" and Equals: { 'f', 'o', 'o', 'b', 'a', 'r' } and ends with: "bar" )
 # Combining templated and concrete matchers
-ok {test-number} - str, StartsWith("foo") && !EqualsRange(bad_arr) && EndsWith("bar") for: "foobar" ( starts with: "foo" and not Equals: { 'o', 'o', 'f', 'b', 'a', 'r' } and ends with: "bar" )
+ok {test-number} - str, StartsWith( "foo" ) && !EqualsRange( bad_arr ) && EndsWith( "bar" ) for: "foobar" ( starts with: "foo" and not Equals: { 'o', 'o', 'f', 'b', 'a', 'r' } and ends with: "bar" )
 # Combining templated and concrete matchers
-ok {test-number} - str, EqualsRange(arr) && StartsWith("foo") && EndsWith("bar") for: "foobar" ( Equals: { 'f', 'o', 'o', 'b', 'a', 'r' } and starts with: "foo" and ends with: "bar" )
+ok {test-number} - str, EqualsRange( arr ) && StartsWith( "foo" ) && EndsWith( "bar" ) for: "foobar" ( Equals: { 'f', 'o', 'o', 'b', 'a', 'r' } and starts with: "foo" and ends with: "bar" )
 # Combining templated and concrete matchers
-ok {test-number} - str, !EqualsRange(bad_arr) && StartsWith("foo") && EndsWith("bar") for: "foobar" ( not Equals: { 'o', 'o', 'f', 'b', 'a', 'r' } and starts with: "foo" and ends with: "bar" )
+ok {test-number} - str, !EqualsRange( bad_arr ) && StartsWith( "foo" ) && EndsWith( "bar" ) for: "foobar" ( not Equals: { 'o', 'o', 'f', 'b', 'a', 'r' } and starts with: "foo" and ends with: "bar" )
 # Combining templated and concrete matchers
-ok {test-number} - str, EqualsRange(bad_arr) || (StartsWith("foo") && EndsWith("bar")) for: "foobar" ( Equals: { 'o', 'o', 'f', 'b', 'a', 'r' } or ( starts with: "foo" and ends with: "bar" ) )
+ok {test-number} - str, EqualsRange( bad_arr ) || ( StartsWith( "foo" ) && EndsWith( "bar" ) ) for: "foobar" ( Equals: { 'o', 'o', 'f', 'b', 'a', 'r' } or ( starts with: "foo" and ends with: "bar" ) )
 # Combining templated and concrete matchers
-ok {test-number} - str, (StartsWith("foo") && EndsWith("bar")) || EqualsRange(bad_arr) for: "foobar" ( ( starts with: "foo" and ends with: "bar" ) or Equals: { 'o', 'o', 'f', 'b', 'a', 'r' } )
+ok {test-number} - str, ( StartsWith( "foo" ) && EndsWith( "bar" ) ) || EqualsRange( bad_arr ) for: "foobar" ( ( starts with: "foo" and ends with: "bar" ) or Equals: { 'o', 'o', 'f', 'b', 'a', 'r' } )
 # Combining templated matchers
-ok {test-number} - container, EqualsRange(a) || EqualsRange(b) || EqualsRange(c) for: { 1, 2, 3 } ( Equals: { 1, 2, 3 } or Equals: { 0, 1, 2 } or Equals: { 4, 5, 6 } )
+ok {test-number} - container, EqualsRange( a ) || EqualsRange( b ) || EqualsRange( c ) for: { 1, 2, 3 } ( Equals: { 1, 2, 3 } or Equals: { 0, 1, 2 } or Equals: { 4, 5, 6 } )
 # Commas in various macros are allowed
 ok {test-number} - std::vector<constructor_throws>{constructor_throws{}, constructor_throws{}}
 # Commas in various macros are allowed
@@ -867,7 +867,7 @@ ok {test-number} - first.matchCalled for: true
 # Composed generic matchers shortcircuit
 ok {test-number} - !second.matchCalled for: true
 # Composed generic matchers shortcircuit
-ok {test-number} - matcher.match(1) for: true
+ok {test-number} - matcher.match( 1 ) for: true
 # Composed generic matchers shortcircuit
 ok {test-number} - first.matchCalled for: true
 # Composed generic matchers shortcircuit
@@ -885,9 +885,9 @@ ok {test-number} - first.matchCalled for: true
 # Composed matchers shortcircuit
 ok {test-number} - !second.matchCalled for: true
 # Contains string matcher
-not ok {test-number} - testStringForMatching(), Contains("not there", Catch::CaseSensitive::No) for: "this string contains 'abc' as a substring" contains: "not there" (case insensitive)
+not ok {test-number} - testStringForMatching(), Contains( "not there", Catch::CaseSensitive::No ) for: "this string contains 'abc' as a substring" contains: "not there" (case insensitive)
 # Contains string matcher
-not ok {test-number} - testStringForMatching(), Contains("STRING") for: "this string contains 'abc' as a substring" contains: "STRING"
+not ok {test-number} - testStringForMatching(), Contains( "STRING" ) for: "this string contains 'abc' as a substring" contains: "STRING"
 # Copy and then generate a range
 ok {test-number} - elem % 2 == 1 for: 1 == 1
 # Copy and then generate a range
@@ -933,9 +933,9 @@ ok {test-number} - enumInfo->lookup(1) == "Value2" for: Value2 == "Value2"
 # Directly creating an EnumInfo
 ok {test-number} - enumInfo->lookup(3) == "{** unexpected enum value **}" for: {** unexpected enum value **} == "{** unexpected enum value **}"
 # EndsWith string matcher
-not ok {test-number} - testStringForMatching(), EndsWith("Substring") for: "this string contains 'abc' as a substring" ends with: "Substring"
+not ok {test-number} - testStringForMatching(), EndsWith( "Substring" ) for: "this string contains 'abc' as a substring" ends with: "Substring"
 # EndsWith string matcher
-not ok {test-number} - testStringForMatching(), EndsWith("this", Catch::CaseSensitive::No) for: "this string contains 'abc' as a substring" ends with: "this" (case insensitive)
+not ok {test-number} - testStringForMatching(), EndsWith( "this", Catch::CaseSensitive::No ) for: "this string contains 'abc' as a substring" ends with: "this" (case insensitive)
 # Enums can quickly have stringification enabled using REGISTER_ENUM
 ok {test-number} - stringify( EnumClass3::Value1 ) == "Value1" for: "Value1" == "Value1"
 # Enums can quickly have stringification enabled using REGISTER_ENUM
@@ -993,13 +993,13 @@ ok {test-number} - data.str_hello.size() == 5 for: 5 == 5
 # Equality checks that should succeed
 ok {test-number} - x == Approx( 1.3 ) for: 1.3 == Approx( 1.3 )
 # Equals
-ok {test-number} - testStringForMatching(), Equals("this string contains 'abc' as a substring") for: "this string contains 'abc' as a substring" equals: "this string contains 'abc' as a substring"
+ok {test-number} - testStringForMatching(), Equals( "this string contains 'abc' as a substring" ) for: "this string contains 'abc' as a substring" equals: "this string contains 'abc' as a substring"
 # Equals
-ok {test-number} - testStringForMatching(), Equals("this string contains 'ABC' as a substring", Catch::CaseSensitive::No) for: "this string contains 'abc' as a substring" equals: "this string contains 'abc' as a substring" (case insensitive)
+ok {test-number} - testStringForMatching(), Equals( "this string contains 'ABC' as a substring", Catch::CaseSensitive::No ) for: "this string contains 'abc' as a substring" equals: "this string contains 'abc' as a substring" (case insensitive)
 # Equals string matcher
-not ok {test-number} - testStringForMatching(), Equals("this string contains 'ABC' as a substring") for: "this string contains 'abc' as a substring" equals: "this string contains 'ABC' as a substring"
+not ok {test-number} - testStringForMatching(), Equals( "this string contains 'ABC' as a substring" ) for: "this string contains 'abc' as a substring" equals: "this string contains 'ABC' as a substring"
 # Equals string matcher
-not ok {test-number} - testStringForMatching(), Equals("something else", Catch::CaseSensitive::No) for: "this string contains 'abc' as a substring" equals: "something else" (case insensitive)
+not ok {test-number} - testStringForMatching(), Equals( "something else", Catch::CaseSensitive::No ) for: "this string contains 'abc' as a substring" equals: "something else" (case insensitive)
 # Exception as a value (e.g. in REQUIRE_THROWS_MATCHES) can be stringified
 ok {test-number} - ::Catch::Detail::stringify(WhatException{}) == "This exception has overridden what() method" for: "This exception has overridden what() method" == "This exception has overridden what() method"
 # Exception as a value (e.g. in REQUIRE_THROWS_MATCHES) can be stringified
@@ -1007,21 +1007,21 @@ ok {test-number} - ::Catch::Detail::stringify(OperatorException{}) == "OperatorE
 # Exception as a value (e.g. in REQUIRE_THROWS_MATCHES) can be stringified
 ok {test-number} - ::Catch::Detail::stringify(StringMakerException{}) == "StringMakerException" for: "StringMakerException" == "StringMakerException"
 # Exception matchers that fail
-not ok {test-number} - expected exception, got none; expression was: doesNotThrow(), SpecialException, ExceptionMatcher{1}
+not ok {test-number} - expected exception, got none; expression was: doesNotThrow(), SpecialException, ExceptionMatcher{ 1 }
 # Exception matchers that fail
-not ok {test-number} - expected exception, got none; expression was: doesNotThrow(), SpecialException, ExceptionMatcher{1}
+not ok {test-number} - expected exception, got none; expression was: doesNotThrow(), SpecialException, ExceptionMatcher{ 1 }
 # Exception matchers that fail
-not ok {test-number} - unexpected exception with message: 'Unknown exception'; expression was: throwsAsInt(1), SpecialException, ExceptionMatcher{1}
+not ok {test-number} - unexpected exception with message: 'Unknown exception'; expression was: throwsAsInt( 1 ), SpecialException, ExceptionMatcher{ 1 }
 # Exception matchers that fail
-not ok {test-number} - unexpected exception with message: 'Unknown exception'; expression was: throwsAsInt(1), SpecialException, ExceptionMatcher{1}
+not ok {test-number} - unexpected exception with message: 'Unknown exception'; expression was: throwsAsInt( 1 ), SpecialException, ExceptionMatcher{ 1 }
 # Exception matchers that fail
-not ok {test-number} - throwsSpecialException(3), SpecialException, ExceptionMatcher{1} for: SpecialException::what special exception has value of 1
+not ok {test-number} - throwsSpecialException( 3 ), SpecialException, ExceptionMatcher{ 1 } for: SpecialException::what special exception has value of 1
 # Exception matchers that fail
-not ok {test-number} - throwsSpecialException(4), SpecialException, ExceptionMatcher{1} for: SpecialException::what special exception has value of 1
+not ok {test-number} - throwsSpecialException( 4 ), SpecialException, ExceptionMatcher{ 1 } for: SpecialException::what special exception has value of 1
 # Exception matchers that succeed
-ok {test-number} - throwsSpecialException(1), SpecialException, ExceptionMatcher{1} for: SpecialException::what special exception has value of 1
+ok {test-number} - throwsSpecialException( 1 ), SpecialException, ExceptionMatcher{ 1 } for: SpecialException::what special exception has value of 1
 # Exception matchers that succeed
-ok {test-number} - throwsSpecialException(2), SpecialException, ExceptionMatcher{2} for: SpecialException::what special exception has value of 2
+ok {test-number} - throwsSpecialException( 2 ), SpecialException, ExceptionMatcher{ 2 } for: SpecialException::what special exception has value of 2
 # Exception messages can be tested for
 ok {test-number} - thisThrows(), "expected exception" for: "expected exception" equals: "expected exception"
 # Exception messages can be tested for
@@ -1035,13 +1035,13 @@ ok {test-number} - thisThrows(), Contains( "except" ) for: "expected exception" 
 # Exception messages can be tested for
 ok {test-number} - thisThrows(), Contains( "exCept", Catch::CaseSensitive::No ) for: "expected exception" contains: "except" (case insensitive)
 # Exceptions matchers
-ok {test-number} - throwsDerivedException(), DerivedException, Message("DerivedException::what") for: DerivedException::what exception message matches "DerivedException::what"
+ok {test-number} - throwsDerivedException(), DerivedException, Message( "DerivedException::what" ) for: DerivedException::what exception message matches "DerivedException::what"
 # Exceptions matchers
-ok {test-number} - throwsDerivedException(), DerivedException, !Message("derivedexception::what") for: DerivedException::what not exception message matches "derivedexception::what"
+ok {test-number} - throwsDerivedException(), DerivedException, !Message( "derivedexception::what" ) for: DerivedException::what not exception message matches "derivedexception::what"
 # Exceptions matchers
-ok {test-number} - throwsSpecialException(2), SpecialException, !Message("DerivedException::what") for: SpecialException::what not exception message matches "DerivedException::what"
+ok {test-number} - throwsSpecialException( 2 ), SpecialException, !Message( "DerivedException::what" ) for: SpecialException::what not exception message matches "DerivedException::what"
 # Exceptions matchers
-ok {test-number} - throwsSpecialException(2), SpecialException, Message("SpecialException::what") for: SpecialException::what exception message matches "SpecialException::what"
+ok {test-number} - throwsSpecialException( 2 ), SpecialException, Message( "SpecialException::what" ) for: SpecialException::what exception message matches "SpecialException::what"
 # Expected exceptions that don't throw or unexpected exceptions fail the test
 not ok {test-number} - unexpected exception with message: 'expected exception'; expression was: thisThrows(), std::string
 # Expected exceptions that don't throw or unexpected exceptions fail the test
@@ -1067,125 +1067,125 @@ ok {test-number} - Factorial(3) == 6 for: 6 == 6
 # Factorials are computed
 ok {test-number} - Factorial(10) == 3628800 for: 3628800 (0x<hex digits>) == 3628800 (0x<hex digits>)
 # Floating point matchers: double
-ok {test-number} - 10., WithinRel(11.1, 0.1) for: 10.0 and 11.1 are within 10% of each other
+ok {test-number} - 10., WithinRel( 11.1, 0.1 ) for: 10.0 and 11.1 are within 10% of each other
 # Floating point matchers: double
-ok {test-number} - 10., !WithinRel(11.2, 0.1) for: 10.0 not and 11.2 are within 10% of each other
+ok {test-number} - 10., !WithinRel( 11.2, 0.1 ) for: 10.0 not and 11.2 are within 10% of each other
 # Floating point matchers: double
-ok {test-number} - 1., !WithinRel(0., 0.99) for: 1.0 not and 0 are within 99% of each other
+ok {test-number} - 1., !WithinRel( 0., 0.99 ) for: 1.0 not and 0 are within 99% of each other
 # Floating point matchers: double
-ok {test-number} - -0., WithinRel(0.) for: -0.0 and 0 are within 2.22045e-12% of each other
+ok {test-number} - -0., WithinRel( 0. ) for: -0.0 and 0 are within 2.22045e-12% of each other
 # Floating point matchers: double
-ok {test-number} - v1, WithinRel(v2) for: 0.0 and 2.22507e-308 are within 2.22045e-12% of each other
+ok {test-number} - v1, WithinRel( v2 ) for: 0.0 and 2.22507e-308 are within 2.22045e-12% of each other
 # Floating point matchers: double
-ok {test-number} - 1., WithinAbs(1., 0) for: 1.0 is within 0.0 of 1.0
+ok {test-number} - 1., WithinAbs( 1., 0 ) for: 1.0 is within 0.0 of 1.0
 # Floating point matchers: double
-ok {test-number} - 0., WithinAbs(1., 1) for: 0.0 is within 1.0 of 1.0
+ok {test-number} - 0., WithinAbs( 1., 1 ) for: 0.0 is within 1.0 of 1.0
 # Floating point matchers: double
-ok {test-number} - 0., !WithinAbs(1., 0.99) for: 0.0 not is within 0.99 of 1.0
+ok {test-number} - 0., !WithinAbs( 1., 0.99 ) for: 0.0 not is within 0.99 of 1.0
 # Floating point matchers: double
-ok {test-number} - 0., !WithinAbs(1., 0.99) for: 0.0 not is within 0.99 of 1.0
+ok {test-number} - 0., !WithinAbs( 1., 0.99 ) for: 0.0 not is within 0.99 of 1.0
 # Floating point matchers: double
-ok {test-number} - 11., !WithinAbs(10., 0.5) for: 11.0 not is within 0.5 of 10.0
+ok {test-number} - 11., !WithinAbs( 10., 0.5 ) for: 11.0 not is within 0.5 of 10.0
 # Floating point matchers: double
-ok {test-number} - 10., !WithinAbs(11., 0.5) for: 10.0 not is within 0.5 of 11.0
+ok {test-number} - 10., !WithinAbs( 11., 0.5 ) for: 10.0 not is within 0.5 of 11.0
 # Floating point matchers: double
-ok {test-number} - -10., WithinAbs(-10., 0.5) for: -10.0 is within 0.5 of -10.0
+ok {test-number} - -10., WithinAbs( -10., 0.5 ) for: -10.0 is within 0.5 of -10.0
 # Floating point matchers: double
-ok {test-number} - -10., WithinAbs(-9.6, 0.5) for: -10.0 is within 0.5 of -9.6
+ok {test-number} - -10., WithinAbs( -9.6, 0.5 ) for: -10.0 is within 0.5 of -9.6
 # Floating point matchers: double
-ok {test-number} - 1., WithinULP(1., 0) for: 1.0 is within 0 ULPs of 1.0000000000000000e+00 ([1.0000000000000000e+00, 1.0000000000000000e+00])
+ok {test-number} - 1., WithinULP( 1., 0 ) for: 1.0 is within 0 ULPs of 1.0000000000000000e+00 ([1.0000000000000000e+00, 1.0000000000000000e+00])
 # Floating point matchers: double
-ok {test-number} - nextafter(1., 2.), WithinULP(1., 1) for: 1.0 is within 1 ULPs of 1.0000000000000000e+00 ([9.9999999999999989e-01, 1.0000000000000002e+00])
+ok {test-number} - nextafter( 1., 2. ), WithinULP( 1., 1 ) for: 1.0 is within 1 ULPs of 1.0000000000000000e+00 ([9.9999999999999989e-01, 1.0000000000000002e+00])
 # Floating point matchers: double
-ok {test-number} - 0., WithinULP(nextafter(0., 1.), 1) for: 0.0 is within 1 ULPs of 4.9406564584124654e-324 ([0.0000000000000000e+00, 9.8813129168249309e-324])
+ok {test-number} - 0., WithinULP( nextafter( 0., 1. ), 1 ) for: 0.0 is within 1 ULPs of 4.9406564584124654e-324 ([0.0000000000000000e+00, 9.8813129168249309e-324])
 # Floating point matchers: double
-ok {test-number} - 1., WithinULP(nextafter(1., 0.), 1) for: 1.0 is within 1 ULPs of 9.9999999999999989e-01 ([9.9999999999999978e-01, 1.0000000000000000e+00])
+ok {test-number} - 1., WithinULP( nextafter( 1., 0. ), 1 ) for: 1.0 is within 1 ULPs of 9.9999999999999989e-01 ([9.9999999999999978e-01, 1.0000000000000000e+00])
 # Floating point matchers: double
-ok {test-number} - 1., !WithinULP(nextafter(1., 2.), 0) for: 1.0 not is within 0 ULPs of 1.0000000000000002e+00 ([1.0000000000000002e+00, 1.0000000000000002e+00])
+ok {test-number} - 1., !WithinULP( nextafter( 1., 2. ), 0 ) for: 1.0 not is within 0 ULPs of 1.0000000000000002e+00 ([1.0000000000000002e+00, 1.0000000000000002e+00])
 # Floating point matchers: double
-ok {test-number} - 1., WithinULP(1., 0) for: 1.0 is within 0 ULPs of 1.0000000000000000e+00 ([1.0000000000000000e+00, 1.0000000000000000e+00])
+ok {test-number} - 1., WithinULP( 1., 0 ) for: 1.0 is within 0 ULPs of 1.0000000000000000e+00 ([1.0000000000000000e+00, 1.0000000000000000e+00])
 # Floating point matchers: double
-ok {test-number} - -0., WithinULP(0., 0) for: -0.0 is within 0 ULPs of 0.0000000000000000e+00 ([0.0000000000000000e+00, 0.0000000000000000e+00])
+ok {test-number} - -0., WithinULP( 0., 0 ) for: -0.0 is within 0 ULPs of 0.0000000000000000e+00 ([0.0000000000000000e+00, 0.0000000000000000e+00])
 # Floating point matchers: double
-ok {test-number} - 1., WithinAbs(1., 0.5) || WithinULP(2., 1) for: 1.0 ( is within 0.5 of 1.0 or is within 1 ULPs of 2.0000000000000000e+00 ([1.9999999999999998e+00, 2.0000000000000004e+00]) )
+ok {test-number} - 1., WithinAbs( 1., 0.5 ) || WithinULP( 2., 1 ) for: 1.0 ( is within 0.5 of 1.0 or is within 1 ULPs of 2.0000000000000000e+00 ([1.9999999999999998e+00, 2.0000000000000004e+00]) )
 # Floating point matchers: double
-ok {test-number} - 1., WithinAbs(2., 0.5) || WithinULP(1., 0) for: 1.0 ( is within 0.5 of 2.0 or is within 0 ULPs of 1.0000000000000000e+00 ([1.0000000000000000e+00, 1.0000000000000000e+00]) )
+ok {test-number} - 1., WithinAbs( 2., 0.5 ) || WithinULP( 1., 0 ) for: 1.0 ( is within 0.5 of 2.0 or is within 0 ULPs of 1.0000000000000000e+00 ([1.0000000000000000e+00, 1.0000000000000000e+00]) )
 # Floating point matchers: double
-ok {test-number} - 0.0001, WithinAbs(0., 0.001) || WithinRel(0., 0.1) for: 0.0001 ( is within 0.001 of 0.0 or and 0 are within 10% of each other )
+ok {test-number} - 0.0001, WithinAbs( 0., 0.001 ) || WithinRel( 0., 0.1 ) for: 0.0001 ( is within 0.001 of 0.0 or and 0 are within 10% of each other )
 # Floating point matchers: double
-ok {test-number} - WithinAbs(1., 0.)
+ok {test-number} - WithinAbs( 1., 0. )
 # Floating point matchers: double
-ok {test-number} - WithinAbs(1., -1.), std::domain_error
+ok {test-number} - WithinAbs( 1., -1. ), std::domain_error
 # Floating point matchers: double
-ok {test-number} - WithinULP(1., 0)
+ok {test-number} - WithinULP( 1., 0 )
 # Floating point matchers: double
-ok {test-number} - WithinRel(1., 0.)
+ok {test-number} - WithinRel( 1., 0. )
 # Floating point matchers: double
-ok {test-number} - WithinRel(1., -0.2), std::domain_error
+ok {test-number} - WithinRel( 1., -0.2 ), std::domain_error
 # Floating point matchers: double
-ok {test-number} - WithinRel(1., 1.), std::domain_error
+ok {test-number} - WithinRel( 1., 1. ), std::domain_error
 # Floating point matchers: float
-ok {test-number} - 10.f, WithinRel(11.1f, 0.1f) for: 10.0f and 11.1 are within 10% of each other
+ok {test-number} - 10.f, WithinRel( 11.1f, 0.1f ) for: 10.0f and 11.1 are within 10% of each other
 # Floating point matchers: float
-ok {test-number} - 10.f, !WithinRel(11.2f, 0.1f) for: 10.0f not and 11.2 are within 10% of each other
+ok {test-number} - 10.f, !WithinRel( 11.2f, 0.1f ) for: 10.0f not and 11.2 are within 10% of each other
 # Floating point matchers: float
-ok {test-number} - 1.f, !WithinRel(0.f, 0.99f) for: 1.0f not and 0 are within 99% of each other
+ok {test-number} - 1.f, !WithinRel( 0.f, 0.99f ) for: 1.0f not and 0 are within 99% of each other
 # Floating point matchers: float
-ok {test-number} - -0.f, WithinRel(0.f) for: -0.0f and 0 are within 0.00119209% of each other
+ok {test-number} - -0.f, WithinRel( 0.f ) for: -0.0f and 0 are within 0.00119209% of each other
 # Floating point matchers: float
-ok {test-number} - v1, WithinRel(v2) for: 0.0f and 1.17549e-38 are within 0.00119209% of each other
+ok {test-number} - v1, WithinRel( v2 ) for: 0.0f and 1.17549e-38 are within 0.00119209% of each other
 # Floating point matchers: float
-ok {test-number} - 1.f, WithinAbs(1.f, 0) for: 1.0f is within 0.0 of 1.0
+ok {test-number} - 1.f, WithinAbs( 1.f, 0 ) for: 1.0f is within 0.0 of 1.0
 # Floating point matchers: float
-ok {test-number} - 0.f, WithinAbs(1.f, 1) for: 0.0f is within 1.0 of 1.0
+ok {test-number} - 0.f, WithinAbs( 1.f, 1 ) for: 0.0f is within 1.0 of 1.0
 # Floating point matchers: float
-ok {test-number} - 0.f, !WithinAbs(1.f, 0.99f) for: 0.0f not is within 0.9900000095 of 1.0
+ok {test-number} - 0.f, !WithinAbs( 1.f, 0.99f ) for: 0.0f not is within 0.9900000095 of 1.0
 # Floating point matchers: float
-ok {test-number} - 0.f, !WithinAbs(1.f, 0.99f) for: 0.0f not is within 0.9900000095 of 1.0
+ok {test-number} - 0.f, !WithinAbs( 1.f, 0.99f ) for: 0.0f not is within 0.9900000095 of 1.0
 # Floating point matchers: float
-ok {test-number} - 0.f, WithinAbs(-0.f, 0) for: 0.0f is within 0.0 of -0.0
+ok {test-number} - 0.f, WithinAbs( -0.f, 0 ) for: 0.0f is within 0.0 of -0.0
 # Floating point matchers: float
-ok {test-number} - 11.f, !WithinAbs(10.f, 0.5f) for: 11.0f not is within 0.5 of 10.0
+ok {test-number} - 11.f, !WithinAbs( 10.f, 0.5f ) for: 11.0f not is within 0.5 of 10.0
 # Floating point matchers: float
-ok {test-number} - 10.f, !WithinAbs(11.f, 0.5f) for: 10.0f not is within 0.5 of 11.0
+ok {test-number} - 10.f, !WithinAbs( 11.f, 0.5f ) for: 10.0f not is within 0.5 of 11.0
 # Floating point matchers: float
-ok {test-number} - -10.f, WithinAbs(-10.f, 0.5f) for: -10.0f is within 0.5 of -10.0
+ok {test-number} - -10.f, WithinAbs( -10.f, 0.5f ) for: -10.0f is within 0.5 of -10.0
 # Floating point matchers: float
-ok {test-number} - -10.f, WithinAbs(-9.6f, 0.5f) for: -10.0f is within 0.5 of -9.6000003815
+ok {test-number} - -10.f, WithinAbs( -9.6f, 0.5f ) for: -10.0f is within 0.5 of -9.6000003815
 # Floating point matchers: float
-ok {test-number} - 1.f, WithinULP(1.f, 0) for: 1.0f is within 0 ULPs of 1.00000000e+00f ([1.00000000e+00, 1.00000000e+00])
+ok {test-number} - 1.f, WithinULP( 1.f, 0 ) for: 1.0f is within 0 ULPs of 1.00000000e+00f ([1.00000000e+00, 1.00000000e+00])
 # Floating point matchers: float
-ok {test-number} - nextafter(1.f, 2.f), WithinULP(1.f, 1) for: 1.0f is within 1 ULPs of 1.00000000e+00f ([9.99999940e-01, 1.00000012e+00])
+ok {test-number} - nextafter( 1.f, 2.f ), WithinULP( 1.f, 1 ) for: 1.0f is within 1 ULPs of 1.00000000e+00f ([9.99999940e-01, 1.00000012e+00])
 # Floating point matchers: float
-ok {test-number} - 0.f, WithinULP(nextafter(0.f, 1.f), 1) for: 0.0f is within 1 ULPs of 1.40129846e-45f ([0.00000000e+00, 2.80259693e-45])
+ok {test-number} - 0.f, WithinULP( nextafter( 0.f, 1.f ), 1 ) for: 0.0f is within 1 ULPs of 1.40129846e-45f ([0.00000000e+00, 2.80259693e-45])
 # Floating point matchers: float
-ok {test-number} - 1.f, WithinULP(nextafter(1.f, 0.f), 1) for: 1.0f is within 1 ULPs of 9.99999940e-01f ([9.99999881e-01, 1.00000000e+00])
+ok {test-number} - 1.f, WithinULP( nextafter( 1.f, 0.f ), 1 ) for: 1.0f is within 1 ULPs of 9.99999940e-01f ([9.99999881e-01, 1.00000000e+00])
 # Floating point matchers: float
-ok {test-number} - 1.f, !WithinULP(nextafter(1.f, 2.f), 0) for: 1.0f not is within 0 ULPs of 1.00000012e+00f ([1.00000012e+00, 1.00000012e+00])
+ok {test-number} - 1.f, !WithinULP( nextafter( 1.f, 2.f ), 0 ) for: 1.0f not is within 0 ULPs of 1.00000012e+00f ([1.00000012e+00, 1.00000012e+00])
 # Floating point matchers: float
-ok {test-number} - 1.f, WithinULP(1.f, 0) for: 1.0f is within 0 ULPs of 1.00000000e+00f ([1.00000000e+00, 1.00000000e+00])
+ok {test-number} - 1.f, WithinULP( 1.f, 0 ) for: 1.0f is within 0 ULPs of 1.00000000e+00f ([1.00000000e+00, 1.00000000e+00])
 # Floating point matchers: float
-ok {test-number} - -0.f, WithinULP(0.f, 0) for: -0.0f is within 0 ULPs of 0.00000000e+00f ([0.00000000e+00, 0.00000000e+00])
+ok {test-number} - -0.f, WithinULP( 0.f, 0 ) for: -0.0f is within 0 ULPs of 0.00000000e+00f ([0.00000000e+00, 0.00000000e+00])
 # Floating point matchers: float
-ok {test-number} - 1.f, WithinAbs(1.f, 0.5) || WithinULP(1.f, 1) for: 1.0f ( is within 0.5 of 1.0 or is within 1 ULPs of 1.00000000e+00f ([9.99999940e-01, 1.00000012e+00]) )
+ok {test-number} - 1.f, WithinAbs( 1.f, 0.5 ) || WithinULP( 1.f, 1 ) for: 1.0f ( is within 0.5 of 1.0 or is within 1 ULPs of 1.00000000e+00f ([9.99999940e-01, 1.00000012e+00]) )
 # Floating point matchers: float
-ok {test-number} - 1.f, WithinAbs(2.f, 0.5) || WithinULP(1.f, 0) for: 1.0f ( is within 0.5 of 2.0 or is within 0 ULPs of 1.00000000e+00f ([1.00000000e+00, 1.00000000e+00]) )
+ok {test-number} - 1.f, WithinAbs( 2.f, 0.5 ) || WithinULP( 1.f, 0 ) for: 1.0f ( is within 0.5 of 2.0 or is within 0 ULPs of 1.00000000e+00f ([1.00000000e+00, 1.00000000e+00]) )
 # Floating point matchers: float
-ok {test-number} - 0.0001f, WithinAbs(0.f, 0.001f) || WithinRel(0.f, 0.1f) for: 0.0001f ( is within 0.001 of 0.0 or and 0 are within 10% of each other )
+ok {test-number} - 0.0001f, WithinAbs( 0.f, 0.001f ) || WithinRel( 0.f, 0.1f ) for: 0.0001f ( is within 0.001 of 0.0 or and 0 are within 10% of each other )
 # Floating point matchers: float
-ok {test-number} - WithinAbs(1.f, 0.f)
+ok {test-number} - WithinAbs( 1.f, 0.f )
 # Floating point matchers: float
-ok {test-number} - WithinAbs(1.f, -1.f), std::domain_error
+ok {test-number} - WithinAbs( 1.f, -1.f ), std::domain_error
 # Floating point matchers: float
-ok {test-number} - WithinULP(1.f, 0)
+ok {test-number} - WithinULP( 1.f, 0 )
 # Floating point matchers: float
-ok {test-number} - WithinULP(1.f, static_cast<uint64_t>(-1)), std::domain_error
+ok {test-number} - WithinULP( 1.f, static_cast<uint64_t>( -1 ) ), std::domain_error
 # Floating point matchers: float
-ok {test-number} - WithinRel(1.f, 0.f)
+ok {test-number} - WithinRel( 1.f, 0.f )
 # Floating point matchers: float
-ok {test-number} - WithinRel(1.f, -0.2f), std::domain_error
+ok {test-number} - WithinRel( 1.f, -0.2f ), std::domain_error
 # Floating point matchers: float
-ok {test-number} - WithinRel(1.f, 1.f), std::domain_error
+ok {test-number} - WithinRel( 1.f, 1.f ), std::domain_error
 # Generators -- adapters
 ok {test-number} - i % 2 == 0 for: 0 == 0
 # Generators -- adapters
@@ -1781,19 +1781,19 @@ ok {test-number} - d <= Approx( 1.22 ).epsilon(0.1) for: 1.23 <= Approx( 1.22 )
 # ManuallyRegistered
 ok {test-number} - with 1 message: 'was called'
 # Matchers can be (AllOf) composed with the && operator
-ok {test-number} - testStringForMatching(), Contains("string") && Contains("abc") && Contains("substring") && Contains("contains") for: "this string contains 'abc' as a substring" ( contains: "string" and contains: "abc" and contains: "substring" and contains: "contains" )
+ok {test-number} - testStringForMatching(), Contains( "string" ) && Contains( "abc" ) && Contains( "substring" ) && Contains( "contains" ) for: "this string contains 'abc' as a substring" ( contains: "string" and contains: "abc" and contains: "substring" and contains: "contains" )
 # Matchers can be (AnyOf) composed with the || operator
-ok {test-number} - testStringForMatching(), Contains("string") || Contains("different") || Contains("random") for: "this string contains 'abc' as a substring" ( contains: "string" or contains: "different" or contains: "random" )
+ok {test-number} - testStringForMatching(), Contains( "string" ) || Contains( "different" ) || Contains( "random" ) for: "this string contains 'abc' as a substring" ( contains: "string" or contains: "different" or contains: "random" )
 # Matchers can be (AnyOf) composed with the || operator
-ok {test-number} - testStringForMatching2(), Contains("string") || Contains("different") || Contains("random") for: "some completely different text that contains one common word" ( contains: "string" or contains: "different" or contains: "random" )
+ok {test-number} - testStringForMatching2(), Contains( "string" ) || Contains( "different" ) || Contains( "random" ) for: "some completely different text that contains one common word" ( contains: "string" or contains: "different" or contains: "random" )
 # Matchers can be composed with both && and ||
-ok {test-number} - testStringForMatching(), (Contains("string") || Contains("different")) && Contains("substring") for: "this string contains 'abc' as a substring" ( ( contains: "string" or contains: "different" ) and contains: "substring" )
+ok {test-number} - testStringForMatching(), ( Contains( "string" ) || Contains( "different" ) ) && Contains( "substring" ) for: "this string contains 'abc' as a substring" ( ( contains: "string" or contains: "different" ) and contains: "substring" )
 # Matchers can be composed with both && and || - failing
-not ok {test-number} - testStringForMatching(), (Contains("string") || Contains("different")) && Contains("random") for: "this string contains 'abc' as a substring" ( ( contains: "string" or contains: "different" ) and contains: "random" )
+not ok {test-number} - testStringForMatching(), ( Contains( "string" ) || Contains( "different" ) ) && Contains( "random" ) for: "this string contains 'abc' as a substring" ( ( contains: "string" or contains: "different" ) and contains: "random" )
 # Matchers can be negated (Not) with the ! operator
-ok {test-number} - testStringForMatching(), !Contains("different") for: "this string contains 'abc' as a substring" not contains: "different"
+ok {test-number} - testStringForMatching(), !Contains( "different" ) for: "this string contains 'abc' as a substring" not contains: "different"
 # Matchers can be negated (Not) with the ! operator - failing
-not ok {test-number} - testStringForMatching(), !Contains("substring") for: "this string contains 'abc' as a substring" not contains: "substring"
+not ok {test-number} - testStringForMatching(), !Contains( "substring" ) for: "this string contains 'abc' as a substring" not contains: "substring"
 # Mismatching exception messages failing the test
 ok {test-number} - thisThrows(), "expected exception" for: "expected exception" equals: "expected exception"
 # Mismatching exception messages failing the test
@@ -1951,13 +1951,13 @@ not ok {test-number} - explicitly with 1 message: 'Message from section one'
 # Output from all sections is reported
 not ok {test-number} - explicitly with 1 message: 'Message from section two'
 # Overloaded comma or address-of operators are not used
-ok {test-number} - (EvilMatcher(), EvilMatcher()), EvilCommaOperatorUsed
+ok {test-number} - ( EvilMatcher(), EvilMatcher() ), EvilCommaOperatorUsed
 # Overloaded comma or address-of operators are not used
 ok {test-number} - &EvilMatcher(), EvilAddressOfOperatorUsed
 # Overloaded comma or address-of operators are not used
-ok {test-number} - EvilMatcher() || (EvilMatcher() && !EvilMatcher())
+ok {test-number} - EvilMatcher() || ( EvilMatcher() && !EvilMatcher() )
 # Overloaded comma or address-of operators are not used
-ok {test-number} - (EvilMatcher() && EvilMatcher()) || !EvilMatcher()
+ok {test-number} - ( EvilMatcher() && EvilMatcher() ) || !EvilMatcher()
 # Parse test names and tags
 ok {test-number} - spec.hasFilters() == false for: false == false
 # Parse test names and tags
@@ -2285,7 +2285,7 @@ ok {test-number} - str1.size() == 2 + 5 for: 7 == 7
 # Precision of floating point stringification can be set
 ok {test-number} - str2.size() == 2 + 15 for: 17 == 17
 # Predicate matcher can accept const char*
-ok {test-number} - "foo", Predicate<const char*>([] (const char* const&) { return true; }) for: "foo" matches undescribed predicate
+ok {test-number} - "foo", Predicate<const char*>( []( const char* const& ) { return true; } ) for: "foo" matches undescribed predicate
 # Process can be configured on command line
 ok {test-number} - result for: {?}
 # Process can be configured on command line
@@ -2461,13 +2461,13 @@ ok {test-number} - Catch::Detail::stringify(UsesSentinel{}) == "{  }" for: "{  }
 # Reconstruction should be based on stringification: #914
 not ok {test-number} - truthy(false) for: Hey, its truthy!
 # Regex string matcher
-not ok {test-number} - testStringForMatching(), Matches("this STRING contains 'abc' as a substring") for: "this string contains 'abc' as a substring" matches "this STRING contains 'abc' as a substring" case sensitively
+not ok {test-number} - testStringForMatching(), Matches( "this STRING contains 'abc' as a substring" ) for: "this string contains 'abc' as a substring" matches "this STRING contains 'abc' as a substring" case sensitively
 # Regex string matcher
-not ok {test-number} - testStringForMatching(), Matches("contains 'abc' as a substring") for: "this string contains 'abc' as a substring" matches "contains 'abc' as a substring" case sensitively
+not ok {test-number} - testStringForMatching(), Matches( "contains 'abc' as a substring" ) for: "this string contains 'abc' as a substring" matches "contains 'abc' as a substring" case sensitively
 # Regex string matcher
-not ok {test-number} - testStringForMatching(), Matches("this string contains 'abc' as a") for: "this string contains 'abc' as a substring" matches "this string contains 'abc' as a" case sensitively
+not ok {test-number} - testStringForMatching(), Matches( "this string contains 'abc' as a" ) for: "this string contains 'abc' as a substring" matches "this string contains 'abc' as a" case sensitively
 # Regression test #1
-ok {test-number} - actual, !UnorderedEquals(expected) for: { 'a', 'b' } not UnorderedEquals: { 'c', 'b' }
+ok {test-number} - actual, !UnorderedEquals( expected ) for: { 'a', 'b' } not UnorderedEquals: { 'c', 'b' }
 # Reporter's write listings to provided stream
 ok {test-number} - !(factories.empty()) for: !false
 # Reporter's write listings to provided stream
@@ -2616,9 +2616,9 @@ ok {test-number} - Approx( d ) != 1.24 for: Approx( 1.23 ) != 1.24
 Message from section one
 Message from section two
 # StartsWith string matcher
-not ok {test-number} - testStringForMatching(), StartsWith("This String") for: "this string contains 'abc' as a substring" starts with: "This String"
+not ok {test-number} - testStringForMatching(), StartsWith( "This String" ) for: "this string contains 'abc' as a substring" starts with: "This String"
 # StartsWith string matcher
-not ok {test-number} - testStringForMatching(), StartsWith("string", Catch::CaseSensitive::No) for: "this string contains 'abc' as a substring" starts with: "string" (case insensitive)
+not ok {test-number} - testStringForMatching(), StartsWith( "string", Catch::CaseSensitive::No ) for: "this string contains 'abc' as a substring" starts with: "string" (case insensitive)
 # Static arrays are convertible to string
 ok {test-number} - Catch::Detail::stringify(singular) == "{ 1 }" for: "{ 1 }" == "{ 1 }"
 # Static arrays are convertible to string
@@ -2626,21 +2626,21 @@ ok {test-number} - Catch::Detail::stringify(arr) == "{ 3, 2, 1 }" for: "{ 3, 2, 
 # Static arrays are convertible to string
 ok {test-number} - Catch::Detail::stringify(arr) == R"({ { "1:1", "1:2", "1:3" }, { "2:1", "2:2" } })" for: "{ { "1:1", "1:2", "1:3" }, { "2:1", "2:2" } }" == "{ { "1:1", "1:2", "1:3" }, { "2:1", "2:2" } }"
 # String matchers
-ok {test-number} - testStringForMatching(), Contains("string") for: "this string contains 'abc' as a substring" contains: "string"
+ok {test-number} - testStringForMatching(), Contains( "string" ) for: "this string contains 'abc' as a substring" contains: "string"
 # String matchers
-ok {test-number} - testStringForMatching(), Contains("string", Catch::CaseSensitive::No) for: "this string contains 'abc' as a substring" contains: "string" (case insensitive)
+ok {test-number} - testStringForMatching(), Contains( "string", Catch::CaseSensitive::No ) for: "this string contains 'abc' as a substring" contains: "string" (case insensitive)
 # String matchers
-ok {test-number} - testStringForMatching(), Contains("abc") for: "this string contains 'abc' as a substring" contains: "abc"
+ok {test-number} - testStringForMatching(), Contains( "abc" ) for: "this string contains 'abc' as a substring" contains: "abc"
 # String matchers
-ok {test-number} - testStringForMatching(), Contains("aBC", Catch::CaseSensitive::No) for: "this string contains 'abc' as a substring" contains: "abc" (case insensitive)
+ok {test-number} - testStringForMatching(), Contains( "aBC", Catch::CaseSensitive::No ) for: "this string contains 'abc' as a substring" contains: "abc" (case insensitive)
 # String matchers
-ok {test-number} - testStringForMatching(), StartsWith("this") for: "this string contains 'abc' as a substring" starts with: "this"
+ok {test-number} - testStringForMatching(), StartsWith( "this" ) for: "this string contains 'abc' as a substring" starts with: "this"
 # String matchers
-ok {test-number} - testStringForMatching(), StartsWith("THIS", Catch::CaseSensitive::No) for: "this string contains 'abc' as a substring" starts with: "this" (case insensitive)
+ok {test-number} - testStringForMatching(), StartsWith( "THIS", Catch::CaseSensitive::No ) for: "this string contains 'abc' as a substring" starts with: "this" (case insensitive)
 # String matchers
-ok {test-number} - testStringForMatching(), EndsWith("substring") for: "this string contains 'abc' as a substring" ends with: "substring"
+ok {test-number} - testStringForMatching(), EndsWith( "substring" ) for: "this string contains 'abc' as a substring" ends with: "substring"
 # String matchers
-ok {test-number} - testStringForMatching(), EndsWith(" SuBsTrInG", Catch::CaseSensitive::No) for: "this string contains 'abc' as a substring" ends with: " substring" (case insensitive)
+ok {test-number} - testStringForMatching(), EndsWith( " SuBsTrInG", Catch::CaseSensitive::No ) for: "this string contains 'abc' as a substring" ends with: " substring" (case insensitive)
 # StringRef
 ok {test-number} - empty.empty() for: true
 # StringRef
@@ -3400,99 +3400,99 @@ ok {test-number} - approx( d ) != 1.25 for: Approx( 1.23 ) != 1.25
 # Variadic macros
 ok {test-number} - with 1 message: 'no assertions'
 # Vector Approx matcher
-ok {test-number} - empty, Approx(empty) for: {  } is approx: {  }
+ok {test-number} - empty, Approx( empty ) for: {  } is approx: {  }
 # Vector Approx matcher
-ok {test-number} - v1, Approx(v1) for: { 1.0, 2.0, 3.0 } is approx: { 1.0, 2.0, 3.0 }
+ok {test-number} - v1, Approx( v1 ) for: { 1.0, 2.0, 3.0 } is approx: { 1.0, 2.0, 3.0 }
 # Vector Approx matcher
-ok {test-number} - v1, Approx<double>({ 1., 2., 3. }) for: { 1.0, 2.0, 3.0 } is approx: { 1.0, 2.0, 3.0 }
+ok {test-number} - v1, Approx<double>( { 1., 2., 3. } ) for: { 1.0, 2.0, 3.0 } is approx: { 1.0, 2.0, 3.0 }
 # Vector Approx matcher
-ok {test-number} - v1, !Approx(temp) for: { 1.0, 2.0, 3.0 } not is approx: { 1.0, 2.0, 3.0, 4.0 }
+ok {test-number} - v1, !Approx( temp ) for: { 1.0, 2.0, 3.0 } not is approx: { 1.0, 2.0, 3.0, 4.0 }
 # Vector Approx matcher
-ok {test-number} - v1, !Approx(v2) for: { 1.0, 2.0, 3.0 } not is approx: { 1.5, 2.5, 3.5 }
+ok {test-number} - v1, !Approx( v2 ) for: { 1.0, 2.0, 3.0 } not is approx: { 1.5, 2.5, 3.5 }
 # Vector Approx matcher
-ok {test-number} - v1, Approx(v2).margin(0.5) for: { 1.0, 2.0, 3.0 } is approx: { 1.5, 2.5, 3.5 }
+ok {test-number} - v1, Approx( v2 ).margin( 0.5 ) for: { 1.0, 2.0, 3.0 } is approx: { 1.5, 2.5, 3.5 }
 # Vector Approx matcher
-ok {test-number} - v1, Approx(v2).epsilon(0.5) for: { 1.0, 2.0, 3.0 } is approx: { 1.5, 2.5, 3.5 }
+ok {test-number} - v1, Approx( v2 ).epsilon( 0.5 ) for: { 1.0, 2.0, 3.0 } is approx: { 1.5, 2.5, 3.5 }
 # Vector Approx matcher
-ok {test-number} - v1, Approx(v2).epsilon(0.1).scale(500) for: { 1.0, 2.0, 3.0 } is approx: { 1.5, 2.5, 3.5 }
+ok {test-number} - v1, Approx( v2 ).epsilon( 0.1 ).scale( 500 ) for: { 1.0, 2.0, 3.0 } is approx: { 1.5, 2.5, 3.5 }
 # Vector Approx matcher -- failing
-not ok {test-number} - empty, Approx(t1) for: {  } is approx: { 1.0, 2.0 }
+not ok {test-number} - empty, Approx( t1 ) for: {  } is approx: { 1.0, 2.0 }
 # Vector Approx matcher -- failing
-not ok {test-number} - v1, Approx(v2) for: { 2.0, 4.0, 6.0 } is approx: { 1.0, 3.0, 5.0 }
+not ok {test-number} - v1, Approx( v2 ) for: { 2.0, 4.0, 6.0 } is approx: { 1.0, 3.0, 5.0 }
 # Vector matchers
-ok {test-number} - v, VectorContains(1) for: { 1, 2, 3 } Contains: 1
+ok {test-number} - v, VectorContains( 1 ) for: { 1, 2, 3 } Contains: 1
 # Vector matchers
-ok {test-number} - v, VectorContains(2) for: { 1, 2, 3 } Contains: 2
+ok {test-number} - v, VectorContains( 2 ) for: { 1, 2, 3 } Contains: 2
 # Vector matchers
-ok {test-number} - v5, (VectorContains<int, CustomAllocator<int>>(2)) for: { 1, 2, 3 } Contains: 2
+ok {test-number} - v5, ( VectorContains<int, CustomAllocator<int>>( 2 ) ) for: { 1, 2, 3 } Contains: 2
 # Vector matchers
-ok {test-number} - v, Contains(v2) for: { 1, 2, 3 } Contains: { 1, 2 }
+ok {test-number} - v, Contains( v2 ) for: { 1, 2, 3 } Contains: { 1, 2 }
 # Vector matchers
-ok {test-number} - v, Contains<int>({ 1, 2 }) for: { 1, 2, 3 } Contains: { 1, 2 }
+ok {test-number} - v, Contains<int>( { 1, 2 } ) for: { 1, 2, 3 } Contains: { 1, 2 }
 # Vector matchers
-ok {test-number} - v5, (Contains<int, std::allocator<int>, CustomAllocator<int>>(v2)) for: { 1, 2, 3 } Contains: { 1, 2 }
+ok {test-number} - v5, ( Contains<int, std::allocator<int>, CustomAllocator<int>>( v2 ) ) for: { 1, 2, 3 } Contains: { 1, 2 }
 # Vector matchers
-ok {test-number} - v, Contains(v2) for: { 1, 2, 3 } Contains: { 1, 2, 3 }
+ok {test-number} - v, Contains( v2 ) for: { 1, 2, 3 } Contains: { 1, 2, 3 }
 # Vector matchers
-ok {test-number} - v, Contains(empty) for: { 1, 2, 3 } Contains: {  }
+ok {test-number} - v, Contains( empty ) for: { 1, 2, 3 } Contains: {  }
 # Vector matchers
-ok {test-number} - empty, Contains(empty) for: {  } Contains: {  }
+ok {test-number} - empty, Contains( empty ) for: {  } Contains: {  }
 # Vector matchers
-ok {test-number} - v5, (Contains<int, std::allocator<int>, CustomAllocator<int>>(v2)) for: { 1, 2, 3 } Contains: { 1, 2, 3 }
+ok {test-number} - v5, ( Contains<int, std::allocator<int>, CustomAllocator<int>>( v2 ) ) for: { 1, 2, 3 } Contains: { 1, 2, 3 }
 # Vector matchers
-ok {test-number} - v5, Contains(v6) for: { 1, 2, 3 } Contains: { 1, 2 }
+ok {test-number} - v5, Contains( v6 ) for: { 1, 2, 3 } Contains: { 1, 2 }
 # Vector matchers
-ok {test-number} - v, VectorContains(1) && VectorContains(2) for: { 1, 2, 3 } ( Contains: 1 and Contains: 2 )
+ok {test-number} - v, VectorContains( 1 ) && VectorContains( 2 ) for: { 1, 2, 3 } ( Contains: 1 and Contains: 2 )
 # Vector matchers
-ok {test-number} - v, Equals(v) for: { 1, 2, 3 } Equals: { 1, 2, 3 }
+ok {test-number} - v, Equals( v ) for: { 1, 2, 3 } Equals: { 1, 2, 3 }
 # Vector matchers
-ok {test-number} - empty, Equals(empty) for: {  } Equals: {  }
+ok {test-number} - empty, Equals( empty ) for: {  } Equals: {  }
 # Vector matchers
-ok {test-number} - v, Equals<int>({ 1, 2, 3 }) for: { 1, 2, 3 } Equals: { 1, 2, 3 }
+ok {test-number} - v, Equals<int>( { 1, 2, 3 } ) for: { 1, 2, 3 } Equals: { 1, 2, 3 }
 # Vector matchers
-ok {test-number} - v, Equals(v2) for: { 1, 2, 3 } Equals: { 1, 2, 3 }
+ok {test-number} - v, Equals( v2 ) for: { 1, 2, 3 } Equals: { 1, 2, 3 }
 # Vector matchers
-ok {test-number} - v5, (Equals<int, std::allocator<int>, CustomAllocator<int>>(v2)) for: { 1, 2, 3 } Equals: { 1, 2, 3 }
+ok {test-number} - v5, ( Equals<int, std::allocator<int>, CustomAllocator<int>>( v2 ) ) for: { 1, 2, 3 } Equals: { 1, 2, 3 }
 # Vector matchers
-ok {test-number} - v5, Equals(v6) for: { 1, 2, 3 } Equals: { 1, 2, 3 }
+ok {test-number} - v5, Equals( v6 ) for: { 1, 2, 3 } Equals: { 1, 2, 3 }
 # Vector matchers
-ok {test-number} - v, UnorderedEquals(v) for: { 1, 2, 3 } UnorderedEquals: { 1, 2, 3 }
+ok {test-number} - v, UnorderedEquals( v ) for: { 1, 2, 3 } UnorderedEquals: { 1, 2, 3 }
 # Vector matchers
-ok {test-number} - v, UnorderedEquals<int>({ 3, 2, 1 }) for: { 1, 2, 3 } UnorderedEquals: { 3, 2, 1 }
+ok {test-number} - v, UnorderedEquals<int>( { 3, 2, 1 } ) for: { 1, 2, 3 } UnorderedEquals: { 3, 2, 1 }
 # Vector matchers
-ok {test-number} - empty, UnorderedEquals(empty) for: {  } UnorderedEquals: {  }
+ok {test-number} - empty, UnorderedEquals( empty ) for: {  } UnorderedEquals: {  }
 # Vector matchers
-ok {test-number} - permuted, UnorderedEquals(v) for: { 1, 3, 2 } UnorderedEquals: { 1, 2, 3 }
+ok {test-number} - permuted, UnorderedEquals( v ) for: { 1, 3, 2 } UnorderedEquals: { 1, 2, 3 }
 # Vector matchers
-ok {test-number} - permuted, UnorderedEquals(v) for: { 2, 3, 1 } UnorderedEquals: { 1, 2, 3 }
+ok {test-number} - permuted, UnorderedEquals( v ) for: { 2, 3, 1 } UnorderedEquals: { 1, 2, 3 }
 # Vector matchers
-ok {test-number} - v5, (UnorderedEquals<int, std::allocator<int>, CustomAllocator<int>>(permuted)) for: { 1, 2, 3 } UnorderedEquals: { 2, 3, 1 }
+ok {test-number} - v5, ( UnorderedEquals<int, std::allocator<int>, CustomAllocator<int>>( permuted ) ) for: { 1, 2, 3 } UnorderedEquals: { 2, 3, 1 }
 # Vector matchers
-ok {test-number} - v5_permuted, UnorderedEquals(v5) for: { 1, 3, 2 } UnorderedEquals: { 1, 2, 3 }
+ok {test-number} - v5_permuted, UnorderedEquals( v5 ) for: { 1, 3, 2 } UnorderedEquals: { 1, 2, 3 }
 # Vector matchers that fail
-not ok {test-number} - v, VectorContains(-1) for: { 1, 2, 3 } Contains: -1
+not ok {test-number} - v, VectorContains( -1 ) for: { 1, 2, 3 } Contains: -1
 # Vector matchers that fail
-not ok {test-number} - empty, VectorContains(1) for: {  } Contains: 1
+not ok {test-number} - empty, VectorContains( 1 ) for: {  } Contains: 1
 # Vector matchers that fail
-not ok {test-number} - empty, Contains(v) for: {  } Contains: { 1, 2, 3 }
+not ok {test-number} - empty, Contains( v ) for: {  } Contains: { 1, 2, 3 }
 # Vector matchers that fail
-not ok {test-number} - v, Contains(v2) for: { 1, 2, 3 } Contains: { 1, 2, 4 }
+not ok {test-number} - v, Contains( v2 ) for: { 1, 2, 3 } Contains: { 1, 2, 4 }
 # Vector matchers that fail
-not ok {test-number} - v, Equals(v2) for: { 1, 2, 3 } Equals: { 1, 2 }
+not ok {test-number} - v, Equals( v2 ) for: { 1, 2, 3 } Equals: { 1, 2 }
 # Vector matchers that fail
-not ok {test-number} - v2, Equals(v) for: { 1, 2 } Equals: { 1, 2, 3 }
+not ok {test-number} - v2, Equals( v ) for: { 1, 2 } Equals: { 1, 2, 3 }
 # Vector matchers that fail
-not ok {test-number} - empty, Equals(v) for: {  } Equals: { 1, 2, 3 }
+not ok {test-number} - empty, Equals( v ) for: {  } Equals: { 1, 2, 3 }
 # Vector matchers that fail
-not ok {test-number} - v, Equals(empty) for: { 1, 2, 3 } Equals: {  }
+not ok {test-number} - v, Equals( empty ) for: { 1, 2, 3 } Equals: {  }
 # Vector matchers that fail
-not ok {test-number} - v, UnorderedEquals(empty) for: { 1, 2, 3 } UnorderedEquals: {  }
+not ok {test-number} - v, UnorderedEquals( empty ) for: { 1, 2, 3 } UnorderedEquals: {  }
 # Vector matchers that fail
-not ok {test-number} - empty, UnorderedEquals(v) for: {  } UnorderedEquals: { 1, 2, 3 }
+not ok {test-number} - empty, UnorderedEquals( v ) for: {  } UnorderedEquals: { 1, 2, 3 }
 # Vector matchers that fail
-not ok {test-number} - permuted, UnorderedEquals(v) for: { 1, 3 } UnorderedEquals: { 1, 2, 3 }
+not ok {test-number} - permuted, UnorderedEquals( v ) for: { 1, 3 } UnorderedEquals: { 1, 2, 3 }
 # Vector matchers that fail
-not ok {test-number} - permuted, UnorderedEquals(v) for: { 3, 1 } UnorderedEquals: { 1, 2, 3 }
+not ok {test-number} - permuted, UnorderedEquals( v ) for: { 3, 1 } UnorderedEquals: { 1, 2, 3 }
 # When checked exceptions are thrown they can be expected or unexpected
 ok {test-number} - thisThrows(), std::domain_error
 # When checked exceptions are thrown they can be expected or unexpected

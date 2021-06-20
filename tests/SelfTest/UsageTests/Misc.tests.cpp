@@ -19,60 +19,58 @@
 #include <array>
 #include <tuple>
 
-namespace { namespace MiscTests {
+namespace {
 
-#ifndef MISC_TEST_HELPERS_INCLUDED // Don't compile this more than once per TU
-#define MISC_TEST_HELPERS_INCLUDED
-
-inline const char* makeString( bool makeNull ) {
-    return makeNull ? nullptr : "valid string";
-}
-inline bool testCheckedIf( bool flag )  {
-    CHECKED_IF( flag )
-        return true;
-    else
-        return false;
-}
-inline bool testCheckedElse( bool flag ) {
-    CHECKED_ELSE( flag )
-        return false;
-
-    return true;
-}
-
-inline unsigned int Factorial( unsigned int number )  {
-    return number > 1 ? Factorial(number-1)*number : 1;
-}
-
-static int f() {
-    return 1;
-}
-
-inline void manuallyRegisteredTestFunction() {
-    SUCCEED( "was called" );
-}
-
-struct AutoTestReg {
-    AutoTestReg() {
-        REGISTER_TEST_CASE( manuallyRegisteredTestFunction, "ManuallyRegistered" );
+    static const char* makeString(bool makeNull) {
+        return makeNull ? nullptr : "valid string";
     }
-};
+    static bool testCheckedIf(bool flag) {
+        CHECKED_IF(flag)
+            return true;
+    else
+    return false;
+    }
+    static bool testCheckedElse(bool flag) {
+        CHECKED_ELSE(flag)
+            return false;
 
-CATCH_INTERNAL_START_WARNINGS_SUPPRESSION
-CATCH_INTERNAL_SUPPRESS_GLOBALS_WARNINGS
-static AutoTestReg autoTestReg;
-CATCH_INTERNAL_STOP_WARNINGS_SUPPRESSION
+        return true;
+    }
 
-template<typename T>
-struct Foo {
-    size_t size() { return 0; }
-};
+    static unsigned int Factorial(unsigned int number) {
+        return number > 1 ? Factorial(number - 1) * number : 1;
+    }
 
-template<typename T, size_t S>
-struct Bar {
-    size_t size() { return S; }
-};
-#endif
+    static int f() {
+        return 1;
+    }
+
+    static void manuallyRegisteredTestFunction() {
+        SUCCEED("was called");
+    }
+
+    struct AutoTestReg {
+        AutoTestReg() {
+            REGISTER_TEST_CASE(manuallyRegisteredTestFunction, "ManuallyRegistered");
+        }
+    };
+
+    CATCH_INTERNAL_START_WARNINGS_SUPPRESSION
+    CATCH_INTERNAL_SUPPRESS_GLOBALS_WARNINGS
+    static AutoTestReg autoTestReg;
+    CATCH_INTERNAL_STOP_WARNINGS_SUPPRESSION
+
+        template<typename T>
+    struct Foo {
+        size_t size() { return 0; }
+    };
+
+    template<typename T, size_t S>
+    struct Bar {
+        size_t size() { return S; }
+    };
+
+}
 
 TEST_CASE( "random SECTION tests", "[.][sections][failing]" ) {
     int a = 1;
@@ -521,5 +519,3 @@ TEMPLATE_TEST_CASE_SIG("#1954 - 7 arg template test case sig compiles", "[regres
                        (1, 1, 1, 1, 1, 0, 0), (5, 1, 1, 1, 1, 0, 0), (5, 3, 1, 1, 1, 0, 0)) {
     SUCCEED();
 }
-
-}} // namespace MiscTests

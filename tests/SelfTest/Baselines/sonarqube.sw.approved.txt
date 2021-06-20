@@ -1002,32 +1002,32 @@ Exception.tests.cpp:<line number>
     <testCase name="Composed matchers shortcircuit/MatchAllOf" duration="{duration}"/>
     <testCase name="Composed matchers shortcircuit/MatchAnyOf" duration="{duration}"/>
     <testCase name="Contains string matcher" duration="{duration}">
-      <failure message="CHECK_THAT(testStringForMatching(), Contains(&quot;not there&quot;, Catch::CaseSensitive::No))">
+      <failure message="CHECK_THAT(testStringForMatching(), Contains( &quot;not there&quot;, Catch::CaseSensitive::No ))">
 FAILED:
-	CHECK_THAT( testStringForMatching(), Contains("not there", Catch::CaseSensitive::No) )
+	CHECK_THAT( testStringForMatching(), Contains( "not there", Catch::CaseSensitive::No ) )
 with expansion:
 	"this string contains 'abc' as a substring" contains: "not there" (case insensitive)
 Matchers.tests.cpp:<line number>
       </failure>
-      <failure message="CHECK_THAT(testStringForMatching(), Contains(&quot;STRING&quot;))">
+      <failure message="CHECK_THAT(testStringForMatching(), Contains( &quot;STRING&quot; ))">
 FAILED:
-	CHECK_THAT( testStringForMatching(), Contains("STRING") )
+	CHECK_THAT( testStringForMatching(), Contains( "STRING" ) )
 with expansion:
 	"this string contains 'abc' as a substring" contains: "STRING"
 Matchers.tests.cpp:<line number>
       </failure>
     </testCase>
     <testCase name="EndsWith string matcher" duration="{duration}">
-      <failure message="CHECK_THAT(testStringForMatching(), EndsWith(&quot;Substring&quot;))">
+      <failure message="CHECK_THAT(testStringForMatching(), EndsWith( &quot;Substring&quot; ))">
 FAILED:
-	CHECK_THAT( testStringForMatching(), EndsWith("Substring") )
+	CHECK_THAT( testStringForMatching(), EndsWith( "Substring" ) )
 with expansion:
 	"this string contains 'abc' as a substring" ends with: "Substring"
 Matchers.tests.cpp:<line number>
       </failure>
-      <failure message="CHECK_THAT(testStringForMatching(), EndsWith(&quot;this&quot;, Catch::CaseSensitive::No))">
+      <failure message="CHECK_THAT(testStringForMatching(), EndsWith( &quot;this&quot;, Catch::CaseSensitive::No ))">
 FAILED:
-	CHECK_THAT( testStringForMatching(), EndsWith("this", Catch::CaseSensitive::No) )
+	CHECK_THAT( testStringForMatching(), EndsWith( "this", Catch::CaseSensitive::No ) )
 with expansion:
 	"this string contains 'abc' as a substring" ends with: "this" (case insensitive)
 Matchers.tests.cpp:<line number>
@@ -1035,58 +1035,58 @@ Matchers.tests.cpp:<line number>
     </testCase>
     <testCase name="Equals" duration="{duration}"/>
     <testCase name="Equals string matcher" duration="{duration}">
-      <failure message="CHECK_THAT(testStringForMatching(), Equals(&quot;this string contains 'ABC' as a substring&quot;))">
+      <failure message="CHECK_THAT(testStringForMatching(), Equals( &quot;this string contains 'ABC' as a substring&quot; ))">
 FAILED:
-	CHECK_THAT( testStringForMatching(), Equals("this string contains 'ABC' as a substring") )
+	CHECK_THAT( testStringForMatching(), Equals( "this string contains 'ABC' as a substring" ) )
 with expansion:
 	"this string contains 'abc' as a substring" equals: "this string contains 'ABC' as a substring"
 Matchers.tests.cpp:<line number>
       </failure>
-      <failure message="CHECK_THAT(testStringForMatching(), Equals(&quot;something else&quot;, Catch::CaseSensitive::No))">
+      <failure message="CHECK_THAT(testStringForMatching(), Equals( &quot;something else&quot;, Catch::CaseSensitive::No ))">
 FAILED:
-	CHECK_THAT( testStringForMatching(), Equals("something else", Catch::CaseSensitive::No) )
+	CHECK_THAT( testStringForMatching(), Equals( "something else", Catch::CaseSensitive::No ) )
 with expansion:
 	"this string contains 'abc' as a substring" equals: "something else" (case insensitive)
 Matchers.tests.cpp:<line number>
       </failure>
     </testCase>
     <testCase name="Exception matchers that fail/No exception" duration="{duration}">
-      <failure message="CHECK_THROWS_MATCHES(doesNotThrow(), SpecialException, ExceptionMatcher{1})">
+      <failure message="CHECK_THROWS_MATCHES(doesNotThrow(), SpecialException, ExceptionMatcher{ 1 })">
 FAILED:
-	CHECK_THROWS_MATCHES( doesNotThrow(), SpecialException, ExceptionMatcher{1} )
+	CHECK_THROWS_MATCHES( doesNotThrow(), SpecialException, ExceptionMatcher{ 1 } )
 Matchers.tests.cpp:<line number>
       </failure>
-      <failure message="REQUIRE_THROWS_MATCHES(doesNotThrow(), SpecialException, ExceptionMatcher{1})">
+      <failure message="REQUIRE_THROWS_MATCHES(doesNotThrow(), SpecialException, ExceptionMatcher{ 1 })">
 FAILED:
-	REQUIRE_THROWS_MATCHES( doesNotThrow(), SpecialException, ExceptionMatcher{1} )
+	REQUIRE_THROWS_MATCHES( doesNotThrow(), SpecialException, ExceptionMatcher{ 1 } )
 Matchers.tests.cpp:<line number>
       </failure>
     </testCase>
     <testCase name="Exception matchers that fail/Type mismatch" duration="{duration}">
-      <error message="CHECK_THROWS_MATCHES(throwsAsInt(1), SpecialException, ExceptionMatcher{1})">
+      <error message="CHECK_THROWS_MATCHES(throwsAsInt( 1 ), SpecialException, ExceptionMatcher{ 1 })">
 FAILED:
-	CHECK_THROWS_MATCHES( throwsAsInt(1), SpecialException, ExceptionMatcher{1} )
+	CHECK_THROWS_MATCHES( throwsAsInt( 1 ), SpecialException, ExceptionMatcher{ 1 } )
 Unknown exception
 Matchers.tests.cpp:<line number>
       </error>
-      <error message="REQUIRE_THROWS_MATCHES(throwsAsInt(1), SpecialException, ExceptionMatcher{1})">
+      <error message="REQUIRE_THROWS_MATCHES(throwsAsInt( 1 ), SpecialException, ExceptionMatcher{ 1 })">
 FAILED:
-	REQUIRE_THROWS_MATCHES( throwsAsInt(1), SpecialException, ExceptionMatcher{1} )
+	REQUIRE_THROWS_MATCHES( throwsAsInt( 1 ), SpecialException, ExceptionMatcher{ 1 } )
 Unknown exception
 Matchers.tests.cpp:<line number>
       </error>
     </testCase>
     <testCase name="Exception matchers that fail/Contents are wrong" duration="{duration}">
-      <failure message="CHECK_THROWS_MATCHES(throwsSpecialException(3), SpecialException, ExceptionMatcher{1})">
+      <failure message="CHECK_THROWS_MATCHES(throwsSpecialException( 3 ), SpecialException, ExceptionMatcher{ 1 })">
 FAILED:
-	CHECK_THROWS_MATCHES( throwsSpecialException(3), SpecialException, ExceptionMatcher{1} )
+	CHECK_THROWS_MATCHES( throwsSpecialException( 3 ), SpecialException, ExceptionMatcher{ 1 } )
 with expansion:
 	SpecialException::what special exception has value of 1
 Matchers.tests.cpp:<line number>
       </failure>
-      <failure message="REQUIRE_THROWS_MATCHES(throwsSpecialException(4), SpecialException, ExceptionMatcher{1})">
+      <failure message="REQUIRE_THROWS_MATCHES(throwsSpecialException( 4 ), SpecialException, ExceptionMatcher{ 1 })">
 FAILED:
-	REQUIRE_THROWS_MATCHES( throwsSpecialException(4), SpecialException, ExceptionMatcher{1} )
+	REQUIRE_THROWS_MATCHES( throwsSpecialException( 4 ), SpecialException, ExceptionMatcher{ 1 } )
 with expansion:
 	SpecialException::what special exception has value of 1
 Matchers.tests.cpp:<line number>
@@ -1110,9 +1110,9 @@ Matchers.tests.cpp:<line number>
     <testCase name="Matchers can be (AnyOf) composed with the || operator" duration="{duration}"/>
     <testCase name="Matchers can be composed with both &amp;&amp; and ||" duration="{duration}"/>
     <testCase name="Matchers can be composed with both &amp;&amp; and || - failing" duration="{duration}">
-      <failure message="CHECK_THAT(testStringForMatching(), (Contains(&quot;string&quot;) || Contains(&quot;different&quot;)) &amp;&amp; Contains(&quot;random&quot;))">
+      <failure message="CHECK_THAT(testStringForMatching(), ( Contains( &quot;string&quot; ) || Contains( &quot;different&quot; ) ) &amp;&amp; Contains( &quot;random&quot; ))">
 FAILED:
-	CHECK_THAT( testStringForMatching(), (Contains("string") || Contains("different")) &amp;&amp; Contains("random") )
+	CHECK_THAT( testStringForMatching(), ( Contains( "string" ) || Contains( "different" ) ) &amp;&amp; Contains( "random" ) )
 with expansion:
 	"this string contains 'abc' as a substring" ( ( contains: "string" or contains: "different" ) and contains: "random" )
 Matchers.tests.cpp:<line number>
@@ -1120,9 +1120,9 @@ Matchers.tests.cpp:<line number>
     </testCase>
     <testCase name="Matchers can be negated (Not) with the ! operator" duration="{duration}"/>
     <testCase name="Matchers can be negated (Not) with the ! operator - failing" duration="{duration}">
-      <failure message="CHECK_THAT(testStringForMatching(), !Contains(&quot;substring&quot;))">
+      <failure message="CHECK_THAT(testStringForMatching(), !Contains( &quot;substring&quot; ))">
 FAILED:
-	CHECK_THAT( testStringForMatching(), !Contains("substring") )
+	CHECK_THAT( testStringForMatching(), !Contains( "substring" ) )
 with expansion:
 	"this string contains 'abc' as a substring" not contains: "substring"
 Matchers.tests.cpp:<line number>
@@ -1131,23 +1131,23 @@ Matchers.tests.cpp:<line number>
     <testCase name="Overloaded comma or address-of operators are not used" duration="{duration}"/>
     <testCase name="Predicate matcher can accept const char*" duration="{duration}"/>
     <testCase name="Regex string matcher" duration="{duration}">
-      <failure message="CHECK_THAT(testStringForMatching(), Matches(&quot;this STRING contains 'abc' as a substring&quot;))">
+      <failure message="CHECK_THAT(testStringForMatching(), Matches( &quot;this STRING contains 'abc' as a substring&quot; ))">
 FAILED:
-	CHECK_THAT( testStringForMatching(), Matches("this STRING contains 'abc' as a substring") )
+	CHECK_THAT( testStringForMatching(), Matches( "this STRING contains 'abc' as a substring" ) )
 with expansion:
 	"this string contains 'abc' as a substring" matches "this STRING contains 'abc' as a substring" case sensitively
 Matchers.tests.cpp:<line number>
       </failure>
-      <failure message="CHECK_THAT(testStringForMatching(), Matches(&quot;contains 'abc' as a substring&quot;))">
+      <failure message="CHECK_THAT(testStringForMatching(), Matches( &quot;contains 'abc' as a substring&quot; ))">
 FAILED:
-	CHECK_THAT( testStringForMatching(), Matches("contains 'abc' as a substring") )
+	CHECK_THAT( testStringForMatching(), Matches( "contains 'abc' as a substring" ) )
 with expansion:
 	"this string contains 'abc' as a substring" matches "contains 'abc' as a substring" case sensitively
 Matchers.tests.cpp:<line number>
       </failure>
-      <failure message="CHECK_THAT(testStringForMatching(), Matches(&quot;this string contains 'abc' as a&quot;))">
+      <failure message="CHECK_THAT(testStringForMatching(), Matches( &quot;this string contains 'abc' as a&quot; ))">
 FAILED:
-	CHECK_THAT( testStringForMatching(), Matches("this string contains 'abc' as a") )
+	CHECK_THAT( testStringForMatching(), Matches( "this string contains 'abc' as a" ) )
 with expansion:
 	"this string contains 'abc' as a substring" matches "this string contains 'abc' as a" case sensitively
 Matchers.tests.cpp:<line number>
@@ -1155,16 +1155,16 @@ Matchers.tests.cpp:<line number>
     </testCase>
     <testCase name="Regression test #1" duration="{duration}"/>
     <testCase name="StartsWith string matcher" duration="{duration}">
-      <failure message="CHECK_THAT(testStringForMatching(), StartsWith(&quot;This String&quot;))">
+      <failure message="CHECK_THAT(testStringForMatching(), StartsWith( &quot;This String&quot; ))">
 FAILED:
-	CHECK_THAT( testStringForMatching(), StartsWith("This String") )
+	CHECK_THAT( testStringForMatching(), StartsWith( "This String" ) )
 with expansion:
 	"this string contains 'abc' as a substring" starts with: "This String"
 Matchers.tests.cpp:<line number>
       </failure>
-      <failure message="CHECK_THAT(testStringForMatching(), StartsWith(&quot;string&quot;, Catch::CaseSensitive::No))">
+      <failure message="CHECK_THAT(testStringForMatching(), StartsWith( &quot;string&quot;, Catch::CaseSensitive::No ))">
 FAILED:
-	CHECK_THAT( testStringForMatching(), StartsWith("string", Catch::CaseSensitive::No) )
+	CHECK_THAT( testStringForMatching(), StartsWith( "string", Catch::CaseSensitive::No ) )
 with expansion:
 	"this string contains 'abc' as a substring" starts with: "string" (case insensitive)
 Matchers.tests.cpp:<line number>
@@ -1176,18 +1176,18 @@ Matchers.tests.cpp:<line number>
     <testCase name="Vector Approx matcher/Vectors with elements/Different length" duration="{duration}"/>
     <testCase name="Vector Approx matcher/Vectors with elements/Same length, different elements" duration="{duration}"/>
     <testCase name="Vector Approx matcher -- failing/Empty and non empty vectors are not approx equal" duration="{duration}">
-      <failure message="CHECK_THAT(empty, Approx(t1))">
+      <failure message="CHECK_THAT(empty, Approx( t1 ))">
 FAILED:
-	CHECK_THAT( empty, Approx(t1) )
+	CHECK_THAT( empty, Approx( t1 ) )
 with expansion:
 	{  } is approx: { 1.0, 2.0 }
 Matchers.tests.cpp:<line number>
       </failure>
     </testCase>
     <testCase name="Vector Approx matcher -- failing/Just different vectors" duration="{duration}">
-      <failure message="CHECK_THAT(v1, Approx(v2))">
+      <failure message="CHECK_THAT(v1, Approx( v2 ))">
 FAILED:
-	CHECK_THAT( v1, Approx(v2) )
+	CHECK_THAT( v1, Approx( v2 ) )
 with expansion:
 	{ 2.0, 4.0, 6.0 } is approx: { 1.0, 3.0, 5.0 }
 Matchers.tests.cpp:<line number>
@@ -1199,92 +1199,92 @@ Matchers.tests.cpp:<line number>
     <testCase name="Vector matchers/Equals" duration="{duration}"/>
     <testCase name="Vector matchers/UnorderedEquals" duration="{duration}"/>
     <testCase name="Vector matchers that fail/Contains (element)" duration="{duration}">
-      <failure message="CHECK_THAT(v, VectorContains(-1))">
+      <failure message="CHECK_THAT(v, VectorContains( -1 ))">
 FAILED:
-	CHECK_THAT( v, VectorContains(-1) )
+	CHECK_THAT( v, VectorContains( -1 ) )
 with expansion:
 	{ 1, 2, 3 } Contains: -1
 Matchers.tests.cpp:<line number>
       </failure>
-      <failure message="CHECK_THAT(empty, VectorContains(1))">
+      <failure message="CHECK_THAT(empty, VectorContains( 1 ))">
 FAILED:
-	CHECK_THAT( empty, VectorContains(1) )
+	CHECK_THAT( empty, VectorContains( 1 ) )
 with expansion:
 	{  } Contains: 1
 Matchers.tests.cpp:<line number>
       </failure>
     </testCase>
     <testCase name="Vector matchers that fail/Contains (vector)" duration="{duration}">
-      <failure message="CHECK_THAT(empty, Contains(v))">
+      <failure message="CHECK_THAT(empty, Contains( v ))">
 FAILED:
-	CHECK_THAT( empty, Contains(v) )
+	CHECK_THAT( empty, Contains( v ) )
 with expansion:
 	{  } Contains: { 1, 2, 3 }
 Matchers.tests.cpp:<line number>
       </failure>
-      <failure message="CHECK_THAT(v, Contains(v2))">
+      <failure message="CHECK_THAT(v, Contains( v2 ))">
 FAILED:
-	CHECK_THAT( v, Contains(v2) )
+	CHECK_THAT( v, Contains( v2 ) )
 with expansion:
 	{ 1, 2, 3 } Contains: { 1, 2, 4 }
 Matchers.tests.cpp:<line number>
       </failure>
     </testCase>
     <testCase name="Vector matchers that fail/Equals" duration="{duration}">
-      <failure message="CHECK_THAT(v, Equals(v2))">
+      <failure message="CHECK_THAT(v, Equals( v2 ))">
 FAILED:
-	CHECK_THAT( v, Equals(v2) )
+	CHECK_THAT( v, Equals( v2 ) )
 with expansion:
 	{ 1, 2, 3 } Equals: { 1, 2 }
 Matchers.tests.cpp:<line number>
       </failure>
-      <failure message="CHECK_THAT(v2, Equals(v))">
+      <failure message="CHECK_THAT(v2, Equals( v ))">
 FAILED:
-	CHECK_THAT( v2, Equals(v) )
+	CHECK_THAT( v2, Equals( v ) )
 with expansion:
 	{ 1, 2 } Equals: { 1, 2, 3 }
 Matchers.tests.cpp:<line number>
       </failure>
-      <failure message="CHECK_THAT(empty, Equals(v))">
+      <failure message="CHECK_THAT(empty, Equals( v ))">
 FAILED:
-	CHECK_THAT( empty, Equals(v) )
+	CHECK_THAT( empty, Equals( v ) )
 with expansion:
 	{  } Equals: { 1, 2, 3 }
 Matchers.tests.cpp:<line number>
       </failure>
-      <failure message="CHECK_THAT(v, Equals(empty))">
+      <failure message="CHECK_THAT(v, Equals( empty ))">
 FAILED:
-	CHECK_THAT( v, Equals(empty) )
+	CHECK_THAT( v, Equals( empty ) )
 with expansion:
 	{ 1, 2, 3 } Equals: {  }
 Matchers.tests.cpp:<line number>
       </failure>
     </testCase>
     <testCase name="Vector matchers that fail/UnorderedEquals" duration="{duration}">
-      <failure message="CHECK_THAT(v, UnorderedEquals(empty))">
+      <failure message="CHECK_THAT(v, UnorderedEquals( empty ))">
 FAILED:
-	CHECK_THAT( v, UnorderedEquals(empty) )
+	CHECK_THAT( v, UnorderedEquals( empty ) )
 with expansion:
 	{ 1, 2, 3 } UnorderedEquals: {  }
 Matchers.tests.cpp:<line number>
       </failure>
-      <failure message="CHECK_THAT(empty, UnorderedEquals(v))">
+      <failure message="CHECK_THAT(empty, UnorderedEquals( v ))">
 FAILED:
-	CHECK_THAT( empty, UnorderedEquals(v) )
+	CHECK_THAT( empty, UnorderedEquals( v ) )
 with expansion:
 	{  } UnorderedEquals: { 1, 2, 3 }
 Matchers.tests.cpp:<line number>
       </failure>
-      <failure message="CHECK_THAT(permuted, UnorderedEquals(v))">
+      <failure message="CHECK_THAT(permuted, UnorderedEquals( v ))">
 FAILED:
-	CHECK_THAT( permuted, UnorderedEquals(v) )
+	CHECK_THAT( permuted, UnorderedEquals( v ) )
 with expansion:
 	{ 1, 3 } UnorderedEquals: { 1, 2, 3 }
 Matchers.tests.cpp:<line number>
       </failure>
-      <failure message="CHECK_THAT(permuted, UnorderedEquals(v))">
+      <failure message="CHECK_THAT(permuted, UnorderedEquals( v ))">
 FAILED:
-	CHECK_THAT( permuted, UnorderedEquals(v) )
+	CHECK_THAT( permuted, UnorderedEquals( v ) )
 with expansion:
 	{ 3, 1 } UnorderedEquals: { 1, 2, 3 }
 Matchers.tests.cpp:<line number>

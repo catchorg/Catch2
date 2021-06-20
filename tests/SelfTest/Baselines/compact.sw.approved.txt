@@ -290,10 +290,10 @@ Approx.tests.cpp:<line number>: passed: 0 == Approx( dZero) for: 0 == Approx( 0.
 Approx.tests.cpp:<line number>: passed: 0 == Approx( dSmall ).margin( 0.001 ) for: 0 == Approx( 0.00001 )
 Approx.tests.cpp:<line number>: passed: 1.234f == Approx( dMedium ) for: 1.234f == Approx( 1.234 )
 Approx.tests.cpp:<line number>: passed: dMedium == Approx( 1.234f ) for: 1.234 == Approx( 1.2339999676 )
-Matchers.tests.cpp:<line number>: passed: 1, Predicate<int>(alwaysTrue, "always true") for: 1 matches predicate: "always true"
-Matchers.tests.cpp:<line number>: passed: 1, !Predicate<int>(alwaysFalse, "always false") for: 1 not matches predicate: "always false"
-Matchers.tests.cpp:<line number>: passed: "Hello olleH", Predicate<std::string>( [] (std::string const& str) -> bool { return str.front() == str.back(); }, "First and last character should be equal") for: "Hello olleH" matches predicate: "First and last character should be equal"
-Matchers.tests.cpp:<line number>: passed: "This wouldn't pass", !Predicate<std::string>( [] (std::string const& str) -> bool { return str.front() == str.back(); } ) for: "This wouldn't pass" not matches undescribed predicate
+Matchers.tests.cpp:<line number>: passed: 1, Predicate<int>( alwaysTrue, "always true" ) for: 1 matches predicate: "always true"
+Matchers.tests.cpp:<line number>: passed: 1, !Predicate<int>( alwaysFalse, "always false" ) for: 1 not matches predicate: "always false"
+Matchers.tests.cpp:<line number>: passed: "Hello olleH", Predicate<std::string>( []( std::string const& str ) -> bool { return str.front() == str.back(); }, "First and last character should be equal" ) for: "Hello olleH" matches predicate: "First and last character should be equal"
+Matchers.tests.cpp:<line number>: passed: "This wouldn't pass", !Predicate<std::string>( []( std::string const& str ) -> bool { return str.front() == str.back(); } ) for: "This wouldn't pass" not matches undescribed predicate
 Compilation.tests.cpp:<line number>: passed: lhs | rhs for: Val: 1 | Val: 2
 Compilation.tests.cpp:<line number>: passed: !(lhs & rhs) for: !(Val: 1 & Val: 2)
 Compilation.tests.cpp:<line number>: passed: HasBitOperators{ 1 } & HasBitOperators{ 1 } for: Val: 1 & Val: 1
@@ -346,41 +346,41 @@ ToStringGeneral.tests.cpp:<line number>: passed: c == i for: 4 == 4
 ToStringGeneral.tests.cpp:<line number>: passed: c == i for: 5 == 5
 Clara.tests.cpp:<line number>: passed: name.empty() for: true
 Clara.tests.cpp:<line number>: passed: name == "foo" for: "foo" == "foo"
-Matchers.tests.cpp:<line number>: passed: with 1 message: 'std::is_same< decltype((MatcherA() && MatcherB()) && MatcherC()), Catch::Matchers::Detail::MatchAllOfGeneric<MatcherA, MatcherB, MatcherC> >::value'
-Matchers.tests.cpp:<line number>: passed: 1, (MatcherA() && MatcherB()) && MatcherC() for: 1 ( equals: (int) 1 or (float) 1.0f and equals: (long long) 1 and equals: (T) 1 )
-Matchers.tests.cpp:<line number>: passed: with 1 message: 'std::is_same< decltype(MatcherA() && (MatcherB() && MatcherC())), Catch::Matchers::Detail::MatchAllOfGeneric<MatcherA, MatcherB, MatcherC> >::value'
-Matchers.tests.cpp:<line number>: passed: 1, MatcherA() && (MatcherB() && MatcherC()) for: 1 ( equals: (int) 1 or (float) 1.0f and equals: (long long) 1 and equals: (T) 1 )
-Matchers.tests.cpp:<line number>: passed: with 1 message: 'std::is_same< decltype((MatcherA() && MatcherB()) && (MatcherC() && MatcherD())), Catch::Matchers::Detail::MatchAllOfGeneric<MatcherA, MatcherB, MatcherC, MatcherD> >::value'
-Matchers.tests.cpp:<line number>: passed: 1, (MatcherA() && MatcherB()) && (MatcherC() && MatcherD()) for: 1 ( equals: (int) 1 or (float) 1.0f and equals: (long long) 1 and equals: (T) 1 and equals: true )
-Matchers.tests.cpp:<line number>: passed: with 1 message: 'std::is_same< decltype((MatcherA() || MatcherB()) || MatcherC()), Catch::Matchers::Detail::MatchAnyOfGeneric<MatcherA, MatcherB, MatcherC> >::value'
-Matchers.tests.cpp:<line number>: passed: 1, (MatcherA() || MatcherB()) || MatcherC() for: 1 ( equals: (int) 1 or (float) 1.0f or equals: (long long) 1 or equals: (T) 1 )
-Matchers.tests.cpp:<line number>: passed: with 1 message: 'std::is_same< decltype(MatcherA() || (MatcherB() || MatcherC())), Catch::Matchers::Detail::MatchAnyOfGeneric<MatcherA, MatcherB, MatcherC> >::value'
-Matchers.tests.cpp:<line number>: passed: 1, MatcherA() || (MatcherB() || MatcherC()) for: 1 ( equals: (int) 1 or (float) 1.0f or equals: (long long) 1 or equals: (T) 1 )
-Matchers.tests.cpp:<line number>: passed: with 1 message: 'std::is_same< decltype((MatcherA() || MatcherB()) || (MatcherC() || MatcherD())), Catch::Matchers::Detail::MatchAnyOfGeneric<MatcherA, MatcherB, MatcherC, MatcherD> >::value'
-Matchers.tests.cpp:<line number>: passed: 1, (MatcherA() || MatcherB()) || (MatcherC() || MatcherD()) for: 1 ( equals: (int) 1 or (float) 1.0f or equals: (long long) 1 or equals: (T) 1 or equals: true )
-Matchers.tests.cpp:<line number>: passed: with 1 message: 'std::is_same< decltype(!MatcherA()), Catch::Matchers::Detail::MatchNotOfGeneric<MatcherA> >::value'
+Matchers.tests.cpp:<line number>: passed: with 1 message: 'std::is_same< decltype( ( MatcherA() && MatcherB() ) && MatcherC() ), Catch::Matchers::Detail:: MatchAllOfGeneric<MatcherA, MatcherB, MatcherC>>::value'
+Matchers.tests.cpp:<line number>: passed: 1, ( MatcherA() && MatcherB() ) && MatcherC() for: 1 ( equals: (int) 1 or (float) 1.0f and equals: (long long) 1 and equals: (T) 1 )
+Matchers.tests.cpp:<line number>: passed: with 1 message: 'std::is_same< decltype( MatcherA() && ( MatcherB() && MatcherC() ) ), Catch::Matchers::Detail:: MatchAllOfGeneric<MatcherA, MatcherB, MatcherC>>::value'
+Matchers.tests.cpp:<line number>: passed: 1, MatcherA() && ( MatcherB() && MatcherC() ) for: 1 ( equals: (int) 1 or (float) 1.0f and equals: (long long) 1 and equals: (T) 1 )
+Matchers.tests.cpp:<line number>: passed: with 1 message: 'std::is_same< decltype( ( MatcherA() && MatcherB() ) && ( MatcherC() && MatcherD() ) ), Catch::Matchers::Detail:: MatchAllOfGeneric<MatcherA, MatcherB, MatcherC, MatcherD>>:: value'
+Matchers.tests.cpp:<line number>: passed: 1, ( MatcherA() && MatcherB() ) && ( MatcherC() && MatcherD() ) for: 1 ( equals: (int) 1 or (float) 1.0f and equals: (long long) 1 and equals: (T) 1 and equals: true )
+Matchers.tests.cpp:<line number>: passed: with 1 message: 'std::is_same< decltype( ( MatcherA() || MatcherB() ) || MatcherC() ), Catch::Matchers::Detail:: MatchAnyOfGeneric<MatcherA, MatcherB, MatcherC>>::value'
+Matchers.tests.cpp:<line number>: passed: 1, ( MatcherA() || MatcherB() ) || MatcherC() for: 1 ( equals: (int) 1 or (float) 1.0f or equals: (long long) 1 or equals: (T) 1 )
+Matchers.tests.cpp:<line number>: passed: with 1 message: 'std::is_same< decltype( MatcherA() || ( MatcherB() || MatcherC() ) ), Catch::Matchers::Detail:: MatchAnyOfGeneric<MatcherA, MatcherB, MatcherC>>::value'
+Matchers.tests.cpp:<line number>: passed: 1, MatcherA() || ( MatcherB() || MatcherC() ) for: 1 ( equals: (int) 1 or (float) 1.0f or equals: (long long) 1 or equals: (T) 1 )
+Matchers.tests.cpp:<line number>: passed: with 1 message: 'std::is_same< decltype( ( MatcherA() || MatcherB() ) || ( MatcherC() || MatcherD() ) ), Catch::Matchers::Detail:: MatchAnyOfGeneric<MatcherA, MatcherB, MatcherC, MatcherD>>:: value'
+Matchers.tests.cpp:<line number>: passed: 1, ( MatcherA() || MatcherB() ) || ( MatcherC() || MatcherD() ) for: 1 ( equals: (int) 1 or (float) 1.0f or equals: (long long) 1 or equals: (T) 1 or equals: true )
+Matchers.tests.cpp:<line number>: passed: with 1 message: 'std::is_same< decltype( !MatcherA() ), Catch::Matchers::Detail::MatchNotOfGeneric<MatcherA>>::value'
 Matchers.tests.cpp:<line number>: passed: 0, !MatcherA() for: 0 not equals: (int) 1 or (float) 1.0f
-Matchers.tests.cpp:<line number>: passed: with 1 message: 'std::is_same< decltype(!!MatcherA()), MatcherA const& >::value'
+Matchers.tests.cpp:<line number>: passed: with 1 message: 'std::is_same<decltype( !!MatcherA() ), MatcherA const&>::value'
 Matchers.tests.cpp:<line number>: passed: 1, !!MatcherA() for: 1 equals: (int) 1 or (float) 1.0f
-Matchers.tests.cpp:<line number>: passed: with 1 message: 'std::is_same< decltype(!!!MatcherA()), Catch::Matchers::Detail::MatchNotOfGeneric<MatcherA> >::value'
+Matchers.tests.cpp:<line number>: passed: with 1 message: 'std::is_same< decltype( !!!MatcherA() ), Catch::Matchers::Detail::MatchNotOfGeneric<MatcherA>>::value'
 Matchers.tests.cpp:<line number>: passed: 0, !!!MatcherA() for: 0 not equals: (int) 1 or (float) 1.0f
-Matchers.tests.cpp:<line number>: passed: with 1 message: 'std::is_same< decltype(!!!!MatcherA()), MatcherA const & >::value'
+Matchers.tests.cpp:<line number>: passed: with 1 message: 'std::is_same<decltype( !!!!MatcherA() ), MatcherA const&>::value'
 Matchers.tests.cpp:<line number>: passed: 1, !!!!MatcherA() for: 1 equals: (int) 1 or (float) 1.0f
-Matchers.tests.cpp:<line number>: passed: with 1 message: 'std::is_same< decltype(StartsWith("foo") || (StartsWith("bar") && EndsWith("bar") && !EndsWith("foo"))), Catch::Matchers::Detail::MatchAnyOf<std::string> >::value'
-Matchers.tests.cpp:<line number>: passed: with 1 message: 'std::is_same< decltype(MatcherA() || MatcherB()), Catch::Matchers::Detail::MatchAnyOfGeneric<MatcherA, MatcherB> >::value'
+Matchers.tests.cpp:<line number>: passed: with 1 message: 'std::is_same<decltype( StartsWith( "foo" ) || ( StartsWith( "bar" ) && EndsWith( "bar" ) && !EndsWith( "foo" ) ) ), Catch::Matchers::Detail::MatchAnyOf<std::string>>::value'
+Matchers.tests.cpp:<line number>: passed: with 1 message: 'std::is_same<decltype( MatcherA() || MatcherB() ), Catch::Matchers::Detail:: MatchAnyOfGeneric<MatcherA, MatcherB>>::value'
 Matchers.tests.cpp:<line number>: passed: 1, MatcherA() || MatcherB() for: 1 ( equals: (int) 1 or (float) 1.0f or equals: (long long) 1 )
-Matchers.tests.cpp:<line number>: passed: with 1 message: 'std::is_same< decltype(MatcherA() && MatcherB()), Catch::Matchers::Detail::MatchAllOfGeneric<MatcherA, MatcherB> >::value'
+Matchers.tests.cpp:<line number>: passed: with 1 message: 'std::is_same<decltype( MatcherA() && MatcherB() ), Catch::Matchers::Detail:: MatchAllOfGeneric<MatcherA, MatcherB>>::value'
 Matchers.tests.cpp:<line number>: passed: 1, MatcherA() && MatcherB() for: 1 ( equals: (int) 1 or (float) 1.0f and equals: (long long) 1 )
-Matchers.tests.cpp:<line number>: passed: with 1 message: 'std::is_same< decltype(MatcherA() || !MatcherB()), Catch::Matchers::Detail::MatchAnyOfGeneric<MatcherA, Catch::Matchers::Detail::MatchNotOfGeneric<MatcherB>> >::value'
+Matchers.tests.cpp:<line number>: passed: with 1 message: 'std::is_same< decltype( MatcherA() || !MatcherB() ), Catch::Matchers::Detail::MatchAnyOfGeneric< MatcherA, Catch::Matchers::Detail::MatchNotOfGeneric<MatcherB>>>::value'
 Matchers.tests.cpp:<line number>: passed: 1, MatcherA() || !MatcherB() for: 1 ( equals: (int) 1 or (float) 1.0f or not equals: (long long) 1 )
-Matchers.tests.cpp:<line number>: passed: vec, Predicate<std::vector<int>>([](auto const& v) { return std::all_of(v.begin(), v.end(), [](int elem) { return elem % 2 == 1; }); }, "All elements are odd") && !EqualsRange(a) for: { 1, 3, 5 } ( matches predicate: "All elements are odd" and not Equals: { 5, 3, 1 } )
-Matchers.tests.cpp:<line number>: passed: str, StartsWith("foo") && EqualsRange(arr) && EndsWith("bar") for: "foobar" ( starts with: "foo" and Equals: { 'f', 'o', 'o', 'b', 'a', 'r' } and ends with: "bar" )
-Matchers.tests.cpp:<line number>: passed: str, StartsWith("foo") && !EqualsRange(bad_arr) && EndsWith("bar") for: "foobar" ( starts with: "foo" and not Equals: { 'o', 'o', 'f', 'b', 'a', 'r' } and ends with: "bar" )
-Matchers.tests.cpp:<line number>: passed: str, EqualsRange(arr) && StartsWith("foo") && EndsWith("bar") for: "foobar" ( Equals: { 'f', 'o', 'o', 'b', 'a', 'r' } and starts with: "foo" and ends with: "bar" )
-Matchers.tests.cpp:<line number>: passed: str, !EqualsRange(bad_arr) && StartsWith("foo") && EndsWith("bar") for: "foobar" ( not Equals: { 'o', 'o', 'f', 'b', 'a', 'r' } and starts with: "foo" and ends with: "bar" )
-Matchers.tests.cpp:<line number>: passed: str, EqualsRange(bad_arr) || (StartsWith("foo") && EndsWith("bar")) for: "foobar" ( Equals: { 'o', 'o', 'f', 'b', 'a', 'r' } or ( starts with: "foo" and ends with: "bar" ) )
-Matchers.tests.cpp:<line number>: passed: str, (StartsWith("foo") && EndsWith("bar")) || EqualsRange(bad_arr) for: "foobar" ( ( starts with: "foo" and ends with: "bar" ) or Equals: { 'o', 'o', 'f', 'b', 'a', 'r' } )
-Matchers.tests.cpp:<line number>: passed: container, EqualsRange(a) || EqualsRange(b) || EqualsRange(c) for: { 1, 2, 3 } ( Equals: { 1, 2, 3 } or Equals: { 0, 1, 2 } or Equals: { 4, 5, 6 } )
+Matchers.tests.cpp:<line number>: passed: vec, Predicate<std::vector<int>>( []( auto const& v ) { return std::all_of( v.begin(), v.end(), []( int elem ) { return elem % 2 == 1; } ); }, "All elements are odd" ) && !EqualsRange( a ) for: { 1, 3, 5 } ( matches predicate: "All elements are odd" and not Equals: { 5, 3, 1 } )
+Matchers.tests.cpp:<line number>: passed: str, StartsWith( "foo" ) && EqualsRange( arr ) && EndsWith( "bar" ) for: "foobar" ( starts with: "foo" and Equals: { 'f', 'o', 'o', 'b', 'a', 'r' } and ends with: "bar" )
+Matchers.tests.cpp:<line number>: passed: str, StartsWith( "foo" ) && !EqualsRange( bad_arr ) && EndsWith( "bar" ) for: "foobar" ( starts with: "foo" and not Equals: { 'o', 'o', 'f', 'b', 'a', 'r' } and ends with: "bar" )
+Matchers.tests.cpp:<line number>: passed: str, EqualsRange( arr ) && StartsWith( "foo" ) && EndsWith( "bar" ) for: "foobar" ( Equals: { 'f', 'o', 'o', 'b', 'a', 'r' } and starts with: "foo" and ends with: "bar" )
+Matchers.tests.cpp:<line number>: passed: str, !EqualsRange( bad_arr ) && StartsWith( "foo" ) && EndsWith( "bar" ) for: "foobar" ( not Equals: { 'o', 'o', 'f', 'b', 'a', 'r' } and starts with: "foo" and ends with: "bar" )
+Matchers.tests.cpp:<line number>: passed: str, EqualsRange( bad_arr ) || ( StartsWith( "foo" ) && EndsWith( "bar" ) ) for: "foobar" ( Equals: { 'o', 'o', 'f', 'b', 'a', 'r' } or ( starts with: "foo" and ends with: "bar" ) )
+Matchers.tests.cpp:<line number>: passed: str, ( StartsWith( "foo" ) && EndsWith( "bar" ) ) || EqualsRange( bad_arr ) for: "foobar" ( ( starts with: "foo" and ends with: "bar" ) or Equals: { 'o', 'o', 'f', 'b', 'a', 'r' } )
+Matchers.tests.cpp:<line number>: passed: container, EqualsRange( a ) || EqualsRange( b ) || EqualsRange( c ) for: { 1, 2, 3 } ( Equals: { 1, 2, 3 } or Equals: { 0, 1, 2 } or Equals: { 4, 5, 6 } )
 Tricky.tests.cpp:<line number>: passed: std::vector<constructor_throws>{constructor_throws{}, constructor_throws{}}
 Tricky.tests.cpp:<line number>: passed: std::vector<constructor_throws>{constructor_throws{}, constructor_throws{}}
 Tricky.tests.cpp:<line number>: passed: std::vector<int>{1, 2, 3} == std::vector<int>{1, 2, 3}
@@ -434,7 +434,7 @@ Condition.tests.cpp:<line number>: passed: (std::numeric_limits<uint32_t>::max)(
 Matchers.tests.cpp:<line number>: passed: !(matcher.match( 1 )) for: !false
 Matchers.tests.cpp:<line number>: passed: first.matchCalled for: true
 Matchers.tests.cpp:<line number>: passed: !second.matchCalled for: true
-Matchers.tests.cpp:<line number>: passed: matcher.match(1) for: true
+Matchers.tests.cpp:<line number>: passed: matcher.match( 1 ) for: true
 Matchers.tests.cpp:<line number>: passed: first.matchCalled for: true
 Matchers.tests.cpp:<line number>: passed: !second.matchCalled for: true
 Matchers.tests.cpp:<line number>: passed: !(matcher.match( 1 )) for: !false
@@ -443,8 +443,8 @@ Matchers.tests.cpp:<line number>: passed: !second.matchCalled for: true
 Matchers.tests.cpp:<line number>: passed: matcher.match( 1 ) for: true
 Matchers.tests.cpp:<line number>: passed: first.matchCalled for: true
 Matchers.tests.cpp:<line number>: passed: !second.matchCalled for: true
-Matchers.tests.cpp:<line number>: failed: testStringForMatching(), Contains("not there", Catch::CaseSensitive::No) for: "this string contains 'abc' as a substring" contains: "not there" (case insensitive)
-Matchers.tests.cpp:<line number>: failed: testStringForMatching(), Contains("STRING") for: "this string contains 'abc' as a substring" contains: "STRING"
+Matchers.tests.cpp:<line number>: failed: testStringForMatching(), Contains( "not there", Catch::CaseSensitive::No ) for: "this string contains 'abc' as a substring" contains: "not there" (case insensitive)
+Matchers.tests.cpp:<line number>: failed: testStringForMatching(), Contains( "STRING" ) for: "this string contains 'abc' as a substring" contains: "STRING"
 Generators.tests.cpp:<line number>: passed: elem % 2 == 1 for: 1 == 1
 Generators.tests.cpp:<line number>: passed: elem % 2 == 1 for: 1 == 1
 Generators.tests.cpp:<line number>: passed: elem % 2 == 1 for: 1 == 1
@@ -469,8 +469,8 @@ ToString.tests.cpp:<line number>: passed: enumInfo->lookup(1) == "Value2" for: V
 ToString.tests.cpp:<line number>: passed: enumInfo->lookup(3) == "{** unexpected enum value **}" for: {** unexpected enum value **}
 ==
 "{** unexpected enum value **}"
-Matchers.tests.cpp:<line number>: failed: testStringForMatching(), EndsWith("Substring") for: "this string contains 'abc' as a substring" ends with: "Substring"
-Matchers.tests.cpp:<line number>: failed: testStringForMatching(), EndsWith("this", Catch::CaseSensitive::No) for: "this string contains 'abc' as a substring" ends with: "this" (case insensitive)
+Matchers.tests.cpp:<line number>: failed: testStringForMatching(), EndsWith( "Substring" ) for: "this string contains 'abc' as a substring" ends with: "Substring"
+Matchers.tests.cpp:<line number>: failed: testStringForMatching(), EndsWith( "this", Catch::CaseSensitive::No ) for: "this string contains 'abc' as a substring" ends with: "this" (case insensitive)
 EnumToString.tests.cpp:<line number>: passed: stringify( EnumClass3::Value1 ) == "Value1" for: "Value1" == "Value1"
 EnumToString.tests.cpp:<line number>: passed: stringify( EnumClass3::Value2 ) == "Value2" for: "Value2" == "Value2"
 EnumToString.tests.cpp:<line number>: passed: stringify( EnumClass3::Value3 ) == "Value3" for: "Value3" == "Value3"
@@ -501,10 +501,10 @@ Condition.tests.cpp:<line number>: passed: data.str_hello == "hello" for: "hello
 Condition.tests.cpp:<line number>: passed: "hello" == data.str_hello for: "hello" == "hello"
 Condition.tests.cpp:<line number>: passed: data.str_hello.size() == 5 for: 5 == 5
 Condition.tests.cpp:<line number>: passed: x == Approx( 1.3 ) for: 1.3 == Approx( 1.3 )
-Matchers.tests.cpp:<line number>: passed: testStringForMatching(), Equals("this string contains 'abc' as a substring") for: "this string contains 'abc' as a substring" equals: "this string contains 'abc' as a substring"
-Matchers.tests.cpp:<line number>: passed: testStringForMatching(), Equals("this string contains 'ABC' as a substring", Catch::CaseSensitive::No) for: "this string contains 'abc' as a substring" equals: "this string contains 'abc' as a substring" (case insensitive)
-Matchers.tests.cpp:<line number>: failed: testStringForMatching(), Equals("this string contains 'ABC' as a substring") for: "this string contains 'abc' as a substring" equals: "this string contains 'ABC' as a substring"
-Matchers.tests.cpp:<line number>: failed: testStringForMatching(), Equals("something else", Catch::CaseSensitive::No) for: "this string contains 'abc' as a substring" equals: "something else" (case insensitive)
+Matchers.tests.cpp:<line number>: passed: testStringForMatching(), Equals( "this string contains 'abc' as a substring" ) for: "this string contains 'abc' as a substring" equals: "this string contains 'abc' as a substring"
+Matchers.tests.cpp:<line number>: passed: testStringForMatching(), Equals( "this string contains 'ABC' as a substring", Catch::CaseSensitive::No ) for: "this string contains 'abc' as a substring" equals: "this string contains 'abc' as a substring" (case insensitive)
+Matchers.tests.cpp:<line number>: failed: testStringForMatching(), Equals( "this string contains 'ABC' as a substring" ) for: "this string contains 'abc' as a substring" equals: "this string contains 'ABC' as a substring"
+Matchers.tests.cpp:<line number>: failed: testStringForMatching(), Equals( "something else", Catch::CaseSensitive::No ) for: "this string contains 'abc' as a substring" equals: "something else" (case insensitive)
 ToStringGeneral.tests.cpp:<line number>: passed: ::Catch::Detail::stringify(WhatException{}) == "This exception has overridden what() method" for: "This exception has overridden what() method"
 ==
 "This exception has overridden what() method"
@@ -512,24 +512,24 @@ ToStringGeneral.tests.cpp:<line number>: passed: ::Catch::Detail::stringify(Oper
 ToStringGeneral.tests.cpp:<line number>: passed: ::Catch::Detail::stringify(StringMakerException{}) == "StringMakerException" for: "StringMakerException"
 ==
 "StringMakerException"
-Matchers.tests.cpp:<line number>: failed: expected exception, got none; expression was: doesNotThrow(), SpecialException, ExceptionMatcher{1}
-Matchers.tests.cpp:<line number>: failed: expected exception, got none; expression was: doesNotThrow(), SpecialException, ExceptionMatcher{1}
-Matchers.tests.cpp:<line number>: failed: unexpected exception with message: 'Unknown exception'; expression was: throwsAsInt(1), SpecialException, ExceptionMatcher{1}
-Matchers.tests.cpp:<line number>: failed: unexpected exception with message: 'Unknown exception'; expression was: throwsAsInt(1), SpecialException, ExceptionMatcher{1}
-Matchers.tests.cpp:<line number>: failed: throwsSpecialException(3), SpecialException, ExceptionMatcher{1} for: SpecialException::what special exception has value of 1
-Matchers.tests.cpp:<line number>: failed: throwsSpecialException(4), SpecialException, ExceptionMatcher{1} for: SpecialException::what special exception has value of 1
-Matchers.tests.cpp:<line number>: passed: throwsSpecialException(1), SpecialException, ExceptionMatcher{1} for: SpecialException::what special exception has value of 1
-Matchers.tests.cpp:<line number>: passed: throwsSpecialException(2), SpecialException, ExceptionMatcher{2} for: SpecialException::what special exception has value of 2
+Matchers.tests.cpp:<line number>: failed: expected exception, got none; expression was: doesNotThrow(), SpecialException, ExceptionMatcher{ 1 }
+Matchers.tests.cpp:<line number>: failed: expected exception, got none; expression was: doesNotThrow(), SpecialException, ExceptionMatcher{ 1 }
+Matchers.tests.cpp:<line number>: failed: unexpected exception with message: 'Unknown exception'; expression was: throwsAsInt( 1 ), SpecialException, ExceptionMatcher{ 1 }
+Matchers.tests.cpp:<line number>: failed: unexpected exception with message: 'Unknown exception'; expression was: throwsAsInt( 1 ), SpecialException, ExceptionMatcher{ 1 }
+Matchers.tests.cpp:<line number>: failed: throwsSpecialException( 3 ), SpecialException, ExceptionMatcher{ 1 } for: SpecialException::what special exception has value of 1
+Matchers.tests.cpp:<line number>: failed: throwsSpecialException( 4 ), SpecialException, ExceptionMatcher{ 1 } for: SpecialException::what special exception has value of 1
+Matchers.tests.cpp:<line number>: passed: throwsSpecialException( 1 ), SpecialException, ExceptionMatcher{ 1 } for: SpecialException::what special exception has value of 1
+Matchers.tests.cpp:<line number>: passed: throwsSpecialException( 2 ), SpecialException, ExceptionMatcher{ 2 } for: SpecialException::what special exception has value of 2
 Exception.tests.cpp:<line number>: passed: thisThrows(), "expected exception" for: "expected exception" equals: "expected exception"
 Exception.tests.cpp:<line number>: passed: thisThrows(), Equals( "expecteD Exception", Catch::CaseSensitive::No ) for: "expected exception" equals: "expected exception" (case insensitive)
 Exception.tests.cpp:<line number>: passed: thisThrows(), StartsWith( "expected" ) for: "expected exception" starts with: "expected"
 Exception.tests.cpp:<line number>: passed: thisThrows(), EndsWith( "exception" ) for: "expected exception" ends with: "exception"
 Exception.tests.cpp:<line number>: passed: thisThrows(), Contains( "except" ) for: "expected exception" contains: "except"
 Exception.tests.cpp:<line number>: passed: thisThrows(), Contains( "exCept", Catch::CaseSensitive::No ) for: "expected exception" contains: "except" (case insensitive)
-Matchers.tests.cpp:<line number>: passed: throwsDerivedException(), DerivedException, Message("DerivedException::what") for: DerivedException::what exception message matches "DerivedException::what"
-Matchers.tests.cpp:<line number>: passed: throwsDerivedException(), DerivedException, !Message("derivedexception::what") for: DerivedException::what not exception message matches "derivedexception::what"
-Matchers.tests.cpp:<line number>: passed: throwsSpecialException(2), SpecialException, !Message("DerivedException::what") for: SpecialException::what not exception message matches "DerivedException::what"
-Matchers.tests.cpp:<line number>: passed: throwsSpecialException(2), SpecialException, Message("SpecialException::what") for: SpecialException::what exception message matches "SpecialException::what"
+Matchers.tests.cpp:<line number>: passed: throwsDerivedException(), DerivedException, Message( "DerivedException::what" ) for: DerivedException::what exception message matches "DerivedException::what"
+Matchers.tests.cpp:<line number>: passed: throwsDerivedException(), DerivedException, !Message( "derivedexception::what" ) for: DerivedException::what not exception message matches "derivedexception::what"
+Matchers.tests.cpp:<line number>: passed: throwsSpecialException( 2 ), SpecialException, !Message( "DerivedException::what" ) for: SpecialException::what not exception message matches "DerivedException::what"
+Matchers.tests.cpp:<line number>: passed: throwsSpecialException( 2 ), SpecialException, Message( "SpecialException::what" ) for: SpecialException::what exception message matches "SpecialException::what"
 Exception.tests.cpp:<line number>: failed: unexpected exception with message: 'expected exception'; expression was: thisThrows(), std::string
 Exception.tests.cpp:<line number>: failed: expected exception, got none; expression was: thisDoesntThrow(), std::domain_error
 Exception.tests.cpp:<line number>: failed: unexpected exception with message: 'expected exception'; expression was: thisThrows()
@@ -542,66 +542,66 @@ Misc.tests.cpp:<line number>: passed: Factorial(1) == 1 for: 1 == 1
 Misc.tests.cpp:<line number>: passed: Factorial(2) == 2 for: 2 == 2
 Misc.tests.cpp:<line number>: passed: Factorial(3) == 6 for: 6 == 6
 Misc.tests.cpp:<line number>: passed: Factorial(10) == 3628800 for: 3628800 (0x<hex digits>) == 3628800 (0x<hex digits>)
-Matchers.tests.cpp:<line number>: passed: 10., WithinRel(11.1, 0.1) for: 10.0 and 11.1 are within 10% of each other
-Matchers.tests.cpp:<line number>: passed: 10., !WithinRel(11.2, 0.1) for: 10.0 not and 11.2 are within 10% of each other
-Matchers.tests.cpp:<line number>: passed: 1., !WithinRel(0., 0.99) for: 1.0 not and 0 are within 99% of each other
-Matchers.tests.cpp:<line number>: passed: -0., WithinRel(0.) for: -0.0 and 0 are within 2.22045e-12% of each other
-Matchers.tests.cpp:<line number>: passed: v1, WithinRel(v2) for: 0.0 and 2.22507e-308 are within 2.22045e-12% of each other
-Matchers.tests.cpp:<line number>: passed: 1., WithinAbs(1., 0) for: 1.0 is within 0.0 of 1.0
-Matchers.tests.cpp:<line number>: passed: 0., WithinAbs(1., 1) for: 0.0 is within 1.0 of 1.0
-Matchers.tests.cpp:<line number>: passed: 0., !WithinAbs(1., 0.99) for: 0.0 not is within 0.99 of 1.0
-Matchers.tests.cpp:<line number>: passed: 0., !WithinAbs(1., 0.99) for: 0.0 not is within 0.99 of 1.0
-Matchers.tests.cpp:<line number>: passed: 11., !WithinAbs(10., 0.5) for: 11.0 not is within 0.5 of 10.0
-Matchers.tests.cpp:<line number>: passed: 10., !WithinAbs(11., 0.5) for: 10.0 not is within 0.5 of 11.0
-Matchers.tests.cpp:<line number>: passed: -10., WithinAbs(-10., 0.5) for: -10.0 is within 0.5 of -10.0
-Matchers.tests.cpp:<line number>: passed: -10., WithinAbs(-9.6, 0.5) for: -10.0 is within 0.5 of -9.6
-Matchers.tests.cpp:<line number>: passed: 1., WithinULP(1., 0) for: 1.0 is within 0 ULPs of 1.0000000000000000e+00 ([1.0000000000000000e+00, 1.0000000000000000e+00])
-Matchers.tests.cpp:<line number>: passed: nextafter(1., 2.), WithinULP(1., 1) for: 1.0 is within 1 ULPs of 1.0000000000000000e+00 ([9.9999999999999989e-01, 1.0000000000000002e+00])
-Matchers.tests.cpp:<line number>: passed: 0., WithinULP(nextafter(0., 1.), 1) for: 0.0 is within 1 ULPs of 4.9406564584124654e-324 ([0.0000000000000000e+00, 9.8813129168249309e-324])
-Matchers.tests.cpp:<line number>: passed: 1., WithinULP(nextafter(1., 0.), 1) for: 1.0 is within 1 ULPs of 9.9999999999999989e-01 ([9.9999999999999978e-01, 1.0000000000000000e+00])
-Matchers.tests.cpp:<line number>: passed: 1., !WithinULP(nextafter(1., 2.), 0) for: 1.0 not is within 0 ULPs of 1.0000000000000002e+00 ([1.0000000000000002e+00, 1.0000000000000002e+00])
-Matchers.tests.cpp:<line number>: passed: 1., WithinULP(1., 0) for: 1.0 is within 0 ULPs of 1.0000000000000000e+00 ([1.0000000000000000e+00, 1.0000000000000000e+00])
-Matchers.tests.cpp:<line number>: passed: -0., WithinULP(0., 0) for: -0.0 is within 0 ULPs of 0.0000000000000000e+00 ([0.0000000000000000e+00, 0.0000000000000000e+00])
-Matchers.tests.cpp:<line number>: passed: 1., WithinAbs(1., 0.5) || WithinULP(2., 1) for: 1.0 ( is within 0.5 of 1.0 or is within 1 ULPs of 2.0000000000000000e+00 ([1.9999999999999998e+00, 2.0000000000000004e+00]) )
-Matchers.tests.cpp:<line number>: passed: 1., WithinAbs(2., 0.5) || WithinULP(1., 0) for: 1.0 ( is within 0.5 of 2.0 or is within 0 ULPs of 1.0000000000000000e+00 ([1.0000000000000000e+00, 1.0000000000000000e+00]) )
-Matchers.tests.cpp:<line number>: passed: 0.0001, WithinAbs(0., 0.001) || WithinRel(0., 0.1) for: 0.0001 ( is within 0.001 of 0.0 or and 0 are within 10% of each other )
-Matchers.tests.cpp:<line number>: passed: WithinAbs(1., 0.)
-Matchers.tests.cpp:<line number>: passed: WithinAbs(1., -1.), std::domain_error
-Matchers.tests.cpp:<line number>: passed: WithinULP(1., 0)
-Matchers.tests.cpp:<line number>: passed: WithinRel(1., 0.)
-Matchers.tests.cpp:<line number>: passed: WithinRel(1., -0.2), std::domain_error
-Matchers.tests.cpp:<line number>: passed: WithinRel(1., 1.), std::domain_error
-Matchers.tests.cpp:<line number>: passed: 10.f, WithinRel(11.1f, 0.1f) for: 10.0f and 11.1 are within 10% of each other
-Matchers.tests.cpp:<line number>: passed: 10.f, !WithinRel(11.2f, 0.1f) for: 10.0f not and 11.2 are within 10% of each other
-Matchers.tests.cpp:<line number>: passed: 1.f, !WithinRel(0.f, 0.99f) for: 1.0f not and 0 are within 99% of each other
-Matchers.tests.cpp:<line number>: passed: -0.f, WithinRel(0.f) for: -0.0f and 0 are within 0.00119209% of each other
-Matchers.tests.cpp:<line number>: passed: v1, WithinRel(v2) for: 0.0f and 1.17549e-38 are within 0.00119209% of each other
-Matchers.tests.cpp:<line number>: passed: 1.f, WithinAbs(1.f, 0) for: 1.0f is within 0.0 of 1.0
-Matchers.tests.cpp:<line number>: passed: 0.f, WithinAbs(1.f, 1) for: 0.0f is within 1.0 of 1.0
-Matchers.tests.cpp:<line number>: passed: 0.f, !WithinAbs(1.f, 0.99f) for: 0.0f not is within 0.9900000095 of 1.0
-Matchers.tests.cpp:<line number>: passed: 0.f, !WithinAbs(1.f, 0.99f) for: 0.0f not is within 0.9900000095 of 1.0
-Matchers.tests.cpp:<line number>: passed: 0.f, WithinAbs(-0.f, 0) for: 0.0f is within 0.0 of -0.0
-Matchers.tests.cpp:<line number>: passed: 11.f, !WithinAbs(10.f, 0.5f) for: 11.0f not is within 0.5 of 10.0
-Matchers.tests.cpp:<line number>: passed: 10.f, !WithinAbs(11.f, 0.5f) for: 10.0f not is within 0.5 of 11.0
-Matchers.tests.cpp:<line number>: passed: -10.f, WithinAbs(-10.f, 0.5f) for: -10.0f is within 0.5 of -10.0
-Matchers.tests.cpp:<line number>: passed: -10.f, WithinAbs(-9.6f, 0.5f) for: -10.0f is within 0.5 of -9.6000003815
-Matchers.tests.cpp:<line number>: passed: 1.f, WithinULP(1.f, 0) for: 1.0f is within 0 ULPs of 1.00000000e+00f ([1.00000000e+00, 1.00000000e+00])
-Matchers.tests.cpp:<line number>: passed: nextafter(1.f, 2.f), WithinULP(1.f, 1) for: 1.0f is within 1 ULPs of 1.00000000e+00f ([9.99999940e-01, 1.00000012e+00])
-Matchers.tests.cpp:<line number>: passed: 0.f, WithinULP(nextafter(0.f, 1.f), 1) for: 0.0f is within 1 ULPs of 1.40129846e-45f ([0.00000000e+00, 2.80259693e-45])
-Matchers.tests.cpp:<line number>: passed: 1.f, WithinULP(nextafter(1.f, 0.f), 1) for: 1.0f is within 1 ULPs of 9.99999940e-01f ([9.99999881e-01, 1.00000000e+00])
-Matchers.tests.cpp:<line number>: passed: 1.f, !WithinULP(nextafter(1.f, 2.f), 0) for: 1.0f not is within 0 ULPs of 1.00000012e+00f ([1.00000012e+00, 1.00000012e+00])
-Matchers.tests.cpp:<line number>: passed: 1.f, WithinULP(1.f, 0) for: 1.0f is within 0 ULPs of 1.00000000e+00f ([1.00000000e+00, 1.00000000e+00])
-Matchers.tests.cpp:<line number>: passed: -0.f, WithinULP(0.f, 0) for: -0.0f is within 0 ULPs of 0.00000000e+00f ([0.00000000e+00, 0.00000000e+00])
-Matchers.tests.cpp:<line number>: passed: 1.f, WithinAbs(1.f, 0.5) || WithinULP(1.f, 1) for: 1.0f ( is within 0.5 of 1.0 or is within 1 ULPs of 1.00000000e+00f ([9.99999940e-01, 1.00000012e+00]) )
-Matchers.tests.cpp:<line number>: passed: 1.f, WithinAbs(2.f, 0.5) || WithinULP(1.f, 0) for: 1.0f ( is within 0.5 of 2.0 or is within 0 ULPs of 1.00000000e+00f ([1.00000000e+00, 1.00000000e+00]) )
-Matchers.tests.cpp:<line number>: passed: 0.0001f, WithinAbs(0.f, 0.001f) || WithinRel(0.f, 0.1f) for: 0.0001f ( is within 0.001 of 0.0 or and 0 are within 10% of each other )
-Matchers.tests.cpp:<line number>: passed: WithinAbs(1.f, 0.f)
-Matchers.tests.cpp:<line number>: passed: WithinAbs(1.f, -1.f), std::domain_error
-Matchers.tests.cpp:<line number>: passed: WithinULP(1.f, 0)
-Matchers.tests.cpp:<line number>: passed: WithinULP(1.f, static_cast<uint64_t>(-1)), std::domain_error
-Matchers.tests.cpp:<line number>: passed: WithinRel(1.f, 0.f)
-Matchers.tests.cpp:<line number>: passed: WithinRel(1.f, -0.2f), std::domain_error
-Matchers.tests.cpp:<line number>: passed: WithinRel(1.f, 1.f), std::domain_error
+Matchers.tests.cpp:<line number>: passed: 10., WithinRel( 11.1, 0.1 ) for: 10.0 and 11.1 are within 10% of each other
+Matchers.tests.cpp:<line number>: passed: 10., !WithinRel( 11.2, 0.1 ) for: 10.0 not and 11.2 are within 10% of each other
+Matchers.tests.cpp:<line number>: passed: 1., !WithinRel( 0., 0.99 ) for: 1.0 not and 0 are within 99% of each other
+Matchers.tests.cpp:<line number>: passed: -0., WithinRel( 0. ) for: -0.0 and 0 are within 2.22045e-12% of each other
+Matchers.tests.cpp:<line number>: passed: v1, WithinRel( v2 ) for: 0.0 and 2.22507e-308 are within 2.22045e-12% of each other
+Matchers.tests.cpp:<line number>: passed: 1., WithinAbs( 1., 0 ) for: 1.0 is within 0.0 of 1.0
+Matchers.tests.cpp:<line number>: passed: 0., WithinAbs( 1., 1 ) for: 0.0 is within 1.0 of 1.0
+Matchers.tests.cpp:<line number>: passed: 0., !WithinAbs( 1., 0.99 ) for: 0.0 not is within 0.99 of 1.0
+Matchers.tests.cpp:<line number>: passed: 0., !WithinAbs( 1., 0.99 ) for: 0.0 not is within 0.99 of 1.0
+Matchers.tests.cpp:<line number>: passed: 11., !WithinAbs( 10., 0.5 ) for: 11.0 not is within 0.5 of 10.0
+Matchers.tests.cpp:<line number>: passed: 10., !WithinAbs( 11., 0.5 ) for: 10.0 not is within 0.5 of 11.0
+Matchers.tests.cpp:<line number>: passed: -10., WithinAbs( -10., 0.5 ) for: -10.0 is within 0.5 of -10.0
+Matchers.tests.cpp:<line number>: passed: -10., WithinAbs( -9.6, 0.5 ) for: -10.0 is within 0.5 of -9.6
+Matchers.tests.cpp:<line number>: passed: 1., WithinULP( 1., 0 ) for: 1.0 is within 0 ULPs of 1.0000000000000000e+00 ([1.0000000000000000e+00, 1.0000000000000000e+00])
+Matchers.tests.cpp:<line number>: passed: nextafter( 1., 2. ), WithinULP( 1., 1 ) for: 1.0 is within 1 ULPs of 1.0000000000000000e+00 ([9.9999999999999989e-01, 1.0000000000000002e+00])
+Matchers.tests.cpp:<line number>: passed: 0., WithinULP( nextafter( 0., 1. ), 1 ) for: 0.0 is within 1 ULPs of 4.9406564584124654e-324 ([0.0000000000000000e+00, 9.8813129168249309e-324])
+Matchers.tests.cpp:<line number>: passed: 1., WithinULP( nextafter( 1., 0. ), 1 ) for: 1.0 is within 1 ULPs of 9.9999999999999989e-01 ([9.9999999999999978e-01, 1.0000000000000000e+00])
+Matchers.tests.cpp:<line number>: passed: 1., !WithinULP( nextafter( 1., 2. ), 0 ) for: 1.0 not is within 0 ULPs of 1.0000000000000002e+00 ([1.0000000000000002e+00, 1.0000000000000002e+00])
+Matchers.tests.cpp:<line number>: passed: 1., WithinULP( 1., 0 ) for: 1.0 is within 0 ULPs of 1.0000000000000000e+00 ([1.0000000000000000e+00, 1.0000000000000000e+00])
+Matchers.tests.cpp:<line number>: passed: -0., WithinULP( 0., 0 ) for: -0.0 is within 0 ULPs of 0.0000000000000000e+00 ([0.0000000000000000e+00, 0.0000000000000000e+00])
+Matchers.tests.cpp:<line number>: passed: 1., WithinAbs( 1., 0.5 ) || WithinULP( 2., 1 ) for: 1.0 ( is within 0.5 of 1.0 or is within 1 ULPs of 2.0000000000000000e+00 ([1.9999999999999998e+00, 2.0000000000000004e+00]) )
+Matchers.tests.cpp:<line number>: passed: 1., WithinAbs( 2., 0.5 ) || WithinULP( 1., 0 ) for: 1.0 ( is within 0.5 of 2.0 or is within 0 ULPs of 1.0000000000000000e+00 ([1.0000000000000000e+00, 1.0000000000000000e+00]) )
+Matchers.tests.cpp:<line number>: passed: 0.0001, WithinAbs( 0., 0.001 ) || WithinRel( 0., 0.1 ) for: 0.0001 ( is within 0.001 of 0.0 or and 0 are within 10% of each other )
+Matchers.tests.cpp:<line number>: passed: WithinAbs( 1., 0. )
+Matchers.tests.cpp:<line number>: passed: WithinAbs( 1., -1. ), std::domain_error
+Matchers.tests.cpp:<line number>: passed: WithinULP( 1., 0 )
+Matchers.tests.cpp:<line number>: passed: WithinRel( 1., 0. )
+Matchers.tests.cpp:<line number>: passed: WithinRel( 1., -0.2 ), std::domain_error
+Matchers.tests.cpp:<line number>: passed: WithinRel( 1., 1. ), std::domain_error
+Matchers.tests.cpp:<line number>: passed: 10.f, WithinRel( 11.1f, 0.1f ) for: 10.0f and 11.1 are within 10% of each other
+Matchers.tests.cpp:<line number>: passed: 10.f, !WithinRel( 11.2f, 0.1f ) for: 10.0f not and 11.2 are within 10% of each other
+Matchers.tests.cpp:<line number>: passed: 1.f, !WithinRel( 0.f, 0.99f ) for: 1.0f not and 0 are within 99% of each other
+Matchers.tests.cpp:<line number>: passed: -0.f, WithinRel( 0.f ) for: -0.0f and 0 are within 0.00119209% of each other
+Matchers.tests.cpp:<line number>: passed: v1, WithinRel( v2 ) for: 0.0f and 1.17549e-38 are within 0.00119209% of each other
+Matchers.tests.cpp:<line number>: passed: 1.f, WithinAbs( 1.f, 0 ) for: 1.0f is within 0.0 of 1.0
+Matchers.tests.cpp:<line number>: passed: 0.f, WithinAbs( 1.f, 1 ) for: 0.0f is within 1.0 of 1.0
+Matchers.tests.cpp:<line number>: passed: 0.f, !WithinAbs( 1.f, 0.99f ) for: 0.0f not is within 0.9900000095 of 1.0
+Matchers.tests.cpp:<line number>: passed: 0.f, !WithinAbs( 1.f, 0.99f ) for: 0.0f not is within 0.9900000095 of 1.0
+Matchers.tests.cpp:<line number>: passed: 0.f, WithinAbs( -0.f, 0 ) for: 0.0f is within 0.0 of -0.0
+Matchers.tests.cpp:<line number>: passed: 11.f, !WithinAbs( 10.f, 0.5f ) for: 11.0f not is within 0.5 of 10.0
+Matchers.tests.cpp:<line number>: passed: 10.f, !WithinAbs( 11.f, 0.5f ) for: 10.0f not is within 0.5 of 11.0
+Matchers.tests.cpp:<line number>: passed: -10.f, WithinAbs( -10.f, 0.5f ) for: -10.0f is within 0.5 of -10.0
+Matchers.tests.cpp:<line number>: passed: -10.f, WithinAbs( -9.6f, 0.5f ) for: -10.0f is within 0.5 of -9.6000003815
+Matchers.tests.cpp:<line number>: passed: 1.f, WithinULP( 1.f, 0 ) for: 1.0f is within 0 ULPs of 1.00000000e+00f ([1.00000000e+00, 1.00000000e+00])
+Matchers.tests.cpp:<line number>: passed: nextafter( 1.f, 2.f ), WithinULP( 1.f, 1 ) for: 1.0f is within 1 ULPs of 1.00000000e+00f ([9.99999940e-01, 1.00000012e+00])
+Matchers.tests.cpp:<line number>: passed: 0.f, WithinULP( nextafter( 0.f, 1.f ), 1 ) for: 0.0f is within 1 ULPs of 1.40129846e-45f ([0.00000000e+00, 2.80259693e-45])
+Matchers.tests.cpp:<line number>: passed: 1.f, WithinULP( nextafter( 1.f, 0.f ), 1 ) for: 1.0f is within 1 ULPs of 9.99999940e-01f ([9.99999881e-01, 1.00000000e+00])
+Matchers.tests.cpp:<line number>: passed: 1.f, !WithinULP( nextafter( 1.f, 2.f ), 0 ) for: 1.0f not is within 0 ULPs of 1.00000012e+00f ([1.00000012e+00, 1.00000012e+00])
+Matchers.tests.cpp:<line number>: passed: 1.f, WithinULP( 1.f, 0 ) for: 1.0f is within 0 ULPs of 1.00000000e+00f ([1.00000000e+00, 1.00000000e+00])
+Matchers.tests.cpp:<line number>: passed: -0.f, WithinULP( 0.f, 0 ) for: -0.0f is within 0 ULPs of 0.00000000e+00f ([0.00000000e+00, 0.00000000e+00])
+Matchers.tests.cpp:<line number>: passed: 1.f, WithinAbs( 1.f, 0.5 ) || WithinULP( 1.f, 1 ) for: 1.0f ( is within 0.5 of 1.0 or is within 1 ULPs of 1.00000000e+00f ([9.99999940e-01, 1.00000012e+00]) )
+Matchers.tests.cpp:<line number>: passed: 1.f, WithinAbs( 2.f, 0.5 ) || WithinULP( 1.f, 0 ) for: 1.0f ( is within 0.5 of 2.0 or is within 0 ULPs of 1.00000000e+00f ([1.00000000e+00, 1.00000000e+00]) )
+Matchers.tests.cpp:<line number>: passed: 0.0001f, WithinAbs( 0.f, 0.001f ) || WithinRel( 0.f, 0.1f ) for: 0.0001f ( is within 0.001 of 0.0 or and 0 are within 10% of each other )
+Matchers.tests.cpp:<line number>: passed: WithinAbs( 1.f, 0.f )
+Matchers.tests.cpp:<line number>: passed: WithinAbs( 1.f, -1.f ), std::domain_error
+Matchers.tests.cpp:<line number>: passed: WithinULP( 1.f, 0 )
+Matchers.tests.cpp:<line number>: passed: WithinULP( 1.f, static_cast<uint64_t>( -1 ) ), std::domain_error
+Matchers.tests.cpp:<line number>: passed: WithinRel( 1.f, 0.f )
+Matchers.tests.cpp:<line number>: passed: WithinRel( 1.f, -0.2f ), std::domain_error
+Matchers.tests.cpp:<line number>: passed: WithinRel( 1.f, 1.f ), std::domain_error
 Generators.tests.cpp:<line number>: passed: i % 2 == 0 for: 0 == 0
 Generators.tests.cpp:<line number>: passed: i % 2 == 0 for: 0 == 0
 Generators.tests.cpp:<line number>: passed: i % 2 == 0 for: 0 == 0
@@ -899,13 +899,13 @@ Approx.tests.cpp:<line number>: passed: d <= Approx( 1.23 ) for: 1.23 <= Approx(
 Approx.tests.cpp:<line number>: passed: !(d <= Approx( 1.22 )) for: !(1.23 <= Approx( 1.22 ))
 Approx.tests.cpp:<line number>: passed: d <= Approx( 1.22 ).epsilon(0.1) for: 1.23 <= Approx( 1.22 )
 Misc.tests.cpp:<line number>: passed: with 1 message: 'was called'
-Matchers.tests.cpp:<line number>: passed: testStringForMatching(), Contains("string") && Contains("abc") && Contains("substring") && Contains("contains") for: "this string contains 'abc' as a substring" ( contains: "string" and contains: "abc" and contains: "substring" and contains: "contains" )
-Matchers.tests.cpp:<line number>: passed: testStringForMatching(), Contains("string") || Contains("different") || Contains("random") for: "this string contains 'abc' as a substring" ( contains: "string" or contains: "different" or contains: "random" )
-Matchers.tests.cpp:<line number>: passed: testStringForMatching2(), Contains("string") || Contains("different") || Contains("random") for: "some completely different text that contains one common word" ( contains: "string" or contains: "different" or contains: "random" )
-Matchers.tests.cpp:<line number>: passed: testStringForMatching(), (Contains("string") || Contains("different")) && Contains("substring") for: "this string contains 'abc' as a substring" ( ( contains: "string" or contains: "different" ) and contains: "substring" )
-Matchers.tests.cpp:<line number>: failed: testStringForMatching(), (Contains("string") || Contains("different")) && Contains("random") for: "this string contains 'abc' as a substring" ( ( contains: "string" or contains: "different" ) and contains: "random" )
-Matchers.tests.cpp:<line number>: passed: testStringForMatching(), !Contains("different") for: "this string contains 'abc' as a substring" not contains: "different"
-Matchers.tests.cpp:<line number>: failed: testStringForMatching(), !Contains("substring") for: "this string contains 'abc' as a substring" not contains: "substring"
+Matchers.tests.cpp:<line number>: passed: testStringForMatching(), Contains( "string" ) && Contains( "abc" ) && Contains( "substring" ) && Contains( "contains" ) for: "this string contains 'abc' as a substring" ( contains: "string" and contains: "abc" and contains: "substring" and contains: "contains" )
+Matchers.tests.cpp:<line number>: passed: testStringForMatching(), Contains( "string" ) || Contains( "different" ) || Contains( "random" ) for: "this string contains 'abc' as a substring" ( contains: "string" or contains: "different" or contains: "random" )
+Matchers.tests.cpp:<line number>: passed: testStringForMatching2(), Contains( "string" ) || Contains( "different" ) || Contains( "random" ) for: "some completely different text that contains one common word" ( contains: "string" or contains: "different" or contains: "random" )
+Matchers.tests.cpp:<line number>: passed: testStringForMatching(), ( Contains( "string" ) || Contains( "different" ) ) && Contains( "substring" ) for: "this string contains 'abc' as a substring" ( ( contains: "string" or contains: "different" ) and contains: "substring" )
+Matchers.tests.cpp:<line number>: failed: testStringForMatching(), ( Contains( "string" ) || Contains( "different" ) ) && Contains( "random" ) for: "this string contains 'abc' as a substring" ( ( contains: "string" or contains: "different" ) and contains: "random" )
+Matchers.tests.cpp:<line number>: passed: testStringForMatching(), !Contains( "different" ) for: "this string contains 'abc' as a substring" not contains: "different"
+Matchers.tests.cpp:<line number>: failed: testStringForMatching(), !Contains( "substring" ) for: "this string contains 'abc' as a substring" not contains: "substring"
 Exception.tests.cpp:<line number>: passed: thisThrows(), "expected exception" for: "expected exception" equals: "expected exception"
 Exception.tests.cpp:<line number>: failed: thisThrows(), "should fail" for: "expected exception" equals: "should fail"
 Generators.tests.cpp:<line number>: passed: values > -6 for: 3 > -6
@@ -1014,10 +1014,10 @@ RandomNumberGeneration.tests.cpp:<line number>: passed: rng() == 0x<hex digits> 
 4261393167 (0x<hex digits>)
 Message.tests.cpp:<line number>: failed: explicitly with 1 message: 'Message from section one'
 Message.tests.cpp:<line number>: failed: explicitly with 1 message: 'Message from section two'
-Matchers.tests.cpp:<line number>: passed: (EvilMatcher(), EvilMatcher()), EvilCommaOperatorUsed
+Matchers.tests.cpp:<line number>: passed: ( EvilMatcher(), EvilMatcher() ), EvilCommaOperatorUsed
 Matchers.tests.cpp:<line number>: passed: &EvilMatcher(), EvilAddressOfOperatorUsed
-Matchers.tests.cpp:<line number>: passed: EvilMatcher() || (EvilMatcher() && !EvilMatcher())
-Matchers.tests.cpp:<line number>: passed: (EvilMatcher() && EvilMatcher()) || !EvilMatcher()
+Matchers.tests.cpp:<line number>: passed: EvilMatcher() || ( EvilMatcher() && !EvilMatcher() )
+Matchers.tests.cpp:<line number>: passed: ( EvilMatcher() && EvilMatcher() ) || !EvilMatcher()
 CmdLine.tests.cpp:<line number>: passed: spec.hasFilters() == false for: false == false
 CmdLine.tests.cpp:<line number>: passed: spec.matches( *tcA ) == false for: false == false
 CmdLine.tests.cpp:<line number>: passed: spec.matches( *tcB ) == false for: false == false
@@ -1181,7 +1181,7 @@ ToStringGeneral.tests.cpp:<line number>: passed: str1.size() == 3 + 5 for: 8 == 
 ToStringGeneral.tests.cpp:<line number>: passed: str2.size() == 3 + 10 for: 13 == 13
 ToStringGeneral.tests.cpp:<line number>: passed: str1.size() == 2 + 5 for: 7 == 7
 ToStringGeneral.tests.cpp:<line number>: passed: str2.size() == 2 + 15 for: 17 == 17
-Matchers.tests.cpp:<line number>: passed: "foo", Predicate<const char*>([] (const char* const&) { return true; }) for: "foo" matches undescribed predicate
+Matchers.tests.cpp:<line number>: passed: "foo", Predicate<const char*>( []( const char* const& ) { return true; } ) for: "foo" matches undescribed predicate
 CmdLine.tests.cpp:<line number>: passed: result for: {?}
 CmdLine.tests.cpp:<line number>: passed: config.processName == "" for: "" == ""
 CmdLine.tests.cpp:<line number>: passed: result for: {?}
@@ -1269,10 +1269,10 @@ Misc.tests.cpp:<line number>: passed: std::tuple_size<TestType>::value >= 1 for:
 Misc.tests.cpp:<line number>: passed: std::tuple_size<TestType>::value >= 1 for: 1 >= 1
 ToString.tests.cpp:<line number>: passed: Catch::Detail::stringify(UsesSentinel{}) == "{  }" for: "{  }" == "{  }"
 Decomposition.tests.cpp:<line number>: failed: truthy(false) for: Hey, its truthy!
-Matchers.tests.cpp:<line number>: failed: testStringForMatching(), Matches("this STRING contains 'abc' as a substring") for: "this string contains 'abc' as a substring" matches "this STRING contains 'abc' as a substring" case sensitively
-Matchers.tests.cpp:<line number>: failed: testStringForMatching(), Matches("contains 'abc' as a substring") for: "this string contains 'abc' as a substring" matches "contains 'abc' as a substring" case sensitively
-Matchers.tests.cpp:<line number>: failed: testStringForMatching(), Matches("this string contains 'abc' as a") for: "this string contains 'abc' as a substring" matches "this string contains 'abc' as a" case sensitively
-Matchers.tests.cpp:<line number>: passed: actual, !UnorderedEquals(expected) for: { 'a', 'b' } not UnorderedEquals: { 'c', 'b' }
+Matchers.tests.cpp:<line number>: failed: testStringForMatching(), Matches( "this STRING contains 'abc' as a substring" ) for: "this string contains 'abc' as a substring" matches "this STRING contains 'abc' as a substring" case sensitively
+Matchers.tests.cpp:<line number>: failed: testStringForMatching(), Matches( "contains 'abc' as a substring" ) for: "this string contains 'abc' as a substring" matches "contains 'abc' as a substring" case sensitively
+Matchers.tests.cpp:<line number>: failed: testStringForMatching(), Matches( "this string contains 'abc' as a" ) for: "this string contains 'abc' as a substring" matches "this string contains 'abc' as a" case sensitively
+Matchers.tests.cpp:<line number>: passed: actual, !UnorderedEquals( expected ) for: { 'a', 'b' } not UnorderedEquals: { 'c', 'b' }
 Reporters.tests.cpp:<line number>: passed: !(factories.empty()) for: !false
 Reporters.tests.cpp:<line number>: passed: listingString, Contains("fakeTag"s) for: "All available tags:
    1  [fakeTag]
@@ -1464,21 +1464,21 @@ Approx.tests.cpp:<line number>: passed: Approx( d ) != 1.22 for: Approx( 1.23 ) 
 Approx.tests.cpp:<line number>: passed: Approx( d ) != 1.24 for: Approx( 1.23 ) != 1.24
 Message from section one
 Message from section two
-Matchers.tests.cpp:<line number>: failed: testStringForMatching(), StartsWith("This String") for: "this string contains 'abc' as a substring" starts with: "This String"
-Matchers.tests.cpp:<line number>: failed: testStringForMatching(), StartsWith("string", Catch::CaseSensitive::No) for: "this string contains 'abc' as a substring" starts with: "string" (case insensitive)
+Matchers.tests.cpp:<line number>: failed: testStringForMatching(), StartsWith( "This String" ) for: "this string contains 'abc' as a substring" starts with: "This String"
+Matchers.tests.cpp:<line number>: failed: testStringForMatching(), StartsWith( "string", Catch::CaseSensitive::No ) for: "this string contains 'abc' as a substring" starts with: "string" (case insensitive)
 ToStringGeneral.tests.cpp:<line number>: passed: Catch::Detail::stringify(singular) == "{ 1 }" for: "{ 1 }" == "{ 1 }"
 ToStringGeneral.tests.cpp:<line number>: passed: Catch::Detail::stringify(arr) == "{ 3, 2, 1 }" for: "{ 3, 2, 1 }" == "{ 3, 2, 1 }"
 ToStringGeneral.tests.cpp:<line number>: passed: Catch::Detail::stringify(arr) == R"({ { "1:1", "1:2", "1:3" }, { "2:1", "2:2" } })" for: "{ { "1:1", "1:2", "1:3" }, { "2:1", "2:2" } }"
 ==
 "{ { "1:1", "1:2", "1:3" }, { "2:1", "2:2" } }"
-Matchers.tests.cpp:<line number>: passed: testStringForMatching(), Contains("string") for: "this string contains 'abc' as a substring" contains: "string"
-Matchers.tests.cpp:<line number>: passed: testStringForMatching(), Contains("string", Catch::CaseSensitive::No) for: "this string contains 'abc' as a substring" contains: "string" (case insensitive)
-Matchers.tests.cpp:<line number>: passed: testStringForMatching(), Contains("abc") for: "this string contains 'abc' as a substring" contains: "abc"
-Matchers.tests.cpp:<line number>: passed: testStringForMatching(), Contains("aBC", Catch::CaseSensitive::No) for: "this string contains 'abc' as a substring" contains: "abc" (case insensitive)
-Matchers.tests.cpp:<line number>: passed: testStringForMatching(), StartsWith("this") for: "this string contains 'abc' as a substring" starts with: "this"
-Matchers.tests.cpp:<line number>: passed: testStringForMatching(), StartsWith("THIS", Catch::CaseSensitive::No) for: "this string contains 'abc' as a substring" starts with: "this" (case insensitive)
-Matchers.tests.cpp:<line number>: passed: testStringForMatching(), EndsWith("substring") for: "this string contains 'abc' as a substring" ends with: "substring"
-Matchers.tests.cpp:<line number>: passed: testStringForMatching(), EndsWith(" SuBsTrInG", Catch::CaseSensitive::No) for: "this string contains 'abc' as a substring" ends with: " substring" (case insensitive)
+Matchers.tests.cpp:<line number>: passed: testStringForMatching(), Contains( "string" ) for: "this string contains 'abc' as a substring" contains: "string"
+Matchers.tests.cpp:<line number>: passed: testStringForMatching(), Contains( "string", Catch::CaseSensitive::No ) for: "this string contains 'abc' as a substring" contains: "string" (case insensitive)
+Matchers.tests.cpp:<line number>: passed: testStringForMatching(), Contains( "abc" ) for: "this string contains 'abc' as a substring" contains: "abc"
+Matchers.tests.cpp:<line number>: passed: testStringForMatching(), Contains( "aBC", Catch::CaseSensitive::No ) for: "this string contains 'abc' as a substring" contains: "abc" (case insensitive)
+Matchers.tests.cpp:<line number>: passed: testStringForMatching(), StartsWith( "this" ) for: "this string contains 'abc' as a substring" starts with: "this"
+Matchers.tests.cpp:<line number>: passed: testStringForMatching(), StartsWith( "THIS", Catch::CaseSensitive::No ) for: "this string contains 'abc' as a substring" starts with: "this" (case insensitive)
+Matchers.tests.cpp:<line number>: passed: testStringForMatching(), EndsWith( "substring" ) for: "this string contains 'abc' as a substring" ends with: "substring"
+Matchers.tests.cpp:<line number>: passed: testStringForMatching(), EndsWith( " SuBsTrInG", Catch::CaseSensitive::No ) for: "this string contains 'abc' as a substring" ends with: " substring" (case insensitive)
 String.tests.cpp:<line number>: passed: empty.empty() for: true
 String.tests.cpp:<line number>: passed: empty.size() == 0 for: 0 == 0
 String.tests.cpp:<line number>: passed: std::strcmp( empty.data(), "" ) == 0 for: 0 == 0
@@ -1905,53 +1905,53 @@ Approx.tests.cpp:<line number>: passed: approx( d ) == 1.22 for: Approx( 1.23 ) 
 Approx.tests.cpp:<line number>: passed: approx( d ) == 1.24 for: Approx( 1.23 ) == 1.24
 Approx.tests.cpp:<line number>: passed: approx( d ) != 1.25 for: Approx( 1.23 ) != 1.25
 VariadicMacros.tests.cpp:<line number>: passed: with 1 message: 'no assertions'
-Matchers.tests.cpp:<line number>: passed: empty, Approx(empty) for: {  } is approx: {  }
-Matchers.tests.cpp:<line number>: passed: v1, Approx(v1) for: { 1.0, 2.0, 3.0 } is approx: { 1.0, 2.0, 3.0 }
-Matchers.tests.cpp:<line number>: passed: v1, Approx<double>({ 1., 2., 3. }) for: { 1.0, 2.0, 3.0 } is approx: { 1.0, 2.0, 3.0 }
-Matchers.tests.cpp:<line number>: passed: v1, !Approx(temp) for: { 1.0, 2.0, 3.0 } not is approx: { 1.0, 2.0, 3.0, 4.0 }
-Matchers.tests.cpp:<line number>: passed: v1, !Approx(v2) for: { 1.0, 2.0, 3.0 } not is approx: { 1.5, 2.5, 3.5 }
-Matchers.tests.cpp:<line number>: passed: v1, Approx(v2).margin(0.5) for: { 1.0, 2.0, 3.0 } is approx: { 1.5, 2.5, 3.5 }
-Matchers.tests.cpp:<line number>: passed: v1, Approx(v2).epsilon(0.5) for: { 1.0, 2.0, 3.0 } is approx: { 1.5, 2.5, 3.5 }
-Matchers.tests.cpp:<line number>: passed: v1, Approx(v2).epsilon(0.1).scale(500) for: { 1.0, 2.0, 3.0 } is approx: { 1.5, 2.5, 3.5 }
-Matchers.tests.cpp:<line number>: failed: empty, Approx(t1) for: {  } is approx: { 1.0, 2.0 }
-Matchers.tests.cpp:<line number>: failed: v1, Approx(v2) for: { 2.0, 4.0, 6.0 } is approx: { 1.0, 3.0, 5.0 }
-Matchers.tests.cpp:<line number>: passed: v, VectorContains(1) for: { 1, 2, 3 } Contains: 1
-Matchers.tests.cpp:<line number>: passed: v, VectorContains(2) for: { 1, 2, 3 } Contains: 2
-Matchers.tests.cpp:<line number>: passed: v5, (VectorContains<int, CustomAllocator<int>>(2)) for: { 1, 2, 3 } Contains: 2
-Matchers.tests.cpp:<line number>: passed: v, Contains(v2) for: { 1, 2, 3 } Contains: { 1, 2 }
-Matchers.tests.cpp:<line number>: passed: v, Contains<int>({ 1, 2 }) for: { 1, 2, 3 } Contains: { 1, 2 }
-Matchers.tests.cpp:<line number>: passed: v5, (Contains<int, std::allocator<int>, CustomAllocator<int>>(v2)) for: { 1, 2, 3 } Contains: { 1, 2 }
-Matchers.tests.cpp:<line number>: passed: v, Contains(v2) for: { 1, 2, 3 } Contains: { 1, 2, 3 }
-Matchers.tests.cpp:<line number>: passed: v, Contains(empty) for: { 1, 2, 3 } Contains: {  }
-Matchers.tests.cpp:<line number>: passed: empty, Contains(empty) for: {  } Contains: {  }
-Matchers.tests.cpp:<line number>: passed: v5, (Contains<int, std::allocator<int>, CustomAllocator<int>>(v2)) for: { 1, 2, 3 } Contains: { 1, 2, 3 }
-Matchers.tests.cpp:<line number>: passed: v5, Contains(v6) for: { 1, 2, 3 } Contains: { 1, 2 }
-Matchers.tests.cpp:<line number>: passed: v, VectorContains(1) && VectorContains(2) for: { 1, 2, 3 } ( Contains: 1 and Contains: 2 )
-Matchers.tests.cpp:<line number>: passed: v, Equals(v) for: { 1, 2, 3 } Equals: { 1, 2, 3 }
-Matchers.tests.cpp:<line number>: passed: empty, Equals(empty) for: {  } Equals: {  }
-Matchers.tests.cpp:<line number>: passed: v, Equals<int>({ 1, 2, 3 }) for: { 1, 2, 3 } Equals: { 1, 2, 3 }
-Matchers.tests.cpp:<line number>: passed: v, Equals(v2) for: { 1, 2, 3 } Equals: { 1, 2, 3 }
-Matchers.tests.cpp:<line number>: passed: v5, (Equals<int, std::allocator<int>, CustomAllocator<int>>(v2)) for: { 1, 2, 3 } Equals: { 1, 2, 3 }
-Matchers.tests.cpp:<line number>: passed: v5, Equals(v6) for: { 1, 2, 3 } Equals: { 1, 2, 3 }
-Matchers.tests.cpp:<line number>: passed: v, UnorderedEquals(v) for: { 1, 2, 3 } UnorderedEquals: { 1, 2, 3 }
-Matchers.tests.cpp:<line number>: passed: v, UnorderedEquals<int>({ 3, 2, 1 }) for: { 1, 2, 3 } UnorderedEquals: { 3, 2, 1 }
-Matchers.tests.cpp:<line number>: passed: empty, UnorderedEquals(empty) for: {  } UnorderedEquals: {  }
-Matchers.tests.cpp:<line number>: passed: permuted, UnorderedEquals(v) for: { 1, 3, 2 } UnorderedEquals: { 1, 2, 3 }
-Matchers.tests.cpp:<line number>: passed: permuted, UnorderedEquals(v) for: { 2, 3, 1 } UnorderedEquals: { 1, 2, 3 }
-Matchers.tests.cpp:<line number>: passed: v5, (UnorderedEquals<int, std::allocator<int>, CustomAllocator<int>>(permuted)) for: { 1, 2, 3 } UnorderedEquals: { 2, 3, 1 }
-Matchers.tests.cpp:<line number>: passed: v5_permuted, UnorderedEquals(v5) for: { 1, 3, 2 } UnorderedEquals: { 1, 2, 3 }
-Matchers.tests.cpp:<line number>: failed: v, VectorContains(-1) for: { 1, 2, 3 } Contains: -1
-Matchers.tests.cpp:<line number>: failed: empty, VectorContains(1) for: {  } Contains: 1
-Matchers.tests.cpp:<line number>: failed: empty, Contains(v) for: {  } Contains: { 1, 2, 3 }
-Matchers.tests.cpp:<line number>: failed: v, Contains(v2) for: { 1, 2, 3 } Contains: { 1, 2, 4 }
-Matchers.tests.cpp:<line number>: failed: v, Equals(v2) for: { 1, 2, 3 } Equals: { 1, 2 }
-Matchers.tests.cpp:<line number>: failed: v2, Equals(v) for: { 1, 2 } Equals: { 1, 2, 3 }
-Matchers.tests.cpp:<line number>: failed: empty, Equals(v) for: {  } Equals: { 1, 2, 3 }
-Matchers.tests.cpp:<line number>: failed: v, Equals(empty) for: { 1, 2, 3 } Equals: {  }
-Matchers.tests.cpp:<line number>: failed: v, UnorderedEquals(empty) for: { 1, 2, 3 } UnorderedEquals: {  }
-Matchers.tests.cpp:<line number>: failed: empty, UnorderedEquals(v) for: {  } UnorderedEquals: { 1, 2, 3 }
-Matchers.tests.cpp:<line number>: failed: permuted, UnorderedEquals(v) for: { 1, 3 } UnorderedEquals: { 1, 2, 3 }
-Matchers.tests.cpp:<line number>: failed: permuted, UnorderedEquals(v) for: { 3, 1 } UnorderedEquals: { 1, 2, 3 }
+Matchers.tests.cpp:<line number>: passed: empty, Approx( empty ) for: {  } is approx: {  }
+Matchers.tests.cpp:<line number>: passed: v1, Approx( v1 ) for: { 1.0, 2.0, 3.0 } is approx: { 1.0, 2.0, 3.0 }
+Matchers.tests.cpp:<line number>: passed: v1, Approx<double>( { 1., 2., 3. } ) for: { 1.0, 2.0, 3.0 } is approx: { 1.0, 2.0, 3.0 }
+Matchers.tests.cpp:<line number>: passed: v1, !Approx( temp ) for: { 1.0, 2.0, 3.0 } not is approx: { 1.0, 2.0, 3.0, 4.0 }
+Matchers.tests.cpp:<line number>: passed: v1, !Approx( v2 ) for: { 1.0, 2.0, 3.0 } not is approx: { 1.5, 2.5, 3.5 }
+Matchers.tests.cpp:<line number>: passed: v1, Approx( v2 ).margin( 0.5 ) for: { 1.0, 2.0, 3.0 } is approx: { 1.5, 2.5, 3.5 }
+Matchers.tests.cpp:<line number>: passed: v1, Approx( v2 ).epsilon( 0.5 ) for: { 1.0, 2.0, 3.0 } is approx: { 1.5, 2.5, 3.5 }
+Matchers.tests.cpp:<line number>: passed: v1, Approx( v2 ).epsilon( 0.1 ).scale( 500 ) for: { 1.0, 2.0, 3.0 } is approx: { 1.5, 2.5, 3.5 }
+Matchers.tests.cpp:<line number>: failed: empty, Approx( t1 ) for: {  } is approx: { 1.0, 2.0 }
+Matchers.tests.cpp:<line number>: failed: v1, Approx( v2 ) for: { 2.0, 4.0, 6.0 } is approx: { 1.0, 3.0, 5.0 }
+Matchers.tests.cpp:<line number>: passed: v, VectorContains( 1 ) for: { 1, 2, 3 } Contains: 1
+Matchers.tests.cpp:<line number>: passed: v, VectorContains( 2 ) for: { 1, 2, 3 } Contains: 2
+Matchers.tests.cpp:<line number>: passed: v5, ( VectorContains<int, CustomAllocator<int>>( 2 ) ) for: { 1, 2, 3 } Contains: 2
+Matchers.tests.cpp:<line number>: passed: v, Contains( v2 ) for: { 1, 2, 3 } Contains: { 1, 2 }
+Matchers.tests.cpp:<line number>: passed: v, Contains<int>( { 1, 2 } ) for: { 1, 2, 3 } Contains: { 1, 2 }
+Matchers.tests.cpp:<line number>: passed: v5, ( Contains<int, std::allocator<int>, CustomAllocator<int>>( v2 ) ) for: { 1, 2, 3 } Contains: { 1, 2 }
+Matchers.tests.cpp:<line number>: passed: v, Contains( v2 ) for: { 1, 2, 3 } Contains: { 1, 2, 3 }
+Matchers.tests.cpp:<line number>: passed: v, Contains( empty ) for: { 1, 2, 3 } Contains: {  }
+Matchers.tests.cpp:<line number>: passed: empty, Contains( empty ) for: {  } Contains: {  }
+Matchers.tests.cpp:<line number>: passed: v5, ( Contains<int, std::allocator<int>, CustomAllocator<int>>( v2 ) ) for: { 1, 2, 3 } Contains: { 1, 2, 3 }
+Matchers.tests.cpp:<line number>: passed: v5, Contains( v6 ) for: { 1, 2, 3 } Contains: { 1, 2 }
+Matchers.tests.cpp:<line number>: passed: v, VectorContains( 1 ) && VectorContains( 2 ) for: { 1, 2, 3 } ( Contains: 1 and Contains: 2 )
+Matchers.tests.cpp:<line number>: passed: v, Equals( v ) for: { 1, 2, 3 } Equals: { 1, 2, 3 }
+Matchers.tests.cpp:<line number>: passed: empty, Equals( empty ) for: {  } Equals: {  }
+Matchers.tests.cpp:<line number>: passed: v, Equals<int>( { 1, 2, 3 } ) for: { 1, 2, 3 } Equals: { 1, 2, 3 }
+Matchers.tests.cpp:<line number>: passed: v, Equals( v2 ) for: { 1, 2, 3 } Equals: { 1, 2, 3 }
+Matchers.tests.cpp:<line number>: passed: v5, ( Equals<int, std::allocator<int>, CustomAllocator<int>>( v2 ) ) for: { 1, 2, 3 } Equals: { 1, 2, 3 }
+Matchers.tests.cpp:<line number>: passed: v5, Equals( v6 ) for: { 1, 2, 3 } Equals: { 1, 2, 3 }
+Matchers.tests.cpp:<line number>: passed: v, UnorderedEquals( v ) for: { 1, 2, 3 } UnorderedEquals: { 1, 2, 3 }
+Matchers.tests.cpp:<line number>: passed: v, UnorderedEquals<int>( { 3, 2, 1 } ) for: { 1, 2, 3 } UnorderedEquals: { 3, 2, 1 }
+Matchers.tests.cpp:<line number>: passed: empty, UnorderedEquals( empty ) for: {  } UnorderedEquals: {  }
+Matchers.tests.cpp:<line number>: passed: permuted, UnorderedEquals( v ) for: { 1, 3, 2 } UnorderedEquals: { 1, 2, 3 }
+Matchers.tests.cpp:<line number>: passed: permuted, UnorderedEquals( v ) for: { 2, 3, 1 } UnorderedEquals: { 1, 2, 3 }
+Matchers.tests.cpp:<line number>: passed: v5, ( UnorderedEquals<int, std::allocator<int>, CustomAllocator<int>>( permuted ) ) for: { 1, 2, 3 } UnorderedEquals: { 2, 3, 1 }
+Matchers.tests.cpp:<line number>: passed: v5_permuted, UnorderedEquals( v5 ) for: { 1, 3, 2 } UnorderedEquals: { 1, 2, 3 }
+Matchers.tests.cpp:<line number>: failed: v, VectorContains( -1 ) for: { 1, 2, 3 } Contains: -1
+Matchers.tests.cpp:<line number>: failed: empty, VectorContains( 1 ) for: {  } Contains: 1
+Matchers.tests.cpp:<line number>: failed: empty, Contains( v ) for: {  } Contains: { 1, 2, 3 }
+Matchers.tests.cpp:<line number>: failed: v, Contains( v2 ) for: { 1, 2, 3 } Contains: { 1, 2, 4 }
+Matchers.tests.cpp:<line number>: failed: v, Equals( v2 ) for: { 1, 2, 3 } Equals: { 1, 2 }
+Matchers.tests.cpp:<line number>: failed: v2, Equals( v ) for: { 1, 2 } Equals: { 1, 2, 3 }
+Matchers.tests.cpp:<line number>: failed: empty, Equals( v ) for: {  } Equals: { 1, 2, 3 }
+Matchers.tests.cpp:<line number>: failed: v, Equals( empty ) for: { 1, 2, 3 } Equals: {  }
+Matchers.tests.cpp:<line number>: failed: v, UnorderedEquals( empty ) for: { 1, 2, 3 } UnorderedEquals: {  }
+Matchers.tests.cpp:<line number>: failed: empty, UnorderedEquals( v ) for: {  } UnorderedEquals: { 1, 2, 3 }
+Matchers.tests.cpp:<line number>: failed: permuted, UnorderedEquals( v ) for: { 1, 3 } UnorderedEquals: { 1, 2, 3 }
+Matchers.tests.cpp:<line number>: failed: permuted, UnorderedEquals( v ) for: { 3, 1 } UnorderedEquals: { 1, 2, 3 }
 Exception.tests.cpp:<line number>: passed: thisThrows(), std::domain_error
 Exception.tests.cpp:<line number>: passed: thisDoesntThrow()
 Exception.tests.cpp:<line number>: passed: thisThrows()
