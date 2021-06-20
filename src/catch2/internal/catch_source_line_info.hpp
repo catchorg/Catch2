@@ -11,10 +11,6 @@
 #include <cstddef>
 #include <iosfwd>
 
-// We need a dummy global operator<< so we can bring it into Catch namespace later
-struct Catch_global_namespace_dummy {};
-std::ostream& operator<<(std::ostream&, Catch_global_namespace_dummy);
-
 namespace Catch {
 
     struct SourceLineInfo {
@@ -33,12 +29,6 @@ namespace Catch {
 
         friend std::ostream& operator << (std::ostream& os, SourceLineInfo const& info);
     };
-
-
-    // Bring in operator<< from global namespace into Catch namespace
-    // This is necessary because the overload of operator<< above makes
-    // lookup stop at namespace Catch
-    using ::operator<<;
 }
 
 #define CATCH_INTERNAL_LINEINFO \
