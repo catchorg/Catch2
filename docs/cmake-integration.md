@@ -88,6 +88,18 @@ include(Catch)
 catch_discover_tests(foo)
 ```
 
+When using `FetchContent`, `include(Catch)` will fail unless 
+`CMAKE_MODULE_PATH` is explicitly updated to include the contrib
+directory.
+
+```cmake
+# ... FetchContent ...
+#
+list(APPEND CMAKE_MODULE_PATH ${catch2_SOURCE_DIR}/contrib)
+include(CTest)
+include(Catch)
+catch_discover_tests()
+```
 
 #### Customization
 `catch_discover_tests` can be given several extra argumets:
