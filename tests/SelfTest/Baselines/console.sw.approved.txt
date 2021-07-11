@@ -9391,6 +9391,61 @@ with expansion:
   10 == 10
 
 -------------------------------------------------------------------------------
+Process can be configured on command line
+  Sharding options
+  shard-count
+-------------------------------------------------------------------------------
+CmdLine.tests.cpp:<line number>
+...............................................................................
+
+CmdLine.tests.cpp:<line number>: PASSED:
+  CHECK( cli.parse({ "test", "--shard-count=8"}) )
+with expansion:
+  {?}
+
+CmdLine.tests.cpp:<line number>: PASSED:
+  REQUIRE( config.shardCount == 8 )
+with expansion:
+  8 == 8
+
+-------------------------------------------------------------------------------
+Process can be configured on command line
+  Sharding options
+  shard-index
+-------------------------------------------------------------------------------
+CmdLine.tests.cpp:<line number>
+...............................................................................
+
+CmdLine.tests.cpp:<line number>: PASSED:
+  CHECK( cli.parse({ "test", "--shard-index=2"}) )
+with expansion:
+  {?}
+
+CmdLine.tests.cpp:<line number>: PASSED:
+  REQUIRE( config.shardIndex == 2 )
+with expansion:
+  2 == 2
+
+-------------------------------------------------------------------------------
+Process can be configured on command line
+  Sharding options
+  Zero shard-count
+-------------------------------------------------------------------------------
+CmdLine.tests.cpp:<line number>
+...............................................................................
+
+CmdLine.tests.cpp:<line number>: PASSED:
+  CHECK( !result )
+with expansion:
+  true
+
+CmdLine.tests.cpp:<line number>: PASSED:
+  CHECK_THAT( result.errorMessage(), ContainsSubstring( "The shard count must be greater than 0" ) )
+with expansion:
+  "The shard count must be greater than 0" contains: "The shard count must be
+  greater than 0"
+
+-------------------------------------------------------------------------------
 Product with differing arities - std::tuple<int, double, float>
 -------------------------------------------------------------------------------
 Misc.tests.cpp:<line number>
@@ -17040,5 +17095,5 @@ Misc.tests.cpp:<line number>: PASSED:
 
 ===============================================================================
 test cases:  373 |  280 passed |  86 failed |  7 failed as expected
-assertions: 2132 | 1959 passed | 146 failed | 27 failed as expected
+assertions: 2138 | 1965 passed | 146 failed | 27 failed as expected
 

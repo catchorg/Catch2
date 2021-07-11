@@ -149,6 +149,15 @@ namespace Catch {
                 return ParserResult::runtimeError( "Unrecognized reporter, '" + reporter + "'. Check available with --list-reporters" );
             return ParserResult::ok( ParseResultType::Matched );
         };
+        auto const setShardCount = [&]( std::string const& shardCount ) {
+            auto result = Clara::Detail::convertInto( shardCount, config.shardCount );
+
+            if (config.shardCount == 0) {
+                return ParserResult::runtimeError( "The shard count must be greater than 0" );
+            } else {
+                return result;
+            }
+        };
 
         auto cli
             = ExeName( config.processName )
@@ -240,6 +249,12 @@ namespace Catch {
             | Opt( config.benchmarkWarmupTime, "benchmarkWarmupTime" )
                 ["--benchmark-warmup-time"]
                 ( "amount of time in milliseconds spent on warming up each test (default: 100)" )
+            | Opt( setShardCount, "shard count" )
+                ["--shard-count"]
+                ( "split the tests to execute into this many groups" )
+            | Opt( config.shardIndex, "shard index" )
+                ["--shard-index"]
+                ( "index of the group of tests to execute (see --shard-count)" )
             | Arg( config.testsOrTags, "test name|pattern|tags" )
                 ( "which test or tests to use" );
 

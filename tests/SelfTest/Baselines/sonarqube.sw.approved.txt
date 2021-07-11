@@ -75,6 +75,9 @@
     <testCase name="Process can be configured on command line/Benchmark options/confidence-interval" duration="{duration}"/>
     <testCase name="Process can be configured on command line/Benchmark options/no-analysis" duration="{duration}"/>
     <testCase name="Process can be configured on command line/Benchmark options/warmup-time" duration="{duration}"/>
+    <testCase name="Process can be configured on command line/Sharding options/shard-count" duration="{duration}"/>
+    <testCase name="Process can be configured on command line/Sharding options/shard-index" duration="{duration}"/>
+    <testCase name="Process can be configured on command line/Sharding options/Zero shard-count" duration="{duration}"/>
     <testCase name="Test with special, characters &quot;in name" duration="{duration}"/>
   </file>
   <file path="tests/<exe-name>/IntrospectiveTests/FloatingPoint.tests.cpp">

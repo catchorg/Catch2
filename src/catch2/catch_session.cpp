@@ -16,6 +16,7 @@
 #include <catch2/catch_version.hpp>
 #include <catch2/interfaces/catch_interfaces_reporter.hpp>
 #include <catch2/internal/catch_startup_exception_registry.hpp>
+#include <catch2/internal/catch_sharding.hpp>
 #include <catch2/internal/catch_textflow.hpp>
 #include <catch2/internal/catch_windows_h_proxy.hpp>
 #include <catch2/reporters/catch_reporter_listening.hpp>
@@ -72,6 +73,8 @@ namespace Catch {
                     for (auto const& match : m_matches)
                         m_tests.insert(match.tests.begin(), match.tests.end());
                 }
+
+                m_tests = createShard(m_tests, m_config->shardCount(), m_config->shardIndex());
             }
 
             Totals execute() {
@@ -171,6 +174,7 @@ namespace Catch {
             return 1;
 
         auto result = m_cli.parse( Clara::Args( argc, argv ) );
+
         if( !result ) {
             config();
             getCurrentMutableContext().setConfig(m_config.get());
@@ -252,6 +256,12 @@ namespace Catch {
     int Session::runInternal() {
         if( m_startupExceptions )
             return 1;
+
+
+        if( m_configData.shardIndex >= m_configData.shardCount ) {
+            Catch::cerr() << "The shard count (" << m_configData.shardCount << ") must be greater than the shard index ("  << m_configData.shardIndex << ")\n" << std::flush;
+            return 1;
+        }
 
         if (m_configData.showHelp || m_configData.libIdentify) {
             return 0;

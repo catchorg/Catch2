@@ -569,6 +569,27 @@ TEST_CASE( "Process can be configured on command line", "[config][command-line]"
             REQUIRE(config.benchmarkWarmupTime == 10);
         }
     }
+
+    SECTION("Sharding options") {
+        SECTION("shard-count") {
+            CHECK(cli.parse({ "test", "--shard-count=8"}));
+
+            REQUIRE(config.shardCount == 8);
+        }
+
+        SECTION("shard-index") {
+            CHECK(cli.parse({ "test", "--shard-index=2"}));
+
+            REQUIRE(config.shardIndex == 2);
+        }
+
+        SECTION("Zero shard-count") {
+            auto result = cli.parse({ "test", "--shard-count=0"});
+
+            CHECK( !result );
+            CHECK_THAT( result.errorMessage(), ContainsSubstring( "The shard count must be greater than 0" ) );
+        }
+    }
 }
 
 TEST_CASE("Test with special, characters \"in name", "[cli][regression]") {
