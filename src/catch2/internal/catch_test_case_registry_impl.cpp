@@ -12,6 +12,7 @@
 #include <catch2/interfaces/catch_interfaces_registry_hub.hpp>
 #include <catch2/internal/catch_random_number_generator.hpp>
 #include <catch2/internal/catch_run_context.hpp>
+#include <catch2/internal/catch_sharding.hpp>
 #include <catch2/catch_test_case_info.hpp>
 #include <catch2/catch_test_spec.hpp>
 #include <catch2/internal/catch_move_and_forward.hpp>
@@ -135,7 +136,7 @@ namespace {
                 filtered.push_back(testCase);
             }
         }
-        return filtered;
+        return createShard(filtered, config.shardCount(), config.shardIndex());
     }
     std::vector<TestCaseHandle> const& getAllTestCasesSorted( IConfig const& config ) {
         return getRegistryHub().getTestCaseRegistry().getAllTestsSorted( config );

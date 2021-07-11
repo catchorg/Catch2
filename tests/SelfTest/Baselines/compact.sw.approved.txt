@@ -1273,6 +1273,12 @@ CmdLine.tests.cpp:<line number>: passed: cli.parse({ "test", "--benchmark-no-ana
 CmdLine.tests.cpp:<line number>: passed: config.benchmarkNoAnalysis for: true
 CmdLine.tests.cpp:<line number>: passed: cli.parse({ "test", "--benchmark-warmup-time=10" }) for: {?}
 CmdLine.tests.cpp:<line number>: passed: config.benchmarkWarmupTime == 10 for: 10 == 10
+CmdLine.tests.cpp:<line number>: passed: cli.parse({ "test", "--shard-count=8"}) for: {?}
+CmdLine.tests.cpp:<line number>: passed: config.shardCount == 8 for: 8 == 8
+CmdLine.tests.cpp:<line number>: passed: cli.parse({ "test", "--shard-index=2"}) for: {?}
+CmdLine.tests.cpp:<line number>: passed: config.shardIndex == 2 for: 2 == 2
+CmdLine.tests.cpp:<line number>: passed: !result for: true
+CmdLine.tests.cpp:<line number>: passed: result.errorMessage(), ContainsSubstring( "The shard count must be greater than 0" ) for: "The shard count must be greater than 0" contains: "The shard count must be greater than 0"
 Misc.tests.cpp:<line number>: passed: std::tuple_size<TestType>::value >= 1 for: 3 >= 1
 Misc.tests.cpp:<line number>: passed: std::tuple_size<TestType>::value >= 1 for: 2 >= 1
 Misc.tests.cpp:<line number>: passed: std::tuple_size<TestType>::value >= 1 for: 1 >= 1

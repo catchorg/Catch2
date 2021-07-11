@@ -8,6 +8,22 @@ project( Catch2ExtraTests LANGUAGES CXX )
 
 message( STATUS "Extra tests included" )
 
+
+add_test(
+  NAME TestShardingIntegration
+  COMMAND ${PYTHON_EXECUTABLE} ${CATCH_DIR}/tests/TestScripts/testSharding.py $<TARGET_FILE:SelfTest>
+)
+
+add_test(
+  NAME TestSharding::OverlyLargeShardIndex
+  COMMAND $<TARGET_FILE:SelfTest>  --shard-index 5 --shard-count 5
+)
+set_tests_properties(
+    TestSharding::OverlyLargeShardIndex
+  PROPERTIES
+    PASS_REGULAR_EXPRESSION "The shard count \\(5\\) must be greater than the shard index \\(5\\)"
+)
+
 # The MinDuration reporting tests do not need separate compilation, but
 # they have non-trivial execution time, so they are categorized as
 # extra tests, so that they are run less.
