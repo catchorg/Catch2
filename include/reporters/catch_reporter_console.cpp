@@ -174,7 +174,7 @@ private:
 };
 
 std::size_t makeRatio(std::size_t number, std::size_t total) {
-    std::size_t ratio = total > 0 ? CATCH_CONFIG_CONSOLE_WIDTH * number / total : 0;
+    std::size_t ratio = total > 0 ? static_cast<size_t> (CATCH_CONFIG_CONSOLE_WIDTH) * number / total : 0;
     return (ratio == 0 && number > 0) ? 1 : ratio;
 }
 
@@ -350,10 +350,11 @@ ConsoleReporter::ConsoleReporter(ReporterConfig const& config)
     : StreamingReporterBase(config),
     m_tablePrinter(new TablePrinter(config.stream(),
         [&config]() -> std::vector<ColumnInfo> {
+        auto consoleWidth = static_cast<int> (CATCH_CONFIG_CONSOLE_WIDTH);
         if (config.fullConfig()->benchmarkNoAnalysis())
         {
             return{
-                { "benchmark name", CATCH_CONFIG_CONSOLE_WIDTH - 43, ColumnInfo::Left },
+                { "benchmark name", consoleWidth - 43, ColumnInfo::Left },
                 { "     samples", 14, ColumnInfo::Right },
                 { "  iterations", 14, ColumnInfo::Right },
                 { "        mean", 14, ColumnInfo::Right }
@@ -362,7 +363,7 @@ ConsoleReporter::ConsoleReporter(ReporterConfig const& config)
         else
         {
             return{
-                { "benchmark name", CATCH_CONFIG_CONSOLE_WIDTH - 43, ColumnInfo::Left },
+                { "benchmark name", consoleWidth - 43, ColumnInfo::Left },
                 { "samples      mean       std dev", 14, ColumnInfo::Right },
                 { "iterations   low mean   low std dev", 14, ColumnInfo::Right },
                 { "estimated    high mean  high std dev", 14, ColumnInfo::Right }
@@ -656,13 +657,14 @@ void ConsoleReporter::printSummaryRow(std::string const& label, std::vector<Summ
 }
 
 void ConsoleReporter::printTotalsDivider(Totals const& totals) {
+    auto consoleWidth = static_cast<size_t> (CATCH_CONFIG_CONSOLE_WIDTH);
     if (totals.testCases.total() > 0) {
         std::size_t failedRatio = makeRatio(totals.testCases.failed, totals.testCases.total());
         std::size_t failedButOkRatio = makeRatio(totals.testCases.failedButOk, totals.testCases.total());
         std::size_t passedRatio = makeRatio(totals.testCases.passed, totals.testCases.total());
-        while (failedRatio + failedButOkRatio + passedRatio < CATCH_CONFIG_CONSOLE_WIDTH - 1)
+        while (failedRatio + failedButOkRatio + passedRatio < consoleWidth - 1)
             findMax(failedRatio, failedButOkRatio, passedRatio)++;
-        while (failedRatio + failedButOkRatio + passedRatio > CATCH_CONFIG_CONSOLE_WIDTH - 1)
+        while (failedRatio + failedButOkRatio + passedRatio > consoleWidth - 1)
             findMax(failedRatio, failedButOkRatio, passedRatio)--;
 
         stream << Colour(Colour::Error) << std::string(failedRatio, '=');
@@ -672,7 +674,7 @@ void ConsoleReporter::printTotalsDivider(Totals const& totals) {
         else
             stream << Colour(Colour::Success) << std::string(passedRatio, '=');
     } else {
-        stream << Colour(Colour::Warning) << std::string(CATCH_CONFIG_CONSOLE_WIDTH - 1, '=');
+        stream << Colour(Colour::Warning) << std::string(consoleWidth - 1, '=');
     }
     stream << '\n';
 }
