@@ -650,6 +650,44 @@ Nor would this
     <TestCase name="#1954 - 7 arg template test case sig compiles - 5, 3, 1, 1, 1, 0, 0" tags="[.][compilation][regression]" filename="tests/<exe-name>/UsageTests/Misc.tests.cpp" >
       <OverallResult success="true"/>
     </TestCase>
+    <TestCase name="#2152 - ULP checks between differently signed values were wrong - double" tags="[floating-point][matchers][ulp]" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
+      <Expression success="true" type="CHECK_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
+        <Original>
+          smallest_non_zero, WithinULP( -smallest_non_zero, 2 )
+        </Original>
+        <Expanded>
+          0.0 is within 2 ULPs of -4.9406564584124654e-324 ([-1.4821969375237396e-323, 4.9406564584124654e-324])
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
+        <Original>
+          smallest_non_zero, !WithinULP( -smallest_non_zero, 1 )
+        </Original>
+        <Expanded>
+          0.0 not is within 1 ULPs of -4.9406564584124654e-324 ([-9.8813129168249309e-324, -0.0000000000000000e+00])
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
+    <TestCase name="#2152 - ULP checks between differently signed values were wrong - float" tags="[floating-point][matchers][ulp]" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
+      <Expression success="true" type="CHECK_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
+        <Original>
+          smallest_non_zero, WithinULP( -smallest_non_zero, 2 )
+        </Original>
+        <Expanded>
+          0.0f is within 2 ULPs of -1.40129846e-45f ([-4.20389539e-45, 1.40129846e-45])
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
+        <Original>
+          smallest_non_zero, !WithinULP( -smallest_non_zero, 1 )
+        </Original>
+        <Expanded>
+          0.0f not is within 1 ULPs of -1.40129846e-45f ([-2.80259693e-45, -0.00000000e+00])
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
     <TestCase name="#748 - captures with unexpected exceptions" tags="[!shouldfail][!throws][.][failing]" filename="tests/<exe-name>/UsageTests/Exception.tests.cpp" >
       <Section name="outside assertions" filename="tests/<exe-name>/UsageTests/Exception.tests.cpp" >
         <Info>
@@ -5089,6 +5127,14 @@ Nor would this
         </Expression>
         <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
           <Original>
+            -1.f, WithinULP( -1.f, 0 )
+          </Original>
+          <Expanded>
+            -1.0f is within 0 ULPs of -1.00000000e+00f ([-1.00000000e+00, -1.00000000e+00])
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
+          <Original>
             nextafter( 1.f, 2.f ), WithinULP( 1.f, 1 )
           </Original>
           <Expanded>
@@ -5135,7 +5181,7 @@ Nor would this
             -0.0f is within 0 ULPs of 0.00000000e+00f ([0.00000000e+00, 0.00000000e+00])
           </Expanded>
         </Expression>
-        <OverallResults successes="7" failures="0" expectedFailures="0"/>
+        <OverallResults successes="8" failures="0" expectedFailures="0"/>
       </Section>
       <Section name="Composed" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
         <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
@@ -17257,6 +17303,61 @@ There is no extra whitespace here
       </Expression>
       <OverallResult success="true"/>
     </TestCase>
+    <TestCase name="convertToBits" tags="[conversion][floating-point]" filename="tests/<exe-name>/IntrospectiveTests/FloatingPoint.tests.cpp" >
+      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/FloatingPoint.tests.cpp" >
+        <Original>
+          convertToBits( 0.f ) == 0
+        </Original>
+        <Expanded>
+          0 == 0
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/FloatingPoint.tests.cpp" >
+        <Original>
+          convertToBits( -0.f ) == ( 1ULL &lt;&lt; 31 )
+        </Original>
+        <Expanded>
+          2147483648 (0x<hex digits>)
+==
+2147483648 (0x<hex digits>)
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/FloatingPoint.tests.cpp" >
+        <Original>
+          convertToBits( 0. ) == 0
+        </Original>
+        <Expanded>
+          0 == 0
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/FloatingPoint.tests.cpp" >
+        <Original>
+          convertToBits( -0. ) == ( 1ULL &lt;&lt; 63 )
+        </Original>
+        <Expanded>
+          9223372036854775808 (0x<hex digits>)
+==
+9223372036854775808 (0x<hex digits>)
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/FloatingPoint.tests.cpp" >
+        <Original>
+          convertToBits( std::numeric_limits&lt;float>::denorm_min() ) == 1
+        </Original>
+        <Expanded>
+          1 == 1
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/FloatingPoint.tests.cpp" >
+        <Original>
+          convertToBits( std::numeric_limits&lt;double>::denorm_min() ) == 1
+        </Original>
+        <Expanded>
+          1 == 1
+        </Expanded>
+      </Expression>
+      <OverallResult success="true"/>
+    </TestCase>
     <TestCase name="empty tags are not allowed" tags="[tags]" filename="tests/<exe-name>/IntrospectiveTests/Tag.tests.cpp" >
       <Expression success="true" type="REQUIRE_THROWS" filename="tests/<exe-name>/IntrospectiveTests/Tag.tests.cpp" >
         <Original>
@@ -19826,9 +19927,9 @@ loose text artifact
       </Section>
       <OverallResult success="true"/>
     </TestCase>
-    <OverallResults successes="1940" failures="147" expectedFailures="23"/>
-    <OverallResultsCases successes="273" failures="86" expectedFailures="6"/>
+    <OverallResults successes="1951" failures="147" expectedFailures="23"/>
+    <OverallResultsCases successes="276" failures="86" expectedFailures="6"/>
   </Group>
-  <OverallResults successes="1940" failures="146" expectedFailures="23"/>
-  <OverallResultsCases successes="273" failures="86" expectedFailures="6"/>
+  <OverallResults successes="1951" failures="146" expectedFailures="23"/>
+  <OverallResultsCases successes="276" failures="86" expectedFailures="6"/>
 </Catch>

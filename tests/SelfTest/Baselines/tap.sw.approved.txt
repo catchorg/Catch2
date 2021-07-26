@@ -158,6 +158,14 @@ ok {test-number} -
 ok {test-number} -
 # #1954 - 7 arg template test case sig compiles - 5, 3, 1, 1, 1, 0, 0
 ok {test-number} -
+# #2152 - ULP checks between differently signed values were wrong - double
+ok {test-number} - smallest_non_zero, WithinULP( -smallest_non_zero, 2 ) for: 0.0 is within 2 ULPs of -4.9406564584124654e-324 ([-1.4821969375237396e-323, 4.9406564584124654e-324])
+# #2152 - ULP checks between differently signed values were wrong - double
+ok {test-number} - smallest_non_zero, !WithinULP( -smallest_non_zero, 1 ) for: 0.0 not is within 1 ULPs of -4.9406564584124654e-324 ([-9.8813129168249309e-324, -0.0000000000000000e+00])
+# #2152 - ULP checks between differently signed values were wrong - float
+ok {test-number} - smallest_non_zero, WithinULP( -smallest_non_zero, 2 ) for: 0.0f is within 2 ULPs of -1.40129846e-45f ([-4.20389539e-45, 1.40129846e-45])
+# #2152 - ULP checks between differently signed values were wrong - float
+ok {test-number} - smallest_non_zero, !WithinULP( -smallest_non_zero, 1 ) for: 0.0f not is within 1 ULPs of -1.40129846e-45f ([-2.80259693e-45, -0.00000000e+00])
 # #748 - captures with unexpected exceptions
 not ok {test-number} - unexpected exception with message: 'answer := 42' with 1 message: 'expected exception'
 # #748 - captures with unexpected exceptions
@@ -1154,6 +1162,8 @@ ok {test-number} - -10.f, WithinAbs( -10.f, 0.5f ) for: -10.0f is within 0.5 of 
 ok {test-number} - -10.f, WithinAbs( -9.6f, 0.5f ) for: -10.0f is within 0.5 of -9.6000003815
 # Floating point matchers: float
 ok {test-number} - 1.f, WithinULP( 1.f, 0 ) for: 1.0f is within 0 ULPs of 1.00000000e+00f ([1.00000000e+00, 1.00000000e+00])
+# Floating point matchers: float
+ok {test-number} - -1.f, WithinULP( -1.f, 0 ) for: -1.0f is within 0 ULPs of -1.00000000e+00f ([-1.00000000e+00, -1.00000000e+00])
 # Floating point matchers: float
 ok {test-number} - nextafter( 1.f, 2.f ), WithinULP( 1.f, 1 ) for: 1.0f is within 1 ULPs of 1.00000000e+00f ([9.99999940e-01, 1.00000012e+00])
 # Floating point matchers: float
@@ -3703,6 +3713,18 @@ ok {test-number} - long_var == unsigned_short_var for: 1 == 1
 ok {test-number} - long_var == unsigned_int_var for: 1 == 1
 # comparisons between int variables
 ok {test-number} - long_var == unsigned_long_var for: 1 == 1
+# convertToBits
+ok {test-number} - convertToBits( 0.f ) == 0 for: 0 == 0
+# convertToBits
+ok {test-number} - convertToBits( -0.f ) == ( 1ULL << 31 ) for: 2147483648 (0x<hex digits>) == 2147483648 (0x<hex digits>)
+# convertToBits
+ok {test-number} - convertToBits( 0. ) == 0 for: 0 == 0
+# convertToBits
+ok {test-number} - convertToBits( -0. ) == ( 1ULL << 63 ) for: 9223372036854775808 (0x<hex digits>) == 9223372036854775808 (0x<hex digits>)
+# convertToBits
+ok {test-number} - convertToBits( std::numeric_limits<float>::denorm_min() ) == 1 for: 1 == 1
+# convertToBits
+ok {test-number} - convertToBits( std::numeric_limits<double>::denorm_min() ) == 1 for: 1 == 1
 # empty tags are not allowed
 ok {test-number} - Catch::TestCaseInfo("", { "test with an empty tag", "[]" }, dummySourceLineInfo)
 # erfc_inv
@@ -4220,5 +4242,5 @@ ok {test-number} - q3 == 23. for: 23.0 == 23.0
 ok {test-number} -
 # xmlentitycheck
 ok {test-number} -
-1..2109
+1..2120
 

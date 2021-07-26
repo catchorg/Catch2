@@ -745,6 +745,41 @@ Misc.tests.cpp:<line number>
 Misc.tests.cpp:<line number>: PASSED:
 
 -------------------------------------------------------------------------------
+#2152 - ULP checks between differently signed values were wrong - double
+-------------------------------------------------------------------------------
+Matchers.tests.cpp:<line number>
+...............................................................................
+
+Matchers.tests.cpp:<line number>: PASSED:
+  CHECK_THAT( smallest_non_zero, WithinULP( -smallest_non_zero, 2 ) )
+with expansion:
+  0.0 is within 2 ULPs of -4.9406564584124654e-324 ([-1.4821969375237396e-323,
+  4.9406564584124654e-324])
+
+Matchers.tests.cpp:<line number>: PASSED:
+  CHECK_THAT( smallest_non_zero, !WithinULP( -smallest_non_zero, 1 ) )
+with expansion:
+  0.0 not is within 1 ULPs of -4.9406564584124654e-324 ([-9.8813129168249309e-
+  324, -0.0000000000000000e+00])
+
+-------------------------------------------------------------------------------
+#2152 - ULP checks between differently signed values were wrong - float
+-------------------------------------------------------------------------------
+Matchers.tests.cpp:<line number>
+...............................................................................
+
+Matchers.tests.cpp:<line number>: PASSED:
+  CHECK_THAT( smallest_non_zero, WithinULP( -smallest_non_zero, 2 ) )
+with expansion:
+  0.0f is within 2 ULPs of -1.40129846e-45f ([-4.20389539e-45, 1.40129846e-45])
+
+Matchers.tests.cpp:<line number>: PASSED:
+  CHECK_THAT( smallest_non_zero, !WithinULP( -smallest_non_zero, 1 ) )
+with expansion:
+  0.0f not is within 1 ULPs of -1.40129846e-45f ([-2.80259693e-45, -0.
+  00000000e+00])
+
+-------------------------------------------------------------------------------
 #748 - captures with unexpected exceptions
   outside assertions
 -------------------------------------------------------------------------------
@@ -924,6 +959,6 @@ Condition.tests.cpp:<line number>: FAILED:
   CHECK( true != true )
 
 ===============================================================================
-test cases: 31 | 26 passed | 3 failed | 2 failed as expected
-assertions: 99 | 92 passed | 4 failed | 3 failed as expected
+test cases:  33 | 28 passed | 3 failed | 2 failed as expected
+assertions: 103 | 96 passed | 4 failed | 3 failed as expected
 

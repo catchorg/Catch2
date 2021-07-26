@@ -745,6 +745,41 @@ Misc.tests.cpp:<line number>
 Misc.tests.cpp:<line number>: PASSED:
 
 -------------------------------------------------------------------------------
+#2152 - ULP checks between differently signed values were wrong - double
+-------------------------------------------------------------------------------
+Matchers.tests.cpp:<line number>
+...............................................................................
+
+Matchers.tests.cpp:<line number>: PASSED:
+  CHECK_THAT( smallest_non_zero, WithinULP( -smallest_non_zero, 2 ) )
+with expansion:
+  0.0 is within 2 ULPs of -4.9406564584124654e-324 ([-1.4821969375237396e-323,
+  4.9406564584124654e-324])
+
+Matchers.tests.cpp:<line number>: PASSED:
+  CHECK_THAT( smallest_non_zero, !WithinULP( -smallest_non_zero, 1 ) )
+with expansion:
+  0.0 not is within 1 ULPs of -4.9406564584124654e-324 ([-9.8813129168249309e-
+  324, -0.0000000000000000e+00])
+
+-------------------------------------------------------------------------------
+#2152 - ULP checks between differently signed values were wrong - float
+-------------------------------------------------------------------------------
+Matchers.tests.cpp:<line number>
+...............................................................................
+
+Matchers.tests.cpp:<line number>: PASSED:
+  CHECK_THAT( smallest_non_zero, WithinULP( -smallest_non_zero, 2 ) )
+with expansion:
+  0.0f is within 2 ULPs of -1.40129846e-45f ([-4.20389539e-45, 1.40129846e-45])
+
+Matchers.tests.cpp:<line number>: PASSED:
+  CHECK_THAT( smallest_non_zero, !WithinULP( -smallest_non_zero, 1 ) )
+with expansion:
+  0.0f not is within 1 ULPs of -1.40129846e-45f ([-2.80259693e-45, -0.
+  00000000e+00])
+
+-------------------------------------------------------------------------------
 #748 - captures with unexpected exceptions
   outside assertions
 -------------------------------------------------------------------------------
@@ -4489,6 +4524,12 @@ Matchers.tests.cpp:<line number>: PASSED:
   REQUIRE_THAT( 1.f, WithinULP( 1.f, 0 ) )
 with expansion:
   1.0f is within 0 ULPs of 1.00000000e+00f ([1.00000000e+00, 1.00000000e+00])
+
+Matchers.tests.cpp:<line number>: PASSED:
+  REQUIRE_THAT( -1.f, WithinULP( -1.f, 0 ) )
+with expansion:
+  -1.0f is within 0 ULPs of -1.00000000e+00f ([-1.00000000e+00, -1.00000000e+
+  00])
 
 Matchers.tests.cpp:<line number>: PASSED:
   REQUIRE_THAT( nextafter( 1.f, 2.f ), WithinULP( 1.f, 1 ) )
@@ -14598,6 +14639,46 @@ with expansion:
   1 == 1
 
 -------------------------------------------------------------------------------
+convertToBits
+-------------------------------------------------------------------------------
+FloatingPoint.tests.cpp:<line number>
+...............................................................................
+
+FloatingPoint.tests.cpp:<line number>: PASSED:
+  CHECK( convertToBits( 0.f ) == 0 )
+with expansion:
+  0 == 0
+
+FloatingPoint.tests.cpp:<line number>: PASSED:
+  CHECK( convertToBits( -0.f ) == ( 1ULL << 31 ) )
+with expansion:
+  2147483648 (0x<hex digits>)
+  ==
+  2147483648 (0x<hex digits>)
+
+FloatingPoint.tests.cpp:<line number>: PASSED:
+  CHECK( convertToBits( 0. ) == 0 )
+with expansion:
+  0 == 0
+
+FloatingPoint.tests.cpp:<line number>: PASSED:
+  CHECK( convertToBits( -0. ) == ( 1ULL << 63 ) )
+with expansion:
+  9223372036854775808 (0x<hex digits>)
+  ==
+  9223372036854775808 (0x<hex digits>)
+
+FloatingPoint.tests.cpp:<line number>: PASSED:
+  CHECK( convertToBits( std::numeric_limits<float>::denorm_min() ) == 1 )
+with expansion:
+  1 == 1
+
+FloatingPoint.tests.cpp:<line number>: PASSED:
+  CHECK( convertToBits( std::numeric_limits<double>::denorm_min() ) == 1 )
+with expansion:
+  1 == 1
+
+-------------------------------------------------------------------------------
 empty tags are not allowed
 -------------------------------------------------------------------------------
 Tag.tests.cpp:<line number>
@@ -16852,6 +16933,6 @@ Misc.tests.cpp:<line number>
 Misc.tests.cpp:<line number>: PASSED:
 
 ===============================================================================
-test cases:  365 |  273 passed |  86 failed |  6 failed as expected
-assertions: 2109 | 1940 passed | 146 failed | 23 failed as expected
+test cases:  368 |  276 passed |  86 failed |  6 failed as expected
+assertions: 2120 | 1951 passed | 146 failed | 23 failed as expected
 

@@ -80,6 +80,10 @@ PartTracker.tests.cpp:<line number>: passed: n for: 3
 Misc.tests.cpp:<line number>: passed:
 Misc.tests.cpp:<line number>: passed:
 Misc.tests.cpp:<line number>: passed:
+Matchers.tests.cpp:<line number>: passed: smallest_non_zero, WithinULP( -smallest_non_zero, 2 ) for: 0.0 is within 2 ULPs of -4.9406564584124654e-324 ([-1.4821969375237396e-323, 4.9406564584124654e-324])
+Matchers.tests.cpp:<line number>: passed: smallest_non_zero, !WithinULP( -smallest_non_zero, 1 ) for: 0.0 not is within 1 ULPs of -4.9406564584124654e-324 ([-9.8813129168249309e-324, -0.0000000000000000e+00])
+Matchers.tests.cpp:<line number>: passed: smallest_non_zero, WithinULP( -smallest_non_zero, 2 ) for: 0.0f is within 2 ULPs of -1.40129846e-45f ([-4.20389539e-45, 1.40129846e-45])
+Matchers.tests.cpp:<line number>: passed: smallest_non_zero, !WithinULP( -smallest_non_zero, 1 ) for: 0.0f not is within 1 ULPs of -1.40129846e-45f ([-2.80259693e-45, -0.00000000e+00])
 Exception.tests.cpp:<line number>: failed: unexpected exception with message: 'answer := 42' with 1 message: 'expected exception'
 Exception.tests.cpp:<line number>: failed: unexpected exception with message: 'answer := 42'; expression was: thisThrows() with 1 message: 'expected exception'
 Exception.tests.cpp:<line number>: passed: thisThrows() with 1 message: 'answer := 42'
@@ -586,6 +590,7 @@ Matchers.tests.cpp:<line number>: passed: 10.f, !WithinAbs( 11.f, 0.5f ) for: 10
 Matchers.tests.cpp:<line number>: passed: -10.f, WithinAbs( -10.f, 0.5f ) for: -10.0f is within 0.5 of -10.0
 Matchers.tests.cpp:<line number>: passed: -10.f, WithinAbs( -9.6f, 0.5f ) for: -10.0f is within 0.5 of -9.6000003815
 Matchers.tests.cpp:<line number>: passed: 1.f, WithinULP( 1.f, 0 ) for: 1.0f is within 0 ULPs of 1.00000000e+00f ([1.00000000e+00, 1.00000000e+00])
+Matchers.tests.cpp:<line number>: passed: -1.f, WithinULP( -1.f, 0 ) for: -1.0f is within 0 ULPs of -1.00000000e+00f ([-1.00000000e+00, -1.00000000e+00])
 Matchers.tests.cpp:<line number>: passed: nextafter( 1.f, 2.f ), WithinULP( 1.f, 1 ) for: 1.0f is within 1 ULPs of 1.00000000e+00f ([9.99999940e-01, 1.00000012e+00])
 Matchers.tests.cpp:<line number>: passed: 0.f, WithinULP( nextafter( 0.f, 1.f ), 1 ) for: 0.0f is within 1 ULPs of 1.40129846e-45f ([0.00000000e+00, 2.80259693e-45])
 Matchers.tests.cpp:<line number>: passed: 1.f, WithinULP( nextafter( 1.f, 0.f ), 1 ) for: 1.0f is within 1 ULPs of 9.99999940e-01f ([9.99999881e-01, 1.00000000e+00])
@@ -2065,6 +2070,16 @@ Condition.tests.cpp:<line number>: passed: long_var == unsigned_char_var for: 1 
 Condition.tests.cpp:<line number>: passed: long_var == unsigned_short_var for: 1 == 1
 Condition.tests.cpp:<line number>: passed: long_var == unsigned_int_var for: 1 == 1
 Condition.tests.cpp:<line number>: passed: long_var == unsigned_long_var for: 1 == 1
+FloatingPoint.tests.cpp:<line number>: passed: convertToBits( 0.f ) == 0 for: 0 == 0
+FloatingPoint.tests.cpp:<line number>: passed: convertToBits( -0.f ) == ( 1ULL << 31 ) for: 2147483648 (0x<hex digits>)
+==
+2147483648 (0x<hex digits>)
+FloatingPoint.tests.cpp:<line number>: passed: convertToBits( 0. ) == 0 for: 0 == 0
+FloatingPoint.tests.cpp:<line number>: passed: convertToBits( -0. ) == ( 1ULL << 63 ) for: 9223372036854775808 (0x<hex digits>)
+==
+9223372036854775808 (0x<hex digits>)
+FloatingPoint.tests.cpp:<line number>: passed: convertToBits( std::numeric_limits<float>::denorm_min() ) == 1 for: 1 == 1
+FloatingPoint.tests.cpp:<line number>: passed: convertToBits( std::numeric_limits<double>::denorm_min() ) == 1 for: 1 == 1
 Tag.tests.cpp:<line number>: passed: Catch::TestCaseInfo("", { "test with an empty tag", "[]" }, dummySourceLineInfo)
 InternalBenchmark.tests.cpp:<line number>: passed: erfc_inv(1.103560) == Approx(-0.09203687623843015) for: -0.0920368762 == Approx( -0.0920368762 )
 InternalBenchmark.tests.cpp:<line number>: passed: erfc_inv(1.067400) == Approx(-0.05980291115763361) for: -0.0598029112 == Approx( -0.0598029112 )

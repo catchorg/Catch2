@@ -65,6 +65,7 @@ set(INTERNAL_HEADERS
     ${SOURCES_DIR}/internal/catch_errno_guard.hpp
     ${SOURCES_DIR}/internal/catch_exception_translator_registry.hpp
     ${SOURCES_DIR}/internal/catch_fatal_condition_handler.hpp
+    ${SOURCES_DIR}/internal/catch_floating_point_helpers.hpp
     ${SOURCES_DIR}/internal/catch_unique_name.hpp
     ${SOURCES_DIR}/generators/catch_generator_exception.hpp
     ${SOURCES_DIR}/generators/catch_generators.hpp
@@ -160,6 +161,7 @@ set(IMPL_SOURCES
     ${SOURCES_DIR}/internal/catch_enum_values_registry.cpp
     ${SOURCES_DIR}/internal/catch_exception_translator_registry.cpp
     ${SOURCES_DIR}/internal/catch_fatal_condition_handler.cpp
+    ${SOURCES_DIR}/internal/catch_floating_point_helpers.cpp
     ${SOURCES_DIR}/generators/internal/catch_generators_combined_tu.cpp
     ${SOURCES_DIR}/interfaces/catch_interfaces_combined_tu.cpp
     ${SOURCES_DIR}/interfaces/catch_interfaces_reporter.cpp

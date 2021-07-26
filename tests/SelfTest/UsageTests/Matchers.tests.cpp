@@ -4,6 +4,7 @@
  */
 
 #include <catch2/catch_test_macros.hpp>
+#include <catch2/catch_template_test_macros.hpp>
 #include <catch2/matchers/catch_matchers_exception.hpp>
 #include <catch2/matchers/catch_matchers_floating_point.hpp>
 #include <catch2/matchers/catch_matchers_predicate.hpp>
@@ -465,6 +466,7 @@ TEST_CASE( "Floating point matchers: float", "[matchers][floating-point]" ) {
     }
     SECTION( "ULPs" ) {
         REQUIRE_THAT( 1.f, WithinULP( 1.f, 0 ) );
+        REQUIRE_THAT(-1.f, WithinULP( -1.f, 0 ) );
 
         REQUIRE_THAT( nextafter( 1.f, 2.f ), WithinULP( 1.f, 1 ) );
         REQUIRE_THAT( 0.f, WithinULP( nextafter( 0.f, 1.f ), 1 ) );
@@ -1081,3 +1083,17 @@ TEST_CASE( "Matchers can take references",
 #ifdef __clang__
 #    pragma clang diagnostic pop
 #endif
+
+TEMPLATE_TEST_CASE(
+    "#2152 - ULP checks between differently signed values were wrong",
+    "[matchers][floating-point][ulp]",
+    float,
+    double ) {
+    using Catch::Matchers::WithinULP;
+
+    static constexpr TestType smallest_non_zero =
+        std::numeric_limits<TestType>::denorm_min();
+
+    CHECK_THAT( smallest_non_zero, WithinULP( -smallest_non_zero, 2 ) );
+    CHECK_THAT( smallest_non_zero, !WithinULP( -smallest_non_zero, 1 ) );
+}

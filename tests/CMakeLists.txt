@@ -80,6 +80,7 @@ set(TEST_SOURCES
         ${SELF_TEST_DIR}/IntrospectiveTests/Clara.tests.cpp
         ${SELF_TEST_DIR}/IntrospectiveTests/CmdLine.tests.cpp
         ${SELF_TEST_DIR}/IntrospectiveTests/Details.tests.cpp
+        ${SELF_TEST_DIR}/IntrospectiveTests/FloatingPoint.tests.cpp
         ${SELF_TEST_DIR}/IntrospectiveTests/GeneratorsImpl.tests.cpp
         ${SELF_TEST_DIR}/IntrospectiveTests/InternalBenchmark.tests.cpp
         ${SELF_TEST_DIR}/IntrospectiveTests/PartTracker.tests.cpp

@@ -77,6 +77,9 @@
     <testCase name="Process can be configured on command line/Benchmark options/warmup-time" duration="{duration}"/>
     <testCase name="Test with special, characters &quot;in name" duration="{duration}"/>
   </file>
+  <file path="tests/<exe-name>/IntrospectiveTests/FloatingPoint.tests.cpp">
+    <testCase name="convertToBits" duration="{duration}"/>
+  </file>
   <file path="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp">
     <testCase name="Generators internals/Single value" duration="{duration}"/>
     <testCase name="Generators internals/Preset values" duration="{duration}"/>
@@ -988,6 +991,8 @@ Exception.tests.cpp:<line number>
     <testCase name="tables" duration="{duration}"/>
   </file>
   <file path="tests/<exe-name>/UsageTests/Matchers.tests.cpp">
+    <testCase name="#2152 - ULP checks between differently signed values were wrong - double" duration="{duration}"/>
+    <testCase name="#2152 - ULP checks between differently signed values were wrong - float" duration="{duration}"/>
     <testCase name="Arbitrary predicate matcher/Function pointer" duration="{duration}"/>
     <testCase name="Arbitrary predicate matcher/Lambdas + different type" duration="{duration}"/>
     <testCase name="Combining MatchAllOfGeneric does not nest" duration="{duration}"/>

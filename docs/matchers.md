@@ -161,6 +161,11 @@ away from the `target` value. The short version of what this means
 is that there is no more than `maxUlpDiff - 1` representeable floating
 point numbers between the argument for matching and the `target` value.
 
+**Important**: The WithinULP matcher requires the platform to use the
+[IEEE-754](https://en.wikipedia.org/wiki/IEEE_754) representation for
+floating point numbers.
+
+
 `WithinRel` creates a matcher that accepts floating point numbers that
 are _approximately equal_ with the `target` with tolerance of `eps.`
 Specifically, it matches if

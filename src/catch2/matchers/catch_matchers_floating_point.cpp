@@ -10,12 +10,12 @@
 #include <catch2/internal/catch_polyfills.hpp>
 #include <catch2/internal/catch_to_string.hpp>
 #include <catch2/catch_tostring.hpp>
+#include <catch2/internal/catch_floating_point_helpers.hpp>
 
 #include <algorithm>
 #include <cmath>
 #include <cstdlib>
 #include <cstdint>
-#include <cstring>
 #include <sstream>
 #include <iomanip>
 #include <limits>
@@ -23,20 +23,6 @@
 
 namespace Catch {
 namespace {
-
-    int32_t convert(float f) {
-        static_assert(sizeof(float) == sizeof(int32_t), "Important ULP matcher assumption violated");
-        int32_t i;
-        std::memcpy(&i, &f, sizeof(f));
-        return i;
-    }
-
-    int64_t convert(double d) {
-        static_assert(sizeof(double) == sizeof(int64_t), "Important ULP matcher assumption violated");
-        int64_t i;
-        std::memcpy(&i, &d, sizeof(d));
-        return i;
-    }
 
     template <typename FP>
     bool almostEqualUlps(FP lhs, FP rhs, uint64_t maxUlpDiff) {
@@ -46,17 +32,10 @@ namespace {
             return false;
         }
 
-        auto lc = convert(lhs);
-        auto rc = convert(rhs);
+        // This should also handle positive and negative zeros, infinities
+        const auto ulpDist = ulpDistance(lhs, rhs);
 
-        if ((lc < 0) != (rc < 0)) {
-            // Potentially we can have +0 and -0
-            return lhs == rhs;
-        }
-
-        // static cast as a workaround for IBM XLC
-        auto ulpDiff = std::abs(static_cast<FP>(lc - rc));
-        return static_cast<uint64_t>(ulpDiff) <= maxUlpDiff;
+        return ulpDist <= maxUlpDiff;
     }
 
 #if defined(CATCH_CONFIG_GLOBAL_NEXTAFTER)
@@ -131,6 +110,9 @@ namespace Detail {
         CATCH_ENFORCE(m_type == Detail::FloatingPointKind::Double
                    || m_ulps < (std::numeric_limits<uint32_t>::max)(),
             "Provided ULP is impossibly large for a float comparison.");
+        CATCH_ENFORCE( std::numeric_limits<double>::is_iec559,
+                       "WithinUlp matcher only supports platforms with "
+                       "IEEE-754 compatible floating point representation" );
     }
 
 #if defined(__clang__)

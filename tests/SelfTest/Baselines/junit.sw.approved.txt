@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuitesloose text artifact
 >
-  <testsuite name="<exe-name>" errors="17" failures="130" tests="2110" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
+  <testsuite name="<exe-name>" errors="17" failures="130" tests="2121" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
     <properties>
       <property name="filters" value="~[!nonportable]~[!benchmark]~[approvals] *"/>
       <property name="random-seed" value="1"/>
@@ -47,6 +47,8 @@ Nor would this
     <testcase classname="<exe-name>.global" name="#1954 - 7 arg template test case sig compiles - 1, 1, 1, 1, 1, 0, 0" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="#1954 - 7 arg template test case sig compiles - 5, 1, 1, 1, 1, 0, 0" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="#1954 - 7 arg template test case sig compiles - 5, 3, 1, 1, 1, 0, 0" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="#2152 - ULP checks between differently signed values were wrong - double" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="#2152 - ULP checks between differently signed values were wrong - float" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="#748 - captures with unexpected exceptions/outside assertions" time="{duration}" status="run">
       <error type="TEST_CASE">
 FAILED:
@@ -1548,6 +1550,7 @@ Misc.tests.cpp:<line number>
     <testcase classname="<exe-name>.global" name="classify_outliers/mixed" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="comparisons between const int variables" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="comparisons between int variables" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="convertToBits" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="empty tags are not allowed" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="erfc_inv" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="estimate_clock_resolution" time="{duration}" status="run"/>
