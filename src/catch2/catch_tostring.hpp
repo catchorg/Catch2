@@ -475,7 +475,7 @@ namespace Catch {
     using std::begin;
     using std::end;
 
-    namespace detail {
+    namespace Detail {
         template <typename...>
         struct void_type {
             using type = void;
@@ -488,10 +488,10 @@ namespace Catch {
         template <typename T>
         struct is_range_impl<T, typename void_type<decltype(begin(std::declval<T>()))>::type> : std::true_type {
         };
-    } // namespace detail
+    } // namespace Detail
 
     template <typename T>
-    struct is_range : detail::is_range_impl<T> {
+    struct is_range : Detail::is_range_impl<T> {
     };
 
 #if defined(_MANAGED) // Managed types are never ranges
