@@ -145,7 +145,7 @@ Catch2 provides 3 matchers that target floating point numbers. These
 are:
 
 * `WithinAbs(double target, double margin)`,
-* `WithinUlps(FloatingPoint target, uint64_t maxUlpDiff)`, and
+* `WithinULP(FloatingPoint target, uint64_t maxUlpDiff)`, and
 * `WithinRel(FloatingPoint target, FloatingPoint eps)`.
 
 > `WithinRel` matcher was introduced in Catch2 2.10.0
