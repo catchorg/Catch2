@@ -99,7 +99,7 @@ somewhere inside it.
 The `Equals` matcher matches a string if (and only if) the argument
 string is equal to `str`.
 
-Finally, the `Matches` matcher performs an ECMASCript regex match using
+Finally, the `Matches` matcher performs an ECMAScript regex match using
 `str` against the argument string. It is important to know that
 the match is performed against the string as a whole, meaning that
 the regex `"abc"` will not match input string `"abcd"`. To match
