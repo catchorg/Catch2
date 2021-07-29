@@ -1,12 +1,34 @@
 <a id="top"></a>
-# Changes overview
-- Catch2 now suggests statically compiled library as its distribution model.
-- Functionality is split into multiple header files.
-- ...
-
 # Migrating from v2 to v3
 
-If you want to migrate to v3, there are two basic approaches to do so.
+v3 is the next major version of Catch2 and brings three significant changes:
+ * Catch2 is now split into multiple headers
+ * Catch2 is now compiled as a static library
+ * C++14 is the minimum required C++ version
+
+There are many reasons why we decided to go from the old single-header
+distribution model to a more standard library distribution model. The
+big one is compile-time performance, but moving over to a split header
+distribution model also improves the future maintainability and
+extendability of the codebase. For example v3 adds a new kind of matchers
+without impacting the compilation times of users that do not use matchers
+in their tests. The new model is also more friendly towards package
+managers, such as vcpkg and Conan.
+
+The result of this move is a significant improvement in compilation
+times, e.g. the inclusion overhead of Catch2 in the common case has been
+reduced by roughly 80%. The improved ease of maintenance also led to
+various runtime performance improvements and the introduction of new features.
+For details, look at [the release notes of 3.0.1](release-notes.md#301).
+
+_Note that we still provide one header + one TU distribution but do
+not consider it the primarily supported option. You should also expect
+that the compilation times will be worse if you use this option._
+
+
+## How to migrate projects from v2 to v3
+
+To migrate to v3, there are two basic approaches to do so.
 
 1. Use `catch_amalgamated.hpp` and `catch_amalgamated.cpp`.
 2. Build Catch2 as a proper (static) library, and move to piecewise headers
