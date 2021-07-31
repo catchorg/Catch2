@@ -2,7 +2,7 @@
 # CMake integration
 
 **Contents**<br>
-[CMake target](#cmake-target)<br>
+[CMake targets](#cmake-targets)<br>
 [Automatic test registration](#automatic-test-registration)<br>
 [CMake project options](#cmake-project-options)<br>
 [Installing Catch2 from git repository](#installing-catch2-from-git-repository)<br>
@@ -15,28 +15,33 @@ integration points for our users.
 2) Catch2's repository contains CMake scripts for automatic registration
 of `TEST_CASE`s in CTest
 
-## CMake target
+## CMake targets
 
-Catch2's CMake build exports an interface target `Catch2::Catch2`. Linking
-against it will add the proper include path and all necessary capabilities
-to the resulting binary.
+Catch2's CMake build exports two targets, `Catch2::Catch2`, and
+`Catch2::Catch2WithMain`. If you do not need custom `main` function,
+you should be using the latter (and only the latter). Linking against
+it will add the proper include paths and link your target together with
+2 static libraries that implement Catch2 and its main respectively.
+If you need custom `main`, you should link only against `Catch2::Catch2`.
 
-This means that if Catch2 has been installed on the system, it should be
-enough to do:
+This means that if Catch2 has been installed on the system, it should
+be enough to do
 ```cmake
-find_package(Catch2 REQUIRED)
+find_package(Catch2 3 REQUIRED)
+# These tests can use the Catch2-provided main
 add_executable(tests test.cpp)
-target_link_libraries(tests PRIVATE Catch2::Catch2)
+target_link_libraries(tests PRIVATE Catch2::Catch2WithMain)
+
+# These tests need their own main
+add_executable(custom-main-tests test.cpp test-main.cpp)
+target_link_libraries(custom-main-tests PRIVATE Catch2::Catch2WithMain)
 ```
 
+These targets are also provided when Catch2 is used as a subdirectory.
+Assuming Catch2 has been cloned to `lib/Catch2`, you only need to replace
+the `find_package` call with `add_subdirectory(lib/Catch2)` and the snippet
+above still works.
 
-This target is also provided when Catch2 is used as a subdirectory.
-Assuming that Catch2 has been cloned to `lib/Catch2`:
-```cmake
-add_subdirectory(lib/Catch2)
-add_executable(tests test.cpp)
-target_link_libraries(tests PRIVATE Catch2::Catch2)
-```
 
 Another possibility is to use [FetchContent](https://cmake.org/cmake/help/latest/module/FetchContent.html):
 ```cmake
@@ -45,13 +50,15 @@ Include(FetchContent)
 FetchContent_Declare(
   Catch2
   GIT_REPOSITORY https://github.com/catchorg/Catch2.git
-  GIT_TAG        v2.13.1)
+  GIT_TAG        v3.0.0-preview3
+)
 
 FetchContent_MakeAvailable(Catch2)
 
 add_executable(tests test.cpp)
-target_link_libraries(tests PRIVATE Catch2::Catch2)
+target_link_libraries(tests PRIVATE Catch2::Catch2WithMain)
 ```
+
 
 ## Automatic test registration
 
@@ -88,7 +95,7 @@ include(Catch)
 catch_discover_tests(foo)
 ```
 
-When using `FetchContent`, `include(Catch)` will fail unless 
+When using `FetchContent`, `include(Catch)` will fail unless
 `CMAKE_MODULE_PATH` is explicitly updated to include the contrib
 directory.
 
@@ -252,7 +259,21 @@ ParseAndAddCatchTests(bar)
 ## CMake project options
 
 Catch2's CMake project also provides some options for other projects
-that consume it. These are
+that consume it. These are:
+
+* `BUILD_TESTING` -- When `ON` and the project is not used as a subproject,
+Catch2's test binary will be built. Defaults to `ON`.
+* `CATCH_INSTALL_DOCS` -- When `ON`, Catch2's documentation will be
+included in the installation. Defaults to `ON`.
+* `CATCH_INSTALL_HELPERS` -- When `ON`, Catch2's contrib folder will be
+included in the installation. Defaults to `ON`.
+* `CATCH_DEVELOPMENT_BUILD` -- When `ON`, configures the build for development
+of Catch2. This means enabling test projects, warnings and so on.
+Defaults to `OFF`.
+
+
+Enabling `CATCH_DEVELOPMENT_BUILD` also enables further configuration
+customization options:
 
 * `CATCH_BUILD_TESTING` -- When `ON`, Catch2's SelfTest project will be
 built. Defaults to `ON`. Note that Catch2 also obeys `BUILD_TESTING` CMake
@@ -260,12 +281,15 @@ variable, so _both_ of them need to be `ON` for the SelfTest to be built,
 and either of them can be set to `OFF` to disable building SelfTest.
 * `CATCH_BUILD_EXAMPLES` -- When `ON`, Catch2's usage examples will be
 built. Defaults to `OFF`.
-* `CATCH_INSTALL_DOCS` -- When `ON`, Catch2's documentation will be
-included in the installation. Defaults to `ON`.
-* `CATCH_INSTALL_HELPERS` -- When `ON`, Catch2's contrib folder will be
-included in the installation. Defaults to `ON`.
-* `BUILD_TESTING` -- When `ON` and the project is not used as a subproject,
-Catch2's test binary will be built. Defaults to `ON`.
+* `CATCH_BUILD_EXTRA_TESTS` -- When `ON`, Catch2's extra tests will be
+built. Defaults to `OFF`.
+* `CATCH_BUILD_FUZZERS` -- When `ON`, Catch2 fuzzing entry points will
+be built. Defaults to `OFF`.
+* `CATCH_ENABLE_WERROR` -- When `ON`, adds `-Werror` or equivalent flag
+to the compilation. Defaults to `ON`.
+* `CATCH_BUILD_SURROGATES` -- When `ON`, each header in Catch2 will be
+compiled separately to ensure that they are self-sufficient.
+Defaults to `OFF`.
 
 
 ## Installing Catch2 from git repository
