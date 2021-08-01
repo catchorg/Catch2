@@ -73,7 +73,7 @@ If you run this as written it will pass. Everything is good. Right?
 Well, there is still a bug here. In fact the first version of this tutorial I posted here genuinely had the bug in! So it's not completely contrived (thanks to Daryle Walker (```@CTMacUser```) for pointing this out).
 
 What is the bug? Well what is the factorial of zero?
-[The factorial of zero is one](http://mathforum.org/library/drmath/view/57128.html) - which is just one of those things you have to know (and remember!).
+[The factorial of zero is one](https://www.zero-factorial.com/whatis.html) - which is just one of those things you have to know (and remember!).
 
 Let's add that to the test case:
 
