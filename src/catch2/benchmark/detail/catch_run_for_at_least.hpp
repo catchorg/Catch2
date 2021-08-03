@@ -43,8 +43,11 @@ namespace Catch {
             void throw_optimized_away_error();
 
             template <typename Clock, typename Fun>
-            TimingOf<Clock, Fun, run_for_at_least_argument_t<Clock, Fun>> run_for_at_least(ClockDuration<Clock> how_long, int seed, Fun&& fun) {
-                auto iters = seed;
+            TimingOf<Clock, Fun, run_for_at_least_argument_t<Clock, Fun>>
+                run_for_at_least(ClockDuration<Clock> how_long,
+                                 const int initial_iterations,
+                                 Fun&& fun) {
+                auto iters = initial_iterations;
                 while (iters < (1 << 30)) {
                     auto&& Timing = measure_one<Clock>(fun, iters, is_callable<Fun(Chronometer)>());
 
