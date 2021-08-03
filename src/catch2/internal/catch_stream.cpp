@@ -64,8 +64,10 @@ namespace Detail {
 
         struct OutputDebugWriter {
 
-            void operator()( std::string const&str ) {
-                writeToDebugConsole( str );
+            void operator()( std::string const& str ) {
+                if ( !str.empty() ) {
+                    writeToDebugConsole( str );
+                }
             }
         };
 
