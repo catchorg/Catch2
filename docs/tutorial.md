@@ -10,33 +10,13 @@
 [Type parametrised test cases](#type-parametrised-test-cases)<br>
 [Next steps](#next-steps)<br>
 
+
 ## Getting Catch2
 
-The simplest way to get Catch2 is to download the latest
-[amalgamated header](https://raw.githubusercontent.com/catchorg/Catch2/devel/extras/catch_amalgamated.hpp)
-and [amalgamated source file](https://raw.githubusercontent.com/catchorg/Catch2/devel/extras/catch_amalgamated.cpp).
-
-These two files are the result of merging all headers, respectively
-all source files, into one file. To use them, just drop them next to your
-own project. Using Catch2 like this has a significant disadvantage in terms
-of final compilation times, but it works well enough to get you started.
-
-Later, you should move towards using Catch2 as a proper library, preferably
-via CMake. See our documentation on the [CMake integration](cmake-integration.md#top).
-
-
-_If you have installed Catch2 from system package manager, or CMake
-package, you need to include the header as `#include <catch2/catch.hpp>`_
-
-
---------
-
-The rest of this page is currently waiting for rewrite for the v3
-release. It might not be accurate in places, and likely doesn't mention
-the proper header to include, or might refer to outdated functionality,
-like the `CATCH_CONFIG_MAIN` macro.
-
---------
+Ideally you should be using Catch2 through its [CMake integration](cmake-integration.md#top).
+Catch2 also provides pkg-config files and single TU distribution, but this
+documentation will assume you are using CMake. If you are using single-TU
+distribution instead, remember to replace the included header with `catch_amalgamated.hpp`.
 
 
 ## Writing tests
@@ -49,11 +29,8 @@ unsigned int Factorial( unsigned int number ) {
 }
 ```
 
-To keep things simple we'll put everything in a single file (<a href="#scaling-up">see later for more on how to structure your test files</a>).
-
 ```c++
-#define CATCH_CONFIG_MAIN  // This tells Catch to provide a main() - only do this in one cpp file
-#include "catch.hpp"
+#include <catch2/catch_test_macros.hpp>
 
 unsigned int Factorial( unsigned int number ) {
     return number <= 1 ? number : Factorial(number-1)*number;
@@ -69,13 +46,10 @@ TEST_CASE( "Factorials are computed", "[factorial]" ) {
 
 This will compile to a complete executable which responds to [command line arguments](command-line.md#top). If you just run it with no arguments it will execute all test cases (in this case there is just one), report any failures, report a summary of how many tests passed and failed and return the number of failed tests (useful for if you just want a yes/ no answer to: "did it work").
 
-If you run this as written it will pass. Everything is good. Right?
-Well, there is still a bug here. In fact the first version of this tutorial I posted here genuinely had the bug in! So it's not completely contrived (thanks to Daryle Walker (```@CTMacUser```) for pointing this out).
-
-What is the bug? Well what is the factorial of zero?
-[The factorial of zero is one](http://mathforum.org/library/drmath/view/57128.html) - which is just one of those things you have to know (and remember!).
-
-Let's add that to the test case:
+Anyway, as the tests above as written will pass, but there is a bug.
+The problem is that `Factorial(0)` should return 1 (due to [its
+definition](https://en.wikipedia.org/wiki/Factorial#Factorial_of_zero)).
+Let's add that as an assertion to the test case:
 
 ```c++
 TEST_CASE( "Factorials are computed", "[factorial]" ) {
@@ -87,7 +61,8 @@ TEST_CASE( "Factorials are computed", "[factorial]" ) {
 }
 ```
 
-Now we get a failure - something like:
+After another compile & run cycle, we will see a test failure. The output
+will look something like:
 
 ```
 Example.cpp:9: FAILED:
@@ -96,37 +71,51 @@ with expansion:
   0 == 1
 ```
 
-Note that we get the actual return value of Factorial(0) printed for us (0) - even though we used a natural expression with the == operator. That lets us immediately see what the problem is.
+Note that the output contains both the original expression,
+`REQUIRE( Factorial(0) == 1 )` and the actual value returned by the call
+to the `Factorial` function: `0`.
 
-Let's change the factorial function to:
-
+We can fix this bug by slightly modifying the `Factorial` function to:
 ```c++
 unsigned int Factorial( unsigned int number ) {
   return number > 1 ? Factorial(number-1)*number : 1;
 }
 ```
 
-Now all the tests pass.
-
-Of course there are still more issues to deal with. For example we'll hit problems when the return value starts to exceed the range of an unsigned int. With factorials that can happen quite quickly. You might want to add tests for such cases and decide how to handle them. We'll stop short of doing that here.
 
 ### What did we do here?
 
-Although this was a simple test it's been enough to demonstrate a few things about how Catch is used. Let's take a moment to consider those before we move on.
+Although this was a simple test it's been enough to demonstrate a few
+things about how Catch2 is used. Let's take a moment to consider those
+before we move on.
 
-1. All we did was ```#define``` one identifier and ```#include``` one header and we got everything - even an implementation of ```main()``` that will [respond to command line arguments](command-line.md#top). You can only use that ```#define``` in one implementation file, for (hopefully) obvious reasons. Once you have more than one file with unit tests in you'll just ```#include "catch.hpp"``` and go. Usually it's a good idea to have a dedicated implementation file that just has ```#define CATCH_CONFIG_MAIN``` and ```#include "catch.hpp"```. You can also provide your own implementation of main and drive Catch yourself (see [Supplying-your-own-main()](own-main.md#top)).
-2. We introduce test cases with the ```TEST_CASE``` macro. This macro takes one or two arguments - a free form test name and, optionally, one or more tags (for more see <a href="#test-cases-and-sections">Test cases and Sections</a>). The test name must be unique. You can run sets of tests by specifying a wildcarded test name or a tag expression. See the [command line docs](command-line.md#top) for more information on running tests.
-3. The name and tags arguments are just strings. We haven't had to declare a function or method - or explicitly register the test case anywhere. Behind the scenes a function with a generated name is defined for you, and automatically registered using static registry classes. By abstracting the function name away we can name our tests without the constraints of identifier names.
-4. We write our individual test assertions using the ```REQUIRE``` macro. Rather than a separate macro for each type of condition we express the condition naturally using C/C++ syntax. Behind the scenes a simple set of expression templates captures the left-hand-side and right-hand-side of the expression so we can display the values in our test report. As we'll see later there _are_ other assertion macros - but because of this technique the number of them is drastically reduced.
+* We introduce test cases with the `TEST_CASE` macro. This macro takes
+  one or two string arguments - a free form test name and, optionally,
+  one or more tags (for more see [Test cases and Sections](#test-cases-and-sections)).
+* The test automatically self-registers with the test runner, and user
+  does not have do anything more to ensure that it is picked up by the test
+  framework. _Note that you can run specific test, or set of tests,
+  through the [command line](command-line#top)._
+* The individual test assertions are written using the `REQUIRE` macro.
+  It accepts a boolean expression, and uses expression templates to
+  internally decompose it, so that it can be individually stringified
+  on test failure.
+  
+On the last point, note that there are more testing macros available,
+because not all useful checks can be expressed as a simple boolean
+expression. As an example, checking that an expression throws an exception
+is done with the `REQUIRE_THROWS` macro. More on that later.
 
-<a id="test-cases-and-sections"></a>
+
 ## Test cases and sections
 
-Most test frameworks have a class-based fixture mechanism. That is, test cases map to methods on a class and common setup and teardown can be performed in ```setup()``` and ```teardown()``` methods (or constructor/ destructor in languages, like C++, that support deterministic destruction).
+Like most test frameworks, Catch2 supports a class-based fixture mechanism,
+where individual tests are methods on class and setup/teardown can be
+done in constructor/destructor of the type.
 
-While Catch fully supports this way of working there are a few problems with the approach. In particular the way your code must be split up, and the blunt granularity of it, may cause problems. You can only have one setup/ teardown pair across a set of methods, but sometimes you want slightly different setup in each method, or you may even want several levels of setup (a concept which we will clarify later on in this tutorial). It was <a href="http://jamesnewkirk.typepad.com/posts/2007/09/why-you-should-.html">problems like these</a> that led James Newkirk, who led the team that built NUnit, to start again from scratch and <a href="http://jamesnewkirk.typepad.com/posts/2007/09/announcing-xuni.html">build xUnit</a>).
-
-Catch takes a different approach (to both NUnit and xUnit) that is a more natural fit for C++ and the C family of languages. This is best explained through an example ([code](../examples/100-Fix-Section.cpp)):
+However, idiomatic usage of Catch2 avoids using it in favour of free
+standing test cases using _sections_ to share setup and teardown code. 
+This is best explained through an example ([code](../examples/100-Fix-Section.cpp)):
 
 ```c++
 TEST_CASE( "vectors can be sized and resized", "[vector]" ) {
@@ -163,29 +152,42 @@ TEST_CASE( "vectors can be sized and resized", "[vector]" ) {
 }
 ```
 
-For each ```SECTION``` the ```TEST_CASE``` is executed from the start - so as we enter each section we know that size is 5 and capacity is at least 5. We enforced those requirements with the ```REQUIRE```s at the top level so we can be confident in them.
-This works because the ```SECTION``` macro contains an if statement that calls back into Catch to see if the section should be executed. One leaf section is executed on each run through a ```TEST_CASE```. The other sections are skipped. Next time through the next section is executed, and so on until no new sections are encountered.
+For each `SECTION` the `TEST_CASE` is executed from the start. This means
+that each section is entered with a freshly constructed vector `v`, that
+we know has size 5 and capacity at least 5, because the two assertions
+are also checked before the section is entered. Each run through a test
+case will execute one, and only one, leaf section.
 
-So far so good - this is already an improvement on the setup/teardown approach because now we see our setup code inline and use the stack.
+Section can also be nested, in which case the parent section can be
+entered multiple times, once for each leaf section. Nested sections are
+most useful when you have multiple tests that share part of the set up.
+To continue on the vector example above, you could add a check that
+`std::vector::reserve` does not remove unused excess capacity, like this:
 
-The power of sections really shows, however, when we need to execute a sequence of checked operations. Continuing the vector example, we might want to verify that attempting to reserve a capacity smaller than the current capacity of the vector changes nothing. We can do that, naturally, like so:
-
-```c++
+```cpp
     SECTION( "reserving bigger changes capacity but not size" ) {
         v.reserve( 10 );
 
         REQUIRE( v.size() == 5 );
         REQUIRE( v.capacity() >= 10 );
-
-        SECTION( "reserving smaller again does not change capacity" ) {
+        SECTION( "reserving down unused capacity does not change capacity" ) {
             v.reserve( 7 );
-
+            REQUIRE( v.size() == 5 );
             REQUIRE( v.capacity() >= 10 );
         }
     }
 ```
 
-Sections can be nested to an arbitrary depth (limited only by your stack size). Each leaf section (i.e. a section that contains no nested sections) will be executed exactly once, on a separate path of execution from any other leaf section (so no leaf section can interfere with another). A failure in a parent section will prevent nested sections from running - but then that's the idea.
+Another way to look at sections is that they are a way to define a tree 
+of paths through the test. Each section represents a node, and the final
+tree is walked in depth-first manner, with each path only visiting only
+one leaf node.
+
+There is no practical limit on nesting sections, as long as your compiler
+can handle them, but keep in mind that overly nested sections can become
+unreadable. From experience, having section nest more than 3 levels is
+usually very hard to follow and not worth the removed duplication.
+
 
 ## BDD-Style
 
@@ -246,24 +248,6 @@ Scenario: vectors can be sized and resized
       When: more capacity is reserved
       Then: the capacity changes but not the size
 ```
-
-<a id="scaling-up"></a>
-## Scaling up
-
-To keep the tutorial simple we put all our code in a single file. This is fine to get started - and makes jumping into Catch even quicker and easier. As you write more real-world tests, though, this is not really the best approach.
-
-The requirement is that the following block of code ([or equivalent](own-main.md#top)):
-
-```c++
-#define CATCH_CONFIG_MAIN
-#include "catch.hpp"
-```
-
-appears in _exactly one_ source file. Use as many additional cpp files (or whatever you call your implementation files) as you need for your tests, partitioned however makes most sense for your way of working. Each additional file need only ```#include "catch.hpp"``` - do not repeat the ```#define```!
-
-In fact it is usually a good idea to put the block with the ```#define``` [in its own source file](slow-compiles.md#top) (code example [main](../examples/020-TestCase-1.cpp), [tests](../examples/020-TestCase-2.cpp)).
-
-Do not write your tests in header files!
 
 
 ## Type parametrised test cases
