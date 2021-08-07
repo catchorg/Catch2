@@ -2,6 +2,9 @@
 ![Catch2 logo](data/artwork/catch2-logo-small.png)
 
 [![Github Releases](https://img.shields.io/github/release/catchorg/catch2.svg)](https://github.com/catchorg/catch2/releases)
+[![Linux build status](https://github.com/catchorg/Catch2/actions/workflows/linux-simple-builds.yml/badge.svg)](https://github.com/catchorg/Catch2/actions/workflows/linux-simple-builds.yml)
+[![Linux build status](https://github.com/catchorg/Catch2/actions/workflows/linux-other-builds.yml/badge.svg)](https://github.com/catchorg/Catch2/actions/workflows/linux-other-builds.yml)
+[![MacOS build status](https://github.com/catchorg/Catch2/actions/workflows/mac-builds.yml/badge.svg)](https://github.com/catchorg/Catch2/actions/workflows/mac-builds.yml)
 [![Build Status](https://ci.appveyor.com/api/projects/status/github/catchorg/Catch2?svg=true&branch=devel)](https://ci.appveyor.com/project/catchorg/catch2)
 [![Code Coverage](https://codecov.io/gh/catchorg/Catch2/branch/devel/graph/badge.svg)](https://codecov.io/gh/catchorg/Catch2)
 [![Try online](https://img.shields.io/badge/try-online-blue.svg)](https://godbolt.org/z/9x9qoM)
