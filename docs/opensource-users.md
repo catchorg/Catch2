@@ -1,19 +1,19 @@
 <a id="top"></a>
-# Open Source projects using Catch
+# Open Source projects using Catch2
 
-Catch is great for open source. With its [liberal license](../LICENSE.txt) and single-header, dependency-free, distribution
-it's easy to just drop the header into your project and start writing tests - what's not to like?
+Catch2 is great for open source. It is licensed under the [Boost Software
+License (BSL)](../LICENSE.txt), has no further dependencies and supports
+two file distribution.
 
-As a result Catch is now being used in many Open Source projects, including some quite well known ones.
-This page is an attempt to track those projects. Obviously it can never be complete.
-This effort largely relies on the maintainers of the projects themselves updating this page and submitting a PR
-(or, if you prefer contact one of the maintainers of Catch directly, use the
-[forums](https://groups.google.com/forum/?fromgroups#!forum/catch-forum)), or raise an [issue](https://github.com/philsquared/Catch/issues) to let us know).
-Of course users of those projects might want to update this page too. That's fine - as long you're confident the project maintainers won't mind.
-If you're an Open Source project maintainer and see your project listed here but would rather it wasn't -
-just let us know via any of the previously mentioned means - although I'm sure there won't be many who feel that way.
+As a result, Catch2 is used for testing in many different Open Source
+projects. This page lists at least some of them, even though it will
+obviously never be complete (and does not have the ambition to be
+complete). Note that the list below is intended to be in alphabetical
+order, to avoid implications of relative importance of the projects.
 
-Listing a project here does not imply endorsement and the plan is to keep these ordered alphabetically to avoid an implication of relative importance.
+_Please only add projects here if you are their maintainer, or have the
+maintainer's explicit consent._
+
 
 ## Libraries & Frameworks
 
