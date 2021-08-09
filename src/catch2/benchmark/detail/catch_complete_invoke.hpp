@@ -11,7 +11,6 @@
 #define CATCH_COMPLETE_INVOKE_HPP_INCLUDED
 
 #include <catch2/internal/catch_test_failure_exception.hpp>
-#include <catch2/internal/catch_enforce.hpp>
 #include <catch2/internal/catch_meta.hpp>
 #include <catch2/interfaces/catch_interfaces_capture.hpp>
 #include <catch2/interfaces/catch_interfaces_registry_hub.hpp>
