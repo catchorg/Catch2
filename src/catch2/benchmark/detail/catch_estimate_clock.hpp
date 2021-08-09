@@ -16,6 +16,7 @@
 #include <catch2/benchmark/detail/catch_measure.hpp>
 #include <catch2/benchmark/detail/catch_run_for_at_least.hpp>
 #include <catch2/benchmark/catch_clock.hpp>
+#include <catch2/internal/catch_unique_ptr.hpp>
 
 #include <algorithm>
 #include <iterator>
@@ -94,7 +95,14 @@ namespace Catch {
 
             template <typename Clock>
             Environment<FloatDuration<Clock>> measure_environment() {
-                static Environment<FloatDuration<Clock>>* env = nullptr;
+#if defined(__clang__)
+#    pragma clang diagnostic push
+#    pragma clang diagnostic ignored "-Wexit-time-destructors"
+#endif
+                static Catch::Detail::unique_ptr<Environment<FloatDuration<Clock>>> env;
+#if defined(__clang__)
+#    pragma clang diagnostic pop
+#endif
                 if (env) {
                     return *env;
                 }
@@ -103,7 +111,7 @@ namespace Catch {
                 auto resolution = Detail::estimate_clock_resolution<Clock>(iters);
                 auto cost = Detail::estimate_clock_cost<Clock>(resolution.mean);
 
-                env = new Environment<FloatDuration<Clock>>{ resolution, cost };
+                env = Catch::Detail::make_unique<Environment<FloatDuration<Clock>>>( Environment<FloatDuration<Clock>>{resolution, cost} );
                 return *env;
             }
         } // namespace Detail
