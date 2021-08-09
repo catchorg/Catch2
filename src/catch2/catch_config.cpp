@@ -18,7 +18,7 @@ namespace Catch {
 
     Config::Config( ConfigData const& data )
     :   m_data( data ),
-        m_stream( openStream() )
+        m_stream( Catch::makeStream(m_data.outputFilename) )
     {
         // We need to trim filter specs to avoid trouble with superfluous
         // whitespace (esp. important for bdd macros, as those are manually
@@ -85,9 +85,5 @@ namespace Catch {
     double Config::benchmarkConfidenceInterval() const            { return m_data.benchmarkConfidenceInterval; }
     unsigned int Config::benchmarkResamples() const               { return m_data.benchmarkResamples; }
     std::chrono::milliseconds Config::benchmarkWarmupTime() const { return std::chrono::milliseconds(m_data.benchmarkWarmupTime); }
-
-    IStream const* Config::openStream() {
-        return Catch::makeStream(m_data.outputFilename);
-    }
 
 } // end namespace Catch

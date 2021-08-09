@@ -110,8 +110,6 @@ namespace Catch {
         std::chrono::milliseconds benchmarkWarmupTime() const override;
 
     private:
-
-        IStream const* openStream();
         ConfigData m_data;
 
         Detail::unique_ptr<IStream const> m_stream;

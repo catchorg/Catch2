@@ -123,17 +123,17 @@ namespace Detail {
 
     ///////////////////////////////////////////////////////////////////////////
 
-    auto makeStream( std::string const& filename ) -> IStream const* {
+    auto makeStream( std::string const& filename ) -> Detail::unique_ptr<IStream const> {
         if( filename.empty() )
-            return new Detail::CoutStream();
+            return Detail::make_unique<Detail::CoutStream>();
         else if( filename[0] == '%' ) {
             if( filename == "%debug" )
-                return new Detail::DebugOutStream();
+                return Detail::make_unique<Detail::DebugOutStream>();
             else
                 CATCH_ERROR( "Unrecognised stream: '" << filename << "'" );
         }
         else
-            return new Detail::FileStream( filename );
+            return Detail::make_unique<Detail::FileStream>( filename );
     }
 
 
