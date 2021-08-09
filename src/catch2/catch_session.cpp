@@ -43,19 +43,13 @@ namespace Catch {
                 return createReporter(config->getReporterName(), config);
             }
 
-            // On older platforms, returning unique_ptr<ListeningReporter>
-            // when the return type is unique_ptr<IStreamingReporter>
-            // doesn't compile without a std::move call. However, this causes
-            // a warning on newer platforms. Thus, we have to work around
-            // it a bit and downcast the pointer manually.
-            auto ret = Detail::unique_ptr<IStreamingReporter>(new ListeningReporter(config));
-            auto& multi = static_cast<ListeningReporter&>(*ret);
+            auto multi = Detail::make_unique<ListeningReporter>(config);
             auto const& listeners = Catch::getRegistryHub().getReporterRegistry().getListeners();
             for (auto const& listener : listeners) {
-                multi.addListener(listener->create(Catch::ReporterConfig(config)));
+                multi->addListener(listener->create(Catch::ReporterConfig(config)));
             }
-            multi.addReporter(createReporter(config->getReporterName(), config));
-            return ret;
+            multi->addReporter(createReporter(config->getReporterName(), config));
+            return multi;
         }
 
         class TestGroup {

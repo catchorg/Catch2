@@ -145,7 +145,7 @@ namespace Detail {
 
         auto add() -> std::size_t {
             if( m_unused.empty() ) {
-                m_streams.push_back( Detail::unique_ptr<std::ostringstream>( new std::ostringstream ) );
+                m_streams.push_back( Detail::make_unique<std::ostringstream>() );
                 return m_streams.size()-1;
             }
             else {

@@ -107,7 +107,7 @@ namespace Catch {
         makeTestCaseInfo(std::string const& _className,
                          NameAndTags const& nameAndTags,
                          SourceLineInfo const& _lineInfo ) {
-        return Detail::unique_ptr<TestCaseInfo>(new TestCaseInfo(_className, nameAndTags, _lineInfo));
+        return Detail::make_unique<TestCaseInfo>(_className, nameAndTags, _lineInfo);
     }
 
     TestCaseInfo::TestCaseInfo(std::string const& _className,
