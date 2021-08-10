@@ -96,13 +96,13 @@ catch_discover_tests(foo)
 ```
 
 When using `FetchContent`, `include(Catch)` will fail unless
-`CMAKE_MODULE_PATH` is explicitly updated to include the contrib
+`CMAKE_MODULE_PATH` is explicitly updated to include the extras
 directory.
 
 ```cmake
 # ... FetchContent ...
 #
-list(APPEND CMAKE_MODULE_PATH ${catch2_SOURCE_DIR}/contrib)
+list(APPEND CMAKE_MODULE_PATH ${catch2_SOURCE_DIR}/extras)
 include(CTest)
 include(Catch)
 catch_discover_tests()
@@ -265,7 +265,7 @@ that consume it. These are:
 Catch2's test binary will be built. Defaults to `ON`.
 * `CATCH_INSTALL_DOCS` -- When `ON`, Catch2's documentation will be
 included in the installation. Defaults to `ON`.
-* `CATCH_INSTALL_HELPERS` -- When `ON`, Catch2's contrib folder will be
+* `CATCH_INSTALL_HELPERS` -- When `ON`, Catch2's extras folder will be
 included in the installation. Defaults to `ON`.
 * `CATCH_DEVELOPMENT_BUILD` -- When `ON`, configures the build for development
 of Catch2. This means enabling test projects, warnings and so on.

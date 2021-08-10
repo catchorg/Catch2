@@ -95,7 +95,7 @@ can use `pkg-config` to get its include path: `pkg-config --cflags catch2`.
 
 ### gdb and lldb scripts
 
-Catch2's `contrib` folder also contains two simple debugger scripts,
+Catch2's `extras` folder also contains two simple debugger scripts,
 `gdbinit` for `gdb` and `lldbinit` for `lldb`. If loaded into their
 respective debugger, these will tell it to step over Catch2's internals
 when stepping through code.
