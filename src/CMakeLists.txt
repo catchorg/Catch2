@@ -99,6 +99,7 @@ set(INTERNAL_HEADERS
     ${SOURCES_DIR}/catch_message.hpp
     ${SOURCES_DIR}/internal/catch_message_info.hpp
     ${SOURCES_DIR}/internal/catch_meta.hpp
+    ${SOURCES_DIR}/internal/catch_move_and_forward.hpp
     ${SOURCES_DIR}/internal/catch_option.hpp
     ${SOURCES_DIR}/internal/catch_output_redirect.hpp
     ${SOURCES_DIR}/internal/catch_platform.hpp
