@@ -9,6 +9,7 @@
 
 #include <catch2/internal/catch_enforce.hpp>
 #include <catch2/internal/catch_string_manip.hpp>
+#include <catch2/internal/catch_move_and_forward.hpp>
 
 #include <algorithm>
 #include <cassert>
@@ -34,7 +35,7 @@ namespace TestCaseTracking {
     }
 
     void ITracker::addChild( ITrackerPtr&& child ) {
-        m_children.push_back( std::move(child) );
+        m_children.push_back( CATCH_MOVE(child) );
     }
 
     ITracker* ITracker::findChild( NameAndLocation const& nameAndLocation ) {
@@ -207,7 +208,7 @@ namespace TestCaseTracking {
             auto newSection = Catch::Detail::make_unique<SectionTracker>(
                 nameAndLocation, ctx, &currentTracker );
             section = newSection.get();
-            currentTracker.addChild( std::move( newSection ) );
+            currentTracker.addChild( CATCH_MOVE( newSection ) );
         }
         if( !ctx.completedCycle() )
             section->tryOpen();

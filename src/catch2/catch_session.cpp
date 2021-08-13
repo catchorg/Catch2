@@ -21,6 +21,7 @@
 #include <catch2/reporters/catch_reporter_listening.hpp>
 #include <catch2/interfaces/catch_interfaces_reporter_registry.hpp>
 #include <catch2/interfaces/catch_interfaces_reporter_factory.hpp>
+#include <catch2/internal/catch_move_and_forward.hpp>
 
 #include <algorithm>
 #include <iomanip>
@@ -57,7 +58,7 @@ namespace Catch {
             explicit TestGroup(IStreamingReporterPtr&& reporter, Config const* config):
                 m_reporter(reporter.get()),
                 m_config{config},
-                m_context{config, std::move(reporter)} {
+                m_context{config, CATCH_MOVE(reporter)} {
 
                 auto const& allTestCases = getAllTestCasesSorted(*m_config);
                 m_matches = m_config->testSpec().matchesByFilter(allTestCases, *m_config);
@@ -277,7 +278,7 @@ namespace Catch {
                 return 0;
             }
 
-            TestGroup tests { std::move(reporter), m_config.get() };
+            TestGroup tests { CATCH_MOVE(reporter), m_config.get() };
             auto const totals = tests.execute();
 
             if( m_config->warnAboutNoTests() && totals.error == -1 )

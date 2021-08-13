@@ -9,6 +9,7 @@
 
 #include <catch2/internal/catch_string_manip.hpp>
 #include <catch2/interfaces/catch_interfaces_tag_alias_registry.hpp>
+#include <catch2/internal/catch_move_and_forward.hpp>
 
 
 namespace Catch {
@@ -35,7 +36,7 @@ namespace Catch {
     }
     TestSpec TestSpecParser::testSpec() {
         addFilter();
-        return std::move(m_testSpec);
+        return CATCH_MOVE(m_testSpec);
     }
     bool TestSpecParser::visitChar( char c ) {
         if( (m_mode != EscapedName) && (c == '\\') ) {
@@ -151,7 +152,7 @@ namespace Catch {
 
     void TestSpecParser::addFilter() {
         if( !m_currentFilter.m_required.empty() || !m_currentFilter.m_forbidden.empty() ) {
-            m_testSpec.m_filters.push_back( std::move(m_currentFilter) );
+            m_testSpec.m_filters.push_back( CATCH_MOVE(m_currentFilter) );
             m_currentFilter = TestSpec::Filter();
         }
     }

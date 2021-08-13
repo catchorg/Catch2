@@ -13,8 +13,7 @@
 #include <catch2/benchmark/catch_clock.hpp>
 #include <catch2/benchmark/detail/catch_complete_invoke.hpp>
 #include <catch2/benchmark/detail/catch_timing.hpp>
-
-#include <utility>
+#include <catch2/internal/catch_move_and_forward.hpp>
 
 namespace Catch {
     namespace Benchmark {
@@ -22,10 +21,10 @@ namespace Catch {
             template <typename Clock, typename Fun, typename... Args>
             TimingOf<Clock, Fun, Args...> measure(Fun&& fun, Args&&... args) {
                 auto start = Clock::now();
-                auto&& r = Detail::complete_invoke(fun, std::forward<Args>(args)...);
+                auto&& r = Detail::complete_invoke(fun, CATCH_FORWARD(args)...);
                 auto end = Clock::now();
                 auto delta = end - start;
-                return { delta, std::forward<decltype(r)>(r), 1 };
+                return { delta, CATCH_FORWARD(r), 1 };
             }
         } // namespace Detail
     } // namespace Benchmark

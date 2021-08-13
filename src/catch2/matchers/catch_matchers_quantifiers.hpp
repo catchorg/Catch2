@@ -9,8 +9,7 @@
 #define CATCH_MATCHERS_QUANTIFIERS_HPP_INCLUDED
 
 #include <catch2/matchers/catch_matchers_templated.hpp>
-
-#include <utility>
+#include <catch2/internal/catch_move_and_forward.hpp>
 
 namespace Catch {
     namespace Matchers {
@@ -20,7 +19,7 @@ namespace Catch {
             Matcher m_matcher;
         public:
             AllMatchMatcher(Matcher matcher):
-                m_matcher(std::move(matcher))
+                m_matcher(CATCH_MOVE(matcher))
             {}
 
             std::string describe() const override {
@@ -44,7 +43,7 @@ namespace Catch {
             Matcher m_matcher;
         public:
             NoneMatchMatcher(Matcher matcher):
-                m_matcher(std::move(matcher))
+                m_matcher(CATCH_MOVE(matcher))
             {}
 
             std::string describe() const override {
@@ -68,7 +67,7 @@ namespace Catch {
             Matcher m_matcher;
         public:
             AnyMatchMatcher(Matcher matcher):
-                m_matcher(std::move(matcher))
+                m_matcher(CATCH_MOVE(matcher))
             {}
 
             std::string describe() const override {
@@ -89,19 +88,19 @@ namespace Catch {
         // Creates a matcher that checks whether a range contains element matching a matcher
         template <typename Matcher>
         AllMatchMatcher<Matcher> AllMatch(Matcher&& matcher) {
-            return { std::forward<Matcher>(matcher) };
+            return { CATCH_FORWARD(matcher) };
         }
 
         // Creates a matcher that checks whether no element in a range matches a matcher.
         template <typename Matcher>
         NoneMatchMatcher<Matcher> NoneMatch(Matcher&& matcher) {
-            return { std::forward<Matcher>(matcher) };
+            return { CATCH_FORWARD(matcher) };
         }
 
         // Creates a matcher that checks whether any element in a range matches a matcher.
         template <typename Matcher>
         AnyMatchMatcher<Matcher> AnyMatch(Matcher&& matcher) {
-            return { std::forward<Matcher>(matcher) };
+            return { CATCH_FORWARD(matcher) };
         }
     }
 }

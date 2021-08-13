@@ -15,7 +15,7 @@
 #include <catch2/internal/catch_context.hpp>
 #include <catch2/interfaces/catch_interfaces_reporter.hpp>
 #include <catch2/internal/catch_unique_name.hpp>
-
+#include <catch2/internal/catch_move_and_forward.hpp>
 #include <catch2/benchmark/catch_chronometer.hpp>
 #include <catch2/benchmark/catch_clock.hpp>
 #include <catch2/benchmark/catch_environment.hpp>
@@ -36,11 +36,11 @@ namespace Catch {
     namespace Benchmark {
         struct Benchmark {
             Benchmark(std::string&& benchmarkName)
-                : name(std::move(benchmarkName)) {}
+                : name(CATCH_MOVE(benchmarkName)) {}
 
             template <class FUN>
             Benchmark(std::string&& benchmarkName , FUN &&func)
-                : fun(std::move(func)), name(std::move(benchmarkName)) {}
+                : fun(CATCH_MOVE(func)), name(CATCH_MOVE(benchmarkName)) {}
 
             template <typename Clock>
             ExecutionPlan<FloatDuration<Clock>> prepare(const IConfig &cfg, Environment<FloatDuration<Clock>> env) const {

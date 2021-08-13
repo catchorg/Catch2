@@ -23,6 +23,7 @@
 #include <catch2/matchers/internal/catch_matchers_impl.hpp>
 #include <catch2/matchers/catch_matchers.hpp>
 #include <catch2/interfaces/catch_interfaces_registry_hub.hpp>
+#include <catch2/internal/catch_move_and_forward.hpp>
 
 namespace Catch {
 
@@ -31,7 +32,7 @@ namespace Catch {
     // the Equals matcher (so the header does not mention matchers)
     void handleExceptionMatchExpr( AssertionHandler& handler, StringMatcher const& matcher, StringRef matcherString  ) {
         std::string exceptionMessage = Catch::translateActiveException();
-        MatchExpr<std::string, StringMatcher const&> expr( std::move(exceptionMessage), matcher, matcherString );
+        MatchExpr<std::string, StringMatcher const&> expr( CATCH_MOVE(exceptionMessage), matcher, matcherString );
         handler.handleExpr( expr );
     }
 

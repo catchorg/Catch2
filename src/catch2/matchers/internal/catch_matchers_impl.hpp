@@ -10,6 +10,7 @@
 
 #include <catch2/internal/catch_test_macro_impl.hpp>
 #include <catch2/internal/catch_stringref.hpp>
+#include <catch2/internal/catch_move_and_forward.hpp>
 
 namespace Catch {
 
@@ -21,7 +22,7 @@ namespace Catch {
     public:
         MatchExpr( ArgT && arg, MatcherT const& matcher, StringRef matcherString )
         :   ITransientExpression{ true, matcher.match( arg ) }, // not forwarding arg here on purpose
-            m_arg( std::forward<ArgT>(arg) ),
+            m_arg( CATCH_FORWARD(arg) ),
             m_matcher( matcher ),
             m_matcherString( matcherString )
         {}
@@ -44,7 +45,7 @@ namespace Catch {
 
     template<typename ArgT, typename MatcherT>
     auto makeMatchExpr( ArgT && arg, MatcherT const& matcher, StringRef matcherString  ) -> MatchExpr<ArgT, MatcherT> {
-        return MatchExpr<ArgT, MatcherT>( std::forward<ArgT>(arg), matcher, matcherString );
+        return MatchExpr<ArgT, MatcherT>( CATCH_FORWARD(arg), matcher, matcherString );
     }
 
 } // namespace Catch

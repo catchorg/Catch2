@@ -11,6 +11,7 @@
 #include <catch2/internal/catch_test_case_registry_impl.hpp>
 #include <catch2/interfaces/catch_interfaces_registry_hub.hpp>
 #include <catch2/internal/catch_string_manip.hpp>
+#include <catch2/internal/catch_move_and_forward.hpp>
 
 namespace Catch {
 
@@ -42,7 +43,7 @@ namespace Catch {
                             extractClassName( classOrMethod ),
                             nameAndTags,
                             lineInfo),
-                        std::move(invoker)
+                        CATCH_MOVE(invoker)
                     );
         } CATCH_CATCH_ALL {
             // Do not throw when constructing global objects, instead register the exception to be processed later

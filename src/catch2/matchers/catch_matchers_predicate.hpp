@@ -10,9 +10,9 @@
 
 #include <catch2/matchers/catch_matchers.hpp>
 #include <catch2/internal/catch_meta.hpp>
+#include <catch2/internal/catch_move_and_forward.hpp>
 
 #include <string>
-#include <utility>
 
 namespace Catch {
 namespace Matchers {
@@ -28,7 +28,7 @@ class PredicateMatcher final : public MatcherBase<T> {
 public:
 
     PredicateMatcher(Predicate&& elem, std::string const& descr)
-        :m_predicate(std::forward<Predicate>(elem)),
+        :m_predicate(CATCH_FORWARD(elem)),
         m_description(Detail::finalizeDescription(descr))
     {}
 
@@ -50,7 +50,7 @@ public:
     PredicateMatcher<T, Pred> Predicate(Pred&& predicate, std::string const& description = "") {
         static_assert(is_callable<Pred(T)>::value, "Predicate not callable with argument T");
         static_assert(std::is_same<bool, FunctionReturnType<Pred, T>>::value, "Predicate does not return bool");
-        return PredicateMatcher<T, Pred>(std::forward<Pred>(predicate), description);
+        return PredicateMatcher<T, Pred>(CATCH_FORWARD(predicate), description);
     }
 
 } // namespace Matchers

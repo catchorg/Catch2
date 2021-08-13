@@ -12,6 +12,7 @@
 #include <catch2/interfaces/catch_interfaces_reporter_registry.hpp>
 #include <catch2/interfaces/catch_interfaces_testcase.hpp>
 #include <catch2/interfaces/catch_interfaces_reporter_factory.hpp>
+#include <catch2/internal/catch_move_and_forward.hpp>
 
 #include <catch2/internal/catch_context.hpp>
 #include <catch2/catch_config.hpp>
@@ -43,7 +44,7 @@ namespace Catch {
 
             std::vector<TagInfo> infos; infos.reserve(tagCounts.size());
             for (auto& tagc : tagCounts) {
-                infos.push_back(std::move(tagc.second));
+                infos.push_back(CATCH_MOVE(tagc.second));
             }
 
             reporter.listTags(infos);

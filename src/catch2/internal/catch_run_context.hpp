@@ -18,6 +18,7 @@
 #include <catch2/catch_assertion_info.hpp>
 #include <catch2/catch_assertion_result.hpp>
 #include <catch2/internal/catch_option.hpp>
+#include <catch2/internal/catch_move_and_forward.hpp>
 
 #include <string>
 

@@ -23,7 +23,7 @@ namespace Catch {
         // still use the `-c` flag comfortably.
         SectionInfo( SourceLineInfo const& _lineInfo, std::string _name,
                     const char* const = nullptr ):
-            name(std::move(_name)),
+            name(CATCH_MOVE(_name)),
             lineInfo(_lineInfo)
             {}
 

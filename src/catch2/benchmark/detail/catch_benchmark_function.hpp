@@ -14,8 +14,8 @@
 #include <catch2/benchmark/detail/catch_complete_invoke.hpp>
 #include <catch2/internal/catch_meta.hpp>
 #include <catch2/internal/catch_unique_ptr.hpp>
+#include <catch2/internal/catch_move_and_forward.hpp>
 
-#include <cassert>
 #include <type_traits>
 #include <utility>
 
@@ -48,7 +48,7 @@ namespace Catch {
                 };
                 template <typename Fun>
                 struct model : public callable {
-                    model(Fun&& fun_) : fun(std::move(fun_)) {}
+                    model(Fun&& fun_) : fun(CATCH_MOVE(fun_)) {}
                     model(Fun const& fun_) : fun(fun_) {}
 
                     model<Fun>* clone() const override { return new model<Fun>(*this); }
@@ -78,17 +78,17 @@ namespace Catch {
                 template <typename Fun,
                     typename std::enable_if<!is_related<Fun, BenchmarkFunction>::value, int>::type = 0>
                     BenchmarkFunction(Fun&& fun)
-                    : f(new model<typename std::decay<Fun>::type>(std::forward<Fun>(fun))) {}
+                    : f(new model<typename std::decay<Fun>::type>(CATCH_FORWARD(fun))) {}
 
                 BenchmarkFunction( BenchmarkFunction&& that ) noexcept:
-                    f( std::move( that.f ) ) {}
+                    f( CATCH_MOVE( that.f ) ) {}
 
                 BenchmarkFunction(BenchmarkFunction const& that)
                     : f(that.f->clone()) {}
 
                 BenchmarkFunction&
                 operator=( BenchmarkFunction&& that ) noexcept {
-                    f = std::move( that.f );
+                    f = CATCH_MOVE( that.f );
                     return *this;
                 }
 

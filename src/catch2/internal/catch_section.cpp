@@ -6,15 +6,16 @@
 
 // SPDX-License-Identifier: BSL-1.0
 #include <catch2/internal/catch_section.hpp>
-#include <catch2/internal/catch_test_macro_impl.hpp>
+#include <catch2/internal/catch_run_context.hpp>
 #include <catch2/internal/catch_uncaught_exceptions.hpp>
+#include <catch2/internal/catch_move_and_forward.hpp>
 
 #include <utility>
 
 namespace Catch {
 
     Section::Section( SectionInfo&& info ):
-        m_info( std::move( info ) ),
+        m_info( CATCH_MOVE( info ) ),
         m_sectionIncluded(
             getResultCapture().sectionStarted( m_info, m_assertions ) ) {
         // Non-"included" sections will not use the timing information

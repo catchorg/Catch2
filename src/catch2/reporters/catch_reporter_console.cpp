@@ -18,8 +18,8 @@
 #include <catch2/catch_test_case_info.hpp>
 #include <catch2/internal/catch_console_width.hpp>
 #include <catch2/reporters/catch_reporter_helpers.hpp>
+#include <catch2/internal/catch_move_and_forward.hpp>
 
-#include <cfloat>
 #include <cstdio>
 
 #if defined(_MSC_VER)
@@ -285,7 +285,7 @@ class TablePrinter {
 public:
     TablePrinter( std::ostream& os, std::vector<ColumnInfo> columnInfos )
     :   m_os( os ),
-        m_columnInfos( std::move( columnInfos ) ) {}
+        m_columnInfos( CATCH_MOVE( columnInfos ) ) {}
 
     auto columnInfos() const -> std::vector<ColumnInfo> const& {
         return m_columnInfos;
@@ -592,7 +592,7 @@ void ConsoleReporter::printHeaderString(std::string const& _string, std::size_t 
 struct SummaryColumn {
 
     SummaryColumn( std::string _label, Colour::Code _colour )
-    :   label( std::move( _label ) ),
+    :   label( CATCH_MOVE( _label ) ),
         colour( _colour ) {}
     SummaryColumn addRow( std::size_t count ) {
         ReusableStringStream rss;

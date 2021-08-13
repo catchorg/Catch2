@@ -14,6 +14,7 @@
 #include <catch2/benchmark/catch_optimizer.hpp>
 #include <catch2/benchmark/detail/catch_complete_invoke.hpp>
 #include <catch2/internal/catch_meta.hpp>
+#include <catch2/internal/catch_move_and_forward.hpp>
 
 namespace Catch {
     namespace Benchmark {
@@ -42,7 +43,7 @@ namespace Catch {
         struct Chronometer {
         public:
             template <typename Fun>
-            void measure(Fun&& fun) { measure(std::forward<Fun>(fun), is_callable<Fun(int)>()); }
+            void measure(Fun&& fun) { measure(CATCH_FORWARD(fun), is_callable<Fun(int)>()); }
 
             int runs() const { return repeats; }
 

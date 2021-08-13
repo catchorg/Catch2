@@ -6,18 +6,19 @@
 
 // SPDX-License-Identifier: BSL-1.0
 #include <catch2/reporters/catch_reporter_listening.hpp>
+#include <catch2/internal/catch_move_and_forward.hpp>
 
 #include <cassert>
 
 namespace Catch {
 
     void ListeningReporter::addListener( IStreamingReporterPtr&& listener ) {
-        m_listeners.push_back( std::move( listener ) );
+        m_listeners.push_back( CATCH_MOVE( listener ) );
     }
 
     void ListeningReporter::addReporter(IStreamingReporterPtr&& reporter) {
         assert(!m_reporter && "Listening reporter can wrap only 1 real reporter");
-        m_reporter = std::move( reporter );
+        m_reporter = CATCH_MOVE( reporter );
         m_preferences.shouldRedirectStdOut = m_reporter->getPreferences().shouldRedirectStdOut;
     }
 

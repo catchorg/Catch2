@@ -8,6 +8,7 @@
 #include <catch2/matchers/catch_matchers_string.hpp>
 #include <catch2/internal/catch_string_manip.hpp>
 #include <catch2/catch_tostring.hpp>
+#include <catch2/internal/catch_move_and_forward.hpp>
 
 #include <regex>
 
@@ -76,7 +77,7 @@ namespace Matchers {
 
 
 
-    RegexMatcher::RegexMatcher(std::string regex, CaseSensitive caseSensitivity): m_regex(std::move(regex)), m_caseSensitivity(caseSensitivity) {}
+    RegexMatcher::RegexMatcher(std::string regex, CaseSensitive caseSensitivity): m_regex(CATCH_MOVE(regex)), m_caseSensitivity(caseSensitivity) {}
 
     bool RegexMatcher::match(std::string const& matchee) const {
         auto flags = std::regex::ECMAScript; // ECMAScript is the default syntax option anyway

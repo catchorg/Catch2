@@ -64,7 +64,7 @@ namespace Catch {
                         Catch::Detail::make_unique<GeneratorTracker>(
                             nameAndLocation, ctx, &currentTracker );
                     tracker = newTracker.get();
-                    currentTracker.addChild( std::move(newTracker) );
+                    currentTracker.addChild( CATCH_MOVE(newTracker) );
                 }
 
                 if( !tracker->isComplete() ) {
@@ -153,7 +153,7 @@ namespace Catch {
                 return m_generator;
             }
             void setGenerator( GeneratorBasePtr&& generator ) override {
-                m_generator = std::move( generator );
+                m_generator = CATCH_MOVE( generator );
             }
         };
         GeneratorTracker::~GeneratorTracker() = default;
@@ -163,7 +163,7 @@ namespace Catch {
     :   m_runInfo(_config->name()),
         m_context(getCurrentMutableContext()),
         m_config(_config),
-        m_reporter(std::move(reporter)),
+        m_reporter(CATCH_MOVE(reporter)),
         m_lastAssertionInfo{ StringRef(), SourceLineInfo("",0), StringRef(), ResultDisposition::Normal },
         m_includeSuccessfulResults( m_config->includeSuccessfulResults() || m_reporter->getPreferences().shouldReportAllAssertions )
     {

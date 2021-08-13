@@ -30,11 +30,11 @@
 #endif
 
 #include <catch2/internal/catch_noncopyable.hpp>
+#include <catch2/internal/catch_move_and_forward.hpp>
 
 #include <cassert>
 #include <cctype>
 #include <memory>
-#include <ostream>
 #include <sstream>
 #include <string>
 #include <vector>
@@ -293,7 +293,7 @@ namespace Catch {
                 T temp;
                 auto result = convertInto( source, temp );
                 if ( result )
-                    target = std::move( temp );
+                    target = CATCH_MOVE( temp );
                 return result;
             }
 #endif // CLARA_CONFIG_OPTIONAL_TYPE

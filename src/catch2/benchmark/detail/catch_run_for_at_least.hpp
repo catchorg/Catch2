@@ -16,8 +16,8 @@
 #include <catch2/benchmark/detail/catch_complete_invoke.hpp>
 #include <catch2/benchmark/detail/catch_timing.hpp>
 #include <catch2/internal/catch_meta.hpp>
+#include <catch2/internal/catch_move_and_forward.hpp>
 
-#include <utility>
 #include <type_traits>
 
 namespace Catch {
@@ -32,7 +32,7 @@ namespace Catch {
                 Detail::ChronometerModel<Clock> meter;
                 auto&& result = Detail::complete_invoke(fun, Chronometer(meter, iters));
 
-                return { meter.elapsed(), std::move(result), iters };
+                return { meter.elapsed(), CATCH_MOVE(result), iters };
             }
 
             template <typename Clock, typename Fun>
@@ -52,7 +52,7 @@ namespace Catch {
                     auto&& Timing = measure_one<Clock>(fun, iters, is_callable<Fun(Chronometer)>());
 
                     if (Timing.elapsed >= how_long) {
-                        return { Timing.elapsed, std::move(Timing.result), iters };
+                        return { Timing.elapsed, CATCH_MOVE(Timing.result), iters };
                     }
                     iters *= 2;
                 }

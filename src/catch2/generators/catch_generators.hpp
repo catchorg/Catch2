@@ -11,6 +11,7 @@
 #include <catch2/interfaces/catch_interfaces_generatortracker.hpp>
 #include <catch2/internal/catch_source_line_info.hpp>
 #include <catch2/internal/catch_stringref.hpp>
+#include <catch2/internal/catch_move_and_forward.hpp>
 
 #include <vector>
 #include <tuple>
@@ -55,7 +56,7 @@ namespace Detail {
         GeneratorWrapper(IGenerator<T>* generator):
             m_generator(generator) {}
         GeneratorWrapper(GeneratorPtr<T> generator):
-            m_generator(std::move(generator)) {}
+            m_generator(CATCH_MOVE(generator)) {}
 
         T const& get() const {
             return m_generator->get();
@@ -74,7 +75,7 @@ namespace Detail {
             m_value(value)
         {}
         SingleValueGenerator(T&& value):
-            m_value(std::move(value))
+            m_value(CATCH_MOVE(value))
         {}
 
         T const& get() const override {
@@ -108,7 +109,7 @@ namespace Detail {
     GeneratorWrapper<DecayedT> value( T&& value ) {
         return GeneratorWrapper<DecayedT>(
             Catch::Detail::make_unique<SingleValueGenerator<DecayedT>>(
-                std::forward<T>( value ) ) );
+                CATCH_FORWARD( value ) ) );
     }
     template <typename T>
     GeneratorWrapper<T> values(std::initializer_list<T> values) {
@@ -121,35 +122,35 @@ namespace Detail {
         size_t m_current = 0;
 
         void add_generator( GeneratorWrapper<T>&& generator ) {
-            m_generators.emplace_back( std::move( generator ) );
+            m_generators.emplace_back( CATCH_MOVE( generator ) );
         }
         void add_generator( T const& val ) {
             m_generators.emplace_back( value( val ) );
         }
         void add_generator( T&& val ) {
-            m_generators.emplace_back( value( std::move( val ) ) );
+            m_generators.emplace_back( value( CATCH_MOVE( val ) ) );
         }
         template <typename U>
         std::enable_if_t<!std::is_same<std::decay_t<U>, T>::value>
         add_generator( U&& val ) {
-            add_generator( T( std::forward<U>( val ) ) );
+            add_generator( T( CATCH_FORWARD( val ) ) );
         }
 
         template <typename U> void add_generators( U&& valueOrGenerator ) {
-            add_generator( std::forward<U>( valueOrGenerator ) );
+            add_generator( CATCH_FORWARD( valueOrGenerator ) );
         }
 
         template <typename U, typename... Gs>
         void add_generators( U&& valueOrGenerator, Gs&&... moreGenerators ) {
-            add_generator( std::forward<U>( valueOrGenerator ) );
-            add_generators( std::forward<Gs>( moreGenerators )... );
+            add_generator( CATCH_FORWARD( valueOrGenerator ) );
+            add_generators( CATCH_FORWARD( moreGenerators )... );
         }
 
     public:
         template <typename... Gs>
         Generators(Gs &&... moreGenerators) {
             m_generators.reserve(sizeof...(Gs));
-            add_generators(std::forward<Gs>(moreGenerators)...);
+            add_generators(CATCH_FORWARD(moreGenerators)...);
         }
 
         T const& get() const override {
@@ -181,19 +182,19 @@ namespace Detail {
 
     template<typename T, typename... Gs>
     auto makeGenerators( GeneratorWrapper<T>&& generator, Gs &&... moreGenerators ) -> Generators<T> {
-        return Generators<T>(std::move(generator), std::forward<Gs>(moreGenerators)...);
+        return Generators<T>(CATCH_MOVE(generator), CATCH_FORWARD(moreGenerators)...);
     }
     template<typename T>
     auto makeGenerators( GeneratorWrapper<T>&& generator ) -> Generators<T> {
-        return Generators<T>(std::move(generator));
+        return Generators<T>(CATCH_MOVE(generator));
     }
     template<typename T, typename... Gs>
     auto makeGenerators( T&& val, Gs &&... moreGenerators ) -> Generators<std::decay_t<T>> {
-        return makeGenerators( value( std::forward<T>( val ) ), std::forward<Gs>( moreGenerators )... );
+        return makeGenerators( value( CATCH_FORWARD( val ) ), CATCH_FORWARD( moreGenerators )... );
     }
     template<typename T, typename U, typename... Gs>
     auto makeGenerators( as<T>, U&& val, Gs &&... moreGenerators ) -> Generators<T> {
-        return makeGenerators( value( T( std::forward<U>( val ) ) ), std::forward<Gs>( moreGenerators )... );
+        return makeGenerators( value( T( CATCH_FORWARD( val ) ) ), CATCH_FORWARD( moreGenerators )... );
     }
 
     auto acquireGeneratorTracker( StringRef generatorName, SourceLineInfo const& lineInfo ) -> IGeneratorTracker&;

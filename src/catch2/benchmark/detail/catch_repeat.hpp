@@ -11,7 +11,7 @@
 #define CATCH_REPEAT_HPP_INCLUDED
 
 #include <type_traits>
-#include <utility>
+#include <catch2/internal/catch_move_and_forward.hpp>
 
 namespace Catch {
     namespace Benchmark {
@@ -27,7 +27,7 @@ namespace Catch {
             };
             template <typename Fun>
             repeater<typename std::decay<Fun>::type> repeat(Fun&& fun) {
-                return { std::forward<Fun>(fun) };
+                return { CATCH_FORWARD(fun) };
             }
         } // namespace Detail
     } // namespace Benchmark

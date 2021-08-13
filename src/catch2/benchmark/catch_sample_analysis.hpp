@@ -13,10 +13,10 @@
 #include <catch2/benchmark/catch_clock.hpp>
 #include <catch2/benchmark/catch_estimate.hpp>
 #include <catch2/benchmark/catch_outlier_classification.hpp>
+#include <catch2/internal/catch_move_and_forward.hpp>
 
 #include <algorithm>
 #include <vector>
-#include <string>
 #include <iterator>
 
 namespace Catch {
@@ -35,7 +35,7 @@ namespace Catch {
                 samples2.reserve(samples.size());
                 std::transform(samples.begin(), samples.end(), std::back_inserter(samples2), [](Duration d) { return Duration2(d); });
                 return {
-                    std::move(samples2),
+                    CATCH_MOVE(samples2),
                     mean,
                     standard_deviation,
                     outliers,

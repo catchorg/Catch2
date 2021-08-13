@@ -10,6 +10,7 @@
 
 #include <catch2/matchers/catch_matchers_templated.hpp>
 #include <catch2/internal/catch_container_nonmembers.hpp>
+#include <catch2/internal/catch_move_and_forward.hpp>
 
 namespace Catch {
     namespace Matchers {
@@ -55,7 +56,7 @@ namespace Catch {
             Matcher m_matcher;
         public:
             explicit SizeMatchesMatcher(Matcher m):
-                m_matcher(std::move(m))
+                m_matcher(CATCH_MOVE(m))
             {}
 
             template <typename RangeLike>
@@ -81,7 +82,7 @@ namespace Catch {
         template <typename Matcher>
         std::enable_if_t<Detail::is_matcher<Matcher>::value,
         SizeMatchesMatcher<Matcher>> SizeIs(Matcher&& m) {
-            return SizeMatchesMatcher<Matcher>{std::forward<Matcher>(m)};
+            return SizeMatchesMatcher<Matcher>{CATCH_FORWARD(m)};
         }
 
     } // end namespace Matchers

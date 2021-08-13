@@ -10,6 +10,9 @@
 
 #include <catch2/generators/catch_generators.hpp>
 #include <catch2/internal/catch_meta.hpp>
+#include <catch2/internal/catch_move_and_forward.hpp>
+
+#include <cassert>
 
 namespace Catch {
 namespace Generators {
@@ -21,7 +24,7 @@ namespace Generators {
         size_t m_target;
     public:
         TakeGenerator(size_t target, GeneratorWrapper<T>&& generator):
-            m_generator(std::move(generator)),
+            m_generator(CATCH_MOVE(generator)),
             m_target(target)
         {
             assert(target != 0 && "Empty generators are not allowed");
@@ -47,7 +50,7 @@ namespace Generators {
 
     template <typename T>
     GeneratorWrapper<T> take(size_t target, GeneratorWrapper<T>&& generator) {
-        return GeneratorWrapper<T>(Catch::Detail::make_unique<TakeGenerator<T>>(target, std::move(generator)));
+        return GeneratorWrapper<T>(Catch::Detail::make_unique<TakeGenerator<T>>(target, CATCH_MOVE(generator)));
     }
 
 
@@ -58,8 +61,8 @@ namespace Generators {
     public:
         template <typename P = Predicate>
         FilterGenerator(P&& pred, GeneratorWrapper<T>&& generator):
-            m_generator(std::move(generator)),
-            m_predicate(std::forward<P>(pred))
+            m_generator(CATCH_MOVE(generator)),
+            m_predicate(CATCH_FORWARD(pred))
         {
             if (!m_predicate(m_generator.get())) {
                 // It might happen that there are no values that pass the
@@ -88,7 +91,7 @@ namespace Generators {
 
     template <typename T, typename Predicate>
     GeneratorWrapper<T> filter(Predicate&& pred, GeneratorWrapper<T>&& generator) {
-        return GeneratorWrapper<T>(Catch::Detail::make_unique<FilterGenerator<T, Predicate>>(std::forward<Predicate>(pred), std::move(generator)));
+        return GeneratorWrapper<T>(Catch::Detail::make_unique<FilterGenerator<T, Predicate>>(CATCH_FORWARD(pred), CATCH_MOVE(generator)));
     }
 
     template <typename T>
@@ -103,7 +106,7 @@ namespace Generators {
         size_t m_repeat_index = 0;
     public:
         RepeatGenerator(size_t repeats, GeneratorWrapper<T>&& generator):
-            m_generator(std::move(generator)),
+            m_generator(CATCH_MOVE(generator)),
             m_target_repeats(repeats)
         {
             assert(m_target_repeats > 0 && "Repeat generator must repeat at least once");
@@ -144,7 +147,7 @@ namespace Generators {
 
     template <typename T>
     GeneratorWrapper<T> repeat(size_t repeats, GeneratorWrapper<T>&& generator) {
-        return GeneratorWrapper<T>(Catch::Detail::make_unique<RepeatGenerator<T>>(repeats, std::move(generator)));
+        return GeneratorWrapper<T>(Catch::Detail::make_unique<RepeatGenerator<T>>(repeats, CATCH_MOVE(generator)));
     }
 
     template <typename T, typename U, typename Func>
@@ -157,8 +160,8 @@ namespace Generators {
     public:
         template <typename F2 = Func>
         MapGenerator(F2&& function, GeneratorWrapper<U>&& generator) :
-            m_generator(std::move(generator)),
-            m_function(std::forward<F2>(function)),
+            m_generator(CATCH_MOVE(generator)),
+            m_function(CATCH_FORWARD(function)),
             m_cache(m_function(m_generator.get()))
         {}
 
@@ -177,14 +180,14 @@ namespace Generators {
     template <typename Func, typename U, typename T = FunctionReturnType<Func, U>>
     GeneratorWrapper<T> map(Func&& function, GeneratorWrapper<U>&& generator) {
         return GeneratorWrapper<T>(
-            Catch::Detail::make_unique<MapGenerator<T, U, Func>>(std::forward<Func>(function), std::move(generator))
+            Catch::Detail::make_unique<MapGenerator<T, U, Func>>(CATCH_FORWARD(function), CATCH_MOVE(generator))
         );
     }
 
     template <typename T, typename U, typename Func>
     GeneratorWrapper<T> map(Func&& function, GeneratorWrapper<U>&& generator) {
         return GeneratorWrapper<T>(
-            Catch::Detail::make_unique<MapGenerator<T, U, Func>>(std::forward<Func>(function), std::move(generator))
+            Catch::Detail::make_unique<MapGenerator<T, U, Func>>(CATCH_FORWARD(function), CATCH_MOVE(generator))
         );
     }
 
@@ -196,7 +199,7 @@ namespace Generators {
         bool m_used_up = false;
     public:
         ChunkGenerator(size_t size, GeneratorWrapper<T> generator) :
-            m_chunk_size(size), m_generator(std::move(generator))
+            m_chunk_size(size), m_generator(CATCH_MOVE(generator))
         {
             m_chunk.reserve(m_chunk_size);
             if (m_chunk_size != 0) {
@@ -227,7 +230,7 @@ namespace Generators {
     template <typename T>
     GeneratorWrapper<std::vector<T>> chunk(size_t size, GeneratorWrapper<T>&& generator) {
         return GeneratorWrapper<std::vector<T>>(
-            Catch::Detail::make_unique<ChunkGenerator<T>>(size, std::move(generator))
+            Catch::Detail::make_unique<ChunkGenerator<T>>(size, CATCH_MOVE(generator))
         );
     }
 

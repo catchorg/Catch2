@@ -16,6 +16,7 @@
 #include <catch2/reporters/catch_reporter_tap.hpp>
 #include <catch2/reporters/catch_reporter_teamcity.hpp>
 #include <catch2/reporters/catch_reporter_xml.hpp>
+#include <catch2/internal/catch_move_and_forward.hpp>
 
 namespace Catch {
 
@@ -43,10 +44,10 @@ namespace Catch {
     }
 
     void ReporterRegistry::registerReporter( std::string const& name, IReporterFactoryPtr factory ) {
-        m_factories.emplace(name, std::move(factory));
+        m_factories.emplace(name, CATCH_MOVE(factory));
     }
     void ReporterRegistry::registerListener( IReporterFactoryPtr factory ) {
-        m_listeners.push_back( std::move(factory) );
+        m_listeners.push_back( CATCH_MOVE(factory) );
     }
 
     IReporterRegistry::FactoryMap const& ReporterRegistry::getFactories() const {

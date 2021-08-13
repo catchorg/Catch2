@@ -10,8 +10,9 @@
 #ifndef CATCH_CONSTRUCTOR_HPP_INCLUDED
 #define CATCH_CONSTRUCTOR_HPP_INCLUDED
 
+#include <catch2/internal/catch_move_and_forward.hpp>
+
 #include <type_traits>
-#include <utility>
 
 namespace Catch {
     namespace Benchmark {
@@ -30,7 +31,7 @@ namespace Catch {
 
                 ObjectStorage(ObjectStorage&& other)
                 {
-                    new(&data) T(std::move(other.stored_object()));
+                    new(&data) T(CATCH_MOVE(other.stored_object()));
                 }
 
                 ~ObjectStorage() { destruct_on_exit<T>(); }
@@ -38,7 +39,7 @@ namespace Catch {
                 template <typename... Args>
                 void construct(Args&&... args)
                 {
-                    new (&data) T(std::forward<Args>(args)...);
+                    new (&data) T(CATCH_FORWARD(args)...);
                 }
 
                 template <bool AllowManualDestruction = !Destruct>

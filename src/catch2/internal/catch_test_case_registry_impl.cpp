@@ -14,6 +14,7 @@
 #include <catch2/internal/catch_run_context.hpp>
 #include <catch2/catch_test_case_info.hpp>
 #include <catch2/catch_test_spec.hpp>
+#include <catch2/internal/catch_move_and_forward.hpp>
 
 #include <algorithm>
 #include <set>
@@ -119,8 +120,8 @@ namespace {
     void TestRegistry::registerTest(Detail::unique_ptr<TestCaseInfo> testInfo, Detail::unique_ptr<ITestInvoker> testInvoker) {
         m_handles.emplace_back(testInfo.get(), testInvoker.get());
         m_viewed_test_infos.push_back(testInfo.get());
-        m_owned_test_infos.push_back(std::move(testInfo));
-        m_invokers.push_back(std::move(testInvoker));
+        m_owned_test_infos.push_back(CATCH_MOVE(testInfo));
+        m_invokers.push_back(CATCH_MOVE(testInvoker));
     }
 
     std::vector<TestCaseInfo*> const& TestRegistry::getAllInfos() const {

@@ -19,6 +19,7 @@
 #include <catch2/catch_test_case_info.hpp>
 #include <catch2/internal/catch_noncopyable.hpp>
 #include <catch2/interfaces/catch_interfaces_reporter_factory.hpp>
+#include <catch2/internal/catch_move_and_forward.hpp>
 
 namespace Catch {
 
@@ -48,16 +49,16 @@ namespace Catch {
 
         public: // IMutableRegistryHub
             void registerReporter( std::string const& name, IReporterFactoryPtr factory ) override {
-                m_reporterRegistry.registerReporter( name, std::move(factory) );
+                m_reporterRegistry.registerReporter( name, CATCH_MOVE(factory) );
             }
             void registerListener( IReporterFactoryPtr factory ) override {
-                m_reporterRegistry.registerListener( std::move(factory) );
+                m_reporterRegistry.registerListener( CATCH_MOVE(factory) );
             }
             void registerTest( Detail::unique_ptr<TestCaseInfo>&& testInfo, Detail::unique_ptr<ITestInvoker>&& invoker ) override {
-                m_testCaseRegistry.registerTest( std::move(testInfo), std::move(invoker) );
+                m_testCaseRegistry.registerTest( CATCH_MOVE(testInfo), CATCH_MOVE(invoker) );
             }
             void registerTranslator( Detail::unique_ptr<IExceptionTranslator>&& translator ) override {
-                m_exceptionTranslatorRegistry.registerTranslator( std::move(translator) );
+                m_exceptionTranslatorRegistry.registerTranslator( CATCH_MOVE(translator) );
             }
             void registerTagAlias( std::string const& alias, std::string const& tag, SourceLineInfo const& lineInfo ) override {
                 m_tagAliasRegistry.add( alias, tag, lineInfo );
