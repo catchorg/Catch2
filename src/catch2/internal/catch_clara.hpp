@@ -69,8 +69,7 @@ namespace Catch {
             template <typename ClassT, typename ReturnT, typename ArgT>
             struct UnaryLambdaTraits<ReturnT ( ClassT::* )( ArgT ) const> {
                 static const bool isValid = true;
-                using ArgType = typename std::remove_const<
-                    typename std::remove_reference<ArgT>::type>::type;
+                using ArgType = std::remove_const_t<std::remove_reference_t<ArgT>>;
                 using ReturnType = ReturnT;
             };
 

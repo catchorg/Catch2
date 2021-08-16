@@ -22,11 +22,9 @@
 namespace Catch {
     namespace Benchmark {
         namespace Detail {
-            template <typename T>
-            using Decay = typename std::decay<T>::type;
             template <typename T, typename U>
             struct is_related
-                : std::is_same<Decay<T>, Decay<U>> {};
+                : std::is_same<std::decay_t<T>, std::decay_t<U>> {};
 
             /// We need to reinvent std::function because every piece of code that might add overhead
             /// in a measurement context needs to have consistent performance characteristics so that we
@@ -76,9 +74,9 @@ namespace Catch {
                     : f(new model<do_nothing>{ {} }) {}
 
                 template <typename Fun,
-                    typename std::enable_if<!is_related<Fun, BenchmarkFunction>::value, int>::type = 0>
+                    std::enable_if_t<!is_related<Fun, BenchmarkFunction>::value, int> = 0>
                     BenchmarkFunction(Fun&& fun)
-                    : f(new model<typename std::decay<Fun>::type>(CATCH_FORWARD(fun))) {}
+                    : f(new model<std::decay_t<Fun>>(CATCH_FORWARD(fun))) {}
 
                 BenchmarkFunction( BenchmarkFunction&& that ) noexcept:
                     f( CATCH_MOVE( that.f ) ) {}

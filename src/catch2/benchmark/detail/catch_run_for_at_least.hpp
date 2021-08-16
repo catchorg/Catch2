@@ -36,7 +36,7 @@ namespace Catch {
             }
 
             template <typename Clock, typename Fun>
-            using run_for_at_least_argument_t = typename std::conditional<is_callable<Fun(Chronometer)>::value, Chronometer, int>::type;
+            using run_for_at_least_argument_t = std::conditional_t<is_callable<Fun(Chronometer)>::value, Chronometer, int>;
 
 
             [[noreturn]]

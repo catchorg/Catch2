@@ -26,7 +26,7 @@ namespace Catch {
                 Fun fun;
             };
             template <typename Fun>
-            repeater<typename std::decay<Fun>::type> repeat(Fun&& fun) {
+            repeater<std::decay_t<Fun>> repeat(Fun&& fun) {
                 return { CATCH_FORWARD(fun) };
             }
         } // namespace Detail

@@ -20,7 +20,7 @@ namespace Catch {
             template <typename T, bool Destruct>
             struct ObjectStorage
             {
-                using TStorage = typename std::aligned_storage<sizeof(T), std::alignment_of<T>::value>::type;
+                using TStorage = std::aligned_storage_t<sizeof(T), std::alignment_of<T>::value>;
 
                 ObjectStorage() : data() {}
 
@@ -43,7 +43,7 @@ namespace Catch {
                 }
 
                 template <bool AllowManualDestruction = !Destruct>
-                typename std::enable_if<AllowManualDestruction>::type destruct()
+                std::enable_if_t<AllowManualDestruction> destruct()
                 {
                     stored_object().~T();
                 }
@@ -51,10 +51,10 @@ namespace Catch {
             private:
                 // If this is a constructor benchmark, destruct the underlying object
                 template <typename U>
-                void destruct_on_exit(typename std::enable_if<Destruct, U>::type* = 0) { destruct<true>(); }
+                void destruct_on_exit(std::enable_if_t<Destruct, U>* = 0) { destruct<true>(); }
                 // Otherwise, don't
                 template <typename U>
-                void destruct_on_exit(typename std::enable_if<!Destruct, U>::type* = 0) { }
+                void destruct_on_exit(std::enable_if_t<!Destruct, U>* = 0) { }
 
                 T& stored_object() {
                     return *static_cast<T*>(static_cast<void*>(&data));
