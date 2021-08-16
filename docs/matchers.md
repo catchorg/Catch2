@@ -58,7 +58,7 @@ to a use-after-free (UAF):
 
 ```cpp
 #include <catch2/catch_test_macros.hpp>
-#include <catch2/matchers/catch_matchers_string.h>
+#include <catch2/matchers/catch_matchers_string.hpp>
 
 TEST_CASE("Bugs, bugs, bugs", "[Bug]"){
     std::string str = "Bugs as a service";
@@ -299,7 +299,7 @@ within certain range. We will call it `IsBetweenMatcher<T>`:
 
 ```c++
 #include <catch2/catch_test_macros.hpp>
-#include <catch2/matchers/catch_matchers.h>
+#include <catch2/matchers/catch_matchers.hpp>
 // ...
 
 
