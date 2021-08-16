@@ -210,13 +210,25 @@ are problematic and are not always caught by our CI infrastructure.
 #### Naked exceptions and exceptions-related function
 
 If you are throwing an exception, it should be done via `CATCH_ERROR`
-or `CATCH_RUNTIME_ERROR` in `catch_enforce.h`. These macros will handle
+or `CATCH_RUNTIME_ERROR` in `internal/catch_enforce.hpp`. These macros will handle
 the differences between compilation with or without exceptions for you.
 However, some platforms (IAR) also have problems with exceptions-related
 functions, such as `std::current_exceptions`. We do not have IAR in our
 CI, but luckily there should not be too many reasons to use these.
 However, if you do, they should be kept behind a
 `CATCH_CONFIG_DISABLE_EXCEPTIONS` macro.
+
+
+#### Avoid `std::move` and `std::forward`
+
+`std::move` and `std::forward` provide nice semantic name for a specific
+`static_cast`. However, being function templates they have surprisingly
+high cost during compilation, and can also have a negative performance
+impact for low-optimization builds.
+
+You should be using `CATCH_MOVE` and `CATCH_FORWARD` macros from
+`internal/catch_move_and_forward.hpp` instead. They expand into the proper
+`static_cast`, and avoid the overhead of `std::move` and `std::forward`.
 
 
 #### Unqualified usage of functions from C's stdlib
