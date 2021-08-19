@@ -239,6 +239,23 @@ there is no difference is wrong, QNX and VxWorks won't compile if you
 include the header as `<cfoo>` and call the function unqualified.
 
 
+#### User-Defined Literals (UDL) for Catch2' types
+
+Due to messy standardese and ... not great ... implementation of
+`-Wreserved-identifier` in Clang, avoid declaring UDLs as
+```cpp
+Approx operator "" _a(long double);
+```
+and instead declare them as
+```cpp
+Approx operator ""_a(long double);
+```
+
+Notice that the second version does not have a space between the `""` and
+the literal suffix.
+
+
+
 ### New source file template
 
 If you are adding new source file, there is a template you should use.

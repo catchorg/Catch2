@@ -114,8 +114,8 @@ namespace Catch {
     };
 
 namespace literals {
-    Approx operator "" _a(long double val);
-    Approx operator "" _a(unsigned long long val);
+    Approx operator ""_a(long double val);
+    Approx operator ""_a(unsigned long long val);
 } // end namespace literals
 
 template<>
