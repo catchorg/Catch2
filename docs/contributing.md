@@ -190,6 +190,24 @@ If want to contribute code, this section contains some simple rules
 and tips on things like code formatting, code constructions to avoid,
 and so on.
 
+### C++ standard version
+
+Catch2 currently targets C++14 as the minimum supported C++ version.
+Features from higher language versions should be used only sparingly,
+when the benefits from using them outweight the maintenance overhead.
+
+Example of good use of polyfilling features is our use of `conjunction`,
+where if available we use `std::conjunction` and otherwise provide our
+own implementation. The reason it is good is that the surface area for
+maintenance is quite small, and `std::conjunction` can directly use
+compiler built-ins, thus providing significant compilation benefits.
+
+Example of bad use of polyfilling features would be to keep around two
+sets of metaprogramming in the stringification implementation, once
+using C++14 compliant TMP and once using C++17's `if constexpr`. While
+the C++17 would provide significant compilation speedups, the maintenance
+cost would be too high.
+
 
 ### Formatting
 
