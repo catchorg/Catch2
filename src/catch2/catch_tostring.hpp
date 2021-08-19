@@ -481,18 +481,18 @@ namespace Catch {
             using type = void;
         };
 
+        template <typename... Ts>
+        using void_type_t = typename void_type<Ts...>::type;
+
         template <typename T, typename = void>
-        struct is_range_impl : std::false_type {
-        };
+        struct is_range_impl : std::false_type {};
 
         template <typename T>
-        struct is_range_impl<T, typename void_type<decltype(begin(std::declval<T>()))>::type> : std::true_type {
-        };
+        struct is_range_impl<T, void_type_t<decltype(begin(std::declval<T>()))>> : std::true_type {};
     } // namespace Detail
 
     template <typename T>
-    struct is_range : Detail::is_range_impl<T> {
-    };
+    struct is_range : Detail::is_range_impl<T> {};
 
 #if defined(_MANAGED) // Managed types are never ranges
     template <typename T>
