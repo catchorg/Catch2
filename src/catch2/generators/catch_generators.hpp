@@ -15,7 +15,6 @@
 
 #include <vector>
 #include <tuple>
-#include <utility>
 
 namespace Catch {
 

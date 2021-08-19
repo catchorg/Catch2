@@ -10,8 +10,6 @@
 #include <catch2/internal/catch_uncaught_exceptions.hpp>
 #include <catch2/internal/catch_move_and_forward.hpp>
 
-#include <utility>
-
 namespace Catch {
 
     Section::Section( SectionInfo&& info ):

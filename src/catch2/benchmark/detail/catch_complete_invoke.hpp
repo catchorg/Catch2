@@ -17,7 +17,6 @@
 #include <catch2/internal/catch_move_and_forward.hpp>
 
 #include <type_traits>
-#include <utility>
 
 namespace Catch {
     namespace Benchmark {

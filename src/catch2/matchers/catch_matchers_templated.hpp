@@ -16,7 +16,6 @@
 #include <algorithm>
 #include <string>
 #include <type_traits>
-#include <utility>
 
 namespace Catch {
 namespace Matchers {

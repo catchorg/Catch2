@@ -13,7 +13,6 @@
 
 #include <algorithm>
 #include <functional>
-#include <utility>
 
 namespace Catch {
     namespace Matchers {

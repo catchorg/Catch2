@@ -18,7 +18,6 @@
 #include <numeric>
 #include <tuple>
 #include <cmath>
-#include <utility>
 
 namespace Catch {
     namespace Benchmark {
