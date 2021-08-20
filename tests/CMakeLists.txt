@@ -359,6 +359,16 @@ set_tests_properties("Benchmarking::FailureReporting::FailMacro"
     FAIL_REGULAR_EXPRESSION "successes=\"1\""
 )
 
+add_test(NAME "Benchmarking::FailureReporting::ShouldFailIsRespected"
+  COMMAND
+    $<TARGET_FILE:SelfTest> "Failing benchmark respects should-fail"
+)
+set_tests_properties("Benchmarking::FailureReporting::ShouldFailIsRespected"
+  PROPERTIES
+    PASS_REGULAR_EXPRESSION "1 failed as expected"
+)
+
+
 if (CATCH_USE_VALGRIND)
     add_test(NAME ValgrindRunTests COMMAND valgrind --leak-check=full --error-exitcode=1 $<TARGET_FILE:SelfTest>)
     add_test(NAME ValgrindListTests COMMAND valgrind --leak-check=full --error-exitcode=1 $<TARGET_FILE:SelfTest> --list-tests --verbosity high)
