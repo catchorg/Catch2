@@ -36,7 +36,7 @@ namespace Catch {
             private:
                 struct callable {
                     virtual void call(Chronometer meter) const = 0;
-                    virtual callable* clone() const = 0;
+                    virtual Catch::Detail::unique_ptr<callable> clone() const = 0;
                     virtual ~callable(); // = default;
 
                     callable() = default;
@@ -48,7 +48,9 @@ namespace Catch {
                     model(Fun&& fun_) : fun(CATCH_MOVE(fun_)) {}
                     model(Fun const& fun_) : fun(fun_) {}
 
-                    model<Fun>* clone() const override { return new model<Fun>(*this); }
+                    Catch::Detail::unique_ptr<callable> clone() const override {
+                        return Catch::Detail::make_unique<model<Fun>>( *this );
+                    }
 
                     void call(Chronometer meter) const override {
                         call(meter, is_callable<Fun(Chronometer)>());
@@ -90,7 +92,7 @@ namespace Catch {
                 }
 
                 BenchmarkFunction& operator=(BenchmarkFunction const& that) {
-                    f.reset(that.f->clone());
+                    f = that.f->clone();
                     return *this;
                 }
 
