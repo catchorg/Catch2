@@ -209,3 +209,10 @@ TEST_CASE( "Comparison with explicitly convertible types", "[Approx]" )
   REQUIRE(Approx(11.0) >= td);
 
 }
+
+TEST_CASE("Approx::operator() is const correct", "[Approx][.approvals]") {
+    const Approx ap = Approx(0.0).margin(0.01);
+
+    // As long as this compiles, the test should be considered passing
+    REQUIRE(1.0 == ap(1.0));
+}

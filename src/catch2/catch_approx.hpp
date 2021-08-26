@@ -30,7 +30,7 @@ namespace Catch {
         Approx operator-() const;
 
         template <typename T, typename = std::enable_if_t<std::is_constructible<double, T>::value>>
-        Approx operator()( T const& value ) {
+        Approx operator()( T const& value ) const {
             Approx approx( static_cast<double>(value) );
             approx.m_epsilon = m_epsilon;
             approx.m_margin = m_margin;
