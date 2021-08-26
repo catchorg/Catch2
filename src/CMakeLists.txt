@@ -249,6 +249,8 @@ if (ANDROID)
     target_link_libraries(Catch2 INTERFACE log)
 endif()
 
+set_target_properties(Catch2 PROPERTIES DEBUG_POSTFIX "d")
+
 # depend on bunch of C++11 and C++14 features to have C++14 enabled by default
 target_compile_features(Catch2
   PUBLIC
@@ -291,6 +293,7 @@ set_target_properties(Catch2WithMain
   PROPERTIES
     OUTPUT_NAME "Catch2Main"
 )
+set_target_properties(Catch2WithMain PROPERTIES DEBUG_POSTFIX "d")
 
 if (NOT_SUBPROJECT)
     # create and install an export set for catch target as Catch2::Catch
