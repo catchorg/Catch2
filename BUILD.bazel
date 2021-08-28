@@ -1,25 +1,41 @@
+package(default_visibility = "//visibility:private")
+
 # Load the cc_library rule.
 load("@rules_cc//cc:defs.bzl", "cc_library")
+
+config_setting(
+    name = "msvc_compiler",
+    flag_values = {
+        "@bazel_tools//tools/cpp:compiler": "msvc-cl",
+    },
+)
+
+DEFAULT_COPTS = select({
+    ":msvc_compiler": ["/std:c++14"],
+    "//conditions:default": ["-std=c++14"],
+})
 
 # Static library, without main.
 cc_library(
     name = "catch2",
+    srcs = glob(
+        ["src/catch2/**/*.cpp"],
+        exclude = ["src/catch2/internal/catch_main.cpp"],
+    ),
     hdrs = glob(["src/catch2/**/*.hpp"]),
-    srcs = glob(["src/catch2/**/*.cpp"],
-                exclude=[ "src/catch2/internal/catch_main.cpp"]),
-    visibility = ["//visibility:public"],
-    copts = ["-std=c++14"],
-    linkstatic = True,
+    copts = DEFAULT_COPTS,
     includes = ["src/"],
+    linkstatic = True,
+    visibility = ["//visibility:public"],
 )
 
 # Static library, with main.
 cc_library(
     name = "catch2_main",
     srcs = ["src/catch2/internal/catch_main.cpp"],
-    deps = [":catch2"],
-    visibility = ["//visibility:public"],
-    linkstatic = True,
-    copts = ["-std=c++14"],
+    copts = DEFAULT_COPTS,
     includes = ["src/"],
+    linkstatic = True,
+    visibility = ["//visibility:public"],
+    deps = [":catch2"],
 )
