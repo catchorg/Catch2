@@ -45,7 +45,7 @@ function(add_warnings_to_targets targets)
           "-Wglobal-constructors"
           "-Wmissing-noreturn"
           "-Wparentheses"
-          "-Wextra-semi-stmt"
+          "-Wextra-semi"
           "-Wunreachable-code"
           "-Wstrict-aliasing"
           "-Wreturn-std-move"
