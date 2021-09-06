@@ -38,8 +38,8 @@ namespace Catch {
 
         void noMatchingTestCases( std::string const& /* spec */ ) override {}
 
-        void testGroupStarting(GroupInfo const& groupInfo) override;
-        void testGroupEnded(TestGroupStats const& testGroupStats) override;
+        void testRunStarting( TestRunInfo const& groupInfo ) override;
+        void testRunEnded( TestRunStats const& testGroupStats ) override;
 
 
         void assertionStarting(AssertionInfo const&) override {}

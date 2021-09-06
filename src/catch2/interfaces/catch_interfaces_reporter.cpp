@@ -32,17 +32,9 @@ namespace Catch {
 
     TestRunInfo::TestRunInfo( std::string const& _name ) : name( _name ) {}
 
-    GroupInfo::GroupInfo(  std::string const& _name,
-                           std::size_t _groupIndex,
-                           std::size_t _groupsCount )
-    :   name( _name ),
-        groupIndex( _groupIndex ),
-        groupsCounts( _groupsCount )
-    {}
-
-     AssertionStats::AssertionStats( AssertionResult const& _assertionResult,
-                                     std::vector<MessageInfo> const& _infoMessages,
-                                     Totals const& _totals )
+    AssertionStats::AssertionStats( AssertionResult const& _assertionResult,
+                                    std::vector<MessageInfo> const& _infoMessages,
+                                    Totals const& _totals )
     :   assertionResult( _assertionResult ),
         infoMessages( _infoMessages ),
         totals( _totals )
@@ -81,20 +73,6 @@ namespace Catch {
         stdOut( _stdOut ),
         stdErr( _stdErr ),
         aborting( _aborting )
-    {}
-
-
-    TestGroupStats::TestGroupStats( GroupInfo const& _groupInfo,
-                                    Totals const& _totals,
-                                    bool _aborting )
-    :   groupInfo( _groupInfo ),
-        totals( _totals ),
-        aborting( _aborting )
-    {}
-
-    TestGroupStats::TestGroupStats( GroupInfo const& _groupInfo )
-    :   groupInfo( _groupInfo ),
-        aborting( false )
     {}
 
 

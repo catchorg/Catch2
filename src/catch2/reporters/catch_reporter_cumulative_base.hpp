@@ -42,8 +42,7 @@ namespace Catch {
 
 
         using TestCaseNode = Node<TestCaseStats, SectionNode>;
-        using TestGroupNode = Node<TestGroupStats, TestCaseNode>;
-        using TestRunNode = Node<TestRunStats, TestGroupNode>;
+        using TestRunNode = Node<TestRunStats, TestCaseNode>;
 
         CumulativeReporterBase( ReporterConfig const& _config ):
             IStreamingReporter( _config.fullConfig() ),
@@ -51,7 +50,6 @@ namespace Catch {
         ~CumulativeReporterBase() override;
 
         void testRunStarting( TestRunInfo const& ) override {}
-        void testGroupStarting( GroupInfo const& ) override {}
 
         void testCaseStarting( TestCaseInfo const& ) override {}
 
@@ -62,7 +60,6 @@ namespace Catch {
         bool assertionEnded( AssertionStats const& assertionStats ) override;
         void sectionEnded( SectionStats const& sectionStats ) override;
         void testCaseEnded( TestCaseStats const& testCaseStats ) override;
-        void testGroupEnded( TestGroupStats const& testGroupStats ) override;
         void testRunEnded( TestRunStats const& testRunStats ) override;
         //! Customization point: called after last test finishes (testRunEnded has been handled)
         virtual void testRunEndedCumulative() = 0;
@@ -78,7 +75,6 @@ namespace Catch {
         // Note: We rely on pointer identity being stable, which is why
         //       which is why we store around pointers rather than values.
         std::vector<Detail::unique_ptr<TestCaseNode>> m_testCases;
-        std::vector<Detail::unique_ptr<TestGroupNode>> m_testGroups;
 
         std::vector<TestRunNode> m_testRuns;
 

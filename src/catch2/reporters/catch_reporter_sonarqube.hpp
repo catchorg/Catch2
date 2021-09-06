@@ -32,15 +32,17 @@ namespace Catch {
 
         void noMatchingTestCases(std::string const& /*spec*/) override {}
 
-        void testRunStarting(TestRunInfo const& testRunInfo) override;
-
-        void testGroupEnded(TestGroupStats const& testGroupStats) override;
+        void testRunStarting( TestRunInfo const& testRunInfo ) override;
 
         void testRunEndedCumulative() override {
+            // HACK: There can only be one testRunNode? This needs to be
+            //       refactored after the group nodes are excised.
+            assert( m_testRuns.size() == 1 );
+            writeRun( m_testRuns.back() );
             xml.endElement();
         }
 
-        void writeGroup(TestGroupNode const& groupNode);
+        void writeRun( TestRunNode const& groupNode );
 
         void writeTestFile(std::string const& filename, std::vector<TestCaseNode const*> const& testCaseNodes);
 

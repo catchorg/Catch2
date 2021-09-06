@@ -22,20 +22,17 @@ namespace Catch {
         xml.writeAttribute("version"_sr, '1');
     }
 
-    void SonarQubeReporter::testGroupEnded(TestGroupStats const& testGroupStats) {
-        CumulativeReporterBase::testGroupEnded(testGroupStats);
-        writeGroup(*m_testGroups.back());
-    }
-
-    void SonarQubeReporter::writeGroup(TestGroupNode const& groupNode) {
+    void SonarQubeReporter::writeRun( TestRunNode const& runNode ) {
         std::map<std::string, std::vector<TestCaseNode const*>> testsPerFile;
-        for ( auto const& child : groupNode.children ) {
+
+        for ( auto const& child : runNode.children ) {
             testsPerFile[child->value.testInfo->lineInfo.file].push_back(
                 child.get() );
         }
 
-        for (auto const& kv : testsPerFile)
-            writeTestFile(kv.first, kv.second);
+        for ( auto const& kv : testsPerFile ) {
+            writeTestFile( kv.first, kv.second );
+        }
     }
 
     void SonarQubeReporter::writeTestFile(std::string const& filename, std::vector<TestCaseNode const*> const& testCaseNodes) {

@@ -48,8 +48,6 @@ namespace Catch {
 
         void testRunStarting( TestRunInfo const& _testRunInfo ) override;
 
-        void testGroupStarting( GroupInfo const& _groupInfo ) override;
-
         void testCaseStarting(TestCaseInfo const& _testInfo) override  {
             currentTestCaseInfo = &_testInfo;
         }
@@ -63,7 +61,6 @@ namespace Catch {
         void testCaseEnded(TestCaseStats const& /* _testCaseStats */) override {
             currentTestCaseInfo = nullptr;
         }
-        void testGroupEnded( TestGroupStats const& ) override;
         void testRunEnded( TestRunStats const& /* _testRunStats */ ) override;
 
         void skipTest(TestCaseInfo const&) override {
@@ -78,7 +75,6 @@ namespace Catch {
         std::ostream& stream;
 
         LazyStat<TestRunInfo> currentTestRunInfo;
-        LazyStat<GroupInfo> currentGroupInfo;
         TestCaseInfo const* currentTestCaseInfo = nullptr;
 
         std::vector<SectionInfo> m_sectionStack;

@@ -175,14 +175,6 @@ namespace Catch {
         m_reporter->testRunEnded(TestRunStats(m_runInfo, m_totals, aborting()));
     }
 
-    void RunContext::testGroupStarting(std::string const& testSpec, std::size_t groupIndex, std::size_t groupsCount) {
-        m_reporter->testGroupStarting(GroupInfo(testSpec, groupIndex, groupsCount));
-    }
-
-    void RunContext::testGroupEnded(std::string const& testSpec, Totals const& totals, std::size_t groupIndex, std::size_t groupsCount) {
-        m_reporter->testGroupEnded(TestGroupStats(GroupInfo(testSpec, groupIndex, groupsCount), totals, aborting()));
-    }
-
     Totals RunContext::runTest(TestCaseHandle const& testCase) {
         Totals prevTotals = m_totals;
 
@@ -389,7 +381,6 @@ namespace Catch {
                                   std::string(),
                                   false));
         m_totals.testCases.failed++;
-        testGroupEnded(std::string(), m_totals, 1, 1);
         m_reporter->testRunEnded(TestRunStats(m_runInfo, m_totals, false));
     }
 

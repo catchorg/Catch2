@@ -487,15 +487,6 @@ void ConsoleReporter::testCaseEnded(TestCaseStats const& _testCaseStats) {
     StreamingReporterBase::testCaseEnded(_testCaseStats);
     m_headerPrinted = false;
 }
-void ConsoleReporter::testGroupEnded(TestGroupStats const& _testGroupStats) {
-    if (currentGroupInfo.used) {
-        printSummaryDivider();
-        stream << "Summary for group '" << _testGroupStats.groupInfo.name << "':\n";
-        printTotals(_testGroupStats.totals);
-        stream << "\n\n" << std::flush;
-    }
-    StreamingReporterBase::testGroupEnded(_testGroupStats);
-}
 void ConsoleReporter::testRunEnded(TestRunStats const& _testRunStats) {
     printTotalsDivider(_testRunStats.totals);
     printTotals(_testRunStats.totals);
@@ -515,11 +506,9 @@ void ConsoleReporter::lazyPrint() {
 
 void ConsoleReporter::lazyPrintWithoutClosingBenchmarkTable() {
 
-    if (!currentTestRunInfo.used)
+    if ( !currentTestRunInfo.used ) {
         lazyPrintRunInfo();
-    if (!currentGroupInfo.used)
-        lazyPrintGroupInfo();
-
+    }
     if (!m_headerPrinted) {
         printTestCaseAndSectionHeader();
         m_headerPrinted = true;
@@ -536,12 +525,6 @@ void ConsoleReporter::lazyPrintRunInfo() {
         stream << "Randomness seeded to: " << m_config->rngSeed() << "\n\n";
 
     currentTestRunInfo.used = true;
-}
-void ConsoleReporter::lazyPrintGroupInfo() {
-    if (!currentGroupInfo->name.empty() && currentGroupInfo->groupsCounts > 1) {
-        printClosedHeader("Group: " + currentGroupInfo->name);
-        currentGroupInfo.used = true;
-    }
 }
 void ConsoleReporter::printTestCaseAndSectionHeader() {
     assert(!m_sectionStack.empty());

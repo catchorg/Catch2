@@ -77,7 +77,6 @@ namespace Catch {
             Totals execute() {
                 auto const& invalidArgs = m_config->testSpec().getInvalidArgs();
                 Totals totals;
-                m_context.testGroupStarting(m_config->name(), 1, 1);
                 for (auto const& testCase : m_tests) {
                     if (!m_context.aborting())
                         totals += m_context.runTest(*testCase);
@@ -97,7 +96,6 @@ namespace Catch {
                          m_reporter->reportInvalidArguments(invalidArg);
                 }
 
-                m_context.testGroupEnded(m_config->name(), totals, 1, 1);
                 return totals;
             }
 

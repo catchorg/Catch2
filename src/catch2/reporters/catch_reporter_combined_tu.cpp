@@ -231,12 +231,10 @@ namespace Catch {
     void EventListenerBase::listTags( std::vector<TagInfo> const& ) {}
     void EventListenerBase::noMatchingTestCases( std::string const& ) {}
     void EventListenerBase::testRunStarting( TestRunInfo const& ) {}
-    void EventListenerBase::testGroupStarting( GroupInfo const& ) {}
     void EventListenerBase::testCaseStarting( TestCaseInfo const& ) {}
     void EventListenerBase::sectionStarting( SectionInfo const& ) {}
     void EventListenerBase::sectionEnded( SectionStats const& ) {}
     void EventListenerBase::testCaseEnded( TestCaseStats const& ) {}
-    void EventListenerBase::testGroupEnded( TestGroupStats const& ) {}
     void EventListenerBase::testRunEnded( TestRunStats const& ) {}
     void EventListenerBase::skipTest( TestCaseInfo const& ) {}
 } // namespace Catch

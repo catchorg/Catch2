@@ -98,16 +98,10 @@ namespace Catch {
         m_deepestSection->stdErr = testCaseStats.stdErr;
     }
 
-    void CumulativeReporterBase::testGroupEnded(
-        TestGroupStats const& testGroupStats ) {
-        auto node = Detail::make_unique<TestGroupNode>( testGroupStats );
-        node->children.swap( m_testCases );
-        m_testGroups.push_back( CATCH_MOVE(node) );
-    }
 
     void CumulativeReporterBase::testRunEnded( TestRunStats const& testRunStats ) {
         m_testRuns.emplace_back( testRunStats );
-        m_testRuns.back().children.swap( m_testGroups );
+        m_testRuns.back().children.swap( m_testCases );
         testRunEndedCumulative();
     }
 

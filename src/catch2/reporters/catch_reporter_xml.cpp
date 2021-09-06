@@ -55,7 +55,7 @@ namespace Catch {
         std::string stylesheetRef = getStylesheetRef();
         if( !stylesheetRef.empty() )
             m_xml.writeStylesheetRef( stylesheetRef );
-        m_xml.startElement( "Catch" );
+        m_xml.startElement( "Catch2TestRun" );
         if( !m_config->name().empty() )
             m_xml.writeAttribute( "name"_sr, m_config->name() );
         if (m_config->testSpec().hasFilters())
@@ -63,12 +63,6 @@ namespace Catch {
         if( m_config->rngSeed() != 0 )
             m_xml.scopedElement( "Randomness" )
                 .writeAttribute( "seed"_sr, m_config->rngSeed() );
-    }
-
-    void XmlReporter::testGroupStarting( GroupInfo const& groupInfo ) {
-        StreamingReporterBase::testGroupStarting( groupInfo );
-        m_xml.startElement( "Group" )
-            .writeAttribute( "name"_sr, groupInfo.name );
     }
 
     void XmlReporter::testCaseStarting( TestCaseInfo const& testInfo ) {
@@ -199,20 +193,6 @@ namespace Catch {
         if( !testCaseStats.stdErr.empty() )
             m_xml.scopedElement( "StdErr" ).writeText( trim( testCaseStats.stdErr ), XmlFormatting::Newline );
 
-        m_xml.endElement();
-    }
-
-    void XmlReporter::testGroupEnded( TestGroupStats const& testGroupStats ) {
-        StreamingReporterBase::testGroupEnded( testGroupStats );
-        // TODO: Check testGroupStats.aborting and act accordingly.
-        m_xml.scopedElement( "OverallResults" )
-            .writeAttribute( "successes"_sr, testGroupStats.totals.assertions.passed )
-            .writeAttribute( "failures"_sr, testGroupStats.totals.assertions.failed )
-            .writeAttribute( "expectedFailures"_sr, testGroupStats.totals.assertions.failedButOk );
-        m_xml.scopedElement( "OverallResultsCases")
-            .writeAttribute( "successes"_sr, testGroupStats.totals.testCases.passed )
-            .writeAttribute( "failures"_sr, testGroupStats.totals.testCases.failed )
-            .writeAttribute( "expectedFailures"_sr, testGroupStats.totals.testCases.failedButOk );
         m_xml.endElement();
     }
 

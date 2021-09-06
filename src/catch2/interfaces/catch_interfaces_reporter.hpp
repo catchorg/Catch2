@@ -48,15 +48,6 @@ namespace Catch {
         TestRunInfo( std::string const& _name );
         std::string name;
     };
-    struct GroupInfo {
-        GroupInfo(  std::string const& _name,
-                    std::size_t _groupIndex,
-                    std::size_t _groupsCount );
-
-        std::string name;
-        std::size_t groupIndex;
-        std::size_t groupsCounts;
-    };
 
     struct AssertionStats {
         AssertionStats( AssertionResult const& _assertionResult,
@@ -96,17 +87,6 @@ namespace Catch {
         Totals totals;
         std::string stdOut;
         std::string stdErr;
-        bool aborting;
-    };
-
-    struct TestGroupStats {
-        TestGroupStats( GroupInfo const& _groupInfo,
-                        Totals const& _totals,
-                        bool _aborting );
-        TestGroupStats( GroupInfo const& _groupInfo );
-
-        GroupInfo groupInfo;
-        Totals totals;
         bool aborting;
     };
 
@@ -196,7 +176,6 @@ namespace Catch {
         virtual void reportInvalidArguments(std::string const&) {}
 
         virtual void testRunStarting( TestRunInfo const& testRunInfo ) = 0;
-        virtual void testGroupStarting( GroupInfo const& groupInfo ) = 0;
 
         virtual void testCaseStarting( TestCaseInfo const& testInfo ) = 0;
         virtual void sectionStarting( SectionInfo const& sectionInfo ) = 0;
@@ -213,7 +192,6 @@ namespace Catch {
 
         virtual void sectionEnded( SectionStats const& sectionStats ) = 0;
         virtual void testCaseEnded( TestCaseStats const& testCaseStats ) = 0;
-        virtual void testGroupEnded( TestGroupStats const& testGroupStats ) = 0;
         virtual void testRunEnded( TestRunStats const& testRunStats ) = 0;
 
         virtual void skipTest( TestCaseInfo const& testInfo ) = 0;

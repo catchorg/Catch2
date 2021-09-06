@@ -27,19 +27,15 @@ namespace Catch {
 
         void testRunStarting(TestRunInfo const& runInfo) override;
 
-        void testGroupStarting(GroupInfo const& groupInfo) override;
-
         void testCaseStarting(TestCaseInfo const& testCaseInfo) override;
         bool assertionEnded(AssertionStats const& assertionStats) override;
 
         void testCaseEnded(TestCaseStats const& testCaseStats) override;
 
-        void testGroupEnded(TestGroupStats const& testGroupStats) override;
-
         void testRunEndedCumulative() override;
 
     private:
-        void writeGroup(TestGroupNode const& groupNode, double suiteTime);
+        void writeRun(TestRunNode const& testRunNode, double suiteTime);
 
         void writeTestCase(TestCaseNode const& testCaseNode);
 

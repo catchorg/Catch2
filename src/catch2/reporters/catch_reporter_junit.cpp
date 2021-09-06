@@ -75,14 +75,10 @@ namespace Catch {
     void JunitReporter::testRunStarting( TestRunInfo const& runInfo )  {
         CumulativeReporterBase::testRunStarting( runInfo );
         xml.startElement( "testsuites" );
-    }
-
-    void JunitReporter::testGroupStarting( GroupInfo const& groupInfo ) {
         suiteTimer.start();
         stdOutForSuite.clear();
         stdErrForSuite.clear();
         unexpectedExceptions = 0;
-        CumulativeReporterBase::testGroupStarting( groupInfo );
     }
 
     void JunitReporter::testCaseStarting( TestCaseInfo const& testCaseInfo ) {
@@ -101,21 +97,20 @@ namespace Catch {
         CumulativeReporterBase::testCaseEnded( testCaseStats );
     }
 
-    void JunitReporter::testGroupEnded( TestGroupStats const& testGroupStats ) {
-        double suiteTime = suiteTimer.getElapsedSeconds();
-        CumulativeReporterBase::testGroupEnded( testGroupStats );
-        writeGroup( *m_testGroups.back(), suiteTime );
-    }
-
     void JunitReporter::testRunEndedCumulative() {
+        const auto suiteTime = suiteTimer.getElapsedSeconds();
+        // HACK: There can only be one testRunNode? This needs to be
+        //       refactored after the group nodes are excised.
+        assert(m_testRuns.size() == 1);
+        writeRun( m_testRuns.back(), suiteTime );
         xml.endElement();
     }
 
-    void JunitReporter::writeGroup( TestGroupNode const& groupNode, double suiteTime ) {
+    void JunitReporter::writeRun( TestRunNode const& testRunNode, double suiteTime ) {
         XmlWriter::ScopedElement e = xml.scopedElement( "testsuite" );
 
-        TestGroupStats const& stats = groupNode.value;
-        xml.writeAttribute( "name"_sr, stats.groupInfo.name );
+        TestRunStats const& stats = testRunNode.value;
+        xml.writeAttribute( "name"_sr, stats.runInfo.name );
         xml.writeAttribute( "errors"_sr, unexpectedExceptions );
         xml.writeAttribute( "failures"_sr, stats.totals.assertions.failed-unexpectedExceptions );
         xml.writeAttribute( "tests"_sr, stats.totals.assertions.total() );
@@ -142,7 +137,7 @@ namespace Catch {
         }
 
         // Write test cases
-        for( auto const& child : groupNode.children )
+        for( auto const& child : testRunNode.children )
             writeTestCase( *child );
 
         xml.scopedElement( "system-out" ).writeText( trim( stdOutForSuite ), XmlFormatting::Newline );

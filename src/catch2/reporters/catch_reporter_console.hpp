@@ -40,7 +40,6 @@ namespace Catch {
         void benchmarkFailed( StringRef error ) override;
 
         void testCaseEnded(TestCaseStats const& _testCaseStats) override;
-        void testGroupEnded(TestGroupStats const& _testGroupStats) override;
         void testRunEnded(TestRunStats const& _testRunStats) override;
         void testRunStarting(TestRunInfo const& _testRunInfo) override;
     private:
@@ -49,7 +48,6 @@ namespace Catch {
 
         void lazyPrintWithoutClosingBenchmarkTable();
         void lazyPrintRunInfo();
-        void lazyPrintGroupInfo();
         void printTestCaseAndSectionHeader();
 
         void printClosedHeader(std::string const& _name);

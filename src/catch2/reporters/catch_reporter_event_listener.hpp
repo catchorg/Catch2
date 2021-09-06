@@ -34,12 +34,10 @@ namespace Catch {
 
         void noMatchingTestCases( std::string const& spec ) override;
         void testRunStarting( TestRunInfo const& testRunInfo ) override;
-        void testGroupStarting( GroupInfo const& groupInfo ) override;
         void testCaseStarting( TestCaseInfo const& testInfo ) override;
         void sectionStarting( SectionInfo const& sectionInfo ) override;
         void sectionEnded( SectionStats const& sectionStats ) override;
         void testCaseEnded( TestCaseStats const& testCaseStats ) override;
-        void testGroupEnded( TestGroupStats const& testGroupStats ) override;
         void testRunEnded( TestRunStats const& testRunStats ) override;
         void skipTest( TestCaseInfo const& testInfo ) override;
     };

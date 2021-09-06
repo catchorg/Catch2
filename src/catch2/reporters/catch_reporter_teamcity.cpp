@@ -46,16 +46,14 @@ namespace Catch {
 
     TeamCityReporter::~TeamCityReporter() {}
 
-    void TeamCityReporter::testGroupStarting(GroupInfo const& groupInfo) {
-        StreamingReporterBase::testGroupStarting(groupInfo);
-        stream << "##teamcity[testSuiteStarted name='"
-            << escape(groupInfo.name) << "']\n";
+    void TeamCityReporter::testRunStarting( TestRunInfo const& runInfo ) {
+        stream << "##teamcity[testSuiteStarted name='" << escape( runInfo.name )
+               << "']\n";
     }
 
-    void TeamCityReporter::testGroupEnded(TestGroupStats const& testGroupStats) {
-        StreamingReporterBase::testGroupEnded(testGroupStats);
+    void TeamCityReporter::testRunEnded( TestRunStats const& runStats ) {
         stream << "##teamcity[testSuiteFinished name='"
-            << escape(testGroupStats.groupInfo.name) << "']\n";
+               << escape( runStats.runInfo.name ) << "']\n";
     }
 
     bool TeamCityReporter::assertionEnded(AssertionStats const& assertionStats) {

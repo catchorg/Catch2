@@ -40,9 +40,6 @@ namespace Catch {
 
         ~RunContext() override;
 
-        void testGroupStarting( std::string const& testSpec, std::size_t groupIndex, std::size_t groupsCount );
-        void testGroupEnded( std::string const& testSpec, Totals const& totals, std::size_t groupIndex, std::size_t groupsCount );
-
         Totals runTest(TestCaseHandle const& testCase);
 
     public: // IResultCapture

@@ -69,14 +69,6 @@ namespace Catch {
         m_reporter->testRunStarting( testRunInfo );
     }
 
-    void ListeningReporter::testGroupStarting( GroupInfo const& groupInfo ) {
-        for ( auto& listener : m_listeners ) {
-            listener->testGroupStarting( groupInfo );
-        }
-        m_reporter->testGroupStarting( groupInfo );
-    }
-
-
     void ListeningReporter::testCaseStarting( TestCaseInfo const& testInfo ) {
         for ( auto& listener : m_listeners ) {
             listener->testCaseStarting( testInfo );
@@ -118,13 +110,6 @@ namespace Catch {
             listener->testCaseEnded( testCaseStats );
         }
         m_reporter->testCaseEnded( testCaseStats );
-    }
-
-    void ListeningReporter::testGroupEnded( TestGroupStats const& testGroupStats ) {
-        for ( auto& listener : m_listeners ) {
-            listener->testGroupEnded( testGroupStats );
-        }
-        m_reporter->testGroupEnded( testGroupStats );
     }
 
     void ListeningReporter::testRunEnded( TestRunStats const& testRunStats ) {

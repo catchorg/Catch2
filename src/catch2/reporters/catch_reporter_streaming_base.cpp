@@ -17,18 +17,8 @@ namespace Catch {
         currentTestRunInfo = _testRunInfo;
     }
 
-    void
-    StreamingReporterBase::testGroupStarting( GroupInfo const& _groupInfo ) {
-        currentGroupInfo = _groupInfo;
-    }
-
-    void StreamingReporterBase::testGroupEnded( TestGroupStats const& ) {
-        currentGroupInfo.reset();
-    }
-
     void StreamingReporterBase::testRunEnded( TestRunStats const& ) {
         currentTestCaseInfo = nullptr;
-        currentGroupInfo.reset();
         currentTestRunInfo.reset();
     }
 
