@@ -11,14 +11,6 @@
 #include <catch2/reporters/catch_reporter_streaming_base.hpp>
 #include <catch2/internal/catch_unique_ptr.hpp>
 
-#if defined(_MSC_VER)
-#pragma warning(push)
-#pragma warning(disable:4061) // Not all labels are EXPLICITLY handled in switch
-                              // Note that 4062 (not all labels are handled
-                              // and default is missing) is enabled
-#endif
-
-
 namespace Catch {
     // Fwd decls
     struct SummaryColumn;
@@ -80,9 +72,5 @@ namespace Catch {
     };
 
 } // end namespace Catch
-
-#if defined(_MSC_VER)
-#pragma warning(pop)
-#endif
 
 #endif // CATCH_REPORTER_CONSOLE_HPP_INCLUDED
