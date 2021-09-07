@@ -76,7 +76,6 @@ namespace Catch {
         bool listTags() const;
         bool listReporters() const;
 
-        std::string getProcessName() const;
         std::string const& getReporterName() const;
 
         std::vector<std::string> const& getTestsOrTags() const override;
