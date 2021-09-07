@@ -45,8 +45,8 @@ namespace Catch {
     };
 
     struct TestRunInfo {
-        TestRunInfo( std::string const& _name );
-        std::string name;
+        TestRunInfo(StringRef _name) : name(_name) {}
+        StringRef name;
     };
 
     struct AssertionStats {

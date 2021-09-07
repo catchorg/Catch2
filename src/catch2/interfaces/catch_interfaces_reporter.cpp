@@ -29,9 +29,6 @@ namespace Catch {
     std::ostream& ReporterConfig::stream() const { return *m_stream; }
     IConfig const * ReporterConfig::fullConfig() const { return m_fullConfig; }
 
-
-    TestRunInfo::TestRunInfo( std::string const& _name ) : name( _name ) {}
-
     AssertionStats::AssertionStats( AssertionResult const& _assertionResult,
                                     std::vector<MessageInfo> const& _infoMessages,
                                     Totals const& _totals )

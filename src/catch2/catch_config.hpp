@@ -89,7 +89,7 @@ namespace Catch {
         // IConfig interface
         bool allowThrows() const override;
         std::ostream& stream() const override;
-        std::string name() const override;
+        StringRef name() const override;
         bool includeSuccessfulResults() const override;
         bool warnAboutMissingAssertions() const override;
         bool warnAboutNoTests() const override;

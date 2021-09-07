@@ -31,8 +31,8 @@ namespace Catch {
                   .initialIndent(indent) << '\n';
         }
 
-        std::string escape(std::string const& str) {
-            std::string escaped = str;
+        std::string escape(StringRef str) {
+            std::string escaped = static_cast<std::string>(str);
             replaceInPlace(escaped, "|", "||");
             replaceInPlace(escaped, "'", "|'");
             replaceInPlace(escaped, "\n", "|n");

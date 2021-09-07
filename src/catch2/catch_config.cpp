@@ -65,7 +65,7 @@ namespace Catch {
     // IConfig interface
     bool Config::allowThrows() const                   { return !m_data.noThrow; }
     std::ostream& Config::stream() const               { return m_stream->stream(); }
-    std::string Config::name() const                   { return m_data.name.empty() ? m_data.processName : m_data.name; }
+    StringRef Config::name() const                     { return m_data.name.empty() ? m_data.processName : m_data.name; }
     bool Config::includeSuccessfulResults() const      { return m_data.showSuccessfulTests; }
     bool Config::warnAboutMissingAssertions() const    { return !!(m_data.warnings & WarnAbout::NoAssertions); }
     bool Config::warnAboutNoTests() const              { return !!(m_data.warnings & WarnAbout::NoTests); }
