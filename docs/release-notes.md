@@ -50,7 +50,6 @@
 
 ## 3.0.1 (in progress)
 
-
 **Catch2 now uses statically compiled library as its distribution model.
 This also means that to get all of Catch2's functionality in a test file,
 you have to include multiple headers.**
@@ -83,6 +82,7 @@ new design.
 ### (Potentially) Breaking changes
 * **Catch2 now uses statically compiled library as its distribution model**
   * **Including `catch.hpp` no longer works**
+* **Catch2 now uses C++14 as the minimum support language version**
 * `ANON_TEST_CASE` has been removed, use `TEST_CASE` with no arguments instead (#1220)
 * `--list*` commands no longer have non-zero return code (#1410)
 * `--list-test-names-only` has been removed (#1190)
@@ -127,6 +127,11 @@ new design.
 * `GENERATE` decays its arguments (#2012, #2040)
   * This means that `str` in `auto str = GENERATE("aa", "bb", "cc");` is inferred to `char const*` rather than `const char[2]`.
 * `--list-*` flags write their output to file specified by the `-o` flag
+* Many changes to reporter interfaces
+  * With the exception of the XmlReporter, the outputs of first party reporters should remain the same
+  * New pair of events were added
+  * One obsolete event was removed
+
 
 ### Improvements
 * Matchers have been extended with the ability to use different signatures of `match` (#1307, #1553, #1554, #1843)
@@ -152,13 +157,18 @@ new design.
 | Run 1 out of 3k tests, names, tags          |  1.79 ± 0.02 |   2.06 ± 0.23 |
 
 
-
 * POSIX platforms use `gmtime_r`, rather than `gmtime` when constructing a date string (#2008, #2165)
 * `--list-*` flags write their output to file specified by the `-o` flag (#2061, #2163)
+* `Approx::operator()` is now properly `const`
+* Catch2's internal helper variables no longer use reserved identifiers (#578)
+
 
 ### Fixes
 * The `INFO` macro no longer contains superfluous semicolon (#1456)
 * The `--list*` family of command line flags now return 0 on success (#1410, #1146)
+* Various ways of failing a benchmark are now counted and reporter properly
+* The ULP matcher now handles comparing numbers with different signs properly (#2152)
+* Universal ADL-found operators should no longer break decomposition (#2121)
 
 
 ### Other changes
@@ -172,6 +182,7 @@ new design.
 * Catch2's pkg-config integration also provides 2 packages
   * `catch2` is the statically compiled implementation by itself
   * `catch2-with-main` also links in the default main
+
 
 
 ## 2.13.6
