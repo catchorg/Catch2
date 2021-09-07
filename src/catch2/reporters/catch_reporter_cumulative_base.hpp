@@ -70,7 +70,7 @@ namespace Catch {
         void listTests( std::vector<TestCaseHandle> const& tests ) override;
         void listTags( std::vector<TagInfo> const& tags ) override;
 
-
+    protected:
         std::ostream& stream;
         // Note: We rely on pointer identity being stable, which is why
         //       we store pointers to the nodes rather than the values.
