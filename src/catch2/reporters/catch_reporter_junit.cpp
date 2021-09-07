@@ -99,10 +99,7 @@ namespace Catch {
 
     void JunitReporter::testRunEndedCumulative() {
         const auto suiteTime = suiteTimer.getElapsedSeconds();
-        // HACK: There can only be one testRunNode? This needs to be
-        //       refactored after the group nodes are excised.
-        assert(m_testRuns.size() == 1);
-        writeRun( m_testRuns.back(), suiteTime );
+        writeRun( *m_testRun, suiteTime );
         xml.endElement();
     }
 

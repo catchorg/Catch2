@@ -73,10 +73,11 @@ namespace Catch {
 
         std::ostream& stream;
         // Note: We rely on pointer identity being stable, which is why
-        //       which is why we store around pointers rather than values.
+        //       we store pointers to the nodes rather than the values.
         std::vector<Detail::unique_ptr<TestCaseNode>> m_testCases;
-
-        std::vector<TestRunNode> m_testRuns;
+        // We need lazy construction here. We should probably refactor it
+        // later, after the events are redone.
+        Detail::unique_ptr<TestRunNode> m_testRun;
 
         Detail::unique_ptr<SectionNode> m_rootSection;
         SectionNode* m_deepestSection = nullptr;

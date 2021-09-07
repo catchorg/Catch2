@@ -100,8 +100,9 @@ namespace Catch {
 
 
     void CumulativeReporterBase::testRunEnded( TestRunStats const& testRunStats ) {
-        m_testRuns.emplace_back( testRunStats );
-        m_testRuns.back().children.swap( m_testCases );
+        assert(!m_testRun && "CumulativeReporterBase assumes there can only be one test run");
+        m_testRun = Detail::make_unique<TestRunNode>( testRunStats );
+        m_testRun->children.swap( m_testCases );
         testRunEndedCumulative();
     }
 

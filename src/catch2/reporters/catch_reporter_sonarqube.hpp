@@ -35,10 +35,7 @@ namespace Catch {
         void testRunStarting( TestRunInfo const& testRunInfo ) override;
 
         void testRunEndedCumulative() override {
-            // HACK: There can only be one testRunNode? This needs to be
-            //       refactored after the group nodes are excised.
-            assert( m_testRuns.size() == 1 );
-            writeRun( m_testRuns.back() );
+            writeRun( *m_testRun );
             xml.endElement();
         }
 
