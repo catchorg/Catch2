@@ -32,13 +32,26 @@ namespace Catch {
     std::vector<StringRef> splitStringRef( StringRef str, char delimiter );
     bool replaceInPlace( std::string& str, std::string const& replaceThis, std::string const& withThis );
 
+    /**
+     * Helper for streaming a "count [maybe-plural-of-label]" human-friendly string
+     *
+     * Usage example:
+     * ```cpp
+     * std::cout << "Found " << pluralise(count, "error") << '\n';
+     * ```
+     *
+     * **Important:** The provided string must outlive the instance
+     */
     struct pluralise {
-        pluralise( std::size_t count, std::string const& label );
+        pluralise(std::size_t count, StringRef label):
+            m_count(count),
+            m_label(label)
+        {}
 
         friend std::ostream& operator << ( std::ostream& os, pluralise const& pluraliser );
 
         std::size_t m_count;
-        std::string m_label;
+        StringRef m_label;
     };
 }
 

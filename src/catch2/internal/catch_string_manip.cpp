@@ -94,11 +94,6 @@ namespace Catch {
         return subStrings;
     }
 
-    pluralise::pluralise( std::size_t count, std::string const& label )
-    :   m_count( count ),
-        m_label( label )
-    {}
-
     std::ostream& operator << ( std::ostream& os, pluralise const& pluraliser ) {
         os << pluraliser.m_count << ' ' << pluraliser.m_label;
         if( pluraliser.m_count != 1 )
