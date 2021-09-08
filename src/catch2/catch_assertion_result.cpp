@@ -91,7 +91,7 @@ namespace Catch {
                 : expr;
     }
 
-    std::string AssertionResult::getMessage() const {
+    StringRef AssertionResult::getMessage() const {
         return m_resultData.message;
     }
     SourceLineInfo AssertionResult::getSourceInfo() const {
