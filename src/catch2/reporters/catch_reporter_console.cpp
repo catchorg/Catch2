@@ -56,7 +56,7 @@ public:
         switch (result.getResultType()) {
         case ResultWas::Ok:
             colour = Colour::Success;
-            passOrFail = "PASSED";
+            passOrFail = "PASSED"_sr;
             //if( result.hasMessage() )
             if (_stats.infoMessages.size() == 1)
                 messageLabel = "with message";
@@ -66,10 +66,10 @@ public:
         case ResultWas::ExpressionFailed:
             if (result.isOk()) {
                 colour = Colour::Success;
-                passOrFail = "FAILED - but was ok";
+                passOrFail = "FAILED - but was ok"_sr;
             } else {
                 colour = Colour::Error;
-                passOrFail = "FAILED";
+                passOrFail = "FAILED"_sr;
             }
             if (_stats.infoMessages.size() == 1)
                 messageLabel = "with message";
@@ -78,7 +78,7 @@ public:
             break;
         case ResultWas::ThrewException:
             colour = Colour::Error;
-            passOrFail = "FAILED";
+            passOrFail = "FAILED"_sr;
             messageLabel = "due to unexpected exception with ";
             if (_stats.infoMessages.size() == 1)
                 messageLabel += "message";
@@ -87,12 +87,12 @@ public:
             break;
         case ResultWas::FatalErrorCondition:
             colour = Colour::Error;
-            passOrFail = "FAILED";
+            passOrFail = "FAILED"_sr;
             messageLabel = "due to a fatal error condition";
             break;
         case ResultWas::DidntThrowException:
             colour = Colour::Error;
-            passOrFail = "FAILED";
+            passOrFail = "FAILED"_sr;
             messageLabel = "because no exception was thrown where one was expected";
             break;
         case ResultWas::Info:
@@ -102,7 +102,7 @@ public:
             messageLabel = "warning";
             break;
         case ResultWas::ExplicitFailure:
-            passOrFail = "FAILED";
+            passOrFail = "FAILED"_sr;
             colour = Colour::Error;
             if (_stats.infoMessages.size() == 1)
                 messageLabel = "explicitly with message";
@@ -113,7 +113,7 @@ public:
         case ResultWas::Unknown:
         case ResultWas::FailureBit:
         case ResultWas::Exception:
-            passOrFail = "** internal error **";
+            passOrFail = "** internal error **"_sr;
             colour = Colour::Error;
             break;
         }
@@ -171,7 +171,7 @@ private:
     AssertionStats const& stats;
     AssertionResult const& result;
     Colour::Code colour;
-    std::string passOrFail;
+    StringRef passOrFail;
     std::string messageLabel;
     std::string message;
     std::vector<MessageInfo> messages;
@@ -603,8 +603,8 @@ void ConsoleReporter::printTotals( Totals const& totals ) {
     } else if (totals.assertions.total() > 0 && totals.testCases.allPassed()) {
         stream << Colour(Colour::ResultSuccess) << "All tests passed";
         stream << " ("
-            << pluralise(totals.assertions.passed, "assertion") << " in "
-            << pluralise(totals.testCases.passed, "test case") << ')'
+            << pluralise(totals.assertions.passed, "assertion"_sr) << " in "
+            << pluralise(totals.testCases.passed, "test case"_sr) << ')'
             << '\n';
     } else {
 
@@ -622,11 +622,11 @@ void ConsoleReporter::printTotals( Totals const& totals ) {
                           .addRow(totals.testCases.failedButOk)
                           .addRow(totals.assertions.failedButOk));
 
-        printSummaryRow("test cases", columns, 0);
-        printSummaryRow("assertions", columns, 1);
+        printSummaryRow("test cases"_sr, columns, 0);
+        printSummaryRow("assertions"_sr, columns, 1);
     }
 }
-void ConsoleReporter::printSummaryRow(std::string const& label, std::vector<SummaryColumn> const& cols, std::size_t row) {
+void ConsoleReporter::printSummaryRow(StringRef label, std::vector<SummaryColumn> const& cols, std::size_t row) {
     for (auto col : cols) {
         std::string value = col.rows[row];
         if (col.label.empty()) {

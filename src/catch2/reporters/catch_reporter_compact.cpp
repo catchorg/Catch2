@@ -62,25 +62,25 @@ void printTotals(std::ostream& out, const Totals& totals) {
             bothOrAll(totals.assertions.failed) : StringRef{};
         out <<
             "Failed " << bothOrAll(totals.testCases.failed)
-            << pluralise(totals.testCases.failed, "test case") << ", "
+            << pluralise(totals.testCases.failed, "test case"_sr) << ", "
             "failed " << qualify_assertions_failed <<
-            pluralise(totals.assertions.failed, "assertion") << '.';
+            pluralise(totals.assertions.failed, "assertion"_sr) << '.';
     } else if (totals.assertions.total() == 0) {
         out <<
             "Passed " << bothOrAll(totals.testCases.total())
-            << pluralise(totals.testCases.total(), "test case")
+            << pluralise(totals.testCases.total(), "test case"_sr)
             << " (no assertions).";
     } else if (totals.assertions.failed) {
         Colour colour(Colour::ResultError);
         out <<
-            "Failed " << pluralise(totals.testCases.failed, "test case") << ", "
-            "failed " << pluralise(totals.assertions.failed, "assertion") << '.';
+            "Failed " << pluralise(totals.testCases.failed, "test case"_sr) << ", "
+            "failed " << pluralise(totals.assertions.failed, "assertion"_sr) << '.';
     } else {
         Colour colour(Colour::ResultSuccess);
         out <<
             "Passed " << bothOrAll(totals.testCases.passed)
-            << pluralise(totals.testCases.passed, "test case") <<
-            " with " << pluralise(totals.assertions.passed, "assertion") << '.';
+            << pluralise(totals.testCases.passed, "test case"_sr) <<
+            " with " << pluralise(totals.assertions.passed, "assertion"_sr) << '.';
     }
 }
 
@@ -227,7 +227,7 @@ private:
 
         {
             Colour colourGuard(colour);
-            stream << " with " << pluralise(N, "message") << ':';
+            stream << " with " << pluralise(N, "message"_sr) << ':';
         }
 
         while (itMessage != itEnd) {

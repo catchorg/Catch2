@@ -168,7 +168,7 @@ namespace Catch {
 
                 {
                     Colour colourGuard(colour);
-                    stream << " with " << pluralise(N, "message") << ':';
+                    stream << " with " << pluralise(N, "message"_sr) << ':';
                 }
 
                 for (; itMessage != itEnd; ) {

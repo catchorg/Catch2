@@ -59,7 +59,7 @@ namespace Catch {
 
 
         void printTotals(Totals const& totals);
-        void printSummaryRow(std::string const& label, std::vector<SummaryColumn> const& cols, std::size_t row);
+        void printSummaryRow(StringRef label, std::vector<SummaryColumn> const& cols, std::size_t row);
 
         void printTotalsDivider(Totals const& totals);
         void printSummaryDivider();

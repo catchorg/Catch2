@@ -171,7 +171,7 @@ namespace Catch {
                                .width( CATCH_CONFIG_CONSOLE_WIDTH - 10 );
             out << str << wrapper << '\n';
         }
-        out << pluralise(tags.size(), "tag") << "\n\n" << std::flush;
+        out << pluralise(tags.size(), "tag"_sr) << "\n\n" << std::flush;
     }
 
     void defaultListTests(std::ostream& out, std::vector<TestCaseHandle> const& tests, bool isFiltered, Verbosity verbosity) {
@@ -207,9 +207,9 @@ namespace Catch {
         }
 
         if (isFiltered) {
-            out << pluralise(tests.size(), "matching test case");
+            out << pluralise(tests.size(), "matching test case"_sr);
         } else {
-            out << pluralise(tests.size(), "test case");
+            out << pluralise(tests.size(), "test case"_sr);
         }
         out << "\n\n" << std::flush;
     }
