@@ -10,6 +10,7 @@
 
 #include <catch2/internal/catch_source_line_info.hpp>
 #include <catch2/internal/catch_unique_ptr.hpp>
+#include <catch2/internal/catch_stringref.hpp>
 
 #include <string>
 #include <vector>
@@ -164,7 +165,7 @@ namespace TestCaseTracking {
     };
 
     class SectionTracker : public TrackerBase {
-        std::vector<std::string> m_filters;
+        std::vector<StringRef> m_filters;
         std::string m_trimmed_name;
     public:
         SectionTracker( NameAndLocation const& nameAndLocation, TrackerContext& ctx, ITracker* parent );
@@ -178,11 +179,11 @@ namespace TestCaseTracking {
         void tryOpen();
 
         void addInitialFilters( std::vector<std::string> const& filters );
-        void addNextFilters( std::vector<std::string> const& filters );
+        void addNextFilters( std::vector<StringRef> const& filters );
         //! Returns filters active in this tracker
-        std::vector<std::string> const& getFilters() const;
+        std::vector<StringRef> const& getFilters() const;
         //! Returns whitespace-trimmed name of the tracked section
-        std::string const& trimmedName() const;
+        StringRef trimmedName() const;
     };
 
 } // namespace TestCaseTracking
