@@ -177,7 +177,10 @@ namespace Catch {
 
         virtual void testRunStarting( TestRunInfo const& testRunInfo ) = 0;
 
+        //! Called _once_ for each TEST_CASE, no matter how many times it is entered
         virtual void testCaseStarting( TestCaseInfo const& testInfo ) = 0;
+        //! Called _every time_ a TEST_CASE is entered, including repeats (due to sections)
+        virtual void testCasePartialStarting( TestCaseInfo const& testInfo, uint64_t partNumber ) = 0;
         virtual void sectionStarting( SectionInfo const& sectionInfo ) = 0;
 
         virtual void benchmarkPreparing( StringRef ) {}
@@ -191,6 +194,9 @@ namespace Catch {
         virtual bool assertionEnded( AssertionStats const& assertionStats ) = 0;
 
         virtual void sectionEnded( SectionStats const& sectionStats ) = 0;
+        //! Called _every time_ a TEST_CASE is entered, including repeats (due to sections)
+        virtual void testCasePartialEnded(TestCaseStats const& testCaseStats, uint64_t partNumber ) = 0;
+        //! Called _once_ for each TEST_CASE, no matter how many times it is entered
         virtual void testCaseEnded( TestCaseStats const& testCaseStats ) = 0;
         virtual void testRunEnded( TestRunStats const& testRunStats ) = 0;
 

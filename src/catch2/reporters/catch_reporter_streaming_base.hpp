@@ -51,6 +51,7 @@ namespace Catch {
         void testCaseStarting(TestCaseInfo const& _testInfo) override  {
             currentTestCaseInfo = &_testInfo;
         }
+        void testCasePartialStarting( TestCaseInfo const&, uint64_t ) override {}
         void sectionStarting(SectionInfo const& _sectionInfo) override {
             m_sectionStack.push_back(_sectionInfo);
         }
@@ -61,6 +62,7 @@ namespace Catch {
         void sectionEnded(SectionStats const& /* _sectionStats */) override {
             m_sectionStack.pop_back();
         }
+        void testCasePartialEnded( TestCaseStats const&, uint64_t ) override {}
         void testCaseEnded(TestCaseStats const& /* _testCaseStats */) override {
             currentTestCaseInfo = nullptr;
         }

@@ -76,6 +76,15 @@ namespace Catch {
         m_reporter->testCaseStarting( testInfo );
     }
 
+    void
+    ListeningReporter::testCasePartialStarting( TestCaseInfo const& testInfo,
+                                                uint64_t partNumber ) {
+        for ( auto& listener : m_listeners ) {
+            listener->testCasePartialStarting( testInfo, partNumber );
+        }
+        m_reporter->testCasePartialStarting( testInfo, partNumber );
+    }
+
     void ListeningReporter::sectionStarting( SectionInfo const& sectionInfo ) {
         for ( auto& listener : m_listeners ) {
             listener->sectionStarting( sectionInfo );
@@ -103,6 +112,14 @@ namespace Catch {
             listener->sectionEnded( sectionStats );
         }
         m_reporter->sectionEnded( sectionStats );
+    }
+
+    void ListeningReporter::testCasePartialEnded( TestCaseStats const& testInfo,
+                                                  uint64_t partNumber ) {
+        for ( auto& listener : m_listeners ) {
+            listener->testCasePartialEnded( testInfo, partNumber );
+        }
+        m_reporter->testCasePartialEnded( testInfo, partNumber );
     }
 
     void ListeningReporter::testCaseEnded( TestCaseStats const& testCaseStats ) {

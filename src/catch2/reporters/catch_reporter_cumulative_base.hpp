@@ -52,13 +52,14 @@ namespace Catch {
         void testRunStarting( TestRunInfo const& ) override {}
 
         void testCaseStarting( TestCaseInfo const& ) override {}
-
+        void testCasePartialStarting( TestCaseInfo const&, uint64_t ) override {}
         void sectionStarting( SectionInfo const& sectionInfo ) override;
 
         void assertionStarting( AssertionInfo const& ) override {}
 
         bool assertionEnded( AssertionStats const& assertionStats ) override;
         void sectionEnded( SectionStats const& sectionStats ) override;
+        void testCasePartialEnded( TestCaseStats const&, uint64_t ) override {}
         void testCaseEnded( TestCaseStats const& testCaseStats ) override;
         void testRunEnded( TestRunStats const& testRunStats ) override;
         //! Customization point: called after last test finishes (testRunEnded has been handled)

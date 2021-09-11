@@ -176,7 +176,7 @@ namespace Catch {
     }
 
     Totals RunContext::runTest(TestCaseHandle const& testCase) {
-        Totals prevTotals = m_totals;
+        const Totals prevTotals = m_totals;
 
         std::string redirectedCout;
         std::string redirectedCerr;
@@ -191,10 +191,25 @@ namespace Catch {
         ITracker& rootTracker = m_trackerContext.startRun();
         assert(rootTracker.isSectionTracker());
         static_cast<SectionTracker&>(rootTracker).addInitialFilters(m_config->getSectionsToRun());
+
+        uint64_t testRuns = 0;
         do {
             m_trackerContext.startCycle();
             m_testCaseTracker = &SectionTracker::acquire(m_trackerContext, TestCaseTracking::NameAndLocation(testInfo.name, testInfo.lineInfo));
-            runCurrentTest(redirectedCout, redirectedCerr);
+
+            m_reporter->testCasePartialStarting(testInfo, testRuns);
+
+            const auto beforeRunTotals = m_totals;
+            std::string oneRunCout, oneRunCerr;
+            runCurrentTest(oneRunCout, oneRunCerr);
+            redirectedCout += oneRunCout;
+            redirectedCerr += oneRunCerr;
+
+            const auto singleRunTotals = m_totals.delta(beforeRunTotals);
+            auto statsForOneRun = TestCaseStats(testInfo, singleRunTotals, redirectedCout, oneRunCerr, aborting());
+
+            m_reporter->testCasePartialEnded(statsForOneRun, testRuns);
+            ++testRuns;
         } while (!m_testCaseTracker->isSuccessfullyCompleted() && !aborting());
 
         Totals deltaTotals = m_totals.delta(prevTotals);

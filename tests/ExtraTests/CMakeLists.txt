@@ -172,6 +172,14 @@ if (MSVC)
     list(APPEND CATCH_WARNING_TARGETS ${EXTRA_TEST_BINARIES} WindowsHeader)
 endif()
 
+
+add_executable(PartialTestCaseEvents ${TESTS_DIR}/X21-PartialTestCaseEvents.cpp)
+target_link_libraries(PartialTestCaseEvents PRIVATE Catch2WithMain)
+add_test(
+  NAME PartialTestCaseEvents
+  COMMAND ${PYTHON_EXECUTABLE} ${CATCH_DIR}/tests/TestScripts/testPartialTestCaseEvent.py $<TARGET_FILE:PartialTestCaseEvents>
+)
+
 #add_executable(DebugBreakMacros ${TESTS_DIR}/X12-CustomDebugBreakMacro.cpp)
 #target_link_libraries(DebugBreakMacros Catch2)
 #add_test(NAME DebugBreakMacros COMMAND DebugBreakMacros --break)

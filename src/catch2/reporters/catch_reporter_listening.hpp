@@ -41,12 +41,14 @@ namespace Catch {
 
         void testRunStarting( TestRunInfo const& testRunInfo ) override;
         void testCaseStarting( TestCaseInfo const& testInfo ) override;
+        void testCasePartialStarting(TestCaseInfo const& testInfo, uint64_t partNumber) override;
         void sectionStarting( SectionInfo const& sectionInfo ) override;
         void assertionStarting( AssertionInfo const& assertionInfo ) override;
 
         // The return value indicates if the messages buffer should be cleared:
         bool assertionEnded( AssertionStats const& assertionStats ) override;
         void sectionEnded( SectionStats const& sectionStats ) override;
+        void testCasePartialEnded(TestCaseStats const& testInfo, uint64_t partNumber) override;
         void testCaseEnded( TestCaseStats const& testCaseStats ) override;
         void testRunEnded( TestRunStats const& testRunStats ) override;
 
