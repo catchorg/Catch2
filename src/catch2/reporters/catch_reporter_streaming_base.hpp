@@ -55,6 +55,9 @@ namespace Catch {
             m_sectionStack.push_back(_sectionInfo);
         }
 
+        void assertionStarting( AssertionInfo const& ) override {}
+        bool assertionEnded( AssertionStats const& ) override { return true; }
+
         void sectionEnded(SectionStats const& /* _sectionStats */) override {
             m_sectionStack.pop_back();
         }
