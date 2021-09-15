@@ -20,7 +20,7 @@
 
 namespace Catch {
 
-    struct TeamCityReporter : StreamingReporterBase {
+    struct TeamCityReporter final : StreamingReporterBase {
         TeamCityReporter( ReporterConfig const& _config )
         :   StreamingReporterBase( _config )
         {

@@ -16,7 +16,7 @@ namespace Catch {
     struct SummaryColumn;
     class TablePrinter;
 
-    struct ConsoleReporter : StreamingReporterBase {
+    struct ConsoleReporter final : StreamingReporterBase {
         Detail::unique_ptr<TablePrinter> m_tablePrinter;
 
         ConsoleReporter(ReporterConfig const& config);

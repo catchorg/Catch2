@@ -12,7 +12,7 @@
 
 namespace Catch {
 
-    struct TAPReporter : StreamingReporterBase {
+    struct TAPReporter final : StreamingReporterBase {
 
         TAPReporter( ReporterConfig const& config ):
             StreamingReporterBase( config ) {
