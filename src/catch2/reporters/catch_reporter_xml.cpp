@@ -46,10 +46,6 @@ namespace Catch {
             .writeAttribute( "line"_sr, sourceInfo.line );
     }
 
-    void XmlReporter::noMatchingTestCases( std::string const& s ) {
-        StreamingReporterBase::noMatchingTestCases( s );
-    }
-
     void XmlReporter::testRunStarting( TestRunInfo const& testInfo ) {
         StreamingReporterBase::testRunStarting( testInfo );
         std::string stylesheetRef = getStylesheetRef();

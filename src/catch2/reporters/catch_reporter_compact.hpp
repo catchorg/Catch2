@@ -22,7 +22,7 @@ namespace Catch {
 
         static std::string getDescription();
 
-        void noMatchingTestCases(std::string const& spec) override;
+        void noMatchingTestCases( StringRef unmatchedSpec ) override;
 
         void assertionStarting(AssertionInfo const&) override;
 

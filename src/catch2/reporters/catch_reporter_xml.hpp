@@ -29,8 +29,6 @@ namespace Catch {
 
     public: // StreamingReporterBase
 
-        void noMatchingTestCases(std::string const& s) override;
-
         void testRunStarting(TestRunInfo const& testInfo) override;
 
         void testCaseStarting(TestCaseInfo const& testInfo) override;

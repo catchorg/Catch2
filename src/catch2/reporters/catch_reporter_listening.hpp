@@ -30,9 +30,9 @@ namespace Catch {
 
     public: // IStreamingReporter
 
-        void noMatchingTestCases( std::string const& spec ) override;
+        void noMatchingTestCases( StringRef unmatchedSpec ) override;
 
-        void reportInvalidArguments(std::string const&arg) override;
+        void reportInvalidArguments( StringRef arg ) override;
 
         void benchmarkPreparing( StringRef name ) override;
         void benchmarkStarting( BenchmarkInfo const& benchmarkInfo ) override;

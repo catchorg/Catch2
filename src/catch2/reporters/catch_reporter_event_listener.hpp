@@ -24,6 +24,8 @@ namespace Catch {
         EventListenerBase( ReporterConfig const& config ):
             IStreamingReporter( config.fullConfig() ) {}
 
+        void reportInvalidArguments( StringRef unmatchedSpec ) override;
+
         void assertionStarting( AssertionInfo const& assertionInfo ) override;
         bool assertionEnded( AssertionStats const& assertionStats ) override;
 
@@ -32,7 +34,7 @@ namespace Catch {
         void listTests( std::vector<TestCaseHandle> const& tests ) override;
         void listTags( std::vector<TagInfo> const& tagInfos ) override;
 
-        void noMatchingTestCases( std::string const& spec ) override;
+        void noMatchingTestCases( StringRef unmatchedSpec ) override;
         void testRunStarting( TestRunInfo const& testRunInfo ) override;
         void testCaseStarting( TestCaseInfo const& testInfo ) override;
         void testCasePartialStarting( TestCaseInfo const& testInfo,

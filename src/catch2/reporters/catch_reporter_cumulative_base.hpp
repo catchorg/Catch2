@@ -49,6 +49,11 @@ namespace Catch {
             stream( _config.stream() ) {}
         ~CumulativeReporterBase() override;
 
+
+        void noMatchingTestCases( StringRef ) override {}
+        void reportInvalidArguments( StringRef ) override {}
+
+
         void testRunStarting( TestRunInfo const& ) override {}
 
         void testCaseStarting( TestCaseInfo const& ) override {}

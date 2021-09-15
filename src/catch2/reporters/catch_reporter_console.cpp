@@ -381,11 +381,11 @@ std::string ConsoleReporter::getDescription() {
     return "Reports test results as plain lines of text";
 }
 
-void ConsoleReporter::noMatchingTestCases(std::string const& spec) {
-    stream << "No test cases matched '" << spec << "'\n";
+void ConsoleReporter::noMatchingTestCases( StringRef unmatchedSpec ) {
+    stream << "No test cases matched '" << unmatchedSpec << "'\n";
 }
 
-void ConsoleReporter::reportInvalidArguments(std::string const& arg) {
+void ConsoleReporter::reportInvalidArguments( StringRef arg ) {
     stream << "Invalid Filter: " << arg << '\n';
 }
 

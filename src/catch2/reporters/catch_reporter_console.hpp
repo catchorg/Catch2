@@ -23,9 +23,8 @@ namespace Catch {
         ~ConsoleReporter() override;
         static std::string getDescription();
 
-        void noMatchingTestCases(std::string const& spec) override;
-
-        void reportInvalidArguments(std::string const&arg) override;
+        void noMatchingTestCases( StringRef unmatchedSpec ) override;
+        void reportInvalidArguments( StringRef arg ) override;
 
         void assertionStarting(AssertionInfo const&) override;
 

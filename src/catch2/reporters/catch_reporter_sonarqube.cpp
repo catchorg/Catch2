@@ -14,8 +14,6 @@
 
 namespace Catch {
 
-    SonarQubeReporter::~SonarQubeReporter() {}
-
     void SonarQubeReporter::testRunStarting(TestRunInfo const& testRunInfo) {
         CumulativeReporterBase::testRunStarting(testRunInfo);
         xml.startElement("testExecutions");

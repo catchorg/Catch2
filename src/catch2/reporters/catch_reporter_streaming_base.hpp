@@ -42,9 +42,8 @@ namespace Catch {
 
         ~StreamingReporterBase() override;
 
-        void noMatchingTestCases(std::string const&) override {}
-
-        void reportInvalidArguments(std::string const&) override {}
+        void noMatchingTestCases( StringRef /*unmatchedSpec*/ ) override {}
+        void reportInvalidArguments( StringRef /*invalidArgument*/ ) override {}
 
         void testRunStarting( TestRunInfo const& _testRunInfo ) override;
 

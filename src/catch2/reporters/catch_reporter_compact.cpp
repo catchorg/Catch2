@@ -258,8 +258,8 @@ private:
             return "Reports test results on a single line, suitable for IDEs";
         }
 
-        void CompactReporter::noMatchingTestCases( std::string const& spec ) {
-            stream << "No test cases matched '" << spec << "'\n";
+        void CompactReporter::noMatchingTestCases( StringRef unmatchedSpec ) {
+            stream << "No test cases matched '" << unmatchedSpec << "'\n";
         }
 
         void CompactReporter::assertionStarting( AssertionInfo const& ) {}

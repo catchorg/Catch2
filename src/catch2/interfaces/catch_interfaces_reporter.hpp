@@ -171,9 +171,8 @@ namespace Catch {
             return m_preferences;
         }
 
-        virtual void noMatchingTestCases( std::string const& spec ) = 0;
-
-        virtual void reportInvalidArguments(std::string const&) {}
+        virtual void noMatchingTestCases( StringRef unmatchedSpec ) = 0;
+        virtual void reportInvalidArguments( StringRef invalidArgument ) = 0;
 
         virtual void testRunStarting( TestRunInfo const& testRunInfo ) = 0;
 

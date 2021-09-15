@@ -194,10 +194,8 @@ namespace Catch {
 
     } // End anonymous namespace
 
-    TAPReporter::~TAPReporter() {}
-
-    void TAPReporter::noMatchingTestCases(std::string const& spec) {
-        stream << "# No test cases matched '" << spec << "'\n";
+    void TAPReporter::noMatchingTestCases( StringRef unmatchedSpec ) {
+        stream << "# No test cases matched '" << unmatchedSpec << "'\n";
     }
 
     bool TAPReporter::assertionEnded(AssertionStats const& _assertionStats) {

@@ -22,14 +22,14 @@ namespace Catch {
         m_preferences.shouldRedirectStdOut = m_reporter->getPreferences().shouldRedirectStdOut;
     }
 
-    void ListeningReporter::noMatchingTestCases( std::string const& spec ) {
+    void ListeningReporter::noMatchingTestCases( StringRef unmatchedSpec ) {
         for ( auto& listener : m_listeners ) {
-            listener->noMatchingTestCases( spec );
+            listener->noMatchingTestCases( unmatchedSpec );
         }
-        m_reporter->noMatchingTestCases( spec );
+        m_reporter->noMatchingTestCases( unmatchedSpec );
     }
 
-    void ListeningReporter::reportInvalidArguments(std::string const&arg){
+    void ListeningReporter::reportInvalidArguments( StringRef arg ) {
         for ( auto& listener : m_listeners ) {
             listener->reportInvalidArguments( arg );
         }

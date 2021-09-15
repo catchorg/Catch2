@@ -23,14 +23,12 @@ namespace Catch {
             m_preferences.shouldReportAllAssertions = true;
         }
 
-        ~SonarQubeReporter() override;
+        ~SonarQubeReporter() override = default;
 
         static std::string getDescription() {
             using namespace std::string_literals;
             return "Reports test results in the Generic Test Data SonarQube XML format"s;
         }
-
-        void noMatchingTestCases(std::string const& /*spec*/) override {}
 
         void testRunStarting( TestRunInfo const& testRunInfo ) override;
 

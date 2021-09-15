@@ -34,10 +34,6 @@ namespace Catch {
             return "Reports test results as TeamCity service messages"s;
         }
 
-        void skipTest( TestCaseInfo const& /* testInfo */ ) override {}
-
-        void noMatchingTestCases( std::string const& /* spec */ ) override {}
-
         void testRunStarting( TestRunInfo const& groupInfo ) override;
         void testRunEnded( TestRunStats const& testGroupStats ) override;
 

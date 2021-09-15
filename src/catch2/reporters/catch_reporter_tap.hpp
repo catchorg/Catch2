@@ -18,14 +18,14 @@ namespace Catch {
             StreamingReporterBase( config ) {
             m_preferences.shouldReportAllAssertions = true;
         }
-        ~TAPReporter() override;
+        ~TAPReporter() override = default;
 
         static std::string getDescription() {
             using namespace std::string_literals;
             return "Reports test results in TAP format, suitable for test harnesses"s;
         }
 
-        void noMatchingTestCases(std::string const& spec) override;
+        void noMatchingTestCases( StringRef unmatchedSpec ) override;
 
         void assertionStarting( AssertionInfo const& ) override {}
 
