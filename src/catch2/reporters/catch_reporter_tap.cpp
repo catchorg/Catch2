@@ -198,7 +198,7 @@ namespace Catch {
         stream << "# No test cases matched '" << unmatchedSpec << "'\n";
     }
 
-    bool TAPReporter::assertionEnded(AssertionStats const& _assertionStats) {
+    void TAPReporter::assertionEnded(AssertionStats const& _assertionStats) {
         ++counter;
 
         stream << "# " << currentTestCaseInfo->name << '\n';
@@ -206,7 +206,6 @@ namespace Catch {
         printer.print();
 
         stream << '\n' << std::flush;
-        return true;
     }
 
     void TAPReporter::testRunEnded(TestRunStats const& _testRunStats) {

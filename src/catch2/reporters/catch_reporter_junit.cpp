@@ -81,10 +81,10 @@ namespace Catch {
         m_okToFail = testCaseInfo.okToFail();
     }
 
-    bool JunitReporter::assertionEnded( AssertionStats const& assertionStats ) {
+    void JunitReporter::assertionEnded( AssertionStats const& assertionStats ) {
         if( assertionStats.assertionResult.getResultType() == ResultWas::ThrewException && !m_okToFail )
             unexpectedExceptions++;
-        return CumulativeReporterBase::assertionEnded( assertionStats );
+        CumulativeReporterBase::assertionEnded( assertionStats );
     }
 
     void JunitReporter::testCaseEnded( TestCaseStats const& testCaseStats ) {

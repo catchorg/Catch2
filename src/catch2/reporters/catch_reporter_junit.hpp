@@ -26,7 +26,7 @@ namespace Catch {
         void testRunStarting(TestRunInfo const& runInfo) override;
 
         void testCaseStarting(TestCaseInfo const& testCaseInfo) override;
-        bool assertionEnded(AssertionStats const& assertionStats) override;
+        void assertionEnded(AssertionStats const& assertionStats) override;
 
         void testCaseEnded(TestCaseStats const& testCaseStats) override;
 

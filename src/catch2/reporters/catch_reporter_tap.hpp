@@ -27,9 +27,7 @@ namespace Catch {
 
         void noMatchingTestCases( StringRef unmatchedSpec ) override;
 
-        void assertionStarting( AssertionInfo const& ) override {}
-
-        bool assertionEnded(AssertionStats const& _assertionStats) override;
+        void assertionEnded(AssertionStats const& _assertionStats) override;
 
         void testRunEnded(TestRunStats const& _testRunStats) override;
 

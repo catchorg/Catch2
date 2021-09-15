@@ -27,7 +27,7 @@ namespace Catch {
         void reportInvalidArguments( StringRef unmatchedSpec ) override;
 
         void assertionStarting( AssertionInfo const& assertionInfo ) override;
-        bool assertionEnded( AssertionStats const& assertionStats ) override;
+        void assertionEnded( AssertionStats const& assertionStats ) override;
 
         void listReporters(
             std::vector<ReporterDescription> const& descriptions ) override;

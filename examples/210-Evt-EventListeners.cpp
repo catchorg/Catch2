@@ -366,10 +366,9 @@ struct MyListener : Catch::EventListenerBase {
         print( std::cout, 1, "- assertionInfo", assertionInfo );
     }
 
-    bool assertionEnded( Catch::AssertionStats const& assertionStats ) override {
+    void assertionEnded( Catch::AssertionStats const& assertionStats ) override {
         std::cout << "\nEvent: assertionEnded:\n";
         print( std::cout, 1, "- assertionStats", assertionStats );
-        return true;
     }
 };
 

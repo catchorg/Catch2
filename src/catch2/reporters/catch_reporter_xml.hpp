@@ -37,7 +37,7 @@ namespace Catch {
 
         void assertionStarting(AssertionInfo const&) override;
 
-        bool assertionEnded(AssertionStats const& assertionStats) override;
+        void assertionEnded(AssertionStats const& assertionStats) override;
 
         void sectionEnded(SectionStats const& sectionStats) override;
 

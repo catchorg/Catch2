@@ -62,7 +62,7 @@ namespace Catch {
 
         void assertionStarting( AssertionInfo const& ) override {}
 
-        bool assertionEnded( AssertionStats const& assertionStats ) override;
+        void assertionEnded( AssertionStats const& assertionStats ) override;
         void sectionEnded( SectionStats const& sectionStats ) override;
         void testCasePartialEnded( TestCaseStats const&, uint64_t ) override {}
         void testCaseEnded( TestCaseStats const& testCaseStats ) override;

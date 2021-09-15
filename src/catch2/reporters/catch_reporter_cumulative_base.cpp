@@ -64,7 +64,7 @@ namespace Catch {
         m_sectionStack.push_back( node );
     }
 
-    bool CumulativeReporterBase::assertionEnded(
+    void CumulativeReporterBase::assertionEnded(
         AssertionStats const& assertionStats ) {
         assert( !m_sectionStack.empty() );
         // AssertionResult holds a pointer to a temporary DecomposedExpression,
@@ -76,7 +76,6 @@ namespace Catch {
             assertionStats.assertionResult.getExpandedExpression() );
         SectionNode& sectionNode = *m_sectionStack.back();
         sectionNode.assertions.push_back( assertionStats );
-        return true;
     }
 
     void CumulativeReporterBase::sectionEnded( SectionStats const& sectionStats ) {

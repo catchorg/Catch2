@@ -262,9 +262,7 @@ private:
             stream << "No test cases matched '" << unmatchedSpec << "'\n";
         }
 
-        void CompactReporter::assertionStarting( AssertionInfo const& ) {}
-
-        bool CompactReporter::assertionEnded( AssertionStats const& _assertionStats ) {
+        void CompactReporter::assertionEnded( AssertionStats const& _assertionStats ) {
             AssertionResult const& result = _assertionStats.assertionResult;
 
             bool printInfoMessages = true;
@@ -272,7 +270,7 @@ private:
             // Drop out if result was successful and we're not printing those
             if( !m_config->includeSuccessfulResults() && result.isOk() ) {
                 if( result.getResultType() != ResultWas::Warning )
-                    return false;
+                    return;
                 printInfoMessages = false;
             }
 
@@ -280,7 +278,6 @@ private:
             printer.print();
 
             stream << '\n' << std::flush;
-            return true;
         }
 
         void CompactReporter::sectionEnded(SectionStats const& _sectionStats) {

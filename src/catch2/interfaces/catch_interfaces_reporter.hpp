@@ -189,8 +189,7 @@ namespace Catch {
 
         virtual void assertionStarting( AssertionInfo const& assertionInfo ) = 0;
 
-        // The return value indicates if the messages buffer should be cleared:
-        virtual bool assertionEnded( AssertionStats const& assertionStats ) = 0;
+        virtual void assertionEnded( AssertionStats const& assertionStats ) = 0;
 
         virtual void sectionEnded( SectionStats const& sectionStats ) = 0;
         //! Called _every time_ a TEST_CASE is entered, including repeats (due to sections)

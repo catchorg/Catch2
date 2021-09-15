@@ -86,7 +86,7 @@ namespace Catch {
 
     void XmlReporter::assertionStarting( AssertionInfo const& ) { }
 
-    bool XmlReporter::assertionEnded( AssertionStats const& assertionStats ) {
+    void XmlReporter::assertionEnded( AssertionStats const& assertionStats ) {
 
         AssertionResult const& result = assertionStats.assertionResult;
 
@@ -107,7 +107,7 @@ namespace Catch {
 
         // Drop out if result was successful but we're not printing them.
         if( !includeResults && result.getResultType() != ResultWas::Warning )
-            return true;
+            return;
 
 
         // Print the expression if there is one.
@@ -157,8 +157,6 @@ namespace Catch {
 
         if( result.hasExpression() )
             m_xml.endElement();
-
-        return true;
     }
 
     void XmlReporter::sectionEnded( SectionStats const& sectionStats ) {

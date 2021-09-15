@@ -222,9 +222,7 @@ namespace Catch {
 namespace Catch {
     void EventListenerBase::assertionStarting( AssertionInfo const& ) {}
 
-    bool EventListenerBase::assertionEnded( AssertionStats const& ) {
-        return false;
-    }
+    void EventListenerBase::assertionEnded( AssertionStats const& ) {}
     void EventListenerBase::listReporters(
         std::vector<ReporterDescription> const& ) {}
     void EventListenerBase::listTests( std::vector<TestCaseHandle> const& ) {}

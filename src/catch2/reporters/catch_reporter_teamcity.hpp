@@ -38,9 +38,7 @@ namespace Catch {
         void testRunEnded( TestRunStats const& testGroupStats ) override;
 
 
-        void assertionStarting(AssertionInfo const&) override {}
-
-        bool assertionEnded(AssertionStats const& assertionStats) override;
+        void assertionEnded(AssertionStats const& assertionStats) override;
 
         void sectionStarting(SectionInfo const& sectionInfo) override {
             m_headerPrintedForThisSection = false;

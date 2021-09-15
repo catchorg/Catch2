@@ -391,21 +391,20 @@ void ConsoleReporter::reportInvalidArguments( StringRef arg ) {
 
 void ConsoleReporter::assertionStarting(AssertionInfo const&) {}
 
-bool ConsoleReporter::assertionEnded(AssertionStats const& _assertionStats) {
+void ConsoleReporter::assertionEnded(AssertionStats const& _assertionStats) {
     AssertionResult const& result = _assertionStats.assertionResult;
 
     bool includeResults = m_config->includeSuccessfulResults() || !result.isOk();
 
     // Drop out if result was successful but we're not printing them.
     if (!includeResults && result.getResultType() != ResultWas::Warning)
-        return false;
+        return;
 
     lazyPrint();
 
     ConsoleAssertionPrinter printer(stream, _assertionStats, includeResults);
     printer.print();
     stream << '\n' << std::flush;
-    return true;
 }
 
 void ConsoleReporter::sectionStarting(SectionInfo const& _sectionInfo) {

@@ -56,7 +56,7 @@ namespace Catch {
                << escape( runStats.runInfo.name ) << "']\n";
     }
 
-    bool TeamCityReporter::assertionEnded(AssertionStats const& assertionStats) {
+    void TeamCityReporter::assertionEnded(AssertionStats const& assertionStats) {
         AssertionResult const& result = assertionStats.assertionResult;
         if (!result.isOk()) {
 
@@ -124,7 +124,6 @@ namespace Catch {
             }
         }
         stream.flush();
-        return true;
     }
 
     void TeamCityReporter::testCaseStarting(TestCaseInfo const& testInfo) {

@@ -100,11 +100,11 @@ namespace Catch {
     }
 
     // The return value indicates if the messages buffer should be cleared:
-    bool ListeningReporter::assertionEnded( AssertionStats const& assertionStats ) {
+    void ListeningReporter::assertionEnded( AssertionStats const& assertionStats ) {
         for( auto& listener : m_listeners ) {
-            static_cast<void>( listener->assertionEnded( assertionStats ) );
+            listener->assertionEnded( assertionStats );
         }
-        return m_reporter->assertionEnded( assertionStats );
+        m_reporter->assertionEnded( assertionStats );
     }
 
     void ListeningReporter::sectionEnded( SectionStats const& sectionStats ) {
