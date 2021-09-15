@@ -81,6 +81,6 @@ namespace Catch {
         aborting( _aborting )
     {}
 
-    void IStreamingReporter::fatalErrorEncountered( StringRef ) {}
+    IStreamingReporter::~IStreamingReporter() = default;
 
 } // end namespace Catch

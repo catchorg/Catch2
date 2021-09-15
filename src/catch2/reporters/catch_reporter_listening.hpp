@@ -31,7 +31,7 @@ namespace Catch {
     public: // IStreamingReporter
 
         void noMatchingTestCases( StringRef unmatchedSpec ) override;
-
+        void fatalErrorEncountered( StringRef error ) override;
         void reportInvalidArguments( StringRef arg ) override;
 
         void benchmarkPreparing( StringRef name ) override;

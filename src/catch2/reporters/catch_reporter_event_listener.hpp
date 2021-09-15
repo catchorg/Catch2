@@ -15,7 +15,7 @@ namespace Catch {
     /**
      * Base class identifying listeners.
      *
-     * Provides default implementation for all IStreamingReporter member
+     * Provides empty default implementation for all IStreamingReporter member
      * functions, so that listeners implementations can pick which
      * member functions it actually cares about.
      */
@@ -25,6 +25,12 @@ namespace Catch {
             IStreamingReporter( config.fullConfig() ) {}
 
         void reportInvalidArguments( StringRef unmatchedSpec ) override;
+        void fatalErrorEncountered( StringRef error ) override;
+
+        void benchmarkPreparing( StringRef name ) override;
+        void benchmarkStarting( BenchmarkInfo const& benchmarkInfo ) override;
+        void benchmarkEnded( BenchmarkStats<> const& benchmarkStats ) override;
+        void benchmarkFailed( StringRef error ) override;
 
         void assertionStarting( AssertionInfo const& assertionInfo ) override;
         void assertionEnded( AssertionStats const& assertionStats ) override;

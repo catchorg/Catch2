@@ -220,6 +220,14 @@ namespace Catch {
 #include <catch2/reporters/catch_reporter_event_listener.hpp>
 
 namespace Catch {
+
+    void EventListenerBase::fatalErrorEncountered( StringRef ) {}
+
+    void EventListenerBase::benchmarkPreparing( StringRef ) {}
+    void EventListenerBase::benchmarkStarting( BenchmarkInfo const& ) {}
+    void EventListenerBase::benchmarkEnded( BenchmarkStats<> const& ) {}
+    void EventListenerBase::benchmarkFailed( StringRef ) {}
+
     void EventListenerBase::assertionStarting( AssertionInfo const& ) {}
 
     void EventListenerBase::assertionEnded( AssertionStats const& ) {}

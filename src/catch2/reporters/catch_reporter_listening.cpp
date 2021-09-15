@@ -29,6 +29,13 @@ namespace Catch {
         m_reporter->noMatchingTestCases( unmatchedSpec );
     }
 
+    void ListeningReporter::fatalErrorEncountered( StringRef error ) {
+        for ( auto& listener : m_listeners ) {
+            listener->fatalErrorEncountered( error );
+        }
+        m_reporter->fatalErrorEncountered( error );
+    }
+
     void ListeningReporter::reportInvalidArguments( StringRef arg ) {
         for ( auto& listener : m_listeners ) {
             listener->reportInvalidArguments( arg );

@@ -42,6 +42,12 @@ namespace Catch {
 
         ~StreamingReporterBase() override;
 
+        void benchmarkPreparing( StringRef ) override {}
+        void benchmarkStarting( BenchmarkInfo const& ) override {}
+        void benchmarkEnded( BenchmarkStats<> const& ) override {}
+        void benchmarkFailed( StringRef ) override {}
+
+        void fatalErrorEncountered( StringRef /*error*/ ) override {}
         void noMatchingTestCases( StringRef /*unmatchedSpec*/ ) override {}
         void reportInvalidArguments( StringRef /*invalidArgument*/ ) override {}
 

@@ -162,7 +162,7 @@ namespace Catch {
     public:
         IStreamingReporter( IConfig const* config ): m_config( config ) {}
 
-        virtual ~IStreamingReporter() = default;
+        virtual ~IStreamingReporter(); // = default;
 
         // Implementing class must also provide the following static methods:
         // static std::string getDescription();
@@ -182,10 +182,10 @@ namespace Catch {
         virtual void testCasePartialStarting( TestCaseInfo const& testInfo, uint64_t partNumber ) = 0;
         virtual void sectionStarting( SectionInfo const& sectionInfo ) = 0;
 
-        virtual void benchmarkPreparing( StringRef ) {}
-        virtual void benchmarkStarting( BenchmarkInfo const& ) {}
-        virtual void benchmarkEnded( BenchmarkStats<> const& ) {}
-        virtual void benchmarkFailed( StringRef ) {}
+        virtual void benchmarkPreparing( StringRef benchmarkName ) = 0;
+        virtual void benchmarkStarting( BenchmarkInfo const& benchmarkInfo ) = 0;
+        virtual void benchmarkEnded( BenchmarkStats<> const& benchmarkStats ) = 0;
+        virtual void benchmarkFailed( StringRef benchmarkName ) = 0;
 
         virtual void assertionStarting( AssertionInfo const& assertionInfo ) = 0;
 
@@ -200,8 +200,7 @@ namespace Catch {
 
         virtual void skipTest( TestCaseInfo const& testInfo ) = 0;
 
-        // Default empty implementation provided
-        virtual void fatalErrorEncountered( StringRef name );
+        virtual void fatalErrorEncountered( StringRef error ) = 0;
 
         //! Writes out information about provided reporters using reporter-specific format
         virtual void listReporters(std::vector<ReporterDescription> const& descriptions) = 0;

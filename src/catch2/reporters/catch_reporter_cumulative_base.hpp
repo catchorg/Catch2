@@ -49,9 +49,14 @@ namespace Catch {
             stream( _config.stream() ) {}
         ~CumulativeReporterBase() override;
 
+        void benchmarkPreparing( StringRef ) override {}
+        void benchmarkStarting( BenchmarkInfo const& ) override {}
+        void benchmarkEnded( BenchmarkStats<> const& ) override {}
+        void benchmarkFailed( StringRef ) override {}
 
         void noMatchingTestCases( StringRef ) override {}
         void reportInvalidArguments( StringRef ) override {}
+        void fatalErrorEncountered( StringRef /*error*/ ) override {}
 
 
         void testRunStarting( TestRunInfo const& ) override {}
