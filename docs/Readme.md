@@ -29,7 +29,6 @@ Odds and ends:
 * [CI and other miscellaneous pieces](ci-and-misc.md#top)
 
 FAQ:
-* [Why are my tests slow to compile?](slow-compiles.md#top)
 * [Known limitations](limitations.md#top)
  
 Other:
