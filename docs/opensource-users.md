@@ -17,6 +17,9 @@ maintainer's explicit consent._
 
 ## Libraries & Frameworks
 
+### [alpaka](https://github.com/alpaka-group/alpaka)
+A header-only C++14 abstraction library for accelerator development.
+
 ### [ApprovalTests.cpp](https://github.com/approvals/ApprovalTests.cpp)
 C++11 implementation of Approval Tests, for quick, convenient testing of legacy code.
 
@@ -58,6 +61,9 @@ A header-only library that allows CPUs to execute unmodified HIP code. It is gen
 
 ### [Inja](https://github.com/pantor/inja)
 A header-only template engine for modern C++.
+
+### [LLAMA](https://github.com/alpaka-group/llama)
+A C++17 template header-only library for the abstraction of memory access patterns.
 
 ### [libcluon](https://github.com/chrberger/libcluon)
 A single-header-only library written in C++14 to glue distributed software components (UDP, TCP, shared memory) supporting natively Protobuf, LCM/ZCM, MsgPack, and JSON for dynamic message transformations in-between. 
