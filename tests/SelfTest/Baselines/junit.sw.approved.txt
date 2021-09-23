@@ -398,17 +398,17 @@ Exception.tests.cpp:<line number>
     <testcase classname="<exe-name>.global" name="Composed matchers shortcircuit/MatchAllOf" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Composed matchers shortcircuit/MatchAnyOf" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Contains string matcher" time="{duration}" status="run">
-      <failure message="testStringForMatching(), Contains( &quot;not there&quot;, Catch::CaseSensitive::No )" type="CHECK_THAT">
+      <failure message="testStringForMatching(), ContainsSubstring( &quot;not there&quot;, Catch::CaseSensitive::No )" type="CHECK_THAT">
 FAILED:
-  CHECK_THAT( testStringForMatching(), Contains( "not there", Catch::CaseSensitive::No ) )
+  CHECK_THAT( testStringForMatching(), ContainsSubstring( "not there", Catch::CaseSensitive::No ) )
 with expansion:
   "this string contains 'abc' as a substring" contains: "not there" (case
   insensitive)
 Matchers.tests.cpp:<line number>
       </failure>
-      <failure message="testStringForMatching(), Contains( &quot;STRING&quot; )" type="CHECK_THAT">
+      <failure message="testStringForMatching(), ContainsSubstring( &quot;STRING&quot; )" type="CHECK_THAT">
 FAILED:
-  CHECK_THAT( testStringForMatching(), Contains( "STRING" ) )
+  CHECK_THAT( testStringForMatching(), ContainsSubstring( "STRING" ) )
 with expansion:
   "this string contains 'abc' as a substring" contains: "STRING"
 Matchers.tests.cpp:<line number>
@@ -800,9 +800,9 @@ Condition.tests.cpp:<line number>
     <testcase classname="<exe-name>.global" name="Matchers can be (AnyOf) composed with the || operator" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Matchers can be composed with both &amp;&amp; and ||" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Matchers can be composed with both &amp;&amp; and || - failing" time="{duration}" status="run">
-      <failure message="testStringForMatching(), ( Contains( &quot;string&quot; ) || Contains( &quot;different&quot; ) ) &amp;&amp; Contains( &quot;random&quot; )" type="CHECK_THAT">
+      <failure message="testStringForMatching(), ( ContainsSubstring( &quot;string&quot; ) || ContainsSubstring( &quot;different&quot; ) ) &amp;&amp; ContainsSubstring( &quot;random&quot; )" type="CHECK_THAT">
 FAILED:
-  CHECK_THAT( testStringForMatching(), ( Contains( "string" ) || Contains( "different" ) ) &amp;&amp; Contains( "random" ) )
+  CHECK_THAT( testStringForMatching(), ( ContainsSubstring( "string" ) || ContainsSubstring( "different" ) ) &amp;&amp; ContainsSubstring( "random" ) )
 with expansion:
   "this string contains 'abc' as a substring" ( ( contains: "string" or
   contains: "different" ) and contains: "random" )
@@ -811,9 +811,9 @@ Matchers.tests.cpp:<line number>
     </testcase>
     <testcase classname="<exe-name>.global" name="Matchers can be negated (Not) with the ! operator" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Matchers can be negated (Not) with the ! operator - failing" time="{duration}" status="run">
-      <failure message="testStringForMatching(), !Contains( &quot;substring&quot; )" type="CHECK_THAT">
+      <failure message="testStringForMatching(), !ContainsSubstring( &quot;substring&quot; )" type="CHECK_THAT">
 FAILED:
-  CHECK_THAT( testStringForMatching(), !Contains( "substring" ) )
+  CHECK_THAT( testStringForMatching(), !ContainsSubstring( "substring" ) )
 with expansion:
   "this string contains 'abc' as a substring" not contains: "substring"
 Matchers.tests.cpp:<line number>

@@ -117,7 +117,7 @@ TEST_CASE("XmlEncode: UTF-8", "[XML][UTF-8][approvals]") {
 }
 
 TEST_CASE("XmlWriter writes boolean attributes as true/false", "[XML][XmlWriter]") {
-    using Catch::Matchers::Contains;
+    using Catch::Matchers::ContainsSubstring;
     std::stringstream stream;
     {
         Catch::XmlWriter xml(stream);
@@ -128,6 +128,6 @@ TEST_CASE("XmlWriter writes boolean attributes as true/false", "[XML][XmlWriter]
     }
 
     REQUIRE_THAT( stream.str(),
-                  Contains(R"(attr1="true")") &&
-                  Contains(R"(attr2="false")") );
+                  ContainsSubstring(R"(attr1="true")") &&
+                  ContainsSubstring(R"(attr2="false")") );
 }

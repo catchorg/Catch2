@@ -24,10 +24,10 @@ TEST_CASE( "Tag alias can be registered against tag patterns" ) {
         catch( std::exception& ex ) {
             std::string what = ex.what();
             using namespace Catch::Matchers;
-            CHECK_THAT( what, Contains( "[@zzz]" ) );
-            CHECK_THAT( what, Contains( "file" ) );
-            CHECK_THAT( what, Contains( "2" ) );
-            CHECK_THAT( what, Contains( "10" ) );
+            CHECK_THAT( what, ContainsSubstring( "[@zzz]" ) );
+            CHECK_THAT( what, ContainsSubstring( "file" ) );
+            CHECK_THAT( what, ContainsSubstring( "2" ) );
+            CHECK_THAT( what, ContainsSubstring( "10" ) );
         }
     }
 

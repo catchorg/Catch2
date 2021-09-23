@@ -332,13 +332,13 @@ Matchers.tests.cpp:<line number>
 ...............................................................................
 
 Matchers.tests.cpp:<line number>: FAILED:
-  CHECK_THAT( testStringForMatching(), Contains( "not there", Catch::CaseSensitive::No ) )
+  CHECK_THAT( testStringForMatching(), ContainsSubstring( "not there", Catch::CaseSensitive::No ) )
 with expansion:
   "this string contains 'abc' as a substring" contains: "not there" (case
   insensitive)
 
 Matchers.tests.cpp:<line number>: FAILED:
-  CHECK_THAT( testStringForMatching(), Contains( "STRING" ) )
+  CHECK_THAT( testStringForMatching(), ContainsSubstring( "STRING" ) )
 with expansion:
   "this string contains 'abc' as a substring" contains: "STRING"
 
@@ -678,7 +678,7 @@ Matchers.tests.cpp:<line number>
 ...............................................................................
 
 Matchers.tests.cpp:<line number>: FAILED:
-  CHECK_THAT( testStringForMatching(), ( Contains( "string" ) || Contains( "different" ) ) && Contains( "random" ) )
+  CHECK_THAT( testStringForMatching(), ( ContainsSubstring( "string" ) || ContainsSubstring( "different" ) ) && ContainsSubstring( "random" ) )
 with expansion:
   "this string contains 'abc' as a substring" ( ( contains: "string" or
   contains: "different" ) and contains: "random" )
@@ -690,7 +690,7 @@ Matchers.tests.cpp:<line number>
 ...............................................................................
 
 Matchers.tests.cpp:<line number>: FAILED:
-  CHECK_THAT( testStringForMatching(), !Contains( "substring" ) )
+  CHECK_THAT( testStringForMatching(), !ContainsSubstring( "substring" ) )
 with expansion:
   "this string contains 'abc' as a substring" not contains: "substring"
 

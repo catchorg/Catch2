@@ -3884,7 +3884,7 @@ Nor would this
   <TestCase name="Contains string matcher" tags="[.][failing][matchers]" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
     <Expression success="false" type="CHECK_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
       <Original>
-        testStringForMatching(), Contains( "not there", Catch::CaseSensitive::No )
+        testStringForMatching(), ContainsSubstring( "not there", Catch::CaseSensitive::No )
       </Original>
       <Expanded>
         "this string contains 'abc' as a substring" contains: "not there" (case insensitive)
@@ -3892,7 +3892,7 @@ Nor would this
     </Expression>
     <Expression success="false" type="CHECK_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
       <Original>
-        testStringForMatching(), Contains( "STRING" )
+        testStringForMatching(), ContainsSubstring( "STRING" )
       </Original>
       <Expanded>
         "this string contains 'abc' as a substring" contains: "STRING"
@@ -4592,7 +4592,7 @@ Nor would this
       </Expression>
       <Expression success="true" type="REQUIRE_THROWS_WITH" filename="tests/<exe-name>/UsageTests/Exception.tests.cpp" >
         <Original>
-          thisThrows(), Contains( "except" )
+          thisThrows(), ContainsSubstring( "except" )
         </Original>
         <Expanded>
           "expected exception" contains: "except"
@@ -4600,7 +4600,7 @@ Nor would this
       </Expression>
       <Expression success="true" type="REQUIRE_THROWS_WITH" filename="tests/<exe-name>/UsageTests/Exception.tests.cpp" >
         <Original>
-          thisThrows(), Contains( "exCept", Catch::CaseSensitive::No )
+          thisThrows(), ContainsSubstring( "exCept", Catch::CaseSensitive::No )
         </Original>
         <Expanded>
           "expected exception" contains: "except" (case insensitive)
@@ -8356,7 +8356,7 @@ Nor would this
   <TestCase name="Matchers can be (AllOf) composed with the &amp;&amp; operator" tags="[matchers][operator&amp;&amp;][operators]" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
     <Expression success="true" type="CHECK_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
       <Original>
-        testStringForMatching(), Contains( "string" ) &amp;&amp; Contains( "abc" ) &amp;&amp; Contains( "substring" ) &amp;&amp; Contains( "contains" )
+        testStringForMatching(), ContainsSubstring( "string" ) &amp;&amp; ContainsSubstring( "abc" ) &amp;&amp; ContainsSubstring( "substring" ) &amp;&amp; ContainsSubstring( "contains" )
       </Original>
       <Expanded>
         "this string contains 'abc' as a substring" ( contains: "string" and contains: "abc" and contains: "substring" and contains: "contains" )
@@ -8367,7 +8367,7 @@ Nor would this
   <TestCase name="Matchers can be (AnyOf) composed with the || operator" tags="[matchers][operators][operator||]" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
     <Expression success="true" type="CHECK_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
       <Original>
-        testStringForMatching(), Contains( "string" ) || Contains( "different" ) || Contains( "random" )
+        testStringForMatching(), ContainsSubstring( "string" ) || ContainsSubstring( "different" ) || ContainsSubstring( "random" )
       </Original>
       <Expanded>
         "this string contains 'abc' as a substring" ( contains: "string" or contains: "different" or contains: "random" )
@@ -8375,7 +8375,7 @@ Nor would this
     </Expression>
     <Expression success="true" type="CHECK_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
       <Original>
-        testStringForMatching2(), Contains( "string" ) || Contains( "different" ) || Contains( "random" )
+        testStringForMatching2(), ContainsSubstring( "string" ) || ContainsSubstring( "different" ) || ContainsSubstring( "random" )
       </Original>
       <Expanded>
         "some completely different text that contains one common word" ( contains: "string" or contains: "different" or contains: "random" )
@@ -8386,7 +8386,7 @@ Nor would this
   <TestCase name="Matchers can be composed with both &amp;&amp; and ||" tags="[matchers][operator&amp;&amp;][operators][operator||]" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
     <Expression success="true" type="CHECK_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
       <Original>
-        testStringForMatching(), ( Contains( "string" ) || Contains( "different" ) ) &amp;&amp; Contains( "substring" )
+        testStringForMatching(), ( ContainsSubstring( "string" ) || ContainsSubstring( "different" ) ) &amp;&amp; ContainsSubstring( "substring" )
       </Original>
       <Expanded>
         "this string contains 'abc' as a substring" ( ( contains: "string" or contains: "different" ) and contains: "substring" )
@@ -8397,7 +8397,7 @@ Nor would this
   <TestCase name="Matchers can be composed with both &amp;&amp; and || - failing" tags="[.][failing][matchers][operator&amp;&amp;][operators][operator||]" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
     <Expression success="false" type="CHECK_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
       <Original>
-        testStringForMatching(), ( Contains( "string" ) || Contains( "different" ) ) &amp;&amp; Contains( "random" )
+        testStringForMatching(), ( ContainsSubstring( "string" ) || ContainsSubstring( "different" ) ) &amp;&amp; ContainsSubstring( "random" )
       </Original>
       <Expanded>
         "this string contains 'abc' as a substring" ( ( contains: "string" or contains: "different" ) and contains: "random" )
@@ -8408,7 +8408,7 @@ Nor would this
   <TestCase name="Matchers can be negated (Not) with the ! operator" tags="[matchers][not][operators]" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
     <Expression success="true" type="CHECK_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
       <Original>
-        testStringForMatching(), !Contains( "different" )
+        testStringForMatching(), !ContainsSubstring( "different" )
       </Original>
       <Expanded>
         "this string contains 'abc' as a substring" not contains: "different"
@@ -8419,7 +8419,7 @@ Nor would this
   <TestCase name="Matchers can be negated (Not) with the ! operator - failing" tags="[.][failing][matchers][not][operators]" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
     <Expression success="false" type="CHECK_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
       <Original>
-        testStringForMatching(), !Contains( "substring" )
+        testStringForMatching(), !ContainsSubstring( "substring" )
       </Original>
       <Expanded>
         "this string contains 'abc' as a substring" not contains: "substring"
@@ -10842,7 +10842,7 @@ Nor would this
         </Expression>
         <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
           <Original>
-            result.errorMessage(), Contains("Unrecognized reporter")
+            result.errorMessage(), ContainsSubstring("Unrecognized reporter")
           </Original>
           <Expanded>
             "Unrecognized reporter, 'unsupported'. Check available with --list-reporters" contains: "Unrecognized reporter"
@@ -10952,7 +10952,7 @@ Nor would this
         </Expression>
         <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
           <Original>
-            result.errorMessage(), Contains("convert") &amp;&amp; Contains("oops")
+            result.errorMessage(), ContainsSubstring("convert") &amp;&amp; ContainsSubstring("oops")
           </Original>
           <Expanded>
             "Unable to convert 'oops' to destination type" ( contains: "convert" and contains: "oops" )
@@ -11075,7 +11075,7 @@ Nor would this
           </Expression>
           <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
             <Original>
-              result.errorMessage(), Contains("never") &amp;&amp; Contains("both")
+              result.errorMessage(), ContainsSubstring("never") &amp;&amp; ContainsSubstring("both")
             </Original>
             <Expanded>
               "keypress argument must be one of: never, start, exit or both. 'sometimes' not recognised" ( contains: "never" and contains: "both" )
@@ -11313,7 +11313,7 @@ Nor would this
         </Expression>
         <Expression success="true" type="CHECK_THAT" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
           <Original>
-            result.errorMessage(), Contains( "colour mode must be one of" )
+            result.errorMessage(), ContainsSubstring( "colour mode must be one of" )
           </Original>
           <Expanded>
             "colour mode must be one of: auto, yes or no. 'wrong' not recognised" contains: "colour mode must be one of"
@@ -11543,7 +11543,7 @@ Nor would this
       </Info>
       <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
         <Original>
-          listingString, Contains("fakeTag"s)
+          listingString, ContainsSubstring("fakeTag"s)
         </Original>
         <Expanded>
           "All available tags:
@@ -11569,7 +11569,7 @@ Nor would this
       </Info>
       <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
         <Original>
-          listingString, Contains("fake reporter"s)
+          listingString, ContainsSubstring("fake reporter"s)
         </Original>
         <Expanded>
           "Available reporters:
@@ -11594,7 +11594,7 @@ Nor would this
       </Info>
       <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
         <Original>
-          listingString, Contains( "fake test name"s ) &amp;&amp; Contains( "fakeTestTag"s )
+          listingString, ContainsSubstring( "fake test name"s ) &amp;&amp; ContainsSubstring( "fakeTestTag"s )
         </Original>
         <Expanded>
           "All available test cases:
@@ -11621,7 +11621,7 @@ Nor would this
       </Info>
       <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
         <Original>
-          listingString, Contains("fakeTag"s)
+          listingString, ContainsSubstring("fakeTag"s)
         </Original>
         <Expanded>
           "All available tags:
@@ -11647,7 +11647,7 @@ Nor would this
       </Info>
       <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
         <Original>
-          listingString, Contains("fake reporter"s)
+          listingString, ContainsSubstring("fake reporter"s)
         </Original>
         <Expanded>
           "Available reporters:
@@ -11672,7 +11672,7 @@ Nor would this
       </Info>
       <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
         <Original>
-          listingString, Contains( "fake test name"s ) &amp;&amp; Contains( "fakeTestTag"s )
+          listingString, ContainsSubstring( "fake test name"s ) &amp;&amp; ContainsSubstring( "fakeTestTag"s )
         </Original>
         <Expanded>
           "All available test cases:
@@ -11699,7 +11699,7 @@ Nor would this
       </Info>
       <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
         <Original>
-          listingString, Contains("fakeTag"s)
+          listingString, ContainsSubstring("fakeTag"s)
         </Original>
         <Expanded>
           "All available tags:
@@ -11725,7 +11725,7 @@ Nor would this
       </Info>
       <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
         <Original>
-          listingString, Contains("fake reporter"s)
+          listingString, ContainsSubstring("fake reporter"s)
         </Original>
         <Expanded>
           "Available reporters:
@@ -11750,7 +11750,7 @@ Nor would this
       </Info>
       <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
         <Original>
-          listingString, Contains( "fake test name"s ) &amp;&amp; Contains( "fakeTestTag"s )
+          listingString, ContainsSubstring( "fake test name"s ) &amp;&amp; ContainsSubstring( "fakeTestTag"s )
         </Original>
         <Expanded>
           "All available test cases:
@@ -11777,7 +11777,7 @@ Nor would this
       </Info>
       <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
         <Original>
-          listingString, Contains("fakeTag"s)
+          listingString, ContainsSubstring("fakeTag"s)
         </Original>
         <Expanded>
           "&lt;?xml version="1.0" encoding="UTF-8"?>
@@ -11804,7 +11804,7 @@ All available tags:
       </Info>
       <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
         <Original>
-          listingString, Contains("fake reporter"s)
+          listingString, ContainsSubstring("fake reporter"s)
         </Original>
         <Expanded>
           "&lt;?xml version="1.0" encoding="UTF-8"?>
@@ -11830,7 +11830,7 @@ Available reporters:
       </Info>
       <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
         <Original>
-          listingString, Contains( "fake test name"s ) &amp;&amp; Contains( "fakeTestTag"s )
+          listingString, ContainsSubstring( "fake test name"s ) &amp;&amp; ContainsSubstring( "fakeTestTag"s )
         </Original>
         <Expanded>
           "&lt;?xml version="1.0" encoding="UTF-8"?>
@@ -11858,7 +11858,7 @@ All available test cases:
       </Info>
       <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
         <Original>
-          listingString, Contains("fakeTag"s)
+          listingString, ContainsSubstring("fakeTag"s)
         </Original>
         <Expanded>
           "&lt;?xml version="1.0" encoding="UTF-8"?>
@@ -11885,7 +11885,7 @@ All available tags:
       </Info>
       <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
         <Original>
-          listingString, Contains("fake reporter"s)
+          listingString, ContainsSubstring("fake reporter"s)
         </Original>
         <Expanded>
           "&lt;?xml version="1.0" encoding="UTF-8"?>
@@ -11911,7 +11911,7 @@ Available reporters:
       </Info>
       <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
         <Original>
-          listingString, Contains( "fake test name"s ) &amp;&amp; Contains( "fakeTestTag"s )
+          listingString, ContainsSubstring( "fake test name"s ) &amp;&amp; ContainsSubstring( "fakeTestTag"s )
         </Original>
         <Expanded>
           "&lt;?xml version="1.0" encoding="UTF-8"?>
@@ -11939,7 +11939,7 @@ All available test cases:
       </Info>
       <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
         <Original>
-          listingString, Contains("fakeTag"s)
+          listingString, ContainsSubstring("fakeTag"s)
         </Original>
         <Expanded>
           "All available tags:
@@ -11965,7 +11965,7 @@ All available test cases:
       </Info>
       <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
         <Original>
-          listingString, Contains("fake reporter"s)
+          listingString, ContainsSubstring("fake reporter"s)
         </Original>
         <Expanded>
           "Available reporters:
@@ -11990,7 +11990,7 @@ All available test cases:
       </Info>
       <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
         <Original>
-          listingString, Contains( "fake test name"s ) &amp;&amp; Contains( "fakeTestTag"s )
+          listingString, ContainsSubstring( "fake test name"s ) &amp;&amp; ContainsSubstring( "fakeTestTag"s )
         </Original>
         <Expanded>
           "All available test cases:
@@ -12017,7 +12017,7 @@ All available test cases:
       </Info>
       <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
         <Original>
-          listingString, Contains("fakeTag"s)
+          listingString, ContainsSubstring("fakeTag"s)
         </Original>
         <Expanded>
           "All available tags:
@@ -12043,7 +12043,7 @@ All available test cases:
       </Info>
       <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
         <Original>
-          listingString, Contains("fake reporter"s)
+          listingString, ContainsSubstring("fake reporter"s)
         </Original>
         <Expanded>
           "Available reporters:
@@ -12068,7 +12068,7 @@ All available test cases:
       </Info>
       <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
         <Original>
-          listingString, Contains( "fake test name"s ) &amp;&amp; Contains( "fakeTestTag"s )
+          listingString, ContainsSubstring( "fake test name"s ) &amp;&amp; ContainsSubstring( "fakeTestTag"s )
         </Original>
         <Expanded>
           "All available test cases:
@@ -12095,7 +12095,7 @@ All available test cases:
       </Info>
       <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
         <Original>
-          listingString, Contains("fakeTag"s)
+          listingString, ContainsSubstring("fakeTag"s)
         </Original>
         <Expanded>
           "&lt;?xml version="1.0" encoding="UTF-8"?>
@@ -12125,7 +12125,7 @@ All available test cases:
       </Info>
       <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
         <Original>
-          listingString, Contains("fake reporter"s)
+          listingString, ContainsSubstring("fake reporter"s)
         </Original>
         <Expanded>
           "&lt;?xml version="1.0" encoding="UTF-8"?>
@@ -12153,7 +12153,7 @@ All available test cases:
       </Info>
       <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
         <Original>
-          listingString, Contains( "fake test name"s ) &amp;&amp; Contains( "fakeTestTag"s )
+          listingString, ContainsSubstring( "fake test name"s ) &amp;&amp; ContainsSubstring( "fakeTestTag"s )
         </Original>
         <Expanded>
           "&lt;?xml version="1.0" encoding="UTF-8"?>
@@ -12497,7 +12497,7 @@ Message from section two
   <TestCase name="String matchers" tags="[matchers]" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
     <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
       <Original>
-        testStringForMatching(), Contains( "string" )
+        testStringForMatching(), ContainsSubstring( "string" )
       </Original>
       <Expanded>
         "this string contains 'abc' as a substring" contains: "string"
@@ -12505,7 +12505,7 @@ Message from section two
     </Expression>
     <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
       <Original>
-        testStringForMatching(), Contains( "string", Catch::CaseSensitive::No )
+        testStringForMatching(), ContainsSubstring( "string", Catch::CaseSensitive::No )
       </Original>
       <Expanded>
         "this string contains 'abc' as a substring" contains: "string" (case insensitive)
@@ -12513,7 +12513,7 @@ Message from section two
     </Expression>
     <Expression success="true" type="CHECK_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
       <Original>
-        testStringForMatching(), Contains( "abc" )
+        testStringForMatching(), ContainsSubstring( "abc" )
       </Original>
       <Expanded>
         "this string contains 'abc' as a substring" contains: "abc"
@@ -12521,7 +12521,7 @@ Message from section two
     </Expression>
     <Expression success="true" type="CHECK_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
       <Original>
-        testStringForMatching(), Contains( "aBC", Catch::CaseSensitive::No )
+        testStringForMatching(), ContainsSubstring( "aBC", Catch::CaseSensitive::No )
       </Original>
       <Expanded>
         "this string contains 'abc' as a substring" contains: "abc" (case insensitive)
@@ -13091,7 +13091,7 @@ Message from section two
     <Section name="The same tag alias can only be registered once" filename="tests/<exe-name>/IntrospectiveTests/Tag.tests.cpp" >
       <Expression success="true" type="CHECK_THAT" filename="tests/<exe-name>/IntrospectiveTests/Tag.tests.cpp" >
         <Original>
-          what, Contains( "[@zzz]" )
+          what, ContainsSubstring( "[@zzz]" )
         </Original>
         <Expanded>
           "error: tag alias, '[@zzz]' already registered.
@@ -13101,7 +13101,7 @@ Message from section two
       </Expression>
       <Expression success="true" type="CHECK_THAT" filename="tests/<exe-name>/IntrospectiveTests/Tag.tests.cpp" >
         <Original>
-          what, Contains( "file" )
+          what, ContainsSubstring( "file" )
         </Original>
         <Expanded>
           "error: tag alias, '[@zzz]' already registered.
@@ -13111,7 +13111,7 @@ Message from section two
       </Expression>
       <Expression success="true" type="CHECK_THAT" filename="tests/<exe-name>/IntrospectiveTests/Tag.tests.cpp" >
         <Original>
-          what, Contains( "2" )
+          what, ContainsSubstring( "2" )
         </Original>
         <Expanded>
           "error: tag alias, '[@zzz]' already registered.
@@ -13121,7 +13121,7 @@ Message from section two
       </Expression>
       <Expression success="true" type="CHECK_THAT" filename="tests/<exe-name>/IntrospectiveTests/Tag.tests.cpp" >
         <Original>
-          what, Contains( "10" )
+          what, ContainsSubstring( "10" )
         </Original>
         <Expanded>
           "error: tag alias, '[@zzz]' already registered.
@@ -14601,7 +14601,7 @@ Message from section two
     <Section name="Listing tags" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
       <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
         <Original>
-          listingString, Contains("[fakeTag]"s)
+          listingString, ContainsSubstring("[fakeTag]"s)
         </Original>
         <Expanded>
           "All available tags:
@@ -14616,7 +14616,7 @@ Message from section two
     <Section name="Listing reporters" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
       <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
         <Original>
-          listingString, Contains("fake reporter"s)
+          listingString, ContainsSubstring("fake reporter"s)
         </Original>
         <Expanded>
           "Available reporters:
@@ -14630,7 +14630,7 @@ Message from section two
     <Section name="Listing tests" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
       <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
         <Original>
-          listingString, Contains( "fake test name"s ) &amp;&amp; Contains( "fakeTestTag"s )
+          listingString, ContainsSubstring( "fake test name"s ) &amp;&amp; ContainsSubstring( "fakeTestTag"s )
         </Original>
         <Expanded>
           "All available test cases:
@@ -16592,7 +16592,7 @@ There is no extra whitespace here
   <TestCase name="XmlWriter writes boolean attributes as true/false" tags="[XML][XmlWriter]" filename="tests/<exe-name>/IntrospectiveTests/Xml.tests.cpp" >
     <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/IntrospectiveTests/Xml.tests.cpp" >
       <Original>
-        stream.str(), Contains(R"(attr1="true")") &amp;&amp; Contains(R"(attr2="false")")
+        stream.str(), ContainsSubstring(R"(attr1="true")") &amp;&amp; ContainsSubstring(R"(attr2="false")")
       </Original>
       <Expanded>
         "&lt;?xml version="1.0" encoding="UTF-8"?>

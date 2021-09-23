@@ -167,8 +167,8 @@ TEST_CASE( "Exception messages can be tested for", "[!throws]" ) {
     SECTION( "wildcarded" ) {
         REQUIRE_THROWS_WITH( thisThrows(), StartsWith( "expected" ) );
         REQUIRE_THROWS_WITH( thisThrows(), EndsWith( "exception" ) );
-        REQUIRE_THROWS_WITH( thisThrows(), Contains( "except" ) );
-        REQUIRE_THROWS_WITH( thisThrows(), Contains( "exCept", Catch::CaseSensitive::No ) );
+        REQUIRE_THROWS_WITH( thisThrows(), ContainsSubstring( "except" ) );
+        REQUIRE_THROWS_WITH( thisThrows(), ContainsSubstring( "exCept", Catch::CaseSensitive::No ) );
     }
 }
 

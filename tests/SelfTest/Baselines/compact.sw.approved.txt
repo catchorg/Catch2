@@ -447,8 +447,8 @@ Matchers.tests.cpp:<line number>: passed: !second.matchCalled for: true
 Matchers.tests.cpp:<line number>: passed: matcher.match( 1 ) for: true
 Matchers.tests.cpp:<line number>: passed: first.matchCalled for: true
 Matchers.tests.cpp:<line number>: passed: !second.matchCalled for: true
-Matchers.tests.cpp:<line number>: failed: testStringForMatching(), Contains( "not there", Catch::CaseSensitive::No ) for: "this string contains 'abc' as a substring" contains: "not there" (case insensitive)
-Matchers.tests.cpp:<line number>: failed: testStringForMatching(), Contains( "STRING" ) for: "this string contains 'abc' as a substring" contains: "STRING"
+Matchers.tests.cpp:<line number>: failed: testStringForMatching(), ContainsSubstring( "not there", Catch::CaseSensitive::No ) for: "this string contains 'abc' as a substring" contains: "not there" (case insensitive)
+Matchers.tests.cpp:<line number>: failed: testStringForMatching(), ContainsSubstring( "STRING" ) for: "this string contains 'abc' as a substring" contains: "STRING"
 Generators.tests.cpp:<line number>: passed: elem % 2 == 1 for: 1 == 1
 Generators.tests.cpp:<line number>: passed: elem % 2 == 1 for: 1 == 1
 Generators.tests.cpp:<line number>: passed: elem % 2 == 1 for: 1 == 1
@@ -528,8 +528,8 @@ Exception.tests.cpp:<line number>: passed: thisThrows(), "expected exception" fo
 Exception.tests.cpp:<line number>: passed: thisThrows(), Equals( "expecteD Exception", Catch::CaseSensitive::No ) for: "expected exception" equals: "expected exception" (case insensitive)
 Exception.tests.cpp:<line number>: passed: thisThrows(), StartsWith( "expected" ) for: "expected exception" starts with: "expected"
 Exception.tests.cpp:<line number>: passed: thisThrows(), EndsWith( "exception" ) for: "expected exception" ends with: "exception"
-Exception.tests.cpp:<line number>: passed: thisThrows(), Contains( "except" ) for: "expected exception" contains: "except"
-Exception.tests.cpp:<line number>: passed: thisThrows(), Contains( "exCept", Catch::CaseSensitive::No ) for: "expected exception" contains: "except" (case insensitive)
+Exception.tests.cpp:<line number>: passed: thisThrows(), ContainsSubstring( "except" ) for: "expected exception" contains: "except"
+Exception.tests.cpp:<line number>: passed: thisThrows(), ContainsSubstring( "exCept", Catch::CaseSensitive::No ) for: "expected exception" contains: "except" (case insensitive)
 Matchers.tests.cpp:<line number>: passed: throwsDerivedException(), DerivedException, Message( "DerivedException::what" ) for: DerivedException::what exception message matches "DerivedException::what"
 Matchers.tests.cpp:<line number>: passed: throwsDerivedException(), DerivedException, !Message( "derivedexception::what" ) for: DerivedException::what not exception message matches "derivedexception::what"
 Matchers.tests.cpp:<line number>: passed: throwsSpecialException( 2 ), SpecialException, !Message( "DerivedException::what" ) for: SpecialException::what not exception message matches "DerivedException::what"
@@ -904,13 +904,13 @@ Approx.tests.cpp:<line number>: passed: d <= Approx( 1.23 ) for: 1.23 <= Approx(
 Approx.tests.cpp:<line number>: passed: !(d <= Approx( 1.22 )) for: !(1.23 <= Approx( 1.22 ))
 Approx.tests.cpp:<line number>: passed: d <= Approx( 1.22 ).epsilon(0.1) for: 1.23 <= Approx( 1.22 )
 Misc.tests.cpp:<line number>: passed: with 1 message: 'was called'
-Matchers.tests.cpp:<line number>: passed: testStringForMatching(), Contains( "string" ) && Contains( "abc" ) && Contains( "substring" ) && Contains( "contains" ) for: "this string contains 'abc' as a substring" ( contains: "string" and contains: "abc" and contains: "substring" and contains: "contains" )
-Matchers.tests.cpp:<line number>: passed: testStringForMatching(), Contains( "string" ) || Contains( "different" ) || Contains( "random" ) for: "this string contains 'abc' as a substring" ( contains: "string" or contains: "different" or contains: "random" )
-Matchers.tests.cpp:<line number>: passed: testStringForMatching2(), Contains( "string" ) || Contains( "different" ) || Contains( "random" ) for: "some completely different text that contains one common word" ( contains: "string" or contains: "different" or contains: "random" )
-Matchers.tests.cpp:<line number>: passed: testStringForMatching(), ( Contains( "string" ) || Contains( "different" ) ) && Contains( "substring" ) for: "this string contains 'abc' as a substring" ( ( contains: "string" or contains: "different" ) and contains: "substring" )
-Matchers.tests.cpp:<line number>: failed: testStringForMatching(), ( Contains( "string" ) || Contains( "different" ) ) && Contains( "random" ) for: "this string contains 'abc' as a substring" ( ( contains: "string" or contains: "different" ) and contains: "random" )
-Matchers.tests.cpp:<line number>: passed: testStringForMatching(), !Contains( "different" ) for: "this string contains 'abc' as a substring" not contains: "different"
-Matchers.tests.cpp:<line number>: failed: testStringForMatching(), !Contains( "substring" ) for: "this string contains 'abc' as a substring" not contains: "substring"
+Matchers.tests.cpp:<line number>: passed: testStringForMatching(), ContainsSubstring( "string" ) && ContainsSubstring( "abc" ) && ContainsSubstring( "substring" ) && ContainsSubstring( "contains" ) for: "this string contains 'abc' as a substring" ( contains: "string" and contains: "abc" and contains: "substring" and contains: "contains" )
+Matchers.tests.cpp:<line number>: passed: testStringForMatching(), ContainsSubstring( "string" ) || ContainsSubstring( "different" ) || ContainsSubstring( "random" ) for: "this string contains 'abc' as a substring" ( contains: "string" or contains: "different" or contains: "random" )
+Matchers.tests.cpp:<line number>: passed: testStringForMatching2(), ContainsSubstring( "string" ) || ContainsSubstring( "different" ) || ContainsSubstring( "random" ) for: "some completely different text that contains one common word" ( contains: "string" or contains: "different" or contains: "random" )
+Matchers.tests.cpp:<line number>: passed: testStringForMatching(), ( ContainsSubstring( "string" ) || ContainsSubstring( "different" ) ) && ContainsSubstring( "substring" ) for: "this string contains 'abc' as a substring" ( ( contains: "string" or contains: "different" ) and contains: "substring" )
+Matchers.tests.cpp:<line number>: failed: testStringForMatching(), ( ContainsSubstring( "string" ) || ContainsSubstring( "different" ) ) && ContainsSubstring( "random" ) for: "this string contains 'abc' as a substring" ( ( contains: "string" or contains: "different" ) and contains: "random" )
+Matchers.tests.cpp:<line number>: passed: testStringForMatching(), !ContainsSubstring( "different" ) for: "this string contains 'abc' as a substring" not contains: "different"
+Matchers.tests.cpp:<line number>: failed: testStringForMatching(), !ContainsSubstring( "substring" ) for: "this string contains 'abc' as a substring" not contains: "substring"
 Exception.tests.cpp:<line number>: passed: thisThrows(), "expected exception" for: "expected exception" equals: "expected exception"
 Exception.tests.cpp:<line number>: failed: thisThrows(), "should fail" for: "expected exception" equals: "should fail"
 Generators.tests.cpp:<line number>: passed: values > -6 for: 3 > -6
@@ -1216,7 +1216,7 @@ CmdLine.tests.cpp:<line number>: passed: cli.parse({"test", "--reporter", "junit
 CmdLine.tests.cpp:<line number>: passed: config.reporterName == "junit" for: "junit" == "junit"
 CmdLine.tests.cpp:<line number>: passed: !(cli.parse({ "test", "-r", "xml", "-r", "junit" })) for: !{?}
 CmdLine.tests.cpp:<line number>: passed: !result for: true
-CmdLine.tests.cpp:<line number>: passed: result.errorMessage(), Contains("Unrecognized reporter") for: "Unrecognized reporter, 'unsupported'. Check available with --list-reporters" contains: "Unrecognized reporter"
+CmdLine.tests.cpp:<line number>: passed: result.errorMessage(), ContainsSubstring("Unrecognized reporter") for: "Unrecognized reporter, 'unsupported'. Check available with --list-reporters" contains: "Unrecognized reporter"
 CmdLine.tests.cpp:<line number>: passed: cli.parse({"test", "-b"}) for: {?}
 CmdLine.tests.cpp:<line number>: passed: config.shouldDebugBreak == true for: true == true
 CmdLine.tests.cpp:<line number>: passed: cli.parse({"test", "--break"}) for: {?}
@@ -1226,7 +1226,7 @@ CmdLine.tests.cpp:<line number>: passed: config.abortAfter == 1 for: 1 == 1
 CmdLine.tests.cpp:<line number>: passed: cli.parse({"test", "-x", "2"}) for: {?}
 CmdLine.tests.cpp:<line number>: passed: config.abortAfter == 2 for: 2 == 2
 CmdLine.tests.cpp:<line number>: passed: !result for: true
-CmdLine.tests.cpp:<line number>: passed: result.errorMessage(), Contains("convert") && Contains("oops") for: "Unable to convert 'oops' to destination type" ( contains: "convert" and contains: "oops" )
+CmdLine.tests.cpp:<line number>: passed: result.errorMessage(), ContainsSubstring("convert") && ContainsSubstring("oops") for: "Unable to convert 'oops' to destination type" ( contains: "convert" and contains: "oops" )
 CmdLine.tests.cpp:<line number>: passed: cli.parse({"test", "--wait-for-keypress", std::get<0>(input)}) for: {?}
 CmdLine.tests.cpp:<line number>: passed: config.waitForKeypress == std::get<1>(input) for: 0 == 0
 CmdLine.tests.cpp:<line number>: passed: cli.parse({"test", "--wait-for-keypress", std::get<0>(input)}) for: {?}
@@ -1236,7 +1236,7 @@ CmdLine.tests.cpp:<line number>: passed: config.waitForKeypress == std::get<1>(i
 CmdLine.tests.cpp:<line number>: passed: cli.parse({"test", "--wait-for-keypress", std::get<0>(input)}) for: {?}
 CmdLine.tests.cpp:<line number>: passed: config.waitForKeypress == std::get<1>(input) for: 3 == 3
 CmdLine.tests.cpp:<line number>: passed: !result for: true
-CmdLine.tests.cpp:<line number>: passed: result.errorMessage(), Contains("never") && Contains("both") for: "keypress argument must be one of: never, start, exit or both. 'sometimes' not recognised" ( contains: "never" and contains: "both" )
+CmdLine.tests.cpp:<line number>: passed: result.errorMessage(), ContainsSubstring("never") && ContainsSubstring("both") for: "keypress argument must be one of: never, start, exit or both. 'sometimes' not recognised" ( contains: "never" and contains: "both" )
 CmdLine.tests.cpp:<line number>: passed: cli.parse({"test", "-e"}) for: {?}
 CmdLine.tests.cpp:<line number>: passed: config.noThrow for: true
 CmdLine.tests.cpp:<line number>: passed: cli.parse({"test", "--nothrow"}) for: {?}
@@ -1258,7 +1258,7 @@ CmdLine.tests.cpp:<line number>: passed: config.useColour == UseColour::Yes for:
 CmdLine.tests.cpp:<line number>: passed: cli.parse({"test", "--use-colour", "no"}) for: {?}
 CmdLine.tests.cpp:<line number>: passed: config.useColour == UseColour::No for: 2 == 2
 CmdLine.tests.cpp:<line number>: passed: !result for: true
-CmdLine.tests.cpp:<line number>: passed: result.errorMessage(), Contains( "colour mode must be one of" ) for: "colour mode must be one of: auto, yes or no. 'wrong' not recognised" contains: "colour mode must be one of"
+CmdLine.tests.cpp:<line number>: passed: result.errorMessage(), ContainsSubstring( "colour mode must be one of" ) for: "colour mode must be one of: auto, yes or no. 'wrong' not recognised" contains: "colour mode must be one of"
 CmdLine.tests.cpp:<line number>: passed: cli.parse({ "test", "--benchmark-samples=200" }) for: {?}
 CmdLine.tests.cpp:<line number>: passed: config.benchmarkSamples == 200 for: 200 == 200
 CmdLine.tests.cpp:<line number>: passed: cli.parse({ "test", "--benchmark-resamples=20000" }) for: {?}
@@ -1279,74 +1279,74 @@ Matchers.tests.cpp:<line number>: failed: testStringForMatching(), Matches( "con
 Matchers.tests.cpp:<line number>: failed: testStringForMatching(), Matches( "this string contains 'abc' as a" ) for: "this string contains 'abc' as a substring" matches "this string contains 'abc' as a" case sensitively
 Matchers.tests.cpp:<line number>: passed: actual, !UnorderedEquals( expected ) for: { 'a', 'b' } not UnorderedEquals: { 'c', 'b' }
 Reporters.tests.cpp:<line number>: passed: !(factories.empty()) for: !false
-Reporters.tests.cpp:<line number>: passed: listingString, Contains("fakeTag"s) for: "All available tags:
+Reporters.tests.cpp:<line number>: passed: listingString, ContainsSubstring("fakeTag"s) for: "All available tags:
    1  [fakeTag]
 1 tag
 
 " contains: "fakeTag" with 1 message: 'Tested reporter: automake'
 Reporters.tests.cpp:<line number>: passed: !(factories.empty()) for: !false
-Reporters.tests.cpp:<line number>: passed: listingString, Contains("fake reporter"s) for: "Available reporters:
+Reporters.tests.cpp:<line number>: passed: listingString, ContainsSubstring("fake reporter"s) for: "Available reporters:
   fake reporter:  fake description
 
 " contains: "fake reporter" with 1 message: 'Tested reporter: automake'
 Reporters.tests.cpp:<line number>: passed: !(factories.empty()) for: !false
-Reporters.tests.cpp:<line number>: passed: listingString, Contains( "fake test name"s ) && Contains( "fakeTestTag"s ) for: "All available test cases:
+Reporters.tests.cpp:<line number>: passed: listingString, ContainsSubstring( "fake test name"s ) && ContainsSubstring( "fakeTestTag"s ) for: "All available test cases:
   fake test name
       [fakeTestTag]
 1 test case
 
 " ( contains: "fake test name" and contains: "fakeTestTag" ) with 1 message: 'Tested reporter: automake'
 Reporters.tests.cpp:<line number>: passed: !(factories.empty()) for: !false
-Reporters.tests.cpp:<line number>: passed: listingString, Contains("fakeTag"s) for: "All available tags:
+Reporters.tests.cpp:<line number>: passed: listingString, ContainsSubstring("fakeTag"s) for: "All available tags:
    1  [fakeTag]
 1 tag
 
 " contains: "fakeTag" with 1 message: 'Tested reporter: compact'
 Reporters.tests.cpp:<line number>: passed: !(factories.empty()) for: !false
-Reporters.tests.cpp:<line number>: passed: listingString, Contains("fake reporter"s) for: "Available reporters:
+Reporters.tests.cpp:<line number>: passed: listingString, ContainsSubstring("fake reporter"s) for: "Available reporters:
   fake reporter:  fake description
 
 " contains: "fake reporter" with 1 message: 'Tested reporter: compact'
 Reporters.tests.cpp:<line number>: passed: !(factories.empty()) for: !false
-Reporters.tests.cpp:<line number>: passed: listingString, Contains( "fake test name"s ) && Contains( "fakeTestTag"s ) for: "All available test cases:
+Reporters.tests.cpp:<line number>: passed: listingString, ContainsSubstring( "fake test name"s ) && ContainsSubstring( "fakeTestTag"s ) for: "All available test cases:
   fake test name
       [fakeTestTag]
 1 test case
 
 " ( contains: "fake test name" and contains: "fakeTestTag" ) with 1 message: 'Tested reporter: compact'
 Reporters.tests.cpp:<line number>: passed: !(factories.empty()) for: !false
-Reporters.tests.cpp:<line number>: passed: listingString, Contains("fakeTag"s) for: "All available tags:
+Reporters.tests.cpp:<line number>: passed: listingString, ContainsSubstring("fakeTag"s) for: "All available tags:
    1  [fakeTag]
 1 tag
 
 " contains: "fakeTag" with 1 message: 'Tested reporter: console'
 Reporters.tests.cpp:<line number>: passed: !(factories.empty()) for: !false
-Reporters.tests.cpp:<line number>: passed: listingString, Contains("fake reporter"s) for: "Available reporters:
+Reporters.tests.cpp:<line number>: passed: listingString, ContainsSubstring("fake reporter"s) for: "Available reporters:
   fake reporter:  fake description
 
 " contains: "fake reporter" with 1 message: 'Tested reporter: console'
 Reporters.tests.cpp:<line number>: passed: !(factories.empty()) for: !false
-Reporters.tests.cpp:<line number>: passed: listingString, Contains( "fake test name"s ) && Contains( "fakeTestTag"s ) for: "All available test cases:
+Reporters.tests.cpp:<line number>: passed: listingString, ContainsSubstring( "fake test name"s ) && ContainsSubstring( "fakeTestTag"s ) for: "All available test cases:
   fake test name
       [fakeTestTag]
 1 test case
 
 " ( contains: "fake test name" and contains: "fakeTestTag" ) with 1 message: 'Tested reporter: console'
 Reporters.tests.cpp:<line number>: passed: !(factories.empty()) for: !false
-Reporters.tests.cpp:<line number>: passed: listingString, Contains("fakeTag"s) for: "<?xml version="1.0" encoding="UTF-8"?>
+Reporters.tests.cpp:<line number>: passed: listingString, ContainsSubstring("fakeTag"s) for: "<?xml version="1.0" encoding="UTF-8"?>
 All available tags:
    1  [fakeTag]
 1 tag
 
 " contains: "fakeTag" with 1 message: 'Tested reporter: junit'
 Reporters.tests.cpp:<line number>: passed: !(factories.empty()) for: !false
-Reporters.tests.cpp:<line number>: passed: listingString, Contains("fake reporter"s) for: "<?xml version="1.0" encoding="UTF-8"?>
+Reporters.tests.cpp:<line number>: passed: listingString, ContainsSubstring("fake reporter"s) for: "<?xml version="1.0" encoding="UTF-8"?>
 Available reporters:
   fake reporter:  fake description
 
 " contains: "fake reporter" with 1 message: 'Tested reporter: junit'
 Reporters.tests.cpp:<line number>: passed: !(factories.empty()) for: !false
-Reporters.tests.cpp:<line number>: passed: listingString, Contains( "fake test name"s ) && Contains( "fakeTestTag"s ) for: "<?xml version="1.0" encoding="UTF-8"?>
+Reporters.tests.cpp:<line number>: passed: listingString, ContainsSubstring( "fake test name"s ) && ContainsSubstring( "fakeTestTag"s ) for: "<?xml version="1.0" encoding="UTF-8"?>
 All available test cases:
   fake test name
       [fakeTestTag]
@@ -1354,20 +1354,20 @@ All available test cases:
 
 " ( contains: "fake test name" and contains: "fakeTestTag" ) with 1 message: 'Tested reporter: junit'
 Reporters.tests.cpp:<line number>: passed: !(factories.empty()) for: !false
-Reporters.tests.cpp:<line number>: passed: listingString, Contains("fakeTag"s) for: "<?xml version="1.0" encoding="UTF-8"?>
+Reporters.tests.cpp:<line number>: passed: listingString, ContainsSubstring("fakeTag"s) for: "<?xml version="1.0" encoding="UTF-8"?>
 All available tags:
    1  [fakeTag]
 1 tag
 
 " contains: "fakeTag" with 1 message: 'Tested reporter: sonarqube'
 Reporters.tests.cpp:<line number>: passed: !(factories.empty()) for: !false
-Reporters.tests.cpp:<line number>: passed: listingString, Contains("fake reporter"s) for: "<?xml version="1.0" encoding="UTF-8"?>
+Reporters.tests.cpp:<line number>: passed: listingString, ContainsSubstring("fake reporter"s) for: "<?xml version="1.0" encoding="UTF-8"?>
 Available reporters:
   fake reporter:  fake description
 
 " contains: "fake reporter" with 1 message: 'Tested reporter: sonarqube'
 Reporters.tests.cpp:<line number>: passed: !(factories.empty()) for: !false
-Reporters.tests.cpp:<line number>: passed: listingString, Contains( "fake test name"s ) && Contains( "fakeTestTag"s ) for: "<?xml version="1.0" encoding="UTF-8"?>
+Reporters.tests.cpp:<line number>: passed: listingString, ContainsSubstring( "fake test name"s ) && ContainsSubstring( "fakeTestTag"s ) for: "<?xml version="1.0" encoding="UTF-8"?>
 All available test cases:
   fake test name
       [fakeTestTag]
@@ -1375,43 +1375,43 @@ All available test cases:
 
 " ( contains: "fake test name" and contains: "fakeTestTag" ) with 1 message: 'Tested reporter: sonarqube'
 Reporters.tests.cpp:<line number>: passed: !(factories.empty()) for: !false
-Reporters.tests.cpp:<line number>: passed: listingString, Contains("fakeTag"s) for: "All available tags:
+Reporters.tests.cpp:<line number>: passed: listingString, ContainsSubstring("fakeTag"s) for: "All available tags:
    1  [fakeTag]
 1 tag
 
 " contains: "fakeTag" with 1 message: 'Tested reporter: tap'
 Reporters.tests.cpp:<line number>: passed: !(factories.empty()) for: !false
-Reporters.tests.cpp:<line number>: passed: listingString, Contains("fake reporter"s) for: "Available reporters:
+Reporters.tests.cpp:<line number>: passed: listingString, ContainsSubstring("fake reporter"s) for: "Available reporters:
   fake reporter:  fake description
 
 " contains: "fake reporter" with 1 message: 'Tested reporter: tap'
 Reporters.tests.cpp:<line number>: passed: !(factories.empty()) for: !false
-Reporters.tests.cpp:<line number>: passed: listingString, Contains( "fake test name"s ) && Contains( "fakeTestTag"s ) for: "All available test cases:
+Reporters.tests.cpp:<line number>: passed: listingString, ContainsSubstring( "fake test name"s ) && ContainsSubstring( "fakeTestTag"s ) for: "All available test cases:
   fake test name
       [fakeTestTag]
 1 test case
 
 " ( contains: "fake test name" and contains: "fakeTestTag" ) with 1 message: 'Tested reporter: tap'
 Reporters.tests.cpp:<line number>: passed: !(factories.empty()) for: !false
-Reporters.tests.cpp:<line number>: passed: listingString, Contains("fakeTag"s) for: "All available tags:
+Reporters.tests.cpp:<line number>: passed: listingString, ContainsSubstring("fakeTag"s) for: "All available tags:
    1  [fakeTag]
 1 tag
 
 " contains: "fakeTag" with 1 message: 'Tested reporter: teamcity'
 Reporters.tests.cpp:<line number>: passed: !(factories.empty()) for: !false
-Reporters.tests.cpp:<line number>: passed: listingString, Contains("fake reporter"s) for: "Available reporters:
+Reporters.tests.cpp:<line number>: passed: listingString, ContainsSubstring("fake reporter"s) for: "Available reporters:
   fake reporter:  fake description
 
 " contains: "fake reporter" with 1 message: 'Tested reporter: teamcity'
 Reporters.tests.cpp:<line number>: passed: !(factories.empty()) for: !false
-Reporters.tests.cpp:<line number>: passed: listingString, Contains( "fake test name"s ) && Contains( "fakeTestTag"s ) for: "All available test cases:
+Reporters.tests.cpp:<line number>: passed: listingString, ContainsSubstring( "fake test name"s ) && ContainsSubstring( "fakeTestTag"s ) for: "All available test cases:
   fake test name
       [fakeTestTag]
 1 test case
 
 " ( contains: "fake test name" and contains: "fakeTestTag" ) with 1 message: 'Tested reporter: teamcity'
 Reporters.tests.cpp:<line number>: passed: !(factories.empty()) for: !false
-Reporters.tests.cpp:<line number>: passed: listingString, Contains("fakeTag"s) for: "<?xml version="1.0" encoding="UTF-8"?>
+Reporters.tests.cpp:<line number>: passed: listingString, ContainsSubstring("fakeTag"s) for: "<?xml version="1.0" encoding="UTF-8"?>
 <TagsFromMatchingTests>
   <Tag>
     <Count>1</Count>
@@ -1421,7 +1421,7 @@ Reporters.tests.cpp:<line number>: passed: listingString, Contains("fakeTag"s) f
   </Tag>
 </TagsFromMatchingTests>" contains: "fakeTag" with 1 message: 'Tested reporter: xml'
 Reporters.tests.cpp:<line number>: passed: !(factories.empty()) for: !false
-Reporters.tests.cpp:<line number>: passed: listingString, Contains("fake reporter"s) for: "<?xml version="1.0" encoding="UTF-8"?>
+Reporters.tests.cpp:<line number>: passed: listingString, ContainsSubstring("fake reporter"s) for: "<?xml version="1.0" encoding="UTF-8"?>
 <AvailableReporters>
   <Reporter>
     <Name>fake reporter</Name>
@@ -1429,7 +1429,7 @@ Reporters.tests.cpp:<line number>: passed: listingString, Contains("fake reporte
   </Reporter>
 </AvailableReporters>" contains: "fake reporter" with 1 message: 'Tested reporter: xml'
 Reporters.tests.cpp:<line number>: passed: !(factories.empty()) for: !false
-Reporters.tests.cpp:<line number>: passed: listingString, Contains( "fake test name"s ) && Contains( "fakeTestTag"s ) for: "<?xml version="1.0" encoding="UTF-8"?>
+Reporters.tests.cpp:<line number>: passed: listingString, ContainsSubstring( "fake test name"s ) && ContainsSubstring( "fakeTestTag"s ) for: "<?xml version="1.0" encoding="UTF-8"?>
 <MatchingTests>
   <TestCase>
     <Name>fake test name</Name>
@@ -1476,10 +1476,10 @@ ToStringGeneral.tests.cpp:<line number>: passed: Catch::Detail::stringify(arr) =
 ToStringGeneral.tests.cpp:<line number>: passed: Catch::Detail::stringify(arr) == R"({ { "1:1", "1:2", "1:3" }, { "2:1", "2:2" } })" for: "{ { "1:1", "1:2", "1:3" }, { "2:1", "2:2" } }"
 ==
 "{ { "1:1", "1:2", "1:3" }, { "2:1", "2:2" } }"
-Matchers.tests.cpp:<line number>: passed: testStringForMatching(), Contains( "string" ) for: "this string contains 'abc' as a substring" contains: "string"
-Matchers.tests.cpp:<line number>: passed: testStringForMatching(), Contains( "string", Catch::CaseSensitive::No ) for: "this string contains 'abc' as a substring" contains: "string" (case insensitive)
-Matchers.tests.cpp:<line number>: passed: testStringForMatching(), Contains( "abc" ) for: "this string contains 'abc' as a substring" contains: "abc"
-Matchers.tests.cpp:<line number>: passed: testStringForMatching(), Contains( "aBC", Catch::CaseSensitive::No ) for: "this string contains 'abc' as a substring" contains: "abc" (case insensitive)
+Matchers.tests.cpp:<line number>: passed: testStringForMatching(), ContainsSubstring( "string" ) for: "this string contains 'abc' as a substring" contains: "string"
+Matchers.tests.cpp:<line number>: passed: testStringForMatching(), ContainsSubstring( "string", Catch::CaseSensitive::No ) for: "this string contains 'abc' as a substring" contains: "string" (case insensitive)
+Matchers.tests.cpp:<line number>: passed: testStringForMatching(), ContainsSubstring( "abc" ) for: "this string contains 'abc' as a substring" contains: "abc"
+Matchers.tests.cpp:<line number>: passed: testStringForMatching(), ContainsSubstring( "aBC", Catch::CaseSensitive::No ) for: "this string contains 'abc' as a substring" contains: "abc" (case insensitive)
 Matchers.tests.cpp:<line number>: passed: testStringForMatching(), StartsWith( "this" ) for: "this string contains 'abc' as a substring" starts with: "this"
 Matchers.tests.cpp:<line number>: passed: testStringForMatching(), StartsWith( "THIS", Catch::CaseSensitive::No ) for: "this string contains 'abc' as a substring" starts with: "this" (case insensitive)
 Matchers.tests.cpp:<line number>: passed: testStringForMatching(), EndsWith( "substring" ) for: "this string contains 'abc' as a substring" ends with: "substring"
@@ -1560,16 +1560,16 @@ Misc.tests.cpp:<line number>: failed: s1 == s2 for: "if ($b == 10) {
 	$a = 20;
 }
 "
-Tag.tests.cpp:<line number>: passed: what, Contains( "[@zzz]" ) for: "error: tag alias, '[@zzz]' already registered.
+Tag.tests.cpp:<line number>: passed: what, ContainsSubstring( "[@zzz]" ) for: "error: tag alias, '[@zzz]' already registered.
 	First seen at: file:2
 	Redefined at: file:10" contains: "[@zzz]"
-Tag.tests.cpp:<line number>: passed: what, Contains( "file" ) for: "error: tag alias, '[@zzz]' already registered.
+Tag.tests.cpp:<line number>: passed: what, ContainsSubstring( "file" ) for: "error: tag alias, '[@zzz]' already registered.
 	First seen at: file:2
 	Redefined at: file:10" contains: "file"
-Tag.tests.cpp:<line number>: passed: what, Contains( "2" ) for: "error: tag alias, '[@zzz]' already registered.
+Tag.tests.cpp:<line number>: passed: what, ContainsSubstring( "2" ) for: "error: tag alias, '[@zzz]' already registered.
 	First seen at: file:2
 	Redefined at: file:10" contains: "2"
-Tag.tests.cpp:<line number>: passed: what, Contains( "10" ) for: "error: tag alias, '[@zzz]' already registered.
+Tag.tests.cpp:<line number>: passed: what, ContainsSubstring( "10" ) for: "error: tag alias, '[@zzz]' already registered.
 	First seen at: file:2
 	Redefined at: file:10" contains: "10"
 Tag.tests.cpp:<line number>: passed: registry.add( "[no ampersat]", "", Catch::SourceLineInfo( "file", 3 ) )
@@ -1736,16 +1736,16 @@ Misc.tests.cpp:<line number>: failed: explicitly
 Misc.tests.cpp:<line number>: failed - but was ok: false
 Misc.tests.cpp:<line number>: failed: explicitly
 Message.tests.cpp:<line number>: failed - but was ok: 1 == 2
-Reporters.tests.cpp:<line number>: passed: listingString, Contains("[fakeTag]"s) for: "All available tags:
+Reporters.tests.cpp:<line number>: passed: listingString, ContainsSubstring("[fakeTag]"s) for: "All available tags:
    1  [fakeTag]
 1 tag
 
 " contains: "[fakeTag]"
-Reporters.tests.cpp:<line number>: passed: listingString, Contains("fake reporter"s) for: "Available reporters:
+Reporters.tests.cpp:<line number>: passed: listingString, ContainsSubstring("fake reporter"s) for: "Available reporters:
   fake reporter:  fake description
 
 " contains: "fake reporter"
-Reporters.tests.cpp:<line number>: passed: listingString, Contains( "fake test name"s ) && Contains( "fakeTestTag"s ) for: "All available test cases:
+Reporters.tests.cpp:<line number>: passed: listingString, ContainsSubstring( "fake test name"s ) && ContainsSubstring( "fakeTestTag"s ) for: "All available test cases:
   fake test name
       [fakeTestTag]
 1 test case
@@ -1987,7 +1987,7 @@ Xml.tests.cpp:<line number>: passed: encode( stringWithQuotes, Catch::XmlEncode:
 "don't &quot;quote&quot; me on that"
 Xml.tests.cpp:<line number>: passed: encode( "[\x01]" ) == "[\\x01]" for: "[\x01]" == "[\x01]"
 Xml.tests.cpp:<line number>: passed: encode( "[\x7F]" ) == "[\\x7F]" for: "[\x7F]" == "[\x7F]"
-Xml.tests.cpp:<line number>: passed: stream.str(), Contains(R"(attr1="true")") && Contains(R"(attr2="false")") for: "<?xml version="1.0" encoding="UTF-8"?>
+Xml.tests.cpp:<line number>: passed: stream.str(), ContainsSubstring(R"(attr1="true")") && ContainsSubstring(R"(attr2="false")") for: "<?xml version="1.0" encoding="UTF-8"?>
 <Element1 attr1="true" attr2="false"/>
 " ( contains: "attr1="true"" and contains: "attr2="false"" )
 InternalBenchmark.tests.cpp:<line number>: passed: analysis.mean.point.count() == 23 for: 23.0 == 23

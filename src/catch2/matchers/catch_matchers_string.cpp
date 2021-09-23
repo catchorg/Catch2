@@ -96,7 +96,7 @@ namespace Matchers {
     StringEqualsMatcher Equals( std::string const& str, CaseSensitive caseSensitivity ) {
         return StringEqualsMatcher( CasedString( str, caseSensitivity) );
     }
-    StringContainsMatcher Contains( std::string const& str, CaseSensitive caseSensitivity ) {
+    StringContainsMatcher ContainsSubstring( std::string const& str, CaseSensitive caseSensitivity ) {
         return StringContainsMatcher( CasedString( str, caseSensitivity) );
     }
     EndsWithMatcher EndsWith( std::string const& str, CaseSensitive caseSensitivity ) {

@@ -21,7 +21,7 @@
 
 TEST_CASE( "The default listing implementation write to provided stream",
            "[reporters][reporter-helpers]" ) {
-    using Catch::Matchers::Contains;
+    using Catch::Matchers::ContainsSubstring;
     using namespace std::string_literals;
 
     std::stringstream sstream;
@@ -31,7 +31,7 @@ TEST_CASE( "The default listing implementation write to provided stream",
         Catch::defaultListTags(sstream, tags, false);
 
         auto listingString = sstream.str();
-        REQUIRE_THAT(listingString, Contains("[fakeTag]"s));
+        REQUIRE_THAT(listingString, ContainsSubstring("[fakeTag]"s));
     }
     SECTION( "Listing reporters" ) {
         std::vector<Catch::ReporterDescription> reporters(
@@ -39,7 +39,7 @@ TEST_CASE( "The default listing implementation write to provided stream",
         Catch::defaultListReporters(sstream, reporters, Catch::Verbosity::Normal);
 
         auto listingString = sstream.str();
-        REQUIRE_THAT(listingString, Contains("fake reporter"s));
+        REQUIRE_THAT(listingString, ContainsSubstring("fake reporter"s));
     }
     SECTION( "Listing tests" ) {
         Catch::TestCaseInfo fakeInfo{
@@ -51,13 +51,13 @@ TEST_CASE( "The default listing implementation write to provided stream",
 
         auto listingString = sstream.str();
         REQUIRE_THAT( listingString,
-                      Contains( "fake test name"s ) &&
-                          Contains( "fakeTestTag"s ) );
+                      ContainsSubstring( "fake test name"s ) &&
+                          ContainsSubstring( "fakeTestTag"s ) );
     }
 }
 
 TEST_CASE( "Reporter's write listings to provided stream", "[reporters]" ) {
-    using Catch::Matchers::Contains;
+    using Catch::Matchers::ContainsSubstring;
     using namespace std::string_literals;
 
     auto const& factories = Catch::getRegistryHub().getReporterRegistry().getFactories();
@@ -80,7 +80,7 @@ TEST_CASE( "Reporter's write listings to provided stream", "[reporters]" ) {
             reporter->listTags(tags);
 
             auto listingString = sstream.str();
-            REQUIRE_THAT(listingString, Contains("fakeTag"s));
+            REQUIRE_THAT(listingString, ContainsSubstring("fakeTag"s));
         }
 
         DYNAMIC_SECTION( factory.first << " reporter lists reporters" ) {
@@ -89,7 +89,7 @@ TEST_CASE( "Reporter's write listings to provided stream", "[reporters]" ) {
             reporter->listReporters(reporters);
 
             auto listingString = sstream.str();
-            REQUIRE_THAT(listingString, Contains("fake reporter"s));
+            REQUIRE_THAT(listingString, ContainsSubstring("fake reporter"s));
         }
 
         DYNAMIC_SECTION( factory.first << " reporter lists tests" ) {
@@ -102,8 +102,8 @@ TEST_CASE( "Reporter's write listings to provided stream", "[reporters]" ) {
 
             auto listingString = sstream.str();
             REQUIRE_THAT( listingString,
-                          Contains( "fake test name"s ) &&
-                              Contains( "fakeTestTag"s ) );
+                          ContainsSubstring( "fake test name"s ) &&
+                              ContainsSubstring( "fakeTestTag"s ) );
         }
     }
 }

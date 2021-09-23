@@ -406,7 +406,7 @@ TEST_CASE( "Process can be configured on command line", "[config][command-line]"
             auto result = cli.parse({"test", "--reporter", "unsupported"});
             CHECK(!result);
 
-            REQUIRE_THAT(result.errorMessage(), Contains("Unrecognized reporter"));
+            REQUIRE_THAT(result.errorMessage(), ContainsSubstring("Unrecognized reporter"));
         }
     }
 
@@ -438,7 +438,7 @@ TEST_CASE( "Process can be configured on command line", "[config][command-line]"
         SECTION("-x must be numeric") {
             auto result = cli.parse({"test", "-x", "oops"});
             CHECK(!result);
-            REQUIRE_THAT(result.errorMessage(), Contains("convert") && Contains("oops"));
+            REQUIRE_THAT(result.errorMessage(), ContainsSubstring("convert") && ContainsSubstring("oops"));
         }
 
      SECTION("wait-for-keypress") {
@@ -460,7 +460,7 @@ TEST_CASE( "Process can be configured on command line", "[config][command-line]"
             CHECK(!result);
 
 #ifndef CATCH_CONFIG_DISABLE_MATCHERS
-            REQUIRE_THAT(result.errorMessage(), Contains("never") && Contains("both"));
+            REQUIRE_THAT(result.errorMessage(), ContainsSubstring("never") && ContainsSubstring("both"));
 #endif
         }
     }
@@ -534,7 +534,7 @@ TEST_CASE( "Process can be configured on command line", "[config][command-line]"
         SECTION( "error" ) {
             auto result = cli.parse({"test", "--use-colour", "wrong"});
             CHECK( !result );
-            CHECK_THAT( result.errorMessage(), Contains( "colour mode must be one of" ) );
+            CHECK_THAT( result.errorMessage(), ContainsSubstring( "colour mode must be one of" ) );
         }
     }
 

@@ -64,7 +64,7 @@ namespace Matchers {
     //! Creates matcher that accepts strings that are exactly equal to `str`
     StringEqualsMatcher Equals( std::string const& str, CaseSensitive caseSensitivity = CaseSensitive::Yes );
     //! Creates matcher that accepts strings that contain `str`
-    StringContainsMatcher Contains( std::string const& str, CaseSensitive caseSensitivity = CaseSensitive::Yes );
+    StringContainsMatcher ContainsSubstring( std::string const& str, CaseSensitive caseSensitivity = CaseSensitive::Yes );
     //! Creates matcher that accepts strings that _end_ with `str`
     EndsWithMatcher EndsWith( std::string const& str, CaseSensitive caseSensitivity = CaseSensitive::Yes );
     //! Creates matcher that accepts strings that _start_ with `str`

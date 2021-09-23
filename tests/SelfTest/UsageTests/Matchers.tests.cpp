@@ -105,12 +105,12 @@ namespace {
 } // end unnamed namespace
 
 TEST_CASE( "String matchers", "[matchers]" ) {
-    REQUIRE_THAT( testStringForMatching(), Contains( "string" ) );
+    REQUIRE_THAT( testStringForMatching(), ContainsSubstring( "string" ) );
     REQUIRE_THAT( testStringForMatching(),
-                  Contains( "string", Catch::CaseSensitive::No ) );
-    CHECK_THAT( testStringForMatching(), Contains( "abc" ) );
+                  ContainsSubstring( "string", Catch::CaseSensitive::No ) );
+    CHECK_THAT( testStringForMatching(), ContainsSubstring( "abc" ) );
     CHECK_THAT( testStringForMatching(),
-                Contains( "aBC", Catch::CaseSensitive::No ) );
+                ContainsSubstring( "aBC", Catch::CaseSensitive::No ) );
 
     CHECK_THAT( testStringForMatching(), StartsWith( "this" ) );
     CHECK_THAT( testStringForMatching(),
@@ -122,8 +122,8 @@ TEST_CASE( "String matchers", "[matchers]" ) {
 
 TEST_CASE( "Contains string matcher", "[.][failing][matchers]" ) {
     CHECK_THAT( testStringForMatching(),
-                Contains( "not there", Catch::CaseSensitive::No ) );
-    CHECK_THAT( testStringForMatching(), Contains( "STRING" ) );
+                ContainsSubstring( "not there", Catch::CaseSensitive::No ) );
+    CHECK_THAT( testStringForMatching(), ContainsSubstring( "STRING" ) );
 }
 
 TEST_CASE( "StartsWith string matcher", "[.][failing][matchers]" ) {
@@ -185,42 +185,42 @@ TEST_CASE( "Regex string matcher", "[matchers][.failing]" ) {
 TEST_CASE( "Matchers can be (AllOf) composed with the && operator",
            "[matchers][operators][operator&&]" ) {
     CHECK_THAT( testStringForMatching(),
-                Contains( "string" ) && Contains( "abc" ) &&
-                    Contains( "substring" ) && Contains( "contains" ) );
+                ContainsSubstring( "string" ) && ContainsSubstring( "abc" ) &&
+                    ContainsSubstring( "substring" ) && ContainsSubstring( "contains" ) );
 }
 
 TEST_CASE( "Matchers can be (AnyOf) composed with the || operator",
            "[matchers][operators][operator||]" ) {
     CHECK_THAT( testStringForMatching(),
-                Contains( "string" ) || Contains( "different" ) ||
-                    Contains( "random" ) );
+                ContainsSubstring( "string" ) || ContainsSubstring( "different" ) ||
+                    ContainsSubstring( "random" ) );
     CHECK_THAT( testStringForMatching2(),
-                Contains( "string" ) || Contains( "different" ) ||
-                    Contains( "random" ) );
+                ContainsSubstring( "string" ) || ContainsSubstring( "different" ) ||
+                    ContainsSubstring( "random" ) );
 }
 
 TEST_CASE( "Matchers can be composed with both && and ||",
            "[matchers][operators][operator||][operator&&]" ) {
     CHECK_THAT( testStringForMatching(),
-                ( Contains( "string" ) || Contains( "different" ) ) &&
-                    Contains( "substring" ) );
+                ( ContainsSubstring( "string" ) || ContainsSubstring( "different" ) ) &&
+                    ContainsSubstring( "substring" ) );
 }
 
 TEST_CASE( "Matchers can be composed with both && and || - failing",
            "[matchers][operators][operator||][operator&&][.failing]" ) {
     CHECK_THAT( testStringForMatching(),
-                ( Contains( "string" ) || Contains( "different" ) ) &&
-                    Contains( "random" ) );
+                ( ContainsSubstring( "string" ) || ContainsSubstring( "different" ) ) &&
+                    ContainsSubstring( "random" ) );
 }
 
 TEST_CASE( "Matchers can be negated (Not) with the ! operator",
            "[matchers][operators][not]" ) {
-    CHECK_THAT( testStringForMatching(), !Contains( "different" ) );
+    CHECK_THAT( testStringForMatching(), !ContainsSubstring( "different" ) );
 }
 
 TEST_CASE( "Matchers can be negated (Not) with the ! operator - failing",
            "[matchers][operators][not][.failing]" ) {
-    CHECK_THAT( testStringForMatching(), !Contains( "substring" ) );
+    CHECK_THAT( testStringForMatching(), !ContainsSubstring( "substring" ) );
 }
 
 template <typename T> struct CustomAllocator : private std::allocator<T> {

@@ -893,9 +893,9 @@ ok {test-number} - first.matchCalled for: true
 # Composed matchers shortcircuit
 ok {test-number} - !second.matchCalled for: true
 # Contains string matcher
-not ok {test-number} - testStringForMatching(), Contains( "not there", Catch::CaseSensitive::No ) for: "this string contains 'abc' as a substring" contains: "not there" (case insensitive)
+not ok {test-number} - testStringForMatching(), ContainsSubstring( "not there", Catch::CaseSensitive::No ) for: "this string contains 'abc' as a substring" contains: "not there" (case insensitive)
 # Contains string matcher
-not ok {test-number} - testStringForMatching(), Contains( "STRING" ) for: "this string contains 'abc' as a substring" contains: "STRING"
+not ok {test-number} - testStringForMatching(), ContainsSubstring( "STRING" ) for: "this string contains 'abc' as a substring" contains: "STRING"
 # Copy and then generate a range
 ok {test-number} - elem % 2 == 1 for: 1 == 1
 # Copy and then generate a range
@@ -1039,9 +1039,9 @@ ok {test-number} - thisThrows(), StartsWith( "expected" ) for: "expected excepti
 # Exception messages can be tested for
 ok {test-number} - thisThrows(), EndsWith( "exception" ) for: "expected exception" ends with: "exception"
 # Exception messages can be tested for
-ok {test-number} - thisThrows(), Contains( "except" ) for: "expected exception" contains: "except"
+ok {test-number} - thisThrows(), ContainsSubstring( "except" ) for: "expected exception" contains: "except"
 # Exception messages can be tested for
-ok {test-number} - thisThrows(), Contains( "exCept", Catch::CaseSensitive::No ) for: "expected exception" contains: "except" (case insensitive)
+ok {test-number} - thisThrows(), ContainsSubstring( "exCept", Catch::CaseSensitive::No ) for: "expected exception" contains: "except" (case insensitive)
 # Exceptions matchers
 ok {test-number} - throwsDerivedException(), DerivedException, Message( "DerivedException::what" ) for: DerivedException::what exception message matches "DerivedException::what"
 # Exceptions matchers
@@ -1791,19 +1791,19 @@ ok {test-number} - d <= Approx( 1.22 ).epsilon(0.1) for: 1.23 <= Approx( 1.22 )
 # ManuallyRegistered
 ok {test-number} - with 1 message: 'was called'
 # Matchers can be (AllOf) composed with the && operator
-ok {test-number} - testStringForMatching(), Contains( "string" ) && Contains( "abc" ) && Contains( "substring" ) && Contains( "contains" ) for: "this string contains 'abc' as a substring" ( contains: "string" and contains: "abc" and contains: "substring" and contains: "contains" )
+ok {test-number} - testStringForMatching(), ContainsSubstring( "string" ) && ContainsSubstring( "abc" ) && ContainsSubstring( "substring" ) && ContainsSubstring( "contains" ) for: "this string contains 'abc' as a substring" ( contains: "string" and contains: "abc" and contains: "substring" and contains: "contains" )
 # Matchers can be (AnyOf) composed with the || operator
-ok {test-number} - testStringForMatching(), Contains( "string" ) || Contains( "different" ) || Contains( "random" ) for: "this string contains 'abc' as a substring" ( contains: "string" or contains: "different" or contains: "random" )
+ok {test-number} - testStringForMatching(), ContainsSubstring( "string" ) || ContainsSubstring( "different" ) || ContainsSubstring( "random" ) for: "this string contains 'abc' as a substring" ( contains: "string" or contains: "different" or contains: "random" )
 # Matchers can be (AnyOf) composed with the || operator
-ok {test-number} - testStringForMatching2(), Contains( "string" ) || Contains( "different" ) || Contains( "random" ) for: "some completely different text that contains one common word" ( contains: "string" or contains: "different" or contains: "random" )
+ok {test-number} - testStringForMatching2(), ContainsSubstring( "string" ) || ContainsSubstring( "different" ) || ContainsSubstring( "random" ) for: "some completely different text that contains one common word" ( contains: "string" or contains: "different" or contains: "random" )
 # Matchers can be composed with both && and ||
-ok {test-number} - testStringForMatching(), ( Contains( "string" ) || Contains( "different" ) ) && Contains( "substring" ) for: "this string contains 'abc' as a substring" ( ( contains: "string" or contains: "different" ) and contains: "substring" )
+ok {test-number} - testStringForMatching(), ( ContainsSubstring( "string" ) || ContainsSubstring( "different" ) ) && ContainsSubstring( "substring" ) for: "this string contains 'abc' as a substring" ( ( contains: "string" or contains: "different" ) and contains: "substring" )
 # Matchers can be composed with both && and || - failing
-not ok {test-number} - testStringForMatching(), ( Contains( "string" ) || Contains( "different" ) ) && Contains( "random" ) for: "this string contains 'abc' as a substring" ( ( contains: "string" or contains: "different" ) and contains: "random" )
+not ok {test-number} - testStringForMatching(), ( ContainsSubstring( "string" ) || ContainsSubstring( "different" ) ) && ContainsSubstring( "random" ) for: "this string contains 'abc' as a substring" ( ( contains: "string" or contains: "different" ) and contains: "random" )
 # Matchers can be negated (Not) with the ! operator
-ok {test-number} - testStringForMatching(), !Contains( "different" ) for: "this string contains 'abc' as a substring" not contains: "different"
+ok {test-number} - testStringForMatching(), !ContainsSubstring( "different" ) for: "this string contains 'abc' as a substring" not contains: "different"
 # Matchers can be negated (Not) with the ! operator - failing
-not ok {test-number} - testStringForMatching(), !Contains( "substring" ) for: "this string contains 'abc' as a substring" not contains: "substring"
+not ok {test-number} - testStringForMatching(), !ContainsSubstring( "substring" ) for: "this string contains 'abc' as a substring" not contains: "substring"
 # Mismatching exception messages failing the test
 ok {test-number} - thisThrows(), "expected exception" for: "expected exception" equals: "expected exception"
 # Mismatching exception messages failing the test
@@ -2355,7 +2355,7 @@ ok {test-number} - !(cli.parse({ "test", "-r", "xml", "-r", "junit" })) for: !{?
 # Process can be configured on command line
 ok {test-number} - !result for: true
 # Process can be configured on command line
-ok {test-number} - result.errorMessage(), Contains("Unrecognized reporter") for: "Unrecognized reporter, 'unsupported'. Check available with --list-reporters" contains: "Unrecognized reporter"
+ok {test-number} - result.errorMessage(), ContainsSubstring("Unrecognized reporter") for: "Unrecognized reporter, 'unsupported'. Check available with --list-reporters" contains: "Unrecognized reporter"
 # Process can be configured on command line
 ok {test-number} - cli.parse({"test", "-b"}) for: {?}
 # Process can be configured on command line
@@ -2375,7 +2375,7 @@ ok {test-number} - config.abortAfter == 2 for: 2 == 2
 # Process can be configured on command line
 ok {test-number} - !result for: true
 # Process can be configured on command line
-ok {test-number} - result.errorMessage(), Contains("convert") && Contains("oops") for: "Unable to convert 'oops' to destination type" ( contains: "convert" and contains: "oops" )
+ok {test-number} - result.errorMessage(), ContainsSubstring("convert") && ContainsSubstring("oops") for: "Unable to convert 'oops' to destination type" ( contains: "convert" and contains: "oops" )
 # Process can be configured on command line
 ok {test-number} - cli.parse({"test", "--wait-for-keypress", std::get<0>(input)}) for: {?}
 # Process can be configured on command line
@@ -2395,7 +2395,7 @@ ok {test-number} - config.waitForKeypress == std::get<1>(input) for: 3 == 3
 # Process can be configured on command line
 ok {test-number} - !result for: true
 # Process can be configured on command line
-ok {test-number} - result.errorMessage(), Contains("never") && Contains("both") for: "keypress argument must be one of: never, start, exit or both. 'sometimes' not recognised" ( contains: "never" and contains: "both" )
+ok {test-number} - result.errorMessage(), ContainsSubstring("never") && ContainsSubstring("both") for: "keypress argument must be one of: never, start, exit or both. 'sometimes' not recognised" ( contains: "never" and contains: "both" )
 # Process can be configured on command line
 ok {test-number} - cli.parse({"test", "-e"}) for: {?}
 # Process can be configured on command line
@@ -2439,7 +2439,7 @@ ok {test-number} - config.useColour == UseColour::No for: 2 == 2
 # Process can be configured on command line
 ok {test-number} - !result for: true
 # Process can be configured on command line
-ok {test-number} - result.errorMessage(), Contains( "colour mode must be one of" ) for: "colour mode must be one of: auto, yes or no. 'wrong' not recognised" contains: "colour mode must be one of"
+ok {test-number} - result.errorMessage(), ContainsSubstring( "colour mode must be one of" ) for: "colour mode must be one of: auto, yes or no. 'wrong' not recognised" contains: "colour mode must be one of"
 # Process can be configured on command line
 ok {test-number} - cli.parse({ "test", "--benchmark-samples=200" }) for: {?}
 # Process can be configured on command line
@@ -2481,99 +2481,99 @@ ok {test-number} - actual, !UnorderedEquals( expected ) for: { 'a', 'b' } not Un
 # Reporter's write listings to provided stream
 ok {test-number} - !(factories.empty()) for: !false
 # Reporter's write listings to provided stream
-ok {test-number} - listingString, Contains("fakeTag"s) for: "All available tags:    1  [fakeTag] 1 tag  " contains: "fakeTag" with 1 message: 'Tested reporter: automake'
+ok {test-number} - listingString, ContainsSubstring("fakeTag"s) for: "All available tags:    1  [fakeTag] 1 tag  " contains: "fakeTag" with 1 message: 'Tested reporter: automake'
 # Reporter's write listings to provided stream
 ok {test-number} - !(factories.empty()) for: !false
 # Reporter's write listings to provided stream
-ok {test-number} - listingString, Contains("fake reporter"s) for: "Available reporters:   fake reporter:  fake description  " contains: "fake reporter" with 1 message: 'Tested reporter: automake'
+ok {test-number} - listingString, ContainsSubstring("fake reporter"s) for: "Available reporters:   fake reporter:  fake description  " contains: "fake reporter" with 1 message: 'Tested reporter: automake'
 # Reporter's write listings to provided stream
 ok {test-number} - !(factories.empty()) for: !false
 # Reporter's write listings to provided stream
-ok {test-number} - listingString, Contains( "fake test name"s ) && Contains( "fakeTestTag"s ) for: "All available test cases:   fake test name       [fakeTestTag] 1 test case  " ( contains: "fake test name" and contains: "fakeTestTag" ) with 1 message: 'Tested reporter: automake'
+ok {test-number} - listingString, ContainsSubstring( "fake test name"s ) && ContainsSubstring( "fakeTestTag"s ) for: "All available test cases:   fake test name       [fakeTestTag] 1 test case  " ( contains: "fake test name" and contains: "fakeTestTag" ) with 1 message: 'Tested reporter: automake'
 # Reporter's write listings to provided stream
 ok {test-number} - !(factories.empty()) for: !false
 # Reporter's write listings to provided stream
-ok {test-number} - listingString, Contains("fakeTag"s) for: "All available tags:    1  [fakeTag] 1 tag  " contains: "fakeTag" with 1 message: 'Tested reporter: compact'
+ok {test-number} - listingString, ContainsSubstring("fakeTag"s) for: "All available tags:    1  [fakeTag] 1 tag  " contains: "fakeTag" with 1 message: 'Tested reporter: compact'
 # Reporter's write listings to provided stream
 ok {test-number} - !(factories.empty()) for: !false
 # Reporter's write listings to provided stream
-ok {test-number} - listingString, Contains("fake reporter"s) for: "Available reporters:   fake reporter:  fake description  " contains: "fake reporter" with 1 message: 'Tested reporter: compact'
+ok {test-number} - listingString, ContainsSubstring("fake reporter"s) for: "Available reporters:   fake reporter:  fake description  " contains: "fake reporter" with 1 message: 'Tested reporter: compact'
 # Reporter's write listings to provided stream
 ok {test-number} - !(factories.empty()) for: !false
 # Reporter's write listings to provided stream
-ok {test-number} - listingString, Contains( "fake test name"s ) && Contains( "fakeTestTag"s ) for: "All available test cases:   fake test name       [fakeTestTag] 1 test case  " ( contains: "fake test name" and contains: "fakeTestTag" ) with 1 message: 'Tested reporter: compact'
+ok {test-number} - listingString, ContainsSubstring( "fake test name"s ) && ContainsSubstring( "fakeTestTag"s ) for: "All available test cases:   fake test name       [fakeTestTag] 1 test case  " ( contains: "fake test name" and contains: "fakeTestTag" ) with 1 message: 'Tested reporter: compact'
 # Reporter's write listings to provided stream
 ok {test-number} - !(factories.empty()) for: !false
 # Reporter's write listings to provided stream
-ok {test-number} - listingString, Contains("fakeTag"s) for: "All available tags:    1  [fakeTag] 1 tag  " contains: "fakeTag" with 1 message: 'Tested reporter: console'
+ok {test-number} - listingString, ContainsSubstring("fakeTag"s) for: "All available tags:    1  [fakeTag] 1 tag  " contains: "fakeTag" with 1 message: 'Tested reporter: console'
 # Reporter's write listings to provided stream
 ok {test-number} - !(factories.empty()) for: !false
 # Reporter's write listings to provided stream
-ok {test-number} - listingString, Contains("fake reporter"s) for: "Available reporters:   fake reporter:  fake description  " contains: "fake reporter" with 1 message: 'Tested reporter: console'
+ok {test-number} - listingString, ContainsSubstring("fake reporter"s) for: "Available reporters:   fake reporter:  fake description  " contains: "fake reporter" with 1 message: 'Tested reporter: console'
 # Reporter's write listings to provided stream
 ok {test-number} - !(factories.empty()) for: !false
 # Reporter's write listings to provided stream
-ok {test-number} - listingString, Contains( "fake test name"s ) && Contains( "fakeTestTag"s ) for: "All available test cases:   fake test name       [fakeTestTag] 1 test case  " ( contains: "fake test name" and contains: "fakeTestTag" ) with 1 message: 'Tested reporter: console'
+ok {test-number} - listingString, ContainsSubstring( "fake test name"s ) && ContainsSubstring( "fakeTestTag"s ) for: "All available test cases:   fake test name       [fakeTestTag] 1 test case  " ( contains: "fake test name" and contains: "fakeTestTag" ) with 1 message: 'Tested reporter: console'
 # Reporter's write listings to provided stream
 ok {test-number} - !(factories.empty()) for: !false
 # Reporter's write listings to provided stream
-ok {test-number} - listingString, Contains("fakeTag"s) for: "<?xml version="1.0" encoding="UTF-8"?> All available tags:    1  [fakeTag] 1 tag  " contains: "fakeTag" with 1 message: 'Tested reporter: junit'
+ok {test-number} - listingString, ContainsSubstring("fakeTag"s) for: "<?xml version="1.0" encoding="UTF-8"?> All available tags:    1  [fakeTag] 1 tag  " contains: "fakeTag" with 1 message: 'Tested reporter: junit'
 # Reporter's write listings to provided stream
 ok {test-number} - !(factories.empty()) for: !false
 # Reporter's write listings to provided stream
-ok {test-number} - listingString, Contains("fake reporter"s) for: "<?xml version="1.0" encoding="UTF-8"?> Available reporters:   fake reporter:  fake description  " contains: "fake reporter" with 1 message: 'Tested reporter: junit'
+ok {test-number} - listingString, ContainsSubstring("fake reporter"s) for: "<?xml version="1.0" encoding="UTF-8"?> Available reporters:   fake reporter:  fake description  " contains: "fake reporter" with 1 message: 'Tested reporter: junit'
 # Reporter's write listings to provided stream
 ok {test-number} - !(factories.empty()) for: !false
 # Reporter's write listings to provided stream
-ok {test-number} - listingString, Contains( "fake test name"s ) && Contains( "fakeTestTag"s ) for: "<?xml version="1.0" encoding="UTF-8"?> All available test cases:   fake test name       [fakeTestTag] 1 test case  " ( contains: "fake test name" and contains: "fakeTestTag" ) with 1 message: 'Tested reporter: junit'
+ok {test-number} - listingString, ContainsSubstring( "fake test name"s ) && ContainsSubstring( "fakeTestTag"s ) for: "<?xml version="1.0" encoding="UTF-8"?> All available test cases:   fake test name       [fakeTestTag] 1 test case  " ( contains: "fake test name" and contains: "fakeTestTag" ) with 1 message: 'Tested reporter: junit'
 # Reporter's write listings to provided stream
 ok {test-number} - !(factories.empty()) for: !false
 # Reporter's write listings to provided stream
-ok {test-number} - listingString, Contains("fakeTag"s) for: "<?xml version="1.0" encoding="UTF-8"?> All available tags:    1  [fakeTag] 1 tag  " contains: "fakeTag" with 1 message: 'Tested reporter: sonarqube'
+ok {test-number} - listingString, ContainsSubstring("fakeTag"s) for: "<?xml version="1.0" encoding="UTF-8"?> All available tags:    1  [fakeTag] 1 tag  " contains: "fakeTag" with 1 message: 'Tested reporter: sonarqube'
 # Reporter's write listings to provided stream
 ok {test-number} - !(factories.empty()) for: !false
 # Reporter's write listings to provided stream
-ok {test-number} - listingString, Contains("fake reporter"s) for: "<?xml version="1.0" encoding="UTF-8"?> Available reporters:   fake reporter:  fake description  " contains: "fake reporter" with 1 message: 'Tested reporter: sonarqube'
+ok {test-number} - listingString, ContainsSubstring("fake reporter"s) for: "<?xml version="1.0" encoding="UTF-8"?> Available reporters:   fake reporter:  fake description  " contains: "fake reporter" with 1 message: 'Tested reporter: sonarqube'
 # Reporter's write listings to provided stream
 ok {test-number} - !(factories.empty()) for: !false
 # Reporter's write listings to provided stream
-ok {test-number} - listingString, Contains( "fake test name"s ) && Contains( "fakeTestTag"s ) for: "<?xml version="1.0" encoding="UTF-8"?> All available test cases:   fake test name       [fakeTestTag] 1 test case  " ( contains: "fake test name" and contains: "fakeTestTag" ) with 1 message: 'Tested reporter: sonarqube'
+ok {test-number} - listingString, ContainsSubstring( "fake test name"s ) && ContainsSubstring( "fakeTestTag"s ) for: "<?xml version="1.0" encoding="UTF-8"?> All available test cases:   fake test name       [fakeTestTag] 1 test case  " ( contains: "fake test name" and contains: "fakeTestTag" ) with 1 message: 'Tested reporter: sonarqube'
 # Reporter's write listings to provided stream
 ok {test-number} - !(factories.empty()) for: !false
 # Reporter's write listings to provided stream
-ok {test-number} - listingString, Contains("fakeTag"s) for: "All available tags:    1  [fakeTag] 1 tag  " contains: "fakeTag" with 1 message: 'Tested reporter: tap'
+ok {test-number} - listingString, ContainsSubstring("fakeTag"s) for: "All available tags:    1  [fakeTag] 1 tag  " contains: "fakeTag" with 1 message: 'Tested reporter: tap'
 # Reporter's write listings to provided stream
 ok {test-number} - !(factories.empty()) for: !false
 # Reporter's write listings to provided stream
-ok {test-number} - listingString, Contains("fake reporter"s) for: "Available reporters:   fake reporter:  fake description  " contains: "fake reporter" with 1 message: 'Tested reporter: tap'
+ok {test-number} - listingString, ContainsSubstring("fake reporter"s) for: "Available reporters:   fake reporter:  fake description  " contains: "fake reporter" with 1 message: 'Tested reporter: tap'
 # Reporter's write listings to provided stream
 ok {test-number} - !(factories.empty()) for: !false
 # Reporter's write listings to provided stream
-ok {test-number} - listingString, Contains( "fake test name"s ) && Contains( "fakeTestTag"s ) for: "All available test cases:   fake test name       [fakeTestTag] 1 test case  " ( contains: "fake test name" and contains: "fakeTestTag" ) with 1 message: 'Tested reporter: tap'
+ok {test-number} - listingString, ContainsSubstring( "fake test name"s ) && ContainsSubstring( "fakeTestTag"s ) for: "All available test cases:   fake test name       [fakeTestTag] 1 test case  " ( contains: "fake test name" and contains: "fakeTestTag" ) with 1 message: 'Tested reporter: tap'
 # Reporter's write listings to provided stream
 ok {test-number} - !(factories.empty()) for: !false
 # Reporter's write listings to provided stream
-ok {test-number} - listingString, Contains("fakeTag"s) for: "All available tags:    1  [fakeTag] 1 tag  " contains: "fakeTag" with 1 message: 'Tested reporter: teamcity'
+ok {test-number} - listingString, ContainsSubstring("fakeTag"s) for: "All available tags:    1  [fakeTag] 1 tag  " contains: "fakeTag" with 1 message: 'Tested reporter: teamcity'
 # Reporter's write listings to provided stream
 ok {test-number} - !(factories.empty()) for: !false
 # Reporter's write listings to provided stream
-ok {test-number} - listingString, Contains("fake reporter"s) for: "Available reporters:   fake reporter:  fake description  " contains: "fake reporter" with 1 message: 'Tested reporter: teamcity'
+ok {test-number} - listingString, ContainsSubstring("fake reporter"s) for: "Available reporters:   fake reporter:  fake description  " contains: "fake reporter" with 1 message: 'Tested reporter: teamcity'
 # Reporter's write listings to provided stream
 ok {test-number} - !(factories.empty()) for: !false
 # Reporter's write listings to provided stream
-ok {test-number} - listingString, Contains( "fake test name"s ) && Contains( "fakeTestTag"s ) for: "All available test cases:   fake test name       [fakeTestTag] 1 test case  " ( contains: "fake test name" and contains: "fakeTestTag" ) with 1 message: 'Tested reporter: teamcity'
+ok {test-number} - listingString, ContainsSubstring( "fake test name"s ) && ContainsSubstring( "fakeTestTag"s ) for: "All available test cases:   fake test name       [fakeTestTag] 1 test case  " ( contains: "fake test name" and contains: "fakeTestTag" ) with 1 message: 'Tested reporter: teamcity'
 # Reporter's write listings to provided stream
 ok {test-number} - !(factories.empty()) for: !false
 # Reporter's write listings to provided stream
-ok {test-number} - listingString, Contains("fakeTag"s) for: "<?xml version="1.0" encoding="UTF-8"?> <TagsFromMatchingTests>   <Tag>     <Count>1</Count>     <Aliases>       <Alias>fakeTag</Alias>     </Aliases>   </Tag> </TagsFromMatchingTests>" contains: "fakeTag" with 1 message: 'Tested reporter: xml'
+ok {test-number} - listingString, ContainsSubstring("fakeTag"s) for: "<?xml version="1.0" encoding="UTF-8"?> <TagsFromMatchingTests>   <Tag>     <Count>1</Count>     <Aliases>       <Alias>fakeTag</Alias>     </Aliases>   </Tag> </TagsFromMatchingTests>" contains: "fakeTag" with 1 message: 'Tested reporter: xml'
 # Reporter's write listings to provided stream
 ok {test-number} - !(factories.empty()) for: !false
 # Reporter's write listings to provided stream
-ok {test-number} - listingString, Contains("fake reporter"s) for: "<?xml version="1.0" encoding="UTF-8"?> <AvailableReporters>   <Reporter>     <Name>fake reporter</Name>     <Description>fake description</Description>   </Reporter> </AvailableReporters>" contains: "fake reporter" with 1 message: 'Tested reporter: xml'
+ok {test-number} - listingString, ContainsSubstring("fake reporter"s) for: "<?xml version="1.0" encoding="UTF-8"?> <AvailableReporters>   <Reporter>     <Name>fake reporter</Name>     <Description>fake description</Description>   </Reporter> </AvailableReporters>" contains: "fake reporter" with 1 message: 'Tested reporter: xml'
 # Reporter's write listings to provided stream
 ok {test-number} - !(factories.empty()) for: !false
 # Reporter's write listings to provided stream
-ok {test-number} - listingString, Contains( "fake test name"s ) && Contains( "fakeTestTag"s ) for: "<?xml version="1.0" encoding="UTF-8"?> <MatchingTests>   <TestCase>     <Name>fake test name</Name>     <ClassName/>     <Tags>[fakeTestTag]</Tags>     <SourceInfo>       <File>fake-file.cpp</File>       <Line>123456789</Line>     </SourceInfo>   </TestCase> </MatchingTests>" ( contains: "fake test name" and contains: "fakeTestTag" ) with 1 message: 'Tested reporter: xml'
+ok {test-number} - listingString, ContainsSubstring( "fake test name"s ) && ContainsSubstring( "fakeTestTag"s ) for: "<?xml version="1.0" encoding="UTF-8"?> <MatchingTests>   <TestCase>     <Name>fake test name</Name>     <ClassName/>     <Tags>[fakeTestTag]</Tags>     <SourceInfo>       <File>fake-file.cpp</File>       <Line>123456789</Line>     </SourceInfo>   </TestCase> </MatchingTests>" ( contains: "fake test name" and contains: "fakeTestTag" ) with 1 message: 'Tested reporter: xml'
 # SUCCEED counts as a test pass
 ok {test-number} - with 1 message: 'this is a success'
 # SUCCEED does not require an argument
@@ -2636,13 +2636,13 @@ ok {test-number} - Catch::Detail::stringify(arr) == "{ 3, 2, 1 }" for: "{ 3, 2, 
 # Static arrays are convertible to string
 ok {test-number} - Catch::Detail::stringify(arr) == R"({ { "1:1", "1:2", "1:3" }, { "2:1", "2:2" } })" for: "{ { "1:1", "1:2", "1:3" }, { "2:1", "2:2" } }" == "{ { "1:1", "1:2", "1:3" }, { "2:1", "2:2" } }"
 # String matchers
-ok {test-number} - testStringForMatching(), Contains( "string" ) for: "this string contains 'abc' as a substring" contains: "string"
+ok {test-number} - testStringForMatching(), ContainsSubstring( "string" ) for: "this string contains 'abc' as a substring" contains: "string"
 # String matchers
-ok {test-number} - testStringForMatching(), Contains( "string", Catch::CaseSensitive::No ) for: "this string contains 'abc' as a substring" contains: "string" (case insensitive)
+ok {test-number} - testStringForMatching(), ContainsSubstring( "string", Catch::CaseSensitive::No ) for: "this string contains 'abc' as a substring" contains: "string" (case insensitive)
 # String matchers
-ok {test-number} - testStringForMatching(), Contains( "abc" ) for: "this string contains 'abc' as a substring" contains: "abc"
+ok {test-number} - testStringForMatching(), ContainsSubstring( "abc" ) for: "this string contains 'abc' as a substring" contains: "abc"
 # String matchers
-ok {test-number} - testStringForMatching(), Contains( "aBC", Catch::CaseSensitive::No ) for: "this string contains 'abc' as a substring" contains: "abc" (case insensitive)
+ok {test-number} - testStringForMatching(), ContainsSubstring( "aBC", Catch::CaseSensitive::No ) for: "this string contains 'abc' as a substring" contains: "abc" (case insensitive)
 # String matchers
 ok {test-number} - testStringForMatching(), StartsWith( "this" ) for: "this string contains 'abc' as a substring" starts with: "this"
 # String matchers
@@ -2782,13 +2782,13 @@ ok {test-number} - now != later for: {iso8601-timestamp} != {iso8601-timestamp}
 # Tabs and newlines show in output
 not ok {test-number} - s1 == s2 for: "if ($b == 10) { 		$a	= 20; }" == "if ($b == 10) { 	$a = 20; } "
 # Tag alias can be registered against tag patterns
-ok {test-number} - what, Contains( "[@zzz]" ) for: "error: tag alias, '[@zzz]' already registered. 	First seen at: file:2 	Redefined at: file:10" contains: "[@zzz]"
+ok {test-number} - what, ContainsSubstring( "[@zzz]" ) for: "error: tag alias, '[@zzz]' already registered. 	First seen at: file:2 	Redefined at: file:10" contains: "[@zzz]"
 # Tag alias can be registered against tag patterns
-ok {test-number} - what, Contains( "file" ) for: "error: tag alias, '[@zzz]' already registered. 	First seen at: file:2 	Redefined at: file:10" contains: "file"
+ok {test-number} - what, ContainsSubstring( "file" ) for: "error: tag alias, '[@zzz]' already registered. 	First seen at: file:2 	Redefined at: file:10" contains: "file"
 # Tag alias can be registered against tag patterns
-ok {test-number} - what, Contains( "2" ) for: "error: tag alias, '[@zzz]' already registered. 	First seen at: file:2 	Redefined at: file:10" contains: "2"
+ok {test-number} - what, ContainsSubstring( "2" ) for: "error: tag alias, '[@zzz]' already registered. 	First seen at: file:2 	Redefined at: file:10" contains: "2"
 # Tag alias can be registered against tag patterns
-ok {test-number} - what, Contains( "10" ) for: "error: tag alias, '[@zzz]' already registered. 	First seen at: file:2 	Redefined at: file:10" contains: "10"
+ok {test-number} - what, ContainsSubstring( "10" ) for: "error: tag alias, '[@zzz]' already registered. 	First seen at: file:2 	Redefined at: file:10" contains: "10"
 # Tag alias can be registered against tag patterns
 ok {test-number} - registry.add( "[no ampersat]", "", Catch::SourceLineInfo( "file", 3 ) )
 # Tag alias can be registered against tag patterns
@@ -3118,11 +3118,11 @@ not ok {test-number} - explicitly
 # The NO_FAIL macro reports a failure but does not fail the test
 ok {test-number} - 1 == 2  # TODO
 # The default listing implementation write to provided stream
-ok {test-number} - listingString, Contains("[fakeTag]"s) for: "All available tags:    1  [fakeTag] 1 tag  " contains: "[fakeTag]"
+ok {test-number} - listingString, ContainsSubstring("[fakeTag]"s) for: "All available tags:    1  [fakeTag] 1 tag  " contains: "[fakeTag]"
 # The default listing implementation write to provided stream
-ok {test-number} - listingString, Contains("fake reporter"s) for: "Available reporters:   fake reporter:  fake description  " contains: "fake reporter"
+ok {test-number} - listingString, ContainsSubstring("fake reporter"s) for: "Available reporters:   fake reporter:  fake description  " contains: "fake reporter"
 # The default listing implementation write to provided stream
-ok {test-number} - listingString, Contains( "fake test name"s ) && Contains( "fakeTestTag"s ) for: "All available test cases:   fake test name       [fakeTestTag] 1 test case  " ( contains: "fake test name" and contains: "fakeTestTag" )
+ok {test-number} - listingString, ContainsSubstring( "fake test name"s ) && ContainsSubstring( "fakeTestTag"s ) for: "All available test cases:   fake test name       [fakeTestTag] 1 test case  " ( contains: "fake test name" and contains: "fakeTestTag" )
 # This test 'should' fail but doesn't
 ok {test-number} - with 1 message: 'oops!'
 # Thrown string literals are translated
@@ -3552,7 +3552,7 @@ ok {test-number} - encode( "[\x01]" ) == "[\\x01]" for: "[\x01]" == "[\x01]"
 # XmlEncode
 ok {test-number} - encode( "[\x7F]" ) == "[\\x7F]" for: "[\x7F]" == "[\x7F]"
 # XmlWriter writes boolean attributes as true/false
-ok {test-number} - stream.str(), Contains(R"(attr1="true")") && Contains(R"(attr2="false")") for: "<?xml version="1.0" encoding="UTF-8"?> <Element1 attr1="true" attr2="false"/> " ( contains: "attr1="true"" and contains: "attr2="false"" )
+ok {test-number} - stream.str(), ContainsSubstring(R"(attr1="true")") && ContainsSubstring(R"(attr2="false")") for: "<?xml version="1.0" encoding="UTF-8"?> <Element1 attr1="true" attr2="false"/> " ( contains: "attr1="true"" and contains: "attr2="false"" )
 # analyse no analysis
 ok {test-number} - analysis.mean.point.count() == 23 for: 23.0 == 23
 # analyse no analysis

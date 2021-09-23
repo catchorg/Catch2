@@ -3519,13 +3519,13 @@ Matchers.tests.cpp:<line number>
 ...............................................................................
 
 Matchers.tests.cpp:<line number>: FAILED:
-  CHECK_THAT( testStringForMatching(), Contains( "not there", Catch::CaseSensitive::No ) )
+  CHECK_THAT( testStringForMatching(), ContainsSubstring( "not there", Catch::CaseSensitive::No ) )
 with expansion:
   "this string contains 'abc' as a substring" contains: "not there" (case
   insensitive)
 
 Matchers.tests.cpp:<line number>: FAILED:
-  CHECK_THAT( testStringForMatching(), Contains( "STRING" ) )
+  CHECK_THAT( testStringForMatching(), ContainsSubstring( "STRING" ) )
 with expansion:
   "this string contains 'abc' as a substring" contains: "STRING"
 
@@ -4119,12 +4119,12 @@ with expansion:
   "expected exception" ends with: "exception"
 
 Exception.tests.cpp:<line number>: PASSED:
-  REQUIRE_THROWS_WITH( thisThrows(), Contains( "except" ) )
+  REQUIRE_THROWS_WITH( thisThrows(), ContainsSubstring( "except" ) )
 with expansion:
   "expected exception" contains: "except"
 
 Exception.tests.cpp:<line number>: PASSED:
-  REQUIRE_THROWS_WITH( thisThrows(), Contains( "exCept", Catch::CaseSensitive::No ) )
+  REQUIRE_THROWS_WITH( thisThrows(), ContainsSubstring( "exCept", Catch::CaseSensitive::No ) )
 with expansion:
   "expected exception" contains: "except" (case insensitive)
 
@@ -6893,7 +6893,7 @@ Matchers.tests.cpp:<line number>
 ...............................................................................
 
 Matchers.tests.cpp:<line number>: PASSED:
-  CHECK_THAT( testStringForMatching(), Contains( "string" ) && Contains( "abc" ) && Contains( "substring" ) && Contains( "contains" ) )
+  CHECK_THAT( testStringForMatching(), ContainsSubstring( "string" ) && ContainsSubstring( "abc" ) && ContainsSubstring( "substring" ) && ContainsSubstring( "contains" ) )
 with expansion:
   "this string contains 'abc' as a substring" ( contains: "string" and
   contains: "abc" and contains: "substring" and contains: "contains" )
@@ -6905,13 +6905,13 @@ Matchers.tests.cpp:<line number>
 ...............................................................................
 
 Matchers.tests.cpp:<line number>: PASSED:
-  CHECK_THAT( testStringForMatching(), Contains( "string" ) || Contains( "different" ) || Contains( "random" ) )
+  CHECK_THAT( testStringForMatching(), ContainsSubstring( "string" ) || ContainsSubstring( "different" ) || ContainsSubstring( "random" ) )
 with expansion:
   "this string contains 'abc' as a substring" ( contains: "string" or contains:
   "different" or contains: "random" )
 
 Matchers.tests.cpp:<line number>: PASSED:
-  CHECK_THAT( testStringForMatching2(), Contains( "string" ) || Contains( "different" ) || Contains( "random" ) )
+  CHECK_THAT( testStringForMatching2(), ContainsSubstring( "string" ) || ContainsSubstring( "different" ) || ContainsSubstring( "random" ) )
 with expansion:
   "some completely different text that contains one common word" ( contains:
   "string" or contains: "different" or contains: "random" )
@@ -6923,7 +6923,7 @@ Matchers.tests.cpp:<line number>
 ...............................................................................
 
 Matchers.tests.cpp:<line number>: PASSED:
-  CHECK_THAT( testStringForMatching(), ( Contains( "string" ) || Contains( "different" ) ) && Contains( "substring" ) )
+  CHECK_THAT( testStringForMatching(), ( ContainsSubstring( "string" ) || ContainsSubstring( "different" ) ) && ContainsSubstring( "substring" ) )
 with expansion:
   "this string contains 'abc' as a substring" ( ( contains: "string" or
   contains: "different" ) and contains: "substring" )
@@ -6935,7 +6935,7 @@ Matchers.tests.cpp:<line number>
 ...............................................................................
 
 Matchers.tests.cpp:<line number>: FAILED:
-  CHECK_THAT( testStringForMatching(), ( Contains( "string" ) || Contains( "different" ) ) && Contains( "random" ) )
+  CHECK_THAT( testStringForMatching(), ( ContainsSubstring( "string" ) || ContainsSubstring( "different" ) ) && ContainsSubstring( "random" ) )
 with expansion:
   "this string contains 'abc' as a substring" ( ( contains: "string" or
   contains: "different" ) and contains: "random" )
@@ -6947,7 +6947,7 @@ Matchers.tests.cpp:<line number>
 ...............................................................................
 
 Matchers.tests.cpp:<line number>: PASSED:
-  CHECK_THAT( testStringForMatching(), !Contains( "different" ) )
+  CHECK_THAT( testStringForMatching(), !ContainsSubstring( "different" ) )
 with expansion:
   "this string contains 'abc' as a substring" not contains: "different"
 
@@ -6958,7 +6958,7 @@ Matchers.tests.cpp:<line number>
 ...............................................................................
 
 Matchers.tests.cpp:<line number>: FAILED:
-  CHECK_THAT( testStringForMatching(), !Contains( "substring" ) )
+  CHECK_THAT( testStringForMatching(), !ContainsSubstring( "substring" ) )
 with expansion:
   "this string contains 'abc' as a substring" not contains: "substring"
 
@@ -8877,7 +8877,7 @@ with expansion:
   true
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  REQUIRE_THAT( result.errorMessage(), Contains("Unrecognized reporter") )
+  REQUIRE_THAT( result.errorMessage(), ContainsSubstring("Unrecognized reporter") )
 with expansion:
   "Unrecognized reporter, 'unsupported'. Check available with --list-reporters"
   contains: "Unrecognized reporter"
@@ -8968,7 +8968,7 @@ with expansion:
   true
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  REQUIRE_THAT( result.errorMessage(), Contains("convert") && Contains("oops") )
+  REQUIRE_THAT( result.errorMessage(), ContainsSubstring("convert") && ContainsSubstring("oops") )
 with expansion:
   "Unable to convert 'oops' to destination type" ( contains: "convert" and
   contains: "oops" )
@@ -9064,7 +9064,7 @@ with expansion:
   true
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  REQUIRE_THAT( result.errorMessage(), Contains("never") && Contains("both") )
+  REQUIRE_THAT( result.errorMessage(), ContainsSubstring("never") && ContainsSubstring("both") )
 with expansion:
   "keypress argument must be one of: never, start, exit or both. 'sometimes'
   not recognised" ( contains: "never" and contains: "both" )
@@ -9255,7 +9255,7 @@ with expansion:
   true
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  CHECK_THAT( result.errorMessage(), Contains( "colour mode must be one of" ) )
+  CHECK_THAT( result.errorMessage(), ContainsSubstring( "colour mode must be one of" ) )
 with expansion:
   "colour mode must be one of: auto, yes or no. 'wrong' not recognised"
   contains: "colour mode must be one of"
@@ -9459,7 +9459,7 @@ Reporters.tests.cpp:<line number>
 ...............................................................................
 
 Reporters.tests.cpp:<line number>: PASSED:
-  REQUIRE_THAT( listingString, Contains("fakeTag"s) )
+  REQUIRE_THAT( listingString, ContainsSubstring("fakeTag"s) )
 with expansion:
   "All available tags:
      1  [fakeTag]
@@ -9488,7 +9488,7 @@ Reporters.tests.cpp:<line number>
 ...............................................................................
 
 Reporters.tests.cpp:<line number>: PASSED:
-  REQUIRE_THAT( listingString, Contains("fake reporter"s) )
+  REQUIRE_THAT( listingString, ContainsSubstring("fake reporter"s) )
 with expansion:
   "Available reporters:
     fake reporter:  fake description
@@ -9516,7 +9516,7 @@ Reporters.tests.cpp:<line number>
 ...............................................................................
 
 Reporters.tests.cpp:<line number>: PASSED:
-  REQUIRE_THAT( listingString, Contains( "fake test name"s ) && Contains( "fakeTestTag"s ) )
+  REQUIRE_THAT( listingString, ContainsSubstring( "fake test name"s ) && ContainsSubstring( "fakeTestTag"s ) )
 with expansion:
   "All available test cases:
     fake test name
@@ -9546,7 +9546,7 @@ Reporters.tests.cpp:<line number>
 ...............................................................................
 
 Reporters.tests.cpp:<line number>: PASSED:
-  REQUIRE_THAT( listingString, Contains("fakeTag"s) )
+  REQUIRE_THAT( listingString, ContainsSubstring("fakeTag"s) )
 with expansion:
   "All available tags:
      1  [fakeTag]
@@ -9575,7 +9575,7 @@ Reporters.tests.cpp:<line number>
 ...............................................................................
 
 Reporters.tests.cpp:<line number>: PASSED:
-  REQUIRE_THAT( listingString, Contains("fake reporter"s) )
+  REQUIRE_THAT( listingString, ContainsSubstring("fake reporter"s) )
 with expansion:
   "Available reporters:
     fake reporter:  fake description
@@ -9603,7 +9603,7 @@ Reporters.tests.cpp:<line number>
 ...............................................................................
 
 Reporters.tests.cpp:<line number>: PASSED:
-  REQUIRE_THAT( listingString, Contains( "fake test name"s ) && Contains( "fakeTestTag"s ) )
+  REQUIRE_THAT( listingString, ContainsSubstring( "fake test name"s ) && ContainsSubstring( "fakeTestTag"s ) )
 with expansion:
   "All available test cases:
     fake test name
@@ -9633,7 +9633,7 @@ Reporters.tests.cpp:<line number>
 ...............................................................................
 
 Reporters.tests.cpp:<line number>: PASSED:
-  REQUIRE_THAT( listingString, Contains("fakeTag"s) )
+  REQUIRE_THAT( listingString, ContainsSubstring("fakeTag"s) )
 with expansion:
   "All available tags:
      1  [fakeTag]
@@ -9662,7 +9662,7 @@ Reporters.tests.cpp:<line number>
 ...............................................................................
 
 Reporters.tests.cpp:<line number>: PASSED:
-  REQUIRE_THAT( listingString, Contains("fake reporter"s) )
+  REQUIRE_THAT( listingString, ContainsSubstring("fake reporter"s) )
 with expansion:
   "Available reporters:
     fake reporter:  fake description
@@ -9690,7 +9690,7 @@ Reporters.tests.cpp:<line number>
 ...............................................................................
 
 Reporters.tests.cpp:<line number>: PASSED:
-  REQUIRE_THAT( listingString, Contains( "fake test name"s ) && Contains( "fakeTestTag"s ) )
+  REQUIRE_THAT( listingString, ContainsSubstring( "fake test name"s ) && ContainsSubstring( "fakeTestTag"s ) )
 with expansion:
   "All available test cases:
     fake test name
@@ -9720,7 +9720,7 @@ Reporters.tests.cpp:<line number>
 ...............................................................................
 
 Reporters.tests.cpp:<line number>: PASSED:
-  REQUIRE_THAT( listingString, Contains("fakeTag"s) )
+  REQUIRE_THAT( listingString, ContainsSubstring("fakeTag"s) )
 with expansion:
   "<?xml version="1.0" encoding="UTF-8"?>
   All available tags:
@@ -9750,7 +9750,7 @@ Reporters.tests.cpp:<line number>
 ...............................................................................
 
 Reporters.tests.cpp:<line number>: PASSED:
-  REQUIRE_THAT( listingString, Contains("fake reporter"s) )
+  REQUIRE_THAT( listingString, ContainsSubstring("fake reporter"s) )
 with expansion:
   "<?xml version="1.0" encoding="UTF-8"?>
   Available reporters:
@@ -9779,7 +9779,7 @@ Reporters.tests.cpp:<line number>
 ...............................................................................
 
 Reporters.tests.cpp:<line number>: PASSED:
-  REQUIRE_THAT( listingString, Contains( "fake test name"s ) && Contains( "fakeTestTag"s ) )
+  REQUIRE_THAT( listingString, ContainsSubstring( "fake test name"s ) && ContainsSubstring( "fakeTestTag"s ) )
 with expansion:
   "<?xml version="1.0" encoding="UTF-8"?>
   All available test cases:
@@ -9810,7 +9810,7 @@ Reporters.tests.cpp:<line number>
 ...............................................................................
 
 Reporters.tests.cpp:<line number>: PASSED:
-  REQUIRE_THAT( listingString, Contains("fakeTag"s) )
+  REQUIRE_THAT( listingString, ContainsSubstring("fakeTag"s) )
 with expansion:
   "<?xml version="1.0" encoding="UTF-8"?>
   All available tags:
@@ -9840,7 +9840,7 @@ Reporters.tests.cpp:<line number>
 ...............................................................................
 
 Reporters.tests.cpp:<line number>: PASSED:
-  REQUIRE_THAT( listingString, Contains("fake reporter"s) )
+  REQUIRE_THAT( listingString, ContainsSubstring("fake reporter"s) )
 with expansion:
   "<?xml version="1.0" encoding="UTF-8"?>
   Available reporters:
@@ -9869,7 +9869,7 @@ Reporters.tests.cpp:<line number>
 ...............................................................................
 
 Reporters.tests.cpp:<line number>: PASSED:
-  REQUIRE_THAT( listingString, Contains( "fake test name"s ) && Contains( "fakeTestTag"s ) )
+  REQUIRE_THAT( listingString, ContainsSubstring( "fake test name"s ) && ContainsSubstring( "fakeTestTag"s ) )
 with expansion:
   "<?xml version="1.0" encoding="UTF-8"?>
   All available test cases:
@@ -9900,7 +9900,7 @@ Reporters.tests.cpp:<line number>
 ...............................................................................
 
 Reporters.tests.cpp:<line number>: PASSED:
-  REQUIRE_THAT( listingString, Contains("fakeTag"s) )
+  REQUIRE_THAT( listingString, ContainsSubstring("fakeTag"s) )
 with expansion:
   "All available tags:
      1  [fakeTag]
@@ -9929,7 +9929,7 @@ Reporters.tests.cpp:<line number>
 ...............................................................................
 
 Reporters.tests.cpp:<line number>: PASSED:
-  REQUIRE_THAT( listingString, Contains("fake reporter"s) )
+  REQUIRE_THAT( listingString, ContainsSubstring("fake reporter"s) )
 with expansion:
   "Available reporters:
     fake reporter:  fake description
@@ -9957,7 +9957,7 @@ Reporters.tests.cpp:<line number>
 ...............................................................................
 
 Reporters.tests.cpp:<line number>: PASSED:
-  REQUIRE_THAT( listingString, Contains( "fake test name"s ) && Contains( "fakeTestTag"s ) )
+  REQUIRE_THAT( listingString, ContainsSubstring( "fake test name"s ) && ContainsSubstring( "fakeTestTag"s ) )
 with expansion:
   "All available test cases:
     fake test name
@@ -9987,7 +9987,7 @@ Reporters.tests.cpp:<line number>
 ...............................................................................
 
 Reporters.tests.cpp:<line number>: PASSED:
-  REQUIRE_THAT( listingString, Contains("fakeTag"s) )
+  REQUIRE_THAT( listingString, ContainsSubstring("fakeTag"s) )
 with expansion:
   "All available tags:
      1  [fakeTag]
@@ -10016,7 +10016,7 @@ Reporters.tests.cpp:<line number>
 ...............................................................................
 
 Reporters.tests.cpp:<line number>: PASSED:
-  REQUIRE_THAT( listingString, Contains("fake reporter"s) )
+  REQUIRE_THAT( listingString, ContainsSubstring("fake reporter"s) )
 with expansion:
   "Available reporters:
     fake reporter:  fake description
@@ -10044,7 +10044,7 @@ Reporters.tests.cpp:<line number>
 ...............................................................................
 
 Reporters.tests.cpp:<line number>: PASSED:
-  REQUIRE_THAT( listingString, Contains( "fake test name"s ) && Contains( "fakeTestTag"s ) )
+  REQUIRE_THAT( listingString, ContainsSubstring( "fake test name"s ) && ContainsSubstring( "fakeTestTag"s ) )
 with expansion:
   "All available test cases:
     fake test name
@@ -10074,7 +10074,7 @@ Reporters.tests.cpp:<line number>
 ...............................................................................
 
 Reporters.tests.cpp:<line number>: PASSED:
-  REQUIRE_THAT( listingString, Contains("fakeTag"s) )
+  REQUIRE_THAT( listingString, ContainsSubstring("fakeTag"s) )
 with expansion:
   "<?xml version="1.0" encoding="UTF-8"?>
   <TagsFromMatchingTests>
@@ -10107,7 +10107,7 @@ Reporters.tests.cpp:<line number>
 ...............................................................................
 
 Reporters.tests.cpp:<line number>: PASSED:
-  REQUIRE_THAT( listingString, Contains("fake reporter"s) )
+  REQUIRE_THAT( listingString, ContainsSubstring("fake reporter"s) )
 with expansion:
   "<?xml version="1.0" encoding="UTF-8"?>
   <AvailableReporters>
@@ -10138,7 +10138,7 @@ Reporters.tests.cpp:<line number>
 ...............................................................................
 
 Reporters.tests.cpp:<line number>: PASSED:
-  REQUIRE_THAT( listingString, Contains( "fake test name"s ) && Contains( "fakeTestTag"s ) )
+  REQUIRE_THAT( listingString, ContainsSubstring( "fake test name"s ) && ContainsSubstring( "fakeTestTag"s ) )
 with expansion:
   "<?xml version="1.0" encoding="UTF-8"?>
   <MatchingTests>
@@ -10474,23 +10474,23 @@ Matchers.tests.cpp:<line number>
 ...............................................................................
 
 Matchers.tests.cpp:<line number>: PASSED:
-  REQUIRE_THAT( testStringForMatching(), Contains( "string" ) )
+  REQUIRE_THAT( testStringForMatching(), ContainsSubstring( "string" ) )
 with expansion:
   "this string contains 'abc' as a substring" contains: "string"
 
 Matchers.tests.cpp:<line number>: PASSED:
-  REQUIRE_THAT( testStringForMatching(), Contains( "string", Catch::CaseSensitive::No ) )
+  REQUIRE_THAT( testStringForMatching(), ContainsSubstring( "string", Catch::CaseSensitive::No ) )
 with expansion:
   "this string contains 'abc' as a substring" contains: "string" (case
   insensitive)
 
 Matchers.tests.cpp:<line number>: PASSED:
-  CHECK_THAT( testStringForMatching(), Contains( "abc" ) )
+  CHECK_THAT( testStringForMatching(), ContainsSubstring( "abc" ) )
 with expansion:
   "this string contains 'abc' as a substring" contains: "abc"
 
 Matchers.tests.cpp:<line number>: PASSED:
-  CHECK_THAT( testStringForMatching(), Contains( "aBC", Catch::CaseSensitive::No ) )
+  CHECK_THAT( testStringForMatching(), ContainsSubstring( "aBC", Catch::CaseSensitive::No ) )
 with expansion:
   "this string contains 'abc' as a substring" contains: "abc" (case
   insensitive)
@@ -11035,28 +11035,28 @@ Tag.tests.cpp:<line number>
 ...............................................................................
 
 Tag.tests.cpp:<line number>: PASSED:
-  CHECK_THAT( what, Contains( "[@zzz]" ) )
+  CHECK_THAT( what, ContainsSubstring( "[@zzz]" ) )
 with expansion:
   "error: tag alias, '[@zzz]' already registered.
   	First seen at: file:2
   	Redefined at: file:10" contains: "[@zzz]"
 
 Tag.tests.cpp:<line number>: PASSED:
-  CHECK_THAT( what, Contains( "file" ) )
+  CHECK_THAT( what, ContainsSubstring( "file" ) )
 with expansion:
   "error: tag alias, '[@zzz]' already registered.
   	First seen at: file:2
   	Redefined at: file:10" contains: "file"
 
 Tag.tests.cpp:<line number>: PASSED:
-  CHECK_THAT( what, Contains( "2" ) )
+  CHECK_THAT( what, ContainsSubstring( "2" ) )
 with expansion:
   "error: tag alias, '[@zzz]' already registered.
   	First seen at: file:2
   	Redefined at: file:10" contains: "2"
 
 Tag.tests.cpp:<line number>: PASSED:
-  CHECK_THAT( what, Contains( "10" ) )
+  CHECK_THAT( what, ContainsSubstring( "10" ) )
 with expansion:
   "error: tag alias, '[@zzz]' already registered.
   	First seen at: file:2
@@ -12451,7 +12451,7 @@ Reporters.tests.cpp:<line number>
 ...............................................................................
 
 Reporters.tests.cpp:<line number>: PASSED:
-  REQUIRE_THAT( listingString, Contains("[fakeTag]"s) )
+  REQUIRE_THAT( listingString, ContainsSubstring("[fakeTag]"s) )
 with expansion:
   "All available tags:
      1  [fakeTag]
@@ -12467,7 +12467,7 @@ Reporters.tests.cpp:<line number>
 ...............................................................................
 
 Reporters.tests.cpp:<line number>: PASSED:
-  REQUIRE_THAT( listingString, Contains("fake reporter"s) )
+  REQUIRE_THAT( listingString, ContainsSubstring("fake reporter"s) )
 with expansion:
   "Available reporters:
     fake reporter:  fake description
@@ -12482,7 +12482,7 @@ Reporters.tests.cpp:<line number>
 ...............................................................................
 
 Reporters.tests.cpp:<line number>: PASSED:
-  REQUIRE_THAT( listingString, Contains( "fake test name"s ) && Contains( "fakeTestTag"s ) )
+  REQUIRE_THAT( listingString, ContainsSubstring( "fake test name"s ) && ContainsSubstring( "fakeTestTag"s ) )
 with expansion:
   "All available test cases:
     fake test name
@@ -14116,7 +14116,7 @@ Xml.tests.cpp:<line number>
 ...............................................................................
 
 Xml.tests.cpp:<line number>: PASSED:
-  REQUIRE_THAT( stream.str(), Contains(R"(attr1="true")") && Contains(R"(attr2="false")") )
+  REQUIRE_THAT( stream.str(), ContainsSubstring(R"(attr1="true")") && ContainsSubstring(R"(attr2="false")") )
 with expansion:
   "<?xml version="1.0" encoding="UTF-8"?>
   <Element1 attr1="true" attr2="false"/>

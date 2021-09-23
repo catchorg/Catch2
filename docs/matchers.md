@@ -35,10 +35,10 @@ operators, that is `&&`, `||`, and `!`, like so:
 
 ```cpp
 using Catch::Matchers::EndsWith;
-using Catch::Matchers::Contains;
+using Catch::Matchers::ContainsSubstring;
 
 REQUIRE_THAT( getSomeString(),
-              EndsWith("as a service") && Contains("web scale"));
+              EndsWith("as a service") && ContainsSubstring("web scale"));
 ```
 
 The example above asserts that the string returned from `getSomeString`
@@ -64,7 +64,7 @@ TEST_CASE("Bugs, bugs, bugs", "[Bug]"){
     std::string str = "Bugs as a service";
 
     auto match_expression = Catch::Matchers::EndsWith( "as a service" ) ||
-        (Catch::Matchers::StartsWith( "Big data" ) && !Catch::Matchers::Contains( "web scale" ) );
+        (Catch::Matchers::StartsWith( "Big data" ) && !Catch::Matchers::ContainsSubstring( "web scale" ) );
     REQUIRE_THAT(str, match_expression);
 }
 ```
@@ -88,7 +88,7 @@ Out of the box, Catch2 provides the following matchers:
 Catch2 provides 5 different matchers that work with `std::string`,
 * `StartsWith(std::string str, CaseSensitive)`,
 * `EndsWith(std::string str, CaseSensitive)`,
-* `Contains(std::string str, CaseSensitive)`,
+* `ContainsSubstring(std::string str, CaseSensitive)`,
 * `Equals(std::string str, CaseSensitive)`, and
 * `Matches(std::string str, CaseSensitive)`.
 
