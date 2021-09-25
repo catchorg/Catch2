@@ -180,6 +180,55 @@ add_test(
   COMMAND ${PYTHON_EXECUTABLE} ${CATCH_DIR}/tests/TestScripts/testPartialTestCaseEvent.py $<TARGET_FILE:PartialTestCaseEvents>
 )
 
+
+add_executable(DuplicatedTestCases-SameNameAndTags ${TESTS_DIR}/X31-DuplicatedTestCases.cpp)
+target_link_libraries(DuplicatedTestCases-SameNameAndTags PRIVATE Catch2::Catch2WithMain)
+add_test(
+  NAME DuplicatedTestCases::SameNameAndTags
+  COMMAND $<TARGET_FILE:DuplicatedTestCases-SameNameAndTags>
+)
+set_tests_properties(
+    DuplicatedTestCases::SameNameAndTags
+  PROPERTIES
+     PASS_REGULAR_EXPRESSION "error: .* already defined\\."
+)
+
+add_executable(DuplicatedTestCases-SameNameDifferentTags ${TESTS_DIR}/X32-DuplicatedTestCasesDifferentTags.cpp)
+target_link_libraries(DuplicatedTestCases-SameNameDifferentTags PRIVATE Catch2::Catch2WithMain)
+add_test(
+  NAME DuplicatedTestCases::SameNameDifferentTags
+  COMMAND $<TARGET_FILE:DuplicatedTestCases-SameNameDifferentTags>
+)
+set_tests_properties(
+    DuplicatedTestCases::SameNameDifferentTags
+  PROPERTIES
+     FAIL_REGULAR_EXPRESSION "error: .* already defined\\."
+)
+
+add_executable(DuplicatedTestCases-DuplicatedTestCaseMethods ${TESTS_DIR}/X33-DuplicatedTestCaseMethods.cpp)
+target_link_libraries(DuplicatedTestCases-DuplicatedTestCaseMethods PRIVATE Catch2::Catch2WithMain)
+add_test(
+  NAME DuplicatedTestCases::DuplicatedTestCaseMethods
+  COMMAND $<TARGET_FILE:DuplicatedTestCases-DuplicatedTestCaseMethods>
+)
+set_tests_properties(
+    DuplicatedTestCases::DuplicatedTestCaseMethods
+  PROPERTIES
+     PASS_REGULAR_EXPRESSION "error: .* already defined\\."
+)
+
+add_executable(DuplicatedTestCases-DifferentFixtures ${TESTS_DIR}/X34-DuplicatedTestCaseMethodsDifferentFixtures.cpp)
+target_link_libraries(DuplicatedTestCases-DifferentFixtures PRIVATE Catch2::Catch2WithMain)
+add_test(
+  NAME DuplicatedTestCases::DuplicatedTestCaseMethodsDifferentFixtures
+  COMMAND $<TARGET_FILE:DuplicatedTestCases-DifferentFixtures>
+)
+set_tests_properties(
+    DuplicatedTestCases::DuplicatedTestCaseMethodsDifferentFixtures
+  PROPERTIES
+    FAIL_REGULAR_EXPRESSION "error: .* already defined\\."
+)
+
 #add_executable(DebugBreakMacros ${TESTS_DIR}/X12-CustomDebugBreakMacro.cpp)
 #target_link_libraries(DebugBreakMacros Catch2)
 #add_test(NAME DebugBreakMacros COMMAND DebugBreakMacros --break)
@@ -196,6 +245,10 @@ set( EXTRA_TEST_BINARIES
     DisabledExceptions-CustomHandler
     FallbackStringifier
     DisableStringification
+    PartialTestCaseEvents
+    DuplicatedTestCases-SameNameAndTags
+    DuplicatedTestCases-SameNameDifferentTags
+    DuplicatedTestCases-DuplicatedTestCaseMethods
 #    DebugBreakMacros
 )
 

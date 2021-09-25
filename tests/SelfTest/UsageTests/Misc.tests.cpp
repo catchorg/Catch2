@@ -519,3 +519,6 @@ TEMPLATE_TEST_CASE_SIG("#1954 - 7 arg template test case sig compiles", "[regres
                        (1, 1, 1, 1, 1, 0, 0), (5, 1, 1, 1, 1, 0, 0), (5, 3, 1, 1, 1, 0, 0)) {
     SUCCEED();
 }
+
+TEST_CASE("Same test name but with different tags is fine", "[.approvals][some-tag]") {}
+TEST_CASE("Same test name but with different tags is fine", "[.approvals][other-tag]") {}

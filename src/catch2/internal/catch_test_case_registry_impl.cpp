@@ -54,20 +54,36 @@ namespace {
 
         case TestRunOrder::LexicographicallySorted: {
             std::vector<TestCaseHandle> sorted = unsortedTestCases;
-            std::sort(sorted.begin(), sorted.end());
+            std::sort(
+                sorted.begin(),
+                sorted.end(),
+                []( TestCaseHandle const& lhs, TestCaseHandle const& rhs ) {
+                    return lhs.getTestCaseInfo() < rhs.getTestCaseInfo();
+                }
+            );
             return sorted;
         }
         case TestRunOrder::Randomized: {
             seedRng(config);
+            using TestWithHash = std::pair<TestHasher::hash_t, TestCaseHandle>;
+
             TestHasher h{ config.rngSeed() };
-            std::vector<std::pair<TestHasher::hash_t, TestCaseHandle>> indexed_tests;
+            std::vector<TestWithHash> indexed_tests;
             indexed_tests.reserve(unsortedTestCases.size());
 
             for (auto const& handle : unsortedTestCases) {
                 indexed_tests.emplace_back(h(handle.getTestCaseInfo()), handle);
             }
 
-            std::sort(indexed_tests.begin(), indexed_tests.end());
+            std::sort( indexed_tests.begin(),
+                       indexed_tests.end(),
+                       []( TestWithHash const& lhs, TestWithHash const& rhs ) {
+                           if ( lhs.first == rhs.first ) {
+                               return lhs.second.getTestCaseInfo() <
+                                      rhs.second.getTestCaseInfo();
+                           }
+                           return lhs.first < rhs.first;
+                       } );
 
             std::vector<TestCaseHandle> randomized;
             randomized.reserve(indexed_tests.size());
@@ -91,14 +107,22 @@ namespace {
         return testSpec.matches( testCase.getTestCaseInfo() ) && isThrowSafe( testCase, config );
     }
 
-    void enforceNoDuplicateTestCases( std::vector<TestCaseHandle> const& functions ) {
-        std::set<TestCaseHandle> seenFunctions;
-        for( auto const& function : functions ) {
-            auto prev = seenFunctions.insert( function );
-            CATCH_ENFORCE( prev.second,
-                    "error: TEST_CASE( \"" << function.getTestCaseInfo().name << "\" ) already defined.\n"
-                    << "\tFirst seen at " << prev.first->getTestCaseInfo().lineInfo << "\n"
-                    << "\tRedefined at " << function.getTestCaseInfo().lineInfo );
+    void
+    enforceNoDuplicateTestCases( std::vector<TestCaseHandle> const& tests ) {
+        auto testInfoCmp = []( TestCaseInfo const* lhs,
+                               TestCaseInfo const* rhs ) {
+            return *lhs < *rhs;
+        };
+        std::set<TestCaseInfo const*, decltype(testInfoCmp)> seenTests(testInfoCmp);
+        for ( auto const& test : tests ) {
+            const auto infoPtr = &test.getTestCaseInfo();
+            const auto prev = seenTests.insert( infoPtr );
+            CATCH_ENFORCE(
+                prev.second,
+                "error: test case \"" << infoPtr->name << "\", with tags \""
+                    << infoPtr->tagsAsString() << "\" already defined.\n"
+                    << "\tFirst seen at " << ( *prev.first )->lineInfo << "\n"
+                    << "\tRedefined at " << infoPtr->lineInfo );
         }
     }
 

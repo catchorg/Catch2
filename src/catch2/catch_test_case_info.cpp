@@ -101,6 +101,10 @@ namespace Catch {
             const size_t extras = 3 + 3;
             return extractFilenamePart(filepath).size() + extras;
         }
+    } // end unnamed namespace
+
+    bool operator<( Tag const& lhs, Tag const& rhs ) {
+        return lhs.original < rhs.original;
     }
 
     Detail::unique_ptr<TestCaseInfo>
@@ -228,15 +232,19 @@ namespace Catch {
                           StringRef(backingLCaseTags.c_str() + backingStart, backingEnd - backingStart));
     }
 
-
-    bool TestCaseHandle::operator == ( TestCaseHandle const& rhs ) const {
-        return m_invoker == rhs.m_invoker
-            && m_info->name == rhs.m_info->name
-            && m_info->className == rhs.m_info->className;
-    }
-
-    bool TestCaseHandle::operator < ( TestCaseHandle const& rhs ) const {
-        return m_info->name < rhs.m_info->name;
+    bool operator<( TestCaseInfo const& lhs, TestCaseInfo const& rhs ) {
+        // We want to avoid redoing the string comparisons multiple times,
+        // so we store the result of a three-way comparison before using
+        // it in the actual comparison logic.
+        const auto cmpName = lhs.name.compare( rhs.name );
+        if ( cmpName != 0 ) {
+            return cmpName < 0;
+        }
+        const auto cmpClassName = lhs.className.compare( rhs.className );
+        if ( cmpClassName != 0 ) {
+            return cmpClassName < 0;
+        }
+        return lhs.tags < rhs.tags;
     }
 
     TestCaseInfo const& TestCaseHandle::getTestCaseInfo() const {

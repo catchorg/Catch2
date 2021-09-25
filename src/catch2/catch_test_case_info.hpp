@@ -30,6 +30,8 @@ namespace Catch {
             original(original_), lowerCased(lowerCased_)
         {}
         StringRef original, lowerCased;
+
+        friend bool operator<( Tag const& lhs, Tag const& rhs );
     };
 
     struct ITestInvoker;
@@ -44,7 +46,15 @@ namespace Catch {
         Benchmark = 1 << 6
     };
 
-
+    /**
+     * Various metadata about the test case.
+     *
+     * A test case is uniquely identified by its (class)name and tags
+     * combination, with source location being ignored, and other properties
+     * being determined from tags.
+     *
+     * Tags are kept sorted.
+     */
     struct TestCaseInfo : Detail::NonCopyable {
 
         TestCaseInfo(std::string const& _className,
@@ -58,6 +68,10 @@ namespace Catch {
 
         // Adds the tag(s) with test's filename (for the -# flag)
         void addFilenameTag();
+
+        //! Orders by name, classname and tags
+        friend bool operator<( TestCaseInfo const& lhs,
+                               TestCaseInfo const& rhs );
 
 
         std::string tagsAsString() const;
@@ -75,6 +89,12 @@ namespace Catch {
         TestCaseProperties properties = TestCaseProperties::None;
     };
 
+    /**
+     * Wrapper over the test case information and the test case invoker
+     *
+     * Does not own either, and is specifically made to be cheap
+     * to copy around.
+     */
     class TestCaseHandle {
         TestCaseInfo* m_info;
         ITestInvoker* m_invoker;
@@ -87,9 +107,6 @@ namespace Catch {
         }
 
         TestCaseInfo const& getTestCaseInfo() const;
-
-        bool operator== ( TestCaseHandle const& rhs ) const;
-        bool operator < ( TestCaseHandle const& rhs ) const;
     };
 
     Detail::unique_ptr<TestCaseInfo> makeTestCaseInfo(  std::string const& className,
