@@ -253,16 +253,6 @@ TEST_CASE( "Nice descriptive name", "[tag1][tag2][tag3][.]" ) {
 TEST_CASE( "first tag", "[tag1]" ) {}
 TEST_CASE( "second tag", "[tag2]" ) {}
 
-//
-//TEST_CASE( "spawn a new process", "[.]" )
-//{
-//    // !TBD Work in progress
-//    char line[200];
-//    FILE* output = popen("./CatchSelfTest ./failing/matchers/StartsWith", "r");
-//    while ( fgets(line, 199, output) )
-//        std::cout << line;
-//}
-
 TEST_CASE( "vectors can be sized and resized", "[vector]" ) {
 
     std::vector<int> v( 5 );
