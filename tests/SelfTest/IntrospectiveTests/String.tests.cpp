@@ -165,3 +165,30 @@ TEST_CASE("StringRef at compilation time", "[Strings][StringRef][constexpr]") {
         STATIC_REQUIRE(sr2.size() == 0);
     }
 }
+
+TEST_CASE("StringRef::compare", "[Strings][StringRef]") {
+    using Catch::StringRef;
+
+    SECTION("Same length on both sides") {
+        StringRef sr1("abcdc");
+        StringRef sr2("abcdd");
+        StringRef sr3("abcdc");
+
+        REQUIRE(sr1.compare(sr2) < 0);
+        REQUIRE(sr2.compare(sr1) > 0);
+        REQUIRE(sr1.compare(sr3) == 0);
+        REQUIRE(sr3.compare(sr1) == 0);
+    }
+    SECTION("Different lengths") {
+        StringRef sr1("def");
+        StringRef sr2("deff");
+        StringRef sr3("ab");
+
+        REQUIRE(sr1.compare(sr2) < 0);
+        REQUIRE(sr2.compare(sr1) > 0);
+        REQUIRE(sr1.compare(sr3) > 0);
+        REQUIRE(sr2.compare(sr3) > 0);
+        REQUIRE(sr3.compare(sr1) < 0);
+        REQUIRE(sr3.compare(sr2) < 0);
+    }
+}

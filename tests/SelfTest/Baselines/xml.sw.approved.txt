@@ -12945,6 +12945,95 @@ Message from section two
     </Section>
     <OverallResult success="true"/>
   </TestCase>
+  <TestCase name="StringRef::compare" tags="[StringRef][Strings]" filename="tests/<exe-name>/IntrospectiveTests/String.tests.cpp" >
+    <Section name="Same length on both sides" filename="tests/<exe-name>/IntrospectiveTests/String.tests.cpp" >
+      <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/String.tests.cpp" >
+        <Original>
+          sr1.compare(sr2) &lt; 0
+        </Original>
+        <Expanded>
+          -1 &lt; 0
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/String.tests.cpp" >
+        <Original>
+          sr2.compare(sr1) > 0
+        </Original>
+        <Expanded>
+          1 > 0
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/String.tests.cpp" >
+        <Original>
+          sr1.compare(sr3) == 0
+        </Original>
+        <Expanded>
+          0 == 0
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/String.tests.cpp" >
+        <Original>
+          sr3.compare(sr1) == 0
+        </Original>
+        <Expanded>
+          0 == 0
+        </Expanded>
+      </Expression>
+      <OverallResults successes="4" failures="0" expectedFailures="0"/>
+    </Section>
+    <Section name="Different lengths" filename="tests/<exe-name>/IntrospectiveTests/String.tests.cpp" >
+      <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/String.tests.cpp" >
+        <Original>
+          sr1.compare(sr2) &lt; 0
+        </Original>
+        <Expanded>
+          -1 &lt; 0
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/String.tests.cpp" >
+        <Original>
+          sr2.compare(sr1) > 0
+        </Original>
+        <Expanded>
+          1 > 0
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/String.tests.cpp" >
+        <Original>
+          sr1.compare(sr3) > 0
+        </Original>
+        <Expanded>
+          3 > 0
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/String.tests.cpp" >
+        <Original>
+          sr2.compare(sr3) > 0
+        </Original>
+        <Expanded>
+          3 > 0
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/String.tests.cpp" >
+        <Original>
+          sr3.compare(sr1) &lt; 0
+        </Original>
+        <Expanded>
+          -3 &lt; 0
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/String.tests.cpp" >
+        <Original>
+          sr3.compare(sr2) &lt; 0
+        </Original>
+        <Expanded>
+          -3 &lt; 0
+        </Expanded>
+      </Expression>
+      <OverallResults successes="6" failures="0" expectedFailures="0"/>
+    </Section>
+    <OverallResult success="true"/>
+  </TestCase>
   <TestCase name="Stringifying char arrays with statically known sizes - char" tags="[toString]" filename="tests/<exe-name>/IntrospectiveTests/ToString.tests.cpp" >
     <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/ToString.tests.cpp" >
       <Original>
@@ -19953,6 +20042,6 @@ loose text artifact
     </Section>
     <OverallResult success="true"/>
   </TestCase>
-  <OverallResults successes="1954" failures="146" expectedFailures="23"/>
-  <OverallResultsCases successes="277" failures="86" expectedFailures="6"/>
+  <OverallResults successes="1964" failures="146" expectedFailures="23"/>
+  <OverallResultsCases successes="278" failures="86" expectedFailures="6"/>
 </Catch2TestRun>

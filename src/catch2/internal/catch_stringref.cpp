@@ -29,6 +29,27 @@ namespace Catch {
         return strncmp(m_start, rhs.m_start, rhs.m_size) < 0;
     }
 
+    int StringRef::compare( StringRef rhs ) const {
+        auto cmpResult =
+            strncmp( m_start, rhs.m_start, std::min( m_size, rhs.m_size ) );
+
+        // This means that strncmp found a difference before the strings
+        // ended, and we can return it directly
+        if ( cmpResult != 0 ) {
+            return cmpResult;
+        }
+
+        // If strings are equal up to length, then their comparison results on
+        // their size
+        if ( m_size < rhs.m_size ) {
+            return -1;
+        } else if ( m_size > rhs.m_size ) {
+            return 1;
+        } else {
+            return 0;
+        }
+    }
+
     auto operator << ( std::ostream& os, StringRef const& str ) -> std::ostream& {
         return os.write(str.data(), str.size());
     }

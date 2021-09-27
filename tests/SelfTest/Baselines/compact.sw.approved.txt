@@ -1537,6 +1537,16 @@ String.tests.cpp:<line number>: passed: with 1 message: '!(sr1.empty())'
 String.tests.cpp:<line number>: passed: with 1 message: 'sr1.size() == 3'
 String.tests.cpp:<line number>: passed: with 1 message: 'sr2.empty()'
 String.tests.cpp:<line number>: passed: with 1 message: 'sr2.size() == 0'
+String.tests.cpp:<line number>: passed: sr1.compare(sr2) < 0 for: -1 < 0
+String.tests.cpp:<line number>: passed: sr2.compare(sr1) > 0 for: 1 > 0
+String.tests.cpp:<line number>: passed: sr1.compare(sr3) == 0 for: 0 == 0
+String.tests.cpp:<line number>: passed: sr3.compare(sr1) == 0 for: 0 == 0
+String.tests.cpp:<line number>: passed: sr1.compare(sr2) < 0 for: -1 < 0
+String.tests.cpp:<line number>: passed: sr2.compare(sr1) > 0 for: 1 > 0
+String.tests.cpp:<line number>: passed: sr1.compare(sr3) > 0 for: 3 > 0
+String.tests.cpp:<line number>: passed: sr2.compare(sr3) > 0 for: 3 > 0
+String.tests.cpp:<line number>: passed: sr3.compare(sr1) < 0 for: -3 < 0
+String.tests.cpp:<line number>: passed: sr3.compare(sr2) < 0 for: -3 < 0
 ToString.tests.cpp:<line number>: passed: ::Catch::Detail::stringify( with_null_terminator ) == R"("abc")"s for: ""abc"" == ""abc""
 ToString.tests.cpp:<line number>: passed: ::Catch::Detail::stringify( no_null_terminator ) == R"("abc")"s for: ""abc"" == ""abc""
 ToString.tests.cpp:<line number>: passed: ::Catch::Detail::stringify( with_null_terminator ) == R"("abc")"s for: ""abc"" == ""abc""

@@ -69,7 +69,6 @@ namespace Catch {
             return m_size;
         }
 
-    public: // substrings and searches
         // Returns a substring of [start, start + length).
         // If start + length > size(), then the substring is [start, start + size()).
         // If start > size(), then the substring is empty.
@@ -87,7 +86,6 @@ namespace Catch {
             return m_start;
         }
 
-    public: // iterators
         constexpr const_iterator begin() const { return m_start; }
         constexpr const_iterator end() const { return m_start + m_size; }
 
@@ -95,6 +93,14 @@ namespace Catch {
         friend std::string& operator += (std::string& lhs, StringRef const& sr);
         friend std::ostream& operator << (std::ostream& os, StringRef const& sr);
         friend std::string operator+(StringRef lhs, StringRef rhs);
+
+        /**
+         * Provides a three-way comparison with rhs
+         *
+         * Returns negative number if lhs < rhs, 0 if lhs == rhs, and a positive
+         * number if lhs > rhs
+         */
+        int compare( StringRef rhs ) const;
     };
 
 
