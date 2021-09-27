@@ -166,7 +166,7 @@ TEST_CASE("StringRef at compilation time", "[Strings][StringRef][constexpr]") {
     }
 }
 
-TEST_CASE("StringRef::compare", "[Strings][StringRef]") {
+TEST_CASE("StringRef::compare", "[Strings][StringRef][approvals]") {
     using Catch::StringRef;
 
     SECTION("Same length on both sides") {

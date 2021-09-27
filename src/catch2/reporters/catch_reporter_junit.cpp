@@ -145,12 +145,14 @@ namespace Catch {
         assert( testCaseNode.children.size() == 1 );
         SectionNode const& rootSection = *testCaseNode.children.front();
 
-        std::string className = stats.testInfo->className;
+        std::string className =
+            static_cast<std::string>( stats.testInfo->className );
 
         if( className.empty() ) {
             className = fileNameTag(stats.testInfo->tags);
-            if ( className.empty() )
+            if ( className.empty() ) {
                 className = "global";
+            }
         }
 
         if ( !m_config->name().empty() )

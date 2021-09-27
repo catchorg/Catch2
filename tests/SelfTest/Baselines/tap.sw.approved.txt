@@ -2753,26 +2753,6 @@ ok {test-number} - with 1 message: 'sr1.size() == 3'
 ok {test-number} - with 1 message: 'sr2.empty()'
 # StringRef at compilation time
 ok {test-number} - with 1 message: 'sr2.size() == 0'
-# StringRef::compare
-ok {test-number} - sr1.compare(sr2) < 0 for: -1 < 0
-# StringRef::compare
-ok {test-number} - sr2.compare(sr1) > 0 for: 1 > 0
-# StringRef::compare
-ok {test-number} - sr1.compare(sr3) == 0 for: 0 == 0
-# StringRef::compare
-ok {test-number} - sr3.compare(sr1) == 0 for: 0 == 0
-# StringRef::compare
-ok {test-number} - sr1.compare(sr2) < 0 for: -1 < 0
-# StringRef::compare
-ok {test-number} - sr2.compare(sr1) > 0 for: 1 > 0
-# StringRef::compare
-ok {test-number} - sr1.compare(sr3) > 0 for: 3 > 0
-# StringRef::compare
-ok {test-number} - sr2.compare(sr3) > 0 for: 3 > 0
-# StringRef::compare
-ok {test-number} - sr3.compare(sr1) < 0 for: -3 < 0
-# StringRef::compare
-ok {test-number} - sr3.compare(sr2) < 0 for: -3 < 0
 # Stringifying char arrays with statically known sizes - char
 ok {test-number} - ::Catch::Detail::stringify( with_null_terminator ) == R"("abc")"s for: ""abc"" == ""abc""
 # Stringifying char arrays with statically known sizes - char
@@ -4268,5 +4248,5 @@ ok {test-number} - q3 == 23. for: 23.0 == 23.0
 ok {test-number} -
 # xmlentitycheck
 ok {test-number} -
-1..2133
+1..2123
 

@@ -13,21 +13,36 @@
 #include <catch2/internal/catch_string_manip.hpp>
 #include <catch2/internal/catch_move_and_forward.hpp>
 
+#include <algorithm>
+#include <iterator>
+
 namespace Catch {
 
     namespace {
-        std::string extractClassName( StringRef classOrQualifiedMethodName ) {
-            std::string className( classOrQualifiedMethodName );
-            if ( startsWith( className, '&' ) ) {
-                std::size_t lastColons = className.rfind( "::" );
-                std::size_t penultimateColons =
-                    className.rfind( "::", lastColons - 1 );
-                if ( penultimateColons == std::string::npos )
-                    penultimateColons = 1;
-                className = className.substr( penultimateColons,
-                                              lastColons - penultimateColons );
+        StringRef extractClassName( StringRef classOrMethodName ) {
+            if ( !startsWith( classOrMethodName, '&' ) ) {
+                return classOrMethodName;
             }
-            return className;
+
+            // Remove the leading '&' to avoid having to special case it later
+            const auto methodName =
+                classOrMethodName.substr( 1, classOrMethodName.size() );
+
+            auto reverseStart = std::make_reverse_iterator( methodName.end() );
+            auto reverseEnd = std::make_reverse_iterator( methodName.begin() );
+
+            // We make a simplifying assumption that ":" is only present
+            // in the input as part of "::" from C++ typenames (this is
+            // relatively safe assumption because the input is generated
+            // as stringification of type through preprocessor).
+            auto lastColons = std::find( reverseStart, reverseEnd, ':' ) + 1;
+            auto secondLastColons =
+                std::find( lastColons + 1, reverseEnd, ':' );
+
+            auto const startIdx = reverseEnd - secondLastColons;
+            auto const classNameSize = secondLastColons - lastColons - 1;
+
+            return methodName.substr( startIdx, classNameSize );
         }
     } // namespace
 

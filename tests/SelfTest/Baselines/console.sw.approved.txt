@@ -10907,70 +10907,6 @@ with message:
   sr2.size() == 0
 
 -------------------------------------------------------------------------------
-StringRef::compare
-  Same length on both sides
--------------------------------------------------------------------------------
-String.tests.cpp:<line number>
-...............................................................................
-
-String.tests.cpp:<line number>: PASSED:
-  REQUIRE( sr1.compare(sr2) < 0 )
-with expansion:
-  -1 < 0
-
-String.tests.cpp:<line number>: PASSED:
-  REQUIRE( sr2.compare(sr1) > 0 )
-with expansion:
-  1 > 0
-
-String.tests.cpp:<line number>: PASSED:
-  REQUIRE( sr1.compare(sr3) == 0 )
-with expansion:
-  0 == 0
-
-String.tests.cpp:<line number>: PASSED:
-  REQUIRE( sr3.compare(sr1) == 0 )
-with expansion:
-  0 == 0
-
--------------------------------------------------------------------------------
-StringRef::compare
-  Different lengths
--------------------------------------------------------------------------------
-String.tests.cpp:<line number>
-...............................................................................
-
-String.tests.cpp:<line number>: PASSED:
-  REQUIRE( sr1.compare(sr2) < 0 )
-with expansion:
-  -1 < 0
-
-String.tests.cpp:<line number>: PASSED:
-  REQUIRE( sr2.compare(sr1) > 0 )
-with expansion:
-  1 > 0
-
-String.tests.cpp:<line number>: PASSED:
-  REQUIRE( sr1.compare(sr3) > 0 )
-with expansion:
-  3 > 0
-
-String.tests.cpp:<line number>: PASSED:
-  REQUIRE( sr2.compare(sr3) > 0 )
-with expansion:
-  3 > 0
-
-String.tests.cpp:<line number>: PASSED:
-  REQUIRE( sr3.compare(sr1) < 0 )
-with expansion:
-  -3 < 0
-
-String.tests.cpp:<line number>: PASSED:
-  REQUIRE( sr3.compare(sr2) < 0 )
-with expansion:
-  -3 < 0
-
--------------------------------------------------------------------------------
 Stringifying char arrays with statically known sizes - char
 -------------------------------------------------------------------------------
 ToString.tests.cpp:<line number>
@@ -17018,6 +16954,6 @@ Misc.tests.cpp:<line number>
 Misc.tests.cpp:<line number>: PASSED:
 
 ===============================================================================
-test cases:  370 |  278 passed |  86 failed |  6 failed as expected
-assertions: 2133 | 1964 passed | 146 failed | 23 failed as expected
+test cases:  369 |  277 passed |  86 failed |  6 failed as expected
+assertions: 2123 | 1954 passed | 146 failed | 23 failed as expected
 

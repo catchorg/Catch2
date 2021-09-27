@@ -204,8 +204,6 @@
     <testCase name="StringRef/StringRef + StringRef" duration="{duration}"/>
     <testCase name="StringRef at compilation time/Simple constructors" duration="{duration}"/>
     <testCase name="StringRef at compilation time/UDL construction" duration="{duration}"/>
-    <testCase name="StringRef::compare/Same length on both sides" duration="{duration}"/>
-    <testCase name="StringRef::compare/Different lengths" duration="{duration}"/>
   </file>
   <file path="tests/<exe-name>/IntrospectiveTests/StringManip.tests.cpp">
     <testCase name="Trim strings" duration="{duration}"/>

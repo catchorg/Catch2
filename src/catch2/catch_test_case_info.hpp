@@ -57,7 +57,7 @@ namespace Catch {
      */
     struct TestCaseInfo : Detail::NonCopyable {
 
-        TestCaseInfo(std::string const& _className,
+        TestCaseInfo(StringRef _className,
                      NameAndTags const& _tags,
                      SourceLineInfo const& _lineInfo);
 
@@ -77,7 +77,7 @@ namespace Catch {
         std::string tagsAsString() const;
 
         std::string name;
-        std::string className;
+        StringRef className;
     private:
         std::string backingTags, backingLCaseTags;
         // Internally we copy tags to the backing storage and then add
@@ -109,9 +109,10 @@ namespace Catch {
         TestCaseInfo const& getTestCaseInfo() const;
     };
 
-    Detail::unique_ptr<TestCaseInfo> makeTestCaseInfo(  std::string const& className,
-                            NameAndTags const& nameAndTags,
-                            SourceLineInfo const& lineInfo );
+    Detail::unique_ptr<TestCaseInfo>
+    makeTestCaseInfo( StringRef className,
+                      NameAndTags const& nameAndTags,
+                      SourceLineInfo const& lineInfo );
 }
 
 #ifdef __clang__
