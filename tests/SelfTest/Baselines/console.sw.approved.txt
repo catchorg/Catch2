@@ -15856,6 +15856,27 @@ with messages:
   6
 
 -------------------------------------------------------------------------------
+startsWith
+-------------------------------------------------------------------------------
+StringManip.tests.cpp:<line number>
+...............................................................................
+
+StringManip.tests.cpp:<line number>: PASSED:
+  CHECK_FALSE( startsWith("", 'c') )
+with expansion:
+  !false
+
+StringManip.tests.cpp:<line number>: PASSED:
+  CHECK( startsWith(std::string("abc"), 'a') )
+with expansion:
+  true
+
+StringManip.tests.cpp:<line number>: PASSED:
+  CHECK( startsWith("def"_catch_sr, 'd') )
+with expansion:
+  true
+
+-------------------------------------------------------------------------------
 std::map is convertible string
   empty
 -------------------------------------------------------------------------------
@@ -16933,6 +16954,6 @@ Misc.tests.cpp:<line number>
 Misc.tests.cpp:<line number>: PASSED:
 
 ===============================================================================
-test cases:  368 |  276 passed |  86 failed |  6 failed as expected
-assertions: 2120 | 1951 passed | 146 failed | 23 failed as expected
+test cases:  369 |  277 passed |  86 failed |  6 failed as expected
+assertions: 2123 | 1954 passed | 146 failed | 23 failed as expected
 

@@ -18761,6 +18761,33 @@ loose text artifact
     </Expression>
     <OverallResult success="false"/>
   </TestCase>
+  <TestCase name="startsWith" tags="[string-manip]" filename="tests/<exe-name>/IntrospectiveTests/StringManip.tests.cpp" >
+    <Expression success="true" type="CHECK_FALSE" filename="tests/<exe-name>/IntrospectiveTests/StringManip.tests.cpp" >
+      <Original>
+        !(startsWith("", 'c'))
+      </Original>
+      <Expanded>
+        !false
+      </Expanded>
+    </Expression>
+    <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/StringManip.tests.cpp" >
+      <Original>
+        startsWith(std::string("abc"), 'a')
+      </Original>
+      <Expanded>
+        true
+      </Expanded>
+    </Expression>
+    <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/StringManip.tests.cpp" >
+      <Original>
+        startsWith("def"_catch_sr, 'd')
+      </Original>
+      <Expanded>
+        true
+      </Expanded>
+    </Expression>
+    <OverallResult success="true"/>
+  </TestCase>
   <TestCase name="std::map is convertible string" tags="[toString]" filename="tests/<exe-name>/UsageTests/ToStringGeneral.tests.cpp" >
     <Section name="empty" filename="tests/<exe-name>/UsageTests/ToStringGeneral.tests.cpp" >
       <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/UsageTests/ToStringGeneral.tests.cpp" >
@@ -19926,6 +19953,6 @@ loose text artifact
     </Section>
     <OverallResult success="true"/>
   </TestCase>
-  <OverallResults successes="1951" failures="146" expectedFailures="23"/>
-  <OverallResultsCases successes="276" failures="86" expectedFailures="6"/>
+  <OverallResults successes="1954" failures="146" expectedFailures="23"/>
+  <OverallResultsCases successes="277" failures="86" expectedFailures="6"/>
 </Catch2TestRun>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuitesloose text artifact
 >
-  <testsuite name="<exe-name>" errors="17" failures="129" tests="2120" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
+  <testsuite name="<exe-name>" errors="17" failures="129" tests="2123" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
     <properties>
       <property name="filters" value="~[!nonportable]~[!benchmark]~[approvals] *"/>
       <property name="random-seed" value="1"/>
@@ -1756,6 +1756,7 @@ Count 4 to 6...
 Message.tests.cpp:<line number>
       </failure>
     </testcase>
+    <testcase classname="<exe-name>.global" name="startsWith" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="std::map is convertible string/empty" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="std::map is convertible string/single item" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="std::map is convertible string/several items" time="{duration}" status="run"/>

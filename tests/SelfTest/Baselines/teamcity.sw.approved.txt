@@ -803,6 +803,8 @@ Message.tests.cpp:<line number>|nexpression failed with messages:|n  "hi"|n  "i 
 Message.tests.cpp:<line number>|nexpression failed with messages:|n  "Count 1 to 3..."|n  "1"|n  "2"|n  "3"|n  CHECK( false )|nwith expansion:|n  false|n']
 Message.tests.cpp:<line number>|nexpression failed with messages:|n  "Count 4 to 6..."|n  "4"|n  "5"|n  "6"|n  CHECK( false )|nwith expansion:|n  false|n']
 ##teamcity[testFinished name='stacks unscoped info in loops' duration="{duration}"]
+##teamcity[testStarted name='startsWith']
+##teamcity[testFinished name='startsWith' duration="{duration}"]
 ##teamcity[testStarted name='std::map is convertible string']
 ##teamcity[testFinished name='std::map is convertible string' duration="{duration}"]
 ##teamcity[testStarted name='std::pair<int,const std::string> -> toString']

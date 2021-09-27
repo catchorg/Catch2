@@ -65,3 +65,11 @@ TEST_CASE("splitString", "[string-manip]") {
     CHECK_THAT(splitStringRef("abc", ','), Equals(std::vector<StringRef>{"abc"}));
     CHECK_THAT(splitStringRef("abc,def", ','), Equals(std::vector<StringRef>{"abc", "def"}));
 }
+
+TEST_CASE("startsWith", "[string-manip]") {
+    using Catch::startsWith;
+
+    CHECK_FALSE(startsWith("", 'c'));
+    CHECK(startsWith(std::string("abc"), 'a'));
+    CHECK(startsWith("def"_catch_sr, 'd'));
+}

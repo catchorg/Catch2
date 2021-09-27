@@ -25,7 +25,7 @@ namespace Catch {
     bool startsWith( std::string const& s, std::string const& prefix ) {
         return s.size() >= prefix.size() && std::equal(prefix.begin(), prefix.end(), s.begin());
     }
-    bool startsWith( std::string const& s, char prefix ) {
+    bool startsWith( StringRef s, char prefix ) {
         return !s.empty() && s[0] == prefix;
     }
     bool endsWith( std::string const& s, std::string const& suffix ) {

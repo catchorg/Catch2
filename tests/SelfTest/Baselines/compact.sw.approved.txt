@@ -2224,6 +2224,9 @@ StringManip.tests.cpp:<line number>: passed: splitStringRef("abc", ','), Equals(
 StringManip.tests.cpp:<line number>: passed: splitStringRef("abc,def", ','), Equals(std::vector<StringRef>{"abc", "def"}) for: { abc, def } Equals: { abc, def }
 Message.tests.cpp:<line number>: failed: false with 4 messages: 'Count 1 to 3...' and '1' and '2' and '3'
 Message.tests.cpp:<line number>: failed: false with 4 messages: 'Count 4 to 6...' and '4' and '5' and '6'
+StringManip.tests.cpp:<line number>: passed: !(startsWith("", 'c')) for: !false
+StringManip.tests.cpp:<line number>: passed: startsWith(std::string("abc"), 'a') for: true
+StringManip.tests.cpp:<line number>: passed: startsWith("def"_catch_sr, 'd') for: true
 ToStringGeneral.tests.cpp:<line number>: passed: Catch::Detail::stringify( emptyMap ) == "{  }" for: "{  }" == "{  }"
 ToStringGeneral.tests.cpp:<line number>: passed: Catch::Detail::stringify( map ) == "{ { \"one\", 1 } }" for: "{ { "one", 1 } }" == "{ { "one", 1 } }"
 ToStringGeneral.tests.cpp:<line number>: passed: Catch::Detail::stringify( map ) == "{ { \"abc\", 1 }, { \"def\", 2 }, { \"ghi\", 3 } }" for: "{ { "abc", 1 }, { "def", 2 }, { "ghi", 3 } }"

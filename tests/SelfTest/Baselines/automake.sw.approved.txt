@@ -330,6 +330,7 @@ loose text artifact
 :test-result: PASS shortened hide tags are split apart
 :test-result: PASS splitString
 :test-result: FAIL stacks unscoped info in loops
+:test-result: PASS startsWith
 :test-result: PASS std::map is convertible string
 :test-result: PASS std::pair<int,const std::string> -> toString
 :test-result: PASS std::pair<int,std::string> -> toString

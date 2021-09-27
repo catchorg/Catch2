@@ -4004,6 +4004,12 @@ ok {test-number} - splitStringRef("abc,def", ','), Equals(std::vector<StringRef>
 not ok {test-number} - false with 4 messages: 'Count 1 to 3...' and '1' and '2' and '3'
 # stacks unscoped info in loops
 not ok {test-number} - false with 4 messages: 'Count 4 to 6...' and '4' and '5' and '6'
+# startsWith
+ok {test-number} - !(startsWith("", 'c')) for: !false
+# startsWith
+ok {test-number} - startsWith(std::string("abc"), 'a') for: true
+# startsWith
+ok {test-number} - startsWith("def"_catch_sr, 'd') for: true
 # std::map is convertible string
 ok {test-number} - Catch::Detail::stringify( emptyMap ) == "{  }" for: "{  }" == "{  }"
 # std::map is convertible string
@@ -4242,5 +4248,5 @@ ok {test-number} - q3 == 23. for: 23.0 == 23.0
 ok {test-number} -
 # xmlentitycheck
 ok {test-number} -
-1..2120
+1..2123
 

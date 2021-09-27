@@ -215,6 +215,7 @@
     <testCase name="replaceInPlace/replace no chars" duration="{duration}"/>
     <testCase name="replaceInPlace/escape '" duration="{duration}"/>
     <testCase name="splitString" duration="{duration}"/>
+    <testCase name="startsWith" duration="{duration}"/>
   </file>
   <file path="tests/<exe-name>/IntrospectiveTests/Tag.tests.cpp">
     <testCase name="Tag alias can be registered against tag patterns/The same tag alias can only be registered once" duration="{duration}"/>
