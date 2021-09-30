@@ -11,13 +11,22 @@
 #include <cassert>
 #include <type_traits>
 
+#if defined(__clang__) && defined(__has_attribute)
+#  if __has_attribute(trivial_abi)
+#    define TRIVIAL_ABI [[clang::trivial_abi]]
+#  endif
+#endif
+#if !defined(TRIVIAL_ABI)
+#  define TRIVIAL_ABI
+#endif
+
 namespace Catch {
 namespace Detail {
     // reimplementation of unique_ptr for improved compilation times
     // Does not support custom deleters (and thus does not require EBO)
     // Does not support arrays
     template <typename T>
-    class unique_ptr {
+    class TRIVIAL_ABI unique_ptr {
         T* m_ptr;
     public:
         constexpr unique_ptr(std::nullptr_t = nullptr):
