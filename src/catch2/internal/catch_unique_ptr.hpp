@@ -22,9 +22,12 @@
 
 namespace Catch {
 namespace Detail {
-    // reimplementation of unique_ptr for improved compilation times
-    // Does not support custom deleters (and thus does not require EBO)
-    // Does not support arrays
+    /**
+     * A reimplementation of `std::unique_ptr` for improved compilation performance
+     *
+     * Does not support arrays nor custom deleters, but has trivial ABI
+     * when supposed by the compiler.
+     */
     template <typename T>
     class TRIVIAL_ABI unique_ptr {
         T* m_ptr;
@@ -107,10 +110,7 @@ namespace Detail {
         }
     };
 
-    // Purposefully doesn't exist
-    // We could also rely on compiler warning + werror for calling plain delete
-    // on a T[], but this seems better.
-    // Maybe add definition and a static assert?
+    //! Specialization to cause compile-time error for arrays
     template <typename T>
     class unique_ptr<T[]>;
 
