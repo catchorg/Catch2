@@ -11,6 +11,8 @@
 #include <cassert>
 #include <type_traits>
 
+#include <catch2/internal/catch_move_and_forward.hpp>
+
 #if defined(__clang__) && defined(__has_attribute)
 #  if __has_attribute(trivial_abi)
 #    define TRIVIAL_ABI [[clang::trivial_abi]]
@@ -116,11 +118,7 @@ namespace Detail {
 
     template <typename T, typename... Args>
     unique_ptr<T> make_unique(Args&&... args) {
-        // static_cast<Args&&> does the same thing as std::forward in
-        // this case, but does not require including big header (<utility>)
-        // and compiles faster thanks to not requiring template instantiation
-        // and overload resolution
-        return unique_ptr<T>(new T(static_cast<Args&&>(args)...));
+        return unique_ptr<T>(new T(CATCH_FORWARD(args)...));
     }
 
 
