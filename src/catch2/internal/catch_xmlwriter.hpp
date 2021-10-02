@@ -129,8 +129,6 @@ namespace Catch {
 
         void writeStylesheetRef( StringRef url );
 
-        XmlWriter& writeBlankLine();
-
         void ensureTagClosed();
 
     private:

@@ -322,12 +322,6 @@ namespace {
         m_os << R"(<?xml-stylesheet type="text/xsl" href=")" << url << R"("?>)" << '\n';
     }
 
-    XmlWriter& XmlWriter::writeBlankLine() {
-        ensureTagClosed();
-        m_os << '\n';
-        return *this;
-    }
-
     void XmlWriter::ensureTagClosed() {
         if( m_tagIsOpen ) {
             m_os << '>' << std::flush;
