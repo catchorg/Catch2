@@ -242,7 +242,7 @@ std::ostream& operator<<(std::ostream& out, helper_1436<T1, T2> const& helper) {
 }
 
 TEST_CASE("CAPTURE can deal with complex expressions involving commas", "[messages][capture]") {
-    CAPTURE(std::vector<int>{1, 2, 3}[0, 1, 2],
+    CAPTURE(std::vector<int>{1, 2, 3}[(0, 1, 2)],
             std::vector<int>{1, 2, 3}[(0, 1)],
             std::vector<int>{1, 2, 3}[0]);
     CAPTURE((helper_1436<int, int>{12, -12}),

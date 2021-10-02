@@ -2557,7 +2557,7 @@ Message.tests.cpp:<line number>
 
 Message.tests.cpp:<line number>: PASSED:
 with messages:
-  std::vector<int>{1, 2, 3}[0, 1, 2] := 3
+  std::vector<int>{1, 2, 3}[(0, 1, 2)] := 3
   std::vector<int>{1, 2, 3}[(0, 1)] := 2
   std::vector<int>{1, 2, 3}[0] := 1
   (helper_1436<int, int>{12, -12}) := { 12, -12 }
