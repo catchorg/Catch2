@@ -388,13 +388,11 @@ namespace Catch {
     template<typename T>
     struct StringMaker<std::optional<T> > {
         static std::string convert(const std::optional<T>& optional) {
-            ReusableStringStream rss;
             if (optional.has_value()) {
-                rss << ::Catch::Detail::stringify(*optional);
+                return ::Catch::Detail::stringify(*optional);
             } else {
-                rss << "{ }";
+                return "{ }";
             }
-            return rss.str();
         }
     };
 }
