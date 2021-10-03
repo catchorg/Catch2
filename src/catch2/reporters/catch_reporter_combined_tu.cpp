@@ -139,7 +139,7 @@ namespace Catch {
                            .width( 5 + maxNameLen )
                     << '\n';
             } else {
-                out << TextFlow::Column( desc.name + ":" )
+                out << TextFlow::Column( desc.name + ':' )
                                .indent( 2 )
                                .width( 5 + maxNameLen ) +
                            TextFlow::Column( desc.description )

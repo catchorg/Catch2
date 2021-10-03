@@ -78,7 +78,7 @@ namespace Detail {
         public:
             FileStream( std::string const& filename ) {
                 m_ofs.open( filename.c_str() );
-                CATCH_ENFORCE( !m_ofs.fail(), "Unable to open file: '" << filename << "'" );
+                CATCH_ENFORCE( !m_ofs.fail(), "Unable to open file: '" << filename << '\'' );
             }
             ~FileStream() override = default;
         public: // IStream
@@ -130,7 +130,7 @@ namespace Detail {
             if( filename == "%debug" )
                 return Detail::make_unique<Detail::DebugOutStream>();
             else
-                CATCH_ERROR( "Unrecognised stream: '" << filename << "'" );
+                CATCH_ERROR( "Unrecognised stream: '" << filename << '\'' );
         }
         else
             return Detail::make_unique<Detail::FileStream>( filename );

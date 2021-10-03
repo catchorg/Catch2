@@ -34,14 +34,14 @@ namespace Catch {
                 }();
 
                 if (warningSet == WarnAbout::Nothing)
-                    return ParserResult::runtimeError( "Unrecognised warning: '" + warning + "'" );
+                    return ParserResult::runtimeError( "Unrecognised warning: '" + warning + '\'' );
                 config.warnings = static_cast<WarnAbout::What>( config.warnings | warningSet );
                 return ParserResult::ok( ParseResultType::Matched );
             };
         auto const loadTestNamesFromFile = [&]( std::string const& filename ) {
                 std::ifstream f( filename.c_str() );
                 if( !f.is_open() )
-                    return ParserResult::runtimeError( "Unable to load input file: '" + filename + "'" );
+                    return ParserResult::runtimeError( "Unable to load input file: '" + filename + '\'' );
 
                 std::string line;
                 while( std::getline( f, line ) ) {
@@ -67,7 +67,7 @@ namespace Catch {
                 else if( startsWith( "random", order ) )
                     config.runOrder = TestRunOrder::Randomized;
                 else
-                    return ParserResult::runtimeError( "Unrecognised ordering: '" + order + "'" );
+                    return ParserResult::runtimeError( "Unrecognised ordering: '" + order + '\'' );
                 return ParserResult::ok( ParseResultType::Matched );
             };
         auto const setRngSeed = [&]( std::string const& seed ) {
@@ -112,7 +112,7 @@ namespace Catch {
             else if( lcVerbosity == "high" )
                 config.verbosity = Verbosity::High;
             else
-                return ParserResult::runtimeError( "Unrecognised verbosity, '" + verbosity + "'" );
+                return ParserResult::runtimeError( "Unrecognised verbosity, '" + verbosity + '\'' );
             return ParserResult::ok( ParseResultType::Matched );
         };
         auto const setReporter = [&]( std::string const& reporter ) {

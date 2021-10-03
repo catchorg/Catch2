@@ -34,7 +34,7 @@ namespace Catch {
 
         IStreamingReporterPtr createReporter(std::string const& reporterName, IConfig const* config) {
             auto reporter = Catch::getRegistryHub().getReporterRegistry().create(reporterName, config);
-            CATCH_ENFORCE(reporter, "No reporter registered with name: '" << reporterName << "'");
+            CATCH_ENFORCE(reporter, "No reporter registered with name: '" << reporterName << '\'');
 
             return reporter;
         }

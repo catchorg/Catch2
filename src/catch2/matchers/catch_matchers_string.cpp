@@ -43,7 +43,7 @@ namespace Matchers {
         description += m_operation;
         description += ": \"";
         description += m_comparator.m_str;
-        description += "\"";
+        description += '"';
         description += m_comparator.caseSensitivitySuffix();
         return description;
     }

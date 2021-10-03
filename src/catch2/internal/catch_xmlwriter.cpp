@@ -268,7 +268,7 @@ namespace {
             if (shouldIndent(fmt)) {
                 m_os << m_indent;
             }
-            m_os << "</" << m_tags.back() << ">";
+            m_os << "</" << m_tags.back() << '>';
         }
         m_os << std::flush;
         applyFormatting(fmt);

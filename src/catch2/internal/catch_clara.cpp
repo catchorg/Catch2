@@ -113,7 +113,7 @@ namespace Catch {
                 } else {
                     return ParserResult::runtimeError(
                         "Expected a boolean value but did not recognise: '" +
-                        source + "'" );
+                        source + '\'' );
                 }
                 return ParserResult::ok( ParseResultType::Matched );
             }

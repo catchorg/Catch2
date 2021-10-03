@@ -156,7 +156,7 @@ namespace Catch {
         }
 
         if ( !m_config->name().empty() )
-            className = m_config->name() + "." + className;
+            className = static_cast<std::string>(m_config->name()) + '.' + className;
 
         writeSection( className, "", rootSection );
     }

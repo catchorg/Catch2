@@ -124,7 +124,7 @@ bool ExceptionMessageMatcher::match(std::exception const& ex) const {
 }
 
 std::string ExceptionMessageMatcher::describe() const {
-    return "exception message matches \"" + m_message + "\"";
+    return "exception message matches \"" + m_message + '"';
 }
 
 ExceptionMessageMatcher Message(std::string const& message) {
