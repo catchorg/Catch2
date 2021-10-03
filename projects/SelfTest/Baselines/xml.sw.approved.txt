@@ -2708,7 +2708,7 @@ Nor would this
     </TestCase>
     <TestCase name="CAPTURE can deal with complex expressions involving commas" tags="[capture][messages]" filename="projects/<exe-name>/UsageTests/Message.tests.cpp" >
       <Info>
-        std::vector&lt;int>{1, 2, 3}[(0, 1, 2)] := 3
+        std::vector&lt;int>{1, 2, 3}[0, 1, 2] := 3
       </Info>
       <Info>
         std::vector&lt;int>{1, 2, 3}[(0, 1)] := 2
