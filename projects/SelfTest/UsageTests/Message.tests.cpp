@@ -241,6 +241,17 @@ std::ostream& operator<<(std::ostream& out, helper_1436<T1, T2> const& helper) {
     return out;
 }
 
+// Clang and gcc have different names for this warning, and clang also
+// warns about an unused value
+#if defined(__GNUG__) && !defined(__clang__)
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wcomma-subscript"
+#elif defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-comma-subscript"
+#pragma clang diagnostic ignored "-Wunused-value"
+#endif
+
 TEST_CASE("CAPTURE can deal with complex expressions involving commas", "[messages][capture]") {
     CAPTURE(std::vector<int>{1, 2, 3}[0, 1, 2],
             std::vector<int>{1, 2, 3}[(0, 1)],
@@ -250,6 +261,10 @@ TEST_CASE("CAPTURE can deal with complex expressions involving commas", "[messag
     CAPTURE( (1, 2), (2, 3) );
     SUCCEED();
 }
+
+#ifdef __GNUG__
+#pragma GCC diagnostic pop
+#endif
 
 TEST_CASE("CAPTURE parses string and character constants", "[messages][capture]") {
     CAPTURE(("comma, in string", "escaped, \", "), "single quote in string,',", "some escapes, \\,\\\\");
