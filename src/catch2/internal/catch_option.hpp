@@ -46,10 +46,22 @@ namespace Catch {
             nullableValue = nullptr;
         }
 
-        T& operator*() { return *nullableValue; }
-        T const& operator*() const { return *nullableValue; }
-        T* operator->() { return nullableValue; }
-        const T* operator->() const { return nullableValue; }
+        T& operator*() {
+            assert(nullableValue);
+            return *nullableValue;
+        }
+        T const& operator*() const {
+            assert(nullableValue);
+            return *nullableValue;
+        }
+        T* operator->() {
+            assert(nullableValue);
+            return nullableValue;
+        }
+        const T* operator->() const {
+            assert(nullableValue);
+            return nullableValue;
+        }
 
         T valueOr( T const& defaultValue ) const {
             return nullableValue ? *nullableValue : defaultValue;
