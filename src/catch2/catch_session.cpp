@@ -24,6 +24,7 @@
 #include <catch2/internal/catch_move_and_forward.hpp>
 
 #include <algorithm>
+#include <ctime>
 #include <iomanip>
 #include <set>
 
@@ -170,6 +171,10 @@ namespace Catch {
         if( m_startupExceptions )
             return 1;
 
+        if (!m_configData.rngSeed) {
+            m_configData.rngSeed = static_cast<unsigned int>(std::time(nullptr));
+        }
+
         auto result = m_cli.parse( Clara::Args( argc, argv ) );
         if( !result ) {
             config();
@@ -187,6 +192,7 @@ namespace Catch {
             showHelp();
         if( m_configData.libIdentify )
             libIdentify();
+
         m_config.reset();
         return 0;
     }
@@ -255,6 +261,7 @@ namespace Catch {
         if (m_configData.showHelp || m_configData.libIdentify) {
             return 0;
         }
+
 
         CATCH_TRY {
             config(); // Force config to be constructed

@@ -11,6 +11,7 @@
 #include <catch2/catch_test_spec.hpp>
 #include <catch2/interfaces/catch_interfaces_config.hpp>
 #include <catch2/internal/catch_unique_ptr.hpp>
+#include <catch2/internal/catch_optional.hpp>
 
 #include <vector>
 #include <string>
@@ -33,7 +34,7 @@ namespace Catch {
         bool libIdentify = false;
 
         int abortAfter = -1;
-        unsigned int rngSeed = 0;
+        Optional<unsigned int> rngSeed;
 
         bool benchmarkNoAnalysis = false;
         unsigned int benchmarkSamples = 100;

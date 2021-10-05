@@ -7,6 +7,7 @@
 // SPDX-License-Identifier: BSL-1.0
 #include <catch2/internal/catch_commandline.hpp>
 
+#include <catch2/internal/catch_compiler_capabilities.hpp>
 #include <catch2/catch_config.hpp>
 #include <catch2/internal/catch_string_manip.hpp>
 #include <catch2/interfaces/catch_interfaces_registry_hub.hpp>
@@ -15,6 +16,7 @@
 
 #include <fstream>
 #include <ctime>
+#include <string>
 
 namespace Catch {
 
@@ -71,10 +73,28 @@ namespace Catch {
                 return ParserResult::ok( ParseResultType::Matched );
             };
         auto const setRngSeed = [&]( std::string const& seed ) {
-                if( seed != "time" )
-                    return Clara::Detail::convertInto( seed, config.rngSeed );
-                config.rngSeed = static_cast<unsigned int>( std::time(nullptr) );
-                return ParserResult::ok( ParseResultType::Matched );
+                if( seed == "time" ) {
+                    config.rngSeed = static_cast<unsigned int>(std::time(nullptr));
+                    return ParserResult::ok(ParseResultType::Matched);
+                }
+
+                CATCH_TRY {
+                    std::size_t parsedTo = 0;
+                    unsigned long parsedSeed = std::stoul(seed, &parsedTo, 0);
+                    if (parsedTo != seed.size()) {
+                        return ParserResult::runtimeError("Could not parse '" + seed + "' as seed");
+                    }
+
+                    // TODO: Ideally we could parse unsigned int directly,
+                    //       but the stdlib doesn't provide helper for that
+                    //       type. After this is refactored to use fixed size
+                    //       type, we should check the parsed value is in range
+                    //       of the underlying type.
+                    config.rngSeed = static_cast<unsigned int>(parsedSeed);
+                    return ParserResult::ok(ParseResultType::Matched);
+                } CATCH_CATCH_ANON(std::exception const&) {
+                    return ParserResult::runtimeError("Could not parse '" + seed + "' as seed");
+                }
             };
         auto const setColourUsage = [&]( std::string const& useColour ) {
                     auto mode = toLower( useColour );
