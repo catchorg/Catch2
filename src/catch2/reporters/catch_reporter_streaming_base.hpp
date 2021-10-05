@@ -10,7 +10,7 @@
 
 #include <catch2/interfaces/catch_interfaces_reporter.hpp>
 
-#include <catch2/internal/catch_option.hpp>
+#include <catch2/internal/catch_optional.hpp>
 
 #include <iosfwd>
 #include <string>
@@ -19,14 +19,14 @@
 namespace Catch {
 
     template<typename T>
-    struct LazyStat : Option<T> {
+    struct LazyStat : Optional<T> {
         LazyStat& operator=(T const& _value) {
-            Option<T>::operator=(_value);
+            Optional<T>::operator=(_value);
             used = false;
             return *this;
         }
         void reset() {
-            Option<T>::reset();
+            Optional<T>::reset();
             used = false;
         }
         bool used = false;

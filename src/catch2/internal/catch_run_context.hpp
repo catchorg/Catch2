@@ -17,7 +17,7 @@
 #include <catch2/internal/catch_test_case_tracker.hpp>
 #include <catch2/catch_assertion_info.hpp>
 #include <catch2/catch_assertion_result.hpp>
-#include <catch2/internal/catch_option.hpp>
+#include <catch2/internal/catch_optional.hpp>
 #include <catch2/internal/catch_move_and_forward.hpp>
 
 #include <string>
@@ -126,7 +126,7 @@ namespace Catch {
         IMutableContext& m_context;
         TestCaseHandle const* m_activeTestCase = nullptr;
         ITracker* m_testCaseTracker = nullptr;
-        Option<AssertionResult> m_lastResult;
+        Optional<AssertionResult> m_lastResult;
 
         IConfig const* m_config;
         Totals m_totals;
