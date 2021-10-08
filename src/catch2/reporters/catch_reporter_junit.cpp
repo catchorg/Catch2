@@ -114,18 +114,16 @@ namespace Catch {
             xml.writeAttribute( "time"_sr, suiteTime );
         xml.writeAttribute( "timestamp"_sr, getCurrentTimestamp() );
 
-        // Write properties if there are any
-        if (m_config->hasTestFilters() || m_config->rngSeed() != 0) {
+        // Write properties
+        {
             auto properties = xml.scopedElement("properties");
+            xml.scopedElement("property")
+                .writeAttribute("name"_sr, "random-seed"_sr)
+                .writeAttribute("value"_sr, m_config->rngSeed());
             if (m_config->hasTestFilters()) {
                 xml.scopedElement("property")
                     .writeAttribute("name"_sr, "filters"_sr)
                     .writeAttribute("value"_sr, serializeFilters(m_config->getTestsOrTags()));
-            }
-            if (m_config->rngSeed() != 0) {
-                xml.scopedElement("property")
-                    .writeAttribute("name"_sr, "random-seed"_sr)
-                    .writeAttribute("value"_sr, m_config->rngSeed());
             }
         }
 

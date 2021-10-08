@@ -3,8 +3,8 @@
 >
   <testsuite name="<exe-name>" errors="17" failures="129" tests="2127" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
     <properties>
-      <property name="filters" value="~[!nonportable]~[!benchmark]~[approvals] *"/>
       <property name="random-seed" value="1"/>
+      <property name="filters" value="~[!nonportable]~[!benchmark]~[approvals] *"/>
     </properties>
     <testcase classname="<exe-name>.global" name="# A test name that starts with a #" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="#1005: Comparing pointer to int and long (NULL can be either on various systems)" time="{duration}" status="run"/>

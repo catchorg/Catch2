@@ -520,8 +520,7 @@ void ConsoleReporter::lazyPrintRunInfo() {
         << " is a Catch v" << libraryVersion() << " host application.\n"
         << "Run with -? for options\n\n";
 
-    if (m_config->rngSeed() != 0)
-        stream << "Randomness seeded to: " << m_config->rngSeed() << "\n\n";
+    stream << "Randomness seeded to: " << m_config->rngSeed() << "\n\n";
 
     currentTestRunInfo.used = true;
 }

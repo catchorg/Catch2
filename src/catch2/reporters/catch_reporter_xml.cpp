@@ -51,14 +51,11 @@ namespace Catch {
         std::string stylesheetRef = getStylesheetRef();
         if( !stylesheetRef.empty() )
             m_xml.writeStylesheetRef( stylesheetRef );
-        m_xml.startElement( "Catch2TestRun" );
-        if( !m_config->name().empty() )
-            m_xml.writeAttribute( "name"_sr, m_config->name() );
+        m_xml.startElement("Catch2TestRun")
+             .writeAttribute("name"_sr, m_config->name())
+             .writeAttribute("rng-seed"_sr, m_config->rngSeed());
         if (m_config->testSpec().hasFilters())
             m_xml.writeAttribute( "filters"_sr, serializeFilters( m_config->getTestsOrTags() ) );
-        if( m_config->rngSeed() != 0 )
-            m_xml.scopedElement( "Randomness" )
-                .writeAttribute( "seed"_sr, m_config->rngSeed() );
     }
 
     void XmlReporter::testCaseStarting( TestCaseInfo const& testInfo ) {
