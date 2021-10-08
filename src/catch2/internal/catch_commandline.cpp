@@ -15,7 +15,6 @@
 #include <catch2/interfaces/catch_interfaces_reporter.hpp>
 
 #include <fstream>
-#include <ctime>
 #include <string>
 
 namespace Catch {
@@ -74,7 +73,10 @@ namespace Catch {
             };
         auto const setRngSeed = [&]( std::string const& seed ) {
                 if( seed == "time" ) {
-                    config.rngSeed = static_cast<unsigned int>(std::time(nullptr));
+                    config.rngSeed = generateRandomSeed(GenerateFrom::Time);
+                    return ParserResult::ok(ParseResultType::Matched);
+                } else if (seed == "random-device") {
+                    config.rngSeed = generateRandomSeed(GenerateFrom::RandomDevice);
                     return ParserResult::ok(ParseResultType::Matched);
                 }
 
@@ -211,7 +213,7 @@ namespace Catch {
             | Opt( setTestOrder, "decl|lex|rand" )
                 ["--order"]
                 ( "test case order (defaults to decl)" )
-            | Opt( setRngSeed, "'time'|number" )
+            | Opt( setRngSeed, "'time'|'random-device'|number" )
                 ["--rng-seed"]
                 ( "set a specific seed for random numbers" )
             | Opt( setColourUsage, "yes|no" )

@@ -131,6 +131,7 @@ new design.
   * With the exception of the XmlReporter, the outputs of first party reporters should remain the same
   * New pair of events were added
   * One obsolete event was removed
+* Catch2 generates a random seed if one hasn't been specified by the user
 
 
 ### Improvements
@@ -161,6 +162,7 @@ new design.
 * `--list-*` flags write their output to file specified by the `-o` flag (#2061, #2163)
 * `Approx::operator()` is now properly `const`
 * Catch2's internal helper variables no longer use reserved identifiers (#578)
+* `--rng-seed` now accepts string `"random-device"` to generate random seed using `std::random_device`
 
 
 ### Fixes

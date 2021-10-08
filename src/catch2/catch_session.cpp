@@ -24,7 +24,6 @@
 #include <catch2/internal/catch_move_and_forward.hpp>
 
 #include <algorithm>
-#include <ctime>
 #include <iomanip>
 #include <set>
 
@@ -170,10 +169,6 @@ namespace Catch {
     int Session::applyCommandLine( int argc, char const * const * argv ) {
         if( m_startupExceptions )
             return 1;
-
-        if (!m_configData.rngSeed) {
-            m_configData.rngSeed = static_cast<unsigned int>(std::time(nullptr));
-        }
 
         auto result = m_cli.parse( Clara::Args( argc, argv ) );
         if( !result ) {

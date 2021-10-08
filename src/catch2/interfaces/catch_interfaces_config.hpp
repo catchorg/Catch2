@@ -73,7 +73,7 @@ namespace Catch {
         virtual bool hasTestFilters() const = 0;
         virtual std::vector<std::string> const& getTestsOrTags() const = 0;
         virtual TestRunOrder runOrder() const = 0;
-        virtual unsigned int rngSeed() const = 0;
+        virtual uint32_t rngSeed() const = 0;
         virtual UseColour useColour() const = 0;
         virtual std::vector<std::string> const& getSectionsToRun() const = 0;
         virtual Verbosity verbosity() const = 0;

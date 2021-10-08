@@ -277,13 +277,20 @@ is that as long as the random seed is fixed, running only some tests
 
 <a id="rng-seed"></a>
 ## Specify a seed for the Random Number Generator
-<pre>--rng-seed &lt;'time'|number&gt;</pre>
+<pre>--rng-seed &lt;'time'|'random-device'|number&gt;</pre>
 
-Sets a seed for the random number generator using ```std::srand()```. 
-If a number is provided this is used directly as the seed so the random pattern is repeatable.
-Alternatively if the keyword ```time``` is provided then the result of calling ```std::time(0)``` is used and so the pattern becomes unpredictable. In some cases, you might need to pass the keyword ```time``` in double quotes instead of single quotes.
+Sets the seed for random number generators used by Catch2. These are used
+e.g. to shuffle tests when user asks for tests to be in random order.
 
-In either case the actual value for the seed is printed as part of Catch's output so if an issue is discovered that is sensitive to test ordering the ordering can be reproduced - even if it was originally seeded from ```std::time(0)```.
+Using `time` as the argument asks Catch2 generate the seed through call
+to `std::time(nullptr)`. This provides very weak randomness and multiple
+runs of the binary can generate the same seed if they are started close
+to each other.
+
+Using `random-device` asks for `std::random_device` to be used instead.
+If your implementation provides working `std::random_device`, it should
+be preferred to using `time`. Catch2 uses `std::random_device` by default.
+
 
 <a id="libidentify"></a>
 ## Identify framework and version according to the libIdentify standard

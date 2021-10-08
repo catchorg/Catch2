@@ -12,6 +12,7 @@
 #include <catch2/interfaces/catch_interfaces_config.hpp>
 #include <catch2/internal/catch_unique_ptr.hpp>
 #include <catch2/internal/catch_optional.hpp>
+#include <catch2/internal/catch_random_seed_generation.hpp>
 
 #include <vector>
 #include <string>
@@ -34,7 +35,7 @@ namespace Catch {
         bool libIdentify = false;
 
         int abortAfter = -1;
-        Optional<unsigned int> rngSeed;
+        uint32_t rngSeed = generateRandomSeed(GenerateFrom::Default);
 
         bool benchmarkNoAnalysis = false;
         unsigned int benchmarkSamples = 100;
@@ -97,7 +98,7 @@ namespace Catch {
         ShowDurations showDurations() const override;
         double minDuration() const override;
         TestRunOrder runOrder() const override;
-        unsigned int rngSeed() const override;
+        uint32_t rngSeed() const override;
         UseColour useColour() const override;
         bool shouldDebugBreak() const override;
         int abortAfter() const override;
