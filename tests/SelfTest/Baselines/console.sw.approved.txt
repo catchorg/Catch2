@@ -9384,6 +9384,42 @@ with expansion:
   1 >= 1
 
 -------------------------------------------------------------------------------
+Random seed generation accepts known methods
+-------------------------------------------------------------------------------
+RandomNumberGeneration.tests.cpp:<line number>
+...............................................................................
+
+RandomNumberGeneration.tests.cpp:<line number>: PASSED:
+  REQUIRE_NOTHROW( Catch::generateRandomSeed(method) )
+
+-------------------------------------------------------------------------------
+Random seed generation accepts known methods
+-------------------------------------------------------------------------------
+RandomNumberGeneration.tests.cpp:<line number>
+...............................................................................
+
+RandomNumberGeneration.tests.cpp:<line number>: PASSED:
+  REQUIRE_NOTHROW( Catch::generateRandomSeed(method) )
+
+-------------------------------------------------------------------------------
+Random seed generation accepts known methods
+-------------------------------------------------------------------------------
+RandomNumberGeneration.tests.cpp:<line number>
+...............................................................................
+
+RandomNumberGeneration.tests.cpp:<line number>: PASSED:
+  REQUIRE_NOTHROW( Catch::generateRandomSeed(method) )
+
+-------------------------------------------------------------------------------
+Random seed generation reports unknown methods
+-------------------------------------------------------------------------------
+RandomNumberGeneration.tests.cpp:<line number>
+...............................................................................
+
+RandomNumberGeneration.tests.cpp:<line number>: PASSED:
+  REQUIRE_THROWS( Catch::generateRandomSeed(static_cast<Catch::GenerateFrom>(77)) )
+
+-------------------------------------------------------------------------------
 Range type with sentinel
 -------------------------------------------------------------------------------
 ToString.tests.cpp:<line number>
@@ -16954,6 +16990,6 @@ Misc.tests.cpp:<line number>
 Misc.tests.cpp:<line number>: PASSED:
 
 ===============================================================================
-test cases:  369 |  277 passed |  86 failed |  6 failed as expected
-assertions: 2123 | 1954 passed | 146 failed | 23 failed as expected
+test cases:  371 |  279 passed |  86 failed |  6 failed as expected
+assertions: 2127 | 1958 passed | 146 failed | 23 failed as expected
 

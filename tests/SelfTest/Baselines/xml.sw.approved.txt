@@ -11468,6 +11468,44 @@ Nor would this
     </Expression>
     <OverallResult success="true"/>
   </TestCase>
+  <TestCase name="Random seed generation accepts known methods" tags="[rng][seed]" filename="tests/<exe-name>/IntrospectiveTests/RandomNumberGeneration.tests.cpp" >
+    <Expression success="true" type="REQUIRE_NOTHROW" filename="tests/<exe-name>/IntrospectiveTests/RandomNumberGeneration.tests.cpp" >
+      <Original>
+        Catch::generateRandomSeed(method)
+      </Original>
+      <Expanded>
+        Catch::generateRandomSeed(method)
+      </Expanded>
+    </Expression>
+    <Expression success="true" type="REQUIRE_NOTHROW" filename="tests/<exe-name>/IntrospectiveTests/RandomNumberGeneration.tests.cpp" >
+      <Original>
+        Catch::generateRandomSeed(method)
+      </Original>
+      <Expanded>
+        Catch::generateRandomSeed(method)
+      </Expanded>
+    </Expression>
+    <Expression success="true" type="REQUIRE_NOTHROW" filename="tests/<exe-name>/IntrospectiveTests/RandomNumberGeneration.tests.cpp" >
+      <Original>
+        Catch::generateRandomSeed(method)
+      </Original>
+      <Expanded>
+        Catch::generateRandomSeed(method)
+      </Expanded>
+    </Expression>
+    <OverallResult success="true"/>
+  </TestCase>
+  <TestCase name="Random seed generation reports unknown methods" tags="[rng][seed]" filename="tests/<exe-name>/IntrospectiveTests/RandomNumberGeneration.tests.cpp" >
+    <Expression success="true" type="REQUIRE_THROWS" filename="tests/<exe-name>/IntrospectiveTests/RandomNumberGeneration.tests.cpp" >
+      <Original>
+        Catch::generateRandomSeed(static_cast&lt;Catch::GenerateFrom>(77))
+      </Original>
+      <Expanded>
+        Catch::generateRandomSeed(static_cast&lt;Catch::GenerateFrom>(77))
+      </Expanded>
+    </Expression>
+    <OverallResult success="true"/>
+  </TestCase>
   <TestCase name="Range type with sentinel" filename="tests/<exe-name>/IntrospectiveTests/ToString.tests.cpp" >
     <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/ToString.tests.cpp" >
       <Original>
@@ -19953,6 +19991,6 @@ loose text artifact
     </Section>
     <OverallResult success="true"/>
   </TestCase>
-  <OverallResults successes="1954" failures="146" expectedFailures="23"/>
-  <OverallResultsCases successes="277" failures="86" expectedFailures="6"/>
+  <OverallResults successes="1958" failures="146" expectedFailures="23"/>
+  <OverallResultsCases successes="279" failures="86" expectedFailures="6"/>
 </Catch2TestRun>

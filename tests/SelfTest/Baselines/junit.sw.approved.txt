@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuitesloose text artifact
 >
-  <testsuite name="<exe-name>" errors="17" failures="129" tests="2123" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
+  <testsuite name="<exe-name>" errors="17" failures="129" tests="2127" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
     <properties>
       <property name="filters" value="~[!nonportable]~[!benchmark]~[approvals] *"/>
       <property name="random-seed" value="1"/>
@@ -1066,6 +1066,8 @@ Message.tests.cpp:<line number>
     <testcase classname="<exe-name>.global" name="Product with differing arities - std::tuple&lt;int, double, float>" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Product with differing arities - std::tuple&lt;int, double>" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Product with differing arities - std::tuple&lt;int>" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Random seed generation accepts known methods" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Random seed generation reports unknown methods" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Range type with sentinel" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Reconstruction should be based on stringification: #914" time="{duration}" status="run">
       <failure message="truthy(false)" type="CHECK">

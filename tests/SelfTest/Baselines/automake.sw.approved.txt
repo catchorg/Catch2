@@ -183,6 +183,8 @@ Nor would this
 :test-result: PASS Product with differing arities - std::tuple<int, double, float>
 :test-result: PASS Product with differing arities - std::tuple<int, double>
 :test-result: PASS Product with differing arities - std::tuple<int>
+:test-result: PASS Random seed generation accepts known methods
+:test-result: PASS Random seed generation reports unknown methods
 :test-result: PASS Range type with sentinel
 :test-result: FAIL Reconstruction should be based on stringification: #914
 :test-result: FAIL Regex string matcher

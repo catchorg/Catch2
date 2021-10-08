@@ -2466,6 +2466,14 @@ ok {test-number} - std::tuple_size<TestType>::value >= 1 for: 3 >= 1
 ok {test-number} - std::tuple_size<TestType>::value >= 1 for: 2 >= 1
 # Product with differing arities - std::tuple<int>
 ok {test-number} - std::tuple_size<TestType>::value >= 1 for: 1 >= 1
+# Random seed generation accepts known methods
+ok {test-number} - Catch::generateRandomSeed(method)
+# Random seed generation accepts known methods
+ok {test-number} - Catch::generateRandomSeed(method)
+# Random seed generation accepts known methods
+ok {test-number} - Catch::generateRandomSeed(method)
+# Random seed generation reports unknown methods
+ok {test-number} - Catch::generateRandomSeed(static_cast<Catch::GenerateFrom>(77))
 # Range type with sentinel
 ok {test-number} - Catch::Detail::stringify(UsesSentinel{}) == "{  }" for: "{  }" == "{  }"
 # Reconstruction should be based on stringification: #914
@@ -4248,5 +4256,5 @@ ok {test-number} - q3 == 23. for: 23.0 == 23.0
 ok {test-number} -
 # xmlentitycheck
 ok {test-number} -
-1..2123
+1..2127
 

@@ -1272,6 +1272,10 @@ CmdLine.tests.cpp:<line number>: passed: config.benchmarkWarmupTime == 10 for: 1
 Misc.tests.cpp:<line number>: passed: std::tuple_size<TestType>::value >= 1 for: 3 >= 1
 Misc.tests.cpp:<line number>: passed: std::tuple_size<TestType>::value >= 1 for: 2 >= 1
 Misc.tests.cpp:<line number>: passed: std::tuple_size<TestType>::value >= 1 for: 1 >= 1
+RandomNumberGeneration.tests.cpp:<line number>: passed: Catch::generateRandomSeed(method)
+RandomNumberGeneration.tests.cpp:<line number>: passed: Catch::generateRandomSeed(method)
+RandomNumberGeneration.tests.cpp:<line number>: passed: Catch::generateRandomSeed(method)
+RandomNumberGeneration.tests.cpp:<line number>: passed: Catch::generateRandomSeed(static_cast<Catch::GenerateFrom>(77))
 ToString.tests.cpp:<line number>: passed: Catch::Detail::stringify(UsesSentinel{}) == "{  }" for: "{  }" == "{  }"
 Decomposition.tests.cpp:<line number>: failed: truthy(false) for: Hey, its truthy!
 Matchers.tests.cpp:<line number>: failed: testStringForMatching(), Matches( "this STRING contains 'abc' as a substring" ) for: "this string contains 'abc' as a substring" matches "this STRING contains 'abc' as a substring" case sensitively

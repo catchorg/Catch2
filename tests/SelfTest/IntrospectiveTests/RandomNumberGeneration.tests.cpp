@@ -5,6 +5,8 @@
 
 #include <catch2/catch_test_macros.hpp>
 #include <catch2/internal/catch_random_number_generator.hpp>
+#include <catch2/internal/catch_random_seed_generation.hpp>
+#include <catch2/generators/catch_generators.hpp>
 
 TEST_CASE("Our PCG implementation provides expected results for known seeds", "[rng]") {
     Catch::SimplePcg32 rng;
@@ -39,4 +41,19 @@ TEST_CASE("Comparison ops", "[rng]") {
     REQUIRE(SimplePcg32{ 0 } != SimplePcg32{});
     REQUIRE_FALSE(SimplePcg32{ 1 } == SimplePcg32{ 2 });
     REQUIRE_FALSE(SimplePcg32{ 1 } != SimplePcg32{ 1 });
+}
+
+TEST_CASE("Random seed generation reports unknown methods", "[rng][seed]") {
+    REQUIRE_THROWS(Catch::generateRandomSeed(static_cast<Catch::GenerateFrom>(77)));
+}
+
+TEST_CASE("Random seed generation accepts known methods", "[rng][seed]") {
+    using Catch::GenerateFrom;
+    const auto method = GENERATE(
+        GenerateFrom::Time,
+        GenerateFrom::RandomDevice,
+        GenerateFrom::Default
+    );
+
+    REQUIRE_NOTHROW(Catch::generateRandomSeed(method));
 }
