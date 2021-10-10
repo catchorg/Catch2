@@ -3,6 +3,7 @@
 # Release notes
 **Contents**<br>
 [3.0.1](#301)<br>
+[2.13.7](#2137)<br>
 [2.13.6](#2136)<br>
 [2.13.5](#2135)<br>
 [2.13.4](#2134)<br>
@@ -185,6 +186,16 @@ new design.
   * `catch2` is the statically compiled implementation by itself
   * `catch2-with-main` also links in the default main
 
+
+
+## 2.13.7
+
+### Fixes
+* Added missing `<iterator>` include in benchmarking. (#2231)
+* Fixed noexcept build with benchmarking enabled (#2235)
+* Fixed build for compilers with C++17 support but without C++17 library support (#2195)
+* JUnit only uses 3 decimal places when reporting durations (#2221)
+* `!mayfail` tagged tests are now marked as `skipped` in JUnit reporter output (#2116)
 
 
 ## 2.13.6
