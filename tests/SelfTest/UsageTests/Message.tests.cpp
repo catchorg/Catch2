@@ -247,6 +247,7 @@ std::ostream& operator<<(std::ostream& out, helper_1436<T1, T2> const& helper) {
 #elif defined(__clang__)
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wunknown-pragmas"
+#pragma clang diagnostic ignored "-Wunknown-warning-option"
 #pragma clang diagnostic ignored "-Wdeprecated-comma-subscript"
 #pragma clang diagnostic ignored "-Wunused-value"
 #endif
