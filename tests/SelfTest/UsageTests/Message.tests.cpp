@@ -242,9 +242,11 @@ std::ostream& operator<<(std::ostream& out, helper_1436<T1, T2> const& helper) {
 // warns about an unused value. This warning must be disabled for C++20.
 #if defined(__GNUG__) && !defined(__clang__)
 #pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wpragmas"
 #pragma GCC diagnostic ignored "-Wcomma-subscript"
 #elif defined(__clang__)
 #pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunknown-pragmas"
 #pragma clang diagnostic ignored "-Wdeprecated-comma-subscript"
 #pragma clang diagnostic ignored "-Wunused-value"
 #endif
