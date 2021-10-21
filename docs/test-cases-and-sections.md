@@ -253,10 +253,6 @@ TEMPLATE_PRODUCT_TEST_CASE("Product with differing arities", "[template][product
 }
 ```
 
-_While there is an upper limit on the number of types you can specify
-in single `TEMPLATE_TEST_CASE` or `TEMPLATE_PRODUCT_TEST_CASE`, the limit
-is very high and should not be encountered in practice._
-
 * **TEMPLATE_LIST_TEST_CASE(** _test name_, _tags_, _type list_ **)**
 
 > [Introduced](https://github.com/catchorg/Catch2/issues/1627) in Catch2 2.9.0.
