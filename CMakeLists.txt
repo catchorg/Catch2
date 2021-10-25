@@ -114,27 +114,11 @@ if (NOT_SUBPROJECT)
           ${CATCH_CMAKE_CONFIG_DESTINATION}
     )
 
-    ## TODO: Catch2 main target?
-    ## Install some cpp file as well?
-
-    # By default, FooConfigVersion is tied to architecture that it was
-    # generated on. Because Catch2 is header-only, it is arch-independent
-    # and thus Catch2ConfigVersion should not be tied to the architecture
-    # it was generated on.
-    #
-    # CMake does not provide a direct customization point for this in
-    # `write_basic_package_version_file`, but it can be accomplished
-    # indirectly by temporarily redefining `CMAKE_SIZEOF_VOID_P` to an
-    # empty string. Note that just undefining the variable could be
-    # insufficient in cases where the variable was already in CMake cache
-    set(CATCH2_CMAKE_SIZEOF_VOID_P ${CMAKE_SIZEOF_VOID_P})
-    set(CMAKE_SIZEOF_VOID_P "")
     write_basic_package_version_file(
       "${CMAKE_CURRENT_BINARY_DIR}/Catch2ConfigVersion.cmake"
       COMPATIBILITY
         SameMajorVersion
     )
-    set(CMAKE_SIZEOF_VOID_P ${CATCH2_CMAKE_SIZEOF_VOID_P})
 
     install(
       FILES
