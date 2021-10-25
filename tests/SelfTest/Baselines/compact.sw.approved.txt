@@ -1449,6 +1449,7 @@ Reporters.tests.cpp:<line number>: passed: listingString, ContainsSubstring( "fa
     </SourceInfo>
   </TestCase>
 </MatchingTests>" ( contains: "fake test name" and contains: "fakeTestTag" ) with 1 message: 'Tested reporter: xml'
+Reporters.tests.cpp:<line number>: passed:
 Message.tests.cpp:<line number>: passed: with 1 message: 'this is a success'
 Message.tests.cpp:<line number>: passed:
 BDD.tests.cpp:<line number>: passed: before == 0 for: 0 == 0

@@ -491,6 +491,8 @@ Matchers.tests.cpp:<line number>|nexpression failed|n  CHECK_THAT( testStringFor
 ##teamcity[testFinished name='Regression test #1' duration="{duration}"]
 ##teamcity[testStarted name='Reporter|'s write listings to provided stream']
 ##teamcity[testFinished name='Reporter|'s write listings to provided stream' duration="{duration}"]
+##teamcity[testStarted name='Reproducer for #2309 - a very long description past 80 chars (default console width) with a late colon : blablabla']
+##teamcity[testFinished name='Reproducer for #2309 - a very long description past 80 chars (default console width) with a late colon : blablabla' duration="{duration}"]
 ##teamcity[testStarted name='SUCCEED counts as a test pass']
 ##teamcity[testFinished name='SUCCEED counts as a test pass' duration="{duration}"]
 ##teamcity[testStarted name='SUCCEED does not require an argument']

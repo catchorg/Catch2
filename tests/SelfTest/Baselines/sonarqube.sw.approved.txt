@@ -181,6 +181,7 @@
     <testCase name="Reporter's write listings to provided stream/xml reporter lists tags" duration="{duration}"/>
     <testCase name="Reporter's write listings to provided stream/xml reporter lists reporters" duration="{duration}"/>
     <testCase name="Reporter's write listings to provided stream/xml reporter lists tests" duration="{duration}"/>
+    <testCase name="Reproducer for #2309 - a very long description past 80 chars (default console width) with a late colon : blablabla" duration="{duration}"/>
     <testCase name="The default listing implementation write to provided stream/Listing tags" duration="{duration}"/>
     <testCase name="The default listing implementation write to provided stream/Listing reporters" duration="{duration}"/>
     <testCase name="The default listing implementation write to provided stream/Listing tests" duration="{duration}"/>

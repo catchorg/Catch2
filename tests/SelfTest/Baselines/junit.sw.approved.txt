@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuitesloose text artifact
 >
-  <testsuite name="<exe-name>" errors="17" failures="129" tests="2131" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
+  <testsuite name="<exe-name>" errors="17" failures="129" tests="2132" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
     <properties>
       <property name="random-seed" value="1"/>
       <property name="filters" value="~[!nonportable]~[!benchmark]~[approvals] *"/>
@@ -1163,6 +1163,7 @@ Matchers.tests.cpp:<line number>
     <testcase classname="<exe-name>.global" name="Reporter's write listings to provided stream/xml reporter lists tags" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Reporter's write listings to provided stream/xml reporter lists reporters" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Reporter's write listings to provided stream/xml reporter lists tests" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Reproducer for #2309 - a very long description past 80 chars (default console width) with a late colon : blablabla" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="SUCCEED counts as a test pass" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="SUCCEED does not require an argument" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.Fixture" name="Scenario: BDD tests requiring Fixtures to provide commonly-accessed data or methods/Given: No operations precede me" time="{duration}" status="run"/>

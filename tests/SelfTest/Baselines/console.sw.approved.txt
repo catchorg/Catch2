@@ -10232,6 +10232,15 @@ with message:
   Tested reporter: xml
 
 -------------------------------------------------------------------------------
+Reproducer for #2309 - a very long description past 80 chars (default console
+width) with a late colon : blablabla
+-------------------------------------------------------------------------------
+Reporters.tests.cpp:<line number>
+...............................................................................
+
+Reporters.tests.cpp:<line number>: PASSED:
+
+-------------------------------------------------------------------------------
 SUCCEED counts as a test pass
 -------------------------------------------------------------------------------
 Message.tests.cpp:<line number>
@@ -17030,6 +17039,6 @@ Misc.tests.cpp:<line number>
 Misc.tests.cpp:<line number>: PASSED:
 
 ===============================================================================
-test cases:  372 |  279 passed |  86 failed |  7 failed as expected
-assertions: 2131 | 1958 passed | 146 failed | 27 failed as expected
+test cases:  373 |  280 passed |  86 failed |  7 failed as expected
+assertions: 2132 | 1959 passed | 146 failed | 27 failed as expected
 

@@ -107,3 +107,8 @@ TEST_CASE( "Reporter's write listings to provided stream", "[reporters]" ) {
         }
     }
 }
+
+
+TEST_CASE("Reproducer for #2309 - a very long description past 80 chars (default console width) with a late colon : blablabla", "[console-reporter]") {
+    SUCCEED();
+}

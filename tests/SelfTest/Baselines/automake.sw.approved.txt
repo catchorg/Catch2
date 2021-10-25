@@ -191,6 +191,7 @@ Nor would this
 :test-result: FAIL Regex string matcher
 :test-result: PASS Regression test #1
 :test-result: PASS Reporter's write listings to provided stream
+:test-result: PASS Reproducer for #2309 - a very long description past 80 chars (default console width) with a late colon : blablabla
 :test-result: PASS SUCCEED counts as a test pass
 :test-result: PASS SUCCEED does not require an argument
 :test-result: PASS Scenario: BDD tests requiring Fixtures to provide commonly-accessed data or methods

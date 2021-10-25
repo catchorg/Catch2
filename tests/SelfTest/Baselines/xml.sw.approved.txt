@@ -12248,6 +12248,9 @@ All available test cases:
     </Section>
     <OverallResult success="true"/>
   </TestCase>
+  <TestCase name="Reproducer for #2309 - a very long description past 80 chars (default console width) with a late colon : blablabla" tags="[console-reporter]" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
+    <OverallResult success="true"/>
+  </TestCase>
   <TestCase name="SUCCEED counts as a test pass" tags="[messages]" filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
     <OverallResult success="true"/>
   </TestCase>
@@ -20027,6 +20030,6 @@ loose text artifact
     </Section>
     <OverallResult success="true"/>
   </TestCase>
-  <OverallResults successes="1958" failures="146" expectedFailures="27"/>
-  <OverallResultsCases successes="279" failures="86" expectedFailures="7"/>
+  <OverallResults successes="1959" failures="146" expectedFailures="27"/>
+  <OverallResultsCases successes="280" failures="86" expectedFailures="7"/>
 </Catch2TestRun>

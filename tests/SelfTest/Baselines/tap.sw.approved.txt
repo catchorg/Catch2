@@ -2590,6 +2590,8 @@ ok {test-number} - listingString, ContainsSubstring("fake reporter"s) for: "<?xm
 ok {test-number} - !(factories.empty()) for: !false
 # Reporter's write listings to provided stream
 ok {test-number} - listingString, ContainsSubstring( "fake test name"s ) && ContainsSubstring( "fakeTestTag"s ) for: "<?xml version="1.0" encoding="UTF-8"?> <MatchingTests>   <TestCase>     <Name>fake test name</Name>     <ClassName/>     <Tags>[fakeTestTag]</Tags>     <SourceInfo>       <File>fake-file.cpp</File>       <Line>123456789</Line>     </SourceInfo>   </TestCase> </MatchingTests>" ( contains: "fake test name" and contains: "fakeTestTag" ) with 1 message: 'Tested reporter: xml'
+# Reproducer for #2309 - a very long description past 80 chars (default console width) with a late colon : blablabla
+ok {test-number} -
 # SUCCEED counts as a test pass
 ok {test-number} - with 1 message: 'this is a success'
 # SUCCEED does not require an argument
@@ -4264,5 +4266,5 @@ ok {test-number} - q3 == 23. for: 23.0 == 23.0
 ok {test-number} -
 # xmlentitycheck
 ok {test-number} -
-1..2131
+1..2132
 

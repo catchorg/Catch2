@@ -559,15 +559,37 @@ void ConsoleReporter::printOpenHeader(std::string const& _name) {
     }
 }
 
-// if string has a : in first line will set indent to follow it on
-// subsequent lines
 void ConsoleReporter::printHeaderString(std::string const& _string, std::size_t indent) {
-    std::size_t i = _string.find(": ");
-    if (i != std::string::npos)
-        i += 2;
-    else
-        i = 0;
-    stream << TextFlow::Column(_string).indent(indent + i).initialIndent(indent) << '\n';
+    // We want to get a bit fancy with line breaking here, so that subsequent
+    // lines start after ":" if one is present, e.g.
+    // ```
+    // blablabla: Fancy
+    //            linebreaking
+    // ```
+    // but we also want to avoid problems with overly long indentation causing
+    // the text to take up too many lines, e.g.
+    // ```
+    // blablabla: F
+    //            a
+    //            n
+    //            c
+    //            y
+    //            .
+    //            .
+    //            .
+    // ```
+    // So we limit the prefix indentation check to first quarter of the possible
+    // width
+    std::size_t idx = _string.find( ": " );
+    if ( idx != std::string::npos && idx < CATCH_CONFIG_CONSOLE_WIDTH / 4 ) {
+        idx += 2;
+    } else {
+        idx = 0;
+    }
+    stream << TextFlow::Column( _string )
+                  .indent( indent + idx )
+                  .initialIndent( indent )
+           << '\n';
 }
 
 struct SummaryColumn {
