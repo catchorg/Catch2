@@ -1426,6 +1426,6 @@ due to unexpected exception with message:
   Why would you throw a std::string?
 
 ===============================================================================
-test cases:  373 |  296 passed |  70 failed |  7 failed as expected
-assertions: 2121 | 1965 passed | 129 failed | 27 failed as expected
+test cases:  374 |  297 passed |  70 failed |  7 failed as expected
+assertions: 2127 | 1971 passed | 129 failed | 27 failed as expected
 

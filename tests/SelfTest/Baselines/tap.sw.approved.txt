@@ -2278,6 +2278,30 @@ ok {test-number} - !(spec.matches(*fakeTestCase("only foo", "[foo]"))) for: !fal
 ok {test-number} - !(spec.matches(*fakeTestCase("only hidden", "[.]"))) for: !false
 # Parse test names and tags
 ok {test-number} - spec.matches(*fakeTestCase("neither foo nor hidden", "[bar]")) for: true
+# Parsing sharding-related cli flags
+ok {test-number} - cli.parse({ "test", "--shard-count=8" }) for: {?}
+# Parsing sharding-related cli flags
+ok {test-number} - config.shardCount == 8 for: 8 == 8
+# Parsing sharding-related cli flags
+ok {test-number} - !(result) for: !{?}
+# Parsing sharding-related cli flags
+ok {test-number} - result.errorMessage(), ContainsSubstring("Shard count must be a positive number") for: "Shard count must be a positive number" contains: "Shard count must be a positive number"
+# Parsing sharding-related cli flags
+ok {test-number} - !(result) for: !{?}
+# Parsing sharding-related cli flags
+ok {test-number} - result.errorMessage(), ContainsSubstring("Shard count must be a positive number") for: "Shard count must be a positive number" contains: "Shard count must be a positive number"
+# Parsing sharding-related cli flags
+ok {test-number} - cli.parse({ "test", "--shard-index=2" }) for: {?}
+# Parsing sharding-related cli flags
+ok {test-number} - config.shardIndex == 2 for: 2 == 2
+# Parsing sharding-related cli flags
+ok {test-number} - !(result) for: !{?}
+# Parsing sharding-related cli flags
+ok {test-number} - result.errorMessage(), ContainsSubstring("Shard index must be a non-negative number") for: "Shard index must be a non-negative number" contains: "Shard index must be a non-negative number"
+# Parsing sharding-related cli flags
+ok {test-number} - cli.parse({ "test", "--shard-index=0" }) for: {?}
+# Parsing sharding-related cli flags
+ok {test-number} - config.shardIndex == 0 for: 0 == 0
 # Pointers can be compared to null
 ok {test-number} - p == 0 for: 0 == 0
 # Pointers can be compared to null
@@ -2468,18 +2492,6 @@ ok {test-number} - config.benchmarkNoAnalysis for: true
 ok {test-number} - cli.parse({ "test", "--benchmark-warmup-time=10" }) for: {?}
 # Process can be configured on command line
 ok {test-number} - config.benchmarkWarmupTime == 10 for: 10 == 10
-# Process can be configured on command line
-ok {test-number} - cli.parse({ "test", "--shard-count=8"}) for: {?}
-# Process can be configured on command line
-ok {test-number} - config.shardCount == 8 for: 8 == 8
-# Process can be configured on command line
-ok {test-number} - cli.parse({ "test", "--shard-index=2"}) for: {?}
-# Process can be configured on command line
-ok {test-number} - config.shardIndex == 2 for: 2 == 2
-# Process can be configured on command line
-ok {test-number} - !result for: true
-# Process can be configured on command line
-ok {test-number} - result.errorMessage(), ContainsSubstring( "The shard count must be greater than 0" ) for: "The shard count must be greater than 0" contains: "The shard count must be greater than 0"
 # Product with differing arities - std::tuple<int, double, float>
 ok {test-number} - std::tuple_size<TestType>::value >= 1 for: 3 >= 1
 # Product with differing arities - std::tuple<int, double>
@@ -4278,5 +4290,5 @@ ok {test-number} - q3 == 23. for: 23.0 == 23.0
 ok {test-number} -
 # xmlentitycheck
 ok {test-number} -
-1..2138
+1..2144
 
