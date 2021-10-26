@@ -569,27 +569,53 @@ TEST_CASE( "Process can be configured on command line", "[config][command-line]"
             REQUIRE(config.benchmarkWarmupTime == 10);
         }
     }
+}
 
-    SECTION("Sharding options") {
-        SECTION("shard-count") {
-            CHECK(cli.parse({ "test", "--shard-count=8"}));
+TEST_CASE("Parsing sharding-related cli flags", "[sharding]") {
+    using namespace Catch::Matchers;
 
-            REQUIRE(config.shardCount == 8);
-        }
+    Catch::ConfigData config;
+    auto cli = Catch::makeCommandLineParser(config);
 
-        SECTION("shard-index") {
-            CHECK(cli.parse({ "test", "--shard-index=2"}));
+    SECTION("shard-count") {
+        CHECK(cli.parse({ "test", "--shard-count=8" }));
 
-            REQUIRE(config.shardIndex == 2);
-        }
-
-        SECTION("Zero shard-count") {
-            auto result = cli.parse({ "test", "--shard-count=0"});
-
-            CHECK( !result );
-            CHECK_THAT( result.errorMessage(), ContainsSubstring( "The shard count must be greater than 0" ) );
-        }
+        REQUIRE(config.shardCount == 8);
     }
+
+    SECTION("Negative shard count reports error") {
+        auto result = cli.parse({ "test", "--shard-count=-1" });
+
+        CHECK_FALSE(result);
+        REQUIRE_THAT(result.errorMessage(), ContainsSubstring("Shard count must be a positive number"));
+    }
+
+    SECTION("Zero shard count reports error") {
+        auto result = cli.parse({ "test", "--shard-count=0" });
+
+        CHECK_FALSE(result);
+        REQUIRE_THAT(result.errorMessage(), ContainsSubstring("Shard count must be a positive number"));
+    }
+
+    SECTION("shard-index") {
+        CHECK(cli.parse({ "test", "--shard-index=2" }));
+
+        REQUIRE(config.shardIndex == 2);
+    }
+
+    SECTION("Negative shard index reports error") {
+        auto result = cli.parse({ "test", "--shard-index=-12" });
+
+        CHECK_FALSE(result);
+        REQUIRE_THAT(result.errorMessage(), ContainsSubstring("Shard index must be a non-negative number"));
+    }
+
+    SECTION("Shard index 0 is accepted") {
+        CHECK(cli.parse({ "test", "--shard-index=0" }));
+
+        REQUIRE(config.shardIndex == 0);
+    }
+
 }
 
 TEST_CASE("Test with special, characters \"in name", "[cli][regression]") {

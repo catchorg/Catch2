@@ -10474,6 +10474,123 @@ Nor would this
     </Section>
     <OverallResult success="true"/>
   </TestCase>
+  <TestCase name="Parsing sharding-related cli flags" tags="[sharding]" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
+    <Section name="shard-count" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
+      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
+        <Original>
+          cli.parse({ "test", "--shard-count=8" })
+        </Original>
+        <Expanded>
+          {?}
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
+        <Original>
+          config.shardCount == 8
+        </Original>
+        <Expanded>
+          8 == 8
+        </Expanded>
+      </Expression>
+      <OverallResults successes="2" failures="0" expectedFailures="0"/>
+    </Section>
+    <Section name="Negative shard count reports error" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
+      <Expression success="true" type="CHECK_FALSE" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
+        <Original>
+          !(result)
+        </Original>
+        <Expanded>
+          !{?}
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
+        <Original>
+          result.errorMessage(), ContainsSubstring("Shard count must be a positive number")
+        </Original>
+        <Expanded>
+          "Shard count must be a positive number" contains: "Shard count must be a positive number"
+        </Expanded>
+      </Expression>
+      <OverallResults successes="2" failures="0" expectedFailures="0"/>
+    </Section>
+    <Section name="Zero shard count reports error" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
+      <Expression success="true" type="CHECK_FALSE" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
+        <Original>
+          !(result)
+        </Original>
+        <Expanded>
+          !{?}
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
+        <Original>
+          result.errorMessage(), ContainsSubstring("Shard count must be a positive number")
+        </Original>
+        <Expanded>
+          "Shard count must be a positive number" contains: "Shard count must be a positive number"
+        </Expanded>
+      </Expression>
+      <OverallResults successes="2" failures="0" expectedFailures="0"/>
+    </Section>
+    <Section name="shard-index" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
+      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
+        <Original>
+          cli.parse({ "test", "--shard-index=2" })
+        </Original>
+        <Expanded>
+          {?}
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
+        <Original>
+          config.shardIndex == 2
+        </Original>
+        <Expanded>
+          2 == 2
+        </Expanded>
+      </Expression>
+      <OverallResults successes="2" failures="0" expectedFailures="0"/>
+    </Section>
+    <Section name="Negative shard index reports error" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
+      <Expression success="true" type="CHECK_FALSE" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
+        <Original>
+          !(result)
+        </Original>
+        <Expanded>
+          !{?}
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
+        <Original>
+          result.errorMessage(), ContainsSubstring("Shard index must be a non-negative number")
+        </Original>
+        <Expanded>
+          "Shard index must be a non-negative number" contains: "Shard index must be a non-negative number"
+        </Expanded>
+      </Expression>
+      <OverallResults successes="2" failures="0" expectedFailures="0"/>
+    </Section>
+    <Section name="Shard index 0 is accepted" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
+      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
+        <Original>
+          cli.parse({ "test", "--shard-index=0" })
+        </Original>
+        <Expanded>
+          {?}
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
+        <Original>
+          config.shardIndex == 0
+        </Original>
+        <Expanded>
+          0 == 0
+        </Expanded>
+      </Expression>
+      <OverallResults successes="2" failures="0" expectedFailures="0"/>
+    </Section>
+    <OverallResult success="true"/>
+  </TestCase>
   <TestCase name="Pointers can be compared to null" filename="tests/<exe-name>/UsageTests/Condition.tests.cpp" >
     <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/UsageTests/Condition.tests.cpp" >
       <Original>
@@ -11463,72 +11580,6 @@ Nor would this
           </Original>
           <Expanded>
             10 == 10
-          </Expanded>
-        </Expression>
-        <OverallResults successes="2" failures="0" expectedFailures="0"/>
-      </Section>
-      <OverallResults successes="2" failures="0" expectedFailures="0"/>
-    </Section>
-    <Section name="Sharding options" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-      <Section name="shard-count" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-        <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-          <Original>
-            cli.parse({ "test", "--shard-count=8"})
-          </Original>
-          <Expanded>
-            {?}
-          </Expanded>
-        </Expression>
-        <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-          <Original>
-            config.shardCount == 8
-          </Original>
-          <Expanded>
-            8 == 8
-          </Expanded>
-        </Expression>
-        <OverallResults successes="2" failures="0" expectedFailures="0"/>
-      </Section>
-      <OverallResults successes="2" failures="0" expectedFailures="0"/>
-    </Section>
-    <Section name="Sharding options" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-      <Section name="shard-index" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-        <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-          <Original>
-            cli.parse({ "test", "--shard-index=2"})
-          </Original>
-          <Expanded>
-            {?}
-          </Expanded>
-        </Expression>
-        <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-          <Original>
-            config.shardIndex == 2
-          </Original>
-          <Expanded>
-            2 == 2
-          </Expanded>
-        </Expression>
-        <OverallResults successes="2" failures="0" expectedFailures="0"/>
-      </Section>
-      <OverallResults successes="2" failures="0" expectedFailures="0"/>
-    </Section>
-    <Section name="Sharding options" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-      <Section name="Zero shard-count" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-        <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-          <Original>
-            !result
-          </Original>
-          <Expanded>
-            true
-          </Expanded>
-        </Expression>
-        <Expression success="true" type="CHECK_THAT" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-          <Original>
-            result.errorMessage(), ContainsSubstring( "The shard count must be greater than 0" )
-          </Original>
-          <Expanded>
-            "The shard count must be greater than 0" contains: "The shard count must be greater than 0"
           </Expanded>
         </Expression>
         <OverallResults successes="2" failures="0" expectedFailures="0"/>
@@ -20096,6 +20147,6 @@ loose text artifact
     </Section>
     <OverallResult success="true"/>
   </TestCase>
-  <OverallResults successes="1965" failures="146" expectedFailures="27"/>
-  <OverallResultsCases successes="280" failures="86" expectedFailures="7"/>
+  <OverallResults successes="1971" failures="146" expectedFailures="27"/>
+  <OverallResultsCases successes="281" failures="86" expectedFailures="7"/>
 </Catch2TestRun>

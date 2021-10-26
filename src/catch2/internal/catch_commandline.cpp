@@ -150,14 +150,41 @@ namespace Catch {
             return ParserResult::ok( ParseResultType::Matched );
         };
         auto const setShardCount = [&]( std::string const& shardCount ) {
-            auto result = Clara::Detail::convertInto( shardCount, config.shardCount );
+            CATCH_TRY{
+                std::size_t parsedTo = 0;
+                int64_t parsedCount = std::stoll(shardCount, &parsedTo, 0);
+                if (parsedTo != shardCount.size()) {
+                    return ParserResult::runtimeError("Could not parse '" + shardCount + "' as shard count");
+                }
+                if (parsedCount <= 0) {
+                    return ParserResult::runtimeError("Shard count must be a positive number");
+                }
 
-            if (config.shardCount == 0) {
-                return ParserResult::runtimeError( "The shard count must be greater than 0" );
-            } else {
-                return result;
+                config.shardCount = static_cast<unsigned int>(parsedCount);
+                return ParserResult::ok(ParseResultType::Matched);
+            } CATCH_CATCH_ANON(std::exception const&) {
+                return ParserResult::runtimeError("Could not parse '" + shardCount + "' as shard count");
             }
         };
+
+        auto const setShardIndex = [&](std::string const& shardIndex) {
+            CATCH_TRY{
+                std::size_t parsedTo = 0;
+                int64_t parsedIndex = std::stoll(shardIndex, &parsedTo, 0);
+                if (parsedTo != shardIndex.size()) {
+                    return ParserResult::runtimeError("Could not parse '" + shardIndex + "' as shard index");
+                }
+                if (parsedIndex < 0) {
+                    return ParserResult::runtimeError("Shard index must be a non-negative number");
+                }
+
+                config.shardIndex = static_cast<unsigned int>(parsedIndex);
+                return ParserResult::ok(ParseResultType::Matched);
+            } CATCH_CATCH_ANON(std::exception const&) {
+                return ParserResult::runtimeError("Could not parse '" + shardIndex + "' as shard index");
+            }
+        };
+
 
         auto cli
             = ExeName( config.processName )
@@ -252,7 +279,7 @@ namespace Catch {
             | Opt( setShardCount, "shard count" )
                 ["--shard-count"]
                 ( "split the tests to execute into this many groups" )
-            | Opt( config.shardIndex, "shard index" )
+            | Opt( setShardIndex, "shard index" )
                 ["--shard-index"]
                 ( "index of the group of tests to execute (see --shard-count)" )
             | Arg( config.testsOrTags, "test name|pattern|tags" )

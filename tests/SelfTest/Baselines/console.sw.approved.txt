@@ -8603,6 +8603,111 @@ with expansion:
   true
 
 -------------------------------------------------------------------------------
+Parsing sharding-related cli flags
+  shard-count
+-------------------------------------------------------------------------------
+CmdLine.tests.cpp:<line number>
+...............................................................................
+
+CmdLine.tests.cpp:<line number>: PASSED:
+  CHECK( cli.parse({ "test", "--shard-count=8" }) )
+with expansion:
+  {?}
+
+CmdLine.tests.cpp:<line number>: PASSED:
+  REQUIRE( config.shardCount == 8 )
+with expansion:
+  8 == 8
+
+-------------------------------------------------------------------------------
+Parsing sharding-related cli flags
+  Negative shard count reports error
+-------------------------------------------------------------------------------
+CmdLine.tests.cpp:<line number>
+...............................................................................
+
+CmdLine.tests.cpp:<line number>: PASSED:
+  CHECK_FALSE( result )
+with expansion:
+  !{?}
+
+CmdLine.tests.cpp:<line number>: PASSED:
+  REQUIRE_THAT( result.errorMessage(), ContainsSubstring("Shard count must be a positive number") )
+with expansion:
+  "Shard count must be a positive number" contains: "Shard count must be a
+  positive number"
+
+-------------------------------------------------------------------------------
+Parsing sharding-related cli flags
+  Zero shard count reports error
+-------------------------------------------------------------------------------
+CmdLine.tests.cpp:<line number>
+...............................................................................
+
+CmdLine.tests.cpp:<line number>: PASSED:
+  CHECK_FALSE( result )
+with expansion:
+  !{?}
+
+CmdLine.tests.cpp:<line number>: PASSED:
+  REQUIRE_THAT( result.errorMessage(), ContainsSubstring("Shard count must be a positive number") )
+with expansion:
+  "Shard count must be a positive number" contains: "Shard count must be a
+  positive number"
+
+-------------------------------------------------------------------------------
+Parsing sharding-related cli flags
+  shard-index
+-------------------------------------------------------------------------------
+CmdLine.tests.cpp:<line number>
+...............................................................................
+
+CmdLine.tests.cpp:<line number>: PASSED:
+  CHECK( cli.parse({ "test", "--shard-index=2" }) )
+with expansion:
+  {?}
+
+CmdLine.tests.cpp:<line number>: PASSED:
+  REQUIRE( config.shardIndex == 2 )
+with expansion:
+  2 == 2
+
+-------------------------------------------------------------------------------
+Parsing sharding-related cli flags
+  Negative shard index reports error
+-------------------------------------------------------------------------------
+CmdLine.tests.cpp:<line number>
+...............................................................................
+
+CmdLine.tests.cpp:<line number>: PASSED:
+  CHECK_FALSE( result )
+with expansion:
+  !{?}
+
+CmdLine.tests.cpp:<line number>: PASSED:
+  REQUIRE_THAT( result.errorMessage(), ContainsSubstring("Shard index must be a non-negative number") )
+with expansion:
+  "Shard index must be a non-negative number" contains: "Shard index must be a
+  non-negative number"
+
+-------------------------------------------------------------------------------
+Parsing sharding-related cli flags
+  Shard index 0 is accepted
+-------------------------------------------------------------------------------
+CmdLine.tests.cpp:<line number>
+...............................................................................
+
+CmdLine.tests.cpp:<line number>: PASSED:
+  CHECK( cli.parse({ "test", "--shard-index=0" }) )
+with expansion:
+  {?}
+
+CmdLine.tests.cpp:<line number>: PASSED:
+  REQUIRE( config.shardIndex == 0 )
+with expansion:
+  0 == 0
+
+-------------------------------------------------------------------------------
 Pointers can be compared to null
 -------------------------------------------------------------------------------
 Condition.tests.cpp:<line number>
@@ -9389,61 +9494,6 @@ CmdLine.tests.cpp:<line number>: PASSED:
   REQUIRE( config.benchmarkWarmupTime == 10 )
 with expansion:
   10 == 10
-
--------------------------------------------------------------------------------
-Process can be configured on command line
-  Sharding options
-  shard-count
--------------------------------------------------------------------------------
-CmdLine.tests.cpp:<line number>
-...............................................................................
-
-CmdLine.tests.cpp:<line number>: PASSED:
-  CHECK( cli.parse({ "test", "--shard-count=8"}) )
-with expansion:
-  {?}
-
-CmdLine.tests.cpp:<line number>: PASSED:
-  REQUIRE( config.shardCount == 8 )
-with expansion:
-  8 == 8
-
--------------------------------------------------------------------------------
-Process can be configured on command line
-  Sharding options
-  shard-index
--------------------------------------------------------------------------------
-CmdLine.tests.cpp:<line number>
-...............................................................................
-
-CmdLine.tests.cpp:<line number>: PASSED:
-  CHECK( cli.parse({ "test", "--shard-index=2"}) )
-with expansion:
-  {?}
-
-CmdLine.tests.cpp:<line number>: PASSED:
-  REQUIRE( config.shardIndex == 2 )
-with expansion:
-  2 == 2
-
--------------------------------------------------------------------------------
-Process can be configured on command line
-  Sharding options
-  Zero shard-count
--------------------------------------------------------------------------------
-CmdLine.tests.cpp:<line number>
-...............................................................................
-
-CmdLine.tests.cpp:<line number>: PASSED:
-  CHECK( !result )
-with expansion:
-  true
-
-CmdLine.tests.cpp:<line number>: PASSED:
-  CHECK_THAT( result.errorMessage(), ContainsSubstring( "The shard count must be greater than 0" ) )
-with expansion:
-  "The shard count must be greater than 0" contains: "The shard count must be
-  greater than 0"
 
 -------------------------------------------------------------------------------
 Product with differing arities - std::tuple<int, double, float>
@@ -17094,6 +17144,6 @@ Misc.tests.cpp:<line number>
 Misc.tests.cpp:<line number>: PASSED:
 
 ===============================================================================
-test cases:  373 |  280 passed |  86 failed |  7 failed as expected
-assertions: 2138 | 1965 passed | 146 failed | 27 failed as expected
+test cases:  374 |  281 passed |  86 failed |  7 failed as expected
+assertions: 2144 | 1971 passed | 146 failed | 27 failed as expected
 

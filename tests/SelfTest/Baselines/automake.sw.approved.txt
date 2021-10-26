@@ -177,6 +177,7 @@ Nor would this
 :test-result: FAIL Output from all sections is reported
 :test-result: PASS Overloaded comma or address-of operators are not used
 :test-result: PASS Parse test names and tags
+:test-result: PASS Parsing sharding-related cli flags
 :test-result: PASS Pointers can be compared to null
 :test-result: PASS Precision of floating point stringification can be set
 :test-result: PASS Predicate matcher can accept const char*

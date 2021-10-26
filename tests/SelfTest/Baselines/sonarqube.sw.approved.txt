@@ -43,6 +43,12 @@
     <testCase name="Parse test names and tags/Leading and trailing spaces in test name" duration="{duration}"/>
     <testCase name="Parse test names and tags/Shortened hide tags are split apart when parsing" duration="{duration}"/>
     <testCase name="Parse test names and tags/Shortened hide tags also properly handle exclusion" duration="{duration}"/>
+    <testCase name="Parsing sharding-related cli flags/shard-count" duration="{duration}"/>
+    <testCase name="Parsing sharding-related cli flags/Negative shard count reports error" duration="{duration}"/>
+    <testCase name="Parsing sharding-related cli flags/Zero shard count reports error" duration="{duration}"/>
+    <testCase name="Parsing sharding-related cli flags/shard-index" duration="{duration}"/>
+    <testCase name="Parsing sharding-related cli flags/Negative shard index reports error" duration="{duration}"/>
+    <testCase name="Parsing sharding-related cli flags/Shard index 0 is accepted" duration="{duration}"/>
     <testCase name="Process can be configured on command line/empty args don't cause a crash" duration="{duration}"/>
     <testCase name="Process can be configured on command line/default - no arguments" duration="{duration}"/>
     <testCase name="Process can be configured on command line/test lists/Specify one test case using" duration="{duration}"/>
@@ -75,9 +81,6 @@
     <testCase name="Process can be configured on command line/Benchmark options/confidence-interval" duration="{duration}"/>
     <testCase name="Process can be configured on command line/Benchmark options/no-analysis" duration="{duration}"/>
     <testCase name="Process can be configured on command line/Benchmark options/warmup-time" duration="{duration}"/>
-    <testCase name="Process can be configured on command line/Sharding options/shard-count" duration="{duration}"/>
-    <testCase name="Process can be configured on command line/Sharding options/shard-index" duration="{duration}"/>
-    <testCase name="Process can be configured on command line/Sharding options/Zero shard-count" duration="{duration}"/>
     <testCase name="Test with special, characters &quot;in name" duration="{duration}"/>
   </file>
   <file path="tests/<exe-name>/IntrospectiveTests/FloatingPoint.tests.cpp">
