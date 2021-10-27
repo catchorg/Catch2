@@ -167,6 +167,8 @@ new design.
 * Catch2 now supports test sharding (#2257)
   * You can ask for the tests to be split into N groups and only run one of them.
   * This greatly simplifies parallelization of tests in a binary through external runner.
+* The embedded CLI parser now supports repeatedly callable lambdas
+  * A lambda-based option parser can opt into being repeatedly specifiable.
 
 
 ### Fixes
