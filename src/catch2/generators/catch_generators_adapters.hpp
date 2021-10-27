@@ -67,7 +67,7 @@ namespace Generators {
             if (!m_predicate(m_generator.get())) {
                 // It might happen that there are no values that pass the
                 // filter. In that case we throw an exception.
-                auto has_initial_value = next();
+                auto has_initial_value = m_generator.next();
                 if (!has_initial_value) {
                     Detail::throw_generator_exception("No valid value found in filtered generator");
                 }
