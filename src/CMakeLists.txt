@@ -140,6 +140,7 @@ set(INTERNAL_HEADERS
     ${SOURCES_DIR}/catch_translate_exception.hpp
     ${SOURCES_DIR}/internal/catch_uncaught_exceptions.hpp
     ${SOURCES_DIR}/internal/catch_unique_ptr.hpp
+    ${SOURCES_DIR}/internal/catch_void_type.hpp
     ${SOURCES_DIR}/catch_version.hpp
     ${SOURCES_DIR}/catch_version_macros.hpp
     ${SOURCES_DIR}/internal/catch_wildcard_pattern.hpp

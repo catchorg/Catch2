@@ -14,9 +14,11 @@
 #include <type_traits>
 #include <string>
 #include <string.h>
+
 #include <catch2/internal/catch_compiler_capabilities.hpp>
 #include <catch2/internal/catch_config_wchar.hpp>
 #include <catch2/internal/catch_stream.hpp>
+#include <catch2/internal/catch_void_type.hpp>
 #include <catch2/interfaces/catch_interfaces_enum_values_registry.hpp>
 
 #ifdef CATCH_CONFIG_CPP17_STRING_VIEW
@@ -474,19 +476,11 @@ namespace Catch {
     using std::end;
 
     namespace Detail {
-        template <typename...>
-        struct void_type {
-            using type = void;
-        };
-
-        template <typename... Ts>
-        using void_type_t = typename void_type<Ts...>::type;
-
         template <typename T, typename = void>
         struct is_range_impl : std::false_type {};
 
         template <typename T>
-        struct is_range_impl<T, void_type_t<decltype(begin(std::declval<T>()))>> : std::true_type {};
+        struct is_range_impl<T, void_t<decltype(begin(std::declval<T>()))>> : std::true_type {};
     } // namespace Detail
 
     template <typename T>
