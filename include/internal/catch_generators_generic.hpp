@@ -63,7 +63,7 @@ namespace Generators {
             if (!m_predicate(m_generator.get())) {
                 // It might happen that there are no values that pass the
                 // filter. In that case we throw an exception.
-                auto has_initial_value = next();
+                auto has_initial_value = nextImpl();
                 if (!has_initial_value) {
                     Catch::throw_exception(GeneratorException("No valid value found in filtered generator"));
                 }
@@ -75,6 +75,11 @@ namespace Generators {
         }
 
         bool next() override {
+            return nextImpl();
+        }
+
+    private:
+        bool nextImpl() {
             bool success = m_generator.next();
             if (!success) {
                 return false;
