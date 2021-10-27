@@ -2909,6 +2909,35 @@ with expansion:
   "foo" == "foo"
 
 -------------------------------------------------------------------------------
+Clara::Opt supports accept-many lambdas
+  Parsing fails on multiple options without accept_many
+-------------------------------------------------------------------------------
+Clara.tests.cpp:<line number>
+...............................................................................
+
+Clara.tests.cpp:<line number>: PASSED:
+  CHECK_FALSE( parse_result )
+with expansion:
+  !{?}
+
+-------------------------------------------------------------------------------
+Clara::Opt supports accept-many lambdas
+  Parsing succeeds on multiple options with accept_many
+-------------------------------------------------------------------------------
+Clara.tests.cpp:<line number>
+...............................................................................
+
+Clara.tests.cpp:<line number>: PASSED:
+  CHECK( parse_result )
+with expansion:
+  {?}
+
+Clara.tests.cpp:<line number>: PASSED:
+  CHECK( res == std::vector<std::string>{ "aaa", "bbb" } )
+with expansion:
+  { "aaa", "bbb" } == { "aaa", "bbb" }
+
+-------------------------------------------------------------------------------
 Combining MatchAllOfGeneric does not nest
 -------------------------------------------------------------------------------
 Matchers.tests.cpp:<line number>
@@ -14963,6 +14992,60 @@ Tricky.tests.cpp:<line number>
 No assertions in test case 'has printf'
 
 -------------------------------------------------------------------------------
+is_unary_function
+-------------------------------------------------------------------------------
+Clara.tests.cpp:<line number>
+...............................................................................
+
+Clara.tests.cpp:<line number>: PASSED:
+with message:
+  Catch::Clara::Detail::is_unary_function<decltype(unary1)>::value
+
+Clara.tests.cpp:<line number>: PASSED:
+with message:
+  Catch::Clara::Detail::is_unary_function<decltype(unary2)>::value
+
+Clara.tests.cpp:<line number>: PASSED:
+with message:
+  Catch::Clara::Detail::is_unary_function<decltype(unary3)>::value
+
+Clara.tests.cpp:<line number>: PASSED:
+with message:
+  Catch::Clara::Detail::is_unary_function<decltype(unary4)>::value
+
+Clara.tests.cpp:<line number>: PASSED:
+with message:
+  Catch::Clara::Detail::is_unary_function<decltype(unary5)>::value
+
+Clara.tests.cpp:<line number>: PASSED:
+with message:
+  Catch::Clara::Detail::is_unary_function<decltype(unary6)>::value
+
+Clara.tests.cpp:<line number>: PASSED:
+with message:
+  !(Catch::Clara::Detail::is_unary_function<decltype(binary1)>::value)
+
+Clara.tests.cpp:<line number>: PASSED:
+with message:
+  !(Catch::Clara::Detail::is_unary_function<decltype(binary2)>::value)
+
+Clara.tests.cpp:<line number>: PASSED:
+with message:
+  !(Catch::Clara::Detail::is_unary_function<decltype(nullary1)>::value)
+
+Clara.tests.cpp:<line number>: PASSED:
+with message:
+  !(Catch::Clara::Detail::is_unary_function<decltype(nullary2)>::value)
+
+Clara.tests.cpp:<line number>: PASSED:
+with message:
+  !(Catch::Clara::Detail::is_unary_function<int>::value)
+
+Clara.tests.cpp:<line number>: PASSED:
+with message:
+  !(Catch::Clara::Detail::is_unary_function<std::string const&>::value)
+
+-------------------------------------------------------------------------------
 just failure
 -------------------------------------------------------------------------------
 Message.tests.cpp:<line number>
@@ -17144,6 +17227,6 @@ Misc.tests.cpp:<line number>
 Misc.tests.cpp:<line number>: PASSED:
 
 ===============================================================================
-test cases:  374 |  281 passed |  86 failed |  7 failed as expected
-assertions: 2144 | 1971 passed | 146 failed | 27 failed as expected
+test cases:  376 |  283 passed |  86 failed |  7 failed as expected
+assertions: 2159 | 1986 passed | 146 failed | 27 failed as expected
 

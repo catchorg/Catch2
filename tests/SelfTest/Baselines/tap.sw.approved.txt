@@ -698,6 +698,12 @@ ok {test-number} - c == i for: 5 == 5
 ok {test-number} - name.empty() for: true
 # Clara::Arg supports single-arg parse the way Opt does
 ok {test-number} - name == "foo" for: "foo" == "foo"
+# Clara::Opt supports accept-many lambdas
+ok {test-number} - !(parse_result) for: !{?}
+# Clara::Opt supports accept-many lambdas
+ok {test-number} - parse_result for: {?}
+# Clara::Opt supports accept-many lambdas
+ok {test-number} - res == std::vector<std::string>{ "aaa", "bbb" } for: { "aaa", "bbb" } == { "aaa", "bbb" }
 # Combining MatchAllOfGeneric does not nest
 ok {test-number} - with 1 message: 'std::is_same< decltype( ( MatcherA() && MatcherB() ) && MatcherC() ), Catch::Matchers::Detail:: MatchAllOfGeneric<MatcherA, MatcherB, MatcherC>>::value'
 # Combining MatchAllOfGeneric does not nest
@@ -3786,6 +3792,30 @@ ok {test-number} -
 # even more nested SECTION tests
 ok {test-number} -
 loose text artifact
+# is_unary_function
+ok {test-number} - with 1 message: 'Catch::Clara::Detail::is_unary_function<decltype(unary1)>::value'
+# is_unary_function
+ok {test-number} - with 1 message: 'Catch::Clara::Detail::is_unary_function<decltype(unary2)>::value'
+# is_unary_function
+ok {test-number} - with 1 message: 'Catch::Clara::Detail::is_unary_function<decltype(unary3)>::value'
+# is_unary_function
+ok {test-number} - with 1 message: 'Catch::Clara::Detail::is_unary_function<decltype(unary4)>::value'
+# is_unary_function
+ok {test-number} - with 1 message: 'Catch::Clara::Detail::is_unary_function<decltype(unary5)>::value'
+# is_unary_function
+ok {test-number} - with 1 message: 'Catch::Clara::Detail::is_unary_function<decltype(unary6)>::value'
+# is_unary_function
+ok {test-number} - with 1 message: '!(Catch::Clara::Detail::is_unary_function<decltype(binary1)>::value)'
+# is_unary_function
+ok {test-number} - with 1 message: '!(Catch::Clara::Detail::is_unary_function<decltype(binary2)>::value)'
+# is_unary_function
+ok {test-number} - with 1 message: '!(Catch::Clara::Detail::is_unary_function<decltype(nullary1)>::value)'
+# is_unary_function
+ok {test-number} - with 1 message: '!(Catch::Clara::Detail::is_unary_function<decltype(nullary2)>::value)'
+# is_unary_function
+ok {test-number} - with 1 message: '!(Catch::Clara::Detail::is_unary_function<int>::value)'
+# is_unary_function
+ok {test-number} - with 1 message: '!(Catch::Clara::Detail::is_unary_function<std::string const&>::value)'
 # just failure
 not ok {test-number} - explicitly with 1 message: 'Previous info should not be seen'
 # just failure after unscoped info
@@ -4290,5 +4320,5 @@ ok {test-number} - q3 == 23. for: 23.0 == 23.0
 ok {test-number} -
 # xmlentitycheck
 ok {test-number} -
-1..2144
+1..2159
 

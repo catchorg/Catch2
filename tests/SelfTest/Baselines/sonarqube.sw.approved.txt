@@ -3,6 +3,9 @@
 >
   <file path="tests/<exe-name>/IntrospectiveTests/Clara.tests.cpp">
     <testCase name="Clara::Arg supports single-arg parse the way Opt does" duration="{duration}"/>
+    <testCase name="Clara::Opt supports accept-many lambdas/Parsing fails on multiple options without accept_many" duration="{duration}"/>
+    <testCase name="Clara::Opt supports accept-many lambdas/Parsing succeeds on multiple options with accept_many" duration="{duration}"/>
+    <testCase name="is_unary_function" duration="{duration}"/>
   </file>
   <file path="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp">
     <testCase name="#1905 -- test spec parser properly clears internal state between compound tests" duration="{duration}"/>

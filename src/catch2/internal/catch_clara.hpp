@@ -29,14 +29,17 @@
 #    endif
 #endif
 
-#include <catch2/internal/catch_noncopyable.hpp>
 #include <catch2/internal/catch_move_and_forward.hpp>
+#include <catch2/internal/catch_noncopyable.hpp>
+#include <catch2/internal/catch_void_type.hpp>
 
 #include <cassert>
 #include <cctype>
 #include <memory>
+#include <ostream>
 #include <sstream>
 #include <string>
+#include <type_traits>
 #include <vector>
 
 namespace Catch {
@@ -53,7 +56,25 @@ namespace Catch {
             ShortCircuitSame
         };
 
+        struct accept_many_t {};
+        constexpr accept_many_t accept_many {};
+
         namespace Detail {
+            struct fake_arg {
+                template <typename T>
+                operator T();
+            };
+
+            template <typename F, typename = void>
+            struct is_unary_function : std::false_type {};
+
+            template <typename F>
+            struct is_unary_function<
+                F,
+                Catch::Detail::void_t<decltype(
+                    std::declval<F>()( fake_arg() ) )
+                >
+            > : std::true_type {};
 
             // Traits for extracting arg and return type of lambdas (for single
             // argument lambdas)
@@ -393,6 +414,11 @@ namespace Catch {
                 }
             };
 
+            template <typename L> struct BoundManyLambda : BoundLambda<L> {
+                explicit BoundManyLambda( L const& lambda ): BoundLambda<L>( lambda ) {}
+                bool isContainer() const override { return true; }
+            };
+
             template <typename L> struct BoundFlagLambda : BoundFlagRefBase {
                 L m_lambda;
 
@@ -447,12 +473,23 @@ namespace Catch {
                     m_ref( ref ) {}
 
             public:
-                template <typename T>
+                template <typename LambdaT>
+                ParserRefImpl( accept_many_t,
+                               LambdaT const& ref,
+                               std::string const& hint ):
+                    m_ref( std::make_shared<BoundManyLambda<LambdaT>>( ref ) ),
+                    m_hint( hint ) {}
+
+                template <typename T,
+                          typename = typename std::enable_if_t<
+                              !Detail::is_unary_function<T>::value>>
                 ParserRefImpl( T& ref, std::string const& hint ):
                     m_ref( std::make_shared<BoundValueRef<T>>( ref ) ),
                     m_hint( hint ) {}
 
-                template <typename LambdaT>
+                template <typename LambdaT,
+                          typename = typename std::enable_if_t<
+                              Detail::is_unary_function<LambdaT>::value>>
                 ParserRefImpl( LambdaT const& ref, std::string const& hint ):
                     m_ref( std::make_shared<BoundLambda<LambdaT>>( ref ) ),
                     m_hint( hint ) {}
@@ -513,13 +550,21 @@ namespace Catch {
 
             explicit Opt(bool& ref);
 
-            template <typename LambdaT>
-            Opt(LambdaT const& ref, std::string const& hint) :
-                ParserRefImpl(ref, hint) {}
+            template <typename LambdaT,
+                      typename = typename std::enable_if_t<
+                          Detail::is_unary_function<LambdaT>::value>>
+            Opt( LambdaT const& ref, std::string const& hint ):
+                ParserRefImpl( ref, hint ) {}
 
-            template <typename T>
-            Opt(T& ref, std::string const& hint) :
-                ParserRefImpl(ref, hint) {}
+            template <typename LambdaT>
+            Opt( accept_many_t, LambdaT const& ref, std::string const& hint ):
+                ParserRefImpl( accept_many, ref, hint ) {}
+
+            template <typename T,
+                      typename = typename std::enable_if_t<
+                          !Detail::is_unary_function<T>::value>>
+            Opt( T& ref, std::string const& hint ):
+                ParserRefImpl( ref, hint ) {}
 
             auto operator[](std::string const& optName) -> Opt& {
                 m_optNames.push_back(optName);

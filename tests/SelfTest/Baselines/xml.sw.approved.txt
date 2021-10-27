@@ -3156,6 +3156,39 @@ Nor would this
     </Expression>
     <OverallResult success="true"/>
   </TestCase>
+  <TestCase name="Clara::Opt supports accept-many lambdas" tags="[clara][opt]" filename="tests/<exe-name>/IntrospectiveTests/Clara.tests.cpp" >
+    <Section name="Parsing fails on multiple options without accept_many" filename="tests/<exe-name>/IntrospectiveTests/Clara.tests.cpp" >
+      <Expression success="true" type="CHECK_FALSE" filename="tests/<exe-name>/IntrospectiveTests/Clara.tests.cpp" >
+        <Original>
+          !(parse_result)
+        </Original>
+        <Expanded>
+          !{?}
+        </Expanded>
+      </Expression>
+      <OverallResults successes="1" failures="0" expectedFailures="0"/>
+    </Section>
+    <Section name="Parsing succeeds on multiple options with accept_many" filename="tests/<exe-name>/IntrospectiveTests/Clara.tests.cpp" >
+      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/Clara.tests.cpp" >
+        <Original>
+          parse_result
+        </Original>
+        <Expanded>
+          {?}
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/Clara.tests.cpp" >
+        <Original>
+          res == std::vector&lt;std::string>{ "aaa", "bbb" }
+        </Original>
+        <Expanded>
+          { "aaa", "bbb" } == { "aaa", "bbb" }
+        </Expanded>
+      </Expression>
+      <OverallResults successes="2" failures="0" expectedFailures="0"/>
+    </Section>
+    <OverallResult success="true"/>
+  </TestCase>
   <TestCase name="Combining MatchAllOfGeneric does not nest" tags="[matchers][templated]" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
     <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
       <Original>
@@ -17633,6 +17666,9 @@ There is no extra whitespace here
 loose text artifact
     <OverallResult success="false"/>
   </TestCase>
+  <TestCase name="is_unary_function" tags="[clara][compilation]" filename="tests/<exe-name>/IntrospectiveTests/Clara.tests.cpp" >
+    <OverallResult success="true"/>
+  </TestCase>
   <TestCase name="just failure" tags="[.][fail][isolated info][messages]" filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
     <Failure filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
       Previous info should not be seen
@@ -20147,6 +20183,6 @@ loose text artifact
     </Section>
     <OverallResult success="true"/>
   </TestCase>
-  <OverallResults successes="1971" failures="146" expectedFailures="27"/>
-  <OverallResultsCases successes="281" failures="86" expectedFailures="7"/>
+  <OverallResults successes="1986" failures="146" expectedFailures="27"/>
+  <OverallResultsCases successes="283" failures="86" expectedFailures="7"/>
 </Catch2TestRun>
