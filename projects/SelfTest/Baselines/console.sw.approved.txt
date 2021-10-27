@@ -4968,6 +4968,9 @@ with expansion:
 GeneratorsImpl.tests.cpp:<line number>: PASSED:
   REQUIRE_THROWS_AS( filter([] (int) { return false; }, value(1)), Catch::GeneratorException )
 
+GeneratorsImpl.tests.cpp:<line number>: PASSED:
+  REQUIRE_THROWS_AS( filter( []( int ) { return false; }, values( { 1, 2, 3 } ) ), Catch::GeneratorException )
+
 -------------------------------------------------------------------------------
 Generators internals
   Take generator
@@ -14179,5 +14182,5 @@ Misc.tests.cpp:<line number>: PASSED:
 
 ===============================================================================
 test cases:  323 |  232 passed |  86 failed |  5 failed as expected
-assertions: 1780 | 1607 passed | 148 failed | 25 failed as expected
+assertions: 1781 | 1608 passed | 148 failed | 25 failed as expected
 
