@@ -216,7 +216,7 @@ namespace Catch {
                     return m_type == ResultType::Ok;
                 }
                 auto type() const -> ResultType { return m_type; }
-                auto errorMessage() const -> std::string {
+                auto errorMessage() const -> std::string const& {
                     return m_errorMessage;
                 }
 
