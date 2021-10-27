@@ -164,6 +164,9 @@ new design.
 * `Approx::operator()` is now properly `const`
 * Catch2's internal helper variables no longer use reserved identifiers (#578)
 * `--rng-seed` now accepts string `"random-device"` to generate random seed using `std::random_device`
+* Catch2 now supports test sharding (#2257)
+  * You can ask for the tests to be split into N groups and only run one of them.
+  * This greatly simplifies parallelization of tests in a binary through external runner.
 
 
 ### Fixes
