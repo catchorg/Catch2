@@ -53,6 +53,9 @@ TEST_CASE("Generators internals", "[generators][internals]") {
 
         // Completely filtered-out generator should throw on construction
         REQUIRE_THROWS_AS(filter([] (int) { return false; }, value(1)), Catch::GeneratorException);
+        REQUIRE_THROWS_AS(
+            filter( []( int ) { return false; }, values( { 1, 2, 3 } ) ),
+            Catch::GeneratorException );
     }
     SECTION("Take generator") {
         SECTION("Take less") {
