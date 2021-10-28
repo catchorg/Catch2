@@ -42,14 +42,16 @@ namespace Catch {
         void Column::iterator::calcLength() {
             m_suffix = false;
             auto width = m_column.m_width - indent();
-            m_end = m_pos;
             std::string const& current_line = m_column.m_string;
-            if ( current_line[m_pos] == '\n' ) {
-                ++m_end;
-            }
-            while ( m_end < current_line.size() &&
-                    current_line[m_end] != '\n' ) {
-                ++m_end;
+            if ( m_end <= m_pos ) {
+                m_end = m_pos;
+                if ( current_line[m_pos] == '\n' ) {
+                    ++m_end;
+                }
+                while ( m_end < current_line.size() &&
+                        current_line[m_end] != '\n' ) {
+                    ++m_end;
+                }
             }
 
             if ( m_end < m_pos + width ) {
