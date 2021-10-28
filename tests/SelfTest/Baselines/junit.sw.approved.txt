@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuitesloose text artifact
 >
-  <testsuite name="<exe-name>" errors="17" failures="129" tests="2159" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
+  <testsuite name="<exe-name>" errors="17" failures="129" tests="2164" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
     <properties>
       <property name="random-seed" value="1"/>
       <property name="filters" value="~[!nonportable]~[!benchmark]~[approvals] *"/>
@@ -698,7 +698,9 @@ Message.tests.cpp:<line number>
     <testcase classname="<exe-name>.global" name="Generators internals/Preset values" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Generators internals/Generator combinator" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Generators internals/Explicitly typed generator sequence" time="{duration}" status="run"/>
-    <testcase classname="<exe-name>.global" name="Generators internals/Filter generator" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Generators internals/Filter generator/Simple filtering" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Generators internals/Filter generator/Filter out multiple elements at the start and end" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Generators internals/Filter generator/Throws on construction if it can't get initial element" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Generators internals/Take generator/Take less" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Generators internals/Take generator/Take more" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Generators internals/Map with explicit return type" time="{duration}" status="run"/>

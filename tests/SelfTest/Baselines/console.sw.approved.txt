@@ -5440,6 +5440,7 @@ with expansion:
 -------------------------------------------------------------------------------
 Generators internals
   Filter generator
+  Simple filtering
 -------------------------------------------------------------------------------
 GeneratorsImpl.tests.cpp:<line number>
 ...............................................................................
@@ -5464,8 +5465,47 @@ GeneratorsImpl.tests.cpp:<line number>: PASSED:
 with expansion:
   !false
 
+-------------------------------------------------------------------------------
+Generators internals
+  Filter generator
+  Filter out multiple elements at the start and end
+-------------------------------------------------------------------------------
+GeneratorsImpl.tests.cpp:<line number>
+...............................................................................
+
 GeneratorsImpl.tests.cpp:<line number>: PASSED:
-  REQUIRE_THROWS_AS( filter([] (int) { return false; }, value(1)), Catch::GeneratorException )
+  REQUIRE( gen.get() == 1 )
+with expansion:
+  1 == 1
+
+GeneratorsImpl.tests.cpp:<line number>: PASSED:
+  REQUIRE( gen.next() )
+with expansion:
+  true
+
+GeneratorsImpl.tests.cpp:<line number>: PASSED:
+  REQUIRE( gen.get() == 3 )
+with expansion:
+  3 == 3
+
+GeneratorsImpl.tests.cpp:<line number>: PASSED:
+  REQUIRE_FALSE( gen.next() )
+with expansion:
+  !false
+
+-------------------------------------------------------------------------------
+Generators internals
+  Filter generator
+  Throws on construction if it can't get initial element
+-------------------------------------------------------------------------------
+GeneratorsImpl.tests.cpp:<line number>
+...............................................................................
+
+GeneratorsImpl.tests.cpp:<line number>: PASSED:
+  REQUIRE_THROWS_AS( filter([](int) { return false; }, value(1)), Catch::GeneratorException )
+
+GeneratorsImpl.tests.cpp:<line number>: PASSED:
+  REQUIRE_THROWS_AS( filter([](int) { return false; }, values({ 1, 2, 3 })), Catch::GeneratorException )
 
 -------------------------------------------------------------------------------
 Generators internals
@@ -17228,5 +17268,5 @@ Misc.tests.cpp:<line number>: PASSED:
 
 ===============================================================================
 test cases:  376 |  283 passed |  86 failed |  7 failed as expected
-assertions: 2159 | 1986 passed | 146 failed | 27 failed as expected
+assertions: 2164 | 1991 passed | 146 failed | 27 failed as expected
 

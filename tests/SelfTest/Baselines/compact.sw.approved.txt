@@ -695,7 +695,12 @@ GeneratorsImpl.tests.cpp:<line number>: passed: gen.get() == 1 for: 1 == 1
 GeneratorsImpl.tests.cpp:<line number>: passed: gen.next() for: true
 GeneratorsImpl.tests.cpp:<line number>: passed: gen.get() == 3 for: 3 == 3
 GeneratorsImpl.tests.cpp:<line number>: passed: !(gen.next()) for: !false
-GeneratorsImpl.tests.cpp:<line number>: passed: filter([] (int) { return false; }, value(1)), Catch::GeneratorException
+GeneratorsImpl.tests.cpp:<line number>: passed: gen.get() == 1 for: 1 == 1
+GeneratorsImpl.tests.cpp:<line number>: passed: gen.next() for: true
+GeneratorsImpl.tests.cpp:<line number>: passed: gen.get() == 3 for: 3 == 3
+GeneratorsImpl.tests.cpp:<line number>: passed: !(gen.next()) for: !false
+GeneratorsImpl.tests.cpp:<line number>: passed: filter([](int) { return false; }, value(1)), Catch::GeneratorException
+GeneratorsImpl.tests.cpp:<line number>: passed: filter([](int) { return false; }, values({ 1, 2, 3 })), Catch::GeneratorException
 GeneratorsImpl.tests.cpp:<line number>: passed: gen.get() == 1 for: 1 == 1
 GeneratorsImpl.tests.cpp:<line number>: passed: gen.next() for: true
 GeneratorsImpl.tests.cpp:<line number>: passed: gen.get() == 2 for: 2 == 2

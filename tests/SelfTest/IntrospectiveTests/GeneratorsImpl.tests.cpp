@@ -50,14 +50,27 @@ TEST_CASE("Generators internals", "[generators][internals]") {
     }
     SECTION("Filter generator") {
         // Normal usage
-        auto gen = filter([] (int i) { return i != 2; }, values({ 2, 1, 2, 3, 2, 2 }));
-        REQUIRE(gen.get() == 1);
-        REQUIRE(gen.next());
-        REQUIRE(gen.get() == 3);
-        REQUIRE_FALSE(gen.next());
+        SECTION("Simple filtering") {
+            auto gen = filter([](int i) { return i != 2; }, values({ 2, 1, 2, 3, 2, 2 }));
+            REQUIRE(gen.get() == 1);
+            REQUIRE(gen.next());
+            REQUIRE(gen.get() == 3);
+            REQUIRE_FALSE(gen.next());
+        }
+        SECTION("Filter out multiple elements at the start and end") {
+            auto gen = filter([](int i) { return i != 2; }, values({ 2, 2, 1, 3, 2, 2 }));
+            REQUIRE(gen.get() == 1);
+            REQUIRE(gen.next());
+            REQUIRE(gen.get() == 3);
+            REQUIRE_FALSE(gen.next());
+        }
 
-        // Completely filtered-out generator should throw on construction
-        REQUIRE_THROWS_AS(filter([] (int) { return false; }, value(1)), Catch::GeneratorException);
+        SECTION("Throws on construction if it can't get initial element") {
+            REQUIRE_THROWS_AS(filter([](int) { return false; }, value(1)), Catch::GeneratorException);
+            REQUIRE_THROWS_AS(
+                filter([](int) { return false; }, values({ 1, 2, 3 })),
+                Catch::GeneratorException);
+        }
     }
     SECTION("Take generator") {
         SECTION("Take less") {

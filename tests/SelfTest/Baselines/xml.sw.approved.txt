@@ -6183,47 +6183,102 @@ Nor would this
       <OverallResults successes="7" failures="0" expectedFailures="0"/>
     </Section>
     <Section name="Filter generator" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
-      <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
-        <Original>
-          gen.get() == 1
-        </Original>
-        <Expanded>
-          1 == 1
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
-        <Original>
-          gen.next()
-        </Original>
-        <Expanded>
-          true
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
-        <Original>
-          gen.get() == 3
-        </Original>
-        <Expanded>
-          3 == 3
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="REQUIRE_FALSE" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
-        <Original>
-          !(gen.next())
-        </Original>
-        <Expanded>
-          !false
-        </Expanded>
-      </Expression>
-      <Expression success="true" type="REQUIRE_THROWS_AS" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
-        <Original>
-          filter([] (int) { return false; }, value(1)), Catch::GeneratorException
-        </Original>
-        <Expanded>
-          filter([] (int) { return false; }, value(1)), Catch::GeneratorException
-        </Expanded>
-      </Expression>
-      <OverallResults successes="5" failures="0" expectedFailures="0"/>
+      <Section name="Simple filtering" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+        <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+          <Original>
+            gen.get() == 1
+          </Original>
+          <Expanded>
+            1 == 1
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+          <Original>
+            gen.next()
+          </Original>
+          <Expanded>
+            true
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+          <Original>
+            gen.get() == 3
+          </Original>
+          <Expanded>
+            3 == 3
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE_FALSE" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+          <Original>
+            !(gen.next())
+          </Original>
+          <Expanded>
+            !false
+          </Expanded>
+        </Expression>
+        <OverallResults successes="4" failures="0" expectedFailures="0"/>
+      </Section>
+      <OverallResults successes="4" failures="0" expectedFailures="0"/>
+    </Section>
+    <Section name="Filter generator" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+      <Section name="Filter out multiple elements at the start and end" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+        <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+          <Original>
+            gen.get() == 1
+          </Original>
+          <Expanded>
+            1 == 1
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+          <Original>
+            gen.next()
+          </Original>
+          <Expanded>
+            true
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+          <Original>
+            gen.get() == 3
+          </Original>
+          <Expanded>
+            3 == 3
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE_FALSE" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+          <Original>
+            !(gen.next())
+          </Original>
+          <Expanded>
+            !false
+          </Expanded>
+        </Expression>
+        <OverallResults successes="4" failures="0" expectedFailures="0"/>
+      </Section>
+      <OverallResults successes="4" failures="0" expectedFailures="0"/>
+    </Section>
+    <Section name="Filter generator" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+      <Section name="Throws on construction if it can't get initial element" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+        <Expression success="true" type="REQUIRE_THROWS_AS" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+          <Original>
+            filter([](int) { return false; }, value(1)), Catch::GeneratorException
+          </Original>
+          <Expanded>
+            filter([](int) { return false; }, value(1)), Catch::GeneratorException
+          </Expanded>
+        </Expression>
+        <Expression success="true" type="REQUIRE_THROWS_AS" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
+          <Original>
+            filter([](int) { return false; }, values({ 1, 2, 3 })), Catch::GeneratorException
+          </Original>
+          <Expanded>
+            filter([](int) { return false; }, values({ 1, 2, 3 })), Catch::GeneratorException
+          </Expanded>
+        </Expression>
+        <OverallResults successes="2" failures="0" expectedFailures="0"/>
+      </Section>
+      <OverallResults successes="2" failures="0" expectedFailures="0"/>
     </Section>
     <Section name="Take generator" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
       <Section name="Take less" filename="tests/<exe-name>/IntrospectiveTests/GeneratorsImpl.tests.cpp" >
@@ -20183,6 +20238,6 @@ loose text artifact
     </Section>
     <OverallResult success="true"/>
   </TestCase>
-  <OverallResults successes="1986" failures="146" expectedFailures="27"/>
+  <OverallResults successes="1991" failures="146" expectedFailures="27"/>
   <OverallResultsCases successes="283" failures="86" expectedFailures="7"/>
 </Catch2TestRun>

@@ -94,7 +94,9 @@
     <testCase name="Generators internals/Preset values" duration="{duration}"/>
     <testCase name="Generators internals/Generator combinator" duration="{duration}"/>
     <testCase name="Generators internals/Explicitly typed generator sequence" duration="{duration}"/>
-    <testCase name="Generators internals/Filter generator" duration="{duration}"/>
+    <testCase name="Generators internals/Filter generator/Simple filtering" duration="{duration}"/>
+    <testCase name="Generators internals/Filter generator/Filter out multiple elements at the start and end" duration="{duration}"/>
+    <testCase name="Generators internals/Filter generator/Throws on construction if it can't get initial element" duration="{duration}"/>
     <testCase name="Generators internals/Take generator/Take less" duration="{duration}"/>
     <testCase name="Generators internals/Take generator/Take more" duration="{duration}"/>
     <testCase name="Generators internals/Map with explicit return type" duration="{duration}"/>

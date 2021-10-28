@@ -1373,7 +1373,17 @@ ok {test-number} - gen.get() == 3 for: 3 == 3
 # Generators internals
 ok {test-number} - !(gen.next()) for: !false
 # Generators internals
-ok {test-number} - filter([] (int) { return false; }, value(1)), Catch::GeneratorException
+ok {test-number} - gen.get() == 1 for: 1 == 1
+# Generators internals
+ok {test-number} - gen.next() for: true
+# Generators internals
+ok {test-number} - gen.get() == 3 for: 3 == 3
+# Generators internals
+ok {test-number} - !(gen.next()) for: !false
+# Generators internals
+ok {test-number} - filter([](int) { return false; }, value(1)), Catch::GeneratorException
+# Generators internals
+ok {test-number} - filter([](int) { return false; }, values({ 1, 2, 3 })), Catch::GeneratorException
 # Generators internals
 ok {test-number} - gen.get() == 1 for: 1 == 1
 # Generators internals
@@ -4320,5 +4330,5 @@ ok {test-number} - q3 == 23. for: 23.0 == 23.0
 ok {test-number} -
 # xmlentitycheck
 ok {test-number} -
-1..2159
+1..2164
 
