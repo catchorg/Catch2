@@ -224,13 +224,13 @@ namespace Catch {
                     return { ResultType::Ok, value };
                 }
                 static auto ok() -> BasicResult { return { ResultType::Ok }; }
-                static auto logicError( std::string const& message )
+                static auto logicError( std::string&& message )
                     -> BasicResult {
-                    return { ResultType::LogicError, message };
+                    return { ResultType::LogicError, CATCH_MOVE(message) };
                 }
-                static auto runtimeError( std::string const& message )
+                static auto runtimeError( std::string&& message )
                     -> BasicResult {
-                    return { ResultType::RuntimeError, message };
+                    return { ResultType::RuntimeError, CATCH_MOVE(message) };
                 }
 
                 explicit operator bool() const {
@@ -256,8 +256,8 @@ namespace Catch {
                     m_errorMessage; // Only populated if resultType is an error
 
                 BasicResult( ResultType type,
-                             std::string const& message ):
-                    ResultValueBase<T>( type ), m_errorMessage( message ) {
+                             std::string&& message ):
+                    ResultValueBase<T>( type ), m_errorMessage( CATCH_MOVE(message) ) {
                     assert( m_type != ResultType::Ok );
                 }
 
