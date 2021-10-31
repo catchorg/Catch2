@@ -89,8 +89,8 @@ namespace Catch {
             }
 
             size_t width() const { return m_width; }
-            iterator begin() const { return iterator( *this ); }
-            iterator end() const { return { *this, iterator::EndTag{} }; }
+            const_iterator begin() const { return const_iterator( *this ); }
+            const_iterator end() const { return { *this, const_iterator::EndTag{} }; }
 
             friend std::ostream& operator<<( std::ostream& os,
                                              Column const& col );
