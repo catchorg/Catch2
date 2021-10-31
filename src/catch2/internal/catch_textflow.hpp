@@ -25,7 +25,7 @@ namespace Catch {
             size_t m_initialIndent = std::string::npos;
 
         public:
-            class iterator {
+            class const_iterator {
                 friend Column;
                 struct EndTag {};
 
@@ -36,7 +36,7 @@ namespace Catch {
                 size_t m_end = 0;
                 bool m_suffix = false;
 
-                iterator( Column const& column, EndTag ):
+                const_iterator( Column const& column, EndTag ):
                     m_column( column ), m_pos( m_column.m_string.size() ) {}
 
                 void calcLength();
@@ -56,21 +56,21 @@ namespace Catch {
                 using reference = value_type&;
                 using iterator_category = std::forward_iterator_tag;
 
-                explicit iterator( Column const& column );
+                explicit const_iterator( Column const& column );
 
                 std::string operator*() const;
 
-                iterator& operator++();
-                iterator operator++( int );
+                const_iterator& operator++();
+                const_iterator operator++( int );
 
-                bool operator==( iterator const& other ) const {
+                bool operator==( const_iterator const& other ) const {
                     return m_pos == other.m_pos && &m_column == &other.m_column;
                 }
-                bool operator!=( iterator const& other ) const {
+                bool operator!=( const_iterator const& other ) const {
                     return !operator==( other );
                 }
             };
-            using const_iterator = iterator;
+            using iterator = const_iterator;
 
             explicit Column( std::string const& text ): m_string( text ) {}
 
@@ -110,7 +110,7 @@ namespace Catch {
                 struct EndTag {};
 
                 std::vector<Column> const& m_columns;
-                std::vector<Column::iterator> m_iterators;
+                std::vector<Column::const_iterator> m_iterators;
                 size_t m_activeIterators;
 
                 iterator( Columns const& columns, EndTag );

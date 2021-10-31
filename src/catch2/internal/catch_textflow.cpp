@@ -39,7 +39,7 @@ namespace {
 namespace Catch {
     namespace TextFlow {
 
-        void Column::iterator::calcLength() {
+        void Column::const_iterator::calcLength() {
             m_suffix = false;
             auto width = m_column.m_width - indent();
             m_end = m_pos;
@@ -73,14 +73,14 @@ namespace Catch {
             }
         }
 
-        size_t Column::iterator::indent() const {
+        size_t Column::const_iterator::indent() const {
             auto initial =
                 m_pos == 0 ? m_column.m_initialIndent : std::string::npos;
             return initial == std::string::npos ? m_column.m_indent : initial;
         }
 
         std::string
-        Column::iterator::addIndentAndSuffix( size_t position,
+        Column::const_iterator::addIndentAndSuffix( size_t position,
                                               size_t length ) const {
             std::string ret;
             const auto desired_indent = indent();
@@ -94,7 +94,7 @@ namespace Catch {
             return ret;
         }
 
-        Column::iterator::iterator( Column const& column ): m_column( column ) {
+        Column::const_iterator::const_iterator( Column const& column ): m_column( column ) {
             assert( m_column.m_width > m_column.m_indent );
             assert( m_column.m_initialIndent == std::string::npos ||
                     m_column.m_width > m_column.m_initialIndent );
@@ -104,12 +104,12 @@ namespace Catch {
             }
         }
 
-        std::string Column::iterator::operator*() const {
+        std::string Column::const_iterator::operator*() const {
             assert( m_pos <= m_end );
             return addIndentAndSuffix( m_pos, m_len );
         }
 
-        Column::iterator& Column::iterator::operator++() {
+        Column::const_iterator& Column::const_iterator::operator++() {
             m_pos += m_len;
             std::string const& current_line = m_column.m_string;
             if ( m_pos < current_line.size() && current_line[m_pos] == '\n' ) {
@@ -127,8 +127,8 @@ namespace Catch {
             return *this;
         }
 
-        Column::iterator Column::iterator::operator++( int ) {
-            iterator prev( *this );
+        Column::const_iterator Column::const_iterator::operator++( int ) {
+            const_iterator prev( *this );
             operator++();
             return prev;
         }
