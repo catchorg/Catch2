@@ -18,31 +18,49 @@ namespace Catch {
 
         class Columns;
 
+        /**
+         * Represents a column of text with specific width and indentation
+         *
+         * When written out to a stream, it will perform linebreaking
+         * of the provided text so that the written lines fit within
+         * target width.
+         */
         class Column {
+            // String to be written out
             std::string m_string;
+            // Width of the column for linebreaking
             size_t m_width = CATCH_CONFIG_CONSOLE_WIDTH - 1;
+            // Indentation of other lines (including first if initial indent is unset)
             size_t m_indent = 0;
+            // Indentation of the first line
             size_t m_initialIndent = std::string::npos;
 
         public:
+            /**
+             * Iterates "lines" in `Column` and return sthem
+             */
             class const_iterator {
                 friend Column;
                 struct EndTag {};
 
                 Column const& m_column;
-                size_t m_pos = 0;
-
-                size_t m_len = 0;
-                size_t m_end = 0;
-                bool m_suffix = false;
+                // Where does the current line start?
+                size_t m_lineStart = 0;
+                // How long should the current line be?
+                size_t m_lineLength = 0;
+                // How far have we checked the string to iterate?
+                size_t m_parsedTo = 0;
+                // Should a '-' be appended to the line?
+                bool m_addHyphen = false;
 
                 const_iterator( Column const& column, EndTag ):
-                    m_column( column ), m_pos( m_column.m_string.size() ) {}
+                    m_column( column ), m_lineStart( m_column.m_string.size() ) {}
 
+                // Calculates the length of the current line
                 void calcLength();
 
                 // Returns current indention width
-                size_t indent() const;
+                size_t indentSize() const;
 
                 // Creates an indented and (optionally) suffixed string from
                 // current iterator position, indentation and length.
@@ -64,7 +82,7 @@ namespace Catch {
                 const_iterator operator++( int );
 
                 bool operator==( const_iterator const& other ) const {
-                    return m_pos == other.m_pos && &m_column == &other.m_column;
+                    return m_lineStart == other.m_lineStart && &m_column == &other.m_column;
                 }
                 bool operator!=( const_iterator const& other ) const {
                     return !operator==( other );
