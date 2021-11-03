@@ -6,6 +6,8 @@
 
 // SPDX-License-Identifier: BSL-1.0
 #include <catch2/internal/catch_textflow.hpp>
+
+#include <algorithm>
 #include <cstring>
 #include <ostream>
 
@@ -41,13 +43,16 @@ namespace Catch {
 
         void Column::const_iterator::calcLength() {
             m_addHyphen = false;
-            const auto maxLineLength = m_column.m_width - indentSize();
             m_parsedTo = m_lineStart;
+
             std::string const& current_line = m_column.m_string;
             if ( current_line[m_lineStart] == '\n' ) {
                 ++m_parsedTo;
             }
-            while ( m_parsedTo < current_line.size() &&
+
+            const auto maxLineLength = m_column.m_width - indentSize();
+            const auto maxParseTo = std::min(current_line.size(), m_lineStart + maxLineLength);
+            while ( m_parsedTo < maxParseTo &&
                     current_line[m_parsedTo] != '\n' ) {
                 ++m_parsedTo;
             }
