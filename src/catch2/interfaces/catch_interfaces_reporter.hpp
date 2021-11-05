@@ -151,7 +151,7 @@ namespace Catch {
         bool shouldReportAllAssertions = false;
     };
 
-
+    //! The common base for all reporters and event listeners
     struct IStreamingReporter {
     protected:
         //! Derived classes can set up their preferences here
@@ -171,35 +171,57 @@ namespace Catch {
             return m_preferences;
         }
 
+        //! Called when no test cases match provided test spec
         virtual void noMatchingTestCases( StringRef unmatchedSpec ) = 0;
+        //! Called for all invalid arguments from the cli
         virtual void reportInvalidArguments( StringRef invalidArgument ) = 0;
 
+        /**
+         * Called once in a testing run before tests are started
+         *
+         * Not called if tests won't be run (e.g. only listing will happen)
+         */
         virtual void testRunStarting( TestRunInfo const& testRunInfo ) = 0;
 
         //! Called _once_ for each TEST_CASE, no matter how many times it is entered
         virtual void testCaseStarting( TestCaseInfo const& testInfo ) = 0;
         //! Called _every time_ a TEST_CASE is entered, including repeats (due to sections)
         virtual void testCasePartialStarting( TestCaseInfo const& testInfo, uint64_t partNumber ) = 0;
+        //! Called when a `SECTION` is being entered. Not called for skipped sections
         virtual void sectionStarting( SectionInfo const& sectionInfo ) = 0;
 
+        //! Called when user-code is being probed before the actual benchmark runs
         virtual void benchmarkPreparing( StringRef benchmarkName ) = 0;
+        //! Called after probe but before the user-code is being benchmarked
         virtual void benchmarkStarting( BenchmarkInfo const& benchmarkInfo ) = 0;
+        //! Called with the benchmark results if benchmark successfully finishes
         virtual void benchmarkEnded( BenchmarkStats<> const& benchmarkStats ) = 0;
+        //! Called if running the benchmarks fails for any reason
         virtual void benchmarkFailed( StringRef benchmarkName ) = 0;
 
+        //! Called before assertion success/failure is evaluated
         virtual void assertionStarting( AssertionInfo const& assertionInfo ) = 0;
 
+        //! Called after assertion was fully evaluated
         virtual void assertionEnded( AssertionStats const& assertionStats ) = 0;
 
+        //! Called after a `SECTION` has finished running
         virtual void sectionEnded( SectionStats const& sectionStats ) = 0;
         //! Called _every time_ a TEST_CASE is entered, including repeats (due to sections)
         virtual void testCasePartialEnded(TestCaseStats const& testCaseStats, uint64_t partNumber ) = 0;
         //! Called _once_ for each TEST_CASE, no matter how many times it is entered
         virtual void testCaseEnded( TestCaseStats const& testCaseStats ) = 0;
+        /**
+         * Called once after all tests in a testing run are finished
+         *
+         * Not called if tests weren't run (e.g. only listings happened)
+         */
         virtual void testRunEnded( TestRunStats const& testRunStats ) = 0;
 
+        //! Called with test cases that are skipped due to the test run aborting
         virtual void skipTest( TestCaseInfo const& testInfo ) = 0;
 
+        //! Called if a fatal error (signal/structured exception) occured
         virtual void fatalErrorEncountered( StringRef error ) = 0;
 
         //! Writes out information about provided reporters using reporter-specific format
