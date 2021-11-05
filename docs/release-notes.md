@@ -179,6 +179,7 @@ new design.
 * Universal ADL-found operators should no longer break decomposition (#2121)
 * Reporter selection is properly case-insensitive
   * Previously it forced lower cased name, which would fail for reporters with upper case characters in name
+* The cumulative reporter base stores benchmark results alongside assertion results
 
 
 ### Other changes

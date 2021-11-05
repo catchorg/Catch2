@@ -196,6 +196,18 @@ add_test(
   COMMAND ${PYTHON_EXECUTABLE} ${CATCH_DIR}/tests/TestScripts/testPartialTestCaseEvent.py $<TARGET_FILE:PartialTestCaseEvents>
 )
 
+add_executable(BenchmarksInCumulativeReporter ${TESTS_DIR}/X22-BenchmarksInCumulativeReporter.cpp)
+target_link_libraries(BenchmarksInCumulativeReporter PRIVATE Catch2::Catch2WithMain)
+add_test(
+  NAME BenchmarksInCumulativeReporter
+  COMMAND BenchmarksInCumulativeReporter --reporter testReporter
+)
+set_tests_properties(
+    BenchmarksInCumulativeReporter
+  PROPERTIES
+    PASS_REGULAR_EXPRESSION "1\n2\n3\n4\n5\n"
+)
+
 
 add_executable(CasingInReporterNames ${TESTS_DIR}/X23-CasingInReporterNames.cpp)
 target_link_libraries(CasingInReporterNames PRIVATE Catch2::Catch2WithMain)

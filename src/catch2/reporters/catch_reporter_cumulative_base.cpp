@@ -32,8 +32,40 @@ namespace Catch {
 
     } // namespace
 
+    namespace Detail {
+        AssertionOrBenchmarkResult::AssertionOrBenchmarkResult(
+            AssertionStats const& assertion ):
+            m_assertion( assertion ) {}
+
+        AssertionOrBenchmarkResult::AssertionOrBenchmarkResult(
+            BenchmarkStats<> const& benchmark ):
+            m_benchmark( benchmark ) {}
+
+        bool AssertionOrBenchmarkResult::isAssertion() const {
+            return m_assertion.some();
+        }
+        bool AssertionOrBenchmarkResult::isBenchmark() const {
+            return m_benchmark.some();
+        }
+
+        AssertionStats const& AssertionOrBenchmarkResult::asAssertion() const {
+            assert(m_assertion.some());
+
+            return *m_assertion;
+        }
+        BenchmarkStats<> const& AssertionOrBenchmarkResult::asBenchmark() const {
+            assert(m_benchmark.some());
+
+            return *m_benchmark;
+        }
+
+    }
 
     CumulativeReporterBase::~CumulativeReporterBase() = default;
+
+    void CumulativeReporterBase::benchmarkEnded(BenchmarkStats<> const& benchmarkStats) {
+        m_sectionStack.back()->assertionsAndBenchmarks.emplace_back(benchmarkStats);
+    }
 
     void
     CumulativeReporterBase::sectionStarting( SectionInfo const& sectionInfo ) {
@@ -75,7 +107,7 @@ namespace Catch {
         static_cast<void>(
             assertionStats.assertionResult.getExpandedExpression() );
         SectionNode& sectionNode = *m_sectionStack.back();
-        sectionNode.assertions.push_back( assertionStats );
+        sectionNode.assertionsAndBenchmarks.emplace_back( assertionStats );
     }
 
     void CumulativeReporterBase::sectionEnded( SectionStats const& sectionStats ) {
@@ -118,6 +150,15 @@ namespace Catch {
 
     void CumulativeReporterBase::listTags(std::vector<TagInfo> const& tags) {
         defaultListTags( stream, tags, m_config->hasTestFilters() );
+    }
+
+    bool CumulativeReporterBase::SectionNode::hasAnyAssertions() const {
+        return std::any_of(
+            assertionsAndBenchmarks.begin(),
+            assertionsAndBenchmarks.end(),
+            []( Detail::AssertionOrBenchmarkResult const& res ) {
+                return res.isAssertion();
+            } );
     }
 
 } // end namespace Catch

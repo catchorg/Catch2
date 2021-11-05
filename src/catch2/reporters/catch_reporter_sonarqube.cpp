@@ -54,7 +54,9 @@ namespace Catch {
         if (!rootName.empty())
             name = rootName + '/' + name;
 
-        if (!sectionNode.assertions.empty() || !sectionNode.stdOut.empty() || !sectionNode.stdErr.empty()) {
+        if ( sectionNode.hasAnyAssertions()
+            || !sectionNode.stdOut.empty()
+            ||  !sectionNode.stdErr.empty() ) {
             XmlWriter::ScopedElement e = xml.scopedElement("testCase");
             xml.writeAttribute("name"_sr, name);
             xml.writeAttribute("duration"_sr, static_cast<long>(sectionNode.stats.durationInSeconds * 1000));
@@ -67,8 +69,11 @@ namespace Catch {
     }
 
     void SonarQubeReporter::writeAssertions(SectionNode const& sectionNode, bool okToFail) {
-        for (auto const& assertion : sectionNode.assertions)
-            writeAssertion(assertion, okToFail);
+        for (auto const& assertionOrBenchmark : sectionNode.assertionsAndBenchmarks) {
+            if (assertionOrBenchmark.isAssertion()) {
+                writeAssertion(assertionOrBenchmark.asAssertion(), okToFail);
+            }
+        }
     }
 
     void SonarQubeReporter::writeAssertion(AssertionStats const& stats, bool okToFail) {

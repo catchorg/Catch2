@@ -10,6 +10,7 @@
 
 #include <catch2/interfaces/catch_interfaces_reporter.hpp>
 #include <catch2/internal/catch_unique_ptr.hpp>
+#include <catch2/internal/catch_optional.hpp>
 
 #include <iosfwd>
 #include <string>
@@ -17,6 +18,38 @@
 
 namespace Catch {
 
+    namespace Detail {
+
+        //! Represents either an assertion or a benchmark result to be handled by cumulative reporter later
+        class AssertionOrBenchmarkResult {
+            // This should really be a variant, but this is much faster
+            // to write and the data layout here is already terrible
+            // enough that we do not have to care about the object size.
+            Optional<AssertionStats> m_assertion;
+            Optional<BenchmarkStats<>> m_benchmark;
+        public:
+            AssertionOrBenchmarkResult(AssertionStats const& assertion);
+            AssertionOrBenchmarkResult(BenchmarkStats<> const& benchmark);
+
+            bool isAssertion() const;
+            bool isBenchmark() const;
+
+            AssertionStats const& asAssertion() const;
+            BenchmarkStats<> const& asBenchmark() const;
+        };
+    }
+
+    /**
+     * Utility base for reporters that need to handle all results at once
+     *
+     * It stores tree of all test cases, sections and assertions, and after the
+     * test run is finished, calls into `testRunEndedCumulative` to pass the
+     * control to the deriving class.
+     *
+     * If you are deriving from this class and override any testing related
+     * member functions, you should first call into the base's implementation to
+     * avoid breaking the tree construction.
+     */
     struct CumulativeReporterBase : IStreamingReporter {
         template<typename T, typename ChildNodeT>
         struct Node {
@@ -33,9 +66,11 @@ namespace Catch {
                 return stats.sectionInfo.lineInfo == other.stats.sectionInfo.lineInfo;
             }
 
+            bool hasAnyAssertions() const;
+
             SectionStats stats;
             std::vector<Detail::unique_ptr<SectionNode>> childSections;
-            std::vector<AssertionStats> assertions;
+            std::vector<Detail::AssertionOrBenchmarkResult> assertionsAndBenchmarks;
             std::string stdOut;
             std::string stdErr;
         };
@@ -51,13 +86,12 @@ namespace Catch {
 
         void benchmarkPreparing( StringRef ) override {}
         void benchmarkStarting( BenchmarkInfo const& ) override {}
-        void benchmarkEnded( BenchmarkStats<> const& ) override {}
+        void benchmarkEnded( BenchmarkStats<> const& benchmarkStats ) override;
         void benchmarkFailed( StringRef ) override {}
 
         void noMatchingTestCases( StringRef ) override {}
         void reportInvalidArguments( StringRef ) override {}
         void fatalErrorEncountered( StringRef /*error*/ ) override {}
-
 
         void testRunStarting( TestRunInfo const& ) override {}
 
