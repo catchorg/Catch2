@@ -140,11 +140,10 @@ namespace Catch {
         auto const setReporter = [&]( std::string const& reporter ) {
             IReporterRegistry::FactoryMap const& factories = getRegistryHub().getReporterRegistry().getFactories();
 
-            auto lcReporter = toLower( reporter );
-            auto result = factories.find( lcReporter );
+            auto result = factories.find( reporter );
 
             if( factories.end() != result )
-                config.reporterName = lcReporter;
+                config.reporterName = reporter;
             else
                 return ParserResult::runtimeError( "Unrecognized reporter, '" + reporter + "'. Check available with --list-reporters" );
             return ParserResult::ok( ParseResultType::Matched );

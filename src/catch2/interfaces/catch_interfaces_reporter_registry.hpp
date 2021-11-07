@@ -24,7 +24,11 @@ namespace Catch {
     using IReporterFactoryPtr = Detail::unique_ptr<IReporterFactory>;
 
     struct IReporterRegistry {
-        using FactoryMap = std::map<std::string, IReporterFactoryPtr>;
+        struct CaseInsensitiveCmp {
+            bool operator()(std::string const& lhs, std::string const& rhs) const;
+        };
+
+        using FactoryMap = std::map<std::string, IReporterFactoryPtr, CaseInsensitiveCmp>;
         using Listeners = std::vector<IReporterFactoryPtr>;
 
         virtual ~IReporterRegistry(); // = default

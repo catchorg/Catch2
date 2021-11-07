@@ -177,6 +177,8 @@ new design.
 * Various ways of failing a benchmark are now counted and reporter properly
 * The ULP matcher now handles comparing numbers with different signs properly (#2152)
 * Universal ADL-found operators should no longer break decomposition (#2121)
+* Reporter selection is properly case-insensitive
+  * Previously it forced lower cased name, which would fail for reporters with upper case characters in name
 
 
 ### Other changes

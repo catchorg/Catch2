@@ -197,6 +197,28 @@ add_test(
 )
 
 
+add_executable(CasingInReporterNames ${TESTS_DIR}/X23-CasingInReporterNames.cpp)
+target_link_libraries(CasingInReporterNames PRIVATE Catch2::Catch2WithMain)
+add_test(
+  NAME Reporters::registration-is-case-preserving
+  COMMAND CasingInReporterNames --list-reporters
+)
+set_tests_properties(
+    Reporters::registration-is-case-preserving
+  PROPERTIES
+    PASS_REGULAR_EXPRESSION "testReporterCASED"
+)
+add_test(
+  NAME Reporters::selection-is-case-insensitive
+  COMMAND  CasingInReporterNames -r testReportercased
+)
+set_tests_properties(
+    Reporters::selection-is-case-insensitive
+  PROPERTIES
+    PASS_REGULAR_EXPRESSION "TestReporter constructed"
+)
+
+
 add_executable(DuplicatedTestCases-SameNameAndTags ${TESTS_DIR}/X31-DuplicatedTestCases.cpp)
 target_link_libraries(DuplicatedTestCases-SameNameAndTags PRIVATE Catch2::Catch2WithMain)
 add_test(
