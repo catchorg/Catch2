@@ -16,12 +16,6 @@
 
 namespace Catch {
 
-    namespace {
-        char toLowerCh(char c) {
-            return static_cast<char>( std::tolower( static_cast<unsigned char>(c) ) );
-        }
-    }
-
     bool startsWith( std::string const& s, std::string const& prefix ) {
         return s.size() >= prefix.size() && std::equal(prefix.begin(), prefix.end(), s.begin());
     }
@@ -38,13 +32,19 @@ namespace Catch {
         return s.find( infix ) != std::string::npos;
     }
     void toLowerInPlace( std::string& s ) {
-        std::transform( s.begin(), s.end(), s.begin(), toLowerCh );
+        std::transform( s.begin(), s.end(), s.begin(), []( char c ) {
+            return toLower( c );
+        } );
     }
     std::string toLower( std::string const& s ) {
         std::string lc = s;
         toLowerInPlace( lc );
         return lc;
     }
+    char toLower(char c) {
+        return static_cast<char>(std::tolower(static_cast<unsigned char>(c)));
+    }
+
     std::string trim( std::string const& str ) {
         static char const* whitespaceChars = "\n\r\t ";
         std::string::size_type start = str.find_first_not_of( whitespaceChars );
