@@ -54,9 +54,13 @@
   #if !defined(CATCH_CONFIG_RUNTIME_STATIC_REQUIRE)
     #define CATCH_STATIC_REQUIRE( ... )       static_assert(   __VA_ARGS__ ,      #__VA_ARGS__ );     CATCH_SUCCEED( #__VA_ARGS__ )
     #define CATCH_STATIC_REQUIRE_FALSE( ... ) static_assert( !(__VA_ARGS__), "!(" #__VA_ARGS__ ")" ); CATCH_SUCCEED( #__VA_ARGS__ )
+    #define CATCH_STATIC_CHECK( ... )       static_assert(   __VA_ARGS__ ,      #__VA_ARGS__ );     CATCH_SUCCEED( #__VA_ARGS__ )
+    #define CATCH_STATIC_CHECK_FALSE( ... ) static_assert( !(__VA_ARGS__), "!(" #__VA_ARGS__ ")" ); CATCH_SUCCEED( #__VA_ARGS__ )
   #else
     #define CATCH_STATIC_REQUIRE( ... )       CATCH_REQUIRE( __VA_ARGS__ )
     #define CATCH_STATIC_REQUIRE_FALSE( ... ) CATCH_REQUIRE_FALSE( __VA_ARGS__ )
+    #define CATCH_STATIC_CHECK( ... )       CATCH_CHECK( __VA_ARGS__ )
+    #define CATCH_STATIC_CHECK_FALSE( ... ) CATCH_CHECK_FALSE( __VA_ARGS__ )
   #endif
 
 
@@ -101,6 +105,8 @@
 
   #define CATCH_STATIC_REQUIRE( ... )       (void)(0)
   #define CATCH_STATIC_REQUIRE_FALSE( ... ) (void)(0)
+  #define CATCH_STATIC_CHECK( ... )       (void)(0)
+  #define CATCH_STATIC_CHECK_FALSE( ... ) (void)(0)
 
   // "BDD-style" convenience wrappers
   #define CATCH_SCENARIO( ... ) INTERNAL_CATCH_TESTCASE_NO_REGISTRATION(INTERNAL_CATCH_UNIQUE_NAME( CATCH2_INTERNAL_TEST_ ))
@@ -145,9 +151,13 @@
   #if !defined(CATCH_CONFIG_RUNTIME_STATIC_REQUIRE)
     #define STATIC_REQUIRE( ... )       static_assert(   __VA_ARGS__,  #__VA_ARGS__ ); SUCCEED( #__VA_ARGS__ )
     #define STATIC_REQUIRE_FALSE( ... ) static_assert( !(__VA_ARGS__), "!(" #__VA_ARGS__ ")" ); SUCCEED( "!(" #__VA_ARGS__ ")" )
+    #define STATIC_CHECK( ... )       static_assert(   __VA_ARGS__,  #__VA_ARGS__ ); SUCCEED( #__VA_ARGS__ )
+    #define STATIC_CHECK_FALSE( ... ) static_assert( !(__VA_ARGS__), "!(" #__VA_ARGS__ ")" ); SUCCEED( "!(" #__VA_ARGS__ ")" )
   #else
     #define STATIC_REQUIRE( ... )       REQUIRE( __VA_ARGS__ )
     #define STATIC_REQUIRE_FALSE( ... ) REQUIRE_FALSE( __VA_ARGS__ )
+    #define STATIC_CHECK( ... )       CHECK( __VA_ARGS__ )
+    #define STATIC_CHECK_FALSE( ... ) CHECK_FALSE( __VA_ARGS__ )
   #endif
 
   // "BDD-style" convenience wrappers
@@ -191,6 +201,8 @@
 
   #define STATIC_REQUIRE( ... )       (void)(0)
   #define STATIC_REQUIRE_FALSE( ... ) (void)(0)
+  #define STATIC_CHECK( ... )       (void)(0)
+  #define STATIC_CHECK_FALSE( ... ) (void)(0)
 
   // "BDD-style" convenience wrappers
   #define SCENARIO( ... ) INTERNAL_CATCH_TESTCASE_NO_REGISTRATION(INTERNAL_CATCH_UNIQUE_NAME( CATCH2_INTERNAL_TEST_ ) )

@@ -59,7 +59,7 @@ TEST_CASE( "SUCCEED showcase" ) {
 }
 ```
 
-* `STATIC_REQUIRE`
+* `STATIC_REQUIRE` and `STATIC_CHECK`
 
 > [Introduced](https://github.com/catchorg/Catch2/issues/1362) in Catch2 2.4.2.
 
@@ -74,6 +74,18 @@ Example:
 TEST_CASE("STATIC_REQUIRE showcase", "[traits]") {
     STATIC_REQUIRE( std::is_void<void>::value );
     STATIC_REQUIRE_FALSE( std::is_void<int>::value );
+}
+```
+
+`STATIC_CHECK( expr )` is equivalent to `STATIC_REQUIRE( expr )`, with the
+difference that when `CATCH_CONFIG_RUNTIME_STATIC_REQUIRE` is defined, it
+becomes equivalent to `CHECK` instead of `REQUIRE`.
+
+Example:
+```cpp
+TEST_CASE("STATIC_CHECK showcase", "[traits]") {
+    STATIC_CHECK( std::is_void<void>::value );
+    STATIC_CHECK_FALSE( std::is_void<int>::value );
 }
 ```
 
