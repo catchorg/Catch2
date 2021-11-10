@@ -1311,19 +1311,19 @@ Reporters.tests.cpp:<line number>: passed: listingString, ContainsSubstring("fak
    1  [fakeTag]
 1 tag
 
-" contains: "fakeTag" with 1 message: 'Tested reporter: automake'
+" contains: "fakeTag" with 1 message: 'Tested reporter: Automake'
 Reporters.tests.cpp:<line number>: passed: !(factories.empty()) for: !false
 Reporters.tests.cpp:<line number>: passed: listingString, ContainsSubstring("fake reporter"s) for: "Available reporters:
   fake reporter:  fake description
 
-" contains: "fake reporter" with 1 message: 'Tested reporter: automake'
+" contains: "fake reporter" with 1 message: 'Tested reporter: Automake'
 Reporters.tests.cpp:<line number>: passed: !(factories.empty()) for: !false
 Reporters.tests.cpp:<line number>: passed: listingString, ContainsSubstring( "fake test name"s ) && ContainsSubstring( "fakeTestTag"s ) for: "All available test cases:
   fake test name
       [fakeTestTag]
 1 test case
 
-" ( contains: "fake test name" and contains: "fakeTestTag" ) with 1 message: 'Tested reporter: automake'
+" ( contains: "fake test name" and contains: "fakeTestTag" ) with 1 message: 'Tested reporter: Automake'
 Reporters.tests.cpp:<line number>: passed: !(factories.empty()) for: !false
 Reporters.tests.cpp:<line number>: passed: listingString, ContainsSubstring("fakeTag"s) for: "All available tags:
    1  [fakeTag]
@@ -1366,13 +1366,13 @@ All available tags:
    1  [fakeTag]
 1 tag
 
-" contains: "fakeTag" with 1 message: 'Tested reporter: junit'
+" contains: "fakeTag" with 1 message: 'Tested reporter: JUnit'
 Reporters.tests.cpp:<line number>: passed: !(factories.empty()) for: !false
 Reporters.tests.cpp:<line number>: passed: listingString, ContainsSubstring("fake reporter"s) for: "<?xml version="1.0" encoding="UTF-8"?>
 Available reporters:
   fake reporter:  fake description
 
-" contains: "fake reporter" with 1 message: 'Tested reporter: junit'
+" contains: "fake reporter" with 1 message: 'Tested reporter: JUnit'
 Reporters.tests.cpp:<line number>: passed: !(factories.empty()) for: !false
 Reporters.tests.cpp:<line number>: passed: listingString, ContainsSubstring( "fake test name"s ) && ContainsSubstring( "fakeTestTag"s ) for: "<?xml version="1.0" encoding="UTF-8"?>
 All available test cases:
@@ -1380,20 +1380,20 @@ All available test cases:
       [fakeTestTag]
 1 test case
 
-" ( contains: "fake test name" and contains: "fakeTestTag" ) with 1 message: 'Tested reporter: junit'
+" ( contains: "fake test name" and contains: "fakeTestTag" ) with 1 message: 'Tested reporter: JUnit'
 Reporters.tests.cpp:<line number>: passed: !(factories.empty()) for: !false
 Reporters.tests.cpp:<line number>: passed: listingString, ContainsSubstring("fakeTag"s) for: "<?xml version="1.0" encoding="UTF-8"?>
 All available tags:
    1  [fakeTag]
 1 tag
 
-" contains: "fakeTag" with 1 message: 'Tested reporter: sonarqube'
+" contains: "fakeTag" with 1 message: 'Tested reporter: SonarQube'
 Reporters.tests.cpp:<line number>: passed: !(factories.empty()) for: !false
 Reporters.tests.cpp:<line number>: passed: listingString, ContainsSubstring("fake reporter"s) for: "<?xml version="1.0" encoding="UTF-8"?>
 Available reporters:
   fake reporter:  fake description
 
-" contains: "fake reporter" with 1 message: 'Tested reporter: sonarqube'
+" contains: "fake reporter" with 1 message: 'Tested reporter: SonarQube'
 Reporters.tests.cpp:<line number>: passed: !(factories.empty()) for: !false
 Reporters.tests.cpp:<line number>: passed: listingString, ContainsSubstring( "fake test name"s ) && ContainsSubstring( "fakeTestTag"s ) for: "<?xml version="1.0" encoding="UTF-8"?>
 All available test cases:
@@ -1401,43 +1401,43 @@ All available test cases:
       [fakeTestTag]
 1 test case
 
-" ( contains: "fake test name" and contains: "fakeTestTag" ) with 1 message: 'Tested reporter: sonarqube'
+" ( contains: "fake test name" and contains: "fakeTestTag" ) with 1 message: 'Tested reporter: SonarQube'
 Reporters.tests.cpp:<line number>: passed: !(factories.empty()) for: !false
 Reporters.tests.cpp:<line number>: passed: listingString, ContainsSubstring("fakeTag"s) for: "All available tags:
    1  [fakeTag]
 1 tag
 
-" contains: "fakeTag" with 1 message: 'Tested reporter: tap'
+" contains: "fakeTag" with 1 message: 'Tested reporter: TAP'
 Reporters.tests.cpp:<line number>: passed: !(factories.empty()) for: !false
 Reporters.tests.cpp:<line number>: passed: listingString, ContainsSubstring("fake reporter"s) for: "Available reporters:
   fake reporter:  fake description
 
-" contains: "fake reporter" with 1 message: 'Tested reporter: tap'
+" contains: "fake reporter" with 1 message: 'Tested reporter: TAP'
 Reporters.tests.cpp:<line number>: passed: !(factories.empty()) for: !false
 Reporters.tests.cpp:<line number>: passed: listingString, ContainsSubstring( "fake test name"s ) && ContainsSubstring( "fakeTestTag"s ) for: "All available test cases:
   fake test name
       [fakeTestTag]
 1 test case
 
-" ( contains: "fake test name" and contains: "fakeTestTag" ) with 1 message: 'Tested reporter: tap'
+" ( contains: "fake test name" and contains: "fakeTestTag" ) with 1 message: 'Tested reporter: TAP'
 Reporters.tests.cpp:<line number>: passed: !(factories.empty()) for: !false
 Reporters.tests.cpp:<line number>: passed: listingString, ContainsSubstring("fakeTag"s) for: "All available tags:
    1  [fakeTag]
 1 tag
 
-" contains: "fakeTag" with 1 message: 'Tested reporter: teamcity'
+" contains: "fakeTag" with 1 message: 'Tested reporter: TeamCity'
 Reporters.tests.cpp:<line number>: passed: !(factories.empty()) for: !false
 Reporters.tests.cpp:<line number>: passed: listingString, ContainsSubstring("fake reporter"s) for: "Available reporters:
   fake reporter:  fake description
 
-" contains: "fake reporter" with 1 message: 'Tested reporter: teamcity'
+" contains: "fake reporter" with 1 message: 'Tested reporter: TeamCity'
 Reporters.tests.cpp:<line number>: passed: !(factories.empty()) for: !false
 Reporters.tests.cpp:<line number>: passed: listingString, ContainsSubstring( "fake test name"s ) && ContainsSubstring( "fakeTestTag"s ) for: "All available test cases:
   fake test name
       [fakeTestTag]
 1 test case
 
-" ( contains: "fake test name" and contains: "fakeTestTag" ) with 1 message: 'Tested reporter: teamcity'
+" ( contains: "fake test name" and contains: "fakeTestTag" ) with 1 message: 'Tested reporter: TeamCity'
 Reporters.tests.cpp:<line number>: passed: !(factories.empty()) for: !false
 Reporters.tests.cpp:<line number>: passed: listingString, ContainsSubstring("fakeTag"s) for: "<?xml version="1.0" encoding="UTF-8"?>
 <TagsFromMatchingTests>
@@ -1447,7 +1447,7 @@ Reporters.tests.cpp:<line number>: passed: listingString, ContainsSubstring("fak
       <Alias>fakeTag</Alias>
     </Aliases>
   </Tag>
-</TagsFromMatchingTests>" contains: "fakeTag" with 1 message: 'Tested reporter: xml'
+</TagsFromMatchingTests>" contains: "fakeTag" with 1 message: 'Tested reporter: XML'
 Reporters.tests.cpp:<line number>: passed: !(factories.empty()) for: !false
 Reporters.tests.cpp:<line number>: passed: listingString, ContainsSubstring("fake reporter"s) for: "<?xml version="1.0" encoding="UTF-8"?>
 <AvailableReporters>
@@ -1455,7 +1455,7 @@ Reporters.tests.cpp:<line number>: passed: listingString, ContainsSubstring("fak
     <Name>fake reporter</Name>
     <Description>fake description</Description>
   </Reporter>
-</AvailableReporters>" contains: "fake reporter" with 1 message: 'Tested reporter: xml'
+</AvailableReporters>" contains: "fake reporter" with 1 message: 'Tested reporter: XML'
 Reporters.tests.cpp:<line number>: passed: !(factories.empty()) for: !false
 Reporters.tests.cpp:<line number>: passed: listingString, ContainsSubstring( "fake test name"s ) && ContainsSubstring( "fakeTestTag"s ) for: "<?xml version="1.0" encoding="UTF-8"?>
 <MatchingTests>
@@ -1468,7 +1468,7 @@ Reporters.tests.cpp:<line number>: passed: listingString, ContainsSubstring( "fa
       <Line>123456789</Line>
     </SourceInfo>
   </TestCase>
-</MatchingTests>" ( contains: "fake test name" and contains: "fakeTestTag" ) with 1 message: 'Tested reporter: xml'
+</MatchingTests>" ( contains: "fake test name" and contains: "fakeTestTag" ) with 1 message: 'Tested reporter: XML'
 Reporters.tests.cpp:<line number>: passed:
 Message.tests.cpp:<line number>: passed: with 1 message: 'this is a success'
 Message.tests.cpp:<line number>: passed:

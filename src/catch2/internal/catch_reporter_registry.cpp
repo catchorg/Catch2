@@ -23,14 +23,14 @@ namespace Catch {
     ReporterRegistry::ReporterRegistry() {
         // Because it is impossible to move out of initializer list,
         // we have to add the elements manually
-        m_factories["automake"] = Detail::make_unique<ReporterFactory<AutomakeReporter>>();
+        m_factories["Automake"] = Detail::make_unique<ReporterFactory<AutomakeReporter>>();
         m_factories["compact"] = Detail::make_unique<ReporterFactory<CompactReporter>>();
         m_factories["console"] = Detail::make_unique<ReporterFactory<ConsoleReporter>>();
-        m_factories["junit"] = Detail::make_unique<ReporterFactory<JunitReporter>>();
-        m_factories["sonarqube"] = Detail::make_unique<ReporterFactory<SonarQubeReporter>>();
-        m_factories["tap"] = Detail::make_unique<ReporterFactory<TAPReporter>>();
-        m_factories["teamcity"] = Detail::make_unique<ReporterFactory<TeamCityReporter>>();
-        m_factories["xml"] = Detail::make_unique<ReporterFactory<XmlReporter>>();
+        m_factories["JUnit"] = Detail::make_unique<ReporterFactory<JunitReporter>>();
+        m_factories["SonarQube"] = Detail::make_unique<ReporterFactory<SonarQubeReporter>>();
+        m_factories["TAP"] = Detail::make_unique<ReporterFactory<TAPReporter>>();
+        m_factories["TeamCity"] = Detail::make_unique<ReporterFactory<TeamCityReporter>>();
+        m_factories["XML"] = Detail::make_unique<ReporterFactory<XmlReporter>>();
     }
 
     ReporterRegistry::~ReporterRegistry() = default;

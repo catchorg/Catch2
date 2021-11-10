@@ -168,30 +168,30 @@
   </file>
   <file path="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp">
     <testCase name="Reporter's write listings to provided stream" duration="{duration}"/>
-    <testCase name="Reporter's write listings to provided stream/automake reporter lists tags" duration="{duration}"/>
-    <testCase name="Reporter's write listings to provided stream/automake reporter lists reporters" duration="{duration}"/>
-    <testCase name="Reporter's write listings to provided stream/automake reporter lists tests" duration="{duration}"/>
+    <testCase name="Reporter's write listings to provided stream/Automake reporter lists tags" duration="{duration}"/>
+    <testCase name="Reporter's write listings to provided stream/Automake reporter lists reporters" duration="{duration}"/>
+    <testCase name="Reporter's write listings to provided stream/Automake reporter lists tests" duration="{duration}"/>
     <testCase name="Reporter's write listings to provided stream/compact reporter lists tags" duration="{duration}"/>
     <testCase name="Reporter's write listings to provided stream/compact reporter lists reporters" duration="{duration}"/>
     <testCase name="Reporter's write listings to provided stream/compact reporter lists tests" duration="{duration}"/>
     <testCase name="Reporter's write listings to provided stream/console reporter lists tags" duration="{duration}"/>
     <testCase name="Reporter's write listings to provided stream/console reporter lists reporters" duration="{duration}"/>
     <testCase name="Reporter's write listings to provided stream/console reporter lists tests" duration="{duration}"/>
-    <testCase name="Reporter's write listings to provided stream/junit reporter lists tags" duration="{duration}"/>
-    <testCase name="Reporter's write listings to provided stream/junit reporter lists reporters" duration="{duration}"/>
-    <testCase name="Reporter's write listings to provided stream/junit reporter lists tests" duration="{duration}"/>
-    <testCase name="Reporter's write listings to provided stream/sonarqube reporter lists tags" duration="{duration}"/>
-    <testCase name="Reporter's write listings to provided stream/sonarqube reporter lists reporters" duration="{duration}"/>
-    <testCase name="Reporter's write listings to provided stream/sonarqube reporter lists tests" duration="{duration}"/>
-    <testCase name="Reporter's write listings to provided stream/tap reporter lists tags" duration="{duration}"/>
-    <testCase name="Reporter's write listings to provided stream/tap reporter lists reporters" duration="{duration}"/>
-    <testCase name="Reporter's write listings to provided stream/tap reporter lists tests" duration="{duration}"/>
-    <testCase name="Reporter's write listings to provided stream/teamcity reporter lists tags" duration="{duration}"/>
-    <testCase name="Reporter's write listings to provided stream/teamcity reporter lists reporters" duration="{duration}"/>
-    <testCase name="Reporter's write listings to provided stream/teamcity reporter lists tests" duration="{duration}"/>
-    <testCase name="Reporter's write listings to provided stream/xml reporter lists tags" duration="{duration}"/>
-    <testCase name="Reporter's write listings to provided stream/xml reporter lists reporters" duration="{duration}"/>
-    <testCase name="Reporter's write listings to provided stream/xml reporter lists tests" duration="{duration}"/>
+    <testCase name="Reporter's write listings to provided stream/JUnit reporter lists tags" duration="{duration}"/>
+    <testCase name="Reporter's write listings to provided stream/JUnit reporter lists reporters" duration="{duration}"/>
+    <testCase name="Reporter's write listings to provided stream/JUnit reporter lists tests" duration="{duration}"/>
+    <testCase name="Reporter's write listings to provided stream/SonarQube reporter lists tags" duration="{duration}"/>
+    <testCase name="Reporter's write listings to provided stream/SonarQube reporter lists reporters" duration="{duration}"/>
+    <testCase name="Reporter's write listings to provided stream/SonarQube reporter lists tests" duration="{duration}"/>
+    <testCase name="Reporter's write listings to provided stream/TAP reporter lists tags" duration="{duration}"/>
+    <testCase name="Reporter's write listings to provided stream/TAP reporter lists reporters" duration="{duration}"/>
+    <testCase name="Reporter's write listings to provided stream/TAP reporter lists tests" duration="{duration}"/>
+    <testCase name="Reporter's write listings to provided stream/TeamCity reporter lists tags" duration="{duration}"/>
+    <testCase name="Reporter's write listings to provided stream/TeamCity reporter lists reporters" duration="{duration}"/>
+    <testCase name="Reporter's write listings to provided stream/TeamCity reporter lists tests" duration="{duration}"/>
+    <testCase name="Reporter's write listings to provided stream/XML reporter lists tags" duration="{duration}"/>
+    <testCase name="Reporter's write listings to provided stream/XML reporter lists reporters" duration="{duration}"/>
+    <testCase name="Reporter's write listings to provided stream/XML reporter lists tests" duration="{duration}"/>
     <testCase name="Reproducer for #2309 - a very long description past 80 chars (default console width) with a late colon : blablabla" duration="{duration}"/>
     <testCase name="The default listing implementation write to provided stream/Listing tags" duration="{duration}"/>
     <testCase name="The default listing implementation write to provided stream/Listing reporters" duration="{duration}"/>

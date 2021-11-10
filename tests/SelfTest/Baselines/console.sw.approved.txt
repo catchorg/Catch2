@@ -9703,7 +9703,7 @@ with expansion:
 
 -------------------------------------------------------------------------------
 Reporter's write listings to provided stream
-  automake reporter lists tags
+  Automake reporter lists tags
 -------------------------------------------------------------------------------
 Reporters.tests.cpp:<line number>
 ...............................................................................
@@ -9717,7 +9717,7 @@ with expansion:
 
 " contains: "fakeTag"
 with message:
-  Tested reporter: automake
+  Tested reporter: Automake
 
 -------------------------------------------------------------------------------
 Reporter's write listings to provided stream
@@ -9732,7 +9732,7 @@ with expansion:
 
 -------------------------------------------------------------------------------
 Reporter's write listings to provided stream
-  automake reporter lists reporters
+  Automake reporter lists reporters
 -------------------------------------------------------------------------------
 Reporters.tests.cpp:<line number>
 ...............................................................................
@@ -9745,7 +9745,7 @@ with expansion:
 
 " contains: "fake reporter"
 with message:
-  Tested reporter: automake
+  Tested reporter: Automake
 
 -------------------------------------------------------------------------------
 Reporter's write listings to provided stream
@@ -9760,7 +9760,7 @@ with expansion:
 
 -------------------------------------------------------------------------------
 Reporter's write listings to provided stream
-  automake reporter lists tests
+  Automake reporter lists tests
 -------------------------------------------------------------------------------
 Reporters.tests.cpp:<line number>
 ...............................................................................
@@ -9775,7 +9775,7 @@ with expansion:
 
 " ( contains: "fake test name" and contains: "fakeTestTag" )
 with message:
-  Tested reporter: automake
+  Tested reporter: Automake
 
 -------------------------------------------------------------------------------
 Reporter's write listings to provided stream
@@ -9964,7 +9964,7 @@ with expansion:
 
 -------------------------------------------------------------------------------
 Reporter's write listings to provided stream
-  junit reporter lists tags
+  JUnit reporter lists tags
 -------------------------------------------------------------------------------
 Reporters.tests.cpp:<line number>
 ...............................................................................
@@ -9979,7 +9979,7 @@ with expansion:
 
 " contains: "fakeTag"
 with message:
-  Tested reporter: junit
+  Tested reporter: JUnit
 
 -------------------------------------------------------------------------------
 Reporter's write listings to provided stream
@@ -9994,7 +9994,7 @@ with expansion:
 
 -------------------------------------------------------------------------------
 Reporter's write listings to provided stream
-  junit reporter lists reporters
+  JUnit reporter lists reporters
 -------------------------------------------------------------------------------
 Reporters.tests.cpp:<line number>
 ...............................................................................
@@ -10008,7 +10008,7 @@ with expansion:
 
 " contains: "fake reporter"
 with message:
-  Tested reporter: junit
+  Tested reporter: JUnit
 
 -------------------------------------------------------------------------------
 Reporter's write listings to provided stream
@@ -10023,7 +10023,7 @@ with expansion:
 
 -------------------------------------------------------------------------------
 Reporter's write listings to provided stream
-  junit reporter lists tests
+  JUnit reporter lists tests
 -------------------------------------------------------------------------------
 Reporters.tests.cpp:<line number>
 ...............................................................................
@@ -10039,7 +10039,7 @@ with expansion:
 
 " ( contains: "fake test name" and contains: "fakeTestTag" )
 with message:
-  Tested reporter: junit
+  Tested reporter: JUnit
 
 -------------------------------------------------------------------------------
 Reporter's write listings to provided stream
@@ -10054,7 +10054,7 @@ with expansion:
 
 -------------------------------------------------------------------------------
 Reporter's write listings to provided stream
-  sonarqube reporter lists tags
+  SonarQube reporter lists tags
 -------------------------------------------------------------------------------
 Reporters.tests.cpp:<line number>
 ...............................................................................
@@ -10069,7 +10069,7 @@ with expansion:
 
 " contains: "fakeTag"
 with message:
-  Tested reporter: sonarqube
+  Tested reporter: SonarQube
 
 -------------------------------------------------------------------------------
 Reporter's write listings to provided stream
@@ -10084,7 +10084,7 @@ with expansion:
 
 -------------------------------------------------------------------------------
 Reporter's write listings to provided stream
-  sonarqube reporter lists reporters
+  SonarQube reporter lists reporters
 -------------------------------------------------------------------------------
 Reporters.tests.cpp:<line number>
 ...............................................................................
@@ -10098,7 +10098,7 @@ with expansion:
 
 " contains: "fake reporter"
 with message:
-  Tested reporter: sonarqube
+  Tested reporter: SonarQube
 
 -------------------------------------------------------------------------------
 Reporter's write listings to provided stream
@@ -10113,7 +10113,7 @@ with expansion:
 
 -------------------------------------------------------------------------------
 Reporter's write listings to provided stream
-  sonarqube reporter lists tests
+  SonarQube reporter lists tests
 -------------------------------------------------------------------------------
 Reporters.tests.cpp:<line number>
 ...............................................................................
@@ -10129,7 +10129,7 @@ with expansion:
 
 " ( contains: "fake test name" and contains: "fakeTestTag" )
 with message:
-  Tested reporter: sonarqube
+  Tested reporter: SonarQube
 
 -------------------------------------------------------------------------------
 Reporter's write listings to provided stream
@@ -10144,7 +10144,7 @@ with expansion:
 
 -------------------------------------------------------------------------------
 Reporter's write listings to provided stream
-  tap reporter lists tags
+  TAP reporter lists tags
 -------------------------------------------------------------------------------
 Reporters.tests.cpp:<line number>
 ...............................................................................
@@ -10158,7 +10158,7 @@ with expansion:
 
 " contains: "fakeTag"
 with message:
-  Tested reporter: tap
+  Tested reporter: TAP
 
 -------------------------------------------------------------------------------
 Reporter's write listings to provided stream
@@ -10173,7 +10173,7 @@ with expansion:
 
 -------------------------------------------------------------------------------
 Reporter's write listings to provided stream
-  tap reporter lists reporters
+  TAP reporter lists reporters
 -------------------------------------------------------------------------------
 Reporters.tests.cpp:<line number>
 ...............................................................................
@@ -10186,7 +10186,7 @@ with expansion:
 
 " contains: "fake reporter"
 with message:
-  Tested reporter: tap
+  Tested reporter: TAP
 
 -------------------------------------------------------------------------------
 Reporter's write listings to provided stream
@@ -10201,7 +10201,7 @@ with expansion:
 
 -------------------------------------------------------------------------------
 Reporter's write listings to provided stream
-  tap reporter lists tests
+  TAP reporter lists tests
 -------------------------------------------------------------------------------
 Reporters.tests.cpp:<line number>
 ...............................................................................
@@ -10216,7 +10216,7 @@ with expansion:
 
 " ( contains: "fake test name" and contains: "fakeTestTag" )
 with message:
-  Tested reporter: tap
+  Tested reporter: TAP
 
 -------------------------------------------------------------------------------
 Reporter's write listings to provided stream
@@ -10231,7 +10231,7 @@ with expansion:
 
 -------------------------------------------------------------------------------
 Reporter's write listings to provided stream
-  teamcity reporter lists tags
+  TeamCity reporter lists tags
 -------------------------------------------------------------------------------
 Reporters.tests.cpp:<line number>
 ...............................................................................
@@ -10245,7 +10245,7 @@ with expansion:
 
 " contains: "fakeTag"
 with message:
-  Tested reporter: teamcity
+  Tested reporter: TeamCity
 
 -------------------------------------------------------------------------------
 Reporter's write listings to provided stream
@@ -10260,7 +10260,7 @@ with expansion:
 
 -------------------------------------------------------------------------------
 Reporter's write listings to provided stream
-  teamcity reporter lists reporters
+  TeamCity reporter lists reporters
 -------------------------------------------------------------------------------
 Reporters.tests.cpp:<line number>
 ...............................................................................
@@ -10273,7 +10273,7 @@ with expansion:
 
 " contains: "fake reporter"
 with message:
-  Tested reporter: teamcity
+  Tested reporter: TeamCity
 
 -------------------------------------------------------------------------------
 Reporter's write listings to provided stream
@@ -10288,7 +10288,7 @@ with expansion:
 
 -------------------------------------------------------------------------------
 Reporter's write listings to provided stream
-  teamcity reporter lists tests
+  TeamCity reporter lists tests
 -------------------------------------------------------------------------------
 Reporters.tests.cpp:<line number>
 ...............................................................................
@@ -10303,7 +10303,7 @@ with expansion:
 
 " ( contains: "fake test name" and contains: "fakeTestTag" )
 with message:
-  Tested reporter: teamcity
+  Tested reporter: TeamCity
 
 -------------------------------------------------------------------------------
 Reporter's write listings to provided stream
@@ -10318,7 +10318,7 @@ with expansion:
 
 -------------------------------------------------------------------------------
 Reporter's write listings to provided stream
-  xml reporter lists tags
+  XML reporter lists tags
 -------------------------------------------------------------------------------
 Reporters.tests.cpp:<line number>
 ...............................................................................
@@ -10336,7 +10336,7 @@ with expansion:
     </Tag>
   </TagsFromMatchingTests>" contains: "fakeTag"
 with message:
-  Tested reporter: xml
+  Tested reporter: XML
 
 -------------------------------------------------------------------------------
 Reporter's write listings to provided stream
@@ -10351,7 +10351,7 @@ with expansion:
 
 -------------------------------------------------------------------------------
 Reporter's write listings to provided stream
-  xml reporter lists reporters
+  XML reporter lists reporters
 -------------------------------------------------------------------------------
 Reporters.tests.cpp:<line number>
 ...............................................................................
@@ -10367,7 +10367,7 @@ with expansion:
     </Reporter>
   </AvailableReporters>" contains: "fake reporter"
 with message:
-  Tested reporter: xml
+  Tested reporter: XML
 
 -------------------------------------------------------------------------------
 Reporter's write listings to provided stream
@@ -10382,7 +10382,7 @@ with expansion:
 
 -------------------------------------------------------------------------------
 Reporter's write listings to provided stream
-  xml reporter lists tests
+  XML reporter lists tests
 -------------------------------------------------------------------------------
 Reporters.tests.cpp:<line number>
 ...............................................................................
@@ -10403,7 +10403,7 @@ with expansion:
     </TestCase>
   </MatchingTests>" ( contains: "fake test name" and contains: "fakeTestTag" )
 with message:
-  Tested reporter: xml
+  Tested reporter: XML
 
 -------------------------------------------------------------------------------
 Reproducer for #2309 - a very long description past 80 chars (default console

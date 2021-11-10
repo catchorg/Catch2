@@ -11816,9 +11816,9 @@ Nor would this
         !false
       </Expanded>
     </Expression>
-    <Section name="automake reporter lists tags" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
+    <Section name="Automake reporter lists tags" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
       <Info>
-        Tested reporter: automake
+        Tested reporter: Automake
       </Info>
       <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
         <Original>
@@ -11842,9 +11842,9 @@ Nor would this
         !false
       </Expanded>
     </Expression>
-    <Section name="automake reporter lists reporters" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
+    <Section name="Automake reporter lists reporters" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
       <Info>
-        Tested reporter: automake
+        Tested reporter: Automake
       </Info>
       <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
         <Original>
@@ -11867,9 +11867,9 @@ Nor would this
         !false
       </Expanded>
     </Expression>
-    <Section name="automake reporter lists tests" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
+    <Section name="Automake reporter lists tests" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
       <Info>
-        Tested reporter: automake
+        Tested reporter: Automake
       </Info>
       <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
         <Original>
@@ -12050,9 +12050,9 @@ Nor would this
         !false
       </Expanded>
     </Expression>
-    <Section name="junit reporter lists tags" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
+    <Section name="JUnit reporter lists tags" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
       <Info>
-        Tested reporter: junit
+        Tested reporter: JUnit
       </Info>
       <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
         <Original>
@@ -12077,9 +12077,9 @@ All available tags:
         !false
       </Expanded>
     </Expression>
-    <Section name="junit reporter lists reporters" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
+    <Section name="JUnit reporter lists reporters" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
       <Info>
-        Tested reporter: junit
+        Tested reporter: JUnit
       </Info>
       <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
         <Original>
@@ -12103,9 +12103,9 @@ Available reporters:
         !false
       </Expanded>
     </Expression>
-    <Section name="junit reporter lists tests" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
+    <Section name="JUnit reporter lists tests" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
       <Info>
-        Tested reporter: junit
+        Tested reporter: JUnit
       </Info>
       <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
         <Original>
@@ -12131,9 +12131,9 @@ All available test cases:
         !false
       </Expanded>
     </Expression>
-    <Section name="sonarqube reporter lists tags" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
+    <Section name="SonarQube reporter lists tags" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
       <Info>
-        Tested reporter: sonarqube
+        Tested reporter: SonarQube
       </Info>
       <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
         <Original>
@@ -12158,9 +12158,9 @@ All available tags:
         !false
       </Expanded>
     </Expression>
-    <Section name="sonarqube reporter lists reporters" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
+    <Section name="SonarQube reporter lists reporters" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
       <Info>
-        Tested reporter: sonarqube
+        Tested reporter: SonarQube
       </Info>
       <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
         <Original>
@@ -12184,9 +12184,9 @@ Available reporters:
         !false
       </Expanded>
     </Expression>
-    <Section name="sonarqube reporter lists tests" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
+    <Section name="SonarQube reporter lists tests" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
       <Info>
-        Tested reporter: sonarqube
+        Tested reporter: SonarQube
       </Info>
       <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
         <Original>
@@ -12212,9 +12212,9 @@ All available test cases:
         !false
       </Expanded>
     </Expression>
-    <Section name="tap reporter lists tags" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
+    <Section name="TAP reporter lists tags" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
       <Info>
-        Tested reporter: tap
+        Tested reporter: TAP
       </Info>
       <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
         <Original>
@@ -12238,9 +12238,9 @@ All available test cases:
         !false
       </Expanded>
     </Expression>
-    <Section name="tap reporter lists reporters" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
+    <Section name="TAP reporter lists reporters" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
       <Info>
-        Tested reporter: tap
+        Tested reporter: TAP
       </Info>
       <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
         <Original>
@@ -12263,9 +12263,9 @@ All available test cases:
         !false
       </Expanded>
     </Expression>
-    <Section name="tap reporter lists tests" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
+    <Section name="TAP reporter lists tests" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
       <Info>
-        Tested reporter: tap
+        Tested reporter: TAP
       </Info>
       <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
         <Original>
@@ -12290,9 +12290,9 @@ All available test cases:
         !false
       </Expanded>
     </Expression>
-    <Section name="teamcity reporter lists tags" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
+    <Section name="TeamCity reporter lists tags" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
       <Info>
-        Tested reporter: teamcity
+        Tested reporter: TeamCity
       </Info>
       <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
         <Original>
@@ -12316,9 +12316,9 @@ All available test cases:
         !false
       </Expanded>
     </Expression>
-    <Section name="teamcity reporter lists reporters" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
+    <Section name="TeamCity reporter lists reporters" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
       <Info>
-        Tested reporter: teamcity
+        Tested reporter: TeamCity
       </Info>
       <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
         <Original>
@@ -12341,9 +12341,9 @@ All available test cases:
         !false
       </Expanded>
     </Expression>
-    <Section name="teamcity reporter lists tests" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
+    <Section name="TeamCity reporter lists tests" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
       <Info>
-        Tested reporter: teamcity
+        Tested reporter: TeamCity
       </Info>
       <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
         <Original>
@@ -12368,9 +12368,9 @@ All available test cases:
         !false
       </Expanded>
     </Expression>
-    <Section name="xml reporter lists tags" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
+    <Section name="XML reporter lists tags" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
       <Info>
-        Tested reporter: xml
+        Tested reporter: XML
       </Info>
       <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
         <Original>
@@ -12398,9 +12398,9 @@ All available test cases:
         !false
       </Expanded>
     </Expression>
-    <Section name="xml reporter lists reporters" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
+    <Section name="XML reporter lists reporters" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
       <Info>
-        Tested reporter: xml
+        Tested reporter: XML
       </Info>
       <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
         <Original>
@@ -12426,9 +12426,9 @@ All available test cases:
         !false
       </Expanded>
     </Expression>
-    <Section name="xml reporter lists tests" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
+    <Section name="XML reporter lists tests" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
       <Info>
-        Tested reporter: xml
+        Tested reporter: XML
       </Info>
       <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
         <Original>

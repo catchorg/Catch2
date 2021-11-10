@@ -1149,30 +1149,30 @@ Matchers.tests.cpp:<line number>
     </testcase>
     <testcase classname="<exe-name>.global" name="Regression test #1" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Reporter's write listings to provided stream" time="{duration}" status="run"/>
-    <testcase classname="<exe-name>.global" name="Reporter's write listings to provided stream/automake reporter lists tags" time="{duration}" status="run"/>
-    <testcase classname="<exe-name>.global" name="Reporter's write listings to provided stream/automake reporter lists reporters" time="{duration}" status="run"/>
-    <testcase classname="<exe-name>.global" name="Reporter's write listings to provided stream/automake reporter lists tests" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Reporter's write listings to provided stream/Automake reporter lists tags" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Reporter's write listings to provided stream/Automake reporter lists reporters" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Reporter's write listings to provided stream/Automake reporter lists tests" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Reporter's write listings to provided stream/compact reporter lists tags" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Reporter's write listings to provided stream/compact reporter lists reporters" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Reporter's write listings to provided stream/compact reporter lists tests" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Reporter's write listings to provided stream/console reporter lists tags" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Reporter's write listings to provided stream/console reporter lists reporters" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Reporter's write listings to provided stream/console reporter lists tests" time="{duration}" status="run"/>
-    <testcase classname="<exe-name>.global" name="Reporter's write listings to provided stream/junit reporter lists tags" time="{duration}" status="run"/>
-    <testcase classname="<exe-name>.global" name="Reporter's write listings to provided stream/junit reporter lists reporters" time="{duration}" status="run"/>
-    <testcase classname="<exe-name>.global" name="Reporter's write listings to provided stream/junit reporter lists tests" time="{duration}" status="run"/>
-    <testcase classname="<exe-name>.global" name="Reporter's write listings to provided stream/sonarqube reporter lists tags" time="{duration}" status="run"/>
-    <testcase classname="<exe-name>.global" name="Reporter's write listings to provided stream/sonarqube reporter lists reporters" time="{duration}" status="run"/>
-    <testcase classname="<exe-name>.global" name="Reporter's write listings to provided stream/sonarqube reporter lists tests" time="{duration}" status="run"/>
-    <testcase classname="<exe-name>.global" name="Reporter's write listings to provided stream/tap reporter lists tags" time="{duration}" status="run"/>
-    <testcase classname="<exe-name>.global" name="Reporter's write listings to provided stream/tap reporter lists reporters" time="{duration}" status="run"/>
-    <testcase classname="<exe-name>.global" name="Reporter's write listings to provided stream/tap reporter lists tests" time="{duration}" status="run"/>
-    <testcase classname="<exe-name>.global" name="Reporter's write listings to provided stream/teamcity reporter lists tags" time="{duration}" status="run"/>
-    <testcase classname="<exe-name>.global" name="Reporter's write listings to provided stream/teamcity reporter lists reporters" time="{duration}" status="run"/>
-    <testcase classname="<exe-name>.global" name="Reporter's write listings to provided stream/teamcity reporter lists tests" time="{duration}" status="run"/>
-    <testcase classname="<exe-name>.global" name="Reporter's write listings to provided stream/xml reporter lists tags" time="{duration}" status="run"/>
-    <testcase classname="<exe-name>.global" name="Reporter's write listings to provided stream/xml reporter lists reporters" time="{duration}" status="run"/>
-    <testcase classname="<exe-name>.global" name="Reporter's write listings to provided stream/xml reporter lists tests" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Reporter's write listings to provided stream/JUnit reporter lists tags" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Reporter's write listings to provided stream/JUnit reporter lists reporters" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Reporter's write listings to provided stream/JUnit reporter lists tests" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Reporter's write listings to provided stream/SonarQube reporter lists tags" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Reporter's write listings to provided stream/SonarQube reporter lists reporters" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Reporter's write listings to provided stream/SonarQube reporter lists tests" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Reporter's write listings to provided stream/TAP reporter lists tags" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Reporter's write listings to provided stream/TAP reporter lists reporters" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Reporter's write listings to provided stream/TAP reporter lists tests" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Reporter's write listings to provided stream/TeamCity reporter lists tags" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Reporter's write listings to provided stream/TeamCity reporter lists reporters" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Reporter's write listings to provided stream/TeamCity reporter lists tests" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Reporter's write listings to provided stream/XML reporter lists tags" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Reporter's write listings to provided stream/XML reporter lists reporters" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Reporter's write listings to provided stream/XML reporter lists tests" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Reproducer for #2309 - a very long description past 80 chars (default console width) with a late colon : blablabla" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="SUCCEED counts as a test pass" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="SUCCEED does not require an argument" time="{duration}" status="run"/>
