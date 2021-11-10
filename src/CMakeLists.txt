@@ -107,7 +107,7 @@ set(INTERNAL_HEADERS
     ${SOURCES_DIR}/internal/catch_preprocessor.hpp
     ${SOURCES_DIR}/internal/catch_random_number_generator.hpp
     ${SOURCES_DIR}/internal/catch_random_seed_generation.hpp
-    ${SOURCES_DIR}/catch_reporter_registrars.hpp
+    ${SOURCES_DIR}/reporters/catch_reporter_registrars.hpp
     ${SOURCES_DIR}/internal/catch_reporter_registry.hpp
     ${SOURCES_DIR}/internal/catch_result_type.hpp
     ${SOURCES_DIR}/internal/catch_run_context.hpp

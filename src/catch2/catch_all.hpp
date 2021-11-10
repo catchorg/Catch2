@@ -28,7 +28,6 @@
 #include <catch2/catch_assertion_result.hpp>
 #include <catch2/catch_config.hpp>
 #include <catch2/catch_message.hpp>
-#include <catch2/catch_reporter_registrars.hpp>
 #include <catch2/catch_section_info.hpp>
 #include <catch2/catch_session.hpp>
 #include <catch2/catch_tag_alias.hpp>

@@ -7,7 +7,7 @@
 // SPDX-License-Identifier: BSL-1.0
 #include <catch2/internal/catch_reporter_registry.hpp>
 
-#include <catch2/catch_reporter_registrars.hpp>
+#include <catch2/reporters/catch_reporter_registrars.hpp>
 #include <catch2/reporters/catch_reporter_automake.hpp>
 #include <catch2/reporters/catch_reporter_compact.hpp>
 #include <catch2/reporters/catch_reporter_console.hpp>

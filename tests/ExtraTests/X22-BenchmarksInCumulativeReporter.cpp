@@ -17,7 +17,7 @@
 #include <catch2/catch_test_macros.hpp>
 #include <catch2/benchmark/catch_benchmark.hpp>
 #include <catch2/reporters/catch_reporter_cumulative_base.hpp>
-#include <catch2/catch_reporter_registrars.hpp>
+#include <catch2/reporters/catch_reporter_registrars.hpp>
 
 #include <iostream>
 
