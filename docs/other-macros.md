@@ -61,7 +61,7 @@ TEST_CASE( "SUCCEED showcase" ) {
 
 * `STATIC_REQUIRE` and `STATIC_CHECK`
 
-> [Introduced](https://github.com/catchorg/Catch2/issues/1362) in Catch2 2.4.2.
+> `STATIC_REQUIRE` was [introduced](https://github.com/catchorg/Catch2/issues/1362) in Catch2 2.4.2.
 
 `STATIC_REQUIRE( expr )` is a macro that can be used the same way as a
 `static_assert`, but also registers the success with Catch2, so it is
@@ -76,6 +76,8 @@ TEST_CASE("STATIC_REQUIRE showcase", "[traits]") {
     STATIC_REQUIRE_FALSE( std::is_void<int>::value );
 }
 ```
+
+> `STATIC_CHECK` was [introduced](https://github.com/catchorg/Catch2/pull/2318) in Catch2 X.Y.Z.
 
 `STATIC_CHECK( expr )` is equivalent to `STATIC_REQUIRE( expr )`, with the
 difference that when `CATCH_CONFIG_RUNTIME_STATIC_REQUIRE` is defined, it
