@@ -472,7 +472,7 @@ TEST_CASE( "toString on wchar_t returns the string contents", "[toString]" ) {
 #endif // CATCH_CONFIG_WCHAR
 
 TEST_CASE( "long long" ) {
-    long long l = std::numeric_limits<long long>::max();
+    constexpr long long l = std::numeric_limits<long long>::max();
 
     REQUIRE( l == std::numeric_limits<long long>::max() );
 }
