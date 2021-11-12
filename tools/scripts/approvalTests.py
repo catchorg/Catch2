@@ -99,9 +99,15 @@ def diffFiles(fileA, fileB):
 
 
 def normalizeFilepath(line):
-    if catchPath in line:
-        # make paths relative to Catch root
-        line = line.replace(catchPath + os.sep, '')
+    # Sometimes the path separators used by compiler and Python can differ,
+    # so we try to match the path with both forward and backward path
+    # separators, to make the paths relative to Catch2 repo root.
+    forwardSlashPath = catchPath.replace('\\', '/')
+    if forwardSlashPath in line:
+        line = line.replace(forwardSlashPath + '/', '')
+    backwardSlashPath = catchPath.replace('/', '\\')
+    if backwardSlashPath in line:
+        line = line.replace(backwardSlashPath + '\\', '')
 
     m = langFilenameParser.match(line)
     if m:
