@@ -49,6 +49,15 @@ namespace Catch {
      * If you are deriving from this class and override any testing related
      * member functions, you should first call into the base's implementation to
      * avoid breaking the tree construction.
+     *
+     * Due to the way this base functions, it has to expand assertions up-front,
+     * even if they are later unused (e.g. because the deriving reporter does
+     * not report successful assertions, or because the deriving reporter does
+     * not use assertion expansion at all). Derived classes can use two
+     * customization points, `m_shouldStoreSuccesfulAssertions` and
+     * `m_shouldStoreFailedAssertions`, to disable the expansion and gain extra
+     * performance. **Accessing the assertion expansions if it wasn't stored is
+     * UB.**
      */
     struct CumulativeReporterBase : IStreamingReporter {
         template<typename T, typename ChildNodeT>
@@ -116,7 +125,14 @@ namespace Catch {
         void listTags( std::vector<TagInfo> const& tags ) override;
 
     protected:
+        //! Should the cumulative base store the assertion expansion for succesful assertions?
+        bool m_shouldStoreSuccesfulAssertions = true;
+        //! Should the cumulative base store the assertion expansion for failed assertions?
+        bool m_shouldStoreFailedAssertions = true;
+
+        //! Stream to write the output to
         std::ostream& stream;
+
         // Note: We rely on pointer identity being stable, which is why
         //       we store pointers to the nodes rather than the values.
         std::vector<Detail::unique_ptr<TestCaseNode>> m_testCases;

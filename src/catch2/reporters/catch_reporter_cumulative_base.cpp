@@ -104,8 +104,16 @@ namespace Catch {
         // Our section stack copy of the assertionResult will likely outlive the
         // temporary, so it must be expanded or discarded now to avoid calling
         // a destroyed object later.
-        static_cast<void>(
-            assertionStats.assertionResult.getExpandedExpression() );
+        if ( m_shouldStoreFailedAssertions &&
+             !assertionStats.assertionResult.isOk() ) {
+            static_cast<void>(
+                assertionStats.assertionResult.getExpandedExpression() );
+        }
+        if ( m_shouldStoreSuccesfulAssertions &&
+             assertionStats.assertionResult.isOk() ) {
+            static_cast<void>(
+                assertionStats.assertionResult.getExpandedExpression() );
+        }
         SectionNode& sectionNode = *m_sectionStack.back();
         sectionNode.assertionsAndBenchmarks.emplace_back( assertionStats );
     }
