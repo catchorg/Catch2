@@ -948,6 +948,8 @@ Tricky.tests.cpp:<line number>: passed: !False for: true
 Tricky.tests.cpp:<line number>: passed: !(False) for: !{?}
 Compilation.tests.cpp:<line number>: passed: with 1 message: 'std::is_void<void>::value'
 Compilation.tests.cpp:<line number>: passed: with 1 message: '!(std::is_void<int>::value)'
+Compilation.tests.cpp:<line number>: passed: with 1 message: 'std::is_void<void>::value'
+Compilation.tests.cpp:<line number>: passed: with 1 message: '!(std::is_void<int>::value)'
 Condition.tests.cpp:<line number>: failed: data.int_seven > 7 for: 7 > 7
 Condition.tests.cpp:<line number>: failed: data.int_seven < 7 for: 7 < 7
 Condition.tests.cpp:<line number>: failed: data.int_seven > 8 for: 7 > 8
