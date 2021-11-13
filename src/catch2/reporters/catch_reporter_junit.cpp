@@ -74,6 +74,7 @@ namespace Catch {
         {
             m_preferences.shouldRedirectStdOut = true;
             m_preferences.shouldReportAllAssertions = true;
+            m_shouldStoreSuccesfulAssertions = false;
         }
 
     std::string JunitReporter::getDescription() {

@@ -21,6 +21,7 @@ namespace Catch {
         , xml(config.stream()) {
             m_preferences.shouldRedirectStdOut = true;
             m_preferences.shouldReportAllAssertions = true;
+            m_shouldStoreSuccesfulAssertions = false;
         }
 
         ~SonarQubeReporter() override = default;
