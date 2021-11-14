@@ -258,6 +258,12 @@ definitions to handle generic range-like types. These are:
 * `SizeIs(Matcher size_matcher)`
 * `Contains(T&& target_element, Comparator = std::equal_to<>{})`
 * `Contains(Matcher element_matcher)`
+* `AllMatch(Matcher element_matcher)`
+* `NoneMatch(Matcher element_matcher)`
+* `AnyMatch(Matcher element_matcher)`
+* `AllTrue()`
+* `NoneTrue()`
+* `AnyTrue()`
 
 `IsEmpty` should be self-explanatory. It successfully matches objects
 that are empty according to either `std::empty`, or ADL-found `empty`
@@ -275,6 +281,14 @@ the target element. The other variant is constructed from a matcher,
 in which case a range is accepted if any of its elements is accepted
 by the provided matcher.
 
+`AllMatch`, `NoneMatch`, and `AnyMatch` match ranges for which either
+all, none, or any of the contained elements matches the given matcher, 
+respectively.
+
+`AllTrue`, `NoneTrue`, and `AnyTrue` match ranges for which either
+all, none, or any of the contained elements are `true`, respectively. 
+It works for ranges of `bool`s and ranges of elements (explicitly) 
+convertible to `bool`.
 
 ## Writing custom matchers (old style)
 
