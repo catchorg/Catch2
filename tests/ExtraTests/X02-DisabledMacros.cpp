@@ -32,6 +32,10 @@ foo f;
 TEST_CASE( "Disabled Macros" ) {
     std::cout << "This should not happen\n";
     FAIL();
+
+    // Test that static assertions don't fire when macros are disabled
+    STATIC_CHECK( 0 == 1 );
+    STATIC_REQUIRE( !true );
 }
 
 #if defined(__clang__)
