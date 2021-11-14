@@ -187,6 +187,7 @@ set(IMPL_SOURCES
     ${SOURCES_DIR}/interfaces/catch_interfaces_reporter.cpp
     ${SOURCES_DIR}/internal/catch_list.cpp
     ${SOURCES_DIR}/matchers/catch_matchers_floating_point.cpp
+    ${SOURCES_DIR}/matchers/catch_matchers_quantifiers.cpp
     ${SOURCES_DIR}/matchers/catch_matchers_string.cpp
     ${SOURCES_DIR}/matchers/catch_matchers_templated.cpp
     ${SOURCES_DIR}/catch_message.cpp

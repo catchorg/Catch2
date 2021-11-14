@@ -14140,6 +14140,173 @@ with expansion:
   !false
 
 -------------------------------------------------------------------------------
+Usage of AllTrue range matcher
+  Basic usage
+  All true evaluates to true
+-------------------------------------------------------------------------------
+MatchersRanges.tests.cpp:<line number>
+...............................................................................
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  REQUIRE_THAT( data, AllTrue() )
+with expansion:
+  { true, true, true, true, true } contains only true
+
+-------------------------------------------------------------------------------
+Usage of AllTrue range matcher
+  Basic usage
+  Empty evaluates to true
+-------------------------------------------------------------------------------
+MatchersRanges.tests.cpp:<line number>
+...............................................................................
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  REQUIRE_THAT( data, AllTrue() )
+with expansion:
+  {  } contains only true
+
+-------------------------------------------------------------------------------
+Usage of AllTrue range matcher
+  Basic usage
+  One false evalutes to false
+-------------------------------------------------------------------------------
+MatchersRanges.tests.cpp:<line number>
+...............................................................................
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  REQUIRE_THAT( data, !AllTrue() )
+with expansion:
+  { true, true, false, true, true } not contains only true
+
+-------------------------------------------------------------------------------
+Usage of AllTrue range matcher
+  Basic usage
+  All false evaluates to false
+-------------------------------------------------------------------------------
+MatchersRanges.tests.cpp:<line number>
+...............................................................................
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  REQUIRE_THAT( data, !AllTrue() )
+with expansion:
+  { false, false, false, false, false } not contains only true
+
+-------------------------------------------------------------------------------
+Usage of AllTrue range matcher
+  Contained type is convertible to bool
+  All true evaluates to true
+-------------------------------------------------------------------------------
+MatchersRanges.tests.cpp:<line number>
+...............................................................................
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  REQUIRE_THAT( data, AllTrue() )
+with expansion:
+  { true, true, true, true, true } contains only true
+
+-------------------------------------------------------------------------------
+Usage of AllTrue range matcher
+  Contained type is convertible to bool
+  One false evalutes to false
+-------------------------------------------------------------------------------
+MatchersRanges.tests.cpp:<line number>
+...............................................................................
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  REQUIRE_THAT( data, !AllTrue() )
+with expansion:
+  { true, true, false, true, true } not contains only true
+
+-------------------------------------------------------------------------------
+Usage of AllTrue range matcher
+  Contained type is convertible to bool
+  All false evaluates to false
+-------------------------------------------------------------------------------
+MatchersRanges.tests.cpp:<line number>
+...............................................................................
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  REQUIRE_THAT( data, !AllTrue() )
+with expansion:
+  { false, false, false, false, false } not contains only true
+
+-------------------------------------------------------------------------------
+Usage of AllTrue range matcher
+  Shortcircuiting
+  All are read
+-------------------------------------------------------------------------------
+MatchersRanges.tests.cpp:<line number>
+...............................................................................
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  REQUIRE_THAT( mocked, AllTrue() )
+with expansion:
+  { true, true, true, true, true } contains only true
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  REQUIRE( mocked.m_derefed[0] )
+with expansion:
+  true
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  REQUIRE( mocked.m_derefed[1] )
+with expansion:
+  true
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  REQUIRE( mocked.m_derefed[2] )
+with expansion:
+  true
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  REQUIRE( mocked.m_derefed[3] )
+with expansion:
+  true
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  REQUIRE( mocked.m_derefed[4] )
+with expansion:
+  true
+
+-------------------------------------------------------------------------------
+Usage of AllTrue range matcher
+  Shortcircuiting
+  Short-circuited
+-------------------------------------------------------------------------------
+MatchersRanges.tests.cpp:<line number>
+...............................................................................
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  REQUIRE_THAT( mocked, !AllTrue() )
+with expansion:
+  { true, true, false, true, true } not contains only true
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  REQUIRE( mocked.m_derefed[0] )
+with expansion:
+  true
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  REQUIRE( mocked.m_derefed[1] )
+with expansion:
+  true
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  REQUIRE( mocked.m_derefed[2] )
+with expansion:
+  true
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  REQUIRE_FALSE( mocked.m_derefed[3] )
+with expansion:
+  !false
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  REQUIRE_FALSE( mocked.m_derefed[4] )
+with expansion:
+  !false
+
+-------------------------------------------------------------------------------
 Usage of AnyMatch range matcher
   Basic usage
 -------------------------------------------------------------------------------
@@ -14248,6 +14415,173 @@ with expansion:
   !false
 
 -------------------------------------------------------------------------------
+Usage of AnyTrue range matcher
+  Basic usage
+  All true evaluates to true
+-------------------------------------------------------------------------------
+MatchersRanges.tests.cpp:<line number>
+...............................................................................
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  REQUIRE_THAT( data, AnyTrue() )
+with expansion:
+  { true, true, true, true, true } contains at least one true
+
+-------------------------------------------------------------------------------
+Usage of AnyTrue range matcher
+  Basic usage
+  Empty evaluates to false
+-------------------------------------------------------------------------------
+MatchersRanges.tests.cpp:<line number>
+...............................................................................
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  REQUIRE_THAT( data, !AnyTrue() )
+with expansion:
+  {  } not contains at least one true
+
+-------------------------------------------------------------------------------
+Usage of AnyTrue range matcher
+  Basic usage
+  One true evalutes to true
+-------------------------------------------------------------------------------
+MatchersRanges.tests.cpp:<line number>
+...............................................................................
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  REQUIRE_THAT( data, AnyTrue() )
+with expansion:
+  { false, false, true, false, false } contains at least one true
+
+-------------------------------------------------------------------------------
+Usage of AnyTrue range matcher
+  Basic usage
+  All false evaluates to false
+-------------------------------------------------------------------------------
+MatchersRanges.tests.cpp:<line number>
+...............................................................................
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  REQUIRE_THAT( data, !AnyTrue() )
+with expansion:
+  { false, false, false, false, false } not contains at least one true
+
+-------------------------------------------------------------------------------
+Usage of AnyTrue range matcher
+  Contained type is convertible to bool
+  All true evaluates to true
+-------------------------------------------------------------------------------
+MatchersRanges.tests.cpp:<line number>
+...............................................................................
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  REQUIRE_THAT( data, AnyTrue() )
+with expansion:
+  { true, true, true, true, true } contains at least one true
+
+-------------------------------------------------------------------------------
+Usage of AnyTrue range matcher
+  Contained type is convertible to bool
+  One true evalutes to true
+-------------------------------------------------------------------------------
+MatchersRanges.tests.cpp:<line number>
+...............................................................................
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  REQUIRE_THAT( data, AnyTrue() )
+with expansion:
+  { false, false, true, false, false } contains at least one true
+
+-------------------------------------------------------------------------------
+Usage of AnyTrue range matcher
+  Contained type is convertible to bool
+  All false evaluates to false
+-------------------------------------------------------------------------------
+MatchersRanges.tests.cpp:<line number>
+...............................................................................
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  REQUIRE_THAT( data, !AnyTrue() )
+with expansion:
+  { false, false, false, false, false } not contains at least one true
+
+-------------------------------------------------------------------------------
+Usage of AnyTrue range matcher
+  Shortcircuiting
+  All are read
+-------------------------------------------------------------------------------
+MatchersRanges.tests.cpp:<line number>
+...............................................................................
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  REQUIRE_THAT( mocked, AnyTrue() )
+with expansion:
+  { false, false, false, false, true } contains at least one true
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  REQUIRE( mocked.m_derefed[0] )
+with expansion:
+  true
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  REQUIRE( mocked.m_derefed[1] )
+with expansion:
+  true
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  REQUIRE( mocked.m_derefed[2] )
+with expansion:
+  true
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  REQUIRE( mocked.m_derefed[3] )
+with expansion:
+  true
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  REQUIRE( mocked.m_derefed[4] )
+with expansion:
+  true
+
+-------------------------------------------------------------------------------
+Usage of AnyTrue range matcher
+  Shortcircuiting
+  Short-circuited
+-------------------------------------------------------------------------------
+MatchersRanges.tests.cpp:<line number>
+...............................................................................
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  REQUIRE_THAT( mocked, AnyTrue() )
+with expansion:
+  { false, false, true, true, true } contains at least one true
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  REQUIRE( mocked.m_derefed[0] )
+with expansion:
+  true
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  REQUIRE( mocked.m_derefed[1] )
+with expansion:
+  true
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  REQUIRE( mocked.m_derefed[2] )
+with expansion:
+  true
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  REQUIRE_FALSE( mocked.m_derefed[3] )
+with expansion:
+  !false
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  REQUIRE_FALSE( mocked.m_derefed[4] )
+with expansion:
+  !false
+
+-------------------------------------------------------------------------------
 Usage of NoneMatch range matcher
   Basic usage
 -------------------------------------------------------------------------------
@@ -14344,6 +14678,173 @@ MatchersRanges.tests.cpp:<line number>: PASSED:
   REQUIRE_FALSE( mocked.m_derefed[2] )
 with expansion:
   !false
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  REQUIRE_FALSE( mocked.m_derefed[3] )
+with expansion:
+  !false
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  REQUIRE_FALSE( mocked.m_derefed[4] )
+with expansion:
+  !false
+
+-------------------------------------------------------------------------------
+Usage of NoneTrue range matcher
+  Basic usage
+  All true evaluates to false
+-------------------------------------------------------------------------------
+MatchersRanges.tests.cpp:<line number>
+...............................................................................
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  REQUIRE_THAT( data, !NoneTrue() )
+with expansion:
+  { true, true, true, true, true } not contains no true
+
+-------------------------------------------------------------------------------
+Usage of NoneTrue range matcher
+  Basic usage
+  Empty evaluates to true
+-------------------------------------------------------------------------------
+MatchersRanges.tests.cpp:<line number>
+...............................................................................
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  REQUIRE_THAT( data, NoneTrue() )
+with expansion:
+  {  } contains no true
+
+-------------------------------------------------------------------------------
+Usage of NoneTrue range matcher
+  Basic usage
+  One true evalutes to false
+-------------------------------------------------------------------------------
+MatchersRanges.tests.cpp:<line number>
+...............................................................................
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  REQUIRE_THAT( data, !NoneTrue() )
+with expansion:
+  { false, false, true, false, false } not contains no true
+
+-------------------------------------------------------------------------------
+Usage of NoneTrue range matcher
+  Basic usage
+  All false evaluates to true
+-------------------------------------------------------------------------------
+MatchersRanges.tests.cpp:<line number>
+...............................................................................
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  REQUIRE_THAT( data, NoneTrue() )
+with expansion:
+  { false, false, false, false, false } contains no true
+
+-------------------------------------------------------------------------------
+Usage of NoneTrue range matcher
+  Contained type is convertible to bool
+  All true evaluates to false
+-------------------------------------------------------------------------------
+MatchersRanges.tests.cpp:<line number>
+...............................................................................
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  REQUIRE_THAT( data, !NoneTrue() )
+with expansion:
+  { true, true, true, true, true } not contains no true
+
+-------------------------------------------------------------------------------
+Usage of NoneTrue range matcher
+  Contained type is convertible to bool
+  One true evalutes to false
+-------------------------------------------------------------------------------
+MatchersRanges.tests.cpp:<line number>
+...............................................................................
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  REQUIRE_THAT( data, !NoneTrue() )
+with expansion:
+  { false, false, true, false, false } not contains no true
+
+-------------------------------------------------------------------------------
+Usage of NoneTrue range matcher
+  Contained type is convertible to bool
+  All false evaluates to true
+-------------------------------------------------------------------------------
+MatchersRanges.tests.cpp:<line number>
+...............................................................................
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  REQUIRE_THAT( data, NoneTrue() )
+with expansion:
+  { false, false, false, false, false } contains no true
+
+-------------------------------------------------------------------------------
+Usage of NoneTrue range matcher
+  Shortcircuiting
+  All are read
+-------------------------------------------------------------------------------
+MatchersRanges.tests.cpp:<line number>
+...............................................................................
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  REQUIRE_THAT( mocked, NoneTrue() )
+with expansion:
+  { false, false, false, false, false } contains no true
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  REQUIRE( mocked.m_derefed[0] )
+with expansion:
+  true
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  REQUIRE( mocked.m_derefed[1] )
+with expansion:
+  true
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  REQUIRE( mocked.m_derefed[2] )
+with expansion:
+  true
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  REQUIRE( mocked.m_derefed[3] )
+with expansion:
+  true
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  REQUIRE( mocked.m_derefed[4] )
+with expansion:
+  true
+
+-------------------------------------------------------------------------------
+Usage of NoneTrue range matcher
+  Shortcircuiting
+  Short-circuited
+-------------------------------------------------------------------------------
+MatchersRanges.tests.cpp:<line number>
+...............................................................................
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  REQUIRE_THAT( mocked, !NoneTrue() )
+with expansion:
+  { false, false, true, true, true } not contains no true
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  REQUIRE( mocked.m_derefed[0] )
+with expansion:
+  true
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  REQUIRE( mocked.m_derefed[1] )
+with expansion:
+  true
+
+MatchersRanges.tests.cpp:<line number>: PASSED:
+  REQUIRE( mocked.m_derefed[2] )
+with expansion:
+  true
 
 MatchersRanges.tests.cpp:<line number>: PASSED:
   REQUIRE_FALSE( mocked.m_derefed[3] )
@@ -17941,6 +18442,6 @@ Misc.tests.cpp:<line number>
 Misc.tests.cpp:<line number>: PASSED:
 
 ===============================================================================
-test cases:  391 |  301 passed |  83 failed |  7 failed as expected
-assertions: 2242 | 2072 passed | 143 failed | 27 failed as expected
+test cases:  394 |  304 passed |  83 failed |  7 failed as expected
+assertions: 2299 | 2129 passed | 143 failed | 27 failed as expected
 
