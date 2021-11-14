@@ -7320,6 +7320,14 @@ Compilation.tests.cpp:<line number>: PASSED:
 with message:
   !(std::is_void<int>::value)
 
+Compilation.tests.cpp:<line number>: PASSED:
+with message:
+  std::is_void<void>::value
+
+Compilation.tests.cpp:<line number>: PASSED:
+with message:
+  !(std::is_void<int>::value)
+
 -------------------------------------------------------------------------------
 Ordering comparison checks that should fail
 -------------------------------------------------------------------------------
@@ -17268,5 +17276,5 @@ Misc.tests.cpp:<line number>: PASSED:
 
 ===============================================================================
 test cases:  376 |  283 passed |  86 failed |  7 failed as expected
-assertions: 2164 | 1991 passed | 146 failed | 27 failed as expected
+assertions: 2166 | 1993 passed | 146 failed | 27 failed as expected
 

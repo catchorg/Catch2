@@ -1878,6 +1878,10 @@ ok {test-number} - !(False) for: !{?}
 ok {test-number} - with 1 message: 'std::is_void<void>::value'
 # Optionally static assertions
 ok {test-number} - with 1 message: '!(std::is_void<int>::value)'
+# Optionally static assertions
+ok {test-number} - with 1 message: 'std::is_void<void>::value'
+# Optionally static assertions
+ok {test-number} - with 1 message: '!(std::is_void<int>::value)'
 # Ordering comparison checks that should fail
 not ok {test-number} - data.int_seven > 7 for: 7 > 7
 # Ordering comparison checks that should fail
@@ -4330,5 +4334,5 @@ ok {test-number} - q3 == 23. for: 23.0 == 23.0
 ok {test-number} -
 # xmlentitycheck
 ok {test-number} -
-1..2164
+1..2166
 

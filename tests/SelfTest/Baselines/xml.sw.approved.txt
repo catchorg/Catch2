@@ -20238,6 +20238,6 @@ loose text artifact
     </Section>
     <OverallResult success="true"/>
   </TestCase>
-  <OverallResults successes="1991" failures="146" expectedFailures="27"/>
+  <OverallResults successes="1993" failures="146" expectedFailures="27"/>
   <OverallResultsCases successes="283" failures="86" expectedFailures="7"/>
 </Catch2TestRun>
