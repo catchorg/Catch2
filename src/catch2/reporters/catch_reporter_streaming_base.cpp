@@ -19,22 +19,21 @@ namespace Catch {
 
     void StreamingReporterBase::testRunEnded( TestRunStats const& ) {
         currentTestCaseInfo = nullptr;
-        currentTestRunInfo.reset();
     }
 
     void StreamingReporterBase::listReporters(std::vector<ReporterDescription> const& descriptions) {
-        defaultListReporters( stream, descriptions, m_config->verbosity() );
+        defaultListReporters( m_stream, descriptions, m_config->verbosity() );
     }
 
     void StreamingReporterBase::listTests(std::vector<TestCaseHandle> const& tests) {
-        defaultListTests(stream,
+        defaultListTests(m_stream,
                          tests,
                          m_config->hasTestFilters(),
                          m_config->verbosity());
     }
 
     void StreamingReporterBase::listTags(std::vector<TagInfo> const& tags) {
-        defaultListTags( stream, tags, m_config->hasTestFilters() );
+        defaultListTags( m_stream, tags, m_config->hasTestFilters() );
     }
 
 } // end namespace Catch

@@ -47,12 +47,12 @@ namespace Catch {
     TeamCityReporter::~TeamCityReporter() {}
 
     void TeamCityReporter::testRunStarting( TestRunInfo const& runInfo ) {
-        stream << "##teamcity[testSuiteStarted name='" << escape( runInfo.name )
+        m_stream << "##teamcity[testSuiteStarted name='" << escape( runInfo.name )
                << "']\n";
     }
 
     void TeamCityReporter::testRunEnded( TestRunStats const& runStats ) {
-        stream << "##teamcity[testSuiteFinished name='"
+        m_stream << "##teamcity[testSuiteFinished name='"
                << escape( runStats.runInfo.name ) << "']\n";
     }
 
@@ -112,43 +112,43 @@ namespace Catch {
 
             if (currentTestCaseInfo->okToFail()) {
                 msg << "- failure ignore as test marked as 'ok to fail'\n";
-                stream << "##teamcity[testIgnored"
+                m_stream << "##teamcity[testIgnored"
                     << " name='" << escape(currentTestCaseInfo->name) << '\''
                     << " message='" << escape(msg.str()) << '\''
                     << "]\n";
             } else {
-                stream << "##teamcity[testFailed"
+                m_stream << "##teamcity[testFailed"
                     << " name='" << escape(currentTestCaseInfo->name) << '\''
                     << " message='" << escape(msg.str()) << '\''
                     << "]\n";
             }
         }
-        stream.flush();
+        m_stream.flush();
     }
 
     void TeamCityReporter::testCaseStarting(TestCaseInfo const& testInfo) {
         m_testTimer.start();
         StreamingReporterBase::testCaseStarting(testInfo);
-        stream << "##teamcity[testStarted name='"
+        m_stream << "##teamcity[testStarted name='"
             << escape(testInfo.name) << "']\n";
-        stream.flush();
+        m_stream.flush();
     }
 
     void TeamCityReporter::testCaseEnded(TestCaseStats const& testCaseStats) {
         StreamingReporterBase::testCaseEnded(testCaseStats);
         auto const& testCaseInfo = *testCaseStats.testInfo;
         if (!testCaseStats.stdOut.empty())
-            stream << "##teamcity[testStdOut name='"
+            m_stream << "##teamcity[testStdOut name='"
             << escape(testCaseInfo.name)
             << "' out='" << escape(testCaseStats.stdOut) << "']\n";
         if (!testCaseStats.stdErr.empty())
-            stream << "##teamcity[testStdErr name='"
+            m_stream << "##teamcity[testStdErr name='"
             << escape(testCaseInfo.name)
             << "' out='" << escape(testCaseStats.stdErr) << "']\n";
-        stream << "##teamcity[testFinished name='"
+        m_stream << "##teamcity[testFinished name='"
             << escape(testCaseInfo.name) << "' duration='"
             << m_testTimer.getElapsedMilliseconds() << "']\n";
-        stream.flush();
+        m_stream.flush();
     }
 
     void TeamCityReporter::printSectionHeader(std::ostream& os) {

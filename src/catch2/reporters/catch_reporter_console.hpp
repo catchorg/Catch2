@@ -66,6 +66,7 @@ namespace Catch {
 
     private:
         bool m_headerPrinted = false;
+        bool m_testRunInfoPrinted = false;
     };
 
 } // end namespace Catch
