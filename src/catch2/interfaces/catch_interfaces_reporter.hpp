@@ -45,7 +45,7 @@ namespace Catch {
     };
 
     struct TestRunInfo {
-        TestRunInfo(StringRef _name) : name(_name) {}
+        constexpr TestRunInfo(StringRef _name) : name(_name) {}
         StringRef name;
     };
 
