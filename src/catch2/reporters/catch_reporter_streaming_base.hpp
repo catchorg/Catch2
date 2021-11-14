@@ -33,8 +33,8 @@ namespace Catch {
     };
 
 
-    struct StreamingReporterBase : IStreamingReporter {
-
+    class StreamingReporterBase : public IStreamingReporter {
+    public:
         StreamingReporterBase( ReporterConfig const& _config ):
             IStreamingReporter( _config.fullConfig() ),
             stream( _config.stream() ) {}
@@ -82,6 +82,7 @@ namespace Catch {
         void listTests( std::vector<TestCaseHandle> const& tests ) override;
         void listTags( std::vector<TagInfo> const& tags ) override;
 
+    protected:
         std::ostream& stream;
 
         LazyStat<TestRunInfo> currentTestRunInfo;
