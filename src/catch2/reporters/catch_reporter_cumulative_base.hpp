@@ -59,7 +59,8 @@ namespace Catch {
      * performance. **Accessing the assertion expansions if it wasn't stored is
      * UB.**
      */
-    struct CumulativeReporterBase : IStreamingReporter {
+    class CumulativeReporterBase : public IStreamingReporter {
+    public:
         template<typename T, typename ChildNodeT>
         struct Node {
             explicit Node( T const& _value ) : value( _value ) {}
@@ -90,7 +91,7 @@ namespace Catch {
 
         CumulativeReporterBase( ReporterConfig const& _config ):
             IStreamingReporter( _config.fullConfig() ),
-            stream( _config.stream() ) {}
+            m_stream( _config.stream() ) {}
         ~CumulativeReporterBase() override;
 
         void benchmarkPreparing( StringRef ) override {}
@@ -131,17 +132,22 @@ namespace Catch {
         bool m_shouldStoreFailedAssertions = true;
 
         //! Stream to write the output to
-        std::ostream& stream;
+        std::ostream& m_stream;
 
+        // We need lazy construction here. We should probably refactor it
+        // later, after the events are redone.
+        //! The root node of the test run tree.
+        Detail::unique_ptr<TestRunNode> m_testRun;
+
+    private:
         // Note: We rely on pointer identity being stable, which is why
         //       we store pointers to the nodes rather than the values.
         std::vector<Detail::unique_ptr<TestCaseNode>> m_testCases;
-        // We need lazy construction here. We should probably refactor it
-        // later, after the events are redone.
-        Detail::unique_ptr<TestRunNode> m_testRun;
-
+        // Root section of the _current_ test case
         Detail::unique_ptr<SectionNode> m_rootSection;
+        // Deepest section of the _current_ test case
         SectionNode* m_deepestSection = nullptr;
+        // Stack of _active_ sections in the _current_ test case
         std::vector<SectionNode*> m_sectionStack;
     };
 

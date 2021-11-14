@@ -146,18 +146,18 @@ namespace Catch {
     }
 
     void CumulativeReporterBase::listReporters(std::vector<ReporterDescription> const& descriptions) {
-        defaultListReporters(stream, descriptions, m_config->verbosity());
+        defaultListReporters(m_stream, descriptions, m_config->verbosity());
     }
 
     void CumulativeReporterBase::listTests(std::vector<TestCaseHandle> const& tests) {
-        defaultListTests(stream,
+        defaultListTests(m_stream,
                          tests,
                          m_config->hasTestFilters(),
                          m_config->verbosity());
     }
 
     void CumulativeReporterBase::listTags(std::vector<TagInfo> const& tags) {
-        defaultListTags( stream, tags, m_config->hasTestFilters() );
+        defaultListTags( m_stream, tags, m_config->hasTestFilters() );
     }
 
     bool CumulativeReporterBase::SectionNode::hasAnyAssertions() const {
