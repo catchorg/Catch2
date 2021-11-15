@@ -114,7 +114,7 @@ a test case,
 * 4 specific purpose generators
   * `RandomIntegerGenerator<Integral>` -- generates random Integrals from range
   * `RandomFloatGenerator<Float>` -- generates random Floats from range
-  * `RangeGenerator<T>` -- generates all values inside an arithmetic range
+  * `RangeGenerator<T>(first, last)` -- generates all values inside a `[first, last)` arithmetic range
   * `IteratorGenerator<T>` -- copies and returns values from an iterator range
 
 > `ChunkGenerator<T>`, `RandomIntegerGenerator<Integral>`, `RandomFloatGenerator<Float>` and `RangeGenerator<T>` were introduced in Catch2 2.7.0.
