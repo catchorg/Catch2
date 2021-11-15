@@ -151,6 +151,17 @@ set_tests_properties(
 )
 
 
+add_executable(DeferredStaticChecks ${TESTS_DIR}/X05-DeferredStaticChecks.cpp)
+target_link_libraries(DeferredStaticChecks PRIVATE Catch2WithMain)
+target_compile_definitions(DeferredStaticChecks PRIVATE "CATCH_CONFIG_RUNTIME_STATIC_REQUIRE")
+
+add_test(NAME DeferredStaticChecks COMMAND DeferredStaticChecks -r compact)
+set_tests_properties(
+    DeferredStaticChecks
+  PROPERTIES
+    PASS_REGULAR_EXPRESSION "Failed 1 test case, failed all 3 assertions."
+)
+
 
 add_executable(FallbackStringifier ${TESTS_DIR}/X10-FallbackStringifier.cpp)
 target_compile_definitions( FallbackStringifier PRIVATE CATCH_CONFIG_FALLBACK_STRINGIFIER=fallbackStringifier )
