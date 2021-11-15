@@ -169,6 +169,8 @@ new design.
   * This greatly simplifies parallelization of tests in a binary through external runner.
 * The embedded CLI parser now supports repeatedly callable lambdas
   * A lambda-based option parser can opt into being repeatedly specifiable.
+* Added `STATIC_CHECK` macro, similar to `STATIC_REQUIRE` (#2318)
+  * When deferred tu runtime, it behaves like `CHECK`, and not like `REQUIRE`.
 
 
 ### Fixes
