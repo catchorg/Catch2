@@ -11,7 +11,8 @@ First off, let's go over some terminology that will be used throughout this
 guide.
 
 - *User code*: user code is the code that the user provides to be measured.
-- *Run*: one run is one execution of the user code.
+- *Run*: one run is one execution of the user code. Sometimes also referred
+  to as an _iteration_.
 - *Sample*: one sample is one data point obtained by measuring the time it takes
   to perform a certain number of runs. One sample can consist of more than one
   run if the clock available does not have enough resolution to accurately
