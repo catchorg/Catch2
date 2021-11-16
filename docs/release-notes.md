@@ -2,7 +2,7 @@
 
 # Release notes
 **Contents**<br>
-[3.0.1](#301)<br>
+[3.0.1 (in progress)](#301-in-progress)<br>
 [2.13.7](#2137)<br>
 [2.13.6](#2136)<br>
 [2.13.5](#2135)<br>
