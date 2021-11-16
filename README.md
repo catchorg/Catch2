@@ -11,6 +11,17 @@
 [![Join the chat in Discord: https://discord.gg/4CWS9zD](https://img.shields.io/badge/Discord-Chat!-brightgreen.svg)](https://discord.gg/4CWS9zD)
 
 
+## What's the Catch2?
+
+Catch2 is mainly a unit testing framework for C++, but it also
+provides basic micro-benchmarking features, and simple BDD macros.
+
+Catch2's main advantage is that using it is both simple and natural.
+Tests autoregister themselves and do not have to be named with valid
+identifiers, assertions look like normal C++ code, and sections provide
+a nice way to share set-up and tear-down code in tests.
+
+
 ## Catch2 v3 is being developed!
 
 You are on the `devel` branch, where the next major version, v3, of
@@ -26,17 +37,6 @@ guidelines on getting started, and collects most common migration
 problems.
 
 
-## What's the Catch2?
-
-Catch2 is mainly a unit testing framework for C++, but it also
-provides basic micro-benchmarking features, and simple BDD macros.
-
-Catch2's main advantage is that using it is both simple and natural.
-Tests autoregister themselves and do not have to be named with valid
-identifiers, assertions look like normal C++ code, and sections provide
-a nice way to share set-up and tear-down code in tests.
-
-
 ## How to use it
 This documentation comprises these three parts:
 
@@ -48,4 +48,5 @@ This documentation comprises these three parts:
 ## More
 * Issues and bugs can be raised on the [Issue tracker on GitHub](https://github.com/catchorg/Catch2/issues)
 * For discussion or questions please use [our Discord](https://discord.gg/4CWS9zD)
-* See [who else is using Catch2](docs/opensource-users.md#top)
+* See who else is using Catch2 in [Open Source Software](docs/opensource-users.md#top)
+or [commercially](docs/commercial-users.md#top).
