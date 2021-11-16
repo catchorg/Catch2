@@ -5,9 +5,8 @@
 [Getting Catch2](#getting-catch2)<br>
 [Writing tests](#writing-tests)<br>
 [Test cases and sections](#test-cases-and-sections)<br>
-[BDD-Style](#bdd-style)<br>
-[Scaling up](#scaling-up)<br>
-[Type parametrised test cases](#type-parametrised-test-cases)<br>
+[BDD style testing](#bdd-style-testing)<br>
+[Data and Type driven tests](#data-and-type-driven-tests)<br>
 [Next steps](#next-steps)<br>
 
 
@@ -113,8 +112,8 @@ Like most test frameworks, Catch2 supports a class-based fixture mechanism,
 where individual tests are methods on class and setup/teardown can be
 done in constructor/destructor of the type.
 
-However, idiomatic usage of Catch2 avoids using it in favour of free
-standing test cases using _sections_ to share setup and teardown code. 
+However, their use in Catch2 is rare, because idiomatic Catch2 tests
+instead use _sections_ to share setup and teardown code between test code.
 This is best explained through an example ([code](../examples/100-Fix-Section.cpp)):
 
 ```c++
@@ -189,83 +188,38 @@ unreadable. From experience, having section nest more than 3 levels is
 usually very hard to follow and not worth the removed duplication.
 
 
-## BDD-Style
+## BDD style testing
 
-If you name your test cases and sections appropriately you can achieve a BDD-style specification structure. This became such a useful way of working that first class support has been added to Catch. Scenarios can be specified using ```SCENARIO```, ```GIVEN```, ```WHEN``` and ```THEN``` macros, which map on to ```TEST_CASE```s and ```SECTION```s, respectively. For more details see [Test cases and sections](test-cases-and-sections.md#top).
+Catch2 also provides some basic support for BDD-style testing. There are
+macro aliases for `TEST_CASE` and `SECTIONS` that you can use so that
+the resulting tests read as BDD spec. `SCENARIO` acts as a `TEST_CASE`
+with "Scenario: " name prefix. Then there are `GIVEN`, `WHEN`, `THEN`
+(and their variants with `AND_` prefix), which act as a `SECTION`,
+similarly prefixed with the macro name.
 
-The vector example can be adjusted to use these macros like so ([example code](../examples/120-Bdd-ScenarioGivenWhenThen.cpp)):
-
-```c++
-SCENARIO( "vectors can be sized and resized", "[vector]" ) {
-
-    GIVEN( "A vector with some items" ) {
-        std::vector<int> v( 5 );
-
-        REQUIRE( v.size() == 5 );
-        REQUIRE( v.capacity() >= 5 );
-
-        WHEN( "the size is increased" ) {
-            v.resize( 10 );
-
-            THEN( "the size and capacity change" ) {
-                REQUIRE( v.size() == 10 );
-                REQUIRE( v.capacity() >= 10 );
-            }
-        }
-        WHEN( "the size is reduced" ) {
-            v.resize( 0 );
-
-            THEN( "the size changes but not capacity" ) {
-                REQUIRE( v.size() == 0 );
-                REQUIRE( v.capacity() >= 5 );
-            }
-        }
-        WHEN( "more capacity is reserved" ) {
-            v.reserve( 10 );
-
-            THEN( "the capacity changes but not the size" ) {
-                REQUIRE( v.size() == 5 );
-                REQUIRE( v.capacity() >= 10 );
-            }
-        }
-        WHEN( "less capacity is reserved" ) {
-            v.reserve( 0 );
-
-            THEN( "neither size nor capacity are changed" ) {
-                REQUIRE( v.size() == 5 );
-                REQUIRE( v.capacity() >= 5 );
-            }
-        }
-    }
-}
-```
-
-Conveniently, these tests will be reported as follows when run:
-
-```
-Scenario: vectors can be sized and resized
-     Given: A vector with some items
-      When: more capacity is reserved
-      Then: the capacity changes but not the size
-```
+For more details on the macros look at the [test cases and
+sections](test-cases-and-sections.md#top) part of the reference docs,
+or at the [vector example done with BDD macros](../examples/120-Bdd-ScenarioGivenWhenThen.cpp).
 
 
-## Type parametrised test cases
+## Data and Type driven tests
 
-Test cases in Catch2 can be also parametrised by type, via the
-`TEMPLATE_TEST_CASE` and `TEMPLATE_PRODUCT_TEST_CASE` macros,
-which behave in the same way the `TEST_CASE` macro, but are run for
-every type or type combination.
+Test cases in Catch2 can also be driven by types, input data, or both
+at the same time.
 
-For more details, see our documentation on [test cases and
-sections](test-cases-and-sections.md#type-parametrised-test-cases).
+For more details look into the Catch2 reference, either at the
+[type parametrized test cases](test-cases-and-sections.md#type-parametrised-test-cases),
+or [data generators](generators.md#top).
 
 
 ## Next steps
 
-This has been a brief introduction to get you up and running with Catch, and to point out some of the key differences between Catch and other frameworks you may already be familiar with. This will get you going quite far already and you are now in a position to dive in and write some tests.
+This page is a brief introduction to get you up and running with Catch2,
+and to show the basic features of Catch2. The features mentioned here
+can get you quite far, but there are many more. However, you can read
+about these as you go, in the ever-growing [reference section](Readme.md#top)
+of the documentation.
 
-Of course there is more to learn - most of which you should be able to page-fault in as you go. Please see the ever-growing [Reference section](Readme.md#top) for what's available.
 
 ---
 
