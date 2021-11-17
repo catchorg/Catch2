@@ -205,7 +205,7 @@ namespace Catch {
     };
 #endif // CATCH_CONFIG_WCHAR
 
-    template<int SZ>
+    template<size_t SZ>
     struct StringMaker<char[SZ]> {
         static std::string convert(char const* str) {
             // Note that `strnlen` is not actually part of standard C++,
@@ -214,7 +214,7 @@ namespace Catch {
                 StringRef( str, strnlen( str, SZ ) ) );
         }
     };
-    template<int SZ>
+    template<size_t SZ>
     struct StringMaker<signed char[SZ]> {
         static std::string convert(signed char const* str) {
             // See the plain `char const*` overload
@@ -223,7 +223,7 @@ namespace Catch {
                 StringRef(reinterpreted, strnlen(reinterpreted, SZ)));
         }
     };
-    template<int SZ>
+    template<size_t SZ>
     struct StringMaker<unsigned char[SZ]> {
         static std::string convert(unsigned char const* str) {
             // See the plain `char const*` overload
@@ -522,7 +522,7 @@ namespace Catch {
         }
     };
 
-    template <typename T, int SZ>
+    template <typename T, size_t SZ>
     struct StringMaker<T[SZ]> {
         static std::string convert(T const(&arr)[SZ]) {
             return rangeToString(arr);
