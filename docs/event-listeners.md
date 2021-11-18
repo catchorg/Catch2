@@ -1,74 +1,43 @@
 <a id="top"></a>
 # Event Listeners
 
-A `Listener` is a class you can register with Catch that will then be passed events,
-such as a test case starting or ending, as they happen during a test run.
-`Listeners` are actually types of `Reporters`, with a few small differences:
- 
-1. Once registered in code they are automatically used - you don't need to specify them on the command line
-2. They are called in addition to (just before) any reporters, and you can register multiple listeners.
-3. They derive from `Catch::TestEventListenerBase`, which has default stubs for all the events,
-so you are not forced to implement events you're not interested in.
-4. You register a listener with `CATCH_REGISTER_LISTENER`
+An event listener is a bit like a reporter, in that it responds to various
+reporter events in Catch2, but it is not expected to write any output.
+Instead, an event listener performs actions within the test process, such
+as performing global initialization (e.g. of a C library), or cleaning out
+in-memory logs if they are not needed (the test case passed).
 
+Unlike reporters, each registered event listener is always active. Event
+listeners are always notified before reporter(s).
 
-## Implementing a Listener
-Simply derive a class from `Catch::TestEventListenerBase` and implement the methods you are interested in, either in
-the main source file (i.e. the one that defines `CATCH_CONFIG_MAIN` or `CATCH_CONFIG_RUNNER`), or in a
-file that defines `CATCH_CONFIG_EXTERNAL_INTERFACES`.
+To write your own event listener, you should derive from `Catch::TestEventListenerBase`,
+as it provides empty stubs for all reporter events, allowing you to
+only override events you care for. Afterwards you have to register it
+with Catch2 using `CATCH_REGISTER_LISTENER` macro, so that Catch2 knows
+about it and instantiates it before running tests.
 
-Then register it using `CATCH_REGISTER_LISTENER`.
+Example event listener:
+```cpp
+#include <catch2/reporters/catch_reporter_event_listener.hpp>
+#include <catch2/catch_reporter_registrars.hpp>
 
-For example ([complete source code](../examples/210-Evt-EventListeners.cpp)):
+class testRunListener : public Catch::EventListenerBase {
+public:
+    using Catch::EventListenerBase::EventListenerBase;
 
-```c++
-#define CATCH_CONFIG_MAIN
-#include "catch.hpp"
-
-struct MyListener : Catch::TestEventListenerBase {
-
-    using TestEventListenerBase::TestEventListenerBase; // inherit constructor
-
-    void testCaseStarting( Catch::TestCaseInfo const& testInfo ) override {
-        // Perform some setup before a test case is run
-    }
-    
-    void testCaseEnded( Catch::TestCaseStats const& testCaseStats ) override {
-        // Tear-down after a test case is run
+    void testRunStarting(Catch::TestRunInfo const&) override {
+        lib_foo_init();
     }
 };
-CATCH_REGISTER_LISTENER( MyListener )
+
+CATCH_REGISTER_LISTENER(testRunListener)
 ```
 
 _Note that you should not use any assertion macros within a Listener!_ 
 
-## Events that can be hooked
+[You can find the list of events that the listeners can react to on its
+own page](reporter-events.md#top).
 
-The following are the methods that can be overridden in the Listener:
-
-```c++
-// The whole test run, starting and ending
-virtual void testRunStarting( TestRunInfo const& testRunInfo );
-virtual void testRunEnded( TestRunStats const& testRunStats );
-
-// Test cases starting and ending
-virtual void testCaseStarting( TestCaseInfo const& testInfo );
-virtual void testCaseEnded( TestCaseStats const& testCaseStats );
-
-// Sections starting and ending
-virtual void sectionStarting( SectionInfo const& sectionInfo );
-virtual void sectionEnded( SectionStats const& sectionStats );
-
-// Assertions before/ after
-virtual void assertionStarting( AssertionInfo const& assertionInfo );
-virtual bool assertionEnded( AssertionStats const& assertionStats );
-
-// A test is being skipped (because it is "hidden")
-virtual void skipTest( TestCaseInfo const& testInfo );
-```
-
-More information about the events (e.g. name of the test case) is contained in the structs passed as arguments -
-just look in the source code to see what fields are available. 
 
 ---
 
