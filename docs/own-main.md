@@ -2,63 +2,69 @@
 # Supplying main() yourself
 
 **Contents**<br>
-[Let Catch take full control of args and config](#let-catch-take-full-control-of-args-and-config)<br>
-[Amending the config](#amending-the-config)<br>
+[Let Catch2 take full control of args and config](#let-catch2-take-full-control-of-args-and-config)<br>
+[Amending the Catch2 config](#amending-the-catch2-config)<br>
 [Adding your own command line options](#adding-your-own-command-line-options)<br>
 [Version detection](#version-detection)<br>
 
-The easiest way to use Catch is to let it supply ```main()``` for you and handle configuring itself from the command line.
+The easiest way to use Catch2 is to use its own `main` function, and let
+it handle the command line arguments. This is done by linking against
+Catch2Main library, e.g. through the [CMake target](cmake-integration.md#cmake-targets),
+or pkg-config files.
 
-This is achieved by writing ```#define CATCH_CONFIG_MAIN``` before the ```#include "catch.hpp"``` in *exactly one* source file.
+If you want to provide your own `main`, then you should link against
+the static library (target) only, without the main part. You will then
+have to write your own `main` and call into Catch2 test runner manually.
 
-Sometimes, though, you need to write your own version of main(). You can do this by writing ```#define CATCH_CONFIG_RUNNER``` instead. Now you are free to write ```main()``` as normal and call into Catch yourself manually.
+Below are some basic recipes on what you can do supplying your own main.
 
-You now have a lot of flexibility - but here are three recipes to get your started:
 
-## Let Catch take full control of args and config
+## Let Catch2 take full control of args and config
 
-If you just need to have code that executes before and/ or after Catch this is the simplest option.
+This is useful if you just need to have code that executes before/after
+Catch2 runs tests.
 
-```c++
-#define CATCH_CONFIG_RUNNER
-#include "catch.hpp"
+```cpp
+#include <catch2/catch_session.hpp>
 
 int main( int argc, char* argv[] ) {
-  // global setup...
+  // your setup ...
 
   int result = Catch::Session().run( argc, argv );
 
-  // global clean-up...
+  // your clean-up...
 
   return result;
 }
 ```
 
-## Amending the config
+_Note that if you only want to run some set up before tests are run, it
+might be simpler to use [event listeners](event-listeners.md#top) instead._
 
-If you still want Catch to process the command line, but you want to programmatically tweak the config, you can do so in one of two ways:
+
+## Amending the Catch2 config
+
+If you want Catch2 to process command line arguments, but also want to
+programmatically change the resulting configuration of Catch2 run,
+you can do it in two ways:
 
 ```c++
-#define CATCH_CONFIG_RUNNER
-#include "catch.hpp"
-
-int main( int argc, char* argv[] )
-{
+int main( int argc, char* argv[] ) {
   Catch::Session session; // There must be exactly one instance
- 
+
   // writing to session.configData() here sets defaults
   // this is the preferred way to set them
-    
+
   int returnCode = session.applyCommandLine( argc, argv );
   if( returnCode != 0 ) // Indicates a command line error
         return returnCode;
- 
-  // writing to session.configData() or session.Config() here 
+
+  // writing to session.configData() or session.Config() here
   // overrides command line args
   // only do this if you know you need to
 
   int numFailed = session.run();
-  
+
   // numFailed is clamped to 255 as some unices only use the lower 8 bits.
   // This clamping has already been applied, so just return it here
   // You can also do any post run clean-up here
@@ -66,38 +72,32 @@ int main( int argc, char* argv[] )
 }
 ```
 
-Take a look at the definitions of Config and ConfigData to see what you can do with them.
+If you want full control of the configuration, don't call `applyCommandLine`.
 
-To take full control of the config simply omit the call to ```applyCommandLine()```.
 
 ## Adding your own command line options
 
-Catch embeds a powerful command line parser called [Clara](https://github.com/philsquared/Clara). 
-As of Catch2 (and Clara 1.0) Clara allows you to write _composable_ option and argument parsers, 
-so extending Catch's own command line options is now easy.
+You can add new command line options to Catch2, by composing the premade
+CLI parser (called Clara), and add your own options.
 
-```c++
-#define CATCH_CONFIG_RUNNER
-#include "catch.hpp"
-
-int main( int argc, char* argv[] )
-{
+```cpp
+int main( int argc, char* argv[] ) {
   Catch::Session session; // There must be exactly one instance
-  
+
   int height = 0; // Some user variable you want to be able to set
-  
-  // Build a new parser on top of Catch's
-  using namespace Catch::clara;
-  auto cli 
-    = session.cli() // Get Catch's composite command line parser
+
+  // Build a new parser on top of Catch2's
+  using namespace Catch::Clara;
+  auto cli
+    = session.cli()           // Get Catch2's command line parser
     | Opt( height, "height" ) // bind variable to a new option, with a hint string
         ["-g"]["--height"]    // the option names it will respond to
         ("how high?");        // description string for the help output
-        
-  // Now pass the new composite back to Catch so it uses that
-  session.cli( cli ); 
-  
-  // Let Catch (using Clara) parse the command line
+
+  // Now pass the new composite back to Catch2 so it uses that
+  session.cli( cli );
+
+  // Let Catch2 (using Clara) parse the command line
   int returnCode = session.applyCommandLine( argc, argv );
   if( returnCode != 0 ) // Indicates a command line error
       return returnCode;
@@ -110,12 +110,13 @@ int main( int argc, char* argv[] )
 }
 ```
 
-See the [Clara documentation](https://github.com/philsquared/Clara/blob/master/README.md) for more details.
+See the [Clara documentation](https://github.com/catchorg/Clara/blob/master/README.md)
+for more details on how to use the Clara parser.
 
 
 ## Version detection
 
-Catch provides a triplet of macros providing the header's version, 
+Catch2 provides a triplet of macros providing the header's version,
 
 * `CATCH_VERSION_MAJOR`
 * `CATCH_VERSION_MINOR`
