@@ -49,8 +49,8 @@ namespace Catch {
         }
 
     public: // operators
-        auto operator == ( StringRef const& other ) const noexcept -> bool;
-        auto operator != (StringRef const& other) const noexcept -> bool {
+        auto operator == ( StringRef other ) const noexcept -> bool;
+        auto operator != (StringRef other) const noexcept -> bool {
             return !(*this == other);
         }
 
@@ -59,7 +59,7 @@ namespace Catch {
             return m_start[index];
         }
 
-        bool operator<(StringRef const& rhs) const noexcept;
+        bool operator<(StringRef rhs) const noexcept;
 
     public: // named queries
         constexpr auto empty() const noexcept -> bool {
@@ -90,8 +90,8 @@ namespace Catch {
         constexpr const_iterator end() const { return m_start + m_size; }
 
 
-        friend std::string& operator += (std::string& lhs, StringRef const& sr);
-        friend std::ostream& operator << (std::ostream& os, StringRef const& sr);
+        friend std::string& operator += (std::string& lhs, StringRef sr);
+        friend std::ostream& operator << (std::ostream& os, StringRef sr);
         friend std::string operator+(StringRef lhs, StringRef rhs);
 
         /**
