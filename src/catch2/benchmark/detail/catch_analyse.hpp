@@ -28,7 +28,7 @@ namespace Catch {
             SampleAnalysis<Duration> analyse(const IConfig &cfg, Environment<Duration>, Iterator first, Iterator last) {
                 if (!cfg.benchmarkNoAnalysis()) {
                     std::vector<double> samples;
-                    samples.reserve(last - first);
+                    samples.reserve(static_cast<size_t>(last - first));
                     std::transform(first, last, std::back_inserter(samples), [](Duration d) { return d.count(); });
 
                     auto analysis = Catch::Benchmark::Detail::analyse_samples(cfg.benchmarkConfidenceInterval(), cfg.benchmarkResamples(), samples.begin(), samples.end());
@@ -54,7 +54,7 @@ namespace Catch {
                     };
                 } else {
                     std::vector<Duration> samples;
-                    samples.reserve(last - first);
+                    samples.reserve(static_cast<size_t>(last - first));
 
                     Duration mean = Duration(0);
                     int i = 0;

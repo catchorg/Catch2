@@ -29,11 +29,11 @@ namespace Catch {
             template <typename Clock>
             std::vector<double> resolution(int k) {
                 std::vector<TimePoint<Clock>> times;
-                times.reserve(k + 1);
+                times.reserve(static_cast<size_t>(k + 1));
                 std::generate_n(std::back_inserter(times), k + 1, now<Clock>{});
 
                 std::vector<double> deltas;
-                deltas.reserve(k);
+                deltas.reserve(static_cast<size_t>(k));
                 std::transform(std::next(times.begin()), times.end(), times.begin(),
                     std::back_inserter(deltas),
                     [](TimePoint<Clock> a, TimePoint<Clock> b) { return static_cast<double>((a - b).count()); });
@@ -83,7 +83,7 @@ namespace Catch {
                 auto&& r = run_for_at_least<Clock>(std::chrono::duration_cast<ClockDuration<Clock>>(clock_cost_estimation_time), iters, time_clock);
                 std::vector<double> times;
                 int nsamples = static_cast<int>(std::ceil(time_limit / r.elapsed));
-                times.reserve(nsamples);
+                times.reserve(static_cast<size_t>(nsamples));
                 std::generate_n(std::back_inserter(times), nsamples, [time_clock, &r] {
                     return static_cast<double>((time_clock(r.iterations) / r.iterations).count());
                 });

@@ -59,7 +59,7 @@ namespace Catch {
 
             template <typename Estimator, typename Iterator>
             sample jackknife(Estimator&& estimator, Iterator first, Iterator last) {
-                auto n = last - first;
+                auto n = static_cast<size_t>(last - first);
                 auto second = first;
                 ++second;
                 sample results;
@@ -115,8 +115,8 @@ namespace Catch {
                 double b2 = bias - z1;
                 double a1 = a(b1);
                 double a2 = a(b2);
-                auto lo = (std::max)(cumn(a1), 0);
-                auto hi = (std::min)(cumn(a2), n - 1);
+                auto lo = static_cast<size_t>((std::max)(cumn(a1), 0));
+                auto hi = static_cast<size_t>((std::min)(cumn(a2), n - 1));
 
                 return { point, resample[lo], resample[hi], confidence_level };
             }
@@ -129,7 +129,7 @@ namespace Catch {
                 double outlier_variance;
             };
 
-            bootstrap_analysis analyse_samples(double confidence_level, int n_resamples, std::vector<double>::iterator first, std::vector<double>::iterator last);
+            bootstrap_analysis analyse_samples(double confidence_level, unsigned int n_resamples, std::vector<double>::iterator first, std::vector<double>::iterator last);
         } // namespace Detail
     } // namespace Benchmark
 } // namespace Catch

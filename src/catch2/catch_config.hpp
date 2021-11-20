@@ -110,7 +110,7 @@ namespace Catch {
         bool showInvisibles() const override;
         Verbosity verbosity() const override;
         bool benchmarkNoAnalysis() const override;
-        int benchmarkSamples() const override;
+        unsigned int benchmarkSamples() const override;
         double benchmarkConfidenceInterval() const override;
         unsigned int benchmarkResamples() const override;
         std::chrono::milliseconds benchmarkWarmupTime() const override;

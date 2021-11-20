@@ -42,7 +42,9 @@ namespace Catch {
             auto const startIdx = reverseEnd - secondLastColons;
             auto const classNameSize = secondLastColons - lastColons - 1;
 
-            return methodName.substr( startIdx, classNameSize );
+            return methodName.substr(
+                static_cast<std::size_t>( startIdx ),
+                static_cast<std::size_t>( classNameSize ) );
         }
     } // namespace
 

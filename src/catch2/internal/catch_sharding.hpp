@@ -30,8 +30,8 @@ namespace Catch {
         const std::size_t startIndex = shardIndex * shardSize + (std::min)(shardIndex, leftoverTests);
         const std::size_t endIndex = (shardIndex + 1) * shardSize + (std::min)(shardIndex + 1, leftoverTests);
 
-        auto startIterator = std::next(container.begin(), startIndex);
-        auto endIterator = std::next(container.begin(), endIndex);
+        auto startIterator = std::next(container.begin(), static_cast<std::ptrdiff_t>(startIndex));
+        auto endIterator = std::next(container.begin(), static_cast<std::ptrdiff_t>(endIndex));
 
         return Container(startIterator, endIterator);
     }

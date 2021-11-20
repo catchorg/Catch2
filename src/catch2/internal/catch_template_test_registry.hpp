@@ -83,9 +83,9 @@
             template<typename...Types> \
             struct TestName{\
                 TestName(){\
-                    int index = 0;                                    \
+                    size_t index = 0;                                    \
                     constexpr char const* tmpl_types[] = {CATCH_REC_LIST(INTERNAL_CATCH_STRINGIZE_WITHOUT_PARENS, __VA_ARGS__)};\
-                    using expander = int[];\
+                    using expander = size_t[];\
                     (void)expander{(reg_test(Types{}, Catch::NameAndTags{ Name " - " + std::string(tmpl_types[index]), Tags } ), index++)... };/* NOLINT */ \
                 }\
             };\
@@ -128,8 +128,8 @@
             template<typename... Types>                               \
             struct TestName {                                         \
                 void reg_tests() {                                          \
-                    int index = 0;                                    \
-                    using expander = int[];                           \
+                    size_t index = 0;                                    \
+                    using expander = size_t[];                           \
                     constexpr char const* tmpl_types[] = {CATCH_REC_LIST(INTERNAL_CATCH_STRINGIZE_WITHOUT_PARENS, INTERNAL_CATCH_REMOVE_PARENS(TmplTypes))};\
                     constexpr char const* types_list[] = {CATCH_REC_LIST(INTERNAL_CATCH_STRINGIZE_WITHOUT_PARENS, INTERNAL_CATCH_REMOVE_PARENS(TypesList))};\
                     constexpr auto num_types = sizeof(types_list) / sizeof(types_list[0]);\
@@ -176,8 +176,8 @@
         template<typename... Types>                               \
         struct TestName {                                         \
             void reg_tests() {                                          \
-                int index = 0;                                    \
-                using expander = int[];                           \
+                size_t index = 0;                                    \
+                using expander = size_t[];                           \
                 (void)expander{(Catch::AutoReg( Catch::makeTestInvoker( &TestFunc<Types> ), CATCH_INTERNAL_LINEINFO, Catch::StringRef(), Catch::NameAndTags{ Name " - " + std::string(INTERNAL_CATCH_STRINGIZE(TmplList)) + " - " + std::to_string(index), Tags } ), index++)... };/* NOLINT */\
             }                                                     \
         };\
@@ -211,9 +211,9 @@
             template<typename...Types> \
             struct TestNameClass{\
                 TestNameClass(){\
-                    int index = 0;                                    \
+                    size_t index = 0;                                    \
                     constexpr char const* tmpl_types[] = {CATCH_REC_LIST(INTERNAL_CATCH_STRINGIZE_WITHOUT_PARENS, __VA_ARGS__)};\
-                    using expander = int[];\
+                    using expander = size_t[];\
                     (void)expander{(reg_test(Types{}, #ClassName, Catch::NameAndTags{ Name " - " + std::string(tmpl_types[index]), Tags } ), index++)... };/* NOLINT */ \
                 }\
             };\
@@ -259,8 +259,8 @@
             template<typename...Types>\
             struct TestNameClass{\
                 void reg_tests(){\
-                    int index = 0;\
-                    using expander = int[];\
+                    std::size_t index = 0;\
+                    using expander = std::size_t[];\
                     constexpr char const* tmpl_types[] = {CATCH_REC_LIST(INTERNAL_CATCH_STRINGIZE_WITHOUT_PARENS, INTERNAL_CATCH_REMOVE_PARENS(TmplTypes))};\
                     constexpr char const* types_list[] = {CATCH_REC_LIST(INTERNAL_CATCH_STRINGIZE_WITHOUT_PARENS, INTERNAL_CATCH_REMOVE_PARENS(TypesList))};\
                     constexpr auto num_types = sizeof(types_list) / sizeof(types_list[0]);\
@@ -310,8 +310,8 @@
             template<typename...Types>\
             struct TestNameClass{\
                 void reg_tests(){\
-                    int index = 0;\
-                    using expander = int[];\
+                    size_t index = 0;\
+                    using expander = size_t[];\
                     (void)expander{(Catch::AutoReg( Catch::makeTestInvoker( &TestName<Types>::test ), CATCH_INTERNAL_LINEINFO, #ClassName, Catch::NameAndTags{ Name " - " + std::string(INTERNAL_CATCH_STRINGIZE(TmplList)) + " - " + std::to_string(index), Tags } ), index++)... };/* NOLINT */ \
                 }\
             };\

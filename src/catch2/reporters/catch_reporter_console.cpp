@@ -196,7 +196,7 @@ enum class Justification { Left, Right };
 
 struct ColumnInfo {
     std::string name;
-    int width;
+    std::size_t width;
     Justification justification;
 };
 struct ColumnBreak {};
@@ -299,7 +299,8 @@ public:
 			TextFlow::Columns headerCols;
 			auto spacer = TextFlow::Spacer(2);
 			for (auto const& info : m_columnInfos) {
-				headerCols += TextFlow::Column(info.name).width(static_cast<std::size_t>(info.width - 2));
+                assert(info.width > 2);
+				headerCols += TextFlow::Column(info.name).width(info.width - 2);
 				headerCols += spacer;
 			}
 			m_os << headerCols << '\n';
@@ -333,7 +334,7 @@ public:
         tp.m_currentColumn++;
 
         auto colInfo = tp.m_columnInfos[tp.m_currentColumn];
-        auto padding = (strSize + 1 < static_cast<std::size_t>(colInfo.width))
+        auto padding = (strSize + 1 < colInfo.width)
             ? std::string(colInfo.width - (strSize + 1), ' ')
             : std::string();
         if (colInfo.justification == Justification::Left)
@@ -437,8 +438,7 @@ void ConsoleReporter::benchmarkPreparing( StringRef name ) {
 	lazyPrintWithoutClosingBenchmarkTable();
 
 	auto nameCol = TextFlow::Column( static_cast<std::string>( name ) )
-                       .width( static_cast<std::size_t>(
-                           m_tablePrinter->columnInfos()[0].width - 2 ) );
+                       .width( m_tablePrinter->columnInfos()[0].width - 2 );
 
 	bool firstLine = true;
 	for (auto line : nameCol) {

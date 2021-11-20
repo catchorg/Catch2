@@ -67,7 +67,7 @@ public:
         ++m_testCaseCounter.starting;
 
         // Reset the part tracking for partial test case events
-        m_lastSeenPartNumber = -1;
+        m_lastSeenPartNumber = uint64_t(-1);
     }
 
     void testCasePartialStarting(Catch::TestCaseInfo const&,

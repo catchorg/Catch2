@@ -105,7 +105,7 @@ namespace Catch {
         std::string name;
         double estimatedDuration;
         int iterations;
-        int samples;
+        unsigned int samples;
         unsigned int resamples;
         double clockResolution;
         double clockCost;
