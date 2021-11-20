@@ -67,6 +67,7 @@ set(INTERNAL_HEADERS
     ${SOURCES_DIR}/internal/catch_fatal_condition_handler.hpp
     ${SOURCES_DIR}/internal/catch_floating_point_helpers.hpp
     ${SOURCES_DIR}/internal/catch_unique_name.hpp
+    ${SOURCES_DIR}/internal/catch_sharding.hpp
     ${SOURCES_DIR}/generators/catch_generator_exception.hpp
     ${SOURCES_DIR}/generators/catch_generators.hpp
     ${SOURCES_DIR}/generators/catch_generators_adapters.hpp
