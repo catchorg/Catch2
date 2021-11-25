@@ -35,22 +35,11 @@ namespace Matchers {
         mutable std::string m_cachedToString;
     };
 
-#ifdef __clang__
-#    pragma clang diagnostic push
-#    pragma clang diagnostic ignored "-Wnon-virtual-dtor"
-#endif
-
-    template<typename ObjectT>
-    struct MatcherMethod {
-        virtual bool match(ObjectT const& arg) const = 0;
-    };
-
-#ifdef __clang__
-#    pragma clang diagnostic pop
-#endif
 
     template<typename T>
-    struct MatcherBase : MatcherUntypedBase, MatcherMethod<T> {};
+    struct MatcherBase : MatcherUntypedBase {
+        virtual bool match( T const& arg ) const = 0;
+    };
 
     namespace Detail {
 
