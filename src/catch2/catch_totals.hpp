@@ -9,6 +9,7 @@
 #define CATCH_TOTALS_HPP_INCLUDED
 
 #include <cstddef>
+#include <cstdint>
 
 namespace Catch {
 
@@ -16,13 +17,13 @@ namespace Catch {
         Counts operator - ( Counts const& other ) const;
         Counts& operator += ( Counts const& other );
 
-        std::size_t total() const;
+        std::uint64_t total() const;
         bool allPassed() const;
         bool allOk() const;
 
-        std::size_t passed = 0;
-        std::size_t failed = 0;
-        std::size_t failedButOk = 0;
+        std::uint64_t passed = 0;
+        std::uint64_t failed = 0;
+        std::uint64_t failedButOk = 0;
     };
 
     struct Totals {

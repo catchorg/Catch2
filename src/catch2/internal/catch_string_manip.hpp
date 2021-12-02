@@ -44,14 +44,14 @@ namespace Catch {
      * **Important:** The provided string must outlive the instance
      */
     struct pluralise {
-        pluralise(std::size_t count, StringRef label):
+        pluralise(std::uint64_t count, StringRef label):
             m_count(count),
             m_label(label)
         {}
 
         friend std::ostream& operator << ( std::ostream& os, pluralise const& pluraliser );
 
-        std::size_t m_count;
+        std::uint64_t m_count;
         StringRef m_label;
     };
 }

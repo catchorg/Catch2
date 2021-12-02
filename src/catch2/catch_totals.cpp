@@ -24,7 +24,7 @@ namespace Catch {
         return *this;
     }
 
-    std::size_t Counts::total() const {
+    std::uint64_t Counts::total() const {
         return passed + failed + failedButOk;
     }
     bool Counts::allPassed() const {

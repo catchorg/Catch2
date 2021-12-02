@@ -178,12 +178,12 @@ private:
     bool printInfoMessages;
 };
 
-std::size_t makeRatio(std::size_t number, std::size_t total) {
-    std::size_t ratio = total > 0 ? CATCH_CONFIG_CONSOLE_WIDTH * number / total : 0;
-    return (ratio == 0 && number > 0) ? 1 : ratio;
+std::size_t makeRatio( std::uint64_t number, std::uint64_t total ) {
+    const auto ratio = total > 0 ? CATCH_CONFIG_CONSOLE_WIDTH * number / total : 0;
+    return (ratio == 0 && number > 0) ? 1 : static_cast<std::size_t>(ratio);
 }
 
-std::size_t& findMax(std::size_t& i, std::size_t& j, std::size_t& k) {
+std::size_t& findMax( std::size_t& i, std::size_t& j, std::size_t& k ) {
     if (i > j && i > k)
         return i;
     else if (j > k)
@@ -597,7 +597,7 @@ struct SummaryColumn {
     SummaryColumn( std::string _label, Colour::Code _colour )
     :   label( CATCH_MOVE( _label ) ),
         colour( _colour ) {}
-    SummaryColumn addRow( std::size_t count ) {
+    SummaryColumn addRow( std::uint64_t count ) {
         ReusableStringStream rss;
         rss << count;
         std::string row = rss.str();
