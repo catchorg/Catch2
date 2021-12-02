@@ -78,26 +78,6 @@ class Version:
         for line in lines:
             f.write( line + "\n" )
 
-def updateReadmeFile(version):
-    import updateWandbox
-
-    downloadParser = re.compile( r'<a href=\"https://github.com/catchorg/Catch2/releases/download/v\d+\.\d+\.\d+/catch.hpp\">' )
-    success, wandboxLink = updateWandbox.uploadFiles()
-    if not success:
-        print('Error when uploading to wandbox: {}'.format(wandboxLink))
-        exit(1)
-    f = open( readmePath, 'r' )
-    lines = []
-    for line in f:
-        lines.append( line.rstrip() )
-    f.close()
-    f = open( readmePath, 'w' )
-    for line in lines:
-        line = downloadParser.sub( r'<a href="https://github.com/catchorg/Catch2/releases/download/v{0}/catch.hpp">'.format(version.getVersionString()) , line)
-        if '[![Try online](https://img.shields.io/badge/try-online-blue.svg)]' in line:
-            line = '[![Try online](https://img.shields.io/badge/try-online-blue.svg)]({0})'.format(wandboxLink)
-        f.write( line + "\n" )
-
 
 def updateCmakeFile(version):
     with open(cmakePath, 'rb') as file:
@@ -144,23 +124,12 @@ def updateDocumentationVersionPlaceholders(version):
 
 
 def performUpdates(version):
-    # First update version file, so we can regenerate single header and
-    # have it ready for upload to wandbox, when updating readme
     version.updateVersionFile()
     updateVersionDefine(version)
 
-    # import generateSingleHeader
-    # generateSingleHeader.generate(version)
+    import generateAmalgamatedFile
+    generateAmalgamatedFile.generate_header()
+    generateAmalgamatedFile.generate_cpp()
 
-    # # Then copy the reporters to single include folder to keep them in sync
-    # # We probably should have some kind of convention to select which reporters need to be copied automagically,
-    # # but this works for now
-    # import shutil
-    # for rep in ('automake', 'tap', 'teamcity', 'sonarqube'):
-    #     sourceFile = os.path.join(catchPath, 'include/reporters/catch_reporter_{}.hpp'.format(rep))
-    #     destFile = os.path.join(catchPath, 'single_include', 'catch2', 'catch_reporter_{}.hpp'.format(rep))
-    #     shutil.copyfile(sourceFile, destFile)
-
-    # updateReadmeFile(version)
     updateCmakeFile(version)
     updateDocumentationVersionPlaceholders(version)

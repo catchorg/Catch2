@@ -103,9 +103,9 @@ def generate_cpp():
             concatenate_file(cpp, file, False)
     print('Concatenated {} cpp files'.format(len(cpp_files)))
 
-
-generate_header()
-generate_cpp()
+if __name__ == "__main__":
+    generate_header()
+    generate_cpp()
 
 
 # Notes:
