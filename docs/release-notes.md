@@ -197,6 +197,7 @@ new design.
 * Catch2's pkg-config integration also provides 2 packages
   * `catch2` is the statically compiled implementation by itself
   * `catch2-with-main` also links in the default main
+* Passing invalid test specifications passed to Catch2 are now reported before tests are run, and are a hard error.
 
 
 

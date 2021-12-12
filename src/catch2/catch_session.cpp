@@ -25,6 +25,7 @@
 #include <catch2/internal/catch_move_and_forward.hpp>
 
 #include <algorithm>
+#include <cassert>
 #include <iomanip>
 #include <set>
 
@@ -61,24 +62,30 @@ namespace Catch {
                 m_config{config},
                 m_context{config, CATCH_MOVE(reporter)} {
 
-                auto const& allTestCases = getAllTestCasesSorted(*m_config);
-                m_matches = m_config->testSpec().matchesByFilter(allTestCases, *m_config);
-                auto const& invalidArgs = m_config->testSpec().getInvalidArgs();
+                assert( m_config->testSpec().getInvalidArgs().empty() &&
+                        "Invalid test specs should be handled before running tests" );
 
-                if (m_matches.empty() && invalidArgs.empty()) {
-                    for (auto const& test : allTestCases)
-                        if (!test.getTestCaseInfo().isHidden())
-                            m_tests.emplace(&test);
+                auto const& allTestCases = getAllTestCasesSorted(*m_config);
+                auto const& testSpec = m_config->testSpec();
+                if ( !testSpec.hasFilters() ) {
+                    for ( auto const& test : allTestCases ) {
+                        if ( !test.getTestCaseInfo().isHidden() ) {
+                            m_tests.emplace( &test );
+                        }
+                    }
                 } else {
-                    for (auto const& match : m_matches)
-                        m_tests.insert(match.tests.begin(), match.tests.end());
+                    m_matches =
+                        testSpec.matchesByFilter( allTestCases, *m_config );
+                    for ( auto const& match : m_matches ) {
+                        m_tests.insert( match.tests.begin(),
+                                        match.tests.end() );
+                    }
                 }
 
                 m_tests = createShard(m_tests, m_config->shardCount(), m_config->shardIndex());
             }
 
             Totals execute() {
-                auto const& invalidArgs = m_config->testSpec().getInvalidArgs();
                 Totals totals;
                 for (auto const& testCase : m_tests) {
                     if (!m_context.aborting())
@@ -92,11 +99,6 @@ namespace Catch {
                         m_reporter->noMatchingTestCases(match.name);
                         totals.error = -1;
                     }
-                }
-
-                if (!invalidArgs.empty()) {
-                    for (auto const& invalidArg: invalidArgs)
-                         m_reporter->reportInvalidArguments(invalidArg);
                 }
 
                 return totals;
@@ -283,6 +285,15 @@ namespace Catch {
 
             // Create reporter(s) so we can route listings through them
             auto reporter = makeReporter(m_config.get());
+
+            auto const& invalidSpecs = m_config->testSpec().getInvalidArgs();
+            if ( !invalidSpecs.empty() ) {
+                for ( auto const& spec : invalidSpecs ) {
+                    reporter->reportInvalidArguments( spec );
+                }
+                return 1;
+            }
+
 
             // Handle list request
             if (list(*reporter, *m_config)) {

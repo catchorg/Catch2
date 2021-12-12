@@ -294,14 +294,12 @@ set_tests_properties(TestsInFile::SimpleSpecs PROPERTIES PASS_REGULAR_EXPRESSION
 add_test(NAME TestsInFile::EscapeSpecialCharacters COMMAND $<TARGET_FILE:SelfTest> "-f ${SELF_TEST_DIR}/Misc/special-characters-in-file.input")
 set_tests_properties(TestsInFile::EscapeSpecialCharacters PROPERTIES PASS_REGULAR_EXPRESSION "1 assertion in 1 test case")
 
-# CTest does not allow us to create an AND of required regular expressions,
-# so we have to split the test into 2 parts and look for parts of the expected
-# output separately.
 add_test(NAME TestsInFile::InvalidTestNames-1 COMMAND $<TARGET_FILE:SelfTest> "-f ${SELF_TEST_DIR}/Misc/invalid-test-names.input")
-set_tests_properties(TestsInFile::InvalidTestNames-1 PROPERTIES PASS_REGULAR_EXPRESSION "Invalid Filter: \"Test with special, characters in \\\\\" name\"")
-
-add_test(NAME TestsInFile::InvalidTestNames-2 COMMAND $<TARGET_FILE:SelfTest> "-f ${SELF_TEST_DIR}/Misc/invalid-test-names.input")
-set_tests_properties(TestsInFile::InvalidTestNames-2 PROPERTIES PASS_REGULAR_EXPRESSION "No tests ran")
+set_tests_properties(TestsInFile::InvalidTestNames-1
+  PROPERTIES
+    PASS_REGULAR_EXPRESSION "Invalid Filter: \"Test with special, characters in \\\\\" name\""
+    FAIL_REGULAR_EXPRESSION "No tests ran"
+)
 
 add_test(NAME TagAlias COMMAND $<TARGET_FILE:SelfTest> [@tricky] --list-tests)
 set_tests_properties(TagAlias PROPERTIES
@@ -369,6 +367,16 @@ add_test(NAME "Benchmarking::FailureReporting::ShouldFailIsRespected"
 set_tests_properties("Benchmarking::FailureReporting::ShouldFailIsRespected"
   PROPERTIES
     PASS_REGULAR_EXPRESSION "1 failed as expected"
+)
+
+add_test(NAME "ErrorHandling::InvalidTestSpecExitsEarly"
+  COMMAND
+    $<TARGET_FILE:SelfTest> "[aa,a]"
+)
+set_tests_properties("ErrorHandling::InvalidTestSpecExitsEarly"
+  PROPERTIES
+    PASS_REGULAR_EXPRESSION "Invalid Filter: \\[aa\,a\\]"
+    FAIL_REGULAR_EXPRESSION "No tests ran"
 )
 
 
