@@ -100,7 +100,7 @@ namespace Catch {
         void benchmarkFailed( StringRef ) override {}
 
         void noMatchingTestCases( StringRef ) override {}
-        void reportInvalidArguments( StringRef ) override {}
+        void reportInvalidTestSpec( StringRef ) override {}
         void fatalErrorEncountered( StringRef /*error*/ ) override {}
 
         void testRunStarting( TestRunInfo const& ) override {}

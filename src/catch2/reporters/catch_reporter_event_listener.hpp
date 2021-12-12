@@ -24,7 +24,7 @@ namespace Catch {
         EventListenerBase( ReporterConfig const& config ):
             IStreamingReporter( config.fullConfig() ) {}
 
-        void reportInvalidArguments( StringRef unmatchedSpec ) override;
+        void reportInvalidTestSpec( StringRef unmatchedSpec ) override;
         void fatalErrorEncountered( StringRef error ) override;
 
         void benchmarkPreparing( StringRef name ) override;

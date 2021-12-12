@@ -173,8 +173,8 @@ namespace Catch {
 
         //! Called when no test cases match provided test spec
         virtual void noMatchingTestCases( StringRef unmatchedSpec ) = 0;
-        //! Called for all invalid arguments from the cli
-        virtual void reportInvalidArguments( StringRef invalidArgument ) = 0;
+        //! Called for all invalid test specs from the cli
+        virtual void reportInvalidTestSpec( StringRef invalidArgument ) = 0;
 
         /**
          * Called once in a testing run before tests are started

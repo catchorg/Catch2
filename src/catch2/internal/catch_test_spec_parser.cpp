@@ -28,7 +28,7 @@ namespace Catch {
         for( m_pos = 0; m_pos < m_arg.size(); ++m_pos )
           //if visitChar fails
            if( !visitChar( m_arg[m_pos] ) ){
-               m_testSpec.m_invalidArgs.push_back(arg);
+               m_testSpec.m_invalidSpecs.push_back(arg);
                break;
            }
         endMode();

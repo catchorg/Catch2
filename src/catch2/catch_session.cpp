@@ -62,7 +62,7 @@ namespace Catch {
                 m_config{config},
                 m_context{config, CATCH_MOVE(reporter)} {
 
-                assert( m_config->testSpec().getInvalidArgs().empty() &&
+                assert( m_config->testSpec().getInvalidSpecs().empty() &&
                         "Invalid test specs should be handled before running tests" );
 
                 auto const& allTestCases = getAllTestCasesSorted(*m_config);
@@ -286,10 +286,10 @@ namespace Catch {
             // Create reporter(s) so we can route listings through them
             auto reporter = makeReporter(m_config.get());
 
-            auto const& invalidSpecs = m_config->testSpec().getInvalidArgs();
+            auto const& invalidSpecs = m_config->testSpec().getInvalidSpecs();
             if ( !invalidSpecs.empty() ) {
                 for ( auto const& spec : invalidSpecs ) {
-                    reporter->reportInvalidArguments( spec );
+                    reporter->reportInvalidTestSpec( spec );
                 }
                 return 1;
             }

@@ -153,14 +153,14 @@ void listTags( std::vector<TagInfo> const& tagInfos );
 ## Miscellaneous events
 
 ```cpp
-void reportInvalidArguments( StringRef unmatchedSpec );
+void reportInvalidTestSpec( StringRef unmatchedSpec );
 void fatalErrorEncountered( StringRef error );
 void noMatchingTestCases( StringRef unmatchedSpec );
 ```
 
 These are one-off events that do not neatly fit into other categories.
 
-`reportInvalidArguments` is sent for each [test specification command line
+`reportInvalidTestSpec` is sent for each [test specification command line
 argument](command-line.md#specifying-which-tests-to-run) that wasn't
 parsed into a valid spec.
 

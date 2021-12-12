@@ -32,7 +32,7 @@ namespace Catch {
 
         void noMatchingTestCases( StringRef unmatchedSpec ) override;
         void fatalErrorEncountered( StringRef error ) override;
-        void reportInvalidArguments( StringRef arg ) override;
+        void reportInvalidTestSpec( StringRef arg ) override;
 
         void benchmarkPreparing( StringRef name ) override;
         void benchmarkStarting( BenchmarkInfo const& benchmarkInfo ) override;

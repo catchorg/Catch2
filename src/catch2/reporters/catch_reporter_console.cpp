@@ -386,7 +386,7 @@ void ConsoleReporter::noMatchingTestCases( StringRef unmatchedSpec ) {
     m_stream << "No test cases matched '" << unmatchedSpec << "'\n";
 }
 
-void ConsoleReporter::reportInvalidArguments( StringRef arg ) {
+void ConsoleReporter::reportInvalidTestSpec( StringRef arg ) {
     m_stream << "Invalid Filter: " << arg << '\n';
 }
 

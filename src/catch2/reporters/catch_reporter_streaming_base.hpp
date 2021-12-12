@@ -32,7 +32,7 @@ namespace Catch {
 
         void fatalErrorEncountered( StringRef /*error*/ ) override {}
         void noMatchingTestCases( StringRef /*unmatchedSpec*/ ) override {}
-        void reportInvalidArguments( StringRef /*invalidArgument*/ ) override {}
+        void reportInvalidTestSpec( StringRef /*invalidArgument*/ ) override {}
 
         void testRunStarting( TestRunInfo const& _testRunInfo ) override;
 

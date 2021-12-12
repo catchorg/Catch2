@@ -36,11 +36,11 @@ namespace Catch {
         m_reporter->fatalErrorEncountered( error );
     }
 
-    void ListeningReporter::reportInvalidArguments( StringRef arg ) {
+    void ListeningReporter::reportInvalidTestSpec( StringRef arg ) {
         for ( auto& listener : m_listeners ) {
-            listener->reportInvalidArguments( arg );
+            listener->reportInvalidTestSpec( arg );
         }
-        m_reporter->reportInvalidArguments( arg );
+        m_reporter->reportInvalidTestSpec( arg );
     }
 
     void ListeningReporter::benchmarkPreparing( StringRef name ) {

@@ -236,7 +236,7 @@ namespace Catch {
     void EventListenerBase::listTests( std::vector<TestCaseHandle> const& ) {}
     void EventListenerBase::listTags( std::vector<TagInfo> const& ) {}
     void EventListenerBase::noMatchingTestCases( StringRef ) {}
-    void EventListenerBase::reportInvalidArguments( StringRef ) {}
+    void EventListenerBase::reportInvalidTestSpec( StringRef ) {}
     void EventListenerBase::testRunStarting( TestRunInfo const& ) {}
     void EventListenerBase::testCaseStarting( TestCaseInfo const& ) {}
     void EventListenerBase::testCasePartialStarting(TestCaseInfo const&, uint64_t) {}

@@ -72,11 +72,11 @@ namespace Catch {
         bool hasFilters() const;
         bool matches( TestCaseInfo const& testCase ) const;
         Matches matchesByFilter( std::vector<TestCaseHandle> const& testCases, IConfig const& config ) const;
-        const vectorStrings & getInvalidArgs() const;
+        const vectorStrings & getInvalidSpecs() const;
 
     private:
         std::vector<Filter> m_filters;
-        std::vector<std::string> m_invalidArgs;
+        std::vector<std::string> m_invalidSpecs;
         friend class TestSpecParser;
     };
 }

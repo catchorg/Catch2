@@ -98,8 +98,8 @@ namespace Catch {
         return matches;
     }
 
-    const TestSpec::vectorStrings& TestSpec::getInvalidArgs() const{
-        return  (m_invalidArgs);
+    const TestSpec::vectorStrings& TestSpec::getInvalidSpecs() const {
+        return m_invalidSpecs;
     }
 
 }
