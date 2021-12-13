@@ -67,8 +67,10 @@ namespace Catch {
     std::ostream& Config::stream() const               { return m_stream->stream(); }
     StringRef Config::name() const                     { return m_data.name.empty() ? m_data.processName : m_data.name; }
     bool Config::includeSuccessfulResults() const      { return m_data.showSuccessfulTests; }
-    bool Config::warnAboutMissingAssertions() const    { return !!(m_data.warnings & WarnAbout::NoAssertions); }
-    bool Config::warnAboutNoTests() const              { return !!(m_data.warnings & WarnAbout::NoTests); }
+    bool Config::warnAboutMissingAssertions() const {
+        return !!( m_data.warnings & WarnAbout::NoAssertions );
+    }
+    bool Config::zeroTestsCountAsSuccess() const       { return m_data.allowZeroTests; }
     ShowDurations Config::showDurations() const        { return m_data.showDurations; }
     double Config::minDuration() const                 { return m_data.minDuration; }
     TestRunOrder Config::runOrder() const              { return m_data.runOrder; }

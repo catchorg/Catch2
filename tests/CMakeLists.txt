@@ -207,15 +207,29 @@ set_tests_properties(List::Reporters::XmlOutput PROPERTIES
 add_test(NAME NoAssertions COMMAND $<TARGET_FILE:SelfTest> -w NoAssertions "An empty test with no assertions")
 set_tests_properties(NoAssertions PROPERTIES PASS_REGULAR_EXPRESSION "No assertions in test case")
 
-add_test(NAME NoTest COMMAND $<TARGET_FILE:SelfTest> Tracker, "___nonexistent_test___")
-set_tests_properties(NoTest PROPERTIES
+# We cannot combine a regular expression on output with return code check
+# in one test, so we register two instead of making a checking script because
+# the runtime overhead is small enough.
+add_test(NAME TestSpecs::CombiningMatchingAndNonMatchingIsOk-1 COMMAND $<TARGET_FILE:SelfTest> Tracker, "___nonexistent_test___")
+
+add_test(NAME TestSpecs::CombiningMatchingAndNonMatchingIsOk-2 COMMAND $<TARGET_FILE:SelfTest> Tracker, "___nonexistent_test___")
+set_tests_properties(TestSpecs::CombiningMatchingAndNonMatchingIsOk-2 PROPERTIES
     PASS_REGULAR_EXPRESSION "No test cases matched '___nonexistent_test___'"
     FAIL_REGULAR_EXPRESSION "No tests ran"
 )
 
-add_test(NAME WarnAboutNoTests COMMAND ${CMAKE_COMMAND} -P ${SELF_TEST_DIR}/WarnAboutNoTests.cmake $<TARGET_FILE:SelfTest>)
+add_test(NAME TestSpecs::NoMatchedTestsFail
+  COMMAND $<TARGET_FILE:SelfTest> "___nonexistent_test___"
+)
+set_tests_properties(TestSpecs::NoMatchedTestsFail
+  PROPERTIES
+    WILL_FAIL ON
+)
+add_test(NAME TestSpecs::OverrideFailureWithNoMatchedTests
+  COMMAND $<TARGET_FILE:SelfTest> "___nonexistent_test___" --allow-running-no-tests
+)
 
-add_test(NAME UnmatchedOutputFilter COMMAND $<TARGET_FILE:SelfTest> [this-tag-does-not-exist] -w NoTests)
+add_test(NAME UnmatchedOutputFilter COMMAND $<TARGET_FILE:SelfTest> [this-tag-does-not-exist])
 set_tests_properties(UnmatchedOutputFilter
   PROPERTIES
     PASS_REGULAR_EXPRESSION "No test cases matched '\\[this-tag-does-not-exist\\]'"

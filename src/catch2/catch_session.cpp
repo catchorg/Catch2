@@ -105,12 +105,10 @@ namespace Catch {
             }
 
         private:
-            using Tests = std::set<TestCaseHandle const*>;
-
             IStreamingReporter* m_reporter;
             Config const* m_config;
             RunContext m_context;
-            Tests m_tests;
+            std::set<TestCaseHandle const*> m_tests;
             TestSpec::Matches m_matches;
         };
 
@@ -303,8 +301,10 @@ namespace Catch {
             TestGroup tests { CATCH_MOVE(reporter), m_config.get() };
             auto const totals = tests.execute();
 
-            if( m_config->warnAboutNoTests() && totals.error == -1 )
+            if ( totals.testCases.total() == 0
+                && !m_config->zeroTestsCountAsSuccess() ) {
                 return 2;
+            }
 
             // Note that on unices only the lower 8 bits are usually used, clamping
             // the return value to 255 prevents false negative when some multiple

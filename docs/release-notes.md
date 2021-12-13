@@ -198,6 +198,9 @@ new design.
   * `catch2` is the statically compiled implementation by itself
   * `catch2-with-main` also links in the default main
 * Passing invalid test specifications passed to Catch2 are now reported before tests are run, and are a hard error.
+* Running 0 tests (e.g. due to empty binary, or test spec not matching anything) returns non-0 exit code
+  * Flag `--allow-running-no-tests` overrides this behaviour.
+  * `NoTests` warning has been removed because it is fully subsumed by this change.
 
 
 

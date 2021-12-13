@@ -299,6 +299,22 @@ set_tests_properties(
 #    PASS_REGULAR_EXPRESSION "Pretty please, break into debugger"
 #)
 
+add_executable(NoTests ${TESTS_DIR}/X92-NoTests.cpp)
+target_link_libraries(NoTests PRIVATE Catch2::Catch2WithMain)
+
+add_test(
+  NAME TestSpecs::EmptySpecWithNoTestsFails
+  COMMAND $<TARGET_FILE:NoTests>
+)
+set_tests_properties(TestSpecs::EmptySpecWithNoTestsFails
+  PROPERTIES
+    WILL_FAIL ON
+)
+add_test(
+  NAME TestSpecs::OverrideFailureWithEmptySpec
+  COMMAND $<TARGET_FILE:NoTests> --allow-running-no-tests
+)
+
 set( EXTRA_TEST_BINARIES
     PrefixedMacros
     DisabledMacros
@@ -310,6 +326,7 @@ set( EXTRA_TEST_BINARIES
     DuplicatedTestCases-SameNameAndTags
     DuplicatedTestCases-SameNameDifferentTags
     DuplicatedTestCases-DuplicatedTestCaseMethods
+    NoTests
 #    DebugBreakMacros
 )
 

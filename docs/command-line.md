@@ -30,6 +30,7 @@
 [Filenames as tags](#filenames-as-tags)<br>
 [Override output colouring](#override-output-colouring)<br>
 [Test Sharding](#test-sharding)<br>
+[Allow running the binary without tests](#no-tests-override)<br>
 
 Catch works quite nicely without any command line options at all - but for those times when you want greater control the following options are available.
 Click one of the following links to take you straight to that option - or scroll on to browse the available options.
@@ -70,6 +71,7 @@ Click one of the following links to take you straight to that option - or scroll
 <a href="#use-colour">                                  `    --use-colour`</a><br />
 <a href="#test-sharding">                               `    --shard-count`</a><br />
 <a href="#test-sharding">                               `    --shard-index`</a><br />
+<a href=#no-tests-override>                             `    --allow-running-no-tests`</a><br />
 
 </br>
 
@@ -210,14 +212,12 @@ This option transforms tabs and newline characters into ```\t``` and ```\n``` re
 ## Warnings
 <pre>-w, --warn &lt;warning name></pre>
 
-Enables reporting of suspicious test states. There are currently two
-available warnings
+Enables reporting of suspicious test runs. There is currently only one
+available warning.
 
 ```
     NoAssertions   // Fail test case / leaf section if no assertions
                    // (e.g. `REQUIRE`) is encountered.
-    NoTests        // Return non-zero exit code when no test cases were run
-                   // Also calls reporter's noMatchingTestCases method
 ```
 
 
@@ -440,6 +440,17 @@ The default shard count is `1`, and the default index to run is `0`. It is an er
 the number of shards.
 
 This is useful when you want to split test execution across multiple processes, as is done with [Bazel test sharding](https://docs.bazel.build/versions/main/test-encyclopedia.html#test-sharding). 
+
+<a id="no-tests-override"></a>
+## Allow running the binary without tests
+<pre>--allow-running-no-tests</pre>
+
+> Introduced in Catch2 X.Y.Z.
+
+By default, Catch2 test binaries return non-0 exit code if no tests were
+run, e.g. if the binary was compiled with no tests, or the provided test
+spec matched no tests. This flag overrides that, so a test run with no
+tests still returns 0.
 
 
 ---
