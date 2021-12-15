@@ -33,7 +33,18 @@ int main (int argc, char * argv[]) {
     // and its constructor, as it (optionally) registers leak detector
     (void)&Catch::leakDetector;
 
-    return Catch::Session().run( argc, argv );
+    Catch::Session session;
+
+#if defined(CATCH_CONFIG_MAIN_BAZEL_JUNIT_XML_OUTPUT_FILE)
+    // Bazel expects test output to be written to this file in JUnit format.
+    auto bazelOutputFile = std::getenv("XML_OUTPUT_FILE");
+    if (bazelOutputFile != nullptr) {
+        session.configData().reporterName = "junit";
+        session.configData().outputFilename = bazelOutputFile;
+    }
+#endif
+
+    return session.run( argc, argv );
 }
 
 #endif // !defined(CATCH_AMALGAMATED_CUSTOM_MAIN

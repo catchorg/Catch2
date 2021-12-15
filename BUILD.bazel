@@ -16,6 +16,7 @@ cc_library(
 # Static library, with main.
 cc_library(
     name = "catch2_main",
+    local_defines = ["CATCH_CONFIG_MAIN_BAZEL_JUNIT_XML_OUTPUT_FILE"],
     srcs = ["src/catch2/internal/catch_main.cpp"],
     deps = [":catch2"],
     visibility = ["//visibility:public"],
