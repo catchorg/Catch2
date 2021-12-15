@@ -6,6 +6,7 @@
 #include <catch2/catch_test_macros.hpp>
 #include <catch2/catch_template_test_macros.hpp>
 #include <catch2/internal/catch_config_wchar.hpp>
+#include <catch2/internal/catch_windows_h_proxy.hpp>
 
 #ifdef __clang__
 #   pragma clang diagnostic ignored "-Wc++98-compat"
@@ -498,3 +499,34 @@ TEMPLATE_TEST_CASE_SIG("#1954 - 7 arg template test case sig compiles", "[regres
 
 TEST_CASE("Same test name but with different tags is fine", "[.approvals][some-tag]") {}
 TEST_CASE("Same test name but with different tags is fine", "[.approvals][other-tag]") {}
+
+#if defined(CATCH_PLATFORM_WINDOWS)
+void throw_and_catch()
+{
+    __try {
+        RaiseException(0xC0000005, 0, 0, NULL);
+    }
+    __except (1)
+    {
+
+    }
+}
+
+
+TEST_CASE("Validate SEH behavior - handled", "[approvals][FatalConditionHandler][CATCH_PLATFORM_WINDOWS]")
+{
+    // Validate that Catch2 framework correctly handles tests raising and handling SEH exceptions.
+    throw_and_catch();
+}
+
+void throw_no_catch()
+{
+    RaiseException(0xC0000005, 0, 0, NULL);
+}
+
+TEST_CASE("Validate SEH behavior - unhandled", "[.approvals][FatalConditionHandler][CATCH_PLATFORM_WINDOWS]")
+{
+    // Validate that Catch2 framework correctly handles tests raising and not handling SEH exceptions.
+    throw_no_catch();
+}
+#endif
