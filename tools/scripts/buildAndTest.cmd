@@ -1,7 +1,7 @@
 rem Start at the root of the Catch project directory, for example:
 rem cd Catch2
 
-rem begin-snippet: catch2-build-and-test
+rem begin-snippet: catch2-build-and-test-win
 rem 1. Regenerate the amalgamated distribution
 python tools\scripts\generateAmalgamatedFiles.py
 
