@@ -26,7 +26,10 @@ namespace Catch {
 
     struct WarnAbout { enum What {
         Nothing = 0x00,
+        //! A test case or leaf section did not run any assertions
         NoAssertions = 0x01,
+        //! A command line test spec matched no test cases
+        UnmatchedTestSpec = 0x02,
     }; };
 
     enum class ShowDurations {
@@ -63,6 +66,7 @@ namespace Catch {
         virtual bool includeSuccessfulResults() const = 0;
         virtual bool shouldDebugBreak() const = 0;
         virtual bool warnAboutMissingAssertions() const = 0;
+        virtual bool warnAboutUnmatchedTestSpecs() const = 0;
         virtual bool zeroTestsCountAsSuccess() const = 0;
         virtual int abortAfter() const = 0;
         virtual bool showInvisibles() const = 0;

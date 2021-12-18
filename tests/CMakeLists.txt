@@ -229,6 +229,23 @@ add_test(NAME TestSpecs::OverrideFailureWithNoMatchedTests
   COMMAND $<TARGET_FILE:SelfTest> "___nonexistent_test___" --allow-running-no-tests
 )
 
+add_test(NAME Warnings::UnmatchedTestSpecIsAccepted
+  COMMAND $<TARGET_FILE:SelfTest> Tracker --warn UnmatchedTestSpec
+)
+set_tests_properties(Warnings::UnmatchedTestSpecIsAccepted
+  PROPERTIES
+    FAIL_REGULAR_EXPRESSION "Unrecognised warning option: "
+)
+
+add_test(NAME TestSpecs::WarnUnmatchedTestSpecFailsWithUnmatchedTestSpec
+  COMMAND
+    $<TARGET_FILE:SelfTest> Tracker, "___nonexistent_test___" --warn UnmatchedTestSpec
+)
+set_tests_properties(TestSpecs::WarnUnmatchedTestSpecFailsWithUnmatchedTestSpec
+  PROPERTIES
+    WILL_FAIL ON
+)
+
 add_test(NAME UnmatchedOutputFilter COMMAND $<TARGET_FILE:SelfTest> [this-tag-does-not-exist])
 set_tests_properties(UnmatchedOutputFilter
   PROPERTIES

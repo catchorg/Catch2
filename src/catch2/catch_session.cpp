@@ -96,13 +96,18 @@ namespace Catch {
 
                 for (auto const& match : m_matches) {
                     if (match.tests.empty()) {
-                        m_reporter->noMatchingTestCases(match.name);
-                        totals.error = -1;
+                        m_unmatchedTestSpecs = true;
+                        m_reporter->noMatchingTestCases( match.name );
                     }
                 }
 
                 return totals;
             }
+
+            bool hadUnmatchedTestSpecs() const {
+                return m_unmatchedTestSpecs;
+            }
+
 
         private:
             IStreamingReporter* m_reporter;
@@ -110,6 +115,7 @@ namespace Catch {
             RunContext m_context;
             std::set<TestCaseHandle const*> m_tests;
             TestSpec::Matches m_matches;
+            bool m_unmatchedTestSpecs = false;
         };
 
         void applyFilenamesAsTags() {
@@ -300,6 +306,11 @@ namespace Catch {
 
             TestGroup tests { CATCH_MOVE(reporter), m_config.get() };
             auto const totals = tests.execute();
+
+            if ( tests.hadUnmatchedTestSpecs()
+                && m_config->warnAboutUnmatchedTestSpecs() ) {
+                return 3;
+            }
 
             if ( totals.testCases.total() == 0
                 && !m_config->zeroTestsCountAsSuccess() ) {

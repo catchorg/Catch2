@@ -27,6 +27,9 @@ namespace Catch {
             if ( warning == "NoAssertions" ) {
                 config.warnings = WarnAbout::NoAssertions;
                 return ParserResult::ok( ParseResultType::Matched );
+            } else if ( warning == "UnmatchedTestSpec" ) {
+                config.warnings = WarnAbout::UnmatchedTestSpec;
+                return ParserResult::ok( ParseResultType::Matched );
             }
 
             return ParserResult ::runtimeError(

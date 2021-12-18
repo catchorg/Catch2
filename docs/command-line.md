@@ -212,13 +212,21 @@ This option transforms tabs and newline characters into ```\t``` and ```\n``` re
 ## Warnings
 <pre>-w, --warn &lt;warning name></pre>
 
-Enables reporting of suspicious test runs. There is currently only one
-available warning.
+You can think of Catch2's warnings as the equivalent of `-Werror` (`/WX`)
+flag for C++ compilers. It turns some suspicious occurences, like a section
+without assertions, into errors. Because these might be intended, warnings
+are not enabled by default, but user can opt in.
+
+There are currently two warnings implemented:
 
 ```
-    NoAssertions   // Fail test case / leaf section if no assertions
-                   // (e.g. `REQUIRE`) is encountered.
+    NoAssertions        // Fail test case / leaf section if no assertions
+                        // (e.g. `REQUIRE`) is encountered.
+    UnmatchedTestSpec   // Fail test run if any of the CLI test specs did
+                        // not match any tests.
 ```
+
+> `UnmatchedTestSpec` was introduced in Catch2 X.Y.Z.
 
 
 <a id="reporting-timings"></a>

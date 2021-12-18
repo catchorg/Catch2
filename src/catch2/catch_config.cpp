@@ -70,6 +70,9 @@ namespace Catch {
     bool Config::warnAboutMissingAssertions() const {
         return !!( m_data.warnings & WarnAbout::NoAssertions );
     }
+    bool Config::warnAboutUnmatchedTestSpecs() const {
+        return !!( m_data.warnings & WarnAbout::UnmatchedTestSpec );
+    }
     bool Config::zeroTestsCountAsSuccess() const       { return m_data.allowZeroTests; }
     ShowDurations Config::showDurations() const        { return m_data.showDurations; }
     double Config::minDuration() const                 { return m_data.minDuration; }

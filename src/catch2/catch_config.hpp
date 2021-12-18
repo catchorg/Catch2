@@ -98,6 +98,7 @@ namespace Catch {
         StringRef name() const override;
         bool includeSuccessfulResults() const override;
         bool warnAboutMissingAssertions() const override;
+        bool warnAboutUnmatchedTestSpecs() const override;
         bool zeroTestsCountAsSuccess() const override;
         ShowDurations showDurations() const override;
         double minDuration() const override;
