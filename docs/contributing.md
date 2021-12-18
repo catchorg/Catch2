@@ -104,6 +104,8 @@ cd Catch2
 ./tools/scripts/buildAndTest.sh
 ```
 
+A Windows version of the script is available at `tools\scripts\buildAndTest.cmd`.
+
 If you added new tests, you will likely see `ApprovalTests` failure.
 After you check that the output difference is expected, you should
 run `tools/scripts/approve.py` to confirm them, and include these changes
