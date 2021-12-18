@@ -217,6 +217,8 @@ flag for C++ compilers. It turns some suspicious occurences, like a section
 without assertions, into errors. Because these might be intended, warnings
 are not enabled by default, but user can opt in.
 
+You can enable multiple warnings at the same time.
+
 There are currently two warnings implemented:
 
 ```

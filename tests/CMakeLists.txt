@@ -237,6 +237,13 @@ set_tests_properties(Warnings::UnmatchedTestSpecIsAccepted
     FAIL_REGULAR_EXPRESSION "Unrecognised warning option: "
 )
 
+add_test(NAME Warnings::MultipleWarningsCanBeSpecified
+  COMMAND
+    $<TARGET_FILE:SelfTest> Tracker
+      --warn NoAssertions
+      --warn UnmatchedTestSpec
+)
+
 add_test(NAME TestSpecs::WarnUnmatchedTestSpecFailsWithUnmatchedTestSpec
   COMMAND
     $<TARGET_FILE:SelfTest> Tracker, "___nonexistent_test___" --warn UnmatchedTestSpec

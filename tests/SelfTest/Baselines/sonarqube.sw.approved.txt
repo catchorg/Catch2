@@ -52,6 +52,9 @@
     <testCase name="Parsing sharding-related cli flags/shard-index" duration="{duration}"/>
     <testCase name="Parsing sharding-related cli flags/Negative shard index reports error" duration="{duration}"/>
     <testCase name="Parsing sharding-related cli flags/Shard index 0 is accepted" duration="{duration}"/>
+    <testCase name="Parsing warnings/NoAssertions" duration="{duration}"/>
+    <testCase name="Parsing warnings/NoTests is no longer supported" duration="{duration}"/>
+    <testCase name="Parsing warnings/Combining multiple warnings" duration="{duration}"/>
     <testCase name="Process can be configured on command line/empty args don't cause a crash" duration="{duration}"/>
     <testCase name="Process can be configured on command line/default - no arguments" duration="{duration}"/>
     <testCase name="Process can be configured on command line/test lists/Specify one test case using" duration="{duration}"/>

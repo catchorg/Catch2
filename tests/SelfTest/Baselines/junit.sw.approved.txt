@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuitesloose text artifact
 >
-  <testsuite name="<exe-name>" errors="17" failures="129" tests="2166" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
+  <testsuite name="<exe-name>" errors="17" failures="129" tests="2171" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
     <properties>
       <property name="random-seed" value="1"/>
       <property name="filters" value="~[!nonportable]~[!benchmark]~[approvals] *"/>
@@ -1070,6 +1070,9 @@ Message.tests.cpp:<line number>
     <testcase classname="<exe-name>.global" name="Parsing sharding-related cli flags/shard-index" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Parsing sharding-related cli flags/Negative shard index reports error" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Parsing sharding-related cli flags/Shard index 0 is accepted" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Parsing warnings/NoAssertions" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Parsing warnings/NoTests is no longer supported" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Parsing warnings/Combining multiple warnings" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Pointers can be compared to null" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Precision of floating point stringification can be set/Floats" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Precision of floating point stringification can be set/Double" time="{duration}" status="run"/>

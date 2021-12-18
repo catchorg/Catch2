@@ -618,6 +618,28 @@ TEST_CASE("Parsing sharding-related cli flags", "[sharding]") {
 
 }
 
+TEST_CASE( "Parsing warnings", "[cli][warnings]" ) {
+    using Catch::WarnAbout;
+
+    Catch::ConfigData config;
+    auto cli = Catch::makeCommandLineParser( config );
+
+    SECTION( "NoAssertions" ) {
+        REQUIRE(cli.parse( { "test", "-w", "NoAssertions" } ));
+        REQUIRE( config.warnings == WarnAbout::NoAssertions );
+    }
+    SECTION( "NoTests is no longer supported" ) {
+        REQUIRE_FALSE(cli.parse( { "test", "-w", "NoTests" } ));
+    }
+    SECTION( "Combining multiple warnings" ) {
+        REQUIRE( cli.parse( { "test",
+                              "--warn", "NoAssertions",
+                              "--warn", "UnmatchedTestSpec" } ) );
+
+        REQUIRE( config.warnings == ( WarnAbout::NoAssertions | WarnAbout::UnmatchedTestSpec ) );
+    }
+}
+
 TEST_CASE("Test with special, characters \"in name", "[cli][regression]") {
     // This test case succeeds if we can invoke it from the CLI
     SUCCEED();

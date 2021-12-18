@@ -8785,6 +8785,52 @@ with expansion:
   0 == 0
 
 -------------------------------------------------------------------------------
+Parsing warnings
+  NoAssertions
+-------------------------------------------------------------------------------
+CmdLine.tests.cpp:<line number>
+...............................................................................
+
+CmdLine.tests.cpp:<line number>: PASSED:
+  REQUIRE( cli.parse( { "test", "-w", "NoAssertions" } ) )
+with expansion:
+  {?}
+
+CmdLine.tests.cpp:<line number>: PASSED:
+  REQUIRE( config.warnings == WarnAbout::NoAssertions )
+with expansion:
+  1 == 1
+
+-------------------------------------------------------------------------------
+Parsing warnings
+  NoTests is no longer supported
+-------------------------------------------------------------------------------
+CmdLine.tests.cpp:<line number>
+...............................................................................
+
+CmdLine.tests.cpp:<line number>: PASSED:
+  REQUIRE_FALSE( cli.parse( { "test", "-w", "NoTests" } ) )
+with expansion:
+  !{?}
+
+-------------------------------------------------------------------------------
+Parsing warnings
+  Combining multiple warnings
+-------------------------------------------------------------------------------
+CmdLine.tests.cpp:<line number>
+...............................................................................
+
+CmdLine.tests.cpp:<line number>: PASSED:
+  REQUIRE( cli.parse( { "test", "--warn", "NoAssertions", "--warn", "UnmatchedTestSpec" } ) )
+with expansion:
+  {?}
+
+CmdLine.tests.cpp:<line number>: PASSED:
+  REQUIRE( config.warnings == ( WarnAbout::NoAssertions | WarnAbout::UnmatchedTestSpec ) )
+with expansion:
+  3 == 3
+
+-------------------------------------------------------------------------------
 Pointers can be compared to null
 -------------------------------------------------------------------------------
 Condition.tests.cpp:<line number>
@@ -17275,6 +17321,6 @@ Misc.tests.cpp:<line number>
 Misc.tests.cpp:<line number>: PASSED:
 
 ===============================================================================
-test cases:  376 |  283 passed |  86 failed |  7 failed as expected
-assertions: 2166 | 1993 passed | 146 failed | 27 failed as expected
+test cases:  377 |  284 passed |  86 failed |  7 failed as expected
+assertions: 2171 | 1998 passed | 146 failed | 27 failed as expected
 

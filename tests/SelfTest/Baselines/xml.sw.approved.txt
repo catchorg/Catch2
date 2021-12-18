@@ -10679,6 +10679,58 @@ Nor would this
     </Section>
     <OverallResult success="true"/>
   </TestCase>
+  <TestCase name="Parsing warnings" tags="[cli][warnings]" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
+    <Section name="NoAssertions" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
+      <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
+        <Original>
+          cli.parse( { "test", "-w", "NoAssertions" } )
+        </Original>
+        <Expanded>
+          {?}
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
+        <Original>
+          config.warnings == WarnAbout::NoAssertions
+        </Original>
+        <Expanded>
+          1 == 1
+        </Expanded>
+      </Expression>
+      <OverallResults successes="2" failures="0" expectedFailures="0"/>
+    </Section>
+    <Section name="NoTests is no longer supported" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
+      <Expression success="true" type="REQUIRE_FALSE" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
+        <Original>
+          !(cli.parse( { "test", "-w", "NoTests" } ))
+        </Original>
+        <Expanded>
+          !{?}
+        </Expanded>
+      </Expression>
+      <OverallResults successes="1" failures="0" expectedFailures="0"/>
+    </Section>
+    <Section name="Combining multiple warnings" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
+      <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
+        <Original>
+          cli.parse( { "test", "--warn", "NoAssertions", "--warn", "UnmatchedTestSpec" } )
+        </Original>
+        <Expanded>
+          {?}
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
+        <Original>
+          config.warnings == ( WarnAbout::NoAssertions | WarnAbout::UnmatchedTestSpec )
+        </Original>
+        <Expanded>
+          3 == 3
+        </Expanded>
+      </Expression>
+      <OverallResults successes="2" failures="0" expectedFailures="0"/>
+    </Section>
+    <OverallResult success="true"/>
+  </TestCase>
   <TestCase name="Pointers can be compared to null" filename="tests/<exe-name>/UsageTests/Condition.tests.cpp" >
     <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/UsageTests/Condition.tests.cpp" >
       <Original>
@@ -20238,6 +20290,6 @@ loose text artifact
     </Section>
     <OverallResult success="true"/>
   </TestCase>
-  <OverallResults successes="1993" failures="146" expectedFailures="27"/>
-  <OverallResultsCases successes="283" failures="86" expectedFailures="7"/>
+  <OverallResults successes="1998" failures="146" expectedFailures="27"/>
+  <OverallResultsCases successes="284" failures="86" expectedFailures="7"/>
 </Catch2TestRun>

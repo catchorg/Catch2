@@ -1200,6 +1200,11 @@ CmdLine.tests.cpp:<line number>: passed: !(result) for: !{?}
 CmdLine.tests.cpp:<line number>: passed: result.errorMessage(), ContainsSubstring("Shard index must be a non-negative number") for: "Shard index must be a non-negative number" contains: "Shard index must be a non-negative number"
 CmdLine.tests.cpp:<line number>: passed: cli.parse({ "test", "--shard-index=0" }) for: {?}
 CmdLine.tests.cpp:<line number>: passed: config.shardIndex == 0 for: 0 == 0
+CmdLine.tests.cpp:<line number>: passed: cli.parse( { "test", "-w", "NoAssertions" } ) for: {?}
+CmdLine.tests.cpp:<line number>: passed: config.warnings == WarnAbout::NoAssertions for: 1 == 1
+CmdLine.tests.cpp:<line number>: passed: !(cli.parse( { "test", "-w", "NoTests" } )) for: !{?}
+CmdLine.tests.cpp:<line number>: passed: cli.parse( { "test", "--warn", "NoAssertions", "--warn", "UnmatchedTestSpec" } ) for: {?}
+CmdLine.tests.cpp:<line number>: passed: config.warnings == ( WarnAbout::NoAssertions | WarnAbout::UnmatchedTestSpec ) for: 3 == 3
 Condition.tests.cpp:<line number>: passed: p == 0 for: 0 == 0
 Condition.tests.cpp:<line number>: passed: p == pNULL for: 0 == 0
 Condition.tests.cpp:<line number>: passed: p != 0 for: 0x<hex digits> != 0

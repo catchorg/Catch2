@@ -25,10 +25,10 @@ namespace Catch {
 
         auto const setWarning = [&]( std::string const& warning ) {
             if ( warning == "NoAssertions" ) {
-                config.warnings = WarnAbout::NoAssertions;
+                config.warnings = static_cast<WarnAbout::What>(config.warnings | WarnAbout::NoAssertions);
                 return ParserResult::ok( ParseResultType::Matched );
             } else if ( warning == "UnmatchedTestSpec" ) {
-                config.warnings = WarnAbout::UnmatchedTestSpec;
+                config.warnings = static_cast<WarnAbout::What>(config.warnings | WarnAbout::UnmatchedTestSpec);
                 return ParserResult::ok( ParseResultType::Matched );
             }
 
@@ -217,7 +217,7 @@ namespace Catch {
             | Opt( [&]( int x ){ config.abortAfter = x; }, "no. failures" )
                 ["-x"]["--abortx"]
                 ( "abort after x failures" )
-            | Opt( setWarning, "warning name" )
+            | Opt( accept_many, setWarning, "warning name" )
                 ["-w"]["--warn"]
                 ( "enable warnings" )
             | Opt( [&]( bool flag ) { config.showDurations = flag ? ShowDurations::Always : ShowDurations::Never; }, "yes|no" )

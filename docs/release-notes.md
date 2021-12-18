@@ -174,6 +174,7 @@ new design.
 * You can have multiple tests with the same name, as long as other parts of the test identity differ (#1915, #1999, #2175)
   * Test identity includes test's name, test's tags and and test's class name if applicable.
 * Added new warning, `UnmatchedTestSpec`, to error on test specs with no matching tests
+* The `-w`, `--warn` warning flags can now be provided multiple times to enable multiple warnings
 
 
 ### Fixes

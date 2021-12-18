@@ -2322,6 +2322,16 @@ ok {test-number} - result.errorMessage(), ContainsSubstring("Shard index must be
 ok {test-number} - cli.parse({ "test", "--shard-index=0" }) for: {?}
 # Parsing sharding-related cli flags
 ok {test-number} - config.shardIndex == 0 for: 0 == 0
+# Parsing warnings
+ok {test-number} - cli.parse( { "test", "-w", "NoAssertions" } ) for: {?}
+# Parsing warnings
+ok {test-number} - config.warnings == WarnAbout::NoAssertions for: 1 == 1
+# Parsing warnings
+ok {test-number} - !(cli.parse( { "test", "-w", "NoTests" } )) for: !{?}
+# Parsing warnings
+ok {test-number} - cli.parse( { "test", "--warn", "NoAssertions", "--warn", "UnmatchedTestSpec" } ) for: {?}
+# Parsing warnings
+ok {test-number} - config.warnings == ( WarnAbout::NoAssertions | WarnAbout::UnmatchedTestSpec ) for: 3 == 3
 # Pointers can be compared to null
 ok {test-number} - p == 0 for: 0 == 0
 # Pointers can be compared to null
@@ -4334,5 +4344,5 @@ ok {test-number} - q3 == 23. for: 23.0 == 23.0
 ok {test-number} -
 # xmlentitycheck
 ok {test-number} -
-1..2166
+1..2171
 
