@@ -8719,6 +8719,156 @@ Nor would this
     </Expression>
     <OverallResult success="false"/>
   </TestCase>
+  <TestCase name="Multireporter calls reporters and listeners in correct order" tags="[multi-reporter][reporters]" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
+    <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
+      <Original>
+        records == expected
+      </Original>
+      <Expanded>
+        { "Hello", "world", "Goodbye", "world" }
+==
+{ "Hello", "world", "Goodbye", "world" }
+      </Expanded>
+    </Expression>
+    <OverallResult success="true"/>
+  </TestCase>
+  <TestCase name="Multireporter updates ReporterPreferences properly" tags="[multi-reporter][reporters]" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
+    <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
+      <Original>
+        multiReporter.getPreferences().shouldRedirectStdOut == false
+      </Original>
+      <Expanded>
+        false == false
+      </Expanded>
+    </Expression>
+    <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
+      <Original>
+        multiReporter.getPreferences().shouldReportAllAssertions == false
+      </Original>
+      <Expanded>
+        false == false
+      </Expanded>
+    </Expression>
+    <Section name="Adding listeners" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
+      <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
+        <Original>
+          multiReporter.getPreferences().shouldRedirectStdOut == true
+        </Original>
+        <Expanded>
+          true == true
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
+        <Original>
+          multiReporter.getPreferences().shouldReportAllAssertions == false
+        </Original>
+        <Expanded>
+          false == false
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
+        <Original>
+          multiReporter.getPreferences().shouldRedirectStdOut == true
+        </Original>
+        <Expanded>
+          true == true
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
+        <Original>
+          multiReporter.getPreferences().shouldReportAllAssertions == true
+        </Original>
+        <Expanded>
+          true == true
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
+        <Original>
+          multiReporter.getPreferences().shouldRedirectStdOut == true
+        </Original>
+        <Expanded>
+          true == true
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
+        <Original>
+          multiReporter.getPreferences().shouldReportAllAssertions == true
+        </Original>
+        <Expanded>
+          true == true
+        </Expanded>
+      </Expression>
+      <OverallResults successes="6" failures="0" expectedFailures="0"/>
+    </Section>
+    <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
+      <Original>
+        multiReporter.getPreferences().shouldRedirectStdOut == false
+      </Original>
+      <Expanded>
+        false == false
+      </Expanded>
+    </Expression>
+    <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
+      <Original>
+        multiReporter.getPreferences().shouldReportAllAssertions == false
+      </Original>
+      <Expanded>
+        false == false
+      </Expanded>
+    </Expression>
+    <Section name="Adding reporters" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
+      <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
+        <Original>
+          multiReporter.getPreferences().shouldRedirectStdOut == true
+        </Original>
+        <Expanded>
+          true == true
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
+        <Original>
+          multiReporter.getPreferences().shouldReportAllAssertions == false
+        </Original>
+        <Expanded>
+          false == false
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
+        <Original>
+          multiReporter.getPreferences().shouldRedirectStdOut == true
+        </Original>
+        <Expanded>
+          true == true
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
+        <Original>
+          multiReporter.getPreferences().shouldReportAllAssertions == true
+        </Original>
+        <Expanded>
+          true == true
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
+        <Original>
+          multiReporter.getPreferences().shouldRedirectStdOut == true
+        </Original>
+        <Expanded>
+          true == true
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
+        <Original>
+          multiReporter.getPreferences().shouldReportAllAssertions == true
+        </Original>
+        <Expanded>
+          true == true
+        </Expanded>
+      </Expression>
+      <OverallResults successes="6" failures="0" expectedFailures="0"/>
+    </Section>
+    <OverallResult success="true"/>
+  </TestCase>
   <TestCase name="Nested generators and captured variables" tags="[generators]" filename="tests/<exe-name>/UsageTests/Generators.tests.cpp" >
     <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/UsageTests/Generators.tests.cpp" >
       <Original>
@@ -20734,6 +20884,6 @@ loose text artifact
     </Section>
     <OverallResult success="true"/>
   </TestCase>
-  <OverallResults successes="2039" failures="143" expectedFailures="27"/>
-  <OverallResultsCases successes="290" failures="83" expectedFailures="7"/>
+  <OverallResults successes="2056" failures="143" expectedFailures="27"/>
+  <OverallResultsCases successes="292" failures="83" expectedFailures="7"/>
 </Catch2TestRun>

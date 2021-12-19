@@ -180,6 +180,10 @@
     <testCase name="Random seed generation reports unknown methods" duration="{duration}"/>
   </file>
   <file path="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp">
+    <testCase name="Multireporter calls reporters and listeners in correct order" duration="{duration}"/>
+    <testCase name="Multireporter updates ReporterPreferences properly" duration="{duration}"/>
+    <testCase name="Multireporter updates ReporterPreferences properly/Adding listeners" duration="{duration}"/>
+    <testCase name="Multireporter updates ReporterPreferences properly/Adding reporters" duration="{duration}"/>
     <testCase name="Reporter's write listings to provided stream" duration="{duration}"/>
     <testCase name="Reporter's write listings to provided stream/Automake reporter lists tags" duration="{duration}"/>
     <testCase name="Reporter's write listings to provided stream/Automake reporter lists reporters" duration="{duration}"/>

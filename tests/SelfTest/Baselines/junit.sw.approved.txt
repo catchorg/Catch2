@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuitesloose text artifact
 >
-  <testsuite name="<exe-name>" errors="17" failures="126" tests="2209" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
+  <testsuite name="<exe-name>" errors="17" failures="126" tests="2226" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
     <properties>
       <property name="random-seed" value="1"/>
       <property name="filters" value="~[!nonportable]~[!benchmark]~[approvals] *"/>
@@ -870,6 +870,10 @@ with expansion:
 Exception.tests.cpp:<line number>
       </failure>
     </testcase>
+    <testcase classname="<exe-name>.global" name="Multireporter calls reporters and listeners in correct order" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Multireporter updates ReporterPreferences properly" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Multireporter updates ReporterPreferences properly/Adding listeners" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Multireporter updates ReporterPreferences properly/Adding reporters" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Nested generators and captured variables" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Nice descriptive name" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Non-std exceptions can be translated" time="{duration}" status="run">

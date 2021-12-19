@@ -1862,6 +1862,40 @@ not ok {test-number} - explicitly
 ok {test-number} - thisThrows(), "expected exception" for: "expected exception" equals: "expected exception"
 # Mismatching exception messages failing the test
 not ok {test-number} - thisThrows(), "should fail" for: "expected exception" equals: "should fail"
+# Multireporter calls reporters and listeners in correct order
+ok {test-number} - records == expected for: { "Hello", "world", "Goodbye", "world" } == { "Hello", "world", "Goodbye", "world" }
+# Multireporter updates ReporterPreferences properly
+ok {test-number} - multiReporter.getPreferences().shouldRedirectStdOut == false for: false == false
+# Multireporter updates ReporterPreferences properly
+ok {test-number} - multiReporter.getPreferences().shouldReportAllAssertions == false for: false == false
+# Multireporter updates ReporterPreferences properly
+ok {test-number} - multiReporter.getPreferences().shouldRedirectStdOut == true for: true == true
+# Multireporter updates ReporterPreferences properly
+ok {test-number} - multiReporter.getPreferences().shouldReportAllAssertions == false for: false == false
+# Multireporter updates ReporterPreferences properly
+ok {test-number} - multiReporter.getPreferences().shouldRedirectStdOut == true for: true == true
+# Multireporter updates ReporterPreferences properly
+ok {test-number} - multiReporter.getPreferences().shouldReportAllAssertions == true for: true == true
+# Multireporter updates ReporterPreferences properly
+ok {test-number} - multiReporter.getPreferences().shouldRedirectStdOut == true for: true == true
+# Multireporter updates ReporterPreferences properly
+ok {test-number} - multiReporter.getPreferences().shouldReportAllAssertions == true for: true == true
+# Multireporter updates ReporterPreferences properly
+ok {test-number} - multiReporter.getPreferences().shouldRedirectStdOut == false for: false == false
+# Multireporter updates ReporterPreferences properly
+ok {test-number} - multiReporter.getPreferences().shouldReportAllAssertions == false for: false == false
+# Multireporter updates ReporterPreferences properly
+ok {test-number} - multiReporter.getPreferences().shouldRedirectStdOut == true for: true == true
+# Multireporter updates ReporterPreferences properly
+ok {test-number} - multiReporter.getPreferences().shouldReportAllAssertions == false for: false == false
+# Multireporter updates ReporterPreferences properly
+ok {test-number} - multiReporter.getPreferences().shouldRedirectStdOut == true for: true == true
+# Multireporter updates ReporterPreferences properly
+ok {test-number} - multiReporter.getPreferences().shouldReportAllAssertions == true for: true == true
+# Multireporter updates ReporterPreferences properly
+ok {test-number} - multiReporter.getPreferences().shouldRedirectStdOut == true for: true == true
+# Multireporter updates ReporterPreferences properly
+ok {test-number} - multiReporter.getPreferences().shouldReportAllAssertions == true for: true == true
 # Nested generators and captured variables
 ok {test-number} - values > -6 for: 3 > -6
 # Nested generators and captured variables
@@ -4412,5 +4446,5 @@ ok {test-number} - q3 == 23. for: 23.0 == 23.0
 ok {test-number} -
 # xmlentitycheck
 ok {test-number} -
-1..2209
+1..2226
 

@@ -170,6 +170,8 @@ Nor would this
 :test-result: FAIL Matchers can be negated (Not) with the ! operator - failing
 :test-result: XFAIL Mayfail test case with nested sections
 :test-result: FAIL Mismatching exception messages failing the test
+:test-result: PASS Multireporter calls reporters and listeners in correct order
+:test-result: PASS Multireporter updates ReporterPreferences properly
 :test-result: PASS Nested generators and captured variables
 :test-result: FAIL Nice descriptive name
 :test-result: FAIL Non-std exceptions can be translated

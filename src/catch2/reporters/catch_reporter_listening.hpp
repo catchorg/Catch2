@@ -30,11 +30,8 @@ namespace Catch {
 
     public:
         ListeningReporter( IConfig const* config ):
-            IStreamingReporter( config ) {
-            // We will assume that listeners will always want all assertions
-            m_preferences.shouldReportAllAssertions = true;
-        }
-
+            IStreamingReporter( config )
+        {}
 
         void addListener( IStreamingReporterPtr&& listener );
         void addReporter( IStreamingReporterPtr&& reporter );

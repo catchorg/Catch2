@@ -939,6 +939,25 @@ Condition.tests.cpp:<line number>: failed: explicitly
 Condition.tests.cpp:<line number>: failed: explicitly
 Exception.tests.cpp:<line number>: passed: thisThrows(), "expected exception" for: "expected exception" equals: "expected exception"
 Exception.tests.cpp:<line number>: failed: thisThrows(), "should fail" for: "expected exception" equals: "should fail"
+Reporters.tests.cpp:<line number>: passed: records == expected for: { "Hello", "world", "Goodbye", "world" }
+==
+{ "Hello", "world", "Goodbye", "world" }
+Reporters.tests.cpp:<line number>: passed: multiReporter.getPreferences().shouldRedirectStdOut == false for: false == false
+Reporters.tests.cpp:<line number>: passed: multiReporter.getPreferences().shouldReportAllAssertions == false for: false == false
+Reporters.tests.cpp:<line number>: passed: multiReporter.getPreferences().shouldRedirectStdOut == true for: true == true
+Reporters.tests.cpp:<line number>: passed: multiReporter.getPreferences().shouldReportAllAssertions == false for: false == false
+Reporters.tests.cpp:<line number>: passed: multiReporter.getPreferences().shouldRedirectStdOut == true for: true == true
+Reporters.tests.cpp:<line number>: passed: multiReporter.getPreferences().shouldReportAllAssertions == true for: true == true
+Reporters.tests.cpp:<line number>: passed: multiReporter.getPreferences().shouldRedirectStdOut == true for: true == true
+Reporters.tests.cpp:<line number>: passed: multiReporter.getPreferences().shouldReportAllAssertions == true for: true == true
+Reporters.tests.cpp:<line number>: passed: multiReporter.getPreferences().shouldRedirectStdOut == false for: false == false
+Reporters.tests.cpp:<line number>: passed: multiReporter.getPreferences().shouldReportAllAssertions == false for: false == false
+Reporters.tests.cpp:<line number>: passed: multiReporter.getPreferences().shouldRedirectStdOut == true for: true == true
+Reporters.tests.cpp:<line number>: passed: multiReporter.getPreferences().shouldReportAllAssertions == false for: false == false
+Reporters.tests.cpp:<line number>: passed: multiReporter.getPreferences().shouldRedirectStdOut == true for: true == true
+Reporters.tests.cpp:<line number>: passed: multiReporter.getPreferences().shouldReportAllAssertions == true for: true == true
+Reporters.tests.cpp:<line number>: passed: multiReporter.getPreferences().shouldRedirectStdOut == true for: true == true
+Reporters.tests.cpp:<line number>: passed: multiReporter.getPreferences().shouldReportAllAssertions == true for: true == true
 Generators.tests.cpp:<line number>: passed: values > -6 for: 3 > -6
 Generators.tests.cpp:<line number>: passed: values > -6 for: 4 > -6
 Generators.tests.cpp:<line number>: passed: values > -6 for: 5 > -6

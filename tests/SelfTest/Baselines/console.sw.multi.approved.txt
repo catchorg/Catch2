@@ -7198,6 +7198,125 @@ with expansion:
   "expected exception" equals: "should fail"
 
 -------------------------------------------------------------------------------
+Multireporter calls reporters and listeners in correct order
+-------------------------------------------------------------------------------
+Reporters.tests.cpp:<line number>
+...............................................................................
+
+Reporters.tests.cpp:<line number>: PASSED:
+  REQUIRE( records == expected )
+with expansion:
+  { "Hello", "world", "Goodbye", "world" }
+  ==
+  { "Hello", "world", "Goodbye", "world" }
+
+-------------------------------------------------------------------------------
+Multireporter updates ReporterPreferences properly
+-------------------------------------------------------------------------------
+Reporters.tests.cpp:<line number>
+...............................................................................
+
+Reporters.tests.cpp:<line number>: PASSED:
+  REQUIRE( multiReporter.getPreferences().shouldRedirectStdOut == false )
+with expansion:
+  false == false
+
+Reporters.tests.cpp:<line number>: PASSED:
+  REQUIRE( multiReporter.getPreferences().shouldReportAllAssertions == false )
+with expansion:
+  false == false
+
+-------------------------------------------------------------------------------
+Multireporter updates ReporterPreferences properly
+  Adding listeners
+-------------------------------------------------------------------------------
+Reporters.tests.cpp:<line number>
+...............................................................................
+
+Reporters.tests.cpp:<line number>: PASSED:
+  REQUIRE( multiReporter.getPreferences().shouldRedirectStdOut == true )
+with expansion:
+  true == true
+
+Reporters.tests.cpp:<line number>: PASSED:
+  REQUIRE( multiReporter.getPreferences().shouldReportAllAssertions == false )
+with expansion:
+  false == false
+
+Reporters.tests.cpp:<line number>: PASSED:
+  REQUIRE( multiReporter.getPreferences().shouldRedirectStdOut == true )
+with expansion:
+  true == true
+
+Reporters.tests.cpp:<line number>: PASSED:
+  REQUIRE( multiReporter.getPreferences().shouldReportAllAssertions == true )
+with expansion:
+  true == true
+
+Reporters.tests.cpp:<line number>: PASSED:
+  REQUIRE( multiReporter.getPreferences().shouldRedirectStdOut == true )
+with expansion:
+  true == true
+
+Reporters.tests.cpp:<line number>: PASSED:
+  REQUIRE( multiReporter.getPreferences().shouldReportAllAssertions == true )
+with expansion:
+  true == true
+
+-------------------------------------------------------------------------------
+Multireporter updates ReporterPreferences properly
+-------------------------------------------------------------------------------
+Reporters.tests.cpp:<line number>
+...............................................................................
+
+Reporters.tests.cpp:<line number>: PASSED:
+  REQUIRE( multiReporter.getPreferences().shouldRedirectStdOut == false )
+with expansion:
+  false == false
+
+Reporters.tests.cpp:<line number>: PASSED:
+  REQUIRE( multiReporter.getPreferences().shouldReportAllAssertions == false )
+with expansion:
+  false == false
+
+-------------------------------------------------------------------------------
+Multireporter updates ReporterPreferences properly
+  Adding reporters
+-------------------------------------------------------------------------------
+Reporters.tests.cpp:<line number>
+...............................................................................
+
+Reporters.tests.cpp:<line number>: PASSED:
+  REQUIRE( multiReporter.getPreferences().shouldRedirectStdOut == true )
+with expansion:
+  true == true
+
+Reporters.tests.cpp:<line number>: PASSED:
+  REQUIRE( multiReporter.getPreferences().shouldReportAllAssertions == false )
+with expansion:
+  false == false
+
+Reporters.tests.cpp:<line number>: PASSED:
+  REQUIRE( multiReporter.getPreferences().shouldRedirectStdOut == true )
+with expansion:
+  true == true
+
+Reporters.tests.cpp:<line number>: PASSED:
+  REQUIRE( multiReporter.getPreferences().shouldReportAllAssertions == true )
+with expansion:
+  true == true
+
+Reporters.tests.cpp:<line number>: PASSED:
+  REQUIRE( multiReporter.getPreferences().shouldRedirectStdOut == true )
+with expansion:
+  true == true
+
+Reporters.tests.cpp:<line number>: PASSED:
+  REQUIRE( multiReporter.getPreferences().shouldReportAllAssertions == true )
+with expansion:
+  true == true
+
+-------------------------------------------------------------------------------
 Nested generators and captured variables
 -------------------------------------------------------------------------------
 Generators.tests.cpp:<line number>
@@ -17645,6 +17764,6 @@ Misc.tests.cpp:<line number>
 Misc.tests.cpp:<line number>: PASSED:
 
 ===============================================================================
-test cases:  380 |  290 passed |  83 failed |  7 failed as expected
-assertions: 2209 | 2039 passed | 143 failed | 27 failed as expected
+test cases:  382 |  292 passed |  83 failed |  7 failed as expected
+assertions: 2226 | 2056 passed | 143 failed | 27 failed as expected
 
