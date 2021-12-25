@@ -8,6 +8,7 @@
 #ifndef CATCH_INTERFACES_REPORTER_REGISTRY_HPP_INCLUDED
 #define CATCH_INTERFACES_REPORTER_REGISTRY_HPP_INCLUDED
 
+#include <catch2/internal/catch_case_insensitive_comparisons.hpp>
 #include <catch2/internal/catch_unique_ptr.hpp>
 
 #include <string>
@@ -24,11 +25,7 @@ namespace Catch {
     using IReporterFactoryPtr = Detail::unique_ptr<IReporterFactory>;
 
     struct IReporterRegistry {
-        struct CaseInsensitiveCmp {
-            bool operator()(std::string const& lhs, std::string const& rhs) const;
-        };
-
-        using FactoryMap = std::map<std::string, IReporterFactoryPtr, CaseInsensitiveCmp>;
+        using FactoryMap = std::map<std::string, IReporterFactoryPtr, Detail::CaseInsensitiveLess>;
         using Listeners = std::vector<IReporterFactoryPtr>;
 
         virtual ~IReporterRegistry(); // = default

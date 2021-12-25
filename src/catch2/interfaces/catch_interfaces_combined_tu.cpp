@@ -76,21 +76,9 @@ namespace Catch {
 
 
 #include <catch2/interfaces/catch_interfaces_reporter_registry.hpp>
-#include <catch2/internal/catch_string_manip.hpp>
-
-#include <algorithm>
 
 namespace Catch {
-
     IReporterRegistry::~IReporterRegistry() = default;
-    bool IReporterRegistry::CaseInsensitiveCmp::operator()(std::string const& lhs, std::string const& rhs) const {
-        return std::lexicographical_compare(lhs.begin(), lhs.end(),
-                          rhs.begin(), rhs.end(),
-                          [](char l, char r) {
-                              return toLower(l) < toLower(r);
-                          });
-    }
-
 }
 
 

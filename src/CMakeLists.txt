@@ -36,6 +36,7 @@ set(INTERNAL_HEADERS
     ${SOURCES_DIR}/generators/catch_generators_all.hpp
     ${SOURCES_DIR}/interfaces/catch_interfaces_all.hpp
     ${SOURCES_DIR}/matchers/internal/catch_matchers_impl.hpp
+    ${SOURCES_DIR}/internal/catch_case_insensitive_comparisons.hpp
     ${SOURCES_DIR}/internal/catch_console_width.hpp
     ${SOURCES_DIR}/internal/catch_container_nonmembers.hpp
     ${SOURCES_DIR}/internal/catch_noncopyable.hpp
@@ -157,6 +158,7 @@ set(IMPL_SOURCES
     ${SOURCES_DIR}/internal/catch_commandline.cpp
     ${SOURCES_DIR}/internal/catch_source_line_info.cpp
     ${SOURCES_DIR}/catch_config.cpp
+    ${SOURCES_DIR}/internal/catch_case_insensitive_comparisons.cpp
     ${SOURCES_DIR}/internal/catch_console_colour.cpp
     ${SOURCES_DIR}/internal/catch_context.cpp
     ${SOURCES_DIR}/internal/catch_debug_console.cpp
