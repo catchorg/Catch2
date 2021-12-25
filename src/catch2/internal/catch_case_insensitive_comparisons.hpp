@@ -8,14 +8,16 @@
 #ifndef CATCH_CASE_INSENSITIVE_COMPARISONS_HPP_INCLUDED
 #define CATCH_CASE_INSENSITIVE_COMPARISONS_HPP_INCLUDED
 
+#include <catch2/internal/catch_stringref.hpp>
+
 #include <string>
 
 namespace Catch {
     namespace Detail {
         //! Provides case-insensitive `op<` semantics when called
         struct CaseInsensitiveLess {
-            bool operator()( std::string const& lhs,
-                             std::string const& rhs ) const;
+            bool operator()( StringRef lhs,
+                             StringRef rhs ) const;
         };
 
     } // namespace Detail
