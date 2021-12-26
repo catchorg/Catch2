@@ -89,6 +89,12 @@
     <testCase name="Process can be configured on command line/Benchmark options/warmup-time" duration="{duration}"/>
     <testCase name="Test with special, characters &quot;in name" duration="{duration}"/>
   </file>
+  <file path="tests/<exe-name>/IntrospectiveTests/Details.tests.cpp">
+    <testCase name="CaseInsensitiveEqualsTo is case insensitive/Degenerate cases" duration="{duration}"/>
+    <testCase name="CaseInsensitiveEqualsTo is case insensitive/Plain comparisons" duration="{duration}"/>
+    <testCase name="CaseInsensitiveLess is case insensitive/Degenerate cases" duration="{duration}"/>
+    <testCase name="CaseInsensitiveLess is case insensitive/Plain comparisons" duration="{duration}"/>
+  </file>
   <file path="tests/<exe-name>/IntrospectiveTests/FloatingPoint.tests.cpp">
     <testCase name="convertToBits" duration="{duration}"/>
   </file>

@@ -666,6 +666,36 @@ ok {test-number} - with 11 messages: '("comma, in string", "escaped, \", ") := "
 ok {test-number} - true with 1 message: 'i := 2'
 # Capture and info messages
 ok {test-number} - true with 1 message: '3'
+# CaseInsensitiveEqualsTo is case insensitive
+ok {test-number} - eq( "", "" ) for: true
+# CaseInsensitiveEqualsTo is case insensitive
+ok {test-number} - !(eq( "", "a" )) for: !false
+# CaseInsensitiveEqualsTo is case insensitive
+ok {test-number} - eq( "a", "a" ) for: true
+# CaseInsensitiveEqualsTo is case insensitive
+ok {test-number} - eq( "a", "A" ) for: true
+# CaseInsensitiveEqualsTo is case insensitive
+ok {test-number} - eq( "A", "a" ) for: true
+# CaseInsensitiveEqualsTo is case insensitive
+ok {test-number} - eq( "A", "A" ) for: true
+# CaseInsensitiveEqualsTo is case insensitive
+ok {test-number} - !(eq( "a", "b" )) for: !false
+# CaseInsensitiveEqualsTo is case insensitive
+ok {test-number} - !(eq( "a", "B" )) for: !false
+# CaseInsensitiveLess is case insensitive
+ok {test-number} - lt( "", "a" ) for: true
+# CaseInsensitiveLess is case insensitive
+ok {test-number} - !(lt( "a", "a" )) for: !false
+# CaseInsensitiveLess is case insensitive
+ok {test-number} - !(lt( "", "" )) for: !false
+# CaseInsensitiveLess is case insensitive
+ok {test-number} - lt( "a", "b" ) for: true
+# CaseInsensitiveLess is case insensitive
+ok {test-number} - lt( "a", "B" ) for: true
+# CaseInsensitiveLess is case insensitive
+ok {test-number} - lt( "A", "b" ) for: true
+# CaseInsensitiveLess is case insensitive
+ok {test-number} - lt( "A", "B" ) for: true
 # Character pretty printing
 ok {test-number} - tab == '\t' for: '\t' == '\t'
 # Character pretty printing
@@ -4344,5 +4374,5 @@ ok {test-number} - q3 == 23. for: 23.0 == 23.0
 ok {test-number} -
 # xmlentitycheck
 ok {test-number} -
-1..2171
+1..2186
 

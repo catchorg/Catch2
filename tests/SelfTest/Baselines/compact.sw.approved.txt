@@ -334,6 +334,21 @@ Message.tests.cpp:<line number>: passed: with 7 messages: 'std::vector<int>{1, 2
 Message.tests.cpp:<line number>: passed: with 11 messages: '("comma, in string", "escaped, \", ") := "escaped, ", "' and '"single quote in string,'," := "single quote in string,',"' and '"some escapes, \\,\\\\" := "some escapes, \,\\"' and '"some, ), unmatched, } prenheses {[<" := "some, ), unmatched, } prenheses {[<"' and ''"' := '"'' and ''\'' := '''' and '',' := ','' and ''}' := '}'' and '')' := ')'' and ''(' := '('' and ''{' := '{''
 ToStringGeneral.tests.cpp:<line number>: passed: true with 1 message: 'i := 2'
 ToStringGeneral.tests.cpp:<line number>: passed: true with 1 message: '3'
+Details.tests.cpp:<line number>: passed: eq( "", "" ) for: true
+Details.tests.cpp:<line number>: passed: !(eq( "", "a" )) for: !false
+Details.tests.cpp:<line number>: passed: eq( "a", "a" ) for: true
+Details.tests.cpp:<line number>: passed: eq( "a", "A" ) for: true
+Details.tests.cpp:<line number>: passed: eq( "A", "a" ) for: true
+Details.tests.cpp:<line number>: passed: eq( "A", "A" ) for: true
+Details.tests.cpp:<line number>: passed: !(eq( "a", "b" )) for: !false
+Details.tests.cpp:<line number>: passed: !(eq( "a", "B" )) for: !false
+Details.tests.cpp:<line number>: passed: lt( "", "a" ) for: true
+Details.tests.cpp:<line number>: passed: !(lt( "a", "a" )) for: !false
+Details.tests.cpp:<line number>: passed: !(lt( "", "" )) for: !false
+Details.tests.cpp:<line number>: passed: lt( "a", "b" ) for: true
+Details.tests.cpp:<line number>: passed: lt( "a", "B" ) for: true
+Details.tests.cpp:<line number>: passed: lt( "A", "b" ) for: true
+Details.tests.cpp:<line number>: passed: lt( "A", "B" ) for: true
 ToStringGeneral.tests.cpp:<line number>: passed: tab == '\t' for: '\t' == '\t'
 ToStringGeneral.tests.cpp:<line number>: passed: newline == '\n' for: '\n' == '\n'
 ToStringGeneral.tests.cpp:<line number>: passed: carr_return == '\r' for: '\r' == '\r'

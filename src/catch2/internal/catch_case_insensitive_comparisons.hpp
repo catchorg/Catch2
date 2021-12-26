@@ -20,6 +20,12 @@ namespace Catch {
                              StringRef rhs ) const;
         };
 
+        //! Provides case-insensitive `op==` semantics when called
+        struct CaseInsensitiveEqualTo {
+            bool operator()( StringRef lhs,
+                             StringRef rhs ) const;
+        };
+
     } // namespace Detail
 } // namespace Catch
 

@@ -2802,6 +2802,109 @@ with message:
   3
 
 -------------------------------------------------------------------------------
+CaseInsensitiveEqualsTo is case insensitive
+  Degenerate cases
+-------------------------------------------------------------------------------
+Details.tests.cpp:<line number>
+...............................................................................
+
+Details.tests.cpp:<line number>: PASSED:
+  REQUIRE( eq( "", "" ) )
+with expansion:
+  true
+
+Details.tests.cpp:<line number>: PASSED:
+  REQUIRE_FALSE( eq( "", "a" ) )
+with expansion:
+  !false
+
+-------------------------------------------------------------------------------
+CaseInsensitiveEqualsTo is case insensitive
+  Plain comparisons
+-------------------------------------------------------------------------------
+Details.tests.cpp:<line number>
+...............................................................................
+
+Details.tests.cpp:<line number>: PASSED:
+  REQUIRE( eq( "a", "a" ) )
+with expansion:
+  true
+
+Details.tests.cpp:<line number>: PASSED:
+  REQUIRE( eq( "a", "A" ) )
+with expansion:
+  true
+
+Details.tests.cpp:<line number>: PASSED:
+  REQUIRE( eq( "A", "a" ) )
+with expansion:
+  true
+
+Details.tests.cpp:<line number>: PASSED:
+  REQUIRE( eq( "A", "A" ) )
+with expansion:
+  true
+
+Details.tests.cpp:<line number>: PASSED:
+  REQUIRE_FALSE( eq( "a", "b" ) )
+with expansion:
+  !false
+
+Details.tests.cpp:<line number>: PASSED:
+  REQUIRE_FALSE( eq( "a", "B" ) )
+with expansion:
+  !false
+
+-------------------------------------------------------------------------------
+CaseInsensitiveLess is case insensitive
+  Degenerate cases
+-------------------------------------------------------------------------------
+Details.tests.cpp:<line number>
+...............................................................................
+
+Details.tests.cpp:<line number>: PASSED:
+  REQUIRE( lt( "", "a" ) )
+with expansion:
+  true
+
+Details.tests.cpp:<line number>: PASSED:
+  REQUIRE_FALSE( lt( "a", "a" ) )
+with expansion:
+  !false
+
+Details.tests.cpp:<line number>: PASSED:
+  REQUIRE_FALSE( lt( "", "" ) )
+with expansion:
+  !false
+
+-------------------------------------------------------------------------------
+CaseInsensitiveLess is case insensitive
+  Plain comparisons
+-------------------------------------------------------------------------------
+Details.tests.cpp:<line number>
+...............................................................................
+
+Details.tests.cpp:<line number>: PASSED:
+  REQUIRE( lt( "a", "b" ) )
+with expansion:
+  true
+
+Details.tests.cpp:<line number>: PASSED:
+  REQUIRE( lt( "a", "B" ) )
+with expansion:
+  true
+
+Details.tests.cpp:<line number>: PASSED:
+  REQUIRE( lt( "A", "b" ) )
+with expansion:
+  true
+
+Details.tests.cpp:<line number>: PASSED:
+  REQUIRE( lt( "A", "B" ) )
+with expansion:
+  true
+
+-------------------------------------------------------------------------------
 Character pretty printing
   Specifically escaped
 -------------------------------------------------------------------------------
@@ -17321,6 +17424,6 @@ Misc.tests.cpp:<line number>
 Misc.tests.cpp:<line number>: PASSED:
 
 ===============================================================================
-test cases:  377 |  284 passed |  86 failed |  7 failed as expected
-assertions: 2171 | 1998 passed | 146 failed | 27 failed as expected
+test cases:  379 |  286 passed |  86 failed |  7 failed as expected
+assertions: 2186 | 2013 passed | 146 failed | 27 failed as expected
 

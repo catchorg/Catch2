@@ -22,5 +22,14 @@ namespace Catch {
                 []( char l, char r ) { return toLower( l ) < toLower( r ); } );
         }
 
+        bool
+        CaseInsensitiveEqualTo::operator()( StringRef lhs,
+                                            StringRef rhs ) const {
+            return std::equal(
+                lhs.begin(), lhs.end(),
+                rhs.begin(), rhs.end(),
+                []( char l, char r ) { return toLower( l ) == toLower( r ); } );
+        }
+
     } // namespace Detail
 } // namespace Catch

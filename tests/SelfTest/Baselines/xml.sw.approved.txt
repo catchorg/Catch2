@@ -3013,6 +3013,144 @@ Nor would this
     </Section>
     <OverallResult success="true"/>
   </TestCase>
+  <TestCase name="CaseInsensitiveEqualsTo is case insensitive" tags="[comparisons][string-case]" filename="tests/<exe-name>/IntrospectiveTests/Details.tests.cpp" >
+    <Section name="Degenerate cases" filename="tests/<exe-name>/IntrospectiveTests/Details.tests.cpp" >
+      <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/Details.tests.cpp" >
+        <Original>
+          eq( "", "" )
+        </Original>
+        <Expanded>
+          true
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE_FALSE" filename="tests/<exe-name>/IntrospectiveTests/Details.tests.cpp" >
+        <Original>
+          !(eq( "", "a" ))
+        </Original>
+        <Expanded>
+          !false
+        </Expanded>
+      </Expression>
+      <OverallResults successes="2" failures="0" expectedFailures="0"/>
+    </Section>
+    <Section name="Plain comparisons" filename="tests/<exe-name>/IntrospectiveTests/Details.tests.cpp" >
+      <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/Details.tests.cpp" >
+        <Original>
+          eq( "a", "a" )
+        </Original>
+        <Expanded>
+          true
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/Details.tests.cpp" >
+        <Original>
+          eq( "a", "A" )
+        </Original>
+        <Expanded>
+          true
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/Details.tests.cpp" >
+        <Original>
+          eq( "A", "a" )
+        </Original>
+        <Expanded>
+          true
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/Details.tests.cpp" >
+        <Original>
+          eq( "A", "A" )
+        </Original>
+        <Expanded>
+          true
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE_FALSE" filename="tests/<exe-name>/IntrospectiveTests/Details.tests.cpp" >
+        <Original>
+          !(eq( "a", "b" ))
+        </Original>
+        <Expanded>
+          !false
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE_FALSE" filename="tests/<exe-name>/IntrospectiveTests/Details.tests.cpp" >
+        <Original>
+          !(eq( "a", "B" ))
+        </Original>
+        <Expanded>
+          !false
+        </Expanded>
+      </Expression>
+      <OverallResults successes="6" failures="0" expectedFailures="0"/>
+    </Section>
+    <OverallResult success="true"/>
+  </TestCase>
+  <TestCase name="CaseInsensitiveLess is case insensitive" tags="[comparisons][string-case]" filename="tests/<exe-name>/IntrospectiveTests/Details.tests.cpp" >
+    <Section name="Degenerate cases" filename="tests/<exe-name>/IntrospectiveTests/Details.tests.cpp" >
+      <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/Details.tests.cpp" >
+        <Original>
+          lt( "", "a" )
+        </Original>
+        <Expanded>
+          true
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE_FALSE" filename="tests/<exe-name>/IntrospectiveTests/Details.tests.cpp" >
+        <Original>
+          !(lt( "a", "a" ))
+        </Original>
+        <Expanded>
+          !false
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE_FALSE" filename="tests/<exe-name>/IntrospectiveTests/Details.tests.cpp" >
+        <Original>
+          !(lt( "", "" ))
+        </Original>
+        <Expanded>
+          !false
+        </Expanded>
+      </Expression>
+      <OverallResults successes="3" failures="0" expectedFailures="0"/>
+    </Section>
+    <Section name="Plain comparisons" filename="tests/<exe-name>/IntrospectiveTests/Details.tests.cpp" >
+      <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/Details.tests.cpp" >
+        <Original>
+          lt( "a", "b" )
+        </Original>
+        <Expanded>
+          true
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/Details.tests.cpp" >
+        <Original>
+          lt( "a", "B" )
+        </Original>
+        <Expanded>
+          true
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/Details.tests.cpp" >
+        <Original>
+          lt( "A", "b" )
+        </Original>
+        <Expanded>
+          true
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/Details.tests.cpp" >
+        <Original>
+          lt( "A", "B" )
+        </Original>
+        <Expanded>
+          true
+        </Expanded>
+      </Expression>
+      <OverallResults successes="4" failures="0" expectedFailures="0"/>
+    </Section>
+    <OverallResult success="true"/>
+  </TestCase>
   <TestCase name="Character pretty printing" filename="tests/<exe-name>/UsageTests/ToStringGeneral.tests.cpp" >
     <Section name="Specifically escaped" filename="tests/<exe-name>/UsageTests/ToStringGeneral.tests.cpp" >
       <Expression success="true" type="CHECK" filename="tests/<exe-name>/UsageTests/ToStringGeneral.tests.cpp" >
@@ -20290,6 +20428,6 @@ loose text artifact
     </Section>
     <OverallResult success="true"/>
   </TestCase>
-  <OverallResults successes="1998" failures="146" expectedFailures="27"/>
-  <OverallResultsCases successes="284" failures="86" expectedFailures="7"/>
+  <OverallResults successes="2013" failures="146" expectedFailures="27"/>
+  <OverallResultsCases successes="286" failures="86" expectedFailures="7"/>
 </Catch2TestRun>
