@@ -22,7 +22,7 @@ std::string ws(int const level) {
 }
 
 std::ostream& operator<<(std::ostream& out, Catch::Tag t) {
-    return out << "original: " << t.original << "lower cased: " << t.lowerCased;
+    return out << "original: " << t.original;
 }
 
 template< typename T >

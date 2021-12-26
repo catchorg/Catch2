@@ -4119,7 +4119,7 @@ not ok {test-number} - false with 1 message: '3'
 # sends information to INFO
 not ok {test-number} - false with 2 messages: 'hi' and 'i := 7'
 # shortened hide tags are split apart
-ok {test-number} - tags, VectorContains("magic-tag"_catch_sr) && VectorContains("."_catch_sr) for: { ., magic-tag } ( Contains: magic-tag and Contains: . )
+ok {test-number} - testcase.tags, VectorContains( Tag( "magic-tag" ) ) && VectorContains( Tag( "."_catch_sr ) ) for: { {?}, {?} } ( Contains: {?} and Contains: {?} )
 # splitString
 ok {test-number} - splitStringRef("", ','), Equals(std::vector<StringRef>()) for: {  } Equals: {  }
 # splitString

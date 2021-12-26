@@ -2281,7 +2281,7 @@ InternalBenchmark.tests.cpp:<line number>: passed: Timing.result == Timing.itera
 InternalBenchmark.tests.cpp:<line number>: passed: Timing.iterations >= time.count() for: 128 >= 100
 Misc.tests.cpp:<line number>: failed: false with 1 message: '3'
 Message.tests.cpp:<line number>: failed: false with 2 messages: 'hi' and 'i := 7'
-Tag.tests.cpp:<line number>: passed: tags, VectorContains("magic-tag"_catch_sr) && VectorContains("."_catch_sr) for: { ., magic-tag } ( Contains: magic-tag and Contains: . )
+Tag.tests.cpp:<line number>: passed: testcase.tags, VectorContains( Tag( "magic-tag" ) ) && VectorContains( Tag( "."_catch_sr ) ) for: { {?}, {?} } ( Contains: {?} and Contains: {?} )
 StringManip.tests.cpp:<line number>: passed: splitStringRef("", ','), Equals(std::vector<StringRef>()) for: {  } Equals: {  }
 StringManip.tests.cpp:<line number>: passed: splitStringRef("abc", ','), Equals(std::vector<StringRef>{"abc"}) for: { abc } Equals: { abc }
 StringManip.tests.cpp:<line number>: passed: splitStringRef("abc,def", ','), Equals(std::vector<StringRef>{"abc", "def"}) for: { abc, def } Equals: { abc, def }

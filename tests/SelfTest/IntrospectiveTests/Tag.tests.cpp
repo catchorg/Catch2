@@ -44,15 +44,12 @@ constexpr Catch::SourceLineInfo dummySourceLineInfo = CATCH_INTERNAL_LINEINFO;
 
 TEST_CASE("shortened hide tags are split apart", "[tags]") {
     using Catch::StringRef;
+    using Catch::Tag;
     using Catch::Matchers::VectorContains;
-    Catch::TestCaseInfo testcase("", {"fake test name", "[.magic-tag]"}, dummySourceLineInfo);
 
-    // Extract parsed tags into strings
-    std::vector<StringRef> tags;
-    for (auto const& tag : testcase.tags) {
-        tags.push_back(tag.lowerCased);
-    }
-    REQUIRE_THAT(tags, VectorContains("magic-tag"_catch_sr) && VectorContains("."_catch_sr));
+    Catch::TestCaseInfo testcase("", {"fake test name", "[.magic-tag]"}, dummySourceLineInfo);
+    REQUIRE_THAT( testcase.tags, VectorContains( Tag( "magic-tag" ) )
+                              && VectorContains( Tag( "."_catch_sr ) ) );
 }
 
 TEST_CASE("tags with dots in later positions are not parsed as hidden", "[tags]") {

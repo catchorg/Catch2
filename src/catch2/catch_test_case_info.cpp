@@ -10,6 +10,7 @@
 #include <catch2/catch_test_spec.hpp>
 #include <catch2/interfaces/catch_interfaces_testcase.hpp>
 #include <catch2/internal/catch_string_manip.hpp>
+#include <catch2/internal/catch_case_insensitive_comparisons.hpp>
 
 #include <cassert>
 #include <cctype>
@@ -103,8 +104,13 @@ namespace Catch {
         }
     } // end unnamed namespace
 
-    bool operator<( Tag const& lhs, Tag const& rhs ) {
-        return lhs.original < rhs.original;
+    bool operator<(  Tag const& lhs, Tag const& rhs ) {
+        Detail::CaseInsensitiveLess cmp;
+        return cmp( lhs.original, rhs.original );
+    }
+    bool operator==( Tag const& lhs, Tag const& rhs ) {
+        Detail::CaseInsensitiveEqualTo cmp;
+        return cmp( lhs.original, rhs.original );
     }
 
     Detail::unique_ptr<TestCaseInfo>
@@ -126,7 +132,6 @@ namespace Catch {
         // (including optional hidden tag and filename tag)
         auto requiredSize = originalTags.size() + sizeOfExtraTags(_lineInfo.file);
         backingTags.reserve(requiredSize);
-        backingLCaseTags.reserve(requiredSize);
 
         // We cannot copy the tags directly, as we need to normalize
         // some tags, so that [.foo] is copied as [.][foo].
@@ -172,9 +177,8 @@ namespace Catch {
         }
 
         // Sort and prepare tags
-        toLowerInPlace(backingLCaseTags);
-        std::sort(begin(tags), end(tags), [](Tag lhs, Tag rhs) { return lhs.lowerCased < rhs.lowerCased; });
-        tags.erase(std::unique(begin(tags), end(tags), [](Tag lhs, Tag rhs) {return lhs.lowerCased == rhs.lowerCased; }),
+        std::sort(begin(tags), end(tags));
+        tags.erase(std::unique(begin(tags), end(tags)),
                    end(tags));
     }
 
@@ -195,9 +199,6 @@ namespace Catch {
         std::string combined("#");
         combined += extractFilenamePart(lineInfo.file);
         internalAppendTag(combined);
-        // TBD: Running this over all tags again is inefficient, but
-        //      simple enough. In practice, the overhead is small enough.
-        toLowerInPlace(backingLCaseTags);
     }
 
     std::string TestCaseInfo::tagsAsString() const {
@@ -223,13 +224,7 @@ namespace Catch {
         backingTags += tagStr;
         const auto backingEnd = backingTags.size();
         backingTags += ']';
-        backingLCaseTags += '[';
-        // We append the tag to the lower-case backing storage as-is,
-        // because we will perform the lower casing later, in bulk
-        backingLCaseTags += tagStr;
-        backingLCaseTags += ']';
-        tags.emplace_back(StringRef(backingTags.c_str() + backingStart, backingEnd - backingStart),
-                          StringRef(backingLCaseTags.c_str() + backingStart, backingEnd - backingStart));
+        tags.emplace_back(StringRef(backingTags.c_str() + backingStart, backingEnd - backingStart));
     }
 
     bool operator<( TestCaseInfo const& lhs, TestCaseInfo const& rhs ) {

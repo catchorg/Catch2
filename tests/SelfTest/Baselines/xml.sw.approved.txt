@@ -19158,10 +19158,10 @@ loose text artifact
   <TestCase name="shortened hide tags are split apart" tags="[tags]" filename="tests/<exe-name>/IntrospectiveTests/Tag.tests.cpp" >
     <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/IntrospectiveTests/Tag.tests.cpp" >
       <Original>
-        tags, VectorContains("magic-tag"_catch_sr) &amp;&amp; VectorContains("."_catch_sr)
+        testcase.tags, VectorContains( Tag( "magic-tag" ) ) &amp;&amp; VectorContains( Tag( "."_catch_sr ) )
       </Original>
       <Expanded>
-        { ., magic-tag } ( Contains: magic-tag and Contains: . )
+        { {?}, {?} } ( Contains: {?} and Contains: {?} )
       </Expanded>
     </Expression>
     <OverallResult success="true"/>

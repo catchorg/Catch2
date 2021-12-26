@@ -13,6 +13,7 @@
 #include <catch2/interfaces/catch_interfaces_testcase.hpp>
 #include <catch2/interfaces/catch_interfaces_reporter_factory.hpp>
 #include <catch2/internal/catch_move_and_forward.hpp>
+#include <catch2/internal/catch_case_insensitive_comparisons.hpp>
 
 #include <catch2/internal/catch_context.hpp>
 #include <catch2/catch_config.hpp>
@@ -32,12 +33,12 @@ namespace Catch {
             auto const& testSpec = config.testSpec();
             std::vector<TestCaseHandle> matchedTestCases = filterTests(getAllTestCasesSorted(config), testSpec, config);
 
-            std::map<StringRef, TagInfo> tagCounts;
+            std::map<StringRef, TagInfo, Detail::CaseInsensitiveLess> tagCounts;
             for (auto const& testCase : matchedTestCases) {
                 for (auto const& tagName : testCase.getTestCaseInfo().tags) {
-                    auto it = tagCounts.find(tagName.lowerCased);
+                    auto it = tagCounts.find(tagName.original);
                     if (it == tagCounts.end())
-                        it = tagCounts.insert(std::make_pair(tagName.lowerCased, TagInfo())).first;
+                        it = tagCounts.insert(std::make_pair(tagName.original, TagInfo())).first;
                     it->second.add(tagName.original);
                 }
             }

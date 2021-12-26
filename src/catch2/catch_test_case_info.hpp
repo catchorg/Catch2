@@ -25,13 +25,21 @@
 
 namespace Catch {
 
+    /**
+     * A **view** of a tag string that provides case insensitive comparisons
+     *
+     * Note that in Catch2 internals, the square brackets around tags are
+     * not a part of tag's representation, so e.g. "[cool-tag]" is represented
+     * as "cool-tag" internally.
+     */
     struct Tag {
-        Tag(StringRef original_, StringRef lowerCased_):
-            original(original_), lowerCased(lowerCased_)
+        constexpr Tag(StringRef original_):
+            original(original_)
         {}
-        StringRef original, lowerCased;
+        StringRef original;
 
-        friend bool operator<( Tag const& lhs, Tag const& rhs );
+        friend bool operator< ( Tag const& lhs, Tag const& rhs );
+        friend bool operator==( Tag const& lhs, Tag const& rhs );
     };
 
     struct ITestInvoker;
@@ -79,7 +87,7 @@ namespace Catch {
         std::string name;
         StringRef className;
     private:
-        std::string backingTags, backingLCaseTags;
+        std::string backingTags;
         // Internally we copy tags to the backing storage and then add
         // refs to this storage to the tags vector.
         void internalAppendTag(StringRef tagString);
