@@ -3894,6 +3894,15 @@ with expansion:
   "{** unexpected enum value **}"
 
 -------------------------------------------------------------------------------
+Empty tag is not allowed
+-------------------------------------------------------------------------------
+Tag.tests.cpp:<line number>
+...............................................................................
+
+Tag.tests.cpp:<line number>: PASSED:
+  REQUIRE_THROWS( Catch::TestCaseInfo( "", { "fake test name", "[]" }, dummySourceLineInfo ) )
+
+-------------------------------------------------------------------------------
 EndsWith string matcher
 -------------------------------------------------------------------------------
 Matchers.tests.cpp:<line number>
@@ -8783,6 +8792,27 @@ with expansion:
   true
 
 -------------------------------------------------------------------------------
+Parsed tags are matched case insensitive
+-------------------------------------------------------------------------------
+TestSpecParser.tests.cpp:<line number>
+...............................................................................
+
+TestSpecParser.tests.cpp:<line number>: PASSED:
+  REQUIRE( spec.hasFilters() )
+with expansion:
+  true
+
+TestSpecParser.tests.cpp:<line number>: PASSED:
+  REQUIRE( spec.getInvalidSpecs().empty() )
+with expansion:
+  true
+
+TestSpecParser.tests.cpp:<line number>: PASSED:
+  REQUIRE( spec.matches( testCase ) )
+with expansion:
+  true
+
+-------------------------------------------------------------------------------
 Parsing sharding-related cli flags
   shard-count
 -------------------------------------------------------------------------------
@@ -8886,6 +8916,60 @@ CmdLine.tests.cpp:<line number>: PASSED:
   REQUIRE( config.shardIndex == 0 )
 with expansion:
   0 == 0
+
+-------------------------------------------------------------------------------
+Parsing tags with non-alphabetical characters is pass-through
+-------------------------------------------------------------------------------
+TestSpecParser.tests.cpp:<line number>
+...............................................................................
+
+TestSpecParser.tests.cpp:<line number>: PASSED:
+  REQUIRE( spec.hasFilters() )
+with expansion:
+  true
+with message:
+  tagString := "[tag with spaces]"
+
+TestSpecParser.tests.cpp:<line number>: PASSED:
+  REQUIRE( spec.getInvalidSpecs().empty() )
+with expansion:
+  true
+with message:
+  tagString := "[tag with spaces]"
+
+TestSpecParser.tests.cpp:<line number>: PASSED:
+  REQUIRE( spec.matches( testCase ) )
+with expansion:
+  true
+with message:
+  tagString := "[tag with spaces]"
+
+-------------------------------------------------------------------------------
+Parsing tags with non-alphabetical characters is pass-through
+-------------------------------------------------------------------------------
+TestSpecParser.tests.cpp:<line number>
+...............................................................................
+
+TestSpecParser.tests.cpp:<line number>: PASSED:
+  REQUIRE( spec.hasFilters() )
+with expansion:
+  true
+with message:
+  tagString := "[I said "good day" sir!]"
+
+TestSpecParser.tests.cpp:<line number>: PASSED:
+  REQUIRE( spec.getInvalidSpecs().empty() )
+with expansion:
+  true
+with message:
+  tagString := "[I said "good day" sir!]"
+
+TestSpecParser.tests.cpp:<line number>: PASSED:
+  REQUIRE( spec.matches( testCase ) )
+with expansion:
+  true
+with message:
+  tagString := "[I said "good day" sir!]"
 
 -------------------------------------------------------------------------------
 Parsing warnings
@@ -11498,6 +11582,22 @@ Tag.tests.cpp:<line number>: PASSED:
   CHECK_THROWS( registry.add( "[@no square bracket at end", "", Catch::SourceLineInfo( "file", 3 ) ) )
 
 -------------------------------------------------------------------------------
+Tags with spaces and non-alphanumerical characters are accepted
+-------------------------------------------------------------------------------
+Tag.tests.cpp:<line number>
+...............................................................................
+
+Tag.tests.cpp:<line number>: PASSED:
+  REQUIRE( testCase.tags.size() == 2 )
+with expansion:
+  2 == 2
+
+Tag.tests.cpp:<line number>: PASSED:
+  REQUIRE_THAT( testCase.tags, VectorContains( Tag( "tag with spaces" ) ) && VectorContains( Tag( "I said \"good day\" sir!"_catch_sr ) ) )
+with expansion:
+  { {?}, {?} } ( Contains: {?} and Contains: {?} )
+
+-------------------------------------------------------------------------------
 Template test case method with test types specified inside std::tuple - MyTypes
 - 0
 -------------------------------------------------------------------------------
@@ -12773,6 +12873,22 @@ Misc.tests.cpp:<line number>: PASSED:
   REQUIRE( v.capacity() >= V )
 with expansion:
   15 >= 15
+
+-------------------------------------------------------------------------------
+Test case with identical tags keeps just one
+-------------------------------------------------------------------------------
+Tag.tests.cpp:<line number>
+...............................................................................
+
+Tag.tests.cpp:<line number>: PASSED:
+  REQUIRE( testCase.tags.size() == 1 )
+with expansion:
+  1 == 1
+
+Tag.tests.cpp:<line number>: PASSED:
+  REQUIRE( testCase.tags[0] == Tag( "tag1" ) )
+with expansion:
+  {?} == {?}
 
 -------------------------------------------------------------------------------
 Test case with one argument
@@ -17424,6 +17540,6 @@ Misc.tests.cpp:<line number>
 Misc.tests.cpp:<line number>: PASSED:
 
 ===============================================================================
-test cases:  379 |  286 passed |  86 failed |  7 failed as expected
-assertions: 2186 | 2013 passed | 146 failed | 27 failed as expected
+test cases:  384 |  291 passed |  86 failed |  7 failed as expected
+assertions: 2200 | 2027 passed | 146 failed | 27 failed as expected
 

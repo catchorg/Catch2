@@ -128,6 +128,7 @@ Nor would this
 :test-result: FAIL Custom std-exceptions can be custom translated
 :test-result: PASS Default scale is invisible to comparison
 :test-result: PASS Directly creating an EnumInfo
+:test-result: PASS Empty tag is not allowed
 :test-result: FAIL EndsWith string matcher
 :test-result: PASS Enums can quickly have stringification enabled using REGISTER_ENUM
 :test-result: PASS Enums in namespaces can quickly have stringification enabled using REGISTER_ENUM
@@ -180,7 +181,9 @@ Nor would this
 :test-result: FAIL Output from all sections is reported
 :test-result: PASS Overloaded comma or address-of operators are not used
 :test-result: PASS Parse test names and tags
+:test-result: PASS Parsed tags are matched case insensitive
 :test-result: PASS Parsing sharding-related cli flags
+:test-result: PASS Parsing tags with non-alphabetical characters is pass-through
 :test-result: PASS Parsing warnings
 :test-result: PASS Pointers can be compared to null
 :test-result: PASS Precision of floating point stringification can be set
@@ -224,6 +227,7 @@ Message from section two
 :test-result: PASS Stringifying std::chrono::time_point<system_clock>
 :test-result: FAIL Tabs and newlines show in output
 :test-result: PASS Tag alias can be registered against tag patterns
+:test-result: PASS Tags with spaces and non-alphanumerical characters are accepted
 :test-result: PASS Template test case method with test types specified inside std::tuple - MyTypes - 0
 :test-result: PASS Template test case method with test types specified inside std::tuple - MyTypes - 1
 :test-result: PASS Template test case method with test types specified inside std::tuple - MyTypes - 2
@@ -242,6 +246,7 @@ Message from section two
 :test-result: PASS TemplateTestSig: vectors can be sized and resized - float,4
 :test-result: PASS TemplateTestSig: vectors can be sized and resized - int,5
 :test-result: PASS TemplateTestSig: vectors can be sized and resized - std::string,15
+:test-result: PASS Test case with identical tags keeps just one
 :test-result: PASS Test case with one argument
 :test-result: PASS Test enum bit values
 :test-result: PASS Test with special, characters "in name

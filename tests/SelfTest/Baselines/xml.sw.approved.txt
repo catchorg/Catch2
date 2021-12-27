@@ -4306,6 +4306,17 @@ Nor would this
     </Expression>
     <OverallResult success="true"/>
   </TestCase>
+  <TestCase name="Empty tag is not allowed" filename="tests/<exe-name>/IntrospectiveTests/Tag.tests.cpp" >
+    <Expression success="true" type="REQUIRE_THROWS" filename="tests/<exe-name>/IntrospectiveTests/Tag.tests.cpp" >
+      <Original>
+        Catch::TestCaseInfo( "", { "fake test name", "[]" }, dummySourceLineInfo )
+      </Original>
+      <Expanded>
+        Catch::TestCaseInfo( "", { "fake test name", "[]" }, dummySourceLineInfo )
+      </Expanded>
+    </Expression>
+    <OverallResult success="true"/>
+  </TestCase>
   <TestCase name="EndsWith string matcher" tags="[.][failing][matchers]" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
     <Expression success="false" type="CHECK_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
       <Original>
@@ -10700,6 +10711,33 @@ Nor would this
     </Section>
     <OverallResult success="true"/>
   </TestCase>
+  <TestCase name="Parsed tags are matched case insensitive" tags="[test-spec][test-spec-parser]" filename="tests/<exe-name>/IntrospectiveTests/TestSpecParser.tests.cpp" >
+    <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/TestSpecParser.tests.cpp" >
+      <Original>
+        spec.hasFilters()
+      </Original>
+      <Expanded>
+        true
+      </Expanded>
+    </Expression>
+    <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/TestSpecParser.tests.cpp" >
+      <Original>
+        spec.getInvalidSpecs().empty()
+      </Original>
+      <Expanded>
+        true
+      </Expanded>
+    </Expression>
+    <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/TestSpecParser.tests.cpp" >
+      <Original>
+        spec.matches( testCase )
+      </Original>
+      <Expanded>
+        true
+      </Expanded>
+    </Expression>
+    <OverallResult success="true"/>
+  </TestCase>
   <TestCase name="Parsing sharding-related cli flags" tags="[sharding]" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
     <Section name="shard-count" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
       <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
@@ -10815,6 +10853,75 @@ Nor would this
       </Expression>
       <OverallResults successes="2" failures="0" expectedFailures="0"/>
     </Section>
+    <OverallResult success="true"/>
+  </TestCase>
+  <TestCase name="Parsing tags with non-alphabetical characters is pass-through" tags="[test-spec][test-spec-parser]" filename="tests/<exe-name>/IntrospectiveTests/TestSpecParser.tests.cpp" >
+    <Info>
+      tagString := "[tag with spaces]"
+    </Info>
+    <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/TestSpecParser.tests.cpp" >
+      <Original>
+        spec.hasFilters()
+      </Original>
+      <Expanded>
+        true
+      </Expanded>
+    </Expression>
+    <Info>
+      tagString := "[tag with spaces]"
+    </Info>
+    <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/TestSpecParser.tests.cpp" >
+      <Original>
+        spec.getInvalidSpecs().empty()
+      </Original>
+      <Expanded>
+        true
+      </Expanded>
+    </Expression>
+    <Info>
+      tagString := "[tag with spaces]"
+    </Info>
+    <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/TestSpecParser.tests.cpp" >
+      <Original>
+        spec.matches( testCase )
+      </Original>
+      <Expanded>
+        true
+      </Expanded>
+    </Expression>
+    <Info>
+      tagString := "[I said "good day" sir!]"
+    </Info>
+    <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/TestSpecParser.tests.cpp" >
+      <Original>
+        spec.hasFilters()
+      </Original>
+      <Expanded>
+        true
+      </Expanded>
+    </Expression>
+    <Info>
+      tagString := "[I said "good day" sir!]"
+    </Info>
+    <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/TestSpecParser.tests.cpp" >
+      <Original>
+        spec.getInvalidSpecs().empty()
+      </Original>
+      <Expanded>
+        true
+      </Expanded>
+    </Expression>
+    <Info>
+      tagString := "[I said "good day" sir!]"
+    </Info>
+    <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/TestSpecParser.tests.cpp" >
+      <Original>
+        spec.matches( testCase )
+      </Original>
+      <Expanded>
+        true
+      </Expanded>
+    </Expression>
     <OverallResult success="true"/>
   </TestCase>
   <TestCase name="Parsing warnings" tags="[cli][warnings]" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
@@ -13640,6 +13747,25 @@ Message from section two
     </Section>
     <OverallResult success="true"/>
   </TestCase>
+  <TestCase name="Tags with spaces and non-alphanumerical characters are accepted" tags="[tags]" filename="tests/<exe-name>/IntrospectiveTests/Tag.tests.cpp" >
+    <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/Tag.tests.cpp" >
+      <Original>
+        testCase.tags.size() == 2
+      </Original>
+      <Expanded>
+        2 == 2
+      </Expanded>
+    </Expression>
+    <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/IntrospectiveTests/Tag.tests.cpp" >
+      <Original>
+        testCase.tags, VectorContains( Tag( "tag with spaces" ) ) &amp;&amp; VectorContains( Tag( "I said \"good day\" sir!"_catch_sr ) )
+      </Original>
+      <Expanded>
+        { {?}, {?} } ( Contains: {?} and Contains: {?} )
+      </Expanded>
+    </Expression>
+    <OverallResult success="true"/>
+  </TestCase>
   <TestCase name="Template test case method with test types specified inside std::tuple - MyTypes - 0" tags="[class][list][template]" filename="tests/<exe-name>/UsageTests/Class.tests.cpp" >
     <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/UsageTests/Class.tests.cpp" >
       <Original>
@@ -14980,6 +15106,25 @@ Message from section two
       </Expression>
       <OverallResults successes="2" failures="0" expectedFailures="0"/>
     </Section>
+    <OverallResult success="true"/>
+  </TestCase>
+  <TestCase name="Test case with identical tags keeps just one" tags="[tags]" filename="tests/<exe-name>/IntrospectiveTests/Tag.tests.cpp" >
+    <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/Tag.tests.cpp" >
+      <Original>
+        testCase.tags.size() == 1
+      </Original>
+      <Expanded>
+        1 == 1
+      </Expanded>
+    </Expression>
+    <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/Tag.tests.cpp" >
+      <Original>
+        testCase.tags[0] == Tag( "tag1" )
+      </Original>
+      <Expanded>
+        {?} == {?}
+      </Expanded>
+    </Expression>
     <OverallResult success="true"/>
   </TestCase>
   <TestCase name="Test case with one argument" filename="tests/<exe-name>/UsageTests/VariadicMacros.tests.cpp" >
@@ -20428,6 +20573,6 @@ loose text artifact
     </Section>
     <OverallResult success="true"/>
   </TestCase>
-  <OverallResults successes="2013" failures="146" expectedFailures="27"/>
-  <OverallResultsCases successes="286" failures="86" expectedFailures="7"/>
+  <OverallResults successes="2027" failures="146" expectedFailures="27"/>
+  <OverallResultsCases successes="291" failures="86" expectedFailures="7"/>
 </Catch2TestRun>

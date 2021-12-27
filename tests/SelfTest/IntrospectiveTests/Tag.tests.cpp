@@ -40,7 +40,7 @@ TEST_CASE( "Tag alias can be registered against tag patterns" ) {
 }
 
 // Dummy line info for creating dummy test cases below
-constexpr Catch::SourceLineInfo dummySourceLineInfo = CATCH_INTERNAL_LINEINFO;
+static constexpr Catch::SourceLineInfo dummySourceLineInfo = CATCH_INTERNAL_LINEINFO;
 
 TEST_CASE("shortened hide tags are split apart", "[tags]") {
     using Catch::StringRef;
@@ -65,4 +65,37 @@ TEST_CASE( "empty tags are not allowed", "[tags]" ) {
     REQUIRE_THROWS(
         Catch::TestCaseInfo("", { "test with an empty tag", "[]" }, dummySourceLineInfo)
     );
+}
+
+TEST_CASE( "Tags with spaces and non-alphanumerical characters are accepted",
+           "[tags]" ) {
+    using Catch::Tag;
+    using Catch::Matchers::VectorContains;
+
+    Catch::TestCaseInfo testCase(
+        "",
+        { "fake test name", "[tag with spaces][I said \"good day\" sir!]" },
+        dummySourceLineInfo );
+
+    REQUIRE( testCase.tags.size() == 2 );
+    REQUIRE_THAT( testCase.tags,
+                  VectorContains( Tag( "tag with spaces" ) ) &&
+                  VectorContains( Tag( "I said \"good day\" sir!"_catch_sr ) ) );
+}
+
+TEST_CASE( "Test case with identical tags keeps just one", "[tags]" ) {
+    using Catch::Tag;
+
+    Catch::TestCaseInfo testCase(
+        "",
+        { "fake test name", "[TaG1][tAg1][TAG1][tag1]" },
+        dummySourceLineInfo );
+
+    REQUIRE( testCase.tags.size() == 1 );
+    REQUIRE( testCase.tags[0] == Tag( "tag1" ) );
+}
+
+TEST_CASE( "Empty tag is not allowed" ) {
+    REQUIRE_THROWS( Catch::TestCaseInfo(
+        "", { "fake test name", "[]" }, dummySourceLineInfo ) );
 }

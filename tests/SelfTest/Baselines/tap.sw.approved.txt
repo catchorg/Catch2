@@ -976,6 +976,8 @@ ok {test-number} - enumInfo->lookup(0) == "Value1" for: Value1 == "Value1"
 ok {test-number} - enumInfo->lookup(1) == "Value2" for: Value2 == "Value2"
 # Directly creating an EnumInfo
 ok {test-number} - enumInfo->lookup(3) == "{** unexpected enum value **}" for: {** unexpected enum value **} == "{** unexpected enum value **}"
+# Empty tag is not allowed
+ok {test-number} - Catch::TestCaseInfo( "", { "fake test name", "[]" }, dummySourceLineInfo )
 # EndsWith string matcher
 not ok {test-number} - testStringForMatching(), EndsWith( "Substring" ) for: "this string contains 'abc' as a substring" ends with: "Substring"
 # EndsWith string matcher
@@ -2328,6 +2330,12 @@ ok {test-number} - !(spec.matches(*fakeTestCase("only foo", "[foo]"))) for: !fal
 ok {test-number} - !(spec.matches(*fakeTestCase("only hidden", "[.]"))) for: !false
 # Parse test names and tags
 ok {test-number} - spec.matches(*fakeTestCase("neither foo nor hidden", "[bar]")) for: true
+# Parsed tags are matched case insensitive
+ok {test-number} - spec.hasFilters() for: true
+# Parsed tags are matched case insensitive
+ok {test-number} - spec.getInvalidSpecs().empty() for: true
+# Parsed tags are matched case insensitive
+ok {test-number} - spec.matches( testCase ) for: true
 # Parsing sharding-related cli flags
 ok {test-number} - cli.parse({ "test", "--shard-count=8" }) for: {?}
 # Parsing sharding-related cli flags
@@ -2352,6 +2360,18 @@ ok {test-number} - result.errorMessage(), ContainsSubstring("Shard index must be
 ok {test-number} - cli.parse({ "test", "--shard-index=0" }) for: {?}
 # Parsing sharding-related cli flags
 ok {test-number} - config.shardIndex == 0 for: 0 == 0
+# Parsing tags with non-alphabetical characters is pass-through
+ok {test-number} - spec.hasFilters() for: true with 1 message: 'tagString := "[tag with spaces]"'
+# Parsing tags with non-alphabetical characters is pass-through
+ok {test-number} - spec.getInvalidSpecs().empty() for: true with 1 message: 'tagString := "[tag with spaces]"'
+# Parsing tags with non-alphabetical characters is pass-through
+ok {test-number} - spec.matches( testCase ) for: true with 1 message: 'tagString := "[tag with spaces]"'
+# Parsing tags with non-alphabetical characters is pass-through
+ok {test-number} - spec.hasFilters() for: true with 1 message: 'tagString := "[I said "good day" sir!]"'
+# Parsing tags with non-alphabetical characters is pass-through
+ok {test-number} - spec.getInvalidSpecs().empty() for: true with 1 message: 'tagString := "[I said "good day" sir!]"'
+# Parsing tags with non-alphabetical characters is pass-through
+ok {test-number} - spec.matches( testCase ) for: true with 1 message: 'tagString := "[I said "good day" sir!]"'
 # Parsing warnings
 ok {test-number} - cli.parse( { "test", "-w", "NoAssertions" } ) for: {?}
 # Parsing warnings
@@ -2899,6 +2919,10 @@ ok {test-number} - registry.add( "[the @ is not at the start]", "", Catch::Sourc
 ok {test-number} - registry.add( "@no square bracket at start]", "", Catch::SourceLineInfo( "file", 3 ) )
 # Tag alias can be registered against tag patterns
 ok {test-number} - registry.add( "[@no square bracket at end", "", Catch::SourceLineInfo( "file", 3 ) )
+# Tags with spaces and non-alphanumerical characters are accepted
+ok {test-number} - testCase.tags.size() == 2 for: 2 == 2
+# Tags with spaces and non-alphanumerical characters are accepted
+ok {test-number} - testCase.tags, VectorContains( Tag( "tag with spaces" ) ) && VectorContains( Tag( "I said \"good day\" sir!"_catch_sr ) ) for: { {?}, {?} } ( Contains: {?} and Contains: {?} )
 # Template test case method with test types specified inside std::tuple - MyTypes - 0
 ok {test-number} - Template_Fixture<TestType>::m_a == 1 for: 1 == 1
 # Template test case method with test types specified inside std::tuple - MyTypes - 1
@@ -3191,6 +3215,10 @@ ok {test-number} - v.capacity() >= V for: 15 >= 15
 ok {test-number} - v.size() == V for: 15 == 15
 # TemplateTestSig: vectors can be sized and resized - std::string,15
 ok {test-number} - v.capacity() >= V for: 15 >= 15
+# Test case with identical tags keeps just one
+ok {test-number} - testCase.tags.size() == 1 for: 1 == 1
+# Test case with identical tags keeps just one
+ok {test-number} - testCase.tags[0] == Tag( "tag1" ) for: {?} == {?}
 # Test case with one argument
 ok {test-number} - with 1 message: 'no assertions'
 # Test enum bit values
@@ -4374,5 +4402,5 @@ ok {test-number} - q3 == 23. for: 23.0 == 23.0
 ok {test-number} -
 # xmlentitycheck
 ok {test-number} -
-1..2186
+1..2200
 
