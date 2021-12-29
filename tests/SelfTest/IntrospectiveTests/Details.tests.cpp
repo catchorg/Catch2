@@ -6,6 +6,7 @@
 #include <catch2/catch_test_macros.hpp>
 #include <catch2/internal/catch_enforce.hpp>
 #include <catch2/internal/catch_case_insensitive_comparisons.hpp>
+#include <catch2/internal/catch_optional.hpp>
 
 #if defined(_MSC_VER)
 #pragma warning(push)
@@ -53,5 +54,32 @@ TEST_CASE( "CaseInsensitiveEqualsTo is case insensitive",
         REQUIRE( eq( "A", "A" ) );
         REQUIRE_FALSE( eq( "a", "b" ) );
         REQUIRE_FALSE( eq( "a", "B" ) );
+    }
+}
+
+TEST_CASE("Optional comparison ops", "[optional][approvals]") {
+    using Catch::Optional;
+
+    Optional<int> a, b;
+
+    SECTION( "Empty optionals are equal" ) {
+        REQUIRE( a == b );
+        REQUIRE_FALSE( a != b );
+    }
+    SECTION( "Empty and non-empty optionals are never equal" ) {
+        a = 1;
+        REQUIRE_FALSE( a == b );
+        REQUIRE( a != b );
+    }
+    SECTION(
+        "non-empty optionals are equal if the contained elements are equal") {
+        a = 1;
+        b = 2;
+        REQUIRE( a != b );
+        REQUIRE_FALSE( a == b );
+
+        a = 2;
+        REQUIRE( a == b );
+        REQUIRE_FALSE( a != b );
     }
 }
