@@ -682,3 +682,20 @@ TEST_CASE("Test with special, characters \"in name", "[cli][regression]") {
     // This test case succeeds if we can invoke it from the CLI
     SUCCEED();
 }
+
+TEST_CASE("Various suspicious reporter specs are rejected",
+          "[cli][reporter-spec][approvals]") {
+    Catch::ConfigData config;
+    auto cli = Catch::makeCommandLineParser( config );
+
+    auto spec = GENERATE( as<std::string>{},
+                          "",
+                          "::console",
+                          "console::",
+                          "console::some-file::",
+                          "::console::some-file::" );
+    CAPTURE( spec );
+
+    auto result = cli.parse( { "test", "--reporter", spec } );
+    REQUIRE_FALSE( result );
+}

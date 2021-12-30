@@ -135,6 +135,10 @@ namespace Catch {
             return ParserResult::ok( ParseResultType::Matched );
         };
         auto const setReporter = [&]( std::string const& reporterSpec ) {
+            if ( reporterSpec.empty() ) {
+                return ParserResult::runtimeError( "Received empty reporter spec." );
+            }
+
             IReporterRegistry::FactoryMap const& factories = getRegistryHub().getReporterRegistry().getFactories();
 
             // clear the default reporter
@@ -143,21 +147,33 @@ namespace Catch {
                 config._nonDefaultReporterSpecifications = true;
             }
 
+
             // Exactly one of the reporters may be specified without an output
             // file, in which case it defaults to the output specified by "-o"
             // (or standard output).
             static constexpr auto separator = "::";
             static constexpr size_t separatorSize = 2;
-            auto separatorPos = reporterSpec.find( separator );
-            const bool containsFileName = separatorPos != reporterSpec.npos;
+            auto fileNameSeparatorPos = reporterSpec.find( separator );
+            const bool containsFileName = fileNameSeparatorPos != reporterSpec.npos;
+            if ( containsFileName ) {
+                auto nextSeparatorPos = reporterSpec.find(
+                    separator, fileNameSeparatorPos + separatorSize );
+                if ( nextSeparatorPos != reporterSpec.npos ) {
+                    return ParserResult::runtimeError(
+                        "Too many separators in reporter spec '" + reporterSpec + '\'' );
+                }
+            }
+
             std::string reporterName;
             Optional<std::string> outputFileName;
-            if (!containsFileName) {
-                reporterName = reporterSpec;
-            } else {
-                reporterName = reporterSpec.substr( 0, separatorPos );
+            reporterName = reporterSpec.substr( 0, fileNameSeparatorPos );
+            if ( reporterName.empty() ) {
+                return ParserResult::runtimeError( "Reporter name cannot be empty." );
+            }
+
+            if ( containsFileName ) {
                 outputFileName = reporterSpec.substr(
-                    separatorPos + separatorSize, reporterSpec.size() );
+                    fileNameSeparatorPos + separatorSize, reporterSpec.size() );
             }
 
             auto result = factories.find( reporterName );
