@@ -256,6 +256,51 @@ set_tests_properties(
 )
 
 
+if (MSVC)
+  set(_NullFile "NUL")
+else()
+  set(_NullFile "/dev/null")
+endif()
+
+add_executable(ListenerStdoutCaptureInMultireporter ${TESTS_DIR}/X24-ListenerStdoutCaptureInMultireporter.cpp)
+target_link_libraries(ListenerStdoutCaptureInMultireporter PRIVATE Catch2::Catch2WithMain)
+
+# This test checks that there is nothing written out from the process,
+# but if CMake is running the tests under Valgrind or similar tool, then
+# that will write its own output to stdout and the test would fail.
+if (NOT MEMORYCHECK_COMMAND)
+  add_test(
+    NAME MultiReporter::NoncapturingListenerDoesntCauseStdoutPassThrough
+    COMMAND ListenerStdoutCaptureInMultireporter
+      --reporter xml::${_NullFile}
+      --reporter junit::${_NullFile}
+  )
+
+  set_tests_properties(
+      MultiReporter::NoncapturingListenerDoesntCauseStdoutPassThrough
+    PROPERTIES
+      PASS_REGULAR_EXPRESSION "X24 - NonCapturingListener initialized"
+      FAIL_REGULAR_EXPRESSION "X24 - FooBarBaz"
+  )
+endif()
+
+
+add_executable(ListenerCanAskForCapturedStdout ${TESTS_DIR}/X25-ListenerCanAskForCapturedStdout.cpp)
+target_link_libraries(ListenerCanAskForCapturedStdout PRIVATE Catch2::Catch2WithMain)
+add_test(
+  NAME MultiReporter::CapturingListenerCausesStdoutCapture
+  COMMAND ListenerCanAskForCapturedStdout
+    --reporter compact::${_NullFile}
+    --reporter console::${_NullFile}
+)
+set_tests_properties(
+    MultiReporter::CapturingListenerCausesStdoutCapture
+  PROPERTIES
+    PASS_REGULAR_EXPRESSION "CapturingListener initialized"
+    FAIL_REGULAR_EXPRESSION "X25 - ERROR"
+)
+
+
 add_executable(DuplicatedTestCases-SameNameAndTags ${TESTS_DIR}/X31-DuplicatedTestCases.cpp)
 target_link_libraries(DuplicatedTestCases-SameNameAndTags PRIVATE Catch2::Catch2WithMain)
 add_test(
