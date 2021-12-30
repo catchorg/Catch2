@@ -32,11 +32,11 @@ namespace {
 		}
 
 		void
-			testCaseEnded(Catch::TestCaseStats const& testCaseStats) override {
+        testCaseEnded( Catch::TestCaseStats const& testCaseStats ) override {
             if ( testCaseStats.stdOut.empty() ) {
                 std::cerr << "X25 - ERROR: empty stdout\n";
             }
-		}
+        }
 	};
 }
 

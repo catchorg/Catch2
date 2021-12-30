@@ -300,6 +300,32 @@ set_tests_properties(
     FAIL_REGULAR_EXPRESSION "X25 - ERROR"
 )
 
+add_executable(ReporterPreferencesForPassingAssertionsIsRespected ${TESTS_DIR}/X26-ReporterPreferencesForPassingAssertionsIsRespected.cpp)
+target_link_libraries(ReporterPreferencesForPassingAssertionsIsRespected PRIVATE Catch2::Catch2WithMain)
+add_test(
+  NAME Reporters::PreferencesForPassingAssertionsIsRespected
+  COMMAND ReporterPreferencesForPassingAssertionsIsRespected
+    --reporter test-reporter
+)
+set_tests_properties(
+    Reporters::PreferencesForPassingAssertionsIsRespected
+  PROPERTIES
+    PASS_REGULAR_EXPRESSION "X26 - TestReporter constructed"
+    FAIL_REGULAR_EXPRESSION "X26 - assertionEnded"
+)
+add_test(
+  NAME MultiReporter::PreferencesForPassingAssertionsIsRespected
+  COMMAND ReporterPreferencesForPassingAssertionsIsRespected
+    --reporter test-reporter
+    --reporter console::${_NullFile}
+)
+set_tests_properties(
+    MultiReporter::PreferencesForPassingAssertionsIsRespected
+  PROPERTIES
+    PASS_REGULAR_EXPRESSION "X26 - TestReporter constructed"
+    FAIL_REGULAR_EXPRESSION "X26 - assertionEnded"
+)
+
 
 add_executable(DuplicatedTestCases-SameNameAndTags ${TESTS_DIR}/X31-DuplicatedTestCases.cpp)
 target_link_libraries(DuplicatedTestCases-SameNameAndTags PRIVATE Catch2::Catch2WithMain)
