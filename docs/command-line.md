@@ -125,6 +125,8 @@ Test names containing special characters, such as `,` or `[` can specify them on
 
 <pre>-r, --reporter &lt;reporter[::output-file]&gt;</pre>
 
+> Support for providing output-file through the `-r`, `--reporter` flag was [introduced](https://github.com/catchorg/Catch2/pull/2183) in Catch2 X.Y.Z
+
 A reporter is an object that formats and structures the output of running tests, and potentially summarises the results. By default a console reporter is used that writes, IDE friendly, textual output. Catch comes bundled with some alternative reporters, but more can be added in client code.<br />
 The bundled reporters are:
 

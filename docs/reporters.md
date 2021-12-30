@@ -38,6 +38,8 @@ By default all these reports are written to stdout, but can be redirected to a f
 <a id="multiple-reporters"></a>
 ## Using multiple reporters
 
+> Support for having multiple parallel reporters was [introduced](https://github.com/catchorg/Catch2/pull/2183) in Catch2 X.Y.Z
+
 Multiple reporters may be used at the same time, e.g. to save a machine-readable output to a file but still print the human-readable output to the console:
 ```
 -r console -r xml::result.xml -r junit::result-junit.xml
