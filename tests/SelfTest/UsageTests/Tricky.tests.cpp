@@ -20,34 +20,6 @@
 #include <sstream>
 #include <iostream>
 
-///////////////////////////////////////////////////////////////////////////////
-TEST_CASE
-(
-    "Where there is more to the expression after the RHS",
-    "[Tricky][failing][.]"
-)
-{
-//    int a = 1, b = 2;
-//    REQUIRE( a == 2 || b == 2 );
-    WARN( "Uncomment the code in this test to check that it gives a sensible compiler error" );
-}
-///////////////////////////////////////////////////////////////////////////////
-TEST_CASE
-(
-    "Where the LHS is not a simple value",
-    "[Tricky][failing][.]"
-)
-{
-    /*
-    int a = 1;
-    int b = 2;
-
-    // This only captures part of the expression, but issues a warning about the rest
-    REQUIRE( a+1 == b-1 );
-    */
-    WARN( "Uncomment the code in this test to check that it gives a sensible compiler error" );
-}
-
 struct Opaque
 {
     int val;
@@ -71,17 +43,6 @@ TEST_CASE
 
     CHECK( &o1 == &o2 );
     CHECK( o1 == o2 );
-}
-
-///////////////////////////////////////////////////////////////////////////////
-TEST_CASE
-(
-    "string literals of different sizes can be compared",
-    "[Tricky][failing][.]"
-)
-{
-    REQUIRE( std::string( "first" ) == "second" );
-
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -239,18 +200,6 @@ TEST_CASE( "(unimplemented) static bools can be evaluated", "[Tricky]" )
         REQUIRE_FALSE( is_true<false>::value );
     }
 }
-
-// Uncomment these tests to produce an error at test registration time
-/*
-TEST_CASE( "Tests with the same name are not allowed", "[Tricky]" )
-{
-
-}
-TEST_CASE( "Tests with the same name are not allowed", "[Tricky]" )
-{
-
-}
-*/
 
 struct Boolable
 {

@@ -1665,7 +1665,6 @@ Misc.tests.cpp:<line number>
       </skipped>
     </testCase>
     <testCase name="This test 'should' fail but doesn't" duration="{duration}"/>
-    <testCase name="atomic if" duration="{duration}"/>
     <testCase name="checkedElse" duration="{duration}"/>
     <testCase name="checkedElse, failing" duration="{duration}">
       <failure message="REQUIRE(testCheckedElse( false ))">
@@ -1899,8 +1898,6 @@ Tricky.tests.cpp:<line number>
     <testCase name="Comparing function pointers" duration="{duration}"/>
     <testCase name="Objects that evaluated in boolean contexts can be checked" duration="{duration}"/>
     <testCase name="Test enum bit values" duration="{duration}"/>
-    <testCase name="Where the LHS is not a simple value" duration="{duration}"/>
-    <testCase name="Where there is more to the expression after the RHS" duration="{duration}"/>
     <testCase name="X/level/0/a" duration="{duration}"/>
     <testCase name="X/level/0/b" duration="{duration}"/>
     <testCase name="X/level/1/a" duration="{duration}"/>
@@ -1910,15 +1907,6 @@ Tricky.tests.cpp:<line number>
     <testCase name="non-copyable objects" duration="{duration}"/>
     <testCase name="null_ptr" duration="{duration}"/>
     <testCase name="pointer to class" duration="{duration}"/>
-    <testCase name="string literals of different sizes can be compared" duration="{duration}">
-      <failure message="REQUIRE(std::string( &quot;first&quot; ) == &quot;second&quot;)">
-FAILED:
-	REQUIRE( std::string( "first" ) == "second" )
-with expansion:
-	"first" == "second"
-Tricky.tests.cpp:<line number>
-      </failure>
-    </testCase>
   </file>
   <file path="tests/<exe-name>/UsageTests/VariadicMacros.tests.cpp">
     <testCase name="Anonymous test case 1" duration="{duration}"/>

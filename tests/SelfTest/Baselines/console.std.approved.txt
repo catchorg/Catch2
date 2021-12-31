@@ -1166,26 +1166,6 @@ due to unexpected exception with message:
   unexpected exception
 
 -------------------------------------------------------------------------------
-Where the LHS is not a simple value
--------------------------------------------------------------------------------
-Tricky.tests.cpp:<line number>
-...............................................................................
-
-Tricky.tests.cpp:<line number>: warning:
-  Uncomment the code in this test to check that it gives a sensible compiler
-  error
-
--------------------------------------------------------------------------------
-Where there is more to the expression after the RHS
--------------------------------------------------------------------------------
-Tricky.tests.cpp:<line number>
-...............................................................................
-
-Tricky.tests.cpp:<line number>: warning:
-  Uncomment the code in this test to check that it gives a sensible compiler
-  error
-
--------------------------------------------------------------------------------
 checkedElse, failing
 -------------------------------------------------------------------------------
 Misc.tests.cpp:<line number>
@@ -1405,17 +1385,6 @@ with messages:
   6
 
 -------------------------------------------------------------------------------
-string literals of different sizes can be compared
--------------------------------------------------------------------------------
-Tricky.tests.cpp:<line number>
-...............................................................................
-
-Tricky.tests.cpp:<line number>: FAILED:
-  REQUIRE( std::string( "first" ) == "second" )
-with expansion:
-  "first" == "second"
-
--------------------------------------------------------------------------------
 thrown std::strings are translated
 -------------------------------------------------------------------------------
 Exception.tests.cpp:<line number>
@@ -1426,6 +1395,6 @@ due to unexpected exception with message:
   Why would you throw a std::string?
 
 ===============================================================================
-test cases:  384 |  307 passed |  70 failed |  7 failed as expected
-assertions: 2185 | 2029 passed | 129 failed | 27 failed as expected
+test cases:  380 |  304 passed |  69 failed |  7 failed as expected
+assertions: 2183 | 2028 passed | 128 failed | 27 failed as expected
 

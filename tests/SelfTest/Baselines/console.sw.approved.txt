@@ -14496,32 +14496,6 @@ Exception.tests.cpp:<line number>
 No assertions in test case 'When unchecked exceptions are thrown, but caught, they do not affect the test'
 
 -------------------------------------------------------------------------------
-Where the LHS is not a simple value
--------------------------------------------------------------------------------
-Tricky.tests.cpp:<line number>
-...............................................................................
-
-Tricky.tests.cpp:<line number>: warning:
-  Uncomment the code in this test to check that it gives a sensible compiler
-  error
-
-
-No assertions in test case 'Where the LHS is not a simple value'
-
--------------------------------------------------------------------------------
-Where there is more to the expression after the RHS
--------------------------------------------------------------------------------
-Tricky.tests.cpp:<line number>
-...............................................................................
-
-Tricky.tests.cpp:<line number>: warning:
-  Uncomment the code in this test to check that it gives a sensible compiler
-  error
-
-
-No assertions in test case 'Where there is more to the expression after the RHS'
-
--------------------------------------------------------------------------------
 X/level/0/a
 -------------------------------------------------------------------------------
 Tricky.tests.cpp:<line number>
@@ -14769,17 +14743,6 @@ ToStringVector.tests.cpp:<line number>: PASSED:
   REQUIRE( Catch::Detail::stringify( twoValues ) == "{ 42, 250 }" )
 with expansion:
   "{ 42, 250 }" == "{ 42, 250 }"
-
--------------------------------------------------------------------------------
-atomic if
--------------------------------------------------------------------------------
-Misc.tests.cpp:<line number>
-...............................................................................
-
-Misc.tests.cpp:<line number>: PASSED:
-  REQUIRE( x == 0 )
-with expansion:
-  0 == 0
 
 -------------------------------------------------------------------------------
 benchmark function call
@@ -16598,17 +16561,6 @@ with expansion:
   "{ { "green", 55 } }"
 
 -------------------------------------------------------------------------------
-string literals of different sizes can be compared
--------------------------------------------------------------------------------
-Tricky.tests.cpp:<line number>
-...............................................................................
-
-Tricky.tests.cpp:<line number>: FAILED:
-  REQUIRE( std::string( "first" ) == "second" )
-with expansion:
-  "first" == "second"
-
--------------------------------------------------------------------------------
 stringify ranges
 -------------------------------------------------------------------------------
 ToStringWhich.tests.cpp:<line number>
@@ -17564,6 +17516,6 @@ Misc.tests.cpp:<line number>
 Misc.tests.cpp:<line number>: PASSED:
 
 ===============================================================================
-test cases:  384 |  291 passed |  86 failed |  7 failed as expected
-assertions: 2202 | 2029 passed | 146 failed | 27 failed as expected
+test cases:  380 |  290 passed |  83 failed |  7 failed as expected
+assertions: 2198 | 2028 passed | 143 failed | 27 failed as expected
 

@@ -3653,10 +3653,6 @@ not ok {test-number} - unexpected exception with message: 'expected exception'; 
 not ok {test-number} - unexpected exception with message: 'expected exception'; expression was: thisThrows() == 0
 # When unchecked exceptions are thrown from sections they are always failures
 not ok {test-number} - unexpected exception with message: 'unexpected exception'
-# Where the LHS is not a simple value
-warning {test-number} - 'Uncomment the code in this test to check that it gives a sensible compiler error'
-# Where there is more to the expression after the RHS
-warning {test-number} - 'Uncomment the code in this test to check that it gives a sensible compiler error'
 # X/level/0/a
 ok {test-number} -
 # X/level/0/b
@@ -3719,8 +3715,6 @@ ok {test-number} - Catch::Detail::stringify( empty ) == "{  }" for: "{  }" == "{
 ok {test-number} - Catch::Detail::stringify( oneValue ) == "{ 42 }" for: "{ 42 }" == "{ 42 }"
 # array<int, N> -> toString
 ok {test-number} - Catch::Detail::stringify( twoValues ) == "{ 42, 250 }" for: "{ 42, 250 }" == "{ 42, 250 }"
-# atomic if
-ok {test-number} - x == 0 for: 0 == 0
 # benchmark function call
 ok {test-number} - model.started == 1 for: 1 == 1
 # benchmark function call
@@ -4186,8 +4180,6 @@ ok {test-number} - Catch::Detail::stringify( set ) == "{ \"one\" }" for: "{ "one
 ok {test-number} - Catch::Detail::stringify( set ) == "{ \"abc\", \"def\", \"ghi\" }" for: "{ "abc", "def", "ghi" }" == "{ "abc", "def", "ghi" }"
 # std::vector<std::pair<std::string,int> > -> toString
 ok {test-number} - ::Catch::Detail::stringify( pr ) == "{ { \"green\", 55 } }" for: "{ { "green", 55 } }" == "{ { "green", 55 } }"
-# string literals of different sizes can be compared
-not ok {test-number} - std::string( "first" ) == "second" for: "first" == "second"
 # stringify ranges
 ok {test-number} - ::Catch::Detail::stringify(streamable_range{}) == "op<<(streamable_range)" for: "op<<(streamable_range)" == "op<<(streamable_range)"
 # stringify ranges
@@ -4406,5 +4398,5 @@ ok {test-number} - q3 == 23. for: 23.0 == 23.0
 ok {test-number} -
 # xmlentitycheck
 ok {test-number} -
-1..2202
+1..2198
 

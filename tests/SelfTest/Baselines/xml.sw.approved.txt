@@ -17091,18 +17091,6 @@ There is no extra whitespace here
   <TestCase name="When unchecked exceptions are thrown, but caught, they do not affect the test" tags="[!throws]" filename="tests/<exe-name>/UsageTests/Exception.tests.cpp" >
     <OverallResult success="false"/>
   </TestCase>
-  <TestCase name="Where the LHS is not a simple value" tags="[.][failing][Tricky]" filename="tests/<exe-name>/UsageTests/Tricky.tests.cpp" >
-    <Warning>
-      Uncomment the code in this test to check that it gives a sensible compiler error
-    </Warning>
-    <OverallResult success="false"/>
-  </TestCase>
-  <TestCase name="Where there is more to the expression after the RHS" tags="[.][failing][Tricky]" filename="tests/<exe-name>/UsageTests/Tricky.tests.cpp" >
-    <Warning>
-      Uncomment the code in this test to check that it gives a sensible compiler error
-    </Warning>
-    <OverallResult success="false"/>
-  </TestCase>
   <TestCase name="X/level/0/a" tags="[Tricky]" filename="tests/<exe-name>/UsageTests/Tricky.tests.cpp" >
     <OverallResult success="true"/>
   </TestCase>
@@ -17371,17 +17359,6 @@ There is no extra whitespace here
       </Original>
       <Expanded>
         "{ 42, 250 }" == "{ 42, 250 }"
-      </Expanded>
-    </Expression>
-    <OverallResult success="true"/>
-  </TestCase>
-  <TestCase name="atomic if" tags="[0][failing]" filename="tests/<exe-name>/UsageTests/Misc.tests.cpp" >
-    <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/UsageTests/Misc.tests.cpp" >
-      <Original>
-        x == 0
-      </Original>
-      <Expanded>
-        0 == 0
       </Expanded>
     </Expression>
     <OverallResult success="true"/>
@@ -19541,17 +19518,6 @@ loose text artifact
     </Expression>
     <OverallResult success="true"/>
   </TestCase>
-  <TestCase name="string literals of different sizes can be compared" tags="[.][failing][Tricky]" filename="tests/<exe-name>/UsageTests/Tricky.tests.cpp" >
-    <Expression success="false" type="REQUIRE" filename="tests/<exe-name>/UsageTests/Tricky.tests.cpp" >
-      <Original>
-        std::string( "first" ) == "second"
-      </Original>
-      <Expanded>
-        "first" == "second"
-      </Expanded>
-    </Expression>
-    <OverallResult success="false"/>
-  </TestCase>
   <TestCase name="stringify ranges" tags="[toString]" filename="tests/<exe-name>/UsageTests/ToStringWhich.tests.cpp" >
     <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/UsageTests/ToStringWhich.tests.cpp" >
       <Original>
@@ -20595,6 +20561,6 @@ loose text artifact
     </Section>
     <OverallResult success="true"/>
   </TestCase>
-  <OverallResults successes="2029" failures="146" expectedFailures="27"/>
-  <OverallResultsCases successes="291" failures="86" expectedFailures="7"/>
+  <OverallResults successes="2028" failures="143" expectedFailures="27"/>
+  <OverallResultsCases successes="290" failures="83" expectedFailures="7"/>
 </Catch2TestRun>

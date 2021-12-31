@@ -2032,8 +2032,6 @@ Exception.tests.cpp:<line number>: failed: unexpected exception with message: 'e
 Exception.tests.cpp:<line number>: failed: unexpected exception with message: 'expected exception'; expression was: thisThrows() == 0
 Exception.tests.cpp:<line number>: failed: unexpected exception with message: 'expected exception'; expression was: thisThrows() == 0
 Exception.tests.cpp:<line number>: failed: unexpected exception with message: 'unexpected exception'
-Tricky.tests.cpp:<line number>: warning: 'Uncomment the code in this test to check that it gives a sensible compiler error'
-Tricky.tests.cpp:<line number>: warning: 'Uncomment the code in this test to check that it gives a sensible compiler error'
 Tricky.tests.cpp:<line number>: passed:
 Tricky.tests.cpp:<line number>: passed:
 Tricky.tests.cpp:<line number>: passed:
@@ -2073,7 +2071,6 @@ InternalBenchmark.tests.cpp:<line number>: passed: analysis.outlier_variance == 
 ToStringVector.tests.cpp:<line number>: passed: Catch::Detail::stringify( empty ) == "{  }" for: "{  }" == "{  }"
 ToStringVector.tests.cpp:<line number>: passed: Catch::Detail::stringify( oneValue ) == "{ 42 }" for: "{ 42 }" == "{ 42 }"
 ToStringVector.tests.cpp:<line number>: passed: Catch::Detail::stringify( twoValues ) == "{ 42, 250 }" for: "{ 42, 250 }" == "{ 42, 250 }"
-Misc.tests.cpp:<line number>: passed: x == 0 for: 0 == 0
 InternalBenchmark.tests.cpp:<line number>: passed: model.started == 1 for: 1 == 1
 InternalBenchmark.tests.cpp:<line number>: passed: model.finished == 0 for: 0 == 0
 InternalBenchmark.tests.cpp:<line number>: passed: model.started == 1 for: 1 == 1
@@ -2321,7 +2318,6 @@ ToStringGeneral.tests.cpp:<line number>: passed: Catch::Detail::stringify( set )
 ToStringPair.tests.cpp:<line number>: passed: ::Catch::Detail::stringify( pr ) == "{ { \"green\", 55 } }" for: "{ { "green", 55 } }"
 ==
 "{ { "green", 55 } }"
-Tricky.tests.cpp:<line number>: failed: std::string( "first" ) == "second" for: "first" == "second"
 ToStringWhich.tests.cpp:<line number>: passed: ::Catch::Detail::stringify(streamable_range{}) == "op<<(streamable_range)" for: "op<<(streamable_range)"
 ==
 "op<<(streamable_range)"
@@ -2461,5 +2457,5 @@ InternalBenchmark.tests.cpp:<line number>: passed: med == 18. for: 18.0 == 18.0
 InternalBenchmark.tests.cpp:<line number>: passed: q3 == 23. for: 23.0 == 23.0
 Misc.tests.cpp:<line number>: passed:
 Misc.tests.cpp:<line number>: passed:
-Failed 86 test cases, failed 146 assertions.
+Failed 83 test cases, failed 143 assertions.
 
