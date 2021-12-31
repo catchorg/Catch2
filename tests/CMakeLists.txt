@@ -451,6 +451,26 @@ set_tests_properties("MultiReporter::NonCapturingReportersPropagateStdout"
     PASS_REGULAR_EXPRESSION "A string sent to stderr via clog"
 )
 
+add_test(NAME "Outputs::DashAsOutLocationSendsOutputToStdout"
+  COMMAND
+    $<TARGET_FILE:SelfTest> "Factorials are computed"
+      --out=-
+)
+set_tests_properties("Outputs::DashAsOutLocationSendsOutputToStdout"
+  PROPERTIES
+    PASS_REGULAR_EXPRESSION "All tests passed \\(5 assertions in 1 test case\\)"
+)
+
+add_test(NAME "Reporters::DashAsLocationInReporterSpecSendsOutputToStdout"
+  COMMAND
+    $<TARGET_FILE:SelfTest> "Factorials are computed"
+      --reporter console::-
+)
+set_tests_properties("Reporters::DashAsLocationInReporterSpecSendsOutputToStdout"
+  PROPERTIES
+    PASS_REGULAR_EXPRESSION "All tests passed \\(5 assertions in 1 test case\\)"
+)
+
 
 if (CATCH_USE_VALGRIND)
     add_test(NAME ValgrindRunTests COMMAND valgrind --leak-check=full --error-exitcode=1 $<TARGET_FILE:SelfTest>)

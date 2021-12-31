@@ -124,8 +124,9 @@ namespace Detail {
     ///////////////////////////////////////////////////////////////////////////
 
     auto makeStream( std::string const& filename ) -> Detail::unique_ptr<IStream const> {
-        if( filename.empty() )
+        if ( filename.empty() || filename == "-" ) {
             return Detail::make_unique<Detail::CoutStream>();
+        }
         else if( filename[0] == '%' ) {
             if( filename == "%debug" )
                 return Detail::make_unique<Detail::DebugOutStream>();

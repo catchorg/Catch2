@@ -140,6 +140,8 @@ The JUnit reporter is an xml format that follows the structure of the JUnit XML 
 
 This option may be passed multiple times to use multiple (different) reporters  at the same time. See [Reporters](reporters.md#multiple-reporters) for details.
 
+As with the `--out` flag, `-` means writing to stdout.
+
 _Note: There is currently no way to escape `::` in the reporter spec,
 and thus reporter/file names with `::` in them will not work properly.
 As `::` in paths is relatively obscure (unlike `:`), we do not consider
@@ -191,6 +193,11 @@ If one or more test-specs have been supplied too then only the matching tests wi
 </pre>
 
 Use this option to send all output to a file. By default output is sent to stdout (note that uses of stdout and stderr *from within test cases* are redirected and included in the report - so even stderr will effectively end up on stdout).
+
+Using `-` as the filename sends the output to stdout.
+
+> Support for `-` as the filename was introduced in Catch2 X.Y.Z
+
 
 <a id="naming-a-test-run"></a>
 ## Naming a test run
