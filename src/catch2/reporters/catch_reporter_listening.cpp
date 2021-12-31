@@ -136,21 +136,22 @@ namespace Catch {
 
     void ListeningReporter::testCasePartialEnded( TestCaseStats const& testStats,
                                                   uint64_t partNumber ) {
-        // TODO: Fix handling of stderr/stdout?
+        if ( m_preferences.shouldRedirectStdOut &&
+             m_haveNoncapturingReporters ) {
+            if ( !testStats.stdOut.empty() ) {
+                Catch::cout() << testStats.stdOut << std::flush;
+            }
+            if ( !testStats.stdErr.empty() ) {
+                Catch::cerr() << testStats.stdErr << std::flush;
+            }
+        }
+
         for ( auto& reporterish : m_reporterLikes ) {
             reporterish->testCasePartialEnded( testStats, partNumber );
         }
     }
 
     void ListeningReporter::testCaseEnded( TestCaseStats const& testCaseStats ) {
-        if ( m_preferences.shouldRedirectStdOut && m_haveNoncapturingReporters ) {
-            if ( !testCaseStats.stdOut.empty() ) {
-                Catch::cout() << testCaseStats.stdOut << std::flush;
-            }
-            if ( !testCaseStats.stdErr.empty() ) {
-                Catch::cerr() << testCaseStats.stdErr << std::flush;
-            }
-        }
         for ( auto& reporterish : m_reporterLikes ) {
             reporterish->testCaseEnded( testCaseStats );
         }
