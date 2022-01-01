@@ -30,7 +30,7 @@
 [Filenames as tags](#filenames-as-tags)<br>
 [Override output colouring](#override-output-colouring)<br>
 [Test Sharding](#test-sharding)<br>
-[Allow running the binary without tests](#no-tests-override)<br>
+[Allow running the binary without tests](#allow-running-the-binary-without-tests)<br>
 
 Catch works quite nicely without any command line options at all - but for those times when you want greater control the following options are available.
 Click one of the following links to take you straight to that option - or scroll on to browse the available options.
@@ -127,20 +127,29 @@ Test names containing special characters, such as `,` or `[` can specify them on
 
 > Support for providing output-file through the `-r`, `--reporter` flag was [introduced](https://github.com/catchorg/Catch2/pull/2183) in Catch2 X.Y.Z
 
-A reporter is an object that formats and structures the output of running tests, and potentially summarises the results. By default a console reporter is used that writes, IDE friendly, textual output. Catch comes bundled with some alternative reporters, but more can be added in client code.<br />
-The bundled reporters are:
+Reporters are how the output from Catch2 (results of assertions, tests,
+benchmarks and so on) is formatted and written out. The default reporter
+is called the "Console" reporter and is intended to provide relatively
+verbose and human-friendly output.
 
-<pre>-r console
--r compact
--r xml
--r junit
-</pre>
+There are multiple built-in reporters, you can see what they do by using the 
+[`--list-reporter`](command-line.md#listing-available-tests-tags-or-reporters)
+flag. If you need a reporter providing custom format outside of the already
+provided ones, look at the ["write your own reporter" part of the reporter
+documentation](reporters.md#writing-your-own-reporter).
 
-The JUnit reporter is an xml format that follows the structure of the JUnit XML Report ANT task, as consumed by a number of third-party tools, including Continuous Integration servers such as Jenkins. If not otherwise needed, the standard XML reporter is preferred as this is a streaming reporter, whereas the Junit reporter needs to hold all its results until the end so it can write the overall results into attributes of the root node.
 
-This option may be passed multiple times to use multiple (different) reporters  at the same time. See [Reporters](reporters.md#multiple-reporters) for details.
+This option may be passed multiple times to use multiple (different)
+reporters  at the same time. See the [reporter documentation](reporters.md#multiple-reporters)
+for details on what the resulting behaviour is. Also note that at most one
+reporter can be provided without the output-file part of reporter spec.
+This reporter will use the "default" output destination, based on
+the [`-o`, `--out`](#sending-output-to-a-file) option.
 
-As with the `--out` flag, `-` means writing to stdout.
+> Support for using multiple different reporters at the same time was [introduced](https://github.com/catchorg/Catch2/pull/2183) in Catch2 X.Y.Z
+
+As with the `--out` option, using `-` for the output file name sends the
+output to stdout.
 
 _Note: There is currently no way to escape `::` in the reporter spec,
 and thus reporter/file names with `::` in them will not work properly.
