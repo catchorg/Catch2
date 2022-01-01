@@ -279,6 +279,7 @@ set(REPORTER_HEADERS
         ${HEADER_DIR}/reporters/catch_reporter_bases.hpp
         ${HEADER_DIR}/reporters/catch_reporter_compact.h
         ${HEADER_DIR}/reporters/catch_reporter_console.h
+        ${HEADER_DIR}/reporters/catch_reporter_gtest.h
         ${HEADER_DIR}/reporters/catch_reporter_junit.h
         ${HEADER_DIR}/reporters/catch_reporter_listening.h
         ${HEADER_DIR}/reporters/catch_reporter_tap.hpp
@@ -290,6 +291,7 @@ set(REPORTER_SOURCES
         ${HEADER_DIR}/reporters/catch_reporter_bases.cpp
         ${HEADER_DIR}/reporters/catch_reporter_compact.cpp
         ${HEADER_DIR}/reporters/catch_reporter_console.cpp
+        ${HEADER_DIR}/reporters/catch_reporter_gtest.cpp
         ${HEADER_DIR}/reporters/catch_reporter_junit.cpp
         ${HEADER_DIR}/reporters/catch_reporter_listening.cpp
         ${HEADER_DIR}/reporters/catch_reporter_xml.cpp
