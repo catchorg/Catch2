@@ -175,6 +175,15 @@ new design.
   * Test identity includes test's name, test's tags and and test's class name if applicable.
 * Added new warning, `UnmatchedTestSpec`, to error on test specs with no matching tests
 * The `-w`, `--warn` warning flags can now be provided multiple times to enable multiple warnings
+* The case-insensitive handling of tags is now more reliable and takes up less memory
+* Test case and assertion counting can no longer reasonably overflow on 32 bit systems
+  * The count is now kept in `uint64_t` on all platforms, instead of using `size_t` type.
+* The `-o`, `--out` output destination specifiers recognize `-` as stdout
+  * You have to provide it as `--out=-` to avoid CLI error about missing option
+  * The new reporter specification also recognizes `-` as stdout
+* Multiple reporters can now run at the same time and write to different files (#1712, #2183)
+  * To support this, the `-r`, `--reporter` flag now also accepts optional output destination
+  * For full overview of the semantics of using multiple reporters, look into the reporter documentation
 
 
 ### Fixes
