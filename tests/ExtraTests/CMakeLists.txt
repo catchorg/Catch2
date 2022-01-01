@@ -241,6 +241,20 @@ set_tests_properties(
     PASS_REGULAR_EXPRESSION "TestReporter constructed"
 )
 
+add_executable(CapturedStdoutInTestCaseEvents ${TESTS_DIR}/X27-CapturedStdoutInTestCaseEvents.cpp)
+target_link_libraries(CapturedStdoutInTestCaseEvents PRIVATE Catch2::Catch2WithMain)
+add_test(
+  NAME Reporters::CapturedStdOutInEvents
+  COMMAND CapturedStdoutInTestCaseEvents
+    --reporter test-reporter
+)
+set_tests_properties(
+    Reporters::CapturedStdOutInEvents
+  PROPERTIES
+    PASS_REGULAR_EXPRESSION "X27 - TestReporter constructed"
+    FAIL_REGULAR_EXPRESSION "X27 ERROR"
+)
+
 
 add_executable(DuplicatedTestCases-SameNameAndTags ${TESTS_DIR}/X31-DuplicatedTestCases.cpp)
 target_link_libraries(DuplicatedTestCases-SameNameAndTags PRIVATE Catch2::Catch2WithMain)

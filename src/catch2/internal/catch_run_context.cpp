@@ -206,7 +206,7 @@ namespace Catch {
             redirectedCerr += oneRunCerr;
 
             const auto singleRunTotals = m_totals.delta(beforeRunTotals);
-            auto statsForOneRun = TestCaseStats(testInfo, singleRunTotals, redirectedCout, oneRunCerr, aborting());
+            auto statsForOneRun = TestCaseStats(testInfo, singleRunTotals, oneRunCout, oneRunCerr, aborting());
 
             m_reporter->testCasePartialEnded(statsForOneRun, testRuns);
             ++testRuns;
