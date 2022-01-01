@@ -3,6 +3,9 @@
 // and expressions in assertion macros are not run.
 
 #include <catch2/catch_test_macros.hpp>
+#include <catch2/benchmark/catch_benchmark.hpp>
+#include <catch2/matchers/catch_matchers.hpp>
+#include <catch2/matchers/catch_matchers_predicate.hpp>
 
 #include <iostream>
 
@@ -30,12 +33,18 @@ foo f;
 
 // This test should not be run, because it won't be registered
 TEST_CASE( "Disabled Macros" ) {
+    CHECK( 1 == 2 );
+    REQUIRE( 1 == 2 );
     std::cout << "This should not happen\n";
     FAIL();
 
     // Test that static assertions don't fire when macros are disabled
     STATIC_CHECK( 0 == 1 );
     STATIC_REQUIRE( !true );
+
+    REQUIRE_THAT( 1,
+                  Catch::Matchers::Predicate( []( int ) { return false; } ) );
+    BENCHMARK( "Disabled benchmark" ) { REQUIRE( 1 == 2 ); };
 }
 
 #if defined(__clang__)
