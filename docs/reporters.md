@@ -19,13 +19,13 @@ There are four reporters built in to the single include:
 * `console` writes as lines of text, formatted to a typical terminal width, with colours if a capable terminal is detected.
 * `compact` similar to `console` but optimised for minimal output - each entry on one line
 * `junit` writes xml that corresponds to Ant's [junitreport](http://help.catchsoftware.com/display/ET/JUnit+Format) target. Useful for build systems that understand Junit.
-Because of the way the junit format is structured the run must complete before anything is written. 
+Because of the way the junit format is structured the run must complete before anything is written.
 * `xml` writes an xml format tailored to Catch. Unlike `junit` this is a streaming format so results are delivered progressively.
 
 There are a few additional reporters, for specific build systems, in the Catch repository (in `include\reporters`) which you can `#include` in your project if you would like to make use of them.
 Do this in one source file - the same one you have `CATCH_CONFIG_MAIN` or `CATCH_CONFIG_RUNNER`.
 
-* `teamcity` writes the native, streaming, format that [TeamCity](https://www.jetbrains.com/teamcity/) understands. 
+* `teamcity` writes the native, streaming, format that [TeamCity](https://www.jetbrains.com/teamcity/) understands.
 Use this when building as part of a TeamCity build to see results as they happen ([code example](../examples/207-Rpt-TeamCityReporter.cpp)).
 * `tap` writes in the TAP ([Test Anything Protocol](https://en.wikipedia.org/wiki/Test_Anything_Protocol)) format.
 * `automake` writes in a format that correspond to [automake  .trs](https://www.gnu.org/software/automake/manual/html_node/Log-files-generation-and-test-results-recording.html) files
@@ -34,6 +34,19 @@ Use this when building as part of a TeamCity build to see results as they happen
 You see what reporters are available from the command line by running with `--list-reporters`.
 
 By default all these reports are written to stdout, but can be redirected to a file with [`-o` or `--out`](command-line.md#sending-output-to-a-file)
+
+<a id="multiple-reporters"></a>
+## Using multiple reporters
+
+> Support for having multiple parallel reporters was [introduced](https://github.com/catchorg/Catch2/pull/2183) in Catch2 X.Y.Z
+
+Multiple reporters may be used at the same time, e.g. to save a machine-readable output to a file but still print the human-readable output to the console:
+```
+-r console -r xml::result.xml -r junit::result-junit.xml
+```
+
+The output file name is given after the reporter name, delimited by a colon. If omitted, it defaults to the file name specified by `-o` (or stdout). Only one reporter may use the default output.
+
 
 ## Writing your own reporter
 

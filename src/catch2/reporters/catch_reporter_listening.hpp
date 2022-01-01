@@ -13,17 +13,25 @@
 namespace Catch {
 
     class ListeningReporter final : public IStreamingReporter {
-        using Reporters = std::vector<IStreamingReporterPtr>;
-        Reporters m_listeners;
-        IStreamingReporterPtr m_reporter = nullptr;
+        /*
+         * Stores all added reporters and listeners
+         *
+         * All Listeners are stored before all reporters, and individual
+         * listeners/reporters are stored in order of insertion.
+         */
+        std::vector<IStreamingReporterPtr> m_reporterLikes;
+        bool m_haveNoncapturingReporters = false;
+
+        // Keep track of how many listeners we have already inserted,
+        // so that we can insert them into the main vector at the right place
+        size_t m_insertedListeners = 0;
+
+        void updatePreferences(IStreamingReporter const& reporterish);
 
     public:
         ListeningReporter( IConfig const* config ):
-            IStreamingReporter( config ) {
-            // We will assume that listeners will always want all assertions
-            m_preferences.shouldReportAllAssertions = true;
-        }
-
+            IStreamingReporter( config )
+        {}
 
         void addListener( IStreamingReporterPtr&& listener );
         void addReporter( IStreamingReporterPtr&& reporter );

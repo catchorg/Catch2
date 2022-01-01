@@ -6,170 +6,186 @@
 
 // SPDX-License-Identifier: BSL-1.0
 #include <catch2/reporters/catch_reporter_listening.hpp>
+
+#include <catch2/catch_config.hpp>
 #include <catch2/internal/catch_move_and_forward.hpp>
+#include <catch2/internal/catch_stream.hpp>
 
 #include <cassert>
 
 namespace Catch {
-
-    void ListeningReporter::addListener( IStreamingReporterPtr&& listener ) {
-        m_listeners.push_back( CATCH_MOVE( listener ) );
+    void ListeningReporter::updatePreferences(IStreamingReporter const& reporterish) {
+        m_preferences.shouldRedirectStdOut |=
+            reporterish.getPreferences().shouldRedirectStdOut;
+        m_preferences.shouldReportAllAssertions |=
+            reporterish.getPreferences().shouldReportAllAssertions;
     }
 
-    void ListeningReporter::addReporter(IStreamingReporterPtr&& reporter) {
-        assert(!m_reporter && "Listening reporter can wrap only 1 real reporter");
-        m_reporter = CATCH_MOVE( reporter );
-        m_preferences.shouldRedirectStdOut = m_reporter->getPreferences().shouldRedirectStdOut;
+    void ListeningReporter::addListener( IStreamingReporterPtr&& listener ) {
+        updatePreferences(*listener);
+        m_reporterLikes.insert(m_reporterLikes.begin() + m_insertedListeners, CATCH_MOVE(listener) );
+        ++m_insertedListeners;
+    }
+
+    void ListeningReporter::addReporter( IStreamingReporterPtr&& reporter ) {
+        updatePreferences(*reporter);
+
+        // We will need to output the captured stdout if there are reporters
+        // that do not want it captured.
+        // We do not consider listeners, because it is generally assumed that
+        // listeners are output-transparent, even though they can ask for stdout
+        // capture to do something with it.
+        m_haveNoncapturingReporters |= !reporter->getPreferences().shouldRedirectStdOut;
+
+        // Reporters can always be placed to the back without breaking the
+        // reporting order
+        m_reporterLikes.push_back( CATCH_MOVE( reporter ) );
     }
 
     void ListeningReporter::noMatchingTestCases( StringRef unmatchedSpec ) {
-        for ( auto& listener : m_listeners ) {
-            listener->noMatchingTestCases( unmatchedSpec );
+        for ( auto& reporterish : m_reporterLikes ) {
+            reporterish->noMatchingTestCases( unmatchedSpec );
         }
-        m_reporter->noMatchingTestCases( unmatchedSpec );
     }
 
     void ListeningReporter::fatalErrorEncountered( StringRef error ) {
-        for ( auto& listener : m_listeners ) {
-            listener->fatalErrorEncountered( error );
+        for ( auto& reporterish : m_reporterLikes ) {
+            reporterish->fatalErrorEncountered( error );
         }
-        m_reporter->fatalErrorEncountered( error );
     }
 
     void ListeningReporter::reportInvalidTestSpec( StringRef arg ) {
-        for ( auto& listener : m_listeners ) {
-            listener->reportInvalidTestSpec( arg );
+        for ( auto& reporterish : m_reporterLikes ) {
+            reporterish->reportInvalidTestSpec( arg );
         }
-        m_reporter->reportInvalidTestSpec( arg );
     }
 
     void ListeningReporter::benchmarkPreparing( StringRef name ) {
-        for (auto& listener : m_listeners) {
-            listener->benchmarkPreparing(name);
+        for (auto& reporterish : m_reporterLikes) {
+            reporterish->benchmarkPreparing(name);
         }
-        m_reporter->benchmarkPreparing(name);
     }
     void ListeningReporter::benchmarkStarting( BenchmarkInfo const& benchmarkInfo ) {
-        for ( auto& listener : m_listeners ) {
-            listener->benchmarkStarting( benchmarkInfo );
+        for ( auto& reporterish : m_reporterLikes ) {
+            reporterish->benchmarkStarting( benchmarkInfo );
         }
-        m_reporter->benchmarkStarting( benchmarkInfo );
     }
     void ListeningReporter::benchmarkEnded( BenchmarkStats<> const& benchmarkStats ) {
-        for ( auto& listener : m_listeners ) {
-            listener->benchmarkEnded( benchmarkStats );
+        for ( auto& reporterish : m_reporterLikes ) {
+            reporterish->benchmarkEnded( benchmarkStats );
         }
-        m_reporter->benchmarkEnded( benchmarkStats );
     }
 
     void ListeningReporter::benchmarkFailed( StringRef error ) {
-        for (auto& listener : m_listeners) {
-            listener->benchmarkFailed(error);
+        for (auto& reporterish : m_reporterLikes) {
+            reporterish->benchmarkFailed(error);
         }
-        m_reporter->benchmarkFailed(error);
     }
 
     void ListeningReporter::testRunStarting( TestRunInfo const& testRunInfo ) {
-        for ( auto& listener : m_listeners ) {
-            listener->testRunStarting( testRunInfo );
+        for ( auto& reporterish : m_reporterLikes ) {
+            reporterish->testRunStarting( testRunInfo );
         }
-        m_reporter->testRunStarting( testRunInfo );
     }
 
     void ListeningReporter::testCaseStarting( TestCaseInfo const& testInfo ) {
-        for ( auto& listener : m_listeners ) {
-            listener->testCaseStarting( testInfo );
+        for ( auto& reporterish : m_reporterLikes ) {
+            reporterish->testCaseStarting( testInfo );
         }
-        m_reporter->testCaseStarting( testInfo );
     }
 
     void
     ListeningReporter::testCasePartialStarting( TestCaseInfo const& testInfo,
                                                 uint64_t partNumber ) {
-        for ( auto& listener : m_listeners ) {
-            listener->testCasePartialStarting( testInfo, partNumber );
+        for ( auto& reporterish : m_reporterLikes ) {
+            reporterish->testCasePartialStarting( testInfo, partNumber );
         }
-        m_reporter->testCasePartialStarting( testInfo, partNumber );
     }
 
     void ListeningReporter::sectionStarting( SectionInfo const& sectionInfo ) {
-        for ( auto& listener : m_listeners ) {
-            listener->sectionStarting( sectionInfo );
+        for ( auto& reporterish : m_reporterLikes ) {
+            reporterish->sectionStarting( sectionInfo );
         }
-        m_reporter->sectionStarting( sectionInfo );
     }
 
     void ListeningReporter::assertionStarting( AssertionInfo const& assertionInfo ) {
-        for ( auto& listener : m_listeners ) {
-            listener->assertionStarting( assertionInfo );
+        for ( auto& reporterish : m_reporterLikes ) {
+            reporterish->assertionStarting( assertionInfo );
         }
-        m_reporter->assertionStarting( assertionInfo );
     }
 
     // The return value indicates if the messages buffer should be cleared:
     void ListeningReporter::assertionEnded( AssertionStats const& assertionStats ) {
-        for( auto& listener : m_listeners ) {
-            listener->assertionEnded( assertionStats );
+        const bool reportByDefault =
+            assertionStats.assertionResult.getResultType() != ResultWas::Ok ||
+            m_config->includeSuccessfulResults();
+
+        for ( auto & reporterish : m_reporterLikes ) {
+            if ( reportByDefault ||
+                 reporterish->getPreferences().shouldReportAllAssertions ) {
+                    reporterish->assertionEnded( assertionStats );
+            }
         }
-        m_reporter->assertionEnded( assertionStats );
     }
 
     void ListeningReporter::sectionEnded( SectionStats const& sectionStats ) {
-        for ( auto& listener : m_listeners ) {
-            listener->sectionEnded( sectionStats );
+        for ( auto& reporterish : m_reporterLikes ) {
+            reporterish->sectionEnded( sectionStats );
         }
-        m_reporter->sectionEnded( sectionStats );
     }
 
-    void ListeningReporter::testCasePartialEnded( TestCaseStats const& testInfo,
+    void ListeningReporter::testCasePartialEnded( TestCaseStats const& testStats,
                                                   uint64_t partNumber ) {
-        for ( auto& listener : m_listeners ) {
-            listener->testCasePartialEnded( testInfo, partNumber );
+        if ( m_preferences.shouldRedirectStdOut &&
+             m_haveNoncapturingReporters ) {
+            if ( !testStats.stdOut.empty() ) {
+                Catch::cout() << testStats.stdOut << std::flush;
+            }
+            if ( !testStats.stdErr.empty() ) {
+                Catch::cerr() << testStats.stdErr << std::flush;
+            }
         }
-        m_reporter->testCasePartialEnded( testInfo, partNumber );
+
+        for ( auto& reporterish : m_reporterLikes ) {
+            reporterish->testCasePartialEnded( testStats, partNumber );
+        }
     }
 
     void ListeningReporter::testCaseEnded( TestCaseStats const& testCaseStats ) {
-        for ( auto& listener : m_listeners ) {
-            listener->testCaseEnded( testCaseStats );
+        for ( auto& reporterish : m_reporterLikes ) {
+            reporterish->testCaseEnded( testCaseStats );
         }
-        m_reporter->testCaseEnded( testCaseStats );
     }
 
     void ListeningReporter::testRunEnded( TestRunStats const& testRunStats ) {
-        for ( auto& listener : m_listeners ) {
-            listener->testRunEnded( testRunStats );
+        for ( auto& reporterish : m_reporterLikes ) {
+            reporterish->testRunEnded( testRunStats );
         }
-        m_reporter->testRunEnded( testRunStats );
     }
 
 
     void ListeningReporter::skipTest( TestCaseInfo const& testInfo ) {
-        for ( auto& listener : m_listeners ) {
-            listener->skipTest( testInfo );
+        for ( auto& reporterish : m_reporterLikes ) {
+            reporterish->skipTest( testInfo );
         }
-        m_reporter->skipTest( testInfo );
     }
 
     void ListeningReporter::listReporters(std::vector<ReporterDescription> const& descriptions) {
-        for (auto& listener : m_listeners) {
-            listener->listReporters(descriptions);
+        for (auto& reporterish : m_reporterLikes) {
+            reporterish->listReporters(descriptions);
         }
-        m_reporter->listReporters(descriptions);
     }
 
     void ListeningReporter::listTests(std::vector<TestCaseHandle> const& tests) {
-        for (auto& listener : m_listeners) {
-            listener->listTests(tests);
+        for (auto& reporterish : m_reporterLikes) {
+            reporterish->listTests(tests);
         }
-        m_reporter->listTests(tests);
     }
 
     void ListeningReporter::listTags(std::vector<TagInfo> const& tags) {
-        for (auto& listener : m_listeners) {
-            listener->listTags(tags);
+        for (auto& reporterish : m_reporterLikes) {
+            reporterish->listTags(tags);
         }
-        m_reporter->listTags(tags);
     }
 
 } // end namespace Catch

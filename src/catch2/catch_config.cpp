@@ -13,13 +13,39 @@
 #include <catch2/internal/catch_test_spec_parser.hpp>
 #include <catch2/interfaces/catch_interfaces_tag_alias_registry.hpp>
 
+#include <ostream>
 
 namespace Catch {
+    namespace Detail {
+        namespace {
+            class RDBufStream : public IStream {
+                mutable std::ostream m_os;
 
-    Config::Config( ConfigData const& data )
-    :   m_data( data ),
-        m_stream( Catch::makeStream(m_data.outputFilename) )
-    {
+            public:
+                //! The streambuf `sb` must outlive the constructed object.
+                RDBufStream( std::streambuf* sb ): m_os( sb ) {}
+                ~RDBufStream() override = default;
+
+            public: // IStream
+                std::ostream& stream() const override { return m_os; }
+            };
+        } // unnamed namespace
+    }     // namespace Detail
+
+    std::ostream& operator<<( std::ostream& os,
+                              ConfigData::ReporterAndFile const& reporter ) {
+        os << "{ " << reporter.reporterName << ", ";
+        if ( reporter.outputFileName ) {
+            os << *reporter.outputFileName;
+        } else {
+            os << "<default-output>";
+        }
+        return os << " }";
+    }
+
+    Config::Config( ConfigData const& data ):
+        m_data( data ),
+        m_defaultStream( openStream( data.defaultOutputFilename ) ) {
         // We need to trim filter specs to avoid trouble with superfluous
         // whitespace (esp. important for bdd macros, as those are manually
         // aligned with whitespace).
@@ -39,23 +65,36 @@ namespace Catch {
             }
         }
         m_testSpec = parser.testSpec();
+
+        m_reporterStreams.reserve( m_data.reporterSpecifications.size() );
+        for ( auto const& reporterAndFile : m_data.reporterSpecifications ) {
+            if ( reporterAndFile.outputFileName.none() ) {
+                m_reporterStreams.emplace_back( new Detail::RDBufStream(
+                    m_defaultStream->stream().rdbuf() ) );
+            } else {
+                m_reporterStreams.emplace_back(
+                    openStream( *reporterAndFile.outputFileName ) );
+            }
+        }
     }
 
     Config::~Config() = default;
 
 
-    std::string const& Config::getFilename() const {
-        return m_data.outputFilename ;
-    }
-
     bool Config::listTests() const          { return m_data.listTests; }
     bool Config::listTags() const           { return m_data.listTags; }
     bool Config::listReporters() const      { return m_data.listReporters; }
 
-    std::string const& Config::getReporterName() const { return m_data.reporterName; }
-
     std::vector<std::string> const& Config::getTestsOrTags() const { return m_data.testsOrTags; }
     std::vector<std::string> const& Config::getSectionsToRun() const { return m_data.sectionsToRun; }
+
+    std::vector<ConfigData::ReporterAndFile> const& Config::getReportersAndOutputFiles() const {
+        return m_data.reporterSpecifications;
+    }
+
+    std::ostream& Config::getReporterOutputStream(std::size_t reporterIdx) const {
+        return m_reporterStreams.at(reporterIdx)->stream();
+    }
 
     TestSpec const& Config::testSpec() const { return m_testSpec; }
     bool Config::hasTestFilters() const { return m_hasTestFilters; }
@@ -64,8 +103,8 @@ namespace Catch {
 
     // IConfig interface
     bool Config::allowThrows() const                   { return !m_data.noThrow; }
-    std::ostream& Config::stream() const               { return m_stream->stream(); }
-    StringRef Config::name() const                     { return m_data.name.empty() ? m_data.processName : m_data.name; }
+    std::ostream& Config::defaultStream() const        { return m_defaultStream->stream(); }
+    StringRef Config::name() const { return m_data.name.empty() ? m_data.processName : m_data.name; }
     bool Config::includeSuccessfulResults() const      { return m_data.showSuccessfulTests; }
     bool Config::warnAboutMissingAssertions() const {
         return !!( m_data.warnings & WarnAbout::NoAssertions );
@@ -91,5 +130,9 @@ namespace Catch {
     double Config::benchmarkConfidenceInterval() const            { return m_data.benchmarkConfidenceInterval; }
     unsigned int Config::benchmarkResamples() const               { return m_data.benchmarkResamples; }
     std::chrono::milliseconds Config::benchmarkWarmupTime() const { return std::chrono::milliseconds(m_data.benchmarkWarmupTime); }
+
+    Detail::unique_ptr<IStream const> Config::openStream(std::string const& outputFileName) {
+        return Catch::makeStream(outputFileName);
+    }
 
 } // end namespace Catch

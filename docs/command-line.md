@@ -123,7 +123,9 @@ Test names containing special characters, such as `,` or `[` can specify them on
 <a id="choosing-a-reporter-to-use"></a>
 ## Choosing a reporter to use
 
-<pre>-r, --reporter &lt;reporter></pre>
+<pre>-r, --reporter &lt;reporter[::output-file]&gt;</pre>
+
+> Support for providing output-file through the `-r`, `--reporter` flag was [introduced](https://github.com/catchorg/Catch2/pull/2183) in Catch2 X.Y.Z
 
 A reporter is an object that formats and structures the output of running tests, and potentially summarises the results. By default a console reporter is used that writes, IDE friendly, textual output. Catch comes bundled with some alternative reporters, but more can be added in client code.<br />
 The bundled reporters are:
@@ -135,6 +137,15 @@ The bundled reporters are:
 </pre>
 
 The JUnit reporter is an xml format that follows the structure of the JUnit XML Report ANT task, as consumed by a number of third-party tools, including Continuous Integration servers such as Jenkins. If not otherwise needed, the standard XML reporter is preferred as this is a streaming reporter, whereas the Junit reporter needs to hold all its results until the end so it can write the overall results into attributes of the root node.
+
+This option may be passed multiple times to use multiple (different) reporters  at the same time. See [Reporters](reporters.md#multiple-reporters) for details.
+
+As with the `--out` flag, `-` means writing to stdout.
+
+_Note: There is currently no way to escape `::` in the reporter spec,
+and thus reporter/file names with `::` in them will not work properly.
+As `::` in paths is relatively obscure (unlike `:`), we do not consider
+this an issue._
 
 <a id="breaking-into-the-debugger"></a>
 ## Breaking into the debugger
@@ -178,10 +189,15 @@ If one or more test-specs have been supplied too then only the matching tests wi
 
 <a id="sending-output-to-a-file"></a>
 ## Sending output to a file
-<pre>-o, --out &lt;filename>
+<pre>-o, --out &lt;filename&gt;
 </pre>
 
 Use this option to send all output to a file. By default output is sent to stdout (note that uses of stdout and stderr *from within test cases* are redirected and included in the report - so even stderr will effectively end up on stdout).
+
+Using `-` as the filename sends the output to stdout.
+
+> Support for `-` as the filename was introduced in Catch2 X.Y.Z
+
 
 <a id="naming-a-test-run"></a>
 ## Naming a test run
@@ -414,7 +430,7 @@ There are some limitations of this feature to be aware of:
 - Code outside of sections being skipped will still be executed - e.g. any set-up code in the TEST_CASE before the
 start of the first section.</br>
 - At time of writing, wildcards are not supported in section names.
-- If you specify a section without narrowing to a test case first then all test cases will be executed 
+- If you specify a section without narrowing to a test case first then all test cases will be executed
 (but only matching sections within them).
 
 
@@ -422,7 +438,7 @@ start of the first section.</br>
 ## Filenames as tags
 <pre>-#, --filenames-as-tags</pre>
 
-When this option is used then every test is given an additional tag which is formed of the unqualified 
+When this option is used then every test is given an additional tag which is formed of the unqualified
 filename it is found in, with any extension stripped, prefixed with the `#` character.
 
 So, for example,  tests within the file `~\Dev\MyProject\Ferrets.cpp` would be tagged `[#Ferrets]`.

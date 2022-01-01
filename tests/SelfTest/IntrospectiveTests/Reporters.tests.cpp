@@ -16,6 +16,9 @@
 #include <catch2/internal/catch_list.hpp>
 #include <catch2/matchers/catch_matchers_string.hpp>
 #include <catch2/reporters/catch_reporter_helpers.hpp>
+#include <catch2/reporters/catch_reporter_event_listener.hpp>
+#include <catch2/reporters/catch_reporter_streaming_base.hpp>
+#include <catch2/reporters/catch_reporter_listening.hpp>
 
 #include <sstream>
 
@@ -111,4 +114,149 @@ TEST_CASE( "Reporter's write listings to provided stream", "[reporters]" ) {
 
 TEST_CASE("Reproducer for #2309 - a very long description past 80 chars (default console width) with a late colon : blablabla", "[console-reporter]") {
     SUCCEED();
+}
+
+namespace {
+    // A listener that writes provided string into destination,
+    // to record order of testRunStarting invocation.
+    class MockListener : public Catch::EventListenerBase {
+        std::string m_witness;
+        std::vector<std::string>& m_recorder;
+    public:
+        MockListener( std::string witness,
+                      std::vector<std::string>& recorder,
+                      Catch::ReporterConfig const& config ):
+            EventListenerBase( config ),
+            m_witness( witness ),
+            m_recorder( recorder )
+        {}
+
+        void testRunStarting( Catch::TestRunInfo const& ) override {
+            m_recorder.push_back( m_witness );
+        }
+    };
+    // A reporter that writes provided string into destination,
+    // to record order of testRunStarting invocation.
+    class MockReporter : public Catch::StreamingReporterBase {
+        std::string m_witness;
+        std::vector<std::string>& m_recorder;
+    public:
+        MockReporter( std::string witness,
+                      std::vector<std::string>& recorder,
+                      Catch::ReporterConfig const& config ):
+            StreamingReporterBase( config ),
+            m_witness( witness ),
+            m_recorder( recorder )
+        {}
+
+        void testRunStarting( Catch::TestRunInfo const& ) override {
+            m_recorder.push_back( m_witness );
+        }
+    };
+} // namespace
+
+TEST_CASE("Multireporter calls reporters and listeners in correct order",
+          "[reporters][multi-reporter]") {
+
+    Catch::ConfigData config_data;
+    Catch::Config config( config_data );
+    std::stringstream sstream;
+    Catch::ReporterConfig rep_config( &config, sstream );
+
+    // We add reporters before listeners, to check that internally they
+    // get sorted properly, and listeners are called first anyway.
+    Catch::ListeningReporter multiReporter( &config );
+    std::vector<std::string> records;
+    multiReporter.addReporter( Catch::Detail::make_unique<MockReporter>(
+        "Goodbye", records, rep_config ) );
+    multiReporter.addListener( Catch::Detail::make_unique<MockListener>(
+        "Hello", records, rep_config ) );
+    multiReporter.addListener( Catch::Detail::make_unique<MockListener>(
+        "world", records, rep_config ) );
+    multiReporter.addReporter( Catch::Detail::make_unique<MockReporter>(
+        "world", records, rep_config ) );
+    multiReporter.testRunStarting( { "" } );
+
+    std::vector<std::string> expected( { "Hello", "world", "Goodbye", "world" } );
+    REQUIRE( records == expected );
+}
+
+namespace {
+    // A listener that sets it preferences to test that multireporter,
+    // properly sets up its own preferences
+    class PreferenceListener : public Catch::EventListenerBase {
+    public:
+        PreferenceListener( bool redirectStdout,
+                            bool reportAllAssertions,
+                            Catch::ReporterConfig const& config ):
+            EventListenerBase( config ) {
+            m_preferences.shouldRedirectStdOut = redirectStdout;
+            m_preferences.shouldReportAllAssertions = reportAllAssertions;
+        }
+    };
+    // A reporter that sets it preferences to test that multireporter,
+    // properly sets up its own preferences
+    class PreferenceReporter : public Catch::StreamingReporterBase {
+    public:
+        PreferenceReporter( bool redirectStdout,
+                            bool reportAllAssertions,
+                            Catch::ReporterConfig const& config ):
+            StreamingReporterBase( config ) {
+            m_preferences.shouldRedirectStdOut = redirectStdout;
+            m_preferences.shouldReportAllAssertions = reportAllAssertions;
+        }
+    };
+} // namespace
+
+TEST_CASE("Multireporter updates ReporterPreferences properly",
+          "[reporters][multi-reporter]") {
+
+    Catch::ConfigData config_data;
+    Catch::Config config( config_data );
+    std::stringstream sstream;
+    Catch::ReporterConfig rep_config( &config, sstream );
+    Catch::ListeningReporter multiReporter( &config );
+
+    // Post init defaults
+    REQUIRE( multiReporter.getPreferences().shouldRedirectStdOut == false );
+    REQUIRE( multiReporter.getPreferences().shouldReportAllAssertions == false );
+
+    SECTION( "Adding listeners" ) {
+        multiReporter.addListener(
+            Catch::Detail::make_unique<PreferenceListener>(
+                true, false, rep_config ) );
+        REQUIRE( multiReporter.getPreferences().shouldRedirectStdOut == true );
+        REQUIRE( multiReporter.getPreferences().shouldReportAllAssertions == false );
+
+        multiReporter.addListener(
+            Catch::Detail::make_unique<PreferenceListener>(
+                false, true, rep_config ) );
+        REQUIRE( multiReporter.getPreferences().shouldRedirectStdOut == true );
+        REQUIRE( multiReporter.getPreferences().shouldReportAllAssertions == true);
+
+        multiReporter.addListener(
+            Catch::Detail::make_unique<PreferenceListener>(
+                false, false, rep_config ) );
+        REQUIRE( multiReporter.getPreferences().shouldRedirectStdOut == true );
+        REQUIRE( multiReporter.getPreferences().shouldReportAllAssertions == true );
+    }
+    SECTION( "Adding reporters" ) {
+        multiReporter.addReporter(
+            Catch::Detail::make_unique<PreferenceReporter>(
+                true, false, rep_config ) );
+        REQUIRE( multiReporter.getPreferences().shouldRedirectStdOut == true );
+        REQUIRE( multiReporter.getPreferences().shouldReportAllAssertions == false );
+
+        multiReporter.addReporter(
+            Catch::Detail::make_unique<PreferenceReporter>(
+                false, true, rep_config ) );
+        REQUIRE( multiReporter.getPreferences().shouldRedirectStdOut == true );
+        REQUIRE( multiReporter.getPreferences().shouldReportAllAssertions == true );
+
+        multiReporter.addReporter(
+            Catch::Detail::make_unique<PreferenceReporter>(
+                false, false, rep_config ) );
+        REQUIRE( multiReporter.getPreferences().shouldRedirectStdOut == true );
+        REQUIRE( multiReporter.getPreferences().shouldReportAllAssertions == true );
+    }
 }

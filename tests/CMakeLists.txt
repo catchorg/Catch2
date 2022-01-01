@@ -418,6 +418,59 @@ set_tests_properties("ErrorHandling::InvalidTestSpecExitsEarly"
     FAIL_REGULAR_EXPRESSION "No tests ran"
 )
 
+if (MSVC)
+  set(_NullFile "NUL")
+else()
+  set(_NullFile "/dev/null")
+endif()
+
+# This test checks that there is nothing written out from the process,
+# but if CMake is running the tests under Valgrind or similar tool, then
+# that will write its own output to stdout and the test would fail.
+if (NOT MEMORYCHECK_COMMAND)
+  add_test(NAME "MultiReporter::CapturingReportersDontPropagateStdOut"
+    COMMAND
+      $<TARGET_FILE:SelfTest> "Sends stuff to stdout and stderr"
+        --reporter xml::${_NullFile}
+        --reporter junit::${_NullFile}
+  )
+  set_tests_properties("MultiReporter::CapturingReportersDontPropagateStdOut"
+    PROPERTIES
+      FAIL_REGULAR_EXPRESSION ".+"
+  )
+endif()
+
+add_test(NAME "MultiReporter::NonCapturingReportersPropagateStdout"
+  COMMAND
+    $<TARGET_FILE:SelfTest> "Sends stuff to stdout and stderr"
+      --reporter xml::${_NullFile}
+      --reporter console::${_NullFile}
+)
+set_tests_properties("MultiReporter::NonCapturingReportersPropagateStdout"
+  PROPERTIES
+    PASS_REGULAR_EXPRESSION "A string sent to stderr via clog"
+)
+
+add_test(NAME "Outputs::DashAsOutLocationSendsOutputToStdout"
+  COMMAND
+    $<TARGET_FILE:SelfTest> "Factorials are computed"
+      --out=-
+)
+set_tests_properties("Outputs::DashAsOutLocationSendsOutputToStdout"
+  PROPERTIES
+    PASS_REGULAR_EXPRESSION "All tests passed \\(5 assertions in 1 test case\\)"
+)
+
+add_test(NAME "Reporters::DashAsLocationInReporterSpecSendsOutputToStdout"
+  COMMAND
+    $<TARGET_FILE:SelfTest> "Factorials are computed"
+      --reporter console::-
+)
+set_tests_properties("Reporters::DashAsLocationInReporterSpecSendsOutputToStdout"
+  PROPERTIES
+    PASS_REGULAR_EXPRESSION "All tests passed \\(5 assertions in 1 test case\\)"
+)
+
 
 if (CATCH_USE_VALGRIND)
     add_test(NAME ValgrindRunTests COMMAND valgrind --leak-check=full --error-exitcode=1 $<TARGET_FILE:SelfTest>)
