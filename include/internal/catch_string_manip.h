@@ -21,7 +21,9 @@ namespace Catch {
     bool endsWith( std::string const& s, char suffix );
     bool contains( std::string const& s, std::string const& infix );
     void toLowerInPlace( std::string& s );
+    void toUpperInPlace( std::string& s );
     std::string toLower( std::string const& s );
+    std::string toUpper( std::string const& s );
     //! Returns a new string without whitespace at the start/end
     std::string trim( std::string const& str );
     //! Returns a substring of the original ref without whitespace. Beware lifetimes!
@@ -33,6 +35,8 @@ namespace Catch {
 
     struct pluralise {
         pluralise( std::size_t count, std::string const& label );
+
+        std::string str() const;
 
         friend std::ostream& operator << ( std::ostream& os, pluralise const& pluraliser );
 

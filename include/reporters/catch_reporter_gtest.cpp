@@ -15,6 +15,7 @@
 #include "../internal/catch_version.h"
 
 #include <cfloat>
+#include <cmath>
 #include <cstdio>
 
 #if defined( _MSC_VER )
@@ -33,6 +34,22 @@
 namespace Catch {
 
     namespace {
+
+        struct Coloured {
+            std::string text;
+            Colour::Code code;
+        };
+
+        std::ostream& operator<<( std::ostream& os, Coloured coloured ) {
+            Colour colourGuard( coloured.code );
+            return os << coloured.text;
+        }
+
+        std::string formatDuration( double durationInSeconds ) {
+            return std::to_string( static_cast<int64_t>(
+                       std::round( durationInSeconds * 1000 ) ) ) +
+                   " ms";
+        }
 
         // Formatter impl for GTestReporter
         class ConsoleAssertionPrinter {
@@ -177,220 +194,22 @@ namespace Catch {
             std::vector<MessageInfo> messages;
             bool printInfoMessages;
         };
-
-        std::size_t makeRatio( std::size_t number, std::size_t total ) {
-            std::size_t ratio =
-                total > 0 ? CATCH_CONFIG_CONSOLE_WIDTH * number / total : 0;
-            return ( ratio == 0 && number > 0 ) ? 1 : ratio;
-        }
-
-        std::size_t& findMax( std::size_t& i, std::size_t& j, std::size_t& k ) {
-            if ( i > j && i > k )
-                return i;
-            else if ( j > k )
-                return j;
-            else
-                return k;
-        }
-
-        struct ColumnInfo {
-            enum Justification { Left, Right };
-            std::string name;
-            int width;
-            Justification justification;
-        };
-        struct ColumnBreak {};
-        struct RowBreak {};
-
-        class Duration {
-            enum class Unit {
-                Auto,
-                Nanoseconds,
-                Microseconds,
-                Milliseconds,
-                Seconds,
-                Minutes
-            };
-            static const uint64_t s_nanosecondsInAMicrosecond = 1000;
-            static const uint64_t s_nanosecondsInAMillisecond =
-                1000 * s_nanosecondsInAMicrosecond;
-            static const uint64_t s_nanosecondsInASecond =
-                1000 * s_nanosecondsInAMillisecond;
-            static const uint64_t s_nanosecondsInAMinute =
-                60 * s_nanosecondsInASecond;
-
-            double m_inNanoseconds;
-            Unit m_units;
-
-        public:
-            explicit Duration( double inNanoseconds, Unit units = Unit::Auto ):
-                m_inNanoseconds( inNanoseconds ), m_units( units ) {
-                if ( m_units == Unit::Auto ) {
-                    if ( m_inNanoseconds < s_nanosecondsInAMicrosecond )
-                        m_units = Unit::Nanoseconds;
-                    else if ( m_inNanoseconds < s_nanosecondsInAMillisecond )
-                        m_units = Unit::Microseconds;
-                    else if ( m_inNanoseconds < s_nanosecondsInASecond )
-                        m_units = Unit::Milliseconds;
-                    else if ( m_inNanoseconds < s_nanosecondsInAMinute )
-                        m_units = Unit::Seconds;
-                    else
-                        m_units = Unit::Minutes;
-                }
-            }
-
-            auto value() const -> double {
-                switch ( m_units ) {
-                case Unit::Microseconds:
-                    return m_inNanoseconds /
-                           static_cast<double>( s_nanosecondsInAMicrosecond );
-                case Unit::Milliseconds:
-                    return m_inNanoseconds /
-                           static_cast<double>( s_nanosecondsInAMillisecond );
-                case Unit::Seconds:
-                    return m_inNanoseconds /
-                           static_cast<double>( s_nanosecondsInASecond );
-                case Unit::Minutes:
-                    return m_inNanoseconds /
-                           static_cast<double>( s_nanosecondsInAMinute );
-                default:
-                    return m_inNanoseconds;
-                }
-            }
-            auto unitsAsString() const -> std::string {
-                switch ( m_units ) {
-                case Unit::Nanoseconds:
-                    return "ns";
-                case Unit::Microseconds:
-                    return "us";
-                case Unit::Milliseconds:
-                    return "ms";
-                case Unit::Seconds:
-                    return "s";
-                case Unit::Minutes:
-                    return "m";
-                default:
-                    return "** internal error **";
-                }
-            }
-            friend auto operator<<( std::ostream& os, Duration const& duration )
-                -> std::ostream& {
-                return os << duration.value() << ' '
-                          << duration.unitsAsString();
-            }
-        };
     } // namespace
 
-    class TablePrinter {
-        std::ostream& m_os;
-        std::vector<ColumnInfo> m_columnInfos;
-        std::ostringstream m_oss;
-        int m_currentColumn = -1;
-        bool m_isOpen = false;
-
-    public:
-        TablePrinter( std::ostream& os, std::vector<ColumnInfo> columnInfos ):
-            m_os( os ), m_columnInfos( std::move( columnInfos ) ) {}
-
-        auto columnInfos() const -> std::vector<ColumnInfo> const& {
-            return m_columnInfos;
-        }
-
-        void open() {
-            if ( !m_isOpen ) {
-                m_isOpen = true;
-                *this << RowBreak();
-
-                Columns headerCols;
-                Spacer spacer( 2 );
-                for ( auto const& info : m_columnInfos ) {
-                    headerCols += Column( info.name )
-                                      .width( static_cast<std::size_t>(
-                                          info.width - 2 ) );
-                    headerCols += spacer;
-                }
-                m_os << headerCols << '\n';
-
-                m_os << Catch::getLineOfChars<'-'>() << '\n';
-            }
-        }
-        void close() {
-            if ( m_isOpen ) {
-                *this << RowBreak();
-                m_os << std::endl;
-                m_isOpen = false;
-            }
-        }
-
-        template <typename T>
-        friend TablePrinter& operator<<( TablePrinter& tp, T const& value ) {
-            tp.m_oss << value;
-            return tp;
-        }
-
-        friend TablePrinter& operator<<( TablePrinter& tp, ColumnBreak ) {
-            auto colStr = tp.m_oss.str();
-            const auto strSize = colStr.size();
-            tp.m_oss.str( "" );
-            tp.open();
-            if ( tp.m_currentColumn ==
-                 static_cast<int>( tp.m_columnInfos.size() - 1 ) ) {
-                tp.m_currentColumn = -1;
-                tp.m_os << '\n';
-            }
-            tp.m_currentColumn++;
-
-            auto colInfo = tp.m_columnInfos[tp.m_currentColumn];
-            auto padding =
-                ( strSize + 1 < static_cast<std::size_t>( colInfo.width ) )
-                    ? std::string( colInfo.width - ( strSize + 1 ), ' ' )
-                    : std::string();
-            if ( colInfo.justification == ColumnInfo::Left )
-                tp.m_os << colStr << padding << ' ';
-            else
-                tp.m_os << padding << colStr << ' ';
-            return tp;
-        }
-
-        friend TablePrinter& operator<<( TablePrinter& tp, RowBreak ) {
-            if ( tp.m_currentColumn > 0 ) {
-                tp.m_os << '\n';
-                tp.m_currentColumn = -1;
-            }
-            return tp;
-        }
-    };
-
     GTestReporter::GTestReporter( ReporterConfig const& config ):
-        StreamingReporterBase( config ),
-        m_tablePrinter( new TablePrinter(
-            config.stream(), [&config]() -> std::vector<ColumnInfo> {
-                if ( config.fullConfig()->benchmarkNoAnalysis() ) {
-                    return { { "benchmark name",
-                               CATCH_CONFIG_CONSOLE_WIDTH - 43,
-                               ColumnInfo::Left },
-                             { "     samples", 14, ColumnInfo::Right },
-                             { "  iterations", 14, ColumnInfo::Right },
-                             { "        mean", 14, ColumnInfo::Right } };
-                } else {
-                    return { { "benchmark name",
-                               CATCH_CONFIG_CONSOLE_WIDTH - 43,
-                               ColumnInfo::Left },
-                             { "samples      mean       std dev",
-                               14,
-                               ColumnInfo::Right },
-                             { "iterations   low mean   low std dev",
-                               14,
-                               ColumnInfo::Right },
-                             { "estimated    high mean  high std dev",
-                               14,
-                               ColumnInfo::Right } };
-                }
-            }() ) ) {}
+        StreamingReporterBase( config ) {}
+
     GTestReporter::~GTestReporter() = default;
 
     std::string GTestReporter::getDescription() {
-        return "Reports test results as plain lines of text";
+        return "Reports each test and section as it runs, similar to Google "
+               "Test. Entering the root section corresponding to the test body "
+               "is not reported for each subsection by default, set verbosity "
+               "to high to change this.";
+    }
+
+    std::set<Verbosity> GTestReporter::getSupportedVerbosities() {
+        return { Verbosity::Normal, Verbosity::High };
     }
 
     void GTestReporter::noMatchingTestCases( std::string const& spec ) {
@@ -399,6 +218,35 @@ namespace Catch {
 
     void GTestReporter::reportInvalidArguments( std::string const& arg ) {
         stream << "Invalid Filter: " << arg << std::endl;
+    }
+
+    void GTestReporter::testRunStarting( TestRunInfo const& _testInfo ) {
+        StreamingReporterBase::testRunStarting( _testInfo );
+        printTestFilters();
+        m_runStats.timer.start();
+        stream << Coloured{ "[==========] ", Colour::Green } << "Running "
+               << _testInfo.name << "\n";
+    }
+
+    void GTestReporter::testCaseStarting( TestCaseInfo const& _testInfo ) {
+        StreamingReporterBase::testCaseStarting( _testInfo );
+        m_testCaseStats = {};
+        m_testCaseStats.timer.start();
+        m_prevNestedSectionAssertionFailures = 0;
+        stream << Coloured{ "[----------] ", Colour::Green } << _testInfo.name
+               << "\n";
+        if ( shouldPrintRootSectionOnlyOnce() ) {
+            stream << Coloured{ "[ RUN      ] ", Colour::Green }
+                   << _testInfo.name << "\n";
+        }
+    }
+
+    void GTestReporter::sectionStarting( SectionInfo const& _sectionInfo ) {
+        StreamingReporterBase::sectionStarting( _sectionInfo );
+        if ( m_sectionStack.size() > 1 || !shouldPrintRootSectionOnlyOnce() ) {
+            stream << Coloured{ "[ RUN      ] ", Colour::Green }
+                   << formatFullSectionName() << "\n";
+        }
     }
 
     void GTestReporter::assertionStarting( AssertionInfo const& ) {}
@@ -414,8 +262,6 @@ namespace Catch {
         if ( !includeResults && result.getResultType() != ResultWas::Warning )
             return false;
 
-        lazyPrint();
-
         ConsoleAssertionPrinter printer(
             stream, _assertionStats, includeResults );
         printer.print();
@@ -423,309 +269,125 @@ namespace Catch {
         return true;
     }
 
-    void GTestReporter::sectionStarting( SectionInfo const& _sectionInfo ) {
-        m_tablePrinter->close();
-        m_headerPrinted = false;
-        StreamingReporterBase::sectionStarting( _sectionInfo );
-    }
     void GTestReporter::sectionEnded( SectionStats const& _sectionStats ) {
-        m_tablePrinter->close();
-        if ( _sectionStats.missingAssertions ) {
-            lazyPrint();
-            Colour colour( Colour::ResultError );
+        if ( _sectionStats.missingAssertions &&
+             m_config->warnAboutMissingAssertions() ) {
+            Colour colour( Colour::Warning );
             if ( m_sectionStack.size() > 1 )
-                stream << "\nNo assertions in section";
+                stream << "No assertions in section\n";
             else
-                stream << "\nNo assertions in test case";
-            stream << " '" << _sectionStats.sectionInfo.name << "'\n"
-                   << std::endl;
+                stream << "No assertions in test case\n";
         }
-        double dur = _sectionStats.durationInSeconds;
-        if ( shouldShowDuration( *m_config, dur ) ) {
-            stream << getFormattedDuration( dur )
-                   << " s: " << _sectionStats.sectionInfo.name << std::endl;
+        const auto sectionName = formatFullSectionName();
+        if ( m_sectionStack.size() > 1 || !shouldPrintRootSectionOnlyOnce() ) {
+            stream << ( _sectionStats.assertions.allOk()
+                            ? Coloured{ "[       OK ] ", Colour::Green }
+                            : Coloured{ "[  FAILED  ] ", Colour::Red } )
+                   << sectionName << " ("
+                   << formatDuration( _sectionStats.durationInSeconds )
+                   << ")\n";
         }
-        if ( m_headerPrinted ) {
-            m_headerPrinted = false;
+        if ( m_sectionStack.size() == 1 ) {
+            if ( _sectionStats.assertions.allPassed() ) {
+                m_testCaseStats.tests.passed++;
+            } else if ( _sectionStats.assertions.allOk() ) {
+                m_testCaseStats.tests.failedButOk++;
+            } else {
+                m_testCaseStats.tests.failed++;
+            }
         }
+        if ( _sectionStats.assertions.failed >
+             m_prevNestedSectionAssertionFailures ) {
+            if ( !m_failedSectionsSet.count( sectionName ) ) {
+                m_failedSections.emplace_back( sectionName );
+                m_failedSectionsSet.insert( sectionName );
+            }
+        }
+        m_prevNestedSectionAssertionFailures = _sectionStats.assertions.failed;
         StreamingReporterBase::sectionEnded( _sectionStats );
     }
 
-#if defined( CATCH_CONFIG_ENABLE_BENCHMARKING )
-    void GTestReporter::benchmarkPreparing( std::string const& name ) {
-        lazyPrintWithoutClosingBenchmarkTable();
-
-        auto nameCol = Column( name ).width( static_cast<std::size_t>(
-            m_tablePrinter->columnInfos()[0].width - 2 ) );
-
-        bool firstLine = true;
-        for ( auto line : nameCol ) {
-            if ( !firstLine )
-                ( *m_tablePrinter )
-                    << ColumnBreak() << ColumnBreak() << ColumnBreak();
-            else
-                firstLine = false;
-
-            ( *m_tablePrinter ) << line << ColumnBreak();
-        }
-    }
-
-    void GTestReporter::benchmarkStarting( BenchmarkInfo const& info ) {
-        ( *m_tablePrinter ) << info.samples << ColumnBreak() << info.iterations
-                            << ColumnBreak();
-        if ( !m_config->benchmarkNoAnalysis() )
-            ( *m_tablePrinter )
-                << Duration( info.estimatedDuration ) << ColumnBreak();
-    }
-    void GTestReporter::benchmarkEnded( BenchmarkStats<> const& stats ) {
-        if ( m_config->benchmarkNoAnalysis() ) {
-            ( *m_tablePrinter )
-                << Duration( stats.mean.point.count() ) << ColumnBreak();
-        } else {
-            ( *m_tablePrinter )
-                << ColumnBreak() << Duration( stats.mean.point.count() )
-                << ColumnBreak() << Duration( stats.mean.lower_bound.count() )
-                << ColumnBreak() << Duration( stats.mean.upper_bound.count() )
-                << ColumnBreak() << ColumnBreak()
-                << Duration( stats.standardDeviation.point.count() )
-                << ColumnBreak()
-                << Duration( stats.standardDeviation.lower_bound.count() )
-                << ColumnBreak()
-                << Duration( stats.standardDeviation.upper_bound.count() )
-                << ColumnBreak() << ColumnBreak() << ColumnBreak()
-                << ColumnBreak() << ColumnBreak();
-        }
-    }
-
-    void GTestReporter::benchmarkFailed( std::string const& error ) {
-        Colour colour( Colour::Red );
-        ( *m_tablePrinter ) << "Benchmark failed (" << error << ')'
-                            << ColumnBreak() << RowBreak();
-    }
-#endif // CATCH_CONFIG_ENABLE_BENCHMARKING
-
     void GTestReporter::testCaseEnded( TestCaseStats const& _testCaseStats ) {
-        m_tablePrinter->close();
         StreamingReporterBase::testCaseEnded( _testCaseStats );
-        m_headerPrinted = false;
-    }
-    void
-    GTestReporter::testGroupEnded( TestGroupStats const& _testGroupStats ) {
-        if ( currentGroupInfo.used ) {
-            printSummaryDivider();
-            stream << "Summary for group '" << _testGroupStats.groupInfo.name
-                   << "':\n";
-            printTotals( _testGroupStats.totals );
-            stream << '\n' << std::endl;
+        m_runStats.tests += m_testCaseStats.tests;
+        if ( shouldPrintRootSectionOnlyOnce() ) {
+            stream << ( _testCaseStats.totals.testCases.allOk()
+                            ? Coloured{ "[       OK ] ", Colour::Green }
+                            : Coloured{ "[  FAILED  ] ", Colour::Red } )
+                   << _testCaseStats.testInfo.name << "\n";
         }
-        StreamingReporterBase::testGroupEnded( _testGroupStats );
+        stream << Coloured{ "[----------] ", Colour::Green }
+               << pluralise( m_testCaseStats.tests.total(), "test" ) << " from "
+               << _testCaseStats.testInfo.name << " ("
+               << formatDuration( m_testCaseStats.timer.getElapsedSeconds() )
+               << " total)\n";
+        if ( m_testCaseStats.tests.failedButOk > 0 ) {
+            stream << Coloured{ "[ EXPECTED ] ", Colour::Yellow }
+                   << pluralise( m_testCaseStats.tests.failedButOk, "test" )
+                   << " failed as expected\n";
+        }
+        if ( m_testCaseStats.tests.failed > 0 ) {
+            stream << Coloured{ "[  FAILED  ] ", Colour::Red }
+                   << pluralise( m_testCaseStats.tests.failed, "test" )
+                   << " failed\n";
+        }
+        stream << "\n";
     }
+
     void GTestReporter::testRunEnded( TestRunStats const& _testRunStats ) {
-        printTotalsDivider( _testRunStats.totals );
-        printTotals( _testRunStats.totals );
-        stream << std::endl;
         StreamingReporterBase::testRunEnded( _testRunStats );
-    }
-    void GTestReporter::testRunStarting( TestRunInfo const& _testInfo ) {
-        StreamingReporterBase::testRunStarting( _testInfo );
-        printTestFilters();
-    }
-
-    void GTestReporter::lazyPrint() {
-
-        m_tablePrinter->close();
-        lazyPrintWithoutClosingBenchmarkTable();
-    }
-
-    void GTestReporter::lazyPrintWithoutClosingBenchmarkTable() {
-
-        if ( !currentTestRunInfo.used )
-            lazyPrintRunInfo();
-        if ( !currentGroupInfo.used )
-            lazyPrintGroupInfo();
-
-        if ( !m_headerPrinted ) {
-            printTestCaseAndSectionHeader();
-            m_headerPrinted = true;
+        stream << Coloured{ "[==========] ", Colour::Green }
+               << pluralise( m_runStats.tests.total(), "test" ) << " from "
+               << pluralise( _testRunStats.totals.testCases.total(),
+                             "test case" )
+               << " run ("
+               << formatDuration( m_runStats.timer.getElapsedSeconds() )
+               << " total)\n";
+        stream << Coloured{ "[  PASSED  ] ", Colour::Green }
+               << pluralise( m_runStats.tests.passed, "test" ) << " passed\n";
+        if ( m_runStats.tests.failedButOk > 0 ) {
+            stream << Coloured{ "[ EXPECTED ] ", Colour::Yellow }
+                   << pluralise( m_runStats.tests.failedButOk, "test" )
+                   << " failed as expected\n";
         }
-    }
-    void GTestReporter::lazyPrintRunInfo() {
-        stream << '\n' << getLineOfChars<'~'>() << '\n';
-        Colour colour( Colour::SecondaryText );
-        stream << currentTestRunInfo->name << " is a Catch v"
-               << libraryVersion() << " host application.\n"
-               << "Run with -? for options\n\n";
-
-        if ( m_config->rngSeed() != 0 )
-            stream << "Randomness seeded to: " << m_config->rngSeed() << "\n\n";
-
-        currentTestRunInfo.used = true;
-    }
-    void GTestReporter::lazyPrintGroupInfo() {
-        if ( !currentGroupInfo->name.empty() &&
-             currentGroupInfo->groupsCounts > 1 ) {
-            printClosedHeader( "Group: " + currentGroupInfo->name );
-            currentGroupInfo.used = true;
-        }
-    }
-    void GTestReporter::printTestCaseAndSectionHeader() {
-        assert( !m_sectionStack.empty() );
-        printOpenHeader( currentTestCaseInfo->name );
-
-        if ( m_sectionStack.size() > 1 ) {
-            Colour colourGuard( Colour::Headers );
-
-            auto it = m_sectionStack.begin() +
-                      1, // Skip first section (test case)
-                itEnd = m_sectionStack.end();
-            for ( ; it != itEnd; ++it )
-                printHeaderString( it->name, 2 );
-        }
-
-        SourceLineInfo lineInfo = m_sectionStack.back().lineInfo;
-
-        stream << getLineOfChars<'-'>() << '\n';
-        Colour colourGuard( Colour::FileName );
-        stream << lineInfo << '\n';
-        stream << getLineOfChars<'.'>() << '\n' << std::endl;
-    }
-
-    void GTestReporter::printClosedHeader( std::string const& _name ) {
-        printOpenHeader( _name );
-        stream << getLineOfChars<'.'>() << '\n';
-    }
-    void GTestReporter::printOpenHeader( std::string const& _name ) {
-        stream << getLineOfChars<'-'>() << '\n';
-        {
-            Colour colourGuard( Colour::Headers );
-            printHeaderString( _name );
-        }
-    }
-
-    // if string has a : in first line will set indent to follow it on
-    // subsequent lines
-    void GTestReporter::printHeaderString( std::string const& _string,
-                                           std::size_t indent ) {
-        std::size_t i = _string.find( ": " );
-        if ( i != std::string::npos )
-            i += 2;
-        else
-            i = 0;
-        stream << Column( _string ).indent( indent + i ).initialIndent( indent )
-               << '\n';
-    }
-
-    struct SummaryColumn {
-
-        SummaryColumn( std::string _label, Colour::Code _colour ):
-            label( std::move( _label ) ), colour( _colour ) {}
-        SummaryColumn addRow( std::size_t count ) {
-            ReusableStringStream rss;
-            rss << count;
-            std::string row = rss.str();
-            for ( auto& oldRow : rows ) {
-                while ( oldRow.size() < row.size() )
-                    oldRow = ' ' + oldRow;
-                while ( oldRow.size() > row.size() )
-                    row = ' ' + row;
+        if ( m_runStats.tests.failed > 0 ) {
+            stream << Coloured{ "[  FAILED  ] ", Colour::Red }
+                   << pluralise( m_runStats.tests.failed, "test" )
+                   << " failed in "
+                   << pluralise( m_failedSections.size(), "section" ) << ":\n";
+            for ( const auto& section : m_failedSections ) {
+                stream << Coloured{ "[  FAILED  ] ", Colour::Red } << section
+                       << "\n";
             }
-            rows.push_back( row );
-            return *this;
-        }
-
-        std::string label;
-        Colour::Code colour;
-        std::vector<std::string> rows;
-    };
-
-    void GTestReporter::printTotals( Totals const& totals ) {
-        if ( totals.testCases.total() == 0 ) {
-            stream << Colour( Colour::Warning ) << "No tests ran\n";
-        } else if ( totals.assertions.total() > 0 &&
-                    totals.testCases.allPassed() ) {
-            stream << Colour( Colour::ResultSuccess ) << "All tests passed";
-            stream << " (" << pluralise( totals.assertions.passed, "assertion" )
-                   << " in "
-                   << pluralise( totals.testCases.passed, "test case" ) << ')'
-                   << '\n';
-        } else {
-
-            std::vector<SummaryColumn> columns;
-            columns.push_back( SummaryColumn( "", Colour::None )
-                                   .addRow( totals.testCases.total() )
-                                   .addRow( totals.assertions.total() ) );
-            columns.push_back( SummaryColumn( "passed", Colour::Success )
-                                   .addRow( totals.testCases.passed )
-                                   .addRow( totals.assertions.passed ) );
-            columns.push_back( SummaryColumn( "failed", Colour::ResultError )
-                                   .addRow( totals.testCases.failed )
-                                   .addRow( totals.assertions.failed ) );
-            columns.push_back( SummaryColumn( "failed as expected",
-                                              Colour::ResultExpectedFailure )
-                                   .addRow( totals.testCases.failedButOk )
-                                   .addRow( totals.assertions.failedButOk ) );
-
-            printSummaryRow( "test cases", columns, 0 );
-            printSummaryRow( "assertions", columns, 1 );
+            stream << "\n "
+                   << toUpper(
+                          pluralise( m_runStats.tests.failed, "failed test" )
+                              .str() )
+                   << "\n";
         }
     }
-    void GTestReporter::printSummaryRow( std::string const& label,
-                                         std::vector<SummaryColumn> const& cols,
-                                         std::size_t row ) {
-        for ( auto col : cols ) {
-            std::string value = col.rows[row];
-            if ( col.label.empty() ) {
-                stream << label << ": ";
-                if ( value != "0" )
-                    stream << value;
-                else
-                    stream << Colour( Colour::Warning ) << "- none -";
-            } else if ( value != "0" ) {
-                stream << Colour( Colour::LightGrey ) << " | ";
-                stream << Colour( col.colour ) << value << ' ' << col.label;
+
+    bool GTestReporter::shouldPrintRootSectionOnlyOnce() const {
+        return m_config->verbosity() <= Verbosity::Normal;
+    }
+
+    std::string GTestReporter::formatFullSectionName() {
+        std::stringstream ss;
+        bool need_separator = false;
+        for ( const auto& section : m_sectionStack ) {
+            if ( need_separator ) {
+                ss << " / ";
+            } else {
+                need_separator = true;
             }
+            ss << trim( section.name );
         }
-        stream << '\n';
-    }
-
-    void GTestReporter::printTotalsDivider( Totals const& totals ) {
-        if ( totals.testCases.total() > 0 ) {
-            std::size_t failedRatio =
-                makeRatio( totals.testCases.failed, totals.testCases.total() );
-            std::size_t failedButOkRatio = makeRatio(
-                totals.testCases.failedButOk, totals.testCases.total() );
-            std::size_t passedRatio =
-                makeRatio( totals.testCases.passed, totals.testCases.total() );
-            while ( failedRatio + failedButOkRatio + passedRatio <
-                    CATCH_CONFIG_CONSOLE_WIDTH - 1 )
-                findMax( failedRatio, failedButOkRatio, passedRatio )++;
-            while ( failedRatio + failedButOkRatio + passedRatio >
-                    CATCH_CONFIG_CONSOLE_WIDTH - 1 )
-                findMax( failedRatio, failedButOkRatio, passedRatio )--;
-
-            stream << Colour( Colour::Error )
-                   << std::string( failedRatio, '=' );
-            stream << Colour( Colour::ResultExpectedFailure )
-                   << std::string( failedButOkRatio, '=' );
-            if ( totals.testCases.allPassed() )
-                stream << Colour( Colour::ResultSuccess )
-                       << std::string( passedRatio, '=' );
-            else
-                stream << Colour( Colour::Success )
-                       << std::string( passedRatio, '=' );
-        } else {
-            stream << Colour( Colour::Warning )
-                   << std::string( CATCH_CONFIG_CONSOLE_WIDTH - 1, '=' );
-        }
-        stream << '\n';
-    }
-    void GTestReporter::printSummaryDivider() {
-        stream << getLineOfChars<'-'>() << '\n';
+        return ss.str();
     }
 
     void GTestReporter::printTestFilters() {
         if ( m_config->testSpec().hasFilters() ) {
-            Colour guard( Colour::BrightYellow );
+            Colour guard( Colour::Yellow );
             stream << "Filters: "
                    << serializeFilters( m_config->getTestsOrTags() ) << '\n';
         }

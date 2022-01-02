@@ -12,6 +12,7 @@
 #include <ostream>
 #include <cstring>
 #include <cctype>
+#include <sstream>
 #include <vector>
 
 namespace Catch {
@@ -19,6 +20,9 @@ namespace Catch {
     namespace {
         char toLowerCh(char c) {
             return static_cast<char>( std::tolower( static_cast<unsigned char>(c) ) );
+        }
+        char toUpperCh(char c) {
+            return static_cast<char>( std::toupper( static_cast<unsigned char>(c) ) );
         }
     }
 
@@ -40,9 +44,17 @@ namespace Catch {
     void toLowerInPlace( std::string& s ) {
         std::transform( s.begin(), s.end(), s.begin(), toLowerCh );
     }
+    void toUpperInPlace( std::string& s ) {
+        std::transform( s.begin(), s.end(), s.begin(), toUpperCh );
+    }
     std::string toLower( std::string const& s ) {
         std::string lc = s;
         toLowerInPlace( lc );
+        return lc;
+    }
+    std::string toUpper( std::string const& s ) {
+        std::string lc = s;
+        toUpperInPlace( lc );
         return lc;
     }
     std::string trim( std::string const& str ) {
@@ -98,6 +110,12 @@ namespace Catch {
     :   m_count( count ),
         m_label( label )
     {}
+
+    std::string pluralise::str() const {
+        std::stringstream ss;
+        ss << *this;
+        return ss.str();
+    }
 
     std::ostream& operator << ( std::ostream& os, pluralise const& pluraliser ) {
         os << pluraliser.m_count << ' ' << pluraliser.m_label;

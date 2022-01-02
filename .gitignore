@@ -26,6 +26,7 @@ Build
 /build/
 /.idea/
 /.vs/
+/.vscode/
 cmake-build-*
 benchmark-dir
 .conan/test_package/build
