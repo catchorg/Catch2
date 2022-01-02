@@ -42,7 +42,7 @@ The `gtest` reporter is much more verbose than `console` but it allows you to:
 * See how each of your tests is run - it feels good to see a lot of green lines
 * See what test is being run now - useful when some tests are slow
 * See the progress is going - useful when the whole test suit is slow
-* See the output of each test nested inside its scope - useful when tests prints something to stdout
+* See the output of each test nested inside its scope - useful when tests print something to stdout
 * Feel comfortable if you are used to Google Test
 
 The reporter is optimized for test cases that do not have nested sections in them. A _test case_ from Catch2 is thought of as a _test case_ from gtest and each _section_ of the test case is thought of as a _test_ from gtest. The latter is referred to as simply a "test" in the output. It is assumed that code outside sections is only used for set up and tear down and is unlikely to fail the test case.
@@ -52,7 +52,7 @@ The reporter also works perfectly fine when there are nested sections, but we ne
 * If there are `N` non-nested sections in the test case, Catch2 runs  it `N` times and thus there is `N` tests. 
 * If there are nested sections in the test case, Catch2 runs it for every leaf section and thus the number of tests depends on the structure of the sections.
 
-Each time Catch2 enters a section the reporter prints the `[ RUN ]` line to the output. With the exception of the root section, which Catch2 implicitly creates for the body of the test case itself. It is only printed once per test case. You can set verbosity to high to remove this exception and fully see how the sections stack is formed during the execution.
+Each time Catch2 enters a section the reporter prints the `[ RUN ]` line to the output. With the exception of the root section, which Catch2 implicitly creates for the body of the test case itself. It is only printed once per test case to make the output a little more compact and similar to what you'd expect. You can set verbosity to high to remove this exception and fully see how the sections stack is formed during the execution.
 
 Note that since Catch2 is much more flexible with its sections than Google Test with its test cases and tests, there is no single "true" way to define how the output of the reporter should look. Especially if there are nested sections. To make things even more complicated, Catch2 runner does not know the structure of the sections before they are actually executed, and thus we cannot analyze this structure beforehand to e.g. collapse the output for entering multiple nested sections.
 
