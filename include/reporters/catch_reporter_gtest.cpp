@@ -89,7 +89,6 @@ namespace Catch {
         StreamingReporterBase::testCaseStarting( _testInfo );
         m_testCaseStats = {};
         m_testCaseStats.timer.start();
-        m_prevNestedSectionAssertionFailures = 0;
         stream << Coloured{ "[----------] ", Colour::Green } << _testInfo.name
                << "\n";
         if ( shouldPrintRootSectionOnlyOnce() ) {
@@ -100,6 +99,7 @@ namespace Catch {
 
     void GTestReporter::sectionStarting( SectionInfo const& _sectionInfo ) {
         StreamingReporterBase::sectionStarting( _sectionInfo );
+        m_prevNestedSectionAssertionFailures = 0;
         if ( m_sectionStack.size() > 1 || !shouldPrintRootSectionOnlyOnce() ) {
             stream << Coloured{ "[ RUN      ] ", Colour::Green }
                    << formatFullSectionName() << "\n";
