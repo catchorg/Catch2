@@ -8,6 +8,7 @@
 #ifndef TWOBLUECUBES_CATCH_REPORTER_BASES_HPP_INCLUDED
 #define TWOBLUECUBES_CATCH_REPORTER_BASES_HPP_INCLUDED
 
+#include "../internal/catch_console_colour.h"
 #include "../internal/catch_enforce.h"
 #include "../internal/catch_interfaces_reporter.h"
 
@@ -278,6 +279,33 @@ namespace Catch {
 
         void assertionStarting(AssertionInfo const&) override;
         bool assertionEnded(AssertionStats const&) override;
+    };
+
+    // Formatter impl for ConsoleReporter
+    class ConsoleAssertionPrinter {
+    public:
+        ConsoleAssertionPrinter& operator= (ConsoleAssertionPrinter const&) = delete;
+        ConsoleAssertionPrinter(ConsoleAssertionPrinter const&) = delete;
+        ConsoleAssertionPrinter(std::ostream& _stream, AssertionStats const& _stats, bool _printInfoMessages);
+
+        void print() const;
+
+    private:
+        void printResultType() const;
+        void printOriginalExpression() const;
+        void printReconstructedExpression() const;
+        void printMessage() const;
+        void printSourceInfo() const;
+
+        std::ostream& stream;
+        AssertionStats const& stats;
+        AssertionResult const& result;
+        Colour::Code colour;
+        std::string passOrFail;
+        std::string messageLabel;
+        std::string message;
+        std::vector<MessageInfo> messages;
+        bool printInfoMessages;
     };
 
 } // end namespace Catch

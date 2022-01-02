@@ -51,149 +51,6 @@ namespace Catch {
                    " ms";
         }
 
-        // Formatter impl for GTestReporter
-        class ConsoleAssertionPrinter {
-        public:
-            ConsoleAssertionPrinter&
-            operator=( ConsoleAssertionPrinter const& ) = delete;
-            ConsoleAssertionPrinter( ConsoleAssertionPrinter const& ) = delete;
-            ConsoleAssertionPrinter( std::ostream& _stream,
-                                     AssertionStats const& _stats,
-                                     bool _printInfoMessages ):
-                stream( _stream ),
-                stats( _stats ),
-                result( _stats.assertionResult ),
-                colour( Colour::None ),
-                message( result.getMessage() ),
-                messages( _stats.infoMessages ),
-                printInfoMessages( _printInfoMessages ) {
-                switch ( result.getResultType() ) {
-                case ResultWas::Ok:
-                    colour = Colour::Success;
-                    passOrFail = "PASSED";
-                    // if( result.hasMessage() )
-                    if ( _stats.infoMessages.size() == 1 )
-                        messageLabel = "with message";
-                    if ( _stats.infoMessages.size() > 1 )
-                        messageLabel = "with messages";
-                    break;
-                case ResultWas::ExpressionFailed:
-                    if ( result.isOk() ) {
-                        colour = Colour::Success;
-                        passOrFail = "FAILED - but was ok";
-                    } else {
-                        colour = Colour::Error;
-                        passOrFail = "FAILED";
-                    }
-                    if ( _stats.infoMessages.size() == 1 )
-                        messageLabel = "with message";
-                    if ( _stats.infoMessages.size() > 1 )
-                        messageLabel = "with messages";
-                    break;
-                case ResultWas::ThrewException:
-                    colour = Colour::Error;
-                    passOrFail = "FAILED";
-                    messageLabel = "due to unexpected exception with ";
-                    if ( _stats.infoMessages.size() == 1 )
-                        messageLabel += "message";
-                    if ( _stats.infoMessages.size() > 1 )
-                        messageLabel += "messages";
-                    break;
-                case ResultWas::FatalErrorCondition:
-                    colour = Colour::Error;
-                    passOrFail = "FAILED";
-                    messageLabel = "due to a fatal error condition";
-                    break;
-                case ResultWas::DidntThrowException:
-                    colour = Colour::Error;
-                    passOrFail = "FAILED";
-                    messageLabel = "because no exception was thrown where one "
-                                   "was expected";
-                    break;
-                case ResultWas::Info:
-                    messageLabel = "info";
-                    break;
-                case ResultWas::Warning:
-                    messageLabel = "warning";
-                    break;
-                case ResultWas::ExplicitFailure:
-                    passOrFail = "FAILED";
-                    colour = Colour::Error;
-                    if ( _stats.infoMessages.size() == 1 )
-                        messageLabel = "explicitly with message";
-                    if ( _stats.infoMessages.size() > 1 )
-                        messageLabel = "explicitly with messages";
-                    break;
-                    // These cases are here to prevent compiler warnings
-                case ResultWas::Unknown:
-                case ResultWas::FailureBit:
-                case ResultWas::Exception:
-                    passOrFail = "** internal error **";
-                    colour = Colour::Error;
-                    break;
-                }
-            }
-
-            void print() const {
-                printSourceInfo();
-                if ( stats.totals.assertions.total() > 0 ) {
-                    printResultType();
-                    printOriginalExpression();
-                    printReconstructedExpression();
-                } else {
-                    stream << '\n';
-                }
-                printMessage();
-            }
-
-        private:
-            void printResultType() const {
-                if ( !passOrFail.empty() ) {
-                    Colour colourGuard( colour );
-                    stream << passOrFail << ":\n";
-                }
-            }
-            void printOriginalExpression() const {
-                if ( result.hasExpression() ) {
-                    Colour colourGuard( Colour::OriginalExpression );
-                    stream << "  ";
-                    stream << result.getExpressionInMacro();
-                    stream << '\n';
-                }
-            }
-            void printReconstructedExpression() const {
-                if ( result.hasExpandedExpression() ) {
-                    stream << "with expansion:\n";
-                    Colour colourGuard( Colour::ReconstructedExpression );
-                    stream
-                        << Column( result.getExpandedExpression() ).indent( 2 )
-                        << '\n';
-                }
-            }
-            void printMessage() const {
-                if ( !messageLabel.empty() )
-                    stream << messageLabel << ':' << '\n';
-                for ( auto const& msg : messages ) {
-                    // If this assertion is a warning ignore any INFO messages
-                    if ( printInfoMessages || msg.type != ResultWas::Info )
-                        stream << Column( msg.message ).indent( 2 ) << '\n';
-                }
-            }
-            void printSourceInfo() const {
-                Colour colourGuard( Colour::FileName );
-                stream << result.getSourceInfo() << ": ";
-            }
-
-            std::ostream& stream;
-            AssertionStats const& stats;
-            AssertionResult const& result;
-            Colour::Code colour;
-            std::string passOrFail;
-            std::string messageLabel;
-            std::string message;
-            std::vector<MessageInfo> messages;
-            bool printInfoMessages;
-        };
     } // namespace
 
     GTestReporter::GTestReporter( ReporterConfig const& config ):
@@ -270,9 +127,8 @@ namespace Catch {
     }
 
     void GTestReporter::sectionEnded( SectionStats const& _sectionStats ) {
-        if ( _sectionStats.missingAssertions &&
-             m_config->warnAboutMissingAssertions() ) {
-            Colour colour( Colour::Warning );
+        if ( _sectionStats.missingAssertions ) {
+            Colour colour( Colour::ResultError );
             if ( m_sectionStack.size() > 1 )
                 stream << "No assertions in section\n";
             else
@@ -353,6 +209,8 @@ namespace Catch {
         if ( m_runStats.tests.failed > 0 ) {
             stream << Coloured{ "[  FAILED  ] ", Colour::Red }
                    << pluralise( m_runStats.tests.failed, "test" )
+                   << " from "
+                   << pluralise( _testRunStats.totals.testCases.failed, "test case" )
                    << " failed in "
                    << pluralise( m_failedSections.size(), "section" ) << ":\n";
             for ( const auto& section : m_failedSections ) {
