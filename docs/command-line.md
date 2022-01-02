@@ -57,7 +57,6 @@ Click one of the following links to take you straight to that option - or scroll
 
 </br>
 
-<a href="#list-test-names-only">                        `    --list-test-names-only`</a><br />
 <a href="#listing-available-tests-tags-or-reporters">   `    --list-reporters`</a><br />
 <a href="#order">                                       `    --order`</a><br />
 <a href="#rng-seed">                                    `    --rng-seed`</a><br />
@@ -268,15 +267,13 @@ are.
 ## Load test names to run from a file
 <pre>-f, --input-file &lt;filename></pre>
 
-Provide the name of a file that contains a list of test case names - one per line. Blank lines are skipped and anything after the comment character, ```#```, is ignored.
+Provide the name of a file that contains a list of test case names,
+one per line. Blank lines are skipped.
 
-A useful way to generate an initial instance of this file is to use the <a href="#list-test-names-only">list-test-names-only</a> option. This can then be manually curated to specify a specific subset of tests - or in a specific order.
-
-<a id="list-test-names-only"></a>
-## Just test names
-<pre>--list-test-names-only</pre>
-
-This option lists all available tests in a non-indented form, one on each line. This makes it ideal for saving to a file and feeding back into the <a href="#input-file">```-f``` or ```--input-file```</a> option.
+A useful way to generate an initial instance of this file is to combine
+the [`--list-tests`](#listing-available-tests-tags-or-reporters) flag with
+the [`--verbosity quiet`](#output-verbosity) option. You can also
+use test specs to filter this list down to what you want first.
 
 
 <a id="order"></a>
