@@ -72,6 +72,7 @@ Click one of the following links to take you straight to that option - or scroll
 <a href="#test-sharding">                               `    --shard-count`</a><br />
 <a href="#test-sharding">                               `    --shard-index`</a><br />
 <a href=#no-tests-override>                             `    --allow-running-no-tests`</a><br />
+<a href=#output-verbosity>                              `    --verbosity`</a><br />
 
 </br>
 
@@ -477,6 +478,19 @@ By default, Catch2 test binaries return non-0 exit code if no tests were
 run, e.g. if the binary was compiled with no tests, or the provided test
 spec matched no tests. This flag overrides that, so a test run with no
 tests still returns 0.
+
+## Output verbosity
+```
+-v, --verbosity <quiet|normal|high>
+```
+
+Changing verbosity might change how much details Catch2's reporters output.
+However, you should consider changing the verbosity level as a _suggestion_.
+Not all reporters support all verbosity levels, e.g. because the reporter's
+format cannot meaningfully change. In that case, the verbosity level is
+ignored.
+
+Verbosity defaults to _normal_.
 
 
 ---
