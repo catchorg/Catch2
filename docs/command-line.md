@@ -37,8 +37,6 @@ Click one of the following links to take you straight to that option - or scroll
 
 <a href="#specifying-which-tests-to-run">               `    <test-spec> ...`</a><br />
 <a href="#usage">                                       `    -h, -?, --help`</a><br />
-<a href="#listing-available-tests-tags-or-reporters">   `    -l, --list-tests`</a><br />
-<a href="#listing-available-tests-tags-or-reporters">   `    -t, --list-tags`</a><br />
 <a href="#showing-results-for-successful-tests">        `    -s, --success`</a><br />
 <a href="#breaking-into-the-debugger">                  `    -b, --break`</a><br />
 <a href="#eliding-assertions-expected-to-throw">        `    -e, --nothrow`</a><br />
@@ -57,6 +55,8 @@ Click one of the following links to take you straight to that option - or scroll
 
 </br>
 
+<a href="#listing-available-tests-tags-or-reporters">   `    --list-tests`</a><br />
+<a href="#listing-available-tests-tags-or-reporters">   `    --list-tags`</a><br />
 <a href="#listing-available-tests-tags-or-reporters">   `    --list-reporters`</a><br />
 <a href="#order">                                       `    --order`</a><br />
 <a href="#rng-seed">                                    `    --rng-seed`</a><br />
@@ -175,17 +175,24 @@ Sometimes this results in a flood of failure messages and you'd rather just see 
 
 <a id="listing-available-tests-tags-or-reporters"></a>
 ## Listing available tests, tags or reporters
-<pre>-l, --list-tests
--t, --list-tags
+```
+--list-tests
+--list-tags
 --list-reporters
-</pre>
+```
 
-```-l``` or ```--list-tests``` will list all registered tests, along with any tags.
-If one or more test-specs have been supplied too then only the matching tests will be listed.
+> The `--list*` options became customizable through reporters in Catch2 X.Y.Z
 
-```-t``` or ```--list-tags``` lists all available tags, along with the number of test cases they match. Again, supplying test specs limits the tags that match.
+`--list-tests` lists all registered tests matching specified test spec.
+Usually this listing also includes tags, and potentially also other
+information, like source location, based on verbosity and reporter's design.
 
-```--list-reporters``` lists the available reporters.
+`--list-tags` lists all tags from registered tests matching specified test
+spec. Usually this also includes number of tests cases they match and
+similar information.
+
+`--list-reporters` lists all available reporters and their descriptions.
+
 
 <a id="sending-output-to-a-file"></a>
 ## Sending output to a file

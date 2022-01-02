@@ -133,6 +133,10 @@ new design.
   * New pair of events were added
   * One obsolete event was removed
 * Catch2 generates a random seed if one hasn't been specified by the user
+* The short flag for `--list-tests`, `-l`, has been removed.
+  * This is not a commonly used flag and does not need to use up valuable single-letter space.
+* The short flag for `--list-tags`, `-t`, has been removed.
+  * This is not a commonly used flag and does not need to use up valuable single-letter space.
 
 
 ### Improvements

@@ -242,12 +242,6 @@ namespace Catch {
         auto cli
             = ExeName( config.processName )
             | Help( config.showHelp )
-            | Opt( config.listTests )
-                ["-l"]["--list-tests"]
-                ( "list all/matching test cases" )
-            | Opt( config.listTags )
-                ["-t"]["--list-tags"]
-                ( "list all/matching tags" )
             | Opt( config.showSuccessfulTests )
                 ["-s"]["--success"]
                 ( "include successful tests in output" )
@@ -296,6 +290,12 @@ namespace Catch {
             | Opt( setVerbosity, "quiet|normal|high" )
                 ["-v"]["--verbosity"]
                 ( "set output verbosity" )
+            | Opt( config.listTests )
+                ["--list-tests"]
+                ( "list all/matching test cases" )
+            | Opt( config.listTags )
+                ["--list-tags"]
+                ( "list all/matching tags" )
             | Opt( config.listReporters )
                 ["--list-reporters"]
                 ( "list all reporters" )
