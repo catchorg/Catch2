@@ -45,12 +45,6 @@ namespace Catch {
             return os << coloured.text;
         }
 
-        std::string formatDuration( double durationInSeconds ) {
-            return std::to_string( static_cast<int64_t>(
-                       std::round( durationInSeconds * 1000 ) ) ) +
-                   " ms";
-        }
-
     } // namespace
 
     GTestReporter::GTestReporter( ReporterConfig const& config ):
@@ -208,9 +202,9 @@ namespace Catch {
         }
         if ( m_runStats.tests.failed > 0 ) {
             stream << Coloured{ "[  FAILED  ] ", Colour::Red }
-                   << pluralise( m_runStats.tests.failed, "test" )
-                   << " from "
-                   << pluralise( _testRunStats.totals.testCases.failed, "test case" )
+                   << pluralise( m_runStats.tests.failed, "test" ) << " from "
+                   << pluralise( _testRunStats.totals.testCases.failed,
+                                 "test case" )
                    << " failed in "
                    << pluralise( m_failedSections.size(), "section" ) << ":\n";
             for ( const auto& section : m_failedSections ) {
@@ -249,6 +243,12 @@ namespace Catch {
             stream << "Filters: "
                    << serializeFilters( m_config->getTestsOrTags() ) << '\n';
         }
+    }
+
+    std::string GTestReporter::formatDuration( double seconds ) {
+        return std::to_string(
+                   static_cast<int64_t>( std::round( seconds * 1000 ) ) ) +
+               " ms";
     }
 
     CATCH_REGISTER_REPORTER( "gtest", GTestReporter )

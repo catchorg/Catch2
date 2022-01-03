@@ -48,6 +48,8 @@ namespace Catch {
 
         void printTestFilters();
 
+        static std::string formatDuration( double seconds ) ;        
+
     private:
         struct Stats {
             Timer timer;
