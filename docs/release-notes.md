@@ -199,6 +199,7 @@ new design.
 * Reporter selection is properly case-insensitive
   * Previously it forced lower cased name, which would fail for reporters with upper case characters in name
 * The cumulative reporter base stores benchmark results alongside assertion results
+* Catch2's SE handling should no longer interferes with ASan on Windows (#2334)
 
 
 ### Other changes
