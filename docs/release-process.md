@@ -40,14 +40,10 @@ After version number is incremented, single-include header is regenerated and re
 After pushing changes to GitHub, GitHub release *needs* to be created.
 Tag version and release title should be same as the new version,
 description should contain the release notes for the current release.
-Single header version of `catch.hpp` *needs* to be attached as a binary,
-as that is where the official download link links to. Preferably
-it should use linux line endings. All non-bundled reporters (Automake, TAP,
-TeamCity, SonarQube) should also be attached as binaries, as they might be
-dependent on a specific version of the single-include header.
+We also attach the two amalgamated files as "binaries".
 
-Since 2.5.0, the release tag and the "binaries" (headers) should be PGP
-signed.
+Since 2.5.0, the release tag and the "binaries" (amalgamated files) should
+be PGP signed.
 
 #### Signing a tag
 
@@ -57,16 +53,14 @@ is the version being released, e.g. `git tag -s v2.6.0`.
 Use the version name as the short message and the release notes as
 the body (long) message.
 
-#### Signing the headers
+#### Signing the amalgamated files
 
-This will create ASCII-armored signatures for the headers that are
-uploaded to the GitHub release:
+This will create ASCII-armored signatures for the two amalgamated files
+that are uploaded to the GitHub release:
 
 ```
-$ gpg2 --armor --output catch.hpp.asc --detach-sig catch.hpp
-$ gpg2 --armor --output catch_reporter_automake.hpp.asc --detach-sig catch_reporter_automake.hpp
-$ gpg2 --armor --output catch_reporter_teamcity.hpp.asc --detach-sig catch_reporter_teamcity.hpp
-$ gpg2 --armor --output catch_reporter_tap.hpp.asc --detach-sig catch_reporter_tap.hpp
+gpg --armor --output extras/catch_amalgamated.hpp.asc --detach-sig extras/catch_amalgamated.hpp
+gpg --armor --output extras/catch_amalgamated.cpp.asc --detach-sig extras/catch_amalgamated.cpp
 ```
 
 _GPG does not support signing multiple files in single invocation._
