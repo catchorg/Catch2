@@ -13,25 +13,15 @@
 
 #include <catch2/internal/catch_move_and_forward.hpp>
 
-#if defined(__clang__) && defined(__has_attribute)
-#  if __has_attribute(trivial_abi)
-#    define TRIVIAL_ABI [[clang::trivial_abi]]
-#  endif
-#endif
-#if !defined(TRIVIAL_ABI)
-#  define TRIVIAL_ABI
-#endif
-
 namespace Catch {
 namespace Detail {
     /**
      * A reimplementation of `std::unique_ptr` for improved compilation performance
      *
-     * Does not support arrays nor custom deleters, but has trivial ABI
-     * when supposed by the compiler.
+     * Does not support arrays nor custom deleters.
      */
     template <typename T>
-    class TRIVIAL_ABI unique_ptr {
+    class unique_ptr {
         T* m_ptr;
     public:
         constexpr unique_ptr(std::nullptr_t = nullptr):
