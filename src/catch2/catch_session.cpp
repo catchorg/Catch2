@@ -19,7 +19,7 @@
 #include <catch2/internal/catch_sharding.hpp>
 #include <catch2/internal/catch_textflow.hpp>
 #include <catch2/internal/catch_windows_h_proxy.hpp>
-#include <catch2/reporters/catch_reporter_listening.hpp>
+#include <catch2/reporters/catch_reporter_multi.hpp>
 #include <catch2/interfaces/catch_interfaces_reporter_registry.hpp>
 #include <catch2/interfaces/catch_interfaces_reporter_factory.hpp>
 #include <catch2/internal/catch_move_and_forward.hpp>
@@ -48,7 +48,7 @@ namespace Catch {
                 return createReporter(config->getReportersAndOutputFiles()[0].reporterName, ReporterConfig(config, stream));
             }
 
-            auto multi = Detail::make_unique<ListeningReporter>(config);
+            auto multi = Detail::make_unique<MultiReporter>(config);
 
             auto const& listeners = Catch::getRegistryHub().getReporterRegistry().getListeners();
             for (auto const& listener : listeners) {

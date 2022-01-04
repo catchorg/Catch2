@@ -217,7 +217,7 @@ set(REPORTER_HEADERS
     ${SOURCES_DIR}/reporters/catch_reporter_event_listener.hpp
     ${SOURCES_DIR}/reporters/catch_reporter_helpers.hpp
     ${SOURCES_DIR}/reporters/catch_reporter_junit.hpp
-    ${SOURCES_DIR}/reporters/catch_reporter_listening.hpp
+    ${SOURCES_DIR}/reporters/catch_reporter_multi.hpp
     ${SOURCES_DIR}/reporters/catch_reporter_sonarqube.hpp
     ${SOURCES_DIR}/reporters/catch_reporter_streaming_base.hpp
     ${SOURCES_DIR}/reporters/catch_reporter_tap.hpp
@@ -231,7 +231,7 @@ set(REPORTER_SOURCES
     ${SOURCES_DIR}/reporters/catch_reporter_console.cpp
     ${SOURCES_DIR}/reporters/catch_reporter_cumulative_base.cpp
     ${SOURCES_DIR}/reporters/catch_reporter_junit.cpp
-    ${SOURCES_DIR}/reporters/catch_reporter_listening.cpp
+    ${SOURCES_DIR}/reporters/catch_reporter_multi.cpp
     ${SOURCES_DIR}/reporters/catch_reporter_sonarqube.cpp
     ${SOURCES_DIR}/reporters/catch_reporter_streaming_base.cpp
     ${SOURCES_DIR}/reporters/catch_reporter_tap.cpp

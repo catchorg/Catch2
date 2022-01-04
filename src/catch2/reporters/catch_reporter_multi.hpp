@@ -5,14 +5,14 @@
 //        https://www.boost.org/LICENSE_1_0.txt)
 
 // SPDX-License-Identifier: BSL-1.0
-#ifndef CATCH_REPORTER_LISTENING_HPP_INCLUDED
-#define CATCH_REPORTER_LISTENING_HPP_INCLUDED
+#ifndef CATCH_REPORTER_MULTI_HPP_INCLUDED
+#define CATCH_REPORTER_MULTI_HPP_INCLUDED
 
 #include <catch2/interfaces/catch_interfaces_reporter.hpp>
 
 namespace Catch {
 
-    class ListeningReporter final : public IStreamingReporter {
+    class MultiReporter final : public IStreamingReporter {
         /*
          * Stores all added reporters and listeners
          *
@@ -29,7 +29,7 @@ namespace Catch {
         void updatePreferences(IStreamingReporter const& reporterish);
 
     public:
-        ListeningReporter( IConfig const* config ):
+        MultiReporter( IConfig const* config ):
             IStreamingReporter( config )
         {}
 
@@ -70,4 +70,4 @@ namespace Catch {
 
 } // end namespace Catch
 
-#endif // CATCH_REPORTER_LISTENING_HPP_INCLUDED
+#endif // CATCH_REPORTER_MULTI_HPP_INCLUDED

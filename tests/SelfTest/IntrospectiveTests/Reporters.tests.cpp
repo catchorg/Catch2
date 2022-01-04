@@ -18,7 +18,7 @@
 #include <catch2/reporters/catch_reporter_helpers.hpp>
 #include <catch2/reporters/catch_reporter_event_listener.hpp>
 #include <catch2/reporters/catch_reporter_streaming_base.hpp>
-#include <catch2/reporters/catch_reporter_listening.hpp>
+#include <catch2/reporters/catch_reporter_multi.hpp>
 
 #include <sstream>
 
@@ -165,7 +165,7 @@ TEST_CASE("Multireporter calls reporters and listeners in correct order",
 
     // We add reporters before listeners, to check that internally they
     // get sorted properly, and listeners are called first anyway.
-    Catch::ListeningReporter multiReporter( &config );
+    Catch::MultiReporter multiReporter( &config );
     std::vector<std::string> records;
     multiReporter.addReporter( Catch::Detail::make_unique<MockReporter>(
         "Goodbye", records, rep_config ) );
@@ -215,7 +215,7 @@ TEST_CASE("Multireporter updates ReporterPreferences properly",
     Catch::Config config( config_data );
     std::stringstream sstream;
     Catch::ReporterConfig rep_config( &config, sstream );
-    Catch::ListeningReporter multiReporter( &config );
+    Catch::MultiReporter multiReporter( &config );
 
     // Post init defaults
     REQUIRE( multiReporter.getPreferences().shouldRedirectStdOut == false );
