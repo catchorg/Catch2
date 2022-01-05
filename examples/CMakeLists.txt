@@ -136,6 +136,11 @@ add_executable( 207-Rpt-TeamCityReporter ${EXAMPLES_DIR}/207-Rpt-TeamCityReporte
 #    add_executable( ${name} ${EXAMPLES_DIR}/${name}.cpp $<TARGET_OBJECTS:CatchMain> ${HEADER_DIR}/catch2/catch.hpp )
 #endforeach()
 
+if (CATCH_BUILD_STATIC_LIBRARY)
+    add_executable( MainFromStaticLib ${EXAMPLES_DIR}/100-Fix-Section.cpp )
+    target_link_libraries( MainFromStaticLib Catch2WithMain )
+endif()
+
 foreach( name ${TARGETS_ALL} )
     target_include_directories( ${name} PRIVATE ${HEADER_DIR} ${CATCH_DIR} )
 
