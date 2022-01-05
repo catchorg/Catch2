@@ -116,6 +116,10 @@ if (CATCH_BUILD_STATIC_LIBRARY)
      ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang" AND NOT ${CMAKE_CXX_COMPILER_VERSION} VERSION_LESS 10))
     target_compile_options(Catch2WithMain PRIVATE "-ffile-prefix-map=${CMAKE_SOURCE_DIR}=.")
   endif()
+
+  if (CATCH_CONFIG_DEFAULT_REPORTER) 
+    target_compile_definitions(Catch2WithMain PRIVATE CATCH_CONFIG_DEFAULT_REPORTER=${CATCH_CONFIG_DEFAULT_REPORTER})
+  endif()
 endif(CATCH_BUILD_STATIC_LIBRARY)
 
 # Only perform the installation steps when Catch is not being used as
