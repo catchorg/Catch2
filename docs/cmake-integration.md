@@ -265,8 +265,9 @@ that consume it. These are:
 Catch2's test binary will be built. Defaults to `ON`.
 * `CATCH_INSTALL_DOCS` -- When `ON`, Catch2's documentation will be
 included in the installation. Defaults to `ON`.
-* `CATCH_INSTALL_HELPERS` -- When `ON`, Catch2's extras folder will be
-included in the installation. Defaults to `ON`.
+* `CATCH_INSTALL_EXTRAS` -- When `ON`, Catch2's extras folder (the CMake
+scripts mentioned above, debugger helpers) will be included in the
+installation. Defaults to `ON`.
 * `CATCH_DEVELOPMENT_BUILD` -- When `ON`, configures the build for development
 of Catch2. This means enabling test projects, warnings and so on.
 Defaults to `OFF`.

@@ -9,7 +9,7 @@ else()
 endif()
 
 option(CATCH_INSTALL_DOCS "Install documentation alongside library" ON)
-option(CATCH_INSTALL_EXTRAS "Install extras alongside library" ON)
+option(CATCH_INSTALL_EXTRAS "Install extras (CMake scripts, debugger helpers) alongside library" ON)
 option(CATCH_DEVELOPMENT_BUILD "Build tests, enable warnings, enable Werror, etc" OFF)
 
 include(CMakeDependentOption)
