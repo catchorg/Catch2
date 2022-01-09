@@ -199,6 +199,7 @@ Nor would this
 :test-result: PASS Range type with sentinel
 :test-result: FAIL Reconstruction should be based on stringification: #914
 :test-result: FAIL Regex string matcher
+:test-result: PASS Registering reporter with '::' in name fails
 :test-result: PASS Regression test #1
 :test-result: PASS Reporter's write listings to provided stream
 :test-result: PASS Reproducer for #2309 - a very long description past 80 chars (default console width) with a late colon : blablabla

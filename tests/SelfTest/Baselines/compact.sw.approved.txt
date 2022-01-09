@@ -1383,6 +1383,7 @@ Decomposition.tests.cpp:<line number>: failed: truthy(false) for: Hey, its truth
 Matchers.tests.cpp:<line number>: failed: testStringForMatching(), Matches( "this STRING contains 'abc' as a substring" ) for: "this string contains 'abc' as a substring" matches "this STRING contains 'abc' as a substring" case sensitively
 Matchers.tests.cpp:<line number>: failed: testStringForMatching(), Matches( "contains 'abc' as a substring" ) for: "this string contains 'abc' as a substring" matches "contains 'abc' as a substring" case sensitively
 Matchers.tests.cpp:<line number>: failed: testStringForMatching(), Matches( "this string contains 'abc' as a" ) for: "this string contains 'abc' as a substring" matches "this string contains 'abc' as a" case sensitively
+Reporters.tests.cpp:<line number>: passed: registry.registerReporter( "with::doublecolons", Catch::Detail::make_unique<TestReporterFactory>() ), "'::' is not allowed in reporter name: 'with::doublecolons'" for: "'::' is not allowed in reporter name: 'with::doublecolons'" equals: "'::' is not allowed in reporter name: 'with::doublecolons'"
 Matchers.tests.cpp:<line number>: passed: actual, !UnorderedEquals( expected ) for: { 'a', 'b' } not UnorderedEquals: { 'c', 'b' }
 Reporters.tests.cpp:<line number>: passed: !(factories.empty()) for: !false
 Reporters.tests.cpp:<line number>: passed: listingString, ContainsSubstring("fakeTag"s) for: "All available tags:

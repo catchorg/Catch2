@@ -10177,6 +10177,18 @@ with expansion:
   'abc' as a" case sensitively
 
 -------------------------------------------------------------------------------
+Registering reporter with '::' in name fails
+-------------------------------------------------------------------------------
+Reporters.tests.cpp:<line number>
+...............................................................................
+
+Reporters.tests.cpp:<line number>: PASSED:
+  REQUIRE_THROWS_WITH( registry.registerReporter( "with::doublecolons", Catch::Detail::make_unique<TestReporterFactory>() ), "'::' is not allowed in reporter name: 'with::doublecolons'" )
+with expansion:
+  "'::' is not allowed in reporter name: 'with::doublecolons'" equals: "'::' is
+  not allowed in reporter name: 'with::doublecolons'"
+
+-------------------------------------------------------------------------------
 Regression test #1
 -------------------------------------------------------------------------------
 Matchers.tests.cpp:<line number>
@@ -17772,6 +17784,6 @@ Misc.tests.cpp:<line number>
 Misc.tests.cpp:<line number>: PASSED:
 
 ===============================================================================
-test cases:  382 |  292 passed |  83 failed |  7 failed as expected
-assertions: 2226 | 2056 passed | 143 failed | 27 failed as expected
+test cases:  383 |  293 passed |  83 failed |  7 failed as expected
+assertions: 2227 | 2057 passed | 143 failed | 27 failed as expected
 

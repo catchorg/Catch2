@@ -13,7 +13,9 @@
 #include <catch2/interfaces/catch_interfaces_reporter.hpp>
 #include <catch2/interfaces/catch_interfaces_reporter_factory.hpp>
 #include <catch2/interfaces/catch_interfaces_reporter_registry.hpp>
+#include <catch2/internal/catch_enforce.hpp>
 #include <catch2/internal/catch_list.hpp>
+#include <catch2/internal/catch_reporter_registry.hpp>
 #include <catch2/matchers/catch_matchers_string.hpp>
 #include <catch2/reporters/catch_reporter_helpers.hpp>
 #include <catch2/reporters/catch_reporter_event_listener.hpp>
@@ -259,4 +261,26 @@ TEST_CASE("Multireporter updates ReporterPreferences properly",
         REQUIRE( multiReporter.getPreferences().shouldRedirectStdOut == true );
         REQUIRE( multiReporter.getPreferences().shouldReportAllAssertions == true );
     }
+}
+
+namespace {
+    class TestReporterFactory : public Catch::IReporterFactory {
+        Catch::IStreamingReporterPtr create( Catch::ReporterConfig const& ) const override {
+            CATCH_INTERNAL_ERROR(
+                "This factory should never create a reporter" );
+        }
+        std::string getDescription() const override {
+            return "Fake test factory";
+        }
+    };
+}
+
+TEST_CASE("Registering reporter with '::' in name fails",
+          "[reporters][registration]") {
+    Catch::ReporterRegistry registry;
+
+    REQUIRE_THROWS_WITH( registry.registerReporter(
+        "with::doublecolons",
+        Catch::Detail::make_unique<TestReporterFactory>() ),
+        "'::' is not allowed in reporter name: 'with::doublecolons'" );
 }

@@ -507,6 +507,8 @@ Matchers.tests.cpp:<line number>|nexpression failed|n  CHECK_THAT( testStringFor
 Matchers.tests.cpp:<line number>|nexpression failed|n  CHECK_THAT( testStringForMatching(), Matches( "contains |'abc|' as a substring" ) )|nwith expansion:|n  "this string contains |'abc|' as a substring" matches "contains |'abc|' as a substring" case sensitively|n']
 Matchers.tests.cpp:<line number>|nexpression failed|n  CHECK_THAT( testStringForMatching(), Matches( "this string contains |'abc|' as a" ) )|nwith expansion:|n  "this string contains |'abc|' as a substring" matches "this string contains |'abc|' as a" case sensitively|n']
 ##teamcity[testFinished name='Regex string matcher' duration="{duration}"]
+##teamcity[testStarted name='Registering reporter with |'::|' in name fails']
+##teamcity[testFinished name='Registering reporter with |'::|' in name fails' duration="{duration}"]
 ##teamcity[testStarted name='Regression test #1']
 ##teamcity[testFinished name='Regression test #1' duration="{duration}"]
 ##teamcity[testStarted name='Reporter|'s write listings to provided stream']

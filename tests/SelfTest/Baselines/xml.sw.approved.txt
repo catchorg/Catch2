@@ -12416,6 +12416,17 @@ Nor would this
     </Expression>
     <OverallResult success="false"/>
   </TestCase>
+  <TestCase name="Registering reporter with '::' in name fails" tags="[registration][reporters]" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
+    <Expression success="true" type="REQUIRE_THROWS_WITH" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
+      <Original>
+        registry.registerReporter( "with::doublecolons", Catch::Detail::make_unique&lt;TestReporterFactory>() ), "'::' is not allowed in reporter name: 'with::doublecolons'"
+      </Original>
+      <Expanded>
+        "'::' is not allowed in reporter name: 'with::doublecolons'" equals: "'::' is not allowed in reporter name: 'with::doublecolons'"
+      </Expanded>
+    </Expression>
+    <OverallResult success="true"/>
+  </TestCase>
   <TestCase name="Regression test #1" tags="[matchers][vector]" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
     <Expression success="true" type="CHECK_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
       <Original>
@@ -20884,6 +20895,6 @@ loose text artifact
     </Section>
     <OverallResult success="true"/>
   </TestCase>
-  <OverallResults successes="2056" failures="143" expectedFailures="27"/>
-  <OverallResultsCases successes="292" failures="83" expectedFailures="7"/>
+  <OverallResults successes="2057" failures="143" expectedFailures="27"/>
+  <OverallResultsCases successes="293" failures="83" expectedFailures="7"/>
 </Catch2TestRun>

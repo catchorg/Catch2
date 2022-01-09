@@ -184,6 +184,7 @@
     <testCase name="Multireporter updates ReporterPreferences properly" duration="{duration}"/>
     <testCase name="Multireporter updates ReporterPreferences properly/Adding listeners" duration="{duration}"/>
     <testCase name="Multireporter updates ReporterPreferences properly/Adding reporters" duration="{duration}"/>
+    <testCase name="Registering reporter with '::' in name fails" duration="{duration}"/>
     <testCase name="Reporter's write listings to provided stream" duration="{duration}"/>
     <testCase name="Reporter's write listings to provided stream/Automake reporter lists tags" duration="{duration}"/>
     <testCase name="Reporter's write listings to provided stream/Automake reporter lists reporters" duration="{duration}"/>

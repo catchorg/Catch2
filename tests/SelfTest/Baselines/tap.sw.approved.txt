@@ -2652,6 +2652,8 @@ not ok {test-number} - testStringForMatching(), Matches( "this STRING contains '
 not ok {test-number} - testStringForMatching(), Matches( "contains 'abc' as a substring" ) for: "this string contains 'abc' as a substring" matches "contains 'abc' as a substring" case sensitively
 # Regex string matcher
 not ok {test-number} - testStringForMatching(), Matches( "this string contains 'abc' as a" ) for: "this string contains 'abc' as a substring" matches "this string contains 'abc' as a" case sensitively
+# Registering reporter with '::' in name fails
+ok {test-number} - registry.registerReporter( "with::doublecolons", Catch::Detail::make_unique<TestReporterFactory>() ), "'::' is not allowed in reporter name: 'with::doublecolons'" for: "'::' is not allowed in reporter name: 'with::doublecolons'" equals: "'::' is not allowed in reporter name: 'with::doublecolons'"
 # Regression test #1
 ok {test-number} - actual, !UnorderedEquals( expected ) for: { 'a', 'b' } not UnorderedEquals: { 'c', 'b' }
 # Reporter's write listings to provided stream
@@ -4454,5 +4456,5 @@ ok {test-number} - q3 == 23. for: 23.0 == 23.0
 ok {test-number} -
 # xmlentitycheck
 ok {test-number} -
-1..2226
+1..2227
 
