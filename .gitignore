@@ -31,3 +31,4 @@ benchmark-dir
 bazel-*
 build-fuzzers
 debug-build
+.vscode
