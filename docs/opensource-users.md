@@ -77,6 +77,9 @@ A small C++ library wrapper for the native C ODBC API.
 ### [Nonius](https://github.com/libnonius/nonius)
 A header-only framework for benchmarking small snippets of C++ code.
 
+### [OpenALpp](https://github.com/Laguna1989/OpenALpp)
+A modern OOP C++14 audio library built on OpenAL for Windows, Linux and web (emscripten).
+
 ### [polymorphic_value](https://github.com/jbcoe/polymorphic_value)
 A polymorphic value-type for C++.
 
