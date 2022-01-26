@@ -29,7 +29,7 @@ TEST_CASE( "Reconstruction should be based on stringification: #914" , "[Decompo
     CHECK(truthy(false));
 }
 
-TEST_CASE("#1005: Comparing pointer to int and long (NULL can be either on various systems)", "[Decomposition]") {
+TEST_CASE("#1005: Comparing pointer to int and long (NULL can be either on various systems)", "[Decomposition][approvals]") {
     FILE* fptr = nullptr;
     REQUIRE(fptr == 0);
     REQUIRE(fptr == 0l);

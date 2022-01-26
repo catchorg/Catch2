@@ -1,5 +1,4 @@
 :test-result: PASS # A test name that starts with a #
-:test-result: PASS #1005: Comparing pointer to int and long (NULL can be either on various systems)
 :test-result: PASS #1027: Bitfields can be captured
 :test-result: PASS #1147
 :test-result: PASS #1175 - Hidden Test
@@ -27,7 +26,7 @@
 :test-result: XFAIL #748 - captures with unexpected exceptions
 :test-result: PASS #809
 :test-result: PASS #833
-:test-result: XFAIL #835 -- errno should not be touched by Catch
+:test-result: XFAIL #835 -- errno should not be touched by Catch2
 :test-result: PASS #872
 :test-result: PASS #961 -- Dynamically created sections should all be reported
 :test-result: FAIL 'Not' checks that should fail
@@ -367,7 +366,6 @@
 :test-result: PASS tuple<>
 :test-result: PASS tuple<float,int>
 :test-result: PASS tuple<int>
-:test-result: PASS tuple<0,int,const char *>
 :test-result: PASS tuple<string,string>
 :test-result: PASS tuple<tuple<int>,tuple<>,float>
 :test-result: PASS uniform samples

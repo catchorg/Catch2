@@ -17,23 +17,6 @@ with message:
   yay
 
 -------------------------------------------------------------------------------
-#1005: Comparing pointer to int and long (NULL can be either on various
-       systems)
--------------------------------------------------------------------------------
-Decomposition.tests.cpp:<line number>
-...............................................................................
-
-Decomposition.tests.cpp:<line number>: PASSED:
-  REQUIRE( fptr == 0 )
-with expansion:
-  0 == 0
-
-Decomposition.tests.cpp:<line number>: PASSED:
-  REQUIRE( fptr == 0l )
-with expansion:
-  0 == 0
-
--------------------------------------------------------------------------------
 #1027: Bitfields can be captured
 -------------------------------------------------------------------------------
 Compilation.tests.cpp:<line number>
@@ -863,7 +846,7 @@ with expansion:
   true
 
 -------------------------------------------------------------------------------
-#835 -- errno should not be touched by Catch
+#835 -- errno should not be touched by Catch2
 -------------------------------------------------------------------------------
 Misc.tests.cpp:<line number>
 ...............................................................................
@@ -874,7 +857,7 @@ with expansion:
   1 == 0
 
 Misc.tests.cpp:<line number>: PASSED:
-  REQUIRE( errno == 1 )
+  REQUIRE( errno_after == 1 )
 with expansion:
   1 == 1
 
@@ -959,6 +942,6 @@ Condition.tests.cpp:<line number>: FAILED:
   CHECK( true != true )
 
 ===============================================================================
-test cases:  33 | 28 passed | 3 failed | 2 failed as expected
-assertions: 103 | 96 passed | 4 failed | 3 failed as expected
+test cases:  32 | 27 passed | 3 failed | 2 failed as expected
+assertions: 101 | 94 passed | 4 failed | 3 failed as expected
 

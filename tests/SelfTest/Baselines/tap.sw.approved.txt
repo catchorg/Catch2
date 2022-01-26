@@ -1,9 +1,5 @@
 # # A test name that starts with a #
 ok {test-number} - with 1 message: 'yay'
-# #1005: Comparing pointer to int and long (NULL can be either on various systems)
-ok {test-number} - fptr == 0 for: 0 == 0
-# #1005: Comparing pointer to int and long (NULL can be either on various systems)
-ok {test-number} - fptr == 0l for: 0 == 0
 # #1027: Bitfields can be captured
 ok {test-number} - y.v == 0 for: 0 == 0
 # #1027: Bitfields can be captured
@@ -188,10 +184,10 @@ ok {test-number} - throws_int(false)
 ok {test-number} - "aaa", Catch::Matchers::EndsWith("aaa") for: "aaa" ends with: "aaa"
 # #833
 ok {test-number} - templated_tests<int>(3) for: true
-# #835 -- errno should not be touched by Catch
+# #835 -- errno should not be touched by Catch2
 not ok {test-number} - f() == 0 for: 1 == 0
-# #835 -- errno should not be touched by Catch
-ok {test-number} - errno == 1 for: 1 == 1
+# #835 -- errno should not be touched by Catch2
+ok {test-number} - errno_after == 1 for: 1 == 1
 # #872
 ok {test-number} - x == 4 for: {?} == 4 with 1 message: 'dummy := 0'
 # #961 -- Dynamically created sections should all be reported
@@ -4320,8 +4316,6 @@ ok {test-number} - "1.2f" == ::Catch::Detail::stringify(float(1.2)) for: "1.2f" 
 ok {test-number} - "{ 1.2f, 0 }" == ::Catch::Detail::stringify(type{1.2f,0}) for: "{ 1.2f, 0 }" == "{ 1.2f, 0 }"
 # tuple<int>
 ok {test-number} - "{ 0 }" == ::Catch::Detail::stringify(type{0}) for: "{ 0 }" == "{ 0 }"
-# tuple<0,int,const char *>
-ok {test-number} - "{ 0, 42, \"Catch me\" }" == ::Catch::Detail::stringify(value) for: "{ 0, 42, "Catch me" }" == "{ 0, 42, "Catch me" }"
 # tuple<string,string>
 ok {test-number} - "{ \"hello\", \"world\" }" == ::Catch::Detail::stringify(type{"hello","world"}) for: "{ "hello", "world" }" == "{ "hello", "world" }"
 # tuple<tuple<int>,tuple<>,float>
@@ -4456,5 +4450,5 @@ ok {test-number} - q3 == 23. for: 23.0 == 23.0
 ok {test-number} -
 # xmlentitycheck
 ok {test-number} -
-1..2227
+1..2224
 

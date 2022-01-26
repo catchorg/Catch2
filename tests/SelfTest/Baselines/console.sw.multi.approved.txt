@@ -17,23 +17,6 @@ with message:
   yay
 
 -------------------------------------------------------------------------------
-#1005: Comparing pointer to int and long (NULL can be either on various
-       systems)
--------------------------------------------------------------------------------
-Decomposition.tests.cpp:<line number>
-...............................................................................
-
-Decomposition.tests.cpp:<line number>: PASSED:
-  REQUIRE( fptr == 0 )
-with expansion:
-  0 == 0
-
-Decomposition.tests.cpp:<line number>: PASSED:
-  REQUIRE( fptr == 0l )
-with expansion:
-  0 == 0
-
--------------------------------------------------------------------------------
 #1027: Bitfields can be captured
 -------------------------------------------------------------------------------
 Compilation.tests.cpp:<line number>
@@ -861,7 +844,7 @@ with expansion:
   true
 
 -------------------------------------------------------------------------------
-#835 -- errno should not be touched by Catch
+#835 -- errno should not be touched by Catch2
 -------------------------------------------------------------------------------
 Misc.tests.cpp:<line number>
 ...............................................................................
@@ -872,7 +855,7 @@ with expansion:
   1 == 0
 
 Misc.tests.cpp:<line number>: PASSED:
-  REQUIRE( errno == 1 )
+  REQUIRE( errno_after == 1 )
 with expansion:
   1 == 1
 
@@ -17225,19 +17208,6 @@ with expansion:
   "{ 0 }" == "{ 0 }"
 
 -------------------------------------------------------------------------------
-tuple<0,int,const char *>
--------------------------------------------------------------------------------
-ToStringTuple.tests.cpp:<line number>
-...............................................................................
-
-ToStringTuple.tests.cpp:<line number>: PASSED:
-  CHECK( "{ 0, 42, \"Catch me\" }" == ::Catch::Detail::stringify(value) )
-with expansion:
-  "{ 0, 42, "Catch me" }"
-  ==
-  "{ 0, 42, "Catch me" }"
-
--------------------------------------------------------------------------------
 tuple<string,string>
 -------------------------------------------------------------------------------
 ToStringTuple.tests.cpp:<line number>
@@ -17776,6 +17746,6 @@ Misc.tests.cpp:<line number>
 Misc.tests.cpp:<line number>: PASSED:
 
 ===============================================================================
-test cases:  383 |  293 passed |  83 failed |  7 failed as expected
-assertions: 2227 | 2057 passed | 143 failed | 27 failed as expected
+test cases:  381 |  291 passed |  83 failed |  7 failed as expected
+assertions: 2224 | 2054 passed | 143 failed | 27 failed as expected
 

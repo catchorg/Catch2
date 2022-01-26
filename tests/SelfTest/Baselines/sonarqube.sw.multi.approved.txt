@@ -864,7 +864,6 @@ Condition.tests.cpp:<line number>
     <testCase name="comparisons between int variables" duration="{duration}"/>
   </file>
   <file path="tests/<exe-name>/UsageTests/Decomposition.tests.cpp">
-    <testCase name="#1005: Comparing pointer to int and long (NULL can be either on various systems)" duration="{duration}"/>
     <testCase name="Reconstruction should be based on stringification: #914" duration="{duration}">
       <failure message="CHECK(truthy(false))">
 FAILED:
@@ -1552,7 +1551,7 @@ Message.tests.cpp:<line number>
     <testCase name="#1954 - 7 arg template test case sig compiles - 1, 1, 1, 1, 1, 0, 0" duration="{duration}"/>
     <testCase name="#1954 - 7 arg template test case sig compiles - 5, 1, 1, 1, 1, 0, 0" duration="{duration}"/>
     <testCase name="#1954 - 7 arg template test case sig compiles - 5, 3, 1, 1, 1, 0, 0" duration="{duration}"/>
-    <testCase name="#835 -- errno should not be touched by Catch" duration="{duration}">
+    <testCase name="#835 -- errno should not be touched by Catch2" duration="{duration}">
       <skipped message="CHECK(f() == 0)">
 FAILED:
 	CHECK( f() == 0 )
@@ -1846,7 +1845,6 @@ Misc.tests.cpp:<line number>
     <testCase name="tuple&lt;>" duration="{duration}"/>
     <testCase name="tuple&lt;float,int>" duration="{duration}"/>
     <testCase name="tuple&lt;int>" duration="{duration}"/>
-    <testCase name="tuple&lt;0,int,const char *>" duration="{duration}"/>
     <testCase name="tuple&lt;string,string>" duration="{duration}"/>
     <testCase name="tuple&lt;tuple&lt;int>,tuple&lt;>,float>" duration="{duration}"/>
   </file>

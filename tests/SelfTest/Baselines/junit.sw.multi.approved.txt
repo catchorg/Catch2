@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuites>
-  <testsuite name="<exe-name>" errors="17" failures="126" tests="2227" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
+  <testsuite name="<exe-name>" errors="17" failures="126" tests="2224" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
     <properties>
       <property name="random-seed" value="1"/>
       <property name="filters" value="~[!nonportable]~[!benchmark]~[approvals] *"/>
     </properties>
     <testcase classname="<exe-name>.global" name="# A test name that starts with a #" time="{duration}" status="run"/>
-    <testcase classname="<exe-name>.global" name="#1005: Comparing pointer to int and long (NULL can be either on various systems)" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="#1027: Bitfields can be captured" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="#1147" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="#1175 - Hidden Test" time="{duration}" status="run"/>
@@ -70,7 +69,7 @@ Exception.tests.cpp:<line number>
     <testcase classname="<exe-name>.global" name="#748 - captures with unexpected exceptions/inside REQUIRE_THROWS" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="#809" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="#833" time="{duration}" status="run"/>
-    <testcase classname="<exe-name>.global" name="#835 -- errno should not be touched by Catch" time="{duration}" status="run">
+    <testcase classname="<exe-name>.global" name="#835 -- errno should not be touched by Catch2" time="{duration}" status="run">
       <skipped message="TEST_CASE tagged with !mayfail"/>
       <failure message="f() == 0" type="CHECK">
 FAILED:
@@ -1865,7 +1864,6 @@ Exception.tests.cpp:<line number>
     <testcase classname="<exe-name>.global" name="tuple&lt;>" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="tuple&lt;float,int>" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="tuple&lt;int>" time="{duration}" status="run"/>
-    <testcase classname="<exe-name>.global" name="tuple&lt;0,int,const char *>" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="tuple&lt;string,string>" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="tuple&lt;tuple&lt;int>,tuple&lt;>,float>" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="uniform samples" time="{duration}" status="run"/>

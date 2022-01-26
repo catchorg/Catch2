@@ -3,25 +3,6 @@
   <TestCase name="# A test name that starts with a #" filename="tests/<exe-name>/UsageTests/Misc.tests.cpp" >
     <OverallResult success="true"/>
   </TestCase>
-  <TestCase name="#1005: Comparing pointer to int and long (NULL can be either on various systems)" tags="[Decomposition]" filename="tests/<exe-name>/UsageTests/Decomposition.tests.cpp" >
-    <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/UsageTests/Decomposition.tests.cpp" >
-      <Original>
-        fptr == 0
-      </Original>
-      <Expanded>
-        0 == 0
-      </Expanded>
-    </Expression>
-    <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/UsageTests/Decomposition.tests.cpp" >
-      <Original>
-        fptr == 0l
-      </Original>
-      <Expanded>
-        0 == 0
-      </Expanded>
-    </Expression>
-    <OverallResult success="true"/>
-  </TestCase>
   <TestCase name="#1027: Bitfields can be captured" filename="tests/<exe-name>/UsageTests/Compilation.tests.cpp" >
     <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/UsageTests/Compilation.tests.cpp" >
       <Original>
@@ -799,7 +780,7 @@ Nor would this
     </Expression>
     <OverallResult success="true"/>
   </TestCase>
-  <TestCase name="#835 -- errno should not be touched by Catch" tags="[!shouldfail][.][failing]" filename="tests/<exe-name>/UsageTests/Misc.tests.cpp" >
+  <TestCase name="#835 -- errno should not be touched by Catch2" tags="[!shouldfail][.][failing]" filename="tests/<exe-name>/UsageTests/Misc.tests.cpp" >
     <Expression success="false" type="CHECK" filename="tests/<exe-name>/UsageTests/Misc.tests.cpp" >
       <Original>
         f() == 0
@@ -810,7 +791,7 @@ Nor would this
     </Expression>
     <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/UsageTests/Misc.tests.cpp" >
       <Original>
-        errno == 1
+        errno_after == 1
       </Original>
       <Expanded>
         1 == 1
@@ -20266,19 +20247,6 @@ There is no extra whitespace here
     </Expression>
     <OverallResult success="true"/>
   </TestCase>
-  <TestCase name="tuple&lt;0,int,const char *>" tags="[toString][tuple]" filename="tests/<exe-name>/UsageTests/ToStringTuple.tests.cpp" >
-    <Expression success="true" type="CHECK" filename="tests/<exe-name>/UsageTests/ToStringTuple.tests.cpp" >
-      <Original>
-        "{ 0, 42, \"Catch me\" }" == ::Catch::Detail::stringify(value)
-      </Original>
-      <Expanded>
-        "{ 0, 42, "Catch me" }"
-==
-"{ 0, 42, "Catch me" }"
-      </Expanded>
-    </Expression>
-    <OverallResult success="true"/>
-  </TestCase>
   <TestCase name="tuple&lt;string,string>" tags="[toString][tuple]" filename="tests/<exe-name>/UsageTests/ToStringTuple.tests.cpp" >
     <Expression success="true" type="CHECK" filename="tests/<exe-name>/UsageTests/ToStringTuple.tests.cpp" >
       <Original>
@@ -20894,6 +20862,6 @@ There is no extra whitespace here
     </Section>
     <OverallResult success="true"/>
   </TestCase>
-  <OverallResults successes="2057" failures="143" expectedFailures="27"/>
-  <OverallResultsCases successes="293" failures="83" expectedFailures="7"/>
+  <OverallResults successes="2054" failures="143" expectedFailures="27"/>
+  <OverallResultsCases successes="291" failures="83" expectedFailures="7"/>
 </Catch2TestRun>

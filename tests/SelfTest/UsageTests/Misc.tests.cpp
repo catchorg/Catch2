@@ -472,10 +472,15 @@ TEST_CASE( "# A test name that starts with a #" ) {
     SUCCEED( "yay" );
 }
 
-TEST_CASE( "#835 -- errno should not be touched by Catch", "[.][failing][!shouldfail]" ) {
+TEST_CASE( "#835 -- errno should not be touched by Catch2", "[.][failing][!shouldfail]" ) {
     errno = 1;
+    // Check that reporting failed test doesn't change errno.
     CHECK(f() == 0);
-    REQUIRE(errno == 1); // Check that f() doesn't touch errno.
+    // We want to avoid expanding `errno` macro in assertion, because
+    // we capture the expression after macro expansion, and would have
+    // to normalize the ways different platforms spell `errno`.
+    const auto errno_after = errno;
+    REQUIRE(errno_after == 1);
 }
 
 TEST_CASE( "#961 -- Dynamically created sections should all be reported", "[.]" ) {
