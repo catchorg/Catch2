@@ -173,7 +173,7 @@ namespace Catch {
 
     void Session::showHelp() const {
         Catch::cout()
-                << "\nCatch v" << libraryVersion() << '\n'
+                << "\nCatch2 v" << libraryVersion() << '\n'
                 << m_cli << '\n'
                 << "For more detailed usage please see the project docs\n\n" << std::flush;
     }
@@ -181,7 +181,7 @@ namespace Catch {
         Catch::cout()
                 << std::left << std::setw(16) << "description: " << "A Catch2 test executable\n"
                 << std::left << std::setw(16) << "category: " << "testframework\n"
-                << std::left << std::setw(16) << "framework: " << "Catch Test\n"
+                << std::left << std::setw(16) << "framework: " << "Catch2\n"
                 << std::left << std::setw(16) << "version: " << libraryVersion() << '\n' << std::flush;
     }
 

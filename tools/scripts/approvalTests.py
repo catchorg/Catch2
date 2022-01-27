@@ -35,7 +35,7 @@ durationsParser = re.compile(r' time="[0-9]*\.[0-9]*"')
 junitDurationsParser = re.compile(r' time="[0-9]+\.[0-9]{3}"')
 durationParser = re.compile(r''' duration=['"][0-9]+['"]''')
 timestampsParser = re.compile(r'\d{4}-\d{2}-\d{2}T\d{2}\:\d{2}\:\d{2}Z')
-versionParser = re.compile(r'Catch v[0-9]+\.[0-9]+\.[0-9]+(-\w*\.[0-9]+)?')
+versionParser = re.compile(r'Catch2 v[0-9]+\.[0-9]+\.[0-9]+(-\w*\.[0-9]+)?')
 nullParser = re.compile(r'\b(__null|nullptr)\b')
 exeNameParser = re.compile(r'''
     \b
@@ -140,7 +140,7 @@ def filterLine(line, isCompact):
     # strip out the test order number in TAP to avoid massive diffs for every change
     line = tapTestNumParser.sub("\g<1> {test-number} -", line)
 
-    # strip Catch version number
+    # strip Catch2 version number
     line = versionParser.sub("<version>", line)
 
     # replace *null* with 0
