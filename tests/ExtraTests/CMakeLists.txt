@@ -326,6 +326,18 @@ set_tests_properties(
     FAIL_REGULAR_EXPRESSION "X26 - assertionEnded"
 )
 
+add_executable(ListenersGetEventsBeforeReporters ${TESTS_DIR}/X28-ListenersGetEventsBeforeReporters.cpp)
+target_link_libraries(ListenersGetEventsBeforeReporters PRIVATE Catch2::Catch2WithMain)
+add_test(
+  NAME ListenersGetEventsBeforeReporters
+  COMMAND ListenersGetEventsBeforeReporters --reporter test-reporter
+)
+set_tests_properties(
+    ListenersGetEventsBeforeReporters
+  PROPERTIES
+    PASS_REGULAR_EXPRESSION "X28 - TestReporter constructed"
+    FAIL_REGULAR_EXPRESSION "X28 - ERROR"
+)
 
 add_executable(DuplicatedTestCases-SameNameAndTags ${TESTS_DIR}/X31-DuplicatedTestCases.cpp)
 target_link_libraries(DuplicatedTestCases-SameNameAndTags PRIVATE Catch2::Catch2WithMain)
@@ -412,6 +424,7 @@ set( EXTRA_TEST_BINARIES
     DuplicatedTestCases-SameNameDifferentTags
     DuplicatedTestCases-DuplicatedTestCaseMethods
     NoTests
+    ListenersGetEventsBeforeReporters
 #    DebugBreakMacros
 )
 
