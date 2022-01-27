@@ -13,6 +13,12 @@ import sys
 import random
 import xml.etree.ElementTree as ET
 
+def none_to_empty_str(e):
+    if e is None:
+        return ""
+    assert type(e) is str
+    return e
+
 def list_tests(self_test_exe, tags, rng_seed):
     cmd = [self_test_exe, '--reporter', 'xml', '--list-tests', '--order', 'rand',
             '--rng-seed', str(rng_seed)]
@@ -26,7 +32,9 @@ def list_tests(self_test_exe, tags, rng_seed):
         raise RuntimeError("Unexpected error output:\n" + process.stderr)
 
     root = ET.fromstring(stdout)
-    result = [elem.text for elem in root.findall('./TestCase/Name')]
+    result = [(none_to_empty_str(tc.find('Name').text),
+               none_to_empty_str(tc.find('Tags').text),
+               none_to_empty_str(tc.find('ClassName').text)) for tc in root.findall('./TestCase')]
 
     if len(result) < 2:
         raise RuntimeError("Unexpectedly few tests listed (got {})".format(
