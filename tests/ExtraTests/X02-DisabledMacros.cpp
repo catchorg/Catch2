@@ -6,9 +6,11 @@
 
 // SPDX-License-Identifier: BSL-1.0
 
-// X02-DisabledMacros.cpp
-// Test that CATCH_CONFIG_DISABLE turns off TEST_CASE autoregistration
-// and expressions in assertion macros are not run.
+/**\file
+ * Test that CATCH_CONFIG_DISABLE turns off TEST_CASE autoregistration
+ * and expressions in assertion macros are not run.
+ */
+
 
 #include <catch2/catch_test_macros.hpp>
 #include <catch2/benchmark/catch_benchmark.hpp>

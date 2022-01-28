@@ -6,8 +6,9 @@
 
 // SPDX-License-Identifier: BSL-1.0
 
-// X12-CustomDebugBreakMacro.cpp
-// Test that user-defined `CATCH_BREAK_INTO_DEBUGGER` is respected and used.
+/**\file
+ * Test that user-defined `CATCH_BREAK_INTO_DEBUGGER` is respected and used.
+ */
 
 #include <iostream>
 

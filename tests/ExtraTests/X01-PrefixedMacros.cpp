@@ -6,10 +6,13 @@
 
 // SPDX-License-Identifier: BSL-1.0
 
-// X01-DisableStringification.cpp
-// Test that Catch's prefixed macros compile and run properly.
-// This won't provide full coverage, but it might be worth checking
-// the other branch as well
+/**\file
+ * Test that Catch's prefixed macros compile and run properly.
+ *
+ * We intentionally do not provide full coverage of all macros, but we
+ * test a smattering and can add other ones as they have regressions.
+ */
+
 
 #include <catch2/catch_test_macros.hpp>
 #include <catch2/matchers/catch_matchers_predicate.hpp>

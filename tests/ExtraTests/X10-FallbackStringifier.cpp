@@ -6,8 +6,13 @@
 
 // SPDX-License-Identifier: BSL-1.0
 
-// X10-FallbackStringifier.cpp
-// Test that defining fallbackStringifier compiles
+/**\file
+ * Test that the user can define custom fallbackStringifier 
+ *
+ * This is done by defining a custom fallback stringifier that prints
+ * out a specific string, and then asserting (to cause stringification)
+ * over a type without stringification support.
+ */
 
 #include <string>
 

@@ -6,11 +6,13 @@
 
 // SPDX-License-Identifier: BSL-1.0
 
-// X11-DisableStringification.cpp
-// Test that stringification of original expression can be disabled
-// this is a workaround for VS 2017 issue with Raw String literal
-// and preprocessor token pasting. In other words, hopefully this test
-// will be deleted soon :-)
+/**\file
+ * Test that stringification of original expression can be disabled.
+ *
+ * This is a workaround for VS 2017, 2019 issue with Raw String literals
+ * and preprocessor token pasting.
+ */
+
 
 #include <catch2/catch_test_macros.hpp>
 

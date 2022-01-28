@@ -7,7 +7,6 @@
 // SPDX-License-Identifier: BSL-1.0
 
 /**\file
- *
  * This file serves as a simple compilation test against the amalgamated
  * version of Catch2.
  */
