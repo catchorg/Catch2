@@ -1,3 +1,11 @@
+
+//              Copyright Catch2 Authors
+// Distributed under the Boost Software License, Version 1.0.
+//   (See accompanying file LICENSE_1_0.txt or copy at
+//        https://www.boost.org/LICENSE_1_0.txt)
+
+// SPDX-License-Identifier: BSL-1.0
+
 // X12-CustomDebugBreakMacro.cpp
 // Test that user-defined `CATCH_BREAK_INTO_DEBUGGER` is respected and used.
 
