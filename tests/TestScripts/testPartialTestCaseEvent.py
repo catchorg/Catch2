@@ -1,5 +1,12 @@
 #!/usr/bin/env python3
 
+#              Copyright Catch2 Authors
+# Distributed under the Boost Software License, Version 1.0.
+#   (See accompanying file LICENSE_1_0.txt or copy at
+#        https://www.boost.org/LICENSE_1_0.txt)
+
+# SPDX-License-Identifier: BSL-1.0
+
 """
 This test script verifies that the testCasePartial{Starting,Ended} reporter
 events fire properly. This is done by calling a test binary compiled with
