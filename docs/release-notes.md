@@ -55,19 +55,9 @@
 This also means that to get all of Catch2's functionality in a test file,
 you have to include multiple headers.**
 
-For quick'n'dirty migration, you can replace the old `#include <catch2/catch.hpp>`
-with `#include <catch2/catch_all.hpp>`. This is a (one of) convenience
-header(s) that brings in _all_ of headers in Catch2. By doing this,
-you should be able to migrate instantly, but at the cost of (significantly)
-increased compilation times. You should prefer piecemeal including
-headers that are actually required by your test code.
-
-The basic set of functionality (`TEST_CASE`, `SECTION`, `REQUIRE`) is in
-`catch2/catch_test_macros.hpp`. Matchers are in `matchers` subfolder,
-generators in `generators` subfolder, and so on.
-
-Note that documentation has not yet been updated to account for the
-new design.
+You probably want to look into the [migration docs](migrate-v2-to-v3.md#top),
+which were written to help people coming from v2.x.x versions to the
+v3 releases.
 
 
 ### FAQ
