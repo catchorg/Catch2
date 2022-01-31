@@ -1186,6 +1186,37 @@ Misc.tests.cpp:<line number>: FAILED:
 with expansion:
   false
 
+-------------------------------------------------------------------------------
+dynamic skipping works with generators
+-------------------------------------------------------------------------------
+Skip.tests.cpp:<line number>
+...............................................................................
+
+Skip.tests.cpp:<line number>: SKIPPED:
+explicitly with message:
+  skipping because answer = 41
+
+-------------------------------------------------------------------------------
+dynamic skipping works with generators
+-------------------------------------------------------------------------------
+Skip.tests.cpp:<line number>
+...............................................................................
+
+Skip.tests.cpp:<line number>: SKIPPED:
+explicitly with message:
+  skipping because answer = 43
+
+-------------------------------------------------------------------------------
+failed assertions before SKIP are still reported
+-------------------------------------------------------------------------------
+Skip.tests.cpp:<line number>
+...............................................................................
+
+Skip.tests.cpp:<line number>: FAILED:
+  CHECK( 3 == 4 )
+
+Skip.tests.cpp:<line number>: SKIPPED:
+
 loose text artifact
 -------------------------------------------------------------------------------
 just failure
@@ -1339,6 +1370,15 @@ with message:
   this SHOULD be seen only ONCE
 
 -------------------------------------------------------------------------------
+sections can be skipped dynamically at runtime
+  skipped
+-------------------------------------------------------------------------------
+Skip.tests.cpp:<line number>
+...............................................................................
+
+Skip.tests.cpp:<line number>: SKIPPED:
+
+-------------------------------------------------------------------------------
 send a single char to INFO
 -------------------------------------------------------------------------------
 Misc.tests.cpp:<line number>
@@ -1360,6 +1400,16 @@ Message.tests.cpp:<line number>: FAILED:
 with messages:
   hi
   i := 7
+
+-------------------------------------------------------------------------------
+skipped tests can optionally provide a reason
+-------------------------------------------------------------------------------
+Skip.tests.cpp:<line number>
+...............................................................................
+
+Skip.tests.cpp:<line number>: SKIPPED:
+explicitly with message:
+  skipping because answer = 43
 
 -------------------------------------------------------------------------------
 stacks unscoped info in loops
@@ -1384,6 +1434,14 @@ with messages:
   6
 
 -------------------------------------------------------------------------------
+tests can be skipped dynamically at runtime
+-------------------------------------------------------------------------------
+Skip.tests.cpp:<line number>
+...............................................................................
+
+Skip.tests.cpp:<line number>: SKIPPED:
+
+-------------------------------------------------------------------------------
 thrown std::strings are translated
 -------------------------------------------------------------------------------
 Exception.tests.cpp:<line number>
@@ -1394,6 +1452,6 @@ due to unexpected exception with message:
   Why would you throw a std::string?
 
 ===============================================================================
-test cases:  395 |  319 passed |  69 failed |  7 failed as expected
-assertions: 2148 | 1993 passed | 128 failed | 27 failed as expected
+test cases:  400 |  319 passed |  69 failed | 4 skipped |  8 failed as expected
+assertions: 2157 | 1995 passed | 128 failed | 6 skipped | 28 failed as expected
 

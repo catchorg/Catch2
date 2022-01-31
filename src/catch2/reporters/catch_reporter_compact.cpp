@@ -109,6 +109,7 @@ public:
         case ResultWas::Unknown:
         case ResultWas::FailureBit:
         case ResultWas::Exception:
+        case ResultWas::ExplicitSkip:
             printResultType(Colour::Error, "** internal error **");
             break;
         }

@@ -44,6 +44,9 @@ namespace Catch {
         catch( TestFailureException& ) {
             std::rethrow_exception(std::current_exception());
         }
+        catch( TestSkipException& ) {
+            std::rethrow_exception(std::current_exception());
+        }
         catch( std::exception const& ex ) {
             return ex.what();
         }

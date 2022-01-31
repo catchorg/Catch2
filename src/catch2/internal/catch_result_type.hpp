@@ -16,6 +16,8 @@ namespace Catch {
         Ok = 0,
         Info = 1,
         Warning = 2,
+        // TODO: Should explicit skip be considered "not OK" (cf. isOk)? I.e., should it have the failure bit?
+        ExplicitSkip = 4,
 
         FailureBit = 0x10,
 

@@ -104,6 +104,7 @@ namespace Catch {
                 case ResultWas::Unknown:
                 case ResultWas::FailureBit:
                 case ResultWas::Exception:
+                case ResultWas::ExplicitSkip:
                     printResultType("** internal error **"_sr);
                     break;
                 }

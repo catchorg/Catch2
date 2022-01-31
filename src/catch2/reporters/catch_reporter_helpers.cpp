@@ -325,6 +325,9 @@ namespace Catch {
         columns.push_back( SummaryColumn( "failed", Colour::ResultError )
                                .addRow( totals.testCases.failed )
                                .addRow( totals.assertions.failed ) );
+        columns.push_back( SummaryColumn( "skipped", Colour::Skip )
+                               .addRow( totals.testCases.skipped )
+                               .addRow( totals.assertions.skipped ) );
         columns.push_back(
             SummaryColumn( "failed as expected", Colour::ResultExpectedFailure )
                 .addRow( totals.testCases.failedButOk )

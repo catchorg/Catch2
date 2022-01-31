@@ -17902,6 +17902,9 @@ There is no extra whitespace here
     </Expression>
     <OverallResult success="true"/>
   </TestCase>
+  <TestCase name="dynamic skipping works with generators" tags="[skipping]" filename="tests/<exe-name>/UsageTests/Skip.tests.cpp" >
+    <OverallResult success="true"/>
+  </TestCase>
   <TestCase name="empty tags are not allowed" tags="[tags]" filename="tests/<exe-name>/IntrospectiveTests/Tag.tests.cpp" >
     <Expression success="true" type="REQUIRE_THROWS" filename="tests/<exe-name>/IntrospectiveTests/Tag.tests.cpp" >
       <Original>
@@ -17975,6 +17978,17 @@ There is no extra whitespace here
     <Section name="f (leaf)" filename="tests/<exe-name>/UsageTests/Misc.tests.cpp" >
       <OverallResults successes="1" failures="0" expectedFailures="0"/>
     </Section>
+    <OverallResult success="true"/>
+  </TestCase>
+  <TestCase name="failed assertions before SKIP are still reported" tags="[!shouldfail][skipping]" filename="tests/<exe-name>/UsageTests/Skip.tests.cpp" >
+    <Expression success="false" type="CHECK" filename="tests/<exe-name>/UsageTests/Skip.tests.cpp" >
+      <Original>
+        3 == 4
+      </Original>
+      <Expanded>
+        3 == 4
+      </Expanded>
+    </Expression>
     <OverallResult success="true"/>
   </TestCase>
   <TestCase name="first tag" tags="[tag1]" filename="tests/<exe-name>/UsageTests/Misc.tests.cpp" >
@@ -19219,6 +19233,15 @@ loose text artifact
   <TestCase name="second tag" tags="[tag2]" filename="tests/<exe-name>/UsageTests/Misc.tests.cpp" >
     <OverallResult success="false"/>
   </TestCase>
+  <TestCase name="sections can be skipped dynamically at runtime" tags="[skipping]" filename="tests/<exe-name>/UsageTests/Skip.tests.cpp" >
+    <Section name="not skipped" filename="tests/<exe-name>/UsageTests/Skip.tests.cpp" >
+      <OverallResults successes="1" failures="0" expectedFailures="0"/>
+    </Section>
+    <Section name="skipped" filename="tests/<exe-name>/UsageTests/Skip.tests.cpp" >
+      <OverallResults successes="0" failures="0" expectedFailures="0"/>
+    </Section>
+    <OverallResult success="true"/>
+  </TestCase>
   <TestCase name="send a single char to INFO" tags="[.][failing]" filename="tests/<exe-name>/UsageTests/Misc.tests.cpp" >
     <Info>
       3
@@ -19259,6 +19282,9 @@ loose text artifact
         { {?}, {?} } ( Contains: {?} and Contains: {?} )
       </Expanded>
     </Expression>
+    <OverallResult success="true"/>
+  </TestCase>
+  <TestCase name="skipped tests can optionally provide a reason" tags="[skipping]" filename="tests/<exe-name>/UsageTests/Skip.tests.cpp" >
     <OverallResult success="true"/>
   </TestCase>
   <TestCase name="splitString" tags="[string-manip]" filename="tests/<exe-name>/IntrospectiveTests/StringManip.tests.cpp" >
@@ -19716,6 +19742,9 @@ loose text artifact
         magic.tag == magic.tag
       </Expanded>
     </Expression>
+    <OverallResult success="true"/>
+  </TestCase>
+  <TestCase name="tests can be skipped dynamically at runtime" tags="[skipping]" filename="tests/<exe-name>/UsageTests/Skip.tests.cpp" >
     <OverallResult success="true"/>
   </TestCase>
   <TestCase name="thrown std::strings are translated" tags="[!throws][.][failing]" filename="tests/<exe-name>/UsageTests/Exception.tests.cpp" >
@@ -20518,6 +20547,6 @@ loose text artifact
     </Section>
     <OverallResult success="true"/>
   </TestCase>
-  <OverallResults successes="1993" failures="143" expectedFailures="27"/>
-  <OverallResultsCases successes="305" failures="83" expectedFailures="7"/>
+  <OverallResults successes="1995" failures="143" expectedFailures="28"/>
+  <OverallResultsCases successes="305" failures="83" expectedFailures="8"/>
 </Catch2TestRun>

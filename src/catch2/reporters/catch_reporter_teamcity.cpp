@@ -89,6 +89,7 @@ namespace Catch {
             case ResultWas::Ok:
             case ResultWas::Info:
             case ResultWas::Warning:
+            case ResultWas::ExplicitSkip:
                 CATCH_ERROR("Internal error in TeamCity reporter");
                 // These cases are here to prevent compiler warnings
             case ResultWas::Unknown:
