@@ -108,7 +108,12 @@ add_library(Catch2::Catch2 ALIAS Catch2)
 # Hacky support for compiling the impl into a static lib
 if (CATCH_BUILD_STATIC_LIBRARY)
   add_library(Catch2WithMain ${CMAKE_CURRENT_LIST_DIR}/src/catch_with_main.cpp)
-  target_link_libraries(Catch2WithMain PUBLIC Catch2)
+  target_link_libraries(Catch2WithMain PRIVATE Catch2)
+  target_include_directories(Catch2WithMain
+    INTERFACE
+      $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}/include>
+      $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
+  )
   add_library(Catch2::Catch2WithMain ALIAS Catch2WithMain)
 
   # Make the build reproducible on versions of g++ and clang that supports -ffile-prefix-map
