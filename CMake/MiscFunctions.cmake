@@ -1,3 +1,11 @@
+
+#              Copyright Catch2 Authors
+# Distributed under the Boost Software License, Version 1.0.
+#   (See accompanying file LICENSE_1_0.txt or copy at
+#        https://www.boost.org/LICENSE_1_0.txt)
+
+# SPDX-License-Identifier: BSL-1.0
+
 include(CheckCXXCompilerFlag)
 function(add_cxx_flag_if_supported_to_targets flagname targets)
     check_cxx_compiler_flag("${flagname}" HAVE_FLAG_${flagname})
