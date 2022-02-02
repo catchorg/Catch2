@@ -79,6 +79,15 @@ def concatenate_file(out, filename: str, expand_headers: bool) -> int:
             # hundred thousands lines (~300k as of preview3 :-) )
             if next_header in concatenated_headers:
                 continue
+
+            # Skip including the auto-generated user config file,
+            # because it has not been generated yet at this point.
+            # The code around it should be written so that just not including
+            # it is equivalent with all-default user configuration.
+            if next_header == 'catch2/catch_user_config.hpp':
+                concatenated_headers.add(next_header)
+                continue
+
             concatenated_headers.add(next_header)
             concatenated += concatenate_file(out, os.path.join(root_path, next_header), expand_headers)
 

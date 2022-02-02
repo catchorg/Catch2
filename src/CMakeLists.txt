@@ -31,6 +31,8 @@ set(BENCHMARK_SOURCES
 SOURCE_GROUP("benchmark" FILES ${BENCHMARK_HEADERS} ${BENCHMARK_SOURCES})
 
 set(INTERNAL_HEADERS
+   "${CMAKE_BINARY_DIR}/generated-includes/catch2/catch_user_config.hpp"
+   "${SOURCES_DIR}/catch_user_config.hpp.in"
     ${SOURCES_DIR}/catch_all.hpp
     ${SOURCES_DIR}/matchers/catch_matchers_all.hpp
     ${SOURCES_DIR}/generators/catch_generators_all.hpp
@@ -282,9 +284,15 @@ target_compile_features(Catch2
     cxx_variadic_macros
 )
 
+configure_file(
+  "${SOURCES_DIR}/catch_user_config.hpp.in"
+  "${CMAKE_BINARY_DIR}/generated-includes/catch2/catch_user_config.hpp"
+)
+
 target_include_directories(Catch2
   PUBLIC
     $<BUILD_INTERFACE:${SOURCES_DIR}/..>
+    $<BUILD_INTERFACE:${CMAKE_BINARY_DIR}/generated-includes>
     $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
 )
 
@@ -323,7 +331,15 @@ if (NOT_SUBPROJECT)
         ${CATCH_CMAKE_CONFIG_DESTINATION}
     )
     # Install the headers
-    install(DIRECTORY ${SOURCES_DIR} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR} FILES_MATCHING PATTERN "*.h*")
+    install(
+      DIRECTORY
+        "${SOURCES_DIR}"
+        "${CMAKE_BINARY_DIR}/generated-includes/catch2" # Also install the generated header
+      DESTINATION
+        "${CMAKE_INSTALL_INCLUDEDIR}"
+      FILES_MATCHING
+        PATTERN "*.hpp"
+    )
 endif()
 
 # Some tests require a full recompilation of Catch2 lib with different
@@ -342,6 +358,7 @@ if (CATCH_BUILD_EXAMPLES OR CATCH_BUILD_EXTRA_TESTS)
     target_include_directories(Catch2_buildall_interface
       INTERFACE
         $<BUILD_INTERFACE:${SOURCES_DIR}/..>
+        $<BUILD_INTERFACE:${CMAKE_BINARY_DIR}/generated-includes>
         $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
     )
     target_compile_features(Catch2_buildall_interface

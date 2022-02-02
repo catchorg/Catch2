@@ -17,6 +17,8 @@
 #ifndef CATCH_CONFIG_ANDROID_LOGWRITE_HPP_INCLUDED
 #define CATCH_CONFIG_ANDROID_LOGWRITE_HPP_INCLUDED
 
+#include <catch2/catch_user_config.hpp>
+
 #if defined(__ANDROID__)
 #    define CATCH_INTERNAL_CONFIG_ANDROID_LOGWRITE
 #endif
