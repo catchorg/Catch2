@@ -452,7 +452,7 @@ namespace Catch {
     }
 
     void RunContext::invokeActiveTestCase() {
-        FatalConditionHandlerGuard _(&m_fatalConditionhandler);
+        FatalConditionHandlerGuard _gaurd(&m_fatalConditionhandler);
         m_activeTestCase->invoke();
     }
 
