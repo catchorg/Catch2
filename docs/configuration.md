@@ -11,7 +11,6 @@
 [C++11 toggles](#c11-toggles)<br>
 [C++17 toggles](#c17-toggles)<br>
 [Other toggles](#other-toggles)<br>
-[Windows header clutter](#windows-header-clutter)<br>
 [Enabling stringification](#enabling-stringification)<br>
 [Disabling exceptions](#disabling-exceptions)<br>
 [Overriding Catch's debug break (`-b`)](#overriding-catchs-debug-break--b)<br>
@@ -180,13 +179,6 @@ This toggle removes most of Catch from given file. This means that `TEST_CASE`s 
 This feature is considered experimental and might change at any point.
 
 _Inspired by Doctest's `DOCTEST_CONFIG_DISABLE`_
-
-## Windows header clutter
-
-On Windows Catch includes `windows.h`. To minimize global namespace clutter in the implementation file, it defines `NOMINMAX` and `WIN32_LEAN_AND_MEAN` before including it. You can control this behaviour via two macros:
-
-    CATCH_CONFIG_NO_NOMINMAX            // Stops Catch from using NOMINMAX macro 
-    CATCH_CONFIG_NO_WIN32_LEAN_AND_MEAN // Stops Catch from using WIN32_LEAN_AND_MEAN macro
 
 
 ## Enabling stringification
