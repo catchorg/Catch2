@@ -16,9 +16,11 @@
 [Disabling exceptions](#disabling-exceptions)<br>
 [Overriding Catch's debug break (`-b`)](#overriding-catchs-debug-break--b)<br>
 
-Catch is designed to "just work" as much as possible. For most people the only configuration needed is telling Catch which source file should host all the implementation code (```CATCH_CONFIG_MAIN```).
-
-Nonetheless there are still some occasions where finer control is needed. For these occasions Catch exposes a set of macros for configuring how it is built.
+Catch2 is designed to "just work" as much as possible, and most of the
+configuration options below are changed automatically during compilation,
+according to the detected environment. However, this detection can also
+be overriden by users, using macros documented below, and/or CMake options
+with the same name.
 
 
 ## Prefixing Catch macros
