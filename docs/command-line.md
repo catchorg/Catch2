@@ -15,7 +15,6 @@
 [Warnings](#warnings)<br>
 [Reporting timings](#reporting-timings)<br>
 [Load test names to run from a file](#load-test-names-to-run-from-a-file)<br>
-[Just test names](#just-test-names)<br>
 [Specify the order test cases are run](#specify-the-order-test-cases-are-run)<br>
 [Specify a seed for the Random Number Generator](#specify-a-seed-for-the-random-number-generator)<br>
 [Identify framework and version according to the libIdentify standard](#identify-framework-and-version-according-to-the-libidentify-standard)<br>
@@ -31,6 +30,7 @@
 [Override output colouring](#override-output-colouring)<br>
 [Test Sharding](#test-sharding)<br>
 [Allow running the binary without tests](#allow-running-the-binary-without-tests)<br>
+[Output verbosity](#output-verbosity)<br>
 
 Catch works quite nicely without any command line options at all - but for those times when you want greater control the following options are available.
 Click one of the following links to take you straight to that option - or scroll on to browse the available options.
