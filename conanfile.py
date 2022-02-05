@@ -42,16 +42,18 @@ conan_basic_setup()'''.format(line_to_replace, self.install_folder.replace("\\",
         cmake.install()
 
     def package_info(self):
+        lib_suffix = "d" if self.settings.build_type == "Debug" else ""
+
         self.cpp_info.names["cmake_find_package"] = "Catch2"
         self.cpp_info.names["cmake_find_package_multi"] = "Catch2"
         # Catch2
         self.cpp_info.components["catch2base"].names["cmake_find_package"] = "Catch2"
         self.cpp_info.components["catch2base"].names["cmake_find_package_multi"] = "Catch2"
         self.cpp_info.components["catch2base"].names["pkg_config"] = "Catch2"
-        self.cpp_info.components["catch2base"].libs = ["Catch2"]
+        self.cpp_info.components["catch2base"].libs = ["Catch2" + lib_suffix]
         # Catch2WithMain
         self.cpp_info.components["catch2main"].names["cmake_find_package"] = "Catch2WithMain"
         self.cpp_info.components["catch2main"].names["cmake_find_package_multi"] = "Catch2WithMain"
         self.cpp_info.components["catch2main"].names["pkg_config"] = "Catch2WithMain"
-        self.cpp_info.components["catch2main"].libs = ["Catch2Main"]
+        self.cpp_info.components["catch2main"].libs = ["Catch2Main" + lib_suffix]
         self.cpp_info.components["catch2main"].requires = ["catch2base"]
