@@ -1,4 +1,4 @@
-include(MiscFunctions)
+include(CatchMiscFunctions)
 
 # Please keep these ordered alphabetically
 set(BENCHMARK_HEADERS

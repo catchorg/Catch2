@@ -1,4 +1,4 @@
-include(MiscFunctions)
+include(CatchMiscFunctions)
 
 if (CATCH_BUILD_SURROGATES)
   message(STATUS "Configuring targets for surrogate TUs")
