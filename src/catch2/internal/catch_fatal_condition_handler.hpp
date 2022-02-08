@@ -32,7 +32,7 @@ namespace Catch {
         // Should be if-defed to work on current platform, can assume
         // engage-disengage 1:1 pairing.
         void engage_platform();
-        void disengage_platform();
+        void disengage_platform() noexcept;
     public:
         // Should also have platform-specific implementations as needed
         FatalConditionHandler();
@@ -44,7 +44,7 @@ namespace Catch {
             engage_platform();
         }
 
-        void disengage() {
+        void disengage() noexcept {
             assert(m_started && "Handler cannot be uninstalled without being installed first");
             m_started = false;
             disengage_platform();

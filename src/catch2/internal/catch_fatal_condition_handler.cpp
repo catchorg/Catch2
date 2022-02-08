@@ -40,7 +40,7 @@ namespace Catch {
     // If neither SEH nor signal handling is required, the handler impls
     // do not have to do anything, and can be empty.
     void FatalConditionHandler::engage_platform() {}
-    void FatalConditionHandler::disengage_platform() {}
+    void FatalConditionHandler::disengage_platform() noexcept {}
     FatalConditionHandler::FatalConditionHandler() = default;
     FatalConditionHandler::~FatalConditionHandler() = default;
 
@@ -124,9 +124,11 @@ namespace Catch {
         previousTopLevelExceptionFilter = SetUnhandledExceptionFilter(topLevelExceptionFilter);
     }
 
-    void FatalConditionHandler::disengage_platform() {
+    void FatalConditionHandler::disengage_platform() noexcept {
         if (SetUnhandledExceptionFilter(previousTopLevelExceptionFilter) != topLevelExceptionFilter) {
-            CATCH_RUNTIME_ERROR("Could not restore previous top level exception filter");
+            Catch::cerr()
+                << "Unexpected SEH unhandled exception filter on disengage."
+                << " The filter was restored, but might be rolled back unexpectedly.";
         }
         previousTopLevelExceptionFilter = nullptr;
     }
@@ -168,7 +170,7 @@ namespace Catch {
     static stack_t oldSigStack{};
     static struct sigaction oldSigActions[sizeof(signalDefs) / sizeof(SignalDefs)]{};
 
-    static void restorePreviousSignalHandlers() {
+    static void restorePreviousSignalHandlers() noexcept {
         // We set signal handlers back to the previous ones. Hopefully
         // nobody overwrote them in the meantime, and doesn't expect
         // their signal handlers to live past ours given that they
@@ -231,7 +233,7 @@ namespace Catch {
 #endif
 
 
-    void FatalConditionHandler::disengage_platform() {
+    void FatalConditionHandler::disengage_platform() noexcept {
         restorePreviousSignalHandlers();
     }
 
