@@ -178,6 +178,7 @@ v3 releases.
 * Multiple reporters can now run at the same time and write to different files (#1712, #2183)
   * To support this, the `-r`, `--reporter` flag now also accepts optional output destination
   * For full overview of the semantics of using multiple reporters, look into the reporter documentation
+  * To enable the new syntax, reporter names can no longer contain `::`.
 
 
 ### Fixes
@@ -190,6 +191,7 @@ v3 releases.
   * Previously it forced lower cased name, which would fail for reporters with upper case characters in name
 * The cumulative reporter base stores benchmark results alongside assertion results
 * Catch2's SE handling should no longer interferes with ASan on Windows (#2334)
+* Fixed Windows console colour handling for tests that redirect stdout (#2345)
 
 
 ### Other changes
