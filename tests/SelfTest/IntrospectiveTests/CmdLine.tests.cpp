@@ -11,6 +11,7 @@
 #include <catch2/catch_test_macros.hpp>
 #include <catch2/matchers/catch_matchers_string.hpp>
 #include <catch2/internal/catch_test_spec_parser.hpp>
+#include <catch2/catch_user_config.hpp>
 #include <catch2/catch_test_case_info.hpp>
 #include <catch2/internal/catch_commandline.hpp>
 #include <catch2/generators/catch_generators.hpp>
@@ -348,10 +349,23 @@ TEST_CASE( "Process can be configured on command line", "[config][command-line]"
         CHECK(config.shouldDebugBreak == false);
         CHECK(config.abortAfter == -1);
         CHECK(config.noThrow == false);
-        CHECK(config.reporterSpecifications == std::vector<Catch::ConfigData::ReporterAndFile>{ {"console", {}} });
+        CHECK( config.reporterSpecifications.empty() );
 
         Catch::Config cfg(config);
         CHECK_FALSE(cfg.hasTestFilters());
+
+        // The Config is responsible for mixing in the default reporter
+        auto expectedReporter =
+#if defined( CATCH_CONFIG_DEFAULT_REPORTER )
+            CATCH_CONFIG_DEFAULT_REPORTER
+#else
+            "console"
+#endif
+            ;
+
+        CHECK( cfg.getReportersAndOutputFiles().size() == 1 );
+        CHECK( cfg.getReportersAndOutputFiles()[0] ==
+               Catch::ConfigData::ReporterAndFile{ expectedReporter, {} } );
     }
 
     SECTION("test lists") {

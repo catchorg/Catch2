@@ -9258,16 +9258,26 @@ with expansion:
   false == false
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  CHECK( config.reporterSpecifications == std::vector<Catch::ConfigData::ReporterAndFile>{ {"console", {}} } )
+  CHECK( config.reporterSpecifications.empty() )
 with expansion:
-  { { console, <default-output> } }
-  ==
-  { { console, <default-output> } }
+  true
 
 CmdLine.tests.cpp:<line number>: PASSED:
   CHECK_FALSE( cfg.hasTestFilters() )
 with expansion:
   !false
+
+CmdLine.tests.cpp:<line number>: PASSED:
+  CHECK( cfg.getReportersAndOutputFiles().size() == 1 )
+with expansion:
+  1 == 1
+
+CmdLine.tests.cpp:<line number>: PASSED:
+  CHECK( cfg.getReportersAndOutputFiles()[0] == Catch::ConfigData::ReporterAndFile{ expectedReporter, {} } )
+with expansion:
+  { console, <default-output> }
+  ==
+  { console, <default-output> }
 
 -------------------------------------------------------------------------------
 Process can be configured on command line
@@ -17747,5 +17757,5 @@ Misc.tests.cpp:<line number>: PASSED:
 
 ===============================================================================
 test cases:  381 |  291 passed |  83 failed |  7 failed as expected
-assertions: 2224 | 2054 passed | 143 failed | 27 failed as expected
+assertions: 2226 | 2056 passed | 143 failed | 27 failed as expected
 

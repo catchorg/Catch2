@@ -2453,9 +2453,13 @@ ok {test-number} - config.abortAfter == -1 for: -1 == -1
 # Process can be configured on command line
 ok {test-number} - config.noThrow == false for: false == false
 # Process can be configured on command line
-ok {test-number} - config.reporterSpecifications == std::vector<Catch::ConfigData::ReporterAndFile>{ {"console", {}} } for: { { console, <default-output> } } == { { console, <default-output> } }
+ok {test-number} - config.reporterSpecifications.empty() for: true
 # Process can be configured on command line
 ok {test-number} - !(cfg.hasTestFilters()) for: !false
+# Process can be configured on command line
+ok {test-number} - cfg.getReportersAndOutputFiles().size() == 1 for: 1 == 1
+# Process can be configured on command line
+ok {test-number} - cfg.getReportersAndOutputFiles()[0] == Catch::ConfigData::ReporterAndFile{ expectedReporter, {} } for: { console, <default-output> } == { console, <default-output> }
 # Process can be configured on command line
 ok {test-number} - result for: {?}
 # Process can be configured on command line
@@ -4450,5 +4454,5 @@ ok {test-number} - q3 == 23. for: 23.0 == 23.0
 ok {test-number} -
 # xmlentitycheck
 ok {test-number} -
-1..2224
+1..2226
 

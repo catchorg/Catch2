@@ -1267,10 +1267,12 @@ CmdLine.tests.cpp:<line number>: passed: config.processName == "test" for: "test
 CmdLine.tests.cpp:<line number>: passed: config.shouldDebugBreak == false for: false == false
 CmdLine.tests.cpp:<line number>: passed: config.abortAfter == -1 for: -1 == -1
 CmdLine.tests.cpp:<line number>: passed: config.noThrow == false for: false == false
-CmdLine.tests.cpp:<line number>: passed: config.reporterSpecifications == std::vector<Catch::ConfigData::ReporterAndFile>{ {"console", {}} } for: { { console, <default-output> } }
-==
-{ { console, <default-output> } }
+CmdLine.tests.cpp:<line number>: passed: config.reporterSpecifications.empty() for: true
 CmdLine.tests.cpp:<line number>: passed: !(cfg.hasTestFilters()) for: !false
+CmdLine.tests.cpp:<line number>: passed: cfg.getReportersAndOutputFiles().size() == 1 for: 1 == 1
+CmdLine.tests.cpp:<line number>: passed: cfg.getReportersAndOutputFiles()[0] == Catch::ConfigData::ReporterAndFile{ expectedReporter, {} } for: { console, <default-output> }
+==
+{ console, <default-output> }
 CmdLine.tests.cpp:<line number>: passed: result for: {?}
 CmdLine.tests.cpp:<line number>: passed: cfg.hasTestFilters() for: true
 CmdLine.tests.cpp:<line number>: passed: cfg.testSpec().matches(*fakeTestCase("notIncluded")) == false for: false == false

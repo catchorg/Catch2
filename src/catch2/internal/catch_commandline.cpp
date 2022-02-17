@@ -139,15 +139,6 @@ namespace Catch {
                 return ParserResult::runtimeError( "Received empty reporter spec." );
             }
 
-            IReporterRegistry::FactoryMap const& factories = getRegistryHub().getReporterRegistry().getFactories();
-
-            // clear the default reporter
-            if (!config._nonDefaultReporterSpecifications) {
-                config.reporterSpecifications.clear();
-                config._nonDefaultReporterSpecifications = true;
-            }
-
-
             // Exactly one of the reporters may be specified without an output
             // file, in which case it defaults to the output specified by "-o"
             // (or standard output).
@@ -176,6 +167,8 @@ namespace Catch {
                     fileNameSeparatorPos + separatorSize, reporterSpec.size() );
             }
 
+            IReporterRegistry::FactoryMap const& factories =
+                getRegistryHub().getReporterRegistry().getFactories();
             auto result = factories.find( reporterName );
 
             if( result == factories.end() )

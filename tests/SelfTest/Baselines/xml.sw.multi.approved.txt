@@ -11289,12 +11289,10 @@ Nor would this
       </Expression>
       <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
         <Original>
-          config.reporterSpecifications == std::vector&lt;Catch::ConfigData::ReporterAndFile>{ {"console", {}} }
+          config.reporterSpecifications.empty()
         </Original>
         <Expanded>
-          { { console, &lt;default-output> } }
-==
-{ { console, &lt;default-output> } }
+          true
         </Expanded>
       </Expression>
       <Expression success="true" type="CHECK_FALSE" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
@@ -11305,7 +11303,25 @@ Nor would this
           !false
         </Expanded>
       </Expression>
-      <OverallResults successes="7" failures="0" expectedFailures="0"/>
+      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
+        <Original>
+          cfg.getReportersAndOutputFiles().size() == 1
+        </Original>
+        <Expanded>
+          1 == 1
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
+        <Original>
+          cfg.getReportersAndOutputFiles()[0] == Catch::ConfigData::ReporterAndFile{ expectedReporter, {} }
+        </Original>
+        <Expanded>
+          { console, &lt;default-output> }
+==
+{ console, &lt;default-output> }
+        </Expanded>
+      </Expression>
+      <OverallResults successes="9" failures="0" expectedFailures="0"/>
     </Section>
     <Section name="test lists" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
       <Section name="Specify one test case using" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
@@ -20862,6 +20878,6 @@ There is no extra whitespace here
     </Section>
     <OverallResult success="true"/>
   </TestCase>
-  <OverallResults successes="2054" failures="143" expectedFailures="27"/>
+  <OverallResults successes="2056" failures="143" expectedFailures="27"/>
   <OverallResultsCases successes="291" failures="83" expectedFailures="7"/>
 </Catch2TestRun>

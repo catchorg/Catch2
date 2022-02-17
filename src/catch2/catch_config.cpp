@@ -6,6 +6,7 @@
 
 // SPDX-License-Identifier: BSL-1.0
 #include <catch2/catch_config.hpp>
+#include <catch2/catch_user_config.hpp>
 #include <catch2/internal/catch_enforce.hpp>
 #include <catch2/internal/catch_stream.hpp>
 #include <catch2/internal/catch_stringref.hpp>
@@ -57,6 +58,7 @@ namespace Catch {
             elem = trim(elem);
         }
 
+
         TestSpecParser parser(ITagAliasRegistry::get());
         if (!m_data.testsOrTags.empty()) {
             m_hasTestFilters = true;
@@ -65,6 +67,19 @@ namespace Catch {
             }
         }
         m_testSpec = parser.testSpec();
+
+
+        // Insert the default reporter if user hasn't asked for a specfic one
+        if ( m_data.reporterSpecifications.empty() ) {
+            m_data.reporterSpecifications.push_back( {
+#if defined( CATCH_CONFIG_DEFAULT_REPORTER )
+                CATCH_CONFIG_DEFAULT_REPORTER,
+#else
+                "console",
+#endif
+                {}
+            } );
+        }
 
         m_reporterStreams.reserve( m_data.reporterSpecifications.size() );
         for ( auto const& reporterAndFile : m_data.reporterSpecifications ) {
