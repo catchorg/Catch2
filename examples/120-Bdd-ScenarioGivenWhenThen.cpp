@@ -1,6 +1,6 @@
 // 120-Bdd-ScenarioGivenWhenThen.cpp
 
-// main() provided in 000-CatchMain.cpp
+// main() provided by linkage with Catch2WithMain
 
 #include <catch2/catch_test_macros.hpp>
 
@@ -48,8 +48,8 @@ SCENARIO( "vectors can be sized and resized", "[vector]" ) {
 }
 
 // Compile & run:
-// - g++ -std=c++11 -Wall -I$(CATCH_SINGLE_INCLUDE) -o 120-Bdd-ScenarioGivenWhenThen 120-Bdd-ScenarioGivenWhenThen.cpp 000-CatchMain.o && 120-Bdd-ScenarioGivenWhenThen --success
-// - cl -EHsc -I%CATCH_SINGLE_INCLUDE% 120-Bdd-ScenarioGivenWhenThen.cpp 000-CatchMain.obj && 120-Bdd-ScenarioGivenWhenThen --success
+// - g++ -std=c++11 -Wall -I$(CATCH_SINGLE_INCLUDE) -o 120-Bdd-ScenarioGivenWhenThen 120-Bdd-ScenarioGivenWhenThen.cpp && 120-Bdd-ScenarioGivenWhenThen --success
+// - cl -EHsc -I%CATCH_SINGLE_INCLUDE% 120-Bdd-ScenarioGivenWhenThen.cpp && 120-Bdd-ScenarioGivenWhenThen --success
 
 // Expected compact output (all assertions):
 //

@@ -4,7 +4,7 @@
 // - Sections
 // - Traditional class-based fixtures (this file)
 
-// main() provided in 000-CatchMain.cpp
+// main() provided by linkage to Catch2WithMain
 
 #include <catch2/catch_test_macros.hpp>
 
@@ -52,8 +52,8 @@ TEST_CASE_METHOD( UniqueTestsFixture, "Create Employee/Normal", "[create]" ) {
 }
 
 // Compile & run:
-// - g++ -std=c++11 -Wall -I$(CATCH_SINGLE_INCLUDE) -o 110-Fix-ClassFixture 110-Fix-ClassFixture.cpp 000-CatchMain.o && 110-Fix-ClassFixture --success
-// - cl -EHsc -I%CATCH_SINGLE_INCLUDE% 110-Fix-ClassFixture.cpp 000-CatchMain.obj && 110-Fix-ClassFixture --success
+// - g++ -std=c++11 -Wall -I$(CATCH_SINGLE_INCLUDE) -o 110-Fix-ClassFixture 110-Fix-ClassFixture.cpp && 110-Fix-ClassFixture --success
+// - cl -EHsc -I%CATCH_SINGLE_INCLUDE% 110-Fix-ClassFixture.cpp && 110-Fix-ClassFixture --success
 
 // Expected compact output (all assertions):
 //
