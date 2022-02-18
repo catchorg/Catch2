@@ -3,7 +3,6 @@
 
 ## Already available
 
-- Catch main: [Catch-provided main](../examples/000-CatchMain.cpp)
 - Test Case: [Single-file](../examples/010-TestCase.cpp)
 - Test Case: [Multiple-file 1](../examples/020-TestCase-1.cpp), [2](../examples/020-TestCase-2.cpp)
 - Assertion: [REQUIRE, CHECK](../examples/030-Asn-Require-Check.cpp)

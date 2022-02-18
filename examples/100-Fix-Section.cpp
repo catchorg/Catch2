@@ -4,7 +4,7 @@
 // - Sections (this file)
 // - Traditional class-based fixtures
 
-// main() provided in 000-CatchMain.cpp
+// main() provided by linkage to Catch2WithMain
 
 #include <catch2/catch_test_macros.hpp>
 #include <vector>
@@ -45,8 +45,8 @@ TEST_CASE( "vectors can be sized and resized", "[vector]" ) {
 }
 
 // Compile & run:
-// - g++ -std=c++11 -Wall -I$(CATCH_SINGLE_INCLUDE) -o 100-Fix-Section 100-Fix-Section.cpp 000-CatchMain.o && 100-Fix-Section --success
-// - cl -EHsc -I%CATCH_SINGLE_INCLUDE% 100-Fix-Section.cpp 000-CatchMain.obj && 100-Fix-Section --success
+// - g++ -std=c++11 -Wall -I$(CATCH_SINGLE_INCLUDE) -o 100-Fix-Section 100-Fix-Section.cpp && 100-Fix-Section --success
+// - cl -EHsc -I%CATCH_SINGLE_INCLUDE% 100-Fix-Section.cpp && 100-Fix-Section --success
 
 // Expected compact output (all assertions):
 //

@@ -8,7 +8,7 @@
 // - REQUIRE_FALSE() stops at first failure.
 // - CHECK_FALSE() continues after failure.
 
-// main() provided in 000-CatchMain.cpp
+// main() provided by linkage to Catch2WithMain
 
 #include <catch2/catch_test_macros.hpp>
 
@@ -53,8 +53,8 @@ TEST_CASE( "Assert that something is false (continue after failure)", "[check-fa
 }
 
 // Compile & run:
-// - g++ -std=c++11 -Wall -I$(CATCH_SINGLE_INCLUDE) -o 030-Asn-Require-Check 030-Asn-Require-Check.cpp 000-CatchMain.o && 030-Asn-Require-Check --success
-// - cl -EHsc -I%CATCH_SINGLE_INCLUDE% 030-Asn-Require-Check.cpp 000-CatchMain.obj && 030-Asn-Require-Check --success
+// - g++ -std=c++11 -Wall -I$(CATCH_SINGLE_INCLUDE) -o 030-Asn-Require-Check 030-Asn-Require-Check.cpp && 030-Asn-Require-Check --success
+// - cl -EHsc -I%CATCH_SINGLE_INCLUDE% 030-Asn-Require-Check.cpp && 030-Asn-Require-Check --success
 
 // Expected compact output (all assertions):
 //
