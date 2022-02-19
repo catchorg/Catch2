@@ -25,6 +25,7 @@
 // can be combined, en-mass, with the _NO_ forms later.
 
 #include <catch2/internal/catch_platform.hpp>
+#include <catch2/catch_user_config.hpp>
 
 #ifdef __cplusplus
 
