@@ -471,6 +471,24 @@ set_tests_properties("Reporters::DashAsLocationInReporterSpecSendsOutputToStdout
     PASS_REGULAR_EXPRESSION "All tests passed \\(5 assertions in 1 test case\\)"
 )
 
+if (CATCH_ENABLE_CONFIGURE_TESTS)
+    add_test(NAME "CMakeConfig::DefaultReporter"
+      COMMAND
+        "${PYTHON_EXECUTABLE}" "${CMAKE_CURRENT_LIST_DIR}/TestScripts/testConfigureDefaultReporter.py" "${CATCH_DIR}" "${CMAKE_CURRENT_BINARY_DIR}"
+    )
+    add_test(NAME "CMakeConfig::Disable"
+      COMMAND
+        "${PYTHON_EXECUTABLE}" "${CMAKE_CURRENT_LIST_DIR}/TestScripts/testConfigureDisable.py" "${CATCH_DIR}" "${CMAKE_CURRENT_BINARY_DIR}"
+    )
+    add_test(NAME "CMakeConfig::DisableStringification"
+      COMMAND
+        "${PYTHON_EXECUTABLE}" "${CMAKE_CURRENT_LIST_DIR}/TestScripts/testConfigureDisableStringification.py" "${CATCH_DIR}" "${CMAKE_CURRENT_BINARY_DIR}"
+    )
+    add_test(NAME "CMakeConfig::ExperimentalRedirect"
+      COMMAND
+        "${PYTHON_EXECUTABLE}" "${CMAKE_CURRENT_LIST_DIR}/TestScripts/testConfigureExperimentalRedirect.py" "${CATCH_DIR}" "${CMAKE_CURRENT_BINARY_DIR}"
+    )
+endif()
 
 if (CATCH_USE_VALGRIND)
     add_test(NAME ValgrindRunTests COMMAND valgrind --leak-check=full --error-exitcode=1 $<TARGET_FILE:SelfTest>)

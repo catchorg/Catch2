@@ -51,6 +51,14 @@ jobs:
             other_pkgs: clang-10
             cmake_configurations: -DCATCH_BUILD_EXTRA_TESTS=ON -DCATCH_BUILD_EXAMPLES=ON
 
+          # Configure tests with Clang-10
+          - cxx: clang++-10
+            build_description: CMake configuration tests
+            build_type: Debug
+            std: 14
+            other_pks: clang-10
+            cmake_configurations: -DCATCH_ENABLE_CONFIGURE_TESTS=ON
+
 
     steps:
     - uses: actions/checkout@v2

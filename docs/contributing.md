@@ -62,18 +62,23 @@ test using an external check script. Catch2 integration tests are written
 using CTest, either as a direct command invocation + pass/fail regex,
 or by delegating the check to a Python script.
 
-There are also two more kinds of tests, examples and "ExtraTests".
+Catch2 is slowly gaining more and more types of tests, currently Catch2
+project also has buildable examples, "ExtraTests", and CMake config tests.
 Examples present a small and self-contained snippets of code that
 use Catch2's facilities for specific purpose. Currently they are assumed
-passing if they compile. ExtraTests then are expensive tests, that we
-do not want to run all the time. This can be either because they take
-a long time to run, or because they take a long time to compile, e.g.
-because they test compile time configuration and require separate
-compilation.
+passing if they compile.
 
-Examples and ExtraTests are not compiled by default. To compile them,
-add `-DCATCH_BUILD_EXAMPLES=ON` and `-DCATCH_BUILD_EXTRA_TESTS=ON` to
-the invocation of CMake configuration step.
+ExtraTests then are expensive tests, that we do not want to run all the
+time. This can be either because they take a long time to run, or because
+they take a long time to compile, e.g. because they test compile time
+configuration and require separate compilation.
+
+Finally, CMake config tests test that you set Catch2's compile-time
+configuration options through CMake, using CMake options of the same name.
+
+None of these tests are enabled by default. To enable them, add
+`-DCATCH_BUILD_EXAMPLES=ON`, `-DCATCH_BUILD_EXTRA_TESTS=ON`, and
+`-DCATCH_ENABLE_CONFIGURE_TESTS=ON` when configuration the CMake build.
 
 Bringing this all together, the steps below should configure, build,
 and run all tests in the `Debug` compilation.
@@ -85,7 +90,7 @@ and run all tests in the `Debug` compilation.
 ./tools/scripts/generateAmalgamatedFiles.py
 
 # 2. Configure the full test build
-cmake -Bdebug-build -H. -DCMAKE_BUILD_TYPE=Debug -DCATCH_BUILD_EXAMPLES=ON -DCATCH_BUILD_EXTRA_TESTS=ON -DCATCH_DEVELOPMENT_BUILD=ON
+cmake -Bdebug-build -H. -DCMAKE_BUILD_TYPE=Debug -DCATCH_DEVELOPMENT_BUILD=ON -DCATCH_BUILD_EXAMPLES=ON -DCATCH_BUILD_EXTRA_TESTS=ON
 
 # 3. Run the actual build
 cmake --build debug-build
