@@ -215,6 +215,10 @@
     <testCase name="The default listing implementation write to provided stream/Listing reporters" duration="{duration}"/>
     <testCase name="The default listing implementation write to provided stream/Listing tests" duration="{duration}"/>
   </file>
+  <file path="tests/<exe-name>/IntrospectiveTests/Stream.tests.cpp">
+    <testCase name="Cout stream properly declares it writes to stdout" duration="{duration}"/>
+    <testCase name="Empty stream name opens cout stream" duration="{duration}"/>
+  </file>
   <file path="tests/<exe-name>/IntrospectiveTests/String.tests.cpp">
     <testCase name="StringRef/Empty string" duration="{duration}"/>
     <testCase name="StringRef/From string literal" duration="{duration}"/>

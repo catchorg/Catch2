@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuitesloose text artifact
 >
-  <testsuite name="<exe-name>" errors="17" failures="126" tests="2226" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
+  <testsuite name="<exe-name>" errors="17" failures="126" tests="2228" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
     <properties>
       <property name="random-seed" value="1"/>
       <property name="filters" value="~[!nonportable]~[!benchmark]~[approvals] *"/>
@@ -425,6 +425,7 @@ Matchers.tests.cpp:<line number>
     <testcase classname="<exe-name>.global" name="Copy and then generate a range/from var and iterators" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Copy and then generate a range/From a temporary container" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Copy and then generate a range/Final validation" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Cout stream properly declares it writes to stdout" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Custom exceptions can be translated when testing for nothrow" time="{duration}" status="run">
       <error message="throwCustom()" type="REQUIRE_NOTHROW">
 FAILED:
@@ -450,6 +451,7 @@ Exception.tests.cpp:<line number>
     </testcase>
     <testcase classname="<exe-name>.global" name="Default scale is invisible to comparison" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Directly creating an EnumInfo" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Empty stream name opens cout stream" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Empty tag is not allowed" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="EndsWith string matcher" time="{duration}" status="run">
       <failure message="testStringForMatching(), EndsWith( &quot;Substring&quot; )" type="CHECK_THAT">

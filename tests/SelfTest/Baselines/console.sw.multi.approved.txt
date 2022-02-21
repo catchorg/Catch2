@@ -3804,6 +3804,17 @@ with expansion:
   6 == 6
 
 -------------------------------------------------------------------------------
+Cout stream properly declares it writes to stdout
+-------------------------------------------------------------------------------
+Stream.tests.cpp:<line number>
+...............................................................................
+
+Stream.tests.cpp:<line number>: PASSED:
+  REQUIRE( Catch::makeStream( "-" )->isStdout() )
+with expansion:
+  true
+
+-------------------------------------------------------------------------------
 Custom exceptions can be translated when testing for nothrow
 -------------------------------------------------------------------------------
 Exception.tests.cpp:<line number>
@@ -3873,6 +3884,17 @@ with expansion:
   {** unexpected enum value **}
   ==
   "{** unexpected enum value **}"
+
+-------------------------------------------------------------------------------
+Empty stream name opens cout stream
+-------------------------------------------------------------------------------
+Stream.tests.cpp:<line number>
+...............................................................................
+
+Stream.tests.cpp:<line number>: PASSED:
+  REQUIRE( Catch::makeStream( "" )->isStdout() )
+with expansion:
+  true
 
 -------------------------------------------------------------------------------
 Empty tag is not allowed
@@ -17756,6 +17778,6 @@ Misc.tests.cpp:<line number>
 Misc.tests.cpp:<line number>: PASSED:
 
 ===============================================================================
-test cases:  381 |  291 passed |  83 failed |  7 failed as expected
-assertions: 2226 | 2056 passed | 143 failed | 27 failed as expected
+test cases:  383 |  293 passed |  83 failed |  7 failed as expected
+assertions: 2228 | 2058 passed | 143 failed | 27 failed as expected
 

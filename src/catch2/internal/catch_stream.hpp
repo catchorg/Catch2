@@ -25,6 +25,9 @@ namespace Catch {
     struct IStream {
         virtual ~IStream(); // = default
         virtual std::ostream& stream() const = 0;
+        // Win32 colour supports requires us to identify whether a stream
+        // is backed by stdout (so we can colour it) or not (and we can't).
+        virtual bool isStdout() const { return false;  }
     };
 
     auto makeStream( std::string const& filename ) -> Detail::unique_ptr<IStream const>;

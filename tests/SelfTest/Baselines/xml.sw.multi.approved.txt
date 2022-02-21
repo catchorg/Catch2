@@ -4205,6 +4205,17 @@ Nor would this
     </Section>
     <OverallResult success="true"/>
   </TestCase>
+  <TestCase name="Cout stream properly declares it writes to stdout" tags="[streams]" filename="tests/<exe-name>/IntrospectiveTests/Stream.tests.cpp" >
+    <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/Stream.tests.cpp" >
+      <Original>
+        Catch::makeStream( "-" )->isStdout()
+      </Original>
+      <Expanded>
+        true
+      </Expanded>
+    </Expression>
+    <OverallResult success="true"/>
+  </TestCase>
   <TestCase name="Custom exceptions can be translated when testing for nothrow" tags="[!throws][.][failing]" filename="tests/<exe-name>/UsageTests/Exception.tests.cpp" >
     <Expression success="false" type="REQUIRE_NOTHROW" filename="tests/<exe-name>/UsageTests/Exception.tests.cpp" >
       <Original>
@@ -4283,6 +4294,17 @@ Nor would this
         {** unexpected enum value **}
 ==
 "{** unexpected enum value **}"
+      </Expanded>
+    </Expression>
+    <OverallResult success="true"/>
+  </TestCase>
+  <TestCase name="Empty stream name opens cout stream" tags="[streams]" filename="tests/<exe-name>/IntrospectiveTests/Stream.tests.cpp" >
+    <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/Stream.tests.cpp" >
+      <Original>
+        Catch::makeStream( "" )->isStdout()
+      </Original>
+      <Expanded>
+        true
       </Expanded>
     </Expression>
     <OverallResult success="true"/>
@@ -20878,6 +20900,6 @@ There is no extra whitespace here
     </Section>
     <OverallResult success="true"/>
   </TestCase>
-  <OverallResults successes="2056" failures="143" expectedFailures="27"/>
-  <OverallResultsCases successes="291" failures="83" expectedFailures="7"/>
+  <OverallResults successes="2058" failures="143" expectedFailures="27"/>
+  <OverallResultsCases successes="293" failures="83" expectedFailures="7"/>
 </Catch2TestRun>

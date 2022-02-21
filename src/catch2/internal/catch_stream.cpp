@@ -99,6 +99,7 @@ namespace Detail {
 
         public: // IStream
             std::ostream& stream() const override { return m_os; }
+            bool isStdout() const override { return true; }
         };
 
         ///////////////////////////////////////////////////////////////////////////

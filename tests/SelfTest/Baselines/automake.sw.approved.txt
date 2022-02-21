@@ -122,11 +122,13 @@ Nor would this
 :test-result: PASS Composed matchers shortcircuit
 :test-result: FAIL Contains string matcher
 :test-result: PASS Copy and then generate a range
+:test-result: PASS Cout stream properly declares it writes to stdout
 :test-result: FAIL Custom exceptions can be translated when testing for nothrow
 :test-result: FAIL Custom exceptions can be translated when testing for throwing as something else
 :test-result: FAIL Custom std-exceptions can be custom translated
 :test-result: PASS Default scale is invisible to comparison
 :test-result: PASS Directly creating an EnumInfo
+:test-result: PASS Empty stream name opens cout stream
 :test-result: PASS Empty tag is not allowed
 :test-result: FAIL EndsWith string matcher
 :test-result: PASS Enums can quickly have stringification enabled using REGISTER_ENUM

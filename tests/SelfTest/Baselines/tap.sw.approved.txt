@@ -956,6 +956,8 @@ ok {test-number} - elem % 2 == 1 for: 1 == 1
 ok {test-number} - call_count == 1 for: 1 == 1
 # Copy and then generate a range
 ok {test-number} - make_data().size() == test_count for: 6 == 6
+# Cout stream properly declares it writes to stdout
+ok {test-number} - Catch::makeStream( "-" )->isStdout() for: true
 # Custom exceptions can be translated when testing for nothrow
 not ok {test-number} - unexpected exception with message: 'custom exception - not std'; expression was: throwCustom()
 # Custom exceptions can be translated when testing for throwing as something else
@@ -972,6 +974,8 @@ ok {test-number} - enumInfo->lookup(0) == "Value1" for: Value1 == "Value1"
 ok {test-number} - enumInfo->lookup(1) == "Value2" for: Value2 == "Value2"
 # Directly creating an EnumInfo
 ok {test-number} - enumInfo->lookup(3) == "{** unexpected enum value **}" for: {** unexpected enum value **} == "{** unexpected enum value **}"
+# Empty stream name opens cout stream
+ok {test-number} - Catch::makeStream( "" )->isStdout() for: true
 # Empty tag is not allowed
 ok {test-number} - Catch::TestCaseInfo( "", { "fake test name", "[]" }, dummySourceLineInfo )
 # EndsWith string matcher
@@ -4454,5 +4458,5 @@ ok {test-number} - q3 == 23. for: 23.0 == 23.0
 ok {test-number} -
 # xmlentitycheck
 ok {test-number} -
-1..2226
+1..2228
 
