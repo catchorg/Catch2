@@ -86,7 +86,7 @@ TEST_CASE( "Enums can quickly have stringification enabled using REGISTER_ENUM" 
     REQUIRE( stringify( EnumClass3::Value3 ) == "Value3" );
     REQUIRE( stringify( EnumClass3::Value4 ) == "{** unexpected enum value **}" );
 
-    EnumClass3 ec3 = EnumClass3 ::Value2;
+    EnumClass3 ec3 = EnumClass3::Value2;
     REQUIRE( stringify( ec3 ) == "Value2" );
 }
 
