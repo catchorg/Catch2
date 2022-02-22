@@ -16,10 +16,6 @@
 #include <catch2/internal/catch_commandline.hpp>
 #include <catch2/generators/catch_generators.hpp>
 
-#ifdef __clang__
-#   pragma clang diagnostic ignored "-Wc++98-compat"
-#endif
-
 namespace {
     auto fakeTestCase(const char* name, const char* desc = "") { return Catch::makeTestCaseInfo("", { name, desc }, CATCH_INTERNAL_LINEINFO); }
 }
