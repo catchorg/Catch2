@@ -36,7 +36,7 @@ if(NOT EXISTS "${TEST_EXECUTABLE}")
   )
 endif()
 execute_process(
-  COMMAND ${TEST_EXECUTOR} "${TEST_EXECUTABLE}" ${spec} --list-tests --verbosity quiet
+  COMMAND ${TEST_EXECUTOR} "${TEST_EXECUTABLE}" --list-tests --verbosity quiet ${spec}
   OUTPUT_VARIABLE output
   RESULT_VARIABLE result
   WORKING_DIRECTORY "${TEST_WORKING_DIR}"
