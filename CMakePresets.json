@@ -1,0 +1,25 @@
+{
+    "version": 3,
+    "configurePresets": [
+        {
+            "name": "basic-tests",
+            "displayName": "Basic development build",
+            "description": "Enables development build with basic tests that are cheap to build and run",
+            "cacheVariables": {
+                "CATCH_DEVELOPMENT_BUILD": "ON"
+            }
+        },
+        {
+            "name": "all-tests",
+            "inherits": "basic-tests",
+            "displayName": "Full development build",
+            "description": "Enables development build with examples and ALL tests",
+            "cacheVariables": {
+                "CATCH_BUILD_EXAMPLES": "ON",
+                "CATCH_BUILD_EXTRA_TESTS": "ON",
+                "CATCH_BUILD_SURROGATES": "ON",
+                "CATCH_ENABLE_CONFIGURE_TESTS": "ON"
+            }
+        }
+    ]   
+}
