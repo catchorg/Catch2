@@ -209,7 +209,11 @@ v3 releases.
 * Running 0 tests (e.g. due to empty binary, or test spec not matching anything) returns non-0 exit code
   * Flag `--allow-running-no-tests` overrides this behaviour.
   * `NoTests` warning has been removed because it is fully subsumed by this change.
-
+* Catch2's compile-time configuration options (`CATCH_CONFIG_FOO`) can be set through CMake options of the same name
+  * They use the same semantics as C++ defines, including the `CATCH_CONFIG_NO_FOO` overrides,
+    * `-DCATCH_CONFIG_DEFAULT_REPORTER=compact` changes default reporter to "compact"
+    * `-DCATCH_CONFIG_NO_ANDROID_LOGWRITE=ON` forces android logwrite to off
+    * `-DCATCH_CONFIG_ANDROID_LOGWRITE=OFF` does nothing (the define will not exist)
 
 
 ## 2.13.7
