@@ -21,7 +21,7 @@
 
 namespace Catch {
 
-    struct IStream;
+    class IStream;
 
     struct ConfigData {
         struct ReporterAndFile {
@@ -91,7 +91,7 @@ namespace Catch {
         bool listReporters() const;
 
         std::vector<ConfigData::ReporterAndFile> const& getReportersAndOutputFiles() const;
-        std::ostream& getReporterOutputStream(std::size_t reporterIdx) const;
+        IStream const* getReporterOutputStream(std::size_t reporterIdx) const;
 
         std::vector<std::string> const& getTestsOrTags() const override;
         std::vector<std::string> const& getSectionsToRun() const override;
@@ -103,7 +103,7 @@ namespace Catch {
 
         // IConfig interface
         bool allowThrows() const override;
-        std::ostream& defaultStream() const override;
+        IStream const* defaultStream() const override;
         StringRef name() const override;
         bool includeSuccessfulResults() const override;
         bool warnAboutMissingAssertions() const override;

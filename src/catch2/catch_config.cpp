@@ -107,8 +107,8 @@ namespace Catch {
         return m_data.reporterSpecifications;
     }
 
-    std::ostream& Config::getReporterOutputStream(std::size_t reporterIdx) const {
-        return m_reporterStreams.at(reporterIdx)->stream();
+    IStream const* Config::getReporterOutputStream(std::size_t reporterIdx) const {
+        return m_reporterStreams.at(reporterIdx).get();
     }
 
     TestSpec const& Config::testSpec() const { return m_testSpec; }
@@ -118,7 +118,7 @@ namespace Catch {
 
     // IConfig interface
     bool Config::allowThrows() const                   { return !m_data.noThrow; }
-    std::ostream& Config::defaultStream() const        { return m_defaultStream->stream(); }
+    IStream const* Config::defaultStream() const       { return m_defaultStream.get(); }
     StringRef Config::name() const { return m_data.name.empty() ? m_data.processName : m_data.name; }
     bool Config::includeSuccessfulResults() const      { return m_data.showSuccessfulTests; }
     bool Config::warnAboutMissingAssertions() const {

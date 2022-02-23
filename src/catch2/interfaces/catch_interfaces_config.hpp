@@ -55,13 +55,14 @@ namespace Catch {
     }; };
 
     class TestSpec;
+    class IStream;
 
     struct IConfig : Detail::NonCopyable {
 
         virtual ~IConfig();
 
         virtual bool allowThrows() const = 0;
-        virtual std::ostream& defaultStream() const = 0;
+        virtual IStream const* defaultStream() const = 0;
         virtual StringRef name() const = 0;
         virtual bool includeSuccessfulResults() const = 0;
         virtual bool shouldDebugBreak() const = 0;

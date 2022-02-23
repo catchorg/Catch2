@@ -9,6 +9,7 @@
 #define CATCH_REPORTER_COMMON_BASE_HPP_INCLUDED
 
 #include <catch2/interfaces/catch_interfaces_reporter.hpp>
+#include <catch2/internal/catch_stream.hpp>
 
 namespace Catch {
     /**
@@ -23,13 +24,19 @@ namespace Catch {
      */
     class ReporterBase : public IEventListener {
     protected:
-        //! Stream to write the output to
+        //! The stream wrapper as passed to us by outside code
+        IStream const* m_wrapped_stream;
+        //! Cached output stream from `m_wrapped_stream` to reduce
+        //! number of indirect calls needed to write output.
         std::ostream& m_stream;
+
+
 
     public:
         ReporterBase( ReporterConfig const& config ):
             IEventListener( config.fullConfig() ),
-            m_stream( config.stream() ) {}
+            m_wrapped_stream( config.stream() ),
+            m_stream( m_wrapped_stream->stream() ) {}
 
 
         /**

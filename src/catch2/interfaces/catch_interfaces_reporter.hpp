@@ -30,15 +30,16 @@ namespace Catch {
     struct TestCaseInfo;
     class TestCaseHandle;
     struct IConfig;
+    class IStream;
 
     struct ReporterConfig {
-        ReporterConfig( IConfig const* _fullConfig, std::ostream& _stream );
+        ReporterConfig( IConfig const* _fullConfig, IStream const* _stream );
 
-        std::ostream& stream() const;
+        IStream const* stream() const;
         IConfig const* fullConfig() const;
 
     private:
-        std::ostream* m_stream;
+        IStream const* m_stream;
         IConfig const* m_fullConfig;
     };
 

@@ -16,6 +16,7 @@
 #include <catch2/internal/catch_enforce.hpp>
 #include <catch2/internal/catch_list.hpp>
 #include <catch2/internal/catch_reporter_registry.hpp>
+#include <catch2/internal/catch_stream.hpp>
 #include <catch2/matchers/catch_matchers_string.hpp>
 #include <catch2/reporters/catch_reporter_helpers.hpp>
 #include <catch2/reporters/catch_reporter_event_listener.hpp>
@@ -23,6 +24,16 @@
 #include <catch2/reporters/catch_reporter_multi.hpp>
 
 #include <sstream>
+
+namespace {
+    class StringIStream : public Catch::IStream {
+    public:
+        std::ostream& stream() const override { return sstr; }
+        std::string str() const { return sstr.str(); }
+    private:
+        mutable std::stringstream sstr;
+    };
+}
 
 TEST_CASE( "The default listing implementation write to provided stream",
            "[reporters][reporter-helpers]" ) {
@@ -72,11 +83,11 @@ TEST_CASE( "Reporter's write listings to provided stream", "[reporters]" ) {
 
     for (auto const& factory : factories) {
         INFO("Tested reporter: " << factory.first);
-        std::stringstream sstream;
+        StringIStream sstream;
 
         Catch::ConfigData config_data;
         Catch::Config config( config_data );
-        Catch::ReporterConfig rep_config( &config, sstream );
+        Catch::ReporterConfig rep_config( &config, &sstream );
         auto reporter = factory.second->create( rep_config );
 
         DYNAMIC_SECTION( factory.first << " reporter lists tags" ) {
@@ -162,8 +173,8 @@ TEST_CASE("Multireporter calls reporters and listeners in correct order",
 
     Catch::ConfigData config_data;
     Catch::Config config( config_data );
-    std::stringstream sstream;
-    Catch::ReporterConfig rep_config( &config, sstream );
+    StringIStream sstream;
+    Catch::ReporterConfig rep_config( &config, &sstream );
 
     // We add reporters before listeners, to check that internally they
     // get sorted properly, and listeners are called first anyway.
@@ -215,8 +226,8 @@ TEST_CASE("Multireporter updates ReporterPreferences properly",
 
     Catch::ConfigData config_data;
     Catch::Config config( config_data );
-    std::stringstream sstream;
-    Catch::ReporterConfig rep_config( &config, sstream );
+    StringIStream sstream;
+    Catch::ReporterConfig rep_config( &config, &sstream );
     Catch::MultiReporter multiReporter( &config );
 
     // Post init defaults

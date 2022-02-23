@@ -22,7 +22,8 @@ namespace Catch {
     std::ostream& cerr();
     std::ostream& clog();
 
-    struct IStream {
+    class IStream {
+    public:
         virtual ~IStream(); // = default
         virtual std::ostream& stream() const = 0;
         // Win32 colour supports requires us to identify whether a stream

@@ -20,10 +20,10 @@
 
 namespace Catch {
 
-    ReporterConfig::ReporterConfig( IConfig const* _fullConfig, std::ostream& _stream )
-    :   m_stream( &_stream ), m_fullConfig( _fullConfig ) {}
+    ReporterConfig::ReporterConfig( IConfig const* _fullConfig, IStream const* _stream )
+    :   m_stream( _stream ), m_fullConfig( _fullConfig ) {}
 
-    std::ostream& ReporterConfig::stream() const { return *m_stream; }
+    IStream const* ReporterConfig::stream() const { return m_stream; }
     IConfig const * ReporterConfig::fullConfig() const { return m_fullConfig; }
 
     AssertionStats::AssertionStats( AssertionResult const& _assertionResult,

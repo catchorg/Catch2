@@ -44,7 +44,7 @@ namespace Catch {
         IStreamingReporterPtr makeReporter(Config const* config) {
             if (Catch::getRegistryHub().getReporterRegistry().getListeners().empty()
                     && config->getReportersAndOutputFiles().size() == 1) {
-                auto& stream = config->getReporterOutputStream(0);
+                auto stream = config->getReporterOutputStream(0);
                 return createReporter(config->getReportersAndOutputFiles()[0].reporterName, ReporterConfig(config, stream));
             }
 
@@ -57,7 +57,7 @@ namespace Catch {
 
             std::size_t reporterIdx = 0;
             for (auto const& reporterAndFile : config->getReportersAndOutputFiles()) {
-                auto& stream = config->getReporterOutputStream(reporterIdx);
+                auto stream = config->getReporterOutputStream(reporterIdx);
                 multi->addReporter(createReporter(reporterAndFile.reporterName, ReporterConfig(config, stream)));
                 reporterIdx++;
             }
