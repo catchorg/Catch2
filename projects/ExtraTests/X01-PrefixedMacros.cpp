@@ -53,6 +53,7 @@ CATCH_TEST_CASE("PrefixedMacros") {
     CATCH_SECTION("some section") {
         int i = 1;
         CATCH_CAPTURE( i );
+        CATCH_CAPTURE( i, i + 1 );
         CATCH_DYNAMIC_SECTION("Dynamic section: " << i) {
             CATCH_FAIL_CHECK( "failure" );
         }
