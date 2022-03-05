@@ -98,7 +98,29 @@ foreach(line ${output})
     string(REGEX REPLACE "[^A-Za-z0-9_]" "_" test_name_clean ${test_name})
     set(output_dir_arg "--out ${output_dir}/${output_prefix}${test_name_clean}${output_suffix}")
   endif()
-  
+
+  set(tags)
+  execute_process(
+    COMMAND ${TEST_EXECUTOR} "${TEST_EXECUTABLE}" "${test}" --list-tags
+    OUTPUT_VARIABLE tags_output
+    RESULT_VARIABLE tags_result
+  )
+  if(NOT ${tags_result} EQUAL 0)
+    message(FATAL_ERROR
+      "Error running test executable '${TEST_EXECUTABLE}':\n"
+      "  Result: ${tags_result}\n"
+      "  Output: ${tags_output}\n"
+    )
+  endif()
+  string(REPLACE "\n" ";" tags_output "${tags_output}")
+  foreach(tag_line ${tags_output})
+    if(tag_line MATCHES "\\[.*\\]")
+      set(tag "${CMAKE_MATCH_0}")
+      string(REGEX REPLACE "\\[|\\]" "" tag ${tag})
+      list(APPEND tags ${tag})
+    endif()
+  endforeach()
+
   # ...and add to script
   add_command(add_test
     "${prefix}${test}${suffix}"
@@ -115,6 +137,9 @@ foreach(line ${output})
     WORKING_DIRECTORY "${TEST_WORKING_DIR}"
     ${properties}
   )
+  if(tags)
+    set(script "${script}set_tests_properties(${prefix}${test}${suffix} PROPERTIES LABELS \"${tags}\")\n")
+  endif()
   list(APPEND tests "${prefix}${test}${suffix}")
 endforeach()
 
