@@ -52,6 +52,9 @@ TEST_CASE( "Disabled Macros" ) {
     STATIC_CHECK( 0 == 1 );
     STATIC_REQUIRE( !true );
 
+    CAPTURE( 1 );
+    CAPTURE( 1, "captured" );
+
     REQUIRE_THAT( 1,
                   Catch::Matchers::Predicate( []( int ) { return false; } ) );
     BENCHMARK( "Disabled benchmark" ) { REQUIRE( 1 == 2 ); };
