@@ -16378,7 +16378,7 @@ There is no extra whitespace here
         </Expression>
         <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
           <Original>
-            mocked.derefed[0]
+            mocked.m_derefed[0]
           </Original>
           <Expanded>
             true
@@ -16386,7 +16386,7 @@ There is no extra whitespace here
         </Expression>
         <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
           <Original>
-            mocked.derefed[1]
+            mocked.m_derefed[1]
           </Original>
           <Expanded>
             true
@@ -16394,7 +16394,7 @@ There is no extra whitespace here
         </Expression>
         <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
           <Original>
-            mocked.derefed[2]
+            mocked.m_derefed[2]
           </Original>
           <Expanded>
             true
@@ -16402,7 +16402,7 @@ There is no extra whitespace here
         </Expression>
         <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
           <Original>
-            mocked.derefed[3]
+            mocked.m_derefed[3]
           </Original>
           <Expanded>
             true
@@ -16410,7 +16410,7 @@ There is no extra whitespace here
         </Expression>
         <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
           <Original>
-            mocked.derefed[4]
+            mocked.m_derefed[4]
           </Original>
           <Expanded>
             true
@@ -16432,7 +16432,7 @@ There is no extra whitespace here
         </Expression>
         <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
           <Original>
-            mocked.derefed[0]
+            mocked.m_derefed[0]
           </Original>
           <Expanded>
             true
@@ -16440,7 +16440,7 @@ There is no extra whitespace here
         </Expression>
         <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
           <Original>
-            mocked.derefed[1]
+            mocked.m_derefed[1]
           </Original>
           <Expanded>
             true
@@ -16448,7 +16448,7 @@ There is no extra whitespace here
         </Expression>
         <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
           <Original>
-            mocked.derefed[2]
+            mocked.m_derefed[2]
           </Original>
           <Expanded>
             true
@@ -16456,7 +16456,7 @@ There is no extra whitespace here
         </Expression>
         <Expression success="true" type="REQUIRE_FALSE" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
           <Original>
-            !(mocked.derefed[3])
+            !(mocked.m_derefed[3])
           </Original>
           <Expanded>
             !false
@@ -16464,7 +16464,7 @@ There is no extra whitespace here
         </Expression>
         <Expression success="true" type="REQUIRE_FALSE" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
           <Original>
-            !(mocked.derefed[4])
+            !(mocked.m_derefed[4])
           </Original>
           <Expanded>
             !false
@@ -16519,7 +16519,7 @@ There is no extra whitespace here
         </Expression>
         <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
           <Original>
-            mocked.derefed[0]
+            mocked.m_derefed[0]
           </Original>
           <Expanded>
             true
@@ -16527,7 +16527,7 @@ There is no extra whitespace here
         </Expression>
         <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
           <Original>
-            mocked.derefed[1]
+            mocked.m_derefed[1]
           </Original>
           <Expanded>
             true
@@ -16535,7 +16535,7 @@ There is no extra whitespace here
         </Expression>
         <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
           <Original>
-            mocked.derefed[2]
+            mocked.m_derefed[2]
           </Original>
           <Expanded>
             true
@@ -16543,7 +16543,7 @@ There is no extra whitespace here
         </Expression>
         <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
           <Original>
-            mocked.derefed[3]
+            mocked.m_derefed[3]
           </Original>
           <Expanded>
             true
@@ -16551,7 +16551,7 @@ There is no extra whitespace here
         </Expression>
         <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
           <Original>
-            mocked.derefed[4]
+            mocked.m_derefed[4]
           </Original>
           <Expanded>
             true
@@ -16573,7 +16573,7 @@ There is no extra whitespace here
         </Expression>
         <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
           <Original>
-            mocked.derefed[0]
+            mocked.m_derefed[0]
           </Original>
           <Expanded>
             true
@@ -16581,7 +16581,7 @@ There is no extra whitespace here
         </Expression>
         <Expression success="true" type="REQUIRE_FALSE" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
           <Original>
-            !(mocked.derefed[1])
+            !(mocked.m_derefed[1])
           </Original>
           <Expanded>
             !false
@@ -16589,7 +16589,7 @@ There is no extra whitespace here
         </Expression>
         <Expression success="true" type="REQUIRE_FALSE" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
           <Original>
-            !(mocked.derefed[2])
+            !(mocked.m_derefed[2])
           </Original>
           <Expanded>
             !false
@@ -16597,7 +16597,7 @@ There is no extra whitespace here
         </Expression>
         <Expression success="true" type="REQUIRE_FALSE" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
           <Original>
-            !(mocked.derefed[3])
+            !(mocked.m_derefed[3])
           </Original>
           <Expanded>
             !false
@@ -16605,7 +16605,7 @@ There is no extra whitespace here
         </Expression>
         <Expression success="true" type="REQUIRE_FALSE" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
           <Original>
-            !(mocked.derefed[4])
+            !(mocked.m_derefed[4])
           </Original>
           <Expanded>
             !false
@@ -16660,7 +16660,7 @@ There is no extra whitespace here
         </Expression>
         <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
           <Original>
-            mocked.derefed[0]
+            mocked.m_derefed[0]
           </Original>
           <Expanded>
             true
@@ -16668,7 +16668,7 @@ There is no extra whitespace here
         </Expression>
         <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
           <Original>
-            mocked.derefed[1]
+            mocked.m_derefed[1]
           </Original>
           <Expanded>
             true
@@ -16676,7 +16676,7 @@ There is no extra whitespace here
         </Expression>
         <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
           <Original>
-            mocked.derefed[2]
+            mocked.m_derefed[2]
           </Original>
           <Expanded>
             true
@@ -16684,7 +16684,7 @@ There is no extra whitespace here
         </Expression>
         <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
           <Original>
-            mocked.derefed[3]
+            mocked.m_derefed[3]
           </Original>
           <Expanded>
             true
@@ -16692,7 +16692,7 @@ There is no extra whitespace here
         </Expression>
         <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
           <Original>
-            mocked.derefed[4]
+            mocked.m_derefed[4]
           </Original>
           <Expanded>
             true
@@ -16714,7 +16714,7 @@ There is no extra whitespace here
         </Expression>
         <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
           <Original>
-            mocked.derefed[0]
+            mocked.m_derefed[0]
           </Original>
           <Expanded>
             true
@@ -16722,7 +16722,7 @@ There is no extra whitespace here
         </Expression>
         <Expression success="true" type="REQUIRE_FALSE" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
           <Original>
-            !(mocked.derefed[1])
+            !(mocked.m_derefed[1])
           </Original>
           <Expanded>
             !false
@@ -16730,7 +16730,7 @@ There is no extra whitespace here
         </Expression>
         <Expression success="true" type="REQUIRE_FALSE" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
           <Original>
-            !(mocked.derefed[2])
+            !(mocked.m_derefed[2])
           </Original>
           <Expanded>
             !false
@@ -16738,7 +16738,7 @@ There is no extra whitespace here
         </Expression>
         <Expression success="true" type="REQUIRE_FALSE" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
           <Original>
-            !(mocked.derefed[3])
+            !(mocked.m_derefed[3])
           </Original>
           <Expanded>
             !false
@@ -16746,7 +16746,7 @@ There is no extra whitespace here
         </Expression>
         <Expression success="true" type="REQUIRE_FALSE" filename="tests/<exe-name>/UsageTests/MatchersRanges.tests.cpp" >
           <Original>
-            !(mocked.derefed[4])
+            !(mocked.m_derefed[4])
           </Original>
           <Expanded>
             !false
