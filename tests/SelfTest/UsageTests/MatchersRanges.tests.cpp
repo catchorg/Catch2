@@ -24,9 +24,8 @@
 namespace {
 
 template <typename Arg, typename... Args>
-std::array<Arg, sizeof...( Args ) + 1> make_array( Arg&& arg,
-                                                    Args&&... args ) {
-    return std::array<Arg, sizeof...( Args ) + 1>{
+auto make_array( Arg&& arg, Args&&... args ) {
+    return std::array<std::decay_t<Arg>, sizeof...( Args ) + 1>{
         { CATCH_FORWARD( arg ), CATCH_FORWARD( args )... } };
 }
 
@@ -39,7 +38,7 @@ namespace unrelated {
         using const_iterator = typename std::array<T, N>::const_iterator;
 
         template <typename... Args>
-        needs_ADL_begin(Args&&... args) : m_elements{make_array(CATCH_FORWARD(args)...)} {}
+        needs_ADL_begin(Args&&... args) : m_elements(make_array(CATCH_FORWARD(args)...)) {}
 
         const_iterator Begin() const { return m_elements.begin(); }
         const_iterator End() const { return m_elements.end(); }
@@ -104,7 +103,7 @@ class has_different_begin_end_types {
 public:
     template <typename... Args>
     explicit has_different_begin_end_types( Args&&... args ):
-        m_elements{ make_array( CATCH_FORWARD( args )... ) } {}
+        m_elements( make_array( CATCH_FORWARD( args )... ) ) {}
 
     iterator begin() const {
         return { m_elements.data(), m_elements.data() + m_elements.size() };
@@ -180,7 +179,7 @@ template <typename T, std::size_t N> struct with_mocked_iterator_access {
 
     template <typename... Args>
     with_mocked_iterator_access( Args&&... args ):
-        m_elements{ make_array( CATCH_FORWARD( args )... ) } {}
+        m_elements( make_array( CATCH_FORWARD( args )... ) ) {}
 
     const_iterator begin() const { return { this, 0 }; }
     const_iterator end() const { return { this, N }; }
