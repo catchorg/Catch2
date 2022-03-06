@@ -298,7 +298,7 @@ namespace Catch {
             | Opt( setRngSeed, "'time'|'random-device'|number" )
                 ["--rng-seed"]
                 ( "set a specific seed for random numbers" )
-            | Opt( setColourUsage, "yes|no" )
+            | Opt( setColourUsage, "yes|no|auto" )
                 ["--use-colour"]
                 ( "should output be colourised" )
             | Opt( config.libIdentify )
