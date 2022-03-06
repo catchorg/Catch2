@@ -119,11 +119,15 @@ using Catch::Benchmark::Detail::sample;
 
     double standard_deviation(std::vector<double>::iterator first, std::vector<double>::iterator last) {
         auto m = Catch::Benchmark::Detail::mean(first, last);
-        double variance = std::accumulate(first, last, 0., [m](double a, double b) {
-            double diff = b - m;
-            return a + diff * diff;
-            }) / (last - first);
-            return std::sqrt(variance);
+        double variance = std::accumulate( first,
+                                           last,
+                                           0.,
+                                           [m]( double a, double b ) {
+                                               double diff = b - m;
+                                               return a + diff * diff;
+                                           } ) /
+                          ( last - first );
+        return std::sqrt( variance );
     }
 
 }
