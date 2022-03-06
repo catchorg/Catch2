@@ -12,7 +12,7 @@
 
 namespace Catch {
 
-    class MultiReporter final : public IStreamingReporter {
+    class MultiReporter final : public IEventListener {
         /*
          * Stores all added reporters and listeners
          *
@@ -26,17 +26,17 @@ namespace Catch {
         // so that we can insert them into the main vector at the right place
         size_t m_insertedListeners = 0;
 
-        void updatePreferences(IStreamingReporter const& reporterish);
+        void updatePreferences(IEventListener const& reporterish);
 
     public:
         MultiReporter( IConfig const* config ):
-            IStreamingReporter( config )
+            IEventListener( config )
         {}
 
         void addListener( IStreamingReporterPtr&& listener );
         void addReporter( IStreamingReporterPtr&& reporter );
 
-    public: // IStreamingReporter
+    public: // IEventListener
 
         void noMatchingTestCases( StringRef unmatchedSpec ) override;
         void fatalErrorEncountered( StringRef error ) override;

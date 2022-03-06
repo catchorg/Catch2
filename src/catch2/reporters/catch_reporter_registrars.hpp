@@ -16,8 +16,8 @@
 
 namespace Catch {
 
-    struct IStreamingReporter;
-    using IStreamingReporterPtr = Detail::unique_ptr<IStreamingReporter>;
+    class IEventListener;
+    using IStreamingReporterPtr = Detail::unique_ptr<IEventListener>;
 
     template <typename T>
     class ReporterFactory : public IReporterFactory {

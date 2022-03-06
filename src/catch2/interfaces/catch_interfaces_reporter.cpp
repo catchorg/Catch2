@@ -78,6 +78,6 @@ namespace Catch {
         aborting( _aborting )
     {}
 
-    IStreamingReporter::~IStreamingReporter() = default;
+    IEventListener::~IEventListener() = default;
 
 } // end namespace Catch

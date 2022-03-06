@@ -16,10 +16,10 @@
 
 namespace Catch {
 
-    class StreamingReporterBase : public IStreamingReporter {
+    class StreamingReporterBase : public IEventListener {
     public:
         StreamingReporterBase( ReporterConfig const& _config ):
-            IStreamingReporter( _config.fullConfig() ),
+            IEventListener( _config.fullConfig() ),
             m_stream( _config.stream() ) {}
 
 

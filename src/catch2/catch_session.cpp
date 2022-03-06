@@ -120,7 +120,7 @@ namespace Catch {
 
 
         private:
-            IStreamingReporter* m_reporter;
+            IEventListener* m_reporter;
             Config const* m_config;
             RunContext m_context;
             std::set<TestCaseHandle const*> m_tests;

@@ -13,16 +13,16 @@
 namespace Catch {
 
     /**
-     * Base class identifying listeners.
+     * Base class to simplify implementing listeners.
      *
-     * Provides empty default implementation for all IStreamingReporter member
-     * functions, so that listeners implementations can pick which
+     * Provides empty default implementation for all IEventListener member
+     * functions, so that a listener implementation can pick which
      * member functions it actually cares about.
      */
-    class EventListenerBase : public IStreamingReporter {
+    class EventListenerBase : public IEventListener {
     public:
         EventListenerBase( ReporterConfig const& config ):
-            IStreamingReporter( config.fullConfig() ) {}
+            IEventListener( config.fullConfig() ) {}
 
         void reportInvalidTestSpec( StringRef unmatchedSpec ) override;
         void fatalErrorEncountered( StringRef error ) override;
@@ -52,7 +52,6 @@ namespace Catch {
         void testCaseEnded( TestCaseStats const& testCaseStats ) override;
         void testRunEnded( TestRunStats const& testRunStats ) override;
         void skipTest( TestCaseInfo const& testInfo ) override;
-
     };
 
 } // end namespace Catch

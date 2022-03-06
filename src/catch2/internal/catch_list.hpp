@@ -16,7 +16,7 @@
 
 namespace Catch {
 
-    struct IStreamingReporter;
+    class IEventListener;
     class Config;
 
 
@@ -32,7 +32,7 @@ namespace Catch {
         std::size_t count = 0;
     };
 
-    bool list( IStreamingReporter& reporter, Config const& config );
+    bool list( IEventListener& reporter, Config const& config );
 
 } // end namespace Catch
 

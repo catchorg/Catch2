@@ -23,13 +23,13 @@
 namespace Catch {
     namespace {
 
-        void listTests(IStreamingReporter& reporter, IConfig const& config) {
+        void listTests(IEventListener& reporter, IConfig const& config) {
             auto const& testSpec = config.testSpec();
             auto matchedTestCases = filterTests(getAllTestCasesSorted(config), testSpec, config);
             reporter.listTests(matchedTestCases);
         }
 
-        void listTags(IStreamingReporter& reporter, IConfig const& config) {
+        void listTags(IEventListener& reporter, IConfig const& config) {
             auto const& testSpec = config.testSpec();
             std::vector<TestCaseHandle> matchedTestCases = filterTests(getAllTestCasesSorted(config), testSpec, config);
 
@@ -51,7 +51,7 @@ namespace Catch {
             reporter.listTags(infos);
         }
 
-        void listReporters(IStreamingReporter& reporter) {
+        void listReporters(IEventListener& reporter) {
             std::vector<ReporterDescription> descriptions;
 
             IReporterRegistry::FactoryMap const& factories = getRegistryHub().getReporterRegistry().getFactories();
@@ -86,7 +86,7 @@ namespace Catch {
         return out;
     }
 
-    bool list( IStreamingReporter& reporter, Config const& config ) {
+    bool list( IEventListener& reporter, Config const& config ) {
         bool listed = false;
         if (config.listTests()) {
             listed = true;

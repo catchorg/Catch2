@@ -59,7 +59,7 @@ namespace Catch {
      * performance. **Accessing the assertion expansions if it wasn't stored is
      * UB.**
      */
-    class CumulativeReporterBase : public IStreamingReporter {
+    class CumulativeReporterBase : public IEventListener {
     public:
         template<typename T, typename ChildNodeT>
         struct Node {
@@ -90,7 +90,7 @@ namespace Catch {
         using TestRunNode = Node<TestRunStats, TestCaseNode>;
 
         CumulativeReporterBase( ReporterConfig const& _config ):
-            IStreamingReporter( _config.fullConfig() ),
+            IEventListener( _config.fullConfig() ),
             m_stream( _config.stream() ) {}
         ~CumulativeReporterBase() override;
 

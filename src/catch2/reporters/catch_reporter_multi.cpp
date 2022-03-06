@@ -14,7 +14,7 @@
 #include <cassert>
 
 namespace Catch {
-    void MultiReporter::updatePreferences(IStreamingReporter const& reporterish) {
+    void MultiReporter::updatePreferences(IEventListener const& reporterish) {
         m_preferences.shouldRedirectStdOut |=
             reporterish.getPreferences().shouldRedirectStdOut;
         m_preferences.shouldReportAllAssertions |=

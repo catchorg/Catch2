@@ -150,7 +150,7 @@ namespace Catch {
     };
 
     //! The common base for all reporters and event listeners
-    struct IStreamingReporter {
+    class IEventListener {
     protected:
         //! Derived classes can set up their preferences here
         ReporterPreferences m_preferences;
@@ -158,9 +158,9 @@ namespace Catch {
         IConfig const* m_config;
 
     public:
-        IStreamingReporter( IConfig const* config ): m_config( config ) {}
+        IEventListener( IConfig const* config ): m_config( config ) {}
 
-        virtual ~IStreamingReporter(); // = default;
+        virtual ~IEventListener(); // = default;
 
         // Implementing class must also provide the following static methods:
         // static std::string getDescription();
@@ -230,7 +230,7 @@ namespace Catch {
         virtual void listTags(std::vector<TagInfo> const& tags) = 0;
 
     };
-    using IStreamingReporterPtr = Detail::unique_ptr<IStreamingReporter>;
+    using IStreamingReporterPtr = Detail::unique_ptr<IEventListener>;
 
 } // end namespace Catch
 
