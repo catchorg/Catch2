@@ -70,7 +70,7 @@ out in batch after each runthrough of a test case is finished.
 You can also write your own custom reporter and tell Catch2 to use it.
 When writing your reporter, you have two options:
 
-* Derive from `Catch::IStreamingReporter`. When doing this, you will have
+* Derive from `Catch::ReporterBase`. When doing this, you will have
   to provide handling for all [reporter events](reporter-events.md#top).
 * Derive from one of the provided [utility reporter bases in
   Catch2](#utility-reporter-bases).

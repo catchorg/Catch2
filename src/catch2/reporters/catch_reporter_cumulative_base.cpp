@@ -6,7 +6,6 @@
 
 // SPDX-License-Identifier: BSL-1.0
 #include <catch2/reporters/catch_reporter_cumulative_base.hpp>
-#include <catch2/reporters/catch_reporter_helpers.hpp>
 
 #include <algorithm>
 #include <cassert>
@@ -143,21 +142,6 @@ namespace Catch {
         m_testRun = Detail::make_unique<TestRunNode>( testRunStats );
         m_testRun->children.swap( m_testCases );
         testRunEndedCumulative();
-    }
-
-    void CumulativeReporterBase::listReporters(std::vector<ReporterDescription> const& descriptions) {
-        defaultListReporters(m_stream, descriptions, m_config->verbosity());
-    }
-
-    void CumulativeReporterBase::listTests(std::vector<TestCaseHandle> const& tests) {
-        defaultListTests(m_stream,
-                         tests,
-                         m_config->hasTestFilters(),
-                         m_config->verbosity());
-    }
-
-    void CumulativeReporterBase::listTags(std::vector<TagInfo> const& tags) {
-        defaultListTags( m_stream, tags, m_config->hasTestFilters() );
     }
 
     bool CumulativeReporterBase::SectionNode::hasAnyAssertions() const {
