@@ -45,13 +45,14 @@ class ConsoleAssertionPrinter {
 public:
     ConsoleAssertionPrinter& operator= (ConsoleAssertionPrinter const&) = delete;
     ConsoleAssertionPrinter(ConsoleAssertionPrinter const&) = delete;
-    ConsoleAssertionPrinter(std::ostream& _stream, AssertionStats const& _stats, bool _printInfoMessages)
+    ConsoleAssertionPrinter(std::ostream& _stream, AssertionStats const& _stats, ColourImpl* colourImpl_, bool _printInfoMessages)
         : stream(_stream),
         stats(_stats),
         result(_stats.assertionResult),
         colour(Colour::None),
         message(result.getMessage()),
         messages(_stats.infoMessages),
+        colourImpl(colourImpl_),
         printInfoMessages(_printInfoMessages) {
         switch (result.getResultType()) {
         case ResultWas::Ok:
@@ -134,23 +135,22 @@ public:
 private:
     void printResultType() const {
         if (!passOrFail.empty()) {
-            Colour colourGuard(colour);
-            stream << passOrFail << ":\n";
+            stream << colourImpl->startColour(colour) << passOrFail << ":\n";
         }
     }
     void printOriginalExpression() const {
         if (result.hasExpression()) {
-            Colour colourGuard(Colour::OriginalExpression);
-            stream << "  ";
-            stream << result.getExpressionInMacro();
-            stream << '\n';
+            stream << colourImpl->startColour( Colour::OriginalExpression )
+                   << "  " << result.getExpressionInMacro() << '\n';
         }
     }
     void printReconstructedExpression() const {
         if (result.hasExpandedExpression()) {
             stream << "with expansion:\n";
-            Colour colourGuard(Colour::ReconstructedExpression);
-            stream << TextFlow::Column(result.getExpandedExpression()).indent(2) << '\n';
+            stream << colourImpl->startColour( Colour::ReconstructedExpression )
+                   << TextFlow::Column( result.getExpandedExpression() )
+                          .indent( 2 )
+                   << '\n';
         }
     }
     void printMessage() const {
@@ -163,8 +163,8 @@ private:
         }
     }
     void printSourceInfo() const {
-        Colour colourGuard(Colour::FileName);
-        stream << result.getSourceInfo() << ": ";
+        stream << colourImpl->startColour( Colour::FileName )
+               << result.getSourceInfo() << ": ";
     }
 
     std::ostream& stream;
@@ -175,6 +175,7 @@ private:
     std::string messageLabel;
     std::string message;
     std::vector<MessageInfo> messages;
+    ColourImpl* colourImpl;
     bool printInfoMessages;
 };
 
@@ -403,7 +404,7 @@ void ConsoleReporter::assertionEnded(AssertionStats const& _assertionStats) {
 
     lazyPrint();
 
-    ConsoleAssertionPrinter printer(m_stream, _assertionStats, includeResults);
+    ConsoleAssertionPrinter printer(m_stream, _assertionStats, m_colour.get(), includeResults);
     printer.print();
     m_stream << '\n' << std::flush;
 }
@@ -417,7 +418,7 @@ void ConsoleReporter::sectionEnded(SectionStats const& _sectionStats) {
     m_tablePrinter->close();
     if (_sectionStats.missingAssertions) {
         lazyPrint();
-        Colour colour(Colour::ResultError);
+        auto guard = m_colour->startColour( Colour::ResultError );
         if (m_sectionStack.size() > 1)
             m_stream << "\nNo assertions in section";
         else
@@ -475,7 +476,7 @@ void ConsoleReporter::benchmarkEnded(BenchmarkStats<> const& stats) {
 }
 
 void ConsoleReporter::benchmarkFailed( StringRef error ) {
-	Colour colour(Colour::Red);
+    auto guard = m_colour->startColour( Colour::Red );
     (*m_tablePrinter)
         << "Benchmark failed (" << error << ')'
         << ColumnBreak() << RowBreak();
@@ -514,13 +515,13 @@ void ConsoleReporter::lazyPrintWithoutClosingBenchmarkTable() {
     }
 }
 void ConsoleReporter::lazyPrintRunInfo() {
-    m_stream << '\n' << lineOfChars('~') << '\n';
-    Colour colour(Colour::SecondaryText);
-    m_stream << currentTestRunInfo.name
-        << " is a Catch2 v" << libraryVersion() << " host application.\n"
-        << "Run with -? for options\n\n";
-
-    m_stream << "Randomness seeded to: " << m_config->rngSeed() << "\n\n";
+    m_stream << '\n'
+             << lineOfChars( '~' ) << '\n'
+             << m_colour->startColour( Colour::SecondaryText )
+             << currentTestRunInfo.name << " is a Catch2 v" << libraryVersion()
+             << " host application.\n"
+             << "Run with -? for options\n\n"
+             << "Randomness seeded to: " << m_config->rngSeed() << "\n\n";
 
     m_testRunInfoPrinted = true;
 }
@@ -529,7 +530,7 @@ void ConsoleReporter::printTestCaseAndSectionHeader() {
     printOpenHeader(currentTestCaseInfo->name);
 
     if (m_sectionStack.size() > 1) {
-        Colour colourGuard(Colour::Headers);
+        auto guard = m_colour->startColour( Colour::Headers );
 
         auto
             it = m_sectionStack.begin() + 1, // Skip first section (test case)
@@ -541,10 +542,10 @@ void ConsoleReporter::printTestCaseAndSectionHeader() {
     SourceLineInfo lineInfo = m_sectionStack.back().lineInfo;
 
 
-    m_stream << lineOfChars('-') << '\n';
-    Colour colourGuard(Colour::FileName);
-    m_stream << lineInfo << '\n';
-    m_stream << lineOfChars('.') << "\n\n" << std::flush;
+    m_stream << lineOfChars( '-' ) << '\n'
+             << m_colour->startColour( Colour::FileName ) << lineInfo << '\n'
+             << lineOfChars( '.' ) << "\n\n"
+             << std::flush;
 }
 
 void ConsoleReporter::printClosedHeader(std::string const& _name) {
@@ -554,7 +555,7 @@ void ConsoleReporter::printClosedHeader(std::string const& _name) {
 void ConsoleReporter::printOpenHeader(std::string const& _name) {
     m_stream << lineOfChars('-') << '\n';
     {
-        Colour colourGuard(Colour::Headers);
+        auto guard = m_colour->startColour( Colour::Headers );
         printHeaderString(_name);
     }
 }
@@ -619,9 +620,11 @@ struct SummaryColumn {
 
 void ConsoleReporter::printTotals( Totals const& totals ) {
     if (totals.testCases.total() == 0) {
-        m_stream << Colour(Colour::Warning) << "No tests ran\n";
+        m_stream << m_colour->startColour( Colour::Warning )
+                 << "No tests ran\n";
     } else if (totals.assertions.total() > 0 && totals.testCases.allPassed()) {
-        m_stream << Colour(Colour::ResultSuccess) << "All tests passed";
+        m_stream << m_colour->startColour( Colour::ResultSuccess )
+                 << "All tests passed";
         m_stream << " ("
             << pluralise(totals.assertions.passed, "assertion"_sr) << " in "
             << pluralise(totals.testCases.passed, "test case"_sr) << ')'
@@ -648,17 +651,19 @@ void ConsoleReporter::printTotals( Totals const& totals ) {
 }
 void ConsoleReporter::printSummaryRow(StringRef label, std::vector<SummaryColumn> const& cols, std::size_t row) {
     for (auto col : cols) {
-        std::string value = col.rows[row];
+        std::string const& value = col.rows[row];
         if (col.label.empty()) {
             m_stream << label << ": ";
-            if (value != "0")
+            if ( value != "0" ) {
                 m_stream << value;
-            else
-                m_stream << Colour(Colour::Warning) << "- none -";
+            } else {
+                m_stream << m_colour->startColour( Colour::Warning )
+                         << "- none -";
+            }
         } else if (value != "0") {
-            m_stream << Colour(Colour::LightGrey) << " | ";
-            m_stream << Colour(col.colour)
-                << value << ' ' << col.label;
+            m_stream << m_colour->startColour( Colour::LightGrey ) << " | "
+                     << m_colour->startColour( col.colour ) << value << ' '
+                     << col.label;
         }
     }
     m_stream << '\n';
@@ -674,14 +679,20 @@ void ConsoleReporter::printTotalsDivider(Totals const& totals) {
         while (failedRatio + failedButOkRatio + passedRatio > CATCH_CONFIG_CONSOLE_WIDTH - 1)
             findMax(failedRatio, failedButOkRatio, passedRatio)--;
 
-        m_stream << Colour(Colour::Error) << std::string(failedRatio, '=');
-        m_stream << Colour(Colour::ResultExpectedFailure) << std::string(failedButOkRatio, '=');
-        if (totals.testCases.allPassed())
-            m_stream << Colour(Colour::ResultSuccess) << std::string(passedRatio, '=');
-        else
-            m_stream << Colour(Colour::Success) << std::string(passedRatio, '=');
+        m_stream << m_colour->startColour( Colour::Error )
+                 << std::string( failedRatio, '=' )
+                 << m_colour->startColour( Colour::ResultExpectedFailure )
+                 << std::string( failedButOkRatio, '=' );
+        if ( totals.testCases.allPassed() ) {
+            m_stream << m_colour->startColour( Colour::ResultSuccess )
+                     << std::string( passedRatio, '=' );
+        } else {
+            m_stream << m_colour->startColour( Colour::Success )
+                     << std::string( passedRatio, '=' );
+        }
     } else {
-        m_stream << Colour(Colour::Warning) << std::string(CATCH_CONFIG_CONSOLE_WIDTH - 1, '=');
+        m_stream << m_colour->startColour( Colour::Warning )
+                 << std::string( CATCH_CONFIG_CONSOLE_WIDTH - 1, '=' );
     }
     m_stream << '\n';
 }
@@ -691,8 +702,8 @@ void ConsoleReporter::printSummaryDivider() {
 
 void ConsoleReporter::printTestFilters() {
     if (m_config->testSpec().hasFilters()) {
-        Colour guard(Colour::BrightYellow);
-        m_stream << "Filters: " << serializeFilters(m_config->getTestsOrTags()) << '\n';
+        m_stream << m_colour->startColour( Colour::BrightYellow ) << "Filters: "
+                 << serializeFilters( m_config->getTestsOrTags() ) << '\n';
     }
 }
 

@@ -10,6 +10,7 @@
 
 #include <catch2/interfaces/catch_interfaces_reporter.hpp>
 #include <catch2/internal/catch_stream.hpp>
+#include <catch2/internal/catch_console_colour.hpp>
 
 namespace Catch {
     /**
@@ -29,14 +30,14 @@ namespace Catch {
         //! Cached output stream from `m_wrapped_stream` to reduce
         //! number of indirect calls needed to write output.
         std::ostream& m_stream;
-
-
+        Detail::unique_ptr<ColourImpl> m_colour;
 
     public:
         ReporterBase( ReporterConfig const& config ):
             IEventListener( config.fullConfig() ),
             m_wrapped_stream( config.stream() ),
-            m_stream( m_wrapped_stream->stream() ) {}
+            m_stream( m_wrapped_stream->stream() ),
+            m_colour( makeColourImpl( config.fullConfig(), m_wrapped_stream ) ) {}
 
 
         /**

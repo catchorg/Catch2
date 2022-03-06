@@ -174,7 +174,7 @@ namespace Catch {
         out << pluralise(tags.size(), "tag"_sr) << "\n\n" << std::flush;
     }
 
-    void defaultListTests(std::ostream& out, std::vector<TestCaseHandle> const& tests, bool isFiltered, Verbosity verbosity) {
+    void defaultListTests(std::ostream& out, ColourImpl* streamColour, std::vector<TestCaseHandle> const& tests, bool isFiltered, Verbosity verbosity) {
         // We special case this to provide the equivalent of old
         // `--list-test-names-only`, which could then be used by the
         // `--input-file` option.
@@ -194,7 +194,7 @@ namespace Catch {
             Colour::Code colour = testCaseInfo.isHidden()
                 ? Colour::SecondaryText
                 : Colour::None;
-            Colour colourGuard(colour);
+            auto colourGuard = streamColour->startColour( colour );
 
             out << TextFlow::Column(testCaseInfo.name).initialIndent(2).indent(4) << '\n';
             if (verbosity >= Verbosity::High) {

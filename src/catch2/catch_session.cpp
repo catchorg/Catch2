@@ -151,14 +151,16 @@ namespace Catch {
             getCurrentMutableContext().setConfig(m_config.get());
 
             m_startupExceptions = true;
-            Colour colourGuard( Colour::Red );
-            Catch::cerr() << "Errors occurred during startup!" << '\n';
+            auto errStream = makeStream( "%stderr" );
+            auto colourImpl = makeColourImpl( &config(), errStream.get() );
+            auto guard = colourImpl->startColour( Colour::Red );
+            errStream->stream() << "Errors occurred during startup!" << '\n';
             // iterate over all exceptions and notify user
             for ( const auto& ex_ptr : exceptions ) {
                 try {
                     std::rethrow_exception(ex_ptr);
                 } catch ( std::exception const& ex ) {
-                    Catch::cerr() << TextFlow::Column( ex.what() ).indent(2) << '\n';
+                    errStream->stream() << TextFlow::Column( ex.what() ).indent(2) << '\n';
                 }
             }
         }
@@ -194,12 +196,15 @@ namespace Catch {
         if( !result ) {
             config();
             getCurrentMutableContext().setConfig(m_config.get());
-            Catch::cerr()
-                << Colour( Colour::Red )
+            auto errStream = makeStream( "%stderr" );
+            auto colour = makeColourImpl( &config(), errStream.get() );
+
+            errStream->stream()
+                << colour->startColour( Colour::Red )
                 << "\nError(s) in input:\n"
                 << TextFlow::Column( result.errorMessage() ).indent( 2 )
                 << "\n\n";
-            Catch::cerr() << "Run with -? for usage\n\n" << std::flush;
+            errStream->stream() << "Run with -? for usage\n\n" << std::flush;
             return MaxExitCode;
         }
 

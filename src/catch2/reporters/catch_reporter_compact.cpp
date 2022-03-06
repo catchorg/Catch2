@@ -18,9 +18,6 @@
 
 namespace {
 
-    // Colour::LightGrey
-    constexpr Catch::Colour::Code dimColour() { return Catch::Colour::FileName; }
-
     constexpr Catch::StringRef bothOrAll( std::uint64_t count ) {
         switch (count) {
         case 1:
@@ -38,6 +35,9 @@ namespace {
 namespace Catch {
 namespace {
 
+    // Colour::LightGrey
+    static constexpr Colour::Code compactDimColour = Colour::FileName;
+
 #ifdef CATCH_PLATFORM_MAC
     static constexpr Catch::StringRef compactFailedString = "FAILED"_sr;
     static constexpr Catch::StringRef compactPassedString = "PASSED"_sr;
@@ -52,11 +52,11 @@ namespace {
 // - white: Passed [both/all] N test cases (no assertions).
 // -   red: Failed N tests cases, failed M assertions.
 // - green: Passed [both/all] N tests cases with M assertions.
-void printTotals(std::ostream& out, const Totals& totals) {
+void printTotals(std::ostream& out, const Totals& totals, ColourImpl* colourImpl) {
     if (totals.testCases.total() == 0) {
         out << "No tests ran.";
     } else if (totals.testCases.failed == totals.testCases.total()) {
-        Colour colour(Colour::ResultError);
+        auto guard = colourImpl->startColour( Colour::ResultError );
         const StringRef qualify_assertions_failed =
             totals.assertions.failed == totals.assertions.total() ?
             bothOrAll(totals.assertions.failed) : StringRef{};
@@ -71,13 +71,11 @@ void printTotals(std::ostream& out, const Totals& totals) {
             << pluralise(totals.testCases.total(), "test case"_sr)
             << " (no assertions).";
     } else if (totals.assertions.failed) {
-        Colour colour(Colour::ResultError);
-        out <<
+        out << colourImpl->startColour( Colour::ResultError ) <<
             "Failed " << pluralise(totals.testCases.failed, "test case"_sr) << ", "
             "failed " << pluralise(totals.assertions.failed, "assertion"_sr) << '.';
     } else {
-        Colour colour(Colour::ResultSuccess);
-        out <<
+        out << colourImpl->startColour( Colour::ResultSuccess ) <<
             "Passed " << bothOrAll(totals.testCases.passed)
             << pluralise(totals.testCases.passed, "test case"_sr) <<
             " with " << pluralise(totals.assertions.passed, "assertion"_sr) << '.';
@@ -89,12 +87,14 @@ class AssertionPrinter {
 public:
     AssertionPrinter& operator= (AssertionPrinter const&) = delete;
     AssertionPrinter(AssertionPrinter const&) = delete;
-    AssertionPrinter(std::ostream& _stream, AssertionStats const& _stats, bool _printInfoMessages)
+    AssertionPrinter(std::ostream& _stream, AssertionStats const& _stats, bool _printInfoMessages, ColourImpl* colourImpl_)
         : stream(_stream)
         , result(_stats.assertionResult)
         , messages(_stats.infoMessages)
         , itMessage(_stats.infoMessages.begin())
-        , printInfoMessages(_printInfoMessages) {}
+        , printInfoMessages(_printInfoMessages)
+        , colourImpl(colourImpl_)
+    {}
 
     void print() {
         printSourceInfo();
@@ -166,16 +166,13 @@ public:
 
 private:
     void printSourceInfo() const {
-        Colour colourGuard(Colour::FileName);
-        stream << result.getSourceInfo() << ':';
+        stream << colourImpl->startColour( Colour::FileName )
+               << result.getSourceInfo() << ':';
     }
 
     void printResultType(Colour::Code colour, StringRef passOrFail) const {
         if (!passOrFail.empty()) {
-            {
-                Colour colourGuard(colour);
-                stream << ' ' << passOrFail;
-            }
+            stream << colourImpl->startColour(colour) << ' ' << passOrFail;
             stream << ':';
         }
     }
@@ -188,8 +185,7 @@ private:
         if (result.hasExpression()) {
             stream << ';';
             {
-                Colour colour(dimColour());
-                stream << " expression was:";
+                stream << colourImpl->startColour(compactDimColour) << " expression was:";
             }
             printOriginalExpression();
         }
@@ -203,10 +199,7 @@ private:
 
     void printReconstructedExpression() const {
         if (result.hasExpandedExpression()) {
-            {
-                Colour colour(dimColour());
-                stream << " for: ";
-            }
+            stream << colourImpl->startColour(compactDimColour) << " for: ";
             stream << result.getExpandedExpression();
         }
     }
@@ -218,25 +211,22 @@ private:
         }
     }
 
-    void printRemainingMessages(Colour::Code colour = dimColour()) {
+    void printRemainingMessages(Colour::Code colour = compactDimColour) {
         if (itMessage == messages.end())
             return;
 
         const auto itEnd = messages.cend();
         const auto N = static_cast<std::size_t>(std::distance(itMessage, itEnd));
 
-        {
-            Colour colourGuard(colour);
-            stream << " with " << pluralise(N, "message"_sr) << ':';
-        }
+        stream << colourImpl->startColour( colour ) << " with "
+               << pluralise( N, "message"_sr ) << ':';
 
         while (itMessage != itEnd) {
             // If this assertion is a warning ignore any INFO messages
             if (printInfoMessages || itMessage->type != ResultWas::Info) {
                 printMessage();
                 if (itMessage != itEnd) {
-                    Colour colourGuard(dimColour());
-                    stream << " and";
+                    stream << colourImpl->startColour(compactDimColour) << " and";
                 }
                 continue;
             }
@@ -250,6 +240,7 @@ private:
     std::vector<MessageInfo> messages;
     std::vector<MessageInfo>::const_iterator itMessage;
     bool printInfoMessages;
+    ColourImpl* colourImpl;
 };
 
 } // anon namespace
@@ -274,7 +265,7 @@ private:
                 printInfoMessages = false;
             }
 
-            AssertionPrinter printer( m_stream, _assertionStats, printInfoMessages );
+            AssertionPrinter printer( m_stream, _assertionStats, printInfoMessages, m_colour.get() );
             printer.print();
 
             m_stream << '\n' << std::flush;
@@ -288,7 +279,7 @@ private:
         }
 
         void CompactReporter::testRunEnded( TestRunStats const& _testRunStats ) {
-            printTotals( m_stream, _testRunStats.totals );
+            printTotals( m_stream, _testRunStats.totals, m_colour.get() );
             m_stream << "\n\n" << std::flush;
             StreamingReporterBase::testRunEnded( _testRunStats );
         }

@@ -18,6 +18,7 @@ namespace Catch {
 
     void ReporterBase::listTests(std::vector<TestCaseHandle> const& tests) {
         defaultListTests(m_stream,
+                         m_colour.get(),
                          tests,
                          m_config->hasTestFilters(),
                          m_config->verbosity());

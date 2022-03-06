@@ -20,18 +20,20 @@ namespace Catch {
         // Making older compiler happy is hard.
         static constexpr StringRef tapFailedString = "not ok"_sr;
         static constexpr StringRef tapPassedString = "ok"_sr;
+        static constexpr Colour::Code tapDimColour = Colour::FileName;
 
         class TapAssertionPrinter {
         public:
             TapAssertionPrinter& operator= (TapAssertionPrinter const&) = delete;
             TapAssertionPrinter(TapAssertionPrinter const&) = delete;
-            TapAssertionPrinter(std::ostream& _stream, AssertionStats const& _stats, std::size_t _counter)
+            TapAssertionPrinter(std::ostream& _stream, AssertionStats const& _stats, std::size_t _counter, ColourImpl* colour_)
                 : stream(_stream)
                 , result(_stats.assertionResult)
                 , messages(_stats.infoMessages)
                 , itMessage(_stats.infoMessages.begin())
                 , printInfoMessages(true)
-                , counter(_counter) {}
+                , counter(_counter)
+                , colourImpl( colour_ ) {}
 
             void print() {
                 itMessage = messages.begin();
@@ -104,11 +106,9 @@ namespace Catch {
             }
 
         private:
-            static Colour::Code dimColour() { return Colour::FileName; }
-
             void printSourceInfo() const {
-                Colour colourGuard(dimColour());
-                stream << result.getSourceInfo() << ':';
+                stream << colourImpl->startColour( tapDimColour )
+                       << result.getSourceInfo() << ':';
             }
 
             void printResultType(StringRef passOrFail) const {
@@ -124,10 +124,8 @@ namespace Catch {
             void printExpressionWas() {
                 if (result.hasExpression()) {
                     stream << ';';
-                    {
-                        Colour colour(dimColour());
-                        stream << " expression was:";
-                    }
+                    stream << colourImpl->startColour( tapDimColour )
+                           << " expression was:";
                     printOriginalExpression();
                 }
             }
@@ -140,10 +138,8 @@ namespace Catch {
 
             void printReconstructedExpression() const {
                 if (result.hasExpandedExpression()) {
-                    {
-                        Colour colour(dimColour());
-                        stream << " for: ";
-                    }
+                    stream << colourImpl->startColour( tapDimColour ) << " for: ";
+
                     std::string expr = result.getExpandedExpression();
                     std::replace(expr.begin(), expr.end(), '\n', ' ');
                     stream << expr;
@@ -157,7 +153,7 @@ namespace Catch {
                 }
             }
 
-            void printRemainingMessages(Colour::Code colour = dimColour()) {
+            void printRemainingMessages(Colour::Code colour = tapDimColour) {
                 if (itMessage == messages.end()) {
                     return;
                 }
@@ -166,18 +162,15 @@ namespace Catch {
                 std::vector<MessageInfo>::const_iterator itEnd = messages.end();
                 const std::size_t N = static_cast<std::size_t>(std::distance(itMessage, itEnd));
 
-                {
-                    Colour colourGuard(colour);
-                    stream << " with " << pluralise(N, "message"_sr) << ':';
-                }
+                stream << colourImpl->startColour( colour ) << " with "
+                       << pluralise( N, "message"_sr ) << ':';
 
                 for (; itMessage != itEnd; ) {
                     // If this assertion is a warning ignore any INFO messages
                     if (printInfoMessages || itMessage->type != ResultWas::Info) {
                         stream << " '" << itMessage->message << '\'';
                         if (++itMessage != itEnd) {
-                            Colour colourGuard(dimColour());
-                            stream << " and";
+                            stream << colourImpl->startColour(tapDimColour) << " and";
                         }
                     }
                 }
@@ -190,6 +183,7 @@ namespace Catch {
             std::vector<MessageInfo>::const_iterator itMessage;
             bool printInfoMessages;
             std::size_t counter;
+            ColourImpl* colourImpl;
         };
 
     } // End anonymous namespace
@@ -202,7 +196,7 @@ namespace Catch {
         ++counter;
 
         m_stream << "# " << currentTestCaseInfo->name << '\n';
-        TapAssertionPrinter printer(m_stream, _assertionStats, counter);
+        TapAssertionPrinter printer(m_stream, _assertionStats, counter, m_colour.get());
         printer.print();
 
         m_stream << '\n' << std::flush;

@@ -13,6 +13,7 @@
 #include <catch2/interfaces/catch_interfaces_reporter.hpp>
 #include <catch2/interfaces/catch_interfaces_reporter_factory.hpp>
 #include <catch2/interfaces/catch_interfaces_reporter_registry.hpp>
+#include <catch2/internal/catch_console_colour.hpp>
 #include <catch2/internal/catch_enforce.hpp>
 #include <catch2/internal/catch_list.hpp>
 #include <catch2/internal/catch_reporter_registry.hpp>
@@ -40,11 +41,11 @@ TEST_CASE( "The default listing implementation write to provided stream",
     using Catch::Matchers::ContainsSubstring;
     using namespace std::string_literals;
 
-    std::stringstream sstream;
+    StringIStream sstream;
     SECTION( "Listing tags" ) {
         std::vector<Catch::TagInfo> tags(1);
         tags[0].add("fakeTag"_catch_sr);
-        Catch::defaultListTags(sstream, tags, false);
+        Catch::defaultListTags(sstream.stream(), tags, false);
 
         auto listingString = sstream.str();
         REQUIRE_THAT(listingString, ContainsSubstring("[fakeTag]"s));
@@ -52,7 +53,7 @@ TEST_CASE( "The default listing implementation write to provided stream",
     SECTION( "Listing reporters" ) {
         std::vector<Catch::ReporterDescription> reporters(
             { { "fake reporter", "fake description" } } );
-        Catch::defaultListReporters(sstream, reporters, Catch::Verbosity::Normal);
+        Catch::defaultListReporters(sstream.stream(), reporters, Catch::Verbosity::Normal);
 
         auto listingString = sstream.str();
         REQUIRE_THAT(listingString, ContainsSubstring("fake reporter"s));
@@ -63,7 +64,11 @@ TEST_CASE( "The default listing implementation write to provided stream",
             { "fake test name"_catch_sr, "[fakeTestTag]"_catch_sr },
             { "fake-file.cpp", 123456789 } };
         std::vector<Catch::TestCaseHandle> tests({ {&fakeInfo, nullptr} });
-        Catch::defaultListTests(sstream, tests, false, Catch::Verbosity::Normal);
+        Catch::ConfigData cd;
+        cd.useColour = Catch::UseColour::No;
+        Catch::Config conf(cd);
+        auto colour = Catch::makeColourImpl( &conf, &sstream);
+        Catch::defaultListTests(sstream.stream(), colour.get(), tests, false, Catch::Verbosity::Normal);
 
         auto listingString = sstream.str();
         REQUIRE_THAT( listingString,
