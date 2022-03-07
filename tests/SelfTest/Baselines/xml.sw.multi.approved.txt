@@ -19352,6 +19352,17 @@ There is no extra whitespace here
     </Section>
     <OverallResult success="true"/>
   </TestCase>
+  <TestCase name="request an unknown %-starting stream fails" tags="[streams]" filename="tests/<exe-name>/IntrospectiveTests/Stream.tests.cpp" >
+    <Expression success="true" type="REQUIRE_THROWS" filename="tests/<exe-name>/IntrospectiveTests/Stream.tests.cpp" >
+      <Original>
+        Catch::makeStream( "%somestream" )
+      </Original>
+      <Expanded>
+        Catch::makeStream( "%somestream" )
+      </Expanded>
+    </Expression>
+    <OverallResult success="true"/>
+  </TestCase>
   <TestCase name="resolution" tags="[benchmark]" filename="tests/<exe-name>/IntrospectiveTests/InternalBenchmark.tests.cpp" >
     <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/InternalBenchmark.tests.cpp" >
       <Original>
@@ -19866,6 +19877,25 @@ There is no extra whitespace here
         "{ { "green", 55 } }"
 ==
 "{ { "green", 55 } }"
+      </Expanded>
+    </Expression>
+    <OverallResult success="true"/>
+  </TestCase>
+  <TestCase name="stdout and stderr streams have %-starting name" tags="[streams]" filename="tests/<exe-name>/IntrospectiveTests/Stream.tests.cpp" >
+    <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/Stream.tests.cpp" >
+      <Original>
+        Catch::makeStream( "%stderr" )->isStdout()
+      </Original>
+      <Expanded>
+        true
+      </Expanded>
+    </Expression>
+    <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/Stream.tests.cpp" >
+      <Original>
+        Catch::makeStream( "%stdout" )->isStdout()
+      </Original>
+      <Expanded>
+        true
       </Expanded>
     </Expression>
     <OverallResult success="true"/>
@@ -20900,6 +20930,6 @@ There is no extra whitespace here
     </Section>
     <OverallResult success="true"/>
   </TestCase>
-  <OverallResults successes="2058" failures="143" expectedFailures="27"/>
-  <OverallResultsCases successes="293" failures="83" expectedFailures="7"/>
+  <OverallResults successes="2061" failures="143" expectedFailures="27"/>
+  <OverallResultsCases successes="295" failures="83" expectedFailures="7"/>
 </Catch2TestRun>

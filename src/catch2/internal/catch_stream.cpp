@@ -102,6 +102,20 @@ namespace Detail {
             bool isStdout() const override { return true; }
         };
 
+        class CerrStream : public IStream {
+            mutable std::ostream m_os;
+
+        public:
+            // Store the streambuf from cerr up-front because
+            // cout may get redirected when running tests
+            CerrStream(): m_os( Catch::cerr().rdbuf() ) {}
+            ~CerrStream() override = default;
+
+        public: // IStream
+            std::ostream& stream() const override { return m_os; }
+            bool isStdout() const override { return true; }
+        };
+
         ///////////////////////////////////////////////////////////////////////////
 
         class DebugOutStream : public IStream {
@@ -128,14 +142,18 @@ namespace Detail {
         if ( filename.empty() || filename == "-" ) {
             return Detail::make_unique<Detail::CoutStream>();
         }
-        else if( filename[0] == '%' ) {
-            if( filename == "%debug" )
+        if( filename[0] == '%' ) {
+            if ( filename == "%debug" ) {
                 return Detail::make_unique<Detail::DebugOutStream>();
-            else
+            } else if ( filename == "%stderr" ) {
+                return Detail::make_unique<Detail::CerrStream>();
+            } else if ( filename == "%stdout" ) {
+                return Detail::make_unique<Detail::CoutStream>();
+            } else {
                 CATCH_ERROR( "Unrecognised stream: '" << filename << '\'' );
+            }
         }
-        else
-            return Detail::make_unique<Detail::FileStream>( filename );
+        return Detail::make_unique<Detail::FileStream>( filename );
     }
 
 

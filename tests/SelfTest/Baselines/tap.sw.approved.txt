@@ -4138,6 +4138,8 @@ ok {test-number} - letters == letters for: "abcdefcg" == "abcdefcg"
 ok {test-number} - Catch::replaceInPlace(s, "'", "|'") for: true
 # replaceInPlace
 ok {test-number} - s == "didn|'t" for: "didn|'t" == "didn|'t"
+# request an unknown %-starting stream fails
+ok {test-number} - Catch::makeStream( "%somestream" )
 # resolution
 ok {test-number} - res.size() == count for: 10 == 10
 # resolution
@@ -4242,6 +4244,10 @@ ok {test-number} - Catch::Detail::stringify( set ) == "{ \"one\" }" for: "{ "one
 ok {test-number} - Catch::Detail::stringify( set ) == "{ \"abc\", \"def\", \"ghi\" }" for: "{ "abc", "def", "ghi" }" == "{ "abc", "def", "ghi" }"
 # std::vector<std::pair<std::string,int> > -> toString
 ok {test-number} - ::Catch::Detail::stringify( pr ) == "{ { \"green\", 55 } }" for: "{ { "green", 55 } }" == "{ { "green", 55 } }"
+# stdout and stderr streams have %-starting name
+ok {test-number} - Catch::makeStream( "%stderr" )->isStdout() for: true
+# stdout and stderr streams have %-starting name
+ok {test-number} - Catch::makeStream( "%stdout" )->isStdout() for: true
 # stringify ranges
 ok {test-number} - ::Catch::Detail::stringify(streamable_range{}) == "op<<(streamable_range)" for: "op<<(streamable_range)" == "op<<(streamable_range)"
 # stringify ranges
@@ -4458,5 +4464,5 @@ ok {test-number} - q3 == 23. for: 23.0 == 23.0
 ok {test-number} -
 # xmlentitycheck
 ok {test-number} -
-1..2228
+1..2231
 

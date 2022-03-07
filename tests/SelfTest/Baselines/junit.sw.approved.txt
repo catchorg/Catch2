@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuitesloose text artifact
 >
-  <testsuite name="<exe-name>" errors="17" failures="126" tests="2228" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
+  <testsuite name="<exe-name>" errors="17" failures="126" tests="2231" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
     <properties>
       <property name="random-seed" value="1"/>
       <property name="filters" value="~[!nonportable]~[!benchmark]~[approvals] *"/>
@@ -1785,6 +1785,7 @@ Message.tests.cpp:<line number>
     <testcase classname="<exe-name>.global" name="replaceInPlace/replace all chars" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="replaceInPlace/replace no chars" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="replaceInPlace/escape '" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="request an unknown %-starting stream fails" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="resolution" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="run_for_at_least, chronometer" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="run_for_at_least, int" time="{duration}" status="run"/>
@@ -1837,6 +1838,7 @@ Message.tests.cpp:<line number>
     <testcase classname="<exe-name>.global" name="std::set is convertible string/single item" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="std::set is convertible string/several items" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="std::vector&lt;std::pair&lt;std::string,int> > -> toString" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="stdout and stderr streams have %-starting name" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="stringify ranges" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="stringify( has_maker )" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="stringify( has_maker_and_operator )" time="{duration}" status="run"/>

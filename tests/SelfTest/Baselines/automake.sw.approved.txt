@@ -337,6 +337,7 @@ loose text artifact
 :test-result: FAIL prints unscoped info only for the first assertion
 :test-result: PASS random SECTION tests
 :test-result: PASS replaceInPlace
+:test-result: PASS request an unknown %-starting stream fails
 :test-result: PASS resolution
 :test-result: PASS run_for_at_least, chronometer
 :test-result: PASS run_for_at_least, int
@@ -352,6 +353,7 @@ loose text artifact
 :test-result: PASS std::pair<int,std::string> -> toString
 :test-result: PASS std::set is convertible string
 :test-result: PASS std::vector<std::pair<std::string,int> > -> toString
+:test-result: PASS stdout and stderr streams have %-starting name
 :test-result: PASS stringify ranges
 :test-result: PASS stringify( has_maker )
 :test-result: PASS stringify( has_maker_and_operator )

@@ -17,3 +17,12 @@ TEST_CASE( "Cout stream properly declares it writes to stdout", "[streams]" ) {
 TEST_CASE( "Empty stream name opens cout stream", "[streams]" ) {
     REQUIRE( Catch::makeStream( "" )->isStdout() );
 }
+
+TEST_CASE( "stdout and stderr streams have %-starting name", "[streams]" ) {
+    REQUIRE( Catch::makeStream( "%stderr" )->isStdout() );
+    REQUIRE( Catch::makeStream( "%stdout" )->isStdout() );
+}
+
+TEST_CASE( "request an unknown %-starting stream fails", "[streams]" ) {
+    REQUIRE_THROWS( Catch::makeStream( "%somestream" ) );
+}

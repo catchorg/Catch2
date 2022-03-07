@@ -218,6 +218,8 @@
   <file path="tests/<exe-name>/IntrospectiveTests/Stream.tests.cpp">
     <testCase name="Cout stream properly declares it writes to stdout" duration="{duration}"/>
     <testCase name="Empty stream name opens cout stream" duration="{duration}"/>
+    <testCase name="request an unknown %-starting stream fails" duration="{duration}"/>
+    <testCase name="stdout and stderr streams have %-starting name" duration="{duration}"/>
   </file>
   <file path="tests/<exe-name>/IntrospectiveTests/String.tests.cpp">
     <testCase name="StringRef/Empty string" duration="{duration}"/>

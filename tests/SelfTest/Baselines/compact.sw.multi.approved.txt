@@ -2301,6 +2301,7 @@ StringManip.tests.cpp:<line number>: passed: !(Catch::replaceInPlace(letters, "x
 StringManip.tests.cpp:<line number>: passed: letters == letters for: "abcdefcg" == "abcdefcg"
 StringManip.tests.cpp:<line number>: passed: Catch::replaceInPlace(s, "'", "|'") for: true
 StringManip.tests.cpp:<line number>: passed: s == "didn|'t" for: "didn|'t" == "didn|'t"
+Stream.tests.cpp:<line number>: passed: Catch::makeStream( "%somestream" )
 InternalBenchmark.tests.cpp:<line number>: passed: res.size() == count for: 10 == 10
 InternalBenchmark.tests.cpp:<line number>: passed: res[i] == rate for: 1000.0 == 1000 (0x<hex digits>)
 InternalBenchmark.tests.cpp:<line number>: passed: res[i] == rate for: 1000.0 == 1000 (0x<hex digits>)
@@ -2359,6 +2360,8 @@ ToStringGeneral.tests.cpp:<line number>: passed: Catch::Detail::stringify( set )
 ToStringPair.tests.cpp:<line number>: passed: ::Catch::Detail::stringify( pr ) == "{ { \"green\", 55 } }" for: "{ { "green", 55 } }"
 ==
 "{ { "green", 55 } }"
+Stream.tests.cpp:<line number>: passed: Catch::makeStream( "%stderr" )->isStdout() for: true
+Stream.tests.cpp:<line number>: passed: Catch::makeStream( "%stdout" )->isStdout() for: true
 ToStringWhich.tests.cpp:<line number>: passed: ::Catch::Detail::stringify(streamable_range{}) == "op<<(streamable_range)" for: "op<<(streamable_range)"
 ==
 "op<<(streamable_range)"

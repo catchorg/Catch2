@@ -16448,6 +16448,15 @@ with expansion:
   "didn|'t" == "didn|'t"
 
 -------------------------------------------------------------------------------
+request an unknown %-starting stream fails
+-------------------------------------------------------------------------------
+Stream.tests.cpp:<line number>
+...............................................................................
+
+Stream.tests.cpp:<line number>: PASSED:
+  REQUIRE_THROWS( Catch::makeStream( "%somestream" ) )
+
+-------------------------------------------------------------------------------
 resolution
 -------------------------------------------------------------------------------
 InternalBenchmark.tests.cpp:<line number>
@@ -16842,6 +16851,22 @@ with expansion:
   "{ { "green", 55 } }"
   ==
   "{ { "green", 55 } }"
+
+-------------------------------------------------------------------------------
+stdout and stderr streams have %-starting name
+-------------------------------------------------------------------------------
+Stream.tests.cpp:<line number>
+...............................................................................
+
+Stream.tests.cpp:<line number>: PASSED:
+  REQUIRE( Catch::makeStream( "%stderr" )->isStdout() )
+with expansion:
+  true
+
+Stream.tests.cpp:<line number>: PASSED:
+  REQUIRE( Catch::makeStream( "%stdout" )->isStdout() )
+with expansion:
+  true
 
 -------------------------------------------------------------------------------
 stringify ranges
@@ -17786,6 +17811,6 @@ Misc.tests.cpp:<line number>
 Misc.tests.cpp:<line number>: PASSED:
 
 ===============================================================================
-test cases:  383 |  293 passed |  83 failed |  7 failed as expected
-assertions: 2228 | 2058 passed | 143 failed | 27 failed as expected
+test cases:  385 |  295 passed |  83 failed |  7 failed as expected
+assertions: 2231 | 2061 passed | 143 failed | 27 failed as expected
 
