@@ -3488,27 +3488,27 @@ ok {test-number} - needs_adl, AllMatch( Predicate<int>( []( int elem ) { return 
 # Usage of AllMatch range matcher
 ok {test-number} - mocked, allMatch for: { 1, 2, 3, 4, 5 } all match matches undescribed predicate
 # Usage of AllMatch range matcher
-ok {test-number} - mocked.derefed[0] for: true
+ok {test-number} - mocked.m_derefed[0] for: true
 # Usage of AllMatch range matcher
-ok {test-number} - mocked.derefed[1] for: true
+ok {test-number} - mocked.m_derefed[1] for: true
 # Usage of AllMatch range matcher
-ok {test-number} - mocked.derefed[2] for: true
+ok {test-number} - mocked.m_derefed[2] for: true
 # Usage of AllMatch range matcher
-ok {test-number} - mocked.derefed[3] for: true
+ok {test-number} - mocked.m_derefed[3] for: true
 # Usage of AllMatch range matcher
-ok {test-number} - mocked.derefed[4] for: true
+ok {test-number} - mocked.m_derefed[4] for: true
 # Usage of AllMatch range matcher
 ok {test-number} - mocked, !allMatch for: { 1, 2, 3, 4, 5 } not all match matches undescribed predicate
 # Usage of AllMatch range matcher
-ok {test-number} - mocked.derefed[0] for: true
+ok {test-number} - mocked.m_derefed[0] for: true
 # Usage of AllMatch range matcher
-ok {test-number} - mocked.derefed[1] for: true
+ok {test-number} - mocked.m_derefed[1] for: true
 # Usage of AllMatch range matcher
-ok {test-number} - mocked.derefed[2] for: true
+ok {test-number} - mocked.m_derefed[2] for: true
 # Usage of AllMatch range matcher
-ok {test-number} - !(mocked.derefed[3]) for: !false
+ok {test-number} - !(mocked.m_derefed[3]) for: !false
 # Usage of AllMatch range matcher
-ok {test-number} - !(mocked.derefed[4]) for: !false
+ok {test-number} - !(mocked.m_derefed[4]) for: !false
 # Usage of AnyMatch range matcher
 ok {test-number} - data, AnyMatch(SizeIs(5)) for: { { 0, 1, 2, 3, 5 }, { 4, -3, -2, 5, 0 }, { 0, 0, 0, 5, 0 }, { 0, -5, 0, 5, 0 }, { 1, 0, 0, -1, 5 } } any match has size == 5
 # Usage of AnyMatch range matcher
@@ -3518,27 +3518,27 @@ ok {test-number} - needs_adl, AnyMatch( Predicate<int>( []( int elem ) { return 
 # Usage of AnyMatch range matcher
 ok {test-number} - mocked, !anyMatch for: { 1, 2, 3, 4, 5 } not any match matches undescribed predicate
 # Usage of AnyMatch range matcher
-ok {test-number} - mocked.derefed[0] for: true
+ok {test-number} - mocked.m_derefed[0] for: true
 # Usage of AnyMatch range matcher
-ok {test-number} - mocked.derefed[1] for: true
+ok {test-number} - mocked.m_derefed[1] for: true
 # Usage of AnyMatch range matcher
-ok {test-number} - mocked.derefed[2] for: true
+ok {test-number} - mocked.m_derefed[2] for: true
 # Usage of AnyMatch range matcher
-ok {test-number} - mocked.derefed[3] for: true
+ok {test-number} - mocked.m_derefed[3] for: true
 # Usage of AnyMatch range matcher
-ok {test-number} - mocked.derefed[4] for: true
+ok {test-number} - mocked.m_derefed[4] for: true
 # Usage of AnyMatch range matcher
 ok {test-number} - mocked, anyMatch for: { 1, 2, 3, 4, 5 } any match matches undescribed predicate
 # Usage of AnyMatch range matcher
-ok {test-number} - mocked.derefed[0] for: true
+ok {test-number} - mocked.m_derefed[0] for: true
 # Usage of AnyMatch range matcher
-ok {test-number} - !(mocked.derefed[1]) for: !false
+ok {test-number} - !(mocked.m_derefed[1]) for: !false
 # Usage of AnyMatch range matcher
-ok {test-number} - !(mocked.derefed[2]) for: !false
+ok {test-number} - !(mocked.m_derefed[2]) for: !false
 # Usage of AnyMatch range matcher
-ok {test-number} - !(mocked.derefed[3]) for: !false
+ok {test-number} - !(mocked.m_derefed[3]) for: !false
 # Usage of AnyMatch range matcher
-ok {test-number} - !(mocked.derefed[4]) for: !false
+ok {test-number} - !(mocked.m_derefed[4]) for: !false
 # Usage of NoneMatch range matcher
 ok {test-number} - data, NoneMatch(SizeIs(6)) for: { { 0, 1, 2, 3, 5 }, { 4, -3, -2, 5, 0 }, { 0, 0, 0, 5, 0 }, { 0, -5, 0, 5, 0 }, { 1, 0, 0, -1, 5 } } none match has size == 6
 # Usage of NoneMatch range matcher
@@ -3548,27 +3548,27 @@ ok {test-number} - needs_adl, NoneMatch( Predicate<int>( []( int elem ) { return
 # Usage of NoneMatch range matcher
 ok {test-number} - mocked, noneMatch for: { 1, 2, 3, 4, 5 } none match matches undescribed predicate
 # Usage of NoneMatch range matcher
-ok {test-number} - mocked.derefed[0] for: true
+ok {test-number} - mocked.m_derefed[0] for: true
 # Usage of NoneMatch range matcher
-ok {test-number} - mocked.derefed[1] for: true
+ok {test-number} - mocked.m_derefed[1] for: true
 # Usage of NoneMatch range matcher
-ok {test-number} - mocked.derefed[2] for: true
+ok {test-number} - mocked.m_derefed[2] for: true
 # Usage of NoneMatch range matcher
-ok {test-number} - mocked.derefed[3] for: true
+ok {test-number} - mocked.m_derefed[3] for: true
 # Usage of NoneMatch range matcher
-ok {test-number} - mocked.derefed[4] for: true
+ok {test-number} - mocked.m_derefed[4] for: true
 # Usage of NoneMatch range matcher
 ok {test-number} - mocked, !noneMatch for: { 1, 2, 3, 4, 5 } not none match matches undescribed predicate
 # Usage of NoneMatch range matcher
-ok {test-number} - mocked.derefed[0] for: true
+ok {test-number} - mocked.m_derefed[0] for: true
 # Usage of NoneMatch range matcher
-ok {test-number} - !(mocked.derefed[1]) for: !false
+ok {test-number} - !(mocked.m_derefed[1]) for: !false
 # Usage of NoneMatch range matcher
-ok {test-number} - !(mocked.derefed[2]) for: !false
+ok {test-number} - !(mocked.m_derefed[2]) for: !false
 # Usage of NoneMatch range matcher
-ok {test-number} - !(mocked.derefed[3]) for: !false
+ok {test-number} - !(mocked.m_derefed[3]) for: !false
 # Usage of NoneMatch range matcher
-ok {test-number} - !(mocked.derefed[4]) for: !false
+ok {test-number} - !(mocked.m_derefed[4]) for: !false
 # Usage of the SizeIs range matcher
 ok {test-number} - empty_vec, SizeIs(0) for: {  } has size == 0
 # Usage of the SizeIs range matcher

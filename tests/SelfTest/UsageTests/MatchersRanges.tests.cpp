@@ -14,22 +14,28 @@
 #include <catch2/matchers/catch_matchers_predicate.hpp>
 #include <catch2/matchers/catch_matchers_string.hpp>
 
-#include <array>
 #include <cmath>
+#include <initializer_list>
 #include <list>
 #include <map>
+#include <type_traits>
 #include <vector>
+#include <memory>
 
 namespace {
-namespace unrelated {
-    class needs_ADL_begin {
-        std::array<int, 5> elements{ {1, 2, 3, 4, 5} };
-    public:
-        using iterator = std::array<int, 5>::iterator;
-        using const_iterator = std::array<int, 5>::const_iterator;
 
-        const_iterator Begin() const { return elements.begin(); }
-        const_iterator End() const { return elements.end(); }
+namespace unrelated {
+    template <typename T>
+    class needs_ADL_begin {
+        std::vector<T> m_elements;
+    public:
+        using iterator = typename std::vector<T>::iterator;
+        using const_iterator = typename std::vector<T>::const_iterator;
+
+        needs_ADL_begin(std::initializer_list<T> init) : m_elements(init) {}
+
+        const_iterator Begin() const { return m_elements.begin(); }
+        const_iterator End() const { return m_elements.end(); }
 
         friend const_iterator begin(needs_ADL_begin const& lhs) {
             return lhs.Begin();
@@ -45,22 +51,23 @@ namespace unrelated {
 #  pragma clang diagnostic ignored "-Wunused-function"
 #endif
 
+template <typename T>
 class has_different_begin_end_types {
-    std::array<int, 5> elements{ {1, 2, 3, 4, 5} };
+    std::vector<T> m_elements;
 
     // Different type for the "end" iterator
     struct iterator_end {};
     // Just a fake forward iterator, that only compares to a different
     // type (so we can test two-type ranges).
     struct iterator {
-        int const* start;
-        int const* end;
+        T const* start;
+        T const* end;
 
         using iterator_category = std::forward_iterator_tag;
         using difference_type = std::ptrdiff_t;
-        using value_type = int;
-        using reference = int const&;
-        using pointer = int const*;
+        using value_type = T;
+        using reference = T const&;
+        using pointer = T const*;
 
 
         friend bool operator==( iterator iter, iterator_end ) {
@@ -88,8 +95,11 @@ class has_different_begin_end_types {
 
 
 public:
+    explicit has_different_begin_end_types( std::initializer_list<T> init ):
+        m_elements( init ) {}
+
     iterator begin() const {
-        return { elements.data(), elements.data() + elements.size() };
+        return { m_elements.data(), m_elements.data() + m_elements.size() };
     }
 
     iterator_end end() const {
@@ -101,80 +111,90 @@ public:
 #  pragma clang diagnostic pop
 #endif
 
+template <typename T> struct with_mocked_iterator_access {
+    std::vector<T> m_elements;
 
-struct with_mocked_iterator_access {
-    static constexpr size_t data_size = 5;
-    std::array<int, data_size> elements{ {1, 2, 3, 4, 5} };
-    std::array<bool, data_size> touched{};
-    std::array<bool, data_size> derefed{};
+    // use plain arrays to have nicer printouts with CHECK(...)
+    mutable std::unique_ptr<bool[]> m_derefed;
 
-    // We want to check which elements were touched when iterating, so
+    // We want to check which elements were dereferenced when iterating, so
     // we can check whether iterator-using code traverses range correctly
-    struct iterator {
-        with_mocked_iterator_access* m_origin;
+    template <bool is_const> class basic_iterator {
+        template <typename U>
+        using constify_t = std::conditional_t<is_const, std::add_const_t<U>, U>;
+
+        constify_t<with_mocked_iterator_access>* m_origin;
         size_t m_origin_idx;
 
+    public:
         using iterator_category = std::forward_iterator_tag;
         using difference_type = std::ptrdiff_t;
-        using value_type = int;
-        using reference = int const&;
-        using pointer = int const*;
+        using value_type = constify_t<T>;
+        using reference = value_type&;
+        using pointer = value_type*;
 
-        friend bool operator==(iterator lhs, iterator rhs) {
-            return lhs.m_origin == rhs.m_origin
-                && lhs.m_origin_idx == rhs.m_origin_idx;
+        basic_iterator( constify_t<with_mocked_iterator_access>* origin,
+                        std::size_t origin_idx ):
+            m_origin{ origin }, m_origin_idx{ origin_idx } {}
+
+        friend bool operator==( basic_iterator lhs, basic_iterator rhs ) {
+            return lhs.m_origin == rhs.m_origin &&
+                   lhs.m_origin_idx == rhs.m_origin_idx;
         }
-        friend bool operator!=(iterator lhs, iterator rhs) {
-            return !(lhs == rhs);
+        friend bool operator!=( basic_iterator lhs, basic_iterator rhs ) {
+            return !( lhs == rhs );
         }
-        iterator& operator++() {
+        basic_iterator& operator++() {
             ++m_origin_idx;
-            assert(m_origin_idx < data_size + 1 && "Outside of valid alloc");
-            if (m_origin_idx < data_size) {
-                m_origin->touched[m_origin_idx] = true;
-            }
             return *this;
         }
-        iterator operator++(int) {
-            auto tmp(*this);
-            ++(*this);
+        basic_iterator operator++( int ) {
+            auto tmp( *this );
+            ++( *this );
             return tmp;
         }
         reference operator*() const {
-            assert(m_origin_idx < data_size && "Attempted to deref invalid position");
-            m_origin->derefed[m_origin_idx] = true;
-            return m_origin->elements[m_origin_idx];
+            assert( m_origin_idx < m_origin->m_elements.size() && "Attempted to deref invalid position" );
+            m_origin->m_derefed[m_origin_idx] = true;
+            return m_origin->m_elements[m_origin_idx];
         }
         pointer operator->() const {
-            assert(m_origin_idx < data_size && "Attempted to deref invalid position");
-            return &m_origin->elements[m_origin_idx];
+            assert( m_origin_idx < m_origin->m_elements.size() && "Attempted to deref invalid position" );
+            return &m_origin->m_elements[m_origin_idx];
         }
-
     };
 
-    iterator begin() const {
-        // Const-cast away to avoid overcomplicating the iterators
-        // We should actually fix this over time
-        return { const_cast<with_mocked_iterator_access*>(this), 0 };
-    }
-    iterator end() const {
-        return { const_cast<with_mocked_iterator_access*>(this), data_size };
-    }
+    using iterator = basic_iterator<false>;
+    using const_iterator = basic_iterator<true>;
 
+    with_mocked_iterator_access( std::initializer_list<T> init ):
+        m_elements( init ),
+        m_derefed( std::make_unique<bool[]>( m_elements.size() ) ) {}
+
+    const_iterator begin() const { return { this, 0 }; }
+    const_iterator end() const { return { this, m_elements.size() }; }
+    iterator begin() { return { this, 0 }; }
+    iterator end() { return { this, m_elements.size() }; }
 };
 
 } // end anon namespace
 
 namespace Catch {
-    template <>
-    struct StringMaker<with_mocked_iterator_access> {
-        static std::string convert(with_mocked_iterator_access const& access) {
+    // make sure with_mocked_iterator_access is not considered a range by Catch,
+    // so that below StringMaker is used instead of the default one for ranges
+    template <typename T>
+    struct is_range<with_mocked_iterator_access<T>> : std::false_type {};
+
+    template <typename T>
+    struct StringMaker<with_mocked_iterator_access<T>> {
+        static std::string
+        convert( with_mocked_iterator_access<T> const& access ) {
             // We have to avoid the type's iterators, because we check
             // their use in tests
-            return ::Catch::Detail::stringify(access.elements);
+            return ::Catch::Detail::stringify( access.m_elements );
         }
     };
-}
+} // namespace Catch
 
 struct MoveOnlyTestElement {
     int num = 0;
@@ -233,7 +253,7 @@ TEST_CASE("Basic use of the Contains range matcher", "[matchers][templated][cont
     }
 
     SECTION("Can handle type that requires ADL-found free function begin and end") {
-        unrelated::needs_ADL_begin in;
+        unrelated::needs_ADL_begin<int> in{1, 2, 3, 4, 5};
 
         REQUIRE_THAT(in,  Contains(1));
         REQUIRE_THAT(in, !Contains(8));
@@ -383,35 +403,35 @@ TEST_CASE("Usage of AllMatch range matcher", "[matchers][templated][quantifiers]
     }
 
     SECTION("Type requires ADL found begin and end") {
-        unrelated::needs_ADL_begin needs_adl;
+        unrelated::needs_ADL_begin<int> needs_adl{ 1, 2, 3, 4, 5 };
         REQUIRE_THAT( needs_adl, AllMatch( Predicate<int>( []( int elem ) {
                           return elem < 6;
                       } ) ) );
     }
 
     SECTION("Shortcircuiting") {
-        with_mocked_iterator_access mocked;
+        with_mocked_iterator_access<int> mocked{ 1, 2, 3, 4, 5 };
         SECTION("All are read") {
             auto allMatch = AllMatch(Predicate<int>([](int elem) {
                 return elem < 10;
             }));
             REQUIRE_THAT(mocked, allMatch);
-            REQUIRE(mocked.derefed[0]);
-            REQUIRE(mocked.derefed[1]);
-            REQUIRE(mocked.derefed[2]);
-            REQUIRE(mocked.derefed[3]);
-            REQUIRE(mocked.derefed[4]);
+            REQUIRE(mocked.m_derefed[0]);
+            REQUIRE(mocked.m_derefed[1]);
+            REQUIRE(mocked.m_derefed[2]);
+            REQUIRE(mocked.m_derefed[3]);
+            REQUIRE(mocked.m_derefed[4]);
         }
         SECTION("Short-circuited") {
             auto allMatch = AllMatch(Predicate<int>([](int elem) {
                 return elem < 3;
             }));
             REQUIRE_THAT(mocked, !allMatch);
-            REQUIRE(mocked.derefed[0]);
-            REQUIRE(mocked.derefed[1]);
-            REQUIRE(mocked.derefed[2]);
-            REQUIRE_FALSE(mocked.derefed[3]);
-            REQUIRE_FALSE(mocked.derefed[4]);
+            REQUIRE(mocked.m_derefed[0]);
+            REQUIRE(mocked.m_derefed[1]);
+            REQUIRE(mocked.m_derefed[2]);
+            REQUIRE_FALSE(mocked.m_derefed[3]);
+            REQUIRE_FALSE(mocked.m_derefed[4]);
         }
     }
 }
@@ -436,34 +456,34 @@ TEST_CASE("Usage of AnyMatch range matcher", "[matchers][templated][quantifiers]
         REQUIRE_THAT(data, !AnyMatch(Contains(0) && Contains(10)));
     }
 
-    SECTION("Type requires ADL found begin and end") {
-        unrelated::needs_ADL_begin needs_adl;
+    SECTION( "Type requires ADL found begin and end" ) {
+        unrelated::needs_ADL_begin<int> needs_adl{ 1, 2, 3, 4, 5 };
         REQUIRE_THAT( needs_adl, AnyMatch( Predicate<int>( []( int elem ) {
                           return elem < 3;
                       } ) ) );
     }
 
     SECTION("Shortcircuiting") {
-        with_mocked_iterator_access mocked;
+        with_mocked_iterator_access<int> mocked{ 1, 2, 3, 4, 5 };
         SECTION("All are read") {
             auto anyMatch = AnyMatch(
                 Predicate<int>( []( int elem ) { return elem > 10; } ) );
             REQUIRE_THAT( mocked, !anyMatch );
-            REQUIRE( mocked.derefed[0] );
-            REQUIRE( mocked.derefed[1] );
-            REQUIRE( mocked.derefed[2] );
-            REQUIRE( mocked.derefed[3] );
-            REQUIRE( mocked.derefed[4] );
+            REQUIRE( mocked.m_derefed[0] );
+            REQUIRE( mocked.m_derefed[1] );
+            REQUIRE( mocked.m_derefed[2] );
+            REQUIRE( mocked.m_derefed[3] );
+            REQUIRE( mocked.m_derefed[4] );
         }
         SECTION("Short-circuited") {
             auto anyMatch = AnyMatch(
                 Predicate<int>( []( int elem ) { return elem < 3; } ) );
             REQUIRE_THAT( mocked, anyMatch );
-            REQUIRE( mocked.derefed[0] );
-            REQUIRE_FALSE( mocked.derefed[1] );
-            REQUIRE_FALSE( mocked.derefed[2] );
-            REQUIRE_FALSE( mocked.derefed[3] );
-            REQUIRE_FALSE( mocked.derefed[4] );
+            REQUIRE( mocked.m_derefed[0] );
+            REQUIRE_FALSE( mocked.m_derefed[1] );
+            REQUIRE_FALSE( mocked.m_derefed[2] );
+            REQUIRE_FALSE( mocked.m_derefed[3] );
+            REQUIRE_FALSE( mocked.m_derefed[4] );
         }
     }
 }
@@ -489,33 +509,33 @@ TEST_CASE("Usage of NoneMatch range matcher", "[matchers][templated][quantifiers
     }
 
     SECTION( "Type requires ADL found begin and end" ) {
-        unrelated::needs_ADL_begin needs_adl;
+        unrelated::needs_ADL_begin<int> needs_adl{ 1, 2, 3, 4, 5 };
         REQUIRE_THAT( needs_adl, NoneMatch( Predicate<int>( []( int elem ) {
                           return elem > 6;
                       } ) ) );
     }
 
     SECTION("Shortcircuiting") {
-        with_mocked_iterator_access mocked;
+        with_mocked_iterator_access<int> mocked{ 1, 2, 3, 4, 5 };
         SECTION("All are read") {
             auto noneMatch = NoneMatch(
                 Predicate<int>([](int elem) { return elem > 10; }));
             REQUIRE_THAT(mocked, noneMatch);
-            REQUIRE(mocked.derefed[0]);
-            REQUIRE(mocked.derefed[1]);
-            REQUIRE(mocked.derefed[2]);
-            REQUIRE(mocked.derefed[3]);
-            REQUIRE(mocked.derefed[4]);
+            REQUIRE(mocked.m_derefed[0]);
+            REQUIRE(mocked.m_derefed[1]);
+            REQUIRE(mocked.m_derefed[2]);
+            REQUIRE(mocked.m_derefed[3]);
+            REQUIRE(mocked.m_derefed[4]);
         }
         SECTION("Short-circuited") {
             auto noneMatch = NoneMatch(
                 Predicate<int>([](int elem) { return elem < 3; }));
             REQUIRE_THAT(mocked, !noneMatch);
-            REQUIRE(mocked.derefed[0]);
-            REQUIRE_FALSE(mocked.derefed[1]);
-            REQUIRE_FALSE(mocked.derefed[2]);
-            REQUIRE_FALSE(mocked.derefed[3]);
-            REQUIRE_FALSE(mocked.derefed[4]);
+            REQUIRE(mocked.m_derefed[0]);
+            REQUIRE_FALSE(mocked.m_derefed[1]);
+            REQUIRE_FALSE(mocked.m_derefed[2]);
+            REQUIRE_FALSE(mocked.m_derefed[3]);
+            REQUIRE_FALSE(mocked.m_derefed[4]);
         }
     }
 }
@@ -533,7 +553,7 @@ TEST_CASE( "The quantifier range matchers support types with different types ret
 
     using Catch::Matchers::Predicate;
 
-    has_different_begin_end_types diff_types;
+    has_different_begin_end_types<int> diff_types{1, 2, 3, 4, 5};
     REQUIRE_THAT( diff_types, !AllMatch( Predicate<int>( []( int elem ) {
                       return elem < 3;
                   } ) ) );

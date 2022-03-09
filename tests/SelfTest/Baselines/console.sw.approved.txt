@@ -13955,27 +13955,27 @@ with expansion:
   { 1, 2, 3, 4, 5 } all match matches undescribed predicate
 
 MatchersRanges.tests.cpp:<line number>: PASSED:
-  REQUIRE( mocked.derefed[0] )
+  REQUIRE( mocked.m_derefed[0] )
 with expansion:
   true
 
 MatchersRanges.tests.cpp:<line number>: PASSED:
-  REQUIRE( mocked.derefed[1] )
+  REQUIRE( mocked.m_derefed[1] )
 with expansion:
   true
 
 MatchersRanges.tests.cpp:<line number>: PASSED:
-  REQUIRE( mocked.derefed[2] )
+  REQUIRE( mocked.m_derefed[2] )
 with expansion:
   true
 
 MatchersRanges.tests.cpp:<line number>: PASSED:
-  REQUIRE( mocked.derefed[3] )
+  REQUIRE( mocked.m_derefed[3] )
 with expansion:
   true
 
 MatchersRanges.tests.cpp:<line number>: PASSED:
-  REQUIRE( mocked.derefed[4] )
+  REQUIRE( mocked.m_derefed[4] )
 with expansion:
   true
 
@@ -13993,27 +13993,27 @@ with expansion:
   { 1, 2, 3, 4, 5 } not all match matches undescribed predicate
 
 MatchersRanges.tests.cpp:<line number>: PASSED:
-  REQUIRE( mocked.derefed[0] )
+  REQUIRE( mocked.m_derefed[0] )
 with expansion:
   true
 
 MatchersRanges.tests.cpp:<line number>: PASSED:
-  REQUIRE( mocked.derefed[1] )
+  REQUIRE( mocked.m_derefed[1] )
 with expansion:
   true
 
 MatchersRanges.tests.cpp:<line number>: PASSED:
-  REQUIRE( mocked.derefed[2] )
+  REQUIRE( mocked.m_derefed[2] )
 with expansion:
   true
 
 MatchersRanges.tests.cpp:<line number>: PASSED:
-  REQUIRE_FALSE( mocked.derefed[3] )
+  REQUIRE_FALSE( mocked.m_derefed[3] )
 with expansion:
   !false
 
 MatchersRanges.tests.cpp:<line number>: PASSED:
-  REQUIRE_FALSE( mocked.derefed[4] )
+  REQUIRE_FALSE( mocked.m_derefed[4] )
 with expansion:
   !false
 
@@ -14063,27 +14063,27 @@ with expansion:
   { 1, 2, 3, 4, 5 } not any match matches undescribed predicate
 
 MatchersRanges.tests.cpp:<line number>: PASSED:
-  REQUIRE( mocked.derefed[0] )
+  REQUIRE( mocked.m_derefed[0] )
 with expansion:
   true
 
 MatchersRanges.tests.cpp:<line number>: PASSED:
-  REQUIRE( mocked.derefed[1] )
+  REQUIRE( mocked.m_derefed[1] )
 with expansion:
   true
 
 MatchersRanges.tests.cpp:<line number>: PASSED:
-  REQUIRE( mocked.derefed[2] )
+  REQUIRE( mocked.m_derefed[2] )
 with expansion:
   true
 
 MatchersRanges.tests.cpp:<line number>: PASSED:
-  REQUIRE( mocked.derefed[3] )
+  REQUIRE( mocked.m_derefed[3] )
 with expansion:
   true
 
 MatchersRanges.tests.cpp:<line number>: PASSED:
-  REQUIRE( mocked.derefed[4] )
+  REQUIRE( mocked.m_derefed[4] )
 with expansion:
   true
 
@@ -14101,27 +14101,27 @@ with expansion:
   { 1, 2, 3, 4, 5 } any match matches undescribed predicate
 
 MatchersRanges.tests.cpp:<line number>: PASSED:
-  REQUIRE( mocked.derefed[0] )
+  REQUIRE( mocked.m_derefed[0] )
 with expansion:
   true
 
 MatchersRanges.tests.cpp:<line number>: PASSED:
-  REQUIRE_FALSE( mocked.derefed[1] )
+  REQUIRE_FALSE( mocked.m_derefed[1] )
 with expansion:
   !false
 
 MatchersRanges.tests.cpp:<line number>: PASSED:
-  REQUIRE_FALSE( mocked.derefed[2] )
+  REQUIRE_FALSE( mocked.m_derefed[2] )
 with expansion:
   !false
 
 MatchersRanges.tests.cpp:<line number>: PASSED:
-  REQUIRE_FALSE( mocked.derefed[3] )
+  REQUIRE_FALSE( mocked.m_derefed[3] )
 with expansion:
   !false
 
 MatchersRanges.tests.cpp:<line number>: PASSED:
-  REQUIRE_FALSE( mocked.derefed[4] )
+  REQUIRE_FALSE( mocked.m_derefed[4] )
 with expansion:
   !false
 
@@ -14171,27 +14171,27 @@ with expansion:
   { 1, 2, 3, 4, 5 } none match matches undescribed predicate
 
 MatchersRanges.tests.cpp:<line number>: PASSED:
-  REQUIRE( mocked.derefed[0] )
+  REQUIRE( mocked.m_derefed[0] )
 with expansion:
   true
 
 MatchersRanges.tests.cpp:<line number>: PASSED:
-  REQUIRE( mocked.derefed[1] )
+  REQUIRE( mocked.m_derefed[1] )
 with expansion:
   true
 
 MatchersRanges.tests.cpp:<line number>: PASSED:
-  REQUIRE( mocked.derefed[2] )
+  REQUIRE( mocked.m_derefed[2] )
 with expansion:
   true
 
 MatchersRanges.tests.cpp:<line number>: PASSED:
-  REQUIRE( mocked.derefed[3] )
+  REQUIRE( mocked.m_derefed[3] )
 with expansion:
   true
 
 MatchersRanges.tests.cpp:<line number>: PASSED:
-  REQUIRE( mocked.derefed[4] )
+  REQUIRE( mocked.m_derefed[4] )
 with expansion:
   true
 
@@ -14209,27 +14209,27 @@ with expansion:
   { 1, 2, 3, 4, 5 } not none match matches undescribed predicate
 
 MatchersRanges.tests.cpp:<line number>: PASSED:
-  REQUIRE( mocked.derefed[0] )
+  REQUIRE( mocked.m_derefed[0] )
 with expansion:
   true
 
 MatchersRanges.tests.cpp:<line number>: PASSED:
-  REQUIRE_FALSE( mocked.derefed[1] )
+  REQUIRE_FALSE( mocked.m_derefed[1] )
 with expansion:
   !false
 
 MatchersRanges.tests.cpp:<line number>: PASSED:
-  REQUIRE_FALSE( mocked.derefed[2] )
+  REQUIRE_FALSE( mocked.m_derefed[2] )
 with expansion:
   !false
 
 MatchersRanges.tests.cpp:<line number>: PASSED:
-  REQUIRE_FALSE( mocked.derefed[3] )
+  REQUIRE_FALSE( mocked.m_derefed[3] )
 with expansion:
   !false
 
 MatchersRanges.tests.cpp:<line number>: PASSED:
-  REQUIRE_FALSE( mocked.derefed[4] )
+  REQUIRE_FALSE( mocked.m_derefed[4] )
 with expansion:
   !false
 

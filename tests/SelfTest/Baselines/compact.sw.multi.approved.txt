@@ -1960,47 +1960,47 @@ MatchersRanges.tests.cpp:<line number>: passed: data, AllMatch(SizeIs(5)) for: {
 MatchersRanges.tests.cpp:<line number>: passed: data, !AllMatch(Contains(0) && Contains(1)) for: { { 0, 1, 2, 3, 5 }, { 4, -3, -2, 5, 0 }, { 0, 0, 0, 5, 0 }, { 0, -5, 0, 5, 0 }, { 1, 0, 0, -1, 5 } } not all match ( contains element 0 and contains element 1 )
 MatchersRanges.tests.cpp:<line number>: passed: needs_adl, AllMatch( Predicate<int>( []( int elem ) { return elem < 6; } ) ) for: { 1, 2, 3, 4, 5 } all match matches undescribed predicate
 MatchersRanges.tests.cpp:<line number>: passed: mocked, allMatch for: { 1, 2, 3, 4, 5 } all match matches undescribed predicate
-MatchersRanges.tests.cpp:<line number>: passed: mocked.derefed[0] for: true
-MatchersRanges.tests.cpp:<line number>: passed: mocked.derefed[1] for: true
-MatchersRanges.tests.cpp:<line number>: passed: mocked.derefed[2] for: true
-MatchersRanges.tests.cpp:<line number>: passed: mocked.derefed[3] for: true
-MatchersRanges.tests.cpp:<line number>: passed: mocked.derefed[4] for: true
+MatchersRanges.tests.cpp:<line number>: passed: mocked.m_derefed[0] for: true
+MatchersRanges.tests.cpp:<line number>: passed: mocked.m_derefed[1] for: true
+MatchersRanges.tests.cpp:<line number>: passed: mocked.m_derefed[2] for: true
+MatchersRanges.tests.cpp:<line number>: passed: mocked.m_derefed[3] for: true
+MatchersRanges.tests.cpp:<line number>: passed: mocked.m_derefed[4] for: true
 MatchersRanges.tests.cpp:<line number>: passed: mocked, !allMatch for: { 1, 2, 3, 4, 5 } not all match matches undescribed predicate
-MatchersRanges.tests.cpp:<line number>: passed: mocked.derefed[0] for: true
-MatchersRanges.tests.cpp:<line number>: passed: mocked.derefed[1] for: true
-MatchersRanges.tests.cpp:<line number>: passed: mocked.derefed[2] for: true
-MatchersRanges.tests.cpp:<line number>: passed: !(mocked.derefed[3]) for: !false
-MatchersRanges.tests.cpp:<line number>: passed: !(mocked.derefed[4]) for: !false
+MatchersRanges.tests.cpp:<line number>: passed: mocked.m_derefed[0] for: true
+MatchersRanges.tests.cpp:<line number>: passed: mocked.m_derefed[1] for: true
+MatchersRanges.tests.cpp:<line number>: passed: mocked.m_derefed[2] for: true
+MatchersRanges.tests.cpp:<line number>: passed: !(mocked.m_derefed[3]) for: !false
+MatchersRanges.tests.cpp:<line number>: passed: !(mocked.m_derefed[4]) for: !false
 MatchersRanges.tests.cpp:<line number>: passed: data, AnyMatch(SizeIs(5)) for: { { 0, 1, 2, 3, 5 }, { 4, -3, -2, 5, 0 }, { 0, 0, 0, 5, 0 }, { 0, -5, 0, 5, 0 }, { 1, 0, 0, -1, 5 } } any match has size == 5
 MatchersRanges.tests.cpp:<line number>: passed: data, !AnyMatch(Contains(0) && Contains(10)) for: { { 0, 1, 2, 3, 5 }, { 4, -3, -2, 5, 0 }, { 0, 0, 0, 5, 0 }, { 0, -5, 0, 5, 0 }, { 1, 0, 0, -1, 5 } } not any match ( contains element 0 and contains element 10 )
 MatchersRanges.tests.cpp:<line number>: passed: needs_adl, AnyMatch( Predicate<int>( []( int elem ) { return elem < 3; } ) ) for: { 1, 2, 3, 4, 5 } any match matches undescribed predicate
 MatchersRanges.tests.cpp:<line number>: passed: mocked, !anyMatch for: { 1, 2, 3, 4, 5 } not any match matches undescribed predicate
-MatchersRanges.tests.cpp:<line number>: passed: mocked.derefed[0] for: true
-MatchersRanges.tests.cpp:<line number>: passed: mocked.derefed[1] for: true
-MatchersRanges.tests.cpp:<line number>: passed: mocked.derefed[2] for: true
-MatchersRanges.tests.cpp:<line number>: passed: mocked.derefed[3] for: true
-MatchersRanges.tests.cpp:<line number>: passed: mocked.derefed[4] for: true
+MatchersRanges.tests.cpp:<line number>: passed: mocked.m_derefed[0] for: true
+MatchersRanges.tests.cpp:<line number>: passed: mocked.m_derefed[1] for: true
+MatchersRanges.tests.cpp:<line number>: passed: mocked.m_derefed[2] for: true
+MatchersRanges.tests.cpp:<line number>: passed: mocked.m_derefed[3] for: true
+MatchersRanges.tests.cpp:<line number>: passed: mocked.m_derefed[4] for: true
 MatchersRanges.tests.cpp:<line number>: passed: mocked, anyMatch for: { 1, 2, 3, 4, 5 } any match matches undescribed predicate
-MatchersRanges.tests.cpp:<line number>: passed: mocked.derefed[0] for: true
-MatchersRanges.tests.cpp:<line number>: passed: !(mocked.derefed[1]) for: !false
-MatchersRanges.tests.cpp:<line number>: passed: !(mocked.derefed[2]) for: !false
-MatchersRanges.tests.cpp:<line number>: passed: !(mocked.derefed[3]) for: !false
-MatchersRanges.tests.cpp:<line number>: passed: !(mocked.derefed[4]) for: !false
+MatchersRanges.tests.cpp:<line number>: passed: mocked.m_derefed[0] for: true
+MatchersRanges.tests.cpp:<line number>: passed: !(mocked.m_derefed[1]) for: !false
+MatchersRanges.tests.cpp:<line number>: passed: !(mocked.m_derefed[2]) for: !false
+MatchersRanges.tests.cpp:<line number>: passed: !(mocked.m_derefed[3]) for: !false
+MatchersRanges.tests.cpp:<line number>: passed: !(mocked.m_derefed[4]) for: !false
 MatchersRanges.tests.cpp:<line number>: passed: data, NoneMatch(SizeIs(6)) for: { { 0, 1, 2, 3, 5 }, { 4, -3, -2, 5, 0 }, { 0, 0, 0, 5, 0 }, { 0, -5, 0, 5, 0 }, { 1, 0, 0, -1, 5 } } none match has size == 6
 MatchersRanges.tests.cpp:<line number>: passed: data, !NoneMatch(Contains(0) && Contains(1)) for: { { 0, 1, 2, 3, 5 }, { 4, -3, -2, 5, 0 }, { 0, 0, 0, 5, 0 }, { 0, -5, 0, 5, 0 }, { 1, 0, 0, -1, 5 } } not none match ( contains element 0 and contains element 1 )
 MatchersRanges.tests.cpp:<line number>: passed: needs_adl, NoneMatch( Predicate<int>( []( int elem ) { return elem > 6; } ) ) for: { 1, 2, 3, 4, 5 } none match matches undescribed predicate
 MatchersRanges.tests.cpp:<line number>: passed: mocked, noneMatch for: { 1, 2, 3, 4, 5 } none match matches undescribed predicate
-MatchersRanges.tests.cpp:<line number>: passed: mocked.derefed[0] for: true
-MatchersRanges.tests.cpp:<line number>: passed: mocked.derefed[1] for: true
-MatchersRanges.tests.cpp:<line number>: passed: mocked.derefed[2] for: true
-MatchersRanges.tests.cpp:<line number>: passed: mocked.derefed[3] for: true
-MatchersRanges.tests.cpp:<line number>: passed: mocked.derefed[4] for: true
+MatchersRanges.tests.cpp:<line number>: passed: mocked.m_derefed[0] for: true
+MatchersRanges.tests.cpp:<line number>: passed: mocked.m_derefed[1] for: true
+MatchersRanges.tests.cpp:<line number>: passed: mocked.m_derefed[2] for: true
+MatchersRanges.tests.cpp:<line number>: passed: mocked.m_derefed[3] for: true
+MatchersRanges.tests.cpp:<line number>: passed: mocked.m_derefed[4] for: true
 MatchersRanges.tests.cpp:<line number>: passed: mocked, !noneMatch for: { 1, 2, 3, 4, 5 } not none match matches undescribed predicate
-MatchersRanges.tests.cpp:<line number>: passed: mocked.derefed[0] for: true
-MatchersRanges.tests.cpp:<line number>: passed: !(mocked.derefed[1]) for: !false
-MatchersRanges.tests.cpp:<line number>: passed: !(mocked.derefed[2]) for: !false
-MatchersRanges.tests.cpp:<line number>: passed: !(mocked.derefed[3]) for: !false
-MatchersRanges.tests.cpp:<line number>: passed: !(mocked.derefed[4]) for: !false
+MatchersRanges.tests.cpp:<line number>: passed: mocked.m_derefed[0] for: true
+MatchersRanges.tests.cpp:<line number>: passed: !(mocked.m_derefed[1]) for: !false
+MatchersRanges.tests.cpp:<line number>: passed: !(mocked.m_derefed[2]) for: !false
+MatchersRanges.tests.cpp:<line number>: passed: !(mocked.m_derefed[3]) for: !false
+MatchersRanges.tests.cpp:<line number>: passed: !(mocked.m_derefed[4]) for: !false
 MatchersRanges.tests.cpp:<line number>: passed: empty_vec, SizeIs(0) for: {  } has size == 0
 MatchersRanges.tests.cpp:<line number>: passed: empty_vec, !SizeIs(2) for: {  } not has size == 2
 MatchersRanges.tests.cpp:<line number>: passed: empty_vec, SizeIs(Lt(2)) for: {  } size matches is less than 2
