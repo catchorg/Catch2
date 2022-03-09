@@ -115,10 +115,9 @@ template <typename T> struct with_mocked_iterator_access {
     std::vector<T> m_elements;
 
     // use plain arrays to have nicer printouts with CHECK(...)
-    mutable std::unique_ptr<bool[]> m_touched;
     mutable std::unique_ptr<bool[]> m_derefed;
 
-    // We want to check which elements were touched when iterating, so
+    // We want to check which elements were dereferenced when iterating, so
     // we can check whether iterator-using code traverses range correctly
     template <bool is_const> class basic_iterator {
         template <typename U>
@@ -147,10 +146,6 @@ template <typename T> struct with_mocked_iterator_access {
         }
         basic_iterator& operator++() {
             ++m_origin_idx;
-            assert( m_origin_idx < m_origin->m_elements.size() + 1 && "Outside of valid alloc" );
-            if ( m_origin_idx < m_origin->m_elements.size() ) {
-                m_origin->m_touched[m_origin_idx] = true;
-            }
             return *this;
         }
         basic_iterator operator++( int ) {
@@ -174,7 +169,6 @@ template <typename T> struct with_mocked_iterator_access {
 
     with_mocked_iterator_access( std::initializer_list<T> init ):
         m_elements( init ),
-        m_touched( std::make_unique<bool[]>( m_elements.size() ) ),
         m_derefed( std::make_unique<bool[]>( m_elements.size() ) ) {}
 
     const_iterator begin() const { return { this, 0 }; }
