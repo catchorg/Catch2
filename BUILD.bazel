@@ -1,14 +1,69 @@
 # Load the cc_library rule.
 load("@rules_cc//cc:defs.bzl", "cc_library")
 
+load("@bazel_skylib//rules:expand_template.bzl", "expand_template")
+
+expand_template(
+    name = "catch_user_config.hpp",
+    out = "catch2/catch_user_config.hpp",
+    substitutions = {
+        "#cmakedefine CATCH_CONFIG_ANDROID_LOGWRITE": "",
+        "#cmakedefine CATCH_CONFIG_COLOUR_ANSI": "",
+        "#cmakedefine CATCH_CONFIG_COLOUR_NONE": "",
+        "#cmakedefine CATCH_CONFIG_COLOUR_WINDOWS": "",
+        "#cmakedefine CATCH_CONFIG_COUNTER": "",
+        "#cmakedefine CATCH_CONFIG_CPP11_TO_STRING": "",
+        "#cmakedefine CATCH_CONFIG_CPP17_BYTE": "",
+        "#cmakedefine CATCH_CONFIG_CPP17_OPTIONAL": "",
+        "#cmakedefine CATCH_CONFIG_CPP17_STRING_VIEW": "",
+        "#cmakedefine CATCH_CONFIG_CPP17_UNCAUGHT_EXCEPTIONS": "",
+        "#cmakedefine CATCH_CONFIG_CPP17_VARIANT": "",
+        "#cmakedefine CATCH_CONFIG_DISABLE_EXCEPTIONS_CUSTOM_HANDLER": "",
+        "#cmakedefine CATCH_CONFIG_DISABLE_EXCEPTIONS": "",
+        "#cmakedefine CATCH_CONFIG_DISABLE_STRINGIFICATION": "",
+        "#cmakedefine CATCH_CONFIG_DISABLE": "",
+        "#cmakedefine CATCH_CONFIG_ENABLE_ALL_STRINGMAKERS": "",
+        "#cmakedefine CATCH_CONFIG_ENABLE_OPTIONAL_STRINGMAKER": "",
+        "#cmakedefine CATCH_CONFIG_ENABLE_PAIR_STRINGMAKER": "",
+        "#cmakedefine CATCH_CONFIG_ENABLE_TUPLE_STRINGMAKER": "",
+        "#cmakedefine CATCH_CONFIG_ENABLE_VARIANT_STRINGMAKER": "",
+        "#cmakedefine CATCH_CONFIG_EXPERIMENTAL_REDIRECT": "",
+        "#cmakedefine CATCH_CONFIG_FALLBACK_STRINGIFIER @CATCH_CONFIG_FALLBACK_STRINGIFIER@": "",
+        "#cmakedefine CATCH_CONFIG_FAST_COMPILE": "",
+        "#cmakedefine CATCH_CONFIG_GLOBAL_NEXTAFTER": "",
+        "#cmakedefine CATCH_CONFIG_NO_COUNTER": "",
+        "#cmakedefine CATCH_CONFIG_NO_CPP11_TO_STRING": "",
+        "#cmakedefine CATCH_CONFIG_NO_CPP17_BYTE": "",
+        "#cmakedefine CATCH_CONFIG_NO_CPP17_OPTIONAL": "",
+        "#cmakedefine CATCH_CONFIG_NO_CPP17_STRING_VIEW": "",
+        "#cmakedefine CATCH_CONFIG_NO_CPP17_UNCAUGHT_EXCEPTIONS": "",
+        "#cmakedefine CATCH_CONFIG_NO_CPP17_VARIANT": "",
+        "#cmakedefine CATCH_CONFIG_NO_GLOBAL_NEXTAFTER": "",
+        "#cmakedefine CATCH_CONFIG_NO_POSIX_SIGNALS": "",
+        "#cmakedefine CATCH_CONFIG_NO_USE_ASYNC": "",
+        "#cmakedefine CATCH_CONFIG_NO_WCHAR": "",
+        "#cmakedefine CATCH_CONFIG_NO_WINDOWS_SEH": "",
+        "#cmakedefine CATCH_CONFIG_NOSTDOUT": "",
+        "#cmakedefine CATCH_CONFIG_POSIX_SIGNALS": "",
+        "#cmakedefine CATCH_CONFIG_PREFIX_ALL": "",
+        "#cmakedefine CATCH_CONFIG_USE_ASYNC": "",
+        "#cmakedefine CATCH_CONFIG_WCHAR": "",
+        "#cmakedefine CATCH_CONFIG_WINDOWS_CRTDBG": "",
+        "#cmakedefine CATCH_CONFIG_WINDOWS_SEH": "",
+        "#cmakedefine CATCH_CONFIG_NO_ANDROID_LOGWRITE": "",
+        "@CATCH_CONFIG_DEFAULT_REPORTER@": "console",
+        "@CATCH_CONFIG_CONSOLE_WIDTH@": "80",
+    },
+    template = "src/catch2/catch_user_config.hpp.in",
+)
+
 # Static library, without main.
 cc_library(
     name = "catch2",
-    hdrs = glob(["src/catch2/**/*.hpp"]),
+    hdrs = glob(["src/catch2/**/*.hpp"]) + ["catch_user_config.hpp"],
     srcs = glob(["src/catch2/**/*.cpp"],
                 exclude=[ "src/catch2/internal/catch_main.cpp"]),
     visibility = ["//visibility:public"],
-    copts = ["-std=c++14"],
     linkstatic = True,
     includes = ["src/"],
 )
@@ -20,6 +75,5 @@ cc_library(
     deps = [":catch2"],
     visibility = ["//visibility:public"],
     linkstatic = True,
-    copts = ["-std=c++14"],
     includes = ["src/"],
 )
