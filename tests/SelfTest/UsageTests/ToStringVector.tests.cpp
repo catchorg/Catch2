@@ -92,3 +92,17 @@ TEST_CASE( "array<int, N> -> toString", "[toString][containers][array]" ) {
     std::array<int, 2> twoValues = {{ 42, 250 }};
     REQUIRE( Catch::Detail::stringify( twoValues ) == "{ 42, 250 }" );
 }
+
+TEST_CASE( "vector<bool>::reference -> toString",
+           "[toString][containers][vector]" ) {
+    std::vector<bool> bools{ false, true };
+    REQUIRE( ::Catch::Detail::stringify( bools[0] ) == "false" );
+    REQUIRE( ::Catch::Detail::stringify( bools[1] ) == "true" );
+}
+
+TEST_CASE( "vector<bool>::const_reference -> toString",
+           "[toString][containers][vector]" ) {
+    const std::vector<bool> bools{ false, true };
+    REQUIRE( ::Catch::Detail::stringify( bools[0] ) == "false" );
+    REQUIRE( ::Catch::Detail::stringify( bools[1] ) == "true" );
+}

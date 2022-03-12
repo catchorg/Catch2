@@ -273,6 +273,32 @@ namespace Catch {
     };
 
     template<>
+    struct StringMaker<std::vector<bool>::reference> {
+        static std::string convert(std::vector<bool>::reference b) {
+            return StringMaker<bool>::convert(b);
+        }
+    };
+
+    // For libstdc++ and MSVC's STL, std::vector<bool>::const_reference is just
+    // an alias for bool. For libc++, however, std::vector<bool>::const_reference
+    // is a distinct type. The following code will conditionally specialize
+    // StringMaker for std::vector<bool>::const_reference if and only if it's a
+    // distinct type.
+    struct Dummy {
+        operator bool() const { return false; }
+    };
+    using VectorBoolConstRef = std::conditional_t<
+        std::is_same<std::vector<bool>::const_reference, bool>::value,
+        Dummy,
+        std::vector<bool>::const_reference>;
+    template <>
+    struct StringMaker<VectorBoolConstRef> {
+        static std::string convert( VectorBoolConstRef b ) {
+            return StringMaker<bool>::convert(b);
+        }
+    };
+
+    template<>
     struct StringMaker<char> {
         static std::string convert(char c);
     };
