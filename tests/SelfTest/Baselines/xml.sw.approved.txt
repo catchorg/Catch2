@@ -20639,6 +20639,44 @@ loose text artifact
     </Expression>
     <OverallResult success="true"/>
   </TestCase>
+  <TestCase name="vector&lt;bool>::const_reference -> toString" tags="[containers][toString][vector]" filename="tests/<exe-name>/UsageTests/ToStringVector.tests.cpp" >
+    <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/UsageTests/ToStringVector.tests.cpp" >
+      <Original>
+        ::Catch::Detail::stringify( bools[0] ) == "false"
+      </Original>
+      <Expanded>
+        "false" == "false"
+      </Expanded>
+    </Expression>
+    <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/UsageTests/ToStringVector.tests.cpp" >
+      <Original>
+        ::Catch::Detail::stringify( bools[1] ) == "true"
+      </Original>
+      <Expanded>
+        "true" == "true"
+      </Expanded>
+    </Expression>
+    <OverallResult success="true"/>
+  </TestCase>
+  <TestCase name="vector&lt;bool>::reference -> toString" tags="[containers][toString][vector]" filename="tests/<exe-name>/UsageTests/ToStringVector.tests.cpp" >
+    <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/UsageTests/ToStringVector.tests.cpp" >
+      <Original>
+        ::Catch::Detail::stringify( bools[0] ) == "false"
+      </Original>
+      <Expanded>
+        "false" == "false"
+      </Expanded>
+    </Expression>
+    <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/UsageTests/ToStringVector.tests.cpp" >
+      <Original>
+        ::Catch::Detail::stringify( bools[1] ) == "true"
+      </Original>
+      <Expanded>
+        "true" == "true"
+      </Expanded>
+    </Expression>
+    <OverallResult success="true"/>
+  </TestCase>
   <TestCase name="vector&lt;int,allocator> -> toString" tags="[toString][vector,allocator]" filename="tests/<exe-name>/UsageTests/ToStringVector.tests.cpp" >
     <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/UsageTests/ToStringVector.tests.cpp" >
       <Original>
@@ -20931,6 +20969,6 @@ loose text artifact
     </Section>
     <OverallResult success="true"/>
   </TestCase>
-  <OverallResults successes="2061" failures="143" expectedFailures="27"/>
-  <OverallResultsCases successes="295" failures="83" expectedFailures="7"/>
+  <OverallResults successes="2065" failures="143" expectedFailures="27"/>
+  <OverallResultsCases successes="297" failures="83" expectedFailures="7"/>
 </Catch2TestRun>

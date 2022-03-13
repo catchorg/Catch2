@@ -4398,6 +4398,14 @@ ok {test-number} - ::Catch::Detail::stringify(bools) == "{  }" for: "{  }" == "{
 ok {test-number} - ::Catch::Detail::stringify(bools) == "{ true }" for: "{ true }" == "{ true }"
 # vector<bool> -> toString
 ok {test-number} - ::Catch::Detail::stringify(bools) == "{ true, false }" for: "{ true, false }" == "{ true, false }"
+# vector<bool>::const_reference -> toString
+ok {test-number} - ::Catch::Detail::stringify( bools[0] ) == "false" for: "false" == "false"
+# vector<bool>::const_reference -> toString
+ok {test-number} - ::Catch::Detail::stringify( bools[1] ) == "true" for: "true" == "true"
+# vector<bool>::reference -> toString
+ok {test-number} - ::Catch::Detail::stringify( bools[0] ) == "false" for: "false" == "false"
+# vector<bool>::reference -> toString
+ok {test-number} - ::Catch::Detail::stringify( bools[1] ) == "true" for: "true" == "true"
 # vector<int,allocator> -> toString
 ok {test-number} - ::Catch::Detail::stringify(vv) == "{  }" for: "{  }" == "{  }"
 # vector<int,allocator> -> toString
@@ -4464,5 +4472,5 @@ ok {test-number} - q3 == 23. for: 23.0 == 23.0
 ok {test-number} -
 # xmlentitycheck
 ok {test-number} -
-1..2231
+1..2235
 

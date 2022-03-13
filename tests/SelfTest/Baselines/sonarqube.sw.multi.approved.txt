@@ -1858,6 +1858,8 @@ Misc.tests.cpp:<line number>
     <testCase name="array&lt;int, N> -> toString" duration="{duration}"/>
     <testCase name="vec&lt;vec&lt;string,alloc>> -> toString" duration="{duration}"/>
     <testCase name="vector&lt;bool> -> toString" duration="{duration}"/>
+    <testCase name="vector&lt;bool>::const_reference -> toString" duration="{duration}"/>
+    <testCase name="vector&lt;bool>::reference -> toString" duration="{duration}"/>
     <testCase name="vector&lt;int,allocator> -> toString" duration="{duration}"/>
     <testCase name="vector&lt;int> -> toString" duration="{duration}"/>
     <testCase name="vector&lt;string> -> toString" duration="{duration}"/>

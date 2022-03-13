@@ -17544,6 +17544,38 @@ with expansion:
   "{ true, false }" == "{ true, false }"
 
 -------------------------------------------------------------------------------
+vector<bool>::const_reference -> toString
+-------------------------------------------------------------------------------
+ToStringVector.tests.cpp:<line number>
+...............................................................................
+
+ToStringVector.tests.cpp:<line number>: PASSED:
+  REQUIRE( ::Catch::Detail::stringify( bools[0] ) == "false" )
+with expansion:
+  "false" == "false"
+
+ToStringVector.tests.cpp:<line number>: PASSED:
+  REQUIRE( ::Catch::Detail::stringify( bools[1] ) == "true" )
+with expansion:
+  "true" == "true"
+
+-------------------------------------------------------------------------------
+vector<bool>::reference -> toString
+-------------------------------------------------------------------------------
+ToStringVector.tests.cpp:<line number>
+...............................................................................
+
+ToStringVector.tests.cpp:<line number>: PASSED:
+  REQUIRE( ::Catch::Detail::stringify( bools[0] ) == "false" )
+with expansion:
+  "false" == "false"
+
+ToStringVector.tests.cpp:<line number>: PASSED:
+  REQUIRE( ::Catch::Detail::stringify( bools[1] ) == "true" )
+with expansion:
+  "true" == "true"
+
+-------------------------------------------------------------------------------
 vector<int,allocator> -> toString
 -------------------------------------------------------------------------------
 ToStringVector.tests.cpp:<line number>
@@ -17811,6 +17843,6 @@ Misc.tests.cpp:<line number>
 Misc.tests.cpp:<line number>: PASSED:
 
 ===============================================================================
-test cases:  385 |  295 passed |  83 failed |  7 failed as expected
-assertions: 2231 | 2061 passed | 143 failed | 27 failed as expected
+test cases:  387 |  297 passed |  83 failed |  7 failed as expected
+assertions: 2235 | 2065 passed | 143 failed | 27 failed as expected
 

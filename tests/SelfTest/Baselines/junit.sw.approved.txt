@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuitesloose text artifact
 >
-  <testsuite name="<exe-name>" errors="17" failures="126" tests="2231" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
+  <testsuite name="<exe-name>" errors="17" failures="126" tests="2235" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
     <properties>
       <property name="random-seed" value="1"/>
       <property name="filters" value="~[!nonportable]~[!benchmark]~[approvals] *"/>
@@ -1882,6 +1882,8 @@ Exception.tests.cpp:<line number>
     <testcase classname="<exe-name>.global" name="unique_ptr reimplementation: basic functionality/free swap" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="vec&lt;vec&lt;string,alloc>> -> toString" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="vector&lt;bool> -> toString" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="vector&lt;bool>::const_reference -> toString" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="vector&lt;bool>::reference -> toString" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="vector&lt;int,allocator> -> toString" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="vector&lt;int> -> toString" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="vector&lt;string> -> toString" time="{duration}" status="run"/>

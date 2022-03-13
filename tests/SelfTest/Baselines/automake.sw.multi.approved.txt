@@ -376,6 +376,8 @@
 :test-result: PASS unique_ptr reimplementation: basic functionality
 :test-result: PASS vec<vec<string,alloc>> -> toString
 :test-result: PASS vector<bool> -> toString
+:test-result: PASS vector<bool>::const_reference -> toString
+:test-result: PASS vector<bool>::reference -> toString
 :test-result: PASS vector<int,allocator> -> toString
 :test-result: PASS vector<int> -> toString
 :test-result: PASS vector<string> -> toString
