@@ -1,5 +1,12 @@
 include(CatchMiscFunctions)
 
+# CMake derives a Visual Studio project GUID from the file path but can be overridden via a property
+# (see https://gitlab.kitware.com/cmake/cmake/-/commit/c85367f4).  Using a non-constant GUID
+# can cause problems if other projects/repos want to reference the vcxproj file,
+# so we force a constant GUID here.
+set(Catch2_GUID_CMAKE "8d538cbe-01bf-4a2e-a98a-6c368fdf13d7" CACHE INTERNAL "Project GUID")
+set(Catch2WithMain_GUID_CMAKE "8bd3552a-2cfb-4a59-ab15-2031b97ada1e" CACHE INTERNAL "Project GUID")
+
 # Please keep these ordered alphabetically
 set(BENCHMARK_HEADERS
     ${SOURCES_DIR}/benchmark/catch_benchmark.hpp
