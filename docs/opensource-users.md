@@ -17,6 +17,9 @@ maintainer's explicit consent._
 
 ## Libraries & Frameworks
 
+### [accessorpp](https://github.com/wqking/accessorpp)
+C++ library for implementing property and data binding.
+
 ### [alpaka](https://github.com/alpaka-group/alpaka)
 A header-only C++14 abstraction library for accelerator development.
 
@@ -49,6 +52,9 @@ Header-only C++11 library to encode/decode base64, base64url, base32, base32hex 
 
 ### [DtCraft](https://github.com/twhuang-uiuc/DtCraft)
 A High-performance Cluster Computing Engine.
+
+### [eventpp](https://github.com/wqking/eventpp)
+C++ event library for callbacks, event dispatcher, and event queue. With eventpp you can easily implement signal and slot mechanism, publisher and subscriber pattern, or observer pattern.
 
 ### [forest](https://github.com/xorz57/forest)
 Template Library of Tree Data Structures.
