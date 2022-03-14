@@ -49,7 +49,8 @@ namespace Catch {
                        "'::' is not allowed in reporter name: '" + name + '\'' );
         m_factories.emplace(name, CATCH_MOVE(factory));
     }
-    void ReporterRegistry::registerListener( IReporterFactoryPtr factory ) {
+    void ReporterRegistry::registerListener(
+        Detail::unique_ptr<EventListenerFactory> factory ) {
         m_listeners.push_back( CATCH_MOVE(factory) );
     }
 

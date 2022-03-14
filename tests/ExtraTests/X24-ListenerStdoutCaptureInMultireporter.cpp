@@ -25,7 +25,7 @@
 namespace {
 	class NonCapturingListener : public Catch::EventListenerBase {
     public:
-        NonCapturingListener( Catch::ReporterConfig const& config ):
+        NonCapturingListener( Catch::IConfig const* config ):
             EventListenerBase( config ) {
             m_preferences.shouldRedirectStdOut = false;
             std::cerr << "X24 - NonCapturingListener initialized.\n";

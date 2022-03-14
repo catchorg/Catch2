@@ -24,7 +24,7 @@ namespace Catch {
         IStreamingReporterPtr create( std::string const& name, ReporterConfig const& config ) const override;
 
         void registerReporter( std::string const& name, IReporterFactoryPtr factory );
-        void registerListener( IReporterFactoryPtr factory );
+        void registerListener( Detail::unique_ptr<EventListenerFactory> factory );
 
         FactoryMap const& getFactories() const override;
         Listeners const& getListeners() const override;

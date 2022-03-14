@@ -48,7 +48,7 @@ class ValidatingTestListener : public Catch::EventListenerBase {
     };
 
 public:
-    ValidatingTestListener(Catch::ReporterConfig const& config) :
+    ValidatingTestListener(Catch::IConfig const* config) :
         EventListenerBase(config) {
         m_preferences.shouldReportAllAssertions = true;
     }

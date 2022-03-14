@@ -15,6 +15,7 @@
 namespace Catch {
 
     struct ReporterConfig;
+    struct IConfig;
     class IEventListener;
     using IStreamingReporterPtr = Detail::unique_ptr<IEventListener>;
 
@@ -27,6 +28,13 @@ namespace Catch {
         virtual std::string getDescription() const = 0;
     };
     using IReporterFactoryPtr = Detail::unique_ptr<IReporterFactory>;
+
+    class EventListenerFactory {
+    public:
+        virtual ~EventListenerFactory(); // = default
+        virtual IStreamingReporterPtr create( IConfig const* config ) const = 0;
+        virtual std::string getDescription() const = 0;
+    };
 } // namespace Catch
 
 #endif // CATCH_INTERFACES_REPORTER_FACTORY_HPP_INCLUDED

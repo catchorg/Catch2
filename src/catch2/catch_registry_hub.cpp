@@ -51,7 +51,7 @@ namespace Catch {
             void registerReporter( std::string const& name, IReporterFactoryPtr factory ) override {
                 m_reporterRegistry.registerReporter( name, CATCH_MOVE(factory) );
             }
-            void registerListener( IReporterFactoryPtr factory ) override {
+            void registerListener( Detail::unique_ptr<EventListenerFactory> factory ) override {
                 m_reporterRegistry.registerListener( CATCH_MOVE(factory) );
             }
             void registerTest( Detail::unique_ptr<TestCaseInfo>&& testInfo, Detail::unique_ptr<ITestInvoker>&& invoker ) override {

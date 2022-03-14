@@ -30,7 +30,7 @@ namespace {
 
     class TestListener : public Catch::EventListenerBase {
     public:
-        TestListener( Catch::ReporterConfig const& config ):
+        TestListener( Catch::IConfig const* config ):
             EventListenerBase( config ) {
             std::cout << "X28 - TestListener constructed.\n";
         }

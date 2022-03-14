@@ -52,7 +52,7 @@ namespace Catch {
 
             auto const& listeners = Catch::getRegistryHub().getReporterRegistry().getListeners();
             for (auto const& listener : listeners) {
-                multi->addListener(listener->create(Catch::ReporterConfig(config, config->defaultStream())));
+                multi->addListener(listener->create(config));
             }
 
             std::size_t reporterIdx = 0;

@@ -25,7 +25,7 @@
 namespace {
 	class CapturingListener : public Catch::EventListenerBase {
     public:
-        CapturingListener( Catch::ReporterConfig const& config ):
+        CapturingListener( Catch::IConfig const* config ):
             EventListenerBase( config ) {
             m_preferences.shouldRedirectStdOut = true;
             std::cerr << "CapturingListener initialized\n";

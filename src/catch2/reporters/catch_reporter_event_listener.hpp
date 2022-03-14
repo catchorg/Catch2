@@ -21,8 +21,7 @@ namespace Catch {
      */
     class EventListenerBase : public IEventListener {
     public:
-        EventListenerBase( ReporterConfig const& config ):
-            IEventListener( config.fullConfig() ) {}
+        using IEventListener::IEventListener;
 
         void reportInvalidTestSpec( StringRef unmatchedSpec ) override;
         void fatalErrorEncountered( StringRef error ) override;

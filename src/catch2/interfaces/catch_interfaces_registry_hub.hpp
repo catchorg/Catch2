@@ -27,6 +27,7 @@ namespace Catch {
     struct SourceLineInfo;
 
     class StartupExceptionRegistry;
+    class EventListenerFactory;
 
     using IReporterFactoryPtr = Detail::unique_ptr<IReporterFactory>;
 
@@ -45,7 +46,7 @@ namespace Catch {
     struct IMutableRegistryHub {
         virtual ~IMutableRegistryHub(); // = default
         virtual void registerReporter( std::string const& name, IReporterFactoryPtr factory ) = 0;
-        virtual void registerListener( IReporterFactoryPtr factory ) = 0;
+        virtual void registerListener( Detail::unique_ptr<EventListenerFactory> factory ) = 0;
         virtual void registerTest(Detail::unique_ptr<TestCaseInfo>&& testInfo, Detail::unique_ptr<ITestInvoker>&& invoker) = 0;
         virtual void registerTranslator( Detail::unique_ptr<IExceptionTranslator>&& translator ) = 0;
         virtual void registerTagAlias( std::string const& alias, std::string const& tag, SourceLineInfo const& lineInfo ) = 0;
