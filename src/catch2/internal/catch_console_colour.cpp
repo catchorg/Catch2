@@ -93,16 +93,15 @@ namespace {
             originalBackgroundAttributes = csbiInfo.wAttributes & ~( FOREGROUND_GREEN | FOREGROUND_RED | FOREGROUND_BLUE | FOREGROUND_INTENSITY );
         }
 
-        static bool useColourOnPlatform() { return true; }
+        static bool useColourOnPlatform(IStream const& stream) {
+            // Win32 text colour APIs can only be used on console streams
+            // We cannot check that the output hasn't been redirected,
+            // so we just check that the original stream is console stream.
+            return stream.isStdout();
+        }
 
     private:
         void use( Colour::Code _colourCode ) const override {
-            // Early exit if we are not writing to the console, because
-            // Win32 API can only change colour of the console.
-            if ( !m_stream->isStdout() ) {
-                return;
-            }
-
             switch( _colourCode ) {
                 case Colour::None:      return setTextAttribute( originalForegroundAttributes );
                 case Colour::White:     return setTextAttribute( FOREGROUND_GREEN | FOREGROUND_RED | FOREGROUND_BLUE );
@@ -138,9 +137,13 @@ namespace {
 } // end anon namespace
 } // end namespace Catch
 
-#elif defined( CATCH_CONFIG_COLOUR_ANSI ) //////////////////////////////////////
+#endif // Windows/ ANSI/ None
 
-#include <unistd.h>
+
+#if defined( CATCH_PLATFORM_LINUX ) || defined( CATCH_PLATFORM_MAC )
+#    define CATCH_INTERNAL_HAS_ISATTY
+#    include <unistd.h>
+#endif
 
 namespace Catch {
 namespace {
@@ -153,18 +156,25 @@ namespace {
     public:
         PosixColourImpl( IStream const* stream ): ColourImpl( stream ) {}
 
-        static bool useColourOnPlatform() {
+        static bool useColourOnPlatform(IStream const& stream) {
+            // This is kinda messy due to trying to support a bunch of
+            // different platforms at once.
+            // The basic idea is that if we are asked to do autodetection (as
+            // opposed to being told to use posixy colours outright), then we
+            // only want to use the colours if we are writing to console.
+            // However, console might be redirected, so we make an attempt at
+            // checking for that on platforms where we know how to do that.
+            bool useColour = stream.isStdout();
+#if defined( CATCH_INTERNAL_HAS_ISATTY ) && \
+    !( defined( __DJGPP__ ) && defined( __STRICT_ANSI__ ) )
             ErrnoGuard _; // for isatty
-            return
+            useColour = useColour && isatty( STDOUT_FILENO );
+#    endif
 #    if defined( CATCH_PLATFORM_MAC ) || defined( CATCH_PLATFORM_IPHONE )
-                !isDebuggerActive() &&
+            useColour = useColour && !isDebuggerActive();
 #    endif
-#    if !( defined( __DJGPP__ ) && defined( __STRICT_ANSI__ ) )
-                isatty( STDOUT_FILENO )
-#    else
-                false
-#    endif
-                    ;
+
+            return useColour;
         }
 
     private:
@@ -201,8 +211,6 @@ namespace {
 } // end anon namespace
 } // end namespace Catch
 
-#endif // Windows/ ANSI/ None
-
 namespace Catch {
 
     Detail::unique_ptr<ColourImpl> makeColourImpl(IConfig const* config, IStream const* stream) {
@@ -220,11 +228,11 @@ namespace Catch {
         if ( colourMode == UseColour::Auto ) {
             createPlatformInstance =
 #if defined( CATCH_CONFIG_COLOUR_ANSI )
-                PosixColourImpl::useColourOnPlatform()
+                PosixColourImpl::useColourOnPlatform( *stream )
 #elif defined( CATCH_CONFIG_COLOUR_WINDOWS )
-                Win32ColourImpl::useColourOnPlatform()
+                Win32ColourImpl::useColourOnPlatform( *stream )
 #else
-                NoColourImpl::useColourOnPlatform()
+                false
 #endif
                 ;
         }

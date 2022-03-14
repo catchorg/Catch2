@@ -661,8 +661,8 @@ void ConsoleReporter::printSummaryRow(StringRef label, std::vector<SummaryColumn
                          << "- none -";
             }
         } else if (value != "0") {
-            m_stream << m_colour->startColour( Colour::LightGrey ) << " | "
-                     << m_colour->startColour( col.colour ) << value << ' '
+            m_stream << m_colour->startColour( Colour::LightGrey ) << " | ";
+            m_stream << m_colour->startColour( col.colour ) << value << ' '
                      << col.label;
         }
     }
