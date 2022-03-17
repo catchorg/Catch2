@@ -103,7 +103,6 @@ namespace Catch {
 
         // IConfig interface
         bool allowThrows() const override;
-        IStream const* defaultStream() const override;
         StringRef name() const override;
         bool includeSuccessfulResults() const override;
         bool warnAboutMissingAssertions() const override;
@@ -130,7 +129,6 @@ namespace Catch {
         Detail::unique_ptr<IStream const> openStream(std::string const& outputFileName);
         ConfigData m_data;
 
-        Detail::unique_ptr<IStream const> m_defaultStream;
         std::vector<Detail::unique_ptr<IStream const>> m_reporterStreams;
         TestSpec m_testSpec;
         bool m_hasTestFilters = false;

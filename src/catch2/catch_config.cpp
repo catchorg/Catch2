@@ -45,8 +45,7 @@ namespace Catch {
     }
 
     Config::Config( ConfigData const& data ):
-        m_data( data ),
-        m_defaultStream( openStream( data.defaultOutputFilename ) ) {
+        m_data( data ) {
         // We need to trim filter specs to avoid trouble with superfluous
         // whitespace (esp. important for bdd macros, as those are manually
         // aligned with whitespace).
@@ -81,13 +80,19 @@ namespace Catch {
             } );
         }
 
+        bool defaultOutputUsed = false;
         m_reporterStreams.reserve( m_data.reporterSpecifications.size() );
         for ( auto const& reporterAndFile : m_data.reporterSpecifications ) {
             if ( reporterAndFile.outputFileName.none() ) {
-                m_reporterStreams.emplace_back( new Detail::RDBufStream(
-                    m_defaultStream->stream().rdbuf() ) );
+                CATCH_ENFORCE( !defaultOutputUsed,
+                               "Internal error: cannot use default output for "
+                               "multiple reporters" );
+                defaultOutputUsed = true;
+
+                m_reporterStreams.push_back(
+                    openStream( data.defaultOutputFilename ) );
             } else {
-                m_reporterStreams.emplace_back(
+                m_reporterStreams.push_back(
                     openStream( *reporterAndFile.outputFileName ) );
             }
         }
@@ -118,7 +123,6 @@ namespace Catch {
 
     // IConfig interface
     bool Config::allowThrows() const                   { return !m_data.noThrow; }
-    IStream const* Config::defaultStream() const       { return m_defaultStream.get(); }
     StringRef Config::name() const { return m_data.name.empty() ? m_data.processName : m_data.name; }
     bool Config::includeSuccessfulResults() const      { return m_data.showSuccessfulTests; }
     bool Config::warnAboutMissingAssertions() const {
