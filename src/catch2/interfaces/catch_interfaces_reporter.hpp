@@ -150,7 +150,18 @@ namespace Catch {
         bool shouldReportAllAssertions = false;
     };
 
-    //! The common base for all reporters and event listeners
+    /**
+     * The common base for all reporters and event listeners
+     *
+     * Implementing classes must also implement:
+     *
+     *     //! User-friendly description of the reporter/listener type
+     *     static std::string getDescription()
+     *
+     * Generally shouldn't be derived from by users of Catch2 directly,
+     * instead they should derive from one of the utility bases that
+     * derive from this class.
+     */
     class IEventListener {
     protected:
         //! Derived classes can set up their preferences here
