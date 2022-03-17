@@ -925,6 +925,8 @@ with expansion:
 A string sent directly to stdout
 A string sent directly to stderr
 A string sent to stderr via clog
+f2
+f1
 Message from section one
 Message from section two
 -------------------------------------------------------------------------------
@@ -1395,6 +1397,6 @@ due to unexpected exception with message:
   Why would you throw a std::string?
 
 ===============================================================================
-test cases:  386 |  310 passed |  69 failed |  7 failed as expected
-assertions: 2219 | 2064 passed | 128 failed | 27 failed as expected
+test cases:  389 |  313 passed |  69 failed |  7 failed as expected
+assertions: 2225 | 2070 passed | 128 failed | 27 failed as expected
 

@@ -3,6 +3,8 @@ Nor would this
 A string sent directly to stdout
 A string sent directly to stderr
 A string sent to stderr via clog
+f2
+f1
 Message from section one
 Message from section two
 loose text artifact

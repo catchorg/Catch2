@@ -273,6 +273,12 @@
     <testCase name="shortened hide tags are split apart" duration="{duration}"/>
     <testCase name="tags with dots in later positions are not parsed as hidden" duration="{duration}"/>
   </file>
+  <file path="tests/<exe-name>/IntrospectiveTests/TestCaseInfoHasher.tests.cpp">
+    <testCase name="TestCaseInfoHasher produces different hashes./class names are equal, names are equal but tags are different." duration="{duration}"/>
+    <testCase name="TestCaseInfoHasher produces different hashes./class names are equal, tags are equal but names are different" duration="{duration}"/>
+    <testCase name="TestCaseInfoHasher produces different hashes./names are equal, tags are equal but class names are different" duration="{duration}"/>
+    <testCase name="TestCaseInfoHasher produces equal hashes./class names and names and tags are equal." duration="{duration}"/>
+  </file>
   <file path="tests/<exe-name>/IntrospectiveTests/TestSpecParser.tests.cpp">
     <testCase name="Parsed tags are matched case insensitive" duration="{duration}"/>
     <testCase name="Parsing tags with non-alphabetical characters is pass-through" duration="{duration}"/>
@@ -1822,6 +1828,9 @@ Misc.tests.cpp:<line number>
     <testCase name="vectors can be sized and resized/reserving smaller does not change size or capacity" duration="{duration}"/>
     <testCase name="xmlentitycheck/embedded xml: &lt;test>it should be possible to embed xml characters, such as &lt;, &quot; or &amp;, or even whole &lt;xml>documents&lt;/xml> within an attribute&lt;/test>" duration="{duration}"/>
     <testCase name="xmlentitycheck/encoded chars: these should all be encoded: &amp;&amp;&amp;&quot;&quot;&quot;&lt;&lt;&lt;&amp;&quot;&lt;&lt;&amp;&quot;" duration="{duration}"/>
+  </file>
+  <file path="tests/<exe-name>/UsageTests/RandomlyOrderedTestCases.tests.cpp">
+    <testCase name="Set TestRunOrder of command line parser to Randomized and register tests in registry." duration="{duration}"/>
   </file>
   <file path="tests/<exe-name>/UsageTests/ToStringChrono.tests.cpp">
     <testCase name="Stringifying std::chrono::duration helpers" duration="{duration}"/>

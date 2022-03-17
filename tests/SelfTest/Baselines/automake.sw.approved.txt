@@ -215,6 +215,9 @@ A string sent directly to stdout
 A string sent directly to stderr
 A string sent to stderr via clog
 :test-result: FAIL Sends stuff to stdout and stderr
+f2
+f1
+:test-result: PASS Set TestRunOrder of command line parser to Randomized and register tests in registry.
 :test-result: PASS Some simple comparisons between doubles
 Message from section one
 Message from section two
@@ -255,6 +258,8 @@ Message from section two
 :test-result: PASS Test case with one argument
 :test-result: PASS Test enum bit values
 :test-result: PASS Test with special, characters "in name
+:test-result: PASS TestCaseInfoHasher produces different hashes.
+:test-result: PASS TestCaseInfoHasher produces equal hashes.
 :test-result: PASS Testing checked-if
 :test-result: XFAIL Testing checked-if 2
 :test-result: XFAIL Testing checked-if 3

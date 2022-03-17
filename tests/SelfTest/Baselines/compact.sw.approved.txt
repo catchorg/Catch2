@@ -1596,6 +1596,10 @@ BDD.tests.cpp:<line number>: passed: v.size() == 0 for: 0 == 0
 A string sent directly to stdout
 A string sent directly to stderr
 A string sent to stderr via clog
+RandomlyOrderedTestCases.tests.cpp:<line number>: passed: cli.parse({"test", "--order", "random"}) for: {?}
+RandomlyOrderedTestCases.tests.cpp:<line number>: passed: configData.runOrder == Catch::TestRunOrder::Randomized for: 2 == 2
+f2
+f1
 Approx.tests.cpp:<line number>: passed: d == Approx( 1.23 ) for: 1.23 == Approx( 1.23 )
 Approx.tests.cpp:<line number>: passed: d != Approx( 1.22 ) for: 1.23 != Approx( 1.22 )
 Approx.tests.cpp:<line number>: passed: d != Approx( 1.24 ) for: 1.23 != Approx( 1.24 )
@@ -1868,6 +1872,18 @@ Tag.tests.cpp:<line number>: passed: testCase.tags[0] == Tag( "tag1" ) for: {?} 
 VariadicMacros.tests.cpp:<line number>: passed: with 1 message: 'no assertions'
 Tricky.tests.cpp:<line number>: passed: 0x<hex digits> == bit30and31 for: 3221225472 (0x<hex digits>) == 3221225472
 CmdLine.tests.cpp:<line number>: passed:
+TestCaseInfoHasher.tests.cpp:<line number>: passed: h(testCase1) != h(testCase2) for: 2974740129541633169 (0x<hex digits>)
+!=
+2974736831006748536 (0x<hex digits>)
+TestCaseInfoHasher.tests.cpp:<line number>: passed: h(testCase1) != h(testCase2) for: 10514428749606303213 (0x<hex digits>)
+!=
+7117040580432901512 (0x<hex digits>)
+TestCaseInfoHasher.tests.cpp:<line number>: passed: h(testCase1) != h(testCase2) for: 781880640949575597 (0x<hex digits>)
+!=
+14164831289977664328 (0x<hex digits>)
+TestCaseInfoHasher.tests.cpp:<line number>: passed: h(testCase1) == h(testCase2) for: 2974740129541633169 (0x<hex digits>)
+==
+2974740129541633169 (0x<hex digits>)
 Misc.tests.cpp:<line number>: passed: true
 Misc.tests.cpp:<line number>: passed:
 Misc.tests.cpp:<line number>: failed - but was ok: false

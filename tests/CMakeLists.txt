@@ -88,6 +88,7 @@ set(TEST_SOURCES
         ${SELF_TEST_DIR}/IntrospectiveTests/RandomNumberGeneration.tests.cpp
         ${SELF_TEST_DIR}/IntrospectiveTests/Reporters.tests.cpp
         ${SELF_TEST_DIR}/IntrospectiveTests/Tag.tests.cpp
+        ${SELF_TEST_DIR}/IntrospectiveTests/TestCaseInfoHasher.tests.cpp
         ${SELF_TEST_DIR}/IntrospectiveTests/TestSpecParser.tests.cpp
         ${SELF_TEST_DIR}/IntrospectiveTests/TextFlow.tests.cpp
         ${SELF_TEST_DIR}/IntrospectiveTests/Sharding.tests.cpp
@@ -110,6 +111,7 @@ set(TEST_SOURCES
         ${SELF_TEST_DIR}/UsageTests/Generators.tests.cpp
         ${SELF_TEST_DIR}/UsageTests/Message.tests.cpp
         ${SELF_TEST_DIR}/UsageTests/Misc.tests.cpp
+	${SELF_TEST_DIR}/UsageTests/RandomlyOrderedTestCases.tests.cpp
         ${SELF_TEST_DIR}/UsageTests/ToStringByte.tests.cpp
         ${SELF_TEST_DIR}/UsageTests/ToStringChrono.tests.cpp
         ${SELF_TEST_DIR}/UsageTests/ToStringGeneral.tests.cpp

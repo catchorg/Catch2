@@ -95,6 +95,7 @@
 #include <catch2/internal/catch_stringref.hpp>
 #include <catch2/internal/catch_tag_alias_registry.hpp>
 #include <catch2/internal/catch_template_test_registry.hpp>
+#include <catch2/internal/catch_test_case_info_hasher.hpp>
 #include <catch2/internal/catch_test_case_registry_impl.hpp>
 #include <catch2/internal/catch_test_case_tracker.hpp>
 #include <catch2/internal/catch_test_failure_exception.hpp>

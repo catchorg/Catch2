@@ -11188,6 +11188,25 @@ Misc.tests.cpp:<line number>
 No assertions in test case 'Sends stuff to stdout and stderr'
 
 -------------------------------------------------------------------------------
+Set TestRunOrder of command line parser to Randomized and register tests in
+registry.
+-------------------------------------------------------------------------------
+RandomlyOrderedTestCases.tests.cpp:<line number>
+...............................................................................
+
+RandomlyOrderedTestCases.tests.cpp:<line number>: PASSED:
+  CHECK( cli.parse({"test", "--order", "random"}) )
+with expansion:
+  {?}
+
+RandomlyOrderedTestCases.tests.cpp:<line number>: PASSED:
+  REQUIRE( configData.runOrder == Catch::TestRunOrder::Randomized )
+with expansion:
+  2 == 2
+
+f2
+f1
+-------------------------------------------------------------------------------
 Some simple comparisons between doubles
 -------------------------------------------------------------------------------
 Approx.tests.cpp:<line number>
@@ -13285,6 +13304,62 @@ CmdLine.tests.cpp:<line number>
 ...............................................................................
 
 CmdLine.tests.cpp:<line number>: PASSED:
+
+-------------------------------------------------------------------------------
+TestCaseInfoHasher produces different hashes.
+  class names are equal, names are equal but tags are different.
+-------------------------------------------------------------------------------
+TestCaseInfoHasher.tests.cpp:<line number>
+...............................................................................
+
+TestCaseInfoHasher.tests.cpp:<line number>: PASSED:
+  CHECK( h(testCase1) != h(testCase2) )
+with expansion:
+  2974740129541633169 (0x<hex digits>)
+  !=
+  2974736831006748536 (0x<hex digits>)
+
+-------------------------------------------------------------------------------
+TestCaseInfoHasher produces different hashes.
+  class names are equal, tags are equal but names are different
+-------------------------------------------------------------------------------
+TestCaseInfoHasher.tests.cpp:<line number>
+...............................................................................
+
+TestCaseInfoHasher.tests.cpp:<line number>: PASSED:
+  CHECK( h(testCase1) != h(testCase2) )
+with expansion:
+  10514428749606303213 (0x<hex digits>)
+  !=
+  7117040580432901512 (0x<hex digits>)
+
+-------------------------------------------------------------------------------
+TestCaseInfoHasher produces different hashes.
+  names are equal, tags are equal but class names are different
+-------------------------------------------------------------------------------
+TestCaseInfoHasher.tests.cpp:<line number>
+...............................................................................
+
+TestCaseInfoHasher.tests.cpp:<line number>: PASSED:
+  CHECK( h(testCase1) != h(testCase2) )
+with expansion:
+  781880640949575597 (0x<hex digits>)
+  !=
+  14164831289977664328 (0x<hex digits>)
+
+-------------------------------------------------------------------------------
+TestCaseInfoHasher produces equal hashes.
+  class names and names and tags are equal.
+-------------------------------------------------------------------------------
+TestCaseInfoHasher.tests.cpp:<line number>
+...............................................................................
+
+TestCaseInfoHasher.tests.cpp:<line number>: PASSED:
+  CHECK( h(testCase1) == h(testCase2) )
+with expansion:
+  2974740129541633169 (0x<hex digits>)
+  ==
+  2974740129541633169 (0x<hex digits>)
 
 -------------------------------------------------------------------------------
 Testing checked-if
@@ -17871,6 +17946,6 @@ Misc.tests.cpp:<line number>
 Misc.tests.cpp:<line number>: PASSED:
 
 ===============================================================================
-test cases:  386 |  296 passed |  83 failed |  7 failed as expected
-assertions: 2234 | 2064 passed | 143 failed | 27 failed as expected
+test cases:  389 |  299 passed |  83 failed |  7 failed as expected
+assertions: 2240 | 2070 passed | 143 failed | 27 failed as expected
 

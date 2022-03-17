@@ -2797,6 +2797,12 @@ ok {test-number} - v.size() == 0 for: 0 == 0
 A string sent directly to stdout
 A string sent directly to stderr
 A string sent to stderr via clog
+# Set TestRunOrder of command line parser to Randomized and register tests in registry.
+ok {test-number} - cli.parse({"test", "--order", "random"}) for: {?}
+# Set TestRunOrder of command line parser to Randomized and register tests in registry.
+ok {test-number} - configData.runOrder == Catch::TestRunOrder::Randomized for: 2 == 2
+f2
+f1
 # Some simple comparisons between doubles
 ok {test-number} - d == Approx( 1.23 ) for: 1.23 == Approx( 1.23 )
 # Some simple comparisons between doubles
@@ -3297,6 +3303,14 @@ ok {test-number} - with 1 message: 'no assertions'
 ok {test-number} - 0x<hex digits> == bit30and31 for: 3221225472 (0x<hex digits>) == 3221225472
 # Test with special, characters "in name
 ok {test-number} -
+# TestCaseInfoHasher produces different hashes.
+ok {test-number} - h(testCase1) != h(testCase2) for: 2974740129541633169 (0x<hex digits>) != 2974736831006748536 (0x<hex digits>)
+# TestCaseInfoHasher produces different hashes.
+ok {test-number} - h(testCase1) != h(testCase2) for: 10514428749606303213 (0x<hex digits>) != 7117040580432901512 (0x<hex digits>)
+# TestCaseInfoHasher produces different hashes.
+ok {test-number} - h(testCase1) != h(testCase2) for: 781880640949575597 (0x<hex digits>) != 14164831289977664328 (0x<hex digits>)
+# TestCaseInfoHasher produces equal hashes.
+ok {test-number} - h(testCase1) == h(testCase2) for: 2974740129541633169 (0x<hex digits>) == 2974740129541633169 (0x<hex digits>)
 # Testing checked-if
 ok {test-number} - true
 # Testing checked-if
@@ -4470,5 +4484,5 @@ ok {test-number} - q3 == 23. for: 23.0 == 23.0
 ok {test-number} -
 # xmlentitycheck
 ok {test-number} -
-1..2234
+1..2240
 

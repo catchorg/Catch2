@@ -210,6 +210,7 @@
 :test-result: PASS Scenario: This is a really long scenario name to see how the list command deals with wrapping
 :test-result: PASS Scenario: Vector resizing affects size and capacity
 :test-result: FAIL Sends stuff to stdout and stderr
+:test-result: PASS Set TestRunOrder of command line parser to Randomized and register tests in registry.
 :test-result: PASS Some simple comparisons between doubles
 :test-result: FAIL Standard output from all sections is reported
 :test-result: FAIL StartsWith string matcher
@@ -248,6 +249,8 @@
 :test-result: PASS Test case with one argument
 :test-result: PASS Test enum bit values
 :test-result: PASS Test with special, characters "in name
+:test-result: PASS TestCaseInfoHasher produces different hashes.
+:test-result: PASS TestCaseInfoHasher produces equal hashes.
 :test-result: PASS Testing checked-if
 :test-result: XFAIL Testing checked-if 2
 :test-result: XFAIL Testing checked-if 3
