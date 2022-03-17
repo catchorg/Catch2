@@ -127,6 +127,10 @@ namespace Catch {
                     filename.erase(0, lastSlash);
                     filename[0] = '#';
                 }
+                else
+                {
+                    filename.insert(0, "#");
+                }
 
                 auto lastDot = filename.find_last_of('.');
                 if (lastDot != std::string::npos) {
