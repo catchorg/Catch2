@@ -26,9 +26,18 @@ namespace Catch {
     public:
         virtual ~IStream(); // = default
         virtual std::ostream& stream() const = 0;
-        // Win32 colour supports requires us to identify whether a stream
-        // is backed by stdout (so we can colour it) or not (and we can't).
-        virtual bool isStdout() const { return false;  }
+        /**
+         * Best guess on whether the instance is writing to a console (e.g. via stdout/stderr)
+         *
+         * This is useful for e.g. Win32 colour support, because the Win32
+         * API manipulates console directly, unlike POSIX escape codes,
+         * that can be written anywhere.
+         *
+         * Due to variety of ways to change where the stdout/stderr is
+         * _actually_ being written, users should always assume that
+         * the answer might be wrong.
+         */
+        virtual bool isConsole() const { return false; }
     };
 
     auto makeStream( std::string const& filename ) -> Detail::unique_ptr<IStream const>;

@@ -955,7 +955,7 @@ ok {test-number} - call_count == 1 for: 1 == 1
 # Copy and then generate a range
 ok {test-number} - make_data().size() == test_count for: 6 == 6
 # Cout stream properly declares it writes to stdout
-ok {test-number} - Catch::makeStream( "-" )->isStdout() for: true
+ok {test-number} - Catch::makeStream( "-" )->isConsole() for: true
 # Custom exceptions can be translated when testing for nothrow
 not ok {test-number} - unexpected exception with message: 'custom exception - not std'; expression was: throwCustom()
 # Custom exceptions can be translated when testing for throwing as something else
@@ -973,7 +973,7 @@ ok {test-number} - enumInfo->lookup(1) == "Value2" for: Value2 == "Value2"
 # Directly creating an EnumInfo
 ok {test-number} - enumInfo->lookup(3) == "{** unexpected enum value **}" for: {** unexpected enum value **} == "{** unexpected enum value **}"
 # Empty stream name opens cout stream
-ok {test-number} - Catch::makeStream( "" )->isStdout() for: true
+ok {test-number} - Catch::makeStream( "" )->isConsole() for: true
 # Empty tag is not allowed
 ok {test-number} - Catch::TestCaseInfo( "", { "fake test name", "[]" }, dummySourceLineInfo )
 # EndsWith string matcher
@@ -4237,9 +4237,9 @@ ok {test-number} - Catch::Detail::stringify( set ) == "{ \"abc\", \"def\", \"ghi
 # std::vector<std::pair<std::string,int> > -> toString
 ok {test-number} - ::Catch::Detail::stringify( pr ) == "{ { \"green\", 55 } }" for: "{ { "green", 55 } }" == "{ { "green", 55 } }"
 # stdout and stderr streams have %-starting name
-ok {test-number} - Catch::makeStream( "%stderr" )->isStdout() for: true
+ok {test-number} - Catch::makeStream( "%stderr" )->isConsole() for: true
 # stdout and stderr streams have %-starting name
-ok {test-number} - Catch::makeStream( "%stdout" )->isStdout() for: true
+ok {test-number} - Catch::makeStream( "%stdout" )->isConsole() for: true
 # stringify ranges
 ok {test-number} - ::Catch::Detail::stringify(streamable_range{}) == "op<<(streamable_range)" for: "op<<(streamable_range)" == "op<<(streamable_range)"
 # stringify ranges

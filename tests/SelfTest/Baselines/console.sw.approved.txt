@@ -3812,7 +3812,7 @@ Stream.tests.cpp:<line number>
 ...............................................................................
 
 Stream.tests.cpp:<line number>: PASSED:
-  REQUIRE( Catch::makeStream( "-" )->isStdout() )
+  REQUIRE( Catch::makeStream( "-" )->isConsole() )
 with expansion:
   true
 
@@ -3894,7 +3894,7 @@ Stream.tests.cpp:<line number>
 ...............................................................................
 
 Stream.tests.cpp:<line number>: PASSED:
-  REQUIRE( Catch::makeStream( "" )->isStdout() )
+  REQUIRE( Catch::makeStream( "" )->isConsole() )
 with expansion:
   true
 
@@ -16859,12 +16859,12 @@ Stream.tests.cpp:<line number>
 ...............................................................................
 
 Stream.tests.cpp:<line number>: PASSED:
-  REQUIRE( Catch::makeStream( "%stderr" )->isStdout() )
+  REQUIRE( Catch::makeStream( "%stderr" )->isConsole() )
 with expansion:
   true
 
 Stream.tests.cpp:<line number>: PASSED:
-  REQUIRE( Catch::makeStream( "%stdout" )->isStdout() )
+  REQUIRE( Catch::makeStream( "%stdout" )->isConsole() )
 with expansion:
   true
 

@@ -99,7 +99,7 @@ namespace Detail {
 
         public: // IStream
             std::ostream& stream() const override { return m_os; }
-            bool isStdout() const override { return true; }
+            bool isConsole() const override { return true; }
         };
 
         class CerrStream : public IStream {
@@ -113,7 +113,7 @@ namespace Detail {
 
         public: // IStream
             std::ostream& stream() const override { return m_os; }
-            bool isStdout() const override { return true; }
+            bool isConsole() const override { return true; }
         };
 
         ///////////////////////////////////////////////////////////////////////////

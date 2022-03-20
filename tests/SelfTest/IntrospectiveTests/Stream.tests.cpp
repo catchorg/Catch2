@@ -11,16 +11,16 @@
 #include <catch2/internal/catch_stream.hpp>
 
 TEST_CASE( "Cout stream properly declares it writes to stdout", "[streams]" ) {
-    REQUIRE( Catch::makeStream( "-" )->isStdout() );
+    REQUIRE( Catch::makeStream( "-" )->isConsole() );
 }
 
 TEST_CASE( "Empty stream name opens cout stream", "[streams]" ) {
-    REQUIRE( Catch::makeStream( "" )->isStdout() );
+    REQUIRE( Catch::makeStream( "" )->isConsole() );
 }
 
 TEST_CASE( "stdout and stderr streams have %-starting name", "[streams]" ) {
-    REQUIRE( Catch::makeStream( "%stderr" )->isStdout() );
-    REQUIRE( Catch::makeStream( "%stdout" )->isStdout() );
+    REQUIRE( Catch::makeStream( "%stderr" )->isConsole() );
+    REQUIRE( Catch::makeStream( "%stdout" )->isConsole() );
 }
 
 TEST_CASE( "request an unknown %-starting stream fails", "[streams]" ) {

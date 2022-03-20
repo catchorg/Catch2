@@ -97,7 +97,7 @@ namespace {
             // Win32 text colour APIs can only be used on console streams
             // We cannot check that the output hasn't been redirected,
             // so we just check that the original stream is console stream.
-            return stream.isStdout();
+            return stream.isConsole();
         }
 
     private:
@@ -164,7 +164,7 @@ namespace {
             // only want to use the colours if we are writing to console.
             // However, console might be redirected, so we make an attempt at
             // checking for that on platforms where we know how to do that.
-            bool useColour = stream.isStdout();
+            bool useColour = stream.isConsole();
 #if defined( CATCH_INTERNAL_HAS_ISATTY ) && \
     !( defined( __DJGPP__ ) && defined( __STRICT_ANSI__ ) )
             ErrnoGuard _; // for isatty

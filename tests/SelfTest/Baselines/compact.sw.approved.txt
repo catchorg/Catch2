@@ -479,7 +479,7 @@ Generators.tests.cpp:<line number>: passed: elem % 2 == 1 for: 1 == 1
 Generators.tests.cpp:<line number>: passed: elem % 2 == 1 for: 1 == 1
 Generators.tests.cpp:<line number>: passed: call_count == 1 for: 1 == 1
 Generators.tests.cpp:<line number>: passed: make_data().size() == test_count for: 6 == 6
-Stream.tests.cpp:<line number>: passed: Catch::makeStream( "-" )->isStdout() for: true
+Stream.tests.cpp:<line number>: passed: Catch::makeStream( "-" )->isConsole() for: true
 Exception.tests.cpp:<line number>: failed: unexpected exception with message: 'custom exception - not std'; expression was: throwCustom()
 Exception.tests.cpp:<line number>: failed: unexpected exception with message: 'custom exception - not std'; expression was: throwCustom(), std::exception
 Exception.tests.cpp:<line number>: failed: unexpected exception with message: 'custom std exception'
@@ -490,7 +490,7 @@ ToString.tests.cpp:<line number>: passed: enumInfo->lookup(1) == "Value2" for: V
 ToString.tests.cpp:<line number>: passed: enumInfo->lookup(3) == "{** unexpected enum value **}" for: {** unexpected enum value **}
 ==
 "{** unexpected enum value **}"
-Stream.tests.cpp:<line number>: passed: Catch::makeStream( "" )->isStdout() for: true
+Stream.tests.cpp:<line number>: passed: Catch::makeStream( "" )->isConsole() for: true
 Tag.tests.cpp:<line number>: passed: Catch::TestCaseInfo( "", { "fake test name", "[]" }, dummySourceLineInfo )
 Matchers.tests.cpp:<line number>: failed: testStringForMatching(), EndsWith( "Substring" ) for: "this string contains 'abc' as a substring" ends with: "Substring"
 Matchers.tests.cpp:<line number>: failed: testStringForMatching(), EndsWith( "this", Catch::CaseSensitive::No ) for: "this string contains 'abc' as a substring" ends with: "this" (case insensitive)
@@ -2368,8 +2368,8 @@ ToStringGeneral.tests.cpp:<line number>: passed: Catch::Detail::stringify( set )
 ToStringPair.tests.cpp:<line number>: passed: ::Catch::Detail::stringify( pr ) == "{ { \"green\", 55 } }" for: "{ { "green", 55 } }"
 ==
 "{ { "green", 55 } }"
-Stream.tests.cpp:<line number>: passed: Catch::makeStream( "%stderr" )->isStdout() for: true
-Stream.tests.cpp:<line number>: passed: Catch::makeStream( "%stdout" )->isStdout() for: true
+Stream.tests.cpp:<line number>: passed: Catch::makeStream( "%stderr" )->isConsole() for: true
+Stream.tests.cpp:<line number>: passed: Catch::makeStream( "%stdout" )->isConsole() for: true
 ToStringWhich.tests.cpp:<line number>: passed: ::Catch::Detail::stringify(streamable_range{}) == "op<<(streamable_range)" for: "op<<(streamable_range)"
 ==
 "op<<(streamable_range)"

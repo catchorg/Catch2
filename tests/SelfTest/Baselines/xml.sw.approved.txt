@@ -4208,7 +4208,7 @@ Nor would this
   <TestCase name="Cout stream properly declares it writes to stdout" tags="[streams]" filename="tests/<exe-name>/IntrospectiveTests/Stream.tests.cpp" >
     <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/Stream.tests.cpp" >
       <Original>
-        Catch::makeStream( "-" )->isStdout()
+        Catch::makeStream( "-" )->isConsole()
       </Original>
       <Expanded>
         true
@@ -4301,7 +4301,7 @@ Nor would this
   <TestCase name="Empty stream name opens cout stream" tags="[streams]" filename="tests/<exe-name>/IntrospectiveTests/Stream.tests.cpp" >
     <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/Stream.tests.cpp" >
       <Original>
-        Catch::makeStream( "" )->isStdout()
+        Catch::makeStream( "" )->isConsole()
       </Original>
       <Expanded>
         true
@@ -19885,7 +19885,7 @@ loose text artifact
   <TestCase name="stdout and stderr streams have %-starting name" tags="[streams]" filename="tests/<exe-name>/IntrospectiveTests/Stream.tests.cpp" >
     <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/Stream.tests.cpp" >
       <Original>
-        Catch::makeStream( "%stderr" )->isStdout()
+        Catch::makeStream( "%stderr" )->isConsole()
       </Original>
       <Expanded>
         true
@@ -19893,7 +19893,7 @@ loose text artifact
     </Expression>
     <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/Stream.tests.cpp" >
       <Original>
-        Catch::makeStream( "%stdout" )->isStdout()
+        Catch::makeStream( "%stdout" )->isConsole()
       </Original>
       <Expanded>
         true
