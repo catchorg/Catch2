@@ -135,19 +135,19 @@ public:
 private:
     void printResultType() const {
         if (!passOrFail.empty()) {
-            stream << colourImpl->startColour(colour) << passOrFail << ":\n";
+            stream << colourImpl->guardColour(colour) << passOrFail << ":\n";
         }
     }
     void printOriginalExpression() const {
         if (result.hasExpression()) {
-            stream << colourImpl->startColour( Colour::OriginalExpression )
+            stream << colourImpl->guardColour( Colour::OriginalExpression )
                    << "  " << result.getExpressionInMacro() << '\n';
         }
     }
     void printReconstructedExpression() const {
         if (result.hasExpandedExpression()) {
             stream << "with expansion:\n";
-            stream << colourImpl->startColour( Colour::ReconstructedExpression )
+            stream << colourImpl->guardColour( Colour::ReconstructedExpression )
                    << TextFlow::Column( result.getExpandedExpression() )
                           .indent( 2 )
                    << '\n';
@@ -163,7 +163,7 @@ private:
         }
     }
     void printSourceInfo() const {
-        stream << colourImpl->startColour( Colour::FileName )
+        stream << colourImpl->guardColour( Colour::FileName )
                << result.getSourceInfo() << ": ";
     }
 
@@ -418,7 +418,8 @@ void ConsoleReporter::sectionEnded(SectionStats const& _sectionStats) {
     m_tablePrinter->close();
     if (_sectionStats.missingAssertions) {
         lazyPrint();
-        auto guard = m_colour->startColour( Colour::ResultError );
+        auto guard =
+            m_colour->guardColour( Colour::ResultError ).engage( m_stream );
         if (m_sectionStack.size() > 1)
             m_stream << "\nNo assertions in section";
         else
@@ -476,7 +477,7 @@ void ConsoleReporter::benchmarkEnded(BenchmarkStats<> const& stats) {
 }
 
 void ConsoleReporter::benchmarkFailed( StringRef error ) {
-    auto guard = m_colour->startColour( Colour::Red );
+    auto guard = m_colour->guardColour( Colour::Red ).engage( m_stream );
     (*m_tablePrinter)
         << "Benchmark failed (" << error << ')'
         << ColumnBreak() << RowBreak();
@@ -517,7 +518,7 @@ void ConsoleReporter::lazyPrintWithoutClosingBenchmarkTable() {
 void ConsoleReporter::lazyPrintRunInfo() {
     m_stream << '\n'
              << lineOfChars( '~' ) << '\n'
-             << m_colour->startColour( Colour::SecondaryText )
+             << m_colour->guardColour( Colour::SecondaryText )
              << currentTestRunInfo.name << " is a Catch2 v" << libraryVersion()
              << " host application.\n"
              << "Run with -? for options\n\n"
@@ -530,7 +531,7 @@ void ConsoleReporter::printTestCaseAndSectionHeader() {
     printOpenHeader(currentTestCaseInfo->name);
 
     if (m_sectionStack.size() > 1) {
-        auto guard = m_colour->startColour( Colour::Headers );
+        auto guard = m_colour->guardColour( Colour::Headers ).engage( m_stream );
 
         auto
             it = m_sectionStack.begin() + 1, // Skip first section (test case)
@@ -543,7 +544,7 @@ void ConsoleReporter::printTestCaseAndSectionHeader() {
 
 
     m_stream << lineOfChars( '-' ) << '\n'
-             << m_colour->startColour( Colour::FileName ) << lineInfo << '\n'
+             << m_colour->guardColour( Colour::FileName ) << lineInfo << '\n'
              << lineOfChars( '.' ) << "\n\n"
              << std::flush;
 }
@@ -555,7 +556,7 @@ void ConsoleReporter::printClosedHeader(std::string const& _name) {
 void ConsoleReporter::printOpenHeader(std::string const& _name) {
     m_stream << lineOfChars('-') << '\n';
     {
-        auto guard = m_colour->startColour( Colour::Headers );
+        auto guard = m_colour->guardColour( Colour::Headers ).engage( m_stream );
         printHeaderString(_name);
     }
 }
@@ -620,10 +621,10 @@ struct SummaryColumn {
 
 void ConsoleReporter::printTotals( Totals const& totals ) {
     if (totals.testCases.total() == 0) {
-        m_stream << m_colour->startColour( Colour::Warning )
+        m_stream << m_colour->guardColour( Colour::Warning )
                  << "No tests ran\n";
     } else if (totals.assertions.total() > 0 && totals.testCases.allPassed()) {
-        m_stream << m_colour->startColour( Colour::ResultSuccess )
+        m_stream << m_colour->guardColour( Colour::ResultSuccess )
                  << "All tests passed";
         m_stream << " ("
             << pluralise(totals.assertions.passed, "assertion"_sr) << " in "
@@ -657,12 +658,12 @@ void ConsoleReporter::printSummaryRow(StringRef label, std::vector<SummaryColumn
             if ( value != "0" ) {
                 m_stream << value;
             } else {
-                m_stream << m_colour->startColour( Colour::Warning )
+                m_stream << m_colour->guardColour( Colour::Warning )
                          << "- none -";
             }
         } else if (value != "0") {
-            m_stream << m_colour->startColour( Colour::LightGrey ) << " | ";
-            m_stream << m_colour->startColour( col.colour ) << value << ' '
+            m_stream << m_colour->guardColour( Colour::LightGrey ) << " | "
+                     << m_colour->guardColour( col.colour ) << value << ' '
                      << col.label;
         }
     }
@@ -679,19 +680,19 @@ void ConsoleReporter::printTotalsDivider(Totals const& totals) {
         while (failedRatio + failedButOkRatio + passedRatio > CATCH_CONFIG_CONSOLE_WIDTH - 1)
             findMax(failedRatio, failedButOkRatio, passedRatio)--;
 
-        m_stream << m_colour->startColour( Colour::Error )
+        m_stream << m_colour->guardColour( Colour::Error )
                  << std::string( failedRatio, '=' )
-                 << m_colour->startColour( Colour::ResultExpectedFailure )
+                 << m_colour->guardColour( Colour::ResultExpectedFailure )
                  << std::string( failedButOkRatio, '=' );
         if ( totals.testCases.allPassed() ) {
-            m_stream << m_colour->startColour( Colour::ResultSuccess )
+            m_stream << m_colour->guardColour( Colour::ResultSuccess )
                      << std::string( passedRatio, '=' );
         } else {
-            m_stream << m_colour->startColour( Colour::Success )
+            m_stream << m_colour->guardColour( Colour::Success )
                      << std::string( passedRatio, '=' );
         }
     } else {
-        m_stream << m_colour->startColour( Colour::Warning )
+        m_stream << m_colour->guardColour( Colour::Warning )
                  << std::string( CATCH_CONFIG_CONSOLE_WIDTH - 1, '=' );
     }
     m_stream << '\n';
@@ -702,7 +703,7 @@ void ConsoleReporter::printSummaryDivider() {
 
 void ConsoleReporter::printTestFilters() {
     if (m_config->testSpec().hasFilters()) {
-        m_stream << m_colour->startColour( Colour::BrightYellow ) << "Filters: "
+        m_stream << m_colour->guardColour( Colour::BrightYellow ) << "Filters: "
                  << serializeFilters( m_config->getTestsOrTags() ) << '\n';
     }
 }

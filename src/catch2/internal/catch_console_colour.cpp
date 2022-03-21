@@ -27,7 +27,7 @@ namespace Catch {
 
     ColourImpl::~ColourImpl() = default;
 
-    ColourImpl::ColourGuard ColourImpl::startColour( Colour::Code colourCode ) {
+    ColourImpl::ColourGuard ColourImpl::guardColour( Colour::Code colourCode ) {
         return ColourGuard(colourCode, this );
     }
 
@@ -45,25 +45,51 @@ namespace Catch {
 
     } // namespace
 
-    ColourImpl::ColourGuard::ColourGuard( Colour::Code code,
-                              ColourImpl const* colour ):
-        m_colourImpl( colour ) {
-        m_colourImpl->use( code );
+    void ColourImpl::ColourGuard::engageImpl( std::ostream& stream ) {
+        assert( &stream == &m_colourImpl->m_stream->stream() &&
+                "Engaging colour guard for different stream than used by the "
+                "parent colour implementation" );
+        static_cast<void>( stream );
+
+        m_engaged = true;
+        m_colourImpl->use( m_code );
     }
-    ColourImpl::ColourGuard::ColourGuard( ColourGuard&& rhs ):
-        m_colourImpl( rhs.m_colourImpl ) {
-        rhs.m_moved = true;
+
+    ColourImpl::ColourGuard::ColourGuard( Colour::Code code,
+                                          ColourImpl const* colour ):
+        m_colourImpl( colour ), m_code( code ) {
+    }
+    ColourImpl::ColourGuard::ColourGuard( ColourGuard&& rhs ) noexcept:
+        m_colourImpl( rhs.m_colourImpl ),
+        m_code( rhs.m_code ),
+        m_engaged( rhs.m_engaged ) {
+        rhs.m_engaged = false;
     }
     ColourImpl::ColourGuard&
-    ColourImpl::ColourGuard::operator=( ColourGuard&& rhs ) {
-        m_colourImpl = rhs.m_colourImpl;
-        rhs.m_moved = true;
+    ColourImpl::ColourGuard::operator=( ColourGuard&& rhs ) noexcept {
+        using std::swap;
+        swap( m_colourImpl, rhs.m_colourImpl );
+        swap( m_code, rhs.m_code );
+        swap( m_engaged, rhs.m_engaged );
+
         return *this;
     }
     ColourImpl::ColourGuard::~ColourGuard() {
-        if ( !m_moved ) {
+        if ( m_engaged ) {
             m_colourImpl->use( Colour::None );
         }
+    }
+
+    ColourImpl::ColourGuard&
+    ColourImpl::ColourGuard::engage( std::ostream& stream ) & {
+        engageImpl( stream );
+        return *this;
+    }
+
+    ColourImpl::ColourGuard&&
+    ColourImpl::ColourGuard::engage( std::ostream& stream ) && {
+        engageImpl( stream );
+        return CATCH_MOVE(*this);
     }
 
 } // namespace Catch

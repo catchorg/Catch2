@@ -153,7 +153,7 @@ namespace Catch {
             m_startupExceptions = true;
             auto errStream = makeStream( "%stderr" );
             auto colourImpl = makeColourImpl( &config(), errStream.get() );
-            auto guard = colourImpl->startColour( Colour::Red );
+            auto guard = colourImpl->guardColour( Colour::Red );
             errStream->stream() << "Errors occurred during startup!" << '\n';
             // iterate over all exceptions and notify user
             for ( const auto& ex_ptr : exceptions ) {
@@ -200,7 +200,7 @@ namespace Catch {
             auto colour = makeColourImpl( &config(), errStream.get() );
 
             errStream->stream()
-                << colour->startColour( Colour::Red )
+                << colour->guardColour( Colour::Red )
                 << "\nError(s) in input:\n"
                 << TextFlow::Column( result.errorMessage() ).indent( 2 )
                 << "\n\n";

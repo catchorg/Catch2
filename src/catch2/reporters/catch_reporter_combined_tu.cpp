@@ -194,7 +194,7 @@ namespace Catch {
             Colour::Code colour = testCaseInfo.isHidden()
                 ? Colour::SecondaryText
                 : Colour::None;
-            auto colourGuard = streamColour->startColour( colour );
+            auto colourGuard = streamColour->guardColour( colour ).engage( out );
 
             out << TextFlow::Column(testCaseInfo.name).initialIndent(2).indent(4) << '\n';
             if (verbosity >= Verbosity::High) {
