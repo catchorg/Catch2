@@ -55,7 +55,11 @@ namespace Catch {
             std::sort( indexed_tests.begin(),
                        indexed_tests.end(),
                        []( TestWithHash const& lhs, TestWithHash const& rhs ) {
-                              return lhs.first <= rhs.first;
+                          if ( lhs.first == rhs.first ) {
+                               return lhs.second.getTestCaseInfo() <
+                                      rhs.second.getTestCaseInfo();
+                           }
+                           return lhs.first < rhs.first;
                        } );
 
             std::vector<TestCaseHandle> randomized;

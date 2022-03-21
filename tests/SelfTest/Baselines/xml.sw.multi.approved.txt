@@ -13348,30 +13348,6 @@ A string sent to stderr via clog
       </StdErr>
     </OverallResult>
   </TestCase>
-  <TestCase name="Set TestRunOrder of command line parser to Randomized and register tests in registry." filename="tests/<exe-name>/UsageTests/RandomlyOrderedTestCases.tests.cpp" >
-    <Expression success="true" type="CHECK" filename="tests/<exe-name>/UsageTests/RandomlyOrderedTestCases.tests.cpp" >
-      <Original>
-        cli.parse({"test", "--order", "random"})
-      </Original>
-      <Expanded>
-        {?}
-      </Expanded>
-    </Expression>
-    <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/UsageTests/RandomlyOrderedTestCases.tests.cpp" >
-      <Original>
-        configData.runOrder == Catch::TestRunOrder::Randomized
-      </Original>
-      <Expanded>
-        2 == 2
-      </Expanded>
-    </Expression>
-    <OverallResult success="true">
-      <StdOut>
-f2
-f1
-      </StdOut>
-    </OverallResult>
-  </TestCase>
   <TestCase name="Some simple comparisons between doubles" tags="[Approx]" filename="tests/<exe-name>/UsageTests/Approx.tests.cpp" >
     <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/UsageTests/Approx.tests.cpp" >
       <Original>
@@ -21072,6 +21048,6 @@ There is no extra whitespace here
     </Section>
     <OverallResult success="true"/>
   </TestCase>
-  <OverallResults successes="2070" failures="143" expectedFailures="27"/>
-  <OverallResultsCases successes="299" failures="83" expectedFailures="7"/>
+  <OverallResults successes="2068" failures="143" expectedFailures="27"/>
+  <OverallResultsCases successes="298" failures="83" expectedFailures="7"/>
 </Catch2TestRun>

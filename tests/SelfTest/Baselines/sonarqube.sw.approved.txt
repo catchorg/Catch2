@@ -1829,9 +1829,6 @@ Misc.tests.cpp:<line number>
     <testCase name="xmlentitycheck/embedded xml: &lt;test>it should be possible to embed xml characters, such as &lt;, &quot; or &amp;, or even whole &lt;xml>documents&lt;/xml> within an attribute&lt;/test>" duration="{duration}"/>
     <testCase name="xmlentitycheck/encoded chars: these should all be encoded: &amp;&amp;&amp;&quot;&quot;&quot;&lt;&lt;&lt;&amp;&quot;&lt;&lt;&amp;&quot;" duration="{duration}"/>
   </file>
-  <file path="tests/<exe-name>/UsageTests/RandomlyOrderedTestCases.tests.cpp">
-    <testCase name="Set TestRunOrder of command line parser to Randomized and register tests in registry." duration="{duration}"/>
-  </file>
   <file path="tests/<exe-name>/UsageTests/ToStringChrono.tests.cpp">
     <testCase name="Stringifying std::chrono::duration helpers" duration="{duration}"/>
     <testCase name="Stringifying std::chrono::duration with weird ratios" duration="{duration}"/>

@@ -1596,10 +1596,6 @@ BDD.tests.cpp:<line number>: passed: v.size() == 0 for: 0 == 0
 A string sent directly to stdout
 A string sent directly to stderr
 A string sent to stderr via clog
-RandomlyOrderedTestCases.tests.cpp:<line number>: passed: cli.parse({"test", "--order", "random"}) for: {?}
-RandomlyOrderedTestCases.tests.cpp:<line number>: passed: configData.runOrder == Catch::TestRunOrder::Randomized for: 2 == 2
-f2
-f1
 Approx.tests.cpp:<line number>: passed: d == Approx( 1.23 ) for: 1.23 == Approx( 1.23 )
 Approx.tests.cpp:<line number>: passed: d != Approx( 1.22 ) for: 1.23 != Approx( 1.22 )
 Approx.tests.cpp:<line number>: passed: d != Approx( 1.24 ) for: 1.23 != Approx( 1.24 )

@@ -2797,12 +2797,6 @@ ok {test-number} - v.size() == 0 for: 0 == 0
 A string sent directly to stdout
 A string sent directly to stderr
 A string sent to stderr via clog
-# Set TestRunOrder of command line parser to Randomized and register tests in registry.
-ok {test-number} - cli.parse({"test", "--order", "random"}) for: {?}
-# Set TestRunOrder of command line parser to Randomized and register tests in registry.
-ok {test-number} - configData.runOrder == Catch::TestRunOrder::Randomized for: 2 == 2
-f2
-f1
 # Some simple comparisons between doubles
 ok {test-number} - d == Approx( 1.23 ) for: 1.23 == Approx( 1.23 )
 # Some simple comparisons between doubles
@@ -4484,5 +4478,5 @@ ok {test-number} - q3 == 23. for: 23.0 == 23.0
 ok {test-number} -
 # xmlentitycheck
 ok {test-number} -
-1..2240
+1..2238
 

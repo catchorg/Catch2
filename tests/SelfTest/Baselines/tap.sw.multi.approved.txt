@@ -2792,10 +2792,6 @@ ok {test-number} - v.size() == 0 for: 0 == 0
 ok {test-number} - v.capacity() >= 10 for: 10 >= 10
 # Scenario: Vector resizing affects size and capacity
 ok {test-number} - v.size() == 0 for: 0 == 0
-# Set TestRunOrder of command line parser to Randomized and register tests in registry.
-ok {test-number} - cli.parse({"test", "--order", "random"}) for: {?}
-# Set TestRunOrder of command line parser to Randomized and register tests in registry.
-ok {test-number} - configData.runOrder == Catch::TestRunOrder::Randomized for: 2 == 2
 # Some simple comparisons between doubles
 ok {test-number} - d == Approx( 1.23 ) for: 1.23 == Approx( 1.23 )
 # Some simple comparisons between doubles
@@ -4474,5 +4470,5 @@ ok {test-number} - q3 == 23. for: 23.0 == 23.0
 ok {test-number} -
 # xmlentitycheck
 ok {test-number} -
-1..2240
+1..2238
 

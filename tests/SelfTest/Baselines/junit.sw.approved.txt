@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuitesloose text artifact
 >
-  <testsuite name="<exe-name>" errors="17" failures="126" tests="2240" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
+  <testsuite name="<exe-name>" errors="17" failures="126" tests="2238" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
     <properties>
       <property name="random-seed" value="1"/>
       <property name="filters" value="~[!nonportable]~[!benchmark]~[approvals] *"/>
@@ -1218,12 +1218,6 @@ A string sent directly to stderr
 A string sent to stderr via clog
       </system-err>
     </testcase>
-    <testcase classname="<exe-name>.global" name="Set TestRunOrder of command line parser to Randomized and register tests in registry." time="{duration}" status="run">
-      <system-out>
-f2
-f1
-      </system-out>
-    </testcase>
     <testcase classname="<exe-name>.global" name="Some simple comparisons between doubles" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Standard output from all sections is reported/two" time="{duration}" status="run">
       <system-out>
@@ -1911,8 +1905,6 @@ Exception.tests.cpp:<line number>
     <system-out>
 This would not be caught previously
 A string sent directly to stdout
-f2
-f1
 Message from section one
 Message from section two
     </system-out>

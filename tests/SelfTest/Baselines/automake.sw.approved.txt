@@ -215,9 +215,6 @@ A string sent directly to stdout
 A string sent directly to stderr
 A string sent to stderr via clog
 :test-result: FAIL Sends stuff to stdout and stderr
-f2
-f1
-:test-result: PASS Set TestRunOrder of command line parser to Randomized and register tests in registry.
 :test-result: PASS Some simple comparisons between doubles
 Message from section one
 Message from section two

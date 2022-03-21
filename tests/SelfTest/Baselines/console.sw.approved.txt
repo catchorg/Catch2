@@ -11188,25 +11188,6 @@ Misc.tests.cpp:<line number>
 No assertions in test case 'Sends stuff to stdout and stderr'
 
 -------------------------------------------------------------------------------
-Set TestRunOrder of command line parser to Randomized and register tests in
-registry.
--------------------------------------------------------------------------------
-RandomlyOrderedTestCases.tests.cpp:<line number>
-...............................................................................
-
-RandomlyOrderedTestCases.tests.cpp:<line number>: PASSED:
-  CHECK( cli.parse({"test", "--order", "random"}) )
-with expansion:
-  {?}
-
-RandomlyOrderedTestCases.tests.cpp:<line number>: PASSED:
-  REQUIRE( configData.runOrder == Catch::TestRunOrder::Randomized )
-with expansion:
-  2 == 2
-
-f2
-f1
--------------------------------------------------------------------------------
 Some simple comparisons between doubles
 -------------------------------------------------------------------------------
 Approx.tests.cpp:<line number>
@@ -17946,6 +17927,6 @@ Misc.tests.cpp:<line number>
 Misc.tests.cpp:<line number>: PASSED:
 
 ===============================================================================
-test cases:  389 |  299 passed |  83 failed |  7 failed as expected
-assertions: 2240 | 2070 passed | 143 failed | 27 failed as expected
+test cases:  388 |  298 passed |  83 failed |  7 failed as expected
+assertions: 2238 | 2068 passed | 143 failed | 27 failed as expected
 
