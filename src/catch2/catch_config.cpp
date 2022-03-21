@@ -8,6 +8,8 @@
 #include <catch2/catch_config.hpp>
 #include <catch2/catch_user_config.hpp>
 #include <catch2/internal/catch_enforce.hpp>
+#include <catch2/internal/catch_optional.hpp>
+#include <catch2/internal/catch_platform.hpp>
 #include <catch2/internal/catch_stream.hpp>
 #include <catch2/internal/catch_stringref.hpp>
 #include <catch2/internal/catch_string_manip.hpp>
@@ -68,6 +70,27 @@ namespace Catch {
                 {}, {}, {}
             } );
         }
+
+#if defined( CATCH_CONFIG_BAZEL_SUPPORT )
+        // Register a JUnit reporter for Bazel. Bazel sets an environment
+        // variable with the path to XML output. If this file is written to
+        // during test, Bazel will not generate a default XML output.
+        // This allows the XML output file to contain higher level of detail
+        // than what is possible otherwise.
+#if defined( _MSC_VER )
+        // On Windows getenv throws a warning as there is no input validation,
+        // since the key is hardcoded, this should not be an issue.
+#pragma warning( suppress : 4996 )
+        const auto bazelOutputFilePtr = std::getenv( "XML_OUTPUT_FILE" );
+#else
+        const auto bazelOutputFilePtr = std::getenv( "XML_OUTPUT_FILE" );
+#endif
+        if ( bazelOutputFilePtr != nullptr ) {
+            m_data.reporterSpecifications.push_back(
+                { std::string( "junit" ),
+                  Optional<std::string>( bazelOutputFilePtr ) } );
+        }
+#endif
 
         bool defaultOutputUsed = false;
         m_reporterStreams.reserve( m_data.reporterSpecifications.size() );

@@ -8,6 +8,7 @@
 [stdout](#stdout)<br>
 [Fallback stringifier](#fallback-stringifier)<br>
 [Default reporter](#default-reporter)<br>
+[Bazel support](#bazel-support)<br>
 [C++11 toggles](#c11-toggles)<br>
 [C++17 toggles](#c17-toggles)<br>
 [Other toggles](#other-toggles)<br>
@@ -95,6 +96,12 @@ default reporter.
 This means that defining `CATCH_CONFIG_DEFAULT_REPORTER` to `"console"`
 is equivalent with the out-of-the-box experience.
 
+
+## Bazel support
+When `CATCH_CONFIG_BAZEL_SUPPORT` is defined, Catch2 will register a `JUnit`
+reporter writing to a path pointed by `XML_OUTPUT_FILE` provided by Bazel.
+
+> `CATCH_CONFIG_BAZEL_SUPPORT` was [introduced](https://github.com/catchorg/Catch2/pull/2399) in Catch2 X.Y.Z.
 
 ## C++11 toggles
 
