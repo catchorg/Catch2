@@ -251,9 +251,7 @@ set(REPORTER_SOURCES
 )
 set(REPORTER_FILES ${REPORTER_HEADERS} ${REPORTER_SOURCES})
 
-# Fixme: STATIC because for dynamic, we would need to handle visibility
-# and I don't want to do the annotations right now
-add_library(Catch2 STATIC
+add_library(Catch2
   ${REPORTER_FILES}
   ${INTERNAL_FILES}
   ${BENCHMARK_HEADERS}
@@ -306,7 +304,7 @@ target_include_directories(Catch2
 )
 
 
-add_library(Catch2WithMain STATIC
+add_library(Catch2WithMain
     ${SOURCES_DIR}/internal/catch_main.cpp
 )
 add_build_reproducibility_settings(Catch2WithMain)
