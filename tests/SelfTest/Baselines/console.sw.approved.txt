@@ -3024,6 +3024,66 @@ with expansion:
   { "aaa", "bbb" } == { "aaa", "bbb" }
 
 -------------------------------------------------------------------------------
+ColourGuard behaviour
+  ColourGuard is disengaged by default
+-------------------------------------------------------------------------------
+ColourImpl.tests.cpp:<line number>
+...............................................................................
+
+ColourImpl.tests.cpp:<line number>: PASSED:
+  REQUIRE( streamWrapper.str().empty() )
+with expansion:
+  true
+
+-------------------------------------------------------------------------------
+ColourGuard behaviour
+  ColourGuard is engaged by op<<
+-------------------------------------------------------------------------------
+ColourImpl.tests.cpp:<line number>
+...............................................................................
+
+ColourImpl.tests.cpp:<line number>: PASSED:
+  REQUIRE( streamWrapper.str() == "1\nUsing code: 2\n2\nUsing code: 0\n3\n" )
+with expansion:
+  "1
+  Using code: 2
+  2
+  Using code: 0
+  3
+  "
+  ==
+  "1
+  Using code: 2
+  2
+  Using code: 0
+  3
+  "
+
+-------------------------------------------------------------------------------
+ColourGuard behaviour
+  ColourGuard can be engaged explicitly
+-------------------------------------------------------------------------------
+ColourImpl.tests.cpp:<line number>
+...............................................................................
+
+ColourImpl.tests.cpp:<line number>: PASSED:
+  REQUIRE( streamWrapper.str() == "Using code: 2\nA\nB\nUsing code: 0\nC\n" )
+with expansion:
+  "Using code: 2
+  A
+  B
+  Using code: 0
+  C
+  "
+  ==
+  "Using code: 2
+  A
+  B
+  Using code: 0
+  C
+  "
+
+-------------------------------------------------------------------------------
 Combining MatchAllOfGeneric does not nest
 -------------------------------------------------------------------------------
 Matchers.tests.cpp:<line number>
@@ -17811,6 +17871,6 @@ Misc.tests.cpp:<line number>
 Misc.tests.cpp:<line number>: PASSED:
 
 ===============================================================================
-test cases:  385 |  295 passed |  83 failed |  7 failed as expected
-assertions: 2231 | 2061 passed | 143 failed | 27 failed as expected
+test cases:  386 |  296 passed |  83 failed |  7 failed as expected
+assertions: 2234 | 2064 passed | 143 failed | 27 failed as expected
 

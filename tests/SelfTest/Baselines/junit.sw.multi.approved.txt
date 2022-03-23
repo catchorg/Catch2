@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuites>
-  <testsuite name="<exe-name>" errors="17" failures="126" tests="2231" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
+  <testsuite name="<exe-name>" errors="17" failures="126" tests="2234" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
     <properties>
       <property name="random-seed" value="1"/>
       <property name="filters" value="~[!nonportable]~[!benchmark]~[approvals] *"/>
@@ -386,6 +386,9 @@ Exception.tests.cpp:<line number>
     <testcase classname="<exe-name>.global" name="Clara::Arg supports single-arg parse the way Opt does" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Clara::Opt supports accept-many lambdas/Parsing fails on multiple options without accept_many" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Clara::Opt supports accept-many lambdas/Parsing succeeds on multiple options with accept_many" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="ColourGuard behaviour/ColourGuard is disengaged by default" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="ColourGuard behaviour/ColourGuard is engaged by op&lt;&lt;" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="ColourGuard behaviour/ColourGuard can be engaged explicitly" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Combining MatchAllOfGeneric does not nest" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Combining MatchAnyOfGeneric does not nest" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Combining MatchNotOfGeneric does not nest" time="{duration}" status="run"/>

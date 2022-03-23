@@ -730,6 +730,12 @@ ok {test-number} - !(parse_result) for: !{?}
 ok {test-number} - parse_result for: {?}
 # Clara::Opt supports accept-many lambdas
 ok {test-number} - res == std::vector<std::string>{ "aaa", "bbb" } for: { "aaa", "bbb" } == { "aaa", "bbb" }
+# ColourGuard behaviour
+ok {test-number} - streamWrapper.str().empty() for: true
+# ColourGuard behaviour
+ok {test-number} - streamWrapper.str() == "1\nUsing code: 2\n2\nUsing code: 0\n3\n" for: "1 Using code: 2 2 Using code: 0 3 " == "1 Using code: 2 2 Using code: 0 3 "
+# ColourGuard behaviour
+ok {test-number} - streamWrapper.str() == "Using code: 2\nA\nB\nUsing code: 0\nC\n" for: "Using code: 2 A B Using code: 0 C " == "Using code: 2 A B Using code: 0 C "
 # Combining MatchAllOfGeneric does not nest
 ok {test-number} - with 1 message: 'std::is_same< decltype( ( MatcherA() && MatcherB() ) && MatcherC() ), Catch::Matchers::Detail:: MatchAllOfGeneric<MatcherA, MatcherB, MatcherC>>::value'
 # Combining MatchAllOfGeneric does not nest
@@ -4464,5 +4470,5 @@ ok {test-number} - q3 == 23. for: 23.0 == 23.0
 ok {test-number} -
 # xmlentitycheck
 ok {test-number} -
-1..2231
+1..2234
 

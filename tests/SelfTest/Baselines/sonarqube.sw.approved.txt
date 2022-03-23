@@ -94,6 +94,11 @@
     <testCase name="Process can be configured on command line/Benchmark options/warmup-time" duration="{duration}"/>
     <testCase name="Test with special, characters &quot;in name" duration="{duration}"/>
   </file>
+  <file path="tests/<exe-name>/IntrospectiveTests/ColourImpl.tests.cpp">
+    <testCase name="ColourGuard behaviour/ColourGuard is disengaged by default" duration="{duration}"/>
+    <testCase name="ColourGuard behaviour/ColourGuard is engaged by op&lt;&lt;" duration="{duration}"/>
+    <testCase name="ColourGuard behaviour/ColourGuard can be engaged explicitly" duration="{duration}"/>
+  </file>
   <file path="tests/<exe-name>/IntrospectiveTests/Details.tests.cpp">
     <testCase name="CaseInsensitiveEqualsTo is case insensitive/Degenerate cases" duration="{duration}"/>
     <testCase name="CaseInsensitiveEqualsTo is case insensitive/Plain comparisons" duration="{duration}"/>

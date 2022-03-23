@@ -3308,6 +3308,66 @@ Nor would this
     </Section>
     <OverallResult success="true"/>
   </TestCase>
+  <TestCase name="ColourGuard behaviour" tags="[console-colours]" filename="tests/<exe-name>/IntrospectiveTests/ColourImpl.tests.cpp" >
+    <Section name="ColourGuard is disengaged by default" filename="tests/<exe-name>/IntrospectiveTests/ColourImpl.tests.cpp" >
+      <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/ColourImpl.tests.cpp" >
+        <Original>
+          streamWrapper.str().empty()
+        </Original>
+        <Expanded>
+          true
+        </Expanded>
+      </Expression>
+      <OverallResults successes="1" failures="0" expectedFailures="0"/>
+    </Section>
+    <Section name="ColourGuard is engaged by op&lt;&lt;" filename="tests/<exe-name>/IntrospectiveTests/ColourImpl.tests.cpp" >
+      <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/ColourImpl.tests.cpp" >
+        <Original>
+          streamWrapper.str() == "1\nUsing code: 2\n2\nUsing code: 0\n3\n"
+        </Original>
+        <Expanded>
+          "1
+Using code: 2
+2
+Using code: 0
+3
+"
+==
+"1
+Using code: 2
+2
+Using code: 0
+3
+"
+        </Expanded>
+      </Expression>
+      <OverallResults successes="1" failures="0" expectedFailures="0"/>
+    </Section>
+    <Section name="ColourGuard can be engaged explicitly" filename="tests/<exe-name>/IntrospectiveTests/ColourImpl.tests.cpp" >
+      <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/ColourImpl.tests.cpp" >
+        <Original>
+          streamWrapper.str() == "Using code: 2\nA\nB\nUsing code: 0\nC\n"
+        </Original>
+        <Expanded>
+          "Using code: 2
+A
+B
+Using code: 0
+C
+"
+==
+"Using code: 2
+A
+B
+Using code: 0
+C
+"
+        </Expanded>
+      </Expression>
+      <OverallResults successes="1" failures="0" expectedFailures="0"/>
+    </Section>
+    <OverallResult success="true"/>
+  </TestCase>
   <TestCase name="Combining MatchAllOfGeneric does not nest" tags="[matchers][templated]" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
     <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
       <Original>
@@ -20931,6 +20991,6 @@ loose text artifact
     </Section>
     <OverallResult success="true"/>
   </TestCase>
-  <OverallResults successes="2061" failures="143" expectedFailures="27"/>
-  <OverallResultsCases successes="295" failures="83" expectedFailures="7"/>
+  <OverallResults successes="2064" failures="143" expectedFailures="27"/>
+  <OverallResultsCases successes="296" failures="83" expectedFailures="7"/>
 </Catch2TestRun>

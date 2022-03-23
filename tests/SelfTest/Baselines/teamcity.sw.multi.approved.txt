@@ -241,6 +241,8 @@ Exception.tests.cpp:<line number>|nunexpected exception with message:|n  "unexpe
 ##teamcity[testFinished name='Clara::Arg supports single-arg parse the way Opt does' duration="{duration}"]
 ##teamcity[testStarted name='Clara::Opt supports accept-many lambdas']
 ##teamcity[testFinished name='Clara::Opt supports accept-many lambdas' duration="{duration}"]
+##teamcity[testStarted name='ColourGuard behaviour']
+##teamcity[testFinished name='ColourGuard behaviour' duration="{duration}"]
 ##teamcity[testStarted name='Combining MatchAllOfGeneric does not nest']
 ##teamcity[testFinished name='Combining MatchAllOfGeneric does not nest' duration="{duration}"]
 ##teamcity[testStarted name='Combining MatchAnyOfGeneric does not nest']
