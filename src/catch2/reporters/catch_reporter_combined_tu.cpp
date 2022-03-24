@@ -196,7 +196,7 @@ namespace Catch {
                 : Colour::None;
             auto colourGuard = streamColour->guardColour( colour ).engage( out );
 
-            out << TextFlow::Column(testCaseInfo.name).initialIndent(2).indent(4) << '\n';
+            out << TextFlow::Column(testCaseInfo.name).indent(2) << '\n';
             if (verbosity >= Verbosity::High) {
                 out << TextFlow::Column(Catch::Detail::stringify(testCaseInfo.lineInfo)).indent(4) << '\n';
             }
