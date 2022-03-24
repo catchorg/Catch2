@@ -38,6 +38,7 @@ endif()
 execute_process(
   COMMAND ${TEST_EXECUTOR} "${TEST_EXECUTABLE}" --list-tests --verbosity quiet ${spec}
   OUTPUT_VARIABLE output
+  ERROR_VARIABLE error
   RESULT_VARIABLE result
   WORKING_DIRECTORY "${TEST_WORKING_DIR}"
 )
@@ -46,6 +47,7 @@ if(NOT ${result} EQUAL 0)
     "Error running test executable '${TEST_EXECUTABLE}':\n"
     "  Result: ${result}\n"
     "  Output: ${output}\n"
+    "  Error: ${error}\n"
   )
 endif()
 
