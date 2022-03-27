@@ -179,6 +179,13 @@ v3 releases.
   * To support this, the `-r`, `--reporter` flag now also accepts optional output destination
   * For full overview of the semantics of using multiple reporters, look into the reporter documentation
   * To enable the new syntax, reporter names can no longer contain `::`.
+* Console colour support has been rewritten and significantly improved
+  * The colour implementation based on ANSI colour codes is always available
+  * Colour implementations respect their associated stream
+    * previously e.g. Win32 impl would change console colour even if Catch2 was writing to a file
+  * The colour API is resilient against changing evaluation order of expressions
+  * The associated CLI flag and compile-time configuration options have changed
+    * For details see the docs for command-line and compile-time Catch2 configuration
 
 
 ### Fixes

@@ -31,19 +31,18 @@ To keep test code clean and uncluttered Catch uses short macro names (e.g. ```TE
 
 ## Terminal colour
 
-    CATCH_CONFIG_COLOUR_NONE      // completely disables all text colouring
-    CATCH_CONFIG_COLOUR_WINDOWS   // forces the Win32 console API to be used
-    CATCH_CONFIG_COLOUR_ANSI      // forces ANSI colour codes to be used
+    CATCH_CONFIG_COLOUR_WIN32     // Force enables compiling colouring impl based on Win32 console API
+    CATCH_CONFIG_NO_COLOUR_WIN32  // Force disables ...
 
-Yes, I am English, so I will continue to spell "colour" with a 'u'.
+Yes, Catch2 uses the british spelling of colour.
 
-When sending output to the terminal, if it detects that it can, Catch will use colourised text. On Windows the Win32 API, ```SetConsoleTextAttribute```, is used. On POSIX systems ANSI colour escape codes are inserted into the stream.
+Catch2 attempts to autodetect whether the Win32 console colouring API,
+`SetConsoleTextAttribute`, is available, and if it is available it compiles
+in a console colouring implementation that uses it.
 
-For finer control you can define one of the above identifiers (these are mutually exclusive - but that is not checked so may behave unexpectedly if you mix them):
+This option can be used to override Catch2's autodetection and force the
+compilation either ON or OFF.
 
-Note that when ANSI colour codes are used "unistd.h" must be includable - along with a definition of ```isatty()```
-
-Typically you should place the ```#define``` before #including "catch.hpp" in your main source file - but if you prefer you can define it for your whole project by whatever your IDE or build system provides for you to do so.
 
 ## Console width
 

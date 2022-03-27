@@ -64,10 +64,7 @@ TEST_CASE( "The default listing implementation write to provided stream",
             { "fake test name"_catch_sr, "[fakeTestTag]"_catch_sr },
             { "fake-file.cpp", 123456789 } };
         std::vector<Catch::TestCaseHandle> tests({ {&fakeInfo, nullptr} });
-        Catch::ConfigData cd;
-        cd.useColour = Catch::UseColour::No;
-        Catch::Config conf(cd);
-        auto colour = Catch::makeColourImpl( &conf, &sstream);
+        auto colour = Catch::makeColourImpl( Catch::ColourMode::None, &sstream);
         Catch::defaultListTests(sstream.stream(), colour.get(), tests, false, Catch::Verbosity::Normal);
 
         auto listingString = sstream.str();

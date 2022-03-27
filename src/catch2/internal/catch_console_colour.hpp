@@ -11,9 +11,11 @@
 #include <catch2/internal/catch_unique_ptr.hpp>
 
 #include <iosfwd>
+#include <cstdint>
 
 namespace Catch {
 
+    enum class ColourMode : std::uint8_t;
     struct IConfig;
     class IStream;
 
@@ -128,7 +130,11 @@ namespace Catch {
     };
 
     //! Provides ColourImpl based on global config and target compilation platform
-    Detail::unique_ptr<ColourImpl> makeColourImpl( IConfig const* config, IStream const* stream );
+    Detail::unique_ptr<ColourImpl> makeColourImpl( ColourMode colourSelection,
+                                                   IStream const* stream );
+
+    //! Checks if specific colour impl has been compiled into the binary
+    bool isColourImplAvailable( ColourMode colourSelection );
 
 } // end namespace Catch
 

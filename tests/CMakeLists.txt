@@ -473,6 +473,17 @@ set_tests_properties("Reporters::DashAsLocationInReporterSpecSendsOutputToStdout
     PASS_REGULAR_EXPRESSION "All tests passed \\(5 assertions in 1 test case\\)"
 )
 
+add_test(NAME "Colours::ColourModeCanBeExplicitlySetToAnsi"
+  COMMAND
+    $<TARGET_FILE:SelfTest> "Factorials are computed"
+      --reporter console
+      --colour-mode ansi
+)
+set_tests_properties("Colours::ColourModeCanBeExplicitlySetToAnsi"
+  PROPERTIES
+    PASS_REGULAR_EXPRESSION "\\[1\;32mAll tests passed"
+)
+
 if (CATCH_ENABLE_CONFIGURE_TESTS)
     add_test(NAME "CMakeConfig::DefaultReporter"
       COMMAND

@@ -9969,7 +9969,7 @@ with expansion:
   {?}
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  REQUIRE( config.useColour == UseColour::Auto )
+  REQUIRE( config.colourMode == ColourMode::PlatformDefault )
 with expansion:
   0 == 0
 
@@ -9982,12 +9982,12 @@ CmdLine.tests.cpp:<line number>
 ...............................................................................
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  CHECK( cli.parse({"test", "--use-colour", "auto"}) )
+  CHECK( cli.parse( { "test", "--colour-mode", "default" } ) )
 with expansion:
   {?}
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  REQUIRE( config.useColour == UseColour::Auto )
+  REQUIRE( config.colourMode == ColourMode::PlatformDefault )
 with expansion:
   0 == 0
 
@@ -10000,12 +10000,12 @@ CmdLine.tests.cpp:<line number>
 ...............................................................................
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  CHECK( cli.parse({"test", "--use-colour", "yes"}) )
+  CHECK( cli.parse({"test", "--colour-mode", "ansi"}) )
 with expansion:
   {?}
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  REQUIRE( config.useColour == UseColour::Yes )
+  REQUIRE( config.colourMode == ColourMode::ANSI )
 with expansion:
   1 == 1
 
@@ -10018,14 +10018,14 @@ CmdLine.tests.cpp:<line number>
 ...............................................................................
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  CHECK( cli.parse({"test", "--use-colour", "no"}) )
+  CHECK( cli.parse({"test", "--colour-mode", "none"}) )
 with expansion:
   {?}
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  REQUIRE( config.useColour == UseColour::No )
+  REQUIRE( config.colourMode == ColourMode::None )
 with expansion:
-  2 == 2
+  3 == 3
 
 -------------------------------------------------------------------------------
 Process can be configured on command line
@@ -10043,8 +10043,8 @@ with expansion:
 CmdLine.tests.cpp:<line number>: PASSED:
   CHECK_THAT( result.errorMessage(), ContainsSubstring( "colour mode must be one of" ) )
 with expansion:
-  "colour mode must be one of: auto, yes or no. 'wrong' not recognised"
-  contains: "colour mode must be one of"
+  "colour mode must be one of: default, ansi, win32, or none. 'wrong' not
+  recognised" contains: "colour mode must be one of"
 
 -------------------------------------------------------------------------------
 Process can be configured on command line

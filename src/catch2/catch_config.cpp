@@ -138,7 +138,7 @@ namespace Catch {
     uint32_t Config::rngSeed() const                   { return m_data.rngSeed; }
     unsigned int Config::shardCount() const            { return m_data.shardCount; }
     unsigned int Config::shardIndex() const            { return m_data.shardIndex; }
-    UseColour Config::useColour() const                { return m_data.useColour; }
+    ColourMode Config::colourMode() const              { return m_data.colourMode; }
     bool Config::shouldDebugBreak() const              { return m_data.shouldDebugBreak; }
     int Config::abortAfter() const                     { return m_data.abortAfter; }
     bool Config::showInvisibles() const                { return m_data.showInvisibles; }

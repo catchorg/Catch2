@@ -2601,23 +2601,23 @@ ok {test-number} - config.noThrow == true for: true == true
 # Process can be configured on command line
 ok {test-number} - cli.parse({"test"}) for: {?}
 # Process can be configured on command line
-ok {test-number} - config.useColour == UseColour::Auto for: 0 == 0
+ok {test-number} - config.colourMode == ColourMode::PlatformDefault for: 0 == 0
 # Process can be configured on command line
-ok {test-number} - cli.parse({"test", "--use-colour", "auto"}) for: {?}
+ok {test-number} - cli.parse( { "test", "--colour-mode", "default" } ) for: {?}
 # Process can be configured on command line
-ok {test-number} - config.useColour == UseColour::Auto for: 0 == 0
+ok {test-number} - config.colourMode == ColourMode::PlatformDefault for: 0 == 0
 # Process can be configured on command line
-ok {test-number} - cli.parse({"test", "--use-colour", "yes"}) for: {?}
+ok {test-number} - cli.parse({"test", "--colour-mode", "ansi"}) for: {?}
 # Process can be configured on command line
-ok {test-number} - config.useColour == UseColour::Yes for: 1 == 1
+ok {test-number} - config.colourMode == ColourMode::ANSI for: 1 == 1
 # Process can be configured on command line
-ok {test-number} - cli.parse({"test", "--use-colour", "no"}) for: {?}
+ok {test-number} - cli.parse({"test", "--colour-mode", "none"}) for: {?}
 # Process can be configured on command line
-ok {test-number} - config.useColour == UseColour::No for: 2 == 2
+ok {test-number} - config.colourMode == ColourMode::None for: 3 == 3
 # Process can be configured on command line
 ok {test-number} - !result for: true
 # Process can be configured on command line
-ok {test-number} - result.errorMessage(), ContainsSubstring( "colour mode must be one of" ) for: "colour mode must be one of: auto, yes or no. 'wrong' not recognised" contains: "colour mode must be one of"
+ok {test-number} - result.errorMessage(), ContainsSubstring( "colour mode must be one of" ) for: "colour mode must be one of: default, ansi, win32, or none. 'wrong' not recognised" contains: "colour mode must be one of"
 # Process can be configured on command line
 ok {test-number} - cli.parse({ "test", "--benchmark-samples=200" }) for: {?}
 # Process can be configured on command line

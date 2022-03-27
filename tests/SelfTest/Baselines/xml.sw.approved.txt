@@ -12165,7 +12165,7 @@ C
         </Expression>
         <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
           <Original>
-            config.useColour == UseColour::Auto
+            config.colourMode == ColourMode::PlatformDefault
           </Original>
           <Expanded>
             0 == 0
@@ -12179,7 +12179,7 @@ C
       <Section name="auto" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
         <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
           <Original>
-            cli.parse({"test", "--use-colour", "auto"})
+            cli.parse( { "test", "--colour-mode", "default" } )
           </Original>
           <Expanded>
             {?}
@@ -12187,7 +12187,7 @@ C
         </Expression>
         <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
           <Original>
-            config.useColour == UseColour::Auto
+            config.colourMode == ColourMode::PlatformDefault
           </Original>
           <Expanded>
             0 == 0
@@ -12201,7 +12201,7 @@ C
       <Section name="yes" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
         <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
           <Original>
-            cli.parse({"test", "--use-colour", "yes"})
+            cli.parse({"test", "--colour-mode", "ansi"})
           </Original>
           <Expanded>
             {?}
@@ -12209,7 +12209,7 @@ C
         </Expression>
         <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
           <Original>
-            config.useColour == UseColour::Yes
+            config.colourMode == ColourMode::ANSI
           </Original>
           <Expanded>
             1 == 1
@@ -12223,7 +12223,7 @@ C
       <Section name="no" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
         <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
           <Original>
-            cli.parse({"test", "--use-colour", "no"})
+            cli.parse({"test", "--colour-mode", "none"})
           </Original>
           <Expanded>
             {?}
@@ -12231,10 +12231,10 @@ C
         </Expression>
         <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
           <Original>
-            config.useColour == UseColour::No
+            config.colourMode == ColourMode::None
           </Original>
           <Expanded>
-            2 == 2
+            3 == 3
           </Expanded>
         </Expression>
         <OverallResults successes="2" failures="0" expectedFailures="0"/>
@@ -12256,7 +12256,7 @@ C
             result.errorMessage(), ContainsSubstring( "colour mode must be one of" )
           </Original>
           <Expanded>
-            "colour mode must be one of: auto, yes or no. 'wrong' not recognised" contains: "colour mode must be one of"
+            "colour mode must be one of: default, ansi, win32, or none. 'wrong' not recognised" contains: "colour mode must be one of"
           </Expanded>
         </Expression>
         <OverallResults successes="2" failures="0" expectedFailures="0"/>

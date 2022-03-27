@@ -9,10 +9,21 @@
 #include <catch2/reporters/catch_reporter_common_base.hpp>
 
 #include <catch2/reporters/catch_reporter_helpers.hpp>
+#include <catch2/internal/catch_console_colour.hpp>
+#include <catch2/internal/catch_stream.hpp>
+
 
 namespace Catch {
+    ReporterBase::ReporterBase( ReporterConfig const& config ):
+        IEventListener( config.fullConfig() ),
+        m_wrapped_stream( config.stream() ),
+        m_stream( m_wrapped_stream->stream() ),
+        m_colour( makeColourImpl( m_config->colourMode(), m_wrapped_stream ) ) {}
 
-    void ReporterBase::listReporters(std::vector<ReporterDescription> const& descriptions) {
+    ReporterBase::~ReporterBase() = default;
+
+    void ReporterBase::listReporters(
+        std::vector<ReporterDescription> const& descriptions ) {
         defaultListReporters(m_stream, descriptions, m_config->verbosity());
     }
 

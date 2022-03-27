@@ -66,7 +66,7 @@ namespace Catch {
         ShowDurations showDurations = ShowDurations::DefaultForReporter;
         double minDuration = -1;
         TestRunOrder runOrder = TestRunOrder::Declared;
-        UseColour useColour = UseColour::Auto;
+        ColourMode colourMode = ColourMode::PlatformDefault;
         WaitForKeypress::When waitForKeypress = WaitForKeypress::Never;
 
         std::string defaultOutputFilename;
@@ -114,7 +114,7 @@ namespace Catch {
         uint32_t rngSeed() const override;
         unsigned int shardCount() const override;
         unsigned int shardIndex() const override;
-        UseColour useColour() const override;
+        ColourMode colourMode() const override;
         bool shouldDebugBreak() const override;
         int abortAfter() const override;
         bool showInvisibles() const override;

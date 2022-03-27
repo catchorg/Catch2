@@ -152,7 +152,8 @@ namespace Catch {
 
             m_startupExceptions = true;
             auto errStream = makeStream( "%stderr" );
-            auto colourImpl = makeColourImpl( &config(), errStream.get() );
+            auto colourImpl = makeColourImpl(
+                ColourMode::PlatformDefault, errStream.get() );
             auto guard = colourImpl->guardColour( Colour::Red );
             errStream->stream() << "Errors occurred during startup!" << '\n';
             // iterate over all exceptions and notify user
@@ -197,7 +198,7 @@ namespace Catch {
             config();
             getCurrentMutableContext().setConfig(m_config.get());
             auto errStream = makeStream( "%stderr" );
-            auto colour = makeColourImpl( &config(), errStream.get() );
+            auto colour = makeColourImpl( ColourMode::PlatformDefault, errStream.get() );
 
             errStream->stream()
                 << colour->guardColour( Colour::Red )

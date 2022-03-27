@@ -8,9 +8,7 @@ expand_template(
     out = "catch2/catch_user_config.hpp",
     substitutions = {
         "#cmakedefine CATCH_CONFIG_ANDROID_LOGWRITE": "",
-        "#cmakedefine CATCH_CONFIG_COLOUR_ANSI": "",
-        "#cmakedefine CATCH_CONFIG_COLOUR_NONE": "",
-        "#cmakedefine CATCH_CONFIG_COLOUR_WINDOWS": "",
+        "#cmakedefine CATCH_CONFIG_COLOUR_WIN32": "",
         "#cmakedefine CATCH_CONFIG_COUNTER": "",
         "#cmakedefine CATCH_CONFIG_CPP11_TO_STRING": "",
         "#cmakedefine CATCH_CONFIG_CPP17_BYTE": "",

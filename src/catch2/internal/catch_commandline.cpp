@@ -13,6 +13,7 @@
 #include <catch2/interfaces/catch_interfaces_registry_hub.hpp>
 #include <catch2/interfaces/catch_interfaces_reporter_registry.hpp>
 #include <catch2/interfaces/catch_interfaces_reporter.hpp>
+#include <catch2/internal/catch_console_colour.hpp>
 
 #include <algorithm>
 #include <fstream>
@@ -95,19 +96,44 @@ namespace Catch {
                     return ParserResult::runtimeError("Could not parse '" + seed + "' as seed");
                 }
             };
-        auto const setColourUsage = [&]( std::string const& useColour ) {
-                    auto mode = toLower( useColour );
+        auto const setColourMode = [&]( std::string const&
+                                             colourMode ) {
+            auto mode = toLower( colourMode );
 
-                    if( mode == "yes" )
-                        config.useColour = UseColour::Yes;
-                    else if( mode == "no" )
-                        config.useColour = UseColour::No;
-                    else if( mode == "auto" )
-                        config.useColour = UseColour::Auto;
-                    else
-                        return ParserResult::runtimeError( "colour mode must be one of: auto, yes or no. '" + useColour + "' not recognised" );
-                return ParserResult::ok( ParseResultType::Matched );
-            };
+            if ( mode == "default" ) {
+                if ( !isColourImplAvailable( ColourMode::PlatformDefault ) ) {
+                    return ParserResult::runtimeError(
+                        "colour mode 'default' is not supported in this "
+                        "binary" );
+                }
+                config.colourMode = ColourMode::PlatformDefault;
+            } else if ( mode == "ansi" ) {
+                if ( !isColourImplAvailable( ColourMode::ANSI ) ) {
+                    return ParserResult::runtimeError(
+                        "colour mode 'ansi' is not supported in this binary" );
+                }
+                config.colourMode = ColourMode::ANSI;
+            } else if ( mode == "win32" ) {
+                if ( !isColourImplAvailable( ColourMode::Win32 ) ) {
+                    return ParserResult::runtimeError(
+                        "colour mode 'win32' is not supported in this "
+                        "binary" );
+                }
+                config.colourMode = ColourMode::Win32;
+            } else if ( mode == "none" ) {
+                if ( !isColourImplAvailable( ColourMode::None ) ) {
+                    return ParserResult::runtimeError(
+                        "colour mode 'none' is not supported in this binary" );
+                }
+                config.colourMode = ColourMode::None;
+            } else {
+                return ParserResult::runtimeError(
+                    "colour mode must be one of: default, ansi, win32, "
+                    "or none. '" +
+                    colourMode + "' not recognised" );
+            }
+            return ParserResult::ok( ParseResultType::Matched );
+        };
         auto const setWaitForKeypress = [&]( std::string const& keypress ) {
                 auto keypressLc = toLower( keypress );
                 if (keypressLc == "never")
@@ -298,8 +324,8 @@ namespace Catch {
             | Opt( setRngSeed, "'time'|'random-device'|number" )
                 ["--rng-seed"]
                 ( "set a specific seed for random numbers" )
-            | Opt( setColourUsage, "yes|no|auto" )
-                ["--use-colour"]
+            | Opt( setColourMode, "ansi|win32|none|default" )
+                ["--colour-mode"]
                 ( "should output be colourised" )
             | Opt( config.libIdentify )
                 ["--libidentify"]

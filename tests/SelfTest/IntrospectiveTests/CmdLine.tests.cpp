@@ -15,6 +15,8 @@
 #include <catch2/catch_test_case_info.hpp>
 #include <catch2/internal/catch_commandline.hpp>
 #include <catch2/generators/catch_generators.hpp>
+#include <catch2/internal/catch_compiler_capabilities.hpp>
+
 
 namespace {
     auto fakeTestCase(const char* name, const char* desc = "") { return Catch::makeTestCaseInfo("", { name, desc }, CATCH_INTERNAL_LINEINFO); }
@@ -556,34 +558,34 @@ TEST_CASE( "Process can be configured on command line", "[config][command-line]"
 
     SECTION( "use-colour") {
 
-        using Catch::UseColour;
+        using Catch::ColourMode;
 
         SECTION( "without option" ) {
             CHECK(cli.parse({"test"}));
 
-            REQUIRE( config.useColour == UseColour::Auto );
+            REQUIRE( config.colourMode == ColourMode::PlatformDefault );
         }
 
         SECTION( "auto" ) {
-            CHECK(cli.parse({"test", "--use-colour", "auto"}));
+            CHECK( cli.parse( { "test", "--colour-mode", "default" } ) );
 
-            REQUIRE( config.useColour == UseColour::Auto );
+            REQUIRE( config.colourMode == ColourMode::PlatformDefault );
         }
 
         SECTION( "yes" ) {
-            CHECK(cli.parse({"test", "--use-colour", "yes"}));
+            CHECK(cli.parse({"test", "--colour-mode", "ansi"}));
 
-            REQUIRE( config.useColour == UseColour::Yes );
+            REQUIRE( config.colourMode == ColourMode::ANSI );
         }
 
         SECTION( "no" ) {
-            CHECK(cli.parse({"test", "--use-colour", "no"}));
+            CHECK(cli.parse({"test", "--colour-mode", "none"}));
 
-            REQUIRE( config.useColour == UseColour::No );
+            REQUIRE( config.colourMode == ColourMode::None );
         }
 
         SECTION( "error" ) {
-            auto result = cli.parse({"test", "--use-colour", "wrong"});
+            auto result = cli.parse({"test", "--colour-mode", "wrong"});
             CHECK( !result );
             CHECK_THAT( result.errorMessage(), ContainsSubstring( "colour mode must be one of" ) );
         }
@@ -711,4 +713,18 @@ TEST_CASE("Various suspicious reporter specs are rejected",
 
     auto result = cli.parse( { "test", "--reporter", spec } );
     REQUIRE_FALSE( result );
+}
+
+TEST_CASE("Win32 colour implementation is compile-time optional",
+          "[approvals][cli][colours]") {
+    Catch::ConfigData config;
+    auto cli = Catch::makeCommandLineParser( config );
+
+    auto result = cli.parse( { "test", "--colour-mode", "win32" } );
+
+#if defined( CATCH_CONFIG_COLOUR_WIN32 )
+    REQUIRE( result );
+#else
+    REQUIRE_FALSE( result );
+#endif
 }

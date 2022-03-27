@@ -9,10 +9,10 @@
 #define CATCH_REPORTER_COMMON_BASE_HPP_INCLUDED
 
 #include <catch2/interfaces/catch_interfaces_reporter.hpp>
-#include <catch2/internal/catch_stream.hpp>
-#include <catch2/internal/catch_console_colour.hpp>
 
 namespace Catch {
+    class ColourImpl;
+
     /**
      * This is the base class for all reporters.
      *
@@ -33,12 +33,8 @@ namespace Catch {
         Detail::unique_ptr<ColourImpl> m_colour;
 
     public:
-        ReporterBase( ReporterConfig const& config ):
-            IEventListener( config.fullConfig() ),
-            m_wrapped_stream( config.stream() ),
-            m_stream( m_wrapped_stream->stream() ),
-            m_colour( makeColourImpl( config.fullConfig(), m_wrapped_stream ) ) {}
-
+        ReporterBase( ReporterConfig const& config );
+        ~ReporterBase() override; // = default;
 
         /**
          * Provides a simple default listing of reporters.

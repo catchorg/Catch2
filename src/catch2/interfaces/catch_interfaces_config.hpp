@@ -42,10 +42,15 @@ namespace Catch {
         LexicographicallySorted,
         Randomized
     };
-    enum class UseColour {
-        Auto,
-        Yes,
-        No
+    enum class ColourMode : std::uint8_t {
+        //! Let Catch2 pick implementation based on platform detection
+        PlatformDefault,
+        //! Use ANSI colour code escapes
+        ANSI,
+        //! Use Win32 console colour API
+        Win32,
+        //! Don't use any colour
+        None
     };
     struct WaitForKeypress { enum When {
         Never,
@@ -79,7 +84,7 @@ namespace Catch {
         virtual uint32_t rngSeed() const = 0;
         virtual unsigned int shardCount() const = 0;
         virtual unsigned int shardIndex() const = 0;
-        virtual UseColour useColour() const = 0;
+        virtual ColourMode colourMode() const = 0;
         virtual std::vector<std::string> const& getSectionsToRun() const = 0;
         virtual Verbosity verbosity() const = 0;
 

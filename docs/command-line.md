@@ -67,7 +67,7 @@ Click one of the following links to take you straight to that option - or scroll
 <a href="#benchmark-confidence-interval">               `    --benchmark-confidence-interval`</a><br />
 <a href="#benchmark-no-analysis">                       `    --benchmark-no-analysis`</a><br />
 <a href="#benchmark-warmup-time">                       `    --benchmark-warmup-time`</a><br />
-<a href="#use-colour">                                  `    --use-colour`</a><br />
+<a href="#colour-mode">                                 `    --colour-mode`</a><br />
 <a href="#test-sharding">                               `    --shard-count`</a><br />
 <a href="#test-sharding">                               `    --shard-index`</a><br />
 <a href=#no-tests-override>                             `    --allow-running-no-tests`</a><br />
@@ -457,16 +457,26 @@ filename it is found in, with any extension stripped, prefixed with the `#` char
 
 So, for example,  tests within the file `~\Dev\MyProject\Ferrets.cpp` would be tagged `[#Ferrets]`.
 
-<a id="use-colour"></a>
+<a id="colour-mode"></a>
 ## Override output colouring
-<pre>--use-colour &lt;yes|no|auto&gt;</pre>
+<pre>--colour-mode &lt;ansi|win32|none|default&gt;</pre>
 
-Catch colours output for terminals, but omits colouring when it detects that
-output is being sent to a pipe. This is done to avoid interfering with automated
-processing of output.
+Catch2 support two different ways of colouring terminal output, and by
+default it attempts to make a good guess on which implementation to use
+(and whether to even use it, e.g. Catch2 tries to avoid writing colour
+codes when writing the results into a file).
 
-`--use-colour yes` forces coloured output, `--use-colour no` disables coloured
-output. The default behaviour is `--use-colour auto`.
+`--colour-mode` allows the user to explicitly select what happens.
+
+* `--colour-mode ansi` tells Catch2 to always use ANSI colour codes, even
+when writing to a file
+* `--colour-mode win32` tells Catch2 to use colour implementation based
+  on Win32 terminal API
+* `--colour-mode none` tells Catch2 to disable colours completely
+* `--colour-mode default` lets Catch2 decide
+
+`--colour-mode default` is the default setting.
+
 
 <a id="test-sharding"></a>
 ## Test Sharding
