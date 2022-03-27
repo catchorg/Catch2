@@ -3298,13 +3298,23 @@ ok {test-number} - 0x<hex digits> == bit30and31 for: 3221225472 (0x<hex digits>)
 # Test with special, characters "in name
 ok {test-number} -
 # TestCaseInfoHasher produces different hashes.
-ok {test-number} - h(testCase1) != h(testCase2) for: 2974740129541633169 (0x<hex digits>) != 2974736831006748536 (0x<hex digits>)
+ok {test-number} - hasherWithCustomSeed(testCase1) != hasherWithCustomSeed(testCase2) for: 9120692942704541793 (0x<hex digits>) != 9120689644169657160 (0x<hex digits>)
 # TestCaseInfoHasher produces different hashes.
-ok {test-number} - h(testCase1) != h(testCase2) for: 10514428749606303213 (0x<hex digits>) != 7117040580432901512 (0x<hex digits>)
+ok {test-number} - hasherWithDefaultSeed(testCase1) != hasherWithDefaultSeed(testCase2) for: 2974740129541633169 (0x<hex digits>) != 2974736831006748536 (0x<hex digits>)
 # TestCaseInfoHasher produces different hashes.
-ok {test-number} - h(testCase1) != h(testCase2) for: 781880640949575597 (0x<hex digits>) != 14164831289977664328 (0x<hex digits>)
+ok {test-number} - hasherWithCustomSeed(testCase1) != hasherWithCustomSeed(testCase2) for: 15082314015503017021 (0x<hex digits>) != 2118456796503879000 (0x<hex digits>)
+# TestCaseInfoHasher produces different hashes.
+ok {test-number} - hasherWithDefaultSeed(testCase1) != hasherWithDefaultSeed(testCase2) for: 10514428749606303213 (0x<hex digits>) != 7117040580432901512 (0x<hex digits>)
+# TestCaseInfoHasher produces different hashes.
+ok {test-number} - hasherWithCustomSeed(testCase1) != hasherWithCustomSeed(testCase2) for: 1645083817427897245 (0x<hex digits>) != 13151211036992360376 (0x<hex digits>)
+# TestCaseInfoHasher produces different hashes.
+ok {test-number} - hasherWithDefaultSeed(testCase1) != hasherWithDefaultSeed(testCase2) for: 781880640949575597 (0x<hex digits>) != 14164831289977664328 (0x<hex digits>)
+# TestCaseInfoHasher produces different hashes.
+ok {test-number} - h1(testCase1) != h2(testCase2) for: 2974740129541633169 (0x<hex digits>) != 10355399658719792260 (0x<hex digits>)
 # TestCaseInfoHasher produces equal hashes.
-ok {test-number} - h(testCase1) == h(testCase2) for: 2974740129541633169 (0x<hex digits>) == 2974740129541633169 (0x<hex digits>)
+ok {test-number} - hasherWithCustomSeed(testCase1) == hasherWithCustomSeed(testCase2) for: 9120692942704541793 (0x<hex digits>) == 9120692942704541793 (0x<hex digits>)
+# TestCaseInfoHasher produces equal hashes.
+ok {test-number} - hasherWithDefaultSeed(testCase1) == hasherWithDefaultSeed(testCase2) for: 2974740129541633169 (0x<hex digits>) == 2974740129541633169 (0x<hex digits>)
 # Testing checked-if
 ok {test-number} - true
 # Testing checked-if
@@ -4478,5 +4488,5 @@ ok {test-number} - q3 == 23. for: 23.0 == 23.0
 ok {test-number} -
 # xmlentitycheck
 ok {test-number} -
-1..2238
+1..2243
 

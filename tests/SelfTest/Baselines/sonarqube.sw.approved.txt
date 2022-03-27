@@ -277,6 +277,7 @@
     <testCase name="TestCaseInfoHasher produces different hashes./class names are equal, names are equal but tags are different." duration="{duration}"/>
     <testCase name="TestCaseInfoHasher produces different hashes./class names are equal, tags are equal but names are different" duration="{duration}"/>
     <testCase name="TestCaseInfoHasher produces different hashes./names are equal, tags are equal but class names are different" duration="{duration}"/>
+    <testCase name="TestCaseInfoHasher produces different hashes./class names and names and tags are equal but hashers are seeded differently." duration="{duration}"/>
     <testCase name="TestCaseInfoHasher produces equal hashes./class names and names and tags are equal." duration="{duration}"/>
   </file>
   <file path="tests/<exe-name>/IntrospectiveTests/TestSpecParser.tests.cpp">

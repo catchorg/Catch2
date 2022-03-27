@@ -43,8 +43,7 @@ namespace Catch {
             seedRng(config);
             using TestWithHash = std::pair<TestCaseInfoHasher::hash_t, TestCaseHandle>;
 
-            //TestHasher h{ config.rngSeed() };
-            TestCaseInfoHasher h;
+            TestCaseInfoHasher h{ config.rngSeed() };
             std::vector<TestWithHash> indexed_tests;
             indexed_tests.reserve(unsortedTestCases.size());
 

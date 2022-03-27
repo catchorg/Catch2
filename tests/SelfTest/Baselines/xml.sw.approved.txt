@@ -15583,7 +15583,17 @@ Message from section two
     <Section name="class names are equal, names are equal but tags are different." filename="tests/<exe-name>/IntrospectiveTests/TestCaseInfoHasher.tests.cpp" >
       <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/TestCaseInfoHasher.tests.cpp" >
         <Original>
-          h(testCase1) != h(testCase2)
+          hasherWithCustomSeed(testCase1) != hasherWithCustomSeed(testCase2)
+        </Original>
+        <Expanded>
+          9120692942704541793 (0x<hex digits>)
+!=
+9120689644169657160 (0x<hex digits>)
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/TestCaseInfoHasher.tests.cpp" >
+        <Original>
+          hasherWithDefaultSeed(testCase1) != hasherWithDefaultSeed(testCase2)
         </Original>
         <Expanded>
           2974740129541633169 (0x<hex digits>)
@@ -15591,12 +15601,22 @@ Message from section two
 2974736831006748536 (0x<hex digits>)
         </Expanded>
       </Expression>
-      <OverallResults successes="1" failures="0" expectedFailures="0"/>
+      <OverallResults successes="2" failures="0" expectedFailures="0"/>
     </Section>
     <Section name="class names are equal, tags are equal but names are different" filename="tests/<exe-name>/IntrospectiveTests/TestCaseInfoHasher.tests.cpp" >
       <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/TestCaseInfoHasher.tests.cpp" >
         <Original>
-          h(testCase1) != h(testCase2)
+          hasherWithCustomSeed(testCase1) != hasherWithCustomSeed(testCase2)
+        </Original>
+        <Expanded>
+          15082314015503017021 (0x<hex digits>)
+!=
+2118456796503879000 (0x<hex digits>)
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/TestCaseInfoHasher.tests.cpp" >
+        <Original>
+          hasherWithDefaultSeed(testCase1) != hasherWithDefaultSeed(testCase2)
         </Original>
         <Expanded>
           10514428749606303213 (0x<hex digits>)
@@ -15604,17 +15624,40 @@ Message from section two
 7117040580432901512 (0x<hex digits>)
         </Expanded>
       </Expression>
-      <OverallResults successes="1" failures="0" expectedFailures="0"/>
+      <OverallResults successes="2" failures="0" expectedFailures="0"/>
     </Section>
     <Section name="names are equal, tags are equal but class names are different" filename="tests/<exe-name>/IntrospectiveTests/TestCaseInfoHasher.tests.cpp" >
       <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/TestCaseInfoHasher.tests.cpp" >
         <Original>
-          h(testCase1) != h(testCase2)
+          hasherWithCustomSeed(testCase1) != hasherWithCustomSeed(testCase2)
+        </Original>
+        <Expanded>
+          1645083817427897245 (0x<hex digits>)
+!=
+13151211036992360376 (0x<hex digits>)
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/TestCaseInfoHasher.tests.cpp" >
+        <Original>
+          hasherWithDefaultSeed(testCase1) != hasherWithDefaultSeed(testCase2)
         </Original>
         <Expanded>
           781880640949575597 (0x<hex digits>)
 !=
 14164831289977664328 (0x<hex digits>)
+        </Expanded>
+      </Expression>
+      <OverallResults successes="2" failures="0" expectedFailures="0"/>
+    </Section>
+    <Section name="class names and names and tags are equal but hashers are seeded differently." filename="tests/<exe-name>/IntrospectiveTests/TestCaseInfoHasher.tests.cpp" >
+      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/TestCaseInfoHasher.tests.cpp" >
+        <Original>
+          h1(testCase1) != h2(testCase2)
+        </Original>
+        <Expanded>
+          2974740129541633169 (0x<hex digits>)
+!=
+10355399658719792260 (0x<hex digits>)
         </Expanded>
       </Expression>
       <OverallResults successes="1" failures="0" expectedFailures="0"/>
@@ -15625,7 +15668,17 @@ Message from section two
     <Section name="class names and names and tags are equal." filename="tests/<exe-name>/IntrospectiveTests/TestCaseInfoHasher.tests.cpp" >
       <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/TestCaseInfoHasher.tests.cpp" >
         <Original>
-          h(testCase1) == h(testCase2)
+          hasherWithCustomSeed(testCase1) == hasherWithCustomSeed(testCase2)
+        </Original>
+        <Expanded>
+          9120692942704541793 (0x<hex digits>)
+==
+9120692942704541793 (0x<hex digits>)
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/TestCaseInfoHasher.tests.cpp" >
+        <Original>
+          hasherWithDefaultSeed(testCase1) == hasherWithDefaultSeed(testCase2)
         </Original>
         <Expanded>
           2974740129541633169 (0x<hex digits>)
@@ -15633,7 +15686,7 @@ Message from section two
 2974740129541633169 (0x<hex digits>)
         </Expanded>
       </Expression>
-      <OverallResults successes="1" failures="0" expectedFailures="0"/>
+      <OverallResults successes="2" failures="0" expectedFailures="0"/>
     </Section>
     <OverallResult success="true"/>
   </TestCase>
@@ -21049,6 +21102,6 @@ loose text artifact
     </Section>
     <OverallResult success="true"/>
   </TestCase>
-  <OverallResults successes="2068" failures="143" expectedFailures="27"/>
+  <OverallResults successes="2073" failures="143" expectedFailures="27"/>
   <OverallResultsCases successes="298" failures="83" expectedFailures="7"/>
 </Catch2TestRun>

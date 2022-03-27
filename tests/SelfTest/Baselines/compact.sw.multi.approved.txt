@@ -1861,16 +1861,31 @@ Tag.tests.cpp:<line number>: passed: testCase.tags[0] == Tag( "tag1" ) for: {?} 
 VariadicMacros.tests.cpp:<line number>: passed: with 1 message: 'no assertions'
 Tricky.tests.cpp:<line number>: passed: 0x<hex digits> == bit30and31 for: 3221225472 (0x<hex digits>) == 3221225472
 CmdLine.tests.cpp:<line number>: passed:
-TestCaseInfoHasher.tests.cpp:<line number>: passed: h(testCase1) != h(testCase2) for: 2974740129541633169 (0x<hex digits>)
+TestCaseInfoHasher.tests.cpp:<line number>: passed: hasherWithCustomSeed(testCase1) != hasherWithCustomSeed(testCase2) for: 9120692942704541793 (0x<hex digits>)
+!=
+9120689644169657160 (0x<hex digits>)
+TestCaseInfoHasher.tests.cpp:<line number>: passed: hasherWithDefaultSeed(testCase1) != hasherWithDefaultSeed(testCase2) for: 2974740129541633169 (0x<hex digits>)
 !=
 2974736831006748536 (0x<hex digits>)
-TestCaseInfoHasher.tests.cpp:<line number>: passed: h(testCase1) != h(testCase2) for: 10514428749606303213 (0x<hex digits>)
+TestCaseInfoHasher.tests.cpp:<line number>: passed: hasherWithCustomSeed(testCase1) != hasherWithCustomSeed(testCase2) for: 15082314015503017021 (0x<hex digits>)
+!=
+2118456796503879000 (0x<hex digits>)
+TestCaseInfoHasher.tests.cpp:<line number>: passed: hasherWithDefaultSeed(testCase1) != hasherWithDefaultSeed(testCase2) for: 10514428749606303213 (0x<hex digits>)
 !=
 7117040580432901512 (0x<hex digits>)
-TestCaseInfoHasher.tests.cpp:<line number>: passed: h(testCase1) != h(testCase2) for: 781880640949575597 (0x<hex digits>)
+TestCaseInfoHasher.tests.cpp:<line number>: passed: hasherWithCustomSeed(testCase1) != hasherWithCustomSeed(testCase2) for: 1645083817427897245 (0x<hex digits>)
+!=
+13151211036992360376 (0x<hex digits>)
+TestCaseInfoHasher.tests.cpp:<line number>: passed: hasherWithDefaultSeed(testCase1) != hasherWithDefaultSeed(testCase2) for: 781880640949575597 (0x<hex digits>)
 !=
 14164831289977664328 (0x<hex digits>)
-TestCaseInfoHasher.tests.cpp:<line number>: passed: h(testCase1) == h(testCase2) for: 2974740129541633169 (0x<hex digits>)
+TestCaseInfoHasher.tests.cpp:<line number>: passed: h1(testCase1) != h2(testCase2) for: 2974740129541633169 (0x<hex digits>)
+!=
+10355399658719792260 (0x<hex digits>)
+TestCaseInfoHasher.tests.cpp:<line number>: passed: hasherWithCustomSeed(testCase1) == hasherWithCustomSeed(testCase2) for: 9120692942704541793 (0x<hex digits>)
+==
+9120692942704541793 (0x<hex digits>)
+TestCaseInfoHasher.tests.cpp:<line number>: passed: hasherWithDefaultSeed(testCase1) == hasherWithDefaultSeed(testCase2) for: 2974740129541633169 (0x<hex digits>)
 ==
 2974740129541633169 (0x<hex digits>)
 Misc.tests.cpp:<line number>: passed: true

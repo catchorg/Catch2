@@ -2,11 +2,15 @@
 #include <catch2/internal/catch_test_case_info_hasher.hpp>
 
 namespace Catch {
+    TestCaseInfoHasher::TestCaseInfoHasher( hash_t seed ): m_seed( seed ) {}
+
+    TestCaseInfoHasher::TestCaseInfoHasher(): m_seed( 14695981039346656037u ) {}
+
     TestCaseInfoHasher::hash_t
     TestCaseInfoHasher::operator()( TestCaseInfo const& t ) const {
-        // FNV-1a algorithm:
+        // FNV-1a hash algorithm that is designed for uniqueness:
         const hash_t prime = 1099511628211u;
-        hash_t hash = 14695981039346656037u;
+        hash_t hash = m_seed;
         for ( const char c : t.name ) {
             hash ^= c;
             hash *= prime;
@@ -15,7 +19,6 @@ namespace Catch {
             hash ^= c;
             hash *= prime;
         }
-        // first option to hash the tag(s):
         for ( const Tag& tag : t.tags ) {
             for ( const char c : tag.original ) {
                 hash ^= c;
