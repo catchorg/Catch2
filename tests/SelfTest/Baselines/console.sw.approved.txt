@@ -13296,16 +13296,9 @@ TestCaseInfoHasher.tests.cpp:<line number>
 TestCaseInfoHasher.tests.cpp:<line number>: PASSED:
   CHECK( hasherWithCustomSeed(testCase1) != hasherWithCustomSeed(testCase2) )
 with expansion:
-  9120692942704541793 (0x<hex digits>)
+  764519552 (0x<hex digits>)
   !=
-  9120689644169657160 (0x<hex digits>)
-
-TestCaseInfoHasher.tests.cpp:<line number>: PASSED:
-  CHECK( hasherWithDefaultSeed(testCase1) != hasherWithDefaultSeed(testCase2) )
-with expansion:
-  2974740129541633169 (0x<hex digits>)
-  !=
-  2974736831006748536 (0x<hex digits>)
+  3472848544 (0x<hex digits>)
 
 -------------------------------------------------------------------------------
 TestCaseInfoHasher produces different hashes.
@@ -13317,16 +13310,9 @@ TestCaseInfoHasher.tests.cpp:<line number>
 TestCaseInfoHasher.tests.cpp:<line number>: PASSED:
   CHECK( hasherWithCustomSeed(testCase1) != hasherWithCustomSeed(testCase2) )
 with expansion:
-  15082314015503017021 (0x<hex digits>)
+  869111496 (0x<hex digits>)
   !=
-  2118456796503879000 (0x<hex digits>)
-
-TestCaseInfoHasher.tests.cpp:<line number>: PASSED:
-  CHECK( hasherWithDefaultSeed(testCase1) != hasherWithDefaultSeed(testCase2) )
-with expansion:
-  10514428749606303213 (0x<hex digits>)
-  !=
-  7117040580432901512 (0x<hex digits>)
+  2870097333 (0x<hex digits>)
 
 -------------------------------------------------------------------------------
 TestCaseInfoHasher produces different hashes.
@@ -13338,16 +13324,9 @@ TestCaseInfoHasher.tests.cpp:<line number>
 TestCaseInfoHasher.tests.cpp:<line number>: PASSED:
   CHECK( hasherWithCustomSeed(testCase1) != hasherWithCustomSeed(testCase2) )
 with expansion:
-  1645083817427897245 (0x<hex digits>)
+  1172537240 (0x<hex digits>)
   !=
-  13151211036992360376 (0x<hex digits>)
-
-TestCaseInfoHasher.tests.cpp:<line number>: PASSED:
-  CHECK( hasherWithDefaultSeed(testCase1) != hasherWithDefaultSeed(testCase2) )
-with expansion:
-  781880640949575597 (0x<hex digits>)
-  !=
-  14164831289977664328 (0x<hex digits>)
+  1403724645 (0x<hex digits>)
 
 -------------------------------------------------------------------------------
 TestCaseInfoHasher produces different hashes.
@@ -13359,9 +13338,9 @@ TestCaseInfoHasher.tests.cpp:<line number>
 TestCaseInfoHasher.tests.cpp:<line number>: PASSED:
   CHECK( h1(testCase1) != h2(testCase2) )
 with expansion:
-  2974740129541633169 (0x<hex digits>)
+  1836497244 (0x<hex digits>)
   !=
-  10355399658719792260 (0x<hex digits>)
+  430288597 (0x<hex digits>)
 
 -------------------------------------------------------------------------------
 TestCaseInfoHasher produces equal hashes.
@@ -13373,16 +13352,9 @@ TestCaseInfoHasher.tests.cpp:<line number>
 TestCaseInfoHasher.tests.cpp:<line number>: PASSED:
   CHECK( hasherWithCustomSeed(testCase1) == hasherWithCustomSeed(testCase2) )
 with expansion:
-  9120692942704541793 (0x<hex digits>)
+  764519552 (0x<hex digits>)
   ==
-  9120692942704541793 (0x<hex digits>)
-
-TestCaseInfoHasher.tests.cpp:<line number>: PASSED:
-  CHECK( hasherWithDefaultSeed(testCase1) == hasherWithDefaultSeed(testCase2) )
-with expansion:
-  2974740129541633169 (0x<hex digits>)
-  ==
-  2974740129541633169 (0x<hex digits>)
+  764519552 (0x<hex digits>)
 
 -------------------------------------------------------------------------------
 Testing checked-if
@@ -17970,5 +17942,5 @@ Misc.tests.cpp:<line number>: PASSED:
 
 ===============================================================================
 test cases:  388 |  298 passed |  83 failed |  7 failed as expected
-assertions: 2243 | 2073 passed | 143 failed | 27 failed as expected
+assertions: 2239 | 2069 passed | 143 failed | 27 failed as expected
 

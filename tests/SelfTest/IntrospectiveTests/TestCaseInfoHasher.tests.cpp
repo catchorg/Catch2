@@ -11,9 +11,6 @@ TEST_CASE( "TestCaseInfoHasher produces equal hashes." ) {
 
         Catch::TestCaseInfoHasher hasherWithCustomSeed(123456789u);
         CHECK(hasherWithCustomSeed(testCase1) == hasherWithCustomSeed(testCase2));
-
-        Catch::TestCaseInfoHasher hasherWithDefaultSeed;
-        CHECK(hasherWithDefaultSeed(testCase1) == hasherWithDefaultSeed(testCase2));
     }
 }
 
@@ -24,9 +21,6 @@ TEST_CASE( "TestCaseInfoHasher produces different hashes." ) {
 
         Catch::TestCaseInfoHasher hasherWithCustomSeed(123456789u);
         CHECK(hasherWithCustomSeed(testCase1) != hasherWithCustomSeed(testCase2));
-
-        Catch::TestCaseInfoHasher hasherWithDefaultSeed;
-        CHECK(hasherWithDefaultSeed(testCase1) != hasherWithDefaultSeed(testCase2));
     }
 
     SECTION( "class names are equal, tags are equal but names are different" ) {
@@ -35,9 +29,6 @@ TEST_CASE( "TestCaseInfoHasher produces different hashes." ) {
 
         Catch::TestCaseInfoHasher hasherWithCustomSeed(123456789u);
         CHECK(hasherWithCustomSeed(testCase1) != hasherWithCustomSeed(testCase2));
-
-        Catch::TestCaseInfoHasher hasherWithDefaultSeed;
-        CHECK(hasherWithDefaultSeed(testCase1) != hasherWithDefaultSeed(testCase2));
     }
 
     SECTION( "names are equal, tags are equal but class names are different" ) {
@@ -46,9 +37,6 @@ TEST_CASE( "TestCaseInfoHasher produces different hashes." ) {
 
         Catch::TestCaseInfoHasher hasherWithCustomSeed(123456789u);
         CHECK(hasherWithCustomSeed(testCase1) != hasherWithCustomSeed(testCase2));
-
-        Catch::TestCaseInfoHasher hasherWithDefaultSeed;
-        CHECK(hasherWithDefaultSeed(testCase1) != hasherWithDefaultSeed(testCase2));
     }
 
     SECTION( "class names and names and tags are equal but hashers are seeded differently." ) {
