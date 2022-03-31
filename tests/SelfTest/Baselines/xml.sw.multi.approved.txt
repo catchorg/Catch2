@@ -15579,6 +15579,77 @@ Message from section two
   <TestCase name="Test with special, characters &quot;in name" tags="[cli][regression]" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
     <OverallResult success="true"/>
   </TestCase>
+  <TestCase name="TestCaseInfoHasher produces different hashes." filename="tests/<exe-name>/IntrospectiveTests/TestCaseInfoHasher.tests.cpp" >
+    <Section name="class names are equal, names are equal but tags are different." filename="tests/<exe-name>/IntrospectiveTests/TestCaseInfoHasher.tests.cpp" >
+      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/TestCaseInfoHasher.tests.cpp" >
+        <Original>
+          hasherWithCustomSeed(testCase1) != hasherWithCustomSeed(testCase2)
+        </Original>
+        <Expanded>
+          764519552 (0x<hex digits>)
+!=
+3472848544 (0x<hex digits>)
+        </Expanded>
+      </Expression>
+      <OverallResults successes="1" failures="0" expectedFailures="0"/>
+    </Section>
+    <Section name="class names are equal, tags are equal but names are different" filename="tests/<exe-name>/IntrospectiveTests/TestCaseInfoHasher.tests.cpp" >
+      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/TestCaseInfoHasher.tests.cpp" >
+        <Original>
+          hasherWithCustomSeed(testCase1) != hasherWithCustomSeed(testCase2)
+        </Original>
+        <Expanded>
+          869111496 (0x<hex digits>)
+!=
+2870097333 (0x<hex digits>)
+        </Expanded>
+      </Expression>
+      <OverallResults successes="1" failures="0" expectedFailures="0"/>
+    </Section>
+    <Section name="names are equal, tags are equal but class names are different" filename="tests/<exe-name>/IntrospectiveTests/TestCaseInfoHasher.tests.cpp" >
+      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/TestCaseInfoHasher.tests.cpp" >
+        <Original>
+          hasherWithCustomSeed(testCase1) != hasherWithCustomSeed(testCase2)
+        </Original>
+        <Expanded>
+          1172537240 (0x<hex digits>)
+!=
+1403724645 (0x<hex digits>)
+        </Expanded>
+      </Expression>
+      <OverallResults successes="1" failures="0" expectedFailures="0"/>
+    </Section>
+    <Section name="class names and names and tags are equal but hashers are seeded differently." filename="tests/<exe-name>/IntrospectiveTests/TestCaseInfoHasher.tests.cpp" >
+      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/TestCaseInfoHasher.tests.cpp" >
+        <Original>
+          h1(testCase1) != h2(testCase2)
+        </Original>
+        <Expanded>
+          1836497244 (0x<hex digits>)
+!=
+430288597 (0x<hex digits>)
+        </Expanded>
+      </Expression>
+      <OverallResults successes="1" failures="0" expectedFailures="0"/>
+    </Section>
+    <OverallResult success="true"/>
+  </TestCase>
+  <TestCase name="TestCaseInfoHasher produces equal hashes." filename="tests/<exe-name>/IntrospectiveTests/TestCaseInfoHasher.tests.cpp" >
+    <Section name="class names and names and tags are equal." filename="tests/<exe-name>/IntrospectiveTests/TestCaseInfoHasher.tests.cpp" >
+      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/TestCaseInfoHasher.tests.cpp" >
+        <Original>
+          hasherWithCustomSeed(testCase1) == hasherWithCustomSeed(testCase2)
+        </Original>
+        <Expanded>
+          764519552 (0x<hex digits>)
+==
+764519552 (0x<hex digits>)
+        </Expanded>
+      </Expression>
+      <OverallResults successes="1" failures="0" expectedFailures="0"/>
+    </Section>
+    <OverallResult success="true"/>
+  </TestCase>
   <TestCase name="Testing checked-if" tags="[checked-if]" filename="tests/<exe-name>/UsageTests/Misc.tests.cpp" >
     <Expression success="true" type="CHECKED_IF" filename="tests/<exe-name>/UsageTests/Misc.tests.cpp" >
       <Original>
@@ -20990,6 +21061,6 @@ There is no extra whitespace here
     </Section>
     <OverallResult success="true"/>
   </TestCase>
-  <OverallResults successes="2064" failures="143" expectedFailures="27"/>
-  <OverallResultsCases successes="296" failures="83" expectedFailures="7"/>
+  <OverallResults successes="2069" failures="143" expectedFailures="27"/>
+  <OverallResultsCases successes="298" failures="83" expectedFailures="7"/>
 </Catch2TestRun>

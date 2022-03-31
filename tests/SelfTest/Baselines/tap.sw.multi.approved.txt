@@ -3290,6 +3290,16 @@ ok {test-number} - with 1 message: 'no assertions'
 ok {test-number} - 0x<hex digits> == bit30and31 for: 3221225472 (0x<hex digits>) == 3221225472
 # Test with special, characters "in name
 ok {test-number} -
+# TestCaseInfoHasher produces different hashes.
+ok {test-number} - hasherWithCustomSeed(testCase1) != hasherWithCustomSeed(testCase2) for: 764519552 (0x<hex digits>) != 3472848544 (0x<hex digits>)
+# TestCaseInfoHasher produces different hashes.
+ok {test-number} - hasherWithCustomSeed(testCase1) != hasherWithCustomSeed(testCase2) for: 869111496 (0x<hex digits>) != 2870097333 (0x<hex digits>)
+# TestCaseInfoHasher produces different hashes.
+ok {test-number} - hasherWithCustomSeed(testCase1) != hasherWithCustomSeed(testCase2) for: 1172537240 (0x<hex digits>) != 1403724645 (0x<hex digits>)
+# TestCaseInfoHasher produces different hashes.
+ok {test-number} - h1(testCase1) != h2(testCase2) for: 1836497244 (0x<hex digits>) != 430288597 (0x<hex digits>)
+# TestCaseInfoHasher produces equal hashes.
+ok {test-number} - hasherWithCustomSeed(testCase1) == hasherWithCustomSeed(testCase2) for: 764519552 (0x<hex digits>) == 764519552 (0x<hex digits>)
 # Testing checked-if
 ok {test-number} - true
 # Testing checked-if
@@ -4462,5 +4472,5 @@ ok {test-number} - q3 == 23. for: 23.0 == 23.0
 ok {test-number} -
 # xmlentitycheck
 ok {test-number} -
-1..2234
+1..2239
 

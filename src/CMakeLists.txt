@@ -157,6 +157,7 @@ set(INTERNAL_HEADERS
     ${SOURCES_DIR}/internal/catch_wildcard_pattern.hpp
     ${SOURCES_DIR}/internal/catch_windows_h_proxy.hpp
     ${SOURCES_DIR}/internal/catch_xmlwriter.hpp
+    ${SOURCES_DIR}/internal/catch_test_case_info_hasher.hpp
 )
 set(IMPL_SOURCES
     ${SOURCES_DIR}/catch_approx.cpp
@@ -213,6 +214,7 @@ set(IMPL_SOURCES
     ${SOURCES_DIR}/catch_version.cpp
     ${SOURCES_DIR}/internal/catch_wildcard_pattern.cpp
     ${SOURCES_DIR}/internal/catch_xmlwriter.cpp
+    ${SOURCES_DIR}/internal/catch_test_case_info_hasher.cpp
 )
 set(INTERNAL_FILES ${IMPL_SOURCES} ${INTERNAL_HEADERS})
 

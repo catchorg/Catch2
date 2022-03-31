@@ -1868,6 +1868,21 @@ Tag.tests.cpp:<line number>: passed: testCase.tags[0] == Tag( "tag1" ) for: {?} 
 VariadicMacros.tests.cpp:<line number>: passed: with 1 message: 'no assertions'
 Tricky.tests.cpp:<line number>: passed: 0x<hex digits> == bit30and31 for: 3221225472 (0x<hex digits>) == 3221225472
 CmdLine.tests.cpp:<line number>: passed:
+TestCaseInfoHasher.tests.cpp:<line number>: passed: hasherWithCustomSeed(testCase1) != hasherWithCustomSeed(testCase2) for: 764519552 (0x<hex digits>)
+!=
+3472848544 (0x<hex digits>)
+TestCaseInfoHasher.tests.cpp:<line number>: passed: hasherWithCustomSeed(testCase1) != hasherWithCustomSeed(testCase2) for: 869111496 (0x<hex digits>)
+!=
+2870097333 (0x<hex digits>)
+TestCaseInfoHasher.tests.cpp:<line number>: passed: hasherWithCustomSeed(testCase1) != hasherWithCustomSeed(testCase2) for: 1172537240 (0x<hex digits>)
+!=
+1403724645 (0x<hex digits>)
+TestCaseInfoHasher.tests.cpp:<line number>: passed: h1(testCase1) != h2(testCase2) for: 1836497244 (0x<hex digits>)
+!=
+430288597 (0x<hex digits>)
+TestCaseInfoHasher.tests.cpp:<line number>: passed: hasherWithCustomSeed(testCase1) == hasherWithCustomSeed(testCase2) for: 764519552 (0x<hex digits>)
+==
+764519552 (0x<hex digits>)
 Misc.tests.cpp:<line number>: passed: true
 Misc.tests.cpp:<line number>: passed:
 Misc.tests.cpp:<line number>: failed - but was ok: false

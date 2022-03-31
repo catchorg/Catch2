@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuitesloose text artifact
 >
-  <testsuite name="<exe-name>" errors="17" failures="126" tests="2234" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
+  <testsuite name="<exe-name>" errors="17" failures="126" tests="2239" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
     <properties>
       <property name="random-seed" value="1"/>
       <property name="filters" value="~[!nonportable]~[!benchmark]~[approvals] *"/>
@@ -1355,6 +1355,11 @@ Misc.tests.cpp:<line number>
     <testcase classname="<exe-name>.global" name="Test case with one argument" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Test enum bit values" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Test with special, characters &quot;in name" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="TestCaseInfoHasher produces different hashes./class names are equal, names are equal but tags are different." time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="TestCaseInfoHasher produces different hashes./class names are equal, tags are equal but names are different" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="TestCaseInfoHasher produces different hashes./names are equal, tags are equal but class names are different" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="TestCaseInfoHasher produces different hashes./class names and names and tags are equal but hashers are seeded differently." time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="TestCaseInfoHasher produces equal hashes./class names and names and tags are equal." time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Testing checked-if" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Testing checked-if 2" time="{duration}" status="run">
       <skipped message="TEST_CASE tagged with !mayfail"/>

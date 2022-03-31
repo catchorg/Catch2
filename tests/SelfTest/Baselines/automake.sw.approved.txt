@@ -255,6 +255,8 @@ Message from section two
 :test-result: PASS Test case with one argument
 :test-result: PASS Test enum bit values
 :test-result: PASS Test with special, characters "in name
+:test-result: PASS TestCaseInfoHasher produces different hashes.
+:test-result: PASS TestCaseInfoHasher produces equal hashes.
 :test-result: PASS Testing checked-if
 :test-result: XFAIL Testing checked-if 2
 :test-result: XFAIL Testing checked-if 3
