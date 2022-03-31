@@ -12,48 +12,61 @@
 
 static constexpr Catch::SourceLineInfo dummySourceLineInfo = CATCH_INTERNAL_LINEINFO;
 
-TEST_CASE( "TestCaseInfoHasher produces equal hashes." ) {
-    SECTION( "class names and names and tags are equal." ) {
-        Catch::TestCaseInfo testCase1("", {"name", "[.magic-tag1]"}, dummySourceLineInfo);
-        Catch::TestCaseInfo testCase2("", {"name", "[.magic-tag1]"}, dummySourceLineInfo);
+using Catch::TestCaseInfo;
+using Catch::TestCaseInfoHasher;
 
-        Catch::TestCaseInfoHasher hasherWithCustomSeed(123456789u);
-        CHECK(hasherWithCustomSeed(testCase1) == hasherWithCustomSeed(testCase2));
-    }
+TEST_CASE("Hashers with same seed produce same hash", "[test-case-hash]") {
+    TestCaseInfo dummy( "", { "name", "[a-tag]" }, dummySourceLineInfo );
+
+    TestCaseInfoHasher h1( 0x12345678 );
+    TestCaseInfoHasher h2( 0x12345678 );
+
+    REQUIRE( h1( dummy ) == h2( dummy ) );
 }
 
-TEST_CASE( "TestCaseInfoHasher produces different hashes." ) {
-    SECTION( "class names are equal, names are equal but tags are different." ) {
-        Catch::TestCaseInfo testCase1("", {"name", "[.magic-tag1]"}, dummySourceLineInfo);
-        Catch::TestCaseInfo testCase2("", {"name", "[.magic-tag2]"}, dummySourceLineInfo);
+TEST_CASE(
+    "Hashers with different seed produce different hash with same test case",
+    "[test-case-hash]") {
+    TestCaseInfo dummy( "", { "name", "[a-tag]" }, dummySourceLineInfo );
 
-        Catch::TestCaseInfoHasher hasherWithCustomSeed(123456789u);
-        CHECK(hasherWithCustomSeed(testCase1) != hasherWithCustomSeed(testCase2));
+    TestCaseInfoHasher h1( 0x12345678 );
+    TestCaseInfoHasher h2( 0x87654321 );
+
+    REQUIRE( h1( dummy ) != h2( dummy ) );
+}
+
+TEST_CASE("Hashing test case produces same hash across multiple calls",
+          "[test-case-hash]") {
+    TestCaseInfo dummy( "", { "name", "[a-tag]" }, dummySourceLineInfo );
+
+    TestCaseInfoHasher h( 0x12345678 );
+
+    REQUIRE( h( dummy ) == h( dummy ) );
+}
+
+TEST_CASE("Hashing different test cases produces different result", "[test-case-hash]") {
+    TestCaseInfoHasher h( 0x12345678 );
+    SECTION("Different test name") {
+        TestCaseInfo dummy1( "class", { "name-1", "[a-tag]" }, dummySourceLineInfo );
+        TestCaseInfo dummy2(
+            "class", { "name-2", "[a-tag]" }, dummySourceLineInfo );
+
+        REQUIRE( h( dummy1 ) != h( dummy2 ) );
     }
+    SECTION("Different classname") {
+        TestCaseInfo dummy1(
+            "class-1", { "name", "[a-tag]" }, dummySourceLineInfo );
+        TestCaseInfo dummy2(
+            "class-2", { "name", "[a-tag]" }, dummySourceLineInfo );
 
-    SECTION( "class names are equal, tags are equal but names are different" ) {
-        Catch::TestCaseInfo testCase1("", {"name1", "[.magic-tag]"}, dummySourceLineInfo);
-        Catch::TestCaseInfo testCase2("", {"name2", "[.magic-tag]"}, dummySourceLineInfo);
-
-        Catch::TestCaseInfoHasher hasherWithCustomSeed(123456789u);
-        CHECK(hasherWithCustomSeed(testCase1) != hasherWithCustomSeed(testCase2));
+        REQUIRE( h( dummy1 ) != h( dummy2 ) );
     }
+    SECTION("Different tags") {
+        TestCaseInfo dummy1(
+            "class", { "name", "[a-tag]" }, dummySourceLineInfo );
+        TestCaseInfo dummy2(
+            "class", { "name", "[b-tag]" }, dummySourceLineInfo );
 
-    SECTION( "names are equal, tags are equal but class names are different" ) {
-        Catch::TestCaseInfo testCase1("class1", {"name", "[.magic-tag]"}, dummySourceLineInfo);
-        Catch::TestCaseInfo testCase2("class2", {"name", "[.magic-tag]"}, dummySourceLineInfo);
-
-        Catch::TestCaseInfoHasher hasherWithCustomSeed(123456789u);
-        CHECK(hasherWithCustomSeed(testCase1) != hasherWithCustomSeed(testCase2));
-    }
-
-    SECTION( "class names and names and tags are equal but hashers are seeded differently." ) {
-        Catch::TestCaseInfo testCase1("", {"name", "[.magic-tag1]"}, dummySourceLineInfo);
-        Catch::TestCaseInfo testCase2("", {"name", "[.magic-tag1]"}, dummySourceLineInfo);
-
-        Catch::TestCaseInfoHasher h1(14695981039346656037u);
-        Catch::TestCaseInfoHasher h2(14695981039346656038u);
-
-        CHECK(h1(testCase1) != h2(testCase2));
+        REQUIRE( h( dummy1 ) != h( dummy2 ) );
     }
 }

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuites>
-  <testsuite name="<exe-name>" errors="17" failures="126" tests="2239" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
+  <testsuite name="<exe-name>" errors="17" failures="126" tests="2240" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
     <properties>
       <property name="random-seed" value="1"/>
       <property name="filters" value="~[!nonportable]~[!benchmark]~[approvals] *"/>
@@ -727,6 +727,12 @@ Message.tests.cpp:<line number>
     <testcase classname="<exe-name>.global" name="Generators internals/Range/Negative manual step/Integer/Slightly over end" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Generators internals/Range/Negative manual step/Integer/Slightly under end" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Greater-than inequalities with different epsilons" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Hashers with different seed produce different hash with same test case" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Hashers with same seed produce same hash" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Hashing different test cases produces different result/Different test name" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Hashing different test cases produces different result/Different classname" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Hashing different test cases produces different result/Different tags" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Hashing test case produces same hash across multiple calls" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="INFO and WARN do not abort tests" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="INFO gets logged on failure" time="{duration}" status="run">
       <failure message="a == 1" type="REQUIRE">
@@ -1354,11 +1360,6 @@ Misc.tests.cpp:<line number>
     <testcase classname="<exe-name>.global" name="Test case with one argument" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Test enum bit values" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Test with special, characters &quot;in name" time="{duration}" status="run"/>
-    <testcase classname="<exe-name>.global" name="TestCaseInfoHasher produces different hashes./class names are equal, names are equal but tags are different." time="{duration}" status="run"/>
-    <testcase classname="<exe-name>.global" name="TestCaseInfoHasher produces different hashes./class names are equal, tags are equal but names are different" time="{duration}" status="run"/>
-    <testcase classname="<exe-name>.global" name="TestCaseInfoHasher produces different hashes./names are equal, tags are equal but class names are different" time="{duration}" status="run"/>
-    <testcase classname="<exe-name>.global" name="TestCaseInfoHasher produces different hashes./class names and names and tags are equal but hashers are seeded differently." time="{duration}" status="run"/>
-    <testcase classname="<exe-name>.global" name="TestCaseInfoHasher produces equal hashes./class names and names and tags are equal." time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Testing checked-if" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Testing checked-if 2" time="{duration}" status="run">
       <skipped message="TEST_CASE tagged with !mayfail"/>

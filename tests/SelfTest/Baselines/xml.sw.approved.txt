@@ -8221,6 +8221,87 @@ C
     </Expression>
     <OverallResult success="true"/>
   </TestCase>
+  <TestCase name="Hashers with different seed produce different hash with same test case" tags="[test-case-hash]" filename="tests/<exe-name>/IntrospectiveTests/TestCaseInfoHasher.tests.cpp" >
+    <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/TestCaseInfoHasher.tests.cpp" >
+      <Original>
+        h1( dummy ) != h2( dummy )
+      </Original>
+      <Expanded>
+        3422778688 (0x<hex digits>)
+!=
+130711275 (0x<hex digits>)
+      </Expanded>
+    </Expression>
+    <OverallResult success="true"/>
+  </TestCase>
+  <TestCase name="Hashers with same seed produce same hash" tags="[test-case-hash]" filename="tests/<exe-name>/IntrospectiveTests/TestCaseInfoHasher.tests.cpp" >
+    <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/TestCaseInfoHasher.tests.cpp" >
+      <Original>
+        h1( dummy ) == h2( dummy )
+      </Original>
+      <Expanded>
+        3422778688 (0x<hex digits>)
+==
+3422778688 (0x<hex digits>)
+      </Expanded>
+    </Expression>
+    <OverallResult success="true"/>
+  </TestCase>
+  <TestCase name="Hashing different test cases produces different result" tags="[test-case-hash]" filename="tests/<exe-name>/IntrospectiveTests/TestCaseInfoHasher.tests.cpp" >
+    <Section name="Different test name" filename="tests/<exe-name>/IntrospectiveTests/TestCaseInfoHasher.tests.cpp" >
+      <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/TestCaseInfoHasher.tests.cpp" >
+        <Original>
+          h( dummy1 ) != h( dummy2 )
+        </Original>
+        <Expanded>
+          2903002874 (0x<hex digits>)
+!=
+2668622104 (0x<hex digits>)
+        </Expanded>
+      </Expression>
+      <OverallResults successes="1" failures="0" expectedFailures="0"/>
+    </Section>
+    <Section name="Different classname" filename="tests/<exe-name>/IntrospectiveTests/TestCaseInfoHasher.tests.cpp" >
+      <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/TestCaseInfoHasher.tests.cpp" >
+        <Original>
+          h( dummy1 ) != h( dummy2 )
+        </Original>
+        <Expanded>
+          2673152918 (0x<hex digits>)
+!=
+3916075712 (0x<hex digits>)
+        </Expanded>
+      </Expression>
+      <OverallResults successes="1" failures="0" expectedFailures="0"/>
+    </Section>
+    <Section name="Different tags" filename="tests/<exe-name>/IntrospectiveTests/TestCaseInfoHasher.tests.cpp" >
+      <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/TestCaseInfoHasher.tests.cpp" >
+        <Original>
+          h( dummy1 ) != h( dummy2 )
+        </Original>
+        <Expanded>
+          2074929312 (0x<hex digits>)
+!=
+3429949824 (0x<hex digits>)
+        </Expanded>
+      </Expression>
+      <OverallResults successes="1" failures="0" expectedFailures="0"/>
+    </Section>
+    <OverallResult success="true"/>
+  </TestCase>
+  <TestCase name="Hashing test case produces same hash across multiple calls" tags="[test-case-hash]" filename="tests/<exe-name>/IntrospectiveTests/TestCaseInfoHasher.tests.cpp" >
+    <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/TestCaseInfoHasher.tests.cpp" >
+      <Original>
+        h( dummy ) == h( dummy )
+      </Original>
+      <Expanded>
+        3422778688 (0x<hex digits>)
+==
+3422778688 (0x<hex digits>)
+      </Expanded>
+    </Expression>
+    <OverallResult success="true"/>
+  </TestCase>
   <TestCase name="INFO and WARN do not abort tests" tags="[.][messages]" filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
     <Info>
       this is a message
@@ -15579,77 +15660,6 @@ Message from section two
   <TestCase name="Test with special, characters &quot;in name" tags="[cli][regression]" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
     <OverallResult success="true"/>
   </TestCase>
-  <TestCase name="TestCaseInfoHasher produces different hashes." filename="tests/<exe-name>/IntrospectiveTests/TestCaseInfoHasher.tests.cpp" >
-    <Section name="class names are equal, names are equal but tags are different." filename="tests/<exe-name>/IntrospectiveTests/TestCaseInfoHasher.tests.cpp" >
-      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/TestCaseInfoHasher.tests.cpp" >
-        <Original>
-          hasherWithCustomSeed(testCase1) != hasherWithCustomSeed(testCase2)
-        </Original>
-        <Expanded>
-          764519552 (0x<hex digits>)
-!=
-3472848544 (0x<hex digits>)
-        </Expanded>
-      </Expression>
-      <OverallResults successes="1" failures="0" expectedFailures="0"/>
-    </Section>
-    <Section name="class names are equal, tags are equal but names are different" filename="tests/<exe-name>/IntrospectiveTests/TestCaseInfoHasher.tests.cpp" >
-      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/TestCaseInfoHasher.tests.cpp" >
-        <Original>
-          hasherWithCustomSeed(testCase1) != hasherWithCustomSeed(testCase2)
-        </Original>
-        <Expanded>
-          869111496 (0x<hex digits>)
-!=
-2870097333 (0x<hex digits>)
-        </Expanded>
-      </Expression>
-      <OverallResults successes="1" failures="0" expectedFailures="0"/>
-    </Section>
-    <Section name="names are equal, tags are equal but class names are different" filename="tests/<exe-name>/IntrospectiveTests/TestCaseInfoHasher.tests.cpp" >
-      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/TestCaseInfoHasher.tests.cpp" >
-        <Original>
-          hasherWithCustomSeed(testCase1) != hasherWithCustomSeed(testCase2)
-        </Original>
-        <Expanded>
-          1172537240 (0x<hex digits>)
-!=
-1403724645 (0x<hex digits>)
-        </Expanded>
-      </Expression>
-      <OverallResults successes="1" failures="0" expectedFailures="0"/>
-    </Section>
-    <Section name="class names and names and tags are equal but hashers are seeded differently." filename="tests/<exe-name>/IntrospectiveTests/TestCaseInfoHasher.tests.cpp" >
-      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/TestCaseInfoHasher.tests.cpp" >
-        <Original>
-          h1(testCase1) != h2(testCase2)
-        </Original>
-        <Expanded>
-          1836497244 (0x<hex digits>)
-!=
-430288597 (0x<hex digits>)
-        </Expanded>
-      </Expression>
-      <OverallResults successes="1" failures="0" expectedFailures="0"/>
-    </Section>
-    <OverallResult success="true"/>
-  </TestCase>
-  <TestCase name="TestCaseInfoHasher produces equal hashes." filename="tests/<exe-name>/IntrospectiveTests/TestCaseInfoHasher.tests.cpp" >
-    <Section name="class names and names and tags are equal." filename="tests/<exe-name>/IntrospectiveTests/TestCaseInfoHasher.tests.cpp" >
-      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/TestCaseInfoHasher.tests.cpp" >
-        <Original>
-          hasherWithCustomSeed(testCase1) == hasherWithCustomSeed(testCase2)
-        </Original>
-        <Expanded>
-          764519552 (0x<hex digits>)
-==
-764519552 (0x<hex digits>)
-        </Expanded>
-      </Expression>
-      <OverallResults successes="1" failures="0" expectedFailures="0"/>
-    </Section>
-    <OverallResult success="true"/>
-  </TestCase>
   <TestCase name="Testing checked-if" tags="[checked-if]" filename="tests/<exe-name>/UsageTests/Misc.tests.cpp" >
     <Expression success="true" type="CHECKED_IF" filename="tests/<exe-name>/UsageTests/Misc.tests.cpp" >
       <Original>
@@ -21062,6 +21072,6 @@ loose text artifact
     </Section>
     <OverallResult success="true"/>
   </TestCase>
-  <OverallResults successes="2069" failures="143" expectedFailures="27"/>
-  <OverallResultsCases successes="298" failures="83" expectedFailures="7"/>
+  <OverallResults successes="2070" failures="143" expectedFailures="27"/>
+  <OverallResultsCases successes="300" failures="83" expectedFailures="7"/>
 </Catch2TestRun>

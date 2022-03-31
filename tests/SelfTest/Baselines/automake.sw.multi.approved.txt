@@ -153,6 +153,10 @@
 :test-result: PASS Generators -- simple
 :test-result: PASS Generators internals
 :test-result: PASS Greater-than inequalities with different epsilons
+:test-result: PASS Hashers with different seed produce different hash with same test case
+:test-result: PASS Hashers with same seed produce same hash
+:test-result: PASS Hashing different test cases produces different result
+:test-result: PASS Hashing test case produces same hash across multiple calls
 :test-result: FAIL INFO and WARN do not abort tests
 :test-result: FAIL INFO gets logged on failure
 :test-result: FAIL INFO gets logged on failure, even if captured before successful assertions
@@ -248,8 +252,6 @@
 :test-result: PASS Test case with one argument
 :test-result: PASS Test enum bit values
 :test-result: PASS Test with special, characters "in name
-:test-result: PASS TestCaseInfoHasher produces different hashes.
-:test-result: PASS TestCaseInfoHasher produces equal hashes.
 :test-result: PASS Testing checked-if
 :test-result: XFAIL Testing checked-if 2
 :test-result: XFAIL Testing checked-if 3

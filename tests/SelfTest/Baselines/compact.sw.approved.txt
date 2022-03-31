@@ -916,6 +916,24 @@ Approx.tests.cpp:<line number>: passed: d >= Approx( 1.22 ) for: 1.23 >= Approx(
 Approx.tests.cpp:<line number>: passed: d >= Approx( 1.23 ) for: 1.23 >= Approx( 1.23 )
 Approx.tests.cpp:<line number>: passed: !(d >= Approx( 1.24 )) for: !(1.23 >= Approx( 1.24 ))
 Approx.tests.cpp:<line number>: passed: d >= Approx( 1.24 ).epsilon(0.1) for: 1.23 >= Approx( 1.24 )
+TestCaseInfoHasher.tests.cpp:<line number>: passed: h1( dummy ) != h2( dummy ) for: 3422778688 (0x<hex digits>)
+!=
+130711275 (0x<hex digits>)
+TestCaseInfoHasher.tests.cpp:<line number>: passed: h1( dummy ) == h2( dummy ) for: 3422778688 (0x<hex digits>)
+==
+3422778688 (0x<hex digits>)
+TestCaseInfoHasher.tests.cpp:<line number>: passed: h( dummy1 ) != h( dummy2 ) for: 2903002874 (0x<hex digits>)
+!=
+2668622104 (0x<hex digits>)
+TestCaseInfoHasher.tests.cpp:<line number>: passed: h( dummy1 ) != h( dummy2 ) for: 2673152918 (0x<hex digits>)
+!=
+3916075712 (0x<hex digits>)
+TestCaseInfoHasher.tests.cpp:<line number>: passed: h( dummy1 ) != h( dummy2 ) for: 2074929312 (0x<hex digits>)
+!=
+3429949824 (0x<hex digits>)
+TestCaseInfoHasher.tests.cpp:<line number>: passed: h( dummy ) == h( dummy ) for: 3422778688 (0x<hex digits>)
+==
+3422778688 (0x<hex digits>)
 Message.tests.cpp:<line number>: warning: 'this is a message' with 1 message: 'this is a warning'
 Message.tests.cpp:<line number>: failed: a == 1 for: 2 == 1 with 2 messages: 'this message should be logged' and 'so should this'
 Message.tests.cpp:<line number>: passed: a == 2 for: 2 == 2 with 1 message: 'this message may be logged later'
@@ -1868,21 +1886,6 @@ Tag.tests.cpp:<line number>: passed: testCase.tags[0] == Tag( "tag1" ) for: {?} 
 VariadicMacros.tests.cpp:<line number>: passed: with 1 message: 'no assertions'
 Tricky.tests.cpp:<line number>: passed: 0x<hex digits> == bit30and31 for: 3221225472 (0x<hex digits>) == 3221225472
 CmdLine.tests.cpp:<line number>: passed:
-TestCaseInfoHasher.tests.cpp:<line number>: passed: hasherWithCustomSeed(testCase1) != hasherWithCustomSeed(testCase2) for: 764519552 (0x<hex digits>)
-!=
-3472848544 (0x<hex digits>)
-TestCaseInfoHasher.tests.cpp:<line number>: passed: hasherWithCustomSeed(testCase1) != hasherWithCustomSeed(testCase2) for: 869111496 (0x<hex digits>)
-!=
-2870097333 (0x<hex digits>)
-TestCaseInfoHasher.tests.cpp:<line number>: passed: hasherWithCustomSeed(testCase1) != hasherWithCustomSeed(testCase2) for: 1172537240 (0x<hex digits>)
-!=
-1403724645 (0x<hex digits>)
-TestCaseInfoHasher.tests.cpp:<line number>: passed: h1(testCase1) != h2(testCase2) for: 1836497244 (0x<hex digits>)
-!=
-430288597 (0x<hex digits>)
-TestCaseInfoHasher.tests.cpp:<line number>: passed: hasherWithCustomSeed(testCase1) == hasherWithCustomSeed(testCase2) for: 764519552 (0x<hex digits>)
-==
-764519552 (0x<hex digits>)
 Misc.tests.cpp:<line number>: passed: true
 Misc.tests.cpp:<line number>: passed:
 Misc.tests.cpp:<line number>: failed - but was ok: false

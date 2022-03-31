@@ -1764,6 +1764,18 @@ ok {test-number} - d >= Approx( 1.23 ) for: 1.23 >= Approx( 1.23 )
 ok {test-number} - !(d >= Approx( 1.24 )) for: !(1.23 >= Approx( 1.24 ))
 # Greater-than inequalities with different epsilons
 ok {test-number} - d >= Approx( 1.24 ).epsilon(0.1) for: 1.23 >= Approx( 1.24 )
+# Hashers with different seed produce different hash with same test case
+ok {test-number} - h1( dummy ) != h2( dummy ) for: 3422778688 (0x<hex digits>) != 130711275 (0x<hex digits>)
+# Hashers with same seed produce same hash
+ok {test-number} - h1( dummy ) == h2( dummy ) for: 3422778688 (0x<hex digits>) == 3422778688 (0x<hex digits>)
+# Hashing different test cases produces different result
+ok {test-number} - h( dummy1 ) != h( dummy2 ) for: 2903002874 (0x<hex digits>) != 2668622104 (0x<hex digits>)
+# Hashing different test cases produces different result
+ok {test-number} - h( dummy1 ) != h( dummy2 ) for: 2673152918 (0x<hex digits>) != 3916075712 (0x<hex digits>)
+# Hashing different test cases produces different result
+ok {test-number} - h( dummy1 ) != h( dummy2 ) for: 2074929312 (0x<hex digits>) != 3429949824 (0x<hex digits>)
+# Hashing test case produces same hash across multiple calls
+ok {test-number} - h( dummy ) == h( dummy ) for: 3422778688 (0x<hex digits>) == 3422778688 (0x<hex digits>)
 # INFO and WARN do not abort tests
 warning {test-number} - 'this is a message' with 1 message: 'this is a warning'
 # INFO gets logged on failure
@@ -3290,16 +3302,6 @@ ok {test-number} - with 1 message: 'no assertions'
 ok {test-number} - 0x<hex digits> == bit30and31 for: 3221225472 (0x<hex digits>) == 3221225472
 # Test with special, characters "in name
 ok {test-number} -
-# TestCaseInfoHasher produces different hashes.
-ok {test-number} - hasherWithCustomSeed(testCase1) != hasherWithCustomSeed(testCase2) for: 764519552 (0x<hex digits>) != 3472848544 (0x<hex digits>)
-# TestCaseInfoHasher produces different hashes.
-ok {test-number} - hasherWithCustomSeed(testCase1) != hasherWithCustomSeed(testCase2) for: 869111496 (0x<hex digits>) != 2870097333 (0x<hex digits>)
-# TestCaseInfoHasher produces different hashes.
-ok {test-number} - hasherWithCustomSeed(testCase1) != hasherWithCustomSeed(testCase2) for: 1172537240 (0x<hex digits>) != 1403724645 (0x<hex digits>)
-# TestCaseInfoHasher produces different hashes.
-ok {test-number} - h1(testCase1) != h2(testCase2) for: 1836497244 (0x<hex digits>) != 430288597 (0x<hex digits>)
-# TestCaseInfoHasher produces equal hashes.
-ok {test-number} - hasherWithCustomSeed(testCase1) == hasherWithCustomSeed(testCase2) for: 764519552 (0x<hex digits>) == 764519552 (0x<hex digits>)
 # Testing checked-if
 ok {test-number} - true
 # Testing checked-if
@@ -4472,5 +4474,5 @@ ok {test-number} - q3 == 23. for: 23.0 == 23.0
 ok {test-number} -
 # xmlentitycheck
 ok {test-number} -
-1..2239
+1..2240
 

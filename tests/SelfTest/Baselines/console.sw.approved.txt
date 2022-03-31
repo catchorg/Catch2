@@ -6833,6 +6833,87 @@ with expansion:
   1.23 >= Approx( 1.24 )
 
 -------------------------------------------------------------------------------
+Hashers with different seed produce different hash with same test case
+-------------------------------------------------------------------------------
+TestCaseInfoHasher.tests.cpp:<line number>
+...............................................................................
+
+TestCaseInfoHasher.tests.cpp:<line number>: PASSED:
+  REQUIRE( h1( dummy ) != h2( dummy ) )
+with expansion:
+  3422778688 (0x<hex digits>)
+  !=
+  130711275 (0x<hex digits>)
+
+-------------------------------------------------------------------------------
+Hashers with same seed produce same hash
+-------------------------------------------------------------------------------
+TestCaseInfoHasher.tests.cpp:<line number>
+...............................................................................
+
+TestCaseInfoHasher.tests.cpp:<line number>: PASSED:
+  REQUIRE( h1( dummy ) == h2( dummy ) )
+with expansion:
+  3422778688 (0x<hex digits>)
+  ==
+  3422778688 (0x<hex digits>)
+
+-------------------------------------------------------------------------------
+Hashing different test cases produces different result
+  Different test name
+-------------------------------------------------------------------------------
+TestCaseInfoHasher.tests.cpp:<line number>
+...............................................................................
+
+TestCaseInfoHasher.tests.cpp:<line number>: PASSED:
+  REQUIRE( h( dummy1 ) != h( dummy2 ) )
+with expansion:
+  2903002874 (0x<hex digits>)
+  !=
+  2668622104 (0x<hex digits>)
+
+-------------------------------------------------------------------------------
+Hashing different test cases produces different result
+  Different classname
+-------------------------------------------------------------------------------
+TestCaseInfoHasher.tests.cpp:<line number>
+...............................................................................
+
+TestCaseInfoHasher.tests.cpp:<line number>: PASSED:
+  REQUIRE( h( dummy1 ) != h( dummy2 ) )
+with expansion:
+  2673152918 (0x<hex digits>)
+  !=
+  3916075712 (0x<hex digits>)
+
+-------------------------------------------------------------------------------
+Hashing different test cases produces different result
+  Different tags
+-------------------------------------------------------------------------------
+TestCaseInfoHasher.tests.cpp:<line number>
+...............................................................................
+
+TestCaseInfoHasher.tests.cpp:<line number>: PASSED:
+  REQUIRE( h( dummy1 ) != h( dummy2 ) )
+with expansion:
+  2074929312 (0x<hex digits>)
+  !=
+  3429949824 (0x<hex digits>)
+
+-------------------------------------------------------------------------------
+Hashing test case produces same hash across multiple calls
+-------------------------------------------------------------------------------
+TestCaseInfoHasher.tests.cpp:<line number>
+...............................................................................
+
+TestCaseInfoHasher.tests.cpp:<line number>: PASSED:
+  REQUIRE( h( dummy ) == h( dummy ) )
+with expansion:
+  3422778688 (0x<hex digits>)
+  ==
+  3422778688 (0x<hex digits>)
+
+-------------------------------------------------------------------------------
 INFO and WARN do not abort tests
 -------------------------------------------------------------------------------
 Message.tests.cpp:<line number>
@@ -13287,76 +13368,6 @@ CmdLine.tests.cpp:<line number>
 CmdLine.tests.cpp:<line number>: PASSED:
 
 -------------------------------------------------------------------------------
-TestCaseInfoHasher produces different hashes.
-  class names are equal, names are equal but tags are different.
--------------------------------------------------------------------------------
-TestCaseInfoHasher.tests.cpp:<line number>
-...............................................................................
-
-TestCaseInfoHasher.tests.cpp:<line number>: PASSED:
-  CHECK( hasherWithCustomSeed(testCase1) != hasherWithCustomSeed(testCase2) )
-with expansion:
-  764519552 (0x<hex digits>)
-  !=
-  3472848544 (0x<hex digits>)
-
--------------------------------------------------------------------------------
-TestCaseInfoHasher produces different hashes.
-  class names are equal, tags are equal but names are different
--------------------------------------------------------------------------------
-TestCaseInfoHasher.tests.cpp:<line number>
-...............................................................................
-
-TestCaseInfoHasher.tests.cpp:<line number>: PASSED:
-  CHECK( hasherWithCustomSeed(testCase1) != hasherWithCustomSeed(testCase2) )
-with expansion:
-  869111496 (0x<hex digits>)
-  !=
-  2870097333 (0x<hex digits>)
-
--------------------------------------------------------------------------------
-TestCaseInfoHasher produces different hashes.
-  names are equal, tags are equal but class names are different
--------------------------------------------------------------------------------
-TestCaseInfoHasher.tests.cpp:<line number>
-...............................................................................
-
-TestCaseInfoHasher.tests.cpp:<line number>: PASSED:
-  CHECK( hasherWithCustomSeed(testCase1) != hasherWithCustomSeed(testCase2) )
-with expansion:
-  1172537240 (0x<hex digits>)
-  !=
-  1403724645 (0x<hex digits>)
-
--------------------------------------------------------------------------------
-TestCaseInfoHasher produces different hashes.
-  class names and names and tags are equal but hashers are seeded differently.
--------------------------------------------------------------------------------
-TestCaseInfoHasher.tests.cpp:<line number>
-...............................................................................
-
-TestCaseInfoHasher.tests.cpp:<line number>: PASSED:
-  CHECK( h1(testCase1) != h2(testCase2) )
-with expansion:
-  1836497244 (0x<hex digits>)
-  !=
-  430288597 (0x<hex digits>)
-
--------------------------------------------------------------------------------
-TestCaseInfoHasher produces equal hashes.
-  class names and names and tags are equal.
--------------------------------------------------------------------------------
-TestCaseInfoHasher.tests.cpp:<line number>
-...............................................................................
-
-TestCaseInfoHasher.tests.cpp:<line number>: PASSED:
-  CHECK( hasherWithCustomSeed(testCase1) == hasherWithCustomSeed(testCase2) )
-with expansion:
-  764519552 (0x<hex digits>)
-  ==
-  764519552 (0x<hex digits>)
-
--------------------------------------------------------------------------------
 Testing checked-if
 -------------------------------------------------------------------------------
 Misc.tests.cpp:<line number>
@@ -17941,6 +17952,6 @@ Misc.tests.cpp:<line number>
 Misc.tests.cpp:<line number>: PASSED:
 
 ===============================================================================
-test cases:  388 |  298 passed |  83 failed |  7 failed as expected
-assertions: 2239 | 2069 passed | 143 failed | 27 failed as expected
+test cases:  390 |  300 passed |  83 failed |  7 failed as expected
+assertions: 2240 | 2070 passed | 143 failed | 27 failed as expected
 
