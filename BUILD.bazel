@@ -4,7 +4,7 @@ load("@rules_cc//cc:defs.bzl", "cc_library")
 load("@bazel_skylib//rules:expand_template.bzl", "expand_template")
 
 expand_template(
-    name = "catch_user_config.hpp",
+    name = "catch_user_config_hpp",
     out = "catch2/catch_user_config.hpp",
     substitutions = {
         "#cmakedefine CATCH_CONFIG_ANDROID_LOGWRITE": "",
@@ -51,6 +51,7 @@ expand_template(
         "#cmakedefine CATCH_CONFIG_NO_ANDROID_LOGWRITE": "",
         "@CATCH_CONFIG_DEFAULT_REPORTER@": "console",
         "@CATCH_CONFIG_CONSOLE_WIDTH@": "80",
+        "#cmakedefine CATCH_CONFIG_NO_COLOUR_WIN32": "",
     },
     template = "src/catch2/catch_user_config.hpp.in",
 )
@@ -58,9 +59,9 @@ expand_template(
 # Static library, without main.
 cc_library(
     name = "catch2",
-    hdrs = glob(["src/catch2/**/*.hpp"]) + ["catch_user_config.hpp"],
+    hdrs = glob(["src/catch2/**/*.hpp"])+ [":catch_user_config_hpp"],
     srcs = glob(["src/catch2/**/*.cpp"],
-                exclude=[ "src/catch2/internal/catch_main.cpp"]),
+                exclude=[ "src/catch2/internal/catch_main.cpp"]) ,
     visibility = ["//visibility:public"],
     linkstatic = True,
     includes = ["src/"],

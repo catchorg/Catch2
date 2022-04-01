@@ -9,7 +9,7 @@
 #define CATCH_CONFIG_HPP_INCLUDED
 
 #include <catch2/catch_test_spec.hpp>
-#include <catch2/catch_user_config.hpp>
+#include "catch2/catch_user_config.hpp"
 #include <catch2/interfaces/catch_interfaces_config.hpp>
 #include <catch2/internal/catch_unique_ptr.hpp>
 #include <catch2/internal/catch_optional.hpp>
