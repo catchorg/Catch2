@@ -8,6 +8,8 @@
 #ifndef CATCH_OPTIONAL_HPP_INCLUDED
 #define CATCH_OPTIONAL_HPP_INCLUDED
 
+#include <cassert>
+
 namespace Catch {
 
     // An optional type
