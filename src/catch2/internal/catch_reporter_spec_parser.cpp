@@ -8,6 +8,8 @@
 
 #include <catch2/internal/catch_reporter_spec_parser.hpp>
 
+#include <catch2/interfaces/catch_interfaces_config.hpp>
+
 namespace Catch {
 
     namespace Detail {
@@ -59,6 +61,21 @@ namespace Catch {
 
             return parts;
         }
-    }
+
+        Optional<ColourMode> stringToColourMode( StringRef colourMode ) {
+            if ( colourMode == "default" ) {
+                return ColourMode::PlatformDefault;
+            } else if ( colourMode == "ansi" ) {
+                return ColourMode::ANSI;
+            } else if ( colourMode == "win32" ) {
+                return ColourMode::Win32;
+            } else if ( colourMode == "none" ) {
+                return ColourMode::None;
+            } else {
+                return {};
+            }
+        }
+    } // namespace Detail
+
 
 } // namespace Catch

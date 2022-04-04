@@ -8,6 +8,7 @@
 #ifndef CATCH_REPORTER_SPEC_PARSER_HPP_INCLUDED
 #define CATCH_REPORTER_SPEC_PARSER_HPP_INCLUDED
 
+#include <catch2/internal/catch_optional.hpp>
 #include <catch2/internal/catch_stringref.hpp>
 
 #include <vector>
@@ -15,9 +16,13 @@
 
 namespace Catch {
 
+    enum class ColourMode : std::uint8_t;
+
     namespace Detail {
         //! Splits the reporter spec into reporter name and kv-pair options
         std::vector<std::string> splitReporterSpec( StringRef reporterSpec );
+
+        Optional<ColourMode> stringToColourMode( StringRef colourMode );
     }
 
 }

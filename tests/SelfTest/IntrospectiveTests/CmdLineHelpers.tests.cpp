@@ -9,6 +9,7 @@
 #include <catch2/catch_test_macros.hpp>
 #include <catch2/internal/catch_reporter_spec_parser.hpp>
 #include <catch2/matchers/catch_matchers_vector.hpp>
+#include <catch2/interfaces/catch_interfaces_config.hpp>
 
 TEST_CASE("Reporter spec splitting", "[reporter-spec][cli][approvals]") {
 	using Catch::Detail::splitReporterSpec;
@@ -42,5 +43,22 @@ TEST_CASE("Reporter spec splitting", "[reporter-spec][cli][approvals]") {
             splitReporterSpec( "spaced reporter name::key:key=value:value" ),
             Equals( std::vector<std::string>{ "spaced reporter name"s,
                                               "key:key=value:value"s } ) );
+    }
+}
+
+TEST_CASE( "Parsing colour mode", "[cli][colour][approvals]" ) {
+    using Catch::Detail::stringToColourMode;
+    using Catch::ColourMode;
+    SECTION("Valid strings") {
+        REQUIRE( stringToColourMode( "none" ) == ColourMode::None );
+        REQUIRE( stringToColourMode( "ansi" ) == ColourMode::ANSI );
+        REQUIRE( stringToColourMode( "win32" ) == ColourMode::Win32 );
+        REQUIRE( stringToColourMode( "default" ) ==
+                 ColourMode::PlatformDefault );
+    }
+    SECTION("Wrong strings") {
+        REQUIRE_FALSE( stringToColourMode( "NONE" ) );
+        REQUIRE_FALSE( stringToColourMode( "-" ) );
+        REQUIRE_FALSE( stringToColourMode( "asdbjsdb kasbd" ) );
     }
 }
