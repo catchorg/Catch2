@@ -62,3 +62,50 @@ TEST_CASE( "Parsing colour mode", "[cli][colour][approvals]" ) {
         REQUIRE_FALSE( stringToColourMode( "asdbjsdb kasbd" ) );
     }
 }
+
+
+TEST_CASE("Parsing reporter specs", "[cli][reporter-spec][approvals]") {
+    using Catch::parseReporterSpec;
+    using Catch::ReporterSpec;
+    using namespace std::string_literals;
+
+    SECTION( "Correct specs" ) {
+        REQUIRE( parseReporterSpec( "someReporter" ) ==
+                 ReporterSpec( "someReporter"s, {}, {}, {} ) );
+        REQUIRE( parseReporterSpec( "otherReporter::Xk=v::out=c:\\blah" ) ==
+                 ReporterSpec(
+                     "otherReporter"s, "c:\\blah"s, {}, { { "Xk"s, "v"s } } ) );
+        REQUIRE( parseReporterSpec( "diffReporter::Xk1=v1::Xk2==v2" ) ==
+                 ReporterSpec( "diffReporter",
+                               {},
+                               {},
+                               { { "Xk1"s, "v1"s }, { "Xk2"s, "=v2"s } } ) );
+        REQUIRE( parseReporterSpec(
+                     "Foo:bar:reporter::colour=ansi::Xk 1=v 1::Xk2=v:3" ) ==
+                 ReporterSpec( "Foo:bar:reporter",
+                               {},
+                               Catch::ColourMode::ANSI,
+                               { { "Xk 1"s, "v 1"s }, { "Xk2"s, "v:3"s } } ) );
+    }
+
+    SECTION( "Bad specs" ) {
+        REQUIRE_FALSE( parseReporterSpec( "::" ) );
+        // Unknown Catch2 arg (should be "out")
+        REQUIRE_FALSE( parseReporterSpec( "reporter::output=filename" ) );
+        // Wrong colour spec
+        REQUIRE_FALSE( parseReporterSpec( "reporter::colour=custom" ) );
+        // Duplicated colour spec
+        REQUIRE_FALSE( parseReporterSpec( "reporter::colour=ansi::colour=ansi" ) );
+        // Duplicated out arg
+        REQUIRE_FALSE( parseReporterSpec( "reporter::out=f.txt::out=z.txt" ) );
+        // Duplicated custom arg
+        REQUIRE_FALSE( parseReporterSpec( "reporter::Xa=foo::Xa=bar" ) );
+        // Empty key
+        REQUIRE_FALSE( parseReporterSpec( "reporter::X=foo" ) );
+        REQUIRE_FALSE( parseReporterSpec( "reporter::=foo" ) );
+        // Empty value
+        REQUIRE_FALSE( parseReporterSpec( "reporter::Xa=" ) );
+        // non-key value later field
+        REQUIRE_FALSE( parseReporterSpec( "reporter::Xab" ) );
+    }
+}
