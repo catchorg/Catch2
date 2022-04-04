@@ -1316,10 +1316,8 @@ CmdLine.tests.cpp:<line number>: passed: config.abortAfter == -1 for: -1 == -1
 CmdLine.tests.cpp:<line number>: passed: config.noThrow == false for: false == false
 CmdLine.tests.cpp:<line number>: passed: config.reporterSpecifications.empty() for: true
 CmdLine.tests.cpp:<line number>: passed: !(cfg.hasTestFilters()) for: !false
-CmdLine.tests.cpp:<line number>: passed: cfg.getReportersAndOutputFiles().size() == 1 for: 1 == 1
-CmdLine.tests.cpp:<line number>: passed: cfg.getReportersAndOutputFiles()[0] == Catch::ConfigData::ReporterAndFile{ expectedReporter, {} } for: { console, <default-output> }
-==
-{ console, <default-output> }
+CmdLine.tests.cpp:<line number>: passed: cfg.getReporterSpecs().size() == 1 for: 1 == 1
+CmdLine.tests.cpp:<line number>: passed: cfg.getReporterSpecs()[0] == Catch::ReporterSpec{ expectedReporter, {}, {}, {} } for: {?} == {?}
 CmdLine.tests.cpp:<line number>: passed: result for: {?}
 CmdLine.tests.cpp:<line number>: passed: cfg.hasTestFilters() for: true
 CmdLine.tests.cpp:<line number>: passed: cfg.testSpec().matches(*fakeTestCase("notIncluded")) == false for: false == false
@@ -1333,37 +1331,21 @@ CmdLine.tests.cpp:<line number>: passed: cfg.hasTestFilters() for: true
 CmdLine.tests.cpp:<line number>: passed: cfg.testSpec().matches(*fakeTestCase("test1")) == false for: false == false
 CmdLine.tests.cpp:<line number>: passed: cfg.testSpec().matches(*fakeTestCase("alwaysIncluded")) for: true
 CmdLine.tests.cpp:<line number>: passed: result for: {?} with 1 message: 'result.errorMessage() := ""'
-CmdLine.tests.cpp:<line number>: passed: config.reporterSpecifications == vec_ReporterAndFile{ {"console", {}} } for: { { console, <default-output> } }
-==
-{ { console, <default-output> } } with 1 message: 'result.errorMessage() := ""'
+CmdLine.tests.cpp:<line number>: passed: config.reporterSpecifications == vec_Specs{ { "console", {}, {}, {} } } for: { {?} } == { {?} } with 1 message: 'result.errorMessage() := ""'
 CmdLine.tests.cpp:<line number>: passed: result for: {?} with 1 message: 'result.errorMessage() := ""'
-CmdLine.tests.cpp:<line number>: passed: config.reporterSpecifications == vec_ReporterAndFile{ {"xml", {}} } for: { { xml, <default-output> } }
-==
-{ { xml, <default-output> } } with 1 message: 'result.errorMessage() := ""'
+CmdLine.tests.cpp:<line number>: passed: config.reporterSpecifications == vec_Specs{ { "xml", {}, {}, {} } } for: { {?} } == { {?} } with 1 message: 'result.errorMessage() := ""'
 CmdLine.tests.cpp:<line number>: passed: result for: {?} with 1 message: 'result.errorMessage() := ""'
-CmdLine.tests.cpp:<line number>: passed: config.reporterSpecifications == vec_ReporterAndFile{ {"junit", {}} } for: { { junit, <default-output> } }
-==
-{ { junit, <default-output> } } with 1 message: 'result.errorMessage() := ""'
+CmdLine.tests.cpp:<line number>: passed: config.reporterSpecifications == vec_Specs{ { "junit", {}, {}, {} } } for: { {?} } == { {?} } with 1 message: 'result.errorMessage() := ""'
 CmdLine.tests.cpp:<line number>: passed: !result for: true
 CmdLine.tests.cpp:<line number>: passed: result.errorMessage(), ContainsSubstring("Unrecognized reporter") for: "Unrecognized reporter, 'unsupported'. Check available with --list-reporters" contains: "Unrecognized reporter"
 CmdLine.tests.cpp:<line number>: passed: result for: {?} with 1 message: 'result.errorMessage() := ""'
-CmdLine.tests.cpp:<line number>: passed: config.reporterSpecifications == vec_ReporterAndFile{ {"console", "out.txt"s} } for: { { console, out.txt } }
-==
-{ { console, out.txt } } with 1 message: 'result.errorMessage() := ""'
+CmdLine.tests.cpp:<line number>: passed: config.reporterSpecifications == vec_Specs{ { "console", "out.txt"s, {}, {} } } for: { {?} } == { {?} } with 1 message: 'result.errorMessage() := ""'
 CmdLine.tests.cpp:<line number>: passed: result for: {?} with 1 message: 'result.errorMessage() := ""'
-CmdLine.tests.cpp:<line number>: passed: config.reporterSpecifications == vec_ReporterAndFile{ {"console", "C:\\Temp\\out.txt"s} } for: { { console, C:\Temp\out.txt } }
-==
-{ { console, C:\Temp\out.txt } } with 1 message: 'result.errorMessage() := ""'
-CmdLine.tests.cpp:<line number>: passed: !result for: true
-CmdLine.tests.cpp:<line number>: passed: result.errorMessage(), ContainsSubstring("empty filename") for: "Reporter 'console' has empty filename specified as its output. Supply a filename or remove the colons to use the default output." contains: "empty filename"
-CmdLine.tests.cpp:<line number>: passed: cli.parse({ "test", "-r", "xml::output.xml", "-r", "junit::output-junit.xml" }) for: {?}
-CmdLine.tests.cpp:<line number>: passed: config.reporterSpecifications == vec_ReporterAndFile{ {"xml", "output.xml"s}, {"junit", "output-junit.xml"s} } for: { { xml, output.xml }, { junit, output-junit.xml } }
-==
-{ { xml, output.xml }, { junit, output-junit.xml } }
-CmdLine.tests.cpp:<line number>: passed: cli.parse({ "test", "-r", "xml::output.xml", "-r", "console" }) for: {?}
-CmdLine.tests.cpp:<line number>: passed: config.reporterSpecifications == vec_ReporterAndFile{ {"xml", "output.xml"s}, {"console", {}} } for: { { xml, output.xml }, { console, <default-output> } }
-==
-{ { xml, output.xml }, { console, <default-output> } }
+CmdLine.tests.cpp:<line number>: passed: config.reporterSpecifications == vec_Specs{ { "console", "C:\\Temp\\out.txt"s, {}, {} } } for: { {?} } == { {?} } with 1 message: 'result.errorMessage() := ""'
+CmdLine.tests.cpp:<line number>: passed: cli.parse({ "test", "-r", "xml::out=output.xml", "-r", "junit::out=output-junit.xml" }) for: {?}
+CmdLine.tests.cpp:<line number>: passed: config.reporterSpecifications == vec_Specs{ { "xml", "output.xml"s, {}, {} }, { "junit", "output-junit.xml"s, {}, {} } } for: { {?}, {?} } == { {?}, {?} }
+CmdLine.tests.cpp:<line number>: passed: cli.parse({ "test", "-r", "xml::out=output.xml", "-r", "console" }) for: {?}
+CmdLine.tests.cpp:<line number>: passed: config.reporterSpecifications == vec_Specs{ { "xml", "output.xml"s, {}, {} }, { "console", {}, {}, {} } } for: { {?}, {?} } == { {?}, {?} }
 CmdLine.tests.cpp:<line number>: passed: !result for: true
 CmdLine.tests.cpp:<line number>: passed: result.errorMessage(), ContainsSubstring("Only one reporter may have unspecified output file.") for: "Only one reporter may have unspecified output file." contains: "Only one reporter may have unspecified output file."
 CmdLine.tests.cpp:<line number>: passed: cli.parse({"test", "-b"}) for: {?}

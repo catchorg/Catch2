@@ -14,6 +14,7 @@
 #include <catch2/internal/catch_unique_ptr.hpp>
 #include <catch2/internal/catch_optional.hpp>
 #include <catch2/internal/catch_random_seed_generation.hpp>
+#include <catch2/internal/catch_reporter_spec_parser.hpp>
 
 #include <iosfwd>
 #include <vector>
@@ -24,17 +25,6 @@ namespace Catch {
     class IStream;
 
     struct ConfigData {
-        struct ReporterAndFile {
-            std::string reporterName;
-
-            // If none, the output goes to the default output.
-            Optional<std::string> outputFileName;
-
-            friend bool operator==(ReporterAndFile const& lhs, ReporterAndFile const& rhs) {
-                return lhs.reporterName == rhs.reporterName && lhs.outputFileName == rhs.outputFileName;
-            }
-            friend std::ostream& operator<<(std::ostream &os, ReporterAndFile const& reporter);
-        };
 
         bool listTests = false;
         bool listTags = false;
@@ -72,7 +62,7 @@ namespace Catch {
         std::string defaultOutputFilename;
         std::string name;
         std::string processName;
-        std::vector<ReporterAndFile> reporterSpecifications;
+        std::vector<ReporterSpec> reporterSpecifications;
 
         std::vector<std::string> testsOrTags;
         std::vector<std::string> sectionsToRun;
@@ -90,7 +80,7 @@ namespace Catch {
         bool listTags() const;
         bool listReporters() const;
 
-        std::vector<ConfigData::ReporterAndFile> const& getReportersAndOutputFiles() const;
+        std::vector<ReporterSpec> const& getReporterSpecs() const;
         IStream const* getReporterOutputStream(std::size_t reporterIdx) const;
 
         std::vector<std::string> const& getTestsOrTags() const override;

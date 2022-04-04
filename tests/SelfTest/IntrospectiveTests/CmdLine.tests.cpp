@@ -361,9 +361,9 @@ TEST_CASE( "Process can be configured on command line", "[config][command-line]"
 #endif
             ;
 
-        CHECK( cfg.getReportersAndOutputFiles().size() == 1 );
-        CHECK( cfg.getReportersAndOutputFiles()[0] ==
-               Catch::ConfigData::ReporterAndFile{ expectedReporter, {} } );
+        CHECK( cfg.getReporterSpecs().size() == 1 );
+        CHECK( cfg.getReporterSpecs()[0] ==
+               Catch::ReporterSpec{ expectedReporter, {}, {}, {} } );
     }
 
     SECTION("test lists") {
@@ -399,28 +399,31 @@ TEST_CASE( "Process can be configured on command line", "[config][command-line]"
     }
 
     SECTION("reporter") {
-        using vec_ReporterAndFile = std::vector<Catch::ConfigData::ReporterAndFile>;
+        using vec_Specs = std::vector<Catch::ReporterSpec>;
         using namespace std::string_literals;
         SECTION("-r/console") {
             auto result = cli.parse({"test", "-r", "console"});
             CAPTURE(result.errorMessage());
             CHECK(result);
 
-            REQUIRE(config.reporterSpecifications == vec_ReporterAndFile{ {"console", {}} });
+            REQUIRE( config.reporterSpecifications ==
+                     vec_Specs{ { "console", {}, {}, {} } } );
         }
         SECTION("-r/xml") {
             auto result = cli.parse({"test", "-r", "xml"});
             CAPTURE(result.errorMessage());
             CHECK(result);
 
-            REQUIRE(config.reporterSpecifications == vec_ReporterAndFile{ {"xml", {}} });
+            REQUIRE( config.reporterSpecifications ==
+                     vec_Specs{ { "xml", {}, {}, {} } } );
         }
         SECTION("--reporter/junit") {
             auto result = cli.parse({"test", "--reporter", "junit"});
             CAPTURE(result.errorMessage());
             CHECK(result);
 
-            REQUIRE(config.reporterSpecifications == vec_ReporterAndFile{ {"junit", {}} });
+            REQUIRE( config.reporterSpecifications ==
+                     vec_Specs{ { "junit", {}, {}, {} } } );
         }
         SECTION("must match one of the available ones") {
             auto result = cli.parse({"test", "--reporter", "unsupported"});
@@ -429,34 +432,34 @@ TEST_CASE( "Process can be configured on command line", "[config][command-line]"
             REQUIRE_THAT(result.errorMessage(), ContainsSubstring("Unrecognized reporter"));
         }
         SECTION("With output file") {
-            auto result = cli.parse({ "test", "-r", "console::out.txt" });
+            auto result = cli.parse({ "test", "-r", "console::out=out.txt" });
             CAPTURE(result.errorMessage());
             CHECK(result);
-            REQUIRE(config.reporterSpecifications == vec_ReporterAndFile{ {"console", "out.txt"s} });
+            REQUIRE( config.reporterSpecifications ==
+                     vec_Specs{ { "console", "out.txt"s, {}, {} } } );
         }
         SECTION("With Windows-like absolute path as output file") {
-            auto result = cli.parse({ "test", "-r", "console::C:\\Temp\\out.txt" });
+            auto result = cli.parse({ "test", "-r", "console::out=C:\\Temp\\out.txt" });
             CAPTURE(result.errorMessage());
             CHECK(result);
-            REQUIRE(config.reporterSpecifications == vec_ReporterAndFile{ {"console", "C:\\Temp\\out.txt"s} });
-        }
-        SECTION("Output file cannot be empty") {
-            auto result = cli.parse({"test", "--reporter", "console::"});
-            CHECK(!result);
-
-            REQUIRE_THAT(result.errorMessage(), ContainsSubstring("empty filename"));
+            REQUIRE( config.reporterSpecifications ==
+                     vec_Specs{ { "console", "C:\\Temp\\out.txt"s, {}, {} } } );
         }
         SECTION("Multiple reporters") {
             SECTION("All with output files") {
-                CHECK(cli.parse({ "test", "-r", "xml::output.xml", "-r", "junit::output-junit.xml" }));
-                REQUIRE(config.reporterSpecifications == vec_ReporterAndFile{ {"xml", "output.xml"s}, {"junit", "output-junit.xml"s} });
+                CHECK(cli.parse({ "test", "-r", "xml::out=output.xml", "-r", "junit::out=output-junit.xml" }));
+                REQUIRE( config.reporterSpecifications ==
+                         vec_Specs{ { "xml", "output.xml"s, {}, {} },
+                               { "junit", "output-junit.xml"s, {}, {} } } );
             }
             SECTION("Mixed output files and default output") {
-                CHECK(cli.parse({ "test", "-r", "xml::output.xml", "-r", "console" }));
-                REQUIRE(config.reporterSpecifications == vec_ReporterAndFile{ {"xml", "output.xml"s}, {"console", {}} });
+                CHECK(cli.parse({ "test", "-r", "xml::out=output.xml", "-r", "console" }));
+                REQUIRE( config.reporterSpecifications ==
+                         vec_Specs{ { "xml", "output.xml"s, {}, {} },
+                                    { "console", {}, {}, {} } } );
             }
             SECTION("cannot have multiple reporters with default output") {
-                auto result = cli.parse({ "test", "-r", "console", "-r", "xml::output.xml", "-r", "junit" });
+                auto result = cli.parse({ "test", "-r", "console", "-r", "xml::out=output.xml", "-r", "junit" });
                 CHECK(!result);
                 REQUIRE_THAT(result.errorMessage(), ContainsSubstring("Only one reporter may have unspecified output file."));
             }

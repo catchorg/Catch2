@@ -11468,7 +11468,7 @@ C
       </Expression>
       <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
         <Original>
-          cfg.getReportersAndOutputFiles().size() == 1
+          cfg.getReporterSpecs().size() == 1
         </Original>
         <Expanded>
           1 == 1
@@ -11476,12 +11476,10 @@ C
       </Expression>
       <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
         <Original>
-          cfg.getReportersAndOutputFiles()[0] == Catch::ConfigData::ReporterAndFile{ expectedReporter, {} }
+          cfg.getReporterSpecs()[0] == Catch::ReporterSpec{ expectedReporter, {}, {}, {} }
         </Original>
         <Expanded>
-          { console, &lt;default-output> }
-==
-{ console, &lt;default-output> }
+          {?} == {?}
         </Expanded>
       </Expression>
       <OverallResults successes="9" failures="0" expectedFailures="0"/>
@@ -11618,12 +11616,10 @@ C
         </Info>
         <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
           <Original>
-            config.reporterSpecifications == vec_ReporterAndFile{ {"console", {}} }
+            config.reporterSpecifications == vec_Specs{ { "console", {}, {}, {} } }
           </Original>
           <Expanded>
-            { { console, &lt;default-output> } }
-==
-{ { console, &lt;default-output> } }
+            { {?} } == { {?} }
           </Expanded>
         </Expression>
         <OverallResults successes="2" failures="0" expectedFailures="0"/>
@@ -11648,12 +11644,10 @@ C
         </Info>
         <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
           <Original>
-            config.reporterSpecifications == vec_ReporterAndFile{ {"xml", {}} }
+            config.reporterSpecifications == vec_Specs{ { "xml", {}, {}, {} } }
           </Original>
           <Expanded>
-            { { xml, &lt;default-output> } }
-==
-{ { xml, &lt;default-output> } }
+            { {?} } == { {?} }
           </Expanded>
         </Expression>
         <OverallResults successes="2" failures="0" expectedFailures="0"/>
@@ -11678,12 +11672,10 @@ C
         </Info>
         <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
           <Original>
-            config.reporterSpecifications == vec_ReporterAndFile{ {"junit", {}} }
+            config.reporterSpecifications == vec_Specs{ { "junit", {}, {}, {} } }
           </Original>
           <Expanded>
-            { { junit, &lt;default-output> } }
-==
-{ { junit, &lt;default-output> } }
+            { {?} } == { {?} }
           </Expanded>
         </Expression>
         <OverallResults successes="2" failures="0" expectedFailures="0"/>
@@ -11730,12 +11722,10 @@ C
         </Info>
         <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
           <Original>
-            config.reporterSpecifications == vec_ReporterAndFile{ {"console", "out.txt"s} }
+            config.reporterSpecifications == vec_Specs{ { "console", "out.txt"s, {}, {} } }
           </Original>
           <Expanded>
-            { { console, out.txt } }
-==
-{ { console, out.txt } }
+            { {?} } == { {?} }
           </Expanded>
         </Expression>
         <OverallResults successes="2" failures="0" expectedFailures="0"/>
@@ -11760,34 +11750,10 @@ C
         </Info>
         <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
           <Original>
-            config.reporterSpecifications == vec_ReporterAndFile{ {"console", "C:\\Temp\\out.txt"s} }
+            config.reporterSpecifications == vec_Specs{ { "console", "C:\\Temp\\out.txt"s, {}, {} } }
           </Original>
           <Expanded>
-            { { console, C:\Temp\out.txt } }
-==
-{ { console, C:\Temp\out.txt } }
-          </Expanded>
-        </Expression>
-        <OverallResults successes="2" failures="0" expectedFailures="0"/>
-      </Section>
-      <OverallResults successes="2" failures="0" expectedFailures="0"/>
-    </Section>
-    <Section name="reporter" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-      <Section name="Output file cannot be empty" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-        <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-          <Original>
-            !result
-          </Original>
-          <Expanded>
-            true
-          </Expanded>
-        </Expression>
-        <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-          <Original>
-            result.errorMessage(), ContainsSubstring("empty filename")
-          </Original>
-          <Expanded>
-            "Reporter 'console' has empty filename specified as its output. Supply a filename or remove the colons to use the default output." contains: "empty filename"
+            { {?} } == { {?} }
           </Expanded>
         </Expression>
         <OverallResults successes="2" failures="0" expectedFailures="0"/>
@@ -11799,7 +11765,7 @@ C
         <Section name="All with output files" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
           <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
             <Original>
-              cli.parse({ "test", "-r", "xml::output.xml", "-r", "junit::output-junit.xml" })
+              cli.parse({ "test", "-r", "xml::out=output.xml", "-r", "junit::out=output-junit.xml" })
             </Original>
             <Expanded>
               {?}
@@ -11807,12 +11773,10 @@ C
           </Expression>
           <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
             <Original>
-              config.reporterSpecifications == vec_ReporterAndFile{ {"xml", "output.xml"s}, {"junit", "output-junit.xml"s} }
+              config.reporterSpecifications == vec_Specs{ { "xml", "output.xml"s, {}, {} }, { "junit", "output-junit.xml"s, {}, {} } }
             </Original>
             <Expanded>
-              { { xml, output.xml }, { junit, output-junit.xml } }
-==
-{ { xml, output.xml }, { junit, output-junit.xml } }
+              { {?}, {?} } == { {?}, {?} }
             </Expanded>
           </Expression>
           <OverallResults successes="2" failures="0" expectedFailures="0"/>
@@ -11826,7 +11790,7 @@ C
         <Section name="Mixed output files and default output" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
           <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
             <Original>
-              cli.parse({ "test", "-r", "xml::output.xml", "-r", "console" })
+              cli.parse({ "test", "-r", "xml::out=output.xml", "-r", "console" })
             </Original>
             <Expanded>
               {?}
@@ -11834,12 +11798,10 @@ C
           </Expression>
           <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
             <Original>
-              config.reporterSpecifications == vec_ReporterAndFile{ {"xml", "output.xml"s}, {"console", {}} }
+              config.reporterSpecifications == vec_Specs{ { "xml", "output.xml"s, {}, {} }, { "console", {}, {}, {} } }
             </Original>
             <Expanded>
-              { { xml, output.xml }, { console, &lt;default-output> } }
-==
-{ { xml, output.xml }, { console, &lt;default-output> } }
+              { {?}, {?} } == { {?}, {?} }
             </Expanded>
           </Expression>
           <OverallResults successes="2" failures="0" expectedFailures="0"/>
@@ -21071,6 +21033,6 @@ There is no extra whitespace here
     </Section>
     <OverallResult success="true"/>
   </TestCase>
-  <OverallResults successes="2070" failures="143" expectedFailures="27"/>
+  <OverallResults successes="2068" failures="143" expectedFailures="27"/>
   <OverallResultsCases successes="300" failures="83" expectedFailures="7"/>
 </Catch2TestRun>

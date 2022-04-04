@@ -435,8 +435,8 @@ if (NOT MEMORYCHECK_COMMAND)
   add_test(NAME "MultiReporter::CapturingReportersDontPropagateStdOut"
     COMMAND
       $<TARGET_FILE:SelfTest> "Sends stuff to stdout and stderr"
-        --reporter xml::${_NullFile}
-        --reporter junit::${_NullFile}
+        --reporter xml::out=${_NullFile}
+        --reporter junit::out=${_NullFile}
   )
   set_tests_properties("MultiReporter::CapturingReportersDontPropagateStdOut"
     PROPERTIES
@@ -447,8 +447,8 @@ endif()
 add_test(NAME "MultiReporter::NonCapturingReportersPropagateStdout"
   COMMAND
     $<TARGET_FILE:SelfTest> "Sends stuff to stdout and stderr"
-      --reporter xml::${_NullFile}
-      --reporter console::${_NullFile}
+      --reporter xml::out=${_NullFile}
+      --reporter console::out=${_NullFile}
 )
 set_tests_properties("MultiReporter::NonCapturingReportersPropagateStdout"
   PROPERTIES
@@ -468,11 +468,32 @@ set_tests_properties("Outputs::DashAsOutLocationSendsOutputToStdout"
 add_test(NAME "Reporters::DashAsLocationInReporterSpecSendsOutputToStdout"
   COMMAND
     $<TARGET_FILE:SelfTest> "Factorials are computed"
-      --reporter console::-
+      --reporter console::out=-
 )
 set_tests_properties("Reporters::DashAsLocationInReporterSpecSendsOutputToStdout"
   PROPERTIES
     PASS_REGULAR_EXPRESSION "All tests passed \\(5 assertions in 1 test case\\)"
+)
+
+add_test(NAME "Reporters::ReporterSpecificColourOverridesDefaultColour"
+  COMMAND
+    $<TARGET_FILE:SelfTest> "Factorials are computed"
+      --reporter console::colour-mode=ansi
+      --colour-mode none
+)
+set_tests_properties("Reporters::ReporterSpecificColourOverridesDefaultColour"
+  PROPERTIES
+    PASS_REGULAR_EXPRESSION "\\[1\;32mAll tests passed"
+)
+
+add_test(NAME "Reporters::UnrecognizedOptionInSpecCausesError"
+  COMMAND
+    $<TARGET_FILE:SelfTest> "Factorials are computed"
+      --reporter console::bad-option=ansi
+)
+set_tests_properties("Reporters::UnrecognizedOptionInSpecCausesError"
+  PROPERTIES
+    WILL_FAIL ON
 )
 
 add_test(NAME "Colours::ColourModeCanBeExplicitlySetToAnsi"

@@ -220,7 +220,7 @@ common_args = ["~[!nonportable]~[!benchmark]~[approvals] *", "-s", "-w", "NoAsse
 filenames = ['{}.sw.multi'.format(reporter) for reporter in reporters]
 reporter_args = []
 for reporter, filename in zip(reporters, filenames):
-    reporter_args += ['-r', '{}::{}'.format(reporter, get_rawResultsPath(filename))]
+    reporter_args += ['-r', '{}::out={}'.format(reporter, get_rawResultsPath(filename))]
 
 run_test("default.sw.multi", common_args + reporter_args)
 check_outputs("default.sw.multi")

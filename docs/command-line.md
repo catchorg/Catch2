@@ -123,21 +123,32 @@ Test names containing special characters, such as `,` or `[` can specify them on
 <a id="choosing-a-reporter-to-use"></a>
 ## Choosing a reporter to use
 
-<pre>-r, --reporter &lt;reporter[::output-file]&gt;</pre>
-
-> Support for providing output-file through the `-r`, `--reporter` flag was [introduced](https://github.com/catchorg/Catch2/pull/2183) in Catch2 X.Y.Z
+<pre>-r, --reporter &lt;reporter[::key=value]*&gt;</pre>
 
 Reporters are how the output from Catch2 (results of assertions, tests,
 benchmarks and so on) is formatted and written out. The default reporter
 is called the "Console" reporter and is intended to provide relatively
 verbose and human-friendly output.
 
+Reporters are also individually configurable. To pass configuration options
+to the reporter, you append `::key=value` to the reporter specification
+as many times as you want, e.g. `--reporter xml::out=someFile.xml`.
+
+The keys must either be prefixed by "X", in which case they are not parsed
+by Catch2 and are only passed down to the reporter, or one of options
+hardcoded into Catch2. Currently there are only 2,
+["out"](#sending-output-to-a-file), and ["colour-mode"](#colour-mode).
+
+_Note that the reporter might still check the X-prefixed options for
+validity, and throw an error if they are wrong._
+
+> Support for passing arguments to reporters through the `-r`, `--reporter` flag was introduced in Catch2 X.Y.Z
+
 There are multiple built-in reporters, you can see what they do by using the 
 [`--list-reporter`](command-line.md#listing-available-tests-tags-or-reporters)
 flag. If you need a reporter providing custom format outside of the already
 provided ones, look at the ["write your own reporter" part of the reporter
 documentation](reporters.md#writing-your-own-reporter).
-
 
 This option may be passed multiple times to use multiple (different)
 reporters  at the same time. See the [reporter documentation](reporters.md#multiple-reporters)
@@ -148,13 +159,12 @@ the [`-o`, `--out`](#sending-output-to-a-file) option.
 
 > Support for using multiple different reporters at the same time was [introduced](https://github.com/catchorg/Catch2/pull/2183) in Catch2 X.Y.Z
 
-As with the `--out` option, using `-` for the output file name sends the
-output to stdout.
 
 _Note: There is currently no way to escape `::` in the reporter spec,
-and thus reporter/file names with `::` in them will not work properly.
-As `::` in paths is relatively obscure (unlike `:`), we do not consider
-this an issue._
+and thus the reporter names, or configuration keys and values, cannot
+contain `::`. As `::` in paths is relatively obscure (unlike ':'), we do
+not consider this an issue._
+
 
 <a id="breaking-into-the-debugger"></a>
 ## Breaking into the debugger

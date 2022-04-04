@@ -18,7 +18,9 @@ namespace Catch {
         IEventListener( config.fullConfig() ),
         m_wrapped_stream( config.stream() ),
         m_stream( m_wrapped_stream->stream() ),
-        m_colour( makeColourImpl( m_config->colourMode(), m_wrapped_stream ) ) {}
+        m_colour( makeColourImpl( config.colourMode(), m_wrapped_stream ) ),
+        m_customOptions( config.customOptions() )
+    {}
 
     ReporterBase::~ReporterBase() = default;
 

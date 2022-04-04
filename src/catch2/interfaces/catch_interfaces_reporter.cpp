@@ -14,17 +14,31 @@
 #include <catch2/internal/catch_string_manip.hpp>
 #include <catch2/catch_test_case_info.hpp>
 #include <catch2/reporters/catch_reporter_helpers.hpp>
+#include <catch2/internal/catch_move_and_forward.hpp>
 
 #include <algorithm>
 #include <iomanip>
 
 namespace Catch {
 
-    ReporterConfig::ReporterConfig( IConfig const* _fullConfig, IStream const* _stream )
-    :   m_stream( _stream ), m_fullConfig( _fullConfig ) {}
+    ReporterConfig::ReporterConfig(
+        IConfig const* _fullConfig,
+        IStream const* _stream,
+        ColourMode colourMode,
+        std::map<std::string, std::string> customOptions ):
+        m_stream( _stream ),
+        m_fullConfig( _fullConfig ),
+        m_colourMode( colourMode ),
+        m_customOptions( CATCH_MOVE( customOptions ) ) {}
 
     IStream const* ReporterConfig::stream() const { return m_stream; }
     IConfig const * ReporterConfig::fullConfig() const { return m_fullConfig; }
+    ColourMode ReporterConfig::colourMode() const { return m_colourMode; }
+
+    std::map<std::string, std::string> const&
+    ReporterConfig::customOptions() const {
+        return m_customOptions;
+    }
 
     AssertionStats::AssertionStats( AssertionResult const& _assertionResult,
                                     std::vector<MessageInfo> const& _infoMessages,

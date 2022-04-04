@@ -66,7 +66,6 @@
     <testCase name="Process can be configured on command line/reporter/must match one of the available ones" duration="{duration}"/>
     <testCase name="Process can be configured on command line/reporter/With output file" duration="{duration}"/>
     <testCase name="Process can be configured on command line/reporter/With Windows-like absolute path as output file" duration="{duration}"/>
-    <testCase name="Process can be configured on command line/reporter/Output file cannot be empty" duration="{duration}"/>
     <testCase name="Process can be configured on command line/reporter/Multiple reporters/All with output files" duration="{duration}"/>
     <testCase name="Process can be configured on command line/reporter/Multiple reporters/Mixed output files and default output" duration="{duration}"/>
     <testCase name="Process can be configured on command line/reporter/Multiple reporters/cannot have multiple reporters with default output" duration="{duration}"/>

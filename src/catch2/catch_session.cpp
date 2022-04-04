@@ -41,11 +41,18 @@ namespace Catch {
             return reporter;
         }
 
-        IStreamingReporterPtr makeReporter(Config const* config) {
+        IStreamingReporterPtr prepareReporters(Config const* config) {
             if (Catch::getRegistryHub().getReporterRegistry().getListeners().empty()
-                    && config->getReportersAndOutputFiles().size() == 1) {
+                    && config->getReporterSpecs().size() == 1) {
+                auto const& spec = config->getReporterSpecs()[0];
                 auto stream = config->getReporterOutputStream(0);
-                return createReporter(config->getReportersAndOutputFiles()[0].reporterName, ReporterConfig(config, stream));
+                return createReporter(
+                    config->getReporterSpecs()[0].name(),
+                    ReporterConfig(
+                        config,
+                        stream,
+                        spec.colourMode().valueOr( config->colourMode() ),
+                        spec.customOptions() ) );
             }
 
             auto multi = Detail::make_unique<MultiReporter>(config);
@@ -56,9 +63,15 @@ namespace Catch {
             }
 
             std::size_t reporterIdx = 0;
-            for (auto const& reporterAndFile : config->getReportersAndOutputFiles()) {
+            for (auto const& reporterSpec : config->getReporterSpecs()) {
                 auto stream = config->getReporterOutputStream(reporterIdx);
-                multi->addReporter(createReporter(reporterAndFile.reporterName, ReporterConfig(config, stream)));
+                multi->addReporter( createReporter(
+                    reporterSpec.name(),
+                    ReporterConfig( config,
+                                    stream,
+                                    reporterSpec.colourMode().valueOr(
+                                        config->colourMode() ),
+                                    reporterSpec.customOptions() ) ) );
                 reporterIdx++;
             }
 
@@ -304,7 +317,7 @@ namespace Catch {
             getCurrentMutableContext().setConfig(m_config.get());
 
             // Create reporter(s) so we can route listings through them
-            auto reporter = makeReporter(m_config.get());
+            auto reporter = prepareReporters(m_config.get());
 
             auto const& invalidSpecs = m_config->testSpec().getInvalidSpecs();
             if ( !invalidSpecs.empty() ) {

@@ -9431,16 +9431,14 @@ with expansion:
   !false
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  CHECK( cfg.getReportersAndOutputFiles().size() == 1 )
+  CHECK( cfg.getReporterSpecs().size() == 1 )
 with expansion:
   1 == 1
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  CHECK( cfg.getReportersAndOutputFiles()[0] == Catch::ConfigData::ReporterAndFile{ expectedReporter, {} } )
+  CHECK( cfg.getReporterSpecs()[0] == Catch::ReporterSpec{ expectedReporter, {}, {}, {} } )
 with expansion:
-  { console, <default-output> }
-  ==
-  { console, <default-output> }
+  {?} == {?}
 
 -------------------------------------------------------------------------------
 Process can be configured on command line
@@ -9542,11 +9540,9 @@ with message:
   result.errorMessage() := ""
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  REQUIRE( config.reporterSpecifications == vec_ReporterAndFile{ {"console", {}} } )
+  REQUIRE( config.reporterSpecifications == vec_Specs{ { "console", {}, {}, {} } } )
 with expansion:
-  { { console, <default-output> } }
-  ==
-  { { console, <default-output> } }
+  { {?} } == { {?} }
 with message:
   result.errorMessage() := ""
 
@@ -9566,11 +9562,9 @@ with message:
   result.errorMessage() := ""
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  REQUIRE( config.reporterSpecifications == vec_ReporterAndFile{ {"xml", {}} } )
+  REQUIRE( config.reporterSpecifications == vec_Specs{ { "xml", {}, {}, {} } } )
 with expansion:
-  { { xml, <default-output> } }
-  ==
-  { { xml, <default-output> } }
+  { {?} } == { {?} }
 with message:
   result.errorMessage() := ""
 
@@ -9590,11 +9584,9 @@ with message:
   result.errorMessage() := ""
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  REQUIRE( config.reporterSpecifications == vec_ReporterAndFile{ {"junit", {}} } )
+  REQUIRE( config.reporterSpecifications == vec_Specs{ { "junit", {}, {}, {} } } )
 with expansion:
-  { { junit, <default-output> } }
-  ==
-  { { junit, <default-output> } }
+  { {?} } == { {?} }
 with message:
   result.errorMessage() := ""
 
@@ -9633,11 +9625,9 @@ with message:
   result.errorMessage() := ""
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  REQUIRE( config.reporterSpecifications == vec_ReporterAndFile{ {"console", "out.txt"s} } )
+  REQUIRE( config.reporterSpecifications == vec_Specs{ { "console", "out.txt"s, {}, {} } } )
 with expansion:
-  { { console, out.txt } }
-  ==
-  { { console, out.txt } }
+  { {?} } == { {?} }
 with message:
   result.errorMessage() := ""
 
@@ -9657,33 +9647,11 @@ with message:
   result.errorMessage() := ""
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  REQUIRE( config.reporterSpecifications == vec_ReporterAndFile{ {"console", "C:\\Temp\\out.txt"s} } )
+  REQUIRE( config.reporterSpecifications == vec_Specs{ { "console", "C:\\Temp\\out.txt"s, {}, {} } } )
 with expansion:
-  { { console, C:\Temp\out.txt } }
-  ==
-  { { console, C:\Temp\out.txt } }
+  { {?} } == { {?} }
 with message:
   result.errorMessage() := ""
-
--------------------------------------------------------------------------------
-Process can be configured on command line
-  reporter
-  Output file cannot be empty
--------------------------------------------------------------------------------
-CmdLine.tests.cpp:<line number>
-...............................................................................
-
-CmdLine.tests.cpp:<line number>: PASSED:
-  CHECK( !result )
-with expansion:
-  true
-
-CmdLine.tests.cpp:<line number>: PASSED:
-  REQUIRE_THAT( result.errorMessage(), ContainsSubstring("empty filename") )
-with expansion:
-  "Reporter 'console' has empty filename specified as its output. Supply a
-  filename or remove the colons to use the default output." contains: "empty
-  filename"
 
 -------------------------------------------------------------------------------
 Process can be configured on command line
@@ -9695,16 +9663,14 @@ CmdLine.tests.cpp:<line number>
 ...............................................................................
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  CHECK( cli.parse({ "test", "-r", "xml::output.xml", "-r", "junit::output-junit.xml" }) )
+  CHECK( cli.parse({ "test", "-r", "xml::out=output.xml", "-r", "junit::out=output-junit.xml" }) )
 with expansion:
   {?}
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  REQUIRE( config.reporterSpecifications == vec_ReporterAndFile{ {"xml", "output.xml"s}, {"junit", "output-junit.xml"s} } )
+  REQUIRE( config.reporterSpecifications == vec_Specs{ { "xml", "output.xml"s, {}, {} }, { "junit", "output-junit.xml"s, {}, {} } } )
 with expansion:
-  { { xml, output.xml }, { junit, output-junit.xml } }
-  ==
-  { { xml, output.xml }, { junit, output-junit.xml } }
+  { {?}, {?} } == { {?}, {?} }
 
 -------------------------------------------------------------------------------
 Process can be configured on command line
@@ -9716,16 +9682,14 @@ CmdLine.tests.cpp:<line number>
 ...............................................................................
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  CHECK( cli.parse({ "test", "-r", "xml::output.xml", "-r", "console" }) )
+  CHECK( cli.parse({ "test", "-r", "xml::out=output.xml", "-r", "console" }) )
 with expansion:
   {?}
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  REQUIRE( config.reporterSpecifications == vec_ReporterAndFile{ {"xml", "output.xml"s}, {"console", {}} } )
+  REQUIRE( config.reporterSpecifications == vec_Specs{ { "xml", "output.xml"s, {}, {} }, { "console", {}, {}, {} } } )
 with expansion:
-  { { xml, output.xml }, { console, <default-output> } }
-  ==
-  { { xml, output.xml }, { console, <default-output> } }
+  { {?}, {?} } == { {?}, {?} }
 
 -------------------------------------------------------------------------------
 Process can be configured on command line
@@ -17945,5 +17909,5 @@ Misc.tests.cpp:<line number>: PASSED:
 
 ===============================================================================
 test cases:  390 |  300 passed |  83 failed |  7 failed as expected
-assertions: 2240 | 2070 passed | 143 failed | 27 failed as expected
+assertions: 2238 | 2068 passed | 143 failed | 27 failed as expected
 

@@ -141,57 +141,42 @@ namespace Catch {
                 return ParserResult::runtimeError( "Unrecognised verbosity, '" + verbosity + '\'' );
             return ParserResult::ok( ParseResultType::Matched );
         };
-        auto const setReporter = [&]( std::string const& reporterSpec ) {
-            if ( reporterSpec.empty() ) {
+        auto const setReporter = [&]( std::string const& userReporterSpec ) {
+            if ( userReporterSpec.empty() ) {
                 return ParserResult::runtimeError( "Received empty reporter spec." );
             }
 
-            // Exactly one of the reporters may be specified without an output
-            // file, in which case it defaults to the output specified by "-o"
-            // (or standard output).
-            static constexpr auto separator = "::";
-            static constexpr size_t separatorSize = 2;
-            auto fileNameSeparatorPos = reporterSpec.find( separator );
-            const bool containsFileName = fileNameSeparatorPos != reporterSpec.npos;
-            if ( containsFileName ) {
-                auto nextSeparatorPos = reporterSpec.find(
-                    separator, fileNameSeparatorPos + separatorSize );
-                if ( nextSeparatorPos != reporterSpec.npos ) {
-                    return ParserResult::runtimeError(
-                        "Too many separators in reporter spec '" + reporterSpec + '\'' );
-                }
+            Optional<ReporterSpec> parsed =
+                parseReporterSpec( userReporterSpec );
+            if ( !parsed ) {
+                return ParserResult::runtimeError(
+                    "Could not parse reporter spec '" + userReporterSpec +
+                    "'" );
             }
 
-            std::string reporterName;
-            Optional<std::string> outputFileName;
-            reporterName = reporterSpec.substr( 0, fileNameSeparatorPos );
-            if ( reporterName.empty() ) {
-                return ParserResult::runtimeError( "Reporter name cannot be empty." );
-            }
-
-            if ( containsFileName ) {
-                outputFileName = reporterSpec.substr(
-                    fileNameSeparatorPos + separatorSize, reporterSpec.size() );
-            }
+            auto const& reporterSpec = *parsed;
 
             IReporterRegistry::FactoryMap const& factories =
                 getRegistryHub().getReporterRegistry().getFactories();
-            auto result = factories.find( reporterName );
+            auto result = factories.find( reporterSpec.name() );
 
-            if( result == factories.end() )
-                return ParserResult::runtimeError( "Unrecognized reporter, '" + reporterName + "'. Check available with --list-reporters" );
-            if( containsFileName && outputFileName->empty() )
-                return ParserResult::runtimeError( "Reporter '" + reporterName + "' has empty filename specified as its output. Supply a filename or remove the colons to use the default output." );
+            if ( result == factories.end() ) {
+                return ParserResult::runtimeError(
+                    "Unrecognized reporter, '" + reporterSpec.name() +
+                    "'. Check available with --list-reporters" );
+            }
 
-            config.reporterSpecifications.push_back({ std::move(reporterName), std::move(outputFileName) });
 
-            // It would be enough to check this only once at the very end, but there is
-            // not a place where we could call this check, so do it every time it could fail.
-            // For valid inputs, this is still called at most once.
-            if (!containsFileName) {
+            const bool hadOutputFile = reporterSpec.outputFile().some();
+            config.reporterSpecifications.push_back( CATCH_MOVE( *parsed ) );
+            // It would be enough to check this only once at the very end, but
+            // there is  not a place where we could call this check, so do it
+            // every time it could fail. For valid inputs, this is still called
+            // at most once.
+            if (!hadOutputFile) {
                 int n_reporters_without_file = 0;
                 for (auto const& spec : config.reporterSpecifications) {
-                    if (spec.outputFileName.none()) {
+                    if (spec.outputFile().none()) {
                         n_reporters_without_file++;
                     }
                 }

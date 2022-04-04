@@ -272,8 +272,8 @@ if (NOT MEMORYCHECK_COMMAND)
   add_test(
     NAME MultiReporter::NoncapturingListenerDoesntCauseStdoutPassThrough
     COMMAND ListenerStdoutCaptureInMultireporter
-      --reporter xml::${_NullFile}
-      --reporter junit::${_NullFile}
+      --reporter xml::out=${_NullFile}
+      --reporter junit::out=${_NullFile}
   )
 
   set_tests_properties(
@@ -290,8 +290,8 @@ target_link_libraries(ListenerCanAskForCapturedStdout PRIVATE Catch2::Catch2With
 add_test(
   NAME MultiReporter::CapturingListenerCausesStdoutCapture
   COMMAND ListenerCanAskForCapturedStdout
-    --reporter compact::${_NullFile}
-    --reporter console::${_NullFile}
+    --reporter compact::out=${_NullFile}
+    --reporter console::out=${_NullFile}
 )
 set_tests_properties(
     MultiReporter::CapturingListenerCausesStdoutCapture
@@ -317,7 +317,7 @@ add_test(
   NAME MultiReporter::PreferencesForPassingAssertionsIsRespected
   COMMAND ReporterPreferencesForPassingAssertionsIsRespected
     --reporter test-reporter
-    --reporter console::${_NullFile}
+    --reporter console::out=${_NullFile}
 )
 set_tests_properties(
     MultiReporter::PreferencesForPassingAssertionsIsRespected
@@ -338,6 +338,20 @@ set_tests_properties(
     PASS_REGULAR_EXPRESSION "X28 - TestReporter constructed"
     FAIL_REGULAR_EXPRESSION "X28 - ERROR"
 )
+
+add_executable(CustomArgumentsForReporters ${TESTS_DIR}/X29-CustomArgumentsForReporters.cpp)
+target_link_libraries(CustomArgumentsForReporters PRIVATE Catch2::Catch2WithMain)
+add_test(
+  NAME CustomArgumentsForReporters
+  COMMAND CustomArgumentsForReporters
+    --reporter "test-reporter::Xa b=c 1::Xz:e = 1234"
+)
+set_tests_properties(
+    CustomArgumentsForReporters
+  PROPERTIES
+    PASS_REGULAR_EXPRESSION "Xa b=c 1::Xz:e = 1234"
+)
+
 
 add_executable(DuplicatedTestCases-SameNameAndTags ${TESTS_DIR}/X31-DuplicatedTestCases.cpp)
 target_link_libraries(DuplicatedTestCases-SameNameAndTags PRIVATE Catch2::Catch2WithMain)

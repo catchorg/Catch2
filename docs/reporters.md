@@ -43,8 +43,13 @@ them write into different destinations. The two main uses of this are
 
 Specifying multiple reporter looks like this:
 ```
---reporter console::- --reporter JUnit::result-junit.xml
+--reporter JUnit::out=result-junit.xml --reporter console::out=-::colour-mode=ansi
 ```
+
+This tells Catch2 to use two reporters, `JUnit` reporter that writes
+its machine-readable XML output to file `result-junit.xml`, and the
+`console` reporter that writes its user-friendly output to stdout and
+uses ANSI colour codes for colouring the output.
 
 Using multiple reporters (or one reporter and one-or-more [event
 listeners](event-listener.md#top)) can have surprisingly complex semantics
@@ -160,6 +165,26 @@ Currently there are two customization options:
    assertions. Usually reporters do not report successful assertions
    and don't need them for their output, but sometimes the desired output
    format includes passing assertions even without the `-s` flag.
+
+
+### Per-reporter configuration
+
+> Per-reporter configuration was introduced in Catch2 X.Y.Z
+
+Catch2 supports some configuration to happen per reporter. The configuration
+options fall into one of two categories:
+
+* Catch2-recognized options
+* Reporter-specific options
+
+The former is a small set of universal options that Catch2 handles for
+the reporters, e.g. output file or console colour mode. The latter are
+options that the reporters have to handle themselves, but the keys and
+values can be arbitrary strings, as long as they don't contain `::`. This
+allows writing reporters that can be significantly customized at runtime.
+
+Reporter-specific options always have to be prefixed with "X" (large
+letter X).
 
 
 ### Other expected functionality of a reporter

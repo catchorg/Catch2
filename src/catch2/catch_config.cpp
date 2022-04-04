@@ -33,17 +33,6 @@ namespace Catch {
         } // unnamed namespace
     }     // namespace Detail
 
-    std::ostream& operator<<( std::ostream& os,
-                              ConfigData::ReporterAndFile const& reporter ) {
-        os << "{ " << reporter.reporterName << ", ";
-        if ( reporter.outputFileName ) {
-            os << *reporter.outputFileName;
-        } else {
-            os << "<default-output>";
-        }
-        return os << " }";
-    }
-
     Config::Config( ConfigData const& data ):
         m_data( data ) {
         // We need to trim filter specs to avoid trouble with superfluous
@@ -76,14 +65,14 @@ namespace Catch {
 #else
                 "console",
 #endif
-                {}
+                {}, {}, {}
             } );
         }
 
         bool defaultOutputUsed = false;
         m_reporterStreams.reserve( m_data.reporterSpecifications.size() );
-        for ( auto const& reporterAndFile : m_data.reporterSpecifications ) {
-            if ( reporterAndFile.outputFileName.none() ) {
+        for ( auto const& reporterSpec : m_data.reporterSpecifications ) {
+            if ( reporterSpec.outputFile().none() ) {
                 CATCH_ENFORCE( !defaultOutputUsed,
                                "Internal error: cannot use default output for "
                                "multiple reporters" );
@@ -93,7 +82,7 @@ namespace Catch {
                     openStream( data.defaultOutputFilename ) );
             } else {
                 m_reporterStreams.push_back(
-                    openStream( *reporterAndFile.outputFileName ) );
+                    openStream( *reporterSpec.outputFile() ) );
             }
         }
     }
@@ -108,7 +97,7 @@ namespace Catch {
     std::vector<std::string> const& Config::getTestsOrTags() const { return m_data.testsOrTags; }
     std::vector<std::string> const& Config::getSectionsToRun() const { return m_data.sectionsToRun; }
 
-    std::vector<ConfigData::ReporterAndFile> const& Config::getReportersAndOutputFiles() const {
+    std::vector<ReporterSpec> const& Config::getReporterSpecs() const {
         return m_data.reporterSpecifications;
     }
 

@@ -89,7 +89,8 @@ TEST_CASE( "Reporter's write listings to provided stream", "[reporters]" ) {
 
         Catch::ConfigData config_data;
         Catch::Config config( config_data );
-        Catch::ReporterConfig rep_config( &config, &sstream );
+        Catch::ReporterConfig rep_config(
+            &config, &sstream, Catch::ColourMode::None, {} );
         auto reporter = factory.second->create( rep_config );
 
         DYNAMIC_SECTION( factory.first << " reporter lists tags" ) {
@@ -176,7 +177,8 @@ TEST_CASE("Multireporter calls reporters and listeners in correct order",
     Catch::ConfigData config_data;
     Catch::Config config( config_data );
     StringIStream sstream;
-    Catch::ReporterConfig rep_config( &config, &sstream );
+    Catch::ReporterConfig rep_config(
+        &config, &sstream, Catch::ColourMode::None, {} );
 
     // We add reporters before listeners, to check that internally they
     // get sorted properly, and listeners are called first anyway.
@@ -229,7 +231,8 @@ TEST_CASE("Multireporter updates ReporterPreferences properly",
     Catch::ConfigData config_data;
     Catch::Config config( config_data );
     StringIStream sstream;
-    Catch::ReporterConfig rep_config( &config, &sstream );
+    Catch::ReporterConfig rep_config(
+        &config, &sstream, Catch::ColourMode::None, {} );
     Catch::MultiReporter multiReporter( &config );
 
     // Post init defaults
