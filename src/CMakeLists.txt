@@ -120,6 +120,7 @@ set(INTERNAL_HEADERS
     ${SOURCES_DIR}/internal/catch_random_seed_generation.hpp
     ${SOURCES_DIR}/reporters/catch_reporter_registrars.hpp
     ${SOURCES_DIR}/internal/catch_reporter_registry.hpp
+    ${SOURCES_DIR}/internal/catch_reporter_spec_parser.hpp
     ${SOURCES_DIR}/internal/catch_result_type.hpp
     ${SOURCES_DIR}/internal/catch_run_context.hpp
     ${SOURCES_DIR}/internal/catch_section.hpp
@@ -192,6 +193,7 @@ set(IMPL_SOURCES
     ${SOURCES_DIR}/internal/catch_random_number_generator.cpp
     ${SOURCES_DIR}/internal/catch_random_seed_generation.cpp
     ${SOURCES_DIR}/internal/catch_reporter_registry.cpp
+    ${SOURCES_DIR}/internal/catch_reporter_spec_parser.cpp
     ${SOURCES_DIR}/internal/catch_result_type.cpp
     ${SOURCES_DIR}/internal/catch_run_context.cpp
     ${SOURCES_DIR}/internal/catch_section.cpp
