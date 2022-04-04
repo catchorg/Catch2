@@ -1405,7 +1405,7 @@ CmdLine.tests.cpp:<line number>: passed: config.colourMode == ColourMode::ANSI f
 CmdLine.tests.cpp:<line number>: passed: cli.parse({"test", "--colour-mode", "none"}) for: {?}
 CmdLine.tests.cpp:<line number>: passed: config.colourMode == ColourMode::None for: 3 == 3
 CmdLine.tests.cpp:<line number>: passed: !result for: true
-CmdLine.tests.cpp:<line number>: passed: result.errorMessage(), ContainsSubstring( "colour mode must be one of" ) for: "colour mode must be one of: default, ansi, win32, or none. 'wrong' not recognised" contains: "colour mode must be one of"
+CmdLine.tests.cpp:<line number>: passed: result.errorMessage(), ContainsSubstring( "colour mode must be one of" ) for: "colour mode must be one of: default, ansi, win32, or none. 'wrong' is not recognised" contains: "colour mode must be one of"
 CmdLine.tests.cpp:<line number>: passed: cli.parse({ "test", "--benchmark-samples=200" }) for: {?}
 CmdLine.tests.cpp:<line number>: passed: config.benchmarkSamples == 200 for: 200 == 200
 CmdLine.tests.cpp:<line number>: passed: cli.parse({ "test", "--benchmark-resamples=20000" }) for: {?}

@@ -12337,7 +12337,7 @@ C
             result.errorMessage(), ContainsSubstring( "colour mode must be one of" )
           </Original>
           <Expanded>
-            "colour mode must be one of: default, ansi, win32, or none. 'wrong' not recognised" contains: "colour mode must be one of"
+            "colour mode must be one of: default, ansi, win32, or none. 'wrong' is not recognised" contains: "colour mode must be one of"
           </Expanded>
         </Expression>
         <OverallResults successes="2" failures="0" expectedFailures="0"/>

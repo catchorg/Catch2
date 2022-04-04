@@ -14,6 +14,7 @@
 #include <catch2/interfaces/catch_interfaces_reporter_registry.hpp>
 #include <catch2/interfaces/catch_interfaces_reporter.hpp>
 #include <catch2/internal/catch_console_colour.hpp>
+#include <catch2/internal/catch_reporter_spec_parser.hpp>
 
 #include <algorithm>
 #include <fstream>
@@ -98,40 +99,20 @@ namespace Catch {
             };
         auto const setColourMode = [&]( std::string const&
                                              colourMode ) {
-            auto mode = toLower( colourMode );
-
-            if ( mode == "default" ) {
-                if ( !isColourImplAvailable( ColourMode::PlatformDefault ) ) {
-                    return ParserResult::runtimeError(
-                        "colour mode 'default' is not supported in this "
-                        "binary" );
-                }
-                config.colourMode = ColourMode::PlatformDefault;
-            } else if ( mode == "ansi" ) {
-                if ( !isColourImplAvailable( ColourMode::ANSI ) ) {
-                    return ParserResult::runtimeError(
-                        "colour mode 'ansi' is not supported in this binary" );
-                }
-                config.colourMode = ColourMode::ANSI;
-            } else if ( mode == "win32" ) {
-                if ( !isColourImplAvailable( ColourMode::Win32 ) ) {
-                    return ParserResult::runtimeError(
-                        "colour mode 'win32' is not supported in this "
-                        "binary" );
-                }
-                config.colourMode = ColourMode::Win32;
-            } else if ( mode == "none" ) {
-                if ( !isColourImplAvailable( ColourMode::None ) ) {
-                    return ParserResult::runtimeError(
-                        "colour mode 'none' is not supported in this binary" );
-                }
-                config.colourMode = ColourMode::None;
-            } else {
+            Optional<ColourMode> maybeMode = Catch::Detail::stringToColourMode(toLower( colourMode ));
+            if ( !maybeMode ) {
                 return ParserResult::runtimeError(
                     "colour mode must be one of: default, ansi, win32, "
                     "or none. '" +
-                    colourMode + "' not recognised" );
+                    colourMode + "' is not recognised" );
             }
+            auto mode = *maybeMode;
+            if ( !isColourImplAvailable( mode ) ) {
+                return ParserResult::runtimeError(
+                    "colour mode '" + colourMode +
+                    "' is not supported in this binary" );
+            }
+            config.colourMode = mode;
             return ParserResult::ok( ParseResultType::Matched );
         };
         auto const setWaitForKeypress = [&]( std::string const& keypress ) {

@@ -10122,7 +10122,7 @@ with expansion:
 CmdLine.tests.cpp:<line number>: PASSED:
   CHECK_THAT( result.errorMessage(), ContainsSubstring( "colour mode must be one of" ) )
 with expansion:
-  "colour mode must be one of: default, ansi, win32, or none. 'wrong' not
+  "colour mode must be one of: default, ansi, win32, or none. 'wrong' is not
   recognised" contains: "colour mode must be one of"
 
 -------------------------------------------------------------------------------

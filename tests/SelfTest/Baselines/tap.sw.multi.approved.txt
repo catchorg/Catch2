@@ -2627,7 +2627,7 @@ ok {test-number} - config.colourMode == ColourMode::None for: 3 == 3
 # Process can be configured on command line
 ok {test-number} - !result for: true
 # Process can be configured on command line
-ok {test-number} - result.errorMessage(), ContainsSubstring( "colour mode must be one of" ) for: "colour mode must be one of: default, ansi, win32, or none. 'wrong' not recognised" contains: "colour mode must be one of"
+ok {test-number} - result.errorMessage(), ContainsSubstring( "colour mode must be one of" ) for: "colour mode must be one of: default, ansi, win32, or none. 'wrong' is not recognised" contains: "colour mode must be one of"
 # Process can be configured on command line
 ok {test-number} - cli.parse({ "test", "--benchmark-samples=200" }) for: {?}
 # Process can be configured on command line
