@@ -242,7 +242,7 @@ namespace Catch {
             | Opt( config.defaultOutputFilename, "filename" )
                 ["-o"]["--out"]
                 ( "default output filename" )
-            | Opt( accept_many, setReporter, "name[:output-file]" )
+            | Opt( accept_many, setReporter, "name[::key=value]*" )
                 ["-r"]["--reporter"]
                 ( "reporter to use (defaults to console)" )
             | Opt( config.name, "name" )
@@ -292,7 +292,7 @@ namespace Catch {
                 ( "set a specific seed for random numbers" )
             | Opt( setColourMode, "ansi|win32|none|default" )
                 ["--colour-mode"]
-                ( "should output be colourised" )
+                ( "what color mode should be used as default" )
             | Opt( config.libIdentify )
                 ["--libidentify"]
                 ( "report name and version according to libidentify standard" )
