@@ -566,25 +566,25 @@ TEST_CASE( "Process can be configured on command line", "[config][command-line]"
         SECTION( "without option" ) {
             CHECK(cli.parse({"test"}));
 
-            REQUIRE( config.colourMode == ColourMode::PlatformDefault );
+            REQUIRE( config.defaultColourMode == ColourMode::PlatformDefault );
         }
 
         SECTION( "auto" ) {
             CHECK( cli.parse( { "test", "--colour-mode", "default" } ) );
 
-            REQUIRE( config.colourMode == ColourMode::PlatformDefault );
+            REQUIRE( config.defaultColourMode == ColourMode::PlatformDefault );
         }
 
         SECTION( "yes" ) {
             CHECK(cli.parse({"test", "--colour-mode", "ansi"}));
 
-            REQUIRE( config.colourMode == ColourMode::ANSI );
+            REQUIRE( config.defaultColourMode == ColourMode::ANSI );
         }
 
         SECTION( "no" ) {
             CHECK(cli.parse({"test", "--colour-mode", "none"}));
 
-            REQUIRE( config.colourMode == ColourMode::None );
+            REQUIRE( config.defaultColourMode == ColourMode::None );
         }
 
         SECTION( "error" ) {

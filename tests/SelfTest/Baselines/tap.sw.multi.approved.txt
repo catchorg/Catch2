@@ -2607,19 +2607,19 @@ ok {test-number} - config.noThrow == true for: true == true
 # Process can be configured on command line
 ok {test-number} - cli.parse({"test"}) for: {?}
 # Process can be configured on command line
-ok {test-number} - config.colourMode == ColourMode::PlatformDefault for: 0 == 0
+ok {test-number} - config.defaultColourMode == ColourMode::PlatformDefault for: 0 == 0
 # Process can be configured on command line
 ok {test-number} - cli.parse( { "test", "--colour-mode", "default" } ) for: {?}
 # Process can be configured on command line
-ok {test-number} - config.colourMode == ColourMode::PlatformDefault for: 0 == 0
+ok {test-number} - config.defaultColourMode == ColourMode::PlatformDefault for: 0 == 0
 # Process can be configured on command line
 ok {test-number} - cli.parse({"test", "--colour-mode", "ansi"}) for: {?}
 # Process can be configured on command line
-ok {test-number} - config.colourMode == ColourMode::ANSI for: 1 == 1
+ok {test-number} - config.defaultColourMode == ColourMode::ANSI for: 1 == 1
 # Process can be configured on command line
 ok {test-number} - cli.parse({"test", "--colour-mode", "none"}) for: {?}
 # Process can be configured on command line
-ok {test-number} - config.colourMode == ColourMode::None for: 3 == 3
+ok {test-number} - config.defaultColourMode == ColourMode::None for: 3 == 3
 # Process can be configured on command line
 ok {test-number} - !result for: true
 # Process can be configured on command line

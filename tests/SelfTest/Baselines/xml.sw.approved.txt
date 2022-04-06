@@ -12208,7 +12208,7 @@ C
         </Expression>
         <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
           <Original>
-            config.colourMode == ColourMode::PlatformDefault
+            config.defaultColourMode == ColourMode::PlatformDefault
           </Original>
           <Expanded>
             0 == 0
@@ -12230,7 +12230,7 @@ C
         </Expression>
         <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
           <Original>
-            config.colourMode == ColourMode::PlatformDefault
+            config.defaultColourMode == ColourMode::PlatformDefault
           </Original>
           <Expanded>
             0 == 0
@@ -12252,7 +12252,7 @@ C
         </Expression>
         <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
           <Original>
-            config.colourMode == ColourMode::ANSI
+            config.defaultColourMode == ColourMode::ANSI
           </Original>
           <Expanded>
             1 == 1
@@ -12274,7 +12274,7 @@ C
         </Expression>
         <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
           <Original>
-            config.colourMode == ColourMode::None
+            config.defaultColourMode == ColourMode::None
           </Original>
           <Expanded>
             3 == 3

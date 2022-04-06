@@ -10014,7 +10014,7 @@ with expansion:
   {?}
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  REQUIRE( config.colourMode == ColourMode::PlatformDefault )
+  REQUIRE( config.defaultColourMode == ColourMode::PlatformDefault )
 with expansion:
   0 == 0
 
@@ -10032,7 +10032,7 @@ with expansion:
   {?}
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  REQUIRE( config.colourMode == ColourMode::PlatformDefault )
+  REQUIRE( config.defaultColourMode == ColourMode::PlatformDefault )
 with expansion:
   0 == 0
 
@@ -10050,7 +10050,7 @@ with expansion:
   {?}
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  REQUIRE( config.colourMode == ColourMode::ANSI )
+  REQUIRE( config.defaultColourMode == ColourMode::ANSI )
 with expansion:
   1 == 1
 
@@ -10068,7 +10068,7 @@ with expansion:
   {?}
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  REQUIRE( config.colourMode == ColourMode::None )
+  REQUIRE( config.defaultColourMode == ColourMode::None )
 with expansion:
   3 == 3
 

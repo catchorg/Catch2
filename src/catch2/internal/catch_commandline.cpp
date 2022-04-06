@@ -97,8 +97,7 @@ namespace Catch {
                     return ParserResult::runtimeError("Could not parse '" + seed + "' as seed");
                 }
             };
-        auto const setColourMode = [&]( std::string const&
-                                             colourMode ) {
+        auto const setDefaultColourMode = [&]( std::string const& colourMode ) {
             Optional<ColourMode> maybeMode = Catch::Detail::stringToColourMode(toLower( colourMode ));
             if ( !maybeMode ) {
                 return ParserResult::runtimeError(
@@ -112,7 +111,7 @@ namespace Catch {
                     "colour mode '" + colourMode +
                     "' is not supported in this binary" );
             }
-            config.colourMode = mode;
+            config.defaultColourMode = mode;
             return ParserResult::ok( ParseResultType::Matched );
         };
         auto const setWaitForKeypress = [&]( std::string const& keypress ) {
@@ -290,7 +289,7 @@ namespace Catch {
             | Opt( setRngSeed, "'time'|'random-device'|number" )
                 ["--rng-seed"]
                 ( "set a specific seed for random numbers" )
-            | Opt( setColourMode, "ansi|win32|none|default" )
+            | Opt( setDefaultColourMode, "ansi|win32|none|default" )
                 ["--colour-mode"]
                 ( "what color mode should be used as default" )
             | Opt( config.libIdentify )

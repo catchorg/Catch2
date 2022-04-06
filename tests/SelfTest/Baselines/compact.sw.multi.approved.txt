@@ -1379,13 +1379,13 @@ CmdLine.tests.cpp:<line number>: passed: config.abortAfter == 1 for: 1 == 1
 CmdLine.tests.cpp:<line number>: passed: config.shouldDebugBreak for: true
 CmdLine.tests.cpp:<line number>: passed: config.noThrow == true for: true == true
 CmdLine.tests.cpp:<line number>: passed: cli.parse({"test"}) for: {?}
-CmdLine.tests.cpp:<line number>: passed: config.colourMode == ColourMode::PlatformDefault for: 0 == 0
+CmdLine.tests.cpp:<line number>: passed: config.defaultColourMode == ColourMode::PlatformDefault for: 0 == 0
 CmdLine.tests.cpp:<line number>: passed: cli.parse( { "test", "--colour-mode", "default" } ) for: {?}
-CmdLine.tests.cpp:<line number>: passed: config.colourMode == ColourMode::PlatformDefault for: 0 == 0
+CmdLine.tests.cpp:<line number>: passed: config.defaultColourMode == ColourMode::PlatformDefault for: 0 == 0
 CmdLine.tests.cpp:<line number>: passed: cli.parse({"test", "--colour-mode", "ansi"}) for: {?}
-CmdLine.tests.cpp:<line number>: passed: config.colourMode == ColourMode::ANSI for: 1 == 1
+CmdLine.tests.cpp:<line number>: passed: config.defaultColourMode == ColourMode::ANSI for: 1 == 1
 CmdLine.tests.cpp:<line number>: passed: cli.parse({"test", "--colour-mode", "none"}) for: {?}
-CmdLine.tests.cpp:<line number>: passed: config.colourMode == ColourMode::None for: 3 == 3
+CmdLine.tests.cpp:<line number>: passed: config.defaultColourMode == ColourMode::None for: 3 == 3
 CmdLine.tests.cpp:<line number>: passed: !result for: true
 CmdLine.tests.cpp:<line number>: passed: result.errorMessage(), ContainsSubstring( "colour mode must be one of" ) for: "colour mode must be one of: default, ansi, win32, or none. 'wrong' is not recognised" contains: "colour mode must be one of"
 CmdLine.tests.cpp:<line number>: passed: cli.parse({ "test", "--benchmark-samples=200" }) for: {?}

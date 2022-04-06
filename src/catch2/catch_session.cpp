@@ -51,7 +51,7 @@ namespace Catch {
                     ReporterConfig(
                         config,
                         stream,
-                        spec.colourMode().valueOr( config->colourMode() ),
+                        spec.colourMode().valueOr( config->defaultColourMode() ),
                         spec.customOptions() ) );
             }
 
@@ -70,7 +70,7 @@ namespace Catch {
                     ReporterConfig( config,
                                     stream,
                                     reporterSpec.colourMode().valueOr(
-                                        config->colourMode() ),
+                                        config->defaultColourMode() ),
                                     reporterSpec.customOptions() ) ) );
                 reporterIdx++;
             }
