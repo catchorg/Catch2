@@ -471,6 +471,9 @@ So, for example,  tests within the file `~\Dev\MyProject\Ferrets.cpp` would be t
 ## Override output colouring
 <pre>--colour-mode &lt;ansi|win32|none|default&gt;</pre>
 
+> The `--colour-mode` option replaced the old `--colour` option in Catch2 X.Y.Z
+
+
 Catch2 support two different ways of colouring terminal output, and by
 default it attempts to make a good guess on which implementation to use
 (and whether to even use it, e.g. Catch2 tries to avoid writing colour
