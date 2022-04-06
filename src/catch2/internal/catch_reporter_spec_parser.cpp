@@ -139,7 +139,7 @@ namespace Catch {
                     return {};
                 }
                 outputFileName = static_cast<std::string>( value );
-            } else if ( key == "colour" ) {
+            } else if ( key == "colour-mode" ) {
                 // Duplicated key
                 if ( colourMode ) {
                     return {};
