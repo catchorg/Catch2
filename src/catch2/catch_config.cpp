@@ -79,10 +79,10 @@ namespace Catch {
                 defaultOutputUsed = true;
 
                 m_reporterStreams.push_back(
-                    openStream( data.defaultOutputFilename ) );
+                    makeStream( data.defaultOutputFilename ) );
             } else {
                 m_reporterStreams.push_back(
-                    openStream( *reporterSpec.outputFile() ) );
+                    makeStream( *reporterSpec.outputFile() ) );
             }
         }
     }
@@ -138,9 +138,5 @@ namespace Catch {
     double Config::benchmarkConfidenceInterval() const            { return m_data.benchmarkConfidenceInterval; }
     unsigned int Config::benchmarkResamples() const               { return m_data.benchmarkResamples; }
     std::chrono::milliseconds Config::benchmarkWarmupTime() const { return std::chrono::milliseconds(m_data.benchmarkWarmupTime); }
-
-    Detail::unique_ptr<IStream const> Config::openStream(std::string const& outputFileName) {
-        return Catch::makeStream(outputFileName);
-    }
 
 } // end namespace Catch

@@ -116,7 +116,6 @@ namespace Catch {
         std::chrono::milliseconds benchmarkWarmupTime() const override;
 
     private:
-        Detail::unique_ptr<IStream const> openStream(std::string const& outputFileName);
         ConfigData m_data;
 
         std::vector<Detail::unique_ptr<IStream const>> m_reporterStreams;
