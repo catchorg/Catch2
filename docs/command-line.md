@@ -218,11 +218,23 @@ similar information.
 <pre>-o, --out &lt;filename&gt;
 </pre>
 
-Use this option to send all output to a file. By default output is sent to stdout (note that uses of stdout and stderr *from within test cases* are redirected and included in the report - so even stderr will effectively end up on stdout).
-
-Using `-` as the filename sends the output to stdout.
+Use this option to send all output to a file, instead of stdout. You can
+use `-` as the filename to explicitly send the output to stdout (this is
+useful e.g. when using multiple reporters).
 
 > Support for `-` as the filename was introduced in Catch2 X.Y.Z
+
+Filenames starting with "%" (percent symbol) are reserved by Catch2 for
+meta purposes, e.g. using `%debug` as the filename opens stream that
+writes to platform specific debugging/logging mechanism.
+
+Catch2 currently recognizes 3 meta streams:
+
+* `%debug` - writes to platform specific debugging/logging output
+* `%stdout` - writes to stdout
+* `%stderr` - writes to stderr
+
+> Support for `%stdout` and `%stderr` was introduced in Catch2 X.Y.Z
 
 
 <a id="naming-a-test-run"></a>

@@ -40,6 +40,17 @@ namespace Catch {
         virtual bool isConsole() const { return false; }
     };
 
+    /**
+     * Creates a stream wrapper that writes to specific file.
+     *
+     * Also recognizes 4 special filenames
+     * * `-` for stdout
+     * * `%stdout` for stdout
+     * * `%stderr` for stderr
+     * * `%debug` for platform specific debugging output
+     *
+     * \throws if passed an unrecognized %-prefixed stream
+     */
     auto makeStream( std::string const& filename ) -> Detail::unique_ptr<IStream const>;
 
     class ReusableStringStream : Detail::NonCopyable {
