@@ -14,39 +14,41 @@ import xml.etree.ElementTree as ET
 import subprocess
 
 """
-Tests the CMake configure option for CATCH_CONFIG_DEFAULT_REPORTER
+Test that Catch2 recognizes `XML_OUTPUT_FILE` env variable and creates
+a junit reporter that writes to the provided path.
 
-Requires 2 arguments, path to where the output files should be stored
-and the name of the test
+Requires 2 arguments, path to Catch2 binary configured with
+`CATCH_CONFIG_BAZEL_SUPPORT`, and the output directory for the output file.
 """
 if len(sys.argv) != 3:
     print("Wrong number of arguments: {}".format(len(sys.argv)))
-    print("Usage: {} bin-path bin-name".format(sys.argv[0]))
+    print("Usage: {} test-bin-path output-dir".format(sys.argv[0]))
     exit(1)
 
 
 bin_path = os.path.abspath(sys.argv[1])
-bin_name = sys.argv[2]
-xml_out_path = os.path.join(bin_path, "{}.xml".format(bin_name))
-config_path = "Debug" if os.name == "nt" else ""
+output_dir = os.path.abspath(sys.argv[2])
+xml_out_path = os.path.join(output_dir, "bazel-out.xml")
 
 # Ensure no file exists from previous test runs
 if os.path.isfile(xml_out_path):
     os.remove(xml_out_path)
 
-args = [os.path.join(bin_path, config_path, bin_name)]
+print('bin path:', bin_path)
+print('xml out path:', xml_out_path)
+
 env = os.environ.copy()
 env["XML_OUTPUT_FILE"] = xml_out_path
 test_passing = True
 
 try:
     ret = subprocess.run(
-        args,
+        bin_path,
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
         check=True,
         universal_newlines=True,
-	env=env
+        env=env
     )
     stdout = ret.stdout
 except subprocess.SubprocessError as ex:
@@ -71,11 +73,13 @@ except FileNotFoundError as ex:
     print("Could not find '{}'".format(xml_out_path))
     raise
 
+bin_name = os.path.basename(bin_path)
 # Check for matching testsuite
 if not tree.find('.//testsuite[@name="{}"]'.format(bin_name)):
     print("Could not find '{}' testsuite".format(bin_name))
     exit(2)
 
+# Check that we haven't disabled the default reporter
 summary_test_cases = re.findall(r'test cases: \d* \| \d* passed \| \d* failed', stdout)
 if len(summary_test_cases) == 0:
     print("Could not find test summary in {}".format(stdout))
