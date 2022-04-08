@@ -121,7 +121,7 @@ set_tests_properties(
     FAIL_REGULAR_EXPRESSION "abort;terminate;fatal"
 )
 
-add_executable( BazelReporter ${TESTS_DIR}/X29-BazelReporter.cpp )
+add_executable( BazelReporter ${TESTS_DIR}/X30-BazelReporter.cpp )
 target_compile_definitions( BazelReporter PRIVATE CATCH_CONFIG_BAZEL_SUPPORT )
 target_link_libraries(BazelReporter Catch2_buildall_interface)
 add_test(NAME CATCH_CONFIG_BAZEL_REPORTER-1
