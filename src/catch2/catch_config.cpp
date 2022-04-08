@@ -87,8 +87,7 @@ namespace Catch {
 #endif
         if ( bazelOutputFilePtr != nullptr ) {
             m_data.reporterSpecifications.push_back(
-                { std::string( "junit" ),
-                  Optional<std::string>( bazelOutputFilePtr ) } );
+                { "junit", std::string( bazelOutputFilePtr ), {}, {} } );
         }
 #endif
 
