@@ -69,6 +69,28 @@ namespace Catch {
             } );
         }
 
+#if defined( CATCH_CONFIG_BAZEL_SUPPORT )
+        // Register a JUnit reporter for Bazel. Bazel sets an environment
+        // variable with the path to XML output. If this file is written to
+        // during test, Bazel will not generate a default XML output.
+        // This allows the XML output file to contain higher level of detail
+        // than what is possible otherwise.
+#    if defined( _MSC_VER )
+        // On Windows getenv throws a warning as there is no input validation,
+        // since the key is hardcoded, this should not be an issue.
+#        pragma warning( push )
+#        pragma warning( disable : 4996 )
+#    endif
+        const auto bazelOutputFilePtr = std::getenv( "XML_OUTPUT_FILE" );
+#    if defined( _MSC_VER )
+#        pragma warning( pop )
+#    endif
+        if ( bazelOutputFilePtr != nullptr ) {
+            m_data.reporterSpecifications.push_back(
+                { "junit", std::string( bazelOutputFilePtr ), {}, {} } );
+        }
+#endif
+
         bool defaultOutputUsed = false;
         m_reporterStreams.reserve( m_data.reporterSpecifications.size() );
         for ( auto const& reporterSpec : m_data.reporterSpecifications ) {

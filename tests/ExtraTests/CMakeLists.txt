@@ -121,6 +121,14 @@ set_tests_properties(
     FAIL_REGULAR_EXPRESSION "abort;terminate;fatal"
 )
 
+add_executable( BazelReporter ${TESTS_DIR}/X30-BazelReporter.cpp )
+target_compile_definitions( BazelReporter PRIVATE CATCH_CONFIG_BAZEL_SUPPORT )
+target_link_libraries(BazelReporter Catch2_buildall_interface)
+add_test(NAME CATCH_CONFIG_BAZEL_REPORTER-1
+  COMMAND
+  "${PYTHON_EXECUTABLE}" "${CATCH_DIR}/tests/TestScripts/testBazelReporter.py" $<TARGET_FILE:BazelReporter> "${CMAKE_CURRENT_BINARY_DIR}"
+)
+
 
 # The default handler on Windows leads to the just-in-time debugger firing,
 # which makes this test unsuitable for CI and headless runs, as it opens

@@ -26,6 +26,7 @@ endmacro()
 
 set(_OverridableOptions
   "ANDROID_LOGWRITE"
+  "BAZEL_SUPPORT"
   "COLOUR_WIN32"
   "COUNTER"
   "CPP11_TO_STRING"
