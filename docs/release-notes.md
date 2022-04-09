@@ -186,6 +186,8 @@ v3 releases.
   * The colour API is resilient against changing evaluation order of expressions
   * The associated CLI flag and compile-time configuration options have changed
     * For details see the docs for command-line and compile-time Catch2 configuration
+* Added a support for Bazel integration with `XML_OUTPUT_FILE` env var (#2399)
+  * This has to be enabled during compilation.
 
 
 ### Fixes
