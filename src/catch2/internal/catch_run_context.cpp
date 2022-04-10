@@ -160,7 +160,7 @@ namespace Catch {
         GeneratorTracker::~GeneratorTracker() = default;
     }
 
-    RunContext::RunContext(IConfig const* _config, IStreamingReporterPtr&& reporter)
+    RunContext::RunContext(IConfig const* _config, IEventListenerPtr&& reporter)
     :   m_runInfo(_config->name()),
         m_context(getCurrentMutableContext()),
         m_config(_config),

@@ -251,7 +251,7 @@ namespace Catch {
         virtual void listTags(std::vector<TagInfo> const& tags) = 0;
 
     };
-    using IStreamingReporterPtr = Detail::unique_ptr<IEventListener>;
+    using IEventListenerPtr = Detail::unique_ptr<IEventListener>;
 
 } // end namespace Catch
 

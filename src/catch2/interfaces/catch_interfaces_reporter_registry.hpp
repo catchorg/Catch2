@@ -20,7 +20,7 @@ namespace Catch {
     struct IConfig;
 
     class IEventListener;
-    using IStreamingReporterPtr = Detail::unique_ptr<IEventListener>;
+    using IEventListenerPtr = Detail::unique_ptr<IEventListener>;
     struct IReporterFactory;
     using IReporterFactoryPtr = Detail::unique_ptr<IReporterFactory>;
     struct ReporterConfig;
@@ -31,7 +31,7 @@ namespace Catch {
         using Listeners = std::vector<Detail::unique_ptr<EventListenerFactory>>;
 
         virtual ~IReporterRegistry(); // = default
-        virtual IStreamingReporterPtr create( std::string const& name, ReporterConfig const& config ) const = 0;
+        virtual IEventListenerPtr create( std::string const& name, ReporterConfig const& config ) const = 0;
         virtual FactoryMap const& getFactories() const = 0;
         virtual Listeners const& getListeners() const = 0;
     };

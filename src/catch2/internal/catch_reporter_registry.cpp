@@ -37,7 +37,7 @@ namespace Catch {
     ReporterRegistry::~ReporterRegistry() = default;
 
 
-    IStreamingReporterPtr ReporterRegistry::create( std::string const& name, ReporterConfig const& config ) const {
+    IEventListenerPtr ReporterRegistry::create( std::string const& name, ReporterConfig const& config ) const {
         auto it =  m_factories.find( name );
         if( it == m_factories.end() )
             return nullptr;

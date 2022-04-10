@@ -17,12 +17,12 @@
 namespace Catch {
 
     class IEventListener;
-    using IStreamingReporterPtr = Detail::unique_ptr<IEventListener>;
+    using IEventListenerPtr = Detail::unique_ptr<IEventListener>;
 
     template <typename T>
     class ReporterFactory : public IReporterFactory {
 
-        IStreamingReporterPtr create( ReporterConfig const& config ) const override {
+        IEventListenerPtr create( ReporterConfig const& config ) const override {
             return Detail::make_unique<T>( config );
         }
 
@@ -45,7 +45,7 @@ namespace Catch {
 
         class TypedListenerFactory : public EventListenerFactory {
 
-            IStreamingReporterPtr
+            IEventListenerPtr
             create( IConfig const* config ) const override {
                 return Detail::make_unique<T>(config);
             }

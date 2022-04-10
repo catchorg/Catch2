@@ -281,7 +281,7 @@ TEST_CASE("Multireporter updates ReporterPreferences properly",
 
 namespace {
     class TestReporterFactory : public Catch::IReporterFactory {
-        Catch::IStreamingReporterPtr create( Catch::ReporterConfig const& ) const override {
+        Catch::IEventListenerPtr create( Catch::ReporterConfig const& ) const override {
             CATCH_INTERNAL_ERROR(
                 "This factory should never create a reporter" );
         }

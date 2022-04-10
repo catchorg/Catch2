@@ -17,13 +17,13 @@ namespace Catch {
     struct ReporterConfig;
     struct IConfig;
     class IEventListener;
-    using IStreamingReporterPtr = Detail::unique_ptr<IEventListener>;
+    using IEventListenerPtr = Detail::unique_ptr<IEventListener>;
 
 
     struct IReporterFactory {
         virtual ~IReporterFactory(); // = default
 
-        virtual IStreamingReporterPtr
+        virtual IEventListenerPtr
         create( ReporterConfig const& config ) const = 0;
         virtual std::string getDescription() const = 0;
     };
@@ -32,7 +32,7 @@ namespace Catch {
     class EventListenerFactory {
     public:
         virtual ~EventListenerFactory(); // = default
-        virtual IStreamingReporterPtr create( IConfig const* config ) const = 0;
+        virtual IEventListenerPtr create( IConfig const* config ) const = 0;
         virtual std::string getDescription() const = 0;
     };
 } // namespace Catch

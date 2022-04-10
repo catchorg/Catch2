@@ -34,14 +34,14 @@ namespace Catch {
     namespace {
         const int MaxExitCode = 255;
 
-        IStreamingReporterPtr createReporter(std::string const& reporterName, ReporterConfig const& config) {
+        IEventListenerPtr createReporter(std::string const& reporterName, ReporterConfig const& config) {
             auto reporter = Catch::getRegistryHub().getReporterRegistry().create(reporterName, config);
             CATCH_ENFORCE(reporter, "No reporter registered with name: '" << reporterName << '\'');
 
             return reporter;
         }
 
-        IStreamingReporterPtr prepareReporters(Config const* config) {
+        IEventListenerPtr prepareReporters(Config const* config) {
             if (Catch::getRegistryHub().getReporterRegistry().getListeners().empty()
                     && config->getReporterSpecs().size() == 1) {
                 auto const& spec = config->getReporterSpecs()[0];
@@ -80,7 +80,7 @@ namespace Catch {
 
         class TestGroup {
         public:
-            explicit TestGroup(IStreamingReporterPtr&& reporter, Config const* config):
+            explicit TestGroup(IEventListenerPtr&& reporter, Config const* config):
                 m_reporter(reporter.get()),
                 m_config{config},
                 m_context{config, CATCH_MOVE(reporter)} {

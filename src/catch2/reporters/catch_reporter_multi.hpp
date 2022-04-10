@@ -19,7 +19,7 @@ namespace Catch {
          * All Listeners are stored before all reporters, and individual
          * listeners/reporters are stored in order of insertion.
          */
-        std::vector<IStreamingReporterPtr> m_reporterLikes;
+        std::vector<IEventListenerPtr> m_reporterLikes;
         bool m_haveNoncapturingReporters = false;
 
         // Keep track of how many listeners we have already inserted,
@@ -33,8 +33,8 @@ namespace Catch {
             IEventListener( config )
         {}
 
-        void addListener( IStreamingReporterPtr&& listener );
-        void addReporter( IStreamingReporterPtr&& reporter );
+        void addListener( IEventListenerPtr&& listener );
+        void addReporter( IEventListenerPtr&& reporter );
 
     public: // IEventListener
 
