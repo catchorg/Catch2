@@ -122,11 +122,14 @@ v3 releases.
   * With the exception of the XmlReporter, the outputs of first party reporters should remain the same
   * New pair of events were added
   * One obsolete event was removed
+  * The base class has been renamed
+  * The built-in reporter class hierarchy has been redone
 * Catch2 generates a random seed if one hasn't been specified by the user
 * The short flag for `--list-tests`, `-l`, has been removed.
   * This is not a commonly used flag and does not need to use up valuable single-letter space.
 * The short flag for `--list-tags`, `-t`, has been removed.
   * This is not a commonly used flag and does not need to use up valuable single-letter space.
+* The `--colour` option has been replaced with `--colour-mode` option
 
 
 ### Improvements
