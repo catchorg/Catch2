@@ -26,39 +26,46 @@ namespace Matchers {
         std::string m_str;
     };
 
-    struct StringMatcherBase : MatcherBase<std::string> {
-        StringMatcherBase( StringRef operation, CasedString const& comparator );
-        std::string describe() const override;
-
+    class StringMatcherBase : public MatcherBase<std::string> {
+    protected:
         CasedString m_comparator;
         StringRef m_operation;
+
+    public:
+        StringMatcherBase( StringRef operation,
+                           CasedString const& comparator );
+        std::string describe() const override;
     };
 
-    struct StringEqualsMatcher final : StringMatcherBase {
+    class StringEqualsMatcher final : public StringMatcherBase {
+    public:
         StringEqualsMatcher( CasedString const& comparator );
         bool match( std::string const& source ) const override;
     };
-    struct StringContainsMatcher final : StringMatcherBase {
+    class StringContainsMatcher final : public StringMatcherBase {
+    public:
         StringContainsMatcher( CasedString const& comparator );
         bool match( std::string const& source ) const override;
     };
-    struct StartsWithMatcher final : StringMatcherBase {
+    class StartsWithMatcher final : public StringMatcherBase {
+    public:
         StartsWithMatcher( CasedString const& comparator );
         bool match( std::string const& source ) const override;
     };
-    struct EndsWithMatcher final : StringMatcherBase {
+    class EndsWithMatcher final : public StringMatcherBase {
+    public:
         EndsWithMatcher( CasedString const& comparator );
         bool match( std::string const& source ) const override;
     };
 
-    struct RegexMatcher final : MatcherBase<std::string> {
+    class RegexMatcher final : public MatcherBase<std::string> {
+        std::string m_regex;
+        CaseSensitive m_caseSensitivity;
+
+    public:
         RegexMatcher( std::string regex, CaseSensitive caseSensitivity );
         bool match( std::string const& matchee ) const override;
         std::string describe() const override;
-
-    private:
-        std::string m_regex;
-        CaseSensitive m_caseSensitivity;
     };
 
     //! Creates matcher that accepts strings that are exactly equal to `str`

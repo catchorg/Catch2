@@ -17,8 +17,10 @@ namespace Catch {
 namespace Matchers {
 
     template<typename T, typename Alloc>
-    struct VectorContainsElementMatcher final : MatcherBase<std::vector<T, Alloc>> {
+    class VectorContainsElementMatcher final : public MatcherBase<std::vector<T, Alloc>> {
+        T const& m_comparator;
 
+    public:
         VectorContainsElementMatcher(T const& comparator):
             m_comparator(comparator)
         {}
@@ -35,13 +37,13 @@ namespace Matchers {
         std::string describe() const override {
             return "Contains: " + ::Catch::Detail::stringify( m_comparator );
         }
-
-        T const& m_comparator;
     };
 
     template<typename T, typename AllocComp, typename AllocMatch>
-    struct ContainsMatcher final : MatcherBase<std::vector<T, AllocMatch>> {
+    class ContainsMatcher final : public MatcherBase<std::vector<T, AllocMatch>> {
+        std::vector<T, AllocComp> const& m_comparator;
 
+    public:
         ContainsMatcher(std::vector<T, AllocComp> const& comparator):
             m_comparator( comparator )
         {}
@@ -67,13 +69,13 @@ namespace Matchers {
         std::string describe() const override {
             return "Contains: " + ::Catch::Detail::stringify( m_comparator );
         }
-
-        std::vector<T, AllocComp> const& m_comparator;
     };
 
     template<typename T, typename AllocComp, typename AllocMatch>
-    struct EqualsMatcher final : MatcherBase<std::vector<T, AllocMatch>> {
+    class EqualsMatcher final : public MatcherBase<std::vector<T, AllocMatch>> {
+        std::vector<T, AllocComp> const& m_comparator;
 
+    public:
         EqualsMatcher(std::vector<T, AllocComp> const& comparator):
             m_comparator( comparator )
         {}
@@ -93,12 +95,14 @@ namespace Matchers {
         std::string describe() const override {
             return "Equals: " + ::Catch::Detail::stringify( m_comparator );
         }
-        std::vector<T, AllocComp> const& m_comparator;
     };
 
     template<typename T, typename AllocComp, typename AllocMatch>
-    struct ApproxMatcher final : MatcherBase<std::vector<T, AllocMatch>> {
+    class ApproxMatcher final : public MatcherBase<std::vector<T, AllocMatch>> {
+        std::vector<T, AllocComp> const& m_comparator;
+        mutable Catch::Approx approx = Catch::Approx::custom();
 
+    public:
         ApproxMatcher(std::vector<T, AllocComp> const& comparator):
             m_comparator( comparator )
         {}
@@ -129,13 +133,13 @@ namespace Matchers {
             approx.scale(static_cast<double>(newScale));
             return *this;
         }
-
-        std::vector<T, AllocComp> const& m_comparator;
-        mutable Catch::Approx approx = Catch::Approx::custom();
     };
 
     template<typename T, typename AllocComp, typename AllocMatch>
-    struct UnorderedEqualsMatcher final : MatcherBase<std::vector<T, AllocMatch>> {
+    class UnorderedEqualsMatcher final : public MatcherBase<std::vector<T, AllocMatch>> {
+        std::vector<T, AllocComp> const& m_target;
+
+    public:
         UnorderedEqualsMatcher(std::vector<T, AllocComp> const& target):
             m_target(target)
         {}
@@ -149,14 +153,11 @@ namespace Matchers {
         std::string describe() const override {
             return "UnorderedEquals: " + ::Catch::Detail::stringify(m_target);
         }
-    private:
-        std::vector<T, AllocComp> const& m_target;
     };
 
 
     // The following functions create the actual matcher objects.
     // This allows the types to be inferred
-
 
     //! Creates a matcher that matches vectors that contain all elements in `comparator`
     template<typename T, typename AllocComp = std::allocator<T>, typename AllocMatch = AllocComp>
