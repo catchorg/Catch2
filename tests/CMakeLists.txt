@@ -508,22 +508,19 @@ set_tests_properties("Colours::ColourModeCanBeExplicitlySetToAnsi"
 )
 
 if (CATCH_ENABLE_CONFIGURE_TESTS)
-    add_test(NAME "CMakeConfig::DefaultReporter"
-      COMMAND
-        "${PYTHON_EXECUTABLE}" "${CMAKE_CURRENT_LIST_DIR}/TestScripts/testConfigureDefaultReporter.py" "${CATCH_DIR}" "${CMAKE_CURRENT_BINARY_DIR}"
-    )
-    add_test(NAME "CMakeConfig::Disable"
-      COMMAND
-        "${PYTHON_EXECUTABLE}" "${CMAKE_CURRENT_LIST_DIR}/TestScripts/testConfigureDisable.py" "${CATCH_DIR}" "${CMAKE_CURRENT_BINARY_DIR}"
-    )
-    add_test(NAME "CMakeConfig::DisableStringification"
-      COMMAND
-        "${PYTHON_EXECUTABLE}" "${CMAKE_CURRENT_LIST_DIR}/TestScripts/testConfigureDisableStringification.py" "${CATCH_DIR}" "${CMAKE_CURRENT_BINARY_DIR}"
-    )
-    add_test(NAME "CMakeConfig::ExperimentalRedirect"
-      COMMAND
-        "${PYTHON_EXECUTABLE}" "${CMAKE_CURRENT_LIST_DIR}/TestScripts/testConfigureExperimentalRedirect.py" "${CATCH_DIR}" "${CMAKE_CURRENT_BINARY_DIR}"
-    )
+    foreach(testName "DefaultReporter" "Disable" "DisableStringification"
+                     "ExperimentalRedirect")
+
+        add_test(NAME "CMakeConfig::${testName}"
+          COMMAND
+            "${PYTHON_EXECUTABLE}" "${CMAKE_CURRENT_LIST_DIR}/TestScripts/testConfigure${testName}.py" "${CATCH_DIR}" "${CMAKE_CURRENT_BINARY_DIR}"
+        )
+        set_tests_properties("CMakeConfig::${testName}"
+          PROPERTIES
+            COST 240
+        )
+
+    endforeach()
 endif()
 
 if (CATCH_USE_VALGRIND)
