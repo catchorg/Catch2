@@ -16,7 +16,7 @@
 namespace Catch {
 
     enum class ColourMode : std::uint8_t;
-    struct IConfig;
+    class IConfig;
     class IStream;
 
     struct Colour {

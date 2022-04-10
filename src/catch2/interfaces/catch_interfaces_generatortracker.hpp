@@ -33,7 +33,8 @@ namespace Catch {
 
     } // namespace Generators
 
-    struct IGeneratorTracker {
+    class IGeneratorTracker {
+    public:
         virtual ~IGeneratorTracker(); // = default;
         virtual auto hasGenerator() const -> bool = 0;
         virtual auto getGenerator() const -> Generators::GeneratorBasePtr const& = 0;

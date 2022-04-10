@@ -14,7 +14,8 @@ namespace Catch {
 
     struct TagAlias;
 
-    struct ITagAliasRegistry {
+    class ITagAliasRegistry {
+    public:
         virtual ~ITagAliasRegistry(); // = default
         // Nullptr if not present
         virtual TagAlias const* find( std::string const& alias ) const = 0;

@@ -29,7 +29,8 @@ namespace Detail {
 } // end namespace detail
 
     template<typename T>
-    struct IGenerator : GeneratorUntypedBase {
+    class IGenerator : public GeneratorUntypedBase {
+    public:
         ~IGenerator() override = default;
         IGenerator() = default;
         IGenerator(IGenerator const&) = default;

@@ -30,7 +30,7 @@ namespace Catch {
     struct TagInfo;
     struct TestCaseInfo;
     class TestCaseHandle;
-    struct IConfig;
+    class IConfig;
     class IStream;
     enum class ColourMode : std::uint8_t;
 

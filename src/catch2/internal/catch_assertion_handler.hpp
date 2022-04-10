@@ -16,7 +16,7 @@
 namespace Catch {
 
     struct AssertionResultData;
-    struct IResultCapture;
+    class IResultCapture;
     class RunContext;
 
     struct AssertionReaction {

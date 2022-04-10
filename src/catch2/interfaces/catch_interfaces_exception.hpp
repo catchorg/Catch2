@@ -17,17 +17,18 @@
 namespace Catch {
     using exceptionTranslateFunction = std::string(*)();
 
-    struct IExceptionTranslator;
+    class IExceptionTranslator;
     using ExceptionTranslators = std::vector<Detail::unique_ptr<IExceptionTranslator const>>;
 
-    struct IExceptionTranslator {
+    class IExceptionTranslator {
+    public:
         virtual ~IExceptionTranslator(); // = default
         virtual std::string translate( ExceptionTranslators::const_iterator it, ExceptionTranslators::const_iterator itEnd ) const = 0;
     };
 
-    struct IExceptionTranslatorRegistry {
+    class IExceptionTranslatorRegistry {
+    public:
         virtual ~IExceptionTranslatorRegistry(); // = default
-
         virtual std::string translateActiveException() const = 0;
     };
 

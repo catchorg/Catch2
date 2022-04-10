@@ -10,19 +10,19 @@
 
 namespace Catch {
 
-    struct IResultCapture;
-    struct IConfig;
+    class IResultCapture;
+    class IConfig;
 
-    struct IContext
-    {
+    class IContext {
+    public:
         virtual ~IContext(); // = default
 
         virtual IResultCapture* getResultCapture() = 0;
         virtual IConfig const* getConfig() const = 0;
     };
 
-    struct IMutableContext : IContext
-    {
+    class IMutableContext : public IContext {
+    public:
         virtual ~IMutableContext(); // = default
         virtual void setResultCapture( IResultCapture* resultCapture ) = 0;
         virtual void setConfig( IConfig const* config ) = 0;

@@ -15,12 +15,13 @@
 namespace Catch {
 
     struct ReporterConfig;
-    struct IConfig;
+    class IConfig;
     class IEventListener;
     using IEventListenerPtr = Detail::unique_ptr<IEventListener>;
 
 
-    struct IReporterFactory {
+    class IReporterFactory {
+    public:
         virtual ~IReporterFactory(); // = default
 
         virtual IEventListenerPtr

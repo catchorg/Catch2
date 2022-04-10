@@ -62,8 +62,8 @@ namespace Catch {
     class TestSpec;
     class IStream;
 
-    struct IConfig : Detail::NonCopyable {
-
+    class IConfig : public Detail::NonCopyable {
+    public:
         virtual ~IConfig();
 
         virtual bool allowThrows() const = 0;
