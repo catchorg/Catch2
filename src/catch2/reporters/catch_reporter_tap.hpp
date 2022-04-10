@@ -12,8 +12,8 @@
 
 namespace Catch {
 
-    struct TAPReporter final : StreamingReporterBase {
-
+    class TAPReporter final : public StreamingReporterBase {
+    public:
         TAPReporter( ReporterConfig const& config ):
             StreamingReporterBase( config ) {
             m_preferences.shouldReportAllAssertions = true;

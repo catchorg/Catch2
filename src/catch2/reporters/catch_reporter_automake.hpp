@@ -12,7 +12,8 @@
 
 namespace Catch {
 
-    struct AutomakeReporter final : StreamingReporterBase {
+    class AutomakeReporter final : public StreamingReporterBase {
+    public:
         AutomakeReporter( ReporterConfig const& _config )
           :   StreamingReporterBase( _config )
         {}
@@ -26,7 +27,6 @@ namespace Catch {
 
         void testCaseEnded(TestCaseStats const& _testCaseStats) override;
         void skipTest(TestCaseInfo const& testInfo) override;
-
     };
 
 } // end namespace Catch

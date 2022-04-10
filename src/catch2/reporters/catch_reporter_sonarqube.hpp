@@ -14,8 +14,8 @@
 
 namespace Catch {
 
-    struct SonarQubeReporter final : CumulativeReporterBase {
-
+    class SonarQubeReporter final : public CumulativeReporterBase {
+    public:
         SonarQubeReporter(ReporterConfig const& config)
         : CumulativeReporterBase(config)
         , xml(m_stream) {

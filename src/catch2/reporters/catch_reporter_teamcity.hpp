@@ -20,7 +20,8 @@
 
 namespace Catch {
 
-    struct TeamCityReporter final : StreamingReporterBase {
+    class TeamCityReporter final : public StreamingReporterBase {
+    public:
         TeamCityReporter( ReporterConfig const& _config )
         :   StreamingReporterBase( _config )
         {
@@ -52,7 +53,6 @@ namespace Catch {
     private:
         void printSectionHeader(std::ostream& os);
 
-    private:
         bool m_headerPrintedForThisSection = false;
         Timer m_testTimer;
     };

@@ -14,8 +14,8 @@
 
 namespace Catch {
 
-    struct CompactReporter final : StreamingReporterBase {
-
+    class CompactReporter final : public StreamingReporterBase {
+    public:
         using StreamingReporterBase::StreamingReporterBase;
 
         ~CompactReporter() override;
