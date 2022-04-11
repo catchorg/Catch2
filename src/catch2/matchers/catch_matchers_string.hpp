@@ -27,11 +27,11 @@ namespace Matchers {
     };
 
     struct StringMatcherBase : MatcherBase<std::string> {
-        StringMatcherBase( std::string const& operation, CasedString const& comparator );
+        StringMatcherBase( StringRef operation, CasedString const& comparator );
         std::string describe() const override;
 
         CasedString m_comparator;
-        std::string m_operation;
+        StringRef m_operation;
     };
 
     struct StringEqualsMatcher final : StringMatcherBase {
