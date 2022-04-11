@@ -96,7 +96,10 @@ namespace Catch {
             template <typename Fun, std::enable_if_t<!Detail::is_related<Fun, Benchmark>::value, int> = 0>
                 Benchmark & operator=(Fun func) {
                 fun = Detail::BenchmarkFunction(func);
-                run();
+                auto const* cfg = getCurrentContext().getConfig();
+                if (!cfg->skipBenchmarks()) {
+                    run();
+                }
                 return *this;
             }
 

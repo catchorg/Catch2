@@ -88,6 +88,7 @@ namespace Catch {
         virtual std::vector<std::string> const& getSectionsToRun() const = 0;
         virtual Verbosity verbosity() const = 0;
 
+        virtual bool skipBenchmarks() const = 0;
         virtual bool benchmarkNoAnalysis() const = 0;
         virtual unsigned int benchmarkSamples() const = 0;
         virtual double benchmarkConfidenceInterval() const = 0;
