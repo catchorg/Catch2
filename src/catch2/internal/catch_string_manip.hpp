@@ -43,16 +43,17 @@ namespace Catch {
      *
      * **Important:** The provided string must outlive the instance
      */
-    struct pluralise {
-        pluralise(std::uint64_t count, StringRef label):
+    class pluralise {
+        std::uint64_t m_count;
+        StringRef m_label;
+
+    public:
+        constexpr pluralise(std::uint64_t count, StringRef label):
             m_count(count),
             m_label(label)
         {}
 
         friend std::ostream& operator << ( std::ostream& os, pluralise const& pluraliser );
-
-        std::uint64_t m_count;
-        StringRef m_label;
     };
 }
 
