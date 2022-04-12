@@ -77,7 +77,7 @@ namespace Catch {
             }
 
         private:
-            mutable XmlWriter* m_writer = nullptr;
+            XmlWriter* m_writer = nullptr;
             XmlFormatting m_fmt;
         };
 
