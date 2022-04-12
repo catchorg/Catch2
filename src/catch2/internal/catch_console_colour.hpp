@@ -60,9 +60,9 @@ namespace Catch {
     class ColourImpl {
     protected:
         //! The associated stream of this ColourImpl instance
-        IStream const* m_stream;
+        IStream* m_stream;
     public:
-        ColourImpl( IStream const* stream ): m_stream( stream ) {}
+        ColourImpl( IStream* stream ): m_stream( stream ) {}
 
         //! RAII wrapper around writing specific colour of text using specific
         //! colour impl into a stream.
@@ -131,7 +131,7 @@ namespace Catch {
 
     //! Provides ColourImpl based on global config and target compilation platform
     Detail::unique_ptr<ColourImpl> makeColourImpl( ColourMode colourSelection,
-                                                   IStream const* stream );
+                                                   IStream* stream );
 
     //! Checks if specific colour impl has been compiled into the binary
     bool isColourImplAvailable( ColourMode colourSelection );

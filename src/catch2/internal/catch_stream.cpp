@@ -74,7 +74,7 @@ namespace Detail {
         ///////////////////////////////////////////////////////////////////////////
 
         class FileStream : public IStream {
-            mutable std::ofstream m_ofs;
+            std::ofstream m_ofs;
         public:
             FileStream( std::string const& filename ) {
                 m_ofs.open( filename.c_str() );
@@ -82,7 +82,7 @@ namespace Detail {
             }
             ~FileStream() override = default;
         public: // IStream
-            std::ostream& stream() const override {
+            std::ostream& stream() override {
                 return m_ofs;
             }
         };
@@ -90,7 +90,7 @@ namespace Detail {
         ///////////////////////////////////////////////////////////////////////////
 
         class CoutStream : public IStream {
-            mutable std::ostream m_os;
+            std::ostream m_os;
         public:
             // Store the streambuf from cout up-front because
             // cout may get redirected when running tests
@@ -98,12 +98,12 @@ namespace Detail {
             ~CoutStream() override = default;
 
         public: // IStream
-            std::ostream& stream() const override { return m_os; }
+            std::ostream& stream() override { return m_os; }
             bool isConsole() const override { return true; }
         };
 
         class CerrStream : public IStream {
-            mutable std::ostream m_os;
+            std::ostream m_os;
 
         public:
             // Store the streambuf from cerr up-front because
@@ -112,7 +112,7 @@ namespace Detail {
             ~CerrStream() override = default;
 
         public: // IStream
-            std::ostream& stream() const override { return m_os; }
+            std::ostream& stream() override { return m_os; }
             bool isConsole() const override { return true; }
         };
 
@@ -120,7 +120,7 @@ namespace Detail {
 
         class DebugOutStream : public IStream {
             Detail::unique_ptr<StreamBufImpl<OutputDebugWriter>> m_streamBuf;
-            mutable std::ostream m_os;
+            std::ostream m_os;
         public:
             DebugOutStream()
             :   m_streamBuf( Detail::make_unique<StreamBufImpl<OutputDebugWriter>>() ),
@@ -130,7 +130,7 @@ namespace Detail {
             ~DebugOutStream() override = default;
 
         public: // IStream
-            std::ostream& stream() const override { return m_os; }
+            std::ostream& stream() override { return m_os; }
         };
 
     } // unnamed namespace
@@ -138,7 +138,7 @@ namespace Detail {
 
     ///////////////////////////////////////////////////////////////////////////
 
-    auto makeStream( std::string const& filename ) -> Detail::unique_ptr<IStream const> {
+    auto makeStream( std::string const& filename ) -> Detail::unique_ptr<IStream> {
         if ( filename.empty() || filename == "-" ) {
             return Detail::make_unique<Detail::CoutStream>();
         }

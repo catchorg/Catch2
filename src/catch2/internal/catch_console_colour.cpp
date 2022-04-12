@@ -84,7 +84,7 @@ namespace Catch {
         //! platforms, and when the user asks to deactivate all colours.
         class NoColourImpl : public ColourImpl {
         public:
-            NoColourImpl( IStream const* stream ): ColourImpl( stream ) {}
+            NoColourImpl( IStream* stream ): ColourImpl( stream ) {}
             static bool useColourOnPlatform() { return true; }
 
         private:
@@ -103,7 +103,7 @@ namespace {
 
     class Win32ColourImpl : public ColourImpl {
     public:
-        Win32ColourImpl(IStream const* stream):
+        Win32ColourImpl(IStream* stream):
             ColourImpl(stream) {
             CONSOLE_SCREEN_BUFFER_INFO csbiInfo;
             GetConsoleScreenBufferInfo( GetStdHandle( STD_OUTPUT_HANDLE ),
@@ -169,7 +169,7 @@ namespace {
 
     class ANSIColourImpl : public ColourImpl {
     public:
-        ANSIColourImpl( IStream const* stream ): ColourImpl( stream ) {}
+        ANSIColourImpl( IStream* stream ): ColourImpl( stream ) {}
 
         static bool useColourOnPlatform(IStream const& stream) {
             // This is kinda messy due to trying to support a bunch of
@@ -229,7 +229,7 @@ namespace {
 namespace Catch {
 
     Detail::unique_ptr<ColourImpl> makeColourImpl( ColourMode implSelection,
-                                                   IStream const* stream ) {
+                                                   IStream* stream ) {
         if ( implSelection == ColourMode::None ) {
             return Detail::make_unique<NoColourImpl>( stream );
         }

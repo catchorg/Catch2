@@ -21,9 +21,9 @@ namespace {
     };
 
     class TestStringStream : public Catch::IStream {
-        mutable std::stringstream m_stream;
+        std::stringstream m_stream;
     public:
-        std::ostream& stream() const override {
+        std::ostream& stream() override {
             return m_stream;
         }
 

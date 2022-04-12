@@ -29,10 +29,10 @@
 namespace {
     class StringIStream : public Catch::IStream {
     public:
-        std::ostream& stream() const override { return sstr; }
+        std::ostream& stream() override { return sstr; }
         std::string str() const { return sstr.str(); }
     private:
-        mutable std::stringstream sstr;
+        std::stringstream sstr;
     };
 }
 

@@ -25,7 +25,7 @@ namespace Catch {
     class IStream {
     public:
         virtual ~IStream(); // = default
-        virtual std::ostream& stream() const = 0;
+        virtual std::ostream& stream() = 0;
         /**
          * Best guess on whether the instance is writing to a console (e.g. via stdout/stderr)
          *
@@ -51,7 +51,7 @@ namespace Catch {
      *
      * \throws if passed an unrecognized %-prefixed stream
      */
-    auto makeStream( std::string const& filename ) -> Detail::unique_ptr<IStream const>;
+    auto makeStream( std::string const& filename ) -> Detail::unique_ptr<IStream>;
 
     class ReusableStringStream : Detail::NonCopyable {
         std::size_t m_index;

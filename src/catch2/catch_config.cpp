@@ -108,8 +108,8 @@ namespace Catch {
         return m_data.reporterSpecifications;
     }
 
-    IStream const* Config::getReporterOutputStream(std::size_t reporterIdx) const {
-        return m_reporterStreams.at(reporterIdx).get();
+    IStream* Config::getReporterOutputStream(std::size_t reporterIdx) const {
+        return const_cast<IStream*>(m_reporterStreams.at(reporterIdx).get());
     }
 
     TestSpec const& Config::testSpec() const { return m_testSpec; }

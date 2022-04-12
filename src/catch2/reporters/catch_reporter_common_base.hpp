@@ -29,7 +29,7 @@ namespace Catch {
     class ReporterBase : public IEventListener {
     protected:
         //! The stream wrapper as passed to us by outside code
-        IStream const* m_wrapped_stream;
+        IStream* m_wrapped_stream;
         //! Cached output stream from `m_wrapped_stream` to reduce
         //! number of indirect calls needed to write output.
         std::ostream& m_stream;

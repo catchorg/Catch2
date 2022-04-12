@@ -23,7 +23,7 @@ namespace Catch {
 
     ReporterConfig::ReporterConfig(
         IConfig const* _fullConfig,
-        IStream const* _stream,
+        IStream* _stream,
         ColourMode colourMode,
         std::map<std::string, std::string> customOptions ):
         m_stream( _stream ),
@@ -31,7 +31,7 @@ namespace Catch {
         m_colourMode( colourMode ),
         m_customOptions( CATCH_MOVE( customOptions ) ) {}
 
-    IStream const* ReporterConfig::stream() const { return m_stream; }
+    IStream* ReporterConfig::stream() const { return m_stream; }
     IConfig const * ReporterConfig::fullConfig() const { return m_fullConfig; }
     ColourMode ReporterConfig::colourMode() const { return m_colourMode; }
 
