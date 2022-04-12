@@ -81,7 +81,7 @@ namespace Catch {
             XmlFormatting m_fmt;
         };
 
-        XmlWriter( std::ostream& os = Catch::cout() );
+        XmlWriter( std::ostream& os );
         ~XmlWriter();
 
         XmlWriter( XmlWriter const& ) = delete;
