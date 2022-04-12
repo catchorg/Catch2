@@ -17,21 +17,6 @@
 #include <ostream>
 
 namespace Catch {
-    namespace Detail {
-        namespace {
-            class RDBufStream : public IStream {
-                mutable std::ostream m_os;
-
-            public:
-                //! The streambuf `sb` must outlive the constructed object.
-                RDBufStream( std::streambuf* sb ): m_os( sb ) {}
-                ~RDBufStream() override = default;
-
-            public: // IStream
-                std::ostream& stream() const override { return m_os; }
-            };
-        } // unnamed namespace
-    }     // namespace Detail
 
     Config::Config( ConfigData const& data ):
         m_data( data ) {
