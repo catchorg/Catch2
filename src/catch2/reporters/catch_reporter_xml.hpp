@@ -17,7 +17,7 @@
 namespace Catch {
     class XmlReporter : public StreamingReporterBase {
     public:
-        XmlReporter(ReporterConfig const& _config);
+        XmlReporter(ReporterConfig&& _config);
 
         ~XmlReporter() override;
 

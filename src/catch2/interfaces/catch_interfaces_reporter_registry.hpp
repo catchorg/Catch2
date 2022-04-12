@@ -32,7 +32,7 @@ namespace Catch {
         using Listeners = std::vector<Detail::unique_ptr<EventListenerFactory>>;
 
         virtual ~IReporterRegistry(); // = default
-        virtual IEventListenerPtr create( std::string const& name, ReporterConfig const& config ) const = 0;
+        virtual IEventListenerPtr create( std::string const& name, ReporterConfig&& config ) const = 0;
         virtual FactoryMap const& getFactories() const = 0;
         virtual Listeners const& getListeners() const = 0;
     };

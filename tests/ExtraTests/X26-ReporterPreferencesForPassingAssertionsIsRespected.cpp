@@ -16,13 +16,14 @@
 #include <catch2/reporters/catch_reporter_registrars.hpp>
 
 #include <iostream>
+#include <utility>
 
 namespace {
 
   class TestReporter : public Catch::StreamingReporterBase {
   public:
-      TestReporter(Catch::ReporterConfig const& _config):
-          StreamingReporterBase(_config) {
+      TestReporter(Catch::ReporterConfig&& _config):
+          StreamingReporterBase(std::move(_config)) {
           m_preferences.shouldReportAllAssertions = false;
           std::cout << "X26 - TestReporter constructed\n";
       }

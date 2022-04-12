@@ -354,8 +354,8 @@ public:
     }
 };
 
-ConsoleReporter::ConsoleReporter(ReporterConfig const& config)
-    : StreamingReporterBase(config),
+ConsoleReporter::ConsoleReporter(ReporterConfig&& config):
+    StreamingReporterBase( CATCH_MOVE( config ) ),
     m_tablePrinter(Detail::make_unique<TablePrinter>(m_stream,
         [&config]() -> std::vector<ColumnInfo> {
         if (config.fullConfig()->benchmarkNoAnalysis())

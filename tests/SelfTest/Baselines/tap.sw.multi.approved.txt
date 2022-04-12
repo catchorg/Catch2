@@ -2479,7 +2479,7 @@ ok {test-number} - !(cfg.hasTestFilters()) for: !false
 # Process can be configured on command line
 ok {test-number} - cfg.getReporterSpecs().size() == 1 for: 1 == 1
 # Process can be configured on command line
-ok {test-number} - cfg.getReporterSpecs()[0] == Catch::ReporterSpec{ expectedReporter, {}, {}, {} } for: {?} == {?}
+ok {test-number} - cfg.getReporterSpecs()[0] == Catch::ReporterSpec{ expectedReporter, std::string{}, Catch::ColourMode::PlatformDefault, {} } for: {?} == {?}
 # Process can be configured on command line
 ok {test-number} - result for: {?}
 # Process can be configured on command line

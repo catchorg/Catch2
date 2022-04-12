@@ -81,7 +81,6 @@ namespace Catch {
         bool listReporters() const;
 
         std::vector<ReporterSpec> const& getReporterSpecs() const;
-        IStream* getReporterOutputStream(std::size_t reporterIdx) const;
 
         std::vector<std::string> const& getTestsOrTags() const override;
         std::vector<std::string> const& getSectionsToRun() const override;
@@ -117,8 +116,6 @@ namespace Catch {
 
     private:
         ConfigData m_data;
-
-        std::vector<Detail::unique_ptr<IStream>> m_reporterStreams;
         TestSpec m_testSpec;
         bool m_hasTestFilters = false;
     };

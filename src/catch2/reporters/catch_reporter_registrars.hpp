@@ -13,6 +13,7 @@
 #include <catch2/interfaces/catch_interfaces_reporter_factory.hpp>
 #include <catch2/internal/catch_compiler_capabilities.hpp>
 #include <catch2/internal/catch_unique_ptr.hpp>
+#include <catch2/internal/catch_move_and_forward.hpp>
 
 namespace Catch {
 
@@ -22,8 +23,8 @@ namespace Catch {
     template <typename T>
     class ReporterFactory : public IReporterFactory {
 
-        IEventListenerPtr create( ReporterConfig const& config ) const override {
-            return Detail::make_unique<T>( config );
+        IEventListenerPtr create( ReporterConfig&& config ) const override {
+            return Detail::make_unique<T>( CATCH_MOVE(config) );
         }
 
         std::string getDescription() const override {

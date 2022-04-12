@@ -20,7 +20,7 @@ namespace Catch {
         Detail::unique_ptr<TablePrinter> m_tablePrinter;
 
     public:
-        ConsoleReporter(ReporterConfig const& config);
+        ConsoleReporter(ReporterConfig&& config);
         ~ConsoleReporter() override;
         static std::string getDescription();
 

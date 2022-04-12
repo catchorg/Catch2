@@ -37,11 +37,11 @@ namespace Catch {
     ReporterRegistry::~ReporterRegistry() = default;
 
 
-    IEventListenerPtr ReporterRegistry::create( std::string const& name, ReporterConfig const& config ) const {
+    IEventListenerPtr ReporterRegistry::create( std::string const& name, ReporterConfig&& config ) const {
         auto it =  m_factories.find( name );
         if( it == m_factories.end() )
             return nullptr;
-        return it->second->create( config );
+        return it->second->create( CATCH_MOVE(config) );
     }
 
     void ReporterRegistry::registerReporter( std::string const& name, IReporterFactoryPtr factory ) {

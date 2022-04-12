@@ -34,8 +34,8 @@ namespace Catch {
     namespace {
         const int MaxExitCode = 255;
 
-        IEventListenerPtr createReporter(std::string const& reporterName, ReporterConfig const& config) {
-            auto reporter = Catch::getRegistryHub().getReporterRegistry().create(reporterName, config);
+        IEventListenerPtr createReporter(std::string const& reporterName, ReporterConfig&& config) {
+            auto reporter = Catch::getRegistryHub().getReporterRegistry().create(reporterName, CATCH_MOVE(config));
             CATCH_ENFORCE(reporter, "No reporter registered with name: '" << reporterName << '\'');
 
             return reporter;
@@ -45,13 +45,12 @@ namespace Catch {
             if (Catch::getRegistryHub().getReporterRegistry().getListeners().empty()
                     && config->getReporterSpecs().size() == 1) {
                 auto const& spec = config->getReporterSpecs()[0];
-                auto stream = config->getReporterOutputStream(0);
                 return createReporter(
-                    config->getReporterSpecs()[0].name(),
+                    spec.name(),
                     ReporterConfig(
                         config,
-                        stream,
-                        spec.colourMode().valueOr( config->defaultColourMode() ),
+                        makeStream(*spec.outputFile()),
+                        *spec.colourMode(),
                         spec.customOptions() ) );
             }
 
@@ -64,13 +63,11 @@ namespace Catch {
 
             std::size_t reporterIdx = 0;
             for (auto const& reporterSpec : config->getReporterSpecs()) {
-                auto stream = config->getReporterOutputStream(reporterIdx);
                 multi->addReporter( createReporter(
                     reporterSpec.name(),
                     ReporterConfig( config,
-                                    stream,
-                                    reporterSpec.colourMode().valueOr(
-                                        config->defaultColourMode() ),
+                                    makeStream( *reporterSpec.outputFile() ),
+                                    *reporterSpec.colourMode(),
                                     reporterSpec.customOptions() ) ) );
                 reporterIdx++;
             }

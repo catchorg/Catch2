@@ -11476,7 +11476,7 @@ C
       </Expression>
       <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
         <Original>
-          cfg.getReporterSpecs()[0] == Catch::ReporterSpec{ expectedReporter, {}, {}, {} }
+          cfg.getReporterSpecs()[0] == Catch::ReporterSpec{ expectedReporter, std::string{}, Catch::ColourMode::PlatformDefault, {} }
         </Original>
         <Expanded>
           {?} == {?}

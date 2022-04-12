@@ -25,8 +25,8 @@
 
 class TestReporter : public Catch::StreamingReporterBase {
 public:
-    TestReporter( Catch::ReporterConfig const& _config ):
-        StreamingReporterBase( _config ) {
+    TestReporter( Catch::ReporterConfig&& _config ):
+        StreamingReporterBase( std::move(_config) ) {
         std::cout << "X29 - TestReporter constructed\n";
     }
 

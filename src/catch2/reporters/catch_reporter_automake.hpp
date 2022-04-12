@@ -15,7 +15,6 @@ namespace Catch {
     class AutomakeReporter final : public StreamingReporterBase {
     public:
         using StreamingReporterBase::StreamingReporterBase;
-
         ~AutomakeReporter() override;
 
         static std::string getDescription() {

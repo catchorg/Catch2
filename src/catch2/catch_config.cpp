@@ -76,20 +76,28 @@ namespace Catch {
         }
 #endif
 
+
+        // We now fixup the reporter specs to handle default output spec,
+        // default colour spec, etc
         bool defaultOutputUsed = false;
-        m_reporterStreams.reserve( m_data.reporterSpecifications.size() );
-        for ( auto const& reporterSpec : m_data.reporterSpecifications ) {
+        for ( auto& reporterSpec : m_data.reporterSpecifications ) {
             if ( reporterSpec.outputFile().none() ) {
                 CATCH_ENFORCE( !defaultOutputUsed,
                                "Internal error: cannot use default output for "
                                "multiple reporters" );
                 defaultOutputUsed = true;
 
-                m_reporterStreams.push_back(
-                    makeStream( data.defaultOutputFilename ) );
-            } else {
-                m_reporterStreams.push_back(
-                    makeStream( *reporterSpec.outputFile() ) );
+                reporterSpec = ReporterSpec{ reporterSpec.name(),
+                                             data.defaultOutputFilename,
+                                             reporterSpec.colourMode(),
+                                             reporterSpec.customOptions() };
+            }
+
+            if ( reporterSpec.colourMode().none() ) {
+                reporterSpec = ReporterSpec{ reporterSpec.name(),
+                                             reporterSpec.outputFile(),
+                                             data.defaultColourMode,
+                                             reporterSpec.customOptions() };
             }
         }
     }
@@ -106,10 +114,6 @@ namespace Catch {
 
     std::vector<ReporterSpec> const& Config::getReporterSpecs() const {
         return m_data.reporterSpecifications;
-    }
-
-    IStream* Config::getReporterOutputStream(std::size_t reporterIdx) const {
-        return const_cast<IStream*>(m_reporterStreams.at(reporterIdx).get());
     }
 
     TestSpec const& Config::testSpec() const { return m_testSpec; }

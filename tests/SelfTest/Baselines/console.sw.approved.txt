@@ -9438,7 +9438,7 @@ with expansion:
   1 == 1
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  CHECK( cfg.getReporterSpecs()[0] == Catch::ReporterSpec{ expectedReporter, {}, {}, {} } )
+  CHECK( cfg.getReporterSpecs()[0] == Catch::ReporterSpec{ expectedReporter, std::string{}, Catch::ColourMode::PlatformDefault, {} } )
 with expansion:
   {?} == {?}
 

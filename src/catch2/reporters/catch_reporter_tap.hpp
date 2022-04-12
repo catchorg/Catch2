@@ -9,13 +9,14 @@
 #define CATCH_REPORTER_TAP_HPP_INCLUDED
 
 #include <catch2/reporters/catch_reporter_streaming_base.hpp>
+#include <catch2/internal/catch_move_and_forward.hpp>
 
 namespace Catch {
 
     class TAPReporter final : public StreamingReporterBase {
     public:
-        TAPReporter( ReporterConfig const& config ):
-            StreamingReporterBase( config ) {
+        TAPReporter( ReporterConfig&& config ):
+            StreamingReporterBase( CATCH_MOVE(config) ) {
             m_preferences.shouldReportAllAssertions = true;
         }
         ~TAPReporter() override = default;

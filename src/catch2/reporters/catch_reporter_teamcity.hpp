@@ -22,8 +22,8 @@ namespace Catch {
 
     class TeamCityReporter final : public StreamingReporterBase {
     public:
-        TeamCityReporter( ReporterConfig const& _config )
-        :   StreamingReporterBase( _config )
+        TeamCityReporter( ReporterConfig&& _config )
+        :   StreamingReporterBase( CATCH_MOVE(_config) )
         {
             m_preferences.shouldRedirectStdOut = true;
         }

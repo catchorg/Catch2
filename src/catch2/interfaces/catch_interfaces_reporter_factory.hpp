@@ -25,7 +25,7 @@ namespace Catch {
         virtual ~IReporterFactory(); // = default
 
         virtual IEventListenerPtr
-        create( ReporterConfig const& config ) const = 0;
+        create( ReporterConfig&& config ) const = 0;
         virtual std::string getDescription() const = 0;
     };
     using IReporterFactoryPtr = Detail::unique_ptr<IReporterFactory>;

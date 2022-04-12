@@ -363,7 +363,10 @@ TEST_CASE( "Process can be configured on command line", "[config][command-line]"
 
         CHECK( cfg.getReporterSpecs().size() == 1 );
         CHECK( cfg.getReporterSpecs()[0] ==
-               Catch::ReporterSpec{ expectedReporter, {}, {}, {} } );
+               Catch::ReporterSpec{ expectedReporter,
+                                    std::string{},
+                                    Catch::ColourMode::PlatformDefault,
+                                    {} } );
     }
 
     SECTION("test lists") {

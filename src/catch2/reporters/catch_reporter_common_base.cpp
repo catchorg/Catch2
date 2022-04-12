@@ -14,11 +14,11 @@
 
 
 namespace Catch {
-    ReporterBase::ReporterBase( ReporterConfig const& config ):
+    ReporterBase::ReporterBase( ReporterConfig&& config ):
         IEventListener( config.fullConfig() ),
-        m_wrapped_stream( config.stream() ),
+        m_wrapped_stream( CATCH_MOVE(config).takeStream() ),
         m_stream( m_wrapped_stream->stream() ),
-        m_colour( makeColourImpl( config.colourMode(), m_wrapped_stream ) ),
+        m_colour( makeColourImpl( config.colourMode(), m_wrapped_stream.get() ) ),
         m_customOptions( config.customOptions() )
     {}
 

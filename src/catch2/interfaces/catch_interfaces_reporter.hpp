@@ -36,17 +36,17 @@ namespace Catch {
 
     struct ReporterConfig {
         ReporterConfig( IConfig const* _fullConfig,
-                        IStream* _stream,
+                        Detail::unique_ptr<IStream> _stream,
                         ColourMode colourMode,
                         std::map<std::string, std::string> customOptions );
 
-        IStream* stream() const;
+        Detail::unique_ptr<IStream> takeStream() &&;
         IConfig const* fullConfig() const;
         ColourMode colourMode() const;
         std::map<std::string, std::string> const& customOptions() const;
 
     private:
-        IStream* m_stream;
+        Detail::unique_ptr<IStream> m_stream;
         IConfig const* m_fullConfig;
         ColourMode m_colourMode;
         std::map<std::string, std::string> m_customOptions;
