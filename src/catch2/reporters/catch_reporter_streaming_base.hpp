@@ -18,10 +18,7 @@ namespace Catch {
 
     class StreamingReporterBase : public ReporterBase {
     public:
-        StreamingReporterBase( ReporterConfig const& _config ):
-            ReporterBase( _config ) {}
-
-
+        using ReporterBase::ReporterBase;
         ~StreamingReporterBase() override;
 
         void benchmarkPreparing( StringRef ) override {}

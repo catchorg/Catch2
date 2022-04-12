@@ -14,9 +14,7 @@ namespace Catch {
 
     class AutomakeReporter final : public StreamingReporterBase {
     public:
-        AutomakeReporter( ReporterConfig const& _config )
-          :   StreamingReporterBase( _config )
-        {}
+        using StreamingReporterBase::StreamingReporterBase;
 
         ~AutomakeReporter() override;
 

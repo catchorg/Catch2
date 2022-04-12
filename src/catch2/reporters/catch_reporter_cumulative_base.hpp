@@ -89,8 +89,7 @@ namespace Catch {
         using TestCaseNode = Node<TestCaseStats, SectionNode>;
         using TestRunNode = Node<TestRunStats, TestCaseNode>;
 
-        CumulativeReporterBase( ReporterConfig const& _config ):
-            ReporterBase( _config ) {}
+        using ReporterBase::ReporterBase;
         ~CumulativeReporterBase() override;
 
         void benchmarkPreparing( StringRef ) override {}
