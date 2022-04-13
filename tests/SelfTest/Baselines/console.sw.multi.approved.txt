@@ -9436,7 +9436,17 @@ with expansion:
   1 == 1
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  CHECK( cfg.getReporterSpecs()[0] == Catch::ReporterSpec{ expectedReporter, std::string{}, Catch::ColourMode::PlatformDefault, {} } )
+  CHECK( cfg.getReporterSpecs()[0] == Catch::ReporterSpec{ expectedReporter, {}, {}, {} } )
+with expansion:
+  {?} == {?}
+
+CmdLine.tests.cpp:<line number>: PASSED:
+  CHECK( cfg.getProcessedReporterSpecs().size() == 1 )
+with expansion:
+  1 == 1
+
+CmdLine.tests.cpp:<line number>: PASSED:
+  CHECK( cfg.getProcessedReporterSpecs()[0] == Catch::ProcessedReporterSpec{ expectedReporter, std::string{}, Catch::ColourMode::PlatformDefault, {} } )
 with expansion:
   {?} == {?}
 
@@ -17909,5 +17919,5 @@ Misc.tests.cpp:<line number>: PASSED:
 
 ===============================================================================
 test cases:  390 |  300 passed |  83 failed |  7 failed as expected
-assertions: 2238 | 2068 passed | 143 failed | 27 failed as expected
+assertions: 2240 | 2070 passed | 143 failed | 27 failed as expected
 

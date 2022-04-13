@@ -24,6 +24,24 @@ namespace Catch {
 
     class IStream;
 
+    /**
+     * `ReporterSpec` but with the defaults filled in.
+     *
+     * Like `ReporterSpec`, the semantics are unchecked.
+     */
+    struct ProcessedReporterSpec {
+        std::string name;
+        std::string outputFilename;
+        ColourMode colourMode;
+        std::map<std::string, std::string> customOptions;
+        friend bool operator==( ProcessedReporterSpec const& lhs,
+                                ProcessedReporterSpec const& rhs );
+        friend bool operator!=( ProcessedReporterSpec const& lhs,
+                                ProcessedReporterSpec const& rhs ) {
+            return !( lhs == rhs );
+        }
+    };
+
     struct ConfigData {
 
         bool listTests = false;
@@ -81,6 +99,8 @@ namespace Catch {
         bool listReporters() const;
 
         std::vector<ReporterSpec> const& getReporterSpecs() const;
+        std::vector<ProcessedReporterSpec> const&
+        getProcessedReporterSpecs() const;
 
         std::vector<std::string> const& getTestsOrTags() const override;
         std::vector<std::string> const& getSectionsToRun() const override;
@@ -116,6 +136,7 @@ namespace Catch {
 
     private:
         ConfigData m_data;
+        std::vector<ProcessedReporterSpec> m_processedReporterSpecs;
         TestSpec m_testSpec;
         bool m_hasTestFilters = false;
     };

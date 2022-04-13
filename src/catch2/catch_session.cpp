@@ -43,15 +43,14 @@ namespace Catch {
 
         IEventListenerPtr prepareReporters(Config const* config) {
             if (Catch::getRegistryHub().getReporterRegistry().getListeners().empty()
-                    && config->getReporterSpecs().size() == 1) {
-                auto const& spec = config->getReporterSpecs()[0];
+                    && config->getProcessedReporterSpecs().size() == 1) {
+                auto const& spec = config->getProcessedReporterSpecs()[0];
                 return createReporter(
-                    spec.name(),
-                    ReporterConfig(
-                        config,
-                        makeStream(*spec.outputFile()),
-                        *spec.colourMode(),
-                        spec.customOptions() ) );
+                    spec.name,
+                    ReporterConfig( config,
+                                    makeStream( spec.outputFilename ),
+                                    spec.colourMode,
+                                    spec.customOptions ) );
             }
 
             auto multi = Detail::make_unique<MultiReporter>(config);
@@ -62,13 +61,13 @@ namespace Catch {
             }
 
             std::size_t reporterIdx = 0;
-            for (auto const& reporterSpec : config->getReporterSpecs()) {
+            for ( auto const& reporterSpec : config->getProcessedReporterSpecs() ) {
                 multi->addReporter( createReporter(
-                    reporterSpec.name(),
+                    reporterSpec.name,
                     ReporterConfig( config,
-                                    makeStream( *reporterSpec.outputFile() ),
-                                    *reporterSpec.colourMode(),
-                                    reporterSpec.customOptions() ) ) );
+                                    makeStream( reporterSpec.outputFilename ),
+                                    reporterSpec.colourMode,
+                                    reporterSpec.customOptions ) ) );
                 reporterIdx++;
             }
 

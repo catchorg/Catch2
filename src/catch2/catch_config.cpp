@@ -18,6 +18,14 @@
 
 namespace Catch {
 
+    bool operator==( ProcessedReporterSpec const& lhs,
+                     ProcessedReporterSpec const& rhs ) {
+        return lhs.name == rhs.name &&
+               lhs.outputFilename == rhs.outputFilename &&
+               lhs.colourMode == rhs.colourMode &&
+               lhs.customOptions == rhs.customOptions;
+    }
+
     Config::Config( ConfigData const& data ):
         m_data( data ) {
         // We need to trim filter specs to avoid trouble with superfluous
@@ -80,25 +88,23 @@ namespace Catch {
         // We now fixup the reporter specs to handle default output spec,
         // default colour spec, etc
         bool defaultOutputUsed = false;
-        for ( auto& reporterSpec : m_data.reporterSpecifications ) {
+        for ( auto const& reporterSpec : m_data.reporterSpecifications ) {
+            // We do the default-output check separately, while always
+            // using the default output below to make the code simpler
+            // and avoid superfluous copies.
             if ( reporterSpec.outputFile().none() ) {
                 CATCH_ENFORCE( !defaultOutputUsed,
                                "Internal error: cannot use default output for "
                                "multiple reporters" );
                 defaultOutputUsed = true;
-
-                reporterSpec = ReporterSpec{ reporterSpec.name(),
-                                             data.defaultOutputFilename,
-                                             reporterSpec.colourMode(),
-                                             reporterSpec.customOptions() };
             }
 
-            if ( reporterSpec.colourMode().none() ) {
-                reporterSpec = ReporterSpec{ reporterSpec.name(),
-                                             reporterSpec.outputFile(),
-                                             data.defaultColourMode,
-                                             reporterSpec.customOptions() };
-            }
+            m_processedReporterSpecs.push_back( ProcessedReporterSpec{
+                reporterSpec.name(),
+                reporterSpec.outputFile() ? *reporterSpec.outputFile()
+                                          : data.defaultOutputFilename,
+                reporterSpec.colourMode().valueOr( data.defaultColourMode ),
+                reporterSpec.customOptions() } );
         }
     }
 
@@ -114,6 +120,11 @@ namespace Catch {
 
     std::vector<ReporterSpec> const& Config::getReporterSpecs() const {
         return m_data.reporterSpecifications;
+    }
+
+    std::vector<ProcessedReporterSpec> const&
+    Config::getProcessedReporterSpecs() const {
+        return m_processedReporterSpecs;
     }
 
     TestSpec const& Config::testSpec() const { return m_testSpec; }
