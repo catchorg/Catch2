@@ -290,6 +290,7 @@
 :test-result: PASS X/level/1/b
 :test-result: PASS XmlEncode
 :test-result: PASS XmlWriter writes boolean attributes as true/false
+:test-result: XFAIL a succeeding test can still be skipped
 :test-result: PASS analyse no analysis
 :test-result: PASS array<int, N> -> toString
 :test-result: PASS benchmark function call
@@ -307,7 +308,9 @@
 :test-result: PASS erfc_inv
 :test-result: PASS estimate_clock_resolution
 :test-result: PASS even more nested SECTION tests
-:test-result: XFAIL failed assertions before SKIP are still reported
+:test-result: XFAIL failed assertions before SKIP cause test case to fail
+:test-result: XFAIL failing for some generator values causes entire test case to fail
+:test-result: XFAIL failing in some unskipped sections causes entire test case to fail
 :test-result: FAIL first tag
 :test-result: FAIL has printf
 :test-result: PASS is_unary_function
@@ -325,6 +328,7 @@
 :test-result: FAIL mix info, unscoped info and warning
 :test-result: FAIL more nested SECTION tests
 :test-result: PASS nested SECTION tests
+:test-result: FAIL nested sections can be skipped dynamically at runtime
 :test-result: PASS non streamable - with conv. op
 :test-result: PASS non-copyable objects
 :test-result: PASS normal_cdf

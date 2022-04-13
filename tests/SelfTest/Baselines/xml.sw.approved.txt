@@ -17158,6 +17158,9 @@ There is no extra whitespace here
     </Expression>
     <OverallResult success="true"/>
   </TestCase>
+  <TestCase name="a succeeding test can still be skipped" tags="[!shouldfail][skipping]" filename="tests/<exe-name>/UsageTests/Skip.tests.cpp" >
+    <OverallResult success="true"/>
+  </TestCase>
   <TestCase name="analyse no analysis" tags="[benchmark]" filename="tests/<exe-name>/IntrospectiveTests/InternalBenchmark.tests.cpp" >
     <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/InternalBenchmark.tests.cpp" >
       <Original>
@@ -17980,7 +17983,7 @@ There is no extra whitespace here
     </Section>
     <OverallResult success="true"/>
   </TestCase>
-  <TestCase name="failed assertions before SKIP are still reported" tags="[!shouldfail][skipping]" filename="tests/<exe-name>/UsageTests/Skip.tests.cpp" >
+  <TestCase name="failed assertions before SKIP cause test case to fail" tags="[!shouldfail][skipping]" filename="tests/<exe-name>/UsageTests/Skip.tests.cpp" >
     <Expression success="false" type="CHECK" filename="tests/<exe-name>/UsageTests/Skip.tests.cpp" >
       <Original>
         3 == 4
@@ -17989,6 +17992,21 @@ There is no extra whitespace here
         3 == 4
       </Expanded>
     </Expression>
+    <OverallResult success="true"/>
+  </TestCase>
+  <TestCase name="failing for some generator values causes entire test case to fail" tags="[!shouldfail][skipping]" filename="tests/<exe-name>/UsageTests/Skip.tests.cpp" >
+    <Failure filename="tests/<exe-name>/UsageTests/Skip.tests.cpp" />
+    <Failure filename="tests/<exe-name>/UsageTests/Skip.tests.cpp" />
+    <OverallResult success="true"/>
+  </TestCase>
+  <TestCase name="failing in some unskipped sections causes entire test case to fail" tags="[!shouldfail][skipping]" filename="tests/<exe-name>/UsageTests/Skip.tests.cpp" >
+    <Section name="skipped" filename="tests/<exe-name>/UsageTests/Skip.tests.cpp" >
+      <OverallResults successes="0" failures="0" expectedFailures="0"/>
+    </Section>
+    <Section name="not skipped" filename="tests/<exe-name>/UsageTests/Skip.tests.cpp" >
+      <Failure filename="tests/<exe-name>/UsageTests/Skip.tests.cpp" />
+      <OverallResults successes="0" failures="0" expectedFailures="1"/>
+    </Section>
     <OverallResult success="true"/>
   </TestCase>
   <TestCase name="first tag" tags="[tag1]" filename="tests/<exe-name>/UsageTests/Misc.tests.cpp" >
@@ -18459,6 +18477,33 @@ loose text artifact
       <OverallResults successes="3" failures="0" expectedFailures="0"/>
     </Section>
     <OverallResult success="true"/>
+  </TestCase>
+  <TestCase name="nested sections can be skipped dynamically at runtime" tags="[skipping]" filename="tests/<exe-name>/UsageTests/Skip.tests.cpp" >
+    <Section name="A" filename="tests/<exe-name>/UsageTests/Skip.tests.cpp" >
+      <OverallResults successes="0" failures="1" expectedFailures="0"/>
+    </Section>
+    <Section name="B" filename="tests/<exe-name>/UsageTests/Skip.tests.cpp" >
+      <Section name="B1" filename="tests/<exe-name>/UsageTests/Skip.tests.cpp" >
+        <OverallResults successes="0" failures="1" expectedFailures="0"/>
+      </Section>
+      <OverallResults successes="0" failures="1" expectedFailures="0"/>
+    </Section>
+    <Section name="B" filename="tests/<exe-name>/UsageTests/Skip.tests.cpp" >
+      <Section name="B2" filename="tests/<exe-name>/UsageTests/Skip.tests.cpp" >
+        <OverallResults successes="0" failures="0" expectedFailures="0"/>
+      </Section>
+      <OverallResults successes="0" failures="0" expectedFailures="0"/>
+    </Section>
+    <Section name="B" filename="tests/<exe-name>/UsageTests/Skip.tests.cpp" >
+      <OverallResults successes="0" failures="0" expectedFailures="0"/>
+    </Section>
+    <OverallResult success="false">
+      <StdOut>
+a!
+b1!
+!
+      </StdOut>
+    </OverallResult>
   </TestCase>
   <TestCase name="non streamable - with conv. op" tags="[Tricky]" filename="tests/<exe-name>/UsageTests/Tricky.tests.cpp" >
     <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/UsageTests/Tricky.tests.cpp" >
@@ -19239,6 +19284,9 @@ loose text artifact
     </Section>
     <Section name="skipped" filename="tests/<exe-name>/UsageTests/Skip.tests.cpp" >
       <OverallResults successes="0" failures="0" expectedFailures="0"/>
+    </Section>
+    <Section name="also not skipped" filename="tests/<exe-name>/UsageTests/Skip.tests.cpp" >
+      <OverallResults successes="1" failures="0" expectedFailures="0"/>
     </Section>
     <OverallResult success="true"/>
   </TestCase>
@@ -20547,6 +20595,6 @@ loose text artifact
     </Section>
     <OverallResult success="true"/>
   </TestCase>
-  <OverallResults successes="1995" failures="143" expectedFailures="28"/>
-  <OverallResultsCases successes="305" failures="83" expectedFailures="8"/>
+  <OverallResults successes="1997" failures="145" expectedFailures="31"/>
+  <OverallResultsCases successes="305" failures="84" expectedFailures="10"/>
 </Catch2TestRun>

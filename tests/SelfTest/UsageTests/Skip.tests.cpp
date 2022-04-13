@@ -9,6 +9,8 @@
 #include <catch2/catch_test_macros.hpp>
 #include <catch2/generators/catch_generators_range.hpp>
 
+#include <iostream>
+
 TEST_CASE( "tests can be skipped dynamically at runtime", "[skipping]" ) {
     SKIP();
     FAIL( "this is not reached" );
@@ -23,6 +25,17 @@ TEST_CASE( "skipped tests can optionally provide a reason", "[skipping]" ) {
 TEST_CASE( "sections can be skipped dynamically at runtime", "[skipping]" ) {
     SECTION( "not skipped" ) { SUCCEED(); }
     SECTION( "skipped" ) { SKIP(); }
+    SECTION( "also not skipped" ) { SUCCEED(); }
+}
+
+TEST_CASE( "nested sections can be skipped dynamically at runtime",
+           "[skipping]" ) {
+    SECTION( "A" ) { std::cout << "a"; }
+    SECTION( "B" ) {
+        SECTION( "B1" ) { std::cout << "b1"; }
+        SECTION( "B2" ) { SKIP(); }
+    }
+    std::cout << "!\n";
 }
 
 TEST_CASE( "dynamic skipping works with generators", "[skipping]" ) {
@@ -31,8 +44,30 @@ TEST_CASE( "dynamic skipping works with generators", "[skipping]" ) {
     SUCCEED();
 }
 
-TEST_CASE( "failed assertions before SKIP are still reported",
+TEST_CASE( "failed assertions before SKIP cause test case to fail",
            "[skipping][!shouldfail]" ) {
     CHECK( 3 == 4 );
     SKIP();
+}
+
+TEST_CASE( "a succeeding test can still be skipped",
+           "[skipping][!shouldfail]" ) {
+    SUCCEED();
+    SKIP();
+}
+
+TEST_CASE( "failing in some unskipped sections causes entire test case to fail",
+           "[skipping][!shouldfail]" ) {
+    SECTION( "skipped" ) { SKIP(); }
+    SECTION( "not skipped" ) { FAIL(); }
+}
+
+TEST_CASE( "failing for some generator values causes entire test case to fail",
+           "[skipping][!shouldfail]" ) {
+    int i = GENERATE( 1, 2, 3, 4 );
+    if ( i % 2 == 0 ) {
+        SKIP();
+    } else {
+        FAIL();
+    }
 }

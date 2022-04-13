@@ -14653,6 +14653,16 @@ with expansion:
   " ( contains: "attr1="true"" and contains: "attr2="false"" )
 
 -------------------------------------------------------------------------------
+a succeeding test can still be skipped
+-------------------------------------------------------------------------------
+Skip.tests.cpp:<line number>
+...............................................................................
+
+Skip.tests.cpp:<line number>: PASSED:
+
+Skip.tests.cpp:<line number>: SKIPPED:
+
+-------------------------------------------------------------------------------
 analyse no analysis
 -------------------------------------------------------------------------------
 InternalBenchmark.tests.cpp:<line number>
@@ -15301,7 +15311,7 @@ Misc.tests.cpp:<line number>
 Misc.tests.cpp:<line number>: PASSED:
 
 -------------------------------------------------------------------------------
-failed assertions before SKIP are still reported
+failed assertions before SKIP cause test case to fail
 -------------------------------------------------------------------------------
 Skip.tests.cpp:<line number>
 ...............................................................................
@@ -15310,6 +15320,56 @@ Skip.tests.cpp:<line number>: FAILED:
   CHECK( 3 == 4 )
 
 Skip.tests.cpp:<line number>: SKIPPED:
+
+-------------------------------------------------------------------------------
+failing for some generator values causes entire test case to fail
+-------------------------------------------------------------------------------
+Skip.tests.cpp:<line number>
+...............................................................................
+
+Skip.tests.cpp:<line number>: FAILED:
+
+-------------------------------------------------------------------------------
+failing for some generator values causes entire test case to fail
+-------------------------------------------------------------------------------
+Skip.tests.cpp:<line number>
+...............................................................................
+
+Skip.tests.cpp:<line number>: SKIPPED:
+
+-------------------------------------------------------------------------------
+failing for some generator values causes entire test case to fail
+-------------------------------------------------------------------------------
+Skip.tests.cpp:<line number>
+...............................................................................
+
+Skip.tests.cpp:<line number>: FAILED:
+
+-------------------------------------------------------------------------------
+failing for some generator values causes entire test case to fail
+-------------------------------------------------------------------------------
+Skip.tests.cpp:<line number>
+...............................................................................
+
+Skip.tests.cpp:<line number>: SKIPPED:
+
+-------------------------------------------------------------------------------
+failing in some unskipped sections causes entire test case to fail
+  skipped
+-------------------------------------------------------------------------------
+Skip.tests.cpp:<line number>
+...............................................................................
+
+Skip.tests.cpp:<line number>: SKIPPED:
+
+-------------------------------------------------------------------------------
+failing in some unskipped sections causes entire test case to fail
+  not skipped
+-------------------------------------------------------------------------------
+Skip.tests.cpp:<line number>
+...............................................................................
+
+Skip.tests.cpp:<line number>: FAILED:
 
 -------------------------------------------------------------------------------
 first tag
@@ -15805,6 +15865,37 @@ Misc.tests.cpp:<line number>: PASSED:
   REQUIRE( a != b )
 with expansion:
   1 != 2
+
+-------------------------------------------------------------------------------
+nested sections can be skipped dynamically at runtime
+  A
+-------------------------------------------------------------------------------
+Skip.tests.cpp:<line number>
+...............................................................................
+
+
+No assertions in section 'A'
+
+-------------------------------------------------------------------------------
+nested sections can be skipped dynamically at runtime
+  B
+  B1
+-------------------------------------------------------------------------------
+Skip.tests.cpp:<line number>
+...............................................................................
+
+
+No assertions in section 'B1'
+
+-------------------------------------------------------------------------------
+nested sections can be skipped dynamically at runtime
+  B
+  B2
+-------------------------------------------------------------------------------
+Skip.tests.cpp:<line number>
+...............................................................................
+
+Skip.tests.cpp:<line number>: SKIPPED:
 
 -------------------------------------------------------------------------------
 non streamable - with conv. op
@@ -16424,6 +16515,15 @@ Skip.tests.cpp:<line number>
 ...............................................................................
 
 Skip.tests.cpp:<line number>: SKIPPED:
+
+-------------------------------------------------------------------------------
+sections can be skipped dynamically at runtime
+  also not skipped
+-------------------------------------------------------------------------------
+Skip.tests.cpp:<line number>
+...............................................................................
+
+Skip.tests.cpp:<line number>: PASSED:
 
 -------------------------------------------------------------------------------
 send a single char to INFO
@@ -17611,6 +17711,6 @@ Misc.tests.cpp:<line number>
 Misc.tests.cpp:<line number>: PASSED:
 
 ===============================================================================
-test cases:  400 |  305 passed |  83 failed | 4 skipped |  8 failed as expected
-assertions: 2172 | 1995 passed | 143 failed | 6 skipped | 28 failed as expected
+test cases:  404 |  305 passed |  84 failed | 5 skipped | 10 failed as expected
+assertions: 2173 | 1997 passed | 145 failed | 31 failed as expected
 

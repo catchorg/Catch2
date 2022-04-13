@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuitesloose text artifact
 >
-  <testsuite name="<exe-name>" errors="17" failures="126" tests="2172" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
+  <testsuite name="<exe-name>" errors="17" failures="128" tests="2184" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
     <properties>
       <property name="random-seed" value="1"/>
       <property name="filters" value="&quot;*&quot; ~[!nonportable] ~[!benchmark] ~[approvals]"/>
@@ -1591,6 +1591,7 @@ at Exception.tests.cpp:<line number>
     <testcase classname="<exe-name>.global" name="XmlEncode/string with control char (1)" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="XmlEncode/string with control char (x7F)" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="XmlWriter writes boolean attributes as true/false" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="a succeeding test can still be skipped" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="analyse no analysis" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="array&lt;int, N> -> toString" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="benchmark function call/without chronometer" time="{duration}" status="run"/>
@@ -1632,11 +1633,29 @@ at Misc.tests.cpp:<line number>
     <testcase classname="<exe-name>.global" name="even more nested SECTION tests/c/d (leaf)" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="even more nested SECTION tests/c/e (leaf)" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="even more nested SECTION tests/f (leaf)" time="{duration}" status="run"/>
-    <testcase classname="<exe-name>.global" name="failed assertions before SKIP are still reported" time="{duration}" status="run">
+    <testcase classname="<exe-name>.global" name="failed assertions before SKIP cause test case to fail" time="{duration}" status="run">
       <skipped message="TEST_CASE tagged with !mayfail"/>
       <failure message="3 == 4" type="CHECK">
 FAILED:
   CHECK( 3 == 4 )
+at Skip.tests.cpp:<line number>
+      </failure>
+    </testcase>
+    <testcase classname="<exe-name>.global" name="failing for some generator values causes entire test case to fail" time="{duration}" status="run">
+      <failure type="FAIL">
+FAILED:
+at Skip.tests.cpp:<line number>
+      </failure>
+      <failure type="FAIL">
+FAILED:
+at Skip.tests.cpp:<line number>
+      </failure>
+    </testcase>
+    <testcase classname="<exe-name>.global" name="failing in some unskipped sections causes entire test case to fail/skipped" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="failing in some unskipped sections causes entire test case to fail/not skipped" time="{duration}" status="run">
+      <skipped message="TEST_CASE tagged with !mayfail"/>
+      <failure type="FAIL">
+FAILED:
 at Skip.tests.cpp:<line number>
       </failure>
     </testcase>
@@ -1752,6 +1771,14 @@ at Misc.tests.cpp:<line number>
     <testcase classname="<exe-name>.global" name="more nested SECTION tests/doesn't equal/less than" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="nested SECTION tests/doesn't equal" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="nested SECTION tests/doesn't equal/not equal" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="nested sections can be skipped dynamically at runtime/B2/B" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="nested sections can be skipped dynamically at runtime/B" time="{duration}" status="run">
+      <system-out>
+a!
+b1!
+!
+      </system-out>
+    </testcase>
     <testcase classname="<exe-name>.global" name="non streamable - with conv. op" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="non-copyable objects" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="normal_cdf" time="{duration}" status="run"/>
@@ -1805,6 +1832,7 @@ at Message.tests.cpp:<line number>
     <testcase classname="<exe-name>.global" name="run_for_at_least, int" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="sections can be skipped dynamically at runtime/not skipped" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="sections can be skipped dynamically at runtime/skipped" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="sections can be skipped dynamically at runtime/also not skipped" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="send a single char to INFO" time="{duration}" status="run">
       <failure message="false" type="REQUIRE">
 FAILED:
@@ -1918,6 +1946,9 @@ This would not be caught previously
 A string sent directly to stdout
 Message from section one
 Message from section two
+a!
+b1!
+!
     </system-out>
     <system-err>
 Nor would this
