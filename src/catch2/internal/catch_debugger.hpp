@@ -49,7 +49,7 @@ namespace Catch {
     #endif
 #elif defined(CATCH_COMPILER_MSC)
     #define CATCH_TRAP() __debugbreak()
-#elif defined(__MINGW32__)
+#elif defined(CATCH_COMPILER_MINGW32)
     extern "C" __declspec(dllimport) void __stdcall DebugBreak();
     #define CATCH_TRAP() DebugBreak()
 #endif

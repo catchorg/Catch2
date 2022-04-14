@@ -29,7 +29,7 @@ namespace Catch {
             std::time(&rawtime);
 
             std::tm timeInfo = {};
-#if defined (CATCH_COMPILER_MSC) || defined (__MINGW32__)
+#if defined (CATCH_COMPILER_MSC) || defined (CATCH_COMPILER_MINGW32)
             gmtime_s(&timeInfo, &rawtime);
 #else
             gmtime_r(&rawtime, &timeInfo);

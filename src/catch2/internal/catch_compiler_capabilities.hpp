@@ -40,6 +40,10 @@
 #define CATCH_COMPILER_MSC
 #endif
 
+#if defined(__MINGW32__)
+#define CATCH_COMPILER_MINGW32
+#endif
+
 #ifdef __cplusplus
 
 #  if (__cplusplus >= 201402L) || (defined(_MSVC_LANG) && _MSVC_LANG >= 201402L)
@@ -139,7 +143,7 @@
 
 ////////////////////////////////////////////////////////////////////////////////
 // Not all Windows environments support SEH properly
-#if defined(__MINGW32__)
+#if defined(CATCH_COMPILER_MINGW32)
 #    define CATCH_INTERNAL_CONFIG_NO_WINDOWS_SEH
 #endif
 

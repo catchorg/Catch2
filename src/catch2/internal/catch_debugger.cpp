@@ -108,7 +108,7 @@
             return IsDebuggerPresent() != 0;
         }
     }
-#elif defined(__MINGW32__)
+#elif defined(CATCH_COMPILER_MINGW32)
     extern "C" __declspec(dllimport) int __stdcall IsDebuggerPresent();
     namespace Catch {
         bool isDebuggerActive() {
