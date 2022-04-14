@@ -5,12 +5,13 @@
 //        https://www.boost.org/LICENSE_1_0.txt)
 
 // SPDX-License-Identifier: BSL-1.0
-#if defined(__clang__)
+#if defined(CATCH_COMPILER_CLANG)
 #    pragma clang diagnostic push
 #    pragma clang diagnostic ignored "-Wexit-time-destructors"
 #endif
 
 
+#include <catch2/internal/catch_compiler_capabilities.hpp>
 #include <catch2/internal/catch_console_colour.hpp>
 #include <catch2/internal/catch_enforce.hpp>
 #include <catch2/internal/catch_errno_guard.hpp>
@@ -277,7 +278,7 @@ namespace Catch {
 
 } // end namespace Catch
 
-#if defined(__clang__)
+#if defined(CATCH_COMPILER_CLANG)
 #    pragma clang diagnostic pop
 #endif
 

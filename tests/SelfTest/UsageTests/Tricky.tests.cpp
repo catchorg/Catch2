@@ -6,7 +6,9 @@
 
 // SPDX-License-Identifier: BSL-1.0
 
-#ifdef __clang__
+#include <catch2/internal/catch_compiler_capabilities.hpp>
+
+#ifdef CATCH_COMPILER_CLANG
 #pragma clang diagnostic ignored "-Wpadded"
 #endif
 

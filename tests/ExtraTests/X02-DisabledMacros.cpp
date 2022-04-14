@@ -14,6 +14,7 @@
 
 #include <catch2/catch_test_macros.hpp>
 #include <catch2/benchmark/catch_benchmark.hpp>
+#include <catch2/internal/catch_compiler_capabilities.hpp>
 #include <catch2/matchers/catch_matchers.hpp>
 #include <catch2/matchers/catch_matchers_predicate.hpp>
 
@@ -28,7 +29,7 @@ struct foo {
     }
 };
 
-#if defined(__clang__)
+#if defined(CATCH_COMPILER_CLANG)
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wglobal-constructors"
 #endif
@@ -36,7 +37,7 @@ struct foo {
 foo f;
 
 
-#if defined(__clang__)
+#if defined(CATCH_COMPILER_CLANG)
 // The test is unused since the registration is disabled
 #pragma clang diagnostic ignored "-Wunused-function"
 #endif
@@ -60,6 +61,6 @@ TEST_CASE( "Disabled Macros" ) {
     BENCHMARK( "Disabled benchmark" ) { REQUIRE( 1 == 2 ); };
 }
 
-#if defined(__clang__)
+#if defined(CATCH_COMPILER_CLANG)
 #pragma clang diagnostic pop
 #endif

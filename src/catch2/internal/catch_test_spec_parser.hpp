@@ -8,11 +8,12 @@
 #ifndef CATCH_TEST_SPEC_PARSER_HPP_INCLUDED
 #define CATCH_TEST_SPEC_PARSER_HPP_INCLUDED
 
-#ifdef __clang__
+#ifdef CATCH_COMPILER_CLANG
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wpadded"
 #endif
 
+#include <catch2/internal/catch_compiler_capabilities.hpp>
 #include <catch2/catch_test_spec.hpp>
 
 #include <vector>
@@ -75,7 +76,7 @@ namespace Catch {
 
 } // namespace Catch
 
-#ifdef __clang__
+#ifdef CATCH_COMPILER_CLANG
 #pragma clang diagnostic pop
 #endif
 

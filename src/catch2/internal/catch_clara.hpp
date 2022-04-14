@@ -8,7 +8,7 @@
 #ifndef CATCH_CLARA_HPP_INCLUDED
 #define CATCH_CLARA_HPP_INCLUDED
 
-#if defined( __clang__ )
+#if defined( CATCH_COMPILER_CLANG )
 #    pragma clang diagnostic push
 #    pragma clang diagnostic ignored "-Wweak-vtables"
 #    pragma clang diagnostic ignored "-Wshadow"
@@ -29,6 +29,7 @@
 #    endif
 #endif
 
+#include <catch2/internal/catch_compiler_capabilities.hpp>
 #include <catch2/internal/catch_move_and_forward.hpp>
 #include <catch2/internal/catch_noncopyable.hpp>
 #include <catch2/internal/catch_void_type.hpp>
@@ -698,7 +699,7 @@ namespace Catch {
     } // namespace Clara
 } // namespace Catch
 
-#if defined( __clang__ )
+#if defined( CATCH_COMPILER_CLANG )
 #    pragma clang diagnostic pop
 #endif
 

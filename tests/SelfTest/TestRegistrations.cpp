@@ -7,9 +7,10 @@
 // SPDX-License-Identifier: BSL-1.0
 
 #include <catch2/catch_tag_alias_autoregistrar.hpp>
-#include <catch2/reporters/catch_reporter_event_listener.hpp>
-#include <catch2/internal/catch_enforce.hpp>
 #include <catch2/catch_test_case_info.hpp>
+#include <catch2/internal/catch_compiler_capabilities.hpp>
+#include <catch2/internal/catch_enforce.hpp>
+#include <catch2/reporters/catch_reporter_event_listener.hpp>
 #include <catch2/reporters/catch_reporter_registrars.hpp>
 
 
@@ -17,7 +18,7 @@
 CATCH_REGISTER_TAG_ALIAS("[@nhf]", "[failing]~[.]")
 CATCH_REGISTER_TAG_ALIAS("[@tricky]", "[tricky]~[.]")
 
-#ifdef __clang__
+#ifdef CATCH_COMPILER_CLANG
 #   pragma clang diagnostic ignored "-Wpadded"
 #   pragma clang diagnostic ignored "-Wweak-vtables"
 #   pragma clang diagnostic ignored "-Wc++98-compat"

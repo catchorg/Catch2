@@ -77,7 +77,7 @@ struct B : private A {
     bool operator==(int) const { return true; }
 };
 
-#ifdef __clang__
+#ifdef CATCH_COMPILER_CLANG
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wunused-function"
 #endif
@@ -91,7 +91,7 @@ B f();
 
 std::ostream g();
 
-#ifdef __clang__
+#ifdef CATCH_COMPILER_CLANG
 #pragma clang diagnostic pop
 #endif
 

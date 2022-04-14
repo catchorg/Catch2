@@ -21,7 +21,7 @@
 
 namespace Catch {
     namespace Benchmark {
-#if defined(CATCH_COMPILER_GCC) || defined(__clang__)
+#if defined(CATCH_COMPILER_GCC) || defined(CATCH_COMPILER_CLANG)
         template <typename T>
         inline void keep_memory(T* p) {
             asm volatile("" : : "g"(p) : "memory");

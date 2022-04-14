@@ -24,11 +24,16 @@
 // Many features, at point of detection, define an _INTERNAL_ macro, so they
 // can be combined, en-mass, with the _NO_ forms later.
 
+#include <catch2/internal/catch_compiler_capabilities.hpp>
 #include <catch2/internal/catch_platform.hpp>
 #include <catch2/catch_user_config.hpp>
 
 #if defined(__GNUC__) && !defined(__clang__) && !defined(__ICC) && !defined(__CUDACC__) && !defined(__LCC__)
 #define CATCH_COMPILER_GCC
+#endif
+
+#if defined(__clang__) && !defined(_MSC_VER)
+#define CATCH_COMPILER_CLANG
 #endif
 
 #ifdef __cplusplus
@@ -61,7 +66,7 @@
 
 #endif
 
-#if defined(__clang__) && !defined(_MSC_VER)
+#if defined(CATCH_COMPILER_CLANG)
 
 #    define CATCH_INTERNAL_START_WARNINGS_SUPPRESSION _Pragma( "clang diagnostic push" )
 #    define CATCH_INTERNAL_STOP_WARNINGS_SUPPRESSION  _Pragma( "clang diagnostic pop" )
@@ -103,7 +108,7 @@
 #    define CATCH_INTERNAL_SUPPRESS_UNUSED_TEMPLATE_WARNINGS \
          _Pragma( "clang diagnostic ignored \"-Wunused-template\"" )
 
-#endif // __clang__
+#endif // CATCH_COMPILER_CLANG
 
 
 ////////////////////////////////////////////////////////////////////////////////

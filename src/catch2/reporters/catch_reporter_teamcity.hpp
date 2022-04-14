@@ -8,12 +8,13 @@
 #ifndef CATCH_REPORTER_TEAMCITY_HPP_INCLUDED
 #define CATCH_REPORTER_TEAMCITY_HPP_INCLUDED
 
+#include <catch2/internal/catch_compiler_capabilities.hpp>
 #include <catch2/reporters/catch_reporter_streaming_base.hpp>
 #include <catch2/catch_timer.hpp>
 
 #include <cstring>
 
-#ifdef __clang__
+#ifdef CATCH_COMPILER_CLANG
 #   pragma clang diagnostic push
 #   pragma clang diagnostic ignored "-Wpadded"
 #endif
@@ -59,7 +60,7 @@ namespace Catch {
 
 } // end namespace Catch
 
-#ifdef __clang__
+#ifdef CATCH_COMPILER_CLANG
 #   pragma clang diagnostic pop
 #endif
 

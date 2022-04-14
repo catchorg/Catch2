@@ -7,6 +7,7 @@
 // SPDX-License-Identifier: BSL-1.0
 
 #include <catch2/catch_test_macros.hpp>
+#include <catch2/internal/catch_compiler_capabilities.hpp>
 #include <iostream>
 
 TEST_CASE( "INFO and WARN do not abort tests", "[messages][.]" ) {
@@ -212,7 +213,7 @@ TEST_CASE( "CAPTURE can deal with complex expressions", "[messages][capture]" ) 
     SUCCEED();
 }
 
-#ifdef __clang__
+#ifdef CATCH_COMPILER_CLANG
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wunused-value" // In (1, 2), the "1" is unused ...
 #endif
@@ -247,7 +248,7 @@ std::ostream& operator<<(std::ostream& out, helper_1436<T1, T2> const& helper) {
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wpragmas"
 #pragma GCC diagnostic ignored "-Wcomma-subscript"
-#elif defined(__clang__)
+#elif defined(CATCH_COMPILER_CLANG)
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wunknown-pragmas"
 #pragma clang diagnostic ignored "-Wunknown-warning-option"
@@ -276,7 +277,7 @@ TEST_CASE("CAPTURE parses string and character constants", "[messages][capture]"
     SUCCEED();
 }
 
-#ifdef __clang__
+#ifdef CATCH_COMPILER_CLANG
 #pragma clang diagnostic pop
 #endif
 #ifdef CATCH_COMPILER_GCC

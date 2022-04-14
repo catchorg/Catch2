@@ -7,6 +7,7 @@
 // SPDX-License-Identifier: BSL-1.0
 
 #include <catch2/catch_test_macros.hpp>
+#include <catch2/internal/catch_compiler_capabilities.hpp>
 #include <catch2/matchers/catch_matchers_container_properties.hpp>
 #include <catch2/matchers/catch_matchers_contains.hpp>
 #include <catch2/matchers/catch_matchers_floating_point.hpp>
@@ -46,7 +47,7 @@ namespace unrelated {
     };
 } // end unrelated namespace
 
-#if defined(__clang__)
+#if defined(CATCH_COMPILER_CLANG)
 #  pragma clang diagnostic push
 #  pragma clang diagnostic ignored "-Wunused-function"
 #endif
@@ -107,7 +108,7 @@ public:
     }
 };
 
-#if defined(__clang__)
+#if defined(CATCH_COMPILER_CLANG)
 #  pragma clang diagnostic pop
 #endif
 

@@ -9,6 +9,7 @@
 
 #include <catch2/interfaces/catch_interfaces_config.hpp>
 #include <catch2/catch_test_spec.hpp>
+#include <catch2/internal/catch_compiler_capabilities.hpp>
 #include <catch2/internal/catch_console_colour.hpp>
 #include <catch2/internal/catch_string_manip.hpp>
 #include <catch2/catch_version.hpp>
@@ -28,7 +29,7 @@
  // Note that 4062 (not all labels are handled and default is missing) is enabled
 #endif
 
-#if defined(__clang__)
+#if defined(CATCH_COMPILER_CLANG)
 #  pragma clang diagnostic push
 // For simplicity, benchmarking-only helpers are always enabled
 #  pragma clang diagnostic ignored "-Wunused-function"
@@ -714,6 +715,6 @@ void ConsoleReporter::printTestFilters() {
 #pragma warning(pop)
 #endif
 
-#if defined(__clang__)
+#if defined(CATCH_COMPILER_CLANG)
 #  pragma clang diagnostic pop
 #endif

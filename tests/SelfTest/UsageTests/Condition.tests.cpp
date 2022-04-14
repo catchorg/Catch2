@@ -6,7 +6,9 @@
 
 // SPDX-License-Identifier: BSL-1.0
 
-#ifdef __clang__
+#include <catch2/internal/catch_compiler_capabilities.hpp>
+
+#ifdef CATCH_COMPILER_CLANG
 #   pragma clang diagnostic push
 #   pragma clang diagnostic ignored "-Wpadded"
 // Wdouble-promotion is not supported until 3.8
@@ -188,7 +190,7 @@ TEST_CASE( "Ordering comparison checks that should fail", "[.][failing]" )
     CHECK( data.str_hello <= "a" );
 }
 
-#ifdef __clang__
+#ifdef CATCH_COMPILER_CLANG
 #   pragma clang diagnostic pop
 #endif
 

@@ -9,6 +9,7 @@
 #define CATCH_DECOMPOSER_HPP_INCLUDED
 
 #include <catch2/catch_tostring.hpp>
+#include <catch2/internal/catch_compiler_capabilities.hpp>
 #include <catch2/internal/catch_stringref.hpp>
 #include <catch2/internal/catch_meta.hpp>
 
@@ -23,7 +24,7 @@
 #pragma warning(disable:4800) // Forcing result to true or false
 #endif
 
-#ifdef __clang__
+#ifdef CATCH_COMPILER_CLANG
 #  pragma clang diagnostic push
 #  pragma clang diagnostic ignored "-Wsign-compare"
 #elif defined CATCH_COMPILER_GCC
@@ -259,7 +260,7 @@ namespace Catch {
 #ifdef _MSC_VER
 #pragma warning(pop)
 #endif
-#ifdef __clang__
+#ifdef CATCH_COMPILER_CLANG
 #  pragma clang diagnostic pop
 #elif defined CATCH_COMPILER_GCC
 #  pragma GCC diagnostic pop

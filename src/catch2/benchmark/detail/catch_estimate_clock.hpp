@@ -16,6 +16,7 @@
 #include <catch2/benchmark/detail/catch_measure.hpp>
 #include <catch2/benchmark/detail/catch_run_for_at_least.hpp>
 #include <catch2/benchmark/catch_clock.hpp>
+#include <catch2/internal/catch_compiler_capabilities.hpp>
 #include <catch2/internal/catch_unique_ptr.hpp>
 
 #include <algorithm>
@@ -95,12 +96,12 @@ namespace Catch {
 
             template <typename Clock>
             Environment<FloatDuration<Clock>> measure_environment() {
-#if defined(__clang__)
+#if defined(CATCH_COMPILER_CLANG)
 #    pragma clang diagnostic push
 #    pragma clang diagnostic ignored "-Wexit-time-destructors"
 #endif
                 static Catch::Detail::unique_ptr<Environment<FloatDuration<Clock>>> env;
-#if defined(__clang__)
+#if defined(CATCH_COMPILER_CLANG)
 #    pragma clang diagnostic pop
 #endif
                 if (env) {
