@@ -230,7 +230,7 @@ TEST_CASE( "Comparisons with int literals don't warn when mixing signed/ unsigne
 #pragma GCC diagnostic ignored "-Wsign-compare"
 #pragma GCC diagnostic ignored "-Wsign-conversion"
 #endif
-#ifdef _MSC_VER
+#ifdef CATCH_COMPILER_MSC
 #pragma warning(disable:4389) // '==' : signed/unsigned mismatch
 #endif
 

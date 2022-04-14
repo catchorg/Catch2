@@ -6,6 +6,8 @@
 
 // SPDX-License-Identifier: BSL-1.0
 #include <catch2/internal/catch_output_redirect.hpp>
+
+#include <catch2/internal/catch_compiler_capabilities.hpp>
 #include <catch2/internal/catch_enforce.hpp>
 
 #include <cstdio>
@@ -13,7 +15,7 @@
 #include <sstream>
 
 #if defined(CATCH_CONFIG_NEW_CAPTURE)
-    #if defined(_MSC_VER)
+    #if defined(CATCH_COMPILER_MSC)
     #include <io.h>      //_dup and _dup2
     #define dup _dup
     #define dup2 _dup2
@@ -59,7 +61,7 @@ namespace Catch {
 
 #if defined(CATCH_CONFIG_NEW_CAPTURE)
 
-#if defined(_MSC_VER)
+#if defined(CATCH_COMPILER_MSC)
     TempFile::TempFile() {
         if (tmpnam_s(m_buffer)) {
             CATCH_RUNTIME_ERROR("Could not get a temp filename");
@@ -87,7 +89,7 @@ namespace Catch {
          std::fclose(m_file);
          // We manually create the file on Windows only, on Linux
          // it will be autodeleted
-#if defined(_MSC_VER)
+#if defined(CATCH_COMPILER_MSC)
          std::remove(m_buffer);
 #endif
     }
@@ -137,7 +139,7 @@ namespace Catch {
 } // namespace Catch
 
 #if defined(CATCH_CONFIG_NEW_CAPTURE)
-    #if defined(_MSC_VER)
+    #if defined(CATCH_COMPILER_MSC)
     #undef dup
     #undef dup2
     #undef fileno

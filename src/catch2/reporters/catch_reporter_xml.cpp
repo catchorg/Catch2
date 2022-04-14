@@ -10,12 +10,13 @@
 #include <catch2/reporters/catch_reporter_helpers.hpp>
 #include <catch2/interfaces/catch_interfaces_config.hpp>
 #include <catch2/catch_test_spec.hpp>
+#include <catch2/internal/catch_compiler_capabilities.hpp>
 #include <catch2/internal/catch_string_manip.hpp>
 #include <catch2/internal/catch_list.hpp>
 #include <catch2/catch_test_case_info.hpp>
 #include <catch2/internal/catch_move_and_forward.hpp>
 
-#if defined(_MSC_VER)
+#if defined(CATCH_COMPILER_MSC)
 #pragma warning(push)
 #pragma warning(disable:4061) // Not all labels are EXPLICITLY handled in switch
                               // Note that 4062 (not all labels are handled
@@ -300,6 +301,6 @@ namespace Catch {
 
 } // end namespace Catch
 
-#if defined(_MSC_VER)
+#if defined(CATCH_COMPILER_MSC)
 #pragma warning(pop)
 #endif

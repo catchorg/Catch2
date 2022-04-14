@@ -14,7 +14,7 @@
 #include <string>
 #include <stdexcept>
 
-#ifdef _MSC_VER
+#ifdef CATCH_COMPILER_MSC
 #pragma warning(disable:4702) // Unreachable code -- unconditional throws and so on
 #endif
 #ifdef CATCH_COMPILER_CLANG

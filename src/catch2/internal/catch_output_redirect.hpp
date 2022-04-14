@@ -85,7 +85,7 @@ namespace Catch {
 
     private:
         std::FILE* m_file = nullptr;
-    #if defined(_MSC_VER)
+    #if defined(CATCH_COMPILER_MSC)
         char m_buffer[L_tmpnam] = { 0 };
     #endif
     };

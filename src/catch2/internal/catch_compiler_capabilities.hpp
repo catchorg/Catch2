@@ -32,8 +32,12 @@
 #define CATCH_COMPILER_GCC
 #endif
 
-#if defined(__clang__) && !defined(_MSC_VER)
+#if defined(__clang__)
 #define CATCH_COMPILER_CLANG
+#endif
+
+#if defined(_MSC_VER) && !defined(__clang__)
+#define CATCH_COMPILER_MSC
 #endif
 
 #ifdef __cplusplus
@@ -164,7 +168,7 @@
 
 ////////////////////////////////////////////////////////////////////////////////
 // Visual C++
-#if defined(_MSC_VER)
+#if defined(CATCH_COMPILER_MSC)
 
 #  define CATCH_INTERNAL_START_WARNINGS_SUPPRESSION __pragma( warning(push) )
 #  define CATCH_INTERNAL_STOP_WARNINGS_SUPPRESSION  __pragma( warning(pop) )

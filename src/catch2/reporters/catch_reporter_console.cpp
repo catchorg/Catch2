@@ -23,7 +23,7 @@
 
 #include <cstdio>
 
-#if defined(_MSC_VER)
+#if defined(CATCH_COMPILER_MSC)
 #pragma warning(push)
 #pragma warning(disable:4061) // Not all labels are EXPLICITLY handled in switch
  // Note that 4062 (not all labels are handled and default is missing) is enabled
@@ -711,7 +711,7 @@ void ConsoleReporter::printTestFilters() {
 
 } // end namespace Catch
 
-#if defined(_MSC_VER)
+#if defined(CATCH_COMPILER_MSC)
 #pragma warning(pop)
 #endif
 

@@ -10,11 +10,12 @@
 #ifndef CATCH_OPTIMIZER_HPP_INCLUDED
 #define CATCH_OPTIMIZER_HPP_INCLUDED
 
-#if defined(_MSC_VER)
+#include <catch2/internal/catch_compiler_capabilities.hpp>
+
+#if defined(CATCH_COMPILER_MSC)
 #   include <atomic> // atomic_thread_fence
 #endif
 
-#include <catch2/internal/catch_compiler_capabilities.hpp>
 #include <catch2/internal/catch_move_and_forward.hpp>
 
 #include <type_traits>
@@ -33,7 +34,7 @@ namespace Catch {
         namespace Detail {
             inline void optimizer_barrier() { keep_memory(); }
         } // namespace Detail
-#elif defined(_MSC_VER)
+#elif defined(CATCH_COMPILER_MSC)
 
 #pragma optimize("", off)
         template <typename T>

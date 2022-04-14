@@ -41,7 +41,7 @@ namespace {
     static bool alwaysTrue( int ) { return true; }
     static bool alwaysFalse( int ) { return false; }
 
-#ifdef _MSC_VER
+#ifdef CATCH_COMPILER_MSC
 #    pragma warning( disable : 4702 ) // Unreachable code -- MSVC 19 (VS 2015)
                                       // sees right through the indirection
 #endif

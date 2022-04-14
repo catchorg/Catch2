@@ -12,7 +12,7 @@
 #pragma clang diagnostic ignored "-Wpadded"
 #endif
 
-#ifdef _MSC_VER
+#ifdef CATCH_COMPILER_MSC
 #pragma warning (disable : 4702) // Disable unreachable code warning for the last test
                                  // that is triggered when compiling as Win32|Release
 #endif

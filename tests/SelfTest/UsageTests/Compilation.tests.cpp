@@ -197,7 +197,7 @@ TEST_CASE("#1548", "[compilation]") {
         inline static void synchronizing_callback( void * ) { }
     }
 
-#if defined (_MSC_VER)
+#if defined (CATCH_COMPILER_MSC)
 #pragma warning(push)
 // The function pointer comparison below triggers warning because of
 // calling conventions
@@ -207,7 +207,7 @@ TEST_CASE("#1548", "[compilation]") {
         TestClass test;
         REQUIRE(utility::synchronizing_callback != test.testMethod_uponComplete_arg);
     }
-#if defined (_MSC_VER)
+#if defined (CATCH_COMPILER_MSC)
 #pragma warning(pop)
 #endif
 

@@ -25,7 +25,7 @@
 #include <string_view>
 #endif
 
-#ifdef _MSC_VER
+#ifdef CATCH_COMPILER_MSC
 #pragma warning(push)
 #pragma warning(disable:4180) // We attempt to stream a function (address) by const&, which MSVC complains about but is harmless
 #endif
@@ -625,7 +625,7 @@ struct ratio_string<std::milli> {
         static std::string convert(std::chrono::time_point<std::chrono::system_clock, Duration> const& time_point) {
             auto converted = std::chrono::system_clock::to_time_t(time_point);
 
-#ifdef _MSC_VER
+#ifdef CATCH_COMPILER_MSC
             std::tm timeInfo = {};
             gmtime_s(&timeInfo, &converted);
 #else
@@ -636,7 +636,7 @@ struct ratio_string<std::milli> {
             char timeStamp[timeStampSize];
             const char * const fmt = "%Y-%m-%dT%H:%M:%SZ";
 
-#ifdef _MSC_VER
+#ifdef CATCH_COMPILER_MSC
             std::strftime(timeStamp, timeStampSize, fmt, &timeInfo);
 #else
             std::strftime(timeStamp, timeStampSize, fmt, timeInfo);
@@ -660,7 +660,7 @@ namespace Catch { \
 
 #define CATCH_REGISTER_ENUM( enumName, ... ) INTERNAL_CATCH_REGISTER_ENUM( enumName, __VA_ARGS__ )
 
-#ifdef _MSC_VER
+#ifdef CATCH_COMPILER_MSC
 #pragma warning(pop)
 #endif
 

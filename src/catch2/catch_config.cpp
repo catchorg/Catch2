@@ -6,7 +6,9 @@
 
 // SPDX-License-Identifier: BSL-1.0
 #include <catch2/catch_config.hpp>
+
 #include <catch2/catch_user_config.hpp>
+#include <catch2/internal/catch_compiler_capabilities.hpp>
 #include <catch2/internal/catch_enforce.hpp>
 #include <catch2/internal/catch_stream.hpp>
 #include <catch2/internal/catch_stringref.hpp>
@@ -68,14 +70,14 @@ namespace Catch {
         // during test, Bazel will not generate a default XML output.
         // This allows the XML output file to contain higher level of detail
         // than what is possible otherwise.
-#    if defined( _MSC_VER )
+#    if defined( CATCH_COMPILER_MSC )
         // On Windows getenv throws a warning as there is no input validation,
         // since the key is hardcoded, this should not be an issue.
 #        pragma warning( push )
 #        pragma warning( disable : 4996 )
 #    endif
         const auto bazelOutputFilePtr = std::getenv( "XML_OUTPUT_FILE" );
-#    if defined( _MSC_VER )
+#    if defined( CATCH_COMPILER_MSC )
 #        pragma warning( pop )
 #    endif
         if ( bazelOutputFilePtr != nullptr ) {

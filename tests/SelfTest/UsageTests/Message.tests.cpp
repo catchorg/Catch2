@@ -221,7 +221,7 @@ TEST_CASE( "CAPTURE can deal with complex expressions", "[messages][capture]" ) 
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wunused-value" // All the comma operators are side-effect free
 #endif
-#ifdef _MSC_VER
+#ifdef CATCH_COMPILER_MSC
 #pragma warning(push)
 #pragma warning(disable:4709) // comma in indexing operator
 #endif
@@ -283,6 +283,6 @@ TEST_CASE("CAPTURE parses string and character constants", "[messages][capture]"
 #ifdef CATCH_COMPILER_GCC
 #pragma GCC diagnostic pop
 #endif
-#ifdef _MSC_VER
+#ifdef CATCH_COMPILER_MSC
 #pragma warning(pop)
 #endif
