@@ -10,8 +10,6 @@
 
 #include <catch2/reporters/catch_reporter_common_base.hpp>
 
-#include <iosfwd>
-#include <string>
 #include <vector>
 
 namespace Catch {

@@ -12,11 +12,9 @@
 #include <catch2/internal/catch_string_manip.hpp>
 #include <catch2/interfaces/catch_interfaces_registry_hub.hpp>
 #include <catch2/interfaces/catch_interfaces_reporter_registry.hpp>
-#include <catch2/interfaces/catch_interfaces_reporter.hpp>
 #include <catch2/internal/catch_console_colour.hpp>
 #include <catch2/internal/catch_reporter_spec_parser.hpp>
 
-#include <algorithm>
 #include <fstream>
 #include <string>
 

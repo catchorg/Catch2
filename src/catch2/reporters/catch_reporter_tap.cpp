@@ -11,6 +11,7 @@
 #include <catch2/catch_test_case_info.hpp>
 
 #include <algorithm>
+#include <iterator>
 #include <ostream>
 
 namespace Catch {

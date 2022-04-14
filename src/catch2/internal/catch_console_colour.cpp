@@ -16,13 +16,16 @@
 #include <catch2/internal/catch_errno_guard.hpp>
 #include <catch2/interfaces/catch_interfaces_config.hpp>
 #include <catch2/internal/catch_stream.hpp>
+#include <catch2/internal/catch_move_and_forward.hpp>
 #include <catch2/internal/catch_context.hpp>
 #include <catch2/internal/catch_platform.hpp>
 #include <catch2/internal/catch_debugger.hpp>
 #include <catch2/internal/catch_windows_h_proxy.hpp>
 #include <catch2/internal/catch_compiler_capabilities.hpp>
 
+#include <cassert>
 #include <ostream>
+#include <utility>
 
 namespace Catch {
 

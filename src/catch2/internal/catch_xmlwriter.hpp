@@ -11,6 +11,7 @@
 #include <catch2/internal/catch_stream.hpp>
 #include <catch2/internal/catch_stringref.hpp>
 
+#include <iosfwd>
 #include <vector>
 
 namespace Catch {

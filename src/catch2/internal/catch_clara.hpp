@@ -34,7 +34,6 @@
 #include <catch2/internal/catch_void_type.hpp>
 
 #include <cassert>
-#include <cctype>
 #include <memory>
 #include <ostream>
 #include <sstream>

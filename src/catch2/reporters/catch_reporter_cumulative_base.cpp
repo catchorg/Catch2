@@ -7,6 +7,8 @@
 // SPDX-License-Identifier: BSL-1.0
 #include <catch2/reporters/catch_reporter_cumulative_base.hpp>
 
+#include <catch2/internal/catch_move_and_forward.hpp>
+
 #include <algorithm>
 #include <cassert>
 

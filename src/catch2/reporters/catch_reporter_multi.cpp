@@ -11,8 +11,6 @@
 #include <catch2/internal/catch_move_and_forward.hpp>
 #include <catch2/internal/catch_stream.hpp>
 
-#include <cassert>
-
 namespace Catch {
     void MultiReporter::updatePreferences(IEventListener const& reporterish) {
         m_preferences.shouldRedirectStdOut |=

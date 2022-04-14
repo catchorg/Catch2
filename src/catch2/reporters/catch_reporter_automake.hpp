@@ -10,6 +10,8 @@
 
 #include <catch2/reporters/catch_reporter_streaming_base.hpp>
 
+#include <string>
+
 namespace Catch {
 
     class AutomakeReporter final : public StreamingReporterBase {
