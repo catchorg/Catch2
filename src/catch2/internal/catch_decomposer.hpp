@@ -26,7 +26,7 @@
 #ifdef __clang__
 #  pragma clang diagnostic push
 #  pragma clang diagnostic ignored "-Wsign-compare"
-#elif defined __GNUC__
+#elif defined CATCH_COMPILER_GCC
 #  pragma GCC diagnostic push
 #  pragma GCC diagnostic ignored "-Wsign-compare"
 #endif
@@ -261,7 +261,7 @@ namespace Catch {
 #endif
 #ifdef __clang__
 #  pragma clang diagnostic pop
-#elif defined __GNUC__
+#elif defined CATCH_COMPILER_GCC
 #  pragma GCC diagnostic pop
 #endif
 

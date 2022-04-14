@@ -12,6 +12,8 @@
 // in a different namespace.
 #include <ostream>
 
+#include <catch2/internal/catch_compiler_capabilities.hpp>
+
 namespace foo {
     struct helper_1403 {
         bool operator==(helper_1403) const { return true; }
@@ -23,7 +25,7 @@ namespace bar {
     struct TypeList {};
 }
 
-#ifdef __GNUC__
+#ifdef CATCH_COMPILER_GCC
 #pragma GCC diagnostic ignored "-Wmissing-declarations"
 #endif
 std::ostream& operator<<(std::ostream& out, foo::helper_1403 const&) {
@@ -79,7 +81,7 @@ struct B : private A {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wunused-function"
 #endif
-#ifdef __GNUC__
+#ifdef CATCH_COMPILER_GCC
 // Note that because -~GCC~-, this warning cannot be silenced temporarily, by pushing diagnostic stack...
 // Luckily it is firing in test files and thus can be silenced for the whole file, without losing much.
 #pragma GCC diagnostic ignored "-Wunused-function"

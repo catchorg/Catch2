@@ -14,13 +14,14 @@
 #   include <atomic> // atomic_thread_fence
 #endif
 
+#include <catch2/internal/catch_compiler_capabilities.hpp>
 #include <catch2/internal/catch_move_and_forward.hpp>
 
 #include <type_traits>
 
 namespace Catch {
     namespace Benchmark {
-#if defined(__GNUC__) || defined(__clang__)
+#if defined(CATCH_COMPILER_GCC) || defined(__clang__)
         template <typename T>
         inline void keep_memory(T* p) {
             asm volatile("" : : "g"(p) : "memory");

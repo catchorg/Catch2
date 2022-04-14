@@ -26,6 +26,7 @@
 
 #include <catch2/internal/catch_fatal_condition_handler.hpp>
 
+#include <catch2/internal/catch_compiler_capabilities.hpp>
 #include <catch2/internal/catch_context.hpp>
 #include <catch2/internal/catch_enforce.hpp>
 #include <catch2/interfaces/catch_interfaces_capture.hpp>
@@ -160,7 +161,7 @@ namespace Catch {
 // Older GCCs trigger -Wmissing-field-initializers for T foo = {}
 // which is zero initialization, but not explicit. We want to avoid
 // that.
-#if defined(__GNUC__)
+#if defined(CATCH_COMPILER_GCC)
 #    pragma GCC diagnostic push
 #    pragma GCC diagnostic ignored "-Wmissing-field-initializers"
 #endif
@@ -228,7 +229,7 @@ namespace Catch {
         }
     }
 
-#if defined(__GNUC__)
+#if defined(CATCH_COMPILER_GCC)
 #    pragma GCC diagnostic pop
 #endif
 

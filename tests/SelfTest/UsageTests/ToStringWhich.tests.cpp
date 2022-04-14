@@ -8,9 +8,9 @@
 
 #include <catch2/catch_test_macros.hpp>
 
+#include <catch2/internal/catch_compiler_capabilities.hpp>
 
-
-#if defined(__GNUC__)
+#if defined(CATCH_COMPILER_GCC)
 // This has to be left enabled until end of the TU, because the GCC
 // frontend reports operator<<(std::ostream& os, const has_maker_and_operator&)
 // as unused anyway

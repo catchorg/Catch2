@@ -22,7 +22,7 @@ namespace Catch {
     }
 
     std::ostream& operator << ( std::ostream& os, SourceLineInfo const& info ) {
-#ifndef __GNUG__
+#if !defined(CATCH_COMPILER_GCC) || !defined(__cplusplus)
         os << info.file << '(' << info.line << ')';
 #else
         os << info.file << ':' << info.line;

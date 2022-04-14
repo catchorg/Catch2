@@ -15,7 +15,7 @@
 #    pragma clang diagnostic ignored "-Wdeprecated"
 #endif
 
-#if defined( __GNUC__ )
+#if defined( CATCH_COMPILER_GCC )
 #    pragma GCC diagnostic push
 #    pragma GCC diagnostic ignored "-Wsign-conversion"
 #endif
@@ -702,7 +702,7 @@ namespace Catch {
 #    pragma clang diagnostic pop
 #endif
 
-#if defined( __GNUC__ )
+#if defined( CATCH_COMPILER_GCC )
 #    pragma GCC diagnostic pop
 #endif
 

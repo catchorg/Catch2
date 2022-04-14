@@ -8,6 +8,7 @@
 #ifndef CATCH_STREAM_HPP_INCLUDED
 #define CATCH_STREAM_HPP_INCLUDED
 
+#include <catch2/internal/catch_compiler_capabilities.hpp>
 #include <catch2/internal/catch_noncopyable.hpp>
 #include <catch2/internal/catch_unique_ptr.hpp>
 
@@ -65,7 +66,7 @@ namespace Catch {
         //! Sets internal state to `str`
         void str(std::string const& str);
 
-#if defined(__GNUC__) && !defined(__clang__)
+#if defined(CATCH_COMPILER_GCC)
 #pragma GCC diagnostic push
 // Old versions of GCC do not understand -Wnonnull-compare
 #pragma GCC diagnostic ignored "-Wpragmas"
@@ -83,7 +84,7 @@ namespace Catch {
             return *this;
         }
 
-#if defined(__GNUC__) && !defined(__clang__)
+#if defined(CATCH_COMPILER_GCC)
 #pragma GCC diagnostic pop
 #endif
         auto get() -> std::ostream& { return *m_oss; }

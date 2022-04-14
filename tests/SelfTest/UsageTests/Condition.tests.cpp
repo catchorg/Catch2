@@ -223,7 +223,7 @@ TEST_CASE( "Comparisons with int literals don't warn when mixing signed/ unsigne
 // Disable warnings about sign conversions for the next two tests
 // (as we are deliberately invoking them)
 // - Currently only disabled for GCC/ LLVM. Should add VC++ too
-#ifdef  __GNUC__
+#ifdef  CATCH_COMPILER_GCC
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wsign-compare"
 #pragma GCC diagnostic ignored "-Wsign-conversion"
@@ -277,7 +277,7 @@ TEST_CASE( "Comparisons between ints where one side is computed" )
      CHECK( 54 == 6*9 );
 }
 
-#ifdef  __GNUC__
+#ifdef  CATCH_COMPILER_GCC
 #pragma GCC diagnostic pop
 #endif
 
