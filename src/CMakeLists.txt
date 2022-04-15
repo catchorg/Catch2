@@ -116,6 +116,7 @@ set(INTERNAL_HEADERS
     ${SOURCES_DIR}/internal/catch_platform.hpp
     ${SOURCES_DIR}/internal/catch_polyfills.hpp
     ${SOURCES_DIR}/internal/catch_preprocessor.hpp
+    ${SOURCES_DIR}/internal/catch_preprocessor_remove_parens.hpp
     ${SOURCES_DIR}/internal/catch_random_number_generator.hpp
     ${SOURCES_DIR}/internal/catch_random_seed_generation.hpp
     ${SOURCES_DIR}/reporters/catch_reporter_registrars.hpp
