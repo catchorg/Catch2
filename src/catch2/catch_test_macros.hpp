@@ -11,7 +11,6 @@
 #include <catch2/internal/catch_test_macro_impl.hpp>
 #include <catch2/catch_message.hpp>
 #include <catch2/catch_user_config.hpp>
-#include <catch2/internal/catch_preprocessor.hpp>
 #include <catch2/internal/catch_section.hpp>
 #include <catch2/internal/catch_test_registry.hpp>
 #include <catch2/internal/catch_unique_name.hpp>
