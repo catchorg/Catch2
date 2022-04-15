@@ -12,7 +12,6 @@
 #include <catch2/internal/catch_move_and_forward.hpp>
 
 #include <algorithm>
-#include <ostream>
 
 namespace Catch {
 

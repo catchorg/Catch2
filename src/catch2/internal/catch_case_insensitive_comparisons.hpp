@@ -10,8 +10,6 @@
 
 #include <catch2/internal/catch_stringref.hpp>
 
-#include <string>
-
 namespace Catch {
     namespace Detail {
         //! Provides case-insensitive `op<` semantics when called

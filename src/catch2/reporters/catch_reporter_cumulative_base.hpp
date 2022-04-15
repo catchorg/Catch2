@@ -12,7 +12,6 @@
 #include <catch2/internal/catch_unique_ptr.hpp>
 #include <catch2/internal/catch_optional.hpp>
 
-#include <iosfwd>
 #include <string>
 #include <vector>
 

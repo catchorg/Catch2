@@ -12,7 +12,6 @@
  */
 
 #include <catch2/catch_test_macros.hpp>
-#include <iostream>
 
 TEST_CASE("Deferred static checks") {
     STATIC_CHECK(1 == 2);

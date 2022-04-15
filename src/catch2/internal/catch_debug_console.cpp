@@ -11,6 +11,8 @@
 #include <catch2/internal/catch_platform.hpp>
 #include <catch2/internal/catch_windows_h_proxy.hpp>
 
+#include <iosfwd>
+
 #if defined(CATCH_CONFIG_ANDROID_LOGWRITE)
 #include <android/log.h>
 

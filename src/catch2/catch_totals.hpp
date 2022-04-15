@@ -8,7 +8,6 @@
 #ifndef CATCH_TOTALS_HPP_INCLUDED
 #define CATCH_TOTALS_HPP_INCLUDED
 
-#include <cstddef>
 #include <cstdint>
 
 namespace Catch {

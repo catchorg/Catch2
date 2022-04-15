@@ -13,6 +13,7 @@
 #include <catch2/internal/catch_compiler_detections.hpp>
 
 #include <cassert>
+#include <cstddef>
 #include <iterator>
 #include <random>
 

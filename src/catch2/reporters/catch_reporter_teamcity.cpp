@@ -14,6 +14,7 @@
 #include <catch2/catch_test_case_info.hpp>
 
 #include <cassert>
+#include <ostream>
 
 namespace Catch {
 
