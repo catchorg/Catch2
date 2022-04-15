@@ -8,6 +8,8 @@
 #ifndef CATCH_CLARA_HPP_INCLUDED
 #define CATCH_CLARA_HPP_INCLUDED
 
+#include <catch2/internal/catch_compiler_detections.hpp>
+
 #if defined( CATCH_COMPILER_CLANG )
 #    pragma clang diagnostic push
 #    pragma clang diagnostic ignored "-Wweak-vtables"
@@ -29,7 +31,6 @@
 #    endif
 #endif
 
-#include <catch2/internal/catch_compiler_detections.hpp>
 #include <catch2/internal/catch_move_and_forward.hpp>
 #include <catch2/internal/catch_noncopyable.hpp>
 #include <catch2/internal/catch_void_type.hpp>

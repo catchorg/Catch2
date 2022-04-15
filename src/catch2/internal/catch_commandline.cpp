@@ -8,7 +8,6 @@
 #include <catch2/internal/catch_commandline.hpp>
 
 #include <catch2/internal/catch_compiler_capabilities.hpp>
-#include <catch2/internal/catch_compiler_detections.hpp>
 #include <catch2/catch_config.hpp>
 #include <catch2/internal/catch_string_manip.hpp>
 #include <catch2/interfaces/catch_interfaces_registry_hub.hpp>

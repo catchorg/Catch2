@@ -10,7 +10,6 @@
 
 #include <catch2/internal/catch_platform.hpp>
 #include <catch2/internal/catch_compiler_capabilities.hpp>
-#include <catch2/internal/catch_compiler_detections.hpp>
 
 #include <cassert>
 

@@ -4,6 +4,9 @@
 //   (See accompanying file LICENSE_1_0.txt or copy at
 //        https://www.boost.org/LICENSE_1_0.txt)
 
+#include <catch2/internal/catch_console_colour.hpp>
+#include <catch2/internal/catch_compiler_detections.hpp>
+
 // SPDX-License-Identifier: BSL-1.0
 #if defined(CATCH_COMPILER_CLANG)
 #    pragma clang diagnostic push
@@ -11,7 +14,6 @@
 #endif
 
 
-#include <catch2/internal/catch_console_colour.hpp>
 #include <catch2/internal/catch_enforce.hpp>
 #include <catch2/internal/catch_errno_guard.hpp>
 #include <catch2/interfaces/catch_interfaces_config.hpp>
@@ -22,7 +24,6 @@
 #include <catch2/internal/catch_debugger.hpp>
 #include <catch2/internal/catch_windows_h_proxy.hpp>
 #include <catch2/internal/catch_compiler_capabilities.hpp>
-#include <catch2/internal/catch_compiler_detections.hpp>
 
 #include <cassert>
 #include <ostream>

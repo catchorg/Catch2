@@ -28,22 +28,6 @@
 #include <catch2/internal/catch_platform.hpp>
 #include <catch2/catch_user_config.hpp>
 
-#if defined(__GNUC__) && !defined(__clang__) && !defined(__ICC) && !defined(__CUDACC__) && !defined(__LCC__)
-#define CATCH_COMPILER_GCC
-#endif
-
-#if defined(__clang__)
-#define CATCH_COMPILER_CLANG
-#endif
-
-#if defined(_MSC_VER) && !defined(__clang__)
-#define CATCH_COMPILER_MSC
-#endif
-
-#if defined(__MINGW32__)
-#define CATCH_COMPILER_MINGW32
-#endif
-
 #ifdef __cplusplus
 
 #  if (__cplusplus >= 201402L) || (defined(_MSVC_LANG) && _MSVC_LANG >= 201402L)

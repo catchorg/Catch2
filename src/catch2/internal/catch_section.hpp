@@ -9,7 +9,6 @@
 #define CATCH_SECTION_HPP_INCLUDED
 
 #include <catch2/internal/catch_compiler_capabilities.hpp>
-#include <catch2/internal/catch_compiler_detections.hpp>
 #include <catch2/internal/catch_noncopyable.hpp>
 #include <catch2/catch_section_info.hpp>
 #include <catch2/catch_timer.hpp>

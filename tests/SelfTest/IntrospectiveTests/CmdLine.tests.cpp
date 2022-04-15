@@ -16,7 +16,6 @@
 #include <catch2/internal/catch_commandline.hpp>
 #include <catch2/generators/catch_generators.hpp>
 #include <catch2/internal/catch_compiler_capabilities.hpp>
-#include <catch2/internal/catch_compiler_detections.hpp>
 
 
 namespace {

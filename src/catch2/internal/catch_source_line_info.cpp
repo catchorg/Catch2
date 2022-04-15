@@ -10,6 +10,8 @@
 #include <cstring>
 #include <ostream>
 
+#include <catch2/internal/catch_compiler_detections.hpp>
+
 namespace Catch {
 
     bool SourceLineInfo::operator == ( SourceLineInfo const& other ) const noexcept {

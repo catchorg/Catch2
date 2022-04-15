@@ -24,7 +24,6 @@
 
 #include <catch2/catch_tag_alias_autoregistrar.hpp>
 #include <catch2/internal/catch_compiler_capabilities.hpp>
-#include <catch2/internal/catch_compiler_detections.hpp>
 #include <catch2/interfaces/catch_interfaces_registry_hub.hpp>
 
 namespace Catch {
@@ -46,7 +45,6 @@ namespace Catch {
 //////////////////////////////////////////
 
 #include <catch2/internal/catch_polyfills.hpp>
-#include <catch2/internal/catch_compiler_detections.hpp>
 #include <cmath>
 
 namespace Catch {
@@ -75,7 +73,6 @@ namespace Catch {
 // vvv formerly catch_uncaught_exceptions.cpp vvv //
 ////////////////////////////////////////////////////
 
-#include <catch2/internal/catch_compiler_detections.hpp>
 #include <catch2/internal/catch_uncaught_exceptions.hpp>
 #include <catch2/internal/catch_config_uncaught_exceptions.hpp>
 
@@ -131,7 +128,6 @@ namespace Catch {
 // vvv formerly catch_startup_exception_registry.cpp vvv //
 ///////////////////////////////////////////////////////////
 #include <catch2/internal/catch_startup_exception_registry.hpp>
-#include <catch2/internal/catch_compiler_detections.hpp>
 
 namespace Catch {
 #if !defined(CATCH_CONFIG_DISABLE_EXCEPTIONS)
