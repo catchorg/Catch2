@@ -8,7 +8,7 @@
 #ifndef CATCH_STREAM_HPP_INCLUDED
 #define CATCH_STREAM_HPP_INCLUDED
 
-#include <catch2/internal/catch_compiler_capabilities.hpp>
+#include <catch2/internal/catch_compiler_detections.hpp>
 #include <catch2/internal/catch_noncopyable.hpp>
 #include <catch2/internal/catch_unique_ptr.hpp>
 

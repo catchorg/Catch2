@@ -10,7 +10,7 @@
 #include <catch2/reporters/catch_reporter_helpers.hpp>
 #include <catch2/interfaces/catch_interfaces_config.hpp>
 #include <catch2/catch_test_spec.hpp>
-#include <catch2/internal/catch_compiler_capabilities.hpp>
+#include <catch2/internal/catch_compiler_detections.hpp>
 #include <catch2/internal/catch_string_manip.hpp>
 #include <catch2/internal/catch_list.hpp>
 #include <catch2/catch_test_case_info.hpp>

@@ -10,7 +10,7 @@
 #include <sstream>
 #include <cstdio>
 
-#include <catch2/internal/catch_compiler_capabilities.hpp>
+#include <catch2/internal/catch_compiler_detections.hpp>
 
 class out_buff : public std::stringbuf {
     std::FILE* m_stream;

@@ -17,7 +17,7 @@
 #ifndef CATCH_CONFIG_UNCAUGHT_EXCEPTIONS_HPP_INCLUDED
 #define CATCH_CONFIG_UNCAUGHT_EXCEPTIONS_HPP_INCLUDED
 
-#include <catch2/internal/catch_compiler_capabilities.hpp>
+#include <catch2/internal/catch_compiler_detections.hpp>
 
 #if defined(CATCH_COMPILER_MSC)
 #  if _MSC_VER >= 1900 // Visual Studio 2015 or newer

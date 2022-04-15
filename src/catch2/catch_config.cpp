@@ -8,7 +8,7 @@
 #include <catch2/catch_config.hpp>
 
 #include <catch2/catch_user_config.hpp>
-#include <catch2/internal/catch_compiler_capabilities.hpp>
+#include <catch2/internal/catch_compiler_detections.hpp>
 #include <catch2/internal/catch_enforce.hpp>
 #include <catch2/internal/catch_stream.hpp>
 #include <catch2/internal/catch_stringref.hpp>

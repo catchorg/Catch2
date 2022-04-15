@@ -8,7 +8,7 @@
 
 #include <catch2/catch_test_macros.hpp>
 
-#include <catch2/internal/catch_compiler_capabilities.hpp>
+#include <catch2/internal/catch_compiler_detections.hpp>
 
 #if defined(CATCH_COMPILER_GCC)
 // This has to be left enabled until end of the TU, because the GCC

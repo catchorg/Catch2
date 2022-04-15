@@ -8,7 +8,7 @@
 #ifndef CATCH_TEMPLATE_TEST_MACROS_HPP_INCLUDED
 #define CATCH_TEMPLATE_TEST_MACROS_HPP_INCLUDED
 
-#include <catch2/internal/catch_compiler_capabilities.hpp>
+#include <catch2/internal/catch_compiler_detections.hpp>
 
 // We need this suppression to leak, because it took until GCC 10
 // for the front end to handle local suppression via _Pragma properly

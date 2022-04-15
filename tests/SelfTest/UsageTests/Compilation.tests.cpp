@@ -12,7 +12,7 @@
 // in a different namespace.
 #include <ostream>
 
-#include <catch2/internal/catch_compiler_capabilities.hpp>
+#include <catch2/internal/catch_compiler_detections.hpp>
 
 namespace foo {
     struct helper_1403 {

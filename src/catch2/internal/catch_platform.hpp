@@ -8,7 +8,7 @@
 #ifndef CATCH_PLATFORM_HPP_INCLUDED
 #define CATCH_PLATFORM_HPP_INCLUDED
 
-#include <catch2/internal/catch_compiler_capabilities.hpp>
+#include <catch2/internal/catch_compiler_detections.hpp>
 
 // See e.g.:
 // https://opensource.apple.com/source/CarbonHeaders/CarbonHeaders-18.1/TargetConditionals.h.auto.html

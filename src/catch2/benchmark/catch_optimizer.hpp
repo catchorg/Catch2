@@ -10,7 +10,7 @@
 #ifndef CATCH_OPTIMIZER_HPP_INCLUDED
 #define CATCH_OPTIMIZER_HPP_INCLUDED
 
-#include <catch2/internal/catch_compiler_capabilities.hpp>
+#include <catch2/internal/catch_compiler_detections.hpp>
 
 #if defined(CATCH_COMPILER_MSC)
 #   include <atomic> // atomic_thread_fence

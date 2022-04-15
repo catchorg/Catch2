@@ -47,7 +47,7 @@
 #include <sstream>
 #include <vector>
 
-#include <catch2/internal/catch_compiler_capabilities.hpp>
+#include <catch2/internal/catch_compiler_detections.hpp>
 
 #ifndef CLARA_TEXTFLOW_CONFIG_CONSOLE_WIDTH
 #define CLARA_TEXTFLOW_CONFIG_CONSOLE_WIDTH 80

@@ -8,7 +8,7 @@
 #ifndef CATCH_DEBUGGER_HPP_INCLUDED
 #define CATCH_DEBUGGER_HPP_INCLUDED
 
-#include <catch2/internal/catch_compiler_capabilities.hpp>
+#include <catch2/internal/catch_compiler_detections.hpp>
 #include <catch2/internal/catch_platform.hpp>
 
 namespace Catch {

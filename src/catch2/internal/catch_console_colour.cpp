@@ -11,7 +11,6 @@
 #endif
 
 
-#include <catch2/internal/catch_compiler_capabilities.hpp>
 #include <catch2/internal/catch_console_colour.hpp>
 #include <catch2/internal/catch_enforce.hpp>
 #include <catch2/internal/catch_errno_guard.hpp>
@@ -22,6 +21,7 @@
 #include <catch2/internal/catch_debugger.hpp>
 #include <catch2/internal/catch_windows_h_proxy.hpp>
 #include <catch2/internal/catch_compiler_capabilities.hpp>
+#include <catch2/internal/catch_compiler_detections.hpp>
 
 #include <ostream>
 

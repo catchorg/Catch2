@@ -16,7 +16,7 @@
 #include <catch2/benchmark/detail/catch_measure.hpp>
 #include <catch2/benchmark/detail/catch_run_for_at_least.hpp>
 #include <catch2/benchmark/catch_clock.hpp>
-#include <catch2/internal/catch_compiler_capabilities.hpp>
+#include <catch2/internal/catch_compiler_detections.hpp>
 #include <catch2/internal/catch_unique_ptr.hpp>
 
 #include <algorithm>

@@ -8,7 +8,7 @@
 #ifndef CATCH_TEST_SPEC_HPP_INCLUDED
 #define CATCH_TEST_SPEC_HPP_INCLUDED
 
-#include <catch2/internal/catch_compiler_capabilities.hpp>
+#include <catch2/internal/catch_compiler_detections.hpp>
 
 #ifdef CATCH_COMPILER_CLANG
 #pragma clang diagnostic push

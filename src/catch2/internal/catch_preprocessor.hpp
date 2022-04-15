@@ -8,7 +8,7 @@
 #ifndef CATCH_PREPROCESSOR_HPP_INCLUDED
 #define CATCH_PREPROCESSOR_HPP_INCLUDED
 
-#include <catch2/internal/catch_compiler_capabilities.hpp>
+#include <catch2/internal/catch_compiler_detections.hpp>
 
 #if defined(CATCH_COMPILER_GCC)
 // We need to silence "empty __VA_ARGS__ warning", and using just _Pragma does not work
