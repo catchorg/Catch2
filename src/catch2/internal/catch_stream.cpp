@@ -11,9 +11,9 @@
 #include <catch2/internal/catch_stringref.hpp>
 #include <catch2/internal/catch_singletons.hpp>
 #include <catch2/internal/catch_unique_ptr.hpp>
+#include <catch2/internal/catch_stdstreams.hpp>
 
 #include <cstdio>
-#include <iostream>
 #include <fstream>
 #include <sstream>
 #include <vector>
@@ -201,12 +201,4 @@ namespace Detail {
     }
 
 
-    ///////////////////////////////////////////////////////////////////////////
-
-
-#ifndef CATCH_CONFIG_NOSTDOUT // If you #define this you must implement these functions
-    std::ostream& cout() { return std::cout; }
-    std::ostream& cerr() { return std::cerr; }
-    std::ostream& clog() { return std::clog; }
-#endif
 }

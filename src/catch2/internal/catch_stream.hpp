@@ -18,10 +18,6 @@
 
 namespace Catch {
 
-    std::ostream& cout();
-    std::ostream& cerr();
-    std::ostream& clog();
-
     class IStream {
     public:
         virtual ~IStream(); // = default

@@ -125,6 +125,7 @@ set(INTERNAL_HEADERS
     ${SOURCES_DIR}/internal/catch_result_type.hpp
     ${SOURCES_DIR}/internal/catch_run_context.hpp
     ${SOURCES_DIR}/internal/catch_section.hpp
+    ${SOURCES_DIR}/internal/catch_stdstreams.hpp
     ${SOURCES_DIR}/catch_section_info.hpp
     ${SOURCES_DIR}/catch_session.hpp
     ${SOURCES_DIR}/internal/catch_singletons.hpp
@@ -198,6 +199,7 @@ set(IMPL_SOURCES
     ${SOURCES_DIR}/internal/catch_result_type.cpp
     ${SOURCES_DIR}/internal/catch_run_context.cpp
     ${SOURCES_DIR}/internal/catch_section.cpp
+    ${SOURCES_DIR}/internal/catch_stdstreams.cpp
     ${SOURCES_DIR}/catch_session.cpp
     ${SOURCES_DIR}/internal/catch_singletons.cpp
     ${SOURCES_DIR}/internal/catch_stream.cpp

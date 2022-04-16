@@ -91,6 +91,7 @@
 #include <catch2/internal/catch_singletons.hpp>
 #include <catch2/internal/catch_source_line_info.hpp>
 #include <catch2/internal/catch_startup_exception_registry.hpp>
+#include <catch2/internal/catch_stdstreams.hpp>
 #include <catch2/internal/catch_stream.hpp>
 #include <catch2/internal/catch_stream_end_stop.hpp>
 #include <catch2/internal/catch_string_manip.hpp>
