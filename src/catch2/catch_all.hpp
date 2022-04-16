@@ -86,6 +86,7 @@
 #include <catch2/internal/catch_reporter_registry.hpp>
 #include <catch2/internal/catch_reporter_spec_parser.hpp>
 #include <catch2/internal/catch_result_type.hpp>
+#include <catch2/internal/catch_reusable_string_stream.hpp>
 #include <catch2/internal/catch_run_context.hpp>
 #include <catch2/internal/catch_section.hpp>
 #include <catch2/internal/catch_sharding.hpp>
@@ -93,7 +94,6 @@
 #include <catch2/internal/catch_source_line_info.hpp>
 #include <catch2/internal/catch_startup_exception_registry.hpp>
 #include <catch2/internal/catch_stdstreams.hpp>
-#include <catch2/internal/catch_stream.hpp>
 #include <catch2/internal/catch_stream_end_stop.hpp>
 #include <catch2/internal/catch_string_manip.hpp>
 #include <catch2/internal/catch_stringref.hpp>

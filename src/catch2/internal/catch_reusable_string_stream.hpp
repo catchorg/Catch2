@@ -5,8 +5,8 @@
 //        https://www.boost.org/LICENSE_1_0.txt)
 
 // SPDX-License-Identifier: BSL-1.0
-#ifndef CATCH_STREAM_HPP_INCLUDED
-#define CATCH_STREAM_HPP_INCLUDED
+#ifndef CATCH_REUSABLE_STRING_STREAM_HPP_INCLUDED
+#define CATCH_REUSABLE_STRING_STREAM_HPP_INCLUDED
 
 #include <catch2/internal/catch_noncopyable.hpp>
 
@@ -54,4 +54,4 @@ namespace Catch {
     };
 }
 
-#endif // CATCH_STREAM_HPP_INCLUDED
+#endif // CATCH_REUSABLE_STRING_STREAM_HPP_INCLUDED

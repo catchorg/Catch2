@@ -131,7 +131,7 @@ set(INTERNAL_HEADERS
     ${SOURCES_DIR}/catch_session.hpp
     ${SOURCES_DIR}/internal/catch_singletons.hpp
     ${SOURCES_DIR}/internal/catch_startup_exception_registry.hpp
-    ${SOURCES_DIR}/internal/catch_stream.hpp
+    ${SOURCES_DIR}/internal/catch_reusable_string_stream.hpp
     ${SOURCES_DIR}/internal/catch_stream_end_stop.hpp
     ${SOURCES_DIR}/internal/catch_string_manip.hpp
     ${SOURCES_DIR}/internal/catch_stringref.hpp
@@ -204,7 +204,7 @@ set(IMPL_SOURCES
     ${SOURCES_DIR}/internal/catch_stdstreams.cpp
     ${SOURCES_DIR}/catch_session.cpp
     ${SOURCES_DIR}/internal/catch_singletons.cpp
-    ${SOURCES_DIR}/internal/catch_stream.cpp
+    ${SOURCES_DIR}/internal/catch_reusable_string_stream.cpp
     ${SOURCES_DIR}/internal/catch_stringref.cpp
     ${SOURCES_DIR}/internal/catch_string_manip.cpp
     ${SOURCES_DIR}/internal/catch_tag_alias_registry.cpp
