@@ -9,6 +9,7 @@
 
 #include <catch2/internal/catch_compiler_detections.hpp>
 #include <catch2/internal/catch_enforce.hpp>
+#include <catch2/internal/catch_stdstreams.hpp>
 
 #include <cstdio>
 #include <cstring>

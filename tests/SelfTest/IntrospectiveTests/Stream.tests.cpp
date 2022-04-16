@@ -8,7 +8,7 @@
 
 #include <catch2/catch_test_macros.hpp>
 
-#include <catch2/internal/catch_stream.hpp>
+#include <catch2/internal/catch_istream.hpp>
 
 TEST_CASE( "Cout stream properly declares it writes to stdout", "[streams]" ) {
     REQUIRE( Catch::makeStream( "-" )->isConsole() );

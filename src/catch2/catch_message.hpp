@@ -9,7 +9,7 @@
 #define CATCH_MESSAGE_HPP_INCLUDED
 
 #include <catch2/internal/catch_result_type.hpp>
-#include <catch2/internal/catch_stream.hpp>
+#include <catch2/internal/catch_reusable_string_stream.hpp>
 #include <catch2/internal/catch_stream_end_stop.hpp>
 #include <catch2/internal/catch_message_info.hpp>
 #include <catch2/interfaces/catch_interfaces_capture.hpp>

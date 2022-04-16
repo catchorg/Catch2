@@ -11,7 +11,7 @@
 #include <string>
 
 #include <catch2/internal/catch_compiler_capabilities.hpp>
-#include <catch2/internal/catch_stream.hpp>
+#include <catch2/internal/catch_reusable_string_stream.hpp>
 
 namespace Catch {
     template <typename T>

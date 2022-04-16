@@ -8,6 +8,7 @@
 
 #include <catch2/catch_test_macros.hpp>
 #include <catch2/internal/catch_console_colour.hpp>
+#include <catch2/internal/catch_istream.hpp>
 
 #include <sstream>
 

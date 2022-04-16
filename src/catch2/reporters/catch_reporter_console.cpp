@@ -14,7 +14,7 @@
 #include <catch2/internal/catch_string_manip.hpp>
 #include <catch2/catch_version.hpp>
 #include <catch2/internal/catch_textflow.hpp>
-#include <catch2/internal/catch_stream.hpp>
+#include <catch2/internal/catch_reusable_string_stream.hpp>
 #include <catch2/internal/catch_stringref.hpp>
 #include <catch2/catch_test_case_info.hpp>
 #include <catch2/internal/catch_console_width.hpp>

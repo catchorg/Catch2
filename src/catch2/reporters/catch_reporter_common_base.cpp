@@ -10,7 +10,7 @@
 
 #include <catch2/reporters/catch_reporter_helpers.hpp>
 #include <catch2/internal/catch_console_colour.hpp>
-#include <catch2/internal/catch_stream.hpp>
+#include <catch2/internal/catch_istream.hpp>
 
 
 namespace Catch {
