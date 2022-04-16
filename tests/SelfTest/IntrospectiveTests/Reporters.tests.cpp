@@ -17,7 +17,7 @@
 #include <catch2/internal/catch_enforce.hpp>
 #include <catch2/internal/catch_list.hpp>
 #include <catch2/internal/catch_reporter_registry.hpp>
-#include <catch2/internal/catch_stream.hpp>
+#include <catch2/internal/catch_istream.hpp>
 #include <catch2/matchers/catch_matchers_string.hpp>
 #include <catch2/reporters/catch_reporter_helpers.hpp>
 #include <catch2/reporters/catch_reporter_event_listener.hpp>

@@ -15,6 +15,7 @@
 #include <catch2/catch_test_case_info.hpp>
 #include <catch2/reporters/catch_reporter_helpers.hpp>
 #include <catch2/internal/catch_move_and_forward.hpp>
+#include <catch2/internal/catch_istream.hpp>
 
 #include <algorithm>
 #include <cassert>
@@ -43,6 +44,8 @@ namespace Catch {
     ReporterConfig::customOptions() const {
         return m_customOptions;
     }
+
+    ReporterConfig::~ReporterConfig() = default;
 
     AssertionStats::AssertionStats( AssertionResult const& _assertionResult,
                                     std::vector<MessageInfo> const& _infoMessages,

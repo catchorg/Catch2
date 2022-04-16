@@ -40,6 +40,10 @@ namespace Catch {
                         ColourMode colourMode,
                         std::map<std::string, std::string> customOptions );
 
+        ReporterConfig( ReporterConfig&& ) = default;
+        ReporterConfig& operator=( ReporterConfig&& ) = default;
+        ~ReporterConfig(); // = default
+
         Detail::unique_ptr<IStream> takeStream() &&;
         IConfig const* fullConfig() const;
         ColourMode colourMode() const;
