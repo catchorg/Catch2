@@ -101,7 +101,7 @@
             return false;
         }
     } // namespace Catch
-#elif defined(CATCH_COMPILER_MSC)
+#elif defined(CATCH_COMPILER_MSVC)
     extern "C" __declspec(dllimport) int __stdcall IsDebuggerPresent();
     namespace Catch {
         bool isDebuggerActive() {

@@ -47,7 +47,7 @@ namespace Catch {
 
         #define CATCH_TRAP() raise(SIGTRAP)
     #endif
-#elif defined(CATCH_COMPILER_MSC)
+#elif defined(CATCH_COMPILER_MSVC)
     #define CATCH_TRAP() __debugbreak()
 #elif defined(CATCH_COMPILER_MINGW32)
     extern "C" __declspec(dllimport) void __stdcall DebugBreak();

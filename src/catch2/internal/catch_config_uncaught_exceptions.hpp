@@ -19,7 +19,7 @@
 
 #include <catch2/internal/catch_compiler_detections.hpp>
 
-#if defined(CATCH_COMPILER_MSC)
+#if defined(CATCH_COMPILER_MSVC)
 #  if _MSC_VER >= 1900 // Visual Studio 2015 or newer
 #    define CATCH_INTERNAL_CONFIG_CPP17_UNCAUGHT_EXCEPTIONS
 #  endif

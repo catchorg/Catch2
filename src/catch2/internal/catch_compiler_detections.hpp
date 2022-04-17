@@ -16,7 +16,7 @@
 #endif
 
 #if defined(_MSC_VER) && !defined(__clang__)
-#define CATCH_COMPILER_MSC
+#define CATCH_COMPILER_MSVC
 #endif
 
 #if defined(__MINGW32__)

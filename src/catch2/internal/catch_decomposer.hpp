@@ -15,7 +15,7 @@
 
 #include <iosfwd>
 
-#ifdef CATCH_COMPILER_MSC
+#ifdef CATCH_COMPILER_MSVC
 #pragma warning(push)
 #pragma warning(disable:4389) // '==' : signed/unsigned mismatch
 #pragma warning(disable:4018) // more "signed/unsigned mismatch"
@@ -257,7 +257,7 @@ namespace Catch {
 
 } // end namespace Catch
 
-#ifdef CATCH_COMPILER_MSC
+#ifdef CATCH_COMPILER_MSVC
 #pragma warning(pop)
 #endif
 #ifdef CATCH_COMPILER_CLANG

@@ -18,7 +18,7 @@
 // for C++14 or C++ libraries with incomplete support.
 // We also have to handle that MSVC std lib will happily provide these
 // under older standards.
-#if defined(CATCH_CPP17_OR_GREATER) || defined(CATCH_COMPILER_MSC)
+#if defined(CATCH_CPP17_OR_GREATER) || defined(CATCH_COMPILER_MSVC)
 
 // We are already using this header either way, so there shouldn't
 // be much additional overhead in including it to get the feature

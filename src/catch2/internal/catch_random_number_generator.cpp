@@ -13,7 +13,7 @@ namespace Catch {
 
 namespace {
 
-#if defined(CATCH_COMPILER_MSC)
+#if defined(CATCH_COMPILER_MSVC)
 #pragma warning(push)
 #pragma warning(disable:4146) // we negate uint32 during the rotate
 #endif
@@ -24,7 +24,7 @@ namespace {
             return (val >> count) | (val << (-count & mask));
         }
 
-#if defined(CATCH_COMPILER_MSC)
+#if defined(CATCH_COMPILER_MSVC)
 #pragma warning(pop)
 #endif
 

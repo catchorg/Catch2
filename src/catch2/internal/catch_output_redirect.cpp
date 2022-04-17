@@ -16,7 +16,7 @@
 #include <sstream>
 
 #if defined(CATCH_CONFIG_NEW_CAPTURE)
-    #if defined(CATCH_COMPILER_MSC)
+    #if defined(CATCH_COMPILER_MSVC)
     #include <io.h>      //_dup and _dup2
     #define dup _dup
     #define dup2 _dup2
@@ -62,7 +62,7 @@ namespace Catch {
 
 #if defined(CATCH_CONFIG_NEW_CAPTURE)
 
-#if defined(CATCH_COMPILER_MSC)
+#if defined(CATCH_COMPILER_MSVC)
     TempFile::TempFile() {
         if (tmpnam_s(m_buffer)) {
             CATCH_RUNTIME_ERROR("Could not get a temp filename");
@@ -90,7 +90,7 @@ namespace Catch {
          std::fclose(m_file);
          // We manually create the file on Windows only, on Linux
          // it will be autodeleted
-#if defined(CATCH_COMPILER_MSC)
+#if defined(CATCH_COMPILER_MSVC)
          std::remove(m_buffer);
 #endif
     }
@@ -140,7 +140,7 @@ namespace Catch {
 } // namespace Catch
 
 #if defined(CATCH_CONFIG_NEW_CAPTURE)
-    #if defined(CATCH_COMPILER_MSC)
+    #if defined(CATCH_COMPILER_MSVC)
     #undef dup
     #undef dup2
     #undef fileno

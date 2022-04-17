@@ -156,7 +156,7 @@
 
 ////////////////////////////////////////////////////////////////////////////////
 // Visual C++
-#if defined(CATCH_COMPILER_MSC)
+#if defined(CATCH_COMPILER_MSVC)
 
 #  define CATCH_INTERNAL_START_WARNINGS_SUPPRESSION __pragma( warning(push) )
 #  define CATCH_INTERNAL_STOP_WARNINGS_SUPPRESSION  __pragma( warning(pop) )
