@@ -588,12 +588,6 @@ namespace Catch {
             std::shared_ptr<std::string> m_name;
             std::shared_ptr<Detail::BoundValueRefBase> m_ref;
 
-            template <typename LambdaT>
-            static auto makeRef(LambdaT const& lambda)
-                -> std::shared_ptr<Detail::BoundValueRefBase> {
-                return std::make_shared<Detail::BoundLambda<LambdaT>>(lambda);
-            }
-
         public:
             ExeName();
             explicit ExeName(std::string& ref);
