@@ -1,3 +1,4 @@
+# rng-seed: 1
 # # A test name that starts with a #
 ok {test-number} - with 1 message: 'yay'
 # #1027: Bitfields can be captured

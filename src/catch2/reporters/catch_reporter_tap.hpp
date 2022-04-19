@@ -26,6 +26,8 @@ namespace Catch {
             return "Reports test results in TAP format, suitable for test harnesses"s;
         }
 
+        void testRunStarting( TestRunInfo const& testInfo ) override;
+
         void noMatchingTestCases( StringRef unmatchedSpec ) override;
 
         void assertionEnded(AssertionStats const& _assertionStats) override;

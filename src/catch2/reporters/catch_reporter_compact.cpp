@@ -7,6 +7,7 @@
 // SPDX-License-Identifier: BSL-1.0
 #include <catch2/reporters/catch_reporter_compact.hpp>
 
+#include <catch2/catch_test_spec.hpp>
 #include <catch2/reporters/catch_reporter_helpers.hpp>
 #include <catch2/interfaces/catch_interfaces_config.hpp>
 #include <catch2/internal/catch_platform.hpp>
@@ -251,6 +252,16 @@ private:
 
         void CompactReporter::noMatchingTestCases( StringRef unmatchedSpec ) {
             m_stream << "No test cases matched '" << unmatchedSpec << "'\n";
+        }
+
+        void CompactReporter::testRunStarting( TestRunInfo const& ) {
+            if ( m_config->testSpec().hasFilters() ) {
+                m_stream << m_colour->guardColour( Colour::BrightYellow )
+                         << "Filters: "
+                         << serializeFilters( m_config->getTestsOrTags() )
+                         << '\n';
+            }
+            m_stream << "RNG seed: " << m_config->rngSeed() << '\n';
         }
 
         void CompactReporter::assertionEnded( AssertionStats const& _assertionStats ) {

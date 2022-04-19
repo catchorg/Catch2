@@ -523,5 +523,27 @@ if (CATCH_ENABLE_CONFIGURE_TESTS)
     endforeach()
 endif()
 
+foreach (reporterName # "Automake" - the simple .trs format does not support any kind of comments/metadata
+                      "compact"
+                      "console"
+                      "JUnit"
+                      "SonarQube"
+                      "TAP"
+                      # "TeamCity" - does not seem to support test suite-level metadata/comments
+                      "XML")
+    add_test(NAME "Reporters:RngSeed:${reporterName}"
+      COMMAND
+        $<TARGET_FILE:SelfTest> "Factorials are computed"
+          --reporter ${reporterName}
+          --rng-seed 18181818
+    )
+    set_tests_properties("Reporters:RngSeed:${reporterName}"
+      PROPERTIES
+        PASS_REGULAR_EXPRESSION "18181818"
+    )
+
+endforeach()
+
+
 list(APPEND CATCH_WARNING_TARGETS SelfTest)
 set(CATCH_WARNING_TARGETS ${CATCH_WARNING_TARGETS} PARENT_SCOPE)

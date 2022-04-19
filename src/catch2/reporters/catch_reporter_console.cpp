@@ -496,7 +496,11 @@ void ConsoleReporter::testRunEnded(TestRunStats const& _testRunStats) {
 }
 void ConsoleReporter::testRunStarting(TestRunInfo const& _testInfo) {
     StreamingReporterBase::testRunStarting(_testInfo);
-    printTestFilters();
+    if ( m_config->testSpec().hasFilters() ) {
+        m_stream << m_colour->guardColour( Colour::BrightYellow ) << "Filters: "
+                 << serializeFilters( m_config->getTestsOrTags() ) << '\n';
+    }
+    m_stream << "Randomness seeded to: " << m_config->rngSeed() << '\n';
 }
 
 void ConsoleReporter::lazyPrint() {
@@ -521,8 +525,7 @@ void ConsoleReporter::lazyPrintRunInfo() {
              << m_colour->guardColour( Colour::SecondaryText )
              << currentTestRunInfo.name << " is a Catch2 v" << libraryVersion()
              << " host application.\n"
-             << "Run with -? for options\n\n"
-             << "Randomness seeded to: " << m_config->rngSeed() << "\n\n";
+             << "Run with -? for options\n\n";
 
     m_testRunInfoPrinted = true;
 }
@@ -699,13 +702,6 @@ void ConsoleReporter::printTotalsDivider(Totals const& totals) {
 }
 void ConsoleReporter::printSummaryDivider() {
     m_stream << lineOfChars('-') << '\n';
-}
-
-void ConsoleReporter::printTestFilters() {
-    if (m_config->testSpec().hasFilters()) {
-        m_stream << m_colour->guardColour( Colour::BrightYellow ) << "Filters: "
-                 << serializeFilters( m_config->getTestsOrTags() ) << '\n';
-    }
 }
 
 } // end namespace Catch

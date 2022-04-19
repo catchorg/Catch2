@@ -63,7 +63,6 @@ namespace Catch {
 
         void printTotalsDivider(Totals const& totals);
         void printSummaryDivider();
-        void printTestFilters();
 
         bool m_headerPrinted = false;
         bool m_testRunInfoPrinted = false;

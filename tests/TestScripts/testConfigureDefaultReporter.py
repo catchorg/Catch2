@@ -38,7 +38,7 @@ stdout, _ = run_and_return_output(os.path.join(build_dir_path, 'tests'), 'SelfTe
 # This matches the summary line made by compact reporter, console reporter's
 # summary line does not match the regex.
 summary_regex = 'Passed \d+ test case with \d+ assertions.'
-if not re.match(summary_regex, stdout):
+if not re.search(summary_regex, stdout):
     print("Could not find '{}' in the stdout".format(summary_regex))
     print('stdout: "{}"'.format(stdout))
     exit(2)
