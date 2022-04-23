@@ -13,8 +13,6 @@
 #include <catch2/generators/catch_generators_range.hpp>
 
 #include <map>
-#include <list>
-#include <algorithm>
 
 namespace {
     std::uint64_t Fibonacci(std::uint64_t number) {
