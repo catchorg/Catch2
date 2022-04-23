@@ -376,7 +376,11 @@ either before running any tests, after running all tests - or both, depending on
 ## Skip all benchmarks
 <pre>--skip-benchmarks</pre>
 
-When this option is set, all benchmarks of each and every Catch test case will be skipped so that it appears as if there were no benchmark defined.
+> [Introduced](https://github.com/catchorg/Catch2/issues/2408) in Catch X.Y.Z.
+
+This flag tells Catch2 to skip running all benchmarks. Benchmarks in this
+case mean code blocks in `BENCHMARK` and `BENCHMARK_ADVANCED` macros, not
+test cases with the `[!benchmark]` tag.
 
 <a id="benchmark-samples"></a>
 ## Specify the number of benchmark samples to collect
