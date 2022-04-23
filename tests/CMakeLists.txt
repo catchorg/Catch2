@@ -359,6 +359,10 @@ add_test(NAME CheckConvenienceHeaders
     ${PYTHON_EXECUTABLE} ${CATCH_DIR}/tools/scripts/checkConvenienceHeaders.py
 )
 
+add_test(NAME "Benchmarking::SkipBenchmarkMacros"
+  COMMAND
+    $<TARGET_FILE:SelfTest> "Skip benchmark macros" --skip-benchmarks
+)
 
 add_test(NAME "Benchmarking::FailureReporting::OptimizedOut"
   COMMAND

@@ -13,6 +13,8 @@
 #include <catch2/generators/catch_generators_range.hpp>
 
 #include <map>
+#include <list>
+#include <algorithm>
 
 namespace {
     std::uint64_t Fibonacci(std::uint64_t number) {
@@ -151,4 +153,21 @@ TEST_CASE("Benchmark containers", "[!benchmark]") {
             meter.measure([&](int i) { storage[i].destruct(); });
         };
     }
+}
+
+TEST_CASE("Skip benchmark macros", "[!benchmark]") {
+    std::vector<int> v;
+    BENCHMARK("fill vector") {
+        v.emplace_back(1);
+        v.emplace_back(2);
+        v.emplace_back(3);
+    };
+    REQUIRE(v.size() == 0);
+
+    std::size_t counter{0};
+    BENCHMARK_ADVANCED("construct vector")(Catch::Benchmark::Chronometer meter) {
+        std::vector<Catch::Benchmark::storage_for<std::string>> storage(meter.runs());
+        meter.measure([&](int i) { storage[i].construct("thing"); counter++; });
+    };
+    REQUIRE(counter == 0);
 }
