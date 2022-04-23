@@ -361,8 +361,16 @@ add_test(NAME CheckConvenienceHeaders
 
 add_test(NAME "Benchmarking::SkipBenchmarkMacros"
   COMMAND
-    $<TARGET_FILE:SelfTest> "Skip benchmark macros" --skip-benchmarks
+    $<TARGET_FILE:SelfTest> "Skip benchmark macros"
+      --reporter console
+      --skip-benchmarks
 )
+set_tests_properties("Benchmarking::SkipBenchmarkMacros"
+  PROPERTIES
+    PASS_REGULAR_EXPRESSION "All tests passed \\(2 assertions in 1 test case\\)"
+    FAIL_REGULAR_EXPRESSION "benchmark name"
+)
+
 
 add_test(NAME "Benchmarking::FailureReporting::OptimizedOut"
   COMMAND
