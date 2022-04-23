@@ -95,8 +95,11 @@ namespace Catch {
             // sets lambda to be used in fun *and* executes benchmark!
             template <typename Fun, std::enable_if_t<!Detail::is_related<Fun, Benchmark>::value, int> = 0>
                 Benchmark & operator=(Fun func) {
-                fun = Detail::BenchmarkFunction(func);
-                run();
+                auto const* cfg = getCurrentContext().getConfig();
+                if (!cfg->skipBenchmarks()) {
+                    fun = Detail::BenchmarkFunction(func);
+                    run();
+                }
                 return *this;
             }
 

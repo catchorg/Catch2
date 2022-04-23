@@ -64,6 +64,7 @@ namespace Catch {
         unsigned int shardCount = 1;
         unsigned int shardIndex = 0;
 
+        bool skipBenchmarks = false;
         bool benchmarkNoAnalysis = false;
         unsigned int benchmarkSamples = 100;
         double benchmarkConfidenceInterval = 0.95;
@@ -129,6 +130,7 @@ namespace Catch {
         int abortAfter() const override;
         bool showInvisibles() const override;
         Verbosity verbosity() const override;
+        bool skipBenchmarks() const override;
         bool benchmarkNoAnalysis() const override;
         unsigned int benchmarkSamples() const override;
         double benchmarkConfidenceInterval() const override;

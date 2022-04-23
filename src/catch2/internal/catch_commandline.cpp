@@ -296,6 +296,9 @@ namespace Catch {
             | Opt( setWaitForKeypress, "never|start|exit|both" )
                 ["--wait-for-keypress"]
                 ( "waits for a keypress before exiting" )
+            | Opt( config.skipBenchmarks)
+                ["--skip-benchmarks"]
+                ( "disable running benchmarks")
             | Opt( config.benchmarkSamples, "samples" )
                 ["--benchmark-samples"]
                 ( "number of samples to collect (default: 100)" )

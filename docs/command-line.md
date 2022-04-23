@@ -19,6 +19,7 @@
 [Specify a seed for the Random Number Generator](#specify-a-seed-for-the-random-number-generator)<br>
 [Identify framework and version according to the libIdentify standard](#identify-framework-and-version-according-to-the-libidentify-standard)<br>
 [Wait for key before continuing](#wait-for-key-before-continuing)<br>
+[Skip benchmarks](#skip-benchmarks)<br>
 [Specify the number of benchmark samples to collect](#specify-the-number-of-benchmark-samples-to-collect)<br>
 [Specify the number of resamples for bootstrapping](#specify-the-number-of-resamples-for-bootstrapping)<br>
 [Specify the confidence-interval for bootstrapping](#specify-the-confidence-interval-for-bootstrapping)<br>
@@ -62,6 +63,7 @@ Click one of the following links to take you straight to that option - or scroll
 <a href="#rng-seed">                                    `    --rng-seed`</a><br />
 <a href="#libidentify">                                 `    --libidentify`</a><br />
 <a href="#wait-for-keypress">                           `    --wait-for-keypress`</a><br />
+<a href="#skip-benchmarks">                             `    --skip-benchmarks`</a><br />
 <a href="#benchmark-samples">                           `    --benchmark-samples`</a><br />
 <a href="#benchmark-resamples">                         `    --benchmark-resamples`</a><br />
 <a href="#benchmark-confidence-interval">               `    --benchmark-confidence-interval`</a><br />
@@ -369,6 +371,16 @@ See [The LibIdentify repo for more information and examples](https://github.com/
 
 Will cause the executable to print a message and wait until the return/ enter key is pressed before continuing -
 either before running any tests, after running all tests - or both, depending on the argument.
+
+<a id="skip-benchmarks"></a>
+## Skip all benchmarks
+<pre>--skip-benchmarks</pre>
+
+> [Introduced](https://github.com/catchorg/Catch2/issues/2408) in Catch X.Y.Z.
+
+This flag tells Catch2 to skip running all benchmarks. Benchmarks in this
+case mean code blocks in `BENCHMARK` and `BENCHMARK_ADVANCED` macros, not
+test cases with the `[!benchmark]` tag.
 
 <a id="benchmark-samples"></a>
 ## Specify the number of benchmark samples to collect
