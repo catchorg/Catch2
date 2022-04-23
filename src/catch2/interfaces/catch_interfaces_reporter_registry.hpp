@@ -17,21 +17,22 @@
 
 namespace Catch {
 
-    struct IConfig;
+    class IConfig;
 
     class IEventListener;
     using IEventListenerPtr = Detail::unique_ptr<IEventListener>;
-    struct IReporterFactory;
+    class IReporterFactory;
     using IReporterFactoryPtr = Detail::unique_ptr<IReporterFactory>;
     struct ReporterConfig;
     class EventListenerFactory;
 
-    struct IReporterRegistry {
+    class IReporterRegistry {
+    public:
         using FactoryMap = std::map<std::string, IReporterFactoryPtr, Detail::CaseInsensitiveLess>;
         using Listeners = std::vector<Detail::unique_ptr<EventListenerFactory>>;
 
         virtual ~IReporterRegistry(); // = default
-        virtual IEventListenerPtr create( std::string const& name, ReporterConfig const& config ) const = 0;
+        virtual IEventListenerPtr create( std::string const& name, ReporterConfig&& config ) const = 0;
         virtual FactoryMap const& getFactories() const = 0;
         virtual Listeners const& getListeners() const = 0;
     };

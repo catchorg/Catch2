@@ -7,8 +7,8 @@
 // SPDX-License-Identifier: BSL-1.0
 #include <catch2/internal/catch_debugger.hpp>
 #include <catch2/internal/catch_errno_guard.hpp>
-#include <catch2/internal/catch_stream.hpp>
 #include <catch2/internal/catch_platform.hpp>
+#include <catch2/internal/catch_stdstreams.hpp>
 
 #if defined(CATCH_PLATFORM_MAC) || defined(CATCH_PLATFORM_IPHONE)
 

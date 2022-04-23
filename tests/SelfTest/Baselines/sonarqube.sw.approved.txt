@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- rng-seed=1 -->
 <testExecutions version="1"loose text artifact
 >
   <file path="tests/<exe-name>/IntrospectiveTests/Clara.tests.cpp">

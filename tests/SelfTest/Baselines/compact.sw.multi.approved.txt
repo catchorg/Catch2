@@ -1,3 +1,5 @@
+Filters: ~[!nonportable]~[!benchmark]~[approvals] *
+RNG seed: 1
 Misc.tests.cpp:<line number>: passed: with 1 message: 'yay'
 Compilation.tests.cpp:<line number>: passed: y.v == 0 for: 0 == 0
 Compilation.tests.cpp:<line number>: passed: 0 == y.v for: 0 == 0
@@ -1316,6 +1318,8 @@ CmdLine.tests.cpp:<line number>: passed: config.reporterSpecifications.empty() f
 CmdLine.tests.cpp:<line number>: passed: !(cfg.hasTestFilters()) for: !false
 CmdLine.tests.cpp:<line number>: passed: cfg.getReporterSpecs().size() == 1 for: 1 == 1
 CmdLine.tests.cpp:<line number>: passed: cfg.getReporterSpecs()[0] == Catch::ReporterSpec{ expectedReporter, {}, {}, {} } for: {?} == {?}
+CmdLine.tests.cpp:<line number>: passed: cfg.getProcessedReporterSpecs().size() == 1 for: 1 == 1
+CmdLine.tests.cpp:<line number>: passed: cfg.getProcessedReporterSpecs()[0] == Catch::ProcessedReporterSpec{ expectedReporter, std::string{}, Catch::ColourMode::PlatformDefault, {} } for: {?} == {?}
 CmdLine.tests.cpp:<line number>: passed: result for: {?}
 CmdLine.tests.cpp:<line number>: passed: cfg.hasTestFilters() for: true
 CmdLine.tests.cpp:<line number>: passed: cfg.testSpec().matches(*fakeTestCase("notIncluded")) == false for: false == false

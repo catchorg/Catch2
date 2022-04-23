@@ -9,8 +9,10 @@
 #include <catch2/internal/catch_console_colour.hpp>
 #include <catch2/internal/catch_string_manip.hpp>
 #include <catch2/catch_test_case_info.hpp>
+#include <catch2/interfaces/catch_interfaces_config.hpp>
 
 #include <algorithm>
+#include <iterator>
 #include <ostream>
 
 namespace Catch {
@@ -187,6 +189,10 @@ namespace Catch {
         };
 
     } // End anonymous namespace
+
+    void TAPReporter::testRunStarting( TestRunInfo const& ) {
+        m_stream << "# rng-seed: " << m_config->rngSeed() << '\n';
+    }
 
     void TAPReporter::noMatchingTestCases( StringRef unmatchedSpec ) {
         m_stream << "# No test cases matched '" << unmatchedSpec << "'\n";

@@ -11482,7 +11482,23 @@ C
           {?} == {?}
         </Expanded>
       </Expression>
-      <OverallResults successes="9" failures="0" expectedFailures="0"/>
+      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
+        <Original>
+          cfg.getProcessedReporterSpecs().size() == 1
+        </Original>
+        <Expanded>
+          1 == 1
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
+        <Original>
+          cfg.getProcessedReporterSpecs()[0] == Catch::ProcessedReporterSpec{ expectedReporter, std::string{}, Catch::ColourMode::PlatformDefault, {} }
+        </Original>
+        <Expanded>
+          {?} == {?}
+        </Expanded>
+      </Expression>
+      <OverallResults successes="11" failures="0" expectedFailures="0"/>
     </Section>
     <Section name="test lists" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
       <Section name="Specify one test case using" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
@@ -21034,6 +21050,6 @@ loose text artifact
     </Section>
     <OverallResult success="true"/>
   </TestCase>
-  <OverallResults successes="2068" failures="143" expectedFailures="27"/>
+  <OverallResults successes="2070" failures="143" expectedFailures="27"/>
   <OverallResultsCases successes="300" failures="83" expectedFailures="7"/>
 </Catch2TestRun>

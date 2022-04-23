@@ -11,7 +11,6 @@
 #include <catch2/internal/catch_list.hpp>
 #include <catch2/internal/catch_context.hpp>
 #include <catch2/internal/catch_run_context.hpp>
-#include <catch2/internal/catch_stream.hpp>
 #include <catch2/catch_test_spec.hpp>
 #include <catch2/catch_version.hpp>
 #include <catch2/interfaces/catch_interfaces_reporter.hpp>
@@ -23,6 +22,8 @@
 #include <catch2/interfaces/catch_interfaces_reporter_registry.hpp>
 #include <catch2/interfaces/catch_interfaces_reporter_factory.hpp>
 #include <catch2/internal/catch_move_and_forward.hpp>
+#include <catch2/internal/catch_stdstreams.hpp>
+#include <catch2/internal/catch_istream.hpp>
 
 #include <algorithm>
 #include <cassert>
@@ -34,8 +35,8 @@ namespace Catch {
     namespace {
         const int MaxExitCode = 255;
 
-        IEventListenerPtr createReporter(std::string const& reporterName, ReporterConfig const& config) {
-            auto reporter = Catch::getRegistryHub().getReporterRegistry().create(reporterName, config);
+        IEventListenerPtr createReporter(std::string const& reporterName, ReporterConfig&& config) {
+            auto reporter = Catch::getRegistryHub().getReporterRegistry().create(reporterName, CATCH_MOVE(config));
             CATCH_ENFORCE(reporter, "No reporter registered with name: '" << reporterName << '\'');
 
             return reporter;
@@ -43,16 +44,14 @@ namespace Catch {
 
         IEventListenerPtr prepareReporters(Config const* config) {
             if (Catch::getRegistryHub().getReporterRegistry().getListeners().empty()
-                    && config->getReporterSpecs().size() == 1) {
-                auto const& spec = config->getReporterSpecs()[0];
-                auto stream = config->getReporterOutputStream(0);
+                    && config->getProcessedReporterSpecs().size() == 1) {
+                auto const& spec = config->getProcessedReporterSpecs()[0];
                 return createReporter(
-                    config->getReporterSpecs()[0].name(),
-                    ReporterConfig(
-                        config,
-                        stream,
-                        spec.colourMode().valueOr( config->defaultColourMode() ),
-                        spec.customOptions() ) );
+                    spec.name,
+                    ReporterConfig( config,
+                                    makeStream( spec.outputFilename ),
+                                    spec.colourMode,
+                                    spec.customOptions ) );
             }
 
             auto multi = Detail::make_unique<MultiReporter>(config);
@@ -63,15 +62,13 @@ namespace Catch {
             }
 
             std::size_t reporterIdx = 0;
-            for (auto const& reporterSpec : config->getReporterSpecs()) {
-                auto stream = config->getReporterOutputStream(reporterIdx);
+            for ( auto const& reporterSpec : config->getProcessedReporterSpecs() ) {
                 multi->addReporter( createReporter(
-                    reporterSpec.name(),
+                    reporterSpec.name,
                     ReporterConfig( config,
-                                    stream,
-                                    reporterSpec.colourMode().valueOr(
-                                        config->defaultColourMode() ),
-                                    reporterSpec.customOptions() ) ) );
+                                    makeStream( reporterSpec.outputFilename ),
+                                    reporterSpec.colourMode,
+                                    reporterSpec.customOptions ) ) );
                 reporterIdx++;
             }
 

@@ -8,9 +8,10 @@
 #ifndef CATCH_XMLWRITER_HPP_INCLUDED
 #define CATCH_XMLWRITER_HPP_INCLUDED
 
-#include <catch2/internal/catch_stream.hpp>
+#include <catch2/internal/catch_reusable_string_stream.hpp>
 #include <catch2/internal/catch_stringref.hpp>
 
+#include <iosfwd>
 #include <vector>
 
 namespace Catch {
@@ -77,11 +78,11 @@ namespace Catch {
             }
 
         private:
-            mutable XmlWriter* m_writer = nullptr;
+            XmlWriter* m_writer = nullptr;
             XmlFormatting m_fmt;
         };
 
-        XmlWriter( std::ostream& os = Catch::cout() );
+        XmlWriter( std::ostream& os );
         ~XmlWriter();
 
         XmlWriter( XmlWriter const& ) = delete;

@@ -1,3 +1,4 @@
+# rng-seed: 1
 # # A test name that starts with a #
 ok {test-number} - with 1 message: 'yay'
 # #1027: Bitfields can be captured
@@ -2481,6 +2482,10 @@ ok {test-number} - cfg.getReporterSpecs().size() == 1 for: 1 == 1
 # Process can be configured on command line
 ok {test-number} - cfg.getReporterSpecs()[0] == Catch::ReporterSpec{ expectedReporter, {}, {}, {} } for: {?} == {?}
 # Process can be configured on command line
+ok {test-number} - cfg.getProcessedReporterSpecs().size() == 1 for: 1 == 1
+# Process can be configured on command line
+ok {test-number} - cfg.getProcessedReporterSpecs()[0] == Catch::ProcessedReporterSpec{ expectedReporter, std::string{}, Catch::ColourMode::PlatformDefault, {} } for: {?} == {?}
+# Process can be configured on command line
 ok {test-number} - result for: {?}
 # Process can be configured on command line
 ok {test-number} - cfg.hasTestFilters() for: true
@@ -4470,5 +4475,5 @@ ok {test-number} - q3 == 23. for: 23.0 == 23.0
 ok {test-number} -
 # xmlentitycheck
 ok {test-number} -
-1..2238
+1..2240
 

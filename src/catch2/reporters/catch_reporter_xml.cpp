@@ -13,6 +13,7 @@
 #include <catch2/internal/catch_string_manip.hpp>
 #include <catch2/internal/catch_list.hpp>
 #include <catch2/catch_test_case_info.hpp>
+#include <catch2/internal/catch_move_and_forward.hpp>
 
 #if defined(_MSC_VER)
 #pragma warning(push)
@@ -22,8 +23,8 @@
 #endif
 
 namespace Catch {
-    XmlReporter::XmlReporter( ReporterConfig const& _config )
-    :   StreamingReporterBase( _config ),
+    XmlReporter::XmlReporter( ReporterConfig&& _config )
+    :   StreamingReporterBase( CATCH_MOVE(_config) ),
         m_xml(m_stream)
     {
         m_preferences.shouldRedirectStdOut = true;

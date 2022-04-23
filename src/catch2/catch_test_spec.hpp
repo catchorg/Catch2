@@ -21,7 +21,7 @@
 
 namespace Catch {
 
-    struct IConfig;
+    class IConfig;
     struct TestCaseInfo;
     class TestCaseHandle;
 

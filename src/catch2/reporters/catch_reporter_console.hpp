@@ -16,10 +16,11 @@ namespace Catch {
     struct SummaryColumn;
     class TablePrinter;
 
-    struct ConsoleReporter final : StreamingReporterBase {
+    class ConsoleReporter final : public StreamingReporterBase {
         Detail::unique_ptr<TablePrinter> m_tablePrinter;
 
-        ConsoleReporter(ReporterConfig const& config);
+    public:
+        ConsoleReporter(ReporterConfig&& config);
         ~ConsoleReporter() override;
         static std::string getDescription();
 
@@ -41,8 +42,8 @@ namespace Catch {
         void testCaseEnded(TestCaseStats const& _testCaseStats) override;
         void testRunEnded(TestRunStats const& _testRunStats) override;
         void testRunStarting(TestRunInfo const& _testRunInfo) override;
-    private:
 
+    private:
         void lazyPrint();
 
         void lazyPrintWithoutClosingBenchmarkTable();
@@ -62,9 +63,7 @@ namespace Catch {
 
         void printTotalsDivider(Totals const& totals);
         void printSummaryDivider();
-        void printTestFilters();
 
-    private:
         bool m_headerPrinted = false;
         bool m_testRunInfoPrinted = false;
     };

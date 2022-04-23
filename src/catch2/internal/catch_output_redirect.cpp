@@ -7,6 +7,7 @@
 // SPDX-License-Identifier: BSL-1.0
 #include <catch2/internal/catch_output_redirect.hpp>
 #include <catch2/internal/catch_enforce.hpp>
+#include <catch2/internal/catch_stdstreams.hpp>
 
 #include <cstdio>
 #include <cstring>

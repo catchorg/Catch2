@@ -17,7 +17,7 @@
 
 #include <catch2/internal/catch_compiler_capabilities.hpp>
 #include <catch2/internal/catch_config_wchar.hpp>
-#include <catch2/internal/catch_stream.hpp>
+#include <catch2/internal/catch_reusable_string_stream.hpp>
 #include <catch2/internal/catch_void_type.hpp>
 #include <catch2/interfaces/catch_interfaces_enum_values_registry.hpp>
 

@@ -8,30 +8,20 @@
 #include <catch2/catch_config.hpp>
 #include <catch2/catch_user_config.hpp>
 #include <catch2/internal/catch_enforce.hpp>
-#include <catch2/internal/catch_stream.hpp>
 #include <catch2/internal/catch_stringref.hpp>
 #include <catch2/internal/catch_string_manip.hpp>
 #include <catch2/internal/catch_test_spec_parser.hpp>
 #include <catch2/interfaces/catch_interfaces_tag_alias_registry.hpp>
 
-#include <ostream>
-
 namespace Catch {
-    namespace Detail {
-        namespace {
-            class RDBufStream : public IStream {
-                mutable std::ostream m_os;
 
-            public:
-                //! The streambuf `sb` must outlive the constructed object.
-                RDBufStream( std::streambuf* sb ): m_os( sb ) {}
-                ~RDBufStream() override = default;
-
-            public: // IStream
-                std::ostream& stream() const override { return m_os; }
-            };
-        } // unnamed namespace
-    }     // namespace Detail
+    bool operator==( ProcessedReporterSpec const& lhs,
+                     ProcessedReporterSpec const& rhs ) {
+        return lhs.name == rhs.name &&
+               lhs.outputFilename == rhs.outputFilename &&
+               lhs.colourMode == rhs.colourMode &&
+               lhs.customOptions == rhs.customOptions;
+    }
 
     Config::Config( ConfigData const& data ):
         m_data( data ) {
@@ -91,21 +81,27 @@ namespace Catch {
         }
 #endif
 
+
+        // We now fixup the reporter specs to handle default output spec,
+        // default colour spec, etc
         bool defaultOutputUsed = false;
-        m_reporterStreams.reserve( m_data.reporterSpecifications.size() );
         for ( auto const& reporterSpec : m_data.reporterSpecifications ) {
+            // We do the default-output check separately, while always
+            // using the default output below to make the code simpler
+            // and avoid superfluous copies.
             if ( reporterSpec.outputFile().none() ) {
                 CATCH_ENFORCE( !defaultOutputUsed,
                                "Internal error: cannot use default output for "
                                "multiple reporters" );
                 defaultOutputUsed = true;
-
-                m_reporterStreams.push_back(
-                    makeStream( data.defaultOutputFilename ) );
-            } else {
-                m_reporterStreams.push_back(
-                    makeStream( *reporterSpec.outputFile() ) );
             }
+
+            m_processedReporterSpecs.push_back( ProcessedReporterSpec{
+                reporterSpec.name(),
+                reporterSpec.outputFile() ? *reporterSpec.outputFile()
+                                          : data.defaultOutputFilename,
+                reporterSpec.colourMode().valueOr( data.defaultColourMode ),
+                reporterSpec.customOptions() } );
         }
     }
 
@@ -123,8 +119,9 @@ namespace Catch {
         return m_data.reporterSpecifications;
     }
 
-    IStream const* Config::getReporterOutputStream(std::size_t reporterIdx) const {
-        return m_reporterStreams.at(reporterIdx).get();
+    std::vector<ProcessedReporterSpec> const&
+    Config::getProcessedReporterSpecs() const {
+        return m_processedReporterSpecs;
     }
 
     TestSpec const& Config::testSpec() const { return m_testSpec; }

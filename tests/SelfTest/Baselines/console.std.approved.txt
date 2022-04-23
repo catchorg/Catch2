@@ -1,10 +1,9 @@
 Filters: ~[!nonportable]~[!benchmark]~[approvals] *
+Randomness seeded to: 1
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 <exe-name> is a <version> host application.
 Run with -? for options
-
-Randomness seeded to: 1
 
 -------------------------------------------------------------------------------
 #1455 - INFO and WARN can start with a linebreak
@@ -1396,5 +1395,5 @@ due to unexpected exception with message:
 
 ===============================================================================
 test cases:  390 |  314 passed |  69 failed |  7 failed as expected
-assertions: 2223 | 2068 passed | 128 failed | 27 failed as expected
+assertions: 2225 | 2070 passed | 128 failed | 27 failed as expected
 

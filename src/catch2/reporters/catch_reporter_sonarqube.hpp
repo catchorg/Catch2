@@ -11,13 +11,14 @@
 #include <catch2/reporters/catch_reporter_cumulative_base.hpp>
 
 #include <catch2/internal/catch_xmlwriter.hpp>
+#include <catch2/internal/catch_move_and_forward.hpp>
 
 namespace Catch {
 
-    struct SonarQubeReporter final : CumulativeReporterBase {
-
-        SonarQubeReporter(ReporterConfig const& config)
-        : CumulativeReporterBase(config)
+    class SonarQubeReporter final : public CumulativeReporterBase {
+    public:
+        SonarQubeReporter(ReporterConfig&& config)
+        : CumulativeReporterBase(CATCH_MOVE(config))
         , xml(m_stream) {
             m_preferences.shouldRedirectStdOut = true;
             m_preferences.shouldReportAllAssertions = true;

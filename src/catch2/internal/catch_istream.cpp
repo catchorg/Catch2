@@ -5,15 +5,14 @@
 //        https://www.boost.org/LICENSE_1_0.txt)
 
 // SPDX-License-Identifier: BSL-1.0
+
+#include <catch2/internal/catch_istream.hpp>
 #include <catch2/internal/catch_enforce.hpp>
-#include <catch2/internal/catch_stream.hpp>
 #include <catch2/internal/catch_debug_console.hpp>
-#include <catch2/internal/catch_stringref.hpp>
-#include <catch2/internal/catch_singletons.hpp>
 #include <catch2/internal/catch_unique_ptr.hpp>
+#include <catch2/internal/catch_stdstreams.hpp>
 
 #include <cstdio>
-#include <iostream>
 #include <fstream>
 #include <sstream>
 #include <vector>
@@ -74,7 +73,7 @@ namespace Detail {
         ///////////////////////////////////////////////////////////////////////////
 
         class FileStream : public IStream {
-            mutable std::ofstream m_ofs;
+            std::ofstream m_ofs;
         public:
             FileStream( std::string const& filename ) {
                 m_ofs.open( filename.c_str() );
@@ -82,7 +81,7 @@ namespace Detail {
             }
             ~FileStream() override = default;
         public: // IStream
-            std::ostream& stream() const override {
+            std::ostream& stream() override {
                 return m_ofs;
             }
         };
@@ -90,7 +89,7 @@ namespace Detail {
         ///////////////////////////////////////////////////////////////////////////
 
         class CoutStream : public IStream {
-            mutable std::ostream m_os;
+            std::ostream m_os;
         public:
             // Store the streambuf from cout up-front because
             // cout may get redirected when running tests
@@ -98,12 +97,12 @@ namespace Detail {
             ~CoutStream() override = default;
 
         public: // IStream
-            std::ostream& stream() const override { return m_os; }
+            std::ostream& stream() override { return m_os; }
             bool isConsole() const override { return true; }
         };
 
         class CerrStream : public IStream {
-            mutable std::ostream m_os;
+            std::ostream m_os;
 
         public:
             // Store the streambuf from cerr up-front because
@@ -112,7 +111,7 @@ namespace Detail {
             ~CerrStream() override = default;
 
         public: // IStream
-            std::ostream& stream() const override { return m_os; }
+            std::ostream& stream() override { return m_os; }
             bool isConsole() const override { return true; }
         };
 
@@ -120,7 +119,7 @@ namespace Detail {
 
         class DebugOutStream : public IStream {
             Detail::unique_ptr<StreamBufImpl<OutputDebugWriter>> m_streamBuf;
-            mutable std::ostream m_os;
+            std::ostream m_os;
         public:
             DebugOutStream()
             :   m_streamBuf( Detail::make_unique<StreamBufImpl<OutputDebugWriter>>() ),
@@ -130,7 +129,7 @@ namespace Detail {
             ~DebugOutStream() override = default;
 
         public: // IStream
-            std::ostream& stream() const override { return m_os; }
+            std::ostream& stream() override { return m_os; }
         };
 
     } // unnamed namespace
@@ -138,7 +137,7 @@ namespace Detail {
 
     ///////////////////////////////////////////////////////////////////////////
 
-    auto makeStream( std::string const& filename ) -> Detail::unique_ptr<IStream const> {
+    auto makeStream( std::string const& filename ) -> Detail::unique_ptr<IStream> {
         if ( filename.empty() || filename == "-" ) {
             return Detail::make_unique<Detail::CoutStream>();
         }
@@ -156,57 +155,4 @@ namespace Detail {
         return Detail::make_unique<Detail::FileStream>( filename );
     }
 
-
-    // This class encapsulates the idea of a pool of ostringstreams that can be reused.
-    struct StringStreams {
-        std::vector<Detail::unique_ptr<std::ostringstream>> m_streams;
-        std::vector<std::size_t> m_unused;
-        std::ostringstream m_referenceStream; // Used for copy state/ flags from
-
-        auto add() -> std::size_t {
-            if( m_unused.empty() ) {
-                m_streams.push_back( Detail::make_unique<std::ostringstream>() );
-                return m_streams.size()-1;
-            }
-            else {
-                auto index = m_unused.back();
-                m_unused.pop_back();
-                return index;
-            }
-        }
-
-        void release( std::size_t index ) {
-            m_streams[index]->copyfmt( m_referenceStream ); // Restore initial flags and other state
-            m_unused.push_back(index);
-        }
-    };
-
-    ReusableStringStream::ReusableStringStream()
-    :   m_index( Singleton<StringStreams>::getMutable().add() ),
-        m_oss( Singleton<StringStreams>::getMutable().m_streams[m_index].get() )
-    {}
-
-    ReusableStringStream::~ReusableStringStream() {
-        static_cast<std::ostringstream*>( m_oss )->str("");
-        m_oss->clear();
-        Singleton<StringStreams>::getMutable().release( m_index );
-    }
-
-    std::string ReusableStringStream::str() const {
-        return static_cast<std::ostringstream*>( m_oss )->str();
-    }
-
-    void ReusableStringStream::str( std::string const& str ) {
-        static_cast<std::ostringstream*>( m_oss )->str( str );
-    }
-
-
-    ///////////////////////////////////////////////////////////////////////////
-
-
-#ifndef CATCH_CONFIG_NOSTDOUT // If you #define this you must implement these functions
-    std::ostream& cout() { return std::cout; }
-    std::ostream& cerr() { return std::cerr; }
-    std::ostream& clog() { return std::clog; }
-#endif
 }

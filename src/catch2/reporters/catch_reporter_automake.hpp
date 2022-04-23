@@ -10,13 +10,13 @@
 
 #include <catch2/reporters/catch_reporter_streaming_base.hpp>
 
+#include <string>
+
 namespace Catch {
 
-    struct AutomakeReporter final : StreamingReporterBase {
-        AutomakeReporter( ReporterConfig const& _config )
-          :   StreamingReporterBase( _config )
-        {}
-
+    class AutomakeReporter final : public StreamingReporterBase {
+    public:
+        using StreamingReporterBase::StreamingReporterBase;
         ~AutomakeReporter() override;
 
         static std::string getDescription() {
@@ -26,7 +26,6 @@ namespace Catch {
 
         void testCaseEnded(TestCaseStats const& _testCaseStats) override;
         void skipTest(TestCaseInfo const& testInfo) override;
-
     };
 
 } // end namespace Catch

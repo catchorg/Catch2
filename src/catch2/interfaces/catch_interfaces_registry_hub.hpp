@@ -16,14 +16,14 @@ namespace Catch {
 
     class TestCaseHandle;
     struct TestCaseInfo;
-    struct ITestCaseRegistry;
-    struct IExceptionTranslatorRegistry;
-    struct IExceptionTranslator;
-    struct IReporterRegistry;
-    struct IReporterFactory;
-    struct ITagAliasRegistry;
-    struct ITestInvoker;
-    struct IMutableEnumValuesRegistry;
+    class ITestCaseRegistry;
+    class IExceptionTranslatorRegistry;
+    class IExceptionTranslator;
+    class IReporterRegistry;
+    class IReporterFactory;
+    class ITagAliasRegistry;
+    class ITestInvoker;
+    class IMutableEnumValuesRegistry;
     struct SourceLineInfo;
 
     class StartupExceptionRegistry;
@@ -31,7 +31,8 @@ namespace Catch {
 
     using IReporterFactoryPtr = Detail::unique_ptr<IReporterFactory>;
 
-    struct IRegistryHub {
+    class IRegistryHub {
+    public:
         virtual ~IRegistryHub(); // = default
 
         virtual IReporterRegistry const& getReporterRegistry() const = 0;
@@ -43,7 +44,8 @@ namespace Catch {
         virtual StartupExceptionRegistry const& getStartupExceptionRegistry() const = 0;
     };
 
-    struct IMutableRegistryHub {
+    class IMutableRegistryHub {
+    public:
         virtual ~IMutableRegistryHub(); // = default
         virtual void registerReporter( std::string const& name, IReporterFactoryPtr factory ) = 0;
         virtual void registerListener( Detail::unique_ptr<EventListenerFactory> factory ) = 0;

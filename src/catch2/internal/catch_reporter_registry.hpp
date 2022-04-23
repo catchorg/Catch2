@@ -21,7 +21,7 @@ namespace Catch {
         ReporterRegistry();
         ~ReporterRegistry() override; // = default, out of line to allow fwd decl
 
-        IEventListenerPtr create( std::string const& name, ReporterConfig const& config ) const override;
+        IEventListenerPtr create( std::string const& name, ReporterConfig&& config ) const override;
 
         void registerReporter( std::string const& name, IReporterFactoryPtr factory );
         void registerListener( Detail::unique_ptr<EventListenerFactory> factory );

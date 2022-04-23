@@ -42,7 +42,7 @@ namespace Catch {
         friend bool operator==( Tag const& lhs, Tag const& rhs );
     };
 
-    struct ITestInvoker;
+    class ITestInvoker;
 
     enum class TestCaseProperties : uint8_t {
         None = 0,

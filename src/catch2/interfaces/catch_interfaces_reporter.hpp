@@ -30,23 +30,27 @@ namespace Catch {
     struct TagInfo;
     struct TestCaseInfo;
     class TestCaseHandle;
-    struct IConfig;
+    class IConfig;
     class IStream;
     enum class ColourMode : std::uint8_t;
 
     struct ReporterConfig {
         ReporterConfig( IConfig const* _fullConfig,
-                        IStream const* _stream,
+                        Detail::unique_ptr<IStream> _stream,
                         ColourMode colourMode,
                         std::map<std::string, std::string> customOptions );
 
-        IStream const* stream() const;
+        ReporterConfig( ReporterConfig&& ) = default;
+        ReporterConfig& operator=( ReporterConfig&& ) = default;
+        ~ReporterConfig(); // = default
+
+        Detail::unique_ptr<IStream> takeStream() &&;
         IConfig const* fullConfig() const;
         ColourMode colourMode() const;
         std::map<std::string, std::string> const& customOptions() const;
 
     private:
-        IStream const* m_stream;
+        Detail::unique_ptr<IStream> m_stream;
         IConfig const* m_fullConfig;
         ColourMode m_colourMode;
         std::map<std::string, std::string> m_customOptions;

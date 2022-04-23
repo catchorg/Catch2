@@ -9,20 +9,39 @@
 #define CATCH_CONFIG_HPP_INCLUDED
 
 #include <catch2/catch_test_spec.hpp>
-#include <catch2/catch_user_config.hpp>
 #include <catch2/interfaces/catch_interfaces_config.hpp>
 #include <catch2/internal/catch_unique_ptr.hpp>
 #include <catch2/internal/catch_optional.hpp>
+#include <catch2/internal/catch_stringref.hpp>
 #include <catch2/internal/catch_random_seed_generation.hpp>
 #include <catch2/internal/catch_reporter_spec_parser.hpp>
 
-#include <iosfwd>
-#include <vector>
+#include <chrono>
+#include <map>
 #include <string>
+#include <vector>
 
 namespace Catch {
 
     class IStream;
+
+    /**
+     * `ReporterSpec` but with the defaults filled in.
+     *
+     * Like `ReporterSpec`, the semantics are unchecked.
+     */
+    struct ProcessedReporterSpec {
+        std::string name;
+        std::string outputFilename;
+        ColourMode colourMode;
+        std::map<std::string, std::string> customOptions;
+        friend bool operator==( ProcessedReporterSpec const& lhs,
+                                ProcessedReporterSpec const& rhs );
+        friend bool operator!=( ProcessedReporterSpec const& lhs,
+                                ProcessedReporterSpec const& rhs ) {
+            return !( lhs == rhs );
+        }
+    };
 
     struct ConfigData {
 
@@ -82,7 +101,8 @@ namespace Catch {
         bool listReporters() const;
 
         std::vector<ReporterSpec> const& getReporterSpecs() const;
-        IStream const* getReporterOutputStream(std::size_t reporterIdx) const;
+        std::vector<ProcessedReporterSpec> const&
+        getProcessedReporterSpecs() const;
 
         std::vector<std::string> const& getTestsOrTags() const override;
         std::vector<std::string> const& getSectionsToRun() const override;
@@ -119,8 +139,7 @@ namespace Catch {
 
     private:
         ConfigData m_data;
-
-        std::vector<Detail::unique_ptr<IStream const>> m_reporterStreams;
+        std::vector<ProcessedReporterSpec> m_processedReporterSpecs;
         TestSpec m_testSpec;
         bool m_hasTestFilters = false;
     };

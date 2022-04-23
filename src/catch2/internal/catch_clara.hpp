@@ -34,7 +34,6 @@
 #include <catch2/internal/catch_void_type.hpp>
 
 #include <cassert>
-#include <cctype>
 #include <memory>
 #include <ostream>
 #include <sstream>
@@ -588,12 +587,6 @@ namespace Catch {
         class ExeName : public Detail::ComposableParserImpl<ExeName> {
             std::shared_ptr<std::string> m_name;
             std::shared_ptr<Detail::BoundValueRefBase> m_ref;
-
-            template <typename LambdaT>
-            static auto makeRef(LambdaT const& lambda)
-                -> std::shared_ptr<Detail::BoundValueRefBase> {
-                return std::make_shared<Detail::BoundLambda<LambdaT>>(lambda);
-            }
 
         public:
             ExeName();

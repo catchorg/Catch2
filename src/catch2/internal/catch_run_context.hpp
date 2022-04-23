@@ -24,9 +24,9 @@
 
 namespace Catch {
 
-    struct IMutableContext;
-    struct IGeneratorTracker;
-    struct IConfig;
+    class IMutableContext;
+    class IGeneratorTracker;
+    class IConfig;
 
     ///////////////////////////////////////////////////////////////////////////
 

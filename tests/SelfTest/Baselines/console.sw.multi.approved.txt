@@ -1,10 +1,9 @@
 Filters: ~[!nonportable]~[!benchmark]~[approvals] *
+Randomness seeded to: 1
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 <exe-name> is a <version> host application.
 Run with -? for options
-
-Randomness seeded to: 1
 
 -------------------------------------------------------------------------------
 # A test name that starts with a #
@@ -9440,6 +9439,16 @@ CmdLine.tests.cpp:<line number>: PASSED:
 with expansion:
   {?} == {?}
 
+CmdLine.tests.cpp:<line number>: PASSED:
+  CHECK( cfg.getProcessedReporterSpecs().size() == 1 )
+with expansion:
+  1 == 1
+
+CmdLine.tests.cpp:<line number>: PASSED:
+  CHECK( cfg.getProcessedReporterSpecs()[0] == Catch::ProcessedReporterSpec{ expectedReporter, std::string{}, Catch::ColourMode::PlatformDefault, {} } )
+with expansion:
+  {?} == {?}
+
 -------------------------------------------------------------------------------
 Process can be configured on command line
   test lists
@@ -17909,5 +17918,5 @@ Misc.tests.cpp:<line number>: PASSED:
 
 ===============================================================================
 test cases:  390 |  300 passed |  83 failed |  7 failed as expected
-assertions: 2238 | 2068 passed | 143 failed | 27 failed as expected
+assertions: 2240 | 2070 passed | 143 failed | 27 failed as expected
 

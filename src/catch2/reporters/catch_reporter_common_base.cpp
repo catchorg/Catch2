@@ -10,15 +10,15 @@
 
 #include <catch2/reporters/catch_reporter_helpers.hpp>
 #include <catch2/internal/catch_console_colour.hpp>
-#include <catch2/internal/catch_stream.hpp>
+#include <catch2/internal/catch_istream.hpp>
 
 
 namespace Catch {
-    ReporterBase::ReporterBase( ReporterConfig const& config ):
+    ReporterBase::ReporterBase( ReporterConfig&& config ):
         IEventListener( config.fullConfig() ),
-        m_wrapped_stream( config.stream() ),
+        m_wrapped_stream( CATCH_MOVE(config).takeStream() ),
         m_stream( m_wrapped_stream->stream() ),
-        m_colour( makeColourImpl( config.colourMode(), m_wrapped_stream ) ),
+        m_colour( makeColourImpl( config.colourMode(), m_wrapped_stream.get() ) ),
         m_customOptions( config.customOptions() )
     {}
 

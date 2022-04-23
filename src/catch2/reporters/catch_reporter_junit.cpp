@@ -13,6 +13,7 @@
 #include <catch2/internal/catch_textflow.hpp>
 #include <catch2/interfaces/catch_interfaces_config.hpp>
 #include <catch2/catch_test_case_info.hpp>
+#include <catch2/internal/catch_move_and_forward.hpp>
 
 #include <cassert>
 #include <ctime>
@@ -68,8 +69,8 @@ namespace Catch {
 
     } // anonymous namespace
 
-    JunitReporter::JunitReporter( ReporterConfig const& _config )
-        :   CumulativeReporterBase( _config ),
+    JunitReporter::JunitReporter( ReporterConfig&& _config )
+        :   CumulativeReporterBase( CATCH_MOVE(_config) ),
             xml( m_stream )
         {
             m_preferences.shouldRedirectStdOut = true;

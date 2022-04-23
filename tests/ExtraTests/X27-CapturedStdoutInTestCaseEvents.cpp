@@ -26,6 +26,7 @@
 
 #include <iostream>
 #include <string>
+#include <utility>
 
 class TestReporter : public Catch::StreamingReporterBase {
     std::string stdOutString( uint64_t iter ){
@@ -36,8 +37,8 @@ class TestReporter : public Catch::StreamingReporterBase {
     }
 
 public:
-    TestReporter( Catch::ReporterConfig const& _config ):
-        StreamingReporterBase( _config ) {
+    TestReporter( Catch::ReporterConfig&& _config ):
+        StreamingReporterBase( std::move(_config) ) {
         m_preferences.shouldRedirectStdOut = true;
         std::cout << "X27 - TestReporter constructed\n";
     }

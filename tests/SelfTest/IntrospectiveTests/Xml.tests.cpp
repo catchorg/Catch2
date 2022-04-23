@@ -9,7 +9,7 @@
 #include <catch2/catch_test_macros.hpp>
 #include <catch2/internal/catch_xmlwriter.hpp>
 
-#include <catch2/internal/catch_stream.hpp>
+#include <catch2/internal/catch_reusable_string_stream.hpp>
 #include <catch2/matchers/catch_matchers_string.hpp>
 
 #include <sstream>

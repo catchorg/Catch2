@@ -22,7 +22,7 @@
 #include <catch2/internal/catch_console_width.hpp>
 #include <catch2/internal/catch_errno_guard.hpp>
 #include <catch2/internal/catch_textflow.hpp>
-#include <catch2/internal/catch_stream.hpp>
+#include <catch2/internal/catch_reusable_string_stream.hpp>
 #include <catch2/internal/catch_string_manip.hpp>
 #include <catch2/internal/catch_console_colour.hpp>
 #include <catch2/catch_tostring.hpp>

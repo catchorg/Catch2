@@ -7,7 +7,6 @@
 // SPDX-License-Identifier: BSL-1.0
 #include <catch2/internal/catch_enum_values_registry.hpp>
 #include <catch2/internal/catch_string_manip.hpp>
-#include <catch2/internal/catch_stream.hpp>
 
 #include <cassert>
 

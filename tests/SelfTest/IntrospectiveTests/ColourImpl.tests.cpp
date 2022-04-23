@@ -8,6 +8,7 @@
 
 #include <catch2/catch_test_macros.hpp>
 #include <catch2/internal/catch_console_colour.hpp>
+#include <catch2/internal/catch_istream.hpp>
 
 #include <sstream>
 
@@ -21,9 +22,9 @@ namespace {
     };
 
     class TestStringStream : public Catch::IStream {
-        mutable std::stringstream m_stream;
+        std::stringstream m_stream;
     public:
-        std::ostream& stream() const override {
+        std::ostream& stream() override {
             return m_stream;
         }
 

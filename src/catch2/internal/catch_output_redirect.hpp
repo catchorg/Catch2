@@ -9,7 +9,7 @@
 #define CATCH_OUTPUT_REDIRECT_HPP_INCLUDED
 
 #include <catch2/internal/catch_platform.hpp>
-#include <catch2/internal/catch_stream.hpp>
+#include <catch2/internal/catch_reusable_string_stream.hpp>
 #include <catch2/internal/catch_compiler_capabilities.hpp>
 
 #include <cstdio>

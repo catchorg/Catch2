@@ -17,23 +17,33 @@
 #include <catch2/internal/catch_enforce.hpp>
 #include <catch2/internal/catch_list.hpp>
 #include <catch2/internal/catch_reporter_registry.hpp>
-#include <catch2/internal/catch_stream.hpp>
+#include <catch2/internal/catch_istream.hpp>
 #include <catch2/matchers/catch_matchers_string.hpp>
 #include <catch2/reporters/catch_reporter_helpers.hpp>
 #include <catch2/reporters/catch_reporter_event_listener.hpp>
 #include <catch2/reporters/catch_reporter_streaming_base.hpp>
 #include <catch2/reporters/catch_reporter_multi.hpp>
+#include <catch2/internal/catch_move_and_forward.hpp>
 
 #include <sstream>
 
 namespace {
     class StringIStream : public Catch::IStream {
     public:
-        std::ostream& stream() const override { return sstr; }
+        std::ostream& stream() override { return sstr; }
         std::string str() const { return sstr.str(); }
     private:
-        mutable std::stringstream sstr;
+        std::stringstream sstr;
     };
+
+    //! config must outlive the function
+    Catch::ReporterConfig makeDummyRepConfig( Catch::Config const& config ) {
+        return Catch::ReporterConfig{
+            &config,
+            Catch::Detail::make_unique<StringIStream>(),
+            Catch::ColourMode::None,
+            {} };
+    }
 }
 
 TEST_CASE( "The default listing implementation write to provided stream",
@@ -85,20 +95,19 @@ TEST_CASE( "Reporter's write listings to provided stream", "[reporters]" ) {
 
     for (auto const& factory : factories) {
         INFO("Tested reporter: " << factory.first);
-        StringIStream sstream;
+        auto sstream = Catch::Detail::make_unique<StringIStream>();
+        auto& sstreamRef = *sstream.get();
 
-        Catch::ConfigData config_data;
-        Catch::Config config( config_data );
-        Catch::ReporterConfig rep_config(
-            &config, &sstream, Catch::ColourMode::None, {} );
-        auto reporter = factory.second->create( rep_config );
+        Catch::Config config( Catch::ConfigData{} );
+        auto reporter = factory.second->create( Catch::ReporterConfig{
+            &config, CATCH_MOVE( sstream ), Catch::ColourMode::None, {} } );
 
         DYNAMIC_SECTION( factory.first << " reporter lists tags" ) {
             std::vector<Catch::TagInfo> tags(1);
             tags[0].add("fakeTag"_catch_sr);
             reporter->listTags(tags);
 
-            auto listingString = sstream.str();
+            auto listingString = sstreamRef.str();
             REQUIRE_THAT(listingString, ContainsSubstring("fakeTag"s));
         }
 
@@ -107,7 +116,7 @@ TEST_CASE( "Reporter's write listings to provided stream", "[reporters]" ) {
                 { { "fake reporter", "fake description" } } );
             reporter->listReporters(reporters);
 
-            auto listingString = sstream.str();
+            auto listingString = sstreamRef.str();
             REQUIRE_THAT(listingString, ContainsSubstring("fake reporter"s));
         }
 
@@ -119,7 +128,7 @@ TEST_CASE( "Reporter's write listings to provided stream", "[reporters]" ) {
             std::vector<Catch::TestCaseHandle> tests({ {&fakeInfo, nullptr} });
             reporter->listTests(tests);
 
-            auto listingString = sstream.str();
+            auto listingString = sstreamRef.str();
             REQUIRE_THAT( listingString,
                           ContainsSubstring( "fake test name"s ) &&
                               ContainsSubstring( "fakeTestTag"s ) );
@@ -159,8 +168,8 @@ namespace {
     public:
         MockReporter( std::string witness,
                       std::vector<std::string>& recorder,
-                      Catch::ReporterConfig const& config ):
-            StreamingReporterBase( config ),
+                      Catch::ReporterConfig&& config ):
+            StreamingReporterBase( CATCH_MOVE(config) ),
             m_witness( witness ),
             m_recorder( recorder )
         {}
@@ -173,25 +182,20 @@ namespace {
 
 TEST_CASE("Multireporter calls reporters and listeners in correct order",
           "[reporters][multi-reporter]") {
-
-    Catch::ConfigData config_data;
-    Catch::Config config( config_data );
-    StringIStream sstream;
-    Catch::ReporterConfig rep_config(
-        &config, &sstream, Catch::ColourMode::None, {} );
+    Catch::Config config( Catch::ConfigData{} );
 
     // We add reporters before listeners, to check that internally they
     // get sorted properly, and listeners are called first anyway.
     Catch::MultiReporter multiReporter( &config );
     std::vector<std::string> records;
     multiReporter.addReporter( Catch::Detail::make_unique<MockReporter>(
-        "Goodbye", records, rep_config ) );
+        "Goodbye", records, makeDummyRepConfig(config) ) );
     multiReporter.addListener(
         Catch::Detail::make_unique<MockListener>( "Hello", records, &config ) );
     multiReporter.addListener(
         Catch::Detail::make_unique<MockListener>( "world", records, &config ) );
     multiReporter.addReporter( Catch::Detail::make_unique<MockReporter>(
-        "world", records, rep_config ) );
+        "world", records, makeDummyRepConfig(config) ) );
     multiReporter.testRunStarting( { "" } );
 
     std::vector<std::string> expected( { "Hello", "world", "Goodbye", "world" } );
@@ -217,8 +221,8 @@ namespace {
     public:
         PreferenceReporter( bool redirectStdout,
                             bool reportAllAssertions,
-                            Catch::ReporterConfig const& config ):
-            StreamingReporterBase( config ) {
+                            Catch::ReporterConfig&& config ):
+            StreamingReporterBase( CATCH_MOVE(config) ) {
             m_preferences.shouldRedirectStdOut = redirectStdout;
             m_preferences.shouldReportAllAssertions = reportAllAssertions;
         }
@@ -228,11 +232,7 @@ namespace {
 TEST_CASE("Multireporter updates ReporterPreferences properly",
           "[reporters][multi-reporter]") {
 
-    Catch::ConfigData config_data;
-    Catch::Config config( config_data );
-    StringIStream sstream;
-    Catch::ReporterConfig rep_config(
-        &config, &sstream, Catch::ColourMode::None, {} );
+    Catch::Config config( Catch::ConfigData{} );
     Catch::MultiReporter multiReporter( &config );
 
     // Post init defaults
@@ -261,19 +261,19 @@ TEST_CASE("Multireporter updates ReporterPreferences properly",
     SECTION( "Adding reporters" ) {
         multiReporter.addReporter(
             Catch::Detail::make_unique<PreferenceReporter>(
-                true, false, rep_config ) );
+                true, false, makeDummyRepConfig(config) ) );
         REQUIRE( multiReporter.getPreferences().shouldRedirectStdOut == true );
         REQUIRE( multiReporter.getPreferences().shouldReportAllAssertions == false );
 
         multiReporter.addReporter(
             Catch::Detail::make_unique<PreferenceReporter>(
-                false, true, rep_config ) );
+                false, true, makeDummyRepConfig( config ) ) );
         REQUIRE( multiReporter.getPreferences().shouldRedirectStdOut == true );
         REQUIRE( multiReporter.getPreferences().shouldReportAllAssertions == true );
 
         multiReporter.addReporter(
             Catch::Detail::make_unique<PreferenceReporter>(
-                false, false, rep_config ) );
+                false, false, makeDummyRepConfig( config ) ) );
         REQUIRE( multiReporter.getPreferences().shouldRedirectStdOut == true );
         REQUIRE( multiReporter.getPreferences().shouldReportAllAssertions == true );
     }
@@ -281,7 +281,7 @@ TEST_CASE("Multireporter updates ReporterPreferences properly",
 
 namespace {
     class TestReporterFactory : public Catch::IReporterFactory {
-        Catch::IEventListenerPtr create( Catch::ReporterConfig const& ) const override {
+        Catch::IEventListenerPtr create( Catch::ReporterConfig&& ) const override {
             CATCH_INTERNAL_ERROR(
                 "This factory should never create a reporter" );
         }

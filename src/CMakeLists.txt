@@ -76,6 +76,7 @@ set(INTERNAL_HEADERS
     ${SOURCES_DIR}/internal/catch_exception_translator_registry.hpp
     ${SOURCES_DIR}/internal/catch_fatal_condition_handler.hpp
     ${SOURCES_DIR}/internal/catch_floating_point_helpers.hpp
+    ${SOURCES_DIR}/internal/catch_istream.hpp
     ${SOURCES_DIR}/internal/catch_unique_name.hpp
     ${SOURCES_DIR}/internal/catch_sharding.hpp
     ${SOURCES_DIR}/generators/catch_generator_exception.hpp
@@ -116,6 +117,7 @@ set(INTERNAL_HEADERS
     ${SOURCES_DIR}/internal/catch_platform.hpp
     ${SOURCES_DIR}/internal/catch_polyfills.hpp
     ${SOURCES_DIR}/internal/catch_preprocessor.hpp
+    ${SOURCES_DIR}/internal/catch_preprocessor_remove_parens.hpp
     ${SOURCES_DIR}/internal/catch_random_number_generator.hpp
     ${SOURCES_DIR}/internal/catch_random_seed_generation.hpp
     ${SOURCES_DIR}/reporters/catch_reporter_registrars.hpp
@@ -124,11 +126,12 @@ set(INTERNAL_HEADERS
     ${SOURCES_DIR}/internal/catch_result_type.hpp
     ${SOURCES_DIR}/internal/catch_run_context.hpp
     ${SOURCES_DIR}/internal/catch_section.hpp
+    ${SOURCES_DIR}/internal/catch_stdstreams.hpp
     ${SOURCES_DIR}/catch_section_info.hpp
     ${SOURCES_DIR}/catch_session.hpp
     ${SOURCES_DIR}/internal/catch_singletons.hpp
     ${SOURCES_DIR}/internal/catch_startup_exception_registry.hpp
-    ${SOURCES_DIR}/internal/catch_stream.hpp
+    ${SOURCES_DIR}/internal/catch_reusable_string_stream.hpp
     ${SOURCES_DIR}/internal/catch_stream_end_stop.hpp
     ${SOURCES_DIR}/internal/catch_string_manip.hpp
     ${SOURCES_DIR}/internal/catch_stringref.hpp
@@ -179,6 +182,7 @@ set(IMPL_SOURCES
     ${SOURCES_DIR}/internal/catch_exception_translator_registry.cpp
     ${SOURCES_DIR}/internal/catch_fatal_condition_handler.cpp
     ${SOURCES_DIR}/internal/catch_floating_point_helpers.cpp
+    ${SOURCES_DIR}/internal/catch_istream.cpp
     ${SOURCES_DIR}/generators/internal/catch_generators_combined_tu.cpp
     ${SOURCES_DIR}/interfaces/catch_interfaces_combined_tu.cpp
     ${SOURCES_DIR}/interfaces/catch_interfaces_reporter.cpp
@@ -197,9 +201,10 @@ set(IMPL_SOURCES
     ${SOURCES_DIR}/internal/catch_result_type.cpp
     ${SOURCES_DIR}/internal/catch_run_context.cpp
     ${SOURCES_DIR}/internal/catch_section.cpp
+    ${SOURCES_DIR}/internal/catch_stdstreams.cpp
     ${SOURCES_DIR}/catch_session.cpp
     ${SOURCES_DIR}/internal/catch_singletons.cpp
-    ${SOURCES_DIR}/internal/catch_stream.cpp
+    ${SOURCES_DIR}/internal/catch_reusable_string_stream.cpp
     ${SOURCES_DIR}/internal/catch_stringref.cpp
     ${SOURCES_DIR}/internal/catch_string_manip.cpp
     ${SOURCES_DIR}/internal/catch_tag_alias_registry.cpp

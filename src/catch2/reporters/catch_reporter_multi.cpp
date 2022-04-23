@@ -9,9 +9,9 @@
 
 #include <catch2/catch_config.hpp>
 #include <catch2/internal/catch_move_and_forward.hpp>
-#include <catch2/internal/catch_stream.hpp>
+#include <catch2/internal/catch_stdstreams.hpp>
 
-#include <cassert>
+#include <ostream>
 
 namespace Catch {
     void MultiReporter::updatePreferences(IEventListener const& reporterish) {

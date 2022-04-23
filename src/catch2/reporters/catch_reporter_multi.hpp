@@ -29,9 +29,7 @@ namespace Catch {
         void updatePreferences(IEventListener const& reporterish);
 
     public:
-        MultiReporter( IConfig const* config ):
-            IEventListener( config )
-        {}
+        using IEventListener::IEventListener;
 
         void addListener( IEventListenerPtr&& listener );
         void addReporter( IEventListenerPtr&& reporter );
