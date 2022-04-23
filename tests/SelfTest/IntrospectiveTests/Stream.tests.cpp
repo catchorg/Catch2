@@ -26,3 +26,7 @@ TEST_CASE( "stdout and stderr streams have %-starting name", "[streams]" ) {
 TEST_CASE( "request an unknown %-starting stream fails", "[streams]" ) {
     REQUIRE_THROWS( Catch::makeStream( "%somestream" ) );
 }
+
+TEST_CASE( "makeStream recognizes %debug stream name", "[streams]" ) {
+    REQUIRE_NOTHROW( Catch::makeStream( "%debug" ) );
+}

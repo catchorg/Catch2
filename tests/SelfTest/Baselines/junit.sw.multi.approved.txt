@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuites>
-  <testsuite name="<exe-name>" errors="17" failures="126" tests="2240" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
+  <testsuite name="<exe-name>" errors="17" failures="126" tests="2241" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
     <properties>
       <property name="random-seed" value="1"/>
       <property name="filters" value="~[!nonportable]~[!benchmark]~[approvals] *"/>
@@ -1726,6 +1726,7 @@ Testing if fib[7] (21) is even
 Misc.tests.cpp:<line number>
       </failure>
     </testcase>
+    <testcase classname="<exe-name>.global" name="makeStream recognizes %debug stream name" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="make_unique reimplementation/From lvalue copies" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="make_unique reimplementation/From rvalue moves" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="make_unique reimplementation/Variadic constructor" time="{duration}" status="run"/>

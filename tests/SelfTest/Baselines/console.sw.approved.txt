@@ -15976,6 +15976,15 @@ with message:
   Testing if fib[7] (21) is even
 
 -------------------------------------------------------------------------------
+makeStream recognizes %debug stream name
+-------------------------------------------------------------------------------
+Stream.tests.cpp:<line number>
+...............................................................................
+
+Stream.tests.cpp:<line number>: PASSED:
+  REQUIRE_NOTHROW( Catch::makeStream( "%debug" ) )
+
+-------------------------------------------------------------------------------
 make_unique reimplementation
   From lvalue copies
 -------------------------------------------------------------------------------
@@ -17925,6 +17934,6 @@ Misc.tests.cpp:<line number>
 Misc.tests.cpp:<line number>: PASSED:
 
 ===============================================================================
-test cases:  390 |  300 passed |  83 failed |  7 failed as expected
-assertions: 2240 | 2070 passed | 143 failed | 27 failed as expected
+test cases:  391 |  301 passed |  83 failed |  7 failed as expected
+assertions: 2241 | 2071 passed | 143 failed | 27 failed as expected
 

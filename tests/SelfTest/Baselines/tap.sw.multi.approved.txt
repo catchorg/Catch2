@@ -4011,6 +4011,8 @@ ok {test-number} - ( fib[i] % 2 ) == 0 for: 0 == 0 with 1 message: 'Testing if f
 not ok {test-number} - ( fib[i] % 2 ) == 0 for: 1 == 0 with 1 message: 'Testing if fib[6] (13) is even'
 # looped tests
 not ok {test-number} - ( fib[i] % 2 ) == 0 for: 1 == 0 with 1 message: 'Testing if fib[7] (21) is even'
+# makeStream recognizes %debug stream name
+ok {test-number} - Catch::makeStream( "%debug" )
 # make_unique reimplementation
 ok {test-number} - !(lval.has_moved) for: !false
 # make_unique reimplementation
@@ -4475,5 +4477,5 @@ ok {test-number} - q3 == 23. for: 23.0 == 23.0
 ok {test-number} -
 # xmlentitycheck
 ok {test-number} -
-1..2240
+1..2241
 

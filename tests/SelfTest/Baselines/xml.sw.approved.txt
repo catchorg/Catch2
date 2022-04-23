@@ -18765,6 +18765,17 @@ loose text artifact
     </Expression>
     <OverallResult success="false"/>
   </TestCase>
+  <TestCase name="makeStream recognizes %debug stream name" tags="[streams]" filename="tests/<exe-name>/IntrospectiveTests/Stream.tests.cpp" >
+    <Expression success="true" type="REQUIRE_NOTHROW" filename="tests/<exe-name>/IntrospectiveTests/Stream.tests.cpp" >
+      <Original>
+        Catch::makeStream( "%debug" )
+      </Original>
+      <Expanded>
+        Catch::makeStream( "%debug" )
+      </Expanded>
+    </Expression>
+    <OverallResult success="true"/>
+  </TestCase>
   <TestCase name="make_unique reimplementation" tags="[internals][unique-ptr]" filename="tests/<exe-name>/IntrospectiveTests/UniquePtr.tests.cpp" >
     <Section name="From lvalue copies" filename="tests/<exe-name>/IntrospectiveTests/UniquePtr.tests.cpp" >
       <Expression success="true" type="REQUIRE_FALSE" filename="tests/<exe-name>/IntrospectiveTests/UniquePtr.tests.cpp" >
@@ -21050,6 +21061,6 @@ loose text artifact
     </Section>
     <OverallResult success="true"/>
   </TestCase>
-  <OverallResults successes="2070" failures="143" expectedFailures="27"/>
-  <OverallResultsCases successes="300" failures="83" expectedFailures="7"/>
+  <OverallResults successes="2071" failures="143" expectedFailures="27"/>
+  <OverallResultsCases successes="301" failures="83" expectedFailures="7"/>
 </Catch2TestRun>

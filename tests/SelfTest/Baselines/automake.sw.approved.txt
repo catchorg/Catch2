@@ -320,6 +320,7 @@ loose text artifact
 :test-result: PASS long long
 :test-result: FAIL looped SECTION tests
 :test-result: FAIL looped tests
+:test-result: PASS makeStream recognizes %debug stream name
 :test-result: PASS make_unique reimplementation
 :test-result: PASS mean
 :test-result: PASS measure

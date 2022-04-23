@@ -2269,6 +2269,7 @@ Misc.tests.cpp:<line number>: failed: ( fib[i] % 2 ) == 0 for: 1 == 0 with 1 mes
 Misc.tests.cpp:<line number>: passed: ( fib[i] % 2 ) == 0 for: 0 == 0 with 1 message: 'Testing if fib[5] (8) is even'
 Misc.tests.cpp:<line number>: failed: ( fib[i] % 2 ) == 0 for: 1 == 0 with 1 message: 'Testing if fib[6] (13) is even'
 Misc.tests.cpp:<line number>: failed: ( fib[i] % 2 ) == 0 for: 1 == 0 with 1 message: 'Testing if fib[7] (21) is even'
+Stream.tests.cpp:<line number>: passed: Catch::makeStream( "%debug" )
 UniquePtr.tests.cpp:<line number>: passed: !(lval.has_moved) for: !false
 UniquePtr.tests.cpp:<line number>: passed: rval.has_moved for: true
 UniquePtr.tests.cpp:<line number>: passed: *ptr == std::tuple<int, double, int>{1, 2., 3} for: {?} == {?}
