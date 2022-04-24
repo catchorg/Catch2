@@ -56,7 +56,7 @@ jobs:
             build_description: CMake configuration tests
             build_type: Debug
             std: 14
-            other_pks: clang-10
+            other_pkgs: clang-10
             cmake_configurations: -DCATCH_ENABLE_CONFIGURE_TESTS=ON
 
 
