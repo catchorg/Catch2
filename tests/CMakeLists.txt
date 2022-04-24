@@ -302,6 +302,7 @@ set_tests_properties(ApprovalTests
     FAIL_REGULAR_EXPRESSION "Results differed"
     COST 120 # We know that this is either the most, or second most,
     # expensive test in the test suite, so we give it high estimate for CI runs
+    LABELS "uses-python"
 )
 
 add_test(NAME RegressionCheck-1670 COMMAND $<TARGET_FILE:SelfTest> "#1670 regression check" -c A -r compact)
@@ -352,11 +353,18 @@ set_tests_properties(TagAlias PROPERTIES
 
 add_test(NAME RandomTestOrdering COMMAND ${PYTHON_EXECUTABLE}
   ${CATCH_DIR}/tests/TestScripts/testRandomOrder.py $<TARGET_FILE:SelfTest>)
-
+set_tests_properties(RandomTestOrdering
+  PROPERTIES
+    LABELS "uses-python"
+)
 
 add_test(NAME CheckConvenienceHeaders
   COMMAND
     ${PYTHON_EXECUTABLE} ${CATCH_DIR}/tools/scripts/checkConvenienceHeaders.py
+)
+set_tests_properties(CheckConvenienceHeaders
+  PROPERTIES
+    LABELS "uses-python"
 )
 
 add_test(NAME "Benchmarking::SkipBenchmarkMacros"
@@ -530,6 +538,7 @@ if (CATCH_ENABLE_CONFIGURE_TESTS)
         set_tests_properties("CMakeConfig::${testName}"
           PROPERTIES
             COST 240
+            LABELS "uses-python"
         )
 
     endforeach()

@@ -13,6 +13,10 @@ add_test(
   NAME TestShardingIntegration
   COMMAND ${PYTHON_EXECUTABLE} ${CATCH_DIR}/tests/TestScripts/testSharding.py $<TARGET_FILE:SelfTest>
 )
+set_tests_properties(TestShardingIntegration
+  PROPERTIES
+    LABELS "uses-python"
+)
 
 add_test(
   NAME TestSharding::OverlyLargeShardIndex
@@ -128,6 +132,10 @@ add_test(NAME CATCH_CONFIG_BAZEL_REPORTER-1
   COMMAND
   "${PYTHON_EXECUTABLE}" "${CATCH_DIR}/tests/TestScripts/testBazelReporter.py" $<TARGET_FILE:BazelReporter> "${CMAKE_CURRENT_BINARY_DIR}"
 )
+set_tests_properties(CATCH_CONFIG_BAZEL_REPORTER-1
+  PROPERTIES
+    LABELS "uses-python"
+)
 
 
 # The default handler on Windows leads to the just-in-time debugger firing,
@@ -213,6 +221,10 @@ target_link_libraries(PartialTestCaseEvents PRIVATE Catch2WithMain)
 add_test(
   NAME PartialTestCaseEvents
   COMMAND ${PYTHON_EXECUTABLE} ${CATCH_DIR}/tests/TestScripts/testPartialTestCaseEvent.py $<TARGET_FILE:PartialTestCaseEvents>
+)
+set_tests_properties(PartialTestCaseEvents
+  PROPERTIES
+    LABELS "uses-python"
 )
 
 add_executable(BenchmarksInCumulativeReporter ${TESTS_DIR}/X22-BenchmarksInCumulativeReporter.cpp)
