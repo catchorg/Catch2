@@ -233,7 +233,7 @@ namespace Catch {
                             return Detail::InternalParseResult::runtimeError(
                                 "Expected argument following " +
                                 token.token);
-                        auto result = valueRef->setValue(argToken.token);
+                        const auto result = valueRef->setValue(argToken.token);
                         if (!result)
                             return Detail::InternalParseResult(result);
                         if (result.value() ==
