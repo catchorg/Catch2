@@ -296,9 +296,9 @@ Specifically, every source file should start with the licence header:
 ```
 
 The include guards for header files should follow the pattern `{FILENAME}_INCLUDED`.
-This means that for file `catch_matchers_foo`, the include guard should
-be `CATCH_MATCHERS_FOO_INCLUDED`, for `catch_generators_bar`, the include
-guard should be `CATCH_GENERATORS_BAR_INCLUDED`, and so on.
+This means that for file `catch_matchers_foo.hpp`, the include guard should
+be `CATCH_MATCHERS_FOO_HPP_INCLUDED`, for `catch_generators_bar.hpp`, the include
+guard should be `CATCH_GENERATORS_BAR_HPP_INCLUDED`, and so on.
 
 
 ## CoC
