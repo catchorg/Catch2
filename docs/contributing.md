@@ -136,6 +136,8 @@ should use. It provides you with the top anchor mentioned to link to
 <a id="top"></a>
 # Cool feature
 
+> [Introduced](https://github.com/catchorg/Catch2/pull/123456) in Catch2 X.Y.Z
+
 Text that explains how to use the cool feature.
 
 
