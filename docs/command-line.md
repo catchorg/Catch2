@@ -19,7 +19,7 @@
 [Specify a seed for the Random Number Generator](#specify-a-seed-for-the-random-number-generator)<br>
 [Identify framework and version according to the libIdentify standard](#identify-framework-and-version-according-to-the-libidentify-standard)<br>
 [Wait for key before continuing](#wait-for-key-before-continuing)<br>
-[Skip benchmarks](#skip-benchmarks)<br>
+[Skip all benchmarks](#skip-all-benchmarks)<br>
 [Specify the number of benchmark samples to collect](#specify-the-number-of-benchmark-samples-to-collect)<br>
 [Specify the number of resamples for bootstrapping](#specify-the-number-of-resamples-for-bootstrapping)<br>
 [Specify the confidence-interval for bootstrapping](#specify-the-confidence-interval-for-bootstrapping)<br>
