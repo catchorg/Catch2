@@ -6,7 +6,7 @@
 // SPDX-License-Identifier: BSL-1.0
 
 //  Catch v3.0.0-preview.4
-//  Generated: 2022-01-03 23:14:23.198909
+//  Generated: 2022-04-26 16:45:02.008519
 //  ----------------------------------------------------------
 //  This file is an amalgamation of multiple different files.
 //  You probably shouldn't edit it directly.
@@ -127,11 +127,15 @@ using Catch::Benchmark::Detail::sample;
 
     double standard_deviation(std::vector<double>::iterator first, std::vector<double>::iterator last) {
         auto m = Catch::Benchmark::Detail::mean(first, last);
-        double variance = std::accumulate(first, last, 0., [m](double a, double b) {
-            double diff = b - m;
-            return a + diff * diff;
-            }) / (last - first);
-            return std::sqrt(variance);
+        double variance = std::accumulate( first,
+                                           last,
+                                           0.,
+                                           [m]( double a, double b ) {
+                                               double diff = b - m;
+                                               return a + diff * diff;
+                                           } ) /
+                          ( last - first );
+        return std::sqrt( variance );
     }
 
 }
@@ -522,8 +526,7 @@ namespace Catch {
     }
 
     Config::Config( ConfigData const& data ):
-        m_data( data ),
-        m_defaultStream( openStream( data.defaultOutputFilename ) ) {
+        m_data( data ) {
         // We need to trim filter specs to avoid trouble with superfluous
         // whitespace (esp. important for bdd macros, as those are manually
         // aligned with whitespace).
@@ -535,6 +538,7 @@ namespace Catch {
             elem = trim(elem);
         }
 
+
         TestSpecParser parser(ITagAliasRegistry::get());
         if (!m_data.testsOrTags.empty()) {
             m_hasTestFilters = true;
@@ -544,13 +548,32 @@ namespace Catch {
         }
         m_testSpec = parser.testSpec();
 
+
+        // Insert the default reporter if user hasn't asked for a specfic one
+        if ( m_data.reporterSpecifications.empty() ) {
+            m_data.reporterSpecifications.push_back( {
+#if defined( CATCH_CONFIG_DEFAULT_REPORTER )
+                CATCH_CONFIG_DEFAULT_REPORTER,
+#else
+                "console",
+#endif
+                {}
+            } );
+        }
+
+        bool defaultOutputUsed = false;
         m_reporterStreams.reserve( m_data.reporterSpecifications.size() );
         for ( auto const& reporterAndFile : m_data.reporterSpecifications ) {
             if ( reporterAndFile.outputFileName.none() ) {
-                m_reporterStreams.emplace_back( new Detail::RDBufStream(
-                    m_defaultStream->stream().rdbuf() ) );
+                CATCH_ENFORCE( !defaultOutputUsed,
+                               "Internal error: cannot use default output for "
+                               "multiple reporters" );
+                defaultOutputUsed = true;
+
+                m_reporterStreams.push_back(
+                    openStream( data.defaultOutputFilename ) );
             } else {
-                m_reporterStreams.emplace_back(
+                m_reporterStreams.push_back(
                     openStream( *reporterAndFile.outputFileName ) );
             }
         }
@@ -570,8 +593,8 @@ namespace Catch {
         return m_data.reporterSpecifications;
     }
 
-    std::ostream& Config::getReporterOutputStream(std::size_t reporterIdx) const {
-        return m_reporterStreams.at(reporterIdx)->stream();
+    IStream const* Config::getReporterOutputStream(std::size_t reporterIdx) const {
+        return m_reporterStreams.at(reporterIdx).get();
     }
 
     TestSpec const& Config::testSpec() const { return m_testSpec; }
@@ -581,7 +604,6 @@ namespace Catch {
 
     // IConfig interface
     bool Config::allowThrows() const                   { return !m_data.noThrow; }
-    std::ostream& Config::defaultStream() const        { return m_defaultStream->stream(); }
     StringRef Config::name() const { return m_data.name.empty() ? m_data.processName : m_data.name; }
     bool Config::includeSuccessfulResults() const      { return m_data.showSuccessfulTests; }
     bool Config::warnAboutMissingAssertions() const {
@@ -750,7 +772,7 @@ namespace Catch {
             void registerReporter( std::string const& name, IReporterFactoryPtr factory ) override {
                 m_reporterRegistry.registerReporter( name, CATCH_MOVE(factory) );
             }
-            void registerListener( IReporterFactoryPtr factory ) override {
+            void registerListener( Detail::unique_ptr<EventListenerFactory> factory ) override {
                 m_reporterRegistry.registerListener( CATCH_MOVE(factory) );
             }
             void registerTest( Detail::unique_ptr<TestCaseInfo>&& testInfo, Detail::unique_ptr<ITestInvoker>&& invoker ) override {
@@ -824,20 +846,20 @@ namespace Catch {
         IStreamingReporterPtr makeReporter(Config const* config) {
             if (Catch::getRegistryHub().getReporterRegistry().getListeners().empty()
                     && config->getReportersAndOutputFiles().size() == 1) {
-                auto& stream = config->getReporterOutputStream(0);
+                auto stream = config->getReporterOutputStream(0);
                 return createReporter(config->getReportersAndOutputFiles()[0].reporterName, ReporterConfig(config, stream));
             }
 
-            auto multi = Detail::make_unique<ListeningReporter>(config);
+            auto multi = Detail::make_unique<MultiReporter>(config);
 
             auto const& listeners = Catch::getRegistryHub().getReporterRegistry().getListeners();
             for (auto const& listener : listeners) {
-                multi->addListener(listener->create(Catch::ReporterConfig(config, config->defaultStream())));
+                multi->addListener(listener->create(config));
             }
 
             std::size_t reporterIdx = 0;
             for (auto const& reporterAndFile : config->getReportersAndOutputFiles()) {
-                auto& stream = config->getReporterOutputStream(reporterIdx);
+                auto stream = config->getReporterOutputStream(reporterIdx);
                 multi->addReporter(createReporter(reporterAndFile.reporterName, ReporterConfig(config, stream)));
                 reporterIdx++;
             }
@@ -900,7 +922,7 @@ namespace Catch {
 
 
         private:
-            IStreamingReporter* m_reporter;
+            IEventListener* m_reporter;
             Config const* m_config;
             RunContext m_context;
             std::set<TestCaseHandle const*> m_tests;
@@ -931,14 +953,16 @@ namespace Catch {
             getCurrentMutableContext().setConfig(m_config.get());
 
             m_startupExceptions = true;
-            Colour colourGuard( Colour::Red );
-            Catch::cerr() << "Errors occurred during startup!" << '\n';
+            auto errStream = makeStream( "%stderr" );
+            auto colourImpl = makeColourImpl( &config(), errStream.get() );
+            auto guard = colourImpl->startColour( Colour::Red );
+            errStream->stream() << "Errors occurred during startup!" << '\n';
             // iterate over all exceptions and notify user
             for ( const auto& ex_ptr : exceptions ) {
                 try {
                     std::rethrow_exception(ex_ptr);
                 } catch ( std::exception const& ex ) {
-                    Catch::cerr() << TextFlow::Column( ex.what() ).indent(2) << '\n';
+                    errStream->stream() << TextFlow::Column( ex.what() ).indent(2) << '\n';
                 }
             }
         }
@@ -953,7 +977,7 @@ namespace Catch {
 
     void Session::showHelp() const {
         Catch::cout()
-                << "\nCatch v" << libraryVersion() << '\n'
+                << "\nCatch2 v" << libraryVersion() << '\n'
                 << m_cli << '\n'
                 << "For more detailed usage please see the project docs\n\n" << std::flush;
     }
@@ -961,7 +985,7 @@ namespace Catch {
         Catch::cout()
                 << std::left << std::setw(16) << "description: " << "A Catch2 test executable\n"
                 << std::left << std::setw(16) << "category: " << "testframework\n"
-                << std::left << std::setw(16) << "framework: " << "Catch Test\n"
+                << std::left << std::setw(16) << "framework: " << "Catch2\n"
                 << std::left << std::setw(16) << "version: " << libraryVersion() << '\n' << std::flush;
     }
 
@@ -974,12 +998,15 @@ namespace Catch {
         if( !result ) {
             config();
             getCurrentMutableContext().setConfig(m_config.get());
-            Catch::cerr()
-                << Colour( Colour::Red )
+            auto errStream = makeStream( "%stderr" );
+            auto colour = makeColourImpl( &config(), errStream.get() );
+
+            errStream->stream()
+                << colour->startColour( Colour::Red )
                 << "\nError(s) in input:\n"
                 << TextFlow::Column( result.errorMessage() ).indent( 2 )
                 << "\n\n";
-            Catch::cerr() << "Run with -? for usage\n\n" << std::flush;
+            errStream->stream() << "Run with -? for usage\n\n" << std::flush;
             return MaxExitCode;
         }
 
@@ -1110,7 +1137,7 @@ namespace Catch {
             // Note that on unices only the lower 8 bits are usually used, clamping
             // the return value to 255 prevents false negative when some multiple
             // of 256 tests has failed
-            return (std::min) (MaxExitCode, (std::max) (totals.error, static_cast<int>(totals.assertions.failed)));
+            return (std::min) (MaxExitCode, static_cast<int>(totals.assertions.failed));
         }
 #if !defined(CATCH_CONFIG_DISABLE_EXCEPTIONS)
         catch( std::exception& ex ) {
@@ -1953,6 +1980,7 @@ namespace Catch {
 
 namespace Catch {
     IReporterFactory::~IReporterFactory() = default;
+    EventListenerFactory::~EventListenerFactory() = default;
 }
 
 
@@ -1962,10 +1990,10 @@ namespace Catch {
 
 namespace Catch {
 
-    ReporterConfig::ReporterConfig( IConfig const* _fullConfig, std::ostream& _stream )
-    :   m_stream( &_stream ), m_fullConfig( _fullConfig ) {}
+    ReporterConfig::ReporterConfig( IConfig const* _fullConfig, IStream const* _stream )
+    :   m_stream( _stream ), m_fullConfig( _fullConfig ) {}
 
-    std::ostream& ReporterConfig::stream() const { return *m_stream; }
+    IStream const* ReporterConfig::stream() const { return m_stream; }
     IConfig const * ReporterConfig::fullConfig() const { return m_fullConfig; }
 
     AssertionStats::AssertionStats( AssertionResult const& _assertionResult,
@@ -2020,7 +2048,7 @@ namespace Catch {
         aborting( _aborting )
     {}
 
-    IStreamingReporter::~IStreamingReporter() = default;
+    IEventListener::~IEventListener() = default;
 
 } // end namespace Catch
 
@@ -2903,15 +2931,6 @@ namespace Catch {
                 return ParserResult::runtimeError( "Received empty reporter spec." );
             }
 
-            IReporterRegistry::FactoryMap const& factories = getRegistryHub().getReporterRegistry().getFactories();
-
-            // clear the default reporter
-            if (!config._nonDefaultReporterSpecifications) {
-                config.reporterSpecifications.clear();
-                config._nonDefaultReporterSpecifications = true;
-            }
-
-
             // Exactly one of the reporters may be specified without an output
             // file, in which case it defaults to the output specified by "-o"
             // (or standard output).
@@ -2940,6 +2959,8 @@ namespace Catch {
                     fileNameSeparatorPos + separatorSize, reporterSpec.size() );
             }
 
+            IReporterRegistry::FactoryMap const& factories =
+                getRegistryHub().getReporterRegistry().getFactories();
             auto result = factories.find( reporterName );
 
             if( result == factories.end() )
@@ -3069,7 +3090,7 @@ namespace Catch {
             | Opt( setRngSeed, "'time'|'random-device'|number" )
                 ["--rng-seed"]
                 ( "set a specific seed for random numbers" )
-            | Opt( setColourUsage, "yes|no" )
+            | Opt( setColourUsage, "yes|no|auto" )
                 ["--use-colour"]
                 ( "should output be colourised" )
             | Opt( config.libIdentify )
@@ -3121,23 +3142,48 @@ namespace Catch {
 #include <ostream>
 
 namespace Catch {
+
+    ColourImpl::~ColourImpl() = default;
+
+    ColourImpl::ColourGuard ColourImpl::startColour( Colour::Code colourCode ) {
+        return ColourGuard(colourCode, this );
+    }
+
     namespace {
+        //! A do-nothing implementation of colour, used as fallback for unknown
+        //! platforms, and when the user asks to deactivate all colours.
+        class NoColourImpl : public ColourImpl {
+        public:
+            NoColourImpl( IStream const* stream ): ColourImpl( stream ) {}
+            static bool useColourOnPlatform() { return true; }
 
-        struct IColourImpl {
-            virtual ~IColourImpl() = default;
-            virtual void use( Colour::Code _colourCode ) = 0;
+        private:
+            void use( Colour::Code ) const override {}
         };
 
-        struct NoColourImpl : IColourImpl {
-            void use( Colour::Code ) override {}
+    } // namespace
 
-            static IColourImpl* instance() {
-                static NoColourImpl s_instance;
-                return &s_instance;
-            }
-        };
+    ColourImpl::ColourGuard::ColourGuard( Colour::Code code,
+                              ColourImpl const* colour ):
+        m_colourImpl( colour ) {
+        m_colourImpl->use( code );
+    }
+    ColourImpl::ColourGuard::ColourGuard( ColourGuard&& rhs ):
+        m_colourImpl( rhs.m_colourImpl ) {
+        rhs.m_moved = true;
+    }
+    ColourImpl::ColourGuard&
+    ColourImpl::ColourGuard::operator=( ColourGuard&& rhs ) {
+        m_colourImpl = rhs.m_colourImpl;
+        rhs.m_moved = true;
+        return *this;
+    }
+    ColourImpl::ColourGuard::~ColourGuard() {
+        if ( !m_moved ) {
+            m_colourImpl->use( Colour::None );
+        }
+    }
 
-    } // anon namespace
 } // namespace Catch
 
 #if !defined( CATCH_CONFIG_COLOUR_NONE ) && !defined( CATCH_CONFIG_COLOUR_WINDOWS ) && !defined( CATCH_CONFIG_COLOUR_ANSI )
@@ -3154,17 +3200,26 @@ namespace Catch {
 namespace Catch {
 namespace {
 
-    class Win32ColourImpl : public IColourImpl {
+    class Win32ColourImpl : public ColourImpl {
     public:
-        Win32ColourImpl() : stdoutHandle( GetStdHandle(STD_OUTPUT_HANDLE) )
-        {
+        Win32ColourImpl(IStream const* stream):
+            ColourImpl(stream) {
             CONSOLE_SCREEN_BUFFER_INFO csbiInfo;
-            GetConsoleScreenBufferInfo( stdoutHandle, &csbiInfo );
+            GetConsoleScreenBufferInfo( GetStdHandle( STD_OUTPUT_HANDLE ),
+                                        &csbiInfo );
             originalForegroundAttributes = csbiInfo.wAttributes & ~( BACKGROUND_GREEN | BACKGROUND_RED | BACKGROUND_BLUE | BACKGROUND_INTENSITY );
             originalBackgroundAttributes = csbiInfo.wAttributes & ~( FOREGROUND_GREEN | FOREGROUND_RED | FOREGROUND_BLUE | FOREGROUND_INTENSITY );
         }
 
-        void use( Colour::Code _colourCode ) override {
+        static bool useColourOnPlatform(IStream const& stream) {
+            // Win32 text colour APIs can only be used on console streams
+            // We cannot check that the output hasn't been redirected,
+            // so we just check that the original stream is console stream.
+            return stream.isStdout();
+        }
+
+    private:
+        void use( Colour::Code _colourCode ) const override {
             switch( _colourCode ) {
                 case Colour::None:      return setTextAttribute( originalForegroundAttributes );
                 case Colour::White:     return setTextAttribute( FOREGROUND_GREEN | FOREGROUND_RED | FOREGROUND_BLUE );
@@ -3188,34 +3243,25 @@ namespace {
             }
         }
 
-    private:
-        void setTextAttribute( WORD _textAttribute ) {
-            SetConsoleTextAttribute( stdoutHandle, _textAttribute | originalBackgroundAttributes );
+        void setTextAttribute( WORD _textAttribute ) const {
+            SetConsoleTextAttribute( GetStdHandle( STD_OUTPUT_HANDLE ),
+                                     _textAttribute |
+                                         originalBackgroundAttributes );
         }
-        HANDLE stdoutHandle;
         WORD originalForegroundAttributes;
         WORD originalBackgroundAttributes;
     };
 
-    IColourImpl* platformColourInstance() {
-        static Win32ColourImpl s_instance;
-
-        auto const* config = getCurrentContext().getConfig();
-        UseColour colourMode = config?
-            config->useColour() : UseColour::Auto;
-        if( colourMode == UseColour::Auto )
-            colourMode = UseColour::Yes;
-        return colourMode == UseColour::Yes
-            ? &s_instance
-            : NoColourImpl::instance();
-    }
-
 } // end anon namespace
 } // end namespace Catch
 
-#elif defined( CATCH_CONFIG_COLOUR_ANSI ) //////////////////////////////////////
+#endif // Windows/ ANSI/ None
 
-#include <unistd.h>
+
+#if defined( CATCH_PLATFORM_LINUX ) || defined( CATCH_PLATFORM_MAC )
+#    define CATCH_INTERNAL_HAS_ISATTY
+#    include <unistd.h>
+#endif
 
 namespace Catch {
 namespace {
@@ -3224,9 +3270,40 @@ namespace {
     // Thanks to Adam Strzelecki for original contribution
     // (http://github.com/nanoant)
     // https://github.com/philsquared/Catch/pull/131
-    class PosixColourImpl : public IColourImpl {
+    class PosixColourImpl : public ColourImpl {
     public:
-        void use( Colour::Code _colourCode ) override {
+        PosixColourImpl( IStream const* stream ): ColourImpl( stream ) {}
+
+        static bool useColourOnPlatform(IStream const& stream) {
+            // This is kinda messy due to trying to support a bunch of
+            // different platforms at once.
+            // The basic idea is that if we are asked to do autodetection (as
+            // opposed to being told to use posixy colours outright), then we
+            // only want to use the colours if we are writing to console.
+            // However, console might be redirected, so we make an attempt at
+            // checking for that on platforms where we know how to do that.
+            bool useColour = stream.isStdout();
+#if defined( CATCH_INTERNAL_HAS_ISATTY ) && \
+    !( defined( __DJGPP__ ) && defined( __STRICT_ANSI__ ) )
+            ErrnoGuard _; // for isatty
+            useColour = useColour && isatty( STDOUT_FILENO );
+#    endif
+#    if defined( CATCH_PLATFORM_MAC ) || defined( CATCH_PLATFORM_IPHONE )
+            useColour = useColour && !isDebuggerActive();
+#    endif
+
+            return useColour;
+        }
+
+    private:
+        void use( Colour::Code _colourCode ) const override {
+            auto setColour = [&out =
+                                  m_stream->stream()]( char const* escapeCode ) {
+                // The escape sequence must be flushed to console, otherwise
+                // if stdin and stderr are intermixed, we'd get accidentally
+                // coloured output.
+                out << '\033' << escapeCode << std::flush;
+            };
             switch( _colourCode ) {
                 case Colour::None:
                 case Colour::White:     return setColour( "[0m" );
@@ -3247,89 +3324,50 @@ namespace {
                 default: CATCH_INTERNAL_ERROR( "Unknown colour requested" );
             }
         }
-        static IColourImpl* instance() {
-            static PosixColourImpl s_instance;
-            return &s_instance;
-        }
-
-    private:
-        void setColour( const char* _escapeCode ) {
-            // The escape sequence must be flushed to console, otherwise if
-            // stdin and stderr are intermixed, we'd get accidentally coloured output.
-            getCurrentContext().getConfig()->defaultStream()
-                << '\033' << _escapeCode << std::flush;
-        }
     };
-
-    bool useColourOnPlatform() {
-        return
-#if defined(CATCH_PLATFORM_MAC) || defined(CATCH_PLATFORM_IPHONE)
-            !isDebuggerActive() &&
-#endif
-#if !(defined(__DJGPP__) && defined(__STRICT_ANSI__))
-            isatty(STDOUT_FILENO)
-#else
-            false
-#endif
-            ;
-    }
-    IColourImpl* platformColourInstance() {
-        ErrnoGuard guard;
-        auto const* config = getCurrentContext().getConfig();
-        UseColour colourMode = config
-            ? config->useColour()
-            : UseColour::Auto;
-        if( colourMode == UseColour::Auto )
-            colourMode = useColourOnPlatform()
-                ? UseColour::Yes
-                : UseColour::No;
-        return colourMode == UseColour::Yes
-            ? PosixColourImpl::instance()
-            : NoColourImpl::instance();
-    }
 
 } // end anon namespace
 } // end namespace Catch
 
-#else  // not Windows or ANSI ///////////////////////////////////////////////
-
 namespace Catch {
 
-    static IColourImpl* platformColourInstance() { return NoColourImpl::instance(); }
+    Detail::unique_ptr<ColourImpl> makeColourImpl(IConfig const* config, IStream const* stream) {
+        UseColour colourMode = config ? config->useColour() : UseColour::Auto;
 
-} // end namespace Catch
-
-#endif // Windows/ ANSI/ None
-
-namespace Catch {
-
-    Colour::Colour( Code _colourCode ) { use( _colourCode ); }
-    Colour::Colour( Colour&& other ) noexcept {
-        m_moved = other.m_moved;
-        other.m_moved = true;
-    }
-    Colour& Colour::operator=( Colour&& other ) noexcept {
-        m_moved = other.m_moved;
-        other.m_moved  = true;
-        return *this;
-    }
-
-    Colour::~Colour(){ if( !m_moved ) use( None ); }
-
-    void Colour::use( Code _colourCode ) {
-        static IColourImpl* impl = platformColourInstance();
-        // Strictly speaking, this cannot possibly happen.
-        // However, under some conditions it does happen (see #1626),
-        // and this change is small enough that we can let practicality
-        // triumph over purity in this case.
-        if (impl != nullptr) {
-            impl->use( _colourCode );
+        bool createPlatformInstance = false;
+        if ( colourMode == UseColour::No ) {
+            createPlatformInstance = false;
         }
+
+        if ( colourMode == UseColour::Yes ) {
+            createPlatformInstance = true;
+        }
+
+        if ( colourMode == UseColour::Auto ) {
+            createPlatformInstance =
+#if defined( CATCH_CONFIG_COLOUR_ANSI )
+                PosixColourImpl::useColourOnPlatform( *stream )
+#elif defined( CATCH_CONFIG_COLOUR_WINDOWS )
+                Win32ColourImpl::useColourOnPlatform( *stream )
+#else
+                false
+#endif
+                ;
+        }
+
+        if ( createPlatformInstance ) {
+            return
+#if defined( CATCH_CONFIG_COLOUR_ANSI )
+                Detail::make_unique<PosixColourImpl>(stream);
+#elif defined( CATCH_CONFIG_COLOUR_WINDOWS )
+                Detail::make_unique<Win32ColourImpl>(stream);
+#else
+                Detail::make_unique<NoColourImpl>(stream);
+#endif
+        }
+        return Detail::make_unique<NoColourImpl>(stream);
     }
 
-    std::ostream& operator << ( std::ostream& os, Colour const& ) {
-        return os;
-    }
 
 } // end namespace Catch
 
@@ -3967,13 +4005,13 @@ namespace Catch {
 namespace Catch {
     namespace {
 
-        void listTests(IStreamingReporter& reporter, IConfig const& config) {
+        void listTests(IEventListener& reporter, IConfig const& config) {
             auto const& testSpec = config.testSpec();
             auto matchedTestCases = filterTests(getAllTestCasesSorted(config), testSpec, config);
             reporter.listTests(matchedTestCases);
         }
 
-        void listTags(IStreamingReporter& reporter, IConfig const& config) {
+        void listTags(IEventListener& reporter, IConfig const& config) {
             auto const& testSpec = config.testSpec();
             std::vector<TestCaseHandle> matchedTestCases = filterTests(getAllTestCasesSorted(config), testSpec, config);
 
@@ -3995,7 +4033,7 @@ namespace Catch {
             reporter.listTags(infos);
         }
 
-        void listReporters(IStreamingReporter& reporter) {
+        void listReporters(IEventListener& reporter) {
             std::vector<ReporterDescription> descriptions;
 
             IReporterRegistry::FactoryMap const& factories = getRegistryHub().getReporterRegistry().getFactories();
@@ -4030,7 +4068,7 @@ namespace Catch {
         return out;
     }
 
-    bool list( IStreamingReporter& reporter, Config const& config ) {
+    bool list( IEventListener& reporter, Config const& config ) {
         bool listed = false;
         if (config.listTests()) {
             listed = true;
@@ -4336,9 +4374,12 @@ namespace Catch {
     }
 
     void ReporterRegistry::registerReporter( std::string const& name, IReporterFactoryPtr factory ) {
+        CATCH_ENFORCE( name.find( "::" ) == name.npos,
+                       "'::' is not allowed in reporter name: '" + name + '\'' );
         m_factories.emplace(name, CATCH_MOVE(factory));
     }
-    void ReporterRegistry::registerListener( IReporterFactoryPtr factory ) {
+    void ReporterRegistry::registerListener(
+        Detail::unique_ptr<EventListenerFactory> factory ) {
         m_listeners.push_back( CATCH_MOVE(factory) );
     }
 
@@ -5143,6 +5184,21 @@ namespace Detail {
 
         public: // IStream
             std::ostream& stream() const override { return m_os; }
+            bool isStdout() const override { return true; }
+        };
+
+        class CerrStream : public IStream {
+            mutable std::ostream m_os;
+
+        public:
+            // Store the streambuf from cerr up-front because
+            // cout may get redirected when running tests
+            CerrStream(): m_os( Catch::cerr().rdbuf() ) {}
+            ~CerrStream() override = default;
+
+        public: // IStream
+            std::ostream& stream() const override { return m_os; }
+            bool isStdout() const override { return true; }
         };
 
         ///////////////////////////////////////////////////////////////////////////
@@ -5171,14 +5227,18 @@ namespace Detail {
         if ( filename.empty() || filename == "-" ) {
             return Detail::make_unique<Detail::CoutStream>();
         }
-        else if( filename[0] == '%' ) {
-            if( filename == "%debug" )
+        if( filename[0] == '%' ) {
+            if ( filename == "%debug" ) {
                 return Detail::make_unique<Detail::DebugOutStream>();
-            else
+            } else if ( filename == "%stderr" ) {
+                return Detail::make_unique<Detail::CerrStream>();
+            } else if ( filename == "%stdout" ) {
+                return Detail::make_unique<Detail::CoutStream>();
+            } else {
                 CATCH_ERROR( "Unrecognised stream: '" << filename << '\'' );
+            }
         }
-        else
-            return Detail::make_unique<Detail::FileStream>( filename );
+        return Detail::make_unique<Detail::FileStream>( filename );
     }
 
 
@@ -7422,7 +7482,7 @@ namespace Catch {
         out << pluralise(tags.size(), "tag"_sr) << "\n\n" << std::flush;
     }
 
-    void defaultListTests(std::ostream& out, std::vector<TestCaseHandle> const& tests, bool isFiltered, Verbosity verbosity) {
+    void defaultListTests(std::ostream& out, ColourImpl* streamColour, std::vector<TestCaseHandle> const& tests, bool isFiltered, Verbosity verbosity) {
         // We special case this to provide the equivalent of old
         // `--list-test-names-only`, which could then be used by the
         // `--input-file` option.
@@ -7442,7 +7502,7 @@ namespace Catch {
             Colour::Code colour = testCaseInfo.isHidden()
                 ? Colour::SecondaryText
                 : Colour::None;
-            Colour colourGuard(colour);
+            auto colourGuard = streamColour->startColour( colour );
 
             out << TextFlow::Column(testCaseInfo.name).initialIndent(2).indent(4) << '\n';
             if (verbosity >= Verbosity::High) {
@@ -7498,12 +7558,33 @@ namespace Catch {
 
 
 
+
+namespace Catch {
+
+    void ReporterBase::listReporters(std::vector<ReporterDescription> const& descriptions) {
+        defaultListReporters(m_stream, descriptions, m_config->verbosity());
+    }
+
+    void ReporterBase::listTests(std::vector<TestCaseHandle> const& tests) {
+        defaultListTests(m_stream,
+                         m_colour.get(),
+                         tests,
+                         m_config->hasTestFilters(),
+                         m_config->verbosity());
+    }
+
+    void ReporterBase::listTags(std::vector<TagInfo> const& tags) {
+        defaultListTags( m_stream, tags, m_config->hasTestFilters() );
+    }
+
+} // namespace Catch
+
+
+
+
 #include <ostream>
 
 namespace {
-
-    // Colour::LightGrey
-    constexpr Catch::Colour::Code dimColour() { return Catch::Colour::FileName; }
 
     constexpr Catch::StringRef bothOrAll( std::uint64_t count ) {
         switch (count) {
@@ -7522,6 +7603,9 @@ namespace {
 namespace Catch {
 namespace {
 
+    // Colour::LightGrey
+    static constexpr Colour::Code compactDimColour = Colour::FileName;
+
 #ifdef CATCH_PLATFORM_MAC
     static constexpr Catch::StringRef compactFailedString = "FAILED"_sr;
     static constexpr Catch::StringRef compactPassedString = "PASSED"_sr;
@@ -7536,11 +7620,11 @@ namespace {
 // - white: Passed [both/all] N test cases (no assertions).
 // -   red: Failed N tests cases, failed M assertions.
 // - green: Passed [both/all] N tests cases with M assertions.
-void printTotals(std::ostream& out, const Totals& totals) {
+void printTotals(std::ostream& out, const Totals& totals, ColourImpl* colourImpl) {
     if (totals.testCases.total() == 0) {
         out << "No tests ran.";
     } else if (totals.testCases.failed == totals.testCases.total()) {
-        Colour colour(Colour::ResultError);
+        auto guard = colourImpl->startColour( Colour::ResultError );
         const StringRef qualify_assertions_failed =
             totals.assertions.failed == totals.assertions.total() ?
             bothOrAll(totals.assertions.failed) : StringRef{};
@@ -7555,13 +7639,11 @@ void printTotals(std::ostream& out, const Totals& totals) {
             << pluralise(totals.testCases.total(), "test case"_sr)
             << " (no assertions).";
     } else if (totals.assertions.failed) {
-        Colour colour(Colour::ResultError);
-        out <<
+        out << colourImpl->startColour( Colour::ResultError ) <<
             "Failed " << pluralise(totals.testCases.failed, "test case"_sr) << ", "
             "failed " << pluralise(totals.assertions.failed, "assertion"_sr) << '.';
     } else {
-        Colour colour(Colour::ResultSuccess);
-        out <<
+        out << colourImpl->startColour( Colour::ResultSuccess ) <<
             "Passed " << bothOrAll(totals.testCases.passed)
             << pluralise(totals.testCases.passed, "test case"_sr) <<
             " with " << pluralise(totals.assertions.passed, "assertion"_sr) << '.';
@@ -7573,12 +7655,14 @@ class AssertionPrinter {
 public:
     AssertionPrinter& operator= (AssertionPrinter const&) = delete;
     AssertionPrinter(AssertionPrinter const&) = delete;
-    AssertionPrinter(std::ostream& _stream, AssertionStats const& _stats, bool _printInfoMessages)
+    AssertionPrinter(std::ostream& _stream, AssertionStats const& _stats, bool _printInfoMessages, ColourImpl* colourImpl_)
         : stream(_stream)
         , result(_stats.assertionResult)
         , messages(_stats.infoMessages)
         , itMessage(_stats.infoMessages.begin())
-        , printInfoMessages(_printInfoMessages) {}
+        , printInfoMessages(_printInfoMessages)
+        , colourImpl(colourImpl_)
+    {}
 
     void print() {
         printSourceInfo();
@@ -7650,16 +7734,13 @@ public:
 
 private:
     void printSourceInfo() const {
-        Colour colourGuard(Colour::FileName);
-        stream << result.getSourceInfo() << ':';
+        stream << colourImpl->startColour( Colour::FileName )
+               << result.getSourceInfo() << ':';
     }
 
     void printResultType(Colour::Code colour, StringRef passOrFail) const {
         if (!passOrFail.empty()) {
-            {
-                Colour colourGuard(colour);
-                stream << ' ' << passOrFail;
-            }
+            stream << colourImpl->startColour(colour) << ' ' << passOrFail;
             stream << ':';
         }
     }
@@ -7672,8 +7753,7 @@ private:
         if (result.hasExpression()) {
             stream << ';';
             {
-                Colour colour(dimColour());
-                stream << " expression was:";
+                stream << colourImpl->startColour(compactDimColour) << " expression was:";
             }
             printOriginalExpression();
         }
@@ -7687,10 +7767,7 @@ private:
 
     void printReconstructedExpression() const {
         if (result.hasExpandedExpression()) {
-            {
-                Colour colour(dimColour());
-                stream << " for: ";
-            }
+            stream << colourImpl->startColour(compactDimColour) << " for: ";
             stream << result.getExpandedExpression();
         }
     }
@@ -7702,25 +7779,22 @@ private:
         }
     }
 
-    void printRemainingMessages(Colour::Code colour = dimColour()) {
+    void printRemainingMessages(Colour::Code colour = compactDimColour) {
         if (itMessage == messages.end())
             return;
 
         const auto itEnd = messages.cend();
         const auto N = static_cast<std::size_t>(std::distance(itMessage, itEnd));
 
-        {
-            Colour colourGuard(colour);
-            stream << " with " << pluralise(N, "message"_sr) << ':';
-        }
+        stream << colourImpl->startColour( colour ) << " with "
+               << pluralise( N, "message"_sr ) << ':';
 
         while (itMessage != itEnd) {
             // If this assertion is a warning ignore any INFO messages
             if (printInfoMessages || itMessage->type != ResultWas::Info) {
                 printMessage();
                 if (itMessage != itEnd) {
-                    Colour colourGuard(dimColour());
-                    stream << " and";
+                    stream << colourImpl->startColour(compactDimColour) << " and";
                 }
                 continue;
             }
@@ -7734,6 +7808,7 @@ private:
     std::vector<MessageInfo> messages;
     std::vector<MessageInfo>::const_iterator itMessage;
     bool printInfoMessages;
+    ColourImpl* colourImpl;
 };
 
 } // anon namespace
@@ -7758,7 +7833,7 @@ private:
                 printInfoMessages = false;
             }
 
-            AssertionPrinter printer( m_stream, _assertionStats, printInfoMessages );
+            AssertionPrinter printer( m_stream, _assertionStats, printInfoMessages, m_colour.get() );
             printer.print();
 
             m_stream << '\n' << std::flush;
@@ -7772,7 +7847,7 @@ private:
         }
 
         void CompactReporter::testRunEnded( TestRunStats const& _testRunStats ) {
-            printTotals( m_stream, _testRunStats.totals );
+            printTotals( m_stream, _testRunStats.totals, m_colour.get() );
             m_stream << "\n\n" << std::flush;
             StreamingReporterBase::testRunEnded( _testRunStats );
         }
@@ -7809,13 +7884,14 @@ class ConsoleAssertionPrinter {
 public:
     ConsoleAssertionPrinter& operator= (ConsoleAssertionPrinter const&) = delete;
     ConsoleAssertionPrinter(ConsoleAssertionPrinter const&) = delete;
-    ConsoleAssertionPrinter(std::ostream& _stream, AssertionStats const& _stats, bool _printInfoMessages)
+    ConsoleAssertionPrinter(std::ostream& _stream, AssertionStats const& _stats, ColourImpl* colourImpl_, bool _printInfoMessages)
         : stream(_stream),
         stats(_stats),
         result(_stats.assertionResult),
         colour(Colour::None),
         message(result.getMessage()),
         messages(_stats.infoMessages),
+        colourImpl(colourImpl_),
         printInfoMessages(_printInfoMessages) {
         switch (result.getResultType()) {
         case ResultWas::Ok:
@@ -7898,23 +7974,22 @@ public:
 private:
     void printResultType() const {
         if (!passOrFail.empty()) {
-            Colour colourGuard(colour);
-            stream << passOrFail << ":\n";
+            stream << colourImpl->startColour(colour) << passOrFail << ":\n";
         }
     }
     void printOriginalExpression() const {
         if (result.hasExpression()) {
-            Colour colourGuard(Colour::OriginalExpression);
-            stream << "  ";
-            stream << result.getExpressionInMacro();
-            stream << '\n';
+            stream << colourImpl->startColour( Colour::OriginalExpression )
+                   << "  " << result.getExpressionInMacro() << '\n';
         }
     }
     void printReconstructedExpression() const {
         if (result.hasExpandedExpression()) {
             stream << "with expansion:\n";
-            Colour colourGuard(Colour::ReconstructedExpression);
-            stream << TextFlow::Column(result.getExpandedExpression()).indent(2) << '\n';
+            stream << colourImpl->startColour( Colour::ReconstructedExpression )
+                   << TextFlow::Column( result.getExpandedExpression() )
+                          .indent( 2 )
+                   << '\n';
         }
     }
     void printMessage() const {
@@ -7927,8 +8002,8 @@ private:
         }
     }
     void printSourceInfo() const {
-        Colour colourGuard(Colour::FileName);
-        stream << result.getSourceInfo() << ": ";
+        stream << colourImpl->startColour( Colour::FileName )
+               << result.getSourceInfo() << ": ";
     }
 
     std::ostream& stream;
@@ -7939,6 +8014,7 @@ private:
     std::string messageLabel;
     std::string message;
     std::vector<MessageInfo> messages;
+    ColourImpl* colourImpl;
     bool printInfoMessages;
 };
 
@@ -8119,7 +8195,7 @@ public:
 
 ConsoleReporter::ConsoleReporter(ReporterConfig const& config)
     : StreamingReporterBase(config),
-    m_tablePrinter(Detail::make_unique<TablePrinter>(config.stream(),
+    m_tablePrinter(Detail::make_unique<TablePrinter>(m_stream,
         [&config]() -> std::vector<ColumnInfo> {
         if (config.fullConfig()->benchmarkNoAnalysis())
         {
@@ -8167,7 +8243,7 @@ void ConsoleReporter::assertionEnded(AssertionStats const& _assertionStats) {
 
     lazyPrint();
 
-    ConsoleAssertionPrinter printer(m_stream, _assertionStats, includeResults);
+    ConsoleAssertionPrinter printer(m_stream, _assertionStats, m_colour.get(), includeResults);
     printer.print();
     m_stream << '\n' << std::flush;
 }
@@ -8181,7 +8257,7 @@ void ConsoleReporter::sectionEnded(SectionStats const& _sectionStats) {
     m_tablePrinter->close();
     if (_sectionStats.missingAssertions) {
         lazyPrint();
-        Colour colour(Colour::ResultError);
+        auto guard = m_colour->startColour( Colour::ResultError );
         if (m_sectionStack.size() > 1)
             m_stream << "\nNo assertions in section";
         else
@@ -8239,7 +8315,7 @@ void ConsoleReporter::benchmarkEnded(BenchmarkStats<> const& stats) {
 }
 
 void ConsoleReporter::benchmarkFailed( StringRef error ) {
-	Colour colour(Colour::Red);
+    auto guard = m_colour->startColour( Colour::Red );
     (*m_tablePrinter)
         << "Benchmark failed (" << error << ')'
         << ColumnBreak() << RowBreak();
@@ -8278,13 +8354,13 @@ void ConsoleReporter::lazyPrintWithoutClosingBenchmarkTable() {
     }
 }
 void ConsoleReporter::lazyPrintRunInfo() {
-    m_stream << '\n' << lineOfChars('~') << '\n';
-    Colour colour(Colour::SecondaryText);
-    m_stream << currentTestRunInfo.name
-        << " is a Catch v" << libraryVersion() << " host application.\n"
-        << "Run with -? for options\n\n";
-
-    m_stream << "Randomness seeded to: " << m_config->rngSeed() << "\n\n";
+    m_stream << '\n'
+             << lineOfChars( '~' ) << '\n'
+             << m_colour->startColour( Colour::SecondaryText )
+             << currentTestRunInfo.name << " is a Catch2 v" << libraryVersion()
+             << " host application.\n"
+             << "Run with -? for options\n\n"
+             << "Randomness seeded to: " << m_config->rngSeed() << "\n\n";
 
     m_testRunInfoPrinted = true;
 }
@@ -8293,7 +8369,7 @@ void ConsoleReporter::printTestCaseAndSectionHeader() {
     printOpenHeader(currentTestCaseInfo->name);
 
     if (m_sectionStack.size() > 1) {
-        Colour colourGuard(Colour::Headers);
+        auto guard = m_colour->startColour( Colour::Headers );
 
         auto
             it = m_sectionStack.begin() + 1, // Skip first section (test case)
@@ -8305,10 +8381,10 @@ void ConsoleReporter::printTestCaseAndSectionHeader() {
     SourceLineInfo lineInfo = m_sectionStack.back().lineInfo;
 
 
-    m_stream << lineOfChars('-') << '\n';
-    Colour colourGuard(Colour::FileName);
-    m_stream << lineInfo << '\n';
-    m_stream << lineOfChars('.') << "\n\n" << std::flush;
+    m_stream << lineOfChars( '-' ) << '\n'
+             << m_colour->startColour( Colour::FileName ) << lineInfo << '\n'
+             << lineOfChars( '.' ) << "\n\n"
+             << std::flush;
 }
 
 void ConsoleReporter::printClosedHeader(std::string const& _name) {
@@ -8318,7 +8394,7 @@ void ConsoleReporter::printClosedHeader(std::string const& _name) {
 void ConsoleReporter::printOpenHeader(std::string const& _name) {
     m_stream << lineOfChars('-') << '\n';
     {
-        Colour colourGuard(Colour::Headers);
+        auto guard = m_colour->startColour( Colour::Headers );
         printHeaderString(_name);
     }
 }
@@ -8383,9 +8459,11 @@ struct SummaryColumn {
 
 void ConsoleReporter::printTotals( Totals const& totals ) {
     if (totals.testCases.total() == 0) {
-        m_stream << Colour(Colour::Warning) << "No tests ran\n";
+        m_stream << m_colour->startColour( Colour::Warning )
+                 << "No tests ran\n";
     } else if (totals.assertions.total() > 0 && totals.testCases.allPassed()) {
-        m_stream << Colour(Colour::ResultSuccess) << "All tests passed";
+        m_stream << m_colour->startColour( Colour::ResultSuccess )
+                 << "All tests passed";
         m_stream << " ("
             << pluralise(totals.assertions.passed, "assertion"_sr) << " in "
             << pluralise(totals.testCases.passed, "test case"_sr) << ')'
@@ -8412,17 +8490,19 @@ void ConsoleReporter::printTotals( Totals const& totals ) {
 }
 void ConsoleReporter::printSummaryRow(StringRef label, std::vector<SummaryColumn> const& cols, std::size_t row) {
     for (auto col : cols) {
-        std::string value = col.rows[row];
+        std::string const& value = col.rows[row];
         if (col.label.empty()) {
             m_stream << label << ": ";
-            if (value != "0")
+            if ( value != "0" ) {
                 m_stream << value;
-            else
-                m_stream << Colour(Colour::Warning) << "- none -";
+            } else {
+                m_stream << m_colour->startColour( Colour::Warning )
+                         << "- none -";
+            }
         } else if (value != "0") {
-            m_stream << Colour(Colour::LightGrey) << " | ";
-            m_stream << Colour(col.colour)
-                << value << ' ' << col.label;
+            m_stream << m_colour->startColour( Colour::LightGrey ) << " | ";
+            m_stream << m_colour->startColour( col.colour ) << value << ' '
+                     << col.label;
         }
     }
     m_stream << '\n';
@@ -8438,14 +8518,20 @@ void ConsoleReporter::printTotalsDivider(Totals const& totals) {
         while (failedRatio + failedButOkRatio + passedRatio > CATCH_CONFIG_CONSOLE_WIDTH - 1)
             findMax(failedRatio, failedButOkRatio, passedRatio)--;
 
-        m_stream << Colour(Colour::Error) << std::string(failedRatio, '=');
-        m_stream << Colour(Colour::ResultExpectedFailure) << std::string(failedButOkRatio, '=');
-        if (totals.testCases.allPassed())
-            m_stream << Colour(Colour::ResultSuccess) << std::string(passedRatio, '=');
-        else
-            m_stream << Colour(Colour::Success) << std::string(passedRatio, '=');
+        m_stream << m_colour->startColour( Colour::Error )
+                 << std::string( failedRatio, '=' )
+                 << m_colour->startColour( Colour::ResultExpectedFailure )
+                 << std::string( failedButOkRatio, '=' );
+        if ( totals.testCases.allPassed() ) {
+            m_stream << m_colour->startColour( Colour::ResultSuccess )
+                     << std::string( passedRatio, '=' );
+        } else {
+            m_stream << m_colour->startColour( Colour::Success )
+                     << std::string( passedRatio, '=' );
+        }
     } else {
-        m_stream << Colour(Colour::Warning) << std::string(CATCH_CONFIG_CONSOLE_WIDTH - 1, '=');
+        m_stream << m_colour->startColour( Colour::Warning )
+                 << std::string( CATCH_CONFIG_CONSOLE_WIDTH - 1, '=' );
     }
     m_stream << '\n';
 }
@@ -8455,8 +8541,8 @@ void ConsoleReporter::printSummaryDivider() {
 
 void ConsoleReporter::printTestFilters() {
     if (m_config->testSpec().hasFilters()) {
-        Colour guard(Colour::BrightYellow);
-        m_stream << "Filters: " << serializeFilters(m_config->getTestsOrTags()) << '\n';
+        m_stream << m_colour->startColour( Colour::BrightYellow ) << "Filters: "
+                 << serializeFilters( m_config->getTestsOrTags() ) << '\n';
     }
 }
 
@@ -8607,21 +8693,6 @@ namespace Catch {
         m_testRun = Detail::make_unique<TestRunNode>( testRunStats );
         m_testRun->children.swap( m_testCases );
         testRunEndedCumulative();
-    }
-
-    void CumulativeReporterBase::listReporters(std::vector<ReporterDescription> const& descriptions) {
-        defaultListReporters(m_stream, descriptions, m_config->verbosity());
-    }
-
-    void CumulativeReporterBase::listTests(std::vector<TestCaseHandle> const& tests) {
-        defaultListTests(m_stream,
-                         tests,
-                         m_config->hasTestFilters(),
-                         m_config->verbosity());
-    }
-
-    void CumulativeReporterBase::listTags(std::vector<TagInfo> const& tags) {
-        defaultListTags( m_stream, tags, m_config->hasTestFilters() );
     }
 
     bool CumulativeReporterBase::SectionNode::hasAnyAssertions() const {
@@ -8917,20 +8988,20 @@ namespace Catch {
 #include <cassert>
 
 namespace Catch {
-    void ListeningReporter::updatePreferences(IStreamingReporter const& reporterish) {
+    void MultiReporter::updatePreferences(IEventListener const& reporterish) {
         m_preferences.shouldRedirectStdOut |=
             reporterish.getPreferences().shouldRedirectStdOut;
         m_preferences.shouldReportAllAssertions |=
             reporterish.getPreferences().shouldReportAllAssertions;
     }
 
-    void ListeningReporter::addListener( IStreamingReporterPtr&& listener ) {
+    void MultiReporter::addListener( IStreamingReporterPtr&& listener ) {
         updatePreferences(*listener);
         m_reporterLikes.insert(m_reporterLikes.begin() + m_insertedListeners, CATCH_MOVE(listener) );
         ++m_insertedListeners;
     }
 
-    void ListeningReporter::addReporter( IStreamingReporterPtr&& reporter ) {
+    void MultiReporter::addReporter( IStreamingReporterPtr&& reporter ) {
         updatePreferences(*reporter);
 
         // We will need to output the captured stdout if there are reporters
@@ -8945,80 +9016,80 @@ namespace Catch {
         m_reporterLikes.push_back( CATCH_MOVE( reporter ) );
     }
 
-    void ListeningReporter::noMatchingTestCases( StringRef unmatchedSpec ) {
+    void MultiReporter::noMatchingTestCases( StringRef unmatchedSpec ) {
         for ( auto& reporterish : m_reporterLikes ) {
             reporterish->noMatchingTestCases( unmatchedSpec );
         }
     }
 
-    void ListeningReporter::fatalErrorEncountered( StringRef error ) {
+    void MultiReporter::fatalErrorEncountered( StringRef error ) {
         for ( auto& reporterish : m_reporterLikes ) {
             reporterish->fatalErrorEncountered( error );
         }
     }
 
-    void ListeningReporter::reportInvalidTestSpec( StringRef arg ) {
+    void MultiReporter::reportInvalidTestSpec( StringRef arg ) {
         for ( auto& reporterish : m_reporterLikes ) {
             reporterish->reportInvalidTestSpec( arg );
         }
     }
 
-    void ListeningReporter::benchmarkPreparing( StringRef name ) {
+    void MultiReporter::benchmarkPreparing( StringRef name ) {
         for (auto& reporterish : m_reporterLikes) {
             reporterish->benchmarkPreparing(name);
         }
     }
-    void ListeningReporter::benchmarkStarting( BenchmarkInfo const& benchmarkInfo ) {
+    void MultiReporter::benchmarkStarting( BenchmarkInfo const& benchmarkInfo ) {
         for ( auto& reporterish : m_reporterLikes ) {
             reporterish->benchmarkStarting( benchmarkInfo );
         }
     }
-    void ListeningReporter::benchmarkEnded( BenchmarkStats<> const& benchmarkStats ) {
+    void MultiReporter::benchmarkEnded( BenchmarkStats<> const& benchmarkStats ) {
         for ( auto& reporterish : m_reporterLikes ) {
             reporterish->benchmarkEnded( benchmarkStats );
         }
     }
 
-    void ListeningReporter::benchmarkFailed( StringRef error ) {
+    void MultiReporter::benchmarkFailed( StringRef error ) {
         for (auto& reporterish : m_reporterLikes) {
             reporterish->benchmarkFailed(error);
         }
     }
 
-    void ListeningReporter::testRunStarting( TestRunInfo const& testRunInfo ) {
+    void MultiReporter::testRunStarting( TestRunInfo const& testRunInfo ) {
         for ( auto& reporterish : m_reporterLikes ) {
             reporterish->testRunStarting( testRunInfo );
         }
     }
 
-    void ListeningReporter::testCaseStarting( TestCaseInfo const& testInfo ) {
+    void MultiReporter::testCaseStarting( TestCaseInfo const& testInfo ) {
         for ( auto& reporterish : m_reporterLikes ) {
             reporterish->testCaseStarting( testInfo );
         }
     }
 
     void
-    ListeningReporter::testCasePartialStarting( TestCaseInfo const& testInfo,
+    MultiReporter::testCasePartialStarting( TestCaseInfo const& testInfo,
                                                 uint64_t partNumber ) {
         for ( auto& reporterish : m_reporterLikes ) {
             reporterish->testCasePartialStarting( testInfo, partNumber );
         }
     }
 
-    void ListeningReporter::sectionStarting( SectionInfo const& sectionInfo ) {
+    void MultiReporter::sectionStarting( SectionInfo const& sectionInfo ) {
         for ( auto& reporterish : m_reporterLikes ) {
             reporterish->sectionStarting( sectionInfo );
         }
     }
 
-    void ListeningReporter::assertionStarting( AssertionInfo const& assertionInfo ) {
+    void MultiReporter::assertionStarting( AssertionInfo const& assertionInfo ) {
         for ( auto& reporterish : m_reporterLikes ) {
             reporterish->assertionStarting( assertionInfo );
         }
     }
 
     // The return value indicates if the messages buffer should be cleared:
-    void ListeningReporter::assertionEnded( AssertionStats const& assertionStats ) {
+    void MultiReporter::assertionEnded( AssertionStats const& assertionStats ) {
         const bool reportByDefault =
             assertionStats.assertionResult.getResultType() != ResultWas::Ok ||
             m_config->includeSuccessfulResults();
@@ -9031,13 +9102,13 @@ namespace Catch {
         }
     }
 
-    void ListeningReporter::sectionEnded( SectionStats const& sectionStats ) {
+    void MultiReporter::sectionEnded( SectionStats const& sectionStats ) {
         for ( auto& reporterish : m_reporterLikes ) {
             reporterish->sectionEnded( sectionStats );
         }
     }
 
-    void ListeningReporter::testCasePartialEnded( TestCaseStats const& testStats,
+    void MultiReporter::testCasePartialEnded( TestCaseStats const& testStats,
                                                   uint64_t partNumber ) {
         if ( m_preferences.shouldRedirectStdOut &&
              m_haveNoncapturingReporters ) {
@@ -9054,38 +9125,38 @@ namespace Catch {
         }
     }
 
-    void ListeningReporter::testCaseEnded( TestCaseStats const& testCaseStats ) {
+    void MultiReporter::testCaseEnded( TestCaseStats const& testCaseStats ) {
         for ( auto& reporterish : m_reporterLikes ) {
             reporterish->testCaseEnded( testCaseStats );
         }
     }
 
-    void ListeningReporter::testRunEnded( TestRunStats const& testRunStats ) {
+    void MultiReporter::testRunEnded( TestRunStats const& testRunStats ) {
         for ( auto& reporterish : m_reporterLikes ) {
             reporterish->testRunEnded( testRunStats );
         }
     }
 
 
-    void ListeningReporter::skipTest( TestCaseInfo const& testInfo ) {
+    void MultiReporter::skipTest( TestCaseInfo const& testInfo ) {
         for ( auto& reporterish : m_reporterLikes ) {
             reporterish->skipTest( testInfo );
         }
     }
 
-    void ListeningReporter::listReporters(std::vector<ReporterDescription> const& descriptions) {
+    void MultiReporter::listReporters(std::vector<ReporterDescription> const& descriptions) {
         for (auto& reporterish : m_reporterLikes) {
             reporterish->listReporters(descriptions);
         }
     }
 
-    void ListeningReporter::listTests(std::vector<TestCaseHandle> const& tests) {
+    void MultiReporter::listTests(std::vector<TestCaseHandle> const& tests) {
         for (auto& reporterish : m_reporterLikes) {
             reporterish->listTests(tests);
         }
     }
 
-    void ListeningReporter::listTags(std::vector<TagInfo> const& tags) {
+    void MultiReporter::listTags(std::vector<TagInfo> const& tags) {
         for (auto& reporterish : m_reporterLikes) {
             reporterish->listTags(tags);
         }
@@ -9242,21 +9313,6 @@ namespace Catch {
         currentTestCaseInfo = nullptr;
     }
 
-    void StreamingReporterBase::listReporters(std::vector<ReporterDescription> const& descriptions) {
-        defaultListReporters( m_stream, descriptions, m_config->verbosity() );
-    }
-
-    void StreamingReporterBase::listTests(std::vector<TestCaseHandle> const& tests) {
-        defaultListTests(m_stream,
-                         tests,
-                         m_config->hasTestFilters(),
-                         m_config->verbosity());
-    }
-
-    void StreamingReporterBase::listTags(std::vector<TagInfo> const& tags) {
-        defaultListTags( m_stream, tags, m_config->hasTestFilters() );
-    }
-
 } // end namespace Catch
 
 
@@ -9271,18 +9327,20 @@ namespace Catch {
         // Making older compiler happy is hard.
         static constexpr StringRef tapFailedString = "not ok"_sr;
         static constexpr StringRef tapPassedString = "ok"_sr;
+        static constexpr Colour::Code tapDimColour = Colour::FileName;
 
         class TapAssertionPrinter {
         public:
             TapAssertionPrinter& operator= (TapAssertionPrinter const&) = delete;
             TapAssertionPrinter(TapAssertionPrinter const&) = delete;
-            TapAssertionPrinter(std::ostream& _stream, AssertionStats const& _stats, std::size_t _counter)
+            TapAssertionPrinter(std::ostream& _stream, AssertionStats const& _stats, std::size_t _counter, ColourImpl* colour_)
                 : stream(_stream)
                 , result(_stats.assertionResult)
                 , messages(_stats.infoMessages)
                 , itMessage(_stats.infoMessages.begin())
                 , printInfoMessages(true)
-                , counter(_counter) {}
+                , counter(_counter)
+                , colourImpl( colour_ ) {}
 
             void print() {
                 itMessage = messages.begin();
@@ -9355,11 +9413,9 @@ namespace Catch {
             }
 
         private:
-            static Colour::Code dimColour() { return Colour::FileName; }
-
             void printSourceInfo() const {
-                Colour colourGuard(dimColour());
-                stream << result.getSourceInfo() << ':';
+                stream << colourImpl->startColour( tapDimColour )
+                       << result.getSourceInfo() << ':';
             }
 
             void printResultType(StringRef passOrFail) const {
@@ -9375,10 +9431,8 @@ namespace Catch {
             void printExpressionWas() {
                 if (result.hasExpression()) {
                     stream << ';';
-                    {
-                        Colour colour(dimColour());
-                        stream << " expression was:";
-                    }
+                    stream << colourImpl->startColour( tapDimColour )
+                           << " expression was:";
                     printOriginalExpression();
                 }
             }
@@ -9391,10 +9445,8 @@ namespace Catch {
 
             void printReconstructedExpression() const {
                 if (result.hasExpandedExpression()) {
-                    {
-                        Colour colour(dimColour());
-                        stream << " for: ";
-                    }
+                    stream << colourImpl->startColour( tapDimColour ) << " for: ";
+
                     std::string expr = result.getExpandedExpression();
                     std::replace(expr.begin(), expr.end(), '\n', ' ');
                     stream << expr;
@@ -9408,7 +9460,7 @@ namespace Catch {
                 }
             }
 
-            void printRemainingMessages(Colour::Code colour = dimColour()) {
+            void printRemainingMessages(Colour::Code colour = tapDimColour) {
                 if (itMessage == messages.end()) {
                     return;
                 }
@@ -9417,18 +9469,15 @@ namespace Catch {
                 std::vector<MessageInfo>::const_iterator itEnd = messages.end();
                 const std::size_t N = static_cast<std::size_t>(std::distance(itMessage, itEnd));
 
-                {
-                    Colour colourGuard(colour);
-                    stream << " with " << pluralise(N, "message"_sr) << ':';
-                }
+                stream << colourImpl->startColour( colour ) << " with "
+                       << pluralise( N, "message"_sr ) << ':';
 
                 for (; itMessage != itEnd; ) {
                     // If this assertion is a warning ignore any INFO messages
                     if (printInfoMessages || itMessage->type != ResultWas::Info) {
                         stream << " '" << itMessage->message << '\'';
                         if (++itMessage != itEnd) {
-                            Colour colourGuard(dimColour());
-                            stream << " and";
+                            stream << colourImpl->startColour(tapDimColour) << " and";
                         }
                     }
                 }
@@ -9441,6 +9490,7 @@ namespace Catch {
             std::vector<MessageInfo>::const_iterator itMessage;
             bool printInfoMessages;
             std::size_t counter;
+            ColourImpl* colourImpl;
         };
 
     } // End anonymous namespace
@@ -9453,7 +9503,7 @@ namespace Catch {
         ++counter;
 
         m_stream << "# " << currentTestCaseInfo->name << '\n';
-        TapAssertionPrinter printer(m_stream, _assertionStats, counter);
+        TapAssertionPrinter printer(m_stream, _assertionStats, counter, m_colour.get());
         printer.print();
 
         m_stream << '\n' << std::flush;
@@ -9649,7 +9699,7 @@ namespace Catch {
 namespace Catch {
     XmlReporter::XmlReporter( ReporterConfig const& _config )
     :   StreamingReporterBase( _config ),
-        m_xml(_config.stream())
+        m_xml(m_stream)
     {
         m_preferences.shouldRedirectStdOut = true;
         m_preferences.shouldReportAllAssertions = true;

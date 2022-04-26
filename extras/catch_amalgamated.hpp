@@ -6,7 +6,7 @@
 // SPDX-License-Identifier: BSL-1.0
 
 //  Catch v3.0.0-preview.4
-//  Generated: 2022-01-03 23:14:22.246211
+//  Generated: 2022-04-26 16:45:01.993961
 //  ----------------------------------------------------------
 //  This file is an amalgamation of multiple different files.
 //  You probably shouldn't edit it directly.
@@ -57,50 +57,301 @@
 #ifndef CATCH_BENCHMARK_HPP_INCLUDED
 #define CATCH_BENCHMARK_HPP_INCLUDED
 
+#include <algorithm>
 
 
-#ifndef CATCH_INTERFACES_CONFIG_HPP_INCLUDED
-#define CATCH_INTERFACES_CONFIG_HPP_INCLUDED
+// Adapted from donated nonius code.
+
+#ifndef CATCH_CHRONOMETER_HPP_INCLUDED
+#define CATCH_CHRONOMETER_HPP_INCLUDED
 
 
 
-#ifndef CATCH_NONCOPYABLE_HPP_INCLUDED
-#define CATCH_NONCOPYABLE_HPP_INCLUDED
+// Adapted from donated nonius code.
+
+#ifndef CATCH_CLOCK_HPP_INCLUDED
+#define CATCH_CLOCK_HPP_INCLUDED
+
+#ifndef CATCH_CATCH_DLL_PUBLIC
+#define CATCH_CATCH_DLL_PUBLIC
+
+#if defined _WIN32 || defined __CYGWIN__
+#    ifdef BUILDING_DLL
+#        ifdef __GNUC__
+#            define CATCH_DLL_PUBLIC __attribute__( ( dllexport ) )
+#        else
+#            define CATCH_DLL_PUBLIC \
+                __declspec( dllexport ) // Note: actually gcc seems to also
+                                        // supports this syntax.
+#        endif
+#    else
+#        ifdef __GNUC__
+#            define CATCH_DLL_PUBLIC __attribute__( ( dllimport ) )
+#        else
+#            define CATCH_DLL_PUBLIC \
+                __declspec( dllimport ) // Note: actually gcc seems to also
+                                        // supports this syntax.
+#        endif
+#    endif
+#    define DLL_LOCAL
+#else
+#    if __GNUC__ >= 4
+#        define CATCH_DLL_PUBLIC __attribute__( ( visibility( "default" ) ) )
+#        define DLL_LOCAL __attribute__( ( visibility( "hidden" ) ) )
+#    else
+#        define CATCH_DLL_PUBLIC
+#        define DLL_LOCAL
+#    endif
+#endif
+
+#endif // CATCH_CATCH_DLL_PUBLIC
+#include <chrono>
+#include <ratio>
 
 namespace Catch {
-    namespace Detail {
+    namespace Benchmark {
+        template <typename Clock>
+        using ClockDuration = typename Clock::duration;
+        template <typename Clock>
+        using FloatDuration = std::chrono::duration<double, typename Clock::period>;
 
-        //! Deriving classes become noncopyable and nonmovable
-        class NonCopyable {
-            NonCopyable( NonCopyable const& ) = delete;
-            NonCopyable( NonCopyable&& ) = delete;
-            NonCopyable& operator=( NonCopyable const& ) = delete;
-            NonCopyable& operator=( NonCopyable&& ) = delete;
+        template <typename Clock>
+        using TimePoint = typename Clock::time_point;
 
-        protected:
-            NonCopyable() noexcept = default;
+        using default_clock = std::chrono::steady_clock;
+
+        template <typename Clock> struct CATCH_DLL_PUBLIC now {
+            TimePoint<Clock> operator()() const {
+                return Clock::now();
+            }
         };
 
-    } // namespace Detail
+        using fp_seconds = std::chrono::duration<double, std::ratio<1>>;
+    } // namespace Benchmark
 } // namespace Catch
 
-#endif // CATCH_NONCOPYABLE_HPP_INCLUDED
+#endif // CATCH_CLOCK_HPP_INCLUDED
+
+
+// Adapted from donated nonius code.
+
+#ifndef CATCH_OPTIMIZER_HPP_INCLUDED
+#define CATCH_OPTIMIZER_HPP_INCLUDED
+
+#if defined(_MSC_VER)
+#   include <atomic> // atomic_thread_fence
+#endif
+
+
+
+#ifndef CATCH_MOVE_AND_FORWARD_HPP_INCLUDED
+#define CATCH_MOVE_AND_FORWARD_HPP_INCLUDED
+
+#include <type_traits>
+
+//! Replacement for std::move with better compile time performance
+#define CATCH_MOVE(...) static_cast<std::remove_reference_t<decltype(__VA_ARGS__)>&&>(__VA_ARGS__)
+
+//! Replacement for std::forward with better compile time performance
+#define CATCH_FORWARD(...) static_cast<decltype(__VA_ARGS__)&&>(__VA_ARGS__)
+
+#endif // CATCH_MOVE_AND_FORWARD_HPP_INCLUDED
+#include <type_traits>
+
+namespace Catch {
+    namespace Benchmark {
+#if defined(__GNUC__) || defined(__clang__)
+        template <typename T>
+        inline void keep_memory(T* p) {
+            asm volatile("" : : "g"(p) : "memory");
+        }
+        inline void keep_memory() {
+            asm volatile("" : : : "memory");
+        }
+
+        namespace Detail {
+            inline void optimizer_barrier() { keep_memory(); }
+        } // namespace Detail
+#elif defined(_MSC_VER)
+
+#pragma optimize("", off)
+        template <typename T>
+        inline void keep_memory(T* p) {
+            // thanks @milleniumbug
+            *reinterpret_cast<char volatile*>(p) = *reinterpret_cast<char const volatile*>(p);
+        }
+        // TODO equivalent keep_memory()
+#pragma optimize("", on)
+
+        namespace Detail {
+            inline void optimizer_barrier() {
+                std::atomic_thread_fence(std::memory_order_seq_cst);
+            }
+        } // namespace Detail
+
+#endif
+
+        template <typename T>
+        inline void deoptimize_value(T&& x) {
+            keep_memory(&x);
+        }
+
+        template <typename Fn, typename... Args>
+        inline auto invoke_deoptimized(Fn&& fn, Args&&... args) -> std::enable_if_t<!std::is_same<void, decltype(fn(args...))>::value> {
+            deoptimize_value(CATCH_FORWARD(fn) (CATCH_FORWARD(args)...));
+        }
+
+        template <typename Fn, typename... Args>
+        inline auto invoke_deoptimized(Fn&& fn, Args&&... args) -> std::enable_if_t<std::is_same<void, decltype(fn(args...))>::value> {
+            CATCH_FORWARD(fn) (CATCH_FORWARD(args)...);
+        }
+    } // namespace Benchmark
+} // namespace Catch
+
+#endif // CATCH_OPTIMIZER_HPP_INCLUDED
+
+
+// Adapted from donated nonius code.
+
+#ifndef CATCH_COMPLETE_INVOKE_HPP_INCLUDED
+#define CATCH_COMPLETE_INVOKE_HPP_INCLUDED
+
+
+
+#ifndef CATCH_TEST_FAILURE_EXCEPTION_HPP_INCLUDED
+#define CATCH_TEST_FAILURE_EXCEPTION_HPP_INCLUDED
+
+
+namespace Catch {
+
+    //! Used to signal that an assertion macro failed
+    struct CATCH_DLL_PUBLIC TestFailureException {};
+
+} // namespace Catch
+
+#endif // CATCH_TEST_FAILURE_EXCEPTION_HPP_INCLUDED
+
+
+#ifndef CATCH_META_HPP_INCLUDED
+#define CATCH_META_HPP_INCLUDED
+
+#include <type_traits>
+
+namespace Catch {
+    template <typename T>
+    struct CATCH_DLL_PUBLIC always_false : std::false_type {};
+
+    template <typename> struct CATCH_DLL_PUBLIC true_given : std::true_type {};
+    struct CATCH_DLL_PUBLIC is_callable_tester {
+        template <typename Fun, typename... Args>
+        true_given<decltype(std::declval<Fun>()(std::declval<Args>()...))> static test(int);
+        template <typename...>
+        std::false_type static test(...);
+    };
+
+    template <typename T>
+    struct is_callable;
+
+    template <typename Fun, typename... Args>
+    struct is_callable<Fun(Args...)> : decltype(is_callable_tester::test<Fun, Args...>(0)) {};
+
+
+#if defined(__cpp_lib_is_invocable) && __cpp_lib_is_invocable >= 201703
+    // std::result_of is deprecated in C++17 and removed in C++20. Hence, it is
+    // replaced with std::invoke_result here.
+    template <typename Func, typename... U>
+    using FunctionReturnType = std::remove_reference_t<std::remove_cv_t<std::invoke_result_t<Func, U...>>>;
+#else
+    template <typename Func, typename... U>
+    using FunctionReturnType = std::remove_reference_t<std::remove_cv_t<std::result_of_t<Func(U...)>>>;
+#endif
+
+} // namespace Catch
+
+namespace mpl_{
+    struct na;
+}
+
+#endif // CATCH_META_HPP_INCLUDED
+
+
+#ifndef CATCH_INTERFACES_CAPTURE_HPP_INCLUDED
+#define CATCH_INTERFACES_CAPTURE_HPP_INCLUDED
+
+
+
+#ifndef CATCH_RESULT_TYPE_HPP_INCLUDED
+#define CATCH_RESULT_TYPE_HPP_INCLUDED
+
+
+namespace Catch {
+
+    // ResultWas::OfType enum
+    struct CATCH_DLL_PUBLIC ResultWas {
+        enum OfType {
+            Unknown = -1,
+            Ok = 0,
+            Info = 1,
+            Warning = 2,
+
+            FailureBit = 0x10,
+
+            ExpressionFailed = FailureBit | 1,
+            ExplicitFailure = FailureBit | 2,
+
+            Exception = 0x100 | FailureBit,
+
+            ThrewException = Exception | 1,
+            DidntThrowException = Exception | 2,
+
+            FatalErrorCondition = 0x200 | FailureBit
+
+        };
+    };
+
+    bool isOk( ResultWas::OfType resultType );
+    bool isJustInfo( int flags );
+
+
+    // ResultDisposition::Flags enum
+    struct CATCH_DLL_PUBLIC ResultDisposition {
+        enum Flags {
+            Normal = 0x01,
+
+            ContinueOnFailure =
+                0x02,         // Failures fail test, but execution continues
+            FalseTest = 0x04, // Prefix expression with !
+            SuppressFail =
+                0x08 // Failures are reported but do not fail the test
+        };
+    };
+
+    CATCH_DLL_PUBLIC ResultDisposition::Flags
+    operator|( ResultDisposition::Flags lhs, ResultDisposition::Flags rhs );
+
+    bool shouldContinueOnFailure( int flags );
+    inline bool isFalseTest( int flags ) { return ( flags & ResultDisposition::FalseTest ) != 0; }
+    bool shouldSuppressFailure( int flags );
+
+} // end namespace Catch
+
+#endif // CATCH_RESULT_TYPE_HPP_INCLUDED
 
 
 #ifndef CATCH_STRINGREF_HPP_INCLUDED
 #define CATCH_STRINGREF_HPP_INCLUDED
 
-#include <cstddef>
-#include <string>
-#include <iosfwd>
 #include <cassert>
+#include <cstddef>
+#include <iosfwd>
+#include <string>
 
 namespace Catch {
 
     /// A non-owning string class (similar to the forthcoming std::string_view)
     /// Note that, because a StringRef may be a substring of another string,
     /// it may not be null terminated.
-    class StringRef {
+    class CATCH_DLL_PUBLIC StringRef {
     public:
         using size_type = std::size_t;
         using const_iterator = const char*;
@@ -171,10 +422,12 @@ namespace Catch {
         constexpr const_iterator begin() const { return m_start; }
         constexpr const_iterator end() const { return m_start + m_size; }
 
-
-        friend std::string& operator += (std::string& lhs, StringRef sr);
-        friend std::ostream& operator << (std::ostream& os, StringRef sr);
-        friend std::string operator+(StringRef lhs, StringRef rhs);
+        CATCH_DLL_PUBLIC friend std::string& operator+=( std::string& lhs,
+                                                         StringRef sr );
+        CATCH_DLL_PUBLIC friend std::ostream& operator<<( std::ostream& os,
+                                                          StringRef sr );
+        CATCH_DLL_PUBLIC friend std::string operator+( StringRef lhs,
+                                                       StringRef rhs );
 
         /**
          * Provides a three-way comparison with rhs
@@ -182,9 +435,8 @@ namespace Catch {
          * Returns negative number if lhs < rhs, 0 if lhs == rhs, and a positive
          * number if lhs > rhs
          */
-        int compare( StringRef rhs ) const;
+        CATCH_DLL_PUBLIC int compare( StringRef rhs ) const;
     };
-
 
     constexpr auto operator ""_sr( char const* rawChars, std::size_t size ) noexcept -> StringRef {
         return StringRef( rawChars, size );
@@ -196,7 +448,677 @@ constexpr auto operator ""_catch_sr( char const* rawChars, std::size_t size ) no
 }
 
 #endif // CATCH_STRINGREF_HPP_INCLUDED
+#include <chrono>
+#include <string>
 
+namespace Catch {
+
+    class AssertionResult;
+    struct AssertionInfo;
+    struct SectionInfo;
+    struct SectionEndInfo;
+    struct MessageInfo;
+    struct MessageBuilder;
+    struct Counts;
+    struct AssertionReaction;
+    struct SourceLineInfo;
+
+    struct ITransientExpression;
+    struct IGeneratorTracker;
+
+    struct BenchmarkInfo;
+    template <typename Duration = std::chrono::duration<double, std::nano>>
+    struct BenchmarkStats;
+
+    struct CATCH_DLL_PUBLIC IResultCapture {
+
+        virtual ~IResultCapture();
+
+        virtual bool sectionStarted(    SectionInfo const& sectionInfo,
+                                        Counts& assertions ) = 0;
+        virtual void sectionEnded( SectionEndInfo const& endInfo ) = 0;
+        virtual void sectionEndedEarly( SectionEndInfo const& endInfo ) = 0;
+
+        virtual auto acquireGeneratorTracker( StringRef generatorName, SourceLineInfo const& lineInfo ) -> IGeneratorTracker& = 0;
+
+        virtual void benchmarkPreparing( StringRef name ) = 0;
+        virtual void benchmarkStarting( BenchmarkInfo const& info ) = 0;
+        virtual void benchmarkEnded( BenchmarkStats<> const& stats ) = 0;
+        virtual void benchmarkFailed( StringRef error ) = 0;
+
+        virtual void pushScopedMessage( MessageInfo const& message ) = 0;
+        virtual void popScopedMessage( MessageInfo const& message ) = 0;
+
+        virtual void emplaceUnscopedMessage( MessageBuilder const& builder ) = 0;
+
+        virtual void handleFatalErrorCondition( StringRef message ) = 0;
+
+        virtual void handleExpr
+                (   AssertionInfo const& info,
+                    ITransientExpression const& expr,
+                    AssertionReaction& reaction ) = 0;
+        virtual void handleMessage
+                (   AssertionInfo const& info,
+                    ResultWas::OfType resultType,
+                    StringRef message,
+                    AssertionReaction& reaction ) = 0;
+        virtual void handleUnexpectedExceptionNotThrown
+                (   AssertionInfo const& info,
+                    AssertionReaction& reaction ) = 0;
+        virtual void handleUnexpectedInflightException
+                (   AssertionInfo const& info,
+                    std::string const& message,
+                    AssertionReaction& reaction ) = 0;
+        virtual void handleIncomplete
+                (   AssertionInfo const& info ) = 0;
+        virtual void handleNonExpr
+                (   AssertionInfo const &info,
+                    ResultWas::OfType resultType,
+                    AssertionReaction &reaction ) = 0;
+
+
+
+        virtual bool lastAssertionPassed() = 0;
+        virtual void assertionPassed() = 0;
+
+        // Deprecated, do not use:
+        virtual std::string getCurrentTestName() const = 0;
+        virtual const AssertionResult* getLastResult() const = 0;
+        virtual void exceptionEarlyReported() = 0;
+    };
+
+    CATCH_DLL_PUBLIC IResultCapture& getResultCapture();
+}
+
+#endif // CATCH_INTERFACES_CAPTURE_HPP_INCLUDED
+
+
+#ifndef CATCH_INTERFACES_REGISTRY_HUB_HPP_INCLUDED
+#define CATCH_INTERFACES_REGISTRY_HUB_HPP_INCLUDED
+
+
+
+#ifndef CATCH_UNIQUE_PTR_HPP_INCLUDED
+#define CATCH_UNIQUE_PTR_HPP_INCLUDED
+
+#include <cassert>
+#include <type_traits>
+
+namespace Catch {
+namespace Detail {
+    /**
+     * A reimplementation of `std::unique_ptr` for improved compilation performance
+     *
+     * Does not support arrays nor custom deleters.
+     */
+    template <typename T> class CATCH_DLL_PUBLIC unique_ptr {
+        T* m_ptr;
+    public:
+        constexpr unique_ptr(std::nullptr_t = nullptr):
+            m_ptr{}
+        {}
+        explicit constexpr unique_ptr(T* ptr):
+            m_ptr(ptr)
+        {}
+
+        template <typename U, typename = std::enable_if_t<std::is_base_of<T, U>::value>>
+        unique_ptr(unique_ptr<U>&& from):
+            m_ptr(from.release())
+        {}
+
+        template <typename U, typename = std::enable_if_t<std::is_base_of<T, U>::value>>
+        unique_ptr& operator=(unique_ptr<U>&& from) {
+            reset(from.release());
+
+            return *this;
+        }
+
+        unique_ptr(unique_ptr const&) = delete;
+        unique_ptr& operator=(unique_ptr const&) = delete;
+
+        unique_ptr(unique_ptr&& rhs) noexcept:
+            m_ptr(rhs.m_ptr) {
+            rhs.m_ptr = nullptr;
+        }
+        unique_ptr& operator=(unique_ptr&& rhs) noexcept {
+            reset(rhs.release());
+
+            return *this;
+        }
+
+        ~unique_ptr() {
+            delete m_ptr;
+        }
+
+        T& operator*() {
+            assert(m_ptr);
+            return *m_ptr;
+        }
+        T const& operator*() const {
+            assert(m_ptr);
+            return *m_ptr;
+        }
+        T* operator->() noexcept {
+            assert(m_ptr);
+            return m_ptr;
+        }
+        T const* operator->() const noexcept {
+            assert(m_ptr);
+            return m_ptr;
+        }
+
+        T* get() { return m_ptr; }
+        T const* get() const { return m_ptr; }
+
+        void reset(T* ptr = nullptr) {
+            delete m_ptr;
+            m_ptr = ptr;
+        }
+
+        T* release() {
+            auto temp = m_ptr;
+            m_ptr = nullptr;
+            return temp;
+        }
+
+        explicit operator bool() const {
+            return m_ptr;
+        }
+
+        friend void swap(unique_ptr& lhs, unique_ptr& rhs) {
+            auto temp = lhs.m_ptr;
+            lhs.m_ptr = rhs.m_ptr;
+            rhs.m_ptr = temp;
+        }
+    };
+
+    //! Specialization to cause compile-time error for arrays
+    template <typename T>
+    class unique_ptr<T[]>;
+
+    template <typename T, typename... Args>
+    unique_ptr<T> make_unique(Args&&... args) {
+        return unique_ptr<T>(new T(CATCH_FORWARD(args)...));
+    }
+
+
+} // end namespace Detail
+} // end namespace Catch
+
+#endif // CATCH_UNIQUE_PTR_HPP_INCLUDED
+#include <string>
+
+namespace Catch {
+
+    class TestCaseHandle;
+    struct TestCaseInfo;
+    struct ITestCaseRegistry;
+    struct IExceptionTranslatorRegistry;
+    struct IExceptionTranslator;
+    struct IReporterRegistry;
+    struct IReporterFactory;
+    struct ITagAliasRegistry;
+    struct ITestInvoker;
+    struct IMutableEnumValuesRegistry;
+    struct SourceLineInfo;
+
+    class StartupExceptionRegistry;
+    class EventListenerFactory;
+
+    using IReporterFactoryPtr = Detail::unique_ptr<IReporterFactory>;
+
+    struct CATCH_DLL_PUBLIC IRegistryHub {
+        virtual ~IRegistryHub(); // = default
+
+        virtual IReporterRegistry const& getReporterRegistry() const = 0;
+        virtual ITestCaseRegistry const& getTestCaseRegistry() const = 0;
+        virtual ITagAliasRegistry const& getTagAliasRegistry() const = 0;
+        virtual IExceptionTranslatorRegistry const& getExceptionTranslatorRegistry() const = 0;
+
+
+        virtual StartupExceptionRegistry const& getStartupExceptionRegistry() const = 0;
+    };
+
+    struct CATCH_DLL_PUBLIC IMutableRegistryHub {
+        virtual ~IMutableRegistryHub(); // = default
+        virtual void registerReporter( std::string const& name, IReporterFactoryPtr factory ) = 0;
+        virtual void registerListener( Detail::unique_ptr<EventListenerFactory> factory ) = 0;
+        virtual void registerTest(Detail::unique_ptr<TestCaseInfo>&& testInfo, Detail::unique_ptr<ITestInvoker>&& invoker) = 0;
+        virtual void registerTranslator( Detail::unique_ptr<IExceptionTranslator>&& translator ) = 0;
+        virtual void registerTagAlias( std::string const& alias, std::string const& tag, SourceLineInfo const& lineInfo ) = 0;
+        virtual void registerStartupException() noexcept = 0;
+        virtual IMutableEnumValuesRegistry& getMutableEnumValuesRegistry() = 0;
+    };
+
+    CATCH_DLL_PUBLIC IRegistryHub const& getRegistryHub();
+    CATCH_DLL_PUBLIC IMutableRegistryHub& getMutableRegistryHub();
+    CATCH_DLL_PUBLIC void cleanUp();
+    CATCH_DLL_PUBLIC std::string translateActiveException();
+}
+
+#endif // CATCH_INTERFACES_REGISTRY_HUB_HPP_INCLUDED
+
+#include <type_traits>
+
+namespace Catch {
+    namespace Benchmark {
+        namespace Detail {
+            template <typename T>
+            struct CompleteType { using type = T; };
+            template <>
+            struct CompleteType<void> { struct type {}; };
+
+            template <typename T>
+            using CompleteType_t = typename CompleteType<T>::type;
+
+            template <typename Result>
+            struct CompleteInvoker {
+                template <typename Fun, typename... Args>
+                static Result invoke(Fun&& fun, Args&&... args) {
+                    return CATCH_FORWARD(fun)(CATCH_FORWARD(args)...);
+                }
+            };
+            template <>
+            struct CompleteInvoker<void> {
+                template <typename Fun, typename... Args>
+                static CompleteType_t<void> invoke(Fun&& fun, Args&&... args) {
+                    CATCH_FORWARD(fun)(CATCH_FORWARD(args)...);
+                    return {};
+                }
+            };
+
+            // invoke and not return void :(
+            template <typename Fun, typename... Args>
+            CompleteType_t<FunctionReturnType<Fun, Args...>> complete_invoke(Fun&& fun, Args&&... args) {
+                return CompleteInvoker<FunctionReturnType<Fun, Args...>>::invoke(CATCH_FORWARD(fun), CATCH_FORWARD(args)...);
+            }
+
+        } // namespace Detail
+
+        template <typename Fun>
+        Detail::CompleteType_t<FunctionReturnType<Fun>> user_code(Fun&& fun) {
+            return Detail::complete_invoke(CATCH_FORWARD(fun));
+        }
+    } // namespace Benchmark
+} // namespace Catch
+
+#endif // CATCH_COMPLETE_INVOKE_HPP_INCLUDED
+
+namespace Catch {
+    namespace Benchmark {
+        namespace Detail {
+            struct CATCH_DLL_PUBLIC ChronometerConcept {
+                virtual void start() = 0;
+                virtual void finish() = 0;
+                virtual ~ChronometerConcept(); // = default;
+
+                ChronometerConcept() = default;
+                ChronometerConcept(ChronometerConcept const&) = default;
+                ChronometerConcept& operator=(ChronometerConcept const&) = default;
+            };
+            template <typename Clock>
+            struct CATCH_DLL_PUBLIC ChronometerModel final
+                : public ChronometerConcept {
+                void start() override { started = Clock::now(); }
+                void finish() override { finished = Clock::now(); }
+
+                ClockDuration<Clock> elapsed() const { return finished - started; }
+
+                TimePoint<Clock> started;
+                TimePoint<Clock> finished;
+            };
+        } // namespace Detail
+
+        struct CATCH_DLL_PUBLIC Chronometer {
+        public:
+            template <typename Fun>
+            void measure(Fun&& fun) { measure(CATCH_FORWARD(fun), is_callable<Fun(int)>()); }
+
+            int runs() const { return repeats; }
+
+            Chronometer(Detail::ChronometerConcept& meter, int repeats_)
+                : impl(&meter)
+                , repeats(repeats_) {}
+
+        private:
+            template <typename Fun>
+            void measure(Fun&& fun, std::false_type) {
+                measure([&fun](int) { return fun(); }, std::true_type());
+            }
+
+            template <typename Fun>
+            void measure(Fun&& fun, std::true_type) {
+                Detail::optimizer_barrier();
+                impl->start();
+                for (int i = 0; i < repeats; ++i) invoke_deoptimized(fun, i);
+                impl->finish();
+                Detail::optimizer_barrier();
+            }
+
+            Detail::ChronometerConcept* impl;
+            int repeats;
+        };
+    } // namespace Benchmark
+} // namespace Catch
+
+#endif // CATCH_CHRONOMETER_HPP_INCLUDED
+
+
+// Adapted from donated nonius code.
+
+#ifndef CATCH_ENVIRONMENT_HPP_INCLUDED
+#define CATCH_ENVIRONMENT_HPP_INCLUDED
+
+
+
+// Adapted from donated nonius code.
+
+#ifndef CATCH_OUTLIER_CLASSIFICATION_HPP_INCLUDED
+#define CATCH_OUTLIER_CLASSIFICATION_HPP_INCLUDED
+
+
+namespace Catch {
+    namespace Benchmark {
+        struct CATCH_DLL_PUBLIC OutlierClassification {
+            int samples_seen = 0;
+            int low_severe = 0;     // more than 3 times IQR below Q1
+            int low_mild = 0;       // 1.5 to 3 times IQR below Q1
+            int high_mild = 0;      // 1.5 to 3 times IQR above Q3
+            int high_severe = 0;    // more than 3 times IQR above Q3
+
+            int total() const {
+                return low_severe + low_mild + high_mild + high_severe;
+            }
+        };
+    } // namespace Benchmark
+} // namespace Catch
+
+#endif // CATCH_OUTLIERS_CLASSIFICATION_HPP_INCLUDED
+
+namespace Catch {
+    namespace Benchmark {
+        template <typename Duration>
+        struct CATCH_DLL_PUBLIC EnvironmentEstimate {
+            Duration mean;
+            OutlierClassification outliers;
+
+            template <typename Duration2>
+            operator EnvironmentEstimate<Duration2>() const {
+                return { mean, outliers };
+            }
+        };
+        template <typename Clock> struct CATCH_DLL_PUBLIC Environment {
+            using clock_type = Clock;
+            EnvironmentEstimate<FloatDuration<Clock>> clock_resolution;
+            EnvironmentEstimate<FloatDuration<Clock>> clock_cost;
+        };
+    } // namespace Benchmark
+} // namespace Catch
+
+#endif // CATCH_ENVIRONMENT_HPP_INCLUDED
+
+
+// Adapted from donated nonius code.
+
+#ifndef CATCH_EXECUTION_PLAN_HPP_INCLUDED
+#define CATCH_EXECUTION_PLAN_HPP_INCLUDED
+
+#include <algorithm>
+
+
+// Adapted from donated nonius code.
+
+#ifndef CATCH_BENCHMARK_FUNCTION_HPP_INCLUDED
+#define CATCH_BENCHMARK_FUNCTION_HPP_INCLUDED
+
+#include <type_traits>
+
+namespace Catch {
+    namespace Benchmark {
+        namespace Detail {
+            template <typename T, typename U>
+            struct is_related
+                : std::is_same<std::decay_t<T>, std::decay_t<U>> {};
+
+            /// We need to reinvent std::function because every piece of code that might add overhead
+            /// in a measurement context needs to have consistent performance characteristics so that we
+            /// can account for it in the measurement.
+            /// Implementations of std::function with optimizations that aren't always applicable, like
+            /// small buffer optimizations, are not uncommon.
+            /// This is effectively an implementation of std::function without any such optimizations;
+            /// it may be slow, but it is consistently slow.
+            struct CATCH_DLL_PUBLIC BenchmarkFunction {
+            private:
+                struct callable {
+                    virtual void call(Chronometer meter) const = 0;
+                    virtual Catch::Detail::unique_ptr<callable> clone() const = 0;
+                    virtual ~callable(); // = default;
+
+                    callable() = default;
+                    callable(callable const&) = default;
+                    callable& operator=(callable const&) = default;
+                };
+                template <typename Fun>
+                struct model : public callable {
+                    model(Fun&& fun_) : fun(CATCH_MOVE(fun_)) {}
+                    model(Fun const& fun_) : fun(fun_) {}
+
+                    Catch::Detail::unique_ptr<callable> clone() const override {
+                        return Catch::Detail::make_unique<model<Fun>>( *this );
+                    }
+
+                    void call(Chronometer meter) const override {
+                        call(meter, is_callable<Fun(Chronometer)>());
+                    }
+                    void call(Chronometer meter, std::true_type) const {
+                        fun(meter);
+                    }
+                    void call(Chronometer meter, std::false_type) const {
+                        meter.measure(fun);
+                    }
+
+                    Fun fun;
+                };
+
+                struct do_nothing { void operator()() const {} };
+
+                template <typename T>
+                BenchmarkFunction(model<T>* c) : f(c) {}
+
+            public:
+                BenchmarkFunction()
+                    : f(new model<do_nothing>{ {} }) {}
+
+                template <typename Fun,
+                    std::enable_if_t<!is_related<Fun, BenchmarkFunction>::value, int> = 0>
+                    BenchmarkFunction(Fun&& fun)
+                    : f(new model<std::decay_t<Fun>>(CATCH_FORWARD(fun))) {}
+
+                BenchmarkFunction( BenchmarkFunction&& that ) noexcept:
+                    f( CATCH_MOVE( that.f ) ) {}
+
+                BenchmarkFunction(BenchmarkFunction const& that)
+                    : f(that.f->clone()) {}
+
+                BenchmarkFunction&
+                operator=( BenchmarkFunction&& that ) noexcept {
+                    f = CATCH_MOVE( that.f );
+                    return *this;
+                }
+
+                BenchmarkFunction& operator=(BenchmarkFunction const& that) {
+                    f = that.f->clone();
+                    return *this;
+                }
+
+                void operator()(Chronometer meter) const { f->call(meter); }
+
+            private:
+                Catch::Detail::unique_ptr<callable> f;
+            };
+        } // namespace Detail
+    } // namespace Benchmark
+} // namespace Catch
+
+#endif // CATCH_BENCHMARK_FUNCTION_HPP_INCLUDED
+
+
+// Adapted from donated nonius code.
+
+#ifndef CATCH_REPEAT_HPP_INCLUDED
+#define CATCH_REPEAT_HPP_INCLUDED
+
+#include <type_traits>
+
+namespace Catch {
+    namespace Benchmark {
+        namespace Detail {
+            template <typename Fun>
+            struct repeater {
+                void operator()(int k) const {
+                    for (int i = 0; i < k; ++i) {
+                        fun();
+                    }
+                }
+                Fun fun;
+            };
+            template <typename Fun>
+            repeater<std::decay_t<Fun>> repeat(Fun&& fun) {
+                return { CATCH_FORWARD(fun) };
+            }
+        } // namespace Detail
+    } // namespace Benchmark
+} // namespace Catch
+
+#endif // CATCH_REPEAT_HPP_INCLUDED
+
+
+// Adapted from donated nonius code.
+
+#ifndef CATCH_RUN_FOR_AT_LEAST_HPP_INCLUDED
+#define CATCH_RUN_FOR_AT_LEAST_HPP_INCLUDED
+
+
+
+// Adapted from donated nonius code.
+
+#ifndef CATCH_MEASURE_HPP_INCLUDED
+#define CATCH_MEASURE_HPP_INCLUDED
+
+
+
+// Adapted from donated nonius code.
+
+#ifndef CATCH_TIMING_HPP_INCLUDED
+#define CATCH_TIMING_HPP_INCLUDED
+
+
+#include <type_traits>
+
+namespace Catch {
+    namespace Benchmark {
+        template <typename Duration, typename Result>
+        struct Timing {
+            Duration elapsed;
+            Result result;
+            int iterations;
+        };
+        template <typename Clock, typename Func, typename... Args>
+        using TimingOf = Timing<ClockDuration<Clock>, Detail::CompleteType_t<FunctionReturnType<Func, Args...>>>;
+    } // namespace Benchmark
+} // namespace Catch
+
+#endif // CATCH_TIMING_HPP_INCLUDED
+
+namespace Catch {
+    namespace Benchmark {
+        namespace Detail {
+            template <typename Clock, typename Fun, typename... Args>
+            TimingOf<Clock, Fun, Args...> measure(Fun&& fun, Args&&... args) {
+                auto start = Clock::now();
+                auto&& r = Detail::complete_invoke(fun, CATCH_FORWARD(args)...);
+                auto end = Clock::now();
+                auto delta = end - start;
+                return { delta, CATCH_FORWARD(r), 1 };
+            }
+        } // namespace Detail
+    } // namespace Benchmark
+} // namespace Catch
+
+#endif // CATCH_MEASURE_HPP_INCLUDED
+
+#include <type_traits>
+
+namespace Catch {
+    namespace Benchmark {
+        namespace Detail {
+            template <typename Clock, typename Fun>
+            TimingOf<Clock, Fun, int> measure_one(Fun&& fun, int iters, std::false_type) {
+                return Detail::measure<Clock>(fun, iters);
+            }
+            template <typename Clock, typename Fun>
+            TimingOf<Clock, Fun, Chronometer> measure_one(Fun&& fun, int iters, std::true_type) {
+                Detail::ChronometerModel<Clock> meter;
+                auto&& result = Detail::complete_invoke(fun, Chronometer(meter, iters));
+
+                return { meter.elapsed(), CATCH_MOVE(result), iters };
+            }
+
+            template <typename Clock, typename Fun>
+            using run_for_at_least_argument_t = std::conditional_t<is_callable<Fun(Chronometer)>::value, Chronometer, int>;
+
+            [[noreturn]] CATCH_DLL_PUBLIC void throw_optimized_away_error();
+
+            template <typename Clock, typename Fun>
+            TimingOf<Clock, Fun, run_for_at_least_argument_t<Clock, Fun>>
+                run_for_at_least(ClockDuration<Clock> how_long,
+                                 const int initial_iterations,
+                                 Fun&& fun) {
+                auto iters = initial_iterations;
+                while (iters < (1 << 30)) {
+                    auto&& Timing = measure_one<Clock>(fun, iters, is_callable<Fun(Chronometer)>());
+
+                    if (Timing.elapsed >= how_long) {
+                        return { Timing.elapsed, CATCH_MOVE(Timing.result), iters };
+                    }
+                    iters *= 2;
+                }
+                throw_optimized_away_error();
+            }
+        } // namespace Detail
+    } // namespace Benchmark
+} // namespace Catch
+
+#endif // CATCH_RUN_FOR_AT_LEAST_HPP_INCLUDED
+
+
+#ifndef CATCH_INTERFACES_CONFIG_HPP_INCLUDED
+#define CATCH_INTERFACES_CONFIG_HPP_INCLUDED
+
+
+
+#ifndef CATCH_NONCOPYABLE_HPP_INCLUDED
+#define CATCH_NONCOPYABLE_HPP_INCLUDED
+
+
+namespace Catch {
+    namespace Detail {
+
+        //! Deriving classes become noncopyable and nonmovable
+        class CATCH_DLL_PUBLIC NonCopyable {
+            NonCopyable( NonCopyable const& ) = delete;
+            NonCopyable( NonCopyable&& ) = delete;
+            NonCopyable& operator=( NonCopyable const& ) = delete;
+            NonCopyable& operator=( NonCopyable&& ) = delete;
+
+        protected:
+            NonCopyable() noexcept = default;
+        };
+
+    } // namespace Detail
+} // namespace Catch
+
+#endif // CATCH_NONCOPYABLE_HPP_INCLUDED
 #include <chrono>
 #include <iosfwd>
 #include <string>
@@ -204,50 +1126,46 @@ constexpr auto operator ""_catch_sr( char const* rawChars, std::size_t size ) no
 
 namespace Catch {
 
-    enum class Verbosity {
-        Quiet = 0,
-        Normal,
-        High
+    enum class CATCH_DLL_PUBLIC Verbosity { Quiet = 0, Normal, High };
+
+    struct CATCH_DLL_PUBLIC WarnAbout {
+        enum What {
+            Nothing = 0x00,
+            //! A test case or leaf section did not run any assertions
+            NoAssertions = 0x01,
+            //! A command line test spec matched no test cases
+            UnmatchedTestSpec = 0x02,
+        };
     };
 
-    struct WarnAbout { enum What {
-        Nothing = 0x00,
-        //! A test case or leaf section did not run any assertions
-        NoAssertions = 0x01,
-        //! A command line test spec matched no test cases
-        UnmatchedTestSpec = 0x02,
-    }; };
-
-    enum class ShowDurations {
+    enum class CATCH_DLL_PUBLIC ShowDurations {
         DefaultForReporter,
         Always,
         Never
     };
-    enum class TestRunOrder {
+    enum class CATCH_DLL_PUBLIC TestRunOrder {
         Declared,
         LexicographicallySorted,
         Randomized
     };
-    enum class UseColour {
-        Auto,
-        Yes,
-        No
+    enum class CATCH_DLL_PUBLIC UseColour { Auto, Yes, No };
+    struct CATCH_DLL_PUBLIC WaitForKeypress {
+        enum When {
+            Never,
+            BeforeStart = 1,
+            BeforeExit = 2,
+            BeforeStartAndExit = BeforeStart | BeforeExit
+        };
     };
-    struct WaitForKeypress { enum When {
-        Never,
-        BeforeStart = 1,
-        BeforeExit = 2,
-        BeforeStartAndExit = BeforeStart | BeforeExit
-    }; };
 
     class TestSpec;
+    class IStream;
 
-    struct IConfig : Detail::NonCopyable {
+    struct CATCH_DLL_PUBLIC IConfig : Detail::NonCopyable {
 
         virtual ~IConfig();
 
         virtual bool allowThrows() const = 0;
-        virtual std::ostream& defaultStream() const = 0;
         virtual StringRef name() const = 0;
         virtual bool includeSuccessfulResults() const = 0;
         virtual bool shouldDebugBreak() const = 0;
@@ -278,6 +1196,891 @@ namespace Catch {
 }
 
 #endif // CATCH_INTERFACES_CONFIG_HPP_INCLUDED
+#include <iterator>
+
+namespace Catch {
+    namespace Benchmark {
+        template <typename Duration> struct CATCH_DLL_PUBLIC ExecutionPlan {
+            int iterations_per_sample;
+            Duration estimated_duration;
+            Detail::BenchmarkFunction benchmark;
+            Duration warmup_time;
+            int warmup_iterations;
+
+            template <typename Duration2>
+            operator ExecutionPlan<Duration2>() const {
+                return { iterations_per_sample, estimated_duration, benchmark, warmup_time, warmup_iterations };
+            }
+
+            template <typename Clock>
+            std::vector<FloatDuration<Clock>> run(const IConfig &cfg, Environment<FloatDuration<Clock>> env) const {
+                // warmup a bit
+                Detail::run_for_at_least<Clock>(std::chrono::duration_cast<ClockDuration<Clock>>(warmup_time), warmup_iterations, Detail::repeat(now<Clock>{}));
+
+                std::vector<FloatDuration<Clock>> times;
+                times.reserve(cfg.benchmarkSamples());
+                std::generate_n(std::back_inserter(times), cfg.benchmarkSamples(), [this, env] {
+                    Detail::ChronometerModel<Clock> model;
+                    this->benchmark(Chronometer(model, iterations_per_sample));
+                    auto sample_time = model.elapsed() - env.clock_cost.mean;
+                    if (sample_time < FloatDuration<Clock>::zero()) sample_time = FloatDuration<Clock>::zero();
+                    return sample_time / iterations_per_sample;
+                });
+                return times;
+            }
+        };
+    } // namespace Benchmark
+} // namespace Catch
+
+#endif // CATCH_EXECUTION_PLAN_HPP_INCLUDED
+
+
+// Adapted from donated nonius code.
+
+#ifndef CATCH_ANALYSE_HPP_INCLUDED
+#define CATCH_ANALYSE_HPP_INCLUDED
+
+
+
+// Adapted from donated nonius code.
+
+#ifndef CATCH_SAMPLE_ANALYSIS_HPP_INCLUDED
+#define CATCH_SAMPLE_ANALYSIS_HPP_INCLUDED
+
+#include <algorithm>
+
+
+// Adapted from donated nonius code.
+
+#ifndef CATCH_ESTIMATE_HPP_INCLUDED
+#define CATCH_ESTIMATE_HPP_INCLUDED
+
+
+namespace Catch {
+    namespace Benchmark {
+        template <typename Duration> struct CATCH_DLL_PUBLIC Estimate {
+            Duration point;
+            Duration lower_bound;
+            Duration upper_bound;
+            double confidence_interval;
+
+            template <typename Duration2>
+            operator Estimate<Duration2>() const {
+                return { point, lower_bound, upper_bound, confidence_interval };
+            }
+        };
+    } // namespace Benchmark
+} // namespace Catch
+
+#endif // CATCH_ESTIMATE_HPP_INCLUDED
+#include <iterator>
+#include <vector>
+
+namespace Catch {
+    namespace Benchmark {
+        template <typename Duration> struct CATCH_DLL_PUBLIC SampleAnalysis {
+            std::vector<Duration> samples;
+            Estimate<Duration> mean;
+            Estimate<Duration> standard_deviation;
+            OutlierClassification outliers;
+            double outlier_variance;
+
+            template <typename Duration2>
+            operator SampleAnalysis<Duration2>() const {
+                std::vector<Duration2> samples2;
+                samples2.reserve(samples.size());
+                std::transform(samples.begin(), samples.end(), std::back_inserter(samples2), [](Duration d) { return Duration2(d); });
+                return {
+                    CATCH_MOVE(samples2),
+                    mean,
+                    standard_deviation,
+                    outliers,
+                    outlier_variance,
+                };
+            }
+        };
+    } // namespace Benchmark
+} // namespace Catch
+
+#endif // CATCH_SAMPLE_ANALYSIS_HPP_INCLUDED
+
+
+// Adapted from donated nonius code.
+
+#ifndef CATCH_STATS_HPP_INCLUDED
+#define CATCH_STATS_HPP_INCLUDED
+
+#include <algorithm>
+#include <cmath>
+#include <numeric>
+#include <tuple>
+#include <vector>
+
+namespace Catch {
+    namespace Benchmark {
+        namespace Detail {
+            using sample = std::vector<double>;
+
+            CATCH_DLL_PUBLIC double
+            weighted_average_quantile( int k,
+                                       int q,
+                                       std::vector<double>::iterator first,
+                                       std::vector<double>::iterator last );
+
+            template <typename Iterator>
+            OutlierClassification classify_outliers(Iterator first, Iterator last) {
+                std::vector<double> copy(first, last);
+
+                auto q1 = weighted_average_quantile(1, 4, copy.begin(), copy.end());
+                auto q3 = weighted_average_quantile(3, 4, copy.begin(), copy.end());
+                auto iqr = q3 - q1;
+                auto los = q1 - (iqr * 3.);
+                auto lom = q1 - (iqr * 1.5);
+                auto him = q3 + (iqr * 1.5);
+                auto his = q3 + (iqr * 3.);
+
+                OutlierClassification o;
+                for (; first != last; ++first) {
+                    auto&& t = *first;
+                    if (t < los) ++o.low_severe;
+                    else if (t < lom) ++o.low_mild;
+                    else if (t > his) ++o.high_severe;
+                    else if (t > him) ++o.high_mild;
+                    ++o.samples_seen;
+                }
+                return o;
+            }
+
+            template <typename Iterator>
+            double mean(Iterator first, Iterator last) {
+                auto count = last - first;
+                double sum = std::accumulate(first, last, 0.);
+                return sum / count;
+            }
+
+            template <typename Estimator, typename Iterator>
+            sample jackknife(Estimator&& estimator, Iterator first, Iterator last) {
+                auto n = static_cast<size_t>(last - first);
+                auto second = first;
+                ++second;
+                sample results;
+                results.reserve(n);
+
+                for (auto it = first; it != last; ++it) {
+                    std::iter_swap(it, first);
+                    results.push_back(estimator(second, last));
+                }
+
+                return results;
+            }
+
+            inline double normal_cdf(double x) {
+                return std::erfc(-x / std::sqrt(2.0)) / 2.0;
+            }
+
+            CATCH_DLL_PUBLIC double erfc_inv( double x );
+
+            CATCH_DLL_PUBLIC double normal_quantile( double p );
+
+            template <typename Iterator, typename Estimator>
+            Estimate<double> bootstrap(double confidence_level, Iterator first, Iterator last, sample const& resample, Estimator&& estimator) {
+                auto n_samples = last - first;
+
+                double point = estimator(first, last);
+                // Degenerate case with a single sample
+                if (n_samples == 1) return { point, point, point, confidence_level };
+
+                sample jack = jackknife(estimator, first, last);
+                double jack_mean = mean(jack.begin(), jack.end());
+                double sum_squares, sum_cubes;
+                std::tie(sum_squares, sum_cubes) = std::accumulate(jack.begin(), jack.end(), std::make_pair(0., 0.), [jack_mean](std::pair<double, double> sqcb, double x) -> std::pair<double, double> {
+                    auto d = jack_mean - x;
+                    auto d2 = d * d;
+                    auto d3 = d2 * d;
+                    return { sqcb.first + d2, sqcb.second + d3 };
+                });
+
+                double accel = sum_cubes / (6 * std::pow(sum_squares, 1.5));
+                int n = static_cast<int>(resample.size());
+                double prob_n = std::count_if(resample.begin(), resample.end(), [point](double x) { return x < point; }) / static_cast<double>(n);
+                // degenerate case with uniform samples
+                if (prob_n == 0) return { point, point, point, confidence_level };
+
+                double bias = normal_quantile(prob_n);
+                double z1 = normal_quantile((1. - confidence_level) / 2.);
+
+                auto cumn = [n]( double x ) -> int {
+                    return std::lround( normal_cdf( x ) * n );
+                };
+                auto a = [bias, accel](double b) { return bias + b / (1. - accel * b); };
+                double b1 = bias + z1;
+                double b2 = bias - z1;
+                double a1 = a(b1);
+                double a2 = a(b2);
+                auto lo = static_cast<size_t>((std::max)(cumn(a1), 0));
+                auto hi = static_cast<size_t>((std::min)(cumn(a2), n - 1));
+
+                return { point, resample[lo], resample[hi], confidence_level };
+            }
+
+            double outlier_variance(Estimate<double> mean, Estimate<double> stddev, int n);
+
+            struct bootstrap_analysis {
+                Estimate<double> mean;
+                Estimate<double> standard_deviation;
+                double outlier_variance;
+            };
+
+            CATCH_DLL_PUBLIC bootstrap_analysis
+            analyse_samples( double confidence_level,
+                             unsigned int n_resamples,
+                             std::vector<double>::iterator first,
+                             std::vector<double>::iterator last );
+        } // namespace Detail
+    } // namespace Benchmark
+} // namespace Catch
+
+#endif // CATCH_STATS_HPP_INCLUDED
+
+#include <algorithm>
+#include <iterator>
+#include <vector>
+
+namespace Catch {
+    namespace Benchmark {
+        namespace Detail {
+            template <typename Duration, typename Iterator>
+            SampleAnalysis<Duration> analyse(const IConfig &cfg, Environment<Duration>, Iterator first, Iterator last) {
+                if (!cfg.benchmarkNoAnalysis()) {
+                    std::vector<double> samples;
+                    samples.reserve(static_cast<size_t>(last - first));
+                    std::transform(first, last, std::back_inserter(samples), [](Duration d) { return d.count(); });
+
+                    auto analysis = Catch::Benchmark::Detail::analyse_samples(cfg.benchmarkConfidenceInterval(), cfg.benchmarkResamples(), samples.begin(), samples.end());
+                    auto outliers = Catch::Benchmark::Detail::classify_outliers(samples.begin(), samples.end());
+
+                    auto wrap_estimate = [](Estimate<double> e) {
+                        return Estimate<Duration> {
+                            Duration(e.point),
+                                Duration(e.lower_bound),
+                                Duration(e.upper_bound),
+                                e.confidence_interval,
+                        };
+                    };
+                    std::vector<Duration> samples2;
+                    samples2.reserve(samples.size());
+                    std::transform(samples.begin(), samples.end(), std::back_inserter(samples2), [](double d) { return Duration(d); });
+                    return {
+                        CATCH_MOVE(samples2),
+                        wrap_estimate(analysis.mean),
+                        wrap_estimate(analysis.standard_deviation),
+                        outliers,
+                        analysis.outlier_variance,
+                    };
+                } else {
+                    std::vector<Duration> samples;
+                    samples.reserve(static_cast<size_t>(last - first));
+
+                    Duration mean = Duration(0);
+                    int i = 0;
+                    for (auto it = first; it < last; ++it, ++i) {
+                        samples.push_back(Duration(*it));
+                        mean += Duration(*it);
+                    }
+                    mean /= i;
+
+                    return {
+                        CATCH_MOVE(samples),
+                        Estimate<Duration>{mean, mean, mean, 0.0},
+                        Estimate<Duration>{Duration(0), Duration(0), Duration(0), 0.0},
+                        OutlierClassification{},
+                        0.0
+                    };
+                }
+            }
+        } // namespace Detail
+    } // namespace Benchmark
+} // namespace Catch
+
+#endif // CATCH_ANALYSE_HPP_INCLUDED
+
+
+// Adapted from donated nonius code.
+
+#ifndef CATCH_ESTIMATE_CLOCK_HPP_INCLUDED
+#define CATCH_ESTIMATE_CLOCK_HPP_INCLUDED
+
+
+#include <algorithm>
+#include <iterator>
+#include <vector>
+#include <cmath>
+
+namespace Catch {
+    namespace Benchmark {
+        namespace Detail {
+            template <typename Clock>
+            std::vector<double> resolution(int k) {
+                std::vector<TimePoint<Clock>> times;
+                times.reserve(static_cast<size_t>(k + 1));
+                std::generate_n(std::back_inserter(times), k + 1, now<Clock>{});
+
+                std::vector<double> deltas;
+                deltas.reserve(static_cast<size_t>(k));
+                std::transform(std::next(times.begin()), times.end(), times.begin(),
+                    std::back_inserter(deltas),
+                    [](TimePoint<Clock> a, TimePoint<Clock> b) { return static_cast<double>((a - b).count()); });
+
+                return deltas;
+            }
+
+            const auto warmup_iterations = 10000;
+            const auto warmup_time = std::chrono::milliseconds(100);
+            const auto minimum_ticks = 1000;
+            const auto warmup_seed = 10000;
+            const auto clock_resolution_estimation_time = std::chrono::milliseconds(500);
+            const auto clock_cost_estimation_time_limit = std::chrono::seconds(1);
+            const auto clock_cost_estimation_tick_limit = 100000;
+            const auto clock_cost_estimation_time = std::chrono::milliseconds(10);
+            const auto clock_cost_estimation_iterations = 10000;
+
+            template <typename Clock>
+            int warmup() {
+                return run_for_at_least<Clock>(std::chrono::duration_cast<ClockDuration<Clock>>(warmup_time), warmup_seed, &resolution<Clock>)
+                    .iterations;
+            }
+            template <typename Clock>
+            EnvironmentEstimate<FloatDuration<Clock>> estimate_clock_resolution(int iterations) {
+                auto r = run_for_at_least<Clock>(std::chrono::duration_cast<ClockDuration<Clock>>(clock_resolution_estimation_time), iterations, &resolution<Clock>)
+                    .result;
+                return {
+                    FloatDuration<Clock>(mean(r.begin(), r.end())),
+                    classify_outliers(r.begin(), r.end()),
+                };
+            }
+            template <typename Clock>
+            EnvironmentEstimate<FloatDuration<Clock>> estimate_clock_cost(FloatDuration<Clock> resolution) {
+                auto time_limit = (std::min)(
+                    resolution * clock_cost_estimation_tick_limit,
+                    FloatDuration<Clock>(clock_cost_estimation_time_limit));
+                auto time_clock = [](int k) {
+                    return Detail::measure<Clock>([k] {
+                        for (int i = 0; i < k; ++i) {
+                            volatile auto ignored = Clock::now();
+                            (void)ignored;
+                        }
+                    }).elapsed;
+                };
+                time_clock(1);
+                int iters = clock_cost_estimation_iterations;
+                auto&& r = run_for_at_least<Clock>(std::chrono::duration_cast<ClockDuration<Clock>>(clock_cost_estimation_time), iters, time_clock);
+                std::vector<double> times;
+                int nsamples = static_cast<int>(std::ceil(time_limit / r.elapsed));
+                times.reserve(static_cast<size_t>(nsamples));
+                std::generate_n(std::back_inserter(times), nsamples, [time_clock, &r] {
+                    return static_cast<double>((time_clock(r.iterations) / r.iterations).count());
+                });
+                return {
+                    FloatDuration<Clock>(mean(times.begin(), times.end())),
+                    classify_outliers(times.begin(), times.end()),
+                };
+            }
+
+            template <typename Clock>
+            Environment<FloatDuration<Clock>> measure_environment() {
+#if defined(__clang__)
+#    pragma clang diagnostic push
+#    pragma clang diagnostic ignored "-Wexit-time-destructors"
+#endif
+                static Catch::Detail::unique_ptr<Environment<FloatDuration<Clock>>> env;
+#if defined(__clang__)
+#    pragma clang diagnostic pop
+#endif
+                if (env) {
+                    return *env;
+                }
+
+                auto iters = Detail::warmup<Clock>();
+                auto resolution = Detail::estimate_clock_resolution<Clock>(iters);
+                auto cost = Detail::estimate_clock_cost<Clock>(resolution.mean);
+
+                env = Catch::Detail::make_unique<Environment<FloatDuration<Clock>>>( Environment<FloatDuration<Clock>>{resolution, cost} );
+                return *env;
+            }
+        } // namespace Detail
+    } // namespace Benchmark
+} // namespace Catch
+
+#endif // CATCH_ESTIMATE_CLOCK_HPP_INCLUDED
+
+
+#ifndef CATCH_INTERFACES_REPORTER_HPP_INCLUDED
+#define CATCH_INTERFACES_REPORTER_HPP_INCLUDED
+
+
+
+#ifndef CATCH_ASSERTION_RESULT_HPP_INCLUDED
+#define CATCH_ASSERTION_RESULT_HPP_INCLUDED
+
+
+
+#ifndef CATCH_ASSERTION_INFO_HPP_INCLUDED
+#define CATCH_ASSERTION_INFO_HPP_INCLUDED
+
+
+
+#ifndef CATCH_SOURCE_LINE_INFO_HPP_INCLUDED
+#define CATCH_SOURCE_LINE_INFO_HPP_INCLUDED
+
+#include <cstddef>
+#include <iosfwd>
+
+namespace Catch {
+
+    struct CATCH_DLL_PUBLIC SourceLineInfo {
+
+        SourceLineInfo() = delete;
+        constexpr SourceLineInfo( char const* _file, std::size_t _line ) noexcept:
+            file( _file ),
+            line( _line )
+        {}
+
+        bool operator == ( SourceLineInfo const& other ) const noexcept;
+        bool operator < ( SourceLineInfo const& other ) const noexcept;
+
+        char const* file;
+        std::size_t line;
+
+        CATCH_DLL_PUBLIC friend std::ostream&
+        operator<<( std::ostream& os, SourceLineInfo const& info );
+    };
+}
+
+#define CATCH_INTERNAL_LINEINFO \
+    ::Catch::SourceLineInfo( __FILE__, static_cast<std::size_t>( __LINE__ ) )
+
+#endif // CATCH_SOURCE_LINE_INFO_HPP_INCLUDED
+
+namespace Catch {
+
+    struct CATCH_DLL_PUBLIC AssertionInfo {
+        // AssertionInfo() = delete;
+
+        StringRef macroName;
+        SourceLineInfo lineInfo;
+        StringRef capturedExpression;
+        ResultDisposition::Flags resultDisposition;
+    };
+
+} // end namespace Catch
+
+#endif // CATCH_ASSERTION_INFO_HPP_INCLUDED
+
+
+#ifndef CATCH_LAZY_EXPR_HPP_INCLUDED
+#define CATCH_LAZY_EXPR_HPP_INCLUDED
+
+#include <iosfwd>
+
+namespace Catch {
+
+    struct ITransientExpression;
+
+    class CATCH_DLL_PUBLIC LazyExpression {
+        friend class AssertionHandler;
+        friend struct AssertionStats;
+        friend class RunContext;
+
+        ITransientExpression const* m_transientExpression = nullptr;
+        bool m_isNegated;
+    public:
+        LazyExpression( bool isNegated ):
+            m_isNegated(isNegated)
+        {}
+        LazyExpression(LazyExpression const& other) = default;
+        LazyExpression& operator = ( LazyExpression const& ) = delete;
+
+        explicit operator bool() const {
+            return m_transientExpression != nullptr;
+        }
+
+        CATCH_DLL_PUBLIC friend auto
+        operator<<( std::ostream& os, LazyExpression const& lazyExpr )
+            -> std::ostream&;
+    };
+
+} // namespace Catch
+
+#endif // CATCH_LAZY_EXPR_HPP_INCLUDED
+#include <string>
+
+namespace Catch {
+
+    struct CATCH_DLL_PUBLIC AssertionResultData {
+        AssertionResultData() = delete;
+
+        AssertionResultData( ResultWas::OfType _resultType, LazyExpression const& _lazyExpression );
+
+        std::string message;
+        mutable std::string reconstructedExpression;
+        LazyExpression lazyExpression;
+        ResultWas::OfType resultType;
+
+        std::string reconstructExpression() const;
+    };
+
+    class CATCH_DLL_PUBLIC AssertionResult {
+    public:
+        AssertionResult() = delete;
+        AssertionResult( AssertionInfo const& info, AssertionResultData const& data );
+
+        bool isOk() const;
+        bool succeeded() const;
+        ResultWas::OfType getResultType() const;
+        bool hasExpression() const;
+        bool hasMessage() const;
+        std::string getExpression() const;
+        std::string getExpressionInMacro() const;
+        bool hasExpandedExpression() const;
+        std::string getExpandedExpression() const;
+        StringRef getMessage() const;
+        SourceLineInfo getSourceInfo() const;
+        StringRef getTestMacroName() const;
+
+    //protected:
+        AssertionInfo m_info;
+        AssertionResultData m_resultData;
+    };
+
+} // end namespace Catch
+
+#endif // CATCH_ASSERTION_RESULT_HPP_INCLUDED
+
+
+#ifndef CATCH_SECTION_INFO_HPP_INCLUDED
+#define CATCH_SECTION_INFO_HPP_INCLUDED
+
+
+
+#ifndef CATCH_TOTALS_HPP_INCLUDED
+#define CATCH_TOTALS_HPP_INCLUDED
+
+#include <cstddef>
+#include <cstdint>
+
+namespace Catch {
+
+    struct CATCH_DLL_PUBLIC Counts {
+        Counts operator - ( Counts const& other ) const;
+        Counts& operator += ( Counts const& other );
+
+        std::uint64_t total() const;
+        bool allPassed() const;
+        bool allOk() const;
+
+        std::uint64_t passed = 0;
+        std::uint64_t failed = 0;
+        std::uint64_t failedButOk = 0;
+    };
+
+    struct CATCH_DLL_PUBLIC Totals {
+
+        Totals operator - ( Totals const& other ) const;
+        Totals& operator += ( Totals const& other );
+
+        Totals delta( Totals const& prevTotals ) const;
+
+        Counts assertions;
+        Counts testCases;
+    };
+}
+
+#endif // CATCH_TOTALS_HPP_INCLUDED
+#include <string>
+
+namespace Catch {
+
+    struct CATCH_DLL_PUBLIC SectionInfo {
+        // The last argument is ignored, so that people can write
+        // SECTION("ShortName", "Proper description that is long") and
+        // still use the `-c` flag comfortably.
+        SectionInfo( SourceLineInfo const& _lineInfo, std::string _name,
+                    const char* const = nullptr ):
+            name(CATCH_MOVE(_name)),
+            lineInfo(_lineInfo)
+            {}
+
+        std::string name;
+        SourceLineInfo lineInfo;
+    };
+
+    struct CATCH_DLL_PUBLIC SectionEndInfo {
+        SectionInfo sectionInfo;
+        Counts prevAssertions;
+        double durationInSeconds;
+    };
+
+} // end namespace Catch
+
+#endif // CATCH_SECTION_INFO_HPP_INCLUDED
+
+
+#ifndef CATCH_MESSAGE_INFO_HPP_INCLUDED
+#define CATCH_MESSAGE_INFO_HPP_INCLUDED
+
+#include <string>
+
+namespace Catch {
+
+    struct CATCH_DLL_PUBLIC MessageInfo {
+        MessageInfo(    StringRef _macroName,
+                        SourceLineInfo const& _lineInfo,
+                        ResultWas::OfType _type );
+
+        StringRef macroName;
+        std::string message;
+        SourceLineInfo lineInfo;
+        ResultWas::OfType type;
+        unsigned int sequence;
+
+        bool operator == (MessageInfo const& other) const {
+            return sequence == other.sequence;
+        }
+        bool operator < (MessageInfo const& other) const {
+            return sequence < other.sequence;
+        }
+    private:
+        static unsigned int globalCount;
+    };
+
+} // end namespace Catch
+
+#endif // CATCH_MESSAGE_INFO_HPP_INCLUDED
+#include <iosfwd>
+#include <string>
+#include <vector>
+
+namespace Catch {
+
+    struct ReporterDescription;
+    struct TagInfo;
+    struct TestCaseInfo;
+    class TestCaseHandle;
+    struct IConfig;
+    class IStream;
+
+    struct CATCH_DLL_PUBLIC ReporterConfig {
+        ReporterConfig( IConfig const* _fullConfig, IStream const* _stream );
+
+        IStream const* stream() const;
+        IConfig const* fullConfig() const;
+
+    private:
+        IStream const* m_stream;
+        IConfig const* m_fullConfig;
+    };
+
+    struct CATCH_DLL_PUBLIC TestRunInfo {
+        constexpr TestRunInfo(StringRef _name) : name(_name) {}
+        StringRef name;
+    };
+
+    struct CATCH_DLL_PUBLIC AssertionStats {
+        AssertionStats( AssertionResult const& _assertionResult,
+                        std::vector<MessageInfo> const& _infoMessages,
+                        Totals const& _totals );
+
+        AssertionStats( AssertionStats const& )              = default;
+        AssertionStats( AssertionStats && )                  = default;
+        AssertionStats& operator = ( AssertionStats const& ) = delete;
+        AssertionStats& operator = ( AssertionStats && )     = delete;
+
+        AssertionResult assertionResult;
+        std::vector<MessageInfo> infoMessages;
+        Totals totals;
+    };
+
+    struct CATCH_DLL_PUBLIC SectionStats {
+        SectionStats(   SectionInfo const& _sectionInfo,
+                        Counts const& _assertions,
+                        double _durationInSeconds,
+                        bool _missingAssertions );
+
+        SectionInfo sectionInfo;
+        Counts assertions;
+        double durationInSeconds;
+        bool missingAssertions;
+    };
+
+    struct CATCH_DLL_PUBLIC TestCaseStats {
+        TestCaseStats(  TestCaseInfo const& _testInfo,
+                        Totals const& _totals,
+                        std::string const& _stdOut,
+                        std::string const& _stdErr,
+                        bool _aborting );
+
+        TestCaseInfo const * testInfo;
+        Totals totals;
+        std::string stdOut;
+        std::string stdErr;
+        bool aborting;
+    };
+
+    struct CATCH_DLL_PUBLIC TestRunStats {
+        TestRunStats(   TestRunInfo const& _runInfo,
+                        Totals const& _totals,
+                        bool _aborting );
+
+        TestRunInfo runInfo;
+        Totals totals;
+        bool aborting;
+    };
+
+    struct CATCH_DLL_PUBLIC BenchmarkInfo {
+        std::string name;
+        double estimatedDuration;
+        int iterations;
+        unsigned int samples;
+        unsigned int resamples;
+        double clockResolution;
+        double clockCost;
+    };
+
+    template <class Duration> struct CATCH_DLL_PUBLIC BenchmarkStats {
+        BenchmarkInfo info;
+
+        std::vector<Duration> samples;
+        Benchmark::Estimate<Duration> mean;
+        Benchmark::Estimate<Duration> standardDeviation;
+        Benchmark::OutlierClassification outliers;
+        double outlierVariance;
+
+        template <typename Duration2>
+        operator BenchmarkStats<Duration2>() const {
+            std::vector<Duration2> samples2;
+            samples2.reserve(samples.size());
+            for (auto const& sample : samples) {
+                samples2.push_back(Duration2(sample));
+            }
+            return {
+                info,
+                CATCH_MOVE(samples2),
+                mean,
+                standardDeviation,
+                outliers,
+                outlierVariance,
+            };
+        }
+    };
+
+    //! By setting up its preferences, a reporter can modify Catch2's behaviour
+    //! in some regards, e.g. it can request Catch2 to capture writes to
+    //! stdout/stderr during test execution, and pass them to the reporter.
+    struct CATCH_DLL_PUBLIC ReporterPreferences {
+        //! Catch2 should redirect writes to stdout and pass them to the
+        //! reporter
+        bool shouldRedirectStdOut = false;
+        //! Catch2 should call `Reporter::assertionEnded` even for passing
+        //! assertions
+        bool shouldReportAllAssertions = false;
+    };
+
+    /**
+     * The common base for all reporters and event listeners
+     *
+     * Implementing classes must also implement:
+     *
+     *     //! User-friendly description of the reporter/listener type
+     *     static std::string getDescription()
+     *
+     * Generally shouldn't be derived from by users of Catch2 directly,
+     * instead they should derive from one of the utility bases that
+     * derive from this class.
+     */
+    class CATCH_DLL_PUBLIC IEventListener {
+    protected:
+        //! Derived classes can set up their preferences here
+        ReporterPreferences m_preferences;
+        //! The test run's config as filled in from CLI and defaults
+        IConfig const* m_config;
+
+    public:
+        IEventListener( IConfig const* config ): m_config( config ) {}
+
+        virtual ~IEventListener(); // = default;
+
+        // Implementing class must also provide the following static methods:
+        // static std::string getDescription();
+
+        ReporterPreferences const& getPreferences() const {
+            return m_preferences;
+        }
+
+        //! Called when no test cases match provided test spec
+        virtual void noMatchingTestCases( StringRef unmatchedSpec ) = 0;
+        //! Called for all invalid test specs from the cli
+        virtual void reportInvalidTestSpec( StringRef invalidArgument ) = 0;
+
+        /**
+         * Called once in a testing run before tests are started
+         *
+         * Not called if tests won't be run (e.g. only listing will happen)
+         */
+        virtual void testRunStarting( TestRunInfo const& testRunInfo ) = 0;
+
+        //! Called _once_ for each TEST_CASE, no matter how many times it is entered
+        virtual void testCaseStarting( TestCaseInfo const& testInfo ) = 0;
+        //! Called _every time_ a TEST_CASE is entered, including repeats (due to sections)
+        virtual void testCasePartialStarting( TestCaseInfo const& testInfo, uint64_t partNumber ) = 0;
+        //! Called when a `SECTION` is being entered. Not called for skipped sections
+        virtual void sectionStarting( SectionInfo const& sectionInfo ) = 0;
+
+        //! Called when user-code is being probed before the actual benchmark runs
+        virtual void benchmarkPreparing( StringRef benchmarkName ) = 0;
+        //! Called after probe but before the user-code is being benchmarked
+        virtual void benchmarkStarting( BenchmarkInfo const& benchmarkInfo ) = 0;
+        //! Called with the benchmark results if benchmark successfully finishes
+        virtual void benchmarkEnded( BenchmarkStats<> const& benchmarkStats ) = 0;
+        //! Called if running the benchmarks fails for any reason
+        virtual void benchmarkFailed( StringRef benchmarkName ) = 0;
+
+        //! Called before assertion success/failure is evaluated
+        virtual void assertionStarting( AssertionInfo const& assertionInfo ) = 0;
+
+        //! Called after assertion was fully evaluated
+        virtual void assertionEnded( AssertionStats const& assertionStats ) = 0;
+
+        //! Called after a `SECTION` has finished running
+        virtual void sectionEnded( SectionStats const& sectionStats ) = 0;
+        //! Called _every time_ a TEST_CASE is entered, including repeats (due to sections)
+        virtual void testCasePartialEnded(TestCaseStats const& testCaseStats, uint64_t partNumber ) = 0;
+        //! Called _once_ for each TEST_CASE, no matter how many times it is entered
+        virtual void testCaseEnded( TestCaseStats const& testCaseStats ) = 0;
+        /**
+         * Called once after all tests in a testing run are finished
+         *
+         * Not called if tests weren't run (e.g. only listings happened)
+         */
+        virtual void testRunEnded( TestRunStats const& testRunStats ) = 0;
+
+        //! Called with test cases that are skipped due to the test run aborting
+        virtual void skipTest( TestCaseInfo const& testInfo ) = 0;
+
+        //! Called if a fatal error (signal/structured exception) occured
+        virtual void fatalErrorEncountered( StringRef error ) = 0;
+
+        //! Writes out information about provided reporters using reporter-specific format
+        virtual void listReporters(std::vector<ReporterDescription> const& descriptions) = 0;
+        //! Writes out information about provided tests using reporter-specific format
+        virtual void listTests(std::vector<TestCaseHandle> const& tests) = 0;
+        //! Writes out information about the provided tags using reporter-specific format
+        virtual void listTags(std::vector<TagInfo> const& tags) = 0;
+    };
+    using IStreamingReporterPtr = Detail::unique_ptr<IEventListener>;
+
+} // end namespace Catch
+
+#endif // CATCH_INTERFACES_REPORTER_HPP_INCLUDED
 
 
 #ifndef CATCH_COMPILER_CAPABILITIES_HPP_INCLUDED
@@ -585,7 +2388,9 @@ namespace Catch {
 #  define CATCH_CONFIG_NEW_CAPTURE
 #endif
 
-#if !defined(CATCH_INTERNAL_CONFIG_EXCEPTIONS_ENABLED) && !defined(CATCH_CONFIG_DISABLE_EXCEPTIONS)
+#if !defined( CATCH_INTERNAL_CONFIG_EXCEPTIONS_ENABLED ) && \
+    !defined( CATCH_CONFIG_DISABLE_EXCEPTIONS ) &&          \
+    !defined( CATCH_CONFIG_NO_DISABLE_EXCEPTIONS )
 #  define CATCH_CONFIG_DISABLE_EXCEPTIONS
 #endif
 
@@ -659,21 +2464,20 @@ namespace Catch {
 #ifndef CATCH_CONTEXT_HPP_INCLUDED
 #define CATCH_CONTEXT_HPP_INCLUDED
 
+
 namespace Catch {
 
     struct IResultCapture;
     struct IConfig;
 
-    struct IContext
-    {
+    struct CATCH_DLL_PUBLIC IContext {
         virtual ~IContext(); // = default
 
         virtual IResultCapture* getResultCapture() = 0;
         virtual IConfig const* getConfig() const = 0;
     };
 
-    struct IMutableContext : IContext
-    {
+    struct CATCH_DLL_PUBLIC IMutableContext : IContext {
         virtual ~IMutableContext(); // = default
         virtual void setResultCapture( IResultCapture* resultCapture ) = 0;
         virtual void setConfig( IConfig const* config ) = 0;
@@ -700,799 +2504,11 @@ namespace Catch {
 
     void cleanUpContext();
 
-    class SimplePcg32;
-    SimplePcg32& rng();
+    class CATCH_DLL_PUBLIC SimplePcg32;
+    CATCH_DLL_PUBLIC SimplePcg32& rng();
 }
 
 #endif // CATCH_CONTEXT_HPP_INCLUDED
-
-
-#ifndef CATCH_INTERFACES_REPORTER_HPP_INCLUDED
-#define CATCH_INTERFACES_REPORTER_HPP_INCLUDED
-
-
-
-#ifndef CATCH_SECTION_INFO_HPP_INCLUDED
-#define CATCH_SECTION_INFO_HPP_INCLUDED
-
-
-
-#ifndef CATCH_MOVE_AND_FORWARD_HPP_INCLUDED
-#define CATCH_MOVE_AND_FORWARD_HPP_INCLUDED
-
-#include <type_traits>
-
-//! Replacement for std::move with better compile time performance
-#define CATCH_MOVE(...) static_cast<std::remove_reference_t<decltype(__VA_ARGS__)>&&>(__VA_ARGS__)
-
-//! Replacement for std::forward with better compile time performance
-#define CATCH_FORWARD(...) static_cast<decltype(__VA_ARGS__)&&>(__VA_ARGS__)
-
-#endif // CATCH_MOVE_AND_FORWARD_HPP_INCLUDED
-
-
-#ifndef CATCH_SOURCE_LINE_INFO_HPP_INCLUDED
-#define CATCH_SOURCE_LINE_INFO_HPP_INCLUDED
-
-#include <cstddef>
-#include <iosfwd>
-
-namespace Catch {
-
-    struct SourceLineInfo {
-
-        SourceLineInfo() = delete;
-        constexpr SourceLineInfo( char const* _file, std::size_t _line ) noexcept:
-            file( _file ),
-            line( _line )
-        {}
-
-        bool operator == ( SourceLineInfo const& other ) const noexcept;
-        bool operator < ( SourceLineInfo const& other ) const noexcept;
-
-        char const* file;
-        std::size_t line;
-
-        friend std::ostream& operator << (std::ostream& os, SourceLineInfo const& info);
-    };
-}
-
-#define CATCH_INTERNAL_LINEINFO \
-    ::Catch::SourceLineInfo( __FILE__, static_cast<std::size_t>( __LINE__ ) )
-
-#endif // CATCH_SOURCE_LINE_INFO_HPP_INCLUDED
-
-
-#ifndef CATCH_TOTALS_HPP_INCLUDED
-#define CATCH_TOTALS_HPP_INCLUDED
-
-#include <cstddef>
-#include <cstdint>
-
-namespace Catch {
-
-    struct Counts {
-        Counts operator - ( Counts const& other ) const;
-        Counts& operator += ( Counts const& other );
-
-        std::uint64_t total() const;
-        bool allPassed() const;
-        bool allOk() const;
-
-        std::uint64_t passed = 0;
-        std::uint64_t failed = 0;
-        std::uint64_t failedButOk = 0;
-    };
-
-    struct Totals {
-
-        Totals operator - ( Totals const& other ) const;
-        Totals& operator += ( Totals const& other );
-
-        Totals delta( Totals const& prevTotals ) const;
-
-        int error = 0;
-        Counts assertions;
-        Counts testCases;
-    };
-}
-
-#endif // CATCH_TOTALS_HPP_INCLUDED
-
-#include <string>
-
-namespace Catch {
-
-    struct SectionInfo {
-        // The last argument is ignored, so that people can write
-        // SECTION("ShortName", "Proper description that is long") and
-        // still use the `-c` flag comfortably.
-        SectionInfo( SourceLineInfo const& _lineInfo, std::string _name,
-                    const char* const = nullptr ):
-            name(CATCH_MOVE(_name)),
-            lineInfo(_lineInfo)
-            {}
-
-        std::string name;
-        SourceLineInfo lineInfo;
-    };
-
-    struct SectionEndInfo {
-        SectionInfo sectionInfo;
-        Counts prevAssertions;
-        double durationInSeconds;
-    };
-
-} // end namespace Catch
-
-#endif // CATCH_SECTION_INFO_HPP_INCLUDED
-
-
-#ifndef CATCH_ASSERTION_RESULT_HPP_INCLUDED
-#define CATCH_ASSERTION_RESULT_HPP_INCLUDED
-
-
-
-#ifndef CATCH_ASSERTION_INFO_HPP_INCLUDED
-#define CATCH_ASSERTION_INFO_HPP_INCLUDED
-
-
-
-#ifndef CATCH_RESULT_TYPE_HPP_INCLUDED
-#define CATCH_RESULT_TYPE_HPP_INCLUDED
-
-namespace Catch {
-
-    // ResultWas::OfType enum
-    struct ResultWas { enum OfType {
-        Unknown = -1,
-        Ok = 0,
-        Info = 1,
-        Warning = 2,
-
-        FailureBit = 0x10,
-
-        ExpressionFailed = FailureBit | 1,
-        ExplicitFailure = FailureBit | 2,
-
-        Exception = 0x100 | FailureBit,
-
-        ThrewException = Exception | 1,
-        DidntThrowException = Exception | 2,
-
-        FatalErrorCondition = 0x200 | FailureBit
-
-    }; };
-
-    bool isOk( ResultWas::OfType resultType );
-    bool isJustInfo( int flags );
-
-
-    // ResultDisposition::Flags enum
-    struct ResultDisposition { enum Flags {
-        Normal = 0x01,
-
-        ContinueOnFailure = 0x02,   // Failures fail test, but execution continues
-        FalseTest = 0x04,           // Prefix expression with !
-        SuppressFail = 0x08         // Failures are reported but do not fail the test
-    }; };
-
-    ResultDisposition::Flags operator | ( ResultDisposition::Flags lhs, ResultDisposition::Flags rhs );
-
-    bool shouldContinueOnFailure( int flags );
-    inline bool isFalseTest( int flags ) { return ( flags & ResultDisposition::FalseTest ) != 0; }
-    bool shouldSuppressFailure( int flags );
-
-} // end namespace Catch
-
-#endif // CATCH_RESULT_TYPE_HPP_INCLUDED
-
-namespace Catch {
-
-    struct AssertionInfo {
-        // AssertionInfo() = delete;
-
-        StringRef macroName;
-        SourceLineInfo lineInfo;
-        StringRef capturedExpression;
-        ResultDisposition::Flags resultDisposition;
-    };
-
-} // end namespace Catch
-
-#endif // CATCH_ASSERTION_INFO_HPP_INCLUDED
-
-
-#ifndef CATCH_LAZY_EXPR_HPP_INCLUDED
-#define CATCH_LAZY_EXPR_HPP_INCLUDED
-
-#include <iosfwd>
-
-namespace Catch {
-
-    struct ITransientExpression;
-
-    class LazyExpression {
-        friend class AssertionHandler;
-        friend struct AssertionStats;
-        friend class RunContext;
-
-        ITransientExpression const* m_transientExpression = nullptr;
-        bool m_isNegated;
-    public:
-        LazyExpression( bool isNegated ):
-            m_isNegated(isNegated)
-        {}
-        LazyExpression(LazyExpression const& other) = default;
-        LazyExpression& operator = ( LazyExpression const& ) = delete;
-
-        explicit operator bool() const {
-            return m_transientExpression != nullptr;
-        }
-
-        friend auto operator << ( std::ostream& os, LazyExpression const& lazyExpr ) -> std::ostream&;
-    };
-
-} // namespace Catch
-
-#endif // CATCH_LAZY_EXPR_HPP_INCLUDED
-
-#include <string>
-
-namespace Catch {
-
-    struct AssertionResultData
-    {
-        AssertionResultData() = delete;
-
-        AssertionResultData( ResultWas::OfType _resultType, LazyExpression const& _lazyExpression );
-
-        std::string message;
-        mutable std::string reconstructedExpression;
-        LazyExpression lazyExpression;
-        ResultWas::OfType resultType;
-
-        std::string reconstructExpression() const;
-    };
-
-    class AssertionResult {
-    public:
-        AssertionResult() = delete;
-        AssertionResult( AssertionInfo const& info, AssertionResultData const& data );
-
-        bool isOk() const;
-        bool succeeded() const;
-        ResultWas::OfType getResultType() const;
-        bool hasExpression() const;
-        bool hasMessage() const;
-        std::string getExpression() const;
-        std::string getExpressionInMacro() const;
-        bool hasExpandedExpression() const;
-        std::string getExpandedExpression() const;
-        StringRef getMessage() const;
-        SourceLineInfo getSourceInfo() const;
-        StringRef getTestMacroName() const;
-
-    //protected:
-        AssertionInfo m_info;
-        AssertionResultData m_resultData;
-    };
-
-} // end namespace Catch
-
-#endif // CATCH_ASSERTION_RESULT_HPP_INCLUDED
-
-
-#ifndef CATCH_MESSAGE_INFO_HPP_INCLUDED
-#define CATCH_MESSAGE_INFO_HPP_INCLUDED
-
-
-
-#ifndef CATCH_INTERFACES_CAPTURE_HPP_INCLUDED
-#define CATCH_INTERFACES_CAPTURE_HPP_INCLUDED
-
-#include <string>
-#include <chrono>
-
-
-namespace Catch {
-
-    class AssertionResult;
-    struct AssertionInfo;
-    struct SectionInfo;
-    struct SectionEndInfo;
-    struct MessageInfo;
-    struct MessageBuilder;
-    struct Counts;
-    struct AssertionReaction;
-    struct SourceLineInfo;
-
-    struct ITransientExpression;
-    struct IGeneratorTracker;
-
-    struct BenchmarkInfo;
-    template <typename Duration = std::chrono::duration<double, std::nano>>
-    struct BenchmarkStats;
-
-    struct IResultCapture {
-
-        virtual ~IResultCapture();
-
-        virtual bool sectionStarted(    SectionInfo const& sectionInfo,
-                                        Counts& assertions ) = 0;
-        virtual void sectionEnded( SectionEndInfo const& endInfo ) = 0;
-        virtual void sectionEndedEarly( SectionEndInfo const& endInfo ) = 0;
-
-        virtual auto acquireGeneratorTracker( StringRef generatorName, SourceLineInfo const& lineInfo ) -> IGeneratorTracker& = 0;
-
-        virtual void benchmarkPreparing( StringRef name ) = 0;
-        virtual void benchmarkStarting( BenchmarkInfo const& info ) = 0;
-        virtual void benchmarkEnded( BenchmarkStats<> const& stats ) = 0;
-        virtual void benchmarkFailed( StringRef error ) = 0;
-
-        virtual void pushScopedMessage( MessageInfo const& message ) = 0;
-        virtual void popScopedMessage( MessageInfo const& message ) = 0;
-
-        virtual void emplaceUnscopedMessage( MessageBuilder const& builder ) = 0;
-
-        virtual void handleFatalErrorCondition( StringRef message ) = 0;
-
-        virtual void handleExpr
-                (   AssertionInfo const& info,
-                    ITransientExpression const& expr,
-                    AssertionReaction& reaction ) = 0;
-        virtual void handleMessage
-                (   AssertionInfo const& info,
-                    ResultWas::OfType resultType,
-                    StringRef message,
-                    AssertionReaction& reaction ) = 0;
-        virtual void handleUnexpectedExceptionNotThrown
-                (   AssertionInfo const& info,
-                    AssertionReaction& reaction ) = 0;
-        virtual void handleUnexpectedInflightException
-                (   AssertionInfo const& info,
-                    std::string const& message,
-                    AssertionReaction& reaction ) = 0;
-        virtual void handleIncomplete
-                (   AssertionInfo const& info ) = 0;
-        virtual void handleNonExpr
-                (   AssertionInfo const &info,
-                    ResultWas::OfType resultType,
-                    AssertionReaction &reaction ) = 0;
-
-
-
-        virtual bool lastAssertionPassed() = 0;
-        virtual void assertionPassed() = 0;
-
-        // Deprecated, do not use:
-        virtual std::string getCurrentTestName() const = 0;
-        virtual const AssertionResult* getLastResult() const = 0;
-        virtual void exceptionEarlyReported() = 0;
-    };
-
-    IResultCapture& getResultCapture();
-}
-
-#endif // CATCH_INTERFACES_CAPTURE_HPP_INCLUDED
-
-#include <string>
-
-namespace Catch {
-
-    struct MessageInfo {
-        MessageInfo(    StringRef _macroName,
-                        SourceLineInfo const& _lineInfo,
-                        ResultWas::OfType _type );
-
-        StringRef macroName;
-        std::string message;
-        SourceLineInfo lineInfo;
-        ResultWas::OfType type;
-        unsigned int sequence;
-
-        bool operator == (MessageInfo const& other) const {
-            return sequence == other.sequence;
-        }
-        bool operator < (MessageInfo const& other) const {
-            return sequence < other.sequence;
-        }
-    private:
-        static unsigned int globalCount;
-    };
-
-} // end namespace Catch
-
-#endif // CATCH_MESSAGE_INFO_HPP_INCLUDED
-
-
-#ifndef CATCH_UNIQUE_PTR_HPP_INCLUDED
-#define CATCH_UNIQUE_PTR_HPP_INCLUDED
-
-#include <cassert>
-#include <type_traits>
-
-
-#if defined(__clang__) && defined(__has_attribute)
-#  if __has_attribute(trivial_abi)
-#    define TRIVIAL_ABI [[clang::trivial_abi]]
-#  endif
-#endif
-#if !defined(TRIVIAL_ABI)
-#  define TRIVIAL_ABI
-#endif
-
-namespace Catch {
-namespace Detail {
-    /**
-     * A reimplementation of `std::unique_ptr` for improved compilation performance
-     *
-     * Does not support arrays nor custom deleters, but has trivial ABI
-     * when supposed by the compiler.
-     */
-    template <typename T>
-    class TRIVIAL_ABI unique_ptr {
-        T* m_ptr;
-    public:
-        constexpr unique_ptr(std::nullptr_t = nullptr):
-            m_ptr{}
-        {}
-        explicit constexpr unique_ptr(T* ptr):
-            m_ptr(ptr)
-        {}
-
-        template <typename U, typename = std::enable_if_t<std::is_base_of<T, U>::value>>
-        unique_ptr(unique_ptr<U>&& from):
-            m_ptr(from.release())
-        {}
-
-        template <typename U, typename = std::enable_if_t<std::is_base_of<T, U>::value>>
-        unique_ptr& operator=(unique_ptr<U>&& from) {
-            reset(from.release());
-
-            return *this;
-        }
-
-        unique_ptr(unique_ptr const&) = delete;
-        unique_ptr& operator=(unique_ptr const&) = delete;
-
-        unique_ptr(unique_ptr&& rhs) noexcept:
-            m_ptr(rhs.m_ptr) {
-            rhs.m_ptr = nullptr;
-        }
-        unique_ptr& operator=(unique_ptr&& rhs) noexcept {
-            reset(rhs.release());
-
-            return *this;
-        }
-
-        ~unique_ptr() {
-            delete m_ptr;
-        }
-
-        T& operator*() {
-            assert(m_ptr);
-            return *m_ptr;
-        }
-        T const& operator*() const {
-            assert(m_ptr);
-            return *m_ptr;
-        }
-        T* operator->() noexcept {
-            assert(m_ptr);
-            return m_ptr;
-        }
-        T const* operator->() const noexcept {
-            assert(m_ptr);
-            return m_ptr;
-        }
-
-        T* get() { return m_ptr; }
-        T const* get() const { return m_ptr; }
-
-        void reset(T* ptr = nullptr) {
-            delete m_ptr;
-            m_ptr = ptr;
-        }
-
-        T* release() {
-            auto temp = m_ptr;
-            m_ptr = nullptr;
-            return temp;
-        }
-
-        explicit operator bool() const {
-            return m_ptr;
-        }
-
-        friend void swap(unique_ptr& lhs, unique_ptr& rhs) {
-            auto temp = lhs.m_ptr;
-            lhs.m_ptr = rhs.m_ptr;
-            rhs.m_ptr = temp;
-        }
-    };
-
-    //! Specialization to cause compile-time error for arrays
-    template <typename T>
-    class unique_ptr<T[]>;
-
-    template <typename T, typename... Args>
-    unique_ptr<T> make_unique(Args&&... args) {
-        return unique_ptr<T>(new T(CATCH_FORWARD(args)...));
-    }
-
-
-} // end namespace Detail
-} // end namespace Catch
-
-#endif // CATCH_UNIQUE_PTR_HPP_INCLUDED
-
-
-// Adapted from donated nonius code.
-
-#ifndef CATCH_ESTIMATE_HPP_INCLUDED
-#define CATCH_ESTIMATE_HPP_INCLUDED
-
-namespace Catch {
-    namespace Benchmark {
-        template <typename Duration>
-        struct Estimate {
-            Duration point;
-            Duration lower_bound;
-            Duration upper_bound;
-            double confidence_interval;
-
-            template <typename Duration2>
-            operator Estimate<Duration2>() const {
-                return { point, lower_bound, upper_bound, confidence_interval };
-            }
-        };
-    } // namespace Benchmark
-} // namespace Catch
-
-#endif // CATCH_ESTIMATE_HPP_INCLUDED
-
-
-// Adapted from donated nonius code.
-
-#ifndef CATCH_OUTLIER_CLASSIFICATION_HPP_INCLUDED
-#define CATCH_OUTLIER_CLASSIFICATION_HPP_INCLUDED
-
-namespace Catch {
-    namespace Benchmark {
-        struct OutlierClassification {
-            int samples_seen = 0;
-            int low_severe = 0;     // more than 3 times IQR below Q1
-            int low_mild = 0;       // 1.5 to 3 times IQR below Q1
-            int high_mild = 0;      // 1.5 to 3 times IQR above Q3
-            int high_severe = 0;    // more than 3 times IQR above Q3
-
-            int total() const {
-                return low_severe + low_mild + high_mild + high_severe;
-            }
-        };
-    } // namespace Benchmark
-} // namespace Catch
-
-#endif // CATCH_OUTLIERS_CLASSIFICATION_HPP_INCLUDED
-
-
-#include <string>
-#include <vector>
-#include <iosfwd>
-
-namespace Catch {
-
-    struct ReporterDescription;
-    struct TagInfo;
-    struct TestCaseInfo;
-    class TestCaseHandle;
-    struct IConfig;
-
-    struct ReporterConfig {
-        ReporterConfig( IConfig const* _fullConfig, std::ostream& _stream );
-
-        std::ostream& stream() const;
-        IConfig const* fullConfig() const;
-
-    private:
-        std::ostream* m_stream;
-        IConfig const* m_fullConfig;
-    };
-
-    struct TestRunInfo {
-        constexpr TestRunInfo(StringRef _name) : name(_name) {}
-        StringRef name;
-    };
-
-    struct AssertionStats {
-        AssertionStats( AssertionResult const& _assertionResult,
-                        std::vector<MessageInfo> const& _infoMessages,
-                        Totals const& _totals );
-
-        AssertionStats( AssertionStats const& )              = default;
-        AssertionStats( AssertionStats && )                  = default;
-        AssertionStats& operator = ( AssertionStats const& ) = delete;
-        AssertionStats& operator = ( AssertionStats && )     = delete;
-
-        AssertionResult assertionResult;
-        std::vector<MessageInfo> infoMessages;
-        Totals totals;
-    };
-
-    struct SectionStats {
-        SectionStats(   SectionInfo const& _sectionInfo,
-                        Counts const& _assertions,
-                        double _durationInSeconds,
-                        bool _missingAssertions );
-
-        SectionInfo sectionInfo;
-        Counts assertions;
-        double durationInSeconds;
-        bool missingAssertions;
-    };
-
-    struct TestCaseStats {
-        TestCaseStats(  TestCaseInfo const& _testInfo,
-                        Totals const& _totals,
-                        std::string const& _stdOut,
-                        std::string const& _stdErr,
-                        bool _aborting );
-
-        TestCaseInfo const * testInfo;
-        Totals totals;
-        std::string stdOut;
-        std::string stdErr;
-        bool aborting;
-    };
-
-    struct TestRunStats {
-        TestRunStats(   TestRunInfo const& _runInfo,
-                        Totals const& _totals,
-                        bool _aborting );
-
-        TestRunInfo runInfo;
-        Totals totals;
-        bool aborting;
-    };
-
-
-    struct BenchmarkInfo {
-        std::string name;
-        double estimatedDuration;
-        int iterations;
-        unsigned int samples;
-        unsigned int resamples;
-        double clockResolution;
-        double clockCost;
-    };
-
-    template <class Duration>
-    struct BenchmarkStats {
-        BenchmarkInfo info;
-
-        std::vector<Duration> samples;
-        Benchmark::Estimate<Duration> mean;
-        Benchmark::Estimate<Duration> standardDeviation;
-        Benchmark::OutlierClassification outliers;
-        double outlierVariance;
-
-        template <typename Duration2>
-        operator BenchmarkStats<Duration2>() const {
-            std::vector<Duration2> samples2;
-            samples2.reserve(samples.size());
-            for (auto const& sample : samples) {
-                samples2.push_back(Duration2(sample));
-            }
-            return {
-                info,
-                CATCH_MOVE(samples2),
-                mean,
-                standardDeviation,
-                outliers,
-                outlierVariance,
-            };
-        }
-    };
-
-    //! By setting up its preferences, a reporter can modify Catch2's behaviour
-    //! in some regards, e.g. it can request Catch2 to capture writes to
-    //! stdout/stderr during test execution, and pass them to the reporter.
-    struct ReporterPreferences {
-        //! Catch2 should redirect writes to stdout and pass them to the
-        //! reporter
-        bool shouldRedirectStdOut = false;
-        //! Catch2 should call `Reporter::assertionEnded` even for passing
-        //! assertions
-        bool shouldReportAllAssertions = false;
-    };
-
-    //! The common base for all reporters and event listeners
-    struct IStreamingReporter {
-    protected:
-        //! Derived classes can set up their preferences here
-        ReporterPreferences m_preferences;
-        //! The test run's config as filled in from CLI and defaults
-        IConfig const* m_config;
-
-    public:
-        IStreamingReporter( IConfig const* config ): m_config( config ) {}
-
-        virtual ~IStreamingReporter(); // = default;
-
-        // Implementing class must also provide the following static methods:
-        // static std::string getDescription();
-
-        ReporterPreferences const& getPreferences() const {
-            return m_preferences;
-        }
-
-        //! Called when no test cases match provided test spec
-        virtual void noMatchingTestCases( StringRef unmatchedSpec ) = 0;
-        //! Called for all invalid test specs from the cli
-        virtual void reportInvalidTestSpec( StringRef invalidArgument ) = 0;
-
-        /**
-         * Called once in a testing run before tests are started
-         *
-         * Not called if tests won't be run (e.g. only listing will happen)
-         */
-        virtual void testRunStarting( TestRunInfo const& testRunInfo ) = 0;
-
-        //! Called _once_ for each TEST_CASE, no matter how many times it is entered
-        virtual void testCaseStarting( TestCaseInfo const& testInfo ) = 0;
-        //! Called _every time_ a TEST_CASE is entered, including repeats (due to sections)
-        virtual void testCasePartialStarting( TestCaseInfo const& testInfo, uint64_t partNumber ) = 0;
-        //! Called when a `SECTION` is being entered. Not called for skipped sections
-        virtual void sectionStarting( SectionInfo const& sectionInfo ) = 0;
-
-        //! Called when user-code is being probed before the actual benchmark runs
-        virtual void benchmarkPreparing( StringRef benchmarkName ) = 0;
-        //! Called after probe but before the user-code is being benchmarked
-        virtual void benchmarkStarting( BenchmarkInfo const& benchmarkInfo ) = 0;
-        //! Called with the benchmark results if benchmark successfully finishes
-        virtual void benchmarkEnded( BenchmarkStats<> const& benchmarkStats ) = 0;
-        //! Called if running the benchmarks fails for any reason
-        virtual void benchmarkFailed( StringRef benchmarkName ) = 0;
-
-        //! Called before assertion success/failure is evaluated
-        virtual void assertionStarting( AssertionInfo const& assertionInfo ) = 0;
-
-        //! Called after assertion was fully evaluated
-        virtual void assertionEnded( AssertionStats const& assertionStats ) = 0;
-
-        //! Called after a `SECTION` has finished running
-        virtual void sectionEnded( SectionStats const& sectionStats ) = 0;
-        //! Called _every time_ a TEST_CASE is entered, including repeats (due to sections)
-        virtual void testCasePartialEnded(TestCaseStats const& testCaseStats, uint64_t partNumber ) = 0;
-        //! Called _once_ for each TEST_CASE, no matter how many times it is entered
-        virtual void testCaseEnded( TestCaseStats const& testCaseStats ) = 0;
-        /**
-         * Called once after all tests in a testing run are finished
-         *
-         * Not called if tests weren't run (e.g. only listings happened)
-         */
-        virtual void testRunEnded( TestRunStats const& testRunStats ) = 0;
-
-        //! Called with test cases that are skipped due to the test run aborting
-        virtual void skipTest( TestCaseInfo const& testInfo ) = 0;
-
-        //! Called if a fatal error (signal/structured exception) occured
-        virtual void fatalErrorEncountered( StringRef error ) = 0;
-
-        //! Writes out information about provided reporters using reporter-specific format
-        virtual void listReporters(std::vector<ReporterDescription> const& descriptions) = 0;
-        //! Writes out information about provided tests using reporter-specific format
-        virtual void listTests(std::vector<TestCaseHandle> const& tests) = 0;
-        //! Writes out information about the provided tags using reporter-specific format
-        virtual void listTags(std::vector<TagInfo> const& tags) = 0;
-
-    };
-    using IStreamingReporterPtr = Detail::unique_ptr<IStreamingReporter>;
-
-} // end namespace Catch
-
-#endif // CATCH_INTERFACES_REPORTER_HPP_INCLUDED
 
 
 #ifndef CATCH_UNIQUE_NAME_HPP_INCLUDED
@@ -1534,1000 +2550,14 @@ namespace Catch {
 #endif
 
 #endif // CATCH_UNIQUE_NAME_HPP_INCLUDED
-
-
-// Adapted from donated nonius code.
-
-#ifndef CATCH_CHRONOMETER_HPP_INCLUDED
-#define CATCH_CHRONOMETER_HPP_INCLUDED
-
-
-
-// Adapted from donated nonius code.
-
-#ifndef CATCH_CLOCK_HPP_INCLUDED
-#define CATCH_CLOCK_HPP_INCLUDED
-
-#include <chrono>
-#include <ratio>
-
-namespace Catch {
-    namespace Benchmark {
-        template <typename Clock>
-        using ClockDuration = typename Clock::duration;
-        template <typename Clock>
-        using FloatDuration = std::chrono::duration<double, typename Clock::period>;
-
-        template <typename Clock>
-        using TimePoint = typename Clock::time_point;
-
-        using default_clock = std::chrono::steady_clock;
-
-        template <typename Clock>
-        struct now {
-            TimePoint<Clock> operator()() const {
-                return Clock::now();
-            }
-        };
-
-        using fp_seconds = std::chrono::duration<double, std::ratio<1>>;
-    } // namespace Benchmark
-} // namespace Catch
-
-#endif // CATCH_CLOCK_HPP_INCLUDED
-
-
-// Adapted from donated nonius code.
-
-#ifndef CATCH_OPTIMIZER_HPP_INCLUDED
-#define CATCH_OPTIMIZER_HPP_INCLUDED
-
-#if defined(_MSC_VER)
-#   include <atomic> // atomic_thread_fence
-#endif
-
-
-#include <type_traits>
-
-namespace Catch {
-    namespace Benchmark {
-#if defined(__GNUC__) || defined(__clang__)
-        template <typename T>
-        inline void keep_memory(T* p) {
-            asm volatile("" : : "g"(p) : "memory");
-        }
-        inline void keep_memory() {
-            asm volatile("" : : : "memory");
-        }
-
-        namespace Detail {
-            inline void optimizer_barrier() { keep_memory(); }
-        } // namespace Detail
-#elif defined(_MSC_VER)
-
-#pragma optimize("", off)
-        template <typename T>
-        inline void keep_memory(T* p) {
-            // thanks @milleniumbug
-            *reinterpret_cast<char volatile*>(p) = *reinterpret_cast<char const volatile*>(p);
-        }
-        // TODO equivalent keep_memory()
-#pragma optimize("", on)
-
-        namespace Detail {
-            inline void optimizer_barrier() {
-                std::atomic_thread_fence(std::memory_order_seq_cst);
-            }
-        } // namespace Detail
-
-#endif
-
-        template <typename T>
-        inline void deoptimize_value(T&& x) {
-            keep_memory(&x);
-        }
-
-        template <typename Fn, typename... Args>
-        inline auto invoke_deoptimized(Fn&& fn, Args&&... args) -> std::enable_if_t<!std::is_same<void, decltype(fn(args...))>::value> {
-            deoptimize_value(CATCH_FORWARD(fn) (CATCH_FORWARD(args)...));
-        }
-
-        template <typename Fn, typename... Args>
-        inline auto invoke_deoptimized(Fn&& fn, Args&&... args) -> std::enable_if_t<std::is_same<void, decltype(fn(args...))>::value> {
-            CATCH_FORWARD(fn) (CATCH_FORWARD(args)...);
-        }
-    } // namespace Benchmark
-} // namespace Catch
-
-#endif // CATCH_OPTIMIZER_HPP_INCLUDED
-
-
-// Adapted from donated nonius code.
-
-#ifndef CATCH_COMPLETE_INVOKE_HPP_INCLUDED
-#define CATCH_COMPLETE_INVOKE_HPP_INCLUDED
-
-
-
-#ifndef CATCH_TEST_FAILURE_EXCEPTION_HPP_INCLUDED
-#define CATCH_TEST_FAILURE_EXCEPTION_HPP_INCLUDED
-
-namespace Catch {
-
-    //! Used to signal that an assertion macro failed
-    struct TestFailureException{};
-
-} // namespace Catch
-
-#endif // CATCH_TEST_FAILURE_EXCEPTION_HPP_INCLUDED
-
-
-#ifndef CATCH_META_HPP_INCLUDED
-#define CATCH_META_HPP_INCLUDED
-
-#include <type_traits>
-
-namespace Catch {
-    template<typename T>
-    struct always_false : std::false_type {};
-
-    template <typename> struct true_given : std::true_type {};
-    struct is_callable_tester {
-        template <typename Fun, typename... Args>
-        true_given<decltype(std::declval<Fun>()(std::declval<Args>()...))> static test(int);
-        template <typename...>
-        std::false_type static test(...);
-    };
-
-    template <typename T>
-    struct is_callable;
-
-    template <typename Fun, typename... Args>
-    struct is_callable<Fun(Args...)> : decltype(is_callable_tester::test<Fun, Args...>(0)) {};
-
-
-#if defined(__cpp_lib_is_invocable) && __cpp_lib_is_invocable >= 201703
-    // std::result_of is deprecated in C++17 and removed in C++20. Hence, it is
-    // replaced with std::invoke_result here.
-    template <typename Func, typename... U>
-    using FunctionReturnType = std::remove_reference_t<std::remove_cv_t<std::invoke_result_t<Func, U...>>>;
-#else
-    template <typename Func, typename... U>
-    using FunctionReturnType = std::remove_reference_t<std::remove_cv_t<std::result_of_t<Func(U...)>>>;
-#endif
-
-} // namespace Catch
-
-namespace mpl_{
-    struct na;
-}
-
-#endif // CATCH_META_HPP_INCLUDED
-
-
-#ifndef CATCH_INTERFACES_REGISTRY_HUB_HPP_INCLUDED
-#define CATCH_INTERFACES_REGISTRY_HUB_HPP_INCLUDED
-
-
-#include <string>
-
-namespace Catch {
-
-    class TestCaseHandle;
-    struct TestCaseInfo;
-    struct ITestCaseRegistry;
-    struct IExceptionTranslatorRegistry;
-    struct IExceptionTranslator;
-    struct IReporterRegistry;
-    struct IReporterFactory;
-    struct ITagAliasRegistry;
-    struct ITestInvoker;
-    struct IMutableEnumValuesRegistry;
-    struct SourceLineInfo;
-
-    class StartupExceptionRegistry;
-
-    using IReporterFactoryPtr = Detail::unique_ptr<IReporterFactory>;
-
-    struct IRegistryHub {
-        virtual ~IRegistryHub(); // = default
-
-        virtual IReporterRegistry const& getReporterRegistry() const = 0;
-        virtual ITestCaseRegistry const& getTestCaseRegistry() const = 0;
-        virtual ITagAliasRegistry const& getTagAliasRegistry() const = 0;
-        virtual IExceptionTranslatorRegistry const& getExceptionTranslatorRegistry() const = 0;
-
-
-        virtual StartupExceptionRegistry const& getStartupExceptionRegistry() const = 0;
-    };
-
-    struct IMutableRegistryHub {
-        virtual ~IMutableRegistryHub(); // = default
-        virtual void registerReporter( std::string const& name, IReporterFactoryPtr factory ) = 0;
-        virtual void registerListener( IReporterFactoryPtr factory ) = 0;
-        virtual void registerTest(Detail::unique_ptr<TestCaseInfo>&& testInfo, Detail::unique_ptr<ITestInvoker>&& invoker) = 0;
-        virtual void registerTranslator( Detail::unique_ptr<IExceptionTranslator>&& translator ) = 0;
-        virtual void registerTagAlias( std::string const& alias, std::string const& tag, SourceLineInfo const& lineInfo ) = 0;
-        virtual void registerStartupException() noexcept = 0;
-        virtual IMutableEnumValuesRegistry& getMutableEnumValuesRegistry() = 0;
-    };
-
-    IRegistryHub const& getRegistryHub();
-    IMutableRegistryHub& getMutableRegistryHub();
-    void cleanUp();
-    std::string translateActiveException();
-
-}
-
-#endif // CATCH_INTERFACES_REGISTRY_HUB_HPP_INCLUDED
-
-#include <type_traits>
-
-namespace Catch {
-    namespace Benchmark {
-        namespace Detail {
-            template <typename T>
-            struct CompleteType { using type = T; };
-            template <>
-            struct CompleteType<void> { struct type {}; };
-
-            template <typename T>
-            using CompleteType_t = typename CompleteType<T>::type;
-
-            template <typename Result>
-            struct CompleteInvoker {
-                template <typename Fun, typename... Args>
-                static Result invoke(Fun&& fun, Args&&... args) {
-                    return CATCH_FORWARD(fun)(CATCH_FORWARD(args)...);
-                }
-            };
-            template <>
-            struct CompleteInvoker<void> {
-                template <typename Fun, typename... Args>
-                static CompleteType_t<void> invoke(Fun&& fun, Args&&... args) {
-                    CATCH_FORWARD(fun)(CATCH_FORWARD(args)...);
-                    return {};
-                }
-            };
-
-            // invoke and not return void :(
-            template <typename Fun, typename... Args>
-            CompleteType_t<FunctionReturnType<Fun, Args...>> complete_invoke(Fun&& fun, Args&&... args) {
-                return CompleteInvoker<FunctionReturnType<Fun, Args...>>::invoke(CATCH_FORWARD(fun), CATCH_FORWARD(args)...);
-            }
-
-        } // namespace Detail
-
-        template <typename Fun>
-        Detail::CompleteType_t<FunctionReturnType<Fun>> user_code(Fun&& fun) {
-            return Detail::complete_invoke(CATCH_FORWARD(fun));
-        }
-    } // namespace Benchmark
-} // namespace Catch
-
-#endif // CATCH_COMPLETE_INVOKE_HPP_INCLUDED
-
-namespace Catch {
-    namespace Benchmark {
-        namespace Detail {
-            struct ChronometerConcept {
-                virtual void start() = 0;
-                virtual void finish() = 0;
-                virtual ~ChronometerConcept(); // = default;
-
-                ChronometerConcept() = default;
-                ChronometerConcept(ChronometerConcept const&) = default;
-                ChronometerConcept& operator=(ChronometerConcept const&) = default;
-            };
-            template <typename Clock>
-            struct ChronometerModel final : public ChronometerConcept {
-                void start() override { started = Clock::now(); }
-                void finish() override { finished = Clock::now(); }
-
-                ClockDuration<Clock> elapsed() const { return finished - started; }
-
-                TimePoint<Clock> started;
-                TimePoint<Clock> finished;
-            };
-        } // namespace Detail
-
-        struct Chronometer {
-        public:
-            template <typename Fun>
-            void measure(Fun&& fun) { measure(CATCH_FORWARD(fun), is_callable<Fun(int)>()); }
-
-            int runs() const { return repeats; }
-
-            Chronometer(Detail::ChronometerConcept& meter, int repeats_)
-                : impl(&meter)
-                , repeats(repeats_) {}
-
-        private:
-            template <typename Fun>
-            void measure(Fun&& fun, std::false_type) {
-                measure([&fun](int) { return fun(); }, std::true_type());
-            }
-
-            template <typename Fun>
-            void measure(Fun&& fun, std::true_type) {
-                Detail::optimizer_barrier();
-                impl->start();
-                for (int i = 0; i < repeats; ++i) invoke_deoptimized(fun, i);
-                impl->finish();
-                Detail::optimizer_barrier();
-            }
-
-            Detail::ChronometerConcept* impl;
-            int repeats;
-        };
-    } // namespace Benchmark
-} // namespace Catch
-
-#endif // CATCH_CHRONOMETER_HPP_INCLUDED
-
-
-// Adapted from donated nonius code.
-
-#ifndef CATCH_ENVIRONMENT_HPP_INCLUDED
-#define CATCH_ENVIRONMENT_HPP_INCLUDED
-
-
-namespace Catch {
-    namespace Benchmark {
-        template <typename Duration>
-        struct EnvironmentEstimate {
-            Duration mean;
-            OutlierClassification outliers;
-
-            template <typename Duration2>
-            operator EnvironmentEstimate<Duration2>() const {
-                return { mean, outliers };
-            }
-        };
-        template <typename Clock>
-        struct Environment {
-            using clock_type = Clock;
-            EnvironmentEstimate<FloatDuration<Clock>> clock_resolution;
-            EnvironmentEstimate<FloatDuration<Clock>> clock_cost;
-        };
-    } // namespace Benchmark
-} // namespace Catch
-
-#endif // CATCH_ENVIRONMENT_HPP_INCLUDED
-
-
-// Adapted from donated nonius code.
-
-#ifndef CATCH_EXECUTION_PLAN_HPP_INCLUDED
-#define CATCH_EXECUTION_PLAN_HPP_INCLUDED
-
-
-
-// Adapted from donated nonius code.
-
-#ifndef CATCH_BENCHMARK_FUNCTION_HPP_INCLUDED
-#define CATCH_BENCHMARK_FUNCTION_HPP_INCLUDED
-
-
-#include <type_traits>
-
-namespace Catch {
-    namespace Benchmark {
-        namespace Detail {
-            template <typename T, typename U>
-            struct is_related
-                : std::is_same<std::decay_t<T>, std::decay_t<U>> {};
-
-            /// We need to reinvent std::function because every piece of code that might add overhead
-            /// in a measurement context needs to have consistent performance characteristics so that we
-            /// can account for it in the measurement.
-            /// Implementations of std::function with optimizations that aren't always applicable, like
-            /// small buffer optimizations, are not uncommon.
-            /// This is effectively an implementation of std::function without any such optimizations;
-            /// it may be slow, but it is consistently slow.
-            struct BenchmarkFunction {
-            private:
-                struct callable {
-                    virtual void call(Chronometer meter) const = 0;
-                    virtual Catch::Detail::unique_ptr<callable> clone() const = 0;
-                    virtual ~callable(); // = default;
-
-                    callable() = default;
-                    callable(callable const&) = default;
-                    callable& operator=(callable const&) = default;
-                };
-                template <typename Fun>
-                struct model : public callable {
-                    model(Fun&& fun_) : fun(CATCH_MOVE(fun_)) {}
-                    model(Fun const& fun_) : fun(fun_) {}
-
-                    Catch::Detail::unique_ptr<callable> clone() const override {
-                        return Catch::Detail::make_unique<model<Fun>>( *this );
-                    }
-
-                    void call(Chronometer meter) const override {
-                        call(meter, is_callable<Fun(Chronometer)>());
-                    }
-                    void call(Chronometer meter, std::true_type) const {
-                        fun(meter);
-                    }
-                    void call(Chronometer meter, std::false_type) const {
-                        meter.measure(fun);
-                    }
-
-                    Fun fun;
-                };
-
-                struct do_nothing { void operator()() const {} };
-
-                template <typename T>
-                BenchmarkFunction(model<T>* c) : f(c) {}
-
-            public:
-                BenchmarkFunction()
-                    : f(new model<do_nothing>{ {} }) {}
-
-                template <typename Fun,
-                    std::enable_if_t<!is_related<Fun, BenchmarkFunction>::value, int> = 0>
-                    BenchmarkFunction(Fun&& fun)
-                    : f(new model<std::decay_t<Fun>>(CATCH_FORWARD(fun))) {}
-
-                BenchmarkFunction( BenchmarkFunction&& that ) noexcept:
-                    f( CATCH_MOVE( that.f ) ) {}
-
-                BenchmarkFunction(BenchmarkFunction const& that)
-                    : f(that.f->clone()) {}
-
-                BenchmarkFunction&
-                operator=( BenchmarkFunction&& that ) noexcept {
-                    f = CATCH_MOVE( that.f );
-                    return *this;
-                }
-
-                BenchmarkFunction& operator=(BenchmarkFunction const& that) {
-                    f = that.f->clone();
-                    return *this;
-                }
-
-                void operator()(Chronometer meter) const { f->call(meter); }
-
-            private:
-                Catch::Detail::unique_ptr<callable> f;
-            };
-        } // namespace Detail
-    } // namespace Benchmark
-} // namespace Catch
-
-#endif // CATCH_BENCHMARK_FUNCTION_HPP_INCLUDED
-
-
-// Adapted from donated nonius code.
-
-#ifndef CATCH_REPEAT_HPP_INCLUDED
-#define CATCH_REPEAT_HPP_INCLUDED
-
-#include <type_traits>
-
-namespace Catch {
-    namespace Benchmark {
-        namespace Detail {
-            template <typename Fun>
-            struct repeater {
-                void operator()(int k) const {
-                    for (int i = 0; i < k; ++i) {
-                        fun();
-                    }
-                }
-                Fun fun;
-            };
-            template <typename Fun>
-            repeater<std::decay_t<Fun>> repeat(Fun&& fun) {
-                return { CATCH_FORWARD(fun) };
-            }
-        } // namespace Detail
-    } // namespace Benchmark
-} // namespace Catch
-
-#endif // CATCH_REPEAT_HPP_INCLUDED
-
-
-// Adapted from donated nonius code.
-
-#ifndef CATCH_RUN_FOR_AT_LEAST_HPP_INCLUDED
-#define CATCH_RUN_FOR_AT_LEAST_HPP_INCLUDED
-
-
-
-// Adapted from donated nonius code.
-
-#ifndef CATCH_MEASURE_HPP_INCLUDED
-#define CATCH_MEASURE_HPP_INCLUDED
-
-
-
-// Adapted from donated nonius code.
-
-#ifndef CATCH_TIMING_HPP_INCLUDED
-#define CATCH_TIMING_HPP_INCLUDED
-
-
-#include <type_traits>
-
-namespace Catch {
-    namespace Benchmark {
-        template <typename Duration, typename Result>
-        struct Timing {
-            Duration elapsed;
-            Result result;
-            int iterations;
-        };
-        template <typename Clock, typename Func, typename... Args>
-        using TimingOf = Timing<ClockDuration<Clock>, Detail::CompleteType_t<FunctionReturnType<Func, Args...>>>;
-    } // namespace Benchmark
-} // namespace Catch
-
-#endif // CATCH_TIMING_HPP_INCLUDED
-
-namespace Catch {
-    namespace Benchmark {
-        namespace Detail {
-            template <typename Clock, typename Fun, typename... Args>
-            TimingOf<Clock, Fun, Args...> measure(Fun&& fun, Args&&... args) {
-                auto start = Clock::now();
-                auto&& r = Detail::complete_invoke(fun, CATCH_FORWARD(args)...);
-                auto end = Clock::now();
-                auto delta = end - start;
-                return { delta, CATCH_FORWARD(r), 1 };
-            }
-        } // namespace Detail
-    } // namespace Benchmark
-} // namespace Catch
-
-#endif // CATCH_MEASURE_HPP_INCLUDED
-
-#include <type_traits>
-
-namespace Catch {
-    namespace Benchmark {
-        namespace Detail {
-            template <typename Clock, typename Fun>
-            TimingOf<Clock, Fun, int> measure_one(Fun&& fun, int iters, std::false_type) {
-                return Detail::measure<Clock>(fun, iters);
-            }
-            template <typename Clock, typename Fun>
-            TimingOf<Clock, Fun, Chronometer> measure_one(Fun&& fun, int iters, std::true_type) {
-                Detail::ChronometerModel<Clock> meter;
-                auto&& result = Detail::complete_invoke(fun, Chronometer(meter, iters));
-
-                return { meter.elapsed(), CATCH_MOVE(result), iters };
-            }
-
-            template <typename Clock, typename Fun>
-            using run_for_at_least_argument_t = std::conditional_t<is_callable<Fun(Chronometer)>::value, Chronometer, int>;
-
-
-            [[noreturn]]
-            void throw_optimized_away_error();
-
-            template <typename Clock, typename Fun>
-            TimingOf<Clock, Fun, run_for_at_least_argument_t<Clock, Fun>>
-                run_for_at_least(ClockDuration<Clock> how_long,
-                                 const int initial_iterations,
-                                 Fun&& fun) {
-                auto iters = initial_iterations;
-                while (iters < (1 << 30)) {
-                    auto&& Timing = measure_one<Clock>(fun, iters, is_callable<Fun(Chronometer)>());
-
-                    if (Timing.elapsed >= how_long) {
-                        return { Timing.elapsed, CATCH_MOVE(Timing.result), iters };
-                    }
-                    iters *= 2;
-                }
-                throw_optimized_away_error();
-            }
-        } // namespace Detail
-    } // namespace Benchmark
-} // namespace Catch
-
-#endif // CATCH_RUN_FOR_AT_LEAST_HPP_INCLUDED
-
-#include <algorithm>
-#include <iterator>
-
-namespace Catch {
-    namespace Benchmark {
-        template <typename Duration>
-        struct ExecutionPlan {
-            int iterations_per_sample;
-            Duration estimated_duration;
-            Detail::BenchmarkFunction benchmark;
-            Duration warmup_time;
-            int warmup_iterations;
-
-            template <typename Duration2>
-            operator ExecutionPlan<Duration2>() const {
-                return { iterations_per_sample, estimated_duration, benchmark, warmup_time, warmup_iterations };
-            }
-
-            template <typename Clock>
-            std::vector<FloatDuration<Clock>> run(const IConfig &cfg, Environment<FloatDuration<Clock>> env) const {
-                // warmup a bit
-                Detail::run_for_at_least<Clock>(std::chrono::duration_cast<ClockDuration<Clock>>(warmup_time), warmup_iterations, Detail::repeat(now<Clock>{}));
-
-                std::vector<FloatDuration<Clock>> times;
-                times.reserve(cfg.benchmarkSamples());
-                std::generate_n(std::back_inserter(times), cfg.benchmarkSamples(), [this, env] {
-                    Detail::ChronometerModel<Clock> model;
-                    this->benchmark(Chronometer(model, iterations_per_sample));
-                    auto sample_time = model.elapsed() - env.clock_cost.mean;
-                    if (sample_time < FloatDuration<Clock>::zero()) sample_time = FloatDuration<Clock>::zero();
-                    return sample_time / iterations_per_sample;
-                });
-                return times;
-            }
-        };
-    } // namespace Benchmark
-} // namespace Catch
-
-#endif // CATCH_EXECUTION_PLAN_HPP_INCLUDED
-
-
-// Adapted from donated nonius code.
-
-#ifndef CATCH_ESTIMATE_CLOCK_HPP_INCLUDED
-#define CATCH_ESTIMATE_CLOCK_HPP_INCLUDED
-
-
-
-// Adapted from donated nonius code.
-
-#ifndef CATCH_STATS_HPP_INCLUDED
-#define CATCH_STATS_HPP_INCLUDED
-
-
-#include <algorithm>
-#include <vector>
-#include <numeric>
-#include <tuple>
 #include <cmath>
-
-namespace Catch {
-    namespace Benchmark {
-        namespace Detail {
-            using sample = std::vector<double>;
-
-            double weighted_average_quantile(int k, int q, std::vector<double>::iterator first, std::vector<double>::iterator last);
-
-            template <typename Iterator>
-            OutlierClassification classify_outliers(Iterator first, Iterator last) {
-                std::vector<double> copy(first, last);
-
-                auto q1 = weighted_average_quantile(1, 4, copy.begin(), copy.end());
-                auto q3 = weighted_average_quantile(3, 4, copy.begin(), copy.end());
-                auto iqr = q3 - q1;
-                auto los = q1 - (iqr * 3.);
-                auto lom = q1 - (iqr * 1.5);
-                auto him = q3 + (iqr * 1.5);
-                auto his = q3 + (iqr * 3.);
-
-                OutlierClassification o;
-                for (; first != last; ++first) {
-                    auto&& t = *first;
-                    if (t < los) ++o.low_severe;
-                    else if (t < lom) ++o.low_mild;
-                    else if (t > his) ++o.high_severe;
-                    else if (t > him) ++o.high_mild;
-                    ++o.samples_seen;
-                }
-                return o;
-            }
-
-            template <typename Iterator>
-            double mean(Iterator first, Iterator last) {
-                auto count = last - first;
-                double sum = std::accumulate(first, last, 0.);
-                return sum / count;
-            }
-
-            template <typename Estimator, typename Iterator>
-            sample jackknife(Estimator&& estimator, Iterator first, Iterator last) {
-                auto n = static_cast<size_t>(last - first);
-                auto second = first;
-                ++second;
-                sample results;
-                results.reserve(n);
-
-                for (auto it = first; it != last; ++it) {
-                    std::iter_swap(it, first);
-                    results.push_back(estimator(second, last));
-                }
-
-                return results;
-            }
-
-            inline double normal_cdf(double x) {
-                return std::erfc(-x / std::sqrt(2.0)) / 2.0;
-            }
-
-            double erfc_inv(double x);
-
-            double normal_quantile(double p);
-
-            template <typename Iterator, typename Estimator>
-            Estimate<double> bootstrap(double confidence_level, Iterator first, Iterator last, sample const& resample, Estimator&& estimator) {
-                auto n_samples = last - first;
-
-                double point = estimator(first, last);
-                // Degenerate case with a single sample
-                if (n_samples == 1) return { point, point, point, confidence_level };
-
-                sample jack = jackknife(estimator, first, last);
-                double jack_mean = mean(jack.begin(), jack.end());
-                double sum_squares, sum_cubes;
-                std::tie(sum_squares, sum_cubes) = std::accumulate(jack.begin(), jack.end(), std::make_pair(0., 0.), [jack_mean](std::pair<double, double> sqcb, double x) -> std::pair<double, double> {
-                    auto d = jack_mean - x;
-                    auto d2 = d * d;
-                    auto d3 = d2 * d;
-                    return { sqcb.first + d2, sqcb.second + d3 };
-                });
-
-                double accel = sum_cubes / (6 * std::pow(sum_squares, 1.5));
-                int n = static_cast<int>(resample.size());
-                double prob_n = std::count_if(resample.begin(), resample.end(), [point](double x) { return x < point; }) / static_cast<double>(n);
-                // degenerate case with uniform samples
-                if (prob_n == 0) return { point, point, point, confidence_level };
-
-                double bias = normal_quantile(prob_n);
-                double z1 = normal_quantile((1. - confidence_level) / 2.);
-
-                auto cumn = [n](double x) -> int {
-                    return std::lround(normal_cdf(x) * n); };
-                auto a = [bias, accel](double b) { return bias + b / (1. - accel * b); };
-                double b1 = bias + z1;
-                double b2 = bias - z1;
-                double a1 = a(b1);
-                double a2 = a(b2);
-                auto lo = static_cast<size_t>((std::max)(cumn(a1), 0));
-                auto hi = static_cast<size_t>((std::min)(cumn(a2), n - 1));
-
-                return { point, resample[lo], resample[hi], confidence_level };
-            }
-
-            double outlier_variance(Estimate<double> mean, Estimate<double> stddev, int n);
-
-            struct bootstrap_analysis {
-                Estimate<double> mean;
-                Estimate<double> standard_deviation;
-                double outlier_variance;
-            };
-
-            bootstrap_analysis analyse_samples(double confidence_level, unsigned int n_resamples, std::vector<double>::iterator first, std::vector<double>::iterator last);
-        } // namespace Detail
-    } // namespace Benchmark
-} // namespace Catch
-
-#endif // CATCH_STATS_HPP_INCLUDED
-
-#include <algorithm>
-#include <iterator>
-#include <vector>
-#include <cmath>
-
-namespace Catch {
-    namespace Benchmark {
-        namespace Detail {
-            template <typename Clock>
-            std::vector<double> resolution(int k) {
-                std::vector<TimePoint<Clock>> times;
-                times.reserve(static_cast<size_t>(k + 1));
-                std::generate_n(std::back_inserter(times), k + 1, now<Clock>{});
-
-                std::vector<double> deltas;
-                deltas.reserve(static_cast<size_t>(k));
-                std::transform(std::next(times.begin()), times.end(), times.begin(),
-                    std::back_inserter(deltas),
-                    [](TimePoint<Clock> a, TimePoint<Clock> b) { return static_cast<double>((a - b).count()); });
-
-                return deltas;
-            }
-
-            const auto warmup_iterations = 10000;
-            const auto warmup_time = std::chrono::milliseconds(100);
-            const auto minimum_ticks = 1000;
-            const auto warmup_seed = 10000;
-            const auto clock_resolution_estimation_time = std::chrono::milliseconds(500);
-            const auto clock_cost_estimation_time_limit = std::chrono::seconds(1);
-            const auto clock_cost_estimation_tick_limit = 100000;
-            const auto clock_cost_estimation_time = std::chrono::milliseconds(10);
-            const auto clock_cost_estimation_iterations = 10000;
-
-            template <typename Clock>
-            int warmup() {
-                return run_for_at_least<Clock>(std::chrono::duration_cast<ClockDuration<Clock>>(warmup_time), warmup_seed, &resolution<Clock>)
-                    .iterations;
-            }
-            template <typename Clock>
-            EnvironmentEstimate<FloatDuration<Clock>> estimate_clock_resolution(int iterations) {
-                auto r = run_for_at_least<Clock>(std::chrono::duration_cast<ClockDuration<Clock>>(clock_resolution_estimation_time), iterations, &resolution<Clock>)
-                    .result;
-                return {
-                    FloatDuration<Clock>(mean(r.begin(), r.end())),
-                    classify_outliers(r.begin(), r.end()),
-                };
-            }
-            template <typename Clock>
-            EnvironmentEstimate<FloatDuration<Clock>> estimate_clock_cost(FloatDuration<Clock> resolution) {
-                auto time_limit = (std::min)(
-                    resolution * clock_cost_estimation_tick_limit,
-                    FloatDuration<Clock>(clock_cost_estimation_time_limit));
-                auto time_clock = [](int k) {
-                    return Detail::measure<Clock>([k] {
-                        for (int i = 0; i < k; ++i) {
-                            volatile auto ignored = Clock::now();
-                            (void)ignored;
-                        }
-                    }).elapsed;
-                };
-                time_clock(1);
-                int iters = clock_cost_estimation_iterations;
-                auto&& r = run_for_at_least<Clock>(std::chrono::duration_cast<ClockDuration<Clock>>(clock_cost_estimation_time), iters, time_clock);
-                std::vector<double> times;
-                int nsamples = static_cast<int>(std::ceil(time_limit / r.elapsed));
-                times.reserve(static_cast<size_t>(nsamples));
-                std::generate_n(std::back_inserter(times), nsamples, [time_clock, &r] {
-                    return static_cast<double>((time_clock(r.iterations) / r.iterations).count());
-                });
-                return {
-                    FloatDuration<Clock>(mean(times.begin(), times.end())),
-                    classify_outliers(times.begin(), times.end()),
-                };
-            }
-
-            template <typename Clock>
-            Environment<FloatDuration<Clock>> measure_environment() {
-#if defined(__clang__)
-#    pragma clang diagnostic push
-#    pragma clang diagnostic ignored "-Wexit-time-destructors"
-#endif
-                static Catch::Detail::unique_ptr<Environment<FloatDuration<Clock>>> env;
-#if defined(__clang__)
-#    pragma clang diagnostic pop
-#endif
-                if (env) {
-                    return *env;
-                }
-
-                auto iters = Detail::warmup<Clock>();
-                auto resolution = Detail::estimate_clock_resolution<Clock>(iters);
-                auto cost = Detail::estimate_clock_cost<Clock>(resolution.mean);
-
-                env = Catch::Detail::make_unique<Environment<FloatDuration<Clock>>>( Environment<FloatDuration<Clock>>{resolution, cost} );
-                return *env;
-            }
-        } // namespace Detail
-    } // namespace Benchmark
-} // namespace Catch
-
-#endif // CATCH_ESTIMATE_CLOCK_HPP_INCLUDED
-
-
-// Adapted from donated nonius code.
-
-#ifndef CATCH_ANALYSE_HPP_INCLUDED
-#define CATCH_ANALYSE_HPP_INCLUDED
-
-
-
-// Adapted from donated nonius code.
-
-#ifndef CATCH_SAMPLE_ANALYSIS_HPP_INCLUDED
-#define CATCH_SAMPLE_ANALYSIS_HPP_INCLUDED
-
-
-#include <algorithm>
-#include <vector>
-#include <iterator>
-
-namespace Catch {
-    namespace Benchmark {
-        template <typename Duration>
-        struct SampleAnalysis {
-            std::vector<Duration> samples;
-            Estimate<Duration> mean;
-            Estimate<Duration> standard_deviation;
-            OutlierClassification outliers;
-            double outlier_variance;
-
-            template <typename Duration2>
-            operator SampleAnalysis<Duration2>() const {
-                std::vector<Duration2> samples2;
-                samples2.reserve(samples.size());
-                std::transform(samples.begin(), samples.end(), std::back_inserter(samples2), [](Duration d) { return Duration2(d); });
-                return {
-                    CATCH_MOVE(samples2),
-                    mean,
-                    standard_deviation,
-                    outliers,
-                    outlier_variance,
-                };
-            }
-        };
-    } // namespace Benchmark
-} // namespace Catch
-
-#endif // CATCH_SAMPLE_ANALYSIS_HPP_INCLUDED
-
-#include <algorithm>
-#include <iterator>
-#include <vector>
-
-namespace Catch {
-    namespace Benchmark {
-        namespace Detail {
-            template <typename Duration, typename Iterator>
-            SampleAnalysis<Duration> analyse(const IConfig &cfg, Environment<Duration>, Iterator first, Iterator last) {
-                if (!cfg.benchmarkNoAnalysis()) {
-                    std::vector<double> samples;
-                    samples.reserve(static_cast<size_t>(last - first));
-                    std::transform(first, last, std::back_inserter(samples), [](Duration d) { return d.count(); });
-
-                    auto analysis = Catch::Benchmark::Detail::analyse_samples(cfg.benchmarkConfidenceInterval(), cfg.benchmarkResamples(), samples.begin(), samples.end());
-                    auto outliers = Catch::Benchmark::Detail::classify_outliers(samples.begin(), samples.end());
-
-                    auto wrap_estimate = [](Estimate<double> e) {
-                        return Estimate<Duration> {
-                            Duration(e.point),
-                                Duration(e.lower_bound),
-                                Duration(e.upper_bound),
-                                e.confidence_interval,
-                        };
-                    };
-                    std::vector<Duration> samples2;
-                    samples2.reserve(samples.size());
-                    std::transform(samples.begin(), samples.end(), std::back_inserter(samples2), [](double d) { return Duration(d); });
-                    return {
-                        CATCH_MOVE(samples2),
-                        wrap_estimate(analysis.mean),
-                        wrap_estimate(analysis.standard_deviation),
-                        outliers,
-                        analysis.outlier_variance,
-                    };
-                } else {
-                    std::vector<Duration> samples;
-                    samples.reserve(static_cast<size_t>(last - first));
-
-                    Duration mean = Duration(0);
-                    int i = 0;
-                    for (auto it = first; it < last; ++it, ++i) {
-                        samples.push_back(Duration(*it));
-                        mean += Duration(*it);
-                    }
-                    mean /= i;
-
-                    return {
-                        CATCH_MOVE(samples),
-                        Estimate<Duration>{mean, mean, mean, 0.0},
-                        Estimate<Duration>{Duration(0), Duration(0), Duration(0), 0.0},
-                        OutlierClassification{},
-                        0.0
-                    };
-                }
-            }
-        } // namespace Detail
-    } // namespace Benchmark
-} // namespace Catch
-
-#endif // CATCH_ANALYSE_HPP_INCLUDED
-
-#include <algorithm>
 #include <functional>
 #include <string>
 #include <vector>
-#include <cmath>
 
 namespace Catch {
     namespace Benchmark {
-        struct Benchmark {
+        struct CATCH_DLL_PUBLIC Benchmark {
             Benchmark(std::string&& benchmarkName)
                 : name(CATCH_MOVE(benchmarkName)) {}
 
@@ -2639,7 +2669,6 @@ namespace Catch {
 #ifndef CATCH_CONSTRUCTOR_HPP_INCLUDED
 #define CATCH_CONSTRUCTOR_HPP_INCLUDED
 
-
 #include <type_traits>
 
 namespace Catch {
@@ -2719,12 +2748,44 @@ namespace Catch {
 #define CATCH_TOSTRING_HPP_INCLUDED
 
 
-#include <vector>
-#include <cstddef>
-#include <type_traits>
-#include <string>
-#include <string.h>
 
+#ifndef CATCH_INTERFACES_ENUM_VALUES_REGISTRY_HPP_INCLUDED
+#define CATCH_INTERFACES_ENUM_VALUES_REGISTRY_HPP_INCLUDED
+
+#include <vector>
+
+namespace Catch {
+
+    namespace Detail {
+        struct CATCH_DLL_PUBLIC EnumInfo {
+            StringRef m_name;
+            std::vector<std::pair<int, StringRef>> m_values;
+
+            ~EnumInfo();
+
+            StringRef lookup( int value ) const;
+        };
+    } // namespace Detail
+
+    struct CATCH_DLL_PUBLIC IMutableEnumValuesRegistry {
+        virtual ~IMutableEnumValuesRegistry(); // = default;
+
+        virtual Detail::EnumInfo const& registerEnum( StringRef enumName, StringRef allEnums, std::vector<int> const& values ) = 0;
+
+        template<typename E>
+        Detail::EnumInfo const& registerEnum( StringRef enumName, StringRef allEnums, std::initializer_list<E> values ) {
+            static_assert(sizeof(int) >= sizeof(E), "Cannot serialize enum to int");
+            std::vector<int> intValues;
+            intValues.reserve( values.size() );
+            for( auto enumValue : values )
+                intValues.push_back( static_cast<int>( enumValue ) );
+            return registerEnum( enumName, allEnums, intValues );
+        }
+    };
+
+} // Catch
+
+#endif // CATCH_INTERFACES_ENUM_VALUES_REGISTRY_HPP_INCLUDED
 
 
 
@@ -2758,9 +2819,8 @@ namespace Catch {
 #ifndef CATCH_STREAM_HPP_INCLUDED
 #define CATCH_STREAM_HPP_INCLUDED
 
-
-#include <iosfwd>
 #include <cstddef>
+#include <iosfwd>
 #include <ostream>
 #include <string>
 
@@ -2770,14 +2830,19 @@ namespace Catch {
     std::ostream& cerr();
     std::ostream& clog();
 
-    struct IStream {
+    class CATCH_DLL_PUBLIC IStream {
+    public:
         virtual ~IStream(); // = default
         virtual std::ostream& stream() const = 0;
+        // Win32 colour supports requires us to identify whether a stream
+        // is backed by stdout (so we can colour it) or not (and we can't).
+        virtual bool isStdout() const { return false;  }
     };
 
-    auto makeStream( std::string const& filename ) -> Detail::unique_ptr<IStream const>;
+    CATCH_DLL_PUBLIC auto makeStream( std::string const& filename )
+        -> Detail::unique_ptr<IStream const>;
 
-    class ReusableStringStream : Detail::NonCopyable {
+    class CATCH_DLL_PUBLIC ReusableStringStream : Detail::NonCopyable {
         std::size_t m_index;
         std::ostream* m_oss;
     public:
@@ -2801,8 +2866,9 @@ namespace Catch {
 #pragma GCC diagnostic ignored "-Wnonnull-compare"
 #endif
 
-        template<typename T>
-        auto operator << ( T const& value ) -> ReusableStringStream& {
+        template <typename T>
+        CATCH_DLL_PUBLIC auto operator<<( T const& value )
+            -> ReusableStringStream& {
             *m_oss << value;
             return *this;
         }
@@ -2824,8 +2890,9 @@ namespace Catch {
 namespace Catch {
     namespace Detail {
 
-        template <typename...>
-        struct make_void { using type = void; };
+        template <typename...> struct CATCH_DLL_PUBLIC make_void {
+            using type = void;
+        };
 
         template <typename... Ts>
         using void_t = typename make_void<Ts...>::type;
@@ -2835,46 +2902,11 @@ namespace Catch {
 
 
 #endif // CATCH_VOID_TYPE_HPP_INCLUDED
-
-
-#ifndef CATCH_INTERFACES_ENUM_VALUES_REGISTRY_HPP_INCLUDED
-#define CATCH_INTERFACES_ENUM_VALUES_REGISTRY_HPP_INCLUDED
-
-
+#include <cstddef>
+#include <string.h>
+#include <string>
+#include <type_traits>
 #include <vector>
-
-namespace Catch {
-
-    namespace Detail {
-        struct EnumInfo {
-            StringRef m_name;
-            std::vector<std::pair<int, StringRef>> m_values;
-
-            ~EnumInfo();
-
-            StringRef lookup( int value ) const;
-        };
-    } // namespace Detail
-
-    struct IMutableEnumValuesRegistry {
-        virtual ~IMutableEnumValuesRegistry(); // = default;
-
-        virtual Detail::EnumInfo const& registerEnum( StringRef enumName, StringRef allEnums, std::vector<int> const& values ) = 0;
-
-        template<typename E>
-        Detail::EnumInfo const& registerEnum( StringRef enumName, StringRef allEnums, std::initializer_list<E> values ) {
-            static_assert(sizeof(int) >= sizeof(E), "Cannot serialize enum to int");
-            std::vector<int> intValues;
-            intValues.reserve( values.size() );
-            for( auto enumValue : values )
-                intValues.push_back( static_cast<int>( enumValue ) );
-            return registerEnum( enumName, allEnums, intValues );
-        }
-    };
-
-} // Catch
-
-#endif // CATCH_INTERFACES_ENUM_VALUES_REGISTRY_HPP_INCLUDED
 
 #ifdef CATCH_CONFIG_CPP17_STRING_VIEW
 #include <string_view>
@@ -2886,8 +2918,9 @@ namespace Catch {
 #endif
 
 // We need a dummy global operator<< so we can bring it into Catch namespace later
-struct Catch_global_namespace_dummy{};
-std::ostream& operator<<(std::ostream&, Catch_global_namespace_dummy);
+struct CATCH_DLL_PUBLIC Catch_global_namespace_dummy {};
+CATCH_DLL_PUBLIC std::ostream& operator<<( std::ostream&,
+                                           Catch_global_namespace_dummy );
 
 namespace Catch {
     // Bring in global namespace operator<< for ADL lookup in
@@ -2900,21 +2933,22 @@ namespace Catch {
         constexpr StringRef unprintableString = "{?}"_sr;
 
         //! Encases `string in quotes, and optionally escapes invisibles
-        std::string convertIntoString( StringRef string, bool escapeInvisibles );
+        CATCH_DLL_PUBLIC std::string convertIntoString( StringRef string,
+                                                        bool escapeInvisibles );
 
         //! Encases `string` in quotes, and escapes invisibles if user requested
         //! it via CLI
-        std::string convertIntoString( StringRef string );
+        CATCH_DLL_PUBLIC std::string convertIntoString( StringRef string );
 
-        std::string rawMemoryToString( const void *object, std::size_t size );
+        CATCH_DLL_PUBLIC std::string rawMemoryToString( const void* object,
+                                                        std::size_t size );
 
         template<typename T>
         std::string rawMemoryToString( const T& object ) {
           return rawMemoryToString( &object, sizeof(object) );
         }
 
-        template<typename T>
-        class IsStreamInsertable {
+        template <typename T> class CATCH_DLL_PUBLIC IsStreamInsertable {
             template<typename Stream, typename U>
             static auto test(int)
                 -> decltype(std::declval<Stream&>() << std::declval<U>(), std::true_type());
@@ -2966,8 +3000,7 @@ namespace Catch {
 
 
     // If we decide for C++14, change these to enable_if_ts
-    template <typename T, typename = void>
-    struct StringMaker {
+    template <typename T, typename = void> struct CATCH_DLL_PUBLIC StringMaker {
         template <typename Fake = T>
         static
         std::enable_if_t<::Catch::Detail::IsStreamInsertable<Fake>::value, std::string>
@@ -3260,12 +3293,10 @@ namespace Catch {
 #include <tuple>
 namespace Catch {
     namespace Detail {
-        template<
-            typename Tuple,
-            std::size_t N = 0,
-            bool = (N < std::tuple_size<Tuple>::value)
-            >
-            struct TupleElementPrinter {
+        template <typename Tuple,
+                  std::size_t N = 0,
+                  bool = ( N < std::tuple_size<Tuple>::value )>
+        struct CATCH_DLL_PUBLIC TupleElementPrinter {
             static void print(const Tuple& tuple, std::ostream& os) {
                 os << (N ? ", " : " ")
                     << ::Catch::Detail::stringify(std::get<N>(tuple));
@@ -3332,14 +3363,14 @@ namespace Catch {
 
     namespace Detail {
         template <typename T, typename = void>
-        struct is_range_impl : std::false_type {};
+        struct CATCH_DLL_PUBLIC is_range_impl : std::false_type {};
 
         template <typename T>
         struct is_range_impl<T, void_t<decltype(begin(std::declval<T>()))>> : std::true_type {};
     } // namespace Detail
 
     template <typename T>
-    struct is_range : Detail::is_range_impl<T> {};
+    struct CATCH_DLL_PUBLIC is_range : Detail::is_range_impl<T> {};
 
 #if defined(_MANAGED) // Managed types are never ranges
     template <typename T>
@@ -3395,15 +3426,13 @@ namespace Catch {
 
 namespace Catch {
 
-template <class Ratio>
-struct ratio_string {
-    static std::string symbol() {
-        Catch::ReusableStringStream rss;
-        rss << '[' << Ratio::num << '/'
-            << Ratio::den << ']';
-        return rss.str();
-    }
-};
+    template <class Ratio> struct CATCH_DLL_PUBLIC ratio_string {
+        static std::string symbol() {
+            Catch::ReusableStringStream rss;
+            rss << '[' << Ratio::num << '/' << Ratio::den << ']';
+            return rss.str();
+        }
+    };
 
 template <>
 struct ratio_string<std::atto> {
@@ -3519,12 +3548,11 @@ namespace Catch { \
 #endif
 
 #endif // CATCH_TOSTRING_HPP_INCLUDED
-
 #include <type_traits>
 
 namespace Catch {
 
-    class Approx {
+    class CATCH_DLL_PUBLIC Approx {
     private:
         bool equalityComparisonImpl(double other) const;
         // Sets and validates the new margin (margin >= 0)
@@ -3596,14 +3624,14 @@ namespace Catch {
 
         template <typename T, typename = std::enable_if_t<std::is_constructible<double, T>::value>>
         Approx& epsilon( T const& newEpsilon ) {
-            double epsilonAsDouble = static_cast<double>(newEpsilon);
+            const auto epsilonAsDouble = static_cast<double>(newEpsilon);
             setEpsilon(epsilonAsDouble);
             return *this;
         }
 
         template <typename T, typename = std::enable_if_t<std::is_constructible<double, T>::value>>
         Approx& margin( T const& newMargin ) {
-            double marginAsDouble = static_cast<double>(newMargin);
+            const auto marginAsDouble = static_cast<double>(newMargin);
             setMargin(marginAsDouble);
             return *this;
         }
@@ -3624,8 +3652,8 @@ namespace Catch {
     };
 
 namespace literals {
-    Approx operator ""_a(long double val);
-    Approx operator ""_a(unsigned long long val);
+    CATCH_DLL_PUBLIC Approx operator""_a( long double val );
+    CATCH_DLL_PUBLIC Approx operator""_a( unsigned long long val );
 } // end namespace literals
 
 template<>
@@ -3661,19 +3689,19 @@ struct StringMaker<Catch::Approx> {
 #ifndef CATCH_CASE_SENSITIVE_HPP_INCLUDED
 #define CATCH_CASE_SENSITIVE_HPP_INCLUDED
 
+
 namespace Catch {
 
-    enum class CaseSensitive { Yes, No };
+    enum class CATCH_DLL_PUBLIC CaseSensitive { Yes, No };
 
 } // namespace Catch
 
 #endif // CATCH_CASE_SENSITIVE_HPP_INCLUDED
-
 #include <string>
 
 namespace Catch
 {
-    class WildcardPattern {
+    class CATCH_DLL_PUBLIC WildcardPattern {
         enum WildcardPosition {
             NoWildcard = 0,
             WildcardAtStart = 1,
@@ -3695,7 +3723,6 @@ namespace Catch
 }
 
 #endif // CATCH_WILDCARD_PATTERN_HPP_INCLUDED
-
 #include <string>
 #include <vector>
 
@@ -3705,9 +3732,9 @@ namespace Catch {
     struct TestCaseInfo;
     class TestCaseHandle;
 
-    class TestSpec {
+    class CATCH_DLL_PUBLIC TestSpec {
 
-        class Pattern {
+        class CATCH_DLL_PUBLIC Pattern {
         public:
             explicit Pattern( std::string const& name );
             virtual ~Pattern();
@@ -3717,7 +3744,7 @@ namespace Catch {
             std::string const m_name;
         };
 
-        class NamePattern : public Pattern {
+        class CATCH_DLL_PUBLIC NamePattern : public Pattern {
         public:
             explicit NamePattern( std::string const& name, std::string const& filterString );
             bool matches( TestCaseInfo const& testCase ) const override;
@@ -3725,7 +3752,7 @@ namespace Catch {
             WildcardPattern m_wildcardPattern;
         };
 
-        class TagPattern : public Pattern {
+        class CATCH_DLL_PUBLIC TagPattern : public Pattern {
         public:
             explicit TagPattern( std::string const& tag, std::string const& filterString );
             bool matches( TestCaseInfo const& testCase ) const override;
@@ -3733,7 +3760,7 @@ namespace Catch {
             std::string m_tag;
         };
 
-        struct Filter {
+        struct CATCH_DLL_PUBLIC Filter {
             std::vector<Detail::unique_ptr<Pattern>> m_required;
             std::vector<Detail::unique_ptr<Pattern>> m_forbidden;
 
@@ -3742,7 +3769,7 @@ namespace Catch {
         };
 
     public:
-        struct FilterMatch {
+        struct CATCH_DLL_PUBLIC FilterMatch {
             std::string name;
             std::vector<TestCaseHandle const*> tests;
         };
@@ -3771,11 +3798,12 @@ namespace Catch {
 #ifndef CATCH_OPTIONAL_HPP_INCLUDED
 #define CATCH_OPTIONAL_HPP_INCLUDED
 
+#include <cassert>
+
 namespace Catch {
 
     // An optional type
-    template<typename T>
-    class Optional {
+    template <typename T> class CATCH_DLL_PUBLIC Optional {
     public:
         Optional() : nullableValue( nullptr ) {}
         Optional( T const& _value )
@@ -3838,7 +3866,8 @@ namespace Catch {
             return some();
         }
 
-        friend bool operator==(Optional const& a, Optional const& b) {
+        CATCH_DLL_PUBLIC friend bool operator==( Optional const& a,
+                                                 Optional const& b ) {
             if (a.none() && b.none()) {
                 return true;
             } else if (a.some() && b.some()) {
@@ -3847,7 +3876,8 @@ namespace Catch {
                 return false;
             }
         }
-        friend bool operator!=(Optional const& a, Optional const& b) {
+        CATCH_DLL_PUBLIC friend bool operator!=( Optional const& a,
+                                                 Optional const& b ) {
             return !( a == b );
         }
 
@@ -3868,38 +3898,40 @@ namespace Catch {
 
 namespace Catch {
 
-    enum class GenerateFrom {
+    enum class CATCH_DLL_PUBLIC GenerateFrom {
         Time,
         RandomDevice,
         //! Currently equivalent to RandomDevice, but can change at any point
         Default
     };
 
-    std::uint32_t generateRandomSeed(GenerateFrom from);
+    CATCH_DLL_PUBLIC std::uint32_t generateRandomSeed( GenerateFrom from );
 
 } // end namespace Catch
 
 #endif // CATCH_RANDOM_SEED_GENERATION_HPP_INCLUDED
-
 #include <iosfwd>
-#include <vector>
 #include <string>
+#include <vector>
 
 namespace Catch {
 
-    struct IStream;
+    class IStream;
 
-    struct ConfigData {
-        struct ReporterAndFile {
+    struct CATCH_DLL_PUBLIC ConfigData {
+        struct CATCH_DLL_PUBLIC ReporterAndFile {
             std::string reporterName;
 
             // If none, the output goes to the default output.
             Optional<std::string> outputFileName;
 
-            friend bool operator==(ReporterAndFile const& lhs, ReporterAndFile const& rhs) {
+            CATCH_DLL_PUBLIC friend bool
+            operator==( ReporterAndFile const& lhs,
+                        ReporterAndFile const& rhs ) {
                 return lhs.reporterName == rhs.reporterName && lhs.outputFileName == rhs.outputFileName;
             }
-            friend std::ostream& operator<<(std::ostream &os, ReporterAndFile const& reporter);
+            CATCH_DLL_PUBLIC friend std::ostream&
+            operator<<( std::ostream& os, ReporterAndFile const& reporter );
         };
 
         bool listTests = false;
@@ -3938,22 +3970,13 @@ namespace Catch {
         std::string defaultOutputFilename;
         std::string name;
         std::string processName;
-#ifndef CATCH_CONFIG_DEFAULT_REPORTER
-#define CATCH_CONFIG_DEFAULT_REPORTER "console"
-#endif
-        std::vector<ReporterAndFile> reporterSpecifications = {
-            {CATCH_CONFIG_DEFAULT_REPORTER, {}}
-        };
-        // Internal: used as parser state
-        bool _nonDefaultReporterSpecifications = false;
-#undef CATCH_CONFIG_DEFAULT_REPORTER
+        std::vector<ReporterAndFile> reporterSpecifications;
 
         std::vector<std::string> testsOrTags;
         std::vector<std::string> sectionsToRun;
     };
 
-
-    class Config : public IConfig {
+    class CATCH_DLL_PUBLIC Config : public IConfig {
     public:
 
         Config() = default;
@@ -3965,7 +3988,7 @@ namespace Catch {
         bool listReporters() const;
 
         std::vector<ConfigData::ReporterAndFile> const& getReportersAndOutputFiles() const;
-        std::ostream& getReporterOutputStream(std::size_t reporterIdx) const;
+        IStream const* getReporterOutputStream(std::size_t reporterIdx) const;
 
         std::vector<std::string> const& getTestsOrTags() const override;
         std::vector<std::string> const& getSectionsToRun() const override;
@@ -3977,7 +4000,6 @@ namespace Catch {
 
         // IConfig interface
         bool allowThrows() const override;
-        std::ostream& defaultStream() const override;
         StringRef name() const override;
         bool includeSuccessfulResults() const override;
         bool warnAboutMissingAssertions() const override;
@@ -4004,7 +4026,6 @@ namespace Catch {
         Detail::unique_ptr<IStream const> openStream(std::string const& outputFileName);
         ConfigData m_data;
 
-        Detail::unique_ptr<IStream const> m_defaultStream;
         std::vector<Detail::unique_ptr<IStream const>> m_reporterStreams;
         TestSpec m_testSpec;
         bool m_hasTestFilters = false;
@@ -4029,7 +4050,7 @@ namespace Catch {
     //    << +StreamEndStop
     // as well as
     //    << stuff +StreamEndStop
-    struct StreamEndStop {
+    struct CATCH_DLL_PUBLIC StreamEndStop {
         StringRef operator+() const { return StringRef(); }
 
         template <typename T>
@@ -4041,7 +4062,6 @@ namespace Catch {
 } // namespace Catch
 
 #endif // CATCH_STREAM_END_STOP_HPP_INCLUDED
-
 #include <string>
 #include <vector>
 
@@ -4049,7 +4069,7 @@ namespace Catch {
 
     struct SourceLineInfo;
 
-    struct MessageStream {
+    struct CATCH_DLL_PUBLIC MessageStream {
 
         template<typename T>
         MessageStream& operator << ( T const& value ) {
@@ -4060,7 +4080,7 @@ namespace Catch {
         ReusableStringStream m_stream;
     };
 
-    struct MessageBuilder : MessageStream {
+    struct CATCH_DLL_PUBLIC MessageBuilder : MessageStream {
         MessageBuilder( StringRef macroName,
                         SourceLineInfo const& lineInfo,
                         ResultWas::OfType type ):
@@ -4076,7 +4096,7 @@ namespace Catch {
         MessageInfo m_info;
     };
 
-    class ScopedMessage {
+    class CATCH_DLL_PUBLIC ScopedMessage {
     public:
         explicit ScopedMessage( MessageBuilder const& builder );
         ScopedMessage( ScopedMessage& duplicate ) = delete;
@@ -4087,7 +4107,7 @@ namespace Catch {
         bool m_moved = false;
     };
 
-    class Capturer {
+    class CATCH_DLL_PUBLIC Capturer {
         std::vector<MessageInfo> m_messages;
         IResultCapture& m_resultCapture = getResultCapture();
         size_t m_captured = 0;
@@ -4207,7 +4227,6 @@ namespace Catch {
 #    endif
 #endif
 
-
 #include <cassert>
 #include <cctype>
 #include <memory>
@@ -4224,24 +4243,24 @@ namespace Catch {
         class Parser;
 
         // enum of result types from a parse
-        enum class ParseResultType {
+        enum class CATCH_DLL_PUBLIC ParseResultType {
             Matched,
             NoMatch,
             ShortCircuitAll,
             ShortCircuitSame
         };
 
-        struct accept_many_t {};
+        struct CATCH_DLL_PUBLIC accept_many_t {};
         constexpr accept_many_t accept_many {};
 
         namespace Detail {
-            struct fake_arg {
+            struct CATCH_DLL_PUBLIC fake_arg {
                 template <typename T>
                 operator T();
             };
 
             template <typename F, typename = void>
-            struct is_unary_function : std::false_type {};
+            struct CATCH_DLL_PUBLIC is_unary_function : std::false_type {};
 
             template <typename F>
             struct is_unary_function<
@@ -4274,15 +4293,15 @@ namespace Catch {
             // Wraps a token coming from a token stream. These may not directly
             // correspond to strings as a single string may encode an option +
             // its argument if the : or = form is used
-            enum class TokenType { Option, Argument };
-            struct Token {
+            enum class CATCH_DLL_PUBLIC TokenType { Option, Argument };
+            struct CATCH_DLL_PUBLIC Token {
                 TokenType type;
                 std::string token;
             };
 
             // Abstracts iterators into args as a stream of tokens, with option
             // arguments uniformly handled
-            class TokenStream {
+            class CATCH_DLL_PUBLIC TokenStream {
                 using Iterator = std::vector<std::string>::const_iterator;
                 Iterator it;
                 Iterator itEnd;
@@ -4316,14 +4335,14 @@ namespace Catch {
             };
 
             //! Denotes type of a parsing result
-            enum class ResultType {
+            enum class CATCH_DLL_PUBLIC ResultType {
                 Ok,          ///< No errors
                 LogicError,  ///< Error in user-specified arguments for
                              ///< construction
                 RuntimeError ///< Error in parsing inputs
             };
 
-            class ResultBase {
+            class CATCH_DLL_PUBLIC ResultBase {
             protected:
                 ResultBase( ResultType type ): m_type( type ) {}
                 virtual ~ResultBase(); // = default;
@@ -4339,7 +4358,8 @@ namespace Catch {
                 ResultType m_type;
             };
 
-            template <typename T> class ResultValueBase : public ResultBase {
+            template <typename T>
+            class CATCH_DLL_PUBLIC ResultValueBase : public ResultBase {
             public:
                 auto value() const -> T const& {
                     enforceOk();
@@ -4385,7 +4405,7 @@ namespace Catch {
             };
 
             template <typename T = void>
-            class BasicResult : public ResultValueBase<T> {
+            class CATCH_DLL_PUBLIC BasicResult : public ResultValueBase<T> {
             public:
                 template <typename U>
                 explicit BasicResult( BasicResult<U> const& other ):
@@ -4440,7 +4460,7 @@ namespace Catch {
                 using ResultBase::m_type;
             };
 
-            class ParseState {
+            class CATCH_DLL_PUBLIC ParseState {
             public:
                 ParseState( ParseResultType type,
                             TokenStream const& remainingTokens );
@@ -4459,7 +4479,7 @@ namespace Catch {
             using ParserResult = BasicResult<ParseResultType>;
             using InternalParseResult = BasicResult<ParseState>;
 
-            struct HelpColumns {
+            struct CATCH_DLL_PUBLIC HelpColumns {
                 std::string left;
                 std::string right;
             };
@@ -4476,9 +4496,10 @@ namespace Catch {
                     return ParserResult::ok( ParseResultType::Matched );
                 }
             }
-            ParserResult convertInto( std::string const& source,
-                                      std::string& target );
-            ParserResult convertInto( std::string const& source, bool& target );
+            CATCH_DLL_PUBLIC ParserResult
+            convertInto( std::string const& source, std::string& target );
+            CATCH_DLL_PUBLIC ParserResult
+            convertInto( std::string const& source, bool& target );
 
 #ifdef CLARA_CONFIG_OPTIONAL_TYPE
             template <typename T>
@@ -4493,21 +4514,22 @@ namespace Catch {
             }
 #endif // CLARA_CONFIG_OPTIONAL_TYPE
 
-            struct BoundRef : Catch::Detail::NonCopyable {
+            struct CATCH_DLL_PUBLIC BoundRef : Catch::Detail::NonCopyable {
                 virtual ~BoundRef() = default;
                 virtual bool isContainer() const;
                 virtual bool isFlag() const;
             };
-            struct BoundValueRefBase : BoundRef {
+            struct CATCH_DLL_PUBLIC BoundValueRefBase : BoundRef {
                 virtual auto setValue( std::string const& arg )
                     -> ParserResult = 0;
             };
-            struct BoundFlagRefBase : BoundRef {
+            struct CATCH_DLL_PUBLIC BoundFlagRefBase : BoundRef {
                 virtual auto setFlag( bool flag ) -> ParserResult = 0;
                 bool isFlag() const override;
             };
 
-            template <typename T> struct BoundValueRef : BoundValueRefBase {
+            template <typename T>
+            struct CATCH_DLL_PUBLIC BoundValueRef : BoundValueRefBase {
                 T& m_ref;
 
                 explicit BoundValueRef( T& ref ): m_ref( ref ) {}
@@ -4535,7 +4557,7 @@ namespace Catch {
                 }
             };
 
-            struct BoundFlagRef : BoundFlagRefBase {
+            struct CATCH_DLL_PUBLIC BoundFlagRef : BoundFlagRefBase {
                 bool& m_ref;
 
                 explicit BoundFlagRef( bool& ref ): m_ref( ref ) {}
@@ -4543,7 +4565,8 @@ namespace Catch {
                 ParserResult setFlag( bool flag ) override;
             };
 
-            template <typename ReturnType> struct LambdaInvoker {
+            template <typename ReturnType>
+            struct CATCH_DLL_PUBLIC LambdaInvoker {
                 static_assert(
                     std::is_same<ReturnType, ParserResult>::value,
                     "Lambda must return void or clara::ParserResult" );
@@ -4574,7 +4597,8 @@ namespace Catch {
                                      L>::ReturnType>::invoke( lambda, temp );
             }
 
-            template <typename L> struct BoundLambda : BoundValueRefBase {
+            template <typename L>
+            struct CATCH_DLL_PUBLIC BoundLambda : BoundValueRefBase {
                 L m_lambda;
 
                 static_assert(
@@ -4589,12 +4613,14 @@ namespace Catch {
                 }
             };
 
-            template <typename L> struct BoundManyLambda : BoundLambda<L> {
+            template <typename L>
+            struct CATCH_DLL_PUBLIC BoundManyLambda : BoundLambda<L> {
                 explicit BoundManyLambda( L const& lambda ): BoundLambda<L>( lambda ) {}
                 bool isContainer() const override { return true; }
             };
 
-            template <typename L> struct BoundFlagLambda : BoundFlagRefBase {
+            template <typename L>
+            struct CATCH_DLL_PUBLIC BoundFlagLambda : BoundFlagRefBase {
                 L m_lambda;
 
                 static_assert(
@@ -4614,9 +4640,9 @@ namespace Catch {
                 }
             };
 
-            enum class Optionality { Optional, Required };
+            enum class CATCH_DLL_PUBLIC Optionality { Optional, Required };
 
-            class ParserBase {
+            class CATCH_DLL_PUBLIC ParserBase {
             public:
                 virtual ~ParserBase() = default;
                 virtual auto validate() const -> Result { return Result::ok(); }
@@ -4629,7 +4655,7 @@ namespace Catch {
             };
 
             template <typename DerivedT>
-            class ComposableParserImpl : public ParserBase {
+            class CATCH_DLL_PUBLIC ComposableParserImpl : public ParserBase {
             public:
                 template <typename T>
                 auto operator|( T const& other ) const -> Parser;
@@ -4637,7 +4663,8 @@ namespace Catch {
 
             // Common code and state for Args and Opts
             template <typename DerivedT>
-            class ParserRefImpl : public ComposableParserImpl<DerivedT> {
+            class CATCH_DLL_PUBLIC ParserRefImpl
+                : public ComposableParserImpl<DerivedT> {
             protected:
                 Optionality m_optionality = Optionality::Optional;
                 std::shared_ptr<BoundRef> m_ref;
@@ -4702,7 +4729,7 @@ namespace Catch {
 
 
         // A parser for arguments
-        class Arg : public Detail::ParserRefImpl<Arg> {
+        class CATCH_DLL_PUBLIC Arg : public Detail::ParserRefImpl<Arg> {
         public:
             using ParserRefImpl::ParserRefImpl;
             using ParserBase::parse;
@@ -4713,7 +4740,7 @@ namespace Catch {
         };
 
         // A parser for options
-        class Opt : public Detail::ParserRefImpl<Opt> {
+        class CATCH_DLL_PUBLIC Opt : public Detail::ParserRefImpl<Opt> {
         protected:
             std::vector<std::string> m_optNames;
 
@@ -4760,7 +4787,8 @@ namespace Catch {
         };
 
         // Specifies the name of the executable
-        class ExeName : public Detail::ComposableParserImpl<ExeName> {
+        class CATCH_DLL_PUBLIC ExeName
+            : public Detail::ComposableParserImpl<ExeName> {
             std::shared_ptr<std::string> m_name;
             std::shared_ptr<Detail::BoundValueRefBase> m_ref;
 
@@ -4789,9 +4817,8 @@ namespace Catch {
             Detail::ParserResult set(std::string const& newName);
         };
 
-
         // A Combined parser
-        class Parser : Detail::ParserBase {
+        class CATCH_DLL_PUBLIC Parser : Detail::ParserBase {
             mutable ExeName m_exeName;
             std::vector<Opt> m_options;
             std::vector<Arg> m_args;
@@ -4824,7 +4851,8 @@ namespace Catch {
 
             void writeToStream(std::ostream& os) const;
 
-            friend auto operator<<(std::ostream& os, Parser const& parser)
+            CATCH_DLL_PUBLIC friend auto operator<<( std::ostream& os,
+                                                     Parser const& parser )
                 -> std::ostream& {
                 parser.writeToStream(os);
                 return os;
@@ -4840,7 +4868,7 @@ namespace Catch {
 
         // Transport for raw args (copied from main args, or supplied via
         // init list for testing)
-        class Args {
+        class CATCH_DLL_PUBLIC Args {
             friend Detail::TokenStream;
             std::string m_exeName;
             std::vector<std::string> m_args;
@@ -4852,9 +4880,8 @@ namespace Catch {
             std::string const& exeName() const { return m_exeName; }
         };
 
-
         // Convenience wrapper for option parser that specifies the help option
-        struct Help : Opt {
+        struct CATCH_DLL_PUBLIC Help : Opt {
             Help(bool& showHelpFlag);
         };
 
@@ -4887,7 +4914,7 @@ namespace Catch {
 
     struct ConfigData;
 
-    Clara::Parser makeCommandLineParser( ConfigData& config );
+    CATCH_DLL_PUBLIC Clara::Parser makeCommandLineParser( ConfigData& config );
 
 } // end namespace Catch
 
@@ -4895,7 +4922,7 @@ namespace Catch {
 
 namespace Catch {
 
-    class Session : Detail::NonCopyable {
+    class CATCH_DLL_PUBLIC Session : Detail::NonCopyable {
     public:
 
         Session();
@@ -4944,12 +4971,11 @@ namespace Catch {
 #ifndef CATCH_TAG_ALIAS_HPP_INCLUDED
 #define CATCH_TAG_ALIAS_HPP_INCLUDED
 
-
 #include <string>
 
 namespace Catch {
 
-    struct TagAlias {
+    struct CATCH_DLL_PUBLIC TagAlias {
         TagAlias(std::string const& _tag, SourceLineInfo _lineInfo):
             tag(_tag),
             lineInfo(_lineInfo)
@@ -4970,7 +4996,7 @@ namespace Catch {
 
 namespace Catch {
 
-    struct RegistrarForTagAliases {
+    struct CATCH_DLL_PUBLIC RegistrarForTagAliases {
         RegistrarForTagAliases( char const* alias, char const* tag, SourceLineInfo const& lineInfo );
     };
 
@@ -5017,7 +5043,6 @@ namespace Catch {
 #ifndef CATCH_DECOMPOSER_HPP_INCLUDED
 #define CATCH_DECOMPOSER_HPP_INCLUDED
 
-
 #include <iosfwd>
 
 #ifdef _MSC_VER
@@ -5039,7 +5064,7 @@ namespace Catch {
 
 namespace Catch {
 
-    struct ITransientExpression {
+    struct CATCH_DLL_PUBLIC ITransientExpression {
         auto isBinaryExpression() const -> bool { return m_isBinaryExpression; }
         auto getResult() const -> bool { return m_result; }
         virtual void streamReconstructedExpression( std::ostream &os ) const = 0;
@@ -5059,16 +5084,21 @@ namespace Catch {
 
         bool m_isBinaryExpression;
         bool m_result;
-        friend std::ostream& operator<<(std::ostream& out, ITransientExpression const& expr) {
+        CATCH_DLL_PUBLIC friend std::ostream&
+        operator<<( std::ostream& out, ITransientExpression const& expr ) {
             expr.streamReconstructedExpression(out);
             return out;
         }
     };
 
-    void formatReconstructedExpression( std::ostream &os, std::string const& lhs, StringRef op, std::string const& rhs );
+    CATCH_DLL_PUBLIC void
+    formatReconstructedExpression( std::ostream& os,
+                                   std::string const& lhs,
+                                   StringRef op,
+                                   std::string const& rhs );
 
-    template<typename LhsT, typename RhsT>
-    class BinaryExpr  : public ITransientExpression {
+    template <typename LhsT, typename RhsT>
+    class CATCH_DLL_PUBLIC BinaryExpr : public ITransientExpression {
         LhsT m_lhs;
         StringRef m_op;
         RhsT m_rhs;
@@ -5143,8 +5173,8 @@ namespace Catch {
         }
     };
 
-    template<typename LhsT>
-    class UnaryExpr : public ITransientExpression {
+    template <typename LhsT>
+    class CATCH_DLL_PUBLIC UnaryExpr : public ITransientExpression {
         LhsT m_lhs;
 
         void streamReconstructedExpression( std::ostream &os ) const override {
@@ -5157,7 +5187,6 @@ namespace Catch {
             m_lhs( lhs )
         {}
     };
-
 
     // Specialised comparison functions to handle equality comparisons between ints and pointers (NULL deduces as an int)
     template<typename LhsT, typename RhsT>
@@ -5182,9 +5211,7 @@ namespace Catch {
     template<typename T>
     auto compareNotEqual( long lhs, T* const& rhs ) -> bool { return reinterpret_cast<void const*>( lhs ) != rhs; }
 
-
-    template<typename LhsT>
-    class ExprLhs {
+    template <typename LhsT> class CATCH_DLL_PUBLIC ExprLhs {
         LhsT m_lhs;
     public:
         explicit ExprLhs( LhsT lhs ) : m_lhs( lhs ) {}
@@ -5246,7 +5273,7 @@ namespace Catch {
         }
     };
 
-    struct Decomposer {
+    struct CATCH_DLL_PUBLIC Decomposer {
         template<typename T, std::enable_if_t<!std::is_arithmetic<std::remove_reference_t<T>>::value, int> = 0>
         friend auto operator <= ( Decomposer &&, T && lhs ) -> ExprLhs<T const&> {
             return ExprLhs<const T&>{ lhs };
@@ -5277,12 +5304,12 @@ namespace Catch {
     struct IResultCapture;
     class RunContext;
 
-    struct AssertionReaction {
+    struct CATCH_DLL_PUBLIC AssertionReaction {
         bool shouldDebugBreak = false;
         bool shouldThrow = false;
     };
 
-    class AssertionHandler {
+    class CATCH_DLL_PUBLIC AssertionHandler {
         AssertionInfo m_assertionInfo;
         AssertionReaction m_reaction;
         bool m_completed = false;
@@ -5322,7 +5349,9 @@ namespace Catch {
         auto allowThrows() const -> bool;
     };
 
-    void handleExceptionMatchExpr( AssertionHandler& handler, std::string const& str, StringRef matcherString );
+    CATCH_DLL_PUBLIC void handleExceptionMatchExpr( AssertionHandler& handler,
+                                                    std::string const& str,
+                                                    StringRef matcherString );
 
 } // namespace Catch
 
@@ -5560,53 +5589,128 @@ namespace Catch {
 
 #define INTERNAL_CATCH_VA_NARGS_IMPL(_0, _1, _2, _3, _4, _5, _6, _7, _8, _9, _10, N, ...) N
 
-#define INTERNAL_CATCH_TYPE_GEN\
-    template<typename...> struct TypeList {};\
-    template<typename...Ts>\
-    constexpr auto get_wrapper() noexcept -> TypeList<Ts...> { return {}; }\
-    template<template<typename...> class...> struct TemplateTypeList{};\
-    template<template<typename...> class...Cs>\
-    constexpr auto get_wrapper() noexcept -> TemplateTypeList<Cs...> { return {}; }\
-    template<typename...>\
-    struct append;\
-    template<typename...>\
-    struct rewrap;\
-    template<template<typename...> class, typename...>\
-    struct create;\
-    template<template<typename...> class, typename>\
-    struct convert;\
-    \
-    template<typename T> \
-    struct append<T> { using type = T; };\
-    template< template<typename...> class L1, typename...E1, template<typename...> class L2, typename...E2, typename...Rest>\
-    struct append<L1<E1...>, L2<E2...>, Rest...> { using type = typename append<L1<E1...,E2...>, Rest...>::type; };\
-    template< template<typename...> class L1, typename...E1, typename...Rest>\
-    struct append<L1<E1...>, TypeList<mpl_::na>, Rest...> { using type = L1<E1...>; };\
-    \
-    template< template<typename...> class Container, template<typename...> class List, typename...elems>\
-    struct rewrap<TemplateTypeList<Container>, List<elems...>> { using type = TypeList<Container<elems...>>; };\
-    template< template<typename...> class Container, template<typename...> class List, class...Elems, typename...Elements>\
-    struct rewrap<TemplateTypeList<Container>, List<Elems...>, Elements...> { using type = typename append<TypeList<Container<Elems...>>, typename rewrap<TemplateTypeList<Container>, Elements...>::type>::type; };\
-    \
-    template<template <typename...> class Final, template< typename...> class...Containers, typename...Types>\
-    struct create<Final, TemplateTypeList<Containers...>, TypeList<Types...>> { using type = typename append<Final<>, typename rewrap<TemplateTypeList<Containers>, Types...>::type...>::type; };\
-    template<template <typename...> class Final, template <typename...> class List, typename...Ts>\
-    struct convert<Final, List<Ts...>> { using type = typename append<Final<>,TypeList<Ts>...>::type; };
+#define INTERNAL_CATCH_TYPE_GEN                                               \
+    template <typename...> struct CATCH_DLL_PUBLIC TypeList {};               \
+    template <typename... Ts>                                                 \
+    constexpr auto get_wrapper() noexcept->TypeList<Ts...> {                  \
+        return {};                                                            \
+    }                                                                         \
+    template <template <typename...> class...>                                \
+    struct CATCH_DLL_PUBLIC TemplateTypeList {};                              \
+    template <template <typename...> class... Cs>                             \
+    constexpr auto get_wrapper() noexcept->TemplateTypeList<Cs...> {          \
+        return {};                                                            \
+    }                                                                         \
+    template <typename...> struct append;                                     \
+    template <typename...> struct rewrap;                                     \
+    template <template <typename...> class, typename...> struct create;       \
+    template <template <typename...> class, typename> struct convert;         \
+                                                                              \
+    template <typename T> struct append<T> { using type = T; };               \
+    template <template <typename...> class L1,                                \
+              typename... E1,                                                 \
+              template <typename...>                                          \
+              class L2,                                                       \
+              typename... E2,                                                 \
+              typename... Rest>                                               \
+    struct append<L1<E1...>, L2<E2...>, Rest...> {                            \
+        using type = typename append<L1<E1..., E2...>, Rest...>::type;        \
+    };                                                                        \
+    template <template <typename...> class L1,                                \
+              typename... E1,                                                 \
+              typename... Rest>                                               \
+    struct append<L1<E1...>, TypeList<mpl_::na>, Rest...> {                   \
+        using type = L1<E1...>;                                               \
+    };                                                                        \
+                                                                              \
+    template <template <typename...> class Container,                         \
+              template <typename...>                                          \
+              class List,                                                     \
+              typename... elems>                                              \
+    struct rewrap<TemplateTypeList<Container>, List<elems...>> {              \
+        using type = TypeList<Container<elems...>>;                           \
+    };                                                                        \
+    template <template <typename...> class Container,                         \
+              template <typename...>                                          \
+              class List,                                                     \
+              class... Elems,                                                 \
+              typename... Elements>                                           \
+    struct rewrap<TemplateTypeList<Container>, List<Elems...>, Elements...> { \
+        using type =                                                          \
+            typename append<TypeList<Container<Elems...>>,                    \
+                            typename rewrap<TemplateTypeList<Container>,      \
+                                            Elements...>::type>::type;        \
+    };                                                                        \
+                                                                              \
+    template <template <typename...> class Final,                             \
+              template <typename...>                                          \
+              class... Containers,                                            \
+              typename... Types>                                              \
+    struct create<Final,                                                      \
+                  TemplateTypeList<Containers...>,                            \
+                  TypeList<Types...>> {                                       \
+        using type =                                                          \
+            typename append<Final<>,                                          \
+                            typename rewrap<TemplateTypeList<Containers>,     \
+                                            Types...>::type...>::type;        \
+    };                                                                        \
+    template <template <typename...> class Final,                             \
+              template <typename...>                                          \
+              class List,                                                     \
+              typename... Ts>                                                 \
+    struct convert<Final, List<Ts...>> {                                      \
+        using type = typename append<Final<>, TypeList<Ts>...>::type;         \
+    };
 
-#define INTERNAL_CATCH_NTTP_1(signature, ...)\
-    template<INTERNAL_CATCH_REMOVE_PARENS(signature)> struct Nttp{};\
-    template<INTERNAL_CATCH_REMOVE_PARENS(signature)>\
-    constexpr auto get_wrapper() noexcept -> Nttp<__VA_ARGS__> { return {}; } \
-    template<template<INTERNAL_CATCH_REMOVE_PARENS(signature)> class...> struct NttpTemplateTypeList{};\
-    template<template<INTERNAL_CATCH_REMOVE_PARENS(signature)> class...Cs>\
-    constexpr auto get_wrapper() noexcept -> NttpTemplateTypeList<Cs...> { return {}; } \
-    \
-    template< template<INTERNAL_CATCH_REMOVE_PARENS(signature)> class Container, template<INTERNAL_CATCH_REMOVE_PARENS(signature)> class List, INTERNAL_CATCH_REMOVE_PARENS(signature)>\
-    struct rewrap<NttpTemplateTypeList<Container>, List<__VA_ARGS__>> { using type = TypeList<Container<__VA_ARGS__>>; };\
-    template< template<INTERNAL_CATCH_REMOVE_PARENS(signature)> class Container, template<INTERNAL_CATCH_REMOVE_PARENS(signature)> class List, INTERNAL_CATCH_REMOVE_PARENS(signature), typename...Elements>\
-    struct rewrap<NttpTemplateTypeList<Container>, List<__VA_ARGS__>, Elements...> { using type = typename append<TypeList<Container<__VA_ARGS__>>, typename rewrap<NttpTemplateTypeList<Container>, Elements...>::type>::type; };\
-    template<template <typename...> class Final, template<INTERNAL_CATCH_REMOVE_PARENS(signature)> class...Containers, typename...Types>\
-    struct create<Final, NttpTemplateTypeList<Containers...>, TypeList<Types...>> { using type = typename append<Final<>, typename rewrap<NttpTemplateTypeList<Containers>, Types...>::type...>::type; };
+#define INTERNAL_CATCH_NTTP_1( signature, ... )                               \
+    template <INTERNAL_CATCH_REMOVE_PARENS( signature )>                      \
+    struct CATCH_DLL_PUBLIC Nttp {};                                          \
+    template <INTERNAL_CATCH_REMOVE_PARENS( signature )>                      \
+    constexpr auto get_wrapper() noexcept->Nttp<__VA_ARGS__> {                \
+        return {};                                                            \
+    }                                                                         \
+    template <template <INTERNAL_CATCH_REMOVE_PARENS( signature )> class...>  \
+    struct CATCH_DLL_PUBLIC NttpTemplateTypeList {};                          \
+    template <template <INTERNAL_CATCH_REMOVE_PARENS( signature )>            \
+              class... Cs>                                                    \
+    constexpr auto get_wrapper() noexcept->NttpTemplateTypeList<Cs...> {      \
+        return {};                                                            \
+    }                                                                         \
+                                                                              \
+    template <template <INTERNAL_CATCH_REMOVE_PARENS( signature )>            \
+              class Container,                                                \
+              template <INTERNAL_CATCH_REMOVE_PARENS( signature )>            \
+              class List,                                                     \
+              INTERNAL_CATCH_REMOVE_PARENS( signature )>                      \
+    struct rewrap<NttpTemplateTypeList<Container>, List<__VA_ARGS__>> {       \
+        using type = TypeList<Container<__VA_ARGS__>>;                        \
+    };                                                                        \
+    template <template <INTERNAL_CATCH_REMOVE_PARENS( signature )>            \
+              class Container,                                                \
+              template <INTERNAL_CATCH_REMOVE_PARENS( signature )>            \
+              class List,                                                     \
+              INTERNAL_CATCH_REMOVE_PARENS( signature ),                      \
+              typename... Elements>                                           \
+    struct rewrap<NttpTemplateTypeList<Container>,                            \
+                  List<__VA_ARGS__>,                                          \
+                  Elements...> {                                              \
+        using type =                                                          \
+            typename append<TypeList<Container<__VA_ARGS__>>,                 \
+                            typename rewrap<NttpTemplateTypeList<Container>,  \
+                                            Elements...>::type>::type;        \
+    };                                                                        \
+    template <template <typename...> class Final,                             \
+              template <INTERNAL_CATCH_REMOVE_PARENS( signature )>            \
+              class... Containers,                                            \
+              typename... Types>                                              \
+    struct create<Final,                                                      \
+                  NttpTemplateTypeList<Containers...>,                        \
+                  TypeList<Types...>> {                                       \
+        using type =                                                          \
+            typename append<Final<>,                                          \
+                            typename rewrap<NttpTemplateTypeList<Containers>, \
+                                            Types...>::type...>::type;        \
+    };
 
 #define INTERNAL_CATCH_DECLARE_SIG_TEST0(TestName)
 #define INTERNAL_CATCH_DECLARE_SIG_TEST1(TestName, signature)\
@@ -5653,16 +5757,20 @@ namespace Catch {
     }
 
 #define INTERNAL_CATCH_DECLARE_SIG_TEST_METHOD0(TestName, ClassName)
-#define INTERNAL_CATCH_DECLARE_SIG_TEST_METHOD1(TestName, ClassName, signature)\
-    template<typename TestType> \
-    struct TestName : INTERNAL_CATCH_REMOVE_PARENS(ClassName)<TestType> { \
-        void test();\
+#define INTERNAL_CATCH_DECLARE_SIG_TEST_METHOD1(                \
+    TestName, ClassName, signature )                            \
+    template <typename TestType>                                \
+    struct CATCH_DLL_PUBLIC TestName                            \
+        : INTERNAL_CATCH_REMOVE_PARENS( ClassName )<TestType> { \
+        void test();                                            \
     }
 
-#define INTERNAL_CATCH_DECLARE_SIG_TEST_METHOD_X(TestName, ClassName, signature, ...)\
-    template<INTERNAL_CATCH_REMOVE_PARENS(signature)> \
-    struct TestName : INTERNAL_CATCH_REMOVE_PARENS(ClassName)<__VA_ARGS__> { \
-        void test();\
+#define INTERNAL_CATCH_DECLARE_SIG_TEST_METHOD_X(                  \
+    TestName, ClassName, signature, ... )                          \
+    template <INTERNAL_CATCH_REMOVE_PARENS( signature )>           \
+    struct CATCH_DLL_PUBLIC TestName                               \
+        : INTERNAL_CATCH_REMOVE_PARENS( ClassName )<__VA_ARGS__> { \
+        void test();                                               \
     }
 
 #define INTERNAL_CATCH_DEFINE_SIG_TEST_METHOD0(TestName)
@@ -5710,7 +5818,7 @@ namespace Catch {
 
 namespace Catch {
 
-    class Timer {
+    class CATCH_DLL_PUBLIC Timer {
         uint64_t m_nanoseconds = 0;
     public:
         void start();
@@ -5726,7 +5834,7 @@ namespace Catch {
 
 namespace Catch {
 
-    class Section : Detail::NonCopyable {
+    class CATCH_DLL_PUBLIC Section : Detail::NonCopyable {
     public:
         Section( SectionInfo&& info );
         ~Section();
@@ -5774,7 +5882,7 @@ namespace Catch {
     class TestSpec;
     struct TestCaseInfo;
 
-    struct ITestInvoker {
+    struct CATCH_DLL_PUBLIC ITestInvoker {
         virtual void invoke () const = 0;
         virtual ~ITestInvoker(); // = default
     };
@@ -5782,7 +5890,7 @@ namespace Catch {
     class TestCaseHandle;
     struct IConfig;
 
-    struct ITestCaseRegistry {
+    struct CATCH_DLL_PUBLIC ITestCaseRegistry {
         virtual ~ITestCaseRegistry(); // = default
         // TODO: this exists only for adding filenames to test cases -- let's expose this in a saner way later
         virtual std::vector<TestCaseInfo* > const& getAllInfos() const = 0;
@@ -5810,26 +5918,30 @@ namespace Catch {
 
 namespace Catch {
 
-template<typename C>
-class TestInvokerAsMethod : public ITestInvoker {
-    void (C::*m_testAsMethod)();
-public:
-    TestInvokerAsMethod( void (C::*testAsMethod)() ) noexcept : m_testAsMethod( testAsMethod ) {}
+    template <typename C>
+    class CATCH_DLL_PUBLIC TestInvokerAsMethod : public ITestInvoker {
+        void ( C::*m_testAsMethod )();
 
-    void invoke() const override {
-        C obj;
-        (obj.*m_testAsMethod)();
-    }
-};
+    public:
+        TestInvokerAsMethod( void ( C::*testAsMethod )() ) noexcept:
+            m_testAsMethod( testAsMethod ) {}
 
-Detail::unique_ptr<ITestInvoker> makeTestInvoker( void(*testAsFunction)() );
+        void invoke() const override {
+            C obj;
+            ( obj.*m_testAsMethod )();
+        }
+    };
 
-template<typename C>
-Detail::unique_ptr<ITestInvoker> makeTestInvoker( void (C::*testAsMethod)() ) {
-    return Detail::make_unique<TestInvokerAsMethod<C>>( testAsMethod );
+    Detail::unique_ptr<ITestInvoker>
+        CATCH_DLL_PUBLIC makeTestInvoker( void ( *testAsFunction )() );
+
+    template <typename C>
+    Detail::unique_ptr<ITestInvoker>
+    makeTestInvoker( void ( C::*testAsMethod )() ) {
+        return Detail::make_unique<TestInvokerAsMethod<C>>( testAsMethod );
 }
 
-struct NameAndTags {
+struct CATCH_DLL_PUBLIC NameAndTags {
     constexpr NameAndTags( StringRef name_ = StringRef(),
                            StringRef tags_ = StringRef() ) noexcept:
         name( name_ ), tags( tags_ ) {}
@@ -5837,7 +5949,7 @@ struct NameAndTags {
     StringRef tags;
 };
 
-struct AutoReg : Detail::NonCopyable {
+struct CATCH_DLL_PUBLIC AutoReg : Detail::NonCopyable {
     AutoReg( Detail::unique_ptr<ITestInvoker> invoker, SourceLineInfo const& lineInfo, StringRef classOrMethod, NameAndTags const& nameAndTags ) noexcept;
 };
 
@@ -5846,12 +5958,14 @@ struct AutoReg : Detail::NonCopyable {
 #if defined(CATCH_CONFIG_DISABLE)
     #define INTERNAL_CATCH_TESTCASE_NO_REGISTRATION( TestName, ... ) \
         static inline void TestName()
-    #define INTERNAL_CATCH_TESTCASE_METHOD_NO_REGISTRATION( TestName, ClassName, ... ) \
-        namespace{                        \
-            struct TestName : INTERNAL_CATCH_REMOVE_PARENS(ClassName) { \
-                void test();              \
-            };                            \
-        }                                 \
+#    define INTERNAL_CATCH_TESTCASE_METHOD_NO_REGISTRATION(   \
+        TestName, ClassName, ... )                            \
+        namespace {                                           \
+            struct CATCH_DLL_PUBLIC TestName                  \
+                : INTERNAL_CATCH_REMOVE_PARENS( ClassName ) { \
+                void test();                                  \
+            };                                                \
+        }                                                     \
         void TestName::test()
 #endif
 
@@ -5874,28 +5988,40 @@ struct AutoReg : Detail::NonCopyable {
         CATCH_INTERNAL_STOP_WARNINGS_SUPPRESSION
 
     ///////////////////////////////////////////////////////////////////////////////
-    #define INTERNAL_CATCH_TEST_CASE_METHOD2( TestName, ClassName, ... )\
-        CATCH_INTERNAL_START_WARNINGS_SUPPRESSION \
-        CATCH_INTERNAL_SUPPRESS_GLOBALS_WARNINGS \
-        namespace{ \
-            struct TestName : INTERNAL_CATCH_REMOVE_PARENS(ClassName) { \
-                void test(); \
-            }; \
-            Catch::AutoReg INTERNAL_CATCH_UNIQUE_NAME( autoRegistrar ) ( Catch::makeTestInvoker( &TestName::test ), CATCH_INTERNAL_LINEINFO, #ClassName, Catch::NameAndTags{ __VA_ARGS__ } ); /* NOLINT */ \
-        } \
-        CATCH_INTERNAL_STOP_WARNINGS_SUPPRESSION \
-        void TestName::test()
-    #define INTERNAL_CATCH_TEST_CASE_METHOD( ClassName, ... ) \
-        INTERNAL_CATCH_TEST_CASE_METHOD2( INTERNAL_CATCH_UNIQUE_NAME( CATCH2_INTERNAL_TEST_ ), ClassName, __VA_ARGS__ )
+#define INTERNAL_CATCH_TEST_CASE_METHOD2( TestName, ClassName, ... ) \
+    CATCH_INTERNAL_START_WARNINGS_SUPPRESSION                        \
+    CATCH_INTERNAL_SUPPRESS_GLOBALS_WARNINGS                         \
+    namespace {                                                      \
+        struct CATCH_DLL_PUBLIC TestName                             \
+            : INTERNAL_CATCH_REMOVE_PARENS( ClassName ) {            \
+            void test();                                             \
+        };                                                           \
+        Catch::AutoReg INTERNAL_CATCH_UNIQUE_NAME( autoRegistrar )(  \
+            Catch::makeTestInvoker( &TestName::test ),               \
+            CATCH_INTERNAL_LINEINFO,                                 \
+            #ClassName,                                              \
+            Catch::NameAndTags{ __VA_ARGS__ } ); /* NOLINT */        \
+    }                                                                \
+    CATCH_INTERNAL_STOP_WARNINGS_SUPPRESSION                         \
+    void TestName::test()
+#define INTERNAL_CATCH_TEST_CASE_METHOD( ClassName, ... )    \
+    INTERNAL_CATCH_TEST_CASE_METHOD2(                        \
+        INTERNAL_CATCH_UNIQUE_NAME( CATCH2_INTERNAL_TEST_ ), \
+        ClassName,                                           \
+        __VA_ARGS__ )
 
-    ///////////////////////////////////////////////////////////////////////////////
-    #define INTERNAL_CATCH_REGISTER_TESTCASE( Function, ... ) \
-        do { \
-            CATCH_INTERNAL_START_WARNINGS_SUPPRESSION \
-            CATCH_INTERNAL_SUPPRESS_GLOBALS_WARNINGS \
-            Catch::AutoReg INTERNAL_CATCH_UNIQUE_NAME( autoRegistrar )( Catch::makeTestInvoker( Function ), CATCH_INTERNAL_LINEINFO, Catch::StringRef(), Catch::NameAndTags{ __VA_ARGS__ } ); /* NOLINT */ \
-            CATCH_INTERNAL_STOP_WARNINGS_SUPPRESSION \
-        } while(false)
+///////////////////////////////////////////////////////////////////////////////
+#define INTERNAL_CATCH_REGISTER_TESTCASE( Function, ... )           \
+    do {                                                            \
+        CATCH_INTERNAL_START_WARNINGS_SUPPRESSION                   \
+        CATCH_INTERNAL_SUPPRESS_GLOBALS_WARNINGS                    \
+        Catch::AutoReg INTERNAL_CATCH_UNIQUE_NAME( autoRegistrar )( \
+            Catch::makeTestInvoker( Function ),                     \
+            CATCH_INTERNAL_LINEINFO,                                \
+            Catch::StringRef(),                                     \
+            Catch::NameAndTags{ __VA_ARGS__ } ); /* NOLINT */       \
+        CATCH_INTERNAL_STOP_WARNINGS_SUPPRESSION                    \
+    } while ( false )
 
 
 #endif // CATCH_TEST_REGISTRY_HPP_INCLUDED
@@ -6165,35 +6291,48 @@ struct AutoReg : Detail::NonCopyable {
 
 
     ///////////////////////////////////////////////////////////////////////////////
-    #define INTERNAL_CATCH_TEMPLATE_TEST_CASE_2(TestName, TestFunc, Name, Tags, Signature, ... )\
-        CATCH_INTERNAL_START_WARNINGS_SUPPRESSION \
-        CATCH_INTERNAL_SUPPRESS_GLOBALS_WARNINGS \
-        CATCH_INTERNAL_SUPPRESS_ZERO_VARIADIC_WARNINGS \
-        CATCH_INTERNAL_SUPPRESS_UNUSED_TEMPLATE_WARNINGS \
-        CATCH_INTERNAL_SUPPRESS_UNUSED_VARIABLE_WARNINGS \
-        INTERNAL_CATCH_DECLARE_SIG_TEST(TestFunc, INTERNAL_CATCH_REMOVE_PARENS(Signature));\
-        namespace {\
-        namespace INTERNAL_CATCH_MAKE_NAMESPACE(TestName){\
-            INTERNAL_CATCH_TYPE_GEN\
-            INTERNAL_CATCH_NTTP_GEN(INTERNAL_CATCH_REMOVE_PARENS(Signature))\
-            INTERNAL_CATCH_NTTP_REG_GEN(TestFunc,INTERNAL_CATCH_REMOVE_PARENS(Signature))\
-            template<typename...Types> \
-            struct TestName{\
-                TestName(){\
-                    size_t index = 0;                                    \
-                    constexpr char const* tmpl_types[] = {CATCH_REC_LIST(INTERNAL_CATCH_STRINGIZE_WITHOUT_PARENS, __VA_ARGS__)};\
-                    using expander = size_t[];\
-                    (void)expander{(reg_test(Types{}, Catch::NameAndTags{ Name " - " + std::string(tmpl_types[index]), Tags } ), index++)... };/* NOLINT */ \
-                }\
-            };\
-            static int INTERNAL_CATCH_UNIQUE_NAME( globalRegistrar ) = [](){\
-            TestName<INTERNAL_CATCH_MAKE_TYPE_LISTS_FROM_TYPES(__VA_ARGS__)>();\
-            return 0;\
-        }();\
-        }\
-        }\
-        CATCH_INTERNAL_STOP_WARNINGS_SUPPRESSION \
-        INTERNAL_CATCH_DEFINE_SIG_TEST(TestFunc,INTERNAL_CATCH_REMOVE_PARENS(Signature))
+#define INTERNAL_CATCH_TEMPLATE_TEST_CASE_2(                                  \
+    TestName, TestFunc, Name, Tags, Signature, ... )                          \
+    CATCH_INTERNAL_START_WARNINGS_SUPPRESSION                                 \
+    CATCH_INTERNAL_SUPPRESS_GLOBALS_WARNINGS                                  \
+    CATCH_INTERNAL_SUPPRESS_ZERO_VARIADIC_WARNINGS                            \
+    CATCH_INTERNAL_SUPPRESS_UNUSED_TEMPLATE_WARNINGS                          \
+    CATCH_INTERNAL_SUPPRESS_UNUSED_VARIABLE_WARNINGS                          \
+    INTERNAL_CATCH_DECLARE_SIG_TEST(                                          \
+        TestFunc, INTERNAL_CATCH_REMOVE_PARENS( Signature ) );                \
+    namespace {                                                               \
+        namespace INTERNAL_CATCH_MAKE_NAMESPACE( TestName ) {                 \
+            INTERNAL_CATCH_TYPE_GEN                                           \
+            INTERNAL_CATCH_NTTP_GEN(                                          \
+                INTERNAL_CATCH_REMOVE_PARENS( Signature ) )                   \
+            INTERNAL_CATCH_NTTP_REG_GEN(                                      \
+                TestFunc, INTERNAL_CATCH_REMOVE_PARENS( Signature ) )         \
+            template <typename... Types> struct CATCH_DLL_PUBLIC TestName {   \
+                TestName() {                                                  \
+                    size_t index = 0;                                         \
+                    constexpr char const* tmpl_types[] = { CATCH_REC_LIST(    \
+                        INTERNAL_CATCH_STRINGIZE_WITHOUT_PARENS,              \
+                        __VA_ARGS__ ) };                                      \
+                    using expander = size_t[];                                \
+                    (void)expander{                                           \
+                        ( reg_test( Types{},                                  \
+                                    Catch::NameAndTags{                       \
+                                        Name " - " +                          \
+                                            std::string( tmpl_types[index] ), \
+                                        Tags } ),                             \
+                          index++ )... }; /* NOLINT */                        \
+                }                                                             \
+            };                                                                \
+            static int INTERNAL_CATCH_UNIQUE_NAME( globalRegistrar ) = []() { \
+                TestName<INTERNAL_CATCH_MAKE_TYPE_LISTS_FROM_TYPES(           \
+                    __VA_ARGS__ )>();                                         \
+                return 0;                                                     \
+            }();                                                              \
+        }                                                                     \
+    }                                                                         \
+    CATCH_INTERNAL_STOP_WARNINGS_SUPPRESSION                                  \
+    INTERNAL_CATCH_DEFINE_SIG_TEST(                                           \
+        TestFunc, INTERNAL_CATCH_REMOVE_PARENS( Signature ) )
 
 #ifndef CATCH_CONFIG_TRADITIONAL_MSVC_PREPROCESSOR
     #define INTERNAL_CATCH_TEMPLATE_TEST_CASE(Name, Tags, ...) \
@@ -6211,39 +6350,63 @@ struct AutoReg : Detail::NonCopyable {
         INTERNAL_CATCH_EXPAND_VARGS( INTERNAL_CATCH_TEMPLATE_TEST_CASE_2( INTERNAL_CATCH_UNIQUE_NAME( CATCH2_INTERNAL_TEMPLATE_TEST_ ), INTERNAL_CATCH_UNIQUE_NAME( CATCH2_INTERNAL_TEMPLATE_TEST_ ), Name, Tags, Signature, __VA_ARGS__ ) )
 #endif
 
-    #define INTERNAL_CATCH_TEMPLATE_PRODUCT_TEST_CASE2(TestName, TestFuncName, Name, Tags, Signature, TmplTypes, TypesList) \
-        CATCH_INTERNAL_START_WARNINGS_SUPPRESSION                      \
-        CATCH_INTERNAL_SUPPRESS_GLOBALS_WARNINGS                      \
-        CATCH_INTERNAL_SUPPRESS_ZERO_VARIADIC_WARNINGS                \
-        CATCH_INTERNAL_SUPPRESS_UNUSED_TEMPLATE_WARNINGS       \
-        CATCH_INTERNAL_SUPPRESS_UNUSED_VARIABLE_WARNINGS \
-        template<typename TestType> static void TestFuncName();       \
-        namespace {\
-        namespace INTERNAL_CATCH_MAKE_NAMESPACE(TestName) {                                     \
-            INTERNAL_CATCH_TYPE_GEN                                                  \
-            INTERNAL_CATCH_NTTP_GEN(INTERNAL_CATCH_REMOVE_PARENS(Signature))         \
-            template<typename... Types>                               \
-            struct TestName {                                         \
-                void reg_tests() {                                          \
-                    size_t index = 0;                                    \
-                    using expander = size_t[];                           \
-                    constexpr char const* tmpl_types[] = {CATCH_REC_LIST(INTERNAL_CATCH_STRINGIZE_WITHOUT_PARENS, INTERNAL_CATCH_REMOVE_PARENS(TmplTypes))};\
-                    constexpr char const* types_list[] = {CATCH_REC_LIST(INTERNAL_CATCH_STRINGIZE_WITHOUT_PARENS, INTERNAL_CATCH_REMOVE_PARENS(TypesList))};\
-                    constexpr auto num_types = sizeof(types_list) / sizeof(types_list[0]);\
-                    (void)expander{(Catch::AutoReg( Catch::makeTestInvoker( &TestFuncName<Types> ), CATCH_INTERNAL_LINEINFO, Catch::StringRef(), Catch::NameAndTags{ Name " - " + std::string(tmpl_types[index / num_types]) + '<' + std::string(types_list[index % num_types]) + '>', Tags } ), index++)... };/* NOLINT */\
-                }                                                     \
-            };                                                        \
-            static int INTERNAL_CATCH_UNIQUE_NAME( globalRegistrar ) = [](){ \
-                using TestInit = typename create<TestName, decltype(get_wrapper<INTERNAL_CATCH_REMOVE_PARENS(TmplTypes)>()), TypeList<INTERNAL_CATCH_MAKE_TYPE_LISTS_FROM_TYPES(INTERNAL_CATCH_REMOVE_PARENS(TypesList))>>::type; \
-                TestInit t;                                           \
-                t.reg_tests();                                        \
-                return 0;                                             \
-            }();                                                      \
-        }                                                             \
-        }                                                             \
-        CATCH_INTERNAL_STOP_WARNINGS_SUPPRESSION                       \
-        template<typename TestType>                                   \
-        static void TestFuncName()
+#define INTERNAL_CATCH_TEMPLATE_PRODUCT_TEST_CASE2(                           \
+    TestName, TestFuncName, Name, Tags, Signature, TmplTypes, TypesList )     \
+    CATCH_INTERNAL_START_WARNINGS_SUPPRESSION                                 \
+    CATCH_INTERNAL_SUPPRESS_GLOBALS_WARNINGS                                  \
+    CATCH_INTERNAL_SUPPRESS_ZERO_VARIADIC_WARNINGS                            \
+    CATCH_INTERNAL_SUPPRESS_UNUSED_TEMPLATE_WARNINGS                          \
+    CATCH_INTERNAL_SUPPRESS_UNUSED_VARIABLE_WARNINGS                          \
+    template <typename TestType> static void TestFuncName();                  \
+    namespace {                                                               \
+        namespace INTERNAL_CATCH_MAKE_NAMESPACE( TestName ) {                 \
+            INTERNAL_CATCH_TYPE_GEN                                           \
+            INTERNAL_CATCH_NTTP_GEN(                                          \
+                INTERNAL_CATCH_REMOVE_PARENS( Signature ) )                   \
+            template <typename... Types> struct CATCH_DLL_PUBLIC TestName {   \
+                void reg_tests() {                                            \
+                    size_t index = 0;                                         \
+                    using expander = size_t[];                                \
+                    constexpr char const* tmpl_types[] = { CATCH_REC_LIST(    \
+                        INTERNAL_CATCH_STRINGIZE_WITHOUT_PARENS,              \
+                        INTERNAL_CATCH_REMOVE_PARENS( TmplTypes ) ) };        \
+                    constexpr char const* types_list[] = { CATCH_REC_LIST(    \
+                        INTERNAL_CATCH_STRINGIZE_WITHOUT_PARENS,              \
+                        INTERNAL_CATCH_REMOVE_PARENS( TypesList ) ) };        \
+                    constexpr auto num_types =                                \
+                        sizeof( types_list ) / sizeof( types_list[0] );       \
+                    (void)expander{                                           \
+                        ( Catch::AutoReg(                                     \
+                              Catch::makeTestInvoker( &TestFuncName<Types> ), \
+                              CATCH_INTERNAL_LINEINFO,                        \
+                              Catch::StringRef(),                             \
+                              Catch::NameAndTags{                             \
+                                  Name " - " +                                \
+                                      std::string(                            \
+                                          tmpl_types[index / num_types] ) +   \
+                                      '<' +                                   \
+                                      std::string(                            \
+                                          types_list[index % num_types] ) +   \
+                                      '>',                                    \
+                                  Tags } ),                                   \
+                          index++ )... }; /* NOLINT */                        \
+                }                                                             \
+            };                                                                \
+            static int INTERNAL_CATCH_UNIQUE_NAME( globalRegistrar ) = []() { \
+                using TestInit = typename create<                             \
+                    TestName,                                                 \
+                    decltype( get_wrapper<INTERNAL_CATCH_REMOVE_PARENS(       \
+                                  TmplTypes )>() ),                           \
+                    TypeList<INTERNAL_CATCH_MAKE_TYPE_LISTS_FROM_TYPES(       \
+                        INTERNAL_CATCH_REMOVE_PARENS( TypesList ) )>>::type;  \
+                TestInit t;                                                   \
+                t.reg_tests();                                                \
+                return 0;                                                     \
+            }();                                                              \
+        }                                                                     \
+    }                                                                         \
+    CATCH_INTERNAL_STOP_WARNINGS_SUPPRESSION                                  \
+    template <typename TestType> static void TestFuncName()
 
 #ifndef CATCH_CONFIG_TRADITIONAL_MSVC_PREPROCESSOR
     #define INTERNAL_CATCH_TEMPLATE_PRODUCT_TEST_CASE(Name, Tags, ...)\
@@ -6261,67 +6424,99 @@ struct AutoReg : Detail::NonCopyable {
         INTERNAL_CATCH_EXPAND_VARGS( INTERNAL_CATCH_TEMPLATE_PRODUCT_TEST_CASE2( INTERNAL_CATCH_UNIQUE_NAME( CATCH2_INTERNAL_TEMPLATE_TEST_ ), INTERNAL_CATCH_UNIQUE_NAME( CATCH2_INTERNAL_TEMPLATE_TEST_ ), Name, Tags, Signature, __VA_ARGS__ ) )
 #endif
 
-    #define INTERNAL_CATCH_TEMPLATE_LIST_TEST_CASE_2(TestName, TestFunc, Name, Tags, TmplList)\
-        CATCH_INTERNAL_START_WARNINGS_SUPPRESSION \
-        CATCH_INTERNAL_SUPPRESS_GLOBALS_WARNINGS \
-        CATCH_INTERNAL_SUPPRESS_UNUSED_TEMPLATE_WARNINGS \
-        CATCH_INTERNAL_SUPPRESS_UNUSED_VARIABLE_WARNINGS \
-        template<typename TestType> static void TestFunc();       \
-        namespace {\
-        namespace INTERNAL_CATCH_MAKE_NAMESPACE(TestName){\
-        INTERNAL_CATCH_TYPE_GEN\
-        template<typename... Types>                               \
-        struct TestName {                                         \
-            void reg_tests() {                                          \
-                size_t index = 0;                                    \
-                using expander = size_t[];                           \
-                (void)expander{(Catch::AutoReg( Catch::makeTestInvoker( &TestFunc<Types> ), CATCH_INTERNAL_LINEINFO, Catch::StringRef(), Catch::NameAndTags{ Name " - " + std::string(INTERNAL_CATCH_STRINGIZE(TmplList)) + " - " + std::to_string(index), Tags } ), index++)... };/* NOLINT */\
-            }                                                     \
-        };\
-        static int INTERNAL_CATCH_UNIQUE_NAME( globalRegistrar ) = [](){ \
-                using TestInit = typename convert<TestName, TmplList>::type; \
-                TestInit t;                                           \
-                t.reg_tests();                                        \
-                return 0;                                             \
-            }();                                                      \
-        }}\
-        CATCH_INTERNAL_STOP_WARNINGS_SUPPRESSION                       \
-        template<typename TestType>                                   \
-        static void TestFunc()
+#define INTERNAL_CATCH_TEMPLATE_LIST_TEST_CASE_2(                             \
+    TestName, TestFunc, Name, Tags, TmplList )                                \
+    CATCH_INTERNAL_START_WARNINGS_SUPPRESSION                                 \
+    CATCH_INTERNAL_SUPPRESS_GLOBALS_WARNINGS                                  \
+    CATCH_INTERNAL_SUPPRESS_UNUSED_TEMPLATE_WARNINGS                          \
+    CATCH_INTERNAL_SUPPRESS_UNUSED_VARIABLE_WARNINGS                          \
+    template <typename TestType> static void TestFunc();                      \
+    namespace {                                                               \
+        namespace INTERNAL_CATCH_MAKE_NAMESPACE( TestName ) {                 \
+            INTERNAL_CATCH_TYPE_GEN                                           \
+            template <typename... Types> struct CATCH_DLL_PUBLIC TestName {   \
+                void reg_tests() {                                            \
+                    size_t index = 0;                                         \
+                    using expander = size_t[];                                \
+                    (void)expander{                                           \
+                        ( Catch::AutoReg(                                     \
+                              Catch::makeTestInvoker( &TestFunc<Types> ),     \
+                              CATCH_INTERNAL_LINEINFO,                        \
+                              Catch::StringRef(),                             \
+                              Catch::NameAndTags{                             \
+                                  Name " - " +                                \
+                                      std::string( INTERNAL_CATCH_STRINGIZE(  \
+                                          TmplList ) ) +                      \
+                                      " - " + std::to_string( index ),        \
+                                  Tags } ),                                   \
+                          index++ )... }; /* NOLINT */                        \
+                }                                                             \
+            };                                                                \
+            static int INTERNAL_CATCH_UNIQUE_NAME( globalRegistrar ) = []() { \
+                using TestInit = typename convert<TestName, TmplList>::type;  \
+                TestInit t;                                                   \
+                t.reg_tests();                                                \
+                return 0;                                                     \
+            }();                                                              \
+        }                                                                     \
+    }                                                                         \
+    CATCH_INTERNAL_STOP_WARNINGS_SUPPRESSION                                  \
+    template <typename TestType> static void TestFunc()
 
-    #define INTERNAL_CATCH_TEMPLATE_LIST_TEST_CASE(Name, Tags, TmplList) \
-        INTERNAL_CATCH_TEMPLATE_LIST_TEST_CASE_2( INTERNAL_CATCH_UNIQUE_NAME( CATCH2_INTERNAL_TEMPLATE_TEST_ ), INTERNAL_CATCH_UNIQUE_NAME( CATCH2_INTERNAL_TEMPLATE_TEST_ ), Name, Tags, TmplList )
+#define INTERNAL_CATCH_TEMPLATE_LIST_TEST_CASE( Name, Tags, TmplList ) \
+    INTERNAL_CATCH_TEMPLATE_LIST_TEST_CASE_2(                          \
+        INTERNAL_CATCH_UNIQUE_NAME( CATCH2_INTERNAL_TEMPLATE_TEST_ ),  \
+        INTERNAL_CATCH_UNIQUE_NAME( CATCH2_INTERNAL_TEMPLATE_TEST_ ),  \
+        Name,                                                          \
+        Tags,                                                          \
+        TmplList )
 
-
-    #define INTERNAL_CATCH_TEMPLATE_TEST_CASE_METHOD_2( TestNameClass, TestName, ClassName, Name, Tags, Signature, ... ) \
-        CATCH_INTERNAL_START_WARNINGS_SUPPRESSION \
-        CATCH_INTERNAL_SUPPRESS_GLOBALS_WARNINGS \
-        CATCH_INTERNAL_SUPPRESS_ZERO_VARIADIC_WARNINGS \
-        CATCH_INTERNAL_SUPPRESS_UNUSED_TEMPLATE_WARNINGS \
-        CATCH_INTERNAL_SUPPRESS_UNUSED_VARIABLE_WARNINGS \
-        namespace {\
-        namespace INTERNAL_CATCH_MAKE_NAMESPACE(TestName){ \
-            INTERNAL_CATCH_TYPE_GEN\
-            INTERNAL_CATCH_NTTP_GEN(INTERNAL_CATCH_REMOVE_PARENS(Signature))\
-            INTERNAL_CATCH_DECLARE_SIG_TEST_METHOD(TestName, ClassName, INTERNAL_CATCH_REMOVE_PARENS(Signature));\
-            INTERNAL_CATCH_NTTP_REG_METHOD_GEN(TestName, INTERNAL_CATCH_REMOVE_PARENS(Signature))\
-            template<typename...Types> \
-            struct TestNameClass{\
-                TestNameClass(){\
-                    size_t index = 0;                                    \
-                    constexpr char const* tmpl_types[] = {CATCH_REC_LIST(INTERNAL_CATCH_STRINGIZE_WITHOUT_PARENS, __VA_ARGS__)};\
-                    using expander = size_t[];\
-                    (void)expander{(reg_test(Types{}, #ClassName, Catch::NameAndTags{ Name " - " + std::string(tmpl_types[index]), Tags } ), index++)... };/* NOLINT */ \
-                }\
-            };\
-            static int INTERNAL_CATCH_UNIQUE_NAME( globalRegistrar ) = [](){\
-                TestNameClass<INTERNAL_CATCH_MAKE_TYPE_LISTS_FROM_TYPES(__VA_ARGS__)>();\
-                return 0;\
-        }();\
-        }\
-        }\
-        CATCH_INTERNAL_STOP_WARNINGS_SUPPRESSION \
-        INTERNAL_CATCH_DEFINE_SIG_TEST_METHOD(TestName, INTERNAL_CATCH_REMOVE_PARENS(Signature))
+#define INTERNAL_CATCH_TEMPLATE_TEST_CASE_METHOD_2(                           \
+    TestNameClass, TestName, ClassName, Name, Tags, Signature, ... )          \
+    CATCH_INTERNAL_START_WARNINGS_SUPPRESSION                                 \
+    CATCH_INTERNAL_SUPPRESS_GLOBALS_WARNINGS                                  \
+    CATCH_INTERNAL_SUPPRESS_ZERO_VARIADIC_WARNINGS                            \
+    CATCH_INTERNAL_SUPPRESS_UNUSED_TEMPLATE_WARNINGS                          \
+    CATCH_INTERNAL_SUPPRESS_UNUSED_VARIABLE_WARNINGS                          \
+    namespace {                                                               \
+        namespace INTERNAL_CATCH_MAKE_NAMESPACE( TestName ) {                 \
+            INTERNAL_CATCH_TYPE_GEN                                           \
+            INTERNAL_CATCH_NTTP_GEN(                                          \
+                INTERNAL_CATCH_REMOVE_PARENS( Signature ) )                   \
+            INTERNAL_CATCH_DECLARE_SIG_TEST_METHOD(                           \
+                TestName,                                                     \
+                ClassName,                                                    \
+                INTERNAL_CATCH_REMOVE_PARENS( Signature ) );                  \
+            INTERNAL_CATCH_NTTP_REG_METHOD_GEN(                               \
+                TestName, INTERNAL_CATCH_REMOVE_PARENS( Signature ) )         \
+            template <typename... Types>                                      \
+            struct CATCH_DLL_PUBLIC TestNameClass {                           \
+                TestNameClass() {                                             \
+                    size_t index = 0;                                         \
+                    constexpr char const* tmpl_types[] = { CATCH_REC_LIST(    \
+                        INTERNAL_CATCH_STRINGIZE_WITHOUT_PARENS,              \
+                        __VA_ARGS__ ) };                                      \
+                    using expander = size_t[];                                \
+                    (void)expander{                                           \
+                        ( reg_test( Types{},                                  \
+                                    #ClassName,                               \
+                                    Catch::NameAndTags{                       \
+                                        Name " - " +                          \
+                                            std::string( tmpl_types[index] ), \
+                                        Tags } ),                             \
+                          index++ )... }; /* NOLINT */                        \
+                }                                                             \
+            };                                                                \
+            static int INTERNAL_CATCH_UNIQUE_NAME( globalRegistrar ) = []() { \
+                TestNameClass<INTERNAL_CATCH_MAKE_TYPE_LISTS_FROM_TYPES(      \
+                    __VA_ARGS__ )>();                                         \
+                return 0;                                                     \
+            }();                                                              \
+        }                                                                     \
+    }                                                                         \
+    CATCH_INTERNAL_STOP_WARNINGS_SUPPRESSION                                  \
+    INTERNAL_CATCH_DEFINE_SIG_TEST_METHOD(                                    \
+        TestName, INTERNAL_CATCH_REMOVE_PARENS( Signature ) )
 
 #ifndef CATCH_CONFIG_TRADITIONAL_MSVC_PREPROCESSOR
     #define INTERNAL_CATCH_TEMPLATE_TEST_CASE_METHOD( ClassName, Name, Tags,... ) \
@@ -6339,42 +6534,74 @@ struct AutoReg : Detail::NonCopyable {
         INTERNAL_CATCH_EXPAND_VARGS( INTERNAL_CATCH_TEMPLATE_TEST_CASE_METHOD_2( INTERNAL_CATCH_UNIQUE_NAME( CATCH2_INTERNAL_TEMPLATE_TEST_CLASS_ ), INTERNAL_CATCH_UNIQUE_NAME( CATCH2_INTERNAL_TEMPLATE_TEST_ ) , ClassName, Name, Tags, Signature, __VA_ARGS__ ) )
 #endif
 
-    #define INTERNAL_CATCH_TEMPLATE_PRODUCT_TEST_CASE_METHOD_2(TestNameClass, TestName, ClassName, Name, Tags, Signature, TmplTypes, TypesList)\
-        CATCH_INTERNAL_START_WARNINGS_SUPPRESSION \
-        CATCH_INTERNAL_SUPPRESS_GLOBALS_WARNINGS \
-        CATCH_INTERNAL_SUPPRESS_ZERO_VARIADIC_WARNINGS \
-        CATCH_INTERNAL_SUPPRESS_UNUSED_TEMPLATE_WARNINGS \
-        CATCH_INTERNAL_SUPPRESS_UNUSED_VARIABLE_WARNINGS \
-        template<typename TestType> \
-            struct TestName : INTERNAL_CATCH_REMOVE_PARENS(ClassName <TestType>) { \
-                void test();\
-            };\
-        namespace {\
-        namespace INTERNAL_CATCH_MAKE_NAMESPACE(TestNameClass) {\
-            INTERNAL_CATCH_TYPE_GEN                  \
-            INTERNAL_CATCH_NTTP_GEN(INTERNAL_CATCH_REMOVE_PARENS(Signature))\
-            template<typename...Types>\
-            struct TestNameClass{\
-                void reg_tests(){\
-                    std::size_t index = 0;\
-                    using expander = std::size_t[];\
-                    constexpr char const* tmpl_types[] = {CATCH_REC_LIST(INTERNAL_CATCH_STRINGIZE_WITHOUT_PARENS, INTERNAL_CATCH_REMOVE_PARENS(TmplTypes))};\
-                    constexpr char const* types_list[] = {CATCH_REC_LIST(INTERNAL_CATCH_STRINGIZE_WITHOUT_PARENS, INTERNAL_CATCH_REMOVE_PARENS(TypesList))};\
-                    constexpr auto num_types = sizeof(types_list) / sizeof(types_list[0]);\
-                    (void)expander{(Catch::AutoReg( Catch::makeTestInvoker( &TestName<Types>::test ), CATCH_INTERNAL_LINEINFO, #ClassName, Catch::NameAndTags{ Name " - " + std::string(tmpl_types[index / num_types]) + '<' + std::string(types_list[index % num_types]) + '>', Tags } ), index++)... };/* NOLINT */ \
-                }\
-            };\
-            static int INTERNAL_CATCH_UNIQUE_NAME( globalRegistrar ) = [](){\
-                using TestInit = typename create<TestNameClass, decltype(get_wrapper<INTERNAL_CATCH_REMOVE_PARENS(TmplTypes)>()), TypeList<INTERNAL_CATCH_MAKE_TYPE_LISTS_FROM_TYPES(INTERNAL_CATCH_REMOVE_PARENS(TypesList))>>::type;\
-                TestInit t;\
-                t.reg_tests();\
-                return 0;\
-            }(); \
-        }\
-        }\
-        CATCH_INTERNAL_STOP_WARNINGS_SUPPRESSION \
-        template<typename TestType> \
-        void TestName<TestType>::test()
+#define INTERNAL_CATCH_TEMPLATE_PRODUCT_TEST_CASE_METHOD_2( TestNameClass,    \
+                                                            TestName,         \
+                                                            ClassName,        \
+                                                            Name,             \
+                                                            Tags,             \
+                                                            Signature,        \
+                                                            TmplTypes,        \
+                                                            TypesList )       \
+    CATCH_INTERNAL_START_WARNINGS_SUPPRESSION                                 \
+    CATCH_INTERNAL_SUPPRESS_GLOBALS_WARNINGS                                  \
+    CATCH_INTERNAL_SUPPRESS_ZERO_VARIADIC_WARNINGS                            \
+    CATCH_INTERNAL_SUPPRESS_UNUSED_TEMPLATE_WARNINGS                          \
+    CATCH_INTERNAL_SUPPRESS_UNUSED_VARIABLE_WARNINGS                          \
+    template <typename TestType>                                              \
+    struct CATCH_DLL_PUBLIC TestName                                          \
+        : INTERNAL_CATCH_REMOVE_PARENS( ClassName<TestType> ) {               \
+        void test();                                                          \
+    };                                                                        \
+    namespace {                                                               \
+        namespace INTERNAL_CATCH_MAKE_NAMESPACE( TestNameClass ) {            \
+            INTERNAL_CATCH_TYPE_GEN                                           \
+            INTERNAL_CATCH_NTTP_GEN(                                          \
+                INTERNAL_CATCH_REMOVE_PARENS( Signature ) )                   \
+            template <typename... Types>                                      \
+            struct CATCH_DLL_PUBLIC TestNameClass {                           \
+                void reg_tests() {                                            \
+                    std::size_t index = 0;                                    \
+                    using expander = std::size_t[];                           \
+                    constexpr char const* tmpl_types[] = { CATCH_REC_LIST(    \
+                        INTERNAL_CATCH_STRINGIZE_WITHOUT_PARENS,              \
+                        INTERNAL_CATCH_REMOVE_PARENS( TmplTypes ) ) };        \
+                    constexpr char const* types_list[] = { CATCH_REC_LIST(    \
+                        INTERNAL_CATCH_STRINGIZE_WITHOUT_PARENS,              \
+                        INTERNAL_CATCH_REMOVE_PARENS( TypesList ) ) };        \
+                    constexpr auto num_types =                                \
+                        sizeof( types_list ) / sizeof( types_list[0] );       \
+                    (void)expander{ (                                         \
+                        Catch::AutoReg(                                       \
+                            Catch::makeTestInvoker( &TestName<Types>::test ), \
+                            CATCH_INTERNAL_LINEINFO,                          \
+                            #ClassName,                                       \
+                            Catch::NameAndTags{                               \
+                                Name " - " +                                  \
+                                    std::string(                              \
+                                        tmpl_types[index / num_types] ) +     \
+                                    '<' +                                     \
+                                    std::string(                              \
+                                        types_list[index % num_types] ) +     \
+                                    '>',                                      \
+                                Tags } ),                                     \
+                        index++ )... }; /* NOLINT */                          \
+                }                                                             \
+            };                                                                \
+            static int INTERNAL_CATCH_UNIQUE_NAME( globalRegistrar ) = []() { \
+                using TestInit = typename create<                             \
+                    TestNameClass,                                            \
+                    decltype( get_wrapper<INTERNAL_CATCH_REMOVE_PARENS(       \
+                                  TmplTypes )>() ),                           \
+                    TypeList<INTERNAL_CATCH_MAKE_TYPE_LISTS_FROM_TYPES(       \
+                        INTERNAL_CATCH_REMOVE_PARENS( TypesList ) )>>::type;  \
+                TestInit t;                                                   \
+                t.reg_tests();                                                \
+                return 0;                                                     \
+            }();                                                              \
+        }                                                                     \
+    }                                                                         \
+    CATCH_INTERNAL_STOP_WARNINGS_SUPPRESSION                                  \
+    template <typename TestType> void TestName<TestType>::test()
 
 #ifndef CATCH_CONFIG_TRADITIONAL_MSVC_PREPROCESSOR
     #define INTERNAL_CATCH_TEMPLATE_PRODUCT_TEST_CASE_METHOD( ClassName, Name, Tags, ... )\
@@ -6392,36 +6619,50 @@ struct AutoReg : Detail::NonCopyable {
         INTERNAL_CATCH_EXPAND_VARGS( INTERNAL_CATCH_TEMPLATE_PRODUCT_TEST_CASE_METHOD_2( INTERNAL_CATCH_UNIQUE_NAME( CATCH2_INTERNAL_TEMPLATE_TEST_ ), INTERNAL_CATCH_UNIQUE_NAME( CATCH2_INTERNAL_TEMPLATE_TEST_ ), ClassName, Name, Tags, Signature,__VA_ARGS__ ) )
 #endif
 
-    #define INTERNAL_CATCH_TEMPLATE_LIST_TEST_CASE_METHOD_2( TestNameClass, TestName, ClassName, Name, Tags, TmplList) \
-        CATCH_INTERNAL_START_WARNINGS_SUPPRESSION \
-        CATCH_INTERNAL_SUPPRESS_GLOBALS_WARNINGS \
-        CATCH_INTERNAL_SUPPRESS_UNUSED_TEMPLATE_WARNINGS \
-        CATCH_INTERNAL_SUPPRESS_UNUSED_VARIABLE_WARNINGS \
-        template<typename TestType> \
-        struct TestName : INTERNAL_CATCH_REMOVE_PARENS(ClassName <TestType>) { \
-            void test();\
-        };\
-        namespace {\
-        namespace INTERNAL_CATCH_MAKE_NAMESPACE(TestName){ \
-            INTERNAL_CATCH_TYPE_GEN\
-            template<typename...Types>\
-            struct TestNameClass{\
-                void reg_tests(){\
-                    size_t index = 0;\
-                    using expander = size_t[];\
-                    (void)expander{(Catch::AutoReg( Catch::makeTestInvoker( &TestName<Types>::test ), CATCH_INTERNAL_LINEINFO, #ClassName, Catch::NameAndTags{ Name " - " + std::string(INTERNAL_CATCH_STRINGIZE(TmplList)) + " - " + std::to_string(index), Tags } ), index++)... };/* NOLINT */ \
-                }\
-            };\
-            static int INTERNAL_CATCH_UNIQUE_NAME( globalRegistrar ) = [](){\
-                using TestInit = typename convert<TestNameClass, TmplList>::type;\
-                TestInit t;\
-                t.reg_tests();\
-                return 0;\
-            }(); \
-        }}\
-        CATCH_INTERNAL_STOP_WARNINGS_SUPPRESSION \
-        template<typename TestType> \
-        void TestName<TestType>::test()
+#define INTERNAL_CATCH_TEMPLATE_LIST_TEST_CASE_METHOD_2(                      \
+    TestNameClass, TestName, ClassName, Name, Tags, TmplList )                \
+    CATCH_INTERNAL_START_WARNINGS_SUPPRESSION                                 \
+    CATCH_INTERNAL_SUPPRESS_GLOBALS_WARNINGS                                  \
+    CATCH_INTERNAL_SUPPRESS_UNUSED_TEMPLATE_WARNINGS                          \
+    CATCH_INTERNAL_SUPPRESS_UNUSED_VARIABLE_WARNINGS                          \
+    template <typename TestType>                                              \
+    struct CATCH_DLL_PUBLIC TestName                                          \
+        : INTERNAL_CATCH_REMOVE_PARENS( ClassName<TestType> ) {               \
+        void test();                                                          \
+    };                                                                        \
+    namespace {                                                               \
+        namespace INTERNAL_CATCH_MAKE_NAMESPACE( TestName ) {                 \
+            INTERNAL_CATCH_TYPE_GEN                                           \
+            template <typename... Types>                                      \
+            struct CATCH_DLL_PUBLIC TestNameClass {                           \
+                void reg_tests() {                                            \
+                    size_t index = 0;                                         \
+                    using expander = size_t[];                                \
+                    (void)expander{ (                                         \
+                        Catch::AutoReg(                                       \
+                            Catch::makeTestInvoker( &TestName<Types>::test ), \
+                            CATCH_INTERNAL_LINEINFO,                          \
+                            #ClassName,                                       \
+                            Catch::NameAndTags{                               \
+                                Name " - " +                                  \
+                                    std::string( INTERNAL_CATCH_STRINGIZE(    \
+                                        TmplList ) ) +                        \
+                                    " - " + std::to_string( index ),          \
+                                Tags } ),                                     \
+                        index++ )... }; /* NOLINT */                          \
+                }                                                             \
+            };                                                                \
+            static int INTERNAL_CATCH_UNIQUE_NAME( globalRegistrar ) = []() { \
+                using TestInit =                                              \
+                    typename convert<TestNameClass, TmplList>::type;          \
+                TestInit t;                                                   \
+                t.reg_tests();                                                \
+                return 0;                                                     \
+            }();                                                              \
+        }                                                                     \
+    }                                                                         \
+    CATCH_INTERNAL_STOP_WARNINGS_SUPPRESSION                                  \
+    template <typename TestType> void TestName<TestType>::test()
 
 #define INTERNAL_CATCH_TEMPLATE_LIST_TEST_CASE_METHOD(ClassName, Name, Tags, TmplList) \
         INTERNAL_CATCH_TEMPLATE_LIST_TEST_CASE_METHOD_2( INTERNAL_CATCH_UNIQUE_NAME( CATCH2_INTERNAL_TEMPLATE_TEST_ ), INTERNAL_CATCH_UNIQUE_NAME( CATCH2_INTERNAL_TEMPLATE_TEST_ ), ClassName, Name, Tags, TmplList )
@@ -6535,8 +6776,6 @@ struct AutoReg : Detail::NonCopyable {
 #ifndef CATCH_TEST_CASE_INFO_HPP_INCLUDED
 #define CATCH_TEST_CASE_INFO_HPP_INCLUDED
 
-
-
 #include <string>
 #include <vector>
 
@@ -6554,19 +6793,21 @@ namespace Catch {
      * not a part of tag's representation, so e.g. "[cool-tag]" is represented
      * as "cool-tag" internally.
      */
-    struct Tag {
+    struct CATCH_DLL_PUBLIC Tag {
         constexpr Tag(StringRef original_):
             original(original_)
         {}
         StringRef original;
 
-        friend bool operator< ( Tag const& lhs, Tag const& rhs );
-        friend bool operator==( Tag const& lhs, Tag const& rhs );
+        CATCH_DLL_PUBLIC friend bool operator<( Tag const& lhs,
+                                                Tag const& rhs );
+        CATCH_DLL_PUBLIC friend bool operator==( Tag const& lhs,
+                                                 Tag const& rhs );
     };
 
     struct ITestInvoker;
 
-    enum class TestCaseProperties : uint8_t {
+    enum class CATCH_DLL_PUBLIC TestCaseProperties : uint8_t {
         None = 0,
         IsHidden = 1 << 1,
         ShouldFail = 1 << 2,
@@ -6585,7 +6826,7 @@ namespace Catch {
      *
      * Tags are kept sorted.
      */
-    struct TestCaseInfo : Detail::NonCopyable {
+    struct CATCH_DLL_PUBLIC TestCaseInfo : Detail::NonCopyable {
 
         TestCaseInfo(StringRef _className,
                      NameAndTags const& _tags,
@@ -6625,7 +6866,7 @@ namespace Catch {
      * Does not own either, and is specifically made to be cheap
      * to copy around.
      */
-    class TestCaseHandle {
+    class CATCH_DLL_PUBLIC TestCaseHandle {
         TestCaseInfo* m_info;
         ITestInvoker* m_invoker;
     public:
@@ -6639,7 +6880,7 @@ namespace Catch {
         TestCaseInfo const& getTestCaseInfo() const;
     };
 
-    Detail::unique_ptr<TestCaseInfo>
+    CATCH_DLL_PUBLIC Detail::unique_ptr<TestCaseInfo>
     makeTestCaseInfo( StringRef className,
                       NameAndTags const& nameAndTags,
                       SourceLineInfo const& lineInfo );
@@ -6660,7 +6901,6 @@ namespace Catch {
 #ifndef CATCH_INTERFACES_EXCEPTION_HPP_INCLUDED
 #define CATCH_INTERFACES_EXCEPTION_HPP_INCLUDED
 
-
 #include <string>
 #include <vector>
 
@@ -6670,12 +6910,12 @@ namespace Catch {
     struct IExceptionTranslator;
     using ExceptionTranslators = std::vector<Detail::unique_ptr<IExceptionTranslator const>>;
 
-    struct IExceptionTranslator {
+    struct CATCH_DLL_PUBLIC IExceptionTranslator {
         virtual ~IExceptionTranslator(); // = default
         virtual std::string translate( ExceptionTranslators::const_iterator it, ExceptionTranslators::const_iterator itEnd ) const = 0;
     };
 
-    struct IExceptionTranslatorRegistry {
+    struct CATCH_DLL_PUBLIC IExceptionTranslatorRegistry {
         virtual ~IExceptionTranslatorRegistry(); // = default
 
         virtual std::string translateActiveException() const = 0;
@@ -6684,14 +6924,14 @@ namespace Catch {
 } // namespace Catch
 
 #endif // CATCH_INTERFACES_EXCEPTION_HPP_INCLUDED
-
 #include <exception>
 
 namespace Catch {
 
-    class ExceptionTranslatorRegistrar {
-        template<typename T>
-        class ExceptionTranslator : public IExceptionTranslator {
+    class CATCH_DLL_PUBLIC ExceptionTranslatorRegistrar {
+        template <typename T>
+        class CATCH_DLL_PUBLIC ExceptionTranslator
+            : public IExceptionTranslator {
         public:
 
             ExceptionTranslator( std::string(*translateFunction)( T const& ) )
@@ -6764,7 +7004,7 @@ namespace Catch {
 namespace Catch {
 
     // Versioning information
-    struct Version {
+    struct CATCH_DLL_PUBLIC Version {
         Version( Version const& ) = delete;
         Version& operator=( Version const& ) = delete;
         Version(    unsigned int _majorVersion,
@@ -6781,7 +7021,8 @@ namespace Catch {
         char const * const branchName;
         unsigned int const buildNumber;
 
-        friend std::ostream& operator << ( std::ostream& os, Version const& version );
+        CATCH_DLL_PUBLIC friend std::ostream&
+        operator<<( std::ostream& os, Version const& version );
     };
 
     Version const& libraryVersion();
@@ -6828,7 +7069,7 @@ namespace Catch {
     // Exception type to be thrown when a Generator runs into an error,
     // e.g. it cannot initialize the first return value based on
     // runtime information
-    class GeneratorException : public std::exception {
+    class CATCH_DLL_PUBLIC GeneratorException : public std::exception {
         const char* const m_msg = "";
 
     public:
@@ -6856,7 +7097,7 @@ namespace Catch {
 namespace Catch {
 
     namespace Generators {
-        class GeneratorUntypedBase {
+        class CATCH_DLL_PUBLIC GeneratorUntypedBase {
         public:
             GeneratorUntypedBase() = default;
             // Generation of copy ops is deprecated (and Clang will complain)
@@ -6876,7 +7117,7 @@ namespace Catch {
 
     } // namespace Generators
 
-    struct IGeneratorTracker {
+    struct CATCH_DLL_PUBLIC IGeneratorTracker {
         virtual ~IGeneratorTracker(); // = default;
         virtual auto hasGenerator() const -> bool = 0;
         virtual auto getGenerator() const -> Generators::GeneratorBasePtr const& = 0;
@@ -6886,9 +7127,8 @@ namespace Catch {
 } // namespace Catch
 
 #endif // CATCH_INTERFACES_GENERATORTRACKER_HPP_INCLUDED
-
-#include <vector>
 #include <tuple>
+#include <vector>
 
 namespace Catch {
 
@@ -6897,32 +7137,30 @@ namespace Generators {
 namespace Detail {
 
     //! Throws GeneratorException with the provided message
-    [[noreturn]]
-    void throw_generator_exception(char const * msg);
+    [[noreturn]] void CATCH_DLL_PUBLIC
+    throw_generator_exception( char const* msg );
 
 } // end namespace detail
 
-    template<typename T>
-    struct IGenerator : GeneratorUntypedBase {
-        ~IGenerator() override = default;
-        IGenerator() = default;
-        IGenerator(IGenerator const&) = default;
-        IGenerator& operator=(IGenerator const&) = default;
+template <typename T>
+struct CATCH_DLL_PUBLIC IGenerator : GeneratorUntypedBase {
+    ~IGenerator() override = default;
+    IGenerator() = default;
+    IGenerator( IGenerator const& ) = default;
+    IGenerator& operator=( IGenerator const& ) = default;
 
-
-        // Returns the current element of the generator
-        //
-        // \Precondition The generator is either freshly constructed,
-        // or the last call to `next()` returned true
-        virtual T const& get() const = 0;
-        using type = T;
-    };
+    // Returns the current element of the generator
+    //
+    // \Precondition The generator is either freshly constructed,
+    // or the last call to `next()` returned true
+    virtual T const& get() const = 0;
+    using type = T;
+};
 
     template <typename T>
     using GeneratorPtr = Catch::Detail::unique_ptr<IGenerator<T>>;
 
-    template <typename T>
-    class GeneratorWrapper final {
+    template <typename T> class CATCH_DLL_PUBLIC GeneratorWrapper final {
         GeneratorPtr<T> m_generator;
     public:
         //! Takes ownership of the passed pointer.
@@ -6939,9 +7177,8 @@ namespace Detail {
         }
     };
 
-
-    template<typename T>
-    class SingleValueGenerator final : public IGenerator<T> {
+    template <typename T>
+    class CATCH_DLL_PUBLIC SingleValueGenerator final : public IGenerator<T> {
         T m_value;
     public:
         SingleValueGenerator(T const& value) :
@@ -6959,8 +7196,8 @@ namespace Detail {
         }
     };
 
-    template<typename T>
-    class FixedValuesGenerator final : public IGenerator<T> {
+    template <typename T>
+    class CATCH_DLL_PUBLIC FixedValuesGenerator final : public IGenerator<T> {
         static_assert(!std::is_same<T, bool>::value,
             "FixedValuesGenerator does not support bools because of std::vector<bool>"
             "specialization, use SingleValue Generator instead.");
@@ -6989,8 +7226,8 @@ namespace Detail {
         return GeneratorWrapper<T>(Catch::Detail::make_unique<FixedValuesGenerator<T>>(values));
     }
 
-    template<typename T>
-    class Generators : public IGenerator<T> {
+    template <typename T>
+    class CATCH_DLL_PUBLIC Generators : public IGenerator<T> {
         std::vector<GeneratorWrapper<T>> m_generators;
         size_t m_current = 0;
 
@@ -7042,7 +7279,6 @@ namespace Detail {
         }
     };
 
-
     template <typename... Ts>
     GeneratorWrapper<std::tuple<std::decay_t<Ts>...>>
     table( std::initializer_list<std::tuple<std::decay_t<Ts>...>> tuples ) {
@@ -7050,8 +7286,7 @@ namespace Detail {
     }
 
     // Tag type to signal that a generator sequence should convert arguments to a specific type
-    template <typename T>
-    struct as {};
+    template <typename T> struct CATCH_DLL_PUBLIC as {};
 
     template<typename T, typename... Gs>
     auto makeGenerators( GeneratorWrapper<T>&& generator, Gs &&... moreGenerators ) -> Generators<T> {
@@ -7070,7 +7305,9 @@ namespace Detail {
         return makeGenerators( value( T( CATCH_FORWARD( val ) ) ), CATCH_FORWARD( moreGenerators )... );
     }
 
-    auto acquireGeneratorTracker( StringRef generatorName, SourceLineInfo const& lineInfo ) -> IGeneratorTracker&;
+    auto CATCH_DLL_PUBLIC acquireGeneratorTracker(
+        StringRef generatorName, SourceLineInfo const& lineInfo )
+        -> IGeneratorTracker&;
 
     template<typename L>
     // Note: The type after -> is weird, because VS2015 cannot parse
@@ -7110,14 +7347,13 @@ namespace Detail {
 #ifndef CATCH_GENERATORS_ADAPTERS_HPP_INCLUDED
 #define CATCH_GENERATORS_ADAPTERS_HPP_INCLUDED
 
-
 #include <cassert>
 
 namespace Catch {
 namespace Generators {
 
     template <typename T>
-    class TakeGenerator final : public IGenerator<T> {
+    class CATCH_DLL_PUBLIC TakeGenerator final : public IGenerator<T> {
         GeneratorWrapper<T> m_generator;
         size_t m_returned = 0;
         size_t m_target;
@@ -7152,9 +7388,8 @@ namespace Generators {
         return GeneratorWrapper<T>(Catch::Detail::make_unique<TakeGenerator<T>>(target, CATCH_MOVE(generator)));
     }
 
-
     template <typename T, typename Predicate>
-    class FilterGenerator final : public IGenerator<T> {
+    class CATCH_DLL_PUBLIC FilterGenerator final : public IGenerator<T> {
         GeneratorWrapper<T> m_generator;
         Predicate m_predicate;
     public:
@@ -7187,14 +7422,13 @@ namespace Generators {
         }
     };
 
-
     template <typename T, typename Predicate>
     GeneratorWrapper<T> filter(Predicate&& pred, GeneratorWrapper<T>&& generator) {
         return GeneratorWrapper<T>(Catch::Detail::make_unique<FilterGenerator<T, Predicate>>(CATCH_FORWARD(pred), CATCH_MOVE(generator)));
     }
 
     template <typename T>
-    class RepeatGenerator final : public IGenerator<T> {
+    class CATCH_DLL_PUBLIC RepeatGenerator final : public IGenerator<T> {
         static_assert(!std::is_same<T, bool>::value,
             "RepeatGenerator currently does not support bools"
             "because of std::vector<bool> specialization");
@@ -7250,7 +7484,7 @@ namespace Generators {
     }
 
     template <typename T, typename U, typename Func>
-    class MapGenerator final : public IGenerator<T> {
+    class CATCH_DLL_PUBLIC MapGenerator final : public IGenerator<T> {
         // TBD: provide static assert for mapping function, for friendly error message
         GeneratorWrapper<U> m_generator;
         Func m_function;
@@ -7291,7 +7525,8 @@ namespace Generators {
     }
 
     template <typename T>
-    class ChunkGenerator final : public IGenerator<std::vector<T>> {
+    class CATCH_DLL_PUBLIC ChunkGenerator final
+        : public IGenerator<std::vector<T>> {
         std::vector<T> m_chunk;
         size_t m_chunk_size;
         GeneratorWrapper<T> m_generator;
@@ -7357,7 +7592,7 @@ namespace Catch {
     // does not use it, but it should behave as expected inside stdlib's
     // distributions.
     // The implementation is based on the PCG family (http://pcg-random.org)
-    class SimplePcg32 {
+    class CATCH_DLL_PUBLIC SimplePcg32 {
         using state_type = std::uint64_t;
     public:
         using result_type = std::uint32_t;
@@ -7379,8 +7614,10 @@ namespace Catch {
         result_type operator()();
 
     private:
-        friend bool operator==(SimplePcg32 const& lhs, SimplePcg32 const& rhs);
-        friend bool operator!=(SimplePcg32 const& lhs, SimplePcg32 const& rhs);
+        CATCH_DLL_PUBLIC friend bool operator==( SimplePcg32 const& lhs,
+                                                 SimplePcg32 const& rhs );
+        CATCH_DLL_PUBLIC friend bool operator!=( SimplePcg32 const& lhs,
+                                                 SimplePcg32 const& rhs );
 
         // In theory we also need operator<< and operator>>
         // In practice we do not use them, so we will skip them for now
@@ -7397,55 +7634,50 @@ namespace Catch {
 } // end namespace Catch
 
 #endif // CATCH_RANDOM_NUMBER_GENERATOR_HPP_INCLUDED
-
 #include <random>
 
 namespace Catch {
 namespace Generators {
 
-template <typename Float>
-class RandomFloatingGenerator final : public IGenerator<Float> {
-    Catch::SimplePcg32& m_rng;
-    std::uniform_real_distribution<Float> m_dist;
-    Float m_current_number;
-public:
+    template <typename Float>
+    class CATCH_DLL_PUBLIC RandomFloatingGenerator final
+        : public IGenerator<Float> {
+        Catch::SimplePcg32& m_rng;
+        std::uniform_real_distribution<Float> m_dist;
+        Float m_current_number;
 
-    RandomFloatingGenerator(Float a, Float b):
-        m_rng(rng()),
-        m_dist(a, b) {
-        static_cast<void>(next());
-    }
+    public:
+        RandomFloatingGenerator( Float a, Float b ):
+            m_rng( rng() ), m_dist( a, b ) {
+            static_cast<void>( next() );
+        }
 
-    Float const& get() const override {
-        return m_current_number;
-    }
-    bool next() override {
-        m_current_number = m_dist(m_rng);
-        return true;
-    }
-};
+        Float const& get() const override { return m_current_number; }
+        bool next() override {
+            m_current_number = m_dist( m_rng );
+            return true;
+        }
+    };
 
-template <typename Integer>
-class RandomIntegerGenerator final : public IGenerator<Integer> {
-    Catch::SimplePcg32& m_rng;
-    std::uniform_int_distribution<Integer> m_dist;
-    Integer m_current_number;
-public:
+    template <typename Integer>
+    class CATCH_DLL_PUBLIC RandomIntegerGenerator final
+        : public IGenerator<Integer> {
+        Catch::SimplePcg32& m_rng;
+        std::uniform_int_distribution<Integer> m_dist;
+        Integer m_current_number;
 
-    RandomIntegerGenerator(Integer a, Integer b):
-        m_rng(rng()),
-        m_dist(a, b) {
-        static_cast<void>(next());
-    }
+    public:
+        RandomIntegerGenerator( Integer a, Integer b ):
+            m_rng( rng() ), m_dist( a, b ) {
+            static_cast<void>( next() );
+        }
 
-    Integer const& get() const override {
-        return m_current_number;
-    }
-    bool next() override {
-        m_current_number = m_dist(m_rng);
-        return true;
-    }
-};
+        Integer const& get() const override { return m_current_number; }
+        bool next() override {
+            m_current_number = m_dist( m_rng );
+            return true;
+        }
+    };
 
 // TODO: Ideally this would be also constrained against the various char types,
 //       but I don't expect users to run into that in practice.
@@ -7478,46 +7710,44 @@ random(T a, T b) {
 #ifndef CATCH_GENERATORS_RANGE_HPP_INCLUDED
 #define CATCH_GENERATORS_RANGE_HPP_INCLUDED
 
-
 #include <iterator>
 #include <type_traits>
 
 namespace Catch {
 namespace Generators {
 
+    template <typename T>
+    class CATCH_DLL_PUBLIC RangeGenerator final : public IGenerator<T> {
+        T m_current;
+        T m_end;
+        T m_step;
+        bool m_positive;
 
-template <typename T>
-class RangeGenerator final : public IGenerator<T> {
-    T m_current;
-    T m_end;
-    T m_step;
-    bool m_positive;
+    public:
+        RangeGenerator( T const& start, T const& end, T const& step ):
+            m_current( start ),
+            m_end( end ),
+            m_step( step ),
+            m_positive( m_step > T( 0 ) ) {
+            assert( m_current != m_end &&
+                    "Range start and end cannot be equal" );
+            assert( m_step != T( 0 ) && "Step size cannot be zero" );
+            assert( ( ( m_positive && m_current <= m_end ) ||
+                      ( !m_positive && m_current >= m_end ) ) &&
+                    "Step moves away from end" );
+        }
 
-public:
-    RangeGenerator(T const& start, T const& end, T const& step):
-        m_current(start),
-        m_end(end),
-        m_step(step),
-        m_positive(m_step > T(0))
-    {
-        assert(m_current != m_end && "Range start and end cannot be equal");
-        assert(m_step != T(0) && "Step size cannot be zero");
-        assert(((m_positive && m_current <= m_end) || (!m_positive && m_current >= m_end)) && "Step moves away from end");
-    }
+        RangeGenerator( T const& start, T const& end ):
+            RangeGenerator( start, end, ( start < end ) ? T( 1 ) : T( -1 ) ) {}
 
-    RangeGenerator(T const& start, T const& end):
-        RangeGenerator(start, end, (start < end) ? T(1) : T(-1))
-    {}
+        T const& get() const override { return m_current; }
 
-    T const& get() const override {
-        return m_current;
-    }
-
-    bool next() override {
-        m_current += m_step;
-        return (m_positive) ? (m_current < m_end) : (m_current > m_end);
-    }
-};
+        bool next() override {
+            m_current += m_step;
+            return ( m_positive ) ? ( m_current < m_end )
+                                  : ( m_current > m_end );
+        }
+    };
 
 template <typename T>
 GeneratorWrapper<T> range(T const& start, T const& end, T const& step) {
@@ -7531,9 +7761,8 @@ GeneratorWrapper<T> range(T const& start, T const& end) {
     return GeneratorWrapper<T>(Catch::Detail::make_unique<RangeGenerator<T>>(start, end));
 }
 
-
 template <typename T>
-class IteratorGenerator final : public IGenerator<T> {
+class CATCH_DLL_PUBLIC IteratorGenerator final : public IGenerator<T> {
     static_assert(!std::is_same<T, bool>::value,
         "IteratorGenerator currently does not support bools"
         "because of std::vector<bool> specialization");
@@ -7603,17 +7832,16 @@ GeneratorWrapper<ResultType> from_range(Container const& cnt) {
 #ifndef CATCH_INTERFACES_REPORTER_FACTORY_HPP_INCLUDED
 #define CATCH_INTERFACES_REPORTER_FACTORY_HPP_INCLUDED
 
-
 #include <string>
 
 namespace Catch {
 
     struct ReporterConfig;
-    struct IStreamingReporter;
-    using IStreamingReporterPtr = Detail::unique_ptr<IStreamingReporter>;
+    struct IConfig;
+    class IEventListener;
+    using IStreamingReporterPtr = Detail::unique_ptr<IEventListener>;
 
-
-    struct IReporterFactory {
+    struct CATCH_DLL_PUBLIC IReporterFactory {
         virtual ~IReporterFactory(); // = default
 
         virtual IStreamingReporterPtr
@@ -7621,6 +7849,13 @@ namespace Catch {
         virtual std::string getDescription() const = 0;
     };
     using IReporterFactoryPtr = Detail::unique_ptr<IReporterFactory>;
+
+    class CATCH_DLL_PUBLIC EventListenerFactory {
+    public:
+        virtual ~EventListenerFactory(); // = default
+        virtual IStreamingReporterPtr create( IConfig const* config ) const = 0;
+        virtual std::string getDescription() const = 0;
+    };
 } // namespace Catch
 
 #endif // CATCH_INTERFACES_REPORTER_FACTORY_HPP_INCLUDED
@@ -7634,19 +7869,18 @@ namespace Catch {
 #ifndef CATCH_CASE_INSENSITIVE_COMPARISONS_HPP_INCLUDED
 #define CATCH_CASE_INSENSITIVE_COMPARISONS_HPP_INCLUDED
 
-
 #include <string>
 
 namespace Catch {
     namespace Detail {
         //! Provides case-insensitive `op<` semantics when called
-        struct CaseInsensitiveLess {
+        struct CATCH_DLL_PUBLIC CaseInsensitiveLess {
             bool operator()( StringRef lhs,
                              StringRef rhs ) const;
         };
 
         //! Provides case-insensitive `op==` semantics when called
-        struct CaseInsensitiveEqualTo {
+        struct CATCH_DLL_PUBLIC CaseInsensitiveEqualTo {
             bool operator()( StringRef lhs,
                              StringRef rhs ) const;
         };
@@ -7655,23 +7889,24 @@ namespace Catch {
 } // namespace Catch
 
 #endif // CATCH_CASE_INSENSITIVE_COMPARISONS_HPP_INCLUDED
+#include <map>
 #include <string>
 #include <vector>
-#include <map>
 
 namespace Catch {
 
     struct IConfig;
 
-    struct IStreamingReporter;
-    using IStreamingReporterPtr = Detail::unique_ptr<IStreamingReporter>;
+    class IEventListener;
+    using IStreamingReporterPtr = Detail::unique_ptr<IEventListener>;
     struct IReporterFactory;
     using IReporterFactoryPtr = Detail::unique_ptr<IReporterFactory>;
     struct ReporterConfig;
+    class EventListenerFactory;
 
-    struct IReporterRegistry {
+    struct CATCH_DLL_PUBLIC IReporterRegistry {
         using FactoryMap = std::map<std::string, IReporterFactoryPtr, Detail::CaseInsensitiveLess>;
-        using Listeners = std::vector<IReporterFactoryPtr>;
+        using Listeners = std::vector<Detail::unique_ptr<EventListenerFactory>>;
 
         virtual ~IReporterRegistry(); // = default
         virtual IStreamingReporterPtr create( std::string const& name, ReporterConfig const& config ) const = 0;
@@ -7693,7 +7928,7 @@ namespace Catch {
 
     struct TagAlias;
 
-    struct ITagAliasRegistry {
+    struct CATCH_DLL_PUBLIC ITagAliasRegistry {
         virtual ~ITagAliasRegistry(); // = default
         // Nullptr if not present
         virtual TagAlias const* find( std::string const& alias ) const = 0;
@@ -7720,6 +7955,7 @@ namespace Catch {
 
 #ifndef CATCH_CONFIG_ANDROID_LOGWRITE_HPP_INCLUDED
 #define CATCH_CONFIG_ANDROID_LOGWRITE_HPP_INCLUDED
+
 
 #if defined(__ANDROID__)
 #    define CATCH_INTERNAL_CONFIG_ANDROID_LOGWRITE
@@ -7781,7 +8017,10 @@ namespace Catch {
 
 namespace Catch {
 
-    struct Colour {
+    struct IConfig;
+    class IStream;
+
+    struct CATCH_DLL_PUBLIC Colour {
         enum Code {
             None = 0,
 
@@ -7817,22 +8056,43 @@ namespace Catch {
             SecondaryText = LightGrey,
             Headers = White
         };
-
-        // Use constructed object for RAII guard
-        Colour( Code _colourCode );
-        Colour( Colour&& other ) noexcept;
-        Colour& operator=( Colour&& other ) noexcept;
-        ~Colour();
-
-        // Use static method for one-shot changes
-        static void use( Code _colourCode );
-
-    private:
-        bool m_moved = false;
-
-        friend std::ostream& operator << (std::ostream& os, Colour const&);
     };
 
+    class CATCH_DLL_PUBLIC ColourImpl {
+    protected:
+        //! The associated stream of this ColourImpl instance
+        IStream const* m_stream;
+    public:
+        ColourImpl( IStream const* stream ): m_stream( stream ) {}
+
+        class CATCH_DLL_PUBLIC ColourGuard {
+            ColourImpl const* m_colourImpl;
+            bool m_moved = false;
+            CATCH_DLL_PUBLIC friend std::ostream&
+            operator<<( std::ostream& lhs, ColourGuard const& ) {
+                return lhs;
+            }
+
+        public:
+            ColourGuard( Colour::Code code,
+                         ColourImpl const* colour );
+            ColourGuard( ColourGuard const& rhs ) = delete;
+            ColourGuard& operator=( ColourGuard const& rhs ) = delete;
+            ColourGuard( ColourGuard&& rhs );
+            ColourGuard& operator=( ColourGuard&& rhs );
+            ~ColourGuard();
+        };
+
+        virtual ~ColourImpl(); // = default
+        ColourGuard startColour( Colour::Code colourCode );
+
+    private:
+        virtual void use( Colour::Code colourCode ) const = 0;
+    };
+
+    //! Provides ColourImpl based on global config and target compilation platform
+    CATCH_DLL_PUBLIC Detail::unique_ptr<ColourImpl>
+    makeColourImpl( IConfig const* config, IStream const* stream );
 
 } // end namespace Catch
 
@@ -7988,7 +8248,6 @@ namespace Catch {
 #ifndef CATCH_ENFORCE_HPP_INCLUDED
 #define CATCH_ENFORCE_HPP_INCLUDED
 
-
 #include <exception>
 
 namespace Catch {
@@ -8003,12 +8262,12 @@ namespace Catch {
     void throw_exception(std::exception const& e);
 #endif
 
-    [[noreturn]]
-    void throw_logic_error(std::string const& msg);
-    [[noreturn]]
-    void throw_domain_error(std::string const& msg);
-    [[noreturn]]
-    void throw_runtime_error(std::string const& msg);
+    [[noreturn]] CATCH_DLL_PUBLIC void
+    throw_logic_error( std::string const& msg );
+    [[noreturn]] CATCH_DLL_PUBLIC void
+    throw_domain_error( std::string const& msg );
+    [[noreturn]] CATCH_DLL_PUBLIC void
+    throw_runtime_error( std::string const& msg );
 
 } // namespace Catch;
 
@@ -8034,14 +8293,16 @@ namespace Catch {
 #ifndef CATCH_ENUM_VALUES_REGISTRY_HPP_INCLUDED
 #define CATCH_ENUM_VALUES_REGISTRY_HPP_INCLUDED
 
-
 #include <vector>
 
 namespace Catch {
 
     namespace Detail {
 
-        Catch::Detail::unique_ptr<EnumInfo> makeEnumInfo( StringRef enumName, StringRef allValueNames, std::vector<int> const& values );
+        CATCH_DLL_PUBLIC Catch::Detail::unique_ptr<EnumInfo>
+        makeEnumInfo( StringRef enumName,
+                      StringRef allValueNames,
+                      std::vector<int> const& values );
 
         class EnumValuesRegistry : public IMutableEnumValuesRegistry {
 
@@ -8050,7 +8311,7 @@ namespace Catch {
             EnumInfo const& registerEnum( StringRef enumName, StringRef allEnums, std::vector<int> const& values) override;
         };
 
-        std::vector<StringRef> parseEnums( StringRef enums );
+        CATCH_DLL_PUBLIC std::vector<StringRef> parseEnums( StringRef enums );
 
     } // Detail
 
@@ -8062,11 +8323,12 @@ namespace Catch {
 #ifndef CATCH_ERRNO_GUARD_HPP_INCLUDED
 #define CATCH_ERRNO_GUARD_HPP_INCLUDED
 
+
 namespace Catch {
 
     //! Simple RAII class that stores the value of `errno`
     //! at construction and restores it at destruction.
-    class ErrnoGuard {
+    class CATCH_DLL_PUBLIC ErrnoGuard {
     public:
         // Keep these outlined to avoid dragging in macros from <cerrno>
 
@@ -8075,7 +8337,6 @@ namespace Catch {
     private:
         int m_oldErrno;
     };
-
 }
 
 #endif // CATCH_ERRNO_GUARD_HPP_INCLUDED
@@ -8084,13 +8345,13 @@ namespace Catch {
 #ifndef CATCH_EXCEPTION_TRANSLATOR_REGISTRY_HPP_INCLUDED
 #define CATCH_EXCEPTION_TRANSLATOR_REGISTRY_HPP_INCLUDED
 
-
-#include <vector>
 #include <string>
+#include <vector>
 
 namespace Catch {
 
-    class ExceptionTranslatorRegistry : public IExceptionTranslatorRegistry {
+    class CATCH_DLL_PUBLIC ExceptionTranslatorRegistry
+        : public IExceptionTranslatorRegistry {
     public:
         ~ExceptionTranslatorRegistry() override;
         void registerTranslator( Detail::unique_ptr<IExceptionTranslator>&& translator );
@@ -8108,7 +8369,6 @@ namespace Catch {
 #ifndef CATCH_FATAL_CONDITION_HANDLER_HPP_INCLUDED
 #define CATCH_FATAL_CONDITION_HANDLER_HPP_INCLUDED
 
-
 #include <cassert>
 
 namespace Catch {
@@ -8123,7 +8383,7 @@ namespace Catch {
      * Can only be instantiated once, and assumes that once a signal
      * is caught, the binary will end up terminating. Thus, there
      */
-    class FatalConditionHandler {
+    class CATCH_DLL_PUBLIC FatalConditionHandler {
         bool m_started = false;
 
         // Install/disengage implementation for specific platform.
@@ -8150,7 +8410,7 @@ namespace Catch {
     };
 
     //! Simple RAII guard for (dis)engaging the FatalConditionHandler
-    class FatalConditionHandlerGuard {
+    class CATCH_DLL_PUBLIC FatalConditionHandlerGuard {
         FatalConditionHandler* m_handler;
     public:
         FatalConditionHandlerGuard(FatalConditionHandler* handler):
@@ -8175,23 +8435,23 @@ namespace Catch {
 #ifndef CATCH_POLYFILLS_HPP_INCLUDED
 #define CATCH_POLYFILLS_HPP_INCLUDED
 
+
 namespace Catch {
-    bool isnan(float f);
-    bool isnan(double d);
+    CATCH_DLL_PUBLIC bool isnan( float f );
+    CATCH_DLL_PUBLIC bool isnan( double d );
 }
 
 #endif // CATCH_POLYFILLS_HPP_INCLUDED
-
 #include <cmath>
 #include <cstdint>
-#include <utility>
 #include <limits>
+#include <utility>
 
 namespace Catch {
     namespace Detail {
 
-        uint32_t convertToBits(float f);
-        uint64_t convertToBits(double d);
+        CATCH_DLL_PUBLIC uint32_t convertToBits( float f );
+        CATCH_DLL_PUBLIC uint64_t convertToBits( double d );
 
     } // end namespace Detail
 
@@ -8263,13 +8523,13 @@ namespace Catch {
 #ifndef CATCH_LEAK_DETECTOR_HPP_INCLUDED
 #define CATCH_LEAK_DETECTOR_HPP_INCLUDED
 
+
 namespace Catch {
 
-    struct LeakDetector {
+    struct CATCH_DLL_PUBLIC LeakDetector {
         LeakDetector();
         ~LeakDetector();
     };
-
 }
 #endif // CATCH_LEAK_DETECTOR_HPP_INCLUDED
 
@@ -8277,22 +8537,19 @@ namespace Catch {
 #ifndef CATCH_LIST_HPP_INCLUDED
 #define CATCH_LIST_HPP_INCLUDED
 
-
 #include <set>
 #include <string>
 
-
 namespace Catch {
 
-    struct IStreamingReporter;
+    class IEventListener;
     class Config;
 
-
-    struct ReporterDescription {
+    struct CATCH_DLL_PUBLIC ReporterDescription {
         std::string name, description;
     };
 
-    struct TagInfo {
+    struct CATCH_DLL_PUBLIC TagInfo {
         void add(StringRef spelling);
         std::string all() const;
 
@@ -8300,7 +8557,7 @@ namespace Catch {
         std::size_t count = 0;
     };
 
-    bool list( IStreamingReporter& reporter, Config const& config );
+    bool list( IEventListener& reporter, Config const& config );
 
 } // end namespace Catch
 
@@ -8310,14 +8567,13 @@ namespace Catch {
 #ifndef CATCH_OUTPUT_REDIRECT_HPP_INCLUDED
 #define CATCH_OUTPUT_REDIRECT_HPP_INCLUDED
 
-
 #include <cstdio>
 #include <iosfwd>
 #include <string>
 
 namespace Catch {
 
-    class RedirectedStream {
+    class CATCH_DLL_PUBLIC RedirectedStream {
         std::ostream& m_originalStream;
         std::ostream& m_redirectionStream;
         std::streambuf* m_prevBuf;
@@ -8327,7 +8583,7 @@ namespace Catch {
         ~RedirectedStream();
     };
 
-    class RedirectedStdOut {
+    class CATCH_DLL_PUBLIC RedirectedStdOut {
         ReusableStringStream m_rss;
         RedirectedStream m_cout;
     public:
@@ -8338,7 +8594,7 @@ namespace Catch {
     // StdErr has two constituent streams in C++, std::cerr and std::clog
     // This means that we need to redirect 2 streams into 1 to keep proper
     // order of writes
-    class RedirectedStdErr {
+    class CATCH_DLL_PUBLIC RedirectedStdErr {
         ReusableStringStream m_rss;
         RedirectedStream m_cerr;
         RedirectedStream m_clog;
@@ -8347,7 +8603,7 @@ namespace Catch {
         auto str() const -> std::string;
     };
 
-    class RedirectedStreams {
+    class CATCH_DLL_PUBLIC RedirectedStreams {
     public:
         RedirectedStreams(RedirectedStreams const&) = delete;
         RedirectedStreams& operator=(RedirectedStreams const&) = delete;
@@ -8369,7 +8625,7 @@ namespace Catch {
     // to create a file inside system folder, thus requiring elevated
     // privileges for the binary), so we have to use tmpnam(_s) and
     // create the file ourselves there.
-    class TempFile {
+    class CATCH_DLL_PUBLIC TempFile {
     public:
         TempFile(TempFile const&) = delete;
         TempFile& operator=(TempFile const&) = delete;
@@ -8389,8 +8645,7 @@ namespace Catch {
     #endif
     };
 
-
-    class OutputRedirect {
+    class CATCH_DLL_PUBLIC OutputRedirect {
     public:
         OutputRedirect(OutputRedirect const&) = delete;
         OutputRedirect& operator=(OutputRedirect const&) = delete;
@@ -8420,12 +8675,11 @@ namespace Catch {
 #ifndef CATCH_REPORTER_REGISTRY_HPP_INCLUDED
 #define CATCH_REPORTER_REGISTRY_HPP_INCLUDED
 
-
 #include <map>
 
 namespace Catch {
 
-    class ReporterRegistry : public IReporterRegistry {
+    class CATCH_DLL_PUBLIC ReporterRegistry : public IReporterRegistry {
     public:
 
         ReporterRegistry();
@@ -8434,7 +8688,7 @@ namespace Catch {
         IStreamingReporterPtr create( std::string const& name, ReporterConfig const& config ) const override;
 
         void registerReporter( std::string const& name, IReporterFactoryPtr factory );
-        void registerListener( IReporterFactoryPtr factory );
+        void registerListener( Detail::unique_ptr<EventListenerFactory> factory );
 
         FactoryMap const& getFactories() const override;
         Listeners const& getListeners() const override;
@@ -8456,19 +8710,19 @@ namespace Catch {
 #ifndef CATCH_TEST_CASE_TRACKER_HPP_INCLUDED
 #define CATCH_TEST_CASE_TRACKER_HPP_INCLUDED
 
-
 #include <string>
 #include <vector>
 
 namespace Catch {
 namespace TestCaseTracking {
 
-    struct NameAndLocation {
+    struct CATCH_DLL_PUBLIC NameAndLocation {
         std::string name;
         SourceLineInfo location;
 
         NameAndLocation( std::string const& _name, SourceLineInfo const& _location );
-        friend bool operator==(NameAndLocation const& lhs, NameAndLocation const& rhs) {
+        CATCH_DLL_PUBLIC friend bool operator==( NameAndLocation const& lhs,
+                                                 NameAndLocation const& rhs ) {
             return lhs.name == rhs.name
                 && lhs.location == rhs.location;
         }
@@ -8478,7 +8732,7 @@ namespace TestCaseTracking {
 
     using ITrackerPtr = Catch::Detail::unique_ptr<ITracker>;
 
-    class ITracker {
+    class CATCH_DLL_PUBLIC ITracker {
         NameAndLocation m_nameAndLocation;
 
         using Children = std::vector<ITrackerPtr>;
@@ -8564,7 +8818,7 @@ namespace TestCaseTracking {
         virtual bool isGeneratorTracker() const;
     };
 
-    class TrackerContext {
+    class CATCH_DLL_PUBLIC TrackerContext {
 
         enum RunState {
             NotStarted,
@@ -8589,7 +8843,7 @@ namespace TestCaseTracking {
         void setCurrentTracker( ITracker* tracker );
     };
 
-    class TrackerBase : public ITracker {
+    class CATCH_DLL_PUBLIC TrackerBase : public ITracker {
     protected:
 
         TrackerContext& m_ctx;
@@ -8609,7 +8863,7 @@ namespace TestCaseTracking {
         void moveToThis();
     };
 
-    class SectionTracker : public TrackerBase {
+    class CATCH_DLL_PUBLIC SectionTracker : public TrackerBase {
         std::vector<StringRef> m_filters;
         std::string m_trimmed_name;
     public:
@@ -8640,7 +8894,6 @@ using TestCaseTracking::SectionTracker;
 } // namespace Catch
 
 #endif // CATCH_TEST_CASE_TRACKER_HPP_INCLUDED
-
 #include <string>
 
 namespace Catch {
@@ -8651,7 +8904,7 @@ namespace Catch {
 
     ///////////////////////////////////////////////////////////////////////////
 
-    class RunContext : public IResultCapture {
+    class CATCH_DLL_PUBLIC RunContext : public IResultCapture {
 
     public:
         RunContext( RunContext const& ) = delete;
@@ -8809,19 +9062,20 @@ namespace Catch {
 #ifndef CATCH_SINGLETONS_HPP_INCLUDED
 #define CATCH_SINGLETONS_HPP_INCLUDED
 
+
 namespace Catch {
 
-    struct ISingleton {
+    struct CATCH_DLL_PUBLIC ISingleton {
         virtual ~ISingleton(); // = default
     };
-
 
     void addSingleton( ISingleton* singleton );
     void cleanupSingletons();
 
-
-    template<typename SingletonImplT, typename InterfaceT = SingletonImplT, typename MutableInterfaceT = InterfaceT>
-    class Singleton : SingletonImplT, public ISingleton {
+    template <typename SingletonImplT,
+              typename InterfaceT = SingletonImplT,
+              typename MutableInterfaceT = InterfaceT>
+    class CATCH_DLL_PUBLIC Singleton : SingletonImplT, public ISingleton {
 
         static auto getInternal() -> Singleton* {
             static Singleton* s_instance = nullptr;
@@ -8849,13 +9103,12 @@ namespace Catch {
 #ifndef CATCH_STARTUP_EXCEPTION_REGISTRY_HPP_INCLUDED
 #define CATCH_STARTUP_EXCEPTION_REGISTRY_HPP_INCLUDED
 
-
-#include <vector>
 #include <exception>
+#include <vector>
 
 namespace Catch {
 
-    class StartupExceptionRegistry {
+    class CATCH_DLL_PUBLIC StartupExceptionRegistry {
 #if !defined(CATCH_CONFIG_DISABLE_EXCEPTIONS)
     public:
         void add(std::exception_ptr const& exception) noexcept;
@@ -8873,29 +9126,34 @@ namespace Catch {
 #ifndef CATCH_STRING_MANIP_HPP_INCLUDED
 #define CATCH_STRING_MANIP_HPP_INCLUDED
 
-
-#include <string>
 #include <iosfwd>
+#include <string>
 #include <vector>
 
 namespace Catch {
 
-    bool startsWith( std::string const& s, std::string const& prefix );
-    bool startsWith( StringRef s, char prefix );
-    bool endsWith( std::string const& s, std::string const& suffix );
-    bool endsWith( std::string const& s, char suffix );
-    bool contains( std::string const& s, std::string const& infix );
-    void toLowerInPlace( std::string& s );
-    std::string toLower( std::string const& s );
-    char toLower( char c );
+    CATCH_DLL_PUBLIC bool startsWith( std::string const& s,
+                                      std::string const& prefix );
+    CATCH_DLL_PUBLIC bool startsWith( StringRef s, char prefix );
+    CATCH_DLL_PUBLIC bool endsWith( std::string const& s,
+                                    std::string const& suffix );
+    CATCH_DLL_PUBLIC bool endsWith( std::string const& s, char suffix );
+    CATCH_DLL_PUBLIC bool contains( std::string const& s,
+                                    std::string const& infix );
+    CATCH_DLL_PUBLIC void toLowerInPlace( std::string& s );
+    CATCH_DLL_PUBLIC std::string toLower( std::string const& s );
+    CATCH_DLL_PUBLIC char toLower( char c );
     //! Returns a new string without whitespace at the start/end
-    std::string trim( std::string const& str );
+    CATCH_DLL_PUBLIC std::string trim( std::string const& str );
     //! Returns a substring of the original ref without whitespace. Beware lifetimes!
-    StringRef trim(StringRef ref);
+    CATCH_DLL_PUBLIC StringRef trim( StringRef ref );
 
     // !!! Be aware, returns refs into original string - make sure original string outlives them
-    std::vector<StringRef> splitStringRef( StringRef str, char delimiter );
-    bool replaceInPlace( std::string& str, std::string const& replaceThis, std::string const& withThis );
+    CATCH_DLL_PUBLIC std::vector<StringRef> splitStringRef( StringRef str,
+                                                            char delimiter );
+    CATCH_DLL_PUBLIC bool replaceInPlace( std::string& str,
+                                          std::string const& replaceThis,
+                                          std::string const& withThis );
 
     /**
      * Helper for streaming a "count [maybe-plural-of-label]" human-friendly string
@@ -8907,13 +9165,14 @@ namespace Catch {
      *
      * **Important:** The provided string must outlive the instance
      */
-    struct pluralise {
+    struct CATCH_DLL_PUBLIC pluralise {
         pluralise(std::uint64_t count, StringRef label):
             m_count(count),
             m_label(label)
         {}
 
-        friend std::ostream& operator << ( std::ostream& os, pluralise const& pluraliser );
+        CATCH_DLL_PUBLIC friend std::ostream&
+        operator<<( std::ostream& os, pluralise const& pluraliser );
 
         std::uint64_t m_count;
         StringRef m_label;
@@ -8926,13 +9185,12 @@ namespace Catch {
 #ifndef CATCH_TAG_ALIAS_REGISTRY_HPP_INCLUDED
 #define CATCH_TAG_ALIAS_REGISTRY_HPP_INCLUDED
 
-
 #include <map>
 #include <string>
 
 namespace Catch {
 
-    class TagAliasRegistry : public ITagAliasRegistry {
+    class CATCH_DLL_PUBLIC TagAliasRegistry : public ITagAliasRegistry {
     public:
         ~TagAliasRegistry() override;
         TagAlias const* find( std::string const& alias ) const override;
@@ -8950,7 +9208,6 @@ namespace Catch {
 
 #ifndef CATCH_TEST_CASE_REGISTRY_IMPL_HPP_INCLUDED
 #define CATCH_TEST_CASE_REGISTRY_IMPL_HPP_INCLUDED
-
 
 #include <vector>
 
@@ -8970,7 +9227,7 @@ namespace Catch {
     std::vector<TestCaseHandle> filterTests( std::vector<TestCaseHandle> const& testCases, TestSpec const& testSpec, IConfig const& config );
     std::vector<TestCaseHandle> const& getAllTestCasesSorted( IConfig const& config );
 
-    class TestRegistry : public ITestCaseRegistry {
+    class CATCH_DLL_PUBLIC TestRegistry : public ITestCaseRegistry {
     public:
         ~TestRegistry() override = default;
 
@@ -8994,7 +9251,7 @@ namespace Catch {
 
     ///////////////////////////////////////////////////////////////////////////
 
-    class TestInvokerAsFunction final : public ITestInvoker {
+    class CATCH_DLL_PUBLIC TestInvokerAsFunction final : public ITestInvoker {
         using TestType = void(*)();
         TestType m_testAsFunction;
     public:
@@ -9021,15 +9278,14 @@ namespace Catch {
 #pragma clang diagnostic ignored "-Wpadded"
 #endif
 
-
-#include <vector>
 #include <string>
+#include <vector>
 
 namespace Catch {
 
     struct ITagAliasRegistry;
 
-    class TestSpecParser {
+    class CATCH_DLL_PUBLIC TestSpecParser {
         enum Mode{ None, Name, QuotedName, Tag, EscapedName };
         Mode m_mode = None;
         Mode lastMode = None;
@@ -9076,9 +9332,8 @@ namespace Catch {
             m_patternName += c;
             m_realPatternPos++;
         }
-
     };
-    TestSpec parseTestSpec( std::string const& arg );
+    CATCH_DLL_PUBLIC TestSpec parseTestSpec( std::string const& arg );
 
 } // namespace Catch
 
@@ -9108,7 +9363,7 @@ namespace Catch {
          * of the provided text so that the written lines fit within
          * target width.
          */
-        class Column {
+        class CATCH_DLL_PUBLIC Column {
             // String to be written out
             std::string m_string;
             // Width of the column for linebreaking
@@ -9122,9 +9377,9 @@ namespace Catch {
             /**
              * Iterates "lines" in `Column` and return sthem
              */
-            class const_iterator {
+            class CATCH_DLL_PUBLIC const_iterator {
                 friend Column;
-                struct EndTag {};
+                struct CATCH_DLL_PUBLIC EndTag {};
 
                 Column const& m_column;
                 // Where does the current line start?
@@ -9193,8 +9448,8 @@ namespace Catch {
             const_iterator begin() const { return const_iterator( *this ); }
             const_iterator end() const { return { *this, const_iterator::EndTag{} }; }
 
-            friend std::ostream& operator<<( std::ostream& os,
-                                             Column const& col );
+            CATCH_DLL_PUBLIC friend std::ostream&
+            operator<<( std::ostream& os, Column const& col );
 
             Columns operator+( Column const& other );
         };
@@ -9202,13 +9457,13 @@ namespace Catch {
         //! Creates a column that serves as an empty space of specific width
         Column Spacer( size_t spaceWidth );
 
-        class Columns {
+        class CATCH_DLL_PUBLIC Columns {
             std::vector<Column> m_columns;
 
         public:
-            class iterator {
+            class CATCH_DLL_PUBLIC iterator {
                 friend Columns;
-                struct EndTag {};
+                struct CATCH_DLL_PUBLIC EndTag {};
 
                 std::vector<Column> const& m_columns;
                 std::vector<Column::const_iterator> m_iterators;
@@ -9240,11 +9495,11 @@ namespace Catch {
             iterator begin() const { return iterator( *this ); }
             iterator end() const { return { *this, iterator::EndTag() }; }
 
-            Columns& operator+=( Column const& col );
-            Columns operator+( Column const& col );
+            CATCH_DLL_PUBLIC Columns& operator+=( Column const& col );
+            CATCH_DLL_PUBLIC Columns operator+( Column const& col );
 
-            friend std::ostream& operator<<( std::ostream& os,
-                                             Columns const& cols );
+            CATCH_DLL_PUBLIC friend std::ostream&
+            operator<<( std::ostream& os, Columns const& cols );
         };
 
     } // namespace TextFlow
@@ -9256,7 +9511,6 @@ namespace Catch {
 #define CATCH_TO_STRING_HPP_INCLUDED
 
 #include <string>
-
 
 namespace Catch {
     template <typename T>
@@ -9290,12 +9544,12 @@ namespace Catch {
 
 #if defined(CATCH_PLATFORM_WINDOWS)
 
-#if !defined(NOMINMAX) && !defined(CATCH_CONFIG_NO_NOMINMAX)
-#  define CATCH_DEFINED_NOMINMAX
+// We might end up with the define made globally through the compiler,
+// and we don't want to trigger warnings for this
+#if !defined(NOMINMAX)
 #  define NOMINMAX
 #endif
-#if !defined(WIN32_LEAN_AND_MEAN) && !defined(CATCH_CONFIG_NO_WIN32_LEAN_AND_MEAN)
-#  define CATCH_DEFINED_WIN32_LEAN_AND_MEAN
+#if !defined(WIN32_LEAN_AND_MEAN)
 #  define WIN32_LEAN_AND_MEAN
 #endif
 
@@ -9303,13 +9557,6 @@ namespace Catch {
 #include <AfxWin.h>
 #else
 #include <windows.h>
-#endif
-
-#ifdef CATCH_DEFINED_NOMINMAX
-#  undef NOMINMAX
-#endif
-#ifdef CATCH_DEFINED_WIN32_LEAN_AND_MEAN
-#  undef WIN32_LEAN_AND_MEAN
 #endif
 
 #endif // defined(CATCH_PLATFORM_WINDOWS)
@@ -9320,18 +9567,19 @@ namespace Catch {
 #ifndef CATCH_XMLWRITER_HPP_INCLUDED
 #define CATCH_XMLWRITER_HPP_INCLUDED
 
-
 #include <vector>
 
 namespace Catch {
-    enum class XmlFormatting {
+    enum class CATCH_DLL_PUBLIC XmlFormatting {
         None = 0x00,
         Indent = 0x01,
         Newline = 0x02,
     };
 
-    XmlFormatting operator | (XmlFormatting lhs, XmlFormatting rhs);
-    XmlFormatting operator & (XmlFormatting lhs, XmlFormatting rhs);
+    CATCH_DLL_PUBLIC XmlFormatting operator|( XmlFormatting lhs,
+                                              XmlFormatting rhs );
+    CATCH_DLL_PUBLIC XmlFormatting operator&( XmlFormatting lhs,
+                                              XmlFormatting rhs );
 
     /**
      * Helper for XML-encoding text (escaping angle brackets, quotes, etc)
@@ -9339,7 +9587,7 @@ namespace Catch {
      * Note: doesn't take ownership of passed strings, and thus the
      *       encoded string must outlive the encoding instance.
      */
-    class XmlEncode {
+    class CATCH_DLL_PUBLIC XmlEncode {
     public:
         enum ForWhat { ForTextNodes, ForAttributes };
 
@@ -9347,17 +9595,17 @@ namespace Catch {
 
         void encodeTo( std::ostream& os ) const;
 
-        friend std::ostream& operator << ( std::ostream& os, XmlEncode const& xmlEncode );
+        CATCH_DLL_PUBLIC friend std::ostream&
+        operator<<( std::ostream& os, XmlEncode const& xmlEncode );
 
     private:
         StringRef m_str;
         ForWhat m_forWhat;
     };
 
-    class XmlWriter {
+    class CATCH_DLL_PUBLIC XmlWriter {
     public:
-
-        class ScopedElement {
+        class CATCH_DLL_PUBLIC ScopedElement {
         public:
             ScopedElement( XmlWriter* writer, XmlFormatting fmt );
 
@@ -9455,7 +9703,6 @@ namespace Catch {
         std::string m_indent;
         std::ostream& m_os;
     };
-
 }
 
 #endif // CATCH_XMLWRITER_HPP_INCLUDED
@@ -9516,7 +9763,10 @@ namespace Catch {
 
     using StringMatcher = Matchers::MatcherBase<std::string>;
 
-    void handleExceptionMatchExpr( AssertionHandler& handler, StringMatcher const& matcher, StringRef matcherString  );
+    CATCH_DLL_PUBLIC void
+    handleExceptionMatchExpr( AssertionHandler& handler,
+                              StringMatcher const& matcher,
+                              StringRef matcherString );
 
     template<typename ArgT, typename MatcherT>
     auto makeMatchExpr( ArgT && arg, MatcherT const& matcher, StringRef matcherString  ) -> MatchExpr<ArgT, MatcherT> {
@@ -9559,14 +9809,13 @@ namespace Catch {
 
 
 #endif // CATCH_MATCHERS_IMPL_HPP_INCLUDED
-
 #include <string>
 #include <vector>
 
 namespace Catch {
 namespace Matchers {
 
-    class MatcherUntypedBase {
+    class CATCH_DLL_PUBLIC MatcherUntypedBase {
     public:
         MatcherUntypedBase() = default;
 
@@ -9584,16 +9833,15 @@ namespace Matchers {
         mutable std::string m_cachedToString;
     };
 
-
-    template<typename T>
-    struct MatcherBase : MatcherUntypedBase {
+    template <typename T>
+    struct CATCH_DLL_PUBLIC MatcherBase : MatcherUntypedBase {
         virtual bool match( T const& arg ) const = 0;
     };
 
     namespace Detail {
 
-        template<typename ArgT>
-        struct MatchAllOf final : MatcherBase<ArgT> {
+        template <typename ArgT>
+        struct CATCH_DLL_PUBLIC MatchAllOf final : MatcherBase<ArgT> {
             MatchAllOf() = default;
             MatchAllOf(MatchAllOf const&) = delete;
             MatchAllOf& operator=(MatchAllOf const&) = delete;
@@ -9646,8 +9894,8 @@ namespace Matchers {
         template<typename ArgT>
         MatchAllOf<ArgT> operator&& (MatcherBase<ArgT> const& lhs, MatchAllOf<ArgT> const& rhs) = delete;
 
-        template<typename ArgT>
-        struct MatchAnyOf final : MatcherBase<ArgT> {
+        template <typename ArgT>
+        struct CATCH_DLL_PUBLIC MatchAnyOf final : MatcherBase<ArgT> {
             MatchAnyOf() = default;
             MatchAnyOf(MatchAnyOf const&) = delete;
             MatchAnyOf& operator=(MatchAnyOf const&) = delete;
@@ -9699,8 +9947,8 @@ namespace Matchers {
         template<typename ArgT>
         MatchAnyOf<ArgT> operator|| (MatcherBase<ArgT> const& lhs, MatchAnyOf<ArgT> const& rhs) = delete;
 
-        template<typename ArgT>
-        struct MatchNotOf final : MatcherBase<ArgT> {
+        template <typename ArgT>
+        struct CATCH_DLL_PUBLIC MatchNotOf final : MatcherBase<ArgT> {
 
             explicit MatchNotOf( MatcherBase<ArgT> const& underlyingMatcher ):
                 m_underlyingMatcher( underlyingMatcher )
@@ -9795,15 +10043,14 @@ namespace Matchers {
 #ifndef CATCH_MATCHERS_TEMPLATED_HPP_INCLUDED
 #define CATCH_MATCHERS_TEMPLATED_HPP_INCLUDED
 
-
-#include <array>
 #include <algorithm>
+#include <array>
 #include <string>
 #include <type_traits>
 
 namespace Catch {
 namespace Matchers {
-    struct MatcherGenericBase : MatcherUntypedBase {
+    struct CATCH_DLL_PUBLIC MatcherGenericBase : MatcherUntypedBase {
         MatcherGenericBase() = default;
         virtual ~MatcherGenericBase(); // = default;
 
@@ -9813,7 +10060,6 @@ namespace Matchers {
         MatcherGenericBase& operator=(MatcherGenericBase const&) = delete;
         MatcherGenericBase& operator=(MatcherGenericBase&&) = delete;
     };
-
 
     namespace Detail {
         template<std::size_t N, std::size_t M>
@@ -9845,8 +10091,8 @@ namespace Matchers {
 
 #else // __cpp_lib_logical_traits
 
-        template<typename... Cond>
-        struct conjunction : std::true_type {};
+        template <typename... Cond>
+        struct CATCH_DLL_PUBLIC conjunction : std::true_type {};
 
         template<typename Cond, typename... Rest>
         struct conjunction<Cond, Rest...> : std::integral_constant<bool, Cond::value && conjunction<Rest...>::value> {};
@@ -9890,7 +10136,10 @@ namespace Matchers {
             return static_cast<T const*>(matchers[Idx])->match(arg) || match_any_of<MatcherTs...>(arg, matchers, std::index_sequence<Indices...>{});
         }
 
-        std::string describe_multi_matcher(StringRef combine, std::string const* descriptions_begin, std::string const* descriptions_end);
+        CATCH_DLL_PUBLIC std::string
+        describe_multi_matcher( StringRef combine,
+                                std::string const* descriptions_begin,
+                                std::string const* descriptions_end );
 
         template<typename... MatcherTs, std::size_t... Idx>
         std::string describe_multi_matcher(StringRef combine, std::array<void const*, sizeof...(MatcherTs)> const& matchers, std::index_sequence<Idx...>) {
@@ -9901,9 +10150,8 @@ namespace Matchers {
             return describe_multi_matcher(combine, descriptions.data(), descriptions.data() + descriptions.size());
         }
 
-
-        template<typename... MatcherTs>
-        struct MatchAllOfGeneric final : MatcherGenericBase {
+        template <typename... MatcherTs>
+        struct CATCH_DLL_PUBLIC MatchAllOfGeneric final : MatcherGenericBase {
             MatchAllOfGeneric(MatchAllOfGeneric const&) = delete;
             MatchAllOfGeneric& operator=(MatchAllOfGeneric const&) = delete;
             MatchAllOfGeneric(MatchAllOfGeneric&&) = default;
@@ -9951,9 +10199,8 @@ namespace Matchers {
             }
         };
 
-
-        template<typename... MatcherTs>
-        struct MatchAnyOfGeneric final : MatcherGenericBase {
+        template <typename... MatcherTs>
+        struct CATCH_DLL_PUBLIC MatchAnyOfGeneric final : MatcherGenericBase {
             MatchAnyOfGeneric(MatchAnyOfGeneric const&) = delete;
             MatchAnyOfGeneric& operator=(MatchAnyOfGeneric const&) = delete;
             MatchAnyOfGeneric(MatchAnyOfGeneric&&) = default;
@@ -10000,9 +10247,8 @@ namespace Matchers {
             }
         };
 
-
-        template<typename MatcherT>
-        struct MatchNotOfGeneric final : MatcherGenericBase {
+        template <typename MatcherT>
+        struct CATCH_DLL_PUBLIC MatchNotOfGeneric final : MatcherGenericBase {
             MatchNotOfGeneric(MatchNotOfGeneric const&) = delete;
             MatchNotOfGeneric& operator=(MatchNotOfGeneric const&) = delete;
             MatchNotOfGeneric(MatchNotOfGeneric&&) = default;
@@ -10083,7 +10329,8 @@ namespace Matchers {
 namespace Catch {
     namespace Matchers {
 
-        class IsEmptyMatcher final : public MatcherGenericBase {
+        class CATCH_DLL_PUBLIC IsEmptyMatcher final
+            : public MatcherGenericBase {
         public:
             // todo: Use polyfills
             template <typename RangeLike>
@@ -10099,7 +10346,8 @@ namespace Catch {
             std::string describe() const override;
         };
 
-        class HasSizeMatcher final : public MatcherGenericBase {
+        class CATCH_DLL_PUBLIC HasSizeMatcher final
+            : public MatcherGenericBase {
             std::size_t m_target_size;
         public:
             explicit HasSizeMatcher(std::size_t target_size):
@@ -10120,7 +10368,8 @@ namespace Catch {
         };
 
         template <typename Matcher>
-        class SizeMatchesMatcher final : public MatcherGenericBase {
+        class CATCH_DLL_PUBLIC SizeMatchesMatcher final
+            : public MatcherGenericBase {
             Matcher m_matcher;
         public:
             explicit SizeMatchesMatcher(Matcher m):
@@ -10142,11 +10391,10 @@ namespace Catch {
             }
         };
 
-
         //! Creates a matcher that accepts empty ranges/containers
-        IsEmptyMatcher IsEmpty();
+        CATCH_DLL_PUBLIC IsEmptyMatcher IsEmpty();
         //! Creates a matcher that accepts ranges/containers with specific size
-        HasSizeMatcher SizeIs(std::size_t sz);
+        CATCH_DLL_PUBLIC HasSizeMatcher SizeIs( std::size_t sz );
         template <typename Matcher>
         std::enable_if_t<Detail::is_matcher<Matcher>::value,
         SizeMatchesMatcher<Matcher>> SizeIs(Matcher&& m) {
@@ -10162,7 +10410,6 @@ namespace Catch {
 #ifndef CATCH_MATCHERS_CONTAINS_HPP_INCLUDED
 #define CATCH_MATCHERS_CONTAINS_HPP_INCLUDED
 
-
 #include <algorithm>
 #include <functional>
 
@@ -10170,7 +10417,8 @@ namespace Catch {
     namespace Matchers {
         //! Matcher for checking that an element in range is equal to specific element
         template <typename T, typename Equality>
-        class ContainsElementMatcher final : public MatcherGenericBase {
+        class CATCH_DLL_PUBLIC ContainsElementMatcher final
+            : public MatcherGenericBase {
             T m_desired;
             Equality m_eq;
         public:
@@ -10197,7 +10445,8 @@ namespace Catch {
 
         //! Meta-matcher for checking that an element in a range matches a specific matcher
         template <typename Matcher>
-        class ContainsMatcherMatcher final : public MatcherGenericBase {
+        class CATCH_DLL_PUBLIC ContainsMatcherMatcher final
+            : public MatcherGenericBase {
             Matcher m_matcher;
         public:
             // Note that we do a copy+move to avoid having to SFINAE this
@@ -10263,21 +10512,21 @@ namespace Catch {
 namespace Catch {
 namespace Matchers {
 
-class ExceptionMessageMatcher final : public MatcherBase<std::exception> {
-    std::string m_message;
-public:
+    class CATCH_DLL_PUBLIC ExceptionMessageMatcher final
+        : public MatcherBase<std::exception> {
+        std::string m_message;
 
-    ExceptionMessageMatcher(std::string const& message):
-        m_message(message)
-    {}
+    public:
+        ExceptionMessageMatcher( std::string const& message ):
+            m_message( message ) {}
 
-    bool match(std::exception const& ex) const override;
+        bool match( std::exception const& ex ) const override;
 
-    std::string describe() const override;
-};
+        std::string describe() const override;
+    };
 
 //! Creates a matcher that checks whether a std derived exception has the provided message
-ExceptionMessageMatcher Message(std::string const& message);
+CATCH_DLL_PUBLIC ExceptionMessageMatcher Message( std::string const& message );
 
 } // namespace Matchers
 } // namespace Catch
@@ -10293,10 +10542,10 @@ namespace Catch {
 namespace Matchers {
 
     namespace Detail {
-        enum class FloatingPointKind : uint8_t;
+        enum class CATCH_DLL_PUBLIC FloatingPointKind : uint8_t;
     }
 
-    struct WithinAbsMatcher final : MatcherBase<double> {
+    struct CATCH_DLL_PUBLIC WithinAbsMatcher final : MatcherBase<double> {
         WithinAbsMatcher(double target, double margin);
         bool match(double const& matchee) const override;
         std::string describe() const override;
@@ -10305,7 +10554,7 @@ namespace Matchers {
         double m_margin;
     };
 
-    struct WithinUlpsMatcher final : MatcherBase<double> {
+    struct CATCH_DLL_PUBLIC WithinUlpsMatcher final : MatcherBase<double> {
         WithinUlpsMatcher(double target, uint64_t ulps, Detail::FloatingPointKind baseType);
         bool match(double const& matchee) const override;
         std::string describe() const override;
@@ -10321,7 +10570,7 @@ namespace Matchers {
     // |lhs - rhs| <= epsilon * max(fabs(lhs), fabs(rhs)), then we get
     // the same result if we do this for floats, as if we do this for
     // doubles that were promoted from floats.
-    struct WithinRelMatcher final : MatcherBase<double> {
+    struct CATCH_DLL_PUBLIC WithinRelMatcher final : MatcherBase<double> {
         WithinRelMatcher(double target, double epsilon);
         bool match(double const& matchee) const override;
         std::string describe() const override;
@@ -10331,20 +10580,22 @@ namespace Matchers {
     };
 
     //! Creates a matcher that accepts doubles within certain ULP range of target
-    WithinUlpsMatcher WithinULP(double target, uint64_t maxUlpDiff);
+    CATCH_DLL_PUBLIC WithinUlpsMatcher WithinULP( double target,
+                                                  uint64_t maxUlpDiff );
     //! Creates a matcher that accepts floats within certain ULP range of target
-    WithinUlpsMatcher WithinULP(float target, uint64_t maxUlpDiff);
+    CATCH_DLL_PUBLIC WithinUlpsMatcher WithinULP( float target,
+                                                  uint64_t maxUlpDiff );
     //! Creates a matcher that accepts numbers within certain range of target
-    WithinAbsMatcher WithinAbs(double target, double margin);
+    CATCH_DLL_PUBLIC WithinAbsMatcher WithinAbs( double target, double margin );
 
     //! Creates a matcher that accepts doubles within certain relative range of target
-    WithinRelMatcher WithinRel(double target, double eps);
+    CATCH_DLL_PUBLIC WithinRelMatcher WithinRel( double target, double eps );
     //! Creates a matcher that accepts doubles within 100*DBL_EPS relative range of target
-    WithinRelMatcher WithinRel(double target);
+    CATCH_DLL_PUBLIC WithinRelMatcher WithinRel( double target );
     //! Creates a matcher that accepts doubles within certain relative range of target
-    WithinRelMatcher WithinRel(float target, float eps);
+    CATCH_DLL_PUBLIC WithinRelMatcher WithinRel( float target, float eps );
     //! Creates a matcher that accepts floats within 100*FLT_EPS relative range of target
-    WithinRelMatcher WithinRel(float target);
+    CATCH_DLL_PUBLIC WithinRelMatcher WithinRel( float target );
 
 } // namespace Matchers
 } // namespace Catch
@@ -10355,18 +10606,17 @@ namespace Matchers {
 #ifndef CATCH_MATCHERS_PREDICATE_HPP_INCLUDED
 #define CATCH_MATCHERS_PREDICATE_HPP_INCLUDED
 
-
 #include <string>
 
 namespace Catch {
 namespace Matchers {
 
 namespace Detail {
-    std::string finalizeDescription(const std::string& desc);
+    CATCH_DLL_PUBLIC std::string finalizeDescription( const std::string& desc );
 } // namespace Detail
 
 template <typename T, typename Predicate>
-class PredicateMatcher final : public MatcherBase<T> {
+class CATCH_DLL_PUBLIC PredicateMatcher final : public MatcherBase<T> {
     Predicate m_predicate;
     std::string m_description;
 public:
@@ -10411,7 +10661,8 @@ namespace Catch {
     namespace Matchers {
         // Matcher for checking that all elements in range matches a given matcher.
         template <typename Matcher>
-        class AllMatchMatcher final : public MatcherGenericBase {
+        class CATCH_DLL_PUBLIC AllMatchMatcher final
+            : public MatcherGenericBase {
             Matcher m_matcher;
         public:
             AllMatchMatcher(Matcher matcher):
@@ -10435,7 +10686,8 @@ namespace Catch {
 
         // Matcher for checking that no element in range matches a given matcher.
         template <typename Matcher>
-        class NoneMatchMatcher final : public MatcherGenericBase {
+        class CATCH_DLL_PUBLIC NoneMatchMatcher final
+            : public MatcherGenericBase {
             Matcher m_matcher;
         public:
             NoneMatchMatcher(Matcher matcher):
@@ -10459,7 +10711,8 @@ namespace Catch {
 
         // Matcher for checking that at least one element in range matches a given matcher.
         template <typename Matcher>
-        class AnyMatchMatcher final : public MatcherGenericBase {
+        class CATCH_DLL_PUBLIC AnyMatchMatcher final
+            : public MatcherGenericBase {
             Matcher m_matcher;
         public:
             AnyMatchMatcher(Matcher matcher):
@@ -10507,13 +10760,12 @@ namespace Catch {
 #ifndef CATCH_MATCHERS_STRING_HPP_INCLUDED
 #define CATCH_MATCHERS_STRING_HPP_INCLUDED
 
-
 #include <string>
 
 namespace Catch {
 namespace Matchers {
 
-    struct CasedString {
+    struct CATCH_DLL_PUBLIC CasedString {
         CasedString( std::string const& str, CaseSensitive caseSensitivity );
         std::string adjustString( std::string const& str ) const;
         StringRef caseSensitivitySuffix() const;
@@ -10522,7 +10774,7 @@ namespace Matchers {
         std::string m_str;
     };
 
-    struct StringMatcherBase : MatcherBase<std::string> {
+    struct CATCH_DLL_PUBLIC StringMatcherBase : MatcherBase<std::string> {
         StringMatcherBase( std::string const& operation, CasedString const& comparator );
         std::string describe() const override;
 
@@ -10530,24 +10782,24 @@ namespace Matchers {
         std::string m_operation;
     };
 
-    struct StringEqualsMatcher final : StringMatcherBase {
+    struct CATCH_DLL_PUBLIC StringEqualsMatcher final : StringMatcherBase {
         StringEqualsMatcher( CasedString const& comparator );
         bool match( std::string const& source ) const override;
     };
-    struct StringContainsMatcher final : StringMatcherBase {
+    struct CATCH_DLL_PUBLIC StringContainsMatcher final : StringMatcherBase {
         StringContainsMatcher( CasedString const& comparator );
         bool match( std::string const& source ) const override;
     };
-    struct StartsWithMatcher final : StringMatcherBase {
+    struct CATCH_DLL_PUBLIC StartsWithMatcher final : StringMatcherBase {
         StartsWithMatcher( CasedString const& comparator );
         bool match( std::string const& source ) const override;
     };
-    struct EndsWithMatcher final : StringMatcherBase {
+    struct CATCH_DLL_PUBLIC EndsWithMatcher final : StringMatcherBase {
         EndsWithMatcher( CasedString const& comparator );
         bool match( std::string const& source ) const override;
     };
 
-    struct RegexMatcher final : MatcherBase<std::string> {
+    struct CATCH_DLL_PUBLIC RegexMatcher final : MatcherBase<std::string> {
         RegexMatcher( std::string regex, CaseSensitive caseSensitivity );
         bool match( std::string const& matchee ) const override;
         std::string describe() const override;
@@ -10558,15 +10810,25 @@ namespace Matchers {
     };
 
     //! Creates matcher that accepts strings that are exactly equal to `str`
-    StringEqualsMatcher Equals( std::string const& str, CaseSensitive caseSensitivity = CaseSensitive::Yes );
+    CATCH_DLL_PUBLIC StringEqualsMatcher
+    Equals( std::string const& str,
+            CaseSensitive caseSensitivity = CaseSensitive::Yes );
     //! Creates matcher that accepts strings that contain `str`
-    StringContainsMatcher ContainsSubstring( std::string const& str, CaseSensitive caseSensitivity = CaseSensitive::Yes );
+    CATCH_DLL_PUBLIC StringContainsMatcher
+    ContainsSubstring( std::string const& str,
+                       CaseSensitive caseSensitivity = CaseSensitive::Yes );
     //! Creates matcher that accepts strings that _end_ with `str`
-    EndsWithMatcher EndsWith( std::string const& str, CaseSensitive caseSensitivity = CaseSensitive::Yes );
+    CATCH_DLL_PUBLIC EndsWithMatcher
+    EndsWith( std::string const& str,
+              CaseSensitive caseSensitivity = CaseSensitive::Yes );
     //! Creates matcher that accepts strings that _start_ with `str`
-    StartsWithMatcher StartsWith( std::string const& str, CaseSensitive caseSensitivity = CaseSensitive::Yes );
+    CATCH_DLL_PUBLIC StartsWithMatcher
+    StartsWith( std::string const& str,
+                CaseSensitive caseSensitivity = CaseSensitive::Yes );
     //! Creates matcher that accepts strings matching `regex`
-    RegexMatcher Matches( std::string const& regex, CaseSensitive caseSensitivity = CaseSensitive::Yes );
+    CATCH_DLL_PUBLIC RegexMatcher
+    Matches( std::string const& regex,
+             CaseSensitive caseSensitivity = CaseSensitive::Yes );
 
 } // namespace Matchers
 } // namespace Catch
@@ -10577,14 +10839,14 @@ namespace Matchers {
 #ifndef CATCH_MATCHERS_VECTOR_HPP_INCLUDED
 #define CATCH_MATCHERS_VECTOR_HPP_INCLUDED
 
-
 #include <algorithm>
 
 namespace Catch {
 namespace Matchers {
 
-    template<typename T, typename Alloc>
-    struct VectorContainsElementMatcher final : MatcherBase<std::vector<T, Alloc>> {
+    template <typename T, typename Alloc>
+    struct CATCH_DLL_PUBLIC VectorContainsElementMatcher final
+        : MatcherBase<std::vector<T, Alloc>> {
 
         VectorContainsElementMatcher(T const& comparator):
             m_comparator(comparator)
@@ -10606,8 +10868,9 @@ namespace Matchers {
         T const& m_comparator;
     };
 
-    template<typename T, typename AllocComp, typename AllocMatch>
-    struct ContainsMatcher final : MatcherBase<std::vector<T, AllocMatch>> {
+    template <typename T, typename AllocComp, typename AllocMatch>
+    struct CATCH_DLL_PUBLIC ContainsMatcher final
+        : MatcherBase<std::vector<T, AllocMatch>> {
 
         ContainsMatcher(std::vector<T, AllocComp> const& comparator):
             m_comparator( comparator )
@@ -10638,8 +10901,9 @@ namespace Matchers {
         std::vector<T, AllocComp> const& m_comparator;
     };
 
-    template<typename T, typename AllocComp, typename AllocMatch>
-    struct EqualsMatcher final : MatcherBase<std::vector<T, AllocMatch>> {
+    template <typename T, typename AllocComp, typename AllocMatch>
+    struct CATCH_DLL_PUBLIC EqualsMatcher final
+        : MatcherBase<std::vector<T, AllocMatch>> {
 
         EqualsMatcher(std::vector<T, AllocComp> const& comparator):
             m_comparator( comparator )
@@ -10663,8 +10927,9 @@ namespace Matchers {
         std::vector<T, AllocComp> const& m_comparator;
     };
 
-    template<typename T, typename AllocComp, typename AllocMatch>
-    struct ApproxMatcher final : MatcherBase<std::vector<T, AllocMatch>> {
+    template <typename T, typename AllocComp, typename AllocMatch>
+    struct CATCH_DLL_PUBLIC ApproxMatcher final
+        : MatcherBase<std::vector<T, AllocMatch>> {
 
         ApproxMatcher(std::vector<T, AllocComp> const& comparator):
             m_comparator( comparator )
@@ -10701,8 +10966,9 @@ namespace Matchers {
         mutable Catch::Approx approx = Catch::Approx::custom();
     };
 
-    template<typename T, typename AllocComp, typename AllocMatch>
-    struct UnorderedEqualsMatcher final : MatcherBase<std::vector<T, AllocMatch>> {
+    template <typename T, typename AllocComp, typename AllocMatch>
+    struct CATCH_DLL_PUBLIC UnorderedEqualsMatcher final
+        : MatcherBase<std::vector<T, AllocMatch>> {
         UnorderedEqualsMatcher(std::vector<T, AllocComp> const& target):
             m_target(target)
         {}
@@ -10719,7 +10985,6 @@ namespace Matchers {
     private:
         std::vector<T, AllocComp> const& m_target;
     };
-
 
     // The following functions create the actual matcher objects.
     // This allows the types to be inferred
@@ -10790,17 +11055,76 @@ namespace Matchers {
 #define CATCH_REPORTER_STREAMING_BASE_HPP_INCLUDED
 
 
+
+#ifndef CATCH_REPORTER_COMMON_BASE_HPP_INCLUDED
+#define CATCH_REPORTER_COMMON_BASE_HPP_INCLUDED
+
+
+namespace Catch {
+    /**
+     * This is the base class for all reporters.
+     *
+     * If are writing a reporter, you must derive from this type, or one
+     * of the helper reporter bases that are derived from this type.
+     *
+     * ReporterBase centralizes handling of various common tasks in reporters,
+     * like storing the right stream for the reporters to write to, and
+     * providing the default implementation of the different listing events.
+     */
+    class CATCH_DLL_PUBLIC ReporterBase : public IEventListener {
+    protected:
+        //! The stream wrapper as passed to us by outside code
+        IStream const* m_wrapped_stream;
+        //! Cached output stream from `m_wrapped_stream` to reduce
+        //! number of indirect calls needed to write output.
+        std::ostream& m_stream;
+        Detail::unique_ptr<ColourImpl> m_colour;
+
+    public:
+        ReporterBase( ReporterConfig const& config ):
+            IEventListener( config.fullConfig() ),
+            m_wrapped_stream( config.stream() ),
+            m_stream( m_wrapped_stream->stream() ),
+            m_colour( makeColourImpl( config.fullConfig(), m_wrapped_stream ) ) {}
+
+
+        /**
+         * Provides a simple default listing of reporters.
+         *
+         * Should look roughly like the reporter listing in v2 and earlier
+         * versions of Catch2.
+         */
+        void listReporters(
+            std::vector<ReporterDescription> const& descriptions ) override;
+        /**
+         * Provides a simple default listing of tests.
+         *
+         * Should look roughly like the test listing in v2 and earlier versions
+         * of Catch2. Especially supports low-verbosity listing that mimics the
+         * old `--list-test-names-only` output.
+         */
+        void listTests( std::vector<TestCaseHandle> const& tests ) override;
+        /**
+         * Provides a simple default listing of tags.
+         *
+         * Should look roughly like the tag listing in v2 and earlier versions
+         * of Catch2.
+         */
+        void listTags( std::vector<TagInfo> const& tags ) override;
+    };
+} // namespace Catch
+
+#endif // CATCH_REPORTER_COMMON_BASE_HPP_INCLUDED
 #include <iosfwd>
 #include <string>
 #include <vector>
 
 namespace Catch {
 
-    class StreamingReporterBase : public IStreamingReporter {
+    class CATCH_DLL_PUBLIC StreamingReporterBase : public ReporterBase {
     public:
         StreamingReporterBase( ReporterConfig const& _config ):
-            IStreamingReporter( _config.fullConfig() ),
-            m_stream( _config.stream() ) {}
+            ReporterBase( _config ) {}
 
 
         ~StreamingReporterBase() override;
@@ -10841,14 +11165,7 @@ namespace Catch {
             // It can optionally be overridden in the derived class.
         }
 
-        void listReporters( std::vector<ReporterDescription> const& descriptions ) override;
-        void listTests( std::vector<TestCaseHandle> const& tests ) override;
-        void listTags( std::vector<TagInfo> const& tags ) override;
-
     protected:
-        //! Stream that the reporter output should be written to
-        std::ostream& m_stream;
-
         TestRunInfo currentTestRunInfo{ "test run has not started yet"_sr };
         TestCaseInfo const* currentTestCaseInfo = nullptr;
 
@@ -10862,7 +11179,7 @@ namespace Catch {
 
 namespace Catch {
 
-    struct AutomakeReporter final : StreamingReporterBase {
+    struct CATCH_DLL_PUBLIC AutomakeReporter final : StreamingReporterBase {
         AutomakeReporter( ReporterConfig const& _config )
           :   StreamingReporterBase( _config )
         {}
@@ -10876,7 +11193,6 @@ namespace Catch {
 
         void testCaseEnded(TestCaseStats const& _testCaseStats) override;
         void skipTest(TestCaseInfo const& testInfo) override;
-
     };
 
 } // end namespace Catch
@@ -10888,11 +11204,9 @@ namespace Catch {
 #define CATCH_REPORTER_COMPACT_HPP_INCLUDED
 
 
-
-
 namespace Catch {
 
-    struct CompactReporter final : StreamingReporterBase {
+    struct CATCH_DLL_PUBLIC CompactReporter final : StreamingReporterBase {
 
         using StreamingReporterBase::StreamingReporterBase;
 
@@ -10907,7 +11221,6 @@ namespace Catch {
         void sectionEnded(SectionStats const& _sectionStats) override;
 
         void testRunEnded(TestRunStats const& _testRunStats) override;
-
     };
 
 } // end namespace Catch
@@ -10924,7 +11237,7 @@ namespace Catch {
     struct SummaryColumn;
     class TablePrinter;
 
-    struct ConsoleReporter final : StreamingReporterBase {
+    struct CATCH_DLL_PUBLIC ConsoleReporter final : StreamingReporterBase {
         Detail::unique_ptr<TablePrinter> m_tablePrinter;
 
         ConsoleReporter(ReporterConfig const& config);
@@ -10985,7 +11298,6 @@ namespace Catch {
 #ifndef CATCH_REPORTER_CUMULATIVE_BASE_HPP_INCLUDED
 #define CATCH_REPORTER_CUMULATIVE_BASE_HPP_INCLUDED
 
-
 #include <iosfwd>
 #include <string>
 #include <vector>
@@ -10995,7 +11307,7 @@ namespace Catch {
     namespace Detail {
 
         //! Represents either an assertion or a benchmark result to be handled by cumulative reporter later
-        class AssertionOrBenchmarkResult {
+        class CATCH_DLL_PUBLIC AssertionOrBenchmarkResult {
             // This should really be a variant, but this is much faster
             // to write and the data layout here is already terrible
             // enough that we do not have to care about the object size.
@@ -11033,17 +11345,17 @@ namespace Catch {
      * performance. **Accessing the assertion expansions if it wasn't stored is
      * UB.**
      */
-    class CumulativeReporterBase : public IStreamingReporter {
+    class CATCH_DLL_PUBLIC CumulativeReporterBase : public ReporterBase {
     public:
-        template<typename T, typename ChildNodeT>
-        struct Node {
+        template <typename T, typename ChildNodeT>
+        struct CATCH_DLL_PUBLIC Node {
             explicit Node( T const& _value ) : value( _value ) {}
 
             using ChildNodes = std::vector<Detail::unique_ptr<ChildNodeT>>;
             T value;
             ChildNodes children;
         };
-        struct SectionNode {
+        struct CATCH_DLL_PUBLIC SectionNode {
             explicit SectionNode(SectionStats const& _stats) : stats(_stats) {}
 
             bool operator == (SectionNode const& other) const {
@@ -11059,13 +11371,11 @@ namespace Catch {
             std::string stdErr;
         };
 
-
         using TestCaseNode = Node<TestCaseStats, SectionNode>;
         using TestRunNode = Node<TestRunStats, TestCaseNode>;
 
         CumulativeReporterBase( ReporterConfig const& _config ):
-            IStreamingReporter( _config.fullConfig() ),
-            m_stream( _config.stream() ) {}
+            ReporterBase( _config ) {}
         ~CumulativeReporterBase() override;
 
         void benchmarkPreparing( StringRef ) override {}
@@ -11095,18 +11405,11 @@ namespace Catch {
 
         void skipTest(TestCaseInfo const&) override {}
 
-        void listReporters( std::vector<ReporterDescription> const& descriptions ) override;
-        void listTests( std::vector<TestCaseHandle> const& tests ) override;
-        void listTags( std::vector<TagInfo> const& tags ) override;
-
     protected:
         //! Should the cumulative base store the assertion expansion for succesful assertions?
         bool m_shouldStoreSuccesfulAssertions = true;
         //! Should the cumulative base store the assertion expansion for failed assertions?
         bool m_shouldStoreFailedAssertions = true;
-
-        //! Stream to write the output to
-        std::ostream& m_stream;
 
         // We need lazy construction here. We should probably refactor it
         // later, after the events are redone.
@@ -11137,16 +11440,15 @@ namespace Catch {
 namespace Catch {
 
     /**
-     * Base class identifying listeners.
+     * Base class to simplify implementing listeners.
      *
-     * Provides empty default implementation for all IStreamingReporter member
-     * functions, so that listeners implementations can pick which
+     * Provides empty default implementation for all IEventListener member
+     * functions, so that a listener implementation can pick which
      * member functions it actually cares about.
      */
-    class EventListenerBase : public IStreamingReporter {
+    class CATCH_DLL_PUBLIC EventListenerBase : public IEventListener {
     public:
-        EventListenerBase( ReporterConfig const& config ):
-            IStreamingReporter( config.fullConfig() ) {}
+        using IEventListener::IEventListener;
 
         void reportInvalidTestSpec( StringRef unmatchedSpec ) override;
         void fatalErrorEncountered( StringRef error ) override;
@@ -11176,7 +11478,6 @@ namespace Catch {
         void testCaseEnded( TestCaseStats const& testCaseStats ) override;
         void testRunEnded( TestRunStats const& testRunStats ) override;
         void skipTest( TestCaseInfo const& testInfo ) override;
-
     };
 
 } // end namespace Catch
@@ -11191,25 +11492,27 @@ namespace Catch {
 #include <string>
 #include <vector>
 
-
 namespace Catch {
 
     struct IConfig;
     class TestCaseHandle;
+    class ColourImpl;
 
     // Returns double formatted as %.3f (format expected on output)
-    std::string getFormattedDuration( double duration );
+    CATCH_DLL_PUBLIC std::string getFormattedDuration( double duration );
 
     //! Should the reporter show duration of test given current configuration?
-    bool shouldShowDuration( IConfig const& config, double duration );
+    CATCH_DLL_PUBLIC bool shouldShowDuration( IConfig const& config,
+                                              double duration );
 
     std::string serializeFilters( std::vector<std::string> const& filters );
 
-    struct lineOfChars {
+    struct CATCH_DLL_PUBLIC lineOfChars {
         char c;
         constexpr lineOfChars( char c_ ): c( c_ ) {}
 
-        friend std::ostream& operator<<( std::ostream& out, lineOfChars value );
+        CATCH_DLL_PUBLIC friend std::ostream& operator<<( std::ostream& out,
+                                                          lineOfChars value );
     };
 
     /**
@@ -11220,7 +11523,7 @@ namespace Catch {
      * bases. The output should be backwards compatible with the output of
      * Catch2 v2 binaries.
      */
-    void
+    CATCH_DLL_PUBLIC void
     defaultListReporters( std::ostream& out,
                           std::vector<ReporterDescription> const& descriptions,
                           Verbosity verbosity );
@@ -11232,7 +11535,9 @@ namespace Catch {
      * bases. The output should be backwards compatible with the output of
      * Catch2 v2 binaries.
      */
-    void defaultListTags( std::ostream& out, std::vector<TagInfo> const& tags, bool isFiltered );
+    CATCH_DLL_PUBLIC void defaultListTags( std::ostream& out,
+                                           std::vector<TagInfo> const& tags,
+                                           bool isFiltered );
 
     /**
      * Lists test case information to the provided stream in user-friendly
@@ -11243,10 +11548,12 @@ namespace Catch {
      * v2 binaries, and also supports the format specific to the old
      * `--list-test-names-only` option, for people who used it in integrations.
      */
-    void defaultListTests( std::ostream& out,
-                           std::vector<TestCaseHandle> const& tests,
-                           bool isFiltered,
-                           Verbosity verbosity );
+    CATCH_DLL_PUBLIC void
+    defaultListTests( std::ostream& out,
+                      ColourImpl* streamColour,
+                      std::vector<TestCaseHandle> const& tests,
+                      bool isFiltered,
+                      Verbosity verbosity );
 
 } // end namespace Catch
 
@@ -11257,10 +11564,9 @@ namespace Catch {
 #define CATCH_REPORTER_JUNIT_HPP_INCLUDED
 
 
-
 namespace Catch {
 
-    class JunitReporter final : public CumulativeReporterBase {
+    class CATCH_DLL_PUBLIC JunitReporter final : public CumulativeReporterBase {
     public:
         JunitReporter(ReporterConfig const& _config);
 
@@ -11303,13 +11609,13 @@ namespace Catch {
 #endif // CATCH_REPORTER_JUNIT_HPP_INCLUDED
 
 
-#ifndef CATCH_REPORTER_LISTENING_HPP_INCLUDED
-#define CATCH_REPORTER_LISTENING_HPP_INCLUDED
+#ifndef CATCH_REPORTER_MULTI_HPP_INCLUDED
+#define CATCH_REPORTER_MULTI_HPP_INCLUDED
 
 
 namespace Catch {
 
-    class ListeningReporter final : public IStreamingReporter {
+    class CATCH_DLL_PUBLIC MultiReporter final : public IEventListener {
         /*
          * Stores all added reporters and listeners
          *
@@ -11323,17 +11629,17 @@ namespace Catch {
         // so that we can insert them into the main vector at the right place
         size_t m_insertedListeners = 0;
 
-        void updatePreferences(IStreamingReporter const& reporterish);
+        void updatePreferences(IEventListener const& reporterish);
 
     public:
-        ListeningReporter( IConfig const* config ):
-            IStreamingReporter( config )
+        MultiReporter( IConfig const* config ):
+            IEventListener( config )
         {}
 
         void addListener( IStreamingReporterPtr&& listener );
         void addReporter( IStreamingReporterPtr&& reporter );
 
-    public: // IStreamingReporter
+    public: // IEventListener
 
         void noMatchingTestCases( StringRef unmatchedSpec ) override;
         void fatalErrorEncountered( StringRef error ) override;
@@ -11361,13 +11667,11 @@ namespace Catch {
         void listReporters(std::vector<ReporterDescription> const& descriptions) override;
         void listTests(std::vector<TestCaseHandle> const& tests) override;
         void listTags(std::vector<TagInfo> const& tags) override;
-
-
     };
 
 } // end namespace Catch
 
-#endif // CATCH_REPORTER_LISTENING_HPP_INCLUDED
+#endif // CATCH_REPORTER_MULTI_HPP_INCLUDED
 
 
 #ifndef CATCH_REPORTER_REGISTRARS_HPP_INCLUDED
@@ -11376,11 +11680,11 @@ namespace Catch {
 
 namespace Catch {
 
-    struct IStreamingReporter;
-    using IStreamingReporterPtr = Detail::unique_ptr<IStreamingReporter>;
+    class IEventListener;
+    using IStreamingReporterPtr = Detail::unique_ptr<IEventListener>;
 
     template <typename T>
-    class ReporterFactory : public IReporterFactory {
+    class CATCH_DLL_PUBLIC ReporterFactory : public IReporterFactory {
 
         IStreamingReporterPtr create( ReporterConfig const& config ) const override {
             return Detail::make_unique<T>( config );
@@ -11391,21 +11695,20 @@ namespace Catch {
         }
     };
 
-
-    template<typename T>
-    class ReporterRegistrar {
+    template <typename T> class CATCH_DLL_PUBLIC ReporterRegistrar {
     public:
         explicit ReporterRegistrar( std::string const& name ) {
             getMutableRegistryHub().registerReporter( name, Detail::make_unique<ReporterFactory<T>>() );
         }
     };
 
-    template<typename T>
-    class ListenerRegistrar {
+    template <typename T> class CATCH_DLL_PUBLIC ListenerRegistrar {
 
-        class ListenerFactory : public IReporterFactory {
+        class CATCH_DLL_PUBLIC TypedListenerFactory
+            : public EventListenerFactory {
 
-            IStreamingReporterPtr create( ReporterConfig const& config ) const override {
+            IStreamingReporterPtr
+            create( IConfig const* config ) const override {
                 return Detail::make_unique<T>(config);
             }
             std::string getDescription() const override {
@@ -11416,7 +11719,7 @@ namespace Catch {
     public:
 
         ListenerRegistrar() {
-            getMutableRegistryHub().registerListener( Detail::make_unique<ListenerFactory>() );
+            getMutableRegistryHub().registerListener( Detail::make_unique<TypedListenerFactory>() );
         }
     };
 }
@@ -11448,10 +11751,9 @@ namespace Catch {
 #define CATCH_REPORTER_SONARQUBE_HPP_INCLUDED
 
 
-
 namespace Catch {
 
-    struct SonarQubeReporter final : CumulativeReporterBase {
+    struct CATCH_DLL_PUBLIC SonarQubeReporter final : CumulativeReporterBase {
 
         SonarQubeReporter(ReporterConfig const& config)
         : CumulativeReporterBase(config)
@@ -11491,7 +11793,6 @@ namespace Catch {
         XmlWriter xml;
     };
 
-
 } // end namespace Catch
 
 #endif // CATCH_REPORTER_SONARQUBE_HPP_INCLUDED
@@ -11503,7 +11804,7 @@ namespace Catch {
 
 namespace Catch {
 
-    struct TAPReporter final : StreamingReporterBase {
+    struct CATCH_DLL_PUBLIC TAPReporter final : StreamingReporterBase {
 
         TAPReporter( ReporterConfig const& config ):
             StreamingReporterBase( config ) {
@@ -11534,7 +11835,6 @@ namespace Catch {
 #ifndef CATCH_REPORTER_TEAMCITY_HPP_INCLUDED
 #define CATCH_REPORTER_TEAMCITY_HPP_INCLUDED
 
-
 #include <cstring>
 
 #ifdef __clang__
@@ -11544,7 +11844,7 @@ namespace Catch {
 
 namespace Catch {
 
-    struct TeamCityReporter final : StreamingReporterBase {
+    struct CATCH_DLL_PUBLIC TeamCityReporter final : StreamingReporterBase {
         TeamCityReporter( ReporterConfig const& _config )
         :   StreamingReporterBase( _config )
         {
@@ -11594,10 +11894,8 @@ namespace Catch {
 #define CATCH_REPORTER_XML_HPP_INCLUDED
 
 
-
-
 namespace Catch {
-    class XmlReporter : public StreamingReporterBase {
+    class CATCH_DLL_PUBLIC XmlReporter : public StreamingReporterBase {
     public:
         XmlReporter(ReporterConfig const& _config);
 
