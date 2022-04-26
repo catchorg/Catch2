@@ -8,15 +8,15 @@
 #ifndef CATCH_MESSAGE_INFO_HPP_INCLUDED
 #define CATCH_MESSAGE_INFO_HPP_INCLUDED
 
+#include <catch2/interfaces/catch_interfaces_capture.hpp>
+#include <catch2/internal/catch_dll_public.hpp>
 #include <catch2/internal/catch_result_type.hpp>
 #include <catch2/internal/catch_source_line_info.hpp>
-#include <catch2/interfaces/catch_interfaces_capture.hpp>
-
 #include <string>
 
 namespace Catch {
 
-    struct MessageInfo {
+    struct CATCH_DLL_PUBLIC MessageInfo {
         MessageInfo(    StringRef _macroName,
                         SourceLineInfo const& _lineInfo,
                         ResultWas::OfType _type );

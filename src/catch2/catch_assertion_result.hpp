@@ -9,17 +9,16 @@
 #define CATCH_ASSERTION_RESULT_HPP_INCLUDED
 
 #include <catch2/catch_assertion_info.hpp>
+#include <catch2/internal/catch_dll_public.hpp>
+#include <catch2/internal/catch_lazy_expr.hpp>
 #include <catch2/internal/catch_result_type.hpp>
 #include <catch2/internal/catch_source_line_info.hpp>
 #include <catch2/internal/catch_stringref.hpp>
-#include <catch2/internal/catch_lazy_expr.hpp>
-
 #include <string>
 
 namespace Catch {
 
-    struct AssertionResultData
-    {
+    struct CATCH_DLL_PUBLIC AssertionResultData {
         AssertionResultData() = delete;
 
         AssertionResultData( ResultWas::OfType _resultType, LazyExpression const& _lazyExpression );
@@ -32,7 +31,7 @@ namespace Catch {
         std::string reconstructExpression() const;
     };
 
-    class AssertionResult {
+    class CATCH_DLL_PUBLIC AssertionResult {
     public:
         AssertionResult() = delete;
         AssertionResult( AssertionInfo const& info, AssertionResultData const& data );

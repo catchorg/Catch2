@@ -29,11 +29,11 @@
 #    endif
 #endif
 
+#include <cassert>
+#include <catch2/internal/catch_dll_public.hpp>
 #include <catch2/internal/catch_move_and_forward.hpp>
 #include <catch2/internal/catch_noncopyable.hpp>
 #include <catch2/internal/catch_void_type.hpp>
-
-#include <cassert>
 #include <cctype>
 #include <memory>
 #include <ostream>
@@ -49,24 +49,24 @@ namespace Catch {
         class Parser;
 
         // enum of result types from a parse
-        enum class ParseResultType {
+        enum class CATCH_DLL_PUBLIC ParseResultType {
             Matched,
             NoMatch,
             ShortCircuitAll,
             ShortCircuitSame
         };
 
-        struct accept_many_t {};
+        struct CATCH_DLL_PUBLIC accept_many_t {};
         constexpr accept_many_t accept_many {};
 
         namespace Detail {
-            struct fake_arg {
+            struct CATCH_DLL_PUBLIC fake_arg {
                 template <typename T>
                 operator T();
             };
 
             template <typename F, typename = void>
-            struct is_unary_function : std::false_type {};
+            struct CATCH_DLL_PUBLIC is_unary_function : std::false_type {};
 
             template <typename F>
             struct is_unary_function<
@@ -99,15 +99,15 @@ namespace Catch {
             // Wraps a token coming from a token stream. These may not directly
             // correspond to strings as a single string may encode an option +
             // its argument if the : or = form is used
-            enum class TokenType { Option, Argument };
-            struct Token {
+            enum class CATCH_DLL_PUBLIC TokenType { Option, Argument };
+            struct CATCH_DLL_PUBLIC Token {
                 TokenType type;
                 std::string token;
             };
 
             // Abstracts iterators into args as a stream of tokens, with option
             // arguments uniformly handled
-            class TokenStream {
+            class CATCH_DLL_PUBLIC TokenStream {
                 using Iterator = std::vector<std::string>::const_iterator;
                 Iterator it;
                 Iterator itEnd;
@@ -141,14 +141,14 @@ namespace Catch {
             };
 
             //! Denotes type of a parsing result
-            enum class ResultType {
+            enum class CATCH_DLL_PUBLIC ResultType {
                 Ok,          ///< No errors
                 LogicError,  ///< Error in user-specified arguments for
                              ///< construction
                 RuntimeError ///< Error in parsing inputs
             };
 
-            class ResultBase {
+            class CATCH_DLL_PUBLIC ResultBase {
             protected:
                 ResultBase( ResultType type ): m_type( type ) {}
                 virtual ~ResultBase(); // = default;
@@ -164,7 +164,8 @@ namespace Catch {
                 ResultType m_type;
             };
 
-            template <typename T> class ResultValueBase : public ResultBase {
+            template <typename T>
+            class CATCH_DLL_PUBLIC ResultValueBase : public ResultBase {
             public:
                 auto value() const -> T const& {
                     enforceOk();
@@ -210,7 +211,7 @@ namespace Catch {
             };
 
             template <typename T = void>
-            class BasicResult : public ResultValueBase<T> {
+            class CATCH_DLL_PUBLIC BasicResult : public ResultValueBase<T> {
             public:
                 template <typename U>
                 explicit BasicResult( BasicResult<U> const& other ):
@@ -265,7 +266,7 @@ namespace Catch {
                 using ResultBase::m_type;
             };
 
-            class ParseState {
+            class CATCH_DLL_PUBLIC ParseState {
             public:
                 ParseState( ParseResultType type,
                             TokenStream const& remainingTokens );
@@ -284,7 +285,7 @@ namespace Catch {
             using ParserResult = BasicResult<ParseResultType>;
             using InternalParseResult = BasicResult<ParseState>;
 
-            struct HelpColumns {
+            struct CATCH_DLL_PUBLIC HelpColumns {
                 std::string left;
                 std::string right;
             };
@@ -301,9 +302,10 @@ namespace Catch {
                     return ParserResult::ok( ParseResultType::Matched );
                 }
             }
-            ParserResult convertInto( std::string const& source,
-                                      std::string& target );
-            ParserResult convertInto( std::string const& source, bool& target );
+            CATCH_DLL_PUBLIC ParserResult
+            convertInto( std::string const& source, std::string& target );
+            CATCH_DLL_PUBLIC ParserResult
+            convertInto( std::string const& source, bool& target );
 
 #ifdef CLARA_CONFIG_OPTIONAL_TYPE
             template <typename T>
@@ -318,21 +320,22 @@ namespace Catch {
             }
 #endif // CLARA_CONFIG_OPTIONAL_TYPE
 
-            struct BoundRef : Catch::Detail::NonCopyable {
+            struct CATCH_DLL_PUBLIC BoundRef : Catch::Detail::NonCopyable {
                 virtual ~BoundRef() = default;
                 virtual bool isContainer() const;
                 virtual bool isFlag() const;
             };
-            struct BoundValueRefBase : BoundRef {
+            struct CATCH_DLL_PUBLIC BoundValueRefBase : BoundRef {
                 virtual auto setValue( std::string const& arg )
                     -> ParserResult = 0;
             };
-            struct BoundFlagRefBase : BoundRef {
+            struct CATCH_DLL_PUBLIC BoundFlagRefBase : BoundRef {
                 virtual auto setFlag( bool flag ) -> ParserResult = 0;
                 bool isFlag() const override;
             };
 
-            template <typename T> struct BoundValueRef : BoundValueRefBase {
+            template <typename T>
+            struct CATCH_DLL_PUBLIC BoundValueRef : BoundValueRefBase {
                 T& m_ref;
 
                 explicit BoundValueRef( T& ref ): m_ref( ref ) {}
@@ -360,7 +363,7 @@ namespace Catch {
                 }
             };
 
-            struct BoundFlagRef : BoundFlagRefBase {
+            struct CATCH_DLL_PUBLIC BoundFlagRef : BoundFlagRefBase {
                 bool& m_ref;
 
                 explicit BoundFlagRef( bool& ref ): m_ref( ref ) {}
@@ -368,7 +371,8 @@ namespace Catch {
                 ParserResult setFlag( bool flag ) override;
             };
 
-            template <typename ReturnType> struct LambdaInvoker {
+            template <typename ReturnType>
+            struct CATCH_DLL_PUBLIC LambdaInvoker {
                 static_assert(
                     std::is_same<ReturnType, ParserResult>::value,
                     "Lambda must return void or clara::ParserResult" );
@@ -399,7 +403,8 @@ namespace Catch {
                                      L>::ReturnType>::invoke( lambda, temp );
             }
 
-            template <typename L> struct BoundLambda : BoundValueRefBase {
+            template <typename L>
+            struct CATCH_DLL_PUBLIC BoundLambda : BoundValueRefBase {
                 L m_lambda;
 
                 static_assert(
@@ -414,12 +419,14 @@ namespace Catch {
                 }
             };
 
-            template <typename L> struct BoundManyLambda : BoundLambda<L> {
+            template <typename L>
+            struct CATCH_DLL_PUBLIC BoundManyLambda : BoundLambda<L> {
                 explicit BoundManyLambda( L const& lambda ): BoundLambda<L>( lambda ) {}
                 bool isContainer() const override { return true; }
             };
 
-            template <typename L> struct BoundFlagLambda : BoundFlagRefBase {
+            template <typename L>
+            struct CATCH_DLL_PUBLIC BoundFlagLambda : BoundFlagRefBase {
                 L m_lambda;
 
                 static_assert(
@@ -439,9 +446,9 @@ namespace Catch {
                 }
             };
 
-            enum class Optionality { Optional, Required };
+            enum class CATCH_DLL_PUBLIC Optionality { Optional, Required };
 
-            class ParserBase {
+            class CATCH_DLL_PUBLIC ParserBase {
             public:
                 virtual ~ParserBase() = default;
                 virtual auto validate() const -> Result { return Result::ok(); }
@@ -454,7 +461,7 @@ namespace Catch {
             };
 
             template <typename DerivedT>
-            class ComposableParserImpl : public ParserBase {
+            class CATCH_DLL_PUBLIC ComposableParserImpl : public ParserBase {
             public:
                 template <typename T>
                 auto operator|( T const& other ) const -> Parser;
@@ -462,7 +469,8 @@ namespace Catch {
 
             // Common code and state for Args and Opts
             template <typename DerivedT>
-            class ParserRefImpl : public ComposableParserImpl<DerivedT> {
+            class CATCH_DLL_PUBLIC ParserRefImpl
+                : public ComposableParserImpl<DerivedT> {
             protected:
                 Optionality m_optionality = Optionality::Optional;
                 std::shared_ptr<BoundRef> m_ref;
@@ -527,7 +535,7 @@ namespace Catch {
 
 
         // A parser for arguments
-        class Arg : public Detail::ParserRefImpl<Arg> {
+        class CATCH_DLL_PUBLIC Arg : public Detail::ParserRefImpl<Arg> {
         public:
             using ParserRefImpl::ParserRefImpl;
             using ParserBase::parse;
@@ -538,7 +546,7 @@ namespace Catch {
         };
 
         // A parser for options
-        class Opt : public Detail::ParserRefImpl<Opt> {
+        class CATCH_DLL_PUBLIC Opt : public Detail::ParserRefImpl<Opt> {
         protected:
             std::vector<std::string> m_optNames;
 
@@ -585,7 +593,8 @@ namespace Catch {
         };
 
         // Specifies the name of the executable
-        class ExeName : public Detail::ComposableParserImpl<ExeName> {
+        class CATCH_DLL_PUBLIC ExeName
+            : public Detail::ComposableParserImpl<ExeName> {
             std::shared_ptr<std::string> m_name;
             std::shared_ptr<Detail::BoundValueRefBase> m_ref;
 
@@ -614,9 +623,8 @@ namespace Catch {
             Detail::ParserResult set(std::string const& newName);
         };
 
-
         // A Combined parser
-        class Parser : Detail::ParserBase {
+        class CATCH_DLL_PUBLIC Parser : Detail::ParserBase {
             mutable ExeName m_exeName;
             std::vector<Opt> m_options;
             std::vector<Arg> m_args;
@@ -649,7 +657,8 @@ namespace Catch {
 
             void writeToStream(std::ostream& os) const;
 
-            friend auto operator<<(std::ostream& os, Parser const& parser)
+            CATCH_DLL_PUBLIC friend auto operator<<( std::ostream& os,
+                                                     Parser const& parser )
                 -> std::ostream& {
                 parser.writeToStream(os);
                 return os;
@@ -665,7 +674,7 @@ namespace Catch {
 
         // Transport for raw args (copied from main args, or supplied via
         // init list for testing)
-        class Args {
+        class CATCH_DLL_PUBLIC Args {
             friend Detail::TokenStream;
             std::string m_exeName;
             std::vector<std::string> m_args;
@@ -677,9 +686,8 @@ namespace Catch {
             std::string const& exeName() const { return m_exeName; }
         };
 
-
         // Convenience wrapper for option parser that specifies the help option
-        struct Help : Opt {
+        struct CATCH_DLL_PUBLIC Help : Opt {
             Help(bool& showHelpFlag);
         };
 

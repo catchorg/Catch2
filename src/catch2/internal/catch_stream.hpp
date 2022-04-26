@@ -8,11 +8,11 @@
 #ifndef CATCH_STREAM_HPP_INCLUDED
 #define CATCH_STREAM_HPP_INCLUDED
 
+#include <catch2/internal/catch_dll_public.hpp>
 #include <catch2/internal/catch_noncopyable.hpp>
 #include <catch2/internal/catch_unique_ptr.hpp>
-
-#include <iosfwd>
 #include <cstddef>
+#include <iosfwd>
 #include <ostream>
 #include <string>
 
@@ -22,7 +22,7 @@ namespace Catch {
     std::ostream& cerr();
     std::ostream& clog();
 
-    class IStream {
+    class CATCH_DLL_PUBLIC IStream {
     public:
         virtual ~IStream(); // = default
         virtual std::ostream& stream() const = 0;
@@ -31,9 +31,10 @@ namespace Catch {
         virtual bool isStdout() const { return false;  }
     };
 
-    auto makeStream( std::string const& filename ) -> Detail::unique_ptr<IStream const>;
+    CATCH_DLL_PUBLIC auto makeStream( std::string const& filename )
+        -> Detail::unique_ptr<IStream const>;
 
-    class ReusableStringStream : Detail::NonCopyable {
+    class CATCH_DLL_PUBLIC ReusableStringStream : Detail::NonCopyable {
         std::size_t m_index;
         std::ostream* m_oss;
     public:
@@ -57,8 +58,9 @@ namespace Catch {
 #pragma GCC diagnostic ignored "-Wnonnull-compare"
 #endif
 
-        template<typename T>
-        auto operator << ( T const& value ) -> ReusableStringStream& {
+        template <typename T>
+        CATCH_DLL_PUBLIC auto operator<<( T const& value )
+            -> ReusableStringStream& {
             *m_oss << value;
             return *this;
         }

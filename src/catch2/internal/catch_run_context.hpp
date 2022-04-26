@@ -8,18 +8,18 @@
 #ifndef CATCH_RUN_CONTEXT_HPP_INCLUDED
 #define CATCH_RUN_CONTEXT_HPP_INCLUDED
 
-#include <catch2/interfaces/catch_interfaces_reporter.hpp>
-#include <catch2/internal/catch_test_registry.hpp>
-#include <catch2/internal/catch_fatal_condition_handler.hpp>
-#include <catch2/catch_test_case_info.hpp>
-#include <catch2/catch_message.hpp>
-#include <catch2/catch_totals.hpp>
-#include <catch2/internal/catch_test_case_tracker.hpp>
 #include <catch2/catch_assertion_info.hpp>
 #include <catch2/catch_assertion_result.hpp>
-#include <catch2/internal/catch_optional.hpp>
+#include <catch2/catch_message.hpp>
+#include <catch2/catch_test_case_info.hpp>
+#include <catch2/catch_totals.hpp>
+#include <catch2/interfaces/catch_interfaces_reporter.hpp>
+#include <catch2/internal/catch_dll_public.hpp>
+#include <catch2/internal/catch_fatal_condition_handler.hpp>
 #include <catch2/internal/catch_move_and_forward.hpp>
-
+#include <catch2/internal/catch_optional.hpp>
+#include <catch2/internal/catch_test_case_tracker.hpp>
+#include <catch2/internal/catch_test_registry.hpp>
 #include <string>
 
 namespace Catch {
@@ -30,7 +30,7 @@ namespace Catch {
 
     ///////////////////////////////////////////////////////////////////////////
 
-    class RunContext : public IResultCapture {
+    class CATCH_DLL_PUBLIC RunContext : public IResultCapture {
 
     public:
         RunContext( RunContext const& ) = delete;

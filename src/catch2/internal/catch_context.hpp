@@ -8,21 +8,21 @@
 #ifndef CATCH_CONTEXT_HPP_INCLUDED
 #define CATCH_CONTEXT_HPP_INCLUDED
 
+#include <catch2/internal/catch_dll_public.hpp>
+
 namespace Catch {
 
     struct IResultCapture;
     struct IConfig;
 
-    struct IContext
-    {
+    struct CATCH_DLL_PUBLIC IContext {
         virtual ~IContext(); // = default
 
         virtual IResultCapture* getResultCapture() = 0;
         virtual IConfig const* getConfig() const = 0;
     };
 
-    struct IMutableContext : IContext
-    {
+    struct CATCH_DLL_PUBLIC IMutableContext : IContext {
         virtual ~IMutableContext(); // = default
         virtual void setResultCapture( IResultCapture* resultCapture ) = 0;
         virtual void setConfig( IConfig const* config ) = 0;
@@ -49,8 +49,8 @@ namespace Catch {
 
     void cleanUpContext();
 
-    class SimplePcg32;
-    SimplePcg32& rng();
+    class CATCH_DLL_PUBLIC SimplePcg32;
+    CATCH_DLL_PUBLIC SimplePcg32& rng();
 }
 
 #endif // CATCH_CONTEXT_HPP_INCLUDED

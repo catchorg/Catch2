@@ -9,12 +9,12 @@
 #define CATCH_WILDCARD_PATTERN_HPP_INCLUDED
 
 #include <catch2/internal/catch_case_sensitive.hpp>
-
+#include <catch2/internal/catch_dll_public.hpp>
 #include <string>
 
 namespace Catch
 {
-    class WildcardPattern {
+    class CATCH_DLL_PUBLIC WildcardPattern {
         enum WildcardPosition {
             NoWildcard = 0,
             WildcardAtStart = 1,

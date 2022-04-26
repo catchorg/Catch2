@@ -8,9 +8,9 @@
 #ifndef CATCH_INTERFACES_CONFIG_HPP_INCLUDED
 #define CATCH_INTERFACES_CONFIG_HPP_INCLUDED
 
+#include <catch2/internal/catch_dll_public.hpp>
 #include <catch2/internal/catch_noncopyable.hpp>
 #include <catch2/internal/catch_stringref.hpp>
-
 #include <chrono>
 #include <iosfwd>
 #include <string>
@@ -18,46 +18,42 @@
 
 namespace Catch {
 
-    enum class Verbosity {
-        Quiet = 0,
-        Normal,
-        High
+    enum class CATCH_DLL_PUBLIC Verbosity { Quiet = 0, Normal, High };
+
+    struct CATCH_DLL_PUBLIC WarnAbout {
+        enum What {
+            Nothing = 0x00,
+            //! A test case or leaf section did not run any assertions
+            NoAssertions = 0x01,
+            //! A command line test spec matched no test cases
+            UnmatchedTestSpec = 0x02,
+        };
     };
 
-    struct WarnAbout { enum What {
-        Nothing = 0x00,
-        //! A test case or leaf section did not run any assertions
-        NoAssertions = 0x01,
-        //! A command line test spec matched no test cases
-        UnmatchedTestSpec = 0x02,
-    }; };
-
-    enum class ShowDurations {
+    enum class CATCH_DLL_PUBLIC ShowDurations {
         DefaultForReporter,
         Always,
         Never
     };
-    enum class TestRunOrder {
+    enum class CATCH_DLL_PUBLIC TestRunOrder {
         Declared,
         LexicographicallySorted,
         Randomized
     };
-    enum class UseColour {
-        Auto,
-        Yes,
-        No
+    enum class CATCH_DLL_PUBLIC UseColour { Auto, Yes, No };
+    struct CATCH_DLL_PUBLIC WaitForKeypress {
+        enum When {
+            Never,
+            BeforeStart = 1,
+            BeforeExit = 2,
+            BeforeStartAndExit = BeforeStart | BeforeExit
+        };
     };
-    struct WaitForKeypress { enum When {
-        Never,
-        BeforeStart = 1,
-        BeforeExit = 2,
-        BeforeStartAndExit = BeforeStart | BeforeExit
-    }; };
 
     class TestSpec;
     class IStream;
 
-    struct IConfig : Detail::NonCopyable {
+    struct CATCH_DLL_PUBLIC IConfig : Detail::NonCopyable {
 
         virtual ~IConfig();
 

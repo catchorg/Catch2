@@ -8,12 +8,13 @@
 #ifndef CATCH_INTERFACES_GENERATORTRACKER_HPP_INCLUDED
 #define CATCH_INTERFACES_GENERATORTRACKER_HPP_INCLUDED
 
+#include <catch2/internal/catch_dll_public.hpp>
 #include <catch2/internal/catch_unique_ptr.hpp>
 
 namespace Catch {
 
     namespace Generators {
-        class GeneratorUntypedBase {
+        class CATCH_DLL_PUBLIC GeneratorUntypedBase {
         public:
             GeneratorUntypedBase() = default;
             // Generation of copy ops is deprecated (and Clang will complain)
@@ -33,7 +34,7 @@ namespace Catch {
 
     } // namespace Generators
 
-    struct IGeneratorTracker {
+    struct CATCH_DLL_PUBLIC IGeneratorTracker {
         virtual ~IGeneratorTracker(); // = default;
         virtual auto hasGenerator() const -> bool = 0;
         virtual auto getGenerator() const -> Generators::GeneratorBasePtr const& = 0;

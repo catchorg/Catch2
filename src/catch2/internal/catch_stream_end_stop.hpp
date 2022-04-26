@@ -8,6 +8,7 @@
 #ifndef CATCH_STREAM_END_STOP_HPP_INCLUDED
 #define CATCH_STREAM_END_STOP_HPP_INCLUDED
 
+#include <catch2/internal/catch_dll_public.hpp>
 #include <catch2/internal/catch_stringref.hpp>
 
 namespace Catch {
@@ -16,7 +17,7 @@ namespace Catch {
     //    << +StreamEndStop
     // as well as
     //    << stuff +StreamEndStop
-    struct StreamEndStop {
+    struct CATCH_DLL_PUBLIC StreamEndStop {
         StringRef operator+() const { return StringRef(); }
 
         template <typename T>

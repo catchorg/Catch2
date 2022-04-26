@@ -8,20 +8,22 @@
 #ifndef CATCH_XMLWRITER_HPP_INCLUDED
 #define CATCH_XMLWRITER_HPP_INCLUDED
 
+#include <catch2/internal/catch_dll_public.hpp>
 #include <catch2/internal/catch_stream.hpp>
 #include <catch2/internal/catch_stringref.hpp>
-
 #include <vector>
 
 namespace Catch {
-    enum class XmlFormatting {
+    enum class CATCH_DLL_PUBLIC XmlFormatting {
         None = 0x00,
         Indent = 0x01,
         Newline = 0x02,
     };
 
-    XmlFormatting operator | (XmlFormatting lhs, XmlFormatting rhs);
-    XmlFormatting operator & (XmlFormatting lhs, XmlFormatting rhs);
+    CATCH_DLL_PUBLIC XmlFormatting operator|( XmlFormatting lhs,
+                                              XmlFormatting rhs );
+    CATCH_DLL_PUBLIC XmlFormatting operator&( XmlFormatting lhs,
+                                              XmlFormatting rhs );
 
     /**
      * Helper for XML-encoding text (escaping angle brackets, quotes, etc)
@@ -29,7 +31,7 @@ namespace Catch {
      * Note: doesn't take ownership of passed strings, and thus the
      *       encoded string must outlive the encoding instance.
      */
-    class XmlEncode {
+    class CATCH_DLL_PUBLIC XmlEncode {
     public:
         enum ForWhat { ForTextNodes, ForAttributes };
 
@@ -37,17 +39,17 @@ namespace Catch {
 
         void encodeTo( std::ostream& os ) const;
 
-        friend std::ostream& operator << ( std::ostream& os, XmlEncode const& xmlEncode );
+        CATCH_DLL_PUBLIC friend std::ostream&
+        operator<<( std::ostream& os, XmlEncode const& xmlEncode );
 
     private:
         StringRef m_str;
         ForWhat m_forWhat;
     };
 
-    class XmlWriter {
+    class CATCH_DLL_PUBLIC XmlWriter {
     public:
-
-        class ScopedElement {
+        class CATCH_DLL_PUBLIC ScopedElement {
         public:
             ScopedElement( XmlWriter* writer, XmlFormatting fmt );
 
@@ -145,7 +147,6 @@ namespace Catch {
         std::string m_indent;
         std::ostream& m_os;
     };
-
 }
 
 #endif // CATCH_XMLWRITER_HPP_INCLUDED

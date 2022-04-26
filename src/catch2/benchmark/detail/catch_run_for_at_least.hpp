@@ -38,9 +38,7 @@ namespace Catch {
             template <typename Clock, typename Fun>
             using run_for_at_least_argument_t = std::conditional_t<is_callable<Fun(Chronometer)>::value, Chronometer, int>;
 
-
-            [[noreturn]]
-            void throw_optimized_away_error();
+            [[noreturn]] CATCH_DLL_PUBLIC void throw_optimized_away_error();
 
             template <typename Clock, typename Fun>
             TimingOf<Clock, Fun, run_for_at_least_argument_t<Clock, Fun>>

@@ -8,13 +8,14 @@
 #ifndef CATCH_INTERFACES_TAG_ALIAS_REGISTRY_HPP_INCLUDED
 #define CATCH_INTERFACES_TAG_ALIAS_REGISTRY_HPP_INCLUDED
 
+#include <catch2/internal/catch_dll_public.hpp>
 #include <string>
 
 namespace Catch {
 
     struct TagAlias;
 
-    struct ITagAliasRegistry {
+    struct CATCH_DLL_PUBLIC ITagAliasRegistry {
         virtual ~ITagAliasRegistry(); // = default
         // Nullptr if not present
         virtual TagAlias const* find( std::string const& alias ) const = 0;

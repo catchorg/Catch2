@@ -8,15 +8,15 @@
 #ifndef CATCH_TAG_ALIAS_REGISTRY_HPP_INCLUDED
 #define CATCH_TAG_ALIAS_REGISTRY_HPP_INCLUDED
 
-#include <catch2/interfaces/catch_interfaces_tag_alias_registry.hpp>
 #include <catch2/catch_tag_alias.hpp>
-
+#include <catch2/interfaces/catch_interfaces_tag_alias_registry.hpp>
+#include <catch2/internal/catch_dll_public.hpp>
 #include <map>
 #include <string>
 
 namespace Catch {
 
-    class TagAliasRegistry : public ITagAliasRegistry {
+    class CATCH_DLL_PUBLIC TagAliasRegistry : public ITagAliasRegistry {
     public:
         ~TagAliasRegistry() override;
         TagAlias const* find( std::string const& alias ) const override;

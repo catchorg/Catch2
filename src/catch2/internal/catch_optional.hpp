@@ -8,11 +8,13 @@
 #ifndef CATCH_OPTIONAL_HPP_INCLUDED
 #define CATCH_OPTIONAL_HPP_INCLUDED
 
+#include <catch2/internal/catch_dll_public.hpp>
+#include <cassert>
+
 namespace Catch {
 
     // An optional type
-    template<typename T>
-    class Optional {
+    template <typename T> class CATCH_DLL_PUBLIC Optional {
     public:
         Optional() : nullableValue( nullptr ) {}
         Optional( T const& _value )
@@ -75,7 +77,8 @@ namespace Catch {
             return some();
         }
 
-        friend bool operator==(Optional const& a, Optional const& b) {
+        CATCH_DLL_PUBLIC friend bool operator==( Optional const& a,
+                                                 Optional const& b ) {
             if (a.none() && b.none()) {
                 return true;
             } else if (a.some() && b.some()) {
@@ -84,7 +87,8 @@ namespace Catch {
                 return false;
             }
         }
-        friend bool operator!=(Optional const& a, Optional const& b) {
+        CATCH_DLL_PUBLIC friend bool operator!=( Optional const& a,
+                                                 Optional const& b ) {
             return !( a == b );
         }
 

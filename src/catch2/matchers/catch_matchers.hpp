@@ -8,16 +8,16 @@
 #ifndef CATCH_MATCHERS_HPP_INCLUDED
 #define CATCH_MATCHERS_HPP_INCLUDED
 
-#include <catch2/matchers/internal/catch_matchers_impl.hpp>
+#include <catch2/internal/catch_dll_public.hpp>
 #include <catch2/internal/catch_move_and_forward.hpp>
-
+#include <catch2/matchers/internal/catch_matchers_impl.hpp>
 #include <string>
 #include <vector>
 
 namespace Catch {
 namespace Matchers {
 
-    class MatcherUntypedBase {
+    class CATCH_DLL_PUBLIC MatcherUntypedBase {
     public:
         MatcherUntypedBase() = default;
 
@@ -35,16 +35,15 @@ namespace Matchers {
         mutable std::string m_cachedToString;
     };
 
-
-    template<typename T>
-    struct MatcherBase : MatcherUntypedBase {
+    template <typename T>
+    struct CATCH_DLL_PUBLIC MatcherBase : MatcherUntypedBase {
         virtual bool match( T const& arg ) const = 0;
     };
 
     namespace Detail {
 
-        template<typename ArgT>
-        struct MatchAllOf final : MatcherBase<ArgT> {
+        template <typename ArgT>
+        struct CATCH_DLL_PUBLIC MatchAllOf final : MatcherBase<ArgT> {
             MatchAllOf() = default;
             MatchAllOf(MatchAllOf const&) = delete;
             MatchAllOf& operator=(MatchAllOf const&) = delete;
@@ -97,8 +96,8 @@ namespace Matchers {
         template<typename ArgT>
         MatchAllOf<ArgT> operator&& (MatcherBase<ArgT> const& lhs, MatchAllOf<ArgT> const& rhs) = delete;
 
-        template<typename ArgT>
-        struct MatchAnyOf final : MatcherBase<ArgT> {
+        template <typename ArgT>
+        struct CATCH_DLL_PUBLIC MatchAnyOf final : MatcherBase<ArgT> {
             MatchAnyOf() = default;
             MatchAnyOf(MatchAnyOf const&) = delete;
             MatchAnyOf& operator=(MatchAnyOf const&) = delete;
@@ -150,8 +149,8 @@ namespace Matchers {
         template<typename ArgT>
         MatchAnyOf<ArgT> operator|| (MatcherBase<ArgT> const& lhs, MatchAnyOf<ArgT> const& rhs) = delete;
 
-        template<typename ArgT>
-        struct MatchNotOf final : MatcherBase<ArgT> {
+        template <typename ArgT>
+        struct CATCH_DLL_PUBLIC MatchNotOf final : MatcherBase<ArgT> {
 
             explicit MatchNotOf( MatcherBase<ArgT> const& underlyingMatcher ):
                 m_underlyingMatcher( underlyingMatcher )

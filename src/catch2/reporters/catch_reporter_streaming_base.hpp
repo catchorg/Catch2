@@ -8,15 +8,15 @@
 #ifndef CATCH_REPORTER_STREAMING_BASE_HPP_INCLUDED
 #define CATCH_REPORTER_STREAMING_BASE_HPP_INCLUDED
 
+#include <catch2/internal/catch_dll_public.hpp>
 #include <catch2/reporters/catch_reporter_common_base.hpp>
-
 #include <iosfwd>
 #include <string>
 #include <vector>
 
 namespace Catch {
 
-    class StreamingReporterBase : public ReporterBase {
+    class CATCH_DLL_PUBLIC StreamingReporterBase : public ReporterBase {
     public:
         StreamingReporterBase( ReporterConfig const& _config ):
             ReporterBase( _config ) {}

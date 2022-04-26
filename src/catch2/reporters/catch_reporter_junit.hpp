@@ -8,14 +8,14 @@
 #ifndef CATCH_REPORTER_JUNIT_HPP_INCLUDED
 #define CATCH_REPORTER_JUNIT_HPP_INCLUDED
 
-
-#include <catch2/reporters/catch_reporter_cumulative_base.hpp>
-#include <catch2/internal/catch_xmlwriter.hpp>
 #include <catch2/catch_timer.hpp>
+#include <catch2/internal/catch_dll_public.hpp>
+#include <catch2/internal/catch_xmlwriter.hpp>
+#include <catch2/reporters/catch_reporter_cumulative_base.hpp>
 
 namespace Catch {
 
-    class JunitReporter final : public CumulativeReporterBase {
+    class CATCH_DLL_PUBLIC JunitReporter final : public CumulativeReporterBase {
     public:
         JunitReporter(ReporterConfig const& _config);
 

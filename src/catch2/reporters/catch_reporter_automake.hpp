@@ -8,11 +8,12 @@
 #ifndef CATCH_REPORTER_AUTOMAKE_HPP_INCLUDED
 #define CATCH_REPORTER_AUTOMAKE_HPP_INCLUDED
 
+#include <catch2/internal/catch_dll_public.hpp>
 #include <catch2/reporters/catch_reporter_streaming_base.hpp>
 
 namespace Catch {
 
-    struct AutomakeReporter final : StreamingReporterBase {
+    struct CATCH_DLL_PUBLIC AutomakeReporter final : StreamingReporterBase {
         AutomakeReporter( ReporterConfig const& _config )
           :   StreamingReporterBase( _config )
         {}
@@ -26,7 +27,6 @@ namespace Catch {
 
         void testCaseEnded(TestCaseStats const& _testCaseStats) override;
         void skipTest(TestCaseInfo const& testInfo) override;
-
     };
 
 } // end namespace Catch

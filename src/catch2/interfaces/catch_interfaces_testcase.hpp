@@ -8,6 +8,7 @@
 #ifndef CATCH_INTERFACES_TESTCASE_HPP_INCLUDED
 #define CATCH_INTERFACES_TESTCASE_HPP_INCLUDED
 
+#include <catch2/internal/catch_dll_public.hpp>
 #include <vector>
 
 namespace Catch {
@@ -15,7 +16,7 @@ namespace Catch {
     class TestSpec;
     struct TestCaseInfo;
 
-    struct ITestInvoker {
+    struct CATCH_DLL_PUBLIC ITestInvoker {
         virtual void invoke () const = 0;
         virtual ~ITestInvoker(); // = default
     };
@@ -23,7 +24,7 @@ namespace Catch {
     class TestCaseHandle;
     struct IConfig;
 
-    struct ITestCaseRegistry {
+    struct CATCH_DLL_PUBLIC ITestCaseRegistry {
         virtual ~ITestCaseRegistry(); // = default
         // TODO: this exists only for adding filenames to test cases -- let's expose this in a saner way later
         virtual std::vector<TestCaseInfo* > const& getAllInfos() const = 0;

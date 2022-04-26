@@ -8,23 +8,21 @@
 #ifndef CATCH_LIST_HPP_INCLUDED
 #define CATCH_LIST_HPP_INCLUDED
 
+#include <catch2/internal/catch_dll_public.hpp>
 #include <catch2/internal/catch_stringref.hpp>
-
 #include <set>
 #include <string>
-
 
 namespace Catch {
 
     class IEventListener;
     class Config;
 
-
-    struct ReporterDescription {
+    struct CATCH_DLL_PUBLIC ReporterDescription {
         std::string name, description;
     };
 
-    struct TagInfo {
+    struct CATCH_DLL_PUBLIC TagInfo {
         void add(StringRef spelling);
         std::string all() const;
 

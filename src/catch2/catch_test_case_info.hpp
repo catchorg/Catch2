@@ -8,13 +8,12 @@
 #ifndef CATCH_TEST_CASE_INFO_HPP_INCLUDED
 #define CATCH_TEST_CASE_INFO_HPP_INCLUDED
 
-#include <catch2/internal/catch_source_line_info.hpp>
+#include <catch2/internal/catch_dll_public.hpp>
 #include <catch2/internal/catch_noncopyable.hpp>
+#include <catch2/internal/catch_source_line_info.hpp>
 #include <catch2/internal/catch_stringref.hpp>
 #include <catch2/internal/catch_test_registry.hpp>
 #include <catch2/internal/catch_unique_ptr.hpp>
-
-
 #include <string>
 #include <vector>
 
@@ -32,19 +31,21 @@ namespace Catch {
      * not a part of tag's representation, so e.g. "[cool-tag]" is represented
      * as "cool-tag" internally.
      */
-    struct Tag {
+    struct CATCH_DLL_PUBLIC Tag {
         constexpr Tag(StringRef original_):
             original(original_)
         {}
         StringRef original;
 
-        friend bool operator< ( Tag const& lhs, Tag const& rhs );
-        friend bool operator==( Tag const& lhs, Tag const& rhs );
+        CATCH_DLL_PUBLIC friend bool operator<( Tag const& lhs,
+                                                Tag const& rhs );
+        CATCH_DLL_PUBLIC friend bool operator==( Tag const& lhs,
+                                                 Tag const& rhs );
     };
 
     struct ITestInvoker;
 
-    enum class TestCaseProperties : uint8_t {
+    enum class CATCH_DLL_PUBLIC TestCaseProperties : uint8_t {
         None = 0,
         IsHidden = 1 << 1,
         ShouldFail = 1 << 2,
@@ -63,7 +64,7 @@ namespace Catch {
      *
      * Tags are kept sorted.
      */
-    struct TestCaseInfo : Detail::NonCopyable {
+    struct CATCH_DLL_PUBLIC TestCaseInfo : Detail::NonCopyable {
 
         TestCaseInfo(StringRef _className,
                      NameAndTags const& _tags,
@@ -103,7 +104,7 @@ namespace Catch {
      * Does not own either, and is specifically made to be cheap
      * to copy around.
      */
-    class TestCaseHandle {
+    class CATCH_DLL_PUBLIC TestCaseHandle {
         TestCaseInfo* m_info;
         ITestInvoker* m_invoker;
     public:
@@ -117,7 +118,7 @@ namespace Catch {
         TestCaseInfo const& getTestCaseInfo() const;
     };
 
-    Detail::unique_ptr<TestCaseInfo>
+    CATCH_DLL_PUBLIC Detail::unique_ptr<TestCaseInfo>
     makeTestCaseInfo( StringRef className,
                       NameAndTags const& nameAndTags,
                       SourceLineInfo const& lineInfo );

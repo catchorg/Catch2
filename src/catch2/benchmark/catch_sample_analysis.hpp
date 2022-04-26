@@ -10,19 +10,18 @@
 #ifndef CATCH_SAMPLE_ANALYSIS_HPP_INCLUDED
 #define CATCH_SAMPLE_ANALYSIS_HPP_INCLUDED
 
+#include <algorithm>
 #include <catch2/benchmark/catch_clock.hpp>
 #include <catch2/benchmark/catch_estimate.hpp>
 #include <catch2/benchmark/catch_outlier_classification.hpp>
+#include <catch2/internal/catch_dll_public.hpp>
 #include <catch2/internal/catch_move_and_forward.hpp>
-
-#include <algorithm>
-#include <vector>
 #include <iterator>
+#include <vector>
 
 namespace Catch {
     namespace Benchmark {
-        template <typename Duration>
-        struct SampleAnalysis {
+        template <typename Duration> struct CATCH_DLL_PUBLIC SampleAnalysis {
             std::vector<Duration> samples;
             Estimate<Duration> mean;
             Estimate<Duration> standard_deviation;

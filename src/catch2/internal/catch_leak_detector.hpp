@@ -8,12 +8,13 @@
 #ifndef CATCH_LEAK_DETECTOR_HPP_INCLUDED
 #define CATCH_LEAK_DETECTOR_HPP_INCLUDED
 
+#include <catch2/internal/catch_dll_public.hpp>
+
 namespace Catch {
 
-    struct LeakDetector {
+    struct CATCH_DLL_PUBLIC LeakDetector {
         LeakDetector();
         ~LeakDetector();
     };
-
 }
 #endif // CATCH_LEAK_DETECTOR_HPP_INCLUDED

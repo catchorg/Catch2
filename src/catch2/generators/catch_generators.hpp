@@ -9,12 +9,12 @@
 #define CATCH_GENERATORS_HPP_INCLUDED
 
 #include <catch2/interfaces/catch_interfaces_generatortracker.hpp>
+#include <catch2/internal/catch_dll_public.hpp>
+#include <catch2/internal/catch_move_and_forward.hpp>
 #include <catch2/internal/catch_source_line_info.hpp>
 #include <catch2/internal/catch_stringref.hpp>
-#include <catch2/internal/catch_move_and_forward.hpp>
-
-#include <vector>
 #include <tuple>
+#include <vector>
 
 namespace Catch {
 
@@ -23,32 +23,30 @@ namespace Generators {
 namespace Detail {
 
     //! Throws GeneratorException with the provided message
-    [[noreturn]]
-    void throw_generator_exception(char const * msg);
+    [[noreturn]] void CATCH_DLL_PUBLIC
+    throw_generator_exception( char const* msg );
 
 } // end namespace detail
 
-    template<typename T>
-    struct IGenerator : GeneratorUntypedBase {
-        ~IGenerator() override = default;
-        IGenerator() = default;
-        IGenerator(IGenerator const&) = default;
-        IGenerator& operator=(IGenerator const&) = default;
+template <typename T>
+struct CATCH_DLL_PUBLIC IGenerator : GeneratorUntypedBase {
+    ~IGenerator() override = default;
+    IGenerator() = default;
+    IGenerator( IGenerator const& ) = default;
+    IGenerator& operator=( IGenerator const& ) = default;
 
-
-        // Returns the current element of the generator
-        //
-        // \Precondition The generator is either freshly constructed,
-        // or the last call to `next()` returned true
-        virtual T const& get() const = 0;
-        using type = T;
-    };
+    // Returns the current element of the generator
+    //
+    // \Precondition The generator is either freshly constructed,
+    // or the last call to `next()` returned true
+    virtual T const& get() const = 0;
+    using type = T;
+};
 
     template <typename T>
     using GeneratorPtr = Catch::Detail::unique_ptr<IGenerator<T>>;
 
-    template <typename T>
-    class GeneratorWrapper final {
+    template <typename T> class CATCH_DLL_PUBLIC GeneratorWrapper final {
         GeneratorPtr<T> m_generator;
     public:
         //! Takes ownership of the passed pointer.
@@ -65,9 +63,8 @@ namespace Detail {
         }
     };
 
-
-    template<typename T>
-    class SingleValueGenerator final : public IGenerator<T> {
+    template <typename T>
+    class CATCH_DLL_PUBLIC SingleValueGenerator final : public IGenerator<T> {
         T m_value;
     public:
         SingleValueGenerator(T const& value) :
@@ -85,8 +82,8 @@ namespace Detail {
         }
     };
 
-    template<typename T>
-    class FixedValuesGenerator final : public IGenerator<T> {
+    template <typename T>
+    class CATCH_DLL_PUBLIC FixedValuesGenerator final : public IGenerator<T> {
         static_assert(!std::is_same<T, bool>::value,
             "FixedValuesGenerator does not support bools because of std::vector<bool>"
             "specialization, use SingleValue Generator instead.");
@@ -115,8 +112,8 @@ namespace Detail {
         return GeneratorWrapper<T>(Catch::Detail::make_unique<FixedValuesGenerator<T>>(values));
     }
 
-    template<typename T>
-    class Generators : public IGenerator<T> {
+    template <typename T>
+    class CATCH_DLL_PUBLIC Generators : public IGenerator<T> {
         std::vector<GeneratorWrapper<T>> m_generators;
         size_t m_current = 0;
 
@@ -168,7 +165,6 @@ namespace Detail {
         }
     };
 
-
     template <typename... Ts>
     GeneratorWrapper<std::tuple<std::decay_t<Ts>...>>
     table( std::initializer_list<std::tuple<std::decay_t<Ts>...>> tuples ) {
@@ -176,8 +172,7 @@ namespace Detail {
     }
 
     // Tag type to signal that a generator sequence should convert arguments to a specific type
-    template <typename T>
-    struct as {};
+    template <typename T> struct CATCH_DLL_PUBLIC as {};
 
     template<typename T, typename... Gs>
     auto makeGenerators( GeneratorWrapper<T>&& generator, Gs &&... moreGenerators ) -> Generators<T> {
@@ -196,7 +191,9 @@ namespace Detail {
         return makeGenerators( value( T( CATCH_FORWARD( val ) ) ), CATCH_FORWARD( moreGenerators )... );
     }
 
-    auto acquireGeneratorTracker( StringRef generatorName, SourceLineInfo const& lineInfo ) -> IGeneratorTracker&;
+    auto CATCH_DLL_PUBLIC acquireGeneratorTracker(
+        StringRef generatorName, SourceLineInfo const& lineInfo )
+        -> IGeneratorTracker&;
 
     template<typename L>
     // Note: The type after -> is weird, because VS2015 cannot parse

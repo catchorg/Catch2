@@ -9,10 +9,11 @@
 #define CATCH_REPORTER_MULTI_HPP_INCLUDED
 
 #include <catch2/interfaces/catch_interfaces_reporter.hpp>
+#include <catch2/internal/catch_dll_public.hpp>
 
 namespace Catch {
 
-    class MultiReporter final : public IEventListener {
+    class CATCH_DLL_PUBLIC MultiReporter final : public IEventListener {
         /*
          * Stores all added reporters and listeners
          *
@@ -64,8 +65,6 @@ namespace Catch {
         void listReporters(std::vector<ReporterDescription> const& descriptions) override;
         void listTests(std::vector<TestCaseHandle> const& tests) override;
         void listTags(std::vector<TagInfo> const& tags) override;
-
-
     };
 
 } // end namespace Catch

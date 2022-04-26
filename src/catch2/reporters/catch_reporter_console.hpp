@@ -8,15 +8,16 @@
 #ifndef CATCH_REPORTER_CONSOLE_HPP_INCLUDED
 #define CATCH_REPORTER_CONSOLE_HPP_INCLUDED
 
-#include <catch2/reporters/catch_reporter_streaming_base.hpp>
+#include <catch2/internal/catch_dll_public.hpp>
 #include <catch2/internal/catch_unique_ptr.hpp>
+#include <catch2/reporters/catch_reporter_streaming_base.hpp>
 
 namespace Catch {
     // Fwd decls
     struct SummaryColumn;
     class TablePrinter;
 
-    struct ConsoleReporter final : StreamingReporterBase {
+    struct CATCH_DLL_PUBLIC ConsoleReporter final : StreamingReporterBase {
         Detail::unique_ptr<TablePrinter> m_tablePrinter;
 
         ConsoleReporter(ReporterConfig const& config);

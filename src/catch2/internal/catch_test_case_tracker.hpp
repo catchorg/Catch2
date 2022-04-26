@@ -8,22 +8,23 @@
 #ifndef CATCH_TEST_CASE_TRACKER_HPP_INCLUDED
 #define CATCH_TEST_CASE_TRACKER_HPP_INCLUDED
 
+#include <catch2/internal/catch_dll_public.hpp>
 #include <catch2/internal/catch_source_line_info.hpp>
-#include <catch2/internal/catch_unique_ptr.hpp>
 #include <catch2/internal/catch_stringref.hpp>
-
+#include <catch2/internal/catch_unique_ptr.hpp>
 #include <string>
 #include <vector>
 
 namespace Catch {
 namespace TestCaseTracking {
 
-    struct NameAndLocation {
+    struct CATCH_DLL_PUBLIC NameAndLocation {
         std::string name;
         SourceLineInfo location;
 
         NameAndLocation( std::string const& _name, SourceLineInfo const& _location );
-        friend bool operator==(NameAndLocation const& lhs, NameAndLocation const& rhs) {
+        CATCH_DLL_PUBLIC friend bool operator==( NameAndLocation const& lhs,
+                                                 NameAndLocation const& rhs ) {
             return lhs.name == rhs.name
                 && lhs.location == rhs.location;
         }
@@ -33,7 +34,7 @@ namespace TestCaseTracking {
 
     using ITrackerPtr = Catch::Detail::unique_ptr<ITracker>;
 
-    class ITracker {
+    class CATCH_DLL_PUBLIC ITracker {
         NameAndLocation m_nameAndLocation;
 
         using Children = std::vector<ITrackerPtr>;
@@ -119,7 +120,7 @@ namespace TestCaseTracking {
         virtual bool isGeneratorTracker() const;
     };
 
-    class TrackerContext {
+    class CATCH_DLL_PUBLIC TrackerContext {
 
         enum RunState {
             NotStarted,
@@ -144,7 +145,7 @@ namespace TestCaseTracking {
         void setCurrentTracker( ITracker* tracker );
     };
 
-    class TrackerBase : public ITracker {
+    class CATCH_DLL_PUBLIC TrackerBase : public ITracker {
     protected:
 
         TrackerContext& m_ctx;
@@ -164,7 +165,7 @@ namespace TestCaseTracking {
         void moveToThis();
     };
 
-    class SectionTracker : public TrackerBase {
+    class CATCH_DLL_PUBLIC SectionTracker : public TrackerBase {
         std::vector<StringRef> m_filters;
         std::string m_trimmed_name;
     public:

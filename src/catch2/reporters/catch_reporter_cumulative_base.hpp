@@ -8,10 +8,10 @@
 #ifndef CATCH_REPORTER_CUMULATIVE_BASE_HPP_INCLUDED
 #define CATCH_REPORTER_CUMULATIVE_BASE_HPP_INCLUDED
 
-#include <catch2/reporters/catch_reporter_common_base.hpp>
-#include <catch2/internal/catch_unique_ptr.hpp>
+#include <catch2/internal/catch_dll_public.hpp>
 #include <catch2/internal/catch_optional.hpp>
-
+#include <catch2/internal/catch_unique_ptr.hpp>
+#include <catch2/reporters/catch_reporter_common_base.hpp>
 #include <iosfwd>
 #include <string>
 #include <vector>
@@ -21,7 +21,7 @@ namespace Catch {
     namespace Detail {
 
         //! Represents either an assertion or a benchmark result to be handled by cumulative reporter later
-        class AssertionOrBenchmarkResult {
+        class CATCH_DLL_PUBLIC AssertionOrBenchmarkResult {
             // This should really be a variant, but this is much faster
             // to write and the data layout here is already terrible
             // enough that we do not have to care about the object size.
@@ -59,17 +59,17 @@ namespace Catch {
      * performance. **Accessing the assertion expansions if it wasn't stored is
      * UB.**
      */
-    class CumulativeReporterBase : public ReporterBase {
+    class CATCH_DLL_PUBLIC CumulativeReporterBase : public ReporterBase {
     public:
-        template<typename T, typename ChildNodeT>
-        struct Node {
+        template <typename T, typename ChildNodeT>
+        struct CATCH_DLL_PUBLIC Node {
             explicit Node( T const& _value ) : value( _value ) {}
 
             using ChildNodes = std::vector<Detail::unique_ptr<ChildNodeT>>;
             T value;
             ChildNodes children;
         };
-        struct SectionNode {
+        struct CATCH_DLL_PUBLIC SectionNode {
             explicit SectionNode(SectionStats const& _stats) : stats(_stats) {}
 
             bool operator == (SectionNode const& other) const {
@@ -84,7 +84,6 @@ namespace Catch {
             std::string stdOut;
             std::string stdErr;
         };
-
 
         using TestCaseNode = Node<TestCaseStats, SectionNode>;
         using TestRunNode = Node<TestRunStats, TestCaseNode>;

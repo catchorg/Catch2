@@ -8,13 +8,13 @@
 #ifndef CATCH_REPORTER_SONARQUBE_HPP_INCLUDED
 #define CATCH_REPORTER_SONARQUBE_HPP_INCLUDED
 
-#include <catch2/reporters/catch_reporter_cumulative_base.hpp>
-
+#include <catch2/internal/catch_dll_public.hpp>
 #include <catch2/internal/catch_xmlwriter.hpp>
+#include <catch2/reporters/catch_reporter_cumulative_base.hpp>
 
 namespace Catch {
 
-    struct SonarQubeReporter final : CumulativeReporterBase {
+    struct CATCH_DLL_PUBLIC SonarQubeReporter final : CumulativeReporterBase {
 
         SonarQubeReporter(ReporterConfig const& config)
         : CumulativeReporterBase(config)
@@ -53,7 +53,6 @@ namespace Catch {
     private:
         XmlWriter xml;
     };
-
 
 } // end namespace Catch
 

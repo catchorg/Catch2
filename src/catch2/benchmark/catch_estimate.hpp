@@ -10,10 +10,11 @@
 #ifndef CATCH_ESTIMATE_HPP_INCLUDED
 #define CATCH_ESTIMATE_HPP_INCLUDED
 
+#include <catch2/internal/catch_dll_public.hpp>
+
 namespace Catch {
     namespace Benchmark {
-        template <typename Duration>
-        struct Estimate {
+        template <typename Duration> struct CATCH_DLL_PUBLIC Estimate {
             Duration point;
             Duration lower_bound;
             Duration upper_bound;

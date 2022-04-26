@@ -13,9 +13,9 @@
 #pragma clang diagnostic ignored "-Wpadded"
 #endif
 
+#include <catch2/internal/catch_dll_public.hpp>
 #include <catch2/internal/catch_unique_ptr.hpp>
 #include <catch2/internal/catch_wildcard_pattern.hpp>
-
 #include <string>
 #include <vector>
 
@@ -25,9 +25,9 @@ namespace Catch {
     struct TestCaseInfo;
     class TestCaseHandle;
 
-    class TestSpec {
+    class CATCH_DLL_PUBLIC TestSpec {
 
-        class Pattern {
+        class CATCH_DLL_PUBLIC Pattern {
         public:
             explicit Pattern( std::string const& name );
             virtual ~Pattern();
@@ -37,7 +37,7 @@ namespace Catch {
             std::string const m_name;
         };
 
-        class NamePattern : public Pattern {
+        class CATCH_DLL_PUBLIC NamePattern : public Pattern {
         public:
             explicit NamePattern( std::string const& name, std::string const& filterString );
             bool matches( TestCaseInfo const& testCase ) const override;
@@ -45,7 +45,7 @@ namespace Catch {
             WildcardPattern m_wildcardPattern;
         };
 
-        class TagPattern : public Pattern {
+        class CATCH_DLL_PUBLIC TagPattern : public Pattern {
         public:
             explicit TagPattern( std::string const& tag, std::string const& filterString );
             bool matches( TestCaseInfo const& testCase ) const override;
@@ -53,7 +53,7 @@ namespace Catch {
             std::string m_tag;
         };
 
-        struct Filter {
+        struct CATCH_DLL_PUBLIC Filter {
             std::vector<Detail::unique_ptr<Pattern>> m_required;
             std::vector<Detail::unique_ptr<Pattern>> m_forbidden;
 
@@ -62,7 +62,7 @@ namespace Catch {
         };
 
     public:
-        struct FilterMatch {
+        struct CATCH_DLL_PUBLIC FilterMatch {
             std::string name;
             std::vector<TestCaseHandle const*> tests;
         };

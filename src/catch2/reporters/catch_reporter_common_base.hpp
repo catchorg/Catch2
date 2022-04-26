@@ -9,8 +9,9 @@
 #define CATCH_REPORTER_COMMON_BASE_HPP_INCLUDED
 
 #include <catch2/interfaces/catch_interfaces_reporter.hpp>
-#include <catch2/internal/catch_stream.hpp>
 #include <catch2/internal/catch_console_colour.hpp>
+#include <catch2/internal/catch_dll_public.hpp>
+#include <catch2/internal/catch_stream.hpp>
 
 namespace Catch {
     /**
@@ -23,7 +24,7 @@ namespace Catch {
      * like storing the right stream for the reporters to write to, and
      * providing the default implementation of the different listing events.
      */
-    class ReporterBase : public IEventListener {
+    class CATCH_DLL_PUBLIC ReporterBase : public IEventListener {
     protected:
         //! The stream wrapper as passed to us by outside code
         IStream const* m_wrapped_stream;

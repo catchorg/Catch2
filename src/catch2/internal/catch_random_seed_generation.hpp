@@ -8,18 +8,19 @@
 #ifndef CATCH_RANDOM_SEED_GENERATION_HPP_INCLUDED
 #define CATCH_RANDOM_SEED_GENERATION_HPP_INCLUDED
 
+#include <catch2/internal/catch_dll_public.hpp>
 #include <cstdint>
 
 namespace Catch {
 
-    enum class GenerateFrom {
+    enum class CATCH_DLL_PUBLIC GenerateFrom {
         Time,
         RandomDevice,
         //! Currently equivalent to RandomDevice, but can change at any point
         Default
     };
 
-    std::uint32_t generateRandomSeed(GenerateFrom from);
+    CATCH_DLL_PUBLIC std::uint32_t generateRandomSeed( GenerateFrom from );
 
 } // end namespace Catch
 

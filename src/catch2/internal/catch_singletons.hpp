@@ -8,19 +8,21 @@
 #ifndef CATCH_SINGLETONS_HPP_INCLUDED
 #define CATCH_SINGLETONS_HPP_INCLUDED
 
+#include <catch2/internal/catch_dll_public.hpp>
+
 namespace Catch {
 
-    struct ISingleton {
+    struct CATCH_DLL_PUBLIC ISingleton {
         virtual ~ISingleton(); // = default
     };
-
 
     void addSingleton( ISingleton* singleton );
     void cleanupSingletons();
 
-
-    template<typename SingletonImplT, typename InterfaceT = SingletonImplT, typename MutableInterfaceT = InterfaceT>
-    class Singleton : SingletonImplT, public ISingleton {
+    template <typename SingletonImplT,
+              typename InterfaceT = SingletonImplT,
+              typename MutableInterfaceT = InterfaceT>
+    class CATCH_DLL_PUBLIC Singleton : SingletonImplT, public ISingleton {
 
         static auto getInternal() -> Singleton* {
             static Singleton* s_instance = nullptr;

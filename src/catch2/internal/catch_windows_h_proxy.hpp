@@ -8,6 +8,7 @@
 #ifndef CATCH_WINDOWS_H_PROXY_HPP_INCLUDED
 #define CATCH_WINDOWS_H_PROXY_HPP_INCLUDED
 
+#include <catch2/internal/catch_dll_public.hpp>
 #include <catch2/internal/catch_platform.hpp>
 
 #if defined(CATCH_PLATFORM_WINDOWS)

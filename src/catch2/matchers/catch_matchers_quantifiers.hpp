@@ -8,14 +8,16 @@
 #ifndef CATCH_MATCHERS_QUANTIFIERS_HPP_INCLUDED
 #define CATCH_MATCHERS_QUANTIFIERS_HPP_INCLUDED
 
-#include <catch2/matchers/catch_matchers_templated.hpp>
+#include <catch2/internal/catch_dll_public.hpp>
 #include <catch2/internal/catch_move_and_forward.hpp>
+#include <catch2/matchers/catch_matchers_templated.hpp>
 
 namespace Catch {
     namespace Matchers {
         // Matcher for checking that all elements in range matches a given matcher.
         template <typename Matcher>
-        class AllMatchMatcher final : public MatcherGenericBase {
+        class CATCH_DLL_PUBLIC AllMatchMatcher final
+            : public MatcherGenericBase {
             Matcher m_matcher;
         public:
             AllMatchMatcher(Matcher matcher):
@@ -39,7 +41,8 @@ namespace Catch {
 
         // Matcher for checking that no element in range matches a given matcher.
         template <typename Matcher>
-        class NoneMatchMatcher final : public MatcherGenericBase {
+        class CATCH_DLL_PUBLIC NoneMatchMatcher final
+            : public MatcherGenericBase {
             Matcher m_matcher;
         public:
             NoneMatchMatcher(Matcher matcher):
@@ -63,7 +66,8 @@ namespace Catch {
 
         // Matcher for checking that at least one element in range matches a given matcher.
         template <typename Matcher>
-        class AnyMatchMatcher final : public MatcherGenericBase {
+        class CATCH_DLL_PUBLIC AnyMatchMatcher final
+            : public MatcherGenericBase {
             Matcher m_matcher;
         public:
             AnyMatchMatcher(Matcher matcher):

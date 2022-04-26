@@ -8,6 +8,7 @@
 #ifndef CATCH_DEBUG_CONSOLE_HPP_INCLUDED
 #define CATCH_DEBUG_CONSOLE_HPP_INCLUDED
 
+#include <catch2/internal/catch_dll_public.hpp>
 #include <string>
 
 namespace Catch {

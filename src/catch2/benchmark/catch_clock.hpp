@@ -10,6 +10,7 @@
 #ifndef CATCH_CLOCK_HPP_INCLUDED
 #define CATCH_CLOCK_HPP_INCLUDED
 
+#include <catch2/internal/catch_dll_public.hpp>
 #include <chrono>
 #include <ratio>
 
@@ -25,8 +26,7 @@ namespace Catch {
 
         using default_clock = std::chrono::steady_clock;
 
-        template <typename Clock>
-        struct now {
+        template <typename Clock> struct CATCH_DLL_PUBLIC now {
             TimePoint<Clock> operator()() const {
                 return Clock::now();
             }

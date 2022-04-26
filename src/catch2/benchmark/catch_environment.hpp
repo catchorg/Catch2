@@ -12,11 +12,12 @@
 
 #include <catch2/benchmark/catch_clock.hpp>
 #include <catch2/benchmark/catch_outlier_classification.hpp>
+#include <catch2/internal/catch_dll_public.hpp>
 
 namespace Catch {
     namespace Benchmark {
         template <typename Duration>
-        struct EnvironmentEstimate {
+        struct CATCH_DLL_PUBLIC EnvironmentEstimate {
             Duration mean;
             OutlierClassification outliers;
 
@@ -25,8 +26,7 @@ namespace Catch {
                 return { mean, outliers };
             }
         };
-        template <typename Clock>
-        struct Environment {
+        template <typename Clock> struct CATCH_DLL_PUBLIC Environment {
             using clock_type = Clock;
             EnvironmentEstimate<FloatDuration<Clock>> clock_resolution;
             EnvironmentEstimate<FloatDuration<Clock>> clock_cost;

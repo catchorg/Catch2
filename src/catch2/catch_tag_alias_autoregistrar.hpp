@@ -9,12 +9,13 @@
 #define CATCH_TAG_ALIAS_AUTOREGISTRAR_HPP_INCLUDED
 
 #include <catch2/internal/catch_compiler_capabilities.hpp>
-#include <catch2/internal/catch_unique_name.hpp>
+#include <catch2/internal/catch_dll_public.hpp>
 #include <catch2/internal/catch_source_line_info.hpp>
+#include <catch2/internal/catch_unique_name.hpp>
 
 namespace Catch {
 
-    struct RegistrarForTagAliases {
+    struct CATCH_DLL_PUBLIC RegistrarForTagAliases {
         RegistrarForTagAliases( char const* alias, char const* tag, SourceLineInfo const& lineInfo );
     };
 

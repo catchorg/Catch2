@@ -8,17 +8,17 @@
 #ifndef CATCH_GENERATORS_ADAPTERS_HPP_INCLUDED
 #define CATCH_GENERATORS_ADAPTERS_HPP_INCLUDED
 
+#include <cassert>
 #include <catch2/generators/catch_generators.hpp>
+#include <catch2/internal/catch_dll_public.hpp>
 #include <catch2/internal/catch_meta.hpp>
 #include <catch2/internal/catch_move_and_forward.hpp>
-
-#include <cassert>
 
 namespace Catch {
 namespace Generators {
 
     template <typename T>
-    class TakeGenerator final : public IGenerator<T> {
+    class CATCH_DLL_PUBLIC TakeGenerator final : public IGenerator<T> {
         GeneratorWrapper<T> m_generator;
         size_t m_returned = 0;
         size_t m_target;
@@ -53,9 +53,8 @@ namespace Generators {
         return GeneratorWrapper<T>(Catch::Detail::make_unique<TakeGenerator<T>>(target, CATCH_MOVE(generator)));
     }
 
-
     template <typename T, typename Predicate>
-    class FilterGenerator final : public IGenerator<T> {
+    class CATCH_DLL_PUBLIC FilterGenerator final : public IGenerator<T> {
         GeneratorWrapper<T> m_generator;
         Predicate m_predicate;
     public:
@@ -88,14 +87,13 @@ namespace Generators {
         }
     };
 
-
     template <typename T, typename Predicate>
     GeneratorWrapper<T> filter(Predicate&& pred, GeneratorWrapper<T>&& generator) {
         return GeneratorWrapper<T>(Catch::Detail::make_unique<FilterGenerator<T, Predicate>>(CATCH_FORWARD(pred), CATCH_MOVE(generator)));
     }
 
     template <typename T>
-    class RepeatGenerator final : public IGenerator<T> {
+    class CATCH_DLL_PUBLIC RepeatGenerator final : public IGenerator<T> {
         static_assert(!std::is_same<T, bool>::value,
             "RepeatGenerator currently does not support bools"
             "because of std::vector<bool> specialization");
@@ -151,7 +149,7 @@ namespace Generators {
     }
 
     template <typename T, typename U, typename Func>
-    class MapGenerator final : public IGenerator<T> {
+    class CATCH_DLL_PUBLIC MapGenerator final : public IGenerator<T> {
         // TBD: provide static assert for mapping function, for friendly error message
         GeneratorWrapper<U> m_generator;
         Func m_function;
@@ -192,7 +190,8 @@ namespace Generators {
     }
 
     template <typename T>
-    class ChunkGenerator final : public IGenerator<std::vector<T>> {
+    class CATCH_DLL_PUBLIC ChunkGenerator final
+        : public IGenerator<std::vector<T>> {
         std::vector<T> m_chunk;
         size_t m_chunk_size;
         GeneratorWrapper<T> m_generator;

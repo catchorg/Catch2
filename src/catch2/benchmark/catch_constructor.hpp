@@ -10,8 +10,8 @@
 #ifndef CATCH_CONSTRUCTOR_HPP_INCLUDED
 #define CATCH_CONSTRUCTOR_HPP_INCLUDED
 
+#include <catch2/internal/catch_dll_public.hpp>
 #include <catch2/internal/catch_move_and_forward.hpp>
-
 #include <type_traits>
 
 namespace Catch {

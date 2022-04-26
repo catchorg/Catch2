@@ -10,9 +10,11 @@
 #ifndef CATCH_OUTLIER_CLASSIFICATION_HPP_INCLUDED
 #define CATCH_OUTLIER_CLASSIFICATION_HPP_INCLUDED
 
+#include <catch2/internal/catch_dll_public.hpp>
+
 namespace Catch {
     namespace Benchmark {
-        struct OutlierClassification {
+        struct CATCH_DLL_PUBLIC OutlierClassification {
             int samples_seen = 0;
             int low_severe = 0;     // more than 3 times IQR below Q1
             int low_mild = 0;       // 1.5 to 3 times IQR below Q1

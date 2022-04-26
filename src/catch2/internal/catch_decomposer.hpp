@@ -9,9 +9,9 @@
 #define CATCH_DECOMPOSER_HPP_INCLUDED
 
 #include <catch2/catch_tostring.hpp>
-#include <catch2/internal/catch_stringref.hpp>
+#include <catch2/internal/catch_dll_public.hpp>
 #include <catch2/internal/catch_meta.hpp>
-
+#include <catch2/internal/catch_stringref.hpp>
 #include <iosfwd>
 
 #ifdef _MSC_VER
@@ -33,7 +33,7 @@
 
 namespace Catch {
 
-    struct ITransientExpression {
+    struct CATCH_DLL_PUBLIC ITransientExpression {
         auto isBinaryExpression() const -> bool { return m_isBinaryExpression; }
         auto getResult() const -> bool { return m_result; }
         virtual void streamReconstructedExpression( std::ostream &os ) const = 0;
@@ -53,16 +53,21 @@ namespace Catch {
 
         bool m_isBinaryExpression;
         bool m_result;
-        friend std::ostream& operator<<(std::ostream& out, ITransientExpression const& expr) {
+        CATCH_DLL_PUBLIC friend std::ostream&
+        operator<<( std::ostream& out, ITransientExpression const& expr ) {
             expr.streamReconstructedExpression(out);
             return out;
         }
     };
 
-    void formatReconstructedExpression( std::ostream &os, std::string const& lhs, StringRef op, std::string const& rhs );
+    CATCH_DLL_PUBLIC void
+    formatReconstructedExpression( std::ostream& os,
+                                   std::string const& lhs,
+                                   StringRef op,
+                                   std::string const& rhs );
 
-    template<typename LhsT, typename RhsT>
-    class BinaryExpr  : public ITransientExpression {
+    template <typename LhsT, typename RhsT>
+    class CATCH_DLL_PUBLIC BinaryExpr : public ITransientExpression {
         LhsT m_lhs;
         StringRef m_op;
         RhsT m_rhs;
@@ -137,8 +142,8 @@ namespace Catch {
         }
     };
 
-    template<typename LhsT>
-    class UnaryExpr : public ITransientExpression {
+    template <typename LhsT>
+    class CATCH_DLL_PUBLIC UnaryExpr : public ITransientExpression {
         LhsT m_lhs;
 
         void streamReconstructedExpression( std::ostream &os ) const override {
@@ -151,7 +156,6 @@ namespace Catch {
             m_lhs( lhs )
         {}
     };
-
 
     // Specialised comparison functions to handle equality comparisons between ints and pointers (NULL deduces as an int)
     template<typename LhsT, typename RhsT>
@@ -176,9 +180,7 @@ namespace Catch {
     template<typename T>
     auto compareNotEqual( long lhs, T* const& rhs ) -> bool { return reinterpret_cast<void const*>( lhs ) != rhs; }
 
-
-    template<typename LhsT>
-    class ExprLhs {
+    template <typename LhsT> class CATCH_DLL_PUBLIC ExprLhs {
         LhsT m_lhs;
     public:
         explicit ExprLhs( LhsT lhs ) : m_lhs( lhs ) {}
@@ -240,7 +242,7 @@ namespace Catch {
         }
     };
 
-    struct Decomposer {
+    struct CATCH_DLL_PUBLIC Decomposer {
         template<typename T, std::enable_if_t<!std::is_arithmetic<std::remove_reference_t<T>>::value, int> = 0>
         friend auto operator <= ( Decomposer &&, T && lhs ) -> ExprLhs<T const&> {
             return ExprLhs<const T&>{ lhs };

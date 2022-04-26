@@ -9,8 +9,9 @@
 #define CATCH_ASSERTION_HANDLER_HPP_INCLUDED
 
 #include <catch2/catch_assertion_info.hpp>
-#include <catch2/internal/catch_decomposer.hpp>
 #include <catch2/interfaces/catch_interfaces_capture.hpp>
+#include <catch2/internal/catch_decomposer.hpp>
+#include <catch2/internal/catch_dll_public.hpp>
 #include <catch2/internal/catch_lazy_expr.hpp>
 
 namespace Catch {
@@ -19,12 +20,12 @@ namespace Catch {
     struct IResultCapture;
     class RunContext;
 
-    struct AssertionReaction {
+    struct CATCH_DLL_PUBLIC AssertionReaction {
         bool shouldDebugBreak = false;
         bool shouldThrow = false;
     };
 
-    class AssertionHandler {
+    class CATCH_DLL_PUBLIC AssertionHandler {
         AssertionInfo m_assertionInfo;
         AssertionReaction m_reaction;
         bool m_completed = false;
@@ -64,7 +65,9 @@ namespace Catch {
         auto allowThrows() const -> bool;
     };
 
-    void handleExceptionMatchExpr( AssertionHandler& handler, std::string const& str, StringRef matcherString );
+    CATCH_DLL_PUBLIC void handleExceptionMatchExpr( AssertionHandler& handler,
+                                                    std::string const& str,
+                                                    StringRef matcherString );
 
 } // namespace Catch
 

@@ -14,8 +14,8 @@
 #   include <atomic> // atomic_thread_fence
 #endif
 
+#include <catch2/internal/catch_dll_public.hpp>
 #include <catch2/internal/catch_move_and_forward.hpp>
-
 #include <type_traits>
 
 namespace Catch {

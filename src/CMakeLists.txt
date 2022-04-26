@@ -70,6 +70,7 @@ set(INTERNAL_HEADERS
     ${SOURCES_DIR}/internal/catch_debug_console.hpp
     ${SOURCES_DIR}/internal/catch_debugger.hpp
     ${SOURCES_DIR}/internal/catch_decomposer.hpp
+    ${SOURCES_DIR}/internal/catch_dll_public.hpp
     ${SOURCES_DIR}/internal/catch_enforce.hpp
     ${SOURCES_DIR}/internal/catch_enum_values_registry.hpp
     ${SOURCES_DIR}/internal/catch_errno_guard.hpp
@@ -257,6 +258,8 @@ add_library(Catch2
   ${BENCHMARK_HEADERS}
   ${BENCHMARK_SOURCES}
 )
+set_target_properties(Catch2 PROPERTIES CXX_VISIBILITY_PRESET hidden)
+
 add_build_reproducibility_settings(Catch2)
 add_library(Catch2::Catch2 ALIAS Catch2)
 

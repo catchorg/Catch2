@@ -8,18 +8,18 @@
 #ifndef CATCH_FLOATING_POINT_HELPERS_HPP_INCLUDED
 #define CATCH_FLOATING_POINT_HELPERS_HPP_INCLUDED
 
+#include <catch2/internal/catch_dll_public.hpp>
 #include <catch2/internal/catch_polyfills.hpp>
-
 #include <cmath>
 #include <cstdint>
-#include <utility>
 #include <limits>
+#include <utility>
 
 namespace Catch {
     namespace Detail {
 
-        uint32_t convertToBits(float f);
-        uint64_t convertToBits(double d);
+        CATCH_DLL_PUBLIC uint32_t convertToBits( float f );
+        CATCH_DLL_PUBLIC uint64_t convertToBits( double d );
 
     } // end namespace Detail
 

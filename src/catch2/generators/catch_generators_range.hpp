@@ -9,46 +9,45 @@
 #define CATCH_GENERATORS_RANGE_HPP_INCLUDED
 
 #include <catch2/generators/catch_generators.hpp>
-
+#include <catch2/internal/catch_dll_public.hpp>
 #include <iterator>
 #include <type_traits>
 
 namespace Catch {
 namespace Generators {
 
+    template <typename T>
+    class CATCH_DLL_PUBLIC RangeGenerator final : public IGenerator<T> {
+        T m_current;
+        T m_end;
+        T m_step;
+        bool m_positive;
 
-template <typename T>
-class RangeGenerator final : public IGenerator<T> {
-    T m_current;
-    T m_end;
-    T m_step;
-    bool m_positive;
+    public:
+        RangeGenerator( T const& start, T const& end, T const& step ):
+            m_current( start ),
+            m_end( end ),
+            m_step( step ),
+            m_positive( m_step > T( 0 ) ) {
+            assert( m_current != m_end &&
+                    "Range start and end cannot be equal" );
+            assert( m_step != T( 0 ) && "Step size cannot be zero" );
+            assert( ( ( m_positive && m_current <= m_end ) ||
+                      ( !m_positive && m_current >= m_end ) ) &&
+                    "Step moves away from end" );
+        }
 
-public:
-    RangeGenerator(T const& start, T const& end, T const& step):
-        m_current(start),
-        m_end(end),
-        m_step(step),
-        m_positive(m_step > T(0))
-    {
-        assert(m_current != m_end && "Range start and end cannot be equal");
-        assert(m_step != T(0) && "Step size cannot be zero");
-        assert(((m_positive && m_current <= m_end) || (!m_positive && m_current >= m_end)) && "Step moves away from end");
-    }
+        RangeGenerator( T const& start, T const& end ):
+            RangeGenerator( start, end, ( start < end ) ? T( 1 ) : T( -1 ) ) {}
 
-    RangeGenerator(T const& start, T const& end):
-        RangeGenerator(start, end, (start < end) ? T(1) : T(-1))
-    {}
+        T const& get() const override { return m_current; }
 
-    T const& get() const override {
-        return m_current;
-    }
-
-    bool next() override {
-        m_current += m_step;
-        return (m_positive) ? (m_current < m_end) : (m_current > m_end);
-    }
-};
+        bool next() override {
+            m_current += m_step;
+            return ( m_positive ) ? ( m_current < m_end )
+                                  : ( m_current > m_end );
+        }
+    };
 
 template <typename T>
 GeneratorWrapper<T> range(T const& start, T const& end, T const& step) {
@@ -62,9 +61,8 @@ GeneratorWrapper<T> range(T const& start, T const& end) {
     return GeneratorWrapper<T>(Catch::Detail::make_unique<RangeGenerator<T>>(start, end));
 }
 
-
 template <typename T>
-class IteratorGenerator final : public IGenerator<T> {
+class CATCH_DLL_PUBLIC IteratorGenerator final : public IGenerator<T> {
     static_assert(!std::is_same<T, bool>::value,
         "IteratorGenerator currently does not support bools"
         "because of std::vector<bool> specialization");

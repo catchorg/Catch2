@@ -12,10 +12,10 @@
 
 #include <catch2/benchmark/catch_chronometer.hpp>
 #include <catch2/benchmark/detail/catch_complete_invoke.hpp>
+#include <catch2/internal/catch_dll_public.hpp>
 #include <catch2/internal/catch_meta.hpp>
-#include <catch2/internal/catch_unique_ptr.hpp>
 #include <catch2/internal/catch_move_and_forward.hpp>
-
+#include <catch2/internal/catch_unique_ptr.hpp>
 #include <type_traits>
 
 namespace Catch {
@@ -32,7 +32,7 @@ namespace Catch {
             /// small buffer optimizations, are not uncommon.
             /// This is effectively an implementation of std::function without any such optimizations;
             /// it may be slow, but it is consistently slow.
-            struct BenchmarkFunction {
+            struct CATCH_DLL_PUBLIC BenchmarkFunction {
             private:
                 struct callable {
                     virtual void call(Chronometer meter) const = 0;

@@ -8,15 +8,16 @@
 #ifndef CATCH_SESSION_HPP_INCLUDED
 #define CATCH_SESSION_HPP_INCLUDED
 
-#include <catch2/internal/catch_commandline.hpp>
-#include <catch2/internal/catch_noncopyable.hpp>
 #include <catch2/catch_config.hpp>
-#include <catch2/internal/catch_unique_ptr.hpp>
+#include <catch2/internal/catch_commandline.hpp>
 #include <catch2/internal/catch_config_wchar.hpp>
+#include <catch2/internal/catch_dll_public.hpp>
+#include <catch2/internal/catch_noncopyable.hpp>
+#include <catch2/internal/catch_unique_ptr.hpp>
 
 namespace Catch {
 
-    class Session : Detail::NonCopyable {
+    class CATCH_DLL_PUBLIC Session : Detail::NonCopyable {
     public:
 
         Session();

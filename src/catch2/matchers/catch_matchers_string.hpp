@@ -8,16 +8,16 @@
 #ifndef CATCH_MATCHERS_STRING_HPP_INCLUDED
 #define CATCH_MATCHERS_STRING_HPP_INCLUDED
 
-#include <catch2/matchers/catch_matchers.hpp>
 #include <catch2/internal/catch_case_sensitive.hpp>
+#include <catch2/internal/catch_dll_public.hpp>
 #include <catch2/internal/catch_stringref.hpp>
-
+#include <catch2/matchers/catch_matchers.hpp>
 #include <string>
 
 namespace Catch {
 namespace Matchers {
 
-    struct CasedString {
+    struct CATCH_DLL_PUBLIC CasedString {
         CasedString( std::string const& str, CaseSensitive caseSensitivity );
         std::string adjustString( std::string const& str ) const;
         StringRef caseSensitivitySuffix() const;
@@ -26,7 +26,7 @@ namespace Matchers {
         std::string m_str;
     };
 
-    struct StringMatcherBase : MatcherBase<std::string> {
+    struct CATCH_DLL_PUBLIC StringMatcherBase : MatcherBase<std::string> {
         StringMatcherBase( std::string const& operation, CasedString const& comparator );
         std::string describe() const override;
 
@@ -34,24 +34,24 @@ namespace Matchers {
         std::string m_operation;
     };
 
-    struct StringEqualsMatcher final : StringMatcherBase {
+    struct CATCH_DLL_PUBLIC StringEqualsMatcher final : StringMatcherBase {
         StringEqualsMatcher( CasedString const& comparator );
         bool match( std::string const& source ) const override;
     };
-    struct StringContainsMatcher final : StringMatcherBase {
+    struct CATCH_DLL_PUBLIC StringContainsMatcher final : StringMatcherBase {
         StringContainsMatcher( CasedString const& comparator );
         bool match( std::string const& source ) const override;
     };
-    struct StartsWithMatcher final : StringMatcherBase {
+    struct CATCH_DLL_PUBLIC StartsWithMatcher final : StringMatcherBase {
         StartsWithMatcher( CasedString const& comparator );
         bool match( std::string const& source ) const override;
     };
-    struct EndsWithMatcher final : StringMatcherBase {
+    struct CATCH_DLL_PUBLIC EndsWithMatcher final : StringMatcherBase {
         EndsWithMatcher( CasedString const& comparator );
         bool match( std::string const& source ) const override;
     };
 
-    struct RegexMatcher final : MatcherBase<std::string> {
+    struct CATCH_DLL_PUBLIC RegexMatcher final : MatcherBase<std::string> {
         RegexMatcher( std::string regex, CaseSensitive caseSensitivity );
         bool match( std::string const& matchee ) const override;
         std::string describe() const override;
@@ -62,15 +62,25 @@ namespace Matchers {
     };
 
     //! Creates matcher that accepts strings that are exactly equal to `str`
-    StringEqualsMatcher Equals( std::string const& str, CaseSensitive caseSensitivity = CaseSensitive::Yes );
+    CATCH_DLL_PUBLIC StringEqualsMatcher
+    Equals( std::string const& str,
+            CaseSensitive caseSensitivity = CaseSensitive::Yes );
     //! Creates matcher that accepts strings that contain `str`
-    StringContainsMatcher ContainsSubstring( std::string const& str, CaseSensitive caseSensitivity = CaseSensitive::Yes );
+    CATCH_DLL_PUBLIC StringContainsMatcher
+    ContainsSubstring( std::string const& str,
+                       CaseSensitive caseSensitivity = CaseSensitive::Yes );
     //! Creates matcher that accepts strings that _end_ with `str`
-    EndsWithMatcher EndsWith( std::string const& str, CaseSensitive caseSensitivity = CaseSensitive::Yes );
+    CATCH_DLL_PUBLIC EndsWithMatcher
+    EndsWith( std::string const& str,
+              CaseSensitive caseSensitivity = CaseSensitive::Yes );
     //! Creates matcher that accepts strings that _start_ with `str`
-    StartsWithMatcher StartsWith( std::string const& str, CaseSensitive caseSensitivity = CaseSensitive::Yes );
+    CATCH_DLL_PUBLIC StartsWithMatcher
+    StartsWith( std::string const& str,
+                CaseSensitive caseSensitivity = CaseSensitive::Yes );
     //! Creates matcher that accepts strings matching `regex`
-    RegexMatcher Matches( std::string const& regex, CaseSensitive caseSensitivity = CaseSensitive::Yes );
+    CATCH_DLL_PUBLIC RegexMatcher
+    Matches( std::string const& regex,
+             CaseSensitive caseSensitivity = CaseSensitive::Yes );
 
 } // namespace Matchers
 } // namespace Catch

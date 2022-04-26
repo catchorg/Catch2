@@ -10,20 +10,19 @@
 #ifndef CATCH_EXECUTION_PLAN_HPP_INCLUDED
 #define CATCH_EXECUTION_PLAN_HPP_INCLUDED
 
-#include <catch2/interfaces/catch_interfaces_config.hpp>
+#include <algorithm>
 #include <catch2/benchmark/catch_clock.hpp>
 #include <catch2/benchmark/catch_environment.hpp>
 #include <catch2/benchmark/detail/catch_benchmark_function.hpp>
 #include <catch2/benchmark/detail/catch_repeat.hpp>
 #include <catch2/benchmark/detail/catch_run_for_at_least.hpp>
-
-#include <algorithm>
+#include <catch2/interfaces/catch_interfaces_config.hpp>
+#include <catch2/internal/catch_dll_public.hpp>
 #include <iterator>
 
 namespace Catch {
     namespace Benchmark {
-        template <typename Duration>
-        struct ExecutionPlan {
+        template <typename Duration> struct CATCH_DLL_PUBLIC ExecutionPlan {
             int iterations_per_sample;
             Duration estimated_duration;
             Detail::BenchmarkFunction benchmark;

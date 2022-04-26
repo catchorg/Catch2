@@ -8,13 +8,14 @@
 #ifndef CATCH_LAZY_EXPR_HPP_INCLUDED
 #define CATCH_LAZY_EXPR_HPP_INCLUDED
 
+#include <catch2/internal/catch_dll_public.hpp>
 #include <iosfwd>
 
 namespace Catch {
 
     struct ITransientExpression;
 
-    class LazyExpression {
+    class CATCH_DLL_PUBLIC LazyExpression {
         friend class AssertionHandler;
         friend struct AssertionStats;
         friend class RunContext;
@@ -32,7 +33,9 @@ namespace Catch {
             return m_transientExpression != nullptr;
         }
 
-        friend auto operator << ( std::ostream& os, LazyExpression const& lazyExpr ) -> std::ostream&;
+        CATCH_DLL_PUBLIC friend auto
+        operator<<( std::ostream& os, LazyExpression const& lazyExpr )
+            -> std::ostream&;
     };
 
 } // namespace Catch

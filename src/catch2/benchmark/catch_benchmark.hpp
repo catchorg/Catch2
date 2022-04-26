@@ -10,31 +10,31 @@
 #ifndef CATCH_BENCHMARK_HPP_INCLUDED
 #define CATCH_BENCHMARK_HPP_INCLUDED
 
-#include <catch2/interfaces/catch_interfaces_config.hpp>
-#include <catch2/internal/catch_compiler_capabilities.hpp>
-#include <catch2/internal/catch_context.hpp>
-#include <catch2/interfaces/catch_interfaces_reporter.hpp>
-#include <catch2/internal/catch_unique_name.hpp>
-#include <catch2/internal/catch_move_and_forward.hpp>
+#include <algorithm>
 #include <catch2/benchmark/catch_chronometer.hpp>
 #include <catch2/benchmark/catch_clock.hpp>
 #include <catch2/benchmark/catch_environment.hpp>
 #include <catch2/benchmark/catch_execution_plan.hpp>
-#include <catch2/benchmark/detail/catch_estimate_clock.hpp>
-#include <catch2/benchmark/detail/catch_complete_invoke.hpp>
 #include <catch2/benchmark/detail/catch_analyse.hpp>
 #include <catch2/benchmark/detail/catch_benchmark_function.hpp>
+#include <catch2/benchmark/detail/catch_complete_invoke.hpp>
+#include <catch2/benchmark/detail/catch_estimate_clock.hpp>
 #include <catch2/benchmark/detail/catch_run_for_at_least.hpp>
-
-#include <algorithm>
+#include <catch2/interfaces/catch_interfaces_config.hpp>
+#include <catch2/interfaces/catch_interfaces_reporter.hpp>
+#include <catch2/internal/catch_compiler_capabilities.hpp>
+#include <catch2/internal/catch_context.hpp>
+#include <catch2/internal/catch_dll_public.hpp>
+#include <catch2/internal/catch_move_and_forward.hpp>
+#include <catch2/internal/catch_unique_name.hpp>
+#include <cmath>
 #include <functional>
 #include <string>
 #include <vector>
-#include <cmath>
 
 namespace Catch {
     namespace Benchmark {
-        struct Benchmark {
+        struct CATCH_DLL_PUBLIC Benchmark {
             Benchmark(std::string&& benchmarkName)
                 : name(CATCH_MOVE(benchmarkName)) {}
 

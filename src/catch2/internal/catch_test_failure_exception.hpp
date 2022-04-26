@@ -8,10 +8,12 @@
 #ifndef CATCH_TEST_FAILURE_EXCEPTION_HPP_INCLUDED
 #define CATCH_TEST_FAILURE_EXCEPTION_HPP_INCLUDED
 
+#include <catch2/internal/catch_dll_public.hpp>
+
 namespace Catch {
 
     //! Used to signal that an assertion macro failed
-    struct TestFailureException{};
+    struct CATCH_DLL_PUBLIC TestFailureException {};
 
 } // namespace Catch
 

@@ -8,13 +8,13 @@
 #ifndef CATCH_STARTUP_EXCEPTION_REGISTRY_HPP_INCLUDED
 #define CATCH_STARTUP_EXCEPTION_REGISTRY_HPP_INCLUDED
 
-
-#include <vector>
+#include <catch2/internal/catch_dll_public.hpp>
 #include <exception>
+#include <vector>
 
 namespace Catch {
 
-    class StartupExceptionRegistry {
+    class CATCH_DLL_PUBLIC StartupExceptionRegistry {
 #if !defined(CATCH_CONFIG_DISABLE_EXCEPTIONS)
     public:
         void add(std::exception_ptr const& exception) noexcept;

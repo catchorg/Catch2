@@ -8,8 +8,8 @@
 #ifndef CATCH_INTERFACES_REPORTER_FACTORY_HPP_INCLUDED
 #define CATCH_INTERFACES_REPORTER_FACTORY_HPP_INCLUDED
 
+#include <catch2/internal/catch_dll_public.hpp>
 #include <catch2/internal/catch_unique_ptr.hpp>
-
 #include <string>
 
 namespace Catch {
@@ -19,8 +19,7 @@ namespace Catch {
     class IEventListener;
     using IStreamingReporterPtr = Detail::unique_ptr<IEventListener>;
 
-
-    struct IReporterFactory {
+    struct CATCH_DLL_PUBLIC IReporterFactory {
         virtual ~IReporterFactory(); // = default
 
         virtual IStreamingReporterPtr
@@ -29,7 +28,7 @@ namespace Catch {
     };
     using IReporterFactoryPtr = Detail::unique_ptr<IReporterFactory>;
 
-    class EventListenerFactory {
+    class CATCH_DLL_PUBLIC EventListenerFactory {
     public:
         virtual ~EventListenerFactory(); // = default
         virtual IStreamingReporterPtr create( IConfig const* config ) const = 0;

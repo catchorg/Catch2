@@ -8,21 +8,21 @@
 #ifndef CATCH_MATCHERS_PREDICATE_HPP_INCLUDED
 #define CATCH_MATCHERS_PREDICATE_HPP_INCLUDED
 
-#include <catch2/matchers/catch_matchers.hpp>
+#include <catch2/internal/catch_dll_public.hpp>
 #include <catch2/internal/catch_meta.hpp>
 #include <catch2/internal/catch_move_and_forward.hpp>
-
+#include <catch2/matchers/catch_matchers.hpp>
 #include <string>
 
 namespace Catch {
 namespace Matchers {
 
 namespace Detail {
-    std::string finalizeDescription(const std::string& desc);
+    CATCH_DLL_PUBLIC std::string finalizeDescription( const std::string& desc );
 } // namespace Detail
 
 template <typename T, typename Predicate>
-class PredicateMatcher final : public MatcherBase<T> {
+class CATCH_DLL_PUBLIC PredicateMatcher final : public MatcherBase<T> {
     Predicate m_predicate;
     std::string m_description;
 public:

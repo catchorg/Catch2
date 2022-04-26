@@ -8,12 +8,12 @@
 #ifndef CATCH_REPORTER_HELPERS_HPP_INCLUDED
 #define CATCH_REPORTER_HELPERS_HPP_INCLUDED
 
+#include <catch2/interfaces/catch_interfaces_config.hpp>
+#include <catch2/internal/catch_dll_public.hpp>
+#include <catch2/internal/catch_list.hpp>
 #include <iosfwd>
 #include <string>
 #include <vector>
-
-#include <catch2/internal/catch_list.hpp>
-#include <catch2/interfaces/catch_interfaces_config.hpp>
 
 namespace Catch {
 
@@ -22,18 +22,20 @@ namespace Catch {
     class ColourImpl;
 
     // Returns double formatted as %.3f (format expected on output)
-    std::string getFormattedDuration( double duration );
+    CATCH_DLL_PUBLIC std::string getFormattedDuration( double duration );
 
     //! Should the reporter show duration of test given current configuration?
-    bool shouldShowDuration( IConfig const& config, double duration );
+    CATCH_DLL_PUBLIC bool shouldShowDuration( IConfig const& config,
+                                              double duration );
 
     std::string serializeFilters( std::vector<std::string> const& filters );
 
-    struct lineOfChars {
+    struct CATCH_DLL_PUBLIC lineOfChars {
         char c;
         constexpr lineOfChars( char c_ ): c( c_ ) {}
 
-        friend std::ostream& operator<<( std::ostream& out, lineOfChars value );
+        CATCH_DLL_PUBLIC friend std::ostream& operator<<( std::ostream& out,
+                                                          lineOfChars value );
     };
 
     /**
@@ -44,7 +46,7 @@ namespace Catch {
      * bases. The output should be backwards compatible with the output of
      * Catch2 v2 binaries.
      */
-    void
+    CATCH_DLL_PUBLIC void
     defaultListReporters( std::ostream& out,
                           std::vector<ReporterDescription> const& descriptions,
                           Verbosity verbosity );
@@ -56,7 +58,9 @@ namespace Catch {
      * bases. The output should be backwards compatible with the output of
      * Catch2 v2 binaries.
      */
-    void defaultListTags( std::ostream& out, std::vector<TagInfo> const& tags, bool isFiltered );
+    CATCH_DLL_PUBLIC void defaultListTags( std::ostream& out,
+                                           std::vector<TagInfo> const& tags,
+                                           bool isFiltered );
 
     /**
      * Lists test case information to the provided stream in user-friendly
@@ -67,11 +71,12 @@ namespace Catch {
      * v2 binaries, and also supports the format specific to the old
      * `--list-test-names-only` option, for people who used it in integrations.
      */
-    void defaultListTests( std::ostream& out,
-                           ColourImpl* streamColour,
-                           std::vector<TestCaseHandle> const& tests,
-                           bool isFiltered,
-                           Verbosity verbosity );
+    CATCH_DLL_PUBLIC void
+    defaultListTests( std::ostream& out,
+                      ColourImpl* streamColour,
+                      std::vector<TestCaseHandle> const& tests,
+                      bool isFiltered,
+                      Verbosity verbosity );
 
 } // end namespace Catch
 

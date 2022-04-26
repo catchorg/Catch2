@@ -10,21 +10,25 @@
 #ifndef CATCH_STATS_HPP_INCLUDED
 #define CATCH_STATS_HPP_INCLUDED
 
+#include <algorithm>
 #include <catch2/benchmark/catch_estimate.hpp>
 #include <catch2/benchmark/catch_outlier_classification.hpp>
-
-#include <algorithm>
-#include <vector>
+#include <catch2/internal/catch_dll_public.hpp>
+#include <cmath>
 #include <numeric>
 #include <tuple>
-#include <cmath>
+#include <vector>
 
 namespace Catch {
     namespace Benchmark {
         namespace Detail {
             using sample = std::vector<double>;
 
-            double weighted_average_quantile(int k, int q, std::vector<double>::iterator first, std::vector<double>::iterator last);
+            CATCH_DLL_PUBLIC double
+            weighted_average_quantile( int k,
+                                       int q,
+                                       std::vector<double>::iterator first,
+                                       std::vector<double>::iterator last );
 
             template <typename Iterator>
             OutlierClassification classify_outliers(Iterator first, Iterator last) {
@@ -77,9 +81,9 @@ namespace Catch {
                 return std::erfc(-x / std::sqrt(2.0)) / 2.0;
             }
 
-            double erfc_inv(double x);
+            CATCH_DLL_PUBLIC double erfc_inv( double x );
 
-            double normal_quantile(double p);
+            CATCH_DLL_PUBLIC double normal_quantile( double p );
 
             template <typename Iterator, typename Estimator>
             Estimate<double> bootstrap(double confidence_level, Iterator first, Iterator last, sample const& resample, Estimator&& estimator) {
@@ -130,7 +134,11 @@ namespace Catch {
                 double outlier_variance;
             };
 
-            bootstrap_analysis analyse_samples(double confidence_level, unsigned int n_resamples, std::vector<double>::iterator first, std::vector<double>::iterator last);
+            CATCH_DLL_PUBLIC bootstrap_analysis
+            analyse_samples( double confidence_level,
+                             unsigned int n_resamples,
+                             std::vector<double>::iterator first,
+                             std::vector<double>::iterator last );
         } // namespace Detail
     } // namespace Benchmark
 } // namespace Catch

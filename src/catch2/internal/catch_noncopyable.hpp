@@ -8,11 +8,13 @@
 #ifndef CATCH_NONCOPYABLE_HPP_INCLUDED
 #define CATCH_NONCOPYABLE_HPP_INCLUDED
 
+#include <catch2/internal/catch_dll_public.hpp>
+
 namespace Catch {
     namespace Detail {
 
         //! Deriving classes become noncopyable and nonmovable
-        class NonCopyable {
+        class CATCH_DLL_PUBLIC NonCopyable {
             NonCopyable( NonCopyable const& ) = delete;
             NonCopyable( NonCopyable&& ) = delete;
             NonCopyable& operator=( NonCopyable const& ) = delete;

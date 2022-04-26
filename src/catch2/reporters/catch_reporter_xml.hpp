@@ -8,14 +8,13 @@
 #ifndef CATCH_REPORTER_XML_HPP_INCLUDED
 #define CATCH_REPORTER_XML_HPP_INCLUDED
 
+#include <catch2/catch_timer.hpp>
+#include <catch2/internal/catch_dll_public.hpp>
+#include <catch2/internal/catch_xmlwriter.hpp>
 #include <catch2/reporters/catch_reporter_streaming_base.hpp>
 
-#include <catch2/internal/catch_xmlwriter.hpp>
-#include <catch2/catch_timer.hpp>
-
-
 namespace Catch {
-    class XmlReporter : public StreamingReporterBase {
+    class CATCH_DLL_PUBLIC XmlReporter : public StreamingReporterBase {
     public:
         XmlReporter(ReporterConfig const& _config);
 

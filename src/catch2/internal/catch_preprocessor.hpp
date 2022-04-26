@@ -104,53 +104,128 @@
 
 #define INTERNAL_CATCH_VA_NARGS_IMPL(_0, _1, _2, _3, _4, _5, _6, _7, _8, _9, _10, N, ...) N
 
-#define INTERNAL_CATCH_TYPE_GEN\
-    template<typename...> struct TypeList {};\
-    template<typename...Ts>\
-    constexpr auto get_wrapper() noexcept -> TypeList<Ts...> { return {}; }\
-    template<template<typename...> class...> struct TemplateTypeList{};\
-    template<template<typename...> class...Cs>\
-    constexpr auto get_wrapper() noexcept -> TemplateTypeList<Cs...> { return {}; }\
-    template<typename...>\
-    struct append;\
-    template<typename...>\
-    struct rewrap;\
-    template<template<typename...> class, typename...>\
-    struct create;\
-    template<template<typename...> class, typename>\
-    struct convert;\
-    \
-    template<typename T> \
-    struct append<T> { using type = T; };\
-    template< template<typename...> class L1, typename...E1, template<typename...> class L2, typename...E2, typename...Rest>\
-    struct append<L1<E1...>, L2<E2...>, Rest...> { using type = typename append<L1<E1...,E2...>, Rest...>::type; };\
-    template< template<typename...> class L1, typename...E1, typename...Rest>\
-    struct append<L1<E1...>, TypeList<mpl_::na>, Rest...> { using type = L1<E1...>; };\
-    \
-    template< template<typename...> class Container, template<typename...> class List, typename...elems>\
-    struct rewrap<TemplateTypeList<Container>, List<elems...>> { using type = TypeList<Container<elems...>>; };\
-    template< template<typename...> class Container, template<typename...> class List, class...Elems, typename...Elements>\
-    struct rewrap<TemplateTypeList<Container>, List<Elems...>, Elements...> { using type = typename append<TypeList<Container<Elems...>>, typename rewrap<TemplateTypeList<Container>, Elements...>::type>::type; };\
-    \
-    template<template <typename...> class Final, template< typename...> class...Containers, typename...Types>\
-    struct create<Final, TemplateTypeList<Containers...>, TypeList<Types...>> { using type = typename append<Final<>, typename rewrap<TemplateTypeList<Containers>, Types...>::type...>::type; };\
-    template<template <typename...> class Final, template <typename...> class List, typename...Ts>\
-    struct convert<Final, List<Ts...>> { using type = typename append<Final<>,TypeList<Ts>...>::type; };
+#define INTERNAL_CATCH_TYPE_GEN                                               \
+    template <typename...> struct CATCH_DLL_PUBLIC TypeList {};               \
+    template <typename... Ts>                                                 \
+    constexpr auto get_wrapper() noexcept->TypeList<Ts...> {                  \
+        return {};                                                            \
+    }                                                                         \
+    template <template <typename...> class...>                                \
+    struct CATCH_DLL_PUBLIC TemplateTypeList {};                              \
+    template <template <typename...> class... Cs>                             \
+    constexpr auto get_wrapper() noexcept->TemplateTypeList<Cs...> {          \
+        return {};                                                            \
+    }                                                                         \
+    template <typename...> struct append;                                     \
+    template <typename...> struct rewrap;                                     \
+    template <template <typename...> class, typename...> struct create;       \
+    template <template <typename...> class, typename> struct convert;         \
+                                                                              \
+    template <typename T> struct append<T> { using type = T; };               \
+    template <template <typename...> class L1,                                \
+              typename... E1,                                                 \
+              template <typename...>                                          \
+              class L2,                                                       \
+              typename... E2,                                                 \
+              typename... Rest>                                               \
+    struct append<L1<E1...>, L2<E2...>, Rest...> {                            \
+        using type = typename append<L1<E1..., E2...>, Rest...>::type;        \
+    };                                                                        \
+    template <template <typename...> class L1,                                \
+              typename... E1,                                                 \
+              typename... Rest>                                               \
+    struct append<L1<E1...>, TypeList<mpl_::na>, Rest...> {                   \
+        using type = L1<E1...>;                                               \
+    };                                                                        \
+                                                                              \
+    template <template <typename...> class Container,                         \
+              template <typename...>                                          \
+              class List,                                                     \
+              typename... elems>                                              \
+    struct rewrap<TemplateTypeList<Container>, List<elems...>> {              \
+        using type = TypeList<Container<elems...>>;                           \
+    };                                                                        \
+    template <template <typename...> class Container,                         \
+              template <typename...>                                          \
+              class List,                                                     \
+              class... Elems,                                                 \
+              typename... Elements>                                           \
+    struct rewrap<TemplateTypeList<Container>, List<Elems...>, Elements...> { \
+        using type =                                                          \
+            typename append<TypeList<Container<Elems...>>,                    \
+                            typename rewrap<TemplateTypeList<Container>,      \
+                                            Elements...>::type>::type;        \
+    };                                                                        \
+                                                                              \
+    template <template <typename...> class Final,                             \
+              template <typename...>                                          \
+              class... Containers,                                            \
+              typename... Types>                                              \
+    struct create<Final,                                                      \
+                  TemplateTypeList<Containers...>,                            \
+                  TypeList<Types...>> {                                       \
+        using type =                                                          \
+            typename append<Final<>,                                          \
+                            typename rewrap<TemplateTypeList<Containers>,     \
+                                            Types...>::type...>::type;        \
+    };                                                                        \
+    template <template <typename...> class Final,                             \
+              template <typename...>                                          \
+              class List,                                                     \
+              typename... Ts>                                                 \
+    struct convert<Final, List<Ts...>> {                                      \
+        using type = typename append<Final<>, TypeList<Ts>...>::type;         \
+    };
 
-#define INTERNAL_CATCH_NTTP_1(signature, ...)\
-    template<INTERNAL_CATCH_REMOVE_PARENS(signature)> struct Nttp{};\
-    template<INTERNAL_CATCH_REMOVE_PARENS(signature)>\
-    constexpr auto get_wrapper() noexcept -> Nttp<__VA_ARGS__> { return {}; } \
-    template<template<INTERNAL_CATCH_REMOVE_PARENS(signature)> class...> struct NttpTemplateTypeList{};\
-    template<template<INTERNAL_CATCH_REMOVE_PARENS(signature)> class...Cs>\
-    constexpr auto get_wrapper() noexcept -> NttpTemplateTypeList<Cs...> { return {}; } \
-    \
-    template< template<INTERNAL_CATCH_REMOVE_PARENS(signature)> class Container, template<INTERNAL_CATCH_REMOVE_PARENS(signature)> class List, INTERNAL_CATCH_REMOVE_PARENS(signature)>\
-    struct rewrap<NttpTemplateTypeList<Container>, List<__VA_ARGS__>> { using type = TypeList<Container<__VA_ARGS__>>; };\
-    template< template<INTERNAL_CATCH_REMOVE_PARENS(signature)> class Container, template<INTERNAL_CATCH_REMOVE_PARENS(signature)> class List, INTERNAL_CATCH_REMOVE_PARENS(signature), typename...Elements>\
-    struct rewrap<NttpTemplateTypeList<Container>, List<__VA_ARGS__>, Elements...> { using type = typename append<TypeList<Container<__VA_ARGS__>>, typename rewrap<NttpTemplateTypeList<Container>, Elements...>::type>::type; };\
-    template<template <typename...> class Final, template<INTERNAL_CATCH_REMOVE_PARENS(signature)> class...Containers, typename...Types>\
-    struct create<Final, NttpTemplateTypeList<Containers...>, TypeList<Types...>> { using type = typename append<Final<>, typename rewrap<NttpTemplateTypeList<Containers>, Types...>::type...>::type; };
+#define INTERNAL_CATCH_NTTP_1( signature, ... )                               \
+    template <INTERNAL_CATCH_REMOVE_PARENS( signature )>                      \
+    struct CATCH_DLL_PUBLIC Nttp {};                                          \
+    template <INTERNAL_CATCH_REMOVE_PARENS( signature )>                      \
+    constexpr auto get_wrapper() noexcept->Nttp<__VA_ARGS__> {                \
+        return {};                                                            \
+    }                                                                         \
+    template <template <INTERNAL_CATCH_REMOVE_PARENS( signature )> class...>  \
+    struct CATCH_DLL_PUBLIC NttpTemplateTypeList {};                          \
+    template <template <INTERNAL_CATCH_REMOVE_PARENS( signature )>            \
+              class... Cs>                                                    \
+    constexpr auto get_wrapper() noexcept->NttpTemplateTypeList<Cs...> {      \
+        return {};                                                            \
+    }                                                                         \
+                                                                              \
+    template <template <INTERNAL_CATCH_REMOVE_PARENS( signature )>            \
+              class Container,                                                \
+              template <INTERNAL_CATCH_REMOVE_PARENS( signature )>            \
+              class List,                                                     \
+              INTERNAL_CATCH_REMOVE_PARENS( signature )>                      \
+    struct rewrap<NttpTemplateTypeList<Container>, List<__VA_ARGS__>> {       \
+        using type = TypeList<Container<__VA_ARGS__>>;                        \
+    };                                                                        \
+    template <template <INTERNAL_CATCH_REMOVE_PARENS( signature )>            \
+              class Container,                                                \
+              template <INTERNAL_CATCH_REMOVE_PARENS( signature )>            \
+              class List,                                                     \
+              INTERNAL_CATCH_REMOVE_PARENS( signature ),                      \
+              typename... Elements>                                           \
+    struct rewrap<NttpTemplateTypeList<Container>,                            \
+                  List<__VA_ARGS__>,                                          \
+                  Elements...> {                                              \
+        using type =                                                          \
+            typename append<TypeList<Container<__VA_ARGS__>>,                 \
+                            typename rewrap<NttpTemplateTypeList<Container>,  \
+                                            Elements...>::type>::type;        \
+    };                                                                        \
+    template <template <typename...> class Final,                             \
+              template <INTERNAL_CATCH_REMOVE_PARENS( signature )>            \
+              class... Containers,                                            \
+              typename... Types>                                              \
+    struct create<Final,                                                      \
+                  NttpTemplateTypeList<Containers...>,                        \
+                  TypeList<Types...>> {                                       \
+        using type =                                                          \
+            typename append<Final<>,                                          \
+                            typename rewrap<NttpTemplateTypeList<Containers>, \
+                                            Types...>::type...>::type;        \
+    };
 
 #define INTERNAL_CATCH_DECLARE_SIG_TEST0(TestName)
 #define INTERNAL_CATCH_DECLARE_SIG_TEST1(TestName, signature)\
@@ -197,16 +272,20 @@
     }
 
 #define INTERNAL_CATCH_DECLARE_SIG_TEST_METHOD0(TestName, ClassName)
-#define INTERNAL_CATCH_DECLARE_SIG_TEST_METHOD1(TestName, ClassName, signature)\
-    template<typename TestType> \
-    struct TestName : INTERNAL_CATCH_REMOVE_PARENS(ClassName)<TestType> { \
-        void test();\
+#define INTERNAL_CATCH_DECLARE_SIG_TEST_METHOD1(                \
+    TestName, ClassName, signature )                            \
+    template <typename TestType>                                \
+    struct CATCH_DLL_PUBLIC TestName                            \
+        : INTERNAL_CATCH_REMOVE_PARENS( ClassName )<TestType> { \
+        void test();                                            \
     }
 
-#define INTERNAL_CATCH_DECLARE_SIG_TEST_METHOD_X(TestName, ClassName, signature, ...)\
-    template<INTERNAL_CATCH_REMOVE_PARENS(signature)> \
-    struct TestName : INTERNAL_CATCH_REMOVE_PARENS(ClassName)<__VA_ARGS__> { \
-        void test();\
+#define INTERNAL_CATCH_DECLARE_SIG_TEST_METHOD_X(                  \
+    TestName, ClassName, signature, ... )                          \
+    template <INTERNAL_CATCH_REMOVE_PARENS( signature )>           \
+    struct CATCH_DLL_PUBLIC TestName                               \
+        : INTERNAL_CATCH_REMOVE_PARENS( ClassName )<__VA_ARGS__> { \
+        void test();                                               \
     }
 
 #define INTERNAL_CATCH_DEFINE_SIG_TEST_METHOD0(TestName)

@@ -8,13 +8,12 @@
 #ifndef CATCH_REPORTER_COMPACT_HPP_INCLUDED
 #define CATCH_REPORTER_COMPACT_HPP_INCLUDED
 
-
+#include <catch2/internal/catch_dll_public.hpp>
 #include <catch2/reporters/catch_reporter_streaming_base.hpp>
-
 
 namespace Catch {
 
-    struct CompactReporter final : StreamingReporterBase {
+    struct CATCH_DLL_PUBLIC CompactReporter final : StreamingReporterBase {
 
         using StreamingReporterBase::StreamingReporterBase;
 
@@ -29,7 +28,6 @@ namespace Catch {
         void sectionEnded(SectionStats const& _sectionStats) override;
 
         void testRunEnded(TestRunStats const& _testRunStats) override;
-
     };
 
 } // end namespace Catch

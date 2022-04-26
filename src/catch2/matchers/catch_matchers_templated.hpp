@@ -8,18 +8,18 @@
 #ifndef CATCH_MATCHERS_TEMPLATED_HPP_INCLUDED
 #define CATCH_MATCHERS_TEMPLATED_HPP_INCLUDED
 
-#include <catch2/matchers/catch_matchers.hpp>
-#include <catch2/internal/catch_stringref.hpp>
-#include <catch2/internal/catch_move_and_forward.hpp>
-
-#include <array>
 #include <algorithm>
+#include <array>
+#include <catch2/internal/catch_dll_public.hpp>
+#include <catch2/internal/catch_move_and_forward.hpp>
+#include <catch2/internal/catch_stringref.hpp>
+#include <catch2/matchers/catch_matchers.hpp>
 #include <string>
 #include <type_traits>
 
 namespace Catch {
 namespace Matchers {
-    struct MatcherGenericBase : MatcherUntypedBase {
+    struct CATCH_DLL_PUBLIC MatcherGenericBase : MatcherUntypedBase {
         MatcherGenericBase() = default;
         virtual ~MatcherGenericBase(); // = default;
 
@@ -29,7 +29,6 @@ namespace Matchers {
         MatcherGenericBase& operator=(MatcherGenericBase const&) = delete;
         MatcherGenericBase& operator=(MatcherGenericBase&&) = delete;
     };
-
 
     namespace Detail {
         template<std::size_t N, std::size_t M>
@@ -61,8 +60,8 @@ namespace Matchers {
 
 #else // __cpp_lib_logical_traits
 
-        template<typename... Cond>
-        struct conjunction : std::true_type {};
+        template <typename... Cond>
+        struct CATCH_DLL_PUBLIC conjunction : std::true_type {};
 
         template<typename Cond, typename... Rest>
         struct conjunction<Cond, Rest...> : std::integral_constant<bool, Cond::value && conjunction<Rest...>::value> {};
@@ -106,7 +105,10 @@ namespace Matchers {
             return static_cast<T const*>(matchers[Idx])->match(arg) || match_any_of<MatcherTs...>(arg, matchers, std::index_sequence<Indices...>{});
         }
 
-        std::string describe_multi_matcher(StringRef combine, std::string const* descriptions_begin, std::string const* descriptions_end);
+        CATCH_DLL_PUBLIC std::string
+        describe_multi_matcher( StringRef combine,
+                                std::string const* descriptions_begin,
+                                std::string const* descriptions_end );
 
         template<typename... MatcherTs, std::size_t... Idx>
         std::string describe_multi_matcher(StringRef combine, std::array<void const*, sizeof...(MatcherTs)> const& matchers, std::index_sequence<Idx...>) {
@@ -117,9 +119,8 @@ namespace Matchers {
             return describe_multi_matcher(combine, descriptions.data(), descriptions.data() + descriptions.size());
         }
 
-
-        template<typename... MatcherTs>
-        struct MatchAllOfGeneric final : MatcherGenericBase {
+        template <typename... MatcherTs>
+        struct CATCH_DLL_PUBLIC MatchAllOfGeneric final : MatcherGenericBase {
             MatchAllOfGeneric(MatchAllOfGeneric const&) = delete;
             MatchAllOfGeneric& operator=(MatchAllOfGeneric const&) = delete;
             MatchAllOfGeneric(MatchAllOfGeneric&&) = default;
@@ -167,9 +168,8 @@ namespace Matchers {
             }
         };
 
-
-        template<typename... MatcherTs>
-        struct MatchAnyOfGeneric final : MatcherGenericBase {
+        template <typename... MatcherTs>
+        struct CATCH_DLL_PUBLIC MatchAnyOfGeneric final : MatcherGenericBase {
             MatchAnyOfGeneric(MatchAnyOfGeneric const&) = delete;
             MatchAnyOfGeneric& operator=(MatchAnyOfGeneric const&) = delete;
             MatchAnyOfGeneric(MatchAnyOfGeneric&&) = default;
@@ -216,9 +216,8 @@ namespace Matchers {
             }
         };
 
-
-        template<typename MatcherT>
-        struct MatchNotOfGeneric final : MatcherGenericBase {
+        template <typename MatcherT>
+        struct CATCH_DLL_PUBLIC MatchNotOfGeneric final : MatcherGenericBase {
             MatchNotOfGeneric(MatchNotOfGeneric const&) = delete;
             MatchNotOfGeneric& operator=(MatchNotOfGeneric const&) = delete;
             MatchNotOfGeneric(MatchNotOfGeneric&&) = default;

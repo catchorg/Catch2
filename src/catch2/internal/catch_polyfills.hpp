@@ -8,9 +8,11 @@
 #ifndef CATCH_POLYFILLS_HPP_INCLUDED
 #define CATCH_POLYFILLS_HPP_INCLUDED
 
+#include <catch2/internal/catch_dll_public.hpp>
+
 namespace Catch {
-    bool isnan(float f);
-    bool isnan(double d);
+    CATCH_DLL_PUBLIC bool isnan( float f );
+    CATCH_DLL_PUBLIC bool isnan( double d );
 }
 
 #endif // CATCH_POLYFILLS_HPP_INCLUDED

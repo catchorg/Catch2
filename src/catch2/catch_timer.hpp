@@ -8,11 +8,12 @@
 #ifndef CATCH_TIMER_HPP_INCLUDED
 #define CATCH_TIMER_HPP_INCLUDED
 
+#include <catch2/internal/catch_dll_public.hpp>
 #include <cstdint>
 
 namespace Catch {
 
-    class Timer {
+    class CATCH_DLL_PUBLIC Timer {
         uint64_t m_nanoseconds = 0;
     public:
         void start();

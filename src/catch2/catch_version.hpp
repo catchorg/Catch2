@@ -8,12 +8,13 @@
 #ifndef CATCH_VERSION_HPP_INCLUDED
 #define CATCH_VERSION_HPP_INCLUDED
 
+#include <catch2/internal/catch_dll_public.hpp>
 #include <iosfwd>
 
 namespace Catch {
 
     // Versioning information
-    struct Version {
+    struct CATCH_DLL_PUBLIC Version {
         Version( Version const& ) = delete;
         Version& operator=( Version const& ) = delete;
         Version(    unsigned int _majorVersion,
@@ -30,7 +31,8 @@ namespace Catch {
         char const * const branchName;
         unsigned int const buildNumber;
 
-        friend std::ostream& operator << ( std::ostream& os, Version const& version );
+        CATCH_DLL_PUBLIC friend std::ostream&
+        operator<<( std::ostream& os, Version const& version );
     };
 
     Version const& libraryVersion();

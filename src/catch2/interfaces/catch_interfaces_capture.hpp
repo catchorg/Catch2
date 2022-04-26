@@ -8,11 +8,11 @@
 #ifndef CATCH_INTERFACES_CAPTURE_HPP_INCLUDED
 #define CATCH_INTERFACES_CAPTURE_HPP_INCLUDED
 
-#include <string>
-#include <chrono>
-
-#include <catch2/internal/catch_stringref.hpp>
+#include <catch2/internal/catch_dll_public.hpp>
 #include <catch2/internal/catch_result_type.hpp>
+#include <catch2/internal/catch_stringref.hpp>
+#include <chrono>
+#include <string>
 
 namespace Catch {
 
@@ -33,7 +33,7 @@ namespace Catch {
     template <typename Duration = std::chrono::duration<double, std::nano>>
     struct BenchmarkStats;
 
-    struct IResultCapture {
+    struct CATCH_DLL_PUBLIC IResultCapture {
 
         virtual ~IResultCapture();
 
@@ -90,7 +90,7 @@ namespace Catch {
         virtual void exceptionEarlyReported() = 0;
     };
 
-    IResultCapture& getResultCapture();
+    CATCH_DLL_PUBLIC IResultCapture& getResultCapture();
 }
 
 #endif // CATCH_INTERFACES_CAPTURE_HPP_INCLUDED

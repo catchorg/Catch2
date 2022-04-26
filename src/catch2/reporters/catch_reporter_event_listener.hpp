@@ -9,6 +9,7 @@
 #define CATCH_REPORTER_EVENT_LISTENER_HPP_INCLUDED
 
 #include <catch2/interfaces/catch_interfaces_reporter.hpp>
+#include <catch2/internal/catch_dll_public.hpp>
 
 namespace Catch {
 
@@ -19,7 +20,7 @@ namespace Catch {
      * functions, so that a listener implementation can pick which
      * member functions it actually cares about.
      */
-    class EventListenerBase : public IEventListener {
+    class CATCH_DLL_PUBLIC EventListenerBase : public IEventListener {
     public:
         using IEventListener::IEventListener;
 

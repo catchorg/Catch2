@@ -8,13 +8,13 @@
 #ifndef CATCH_MESSAGE_HPP_INCLUDED
 #define CATCH_MESSAGE_HPP_INCLUDED
 
+#include <catch2/catch_tostring.hpp>
+#include <catch2/interfaces/catch_interfaces_capture.hpp>
+#include <catch2/internal/catch_dll_public.hpp>
+#include <catch2/internal/catch_message_info.hpp>
 #include <catch2/internal/catch_result_type.hpp>
 #include <catch2/internal/catch_stream.hpp>
 #include <catch2/internal/catch_stream_end_stop.hpp>
-#include <catch2/internal/catch_message_info.hpp>
-#include <catch2/interfaces/catch_interfaces_capture.hpp>
-#include <catch2/catch_tostring.hpp>
-
 #include <string>
 #include <vector>
 
@@ -22,7 +22,7 @@ namespace Catch {
 
     struct SourceLineInfo;
 
-    struct MessageStream {
+    struct CATCH_DLL_PUBLIC MessageStream {
 
         template<typename T>
         MessageStream& operator << ( T const& value ) {
@@ -33,7 +33,7 @@ namespace Catch {
         ReusableStringStream m_stream;
     };
 
-    struct MessageBuilder : MessageStream {
+    struct CATCH_DLL_PUBLIC MessageBuilder : MessageStream {
         MessageBuilder( StringRef macroName,
                         SourceLineInfo const& lineInfo,
                         ResultWas::OfType type ):
@@ -49,7 +49,7 @@ namespace Catch {
         MessageInfo m_info;
     };
 
-    class ScopedMessage {
+    class CATCH_DLL_PUBLIC ScopedMessage {
     public:
         explicit ScopedMessage( MessageBuilder const& builder );
         ScopedMessage( ScopedMessage& duplicate ) = delete;
@@ -60,7 +60,7 @@ namespace Catch {
         bool m_moved = false;
     };
 
-    class Capturer {
+    class CATCH_DLL_PUBLIC Capturer {
         std::vector<MessageInfo> m_messages;
         IResultCapture& m_resultCapture = getResultCapture();
         size_t m_captured = 0;

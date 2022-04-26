@@ -12,6 +12,7 @@
 #include <catch2/interfaces/catch_interfaces_reporter.hpp>
 #include <catch2/interfaces/catch_interfaces_reporter_factory.hpp>
 #include <catch2/internal/catch_compiler_capabilities.hpp>
+#include <catch2/internal/catch_dll_public.hpp>
 #include <catch2/internal/catch_unique_ptr.hpp>
 
 namespace Catch {
@@ -20,7 +21,7 @@ namespace Catch {
     using IStreamingReporterPtr = Detail::unique_ptr<IEventListener>;
 
     template <typename T>
-    class ReporterFactory : public IReporterFactory {
+    class CATCH_DLL_PUBLIC ReporterFactory : public IReporterFactory {
 
         IStreamingReporterPtr create( ReporterConfig const& config ) const override {
             return Detail::make_unique<T>( config );
@@ -31,19 +32,17 @@ namespace Catch {
         }
     };
 
-
-    template<typename T>
-    class ReporterRegistrar {
+    template <typename T> class CATCH_DLL_PUBLIC ReporterRegistrar {
     public:
         explicit ReporterRegistrar( std::string const& name ) {
             getMutableRegistryHub().registerReporter( name, Detail::make_unique<ReporterFactory<T>>() );
         }
     };
 
-    template<typename T>
-    class ListenerRegistrar {
+    template <typename T> class CATCH_DLL_PUBLIC ListenerRegistrar {
 
-        class TypedListenerFactory : public EventListenerFactory {
+        class CATCH_DLL_PUBLIC TypedListenerFactory
+            : public EventListenerFactory {
 
             IStreamingReporterPtr
             create( IConfig const* config ) const override {

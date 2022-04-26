@@ -8,20 +8,20 @@
 #ifndef CATCH_CASE_INSENSITIVE_COMPARISONS_HPP_INCLUDED
 #define CATCH_CASE_INSENSITIVE_COMPARISONS_HPP_INCLUDED
 
+#include <catch2/internal/catch_dll_public.hpp>
 #include <catch2/internal/catch_stringref.hpp>
-
 #include <string>
 
 namespace Catch {
     namespace Detail {
         //! Provides case-insensitive `op<` semantics when called
-        struct CaseInsensitiveLess {
+        struct CATCH_DLL_PUBLIC CaseInsensitiveLess {
             bool operator()( StringRef lhs,
                              StringRef rhs ) const;
         };
 
         //! Provides case-insensitive `op==` semantics when called
-        struct CaseInsensitiveEqualTo {
+        struct CATCH_DLL_PUBLIC CaseInsensitiveEqualTo {
             bool operator()( StringRef lhs,
                              StringRef rhs ) const;
         };

@@ -8,11 +8,12 @@
 #ifndef CATCH_REPORTER_TAP_HPP_INCLUDED
 #define CATCH_REPORTER_TAP_HPP_INCLUDED
 
+#include <catch2/internal/catch_dll_public.hpp>
 #include <catch2/reporters/catch_reporter_streaming_base.hpp>
 
 namespace Catch {
 
-    struct TAPReporter final : StreamingReporterBase {
+    struct CATCH_DLL_PUBLIC TAPReporter final : StreamingReporterBase {
 
         TAPReporter( ReporterConfig const& config ):
             StreamingReporterBase( config ) {

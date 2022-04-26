@@ -10,15 +10,16 @@
 
 #include <catch2/interfaces/catch_interfaces_exception.hpp>
 #include <catch2/internal/catch_compiler_capabilities.hpp>
+#include <catch2/internal/catch_dll_public.hpp>
 #include <catch2/internal/catch_unique_name.hpp>
-
 #include <exception>
 
 namespace Catch {
 
-    class ExceptionTranslatorRegistrar {
-        template<typename T>
-        class ExceptionTranslator : public IExceptionTranslator {
+    class CATCH_DLL_PUBLIC ExceptionTranslatorRegistrar {
+        template <typename T>
+        class CATCH_DLL_PUBLIC ExceptionTranslator
+            : public IExceptionTranslator {
         public:
 
             ExceptionTranslator( std::string(*translateFunction)( T const& ) )

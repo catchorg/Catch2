@@ -8,10 +8,10 @@
 #ifndef CATCH_ENFORCE_HPP_INCLUDED
 #define CATCH_ENFORCE_HPP_INCLUDED
 
-#include <catch2/internal/catch_source_line_info.hpp>
 #include <catch2/internal/catch_compiler_capabilities.hpp>
+#include <catch2/internal/catch_dll_public.hpp>
+#include <catch2/internal/catch_source_line_info.hpp>
 #include <catch2/internal/catch_stream.hpp>
-
 #include <exception>
 
 namespace Catch {
@@ -26,12 +26,12 @@ namespace Catch {
     void throw_exception(std::exception const& e);
 #endif
 
-    [[noreturn]]
-    void throw_logic_error(std::string const& msg);
-    [[noreturn]]
-    void throw_domain_error(std::string const& msg);
-    [[noreturn]]
-    void throw_runtime_error(std::string const& msg);
+    [[noreturn]] CATCH_DLL_PUBLIC void
+    throw_logic_error( std::string const& msg );
+    [[noreturn]] CATCH_DLL_PUBLIC void
+    throw_domain_error( std::string const& msg );
+    [[noreturn]] CATCH_DLL_PUBLIC void
+    throw_runtime_error( std::string const& msg );
 
 } // namespace Catch;
 

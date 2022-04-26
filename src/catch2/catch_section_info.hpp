@@ -8,16 +8,16 @@
 #ifndef CATCH_SECTION_INFO_HPP_INCLUDED
 #define CATCH_SECTION_INFO_HPP_INCLUDED
 
+#include <catch2/catch_totals.hpp>
+#include <catch2/internal/catch_dll_public.hpp>
 #include <catch2/internal/catch_move_and_forward.hpp>
 #include <catch2/internal/catch_source_line_info.hpp>
 #include <catch2/internal/catch_stringref.hpp>
-#include <catch2/catch_totals.hpp>
-
 #include <string>
 
 namespace Catch {
 
-    struct SectionInfo {
+    struct CATCH_DLL_PUBLIC SectionInfo {
         // The last argument is ignored, so that people can write
         // SECTION("ShortName", "Proper description that is long") and
         // still use the `-c` flag comfortably.
@@ -31,7 +31,7 @@ namespace Catch {
         SourceLineInfo lineInfo;
     };
 
-    struct SectionEndInfo {
+    struct CATCH_DLL_PUBLIC SectionEndInfo {
         SectionInfo sectionInfo;
         Counts prevAssertions;
         double durationInSeconds;

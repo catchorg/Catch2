@@ -9,11 +9,11 @@
 #define CATCH_INTERFACES_REPORTER_REGISTRY_HPP_INCLUDED
 
 #include <catch2/internal/catch_case_insensitive_comparisons.hpp>
+#include <catch2/internal/catch_dll_public.hpp>
 #include <catch2/internal/catch_unique_ptr.hpp>
-
+#include <map>
 #include <string>
 #include <vector>
-#include <map>
 
 namespace Catch {
 
@@ -26,7 +26,7 @@ namespace Catch {
     struct ReporterConfig;
     class EventListenerFactory;
 
-    struct IReporterRegistry {
+    struct CATCH_DLL_PUBLIC IReporterRegistry {
         using FactoryMap = std::map<std::string, IReporterFactoryPtr, Detail::CaseInsensitiveLess>;
         using Listeners = std::vector<Detail::unique_ptr<EventListenerFactory>>;
 

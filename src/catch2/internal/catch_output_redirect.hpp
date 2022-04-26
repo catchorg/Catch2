@@ -8,17 +8,17 @@
 #ifndef CATCH_OUTPUT_REDIRECT_HPP_INCLUDED
 #define CATCH_OUTPUT_REDIRECT_HPP_INCLUDED
 
+#include <catch2/internal/catch_compiler_capabilities.hpp>
+#include <catch2/internal/catch_dll_public.hpp>
 #include <catch2/internal/catch_platform.hpp>
 #include <catch2/internal/catch_stream.hpp>
-#include <catch2/internal/catch_compiler_capabilities.hpp>
-
 #include <cstdio>
 #include <iosfwd>
 #include <string>
 
 namespace Catch {
 
-    class RedirectedStream {
+    class CATCH_DLL_PUBLIC RedirectedStream {
         std::ostream& m_originalStream;
         std::ostream& m_redirectionStream;
         std::streambuf* m_prevBuf;
@@ -28,7 +28,7 @@ namespace Catch {
         ~RedirectedStream();
     };
 
-    class RedirectedStdOut {
+    class CATCH_DLL_PUBLIC RedirectedStdOut {
         ReusableStringStream m_rss;
         RedirectedStream m_cout;
     public:
@@ -39,7 +39,7 @@ namespace Catch {
     // StdErr has two constituent streams in C++, std::cerr and std::clog
     // This means that we need to redirect 2 streams into 1 to keep proper
     // order of writes
-    class RedirectedStdErr {
+    class CATCH_DLL_PUBLIC RedirectedStdErr {
         ReusableStringStream m_rss;
         RedirectedStream m_cerr;
         RedirectedStream m_clog;
@@ -48,7 +48,7 @@ namespace Catch {
         auto str() const -> std::string;
     };
 
-    class RedirectedStreams {
+    class CATCH_DLL_PUBLIC RedirectedStreams {
     public:
         RedirectedStreams(RedirectedStreams const&) = delete;
         RedirectedStreams& operator=(RedirectedStreams const&) = delete;
@@ -70,7 +70,7 @@ namespace Catch {
     // to create a file inside system folder, thus requiring elevated
     // privileges for the binary), so we have to use tmpnam(_s) and
     // create the file ourselves there.
-    class TempFile {
+    class CATCH_DLL_PUBLIC TempFile {
     public:
         TempFile(TempFile const&) = delete;
         TempFile& operator=(TempFile const&) = delete;
@@ -90,8 +90,7 @@ namespace Catch {
     #endif
     };
 
-
-    class OutputRedirect {
+    class CATCH_DLL_PUBLIC OutputRedirect {
     public:
         OutputRedirect(OutputRedirect const&) = delete;
         OutputRedirect& operator=(OutputRedirect const&) = delete;

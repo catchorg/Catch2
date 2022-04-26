@@ -10,12 +10,12 @@
 
 #include <catch2/interfaces/catch_interfaces_reporter.hpp>
 #include <catch2/interfaces/catch_interfaces_reporter_registry.hpp>
-
+#include <catch2/internal/catch_dll_public.hpp>
 #include <map>
 
 namespace Catch {
 
-    class ReporterRegistry : public IReporterRegistry {
+    class CATCH_DLL_PUBLIC ReporterRegistry : public IReporterRegistry {
     public:
 
         ReporterRegistry();

@@ -14,15 +14,15 @@
 #endif
 
 #include <catch2/catch_test_spec.hpp>
-
-#include <vector>
+#include <catch2/internal/catch_dll_public.hpp>
 #include <string>
+#include <vector>
 
 namespace Catch {
 
     struct ITagAliasRegistry;
 
-    class TestSpecParser {
+    class CATCH_DLL_PUBLIC TestSpecParser {
         enum Mode{ None, Name, QuotedName, Tag, EscapedName };
         Mode m_mode = None;
         Mode lastMode = None;
@@ -69,9 +69,8 @@ namespace Catch {
             m_patternName += c;
             m_realPatternPos++;
         }
-
     };
-    TestSpec parseTestSpec( std::string const& arg );
+    CATCH_DLL_PUBLIC TestSpec parseTestSpec( std::string const& arg );
 
 } // namespace Catch
 

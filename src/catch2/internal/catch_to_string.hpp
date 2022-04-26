@@ -8,10 +8,10 @@
 #ifndef CATCH_TO_STRING_HPP_INCLUDED
 #define CATCH_TO_STRING_HPP_INCLUDED
 
-#include <string>
-
 #include <catch2/internal/catch_compiler_capabilities.hpp>
+#include <catch2/internal/catch_dll_public.hpp>
 #include <catch2/internal/catch_stream.hpp>
+#include <string>
 
 namespace Catch {
     template <typename T>

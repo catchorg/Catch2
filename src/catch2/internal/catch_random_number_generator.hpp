@@ -8,6 +8,7 @@
 #ifndef CATCH_RANDOM_NUMBER_GENERATOR_HPP_INCLUDED
 #define CATCH_RANDOM_NUMBER_GENERATOR_HPP_INCLUDED
 
+#include <catch2/internal/catch_dll_public.hpp>
 #include <cstdint>
 
 namespace Catch {
@@ -17,7 +18,7 @@ namespace Catch {
     // does not use it, but it should behave as expected inside stdlib's
     // distributions.
     // The implementation is based on the PCG family (http://pcg-random.org)
-    class SimplePcg32 {
+    class CATCH_DLL_PUBLIC SimplePcg32 {
         using state_type = std::uint64_t;
     public:
         using result_type = std::uint32_t;
@@ -39,8 +40,10 @@ namespace Catch {
         result_type operator()();
 
     private:
-        friend bool operator==(SimplePcg32 const& lhs, SimplePcg32 const& rhs);
-        friend bool operator!=(SimplePcg32 const& lhs, SimplePcg32 const& rhs);
+        CATCH_DLL_PUBLIC friend bool operator==( SimplePcg32 const& lhs,
+                                                 SimplePcg32 const& rhs );
+        CATCH_DLL_PUBLIC friend bool operator!=( SimplePcg32 const& lhs,
+                                                 SimplePcg32 const& rhs );
 
         // In theory we also need operator<< and operator>>
         // In practice we do not use them, so we will skip them for now

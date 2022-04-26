@@ -8,9 +8,9 @@
 #ifndef CATCH_TEST_CASE_REGISTRY_IMPL_HPP_INCLUDED
 #define CATCH_TEST_CASE_REGISTRY_IMPL_HPP_INCLUDED
 
-#include <catch2/internal/catch_test_registry.hpp>
 #include <catch2/interfaces/catch_interfaces_config.hpp>
-
+#include <catch2/internal/catch_dll_public.hpp>
+#include <catch2/internal/catch_test_registry.hpp>
 #include <vector>
 
 namespace Catch {
@@ -29,7 +29,7 @@ namespace Catch {
     std::vector<TestCaseHandle> filterTests( std::vector<TestCaseHandle> const& testCases, TestSpec const& testSpec, IConfig const& config );
     std::vector<TestCaseHandle> const& getAllTestCasesSorted( IConfig const& config );
 
-    class TestRegistry : public ITestCaseRegistry {
+    class CATCH_DLL_PUBLIC TestRegistry : public ITestCaseRegistry {
     public:
         ~TestRegistry() override = default;
 
@@ -53,7 +53,7 @@ namespace Catch {
 
     ///////////////////////////////////////////////////////////////////////////
 
-    class TestInvokerAsFunction final : public ITestInvoker {
+    class CATCH_DLL_PUBLIC TestInvokerAsFunction final : public ITestInvoker {
         using TestType = void(*)();
         TestType m_testAsFunction;
     public:

@@ -8,16 +8,17 @@
 #ifndef CATCH_MATCHERS_FLOATING_POINT_HPP_INCLUDED
 #define CATCH_MATCHERS_FLOATING_POINT_HPP_INCLUDED
 
+#include <catch2/internal/catch_dll_public.hpp>
 #include <catch2/matchers/catch_matchers.hpp>
 
 namespace Catch {
 namespace Matchers {
 
     namespace Detail {
-        enum class FloatingPointKind : uint8_t;
+        enum class CATCH_DLL_PUBLIC FloatingPointKind : uint8_t;
     }
 
-    struct WithinAbsMatcher final : MatcherBase<double> {
+    struct CATCH_DLL_PUBLIC WithinAbsMatcher final : MatcherBase<double> {
         WithinAbsMatcher(double target, double margin);
         bool match(double const& matchee) const override;
         std::string describe() const override;
@@ -26,7 +27,7 @@ namespace Matchers {
         double m_margin;
     };
 
-    struct WithinUlpsMatcher final : MatcherBase<double> {
+    struct CATCH_DLL_PUBLIC WithinUlpsMatcher final : MatcherBase<double> {
         WithinUlpsMatcher(double target, uint64_t ulps, Detail::FloatingPointKind baseType);
         bool match(double const& matchee) const override;
         std::string describe() const override;
@@ -42,7 +43,7 @@ namespace Matchers {
     // |lhs - rhs| <= epsilon * max(fabs(lhs), fabs(rhs)), then we get
     // the same result if we do this for floats, as if we do this for
     // doubles that were promoted from floats.
-    struct WithinRelMatcher final : MatcherBase<double> {
+    struct CATCH_DLL_PUBLIC WithinRelMatcher final : MatcherBase<double> {
         WithinRelMatcher(double target, double epsilon);
         bool match(double const& matchee) const override;
         std::string describe() const override;
@@ -52,20 +53,22 @@ namespace Matchers {
     };
 
     //! Creates a matcher that accepts doubles within certain ULP range of target
-    WithinUlpsMatcher WithinULP(double target, uint64_t maxUlpDiff);
+    CATCH_DLL_PUBLIC WithinUlpsMatcher WithinULP( double target,
+                                                  uint64_t maxUlpDiff );
     //! Creates a matcher that accepts floats within certain ULP range of target
-    WithinUlpsMatcher WithinULP(float target, uint64_t maxUlpDiff);
+    CATCH_DLL_PUBLIC WithinUlpsMatcher WithinULP( float target,
+                                                  uint64_t maxUlpDiff );
     //! Creates a matcher that accepts numbers within certain range of target
-    WithinAbsMatcher WithinAbs(double target, double margin);
+    CATCH_DLL_PUBLIC WithinAbsMatcher WithinAbs( double target, double margin );
 
     //! Creates a matcher that accepts doubles within certain relative range of target
-    WithinRelMatcher WithinRel(double target, double eps);
+    CATCH_DLL_PUBLIC WithinRelMatcher WithinRel( double target, double eps );
     //! Creates a matcher that accepts doubles within 100*DBL_EPS relative range of target
-    WithinRelMatcher WithinRel(double target);
+    CATCH_DLL_PUBLIC WithinRelMatcher WithinRel( double target );
     //! Creates a matcher that accepts doubles within certain relative range of target
-    WithinRelMatcher WithinRel(float target, float eps);
+    CATCH_DLL_PUBLIC WithinRelMatcher WithinRel( float target, float eps );
     //! Creates a matcher that accepts floats within 100*FLT_EPS relative range of target
-    WithinRelMatcher WithinRel(float target);
+    CATCH_DLL_PUBLIC WithinRelMatcher WithinRel( float target );
 
 } // namespace Matchers
 } // namespace Catch

@@ -9,9 +9,9 @@
 #define CATCH_UNIQUE_PTR_HPP_INCLUDED
 
 #include <cassert>
-#include <type_traits>
-
+#include <catch2/internal/catch_dll_public.hpp>
 #include <catch2/internal/catch_move_and_forward.hpp>
+#include <type_traits>
 
 namespace Catch {
 namespace Detail {
@@ -20,8 +20,7 @@ namespace Detail {
      *
      * Does not support arrays nor custom deleters.
      */
-    template <typename T>
-    class unique_ptr {
+    template <typename T> class CATCH_DLL_PUBLIC unique_ptr {
         T* m_ptr;
     public:
         constexpr unique_ptr(std::nullptr_t = nullptr):

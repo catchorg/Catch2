@@ -8,12 +8,14 @@
 #ifndef CATCH_VOID_TYPE_HPP_INCLUDED
 #define CATCH_VOID_TYPE_HPP_INCLUDED
 
+#include <catch2/internal/catch_dll_public.hpp>
 
 namespace Catch {
     namespace Detail {
 
-        template <typename...>
-        struct make_void { using type = void; };
+        template <typename...> struct CATCH_DLL_PUBLIC make_void {
+            using type = void;
+        };
 
         template <typename... Ts>
         using void_t = typename make_void<Ts...>::type;

@@ -8,14 +8,16 @@
 #ifndef CATCH_MATCHERS_CONTAINER_PROPERTIES_HPP_INCLUDED
 #define CATCH_MATCHERS_CONTAINER_PROPERTIES_HPP_INCLUDED
 
-#include <catch2/matchers/catch_matchers_templated.hpp>
 #include <catch2/internal/catch_container_nonmembers.hpp>
+#include <catch2/internal/catch_dll_public.hpp>
 #include <catch2/internal/catch_move_and_forward.hpp>
+#include <catch2/matchers/catch_matchers_templated.hpp>
 
 namespace Catch {
     namespace Matchers {
 
-        class IsEmptyMatcher final : public MatcherGenericBase {
+        class CATCH_DLL_PUBLIC IsEmptyMatcher final
+            : public MatcherGenericBase {
         public:
             // todo: Use polyfills
             template <typename RangeLike>
@@ -31,7 +33,8 @@ namespace Catch {
             std::string describe() const override;
         };
 
-        class HasSizeMatcher final : public MatcherGenericBase {
+        class CATCH_DLL_PUBLIC HasSizeMatcher final
+            : public MatcherGenericBase {
             std::size_t m_target_size;
         public:
             explicit HasSizeMatcher(std::size_t target_size):
@@ -52,7 +55,8 @@ namespace Catch {
         };
 
         template <typename Matcher>
-        class SizeMatchesMatcher final : public MatcherGenericBase {
+        class CATCH_DLL_PUBLIC SizeMatchesMatcher final
+            : public MatcherGenericBase {
             Matcher m_matcher;
         public:
             explicit SizeMatchesMatcher(Matcher m):
@@ -74,11 +78,10 @@ namespace Catch {
             }
         };
 
-
         //! Creates a matcher that accepts empty ranges/containers
-        IsEmptyMatcher IsEmpty();
+        CATCH_DLL_PUBLIC IsEmptyMatcher IsEmpty();
         //! Creates a matcher that accepts ranges/containers with specific size
-        HasSizeMatcher SizeIs(std::size_t sz);
+        CATCH_DLL_PUBLIC HasSizeMatcher SizeIs( std::size_t sz );
         template <typename Matcher>
         std::enable_if_t<Detail::is_matcher<Matcher>::value,
         SizeMatchesMatcher<Matcher>> SizeIs(Matcher&& m) {

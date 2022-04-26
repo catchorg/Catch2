@@ -8,12 +8,13 @@
 #ifndef CATCH_TOTALS_HPP_INCLUDED
 #define CATCH_TOTALS_HPP_INCLUDED
 
+#include <catch2/internal/catch_dll_public.hpp>
 #include <cstddef>
 #include <cstdint>
 
 namespace Catch {
 
-    struct Counts {
+    struct CATCH_DLL_PUBLIC Counts {
         Counts operator - ( Counts const& other ) const;
         Counts& operator += ( Counts const& other );
 
@@ -26,7 +27,7 @@ namespace Catch {
         std::uint64_t failedButOk = 0;
     };
 
-    struct Totals {
+    struct CATCH_DLL_PUBLIC Totals {
 
         Totals operator - ( Totals const& other ) const;
         Totals& operator += ( Totals const& other );

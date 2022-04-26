@@ -41,7 +41,10 @@ namespace Catch {
 
     using StringMatcher = Matchers::MatcherBase<std::string>;
 
-    void handleExceptionMatchExpr( AssertionHandler& handler, StringMatcher const& matcher, StringRef matcherString  );
+    CATCH_DLL_PUBLIC void
+    handleExceptionMatchExpr( AssertionHandler& handler,
+                              StringMatcher const& matcher,
+                              StringRef matcherString );
 
     template<typename ArgT, typename MatcherT>
     auto makeMatchExpr( ArgT && arg, MatcherT const& matcher, StringRef matcherString  ) -> MatchExpr<ArgT, MatcherT> {

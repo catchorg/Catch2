@@ -8,9 +8,11 @@
 #ifndef CATCH_CASE_SENSITIVE_HPP_INCLUDED
 #define CATCH_CASE_SENSITIVE_HPP_INCLUDED
 
+#include <catch2/internal/catch_dll_public.hpp>
+
 namespace Catch {
 
-    enum class CaseSensitive { Yes, No };
+    enum class CATCH_DLL_PUBLIC CaseSensitive { Yes, No };
 
 } // namespace Catch
 

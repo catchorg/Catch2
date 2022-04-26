@@ -10,6 +10,7 @@
 
 #include <cassert>
 #include <catch2/internal/catch_console_width.hpp>
+#include <catch2/internal/catch_dll_public.hpp>
 #include <string>
 #include <vector>
 
@@ -25,7 +26,7 @@ namespace Catch {
          * of the provided text so that the written lines fit within
          * target width.
          */
-        class Column {
+        class CATCH_DLL_PUBLIC Column {
             // String to be written out
             std::string m_string;
             // Width of the column for linebreaking
@@ -39,9 +40,9 @@ namespace Catch {
             /**
              * Iterates "lines" in `Column` and return sthem
              */
-            class const_iterator {
+            class CATCH_DLL_PUBLIC const_iterator {
                 friend Column;
-                struct EndTag {};
+                struct CATCH_DLL_PUBLIC EndTag {};
 
                 Column const& m_column;
                 // Where does the current line start?
@@ -110,8 +111,8 @@ namespace Catch {
             const_iterator begin() const { return const_iterator( *this ); }
             const_iterator end() const { return { *this, const_iterator::EndTag{} }; }
 
-            friend std::ostream& operator<<( std::ostream& os,
-                                             Column const& col );
+            CATCH_DLL_PUBLIC friend std::ostream&
+            operator<<( std::ostream& os, Column const& col );
 
             Columns operator+( Column const& other );
         };
@@ -119,13 +120,13 @@ namespace Catch {
         //! Creates a column that serves as an empty space of specific width
         Column Spacer( size_t spaceWidth );
 
-        class Columns {
+        class CATCH_DLL_PUBLIC Columns {
             std::vector<Column> m_columns;
 
         public:
-            class iterator {
+            class CATCH_DLL_PUBLIC iterator {
                 friend Columns;
-                struct EndTag {};
+                struct CATCH_DLL_PUBLIC EndTag {};
 
                 std::vector<Column> const& m_columns;
                 std::vector<Column::const_iterator> m_iterators;
@@ -157,11 +158,11 @@ namespace Catch {
             iterator begin() const { return iterator( *this ); }
             iterator end() const { return { *this, iterator::EndTag() }; }
 
-            Columns& operator+=( Column const& col );
-            Columns operator+( Column const& col );
+            CATCH_DLL_PUBLIC Columns& operator+=( Column const& col );
+            CATCH_DLL_PUBLIC Columns operator+( Column const& col );
 
-            friend std::ostream& operator<<( std::ostream& os,
-                                             Columns const& cols );
+            CATCH_DLL_PUBLIC friend std::ostream&
+            operator<<( std::ostream& os, Columns const& cols );
         };
 
     } // namespace TextFlow

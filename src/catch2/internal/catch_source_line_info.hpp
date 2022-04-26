@@ -8,12 +8,13 @@
 #ifndef CATCH_SOURCE_LINE_INFO_HPP_INCLUDED
 #define CATCH_SOURCE_LINE_INFO_HPP_INCLUDED
 
+#include <catch2/internal/catch_dll_public.hpp>
 #include <cstddef>
 #include <iosfwd>
 
 namespace Catch {
 
-    struct SourceLineInfo {
+    struct CATCH_DLL_PUBLIC SourceLineInfo {
 
         SourceLineInfo() = delete;
         constexpr SourceLineInfo( char const* _file, std::size_t _line ) noexcept:
@@ -27,7 +28,8 @@ namespace Catch {
         char const* file;
         std::size_t line;
 
-        friend std::ostream& operator << (std::ostream& os, SourceLineInfo const& info);
+        CATCH_DLL_PUBLIC friend std::ostream&
+        operator<<( std::ostream& os, SourceLineInfo const& info );
     };
 }
 

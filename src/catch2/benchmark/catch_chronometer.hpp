@@ -13,13 +13,14 @@
 #include <catch2/benchmark/catch_clock.hpp>
 #include <catch2/benchmark/catch_optimizer.hpp>
 #include <catch2/benchmark/detail/catch_complete_invoke.hpp>
+#include <catch2/internal/catch_dll_public.hpp>
 #include <catch2/internal/catch_meta.hpp>
 #include <catch2/internal/catch_move_and_forward.hpp>
 
 namespace Catch {
     namespace Benchmark {
         namespace Detail {
-            struct ChronometerConcept {
+            struct CATCH_DLL_PUBLIC ChronometerConcept {
                 virtual void start() = 0;
                 virtual void finish() = 0;
                 virtual ~ChronometerConcept(); // = default;
@@ -29,7 +30,8 @@ namespace Catch {
                 ChronometerConcept& operator=(ChronometerConcept const&) = default;
             };
             template <typename Clock>
-            struct ChronometerModel final : public ChronometerConcept {
+            struct CATCH_DLL_PUBLIC ChronometerModel final
+                : public ChronometerConcept {
                 void start() override { started = Clock::now(); }
                 void finish() override { finished = Clock::now(); }
 
@@ -40,7 +42,7 @@ namespace Catch {
             };
         } // namespace Detail
 
-        struct Chronometer {
+        struct CATCH_DLL_PUBLIC Chronometer {
         public:
             template <typename Fun>
             void measure(Fun&& fun) { measure(CATCH_FORWARD(fun), is_callable<Fun(int)>()); }

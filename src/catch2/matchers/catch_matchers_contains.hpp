@@ -8,17 +8,18 @@
 #ifndef CATCH_MATCHERS_CONTAINS_HPP_INCLUDED
 #define CATCH_MATCHERS_CONTAINS_HPP_INCLUDED
 
-#include <catch2/matchers/catch_matchers_templated.hpp>
-#include <catch2/internal/catch_move_and_forward.hpp>
-
 #include <algorithm>
+#include <catch2/internal/catch_dll_public.hpp>
+#include <catch2/internal/catch_move_and_forward.hpp>
+#include <catch2/matchers/catch_matchers_templated.hpp>
 #include <functional>
 
 namespace Catch {
     namespace Matchers {
         //! Matcher for checking that an element in range is equal to specific element
         template <typename T, typename Equality>
-        class ContainsElementMatcher final : public MatcherGenericBase {
+        class CATCH_DLL_PUBLIC ContainsElementMatcher final
+            : public MatcherGenericBase {
             T m_desired;
             Equality m_eq;
         public:
@@ -45,7 +46,8 @@ namespace Catch {
 
         //! Meta-matcher for checking that an element in a range matches a specific matcher
         template <typename Matcher>
-        class ContainsMatcherMatcher final : public MatcherGenericBase {
+        class CATCH_DLL_PUBLIC ContainsMatcherMatcher final
+            : public MatcherGenericBase {
             Matcher m_matcher;
         public:
             // Note that we do a copy+move to avoid having to SFINAE this

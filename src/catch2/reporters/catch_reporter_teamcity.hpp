@@ -8,9 +8,9 @@
 #ifndef CATCH_REPORTER_TEAMCITY_HPP_INCLUDED
 #define CATCH_REPORTER_TEAMCITY_HPP_INCLUDED
 
-#include <catch2/reporters/catch_reporter_streaming_base.hpp>
 #include <catch2/catch_timer.hpp>
-
+#include <catch2/internal/catch_dll_public.hpp>
+#include <catch2/reporters/catch_reporter_streaming_base.hpp>
 #include <cstring>
 
 #ifdef __clang__
@@ -20,7 +20,7 @@
 
 namespace Catch {
 
-    struct TeamCityReporter final : StreamingReporterBase {
+    struct CATCH_DLL_PUBLIC TeamCityReporter final : StreamingReporterBase {
         TeamCityReporter( ReporterConfig const& _config )
         :   StreamingReporterBase( _config )
         {

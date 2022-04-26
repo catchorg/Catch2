@@ -8,17 +8,18 @@
 #ifndef CATCH_STRINGREF_HPP_INCLUDED
 #define CATCH_STRINGREF_HPP_INCLUDED
 
-#include <cstddef>
-#include <string>
-#include <iosfwd>
 #include <cassert>
+#include <catch2/internal/catch_dll_public.hpp>
+#include <cstddef>
+#include <iosfwd>
+#include <string>
 
 namespace Catch {
 
     /// A non-owning string class (similar to the forthcoming std::string_view)
     /// Note that, because a StringRef may be a substring of another string,
     /// it may not be null terminated.
-    class StringRef {
+    class CATCH_DLL_PUBLIC StringRef {
     public:
         using size_type = std::size_t;
         using const_iterator = const char*;
@@ -89,10 +90,12 @@ namespace Catch {
         constexpr const_iterator begin() const { return m_start; }
         constexpr const_iterator end() const { return m_start + m_size; }
 
-
-        friend std::string& operator += (std::string& lhs, StringRef sr);
-        friend std::ostream& operator << (std::ostream& os, StringRef sr);
-        friend std::string operator+(StringRef lhs, StringRef rhs);
+        CATCH_DLL_PUBLIC friend std::string& operator+=( std::string& lhs,
+                                                         StringRef sr );
+        CATCH_DLL_PUBLIC friend std::ostream& operator<<( std::ostream& os,
+                                                          StringRef sr );
+        CATCH_DLL_PUBLIC friend std::string operator+( StringRef lhs,
+                                                       StringRef rhs );
 
         /**
          * Provides a three-way comparison with rhs
@@ -100,9 +103,8 @@ namespace Catch {
          * Returns negative number if lhs < rhs, 0 if lhs == rhs, and a positive
          * number if lhs > rhs
          */
-        int compare( StringRef rhs ) const;
+        CATCH_DLL_PUBLIC int compare( StringRef rhs ) const;
     };
-
 
     constexpr auto operator ""_sr( char const* rawChars, std::size_t size ) noexcept -> StringRef {
         return StringRef( rawChars, size );

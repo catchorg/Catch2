@@ -11,29 +11,32 @@
 #include <catch2/catch_test_spec.hpp>
 #include <catch2/catch_user_config.hpp>
 #include <catch2/interfaces/catch_interfaces_config.hpp>
-#include <catch2/internal/catch_unique_ptr.hpp>
+#include <catch2/internal/catch_dll_public.hpp>
 #include <catch2/internal/catch_optional.hpp>
 #include <catch2/internal/catch_random_seed_generation.hpp>
-
+#include <catch2/internal/catch_unique_ptr.hpp>
 #include <iosfwd>
-#include <vector>
 #include <string>
+#include <vector>
 
 namespace Catch {
 
     class IStream;
 
-    struct ConfigData {
-        struct ReporterAndFile {
+    struct CATCH_DLL_PUBLIC ConfigData {
+        struct CATCH_DLL_PUBLIC ReporterAndFile {
             std::string reporterName;
 
             // If none, the output goes to the default output.
             Optional<std::string> outputFileName;
 
-            friend bool operator==(ReporterAndFile const& lhs, ReporterAndFile const& rhs) {
+            CATCH_DLL_PUBLIC friend bool
+            operator==( ReporterAndFile const& lhs,
+                        ReporterAndFile const& rhs ) {
                 return lhs.reporterName == rhs.reporterName && lhs.outputFileName == rhs.outputFileName;
             }
-            friend std::ostream& operator<<(std::ostream &os, ReporterAndFile const& reporter);
+            CATCH_DLL_PUBLIC friend std::ostream&
+            operator<<( std::ostream& os, ReporterAndFile const& reporter );
         };
 
         bool listTests = false;
@@ -78,8 +81,7 @@ namespace Catch {
         std::vector<std::string> sectionsToRun;
     };
 
-
-    class Config : public IConfig {
+    class CATCH_DLL_PUBLIC Config : public IConfig {
     public:
 
         Config() = default;

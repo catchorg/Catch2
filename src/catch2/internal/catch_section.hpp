@@ -8,16 +8,17 @@
 #ifndef CATCH_SECTION_HPP_INCLUDED
 #define CATCH_SECTION_HPP_INCLUDED
 
-#include <catch2/internal/catch_compiler_capabilities.hpp>
-#include <catch2/internal/catch_noncopyable.hpp>
 #include <catch2/catch_section_info.hpp>
 #include <catch2/catch_timer.hpp>
 #include <catch2/catch_totals.hpp>
+#include <catch2/internal/catch_compiler_capabilities.hpp>
+#include <catch2/internal/catch_dll_public.hpp>
+#include <catch2/internal/catch_noncopyable.hpp>
 #include <catch2/internal/catch_unique_name.hpp>
 
 namespace Catch {
 
-    class Section : Detail::NonCopyable {
+    class CATCH_DLL_PUBLIC Section : Detail::NonCopyable {
     public:
         Section( SectionInfo&& info );
         ~Section();

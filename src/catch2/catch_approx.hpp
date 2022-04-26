@@ -9,12 +9,12 @@
 #define CATCH_APPROX_HPP_INCLUDED
 
 #include <catch2/catch_tostring.hpp>
-
+#include <catch2/internal/catch_dll_public.hpp>
 #include <type_traits>
 
 namespace Catch {
 
-    class Approx {
+    class CATCH_DLL_PUBLIC Approx {
     private:
         bool equalityComparisonImpl(double other) const;
         // Sets and validates the new margin (margin >= 0)
@@ -114,8 +114,8 @@ namespace Catch {
     };
 
 namespace literals {
-    Approx operator ""_a(long double val);
-    Approx operator ""_a(unsigned long long val);
+    CATCH_DLL_PUBLIC Approx operator""_a( long double val );
+    CATCH_DLL_PUBLIC Approx operator""_a( unsigned long long val );
 } // end namespace literals
 
 template<>

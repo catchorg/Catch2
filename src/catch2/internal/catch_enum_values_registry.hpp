@@ -9,16 +9,19 @@
 #define CATCH_ENUM_VALUES_REGISTRY_HPP_INCLUDED
 
 #include <catch2/interfaces/catch_interfaces_enum_values_registry.hpp>
-#include <catch2/internal/catch_unique_ptr.hpp>
+#include <catch2/internal/catch_dll_public.hpp>
 #include <catch2/internal/catch_stringref.hpp>
-
+#include <catch2/internal/catch_unique_ptr.hpp>
 #include <vector>
 
 namespace Catch {
 
     namespace Detail {
 
-        Catch::Detail::unique_ptr<EnumInfo> makeEnumInfo( StringRef enumName, StringRef allValueNames, std::vector<int> const& values );
+        CATCH_DLL_PUBLIC Catch::Detail::unique_ptr<EnumInfo>
+        makeEnumInfo( StringRef enumName,
+                      StringRef allValueNames,
+                      std::vector<int> const& values );
 
         class EnumValuesRegistry : public IMutableEnumValuesRegistry {
 
@@ -27,7 +30,7 @@ namespace Catch {
             EnumInfo const& registerEnum( StringRef enumName, StringRef allEnums, std::vector<int> const& values) override;
         };
 
-        std::vector<StringRef> parseEnums( StringRef enums );
+        CATCH_DLL_PUBLIC std::vector<StringRef> parseEnums( StringRef enums );
 
     } // Detail
 

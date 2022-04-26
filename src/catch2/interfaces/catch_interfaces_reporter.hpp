@@ -8,20 +8,19 @@
 #ifndef CATCH_INTERFACES_REPORTER_HPP_INCLUDED
 #define CATCH_INTERFACES_REPORTER_HPP_INCLUDED
 
-#include <catch2/catch_section_info.hpp>
-#include <catch2/catch_totals.hpp>
-#include <catch2/catch_assertion_result.hpp>
-#include <catch2/internal/catch_message_info.hpp>
-#include <catch2/internal/catch_stringref.hpp>
-#include <catch2/internal/catch_unique_ptr.hpp>
-#include <catch2/internal/catch_move_and_forward.hpp>
 #include <catch2/benchmark/catch_estimate.hpp>
 #include <catch2/benchmark/catch_outlier_classification.hpp>
-
-
+#include <catch2/catch_assertion_result.hpp>
+#include <catch2/catch_section_info.hpp>
+#include <catch2/catch_totals.hpp>
+#include <catch2/internal/catch_dll_public.hpp>
+#include <catch2/internal/catch_message_info.hpp>
+#include <catch2/internal/catch_move_and_forward.hpp>
+#include <catch2/internal/catch_stringref.hpp>
+#include <catch2/internal/catch_unique_ptr.hpp>
+#include <iosfwd>
 #include <string>
 #include <vector>
-#include <iosfwd>
 
 namespace Catch {
 
@@ -32,7 +31,7 @@ namespace Catch {
     struct IConfig;
     class IStream;
 
-    struct ReporterConfig {
+    struct CATCH_DLL_PUBLIC ReporterConfig {
         ReporterConfig( IConfig const* _fullConfig, IStream const* _stream );
 
         IStream const* stream() const;
@@ -43,12 +42,12 @@ namespace Catch {
         IConfig const* m_fullConfig;
     };
 
-    struct TestRunInfo {
+    struct CATCH_DLL_PUBLIC TestRunInfo {
         constexpr TestRunInfo(StringRef _name) : name(_name) {}
         StringRef name;
     };
 
-    struct AssertionStats {
+    struct CATCH_DLL_PUBLIC AssertionStats {
         AssertionStats( AssertionResult const& _assertionResult,
                         std::vector<MessageInfo> const& _infoMessages,
                         Totals const& _totals );
@@ -63,7 +62,7 @@ namespace Catch {
         Totals totals;
     };
 
-    struct SectionStats {
+    struct CATCH_DLL_PUBLIC SectionStats {
         SectionStats(   SectionInfo const& _sectionInfo,
                         Counts const& _assertions,
                         double _durationInSeconds,
@@ -75,7 +74,7 @@ namespace Catch {
         bool missingAssertions;
     };
 
-    struct TestCaseStats {
+    struct CATCH_DLL_PUBLIC TestCaseStats {
         TestCaseStats(  TestCaseInfo const& _testInfo,
                         Totals const& _totals,
                         std::string const& _stdOut,
@@ -89,7 +88,7 @@ namespace Catch {
         bool aborting;
     };
 
-    struct TestRunStats {
+    struct CATCH_DLL_PUBLIC TestRunStats {
         TestRunStats(   TestRunInfo const& _runInfo,
                         Totals const& _totals,
                         bool _aborting );
@@ -99,8 +98,7 @@ namespace Catch {
         bool aborting;
     };
 
-
-    struct BenchmarkInfo {
+    struct CATCH_DLL_PUBLIC BenchmarkInfo {
         std::string name;
         double estimatedDuration;
         int iterations;
@@ -110,8 +108,7 @@ namespace Catch {
         double clockCost;
     };
 
-    template <class Duration>
-    struct BenchmarkStats {
+    template <class Duration> struct CATCH_DLL_PUBLIC BenchmarkStats {
         BenchmarkInfo info;
 
         std::vector<Duration> samples;
@@ -141,7 +138,7 @@ namespace Catch {
     //! By setting up its preferences, a reporter can modify Catch2's behaviour
     //! in some regards, e.g. it can request Catch2 to capture writes to
     //! stdout/stderr during test execution, and pass them to the reporter.
-    struct ReporterPreferences {
+    struct CATCH_DLL_PUBLIC ReporterPreferences {
         //! Catch2 should redirect writes to stdout and pass them to the
         //! reporter
         bool shouldRedirectStdOut = false;
@@ -162,7 +159,7 @@ namespace Catch {
      * instead they should derive from one of the utility bases that
      * derive from this class.
      */
-    class IEventListener {
+    class CATCH_DLL_PUBLIC IEventListener {
     protected:
         //! Derived classes can set up their preferences here
         ReporterPreferences m_preferences;
@@ -240,7 +237,6 @@ namespace Catch {
         virtual void listTests(std::vector<TestCaseHandle> const& tests) = 0;
         //! Writes out information about the provided tags using reporter-specific format
         virtual void listTags(std::vector<TagInfo> const& tags) = 0;
-
     };
     using IStreamingReporterPtr = Detail::unique_ptr<IEventListener>;
 

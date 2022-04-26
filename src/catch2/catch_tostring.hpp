@@ -8,18 +8,17 @@
 #ifndef CATCH_TOSTRING_HPP_INCLUDED
 #define CATCH_TOSTRING_HPP_INCLUDED
 
-
-#include <vector>
-#include <cstddef>
-#include <type_traits>
-#include <string>
-#include <string.h>
-
+#include <catch2/interfaces/catch_interfaces_enum_values_registry.hpp>
 #include <catch2/internal/catch_compiler_capabilities.hpp>
 #include <catch2/internal/catch_config_wchar.hpp>
+#include <catch2/internal/catch_dll_public.hpp>
 #include <catch2/internal/catch_stream.hpp>
 #include <catch2/internal/catch_void_type.hpp>
-#include <catch2/interfaces/catch_interfaces_enum_values_registry.hpp>
+#include <cstddef>
+#include <string.h>
+#include <string>
+#include <type_traits>
+#include <vector>
 
 #ifdef CATCH_CONFIG_CPP17_STRING_VIEW
 #include <string_view>
@@ -31,8 +30,9 @@
 #endif
 
 // We need a dummy global operator<< so we can bring it into Catch namespace later
-struct Catch_global_namespace_dummy{};
-std::ostream& operator<<(std::ostream&, Catch_global_namespace_dummy);
+struct CATCH_DLL_PUBLIC Catch_global_namespace_dummy {};
+CATCH_DLL_PUBLIC std::ostream& operator<<( std::ostream&,
+                                           Catch_global_namespace_dummy );
 
 namespace Catch {
     // Bring in global namespace operator<< for ADL lookup in
@@ -45,21 +45,22 @@ namespace Catch {
         constexpr StringRef unprintableString = "{?}"_sr;
 
         //! Encases `string in quotes, and optionally escapes invisibles
-        std::string convertIntoString( StringRef string, bool escapeInvisibles );
+        CATCH_DLL_PUBLIC std::string convertIntoString( StringRef string,
+                                                        bool escapeInvisibles );
 
         //! Encases `string` in quotes, and escapes invisibles if user requested
         //! it via CLI
-        std::string convertIntoString( StringRef string );
+        CATCH_DLL_PUBLIC std::string convertIntoString( StringRef string );
 
-        std::string rawMemoryToString( const void *object, std::size_t size );
+        CATCH_DLL_PUBLIC std::string rawMemoryToString( const void* object,
+                                                        std::size_t size );
 
         template<typename T>
         std::string rawMemoryToString( const T& object ) {
           return rawMemoryToString( &object, sizeof(object) );
         }
 
-        template<typename T>
-        class IsStreamInsertable {
+        template <typename T> class CATCH_DLL_PUBLIC IsStreamInsertable {
             template<typename Stream, typename U>
             static auto test(int)
                 -> decltype(std::declval<Stream&>() << std::declval<U>(), std::true_type());
@@ -111,8 +112,7 @@ namespace Catch {
 
 
     // If we decide for C++14, change these to enable_if_ts
-    template <typename T, typename = void>
-    struct StringMaker {
+    template <typename T, typename = void> struct CATCH_DLL_PUBLIC StringMaker {
         template <typename Fake = T>
         static
         std::enable_if_t<::Catch::Detail::IsStreamInsertable<Fake>::value, std::string>
@@ -405,12 +405,10 @@ namespace Catch {
 #include <tuple>
 namespace Catch {
     namespace Detail {
-        template<
-            typename Tuple,
-            std::size_t N = 0,
-            bool = (N < std::tuple_size<Tuple>::value)
-            >
-            struct TupleElementPrinter {
+        template <typename Tuple,
+                  std::size_t N = 0,
+                  bool = ( N < std::tuple_size<Tuple>::value )>
+        struct CATCH_DLL_PUBLIC TupleElementPrinter {
             static void print(const Tuple& tuple, std::ostream& os) {
                 os << (N ? ", " : " ")
                     << ::Catch::Detail::stringify(std::get<N>(tuple));
@@ -477,14 +475,14 @@ namespace Catch {
 
     namespace Detail {
         template <typename T, typename = void>
-        struct is_range_impl : std::false_type {};
+        struct CATCH_DLL_PUBLIC is_range_impl : std::false_type {};
 
         template <typename T>
         struct is_range_impl<T, void_t<decltype(begin(std::declval<T>()))>> : std::true_type {};
     } // namespace Detail
 
     template <typename T>
-    struct is_range : Detail::is_range_impl<T> {};
+    struct CATCH_DLL_PUBLIC is_range : Detail::is_range_impl<T> {};
 
 #if defined(_MANAGED) // Managed types are never ranges
     template <typename T>
@@ -540,15 +538,13 @@ namespace Catch {
 
 namespace Catch {
 
-template <class Ratio>
-struct ratio_string {
-    static std::string symbol() {
-        Catch::ReusableStringStream rss;
-        rss << '[' << Ratio::num << '/'
-            << Ratio::den << ']';
-        return rss.str();
-    }
-};
+    template <class Ratio> struct CATCH_DLL_PUBLIC ratio_string {
+        static std::string symbol() {
+            Catch::ReusableStringStream rss;
+            rss << '[' << Ratio::num << '/' << Ratio::den << ']';
+            return rss.str();
+        }
+    };
 
 template <>
 struct ratio_string<std::atto> {

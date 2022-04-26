@@ -8,8 +8,8 @@
 #ifndef CATCH_CONSOLE_COLOUR_HPP_INCLUDED
 #define CATCH_CONSOLE_COLOUR_HPP_INCLUDED
 
+#include <catch2/internal/catch_dll_public.hpp>
 #include <catch2/internal/catch_unique_ptr.hpp>
-
 #include <iosfwd>
 
 namespace Catch {
@@ -17,7 +17,7 @@ namespace Catch {
     struct IConfig;
     class IStream;
 
-    struct Colour {
+    struct CATCH_DLL_PUBLIC Colour {
         enum Code {
             None = 0,
 
@@ -55,20 +55,21 @@ namespace Catch {
         };
     };
 
-    class ColourImpl {
+    class CATCH_DLL_PUBLIC ColourImpl {
     protected:
         //! The associated stream of this ColourImpl instance
         IStream const* m_stream;
     public:
         ColourImpl( IStream const* stream ): m_stream( stream ) {}
 
-        class ColourGuard {
+        class CATCH_DLL_PUBLIC ColourGuard {
             ColourImpl const* m_colourImpl;
             bool m_moved = false;
-            friend std::ostream& operator<<(std::ostream& lhs,
-                                            ColourGuard const&) {
+            CATCH_DLL_PUBLIC friend std::ostream&
+            operator<<( std::ostream& lhs, ColourGuard const& ) {
                 return lhs;
             }
+
         public:
             ColourGuard( Colour::Code code,
                          ColourImpl const* colour );
@@ -87,7 +88,8 @@ namespace Catch {
     };
 
     //! Provides ColourImpl based on global config and target compilation platform
-    Detail::unique_ptr<ColourImpl> makeColourImpl( IConfig const* config, IStream const* stream );
+    CATCH_DLL_PUBLIC Detail::unique_ptr<ColourImpl>
+    makeColourImpl( IConfig const* config, IStream const* stream );
 
 } // end namespace Catch
 

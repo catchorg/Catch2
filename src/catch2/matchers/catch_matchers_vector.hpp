@@ -8,16 +8,17 @@
 #ifndef CATCH_MATCHERS_VECTOR_HPP_INCLUDED
 #define CATCH_MATCHERS_VECTOR_HPP_INCLUDED
 
-#include <catch2/matchers/catch_matchers.hpp>
-#include <catch2/catch_approx.hpp>
-
 #include <algorithm>
+#include <catch2/catch_approx.hpp>
+#include <catch2/internal/catch_dll_public.hpp>
+#include <catch2/matchers/catch_matchers.hpp>
 
 namespace Catch {
 namespace Matchers {
 
-    template<typename T, typename Alloc>
-    struct VectorContainsElementMatcher final : MatcherBase<std::vector<T, Alloc>> {
+    template <typename T, typename Alloc>
+    struct CATCH_DLL_PUBLIC VectorContainsElementMatcher final
+        : MatcherBase<std::vector<T, Alloc>> {
 
         VectorContainsElementMatcher(T const& comparator):
             m_comparator(comparator)
@@ -39,8 +40,9 @@ namespace Matchers {
         T const& m_comparator;
     };
 
-    template<typename T, typename AllocComp, typename AllocMatch>
-    struct ContainsMatcher final : MatcherBase<std::vector<T, AllocMatch>> {
+    template <typename T, typename AllocComp, typename AllocMatch>
+    struct CATCH_DLL_PUBLIC ContainsMatcher final
+        : MatcherBase<std::vector<T, AllocMatch>> {
 
         ContainsMatcher(std::vector<T, AllocComp> const& comparator):
             m_comparator( comparator )
@@ -71,8 +73,9 @@ namespace Matchers {
         std::vector<T, AllocComp> const& m_comparator;
     };
 
-    template<typename T, typename AllocComp, typename AllocMatch>
-    struct EqualsMatcher final : MatcherBase<std::vector<T, AllocMatch>> {
+    template <typename T, typename AllocComp, typename AllocMatch>
+    struct CATCH_DLL_PUBLIC EqualsMatcher final
+        : MatcherBase<std::vector<T, AllocMatch>> {
 
         EqualsMatcher(std::vector<T, AllocComp> const& comparator):
             m_comparator( comparator )
@@ -96,8 +99,9 @@ namespace Matchers {
         std::vector<T, AllocComp> const& m_comparator;
     };
 
-    template<typename T, typename AllocComp, typename AllocMatch>
-    struct ApproxMatcher final : MatcherBase<std::vector<T, AllocMatch>> {
+    template <typename T, typename AllocComp, typename AllocMatch>
+    struct CATCH_DLL_PUBLIC ApproxMatcher final
+        : MatcherBase<std::vector<T, AllocMatch>> {
 
         ApproxMatcher(std::vector<T, AllocComp> const& comparator):
             m_comparator( comparator )
@@ -134,8 +138,9 @@ namespace Matchers {
         mutable Catch::Approx approx = Catch::Approx::custom();
     };
 
-    template<typename T, typename AllocComp, typename AllocMatch>
-    struct UnorderedEqualsMatcher final : MatcherBase<std::vector<T, AllocMatch>> {
+    template <typename T, typename AllocComp, typename AllocMatch>
+    struct CATCH_DLL_PUBLIC UnorderedEqualsMatcher final
+        : MatcherBase<std::vector<T, AllocMatch>> {
         UnorderedEqualsMatcher(std::vector<T, AllocComp> const& target):
             m_target(target)
         {}
@@ -152,7 +157,6 @@ namespace Matchers {
     private:
         std::vector<T, AllocComp> const& m_target;
     };
-
 
     // The following functions create the actual matcher objects.
     // This allows the types to be inferred

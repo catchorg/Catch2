@@ -8,8 +8,8 @@
 #ifndef CATCH_INTERFACES_REGISTRY_HUB_HPP_INCLUDED
 #define CATCH_INTERFACES_REGISTRY_HUB_HPP_INCLUDED
 
+#include <catch2/internal/catch_dll_public.hpp>
 #include <catch2/internal/catch_unique_ptr.hpp>
-
 #include <string>
 
 namespace Catch {
@@ -31,7 +31,7 @@ namespace Catch {
 
     using IReporterFactoryPtr = Detail::unique_ptr<IReporterFactory>;
 
-    struct IRegistryHub {
+    struct CATCH_DLL_PUBLIC IRegistryHub {
         virtual ~IRegistryHub(); // = default
 
         virtual IReporterRegistry const& getReporterRegistry() const = 0;
@@ -43,7 +43,7 @@ namespace Catch {
         virtual StartupExceptionRegistry const& getStartupExceptionRegistry() const = 0;
     };
 
-    struct IMutableRegistryHub {
+    struct CATCH_DLL_PUBLIC IMutableRegistryHub {
         virtual ~IMutableRegistryHub(); // = default
         virtual void registerReporter( std::string const& name, IReporterFactoryPtr factory ) = 0;
         virtual void registerListener( Detail::unique_ptr<EventListenerFactory> factory ) = 0;
@@ -54,11 +54,10 @@ namespace Catch {
         virtual IMutableEnumValuesRegistry& getMutableEnumValuesRegistry() = 0;
     };
 
-    IRegistryHub const& getRegistryHub();
-    IMutableRegistryHub& getMutableRegistryHub();
-    void cleanUp();
-    std::string translateActiveException();
-
+    CATCH_DLL_PUBLIC IRegistryHub const& getRegistryHub();
+    CATCH_DLL_PUBLIC IMutableRegistryHub& getMutableRegistryHub();
+    CATCH_DLL_PUBLIC void cleanUp();
+    CATCH_DLL_PUBLIC std::string translateActiveException();
 }
 
 #endif // CATCH_INTERFACES_REGISTRY_HUB_HPP_INCLUDED
