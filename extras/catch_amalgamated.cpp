@@ -6,7 +6,7 @@
 // SPDX-License-Identifier: BSL-1.0
 
 //  Catch v3.0.0-preview.5
-//  Generated: 2022-04-26 23:42:11.339089
+//  Generated: 2022-04-26 23:43:38.004914
 //  ----------------------------------------------------------
 //  This file is an amalgamation of multiple different files.
 //  You probably shouldn't edit it directly.

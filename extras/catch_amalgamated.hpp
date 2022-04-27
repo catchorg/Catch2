@@ -6,7 +6,7 @@
 // SPDX-License-Identifier: BSL-1.0
 
 //  Catch v3.0.0-preview.5
-//  Generated: 2022-04-26 23:42:11.323009
+//  Generated: 2022-04-26 23:43:37.987745
 //  ----------------------------------------------------------
 //  This file is an amalgamation of multiple different files.
 //  You probably shouldn't edit it directly.
@@ -71,6 +71,8 @@
 
 #ifndef CATCH_CLOCK_HPP_INCLUDED
 #define CATCH_CLOCK_HPP_INCLUDED
+
+
 
 #ifndef CATCH_DLL_PUBLIC_HPP_INCLUDED
 #define CATCH_DLL_PUBLIC_HPP_INCLUDED
