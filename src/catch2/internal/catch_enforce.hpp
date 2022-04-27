@@ -9,9 +9,10 @@
 #define CATCH_ENFORCE_HPP_INCLUDED
 
 #include <catch2/internal/catch_compiler_capabilities.hpp>
+#include <catch2/internal/catch_reusable_string_stream.hpp>
 #include <catch2/internal/catch_dll_public.hpp>
 #include <catch2/internal/catch_source_line_info.hpp>
-#include <catch2/internal/catch_stream.hpp>
+
 #include <exception>
 
 namespace Catch {

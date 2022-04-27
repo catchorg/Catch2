@@ -9,8 +9,10 @@
 #include <catch2/internal/catch_console_colour.hpp>
 #include <catch2/internal/catch_string_manip.hpp>
 #include <catch2/catch_test_case_info.hpp>
+#include <catch2/interfaces/catch_interfaces_config.hpp>
 
 #include <algorithm>
+#include <iterator>
 #include <ostream>
 
 namespace Catch {
@@ -107,7 +109,7 @@ namespace Catch {
 
         private:
             void printSourceInfo() const {
-                stream << colourImpl->startColour( tapDimColour )
+                stream << colourImpl->guardColour( tapDimColour )
                        << result.getSourceInfo() << ':';
             }
 
@@ -124,7 +126,7 @@ namespace Catch {
             void printExpressionWas() {
                 if (result.hasExpression()) {
                     stream << ';';
-                    stream << colourImpl->startColour( tapDimColour )
+                    stream << colourImpl->guardColour( tapDimColour )
                            << " expression was:";
                     printOriginalExpression();
                 }
@@ -138,7 +140,7 @@ namespace Catch {
 
             void printReconstructedExpression() const {
                 if (result.hasExpandedExpression()) {
-                    stream << colourImpl->startColour( tapDimColour ) << " for: ";
+                    stream << colourImpl->guardColour( tapDimColour ) << " for: ";
 
                     std::string expr = result.getExpandedExpression();
                     std::replace(expr.begin(), expr.end(), '\n', ' ');
@@ -162,7 +164,7 @@ namespace Catch {
                 std::vector<MessageInfo>::const_iterator itEnd = messages.end();
                 const std::size_t N = static_cast<std::size_t>(std::distance(itMessage, itEnd));
 
-                stream << colourImpl->startColour( colour ) << " with "
+                stream << colourImpl->guardColour( colour ) << " with "
                        << pluralise( N, "message"_sr ) << ':';
 
                 for (; itMessage != itEnd; ) {
@@ -170,7 +172,7 @@ namespace Catch {
                     if (printInfoMessages || itMessage->type != ResultWas::Info) {
                         stream << " '" << itMessage->message << '\'';
                         if (++itMessage != itEnd) {
-                            stream << colourImpl->startColour(tapDimColour) << " and";
+                            stream << colourImpl->guardColour(tapDimColour) << " and";
                         }
                     }
                 }
@@ -187,6 +189,10 @@ namespace Catch {
         };
 
     } // End anonymous namespace
+
+    void TAPReporter::testRunStarting( TestRunInfo const& ) {
+        m_stream << "# rng-seed: " << m_config->rngSeed() << '\n';
+    }
 
     void TAPReporter::noMatchingTestCases( StringRef unmatchedSpec ) {
         m_stream << "# No test cases matched '" << unmatchedSpec << "'\n";

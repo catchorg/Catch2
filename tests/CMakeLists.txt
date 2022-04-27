@@ -79,6 +79,8 @@ set(TEST_SOURCES
         ${SELF_TEST_DIR}/TestRegistrations.cpp
         ${SELF_TEST_DIR}/IntrospectiveTests/Clara.tests.cpp
         ${SELF_TEST_DIR}/IntrospectiveTests/CmdLine.tests.cpp
+        ${SELF_TEST_DIR}/IntrospectiveTests/CmdLineHelpers.tests.cpp
+        ${SELF_TEST_DIR}/IntrospectiveTests/ColourImpl.tests.cpp
         ${SELF_TEST_DIR}/IntrospectiveTests/Details.tests.cpp
         ${SELF_TEST_DIR}/IntrospectiveTests/FloatingPoint.tests.cpp
         ${SELF_TEST_DIR}/IntrospectiveTests/GeneratorsImpl.tests.cpp
@@ -87,6 +89,7 @@ set(TEST_SOURCES
         ${SELF_TEST_DIR}/IntrospectiveTests/RandomNumberGeneration.tests.cpp
         ${SELF_TEST_DIR}/IntrospectiveTests/Reporters.tests.cpp
         ${SELF_TEST_DIR}/IntrospectiveTests/Tag.tests.cpp
+        ${SELF_TEST_DIR}/IntrospectiveTests/TestCaseInfoHasher.tests.cpp
         ${SELF_TEST_DIR}/IntrospectiveTests/TestSpecParser.tests.cpp
         ${SELF_TEST_DIR}/IntrospectiveTests/TextFlow.tests.cpp
         ${SELF_TEST_DIR}/IntrospectiveTests/Sharding.tests.cpp
@@ -299,6 +302,7 @@ set_tests_properties(ApprovalTests
     FAIL_REGULAR_EXPRESSION "Results differed"
     COST 120 # We know that this is either the most, or second most,
     # expensive test in the test suite, so we give it high estimate for CI runs
+    LABELS "uses-python"
 )
 
 add_test(NAME RegressionCheck-1670 COMMAND $<TARGET_FILE:SelfTest> "#1670 regression check" -c A -r compact)
@@ -349,11 +353,30 @@ set_tests_properties(TagAlias PROPERTIES
 
 add_test(NAME RandomTestOrdering COMMAND ${PYTHON_EXECUTABLE}
   ${CATCH_DIR}/tests/TestScripts/testRandomOrder.py $<TARGET_FILE:SelfTest>)
-
+set_tests_properties(RandomTestOrdering
+  PROPERTIES
+    LABELS "uses-python"
+)
 
 add_test(NAME CheckConvenienceHeaders
   COMMAND
     ${PYTHON_EXECUTABLE} ${CATCH_DIR}/tools/scripts/checkConvenienceHeaders.py
+)
+set_tests_properties(CheckConvenienceHeaders
+  PROPERTIES
+    LABELS "uses-python"
+)
+
+add_test(NAME "Benchmarking::SkipBenchmarkMacros"
+  COMMAND
+    $<TARGET_FILE:SelfTest> "Skip benchmark macros"
+      --reporter console
+      --skip-benchmarks
+)
+set_tests_properties("Benchmarking::SkipBenchmarkMacros"
+  PROPERTIES
+    PASS_REGULAR_EXPRESSION "All tests passed \\(2 assertions in 1 test case\\)"
+    FAIL_REGULAR_EXPRESSION "benchmark name"
 )
 
 
@@ -432,8 +455,8 @@ if (NOT MEMORYCHECK_COMMAND)
   add_test(NAME "MultiReporter::CapturingReportersDontPropagateStdOut"
     COMMAND
       $<TARGET_FILE:SelfTest> "Sends stuff to stdout and stderr"
-        --reporter xml::${_NullFile}
-        --reporter junit::${_NullFile}
+        --reporter xml::out=${_NullFile}
+        --reporter junit::out=${_NullFile}
   )
   set_tests_properties("MultiReporter::CapturingReportersDontPropagateStdOut"
     PROPERTIES
@@ -444,8 +467,8 @@ endif()
 add_test(NAME "MultiReporter::NonCapturingReportersPropagateStdout"
   COMMAND
     $<TARGET_FILE:SelfTest> "Sends stuff to stdout and stderr"
-      --reporter xml::${_NullFile}
-      --reporter console::${_NullFile}
+      --reporter xml::out=${_NullFile}
+      --reporter console::out=${_NullFile}
 )
 set_tests_properties("MultiReporter::NonCapturingReportersPropagateStdout"
   PROPERTIES
@@ -465,39 +488,83 @@ set_tests_properties("Outputs::DashAsOutLocationSendsOutputToStdout"
 add_test(NAME "Reporters::DashAsLocationInReporterSpecSendsOutputToStdout"
   COMMAND
     $<TARGET_FILE:SelfTest> "Factorials are computed"
-      --reporter console::-
+      --reporter console::out=-
 )
 set_tests_properties("Reporters::DashAsLocationInReporterSpecSendsOutputToStdout"
   PROPERTIES
     PASS_REGULAR_EXPRESSION "All tests passed \\(5 assertions in 1 test case\\)"
 )
 
+add_test(NAME "Reporters::ReporterSpecificColourOverridesDefaultColour"
+  COMMAND
+    $<TARGET_FILE:SelfTest> "Factorials are computed"
+      --reporter console::colour-mode=ansi
+      --colour-mode none
+)
+set_tests_properties("Reporters::ReporterSpecificColourOverridesDefaultColour"
+  PROPERTIES
+    PASS_REGULAR_EXPRESSION "\\[1\;32mAll tests passed"
+)
+
+add_test(NAME "Reporters::UnrecognizedOptionInSpecCausesError"
+  COMMAND
+    $<TARGET_FILE:SelfTest> "Factorials are computed"
+      --reporter console::bad-option=ansi
+)
+set_tests_properties("Reporters::UnrecognizedOptionInSpecCausesError"
+  PROPERTIES
+    WILL_FAIL ON
+)
+
+add_test(NAME "Colours::ColourModeCanBeExplicitlySetToAnsi"
+  COMMAND
+    $<TARGET_FILE:SelfTest> "Factorials are computed"
+      --reporter console
+      --colour-mode ansi
+)
+set_tests_properties("Colours::ColourModeCanBeExplicitlySetToAnsi"
+  PROPERTIES
+    PASS_REGULAR_EXPRESSION "\\[1\;32mAll tests passed"
+)
+
 if (CATCH_ENABLE_CONFIGURE_TESTS)
-    add_test(NAME "CMakeConfig::DefaultReporter"
-      COMMAND
-        "${PYTHON_EXECUTABLE}" "${CMAKE_CURRENT_LIST_DIR}/TestScripts/testConfigureDefaultReporter.py" "${CATCH_DIR}" "${CMAKE_CURRENT_BINARY_DIR}"
-    )
-    add_test(NAME "CMakeConfig::Disable"
-      COMMAND
-        "${PYTHON_EXECUTABLE}" "${CMAKE_CURRENT_LIST_DIR}/TestScripts/testConfigureDisable.py" "${CATCH_DIR}" "${CMAKE_CURRENT_BINARY_DIR}"
-    )
-    add_test(NAME "CMakeConfig::DisableStringification"
-      COMMAND
-        "${PYTHON_EXECUTABLE}" "${CMAKE_CURRENT_LIST_DIR}/TestScripts/testConfigureDisableStringification.py" "${CATCH_DIR}" "${CMAKE_CURRENT_BINARY_DIR}"
-    )
-    add_test(NAME "CMakeConfig::ExperimentalRedirect"
-      COMMAND
-        "${PYTHON_EXECUTABLE}" "${CMAKE_CURRENT_LIST_DIR}/TestScripts/testConfigureExperimentalRedirect.py" "${CATCH_DIR}" "${CMAKE_CURRENT_BINARY_DIR}"
-    )
+    foreach(testName "DefaultReporter" "Disable" "DisableStringification"
+                     "ExperimentalRedirect")
+
+        add_test(NAME "CMakeConfig::${testName}"
+          COMMAND
+            "${PYTHON_EXECUTABLE}" "${CMAKE_CURRENT_LIST_DIR}/TestScripts/testConfigure${testName}.py" "${CATCH_DIR}" "${CMAKE_CURRENT_BINARY_DIR}"
+        )
+        set_tests_properties("CMakeConfig::${testName}"
+          PROPERTIES
+            COST 240
+            LABELS "uses-python"
+        )
+
+    endforeach()
 endif()
 
-if (CATCH_USE_VALGRIND)
-    add_test(NAME ValgrindRunTests COMMAND valgrind --leak-check=full --error-exitcode=1 $<TARGET_FILE:SelfTest>)
-    add_test(NAME ValgrindListTests COMMAND valgrind --leak-check=full --error-exitcode=1 $<TARGET_FILE:SelfTest> --list-tests --verbosity high)
-    set_tests_properties(ValgrindListTests PROPERTIES PASS_REGULAR_EXPRESSION "definitely lost: 0 bytes in 0 blocks")
-    add_test(NAME ValgrindListTags COMMAND valgrind --leak-check=full --error-exitcode=1 $<TARGET_FILE:SelfTest> --list-tags)
-    set_tests_properties(ValgrindListTags PROPERTIES PASS_REGULAR_EXPRESSION "definitely lost: 0 bytes in 0 blocks")
-endif()
+foreach (reporterName # "Automake" - the simple .trs format does not support any kind of comments/metadata
+                      "compact"
+                      "console"
+                      "JUnit"
+                      "SonarQube"
+                      "TAP"
+                      # "TeamCity" - does not seem to support test suite-level metadata/comments
+                      "XML")
+    add_test(NAME "Reporters:RngSeed:${reporterName}"
+      COMMAND
+        $<TARGET_FILE:SelfTest> "Factorials are computed"
+          --reporter ${reporterName}
+          --rng-seed 18181818
+    )
+    set_tests_properties("Reporters:RngSeed:${reporterName}"
+      PROPERTIES
+        PASS_REGULAR_EXPRESSION "18181818"
+    )
+
+endforeach()
+
 
 list(APPEND CATCH_WARNING_TARGETS SelfTest)
 set(CATCH_WARNING_TARGETS ${CATCH_WARNING_TARGETS} PARENT_SCOPE)

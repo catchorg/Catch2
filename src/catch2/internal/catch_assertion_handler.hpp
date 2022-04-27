@@ -14,11 +14,11 @@
 #include <catch2/internal/catch_dll_public.hpp>
 #include <catch2/internal/catch_lazy_expr.hpp>
 
+#include <string>
+
 namespace Catch {
 
-    struct AssertionResultData;
-    struct IResultCapture;
-    class RunContext;
+    class IResultCapture;
 
     struct CATCH_DLL_PUBLIC AssertionReaction {
         bool shouldDebugBreak = false;

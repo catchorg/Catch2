@@ -9,7 +9,6 @@
 #define CATCH_TOTALS_HPP_INCLUDED
 
 #include <catch2/internal/catch_dll_public.hpp>
-#include <cstddef>
 #include <cstdint>
 
 namespace Catch {

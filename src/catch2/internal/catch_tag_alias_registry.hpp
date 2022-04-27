@@ -15,6 +15,7 @@
 #include <string>
 
 namespace Catch {
+    struct SourceLineInfo;
 
     class CATCH_DLL_PUBLIC TagAliasRegistry : public ITagAliasRegistry {
     public:

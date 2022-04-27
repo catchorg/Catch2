@@ -17,7 +17,7 @@
 
 namespace Catch {
 
-    struct IConfig;
+    class IConfig;
     class TestCaseHandle;
     class ColourImpl;
 

@@ -19,6 +19,9 @@
 #include <catch2/internal/catch_stringref.hpp>
 #include <catch2/internal/catch_unique_ptr.hpp>
 #include <iosfwd>
+
+
+#include <map>
 #include <string>
 #include <vector>
 
@@ -28,18 +31,30 @@ namespace Catch {
     struct TagInfo;
     struct TestCaseInfo;
     class TestCaseHandle;
-    struct IConfig;
+    class IConfig;
     class IStream;
+    enum class ColourMode : std::uint8_t;
 
     struct CATCH_DLL_PUBLIC ReporterConfig {
-        ReporterConfig( IConfig const* _fullConfig, IStream const* _stream );
+        ReporterConfig( IConfig const* _fullConfig,
+                        Detail::unique_ptr<IStream> _stream,
+                        ColourMode colourMode,
+                        std::map<std::string, std::string> customOptions );
 
-        IStream const* stream() const;
+        ReporterConfig( ReporterConfig&& ) = default;
+        ReporterConfig& operator=( ReporterConfig&& ) = default;
+        ~ReporterConfig(); // = default
+
+        Detail::unique_ptr<IStream> takeStream() &&;
         IConfig const* fullConfig() const;
+        ColourMode colourMode() const;
+        std::map<std::string, std::string> const& customOptions() const;
 
     private:
-        IStream const* m_stream;
+        Detail::unique_ptr<IStream> m_stream;
         IConfig const* m_fullConfig;
+        ColourMode m_colourMode;
+        std::map<std::string, std::string> m_customOptions;
     };
 
     struct CATCH_DLL_PUBLIC TestRunInfo {
@@ -238,7 +253,7 @@ namespace Catch {
         //! Writes out information about the provided tags using reporter-specific format
         virtual void listTags(std::vector<TagInfo> const& tags) = 0;
     };
-    using IStreamingReporterPtr = Detail::unique_ptr<IEventListener>;
+    using IEventListenerPtr = Detail::unique_ptr<IEventListener>;
 
 } // end namespace Catch
 

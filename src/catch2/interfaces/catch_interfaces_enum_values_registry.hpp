@@ -25,7 +25,8 @@ namespace Catch {
         };
     } // namespace Detail
 
-    struct CATCH_DLL_PUBLIC IMutableEnumValuesRegistry {
+    class CATCH_DLL_PUBLIC IMutableEnumValuesRegistry {
+    public:
         virtual ~IMutableEnumValuesRegistry(); // = default;
 
         virtual Detail::EnumInfo const& registerEnum( StringRef enumName, StringRef allEnums, std::vector<int> const& values ) = 0;

@@ -26,15 +26,15 @@ namespace Catch {
     struct AssertionReaction;
     struct SourceLineInfo;
 
-    struct ITransientExpression;
-    struct IGeneratorTracker;
+    class ITransientExpression;
+    class IGeneratorTracker;
 
     struct BenchmarkInfo;
     template <typename Duration = std::chrono::duration<double, std::nano>>
     struct BenchmarkStats;
 
-    struct CATCH_DLL_PUBLIC IResultCapture {
-
+    class CATCH_DLL_PUBLIC IResultCapture {
+    public:
         virtual ~IResultCapture();
 
         virtual bool sectionStarted(    SectionInfo const& sectionInfo,

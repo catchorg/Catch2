@@ -116,7 +116,6 @@
 
 #ifdef __OS400__
 #       define CATCH_INTERNAL_CONFIG_NO_POSIX_SIGNALS
-#       define CATCH_CONFIG_COLOUR_NONE
 #endif
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -164,7 +163,7 @@
 // Universal Windows platform does not support SEH
 // Or console colours (or console at all...)
 #  if defined(WINAPI_FAMILY) && (WINAPI_FAMILY == WINAPI_FAMILY_APP)
-#    define CATCH_CONFIG_COLOUR_NONE
+#    define CATCH_INTERNAL_CONFIG_NO_COLOUR_WIN32
 #  else
 #    define CATCH_INTERNAL_CONFIG_WINDOWS_SEH
 #  endif
@@ -206,7 +205,7 @@
 #if defined(UNDER_RTSS) || defined(RTX64_BUILD)
     #define CATCH_INTERNAL_CONFIG_NO_WINDOWS_SEH
     #define CATCH_INTERNAL_CONFIG_NO_ASYNC
-    #define CATCH_CONFIG_COLOUR_NONE
+    #define CATCH_INTERNAL_CONFIG_NO_COLOUR_WIN32
 #endif
 
 #if !defined(_GLIBCXX_USE_C99_MATH_TR1)
@@ -357,5 +356,13 @@
 #if defined(CATCH_INTERNAL_CONFIG_TRADITIONAL_MSVC_PREPROCESSOR) && !defined(CATCH_CONFIG_NO_TRADITIONAL_MSVC_PREPROCESSOR) && !defined(CATCH_CONFIG_TRADITIONAL_MSVC_PREPROCESSOR)
 #define CATCH_CONFIG_TRADITIONAL_MSVC_PREPROCESSOR
 #endif
+
+#if defined( CATCH_PLATFORM_WINDOWS ) &&       \
+    !defined( CATCH_CONFIG_COLOUR_WIN32 ) && \
+    !defined( CATCH_CONFIG_NO_COLOUR_WIN32 ) && \
+    !defined( CATCH_INTERNAL_CONFIG_NO_COLOUR_WIN32 )
+#    define CATCH_CONFIG_COLOUR_WIN32
+#endif
+
 
 #endif // CATCH_COMPILER_CAPABILITIES_HPP_INCLUDED

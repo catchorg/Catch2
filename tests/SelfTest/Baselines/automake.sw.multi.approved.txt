@@ -102,6 +102,7 @@
 :test-result: PASS Character pretty printing
 :test-result: PASS Clara::Arg supports single-arg parse the way Opt does
 :test-result: PASS Clara::Opt supports accept-many lambdas
+:test-result: PASS ColourGuard behaviour
 :test-result: PASS Combining MatchAllOfGeneric does not nest
 :test-result: PASS Combining MatchAnyOfGeneric does not nest
 :test-result: PASS Combining MatchNotOfGeneric does not nest
@@ -152,6 +153,10 @@
 :test-result: PASS Generators -- simple
 :test-result: PASS Generators internals
 :test-result: PASS Greater-than inequalities with different epsilons
+:test-result: PASS Hashers with different seed produce different hash with same test case
+:test-result: PASS Hashers with same seed produce same hash
+:test-result: PASS Hashing different test cases produces different result
+:test-result: PASS Hashing test case produces same hash across multiple calls
 :test-result: FAIL INFO and WARN do not abort tests
 :test-result: FAIL INFO gets logged on failure
 :test-result: FAIL INFO gets logged on failure, even if captured before successful assertions
@@ -307,6 +312,7 @@
 :test-result: PASS long long
 :test-result: FAIL looped SECTION tests
 :test-result: FAIL looped tests
+:test-result: PASS makeStream recognizes %debug stream name
 :test-result: PASS make_unique reimplementation
 :test-result: PASS mean
 :test-result: PASS measure

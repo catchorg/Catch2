@@ -12,9 +12,9 @@
 #include <catch2/internal/catch_string_manip.hpp>
 #include <catch2/interfaces/catch_interfaces_registry_hub.hpp>
 #include <catch2/interfaces/catch_interfaces_reporter_registry.hpp>
-#include <catch2/interfaces/catch_interfaces_reporter.hpp>
+#include <catch2/internal/catch_console_colour.hpp>
+#include <catch2/internal/catch_reporter_spec_parser.hpp>
 
-#include <algorithm>
 #include <fstream>
 #include <string>
 
@@ -95,19 +95,23 @@ namespace Catch {
                     return ParserResult::runtimeError("Could not parse '" + seed + "' as seed");
                 }
             };
-        auto const setColourUsage = [&]( std::string const& useColour ) {
-                    auto mode = toLower( useColour );
-
-                    if( mode == "yes" )
-                        config.useColour = UseColour::Yes;
-                    else if( mode == "no" )
-                        config.useColour = UseColour::No;
-                    else if( mode == "auto" )
-                        config.useColour = UseColour::Auto;
-                    else
-                        return ParserResult::runtimeError( "colour mode must be one of: auto, yes or no. '" + useColour + "' not recognised" );
-                return ParserResult::ok( ParseResultType::Matched );
-            };
+        auto const setDefaultColourMode = [&]( std::string const& colourMode ) {
+            Optional<ColourMode> maybeMode = Catch::Detail::stringToColourMode(toLower( colourMode ));
+            if ( !maybeMode ) {
+                return ParserResult::runtimeError(
+                    "colour mode must be one of: default, ansi, win32, "
+                    "or none. '" +
+                    colourMode + "' is not recognised" );
+            }
+            auto mode = *maybeMode;
+            if ( !isColourImplAvailable( mode ) ) {
+                return ParserResult::runtimeError(
+                    "colour mode '" + colourMode +
+                    "' is not supported in this binary" );
+            }
+            config.defaultColourMode = mode;
+            return ParserResult::ok( ParseResultType::Matched );
+        };
         auto const setWaitForKeypress = [&]( std::string const& keypress ) {
                 auto keypressLc = toLower( keypress );
                 if (keypressLc == "never")
@@ -134,57 +138,42 @@ namespace Catch {
                 return ParserResult::runtimeError( "Unrecognised verbosity, '" + verbosity + '\'' );
             return ParserResult::ok( ParseResultType::Matched );
         };
-        auto const setReporter = [&]( std::string const& reporterSpec ) {
-            if ( reporterSpec.empty() ) {
+        auto const setReporter = [&]( std::string const& userReporterSpec ) {
+            if ( userReporterSpec.empty() ) {
                 return ParserResult::runtimeError( "Received empty reporter spec." );
             }
 
-            // Exactly one of the reporters may be specified without an output
-            // file, in which case it defaults to the output specified by "-o"
-            // (or standard output).
-            static constexpr auto separator = "::";
-            static constexpr size_t separatorSize = 2;
-            auto fileNameSeparatorPos = reporterSpec.find( separator );
-            const bool containsFileName = fileNameSeparatorPos != reporterSpec.npos;
-            if ( containsFileName ) {
-                auto nextSeparatorPos = reporterSpec.find(
-                    separator, fileNameSeparatorPos + separatorSize );
-                if ( nextSeparatorPos != reporterSpec.npos ) {
-                    return ParserResult::runtimeError(
-                        "Too many separators in reporter spec '" + reporterSpec + '\'' );
-                }
+            Optional<ReporterSpec> parsed =
+                parseReporterSpec( userReporterSpec );
+            if ( !parsed ) {
+                return ParserResult::runtimeError(
+                    "Could not parse reporter spec '" + userReporterSpec +
+                    "'" );
             }
 
-            std::string reporterName;
-            Optional<std::string> outputFileName;
-            reporterName = reporterSpec.substr( 0, fileNameSeparatorPos );
-            if ( reporterName.empty() ) {
-                return ParserResult::runtimeError( "Reporter name cannot be empty." );
-            }
-
-            if ( containsFileName ) {
-                outputFileName = reporterSpec.substr(
-                    fileNameSeparatorPos + separatorSize, reporterSpec.size() );
-            }
+            auto const& reporterSpec = *parsed;
 
             IReporterRegistry::FactoryMap const& factories =
                 getRegistryHub().getReporterRegistry().getFactories();
-            auto result = factories.find( reporterName );
+            auto result = factories.find( reporterSpec.name() );
 
-            if( result == factories.end() )
-                return ParserResult::runtimeError( "Unrecognized reporter, '" + reporterName + "'. Check available with --list-reporters" );
-            if( containsFileName && outputFileName->empty() )
-                return ParserResult::runtimeError( "Reporter '" + reporterName + "' has empty filename specified as its output. Supply a filename or remove the colons to use the default output." );
+            if ( result == factories.end() ) {
+                return ParserResult::runtimeError(
+                    "Unrecognized reporter, '" + reporterSpec.name() +
+                    "'. Check available with --list-reporters" );
+            }
 
-            config.reporterSpecifications.push_back({ std::move(reporterName), std::move(outputFileName) });
 
-            // It would be enough to check this only once at the very end, but there is
-            // not a place where we could call this check, so do it every time it could fail.
-            // For valid inputs, this is still called at most once.
-            if (!containsFileName) {
+            const bool hadOutputFile = reporterSpec.outputFile().some();
+            config.reporterSpecifications.push_back( CATCH_MOVE( *parsed ) );
+            // It would be enough to check this only once at the very end, but
+            // there is  not a place where we could call this check, so do it
+            // every time it could fail. For valid inputs, this is still called
+            // at most once.
+            if (!hadOutputFile) {
                 int n_reporters_without_file = 0;
                 for (auto const& spec : config.reporterSpecifications) {
-                    if (spec.outputFileName.none()) {
+                    if (spec.outputFile().none()) {
                         n_reporters_without_file++;
                     }
                 }
@@ -250,7 +239,7 @@ namespace Catch {
             | Opt( config.defaultOutputFilename, "filename" )
                 ["-o"]["--out"]
                 ( "default output filename" )
-            | Opt( accept_many, setReporter, "name[:output-file]" )
+            | Opt( accept_many, setReporter, "name[::key=value]*" )
                 ["-r"]["--reporter"]
                 ( "reporter to use (defaults to console)" )
             | Opt( config.name, "name" )
@@ -298,15 +287,18 @@ namespace Catch {
             | Opt( setRngSeed, "'time'|'random-device'|number" )
                 ["--rng-seed"]
                 ( "set a specific seed for random numbers" )
-            | Opt( setColourUsage, "yes|no|auto" )
-                ["--use-colour"]
-                ( "should output be colourised" )
+            | Opt( setDefaultColourMode, "ansi|win32|none|default" )
+                ["--colour-mode"]
+                ( "what color mode should be used as default" )
             | Opt( config.libIdentify )
                 ["--libidentify"]
                 ( "report name and version according to libidentify standard" )
             | Opt( setWaitForKeypress, "never|start|exit|both" )
                 ["--wait-for-keypress"]
                 ( "waits for a keypress before exiting" )
+            | Opt( config.skipBenchmarks)
+                ["--skip-benchmarks"]
+                ( "disable running benchmarks")
             | Opt( config.benchmarkSamples, "samples" )
                 ["--benchmark-samples"]
                 ( "number of samples to collect (default: 100)" )

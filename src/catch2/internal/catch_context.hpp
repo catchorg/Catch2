@@ -12,17 +12,19 @@
 
 namespace Catch {
 
-    struct IResultCapture;
-    struct IConfig;
+    class IResultCapture;
+    class IConfig;
 
-    struct CATCH_DLL_PUBLIC IContext {
+    class CATCH_DLL_PUBLIC IContext {
+    public:
         virtual ~IContext(); // = default
 
         virtual IResultCapture* getResultCapture() = 0;
         virtual IConfig const* getConfig() const = 0;
     };
 
-    struct CATCH_DLL_PUBLIC IMutableContext : IContext {
+    class CATCH_DLL_PUBLIC IMutableContext : public IContext {
+    public:
         virtual ~IMutableContext(); // = default
         virtual void setResultCapture( IResultCapture* resultCapture ) = 0;
         virtual void setConfig( IConfig const* config ) = 0;

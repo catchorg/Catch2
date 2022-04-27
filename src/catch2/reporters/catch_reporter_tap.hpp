@@ -10,13 +10,14 @@
 
 #include <catch2/internal/catch_dll_public.hpp>
 #include <catch2/reporters/catch_reporter_streaming_base.hpp>
+#include <catch2/internal/catch_move_and_forward.hpp>
 
 namespace Catch {
 
-    struct CATCH_DLL_PUBLIC TAPReporter final : StreamingReporterBase {
-
-        TAPReporter( ReporterConfig const& config ):
-            StreamingReporterBase( config ) {
+    class CATCH_DLL_PUBLIC TAPReporter final : public StreamingReporterBase {
+    public:
+        TAPReporter( ReporterConfig&& config ):
+            StreamingReporterBase( CATCH_MOVE(config) ) {
             m_preferences.shouldReportAllAssertions = true;
         }
         ~TAPReporter() override = default;
@@ -25,6 +26,8 @@ namespace Catch {
             using namespace std::string_literals;
             return "Reports test results in TAP format, suitable for test harnesses"s;
         }
+
+        void testRunStarting( TestRunInfo const& testInfo ) override;
 
         void noMatchingTestCases( StringRef unmatchedSpec ) override;
 

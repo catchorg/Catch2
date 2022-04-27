@@ -96,9 +96,6 @@ if (CATCH_DEVELOPMENT_BUILD)
 endif()
 
 
-#option(CATCH_USE_VALGRIND "Perform SelfTests with Valgrind" OFF)
-#option(CATCH_ENABLE_WERROR "Enable all warnings as errors" ON)
-#
 #set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 #
 #

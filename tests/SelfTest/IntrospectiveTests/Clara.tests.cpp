@@ -52,12 +52,11 @@ TEST_CASE("Clara::Arg supports single-arg parse the way Opt does", "[clara][arg]
 }
 
 TEST_CASE("Clara::Opt supports accept-many lambdas", "[clara][opt]") {
-    std::string name;
     using namespace Catch::Clara;
     std::vector<std::string> res;
     const auto push_to_res = [&](std::string const& s) {
         res.push_back(s);
-        return ParserResult::ok();
+        return ParserResult::ok( ParseResultType::Matched );
     };
 
     SECTION("Parsing fails on multiple options without accept_many") {

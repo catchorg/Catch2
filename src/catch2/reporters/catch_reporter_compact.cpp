@@ -7,6 +7,7 @@
 // SPDX-License-Identifier: BSL-1.0
 #include <catch2/reporters/catch_reporter_compact.hpp>
 
+#include <catch2/catch_test_spec.hpp>
 #include <catch2/reporters/catch_reporter_helpers.hpp>
 #include <catch2/interfaces/catch_interfaces_config.hpp>
 #include <catch2/internal/catch_platform.hpp>
@@ -56,7 +57,7 @@ void printTotals(std::ostream& out, const Totals& totals, ColourImpl* colourImpl
     if (totals.testCases.total() == 0) {
         out << "No tests ran.";
     } else if (totals.testCases.failed == totals.testCases.total()) {
-        auto guard = colourImpl->startColour( Colour::ResultError );
+        auto guard = colourImpl->guardColour( Colour::ResultError ).engage( out );
         const StringRef qualify_assertions_failed =
             totals.assertions.failed == totals.assertions.total() ?
             bothOrAll(totals.assertions.failed) : StringRef{};
@@ -71,11 +72,11 @@ void printTotals(std::ostream& out, const Totals& totals, ColourImpl* colourImpl
             << pluralise(totals.testCases.total(), "test case"_sr)
             << " (no assertions).";
     } else if (totals.assertions.failed) {
-        out << colourImpl->startColour( Colour::ResultError ) <<
+        out << colourImpl->guardColour( Colour::ResultError ) <<
             "Failed " << pluralise(totals.testCases.failed, "test case"_sr) << ", "
             "failed " << pluralise(totals.assertions.failed, "assertion"_sr) << '.';
     } else {
-        out << colourImpl->startColour( Colour::ResultSuccess ) <<
+        out << colourImpl->guardColour( Colour::ResultSuccess ) <<
             "Passed " << bothOrAll(totals.testCases.passed)
             << pluralise(totals.testCases.passed, "test case"_sr) <<
             " with " << pluralise(totals.assertions.passed, "assertion"_sr) << '.';
@@ -166,13 +167,13 @@ public:
 
 private:
     void printSourceInfo() const {
-        stream << colourImpl->startColour( Colour::FileName )
+        stream << colourImpl->guardColour( Colour::FileName )
                << result.getSourceInfo() << ':';
     }
 
     void printResultType(Colour::Code colour, StringRef passOrFail) const {
         if (!passOrFail.empty()) {
-            stream << colourImpl->startColour(colour) << ' ' << passOrFail;
+            stream << colourImpl->guardColour(colour) << ' ' << passOrFail;
             stream << ':';
         }
     }
@@ -185,7 +186,7 @@ private:
         if (result.hasExpression()) {
             stream << ';';
             {
-                stream << colourImpl->startColour(compactDimColour) << " expression was:";
+                stream << colourImpl->guardColour(compactDimColour) << " expression was:";
             }
             printOriginalExpression();
         }
@@ -199,7 +200,7 @@ private:
 
     void printReconstructedExpression() const {
         if (result.hasExpandedExpression()) {
-            stream << colourImpl->startColour(compactDimColour) << " for: ";
+            stream << colourImpl->guardColour(compactDimColour) << " for: ";
             stream << result.getExpandedExpression();
         }
     }
@@ -218,7 +219,7 @@ private:
         const auto itEnd = messages.cend();
         const auto N = static_cast<std::size_t>(std::distance(itMessage, itEnd));
 
-        stream << colourImpl->startColour( colour ) << " with "
+        stream << colourImpl->guardColour( colour ) << " with "
                << pluralise( N, "message"_sr ) << ':';
 
         while (itMessage != itEnd) {
@@ -226,7 +227,7 @@ private:
             if (printInfoMessages || itMessage->type != ResultWas::Info) {
                 printMessage();
                 if (itMessage != itEnd) {
-                    stream << colourImpl->startColour(compactDimColour) << " and";
+                    stream << colourImpl->guardColour(compactDimColour) << " and";
                 }
                 continue;
             }
@@ -251,6 +252,16 @@ private:
 
         void CompactReporter::noMatchingTestCases( StringRef unmatchedSpec ) {
             m_stream << "No test cases matched '" << unmatchedSpec << "'\n";
+        }
+
+        void CompactReporter::testRunStarting( TestRunInfo const& ) {
+            if ( m_config->testSpec().hasFilters() ) {
+                m_stream << m_colour->guardColour( Colour::BrightYellow )
+                         << "Filters: "
+                         << serializeFilters( m_config->getTestsOrTags() )
+                         << '\n';
+            }
+            m_stream << "RNG seed: " << m_config->rngSeed() << '\n';
         }
 
         void CompactReporter::assertionEnded( AssertionStats const& _assertionStats ) {

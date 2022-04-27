@@ -13,7 +13,7 @@
 
 namespace Catch {
 
-    struct ITransientExpression;
+    class ITransientExpression;
 
     class CATCH_DLL_PUBLIC LazyExpression {
         friend class AssertionHandler;

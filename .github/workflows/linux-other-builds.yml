@@ -56,8 +56,17 @@ jobs:
             build_description: CMake configuration tests
             build_type: Debug
             std: 14
-            other_pks: clang-10
+            other_pkgs: clang-10
             cmake_configurations: -DCATCH_ENABLE_CONFIGURE_TESTS=ON
+
+          # Valgrind test Clang-10
+          - cxx: clang++-10
+            build_description: Valgrind tests
+            build_type: Debug
+            std: 14
+            other_pkgs: clang-10 valgrind
+            cmake_configurations: -DMEMORYCHECK_COMMAND=`which valgrind` -DMEMORYCHECK_COMMAND_OPTIONS="-q --track-origins=yes --leak-check=full --num-callers=50 --show-leak-kinds=definite --error-exitcode=1"
+            other_ctest_args: -T memcheck -LE uses-python
 
 
     steps:
@@ -91,4 +100,4 @@ jobs:
           CTEST_OUTPUT_ON_FAILURE: 1
       working-directory: ${{runner.workspace}}/build
       # Hardcode 2 cores we know are there
-      run: ctest -C ${{matrix.build_type}} -j 2
+      run: ctest -C ${{matrix.build_type}} -j 2 ${{matrix.other_ctest_args}}

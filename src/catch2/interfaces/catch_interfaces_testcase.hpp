@@ -16,15 +16,17 @@ namespace Catch {
     class TestSpec;
     struct TestCaseInfo;
 
-    struct CATCH_DLL_PUBLIC ITestInvoker {
+    class CATCH_DLL_PUBLIC ITestInvoker {
+    public:
         virtual void invoke () const = 0;
         virtual ~ITestInvoker(); // = default
     };
 
     class TestCaseHandle;
-    struct IConfig;
+    class IConfig;
 
-    struct CATCH_DLL_PUBLIC ITestCaseRegistry {
+    class CATCH_DLL_PUBLIC ITestCaseRegistry {
+    public:
         virtual ~ITestCaseRegistry(); // = default
         // TODO: this exists only for adding filenames to test cases -- let's expose this in a saner way later
         virtual std::vector<TestCaseInfo* > const& getAllInfos() const = 0;

@@ -13,9 +13,12 @@
 #include <catch2/interfaces/catch_interfaces_config.hpp>
 #include <catch2/internal/catch_dll_public.hpp>
 #include <catch2/internal/catch_optional.hpp>
+#include <catch2/internal/catch_stringref.hpp>
 #include <catch2/internal/catch_random_seed_generation.hpp>
-#include <catch2/internal/catch_unique_ptr.hpp>
-#include <iosfwd>
+#include <catch2/internal/catch_reporter_spec_parser.hpp>
+
+#include <chrono>
+#include <map>
 #include <string>
 #include <vector>
 
@@ -23,21 +26,25 @@ namespace Catch {
 
     class IStream;
 
+    /**
+     * `ReporterSpec` but with the defaults filled in.
+     *
+     * Like `ReporterSpec`, the semantics are unchecked.
+     */
+    struct CATCH_DLL_PUBLIC ProcessedReporterSpec {
+        std::string name;
+        std::string outputFilename;
+        ColourMode colourMode;
+        std::map<std::string, std::string> customOptions;
+        CATCH_DLL_PUBLIC friend bool operator==( ProcessedReporterSpec const& lhs,
+                                ProcessedReporterSpec const& rhs );
+        CATCH_DLL_PUBLIC friend bool operator!=( ProcessedReporterSpec const& lhs,
+                                ProcessedReporterSpec const& rhs ) {
+            return !( lhs == rhs );
+        }
+    };
+
     struct CATCH_DLL_PUBLIC ConfigData {
-        struct CATCH_DLL_PUBLIC ReporterAndFile {
-            std::string reporterName;
-
-            // If none, the output goes to the default output.
-            Optional<std::string> outputFileName;
-
-            CATCH_DLL_PUBLIC friend bool
-            operator==( ReporterAndFile const& lhs,
-                        ReporterAndFile const& rhs ) {
-                return lhs.reporterName == rhs.reporterName && lhs.outputFileName == rhs.outputFileName;
-            }
-            CATCH_DLL_PUBLIC friend std::ostream&
-            operator<<( std::ostream& os, ReporterAndFile const& reporter );
-        };
 
         bool listTests = false;
         bool listTags = false;
@@ -58,6 +65,7 @@ namespace Catch {
         unsigned int shardCount = 1;
         unsigned int shardIndex = 0;
 
+        bool skipBenchmarks = false;
         bool benchmarkNoAnalysis = false;
         unsigned int benchmarkSamples = 100;
         double benchmarkConfidenceInterval = 0.95;
@@ -69,13 +77,13 @@ namespace Catch {
         ShowDurations showDurations = ShowDurations::DefaultForReporter;
         double minDuration = -1;
         TestRunOrder runOrder = TestRunOrder::Declared;
-        UseColour useColour = UseColour::Auto;
+        ColourMode defaultColourMode = ColourMode::PlatformDefault;
         WaitForKeypress::When waitForKeypress = WaitForKeypress::Never;
 
         std::string defaultOutputFilename;
         std::string name;
         std::string processName;
-        std::vector<ReporterAndFile> reporterSpecifications;
+        std::vector<ReporterSpec> reporterSpecifications;
 
         std::vector<std::string> testsOrTags;
         std::vector<std::string> sectionsToRun;
@@ -92,8 +100,9 @@ namespace Catch {
         bool listTags() const;
         bool listReporters() const;
 
-        std::vector<ConfigData::ReporterAndFile> const& getReportersAndOutputFiles() const;
-        IStream const* getReporterOutputStream(std::size_t reporterIdx) const;
+        std::vector<ReporterSpec> const& getReporterSpecs() const;
+        std::vector<ProcessedReporterSpec> const&
+        getProcessedReporterSpecs() const;
 
         std::vector<std::string> const& getTestsOrTags() const override;
         std::vector<std::string> const& getSectionsToRun() const override;
@@ -116,11 +125,12 @@ namespace Catch {
         uint32_t rngSeed() const override;
         unsigned int shardCount() const override;
         unsigned int shardIndex() const override;
-        UseColour useColour() const override;
+        ColourMode defaultColourMode() const override;
         bool shouldDebugBreak() const override;
         int abortAfter() const override;
         bool showInvisibles() const override;
         Verbosity verbosity() const override;
+        bool skipBenchmarks() const override;
         bool benchmarkNoAnalysis() const override;
         unsigned int benchmarkSamples() const override;
         double benchmarkConfidenceInterval() const override;
@@ -128,10 +138,8 @@ namespace Catch {
         std::chrono::milliseconds benchmarkWarmupTime() const override;
 
     private:
-        Detail::unique_ptr<IStream const> openStream(std::string const& outputFileName);
         ConfigData m_data;
-
-        std::vector<Detail::unique_ptr<IStream const>> m_reporterStreams;
+        std::vector<ProcessedReporterSpec> m_processedReporterSpecs;
         TestSpec m_testSpec;
         bool m_hasTestFilters = false;
     };

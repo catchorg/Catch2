@@ -9,11 +9,14 @@
 #define CATCH_REPORTER_COMMON_BASE_HPP_INCLUDED
 
 #include <catch2/interfaces/catch_interfaces_reporter.hpp>
-#include <catch2/internal/catch_console_colour.hpp>
 #include <catch2/internal/catch_dll_public.hpp>
-#include <catch2/internal/catch_stream.hpp>
+
+#include <map>
+#include <string>
 
 namespace Catch {
+    class ColourImpl;
+
     /**
      * This is the base class for all reporters.
      *
@@ -27,19 +30,18 @@ namespace Catch {
     class CATCH_DLL_PUBLIC ReporterBase : public IEventListener {
     protected:
         //! The stream wrapper as passed to us by outside code
-        IStream const* m_wrapped_stream;
+        Detail::unique_ptr<IStream> m_wrapped_stream;
         //! Cached output stream from `m_wrapped_stream` to reduce
         //! number of indirect calls needed to write output.
         std::ostream& m_stream;
+        //! Colour implementation this reporter was configured for
         Detail::unique_ptr<ColourImpl> m_colour;
+        //! The custom reporter options user passed down to the reporter
+        std::map<std::string, std::string> m_customOptions;
 
     public:
-        ReporterBase( ReporterConfig const& config ):
-            IEventListener( config.fullConfig() ),
-            m_wrapped_stream( config.stream() ),
-            m_stream( m_wrapped_stream->stream() ),
-            m_colour( makeColourImpl( config.fullConfig(), m_wrapped_stream ) ) {}
-
+        ReporterBase( ReporterConfig&& config );
+        ~ReporterBase() override; // = default;
 
         /**
          * Provides a simple default listing of reporters.

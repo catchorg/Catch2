@@ -24,9 +24,9 @@
 
 namespace Catch {
 
-    struct IMutableContext;
-    struct IGeneratorTracker;
-    struct IConfig;
+    class IMutableContext;
+    class IGeneratorTracker;
+    class IConfig;
 
     ///////////////////////////////////////////////////////////////////////////
 
@@ -36,7 +36,7 @@ namespace Catch {
         RunContext( RunContext const& ) = delete;
         RunContext& operator =( RunContext const& ) = delete;
 
-        explicit RunContext( IConfig const* _config, IStreamingReporterPtr&& reporter );
+        explicit RunContext( IConfig const* _config, IEventListenerPtr&& reporter );
 
         ~RunContext() override;
 
@@ -130,7 +130,7 @@ namespace Catch {
 
         IConfig const* m_config;
         Totals m_totals;
-        IStreamingReporterPtr m_reporter;
+        IEventListenerPtr m_reporter;
         std::vector<MessageInfo> m_messages;
         std::vector<ScopedMessage> m_messageScopes; /* Keeps owners of so-called unscoped messages. */
         AssertionInfo m_lastAssertionInfo;

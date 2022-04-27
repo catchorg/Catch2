@@ -9,13 +9,25 @@
 
 #include <catch2/internal/catch_string_manip.hpp>
 #include <catch2/catch_test_case_info.hpp>
+#include <catch2/internal/catch_reusable_string_stream.hpp>
+#include <catch2/interfaces/catch_interfaces_config.hpp>
 
 #include <map>
 
 namespace Catch {
 
+    namespace {
+        std::string createRngSeedString(uint32_t seed) {
+            ReusableStringStream sstr;
+            sstr << "rng-seed=" << seed;
+            return sstr.str();
+        }
+    }
+
     void SonarQubeReporter::testRunStarting(TestRunInfo const& testRunInfo) {
         CumulativeReporterBase::testRunStarting(testRunInfo);
+
+        xml.writeComment( createRngSeedString( m_config->rngSeed() ) );
         xml.startElement("testExecutions");
         xml.writeAttribute("version"_sr, '1');
     }

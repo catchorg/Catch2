@@ -14,17 +14,18 @@
 #include <catch2/internal/catch_compiler_capabilities.hpp>
 #include <catch2/internal/catch_dll_public.hpp>
 #include <catch2/internal/catch_unique_ptr.hpp>
+#include <catch2/internal/catch_move_and_forward.hpp>
 
 namespace Catch {
 
     class IEventListener;
-    using IStreamingReporterPtr = Detail::unique_ptr<IEventListener>;
+    using IEventListenerPtr = Detail::unique_ptr<IEventListener>;
 
     template <typename T>
     class CATCH_DLL_PUBLIC ReporterFactory : public IReporterFactory {
 
-        IStreamingReporterPtr create( ReporterConfig const& config ) const override {
-            return Detail::make_unique<T>( config );
+        IEventListenerPtr create( ReporterConfig&& config ) const override {
+            return Detail::make_unique<T>( CATCH_MOVE(config) );
         }
 
         std::string getDescription() const override {
@@ -44,7 +45,7 @@ namespace Catch {
         class CATCH_DLL_PUBLIC TypedListenerFactory
             : public EventListenerFactory {
 
-            IStreamingReporterPtr
+            IEventListenerPtr
             create( IConfig const* config ) const override {
                 return Detail::make_unique<T>(config);
             }

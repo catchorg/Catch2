@@ -30,6 +30,7 @@
 #include <catch2/internal/catch_enforce.hpp>
 #include <catch2/interfaces/catch_interfaces_capture.hpp>
 #include <catch2/internal/catch_windows_h_proxy.hpp>
+#include <catch2/internal/catch_stdstreams.hpp>
 
 #include <algorithm>
 
@@ -40,7 +41,7 @@ namespace Catch {
     // If neither SEH nor signal handling is required, the handler impls
     // do not have to do anything, and can be empty.
     void FatalConditionHandler::engage_platform() {}
-    void FatalConditionHandler::disengage_platform() {}
+    void FatalConditionHandler::disengage_platform() noexcept {}
     FatalConditionHandler::FatalConditionHandler() = default;
     FatalConditionHandler::~FatalConditionHandler() = default;
 
@@ -78,10 +79,10 @@ namespace Catch {
     // Windows can easily distinguish between SO and SigSegV,
     // but SigInt, SigTerm, etc are handled differently.
     static SignalDefs signalDefs[] = {
-        { static_cast<DWORD>(EXCEPTION_ILLEGAL_INSTRUCTION),  "SIGILL - Illegal instruction signal" },
-        { static_cast<DWORD>(EXCEPTION_STACK_OVERFLOW), "SIGSEGV - Stack overflow" },
-        { static_cast<DWORD>(EXCEPTION_ACCESS_VIOLATION), "SIGSEGV - Segmentation violation signal" },
-        { static_cast<DWORD>(EXCEPTION_INT_DIVIDE_BY_ZERO), "Divide by zero error" },
+        { EXCEPTION_ILLEGAL_INSTRUCTION,  "SIGILL - Illegal instruction signal" },
+        { EXCEPTION_STACK_OVERFLOW, "SIGSEGV - Stack overflow" },
+        { EXCEPTION_ACCESS_VIOLATION, "SIGSEGV - Segmentation violation signal" },
+        { EXCEPTION_INT_DIVIDE_BY_ZERO, "Divide by zero error" },
     };
 
     static LONG CALLBACK topLevelExceptionFilter(PEXCEPTION_POINTERS ExceptionInfo) {
@@ -124,9 +125,11 @@ namespace Catch {
         previousTopLevelExceptionFilter = SetUnhandledExceptionFilter(topLevelExceptionFilter);
     }
 
-    void FatalConditionHandler::disengage_platform() {
-        if (SetUnhandledExceptionFilter(reinterpret_cast<LPTOP_LEVEL_EXCEPTION_FILTER>(previousTopLevelExceptionFilter)) != topLevelExceptionFilter) {
-            CATCH_RUNTIME_ERROR("Could not restore previous top level exception filter");
+    void FatalConditionHandler::disengage_platform() noexcept {
+        if (SetUnhandledExceptionFilter(previousTopLevelExceptionFilter) != topLevelExceptionFilter) {
+            Catch::cerr()
+                << "Unexpected SEH unhandled exception filter on disengage."
+                << " The filter was restored, but might be rolled back unexpectedly.";
         }
         previousTopLevelExceptionFilter = nullptr;
     }
@@ -168,7 +171,7 @@ namespace Catch {
     static stack_t oldSigStack{};
     static struct sigaction oldSigActions[sizeof(signalDefs) / sizeof(SignalDefs)]{};
 
-    static void restorePreviousSignalHandlers() {
+    static void restorePreviousSignalHandlers() noexcept {
         // We set signal handlers back to the previous ones. Hopefully
         // nobody overwrote them in the meantime, and doesn't expect
         // their signal handlers to live past ours given that they
@@ -231,7 +234,7 @@ namespace Catch {
 #endif
 
 
-    void FatalConditionHandler::disengage_platform() {
+    void FatalConditionHandler::disengage_platform() noexcept {
         restorePreviousSignalHandlers();
     }
 

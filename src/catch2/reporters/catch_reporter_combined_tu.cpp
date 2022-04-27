@@ -22,7 +22,7 @@
 #include <catch2/internal/catch_console_width.hpp>
 #include <catch2/internal/catch_errno_guard.hpp>
 #include <catch2/internal/catch_textflow.hpp>
-#include <catch2/internal/catch_stream.hpp>
+#include <catch2/internal/catch_reusable_string_stream.hpp>
 #include <catch2/internal/catch_string_manip.hpp>
 #include <catch2/internal/catch_console_colour.hpp>
 #include <catch2/catch_tostring.hpp>
@@ -194,9 +194,9 @@ namespace Catch {
             Colour::Code colour = testCaseInfo.isHidden()
                 ? Colour::SecondaryText
                 : Colour::None;
-            auto colourGuard = streamColour->startColour( colour );
+            auto colourGuard = streamColour->guardColour( colour ).engage( out );
 
-            out << TextFlow::Column(testCaseInfo.name).initialIndent(2).indent(4) << '\n';
+            out << TextFlow::Column(testCaseInfo.name).indent(2) << '\n';
             if (verbosity >= Verbosity::High) {
                 out << TextFlow::Column(Catch::Detail::stringify(testCaseInfo.lineInfo)).indent(4) << '\n';
             }

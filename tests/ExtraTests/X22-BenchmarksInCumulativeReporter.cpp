@@ -20,12 +20,13 @@
 #include <catch2/reporters/catch_reporter_registrars.hpp>
 
 #include <iostream>
+#include <utility>
 
 class CumulativeBenchmarkReporter final : public Catch::CumulativeReporterBase {
 
 public:
-    CumulativeBenchmarkReporter(Catch::ReporterConfig const& _config) :
-        CumulativeReporterBase(_config) {
+    CumulativeBenchmarkReporter(Catch::ReporterConfig&& _config) :
+        CumulativeReporterBase(std::move(_config)) {
         m_preferences.shouldReportAllAssertions = true;
     }
 

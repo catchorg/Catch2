@@ -20,7 +20,7 @@
 
 namespace Catch {
 
-    struct ITagAliasRegistry;
+    class ITagAliasRegistry;
 
     class CATCH_DLL_PUBLIC TestSpecParser {
         enum Mode{ None, Name, QuotedName, Tag, EscapedName };

@@ -5,34 +5,19 @@
 //        https://www.boost.org/LICENSE_1_0.txt)
 
 // SPDX-License-Identifier: BSL-1.0
-#ifndef CATCH_STREAM_HPP_INCLUDED
-#define CATCH_STREAM_HPP_INCLUDED
+#ifndef CATCH_REUSABLE_STRING_STREAM_HPP_INCLUDED
+#define CATCH_REUSABLE_STRING_STREAM_HPP_INCLUDED
 
 #include <catch2/internal/catch_dll_public.hpp>
 #include <catch2/internal/catch_noncopyable.hpp>
-#include <catch2/internal/catch_unique_ptr.hpp>
+
+#include <iosfwd>
 #include <cstddef>
 #include <iosfwd>
 #include <ostream>
 #include <string>
 
 namespace Catch {
-
-    std::ostream& cout();
-    std::ostream& cerr();
-    std::ostream& clog();
-
-    class CATCH_DLL_PUBLIC IStream {
-    public:
-        virtual ~IStream(); // = default
-        virtual std::ostream& stream() const = 0;
-        // Win32 colour supports requires us to identify whether a stream
-        // is backed by stdout (so we can colour it) or not (and we can't).
-        virtual bool isStdout() const { return false;  }
-    };
-
-    CATCH_DLL_PUBLIC auto makeStream( std::string const& filename )
-        -> Detail::unique_ptr<IStream const>;
 
     class CATCH_DLL_PUBLIC ReusableStringStream : Detail::NonCopyable {
         std::size_t m_index;
@@ -72,4 +57,4 @@ namespace Catch {
     };
 }
 
-#endif // CATCH_STREAM_HPP_INCLUDED
+#endif // CATCH_REUSABLE_STRING_STREAM_HPP_INCLUDED

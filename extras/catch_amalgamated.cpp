@@ -5,8 +5,8 @@
 
 // SPDX-License-Identifier: BSL-1.0
 
-//  Catch v3.0.0-preview.4
-//  Generated: 2022-04-26 16:45:02.008519
+//  Catch v3.0.0-preview.5
+//  Generated: 2022-04-26 23:30:43.849115
 //  ----------------------------------------------------------
 //  This file is an amalgamation of multiple different files.
 //  You probably shouldn't edit it directly.
@@ -20,6 +20,7 @@
 
 
 #include <cassert>
+#include <cstddef>
 #include <iterator>
 #include <random>
 
@@ -495,34 +496,14 @@ namespace Catch {
 
 
 
-#include <ostream>
-
 namespace Catch {
-    namespace Detail {
-        namespace {
-            class RDBufStream : public IStream {
-                mutable std::ostream m_os;
 
-            public:
-                //! The streambuf `sb` must outlive the constructed object.
-                RDBufStream( std::streambuf* sb ): m_os( sb ) {}
-                ~RDBufStream() override = default;
-
-            public: // IStream
-                std::ostream& stream() const override { return m_os; }
-            };
-        } // unnamed namespace
-    }     // namespace Detail
-
-    std::ostream& operator<<( std::ostream& os,
-                              ConfigData::ReporterAndFile const& reporter ) {
-        os << "{ " << reporter.reporterName << ", ";
-        if ( reporter.outputFileName ) {
-            os << *reporter.outputFileName;
-        } else {
-            os << "<default-output>";
-        }
-        return os << " }";
+    bool operator==( ProcessedReporterSpec const& lhs,
+                     ProcessedReporterSpec const& rhs ) {
+        return lhs.name == rhs.name &&
+               lhs.outputFilename == rhs.outputFilename &&
+               lhs.colourMode == rhs.colourMode &&
+               lhs.customOptions == rhs.customOptions;
     }
 
     Config::Config( ConfigData const& data ):
@@ -557,25 +538,53 @@ namespace Catch {
 #else
                 "console",
 #endif
-                {}
+                {}, {}, {}
             } );
         }
 
+#if defined( CATCH_CONFIG_BAZEL_SUPPORT )
+        // Register a JUnit reporter for Bazel. Bazel sets an environment
+        // variable with the path to XML output. If this file is written to
+        // during test, Bazel will not generate a default XML output.
+        // This allows the XML output file to contain higher level of detail
+        // than what is possible otherwise.
+#    if defined( _MSC_VER )
+        // On Windows getenv throws a warning as there is no input validation,
+        // since the key is hardcoded, this should not be an issue.
+#        pragma warning( push )
+#        pragma warning( disable : 4996 )
+#    endif
+        const auto bazelOutputFilePtr = std::getenv( "XML_OUTPUT_FILE" );
+#    if defined( _MSC_VER )
+#        pragma warning( pop )
+#    endif
+        if ( bazelOutputFilePtr != nullptr ) {
+            m_data.reporterSpecifications.push_back(
+                { "junit", std::string( bazelOutputFilePtr ), {}, {} } );
+        }
+#endif
+
+
+        // We now fixup the reporter specs to handle default output spec,
+        // default colour spec, etc
         bool defaultOutputUsed = false;
-        m_reporterStreams.reserve( m_data.reporterSpecifications.size() );
-        for ( auto const& reporterAndFile : m_data.reporterSpecifications ) {
-            if ( reporterAndFile.outputFileName.none() ) {
+        for ( auto const& reporterSpec : m_data.reporterSpecifications ) {
+            // We do the default-output check separately, while always
+            // using the default output below to make the code simpler
+            // and avoid superfluous copies.
+            if ( reporterSpec.outputFile().none() ) {
                 CATCH_ENFORCE( !defaultOutputUsed,
                                "Internal error: cannot use default output for "
                                "multiple reporters" );
                 defaultOutputUsed = true;
-
-                m_reporterStreams.push_back(
-                    openStream( data.defaultOutputFilename ) );
-            } else {
-                m_reporterStreams.push_back(
-                    openStream( *reporterAndFile.outputFileName ) );
             }
+
+            m_processedReporterSpecs.push_back( ProcessedReporterSpec{
+                reporterSpec.name(),
+                reporterSpec.outputFile() ? *reporterSpec.outputFile()
+                                          : data.defaultOutputFilename,
+                reporterSpec.colourMode().valueOr( data.defaultColourMode ),
+                reporterSpec.customOptions() } );
         }
     }
 
@@ -589,12 +598,13 @@ namespace Catch {
     std::vector<std::string> const& Config::getTestsOrTags() const { return m_data.testsOrTags; }
     std::vector<std::string> const& Config::getSectionsToRun() const { return m_data.sectionsToRun; }
 
-    std::vector<ConfigData::ReporterAndFile> const& Config::getReportersAndOutputFiles() const {
+    std::vector<ReporterSpec> const& Config::getReporterSpecs() const {
         return m_data.reporterSpecifications;
     }
 
-    IStream const* Config::getReporterOutputStream(std::size_t reporterIdx) const {
-        return m_reporterStreams.at(reporterIdx).get();
+    std::vector<ProcessedReporterSpec> const&
+    Config::getProcessedReporterSpecs() const {
+        return m_processedReporterSpecs;
     }
 
     TestSpec const& Config::testSpec() const { return m_testSpec; }
@@ -619,21 +629,18 @@ namespace Catch {
     uint32_t Config::rngSeed() const                   { return m_data.rngSeed; }
     unsigned int Config::shardCount() const            { return m_data.shardCount; }
     unsigned int Config::shardIndex() const            { return m_data.shardIndex; }
-    UseColour Config::useColour() const                { return m_data.useColour; }
+    ColourMode Config::defaultColourMode() const       { return m_data.defaultColourMode; }
     bool Config::shouldDebugBreak() const              { return m_data.shouldDebugBreak; }
     int Config::abortAfter() const                     { return m_data.abortAfter; }
     bool Config::showInvisibles() const                { return m_data.showInvisibles; }
     Verbosity Config::verbosity() const                { return m_data.verbosity; }
 
+    bool Config::skipBenchmarks() const                           { return m_data.skipBenchmarks; }
     bool Config::benchmarkNoAnalysis() const                      { return m_data.benchmarkNoAnalysis; }
     unsigned int Config::benchmarkSamples() const                 { return m_data.benchmarkSamples; }
     double Config::benchmarkConfidenceInterval() const            { return m_data.benchmarkConfidenceInterval; }
     unsigned int Config::benchmarkResamples() const               { return m_data.benchmarkResamples; }
     std::chrono::milliseconds Config::benchmarkWarmupTime() const { return std::chrono::milliseconds(m_data.benchmarkWarmupTime); }
-
-    Detail::unique_ptr<IStream const> Config::openStream(std::string const& outputFileName) {
-        return Catch::makeStream(outputFileName);
-    }
 
 } // end namespace Catch
 
@@ -836,18 +843,23 @@ namespace Catch {
     namespace {
         const int MaxExitCode = 255;
 
-        IStreamingReporterPtr createReporter(std::string const& reporterName, ReporterConfig const& config) {
-            auto reporter = Catch::getRegistryHub().getReporterRegistry().create(reporterName, config);
+        IEventListenerPtr createReporter(std::string const& reporterName, ReporterConfig&& config) {
+            auto reporter = Catch::getRegistryHub().getReporterRegistry().create(reporterName, CATCH_MOVE(config));
             CATCH_ENFORCE(reporter, "No reporter registered with name: '" << reporterName << '\'');
 
             return reporter;
         }
 
-        IStreamingReporterPtr makeReporter(Config const* config) {
+        IEventListenerPtr prepareReporters(Config const* config) {
             if (Catch::getRegistryHub().getReporterRegistry().getListeners().empty()
-                    && config->getReportersAndOutputFiles().size() == 1) {
-                auto stream = config->getReporterOutputStream(0);
-                return createReporter(config->getReportersAndOutputFiles()[0].reporterName, ReporterConfig(config, stream));
+                    && config->getProcessedReporterSpecs().size() == 1) {
+                auto const& spec = config->getProcessedReporterSpecs()[0];
+                return createReporter(
+                    spec.name,
+                    ReporterConfig( config,
+                                    makeStream( spec.outputFilename ),
+                                    spec.colourMode,
+                                    spec.customOptions ) );
             }
 
             auto multi = Detail::make_unique<MultiReporter>(config);
@@ -858,9 +870,13 @@ namespace Catch {
             }
 
             std::size_t reporterIdx = 0;
-            for (auto const& reporterAndFile : config->getReportersAndOutputFiles()) {
-                auto stream = config->getReporterOutputStream(reporterIdx);
-                multi->addReporter(createReporter(reporterAndFile.reporterName, ReporterConfig(config, stream)));
+            for ( auto const& reporterSpec : config->getProcessedReporterSpecs() ) {
+                multi->addReporter( createReporter(
+                    reporterSpec.name,
+                    ReporterConfig( config,
+                                    makeStream( reporterSpec.outputFilename ),
+                                    reporterSpec.colourMode,
+                                    reporterSpec.customOptions ) ) );
                 reporterIdx++;
             }
 
@@ -869,7 +885,7 @@ namespace Catch {
 
         class TestGroup {
         public:
-            explicit TestGroup(IStreamingReporterPtr&& reporter, Config const* config):
+            explicit TestGroup(IEventListenerPtr&& reporter, Config const* config):
                 m_reporter(reporter.get()),
                 m_config{config},
                 m_context{config, CATCH_MOVE(reporter)} {
@@ -954,8 +970,9 @@ namespace Catch {
 
             m_startupExceptions = true;
             auto errStream = makeStream( "%stderr" );
-            auto colourImpl = makeColourImpl( &config(), errStream.get() );
-            auto guard = colourImpl->startColour( Colour::Red );
+            auto colourImpl = makeColourImpl(
+                ColourMode::PlatformDefault, errStream.get() );
+            auto guard = colourImpl->guardColour( Colour::Red );
             errStream->stream() << "Errors occurred during startup!" << '\n';
             // iterate over all exceptions and notify user
             for ( const auto& ex_ptr : exceptions ) {
@@ -999,10 +1016,10 @@ namespace Catch {
             config();
             getCurrentMutableContext().setConfig(m_config.get());
             auto errStream = makeStream( "%stderr" );
-            auto colour = makeColourImpl( &config(), errStream.get() );
+            auto colour = makeColourImpl( ColourMode::PlatformDefault, errStream.get() );
 
             errStream->stream()
-                << colour->startColour( Colour::Red )
+                << colour->guardColour( Colour::Red )
                 << "\nError(s) in input:\n"
                 << TextFlow::Column( result.errorMessage() ).indent( 2 )
                 << "\n\n";
@@ -1105,7 +1122,7 @@ namespace Catch {
             getCurrentMutableContext().setConfig(m_config.get());
 
             // Create reporter(s) so we can route listings through them
-            auto reporter = makeReporter(m_config.get());
+            auto reporter = prepareReporters(m_config.get());
 
             auto const& invalidSpecs = m_config->testSpec().getInvalidSpecs();
             if ( !invalidSpecs.empty() ) {
@@ -1844,7 +1861,7 @@ namespace Catch {
     }
 
     Version const& libraryVersion() {
-        static Version version( 3, 0, 0, "preview", 4 );
+        static Version version( 3, 0, 0, "preview", 5 );
         return version;
     }
 
@@ -1986,15 +2003,34 @@ namespace Catch {
 
 
 #include <algorithm>
+#include <cassert>
 #include <iomanip>
 
 namespace Catch {
 
-    ReporterConfig::ReporterConfig( IConfig const* _fullConfig, IStream const* _stream )
-    :   m_stream( _stream ), m_fullConfig( _fullConfig ) {}
+    ReporterConfig::ReporterConfig(
+        IConfig const* _fullConfig,
+        Detail::unique_ptr<IStream> _stream,
+        ColourMode colourMode,
+        std::map<std::string, std::string> customOptions ):
+        m_stream( CATCH_MOVE(_stream) ),
+        m_fullConfig( _fullConfig ),
+        m_colourMode( colourMode ),
+        m_customOptions( CATCH_MOVE( customOptions ) ) {}
 
-    IStream const* ReporterConfig::stream() const { return m_stream; }
+    Detail::unique_ptr<IStream> ReporterConfig::takeStream() && {
+        assert( m_stream );
+        return CATCH_MOVE( m_stream );
+    }
     IConfig const * ReporterConfig::fullConfig() const { return m_fullConfig; }
+    ColourMode ReporterConfig::colourMode() const { return m_colourMode; }
+
+    std::map<std::string, std::string> const&
+    ReporterConfig::customOptions() const {
+        return m_customOptions;
+    }
+
+    ReporterConfig::~ReporterConfig() = default;
 
     AssertionStats::AssertionStats( AssertionResult const& _assertionResult,
                                     std::vector<MessageInfo> const& _infoMessages,
@@ -2154,7 +2190,10 @@ namespace Catch {
 } // namespace Catch
 
 
+
+
 #include <algorithm>
+#include <ostream>
 
 namespace {
     bool isOptPrefix( char c ) {
@@ -2374,7 +2413,7 @@ namespace Catch {
                             return Detail::InternalParseResult::runtimeError(
                                 "Expected argument following " +
                                 token.token);
-                        auto result = valueRef->setValue(argToken.token);
+                        const auto result = valueRef->setValue(argToken.token);
                         if (!result)
                             return Detail::InternalParseResult(result);
                         if (result.value() ==
@@ -2806,7 +2845,6 @@ namespace Catch {
 
 
 
-#include <algorithm>
 #include <fstream>
 #include <string>
 
@@ -2887,19 +2925,23 @@ namespace Catch {
                     return ParserResult::runtimeError("Could not parse '" + seed + "' as seed");
                 }
             };
-        auto const setColourUsage = [&]( std::string const& useColour ) {
-                    auto mode = toLower( useColour );
-
-                    if( mode == "yes" )
-                        config.useColour = UseColour::Yes;
-                    else if( mode == "no" )
-                        config.useColour = UseColour::No;
-                    else if( mode == "auto" )
-                        config.useColour = UseColour::Auto;
-                    else
-                        return ParserResult::runtimeError( "colour mode must be one of: auto, yes or no. '" + useColour + "' not recognised" );
-                return ParserResult::ok( ParseResultType::Matched );
-            };
+        auto const setDefaultColourMode = [&]( std::string const& colourMode ) {
+            Optional<ColourMode> maybeMode = Catch::Detail::stringToColourMode(toLower( colourMode ));
+            if ( !maybeMode ) {
+                return ParserResult::runtimeError(
+                    "colour mode must be one of: default, ansi, win32, "
+                    "or none. '" +
+                    colourMode + "' is not recognised" );
+            }
+            auto mode = *maybeMode;
+            if ( !isColourImplAvailable( mode ) ) {
+                return ParserResult::runtimeError(
+                    "colour mode '" + colourMode +
+                    "' is not supported in this binary" );
+            }
+            config.defaultColourMode = mode;
+            return ParserResult::ok( ParseResultType::Matched );
+        };
         auto const setWaitForKeypress = [&]( std::string const& keypress ) {
                 auto keypressLc = toLower( keypress );
                 if (keypressLc == "never")
@@ -2926,57 +2968,42 @@ namespace Catch {
                 return ParserResult::runtimeError( "Unrecognised verbosity, '" + verbosity + '\'' );
             return ParserResult::ok( ParseResultType::Matched );
         };
-        auto const setReporter = [&]( std::string const& reporterSpec ) {
-            if ( reporterSpec.empty() ) {
+        auto const setReporter = [&]( std::string const& userReporterSpec ) {
+            if ( userReporterSpec.empty() ) {
                 return ParserResult::runtimeError( "Received empty reporter spec." );
             }
 
-            // Exactly one of the reporters may be specified without an output
-            // file, in which case it defaults to the output specified by "-o"
-            // (or standard output).
-            static constexpr auto separator = "::";
-            static constexpr size_t separatorSize = 2;
-            auto fileNameSeparatorPos = reporterSpec.find( separator );
-            const bool containsFileName = fileNameSeparatorPos != reporterSpec.npos;
-            if ( containsFileName ) {
-                auto nextSeparatorPos = reporterSpec.find(
-                    separator, fileNameSeparatorPos + separatorSize );
-                if ( nextSeparatorPos != reporterSpec.npos ) {
-                    return ParserResult::runtimeError(
-                        "Too many separators in reporter spec '" + reporterSpec + '\'' );
-                }
+            Optional<ReporterSpec> parsed =
+                parseReporterSpec( userReporterSpec );
+            if ( !parsed ) {
+                return ParserResult::runtimeError(
+                    "Could not parse reporter spec '" + userReporterSpec +
+                    "'" );
             }
 
-            std::string reporterName;
-            Optional<std::string> outputFileName;
-            reporterName = reporterSpec.substr( 0, fileNameSeparatorPos );
-            if ( reporterName.empty() ) {
-                return ParserResult::runtimeError( "Reporter name cannot be empty." );
-            }
-
-            if ( containsFileName ) {
-                outputFileName = reporterSpec.substr(
-                    fileNameSeparatorPos + separatorSize, reporterSpec.size() );
-            }
+            auto const& reporterSpec = *parsed;
 
             IReporterRegistry::FactoryMap const& factories =
                 getRegistryHub().getReporterRegistry().getFactories();
-            auto result = factories.find( reporterName );
+            auto result = factories.find( reporterSpec.name() );
 
-            if( result == factories.end() )
-                return ParserResult::runtimeError( "Unrecognized reporter, '" + reporterName + "'. Check available with --list-reporters" );
-            if( containsFileName && outputFileName->empty() )
-                return ParserResult::runtimeError( "Reporter '" + reporterName + "' has empty filename specified as its output. Supply a filename or remove the colons to use the default output." );
+            if ( result == factories.end() ) {
+                return ParserResult::runtimeError(
+                    "Unrecognized reporter, '" + reporterSpec.name() +
+                    "'. Check available with --list-reporters" );
+            }
 
-            config.reporterSpecifications.push_back({ std::move(reporterName), std::move(outputFileName) });
 
-            // It would be enough to check this only once at the very end, but there is
-            // not a place where we could call this check, so do it every time it could fail.
-            // For valid inputs, this is still called at most once.
-            if (!containsFileName) {
+            const bool hadOutputFile = reporterSpec.outputFile().some();
+            config.reporterSpecifications.push_back( CATCH_MOVE( *parsed ) );
+            // It would be enough to check this only once at the very end, but
+            // there is  not a place where we could call this check, so do it
+            // every time it could fail. For valid inputs, this is still called
+            // at most once.
+            if (!hadOutputFile) {
                 int n_reporters_without_file = 0;
                 for (auto const& spec : config.reporterSpecifications) {
-                    if (spec.outputFileName.none()) {
+                    if (spec.outputFile().none()) {
                         n_reporters_without_file++;
                     }
                 }
@@ -3042,7 +3069,7 @@ namespace Catch {
             | Opt( config.defaultOutputFilename, "filename" )
                 ["-o"]["--out"]
                 ( "default output filename" )
-            | Opt( accept_many, setReporter, "name[:output-file]" )
+            | Opt( accept_many, setReporter, "name[::key=value]*" )
                 ["-r"]["--reporter"]
                 ( "reporter to use (defaults to console)" )
             | Opt( config.name, "name" )
@@ -3090,15 +3117,18 @@ namespace Catch {
             | Opt( setRngSeed, "'time'|'random-device'|number" )
                 ["--rng-seed"]
                 ( "set a specific seed for random numbers" )
-            | Opt( setColourUsage, "yes|no|auto" )
-                ["--use-colour"]
-                ( "should output be colourised" )
+            | Opt( setDefaultColourMode, "ansi|win32|none|default" )
+                ["--colour-mode"]
+                ( "what color mode should be used as default" )
             | Opt( config.libIdentify )
                 ["--libidentify"]
                 ( "report name and version according to libidentify standard" )
             | Opt( setWaitForKeypress, "never|start|exit|both" )
                 ["--wait-for-keypress"]
                 ( "waits for a keypress before exiting" )
+            | Opt( config.skipBenchmarks)
+                ["--skip-benchmarks"]
+                ( "disable running benchmarks")
             | Opt( config.benchmarkSamples, "samples" )
                 ["--benchmark-samples"]
                 ( "number of samples to collect (default: 100)" )
@@ -3139,14 +3169,63 @@ namespace Catch {
 
 
 
+#include <cassert>
 #include <ostream>
+#include <utility>
 
 namespace Catch {
 
     ColourImpl::~ColourImpl() = default;
 
-    ColourImpl::ColourGuard ColourImpl::startColour( Colour::Code colourCode ) {
+    ColourImpl::ColourGuard ColourImpl::guardColour( Colour::Code colourCode ) {
         return ColourGuard(colourCode, this );
+    }
+
+    void ColourImpl::ColourGuard::engageImpl( std::ostream& stream ) {
+        assert( &stream == &m_colourImpl->m_stream->stream() &&
+                "Engaging colour guard for different stream than used by the "
+                "parent colour implementation" );
+        static_cast<void>( stream );
+
+        m_engaged = true;
+        m_colourImpl->use( m_code );
+    }
+
+    ColourImpl::ColourGuard::ColourGuard( Colour::Code code,
+                                          ColourImpl const* colour ):
+        m_colourImpl( colour ), m_code( code ) {
+    }
+    ColourImpl::ColourGuard::ColourGuard( ColourGuard&& rhs ) noexcept:
+        m_colourImpl( rhs.m_colourImpl ),
+        m_code( rhs.m_code ),
+        m_engaged( rhs.m_engaged ) {
+        rhs.m_engaged = false;
+    }
+    ColourImpl::ColourGuard&
+    ColourImpl::ColourGuard::operator=( ColourGuard&& rhs ) noexcept {
+        using std::swap;
+        swap( m_colourImpl, rhs.m_colourImpl );
+        swap( m_code, rhs.m_code );
+        swap( m_engaged, rhs.m_engaged );
+
+        return *this;
+    }
+    ColourImpl::ColourGuard::~ColourGuard() {
+        if ( m_engaged ) {
+            m_colourImpl->use( Colour::None );
+        }
+    }
+
+    ColourImpl::ColourGuard&
+    ColourImpl::ColourGuard::engage( std::ostream& stream ) & {
+        engageImpl( stream );
+        return *this;
+    }
+
+    ColourImpl::ColourGuard&&
+    ColourImpl::ColourGuard::engage( std::ostream& stream ) && {
+        engageImpl( stream );
+        return CATCH_MOVE(*this);
     }
 
     namespace {
@@ -3154,55 +3233,26 @@ namespace Catch {
         //! platforms, and when the user asks to deactivate all colours.
         class NoColourImpl : public ColourImpl {
         public:
-            NoColourImpl( IStream const* stream ): ColourImpl( stream ) {}
+            NoColourImpl( IStream* stream ): ColourImpl( stream ) {}
             static bool useColourOnPlatform() { return true; }
 
         private:
             void use( Colour::Code ) const override {}
         };
-
     } // namespace
 
-    ColourImpl::ColourGuard::ColourGuard( Colour::Code code,
-                              ColourImpl const* colour ):
-        m_colourImpl( colour ) {
-        m_colourImpl->use( code );
-    }
-    ColourImpl::ColourGuard::ColourGuard( ColourGuard&& rhs ):
-        m_colourImpl( rhs.m_colourImpl ) {
-        rhs.m_moved = true;
-    }
-    ColourImpl::ColourGuard&
-    ColourImpl::ColourGuard::operator=( ColourGuard&& rhs ) {
-        m_colourImpl = rhs.m_colourImpl;
-        rhs.m_moved = true;
-        return *this;
-    }
-    ColourImpl::ColourGuard::~ColourGuard() {
-        if ( !m_moved ) {
-            m_colourImpl->use( Colour::None );
-        }
-    }
 
 } // namespace Catch
 
-#if !defined( CATCH_CONFIG_COLOUR_NONE ) && !defined( CATCH_CONFIG_COLOUR_WINDOWS ) && !defined( CATCH_CONFIG_COLOUR_ANSI )
-#   ifdef CATCH_PLATFORM_WINDOWS
-#       define CATCH_CONFIG_COLOUR_WINDOWS
-#   else
-#       define CATCH_CONFIG_COLOUR_ANSI
-#   endif
-#endif
 
-
-#if defined ( CATCH_CONFIG_COLOUR_WINDOWS ) /////////////////////////////////////////
+#if defined ( CATCH_CONFIG_COLOUR_WIN32 ) /////////////////////////////////////////
 
 namespace Catch {
 namespace {
 
     class Win32ColourImpl : public ColourImpl {
     public:
-        Win32ColourImpl(IStream const* stream):
+        Win32ColourImpl(IStream* stream):
             ColourImpl(stream) {
             CONSOLE_SCREEN_BUFFER_INFO csbiInfo;
             GetConsoleScreenBufferInfo( GetStdHandle( STD_OUTPUT_HANDLE ),
@@ -3215,7 +3265,7 @@ namespace {
             // Win32 text colour APIs can only be used on console streams
             // We cannot check that the output hasn't been redirected,
             // so we just check that the original stream is console stream.
-            return stream.isStdout();
+            return stream.isConsole();
         }
 
     private:
@@ -3266,13 +3316,9 @@ namespace {
 namespace Catch {
 namespace {
 
-    // use POSIX/ ANSI console terminal codes
-    // Thanks to Adam Strzelecki for original contribution
-    // (http://github.com/nanoant)
-    // https://github.com/philsquared/Catch/pull/131
-    class PosixColourImpl : public ColourImpl {
+    class ANSIColourImpl : public ColourImpl {
     public:
-        PosixColourImpl( IStream const* stream ): ColourImpl( stream ) {}
+        ANSIColourImpl( IStream* stream ): ColourImpl( stream ) {}
 
         static bool useColourOnPlatform(IStream const& stream) {
             // This is kinda messy due to trying to support a bunch of
@@ -3282,7 +3328,7 @@ namespace {
             // only want to use the colours if we are writing to console.
             // However, console might be redirected, so we make an attempt at
             // checking for that on platforms where we know how to do that.
-            bool useColour = stream.isStdout();
+            bool useColour = stream.isConsole();
 #if defined( CATCH_INTERNAL_HAS_ISATTY ) && \
     !( defined( __DJGPP__ ) && defined( __STRICT_ANSI__ ) )
             ErrnoGuard _; // for isatty
@@ -3331,41 +3377,50 @@ namespace {
 
 namespace Catch {
 
-    Detail::unique_ptr<ColourImpl> makeColourImpl(IConfig const* config, IStream const* stream) {
-        UseColour colourMode = config ? config->useColour() : UseColour::Auto;
-
-        bool createPlatformInstance = false;
-        if ( colourMode == UseColour::No ) {
-            createPlatformInstance = false;
+    Detail::unique_ptr<ColourImpl> makeColourImpl( ColourMode implSelection,
+                                                   IStream* stream ) {
+        if ( implSelection == ColourMode::None ) {
+            return Detail::make_unique<NoColourImpl>( stream );
         }
-
-        if ( colourMode == UseColour::Yes ) {
-            createPlatformInstance = true;
+        if ( implSelection == ColourMode::ANSI ) {
+            return Detail::make_unique<ANSIColourImpl>( stream );
         }
-
-        if ( colourMode == UseColour::Auto ) {
-            createPlatformInstance =
-#if defined( CATCH_CONFIG_COLOUR_ANSI )
-                PosixColourImpl::useColourOnPlatform( *stream )
-#elif defined( CATCH_CONFIG_COLOUR_WINDOWS )
-                Win32ColourImpl::useColourOnPlatform( *stream )
-#else
-                false
+#if defined( CATCH_CONFIG_COLOUR_WIN32 )
+        if ( implSelection == ColourMode::Win32 ) {
+            return Detail::make_unique<Win32ColourImpl>( stream );
+        }
 #endif
-                ;
+
+        // todo: check win32 eligibility under ifdef, otherwise ansi
+        if ( implSelection == ColourMode::PlatformDefault) {
+#if defined (CATCH_CONFIG_COLOUR_WIN32)
+            if ( Win32ColourImpl::useColourOnPlatform( *stream ) ) {
+                return Detail::make_unique<Win32ColourImpl>( stream );
+            } else {
+                return Detail::make_unique<NoColourImpl>( stream );
+            }
+#endif
+            if ( ANSIColourImpl::useColourOnPlatform( *stream ) ) {
+                return Detail::make_unique<ANSIColourImpl>( stream );
+            }
+            return Detail::make_unique<NoColourImpl>( stream );
         }
 
-        if ( createPlatformInstance ) {
-            return
-#if defined( CATCH_CONFIG_COLOUR_ANSI )
-                Detail::make_unique<PosixColourImpl>(stream);
-#elif defined( CATCH_CONFIG_COLOUR_WINDOWS )
-                Detail::make_unique<Win32ColourImpl>(stream);
-#else
-                Detail::make_unique<NoColourImpl>(stream);
+        CATCH_ERROR( "Could not create colour impl for selection " << static_cast<int>(implSelection) );
+    }
+
+    bool isColourImplAvailable( ColourMode colourSelection ) {
+        switch ( colourSelection ) {
+#if defined( CATCH_CONFIG_COLOUR_WIN32 )
+        case ColourMode::Win32:
 #endif
+        case ColourMode::ANSI:
+        case ColourMode::None:
+        case ColourMode::PlatformDefault:
+            return true;
+        default:
+            return false;
         }
-        return Detail::make_unique<NoColourImpl>(stream);
     }
 
 
@@ -3432,6 +3487,10 @@ namespace Catch {
 }
 
 
+
+
+
+#include <ostream>
 
 #if defined(CATCH_CONFIG_ANDROID_LOGWRITE)
 #include <android/log.h>
@@ -3773,7 +3832,7 @@ namespace Catch {
     // If neither SEH nor signal handling is required, the handler impls
     // do not have to do anything, and can be empty.
     void FatalConditionHandler::engage_platform() {}
-    void FatalConditionHandler::disengage_platform() {}
+    void FatalConditionHandler::disengage_platform() noexcept {}
     FatalConditionHandler::FatalConditionHandler() = default;
     FatalConditionHandler::~FatalConditionHandler() = default;
 
@@ -3811,10 +3870,10 @@ namespace Catch {
     // Windows can easily distinguish between SO and SigSegV,
     // but SigInt, SigTerm, etc are handled differently.
     static SignalDefs signalDefs[] = {
-        { static_cast<DWORD>(EXCEPTION_ILLEGAL_INSTRUCTION),  "SIGILL - Illegal instruction signal" },
-        { static_cast<DWORD>(EXCEPTION_STACK_OVERFLOW), "SIGSEGV - Stack overflow" },
-        { static_cast<DWORD>(EXCEPTION_ACCESS_VIOLATION), "SIGSEGV - Segmentation violation signal" },
-        { static_cast<DWORD>(EXCEPTION_INT_DIVIDE_BY_ZERO), "Divide by zero error" },
+        { EXCEPTION_ILLEGAL_INSTRUCTION,  "SIGILL - Illegal instruction signal" },
+        { EXCEPTION_STACK_OVERFLOW, "SIGSEGV - Stack overflow" },
+        { EXCEPTION_ACCESS_VIOLATION, "SIGSEGV - Segmentation violation signal" },
+        { EXCEPTION_INT_DIVIDE_BY_ZERO, "Divide by zero error" },
     };
 
     static LONG CALLBACK topLevelExceptionFilter(PEXCEPTION_POINTERS ExceptionInfo) {
@@ -3857,9 +3916,11 @@ namespace Catch {
         previousTopLevelExceptionFilter = SetUnhandledExceptionFilter(topLevelExceptionFilter);
     }
 
-    void FatalConditionHandler::disengage_platform() {
-        if (SetUnhandledExceptionFilter(reinterpret_cast<LPTOP_LEVEL_EXCEPTION_FILTER>(previousTopLevelExceptionFilter)) != topLevelExceptionFilter) {
-            CATCH_RUNTIME_ERROR("Could not restore previous top level exception filter");
+    void FatalConditionHandler::disengage_platform() noexcept {
+        if (SetUnhandledExceptionFilter(previousTopLevelExceptionFilter) != topLevelExceptionFilter) {
+            Catch::cerr()
+                << "Unexpected SEH unhandled exception filter on disengage."
+                << " The filter was restored, but might be rolled back unexpectedly.";
         }
         previousTopLevelExceptionFilter = nullptr;
     }
@@ -3901,7 +3962,7 @@ namespace Catch {
     static stack_t oldSigStack{};
     static struct sigaction oldSigActions[sizeof(signalDefs) / sizeof(SignalDefs)]{};
 
-    static void restorePreviousSignalHandlers() {
+    static void restorePreviousSignalHandlers() noexcept {
         // We set signal handlers back to the previous ones. Hopefully
         // nobody overwrote them in the meantime, and doesn't expect
         // their signal handlers to live past ours given that they
@@ -3964,7 +4025,7 @@ namespace Catch {
 #endif
 
 
-    void FatalConditionHandler::disengage_platform() {
+    void FatalConditionHandler::disengage_platform() noexcept {
         restorePreviousSignalHandlers();
     }
 
@@ -3997,6 +4058,154 @@ namespace Catch {
     } // end namespace Detail
 } // end namespace Catch
 
+
+
+
+
+#include <cstdio>
+#include <fstream>
+#include <sstream>
+#include <vector>
+
+namespace Catch {
+
+    Catch::IStream::~IStream() = default;
+
+namespace Detail {
+    namespace {
+        template<typename WriterF, std::size_t bufferSize=256>
+        class StreamBufImpl : public std::streambuf {
+            char data[bufferSize];
+            WriterF m_writer;
+
+        public:
+            StreamBufImpl() {
+                setp( data, data + sizeof(data) );
+            }
+
+            ~StreamBufImpl() noexcept {
+                StreamBufImpl::sync();
+            }
+
+        private:
+            int overflow( int c ) override {
+                sync();
+
+                if( c != EOF ) {
+                    if( pbase() == epptr() )
+                        m_writer( std::string( 1, static_cast<char>( c ) ) );
+                    else
+                        sputc( static_cast<char>( c ) );
+                }
+                return 0;
+            }
+
+            int sync() override {
+                if( pbase() != pptr() ) {
+                    m_writer( std::string( pbase(), static_cast<std::string::size_type>( pptr() - pbase() ) ) );
+                    setp( pbase(), epptr() );
+                }
+                return 0;
+            }
+        };
+
+        ///////////////////////////////////////////////////////////////////////////
+
+        struct OutputDebugWriter {
+
+            void operator()( std::string const& str ) {
+                if ( !str.empty() ) {
+                    writeToDebugConsole( str );
+                }
+            }
+        };
+
+        ///////////////////////////////////////////////////////////////////////////
+
+        class FileStream : public IStream {
+            std::ofstream m_ofs;
+        public:
+            FileStream( std::string const& filename ) {
+                m_ofs.open( filename.c_str() );
+                CATCH_ENFORCE( !m_ofs.fail(), "Unable to open file: '" << filename << '\'' );
+            }
+            ~FileStream() override = default;
+        public: // IStream
+            std::ostream& stream() override {
+                return m_ofs;
+            }
+        };
+
+        ///////////////////////////////////////////////////////////////////////////
+
+        class CoutStream : public IStream {
+            std::ostream m_os;
+        public:
+            // Store the streambuf from cout up-front because
+            // cout may get redirected when running tests
+            CoutStream() : m_os( Catch::cout().rdbuf() ) {}
+            ~CoutStream() override = default;
+
+        public: // IStream
+            std::ostream& stream() override { return m_os; }
+            bool isConsole() const override { return true; }
+        };
+
+        class CerrStream : public IStream {
+            std::ostream m_os;
+
+        public:
+            // Store the streambuf from cerr up-front because
+            // cout may get redirected when running tests
+            CerrStream(): m_os( Catch::cerr().rdbuf() ) {}
+            ~CerrStream() override = default;
+
+        public: // IStream
+            std::ostream& stream() override { return m_os; }
+            bool isConsole() const override { return true; }
+        };
+
+        ///////////////////////////////////////////////////////////////////////////
+
+        class DebugOutStream : public IStream {
+            Detail::unique_ptr<StreamBufImpl<OutputDebugWriter>> m_streamBuf;
+            std::ostream m_os;
+        public:
+            DebugOutStream()
+            :   m_streamBuf( Detail::make_unique<StreamBufImpl<OutputDebugWriter>>() ),
+                m_os( m_streamBuf.get() )
+            {}
+
+            ~DebugOutStream() override = default;
+
+        public: // IStream
+            std::ostream& stream() override { return m_os; }
+        };
+
+    } // unnamed namespace
+} // namespace Detail
+
+    ///////////////////////////////////////////////////////////////////////////
+
+    auto makeStream( std::string const& filename ) -> Detail::unique_ptr<IStream> {
+        if ( filename.empty() || filename == "-" ) {
+            return Detail::make_unique<Detail::CoutStream>();
+        }
+        if( filename[0] == '%' ) {
+            if ( filename == "%debug" ) {
+                return Detail::make_unique<Detail::DebugOutStream>();
+            } else if ( filename == "%stderr" ) {
+                return Detail::make_unique<Detail::CerrStream>();
+            } else if ( filename == "%stdout" ) {
+                return Detail::make_unique<Detail::CoutStream>();
+            } else {
+                CATCH_ERROR( "Unrecognised stream: '" << filename << '\'' );
+            }
+        }
+        return Detail::make_unique<Detail::FileStream>( filename );
+    }
+
+}
 
 
 
@@ -4366,11 +4575,11 @@ namespace Catch {
     ReporterRegistry::~ReporterRegistry() = default;
 
 
-    IStreamingReporterPtr ReporterRegistry::create( std::string const& name, ReporterConfig const& config ) const {
+    IEventListenerPtr ReporterRegistry::create( std::string const& name, ReporterConfig&& config ) const {
         auto it =  m_factories.find( name );
         if( it == m_factories.end() )
             return nullptr;
-        return it->second->create( config );
+        return it->second->create( CATCH_MOVE(config) );
     }
 
     void ReporterRegistry::registerReporter( std::string const& name, IReporterFactoryPtr factory ) {
@@ -4394,6 +4603,171 @@ namespace Catch {
 
 
 
+
+
+#include <algorithm>
+
+namespace Catch {
+
+    namespace {
+        struct kvPair {
+            StringRef key, value;
+        };
+
+        kvPair splitKVPair(StringRef kvString) {
+            auto splitPos = static_cast<size_t>( std::distance(
+                kvString.begin(),
+                std::find( kvString.begin(), kvString.end(), '=' ) ) );
+
+            return { kvString.substr( 0, splitPos ),
+                     kvString.substr( splitPos + 1, kvString.size() ) };
+        }
+    }
+
+    namespace Detail {
+        std::vector<std::string> splitReporterSpec( StringRef reporterSpec ) {
+            static constexpr auto separator = "::";
+            static constexpr size_t separatorSize = 2;
+
+            size_t separatorPos = 0;
+            auto findNextSeparator = [&reporterSpec]( size_t startPos ) {
+                static_assert(
+                    separatorSize == 2,
+                    "The code below currently assumes 2 char separator" );
+
+                auto currentPos = startPos;
+                do {
+                    while ( currentPos < reporterSpec.size() &&
+                            reporterSpec[currentPos] != separator[0] ) {
+                        ++currentPos;
+                    }
+                    if ( currentPos + 1 < reporterSpec.size() &&
+                         reporterSpec[currentPos + 1] == separator[1] ) {
+                        return currentPos;
+                    }
+                    ++currentPos;
+                } while ( currentPos < reporterSpec.size() );
+
+                return static_cast<size_t>( -1 );
+            };
+
+            std::vector<std::string> parts;
+
+            while ( separatorPos < reporterSpec.size() ) {
+                const auto nextSeparator = findNextSeparator( separatorPos );
+                parts.push_back( static_cast<std::string>( reporterSpec.substr(
+                    separatorPos, nextSeparator - separatorPos ) ) );
+
+                if ( nextSeparator == static_cast<size_t>( -1 ) ) {
+                    break;
+                }
+                separatorPos = nextSeparator + separatorSize;
+            }
+
+            // Handle a separator at the end.
+            // This is not a valid spec, but we want to do validation in a
+            // centralized place
+            if ( separatorPos == reporterSpec.size() ) {
+                parts.emplace_back();
+            }
+
+            return parts;
+        }
+
+        Optional<ColourMode> stringToColourMode( StringRef colourMode ) {
+            if ( colourMode == "default" ) {
+                return ColourMode::PlatformDefault;
+            } else if ( colourMode == "ansi" ) {
+                return ColourMode::ANSI;
+            } else if ( colourMode == "win32" ) {
+                return ColourMode::Win32;
+            } else if ( colourMode == "none" ) {
+                return ColourMode::None;
+            } else {
+                return {};
+            }
+        }
+    } // namespace Detail
+
+
+    bool operator==( ReporterSpec const& lhs, ReporterSpec const& rhs ) {
+        return lhs.m_name == rhs.m_name &&
+               lhs.m_outputFileName == rhs.m_outputFileName &&
+               lhs.m_colourMode == rhs.m_colourMode &&
+               lhs.m_customOptions == rhs.m_customOptions;
+    }
+
+    Optional<ReporterSpec> parseReporterSpec( StringRef reporterSpec ) {
+        auto parts = Detail::splitReporterSpec( reporterSpec );
+
+        assert( parts.size() > 0 && "Split should never return empty vector" );
+
+        std::map<std::string, std::string> kvPairs;
+        Optional<std::string> outputFileName;
+        Optional<ColourMode> colourMode;
+
+        // First part is always reporter name, so we skip it
+        for ( size_t i = 1; i < parts.size(); ++i ) {
+            auto kv = splitKVPair( parts[i] );
+            auto key = kv.key, value = kv.value;
+
+            if ( key.empty() || value.empty() ) {
+                return {};
+            } else if ( key[0] == 'X' ) {
+                // This is a reporter-specific option, we don't check these
+                // apart from basic sanity checks
+                if ( key.size() == 1 ) {
+                    return {};
+                }
+
+                auto ret = kvPairs.emplace( kv.key, kv.value );
+                if ( !ret.second ) {
+                    // Duplicated key. We might want to handle this differently,
+                    // e.g. by overwriting the existing value?
+                    return {};
+                }
+            } else if ( key == "out" ) {
+                // Duplicated key
+                if ( outputFileName ) {
+                    return {};
+                }
+                outputFileName = static_cast<std::string>( value );
+            } else if ( key == "colour-mode" ) {
+                // Duplicated key
+                if ( colourMode ) {
+                    return {};
+                }
+                colourMode = Detail::stringToColourMode( value );
+                // Parsing failed
+                if ( !colourMode ) {
+                    return {};
+                }
+            } else {
+                // Unrecognized option
+                return {};
+            }
+        }
+
+        return ReporterSpec{ CATCH_MOVE( parts[0] ),
+                             CATCH_MOVE( outputFileName ),
+                             CATCH_MOVE( colourMode ),
+                             CATCH_MOVE( kvPairs ) };
+    }
+
+ReporterSpec::ReporterSpec(
+        std::string name,
+        Optional<std::string> outputFileName,
+        Optional<ColourMode> colourMode,
+        std::map<std::string, std::string> customOptions ):
+        m_name( CATCH_MOVE( name ) ),
+        m_outputFileName( CATCH_MOVE( outputFileName ) ),
+        m_colourMode( CATCH_MOVE( colourMode ) ),
+        m_customOptions( CATCH_MOVE( customOptions ) ) {}
+
+} // namespace Catch
+
+
+
 namespace Catch {
 
     bool isOk( ResultWas::OfType resultType ) {
@@ -4411,6 +4785,60 @@ namespace Catch {
     bool shouldSuppressFailure( int flags )      { return ( flags & ResultDisposition::SuppressFail ) != 0; }
 
 } // end namespace Catch
+
+
+
+#include <cstdio>
+#include <sstream>
+#include <vector>
+
+namespace Catch {
+
+    // This class encapsulates the idea of a pool of ostringstreams that can be reused.
+    struct StringStreams {
+        std::vector<Detail::unique_ptr<std::ostringstream>> m_streams;
+        std::vector<std::size_t> m_unused;
+        std::ostringstream m_referenceStream; // Used for copy state/ flags from
+
+        auto add() -> std::size_t {
+            if( m_unused.empty() ) {
+                m_streams.push_back( Detail::make_unique<std::ostringstream>() );
+                return m_streams.size()-1;
+            }
+            else {
+                auto index = m_unused.back();
+                m_unused.pop_back();
+                return index;
+            }
+        }
+
+        void release( std::size_t index ) {
+            m_streams[index]->copyfmt( m_referenceStream ); // Restore initial flags and other state
+            m_unused.push_back(index);
+        }
+    };
+
+    ReusableStringStream::ReusableStringStream()
+    :   m_index( Singleton<StringStreams>::getMutable().add() ),
+        m_oss( Singleton<StringStreams>::getMutable().m_streams[m_index].get() )
+    {}
+
+    ReusableStringStream::~ReusableStringStream() {
+        static_cast<std::ostringstream*>( m_oss )->str("");
+        m_oss->clear();
+        Singleton<StringStreams>::getMutable().release( m_index );
+    }
+
+    std::string ReusableStringStream::str() const {
+        return static_cast<std::ostringstream*>( m_oss )->str();
+    }
+
+    void ReusableStringStream::str( std::string const& str ) {
+        static_cast<std::ostringstream*>( m_oss )->str( str );
+    }
+
+
+}
 
 
 
@@ -4555,7 +4983,7 @@ namespace Catch {
         GeneratorTracker::~GeneratorTracker() = default;
     }
 
-    RunContext::RunContext(IConfig const* _config, IStreamingReporterPtr&& reporter)
+    RunContext::RunContext(IConfig const* _config, IEventListenerPtr&& reporter)
     :   m_runInfo(_config->name()),
         m_context(getCurrentMutableContext()),
         m_config(_config),
@@ -5097,204 +5525,20 @@ namespace Catch {
 
 
 
-#include <cstdio>
+
+
 #include <iostream>
-#include <fstream>
-#include <sstream>
-#include <vector>
 
 namespace Catch {
 
-    Catch::IStream::~IStream() = default;
-
-namespace Detail {
-    namespace {
-        template<typename WriterF, std::size_t bufferSize=256>
-        class StreamBufImpl : public std::streambuf {
-            char data[bufferSize];
-            WriterF m_writer;
-
-        public:
-            StreamBufImpl() {
-                setp( data, data + sizeof(data) );
-            }
-
-            ~StreamBufImpl() noexcept {
-                StreamBufImpl::sync();
-            }
-
-        private:
-            int overflow( int c ) override {
-                sync();
-
-                if( c != EOF ) {
-                    if( pbase() == epptr() )
-                        m_writer( std::string( 1, static_cast<char>( c ) ) );
-                    else
-                        sputc( static_cast<char>( c ) );
-                }
-                return 0;
-            }
-
-            int sync() override {
-                if( pbase() != pptr() ) {
-                    m_writer( std::string( pbase(), static_cast<std::string::size_type>( pptr() - pbase() ) ) );
-                    setp( pbase(), epptr() );
-                }
-                return 0;
-            }
-        };
-
-        ///////////////////////////////////////////////////////////////////////////
-
-        struct OutputDebugWriter {
-
-            void operator()( std::string const& str ) {
-                if ( !str.empty() ) {
-                    writeToDebugConsole( str );
-                }
-            }
-        };
-
-        ///////////////////////////////////////////////////////////////////////////
-
-        class FileStream : public IStream {
-            mutable std::ofstream m_ofs;
-        public:
-            FileStream( std::string const& filename ) {
-                m_ofs.open( filename.c_str() );
-                CATCH_ENFORCE( !m_ofs.fail(), "Unable to open file: '" << filename << '\'' );
-            }
-            ~FileStream() override = default;
-        public: // IStream
-            std::ostream& stream() const override {
-                return m_ofs;
-            }
-        };
-
-        ///////////////////////////////////////////////////////////////////////////
-
-        class CoutStream : public IStream {
-            mutable std::ostream m_os;
-        public:
-            // Store the streambuf from cout up-front because
-            // cout may get redirected when running tests
-            CoutStream() : m_os( Catch::cout().rdbuf() ) {}
-            ~CoutStream() override = default;
-
-        public: // IStream
-            std::ostream& stream() const override { return m_os; }
-            bool isStdout() const override { return true; }
-        };
-
-        class CerrStream : public IStream {
-            mutable std::ostream m_os;
-
-        public:
-            // Store the streambuf from cerr up-front because
-            // cout may get redirected when running tests
-            CerrStream(): m_os( Catch::cerr().rdbuf() ) {}
-            ~CerrStream() override = default;
-
-        public: // IStream
-            std::ostream& stream() const override { return m_os; }
-            bool isStdout() const override { return true; }
-        };
-
-        ///////////////////////////////////////////////////////////////////////////
-
-        class DebugOutStream : public IStream {
-            Detail::unique_ptr<StreamBufImpl<OutputDebugWriter>> m_streamBuf;
-            mutable std::ostream m_os;
-        public:
-            DebugOutStream()
-            :   m_streamBuf( Detail::make_unique<StreamBufImpl<OutputDebugWriter>>() ),
-                m_os( m_streamBuf.get() )
-            {}
-
-            ~DebugOutStream() override = default;
-
-        public: // IStream
-            std::ostream& stream() const override { return m_os; }
-        };
-
-    } // unnamed namespace
-} // namespace Detail
-
-    ///////////////////////////////////////////////////////////////////////////
-
-    auto makeStream( std::string const& filename ) -> Detail::unique_ptr<IStream const> {
-        if ( filename.empty() || filename == "-" ) {
-            return Detail::make_unique<Detail::CoutStream>();
-        }
-        if( filename[0] == '%' ) {
-            if ( filename == "%debug" ) {
-                return Detail::make_unique<Detail::DebugOutStream>();
-            } else if ( filename == "%stderr" ) {
-                return Detail::make_unique<Detail::CerrStream>();
-            } else if ( filename == "%stdout" ) {
-                return Detail::make_unique<Detail::CoutStream>();
-            } else {
-                CATCH_ERROR( "Unrecognised stream: '" << filename << '\'' );
-            }
-        }
-        return Detail::make_unique<Detail::FileStream>( filename );
-    }
-
-
-    // This class encapsulates the idea of a pool of ostringstreams that can be reused.
-    struct StringStreams {
-        std::vector<Detail::unique_ptr<std::ostringstream>> m_streams;
-        std::vector<std::size_t> m_unused;
-        std::ostringstream m_referenceStream; // Used for copy state/ flags from
-
-        auto add() -> std::size_t {
-            if( m_unused.empty() ) {
-                m_streams.push_back( Detail::make_unique<std::ostringstream>() );
-                return m_streams.size()-1;
-            }
-            else {
-                auto index = m_unused.back();
-                m_unused.pop_back();
-                return index;
-            }
-        }
-
-        void release( std::size_t index ) {
-            m_streams[index]->copyfmt( m_referenceStream ); // Restore initial flags and other state
-            m_unused.push_back(index);
-        }
-    };
-
-    ReusableStringStream::ReusableStringStream()
-    :   m_index( Singleton<StringStreams>::getMutable().add() ),
-        m_oss( Singleton<StringStreams>::getMutable().m_streams[m_index].get() )
-    {}
-
-    ReusableStringStream::~ReusableStringStream() {
-        static_cast<std::ostringstream*>( m_oss )->str("");
-        m_oss->clear();
-        Singleton<StringStreams>::getMutable().release( m_index );
-    }
-
-    std::string ReusableStringStream::str() const {
-        return static_cast<std::ostringstream*>( m_oss )->str();
-    }
-
-    void ReusableStringStream::str( std::string const& str ) {
-        static_cast<std::ostringstream*>( m_oss )->str( str );
-    }
-
-
-    ///////////////////////////////////////////////////////////////////////////
-
-
-#ifndef CATCH_CONFIG_NOSTDOUT // If you #define this you must implement these functions
+// If you #define this you must implement these functions
+#if !defined( CATCH_CONFIG_NOSTDOUT )
     std::ostream& cout() { return std::cout; }
     std::ostream& cerr() { return std::cerr; }
     std::ostream& clog() { return std::clog; }
 #endif
-}
+
+} // namespace Catch
 
 
 
@@ -5505,36 +5749,42 @@ namespace Catch {
 
 
 
+namespace Catch {
+    TestCaseInfoHasher::TestCaseInfoHasher( hash_t seed ): m_seed( seed ) {}
+
+    uint32_t TestCaseInfoHasher::operator()( TestCaseInfo const& t ) const {
+        // FNV-1a hash algorithm that is designed for uniqueness:
+        const hash_t prime = 1099511628211u;
+        hash_t hash = 14695981039346656037u;
+        for ( const char c : t.name ) {
+            hash ^= c;
+            hash *= prime;
+        }
+        for ( const char c : t.className ) {
+            hash ^= c;
+            hash *= prime;
+        }
+        for ( const Tag& tag : t.tags ) {
+            for ( const char c : tag.original ) {
+                hash ^= c;
+                hash *= prime;
+            }
+        }
+        hash ^= m_seed;
+        hash *= prime;
+        const uint32_t low{ static_cast<uint32_t>( hash ) };
+        const uint32_t high{ static_cast<uint32_t>( hash >> 32 ) };
+        return low * high;
+    }
+} // namespace Catch
+
+
+
+
 #include <algorithm>
 #include <set>
 
 namespace Catch {
-
-namespace {
-    struct TestHasher {
-        using hash_t = uint64_t;
-
-        explicit TestHasher( hash_t hashSuffix ):
-            m_hashSuffix( hashSuffix ) {}
-
-        uint64_t m_hashSuffix;
-
-        uint32_t operator()( TestCaseInfo const& t ) const {
-            // FNV-1a hash with multiplication fold.
-            const hash_t prime = 1099511628211u;
-            hash_t hash = 14695981039346656037u;
-            for (const char c : t.name) {
-                hash ^= c;
-                hash *= prime;
-            }
-            hash ^= m_hashSuffix;
-            hash *= prime;
-            const uint32_t low{ static_cast<uint32_t>(hash) };
-            const uint32_t high{ static_cast<uint32_t>(hash >> 32) };
-            return low * high;
-        }
-    };
-} // end anonymous namespace
 
     std::vector<TestCaseHandle> sortTests( IConfig const& config, std::vector<TestCaseHandle> const& unsortedTestCases ) {
         switch (config.runOrder()) {
@@ -5554,9 +5804,9 @@ namespace {
         }
         case TestRunOrder::Randomized: {
             seedRng(config);
-            using TestWithHash = std::pair<TestHasher::hash_t, TestCaseHandle>;
+            using TestWithHash = std::pair<TestCaseInfoHasher::hash_t, TestCaseHandle>;
 
-            TestHasher h{ config.rngSeed() };
+            TestCaseInfoHasher h{ config.rngSeed() };
             std::vector<TestWithHash> indexed_tests;
             indexed_tests.reserve(unsortedTestCases.size());
 
@@ -7056,7 +7306,7 @@ namespace Matchers {
     }
 
 
-    StringMatcherBase::StringMatcherBase( std::string const& operation, CasedString const& comparator )
+    StringMatcherBase::StringMatcherBase( StringRef operation, CasedString const& comparator )
     : m_comparator( comparator ),
       m_operation( operation ) {
     }
@@ -7073,28 +7323,28 @@ namespace Matchers {
         return description;
     }
 
-    StringEqualsMatcher::StringEqualsMatcher( CasedString const& comparator ) : StringMatcherBase( "equals", comparator ) {}
+    StringEqualsMatcher::StringEqualsMatcher( CasedString const& comparator ) : StringMatcherBase( "equals"_sr, comparator ) {}
 
     bool StringEqualsMatcher::match( std::string const& source ) const {
         return m_comparator.adjustString( source ) == m_comparator.m_str;
     }
 
 
-    StringContainsMatcher::StringContainsMatcher( CasedString const& comparator ) : StringMatcherBase( "contains", comparator ) {}
+    StringContainsMatcher::StringContainsMatcher( CasedString const& comparator ) : StringMatcherBase( "contains"_sr, comparator ) {}
 
     bool StringContainsMatcher::match( std::string const& source ) const {
         return contains( m_comparator.adjustString( source ), m_comparator.m_str );
     }
 
 
-    StartsWithMatcher::StartsWithMatcher( CasedString const& comparator ) : StringMatcherBase( "starts with", comparator ) {}
+    StartsWithMatcher::StartsWithMatcher( CasedString const& comparator ) : StringMatcherBase( "starts with"_sr, comparator ) {}
 
     bool StartsWithMatcher::match( std::string const& source ) const {
         return startsWith( m_comparator.adjustString( source ), m_comparator.m_str );
     }
 
 
-    EndsWithMatcher::EndsWithMatcher( CasedString const& comparator ) : StringMatcherBase( "ends with", comparator ) {}
+    EndsWithMatcher::EndsWithMatcher( CasedString const& comparator ) : StringMatcherBase( "ends with"_sr, comparator ) {}
 
     bool EndsWithMatcher::match( std::string const& source ) const {
         return endsWith( m_comparator.adjustString( source ), m_comparator.m_str );
@@ -7502,9 +7752,9 @@ namespace Catch {
             Colour::Code colour = testCaseInfo.isHidden()
                 ? Colour::SecondaryText
                 : Colour::None;
-            auto colourGuard = streamColour->startColour( colour );
+            auto colourGuard = streamColour->guardColour( colour ).engage( out );
 
-            out << TextFlow::Column(testCaseInfo.name).initialIndent(2).indent(4) << '\n';
+            out << TextFlow::Column(testCaseInfo.name).indent(2) << '\n';
             if (verbosity >= Verbosity::High) {
                 out << TextFlow::Column(Catch::Detail::stringify(testCaseInfo.lineInfo)).indent(4) << '\n';
             }
@@ -7559,9 +7809,20 @@ namespace Catch {
 
 
 
-namespace Catch {
 
-    void ReporterBase::listReporters(std::vector<ReporterDescription> const& descriptions) {
+namespace Catch {
+    ReporterBase::ReporterBase( ReporterConfig&& config ):
+        IEventListener( config.fullConfig() ),
+        m_wrapped_stream( CATCH_MOVE(config).takeStream() ),
+        m_stream( m_wrapped_stream->stream() ),
+        m_colour( makeColourImpl( config.colourMode(), m_wrapped_stream.get() ) ),
+        m_customOptions( config.customOptions() )
+    {}
+
+    ReporterBase::~ReporterBase() = default;
+
+    void ReporterBase::listReporters(
+        std::vector<ReporterDescription> const& descriptions ) {
         defaultListReporters(m_stream, descriptions, m_config->verbosity());
     }
 
@@ -7624,7 +7885,7 @@ void printTotals(std::ostream& out, const Totals& totals, ColourImpl* colourImpl
     if (totals.testCases.total() == 0) {
         out << "No tests ran.";
     } else if (totals.testCases.failed == totals.testCases.total()) {
-        auto guard = colourImpl->startColour( Colour::ResultError );
+        auto guard = colourImpl->guardColour( Colour::ResultError ).engage( out );
         const StringRef qualify_assertions_failed =
             totals.assertions.failed == totals.assertions.total() ?
             bothOrAll(totals.assertions.failed) : StringRef{};
@@ -7639,11 +7900,11 @@ void printTotals(std::ostream& out, const Totals& totals, ColourImpl* colourImpl
             << pluralise(totals.testCases.total(), "test case"_sr)
             << " (no assertions).";
     } else if (totals.assertions.failed) {
-        out << colourImpl->startColour( Colour::ResultError ) <<
+        out << colourImpl->guardColour( Colour::ResultError ) <<
             "Failed " << pluralise(totals.testCases.failed, "test case"_sr) << ", "
             "failed " << pluralise(totals.assertions.failed, "assertion"_sr) << '.';
     } else {
-        out << colourImpl->startColour( Colour::ResultSuccess ) <<
+        out << colourImpl->guardColour( Colour::ResultSuccess ) <<
             "Passed " << bothOrAll(totals.testCases.passed)
             << pluralise(totals.testCases.passed, "test case"_sr) <<
             " with " << pluralise(totals.assertions.passed, "assertion"_sr) << '.';
@@ -7734,13 +7995,13 @@ public:
 
 private:
     void printSourceInfo() const {
-        stream << colourImpl->startColour( Colour::FileName )
+        stream << colourImpl->guardColour( Colour::FileName )
                << result.getSourceInfo() << ':';
     }
 
     void printResultType(Colour::Code colour, StringRef passOrFail) const {
         if (!passOrFail.empty()) {
-            stream << colourImpl->startColour(colour) << ' ' << passOrFail;
+            stream << colourImpl->guardColour(colour) << ' ' << passOrFail;
             stream << ':';
         }
     }
@@ -7753,7 +8014,7 @@ private:
         if (result.hasExpression()) {
             stream << ';';
             {
-                stream << colourImpl->startColour(compactDimColour) << " expression was:";
+                stream << colourImpl->guardColour(compactDimColour) << " expression was:";
             }
             printOriginalExpression();
         }
@@ -7767,7 +8028,7 @@ private:
 
     void printReconstructedExpression() const {
         if (result.hasExpandedExpression()) {
-            stream << colourImpl->startColour(compactDimColour) << " for: ";
+            stream << colourImpl->guardColour(compactDimColour) << " for: ";
             stream << result.getExpandedExpression();
         }
     }
@@ -7786,7 +8047,7 @@ private:
         const auto itEnd = messages.cend();
         const auto N = static_cast<std::size_t>(std::distance(itMessage, itEnd));
 
-        stream << colourImpl->startColour( colour ) << " with "
+        stream << colourImpl->guardColour( colour ) << " with "
                << pluralise( N, "message"_sr ) << ':';
 
         while (itMessage != itEnd) {
@@ -7794,7 +8055,7 @@ private:
             if (printInfoMessages || itMessage->type != ResultWas::Info) {
                 printMessage();
                 if (itMessage != itEnd) {
-                    stream << colourImpl->startColour(compactDimColour) << " and";
+                    stream << colourImpl->guardColour(compactDimColour) << " and";
                 }
                 continue;
             }
@@ -7819,6 +8080,16 @@ private:
 
         void CompactReporter::noMatchingTestCases( StringRef unmatchedSpec ) {
             m_stream << "No test cases matched '" << unmatchedSpec << "'\n";
+        }
+
+        void CompactReporter::testRunStarting( TestRunInfo const& ) {
+            if ( m_config->testSpec().hasFilters() ) {
+                m_stream << m_colour->guardColour( Colour::BrightYellow )
+                         << "Filters: "
+                         << serializeFilters( m_config->getTestsOrTags() )
+                         << '\n';
+            }
+            m_stream << "RNG seed: " << m_config->rngSeed() << '\n';
         }
 
         void CompactReporter::assertionEnded( AssertionStats const& _assertionStats ) {
@@ -7974,19 +8245,19 @@ public:
 private:
     void printResultType() const {
         if (!passOrFail.empty()) {
-            stream << colourImpl->startColour(colour) << passOrFail << ":\n";
+            stream << colourImpl->guardColour(colour) << passOrFail << ":\n";
         }
     }
     void printOriginalExpression() const {
         if (result.hasExpression()) {
-            stream << colourImpl->startColour( Colour::OriginalExpression )
+            stream << colourImpl->guardColour( Colour::OriginalExpression )
                    << "  " << result.getExpressionInMacro() << '\n';
         }
     }
     void printReconstructedExpression() const {
         if (result.hasExpandedExpression()) {
             stream << "with expansion:\n";
-            stream << colourImpl->startColour( Colour::ReconstructedExpression )
+            stream << colourImpl->guardColour( Colour::ReconstructedExpression )
                    << TextFlow::Column( result.getExpandedExpression() )
                           .indent( 2 )
                    << '\n';
@@ -8002,7 +8273,7 @@ private:
         }
     }
     void printSourceInfo() const {
-        stream << colourImpl->startColour( Colour::FileName )
+        stream << colourImpl->guardColour( Colour::FileName )
                << result.getSourceInfo() << ": ";
     }
 
@@ -8193,8 +8464,8 @@ public:
     }
 };
 
-ConsoleReporter::ConsoleReporter(ReporterConfig const& config)
-    : StreamingReporterBase(config),
+ConsoleReporter::ConsoleReporter(ReporterConfig&& config):
+    StreamingReporterBase( CATCH_MOVE( config ) ),
     m_tablePrinter(Detail::make_unique<TablePrinter>(m_stream,
         [&config]() -> std::vector<ColumnInfo> {
         if (config.fullConfig()->benchmarkNoAnalysis())
@@ -8257,7 +8528,8 @@ void ConsoleReporter::sectionEnded(SectionStats const& _sectionStats) {
     m_tablePrinter->close();
     if (_sectionStats.missingAssertions) {
         lazyPrint();
-        auto guard = m_colour->startColour( Colour::ResultError );
+        auto guard =
+            m_colour->guardColour( Colour::ResultError ).engage( m_stream );
         if (m_sectionStack.size() > 1)
             m_stream << "\nNo assertions in section";
         else
@@ -8315,7 +8587,7 @@ void ConsoleReporter::benchmarkEnded(BenchmarkStats<> const& stats) {
 }
 
 void ConsoleReporter::benchmarkFailed( StringRef error ) {
-    auto guard = m_colour->startColour( Colour::Red );
+    auto guard = m_colour->guardColour( Colour::Red ).engage( m_stream );
     (*m_tablePrinter)
         << "Benchmark failed (" << error << ')'
         << ColumnBreak() << RowBreak();
@@ -8334,7 +8606,11 @@ void ConsoleReporter::testRunEnded(TestRunStats const& _testRunStats) {
 }
 void ConsoleReporter::testRunStarting(TestRunInfo const& _testInfo) {
     StreamingReporterBase::testRunStarting(_testInfo);
-    printTestFilters();
+    if ( m_config->testSpec().hasFilters() ) {
+        m_stream << m_colour->guardColour( Colour::BrightYellow ) << "Filters: "
+                 << serializeFilters( m_config->getTestsOrTags() ) << '\n';
+    }
+    m_stream << "Randomness seeded to: " << m_config->rngSeed() << '\n';
 }
 
 void ConsoleReporter::lazyPrint() {
@@ -8356,11 +8632,10 @@ void ConsoleReporter::lazyPrintWithoutClosingBenchmarkTable() {
 void ConsoleReporter::lazyPrintRunInfo() {
     m_stream << '\n'
              << lineOfChars( '~' ) << '\n'
-             << m_colour->startColour( Colour::SecondaryText )
+             << m_colour->guardColour( Colour::SecondaryText )
              << currentTestRunInfo.name << " is a Catch2 v" << libraryVersion()
              << " host application.\n"
-             << "Run with -? for options\n\n"
-             << "Randomness seeded to: " << m_config->rngSeed() << "\n\n";
+             << "Run with -? for options\n\n";
 
     m_testRunInfoPrinted = true;
 }
@@ -8369,7 +8644,7 @@ void ConsoleReporter::printTestCaseAndSectionHeader() {
     printOpenHeader(currentTestCaseInfo->name);
 
     if (m_sectionStack.size() > 1) {
-        auto guard = m_colour->startColour( Colour::Headers );
+        auto guard = m_colour->guardColour( Colour::Headers ).engage( m_stream );
 
         auto
             it = m_sectionStack.begin() + 1, // Skip first section (test case)
@@ -8382,7 +8657,7 @@ void ConsoleReporter::printTestCaseAndSectionHeader() {
 
 
     m_stream << lineOfChars( '-' ) << '\n'
-             << m_colour->startColour( Colour::FileName ) << lineInfo << '\n'
+             << m_colour->guardColour( Colour::FileName ) << lineInfo << '\n'
              << lineOfChars( '.' ) << "\n\n"
              << std::flush;
 }
@@ -8394,7 +8669,7 @@ void ConsoleReporter::printClosedHeader(std::string const& _name) {
 void ConsoleReporter::printOpenHeader(std::string const& _name) {
     m_stream << lineOfChars('-') << '\n';
     {
-        auto guard = m_colour->startColour( Colour::Headers );
+        auto guard = m_colour->guardColour( Colour::Headers ).engage( m_stream );
         printHeaderString(_name);
     }
 }
@@ -8459,10 +8734,10 @@ struct SummaryColumn {
 
 void ConsoleReporter::printTotals( Totals const& totals ) {
     if (totals.testCases.total() == 0) {
-        m_stream << m_colour->startColour( Colour::Warning )
+        m_stream << m_colour->guardColour( Colour::Warning )
                  << "No tests ran\n";
     } else if (totals.assertions.total() > 0 && totals.testCases.allPassed()) {
-        m_stream << m_colour->startColour( Colour::ResultSuccess )
+        m_stream << m_colour->guardColour( Colour::ResultSuccess )
                  << "All tests passed";
         m_stream << " ("
             << pluralise(totals.assertions.passed, "assertion"_sr) << " in "
@@ -8496,12 +8771,12 @@ void ConsoleReporter::printSummaryRow(StringRef label, std::vector<SummaryColumn
             if ( value != "0" ) {
                 m_stream << value;
             } else {
-                m_stream << m_colour->startColour( Colour::Warning )
+                m_stream << m_colour->guardColour( Colour::Warning )
                          << "- none -";
             }
         } else if (value != "0") {
-            m_stream << m_colour->startColour( Colour::LightGrey ) << " | ";
-            m_stream << m_colour->startColour( col.colour ) << value << ' '
+            m_stream << m_colour->guardColour( Colour::LightGrey ) << " | "
+                     << m_colour->guardColour( col.colour ) << value << ' '
                      << col.label;
         }
     }
@@ -8518,32 +8793,25 @@ void ConsoleReporter::printTotalsDivider(Totals const& totals) {
         while (failedRatio + failedButOkRatio + passedRatio > CATCH_CONFIG_CONSOLE_WIDTH - 1)
             findMax(failedRatio, failedButOkRatio, passedRatio)--;
 
-        m_stream << m_colour->startColour( Colour::Error )
+        m_stream << m_colour->guardColour( Colour::Error )
                  << std::string( failedRatio, '=' )
-                 << m_colour->startColour( Colour::ResultExpectedFailure )
+                 << m_colour->guardColour( Colour::ResultExpectedFailure )
                  << std::string( failedButOkRatio, '=' );
         if ( totals.testCases.allPassed() ) {
-            m_stream << m_colour->startColour( Colour::ResultSuccess )
+            m_stream << m_colour->guardColour( Colour::ResultSuccess )
                      << std::string( passedRatio, '=' );
         } else {
-            m_stream << m_colour->startColour( Colour::Success )
+            m_stream << m_colour->guardColour( Colour::Success )
                      << std::string( passedRatio, '=' );
         }
     } else {
-        m_stream << m_colour->startColour( Colour::Warning )
+        m_stream << m_colour->guardColour( Colour::Warning )
                  << std::string( CATCH_CONFIG_CONSOLE_WIDTH - 1, '=' );
     }
     m_stream << '\n';
 }
 void ConsoleReporter::printSummaryDivider() {
     m_stream << lineOfChars('-') << '\n';
-}
-
-void ConsoleReporter::printTestFilters() {
-    if (m_config->testSpec().hasFilters()) {
-        m_stream << m_colour->startColour( Colour::BrightYellow ) << "Filters: "
-                 << serializeFilters( m_config->getTestsOrTags() ) << '\n';
-    }
 }
 
 } // end namespace Catch
@@ -8555,6 +8823,7 @@ void ConsoleReporter::printTestFilters() {
 #if defined(__clang__)
 #  pragma clang diagnostic pop
 #endif
+
 
 
 
@@ -8763,8 +9032,8 @@ namespace Catch {
 
     } // anonymous namespace
 
-    JunitReporter::JunitReporter( ReporterConfig const& _config )
-        :   CumulativeReporterBase( _config ),
+    JunitReporter::JunitReporter( ReporterConfig&& _config )
+        :   CumulativeReporterBase( CATCH_MOVE(_config) ),
             xml( m_stream )
         {
             m_preferences.shouldRedirectStdOut = true;
@@ -8985,7 +9254,7 @@ namespace Catch {
 
 
 
-#include <cassert>
+#include <ostream>
 
 namespace Catch {
     void MultiReporter::updatePreferences(IEventListener const& reporterish) {
@@ -8995,13 +9264,13 @@ namespace Catch {
             reporterish.getPreferences().shouldReportAllAssertions;
     }
 
-    void MultiReporter::addListener( IStreamingReporterPtr&& listener ) {
+    void MultiReporter::addListener( IEventListenerPtr&& listener ) {
         updatePreferences(*listener);
         m_reporterLikes.insert(m_reporterLikes.begin() + m_insertedListeners, CATCH_MOVE(listener) );
         ++m_insertedListeners;
     }
 
-    void MultiReporter::addReporter( IStreamingReporterPtr&& reporter ) {
+    void MultiReporter::addReporter( IEventListenerPtr&& reporter ) {
         updatePreferences(*reporter);
 
         // We will need to output the captured stdout if there are reporters
@@ -9171,8 +9440,18 @@ namespace Catch {
 
 namespace Catch {
 
+    namespace {
+        std::string createRngSeedString(uint32_t seed) {
+            ReusableStringStream sstr;
+            sstr << "rng-seed=" << seed;
+            return sstr.str();
+        }
+    }
+
     void SonarQubeReporter::testRunStarting(TestRunInfo const& testRunInfo) {
         CumulativeReporterBase::testRunStarting(testRunInfo);
+
+        xml.writeComment( createRngSeedString( m_config->rngSeed() ) );
         xml.startElement("testExecutions");
         xml.writeAttribute("version"_sr, '1');
     }
@@ -9318,6 +9597,7 @@ namespace Catch {
 
 
 #include <algorithm>
+#include <iterator>
 #include <ostream>
 
 namespace Catch {
@@ -9414,7 +9694,7 @@ namespace Catch {
 
         private:
             void printSourceInfo() const {
-                stream << colourImpl->startColour( tapDimColour )
+                stream << colourImpl->guardColour( tapDimColour )
                        << result.getSourceInfo() << ':';
             }
 
@@ -9431,7 +9711,7 @@ namespace Catch {
             void printExpressionWas() {
                 if (result.hasExpression()) {
                     stream << ';';
-                    stream << colourImpl->startColour( tapDimColour )
+                    stream << colourImpl->guardColour( tapDimColour )
                            << " expression was:";
                     printOriginalExpression();
                 }
@@ -9445,7 +9725,7 @@ namespace Catch {
 
             void printReconstructedExpression() const {
                 if (result.hasExpandedExpression()) {
-                    stream << colourImpl->startColour( tapDimColour ) << " for: ";
+                    stream << colourImpl->guardColour( tapDimColour ) << " for: ";
 
                     std::string expr = result.getExpandedExpression();
                     std::replace(expr.begin(), expr.end(), '\n', ' ');
@@ -9469,7 +9749,7 @@ namespace Catch {
                 std::vector<MessageInfo>::const_iterator itEnd = messages.end();
                 const std::size_t N = static_cast<std::size_t>(std::distance(itMessage, itEnd));
 
-                stream << colourImpl->startColour( colour ) << " with "
+                stream << colourImpl->guardColour( colour ) << " with "
                        << pluralise( N, "message"_sr ) << ':';
 
                 for (; itMessage != itEnd; ) {
@@ -9477,7 +9757,7 @@ namespace Catch {
                     if (printInfoMessages || itMessage->type != ResultWas::Info) {
                         stream << " '" << itMessage->message << '\'';
                         if (++itMessage != itEnd) {
-                            stream << colourImpl->startColour(tapDimColour) << " and";
+                            stream << colourImpl->guardColour(tapDimColour) << " and";
                         }
                     }
                 }
@@ -9494,6 +9774,10 @@ namespace Catch {
         };
 
     } // End anonymous namespace
+
+    void TAPReporter::testRunStarting( TestRunInfo const& ) {
+        m_stream << "# rng-seed: " << m_config->rngSeed() << '\n';
+    }
 
     void TAPReporter::noMatchingTestCases( StringRef unmatchedSpec ) {
         m_stream << "# No test cases matched '" << unmatchedSpec << "'\n";
@@ -9527,6 +9811,7 @@ namespace Catch {
 
 
 #include <cassert>
+#include <ostream>
 
 namespace Catch {
 
@@ -9697,8 +9982,8 @@ namespace Catch {
 #endif
 
 namespace Catch {
-    XmlReporter::XmlReporter( ReporterConfig const& _config )
-    :   StreamingReporterBase( _config ),
+    XmlReporter::XmlReporter( ReporterConfig&& _config )
+    :   StreamingReporterBase( CATCH_MOVE(_config) ),
         m_xml(m_stream)
     {
         m_preferences.shouldRedirectStdOut = true;

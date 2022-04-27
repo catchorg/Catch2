@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- rng-seed=1 -->
 <testExecutions version="1"loose text artifact
 >
   <file path="tests/<exe-name>/IntrospectiveTests/Clara.tests.cpp">
@@ -66,7 +67,6 @@
     <testCase name="Process can be configured on command line/reporter/must match one of the available ones" duration="{duration}"/>
     <testCase name="Process can be configured on command line/reporter/With output file" duration="{duration}"/>
     <testCase name="Process can be configured on command line/reporter/With Windows-like absolute path as output file" duration="{duration}"/>
-    <testCase name="Process can be configured on command line/reporter/Output file cannot be empty" duration="{duration}"/>
     <testCase name="Process can be configured on command line/reporter/Multiple reporters/All with output files" duration="{duration}"/>
     <testCase name="Process can be configured on command line/reporter/Multiple reporters/Mixed output files and default output" duration="{duration}"/>
     <testCase name="Process can be configured on command line/reporter/Multiple reporters/cannot have multiple reporters with default output" duration="{duration}"/>
@@ -93,6 +93,11 @@
     <testCase name="Process can be configured on command line/Benchmark options/no-analysis" duration="{duration}"/>
     <testCase name="Process can be configured on command line/Benchmark options/warmup-time" duration="{duration}"/>
     <testCase name="Test with special, characters &quot;in name" duration="{duration}"/>
+  </file>
+  <file path="tests/<exe-name>/IntrospectiveTests/ColourImpl.tests.cpp">
+    <testCase name="ColourGuard behaviour/ColourGuard is disengaged by default" duration="{duration}"/>
+    <testCase name="ColourGuard behaviour/ColourGuard is engaged by op&lt;&lt;" duration="{duration}"/>
+    <testCase name="ColourGuard behaviour/ColourGuard can be engaged explicitly" duration="{duration}"/>
   </file>
   <file path="tests/<exe-name>/IntrospectiveTests/Details.tests.cpp">
     <testCase name="CaseInsensitiveEqualsTo is case insensitive/Degenerate cases" duration="{duration}"/>
@@ -219,6 +224,7 @@
   <file path="tests/<exe-name>/IntrospectiveTests/Stream.tests.cpp">
     <testCase name="Cout stream properly declares it writes to stdout" duration="{duration}"/>
     <testCase name="Empty stream name opens cout stream" duration="{duration}"/>
+    <testCase name="makeStream recognizes %debug stream name" duration="{duration}"/>
     <testCase name="request an unknown %-starting stream fails" duration="{duration}"/>
     <testCase name="stdout and stderr streams have %-starting name" duration="{duration}"/>
   </file>
@@ -267,6 +273,14 @@
     <testCase name="empty tags are not allowed" duration="{duration}"/>
     <testCase name="shortened hide tags are split apart" duration="{duration}"/>
     <testCase name="tags with dots in later positions are not parsed as hidden" duration="{duration}"/>
+  </file>
+  <file path="tests/<exe-name>/IntrospectiveTests/TestCaseInfoHasher.tests.cpp">
+    <testCase name="Hashers with different seed produce different hash with same test case" duration="{duration}"/>
+    <testCase name="Hashers with same seed produce same hash" duration="{duration}"/>
+    <testCase name="Hashing different test cases produces different result/Different test name" duration="{duration}"/>
+    <testCase name="Hashing different test cases produces different result/Different classname" duration="{duration}"/>
+    <testCase name="Hashing different test cases produces different result/Different tags" duration="{duration}"/>
+    <testCase name="Hashing test case produces same hash across multiple calls" duration="{duration}"/>
   </file>
   <file path="tests/<exe-name>/IntrospectiveTests/TestSpecParser.tests.cpp">
     <testCase name="Parsed tags are matched case insensitive" duration="{duration}"/>

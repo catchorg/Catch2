@@ -3308,6 +3308,66 @@ Nor would this
     </Section>
     <OverallResult success="true"/>
   </TestCase>
+  <TestCase name="ColourGuard behaviour" tags="[console-colours]" filename="tests/<exe-name>/IntrospectiveTests/ColourImpl.tests.cpp" >
+    <Section name="ColourGuard is disengaged by default" filename="tests/<exe-name>/IntrospectiveTests/ColourImpl.tests.cpp" >
+      <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/ColourImpl.tests.cpp" >
+        <Original>
+          streamWrapper.str().empty()
+        </Original>
+        <Expanded>
+          true
+        </Expanded>
+      </Expression>
+      <OverallResults successes="1" failures="0" expectedFailures="0"/>
+    </Section>
+    <Section name="ColourGuard is engaged by op&lt;&lt;" filename="tests/<exe-name>/IntrospectiveTests/ColourImpl.tests.cpp" >
+      <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/ColourImpl.tests.cpp" >
+        <Original>
+          streamWrapper.str() == "1\nUsing code: 2\n2\nUsing code: 0\n3\n"
+        </Original>
+        <Expanded>
+          "1
+Using code: 2
+2
+Using code: 0
+3
+"
+==
+"1
+Using code: 2
+2
+Using code: 0
+3
+"
+        </Expanded>
+      </Expression>
+      <OverallResults successes="1" failures="0" expectedFailures="0"/>
+    </Section>
+    <Section name="ColourGuard can be engaged explicitly" filename="tests/<exe-name>/IntrospectiveTests/ColourImpl.tests.cpp" >
+      <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/ColourImpl.tests.cpp" >
+        <Original>
+          streamWrapper.str() == "Using code: 2\nA\nB\nUsing code: 0\nC\n"
+        </Original>
+        <Expanded>
+          "Using code: 2
+A
+B
+Using code: 0
+C
+"
+==
+"Using code: 2
+A
+B
+Using code: 0
+C
+"
+        </Expanded>
+      </Expression>
+      <OverallResults successes="1" failures="0" expectedFailures="0"/>
+    </Section>
+    <OverallResult success="true"/>
+  </TestCase>
   <TestCase name="Combining MatchAllOfGeneric does not nest" tags="[matchers][templated]" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
     <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
       <Original>
@@ -4208,7 +4268,7 @@ Nor would this
   <TestCase name="Cout stream properly declares it writes to stdout" tags="[streams]" filename="tests/<exe-name>/IntrospectiveTests/Stream.tests.cpp" >
     <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/Stream.tests.cpp" >
       <Original>
-        Catch::makeStream( "-" )->isStdout()
+        Catch::makeStream( "-" )->isConsole()
       </Original>
       <Expanded>
         true
@@ -4301,7 +4361,7 @@ Nor would this
   <TestCase name="Empty stream name opens cout stream" tags="[streams]" filename="tests/<exe-name>/IntrospectiveTests/Stream.tests.cpp" >
     <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/Stream.tests.cpp" >
       <Original>
-        Catch::makeStream( "" )->isStdout()
+        Catch::makeStream( "" )->isConsole()
       </Original>
       <Expanded>
         true
@@ -8161,6 +8221,87 @@ Nor would this
     </Expression>
     <OverallResult success="true"/>
   </TestCase>
+  <TestCase name="Hashers with different seed produce different hash with same test case" tags="[test-case-hash]" filename="tests/<exe-name>/IntrospectiveTests/TestCaseInfoHasher.tests.cpp" >
+    <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/TestCaseInfoHasher.tests.cpp" >
+      <Original>
+        h1( dummy ) != h2( dummy )
+      </Original>
+      <Expanded>
+        3422778688 (0x<hex digits>)
+!=
+130711275 (0x<hex digits>)
+      </Expanded>
+    </Expression>
+    <OverallResult success="true"/>
+  </TestCase>
+  <TestCase name="Hashers with same seed produce same hash" tags="[test-case-hash]" filename="tests/<exe-name>/IntrospectiveTests/TestCaseInfoHasher.tests.cpp" >
+    <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/TestCaseInfoHasher.tests.cpp" >
+      <Original>
+        h1( dummy ) == h2( dummy )
+      </Original>
+      <Expanded>
+        3422778688 (0x<hex digits>)
+==
+3422778688 (0x<hex digits>)
+      </Expanded>
+    </Expression>
+    <OverallResult success="true"/>
+  </TestCase>
+  <TestCase name="Hashing different test cases produces different result" tags="[test-case-hash]" filename="tests/<exe-name>/IntrospectiveTests/TestCaseInfoHasher.tests.cpp" >
+    <Section name="Different test name" filename="tests/<exe-name>/IntrospectiveTests/TestCaseInfoHasher.tests.cpp" >
+      <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/TestCaseInfoHasher.tests.cpp" >
+        <Original>
+          h( dummy1 ) != h( dummy2 )
+        </Original>
+        <Expanded>
+          2903002874 (0x<hex digits>)
+!=
+2668622104 (0x<hex digits>)
+        </Expanded>
+      </Expression>
+      <OverallResults successes="1" failures="0" expectedFailures="0"/>
+    </Section>
+    <Section name="Different classname" filename="tests/<exe-name>/IntrospectiveTests/TestCaseInfoHasher.tests.cpp" >
+      <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/TestCaseInfoHasher.tests.cpp" >
+        <Original>
+          h( dummy1 ) != h( dummy2 )
+        </Original>
+        <Expanded>
+          2673152918 (0x<hex digits>)
+!=
+3916075712 (0x<hex digits>)
+        </Expanded>
+      </Expression>
+      <OverallResults successes="1" failures="0" expectedFailures="0"/>
+    </Section>
+    <Section name="Different tags" filename="tests/<exe-name>/IntrospectiveTests/TestCaseInfoHasher.tests.cpp" >
+      <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/TestCaseInfoHasher.tests.cpp" >
+        <Original>
+          h( dummy1 ) != h( dummy2 )
+        </Original>
+        <Expanded>
+          2074929312 (0x<hex digits>)
+!=
+3429949824 (0x<hex digits>)
+        </Expanded>
+      </Expression>
+      <OverallResults successes="1" failures="0" expectedFailures="0"/>
+    </Section>
+    <OverallResult success="true"/>
+  </TestCase>
+  <TestCase name="Hashing test case produces same hash across multiple calls" tags="[test-case-hash]" filename="tests/<exe-name>/IntrospectiveTests/TestCaseInfoHasher.tests.cpp" >
+    <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/TestCaseInfoHasher.tests.cpp" >
+      <Original>
+        h( dummy ) == h( dummy )
+      </Original>
+      <Expanded>
+        3422778688 (0x<hex digits>)
+==
+3422778688 (0x<hex digits>)
+      </Expanded>
+    </Expression>
+    <OverallResult success="true"/>
+  </TestCase>
   <TestCase name="INFO and WARN do not abort tests" tags="[.][messages]" filename="tests/<exe-name>/UsageTests/Message.tests.cpp" >
     <Info>
       this is a message
@@ -11327,7 +11468,7 @@ Nor would this
       </Expression>
       <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
         <Original>
-          cfg.getReportersAndOutputFiles().size() == 1
+          cfg.getReporterSpecs().size() == 1
         </Original>
         <Expanded>
           1 == 1
@@ -11335,15 +11476,29 @@ Nor would this
       </Expression>
       <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
         <Original>
-          cfg.getReportersAndOutputFiles()[0] == Catch::ConfigData::ReporterAndFile{ expectedReporter, {} }
+          cfg.getReporterSpecs()[0] == Catch::ReporterSpec{ expectedReporter, {}, {}, {} }
         </Original>
         <Expanded>
-          { console, &lt;default-output> }
-==
-{ console, &lt;default-output> }
+          {?} == {?}
         </Expanded>
       </Expression>
-      <OverallResults successes="9" failures="0" expectedFailures="0"/>
+      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
+        <Original>
+          cfg.getProcessedReporterSpecs().size() == 1
+        </Original>
+        <Expanded>
+          1 == 1
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
+        <Original>
+          cfg.getProcessedReporterSpecs()[0] == Catch::ProcessedReporterSpec{ expectedReporter, std::string{}, Catch::ColourMode::PlatformDefault, {} }
+        </Original>
+        <Expanded>
+          {?} == {?}
+        </Expanded>
+      </Expression>
+      <OverallResults successes="11" failures="0" expectedFailures="0"/>
     </Section>
     <Section name="test lists" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
       <Section name="Specify one test case using" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
@@ -11477,12 +11632,10 @@ Nor would this
         </Info>
         <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
           <Original>
-            config.reporterSpecifications == vec_ReporterAndFile{ {"console", {}} }
+            config.reporterSpecifications == vec_Specs{ { "console", {}, {}, {} } }
           </Original>
           <Expanded>
-            { { console, &lt;default-output> } }
-==
-{ { console, &lt;default-output> } }
+            { {?} } == { {?} }
           </Expanded>
         </Expression>
         <OverallResults successes="2" failures="0" expectedFailures="0"/>
@@ -11507,12 +11660,10 @@ Nor would this
         </Info>
         <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
           <Original>
-            config.reporterSpecifications == vec_ReporterAndFile{ {"xml", {}} }
+            config.reporterSpecifications == vec_Specs{ { "xml", {}, {}, {} } }
           </Original>
           <Expanded>
-            { { xml, &lt;default-output> } }
-==
-{ { xml, &lt;default-output> } }
+            { {?} } == { {?} }
           </Expanded>
         </Expression>
         <OverallResults successes="2" failures="0" expectedFailures="0"/>
@@ -11537,12 +11688,10 @@ Nor would this
         </Info>
         <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
           <Original>
-            config.reporterSpecifications == vec_ReporterAndFile{ {"junit", {}} }
+            config.reporterSpecifications == vec_Specs{ { "junit", {}, {}, {} } }
           </Original>
           <Expanded>
-            { { junit, &lt;default-output> } }
-==
-{ { junit, &lt;default-output> } }
+            { {?} } == { {?} }
           </Expanded>
         </Expression>
         <OverallResults successes="2" failures="0" expectedFailures="0"/>
@@ -11589,12 +11738,10 @@ Nor would this
         </Info>
         <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
           <Original>
-            config.reporterSpecifications == vec_ReporterAndFile{ {"console", "out.txt"s} }
+            config.reporterSpecifications == vec_Specs{ { "console", "out.txt"s, {}, {} } }
           </Original>
           <Expanded>
-            { { console, out.txt } }
-==
-{ { console, out.txt } }
+            { {?} } == { {?} }
           </Expanded>
         </Expression>
         <OverallResults successes="2" failures="0" expectedFailures="0"/>
@@ -11619,34 +11766,10 @@ Nor would this
         </Info>
         <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
           <Original>
-            config.reporterSpecifications == vec_ReporterAndFile{ {"console", "C:\\Temp\\out.txt"s} }
+            config.reporterSpecifications == vec_Specs{ { "console", "C:\\Temp\\out.txt"s, {}, {} } }
           </Original>
           <Expanded>
-            { { console, C:\Temp\out.txt } }
-==
-{ { console, C:\Temp\out.txt } }
-          </Expanded>
-        </Expression>
-        <OverallResults successes="2" failures="0" expectedFailures="0"/>
-      </Section>
-      <OverallResults successes="2" failures="0" expectedFailures="0"/>
-    </Section>
-    <Section name="reporter" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-      <Section name="Output file cannot be empty" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-        <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-          <Original>
-            !result
-          </Original>
-          <Expanded>
-            true
-          </Expanded>
-        </Expression>
-        <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
-          <Original>
-            result.errorMessage(), ContainsSubstring("empty filename")
-          </Original>
-          <Expanded>
-            "Reporter 'console' has empty filename specified as its output. Supply a filename or remove the colons to use the default output." contains: "empty filename"
+            { {?} } == { {?} }
           </Expanded>
         </Expression>
         <OverallResults successes="2" failures="0" expectedFailures="0"/>
@@ -11658,7 +11781,7 @@ Nor would this
         <Section name="All with output files" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
           <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
             <Original>
-              cli.parse({ "test", "-r", "xml::output.xml", "-r", "junit::output-junit.xml" })
+              cli.parse({ "test", "-r", "xml::out=output.xml", "-r", "junit::out=output-junit.xml" })
             </Original>
             <Expanded>
               {?}
@@ -11666,12 +11789,10 @@ Nor would this
           </Expression>
           <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
             <Original>
-              config.reporterSpecifications == vec_ReporterAndFile{ {"xml", "output.xml"s}, {"junit", "output-junit.xml"s} }
+              config.reporterSpecifications == vec_Specs{ { "xml", "output.xml"s, {}, {} }, { "junit", "output-junit.xml"s, {}, {} } }
             </Original>
             <Expanded>
-              { { xml, output.xml }, { junit, output-junit.xml } }
-==
-{ { xml, output.xml }, { junit, output-junit.xml } }
+              { {?}, {?} } == { {?}, {?} }
             </Expanded>
           </Expression>
           <OverallResults successes="2" failures="0" expectedFailures="0"/>
@@ -11685,7 +11806,7 @@ Nor would this
         <Section name="Mixed output files and default output" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
           <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
             <Original>
-              cli.parse({ "test", "-r", "xml::output.xml", "-r", "console" })
+              cli.parse({ "test", "-r", "xml::out=output.xml", "-r", "console" })
             </Original>
             <Expanded>
               {?}
@@ -11693,12 +11814,10 @@ Nor would this
           </Expression>
           <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
             <Original>
-              config.reporterSpecifications == vec_ReporterAndFile{ {"xml", "output.xml"s}, {"console", {}} }
+              config.reporterSpecifications == vec_Specs{ { "xml", "output.xml"s, {}, {} }, { "console", {}, {}, {} } }
             </Original>
             <Expanded>
-              { { xml, output.xml }, { console, &lt;default-output> } }
-==
-{ { xml, output.xml }, { console, &lt;default-output> } }
+              { {?}, {?} } == { {?}, {?} }
             </Expanded>
           </Expression>
           <OverallResults successes="2" failures="0" expectedFailures="0"/>
@@ -12105,7 +12224,7 @@ Nor would this
         </Expression>
         <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
           <Original>
-            config.useColour == UseColour::Auto
+            config.defaultColourMode == ColourMode::PlatformDefault
           </Original>
           <Expanded>
             0 == 0
@@ -12119,7 +12238,7 @@ Nor would this
       <Section name="auto" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
         <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
           <Original>
-            cli.parse({"test", "--use-colour", "auto"})
+            cli.parse( { "test", "--colour-mode", "default" } )
           </Original>
           <Expanded>
             {?}
@@ -12127,7 +12246,7 @@ Nor would this
         </Expression>
         <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
           <Original>
-            config.useColour == UseColour::Auto
+            config.defaultColourMode == ColourMode::PlatformDefault
           </Original>
           <Expanded>
             0 == 0
@@ -12141,7 +12260,7 @@ Nor would this
       <Section name="yes" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
         <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
           <Original>
-            cli.parse({"test", "--use-colour", "yes"})
+            cli.parse({"test", "--colour-mode", "ansi"})
           </Original>
           <Expanded>
             {?}
@@ -12149,7 +12268,7 @@ Nor would this
         </Expression>
         <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
           <Original>
-            config.useColour == UseColour::Yes
+            config.defaultColourMode == ColourMode::ANSI
           </Original>
           <Expanded>
             1 == 1
@@ -12163,7 +12282,7 @@ Nor would this
       <Section name="no" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
         <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
           <Original>
-            cli.parse({"test", "--use-colour", "no"})
+            cli.parse({"test", "--colour-mode", "none"})
           </Original>
           <Expanded>
             {?}
@@ -12171,10 +12290,10 @@ Nor would this
         </Expression>
         <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
           <Original>
-            config.useColour == UseColour::No
+            config.defaultColourMode == ColourMode::None
           </Original>
           <Expanded>
-            2 == 2
+            3 == 3
           </Expanded>
         </Expression>
         <OverallResults successes="2" failures="0" expectedFailures="0"/>
@@ -12196,7 +12315,7 @@ Nor would this
             result.errorMessage(), ContainsSubstring( "colour mode must be one of" )
           </Original>
           <Expanded>
-            "colour mode must be one of: auto, yes or no. 'wrong' not recognised" contains: "colour mode must be one of"
+            "colour mode must be one of: default, ansi, win32, or none. 'wrong' is not recognised" contains: "colour mode must be one of"
           </Expanded>
         </Expression>
         <OverallResults successes="2" failures="0" expectedFailures="0"/>
@@ -18646,6 +18765,17 @@ loose text artifact
     </Expression>
     <OverallResult success="false"/>
   </TestCase>
+  <TestCase name="makeStream recognizes %debug stream name" tags="[streams]" filename="tests/<exe-name>/IntrospectiveTests/Stream.tests.cpp" >
+    <Expression success="true" type="REQUIRE_NOTHROW" filename="tests/<exe-name>/IntrospectiveTests/Stream.tests.cpp" >
+      <Original>
+        Catch::makeStream( "%debug" )
+      </Original>
+      <Expanded>
+        Catch::makeStream( "%debug" )
+      </Expanded>
+    </Expression>
+    <OverallResult success="true"/>
+  </TestCase>
   <TestCase name="make_unique reimplementation" tags="[internals][unique-ptr]" filename="tests/<exe-name>/IntrospectiveTests/UniquePtr.tests.cpp" >
     <Section name="From lvalue copies" filename="tests/<exe-name>/IntrospectiveTests/UniquePtr.tests.cpp" >
       <Expression success="true" type="REQUIRE_FALSE" filename="tests/<exe-name>/IntrospectiveTests/UniquePtr.tests.cpp" >
@@ -19885,7 +20015,7 @@ loose text artifact
   <TestCase name="stdout and stderr streams have %-starting name" tags="[streams]" filename="tests/<exe-name>/IntrospectiveTests/Stream.tests.cpp" >
     <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/Stream.tests.cpp" >
       <Original>
-        Catch::makeStream( "%stderr" )->isStdout()
+        Catch::makeStream( "%stderr" )->isConsole()
       </Original>
       <Expanded>
         true
@@ -19893,7 +20023,7 @@ loose text artifact
     </Expression>
     <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/Stream.tests.cpp" >
       <Original>
-        Catch::makeStream( "%stdout" )->isStdout()
+        Catch::makeStream( "%stdout" )->isConsole()
       </Original>
       <Expanded>
         true
@@ -20931,6 +21061,6 @@ loose text artifact
     </Section>
     <OverallResult success="true"/>
   </TestCase>
-  <OverallResults successes="2061" failures="143" expectedFailures="27"/>
-  <OverallResultsCases successes="295" failures="83" expectedFailures="7"/>
+  <OverallResults successes="2071" failures="143" expectedFailures="27"/>
+  <OverallResultsCases successes="301" failures="83" expectedFailures="7"/>
 </Catch2TestRun>

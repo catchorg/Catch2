@@ -49,17 +49,17 @@ namespace Catch {
      *
      * **Important:** The provided string must outlive the instance
      */
-    struct CATCH_DLL_PUBLIC pluralise {
-        pluralise(std::uint64_t count, StringRef label):
+    class CATCH_DLL_PUBLIC pluralise {
+        std::uint64_t m_count;
+        StringRef m_label;
+
+    public:
+        constexpr pluralise(std::uint64_t count, StringRef label):
             m_count(count),
             m_label(label)
         {}
 
-        CATCH_DLL_PUBLIC friend std::ostream&
-        operator<<( std::ostream& os, pluralise const& pluraliser );
-
-        std::uint64_t m_count;
-        StringRef m_label;
+        CATCH_DLL_PUBLIC friend std::ostream& operator << ( std::ostream& os, pluralise const& pluraliser );
     };
 }
 

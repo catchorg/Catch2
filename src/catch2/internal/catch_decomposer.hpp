@@ -33,7 +33,11 @@
 
 namespace Catch {
 
-    struct CATCH_DLL_PUBLIC ITransientExpression {
+    class CATCH_DLL_PUBLIC ITransientExpression {
+        bool m_isBinaryExpression;
+        bool m_result;
+
+    public:
         auto isBinaryExpression() const -> bool { return m_isBinaryExpression; }
         auto getResult() const -> bool { return m_result; }
         virtual void streamReconstructedExpression( std::ostream &os ) const = 0;
@@ -51,10 +55,7 @@ namespace Catch {
         // complain if it's not here :-(
         virtual ~ITransientExpression(); // = default;
 
-        bool m_isBinaryExpression;
-        bool m_result;
-        CATCH_DLL_PUBLIC friend std::ostream&
-        operator<<( std::ostream& out, ITransientExpression const& expr ) {
+        CATCH_DLL_PUBLIC friend std::ostream& operator<<(std::ostream& out, ITransientExpression const& expr) {
             expr.streamReconstructedExpression(out);
             return out;
         }

@@ -12,7 +12,7 @@
 #include <catch2/internal/catch_compiler_capabilities.hpp>
 #include <catch2/internal/catch_config_wchar.hpp>
 #include <catch2/internal/catch_dll_public.hpp>
-#include <catch2/internal/catch_stream.hpp>
+#include <catch2/internal/catch_reusable_string_stream.hpp>
 #include <catch2/internal/catch_void_type.hpp>
 #include <cstddef>
 #include <string.h>

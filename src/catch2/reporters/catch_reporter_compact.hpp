@@ -13,8 +13,8 @@
 
 namespace Catch {
 
-    struct CATCH_DLL_PUBLIC CompactReporter final : StreamingReporterBase {
-
+    class CATCH_DLL_PUBLIC CompactReporter final : public StreamingReporterBase {
+    public:
         using StreamingReporterBase::StreamingReporterBase;
 
         ~CompactReporter() override;
@@ -22,6 +22,8 @@ namespace Catch {
         static std::string getDescription();
 
         void noMatchingTestCases( StringRef unmatchedSpec ) override;
+
+        void testRunStarting( TestRunInfo const& _testInfo ) override;
 
         void assertionEnded(AssertionStats const& _assertionStats) override;
 

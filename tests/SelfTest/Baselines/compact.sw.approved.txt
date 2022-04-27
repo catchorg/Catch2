@@ -1,3 +1,5 @@
+Filters: ~[!nonportable]~[!benchmark]~[approvals] *
+RNG seed: 1
 Misc.tests.cpp:<line number>: passed: with 1 message: 'yay'
 Compilation.tests.cpp:<line number>: passed: y.v == 0 for: 0 == 0
 Compilation.tests.cpp:<line number>: passed: 0 == y.v for: 0 == 0
@@ -366,6 +368,33 @@ Clara.tests.cpp:<line number>: passed: name == "foo" for: "foo" == "foo"
 Clara.tests.cpp:<line number>: passed: !(parse_result) for: !{?}
 Clara.tests.cpp:<line number>: passed: parse_result for: {?}
 Clara.tests.cpp:<line number>: passed: res == std::vector<std::string>{ "aaa", "bbb" } for: { "aaa", "bbb" } == { "aaa", "bbb" }
+ColourImpl.tests.cpp:<line number>: passed: streamWrapper.str().empty() for: true
+ColourImpl.tests.cpp:<line number>: passed: streamWrapper.str() == "1\nUsing code: 2\n2\nUsing code: 0\n3\n" for: "1
+Using code: 2
+2
+Using code: 0
+3
+"
+==
+"1
+Using code: 2
+2
+Using code: 0
+3
+"
+ColourImpl.tests.cpp:<line number>: passed: streamWrapper.str() == "Using code: 2\nA\nB\nUsing code: 0\nC\n" for: "Using code: 2
+A
+B
+Using code: 0
+C
+"
+==
+"Using code: 2
+A
+B
+Using code: 0
+C
+"
 Matchers.tests.cpp:<line number>: passed: with 1 message: 'std::is_same< decltype( ( MatcherA() && MatcherB() ) && MatcherC() ), Catch::Matchers::Detail:: MatchAllOfGeneric<MatcherA, MatcherB, MatcherC>>::value'
 Matchers.tests.cpp:<line number>: passed: 1, ( MatcherA() && MatcherB() ) && MatcherC() for: 1 ( equals: (int) 1 or (float) 1.0f and equals: (long long) 1 and equals: (T) 1 )
 Matchers.tests.cpp:<line number>: passed: with 1 message: 'std::is_same< decltype( MatcherA() && ( MatcherB() && MatcherC() ) ), Catch::Matchers::Detail:: MatchAllOfGeneric<MatcherA, MatcherB, MatcherC>>::value'
@@ -479,7 +508,7 @@ Generators.tests.cpp:<line number>: passed: elem % 2 == 1 for: 1 == 1
 Generators.tests.cpp:<line number>: passed: elem % 2 == 1 for: 1 == 1
 Generators.tests.cpp:<line number>: passed: call_count == 1 for: 1 == 1
 Generators.tests.cpp:<line number>: passed: make_data().size() == test_count for: 6 == 6
-Stream.tests.cpp:<line number>: passed: Catch::makeStream( "-" )->isStdout() for: true
+Stream.tests.cpp:<line number>: passed: Catch::makeStream( "-" )->isConsole() for: true
 Exception.tests.cpp:<line number>: failed: unexpected exception with message: 'custom exception - not std'; expression was: throwCustom()
 Exception.tests.cpp:<line number>: failed: unexpected exception with message: 'custom exception - not std'; expression was: throwCustom(), std::exception
 Exception.tests.cpp:<line number>: failed: unexpected exception with message: 'custom std exception'
@@ -490,7 +519,7 @@ ToString.tests.cpp:<line number>: passed: enumInfo->lookup(1) == "Value2" for: V
 ToString.tests.cpp:<line number>: passed: enumInfo->lookup(3) == "{** unexpected enum value **}" for: {** unexpected enum value **}
 ==
 "{** unexpected enum value **}"
-Stream.tests.cpp:<line number>: passed: Catch::makeStream( "" )->isStdout() for: true
+Stream.tests.cpp:<line number>: passed: Catch::makeStream( "" )->isConsole() for: true
 Tag.tests.cpp:<line number>: passed: Catch::TestCaseInfo( "", { "fake test name", "[]" }, dummySourceLineInfo )
 Matchers.tests.cpp:<line number>: failed: testStringForMatching(), EndsWith( "Substring" ) for: "this string contains 'abc' as a substring" ends with: "Substring"
 Matchers.tests.cpp:<line number>: failed: testStringForMatching(), EndsWith( "this", Catch::CaseSensitive::No ) for: "this string contains 'abc' as a substring" ends with: "this" (case insensitive)
@@ -889,6 +918,24 @@ Approx.tests.cpp:<line number>: passed: d >= Approx( 1.22 ) for: 1.23 >= Approx(
 Approx.tests.cpp:<line number>: passed: d >= Approx( 1.23 ) for: 1.23 >= Approx( 1.23 )
 Approx.tests.cpp:<line number>: passed: !(d >= Approx( 1.24 )) for: !(1.23 >= Approx( 1.24 ))
 Approx.tests.cpp:<line number>: passed: d >= Approx( 1.24 ).epsilon(0.1) for: 1.23 >= Approx( 1.24 )
+TestCaseInfoHasher.tests.cpp:<line number>: passed: h1( dummy ) != h2( dummy ) for: 3422778688 (0x<hex digits>)
+!=
+130711275 (0x<hex digits>)
+TestCaseInfoHasher.tests.cpp:<line number>: passed: h1( dummy ) == h2( dummy ) for: 3422778688 (0x<hex digits>)
+==
+3422778688 (0x<hex digits>)
+TestCaseInfoHasher.tests.cpp:<line number>: passed: h( dummy1 ) != h( dummy2 ) for: 2903002874 (0x<hex digits>)
+!=
+2668622104 (0x<hex digits>)
+TestCaseInfoHasher.tests.cpp:<line number>: passed: h( dummy1 ) != h( dummy2 ) for: 2673152918 (0x<hex digits>)
+!=
+3916075712 (0x<hex digits>)
+TestCaseInfoHasher.tests.cpp:<line number>: passed: h( dummy1 ) != h( dummy2 ) for: 2074929312 (0x<hex digits>)
+!=
+3429949824 (0x<hex digits>)
+TestCaseInfoHasher.tests.cpp:<line number>: passed: h( dummy ) == h( dummy ) for: 3422778688 (0x<hex digits>)
+==
+3422778688 (0x<hex digits>)
 Message.tests.cpp:<line number>: warning: 'this is a message' with 1 message: 'this is a warning'
 Message.tests.cpp:<line number>: failed: a == 1 for: 2 == 1 with 2 messages: 'this message should be logged' and 'so should this'
 Message.tests.cpp:<line number>: passed: a == 2 for: 2 == 2 with 1 message: 'this message may be logged later'
@@ -1271,10 +1318,10 @@ CmdLine.tests.cpp:<line number>: passed: config.abortAfter == -1 for: -1 == -1
 CmdLine.tests.cpp:<line number>: passed: config.noThrow == false for: false == false
 CmdLine.tests.cpp:<line number>: passed: config.reporterSpecifications.empty() for: true
 CmdLine.tests.cpp:<line number>: passed: !(cfg.hasTestFilters()) for: !false
-CmdLine.tests.cpp:<line number>: passed: cfg.getReportersAndOutputFiles().size() == 1 for: 1 == 1
-CmdLine.tests.cpp:<line number>: passed: cfg.getReportersAndOutputFiles()[0] == Catch::ConfigData::ReporterAndFile{ expectedReporter, {} } for: { console, <default-output> }
-==
-{ console, <default-output> }
+CmdLine.tests.cpp:<line number>: passed: cfg.getReporterSpecs().size() == 1 for: 1 == 1
+CmdLine.tests.cpp:<line number>: passed: cfg.getReporterSpecs()[0] == Catch::ReporterSpec{ expectedReporter, {}, {}, {} } for: {?} == {?}
+CmdLine.tests.cpp:<line number>: passed: cfg.getProcessedReporterSpecs().size() == 1 for: 1 == 1
+CmdLine.tests.cpp:<line number>: passed: cfg.getProcessedReporterSpecs()[0] == Catch::ProcessedReporterSpec{ expectedReporter, std::string{}, Catch::ColourMode::PlatformDefault, {} } for: {?} == {?}
 CmdLine.tests.cpp:<line number>: passed: result for: {?}
 CmdLine.tests.cpp:<line number>: passed: cfg.hasTestFilters() for: true
 CmdLine.tests.cpp:<line number>: passed: cfg.testSpec().matches(*fakeTestCase("notIncluded")) == false for: false == false
@@ -1288,37 +1335,21 @@ CmdLine.tests.cpp:<line number>: passed: cfg.hasTestFilters() for: true
 CmdLine.tests.cpp:<line number>: passed: cfg.testSpec().matches(*fakeTestCase("test1")) == false for: false == false
 CmdLine.tests.cpp:<line number>: passed: cfg.testSpec().matches(*fakeTestCase("alwaysIncluded")) for: true
 CmdLine.tests.cpp:<line number>: passed: result for: {?} with 1 message: 'result.errorMessage() := ""'
-CmdLine.tests.cpp:<line number>: passed: config.reporterSpecifications == vec_ReporterAndFile{ {"console", {}} } for: { { console, <default-output> } }
-==
-{ { console, <default-output> } } with 1 message: 'result.errorMessage() := ""'
+CmdLine.tests.cpp:<line number>: passed: config.reporterSpecifications == vec_Specs{ { "console", {}, {}, {} } } for: { {?} } == { {?} } with 1 message: 'result.errorMessage() := ""'
 CmdLine.tests.cpp:<line number>: passed: result for: {?} with 1 message: 'result.errorMessage() := ""'
-CmdLine.tests.cpp:<line number>: passed: config.reporterSpecifications == vec_ReporterAndFile{ {"xml", {}} } for: { { xml, <default-output> } }
-==
-{ { xml, <default-output> } } with 1 message: 'result.errorMessage() := ""'
+CmdLine.tests.cpp:<line number>: passed: config.reporterSpecifications == vec_Specs{ { "xml", {}, {}, {} } } for: { {?} } == { {?} } with 1 message: 'result.errorMessage() := ""'
 CmdLine.tests.cpp:<line number>: passed: result for: {?} with 1 message: 'result.errorMessage() := ""'
-CmdLine.tests.cpp:<line number>: passed: config.reporterSpecifications == vec_ReporterAndFile{ {"junit", {}} } for: { { junit, <default-output> } }
-==
-{ { junit, <default-output> } } with 1 message: 'result.errorMessage() := ""'
+CmdLine.tests.cpp:<line number>: passed: config.reporterSpecifications == vec_Specs{ { "junit", {}, {}, {} } } for: { {?} } == { {?} } with 1 message: 'result.errorMessage() := ""'
 CmdLine.tests.cpp:<line number>: passed: !result for: true
 CmdLine.tests.cpp:<line number>: passed: result.errorMessage(), ContainsSubstring("Unrecognized reporter") for: "Unrecognized reporter, 'unsupported'. Check available with --list-reporters" contains: "Unrecognized reporter"
 CmdLine.tests.cpp:<line number>: passed: result for: {?} with 1 message: 'result.errorMessage() := ""'
-CmdLine.tests.cpp:<line number>: passed: config.reporterSpecifications == vec_ReporterAndFile{ {"console", "out.txt"s} } for: { { console, out.txt } }
-==
-{ { console, out.txt } } with 1 message: 'result.errorMessage() := ""'
+CmdLine.tests.cpp:<line number>: passed: config.reporterSpecifications == vec_Specs{ { "console", "out.txt"s, {}, {} } } for: { {?} } == { {?} } with 1 message: 'result.errorMessage() := ""'
 CmdLine.tests.cpp:<line number>: passed: result for: {?} with 1 message: 'result.errorMessage() := ""'
-CmdLine.tests.cpp:<line number>: passed: config.reporterSpecifications == vec_ReporterAndFile{ {"console", "C:\\Temp\\out.txt"s} } for: { { console, C:\Temp\out.txt } }
-==
-{ { console, C:\Temp\out.txt } } with 1 message: 'result.errorMessage() := ""'
-CmdLine.tests.cpp:<line number>: passed: !result for: true
-CmdLine.tests.cpp:<line number>: passed: result.errorMessage(), ContainsSubstring("empty filename") for: "Reporter 'console' has empty filename specified as its output. Supply a filename or remove the colons to use the default output." contains: "empty filename"
-CmdLine.tests.cpp:<line number>: passed: cli.parse({ "test", "-r", "xml::output.xml", "-r", "junit::output-junit.xml" }) for: {?}
-CmdLine.tests.cpp:<line number>: passed: config.reporterSpecifications == vec_ReporterAndFile{ {"xml", "output.xml"s}, {"junit", "output-junit.xml"s} } for: { { xml, output.xml }, { junit, output-junit.xml } }
-==
-{ { xml, output.xml }, { junit, output-junit.xml } }
-CmdLine.tests.cpp:<line number>: passed: cli.parse({ "test", "-r", "xml::output.xml", "-r", "console" }) for: {?}
-CmdLine.tests.cpp:<line number>: passed: config.reporterSpecifications == vec_ReporterAndFile{ {"xml", "output.xml"s}, {"console", {}} } for: { { xml, output.xml }, { console, <default-output> } }
-==
-{ { xml, output.xml }, { console, <default-output> } }
+CmdLine.tests.cpp:<line number>: passed: config.reporterSpecifications == vec_Specs{ { "console", "C:\\Temp\\out.txt"s, {}, {} } } for: { {?} } == { {?} } with 1 message: 'result.errorMessage() := ""'
+CmdLine.tests.cpp:<line number>: passed: cli.parse({ "test", "-r", "xml::out=output.xml", "-r", "junit::out=output-junit.xml" }) for: {?}
+CmdLine.tests.cpp:<line number>: passed: config.reporterSpecifications == vec_Specs{ { "xml", "output.xml"s, {}, {} }, { "junit", "output-junit.xml"s, {}, {} } } for: { {?}, {?} } == { {?}, {?} }
+CmdLine.tests.cpp:<line number>: passed: cli.parse({ "test", "-r", "xml::out=output.xml", "-r", "console" }) for: {?}
+CmdLine.tests.cpp:<line number>: passed: config.reporterSpecifications == vec_Specs{ { "xml", "output.xml"s, {}, {} }, { "console", {}, {}, {} } } for: { {?}, {?} } == { {?}, {?} }
 CmdLine.tests.cpp:<line number>: passed: !result for: true
 CmdLine.tests.cpp:<line number>: passed: result.errorMessage(), ContainsSubstring("Only one reporter may have unspecified output file.") for: "Only one reporter may have unspecified output file." contains: "Only one reporter may have unspecified output file."
 CmdLine.tests.cpp:<line number>: passed: cli.parse({"test", "-b"}) for: {?}
@@ -1354,15 +1385,15 @@ CmdLine.tests.cpp:<line number>: passed: config.abortAfter == 1 for: 1 == 1
 CmdLine.tests.cpp:<line number>: passed: config.shouldDebugBreak for: true
 CmdLine.tests.cpp:<line number>: passed: config.noThrow == true for: true == true
 CmdLine.tests.cpp:<line number>: passed: cli.parse({"test"}) for: {?}
-CmdLine.tests.cpp:<line number>: passed: config.useColour == UseColour::Auto for: 0 == 0
-CmdLine.tests.cpp:<line number>: passed: cli.parse({"test", "--use-colour", "auto"}) for: {?}
-CmdLine.tests.cpp:<line number>: passed: config.useColour == UseColour::Auto for: 0 == 0
-CmdLine.tests.cpp:<line number>: passed: cli.parse({"test", "--use-colour", "yes"}) for: {?}
-CmdLine.tests.cpp:<line number>: passed: config.useColour == UseColour::Yes for: 1 == 1
-CmdLine.tests.cpp:<line number>: passed: cli.parse({"test", "--use-colour", "no"}) for: {?}
-CmdLine.tests.cpp:<line number>: passed: config.useColour == UseColour::No for: 2 == 2
+CmdLine.tests.cpp:<line number>: passed: config.defaultColourMode == ColourMode::PlatformDefault for: 0 == 0
+CmdLine.tests.cpp:<line number>: passed: cli.parse( { "test", "--colour-mode", "default" } ) for: {?}
+CmdLine.tests.cpp:<line number>: passed: config.defaultColourMode == ColourMode::PlatformDefault for: 0 == 0
+CmdLine.tests.cpp:<line number>: passed: cli.parse({"test", "--colour-mode", "ansi"}) for: {?}
+CmdLine.tests.cpp:<line number>: passed: config.defaultColourMode == ColourMode::ANSI for: 1 == 1
+CmdLine.tests.cpp:<line number>: passed: cli.parse({"test", "--colour-mode", "none"}) for: {?}
+CmdLine.tests.cpp:<line number>: passed: config.defaultColourMode == ColourMode::None for: 3 == 3
 CmdLine.tests.cpp:<line number>: passed: !result for: true
-CmdLine.tests.cpp:<line number>: passed: result.errorMessage(), ContainsSubstring( "colour mode must be one of" ) for: "colour mode must be one of: auto, yes or no. 'wrong' not recognised" contains: "colour mode must be one of"
+CmdLine.tests.cpp:<line number>: passed: result.errorMessage(), ContainsSubstring( "colour mode must be one of" ) for: "colour mode must be one of: default, ansi, win32, or none. 'wrong' is not recognised" contains: "colour mode must be one of"
 CmdLine.tests.cpp:<line number>: passed: cli.parse({ "test", "--benchmark-samples=200" }) for: {?}
 CmdLine.tests.cpp:<line number>: passed: config.benchmarkSamples == 200 for: 200 == 200
 CmdLine.tests.cpp:<line number>: passed: cli.parse({ "test", "--benchmark-resamples=20000" }) for: {?}
@@ -2238,6 +2269,7 @@ Misc.tests.cpp:<line number>: failed: ( fib[i] % 2 ) == 0 for: 1 == 0 with 1 mes
 Misc.tests.cpp:<line number>: passed: ( fib[i] % 2 ) == 0 for: 0 == 0 with 1 message: 'Testing if fib[5] (8) is even'
 Misc.tests.cpp:<line number>: failed: ( fib[i] % 2 ) == 0 for: 1 == 0 with 1 message: 'Testing if fib[6] (13) is even'
 Misc.tests.cpp:<line number>: failed: ( fib[i] % 2 ) == 0 for: 1 == 0 with 1 message: 'Testing if fib[7] (21) is even'
+Stream.tests.cpp:<line number>: passed: Catch::makeStream( "%debug" )
 UniquePtr.tests.cpp:<line number>: passed: !(lval.has_moved) for: !false
 UniquePtr.tests.cpp:<line number>: passed: rval.has_moved for: true
 UniquePtr.tests.cpp:<line number>: passed: *ptr == std::tuple<int, double, int>{1, 2., 3} for: {?} == {?}
@@ -2368,8 +2400,8 @@ ToStringGeneral.tests.cpp:<line number>: passed: Catch::Detail::stringify( set )
 ToStringPair.tests.cpp:<line number>: passed: ::Catch::Detail::stringify( pr ) == "{ { \"green\", 55 } }" for: "{ { "green", 55 } }"
 ==
 "{ { "green", 55 } }"
-Stream.tests.cpp:<line number>: passed: Catch::makeStream( "%stderr" )->isStdout() for: true
-Stream.tests.cpp:<line number>: passed: Catch::makeStream( "%stdout" )->isStdout() for: true
+Stream.tests.cpp:<line number>: passed: Catch::makeStream( "%stderr" )->isConsole() for: true
+Stream.tests.cpp:<line number>: passed: Catch::makeStream( "%stdout" )->isConsole() for: true
 ToStringWhich.tests.cpp:<line number>: passed: ::Catch::Detail::stringify(streamable_range{}) == "op<<(streamable_range)" for: "op<<(streamable_range)"
 ==
 "op<<(streamable_range)"

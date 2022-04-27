@@ -43,7 +43,7 @@ namespace Catch {
                                                  Tag const& rhs );
     };
 
-    struct ITestInvoker;
+    class ITestInvoker;
 
     enum class CATCH_DLL_PUBLIC TestCaseProperties : uint8_t {
         None = 0,

@@ -26,6 +26,8 @@ endmacro()
 
 set(_OverridableOptions
   "ANDROID_LOGWRITE"
+  "BAZEL_SUPPORT"
+  "COLOUR_WIN32"
   "COUNTER"
   "CPP11_TO_STRING"
   "CPP17_BYTE"
@@ -45,9 +47,6 @@ foreach(OptionName ${_OverridableOptions})
 endforeach()
 
 set(_OtherConfigOptions
-  "COLOUR_ANSI"
-  "COLOUR_NONE"
-  "COLOUR_WINDOWS"
   "DISABLE_EXCEPTIONS"
   "DISABLE_EXCEPTIONS_CUSTOM_HANDLER"
   "DISABLE"

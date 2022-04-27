@@ -122,11 +122,14 @@ v3 releases.
   * With the exception of the XmlReporter, the outputs of first party reporters should remain the same
   * New pair of events were added
   * One obsolete event was removed
+  * The base class has been renamed
+  * The built-in reporter class hierarchy has been redone
 * Catch2 generates a random seed if one hasn't been specified by the user
 * The short flag for `--list-tests`, `-l`, has been removed.
   * This is not a commonly used flag and does not need to use up valuable single-letter space.
 * The short flag for `--list-tags`, `-t`, has been removed.
   * This is not a commonly used flag and does not need to use up valuable single-letter space.
+* The `--colour` option has been replaced with `--colour-mode` option
 
 
 ### Improvements
@@ -179,6 +182,16 @@ v3 releases.
   * To support this, the `-r`, `--reporter` flag now also accepts optional output destination
   * For full overview of the semantics of using multiple reporters, look into the reporter documentation
   * To enable the new syntax, reporter names can no longer contain `::`.
+* Console colour support has been rewritten and significantly improved
+  * The colour implementation based on ANSI colour codes is always available
+  * Colour implementations respect their associated stream
+    * previously e.g. Win32 impl would change console colour even if Catch2 was writing to a file
+  * The colour API is resilient against changing evaluation order of expressions
+  * The associated CLI flag and compile-time configuration options have changed
+    * For details see the docs for command-line and compile-time Catch2 configuration
+* Added a support for Bazel integration with `XML_OUTPUT_FILE` env var (#2399)
+  * This has to be enabled during compilation.
+* Added `--skip-benchmarks` flag to run tests without any `BENCHMARK`s (#2392, #2408)
 
 
 ### Fixes

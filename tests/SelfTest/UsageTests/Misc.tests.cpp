@@ -537,4 +537,16 @@ TEST_CASE("Validate SEH behavior - unhandled", "[.approvals][FatalConditionHandl
     // Validate that Catch2 framework correctly handles tests raising and not handling SEH exceptions.
     throw_no_catch();
 }
+
+static LONG CALLBACK dummyExceptionFilter(PEXCEPTION_POINTERS ExceptionInfo) {
+    return EXCEPTION_CONTINUE_SEARCH;
+}
+
+TEST_CASE("Validate SEH behavior - no crash for stack unwinding", "[approvals][!throws][!shouldfail][FatalConditionHandler][CATCH_PLATFORM_WINDOWS]")
+{
+    // Trigger stack unwinding with SEH top-level filter changed and validate the test fails expectedly with no application crash
+    SetUnhandledExceptionFilter(dummyExceptionFilter);
+    throw 1;
+}
+
 #endif

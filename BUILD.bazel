@@ -1,16 +1,15 @@
 # Load the cc_library rule.
 load("@rules_cc//cc:defs.bzl", "cc_library")
-
 load("@bazel_skylib//rules:expand_template.bzl", "expand_template")
 
 expand_template(
-    name = "catch_user_config.hpp",
+    name = "catch_user_config",
     out = "catch2/catch_user_config.hpp",
     substitutions = {
         "#cmakedefine CATCH_CONFIG_ANDROID_LOGWRITE": "",
-        "#cmakedefine CATCH_CONFIG_COLOUR_ANSI": "",
-        "#cmakedefine CATCH_CONFIG_COLOUR_NONE": "",
-        "#cmakedefine CATCH_CONFIG_COLOUR_WINDOWS": "",
+        "#cmakedefine CATCH_CONFIG_BAZEL_SUPPORT": "#define CATCH_CONFIG_BAZEL_SUPPORT",
+        "#cmakedefine CATCH_CONFIG_NO_COLOUR_WIN32": "",
+        "#cmakedefine CATCH_CONFIG_COLOUR_WIN32": "",
         "#cmakedefine CATCH_CONFIG_COUNTER": "",
         "#cmakedefine CATCH_CONFIG_CPP11_TO_STRING": "",
         "#cmakedefine CATCH_CONFIG_CPP17_BYTE": "",
@@ -57,23 +56,36 @@ expand_template(
     template = "src/catch2/catch_user_config.hpp.in",
 )
 
+# Generated header library, modifies the include prefix to account for
+# generation path so that we can include <catch2/catch_user_config.hpp>
+# correctly.
+cc_library(
+    name = "catch2_generated",
+    hdrs = ["catch2/catch_user_config.hpp"],
+    include_prefix = ".",  # to manipulate -I of dependenices
+    visibility = ["//visibility:public"],
+)
+
 # Static library, without main.
 cc_library(
     name = "catch2",
-    hdrs = glob(["src/catch2/**/*.hpp"]) + ["catch_user_config.hpp"],
-    srcs = glob(["src/catch2/**/*.cpp"],
-                exclude=[ "src/catch2/internal/catch_main.cpp"]),
-    visibility = ["//visibility:public"],
-    linkstatic = True,
+    srcs = glob(
+        ["src/catch2/**/*.cpp"],
+        exclude = ["src/catch2/internal/catch_main.cpp"],
+    ),
+    hdrs = glob(["src/catch2/**/*.hpp"]),
     includes = ["src/"],
+    linkstatic = True,
+    visibility = ["//visibility:public"],
+    deps = [":catch2_generated"],
 )
 
 # Static library, with main.
 cc_library(
     name = "catch2_main",
     srcs = ["src/catch2/internal/catch_main.cpp"],
-    deps = [":catch2"],
-    visibility = ["//visibility:public"],
-    linkstatic = True,
     includes = ["src/"],
+    linkstatic = True,
+    visibility = ["//visibility:public"],
+    deps = [":catch2"],
 )

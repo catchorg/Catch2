@@ -6,7 +6,7 @@
 
 // SPDX-License-Identifier: BSL-1.0
 #include <catch2/catch_assertion_result.hpp>
-#include <catch2/internal/catch_stream.hpp>
+#include <catch2/internal/catch_reusable_string_stream.hpp>
 
 namespace Catch {
 

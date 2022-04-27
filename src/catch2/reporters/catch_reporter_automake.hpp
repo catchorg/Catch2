@@ -11,13 +11,13 @@
 #include <catch2/internal/catch_dll_public.hpp>
 #include <catch2/reporters/catch_reporter_streaming_base.hpp>
 
+#include <string>
+
 namespace Catch {
 
-    struct CATCH_DLL_PUBLIC AutomakeReporter final : StreamingReporterBase {
-        AutomakeReporter( ReporterConfig const& _config )
-          :   StreamingReporterBase( _config )
-        {}
-
+    class CATCH_DLL_PUBLIC AutomakeReporter final : public StreamingReporterBase {
+    public:
+        using StreamingReporterBase::StreamingReporterBase;
         ~AutomakeReporter() override;
 
         static std::string getDescription() {

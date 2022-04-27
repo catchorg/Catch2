@@ -11,7 +11,6 @@
 #include <catch2/internal/catch_list.hpp>
 #include <catch2/internal/catch_context.hpp>
 #include <catch2/internal/catch_run_context.hpp>
-#include <catch2/internal/catch_stream.hpp>
 #include <catch2/catch_test_spec.hpp>
 #include <catch2/catch_version.hpp>
 #include <catch2/interfaces/catch_interfaces_reporter.hpp>
@@ -23,6 +22,8 @@
 #include <catch2/interfaces/catch_interfaces_reporter_registry.hpp>
 #include <catch2/interfaces/catch_interfaces_reporter_factory.hpp>
 #include <catch2/internal/catch_move_and_forward.hpp>
+#include <catch2/internal/catch_stdstreams.hpp>
+#include <catch2/internal/catch_istream.hpp>
 
 #include <algorithm>
 #include <cassert>
@@ -34,18 +35,23 @@ namespace Catch {
     namespace {
         const int MaxExitCode = 255;
 
-        IStreamingReporterPtr createReporter(std::string const& reporterName, ReporterConfig const& config) {
-            auto reporter = Catch::getRegistryHub().getReporterRegistry().create(reporterName, config);
+        IEventListenerPtr createReporter(std::string const& reporterName, ReporterConfig&& config) {
+            auto reporter = Catch::getRegistryHub().getReporterRegistry().create(reporterName, CATCH_MOVE(config));
             CATCH_ENFORCE(reporter, "No reporter registered with name: '" << reporterName << '\'');
 
             return reporter;
         }
 
-        IStreamingReporterPtr makeReporter(Config const* config) {
+        IEventListenerPtr prepareReporters(Config const* config) {
             if (Catch::getRegistryHub().getReporterRegistry().getListeners().empty()
-                    && config->getReportersAndOutputFiles().size() == 1) {
-                auto stream = config->getReporterOutputStream(0);
-                return createReporter(config->getReportersAndOutputFiles()[0].reporterName, ReporterConfig(config, stream));
+                    && config->getProcessedReporterSpecs().size() == 1) {
+                auto const& spec = config->getProcessedReporterSpecs()[0];
+                return createReporter(
+                    spec.name,
+                    ReporterConfig( config,
+                                    makeStream( spec.outputFilename ),
+                                    spec.colourMode,
+                                    spec.customOptions ) );
             }
 
             auto multi = Detail::make_unique<MultiReporter>(config);
@@ -56,9 +62,13 @@ namespace Catch {
             }
 
             std::size_t reporterIdx = 0;
-            for (auto const& reporterAndFile : config->getReportersAndOutputFiles()) {
-                auto stream = config->getReporterOutputStream(reporterIdx);
-                multi->addReporter(createReporter(reporterAndFile.reporterName, ReporterConfig(config, stream)));
+            for ( auto const& reporterSpec : config->getProcessedReporterSpecs() ) {
+                multi->addReporter( createReporter(
+                    reporterSpec.name,
+                    ReporterConfig( config,
+                                    makeStream( reporterSpec.outputFilename ),
+                                    reporterSpec.colourMode,
+                                    reporterSpec.customOptions ) ) );
                 reporterIdx++;
             }
 
@@ -67,7 +77,7 @@ namespace Catch {
 
         class TestGroup {
         public:
-            explicit TestGroup(IStreamingReporterPtr&& reporter, Config const* config):
+            explicit TestGroup(IEventListenerPtr&& reporter, Config const* config):
                 m_reporter(reporter.get()),
                 m_config{config},
                 m_context{config, CATCH_MOVE(reporter)} {
@@ -152,8 +162,9 @@ namespace Catch {
 
             m_startupExceptions = true;
             auto errStream = makeStream( "%stderr" );
-            auto colourImpl = makeColourImpl( &config(), errStream.get() );
-            auto guard = colourImpl->startColour( Colour::Red );
+            auto colourImpl = makeColourImpl(
+                ColourMode::PlatformDefault, errStream.get() );
+            auto guard = colourImpl->guardColour( Colour::Red );
             errStream->stream() << "Errors occurred during startup!" << '\n';
             // iterate over all exceptions and notify user
             for ( const auto& ex_ptr : exceptions ) {
@@ -197,10 +208,10 @@ namespace Catch {
             config();
             getCurrentMutableContext().setConfig(m_config.get());
             auto errStream = makeStream( "%stderr" );
-            auto colour = makeColourImpl( &config(), errStream.get() );
+            auto colour = makeColourImpl( ColourMode::PlatformDefault, errStream.get() );
 
             errStream->stream()
-                << colour->startColour( Colour::Red )
+                << colour->guardColour( Colour::Red )
                 << "\nError(s) in input:\n"
                 << TextFlow::Column( result.errorMessage() ).indent( 2 )
                 << "\n\n";
@@ -303,7 +314,7 @@ namespace Catch {
             getCurrentMutableContext().setConfig(m_config.get());
 
             // Create reporter(s) so we can route listings through them
-            auto reporter = makeReporter(m_config.get());
+            auto reporter = prepareReporters(m_config.get());
 
             auto const& invalidSpecs = m_config->testSpec().getInvalidSpecs();
             if ( !invalidSpecs.empty() ) {

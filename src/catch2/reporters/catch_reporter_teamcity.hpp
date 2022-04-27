@@ -20,9 +20,10 @@
 
 namespace Catch {
 
-    struct CATCH_DLL_PUBLIC TeamCityReporter final : StreamingReporterBase {
-        TeamCityReporter( ReporterConfig const& _config )
-        :   StreamingReporterBase( _config )
+    class CATCH_DLL_PUBLIC TeamCityReporter final : public StreamingReporterBase {
+    public:
+        TeamCityReporter( ReporterConfig&& _config )
+        :   StreamingReporterBase( CATCH_MOVE(_config) )
         {
             m_preferences.shouldRedirectStdOut = true;
         }
@@ -52,7 +53,6 @@ namespace Catch {
     private:
         void printSectionHeader(std::ostream& os);
 
-    private:
         bool m_headerPrintedForThisSection = false;
         Timer m_testTimer;
     };

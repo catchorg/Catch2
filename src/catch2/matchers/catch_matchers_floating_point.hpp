@@ -18,7 +18,8 @@ namespace Matchers {
         enum class CATCH_DLL_PUBLIC FloatingPointKind : uint8_t;
     }
 
-    struct CATCH_DLL_PUBLIC WithinAbsMatcher final : MatcherBase<double> {
+    class CATCH_DLL_PUBLIC WithinAbsMatcher final : public MatcherBase<double> {
+    public:
         WithinAbsMatcher(double target, double margin);
         bool match(double const& matchee) const override;
         std::string describe() const override;
@@ -27,8 +28,11 @@ namespace Matchers {
         double m_margin;
     };
 
-    struct CATCH_DLL_PUBLIC WithinUlpsMatcher final : MatcherBase<double> {
-        WithinUlpsMatcher(double target, uint64_t ulps, Detail::FloatingPointKind baseType);
+    class CATCH_DLL_PUBLIC WithinUlpsMatcher final : public MatcherBase<double> {
+    public:
+        WithinUlpsMatcher( double target,
+                           uint64_t ulps,
+                           Detail::FloatingPointKind baseType );
         bool match(double const& matchee) const override;
         std::string describe() const override;
     private:
@@ -43,8 +47,9 @@ namespace Matchers {
     // |lhs - rhs| <= epsilon * max(fabs(lhs), fabs(rhs)), then we get
     // the same result if we do this for floats, as if we do this for
     // doubles that were promoted from floats.
-    struct CATCH_DLL_PUBLIC WithinRelMatcher final : MatcherBase<double> {
-        WithinRelMatcher(double target, double epsilon);
+    class CATCH_DLL_PUBLIC WithinRelMatcher final : public MatcherBase<double> {
+    public:
+        WithinRelMatcher( double target, double epsilon );
         bool match(double const& matchee) const override;
         std::string describe() const override;
     private:

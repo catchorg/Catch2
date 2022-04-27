@@ -16,37 +16,12 @@
 #include <catch2/catch_test_case_info.hpp>
 #include <catch2/catch_test_spec.hpp>
 #include <catch2/internal/catch_move_and_forward.hpp>
+#include <catch2/internal/catch_test_case_info_hasher.hpp>
 
 #include <algorithm>
 #include <set>
 
 namespace Catch {
-
-namespace {
-    struct TestHasher {
-        using hash_t = uint64_t;
-
-        explicit TestHasher( hash_t hashSuffix ):
-            m_hashSuffix( hashSuffix ) {}
-
-        uint64_t m_hashSuffix;
-
-        uint32_t operator()( TestCaseInfo const& t ) const {
-            // FNV-1a hash with multiplication fold.
-            const hash_t prime = 1099511628211u;
-            hash_t hash = 14695981039346656037u;
-            for (const char c : t.name) {
-                hash ^= c;
-                hash *= prime;
-            }
-            hash ^= m_hashSuffix;
-            hash *= prime;
-            const uint32_t low{ static_cast<uint32_t>(hash) };
-            const uint32_t high{ static_cast<uint32_t>(hash >> 32) };
-            return low * high;
-        }
-    };
-} // end anonymous namespace
 
     std::vector<TestCaseHandle> sortTests( IConfig const& config, std::vector<TestCaseHandle> const& unsortedTestCases ) {
         switch (config.runOrder()) {
@@ -66,9 +41,9 @@ namespace {
         }
         case TestRunOrder::Randomized: {
             seedRng(config);
-            using TestWithHash = std::pair<TestHasher::hash_t, TestCaseHandle>;
+            using TestWithHash = std::pair<TestCaseInfoHasher::hash_t, TestCaseHandle>;
 
-            TestHasher h{ config.rngSeed() };
+            TestCaseInfoHasher h{ config.rngSeed() };
             std::vector<TestWithHash> indexed_tests;
             indexed_tests.reserve(unsortedTestCases.size());
 

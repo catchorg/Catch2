@@ -10,7 +10,6 @@
 
 #include <catch2/internal/catch_dll_public.hpp>
 #include <catch2/internal/catch_stringref.hpp>
-#include <string>
 
 namespace Catch {
     namespace Detail {

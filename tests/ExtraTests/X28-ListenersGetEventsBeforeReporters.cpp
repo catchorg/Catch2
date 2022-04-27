@@ -19,7 +19,9 @@
 #include <catch2/reporters/catch_reporter_event_listener.hpp>
 #include <catch2/reporters/catch_reporter_registrars.hpp>
 #include <catch2/reporters/catch_reporter_streaming_base.hpp>
+
 #include <iostream>
+#include <utility>
 
 namespace {
 
@@ -54,8 +56,8 @@ namespace {
 
     class TestReporter : public Catch::StreamingReporterBase {
     public:
-        TestReporter( Catch::ReporterConfig const& _config ):
-            StreamingReporterBase( _config ) {
+        TestReporter( Catch::ReporterConfig&& _config ):
+            StreamingReporterBase( std::move(_config) ) {
             std::cout << "X28 - TestReporter constructed\n";
         }
 

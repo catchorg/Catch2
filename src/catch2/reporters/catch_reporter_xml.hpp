@@ -16,7 +16,7 @@
 namespace Catch {
     class CATCH_DLL_PUBLIC XmlReporter : public StreamingReporterBase {
     public:
-        XmlReporter(ReporterConfig const& _config);
+        XmlReporter(ReporterConfig&& _config);
 
         ~XmlReporter() override;
 

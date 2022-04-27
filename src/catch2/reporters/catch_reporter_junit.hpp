@@ -17,7 +17,7 @@ namespace Catch {
 
     class CATCH_DLL_PUBLIC JunitReporter final : public CumulativeReporterBase {
     public:
-        JunitReporter(ReporterConfig const& _config);
+        JunitReporter(ReporterConfig&& _config);
 
         ~JunitReporter() override = default;
 

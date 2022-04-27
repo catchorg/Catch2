@@ -9,9 +9,9 @@
 
 #include <catch2/catch_config.hpp>
 #include <catch2/internal/catch_move_and_forward.hpp>
-#include <catch2/internal/catch_stream.hpp>
+#include <catch2/internal/catch_stdstreams.hpp>
 
-#include <cassert>
+#include <ostream>
 
 namespace Catch {
     void MultiReporter::updatePreferences(IEventListener const& reporterish) {
@@ -21,13 +21,13 @@ namespace Catch {
             reporterish.getPreferences().shouldReportAllAssertions;
     }
 
-    void MultiReporter::addListener( IStreamingReporterPtr&& listener ) {
+    void MultiReporter::addListener( IEventListenerPtr&& listener ) {
         updatePreferences(*listener);
         m_reporterLikes.insert(m_reporterLikes.begin() + m_insertedListeners, CATCH_MOVE(listener) );
         ++m_insertedListeners;
     }
 
-    void MultiReporter::addReporter( IStreamingReporterPtr&& reporter ) {
+    void MultiReporter::addReporter( IEventListenerPtr&& reporter ) {
         updatePreferences(*reporter);
 
         // We will need to output the captured stdout if there are reporters

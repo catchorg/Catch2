@@ -19,7 +19,8 @@
 
 namespace Catch {
 namespace Matchers {
-    struct CATCH_DLL_PUBLIC MatcherGenericBase : MatcherUntypedBase {
+    class CATCH_DLL_PUBLIC MatcherGenericBase : public MatcherUntypedBase {
+    public:
         MatcherGenericBase() = default;
         virtual ~MatcherGenericBase(); // = default;
 
@@ -119,8 +120,10 @@ namespace Matchers {
             return describe_multi_matcher(combine, descriptions.data(), descriptions.data() + descriptions.size());
         }
 
-        template <typename... MatcherTs>
-        struct CATCH_DLL_PUBLIC MatchAllOfGeneric final : MatcherGenericBase {
+
+        template<typename... MatcherTs>
+        class CATCH_DLL_PUBLIC MatchAllOfGeneric final : public MatcherGenericBase {
+        public:
             MatchAllOfGeneric(MatchAllOfGeneric const&) = delete;
             MatchAllOfGeneric& operator=(MatchAllOfGeneric const&) = delete;
             MatchAllOfGeneric(MatchAllOfGeneric&&) = default;
@@ -138,7 +141,11 @@ namespace Matchers {
                 return describe_multi_matcher<MatcherTs...>(" and "_sr, m_matchers, std::index_sequence_for<MatcherTs...>{});
             }
 
-            std::array<void const*, sizeof...(MatcherTs)> m_matchers;
+            // Has to be public to enable the concatenating operators
+            // below, because they are not friend of the RHS, only LHS,
+            // and thus cannot access private fields of RHS
+            std::array<void const*, sizeof...( MatcherTs )> m_matchers;
+
 
             //! Avoids type nesting for `GenericAllOf && GenericAllOf` case
             template<typename... MatchersRHS>
@@ -168,8 +175,10 @@ namespace Matchers {
             }
         };
 
-        template <typename... MatcherTs>
-        struct CATCH_DLL_PUBLIC MatchAnyOfGeneric final : MatcherGenericBase {
+
+        template<typename... MatcherTs>
+        class CATCH_DLL_PUBLIC MatchAnyOfGeneric final : public MatcherGenericBase {
+        public:
             MatchAnyOfGeneric(MatchAnyOfGeneric const&) = delete;
             MatchAnyOfGeneric& operator=(MatchAnyOfGeneric const&) = delete;
             MatchAnyOfGeneric(MatchAnyOfGeneric&&) = default;
@@ -187,7 +196,11 @@ namespace Matchers {
                 return describe_multi_matcher<MatcherTs...>(" or "_sr, m_matchers, std::index_sequence_for<MatcherTs...>{});
             }
 
-            std::array<void const*, sizeof...(MatcherTs)> m_matchers;
+
+            // Has to be public to enable the concatenating operators
+            // below, because they are not friend of the RHS, only LHS,
+            // and thus cannot access private fields of RHS
+            std::array<void const*, sizeof...( MatcherTs )> m_matchers;
 
             //! Avoids type nesting for `GenericAnyOf || GenericAnyOf` case
             template<typename... MatchersRHS>
@@ -216,8 +229,12 @@ namespace Matchers {
             }
         };
 
-        template <typename MatcherT>
-        struct CATCH_DLL_PUBLIC MatchNotOfGeneric final : MatcherGenericBase {
+
+        template<typename MatcherT>
+        class CATCH_DLL_PUBLIC MatchNotOfGeneric final : public MatcherGenericBase {
+            MatcherT const& m_matcher;
+
+        public:
             MatchNotOfGeneric(MatchNotOfGeneric const&) = delete;
             MatchNotOfGeneric& operator=(MatchNotOfGeneric const&) = delete;
             MatchNotOfGeneric(MatchNotOfGeneric&&) = default;
@@ -238,8 +255,6 @@ namespace Matchers {
             friend MatcherT const& operator ! (MatchNotOfGeneric<MatcherT> const& matcher) {
                 return matcher.m_matcher;
             }
-        private:
-            MatcherT const& m_matcher;
         };
     } // namespace Detail
 

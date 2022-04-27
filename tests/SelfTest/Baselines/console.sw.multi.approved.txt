@@ -1,10 +1,9 @@
 Filters: ~[!nonportable]~[!benchmark]~[approvals] *
+Randomness seeded to: 1
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 <exe-name> is a <version> host application.
 Run with -? for options
-
-Randomness seeded to: 1
 
 -------------------------------------------------------------------------------
 # A test name that starts with a #
@@ -3022,6 +3021,66 @@ with expansion:
   { "aaa", "bbb" } == { "aaa", "bbb" }
 
 -------------------------------------------------------------------------------
+ColourGuard behaviour
+  ColourGuard is disengaged by default
+-------------------------------------------------------------------------------
+ColourImpl.tests.cpp:<line number>
+...............................................................................
+
+ColourImpl.tests.cpp:<line number>: PASSED:
+  REQUIRE( streamWrapper.str().empty() )
+with expansion:
+  true
+
+-------------------------------------------------------------------------------
+ColourGuard behaviour
+  ColourGuard is engaged by op<<
+-------------------------------------------------------------------------------
+ColourImpl.tests.cpp:<line number>
+...............................................................................
+
+ColourImpl.tests.cpp:<line number>: PASSED:
+  REQUIRE( streamWrapper.str() == "1\nUsing code: 2\n2\nUsing code: 0\n3\n" )
+with expansion:
+  "1
+  Using code: 2
+  2
+  Using code: 0
+  3
+  "
+  ==
+  "1
+  Using code: 2
+  2
+  Using code: 0
+  3
+  "
+
+-------------------------------------------------------------------------------
+ColourGuard behaviour
+  ColourGuard can be engaged explicitly
+-------------------------------------------------------------------------------
+ColourImpl.tests.cpp:<line number>
+...............................................................................
+
+ColourImpl.tests.cpp:<line number>: PASSED:
+  REQUIRE( streamWrapper.str() == "Using code: 2\nA\nB\nUsing code: 0\nC\n" )
+with expansion:
+  "Using code: 2
+  A
+  B
+  Using code: 0
+  C
+  "
+  ==
+  "Using code: 2
+  A
+  B
+  Using code: 0
+  C
+  "
+
+-------------------------------------------------------------------------------
 Combining MatchAllOfGeneric does not nest
 -------------------------------------------------------------------------------
 Matchers.tests.cpp:<line number>
@@ -3810,7 +3869,7 @@ Stream.tests.cpp:<line number>
 ...............................................................................
 
 Stream.tests.cpp:<line number>: PASSED:
-  REQUIRE( Catch::makeStream( "-" )->isStdout() )
+  REQUIRE( Catch::makeStream( "-" )->isConsole() )
 with expansion:
   true
 
@@ -3892,7 +3951,7 @@ Stream.tests.cpp:<line number>
 ...............................................................................
 
 Stream.tests.cpp:<line number>: PASSED:
-  REQUIRE( Catch::makeStream( "" )->isStdout() )
+  REQUIRE( Catch::makeStream( "" )->isConsole() )
 with expansion:
   true
 
@@ -6771,6 +6830,87 @@ with expansion:
   1.23 >= Approx( 1.24 )
 
 -------------------------------------------------------------------------------
+Hashers with different seed produce different hash with same test case
+-------------------------------------------------------------------------------
+TestCaseInfoHasher.tests.cpp:<line number>
+...............................................................................
+
+TestCaseInfoHasher.tests.cpp:<line number>: PASSED:
+  REQUIRE( h1( dummy ) != h2( dummy ) )
+with expansion:
+  3422778688 (0x<hex digits>)
+  !=
+  130711275 (0x<hex digits>)
+
+-------------------------------------------------------------------------------
+Hashers with same seed produce same hash
+-------------------------------------------------------------------------------
+TestCaseInfoHasher.tests.cpp:<line number>
+...............................................................................
+
+TestCaseInfoHasher.tests.cpp:<line number>: PASSED:
+  REQUIRE( h1( dummy ) == h2( dummy ) )
+with expansion:
+  3422778688 (0x<hex digits>)
+  ==
+  3422778688 (0x<hex digits>)
+
+-------------------------------------------------------------------------------
+Hashing different test cases produces different result
+  Different test name
+-------------------------------------------------------------------------------
+TestCaseInfoHasher.tests.cpp:<line number>
+...............................................................................
+
+TestCaseInfoHasher.tests.cpp:<line number>: PASSED:
+  REQUIRE( h( dummy1 ) != h( dummy2 ) )
+with expansion:
+  2903002874 (0x<hex digits>)
+  !=
+  2668622104 (0x<hex digits>)
+
+-------------------------------------------------------------------------------
+Hashing different test cases produces different result
+  Different classname
+-------------------------------------------------------------------------------
+TestCaseInfoHasher.tests.cpp:<line number>
+...............................................................................
+
+TestCaseInfoHasher.tests.cpp:<line number>: PASSED:
+  REQUIRE( h( dummy1 ) != h( dummy2 ) )
+with expansion:
+  2673152918 (0x<hex digits>)
+  !=
+  3916075712 (0x<hex digits>)
+
+-------------------------------------------------------------------------------
+Hashing different test cases produces different result
+  Different tags
+-------------------------------------------------------------------------------
+TestCaseInfoHasher.tests.cpp:<line number>
+...............................................................................
+
+TestCaseInfoHasher.tests.cpp:<line number>: PASSED:
+  REQUIRE( h( dummy1 ) != h( dummy2 ) )
+with expansion:
+  2074929312 (0x<hex digits>)
+  !=
+  3429949824 (0x<hex digits>)
+
+-------------------------------------------------------------------------------
+Hashing test case produces same hash across multiple calls
+-------------------------------------------------------------------------------
+TestCaseInfoHasher.tests.cpp:<line number>
+...............................................................................
+
+TestCaseInfoHasher.tests.cpp:<line number>: PASSED:
+  REQUIRE( h( dummy ) == h( dummy ) )
+with expansion:
+  3422778688 (0x<hex digits>)
+  ==
+  3422778688 (0x<hex digits>)
+
+-------------------------------------------------------------------------------
 INFO and WARN do not abort tests
 -------------------------------------------------------------------------------
 Message.tests.cpp:<line number>
@@ -9290,16 +9430,24 @@ with expansion:
   !false
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  CHECK( cfg.getReportersAndOutputFiles().size() == 1 )
+  CHECK( cfg.getReporterSpecs().size() == 1 )
 with expansion:
   1 == 1
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  CHECK( cfg.getReportersAndOutputFiles()[0] == Catch::ConfigData::ReporterAndFile{ expectedReporter, {} } )
+  CHECK( cfg.getReporterSpecs()[0] == Catch::ReporterSpec{ expectedReporter, {}, {}, {} } )
 with expansion:
-  { console, <default-output> }
-  ==
-  { console, <default-output> }
+  {?} == {?}
+
+CmdLine.tests.cpp:<line number>: PASSED:
+  CHECK( cfg.getProcessedReporterSpecs().size() == 1 )
+with expansion:
+  1 == 1
+
+CmdLine.tests.cpp:<line number>: PASSED:
+  CHECK( cfg.getProcessedReporterSpecs()[0] == Catch::ProcessedReporterSpec{ expectedReporter, std::string{}, Catch::ColourMode::PlatformDefault, {} } )
+with expansion:
+  {?} == {?}
 
 -------------------------------------------------------------------------------
 Process can be configured on command line
@@ -9401,11 +9549,9 @@ with message:
   result.errorMessage() := ""
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  REQUIRE( config.reporterSpecifications == vec_ReporterAndFile{ {"console", {}} } )
+  REQUIRE( config.reporterSpecifications == vec_Specs{ { "console", {}, {}, {} } } )
 with expansion:
-  { { console, <default-output> } }
-  ==
-  { { console, <default-output> } }
+  { {?} } == { {?} }
 with message:
   result.errorMessage() := ""
 
@@ -9425,11 +9571,9 @@ with message:
   result.errorMessage() := ""
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  REQUIRE( config.reporterSpecifications == vec_ReporterAndFile{ {"xml", {}} } )
+  REQUIRE( config.reporterSpecifications == vec_Specs{ { "xml", {}, {}, {} } } )
 with expansion:
-  { { xml, <default-output> } }
-  ==
-  { { xml, <default-output> } }
+  { {?} } == { {?} }
 with message:
   result.errorMessage() := ""
 
@@ -9449,11 +9593,9 @@ with message:
   result.errorMessage() := ""
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  REQUIRE( config.reporterSpecifications == vec_ReporterAndFile{ {"junit", {}} } )
+  REQUIRE( config.reporterSpecifications == vec_Specs{ { "junit", {}, {}, {} } } )
 with expansion:
-  { { junit, <default-output> } }
-  ==
-  { { junit, <default-output> } }
+  { {?} } == { {?} }
 with message:
   result.errorMessage() := ""
 
@@ -9492,11 +9634,9 @@ with message:
   result.errorMessage() := ""
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  REQUIRE( config.reporterSpecifications == vec_ReporterAndFile{ {"console", "out.txt"s} } )
+  REQUIRE( config.reporterSpecifications == vec_Specs{ { "console", "out.txt"s, {}, {} } } )
 with expansion:
-  { { console, out.txt } }
-  ==
-  { { console, out.txt } }
+  { {?} } == { {?} }
 with message:
   result.errorMessage() := ""
 
@@ -9516,33 +9656,11 @@ with message:
   result.errorMessage() := ""
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  REQUIRE( config.reporterSpecifications == vec_ReporterAndFile{ {"console", "C:\\Temp\\out.txt"s} } )
+  REQUIRE( config.reporterSpecifications == vec_Specs{ { "console", "C:\\Temp\\out.txt"s, {}, {} } } )
 with expansion:
-  { { console, C:\Temp\out.txt } }
-  ==
-  { { console, C:\Temp\out.txt } }
+  { {?} } == { {?} }
 with message:
   result.errorMessage() := ""
-
--------------------------------------------------------------------------------
-Process can be configured on command line
-  reporter
-  Output file cannot be empty
--------------------------------------------------------------------------------
-CmdLine.tests.cpp:<line number>
-...............................................................................
-
-CmdLine.tests.cpp:<line number>: PASSED:
-  CHECK( !result )
-with expansion:
-  true
-
-CmdLine.tests.cpp:<line number>: PASSED:
-  REQUIRE_THAT( result.errorMessage(), ContainsSubstring("empty filename") )
-with expansion:
-  "Reporter 'console' has empty filename specified as its output. Supply a
-  filename or remove the colons to use the default output." contains: "empty
-  filename"
 
 -------------------------------------------------------------------------------
 Process can be configured on command line
@@ -9554,16 +9672,14 @@ CmdLine.tests.cpp:<line number>
 ...............................................................................
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  CHECK( cli.parse({ "test", "-r", "xml::output.xml", "-r", "junit::output-junit.xml" }) )
+  CHECK( cli.parse({ "test", "-r", "xml::out=output.xml", "-r", "junit::out=output-junit.xml" }) )
 with expansion:
   {?}
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  REQUIRE( config.reporterSpecifications == vec_ReporterAndFile{ {"xml", "output.xml"s}, {"junit", "output-junit.xml"s} } )
+  REQUIRE( config.reporterSpecifications == vec_Specs{ { "xml", "output.xml"s, {}, {} }, { "junit", "output-junit.xml"s, {}, {} } } )
 with expansion:
-  { { xml, output.xml }, { junit, output-junit.xml } }
-  ==
-  { { xml, output.xml }, { junit, output-junit.xml } }
+  { {?}, {?} } == { {?}, {?} }
 
 -------------------------------------------------------------------------------
 Process can be configured on command line
@@ -9575,16 +9691,14 @@ CmdLine.tests.cpp:<line number>
 ...............................................................................
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  CHECK( cli.parse({ "test", "-r", "xml::output.xml", "-r", "console" }) )
+  CHECK( cli.parse({ "test", "-r", "xml::out=output.xml", "-r", "console" }) )
 with expansion:
   {?}
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  REQUIRE( config.reporterSpecifications == vec_ReporterAndFile{ {"xml", "output.xml"s}, {"console", {}} } )
+  REQUIRE( config.reporterSpecifications == vec_Specs{ { "xml", "output.xml"s, {}, {} }, { "console", {}, {}, {} } } )
 with expansion:
-  { { xml, output.xml }, { console, <default-output> } }
-  ==
-  { { xml, output.xml }, { console, <default-output> } }
+  { {?}, {?} } == { {?}, {?} }
 
 -------------------------------------------------------------------------------
 Process can be configured on command line
@@ -9907,7 +10021,7 @@ with expansion:
   {?}
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  REQUIRE( config.useColour == UseColour::Auto )
+  REQUIRE( config.defaultColourMode == ColourMode::PlatformDefault )
 with expansion:
   0 == 0
 
@@ -9920,12 +10034,12 @@ CmdLine.tests.cpp:<line number>
 ...............................................................................
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  CHECK( cli.parse({"test", "--use-colour", "auto"}) )
+  CHECK( cli.parse( { "test", "--colour-mode", "default" } ) )
 with expansion:
   {?}
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  REQUIRE( config.useColour == UseColour::Auto )
+  REQUIRE( config.defaultColourMode == ColourMode::PlatformDefault )
 with expansion:
   0 == 0
 
@@ -9938,12 +10052,12 @@ CmdLine.tests.cpp:<line number>
 ...............................................................................
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  CHECK( cli.parse({"test", "--use-colour", "yes"}) )
+  CHECK( cli.parse({"test", "--colour-mode", "ansi"}) )
 with expansion:
   {?}
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  REQUIRE( config.useColour == UseColour::Yes )
+  REQUIRE( config.defaultColourMode == ColourMode::ANSI )
 with expansion:
   1 == 1
 
@@ -9956,14 +10070,14 @@ CmdLine.tests.cpp:<line number>
 ...............................................................................
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  CHECK( cli.parse({"test", "--use-colour", "no"}) )
+  CHECK( cli.parse({"test", "--colour-mode", "none"}) )
 with expansion:
   {?}
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  REQUIRE( config.useColour == UseColour::No )
+  REQUIRE( config.defaultColourMode == ColourMode::None )
 with expansion:
-  2 == 2
+  3 == 3
 
 -------------------------------------------------------------------------------
 Process can be configured on command line
@@ -9981,8 +10095,8 @@ with expansion:
 CmdLine.tests.cpp:<line number>: PASSED:
   CHECK_THAT( result.errorMessage(), ContainsSubstring( "colour mode must be one of" ) )
 with expansion:
-  "colour mode must be one of: auto, yes or no. 'wrong' not recognised"
-  contains: "colour mode must be one of"
+  "colour mode must be one of: default, ansi, win32, or none. 'wrong' is not
+  recognised" contains: "colour mode must be one of"
 
 -------------------------------------------------------------------------------
 Process can be configured on command line
@@ -15854,6 +15968,15 @@ with message:
   Testing if fib[7] (21) is even
 
 -------------------------------------------------------------------------------
+makeStream recognizes %debug stream name
+-------------------------------------------------------------------------------
+Stream.tests.cpp:<line number>
+...............................................................................
+
+Stream.tests.cpp:<line number>: PASSED:
+  REQUIRE_NOTHROW( Catch::makeStream( "%debug" ) )
+
+-------------------------------------------------------------------------------
 make_unique reimplementation
   From lvalue copies
 -------------------------------------------------------------------------------
@@ -16851,12 +16974,12 @@ Stream.tests.cpp:<line number>
 ...............................................................................
 
 Stream.tests.cpp:<line number>: PASSED:
-  REQUIRE( Catch::makeStream( "%stderr" )->isStdout() )
+  REQUIRE( Catch::makeStream( "%stderr" )->isConsole() )
 with expansion:
   true
 
 Stream.tests.cpp:<line number>: PASSED:
-  REQUIRE( Catch::makeStream( "%stdout" )->isStdout() )
+  REQUIRE( Catch::makeStream( "%stdout" )->isConsole() )
 with expansion:
   true
 
@@ -17803,6 +17926,6 @@ Misc.tests.cpp:<line number>
 Misc.tests.cpp:<line number>: PASSED:
 
 ===============================================================================
-test cases:  385 |  295 passed |  83 failed |  7 failed as expected
-assertions: 2231 | 2061 passed | 143 failed | 27 failed as expected
+test cases:  391 |  301 passed |  83 failed |  7 failed as expected
+assertions: 2241 | 2071 passed | 143 failed | 27 failed as expected
 

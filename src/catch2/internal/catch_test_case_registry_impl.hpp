@@ -16,7 +16,7 @@
 namespace Catch {
 
     class TestCaseHandle;
-    struct IConfig;
+    class IConfig;
     class TestSpec;
 
     std::vector<TestCaseHandle> sortTests( IConfig const& config, std::vector<TestCaseHandle> const& unsortedTestCases );

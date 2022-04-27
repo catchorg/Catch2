@@ -1,0 +1,4 @@
+build:gcc9 --cxxopt=-std=c++2a
+build:clang13 --cxxopt=-std=c++17
+build:vs2019 --cxxopt=/std:c++17
+build:vs2022 --cxxopt=/std:c++17

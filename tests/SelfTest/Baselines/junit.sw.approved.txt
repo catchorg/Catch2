@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuitesloose text artifact
 >
-  <testsuite name="<exe-name>" errors="17" failures="126" tests="2231" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
+  <testsuite name="<exe-name>" errors="17" failures="126" tests="2241" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
     <properties>
       <property name="random-seed" value="1"/>
       <property name="filters" value="~[!nonportable]~[!benchmark]~[approvals] *"/>
@@ -387,6 +387,9 @@ Exception.tests.cpp:<line number>
     <testcase classname="<exe-name>.global" name="Clara::Arg supports single-arg parse the way Opt does" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Clara::Opt supports accept-many lambdas/Parsing fails on multiple options without accept_many" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Clara::Opt supports accept-many lambdas/Parsing succeeds on multiple options with accept_many" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="ColourGuard behaviour/ColourGuard is disengaged by default" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="ColourGuard behaviour/ColourGuard is engaged by op&lt;&lt;" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="ColourGuard behaviour/ColourGuard can be engaged explicitly" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Combining MatchAllOfGeneric does not nest" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Combining MatchAnyOfGeneric does not nest" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Combining MatchNotOfGeneric does not nest" time="{duration}" status="run"/>
@@ -725,6 +728,12 @@ Message.tests.cpp:<line number>
     <testcase classname="<exe-name>.global" name="Generators internals/Range/Negative manual step/Integer/Slightly over end" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Generators internals/Range/Negative manual step/Integer/Slightly under end" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Greater-than inequalities with different epsilons" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Hashers with different seed produce different hash with same test case" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Hashers with same seed produce same hash" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Hashing different test cases produces different result/Different test name" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Hashing different test cases produces different result/Different classname" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Hashing different test cases produces different result/Different tags" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Hashing test case produces same hash across multiple calls" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="INFO and WARN do not abort tests" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="INFO gets logged on failure" time="{duration}" status="run">
       <failure message="a == 1" type="REQUIRE">
@@ -1100,7 +1109,6 @@ Message.tests.cpp:<line number>
     <testcase classname="<exe-name>.global" name="Process can be configured on command line/reporter/must match one of the available ones" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Process can be configured on command line/reporter/With output file" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Process can be configured on command line/reporter/With Windows-like absolute path as output file" time="{duration}" status="run"/>
-    <testcase classname="<exe-name>.global" name="Process can be configured on command line/reporter/Output file cannot be empty" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Process can be configured on command line/reporter/Multiple reporters/All with output files" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Process can be configured on command line/reporter/Multiple reporters/Mixed output files and default output" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Process can be configured on command line/reporter/Multiple reporters/cannot have multiple reporters with default output" time="{duration}" status="run"/>
@@ -1719,6 +1727,7 @@ Testing if fib[7] (21) is even
 Misc.tests.cpp:<line number>
       </failure>
     </testcase>
+    <testcase classname="<exe-name>.global" name="makeStream recognizes %debug stream name" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="make_unique reimplementation/From lvalue copies" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="make_unique reimplementation/From rvalue moves" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="make_unique reimplementation/Variadic constructor" time="{duration}" status="run"/>

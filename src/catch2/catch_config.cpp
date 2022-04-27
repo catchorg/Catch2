@@ -8,40 +8,19 @@
 #include <catch2/catch_config.hpp>
 #include <catch2/catch_user_config.hpp>
 #include <catch2/internal/catch_enforce.hpp>
-#include <catch2/internal/catch_stream.hpp>
 #include <catch2/internal/catch_stringref.hpp>
 #include <catch2/internal/catch_string_manip.hpp>
 #include <catch2/internal/catch_test_spec_parser.hpp>
 #include <catch2/interfaces/catch_interfaces_tag_alias_registry.hpp>
 
-#include <ostream>
-
 namespace Catch {
-    namespace Detail {
-        namespace {
-            class RDBufStream : public IStream {
-                mutable std::ostream m_os;
 
-            public:
-                //! The streambuf `sb` must outlive the constructed object.
-                RDBufStream( std::streambuf* sb ): m_os( sb ) {}
-                ~RDBufStream() override = default;
-
-            public: // IStream
-                std::ostream& stream() const override { return m_os; }
-            };
-        } // unnamed namespace
-    }     // namespace Detail
-
-    std::ostream& operator<<( std::ostream& os,
-                              ConfigData::ReporterAndFile const& reporter ) {
-        os << "{ " << reporter.reporterName << ", ";
-        if ( reporter.outputFileName ) {
-            os << *reporter.outputFileName;
-        } else {
-            os << "<default-output>";
-        }
-        return os << " }";
+    bool operator==( ProcessedReporterSpec const& lhs,
+                     ProcessedReporterSpec const& rhs ) {
+        return lhs.name == rhs.name &&
+               lhs.outputFilename == rhs.outputFilename &&
+               lhs.colourMode == rhs.colourMode &&
+               lhs.customOptions == rhs.customOptions;
     }
 
     Config::Config( ConfigData const& data ):
@@ -76,25 +55,53 @@ namespace Catch {
 #else
                 "console",
 #endif
-                {}
+                {}, {}, {}
             } );
         }
 
+#if defined( CATCH_CONFIG_BAZEL_SUPPORT )
+        // Register a JUnit reporter for Bazel. Bazel sets an environment
+        // variable with the path to XML output. If this file is written to
+        // during test, Bazel will not generate a default XML output.
+        // This allows the XML output file to contain higher level of detail
+        // than what is possible otherwise.
+#    if defined( _MSC_VER )
+        // On Windows getenv throws a warning as there is no input validation,
+        // since the key is hardcoded, this should not be an issue.
+#        pragma warning( push )
+#        pragma warning( disable : 4996 )
+#    endif
+        const auto bazelOutputFilePtr = std::getenv( "XML_OUTPUT_FILE" );
+#    if defined( _MSC_VER )
+#        pragma warning( pop )
+#    endif
+        if ( bazelOutputFilePtr != nullptr ) {
+            m_data.reporterSpecifications.push_back(
+                { "junit", std::string( bazelOutputFilePtr ), {}, {} } );
+        }
+#endif
+
+
+        // We now fixup the reporter specs to handle default output spec,
+        // default colour spec, etc
         bool defaultOutputUsed = false;
-        m_reporterStreams.reserve( m_data.reporterSpecifications.size() );
-        for ( auto const& reporterAndFile : m_data.reporterSpecifications ) {
-            if ( reporterAndFile.outputFileName.none() ) {
+        for ( auto const& reporterSpec : m_data.reporterSpecifications ) {
+            // We do the default-output check separately, while always
+            // using the default output below to make the code simpler
+            // and avoid superfluous copies.
+            if ( reporterSpec.outputFile().none() ) {
                 CATCH_ENFORCE( !defaultOutputUsed,
                                "Internal error: cannot use default output for "
                                "multiple reporters" );
                 defaultOutputUsed = true;
-
-                m_reporterStreams.push_back(
-                    openStream( data.defaultOutputFilename ) );
-            } else {
-                m_reporterStreams.push_back(
-                    openStream( *reporterAndFile.outputFileName ) );
             }
+
+            m_processedReporterSpecs.push_back( ProcessedReporterSpec{
+                reporterSpec.name(),
+                reporterSpec.outputFile() ? *reporterSpec.outputFile()
+                                          : data.defaultOutputFilename,
+                reporterSpec.colourMode().valueOr( data.defaultColourMode ),
+                reporterSpec.customOptions() } );
         }
     }
 
@@ -108,12 +115,13 @@ namespace Catch {
     std::vector<std::string> const& Config::getTestsOrTags() const { return m_data.testsOrTags; }
     std::vector<std::string> const& Config::getSectionsToRun() const { return m_data.sectionsToRun; }
 
-    std::vector<ConfigData::ReporterAndFile> const& Config::getReportersAndOutputFiles() const {
+    std::vector<ReporterSpec> const& Config::getReporterSpecs() const {
         return m_data.reporterSpecifications;
     }
 
-    IStream const* Config::getReporterOutputStream(std::size_t reporterIdx) const {
-        return m_reporterStreams.at(reporterIdx).get();
+    std::vector<ProcessedReporterSpec> const&
+    Config::getProcessedReporterSpecs() const {
+        return m_processedReporterSpecs;
     }
 
     TestSpec const& Config::testSpec() const { return m_testSpec; }
@@ -138,20 +146,17 @@ namespace Catch {
     uint32_t Config::rngSeed() const                   { return m_data.rngSeed; }
     unsigned int Config::shardCount() const            { return m_data.shardCount; }
     unsigned int Config::shardIndex() const            { return m_data.shardIndex; }
-    UseColour Config::useColour() const                { return m_data.useColour; }
+    ColourMode Config::defaultColourMode() const       { return m_data.defaultColourMode; }
     bool Config::shouldDebugBreak() const              { return m_data.shouldDebugBreak; }
     int Config::abortAfter() const                     { return m_data.abortAfter; }
     bool Config::showInvisibles() const                { return m_data.showInvisibles; }
     Verbosity Config::verbosity() const                { return m_data.verbosity; }
 
+    bool Config::skipBenchmarks() const                           { return m_data.skipBenchmarks; }
     bool Config::benchmarkNoAnalysis() const                      { return m_data.benchmarkNoAnalysis; }
     unsigned int Config::benchmarkSamples() const                 { return m_data.benchmarkSamples; }
     double Config::benchmarkConfidenceInterval() const            { return m_data.benchmarkConfidenceInterval; }
     unsigned int Config::benchmarkResamples() const               { return m_data.benchmarkResamples; }
     std::chrono::milliseconds Config::benchmarkWarmupTime() const { return std::chrono::milliseconds(m_data.benchmarkWarmupTime); }
-
-    Detail::unique_ptr<IStream const> Config::openStream(std::string const& outputFileName) {
-        return Catch::makeStream(outputFileName);
-    }
 
 } // end namespace Catch

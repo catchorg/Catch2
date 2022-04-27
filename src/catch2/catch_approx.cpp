@@ -7,6 +7,7 @@
 // SPDX-License-Identifier: BSL-1.0
 #include <catch2/catch_approx.hpp>
 #include <catch2/internal/catch_enforce.hpp>
+#include <catch2/internal/catch_reusable_string_stream.hpp>
 
 #include <cmath>
 #include <limits>
