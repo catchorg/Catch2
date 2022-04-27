@@ -1,5 +1,5 @@
-#ifndef CATCH_CATCH_DLL_PUBLIC
-#define CATCH_CATCH_DLL_PUBLIC
+#ifndef CATCH_DLL_PUBLIC_HPP_INCLUDED
+#define CATCH_DLL_PUBLIC_HPP_INCLUDED
 
 #if defined _WIN32 || defined __CYGWIN__
 #    ifdef BUILDING_DLL
@@ -30,4 +30,4 @@
 #    endif
 #endif
 
-#endif // CATCH_CATCH_DLL_PUBLIC
+#endif // CATCH_DLL_PUBLIC_INCLUDED
