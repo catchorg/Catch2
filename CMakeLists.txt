@@ -134,6 +134,7 @@ if (NOT_SUBPROJECT)
           docs/
         DESTINATION
           "${CMAKE_INSTALL_DOCDIR}"
+        PATTERN "doxygen" EXCLUDE
       )
     endif()
 
