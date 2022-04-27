@@ -20,6 +20,27 @@
                 "CATCH_BUILD_SURROGATES": "ON",
                 "CATCH_ENABLE_CONFIGURE_TESTS": "ON"
             }
+        },
+        {
+            "name": "basic-tests-shared",
+            "displayName": "Basic development build with BUILD_SHARED_LIBS=ON",
+            "description": "Enables development build with basic tests that are cheap to build and run",
+            "cacheVariables": {
+                "CATCH_DEVELOPMENT_BUILD": "ON",
+                "BUILD_SHARED_LIBS": "ON"
+            }
+        },
+        {
+            "name": "all-tests-shared",
+            "inherits": "basic-tests-shared",
+            "displayName": "Full development build with BUILD_SHARED_LIBS=ON",
+            "description": "Enables development build with examples and ALL tests",
+            "cacheVariables": {
+                "CATCH_BUILD_EXAMPLES": "ON",
+                "CATCH_BUILD_EXTRA_TESTS": "ON",
+                "CATCH_BUILD_SURROGATES": "ON",
+                "CATCH_ENABLE_CONFIGURE_TESTS": "ON"
+            }
         }
     ]   
 }
