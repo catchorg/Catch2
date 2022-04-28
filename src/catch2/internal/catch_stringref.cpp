@@ -14,7 +14,7 @@
 
 namespace Catch {
     StringRef::StringRef( char const* rawChars ) noexcept
-    : StringRef( rawChars, static_cast<StringRef::size_type>(std::strlen(rawChars) ) )
+    : StringRef( rawChars, std::strlen(rawChars) )
     {}
 
     auto StringRef::operator == ( StringRef other ) const noexcept -> bool {
