@@ -103,13 +103,6 @@ if (CATCH_DEVELOPMENT_BUILD)
     add_warnings_to_targets("${CATCH_WARNING_TARGETS}")
 endif()
 
-
-#set_property(GLOBAL PROPERTY USE_FOLDERS ON)
-#
-#
-#
-#
-#
 # Only perform the installation steps when Catch is not being used as
 # a subproject via `add_subdirectory`, or the destinations will break,
 # see https://github.com/catchorg/Catch2/issues/1373
