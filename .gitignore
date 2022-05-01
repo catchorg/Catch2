@@ -11,11 +11,6 @@ Release
 xcuserdata
 CatchSelfTest.xcscheme
 Breakpoints.xcbkptlist
-projects/VS2010/TestCatch/_UpgradeReport_Files/
-projects/VS2010/TestCatch/TestCatch/TestCatch.vcxproj.filters
-projects/VisualStudio/TestCatch/UpgradeLog.XML
-projects/CMake/.idea
-projects/CMake/cmake-build-debug
 UpgradeLog.XML
 Resources/DWARF
 projects/Generated
@@ -32,3 +27,7 @@ bazel-*
 build-fuzzers
 debug-build
 .vscode
+msvc-sln*
+# Currently we use Doxygen for dep graphs and the full docs are only slowly
+# being filled in, so we definitely do not want git to deal with the docs.
+docs/doxygen
