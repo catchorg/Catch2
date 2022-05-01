@@ -48,17 +48,25 @@ function(add_warnings_to_targets targets)
           "-Wcall-to-pure-virtual-from-ctor-dtor"
           "-Wcast-align"
           "-Wcatch-value"
+          "-Wdangling"
           "-Wdeprecated"
           "-Wdeprecated-register"
+          "-Wexceptions"
           "-Wexit-time-destructors"
           "-Wextra"
           "-Wextra-semi"
           "-Wglobal-constructors"
+          "-Winit-self"
           "-Wmisleading-indentation"
+          "-Wmismatched-new-delete"
+          "-Wmismatched-return-types"
+          "-Wmismatched-tags"
           "-Wmissing-braces"
           "-Wmissing-declarations"
           "-Wmissing-noreturn"
+          "-Wnull-dereference"
           "-Wold-style-cast"
+          "-Woverloaded-virtual"
           "-Wparentheses"
           "-Wpedantic"
           "-Wreorder"
@@ -67,12 +75,21 @@ function(add_warnings_to_targets targets)
           "-Wstrict-aliasing"
           "-Wsuggest-override"
           "-Wundef"
+          "-Wuninitialized"
+          "-Wunneeded-internal-declaration"
           "-Wunreachable-code"
           "-Wunused"
           "-Wunused-function"
           "-Wunused-parameter"
           "-Wvla"
           "-Wweak-vtables"
+
+          # This is a useful warning, but our tests sometimes rely on
+          # functions being present, but not picked (e.g. various checks
+          # for stringification implementation ordering).
+          # Ergo, we should use it every now and then, but we cannot
+          # enable it by default.
+          # "-Wunused-member-function"
         )
         foreach(warning ${CHECKED_WARNING_FLAGS})
             add_cxx_flag_if_supported_to_targets(${warning} "${targets}")
