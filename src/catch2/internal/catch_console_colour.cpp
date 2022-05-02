@@ -88,7 +88,6 @@ namespace Catch {
         class NoColourImpl : public ColourImpl {
         public:
             NoColourImpl( IStream* stream ): ColourImpl( stream ) {}
-            static bool useColourOnPlatform() { return true; }
 
         private:
             void use( Colour::Code ) const override {}

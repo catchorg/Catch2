@@ -108,11 +108,6 @@ namespace Catch {
             }
 
         private:
-            void printSourceInfo() const {
-                stream << colourImpl->guardColour( tapDimColour )
-                       << result.getSourceInfo() << ':';
-            }
-
             void printResultType(StringRef passOrFail) const {
                 if (!passOrFail.empty()) {
                     stream << passOrFail << ' ' << counter << " -";

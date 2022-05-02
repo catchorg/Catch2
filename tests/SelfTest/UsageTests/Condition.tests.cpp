@@ -33,15 +33,6 @@ namespace {
         double double_pi = 3.1415926535;
     };
 
-    struct TestDef {
-        TestDef& operator + (const std::string&) {
-            return *this;
-        }
-        TestDef& operator[](const std::string&) {
-            return *this;
-        }
-    };
-
     static const char* returnsConstNull() { return nullptr; }
     static char* returnsNull() { return nullptr; }
 
@@ -53,9 +44,6 @@ namespace {
 // Equality tests
 TEST_CASE( "Equality checks that should succeed" )
 {
-    TestDef td;
-    td + "hello" + "hello";
-
     TestData data;
 
     REQUIRE( data.int_seven == 7 );
