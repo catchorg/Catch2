@@ -308,7 +308,7 @@ struct MyListener : Catch::EventListenerBase {
     using EventListenerBase::EventListenerBase; // inherit constructor
 
     // Get rid of Wweak-tables
-    ~MyListener();
+    ~MyListener() override;
 
     // The whole test run starting
     void testRunStarting( Catch::TestRunInfo const& testRunInfo ) override {

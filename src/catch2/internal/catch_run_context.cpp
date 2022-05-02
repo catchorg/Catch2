@@ -32,7 +32,7 @@ namespace Catch {
             GeneratorTracker( TestCaseTracking::NameAndLocation const& nameAndLocation, TrackerContext& ctx, ITracker* parent )
             :   TrackerBase( nameAndLocation, ctx, parent )
             {}
-            ~GeneratorTracker();
+            ~GeneratorTracker() override;
 
             static GeneratorTracker& acquire( TrackerContext& ctx, TestCaseTracking::NameAndLocation const& nameAndLocation ) {
                 GeneratorTracker* tracker;

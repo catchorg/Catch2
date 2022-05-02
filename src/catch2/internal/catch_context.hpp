@@ -23,7 +23,7 @@ namespace Catch {
 
     class IMutableContext : public IContext {
     public:
-        virtual ~IMutableContext(); // = default
+        ~IMutableContext() override; // = default
         virtual void setResultCapture( IResultCapture* resultCapture ) = 0;
         virtual void setConfig( IConfig const* config ) = 0;
 

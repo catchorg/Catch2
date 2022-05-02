@@ -22,7 +22,7 @@ namespace Matchers {
     class MatcherGenericBase : public MatcherUntypedBase {
     public:
         MatcherGenericBase() = default;
-        virtual ~MatcherGenericBase(); // = default;
+        ~MatcherGenericBase() override; // = default;
 
         MatcherGenericBase(MatcherGenericBase&) = default;
         MatcherGenericBase(MatcherGenericBase&&) = default;
