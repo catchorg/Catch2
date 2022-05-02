@@ -64,6 +64,7 @@ function(add_warnings_to_targets targets)
           "-Wmissing-braces"
           "-Wmissing-declarations"
           "-Wmissing-noreturn"
+          "-Wmissing-variable-declarations"
           "-Wnull-dereference"
           "-Wold-style-cast"
           "-Woverloaded-virtual"

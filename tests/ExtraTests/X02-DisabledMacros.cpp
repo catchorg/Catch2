@@ -33,7 +33,7 @@ struct foo {
 #pragma clang diagnostic ignored "-Wglobal-constructors"
 #endif
 // Construct foo, but `foo::print` should not be run
-foo f;
+static foo f;
 
 
 #if defined(__clang__)
