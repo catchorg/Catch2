@@ -51,10 +51,10 @@ namespace Catch {
             private:
                 // If this is a constructor benchmark, destruct the underlying object
                 template <typename U>
-                void destruct_on_exit(std::enable_if_t<Destruct, U>* = 0) { destruct<true>(); }
+                void destruct_on_exit(std::enable_if_t<Destruct, U>* = nullptr) { destruct<true>(); }
                 // Otherwise, don't
                 template <typename U>
-                void destruct_on_exit(std::enable_if_t<!Destruct, U>* = 0) { }
+                void destruct_on_exit(std::enable_if_t<!Destruct, U>* = nullptr) { }
 
                 T& stored_object() {
                     return *static_cast<T*>(static_cast<void*>(&data));
