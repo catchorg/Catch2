@@ -26,7 +26,7 @@ namespace bar {
 #ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wmissing-declarations"
 #endif
-std::ostream& operator<<(std::ostream& out, foo::helper_1403 const&) {
+static std::ostream& operator<<(std::ostream& out, foo::helper_1403 const&) {
     return out << "[1403 helper]";
 }
 ///////////////////////////////
@@ -49,7 +49,7 @@ struct logic_t {
 };
 
 
-void throws_int(bool b) {
+static void throws_int(bool b) {
     if (b) {
         throw 1;
     }
@@ -69,7 +69,7 @@ bool templated_tests(T t) {
 
 struct A {};
 
-std::ostream &operator<<(std::ostream &o, const A &) { return o << 0; }
+static std::ostream &operator<<(std::ostream &o, const A &) { return o << 0; }
 
 struct B : private A {
     bool operator==(int) const { return true; }
