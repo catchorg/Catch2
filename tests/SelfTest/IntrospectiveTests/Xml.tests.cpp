@@ -52,10 +52,9 @@ TEST_CASE( "XmlEncode", "[XML]" ) {
 
 // Thanks to Peter Bindels (dascandy) for some of the tests
 TEST_CASE("XmlEncode: UTF-8", "[XML][UTF-8][approvals]") {
-#define ESC(lit) reinterpret_cast<const char*>(lit)
     SECTION("Valid utf-8 strings") {
-        CHECK(encode(ESC(u8"Here be 👾")) == ESC(u8"Here be 👾"));
-        CHECK(encode(ESC(u8"šš")) == ESC(u8"šš"));
+        CHECK(encode("Here be 👾") == "Here be 👾");
+        CHECK(encode("šš") == "šš");
 
         CHECK(encode("\xDF\xBF")         == "\xDF\xBF"); // 0x7FF
         CHECK(encode("\xE0\xA0\x80")     == "\xE0\xA0\x80"); // 0x800
@@ -67,10 +66,10 @@ TEST_CASE("XmlEncode: UTF-8", "[XML][UTF-8][approvals]") {
     }
     SECTION("Invalid utf-8 strings") {
         SECTION("Various broken strings") {
-            CHECK(encode(ESC("Here \xFF be \xF0\x9F\x91\xBE")) == ESC(u8"Here \\xFF be 👾"));
+            CHECK(encode("Here \xFF be \xF0\x9F\x91\xBE") == "Here \\xFF be 👾");
             CHECK(encode("\xFF") == "\\xFF");
-            CHECK(encode("\xC5\xC5\xA0") == ESC(u8"\\xC5Š"));
-            CHECK(encode("\xF4\x90\x80\x80") == ESC(u8"\\xF4\\x90\\x80\\x80")); // 0x110000 -- out of unicode range
+            CHECK(encode("\xC5\xC5\xA0") == "\\xC5Š");
+            CHECK(encode("\xF4\x90\x80\x80") == "\\xF4\\x90\\x80\\x80"); // 0x110000 -- out of unicode range
         }
 
         SECTION("Overlong encodings") {
@@ -121,7 +120,6 @@ TEST_CASE("XmlEncode: UTF-8", "[XML][UTF-8][approvals]") {
             CHECK(encode("\xF4\x80\x80") == "\\xF4\\x80\\x80");
         }
     }
-#undef ESC
 }
 
 TEST_CASE("XmlWriter writes boolean attributes as true/false", "[XML][XmlWriter]") {

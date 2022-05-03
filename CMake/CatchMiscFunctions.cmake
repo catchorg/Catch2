@@ -45,6 +45,7 @@ function(add_warnings_to_targets targets)
         set(CHECKED_WARNING_FLAGS
           "-Wabsolute-value"
           "-Wall"
+          "-Wc++20-compat"
           "-Wcall-to-pure-virtual-from-ctor-dtor"
           "-Wcast-align"
           "-Wcatch-value"
