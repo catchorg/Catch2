@@ -2,7 +2,7 @@ Filters: ~[!nonportable]~[!benchmark]~[approvals] *
 Randomness seeded to: 1
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-<exe-name> is a <version> host application.
+<exe-name> is a Catch2 v<version> host application.
 Run with -? for options
 
 -------------------------------------------------------------------------------
