@@ -114,7 +114,7 @@ namespace {
             originalBackgroundAttributes = csbiInfo.wAttributes & ~( FOREGROUND_GREEN | FOREGROUND_RED | FOREGROUND_BLUE | FOREGROUND_INTENSITY );
         }
 
-        static bool useColourOnPlatform(IStream const& stream) {
+        static bool useImplementationForStream(IStream const& stream) {
             // Win32 text colour APIs can only be used on console streams
             // We cannot check that the output hasn't been redirected,
             // so we just check that the original stream is console stream.
@@ -173,7 +173,7 @@ namespace {
     public:
         ANSIColourImpl( IStream* stream ): ColourImpl( stream ) {}
 
-        static bool useColourOnPlatform(IStream const& stream) {
+        static bool useImplementationForStream(IStream const& stream) {
             // This is kinda messy due to trying to support a bunch of
             // different platforms at once.
             // The basic idea is that if we are asked to do autodetection (as
@@ -247,13 +247,13 @@ namespace Catch {
         // todo: check win32 eligibility under ifdef, otherwise ansi
         if ( implSelection == ColourMode::PlatformDefault) {
 #if defined (CATCH_CONFIG_COLOUR_WIN32)
-            if ( Win32ColourImpl::useColourOnPlatform( *stream ) ) {
+            if ( Win32ColourImpl::useImplementationForStream( *stream ) ) {
                 return Detail::make_unique<Win32ColourImpl>( stream );
             } else {
                 return Detail::make_unique<NoColourImpl>( stream );
             }
 #endif
-            if ( ANSIColourImpl::useColourOnPlatform( *stream ) ) {
+            if ( ANSIColourImpl::useImplementationForStream( *stream ) ) {
                 return Detail::make_unique<ANSIColourImpl>( stream );
             }
             return Detail::make_unique<NoColourImpl>( stream );
