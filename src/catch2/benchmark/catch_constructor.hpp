@@ -20,9 +20,7 @@ namespace Catch {
             template <typename T, bool Destruct>
             struct ObjectStorage
             {
-                using TStorage = std::aligned_storage_t<sizeof(T), std::alignment_of<T>::value>;
-
-                ObjectStorage() : data() {}
+                ObjectStorage() = default;
 
                 ObjectStorage(const ObjectStorage& other)
                 {
@@ -31,7 +29,7 @@ namespace Catch {
 
                 ObjectStorage(ObjectStorage&& other)
                 {
-                    new(&data) T(CATCH_MOVE(other.stored_object()));
+                    new(data) T(CATCH_MOVE(other.stored_object()));
                 }
 
                 ~ObjectStorage() { destruct_on_exit<T>(); }
@@ -39,7 +37,7 @@ namespace Catch {
                 template <typename... Args>
                 void construct(Args&&... args)
                 {
-                    new (&data) T(CATCH_FORWARD(args)...);
+                    new (data) T(CATCH_FORWARD(args)...);
                 }
 
                 template <bool AllowManualDestruction = !Destruct>
@@ -57,15 +55,15 @@ namespace Catch {
                 void destruct_on_exit(std::enable_if_t<!Destruct, U>* = nullptr) { }
 
                 T& stored_object() {
-                    return *static_cast<T*>(static_cast<void*>(&data));
+                    return *static_cast<T*>(static_cast<void*>(data));
                 }
 
                 T const& stored_object() const {
-                    return *static_cast<T*>(static_cast<void*>(&data));
+                    return *static_cast<T*>(static_cast<void*>(data));
                 }
 
 
-                TStorage data;
+                alignas( T ) unsigned char data[sizeof( T )]{};
             };
         } // namespace Detail
 
