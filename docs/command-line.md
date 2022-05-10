@@ -59,6 +59,7 @@ Click one of the following links to take you straight to that option - or scroll
 <a href="#listing-available-tests-tags-or-reporters">   `    --list-tests`</a><br />
 <a href="#listing-available-tests-tags-or-reporters">   `    --list-tags`</a><br />
 <a href="#listing-available-tests-tags-or-reporters">   `    --list-reporters`</a><br />
+<a href="#listing-available-tests-tags-or-reporters">   `    --list-listeners`</a><br />
 <a href="#order">                                       `    --order`</a><br />
 <a href="#rng-seed">                                    `    --rng-seed`</a><br />
 <a href="#libidentify">                                 `    --libidentify`</a><br />
@@ -200,9 +201,12 @@ Sometimes this results in a flood of failure messages and you'd rather just see 
 --list-tests
 --list-tags
 --list-reporters
+--list-listeners
 ```
 
 > The `--list*` options became customizable through reporters in Catch2 X.Y.Z
+
+> The `--list-listeners` option was added in Catch2 X.Y.Z
 
 `--list-tests` lists all registered tests matching specified test spec.
 Usually this listing also includes tags, and potentially also other
@@ -213,6 +217,8 @@ spec. Usually this also includes number of tests cases they match and
 similar information.
 
 `--list-reporters` lists all available reporters and their descriptions.
+
+`--list-listeners` lists all registered listeners and their descriptions.
 
 
 <a id="sending-output-to-a-file"></a>

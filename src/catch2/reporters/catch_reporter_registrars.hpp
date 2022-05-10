@@ -59,22 +59,26 @@ namespace Catch {
     class ListenerRegistrar {
 
         class TypedListenerFactory : public EventListenerFactory {
-            StringRef m_defaultDescription;
+            StringRef m_listenerName;
 
             std::string getDescriptionImpl( std::true_type ) const {
                 return T::getDescription();
             }
 
             std::string getDescriptionImpl( std::false_type ) const {
-                return static_cast<std::string>(m_defaultDescription);
+                return "(No description provided)";
             }
 
         public:
-            TypedListenerFactory( StringRef defaultDescription ):
-                m_defaultDescription( defaultDescription ) {}
+            TypedListenerFactory( StringRef listenerName ):
+                m_listenerName( listenerName ) {}
 
             IEventListenerPtr create( IConfig const* config ) const override {
                 return Detail::make_unique<T>( config );
+            }
+
+            StringRef getName() const override {
+                return m_listenerName;
             }
 
             std::string getDescription() const override {
@@ -83,9 +87,8 @@ namespace Catch {
         };
 
     public:
-
-        ListenerRegistrar(StringRef defaultDescription) {
-            getMutableRegistryHub().registerListener( Detail::make_unique<TypedListenerFactory>(defaultDescription) );
+        ListenerRegistrar(StringRef listenerName) {
+            getMutableRegistryHub().registerListener( Detail::make_unique<TypedListenerFactory>(listenerName) );
         }
     };
 }

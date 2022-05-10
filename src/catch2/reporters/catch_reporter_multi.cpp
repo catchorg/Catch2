@@ -176,6 +176,13 @@ namespace Catch {
         }
     }
 
+    void MultiReporter::listListeners(
+        std::vector<ListenerDescription> const& descriptions ) {
+        for ( auto& reporterish : m_reporterLikes ) {
+            reporterish->listListeners( descriptions );
+        }
+    }
+
     void MultiReporter::listTests(std::vector<TestCaseHandle> const& tests) {
         for (auto& reporterish : m_reporterLikes) {
             reporterish->listTests(tests);

@@ -23,6 +23,10 @@ namespace Catch {
     struct ReporterDescription {
         std::string name, description;
     };
+    struct ListenerDescription {
+        StringRef name;
+        std::string description;
+    };
 
     struct TagInfo {
         void add(StringRef spelling);

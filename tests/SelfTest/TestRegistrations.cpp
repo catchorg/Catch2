@@ -48,6 +48,10 @@ class ValidatingTestListener : public Catch::EventListenerBase {
     };
 
 public:
+    static std::string getDescription() {
+        return "Validates ordering of Catch2's listener events";
+    }
+
     ValidatingTestListener(Catch::IConfig const* config) :
         EventListenerBase(config) {
         m_preferences.shouldReportAllAssertions = true;

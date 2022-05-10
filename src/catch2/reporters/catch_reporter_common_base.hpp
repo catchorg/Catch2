@@ -51,6 +51,14 @@ namespace Catch {
         void listReporters(
             std::vector<ReporterDescription> const& descriptions ) override;
         /**
+         * Provides a simple default listing of listeners
+         *
+         * Looks similarly to listing of reporters, but with listener type
+         * instead of reporter name.
+         */
+        void listListeners(
+            std::vector<ListenerDescription> const& descriptions ) override;
+        /**
          * Provides a simple default listing of tests.
          *
          * Should look roughly like the test listing in v2 and earlier versions

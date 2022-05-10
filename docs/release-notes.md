@@ -192,6 +192,7 @@ v3 releases.
 * Added a support for Bazel integration with `XML_OUTPUT_FILE` env var (#2399)
   * This has to be enabled during compilation.
 * Added `--skip-benchmarks` flag to run tests without any `BENCHMARK`s (#2392, #2408)
+* Added option to list all listeners in the binary via `--list-listeners`
 
 
 ### Fixes

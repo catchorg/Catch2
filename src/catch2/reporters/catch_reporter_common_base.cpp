@@ -29,6 +29,11 @@ namespace Catch {
         defaultListReporters(m_stream, descriptions, m_config->verbosity());
     }
 
+    void ReporterBase::listListeners(
+        std::vector<ListenerDescription> const& descriptions ) {
+        defaultListListeners( m_stream, descriptions );
+    }
+
     void ReporterBase::listTests(std::vector<TestCaseHandle> const& tests) {
         defaultListTests(m_stream,
                          m_colour.get(),

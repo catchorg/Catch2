@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuitesloose text artifact
 >
-  <testsuite name="<exe-name>" errors="17" failures="126" tests="2241" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
+  <testsuite name="<exe-name>" errors="17" failures="126" tests="2242" hostname="tbd" time="{duration}" timestamp="{iso8601-timestamp}">
     <properties>
       <property name="random-seed" value="1"/>
       <property name="filters" value="~[!nonportable]~[!benchmark]~[approvals] *"/>
@@ -1379,6 +1379,7 @@ Misc.tests.cpp:<line number>
     <testcase classname="<exe-name>.global" name="The default listing implementation write to provided stream/Listing tags" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="The default listing implementation write to provided stream/Listing reporters" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="The default listing implementation write to provided stream/Listing tests" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="The default listing implementation write to provided stream/Listing listeners" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="This test 'should' fail but doesn't" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="Thrown string literals are translated" time="{duration}" status="run">
       <error type="TEST_CASE">

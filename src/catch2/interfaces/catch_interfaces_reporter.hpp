@@ -27,6 +27,7 @@
 namespace Catch {
 
     struct ReporterDescription;
+    struct ListenerDescription;
     struct TagInfo;
     struct TestCaseInfo;
     class TestCaseHandle;
@@ -249,11 +250,12 @@ namespace Catch {
 
         //! Writes out information about provided reporters using reporter-specific format
         virtual void listReporters(std::vector<ReporterDescription> const& descriptions) = 0;
+        //! Writes out the provided listeners descriptions using reporter-specific format
+        virtual void listListeners(std::vector<ListenerDescription> const& descriptions) = 0;
         //! Writes out information about provided tests using reporter-specific format
         virtual void listTests(std::vector<TestCaseHandle> const& tests) = 0;
         //! Writes out information about the provided tags using reporter-specific format
         virtual void listTags(std::vector<TagInfo> const& tags) = 0;
-
     };
     using IEventListenerPtr = Detail::unique_ptr<IEventListener>;
 

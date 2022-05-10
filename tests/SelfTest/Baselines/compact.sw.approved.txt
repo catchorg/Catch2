@@ -1898,6 +1898,10 @@ Reporters.tests.cpp:<line number>: passed: listingString, ContainsSubstring( "fa
 1 test case
 
 " ( contains: "fake test name" and contains: "fakeTestTag" )
+Reporters.tests.cpp:<line number>: passed: listingString, ContainsSubstring( "fakeListener"s ) && ContainsSubstring( "fake description"s ) for: "Registered listeners:
+  fakeListener:  fake description
+
+" ( contains: "fakeListener" and contains: "fake description" )
 Misc.tests.cpp:<line number>: passed: with 1 message: 'oops!'
 Exception.tests.cpp:<line number>: failed: unexpected exception with message: 'For some reason someone is throwing a string literal!'
 PartTracker.tests.cpp:<line number>: passed: testCase.isOpen() for: true

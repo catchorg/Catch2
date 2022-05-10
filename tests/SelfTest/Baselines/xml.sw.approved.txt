@@ -15754,6 +15754,20 @@ Message from section two
       </Expression>
       <OverallResults successes="1" failures="0" expectedFailures="0"/>
     </Section>
+    <Section name="Listing listeners" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
+      <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
+        <Original>
+          listingString, ContainsSubstring( "fakeListener"s ) &amp;&amp; ContainsSubstring( "fake description"s )
+        </Original>
+        <Expanded>
+          "Registered listeners:
+  fakeListener:  fake description
+
+" ( contains: "fakeListener" and contains: "fake description" )
+        </Expanded>
+      </Expression>
+      <OverallResults successes="1" failures="0" expectedFailures="0"/>
+    </Section>
     <OverallResult success="true"/>
   </TestCase>
   <TestCase name="This test 'should' fail but doesn't" tags="[!shouldfail][.][failing]" filename="tests/<exe-name>/UsageTests/Misc.tests.cpp" >
@@ -21061,6 +21075,6 @@ loose text artifact
     </Section>
     <OverallResult success="true"/>
   </TestCase>
-  <OverallResults successes="2071" failures="143" expectedFailures="27"/>
+  <OverallResults successes="2072" failures="143" expectedFailures="27"/>
   <OverallResultsCases successes="301" failures="83" expectedFailures="7"/>
 </Catch2TestRun>

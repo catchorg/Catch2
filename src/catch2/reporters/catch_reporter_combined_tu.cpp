@@ -152,6 +152,33 @@ namespace Catch {
         out << '\n' << std::flush;
     }
 
+    void defaultListListeners( std::ostream& out,
+                               std::vector<ListenerDescription> const& descriptions ) {
+        const auto maxNameLen =
+            std::max_element( descriptions.begin(),
+                              descriptions.end(),
+                              []( ListenerDescription const& lhs,
+                                  ListenerDescription const& rhs ) {
+                                  return lhs.name.size() < rhs.name.size();
+                              } )
+                ->name.size();
+
+        out << "Registered listeners:\n";
+        for ( auto const& desc : descriptions ) {
+            out << TextFlow::Column( static_cast<std::string>( desc.name ) +
+                                     ':' )
+                           .indent( 2 )
+                           .width( maxNameLen + 5 ) +
+                       TextFlow::Column( desc.description )
+                           .initialIndent( 0 )
+                           .indent( 2 )
+                           .width( CATCH_CONFIG_CONSOLE_WIDTH - maxNameLen - 8 )
+                << '\n';
+        }
+
+        out << '\n' << std::flush;
+    }
+
     void defaultListTags( std::ostream& out,
                           std::vector<TagInfo> const& tags,
                           bool isFiltered ) {
@@ -233,6 +260,8 @@ namespace Catch {
     void EventListenerBase::assertionEnded( AssertionStats const& ) {}
     void EventListenerBase::listReporters(
         std::vector<ReporterDescription> const& ) {}
+    void EventListenerBase::listListeners(
+        std::vector<ListenerDescription> const& ) {}
     void EventListenerBase::listTests( std::vector<TestCaseHandle> const& ) {}
     void EventListenerBase::listTags( std::vector<TagInfo> const& ) {}
     void EventListenerBase::noMatchingTestCases( StringRef ) {}

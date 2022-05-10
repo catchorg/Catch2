@@ -63,6 +63,19 @@ namespace Catch {
             reporter.listReporters(descriptions);
         }
 
+        void listListeners(IEventListener& reporter) {
+            std::vector<ListenerDescription> descriptions;
+
+            auto const& factories =
+                getRegistryHub().getReporterRegistry().getListeners();
+            descriptions.reserve( factories.size() );
+            for ( auto const& fac : factories ) {
+                descriptions.push_back( { fac->getName(), fac->getDescription() } );
+            }
+
+            reporter.listListeners( descriptions );
+        }
+
     } // end anonymous namespace
 
     void TagInfo::add( StringRef spelling ) {
@@ -99,6 +112,10 @@ namespace Catch {
         if (config.listReporters()) {
             listed = true;
             listReporters(reporter);
+        }
+        if ( config.listListeners() ) {
+            listed = true;
+            listListeners( reporter );
         }
         return listed;
     }

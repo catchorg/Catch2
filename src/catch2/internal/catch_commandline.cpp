@@ -280,7 +280,10 @@ namespace Catch {
                 ( "list all/matching tags" )
             | Opt( config.listReporters )
                 ["--list-reporters"]
-                ( "list all reporters" )
+                ( "list all available reporters" )
+            | Opt( config.listListeners )
+                ["--list-listeners"]
+                ( "list all listeners" )
             | Opt( setTestOrder, "decl|lex|rand" )
                 ["--order"]
                 ( "test case order (defaults to decl)" )

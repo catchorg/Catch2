@@ -84,6 +84,16 @@ TEST_CASE( "The default listing implementation write to provided stream",
                       ContainsSubstring( "fake test name"s ) &&
                           ContainsSubstring( "fakeTestTag"s ) );
     }
+    SECTION( "Listing listeners" ) {
+        std::vector<Catch::ListenerDescription> listeners(
+            { { "fakeListener"_catch_sr, "fake description" } } );
+
+        Catch::defaultListListeners( sstream.stream(), listeners );
+        auto listingString = sstream.str();
+        REQUIRE_THAT( listingString,
+                      ContainsSubstring( "fakeListener"s ) &&
+                          ContainsSubstring( "fake description"s ) );
+    }
 }
 
 TEST_CASE( "Reporter's write listings to provided stream", "[reporters]" ) {

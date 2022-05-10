@@ -13445,6 +13445,21 @@ with expansion:
 " ( contains: "fake test name" and contains: "fakeTestTag" )
 
 -------------------------------------------------------------------------------
+The default listing implementation write to provided stream
+  Listing listeners
+-------------------------------------------------------------------------------
+Reporters.tests.cpp:<line number>
+...............................................................................
+
+Reporters.tests.cpp:<line number>: PASSED:
+  REQUIRE_THAT( listingString, ContainsSubstring( "fakeListener"s ) && ContainsSubstring( "fake description"s ) )
+with expansion:
+  "Registered listeners:
+    fakeListener:  fake description
+
+" ( contains: "fakeListener" and contains: "fake description" )
+
+-------------------------------------------------------------------------------
 This test 'should' fail but doesn't
 -------------------------------------------------------------------------------
 Misc.tests.cpp:<line number>
@@ -17935,5 +17950,5 @@ Misc.tests.cpp:<line number>: PASSED:
 
 ===============================================================================
 test cases:  391 |  301 passed |  83 failed |  7 failed as expected
-assertions: 2241 | 2071 passed | 143 failed | 27 failed as expected
+assertions: 2242 | 2072 passed | 143 failed | 27 failed as expected
 

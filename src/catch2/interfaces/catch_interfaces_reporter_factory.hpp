@@ -9,6 +9,7 @@
 #define CATCH_INTERFACES_REPORTER_FACTORY_HPP_INCLUDED
 
 #include <catch2/internal/catch_unique_ptr.hpp>
+#include <catch2/internal/catch_stringref.hpp>
 
 #include <string>
 
@@ -34,6 +35,9 @@ namespace Catch {
     public:
         virtual ~EventListenerFactory(); // = default
         virtual IEventListenerPtr create( IConfig const* config ) const = 0;
+        //! Return a meaningful name for the listener, e.g. its type name
+        virtual StringRef getName() const = 0;
+        //! Return listener's description if available
         virtual std::string getDescription() const = 0;
     };
 } // namespace Catch

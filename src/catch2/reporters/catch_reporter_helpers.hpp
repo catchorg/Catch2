@@ -50,6 +50,13 @@ namespace Catch {
                           Verbosity verbosity );
 
     /**
+     * Lists listeners descriptions to the provided stream in user-friendly
+     * format
+     */
+    void defaultListListeners( std::ostream& out,
+                               std::vector<ListenerDescription> const& descriptions );
+
+    /**
      * Lists tag information to the provided stream in user-friendly format
      *
      * Used as the default listing implementation by the first party reporter

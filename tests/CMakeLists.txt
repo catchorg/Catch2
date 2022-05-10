@@ -207,6 +207,18 @@ set_tests_properties(List::Reporters::XmlOutput PROPERTIES
     FAIL_REGULAR_EXPRESSION "Available reporters:"
 )
 
+add_test(NAME List::Listeners::Output
+  COMMAND
+    $<TARGET_FILE:SelfTest> --list-listeners
+)
+set_tests_properties(List::Listeners::Output
+  PROPERTIES
+    PASS_REGULAR_EXPRESSION "Registered listeners:"
+)
+add_test(NAME List::Listeners::ExitCode
+  COMMAND
+    $<TARGET_FILE:SelfTest> --list-listeners
+)
 
 
 add_test(NAME NoAssertions COMMAND $<TARGET_FILE:SelfTest> -w NoAssertions "An empty test with no assertions")

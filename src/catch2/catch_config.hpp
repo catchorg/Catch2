@@ -48,6 +48,7 @@ namespace Catch {
         bool listTests = false;
         bool listTags = false;
         bool listReporters = false;
+        bool listListeners = false;
 
         bool showSuccessfulTests = false;
         bool shouldDebugBreak = false;
@@ -99,6 +100,7 @@ namespace Catch {
         bool listTests() const;
         bool listTags() const;
         bool listReporters() const;
+        bool listListeners() const;
 
         std::vector<ReporterSpec> const& getReporterSpecs() const;
         std::vector<ProcessedReporterSpec> const&
