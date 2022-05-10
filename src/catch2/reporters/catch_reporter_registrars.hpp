@@ -14,8 +14,22 @@
 #include <catch2/internal/catch_compiler_capabilities.hpp>
 #include <catch2/internal/catch_unique_ptr.hpp>
 #include <catch2/internal/catch_move_and_forward.hpp>
+#include <catch2/internal/catch_void_type.hpp>
+
+#include <type_traits>
 
 namespace Catch {
+
+    namespace Detail {
+        template <typename T, typename = void>
+        struct has_description : std::false_type {};
+
+        template <typename T>
+        struct has_description<
+            T,
+            void_t<decltype( T::getDescription() )>>
+            : std::true_type {};
+    }
 
     class IEventListener;
     using IEventListenerPtr = Detail::unique_ptr<IEventListener>;
@@ -45,20 +59,33 @@ namespace Catch {
     class ListenerRegistrar {
 
         class TypedListenerFactory : public EventListenerFactory {
+            StringRef m_defaultDescription;
 
-            IEventListenerPtr
-            create( IConfig const* config ) const override {
-                return Detail::make_unique<T>(config);
+            std::string getDescriptionImpl( std::true_type ) const {
+                return T::getDescription();
             }
+
+            std::string getDescriptionImpl( std::false_type ) const {
+                return static_cast<std::string>(m_defaultDescription);
+            }
+
+        public:
+            TypedListenerFactory( StringRef defaultDescription ):
+                m_defaultDescription( defaultDescription ) {}
+
+            IEventListenerPtr create( IConfig const* config ) const override {
+                return Detail::make_unique<T>( config );
+            }
+
             std::string getDescription() const override {
-                return std::string();
+                return getDescriptionImpl( Detail::has_description<T>{} );
             }
         };
 
     public:
 
-        ListenerRegistrar() {
-            getMutableRegistryHub().registerListener( Detail::make_unique<TypedListenerFactory>() );
+        ListenerRegistrar(StringRef defaultDescription) {
+            getMutableRegistryHub().registerListener( Detail::make_unique<TypedListenerFactory>(defaultDescription) );
         }
     };
 }
@@ -74,7 +101,7 @@ namespace Catch {
 #define CATCH_REGISTER_LISTENER( listenerType ) \
     CATCH_INTERNAL_START_WARNINGS_SUPPRESSION   \
     CATCH_INTERNAL_SUPPRESS_GLOBALS_WARNINGS    \
-    namespace{ Catch::ListenerRegistrar<listenerType> catch_internal_RegistrarFor##listenerType; } \
+    namespace { Catch::ListenerRegistrar<listenerType> catch_internal_RegistrarFor##listenerType(#listenerType); } \
     CATCH_INTERNAL_STOP_WARNINGS_SUPPRESSION
 #else // CATCH_CONFIG_DISABLE
 
