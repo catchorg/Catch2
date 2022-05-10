@@ -219,7 +219,17 @@ add_test(NAME List::Listeners::ExitCode
   COMMAND
     $<TARGET_FILE:SelfTest> --list-listeners
 )
-
+add_test(NAME List::Listeners::XmlOutput
+  COMMAND
+    $<TARGET_FILE:SelfTest>
+      --list-listeners
+      --reporter xml
+)
+set_tests_properties(List::Listeners::XmlOutput
+  PROPERTIES
+    PASS_REGULAR_EXPRESSION "<RegisteredListeners>"
+    FAIL_REGULAR_EXPRESSION "Registered listeners:"
+)
 
 add_test(NAME NoAssertions COMMAND $<TARGET_FILE:SelfTest> -w NoAssertions "An empty test with no assertions")
 set_tests_properties(NoAssertions PROPERTIES PASS_REGULAR_EXPRESSION "No assertions in test case")

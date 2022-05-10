@@ -259,6 +259,19 @@ namespace Catch {
         }
     }
 
+    void XmlReporter::listListeners(std::vector<ListenerDescription> const& descriptions) {
+        auto outerTag = m_xml.scopedElement( "RegisteredListeners" );
+        for ( auto const& listener : descriptions ) {
+            auto inner = m_xml.scopedElement( "Listener" );
+            m_xml.startElement( "Name", XmlFormatting::Indent )
+                .writeText( listener.name, XmlFormatting::None )
+                .endElement( XmlFormatting::Newline );
+            m_xml.startElement( "Description", XmlFormatting::Indent )
+                .writeText( listener.description, XmlFormatting::None )
+                .endElement( XmlFormatting::Newline );
+        }
+    }
+
     void XmlReporter::listTests(std::vector<TestCaseHandle> const& tests) {
         auto outerTag = m_xml.scopedElement("MatchingTests");
         for (auto const& test : tests) {
