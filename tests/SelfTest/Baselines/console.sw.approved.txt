@@ -13420,12 +13420,12 @@ Reporters.tests.cpp:<line number>
 ...............................................................................
 
 Reporters.tests.cpp:<line number>: PASSED:
-  REQUIRE_THAT( listingString, ContainsSubstring("fake reporter"s) )
+  REQUIRE_THAT( listingString, ContainsSubstring( "fake reporter"s ) && ContainsSubstring( "fake description"s ) )
 with expansion:
   "Available reporters:
     fake reporter:  fake description
 
-" contains: "fake reporter"
+" ( contains: "fake reporter" and contains: "fake description" )
 
 -------------------------------------------------------------------------------
 The default listing implementation write to provided stream

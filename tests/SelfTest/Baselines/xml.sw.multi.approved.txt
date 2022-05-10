@@ -15727,13 +15727,13 @@ Message from section two
     <Section name="Listing reporters" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
       <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/IntrospectiveTests/Reporters.tests.cpp" >
         <Original>
-          listingString, ContainsSubstring("fake reporter"s)
+          listingString, ContainsSubstring( "fake reporter"s ) &amp;&amp; ContainsSubstring( "fake description"s )
         </Original>
         <Expanded>
           "Available reporters:
   fake reporter:  fake description
 
-" contains: "fake reporter"
+" ( contains: "fake reporter" and contains: "fake description" )
         </Expanded>
       </Expression>
       <OverallResults successes="1" failures="0" expectedFailures="0"/>

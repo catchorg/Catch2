@@ -3335,7 +3335,7 @@ ok {test-number} - 1 == 2  # TODO
 # The default listing implementation write to provided stream
 ok {test-number} - listingString, ContainsSubstring("[fakeTag]"s) for: "All available tags:    1  [fakeTag] 1 tag  " contains: "[fakeTag]"
 # The default listing implementation write to provided stream
-ok {test-number} - listingString, ContainsSubstring("fake reporter"s) for: "Available reporters:   fake reporter:  fake description  " contains: "fake reporter"
+ok {test-number} - listingString, ContainsSubstring( "fake reporter"s ) && ContainsSubstring( "fake description"s ) for: "Available reporters:   fake reporter:  fake description  " ( contains: "fake reporter" and contains: "fake description" )
 # The default listing implementation write to provided stream
 ok {test-number} - listingString, ContainsSubstring( "fake test name"s ) && ContainsSubstring( "fakeTestTag"s ) for: "All available test cases:   fake test name       [fakeTestTag] 1 test case  " ( contains: "fake test name" and contains: "fakeTestTag" )
 # This test 'should' fail but doesn't

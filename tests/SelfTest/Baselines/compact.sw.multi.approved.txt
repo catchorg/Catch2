@@ -1881,10 +1881,10 @@ Reporters.tests.cpp:<line number>: passed: listingString, ContainsSubstring("[fa
 1 tag
 
 " contains: "[fakeTag]"
-Reporters.tests.cpp:<line number>: passed: listingString, ContainsSubstring("fake reporter"s) for: "Available reporters:
+Reporters.tests.cpp:<line number>: passed: listingString, ContainsSubstring( "fake reporter"s ) && ContainsSubstring( "fake description"s ) for: "Available reporters:
   fake reporter:  fake description
 
-" contains: "fake reporter"
+" ( contains: "fake reporter" and contains: "fake description" )
 Reporters.tests.cpp:<line number>: passed: listingString, ContainsSubstring( "fake test name"s ) && ContainsSubstring( "fakeTestTag"s ) for: "All available test cases:
   fake test name
       [fakeTestTag]
