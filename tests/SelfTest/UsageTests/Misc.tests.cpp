@@ -549,4 +549,4 @@ TEST_CASE("Validate SEH behavior - no crash for stack unwinding", "[approvals][!
     throw 1;
 }
 
-#endif
+#endif // CATCH_PLATFORM_WINDOWS
