@@ -3374,7 +3374,7 @@ C
         1, ( MatcherA() &amp;&amp; MatcherB() ) &amp;&amp; MatcherC()
       </Original>
       <Expanded>
-        1 ( equals: (int) 1 or (float) 1.0f and equals: (long long) 1 and equals: (T) 1 )
+        1 ( equals: (int) 1 or (string) "1" and equals: (long long) 1 and equals: (T) 1 )
       </Expanded>
     </Expression>
     <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
@@ -3382,7 +3382,7 @@ C
         1, MatcherA() &amp;&amp; ( MatcherB() &amp;&amp; MatcherC() )
       </Original>
       <Expanded>
-        1 ( equals: (int) 1 or (float) 1.0f and equals: (long long) 1 and equals: (T) 1 )
+        1 ( equals: (int) 1 or (string) "1" and equals: (long long) 1 and equals: (T) 1 )
       </Expanded>
     </Expression>
     <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
@@ -3390,7 +3390,7 @@ C
         1, ( MatcherA() &amp;&amp; MatcherB() ) &amp;&amp; ( MatcherC() &amp;&amp; MatcherD() )
       </Original>
       <Expanded>
-        1 ( equals: (int) 1 or (float) 1.0f and equals: (long long) 1 and equals: (T) 1 and equals: true )
+        1 ( equals: (int) 1 or (string) "1" and equals: (long long) 1 and equals: (T) 1 and equals: true )
       </Expanded>
     </Expression>
     <OverallResult success="true"/>
@@ -3401,7 +3401,7 @@ C
         1, ( MatcherA() || MatcherB() ) || MatcherC()
       </Original>
       <Expanded>
-        1 ( equals: (int) 1 or (float) 1.0f or equals: (long long) 1 or equals: (T) 1 )
+        1 ( equals: (int) 1 or (string) "1" or equals: (long long) 1 or equals: (T) 1 )
       </Expanded>
     </Expression>
     <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
@@ -3409,7 +3409,7 @@ C
         1, MatcherA() || ( MatcherB() || MatcherC() )
       </Original>
       <Expanded>
-        1 ( equals: (int) 1 or (float) 1.0f or equals: (long long) 1 or equals: (T) 1 )
+        1 ( equals: (int) 1 or (string) "1" or equals: (long long) 1 or equals: (T) 1 )
       </Expanded>
     </Expression>
     <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
@@ -3417,7 +3417,7 @@ C
         1, ( MatcherA() || MatcherB() ) || ( MatcherC() || MatcherD() )
       </Original>
       <Expanded>
-        1 ( equals: (int) 1 or (float) 1.0f or equals: (long long) 1 or equals: (T) 1 or equals: true )
+        1 ( equals: (int) 1 or (string) "1" or equals: (long long) 1 or equals: (T) 1 or equals: true )
       </Expanded>
     </Expression>
     <OverallResult success="true"/>
@@ -3428,7 +3428,7 @@ C
         0, !MatcherA()
       </Original>
       <Expanded>
-        0 not equals: (int) 1 or (float) 1.0f
+        0 not equals: (int) 1 or (string) "1"
       </Expanded>
     </Expression>
     <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
@@ -3436,7 +3436,7 @@ C
         1, !!MatcherA()
       </Original>
       <Expanded>
-        1 equals: (int) 1 or (float) 1.0f
+        1 equals: (int) 1 or (string) "1"
       </Expanded>
     </Expression>
     <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
@@ -3444,7 +3444,7 @@ C
         0, !!!MatcherA()
       </Original>
       <Expanded>
-        0 not equals: (int) 1 or (float) 1.0f
+        0 not equals: (int) 1 or (string) "1"
       </Expanded>
     </Expression>
     <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
@@ -3452,7 +3452,7 @@ C
         1, !!!!MatcherA()
       </Original>
       <Expanded>
-        1 equals: (int) 1 or (float) 1.0f
+        1 equals: (int) 1 or (string) "1"
       </Expanded>
     </Expression>
     <OverallResult success="true"/>
@@ -3466,7 +3466,7 @@ C
         1, MatcherA() || MatcherB()
       </Original>
       <Expanded>
-        1 ( equals: (int) 1 or (float) 1.0f or equals: (long long) 1 )
+        1 ( equals: (int) 1 or (string) "1" or equals: (long long) 1 )
       </Expanded>
     </Expression>
     <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
@@ -3474,7 +3474,7 @@ C
         1, MatcherA() &amp;&amp; MatcherB()
       </Original>
       <Expanded>
-        1 ( equals: (int) 1 or (float) 1.0f and equals: (long long) 1 )
+        1 ( equals: (int) 1 or (string) "1" and equals: (long long) 1 )
       </Expanded>
     </Expression>
     <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/UsageTests/Matchers.tests.cpp" >
@@ -3482,7 +3482,7 @@ C
         1, MatcherA() || !MatcherB()
       </Original>
       <Expanded>
-        1 ( equals: (int) 1 or (float) 1.0f or not equals: (long long) 1 )
+        1 ( equals: (int) 1 or (string) "1" or not equals: (long long) 1 )
       </Expanded>
     </Expression>
     <OverallResult success="true"/>

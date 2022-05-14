@@ -24,6 +24,10 @@ namespace Catch {
         namespace Detail {
             using sample = std::vector<double>;
 
+            // Used when we know we want == comparison of two doubles
+            // to centralize warning suppression
+            bool directCompare( double lhs, double rhs );
+
             double weighted_average_quantile(int k, int q, std::vector<double>::iterator first, std::vector<double>::iterator last);
 
             template <typename Iterator>
@@ -103,7 +107,9 @@ namespace Catch {
                 long n = static_cast<long>(resample.size());
                 double prob_n = std::count_if(resample.begin(), resample.end(), [point](double x) { return x < point; }) / static_cast<double>(n);
                 // degenerate case with uniform samples
-                if (prob_n == 0) return { point, point, point, confidence_level };
+                if ( directCompare( prob_n, 0. ) ) {
+                    return { point, point, point, confidence_level };
+                }
 
                 double bias = normal_quantile(prob_n);
                 double z1 = normal_quantile((1. - confidence_level) / 2.);

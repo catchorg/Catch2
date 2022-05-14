@@ -396,32 +396,32 @@ Using code: 0
 C
 "
 Matchers.tests.cpp:<line number>: passed: with 1 message: 'std::is_same< decltype( ( MatcherA() && MatcherB() ) && MatcherC() ), Catch::Matchers::Detail:: MatchAllOfGeneric<MatcherA, MatcherB, MatcherC>>::value'
-Matchers.tests.cpp:<line number>: passed: 1, ( MatcherA() && MatcherB() ) && MatcherC() for: 1 ( equals: (int) 1 or (float) 1.0f and equals: (long long) 1 and equals: (T) 1 )
+Matchers.tests.cpp:<line number>: passed: 1, ( MatcherA() && MatcherB() ) && MatcherC() for: 1 ( equals: (int) 1 or (string) "1" and equals: (long long) 1 and equals: (T) 1 )
 Matchers.tests.cpp:<line number>: passed: with 1 message: 'std::is_same< decltype( MatcherA() && ( MatcherB() && MatcherC() ) ), Catch::Matchers::Detail:: MatchAllOfGeneric<MatcherA, MatcherB, MatcherC>>::value'
-Matchers.tests.cpp:<line number>: passed: 1, MatcherA() && ( MatcherB() && MatcherC() ) for: 1 ( equals: (int) 1 or (float) 1.0f and equals: (long long) 1 and equals: (T) 1 )
+Matchers.tests.cpp:<line number>: passed: 1, MatcherA() && ( MatcherB() && MatcherC() ) for: 1 ( equals: (int) 1 or (string) "1" and equals: (long long) 1 and equals: (T) 1 )
 Matchers.tests.cpp:<line number>: passed: with 1 message: 'std::is_same< decltype( ( MatcherA() && MatcherB() ) && ( MatcherC() && MatcherD() ) ), Catch::Matchers::Detail:: MatchAllOfGeneric<MatcherA, MatcherB, MatcherC, MatcherD>>:: value'
-Matchers.tests.cpp:<line number>: passed: 1, ( MatcherA() && MatcherB() ) && ( MatcherC() && MatcherD() ) for: 1 ( equals: (int) 1 or (float) 1.0f and equals: (long long) 1 and equals: (T) 1 and equals: true )
+Matchers.tests.cpp:<line number>: passed: 1, ( MatcherA() && MatcherB() ) && ( MatcherC() && MatcherD() ) for: 1 ( equals: (int) 1 or (string) "1" and equals: (long long) 1 and equals: (T) 1 and equals: true )
 Matchers.tests.cpp:<line number>: passed: with 1 message: 'std::is_same< decltype( ( MatcherA() || MatcherB() ) || MatcherC() ), Catch::Matchers::Detail:: MatchAnyOfGeneric<MatcherA, MatcherB, MatcherC>>::value'
-Matchers.tests.cpp:<line number>: passed: 1, ( MatcherA() || MatcherB() ) || MatcherC() for: 1 ( equals: (int) 1 or (float) 1.0f or equals: (long long) 1 or equals: (T) 1 )
+Matchers.tests.cpp:<line number>: passed: 1, ( MatcherA() || MatcherB() ) || MatcherC() for: 1 ( equals: (int) 1 or (string) "1" or equals: (long long) 1 or equals: (T) 1 )
 Matchers.tests.cpp:<line number>: passed: with 1 message: 'std::is_same< decltype( MatcherA() || ( MatcherB() || MatcherC() ) ), Catch::Matchers::Detail:: MatchAnyOfGeneric<MatcherA, MatcherB, MatcherC>>::value'
-Matchers.tests.cpp:<line number>: passed: 1, MatcherA() || ( MatcherB() || MatcherC() ) for: 1 ( equals: (int) 1 or (float) 1.0f or equals: (long long) 1 or equals: (T) 1 )
+Matchers.tests.cpp:<line number>: passed: 1, MatcherA() || ( MatcherB() || MatcherC() ) for: 1 ( equals: (int) 1 or (string) "1" or equals: (long long) 1 or equals: (T) 1 )
 Matchers.tests.cpp:<line number>: passed: with 1 message: 'std::is_same< decltype( ( MatcherA() || MatcherB() ) || ( MatcherC() || MatcherD() ) ), Catch::Matchers::Detail:: MatchAnyOfGeneric<MatcherA, MatcherB, MatcherC, MatcherD>>:: value'
-Matchers.tests.cpp:<line number>: passed: 1, ( MatcherA() || MatcherB() ) || ( MatcherC() || MatcherD() ) for: 1 ( equals: (int) 1 or (float) 1.0f or equals: (long long) 1 or equals: (T) 1 or equals: true )
+Matchers.tests.cpp:<line number>: passed: 1, ( MatcherA() || MatcherB() ) || ( MatcherC() || MatcherD() ) for: 1 ( equals: (int) 1 or (string) "1" or equals: (long long) 1 or equals: (T) 1 or equals: true )
 Matchers.tests.cpp:<line number>: passed: with 1 message: 'std::is_same< decltype( !MatcherA() ), Catch::Matchers::Detail::MatchNotOfGeneric<MatcherA>>::value'
-Matchers.tests.cpp:<line number>: passed: 0, !MatcherA() for: 0 not equals: (int) 1 or (float) 1.0f
+Matchers.tests.cpp:<line number>: passed: 0, !MatcherA() for: 0 not equals: (int) 1 or (string) "1"
 Matchers.tests.cpp:<line number>: passed: with 1 message: 'std::is_same<decltype( !!MatcherA() ), MatcherA const&>::value'
-Matchers.tests.cpp:<line number>: passed: 1, !!MatcherA() for: 1 equals: (int) 1 or (float) 1.0f
+Matchers.tests.cpp:<line number>: passed: 1, !!MatcherA() for: 1 equals: (int) 1 or (string) "1"
 Matchers.tests.cpp:<line number>: passed: with 1 message: 'std::is_same< decltype( !!!MatcherA() ), Catch::Matchers::Detail::MatchNotOfGeneric<MatcherA>>::value'
-Matchers.tests.cpp:<line number>: passed: 0, !!!MatcherA() for: 0 not equals: (int) 1 or (float) 1.0f
+Matchers.tests.cpp:<line number>: passed: 0, !!!MatcherA() for: 0 not equals: (int) 1 or (string) "1"
 Matchers.tests.cpp:<line number>: passed: with 1 message: 'std::is_same<decltype( !!!!MatcherA() ), MatcherA const&>::value'
-Matchers.tests.cpp:<line number>: passed: 1, !!!!MatcherA() for: 1 equals: (int) 1 or (float) 1.0f
+Matchers.tests.cpp:<line number>: passed: 1, !!!!MatcherA() for: 1 equals: (int) 1 or (string) "1"
 Matchers.tests.cpp:<line number>: passed: with 1 message: 'std::is_same<decltype( StartsWith( "foo" ) || ( StartsWith( "bar" ) && EndsWith( "bar" ) && !EndsWith( "foo" ) ) ), Catch::Matchers::Detail::MatchAnyOf<std::string>>::value'
 Matchers.tests.cpp:<line number>: passed: with 1 message: 'std::is_same<decltype( MatcherA() || MatcherB() ), Catch::Matchers::Detail:: MatchAnyOfGeneric<MatcherA, MatcherB>>::value'
-Matchers.tests.cpp:<line number>: passed: 1, MatcherA() || MatcherB() for: 1 ( equals: (int) 1 or (float) 1.0f or equals: (long long) 1 )
+Matchers.tests.cpp:<line number>: passed: 1, MatcherA() || MatcherB() for: 1 ( equals: (int) 1 or (string) "1" or equals: (long long) 1 )
 Matchers.tests.cpp:<line number>: passed: with 1 message: 'std::is_same<decltype( MatcherA() && MatcherB() ), Catch::Matchers::Detail:: MatchAllOfGeneric<MatcherA, MatcherB>>::value'
-Matchers.tests.cpp:<line number>: passed: 1, MatcherA() && MatcherB() for: 1 ( equals: (int) 1 or (float) 1.0f and equals: (long long) 1 )
+Matchers.tests.cpp:<line number>: passed: 1, MatcherA() && MatcherB() for: 1 ( equals: (int) 1 or (string) "1" and equals: (long long) 1 )
 Matchers.tests.cpp:<line number>: passed: with 1 message: 'std::is_same< decltype( MatcherA() || !MatcherB() ), Catch::Matchers::Detail::MatchAnyOfGeneric< MatcherA, Catch::Matchers::Detail::MatchNotOfGeneric<MatcherB>>>::value'
-Matchers.tests.cpp:<line number>: passed: 1, MatcherA() || !MatcherB() for: 1 ( equals: (int) 1 or (float) 1.0f or not equals: (long long) 1 )
+Matchers.tests.cpp:<line number>: passed: 1, MatcherA() || !MatcherB() for: 1 ( equals: (int) 1 or (string) "1" or not equals: (long long) 1 )
 Matchers.tests.cpp:<line number>: passed: vec, Predicate<std::vector<int>>( []( auto const& v ) { return std::all_of( v.begin(), v.end(), []( int elem ) { return elem % 2 == 1; } ); }, "All elements are odd" ) && !EqualsRange( a ) for: { 1, 3, 5 } ( matches predicate: "All elements are odd" and not Equals: { 5, 3, 1 } )
 Matchers.tests.cpp:<line number>: passed: str, StartsWith( "foo" ) && EqualsRange( arr ) && EndsWith( "bar" ) for: "foobar" ( starts with: "foo" and Equals: { 'f', 'o', 'o', 'b', 'a', 'r' } and ends with: "bar" )
 Matchers.tests.cpp:<line number>: passed: str, StartsWith( "foo" ) && !EqualsRange( bad_arr ) && EndsWith( "bar" ) for: "foobar" ( starts with: "foo" and not Equals: { 'o', 'o', 'f', 'b', 'a', 'r' } and ends with: "bar" )

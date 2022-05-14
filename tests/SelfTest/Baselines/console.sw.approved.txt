@@ -3096,7 +3096,7 @@ with message:
 Matchers.tests.cpp:<line number>: PASSED:
   REQUIRE_THAT( 1, ( MatcherA() && MatcherB() ) && MatcherC() )
 with expansion:
-  1 ( equals: (int) 1 or (float) 1.0f and equals: (long long) 1 and equals: (T)
+  1 ( equals: (int) 1 or (string) "1" and equals: (long long) 1 and equals: (T)
   1 )
 
 Matchers.tests.cpp:<line number>: PASSED:
@@ -3107,7 +3107,7 @@ with message:
 Matchers.tests.cpp:<line number>: PASSED:
   REQUIRE_THAT( 1, MatcherA() && ( MatcherB() && MatcherC() ) )
 with expansion:
-  1 ( equals: (int) 1 or (float) 1.0f and equals: (long long) 1 and equals: (T)
+  1 ( equals: (int) 1 or (string) "1" and equals: (long long) 1 and equals: (T)
   1 )
 
 Matchers.tests.cpp:<line number>: PASSED:
@@ -3119,7 +3119,7 @@ with message:
 Matchers.tests.cpp:<line number>: PASSED:
   REQUIRE_THAT( 1, ( MatcherA() && MatcherB() ) && ( MatcherC() && MatcherD() ) )
 with expansion:
-  1 ( equals: (int) 1 or (float) 1.0f and equals: (long long) 1 and equals: (T)
+  1 ( equals: (int) 1 or (string) "1" and equals: (long long) 1 and equals: (T)
   1 and equals: true )
 
 -------------------------------------------------------------------------------
@@ -3136,7 +3136,7 @@ with message:
 Matchers.tests.cpp:<line number>: PASSED:
   REQUIRE_THAT( 1, ( MatcherA() || MatcherB() ) || MatcherC() )
 with expansion:
-  1 ( equals: (int) 1 or (float) 1.0f or equals: (long long) 1 or equals: (T) 1
+  1 ( equals: (int) 1 or (string) "1" or equals: (long long) 1 or equals: (T) 1
   )
 
 Matchers.tests.cpp:<line number>: PASSED:
@@ -3147,7 +3147,7 @@ with message:
 Matchers.tests.cpp:<line number>: PASSED:
   REQUIRE_THAT( 1, MatcherA() || ( MatcherB() || MatcherC() ) )
 with expansion:
-  1 ( equals: (int) 1 or (float) 1.0f or equals: (long long) 1 or equals: (T) 1
+  1 ( equals: (int) 1 or (string) "1" or equals: (long long) 1 or equals: (T) 1
   )
 
 Matchers.tests.cpp:<line number>: PASSED:
@@ -3159,7 +3159,7 @@ with message:
 Matchers.tests.cpp:<line number>: PASSED:
   REQUIRE_THAT( 1, ( MatcherA() || MatcherB() ) || ( MatcherC() || MatcherD() ) )
 with expansion:
-  1 ( equals: (int) 1 or (float) 1.0f or equals: (long long) 1 or equals: (T) 1
+  1 ( equals: (int) 1 or (string) "1" or equals: (long long) 1 or equals: (T) 1
   or equals: true )
 
 -------------------------------------------------------------------------------
@@ -3176,7 +3176,7 @@ with message:
 Matchers.tests.cpp:<line number>: PASSED:
   REQUIRE_THAT( 0, !MatcherA() )
 with expansion:
-  0 not equals: (int) 1 or (float) 1.0f
+  0 not equals: (int) 1 or (string) "1"
 
 Matchers.tests.cpp:<line number>: PASSED:
 with message:
@@ -3185,7 +3185,7 @@ with message:
 Matchers.tests.cpp:<line number>: PASSED:
   REQUIRE_THAT( 1, !!MatcherA() )
 with expansion:
-  1 equals: (int) 1 or (float) 1.0f
+  1 equals: (int) 1 or (string) "1"
 
 Matchers.tests.cpp:<line number>: PASSED:
 with message:
@@ -3195,7 +3195,7 @@ with message:
 Matchers.tests.cpp:<line number>: PASSED:
   REQUIRE_THAT( 0, !!!MatcherA() )
 with expansion:
-  0 not equals: (int) 1 or (float) 1.0f
+  0 not equals: (int) 1 or (string) "1"
 
 Matchers.tests.cpp:<line number>: PASSED:
 with message:
@@ -3204,7 +3204,7 @@ with message:
 Matchers.tests.cpp:<line number>: PASSED:
   REQUIRE_THAT( 1, !!!!MatcherA() )
 with expansion:
-  1 equals: (int) 1 or (float) 1.0f
+  1 equals: (int) 1 or (string) "1"
 
 -------------------------------------------------------------------------------
 Combining concrete matchers does not use templated matchers
@@ -3232,7 +3232,7 @@ with message:
 Matchers.tests.cpp:<line number>: PASSED:
   REQUIRE_THAT( 1, MatcherA() || MatcherB() )
 with expansion:
-  1 ( equals: (int) 1 or (float) 1.0f or equals: (long long) 1 )
+  1 ( equals: (int) 1 or (string) "1" or equals: (long long) 1 )
 
 Matchers.tests.cpp:<line number>: PASSED:
 with message:
@@ -3242,7 +3242,7 @@ with message:
 Matchers.tests.cpp:<line number>: PASSED:
   REQUIRE_THAT( 1, MatcherA() && MatcherB() )
 with expansion:
-  1 ( equals: (int) 1 or (float) 1.0f and equals: (long long) 1 )
+  1 ( equals: (int) 1 or (string) "1" and equals: (long long) 1 )
 
 Matchers.tests.cpp:<line number>: PASSED:
 with message:
@@ -3253,7 +3253,7 @@ with message:
 Matchers.tests.cpp:<line number>: PASSED:
   REQUIRE_THAT( 1, MatcherA() || !MatcherB() )
 with expansion:
-  1 ( equals: (int) 1 or (float) 1.0f or not equals: (long long) 1 )
+  1 ( equals: (int) 1 or (string) "1" or not equals: (long long) 1 )
 
 -------------------------------------------------------------------------------
 Combining templated and concrete matchers

@@ -7,6 +7,12 @@
 // SPDX-License-Identifier: BSL-1.0
 // Adapted from donated nonius code.
 
+
+#if defined( __GNUC__ ) || defined( __clang__ )
+#    pragma GCC diagnostic ignored "-Wfloat-equal"
+#endif
+
+
 #include <catch2/catch_test_macros.hpp>
 #include <catch2/catch_approx.hpp>
 #include <catch2/catch_config.hpp>
@@ -283,8 +289,8 @@ TEST_CASE("analyse", "[approvals][benchmark]") {
     }
 
     auto analysis = Catch::Benchmark::Detail::analyse(config, env, samples.begin(), samples.end());
-    CHECK(analysis.mean.point.count() == 23);
-    CHECK(analysis.mean.lower_bound.count() < 23);
+    CHECK( analysis.mean.point.count() == 23 );
+    CHECK( analysis.mean.lower_bound.count() < 23 );
     CHECK(analysis.mean.lower_bound.count() > 22);
     CHECK(analysis.mean.upper_bound.count() > 23);
     CHECK(analysis.mean.upper_bound.count() < 24);

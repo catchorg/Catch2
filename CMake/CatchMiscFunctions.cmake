@@ -56,6 +56,7 @@ function(add_warnings_to_targets targets)
           "-Wexit-time-destructors"
           "-Wextra"
           "-Wextra-semi"
+          "-Wfloat-equal"
           "-Wglobal-constructors"
           "-Winit-self"
           "-Wmisleading-indentation"

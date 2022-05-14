@@ -740,57 +740,57 @@ ok {test-number} - streamWrapper.str() == "Using code: 2\nA\nB\nUsing code: 0\nC
 # Combining MatchAllOfGeneric does not nest
 ok {test-number} - with 1 message: 'std::is_same< decltype( ( MatcherA() && MatcherB() ) && MatcherC() ), Catch::Matchers::Detail:: MatchAllOfGeneric<MatcherA, MatcherB, MatcherC>>::value'
 # Combining MatchAllOfGeneric does not nest
-ok {test-number} - 1, ( MatcherA() && MatcherB() ) && MatcherC() for: 1 ( equals: (int) 1 or (float) 1.0f and equals: (long long) 1 and equals: (T) 1 )
+ok {test-number} - 1, ( MatcherA() && MatcherB() ) && MatcherC() for: 1 ( equals: (int) 1 or (string) "1" and equals: (long long) 1 and equals: (T) 1 )
 # Combining MatchAllOfGeneric does not nest
 ok {test-number} - with 1 message: 'std::is_same< decltype( MatcherA() && ( MatcherB() && MatcherC() ) ), Catch::Matchers::Detail:: MatchAllOfGeneric<MatcherA, MatcherB, MatcherC>>::value'
 # Combining MatchAllOfGeneric does not nest
-ok {test-number} - 1, MatcherA() && ( MatcherB() && MatcherC() ) for: 1 ( equals: (int) 1 or (float) 1.0f and equals: (long long) 1 and equals: (T) 1 )
+ok {test-number} - 1, MatcherA() && ( MatcherB() && MatcherC() ) for: 1 ( equals: (int) 1 or (string) "1" and equals: (long long) 1 and equals: (T) 1 )
 # Combining MatchAllOfGeneric does not nest
 ok {test-number} - with 1 message: 'std::is_same< decltype( ( MatcherA() && MatcherB() ) && ( MatcherC() && MatcherD() ) ), Catch::Matchers::Detail:: MatchAllOfGeneric<MatcherA, MatcherB, MatcherC, MatcherD>>:: value'
 # Combining MatchAllOfGeneric does not nest
-ok {test-number} - 1, ( MatcherA() && MatcherB() ) && ( MatcherC() && MatcherD() ) for: 1 ( equals: (int) 1 or (float) 1.0f and equals: (long long) 1 and equals: (T) 1 and equals: true )
+ok {test-number} - 1, ( MatcherA() && MatcherB() ) && ( MatcherC() && MatcherD() ) for: 1 ( equals: (int) 1 or (string) "1" and equals: (long long) 1 and equals: (T) 1 and equals: true )
 # Combining MatchAnyOfGeneric does not nest
 ok {test-number} - with 1 message: 'std::is_same< decltype( ( MatcherA() || MatcherB() ) || MatcherC() ), Catch::Matchers::Detail:: MatchAnyOfGeneric<MatcherA, MatcherB, MatcherC>>::value'
 # Combining MatchAnyOfGeneric does not nest
-ok {test-number} - 1, ( MatcherA() || MatcherB() ) || MatcherC() for: 1 ( equals: (int) 1 or (float) 1.0f or equals: (long long) 1 or equals: (T) 1 )
+ok {test-number} - 1, ( MatcherA() || MatcherB() ) || MatcherC() for: 1 ( equals: (int) 1 or (string) "1" or equals: (long long) 1 or equals: (T) 1 )
 # Combining MatchAnyOfGeneric does not nest
 ok {test-number} - with 1 message: 'std::is_same< decltype( MatcherA() || ( MatcherB() || MatcherC() ) ), Catch::Matchers::Detail:: MatchAnyOfGeneric<MatcherA, MatcherB, MatcherC>>::value'
 # Combining MatchAnyOfGeneric does not nest
-ok {test-number} - 1, MatcherA() || ( MatcherB() || MatcherC() ) for: 1 ( equals: (int) 1 or (float) 1.0f or equals: (long long) 1 or equals: (T) 1 )
+ok {test-number} - 1, MatcherA() || ( MatcherB() || MatcherC() ) for: 1 ( equals: (int) 1 or (string) "1" or equals: (long long) 1 or equals: (T) 1 )
 # Combining MatchAnyOfGeneric does not nest
 ok {test-number} - with 1 message: 'std::is_same< decltype( ( MatcherA() || MatcherB() ) || ( MatcherC() || MatcherD() ) ), Catch::Matchers::Detail:: MatchAnyOfGeneric<MatcherA, MatcherB, MatcherC, MatcherD>>:: value'
 # Combining MatchAnyOfGeneric does not nest
-ok {test-number} - 1, ( MatcherA() || MatcherB() ) || ( MatcherC() || MatcherD() ) for: 1 ( equals: (int) 1 or (float) 1.0f or equals: (long long) 1 or equals: (T) 1 or equals: true )
+ok {test-number} - 1, ( MatcherA() || MatcherB() ) || ( MatcherC() || MatcherD() ) for: 1 ( equals: (int) 1 or (string) "1" or equals: (long long) 1 or equals: (T) 1 or equals: true )
 # Combining MatchNotOfGeneric does not nest
 ok {test-number} - with 1 message: 'std::is_same< decltype( !MatcherA() ), Catch::Matchers::Detail::MatchNotOfGeneric<MatcherA>>::value'
 # Combining MatchNotOfGeneric does not nest
-ok {test-number} - 0, !MatcherA() for: 0 not equals: (int) 1 or (float) 1.0f
+ok {test-number} - 0, !MatcherA() for: 0 not equals: (int) 1 or (string) "1"
 # Combining MatchNotOfGeneric does not nest
 ok {test-number} - with 1 message: 'std::is_same<decltype( !!MatcherA() ), MatcherA const&>::value'
 # Combining MatchNotOfGeneric does not nest
-ok {test-number} - 1, !!MatcherA() for: 1 equals: (int) 1 or (float) 1.0f
+ok {test-number} - 1, !!MatcherA() for: 1 equals: (int) 1 or (string) "1"
 # Combining MatchNotOfGeneric does not nest
 ok {test-number} - with 1 message: 'std::is_same< decltype( !!!MatcherA() ), Catch::Matchers::Detail::MatchNotOfGeneric<MatcherA>>::value'
 # Combining MatchNotOfGeneric does not nest
-ok {test-number} - 0, !!!MatcherA() for: 0 not equals: (int) 1 or (float) 1.0f
+ok {test-number} - 0, !!!MatcherA() for: 0 not equals: (int) 1 or (string) "1"
 # Combining MatchNotOfGeneric does not nest
 ok {test-number} - with 1 message: 'std::is_same<decltype( !!!!MatcherA() ), MatcherA const&>::value'
 # Combining MatchNotOfGeneric does not nest
-ok {test-number} - 1, !!!!MatcherA() for: 1 equals: (int) 1 or (float) 1.0f
+ok {test-number} - 1, !!!!MatcherA() for: 1 equals: (int) 1 or (string) "1"
 # Combining concrete matchers does not use templated matchers
 ok {test-number} - with 1 message: 'std::is_same<decltype( StartsWith( "foo" ) || ( StartsWith( "bar" ) && EndsWith( "bar" ) && !EndsWith( "foo" ) ) ), Catch::Matchers::Detail::MatchAnyOf<std::string>>::value'
 # Combining only templated matchers
 ok {test-number} - with 1 message: 'std::is_same<decltype( MatcherA() || MatcherB() ), Catch::Matchers::Detail:: MatchAnyOfGeneric<MatcherA, MatcherB>>::value'
 # Combining only templated matchers
-ok {test-number} - 1, MatcherA() || MatcherB() for: 1 ( equals: (int) 1 or (float) 1.0f or equals: (long long) 1 )
+ok {test-number} - 1, MatcherA() || MatcherB() for: 1 ( equals: (int) 1 or (string) "1" or equals: (long long) 1 )
 # Combining only templated matchers
 ok {test-number} - with 1 message: 'std::is_same<decltype( MatcherA() && MatcherB() ), Catch::Matchers::Detail:: MatchAllOfGeneric<MatcherA, MatcherB>>::value'
 # Combining only templated matchers
-ok {test-number} - 1, MatcherA() && MatcherB() for: 1 ( equals: (int) 1 or (float) 1.0f and equals: (long long) 1 )
+ok {test-number} - 1, MatcherA() && MatcherB() for: 1 ( equals: (int) 1 or (string) "1" and equals: (long long) 1 )
 # Combining only templated matchers
 ok {test-number} - with 1 message: 'std::is_same< decltype( MatcherA() || !MatcherB() ), Catch::Matchers::Detail::MatchAnyOfGeneric< MatcherA, Catch::Matchers::Detail::MatchNotOfGeneric<MatcherB>>>::value'
 # Combining only templated matchers
-ok {test-number} - 1, MatcherA() || !MatcherB() for: 1 ( equals: (int) 1 or (float) 1.0f or not equals: (long long) 1 )
+ok {test-number} - 1, MatcherA() || !MatcherB() for: 1 ( equals: (int) 1 or (string) "1" or not equals: (long long) 1 )
 # Combining templated and concrete matchers
 ok {test-number} - vec, Predicate<std::vector<int>>( []( auto const& v ) { return std::all_of( v.begin(), v.end(), []( int elem ) { return elem % 2 == 1; } ); }, "All elements are odd" ) && !EqualsRange( a ) for: { 1, 3, 5 } ( matches predicate: "All elements are odd" and not Equals: { 5, 3, 1 } )
 # Combining templated and concrete matchers

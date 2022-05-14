@@ -10,6 +10,7 @@
 
 #include <catch2/internal/catch_polyfills.hpp>
 
+#include <cassert>
 #include <cmath>
 #include <cstdint>
 #include <utility>
@@ -23,6 +24,15 @@ namespace Catch {
 
     } // end namespace Detail
 
+
+
+#if defined( __GNUC__ ) || defined( __clang__ )
+#    pragma GCC diagnostic push
+    // We do a bunch of direct compensations of floating point numbers,
+    // because we know what we are doing and actually do want the direct
+    // comparison behaviour.
+#    pragma GCC diagnostic ignored "-Wfloat-equal"
+#endif
 
     /**
      * Calculates the ULP distance between two floating point numbers
@@ -82,6 +92,11 @@ namespace Catch {
 
         return lc - rc;
     }
+
+#if defined( __GNUC__ ) || defined( __clang__ )
+#    pragma GCC diagnostic pop
+#endif
+
 
 } // end namespace Catch
 

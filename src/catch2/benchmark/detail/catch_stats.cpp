@@ -137,6 +137,15 @@ namespace Catch {
     namespace Benchmark {
         namespace Detail {
 
+#if defined( __GNUC__ ) || defined( __clang__ )
+#    pragma GCC diagnostic push
+#    pragma GCC diagnostic ignored "-Wfloat-equal"
+#endif
+            bool directCompare( double lhs, double rhs ) { return lhs == rhs; }
+#if defined( __GNUC__ ) || defined( __clang__ )
+#    pragma GCC diagnostic pop
+#endif
+
             double weighted_average_quantile(int k, int q, std::vector<double>::iterator first, std::vector<double>::iterator last) {
                 auto count = last - first;
                 double idx = (count - 1) * k / static_cast<double>(q);
@@ -144,7 +153,9 @@ namespace Catch {
                 double g = idx - j;
                 std::nth_element(first, first + j, last);
                 auto xj = first[j];
-                if (g == 0) return xj;
+                if ( directCompare( g, 0 ) ) {
+                    return xj;
+                }
 
                 auto xj1 = *std::min_element(first + (j + 1), last);
                 return xj + g * (xj1 - xj);
