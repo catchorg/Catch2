@@ -47,7 +47,8 @@ namespace Catch {
     void ReporterRegistry::registerReporter( std::string const& name, IReporterFactoryPtr factory ) {
         CATCH_ENFORCE( name.find( "::" ) == name.npos,
                        "'::' is not allowed in reporter name: '" + name + '\'' );
-        m_factories.emplace(name, CATCH_MOVE(factory));
+        auto ret = m_factories.emplace(name, CATCH_MOVE(factory));
+        CATCH_ENFORCE( ret.second, "reporter using '" + name + "' as name was already registered" );
     }
     void ReporterRegistry::registerListener(
         Detail::unique_ptr<EventListenerFactory> factory ) {

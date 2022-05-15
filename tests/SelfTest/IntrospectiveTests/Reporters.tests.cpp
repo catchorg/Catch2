@@ -312,3 +312,18 @@ TEST_CASE("Registering reporter with '::' in name fails",
         Catch::Detail::make_unique<TestReporterFactory>() ),
         "'::' is not allowed in reporter name: 'with::doublecolons'" );
 }
+
+TEST_CASE("Registering multiple reporters with the same name fails",
+          "[reporters][registration][approvals]") {
+    Catch::ReporterRegistry registry;
+
+    registry.registerReporter(
+        "some-reporter-name",
+        Catch::Detail::make_unique<TestReporterFactory>() );
+
+    REQUIRE_THROWS_WITH(
+        registry.registerReporter(
+            "some-reporter-name",
+            Catch::Detail::make_unique<TestReporterFactory>() ),
+        "reporter using 'some-reporter-name' as name was already registered" );
+}
