@@ -12,6 +12,7 @@
 #include <catch2/interfaces/catch_interfaces_reporter.hpp>
 #include <catch2/interfaces/catch_interfaces_reporter_factory.hpp>
 #include <catch2/internal/catch_compiler_capabilities.hpp>
+#include <catch2/internal/catch_unique_name.hpp>
 #include <catch2/internal/catch_unique_ptr.hpp>
 #include <catch2/internal/catch_move_and_forward.hpp>
 #include <catch2/internal/catch_void_type.hpp>
@@ -21,6 +22,7 @@
 namespace Catch {
 
     namespace Detail {
+
         template <typename T, typename = void>
         struct has_description : std::false_type {};
 
@@ -29,7 +31,13 @@ namespace Catch {
             T,
             void_t<decltype( T::getDescription() )>>
             : std::true_type {};
-    }
+
+        //! Indirection for reporter registration, so that the error handling is
+        //! independent on the reporter's concrete type
+        void registerReporterImpl( std::string const& name,
+                                   IReporterFactoryPtr reporterPtr );
+
+    } // namespace Detail
 
     class IEventListener;
     using IEventListenerPtr = Detail::unique_ptr<IEventListener>;
@@ -51,7 +59,8 @@ namespace Catch {
     class ReporterRegistrar {
     public:
         explicit ReporterRegistrar( std::string const& name ) {
-            getMutableRegistryHub().registerReporter( name, Detail::make_unique<ReporterFactory<T>>() );
+            registerReporterImpl( name,
+                                  Detail::make_unique<ReporterFactory<T>>() );
         }
     };
 
@@ -95,17 +104,24 @@ namespace Catch {
 
 #if !defined(CATCH_CONFIG_DISABLE)
 
-#define CATCH_REGISTER_REPORTER( name, reporterType ) \
-    CATCH_INTERNAL_START_WARNINGS_SUPPRESSION         \
-    CATCH_INTERNAL_SUPPRESS_GLOBALS_WARNINGS          \
-    namespace{ Catch::ReporterRegistrar<reporterType> catch_internal_RegistrarFor##reporterType( name ); } \
-    CATCH_INTERNAL_STOP_WARNINGS_SUPPRESSION
+#    define CATCH_REGISTER_REPORTER( name, reporterType )                      \
+        CATCH_INTERNAL_START_WARNINGS_SUPPRESSION                              \
+        CATCH_INTERNAL_SUPPRESS_GLOBALS_WARNINGS                               \
+        namespace {                                                            \
+            Catch::ReporterRegistrar<reporterType> INTERNAL_CATCH_UNIQUE_NAME( \
+                catch_internal_RegistrarFor )( name );                         \
+        }                                                                      \
+        CATCH_INTERNAL_STOP_WARNINGS_SUPPRESSION
 
-#define CATCH_REGISTER_LISTENER( listenerType ) \
-    CATCH_INTERNAL_START_WARNINGS_SUPPRESSION   \
-    CATCH_INTERNAL_SUPPRESS_GLOBALS_WARNINGS    \
-    namespace { Catch::ListenerRegistrar<listenerType> catch_internal_RegistrarFor##listenerType(#listenerType); } \
-    CATCH_INTERNAL_STOP_WARNINGS_SUPPRESSION
+#    define CATCH_REGISTER_LISTENER( listenerType )                            \
+        CATCH_INTERNAL_START_WARNINGS_SUPPRESSION                              \
+        CATCH_INTERNAL_SUPPRESS_GLOBALS_WARNINGS                               \
+        namespace {                                                            \
+            Catch::ListenerRegistrar<listenerType> INTERNAL_CATCH_UNIQUE_NAME( \
+                catch_internal_RegistrarFor )( #listenerType );                \
+        }                                                                      \
+        CATCH_INTERNAL_STOP_WARNINGS_SUPPRESSION
+
 #else // CATCH_CONFIG_DISABLE
 
 #define CATCH_REGISTER_REPORTER(name, reporterType)

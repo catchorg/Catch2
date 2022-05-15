@@ -120,7 +120,6 @@ set(INTERNAL_HEADERS
     ${SOURCES_DIR}/internal/catch_preprocessor_remove_parens.hpp
     ${SOURCES_DIR}/internal/catch_random_number_generator.hpp
     ${SOURCES_DIR}/internal/catch_random_seed_generation.hpp
-    ${SOURCES_DIR}/reporters/catch_reporter_registrars.hpp
     ${SOURCES_DIR}/internal/catch_reporter_registry.hpp
     ${SOURCES_DIR}/internal/catch_reporter_spec_parser.hpp
     ${SOURCES_DIR}/internal/catch_result_type.hpp
@@ -237,6 +236,7 @@ set(REPORTER_HEADERS
     ${SOURCES_DIR}/reporters/catch_reporter_helpers.hpp
     ${SOURCES_DIR}/reporters/catch_reporter_junit.hpp
     ${SOURCES_DIR}/reporters/catch_reporter_multi.hpp
+    ${SOURCES_DIR}/reporters/catch_reporter_registrars.hpp
     ${SOURCES_DIR}/reporters/catch_reporter_sonarqube.hpp
     ${SOURCES_DIR}/reporters/catch_reporter_streaming_base.hpp
     ${SOURCES_DIR}/reporters/catch_reporter_tap.hpp
@@ -252,6 +252,7 @@ set(REPORTER_SOURCES
     ${SOURCES_DIR}/reporters/catch_reporter_cumulative_base.cpp
     ${SOURCES_DIR}/reporters/catch_reporter_junit.cpp
     ${SOURCES_DIR}/reporters/catch_reporter_multi.cpp
+    ${SOURCES_DIR}/reporters/catch_reporter_registrars.cpp
     ${SOURCES_DIR}/reporters/catch_reporter_sonarqube.cpp
     ${SOURCES_DIR}/reporters/catch_reporter_streaming_base.cpp
     ${SOURCES_DIR}/reporters/catch_reporter_tap.cpp

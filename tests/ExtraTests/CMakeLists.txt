@@ -421,6 +421,20 @@ set_tests_properties(
     FAIL_REGULAR_EXPRESSION "error: .* already defined\\."
 )
 
+
+add_executable(DuplicatedReporters ${TESTS_DIR}/X35-DuplicatedReporterNames.cpp)
+target_link_libraries(DuplicatedReporters PRIVATE Catch2::Catch2WithMain)
+add_test(
+  NAME Reporters::RegistrationErrorsAreCaught
+  COMMAND $<TARGET_FILE:DuplicatedReporters>
+)
+set_tests_properties(
+    Reporters::RegistrationErrorsAreCaught
+  PROPERTIES
+    PASS_REGULAR_EXPRESSION "Errors occurred during startup!"
+)
+
+
 #add_executable(DebugBreakMacros ${TESTS_DIR}/X12-CustomDebugBreakMacro.cpp)
 #target_link_libraries(DebugBreakMacros Catch2)
 #add_test(NAME DebugBreakMacros COMMAND DebugBreakMacros --break)
