@@ -127,9 +127,9 @@ def performUpdates(version):
     version.updateVersionFile()
     updateVersionDefine(version)
 
-    import generateAmalgamatedFile
-    generateAmalgamatedFile.generate_header()
-    generateAmalgamatedFile.generate_cpp()
+    import generateAmalgamatedFiles
+    generateAmalgamatedFiles.generate_header()
+    generateAmalgamatedFiles.generate_cpp()
 
     updateCmakeFile(version)
     updateDocumentationVersionPlaceholders(version)
