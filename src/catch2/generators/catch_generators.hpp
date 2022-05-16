@@ -8,6 +8,7 @@
 #ifndef CATCH_GENERATORS_HPP_INCLUDED
 #define CATCH_GENERATORS_HPP_INCLUDED
 
+#include <catch2/catch_tostring.hpp>
 #include <catch2/interfaces/catch_interfaces_generatortracker.hpp>
 #include <catch2/internal/catch_source_line_info.hpp>
 #include <catch2/internal/catch_stringref.hpp>
@@ -32,6 +33,10 @@ namespace Detail {
 
     template<typename T>
     class IGenerator : public GeneratorUntypedBase {
+        std::string stringifyImpl() const override {
+            return ::Catch::Detail::stringify( get() );
+        }
+
     public:
         ~IGenerator() override = default;
         IGenerator() = default;

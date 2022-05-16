@@ -184,6 +184,7 @@ set(IMPL_SOURCES
     ${SOURCES_DIR}/internal/catch_istream.cpp
     ${SOURCES_DIR}/generators/internal/catch_generators_combined_tu.cpp
     ${SOURCES_DIR}/interfaces/catch_interfaces_combined_tu.cpp
+    ${SOURCES_DIR}/interfaces/catch_interfaces_generatortracker.cpp
     ${SOURCES_DIR}/interfaces/catch_interfaces_reporter.cpp
     ${SOURCES_DIR}/internal/catch_list.cpp
     ${SOURCES_DIR}/matchers/catch_matchers_floating_point.cpp

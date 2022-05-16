@@ -424,3 +424,92 @@ TEST_CASE("Generators count returned elements", "[generators][approvals]") {
     REQUIRE_FALSE( generator.countedNext() );
     REQUIRE( generator.currentElementIndex() == 2 );
 }
+
+TEST_CASE( "Generators can stringify their elements",
+           "[generators][approvals]" ) {
+    auto generator =
+        Catch::Generators::FixedValuesGenerator<int>( { 1, 2, 3 } );
+
+    REQUIRE( generator.currentElementAsString() == "1"_catch_sr );
+    REQUIRE( generator.countedNext() );
+    REQUIRE( generator.currentElementAsString() == "2"_catch_sr );
+    REQUIRE( generator.countedNext() );
+    REQUIRE( generator.currentElementAsString() == "3"_catch_sr );
+}
+
+namespace {
+    class CustomStringifyGenerator
+        : public Catch::Generators::IGenerator<bool> {
+        bool m_first = true;
+
+        std::string stringifyImpl() const override {
+            return m_first ? "first" : "second";
+        }
+
+        bool next() override {
+            if ( m_first ) {
+                m_first = false;
+                return true;
+            }
+            return false;
+        }
+
+    public:
+        bool const& get() const override;
+    };
+
+    // Avoids -Wweak-vtables
+    bool const& CustomStringifyGenerator::get() const { return m_first; }
+} // namespace
+
+TEST_CASE( "Generators can override element stringification",
+           "[generators][approvals]" ) {
+    CustomStringifyGenerator generator;
+    REQUIRE( generator.currentElementAsString() == "first"_catch_sr );
+    REQUIRE( generator.countedNext() );
+    REQUIRE( generator.currentElementAsString() == "second"_catch_sr );
+}
+
+namespace {
+    class StringifyCountingGenerator
+        : public Catch::Generators::IGenerator<bool> {
+        bool m_first = true;
+        mutable size_t m_stringificationCalls = 0;
+
+        std::string stringifyImpl() const override {
+            ++m_stringificationCalls;
+            return m_first ? "first" : "second";
+        }
+
+        bool next() override {
+            if ( m_first ) {
+                m_first = false;
+                return true;
+            }
+            return false;
+        }
+
+    public:
+
+        bool const& get() const override;
+        size_t stringificationCalls() const { return m_stringificationCalls; }
+    };
+
+    // Avoids -Wweak-vtables
+    bool const& StringifyCountingGenerator::get() const { return m_first; }
+
+} // namespace
+
+TEST_CASE( "Generator element stringification is cached",
+           "[generators][approvals]" ) {
+    StringifyCountingGenerator generator;
+    REQUIRE( generator.currentElementAsString() == "first"_catch_sr );
+    REQUIRE( generator.currentElementAsString() == "first"_catch_sr );
+    REQUIRE( generator.currentElementAsString() == "first"_catch_sr );
+    REQUIRE( generator.currentElementAsString() == "first"_catch_sr );
+    REQUIRE( generator.currentElementAsString() == "first"_catch_sr );
+
+    REQUIRE( generator.stringificationCalls() == 1 );
+}
+
+// caching?
