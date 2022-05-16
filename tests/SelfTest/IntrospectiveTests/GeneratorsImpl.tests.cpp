@@ -511,5 +511,3 @@ TEST_CASE( "Generator element stringification is cached",
 
     REQUIRE( generator.stringificationCalls() == 1 );
 }
-
-// caching?
