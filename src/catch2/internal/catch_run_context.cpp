@@ -143,7 +143,7 @@ namespace Catch {
                 // this generator is still waiting for any child to start.
                 if ( should_wait_for_child ||
                      ( m_runState == CompletedSuccessfully &&
-                       m_generator->next() ) ) {
+                       m_generator->countedNext() ) ) {
                     m_children.clear();
                     m_runState = Executing;
                 }

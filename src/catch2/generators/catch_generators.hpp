@@ -64,7 +64,7 @@ namespace Detail {
             return m_generator->get();
         }
         bool next() {
-            return m_generator->next();
+            return m_generator->countedNext();
         }
     };
 

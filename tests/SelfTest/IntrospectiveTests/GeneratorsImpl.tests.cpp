@@ -413,3 +413,14 @@ TEST_CASE("GENERATE decays arrays", "[generators][compilation][approvals]") {
     auto str = GENERATE("abc", "def", "gh");
     STATIC_REQUIRE(std::is_same<decltype(str), const char*>::value);
 }
+
+TEST_CASE("Generators count returned elements", "[generators][approvals]") {
+    auto generator = Catch::Generators::FixedValuesGenerator<int>( { 1, 2, 3 } );
+    REQUIRE( generator.currentElementIndex() == 0 );
+    REQUIRE( generator.countedNext() );
+    REQUIRE( generator.currentElementIndex() == 1 );
+    REQUIRE( generator.countedNext() );
+    REQUIRE( generator.currentElementIndex() == 2 );
+    REQUIRE_FALSE( generator.countedNext() );
+    REQUIRE( generator.currentElementIndex() == 2 );
+}

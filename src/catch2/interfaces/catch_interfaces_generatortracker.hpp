@@ -14,6 +14,17 @@ namespace Catch {
 
     namespace Generators {
         class GeneratorUntypedBase {
+            // Counts based on `next` returning true
+            std::size_t m_currentElementIndex = 0;
+
+            /**
+             * Attempts to move the generator to the next element
+             *
+             * Returns true iff the move succeeded (and a valid element
+             * can be retrieved).
+             */
+            virtual bool next() = 0;
+
         public:
             GeneratorUntypedBase() = default;
             // Generation of copy ops is deprecated (and Clang will complain)
@@ -23,11 +34,25 @@ namespace Catch {
 
             virtual ~GeneratorUntypedBase(); // = default;
 
-            // Attempts to move the generator to the next element
-            //
-            // Returns true iff the move succeeded (and a valid element
-            // can be retrieved).
-            virtual bool next() = 0;
+            /**
+             * Attempts to move the generator to the next element
+             *
+             * Serves as a non-virtual interface to `next`, so that the
+             * top level interface can provide sanity checking and shared
+             * features.
+             *
+             * As with `next`, returns true iff the move succeeded and
+             * the generator has new valid element to provide.
+             */
+            bool countedNext() {
+                auto ret = next();
+                if ( ret ) {
+                    ++m_currentElementIndex;
+                }
+                return ret;
+            }
+
+            std::size_t currentElementIndex() const { return m_currentElementIndex; }
         };
         using GeneratorBasePtr = Catch::Detail::unique_ptr<GeneratorUntypedBase>;
 
