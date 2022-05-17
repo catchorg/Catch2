@@ -16,16 +16,21 @@
 
 namespace Catch {
 namespace Generators {
+namespace Detail {
+    // Returns a suitable seed for a random floating generator based off
+    // the primary internal rng. It does so by taking current value from
+    // the rng and returning it as the seed.
+    std::uint32_t getSeed();
+}
 
 template <typename Float>
 class RandomFloatingGenerator final : public IGenerator<Float> {
-    Catch::SimplePcg32& m_rng;
+    Catch::SimplePcg32 m_rng;
     std::uniform_real_distribution<Float> m_dist;
     Float m_current_number;
 public:
-
-    RandomFloatingGenerator(Float a, Float b):
-        m_rng(sharedRng()),
+    RandomFloatingGenerator( Float a, Float b, std::uint32_t seed ):
+        m_rng(seed),
         m_dist(a, b) {
         static_cast<void>(next());
     }
@@ -41,13 +46,12 @@ public:
 
 template <typename Integer>
 class RandomIntegerGenerator final : public IGenerator<Integer> {
-    Catch::SimplePcg32& m_rng;
+    Catch::SimplePcg32 m_rng;
     std::uniform_int_distribution<Integer> m_dist;
     Integer m_current_number;
 public:
-
-    RandomIntegerGenerator(Integer a, Integer b):
-        m_rng(sharedRng()),
+    RandomIntegerGenerator( Integer a, Integer b, std::uint32_t seed ):
+        m_rng(seed),
         m_dist(a, b) {
         static_cast<void>(next());
     }
@@ -68,7 +72,7 @@ std::enable_if_t<std::is_integral<T>::value && !std::is_same<T, bool>::value,
 GeneratorWrapper<T>>
 random(T a, T b) {
     return GeneratorWrapper<T>(
-        Catch::Detail::make_unique<RandomIntegerGenerator<T>>(a, b)
+        Catch::Detail::make_unique<RandomIntegerGenerator<T>>(a, b, Detail::getSeed())
     );
 }
 
@@ -77,7 +81,7 @@ std::enable_if_t<std::is_floating_point<T>::value,
 GeneratorWrapper<T>>
 random(T a, T b) {
     return GeneratorWrapper<T>(
-        Catch::Detail::make_unique<RandomFloatingGenerator<T>>(a, b)
+        Catch::Detail::make_unique<RandomFloatingGenerator<T>>(a, b, Detail::getSeed())
     );
 }
 

@@ -222,6 +222,7 @@ set(IMPL_SOURCES
     ${SOURCES_DIR}/internal/catch_wildcard_pattern.cpp
     ${SOURCES_DIR}/internal/catch_xmlwriter.cpp
     ${SOURCES_DIR}/internal/catch_test_case_info_hasher.cpp
+    ${SOURCES_DIR}/generators/catch_generators_random.cpp
 )
 set(INTERNAL_FILES ${IMPL_SOURCES} ${INTERNAL_HEADERS})
 

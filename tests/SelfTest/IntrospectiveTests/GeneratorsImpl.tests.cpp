@@ -511,3 +511,26 @@ TEST_CASE( "Generator element stringification is cached",
 
     REQUIRE( generator.stringificationCalls() == 1 );
 }
+
+TEST_CASE( "Random generators can be seeded", "[generators][approvals]" ) {
+    SECTION( "Integer generator" ) {
+        using Catch::Generators::RandomIntegerGenerator;
+        RandomIntegerGenerator<int> rng1( 0, 100, 0x1234 ),
+                                    rng2( 0, 100, 0x1234 );
+
+        for ( size_t i = 0; i < 10; ++i ) {
+            REQUIRE( rng1.get() == rng2.get() );
+            rng1.next(); rng2.next();
+        }
+    }
+    SECTION("Float generator") {
+        using Catch::Generators::RandomFloatingGenerator;
+        RandomFloatingGenerator<double> rng1( 0., 100., 0x1234 ),
+                                        rng2( 0., 100., 0x1234 );
+        for ( size_t i = 0; i < 10; ++i ) {
+            REQUIRE( rng1.get() == rng2.get() );
+            rng1.next();
+            rng2.next();
+        }
+    }
+}
