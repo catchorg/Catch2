@@ -193,6 +193,39 @@ namespace Catch {
         assert(rootTracker.isSectionTracker());
         static_cast<SectionTracker&>(rootTracker).addInitialFilters(m_config->getSectionsToRun());
 
+        // We intentionally only seed the internal RNG once per test case,
+        // before it is first invoked. The reason for that is a complex
+        // interplay of generator/section implementation details and the
+        // Random*Generator types.
+        //
+        // The issue boils down to us needing to seed the Random*Generators
+        // with different seed each, so that they return different sequences
+        // of random numbers. We do this by giving them a number from the
+        // shared RNG instance as their seed.
+        //
+        // However, this runs into an issue if the reseeding happens each
+        // time the test case is entered (as opposed to first time only),
+        // because multiple generators could get the same seed, e.g. in
+        // ```cpp
+        // TEST_CASE() {
+        //     auto i = GENERATE(take(10, random(0, 100));
+        //     SECTION("A") {
+        //         auto j = GENERATE(take(10, random(0, 100));
+        //     }
+        //     SECTION("B") {
+        //         auto k = GENERATE(take(10, random(0, 100));
+        //     }
+        // }
+        // ```
+        // `i` and `j` would properly return values from different sequences,
+        // but `i` and `k` would return the same sequence, because their seed
+        // would be the same.
+        // (The reason their seeds would be the same is that the generator
+        //  for k would be initialized when the test case is entered the second
+        //  time, after the shared RNG instance was reset to the same value
+        //  it had when the generator for i was initialized.)
+        seedRng( *m_config );
+
         uint64_t testRuns = 0;
         do {
             m_trackerContext.startCycle();
@@ -421,8 +454,6 @@ namespace Catch {
         double duration = 0;
         m_shouldReportUnexpected = true;
         m_lastAssertionInfo = { "TEST_CASE"_sr, testCaseInfo.lineInfo, StringRef(), ResultDisposition::Normal };
-
-        seedRng(*m_config);
 
         Timer timer;
         CATCH_TRY {
