@@ -82,8 +82,8 @@ class Version:
 def updateCmakeFile(version):
     with open(cmakePath, 'rb') as file:
         lines = file.readlines()
-    replacementRegex = re.compile(b'project\\(Catch2 LANGUAGES CXX VERSION \\d+\\.\\d+\\.\\d+\\)')
-    replacement = 'project(Catch2 LANGUAGES CXX VERSION {0})'.format(version.getVersionString()).encode('ascii')
+    replacementRegex = re.compile(b'''VERSION (\\d+.\\d+.\\d+) # CML version placeholder, don't delete''')
+    replacement = '''VERSION {0} # CML version placeholder, don't delete'''.format(version.getVersionString()).encode('ascii')
     with open(cmakePath, 'wb') as file:
         for line in lines:
             file.write(replacementRegex.sub(replacement, line))

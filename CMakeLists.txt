@@ -36,7 +36,13 @@ if(CMAKE_VERSION VERSION_GREATER 3.8)
 endif()
 
 
-project(Catch2 LANGUAGES CXX VERSION 3.0.0)
+project(Catch2
+  VERSION 3.0.0 # CML version placeholder, don't delete
+  LANGUAGES CXX
+  HOMEPAGE_URL "https://github.com/catchorg/Catch2"
+  DESCRIPTION "A modern, C++-native, unit test framework."
+)
+
 
 # Provide path for scripts. We first add path to the scripts we don't use,
 # but projects including us might, and set the path up to parent scope.
