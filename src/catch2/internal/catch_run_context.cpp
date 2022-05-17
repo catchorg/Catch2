@@ -599,7 +599,6 @@ namespace Catch {
 
     void seedRng(IConfig const& config) {
         if (config.rngSeed() != 0) {
-            std::srand(config.rngSeed());
             rng().seed(config.rngSeed());
         }
     }
