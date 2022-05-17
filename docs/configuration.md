@@ -101,7 +101,7 @@ is equivalent with the out-of-the-box experience.
 When `CATCH_CONFIG_BAZEL_SUPPORT` is defined, Catch2 will register a `JUnit`
 reporter writing to a path pointed by `XML_OUTPUT_FILE` provided by Bazel.
 
-> `CATCH_CONFIG_BAZEL_SUPPORT` was [introduced](https://github.com/catchorg/Catch2/pull/2399) in Catch2 X.Y.Z.
+> `CATCH_CONFIG_BAZEL_SUPPORT` was [introduced](https://github.com/catchorg/Catch2/pull/2399) in Catch2 3.0.1.
 
 ## C++11 toggles
 

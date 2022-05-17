@@ -37,7 +37,7 @@ endif()
 
 
 project(Catch2
-  VERSION 3.0.0 # CML version placeholder, don't delete
+  VERSION 3.0.1 # CML version placeholder, don't delete
   LANGUAGES CXX
   HOMEPAGE_URL "https://github.com/catchorg/Catch2"
   DESCRIPTION "A modern, C++-native, unit test framework."

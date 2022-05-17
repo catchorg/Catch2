@@ -56,7 +56,7 @@ are handled by a different event.
 
 ### `testCasePartial` events
 
-> Introduced in Catch2 X.Y.Z
+> Introduced in Catch2 3.0.1
 
 ```cpp
 void testCasePartialStarting( TestCaseInfo const& testInfo, uint64_t partNumber );
@@ -135,7 +135,7 @@ benchmarking itself fails.
 
 ## Listings events
 
-> Introduced in Catch2 X.Y.Z.
+> Introduced in Catch2 3.0.1.
 
 Listings events are events that correspond to the test binary being
 invoked with `--list-foo` flag. 

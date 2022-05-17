@@ -30,7 +30,7 @@ reporters](#multiple-reporters) to avoid any surprises from doing so.
 <a id="multiple-reporters"></a>
 ## Using multiple reporters
 
-> Support for having multiple parallel reporters was [introduced](https://github.com/catchorg/Catch2/pull/2183) in Catch2 X.Y.Z
+> Support for having multiple parallel reporters was [introduced](https://github.com/catchorg/Catch2/pull/2183) in Catch2 3.0.1
 
 Catch2 supports using multiple reporters at the same time while having
 them write into different destinations. The two main uses of this are
@@ -169,7 +169,7 @@ Currently there are two customization options:
 
 ### Per-reporter configuration
 
-> Per-reporter configuration was introduced in Catch2 X.Y.Z
+> Per-reporter configuration was introduced in Catch2 3.0.1
 
 Catch2 supports some configuration to happen per reporter. The configuration
 options fall into one of two categories:

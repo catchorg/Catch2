@@ -5,8 +5,8 @@
 
 // SPDX-License-Identifier: BSL-1.0
 
-//  Catch v3.0.0-preview.5
-//  Generated: 2022-04-20 23:45:15.004945
+//  Catch v3.0.1
+//  Generated: 2022-05-17 22:08:47.054486
 //  ----------------------------------------------------------
 //  This file is an amalgamation of multiple different files.
 //  You probably shouldn't edit it directly.
@@ -145,6 +145,15 @@ namespace Catch {
     namespace Benchmark {
         namespace Detail {
 
+#if defined( __GNUC__ ) || defined( __clang__ )
+#    pragma GCC diagnostic push
+#    pragma GCC diagnostic ignored "-Wfloat-equal"
+#endif
+            bool directCompare( double lhs, double rhs ) { return lhs == rhs; }
+#if defined( __GNUC__ ) || defined( __clang__ )
+#    pragma GCC diagnostic pop
+#endif
+
             double weighted_average_quantile(int k, int q, std::vector<double>::iterator first, std::vector<double>::iterator last) {
                 auto count = last - first;
                 double idx = (count - 1) * k / static_cast<double>(q);
@@ -152,7 +161,9 @@ namespace Catch {
                 double g = idx - j;
                 std::nth_element(first, first + j, last);
                 auto xj = first[j];
-                if (g == 0) return xj;
+                if ( directCompare( g, 0 ) ) {
+                    return xj;
+                }
 
                 auto xj1 = *std::min_element(first + (j + 1), last);
                 return xj + g * (xj1 - xj);
@@ -594,6 +605,7 @@ namespace Catch {
     bool Config::listTests() const          { return m_data.listTests; }
     bool Config::listTags() const           { return m_data.listTags; }
     bool Config::listReporters() const      { return m_data.listReporters; }
+    bool Config::listListeners() const      { return m_data.listListeners; }
 
     std::vector<std::string> const& Config::getTestsOrTags() const { return m_data.testsOrTags; }
     std::vector<std::string> const& Config::getSectionsToRun() const { return m_data.sectionsToRun; }
@@ -635,6 +647,7 @@ namespace Catch {
     bool Config::showInvisibles() const                { return m_data.showInvisibles; }
     Verbosity Config::verbosity() const                { return m_data.verbosity; }
 
+    bool Config::skipBenchmarks() const                           { return m_data.skipBenchmarks; }
     bool Config::benchmarkNoAnalysis() const                      { return m_data.benchmarkNoAnalysis; }
     unsigned int Config::benchmarkSamples() const                 { return m_data.benchmarkSamples; }
     double Config::benchmarkConfidenceInterval() const            { return m_data.benchmarkConfidenceInterval; }
@@ -1215,7 +1228,7 @@ namespace Catch {
             else if( tag == "!nonportable"_sr )
                 return TestCaseProperties::NonPortable;
             else if( tag == "!benchmark"_sr )
-                return static_cast<TestCaseProperties>(TestCaseProperties::Benchmark | TestCaseProperties::IsHidden );
+                return TestCaseProperties::Benchmark | TestCaseProperties::IsHidden;
             else
                 return TestCaseProperties::None;
         }
@@ -1860,11 +1873,17 @@ namespace Catch {
     }
 
     Version const& libraryVersion() {
-        static Version version( 3, 0, 0, "preview", 5 );
+        static Version version( 3, 0, 1, "", 0 );
         return version;
     }
 
 }
+
+
+
+
+
+std::uint32_t Catch::Generators::Detail::getSeed() { return sharedRng()(); }
 
 
 /** \file
@@ -1998,6 +2017,32 @@ namespace Catch {
     IReporterFactory::~IReporterFactory() = default;
     EventListenerFactory::~EventListenerFactory() = default;
 }
+
+
+
+#include <string>
+
+namespace Catch {
+    namespace Generators {
+
+        bool GeneratorUntypedBase::countedNext() {
+            auto ret = next();
+            if ( ret ) {
+                m_stringReprCache.clear();
+                ++m_currentElementIndex;
+            }
+            return ret;
+        }
+
+        StringRef GeneratorUntypedBase::currentElementAsString() const {
+            if ( m_stringReprCache.empty() ) {
+                m_stringReprCache = stringifyImpl();
+            }
+            return m_stringReprCache;
+        }
+
+    } // namespace Generators
+} // namespace Catch
 
 
 
@@ -2412,7 +2457,7 @@ namespace Catch {
                             return Detail::InternalParseResult::runtimeError(
                                 "Expected argument following " +
                                 token.token);
-                        auto result = valueRef->setValue(argToken.token);
+                        const auto result = valueRef->setValue(argToken.token);
                         if (!result)
                             return Detail::InternalParseResult(result);
                         if (result.value() ==
@@ -3109,7 +3154,10 @@ namespace Catch {
                 ( "list all/matching tags" )
             | Opt( config.listReporters )
                 ["--list-reporters"]
-                ( "list all reporters" )
+                ( "list all available reporters" )
+            | Opt( config.listListeners )
+                ["--list-listeners"]
+                ( "list all listeners" )
             | Opt( setTestOrder, "decl|lex|rand" )
                 ["--order"]
                 ( "test case order (defaults to decl)" )
@@ -3125,6 +3173,9 @@ namespace Catch {
             | Opt( setWaitForKeypress, "never|start|exit|both" )
                 ["--wait-for-keypress"]
                 ( "waits for a keypress before exiting" )
+            | Opt( config.skipBenchmarks)
+                ["--skip-benchmarks"]
+                ( "disable running benchmarks")
             | Opt( config.benchmarkSamples, "samples" )
                 ["--benchmark-samples"]
                 ( "number of samples to collect (default: 100)" )
@@ -3230,7 +3281,6 @@ namespace Catch {
         class NoColourImpl : public ColourImpl {
         public:
             NoColourImpl( IStream* stream ): ColourImpl( stream ) {}
-            static bool useColourOnPlatform() { return true; }
 
         private:
             void use( Colour::Code ) const override {}
@@ -3257,7 +3307,7 @@ namespace {
             originalBackgroundAttributes = csbiInfo.wAttributes & ~( FOREGROUND_GREEN | FOREGROUND_RED | FOREGROUND_BLUE | FOREGROUND_INTENSITY );
         }
 
-        static bool useColourOnPlatform(IStream const& stream) {
+        static bool useImplementationForStream(IStream const& stream) {
             // Win32 text colour APIs can only be used on console streams
             // We cannot check that the output hasn't been redirected,
             // so we just check that the original stream is console stream.
@@ -3316,7 +3366,7 @@ namespace {
     public:
         ANSIColourImpl( IStream* stream ): ColourImpl( stream ) {}
 
-        static bool useColourOnPlatform(IStream const& stream) {
+        static bool useImplementationForStream(IStream const& stream) {
             // This is kinda messy due to trying to support a bunch of
             // different platforms at once.
             // The basic idea is that if we are asked to do autodetection (as
@@ -3390,13 +3440,13 @@ namespace Catch {
         // todo: check win32 eligibility under ifdef, otherwise ansi
         if ( implSelection == ColourMode::PlatformDefault) {
 #if defined (CATCH_CONFIG_COLOUR_WIN32)
-            if ( Win32ColourImpl::useColourOnPlatform( *stream ) ) {
+            if ( Win32ColourImpl::useImplementationForStream( *stream ) ) {
                 return Detail::make_unique<Win32ColourImpl>( stream );
             } else {
                 return Detail::make_unique<NoColourImpl>( stream );
             }
 #endif
-            if ( ANSIColourImpl::useColourOnPlatform( *stream ) ) {
+            if ( ANSIColourImpl::useImplementationForStream( *stream ) ) {
                 return Detail::make_unique<ANSIColourImpl>( stream );
             }
             return Detail::make_unique<NoColourImpl>( stream );
@@ -3475,7 +3525,7 @@ namespace Catch {
     Context::~Context() = default;
 
 
-    SimplePcg32& rng() {
+    SimplePcg32& sharedRng() {
         static SimplePcg32 s_rng;
         return s_rng;
     }
@@ -4079,7 +4129,7 @@ namespace Detail {
                 setp( data, data + sizeof(data) );
             }
 
-            ~StreamBufImpl() noexcept {
+            ~StreamBufImpl() noexcept override {
                 StreamBufImpl::sync();
             }
 
@@ -4250,6 +4300,19 @@ namespace Catch {
             reporter.listReporters(descriptions);
         }
 
+        void listListeners(IEventListener& reporter) {
+            std::vector<ListenerDescription> descriptions;
+
+            auto const& factories =
+                getRegistryHub().getReporterRegistry().getListeners();
+            descriptions.reserve( factories.size() );
+            for ( auto const& fac : factories ) {
+                descriptions.push_back( { fac->getName(), fac->getDescription() } );
+            }
+
+            reporter.listListeners( descriptions );
+        }
+
     } // end anonymous namespace
 
     void TagInfo::add( StringRef spelling ) {
@@ -4287,6 +4350,10 @@ namespace Catch {
             listed = true;
             listReporters(reporter);
         }
+        if ( config.listListeners() ) {
+            listed = true;
+            listListeners( reporter );
+        }
         return listed;
     }
 
@@ -4297,7 +4364,7 @@ namespace Catch {
 namespace Catch {
     CATCH_INTERNAL_START_WARNINGS_SUPPRESSION
     CATCH_INTERNAL_SUPPRESS_GLOBALS_WARNINGS
-    LeakDetector leakDetector;
+    static LeakDetector leakDetector;
     CATCH_INTERNAL_STOP_WARNINGS_SUPPRESSION
 }
 
@@ -4581,7 +4648,8 @@ namespace Catch {
     void ReporterRegistry::registerReporter( std::string const& name, IReporterFactoryPtr factory ) {
         CATCH_ENFORCE( name.find( "::" ) == name.npos,
                        "'::' is not allowed in reporter name: '" + name + '\'' );
-        m_factories.emplace(name, CATCH_MOVE(factory));
+        auto ret = m_factories.emplace(name, CATCH_MOVE(factory));
+        CATCH_ENFORCE( ret.second, "reporter using '" + name + "' as name was already registered" );
     }
     void ReporterRegistry::registerListener(
         Detail::unique_ptr<EventListenerFactory> factory ) {
@@ -4851,7 +4919,7 @@ namespace Catch {
             GeneratorTracker( TestCaseTracking::NameAndLocation const& nameAndLocation, TrackerContext& ctx, ITracker* parent )
             :   TrackerBase( nameAndLocation, ctx, parent )
             {}
-            ~GeneratorTracker();
+            ~GeneratorTracker() override;
 
             static GeneratorTracker& acquire( TrackerContext& ctx, TestCaseTracking::NameAndLocation const& nameAndLocation ) {
                 GeneratorTracker* tracker;
@@ -4962,7 +5030,7 @@ namespace Catch {
                 // this generator is still waiting for any child to start.
                 if ( should_wait_for_child ||
                      ( m_runState == CompletedSuccessfully &&
-                       m_generator->next() ) ) {
+                       m_generator->countedNext() ) ) {
                     m_children.clear();
                     m_runState = Executing;
                 }
@@ -5011,6 +5079,39 @@ namespace Catch {
         ITracker& rootTracker = m_trackerContext.startRun();
         assert(rootTracker.isSectionTracker());
         static_cast<SectionTracker&>(rootTracker).addInitialFilters(m_config->getSectionsToRun());
+
+        // We intentionally only seed the internal RNG once per test case,
+        // before it is first invoked. The reason for that is a complex
+        // interplay of generator/section implementation details and the
+        // Random*Generator types.
+        //
+        // The issue boils down to us needing to seed the Random*Generators
+        // with different seed each, so that they return different sequences
+        // of random numbers. We do this by giving them a number from the
+        // shared RNG instance as their seed.
+        //
+        // However, this runs into an issue if the reseeding happens each
+        // time the test case is entered (as opposed to first time only),
+        // because multiple generators could get the same seed, e.g. in
+        // ```cpp
+        // TEST_CASE() {
+        //     auto i = GENERATE(take(10, random(0, 100));
+        //     SECTION("A") {
+        //         auto j = GENERATE(take(10, random(0, 100));
+        //     }
+        //     SECTION("B") {
+        //         auto k = GENERATE(take(10, random(0, 100));
+        //     }
+        // }
+        // ```
+        // `i` and `j` would properly return values from different sequences,
+        // but `i` and `k` would return the same sequence, because their seed
+        // would be the same.
+        // (The reason their seeds would be the same is that the generator
+        //  for k would be initialized when the test case is entered the second
+        //  time, after the shared RNG instance was reset to the same value
+        //  it had when the generator for i was initialized.)
+        seedRng( *m_config );
 
         uint64_t testRuns = 0;
         do {
@@ -5241,8 +5342,6 @@ namespace Catch {
         m_shouldReportUnexpected = true;
         m_lastAssertionInfo = { "TEST_CASE"_sr, testCaseInfo.lineInfo, StringRef(), ResultDisposition::Normal };
 
-        seedRng(*m_config);
-
         Timer timer;
         CATCH_TRY {
             if (m_reporter->getPreferences().shouldRedirectStdOut) {
@@ -5417,10 +5516,7 @@ namespace Catch {
     }
 
     void seedRng(IConfig const& config) {
-        if (config.rngSeed() != 0) {
-            std::srand(config.rngSeed());
-            rng().seed(config.rngSeed());
-        }
+        sharedRng().seed(config.rngSeed());
     }
 
     unsigned int rngSeed() {
@@ -5642,7 +5738,7 @@ namespace Catch {
 
 namespace Catch {
     StringRef::StringRef( char const* rawChars ) noexcept
-    : StringRef( rawChars, static_cast<StringRef::size_type>(std::strlen(rawChars) ) )
+    : StringRef( rawChars, std::strlen(rawChars) )
     {}
 
     auto StringRef::operator == ( StringRef other ) const noexcept -> bool {
@@ -7213,14 +7309,26 @@ namespace Detail {
 
         ret << " ([";
         if (m_type == Detail::FloatingPointKind::Double) {
-            write(ret, step(m_target, static_cast<double>(-INFINITY), m_ulps));
+            write( ret,
+                   step( m_target,
+                         -std::numeric_limits<double>::infinity(),
+                         m_ulps ) );
             ret << ", ";
-            write(ret, step(m_target, static_cast<double>( INFINITY), m_ulps));
+            write( ret,
+                   step( m_target,
+                         std::numeric_limits<double>::infinity(),
+                         m_ulps ) );
         } else {
             // We have to cast INFINITY to float because of MinGW, see #1782
-            write(ret, step(static_cast<float>(m_target), static_cast<float>(-INFINITY), m_ulps));
+            write( ret,
+                   step( static_cast<float>( m_target ),
+                         -std::numeric_limits<float>::infinity(),
+                         m_ulps ) );
             ret << ", ";
-            write(ret, step(static_cast<float>(m_target), static_cast<float>( INFINITY), m_ulps));
+            write( ret,
+                   step( static_cast<float>( m_target ),
+                         std::numeric_limits<float>::infinity(),
+                         m_ulps ) );
         }
         ret << "])";
 
@@ -7706,6 +7814,33 @@ namespace Catch {
         out << '\n' << std::flush;
     }
 
+    void defaultListListeners( std::ostream& out,
+                               std::vector<ListenerDescription> const& descriptions ) {
+        const auto maxNameLen =
+            std::max_element( descriptions.begin(),
+                              descriptions.end(),
+                              []( ListenerDescription const& lhs,
+                                  ListenerDescription const& rhs ) {
+                                  return lhs.name.size() < rhs.name.size();
+                              } )
+                ->name.size();
+
+        out << "Registered listeners:\n";
+        for ( auto const& desc : descriptions ) {
+            out << TextFlow::Column( static_cast<std::string>( desc.name ) +
+                                     ':' )
+                           .indent( 2 )
+                           .width( maxNameLen + 5 ) +
+                       TextFlow::Column( desc.description )
+                           .initialIndent( 0 )
+                           .indent( 2 )
+                           .width( CATCH_CONFIG_CONSOLE_WIDTH - maxNameLen - 8 )
+                << '\n';
+        }
+
+        out << '\n' << std::flush;
+    }
+
     void defaultListTags( std::ostream& out,
                           std::vector<TagInfo> const& tags,
                           bool isFiltered ) {
@@ -7786,6 +7921,8 @@ namespace Catch {
     void EventListenerBase::assertionEnded( AssertionStats const& ) {}
     void EventListenerBase::listReporters(
         std::vector<ReporterDescription> const& ) {}
+    void EventListenerBase::listListeners(
+        std::vector<ListenerDescription> const& ) {}
     void EventListenerBase::listTests( std::vector<TestCaseHandle> const& ) {}
     void EventListenerBase::listTags( std::vector<TagInfo> const& ) {}
     void EventListenerBase::noMatchingTestCases( StringRef ) {}
@@ -7820,6 +7957,11 @@ namespace Catch {
     void ReporterBase::listReporters(
         std::vector<ReporterDescription> const& descriptions ) {
         defaultListReporters(m_stream, descriptions, m_config->verbosity());
+    }
+
+    void ReporterBase::listListeners(
+        std::vector<ListenerDescription> const& descriptions ) {
+        defaultListListeners( m_stream, descriptions );
     }
 
     void ReporterBase::listTests(std::vector<TestCaseHandle> const& tests) {
@@ -9415,6 +9557,13 @@ namespace Catch {
         }
     }
 
+    void MultiReporter::listListeners(
+        std::vector<ListenerDescription> const& descriptions ) {
+        for ( auto& reporterish : m_reporterLikes ) {
+            reporterish->listListeners( descriptions );
+        }
+    }
+
     void MultiReporter::listTests(std::vector<TestCaseHandle> const& tests) {
         for (auto& reporterish : m_reporterLikes) {
             reporterish->listTests(tests);
@@ -9428,6 +9577,29 @@ namespace Catch {
     }
 
 } // end namespace Catch
+
+
+
+
+
+namespace Catch {
+    namespace Detail {
+
+        void registerReporterImpl( std::string const& name,
+                                   IReporterFactoryPtr reporterPtr ) {
+            CATCH_TRY {
+                getMutableRegistryHub().registerReporter(
+                    name, CATCH_MOVE( reporterPtr ) );
+            }
+            CATCH_CATCH_ALL {
+                // Do not throw when constructing global objects, instead
+                // register the exception to be processed later
+                getMutableRegistryHub().registerStartupException();
+            }
+        }
+
+    } // namespace Detail
+} // namespace Catch
 
 
 
@@ -9689,11 +9861,6 @@ namespace Catch {
             }
 
         private:
-            void printSourceInfo() const {
-                stream << colourImpl->guardColour( tapDimColour )
-                       << result.getSourceInfo() << ':';
-            }
-
             void printResultType(StringRef passOrFail) const {
                 if (!passOrFail.empty()) {
                     stream << passOrFail << ' ' << counter << " -";
@@ -10009,7 +10176,8 @@ namespace Catch {
             m_xml.writeStylesheetRef( stylesheetRef );
         m_xml.startElement("Catch2TestRun")
              .writeAttribute("name"_sr, m_config->name())
-             .writeAttribute("rng-seed"_sr, m_config->rngSeed());
+             .writeAttribute("rng-seed"_sr, m_config->rngSeed())
+             .writeAttribute("catch2-version"_sr, libraryVersion());
         if (m_config->testSpec().hasFilters())
             m_xml.writeAttribute( "filters"_sr, serializeFilters( m_config->getTestsOrTags() ) );
     }
@@ -10209,6 +10377,19 @@ namespace Catch {
             m_xml.startElement("Description", XmlFormatting::Indent)
                  .writeText(reporter.description, XmlFormatting::None)
                  .endElement(XmlFormatting::Newline);
+        }
+    }
+
+    void XmlReporter::listListeners(std::vector<ListenerDescription> const& descriptions) {
+        auto outerTag = m_xml.scopedElement( "RegisteredListeners" );
+        for ( auto const& listener : descriptions ) {
+            auto inner = m_xml.scopedElement( "Listener" );
+            m_xml.startElement( "Name", XmlFormatting::Indent )
+                .writeText( listener.name, XmlFormatting::None )
+                .endElement( XmlFormatting::Newline );
+            m_xml.startElement( "Description", XmlFormatting::Indent )
+                .writeText( listener.description, XmlFormatting::None )
+                .endElement( XmlFormatting::Newline );
         }
     }
 

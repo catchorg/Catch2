@@ -5,8 +5,8 @@
 
 // SPDX-License-Identifier: BSL-1.0
 
-//  Catch v3.0.0-preview.5
-//  Generated: 2022-04-20 23:45:13.582550
+//  Catch v3.0.1
+//  Generated: 2022-05-17 22:08:46.674860
 //  ----------------------------------------------------------
 //  This file is an amalgamation of multiple different files.
 //  You probably shouldn't edit it directly.
@@ -274,6 +274,7 @@ namespace Catch {
         virtual std::vector<std::string> const& getSectionsToRun() const = 0;
         virtual Verbosity verbosity() const = 0;
 
+        virtual bool skipBenchmarks() const = 0;
         virtual bool benchmarkNoAnalysis() const = 0;
         virtual unsigned int benchmarkSamples() const = 0;
         virtual double benchmarkConfidenceInterval() const = 0;
@@ -688,7 +689,7 @@ namespace Catch {
 
     class IMutableContext : public IContext {
     public:
-        virtual ~IMutableContext(); // = default
+        ~IMutableContext() override; // = default
         virtual void setResultCapture( IResultCapture* resultCapture ) = 0;
         virtual void setConfig( IConfig const* config ) = 0;
 
@@ -715,7 +716,7 @@ namespace Catch {
     void cleanUpContext();
 
     class SimplePcg32;
-    SimplePcg32& rng();
+    SimplePcg32& sharedRng();
 }
 
 #endif // CATCH_CONTEXT_HPP_INCLUDED
@@ -1287,6 +1288,7 @@ namespace Catch {
 namespace Catch {
 
     struct ReporterDescription;
+    struct ListenerDescription;
     struct TagInfo;
     struct TestCaseInfo;
     class TestCaseHandle;
@@ -1509,11 +1511,12 @@ namespace Catch {
 
         //! Writes out information about provided reporters using reporter-specific format
         virtual void listReporters(std::vector<ReporterDescription> const& descriptions) = 0;
+        //! Writes out the provided listeners descriptions using reporter-specific format
+        virtual void listListeners(std::vector<ListenerDescription> const& descriptions) = 0;
         //! Writes out information about provided tests using reporter-specific format
         virtual void listTests(std::vector<TestCaseHandle> const& tests) = 0;
         //! Writes out information about the provided tags using reporter-specific format
         virtual void listTags(std::vector<TagInfo> const& tags) = 0;
-
     };
     using IEventListenerPtr = Detail::unique_ptr<IEventListener>;
 
@@ -2226,6 +2229,10 @@ namespace Catch {
         namespace Detail {
             using sample = std::vector<double>;
 
+            // Used when we know we want == comparison of two doubles
+            // to centralize warning suppression
+            bool directCompare( double lhs, double rhs );
+
             double weighted_average_quantile(int k, int q, std::vector<double>::iterator first, std::vector<double>::iterator last);
 
             template <typename Iterator>
@@ -2256,7 +2263,7 @@ namespace Catch {
             double mean(Iterator first, Iterator last) {
                 auto count = last - first;
                 double sum = std::accumulate(first, last, 0.);
-                return sum / count;
+                return sum / static_cast<double>(count);
             }
 
             template <typename Estimator, typename Iterator>
@@ -2302,15 +2309,17 @@ namespace Catch {
                 });
 
                 double accel = sum_cubes / (6 * std::pow(sum_squares, 1.5));
-                int n = static_cast<int>(resample.size());
+                long n = static_cast<long>(resample.size());
                 double prob_n = std::count_if(resample.begin(), resample.end(), [point](double x) { return x < point; }) / static_cast<double>(n);
                 // degenerate case with uniform samples
-                if (prob_n == 0) return { point, point, point, confidence_level };
+                if ( directCompare( prob_n, 0. ) ) {
+                    return { point, point, point, confidence_level };
+                }
 
                 double bias = normal_quantile(prob_n);
                 double z1 = normal_quantile((1. - confidence_level) / 2.);
 
-                auto cumn = [n]( double x ) -> int {
+                auto cumn = [n]( double x ) -> long {
                     return std::lround( normal_cdf( x ) * n );
                 };
                 auto a = [bias, accel](double b) { return bias + b / (1. - accel * b); };
@@ -2318,7 +2327,7 @@ namespace Catch {
                 double b2 = bias - z1;
                 double a1 = a(b1);
                 double a2 = a(b2);
-                auto lo = static_cast<size_t>((std::max)(cumn(a1), 0));
+                auto lo = static_cast<size_t>((std::max)(cumn(a1), 0l));
                 auto hi = static_cast<size_t>((std::min)(cumn(a2), n - 1));
 
                 return { point, resample[lo], resample[hi], confidence_level };
@@ -2619,8 +2628,11 @@ namespace Catch {
             // sets lambda to be used in fun *and* executes benchmark!
             template <typename Fun, std::enable_if_t<!Detail::is_related<Fun, Benchmark>::value, int> = 0>
                 Benchmark & operator=(Fun func) {
-                fun = Detail::BenchmarkFunction(func);
-                run();
+                auto const* cfg = getCurrentContext().getConfig();
+                if (!cfg->skipBenchmarks()) {
+                    fun = Detail::BenchmarkFunction(func);
+                    run();
+                }
                 return *this;
             }
 
@@ -2679,9 +2691,7 @@ namespace Catch {
             template <typename T, bool Destruct>
             struct ObjectStorage
             {
-                using TStorage = std::aligned_storage_t<sizeof(T), std::alignment_of<T>::value>;
-
-                ObjectStorage() : data() {}
+                ObjectStorage() = default;
 
                 ObjectStorage(const ObjectStorage& other)
                 {
@@ -2690,7 +2700,7 @@ namespace Catch {
 
                 ObjectStorage(ObjectStorage&& other)
                 {
-                    new(&data) T(CATCH_MOVE(other.stored_object()));
+                    new(data) T(CATCH_MOVE(other.stored_object()));
                 }
 
                 ~ObjectStorage() { destruct_on_exit<T>(); }
@@ -2698,7 +2708,7 @@ namespace Catch {
                 template <typename... Args>
                 void construct(Args&&... args)
                 {
-                    new (&data) T(CATCH_FORWARD(args)...);
+                    new (data) T(CATCH_FORWARD(args)...);
                 }
 
                 template <bool AllowManualDestruction = !Destruct>
@@ -2710,21 +2720,21 @@ namespace Catch {
             private:
                 // If this is a constructor benchmark, destruct the underlying object
                 template <typename U>
-                void destruct_on_exit(std::enable_if_t<Destruct, U>* = 0) { destruct<true>(); }
+                void destruct_on_exit(std::enable_if_t<Destruct, U>* = nullptr) { destruct<true>(); }
                 // Otherwise, don't
                 template <typename U>
-                void destruct_on_exit(std::enable_if_t<!Destruct, U>* = 0) { }
+                void destruct_on_exit(std::enable_if_t<!Destruct, U>* = nullptr) { }
 
                 T& stored_object() {
-                    return *static_cast<T*>(static_cast<void*>(&data));
+                    return *static_cast<T*>(static_cast<void*>(data));
                 }
 
                 T const& stored_object() const {
-                    return *static_cast<T*>(static_cast<void*>(&data));
+                    return *static_cast<T*>(static_cast<void*>(data));
                 }
 
 
-                TStorage data;
+                alignas( T ) unsigned char data[sizeof( T )]{};
             };
         } // namespace Detail
 
@@ -4147,6 +4157,7 @@ namespace Catch {
         bool listTests = false;
         bool listTags = false;
         bool listReporters = false;
+        bool listListeners = false;
 
         bool showSuccessfulTests = false;
         bool shouldDebugBreak = false;
@@ -4163,6 +4174,7 @@ namespace Catch {
         unsigned int shardCount = 1;
         unsigned int shardIndex = 0;
 
+        bool skipBenchmarks = false;
         bool benchmarkNoAnalysis = false;
         unsigned int benchmarkSamples = 100;
         double benchmarkConfidenceInterval = 0.95;
@@ -4197,6 +4209,7 @@ namespace Catch {
         bool listTests() const;
         bool listTags() const;
         bool listReporters() const;
+        bool listListeners() const;
 
         std::vector<ReporterSpec> const& getReporterSpecs() const;
         std::vector<ProcessedReporterSpec> const&
@@ -4228,6 +4241,7 @@ namespace Catch {
         int abortAfter() const override;
         bool showInvisibles() const override;
         Verbosity verbosity() const override;
+        bool skipBenchmarks() const override;
         bool benchmarkNoAnalysis() const override;
         unsigned int benchmarkSamples() const override;
         double benchmarkConfidenceInterval() const override;
@@ -6993,6 +7007,7 @@ namespace Catch {
 
 #endif // CATCH_TRANSLATE_EXCEPTION_HPP_INCLUDED
 
+
 #ifndef CATCH_VERSION_HPP_INCLUDED
 #define CATCH_VERSION_HPP_INCLUDED
 
@@ -7032,7 +7047,7 @@ namespace Catch {
 
 #define CATCH_VERSION_MAJOR 3
 #define CATCH_VERSION_MINOR 0
-#define CATCH_VERSION_PATCH 0
+#define CATCH_VERSION_PATCH 1
 
 #endif // CATCH_VERSION_MACROS_HPP_INCLUDED
 
@@ -7090,10 +7105,30 @@ namespace Catch {
 #define CATCH_INTERFACES_GENERATORTRACKER_HPP_INCLUDED
 
 
+#include <string>
+
 namespace Catch {
 
     namespace Generators {
         class GeneratorUntypedBase {
+            // Caches result from `toStringImpl`, assume that when it is an
+            // empty string, the cache is invalidated.
+            mutable std::string m_stringReprCache;
+
+            // Counts based on `next` returning true
+            std::size_t m_currentElementIndex = 0;
+
+            /**
+             * Attempts to move the generator to the next element
+             *
+             * Returns true iff the move succeeded (and a valid element
+             * can be retrieved).
+             */
+            virtual bool next() = 0;
+
+            //! Customization point for `currentElementAsString`
+            virtual std::string stringifyImpl() const = 0;
+
         public:
             GeneratorUntypedBase() = default;
             // Generation of copy ops is deprecated (and Clang will complain)
@@ -7103,11 +7138,34 @@ namespace Catch {
 
             virtual ~GeneratorUntypedBase(); // = default;
 
-            // Attempts to move the generator to the next element
-            //
-            // Returns true iff the move succeeded (and a valid element
-            // can be retrieved).
-            virtual bool next() = 0;
+            /**
+             * Attempts to move the generator to the next element
+             *
+             * Serves as a non-virtual interface to `next`, so that the
+             * top level interface can provide sanity checking and shared
+             * features.
+             *
+             * As with `next`, returns true iff the move succeeded and
+             * the generator has new valid element to provide.
+             */
+            bool countedNext();
+
+            std::size_t currentElementIndex() const { return m_currentElementIndex; }
+
+            /**
+             * Returns generator's current element as user-friendly string.
+             *
+             * By default returns string equivalent to calling
+             * `Catch::Detail::stringify` on the current element, but generators
+             * can customize their implementation as needed.
+             *
+             * Not thread-safe due to internal caching.
+             *
+             * The returned ref is valid only until the generator instance
+             * is destructed, or it moves onto the next element, whichever
+             * comes first.
+             */
+            StringRef currentElementAsString() const;
         };
         using GeneratorBasePtr = Catch::Detail::unique_ptr<GeneratorUntypedBase>;
 
@@ -7142,6 +7200,10 @@ namespace Detail {
 
     template<typename T>
     class IGenerator : public GeneratorUntypedBase {
+        std::string stringifyImpl() const override {
+            return ::Catch::Detail::stringify( get() );
+        }
+
     public:
         ~IGenerator() override = default;
         IGenerator() = default;
@@ -7174,7 +7236,7 @@ namespace Detail {
             return m_generator->get();
         }
         bool next() {
-            return m_generator->next();
+            return m_generator->countedNext();
         }
     };
 
@@ -7641,16 +7703,21 @@ namespace Catch {
 
 namespace Catch {
 namespace Generators {
+namespace Detail {
+    // Returns a suitable seed for a random floating generator based off
+    // the primary internal rng. It does so by taking current value from
+    // the rng and returning it as the seed.
+    std::uint32_t getSeed();
+}
 
 template <typename Float>
 class RandomFloatingGenerator final : public IGenerator<Float> {
-    Catch::SimplePcg32& m_rng;
+    Catch::SimplePcg32 m_rng;
     std::uniform_real_distribution<Float> m_dist;
     Float m_current_number;
 public:
-
-    RandomFloatingGenerator(Float a, Float b):
-        m_rng(rng()),
+    RandomFloatingGenerator( Float a, Float b, std::uint32_t seed ):
+        m_rng(seed),
         m_dist(a, b) {
         static_cast<void>(next());
     }
@@ -7666,13 +7733,12 @@ public:
 
 template <typename Integer>
 class RandomIntegerGenerator final : public IGenerator<Integer> {
-    Catch::SimplePcg32& m_rng;
+    Catch::SimplePcg32 m_rng;
     std::uniform_int_distribution<Integer> m_dist;
     Integer m_current_number;
 public:
-
-    RandomIntegerGenerator(Integer a, Integer b):
-        m_rng(rng()),
+    RandomIntegerGenerator( Integer a, Integer b, std::uint32_t seed ):
+        m_rng(seed),
         m_dist(a, b) {
         static_cast<void>(next());
     }
@@ -7693,7 +7759,7 @@ std::enable_if_t<std::is_integral<T>::value && !std::is_same<T, bool>::value,
 GeneratorWrapper<T>>
 random(T a, T b) {
     return GeneratorWrapper<T>(
-        Catch::Detail::make_unique<RandomIntegerGenerator<T>>(a, b)
+        Catch::Detail::make_unique<RandomIntegerGenerator<T>>(a, b, Detail::getSeed())
     );
 }
 
@@ -7702,7 +7768,7 @@ std::enable_if_t<std::is_floating_point<T>::value,
 GeneratorWrapper<T>>
 random(T a, T b) {
     return GeneratorWrapper<T>(
-        Catch::Detail::make_unique<RandomFloatingGenerator<T>>(a, b)
+        Catch::Detail::make_unique<RandomFloatingGenerator<T>>(a, b, Detail::getSeed())
     );
 }
 
@@ -7867,6 +7933,9 @@ namespace Catch {
     public:
         virtual ~EventListenerFactory(); // = default
         virtual IEventListenerPtr create( IConfig const* config ) const = 0;
+        //! Return a meaningful name for the listener, e.g. its type name
+        virtual StringRef getName() const = 0;
+        //! Return listener's description if available
         virtual std::string getDescription() const = 0;
     };
 } // namespace Catch
@@ -7901,6 +7970,7 @@ namespace Catch {
 } // namespace Catch
 
 #endif // CATCH_CASE_INSENSITIVE_COMPARISONS_HPP_INCLUDED
+
 #include <string>
 #include <vector>
 #include <map>
@@ -8033,6 +8103,7 @@ namespace Catch {
 
 #endif // CATCH_CONSOLE_WIDTH_HPP_INCLUDED
 
+
 #ifndef CATCH_CONTAINER_NONMEMBERS_HPP_INCLUDED
 #define CATCH_CONTAINER_NONMEMBERS_HPP_INCLUDED
 
@@ -8125,7 +8196,7 @@ namespace Catch {
     #if defined(__i386__) || defined(__x86_64__)
         #define CATCH_TRAP() __asm__("int $3\n" : : ) /* NOLINT */
     #elif defined(__aarch64__)
-        #define CATCH_TRAP()  __asm__(".inst 0xd4200000")
+        #define CATCH_TRAP()  __asm__(".inst 0xd43e0000")
     #endif
 
 #elif defined(CATCH_PLATFORM_IPHONE)
@@ -8367,6 +8438,7 @@ namespace Catch {
 
 #endif // CATCH_POLYFILLS_HPP_INCLUDED
 
+#include <cassert>
 #include <cmath>
 #include <cstdint>
 #include <utility>
@@ -8380,6 +8452,15 @@ namespace Catch {
 
     } // end namespace Detail
 
+
+
+#if defined( __GNUC__ ) || defined( __clang__ )
+#    pragma GCC diagnostic push
+    // We do a bunch of direct compensations of floating point numbers,
+    // because we know what we are doing and actually do want the direct
+    // comparison behaviour.
+#    pragma GCC diagnostic ignored "-Wfloat-equal"
+#endif
 
     /**
      * Calculates the ULP distance between two floating point numbers
@@ -8439,6 +8520,11 @@ namespace Catch {
 
         return lc - rc;
     }
+
+#if defined( __GNUC__ ) || defined( __clang__ )
+#    pragma GCC diagnostic pop
+#endif
+
 
 } // end namespace Catch
 
@@ -8522,6 +8608,10 @@ namespace Catch {
 
     struct ReporterDescription {
         std::string name, description;
+    };
+    struct ListenerDescription {
+        StringRef name;
+        std::string description;
     };
 
     struct TagInfo {
@@ -10074,7 +10164,7 @@ namespace Matchers {
     class MatcherGenericBase : public MatcherUntypedBase {
     public:
         MatcherGenericBase() = default;
-        virtual ~MatcherGenericBase(); // = default;
+        ~MatcherGenericBase() override; // = default;
 
         MatcherGenericBase(MatcherGenericBase&) = default;
         MatcherGenericBase(MatcherGenericBase&&) = default;
@@ -11129,6 +11219,14 @@ namespace Catch {
         void listReporters(
             std::vector<ReporterDescription> const& descriptions ) override;
         /**
+         * Provides a simple default listing of listeners
+         *
+         * Looks similarly to listing of reporters, but with listener type
+         * instead of reporter name.
+         */
+        void listListeners(
+            std::vector<ListenerDescription> const& descriptions ) override;
+        /**
          * Provides a simple default listing of tests.
          *
          * Should look roughly like the test listing in v2 and earlier versions
@@ -11495,6 +11593,8 @@ namespace Catch {
 
         void listReporters(
             std::vector<ReporterDescription> const& descriptions ) override;
+        void listListeners(
+            std::vector<ListenerDescription> const& descriptions ) override;
         void listTests( std::vector<TestCaseHandle> const& tests ) override;
         void listTags( std::vector<TagInfo> const& tagInfos ) override;
 
@@ -11558,6 +11658,13 @@ namespace Catch {
     defaultListReporters( std::ostream& out,
                           std::vector<ReporterDescription> const& descriptions,
                           Verbosity verbosity );
+
+    /**
+     * Lists listeners descriptions to the provided stream in user-friendly
+     * format
+     */
+    void defaultListListeners( std::ostream& out,
+                               std::vector<ListenerDescription> const& descriptions );
 
     /**
      * Lists tag information to the provided stream in user-friendly format
@@ -11692,6 +11799,7 @@ namespace Catch {
         void skipTest( TestCaseInfo const& testInfo ) override;
 
         void listReporters(std::vector<ReporterDescription> const& descriptions) override;
+        void listListeners(std::vector<ListenerDescription> const& descriptions) override;
         void listTests(std::vector<TestCaseHandle> const& tests) override;
         void listTags(std::vector<TagInfo> const& tags) override;
 
@@ -11707,7 +11815,27 @@ namespace Catch {
 #define CATCH_REPORTER_REGISTRARS_HPP_INCLUDED
 
 
+#include <type_traits>
+
 namespace Catch {
+
+    namespace Detail {
+
+        template <typename T, typename = void>
+        struct has_description : std::false_type {};
+
+        template <typename T>
+        struct has_description<
+            T,
+            void_t<decltype( T::getDescription() )>>
+            : std::true_type {};
+
+        //! Indirection for reporter registration, so that the error handling is
+        //! independent on the reporter's concrete type
+        void registerReporterImpl( std::string const& name,
+                                   IReporterFactoryPtr reporterPtr );
+
+    } // namespace Detail
 
     class IEventListener;
     using IEventListenerPtr = Detail::unique_ptr<IEventListener>;
@@ -11729,7 +11857,8 @@ namespace Catch {
     class ReporterRegistrar {
     public:
         explicit ReporterRegistrar( std::string const& name ) {
-            getMutableRegistryHub().registerReporter( name, Detail::make_unique<ReporterFactory<T>>() );
+            registerReporterImpl( name,
+                                  Detail::make_unique<ReporterFactory<T>>() );
         }
     };
 
@@ -11737,37 +11866,60 @@ namespace Catch {
     class ListenerRegistrar {
 
         class TypedListenerFactory : public EventListenerFactory {
+            StringRef m_listenerName;
 
-            IEventListenerPtr
-            create( IConfig const* config ) const override {
-                return Detail::make_unique<T>(config);
+            std::string getDescriptionImpl( std::true_type ) const {
+                return T::getDescription();
             }
+
+            std::string getDescriptionImpl( std::false_type ) const {
+                return "(No description provided)";
+            }
+
+        public:
+            TypedListenerFactory( StringRef listenerName ):
+                m_listenerName( listenerName ) {}
+
+            IEventListenerPtr create( IConfig const* config ) const override {
+                return Detail::make_unique<T>( config );
+            }
+
+            StringRef getName() const override {
+                return m_listenerName;
+            }
+
             std::string getDescription() const override {
-                return std::string();
+                return getDescriptionImpl( Detail::has_description<T>{} );
             }
         };
 
     public:
-
-        ListenerRegistrar() {
-            getMutableRegistryHub().registerListener( Detail::make_unique<TypedListenerFactory>() );
+        ListenerRegistrar(StringRef listenerName) {
+            getMutableRegistryHub().registerListener( Detail::make_unique<TypedListenerFactory>(listenerName) );
         }
     };
 }
 
 #if !defined(CATCH_CONFIG_DISABLE)
 
-#define CATCH_REGISTER_REPORTER( name, reporterType ) \
-    CATCH_INTERNAL_START_WARNINGS_SUPPRESSION         \
-    CATCH_INTERNAL_SUPPRESS_GLOBALS_WARNINGS          \
-    namespace{ Catch::ReporterRegistrar<reporterType> catch_internal_RegistrarFor##reporterType( name ); } \
-    CATCH_INTERNAL_STOP_WARNINGS_SUPPRESSION
+#    define CATCH_REGISTER_REPORTER( name, reporterType )                      \
+        CATCH_INTERNAL_START_WARNINGS_SUPPRESSION                              \
+        CATCH_INTERNAL_SUPPRESS_GLOBALS_WARNINGS                               \
+        namespace {                                                            \
+            Catch::ReporterRegistrar<reporterType> INTERNAL_CATCH_UNIQUE_NAME( \
+                catch_internal_RegistrarFor )( name );                         \
+        }                                                                      \
+        CATCH_INTERNAL_STOP_WARNINGS_SUPPRESSION
 
-#define CATCH_REGISTER_LISTENER( listenerType ) \
-    CATCH_INTERNAL_START_WARNINGS_SUPPRESSION   \
-    CATCH_INTERNAL_SUPPRESS_GLOBALS_WARNINGS    \
-    namespace{ Catch::ListenerRegistrar<listenerType> catch_internal_RegistrarFor##listenerType; } \
-    CATCH_INTERNAL_STOP_WARNINGS_SUPPRESSION
+#    define CATCH_REGISTER_LISTENER( listenerType )                            \
+        CATCH_INTERNAL_START_WARNINGS_SUPPRESSION                              \
+        CATCH_INTERNAL_SUPPRESS_GLOBALS_WARNINGS                               \
+        namespace {                                                            \
+            Catch::ListenerRegistrar<listenerType> INTERNAL_CATCH_UNIQUE_NAME( \
+                catch_internal_RegistrarFor )( #listenerType );                \
+        }                                                                      \
+        CATCH_INTERNAL_STOP_WARNINGS_SUPPRESSION
+
 #else // CATCH_CONFIG_DISABLE
 
 #define CATCH_REGISTER_REPORTER(name, reporterType)
@@ -11969,6 +12121,7 @@ namespace Catch {
         void benchmarkFailed( StringRef error ) override;
 
         void listReporters(std::vector<ReporterDescription> const& descriptions) override;
+        void listListeners(std::vector<ListenerDescription> const& descriptions) override;
         void listTests(std::vector<TestCaseHandle> const& tests) override;
         void listTags(std::vector<TagInfo> const& tags) override;
 

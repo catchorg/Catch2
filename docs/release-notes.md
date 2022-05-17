@@ -2,7 +2,7 @@
 
 # Release notes
 **Contents**<br>
-[3.0.1 (in progress)](#301-in-progress)<br>
+[3.0.1](#301)<br>
 [2.13.7](#2137)<br>
 [2.13.6](#2136)<br>
 [2.13.5](#2135)<br>
@@ -49,7 +49,7 @@
 [Even Older versions](#even-older-versions)<br>
 
 
-## 3.0.1 (in progress)
+## 3.0.1
 
 **Catch2 now uses statically compiled library as its distribution model.
 This also means that to get all of Catch2's functionality in a test file,
@@ -206,6 +206,7 @@ v3 releases.
 * The cumulative reporter base stores benchmark results alongside assertion results
 * Catch2's SE handling should no longer interferes with ASan on Windows (#2334)
 * Fixed Windows console colour handling for tests that redirect stdout (#2345)
+* Fixed issue with the `random` generators returning the same value over and over again
 
 
 ### Other changes
@@ -228,6 +229,7 @@ v3 releases.
     * `-DCATCH_CONFIG_DEFAULT_REPORTER=compact` changes default reporter to "compact"
     * `-DCATCH_CONFIG_NO_ANDROID_LOGWRITE=ON` forces android logwrite to off
     * `-DCATCH_CONFIG_ANDROID_LOGWRITE=OFF` does nothing (the define will not exist)
+
 
 
 ## 2.13.7

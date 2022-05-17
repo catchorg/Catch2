@@ -15,7 +15,7 @@ stringification machinery to the _expr_ and records the result. As with
 evaluates to `true`. `CHECKED_ELSE( expr )` work similarly, but the block
 is entered only if the _expr_ evaluated to `false`.
 
-> `CHECKED_X` macros were changed to not count as failure in Catch2 X.Y.Z.
+> `CHECKED_X` macros were changed to not count as failure in Catch2 3.0.1.
 
 Example:
 ```cpp
@@ -77,7 +77,7 @@ TEST_CASE("STATIC_REQUIRE showcase", "[traits]") {
 }
 ```
 
-> `STATIC_CHECK` was [introduced](https://github.com/catchorg/Catch2/pull/2318) in Catch2 X.Y.Z.
+> `STATIC_CHECK` was [introduced](https://github.com/catchorg/Catch2/pull/2318) in Catch2 3.0.1.
 
 `STATIC_CHECK( expr )` is equivalent to `STATIC_REQUIRE( expr )`, with the
 difference that when `CATCH_CONFIG_RUNTIME_STATIC_REQUIRE` is defined, it

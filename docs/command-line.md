@@ -145,7 +145,7 @@ hardcoded into Catch2. Currently there are only 2,
 _Note that the reporter might still check the X-prefixed options for
 validity, and throw an error if they are wrong._
 
-> Support for passing arguments to reporters through the `-r`, `--reporter` flag was introduced in Catch2 X.Y.Z
+> Support for passing arguments to reporters through the `-r`, `--reporter` flag was introduced in Catch2 3.0.1
 
 There are multiple built-in reporters, you can see what they do by using the 
 [`--list-reporter`](command-line.md#listing-available-tests-tags-or-reporters)
@@ -160,7 +160,7 @@ reporter can be provided without the output-file part of reporter spec.
 This reporter will use the "default" output destination, based on
 the [`-o`, `--out`](#sending-output-to-a-file) option.
 
-> Support for using multiple different reporters at the same time was [introduced](https://github.com/catchorg/Catch2/pull/2183) in Catch2 X.Y.Z
+> Support for using multiple different reporters at the same time was [introduced](https://github.com/catchorg/Catch2/pull/2183) in Catch2 3.0.1
 
 
 _Note: There is currently no way to escape `::` in the reporter spec,
@@ -204,9 +204,9 @@ Sometimes this results in a flood of failure messages and you'd rather just see 
 --list-listeners
 ```
 
-> The `--list*` options became customizable through reporters in Catch2 X.Y.Z
+> The `--list*` options became customizable through reporters in Catch2 3.0.1
 
-> The `--list-listeners` option was added in Catch2 X.Y.Z
+> The `--list-listeners` option was added in Catch2 3.0.1
 
 `--list-tests` lists all registered tests matching specified test spec.
 Usually this listing also includes tags, and potentially also other
@@ -230,7 +230,7 @@ Use this option to send all output to a file, instead of stdout. You can
 use `-` as the filename to explicitly send the output to stdout (this is
 useful e.g. when using multiple reporters).
 
-> Support for `-` as the filename was introduced in Catch2 X.Y.Z
+> Support for `-` as the filename was introduced in Catch2 3.0.1
 
 Filenames starting with "%" (percent symbol) are reserved by Catch2 for
 meta purposes, e.g. using `%debug` as the filename opens stream that
@@ -242,7 +242,7 @@ Catch2 currently recognizes 3 meta streams:
 * `%stdout` - writes to stdout
 * `%stderr` - writes to stderr
 
-> Support for `%stdout` and `%stderr` was introduced in Catch2 X.Y.Z
+> Support for `%stdout` and `%stderr` was introduced in Catch2 3.0.1
 
 
 <a id="naming-a-test-run"></a>
@@ -290,7 +290,7 @@ There are currently two warnings implemented:
                         // not match any tests.
 ```
 
-> `UnmatchedTestSpec` was introduced in Catch2 X.Y.Z.
+> `UnmatchedTestSpec` was introduced in Catch2 3.0.1.
 
 
 <a id="reporting-timings"></a>
@@ -388,7 +388,7 @@ either before running any tests, after running all tests - or both, depending on
 ## Skip all benchmarks
 <pre>--skip-benchmarks</pre>
 
-> [Introduced](https://github.com/catchorg/Catch2/issues/2408) in Catch X.Y.Z.
+> [Introduced](https://github.com/catchorg/Catch2/issues/2408) in Catch2 3.0.1.
 
 This flag tells Catch2 to skip running all benchmarks. Benchmarks in this
 case mean code blocks in `BENCHMARK` and `BENCHMARK_ADVANCED` macros, not
@@ -507,7 +507,7 @@ So, for example,  tests within the file `~\Dev\MyProject\Ferrets.cpp` would be t
 ## Override output colouring
 <pre>--colour-mode &lt;ansi|win32|none|default&gt;</pre>
 
-> The `--colour-mode` option replaced the old `--colour` option in Catch2 X.Y.Z
+> The `--colour-mode` option replaced the old `--colour` option in Catch2 3.0.1
 
 
 Catch2 support two different ways of colouring terminal output, and by
@@ -531,7 +531,7 @@ when writing to a file
 ## Test Sharding
 <pre>--shard-count <#number of shards>, --shard-index <#shard index to run></pre>
 
-> [Introduced](https://github.com/catchorg/Catch2/pull/2257) in Catch2 X.Y.Z.
+> [Introduced](https://github.com/catchorg/Catch2/pull/2257) in Catch2 3.0.1.
 
 When `--shard-count <#number of shards>` is used, the tests to execute will be split evenly in to the given number of sets,
 identified by indicies starting at 0. The tests in the set given by `--shard-index <#shard index to run>` will be executed.
@@ -544,7 +544,7 @@ This is useful when you want to split test execution across multiple processes, 
 ## Allow running the binary without tests
 <pre>--allow-running-no-tests</pre>
 
-> Introduced in Catch2 X.Y.Z.
+> Introduced in Catch2 3.0.1.
 
 By default, Catch2 test binaries return non-0 exit code if no tests were
 run, e.g. if the binary was compiled with no tests, or the provided test

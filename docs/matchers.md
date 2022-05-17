@@ -248,7 +248,7 @@ Note that `DerivedException` in the example above has to derive from
 
 ### Generic range Matchers
 
-> Generic range matchers were introduced in Catch2 X.Y.Z
+> Generic range matchers were introduced in Catch2 3.0.1
 
 Catch2 also provides some matchers that use the new style matchers
 definitions to handle generic range-like types. These are:
@@ -350,7 +350,7 @@ style matchers arbitrarily.
 
 ## Writing custom matchers (new style)
 
-> New style matchers were introduced in Catch2 X.Y.Z
+> New style matchers were introduced in Catch2 3.0.1
 
 To create a new-style matcher, you have to create your own type that
 derives from `Catch::Matchers::MatcherGenericBase`. Your type has to
