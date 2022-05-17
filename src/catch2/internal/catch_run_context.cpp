@@ -598,9 +598,7 @@ namespace Catch {
     }
 
     void seedRng(IConfig const& config) {
-        if (config.rngSeed() != 0) {
-            rng().seed(config.rngSeed());
-        }
+        rng().seed(config.rngSeed());
     }
 
     unsigned int rngSeed() {
