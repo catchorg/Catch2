@@ -50,7 +50,7 @@ namespace Catch {
     void cleanUpContext();
 
     class SimplePcg32;
-    SimplePcg32& rng();
+    SimplePcg32& sharedRng();
 }
 
 #endif // CATCH_CONTEXT_HPP_INCLUDED

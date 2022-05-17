@@ -25,7 +25,7 @@ class RandomFloatingGenerator final : public IGenerator<Float> {
 public:
 
     RandomFloatingGenerator(Float a, Float b):
-        m_rng(rng()),
+        m_rng(sharedRng()),
         m_dist(a, b) {
         static_cast<void>(next());
     }
@@ -47,7 +47,7 @@ class RandomIntegerGenerator final : public IGenerator<Integer> {
 public:
 
     RandomIntegerGenerator(Integer a, Integer b):
-        m_rng(rng()),
+        m_rng(sharedRng()),
         m_dist(a, b) {
         static_cast<void>(next());
     }

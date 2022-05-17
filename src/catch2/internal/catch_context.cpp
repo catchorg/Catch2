@@ -55,7 +55,7 @@ namespace Catch {
     Context::~Context() = default;
 
 
-    SimplePcg32& rng() {
+    SimplePcg32& sharedRng() {
         static SimplePcg32 s_rng;
         return s_rng;
     }
