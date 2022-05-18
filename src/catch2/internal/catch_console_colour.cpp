@@ -252,11 +252,12 @@ namespace Catch {
             } else {
                 return Detail::make_unique<NoColourImpl>( stream );
             }
-#endif
+#else
             if ( ANSIColourImpl::useImplementationForStream( *stream ) ) {
                 return Detail::make_unique<ANSIColourImpl>( stream );
             }
             return Detail::make_unique<NoColourImpl>( stream );
+#endif
         }
 
         CATCH_ERROR( "Could not create colour impl for selection " << static_cast<int>(implSelection) );
