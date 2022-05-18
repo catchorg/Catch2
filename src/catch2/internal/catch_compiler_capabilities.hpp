@@ -57,6 +57,11 @@
 
 #endif
 
+#if defined(__CUDACC__) && !defined(__clang__)
+#    define CATCH_INTERNAL_START_WARNINGS_SUPPRESSION _Pragma( "nv_diag_suppress 177" )
+#    define CATCH_INTERNAL_STOP_WARNINGS_SUPPRESSION  _Pragma( "nv_diag_default 177" )
+#endif
+
 #if defined(__clang__) && !defined(_MSC_VER)
 
 #    define CATCH_INTERNAL_START_WARNINGS_SUPPRESSION _Pragma( "clang diagnostic push" )
