@@ -5,6 +5,7 @@
 [CMake targets](#cmake-targets)<br>
 [Automatic test registration](#automatic-test-registration)<br>
 [CMake project options](#cmake-project-options)<br>
+[`CATCH_CONFIG_*` customization options in CMake](#catch_config_-customization-options-in-cmake)<br>
 [Installing Catch2 from git repository](#installing-catch2-from-git-repository)<br>
 [Installing Catch2 from vcpkg](#installing-catch2-from-vcpkg)<br>
 
@@ -291,6 +292,31 @@ to the compilation. Defaults to `ON`.
 * `CATCH_BUILD_SURROGATES` -- When `ON`, each header in Catch2 will be
 compiled separately to ensure that they are self-sufficient.
 Defaults to `OFF`.
+
+
+## `CATCH_CONFIG_*` customization options in CMake
+
+> CMake support for `CATCH_CONFIG_*` options was introduced in Catch2 3.0.1
+
+Due to the new separate compilation model, all the options from the
+[Compile-time configuration docs](configuration.md#top) can also be set
+through Catch2's CMake. To set them, define the option you want as `ON`,
+e.g. `-DCATCH_CONFIG_NOSTDOUT=ON`.
+
+Note that setting the option to `OFF` doesn't disable it. To force disable
+an option, you need to set the `_NO_` form of it to `ON`, e.g.
+`-DCATCH_CONFIG_NO_COLOUR_WIN32=ON`.
+
+
+To summarize the configuration option behaviour with an example:
+
+| `-DCATCH_CONFIG_COLOUR_WIN32` | `-DCATCH_CONFIG_NO_COLOUR_WIN32` |      Result |
+|-------------------------------|----------------------------------|-------------|
+|                          `ON` |                             `ON` |       error |
+|                          `ON` |                            `OFF` |    force-on |
+|                         `OFF` |                             `ON` |   force-off |
+|                         `OFF` |                            `OFF` | auto-detect |
+
 
 
 ## Installing Catch2 from git repository
