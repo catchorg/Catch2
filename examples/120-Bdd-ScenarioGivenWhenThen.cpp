@@ -48,7 +48,7 @@ SCENARIO( "vectors can be sized and resized", "[vector]" ) {
 }
 
 // Compile & run:
-// - g++ -std=c++11 -Wall -I$(CATCH_SINGLE_INCLUDE) -o 120-Bdd-ScenarioGivenWhenThen 120-Bdd-ScenarioGivenWhenThen.cpp && 120-Bdd-ScenarioGivenWhenThen --success
+// - g++ -std=c++14 -Wall -I$(CATCH_SINGLE_INCLUDE) -o 120-Bdd-ScenarioGivenWhenThen 120-Bdd-ScenarioGivenWhenThen.cpp && 120-Bdd-ScenarioGivenWhenThen --success
 // - cl -EHsc -I%CATCH_SINGLE_INCLUDE% 120-Bdd-ScenarioGivenWhenThen.cpp && 120-Bdd-ScenarioGivenWhenThen --success
 
 // Expected compact output (all assertions):

@@ -52,8 +52,11 @@ TEST_CASE_METHOD( UniqueTestsFixture, "Create Employee/Normal", "[create]" ) {
 }
 
 // Compile & run:
-// - g++ -std=c++11 -Wall -I$(CATCH_SINGLE_INCLUDE) -o 110-Fix-ClassFixture 110-Fix-ClassFixture.cpp && 110-Fix-ClassFixture --success
+// - g++ -std=c++14 -Wall -I$(CATCH_SINGLE_INCLUDE) -o 110-Fix-ClassFixture 110-Fix-ClassFixture.cpp && 110-Fix-ClassFixture --success
 // - cl -EHsc -I%CATCH_SINGLE_INCLUDE% 110-Fix-ClassFixture.cpp && 110-Fix-ClassFixture --success
+//
+// Compile with pkg-config:
+// - g++ -std=c++14 -Wall $(pkg-config catch2-with-main --cflags)  -o 110-Fix-ClassFixture 110-Fix-ClassFixture.cpp $(pkg-config catch2-with-main --libs)
 
 // Expected compact output (all assertions):
 //

@@ -45,7 +45,7 @@ TEST_CASE( "vectors can be sized and resized", "[vector]" ) {
 }
 
 // Compile & run:
-// - g++ -std=c++11 -Wall -I$(CATCH_SINGLE_INCLUDE) -o 100-Fix-Section 100-Fix-Section.cpp && 100-Fix-Section --success
+// - g++ -std=c++14 -Wall -I$(CATCH_SINGLE_INCLUDE) -o 100-Fix-Section 100-Fix-Section.cpp && 100-Fix-Section --success
 // - cl -EHsc -I%CATCH_SINGLE_INCLUDE% 100-Fix-Section.cpp && 100-Fix-Section --success
 
 // Expected compact output (all assertions):

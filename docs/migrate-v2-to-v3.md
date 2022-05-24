@@ -50,7 +50,8 @@ compilation times in the v3 version. The basic steps to do so are:
 
 1. Change your CMakeLists.txt to link against `Catch2WithMain` target if
 you use Catch2's default main. (If you do not, keep linking against
-the `Catch2` target.)
+the `Catch2` target.). If you use pkg-config, change `pkg-config catch2` to
+`pkg-config catch2-with-main`.
 2. Delete TU with `CATCH_CONFIG_RUNNER` or `CATCH_CONFIG_MAIN` defined,
 as it is no longer needed.
 3. Change `#include <catch2/catch.hpp>` to `#include <catch2/catch_all.hpp>`
