@@ -12,6 +12,8 @@
 // in a different namespace.
 #include <ostream>
 
+#include <catch2/internal/catch_compiler_detections.hpp>
+
 namespace foo {
     struct helper_1403 {
         bool operator==(helper_1403) const { return true; }
@@ -23,7 +25,7 @@ namespace bar {
     struct TypeList {};
 }
 
-#ifdef __GNUC__
+#ifdef CATCH_COMPILER_GCC
 #pragma GCC diagnostic ignored "-Wmissing-declarations"
 #endif
 static std::ostream& operator<<(std::ostream& out, foo::helper_1403 const&) {
@@ -75,11 +77,11 @@ struct B : private A {
     bool operator==(int) const { return true; }
 };
 
-#ifdef __clang__
+#ifdef CATCH_COMPILER_CLANG
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wunused-function"
 #endif
-#ifdef __GNUC__
+#ifdef CATCH_COMPILER_GCC
 // Note that because -~GCC~-, this warning cannot be silenced temporarily, by pushing diagnostic stack...
 // Luckily it is firing in test files and thus can be silenced for the whole file, without losing much.
 #pragma GCC diagnostic ignored "-Wunused-function"
@@ -89,7 +91,7 @@ B f();
 
 std::ostream g();
 
-#ifdef __clang__
+#ifdef CATCH_COMPILER_CLANG
 #pragma clang diagnostic pop
 #endif
 
@@ -195,7 +197,7 @@ TEST_CASE("#1548", "[compilation]") {
         inline static void synchronizing_callback( void * ) { }
     }
 
-#if defined (_MSC_VER)
+#if defined (CATCH_COMPILER_MSC)
 #pragma warning(push)
 // The function pointer comparison below triggers warning because of
 // calling conventions
@@ -205,7 +207,7 @@ TEST_CASE("#1548", "[compilation]") {
         TestClass test;
         REQUIRE(utility::synchronizing_callback != test.testMethod_uponComplete_arg);
     }
-#if defined (_MSC_VER)
+#if defined (CATCH_COMPILER_MSC)
 #pragma warning(pop)
 #endif
 

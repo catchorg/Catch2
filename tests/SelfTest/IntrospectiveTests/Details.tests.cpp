@@ -6,12 +6,13 @@
 
 // SPDX-License-Identifier: BSL-1.0
 
+#include <catch2/internal/catch_compiler_detections.hpp>
 #include <catch2/catch_test_macros.hpp>
 #include <catch2/internal/catch_enforce.hpp>
 #include <catch2/internal/catch_case_insensitive_comparisons.hpp>
 #include <catch2/internal/catch_optional.hpp>
 
-#if defined(_MSC_VER)
+#if defined(CATCH_COMPILER_MSC)
 #pragma warning(push)
 #pragma warning(disable:4702) // unreachable code in the macro expansions
 #endif
@@ -24,7 +25,7 @@ TEST_CASE("Check that our error handling macros throw the right exceptions", "[!
     REQUIRE_NOTHROW([](){CATCH_ENFORCE(true, "");}());
 }
 
-#if defined(_MSC_VER)
+#if defined(CATCH_COMPILER_MSC)
 #pragma warning(pop) // unreachable code in the macro expansions
 #endif
 

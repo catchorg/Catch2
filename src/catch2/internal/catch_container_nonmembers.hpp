@@ -9,6 +9,7 @@
 #define CATCH_CONTAINER_NONMEMBERS_HPP_INCLUDED
 
 #include <catch2/internal/catch_compiler_capabilities.hpp>
+#include <catch2/internal/catch_compiler_detections.hpp>
 
 #include <cstddef>
 #include <initializer_list>
@@ -17,7 +18,7 @@
 // for C++14 or C++ libraries with incomplete support.
 // We also have to handle that MSVC std lib will happily provide these
 // under older standards.
-#if defined(CATCH_CPP17_OR_GREATER) || defined(_MSC_VER)
+#if defined(CATCH_CPP17_OR_GREATER) || defined(CATCH_COMPILER_MSVC)
 
 // We are already using this header either way, so there shouldn't
 // be much additional overhead in including it to get the feature

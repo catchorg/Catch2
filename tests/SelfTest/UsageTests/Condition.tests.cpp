@@ -6,7 +6,9 @@
 
 // SPDX-License-Identifier: BSL-1.0
 
-#ifdef __clang__
+#include <catch2/internal/catch_compiler_detections.hpp>
+
+#ifdef CATCH_COMPILER_CLANG
 #   pragma clang diagnostic push
 #   pragma clang diagnostic ignored "-Wpadded"
 // Wdouble-promotion is not supported until 3.8
@@ -176,7 +178,7 @@ TEST_CASE( "Ordering comparison checks that should fail", "[.][failing]" )
     CHECK( data.str_hello <= "a" );
 }
 
-#ifdef __clang__
+#ifdef CATCH_COMPILER_CLANG
 #   pragma clang diagnostic pop
 #endif
 
@@ -211,12 +213,12 @@ TEST_CASE( "Comparisons with int literals don't warn when mixing signed/ unsigne
 // Disable warnings about sign conversions for the next two tests
 // (as we are deliberately invoking them)
 // - Currently only disabled for GCC/ LLVM. Should add VC++ too
-#ifdef  __GNUC__
+#ifdef  CATCH_COMPILER_GCC
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wsign-compare"
 #pragma GCC diagnostic ignored "-Wsign-conversion"
 #endif
-#ifdef _MSC_VER
+#ifdef CATCH_COMPILER_MSC
 #pragma warning(disable:4389) // '==' : signed/unsigned mismatch
 #endif
 
@@ -265,7 +267,7 @@ TEST_CASE( "Comparisons between ints where one side is computed" )
      CHECK( 54 == 6*9 );
 }
 
-#ifdef  __GNUC__
+#ifdef  CATCH_COMPILER_GCC
 #pragma GCC diagnostic pop
 #endif
 

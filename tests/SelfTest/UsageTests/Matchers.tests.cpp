@@ -8,6 +8,7 @@
 
 #include <catch2/catch_test_macros.hpp>
 #include <catch2/catch_template_test_macros.hpp>
+#include <catch2/internal/catch_compiler_detections.hpp>
 #include <catch2/matchers/catch_matchers_exception.hpp>
 #include <catch2/matchers/catch_matchers_floating_point.hpp>
 #include <catch2/matchers/catch_matchers_predicate.hpp>
@@ -21,7 +22,7 @@
 #include <list>
 #include <sstream>
 
-#ifdef __clang__
+#ifdef CATCH_COMPILER_CLANG
 #    pragma clang diagnostic push
 #    pragma clang diagnostic ignored "-Wweak-vtables"
 #    pragma clang diagnostic ignored "-Wpadded"
@@ -40,7 +41,7 @@ namespace {
     static bool alwaysTrue( int ) { return true; }
     static bool alwaysFalse( int ) { return false; }
 
-#ifdef _MSC_VER
+#ifdef CATCH_COMPILER_MSC
 #    pragma warning( disable : 4702 ) // Unreachable code -- MSVC 19 (VS 2015)
                                       // sees right through the indirection
 #endif
@@ -1083,7 +1084,7 @@ TEST_CASE( "Matchers can take references",
     REQUIRE_THAT( 22, ReferencingMatcher{} );
 }
 
-#ifdef __clang__
+#ifdef CATCH_COMPILER_CLANG
 #    pragma clang diagnostic pop
 #endif
 

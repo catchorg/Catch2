@@ -9,12 +9,13 @@
 #define CATCH_DECOMPOSER_HPP_INCLUDED
 
 #include <catch2/catch_tostring.hpp>
+#include <catch2/internal/catch_compiler_detections.hpp>
 #include <catch2/internal/catch_stringref.hpp>
 #include <catch2/internal/catch_meta.hpp>
 
 #include <iosfwd>
 
-#ifdef _MSC_VER
+#ifdef CATCH_COMPILER_MSVC
 #pragma warning(push)
 #pragma warning(disable:4389) // '==' : signed/unsigned mismatch
 #pragma warning(disable:4018) // more "signed/unsigned mismatch"
@@ -23,10 +24,10 @@
 #pragma warning(disable:4800) // Forcing result to true or false
 #endif
 
-#ifdef __clang__
+#ifdef CATCH_COMPILER_CLANG
 #  pragma clang diagnostic push
 #  pragma clang diagnostic ignored "-Wsign-compare"
-#elif defined __GNUC__
+#elif defined CATCH_COMPILER_GCC
 #  pragma GCC diagnostic push
 #  pragma GCC diagnostic ignored "-Wsign-compare"
 #endif
@@ -256,12 +257,12 @@ namespace Catch {
 
 } // end namespace Catch
 
-#ifdef _MSC_VER
+#ifdef CATCH_COMPILER_MSVC
 #pragma warning(pop)
 #endif
-#ifdef __clang__
+#ifdef CATCH_COMPILER_CLANG
 #  pragma clang diagnostic pop
-#elif defined __GNUC__
+#elif defined CATCH_COMPILER_GCC
 #  pragma GCC diagnostic pop
 #endif
 

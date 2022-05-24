@@ -6,6 +6,8 @@
 
 // SPDX-License-Identifier: BSL-1.0
 #include <catch2/internal/catch_debugger.hpp>
+
+#include <catch2/internal/catch_compiler_detections.hpp>
 #include <catch2/internal/catch_errno_guard.hpp>
 #include <catch2/internal/catch_platform.hpp>
 #include <catch2/internal/catch_stdstreams.hpp>
@@ -99,14 +101,14 @@
             return false;
         }
     } // namespace Catch
-#elif defined(_MSC_VER)
+#elif defined(CATCH_COMPILER_MSVC)
     extern "C" __declspec(dllimport) int __stdcall IsDebuggerPresent();
     namespace Catch {
         bool isDebuggerActive() {
             return IsDebuggerPresent() != 0;
         }
     }
-#elif defined(__MINGW32__)
+#elif defined(CATCH_COMPILER_MINGW32)
     extern "C" __declspec(dllimport) int __stdcall IsDebuggerPresent();
     namespace Catch {
         bool isDebuggerActive() {

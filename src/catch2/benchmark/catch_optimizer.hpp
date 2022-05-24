@@ -10,7 +10,9 @@
 #ifndef CATCH_OPTIMIZER_HPP_INCLUDED
 #define CATCH_OPTIMIZER_HPP_INCLUDED
 
-#if defined(_MSC_VER)
+#include <catch2/internal/catch_compiler_detections.hpp>
+
+#if defined(CATCH_COMPILER_MSC)
 #   include <atomic> // atomic_thread_fence
 #endif
 
@@ -20,7 +22,7 @@
 
 namespace Catch {
     namespace Benchmark {
-#if defined(__GNUC__) || defined(__clang__)
+#if defined(CATCH_COMPILER_GCC) || defined(CATCH_COMPILER_CLANG)
         template <typename T>
         inline void keep_memory(T* p) {
             asm volatile("" : : "g"(p) : "memory");
@@ -32,7 +34,7 @@ namespace Catch {
         namespace Detail {
             inline void optimizer_barrier() { keep_memory(); }
         } // namespace Detail
-#elif defined(_MSC_VER)
+#elif defined(CATCH_COMPILER_MSC)
 
 #pragma optimize("", off)
         template <typename T>

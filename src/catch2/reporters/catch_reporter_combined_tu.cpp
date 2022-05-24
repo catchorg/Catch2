@@ -17,8 +17,10 @@
  * of Catch2 has its own combined TU like this.
  */
 
+
 #include <catch2/reporters/catch_reporter_helpers.hpp>
 #include <catch2/interfaces/catch_interfaces_config.hpp>
+#include <catch2/internal/catch_compiler_detections.hpp>
 #include <catch2/internal/catch_console_width.hpp>
 #include <catch2/internal/catch_errno_guard.hpp>
 #include <catch2/internal/catch_textflow.hpp>
@@ -68,7 +70,7 @@ namespace Catch {
 
         // Save previous errno, to prevent sprintf from overwriting it
         ErrnoGuard guard;
-#ifdef _MSC_VER
+#ifdef CATCH_COMPILER_MSC
         size_t printedLength = static_cast<size_t>(
             sprintf_s( buffer, "%.3f", duration ) );
 #else

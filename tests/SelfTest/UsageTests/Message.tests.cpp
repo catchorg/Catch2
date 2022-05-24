@@ -7,6 +7,7 @@
 // SPDX-License-Identifier: BSL-1.0
 
 #include <catch2/catch_test_macros.hpp>
+#include <catch2/internal/catch_compiler_detections.hpp>
 #include <iostream>
 
 TEST_CASE( "INFO and WARN do not abort tests", "[messages][.]" ) {
@@ -212,15 +213,15 @@ TEST_CASE( "CAPTURE can deal with complex expressions", "[messages][capture]" ) 
     SUCCEED();
 }
 
-#ifdef __clang__
+#ifdef CATCH_COMPILER_CLANG
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wunused-value" // In (1, 2), the "1" is unused ...
 #endif
-#ifdef __GNUC__
+#ifdef CATCH_COMPILER_GCC
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wunused-value" // All the comma operators are side-effect free
 #endif
-#ifdef _MSC_VER
+#ifdef CATCH_COMPILER_MSC
 #pragma warning(push)
 #pragma warning(disable:4709) // comma in indexing operator
 #endif
@@ -243,11 +244,11 @@ std::ostream& operator<<(std::ostream& out, helper_1436<T1, T2> const& helper) {
 
 // Clang and gcc have different names for this warning, and clang also
 // warns about an unused value. This warning must be disabled for C++20.
-#if defined(__GNUG__) && !defined(__clang__)
+#if defined(CATCH_COMPILER_GCC) && __cplusplus
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wpragmas"
 #pragma GCC diagnostic ignored "-Wcomma-subscript"
-#elif defined(__clang__)
+#elif defined(CATCH_COMPILER_CLANG)
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wunknown-pragmas"
 #pragma clang diagnostic ignored "-Wunknown-warning-option"
@@ -265,7 +266,7 @@ TEST_CASE("CAPTURE can deal with complex expressions involving commas", "[messag
     SUCCEED();
 }
 
-#ifdef __GNUG__
+#ifdef CATCH_COMPILER_GCC
 #pragma GCC diagnostic pop
 #endif
 
@@ -276,12 +277,12 @@ TEST_CASE("CAPTURE parses string and character constants", "[messages][capture]"
     SUCCEED();
 }
 
-#ifdef __clang__
+#ifdef CATCH_COMPILER_CLANG
 #pragma clang diagnostic pop
 #endif
-#ifdef __GNUC__
+#ifdef CATCH_COMPILER_GCC
 #pragma GCC diagnostic pop
 #endif
-#ifdef _MSC_VER
+#ifdef CATCH_COMPILER_MSC
 #pragma warning(pop)
 #endif

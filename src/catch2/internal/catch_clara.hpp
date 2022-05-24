@@ -8,14 +8,16 @@
 #ifndef CATCH_CLARA_HPP_INCLUDED
 #define CATCH_CLARA_HPP_INCLUDED
 
-#if defined( __clang__ )
+#include <catch2/internal/catch_compiler_detections.hpp>
+
+#if defined( CATCH_COMPILER_CLANG )
 #    pragma clang diagnostic push
 #    pragma clang diagnostic ignored "-Wweak-vtables"
 #    pragma clang diagnostic ignored "-Wshadow"
 #    pragma clang diagnostic ignored "-Wdeprecated"
 #endif
 
-#if defined( __GNUC__ )
+#if defined( CATCH_COMPILER_GCC )
 #    pragma GCC diagnostic push
 #    pragma GCC diagnostic ignored "-Wsign-conversion"
 #endif
@@ -691,11 +693,11 @@ namespace Catch {
     } // namespace Clara
 } // namespace Catch
 
-#if defined( __clang__ )
+#if defined( CATCH_COMPILER_CLANG )
 #    pragma clang diagnostic pop
 #endif
 
-#if defined( __GNUC__ )
+#if defined( CATCH_COMPILER_GCC )
 #    pragma GCC diagnostic pop
 #endif
 

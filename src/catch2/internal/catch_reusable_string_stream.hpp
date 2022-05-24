@@ -8,6 +8,7 @@
 #ifndef CATCH_REUSABLE_STRING_STREAM_HPP_INCLUDED
 #define CATCH_REUSABLE_STRING_STREAM_HPP_INCLUDED
 
+#include <catch2/internal/catch_compiler_detections.hpp>
 #include <catch2/internal/catch_noncopyable.hpp>
 
 #include <iosfwd>

@@ -8,6 +8,7 @@
 #ifndef CATCH_TEST_CASE_INFO_HPP_INCLUDED
 #define CATCH_TEST_CASE_INFO_HPP_INCLUDED
 
+#include <catch2/internal/catch_compiler_detections.hpp>
 #include <catch2/internal/catch_source_line_info.hpp>
 #include <catch2/internal/catch_noncopyable.hpp>
 #include <catch2/internal/catch_stringref.hpp>
@@ -18,7 +19,7 @@
 #include <string>
 #include <vector>
 
-#ifdef __clang__
+#ifdef CATCH_COMPILER_CLANG
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wpadded"
 #endif
@@ -123,7 +124,7 @@ namespace Catch {
                       SourceLineInfo const& lineInfo );
 }
 
-#ifdef __clang__
+#ifdef CATCH_COMPILER_CLANG
 #pragma clang diagnostic pop
 #endif
 

@@ -6,6 +6,7 @@
 
 // SPDX-License-Identifier: BSL-1.0
 #include <catch2/matchers/catch_matchers_floating_point.hpp>
+#include <catch2/internal/catch_compiler_detections.hpp>
 #include <catch2/internal/catch_enforce.hpp>
 #include <catch2/internal/catch_polyfills.hpp>
 #include <catch2/internal/catch_to_string.hpp>
@@ -115,7 +116,7 @@ namespace Detail {
                        "IEEE-754 compatible floating point representation" );
     }
 
-#if defined(__clang__)
+#if defined(CATCH_COMPILER_CLANG)
 #pragma clang diagnostic push
 // Clang <3.5 reports on the default branch in the switch below
 #pragma clang diagnostic ignored "-Wunreachable-code"
@@ -132,7 +133,7 @@ namespace Detail {
         }
     }
 
-#if defined(__clang__)
+#if defined(CATCH_COMPILER_CLANG)
 #pragma clang diagnostic pop
 #endif
 

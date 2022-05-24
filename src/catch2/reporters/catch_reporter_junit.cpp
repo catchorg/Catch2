@@ -9,6 +9,7 @@
 
 #include <catch2/reporters/catch_reporter_helpers.hpp>
 #include <catch2/catch_tostring.hpp>
+#include <catch2/internal/catch_compiler_detections.hpp>
 #include <catch2/internal/catch_string_manip.hpp>
 #include <catch2/internal/catch_textflow.hpp>
 #include <catch2/interfaces/catch_interfaces_config.hpp>
@@ -28,7 +29,7 @@ namespace Catch {
             std::time(&rawtime);
 
             std::tm timeInfo = {};
-#if defined (_MSC_VER) || defined (__MINGW32__)
+#if defined (CATCH_COMPILER_MSC) || defined (CATCH_COMPILER_MINGW32)
             gmtime_s(&timeInfo, &rawtime);
 #else
             gmtime_r(&rawtime, &timeInfo);

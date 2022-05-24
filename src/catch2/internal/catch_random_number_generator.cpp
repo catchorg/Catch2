@@ -7,11 +7,13 @@
 // SPDX-License-Identifier: BSL-1.0
 #include <catch2/internal/catch_random_number_generator.hpp>
 
+#include <catch2/internal/catch_compiler_detections.hpp>
+
 namespace Catch {
 
 namespace {
 
-#if defined(_MSC_VER)
+#if defined(CATCH_COMPILER_MSVC)
 #pragma warning(push)
 #pragma warning(disable:4146) // we negate uint32 during the rotate
 #endif
@@ -22,7 +24,7 @@ namespace {
             return (val >> count) | (val << (-count & mask));
         }
 
-#if defined(_MSC_VER)
+#if defined(CATCH_COMPILER_MSVC)
 #pragma warning(pop)
 #endif
 

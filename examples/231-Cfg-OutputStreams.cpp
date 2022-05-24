@@ -10,6 +10,8 @@
 #include <sstream>
 #include <cstdio>
 
+#include <catch2/internal/catch_compiler_detections.hpp>
+
 class out_buff : public std::stringbuf {
     std::FILE* m_stream;
 public:
@@ -31,7 +33,7 @@ public:
 
 out_buff::~out_buff() { pubsync(); }
 
-#if defined(__clang__)
+#if defined(CATCH_COMPILER_CLANG)
 #pragma clang diagnostic ignored "-Wexit-time-destructors" // static variables in cout/cerr/clog
 #endif
 

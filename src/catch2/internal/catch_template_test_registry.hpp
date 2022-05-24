@@ -10,6 +10,7 @@
 
 #include <catch2/internal/catch_test_registry.hpp>
 #include <catch2/internal/catch_compiler_capabilities.hpp>
+#include <catch2/internal/catch_compiler_detections.hpp>
 #include <catch2/internal/catch_preprocessor.hpp>
 #include <catch2/internal/catch_meta.hpp>
 #include <catch2/internal/catch_unique_name.hpp>
@@ -18,7 +19,7 @@
 // GCC 5 and older do not properly handle disabling unused-variable warning
 // with a _Pragma. This means that we have to leak the suppression to the
 // user code as well :-(
-#if defined(__GNUC__) && !defined(__clang__) && __GNUC__ <= 5
+#if defined(CATCH_COMPILER_GCC) && __GNUC__ <= 5
 #pragma GCC diagnostic ignored "-Wunused-variable"
 #endif
 

@@ -8,6 +8,8 @@
 #ifndef CATCH_PLATFORM_HPP_INCLUDED
 #define CATCH_PLATFORM_HPP_INCLUDED
 
+#include <catch2/internal/catch_compiler_detections.hpp>
+
 // See e.g.:
 // https://opensource.apple.com/source/CarbonHeaders/CarbonHeaders-18.1/TargetConditionals.h.auto.html
 #ifdef __APPLE__
@@ -22,7 +24,7 @@
 #elif defined(linux) || defined(__linux) || defined(__linux__)
 #  define CATCH_PLATFORM_LINUX
 
-#elif defined(WIN32) || defined(__WIN32__) || defined(_WIN32) || defined(_MSC_VER) || defined(__MINGW32__)
+#elif defined(WIN32) || defined(__WIN32__) || defined(_WIN32) || defined(CATCH_COMPILER_MSVC) || defined(CATCH_COMPILER_MINGW32)
 #  define CATCH_PLATFORM_WINDOWS
 #endif
 

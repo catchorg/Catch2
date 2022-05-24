@@ -7,6 +7,7 @@
 // SPDX-License-Identifier: BSL-1.0
 
 #include <catch2/catch_test_macros.hpp>
+#include <catch2/internal/catch_compiler_detections.hpp>
 #include <catch2/generators/catch_generator_exception.hpp>
 #include <catch2/generators/catch_generators_adapters.hpp>
 #include <catch2/generators/catch_generators_random.hpp>
@@ -235,7 +236,7 @@ namespace {
     }
 }
 
-#if defined(__clang__)
+#if defined(CATCH_COMPILER_CLANG)
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wexit-time-destructors"
 #endif
@@ -277,6 +278,6 @@ TEST_CASE("#1913 - GENERATEs can share a line", "[regression][generators]") {
     REQUIRE(i != j);
 }
 
-#if defined(__clang__)
+#if defined(CATCH_COMPILER_CLANG)
 #pragma clang diagnostic pop
 #endif

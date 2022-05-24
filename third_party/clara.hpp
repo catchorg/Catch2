@@ -47,6 +47,8 @@
 #include <sstream>
 #include <vector>
 
+#include <catch2/internal/catch_compiler_detections.hpp>
+
 #ifndef CLARA_TEXTFLOW_CONFIG_CONSOLE_WIDTH
 #define CLARA_TEXTFLOW_CONFIG_CONSOLE_WIDTH 80
 #endif
@@ -379,7 +381,7 @@ namespace clara { namespace TextFlow {
 #include <set>
 #include <algorithm>
 
-#if !defined(CLARA_PLATFORM_WINDOWS) && ( defined(WIN32) || defined(__WIN32__) || defined(_WIN32) || defined(_MSC_VER) )
+#if !defined(CLARA_PLATFORM_WINDOWS) && ( defined(WIN32) || defined(__WIN32__) || defined(_WIN32) || defined(CATCH_COMPILER_MSC) )
 #define CLARA_PLATFORM_WINDOWS
 #endif
 

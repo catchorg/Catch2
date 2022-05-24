@@ -11,6 +11,7 @@
 #include <catch2/internal/catch_platform.hpp>
 #include <catch2/internal/catch_reusable_string_stream.hpp>
 #include <catch2/internal/catch_compiler_capabilities.hpp>
+#include <catch2/internal/catch_compiler_detections.hpp>
 
 #include <cstdio>
 #include <iosfwd>
@@ -85,7 +86,7 @@ namespace Catch {
 
     private:
         std::FILE* m_file = nullptr;
-    #if defined(_MSC_VER)
+    #if defined(CATCH_COMPILER_MSVC)
         char m_buffer[L_tmpnam] = { 0 };
     #endif
     };

@@ -8,6 +8,7 @@
 #ifndef CATCH_DEBUGGER_HPP_INCLUDED
 #define CATCH_DEBUGGER_HPP_INCLUDED
 
+#include <catch2/internal/catch_compiler_detections.hpp>
 #include <catch2/internal/catch_platform.hpp>
 
 namespace Catch {
@@ -39,16 +40,16 @@ namespace Catch {
     // If we can use inline assembler, do it because this allows us to break
     // directly at the location of the failing check instead of breaking inside
     // raise() called from it, i.e. one stack frame below.
-    #if defined(__GNUC__) && (defined(__i386) || defined(__x86_64))
+    #if defined(CATCH_COMPILER_GCC) && (defined(__i386) || defined(__x86_64))
         #define CATCH_TRAP() asm volatile ("int $3") /* NOLINT */
     #else // Fall back to the generic way.
         #include <signal.h>
 
         #define CATCH_TRAP() raise(SIGTRAP)
     #endif
-#elif defined(_MSC_VER)
+#elif defined(CATCH_COMPILER_MSVC)
     #define CATCH_TRAP() __debugbreak()
-#elif defined(__MINGW32__)
+#elif defined(CATCH_COMPILER_MINGW32)
     extern "C" __declspec(dllimport) void __stdcall DebugBreak();
     #define CATCH_TRAP() DebugBreak()
 #endif

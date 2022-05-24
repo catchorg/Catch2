@@ -8,15 +8,16 @@
 
 #include <catch2/catch_test_macros.hpp>
 #include <catch2/catch_translate_exception.hpp>
+#include <catch2/internal/catch_compiler_detections.hpp>
 #include <catch2/matchers/catch_matchers_string.hpp>
 
 #include <string>
 #include <stdexcept>
 
-#ifdef _MSC_VER
+#ifdef CATCH_COMPILER_MSC
 #pragma warning(disable:4702) // Unreachable code -- unconditional throws and so on
 #endif
-#ifdef __clang__
+#ifdef CATCH_COMPILER_CLANG
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wweak-vtables"
 #pragma clang diagnostic ignored "-Wmissing-noreturn"
@@ -199,6 +200,6 @@ TEST_CASE( "#748 - captures with unexpected exceptions", "[.][failing][!throws][
     }
 }
 
-#ifdef __clang__
+#ifdef CATCH_COMPILER_CLANG
 #pragma clang diagnostic pop
 #endif

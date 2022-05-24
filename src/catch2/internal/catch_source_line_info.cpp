@@ -10,6 +10,8 @@
 #include <cstring>
 #include <ostream>
 
+#include <catch2/internal/catch_compiler_detections.hpp>
+
 namespace Catch {
 
     bool SourceLineInfo::operator == ( SourceLineInfo const& other ) const noexcept {
@@ -22,7 +24,7 @@ namespace Catch {
     }
 
     std::ostream& operator << ( std::ostream& os, SourceLineInfo const& info ) {
-#ifndef __GNUG__
+#if !defined(CATCH_COMPILER_GCC) || !defined(__cplusplus)
         os << info.file << '(' << info.line << ')';
 #else
         os << info.file << ':' << info.line;

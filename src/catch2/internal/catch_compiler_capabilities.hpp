@@ -24,6 +24,7 @@
 // Many features, at point of detection, define an _INTERNAL_ macro, so they
 // can be combined, en-mass, with the _NO_ forms later.
 
+#include <catch2/internal/catch_compiler_detections.hpp>
 #include <catch2/internal/catch_platform.hpp>
 #include <catch2/catch_user_config.hpp>
 
@@ -41,7 +42,7 @@
 
 // Only GCC compiler should be used in this block, so other compilers trying to
 // mask themselves as GCC should be ignored.
-#if defined(__GNUC__) && !defined(__clang__) && !defined(__ICC) && !defined(__CUDACC__) && !defined(__LCC__)
+#if defined(CATCH_COMPILER_GCC)
 #    define CATCH_INTERNAL_START_WARNINGS_SUPPRESSION _Pragma( "GCC diagnostic push" )
 #    define CATCH_INTERNAL_STOP_WARNINGS_SUPPRESSION  _Pragma( "GCC diagnostic pop" )
 
@@ -57,7 +58,7 @@
 
 #endif
 
-#if defined(__clang__) && !defined(_MSC_VER)
+#if defined(CATCH_COMPILER_CLANG)
 
 #    define CATCH_INTERNAL_START_WARNINGS_SUPPRESSION _Pragma( "clang diagnostic push" )
 #    define CATCH_INTERNAL_STOP_WARNINGS_SUPPRESSION  _Pragma( "clang diagnostic pop" )
@@ -99,7 +100,7 @@
 #    define CATCH_INTERNAL_SUPPRESS_UNUSED_TEMPLATE_WARNINGS \
          _Pragma( "clang diagnostic ignored \"-Wunused-template\"" )
 
-#endif // __clang__
+#endif // CATCH_COMPILER_CLANG
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -126,7 +127,7 @@
 
 ////////////////////////////////////////////////////////////////////////////////
 // Not all Windows environments support SEH properly
-#if defined(__MINGW32__)
+#if defined(CATCH_COMPILER_MINGW32)
 #    define CATCH_INTERNAL_CONFIG_NO_WINDOWS_SEH
 #endif
 
@@ -155,7 +156,7 @@
 
 ////////////////////////////////////////////////////////////////////////////////
 // Visual C++
-#if defined(_MSC_VER)
+#if defined(CATCH_COMPILER_MSVC)
 
 #  define CATCH_INTERNAL_START_WARNINGS_SUPPRESSION __pragma( warning(push) )
 #  define CATCH_INTERNAL_STOP_WARNINGS_SUPPRESSION  __pragma( warning(pop) )
