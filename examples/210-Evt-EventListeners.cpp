@@ -420,7 +420,7 @@ TEST_CASE_METHOD( Fixture, "3: Testcase with class-based fixture", "[tag-C][tag-
 }
 
 // Compile & run:
-// - g++ -std=c++11 -Wall -I$(CATCH_SINGLE_INCLUDE) -o 210-Evt-EventListeners 210-Evt-EventListeners.cpp && 210-Evt-EventListeners --success
+// - g++ -std=c++14 -Wall -I$(CATCH_SINGLE_INCLUDE) -o 210-Evt-EventListeners 210-Evt-EventListeners.cpp && 210-Evt-EventListeners --success
 // - cl -EHsc -I%CATCH_SINGLE_INCLUDE% 210-Evt-EventListeners.cpp && 210-Evt-EventListeners --success
 
 // Expected compact output (all assertions):

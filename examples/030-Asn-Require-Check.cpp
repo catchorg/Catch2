@@ -53,7 +53,7 @@ TEST_CASE( "Assert that something is false (continue after failure)", "[check-fa
 }
 
 // Compile & run:
-// - g++ -std=c++11 -Wall -I$(CATCH_SINGLE_INCLUDE) -o 030-Asn-Require-Check 030-Asn-Require-Check.cpp && 030-Asn-Require-Check --success
+// - g++ -std=c++14 -Wall -I$(CATCH_SINGLE_INCLUDE) -o 030-Asn-Require-Check 030-Asn-Require-Check.cpp && 030-Asn-Require-Check --success
 // - cl -EHsc -I%CATCH_SINGLE_INCLUDE% 030-Asn-Require-Check.cpp && 030-Asn-Require-Check --success
 
 // Expected compact output (all assertions):
