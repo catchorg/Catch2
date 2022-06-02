@@ -220,7 +220,7 @@ similar information.
 
 `--list-listeners` lists all registered listeners and their descriptions.
 
-The [`--verbosity` argument](#output-verbosity) modifies the level of detail provided by the `--list*` options
+The [`--verbosity` argument](#output-verbosity) modifies the level of detail provided by the default `--list*` options
 as follows:
 
 | Option             | `normal` (default)              | `quiet`             | `high`                                  |
