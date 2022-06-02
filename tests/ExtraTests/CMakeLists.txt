@@ -459,7 +459,10 @@ add_test(
   NAME TestSpecs::OverrideFailureWithEmptySpec
   COMMAND $<TARGET_FILE:NoTests> --allow-running-no-tests
 )
-
+add_test(
+  NAME List::Listeners::WorksWithoutRegisteredListeners
+  COMMAND $<TARGET_FILE:NoTests> --list-listeners
+)
 set( EXTRA_TEST_BINARIES
     PrefixedMacros
     DisabledMacros
