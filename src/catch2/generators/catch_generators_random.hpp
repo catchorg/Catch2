@@ -65,12 +65,17 @@ public:
     }
 };
 
-// TODO: Ideally this would be also constrained against the various char types,
-//       but I don't expect users to run into that in practice.
 template <typename T>
-std::enable_if_t<std::is_integral<T>::value && !std::is_same<T, bool>::value,
-GeneratorWrapper<T>>
+std::enable_if_t<std::is_integral<T>::value, GeneratorWrapper<T>>
 random(T a, T b) {
+    static_assert(
+        !std::is_same<T, char>::value &&
+        !std::is_same<T, uint8_t>::value &&
+        !std::is_same<T, uint8_t>::value &&
+        !std::is_same<T, signed char>::value &&
+        !std::is_same<T, unsigned char>::value &&
+        !std::is_same<T, bool>::value,
+        "The requested type is not supported by the underlying random distributions from std" );
     return GeneratorWrapper<T>(
         Catch::Detail::make_unique<RandomIntegerGenerator<T>>(a, b, Detail::getSeed())
     );
