@@ -220,6 +220,15 @@ similar information.
 
 `--list-listeners` lists all registered listeners and their descriptions.
 
+The [`--verbosity` argument](#output-verbosity) modifies the level of detail provided by the default `--list*` options
+as follows:
+
+| Option             | `normal` (default)              | `quiet`             | `high`                                  |
+|--------------------|---------------------------------|---------------------|-----------------------------------------|
+| `--list-tests`     | Test names and tags             | Test names only     | Same as `normal`, plus source code line |
+| `--list-tags`      | Tags and counts                 | Same as `normal`    | Same as `normal`                        |
+| `--list-reporters` | Reporter names and descriptions | Reporter names only | Same as `normal`                        |
+| `--list-listeners` | Listener names and descriptions | Same as `normal`    | Same as `normal`                        |
 
 <a id="sending-output-to-a-file"></a>
 ## Sending output to a file
