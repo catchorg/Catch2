@@ -154,6 +154,12 @@ namespace Catch {
 
     void defaultListListeners( std::ostream& out,
                                std::vector<ListenerDescription> const& descriptions ) {
+        out << "Registered listeners:\n";
+
+        if(descriptions.empty()) {
+            return;
+        }
+
         const auto maxNameLen =
             std::max_element( descriptions.begin(),
                               descriptions.end(),
@@ -163,7 +169,6 @@ namespace Catch {
                               } )
                 ->name.size();
 
-        out << "Registered listeners:\n";
         for ( auto const& desc : descriptions ) {
             out << TextFlow::Column( static_cast<std::string>( desc.name ) +
                                      ':' )
