@@ -70,7 +70,7 @@ std::enable_if_t<std::is_integral<T>::value, GeneratorWrapper<T>>
 random(T a, T b) {
     static_assert(
         !std::is_same<T, char>::value &&
-        !std::is_same<T, uint8_t>::value &&
+        !std::is_same<T, int8_t>::value &&
         !std::is_same<T, uint8_t>::value &&
         !std::is_same<T, signed char>::value &&
         !std::is_same<T, unsigned char>::value &&
