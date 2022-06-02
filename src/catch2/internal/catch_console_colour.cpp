@@ -232,25 +232,22 @@ namespace Catch {
 
     Detail::unique_ptr<ColourImpl> makeColourImpl( ColourMode implSelection,
                                                    IStream* stream ) {
-        if ( implSelection == ColourMode::None ) {
-            return Detail::make_unique<NoColourImpl>( stream );
-        }
-        if ( implSelection == ColourMode::ANSI ) {
-            return Detail::make_unique<ANSIColourImpl>( stream );
-        }
 #if defined( CATCH_CONFIG_COLOUR_WIN32 )
         if ( implSelection == ColourMode::Win32 ) {
             return Detail::make_unique<Win32ColourImpl>( stream );
         }
 #endif
+        if ( implSelection == ColourMode::ANSI ) {
+            return Detail::make_unique<ANSIColourImpl>( stream );
+        }
+        if ( implSelection == ColourMode::None ) {
+            return Detail::make_unique<NoColourImpl>( stream );
+        }
 
-        // todo: check win32 eligibility under ifdef, otherwise ansi
         if ( implSelection == ColourMode::PlatformDefault) {
-#if defined (CATCH_CONFIG_COLOUR_WIN32)
+#if defined( CATCH_CONFIG_COLOUR_WIN32 )
             if ( Win32ColourImpl::useImplementationForStream( *stream ) ) {
                 return Detail::make_unique<Win32ColourImpl>( stream );
-            } else {
-                return Detail::make_unique<NoColourImpl>( stream );
             }
 #endif
             if ( ANSIColourImpl::useImplementationForStream( *stream ) ) {
