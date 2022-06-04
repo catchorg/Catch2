@@ -94,7 +94,7 @@ before we move on.
 * The test automatically self-registers with the test runner, and user
   does not have do anything more to ensure that it is picked up by the test
   framework. _Note that you can run specific test, or set of tests,
-  through the [command line](command-line#top)._
+  through the [command line](command-line.md#top)._
 * The individual test assertions are written using the `REQUIRE` macro.
   It accepts a boolean expression, and uses expression templates to
   internally decompose it, so that it can be individually stringified
