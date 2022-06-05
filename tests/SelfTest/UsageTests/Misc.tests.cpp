@@ -508,7 +508,8 @@ TEMPLATE_TEST_CASE_SIG("#1954 - 7 arg template test case sig compiles", "[regres
 TEST_CASE("Same test name but with different tags is fine", "[.approvals][some-tag]") {}
 TEST_CASE("Same test name but with different tags is fine", "[.approvals][other-tag]") {}
 
-#if defined(CATCH_PLATFORM_WINDOWS)
+// MinGW doesn't support __try, and Clang has only very partial support
+#if defined(_MSC_VER)
 void throw_and_catch()
 {
     __try {
@@ -549,4 +550,4 @@ TEST_CASE("Validate SEH behavior - no crash for stack unwinding", "[approvals][!
     throw 1;
 }
 
-#endif // CATCH_PLATFORM_WINDOWS
+#endif // _MSC_VER
