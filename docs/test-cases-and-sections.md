@@ -153,7 +153,7 @@ Scenario : vector can be sized and resized
   Then   : The size changes
 ```
 
-See also [runnable example on godbolt](https://godbolt.org/z/e5vPPM),
+See also [runnable example on godbolt](https://godbolt.org/z/eY5a64r99),
 with a more complicated (and failing) example.
 
 > `AND_GIVEN` was [introduced](https://github.com/catchorg/Catch2/issues/1360) in Catch2 2.4.0.
