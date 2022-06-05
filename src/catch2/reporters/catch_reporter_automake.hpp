@@ -8,7 +8,9 @@
 #ifndef CATCH_REPORTER_AUTOMAKE_HPP_INCLUDED
 #define CATCH_REPORTER_AUTOMAKE_HPP_INCLUDED
 
+#include <catch2/interfaces/catch_interfaces_reporter.hpp>
 #include <catch2/reporters/catch_reporter_streaming_base.hpp>
+#include <catch2/internal/catch_move_and_forward.hpp>
 
 #include <string>
 
@@ -16,7 +18,9 @@ namespace Catch {
 
     class AutomakeReporter final : public StreamingReporterBase {
     public:
-        using StreamingReporterBase::StreamingReporterBase;
+        AutomakeReporter(ReporterConfig&& _config):
+            StreamingReporterBase(CATCH_MOVE(_config))
+        {}
         ~AutomakeReporter() override;
 
         static std::string getDescription() {
