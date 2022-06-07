@@ -126,7 +126,7 @@ namespace Catch {
                     return {};
                 }
 
-                auto ret = kvPairs.emplace( kv.key, kv.value );
+                auto ret = kvPairs.emplace( std::string(kv.key), std::string(kv.value) );
                 if ( !ret.second ) {
                     // Duplicated key. We might want to handle this differently,
                     // e.g. by overwriting the existing value?
