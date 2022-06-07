@@ -90,6 +90,8 @@ namespace Catch {
         using TestCaseNode = Node<TestCaseStats, SectionNode>;
         using TestRunNode = Node<TestRunStats, TestCaseNode>;
 
+        // GCC5 compat: we cannot use inherited constructor, because it
+        //              doesn't implement backport of P0136
         CumulativeReporterBase(ReporterConfig&& _config):
             ReporterBase(CATCH_MOVE(_config))
         {}

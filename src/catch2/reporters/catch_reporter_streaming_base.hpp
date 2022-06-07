@@ -18,6 +18,8 @@ namespace Catch {
 
     class StreamingReporterBase : public ReporterBase {
     public:
+        // GCC5 compat: we cannot use inherited constructor, because it
+        //              doesn't implement backport of P0136
         StreamingReporterBase(ReporterConfig&& _config):
             ReporterBase(CATCH_MOVE(_config))
         {}
