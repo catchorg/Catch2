@@ -17,14 +17,6 @@ as it can be replaced by `Catch.cmake` that provides the function
 command line interface instead of parsing C++ code with regular expressions.
 
 
-## Planned changes
-
-### Console Colour API
-
-The API for Catch2's console colour will be changed to take an extra
-argument, the stream to which the colour code should be applied.
-
-
 ---
 
 [Home](Readme.md#top)
