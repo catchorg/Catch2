@@ -311,6 +311,7 @@ add_test(
     $<TARGET_FILE:SelfTest> "#2025: same-level sections"
     -c "A"
     -c "B"
+    --colour-mode none
 )
 set_tests_properties(FilteredSection::GeneratorsDontCauseInfiniteLoop-2
   PROPERTIES
@@ -394,6 +395,7 @@ add_test(NAME "Benchmarking::SkipBenchmarkMacros"
     $<TARGET_FILE:SelfTest> "Skip benchmark macros"
       --reporter console
       --skip-benchmarks
+      --colour-mode none
 )
 set_tests_properties("Benchmarking::SkipBenchmarkMacros"
   PROPERTIES
@@ -501,6 +503,7 @@ add_test(NAME "Outputs::DashAsOutLocationSendsOutputToStdout"
   COMMAND
     $<TARGET_FILE:SelfTest> "Factorials are computed"
       --out=-
+      --colour-mode none
 )
 set_tests_properties("Outputs::DashAsOutLocationSendsOutputToStdout"
   PROPERTIES
@@ -511,6 +514,7 @@ add_test(NAME "Reporters::DashAsLocationInReporterSpecSendsOutputToStdout"
   COMMAND
     $<TARGET_FILE:SelfTest> "Factorials are computed"
       --reporter console::out=-
+      --colour-mode none
 )
 set_tests_properties("Reporters::DashAsLocationInReporterSpecSendsOutputToStdout"
   PROPERTIES
