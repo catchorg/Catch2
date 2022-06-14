@@ -15,6 +15,9 @@
 
 namespace Catch {
 
+    // Requires declaration for -Wmissing-declarations.
+    bool provideBazelReporterOutput();
+
     bool operator==( ProcessedReporterSpec const& lhs,
                      ProcessedReporterSpec const& rhs ) {
         return lhs.name == rhs.name &&
@@ -59,27 +62,27 @@ namespace Catch {
             } );
         }
 
-#if defined( CATCH_CONFIG_BAZEL_SUPPORT )
-        // Register a JUnit reporter for Bazel. Bazel sets an environment
-        // variable with the path to XML output. If this file is written to
-        // during test, Bazel will not generate a default XML output.
-        // This allows the XML output file to contain higher level of detail
-        // than what is possible otherwise.
+    if(provideBazelReporterOutput()){
+            // Register a JUnit reporter for Bazel. Bazel sets an environment
+            // variable with the path to XML output. If this file is written to
+            // during test, Bazel will not generate a default XML output.
+            // This allows the XML output file to contain higher level of detail
+            // than what is possible otherwise.
 #    if defined( _MSC_VER )
-        // On Windows getenv throws a warning as there is no input validation,
-        // since the key is hardcoded, this should not be an issue.
-#        pragma warning( push )
-#        pragma warning( disable : 4996 )
+            // On Windows getenv throws a warning as there is no input validation,
+            // since the key is hardcoded, this should not be an issue.
+#           pragma warning( push )
+#           pragma warning( disable : 4996 )
 #    endif
-        const auto bazelOutputFilePtr = std::getenv( "XML_OUTPUT_FILE" );
+            const auto bazelOutputFilePtr = std::getenv( "XML_OUTPUT_FILE" );
 #    if defined( _MSC_VER )
 #        pragma warning( pop )
 #    endif
-        if ( bazelOutputFilePtr != nullptr ) {
-            m_data.reporterSpecifications.push_back(
-                { "junit", std::string( bazelOutputFilePtr ), {}, {} } );
-        }
-#endif
+            if ( bazelOutputFilePtr != nullptr ) {
+                m_data.reporterSpecifications.push_back(
+                    { "junit", std::string( bazelOutputFilePtr ), {}, {} } );
+            }
+    }
 
 
         // We now fixup the reporter specs to handle default output spec,
@@ -112,6 +115,26 @@ namespace Catch {
     bool Config::listTags() const           { return m_data.listTags; }
     bool Config::listReporters() const      { return m_data.listReporters; }
     bool Config::listListeners() const      { return m_data.listListeners; }
+
+    bool provideBazelReporterOutput() {
+#ifdef CATCH_CONFIG_BAZEL_SUPPORT
+        return true;
+#else
+
+#    if defined( _MSC_VER )
+        // On Windows getenv throws a warning as there is no input validation,
+        // since the switch is hardcoded, this should not be an issue.
+#        pragma warning( push )
+#       pragma warning( disable : 4996 )
+#    endif
+
+    return std::getenv("BAZEL_TEST") != nullptr;
+
+#    if defined( _MSC_VER )
+#        pragma warning( pop )
+#    endif
+#endif
+    }
 
     std::vector<std::string> const& Config::getTestsOrTags() const { return m_data.testsOrTags; }
     std::vector<std::string> const& Config::getSectionsToRun() const { return m_data.sectionsToRun; }
