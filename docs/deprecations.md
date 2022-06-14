@@ -17,6 +17,15 @@ as it can be replaced by `Catch.cmake` that provides the function
 command line interface instead of parsing C++ code with regular expressions.
 
 
+### `CATCH_CONFIG_BAZEL_SUPPORT`
+
+Catch2 supports writing the Bazel JUnit XML output file when it is aware
+that is within a bazel testing environment. Originally there was no way
+to accurately probe the environment for this information so the flag
+`CATCH_CONFIG_BAZEL_SUPPORT` was added. This now deprecated. Bazel has now had a change
+where it will export `BAZEL_TEST=1` for purposes like the above. Catch2
+will now instead inspect the environment instead of relying on build configuration.
+
 ---
 
 [Home](Readme.md#top)
