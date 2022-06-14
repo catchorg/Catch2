@@ -200,23 +200,25 @@ print("Running approvals against executable:")
 print("  " + cmdPath)
 
 
+base_args = ["--order", "lex", "--rng-seed", "1", "--colour-mode", "none"]
+
 ## special cases first:
 # Standard console reporter
-approve("console.std", ["~[!nonportable]~[!benchmark]~[approvals] *", "--order", "lex", "--rng-seed", "1", "--colour-mode", "none"])
+approve("console.std", ["~[!nonportable]~[!benchmark]~[approvals] *"] + base_args)
 # console reporter, include passes, warn about No Assertions, limit failures to first 4
-approve("console.swa4", ["~[!nonportable]~[!benchmark]~[approvals] *", "-s", "-w", "NoAssertions", "-x", "4", "--order", "lex", "--rng-seed", "1", "--colour-mode", "none"])
+approve("console.swa4", ["~[!nonportable]~[!benchmark]~[approvals] *", "-s", "-w", "NoAssertions", "-x", "4"] + base_args)
 
 ## Common reporter checks: include passes, warn about No Assertions
 reporters = ('console', 'junit', 'xml', 'compact', 'sonarqube', 'tap', 'teamcity', 'automake')
 for reporter in reporters:
     filename = '{}.sw'.format(reporter)
-    common_args = ["~[!nonportable]~[!benchmark]~[approvals] *", "-s", "-w", "NoAssertions", "--order", "lex", "--rng-seed", "1", "--colour-mode", "none"]
+    common_args = ["~[!nonportable]~[!benchmark]~[approvals] *", "-s", "-w", "NoAssertions"] + base_args
     reporter_args = ['-r', reporter]
     approve(filename, common_args + reporter_args)
 
 ## All reporters at the same time
 
-common_args = ["~[!nonportable]~[!benchmark]~[approvals] *", "-s", "-w", "NoAssertions", "--order", "lex", "--rng-seed", "1", "--colour-mode", "none"]
+common_args = ["~[!nonportable]~[!benchmark]~[approvals] *", "-s", "-w", "NoAssertions"] + base_args
 filenames = ['{}.sw.multi'.format(reporter) for reporter in reporters]
 reporter_args = []
 for reporter, filename in zip(reporters, filenames):
