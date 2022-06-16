@@ -39,7 +39,9 @@ endif()
 project(Catch2
   VERSION 3.0.1 # CML version placeholder, don't delete
   LANGUAGES CXX
-  HOMEPAGE_URL "https://github.com/catchorg/Catch2"
+  # HOMEPAGE_URL is not supported until CMake version 3.12, which
+  # we do not target yet.
+  # HOMEPAGE_URL "https://github.com/catchorg/Catch2"
   DESCRIPTION "A modern, C++-native, unit test framework."
 )
 
