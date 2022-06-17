@@ -13,10 +13,29 @@
 #include <catch2/internal/catch_test_spec_parser.hpp>
 #include <catch2/interfaces/catch_interfaces_tag_alias_registry.hpp>
 
-namespace Catch {
+namespace {
+    bool provideBazelReporterOutput() {
+#ifdef CATCH_CONFIG_BAZEL_SUPPORT
+        return true;
+#else
 
-    // Requires declaration for -Wmissing-declarations.
-    bool provideBazelReporterOutput();
+#    if defined( _MSC_VER )
+        // On Windows getenv throws a warning as there is no input validation,
+        // since the switch is hardcoded, this should not be an issue.
+#        pragma warning( push )
+#        pragma warning( disable : 4996 )
+#    endif
+
+        return std::getenv( "BAZEL_TEST" ) != nullptr;
+
+#    if defined( _MSC_VER )
+#        pragma warning( pop )
+#    endif
+#endif
+    }
+}
+
+namespace Catch {
 
     bool operator==( ProcessedReporterSpec const& lhs,
                      ProcessedReporterSpec const& rhs ) {
@@ -115,26 +134,6 @@ namespace Catch {
     bool Config::listTags() const           { return m_data.listTags; }
     bool Config::listReporters() const      { return m_data.listReporters; }
     bool Config::listListeners() const      { return m_data.listListeners; }
-
-    bool provideBazelReporterOutput() {
-#ifdef CATCH_CONFIG_BAZEL_SUPPORT
-        return true;
-#else
-
-#    if defined( _MSC_VER )
-        // On Windows getenv throws a warning as there is no input validation,
-        // since the switch is hardcoded, this should not be an issue.
-#        pragma warning( push )
-#       pragma warning( disable : 4996 )
-#    endif
-
-    return std::getenv("BAZEL_TEST") != nullptr;
-
-#    if defined( _MSC_VER )
-#        pragma warning( pop )
-#    endif
-#endif
-    }
 
     std::vector<std::string> const& Config::getTestsOrTags() const { return m_data.testsOrTags; }
     std::vector<std::string> const& Config::getSectionsToRun() const { return m_data.sectionsToRun; }
