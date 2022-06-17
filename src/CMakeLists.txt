@@ -263,6 +263,12 @@ set(REPORTER_SOURCES
 )
 set(REPORTER_FILES ${REPORTER_HEADERS} ${REPORTER_SOURCES})
 
+set(ALL_HEADERS
+  ${BENCHMARK_HEADERS}
+  ${INTERNAL_HEADERS}
+  ${REPORTER_HEADERS}
+)
+
 # Fixme: STATIC because for dynamic, we would need to handle visibility
 # and I don't want to do the annotations right now
 add_library(Catch2 STATIC
@@ -342,7 +348,6 @@ if (NOT_SUBPROJECT)
         ${CMAKE_INSTALL_LIBDIR}
     )
 
-
     install(
       EXPORT
         Catch2Targets
@@ -351,17 +356,87 @@ if (NOT_SUBPROJECT)
       DESTINATION
         ${CATCH_CMAKE_CONFIG_DESTINATION}
     )
+
     # Install the headers
-    install(
-      DIRECTORY
-        "${SOURCES_DIR}"
-        "${CMAKE_BINARY_DIR}/generated-includes/catch2" # Also install the generated header
-      DESTINATION
-        "${CMAKE_INSTALL_INCLUDEDIR}"
-      FILES_MATCHING
-        PATTERN "*.hpp"
-    )
-endif()
+    if (CMAKE_VERSION VERSION_LESS "3.20")
+        # Just glob for files in the tree (note: creates empty directories)
+        install(
+          DIRECTORY
+            "${SOURCES_DIR}"
+            "${CMAKE_BINARY_DIR}/generated-includes/catch2" # Also install the generated header
+          DESTINATION
+            "${CMAKE_INSTALL_INCLUDEDIR}"
+          FILES_MATCHING
+          PATTERN "*.hpp"
+        )
+    else()
+        # Construct per-directory install commands from lists of header files
+        set(_header_targets )
+        foreach(_h ${ALL_HEADERS})
+            cmake_path(
+              RELATIVE_PATH _h
+              BASE_DIRECTORY "${CATCH_DIR}"
+              OUTPUT_VARIABLE _h_rel)
+
+            message(DEBUG "Processing ${_h_rel}...")
+
+            # Skip any "*.hpp.in" files listed with the headers
+            string(REGEX MATCH ".*\.in$" _infile "${_h}")
+            if (_infile)
+                message(DEBUG "Skipping non-header file ${_h_rel}!\n")
+                continue()
+            endif()
+
+            # Figure out if this header is in the source or build tree
+            cmake_path(SET _build_prefix "${CMAKE_BINARY_DIR}/generated-includes")
+            cmake_path(IS_PREFIX _build_prefix "${_h}" NORMALIZE _in_build)
+            cmake_path(IS_PREFIX CATCH_DIR "${_h}" NORMALIZE _in_source)
+
+            # Set _h_dir to the normalized parent path for the header
+            cmake_path(GET _h PARENT_PATH _h_dir)
+            cmake_path(NORMAL_PATH _h_dir)
+
+            # Make that normalized path relative, starting from "catch2/..."
+            if (_in_build)
+                cmake_path(RELATIVE_PATH _h_dir
+                  BASE_DIRECTORY "${_build_prefix}")
+            elseif (_in_source)
+                cmake_path(RELATIVE_PATH _h_dir
+                  BASE_DIRECTORY "${CATCH_DIR}/src")
+            else()
+                message(WARNING "\nNo install path for: ${_h}")
+                continue()
+            endif()
+
+            # Create a target for each header install directory,
+            # named "_headers_<relative_include_path>".
+            # That target will have two properties:
+            #   DESTINATION_DIR = "relative/include/path"
+            #   HEADER_FILES = a list of the headers to install into that dir
+            string(REPLACE "/" "_" _tgt_name "${_h_dir}")
+            string(PREPEND _tgt_name "_headers_")
+            if (NOT TARGET ${_tgt_name})
+                message(DEBUG "  Creating header install target ${_tgt_name}")
+                list(APPEND _header_targets "${_tgt_name}")
+                add_custom_target(${_tgt_name})
+                set_property(TARGET ${_tgt_name} PROPERTY
+                  DESTINATION_DIR "${_h_dir}")
+            endif()
+            message(DEBUG "  Will install ${_h_rel}\n     to <include_dir>/${_h_dir}")
+            set_property(TARGET ${_tgt_name} APPEND PROPERTY
+              HEADER_FILES "${_h}")
+        endforeach()
+
+        # Create an install(FILES...) command for each custom target
+        foreach(_tgt ${_header_targets})
+            set(_dest_path $<TARGET_PROPERTY:${_tgt},DESTINATION_DIR>)
+            install(FILES
+              $<TARGET_PROPERTY:${_tgt},HEADER_FILES>
+              DESTINATION
+                "${CMAKE_INSTALL_INCLUDEDIR}/${_dest_path}")
+        endforeach()
+    endif()  # CMAKE_VERSION VERSION_LESS
+endif()  # NOT_SUBPROJECT
 
 # Some tests require a full recompilation of Catch2 lib with different
 # compilation flags. They can link against this target to recompile all
