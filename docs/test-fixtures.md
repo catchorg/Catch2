@@ -61,8 +61,8 @@ struct Template_Fixture {
 
 TEMPLATE_TEST_CASE_METHOD(Template_Fixture,
                           "A TEMPLATE_TEST_CASE_METHOD based test run that succeeds",
-                          "[class][template]", int, float, double)
-{
+                          "[class][template]",
+                          int, float, double) {
     REQUIRE( Template_Fixture<TestType>::m_a == 1 );
 }
 
@@ -82,8 +82,9 @@ struct Foo_class {
 
 TEMPLATE_PRODUCT_TEST_CASE_METHOD(Template_Template_Fixture,
                                   "A TEMPLATE_PRODUCT_TEST_CASE_METHOD based test succeeds",
-                                  "[class][template]", (Foo_class, std::vector), int)
-{
+                                  "[class][template]",
+                                  (Foo_class, std::vector),
+                                  int) {
     REQUIRE( Template_Template_Fixture<TestType>::m_a.size() == 0 );
 }
 ```
@@ -110,8 +111,9 @@ struct Nttp_Fixture{
 TEMPLATE_TEST_CASE_METHOD_SIG(
     Nttp_Fixture,
     "A TEMPLATE_TEST_CASE_METHOD_SIG based test run that succeeds",
-    "[class][template][nttp]",((int V), V), 1, 3, 6)
-{
+    "[class][template][nttp]",
+    ((int V), V),
+    1, 3, 6) {
     REQUIRE(Nttp_Fixture<V>::value > 0);
 }
 
@@ -131,8 +133,9 @@ TEMPLATE_PRODUCT_TEST_CASE_METHOD_SIG(
     Template_Fixture_2, 
     "A TEMPLATE_PRODUCT_TEST_CASE_METHOD_SIG based test run that succeeds", 
     "[class][template][product][nttp]", 
-    ((typename T, size_t S), T, S),(std::array, Template_Foo_2), ((int,2), (float,6)))
-{
+    ((typename T, size_t S), T, S),
+    (std::array, Template_Foo_2),
+    ((int,2), (float,6))) {
     REQUIRE(Template_Fixture_2<TestType>{}.m_a.size() >= 2);
 }
 ```
@@ -148,8 +151,8 @@ Example:
 using MyTypes = std::tuple<int, char, double>;
 TEMPLATE_LIST_TEST_CASE_METHOD(Template_Fixture,
                                "Template test case method with test types specified inside std::tuple",
-                               "[class][template][list]", MyTypes)
-{
+                               "[class][template][list]",
+                               MyTypes) {
     REQUIRE( Template_Fixture<TestType>::m_a == 1 );
 }
 ```
