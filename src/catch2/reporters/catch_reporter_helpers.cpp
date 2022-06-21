@@ -5,17 +5,6 @@
 //        https://www.boost.org/LICENSE_1_0.txt)
 
 // SPDX-License-Identifier: BSL-1.0
-/** \file
- * This is a special TU that combines what would otherwise be a very
- * small reporter-related TUs into one bigger TU.
- *
- * The reason for this is compilation performance improvements by
- * avoiding reparsing headers for many small TUs, instead having this
- * one TU include bit more, but having it all parsed only once.
- *
- * To avoid heavy-tail problem with compilation times, each "subpart"
- * of Catch2 has its own combined TU like this.
- */
 
 #include <catch2/reporters/catch_reporter_helpers.hpp>
 #include <catch2/interfaces/catch_interfaces_config.hpp>
@@ -246,38 +235,4 @@ namespace Catch {
         out << "\n\n" << std::flush;
     }
 
-} // namespace Catch
-
-
-#include <catch2/reporters/catch_reporter_event_listener.hpp>
-
-namespace Catch {
-
-    void EventListenerBase::fatalErrorEncountered( StringRef ) {}
-
-    void EventListenerBase::benchmarkPreparing( StringRef ) {}
-    void EventListenerBase::benchmarkStarting( BenchmarkInfo const& ) {}
-    void EventListenerBase::benchmarkEnded( BenchmarkStats<> const& ) {}
-    void EventListenerBase::benchmarkFailed( StringRef ) {}
-
-    void EventListenerBase::assertionStarting( AssertionInfo const& ) {}
-
-    void EventListenerBase::assertionEnded( AssertionStats const& ) {}
-    void EventListenerBase::listReporters(
-        std::vector<ReporterDescription> const& ) {}
-    void EventListenerBase::listListeners(
-        std::vector<ListenerDescription> const& ) {}
-    void EventListenerBase::listTests( std::vector<TestCaseHandle> const& ) {}
-    void EventListenerBase::listTags( std::vector<TagInfo> const& ) {}
-    void EventListenerBase::noMatchingTestCases( StringRef ) {}
-    void EventListenerBase::reportInvalidTestSpec( StringRef ) {}
-    void EventListenerBase::testRunStarting( TestRunInfo const& ) {}
-    void EventListenerBase::testCaseStarting( TestCaseInfo const& ) {}
-    void EventListenerBase::testCasePartialStarting(TestCaseInfo const&, uint64_t) {}
-    void EventListenerBase::sectionStarting( SectionInfo const& ) {}
-    void EventListenerBase::sectionEnded( SectionStats const& ) {}
-    void EventListenerBase::testCasePartialEnded(TestCaseStats const&, uint64_t) {}
-    void EventListenerBase::testCaseEnded( TestCaseStats const& ) {}
-    void EventListenerBase::testRunEnded( TestRunStats const& ) {}
-    void EventListenerBase::skipTest( TestCaseInfo const& ) {}
 } // namespace Catch
