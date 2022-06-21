@@ -28,7 +28,7 @@ if len(sys.argv) != 3:
 
 bin_path = os.path.abspath(sys.argv[1])
 output_dir = os.path.abspath(sys.argv[2])
-xml_out_path = os.path.join(output_dir, "bazel-out.xml")
+xml_out_path = os.path.join(output_dir, '{}.xml'.format(os.path.basename(bin_path)))
 
 # Ensure no file exists from previous test runs
 if os.path.isfile(xml_out_path):
