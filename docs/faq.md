@@ -46,6 +46,17 @@ This means that we will not knowingly make backwards-incompatible changes
 without incrementing the major version number.
 
 
+## Does Catch2 support running tests in parallel?
+
+Not natively, no. We see running tests in parallel as the job of an
+external test runner, that can also run them in separate processes,
+support test execution timeouts and so on.
+
+However, Catch2 provides some tools that make the job of external test
+runners easier. [See the relevant section in our page on best
+practices](usage-tips.md#parallel-tests).
+
+
 ---
 
 [Home](Readme.md#top)
