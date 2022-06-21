@@ -26,6 +26,7 @@ Running:
 
 Odds and ends:
 * [Frequently Asked Questions (FAQ)](faq.md#top)
+* [Best practices and other tips](usage-tips.md#top)
 * [CMake integration](cmake-integration.md#top)
 * [CI and other miscellaneous pieces](ci-and-misc.md#top)
 * [Known limitations](limitations.md#top)
