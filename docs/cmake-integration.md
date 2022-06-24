@@ -63,17 +63,19 @@ target_link_libraries(tests PRIVATE Catch2::Catch2WithMain)
 
 ## Automatic test registration
 
-Catch2's repository also contains two CMake scripts that help users
+Catch2's repository also contains three CMake scripts that help users
 with automatically registering their `TEST_CASE`s with CTest. They
 can be found in the `extras` folder, and are
 
 1) `Catch.cmake` (and its dependency `CatchAddTests.cmake`)
 2) `ParseAndAddCatchTests.cmake` (deprecated)
+3) `CatchShardTests.cmake` (and its dependency `CatchShardTestsImpl.cmake`)
 
 If Catch2 has been installed in system, both of these can be used after
 doing `find_package(Catch2 REQUIRED)`. Otherwise you need to add them
 to your CMake module path.
 
+<a id="catch_discover_tests"></a>
 ### `Catch.cmake` and `CatchAddTests.cmake`
 
 `Catch.cmake` provides function `catch_discover_tests` to get tests from
@@ -256,6 +258,49 @@ ParseAndAddCatchTests(mpi_foo)
 unset(OptionalCatchTestLauncher)
 ParseAndAddCatchTests(bar)
 ```
+
+
+### `CatchShardTests.cmake`
+
+> `CatchShardTests.cmake` was introduced in Catch2 X.Y.Z.
+
+`CatchShardTests.cmake` provides a function
+`catch_add_sharded_tests(TEST_BINARY)` that splits tests from `TEST_BINARY`
+into multiple shards. The tests in each shard and their order is randomized,
+and the seed changes every invocation of CTest.
+
+Currently there are 3 customization points for this script:
+
+ * SHARD_COUNT - number of shards to split target's tests into
+ * REPORTER    - reporter spec to use for tests
+ * TEST_SPEC   - test spec used for filtering tests
+
+Example usage:
+
+```
+include(CatchShardTests)
+
+catch_add_sharded_tests(foo-tests
+  SHARD_COUNT 4
+  REPORTER "xml::out=-"
+  TEST_SPEC "A"
+)
+
+catch_add_sharded_tests(tests
+  SHARD_COUNT 8
+  REPORTER "xml::out=-"
+  TEST_SPEC "B"
+)
+```
+
+This registers total of 12 CTest tests (4 + 8 shards) to run shards
+from `foo-tests` test binary, filtered by a test spec.
+
+_Note that this script is currently a proof-of-concept for reseeding
+shards per CTest run, and thus does not support (nor does it currently
+aim to support) all customization points from
+[`catch_discover_tests`](#catch_discover_tests)._
+
 
 ## CMake project options
 
