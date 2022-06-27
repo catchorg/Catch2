@@ -435,14 +435,21 @@ set(CATCH_WARNING_TARGETS ${CATCH_WARNING_TARGETS} PARENT_SCOPE)
 # so we want to check & warn users if they do this. However, we won't abort
 # the configuration step so that we don't have to also provide an override.
 if (BUILD_SHARED_LIBS)
-    get_target_property(_VisPreset Catch2 CXX_VISIBILITY_PRESET)
-    get_target_property(_ExportAll Catch2 WINDOWS_EXPORT_ALL_SYMBOLS)
-    if (MSVC AND NOT _ExportAll
-        OR _VisPreset STREQUAL "hidden")
-
-        message(WARNING
-          "Catch2 does not support being built as a dynamic library with hidden"
-          " visibility. You have to ensure that visibility is handled yourself."
+    if (MSVC)
+        set_target_properties(Catch2 Catch2WithMain
+          PROPERTIES
+            WINDOWS_EXPORT_ALL_SYMBOLS ON
         )
+    endif()
+
+    get_target_property(_VisPreset Catch2 CXX_VISIBILITY_PRESET)
+    if (NOT MSVC AND _VisPreset STREQUAL "hidden")
+        set_target_properties(Catch2 Catch2WithMain
+          PROPERTIES
+            CXX_VISIBILITY_PRESET "default"
+            VISIBILITY_INLINES_HIDDEN OFF
+        )
+        message(WARNING "Setting Catch2's visibility to default."
+                        " Hidden visibility is not supported.")
     endif()
 endif()
