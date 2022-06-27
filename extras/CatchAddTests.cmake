@@ -101,7 +101,7 @@ endif()
 if(dl_paths)
   foreach(path ${dl_paths})
     cmake_path(NATIVE_PATH path native_path)
-    list(APPEND environment_modifications "${dl_paths_variable_name}=path_list_append:${native_path}")
+    list(APPEND environment_modifications "${dl_paths_variable_name}=path_list_prepend:${native_path}")
   endforeach()
 endif()
 
