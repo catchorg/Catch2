@@ -16,6 +16,10 @@
 #include <iosfwd>
 #include <string>
 
+#if defined(CATCH_CONFIG_NEW_CAPTURE)
+#include <thread>
+#endif
+
 namespace Catch {
 
     class RedirectedStream {
@@ -66,50 +70,79 @@ namespace Catch {
 
 #if defined(CATCH_CONFIG_NEW_CAPTURE)
 
-    // Windows's implementation of std::tmpfile is terrible (it tries
-    // to create a file inside system folder, thus requiring elevated
-    // privileges for the binary), so we have to use tmpnam(_s) and
-    // create the file ourselves there.
-    class TempFile {
-    public:
-        TempFile(TempFile const&) = delete;
-        TempFile& operator=(TempFile const&) = delete;
-        TempFile(TempFile&&) = delete;
-        TempFile& operator=(TempFile&&) = delete;
+#if defined(CATCH_CPP20_OR_GREATER)
+using jthread = std::jthread;
+#else
+// Just enough of std::jthread from C++20 for the code below.
+struct jthread final
+{
+    jthread() noexcept;
 
-        TempFile();
-        ~TempFile();
+    template <typename F, typename... Args>
+    jthread(F&& f, Args&&... args);
 
-        std::FILE* getFile();
-        std::string getContents();
+    jthread(jthread const&) = delete;
+    jthread(jthread&&) noexcept = default;
 
-    private:
-        std::FILE* m_file = nullptr;
-    #if defined(_MSC_VER)
-        char m_buffer[L_tmpnam] = { 0 };
-    #endif
-    };
+    jthread& operator=(jthread const&) noexcept = delete;
 
+    // Not exactly like std::jthread, but close enough for the code below.
+    jthread& operator=(jthread&&) noexcept = default;
 
-    class OutputRedirect {
-    public:
-        OutputRedirect(OutputRedirect const&) = delete;
-        OutputRedirect& operator=(OutputRedirect const&) = delete;
-        OutputRedirect(OutputRedirect&&) = delete;
-        OutputRedirect& operator=(OutputRedirect&&) = delete;
+    // Not exactly like std::jthread, but close enough for the code below.
+    ~jthread() noexcept;
 
+private:
+    std::thread m_thread;
+};
+#endif
 
-        OutputRedirect(std::string& stdout_dest, std::string& stderr_dest);
-        ~OutputRedirect();
+struct UniqueFileDescriptor final
+{
+    constexpr UniqueFileDescriptor() noexcept;
+    explicit UniqueFileDescriptor(int value) noexcept;
 
-    private:
-        int m_originalStdout = -1;
-        int m_originalStderr = -1;
-        TempFile m_stdoutFile;
-        TempFile m_stderrFile;
-        std::string& m_stdoutDest;
-        std::string& m_stderrDest;
-    };
+    UniqueFileDescriptor(UniqueFileDescriptor const&) = delete;
+    constexpr UniqueFileDescriptor(UniqueFileDescriptor&& other) noexcept;
+
+    ~UniqueFileDescriptor() noexcept;
+
+    UniqueFileDescriptor& operator=(UniqueFileDescriptor const&) = delete;
+    UniqueFileDescriptor& operator=(UniqueFileDescriptor&& other) noexcept;
+
+    constexpr int get();
+
+private:
+    int m_value;
+};
+
+struct OutputFileRedirector final
+{
+    explicit OutputFileRedirector(std::FILE* file, std::string& result);
+
+    OutputFileRedirector(OutputFileRedirector const&) = delete;
+    OutputFileRedirector(OutputFileRedirector&&) = delete;
+
+    ~OutputFileRedirector() noexcept;
+
+    OutputFileRedirector& operator=(OutputFileRedirector const&) = delete;
+    OutputFileRedirector& operator=(OutputFileRedirector&&) = delete;
+
+private:
+    std::FILE* m_file;
+    int m_fd;
+    UniqueFileDescriptor m_previous;
+    jthread m_readThread;
+};
+
+struct OutputRedirect final
+{
+    OutputRedirect(std::string& output, std::string& error);
+
+private:
+    OutputFileRedirector m_output;
+    OutputFileRedirector m_error;
+};
 
 #endif
 

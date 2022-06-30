@@ -37,6 +37,10 @@
 #    define CATCH_CPP17_OR_GREATER
 #  endif
 
+#  if (__cplusplus >= 202002L) || (defined(_MSVC_LANG) && _MSVC_LANG >= 202002L)
+#    define CATCH_CPP20_OR_GREATER
+#  endif
+
 #endif
 
 // Only GCC compiler should be used in this block, so other compilers trying to
