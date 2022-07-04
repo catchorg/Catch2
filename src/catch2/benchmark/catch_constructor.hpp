@@ -59,7 +59,7 @@ namespace Catch {
                 }
 
                 T const& stored_object() const {
-                    return *static_cast<T*>(static_cast<void*>(data));
+                    return *static_cast<T*>(const_cast<void*>(static_cast<const void*>(data)));
                 }
 
 
