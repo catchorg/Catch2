@@ -116,6 +116,13 @@ same as the Catch name; see also ``TEST_PREFIX`` and ``TEST_SUFFIX``.
     ``--out dir/<test_name>suffix``. This can be used to add a file extension to
     the output e.g. ".xml".
 
+  ``DL_PATHS path...``
+    Specifies paths that need to be set for the dynamic linker to find shared
+    libraries/DLLs when running the test executable (PATH/LD_LIBRARY_PATH respectively).
+    These paths will both be set when retrieving the list of test cases from the
+    test executable and when the tests are executed themselves. This requires
+    cmake/ctest >= 3.22.
+
 #]=======================================================================]
 
 #------------------------------------------------------------------------------
@@ -124,7 +131,7 @@ function(catch_discover_tests TARGET)
     ""
     ""
     "TEST_PREFIX;TEST_SUFFIX;WORKING_DIRECTORY;TEST_LIST;REPORTER;OUTPUT_DIR;OUTPUT_PREFIX;OUTPUT_SUFFIX"
-    "TEST_SPEC;EXTRA_ARGS;PROPERTIES"
+    "TEST_SPEC;EXTRA_ARGS;PROPERTIES;DL_PATHS"
     ${ARGN}
   )
 
@@ -133,6 +140,12 @@ function(catch_discover_tests TARGET)
   endif()
   if(NOT _TEST_LIST)
     set(_TEST_LIST ${TARGET}_TESTS)
+  endif()
+
+  if (_DL_PATHS)
+    if(${CMAKE_VERSION} VERSION_LESS "3.22.0")
+        message(FATAL_ERROR "The DL_PATHS option requires at least cmake 3.22")
+    endif()
   endif()
 
   ## Generate a unique name based on the extra arguments
@@ -164,6 +177,7 @@ function(catch_discover_tests TARGET)
             -D "TEST_OUTPUT_DIR=${_OUTPUT_DIR}"
             -D "TEST_OUTPUT_PREFIX=${_OUTPUT_PREFIX}"
             -D "TEST_OUTPUT_SUFFIX=${_OUTPUT_SUFFIX}"
+            -D "TEST_DL_PATHS=${_DL_PATHS}"
             -D "CTEST_FILE=${ctest_tests_file}"
             -P "${_CATCH_DISCOVER_TESTS_SCRIPT}"
     VERBATIM
