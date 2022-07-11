@@ -120,7 +120,7 @@ same as the Catch name; see also ``TEST_PREFIX`` and ``TEST_SUFFIX``.
     Specifies paths that need to be set for the dynamic linker to find shared
     libraries/DLLs when running the test executable (PATH/LD_LIBRARY_PATH respectively).
     These paths will both be set when retrieving the list of test cases from the
-    test executable and when the tests are executed themselfs. This requires
+    test executable and when the tests are executed themselves. This requires
     cmake/ctest >= 3.22.
 
 #]=======================================================================]
