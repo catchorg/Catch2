@@ -578,4 +578,5 @@ ignored.
 
 Verbosity defaults to _normal_.
 
+***
 
