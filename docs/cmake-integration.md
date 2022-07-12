@@ -27,7 +27,7 @@ If you need custom `main`, you should link only against `Catch2::Catch2`.
 
 This means that if Catch2 has been installed on the system, it should
 be enough to do
-```cmake
+```bash
 find_package(Catch2 3 REQUIRED)
 # These tests can use the Catch2-provided main
 add_executable(tests test.cpp)
@@ -45,7 +45,7 @@ above still works.
 
 
 Another possibility is to use [FetchContent](https://cmake.org/cmake/help/latest/module/FetchContent.html):
-```cmake
+```bash
 Include(FetchContent)
 
 FetchContent_Declare(
@@ -84,7 +84,7 @@ a target. This function works by running the resulting executable with
 existing tests.
 
 #### Usage
-```cmake
+```bash
 cmake_minimum_required(VERSION 3.5)
 
 project(baz LANGUAGES CXX VERSION 0.0.1)
@@ -102,7 +102,7 @@ When using `FetchContent`, `include(Catch)` will fail unless
 `CMAKE_MODULE_PATH` is explicitly updated to include the extras
 directory.
 
-```cmake
+```bash
 # ... FetchContent ...
 #
 list(APPEND CMAKE_MODULE_PATH ${catch2_SOURCE_DIR}/extras)
@@ -113,7 +113,7 @@ catch_discover_tests()
 
 #### Customization
 `catch_discover_tests` can be given several extra argumets:
-```cmake
+```bash
 catch_discover_tests(target
                      [TEST_SPEC arg1...]
                      [EXTRA_ARGS arg1...]
@@ -216,7 +216,7 @@ parsed are *silently ignored*.
 
 #### Usage
 
-```cmake
+```bash
 cmake_minimum_required(VERSION 3.5)
 
 project(baz LANGUAGES CXX VERSION 0.0.1)
@@ -252,7 +252,7 @@ automatically discovered. Defaults to `OFF`.
 Optionally, one can specify a launching command to run tests by setting the
 variable `OptionalCatchTestLauncher` before calling `ParseAndAddCatchTests`. For
 instance to run some tests using `MPI` and other sequentially, one can write
-```cmake
+```bash
 set(OptionalCatchTestLauncher ${MPIEXEC} ${MPIEXEC_NUMPROC_FLAG} ${NUMPROC})
 ParseAndAddCatchTests(mpi_foo)
 unset(OptionalCatchTestLauncher)
@@ -370,7 +370,7 @@ If you cannot install Catch2 from a package manager (e.g. Ubuntu 16.04
 provides catch only in version 1.2.0) you might want to install it from
 the repository instead. Assuming you have enough rights, you can just
 install it to the default location, like so:
-```
+```bash
 $ git clone https://github.com/catchorg/Catch2.git
 $ cd Catch2
 $ cmake -Bbuild -H. -DBUILD_TESTING=OFF
@@ -386,7 +386,7 @@ accordingly.
 ## Installing Catch2 from vcpkg
 
 Alternatively, you can build and install Catch2 using [vcpkg](https://github.com/microsoft/vcpkg/) dependency manager:
-```
+```bash
 git clone https://github.com/Microsoft/vcpkg.git
 cd vcpkg
 ./bootstrap-vcpkg.sh
@@ -397,6 +397,4 @@ cd vcpkg
 The catch2 port in vcpkg is kept up to date by microsoft team members and community contributors.
 If the version is out of date, please [create an issue or pull request](https://github.com/Microsoft/vcpkg) on the vcpkg repository.
 
----
 
-[Home](Readme.md#top)

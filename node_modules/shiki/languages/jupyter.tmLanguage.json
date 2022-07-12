@@ -1,0 +1,9 @@
+{
+  "scopeName": "source.jupyter",
+  "patterns": [
+    {
+      "include": "source.json"
+    }
+  ],
+  "name": "jupyter"
+}

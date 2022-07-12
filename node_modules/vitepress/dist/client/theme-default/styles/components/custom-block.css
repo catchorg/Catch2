@@ -1,0 +1,90 @@
+.custom-block {
+  border: 1px solid transparent;
+  border-radius: 8px;
+  padding: 16px 16px 8px;
+  line-height: 24px;
+  font-size: 14px;
+  color: var(--vp-c-text-2);
+}
+
+.custom-block.info {
+  border-color: var(--vp-custom-block-info-border);
+  color: var(--vp-custom-block-info-text);
+  background-color: var(--vp-custom-block-info-bg);
+}
+
+.custom-block.info code {
+  background-color: var(--vp-custom-block-info-code-bg);
+}
+
+.custom-block.tip {
+  border-color: var(--vp-custom-block-tip-border);
+  color: var(--vp-custom-block-tip-text);
+  background-color: var(--vp-custom-block-tip-bg);
+}
+
+.custom-block.tip code {
+  background-color: var(--vp-custom-block-tip-code-bg);
+}
+
+.custom-block.warning {
+  border-color: var(--vp-custom-block-warning-border);
+  color: var(--vp-custom-block-warning-text);
+  background-color: var(--vp-custom-block-warning-bg);
+}
+
+.custom-block.warning code {
+  background-color: var(--vp-custom-block-warning-code-bg);
+}
+
+.custom-block.danger {
+  border-color: var(--vp-custom-block-danger-border);
+  color: var(--vp-custom-block-danger-text);
+  background-color: var(--vp-custom-block-danger-bg);
+}
+
+.custom-block.danger code {
+  background-color: var(--vp-custom-block-danger-code-bg);
+}
+
+.custom-block.details {
+  border-color: var(--vp-custom-block-details-border);
+  color: var(--vp-custom-block-details-text);
+  background-color: var(--vp-custom-block-details-bg);
+}
+
+.custom-block.details code {
+  background-color: var(--vp-custom-block-details-code-bg);
+}
+
+.custom-block-title {
+  font-weight: 700;
+}
+
+.custom-block p + p {
+  margin: 8px 0;
+}
+
+.custom-block.details summary {
+  margin: 0 0 8px;
+  font-weight: 700;
+}
+
+.custom-block.details summary + p {
+  margin: 8px 0;
+}
+
+.custom-block a {
+  color: inherit;
+  font-weight: 600;
+  text-decoration: underline;
+  transition: opacity 0.25s;
+}
+
+.custom-block a:hover {
+  opacity: 0.6;
+}
+
+.custom-block code {
+  font-size: var(--vp-custom-block-code-font-size);
+}

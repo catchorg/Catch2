@@ -1,13 +1,6 @@
 <a id="top"></a>
 # String conversions
 
-**Contents**<br>
-[operator << overload for std::ostream](#operator--overload-for-stdostream)<br>
-[Catch::StringMaker specialisation](#catchstringmaker-specialisation)<br>
-[Catch::is_range specialisation](#catchis_range-specialisation)<br>
-[Exceptions](#exceptions)<br>
-[Enums](#enums)<br>
-[Floating point precision](#floating-point-precision)<br>
 
 
 Catch needs to be able to convert types you use in assertions and logging expressions into strings (for logging and reporting purposes).

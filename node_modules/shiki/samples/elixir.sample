@@ -1,0 +1,8 @@
+# module_name.ex
+defmodule ModuleName do
+  def hello do
+    IO.puts "Hello World"
+  end
+end
+
+# From https://elixir-lang.org/crash-course.html#elixir

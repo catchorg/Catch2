@@ -1,11 +1,7 @@
 <a id="top"></a>
 # Supplying main() yourself
 
-**Contents**<br>
-[Let Catch2 take full control of args and config](#let-catch2-take-full-control-of-args-and-config)<br>
-[Amending the Catch2 config](#amending-the-catch2-config)<br>
-[Adding your own command line options](#adding-your-own-command-line-options)<br>
-[Version detection](#version-detection)<br>
+
 
 The easiest way to use Catch2 is to use its own `main` function, and let
 it handle the command line arguments. This is done by linking against
@@ -48,7 +44,7 @@ If you want Catch2 to process command line arguments, but also want to
 programmatically change the resulting configuration of Catch2 run,
 you can do it in two ways:
 
-```c++
+```cpp
 int main( int argc, char* argv[] ) {
   Catch::Session session; // There must be exactly one instance
 

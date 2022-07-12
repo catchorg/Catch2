@@ -1,11 +1,6 @@
 <a id="top"></a>
 # Matchers
 
-**Contents**<br>
-[Using Matchers](#using-matchers)<br>
-[Built-in matchers](#built-in-matchers)<br>
-[Writing custom matchers (old style)](#writing-custom-matchers-old-style)<br>
-[Writing custom matchers (new style)](#writing-custom-matchers-new-style)<br>
 
 Matchers, as popularized by the [Hamcrest](https://en.wikipedia.org/wiki/Hamcrest)
 framework are an alternative way to write assertions, useful for tests
@@ -30,7 +25,7 @@ using Catch::Matchers::EndsWith;
 REQUIRE_THAT( getSomeString(), EndsWith("as a service") );
 ```
 
-Individual matchers can also be combined using the C++ logical
+Individual matchers can also be combined using the cpp logical
 operators, that is `&&`, `||`, and `!`, like so:
 
 ```cpp
@@ -297,7 +292,7 @@ To combine these into an example, let's say that you want to write
 a matcher that decides whether the provided argument is a number
 within certain range. We will call it `IsBetweenMatcher<T>`:
 
-```c++
+```cpp
 #include <catch2/catch_test_macros.hpp>
 #include <catch2/matchers/catch_matchers.hpp>
 // ...

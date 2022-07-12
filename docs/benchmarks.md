@@ -50,13 +50,13 @@ Benchmarks can be specified anywhere inside a Catch test case.
 There is a simple and a slightly more advanced version of the `BENCHMARK` macro.
 
 Let's have a look how a naive Fibonacci implementation could be benchmarked:
-```c++
+```cpp
 std::uint64_t Fibonacci(std::uint64_t number) {
     return number < 2 ? 1 : Fibonacci(number - 1) + Fibonacci(number - 2);
 }
 ```
 Now the most straight forward way to benchmark this function, is just adding a `BENCHMARK` macro to our test case:
-```c++
+```cpp
 TEST_CASE("Fibonacci") {
     CHECK(Fibonacci(0) == 1);
     // some more asserts..
@@ -121,7 +121,7 @@ the macro, some advanced features are available. The contents of the simple benc
 while the blocks of the advanced benchmarks are invoked exactly twice:
 once during the estimation phase, and another time during the execution phase.
 
-```c++
+```cpp
 BENCHMARK("simple"){ return long_computation(); };
 
 BENCHMARK_ADVANCED("advanced")(Catch::Benchmark::Chronometer meter) {
@@ -145,7 +145,7 @@ that needs to be done outside the measurement can be done outside the call to
 The callable object passed in to `measure` can optionally accept an `int`
 parameter.
 
-```c++
+```cpp
 meter.measure([](int i) { return long_computation(i); });
 ```
 
@@ -155,7 +155,7 @@ for example. The number of runs can be known beforehand by calling
 `Catch::Benchmark::Chronometer::runs`; with this one can set up a different instance to be
 mutated by each run.
 
-```c++
+```cpp
 std::vector<std::string> v(meter.runs());
 std::fill(v.begin(), v.end(), test_string());
 meter.measure([&v](int i) { in_place_escape(v[i]); });
@@ -168,7 +168,7 @@ the resetting code.
 It is also possible to just provide an argument name to the simple `BENCHMARK` macro to get
 the same semantics as providing a callable to `meter.measure` with `int` argument:
 
-```c++
+```cpp
 BENCHMARK("indexed", i){ return long_computation(i); };
 ```
 
@@ -185,7 +185,7 @@ To solve this conundrum, Catch provides class templates that let you manually
 construct and destroy objects without dynamic allocation and in a way that lets
 you measure construction and destruction separately.
 
-```c++
+```cpp
 BENCHMARK_ADVANCED("construct")(Catch::Benchmark::Chronometer meter) {
     std::vector<Catch::Benchmark::storage_for<std::string>> storage(meter.runs());
     meter.measure([&](int i) { storage[i].construct("thing"); });
@@ -231,7 +231,7 @@ That helps with keeping the code in a natural fashion.
 
 Here's an example:
 
-```c++
+```cpp
 // may measure nothing at all by skipping the long calculation since its
 // result is not used
 BENCHMARK("no return"){ long_calculation(); };

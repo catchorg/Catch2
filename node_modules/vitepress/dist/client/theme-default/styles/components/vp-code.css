@@ -1,0 +1,7 @@
+.dark .vp-code-light {
+  display: none;
+}
+
+html:not(.dark) .vp-code-dark {
+  display: none;
+}

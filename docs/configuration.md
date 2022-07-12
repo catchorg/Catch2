@@ -1,20 +1,7 @@
 <a id="top"></a>
 # Compile-time configuration
 
-**Contents**<br>
-[Prefixing Catch macros](#prefixing-catch-macros)<br>
-[Terminal colour](#terminal-colour)<br>
-[Console width](#console-width)<br>
-[stdout](#stdout)<br>
-[Fallback stringifier](#fallback-stringifier)<br>
-[Default reporter](#default-reporter)<br>
-[Bazel support](#bazel-support)<br>
-[C++11 toggles](#c11-toggles)<br>
-[C++17 toggles](#c17-toggles)<br>
-[Other toggles](#other-toggles)<br>
-[Enabling stringification](#enabling-stringification)<br>
-[Disabling exceptions](#disabling-exceptions)<br>
-[Overriding Catch's debug break (`-b`)](#overriding-catchs-debug-break--b)<br>
+
 
 Catch2 is designed to "just work" as much as possible, and most of the
 configuration options below are changed automatically during compilation,

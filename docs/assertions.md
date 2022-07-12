@@ -1,12 +1,7 @@
 <a id="top"></a>
 # Assertion Macros
 
-**Contents**<br>
-[Natural Expressions](#natural-expressions)<br>
-[Exceptions](#exceptions)<br>
-[Matcher expressions](#matcher-expressions)<br>
-[Thread Safety](#thread-safety)<br>
-[Expressions with commas](#expressions-with-commas)<br>
+
 
 Most test frameworks have a large collection of assertion macros to capture all possible conditional forms (```_EQUALS```, ```_NOTEQUALS```, ```_GREATER_THAN``` etc).
 

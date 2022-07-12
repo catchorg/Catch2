@@ -1,0 +1,12 @@
+*> setup the identification division
+IDENTIFICATION DIVISION.
+*> setup the program id
+PROGRAM-ID. HELLO.
+*> setup the procedure division (like 'main' function)
+PROCEDURE DIVISION.
+*> print a string
+DISPLAY 'WILLKOMMEN'.
+*> end our program
+STOP RUN.
+
+*> From https://medium.com/@yvanscher/7-cobol-examples-with-explanations-ae1784b4d576

@@ -1,0 +1,78 @@
+{
+  "name": "body-scroll-lock",
+  "version": "4.0.0-beta.0",
+  "description": "Enables body scroll locking (for iOS Mobile and Tablet, Android, desktop Safari/Chrome/Firefox) without breaking scrolling of a target element (eg. modal/lightbox/flyouts/nav-menus)",
+  "main": "lib/bodyScrollLock.min.js",
+  "module": "lib/bodyScrollLock.esm.js",
+  "author": "Will Po",
+  "repository": "https://github.com/willmcpo/body-scroll-lock.git",
+  "license": "MIT",
+  "files": [
+    "lib"
+  ],
+  "keywords": [
+    "body scroll",
+    "body scroll lock",
+    "react scroll lock",
+    "react scroll",
+    "scroll",
+    "lock",
+    "freeze",
+    "toggle",
+    "disable",
+    "overflow",
+    "modal",
+    "lightbox",
+    "react",
+    "vanilla-js",
+    "angular",
+    "vue",
+    "ios",
+    "mobile",
+    "desktop",
+    "tablet",
+    "bsl"
+  ],
+  "dependencies": {},
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-eslint": "^10.1.0",
+    "babel-plugin-transform-flow-strip-types": "^6.22.0",
+    "babel-preset-env": "^1.6.1",
+    "babel-preset-flow": "^6.23.0",
+    "babel-preset-stage-0": "^6.24.1",
+    "eslint": "^6.8.0",
+    "eslint-config-airbnb-base": "^14.0.0",
+    "eslint-config-babel": "^9.0.0",
+    "eslint-config-prettier": "^6.0.0",
+    "eslint-plugin-flowtype": "^4.6.0",
+    "eslint-plugin-import": "^2.8.0",
+    "flow-bin": "^0.120.1",
+    "husky": "^4.2.3",
+    "jest": "^25.1.0",
+    "lint-staged": "^10.0.8",
+    "prettier": "^1.10.2",
+    "rimraf": "^3.0.2",
+    "uglify-js": "^3.4.7"
+  },
+  "scripts": {
+    "clean": "rimraf lib/ && mkdir -p ./lib",
+    "release": "npm version",
+    "postrelease": "yarn publish && git push --follow-tags",
+    "buildModule": "BABEL_ENV=module babel src/bodyScrollLock.js > lib/bodyScrollLock.esm.js",
+    "buildEs6": "BABEL_ENV=es6 babel src/bodyScrollLock.js > lib/bodyScrollLock.es6.js",
+    "buildUmd": "BABEL_ENV=umd babel src/bodyScrollLock.js > lib/bodyScrollLock.js && uglifyjs --compress unused,dead_code --mangle reserved=['require','exports'] lib/bodyScrollLock.js > lib/bodyScrollLock.min.js",
+    "build": "yarn buildModule && yarn buildEs6 && yarn buildUmd",
+    "lint": "eslint ./src",
+    "prerelease": "yarn flow && yarn lint && yarn run clean && yarn build",
+    "flow": "flow",
+    "prettierAll": "prettier --write '**/*.{md,json,js,html,yml}'",
+    "precommit": "lint-staged"
+  },
+  "lint-staged": {
+    "*.js": [
+      "prettier --write --single-quote --trailing-comma es5 --print-width 120",
+      "git add"
+    ]
+  }
+}

@@ -1,14 +1,6 @@
 <a id="top"></a>
 # Tutorial
 
-**Contents**<br>
-[Getting Catch2](#getting-catch2)<br>
-[Writing tests](#writing-tests)<br>
-[Test cases and sections](#test-cases-and-sections)<br>
-[BDD style testing](#bdd-style-testing)<br>
-[Data and Type driven tests](#data-and-type-driven-tests)<br>
-[Next steps](#next-steps)<br>
-
 
 ## Getting Catch2
 
@@ -22,13 +14,13 @@ distribution instead, remember to replace the included header with `catch_amalga
 
 Let's start with a really simple example ([code](../examples/010-TestCase.cpp)). Say you have written a function to calculate factorials and now you want to test it (let's leave aside TDD for now).
 
-```c++
+```cpp
 unsigned int Factorial( unsigned int number ) {
     return number <= 1 ? number : Factorial(number-1)*number;
 }
 ```
 
-```c++
+```cpp
 #include <catch2/catch_test_macros.hpp>
 
 unsigned int Factorial( unsigned int number ) {
@@ -50,7 +42,7 @@ The problem is that `Factorial(0)` should return 1 (due to [its
 definition](https://en.wikipedia.org/wiki/Factorial#Factorial_of_zero)).
 Let's add that as an assertion to the test case:
 
-```c++
+```cpp
 TEST_CASE( "Factorials are computed", "[factorial]" ) {
     REQUIRE( Factorial(0) == 1 );
     REQUIRE( Factorial(1) == 1 );
@@ -75,7 +67,7 @@ Note that the output contains both the original expression,
 to the `Factorial` function: `0`.
 
 We can fix this bug by slightly modifying the `Factorial` function to:
-```c++
+```cpp
 unsigned int Factorial( unsigned int number ) {
   return number > 1 ? Factorial(number-1)*number : 1;
 }
@@ -116,7 +108,7 @@ However, their use in Catch2 is rare, because idiomatic Catch2 tests
 instead use _sections_ to share setup and teardown code between test code.
 This is best explained through an example ([code](../examples/100-Fix-Section.cpp)):
 
-```c++
+```cpp
 TEST_CASE( "vectors can be sized and resized", "[vector]" ) {
 
     std::vector<int> v( 5 );

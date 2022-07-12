@@ -52,7 +52,7 @@ its machine-readable XML output to file `result-junit.xml`, and the
 uses ANSI colour codes for colouring the output.
 
 Using multiple reporters (or one reporter and one-or-more [event
-listeners](event-listener.md#top)) can have surprisingly complex semantics
+listeners](event-listeners.md#top)) can have surprisingly complex semantics
 when using customization points provided to reporters by Catch2, namely
 capturing stdout/stderr from test cases.
 

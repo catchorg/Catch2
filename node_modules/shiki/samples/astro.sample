@@ -1,0 +1,16 @@
+---
+const name = "world"
+---
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <!-- This... is an Astro comment. -->
+    <title>Hello, {name}</title>
+  </head>
+  <body>
+    <main>
+      <h1>Hello, {name}</h1>
+    </main>
+  </body>
+</html>

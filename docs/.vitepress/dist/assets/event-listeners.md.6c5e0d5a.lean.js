@@ -1,0 +1,1 @@
+import{_ as s,c as n,o as e,a}from"./app.f3758f8e.js";const D=JSON.parse('{"title":"Event Listeners","description":"","frontmatter":{},"headers":[],"relativePath":"event-listeners.md","lastUpdated":1637577876000}'),t={name:"event-listeners.md"},p=a("",11),l=[p];function o(r,c,i,F,y,d){return e(),n("div",null,l)}var h=s(t,[["render",o]]);export{D as __pageData,h as default};

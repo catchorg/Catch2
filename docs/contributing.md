@@ -1,12 +1,7 @@
 <a id="top"></a>
 # Contributing to Catch2
 
-**Contents**<br>
-[Using Git(Hub)](#using-github)<br>
-[Testing your changes](#testing-your-changes)<br>
-[Writing documentation](#writing-documentation)<br>
-[Writing code](#writing-code)<br>
-[CoC](#coc)<br>
+
 
 So you want to contribute something to Catch2? That's great! Whether it's
 a bug fix, a new feature, support for additional compilers - or just
@@ -305,7 +300,7 @@ guard should be `CATCH_GENERATORS_BAR_HPP_INCLUDED`, and so on.
 
 ## CoC
 
-This project has a [CoC](../CODE_OF_CONDUCT.md). Please adhere to it
+This project has a [CoC](/CODE_OF_CONDUCT). Please adhere to it
 while contributing to Catch2.
 
 -----------
