@@ -9,6 +9,7 @@
 #include <catch2/internal/catch_stdstreams.hpp>
 
 #include <stdexcept>
+#include <system_error>
 
 
 namespace Catch {
@@ -34,6 +35,11 @@ namespace Catch {
     [[noreturn]]
     void throw_runtime_error(std::string const& msg) {
         throw_exception(std::runtime_error(msg));
+    }
+
+    [[noreturn]]
+    void throw_system_error(int ev, const std::error_category& ecat) {
+        throw_exception(std::system_error(ev, ecat));
     }
 
 

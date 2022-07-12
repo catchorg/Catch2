@@ -14,6 +14,7 @@
 #include <sstream>
 
 #if defined(CATCH_CONFIG_NEW_CAPTURE)
+    #include <catch2/internal/catch_move_and_forward.hpp>
     #include <system_error>
     #if defined(_MSC_VER)
     #include <fcntl.h> // _O_TEXT
@@ -67,7 +68,7 @@ inline void close_or_throw(int descriptor)
 {
     if (close(descriptor))
     {
-        throw std::system_error{ errno, std::generic_category() };
+        CATCH_SYSTEM_ERROR(errno, std::generic_category());
     }
 }
 
@@ -77,7 +78,7 @@ inline int dup_or_throw(int descriptor)
 
     if (result == -1)
     {
-        throw std::system_error{ errno, std::generic_category() };
+        CATCH_SYSTEM_ERROR(errno, std::generic_category());
     }
 
     return result;
@@ -89,7 +90,7 @@ inline int dup2_or_throw(int sourceDescriptor, int destinationDescriptor)
 
     if (result == -1)
     {
-        throw std::system_error{ errno, std::generic_category() };
+        CATCH_SYSTEM_ERROR(errno, std::generic_category());
     }
 
     return result;
@@ -101,7 +102,7 @@ inline int fileno_or_throw(std::FILE* file)
 
     if (result == -1)
     {
-        throw std::system_error{ errno, std::generic_category() };
+        CATCH_SYSTEM_ERROR(errno, std::generic_category());
     }
 
     return result;
@@ -119,7 +120,7 @@ inline void pipe_or_throw(int descriptors[2])
 
     if (result)
     {
-        throw std::system_error{ errno, std::generic_category() };
+        CATCH_SYSTEM_ERROR(errno, std::generic_category());
     }
 }
 
@@ -133,7 +134,7 @@ inline size_t read_or_throw(int descriptor, void* buffer, size_t size)
 
     if (result == -1)
     {
-        throw std::system_error{ errno, std::generic_category() };
+        CATCH_SYSTEM_ERROR(errno, std::generic_category());
     }
 
     return static_cast<size_t>(result);
@@ -143,14 +144,14 @@ inline void fflush_or_throw(std::FILE* file)
 {
     if (std::fflush(file))
     {
-        throw std::system_error{ errno, std::generic_category() };
+        CATCH_SYSTEM_ERROR(errno, std::generic_category());
     }
 }
 
 jthread::jthread() noexcept : m_thread{} {}
 
 template <typename F, typename... Args>
-jthread::jthread(F&& f, Args&&... args) : m_thread{ std::forward<F>(f), std::forward<Args>(args)... } {}
+jthread::jthread(F&& f, Args&&... args) : m_thread{ CATCH_FORWARD(f), CATCH_FORWARD(args)... } {}
 
 // Not exactly like std::jthread, but close enough for the code below.
 jthread::~jthread() noexcept
@@ -237,8 +238,8 @@ OutputFileRedirector::OutputFileRedirector(FILE* file, std::string& result) :
 
     // Anonymous pipes have a limited buffer and require an active reader to ensure the writer does not become blocked.
     // Use a separate thread to ensure the buffer does not get stuck full.
-    m_readThread = jthread{ [readDescriptor{ std::move(readDescriptor) }, &result] () mutable {
-        read_thread(std::move(readDescriptor), result); } };
+    m_readThread = jthread{ [readDescriptor{ CATCH_MOVE(readDescriptor) }, &result] () mutable {
+        read_thread(CATCH_MOVE(readDescriptor), result); } };
 
     dup2_or_throw(writeDescriptor.get(), m_fd);
 }

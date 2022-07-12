@@ -32,6 +32,8 @@ namespace Catch {
     void throw_domain_error(std::string const& msg);
     [[noreturn]]
     void throw_runtime_error(std::string const& msg);
+    [[noreturn]]
+    void throw_system_error(int ev, const std::error_category& ecat);
 
 } // namespace Catch;
 
@@ -46,6 +48,9 @@ namespace Catch {
 
 #define CATCH_RUNTIME_ERROR(...) \
     Catch::throw_runtime_error(CATCH_MAKE_MSG( __VA_ARGS__ ))
+
+#define CATCH_SYSTEM_ERROR(ev, ecat) \
+    Catch::throw_system_error((ev), (ecat))
 
 #define CATCH_ENFORCE( condition, ... ) \
     do{ if( !(condition) ) CATCH_ERROR( __VA_ARGS__ ); } while(false)
