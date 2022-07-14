@@ -363,9 +363,8 @@ namespace Catch {
         }
 
         void invokeActiveTestCase() {
-            FatalConditionHandler fatalConditionHandler; // Handle signals
+            FatalConditionHandlerGuard _(&m_fatalConditionhandler);
             m_activeTestCase->invoke();
-            fatalConditionHandler.reset();
         }
 
     private:
@@ -403,6 +402,7 @@ namespace Catch {
         std::vector<SectionEndInfo> m_unfinishedSections;
         std::vector<ITracker*> m_activeSections;
         TrackerContext m_trackerContext;
+        FatalConditionHandler m_fatalConditionhandler;
         size_t m_prevPassed;
         bool m_shouldReportUnexpected;
     };
