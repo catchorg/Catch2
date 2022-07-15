@@ -72,7 +72,8 @@ All tag names beginning with non-alphanumeric characters are reserved by Catch. 
 
 * `[@<alias>]` - tag aliases all begin with `@` (see below).
 
-* `[!benchmark]` - this test case is actually a benchmark. This is an experimental feature, and currently has no documentation. If you want to try it out, look at `projects/SelfTest/Benchmark.tests.cpp` for details.
+* `[!benchmark]` - this test case is actually a benchmark. Currently this only serves to hide the test case by default, to avoid the execution time costs.
+
 
 ## Tag aliases
 
