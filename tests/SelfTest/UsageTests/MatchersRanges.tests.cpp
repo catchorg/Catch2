@@ -53,43 +53,49 @@ namespace unrelated {
 
 template <typename T>
 class has_different_begin_end_types {
-    std::vector<T> m_elements;
+    // Using std::vector<T> leads to annoying issues when T is bool
+    // so we just use list because the perf is not critical and ugh.
+    std::list<T> m_elements;
 
     // Different type for the "end" iterator
     struct iterator_end {};
-    // Just a fake forward iterator, that only compares to a different
-    // type (so we can test two-type ranges).
-    struct iterator {
-        T const* start;
-        T const* end;
+    // Fake-ish forward iterator that only compares to a different type
+    class iterator {
+        using underlying_iter = typename std::list<T>::const_iterator;
+        underlying_iter m_start;
+        underlying_iter m_end;
+
+    public:
+        iterator( underlying_iter start, underlying_iter end ):
+            m_start( start ), m_end( end ) {}
 
         using iterator_category = std::forward_iterator_tag;
         using difference_type = std::ptrdiff_t;
         using value_type = T;
-        using reference = T const&;
+        using const_reference = T const&;
         using pointer = T const*;
 
 
         friend bool operator==( iterator iter, iterator_end ) {
-            return iter.start == iter.end;
+            return iter.m_start == iter.m_end;
         }
         friend bool operator!=( iterator iter, iterator_end ) {
-            return iter.start != iter.end;
+            return iter.m_start != iter.m_end;
         }
         iterator& operator++() {
-            ++start;
+            ++m_start;
             return *this;
         }
         iterator operator++(int) {
             auto tmp(*this);
-            ++start;
+            ++m_start;
             return tmp;
         }
-        reference operator*() const {
-            return *start;
+        const_reference operator*() const {
+            return *m_start;
         }
         pointer operator->() const {
-            return start;
+            return m_start;
         }
     };
 
@@ -99,7 +105,7 @@ public:
         m_elements( init ) {}
 
     iterator begin() const {
-        return { m_elements.data(), m_elements.data() + m_elements.size() };
+        return { m_elements.begin(), m_elements.end() };
     }
 
     iterator_end end() const {
@@ -130,8 +136,9 @@ template <typename T> struct with_mocked_iterator_access {
         using iterator_category = std::forward_iterator_tag;
         using difference_type = std::ptrdiff_t;
         using value_type = constify_t<T>;
-        using reference = value_type&;
-        using pointer = value_type*;
+        using const_reference = typename std::vector<T>::const_reference;
+        using reference = typename std::vector<T>::reference;
+        using pointer = typename std::vector<T>::pointer;
 
         basic_iterator( constify_t<with_mocked_iterator_access>* origin,
                         std::size_t origin_idx ):
@@ -153,7 +160,7 @@ template <typename T> struct with_mocked_iterator_access {
             ++( *this );
             return tmp;
         }
-        reference operator*() const {
+        const_reference operator*() const {
             assert( m_origin_idx < m_origin->m_elements.size() && "Attempted to deref invalid position" );
             m_origin->m_derefed[m_origin_idx] = true;
             return m_origin->m_elements[m_origin_idx];
