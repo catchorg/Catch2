@@ -5,14 +5,59 @@
 
 // SPDX-License-Identifier: BSL-1.0
 
-//  Catch v3.0.1
-//  Generated: 2022-05-17 22:08:47.054486
+//  Catch v3.1.0
+//  Generated: 2022-07-17 20:14:05.885021
 //  ----------------------------------------------------------
 //  This file is an amalgamation of multiple different files.
 //  You probably shouldn't edit it directly.
 //  ----------------------------------------------------------
 
 #include "catch_amalgamated.hpp"
+
+
+
+
+namespace Catch {
+    namespace Benchmark {
+        namespace Detail {
+            ChronometerConcept::~ChronometerConcept() = default;
+        } // namespace Detail
+    } // namespace Benchmark
+} // namespace Catch
+
+
+
+
+namespace Catch {
+    namespace Benchmark {
+        namespace Detail {
+            BenchmarkFunction::callable::~callable() = default;
+        } // namespace Detail
+    } // namespace Benchmark
+} // namespace Catch
+
+
+
+#include <exception>
+
+namespace Catch {
+    namespace Benchmark {
+        namespace Detail {
+            struct optimized_away_error : std::exception {
+                const char* what() const noexcept override;
+            };
+
+            const char* optimized_away_error::what() const noexcept {
+                return "could not measure benchmark, maybe it was optimized away";
+            }
+
+            void throw_optimized_away_error() {
+                Catch::throw_exception(optimized_away_error{});
+            }
+
+        } // namespace Detail
+    } // namespace Benchmark
+} // namespace Catch
 
 
 // Adapted from donated nonius code.
@@ -265,72 +310,6 @@ namespace Catch {
 } // namespace Catch
 
 
-/** \file
- * This is a special TU that combines what would otherwise be a very
- * small benchmarking-related TUs into one bigger TU.
- *
- * The reason for this is compilation performance improvements by
- * avoiding reparsing headers for many small TUs, instead having this
- * one TU include bit more, but having it all parsed only once.
- *
- * To avoid heavy-tail problem with compilation times, each "subpart"
- * of Catch2 has its own combined TU like this.
- */
-
-////////////////////////////////////////////
-// vvv formerly catch_chronometer.cpp vvv //
-////////////////////////////////////////////
-
-
-namespace Catch {
-    namespace Benchmark {
-        namespace Detail {
-            ChronometerConcept::~ChronometerConcept() = default;
-        } // namespace Detail
-    } // namespace Benchmark
-} // namespace Catch
-
-
-///////////////////////////////////////////////////
-// vvv formerly catch_benchmark_function.cpp vvv //
-///////////////////////////////////////////////////
-
-
-namespace Catch {
-    namespace Benchmark {
-        namespace Detail {
-            BenchmarkFunction::callable::~callable() = default;
-            } // namespace Detail
-    } // namespace Benchmark
-} // namespace Catch
-
-
-/////////////////////////////////////////////////
-// vvv formerly catch_run_for_at_least.cpp vvv //
-/////////////////////////////////////////////////
-
-#include <exception>
-
-namespace Catch {
-    namespace Benchmark {
-        namespace Detail {
-            struct optimized_away_error : std::exception {
-                const char* what() const noexcept override;
-            };
-
-            const char* optimized_away_error::what() const noexcept {
-                return "could not measure benchmark, maybe it was optimized away";
-            }
-
-            void throw_optimized_away_error() {
-                Catch::throw_exception(optimized_away_error{});
-            }
-
-        } // namespace Detail
-    } // namespace Benchmark
-} // namespace Catch
-
-
 
 #include <cmath>
 #include <limits>
@@ -507,6 +486,28 @@ namespace Catch {
 
 
 
+namespace {
+    bool provideBazelReporterOutput() {
+#ifdef CATCH_CONFIG_BAZEL_SUPPORT
+        return true;
+#else
+
+#    if defined( _MSC_VER )
+        // On Windows getenv throws a warning as there is no input validation,
+        // since the switch is hardcoded, this should not be an issue.
+#        pragma warning( push )
+#        pragma warning( disable : 4996 )
+#    endif
+
+        return std::getenv( "BAZEL_TEST" ) != nullptr;
+
+#    if defined( _MSC_VER )
+#        pragma warning( pop )
+#    endif
+#endif
+    }
+}
+
 namespace Catch {
 
     bool operator==( ProcessedReporterSpec const& lhs,
@@ -553,27 +554,27 @@ namespace Catch {
             } );
         }
 
-#if defined( CATCH_CONFIG_BAZEL_SUPPORT )
-        // Register a JUnit reporter for Bazel. Bazel sets an environment
-        // variable with the path to XML output. If this file is written to
-        // during test, Bazel will not generate a default XML output.
-        // This allows the XML output file to contain higher level of detail
-        // than what is possible otherwise.
+    if(provideBazelReporterOutput()){
+            // Register a JUnit reporter for Bazel. Bazel sets an environment
+            // variable with the path to XML output. If this file is written to
+            // during test, Bazel will not generate a default XML output.
+            // This allows the XML output file to contain higher level of detail
+            // than what is possible otherwise.
 #    if defined( _MSC_VER )
-        // On Windows getenv throws a warning as there is no input validation,
-        // since the key is hardcoded, this should not be an issue.
-#        pragma warning( push )
-#        pragma warning( disable : 4996 )
+            // On Windows getenv throws a warning as there is no input validation,
+            // since the key is hardcoded, this should not be an issue.
+#           pragma warning( push )
+#           pragma warning( disable : 4996 )
 #    endif
-        const auto bazelOutputFilePtr = std::getenv( "XML_OUTPUT_FILE" );
+            const auto bazelOutputFilePtr = std::getenv( "XML_OUTPUT_FILE" );
 #    if defined( _MSC_VER )
 #        pragma warning( pop )
 #    endif
-        if ( bazelOutputFilePtr != nullptr ) {
-            m_data.reporterSpecifications.push_back(
-                { "junit", std::string( bazelOutputFilePtr ), {}, {} } );
-        }
-#endif
+            if ( bazelOutputFilePtr != nullptr ) {
+                m_data.reporterSpecifications.push_back(
+                    { "junit", std::string( bazelOutputFilePtr ), {}, {} } );
+            }
+    }
 
 
         // We now fixup the reporter specs to handle default output spec,
@@ -1177,6 +1178,22 @@ namespace Catch {
     }
 
 } // end namespace Catch
+
+
+
+
+namespace Catch {
+
+    RegistrarForTagAliases::RegistrarForTagAliases(char const* alias, char const* tag, SourceLineInfo const& lineInfo) {
+        CATCH_TRY {
+            getMutableRegistryHub().registerTagAlias(alias, tag, lineInfo);
+        } CATCH_CATCH_ALL {
+            // Do not throw when constructing global objects, instead register the exception to be processed later
+            getMutableRegistryHub().registerStartupException();
+        }
+    }
+
+}
 
 
 
@@ -1873,34 +1890,13 @@ namespace Catch {
     }
 
     Version const& libraryVersion() {
-        static Version version( 3, 0, 1, "", 0 );
+        static Version version( 3, 1, 0, "", 0 );
         return version;
     }
 
 }
 
 
-
-
-
-std::uint32_t Catch::Generators::Detail::getSeed() { return sharedRng()(); }
-
-
-/** \file
- * This is a special TU that combines what would otherwise be a very
- * small generator-related TUs into one bigger TU.
- *
- * The reason for this is compilation performance improvements by
- * avoiding reparsing headers for many small TUs, instead having this
- * one TU include bit more, but having it all parsed only once.
- *
- * To avoid heavy-tail problem with compilation times, each "subpart"
- * of Catch2 has its own combined TU like this.
- */
-
-////////////////////////////////////////////////////
-// vvv formerly catch_generator_exception.cpp vvv //
-////////////////////////////////////////////////////
 
 
 namespace Catch {
@@ -1912,9 +1908,6 @@ namespace Catch {
 } // end namespace Catch
 
 
-///////////////////////////////////////////
-// vvv formerly catch_generators.cpp vvv //
-///////////////////////////////////////////
 
 
 namespace Catch {
@@ -1941,21 +1934,12 @@ namespace Detail {
 } // namespace Catch
 
 
-/** \file
- * This is a special TU that combines what would otherwise be a very
- * small interfaces-related TUs into one bigger TU.
- *
- * The reason for this is compilation performance improvements by
- * avoiding reparsing headers for many small TUs, instead having this
- * one TU include bit more, but having it all parsed only once.
- *
- * To avoid heavy-tail problem with compilation times, each "subpart"
- * of Catch2 has its own combined TU like this.
- */
 
-///////////////////////////////////////////////////
-// vvv formerly catch_interfaces_capture.cpp vvv //
-///////////////////////////////////////////////////
+
+
+std::uint32_t Catch::Generators::Detail::getSeed() { return sharedRng()(); }
+
+
 
 
 namespace Catch {
@@ -1963,9 +1947,6 @@ namespace Catch {
 }
 
 
-//////////////////////////////////////////////////
-// vvv formerly catch_interfaces_config.cpp vvv //
-//////////////////////////////////////////////////
 
 
 namespace Catch {
@@ -1973,49 +1954,11 @@ namespace Catch {
 }
 
 
-/////////////////////////////////////////////////////
-// vvv formerly catch_interfaces_exception.cpp vvv //
-/////////////////////////////////////////////////////
 
 
 namespace Catch {
     IExceptionTranslator::~IExceptionTranslator() = default;
     IExceptionTranslatorRegistry::~IExceptionTranslatorRegistry() = default;
-}
-
-
-////////////////////////////////////////////////////////
-// vvv formerly catch_interfaces_registry_hub.cpp vvv //
-////////////////////////////////////////////////////////
-
-
-namespace Catch {
-    IRegistryHub::~IRegistryHub() = default;
-    IMutableRegistryHub::~IMutableRegistryHub() = default;
-}
-
-
-////////////////////////////////////////////////////
-// vvv formerly catch_interfaces_testcase.cpp vvv //
-////////////////////////////////////////////////////
-
-
-namespace Catch {
-    ITestInvoker::~ITestInvoker() = default;
-    ITestCaseRegistry::~ITestCaseRegistry() = default;
-}
-
-
-
-namespace Catch {
-    IReporterRegistry::~IReporterRegistry() = default;
-}
-
-
-
-namespace Catch {
-    IReporterFactory::~IReporterFactory() = default;
-    EventListenerFactory::~EventListenerFactory() = default;
 }
 
 
@@ -2043,6 +1986,14 @@ namespace Catch {
 
     } // namespace Generators
 } // namespace Catch
+
+
+
+
+namespace Catch {
+    IRegistryHub::~IRegistryHub() = default;
+    IMutableRegistryHub::~IMutableRegistryHub() = default;
+}
 
 
 
@@ -2131,6 +2082,29 @@ namespace Catch {
     IEventListener::~IEventListener() = default;
 
 } // end namespace Catch
+
+
+
+
+namespace Catch {
+    IReporterFactory::~IReporterFactory() = default;
+    EventListenerFactory::~EventListenerFactory() = default;
+}
+
+
+
+
+namespace Catch {
+    IReporterRegistry::~IReporterRegistry() = default;
+}
+
+
+
+
+namespace Catch {
+    ITestInvoker::~ITestInvoker() = default;
+    ITestCaseRegistry::~ITestCaseRegistry() = default;
+}
 
 
 
@@ -2672,221 +2646,6 @@ namespace Catch {
 } // namespace Catch
 
 
-/** \file
- * This is a special TU that combines what would otherwise be a very
- * small top-level TUs into one bigger TU.
- *
- * The reason for this is compilation performance improvements by
- * avoiding reparsing headers for many small TUs, instead having this
- * one TU include bit more, but having it all parsed only once.
- *
- * To avoid heavy-tail problem with compilation times, each "subpart"
- * of Catch2 has its own combined TU like this.
- */
-
-
-////////////////////////////////////////////////////////
-// vvv formerly catch_tag_alias_autoregistrar.cpp vvv //
-////////////////////////////////////////////////////////
-
-
-namespace Catch {
-
-    RegistrarForTagAliases::RegistrarForTagAliases(char const* alias, char const* tag, SourceLineInfo const& lineInfo) {
-        CATCH_TRY {
-            getMutableRegistryHub().registerTagAlias(alias, tag, lineInfo);
-        } CATCH_CATCH_ALL {
-            // Do not throw when constructing global objects, instead register the exception to be processed later
-            getMutableRegistryHub().registerStartupException();
-        }
-    }
-
-}
-
-
-//////////////////////////////////////////
-// vvv formerly catch_polyfills.cpp vvv //
-//////////////////////////////////////////
-
-#include <cmath>
-
-namespace Catch {
-
-#if !defined(CATCH_CONFIG_POLYFILL_ISNAN)
-    bool isnan(float f) {
-        return std::isnan(f);
-    }
-    bool isnan(double d) {
-        return std::isnan(d);
-    }
-#else
-    // For now we only use this for embarcadero
-    bool isnan(float f) {
-        return std::_isnan(f);
-    }
-    bool isnan(double d) {
-        return std::_isnan(d);
-    }
-#endif
-
-} // end namespace Catch
-
-
-////////////////////////////////////////////////////
-// vvv formerly catch_uncaught_exceptions.cpp vvv //
-////////////////////////////////////////////////////
-
-
-#include <exception>
-
-namespace Catch {
-    bool uncaught_exceptions() {
-#if defined(CATCH_CONFIG_DISABLE_EXCEPTIONS)
-        return false;
-#elif defined(CATCH_CONFIG_CPP17_UNCAUGHT_EXCEPTIONS)
-        return std::uncaught_exceptions() > 0;
-#else
-        return std::uncaught_exception();
-#endif
-  }
-} // end namespace Catch
-
-
-////////////////////////////////////////////
-// vvv formerly catch_errno_guard.cpp vvv //
-////////////////////////////////////////////
-
-#include <cerrno>
-
-namespace Catch {
-        ErrnoGuard::ErrnoGuard():m_oldErrno(errno){}
-        ErrnoGuard::~ErrnoGuard() { errno = m_oldErrno; }
-}
-
-
-///////////////////////////////////////////
-// vvv formerly catch_decomposer.cpp vvv //
-///////////////////////////////////////////
-
-namespace Catch {
-
-    ITransientExpression::~ITransientExpression() = default;
-
-    void formatReconstructedExpression( std::ostream &os, std::string const& lhs, StringRef op, std::string const& rhs ) {
-        if( lhs.size() + rhs.size() < 40 &&
-                lhs.find('\n') == std::string::npos &&
-                rhs.find('\n') == std::string::npos )
-            os << lhs << ' ' << op << ' ' << rhs;
-        else
-            os << lhs << '\n' << op << '\n' << rhs;
-    }
-}
-
-
-///////////////////////////////////////////////////////////
-// vvv formerly catch_startup_exception_registry.cpp vvv //
-///////////////////////////////////////////////////////////
-
-namespace Catch {
-#if !defined(CATCH_CONFIG_DISABLE_EXCEPTIONS)
-    void StartupExceptionRegistry::add( std::exception_ptr const& exception ) noexcept {
-        CATCH_TRY {
-            m_exceptions.push_back(exception);
-        } CATCH_CATCH_ALL {
-            // If we run out of memory during start-up there's really not a lot more we can do about it
-            std::terminate();
-        }
-    }
-
-    std::vector<std::exception_ptr> const& StartupExceptionRegistry::getExceptions() const noexcept {
-        return m_exceptions;
-    }
-#endif
-
-} // end namespace Catch
-
-
-//////////////////////////////////////////////
-// vvv formerly catch_leak_detector.cpp vvv //
-//////////////////////////////////////////////
-
-
-#ifdef CATCH_CONFIG_WINDOWS_CRTDBG
-#include <crtdbg.h>
-
-namespace Catch {
-
-    LeakDetector::LeakDetector() {
-        int flag = _CrtSetDbgFlag(_CRTDBG_REPORT_FLAG);
-        flag |= _CRTDBG_LEAK_CHECK_DF;
-        flag |= _CRTDBG_ALLOC_MEM_DF;
-        _CrtSetDbgFlag(flag);
-        _CrtSetReportMode(_CRT_WARN, _CRTDBG_MODE_FILE | _CRTDBG_MODE_DEBUG);
-        _CrtSetReportFile(_CRT_WARN, _CRTDBG_FILE_STDERR);
-        // Change this to leaking allocation's number to break there
-        _CrtSetBreakAlloc(-1);
-    }
-}
-
-#else // ^^ Windows crt debug heap enabled // Windows crt debug heap disabled vv
-
-    Catch::LeakDetector::LeakDetector() {}
-
-#endif // CATCH_CONFIG_WINDOWS_CRTDBG
-
-Catch::LeakDetector::~LeakDetector() {
-    Catch::cleanUp();
-}
-
-
-/////////////////////////////////////////////
-// vvv formerly catch_message_info.cpp vvv //
-/////////////////////////////////////////////
-
-
-namespace Catch {
-
-    MessageInfo::MessageInfo(   StringRef _macroName,
-                                SourceLineInfo const& _lineInfo,
-                                ResultWas::OfType _type )
-    :   macroName( _macroName ),
-        lineInfo( _lineInfo ),
-        type( _type ),
-        sequence( ++globalCount )
-    {}
-
-    // This may need protecting if threading support is added
-    unsigned int MessageInfo::globalCount = 0;
-
-} // end namespace Catch
-
-
-
-
-//////////////////////////////////////////
-// vvv formerly catch_lazy_expr.cpp vvv //
-//////////////////////////////////////////
-
-namespace Catch {
-
-    auto operator << (std::ostream& os, LazyExpression const& lazyExpr) -> std::ostream& {
-        if (lazyExpr.m_isNegated)
-            os << '!';
-
-        if (lazyExpr) {
-            if (lazyExpr.m_isNegated && lazyExpr.m_transientExpression->isBinaryExpression())
-                os << '(' << *lazyExpr.m_transientExpression << ')';
-            else
-                os << *lazyExpr.m_transientExpression;
-        } else {
-            os << "{** error - unchecked empty expression requested **}";
-        }
-        return os;
-    }
-
-} // namespace Catch
-
-
 
 
 #include <fstream>
@@ -3425,25 +3184,22 @@ namespace Catch {
 
     Detail::unique_ptr<ColourImpl> makeColourImpl( ColourMode implSelection,
                                                    IStream* stream ) {
-        if ( implSelection == ColourMode::None ) {
-            return Detail::make_unique<NoColourImpl>( stream );
-        }
-        if ( implSelection == ColourMode::ANSI ) {
-            return Detail::make_unique<ANSIColourImpl>( stream );
-        }
 #if defined( CATCH_CONFIG_COLOUR_WIN32 )
         if ( implSelection == ColourMode::Win32 ) {
             return Detail::make_unique<Win32ColourImpl>( stream );
         }
 #endif
+        if ( implSelection == ColourMode::ANSI ) {
+            return Detail::make_unique<ANSIColourImpl>( stream );
+        }
+        if ( implSelection == ColourMode::None ) {
+            return Detail::make_unique<NoColourImpl>( stream );
+        }
 
-        // todo: check win32 eligibility under ifdef, otherwise ansi
         if ( implSelection == ColourMode::PlatformDefault) {
-#if defined (CATCH_CONFIG_COLOUR_WIN32)
+#if defined( CATCH_CONFIG_COLOUR_WIN32 )
             if ( Win32ColourImpl::useImplementationForStream( *stream ) ) {
                 return Detail::make_unique<Win32ColourImpl>( stream );
-            } else {
-                return Detail::make_unique<NoColourImpl>( stream );
             }
 #endif
             if ( ANSIColourImpl::useImplementationForStream( *stream ) ) {
@@ -3679,6 +3435,23 @@ namespace Catch {
 
 
 
+
+namespace Catch {
+
+    ITransientExpression::~ITransientExpression() = default;
+
+    void formatReconstructedExpression( std::ostream &os, std::string const& lhs, StringRef op, std::string const& rhs ) {
+        if( lhs.size() + rhs.size() < 40 &&
+                lhs.find('\n') == std::string::npos &&
+                rhs.find('\n') == std::string::npos )
+            os << lhs << ' ' << op << ' ' << rhs;
+        else
+            os << lhs << '\n' << op << '\n' << rhs;
+    }
+}
+
+
+
 #include <stdexcept>
 
 
@@ -3776,6 +3549,16 @@ namespace Catch {
     } // Detail
 } // Catch
 
+
+
+
+
+#include <cerrno>
+
+namespace Catch {
+        ErrnoGuard::ErrnoGuard():m_oldErrno(errno){}
+        ErrnoGuard::~ErrnoGuard() { errno = m_oldErrno; }
+}
 
 
 
@@ -4256,6 +4039,58 @@ namespace Detail {
 
 
 
+namespace Catch {
+
+    auto operator << (std::ostream& os, LazyExpression const& lazyExpr) -> std::ostream& {
+        if (lazyExpr.m_isNegated)
+            os << '!';
+
+        if (lazyExpr) {
+            if (lazyExpr.m_isNegated && lazyExpr.m_transientExpression->isBinaryExpression())
+                os << '(' << *lazyExpr.m_transientExpression << ')';
+            else
+                os << *lazyExpr.m_transientExpression;
+        } else {
+            os << "{** error - unchecked empty expression requested **}";
+        }
+        return os;
+    }
+
+} // namespace Catch
+
+
+
+
+#ifdef CATCH_CONFIG_WINDOWS_CRTDBG
+#include <crtdbg.h>
+
+namespace Catch {
+
+    LeakDetector::LeakDetector() {
+        int flag = _CrtSetDbgFlag(_CRTDBG_REPORT_FLAG);
+        flag |= _CRTDBG_LEAK_CHECK_DF;
+        flag |= _CRTDBG_ALLOC_MEM_DF;
+        _CrtSetDbgFlag(flag);
+        _CrtSetReportMode(_CRT_WARN, _CRTDBG_MODE_FILE | _CRTDBG_MODE_DEBUG);
+        _CrtSetReportFile(_CRT_WARN, _CRTDBG_FILE_STDERR);
+        // Change this to leaking allocation's number to break there
+        _CrtSetBreakAlloc(-1);
+    }
+}
+
+#else // ^^ Windows crt debug heap enabled // Windows crt debug heap disabled vv
+
+    Catch::LeakDetector::LeakDetector() {}
+
+#endif // CATCH_CONFIG_WINDOWS_CRTDBG
+
+Catch::LeakDetector::~LeakDetector() {
+    Catch::cleanUp();
+}
+
+
+
+
 
 namespace Catch {
     namespace {
@@ -4387,6 +4222,25 @@ int main (int argc, char * argv[]) {
 }
 
 #endif // !defined(CATCH_AMALGAMATED_CUSTOM_MAIN
+
+
+
+
+namespace Catch {
+
+    MessageInfo::MessageInfo(   StringRef _macroName,
+                                SourceLineInfo const& _lineInfo,
+                                ResultWas::OfType _type )
+    :   macroName( _macroName ),
+        lineInfo( _lineInfo ),
+        type( _type ),
+        sequence( ++globalCount )
+    {}
+
+    // This may need protecting if threading support is added
+    unsigned int MessageInfo::globalCount = 0;
+
+} // end namespace Catch
 
 
 
@@ -4525,6 +4379,32 @@ namespace Catch {
     #undef fileno
     #endif
 #endif
+
+
+
+
+#include <cmath>
+
+namespace Catch {
+
+#if !defined(CATCH_CONFIG_POLYFILL_ISNAN)
+    bool isnan(float f) {
+        return std::isnan(f);
+    }
+    bool isnan(double d) {
+        return std::isnan(d);
+    }
+#else
+    // For now we only use this for embarcadero
+    bool isnan(float f) {
+        return std::_isnan(f);
+    }
+    bool isnan(double d) {
+        return std::_isnan(d);
+    }
+#endif
+
+} // end namespace Catch
 
 
 
@@ -4784,7 +4664,7 @@ namespace Catch {
                     return {};
                 }
 
-                auto ret = kvPairs.emplace( kv.key, kv.value );
+                auto ret = kvPairs.emplace( std::string(kv.key), std::string(kv.value) );
                 if ( !ret.second ) {
                     // Duplicated key. We might want to handle this differently,
                     // e.g. by overwriting the existing value?
@@ -5387,6 +5267,11 @@ namespace Catch {
         // before running the tests themselves, or the binary can crash
         // without failed test being reported.
         FatalConditionHandlerGuard _(&m_fatalConditionhandler);
+        // We keep having issue where some compilers warn about an unused
+        // variable, even though the type has non-trivial constructor and
+        // destructor. This is annoying and ugly, but it makes them stfu.
+        (void)_;
+
         m_activeTestCase->invoke();
     }
 
@@ -5612,6 +5497,27 @@ namespace Catch {
 #endif
         return os;
     }
+
+} // end namespace Catch
+
+
+
+
+namespace Catch {
+#if !defined(CATCH_CONFIG_DISABLE_EXCEPTIONS)
+    void StartupExceptionRegistry::add( std::exception_ptr const& exception ) noexcept {
+        CATCH_TRY {
+            m_exceptions.push_back(exception);
+        } CATCH_CATCH_ALL {
+            // If we run out of memory during start-up there's really not a lot more we can do about it
+            std::terminate();
+        }
+    }
+
+    std::vector<std::exception_ptr> const& StartupExceptionRegistry::getExceptions() const noexcept {
+        return m_exceptions;
+    }
+#endif
 
 } // end namespace Catch
 
@@ -6792,6 +6698,23 @@ namespace Catch {
 
 
 
+
+#include <exception>
+
+namespace Catch {
+    bool uncaught_exceptions() {
+#if defined(CATCH_CONFIG_DISABLE_EXCEPTIONS)
+        return false;
+#elif defined(CATCH_CONFIG_CPP17_UNCAUGHT_EXCEPTIONS)
+        return std::uncaught_exceptions() > 0;
+#else
+        return std::uncaught_exception();
+#endif
+  }
+} // end namespace Catch
+
+
+
 namespace Catch {
 
     WildcardPattern::WildcardPattern( std::string const& pattern,
@@ -7171,6 +7094,72 @@ namespace {
 
 
 
+
+
+namespace Catch {
+namespace Matchers {
+
+    std::string MatcherUntypedBase::toString() const {
+        if (m_cachedToString.empty()) {
+            m_cachedToString = describe();
+        }
+        return m_cachedToString;
+    }
+
+    MatcherUntypedBase::~MatcherUntypedBase() = default;
+
+} // namespace Matchers
+} // namespace Catch
+
+
+
+
+namespace Catch {
+namespace Matchers {
+
+    std::string IsEmptyMatcher::describe() const {
+        return "is empty";
+    }
+
+    std::string HasSizeMatcher::describe() const {
+        ReusableStringStream sstr;
+        sstr << "has size == " << m_target_size;
+        return sstr.str();
+    }
+
+    IsEmptyMatcher IsEmpty() {
+        return {};
+    }
+
+    HasSizeMatcher SizeIs(std::size_t sz) {
+        return HasSizeMatcher{ sz };
+    }
+
+} // end namespace Matchers
+} // end namespace Catch
+
+
+
+namespace Catch {
+namespace Matchers {
+
+bool ExceptionMessageMatcher::match(std::exception const& ex) const {
+    return ex.what() == m_message;
+}
+
+std::string ExceptionMessageMatcher::describe() const {
+    return "exception message matches \"" + m_message + '"';
+}
+
+ExceptionMessageMatcher Message(std::string const& message) {
+    return ExceptionMessageMatcher(message);
+}
+
+} // namespace Matchers
+} // namespace Catch
+
+
+
 #include <algorithm>
 #include <cmath>
 #include <cstdlib>
@@ -7389,6 +7378,35 @@ WithinRelMatcher WithinRel(float target) {
 
 
 
+
+std::string Catch::Matchers::Detail::finalizeDescription(const std::string& desc) {
+    if (desc.empty()) {
+        return "matches undescribed predicate";
+    } else {
+        return "matches predicate: \"" + desc + '"';
+    }
+}
+
+
+
+namespace Catch {
+    namespace Matchers {
+        std::string AllTrueMatcher::describe() const { return "contains only true"; }
+
+        AllTrueMatcher AllTrue() { return AllTrueMatcher{}; }
+
+        std::string NoneTrueMatcher::describe() const { return "contains no true"; }
+
+        NoneTrueMatcher NoneTrue() { return NoneTrueMatcher{}; }
+
+        std::string AnyTrueMatcher::describe() const { return "contains at least one true"; }
+
+        AnyTrueMatcher AnyTrue() { return AnyTrueMatcher{}; }
+    } // namespace Matchers
+} // namespace Catch
+
+
+
 #include <regex>
 
 namespace Catch {
@@ -7528,21 +7546,7 @@ namespace Matchers {
 } // namespace Catch
 
 
-/** \file
- * This is a special TU that combines what would otherwise be a very
- * small matcher-related TUs into one bigger TU.
- *
- * The reason for this is compilation performance improvements by
- * avoiding reparsing headers for many small TUs, instead having this
- * one TU include bit more, but having it all parsed only once.
- *
- * To avoid heavy-tail problem with compilation times, each "subpart"
- * of Catch2 has its own combined TU like this.
- */
 
-//////////////////////////////////////////////
-// vvv formerly catch_matchers_impl.cpp vvv //
-//////////////////////////////////////////////
 
 namespace Catch {
 
@@ -7555,97 +7559,6 @@ namespace Catch {
         handler.handleExpr( expr );
     }
 
-} // namespace Catch
-
-
-//////////////////////////////////////////////////////////////
-// vvv formerly catch_matchers_container_properties.cpp vvv //
-//////////////////////////////////////////////////////////////
-
-namespace Catch {
-namespace Matchers {
-
-    std::string IsEmptyMatcher::describe() const {
-        return "is empty";
-    }
-
-    std::string HasSizeMatcher::describe() const {
-        ReusableStringStream sstr;
-        sstr << "has size == " << m_target_size;
-        return sstr.str();
-    }
-
-    IsEmptyMatcher IsEmpty() {
-        return {};
-    }
-
-    HasSizeMatcher SizeIs(std::size_t sz) {
-        return HasSizeMatcher{ sz };
-    }
-
-} // end namespace Matchers
-} // end namespace Catch
-
-
-
-/////////////////////////////////////////
-// vvv formerly catch_matchers.cpp vvv //
-/////////////////////////////////////////
-
-
-namespace Catch {
-namespace Matchers {
-
-    std::string MatcherUntypedBase::toString() const {
-        if (m_cachedToString.empty()) {
-            m_cachedToString = describe();
-        }
-        return m_cachedToString;
-    }
-
-    MatcherUntypedBase::~MatcherUntypedBase() = default;
-
-} // namespace Matchers
-} // namespace Catch
-
-
-
-///////////////////////////////////////////////////
-// vvv formerly catch_matchers_predicate.cpp vvv //
-///////////////////////////////////////////////////
-
-std::string Catch::Matchers::Detail::finalizeDescription(const std::string& desc) {
-    if (desc.empty()) {
-        return "matches undescribed predicate";
-    } else {
-        return "matches predicate: \"" + desc + '"';
-    }
-}
-
-
-
-
-
-///////////////////////////////////////////////////
-// vvv formerly catch_matchers_exception.cpp vvv //
-///////////////////////////////////////////////////
-
-namespace Catch {
-namespace Matchers {
-
-bool ExceptionMessageMatcher::match(std::exception const& ex) const {
-    return ex.what() == m_message;
-}
-
-std::string ExceptionMessageMatcher::describe() const {
-    return "exception message matches \"" + m_message + '"';
-}
-
-ExceptionMessageMatcher Message(std::string const& message) {
-    return ExceptionMessageMatcher(message);
-}
-
-} // namespace Matchers
 } // namespace Catch
 
 
@@ -7675,268 +7588,6 @@ namespace Catch {
     }
 
 } // end namespace Catch
-
-
-/** \file
- * This is a special TU that combines what would otherwise be a very
- * small reporter-related TUs into one bigger TU.
- *
- * The reason for this is compilation performance improvements by
- * avoiding reparsing headers for many small TUs, instead having this
- * one TU include bit more, but having it all parsed only once.
- *
- * To avoid heavy-tail problem with compilation times, each "subpart"
- * of Catch2 has its own combined TU like this.
- */
-
-
-#include <algorithm>
-#include <cfloat>
-#include <cstdio>
-#include <ostream>
-#include <iomanip>
-
-namespace Catch {
-
-    namespace {
-        void listTestNamesOnly(std::ostream& out,
-                               std::vector<TestCaseHandle> const& tests) {
-            for (auto const& test : tests) {
-                auto const& testCaseInfo = test.getTestCaseInfo();
-
-                if (startsWith(testCaseInfo.name, '#')) {
-                    out << '"' << testCaseInfo.name << '"';
-                } else {
-                    out << testCaseInfo.name;
-                }
-
-                out << '\n';
-            }
-            out << std::flush;
-        }
-    } // end unnamed namespace
-
-
-    // Because formatting using c++ streams is stateful, drop down to C is
-    // required Alternatively we could use stringstream, but its performance
-    // is... not good.
-    std::string getFormattedDuration( double duration ) {
-        // Max exponent + 1 is required to represent the whole part
-        // + 1 for decimal point
-        // + 3 for the 3 decimal places
-        // + 1 for null terminator
-        const std::size_t maxDoubleSize = DBL_MAX_10_EXP + 1 + 1 + 3 + 1;
-        char buffer[maxDoubleSize];
-
-        // Save previous errno, to prevent sprintf from overwriting it
-        ErrnoGuard guard;
-#ifdef _MSC_VER
-        size_t printedLength = static_cast<size_t>(
-            sprintf_s( buffer, "%.3f", duration ) );
-#else
-        size_t printedLength = static_cast<size_t>(
-            std::snprintf( buffer, maxDoubleSize, "%.3f", duration ) );
-#endif
-        return std::string( buffer, printedLength );
-    }
-
-    bool shouldShowDuration( IConfig const& config, double duration ) {
-        if ( config.showDurations() == ShowDurations::Always ) {
-            return true;
-        }
-        if ( config.showDurations() == ShowDurations::Never ) {
-            return false;
-        }
-        const double min = config.minDuration();
-        return min >= 0 && duration >= min;
-    }
-
-    std::string serializeFilters( std::vector<std::string> const& filters ) {
-        // We add a ' ' separator between each filter
-        size_t serialized_size = filters.size() - 1;
-        for (auto const& filter : filters) {
-            serialized_size += filter.size();
-        }
-
-        std::string serialized;
-        serialized.reserve(serialized_size);
-        bool first = true;
-
-        for (auto const& filter : filters) {
-            if (!first) {
-                serialized.push_back(' ');
-            }
-            first = false;
-            serialized.append(filter);
-        }
-
-        return serialized;
-    }
-
-    std::ostream& operator<<( std::ostream& out, lineOfChars value ) {
-        for ( size_t idx = 0; idx < CATCH_CONFIG_CONSOLE_WIDTH - 1; ++idx ) {
-            out.put( value.c );
-        }
-        return out;
-    }
-
-    void
-    defaultListReporters( std::ostream& out,
-                          std::vector<ReporterDescription> const& descriptions,
-                          Verbosity verbosity ) {
-        out << "Available reporters:\n";
-        const auto maxNameLen =
-            std::max_element( descriptions.begin(),
-                              descriptions.end(),
-                              []( ReporterDescription const& lhs,
-                                  ReporterDescription const& rhs ) {
-                                  return lhs.name.size() < rhs.name.size();
-                              } )
-                ->name.size();
-
-        for ( auto const& desc : descriptions ) {
-            if ( verbosity == Verbosity::Quiet ) {
-                out << TextFlow::Column( desc.name )
-                           .indent( 2 )
-                           .width( 5 + maxNameLen )
-                    << '\n';
-            } else {
-                out << TextFlow::Column( desc.name + ':' )
-                               .indent( 2 )
-                               .width( 5 + maxNameLen ) +
-                           TextFlow::Column( desc.description )
-                               .initialIndent( 0 )
-                               .indent( 2 )
-                               .width( CATCH_CONFIG_CONSOLE_WIDTH - maxNameLen - 8 )
-                    << '\n';
-            }
-        }
-        out << '\n' << std::flush;
-    }
-
-    void defaultListListeners( std::ostream& out,
-                               std::vector<ListenerDescription> const& descriptions ) {
-        const auto maxNameLen =
-            std::max_element( descriptions.begin(),
-                              descriptions.end(),
-                              []( ListenerDescription const& lhs,
-                                  ListenerDescription const& rhs ) {
-                                  return lhs.name.size() < rhs.name.size();
-                              } )
-                ->name.size();
-
-        out << "Registered listeners:\n";
-        for ( auto const& desc : descriptions ) {
-            out << TextFlow::Column( static_cast<std::string>( desc.name ) +
-                                     ':' )
-                           .indent( 2 )
-                           .width( maxNameLen + 5 ) +
-                       TextFlow::Column( desc.description )
-                           .initialIndent( 0 )
-                           .indent( 2 )
-                           .width( CATCH_CONFIG_CONSOLE_WIDTH - maxNameLen - 8 )
-                << '\n';
-        }
-
-        out << '\n' << std::flush;
-    }
-
-    void defaultListTags( std::ostream& out,
-                          std::vector<TagInfo> const& tags,
-                          bool isFiltered ) {
-        if ( isFiltered ) {
-            out << "Tags for matching test cases:\n";
-        } else {
-            out << "All available tags:\n";
-        }
-
-        for ( auto const& tagCount : tags ) {
-            ReusableStringStream rss;
-            rss << "  " << std::setw( 2 ) << tagCount.count << "  ";
-            auto str = rss.str();
-            auto wrapper = TextFlow::Column( tagCount.all() )
-                               .initialIndent( 0 )
-                               .indent( str.size() )
-                               .width( CATCH_CONFIG_CONSOLE_WIDTH - 10 );
-            out << str << wrapper << '\n';
-        }
-        out << pluralise(tags.size(), "tag"_sr) << "\n\n" << std::flush;
-    }
-
-    void defaultListTests(std::ostream& out, ColourImpl* streamColour, std::vector<TestCaseHandle> const& tests, bool isFiltered, Verbosity verbosity) {
-        // We special case this to provide the equivalent of old
-        // `--list-test-names-only`, which could then be used by the
-        // `--input-file` option.
-        if (verbosity == Verbosity::Quiet) {
-            listTestNamesOnly(out, tests);
-            return;
-        }
-
-        if (isFiltered) {
-            out << "Matching test cases:\n";
-        } else {
-            out << "All available test cases:\n";
-        }
-
-        for (auto const& test : tests) {
-            auto const& testCaseInfo = test.getTestCaseInfo();
-            Colour::Code colour = testCaseInfo.isHidden()
-                ? Colour::SecondaryText
-                : Colour::None;
-            auto colourGuard = streamColour->guardColour( colour ).engage( out );
-
-            out << TextFlow::Column(testCaseInfo.name).indent(2) << '\n';
-            if (verbosity >= Verbosity::High) {
-                out << TextFlow::Column(Catch::Detail::stringify(testCaseInfo.lineInfo)).indent(4) << '\n';
-            }
-            if (!testCaseInfo.tags.empty() &&
-                verbosity > Verbosity::Quiet) {
-                out << TextFlow::Column(testCaseInfo.tagsAsString()).indent(6) << '\n';
-            }
-        }
-
-        if (isFiltered) {
-            out << pluralise(tests.size(), "matching test case"_sr);
-        } else {
-            out << pluralise(tests.size(), "test case"_sr);
-        }
-        out << "\n\n" << std::flush;
-    }
-
-} // namespace Catch
-
-
-
-namespace Catch {
-
-    void EventListenerBase::fatalErrorEncountered( StringRef ) {}
-
-    void EventListenerBase::benchmarkPreparing( StringRef ) {}
-    void EventListenerBase::benchmarkStarting( BenchmarkInfo const& ) {}
-    void EventListenerBase::benchmarkEnded( BenchmarkStats<> const& ) {}
-    void EventListenerBase::benchmarkFailed( StringRef ) {}
-
-    void EventListenerBase::assertionStarting( AssertionInfo const& ) {}
-
-    void EventListenerBase::assertionEnded( AssertionStats const& ) {}
-    void EventListenerBase::listReporters(
-        std::vector<ReporterDescription> const& ) {}
-    void EventListenerBase::listListeners(
-        std::vector<ListenerDescription> const& ) {}
-    void EventListenerBase::listTests( std::vector<TestCaseHandle> const& ) {}
-    void EventListenerBase::listTags( std::vector<TagInfo> const& ) {}
-    void EventListenerBase::noMatchingTestCases( StringRef ) {}
-    void EventListenerBase::reportInvalidTestSpec( StringRef ) {}
-    void EventListenerBase::testRunStarting( TestRunInfo const& ) {}
-    void EventListenerBase::testCaseStarting( TestCaseInfo const& ) {}
-    void EventListenerBase::testCasePartialStarting(TestCaseInfo const&, uint64_t) {}
-    void EventListenerBase::sectionStarting( SectionInfo const& ) {}
-    void EventListenerBase::sectionEnded( SectionStats const& ) {}
-    void EventListenerBase::testCasePartialEnded(TestCaseStats const&, uint64_t) {}
-    void EventListenerBase::testCaseEnded( TestCaseStats const& ) {}
-    void EventListenerBase::testRunEnded( TestRunStats const& ) {}
-    void EventListenerBase::skipTest( TestCaseInfo const& ) {}
-} // namespace Catch
 
 
 
@@ -9116,6 +8767,263 @@ namespace Catch {
 
 
 
+namespace Catch {
+
+    void EventListenerBase::fatalErrorEncountered( StringRef ) {}
+
+    void EventListenerBase::benchmarkPreparing( StringRef ) {}
+    void EventListenerBase::benchmarkStarting( BenchmarkInfo const& ) {}
+    void EventListenerBase::benchmarkEnded( BenchmarkStats<> const& ) {}
+    void EventListenerBase::benchmarkFailed( StringRef ) {}
+
+    void EventListenerBase::assertionStarting( AssertionInfo const& ) {}
+
+    void EventListenerBase::assertionEnded( AssertionStats const& ) {}
+    void EventListenerBase::listReporters(
+        std::vector<ReporterDescription> const& ) {}
+    void EventListenerBase::listListeners(
+        std::vector<ListenerDescription> const& ) {}
+    void EventListenerBase::listTests( std::vector<TestCaseHandle> const& ) {}
+    void EventListenerBase::listTags( std::vector<TagInfo> const& ) {}
+    void EventListenerBase::noMatchingTestCases( StringRef ) {}
+    void EventListenerBase::reportInvalidTestSpec( StringRef ) {}
+    void EventListenerBase::testRunStarting( TestRunInfo const& ) {}
+    void EventListenerBase::testCaseStarting( TestCaseInfo const& ) {}
+    void EventListenerBase::testCasePartialStarting(TestCaseInfo const&, uint64_t) {}
+    void EventListenerBase::sectionStarting( SectionInfo const& ) {}
+    void EventListenerBase::sectionEnded( SectionStats const& ) {}
+    void EventListenerBase::testCasePartialEnded(TestCaseStats const&, uint64_t) {}
+    void EventListenerBase::testCaseEnded( TestCaseStats const& ) {}
+    void EventListenerBase::testRunEnded( TestRunStats const& ) {}
+    void EventListenerBase::skipTest( TestCaseInfo const& ) {}
+} // namespace Catch
+
+
+
+
+#include <algorithm>
+#include <cfloat>
+#include <cstdio>
+#include <ostream>
+#include <iomanip>
+
+namespace Catch {
+
+    namespace {
+        void listTestNamesOnly(std::ostream& out,
+                               std::vector<TestCaseHandle> const& tests) {
+            for (auto const& test : tests) {
+                auto const& testCaseInfo = test.getTestCaseInfo();
+
+                if (startsWith(testCaseInfo.name, '#')) {
+                    out << '"' << testCaseInfo.name << '"';
+                } else {
+                    out << testCaseInfo.name;
+                }
+
+                out << '\n';
+            }
+            out << std::flush;
+        }
+    } // end unnamed namespace
+
+
+    // Because formatting using c++ streams is stateful, drop down to C is
+    // required Alternatively we could use stringstream, but its performance
+    // is... not good.
+    std::string getFormattedDuration( double duration ) {
+        // Max exponent + 1 is required to represent the whole part
+        // + 1 for decimal point
+        // + 3 for the 3 decimal places
+        // + 1 for null terminator
+        const std::size_t maxDoubleSize = DBL_MAX_10_EXP + 1 + 1 + 3 + 1;
+        char buffer[maxDoubleSize];
+
+        // Save previous errno, to prevent sprintf from overwriting it
+        ErrnoGuard guard;
+#ifdef _MSC_VER
+        size_t printedLength = static_cast<size_t>(
+            sprintf_s( buffer, "%.3f", duration ) );
+#else
+        size_t printedLength = static_cast<size_t>(
+            std::snprintf( buffer, maxDoubleSize, "%.3f", duration ) );
+#endif
+        return std::string( buffer, printedLength );
+    }
+
+    bool shouldShowDuration( IConfig const& config, double duration ) {
+        if ( config.showDurations() == ShowDurations::Always ) {
+            return true;
+        }
+        if ( config.showDurations() == ShowDurations::Never ) {
+            return false;
+        }
+        const double min = config.minDuration();
+        return min >= 0 && duration >= min;
+    }
+
+    std::string serializeFilters( std::vector<std::string> const& filters ) {
+        // We add a ' ' separator between each filter
+        size_t serialized_size = filters.size() - 1;
+        for (auto const& filter : filters) {
+            serialized_size += filter.size();
+        }
+
+        std::string serialized;
+        serialized.reserve(serialized_size);
+        bool first = true;
+
+        for (auto const& filter : filters) {
+            if (!first) {
+                serialized.push_back(' ');
+            }
+            first = false;
+            serialized.append(filter);
+        }
+
+        return serialized;
+    }
+
+    std::ostream& operator<<( std::ostream& out, lineOfChars value ) {
+        for ( size_t idx = 0; idx < CATCH_CONFIG_CONSOLE_WIDTH - 1; ++idx ) {
+            out.put( value.c );
+        }
+        return out;
+    }
+
+    void
+    defaultListReporters( std::ostream& out,
+                          std::vector<ReporterDescription> const& descriptions,
+                          Verbosity verbosity ) {
+        out << "Available reporters:\n";
+        const auto maxNameLen =
+            std::max_element( descriptions.begin(),
+                              descriptions.end(),
+                              []( ReporterDescription const& lhs,
+                                  ReporterDescription const& rhs ) {
+                                  return lhs.name.size() < rhs.name.size();
+                              } )
+                ->name.size();
+
+        for ( auto const& desc : descriptions ) {
+            if ( verbosity == Verbosity::Quiet ) {
+                out << TextFlow::Column( desc.name )
+                           .indent( 2 )
+                           .width( 5 + maxNameLen )
+                    << '\n';
+            } else {
+                out << TextFlow::Column( desc.name + ':' )
+                               .indent( 2 )
+                               .width( 5 + maxNameLen ) +
+                           TextFlow::Column( desc.description )
+                               .initialIndent( 0 )
+                               .indent( 2 )
+                               .width( CATCH_CONFIG_CONSOLE_WIDTH - maxNameLen - 8 )
+                    << '\n';
+            }
+        }
+        out << '\n' << std::flush;
+    }
+
+    void defaultListListeners( std::ostream& out,
+                               std::vector<ListenerDescription> const& descriptions ) {
+        out << "Registered listeners:\n";
+
+        if(descriptions.empty()) {
+            return;
+        }
+
+        const auto maxNameLen =
+            std::max_element( descriptions.begin(),
+                              descriptions.end(),
+                              []( ListenerDescription const& lhs,
+                                  ListenerDescription const& rhs ) {
+                                  return lhs.name.size() < rhs.name.size();
+                              } )
+                ->name.size();
+
+        for ( auto const& desc : descriptions ) {
+            out << TextFlow::Column( static_cast<std::string>( desc.name ) +
+                                     ':' )
+                           .indent( 2 )
+                           .width( maxNameLen + 5 ) +
+                       TextFlow::Column( desc.description )
+                           .initialIndent( 0 )
+                           .indent( 2 )
+                           .width( CATCH_CONFIG_CONSOLE_WIDTH - maxNameLen - 8 )
+                << '\n';
+        }
+
+        out << '\n' << std::flush;
+    }
+
+    void defaultListTags( std::ostream& out,
+                          std::vector<TagInfo> const& tags,
+                          bool isFiltered ) {
+        if ( isFiltered ) {
+            out << "Tags for matching test cases:\n";
+        } else {
+            out << "All available tags:\n";
+        }
+
+        for ( auto const& tagCount : tags ) {
+            ReusableStringStream rss;
+            rss << "  " << std::setw( 2 ) << tagCount.count << "  ";
+            auto str = rss.str();
+            auto wrapper = TextFlow::Column( tagCount.all() )
+                               .initialIndent( 0 )
+                               .indent( str.size() )
+                               .width( CATCH_CONFIG_CONSOLE_WIDTH - 10 );
+            out << str << wrapper << '\n';
+        }
+        out << pluralise(tags.size(), "tag"_sr) << "\n\n" << std::flush;
+    }
+
+    void defaultListTests(std::ostream& out, ColourImpl* streamColour, std::vector<TestCaseHandle> const& tests, bool isFiltered, Verbosity verbosity) {
+        // We special case this to provide the equivalent of old
+        // `--list-test-names-only`, which could then be used by the
+        // `--input-file` option.
+        if (verbosity == Verbosity::Quiet) {
+            listTestNamesOnly(out, tests);
+            return;
+        }
+
+        if (isFiltered) {
+            out << "Matching test cases:\n";
+        } else {
+            out << "All available test cases:\n";
+        }
+
+        for (auto const& test : tests) {
+            auto const& testCaseInfo = test.getTestCaseInfo();
+            Colour::Code colour = testCaseInfo.isHidden()
+                ? Colour::SecondaryText
+                : Colour::None;
+            auto colourGuard = streamColour->guardColour( colour ).engage( out );
+
+            out << TextFlow::Column(testCaseInfo.name).indent(2) << '\n';
+            if (verbosity >= Verbosity::High) {
+                out << TextFlow::Column(Catch::Detail::stringify(testCaseInfo.lineInfo)).indent(4) << '\n';
+            }
+            if (!testCaseInfo.tags.empty() &&
+                verbosity > Verbosity::Quiet) {
+                out << TextFlow::Column(testCaseInfo.tagsAsString()).indent(6) << '\n';
+            }
+        }
+
+        if (isFiltered) {
+            out << pluralise(tests.size(), "matching test case"_sr);
+        } else {
+            out << pluralise(tests.size(), "test case"_sr);
+        }
+        out << "\n\n" << std::flush;
+    }
+
+} // namespace Catch
+
+
+
+
 #include <cassert>
 #include <ctime>
 #include <algorithm>
@@ -9166,6 +9074,15 @@ namespace Catch {
             ReusableStringStream rss;
             rss << std::fixed << std::setprecision( 3 ) << seconds;
             return rss.str();
+        }
+
+        static void normalizeNamespaceMarkers(std::string& str) {
+            std::size_t pos = str.find( "::" );
+            while ( pos != str.npos ) {
+                str.replace( pos, 2, "." );
+                pos += 1;
+                pos = str.find( "::", pos );
+            }
         }
 
     } // anonymous namespace
@@ -9270,6 +9187,8 @@ namespace Catch {
 
         if ( !m_config->name().empty() )
             className = static_cast<std::string>(m_config->name()) + '.' + className;
+
+        normalizeNamespaceMarkers(className);
 
         writeSection( className, "", rootSection, stats.testInfo->okToFail() );
     }

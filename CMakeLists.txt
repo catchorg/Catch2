@@ -37,7 +37,7 @@ endif()
 
 
 project(Catch2
-  VERSION 3.0.1 # CML version placeholder, don't delete
+  VERSION 3.1.0 # CML version placeholder, don't delete
   LANGUAGES CXX
   # HOMEPAGE_URL is not supported until CMake version 3.12, which
   # we do not target yet.
