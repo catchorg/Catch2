@@ -67,6 +67,15 @@ namespace Catch {
             return rss.str();
         }
 
+        static void normalizeNamespaceMarkers(std::string& str) {
+            std::size_t pos = str.find( "::" );
+            while ( pos != str.npos ) {
+                str.replace( pos, 2, "." );
+                pos += 1;
+                pos = str.find( "::", pos );
+            }
+        }
+
     } // anonymous namespace
 
     JunitReporter::JunitReporter( ReporterConfig&& _config )
@@ -169,6 +178,8 @@ namespace Catch {
 
         if ( !m_config->name().empty() )
             className = static_cast<std::string>(m_config->name()) + '.' + className;
+
+        normalizeNamespaceMarkers(className);
 
         writeSection( className, "", rootSection, stats.testInfo->okToFail() );
     }

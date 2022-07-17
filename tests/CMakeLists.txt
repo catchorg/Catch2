@@ -553,6 +553,17 @@ set_tests_properties("Colours::ColourModeCanBeExplicitlySetToAnsi"
     PASS_REGULAR_EXPRESSION "\\[1\;32mAll tests passed"
 )
 
+add_test(NAME "Reporters::JUnit::NamespacesAreNormalized"
+  COMMAND
+    $<TARGET_FILE:SelfTest>
+      --reporter junit
+      "A TEST_CASE_METHOD testing junit classname normalization"
+)
+set_tests_properties("Reporters::JUnit::NamespacesAreNormalized"
+  PROPERTIES
+    PASS_REGULAR_EXPRESSION "testcase classname=\"SelfTest(\.exe)?\\.A\\.B\\.TestClass\""
+)
+
 if (CATCH_ENABLE_CONFIGURE_TESTS)
     foreach(testName "DefaultReporter" "Disable" "DisableStringification"
                      "ExperimentalRedirect")
