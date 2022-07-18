@@ -146,6 +146,12 @@ include(CTest)
 
 add_executable(SelfTest ${TEST_SOURCES})
 target_link_libraries(SelfTest PRIVATE Catch2WithMain)
+if (BUILD_SHARED_LIBS AND WIN32)
+    add_custom_command(TARGET SelfTest PRE_LINK
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different $<TARGET_FILE:Catch2>
+        $<TARGET_FILE:Catch2WithMain> $<TARGET_FILE_DIR:SelfTest>
+    )
+endif()
 
 if (CATCH_ENABLE_COVERAGE)
     set(ENABLE_COVERAGE ON CACHE BOOL "Enable coverage build." FORCE)
