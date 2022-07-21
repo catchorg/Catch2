@@ -17,6 +17,8 @@ set(tests)
 
 if(WIN32)
   set(dl_paths_variable_name PATH)
+elseif(APPLE)
+  set(dl_paths_variable_name DYLD_LIBRARY_PATH)
 else()
   set(dl_paths_variable_name LD_LIBRARY_PATH)
 endif()
