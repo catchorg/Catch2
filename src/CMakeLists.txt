@@ -359,8 +359,12 @@ if (NOT_SUBPROJECT)
         Catch2WithMain
       EXPORT
         Catch2Targets
-      DESTINATION
+      LIBRARY DESTINATION 
         ${CMAKE_INSTALL_LIBDIR}
+      ARCHIVE DESTINATION
+        ${CMAKE_INSTALL_LIBDIR}
+      RUNTIME DESTINATION
+        ${CMAKE_INSTALL_BINDIR}
     )
 
 
