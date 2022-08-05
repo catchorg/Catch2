@@ -23,7 +23,7 @@ If you just need to have code that executes before and/ or after Catch this is t
 #define CATCH_CONFIG_RUNNER
 #include "catch.hpp"
 
-extern "C" int __cdecl main( int argc, char* argv[] ) {
+int main( int argc, char* argv[] ) {
   // global setup...
 
   int result = Catch::Session().run( argc, argv );
@@ -42,7 +42,7 @@ If you still want Catch to process the command line, but you want to programmati
 #define CATCH_CONFIG_RUNNER
 #include "catch.hpp"
 
-int __cdecl main( int argc, char* argv[] )
+int main( int argc, char* argv[] )
 {
   Catch::Session session; // There must be exactly one instance
  
@@ -80,7 +80,7 @@ so extending Catch's own command line options is now easy.
 #define CATCH_CONFIG_RUNNER
 #include "catch.hpp"
 
-int __cdecl main( int argc, char* argv[] )
+int main( int argc, char* argv[] )
 {
   Catch::Session session; // There must be exactly one instance
   

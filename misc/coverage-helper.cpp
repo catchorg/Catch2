@@ -122,7 +122,7 @@ int exec_cmd(std::string const& cmd, int log_num, std::string const& path) {
 // [2]: "--sep--"
 // [3]+: the actual command
 
-int __cdecl main(int argc, char** argv) {
+int main(int argc, char** argv) {
     std::vector<std::string> args(argv, argv + argc);
     auto sep = std::find(begin(args), end(args), separator);
     assert(sep - begin(args) == 2 && "Structure differs from expected!");
