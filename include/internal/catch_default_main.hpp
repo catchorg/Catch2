@@ -13,20 +13,20 @@
 
 #ifndef __OBJC__
 
-#ifndef CDECL
+#ifndef CATCH_INTERNAL_CDECL
 #ifdef _MSC_VER
-#define CDECL __cdecl
+#define CATCH_INTERNAL_CDECL __cdecl
 #else
-#define CDECL
+#define CATCH_INTERNAL_CDECL
 #endif
 #endif
 
 #if defined(CATCH_CONFIG_WCHAR) && defined(CATCH_PLATFORM_WINDOWS) && defined(_UNICODE) && !defined(DO_NOT_USE_WMAIN)
 // Standard C/C++ Win32 Unicode wmain entry point
-extern "C" int CDECL wmain (int argc, wchar_t * argv[], wchar_t * []) {
+extern "C" int CATCH_INTERNAL_CDECL wmain (int argc, wchar_t * argv[], wchar_t * []) {
 #else
 // Standard C/C++ main entry point
-int CDECL main (int argc, char * argv[]) {
+int CATCH_INTERNAL_CDECL main (int argc, char * argv[]) {
 #endif
 
     return Catch::Session().run( argc, argv );
