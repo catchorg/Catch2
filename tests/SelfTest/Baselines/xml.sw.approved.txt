@@ -10737,18 +10737,18 @@ C
     <Section name="empty tag" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
       <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
         <Original>
-          spec.hasFilters() == false
+          spec.hasFilters() == true
         </Original>
         <Expanded>
-          false == false
+          true == true
         </Expanded>
       </Expression>
       <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
         <Original>
-          spec.matches( *tcA ) == false
+          spec.matches( *tcA ) == true
         </Original>
         <Expanded>
-          false == false
+          true == true
         </Expanded>
       </Expression>
       <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
@@ -10769,10 +10769,10 @@ C
       </Expression>
       <Expression success="true" type="CHECK" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
         <Original>
-          spec.matches( *tcD ) == false
+          spec.matches( *tcD ) == true
         </Original>
         <Expanded>
-          false == false
+          true == true
         </Expanded>
       </Expression>
       <OverallResults successes="5" failures="0" expectedFailures="0"/>
@@ -16443,6 +16443,68 @@ There is no extra whitespace here
     </Exception>
     <OverallResult success="false"/>
   </TestCase>
+  <TestCase name="Untagged tests are matched by empty tag" tags="[test-spec][test-spec-parser]" filename="tests/<exe-name>/IntrospectiveTests/TestSpecParser.tests.cpp" >
+    <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/TestSpecParser.tests.cpp" >
+      <Original>
+        spec.hasFilters()
+      </Original>
+      <Expanded>
+        true
+      </Expanded>
+    </Expression>
+    <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/TestSpecParser.tests.cpp" >
+      <Original>
+        spec.getInvalidSpecs().empty()
+      </Original>
+      <Expanded>
+        true
+      </Expanded>
+    </Expression>
+    <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/TestSpecParser.tests.cpp" >
+      <Original>
+        spec.matches( testCase )
+      </Original>
+      <Expanded>
+        true
+      </Expanded>
+    </Expression>
+    <OverallResult success="true"/>
+  </TestCase>
+  <TestCase name="Untagged tests can be matched with hidden tests using empty tag" tags="[test-spec][test-spec-parser]" filename="tests/<exe-name>/IntrospectiveTests/TestSpecParser.tests.cpp" >
+    <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/TestSpecParser.tests.cpp" >
+      <Original>
+        spec.hasFilters()
+      </Original>
+      <Expanded>
+        true
+      </Expanded>
+    </Expression>
+    <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/TestSpecParser.tests.cpp" >
+      <Original>
+        spec.getInvalidSpecs().empty()
+      </Original>
+      <Expanded>
+        true
+      </Expanded>
+    </Expression>
+    <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/TestSpecParser.tests.cpp" >
+      <Original>
+        spec.matches( testCaseNoTag )
+      </Original>
+      <Expanded>
+        true
+      </Expanded>
+    </Expression>
+    <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/TestSpecParser.tests.cpp" >
+      <Original>
+        spec.matches( testCaseHiddenTag )
+      </Original>
+      <Expanded>
+        true
+      </Expanded>
+    </Expression>
+    <OverallResult success="true"/>
+  </TestCase>
   <TestCase name="Upcasting special member functions" tags="[internals][unique-ptr]" filename="tests/<exe-name>/IntrospectiveTests/UniquePtr.tests.cpp" >
     <Section name="Move constructor" filename="tests/<exe-name>/IntrospectiveTests/UniquePtr.tests.cpp" >
       <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/UniquePtr.tests.cpp" >
@@ -21702,6 +21764,6 @@ loose text artifact
     </Section>
     <OverallResult success="true"/>
   </TestCase>
-  <OverallResults successes="2129" failures="143" expectedFailures="27"/>
-  <OverallResultsCases successes="304" failures="83" expectedFailures="7"/>
+  <OverallResults successes="2136" failures="143" expectedFailures="27"/>
+  <OverallResultsCases successes="306" failures="83" expectedFailures="7"/>
 </Catch2TestRun>

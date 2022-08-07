@@ -1239,11 +1239,11 @@ CmdLine.tests.cpp:<line number>: passed: spec.matches( *tcA ) == false for: fals
 CmdLine.tests.cpp:<line number>: passed: spec.matches( *tcB ) == false for: false == false
 CmdLine.tests.cpp:<line number>: passed: spec.matches( *tcC ) == true for: true == true
 CmdLine.tests.cpp:<line number>: passed: spec.matches( *tcD ) == false for: false == false
-CmdLine.tests.cpp:<line number>: passed: spec.hasFilters() == false for: false == false
-CmdLine.tests.cpp:<line number>: passed: spec.matches( *tcA ) == false for: false == false
+CmdLine.tests.cpp:<line number>: passed: spec.hasFilters() == true for: true == true
+CmdLine.tests.cpp:<line number>: passed: spec.matches( *tcA ) == true for: true == true
 CmdLine.tests.cpp:<line number>: passed: spec.matches( *tcB ) == false for: false == false
 CmdLine.tests.cpp:<line number>: passed: spec.matches( *tcC ) == false for: false == false
-CmdLine.tests.cpp:<line number>: passed: spec.matches( *tcD ) == false for: false == false
+CmdLine.tests.cpp:<line number>: passed: spec.matches( *tcD ) == true for: true == true
 CmdLine.tests.cpp:<line number>: passed: spec.hasFilters() == false for: false == false
 CmdLine.tests.cpp:<line number>: passed: spec.matches( *tcA ) == false for: false == false
 CmdLine.tests.cpp:<line number>: passed: spec.matches( *tcB ) == false for: false == false
@@ -1996,6 +1996,13 @@ StringManip.tests.cpp:<line number>: passed: trim(StringRef(whitespace_at_both_e
 ==
 There is no extra whitespace here
 Exception.tests.cpp:<line number>: failed: unexpected exception with message: '3.14'
+TestSpecParser.tests.cpp:<line number>: passed: spec.hasFilters() for: true
+TestSpecParser.tests.cpp:<line number>: passed: spec.getInvalidSpecs().empty() for: true
+TestSpecParser.tests.cpp:<line number>: passed: spec.matches( testCase ) for: true
+TestSpecParser.tests.cpp:<line number>: passed: spec.hasFilters() for: true
+TestSpecParser.tests.cpp:<line number>: passed: spec.getInvalidSpecs().empty() for: true
+TestSpecParser.tests.cpp:<line number>: passed: spec.matches( testCaseNoTag ) for: true
+TestSpecParser.tests.cpp:<line number>: passed: spec.matches( testCaseHiddenTag ) for: true
 UniquePtr.tests.cpp:<line number>: passed: bptr->i == 3 for: 3 == 3
 UniquePtr.tests.cpp:<line number>: passed: bptr->i == 3 for: 3 == 3
 MatchersRanges.tests.cpp:<line number>: passed: data, AllMatch(SizeIs(5)) for: { { 0, 1, 2, 3, 5 }, { 4, -3, -2, 5, 0 }, { 0, 0, 0, 5, 0 }, { 0, -5, 0, 5, 0 }, { 1, 0, 0, -1, 5 } } all match has size == 5

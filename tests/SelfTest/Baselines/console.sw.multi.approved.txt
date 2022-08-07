@@ -8857,14 +8857,14 @@ CmdLine.tests.cpp:<line number>
 ...............................................................................
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  CHECK( spec.hasFilters() == false )
+  CHECK( spec.hasFilters() == true )
 with expansion:
-  false == false
+  true == true
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  CHECK( spec.matches( *tcA ) == false )
+  CHECK( spec.matches( *tcA ) == true )
 with expansion:
-  false == false
+  true == true
 
 CmdLine.tests.cpp:<line number>: PASSED:
   CHECK( spec.matches( *tcB ) == false )
@@ -8877,9 +8877,9 @@ with expansion:
   false == false
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  CHECK( spec.matches( *tcD ) == false )
+  CHECK( spec.matches( *tcD ) == true )
 with expansion:
-  false == false
+  true == true
 
 -------------------------------------------------------------------------------
 Parse test names and tags
@@ -14008,6 +14008,53 @@ due to unexpected exception with message:
   3.14
 
 -------------------------------------------------------------------------------
+Untagged tests are matched by empty tag
+-------------------------------------------------------------------------------
+TestSpecParser.tests.cpp:<line number>
+...............................................................................
+
+TestSpecParser.tests.cpp:<line number>: PASSED:
+  REQUIRE( spec.hasFilters() )
+with expansion:
+  true
+
+TestSpecParser.tests.cpp:<line number>: PASSED:
+  REQUIRE( spec.getInvalidSpecs().empty() )
+with expansion:
+  true
+
+TestSpecParser.tests.cpp:<line number>: PASSED:
+  REQUIRE( spec.matches( testCase ) )
+with expansion:
+  true
+
+-------------------------------------------------------------------------------
+Untagged tests can be matched with hidden tests using empty tag
+-------------------------------------------------------------------------------
+TestSpecParser.tests.cpp:<line number>
+...............................................................................
+
+TestSpecParser.tests.cpp:<line number>: PASSED:
+  REQUIRE( spec.hasFilters() )
+with expansion:
+  true
+
+TestSpecParser.tests.cpp:<line number>: PASSED:
+  REQUIRE( spec.getInvalidSpecs().empty() )
+with expansion:
+  true
+
+TestSpecParser.tests.cpp:<line number>: PASSED:
+  REQUIRE( spec.matches( testCaseNoTag ) )
+with expansion:
+  true
+
+TestSpecParser.tests.cpp:<line number>: PASSED:
+  REQUIRE( spec.matches( testCaseHiddenTag ) )
+with expansion:
+  true
+
+-------------------------------------------------------------------------------
 Upcasting special member functions
   Move constructor
 -------------------------------------------------------------------------------
@@ -18442,6 +18489,6 @@ Misc.tests.cpp:<line number>
 Misc.tests.cpp:<line number>: PASSED:
 
 ===============================================================================
-test cases:  394 |  304 passed |  83 failed |  7 failed as expected
-assertions: 2299 | 2129 passed | 143 failed | 27 failed as expected
+test cases:  396 |  306 passed |  83 failed |  7 failed as expected
+assertions: 2306 | 2136 passed | 143 failed | 27 failed as expected
 

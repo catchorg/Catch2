@@ -269,6 +269,8 @@ Message from section two
 :test-result: PASS Tracker
 :test-result: PASS Trim strings
 :test-result: FAIL Unexpected exceptions can be translated
+:test-result: PASS Untagged tests are matched by empty tag
+:test-result: PASS Untagged tests can be matched with hidden tests using empty tag
 :test-result: PASS Upcasting special member functions
 :test-result: PASS Usage of AllMatch range matcher
 :test-result: PASS Usage of AllTrue range matcher

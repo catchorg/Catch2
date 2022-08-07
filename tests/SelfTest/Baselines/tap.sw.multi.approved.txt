@@ -2320,15 +2320,15 @@ ok {test-number} - spec.matches( *tcC ) == true for: true == true
 # Parse test names and tags
 ok {test-number} - spec.matches( *tcD ) == false for: false == false
 # Parse test names and tags
-ok {test-number} - spec.hasFilters() == false for: false == false
+ok {test-number} - spec.hasFilters() == true for: true == true
 # Parse test names and tags
-ok {test-number} - spec.matches( *tcA ) == false for: false == false
+ok {test-number} - spec.matches( *tcA ) == true for: true == true
 # Parse test names and tags
 ok {test-number} - spec.matches( *tcB ) == false for: false == false
 # Parse test names and tags
 ok {test-number} - spec.matches( *tcC ) == false for: false == false
 # Parse test names and tags
-ok {test-number} - spec.matches( *tcD ) == false for: false == false
+ok {test-number} - spec.matches( *tcD ) == true for: true == true
 # Parse test names and tags
 ok {test-number} - spec.hasFilters() == false for: false == false
 # Parse test names and tags
@@ -3489,6 +3489,20 @@ ok {test-number} - trim(StringRef(trailing_whitespace)) == StringRef(no_whitespa
 ok {test-number} - trim(StringRef(whitespace_at_both_ends)) == StringRef(no_whitespace) for: There is no extra whitespace here == There is no extra whitespace here
 # Unexpected exceptions can be translated
 not ok {test-number} - unexpected exception with message: '3.14'
+# Untagged tests are matched by empty tag
+ok {test-number} - spec.hasFilters() for: true
+# Untagged tests are matched by empty tag
+ok {test-number} - spec.getInvalidSpecs().empty() for: true
+# Untagged tests are matched by empty tag
+ok {test-number} - spec.matches( testCase ) for: true
+# Untagged tests can be matched with hidden tests using empty tag
+ok {test-number} - spec.hasFilters() for: true
+# Untagged tests can be matched with hidden tests using empty tag
+ok {test-number} - spec.getInvalidSpecs().empty() for: true
+# Untagged tests can be matched with hidden tests using empty tag
+ok {test-number} - spec.matches( testCaseNoTag ) for: true
+# Untagged tests can be matched with hidden tests using empty tag
+ok {test-number} - spec.matches( testCaseHiddenTag ) for: true
 # Upcasting special member functions
 ok {test-number} - bptr->i == 3 for: 3 == 3
 # Upcasting special member functions
@@ -4593,5 +4607,5 @@ ok {test-number} - q3 == 23. for: 23.0 == 23.0
 ok {test-number} -
 # xmlentitycheck
 ok {test-number} -
-1..2299
+1..2306
 

@@ -285,6 +285,8 @@
   <file path="tests/<exe-name>/IntrospectiveTests/TestSpecParser.tests.cpp">
     <testCase name="Parsed tags are matched case insensitive" duration="{duration}"/>
     <testCase name="Parsing tags with non-alphabetical characters is pass-through" duration="{duration}"/>
+    <testCase name="Untagged tests are matched by empty tag" duration="{duration}"/>
+    <testCase name="Untagged tests can be matched with hidden tests using empty tag" duration="{duration}"/>
   </file>
   <file path="tests/<exe-name>/IntrospectiveTests/ToString.tests.cpp">
     <testCase name="Directly creating an EnumInfo" duration="{duration}"/>
