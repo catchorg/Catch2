@@ -42,6 +42,8 @@ namespace Catch {
     {}
 
     bool TestSpec::TagPattern::matches( TestCaseInfo const& testCase ) const {
+        if (m_tag.empty())
+            return testCase.tags.empty();
         return std::find( begin( testCase.tags ),
                           end( testCase.tags ),
                           Tag( m_tag ) ) != end( testCase.tags );

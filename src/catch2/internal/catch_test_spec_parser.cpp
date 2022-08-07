@@ -214,24 +214,22 @@ namespace Catch {
     void TestSpecParser::addTagPattern() {
         auto token = preprocessPattern();
 
-        if (!token.empty()) {
-            // If the tag pattern is the "hide and tag" shorthand (e.g. [.foo])
-            // we have to create a separate hide tag and shorten the real one
-            if (token.size() > 1 && token[0] == '.') {
-                token.erase(token.begin());
-                if (m_exclusion) {
-                    m_currentFilter.m_forbidden.emplace_back(Detail::make_unique<TestSpec::TagPattern>(".", m_substring));
-                    m_currentFilter.m_forbidden.emplace_back(Detail::make_unique<TestSpec::TagPattern>(token, m_substring));
-                } else {
-                    m_currentFilter.m_required.emplace_back(Detail::make_unique<TestSpec::TagPattern>(".", m_substring));
-                    m_currentFilter.m_required.emplace_back(Detail::make_unique<TestSpec::TagPattern>(token, m_substring));
-                }
-            }
+        // If the tag pattern is the "hide and tag" shorthand (e.g. [.foo])
+        // we have to create a separate hide tag and shorten the real one
+        if (token.size() > 1 && token[0] == '.') {
+            token.erase(token.begin());
             if (m_exclusion) {
+                m_currentFilter.m_forbidden.emplace_back(Detail::make_unique<TestSpec::TagPattern>(".", m_substring));
                 m_currentFilter.m_forbidden.emplace_back(Detail::make_unique<TestSpec::TagPattern>(token, m_substring));
             } else {
+                m_currentFilter.m_required.emplace_back(Detail::make_unique<TestSpec::TagPattern>(".", m_substring));
                 m_currentFilter.m_required.emplace_back(Detail::make_unique<TestSpec::TagPattern>(token, m_substring));
             }
+        }
+        if (m_exclusion) {
+            m_currentFilter.m_forbidden.emplace_back(Detail::make_unique<TestSpec::TagPattern>(token, m_substring));
+        } else {
+            m_currentFilter.m_required.emplace_back(Detail::make_unique<TestSpec::TagPattern>(token, m_substring));
         }
         m_substring.clear();
         m_exclusion = false;

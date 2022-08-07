@@ -53,3 +53,26 @@ TEST_CASE("Parsed tags are matched case insensitive",
 
     REQUIRE( spec.matches( testCase ) );
 }
+
+TEST_CASE("Untagged tests are matched by empty tag",
+    "[test-spec][test-spec-parser]") {
+    auto spec = parseAndCreateSpec( "[]" );
+
+    Catch::TestCaseInfo testCase(
+        "", { "fake test name" }, dummySourceLineInfo );
+
+    REQUIRE( spec.matches( testCase ) );
+}
+
+TEST_CASE("Untagged tests can be matched with hidden tests using empty tag",
+    "[test-spec][test-spec-parser]") {
+    auto spec = parseAndCreateSpec( "[],[.tag]" );
+
+    Catch::TestCaseInfo testCaseNoTag(
+        "", { "fake test with no tags" }, dummySourceLineInfo );
+    Catch::TestCaseInfo testCaseHiddenTag(
+        "", { "fake test with hidden tags", "[.tag]" }, dummySourceLineInfo );
+
+    REQUIRE( spec.matches( testCaseNoTag ) );
+    REQUIRE( spec.matches( testCaseHiddenTag ) );
+}

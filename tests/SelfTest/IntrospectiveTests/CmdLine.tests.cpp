@@ -245,11 +245,11 @@ TEST_CASE( "Parse test names and tags", "[command-line][test-spec]" ) {
     }
     SECTION( "empty tag" ) {
         TestSpec spec = parseTestSpec( "[]" );
-        CHECK( spec.hasFilters() == false );
-        CHECK( spec.matches( *tcA ) == false );
+        CHECK( spec.hasFilters() == true );
+        CHECK( spec.matches( *tcA ) == true );
         CHECK( spec.matches( *tcB ) == false );
         CHECK( spec.matches( *tcC ) == false );
-        CHECK( spec.matches( *tcD ) == false );
+        CHECK( spec.matches( *tcD ) == true );
     }
     SECTION( "empty quoted name" ) {
         TestSpec spec = parseTestSpec( "\"\"" );
