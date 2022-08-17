@@ -7,6 +7,7 @@
 [Why cannot I derive from the built-in reporters?](#why-cannot-i-derive-from-the-built-in-reporters)<br>
 [What is Catch2's ABI stability policy?](#what-is-catch2s-abi-stability-policy)<br>
 [What is Catch2's API stability policy?](#what-is-catch2s-api-stability-policy)<br>
+[Does Catch2 support running tests in parallel?](#does-catch2-support-running-tests-in-parallel)<br>
 
 ## How do I run global setup/teardown only if tests will be run?
 

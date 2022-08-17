@@ -73,6 +73,11 @@ seed, e.g.
 ./tests --order rand --shard-index 2 --shard-count 3 --rng-seed 0xBEEF
 ```
 
+Catch2 actually provides a helper to automatically register multiple shards
+as CTest tests, with shared random seed that changes each CTest invocation.
+For details look at the documentation of
+[`CatchShardTests.cmake` CMake script](cmake-integration.md#catchshardtestscmake).
+
 
 ## Organizing tests into binaries
 
