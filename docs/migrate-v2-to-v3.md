@@ -65,7 +65,9 @@ to piecemeal includes. You will likely want to start by including
 [other notes](#other-notes) for further ideas)
 
 ## Other notes
+
 * The main test include is now `<catch2/catch_test_macros.hpp>`
+
 * Big "subparts" like Matchers, or Generators, have their own folder, and
 also their own "big header", so if you just want to include all matchers,
 you can include `<catch2/matchers/catch_matchers_all.hpp>`,
@@ -73,11 +75,21 @@ or `<catch2/generators/catch_generators_all.hpp>`
 
 
 ## Things that can break during porting
-* The namespace on Matchers were cleaned up, they are no longer first declared
-deep within an internal namespace and then brought up. All Matchers now live
-in `Catch::Matchers`.
-* The reporter interfaces changed in a breaking manner. If you wrote custom
-reporter or listener, you might need to modify them a bit.
+
+* The namespaces of Matchers were flattened and cleaned up.
+
+Matchers are no longer declared deep within an internal namespace and
+then brought up into `Catch` namespace. All Matchers now live in the
+`Catch::Matchers` namespace.
+
+* The `Contains` string matcher was renamed to `ContainsSubstring`.
+
+* The reporter interfaces changed in a breaking manner.
+
+If you are using a custom reporter or listener, you will likely need to
+modify them to conform to the new interfaces. Unlike before in v2,
+the [interfaces](reporters.md#top) and the [events](reporter-events.md#top)
+are now documented.
 
 
 ---
