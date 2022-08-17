@@ -1,12 +1,6 @@
 <a id="top"></a>
 # CI and other odd pieces
 
-**Contents**<br>
-[Continuous Integration systems](#continuous-integration-systems)<br>
-[Other reporters](#other-reporters)<br>
-[Low-level tools](#low-level-tools)<br>
-[CMake](#cmake)<br>
-
 This page talks about how Catch integrates with Continuous Integration 
 Build Systems may refer to low-level tools, like CMake, or larger systems that run on servers, like Jenkins or TeamCity. This page will talk about both.
 
@@ -34,19 +28,6 @@ The advantage of this format is that the JUnit Ant schema is widely understood b
 
 The disadvantage is that this schema was designed to correspond to how JUnit works - and there is a significant mismatch with how Catch works. Additionally the format is not streamable (because opening elements hold counts of failed and passing tests as attributes) - so the whole test run must complete before it can be written.
 
-## Other reporters
-Other reporters are not part of the single-header distribution and need
-to be downloaded and included separately. All reporters are stored in
-`single_include` directory in the git repository, and are named
-`catch_reporter_*.hpp`. For example, to use the TeamCity reporter you
-need to download `single_include/catch_reporter_teamcity.hpp` and include
-it after Catch itself.
-
-```cpp
-#define CATCH_CONFIG_MAIN
-#include "catch.hpp"
-#include "catch_reporter_teamcity.hpp"
-```
 
 ### TeamCity Reporter
 ```-r teamcity```
@@ -69,18 +50,8 @@ Because of the incremental nature of Catch's test suites and ability to run spec
 ```-r sonarqube```
 [SonarQube Generic Test Data](https://docs.sonarqube.org/latest/analysis/generic-test/) XML format for tests metrics.
 
+
 ## Low-level tools
-
-### Precompiled headers (PCHs)
-
-Catch offers prototypal support for being included in precompiled headers, but because of its single-header nature it does need some actions by the user:
-* The precompiled header needs to define `CATCH_CONFIG_ALL_PARTS`
-* The implementation file needs to
-  * undefine `TWOBLUECUBES_SINGLE_INCLUDE_CATCH_HPP_INCLUDED`
-  * define `CATCH_CONFIG_IMPL_ONLY`
-  * define `CATCH_CONFIG_MAIN` or `CATCH_CONFIG_RUNNER`
-  * include "catch.hpp" again
-
 
 ### CodeCoverage module (GCOV, LCOV...)
 
