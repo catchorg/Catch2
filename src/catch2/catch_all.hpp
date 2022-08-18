@@ -27,6 +27,7 @@
 #include <catch2/catch_assertion_info.hpp>
 #include <catch2/catch_assertion_result.hpp>
 #include <catch2/catch_config.hpp>
+#include <catch2/catch_get_random_seed.hpp>
 #include <catch2/catch_message.hpp>
 #include <catch2/catch_section_info.hpp>
 #include <catch2/catch_session.hpp>

@@ -7,6 +7,7 @@
 // SPDX-License-Identifier: BSL-1.0
 #include <catch2/reporters/catch_reporter_compact.hpp>
 
+#include <catch2/catch_get_random_seed.hpp>
 #include <catch2/catch_test_spec.hpp>
 #include <catch2/reporters/catch_reporter_helpers.hpp>
 #include <catch2/interfaces/catch_interfaces_config.hpp>
@@ -261,7 +262,7 @@ private:
                          << serializeFilters( m_config->getTestsOrTags() )
                          << '\n';
             }
-            m_stream << "RNG seed: " << m_config->rngSeed() << '\n';
+            m_stream << "RNG seed: " << getSeed() << '\n';
         }
 
         void CompactReporter::assertionEnded( AssertionStats const& _assertionStats ) {
