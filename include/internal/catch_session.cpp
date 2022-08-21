@@ -293,7 +293,7 @@ namespace Catch {
 
             // Handle list request
             if( Option<std::size_t> listed = list( m_config ) )
-                return static_cast<int>( *listed );
+                return (std::min) (MaxExitCode, static_cast<int>(*listed));
 
             TestGroup tests { m_config };
             auto const totals = tests.execute();
