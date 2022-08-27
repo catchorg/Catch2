@@ -8,7 +8,6 @@
 #ifndef CATCH_INTERFACES_REPORTER_HPP_INCLUDED
 #define CATCH_INTERFACES_REPORTER_HPP_INCLUDED
 
-#include "catch2/interfaces/catch_interfaces_capture.hpp"
 #include <catch2/catch_section_info.hpp>
 #include <catch2/catch_totals.hpp>
 #include <catch2/catch_assertion_result.hpp>

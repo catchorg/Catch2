@@ -8,7 +8,6 @@
 #ifndef CATCH_GENERATORS_HPP_INCLUDED
 #define CATCH_GENERATORS_HPP_INCLUDED
 
-#include "catch2/interfaces/catch_interfaces_capture.hpp"
 #include <catch2/catch_tostring.hpp>
 #include <catch2/interfaces/catch_interfaces_generatortracker.hpp>
 #include <catch2/internal/catch_generator_info.hpp>

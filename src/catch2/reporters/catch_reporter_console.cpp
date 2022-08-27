@@ -160,14 +160,14 @@ private:
             return;
         }
 
-        stream << "with " << pluralise(stats.generatorInfos.size(), "generator"_sr) << "\n";
+        stream << "with " << pluralise(stats.generatorInfos.size(), "generator"_sr) << '\n';
         for ( auto const& info : stats.generatorInfos ) {
             stream << TextFlow::Column( "line:" ).indent( 2 )
                    << info.lineInfo.line << ": "
                    << "GENERATE(" << info.definition << ")\n"
                    << TextFlow::Column( "value: " ).indent( 2 )
                    << colourImpl->guardColour( Colour::GeneratorValue )
-                   << info.currentElement << "\n";
+                   << info.currentElement << '\n';
         }
     }
     void printMessage() const {

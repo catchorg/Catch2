@@ -5,7 +5,6 @@
 //        https://www.boost.org/LICENSE_1_0.txt)
 
 // SPDX-License-Identifier: BSL-1.0
-#include "catch2/interfaces/catch_interfaces_capture.hpp"
 #include <catch2/interfaces/catch_interfaces_reporter.hpp>
 #include <catch2/interfaces/catch_interfaces_config.hpp>
 #include <catch2/internal/catch_console_colour.hpp>
