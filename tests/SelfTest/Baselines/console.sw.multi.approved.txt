@@ -226,6 +226,9 @@ Generators.tests.cpp:<line number>: PASSED:
   REQUIRE( counter < 7 )
 with expansion:
   3 < 7
+with 1 generator
+  line:267: GENERATE(1, 2)
+  value: 1
 
 -------------------------------------------------------------------------------
 #1913 - GENERATE inside a for loop should not keep recreating the generator
@@ -237,6 +240,9 @@ Generators.tests.cpp:<line number>: PASSED:
   REQUIRE( counter < 7 )
 with expansion:
   6 < 7
+with 1 generator
+  line:267: GENERATE(1, 2)
+  value: 2
 
 -------------------------------------------------------------------------------
 #1913 - GENERATEs can share a line
@@ -248,6 +254,11 @@ Generators.tests.cpp:<line number>: PASSED:
   REQUIRE( i != j )
 with expansion:
   1 != 3
+with 2 generators
+  line:276: GENERATE(1, 2)
+  value: 1
+  line:276: GENERATE(3, 4)
+  value: 3
 
 -------------------------------------------------------------------------------
 #1913 - GENERATEs can share a line
@@ -259,6 +270,11 @@ Generators.tests.cpp:<line number>: PASSED:
   REQUIRE( i != j )
 with expansion:
   1 != 4
+with 2 generators
+  line:276: GENERATE(1, 2)
+  value: 1
+  line:276: GENERATE(3, 4)
+  value: 4
 
 -------------------------------------------------------------------------------
 #1913 - GENERATEs can share a line
@@ -270,6 +286,11 @@ Generators.tests.cpp:<line number>: PASSED:
   REQUIRE( i != j )
 with expansion:
   2 != 3
+with 2 generators
+  line:276: GENERATE(1, 2)
+  value: 2
+  line:276: GENERATE(3, 4)
+  value: 3
 
 -------------------------------------------------------------------------------
 #1913 - GENERATEs can share a line
@@ -281,6 +302,11 @@ Generators.tests.cpp:<line number>: PASSED:
   REQUIRE( i != j )
 with expansion:
   2 != 4
+with 2 generators
+  line:276: GENERATE(1, 2)
+  value: 2
+  line:276: GENERATE(3, 4)
+  value: 4
 
 -------------------------------------------------------------------------------
 #1938 - GENERATE after a section
@@ -304,6 +330,9 @@ PartTracker.tests.cpp:<line number>: PASSED:
   REQUIRE( m )
 with expansion:
   1
+with 1 generator
+  line:216: GENERATE(1, 2, 3)
+  value: 1
 
 -------------------------------------------------------------------------------
 #1938 - GENERATE after a section
@@ -316,6 +345,9 @@ PartTracker.tests.cpp:<line number>: PASSED:
   REQUIRE( m )
 with expansion:
   2
+with 1 generator
+  line:216: GENERATE(1, 2, 3)
+  value: 2
 
 -------------------------------------------------------------------------------
 #1938 - GENERATE after a section
@@ -328,6 +360,9 @@ PartTracker.tests.cpp:<line number>: PASSED:
   REQUIRE( m )
 with expansion:
   3
+with 1 generator
+  line:216: GENERATE(1, 2, 3)
+  value: 3
 
 -------------------------------------------------------------------------------
 #1938 - Section followed by flat generate
@@ -349,6 +384,9 @@ PartTracker.tests.cpp:<line number>: PASSED:
   REQUIRE( m )
 with expansion:
   2
+with 1 generator
+  line:252: GENERATE(2, 3)
+  value: 2
 
 -------------------------------------------------------------------------------
 #1938 - Section followed by flat generate
@@ -360,6 +398,9 @@ PartTracker.tests.cpp:<line number>: PASSED:
   REQUIRE( m )
 with expansion:
   3
+with 1 generator
+  line:252: GENERATE(2, 3)
+  value: 3
 
 -------------------------------------------------------------------------------
 #1938 - flat generate
@@ -371,6 +412,9 @@ PartTracker.tests.cpp:<line number>: PASSED:
   REQUIRE( m )
 with expansion:
   1
+with 1 generator
+  line:223: GENERATE(1, 2, 3)
+  value: 1
 
 -------------------------------------------------------------------------------
 #1938 - flat generate
@@ -382,6 +426,9 @@ PartTracker.tests.cpp:<line number>: PASSED:
   REQUIRE( m )
 with expansion:
   2
+with 1 generator
+  line:223: GENERATE(1, 2, 3)
+  value: 2
 
 -------------------------------------------------------------------------------
 #1938 - flat generate
@@ -393,6 +440,9 @@ PartTracker.tests.cpp:<line number>: PASSED:
   REQUIRE( m )
 with expansion:
   3
+with 1 generator
+  line:223: GENERATE(1, 2, 3)
+  value: 3
 
 -------------------------------------------------------------------------------
 #1938 - mixed sections and generates
@@ -402,6 +452,9 @@ PartTracker.tests.cpp:<line number>
 ...............................................................................
 
 PartTracker.tests.cpp:<line number>: PASSED:
+with 1 generator
+  line:235: GENERATE(1, 2)
+  value: 1
 with message:
   A
 
@@ -412,6 +465,11 @@ PartTracker.tests.cpp:<line number>
 ...............................................................................
 
 PartTracker.tests.cpp:<line number>: PASSED:
+with 2 generators
+  line:239: GENERATE(3, 4)
+  value: 3
+  line:243: GENERATE(5, 6)
+  value: 5
 with messages:
   i := 1
   j := 3
@@ -425,6 +483,11 @@ PartTracker.tests.cpp:<line number>
 ...............................................................................
 
 PartTracker.tests.cpp:<line number>: PASSED:
+with 2 generators
+  line:235: GENERATE(1, 2)
+  value: 1
+  line:239: GENERATE(3, 4)
+  value: 3
 with message:
   B
 
@@ -435,6 +498,9 @@ PartTracker.tests.cpp:<line number>
 ...............................................................................
 
 PartTracker.tests.cpp:<line number>: PASSED:
+with 1 generator
+  line:243: GENERATE(5, 6)
+  value: 6
 with messages:
   i := 1
   j := 3
@@ -448,6 +514,11 @@ PartTracker.tests.cpp:<line number>
 ...............................................................................
 
 PartTracker.tests.cpp:<line number>: PASSED:
+with 2 generators
+  line:235: GENERATE(1, 2)
+  value: 1
+  line:239: GENERATE(3, 4)
+  value: 4
 with message:
   B
 
@@ -458,6 +529,9 @@ PartTracker.tests.cpp:<line number>
 ...............................................................................
 
 PartTracker.tests.cpp:<line number>: PASSED:
+with 1 generator
+  line:243: GENERATE(5, 6)
+  value: 5
 with messages:
   i := 1
   j := 4
@@ -470,6 +544,13 @@ PartTracker.tests.cpp:<line number>
 ...............................................................................
 
 PartTracker.tests.cpp:<line number>: PASSED:
+with 3 generators
+  line:235: GENERATE(1, 2)
+  value: 1
+  line:239: GENERATE(3, 4)
+  value: 4
+  line:243: GENERATE(5, 6)
+  value: 6
 with messages:
   i := 1
   j := 4
@@ -483,6 +564,9 @@ PartTracker.tests.cpp:<line number>
 ...............................................................................
 
 PartTracker.tests.cpp:<line number>: PASSED:
+with 1 generator
+  line:235: GENERATE(1, 2)
+  value: 2
 with message:
   A
 
@@ -493,6 +577,11 @@ PartTracker.tests.cpp:<line number>
 ...............................................................................
 
 PartTracker.tests.cpp:<line number>: PASSED:
+with 2 generators
+  line:239: GENERATE(3, 4)
+  value: 3
+  line:243: GENERATE(5, 6)
+  value: 5
 with messages:
   i := 2
   j := 3
@@ -506,6 +595,11 @@ PartTracker.tests.cpp:<line number>
 ...............................................................................
 
 PartTracker.tests.cpp:<line number>: PASSED:
+with 2 generators
+  line:235: GENERATE(1, 2)
+  value: 2
+  line:239: GENERATE(3, 4)
+  value: 3
 with message:
   B
 
@@ -516,6 +610,9 @@ PartTracker.tests.cpp:<line number>
 ...............................................................................
 
 PartTracker.tests.cpp:<line number>: PASSED:
+with 1 generator
+  line:243: GENERATE(5, 6)
+  value: 6
 with messages:
   i := 2
   j := 3
@@ -529,6 +626,11 @@ PartTracker.tests.cpp:<line number>
 ...............................................................................
 
 PartTracker.tests.cpp:<line number>: PASSED:
+with 2 generators
+  line:235: GENERATE(1, 2)
+  value: 2
+  line:239: GENERATE(3, 4)
+  value: 4
 with message:
   B
 
@@ -539,6 +641,9 @@ PartTracker.tests.cpp:<line number>
 ...............................................................................
 
 PartTracker.tests.cpp:<line number>: PASSED:
+with 1 generator
+  line:243: GENERATE(5, 6)
+  value: 5
 with messages:
   i := 2
   j := 4
@@ -551,6 +656,13 @@ PartTracker.tests.cpp:<line number>
 ...............................................................................
 
 PartTracker.tests.cpp:<line number>: PASSED:
+with 3 generators
+  line:235: GENERATE(1, 2)
+  value: 2
+  line:239: GENERATE(3, 4)
+  value: 4
+  line:243: GENERATE(5, 6)
+  value: 6
 with messages:
   i := 2
   j := 4
@@ -566,27 +678,21 @@ PartTracker.tests.cpp:<line number>: PASSED:
   REQUIRE( m )
 with expansion:
   1
+with 2 generators
+  line:228: GENERATE(1, 2, 3)
+  value: 1
+  line:229: GENERATE(1, 2, 3)
+  value: 1
 
 PartTracker.tests.cpp:<line number>: PASSED:
   REQUIRE( n )
 with expansion:
   1
-
--------------------------------------------------------------------------------
-#1938 - nested generate
--------------------------------------------------------------------------------
-PartTracker.tests.cpp:<line number>
-...............................................................................
-
-PartTracker.tests.cpp:<line number>: PASSED:
-  REQUIRE( m )
-with expansion:
-  1
-
-PartTracker.tests.cpp:<line number>: PASSED:
-  REQUIRE( n )
-with expansion:
-  2
+with 2 generators
+  line:228: GENERATE(1, 2, 3)
+  value: 1
+  line:229: GENERATE(1, 2, 3)
+  value: 1
 
 -------------------------------------------------------------------------------
 #1938 - nested generate
@@ -598,11 +704,47 @@ PartTracker.tests.cpp:<line number>: PASSED:
   REQUIRE( m )
 with expansion:
   1
+with 2 generators
+  line:228: GENERATE(1, 2, 3)
+  value: 1
+  line:229: GENERATE(1, 2, 3)
+  value: 2
+
+PartTracker.tests.cpp:<line number>: PASSED:
+  REQUIRE( n )
+with expansion:
+  2
+with 2 generators
+  line:228: GENERATE(1, 2, 3)
+  value: 1
+  line:229: GENERATE(1, 2, 3)
+  value: 2
+
+-------------------------------------------------------------------------------
+#1938 - nested generate
+-------------------------------------------------------------------------------
+PartTracker.tests.cpp:<line number>
+...............................................................................
+
+PartTracker.tests.cpp:<line number>: PASSED:
+  REQUIRE( m )
+with expansion:
+  1
+with 2 generators
+  line:228: GENERATE(1, 2, 3)
+  value: 1
+  line:229: GENERATE(1, 2, 3)
+  value: 3
 
 PartTracker.tests.cpp:<line number>: PASSED:
   REQUIRE( n )
 with expansion:
   3
+with 2 generators
+  line:228: GENERATE(1, 2, 3)
+  value: 1
+  line:229: GENERATE(1, 2, 3)
+  value: 3
 
 -------------------------------------------------------------------------------
 #1938 - nested generate
@@ -614,11 +756,21 @@ PartTracker.tests.cpp:<line number>: PASSED:
   REQUIRE( m )
 with expansion:
   2
+with 2 generators
+  line:228: GENERATE(1, 2, 3)
+  value: 2
+  line:229: GENERATE(1, 2, 3)
+  value: 1
 
 PartTracker.tests.cpp:<line number>: PASSED:
   REQUIRE( n )
 with expansion:
   1
+with 2 generators
+  line:228: GENERATE(1, 2, 3)
+  value: 2
+  line:229: GENERATE(1, 2, 3)
+  value: 1
 
 -------------------------------------------------------------------------------
 #1938 - nested generate
@@ -630,11 +782,21 @@ PartTracker.tests.cpp:<line number>: PASSED:
   REQUIRE( m )
 with expansion:
   2
+with 2 generators
+  line:228: GENERATE(1, 2, 3)
+  value: 2
+  line:229: GENERATE(1, 2, 3)
+  value: 2
 
 PartTracker.tests.cpp:<line number>: PASSED:
   REQUIRE( n )
 with expansion:
   2
+with 2 generators
+  line:228: GENERATE(1, 2, 3)
+  value: 2
+  line:229: GENERATE(1, 2, 3)
+  value: 2
 
 -------------------------------------------------------------------------------
 #1938 - nested generate
@@ -646,11 +808,21 @@ PartTracker.tests.cpp:<line number>: PASSED:
   REQUIRE( m )
 with expansion:
   2
+with 2 generators
+  line:228: GENERATE(1, 2, 3)
+  value: 2
+  line:229: GENERATE(1, 2, 3)
+  value: 3
 
 PartTracker.tests.cpp:<line number>: PASSED:
   REQUIRE( n )
 with expansion:
   3
+with 2 generators
+  line:228: GENERATE(1, 2, 3)
+  value: 2
+  line:229: GENERATE(1, 2, 3)
+  value: 3
 
 -------------------------------------------------------------------------------
 #1938 - nested generate
@@ -662,11 +834,21 @@ PartTracker.tests.cpp:<line number>: PASSED:
   REQUIRE( m )
 with expansion:
   3
+with 2 generators
+  line:228: GENERATE(1, 2, 3)
+  value: 3
+  line:229: GENERATE(1, 2, 3)
+  value: 1
 
 PartTracker.tests.cpp:<line number>: PASSED:
   REQUIRE( n )
 with expansion:
   1
+with 2 generators
+  line:228: GENERATE(1, 2, 3)
+  value: 3
+  line:229: GENERATE(1, 2, 3)
+  value: 1
 
 -------------------------------------------------------------------------------
 #1938 - nested generate
@@ -678,11 +860,21 @@ PartTracker.tests.cpp:<line number>: PASSED:
   REQUIRE( m )
 with expansion:
   3
+with 2 generators
+  line:228: GENERATE(1, 2, 3)
+  value: 3
+  line:229: GENERATE(1, 2, 3)
+  value: 2
 
 PartTracker.tests.cpp:<line number>: PASSED:
   REQUIRE( n )
 with expansion:
   2
+with 2 generators
+  line:228: GENERATE(1, 2, 3)
+  value: 3
+  line:229: GENERATE(1, 2, 3)
+  value: 2
 
 -------------------------------------------------------------------------------
 #1938 - nested generate
@@ -694,11 +886,21 @@ PartTracker.tests.cpp:<line number>: PASSED:
   REQUIRE( m )
 with expansion:
   3
+with 2 generators
+  line:228: GENERATE(1, 2, 3)
+  value: 3
+  line:229: GENERATE(1, 2, 3)
+  value: 3
 
 PartTracker.tests.cpp:<line number>: PASSED:
   REQUIRE( n )
 with expansion:
   3
+with 2 generators
+  line:228: GENERATE(1, 2, 3)
+  value: 3
+  line:229: GENERATE(1, 2, 3)
+  value: 3
 
 -------------------------------------------------------------------------------
 #1954 - 7 arg template test case sig compiles - 1, 1, 1, 1, 1, 0, 0
@@ -1091,16 +1293,37 @@ Generators.tests.cpp:<line number>: PASSED:
   CHECK( x < y )
 with expansion:
   1 < 4
+with 3 generators
+  line:35: GENERATE(1, 2, 3)
+  value: 1
+  line:36: GENERATE(4, 5, 6)
+  value: 4
+  line:37: GENERATE(7, 8, 9)
+  value: 7
 
 Generators.tests.cpp:<line number>: PASSED:
   CHECK( y < z )
 with expansion:
   4 < 7
+with 3 generators
+  line:35: GENERATE(1, 2, 3)
+  value: 1
+  line:36: GENERATE(4, 5, 6)
+  value: 4
+  line:37: GENERATE(7, 8, 9)
+  value: 7
 
 Generators.tests.cpp:<line number>: PASSED:
   REQUIRE( x < z )
 with expansion:
   1 < 7
+with 3 generators
+  line:35: GENERATE(1, 2, 3)
+  value: 1
+  line:36: GENERATE(4, 5, 6)
+  value: 4
+  line:37: GENERATE(7, 8, 9)
+  value: 7
 
 -------------------------------------------------------------------------------
 3x3x3 ints
@@ -1112,16 +1335,37 @@ Generators.tests.cpp:<line number>: PASSED:
   CHECK( x < y )
 with expansion:
   1 < 4
+with 3 generators
+  line:35: GENERATE(1, 2, 3)
+  value: 1
+  line:36: GENERATE(4, 5, 6)
+  value: 4
+  line:37: GENERATE(7, 8, 9)
+  value: 8
 
 Generators.tests.cpp:<line number>: PASSED:
   CHECK( y < z )
 with expansion:
   4 < 8
+with 3 generators
+  line:35: GENERATE(1, 2, 3)
+  value: 1
+  line:36: GENERATE(4, 5, 6)
+  value: 4
+  line:37: GENERATE(7, 8, 9)
+  value: 8
 
 Generators.tests.cpp:<line number>: PASSED:
   REQUIRE( x < z )
 with expansion:
   1 < 8
+with 3 generators
+  line:35: GENERATE(1, 2, 3)
+  value: 1
+  line:36: GENERATE(4, 5, 6)
+  value: 4
+  line:37: GENERATE(7, 8, 9)
+  value: 8
 
 -------------------------------------------------------------------------------
 3x3x3 ints
@@ -1133,16 +1377,37 @@ Generators.tests.cpp:<line number>: PASSED:
   CHECK( x < y )
 with expansion:
   1 < 4
+with 3 generators
+  line:35: GENERATE(1, 2, 3)
+  value: 1
+  line:36: GENERATE(4, 5, 6)
+  value: 4
+  line:37: GENERATE(7, 8, 9)
+  value: 9
 
 Generators.tests.cpp:<line number>: PASSED:
   CHECK( y < z )
 with expansion:
   4 < 9
+with 3 generators
+  line:35: GENERATE(1, 2, 3)
+  value: 1
+  line:36: GENERATE(4, 5, 6)
+  value: 4
+  line:37: GENERATE(7, 8, 9)
+  value: 9
 
 Generators.tests.cpp:<line number>: PASSED:
   REQUIRE( x < z )
 with expansion:
   1 < 9
+with 3 generators
+  line:35: GENERATE(1, 2, 3)
+  value: 1
+  line:36: GENERATE(4, 5, 6)
+  value: 4
+  line:37: GENERATE(7, 8, 9)
+  value: 9
 
 -------------------------------------------------------------------------------
 3x3x3 ints
@@ -1154,16 +1419,37 @@ Generators.tests.cpp:<line number>: PASSED:
   CHECK( x < y )
 with expansion:
   1 < 5
+with 3 generators
+  line:35: GENERATE(1, 2, 3)
+  value: 1
+  line:36: GENERATE(4, 5, 6)
+  value: 5
+  line:37: GENERATE(7, 8, 9)
+  value: 7
 
 Generators.tests.cpp:<line number>: PASSED:
   CHECK( y < z )
 with expansion:
   5 < 7
+with 3 generators
+  line:35: GENERATE(1, 2, 3)
+  value: 1
+  line:36: GENERATE(4, 5, 6)
+  value: 5
+  line:37: GENERATE(7, 8, 9)
+  value: 7
 
 Generators.tests.cpp:<line number>: PASSED:
   REQUIRE( x < z )
 with expansion:
   1 < 7
+with 3 generators
+  line:35: GENERATE(1, 2, 3)
+  value: 1
+  line:36: GENERATE(4, 5, 6)
+  value: 5
+  line:37: GENERATE(7, 8, 9)
+  value: 7
 
 -------------------------------------------------------------------------------
 3x3x3 ints
@@ -1175,16 +1461,37 @@ Generators.tests.cpp:<line number>: PASSED:
   CHECK( x < y )
 with expansion:
   1 < 5
+with 3 generators
+  line:35: GENERATE(1, 2, 3)
+  value: 1
+  line:36: GENERATE(4, 5, 6)
+  value: 5
+  line:37: GENERATE(7, 8, 9)
+  value: 8
 
 Generators.tests.cpp:<line number>: PASSED:
   CHECK( y < z )
 with expansion:
   5 < 8
+with 3 generators
+  line:35: GENERATE(1, 2, 3)
+  value: 1
+  line:36: GENERATE(4, 5, 6)
+  value: 5
+  line:37: GENERATE(7, 8, 9)
+  value: 8
 
 Generators.tests.cpp:<line number>: PASSED:
   REQUIRE( x < z )
 with expansion:
   1 < 8
+with 3 generators
+  line:35: GENERATE(1, 2, 3)
+  value: 1
+  line:36: GENERATE(4, 5, 6)
+  value: 5
+  line:37: GENERATE(7, 8, 9)
+  value: 8
 
 -------------------------------------------------------------------------------
 3x3x3 ints
@@ -1196,16 +1503,37 @@ Generators.tests.cpp:<line number>: PASSED:
   CHECK( x < y )
 with expansion:
   1 < 5
+with 3 generators
+  line:35: GENERATE(1, 2, 3)
+  value: 1
+  line:36: GENERATE(4, 5, 6)
+  value: 5
+  line:37: GENERATE(7, 8, 9)
+  value: 9
 
 Generators.tests.cpp:<line number>: PASSED:
   CHECK( y < z )
 with expansion:
   5 < 9
+with 3 generators
+  line:35: GENERATE(1, 2, 3)
+  value: 1
+  line:36: GENERATE(4, 5, 6)
+  value: 5
+  line:37: GENERATE(7, 8, 9)
+  value: 9
 
 Generators.tests.cpp:<line number>: PASSED:
   REQUIRE( x < z )
 with expansion:
   1 < 9
+with 3 generators
+  line:35: GENERATE(1, 2, 3)
+  value: 1
+  line:36: GENERATE(4, 5, 6)
+  value: 5
+  line:37: GENERATE(7, 8, 9)
+  value: 9
 
 -------------------------------------------------------------------------------
 3x3x3 ints
@@ -1217,16 +1545,37 @@ Generators.tests.cpp:<line number>: PASSED:
   CHECK( x < y )
 with expansion:
   1 < 6
+with 3 generators
+  line:35: GENERATE(1, 2, 3)
+  value: 1
+  line:36: GENERATE(4, 5, 6)
+  value: 6
+  line:37: GENERATE(7, 8, 9)
+  value: 7
 
 Generators.tests.cpp:<line number>: PASSED:
   CHECK( y < z )
 with expansion:
   6 < 7
+with 3 generators
+  line:35: GENERATE(1, 2, 3)
+  value: 1
+  line:36: GENERATE(4, 5, 6)
+  value: 6
+  line:37: GENERATE(7, 8, 9)
+  value: 7
 
 Generators.tests.cpp:<line number>: PASSED:
   REQUIRE( x < z )
 with expansion:
   1 < 7
+with 3 generators
+  line:35: GENERATE(1, 2, 3)
+  value: 1
+  line:36: GENERATE(4, 5, 6)
+  value: 6
+  line:37: GENERATE(7, 8, 9)
+  value: 7
 
 -------------------------------------------------------------------------------
 3x3x3 ints
@@ -1238,16 +1587,37 @@ Generators.tests.cpp:<line number>: PASSED:
   CHECK( x < y )
 with expansion:
   1 < 6
+with 3 generators
+  line:35: GENERATE(1, 2, 3)
+  value: 1
+  line:36: GENERATE(4, 5, 6)
+  value: 6
+  line:37: GENERATE(7, 8, 9)
+  value: 8
 
 Generators.tests.cpp:<line number>: PASSED:
   CHECK( y < z )
 with expansion:
   6 < 8
+with 3 generators
+  line:35: GENERATE(1, 2, 3)
+  value: 1
+  line:36: GENERATE(4, 5, 6)
+  value: 6
+  line:37: GENERATE(7, 8, 9)
+  value: 8
 
 Generators.tests.cpp:<line number>: PASSED:
   REQUIRE( x < z )
 with expansion:
   1 < 8
+with 3 generators
+  line:35: GENERATE(1, 2, 3)
+  value: 1
+  line:36: GENERATE(4, 5, 6)
+  value: 6
+  line:37: GENERATE(7, 8, 9)
+  value: 8
 
 -------------------------------------------------------------------------------
 3x3x3 ints
@@ -1259,16 +1629,37 @@ Generators.tests.cpp:<line number>: PASSED:
   CHECK( x < y )
 with expansion:
   1 < 6
+with 3 generators
+  line:35: GENERATE(1, 2, 3)
+  value: 1
+  line:36: GENERATE(4, 5, 6)
+  value: 6
+  line:37: GENERATE(7, 8, 9)
+  value: 9
 
 Generators.tests.cpp:<line number>: PASSED:
   CHECK( y < z )
 with expansion:
   6 < 9
+with 3 generators
+  line:35: GENERATE(1, 2, 3)
+  value: 1
+  line:36: GENERATE(4, 5, 6)
+  value: 6
+  line:37: GENERATE(7, 8, 9)
+  value: 9
 
 Generators.tests.cpp:<line number>: PASSED:
   REQUIRE( x < z )
 with expansion:
   1 < 9
+with 3 generators
+  line:35: GENERATE(1, 2, 3)
+  value: 1
+  line:36: GENERATE(4, 5, 6)
+  value: 6
+  line:37: GENERATE(7, 8, 9)
+  value: 9
 
 -------------------------------------------------------------------------------
 3x3x3 ints
@@ -1280,16 +1671,37 @@ Generators.tests.cpp:<line number>: PASSED:
   CHECK( x < y )
 with expansion:
   2 < 4
+with 3 generators
+  line:35: GENERATE(1, 2, 3)
+  value: 2
+  line:36: GENERATE(4, 5, 6)
+  value: 4
+  line:37: GENERATE(7, 8, 9)
+  value: 7
 
 Generators.tests.cpp:<line number>: PASSED:
   CHECK( y < z )
 with expansion:
   4 < 7
+with 3 generators
+  line:35: GENERATE(1, 2, 3)
+  value: 2
+  line:36: GENERATE(4, 5, 6)
+  value: 4
+  line:37: GENERATE(7, 8, 9)
+  value: 7
 
 Generators.tests.cpp:<line number>: PASSED:
   REQUIRE( x < z )
 with expansion:
   2 < 7
+with 3 generators
+  line:35: GENERATE(1, 2, 3)
+  value: 2
+  line:36: GENERATE(4, 5, 6)
+  value: 4
+  line:37: GENERATE(7, 8, 9)
+  value: 7
 
 -------------------------------------------------------------------------------
 3x3x3 ints
@@ -1301,16 +1713,37 @@ Generators.tests.cpp:<line number>: PASSED:
   CHECK( x < y )
 with expansion:
   2 < 4
+with 3 generators
+  line:35: GENERATE(1, 2, 3)
+  value: 2
+  line:36: GENERATE(4, 5, 6)
+  value: 4
+  line:37: GENERATE(7, 8, 9)
+  value: 8
 
 Generators.tests.cpp:<line number>: PASSED:
   CHECK( y < z )
 with expansion:
   4 < 8
+with 3 generators
+  line:35: GENERATE(1, 2, 3)
+  value: 2
+  line:36: GENERATE(4, 5, 6)
+  value: 4
+  line:37: GENERATE(7, 8, 9)
+  value: 8
 
 Generators.tests.cpp:<line number>: PASSED:
   REQUIRE( x < z )
 with expansion:
   2 < 8
+with 3 generators
+  line:35: GENERATE(1, 2, 3)
+  value: 2
+  line:36: GENERATE(4, 5, 6)
+  value: 4
+  line:37: GENERATE(7, 8, 9)
+  value: 8
 
 -------------------------------------------------------------------------------
 3x3x3 ints
@@ -1322,16 +1755,37 @@ Generators.tests.cpp:<line number>: PASSED:
   CHECK( x < y )
 with expansion:
   2 < 4
+with 3 generators
+  line:35: GENERATE(1, 2, 3)
+  value: 2
+  line:36: GENERATE(4, 5, 6)
+  value: 4
+  line:37: GENERATE(7, 8, 9)
+  value: 9
 
 Generators.tests.cpp:<line number>: PASSED:
   CHECK( y < z )
 with expansion:
   4 < 9
+with 3 generators
+  line:35: GENERATE(1, 2, 3)
+  value: 2
+  line:36: GENERATE(4, 5, 6)
+  value: 4
+  line:37: GENERATE(7, 8, 9)
+  value: 9
 
 Generators.tests.cpp:<line number>: PASSED:
   REQUIRE( x < z )
 with expansion:
   2 < 9
+with 3 generators
+  line:35: GENERATE(1, 2, 3)
+  value: 2
+  line:36: GENERATE(4, 5, 6)
+  value: 4
+  line:37: GENERATE(7, 8, 9)
+  value: 9
 
 -------------------------------------------------------------------------------
 3x3x3 ints
@@ -1343,16 +1797,37 @@ Generators.tests.cpp:<line number>: PASSED:
   CHECK( x < y )
 with expansion:
   2 < 5
+with 3 generators
+  line:35: GENERATE(1, 2, 3)
+  value: 2
+  line:36: GENERATE(4, 5, 6)
+  value: 5
+  line:37: GENERATE(7, 8, 9)
+  value: 7
 
 Generators.tests.cpp:<line number>: PASSED:
   CHECK( y < z )
 with expansion:
   5 < 7
+with 3 generators
+  line:35: GENERATE(1, 2, 3)
+  value: 2
+  line:36: GENERATE(4, 5, 6)
+  value: 5
+  line:37: GENERATE(7, 8, 9)
+  value: 7
 
 Generators.tests.cpp:<line number>: PASSED:
   REQUIRE( x < z )
 with expansion:
   2 < 7
+with 3 generators
+  line:35: GENERATE(1, 2, 3)
+  value: 2
+  line:36: GENERATE(4, 5, 6)
+  value: 5
+  line:37: GENERATE(7, 8, 9)
+  value: 7
 
 -------------------------------------------------------------------------------
 3x3x3 ints
@@ -1364,16 +1839,37 @@ Generators.tests.cpp:<line number>: PASSED:
   CHECK( x < y )
 with expansion:
   2 < 5
+with 3 generators
+  line:35: GENERATE(1, 2, 3)
+  value: 2
+  line:36: GENERATE(4, 5, 6)
+  value: 5
+  line:37: GENERATE(7, 8, 9)
+  value: 8
 
 Generators.tests.cpp:<line number>: PASSED:
   CHECK( y < z )
 with expansion:
   5 < 8
+with 3 generators
+  line:35: GENERATE(1, 2, 3)
+  value: 2
+  line:36: GENERATE(4, 5, 6)
+  value: 5
+  line:37: GENERATE(7, 8, 9)
+  value: 8
 
 Generators.tests.cpp:<line number>: PASSED:
   REQUIRE( x < z )
 with expansion:
   2 < 8
+with 3 generators
+  line:35: GENERATE(1, 2, 3)
+  value: 2
+  line:36: GENERATE(4, 5, 6)
+  value: 5
+  line:37: GENERATE(7, 8, 9)
+  value: 8
 
 -------------------------------------------------------------------------------
 3x3x3 ints
@@ -1385,16 +1881,37 @@ Generators.tests.cpp:<line number>: PASSED:
   CHECK( x < y )
 with expansion:
   2 < 5
+with 3 generators
+  line:35: GENERATE(1, 2, 3)
+  value: 2
+  line:36: GENERATE(4, 5, 6)
+  value: 5
+  line:37: GENERATE(7, 8, 9)
+  value: 9
 
 Generators.tests.cpp:<line number>: PASSED:
   CHECK( y < z )
 with expansion:
   5 < 9
+with 3 generators
+  line:35: GENERATE(1, 2, 3)
+  value: 2
+  line:36: GENERATE(4, 5, 6)
+  value: 5
+  line:37: GENERATE(7, 8, 9)
+  value: 9
 
 Generators.tests.cpp:<line number>: PASSED:
   REQUIRE( x < z )
 with expansion:
   2 < 9
+with 3 generators
+  line:35: GENERATE(1, 2, 3)
+  value: 2
+  line:36: GENERATE(4, 5, 6)
+  value: 5
+  line:37: GENERATE(7, 8, 9)
+  value: 9
 
 -------------------------------------------------------------------------------
 3x3x3 ints
@@ -1406,16 +1923,37 @@ Generators.tests.cpp:<line number>: PASSED:
   CHECK( x < y )
 with expansion:
   2 < 6
+with 3 generators
+  line:35: GENERATE(1, 2, 3)
+  value: 2
+  line:36: GENERATE(4, 5, 6)
+  value: 6
+  line:37: GENERATE(7, 8, 9)
+  value: 7
 
 Generators.tests.cpp:<line number>: PASSED:
   CHECK( y < z )
 with expansion:
   6 < 7
+with 3 generators
+  line:35: GENERATE(1, 2, 3)
+  value: 2
+  line:36: GENERATE(4, 5, 6)
+  value: 6
+  line:37: GENERATE(7, 8, 9)
+  value: 7
 
 Generators.tests.cpp:<line number>: PASSED:
   REQUIRE( x < z )
 with expansion:
   2 < 7
+with 3 generators
+  line:35: GENERATE(1, 2, 3)
+  value: 2
+  line:36: GENERATE(4, 5, 6)
+  value: 6
+  line:37: GENERATE(7, 8, 9)
+  value: 7
 
 -------------------------------------------------------------------------------
 3x3x3 ints
@@ -1427,16 +1965,37 @@ Generators.tests.cpp:<line number>: PASSED:
   CHECK( x < y )
 with expansion:
   2 < 6
+with 3 generators
+  line:35: GENERATE(1, 2, 3)
+  value: 2
+  line:36: GENERATE(4, 5, 6)
+  value: 6
+  line:37: GENERATE(7, 8, 9)
+  value: 8
 
 Generators.tests.cpp:<line number>: PASSED:
   CHECK( y < z )
 with expansion:
   6 < 8
+with 3 generators
+  line:35: GENERATE(1, 2, 3)
+  value: 2
+  line:36: GENERATE(4, 5, 6)
+  value: 6
+  line:37: GENERATE(7, 8, 9)
+  value: 8
 
 Generators.tests.cpp:<line number>: PASSED:
   REQUIRE( x < z )
 with expansion:
   2 < 8
+with 3 generators
+  line:35: GENERATE(1, 2, 3)
+  value: 2
+  line:36: GENERATE(4, 5, 6)
+  value: 6
+  line:37: GENERATE(7, 8, 9)
+  value: 8
 
 -------------------------------------------------------------------------------
 3x3x3 ints
@@ -1448,16 +2007,37 @@ Generators.tests.cpp:<line number>: PASSED:
   CHECK( x < y )
 with expansion:
   2 < 6
+with 3 generators
+  line:35: GENERATE(1, 2, 3)
+  value: 2
+  line:36: GENERATE(4, 5, 6)
+  value: 6
+  line:37: GENERATE(7, 8, 9)
+  value: 9
 
 Generators.tests.cpp:<line number>: PASSED:
   CHECK( y < z )
 with expansion:
   6 < 9
+with 3 generators
+  line:35: GENERATE(1, 2, 3)
+  value: 2
+  line:36: GENERATE(4, 5, 6)
+  value: 6
+  line:37: GENERATE(7, 8, 9)
+  value: 9
 
 Generators.tests.cpp:<line number>: PASSED:
   REQUIRE( x < z )
 with expansion:
   2 < 9
+with 3 generators
+  line:35: GENERATE(1, 2, 3)
+  value: 2
+  line:36: GENERATE(4, 5, 6)
+  value: 6
+  line:37: GENERATE(7, 8, 9)
+  value: 9
 
 -------------------------------------------------------------------------------
 3x3x3 ints
@@ -1469,16 +2049,37 @@ Generators.tests.cpp:<line number>: PASSED:
   CHECK( x < y )
 with expansion:
   3 < 4
+with 3 generators
+  line:35: GENERATE(1, 2, 3)
+  value: 3
+  line:36: GENERATE(4, 5, 6)
+  value: 4
+  line:37: GENERATE(7, 8, 9)
+  value: 7
 
 Generators.tests.cpp:<line number>: PASSED:
   CHECK( y < z )
 with expansion:
   4 < 7
+with 3 generators
+  line:35: GENERATE(1, 2, 3)
+  value: 3
+  line:36: GENERATE(4, 5, 6)
+  value: 4
+  line:37: GENERATE(7, 8, 9)
+  value: 7
 
 Generators.tests.cpp:<line number>: PASSED:
   REQUIRE( x < z )
 with expansion:
   3 < 7
+with 3 generators
+  line:35: GENERATE(1, 2, 3)
+  value: 3
+  line:36: GENERATE(4, 5, 6)
+  value: 4
+  line:37: GENERATE(7, 8, 9)
+  value: 7
 
 -------------------------------------------------------------------------------
 3x3x3 ints
@@ -1490,16 +2091,37 @@ Generators.tests.cpp:<line number>: PASSED:
   CHECK( x < y )
 with expansion:
   3 < 4
+with 3 generators
+  line:35: GENERATE(1, 2, 3)
+  value: 3
+  line:36: GENERATE(4, 5, 6)
+  value: 4
+  line:37: GENERATE(7, 8, 9)
+  value: 8
 
 Generators.tests.cpp:<line number>: PASSED:
   CHECK( y < z )
 with expansion:
   4 < 8
+with 3 generators
+  line:35: GENERATE(1, 2, 3)
+  value: 3
+  line:36: GENERATE(4, 5, 6)
+  value: 4
+  line:37: GENERATE(7, 8, 9)
+  value: 8
 
 Generators.tests.cpp:<line number>: PASSED:
   REQUIRE( x < z )
 with expansion:
   3 < 8
+with 3 generators
+  line:35: GENERATE(1, 2, 3)
+  value: 3
+  line:36: GENERATE(4, 5, 6)
+  value: 4
+  line:37: GENERATE(7, 8, 9)
+  value: 8
 
 -------------------------------------------------------------------------------
 3x3x3 ints
@@ -1511,16 +2133,37 @@ Generators.tests.cpp:<line number>: PASSED:
   CHECK( x < y )
 with expansion:
   3 < 4
+with 3 generators
+  line:35: GENERATE(1, 2, 3)
+  value: 3
+  line:36: GENERATE(4, 5, 6)
+  value: 4
+  line:37: GENERATE(7, 8, 9)
+  value: 9
 
 Generators.tests.cpp:<line number>: PASSED:
   CHECK( y < z )
 with expansion:
   4 < 9
+with 3 generators
+  line:35: GENERATE(1, 2, 3)
+  value: 3
+  line:36: GENERATE(4, 5, 6)
+  value: 4
+  line:37: GENERATE(7, 8, 9)
+  value: 9
 
 Generators.tests.cpp:<line number>: PASSED:
   REQUIRE( x < z )
 with expansion:
   3 < 9
+with 3 generators
+  line:35: GENERATE(1, 2, 3)
+  value: 3
+  line:36: GENERATE(4, 5, 6)
+  value: 4
+  line:37: GENERATE(7, 8, 9)
+  value: 9
 
 -------------------------------------------------------------------------------
 3x3x3 ints
@@ -1532,16 +2175,37 @@ Generators.tests.cpp:<line number>: PASSED:
   CHECK( x < y )
 with expansion:
   3 < 5
+with 3 generators
+  line:35: GENERATE(1, 2, 3)
+  value: 3
+  line:36: GENERATE(4, 5, 6)
+  value: 5
+  line:37: GENERATE(7, 8, 9)
+  value: 7
 
 Generators.tests.cpp:<line number>: PASSED:
   CHECK( y < z )
 with expansion:
   5 < 7
+with 3 generators
+  line:35: GENERATE(1, 2, 3)
+  value: 3
+  line:36: GENERATE(4, 5, 6)
+  value: 5
+  line:37: GENERATE(7, 8, 9)
+  value: 7
 
 Generators.tests.cpp:<line number>: PASSED:
   REQUIRE( x < z )
 with expansion:
   3 < 7
+with 3 generators
+  line:35: GENERATE(1, 2, 3)
+  value: 3
+  line:36: GENERATE(4, 5, 6)
+  value: 5
+  line:37: GENERATE(7, 8, 9)
+  value: 7
 
 -------------------------------------------------------------------------------
 3x3x3 ints
@@ -1553,16 +2217,37 @@ Generators.tests.cpp:<line number>: PASSED:
   CHECK( x < y )
 with expansion:
   3 < 5
+with 3 generators
+  line:35: GENERATE(1, 2, 3)
+  value: 3
+  line:36: GENERATE(4, 5, 6)
+  value: 5
+  line:37: GENERATE(7, 8, 9)
+  value: 8
 
 Generators.tests.cpp:<line number>: PASSED:
   CHECK( y < z )
 with expansion:
   5 < 8
+with 3 generators
+  line:35: GENERATE(1, 2, 3)
+  value: 3
+  line:36: GENERATE(4, 5, 6)
+  value: 5
+  line:37: GENERATE(7, 8, 9)
+  value: 8
 
 Generators.tests.cpp:<line number>: PASSED:
   REQUIRE( x < z )
 with expansion:
   3 < 8
+with 3 generators
+  line:35: GENERATE(1, 2, 3)
+  value: 3
+  line:36: GENERATE(4, 5, 6)
+  value: 5
+  line:37: GENERATE(7, 8, 9)
+  value: 8
 
 -------------------------------------------------------------------------------
 3x3x3 ints
@@ -1574,16 +2259,37 @@ Generators.tests.cpp:<line number>: PASSED:
   CHECK( x < y )
 with expansion:
   3 < 5
+with 3 generators
+  line:35: GENERATE(1, 2, 3)
+  value: 3
+  line:36: GENERATE(4, 5, 6)
+  value: 5
+  line:37: GENERATE(7, 8, 9)
+  value: 9
 
 Generators.tests.cpp:<line number>: PASSED:
   CHECK( y < z )
 with expansion:
   5 < 9
+with 3 generators
+  line:35: GENERATE(1, 2, 3)
+  value: 3
+  line:36: GENERATE(4, 5, 6)
+  value: 5
+  line:37: GENERATE(7, 8, 9)
+  value: 9
 
 Generators.tests.cpp:<line number>: PASSED:
   REQUIRE( x < z )
 with expansion:
   3 < 9
+with 3 generators
+  line:35: GENERATE(1, 2, 3)
+  value: 3
+  line:36: GENERATE(4, 5, 6)
+  value: 5
+  line:37: GENERATE(7, 8, 9)
+  value: 9
 
 -------------------------------------------------------------------------------
 3x3x3 ints
@@ -1595,16 +2301,37 @@ Generators.tests.cpp:<line number>: PASSED:
   CHECK( x < y )
 with expansion:
   3 < 6
+with 3 generators
+  line:35: GENERATE(1, 2, 3)
+  value: 3
+  line:36: GENERATE(4, 5, 6)
+  value: 6
+  line:37: GENERATE(7, 8, 9)
+  value: 7
 
 Generators.tests.cpp:<line number>: PASSED:
   CHECK( y < z )
 with expansion:
   6 < 7
+with 3 generators
+  line:35: GENERATE(1, 2, 3)
+  value: 3
+  line:36: GENERATE(4, 5, 6)
+  value: 6
+  line:37: GENERATE(7, 8, 9)
+  value: 7
 
 Generators.tests.cpp:<line number>: PASSED:
   REQUIRE( x < z )
 with expansion:
   3 < 7
+with 3 generators
+  line:35: GENERATE(1, 2, 3)
+  value: 3
+  line:36: GENERATE(4, 5, 6)
+  value: 6
+  line:37: GENERATE(7, 8, 9)
+  value: 7
 
 -------------------------------------------------------------------------------
 3x3x3 ints
@@ -1616,16 +2343,37 @@ Generators.tests.cpp:<line number>: PASSED:
   CHECK( x < y )
 with expansion:
   3 < 6
+with 3 generators
+  line:35: GENERATE(1, 2, 3)
+  value: 3
+  line:36: GENERATE(4, 5, 6)
+  value: 6
+  line:37: GENERATE(7, 8, 9)
+  value: 8
 
 Generators.tests.cpp:<line number>: PASSED:
   CHECK( y < z )
 with expansion:
   6 < 8
+with 3 generators
+  line:35: GENERATE(1, 2, 3)
+  value: 3
+  line:36: GENERATE(4, 5, 6)
+  value: 6
+  line:37: GENERATE(7, 8, 9)
+  value: 8
 
 Generators.tests.cpp:<line number>: PASSED:
   REQUIRE( x < z )
 with expansion:
   3 < 8
+with 3 generators
+  line:35: GENERATE(1, 2, 3)
+  value: 3
+  line:36: GENERATE(4, 5, 6)
+  value: 6
+  line:37: GENERATE(7, 8, 9)
+  value: 8
 
 -------------------------------------------------------------------------------
 3x3x3 ints
@@ -1637,16 +2385,37 @@ Generators.tests.cpp:<line number>: PASSED:
   CHECK( x < y )
 with expansion:
   3 < 6
+with 3 generators
+  line:35: GENERATE(1, 2, 3)
+  value: 3
+  line:36: GENERATE(4, 5, 6)
+  value: 6
+  line:37: GENERATE(7, 8, 9)
+  value: 9
 
 Generators.tests.cpp:<line number>: PASSED:
   CHECK( y < z )
 with expansion:
   6 < 9
+with 3 generators
+  line:35: GENERATE(1, 2, 3)
+  value: 3
+  line:36: GENERATE(4, 5, 6)
+  value: 6
+  line:37: GENERATE(7, 8, 9)
+  value: 9
 
 Generators.tests.cpp:<line number>: PASSED:
   REQUIRE( x < z )
 with expansion:
   3 < 9
+with 3 generators
+  line:35: GENERATE(1, 2, 3)
+  value: 3
+  line:36: GENERATE(4, 5, 6)
+  value: 6
+  line:37: GENERATE(7, 8, 9)
+  value: 9
 
 -------------------------------------------------------------------------------
 A METHOD_AS_TEST_CASE based test run that fails
@@ -3712,6 +4481,9 @@ Generators.tests.cpp:<line number>: PASSED:
   REQUIRE( elem % 2 == 1 )
 with expansion:
   1 == 1
+with 1 generator
+  line:250: GENERATE(from_range(data.begin(), data.end()))
+  value: 1
 
 -------------------------------------------------------------------------------
 Copy and then generate a range
@@ -3724,6 +4496,9 @@ Generators.tests.cpp:<line number>: PASSED:
   REQUIRE( elem % 2 == 1 )
 with expansion:
   1 == 1
+with 1 generator
+  line:250: GENERATE(from_range(data.begin(), data.end()))
+  value: 3
 
 -------------------------------------------------------------------------------
 Copy and then generate a range
@@ -3736,6 +4511,9 @@ Generators.tests.cpp:<line number>: PASSED:
   REQUIRE( elem % 2 == 1 )
 with expansion:
   1 == 1
+with 1 generator
+  line:250: GENERATE(from_range(data.begin(), data.end()))
+  value: 5
 
 -------------------------------------------------------------------------------
 Copy and then generate a range
@@ -3748,6 +4526,9 @@ Generators.tests.cpp:<line number>: PASSED:
   REQUIRE( elem % 2 == 1 )
 with expansion:
   1 == 1
+with 1 generator
+  line:250: GENERATE(from_range(data.begin(), data.end()))
+  value: 7
 
 -------------------------------------------------------------------------------
 Copy and then generate a range
@@ -3760,6 +4541,9 @@ Generators.tests.cpp:<line number>: PASSED:
   REQUIRE( elem % 2 == 1 )
 with expansion:
   1 == 1
+with 1 generator
+  line:250: GENERATE(from_range(data.begin(), data.end()))
+  value: 9
 
 -------------------------------------------------------------------------------
 Copy and then generate a range
@@ -3772,6 +4556,9 @@ Generators.tests.cpp:<line number>: PASSED:
   REQUIRE( elem % 2 == 1 )
 with expansion:
   1 == 1
+with 1 generator
+  line:250: GENERATE(from_range(data.begin(), data.end()))
+  value: 11
 
 -------------------------------------------------------------------------------
 Copy and then generate a range
@@ -3784,6 +4571,9 @@ Generators.tests.cpp:<line number>: PASSED:
   REQUIRE( elem % 2 == 1 )
 with expansion:
   1 == 1
+with 1 generator
+  line:254: GENERATE(from_range(make_data_counted()))
+  value: 1
 
 -------------------------------------------------------------------------------
 Copy and then generate a range
@@ -3796,6 +4586,9 @@ Generators.tests.cpp:<line number>: PASSED:
   REQUIRE( elem % 2 == 1 )
 with expansion:
   1 == 1
+with 1 generator
+  line:254: GENERATE(from_range(make_data_counted()))
+  value: 3
 
 -------------------------------------------------------------------------------
 Copy and then generate a range
@@ -3808,6 +4601,9 @@ Generators.tests.cpp:<line number>: PASSED:
   REQUIRE( elem % 2 == 1 )
 with expansion:
   1 == 1
+with 1 generator
+  line:254: GENERATE(from_range(make_data_counted()))
+  value: 5
 
 -------------------------------------------------------------------------------
 Copy and then generate a range
@@ -3820,6 +4616,9 @@ Generators.tests.cpp:<line number>: PASSED:
   REQUIRE( elem % 2 == 1 )
 with expansion:
   1 == 1
+with 1 generator
+  line:254: GENERATE(from_range(make_data_counted()))
+  value: 7
 
 -------------------------------------------------------------------------------
 Copy and then generate a range
@@ -3832,6 +4631,9 @@ Generators.tests.cpp:<line number>: PASSED:
   REQUIRE( elem % 2 == 1 )
 with expansion:
   1 == 1
+with 1 generator
+  line:254: GENERATE(from_range(make_data_counted()))
+  value: 9
 
 -------------------------------------------------------------------------------
 Copy and then generate a range
@@ -3844,6 +4646,9 @@ Generators.tests.cpp:<line number>: PASSED:
   REQUIRE( elem % 2 == 1 )
 with expansion:
   1 == 1
+with 1 generator
+  line:254: GENERATE(from_range(make_data_counted()))
+  value: 11
 
 -------------------------------------------------------------------------------
 Copy and then generate a range
@@ -4829,6 +5634,9 @@ Generators.tests.cpp:<line number>: PASSED:
   REQUIRE( i % 2 == 0 )
 with expansion:
   0 == 0
+with 1 generator
+  line:133: GENERATE(filter([] (int val) { return val % 2 == 0; }, values({ 1, 2, 3, 4, 5, 6 })))
+  value: 2
 
 -------------------------------------------------------------------------------
 Generators -- adapters
@@ -4842,6 +5650,9 @@ Generators.tests.cpp:<line number>: PASSED:
   REQUIRE( i % 2 == 0 )
 with expansion:
   0 == 0
+with 1 generator
+  line:133: GENERATE(filter([] (int val) { return val % 2 == 0; }, values({ 1, 2, 3, 4, 5, 6 })))
+  value: 4
 
 -------------------------------------------------------------------------------
 Generators -- adapters
@@ -4855,6 +5666,9 @@ Generators.tests.cpp:<line number>: PASSED:
   REQUIRE( i % 2 == 0 )
 with expansion:
   0 == 0
+with 1 generator
+  line:133: GENERATE(filter([] (int val) { return val % 2 == 0; }, values({ 1, 2, 3, 4, 5, 6 })))
+  value: 6
 
 -------------------------------------------------------------------------------
 Generators -- adapters
@@ -4878,6 +5692,9 @@ Generators.tests.cpp:<line number>: PASSED:
   REQUIRE( i < 4 )
 with expansion:
   1 < 4
+with 1 generator
+  line:143: GENERATE(take(3, values({ 1, 2, 3, 4, 5, 6 })))
+  value: 1
 
 -------------------------------------------------------------------------------
 Generators -- adapters
@@ -4890,6 +5707,9 @@ Generators.tests.cpp:<line number>: PASSED:
   REQUIRE( i < 4 )
 with expansion:
   2 < 4
+with 1 generator
+  line:143: GENERATE(take(3, values({ 1, 2, 3, 4, 5, 6 })))
+  value: 2
 
 -------------------------------------------------------------------------------
 Generators -- adapters
@@ -4902,6 +5722,9 @@ Generators.tests.cpp:<line number>: PASSED:
   REQUIRE( i < 4 )
 with expansion:
   3 < 4
+with 1 generator
+  line:143: GENERATE(take(3, values({ 1, 2, 3, 4, 5, 6 })))
+  value: 3
 
 -------------------------------------------------------------------------------
 Generators -- adapters
@@ -4915,6 +5738,9 @@ Generators.tests.cpp:<line number>: PASSED:
   REQUIRE( i % 2 == 0 )
 with expansion:
   0 == 0
+with 1 generator
+  line:149: GENERATE(map([] (int val) { return val * 2; }, values({ 1, 2, 3 })))
+  value: 2
 
 -------------------------------------------------------------------------------
 Generators -- adapters
@@ -4928,6 +5754,9 @@ Generators.tests.cpp:<line number>: PASSED:
   REQUIRE( i % 2 == 0 )
 with expansion:
   0 == 0
+with 1 generator
+  line:149: GENERATE(map([] (int val) { return val * 2; }, values({ 1, 2, 3 })))
+  value: 4
 
 -------------------------------------------------------------------------------
 Generators -- adapters
@@ -4941,6 +5770,9 @@ Generators.tests.cpp:<line number>: PASSED:
   REQUIRE( i % 2 == 0 )
 with expansion:
   0 == 0
+with 1 generator
+  line:149: GENERATE(map([] (int val) { return val * 2; }, values({ 1, 2, 3 })))
+  value: 6
 
 -------------------------------------------------------------------------------
 Generators -- adapters
@@ -4954,6 +5786,9 @@ Generators.tests.cpp:<line number>: PASSED:
   REQUIRE( i.size() == 1 )
 with expansion:
   1 == 1
+with 1 generator
+  line:154: GENERATE(map<std::string>([] (int val) { return std::to_string(val); }, values({ 1, 2, 3 })))
+  value: "1"
 
 -------------------------------------------------------------------------------
 Generators -- adapters
@@ -4967,6 +5802,9 @@ Generators.tests.cpp:<line number>: PASSED:
   REQUIRE( i.size() == 1 )
 with expansion:
   1 == 1
+with 1 generator
+  line:154: GENERATE(map<std::string>([] (int val) { return std::to_string(val); }, values({ 1, 2, 3 })))
+  value: "2"
 
 -------------------------------------------------------------------------------
 Generators -- adapters
@@ -4980,6 +5818,9 @@ Generators.tests.cpp:<line number>: PASSED:
   REQUIRE( i.size() == 1 )
 with expansion:
   1 == 1
+with 1 generator
+  line:154: GENERATE(map<std::string>([] (int val) { return std::to_string(val); }, values({ 1, 2, 3 })))
+  value: "3"
 
 -------------------------------------------------------------------------------
 Generators -- adapters
@@ -4993,6 +5834,9 @@ Generators.tests.cpp:<line number>: PASSED:
   REQUIRE( i.size() == 1 )
 with expansion:
   1 == 1
+with 1 generator
+  line:159: GENERATE(map([] (int val) { return std::to_string(val); }, values({ 1, 2, 3 })))
+  value: "1"
 
 -------------------------------------------------------------------------------
 Generators -- adapters
@@ -5006,6 +5850,9 @@ Generators.tests.cpp:<line number>: PASSED:
   REQUIRE( i.size() == 1 )
 with expansion:
   1 == 1
+with 1 generator
+  line:159: GENERATE(map([] (int val) { return std::to_string(val); }, values({ 1, 2, 3 })))
+  value: "2"
 
 -------------------------------------------------------------------------------
 Generators -- adapters
@@ -5019,6 +5866,9 @@ Generators.tests.cpp:<line number>: PASSED:
   REQUIRE( i.size() == 1 )
 with expansion:
   1 == 1
+with 1 generator
+  line:159: GENERATE(map([] (int val) { return std::to_string(val); }, values({ 1, 2, 3 })))
+  value: "3"
 
 -------------------------------------------------------------------------------
 Generators -- adapters
@@ -5031,6 +5881,9 @@ Generators.tests.cpp:<line number>: PASSED:
   REQUIRE( j > 0 )
 with expansion:
   1 > 0
+with 1 generator
+  line:165: GENERATE(repeat(2, values({ 1, 2, 3 })))
+  value: 1
 
 -------------------------------------------------------------------------------
 Generators -- adapters
@@ -5043,6 +5896,9 @@ Generators.tests.cpp:<line number>: PASSED:
   REQUIRE( j > 0 )
 with expansion:
   2 > 0
+with 1 generator
+  line:165: GENERATE(repeat(2, values({ 1, 2, 3 })))
+  value: 2
 
 -------------------------------------------------------------------------------
 Generators -- adapters
@@ -5055,6 +5911,9 @@ Generators.tests.cpp:<line number>: PASSED:
   REQUIRE( j > 0 )
 with expansion:
   3 > 0
+with 1 generator
+  line:165: GENERATE(repeat(2, values({ 1, 2, 3 })))
+  value: 3
 
 -------------------------------------------------------------------------------
 Generators -- adapters
@@ -5067,6 +5926,24 @@ Generators.tests.cpp:<line number>: PASSED:
   REQUIRE( j > 0 )
 with expansion:
   1 > 0
+with 1 generator
+  line:165: GENERATE(repeat(2, values({ 1, 2, 3 })))
+  value: 1
+
+-------------------------------------------------------------------------------
+Generators -- adapters
+  Repeating a generator
+-------------------------------------------------------------------------------
+Generators.tests.cpp:<line number>
+...............................................................................
+
+Generators.tests.cpp:<line number>: PASSED:
+  REQUIRE( j > 0 )
+with expansion:
+  1 > 0
+with 1 generator
+  line:165: GENERATE(repeat(2, values({ 1, 2, 3 })))
+  value: 1
 
 -------------------------------------------------------------------------------
 Generators -- adapters
@@ -5079,6 +5956,24 @@ Generators.tests.cpp:<line number>: PASSED:
   REQUIRE( j > 0 )
 with expansion:
   2 > 0
+with 1 generator
+  line:165: GENERATE(repeat(2, values({ 1, 2, 3 })))
+  value: 2
+
+-------------------------------------------------------------------------------
+Generators -- adapters
+  Repeating a generator
+-------------------------------------------------------------------------------
+Generators.tests.cpp:<line number>
+...............................................................................
+
+Generators.tests.cpp:<line number>: PASSED:
+  REQUIRE( j > 0 )
+with expansion:
+  2 > 0
+with 1 generator
+  line:165: GENERATE(repeat(2, values({ 1, 2, 3 })))
+  value: 2
 
 -------------------------------------------------------------------------------
 Generators -- adapters
@@ -5091,6 +5986,24 @@ Generators.tests.cpp:<line number>: PASSED:
   REQUIRE( j > 0 )
 with expansion:
   3 > 0
+with 1 generator
+  line:165: GENERATE(repeat(2, values({ 1, 2, 3 })))
+  value: 3
+
+-------------------------------------------------------------------------------
+Generators -- adapters
+  Repeating a generator
+-------------------------------------------------------------------------------
+Generators.tests.cpp:<line number>
+...............................................................................
+
+Generators.tests.cpp:<line number>: PASSED:
+  REQUIRE( j > 0 )
+with expansion:
+  3 > 0
+with 1 generator
+  line:165: GENERATE(repeat(2, values({ 1, 2, 3 })))
+  value: 3
 
 -------------------------------------------------------------------------------
 Generators -- adapters
@@ -5104,11 +6017,17 @@ Generators.tests.cpp:<line number>: PASSED:
   REQUIRE( chunk2.size() == 2 )
 with expansion:
   2 == 2
+with 1 generator
+  line:170: GENERATE(chunk(2, values({ 1, 1, 2, 2, 3, 3 })))
+  value: { 1, 1 }
 
 Generators.tests.cpp:<line number>: PASSED:
   REQUIRE( chunk2.front() == chunk2.back() )
 with expansion:
   1 == 1
+with 1 generator
+  line:170: GENERATE(chunk(2, values({ 1, 1, 2, 2, 3, 3 })))
+  value: { 1, 1 }
 
 -------------------------------------------------------------------------------
 Generators -- adapters
@@ -5122,11 +6041,17 @@ Generators.tests.cpp:<line number>: PASSED:
   REQUIRE( chunk2.size() == 2 )
 with expansion:
   2 == 2
+with 1 generator
+  line:170: GENERATE(chunk(2, values({ 1, 1, 2, 2, 3, 3 })))
+  value: { 2, 2 }
 
 Generators.tests.cpp:<line number>: PASSED:
   REQUIRE( chunk2.front() == chunk2.back() )
 with expansion:
   2 == 2
+with 1 generator
+  line:170: GENERATE(chunk(2, values({ 1, 1, 2, 2, 3, 3 })))
+  value: { 2, 2 }
 
 -------------------------------------------------------------------------------
 Generators -- adapters
@@ -5140,11 +6065,17 @@ Generators.tests.cpp:<line number>: PASSED:
   REQUIRE( chunk2.size() == 2 )
 with expansion:
   2 == 2
+with 1 generator
+  line:170: GENERATE(chunk(2, values({ 1, 1, 2, 2, 3, 3 })))
+  value: { 3, 3 }
 
 Generators.tests.cpp:<line number>: PASSED:
   REQUIRE( chunk2.front() == chunk2.back() )
 with expansion:
   3 == 3
+with 1 generator
+  line:170: GENERATE(chunk(2, values({ 1, 1, 2, 2, 3, 3 })))
+  value: { 3, 3 }
 
 -------------------------------------------------------------------------------
 Generators -- adapters
@@ -5158,16 +6089,25 @@ Generators.tests.cpp:<line number>: PASSED:
   REQUIRE( chunk2.size() == 2 )
 with expansion:
   2 == 2
+with 1 generator
+  line:175: GENERATE(chunk(2, values({ 1, 1, 2, 2, 3 })))
+  value: { 1, 1 }
 
 Generators.tests.cpp:<line number>: PASSED:
   REQUIRE( chunk2.front() == chunk2.back() )
 with expansion:
   1 == 1
+with 1 generator
+  line:175: GENERATE(chunk(2, values({ 1, 1, 2, 2, 3 })))
+  value: { 1, 1 }
 
 Generators.tests.cpp:<line number>: PASSED:
   REQUIRE( chunk2.front() < 3 )
 with expansion:
   1 < 3
+with 1 generator
+  line:175: GENERATE(chunk(2, values({ 1, 1, 2, 2, 3 })))
+  value: { 1, 1 }
 
 -------------------------------------------------------------------------------
 Generators -- adapters
@@ -5181,16 +6121,25 @@ Generators.tests.cpp:<line number>: PASSED:
   REQUIRE( chunk2.size() == 2 )
 with expansion:
   2 == 2
+with 1 generator
+  line:175: GENERATE(chunk(2, values({ 1, 1, 2, 2, 3 })))
+  value: { 2, 2 }
 
 Generators.tests.cpp:<line number>: PASSED:
   REQUIRE( chunk2.front() == chunk2.back() )
 with expansion:
   2 == 2
+with 1 generator
+  line:175: GENERATE(chunk(2, values({ 1, 1, 2, 2, 3 })))
+  value: { 2, 2 }
 
 Generators.tests.cpp:<line number>: PASSED:
   REQUIRE( chunk2.front() < 3 )
 with expansion:
   2 < 3
+with 1 generator
+  line:175: GENERATE(chunk(2, values({ 1, 1, 2, 2, 3 })))
+  value: { 2, 2 }
 
 -------------------------------------------------------------------------------
 Generators -- adapters
@@ -5204,6 +6153,9 @@ Generators.tests.cpp:<line number>: PASSED:
   REQUIRE( chunk2.size() == 0 )
 with expansion:
   0 == 0
+with 1 generator
+  line:181: GENERATE(take(3, chunk(0, value(1))))
+  value: {  }
 
 -------------------------------------------------------------------------------
 Generators -- adapters
@@ -5217,6 +6169,9 @@ Generators.tests.cpp:<line number>: PASSED:
   REQUIRE( chunk2.size() == 0 )
 with expansion:
   0 == 0
+with 1 generator
+  line:181: GENERATE(take(3, chunk(0, value(1))))
+  value: {  }
 
 -------------------------------------------------------------------------------
 Generators -- adapters
@@ -5230,6 +6185,9 @@ Generators.tests.cpp:<line number>: PASSED:
   REQUIRE( chunk2.size() == 0 )
 with expansion:
   0 == 0
+with 1 generator
+  line:181: GENERATE(take(3, chunk(0, value(1))))
+  value: {  }
 
 -------------------------------------------------------------------------------
 Generators -- adapters
@@ -5253,6 +6211,11 @@ Generators.tests.cpp:<line number>: PASSED:
   REQUIRE( j < i )
 with expansion:
   -3 < 1
+with 2 generators
+  line:20: GENERATE(1, 2, 3)
+  value: 1
+  line:22: GENERATE(values({ -3, -2, -1 }))
+  value: -3
 
 -------------------------------------------------------------------------------
 Generators -- simple
@@ -5265,6 +6228,11 @@ Generators.tests.cpp:<line number>: PASSED:
   REQUIRE( j < i )
 with expansion:
   -2 < 1
+with 2 generators
+  line:20: GENERATE(1, 2, 3)
+  value: 1
+  line:22: GENERATE(values({ -3, -2, -1 }))
+  value: -2
 
 -------------------------------------------------------------------------------
 Generators -- simple
@@ -5277,6 +6245,11 @@ Generators.tests.cpp:<line number>: PASSED:
   REQUIRE( j < i )
 with expansion:
   -1 < 1
+with 2 generators
+  line:20: GENERATE(1, 2, 3)
+  value: 1
+  line:22: GENERATE(values({ -3, -2, -1 }))
+  value: -1
 
 -------------------------------------------------------------------------------
 Generators -- simple
@@ -5289,6 +6262,11 @@ Generators.tests.cpp:<line number>: PASSED:
   REQUIRE( 4u * i > str.size() )
 with expansion:
   4 > 1
+with 2 generators
+  line:20: GENERATE(1, 2, 3)
+  value: 1
+  line:28: GENERATE(as<std::string>{}, "a", "bb", "ccc")
+  value: "a"
 
 -------------------------------------------------------------------------------
 Generators -- simple
@@ -5301,6 +6279,11 @@ Generators.tests.cpp:<line number>: PASSED:
   REQUIRE( 4u * i > str.size() )
 with expansion:
   4 > 2
+with 2 generators
+  line:20: GENERATE(1, 2, 3)
+  value: 1
+  line:28: GENERATE(as<std::string>{}, "a", "bb", "ccc")
+  value: "bb"
 
 -------------------------------------------------------------------------------
 Generators -- simple
@@ -5313,6 +6296,11 @@ Generators.tests.cpp:<line number>: PASSED:
   REQUIRE( 4u * i > str.size() )
 with expansion:
   4 > 3
+with 2 generators
+  line:20: GENERATE(1, 2, 3)
+  value: 1
+  line:28: GENERATE(as<std::string>{}, "a", "bb", "ccc")
+  value: "ccc"
 
 -------------------------------------------------------------------------------
 Generators -- simple
@@ -5325,6 +6313,11 @@ Generators.tests.cpp:<line number>: PASSED:
   REQUIRE( j < i )
 with expansion:
   -3 < 2
+with 2 generators
+  line:20: GENERATE(1, 2, 3)
+  value: 2
+  line:22: GENERATE(values({ -3, -2, -1 }))
+  value: -3
 
 -------------------------------------------------------------------------------
 Generators -- simple
@@ -5337,6 +6330,11 @@ Generators.tests.cpp:<line number>: PASSED:
   REQUIRE( j < i )
 with expansion:
   -2 < 2
+with 2 generators
+  line:20: GENERATE(1, 2, 3)
+  value: 2
+  line:22: GENERATE(values({ -3, -2, -1 }))
+  value: -2
 
 -------------------------------------------------------------------------------
 Generators -- simple
@@ -5349,6 +6347,11 @@ Generators.tests.cpp:<line number>: PASSED:
   REQUIRE( j < i )
 with expansion:
   -1 < 2
+with 2 generators
+  line:20: GENERATE(1, 2, 3)
+  value: 2
+  line:22: GENERATE(values({ -3, -2, -1 }))
+  value: -1
 
 -------------------------------------------------------------------------------
 Generators -- simple
@@ -5361,6 +6364,11 @@ Generators.tests.cpp:<line number>: PASSED:
   REQUIRE( 4u * i > str.size() )
 with expansion:
   8 > 1
+with 2 generators
+  line:20: GENERATE(1, 2, 3)
+  value: 2
+  line:28: GENERATE(as<std::string>{}, "a", "bb", "ccc")
+  value: "a"
 
 -------------------------------------------------------------------------------
 Generators -- simple
@@ -5373,6 +6381,11 @@ Generators.tests.cpp:<line number>: PASSED:
   REQUIRE( 4u * i > str.size() )
 with expansion:
   8 > 2
+with 2 generators
+  line:20: GENERATE(1, 2, 3)
+  value: 2
+  line:28: GENERATE(as<std::string>{}, "a", "bb", "ccc")
+  value: "bb"
 
 -------------------------------------------------------------------------------
 Generators -- simple
@@ -5385,6 +6398,11 @@ Generators.tests.cpp:<line number>: PASSED:
   REQUIRE( 4u * i > str.size() )
 with expansion:
   8 > 3
+with 2 generators
+  line:20: GENERATE(1, 2, 3)
+  value: 2
+  line:28: GENERATE(as<std::string>{}, "a", "bb", "ccc")
+  value: "ccc"
 
 -------------------------------------------------------------------------------
 Generators -- simple
@@ -5397,6 +6415,11 @@ Generators.tests.cpp:<line number>: PASSED:
   REQUIRE( j < i )
 with expansion:
   -3 < 3
+with 2 generators
+  line:20: GENERATE(1, 2, 3)
+  value: 3
+  line:22: GENERATE(values({ -3, -2, -1 }))
+  value: -3
 
 -------------------------------------------------------------------------------
 Generators -- simple
@@ -5409,6 +6432,11 @@ Generators.tests.cpp:<line number>: PASSED:
   REQUIRE( j < i )
 with expansion:
   -2 < 3
+with 2 generators
+  line:20: GENERATE(1, 2, 3)
+  value: 3
+  line:22: GENERATE(values({ -3, -2, -1 }))
+  value: -2
 
 -------------------------------------------------------------------------------
 Generators -- simple
@@ -5421,6 +6449,11 @@ Generators.tests.cpp:<line number>: PASSED:
   REQUIRE( j < i )
 with expansion:
   -1 < 3
+with 2 generators
+  line:20: GENERATE(1, 2, 3)
+  value: 3
+  line:22: GENERATE(values({ -3, -2, -1 }))
+  value: -1
 
 -------------------------------------------------------------------------------
 Generators -- simple
@@ -5433,6 +6466,11 @@ Generators.tests.cpp:<line number>: PASSED:
   REQUIRE( 4u * i > str.size() )
 with expansion:
   12 > 1
+with 2 generators
+  line:20: GENERATE(1, 2, 3)
+  value: 3
+  line:28: GENERATE(as<std::string>{}, "a", "bb", "ccc")
+  value: "a"
 
 -------------------------------------------------------------------------------
 Generators -- simple
@@ -5445,6 +6483,11 @@ Generators.tests.cpp:<line number>: PASSED:
   REQUIRE( 4u * i > str.size() )
 with expansion:
   12 > 2
+with 2 generators
+  line:20: GENERATE(1, 2, 3)
+  value: 3
+  line:28: GENERATE(as<std::string>{}, "a", "bb", "ccc")
+  value: "bb"
 
 -------------------------------------------------------------------------------
 Generators -- simple
@@ -5457,6 +6500,11 @@ Generators.tests.cpp:<line number>: PASSED:
   REQUIRE( 4u * i > str.size() )
 with expansion:
   12 > 3
+with 2 generators
+  line:20: GENERATE(1, 2, 3)
+  value: 3
+  line:28: GENERATE(as<std::string>{}, "a", "bb", "ccc")
+  value: "ccc"
 
 -------------------------------------------------------------------------------
 Generators internals
@@ -7471,6 +8519,11 @@ Generators.tests.cpp:<line number>: PASSED:
   REQUIRE( values > -6 )
 with expansion:
   3 > -6
+with 2 generators
+  line:217: GENERATE(table<int, int>({ record{3, 7}, record{-5, -3}, record{90, 100} }))
+  value: {?}
+  line:222: GENERATE(range(from, to))
+  value: 3
 
 -------------------------------------------------------------------------------
 Nested generators and captured variables
@@ -7482,6 +8535,11 @@ Generators.tests.cpp:<line number>: PASSED:
   REQUIRE( values > -6 )
 with expansion:
   4 > -6
+with 2 generators
+  line:217: GENERATE(table<int, int>({ record{3, 7}, record{-5, -3}, record{90, 100} }))
+  value: {?}
+  line:222: GENERATE(range(from, to))
+  value: 4
 
 -------------------------------------------------------------------------------
 Nested generators and captured variables
@@ -7493,6 +8551,11 @@ Generators.tests.cpp:<line number>: PASSED:
   REQUIRE( values > -6 )
 with expansion:
   5 > -6
+with 2 generators
+  line:217: GENERATE(table<int, int>({ record{3, 7}, record{-5, -3}, record{90, 100} }))
+  value: {?}
+  line:222: GENERATE(range(from, to))
+  value: 5
 
 -------------------------------------------------------------------------------
 Nested generators and captured variables
@@ -7504,6 +8567,11 @@ Generators.tests.cpp:<line number>: PASSED:
   REQUIRE( values > -6 )
 with expansion:
   6 > -6
+with 2 generators
+  line:217: GENERATE(table<int, int>({ record{3, 7}, record{-5, -3}, record{90, 100} }))
+  value: {?}
+  line:222: GENERATE(range(from, to))
+  value: 6
 
 -------------------------------------------------------------------------------
 Nested generators and captured variables
@@ -7515,6 +8583,11 @@ Generators.tests.cpp:<line number>: PASSED:
   REQUIRE( values > -6 )
 with expansion:
   -5 > -6
+with 2 generators
+  line:217: GENERATE(table<int, int>({ record{3, 7}, record{-5, -3}, record{90, 100} }))
+  value: {?}
+  line:222: GENERATE(range(from, to))
+  value: -5
 
 -------------------------------------------------------------------------------
 Nested generators and captured variables
@@ -7526,6 +8599,11 @@ Generators.tests.cpp:<line number>: PASSED:
   REQUIRE( values > -6 )
 with expansion:
   -4 > -6
+with 2 generators
+  line:217: GENERATE(table<int, int>({ record{3, 7}, record{-5, -3}, record{90, 100} }))
+  value: {?}
+  line:222: GENERATE(range(from, to))
+  value: -4
 
 -------------------------------------------------------------------------------
 Nested generators and captured variables
@@ -7537,6 +8615,11 @@ Generators.tests.cpp:<line number>: PASSED:
   REQUIRE( values > -6 )
 with expansion:
   90 > -6
+with 2 generators
+  line:217: GENERATE(table<int, int>({ record{3, 7}, record{-5, -3}, record{90, 100} }))
+  value: {?}
+  line:222: GENERATE(range(from, to))
+  value: 90
 
 -------------------------------------------------------------------------------
 Nested generators and captured variables
@@ -7548,6 +8631,11 @@ Generators.tests.cpp:<line number>: PASSED:
   REQUIRE( values > -6 )
 with expansion:
   91 > -6
+with 2 generators
+  line:217: GENERATE(table<int, int>({ record{3, 7}, record{-5, -3}, record{90, 100} }))
+  value: {?}
+  line:222: GENERATE(range(from, to))
+  value: 91
 
 -------------------------------------------------------------------------------
 Nested generators and captured variables
@@ -7559,6 +8647,11 @@ Generators.tests.cpp:<line number>: PASSED:
   REQUIRE( values > -6 )
 with expansion:
   92 > -6
+with 2 generators
+  line:217: GENERATE(table<int, int>({ record{3, 7}, record{-5, -3}, record{90, 100} }))
+  value: {?}
+  line:222: GENERATE(range(from, to))
+  value: 92
 
 -------------------------------------------------------------------------------
 Nested generators and captured variables
@@ -7570,6 +8663,11 @@ Generators.tests.cpp:<line number>: PASSED:
   REQUIRE( values > -6 )
 with expansion:
   93 > -6
+with 2 generators
+  line:217: GENERATE(table<int, int>({ record{3, 7}, record{-5, -3}, record{90, 100} }))
+  value: {?}
+  line:222: GENERATE(range(from, to))
+  value: 93
 
 -------------------------------------------------------------------------------
 Nested generators and captured variables
@@ -7581,6 +8679,11 @@ Generators.tests.cpp:<line number>: PASSED:
   REQUIRE( values > -6 )
 with expansion:
   94 > -6
+with 2 generators
+  line:217: GENERATE(table<int, int>({ record{3, 7}, record{-5, -3}, record{90, 100} }))
+  value: {?}
+  line:222: GENERATE(range(from, to))
+  value: 94
 
 -------------------------------------------------------------------------------
 Nested generators and captured variables
@@ -7592,6 +8695,11 @@ Generators.tests.cpp:<line number>: PASSED:
   REQUIRE( values > -6 )
 with expansion:
   95 > -6
+with 2 generators
+  line:217: GENERATE(table<int, int>({ record{3, 7}, record{-5, -3}, record{90, 100} }))
+  value: {?}
+  line:222: GENERATE(range(from, to))
+  value: 95
 
 -------------------------------------------------------------------------------
 Nested generators and captured variables
@@ -7603,6 +8711,11 @@ Generators.tests.cpp:<line number>: PASSED:
   REQUIRE( values > -6 )
 with expansion:
   96 > -6
+with 2 generators
+  line:217: GENERATE(table<int, int>({ record{3, 7}, record{-5, -3}, record{90, 100} }))
+  value: {?}
+  line:222: GENERATE(range(from, to))
+  value: 96
 
 -------------------------------------------------------------------------------
 Nested generators and captured variables
@@ -7614,6 +8727,11 @@ Generators.tests.cpp:<line number>: PASSED:
   REQUIRE( values > -6 )
 with expansion:
   97 > -6
+with 2 generators
+  line:217: GENERATE(table<int, int>({ record{3, 7}, record{-5, -3}, record{90, 100} }))
+  value: {?}
+  line:222: GENERATE(range(from, to))
+  value: 97
 
 -------------------------------------------------------------------------------
 Nested generators and captured variables
@@ -7625,6 +8743,11 @@ Generators.tests.cpp:<line number>: PASSED:
   REQUIRE( values > -6 )
 with expansion:
   98 > -6
+with 2 generators
+  line:217: GENERATE(table<int, int>({ record{3, 7}, record{-5, -3}, record{90, 100} }))
+  value: {?}
+  line:222: GENERATE(range(from, to))
+  value: 98
 
 -------------------------------------------------------------------------------
 Nested generators and captured variables
@@ -7636,6 +8759,11 @@ Generators.tests.cpp:<line number>: PASSED:
   REQUIRE( values > -6 )
 with expansion:
   99 > -6
+with 2 generators
+  line:217: GENERATE(table<int, int>({ record{3, 7}, record{-5, -3}, record{90, 100} }))
+  value: {?}
+  line:222: GENERATE(range(from, to))
+  value: 99
 
 -------------------------------------------------------------------------------
 Nice descriptive name
@@ -9189,6 +10317,9 @@ TestSpecParser.tests.cpp:<line number>: PASSED:
   REQUIRE( spec.hasFilters() )
 with expansion:
   true
+with 1 generator
+  line:36: GENERATE(as<std::string>{}, "[tag with spaces]", "[I said \"good day\" sir!]")
+  value: "[tag with spaces]"
 with message:
   tagString := "[tag with spaces]"
 
@@ -9196,6 +10327,9 @@ TestSpecParser.tests.cpp:<line number>: PASSED:
   REQUIRE( spec.getInvalidSpecs().empty() )
 with expansion:
   true
+with 1 generator
+  line:36: GENERATE(as<std::string>{}, "[tag with spaces]", "[I said \"good day\" sir!]")
+  value: "[tag with spaces]"
 with message:
   tagString := "[tag with spaces]"
 
@@ -9203,6 +10337,9 @@ TestSpecParser.tests.cpp:<line number>: PASSED:
   REQUIRE( spec.matches( testCase ) )
 with expansion:
   true
+with 1 generator
+  line:36: GENERATE(as<std::string>{}, "[tag with spaces]", "[I said \"good day\" sir!]")
+  value: "[tag with spaces]"
 with message:
   tagString := "[tag with spaces]"
 
@@ -9216,6 +10353,9 @@ TestSpecParser.tests.cpp:<line number>: PASSED:
   REQUIRE( spec.hasFilters() )
 with expansion:
   true
+with 1 generator
+  line:36: GENERATE(as<std::string>{}, "[tag with spaces]", "[I said \"good day\" sir!]")
+  value: "[I said "good day" sir!]"
 with message:
   tagString := "[I said "good day" sir!]"
 
@@ -9223,6 +10363,9 @@ TestSpecParser.tests.cpp:<line number>: PASSED:
   REQUIRE( spec.getInvalidSpecs().empty() )
 with expansion:
   true
+with 1 generator
+  line:36: GENERATE(as<std::string>{}, "[tag with spaces]", "[I said \"good day\" sir!]")
+  value: "[I said "good day" sir!]"
 with message:
   tagString := "[I said "good day" sir!]"
 
@@ -9230,6 +10373,9 @@ TestSpecParser.tests.cpp:<line number>: PASSED:
   REQUIRE( spec.matches( testCase ) )
 with expansion:
   true
+with 1 generator
+  line:36: GENERATE(as<std::string>{}, "[tag with spaces]", "[I said \"good day\" sir!]")
+  value: "[I said "good day" sir!]"
 with message:
   tagString := "[I said "good day" sir!]"
 
@@ -9824,11 +10970,17 @@ CmdLine.tests.cpp:<line number>: PASSED:
   CHECK( cli.parse({"test", "--wait-for-keypress", std::get<0>(input)}) )
 with expansion:
   {?}
+with 1 generator
+  line:514: GENERATE(table<char const*, Catch::WaitForKeypress::When>({ tuple_type{"never", Catch::WaitForKeypress::Never}, tuple_type{"start", Catch::WaitForKeypress::BeforeStart}, tuple_type{"exit", Catch::WaitForKeypress::BeforeExit}, tuple_type{"both", Catch::WaitForKeypress::BeforeStartAndExit}, }))
+  value: {?}
 
 CmdLine.tests.cpp:<line number>: PASSED:
   REQUIRE( config.waitForKeypress == std::get<1>(input) )
 with expansion:
   0 == 0
+with 1 generator
+  line:514: GENERATE(table<char const*, Catch::WaitForKeypress::When>({ tuple_type{"never", Catch::WaitForKeypress::Never}, tuple_type{"start", Catch::WaitForKeypress::BeforeStart}, tuple_type{"exit", Catch::WaitForKeypress::BeforeExit}, tuple_type{"both", Catch::WaitForKeypress::BeforeStartAndExit}, }))
+  value: {?}
 
 -------------------------------------------------------------------------------
 Process can be configured on command line
@@ -9843,11 +10995,17 @@ CmdLine.tests.cpp:<line number>: PASSED:
   CHECK( cli.parse({"test", "--wait-for-keypress", std::get<0>(input)}) )
 with expansion:
   {?}
+with 1 generator
+  line:514: GENERATE(table<char const*, Catch::WaitForKeypress::When>({ tuple_type{"never", Catch::WaitForKeypress::Never}, tuple_type{"start", Catch::WaitForKeypress::BeforeStart}, tuple_type{"exit", Catch::WaitForKeypress::BeforeExit}, tuple_type{"both", Catch::WaitForKeypress::BeforeStartAndExit}, }))
+  value: {?}
 
 CmdLine.tests.cpp:<line number>: PASSED:
   REQUIRE( config.waitForKeypress == std::get<1>(input) )
 with expansion:
   1 == 1
+with 1 generator
+  line:514: GENERATE(table<char const*, Catch::WaitForKeypress::When>({ tuple_type{"never", Catch::WaitForKeypress::Never}, tuple_type{"start", Catch::WaitForKeypress::BeforeStart}, tuple_type{"exit", Catch::WaitForKeypress::BeforeExit}, tuple_type{"both", Catch::WaitForKeypress::BeforeStartAndExit}, }))
+  value: {?}
 
 -------------------------------------------------------------------------------
 Process can be configured on command line
@@ -9862,11 +11020,17 @@ CmdLine.tests.cpp:<line number>: PASSED:
   CHECK( cli.parse({"test", "--wait-for-keypress", std::get<0>(input)}) )
 with expansion:
   {?}
+with 1 generator
+  line:514: GENERATE(table<char const*, Catch::WaitForKeypress::When>({ tuple_type{"never", Catch::WaitForKeypress::Never}, tuple_type{"start", Catch::WaitForKeypress::BeforeStart}, tuple_type{"exit", Catch::WaitForKeypress::BeforeExit}, tuple_type{"both", Catch::WaitForKeypress::BeforeStartAndExit}, }))
+  value: {?}
 
 CmdLine.tests.cpp:<line number>: PASSED:
   REQUIRE( config.waitForKeypress == std::get<1>(input) )
 with expansion:
   2 == 2
+with 1 generator
+  line:514: GENERATE(table<char const*, Catch::WaitForKeypress::When>({ tuple_type{"never", Catch::WaitForKeypress::Never}, tuple_type{"start", Catch::WaitForKeypress::BeforeStart}, tuple_type{"exit", Catch::WaitForKeypress::BeforeExit}, tuple_type{"both", Catch::WaitForKeypress::BeforeStartAndExit}, }))
+  value: {?}
 
 -------------------------------------------------------------------------------
 Process can be configured on command line
@@ -9881,11 +11045,17 @@ CmdLine.tests.cpp:<line number>: PASSED:
   CHECK( cli.parse({"test", "--wait-for-keypress", std::get<0>(input)}) )
 with expansion:
   {?}
+with 1 generator
+  line:514: GENERATE(table<char const*, Catch::WaitForKeypress::When>({ tuple_type{"never", Catch::WaitForKeypress::Never}, tuple_type{"start", Catch::WaitForKeypress::BeforeStart}, tuple_type{"exit", Catch::WaitForKeypress::BeforeExit}, tuple_type{"both", Catch::WaitForKeypress::BeforeStartAndExit}, }))
+  value: {?}
 
 CmdLine.tests.cpp:<line number>: PASSED:
   REQUIRE( config.waitForKeypress == std::get<1>(input) )
 with expansion:
   3 == 3
+with 1 generator
+  line:514: GENERATE(table<char const*, Catch::WaitForKeypress::When>({ tuple_type{"never", Catch::WaitForKeypress::Never}, tuple_type{"start", Catch::WaitForKeypress::BeforeStart}, tuple_type{"exit", Catch::WaitForKeypress::BeforeExit}, tuple_type{"both", Catch::WaitForKeypress::BeforeStartAndExit}, }))
+  value: {?}
 
 -------------------------------------------------------------------------------
 Process can be configured on command line
@@ -10229,6 +11399,9 @@ RandomNumberGeneration.tests.cpp:<line number>
 
 RandomNumberGeneration.tests.cpp:<line number>: PASSED:
   REQUIRE_NOTHROW( Catch::generateRandomSeed(method) )
+with 1 generator
+  line:59: GENERATE(GenerateFrom::Time, GenerateFrom::RandomDevice, GenerateFrom::Default)
+  value: 0
 
 -------------------------------------------------------------------------------
 Random seed generation accepts known methods
@@ -10238,6 +11411,9 @@ RandomNumberGeneration.tests.cpp:<line number>
 
 RandomNumberGeneration.tests.cpp:<line number>: PASSED:
   REQUIRE_NOTHROW( Catch::generateRandomSeed(method) )
+with 1 generator
+  line:59: GENERATE(GenerateFrom::Time, GenerateFrom::RandomDevice, GenerateFrom::Default)
+  value: 1
 
 -------------------------------------------------------------------------------
 Random seed generation accepts known methods
@@ -10247,6 +11423,9 @@ RandomNumberGeneration.tests.cpp:<line number>
 
 RandomNumberGeneration.tests.cpp:<line number>: PASSED:
   REQUIRE_NOTHROW( Catch::generateRandomSeed(method) )
+with 1 generator
+  line:59: GENERATE(GenerateFrom::Time, GenerateFrom::RandomDevice, GenerateFrom::Default)
+  value: 2
 
 -------------------------------------------------------------------------------
 Random seed generation reports unknown methods
@@ -17641,6 +18820,9 @@ Generators.tests.cpp:<line number>: PASSED:
   REQUIRE( data.str.size() == data.len )
 with expansion:
   3 == 3
+with 1 generator
+  line:94: GENERATE(values<Data>({ {"one", 3}, {"two", 3}, {"three", 5}, {"four", 4} }))
+  value: {?}
 
 -------------------------------------------------------------------------------
 strlen3
@@ -17652,6 +18834,9 @@ Generators.tests.cpp:<line number>: PASSED:
   REQUIRE( data.str.size() == data.len )
 with expansion:
   3 == 3
+with 1 generator
+  line:94: GENERATE(values<Data>({ {"one", 3}, {"two", 3}, {"three", 5}, {"four", 4} }))
+  value: {?}
 
 -------------------------------------------------------------------------------
 strlen3
@@ -17663,6 +18848,9 @@ Generators.tests.cpp:<line number>: PASSED:
   REQUIRE( data.str.size() == data.len )
 with expansion:
   5 == 5
+with 1 generator
+  line:94: GENERATE(values<Data>({ {"one", 3}, {"two", 3}, {"three", 5}, {"four", 4} }))
+  value: {?}
 
 -------------------------------------------------------------------------------
 strlen3
@@ -17674,6 +18862,9 @@ Generators.tests.cpp:<line number>: PASSED:
   REQUIRE( data.str.size() == data.len )
 with expansion:
   4 == 4
+with 1 generator
+  line:94: GENERATE(values<Data>({ {"one", 3}, {"two", 3}, {"three", 5}, {"four", 4} }))
+  value: {?}
 
 -------------------------------------------------------------------------------
 tables
@@ -17685,6 +18876,9 @@ Generators.tests.cpp:<line number>: PASSED:
   REQUIRE( strlen(std::get<0>(data)) == static_cast<size_t>(std::get<1>(data)) )
 with expansion:
   5 == 5
+with 1 generator
+  line:63: GENERATE(table<char const*, int>({ tuple_type{"first", 5}, tuple_type{"second", 6}, tuple_type{"third", 5}, tuple_type{"etc...", 6} }))
+  value: {?}
 
 -------------------------------------------------------------------------------
 tables
@@ -17696,6 +18890,9 @@ Generators.tests.cpp:<line number>: PASSED:
   REQUIRE( strlen(std::get<0>(data)) == static_cast<size_t>(std::get<1>(data)) )
 with expansion:
   6 == 6
+with 1 generator
+  line:63: GENERATE(table<char const*, int>({ tuple_type{"first", 5}, tuple_type{"second", 6}, tuple_type{"third", 5}, tuple_type{"etc...", 6} }))
+  value: {?}
 
 -------------------------------------------------------------------------------
 tables
@@ -17707,6 +18904,9 @@ Generators.tests.cpp:<line number>: PASSED:
   REQUIRE( strlen(std::get<0>(data)) == static_cast<size_t>(std::get<1>(data)) )
 with expansion:
   5 == 5
+with 1 generator
+  line:63: GENERATE(table<char const*, int>({ tuple_type{"first", 5}, tuple_type{"second", 6}, tuple_type{"third", 5}, tuple_type{"etc...", 6} }))
+  value: {?}
 
 -------------------------------------------------------------------------------
 tables
@@ -17718,6 +18918,9 @@ Generators.tests.cpp:<line number>: PASSED:
   REQUIRE( strlen(std::get<0>(data)) == static_cast<size_t>(std::get<1>(data)) )
 with expansion:
   6 == 6
+with 1 generator
+  line:63: GENERATE(table<char const*, int>({ tuple_type{"first", 5}, tuple_type{"second", 6}, tuple_type{"third", 5}, tuple_type{"etc...", 6} }))
+  value: {?}
 
 -------------------------------------------------------------------------------
 tags with dots in later positions are not parsed as hidden
@@ -18443,5 +19646,5 @@ Misc.tests.cpp:<line number>: PASSED:
 
 ===============================================================================
 test cases:  394 |  304 passed |  83 failed |  7 failed as expected
-assertions: 2299 | 2129 passed | 143 failed | 27 failed as expected
+assertions: 2302 | 2132 passed | 143 failed | 27 failed as expected
 

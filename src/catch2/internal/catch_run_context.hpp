@@ -8,6 +8,7 @@
 #ifndef CATCH_RUN_CONTEXT_HPP_INCLUDED
 #define CATCH_RUN_CONTEXT_HPP_INCLUDED
 
+#include "catch2/interfaces/catch_interfaces_capture.hpp"
 #include <catch2/interfaces/catch_interfaces_reporter.hpp>
 #include <catch2/internal/catch_test_registry.hpp>
 #include <catch2/internal/catch_fatal_condition_handler.hpp>
@@ -74,6 +75,7 @@ namespace Catch {
         void sectionEndedEarly( SectionEndInfo const& endInfo ) override;
 
         auto acquireGeneratorTracker( StringRef generatorName, SourceLineInfo const& lineInfo ) -> IGeneratorTracker& override;
+        void trackGeneratorState( GeneratorInfo info ) override;
 
         void benchmarkPreparing( StringRef name ) override;
         void benchmarkStarting( BenchmarkInfo const& info ) override;
@@ -132,6 +134,7 @@ namespace Catch {
         Totals m_totals;
         IEventListenerPtr m_reporter;
         std::vector<MessageInfo> m_messages;
+        std::vector<GeneratorInfo> m_generatorInfos;
         std::vector<ScopedMessage> m_messageScopes; /* Keeps owners of so-called unscoped messages. */
         AssertionInfo m_lastAssertionInfo;
         std::vector<SectionEndInfo> m_unfinishedSections;
