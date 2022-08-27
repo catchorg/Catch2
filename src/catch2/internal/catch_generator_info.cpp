@@ -10,10 +10,12 @@
 
 namespace Catch {
 
-    GeneratorInfo::GeneratorInfo( StringRef _definition,
+    GeneratorInfo::GeneratorInfo( StringRef _name,
+                                  StringRef _arguments,
                                   SourceLineInfo const& _lineInfo,
                                   StringRef _currentElement ):
-        definition( _definition ),
+        name( _name ),
+        arguments( _arguments ),
         lineInfo( _lineInfo ),
         currentElement( _currentElement ) {}
 

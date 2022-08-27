@@ -164,7 +164,7 @@ private:
         for ( auto const& info : stats.generatorInfos ) {
             stream << TextFlow::Column( "line:" ).indent( 2 )
                    << info.lineInfo.line << ": "
-                   << "GENERATE(" << info.definition << ")\n"
+                   << "GENERATE(" << info.arguments << ")\n"
                    << TextFlow::Column( "value: " ).indent( 2 )
                    << colourImpl->guardColour( Colour::GeneratorValue )
                    << info.currentElement << '\n';

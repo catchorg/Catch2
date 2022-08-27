@@ -15,16 +15,18 @@
 namespace Catch {
 
     struct GeneratorInfo {
-        GeneratorInfo( StringRef _definition,
+        GeneratorInfo( StringRef _name,
+                       StringRef _arguments,
                        SourceLineInfo const& _lineInfo,
                        StringRef currentElement );
 
-        StringRef definition;
+        StringRef name;
+        StringRef arguments;
         SourceLineInfo lineInfo;
         StringRef currentElement;
 
         bool operator==( GeneratorInfo const& other ) const {
-            return definition == other.definition &&
+            return name == other.name && arguments == other.arguments &&
                    lineInfo == other.lineInfo &&
                    currentElement == other.currentElement;
         }
