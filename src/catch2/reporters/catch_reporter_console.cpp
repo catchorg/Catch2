@@ -126,6 +126,7 @@ public:
             printResultType();
             printOriginalExpression();
             printReconstructedExpression();
+            printGeneratorStates();
         } else {
             stream << '\n';
         }
@@ -151,6 +152,22 @@ private:
                    << TextFlow::Column( result.getExpandedExpression() )
                           .indent( 2 )
                    << '\n';
+        }
+    }
+    void printGeneratorStates() const {
+        if ( stats.generatorInfos.empty() ) {
+            return;
+        }
+
+        stream << "with " << pluralise(stats.generatorInfos.size(), "generator"_sr) << "\n";
+        for ( auto const& info : stats.generatorInfos ) {
+            stream << TextFlow::Column( "line:" ).indent( 2 )
+                   << info.lineInfo.line << ": "
+                   << "GENERATE(" << static_cast<std::string>( info.definition )
+                   << ")\n"
+                   << TextFlow::Column( "value: " ).indent( 2 )
+                   << colourImpl->guardColour( Colour::GeneratorValue )
+                   << info.currentElement << "\n";
         }
     }
     void printMessage() const {

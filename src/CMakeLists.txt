@@ -111,6 +111,7 @@ set(INTERNAL_HEADERS
     ${SOURCES_DIR}/matchers/catch_matchers_templated.hpp
     ${SOURCES_DIR}/matchers/catch_matchers_vector.hpp
     ${SOURCES_DIR}/catch_message.hpp
+    ${SOURCES_DIR}/internal/catch_generator_info.hpp
     ${SOURCES_DIR}/internal/catch_message_info.hpp
     ${SOURCES_DIR}/internal/catch_meta.hpp
     ${SOURCES_DIR}/internal/catch_move_and_forward.hpp
@@ -234,6 +235,7 @@ set(IMPL_SOURCES
     ${SOURCES_DIR}/internal/catch_errno_guard.cpp
     ${SOURCES_DIR}/internal/catch_lazy_expr.cpp
     ${SOURCES_DIR}/internal/catch_leak_detector.cpp
+    ${SOURCES_DIR}/internal/catch_generator_info.cpp
     ${SOURCES_DIR}/internal/catch_message_info.cpp
     ${SOURCES_DIR}/internal/catch_polyfills.cpp
     ${SOURCES_DIR}/internal/catch_startup_exception_registry.cpp

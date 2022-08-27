@@ -50,6 +50,7 @@ namespace Catch {
 
             OriginalExpression = Cyan,
             ReconstructedExpression = BrightYellow,
+            GeneratorValue = Cyan,
 
             SecondaryText = LightGrey,
             Headers = White

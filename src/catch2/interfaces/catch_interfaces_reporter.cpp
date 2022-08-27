@@ -5,6 +5,7 @@
 //        https://www.boost.org/LICENSE_1_0.txt)
 
 // SPDX-License-Identifier: BSL-1.0
+#include "catch2/interfaces/catch_interfaces_capture.hpp"
 #include <catch2/interfaces/catch_interfaces_reporter.hpp>
 #include <catch2/interfaces/catch_interfaces_config.hpp>
 #include <catch2/internal/catch_console_colour.hpp>
@@ -49,9 +50,11 @@ namespace Catch {
 
     AssertionStats::AssertionStats( AssertionResult const& _assertionResult,
                                     std::vector<MessageInfo> const& _infoMessages,
+                                    std::vector<GeneratorInfo> const& _generatorInfos,
                                     Totals const& _totals )
     :   assertionResult( _assertionResult ),
         infoMessages( _infoMessages ),
+        generatorInfos( _generatorInfos ),
         totals( _totals )
     {
         assertionResult.m_resultData.lazyExpression.m_transientExpression = _assertionResult.m_resultData.lazyExpression.m_transientExpression;

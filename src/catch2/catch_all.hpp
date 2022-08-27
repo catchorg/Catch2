@@ -67,6 +67,7 @@
 #include <catch2/internal/catch_exception_translator_registry.hpp>
 #include <catch2/internal/catch_fatal_condition_handler.hpp>
 #include <catch2/internal/catch_floating_point_helpers.hpp>
+#include <catch2/internal/catch_generator_info.hpp>
 #include <catch2/internal/catch_istream.hpp>
 #include <catch2/internal/catch_lazy_expr.hpp>
 #include <catch2/internal/catch_leak_detector.hpp>
