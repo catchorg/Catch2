@@ -319,7 +319,7 @@ namespace Catch {
         return tracker;
     }
 
-    void RunContext::trackGeneratorState( GeneratorInfo info ) {
+    void RunContext::trackGeneratorState( GeneratorInfo const& info ) {
         // Avoid redundant entries, in case a generator is used within a loop.
         if ( std::find( m_generatorInfos.cbegin(),
                         m_generatorInfos.cend(),

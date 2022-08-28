@@ -44,7 +44,7 @@ namespace Catch {
         virtual void sectionEndedEarly( SectionEndInfo const& endInfo ) = 0;
 
         virtual auto acquireGeneratorTracker( StringRef generatorName, SourceLineInfo const& lineInfo ) -> IGeneratorTracker& = 0;
-        virtual void trackGeneratorState( GeneratorInfo info ) = 0;
+        virtual void trackGeneratorState( GeneratorInfo const& info ) = 0;
 
         virtual void benchmarkPreparing( StringRef name ) = 0;
         virtual void benchmarkStarting( BenchmarkInfo const& info ) = 0;

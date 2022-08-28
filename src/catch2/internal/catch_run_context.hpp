@@ -74,7 +74,7 @@ namespace Catch {
         void sectionEndedEarly( SectionEndInfo const& endInfo ) override;
 
         auto acquireGeneratorTracker( StringRef generatorName, SourceLineInfo const& lineInfo ) -> IGeneratorTracker& override;
-        void trackGeneratorState( GeneratorInfo info ) override;
+        void trackGeneratorState( GeneratorInfo const& info ) override;
 
         void benchmarkPreparing( StringRef name ) override;
         void benchmarkStarting( BenchmarkInfo const& info ) override;
