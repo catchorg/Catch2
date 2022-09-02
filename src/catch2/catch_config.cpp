@@ -8,6 +8,7 @@
 #include <catch2/catch_config.hpp>
 #include <catch2/catch_user_config.hpp>
 #include <catch2/internal/catch_enforce.hpp>
+#include <catch2/internal/catch_platform.hpp>
 #include <catch2/internal/catch_stringref.hpp>
 #include <catch2/internal/catch_string_manip.hpp>
 #include <catch2/internal/catch_test_spec_parser.hpp>
@@ -15,8 +16,11 @@
 
 namespace {
     bool provideBazelReporterOutput() {
-#ifdef CATCH_CONFIG_BAZEL_SUPPORT
+#if defined(CATCH_CONFIG_BAZEL_SUPPORT)
         return true;
+#elif defined(CATCH_PLATFORM_WINDOWS_UWP)
+        // UWP does not support environment variables
+        return false;
 #else
 
 #    if defined( _MSC_VER )
@@ -81,6 +85,7 @@ namespace Catch {
             } );
         }
 
+#if !defined(CATCH_PLATFORM_WINDOWS_UWP)
     if(provideBazelReporterOutput()){
             // Register a JUnit reporter for Bazel. Bazel sets an environment
             // variable with the path to XML output. If this file is written to
@@ -102,7 +107,7 @@ namespace Catch {
                     { "junit", std::string( bazelOutputFilePtr ), {}, {} } );
             }
     }
-
+#endif
 
         // We now fixup the reporter specs to handle default output spec,
         // default colour spec, etc
