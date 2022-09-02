@@ -24,6 +24,10 @@
 
 #elif defined(WIN32) || defined(__WIN32__) || defined(_WIN32) || defined(_MSC_VER) || defined(__MINGW32__)
 #  define CATCH_PLATFORM_WINDOWS
+
+#  if defined( WINAPI_FAMILY ) && ( WINAPI_FAMILY == WINAPI_FAMILY_APP )
+#      define CATCH_PLATFORM_WINDOWS_UWP
+#  endif
 #endif
 
 #endif // CATCH_PLATFORM_HPP_INCLUDED
