@@ -21,9 +21,10 @@ reduced by roughly 80%. The improved ease of maintenance also led to
 various runtime performance improvements and the introduction of new features.
 For details, look at [the release notes of 3.0.1](release-notes.md#301).
 
-_Note that we still provide one header + one TU distribution but do
-not consider it the primarily supported option. You should also expect
-that the compilation times will be worse if you use this option._
+_Note that we still provide one header + one translation unit (TU)
+distribution but do not consider it the primarily supported option. You
+should also expect that the compilation times will be worse if you use
+this option._
 
 
 ## How to migrate projects from v2 to v3

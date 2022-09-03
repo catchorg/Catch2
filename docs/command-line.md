@@ -339,8 +339,8 @@ Test cases are ordered one of three ways:
 
 ### decl
 Declaration order (this is the default order if no --order argument is provided).
-Tests in the same TU are sorted using their declaration orders, different
-TUs are in an implementation (linking) dependent order.
+Tests in the same translation unit are sorted using their declaration orders,
+different TUs are sorted in an implementation (linking) dependent order.
 
 
 ### lex

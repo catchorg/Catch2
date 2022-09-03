@@ -13,9 +13,10 @@
 ## Getting Catch2
 
 Ideally you should be using Catch2 through its [CMake integration](cmake-integration.md#top).
-Catch2 also provides pkg-config files and single TU distribution, but this
-documentation will assume you are using CMake. If you are using single-TU
-distribution instead, remember to replace the included header with `catch_amalgamated.hpp`.
+Catch2 also provides pkg-config files and two file (header + cpp)
+distribution, but this documentation will assume you are using CMake. If
+you are using the two file distribution instead, remember to replace
+the included header with `catch_amalgamated.hpp`.
 
 
 ## Writing tests
