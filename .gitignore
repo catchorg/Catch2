@@ -31,3 +31,7 @@ msvc-sln*
 # Currently we use Doxygen for dep graphs and the full docs are only slowly
 # being filled in, so we definitely do not want git to deal with the docs.
 docs/doxygen
+
+# vitepress
+docs/dist/
+node_modules
