@@ -19,6 +19,7 @@
 #include <catch2/internal/catch_console_width.hpp>
 #include <catch2/reporters/catch_reporter_helpers.hpp>
 #include <catch2/internal/catch_move_and_forward.hpp>
+#include <catch2/catch_get_random_seed.hpp>
 
 #include <cstdio>
 
@@ -500,7 +501,7 @@ void ConsoleReporter::testRunStarting(TestRunInfo const& _testInfo) {
         m_stream << m_colour->guardColour( Colour::BrightYellow ) << "Filters: "
                  << serializeFilters( m_config->getTestsOrTags() ) << '\n';
     }
-    m_stream << "Randomness seeded to: " << m_config->rngSeed() << '\n';
+    m_stream << "Randomness seeded to: " << getSeed() << '\n';
 }
 
 void ConsoleReporter::lazyPrint() {

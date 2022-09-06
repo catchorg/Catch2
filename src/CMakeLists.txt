@@ -137,6 +137,7 @@ set(INTERNAL_HEADERS
     ${SOURCES_DIR}/internal/catch_string_manip.hpp
     ${SOURCES_DIR}/internal/catch_stringref.hpp
     ${SOURCES_DIR}/catch_tag_alias.hpp
+    ${SOURCES_DIR}/catch_get_random_seed.hpp
     ${SOURCES_DIR}/catch_tag_alias_autoregistrar.hpp
     ${SOURCES_DIR}/internal/catch_tag_alias_registry.hpp
     ${SOURCES_DIR}/catch_test_case_info.hpp
@@ -187,6 +188,7 @@ set(IMPL_SOURCES
     ${SOURCES_DIR}/interfaces/catch_interfaces_reporter.cpp
     ${SOURCES_DIR}/internal/catch_list.cpp
     ${SOURCES_DIR}/matchers/catch_matchers_floating_point.cpp
+    ${SOURCES_DIR}/matchers/catch_matchers_quantifiers.cpp
     ${SOURCES_DIR}/matchers/catch_matchers_string.cpp
     ${SOURCES_DIR}/matchers/catch_matchers_templated.cpp
     ${SOURCES_DIR}/catch_message.cpp
@@ -229,6 +231,7 @@ set(IMPL_SOURCES
     ${SOURCES_DIR}/matchers/catch_matchers_predicate.cpp
     ${SOURCES_DIR}/matchers/internal/catch_matchers_impl.cpp
     ${SOURCES_DIR}/catch_tag_alias_autoregistrar.cpp
+    ${SOURCES_DIR}/catch_get_random_seed.cpp
     ${SOURCES_DIR}/internal/catch_decomposer.cpp
     ${SOURCES_DIR}/internal/catch_errno_guard.cpp
     ${SOURCES_DIR}/internal/catch_lazy_expr.cpp
@@ -358,8 +361,12 @@ if (NOT_SUBPROJECT)
         Catch2WithMain
       EXPORT
         Catch2Targets
-      DESTINATION
+      LIBRARY DESTINATION 
         ${CMAKE_INSTALL_LIBDIR}
+      ARCHIVE DESTINATION
+        ${CMAKE_INSTALL_LIBDIR}
+      RUNTIME DESTINATION
+        ${CMAKE_INSTALL_BINDIR}
     )
 
 

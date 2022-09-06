@@ -85,7 +85,55 @@ namespace Catch {
             }
         };
 
-        // Creates a matcher that checks whether a range contains element matching a matcher
+        // Matcher for checking that all elements in range are true.
+        class AllTrueMatcher final : public MatcherGenericBase {
+        public:
+            std::string describe() const override;
+
+            template <typename RangeLike>
+            bool match(RangeLike&& rng) const {
+                for (auto&& elem : rng) {
+                    if (!elem) {
+                        return false;
+                    }
+                }
+                return true;
+            }
+        };
+
+        // Matcher for checking that no element in range is true.
+        class NoneTrueMatcher final : public MatcherGenericBase {
+        public:
+            std::string describe() const override;
+
+            template <typename RangeLike>
+            bool match(RangeLike&& rng) const {
+                for (auto&& elem : rng) {
+                    if (elem) {
+                        return false;
+                    }
+                }
+                return true;
+            }
+        };
+
+        // Matcher for checking that any element in range is true.
+        class AnyTrueMatcher final : public MatcherGenericBase {
+        public:
+            std::string describe() const override;
+
+            template <typename RangeLike>
+            bool match(RangeLike&& rng) const {
+                for (auto&& elem : rng) {
+                    if (elem) {
+                        return true;
+                    }
+                }
+                return false;
+            }
+        };
+
+        // Creates a matcher that checks whether all elements in a range match a matcher
         template <typename Matcher>
         AllMatchMatcher<Matcher> AllMatch(Matcher&& matcher) {
             return { CATCH_FORWARD(matcher) };
@@ -102,6 +150,15 @@ namespace Catch {
         AnyMatchMatcher<Matcher> AnyMatch(Matcher&& matcher) {
             return { CATCH_FORWARD(matcher) };
         }
+
+        // Creates a matcher that checks whether all elements in a range are true
+        AllTrueMatcher AllTrue();
+
+        // Creates a matcher that checks whether no element in a range is true
+        NoneTrueMatcher NoneTrue();
+
+        // Creates a matcher that checks whether any element in a range is true
+        AnyTrueMatcher AnyTrue();
     }
 }
 

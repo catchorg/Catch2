@@ -5,11 +5,14 @@
 //        https://www.boost.org/LICENSE_1_0.txt)
 
 // SPDX-License-Identifier: BSL-1.0
-#ifndef CATCH_VERSION_MACROS_HPP_INCLUDED
-#define CATCH_VERSION_MACROS_HPP_INCLUDED
 
-#define CATCH_VERSION_MAJOR 3
-#define CATCH_VERSION_MINOR 1
-#define CATCH_VERSION_PATCH 0
+#include <catch2/catch_get_random_seed.hpp>
 
-#endif // CATCH_VERSION_MACROS_HPP_INCLUDED
+#include <catch2/internal/catch_context.hpp>
+#include <catch2/catch_config.hpp>
+
+namespace Catch {
+    std::uint32_t getSeed() {
+        return getCurrentContext().getConfig()->rngSeed();
+    }
+}

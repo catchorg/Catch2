@@ -4,11 +4,11 @@ on: [push, pull_request]
 
 jobs:
   build:
-    runs-on: macos-10.15
+    runs-on: macos-12
     strategy:
       matrix:
         cxx:
-          - g++-9
+          - g++-11
           - clang++
         build_type: [Debug, Release]
         std: [14, 17]

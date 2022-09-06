@@ -5,8 +5,8 @@
 
 // SPDX-License-Identifier: BSL-1.0
 
-//  Catch v3.0.1
-//  Generated: 2022-05-17 22:08:46.674860
+//  Catch v3.1.0
+//  Generated: 2022-07-17 20:14:04.055157
 //  ----------------------------------------------------------
 //  This file is an amalgamation of multiple different files.
 //  You probably shouldn't edit it directly.
@@ -360,10 +360,22 @@ namespace Catch {
 
 #endif
 
+#if defined(__CUDACC__) && !defined(__clang__)
+#    define CATCH_INTERNAL_START_WARNINGS_SUPPRESSION _Pragma( "nv_diagnostic push" )
+#    define CATCH_INTERNAL_STOP_WARNINGS_SUPPRESSION  _Pragma( "nv_diagnostic pop" )
+#    define CATCH_INTERNAL_SUPPRESS_UNUSED_VARIABLE_WARNINGS _Pragma( "nv_diag_suppress 177" )
+#endif
+
+// clang-cl defines _MSC_VER as well as __clang__, which could cause the
+// start/stop internal suppression macros to be double defined.
 #if defined(__clang__) && !defined(_MSC_VER)
 
 #    define CATCH_INTERNAL_START_WARNINGS_SUPPRESSION _Pragma( "clang diagnostic push" )
 #    define CATCH_INTERNAL_STOP_WARNINGS_SUPPRESSION  _Pragma( "clang diagnostic pop" )
+
+#endif // __clang__ && !_MSC_VER
+
+#if defined(__clang__)
 
 // As of this writing, IBM XL's implementation of __builtin_constant_p has a bug
 // which results in calls to destructors being emitted for each temporary,
@@ -2320,7 +2332,7 @@ namespace Catch {
                 double z1 = normal_quantile((1. - confidence_level) / 2.);
 
                 auto cumn = [n]( double x ) -> long {
-                    return std::lround( normal_cdf( x ) * n );
+                    return std::lround( normal_cdf( x ) * static_cast<double>(n) );
                 };
                 auto a = [bias, accel](double b) { return bias + b / (1. - accel * b); };
                 double b1 = bias + z1;
@@ -2730,7 +2742,7 @@ namespace Catch {
                 }
 
                 T const& stored_object() const {
-                    return *static_cast<T*>(static_cast<void*>(data));
+                    return *static_cast<T const*>(static_cast<void const*>(data));
                 }
 
 
@@ -5568,9 +5580,9 @@ namespace Catch {
 
 #endif // CATCH_ASSERTION_HANDLER_HPP_INCLUDED
 
-// We need this suppression to leak, because it took until GCC 9
+// We need this suppression to leak, because it took until GCC 10
 // for the front end to handle local suppression via _Pragma properly
-#if defined(__GNUC__) && !defined(__clang__) && !defined(__ICC) && __GNUC__ < 9
+#if defined(__GNUC__) && !defined(__clang__) && !defined(__ICC) && __GNUC__ <= 9
   #pragma GCC diagnostic ignored "-Wparentheses"
 #endif
 
@@ -5879,6 +5891,7 @@ struct AutoReg : Detail::NonCopyable {
         static void TestName(); \
         CATCH_INTERNAL_START_WARNINGS_SUPPRESSION \
         CATCH_INTERNAL_SUPPRESS_GLOBALS_WARNINGS \
+        CATCH_INTERNAL_SUPPRESS_UNUSED_VARIABLE_WARNINGS \
         namespace{ Catch::AutoReg INTERNAL_CATCH_UNIQUE_NAME( autoRegistrar )( Catch::makeTestInvoker( &TestName ), CATCH_INTERNAL_LINEINFO, Catch::StringRef(), Catch::NameAndTags{ __VA_ARGS__ } ); } /* NOLINT */ \
         CATCH_INTERNAL_STOP_WARNINGS_SUPPRESSION \
         static void TestName()
@@ -5889,6 +5902,7 @@ struct AutoReg : Detail::NonCopyable {
     #define INTERNAL_CATCH_METHOD_AS_TEST_CASE( QualifiedMethod, ... ) \
         CATCH_INTERNAL_START_WARNINGS_SUPPRESSION \
         CATCH_INTERNAL_SUPPRESS_GLOBALS_WARNINGS \
+        CATCH_INTERNAL_SUPPRESS_UNUSED_VARIABLE_WARNINGS \
         namespace{ Catch::AutoReg INTERNAL_CATCH_UNIQUE_NAME( autoRegistrar )( Catch::makeTestInvoker( &QualifiedMethod ), CATCH_INTERNAL_LINEINFO, "&" #QualifiedMethod, Catch::NameAndTags{ __VA_ARGS__ } ); } /* NOLINT */ \
         CATCH_INTERNAL_STOP_WARNINGS_SUPPRESSION
 
@@ -5896,6 +5910,7 @@ struct AutoReg : Detail::NonCopyable {
     #define INTERNAL_CATCH_TEST_CASE_METHOD2( TestName, ClassName, ... )\
         CATCH_INTERNAL_START_WARNINGS_SUPPRESSION \
         CATCH_INTERNAL_SUPPRESS_GLOBALS_WARNINGS \
+        CATCH_INTERNAL_SUPPRESS_UNUSED_VARIABLE_WARNINGS \
         namespace{ \
             struct TestName : INTERNAL_CATCH_REMOVE_PARENS(ClassName) { \
                 void test(); \
@@ -5912,6 +5927,7 @@ struct AutoReg : Detail::NonCopyable {
         do { \
             CATCH_INTERNAL_START_WARNINGS_SUPPRESSION \
             CATCH_INTERNAL_SUPPRESS_GLOBALS_WARNINGS \
+            CATCH_INTERNAL_SUPPRESS_UNUSED_VARIABLE_WARNINGS \
             Catch::AutoReg INTERNAL_CATCH_UNIQUE_NAME( autoRegistrar )( Catch::makeTestInvoker( Function ), CATCH_INTERNAL_LINEINFO, Catch::StringRef(), Catch::NameAndTags{ __VA_ARGS__ } ); /* NOLINT */ \
             CATCH_INTERNAL_STOP_WARNINGS_SUPPRESSION \
         } while(false)
@@ -7046,8 +7062,8 @@ namespace Catch {
 #define CATCH_VERSION_MACROS_HPP_INCLUDED
 
 #define CATCH_VERSION_MAJOR 3
-#define CATCH_VERSION_MINOR 0
-#define CATCH_VERSION_PATCH 1
+#define CATCH_VERSION_MINOR 1
+#define CATCH_VERSION_PATCH 0
 
 #endif // CATCH_VERSION_MACROS_HPP_INCLUDED
 
@@ -7752,12 +7768,17 @@ public:
     }
 };
 
-// TODO: Ideally this would be also constrained against the various char types,
-//       but I don't expect users to run into that in practice.
 template <typename T>
-std::enable_if_t<std::is_integral<T>::value && !std::is_same<T, bool>::value,
-GeneratorWrapper<T>>
+std::enable_if_t<std::is_integral<T>::value, GeneratorWrapper<T>>
 random(T a, T b) {
+    static_assert(
+        !std::is_same<T, char>::value &&
+        !std::is_same<T, int8_t>::value &&
+        !std::is_same<T, uint8_t>::value &&
+        !std::is_same<T, signed char>::value &&
+        !std::is_same<T, unsigned char>::value &&
+        !std::is_same<T, bool>::value,
+        "The requested type is not supported by the underlying random distributions from std" );
     return GeneratorWrapper<T>(
         Catch::Detail::make_unique<RandomIntegerGenerator<T>>(a, b, Detail::getSeed())
     );
@@ -8096,6 +8117,9 @@ namespace Catch {
 
 #ifndef CATCH_CONSOLE_WIDTH_HPP_INCLUDED
 #define CATCH_CONSOLE_WIDTH_HPP_INCLUDED
+
+// This include must be kept so that user's configured value for CONSOLE_WIDTH
+// is used before we attempt to provide a default value
 
 #ifndef CATCH_CONFIG_CONSOLE_WIDTH
 #define CATCH_CONFIG_CONSOLE_WIDTH 80
@@ -10455,7 +10479,6 @@ namespace Catch {
 
         class IsEmptyMatcher final : public MatcherGenericBase {
         public:
-            // todo: Use polyfills
             template <typename RangeLike>
             bool match(RangeLike&& rng) const {
 #if defined(CATCH_CONFIG_POLYFILL_NONMEMBER_CONTAINER_ACCESS)
@@ -10856,7 +10879,55 @@ namespace Catch {
             }
         };
 
-        // Creates a matcher that checks whether a range contains element matching a matcher
+        // Matcher for checking that all elements in range are true.
+        class AllTrueMatcher final : public MatcherGenericBase {
+        public:
+            std::string describe() const override;
+
+            template <typename RangeLike>
+            bool match(RangeLike&& rng) const {
+                for (auto&& elem : rng) {
+                    if (!elem) {
+                        return false;
+                    }
+                }
+                return true;
+            }
+        };
+
+        // Matcher for checking that no element in range is true.
+        class NoneTrueMatcher final : public MatcherGenericBase {
+        public:
+            std::string describe() const override;
+
+            template <typename RangeLike>
+            bool match(RangeLike&& rng) const {
+                for (auto&& elem : rng) {
+                    if (elem) {
+                        return false;
+                    }
+                }
+                return true;
+            }
+        };
+
+        // Matcher for checking that any element in range is true.
+        class AnyTrueMatcher final : public MatcherGenericBase {
+        public:
+            std::string describe() const override;
+
+            template <typename RangeLike>
+            bool match(RangeLike&& rng) const {
+                for (auto&& elem : rng) {
+                    if (elem) {
+                        return true;
+                    }
+                }
+                return false;
+            }
+        };
+
+        // Creates a matcher that checks whether all elements in a range match a matcher
         template <typename Matcher>
         AllMatchMatcher<Matcher> AllMatch(Matcher&& matcher) {
             return { CATCH_FORWARD(matcher) };
@@ -10873,6 +10944,15 @@ namespace Catch {
         AnyMatchMatcher<Matcher> AnyMatch(Matcher&& matcher) {
             return { CATCH_FORWARD(matcher) };
         }
+
+        // Creates a matcher that checks whether all elements in a range are true
+        AllTrueMatcher AllTrue();
+
+        // Creates a matcher that checks whether no element in a range is true
+        NoneTrueMatcher NoneTrue();
+
+        // Creates a matcher that checks whether any element in a range is true
+        AnyTrueMatcher AnyTrue();
     }
 }
 
@@ -11252,7 +11332,11 @@ namespace Catch {
 
     class StreamingReporterBase : public ReporterBase {
     public:
-        using ReporterBase::ReporterBase;
+        // GCC5 compat: we cannot use inherited constructor, because it
+        //              doesn't implement backport of P0136
+        StreamingReporterBase(ReporterConfig&& _config):
+            ReporterBase(CATCH_MOVE(_config))
+        {}
         ~StreamingReporterBase() override;
 
         void benchmarkPreparing( StringRef ) override {}
@@ -11309,7 +11393,11 @@ namespace Catch {
 
     class AutomakeReporter final : public StreamingReporterBase {
     public:
-        using StreamingReporterBase::StreamingReporterBase;
+        // GCC5 compat: we cannot use inherited constructor, because it
+        //              doesn't implement backport of P0136
+        AutomakeReporter(ReporterConfig&& _config):
+            StreamingReporterBase(CATCH_MOVE(_config))
+        {}
         ~AutomakeReporter() override;
 
         static std::string getDescription() {
@@ -11505,7 +11593,11 @@ namespace Catch {
         using TestCaseNode = Node<TestCaseStats, SectionNode>;
         using TestRunNode = Node<TestRunStats, TestCaseNode>;
 
-        using ReporterBase::ReporterBase;
+        // GCC5 compat: we cannot use inherited constructor, because it
+        //              doesn't implement backport of P0136
+        CumulativeReporterBase(ReporterConfig&& _config):
+            ReporterBase(CATCH_MOVE(_config))
+        {}
         ~CumulativeReporterBase() override;
 
         void benchmarkPreparing( StringRef ) override {}

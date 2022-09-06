@@ -114,4 +114,20 @@ namespace Inner
     {
         REQUIRE(Template_Fixture_2<TestType>{}.m_a.size() < 2);
     }
+} // namespace
+
+
+// We want a class in nested namespace so we can test JUnit's classname normalization.
+namespace {
+    namespace A {
+        namespace B {
+            class TestClass {};
+        }
+    }
+} // namespace
+
+TEST_CASE_METHOD( A::B::TestClass,
+                  "A TEST_CASE_METHOD testing junit classname normalization",
+                  "[class][approvals]" ) {
+    SUCCEED();
 }

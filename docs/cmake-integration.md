@@ -262,7 +262,7 @@ ParseAndAddCatchTests(bar)
 
 ### `CatchShardTests.cmake`
 
-> `CatchShardTests.cmake` was introduced in Catch2 X.Y.Z.
+> `CatchShardTests.cmake` was introduced in Catch2 3.1.0.
 
 `CatchShardTests.cmake` provides a function
 `catch_add_sharded_tests(TEST_BINARY)` that splits tests from `TEST_BINARY`

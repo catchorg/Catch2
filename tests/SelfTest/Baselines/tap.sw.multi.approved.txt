@@ -3523,6 +3523,44 @@ ok {test-number} - mocked.m_derefed[2] for: true
 ok {test-number} - !(mocked.m_derefed[3]) for: !false
 # Usage of AllMatch range matcher
 ok {test-number} - !(mocked.m_derefed[4]) for: !false
+# Usage of AllTrue range matcher
+ok {test-number} - data, AllTrue() for: { true, true, true, true, true } contains only true
+# Usage of AllTrue range matcher
+ok {test-number} - data, AllTrue() for: {  } contains only true
+# Usage of AllTrue range matcher
+ok {test-number} - data, !AllTrue() for: { true, true, false, true, true } not contains only true
+# Usage of AllTrue range matcher
+ok {test-number} - data, !AllTrue() for: { false, false, false, false, false } not contains only true
+# Usage of AllTrue range matcher
+ok {test-number} - data, AllTrue() for: { true, true, true, true, true } contains only true
+# Usage of AllTrue range matcher
+ok {test-number} - data, !AllTrue() for: { true, true, false, true, true } not contains only true
+# Usage of AllTrue range matcher
+ok {test-number} - data, !AllTrue() for: { false, false, false, false, false } not contains only true
+# Usage of AllTrue range matcher
+ok {test-number} - mocked, AllTrue() for: { true, true, true, true, true } contains only true
+# Usage of AllTrue range matcher
+ok {test-number} - mocked.m_derefed[0] for: true
+# Usage of AllTrue range matcher
+ok {test-number} - mocked.m_derefed[1] for: true
+# Usage of AllTrue range matcher
+ok {test-number} - mocked.m_derefed[2] for: true
+# Usage of AllTrue range matcher
+ok {test-number} - mocked.m_derefed[3] for: true
+# Usage of AllTrue range matcher
+ok {test-number} - mocked.m_derefed[4] for: true
+# Usage of AllTrue range matcher
+ok {test-number} - mocked, !AllTrue() for: { true, true, false, true, true } not contains only true
+# Usage of AllTrue range matcher
+ok {test-number} - mocked.m_derefed[0] for: true
+# Usage of AllTrue range matcher
+ok {test-number} - mocked.m_derefed[1] for: true
+# Usage of AllTrue range matcher
+ok {test-number} - mocked.m_derefed[2] for: true
+# Usage of AllTrue range matcher
+ok {test-number} - !(mocked.m_derefed[3]) for: !false
+# Usage of AllTrue range matcher
+ok {test-number} - !(mocked.m_derefed[4]) for: !false
 # Usage of AnyMatch range matcher
 ok {test-number} - data, AnyMatch(SizeIs(5)) for: { { 0, 1, 2, 3, 5 }, { 4, -3, -2, 5, 0 }, { 0, 0, 0, 5, 0 }, { 0, -5, 0, 5, 0 }, { 1, 0, 0, -1, 5 } } any match has size == 5
 # Usage of AnyMatch range matcher
@@ -3553,6 +3591,44 @@ ok {test-number} - !(mocked.m_derefed[2]) for: !false
 ok {test-number} - !(mocked.m_derefed[3]) for: !false
 # Usage of AnyMatch range matcher
 ok {test-number} - !(mocked.m_derefed[4]) for: !false
+# Usage of AnyTrue range matcher
+ok {test-number} - data, AnyTrue() for: { true, true, true, true, true } contains at least one true
+# Usage of AnyTrue range matcher
+ok {test-number} - data, !AnyTrue() for: {  } not contains at least one true
+# Usage of AnyTrue range matcher
+ok {test-number} - data, AnyTrue() for: { false, false, true, false, false } contains at least one true
+# Usage of AnyTrue range matcher
+ok {test-number} - data, !AnyTrue() for: { false, false, false, false, false } not contains at least one true
+# Usage of AnyTrue range matcher
+ok {test-number} - data, AnyTrue() for: { true, true, true, true, true } contains at least one true
+# Usage of AnyTrue range matcher
+ok {test-number} - data, AnyTrue() for: { false, false, true, false, false } contains at least one true
+# Usage of AnyTrue range matcher
+ok {test-number} - data, !AnyTrue() for: { false, false, false, false, false } not contains at least one true
+# Usage of AnyTrue range matcher
+ok {test-number} - mocked, AnyTrue() for: { false, false, false, false, true } contains at least one true
+# Usage of AnyTrue range matcher
+ok {test-number} - mocked.m_derefed[0] for: true
+# Usage of AnyTrue range matcher
+ok {test-number} - mocked.m_derefed[1] for: true
+# Usage of AnyTrue range matcher
+ok {test-number} - mocked.m_derefed[2] for: true
+# Usage of AnyTrue range matcher
+ok {test-number} - mocked.m_derefed[3] for: true
+# Usage of AnyTrue range matcher
+ok {test-number} - mocked.m_derefed[4] for: true
+# Usage of AnyTrue range matcher
+ok {test-number} - mocked, AnyTrue() for: { false, false, true, true, true } contains at least one true
+# Usage of AnyTrue range matcher
+ok {test-number} - mocked.m_derefed[0] for: true
+# Usage of AnyTrue range matcher
+ok {test-number} - mocked.m_derefed[1] for: true
+# Usage of AnyTrue range matcher
+ok {test-number} - mocked.m_derefed[2] for: true
+# Usage of AnyTrue range matcher
+ok {test-number} - !(mocked.m_derefed[3]) for: !false
+# Usage of AnyTrue range matcher
+ok {test-number} - !(mocked.m_derefed[4]) for: !false
 # Usage of NoneMatch range matcher
 ok {test-number} - data, NoneMatch(SizeIs(6)) for: { { 0, 1, 2, 3, 5 }, { 4, -3, -2, 5, 0 }, { 0, 0, 0, 5, 0 }, { 0, -5, 0, 5, 0 }, { 1, 0, 0, -1, 5 } } none match has size == 6
 # Usage of NoneMatch range matcher
@@ -3582,6 +3658,44 @@ ok {test-number} - !(mocked.m_derefed[2]) for: !false
 # Usage of NoneMatch range matcher
 ok {test-number} - !(mocked.m_derefed[3]) for: !false
 # Usage of NoneMatch range matcher
+ok {test-number} - !(mocked.m_derefed[4]) for: !false
+# Usage of NoneTrue range matcher
+ok {test-number} - data, !NoneTrue() for: { true, true, true, true, true } not contains no true
+# Usage of NoneTrue range matcher
+ok {test-number} - data, NoneTrue() for: {  } contains no true
+# Usage of NoneTrue range matcher
+ok {test-number} - data, !NoneTrue() for: { false, false, true, false, false } not contains no true
+# Usage of NoneTrue range matcher
+ok {test-number} - data, NoneTrue() for: { false, false, false, false, false } contains no true
+# Usage of NoneTrue range matcher
+ok {test-number} - data, !NoneTrue() for: { true, true, true, true, true } not contains no true
+# Usage of NoneTrue range matcher
+ok {test-number} - data, !NoneTrue() for: { false, false, true, false, false } not contains no true
+# Usage of NoneTrue range matcher
+ok {test-number} - data, NoneTrue() for: { false, false, false, false, false } contains no true
+# Usage of NoneTrue range matcher
+ok {test-number} - mocked, NoneTrue() for: { false, false, false, false, false } contains no true
+# Usage of NoneTrue range matcher
+ok {test-number} - mocked.m_derefed[0] for: true
+# Usage of NoneTrue range matcher
+ok {test-number} - mocked.m_derefed[1] for: true
+# Usage of NoneTrue range matcher
+ok {test-number} - mocked.m_derefed[2] for: true
+# Usage of NoneTrue range matcher
+ok {test-number} - mocked.m_derefed[3] for: true
+# Usage of NoneTrue range matcher
+ok {test-number} - mocked.m_derefed[4] for: true
+# Usage of NoneTrue range matcher
+ok {test-number} - mocked, !NoneTrue() for: { false, false, true, true, true } not contains no true
+# Usage of NoneTrue range matcher
+ok {test-number} - mocked.m_derefed[0] for: true
+# Usage of NoneTrue range matcher
+ok {test-number} - mocked.m_derefed[1] for: true
+# Usage of NoneTrue range matcher
+ok {test-number} - mocked.m_derefed[2] for: true
+# Usage of NoneTrue range matcher
+ok {test-number} - !(mocked.m_derefed[3]) for: !false
+# Usage of NoneTrue range matcher
 ok {test-number} - !(mocked.m_derefed[4]) for: !false
 # Usage of the SizeIs range matcher
 ok {test-number} - empty_vec, SizeIs(0) for: {  } has size == 0
@@ -4479,5 +4593,5 @@ ok {test-number} - q3 == 23. for: 23.0 == 23.0
 ok {test-number} -
 # xmlentitycheck
 ok {test-number} -
-1..2242
+1..2299
 
