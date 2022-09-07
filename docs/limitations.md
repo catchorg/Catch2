@@ -99,7 +99,7 @@ Catch does not support running tests in isolated (forked) processes. While this 
 
 Catch2 keeps test execution in one process strictly serial, and there
 are no plans to change this. If you find yourself with a test suite
-that takes too long to run and yo uwant to make it parallel, you have
+that takes too long to run and you want to make it parallel, you have
 to run multiple processes side by side.
 
 There are 2 basic ways to do that,
@@ -171,7 +171,7 @@ TEST_CASE("b") {
 }
 ```
 
-If you are seeing a problem like this, i.e. a weird test paths that trigger only under Clang with `libc++`, or only under very specific version of `libstdc++`, it is very likely you are seeing this. The only known workaround is to use a fixed version of your standard library.
+If you are seeing a problem like this, i.e. weird test paths that trigger only under Clang with `libc++`, or only under very specific version of `libstdc++`, it is very likely you are seeing this. The only known workaround is to use a fixed version of your standard library.
 
 
 ### libstdc++, `_GLIBCXX_DEBUG` macro and random ordering of tests

@@ -19,7 +19,7 @@
 Catch2 is designed to "just work" as much as possible, and most of the
 configuration options below are changed automatically during compilation,
 according to the detected environment. However, this detection can also
-be overriden by users, using macros documented below, and/or CMake options
+be overridden by users, using macros documented below, and/or CMake options
 with the same name.
 
 
