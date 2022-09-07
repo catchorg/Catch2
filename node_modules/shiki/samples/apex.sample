@@ -1,5 +1,0 @@
-String s1 = 'Salesforce and force.com';
-String s2 = s1.remove('force');
-System.debug( 's2'+ s2);// 'Sales and .com'
-
-// From https://www.guru99.com/apex-tutorial.html

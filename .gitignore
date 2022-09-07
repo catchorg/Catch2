@@ -34,7 +34,7 @@ msvc-sln*
 docs/doxygen
 
 # vitepress
-docs/dist/
+docs/.vitepress/dist/
 node_modules
 
 
