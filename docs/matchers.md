@@ -25,7 +25,7 @@ using Catch::Matchers::EndsWith;
 REQUIRE_THAT( getSomeString(), EndsWith("as a service") );
 ```
 
-Individual matchers can also be combined using the cpp logical
+Individual matchers can also be combined using the C++ logical
 operators, that is `&&`, `||`, and `!`, like so:
 
 ```cpp
