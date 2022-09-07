@@ -36,6 +36,7 @@ docs/doxygen
 # vitepress
 docs/.vitepress/dist/
 node_modules
+yarn-error.log
 
 
 *.cache
