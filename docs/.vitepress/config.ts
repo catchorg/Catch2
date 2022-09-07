@@ -57,7 +57,7 @@ export default defineConfig({
             {
                 text: 'Running Command Line',
                 items: [
-                    { text: 'Command Line', link: 'https://github.com/catchorg/Catch2/blob/devel/docs/command-line.md' },
+                    { text: 'Command Line', link: '/command-line' },
                 ]
             },
             {
