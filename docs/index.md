@@ -12,6 +12,9 @@ hero:
     - theme: alt
       text: View on GitHub
       link: https://github.com/catchorg/Catch2
+    - theme: alt
+      text: Discord
+      link: https://discord.com/invite/4CWS9zD
 features:
   - icon: ⚡️
     title: Simple and Natural
