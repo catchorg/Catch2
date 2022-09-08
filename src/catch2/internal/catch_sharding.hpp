@@ -11,6 +11,7 @@
 #include <catch2/catch_session.hpp>
 
 #include <cmath>
+#include <algorithm>
 
 namespace Catch {
 
