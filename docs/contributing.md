@@ -286,7 +286,7 @@ the literal suffix.
 ### New source file template
 
 If you are adding new source file, there is a template you should use.
-Specifically, every source file should start with the license header:
+Specifically, every source file should start with the licence header:
 ```cpp
 
     //              Copyright Catch2 Authors
