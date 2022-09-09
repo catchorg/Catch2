@@ -112,7 +112,7 @@ catch_discover_tests()
 ```
 
 #### Customization
-`catch_discover_tests` can be given several extra argumets:
+`catch_discover_tests` can be given several extra arguments:
 ```cmake
 catch_discover_tests(target
                      [TEST_SPEC arg1...]
