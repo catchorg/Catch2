@@ -78,6 +78,7 @@ cc_library(
     linkstatic = True,
     visibility = ["//visibility:public"],
     deps = [":catch2_generated"],
+    copts = ["-std=c++14"],
 )
 
 # Static library, with main.
@@ -88,4 +89,5 @@ cc_library(
     linkstatic = True,
     visibility = ["//visibility:public"],
     deps = [":catch2"],
+    copts = ["-std=c++14"],
 )
