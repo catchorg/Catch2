@@ -54,14 +54,18 @@ namespace Catch {
                 template <typename U>
                 void destruct_on_exit(std::enable_if_t<!Destruct, U>* = nullptr) { }
 
-                T& stored_object() {
-                    return *static_cast<T*>(static_cast<void*>(data));
-                }
+#if defined( __GNUC__ ) && __GNUC__ <= 6
+#    pragma GCC diagnostic push
+#    pragma GCC diagnostic ignored "-Wstrict-aliasing"
+#endif
+                T& stored_object() { return *reinterpret_cast<T*>( data ); }
 
                 T const& stored_object() const {
-                    return *static_cast<T const*>(static_cast<void const*>(data));
+                    return *reinterpret_cast<T const*>( data );
                 }
-
+#if defined( __GNUC__ ) && __GNUC__ <= 6
+#    pragma GCC diagnostic pop
+#endif
 
                 alignas( T ) unsigned char data[sizeof( T )]{};
             };
