@@ -8,16 +8,17 @@
 #ifndef CATCH_OUTPUT_REDIRECT_HPP_INCLUDED
 #define CATCH_OUTPUT_REDIRECT_HPP_INCLUDED
 
+#include <catch2/internal/catch_compiler_capabilities.hpp>
 #include <catch2/internal/catch_platform.hpp>
 #include <catch2/internal/catch_reusable_string_stream.hpp>
-#include <catch2/internal/catch_compiler_capabilities.hpp>
-
 #include <cstdio>
 #include <iosfwd>
 #include <string>
 
-#if defined(CATCH_CONFIG_NEW_CAPTURE)
-#include <thread>
+#if defined( CATCH_CONFIG_NEW_CAPTURE )
+#    if defined( CATCH_INTERNAL_CONFIG_USE_ASYNC )
+#        include <thread>
+#    endif
 #endif
 
 namespace Catch {
@@ -28,13 +29,15 @@ namespace Catch {
         std::streambuf* m_prevBuf;
 
     public:
-        RedirectedStream( std::ostream& originalStream, std::ostream& redirectionStream );
+        RedirectedStream( std::ostream& originalStream,
+                          std::ostream& redirectionStream );
         ~RedirectedStream();
     };
 
     class RedirectedStdOut {
         ReusableStringStream m_rss;
         RedirectedStream m_cout;
+
     public:
         RedirectedStdOut();
         auto str() const -> std::string;
@@ -47,6 +50,7 @@ namespace Catch {
         ReusableStringStream m_rss;
         RedirectedStream m_cerr;
         RedirectedStream m_clog;
+
     public:
         RedirectedStdErr();
         auto str() const -> std::string;
@@ -54,13 +58,15 @@ namespace Catch {
 
     class RedirectedStreams {
     public:
-        RedirectedStreams(RedirectedStreams const&) = delete;
-        RedirectedStreams& operator=(RedirectedStreams const&) = delete;
-        RedirectedStreams(RedirectedStreams&&) = delete;
-        RedirectedStreams& operator=(RedirectedStreams&&) = delete;
+        RedirectedStreams( RedirectedStreams const& ) = delete;
+        RedirectedStreams& operator=( RedirectedStreams const& ) = delete;
+        RedirectedStreams( RedirectedStreams&& ) = delete;
+        RedirectedStreams& operator=( RedirectedStreams&& ) = delete;
 
-        RedirectedStreams(std::string& redirectedCout, std::string& redirectedCerr);
+        RedirectedStreams( std::string& redirectedCout,
+                           std::string& redirectedCerr );
         ~RedirectedStreams();
+
     private:
         std::string& m_redirectedCout;
         std::string& m_redirectedCerr;
@@ -68,83 +74,102 @@ namespace Catch {
         RedirectedStdErr m_redirectedStdErr;
     };
 
-#if defined(CATCH_CONFIG_NEW_CAPTURE)
+#if defined( CATCH_CONFIG_NEW_CAPTURE )
 
-#if defined(CATCH_CPP20_OR_GREATER)
-using jthread = std::jthread;
-#else
-// Just enough of std::jthread from C++20 for the code below.
-struct jthread final
-{
-    jthread() noexcept;
+#    if defined( CATCH_INTERNAL_CONFIG_USE_ASYNC )
 
-    template <typename F, typename... Args>
-    jthread(F&& f, Args&&... args);
+    struct UniqueFileDescriptor final {
+        constexpr UniqueFileDescriptor() noexcept;
+        explicit UniqueFileDescriptor( int value ) noexcept;
 
-    jthread(jthread const&) = delete;
-    jthread(jthread&&) noexcept = default;
+        UniqueFileDescriptor( UniqueFileDescriptor const& ) = delete;
+        constexpr UniqueFileDescriptor( UniqueFileDescriptor&& other ) noexcept;
 
-    jthread& operator=(jthread const&) noexcept = delete;
+        ~UniqueFileDescriptor() noexcept;
 
-    // Not exactly like std::jthread, but close enough for the code below.
-    jthread& operator=(jthread&&) noexcept = default;
+        UniqueFileDescriptor& operator=( UniqueFileDescriptor const& ) = delete;
+        UniqueFileDescriptor&
+        operator=( UniqueFileDescriptor&& other ) noexcept;
 
-    // Not exactly like std::jthread, but close enough for the code below.
-    ~jthread() noexcept;
+        constexpr int get();
 
-private:
-    std::thread m_thread;
-};
-#endif
+    private:
+        int m_value;
+    };
 
-struct UniqueFileDescriptor final
-{
-    constexpr UniqueFileDescriptor() noexcept;
-    explicit UniqueFileDescriptor(int value) noexcept;
+    struct OutputFileRedirector final {
+        explicit OutputFileRedirector( std::FILE* file, std::string& result );
 
-    UniqueFileDescriptor(UniqueFileDescriptor const&) = delete;
-    constexpr UniqueFileDescriptor(UniqueFileDescriptor&& other) noexcept;
+        OutputFileRedirector( OutputFileRedirector const& ) = delete;
+        OutputFileRedirector( OutputFileRedirector&& ) = delete;
 
-    ~UniqueFileDescriptor() noexcept;
+        ~OutputFileRedirector() noexcept;
 
-    UniqueFileDescriptor& operator=(UniqueFileDescriptor const&) = delete;
-    UniqueFileDescriptor& operator=(UniqueFileDescriptor&& other) noexcept;
+        OutputFileRedirector& operator=( OutputFileRedirector const& ) = delete;
+        OutputFileRedirector& operator=( OutputFileRedirector&& ) = delete;
 
-    constexpr int get();
+    private:
+        std::FILE* m_file;
+        int m_fd;
+        UniqueFileDescriptor m_previous;
+        std::thread m_readThread;
+    };
 
-private:
-    int m_value;
-};
+    struct OutputRedirect final {
+        OutputRedirect( std::string& output, std::string& error );
 
-struct OutputFileRedirector final
-{
-    explicit OutputFileRedirector(std::FILE* file, std::string& result);
+    private:
+        OutputFileRedirector m_output;
+        OutputFileRedirector m_error;
+    };
 
-    OutputFileRedirector(OutputFileRedirector const&) = delete;
-    OutputFileRedirector(OutputFileRedirector&&) = delete;
+#    else // !CATCH_INTERNAL_CONFIG_USE_ASYNC
 
-    ~OutputFileRedirector() noexcept;
+    // Windows's implementation of std::tmpfile is terrible (it tries
+    // to create a file inside system folder, thus requiring elevated
+    // privileges for the binary), so we have to use tmpnam(_s) and
+    // create the file ourselves there.
+    class TempFile {
+    public:
+        TempFile( TempFile const& ) = delete;
+        TempFile& operator=( TempFile const& ) = delete;
+        TempFile( TempFile&& ) = delete;
+        TempFile& operator=( TempFile&& ) = delete;
 
-    OutputFileRedirector& operator=(OutputFileRedirector const&) = delete;
-    OutputFileRedirector& operator=(OutputFileRedirector&&) = delete;
+        TempFile();
+        ~TempFile();
 
-private:
-    std::FILE* m_file;
-    int m_fd;
-    UniqueFileDescriptor m_previous;
-    jthread m_readThread;
-};
+        std::FILE* getFile();
+        std::string getContents();
 
-struct OutputRedirect final
-{
-    OutputRedirect(std::string& output, std::string& error);
+    private:
+        std::FILE* m_file = nullptr;
+#        if defined( _MSC_VER )
+        char m_buffer[L_tmpnam] = { 0 };
+#        endif
+    };
 
-private:
-    OutputFileRedirector m_output;
-    OutputFileRedirector m_error;
-};
+    class OutputRedirect {
+    public:
+        OutputRedirect( OutputRedirect const& ) = delete;
+        OutputRedirect& operator=( OutputRedirect const& ) = delete;
+        OutputRedirect( OutputRedirect&& ) = delete;
+        OutputRedirect& operator=( OutputRedirect&& ) = delete;
 
-#endif
+        OutputRedirect( std::string& stdout_dest, std::string& stderr_dest );
+        ~OutputRedirect();
+
+    private:
+        int m_originalStdout = -1;
+        int m_originalStderr = -1;
+        TempFile m_stdoutFile;
+        TempFile m_stderrFile;
+        std::string& m_stdoutDest;
+        std::string& m_stderrDest;
+    };
+
+#    endif // CATCH_INTERNAL_CONFIG_USE_ASYNC
+#endif     // CATCH_CONFIG_NEW_CAPTURE
 
 } // end namespace Catch
 
