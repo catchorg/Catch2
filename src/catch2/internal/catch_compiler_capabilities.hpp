@@ -53,6 +53,9 @@
 #    define CATCH_INTERNAL_SUPPRESS_UNUSED_VARIABLE_WARNINGS \
          _Pragma( "GCC diagnostic ignored \"-Wunused-variable\"" )
 
+#    define CATCH_INTERNAL_SUPPRESS_USELESS_CAST_WARNINGS \
+         _Pragma( "GCC diagnostic ignored \"-Wuseless-cast\"" )
+
 #    define CATCH_INTERNAL_IGNORE_BUT_WARN(...) (void)__builtin_constant_p(__VA_ARGS__)
 
 #endif
@@ -334,6 +337,9 @@
 #endif
 #if !defined(CATCH_INTERNAL_SUPPRESS_UNUSED_VARIABLE_WARNINGS)
 #   define CATCH_INTERNAL_SUPPRESS_UNUSED_VARIABLE_WARNINGS
+#endif
+#if !defined(CATCH_INTERNAL_SUPPRESS_USELESS_CAST_WARNINGS)
+#   define CATCH_INTERNAL_SUPPRESS_USELESS_CAST_WARNINGS
 #endif
 #if !defined(CATCH_INTERNAL_SUPPRESS_ZERO_VARIADIC_WARNINGS)
 #   define CATCH_INTERNAL_SUPPRESS_ZERO_VARIADIC_WARNINGS
