@@ -8,6 +8,8 @@
 #ifndef CATCH_CONTEXT_HPP_INCLUDED
 #define CATCH_CONTEXT_HPP_INCLUDED
 
+#include <catch2/internal/catch_compiler_capabilities.hpp>
+
 namespace Catch {
 
     class IResultCapture;
@@ -28,7 +30,7 @@ namespace Catch {
         virtual void setConfig( IConfig const* config ) = 0;
 
     private:
-        static IMutableContext *currentContext;
+        CATCH_EXPORT static IMutableContext* currentContext;
         friend IMutableContext& getCurrentMutableContext();
         friend void cleanUpContext();
         static void createContext();

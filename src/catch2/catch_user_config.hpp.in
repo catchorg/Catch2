@@ -181,6 +181,8 @@
 #cmakedefine CATCH_CONFIG_PREFIX_ALL
 #cmakedefine CATCH_CONFIG_WINDOWS_CRTDBG
 
+#cmakedefine CATCH_CONFIG_SHARED_LIBRARY
+
 
 // ------
 // "Variable" defines, these have actual values

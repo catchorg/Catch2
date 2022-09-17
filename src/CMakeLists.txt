@@ -409,6 +409,10 @@ if (CATCH_BUILD_EXAMPLES OR CATCH_BUILD_EXTRA_TESTS)
         $<BUILD_INTERFACE:${CMAKE_BINARY_DIR}/generated-includes>
         $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
     )
+    target_compile_definitions(Catch2_buildall_interface
+      INTERFACE
+        CATCH_CONFIG_STATIC
+    )
     target_compile_features(Catch2_buildall_interface
       INTERFACE
         cxx_alignas
