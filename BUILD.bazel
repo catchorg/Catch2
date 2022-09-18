@@ -1,5 +1,3 @@
-# Load the cc_library rule.
-load("@rules_cc//cc:defs.bzl", "cc_library")
 load("@bazel_skylib//rules:expand_template.bzl", "expand_template")
 
 expand_template(
