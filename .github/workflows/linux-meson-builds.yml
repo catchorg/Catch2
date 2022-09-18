@@ -1,0 +1,43 @@
+name: Linux builds (basic) using meson build system
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    name: meson ${{matrix.cxx}}, C++${{matrix.std}}, ${{matrix.build_type}}
+    runs-on: ubuntu-22.04
+    strategy:
+      matrix:
+        cxx:
+          - g++-11
+          - clang++-11
+        build_type: [debug, release]
+        std: [14, 17]
+        include:
+          - cxx: clang++-11
+            other_pkgs: clang-11
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Prepare environment
+      run: sudo apt-get install -y meson ninja-build ${{matrix.other_pkgs}}
+
+    - name: Configure build
+      env:
+        CXX: ${{matrix.cxx}}
+        CXXFLAGS: -std=c++${{matrix.std}} ${{matrix.cxxflags}}
+      # Note: $GITHUB_WORKSPACE is distinct from ${{runner.workspace}}.
+      #       This is important
+      run: |
+        meson -Dbuildtype=${{matrix.build_type}} ${{runner.workspace}}/meson-build
+
+    - name: Build tests + lib
+      working-directory: ${{runner.workspace}}/meson-build
+      run: ninja
+
+    - name: Run tests
+      working-directory: ${{runner.workspace}}/meson-build
+      # Hardcode 2 cores we know are there
+      run: |
+        meson test --verbose

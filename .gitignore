@@ -1,4 +1,5 @@
 *.build
+!meson.build
 *.pbxuser
 *.mode1v3
 *.ncb
