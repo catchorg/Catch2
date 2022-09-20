@@ -228,16 +228,16 @@ namespace Catch {
     }
 
     OutputFileRedirector::~OutputFileRedirector() noexcept {
-        if ( m_readThread.joinable() ) {
-            m_readThread.join();
-        }
-
         fflush_or_throw(
             m_file ); // std::terminate on failure (due to noexcept)
 
         // Restore the original stdout or stderr file descriptor.
         dup2_or_throw( m_previous.get(),
                        m_fd ); // std::terminate on failure (due to noexcept)
+
+        if ( m_readThread.joinable() ) {
+            m_readThread.join();
+        }
     }
 
     OutputRedirect::OutputRedirect( std::string& output, std::string& error ):
