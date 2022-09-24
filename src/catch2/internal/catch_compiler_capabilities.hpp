@@ -58,6 +58,7 @@
 
 #    define CATCH_INTERNAL_IGNORE_BUT_WARN(...) (void)__builtin_constant_p(__VA_ARGS__)
 
+#    define CATCH_INTERNAL_TYPEID_DEMANGLE
 #endif
 
 #if defined(__CUDACC__) && !defined(__clang__)
@@ -73,6 +74,7 @@
 #    define CATCH_INTERNAL_START_WARNINGS_SUPPRESSION _Pragma( "clang diagnostic push" )
 #    define CATCH_INTERNAL_STOP_WARNINGS_SUPPRESSION  _Pragma( "clang diagnostic pop" )
 
+#    define CATCH_INTERNAL_TYPEID_DEMANGLE
 #endif // __clang__ && !_MSC_VER
 
 #if defined(__clang__)
