@@ -3007,19 +3007,19 @@ ok {test-number} - Template_Fixture<TestType>::m_a == 1 for: 1 == 1
 ok {test-number} - Template_Fixture<TestType>::m_a == 1 for: 1 == 1
 # Template test case method with test types specified inside std::tuple - MyTypes - 2
 ok {test-number} - Template_Fixture<TestType>::m_a == 1 for: 1.0 == 1
-# Template test case with test types specified inside non-copyable and non-movable std::tuple - NonCopyableAndNonMovableTypes - 0
+# Template test case with test types specified inside non-copyable and non-movable std::tuple - NonCopyableAndNonMovableTypes - 0 - NonCopyableAndNonMovableType
 ok {test-number} - sizeof(TestType) > 0 for: 1 > 0
-# Template test case with test types specified inside non-copyable and non-movable std::tuple - NonCopyableAndNonMovableTypes - 1
+# Template test case with test types specified inside non-copyable and non-movable std::tuple - NonCopyableAndNonMovableTypes - 1 - float
 ok {test-number} - sizeof(TestType) > 0 for: 4 > 0
-# Template test case with test types specified inside non-default-constructible std::tuple - MyNonDefaultConstructibleTypes - 0
+# Template test case with test types specified inside non-default-constructible std::tuple - MyNonDefaultConstructibleTypes - 0 - NonDefaultConstructibleType
 ok {test-number} - sizeof(TestType) > 0 for: 1 > 0
-# Template test case with test types specified inside non-default-constructible std::tuple - MyNonDefaultConstructibleTypes - 1
+# Template test case with test types specified inside non-default-constructible std::tuple - MyNonDefaultConstructibleTypes - 1 - float
 ok {test-number} - sizeof(TestType) > 0 for: 4 > 0
-# Template test case with test types specified inside std::tuple - MyTypes - 0
+# Template test case with test types specified inside std::tuple - MyTypes - 0 - int
 ok {test-number} - sizeof(TestType) > 0 for: 4 > 0
-# Template test case with test types specified inside std::tuple - MyTypes - 1
+# Template test case with test types specified inside std::tuple - MyTypes - 1 - char
 ok {test-number} - sizeof(TestType) > 0 for: 1 > 0
-# Template test case with test types specified inside std::tuple - MyTypes - 2
+# Template test case with test types specified inside std::tuple - MyTypes - 2 - float
 ok {test-number} - sizeof(TestType) > 0 for: 4 > 0
 # TemplateTest: vectors can be sized and resized - float
 ok {test-number} - v.size() == 5 for: 5 == 5

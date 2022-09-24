@@ -12049,7 +12049,8 @@ with expansion:
 
 -------------------------------------------------------------------------------
 Template test case with test types specified inside non-copyable and non-
-movable std::tuple - NonCopyableAndNonMovableTypes - 0
+movable std::tuple - NonCopyableAndNonMovableTypes - 0 -
+NonCopyableAndNonMovableType
 -------------------------------------------------------------------------------
 Misc.tests.cpp:<line number>
 ...............................................................................
@@ -12061,7 +12062,7 @@ with expansion:
 
 -------------------------------------------------------------------------------
 Template test case with test types specified inside non-copyable and non-
-movable std::tuple - NonCopyableAndNonMovableTypes - 1
+movable std::tuple - NonCopyableAndNonMovableTypes - 1 - float
 -------------------------------------------------------------------------------
 Misc.tests.cpp:<line number>
 ...............................................................................
@@ -12073,7 +12074,7 @@ with expansion:
 
 -------------------------------------------------------------------------------
 Template test case with test types specified inside non-default-constructible
-std::tuple - MyNonDefaultConstructibleTypes - 0
+std::tuple - MyNonDefaultConstructibleTypes - 0 - NonDefaultConstructibleType
 -------------------------------------------------------------------------------
 Misc.tests.cpp:<line number>
 ...............................................................................
@@ -12085,7 +12086,7 @@ with expansion:
 
 -------------------------------------------------------------------------------
 Template test case with test types specified inside non-default-constructible
-std::tuple - MyNonDefaultConstructibleTypes - 1
+std::tuple - MyNonDefaultConstructibleTypes - 1 - float
 -------------------------------------------------------------------------------
 Misc.tests.cpp:<line number>
 ...............................................................................
@@ -12096,7 +12097,8 @@ with expansion:
   4 > 0
 
 -------------------------------------------------------------------------------
-Template test case with test types specified inside std::tuple - MyTypes - 0
+Template test case with test types specified inside std::tuple - MyTypes - 0 -
+int
 -------------------------------------------------------------------------------
 Misc.tests.cpp:<line number>
 ...............................................................................
@@ -12107,7 +12109,8 @@ with expansion:
   4 > 0
 
 -------------------------------------------------------------------------------
-Template test case with test types specified inside std::tuple - MyTypes - 1
+Template test case with test types specified inside std::tuple - MyTypes - 1 -
+char
 -------------------------------------------------------------------------------
 Misc.tests.cpp:<line number>
 ...............................................................................
@@ -12118,7 +12121,8 @@ with expansion:
   1 > 0
 
 -------------------------------------------------------------------------------
-Template test case with test types specified inside std::tuple - MyTypes - 2
+Template test case with test types specified inside std::tuple - MyTypes - 2 -
+float
 -------------------------------------------------------------------------------
 Misc.tests.cpp:<line number>
 ...............................................................................

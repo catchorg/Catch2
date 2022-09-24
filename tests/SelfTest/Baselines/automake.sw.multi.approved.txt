@@ -233,13 +233,13 @@
 :test-result: PASS Template test case method with test types specified inside std::tuple - MyTypes - 0
 :test-result: PASS Template test case method with test types specified inside std::tuple - MyTypes - 1
 :test-result: PASS Template test case method with test types specified inside std::tuple - MyTypes - 2
-:test-result: PASS Template test case with test types specified inside non-copyable and non-movable std::tuple - NonCopyableAndNonMovableTypes - 0
-:test-result: PASS Template test case with test types specified inside non-copyable and non-movable std::tuple - NonCopyableAndNonMovableTypes - 1
-:test-result: PASS Template test case with test types specified inside non-default-constructible std::tuple - MyNonDefaultConstructibleTypes - 0
-:test-result: PASS Template test case with test types specified inside non-default-constructible std::tuple - MyNonDefaultConstructibleTypes - 1
-:test-result: PASS Template test case with test types specified inside std::tuple - MyTypes - 0
-:test-result: PASS Template test case with test types specified inside std::tuple - MyTypes - 1
-:test-result: PASS Template test case with test types specified inside std::tuple - MyTypes - 2
+:test-result: PASS Template test case with test types specified inside non-copyable and non-movable std::tuple - NonCopyableAndNonMovableTypes - 0 - NonCopyableAndNonMovableType
+:test-result: PASS Template test case with test types specified inside non-copyable and non-movable std::tuple - NonCopyableAndNonMovableTypes - 1 - float
+:test-result: PASS Template test case with test types specified inside non-default-constructible std::tuple - MyNonDefaultConstructibleTypes - 0 - NonDefaultConstructibleType
+:test-result: PASS Template test case with test types specified inside non-default-constructible std::tuple - MyNonDefaultConstructibleTypes - 1 - float
+:test-result: PASS Template test case with test types specified inside std::tuple - MyTypes - 0 - int
+:test-result: PASS Template test case with test types specified inside std::tuple - MyTypes - 1 - char
+:test-result: PASS Template test case with test types specified inside std::tuple - MyTypes - 2 - float
 :test-result: PASS TemplateTest: vectors can be sized and resized - float
 :test-result: PASS TemplateTest: vectors can be sized and resized - int
 :test-result: PASS TemplateTest: vectors can be sized and resized - std::string

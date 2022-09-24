@@ -14293,7 +14293,7 @@ Message from section two
     </Expression>
     <OverallResult success="true"/>
   </TestCase>
-  <TestCase name="Template test case with test types specified inside non-copyable and non-movable std::tuple - NonCopyableAndNonMovableTypes - 0" tags="[list][template]" filename="tests/<exe-name>/UsageTests/Misc.tests.cpp" >
+  <TestCase name="Template test case with test types specified inside non-copyable and non-movable std::tuple - NonCopyableAndNonMovableTypes - 0 - NonCopyableAndNonMovableType" tags="[list][template]" filename="tests/<exe-name>/UsageTests/Misc.tests.cpp" >
     <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/UsageTests/Misc.tests.cpp" >
       <Original>
         sizeof(TestType) > 0
@@ -14304,7 +14304,7 @@ Message from section two
     </Expression>
     <OverallResult success="true"/>
   </TestCase>
-  <TestCase name="Template test case with test types specified inside non-copyable and non-movable std::tuple - NonCopyableAndNonMovableTypes - 1" tags="[list][template]" filename="tests/<exe-name>/UsageTests/Misc.tests.cpp" >
+  <TestCase name="Template test case with test types specified inside non-copyable and non-movable std::tuple - NonCopyableAndNonMovableTypes - 1 - float" tags="[list][template]" filename="tests/<exe-name>/UsageTests/Misc.tests.cpp" >
     <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/UsageTests/Misc.tests.cpp" >
       <Original>
         sizeof(TestType) > 0
@@ -14315,7 +14315,7 @@ Message from section two
     </Expression>
     <OverallResult success="true"/>
   </TestCase>
-  <TestCase name="Template test case with test types specified inside non-default-constructible std::tuple - MyNonDefaultConstructibleTypes - 0" tags="[list][template]" filename="tests/<exe-name>/UsageTests/Misc.tests.cpp" >
+  <TestCase name="Template test case with test types specified inside non-default-constructible std::tuple - MyNonDefaultConstructibleTypes - 0 - NonDefaultConstructibleType" tags="[list][template]" filename="tests/<exe-name>/UsageTests/Misc.tests.cpp" >
     <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/UsageTests/Misc.tests.cpp" >
       <Original>
         sizeof(TestType) > 0
@@ -14326,7 +14326,7 @@ Message from section two
     </Expression>
     <OverallResult success="true"/>
   </TestCase>
-  <TestCase name="Template test case with test types specified inside non-default-constructible std::tuple - MyNonDefaultConstructibleTypes - 1" tags="[list][template]" filename="tests/<exe-name>/UsageTests/Misc.tests.cpp" >
+  <TestCase name="Template test case with test types specified inside non-default-constructible std::tuple - MyNonDefaultConstructibleTypes - 1 - float" tags="[list][template]" filename="tests/<exe-name>/UsageTests/Misc.tests.cpp" >
     <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/UsageTests/Misc.tests.cpp" >
       <Original>
         sizeof(TestType) > 0
@@ -14337,7 +14337,7 @@ Message from section two
     </Expression>
     <OverallResult success="true"/>
   </TestCase>
-  <TestCase name="Template test case with test types specified inside std::tuple - MyTypes - 0" tags="[list][template]" filename="tests/<exe-name>/UsageTests/Misc.tests.cpp" >
+  <TestCase name="Template test case with test types specified inside std::tuple - MyTypes - 0 - int" tags="[list][template]" filename="tests/<exe-name>/UsageTests/Misc.tests.cpp" >
     <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/UsageTests/Misc.tests.cpp" >
       <Original>
         sizeof(TestType) > 0
@@ -14348,7 +14348,7 @@ Message from section two
     </Expression>
     <OverallResult success="true"/>
   </TestCase>
-  <TestCase name="Template test case with test types specified inside std::tuple - MyTypes - 1" tags="[list][template]" filename="tests/<exe-name>/UsageTests/Misc.tests.cpp" >
+  <TestCase name="Template test case with test types specified inside std::tuple - MyTypes - 1 - char" tags="[list][template]" filename="tests/<exe-name>/UsageTests/Misc.tests.cpp" >
     <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/UsageTests/Misc.tests.cpp" >
       <Original>
         sizeof(TestType) > 0
@@ -14359,7 +14359,7 @@ Message from section two
     </Expression>
     <OverallResult success="true"/>
   </TestCase>
-  <TestCase name="Template test case with test types specified inside std::tuple - MyTypes - 2" tags="[list][template]" filename="tests/<exe-name>/UsageTests/Misc.tests.cpp" >
+  <TestCase name="Template test case with test types specified inside std::tuple - MyTypes - 2 - float" tags="[list][template]" filename="tests/<exe-name>/UsageTests/Misc.tests.cpp" >
     <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/UsageTests/Misc.tests.cpp" >
       <Original>
         sizeof(TestType) > 0

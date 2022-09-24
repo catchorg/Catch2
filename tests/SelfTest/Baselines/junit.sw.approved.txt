@@ -1301,13 +1301,13 @@ Misc.tests.cpp:<line number>
     <testcase classname="<exe-name>.Template_Fixture" name="Template test case method with test types specified inside std::tuple - MyTypes - 0" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.Template_Fixture" name="Template test case method with test types specified inside std::tuple - MyTypes - 1" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.Template_Fixture" name="Template test case method with test types specified inside std::tuple - MyTypes - 2" time="{duration}" status="run"/>
-    <testcase classname="<exe-name>.global" name="Template test case with test types specified inside non-copyable and non-movable std::tuple - NonCopyableAndNonMovableTypes - 0" time="{duration}" status="run"/>
-    <testcase classname="<exe-name>.global" name="Template test case with test types specified inside non-copyable and non-movable std::tuple - NonCopyableAndNonMovableTypes - 1" time="{duration}" status="run"/>
-    <testcase classname="<exe-name>.global" name="Template test case with test types specified inside non-default-constructible std::tuple - MyNonDefaultConstructibleTypes - 0" time="{duration}" status="run"/>
-    <testcase classname="<exe-name>.global" name="Template test case with test types specified inside non-default-constructible std::tuple - MyNonDefaultConstructibleTypes - 1" time="{duration}" status="run"/>
-    <testcase classname="<exe-name>.global" name="Template test case with test types specified inside std::tuple - MyTypes - 0" time="{duration}" status="run"/>
-    <testcase classname="<exe-name>.global" name="Template test case with test types specified inside std::tuple - MyTypes - 1" time="{duration}" status="run"/>
-    <testcase classname="<exe-name>.global" name="Template test case with test types specified inside std::tuple - MyTypes - 2" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Template test case with test types specified inside non-copyable and non-movable std::tuple - NonCopyableAndNonMovableTypes - 0 - NonCopyableAndNonMovableType" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Template test case with test types specified inside non-copyable and non-movable std::tuple - NonCopyableAndNonMovableTypes - 1 - float" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Template test case with test types specified inside non-default-constructible std::tuple - MyNonDefaultConstructibleTypes - 0 - NonDefaultConstructibleType" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Template test case with test types specified inside non-default-constructible std::tuple - MyNonDefaultConstructibleTypes - 1 - float" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Template test case with test types specified inside std::tuple - MyTypes - 0 - int" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Template test case with test types specified inside std::tuple - MyTypes - 1 - char" time="{duration}" status="run"/>
+    <testcase classname="<exe-name>.global" name="Template test case with test types specified inside std::tuple - MyTypes - 2 - float" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="TemplateTest: vectors can be sized and resized - float" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="TemplateTest: vectors can be sized and resized - float/resizing bigger changes size and capacity" time="{duration}" status="run"/>
     <testcase classname="<exe-name>.global" name="TemplateTest: vectors can be sized and resized - float/resizing smaller changes size but not capacity" time="{duration}" status="run"/>
