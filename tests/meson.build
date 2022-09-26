@@ -65,6 +65,7 @@ self_test = executable(
   'self_test',
   self_test_sources,
   include_directories : '../src',
-  link_with : [ catch2_with_main, catch2 ])
+  link_with : [ catch2_with_main, catch2 ]
+)
 
 test('SelfTest', self_test)

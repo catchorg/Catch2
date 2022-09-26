@@ -4,16 +4,19 @@
 #        https://www.boost.org/LICENSE_1_0.txt)
 
 # SPDX-License-Identifier: BSL-1.0
+pkg = import('pkgconfig')
 
 conf_data = configuration_data()
 conf_data.set('CATCH_CONFIG_DEFAULT_REPORTER', 'console')
 conf_data.set('CATCH_CONFIG_CONSOLE_WIDTH', '80')
 
-configure_file(input: 'catch_user_config.hpp.in',
-               output: 'catch_user_config.hpp',
-               format: 'cmake@',
-               install_dir: get_option('includedir') / 'catch2',
-               configuration: conf_data)
+configure_file(
+  input: 'catch_user_config.hpp.in',
+  output: 'catch_user_config.hpp',
+  format: 'cmake@',
+  install_dir: get_option('includedir') / 'catch2',
+  configuration: conf_data
+)
 
 benchmark_headers = [
   'benchmark/catch_benchmark.hpp',
@@ -302,46 +305,53 @@ sources = benchmark_sources + internal_sources + reporter_sources
 # make it compatible with newer meson.
 include_subdir = 'catch2'
 foreach file : headers
-    file_path = file.split('/')
+  file_path = file.split('/')
 
-    folder = ''
-    foreach path : file_path
-        if path != file_path[-1]
-            folder = folder / path
-        endif
-    endforeach
+  folder = ''
+  foreach path : file_path
+    if path != file_path[-1]
+      folder = folder / path
+    endif
+  endforeach
 
-    install_headers(file, subdir: join_paths(include_subdir, folder))
+  install_headers(file, subdir: join_paths(include_subdir, folder))
 endforeach
 
 catch2 = static_library(
   'Catch2',
   sources,
   include_directories : '..',
-  dependencies : [],
-  install : true)
+  install : true
+)
+
+catch2_dep = declare_dependency(
+  link_with: catch2,
+  include_directories: '..'
+)
 
 pkg.generate(
+  catch2,
   filebase: 'catch2',
-  name : 'Catch2',
-  libraries : catch2,
-  version : meson.project_version(),
   description : 'A modern, C++-native, test framework for C++14 and above',
-  url: 'https://github.com/catchorg/Catch2',
+  url: 'https://github.com/catchorg/Catch2'
 )
 
 catch2_with_main = static_library(
   'Catch2Main',
   [ 'internal/catch_main.cpp' ],
+  link_with: catch2,
   include_directories : '..',
-  dependencies : [],
-  install : true)
+  install : true
+)
+
+catch2_with_main_dep = declare_dependency(
+  link_with: [ catch2, catch2_with_main ],
+  include_directories: '..'
+)
 
 pkg.generate(
+  catch2_with_main,
   filebase : 'catch2-with-main',
-  name : 'Catch2-With-Main',
-  libraries : catch2_with_main,
-  version : meson.project_version(),
   description : 'A modern, C++-native, test framework for C++14 and above (links in default main)',
   requires : 'catch2 = ' + meson.project_version()
 )
