@@ -61,7 +61,6 @@ namespace Catch {
                 multi->addListener(listener->create(config));
             }
 
-            std::size_t reporterIdx = 0;
             for ( auto const& reporterSpec : config->getProcessedReporterSpecs() ) {
                 multi->addReporter( createReporter(
                     reporterSpec.name,
@@ -69,7 +68,6 @@ namespace Catch {
                                     makeStream( reporterSpec.outputFilename ),
                                     reporterSpec.colourMode,
                                     reporterSpec.customOptions ) ) );
-                reporterIdx++;
             }
 
             return multi;
