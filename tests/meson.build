@@ -62,7 +62,7 @@ self_test_sources = [
 # This isn't as good as the CMake tests, but it proves that we've
 # actually put something in the library files.
 self_test = executable(
-  'self_test',
+  'SelfTest',
   self_test_sources,
   include_directories : '../src',
   link_with : [ catch2_with_main, catch2 ]
