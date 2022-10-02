@@ -47,7 +47,7 @@ namespace Catch {
 
             Error = BrightRed,
             Success = Green,
-            Skip = Blue,
+            Skip = LightGrey,
 
             OriginalExpression = Cyan,
             ReconstructedExpression = BrightYellow,
