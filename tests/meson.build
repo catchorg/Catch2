@@ -7,8 +7,7 @@
 
 # define the sources of the self test
 # Please keep these ordered alphabetically
-self_test_sources = [
-  'SelfTest/TestRegistrations.cpp',
+self_test_sources = files(
   'SelfTest/IntrospectiveTests/Clara.tests.cpp',
   'SelfTest/IntrospectiveTests/CmdLine.tests.cpp',
   'SelfTest/IntrospectiveTests/CmdLineHelpers.tests.cpp',
@@ -20,17 +19,18 @@ self_test_sources = [
   'SelfTest/IntrospectiveTests/PartTracker.tests.cpp',
   'SelfTest/IntrospectiveTests/RandomNumberGeneration.tests.cpp',
   'SelfTest/IntrospectiveTests/Reporters.tests.cpp',
-  'SelfTest/IntrospectiveTests/Tag.tests.cpp',
-  'SelfTest/IntrospectiveTests/TestCaseInfoHasher.tests.cpp',
-  'SelfTest/IntrospectiveTests/TestSpecParser.tests.cpp',
-  'SelfTest/IntrospectiveTests/TextFlow.tests.cpp',
   'SelfTest/IntrospectiveTests/Sharding.tests.cpp',
   'SelfTest/IntrospectiveTests/Stream.tests.cpp',
   'SelfTest/IntrospectiveTests/String.tests.cpp',
   'SelfTest/IntrospectiveTests/StringManip.tests.cpp',
-  'SelfTest/IntrospectiveTests/Xml.tests.cpp',
+  'SelfTest/IntrospectiveTests/Tag.tests.cpp',
+  'SelfTest/IntrospectiveTests/TestCaseInfoHasher.tests.cpp',
+  'SelfTest/IntrospectiveTests/TestSpecParser.tests.cpp',
+  'SelfTest/IntrospectiveTests/TextFlow.tests.cpp',
   'SelfTest/IntrospectiveTests/ToString.tests.cpp',
   'SelfTest/IntrospectiveTests/UniquePtr.tests.cpp',
+  'SelfTest/IntrospectiveTests/Xml.tests.cpp',
+  'SelfTest/TestRegistrations.cpp',
   'SelfTest/TimingTests/Sleep.tests.cpp',
   'SelfTest/UsageTests/Approx.tests.cpp',
   'SelfTest/UsageTests/BDD.tests.cpp',
@@ -42,6 +42,8 @@ self_test_sources = [
   'SelfTest/UsageTests/EnumToString.tests.cpp',
   'SelfTest/UsageTests/Exception.tests.cpp',
   'SelfTest/UsageTests/Generators.tests.cpp',
+  'SelfTest/UsageTests/Matchers.tests.cpp',
+  'SelfTest/UsageTests/MatchersRanges.tests.cpp',
   'SelfTest/UsageTests/Message.tests.cpp',
   'SelfTest/UsageTests/Misc.tests.cpp',
   'SelfTest/UsageTests/ToStringByte.tests.cpp',
@@ -55,17 +57,15 @@ self_test_sources = [
   'SelfTest/UsageTests/ToStringWhich.tests.cpp',
   'SelfTest/UsageTests/Tricky.tests.cpp',
   'SelfTest/UsageTests/VariadicMacros.tests.cpp',
-  'SelfTest/UsageTests/MatchersRanges.tests.cpp',
-  'SelfTest/UsageTests/Matchers.tests.cpp'
-]
+)
 
 # This isn't as good as the CMake tests, but it proves that we've
 # actually put something in the library files.
 self_test = executable(
   'SelfTest',
   self_test_sources,
-  include_directories : '../src',
-  link_with : [ catch2_with_main, catch2 ]
+  include_directories: '../src',
+  link_with: [catch2_with_main, catch2],
 )
 
 test('SelfTest', self_test)
