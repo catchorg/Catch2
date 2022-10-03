@@ -108,6 +108,7 @@ def generate_cpp():
     with open(output_cpp, mode='w', encoding='utf-8') as cpp:
         cpp.write(formatted_file_header(Version()))
         cpp.write('\n#include "catch_amalgamated.hpp"\n')
+        concatenate_file(cpp, os.path.join(root_path, 'catch2/internal/catch_windows_h_proxy.hpp'), False)
         for file in cpp_files:
             concatenate_file(cpp, file, False)
     print('Concatenated {} cpp files'.format(len(cpp_files)))
