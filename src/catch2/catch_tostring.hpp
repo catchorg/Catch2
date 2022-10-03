@@ -13,7 +13,6 @@
 #include <cstddef>
 #include <type_traits>
 #include <string>
-#include <string.h>
 
 #include <catch2/internal/catch_compiler_capabilities.hpp>
 #include <catch2/internal/catch_config_wchar.hpp>
@@ -41,6 +40,13 @@ namespace Catch {
 
     namespace Detail {
 
+        inline std::size_t catch_strnlen(const char *str, std::size_t n) {
+            auto ret = std::char_traits<char>::find(str, n, '\0');
+            if (ret != nullptr) {
+                return ret - str;
+            }
+            return n;
+        }
 
         constexpr StringRef unprintableString = "{?}"_sr;
 
@@ -208,28 +214,24 @@ namespace Catch {
     template<size_t SZ>
     struct StringMaker<char[SZ]> {
         static std::string convert(char const* str) {
-            // Note that `strnlen` is not actually part of standard C++,
-            // but both POSIX and Windows cstdlib provide it.
             return Detail::convertIntoString(
-                StringRef( str, strnlen( str, SZ ) ) );
+                StringRef( str, Detail::catch_strnlen( str, SZ ) ) );
         }
     };
     template<size_t SZ>
     struct StringMaker<signed char[SZ]> {
         static std::string convert(signed char const* str) {
-            // See the plain `char const*` overload
             auto reinterpreted = reinterpret_cast<char const*>(str);
             return Detail::convertIntoString(
-                StringRef(reinterpreted, strnlen(reinterpreted, SZ)));
+                StringRef(reinterpreted, Detail::catch_strnlen(reinterpreted, SZ)));
         }
     };
     template<size_t SZ>
     struct StringMaker<unsigned char[SZ]> {
         static std::string convert(unsigned char const* str) {
-            // See the plain `char const*` overload
             auto reinterpreted = reinterpret_cast<char const*>(str);
             return Detail::convertIntoString(
-                StringRef(reinterpreted, strnlen(reinterpreted, SZ)));
+                StringRef(reinterpreted, Detail::catch_strnlen(reinterpreted, SZ)));
         }
     };
 
