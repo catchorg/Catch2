@@ -56,7 +56,7 @@ self_test_sources = [
   'SelfTest/UsageTests/Tricky.tests.cpp',
   'SelfTest/UsageTests/VariadicMacros.tests.cpp',
   'SelfTest/UsageTests/MatchersRanges.tests.cpp',
-  'SelfTest/UsageTests/Matchers.tests.cpp'
+  'SelfTest/UsageTests/Matchers.tests.cpp',
 ]
 
 # This isn't as good as the CMake tests, but it proves that we've
@@ -64,8 +64,8 @@ self_test_sources = [
 self_test = executable(
   'SelfTest',
   self_test_sources,
-  include_directories : '../src',
-  link_with : [ catch2_with_main, catch2 ]
+  include_directories: '../src',
+  link_with: [catch2_with_main, catch2],
 )
 
 test('SelfTest', self_test)

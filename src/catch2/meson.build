@@ -15,7 +15,7 @@ configure_file(
   output: 'catch_user_config.hpp',
   format: 'cmake@',
   install_dir: get_option('includedir') / 'catch2',
-  configuration: conf_data
+  configuration: conf_data,
 )
 
 benchmark_headers = [
@@ -38,7 +38,7 @@ benchmark_headers = [
   'benchmark/detail/catch_repeat.hpp',
   'benchmark/detail/catch_run_for_at_least.hpp',
   'benchmark/detail/catch_stats.hpp',
-  'benchmark/detail/catch_timing.hpp'
+  'benchmark/detail/catch_timing.hpp',
 ]
 
 benchmark_sources = [
@@ -170,7 +170,7 @@ internal_headers = [
   'internal/catch_wildcard_pattern.hpp',
   'internal/catch_windows_h_proxy.hpp',
   'internal/catch_xmlwriter.hpp',
-  'internal/catch_test_case_info_hasher.hpp'
+  'internal/catch_test_case_info_hasher.hpp',
 ]
 
 internal_sources = [
@@ -239,7 +239,7 @@ internal_sources = [
   'matchers/catch_matchers_predicate.cpp',
   'matchers/internal/catch_matchers_impl.cpp',
   'catch_tag_alias_autoregistrar.cpp',
-  'catch_get_random_seed.cpp',  
+  'catch_get_random_seed.cpp',
   'internal/catch_decomposer.cpp',
   'internal/catch_errno_guard.cpp',
   'internal/catch_lazy_expr.cpp',
@@ -273,7 +273,7 @@ reporter_headers = [
   'reporters/catch_reporter_streaming_base.hpp',
   'reporters/catch_reporter_tap.hpp',
   'reporters/catch_reporter_teamcity.hpp',
-  'reporters/catch_reporter_xml.hpp'
+  'reporters/catch_reporter_xml.hpp',
 ]
 
 reporter_sources = [
@@ -320,38 +320,38 @@ endforeach
 catch2 = static_library(
   'Catch2',
   sources,
-  include_directories : '..',
-  install : true
+  include_directories: '..',
+  install: true,
 )
 
 catch2_dep = declare_dependency(
   link_with: catch2,
-  include_directories: '..'
+  include_directories: '..',
 )
 
 pkg.generate(
   catch2,
   filebase: 'catch2',
-  description : 'A modern, C++-native, test framework for C++14 and above',
-  url: 'https://github.com/catchorg/Catch2'
+  description: 'A modern, C++-native, test framework for C++14 and above',
+  url: 'https://github.com/catchorg/Catch2',
 )
 
 catch2_with_main = static_library(
   'Catch2Main',
-  [ 'internal/catch_main.cpp' ],
+  'internal/catch_main.cpp',
   link_with: catch2,
-  include_directories : '..',
-  install : true
+  include_directories: '..',
+  install: true,
 )
 
 catch2_with_main_dep = declare_dependency(
-  link_with: [ catch2, catch2_with_main ],
-  include_directories: '..'
+  link_with: [catch2, catch2_with_main],
+  include_directories: '..',
 )
 
 pkg.generate(
   catch2_with_main,
-  filebase : 'catch2-with-main',
-  description : 'A modern, C++-native, test framework for C++14 and above (links in default main)',
-  requires : 'catch2 = ' + meson.project_version()
+  filebase: 'catch2-with-main',
+  description: 'A modern, C++-native, test framework for C++14 and above (links in default main)',
+  requires: 'catch2 = ' + meson.project_version(),
 )
