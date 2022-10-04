@@ -304,7 +304,7 @@ endif()
 set_target_properties(Catch2 PROPERTIES 
                           DEBUG_POSTFIX "d"
                                 VERSION ${PROJECT_VERSION}
-                              SOVERSION ${PROJECT_VERSION_MAJOR})
+                              SOVERSION ${PROJECT_VERSION})
 
 # depend on bunch of C++11 and C++14 features to have C++14 enabled by default
 target_compile_features(Catch2
@@ -354,7 +354,7 @@ set_target_properties(Catch2WithMain
   PROPERTIES
     OUTPUT_NAME "Catch2Main"
         VERSION ${PROJECT_VERSION}
-      SOVERSION ${PROJECT_VERSION_MAJOR}
+      SOVERSION ${PROJECT_VERSION}
 )
 set_target_properties(Catch2WithMain PROPERTIES DEBUG_POSTFIX "d")
 
