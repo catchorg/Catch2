@@ -8,9 +8,10 @@
 
 include(CheckCXXCompilerFlag)
 function(add_cxx_flag_if_supported_to_targets flagname targets)
-    check_cxx_compiler_flag("${flagname}" HAVE_FLAG_${flagname})
+    string(MAKE_C_IDENTIFIER ${flagname} flag_identifier )
+    check_cxx_compiler_flag("${flagname}" HAVE_FLAG_${flag_identifier})
 
-    if (HAVE_FLAG_${flagname})
+    if (HAVE_FLAG_${flag_identifier})
         foreach(target ${targets})
             target_compile_options(${target} PUBLIC ${flagname})
         endforeach()
@@ -112,9 +113,8 @@ endfunction()
 # Adds flags required for reproducible build to the target
 # Currently only supports GCC and Clang
 function(add_build_reproducibility_settings target)
-# Make the build reproducible on versions of g++ and clang that supports -ffile-prefix-map
-  if(("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU" AND NOT ${CMAKE_CXX_COMPILER_VERSION} VERSION_LESS 8) OR
-     ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang" AND NOT ${CMAKE_CXX_COMPILER_VERSION} VERSION_LESS 10))
-    target_compile_options(${target} PRIVATE "-ffile-prefix-map=${CATCH_DIR}=.")
+  # Make the build reproducible on versions of g++ and clang that supports -ffile-prefix-map
+  if((CMAKE_CXX_COMPILER_ID STREQUAL "GNU") OR (CMAKE_CXX_COMPILER_ID MATCHES "Clang"))
+    add_cxx_flag_if_supported_to_targets("-ffile-prefix-map=${CATCH_DIR}/=" "${target}")
   endif()
 endfunction()
