@@ -15,6 +15,9 @@ Catch is different. Because it decomposes natural C-style conditional expression
 Most of these macros come in two forms:
 
 ## Natural Expressions
+```cpp
+#include <catch2/catch_test_macros.hpp>
+```
 
 The ```REQUIRE``` family of macros tests an expression and aborts the test case if it fails.
 The ```CHECK``` family are equivalent but execution continues in the same test case even if the assertion fails. This is useful if you have a series of essentially orthogonal assertions and it is useful to see all the results rather than stopping at the first failure.
@@ -52,6 +55,9 @@ This expression is too complex because of the `||` operator. If you want to chec
 
 
 ### Floating point comparisons
+```cpp
+#include <catch2/catch_approx.hpp>
+```
 
 When comparing floating point numbers - especially if at least one of them has been computed - great care must be taken to allow for rounding errors and inexact representations.
 
@@ -124,7 +130,9 @@ Expects that an exception of the _specified type_ is thrown during evaluation of
 
 * **REQUIRE_THROWS_WITH(** _expression_, _string or string matcher_ **)** and  
 * **CHECK_THROWS_WITH(** _expression_, _string or string matcher_ **)**
-
+```cpp
+#include <catch2/matchers/catch_matchers.hpp>
+```
 Expects that an exception is thrown that, when converted to a string, matches the _string_ or _string matcher_ provided (see next section for Matchers).
 
 e.g.
@@ -195,6 +203,20 @@ TEST_CASE_METHOD((Fixture<int, int>), "foo", "[bar]") {
 
 This solution is not always applicable, because it might require extra
 changes on the Catch's side to work.
+
+## Lambdas
+Lambdas are a C++ language feature and can be freely used inside a `TEST_CASE` or a `SECTION`.
+
+```cpp
+#include <catch2/catch_test_macros.hpp>
+
+TEST_CASE("Dumb") {
+    auto fnTest = [](const bool bPass) { CHECK(bPass); };
+
+    fnTest(true);
+}
+```
+[godbolt](https://catch2.godbolt.org/z/ebdr9vKcj)
 
 ---
 

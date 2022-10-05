@@ -2,6 +2,9 @@
 # Data Generators
 
 > Introduced in Catch2 2.6.0.
+```cpp
+#include <catch2/generators/catch_generators.hpp>
+```
 
 Data generators (also known as _data driven/parametrized test cases_)
 let you reuse the same set of assertions across different input values.
@@ -144,6 +147,16 @@ type, making their usage much nicer. These are
 > `from_range` has been introduced in Catch2 2.10.0
 
 > `range()` for floating point numbers has been introduced in Catch2 2.11.0
+
+### Random generators
+```cpp
+#include <catch2/generators/catch_generators_random.hpp>
+```
+
+### Range generators
+```cpp
+#include <catch2/generators/catch_generators_range.hpp>
+```
 
 And can be used as shown in the example below to create a generator
 that returns 100 odd random number:
