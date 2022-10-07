@@ -21,11 +21,7 @@
 #  define WIN32_LEAN_AND_MEAN
 #endif
 
-#ifdef __AFXDLL
-#include <AfxWin.h>
-#else
 #include <windows.h>
-#endif
 
 #endif // defined(CATCH_PLATFORM_WINDOWS)
 

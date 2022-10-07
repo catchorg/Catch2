@@ -284,7 +284,7 @@ This option transforms tabs and newline characters into ```\t``` and ```\n``` re
 <pre>-w, --warn &lt;warning name></pre>
 
 You can think of Catch2's warnings as the equivalent of `-Werror` (`/WX`)
-flag for C++ compilers. It turns some suspicious occurences, like a section
+flag for C++ compilers. It turns some suspicious occurrences, like a section
 without assertions, into errors. Because these might be intended, warnings
 are not enabled by default, but user can opt in.
 
@@ -313,7 +313,7 @@ When set to ```yes``` Catch will report the duration of each test case, in milli
 > `--min-duration` was [introduced](https://github.com/catchorg/Catch2/pull/1910) in Catch2 2.13.0
 
 When set, Catch will report the duration of each test case that took more
-than &lt;value> seconds, in milliseconds. This option is overriden by both
+than &lt;value> seconds, in milliseconds. This option is overridden by both
 `-d yes` and `-d no`, so that either all durations are reported, or none
 are.
 
@@ -570,7 +570,7 @@ tests still returns 0.
 -v, --verbosity <quiet|normal|high>
 ```
 
-Changing verbosity might change how much details Catch2's reporters output.
+Changing verbosity might change how many details Catch2's reporters output.
 However, you should consider changing the verbosity level as a _suggestion_.
 Not all reporters support all verbosity levels, e.g. because the reporter's
 format cannot meaningfully change. In that case, the verbosity level is

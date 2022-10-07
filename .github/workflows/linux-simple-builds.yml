@@ -9,7 +9,8 @@ jobs:
     strategy:
       matrix:
         cxx:
-#          - g++-6
+          - g++-5
+          - g++-6
           - g++-7
           - g++-8
           - g++-9
@@ -22,9 +23,10 @@ jobs:
         build_type: [Debug, Release]
         std: [14]
         include:
-        # cannot be installed on ubuntu-20.04 be default?
-#          - cxx: g++-6
-#            other_pkgs: g++-6
+          - cxx: g++-5
+            other_pkgs: g++-5
+          - cxx: g++-6
+            other_pkgs: g++-6
           - cxx: g++-7
             other_pkgs: g++-7
           - cxx: g++-8
@@ -66,6 +68,12 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+
+    - name: Add repositories for older GCC
+      run: |
+        sudo apt-add-repository 'deb http://azure.archive.ubuntu.com/ubuntu/ bionic main'
+        sudo apt-add-repository 'deb http://azure.archive.ubuntu.com/ubuntu/ bionic universe'
+      if: ${{ matrix.cxx == 'g++-5' || matrix.cxx == 'g++-6' }}
 
     - name: Prepare environment
       run: sudo apt-get install -y ninja-build ${{matrix.other_pkgs}}

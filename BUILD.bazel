@@ -1,14 +1,13 @@
-# Load the cc_library rule.
-load("@rules_cc//cc:defs.bzl", "cc_library")
 load("@bazel_skylib//rules:expand_template.bzl", "expand_template")
 
 expand_template(
     name = "catch_user_config",
     out = "catch2/catch_user_config.hpp",
     substitutions = {
+        "@CATCH_CONFIG_CONSOLE_WIDTH@": "80",
+        "@CATCH_CONFIG_DEFAULT_REPORTER@": "console",
         "#cmakedefine CATCH_CONFIG_ANDROID_LOGWRITE": "",
         "#cmakedefine CATCH_CONFIG_BAZEL_SUPPORT": "#define CATCH_CONFIG_BAZEL_SUPPORT",
-        "#cmakedefine CATCH_CONFIG_NO_COLOUR_WIN32": "",
         "#cmakedefine CATCH_CONFIG_COLOUR_WIN32": "",
         "#cmakedefine CATCH_CONFIG_COUNTER": "",
         "#cmakedefine CATCH_CONFIG_CPP11_TO_STRING": "",
@@ -30,6 +29,8 @@ expand_template(
         "#cmakedefine CATCH_CONFIG_FALLBACK_STRINGIFIER @CATCH_CONFIG_FALLBACK_STRINGIFIER@": "",
         "#cmakedefine CATCH_CONFIG_FAST_COMPILE": "",
         "#cmakedefine CATCH_CONFIG_GLOBAL_NEXTAFTER": "",
+        "#cmakedefine CATCH_CONFIG_NO_ANDROID_LOGWRITE": "",
+        "#cmakedefine CATCH_CONFIG_NO_COLOUR_WIN32": "",
         "#cmakedefine CATCH_CONFIG_NO_COUNTER": "",
         "#cmakedefine CATCH_CONFIG_NO_CPP11_TO_STRING": "",
         "#cmakedefine CATCH_CONFIG_NO_CPP17_BYTE": "",
@@ -45,13 +46,11 @@ expand_template(
         "#cmakedefine CATCH_CONFIG_NOSTDOUT": "",
         "#cmakedefine CATCH_CONFIG_POSIX_SIGNALS": "",
         "#cmakedefine CATCH_CONFIG_PREFIX_ALL": "",
+        "#cmakedefine CATCH_CONFIG_SHARED_LIBRARY": "",
         "#cmakedefine CATCH_CONFIG_USE_ASYNC": "",
         "#cmakedefine CATCH_CONFIG_WCHAR": "",
         "#cmakedefine CATCH_CONFIG_WINDOWS_CRTDBG": "",
         "#cmakedefine CATCH_CONFIG_WINDOWS_SEH": "",
-        "#cmakedefine CATCH_CONFIG_NO_ANDROID_LOGWRITE": "",
-        "@CATCH_CONFIG_DEFAULT_REPORTER@": "console",
-        "@CATCH_CONFIG_CONSOLE_WIDTH@": "80",
     },
     template = "src/catch2/catch_user_config.hpp.in",
 )

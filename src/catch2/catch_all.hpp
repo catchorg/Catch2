@@ -114,7 +114,6 @@
 #include <catch2/internal/catch_unique_ptr.hpp>
 #include <catch2/internal/catch_void_type.hpp>
 #include <catch2/internal/catch_wildcard_pattern.hpp>
-#include <catch2/internal/catch_windows_h_proxy.hpp>
 #include <catch2/internal/catch_xmlwriter.hpp>
 #include <catch2/matchers/catch_matchers_all.hpp>
 #include <catch2/reporters/catch_reporters_all.hpp>

@@ -120,7 +120,8 @@ def verify_convenience_header(folder):
     # 4) Are all required headers present?
     file_incs_set = set(file_incs)
     for include in target_includes:
-        if include not in file_incs_set:
+        if (include not in file_incs_set and
+            include != 'catch2/internal/catch_windows_h_proxy.hpp'):
             errors_found = True
             print("'{}': missing include '{}'".format(header_name, include))
 

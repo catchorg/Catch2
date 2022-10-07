@@ -47,7 +47,7 @@ Catch2 also supports [splitting tests in a binary into multiple
 shards](command-line.md#test-sharding). This can be used by any test
 runner to run batches of tests in parallel. Do note that when selecting
 on the number of shards, you should have more shards than there are cores,
-to avoid issues with long running tests getting accidentally grouped in
+to avoid issues with long-running tests getting accidentally grouped in
 the same shard, and causing long-tailed execution time.
 
 **Note that naively composing sharding and random ordering of tests will break.**

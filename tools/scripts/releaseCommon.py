@@ -15,6 +15,7 @@ versionPath = os.path.join( rootPath, "catch_version.cpp" )
 definePath = os.path.join(rootPath, 'catch_version_macros.hpp')
 readmePath = os.path.join( catchPath, "README.md" )
 cmakePath = os.path.join(catchPath, 'CMakeLists.txt')
+mesonPath = os.path.join(catchPath, 'meson.build')
 
 class Version:
     def __init__(self):
@@ -89,6 +90,16 @@ def updateCmakeFile(version):
             file.write(replacementRegex.sub(replacement, line))
 
 
+def updateMesonFile(version):
+    with open(mesonPath, 'rb') as file:
+        lines = file.readlines()
+    replacementRegex = re.compile(b'''version\s*:\s*'(\\d+.\\d+.\\d+)', # CML version placeholder, don't delete''')
+    replacement = '''version: '{0}', # CML version placeholder, don't delete'''.format(version.getVersionString()).encode('ascii')
+    with open(mesonPath, 'wb') as file:
+        for line in lines:
+            file.write(replacementRegex.sub(replacement, line))
+
+
 def updateVersionDefine(version):
     # First member of the tuple is the compiled regex object, the second is replacement if it matches
     replacementRegexes = [(re.compile(b'#define CATCH_VERSION_MAJOR \\d+'),'#define CATCH_VERSION_MAJOR {}'.format(version.majorVersion).encode('ascii')),
@@ -132,4 +143,5 @@ def performUpdates(version):
     generateAmalgamatedFiles.generate_cpp()
 
     updateCmakeFile(version)
+    updateMesonFile(version)
     updateDocumentationVersionPlaceholders(version)

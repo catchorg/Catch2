@@ -301,7 +301,10 @@ if (ANDROID)
     target_link_libraries(Catch2 INTERFACE log)
 endif()
 
-set_target_properties(Catch2 PROPERTIES DEBUG_POSTFIX "d")
+set_target_properties(Catch2 PROPERTIES 
+                          DEBUG_POSTFIX "d"
+                                VERSION ${PROJECT_VERSION}
+                              SOVERSION ${PROJECT_VERSION})
 
 # depend on bunch of C++11 and C++14 features to have C++14 enabled by default
 target_compile_features(Catch2
@@ -350,6 +353,8 @@ target_link_libraries(Catch2WithMain PUBLIC Catch2)
 set_target_properties(Catch2WithMain
   PROPERTIES
     OUTPUT_NAME "Catch2Main"
+        VERSION ${PROJECT_VERSION}
+      SOVERSION ${PROJECT_VERSION}
 )
 set_target_properties(Catch2WithMain PROPERTIES DEBUG_POSTFIX "d")
 
@@ -408,6 +413,10 @@ if (CATCH_BUILD_EXAMPLES OR CATCH_BUILD_EXTRA_TESTS)
         $<BUILD_INTERFACE:${SOURCES_DIR}/..>
         $<BUILD_INTERFACE:${CMAKE_BINARY_DIR}/generated-includes>
         $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
+    )
+    target_compile_definitions(Catch2_buildall_interface
+      INTERFACE
+        CATCH_CONFIG_STATIC
     )
     target_compile_features(Catch2_buildall_interface
       INTERFACE

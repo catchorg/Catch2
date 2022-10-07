@@ -158,7 +158,7 @@ difference with `target` is less than the `margin`.
 are no more than `maxUlpDiff`
 [ULPs](https://en.wikipedia.org/wiki/Unit_in_the_last_place)
 away from the `target` value. The short version of what this means
-is that there is no more than `maxUlpDiff - 1` representeable floating
+is that there is no more than `maxUlpDiff - 1` representable floating
 point numbers between the argument for matching and the `target` value.
 
 **Important**: The WithinULP matcher requires the platform to use the
@@ -224,7 +224,7 @@ The other miscellaneous matcher utility is exception matching.
 
 #### Matching exceptions
 
-Catch2 provides an utility macro for asserting that an expression
+Catch2 provides a utility macro for asserting that an expression
 throws exception of specific type, and that the exception has desired
 properties. The macro is `REQUIRE_THROWS_MATCHES(expr, ExceptionType, Matcher)`.
 
@@ -368,7 +368,7 @@ style matchers arbitrarily.
 
 To create a new-style matcher, you have to create your own type that
 derives from `Catch::Matchers::MatcherGenericBase`. Your type has to
-also provide two methods, `bool match( ... ) const` and overriden
+also provide two methods, `bool match( ... ) const` and overridden
 `std::string describe() const`.
 
 Unlike with old-style matchers, there are no requirements on how
