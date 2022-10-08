@@ -43,7 +43,7 @@ namespace Catch {
         inline std::size_t catch_strnlen(const char *str, std::size_t n) {
             auto ret = std::char_traits<char>::find(str, n, '\0');
             if (ret != nullptr) {
-                return ret - str;
+                return static_cast<std::size_t>(ret - str);
             }
             return n;
         }
