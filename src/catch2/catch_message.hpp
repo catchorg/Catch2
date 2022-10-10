@@ -110,7 +110,7 @@ namespace Catch {
     Catch::getResultCapture().emplaceUnscopedMessage( Catch::MessageBuilder( macroName##_catch_sr, CATCH_INTERNAL_LINEINFO, Catch::ResultWas::Info ) << log )
 
 
-#if defined(CATCH_CONFIG_PREFIX_ALL)
+#if defined(CATCH_CONFIG_PREFIX_ALL) && !defined(CATCH_CONFIG_PREFIX_MESSAGES)
 #define CATCH_CONFIG_PREFIX_MESSAGES
 #endif
 
