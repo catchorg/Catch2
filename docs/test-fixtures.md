@@ -3,7 +3,7 @@
 
 ## Defining test fixtures
 
-Although Catch allows you to group tests together as sections within a test case, it can still be convenient, sometimes, to group them using a more traditional test fixture. Catch fully supports this too. You define the test fixture as a simple structure:
+Although Catch allows you to group tests together as [sections within a test case](test-cases-and-sections.md), it can still be convenient, sometimes, to group them using a more traditional test fixture. Catch fully supports this too. You define the test fixture as a simple structure:
 
 ```c++
 class UniqueTestsFixture {
