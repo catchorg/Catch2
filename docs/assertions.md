@@ -53,56 +53,8 @@ This expression is too complex because of the `||` operator. If you want to chec
 
 ### Floating point comparisons
 
-When comparing floating point numbers - especially if at least one of them has been computed - great care must be taken to allow for rounding errors and inexact representations.
-
-Catch provides a way to perform tolerant comparisons of floating point values through use of a wrapper class called `Approx`. `Approx` can be used on either side of a comparison expression. It overloads the comparisons operators to take a tolerance into account. Here's a simple example:
-
-```cpp
-REQUIRE( performComputation() == Approx( 2.1 ) );
-```
-
-Catch also provides a user-defined literal for `Approx`; `_a`. It resides in
-the `Catch::literals` namespace and can be used like so:
-```cpp
-using namespace Catch::literals;
-REQUIRE( performComputation() == 2.1_a );
-```
-
-`Approx` is constructed with defaults that should cover most simple cases.
-For the more complex cases, `Approx` provides 3 customization points:
-
-* __epsilon__ - epsilon serves to set the coefficient by which a result
-can differ from `Approx`'s value before it is rejected.
-_By default set to `std::numeric_limits<float>::epsilon()*100`._
-* __margin__ - margin serves to set the the absolute value by which
-a result can differ from `Approx`'s value before it is rejected.
-_By default set to `0.0`._
-* __scale__ - scale is used to change the magnitude of `Approx` for relative check.
-_By default set to `0.0`._
-
-#### epsilon example
-```cpp
-Approx target = Approx(100).epsilon(0.01);
-100.0 == target; // Obviously true
-200.0 == target; // Obviously still false
-100.5 == target; // True, because we set target to allow up to 1% difference
-```
-
-#### margin example
-```cpp
-Approx target = Approx(100).margin(5);
-100.0 == target; // Obviously true
-200.0 == target; // Obviously still false
-104.0 == target; // True, because we set target to allow absolute difference of at most 5
-```
-
-#### scale
-Scale can be useful if the computation leading to the result worked
-on different scale than is used by the results. Since allowed difference
-between Approx's value and compared value is based primarily on Approx's value
-(the allowed difference is computed as
-`(Approx::scale + Approx::value) * epsilon`), the resulting comparison could
-need rescaling to be correct.
+Comparing floating point numbers is complex, and [so it has its own
+documentation page](comparing-floating-point-numbers.md#top).
 
 
 ## Exceptions
