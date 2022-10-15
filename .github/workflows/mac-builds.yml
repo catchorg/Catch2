@@ -4,7 +4,11 @@ on: [push, pull_request]
 
 jobs:
   build:
-    runs-on: macos-12
+    # macos-12 updated to a toolchain that crashes when linking the
+    # test binary. This seems to be a known bug in that version,
+    # and will eventually get fixed in an update. After that, we can go
+    # back to newer macos images.
+    runs-on: macos-11
     strategy:
       matrix:
         cxx:
