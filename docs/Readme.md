@@ -6,14 +6,14 @@ Once you're up and running consider the following reference material.
 
 **Writing tests:**
 * [Assertion macros](assertions.md#top)
-* [Matchers](matchers.md#top)
+* [Matchers (asserting complex properties)](matchers.md#top)
 * [Comparing floating point numbers](comparing-floating-point-numbers.md#top)
 * [Logging macros](logging.md#top)
 * [Test cases and sections](test-cases-and-sections.md#top)
 * [Test fixtures](test-fixtures.md#top)
-* [Reporters](reporters.md#top)
+* [Reporters (output customization)](reporters.md#top)
 * [Event Listeners](event-listeners.md#top)
-* [Data Generators](generators.md#top)
+* [Data Generators (value parameterized tests)](generators.md#top)
 * [Other macros](other-macros.md#top)
 * [Micro benchmarking](benchmarks.md#top)
 
