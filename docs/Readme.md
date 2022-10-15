@@ -4,7 +4,7 @@
 To get the most out of Catch2, start with the [tutorial](tutorial.md#top).
 Once you're up and running consider the following reference material.
 
-Writing tests:
+**Writing tests:**
 * [Assertion macros](assertions.md#top)
 * [Matchers](matchers.md#top)
 * [Comparing floating point numbers](comparing-floating-point-numbers.md#top)
@@ -17,22 +17,22 @@ Writing tests:
 * [Other macros](other-macros.md#top)
 * [Micro benchmarking](benchmarks.md#top)
 
-Fine tuning:
+**Fine tuning:**
 * [Supplying your own main()](own-main.md#top)
 * [Compile-time configuration](configuration.md#top)
 * [String Conversions](tostring.md#top)
 
-Running:
+**Running:**
 * [Command line](command-line.md#top)
 
-Odds and ends:
+**Odds and ends:**
 * [Frequently Asked Questions (FAQ)](faq.md#top)
 * [Best practices and other tips](usage-tips.md#top)
 * [CMake integration](cmake-integration.md#top)
 * [CI and other miscellaneous pieces](ci-and-misc.md#top)
 * [Known limitations](limitations.md#top)
  
-Other:
+**Other:**
 * [Why Catch2?](why-catch.md#top)
 * [Migrating from v2 to v3](migrate-v2-to-v3.md#top)
 * [Open Source Projects using Catch2](opensource-users.md#top)
