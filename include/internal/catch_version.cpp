@@ -37,7 +37,7 @@ namespace Catch {
     }
 
     Version const& libraryVersion() {
-        static Version version( 2, 13, 9, "", 0 );
+        static Version version( 2, 13, 10, "", 0 );
         return version;
     }
 
