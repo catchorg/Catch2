@@ -3,6 +3,7 @@
 
 **Contents**<br>
 [Natural Expressions](#natural-expressions)<br>
+[Floating point comparisons](#floating-point-comparisons)<br>
 [Exceptions](#exceptions)<br>
 [Matcher expressions](#matcher-expressions)<br>
 [Thread Safety](#thread-safety)<br>
@@ -31,16 +32,26 @@ CHECK( thisReturnsTrue() );
 REQUIRE( i == 42 );
 ```
 
+Expressions prefixed with `!` cannot be decomposed. If you have a type
+that is convertible to bool and you want to assert that it evaluates to
+false, use the two forms below:
+
+
 * **REQUIRE_FALSE(** _expression_ **)** and
 * **CHECK_FALSE(** _expression_ **)**
 
-Evaluates the expression and records the _logical NOT_ of the result. If an exception is thrown it is caught, reported, and counted as a failure.
-(these forms exist as a workaround for the fact that `!` prefixed expressions cannot be decomposed).
+Note that there is no reason to use these forms for plain bool variables,
+because there is no added value in decomposing them.
 
 Example:
+```cpp
+Status ret = someFunction();
+REQUIRE_FALSE(ret); // ret must evaluate to false, and Catch2 will print
+                    // out the value of ret if possibly
 ```
-REQUIRE_FALSE( thisReturnsFalse() );
-```
+
+
+### Other limitations
 
 Note that expressions containing either of the binary logical operators,
 `&&` or `||`, cannot be decomposed and will not compile. The reason behind
@@ -69,7 +80,7 @@ options.
    your tests.
 
 
-### Floating point comparisons
+## Floating point comparisons
 
 Comparing floating point numbers is complex, and [so it has its own
 documentation page](comparing-floating-point-numbers.md#top).
