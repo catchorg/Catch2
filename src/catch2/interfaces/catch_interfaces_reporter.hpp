@@ -12,6 +12,7 @@
 #include <catch2/catch_totals.hpp>
 #include <catch2/catch_assertion_result.hpp>
 #include <catch2/internal/catch_message_info.hpp>
+#include <catch2/internal/catch_generator_info.hpp>
 #include <catch2/internal/catch_stringref.hpp>
 #include <catch2/internal/catch_unique_ptr.hpp>
 #include <catch2/internal/catch_move_and_forward.hpp>
@@ -65,6 +66,7 @@ namespace Catch {
     struct AssertionStats {
         AssertionStats( AssertionResult const& _assertionResult,
                         std::vector<MessageInfo> const& _infoMessages,
+                        std::vector<GeneratorInfo> const& _generatorInfos,
                         Totals const& _totals );
 
         AssertionStats( AssertionStats const& )              = default;
@@ -74,6 +76,7 @@ namespace Catch {
 
         AssertionResult assertionResult;
         std::vector<MessageInfo> infoMessages;
+        std::vector<GeneratorInfo> generatorInfos;
         Totals totals;
     };
 

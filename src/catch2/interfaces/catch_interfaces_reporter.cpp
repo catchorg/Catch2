@@ -49,9 +49,11 @@ namespace Catch {
 
     AssertionStats::AssertionStats( AssertionResult const& _assertionResult,
                                     std::vector<MessageInfo> const& _infoMessages,
+                                    std::vector<GeneratorInfo> const& _generatorInfos,
                                     Totals const& _totals )
     :   assertionResult( _assertionResult ),
         infoMessages( _infoMessages ),
+        generatorInfos( _generatorInfos ),
         totals( _totals )
     {
         assertionResult.m_resultData.lazyExpression.m_transientExpression = _assertionResult.m_resultData.lazyExpression.m_transientExpression;

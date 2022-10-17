@@ -74,6 +74,7 @@ namespace Catch {
         void sectionEndedEarly( SectionEndInfo const& endInfo ) override;
 
         auto acquireGeneratorTracker( StringRef generatorName, SourceLineInfo const& lineInfo ) -> IGeneratorTracker& override;
+        void trackGeneratorState( GeneratorInfo const& info ) override;
 
         void benchmarkPreparing( StringRef name ) override;
         void benchmarkStarting( BenchmarkInfo const& info ) override;
@@ -132,6 +133,7 @@ namespace Catch {
         Totals m_totals;
         IEventListenerPtr m_reporter;
         std::vector<MessageInfo> m_messages;
+        std::vector<GeneratorInfo> m_generatorInfos;
         std::vector<ScopedMessage> m_messageScopes; /* Keeps owners of so-called unscoped messages. */
         AssertionInfo m_lastAssertionInfo;
         std::vector<SectionEndInfo> m_unfinishedSections;

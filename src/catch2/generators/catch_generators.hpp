@@ -10,6 +10,7 @@
 
 #include <catch2/catch_tostring.hpp>
 #include <catch2/interfaces/catch_interfaces_generatortracker.hpp>
+#include <catch2/internal/catch_generator_info.hpp>
 #include <catch2/internal/catch_source_line_info.hpp>
 #include <catch2/internal/catch_stringref.hpp>
 #include <catch2/internal/catch_move_and_forward.hpp>
@@ -210,7 +211,7 @@ namespace Detail {
     // Note: The type after -> is weird, because VS2015 cannot parse
     //       the expression used in the typedef inside, when it is in
     //       return type. Yeah.
-    auto generate( StringRef generatorName, SourceLineInfo const& lineInfo, L const& generatorExpression ) -> decltype(std::declval<decltype(generatorExpression())>().get()) {
+    auto generate( StringRef generatorName, StringRef argumentsDescription, SourceLineInfo const& lineInfo, L const& generatorExpression ) -> decltype(std::declval<decltype(generatorExpression())>().get()) {
         using UnderlyingType = typename decltype(generatorExpression())::type;
 
         IGeneratorTracker& tracker = acquireGeneratorTracker( generatorName, lineInfo );
@@ -219,6 +220,7 @@ namespace Detail {
         }
 
         auto const& generator = static_cast<IGenerator<UnderlyingType> const&>( *tracker.getGenerator() );
+        getResultCapture().trackGeneratorState(GeneratorInfo(generatorName, argumentsDescription, lineInfo, generator.currentElementAsString()));
         return generator.get();
     }
 
@@ -227,14 +229,17 @@ namespace Detail {
 
 #define GENERATE( ... ) \
     Catch::Generators::generate( INTERNAL_CATCH_STRINGIZE(INTERNAL_CATCH_UNIQUE_NAME(generator)), \
+                                 INTERNAL_CATCH_STRINGIZE( __VA_ARGS__ ), \
                                  CATCH_INTERNAL_LINEINFO, \
                                  [ ]{ using namespace Catch::Generators; return makeGenerators( __VA_ARGS__ ); } ) //NOLINT(google-build-using-namespace)
 #define GENERATE_COPY( ... ) \
     Catch::Generators::generate( INTERNAL_CATCH_STRINGIZE(INTERNAL_CATCH_UNIQUE_NAME(generator)), \
+                                 INTERNAL_CATCH_STRINGIZE( __VA_ARGS__ ), \
                                  CATCH_INTERNAL_LINEINFO, \
                                  [=]{ using namespace Catch::Generators; return makeGenerators( __VA_ARGS__ ); } ) //NOLINT(google-build-using-namespace)
 #define GENERATE_REF( ... ) \
     Catch::Generators::generate( INTERNAL_CATCH_STRINGIZE(INTERNAL_CATCH_UNIQUE_NAME(generator)), \
+                                 INTERNAL_CATCH_STRINGIZE( __VA_ARGS__ ), \
                                  CATCH_INTERNAL_LINEINFO, \
                                  [&]{ using namespace Catch::Generators; return makeGenerators( __VA_ARGS__ ); } ) //NOLINT(google-build-using-namespace)
 

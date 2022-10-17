@@ -228,6 +228,9 @@ Generators.tests.cpp:<line number>: PASSED:
   REQUIRE( counter < 7 )
 with expansion:
   3 < 7
+with 1 generator
+  line:267: GENERATE(1, 2)
+  value: 1
 
 -------------------------------------------------------------------------------
 #1913 - GENERATE inside a for loop should not keep recreating the generator
@@ -239,6 +242,9 @@ Generators.tests.cpp:<line number>: PASSED:
   REQUIRE( counter < 7 )
 with expansion:
   6 < 7
+with 1 generator
+  line:267: GENERATE(1, 2)
+  value: 2
 
 -------------------------------------------------------------------------------
 #1913 - GENERATEs can share a line
@@ -250,6 +256,11 @@ Generators.tests.cpp:<line number>: PASSED:
   REQUIRE( i != j )
 with expansion:
   1 != 3
+with 2 generators
+  line:276: GENERATE(1, 2)
+  value: 1
+  line:276: GENERATE(3, 4)
+  value: 3
 
 -------------------------------------------------------------------------------
 #1913 - GENERATEs can share a line
@@ -261,6 +272,11 @@ Generators.tests.cpp:<line number>: PASSED:
   REQUIRE( i != j )
 with expansion:
   1 != 4
+with 2 generators
+  line:276: GENERATE(1, 2)
+  value: 1
+  line:276: GENERATE(3, 4)
+  value: 4
 
 -------------------------------------------------------------------------------
 #1913 - GENERATEs can share a line
@@ -272,6 +288,11 @@ Generators.tests.cpp:<line number>: PASSED:
   REQUIRE( i != j )
 with expansion:
   2 != 3
+with 2 generators
+  line:276: GENERATE(1, 2)
+  value: 2
+  line:276: GENERATE(3, 4)
+  value: 3
 
 -------------------------------------------------------------------------------
 #1913 - GENERATEs can share a line
@@ -283,6 +304,11 @@ Generators.tests.cpp:<line number>: PASSED:
   REQUIRE( i != j )
 with expansion:
   2 != 4
+with 2 generators
+  line:276: GENERATE(1, 2)
+  value: 2
+  line:276: GENERATE(3, 4)
+  value: 4
 
 -------------------------------------------------------------------------------
 #1938 - GENERATE after a section
@@ -306,6 +332,9 @@ PartTracker.tests.cpp:<line number>: PASSED:
   REQUIRE( m )
 with expansion:
   1
+with 1 generator
+  line:216: GENERATE(1, 2, 3)
+  value: 1
 
 -------------------------------------------------------------------------------
 #1938 - GENERATE after a section
@@ -318,6 +347,9 @@ PartTracker.tests.cpp:<line number>: PASSED:
   REQUIRE( m )
 with expansion:
   2
+with 1 generator
+  line:216: GENERATE(1, 2, 3)
+  value: 2
 
 -------------------------------------------------------------------------------
 #1938 - GENERATE after a section
@@ -330,6 +362,9 @@ PartTracker.tests.cpp:<line number>: PASSED:
   REQUIRE( m )
 with expansion:
   3
+with 1 generator
+  line:216: GENERATE(1, 2, 3)
+  value: 3
 
 -------------------------------------------------------------------------------
 #1938 - Section followed by flat generate
@@ -351,6 +386,9 @@ PartTracker.tests.cpp:<line number>: PASSED:
   REQUIRE( m )
 with expansion:
   2
+with 1 generator
+  line:252: GENERATE(2, 3)
+  value: 2
 
 -------------------------------------------------------------------------------
 #1938 - Section followed by flat generate
@@ -362,6 +400,9 @@ PartTracker.tests.cpp:<line number>: PASSED:
   REQUIRE( m )
 with expansion:
   3
+with 1 generator
+  line:252: GENERATE(2, 3)
+  value: 3
 
 -------------------------------------------------------------------------------
 #1938 - flat generate
@@ -373,6 +414,9 @@ PartTracker.tests.cpp:<line number>: PASSED:
   REQUIRE( m )
 with expansion:
   1
+with 1 generator
+  line:223: GENERATE(1, 2, 3)
+  value: 1
 
 -------------------------------------------------------------------------------
 #1938 - flat generate
@@ -384,6 +428,9 @@ PartTracker.tests.cpp:<line number>: PASSED:
   REQUIRE( m )
 with expansion:
   2
+with 1 generator
+  line:223: GENERATE(1, 2, 3)
+  value: 2
 
 -------------------------------------------------------------------------------
 #1938 - flat generate
@@ -395,6 +442,9 @@ PartTracker.tests.cpp:<line number>: PASSED:
   REQUIRE( m )
 with expansion:
   3
+with 1 generator
+  line:223: GENERATE(1, 2, 3)
+  value: 3
 
 -------------------------------------------------------------------------------
 #1938 - mixed sections and generates
@@ -404,6 +454,9 @@ PartTracker.tests.cpp:<line number>
 ...............................................................................
 
 PartTracker.tests.cpp:<line number>: PASSED:
+with 1 generator
+  line:235: GENERATE(1, 2)
+  value: 1
 with message:
   A
 
@@ -414,6 +467,11 @@ PartTracker.tests.cpp:<line number>
 ...............................................................................
 
 PartTracker.tests.cpp:<line number>: PASSED:
+with 2 generators
+  line:239: GENERATE(3, 4)
+  value: 3
+  line:243: GENERATE(5, 6)
+  value: 5
 with messages:
   i := 1
   j := 3
@@ -427,6 +485,11 @@ PartTracker.tests.cpp:<line number>
 ...............................................................................
 
 PartTracker.tests.cpp:<line number>: PASSED:
+with 2 generators
+  line:235: GENERATE(1, 2)
+  value: 1
+  line:239: GENERATE(3, 4)
+  value: 3
 with message:
   B
 
@@ -437,6 +500,9 @@ PartTracker.tests.cpp:<line number>
 ...............................................................................
 
 PartTracker.tests.cpp:<line number>: PASSED:
+with 1 generator
+  line:243: GENERATE(5, 6)
+  value: 6
 with messages:
   i := 1
   j := 3
@@ -450,6 +516,11 @@ PartTracker.tests.cpp:<line number>
 ...............................................................................
 
 PartTracker.tests.cpp:<line number>: PASSED:
+with 2 generators
+  line:235: GENERATE(1, 2)
+  value: 1
+  line:239: GENERATE(3, 4)
+  value: 4
 with message:
   B
 
@@ -460,6 +531,9 @@ PartTracker.tests.cpp:<line number>
 ...............................................................................
 
 PartTracker.tests.cpp:<line number>: PASSED:
+with 1 generator
+  line:243: GENERATE(5, 6)
+  value: 5
 with messages:
   i := 1
   j := 4
@@ -472,6 +546,13 @@ PartTracker.tests.cpp:<line number>
 ...............................................................................
 
 PartTracker.tests.cpp:<line number>: PASSED:
+with 3 generators
+  line:235: GENERATE(1, 2)
+  value: 1
+  line:239: GENERATE(3, 4)
+  value: 4
+  line:243: GENERATE(5, 6)
+  value: 6
 with messages:
   i := 1
   j := 4
@@ -485,6 +566,9 @@ PartTracker.tests.cpp:<line number>
 ...............................................................................
 
 PartTracker.tests.cpp:<line number>: PASSED:
+with 1 generator
+  line:235: GENERATE(1, 2)
+  value: 2
 with message:
   A
 
@@ -495,6 +579,11 @@ PartTracker.tests.cpp:<line number>
 ...............................................................................
 
 PartTracker.tests.cpp:<line number>: PASSED:
+with 2 generators
+  line:239: GENERATE(3, 4)
+  value: 3
+  line:243: GENERATE(5, 6)
+  value: 5
 with messages:
   i := 2
   j := 3
@@ -508,6 +597,11 @@ PartTracker.tests.cpp:<line number>
 ...............................................................................
 
 PartTracker.tests.cpp:<line number>: PASSED:
+with 2 generators
+  line:235: GENERATE(1, 2)
+  value: 2
+  line:239: GENERATE(3, 4)
+  value: 3
 with message:
   B
 
@@ -518,6 +612,9 @@ PartTracker.tests.cpp:<line number>
 ...............................................................................
 
 PartTracker.tests.cpp:<line number>: PASSED:
+with 1 generator
+  line:243: GENERATE(5, 6)
+  value: 6
 with messages:
   i := 2
   j := 3
@@ -531,6 +628,11 @@ PartTracker.tests.cpp:<line number>
 ...............................................................................
 
 PartTracker.tests.cpp:<line number>: PASSED:
+with 2 generators
+  line:235: GENERATE(1, 2)
+  value: 2
+  line:239: GENERATE(3, 4)
+  value: 4
 with message:
   B
 
@@ -541,6 +643,9 @@ PartTracker.tests.cpp:<line number>
 ...............................................................................
 
 PartTracker.tests.cpp:<line number>: PASSED:
+with 1 generator
+  line:243: GENERATE(5, 6)
+  value: 5
 with messages:
   i := 2
   j := 4
@@ -553,6 +658,13 @@ PartTracker.tests.cpp:<line number>
 ...............................................................................
 
 PartTracker.tests.cpp:<line number>: PASSED:
+with 3 generators
+  line:235: GENERATE(1, 2)
+  value: 2
+  line:239: GENERATE(3, 4)
+  value: 4
+  line:243: GENERATE(5, 6)
+  value: 6
 with messages:
   i := 2
   j := 4
@@ -568,27 +680,21 @@ PartTracker.tests.cpp:<line number>: PASSED:
   REQUIRE( m )
 with expansion:
   1
+with 2 generators
+  line:228: GENERATE(1, 2, 3)
+  value: 1
+  line:229: GENERATE(1, 2, 3)
+  value: 1
 
 PartTracker.tests.cpp:<line number>: PASSED:
   REQUIRE( n )
 with expansion:
   1
-
--------------------------------------------------------------------------------
-#1938 - nested generate
--------------------------------------------------------------------------------
-PartTracker.tests.cpp:<line number>
-...............................................................................
-
-PartTracker.tests.cpp:<line number>: PASSED:
-  REQUIRE( m )
-with expansion:
-  1
-
-PartTracker.tests.cpp:<line number>: PASSED:
-  REQUIRE( n )
-with expansion:
-  2
+with 2 generators
+  line:228: GENERATE(1, 2, 3)
+  value: 1
+  line:229: GENERATE(1, 2, 3)
+  value: 1
 
 -------------------------------------------------------------------------------
 #1938 - nested generate
@@ -600,11 +706,47 @@ PartTracker.tests.cpp:<line number>: PASSED:
   REQUIRE( m )
 with expansion:
   1
+with 2 generators
+  line:228: GENERATE(1, 2, 3)
+  value: 1
+  line:229: GENERATE(1, 2, 3)
+  value: 2
+
+PartTracker.tests.cpp:<line number>: PASSED:
+  REQUIRE( n )
+with expansion:
+  2
+with 2 generators
+  line:228: GENERATE(1, 2, 3)
+  value: 1
+  line:229: GENERATE(1, 2, 3)
+  value: 2
+
+-------------------------------------------------------------------------------
+#1938 - nested generate
+-------------------------------------------------------------------------------
+PartTracker.tests.cpp:<line number>
+...............................................................................
+
+PartTracker.tests.cpp:<line number>: PASSED:
+  REQUIRE( m )
+with expansion:
+  1
+with 2 generators
+  line:228: GENERATE(1, 2, 3)
+  value: 1
+  line:229: GENERATE(1, 2, 3)
+  value: 3
 
 PartTracker.tests.cpp:<line number>: PASSED:
   REQUIRE( n )
 with expansion:
   3
+with 2 generators
+  line:228: GENERATE(1, 2, 3)
+  value: 1
+  line:229: GENERATE(1, 2, 3)
+  value: 3
 
 -------------------------------------------------------------------------------
 #1938 - nested generate
@@ -616,11 +758,21 @@ PartTracker.tests.cpp:<line number>: PASSED:
   REQUIRE( m )
 with expansion:
   2
+with 2 generators
+  line:228: GENERATE(1, 2, 3)
+  value: 2
+  line:229: GENERATE(1, 2, 3)
+  value: 1
 
 PartTracker.tests.cpp:<line number>: PASSED:
   REQUIRE( n )
 with expansion:
   1
+with 2 generators
+  line:228: GENERATE(1, 2, 3)
+  value: 2
+  line:229: GENERATE(1, 2, 3)
+  value: 1
 
 -------------------------------------------------------------------------------
 #1938 - nested generate
@@ -632,11 +784,21 @@ PartTracker.tests.cpp:<line number>: PASSED:
   REQUIRE( m )
 with expansion:
   2
+with 2 generators
+  line:228: GENERATE(1, 2, 3)
+  value: 2
+  line:229: GENERATE(1, 2, 3)
+  value: 2
 
 PartTracker.tests.cpp:<line number>: PASSED:
   REQUIRE( n )
 with expansion:
   2
+with 2 generators
+  line:228: GENERATE(1, 2, 3)
+  value: 2
+  line:229: GENERATE(1, 2, 3)
+  value: 2
 
 -------------------------------------------------------------------------------
 #1938 - nested generate
@@ -648,11 +810,21 @@ PartTracker.tests.cpp:<line number>: PASSED:
   REQUIRE( m )
 with expansion:
   2
+with 2 generators
+  line:228: GENERATE(1, 2, 3)
+  value: 2
+  line:229: GENERATE(1, 2, 3)
+  value: 3
 
 PartTracker.tests.cpp:<line number>: PASSED:
   REQUIRE( n )
 with expansion:
   3
+with 2 generators
+  line:228: GENERATE(1, 2, 3)
+  value: 2
+  line:229: GENERATE(1, 2, 3)
+  value: 3
 
 -------------------------------------------------------------------------------
 #1938 - nested generate
@@ -664,11 +836,21 @@ PartTracker.tests.cpp:<line number>: PASSED:
   REQUIRE( m )
 with expansion:
   3
+with 2 generators
+  line:228: GENERATE(1, 2, 3)
+  value: 3
+  line:229: GENERATE(1, 2, 3)
+  value: 1
 
 PartTracker.tests.cpp:<line number>: PASSED:
   REQUIRE( n )
 with expansion:
   1
+with 2 generators
+  line:228: GENERATE(1, 2, 3)
+  value: 3
+  line:229: GENERATE(1, 2, 3)
+  value: 1
 
 -------------------------------------------------------------------------------
 #1938 - nested generate
@@ -680,11 +862,21 @@ PartTracker.tests.cpp:<line number>: PASSED:
   REQUIRE( m )
 with expansion:
   3
+with 2 generators
+  line:228: GENERATE(1, 2, 3)
+  value: 3
+  line:229: GENERATE(1, 2, 3)
+  value: 2
 
 PartTracker.tests.cpp:<line number>: PASSED:
   REQUIRE( n )
 with expansion:
   2
+with 2 generators
+  line:228: GENERATE(1, 2, 3)
+  value: 3
+  line:229: GENERATE(1, 2, 3)
+  value: 2
 
 -------------------------------------------------------------------------------
 #1938 - nested generate
@@ -696,11 +888,21 @@ PartTracker.tests.cpp:<line number>: PASSED:
   REQUIRE( m )
 with expansion:
   3
+with 2 generators
+  line:228: GENERATE(1, 2, 3)
+  value: 3
+  line:229: GENERATE(1, 2, 3)
+  value: 3
 
 PartTracker.tests.cpp:<line number>: PASSED:
   REQUIRE( n )
 with expansion:
   3
+with 2 generators
+  line:228: GENERATE(1, 2, 3)
+  value: 3
+  line:229: GENERATE(1, 2, 3)
+  value: 3
 
 -------------------------------------------------------------------------------
 #1954 - 7 arg template test case sig compiles - 1, 1, 1, 1, 1, 0, 0

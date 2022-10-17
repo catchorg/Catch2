@@ -283,7 +283,7 @@ namespace Catch {
             m_lastAssertionPassed = true;
         }
 
-        m_reporter->assertionEnded(AssertionStats(result, m_messages, m_totals));
+        m_reporter->assertionEnded(AssertionStats(result, m_messages, m_generatorInfos, m_totals));
 
         if (result.getResultType() != ResultWas::Warning)
             m_messageScopes.clear();
@@ -319,6 +319,16 @@ namespace Catch {
         return tracker;
     }
 
+    void RunContext::trackGeneratorState( GeneratorInfo const& info ) {
+        // Avoid redundant entries, in case a generator is used within a loop.
+        if ( std::find( m_generatorInfos.cbegin(),
+                        m_generatorInfos.cend(),
+                        info ) != m_generatorInfos.cend() )
+            return;
+
+        m_generatorInfos.push_back( info );
+    }
+
     bool RunContext::testForMissingAssertions(Counts& assertions) {
         if (assertions.total() != 0)
             return false;
@@ -343,6 +353,7 @@ namespace Catch {
         m_reporter->sectionEnded(SectionStats(endInfo.sectionInfo, assertions, endInfo.durationInSeconds, missingAssertions));
         m_messages.clear();
         m_messageScopes.clear();
+        m_generatorInfos.clear();
     }
 
     void RunContext::sectionEndedEarly(SectionEndInfo const & endInfo) {
@@ -490,6 +501,7 @@ namespace Catch {
         handleUnfinishedSections();
         m_messages.clear();
         m_messageScopes.clear();
+        m_generatorInfos.clear();
 
         SectionStats testCaseSectionStats(testCaseSection, assertions, duration, missingAssertions);
         m_reporter->sectionEnded(testCaseSectionStats);
