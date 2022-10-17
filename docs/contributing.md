@@ -125,7 +125,7 @@ information that you will need for updating Catch2's documentation, and
 possibly some generic advise as well.
 
 
-### Technicalities 
+### Technicalities
 
 First, the technicalities:
 

@@ -33,7 +33,7 @@ public:
 CATCH_REGISTER_LISTENER(testRunListener)
 ```
 
-_Note that you should not use any assertion macros within a Listener!_ 
+_Note that you should not use any assertion macros within a Listener!_
 
 [You can find the list of events that the listeners can react to on its
 own page](reporter-events.md#top).

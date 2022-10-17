@@ -19,7 +19,7 @@ Most of these macros come in two forms:
 The ```REQUIRE``` family of macros tests an expression and aborts the test case if it fails.
 The ```CHECK``` family are equivalent but execution continues in the same test case even if the assertion fails. This is useful if you have a series of essentially orthogonal assertions and it is useful to see all the results rather than stopping at the first failure.
 
-* **REQUIRE(** _expression_ **)** and  
+* **REQUIRE(** _expression_ **)** and
 * **CHECK(** _expression_ **)**
 
 Evaluates the expression and records the result. If an exception is thrown, it is caught, reported, and counted as a failure. These are the macros you will use most of the time.
@@ -77,22 +77,22 @@ documentation page](comparing-floating-point-numbers.md#top).
 
 ## Exceptions
 
-* **REQUIRE_NOTHROW(** _expression_ **)** and  
+* **REQUIRE_NOTHROW(** _expression_ **)** and
 * **CHECK_NOTHROW(** _expression_ **)**
 
 Expects that no exception is thrown during evaluation of the expression.
 
-* **REQUIRE_THROWS(** _expression_ **)** and  
+* **REQUIRE_THROWS(** _expression_ **)** and
 * **CHECK_THROWS(** _expression_ **)**
 
 Expects that an exception (of any type) is be thrown during evaluation of the expression.
 
-* **REQUIRE_THROWS_AS(** _expression_, _exception type_ **)** and  
+* **REQUIRE_THROWS_AS(** _expression_, _exception type_ **)** and
 * **CHECK_THROWS_AS(** _expression_, _exception type_ **)**
 
 Expects that an exception of the _specified type_ is thrown during evaluation of the expression. Note that the _exception type_ is extended with `const&` and you should not include it yourself.
 
-* **REQUIRE_THROWS_WITH(** _expression_, _string or string matcher_ **)** and  
+* **REQUIRE_THROWS_WITH(** _expression_, _string or string matcher_ **)** and
 * **CHECK_THROWS_WITH(** _expression_, _string or string matcher_ **)**
 
 Expects that an exception is thrown that, when converted to a string, matches the _string_ or _string matcher_ provided (see next section for Matchers).
@@ -128,8 +128,8 @@ REQUIRE_NOTHROW([&](){
 
 To support Matchers a slightly different form is used. Matchers have [their own documentation](matchers.md#top).
 
-* **REQUIRE_THAT(** _lhs_, _matcher expression_ **)** and  
-* **CHECK_THAT(** _lhs_, _matcher expression_ **)**  
+* **REQUIRE_THAT(** _lhs_, _matcher expression_ **)** and
+* **CHECK_THAT(** _lhs_, _matcher expression_ **)**
 
 Matchers can be composed using `&&`, `||` and `!` operators.
 

@@ -241,12 +241,12 @@ in which case a range is accepted if any of its elements is accepted
 by the provided matcher.
 
 `AllMatch`, `NoneMatch`, and `AnyMatch` match ranges for which either
-all, none, or any of the contained elements matches the given matcher, 
+all, none, or any of the contained elements matches the given matcher,
 respectively.
 
 `AllTrue`, `NoneTrue`, and `AnyTrue` match ranges for which either
-all, none, or any of the contained elements are `true`, respectively. 
-It works for ranges of `bool`s and ranges of elements (explicitly) 
+all, none, or any of the contained elements are `true`, respectively.
+It works for ranges of `bool`s and ranges of elements (explicitly)
 convertible to `bool`.
 
 ## Writing custom matchers (old style)

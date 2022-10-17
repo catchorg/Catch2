@@ -1,7 +1,7 @@
 <a id="top"></a>
 # CI and other odd pieces
 
-This page talks about how Catch integrates with Continuous Integration 
+This page talks about how Catch integrates with Continuous Integration
 Build Systems may refer to low-level tools, like CMake, or larger systems that run on servers, like Jenkins or TeamCity. This page will talk about both.
 
 ## Continuous Integration systems
@@ -11,9 +11,9 @@ Probably the most important aspect to using Catch with a build server is the use
 Two of these reporters are built in (XML and JUnit) and the third (TeamCity) is included as a separate header. It's possible that the other two may be split out in the future too - as that would make the core of Catch smaller for those that don't need them.
 
 ### XML Reporter
-```-r xml``` 
+```-r xml```
 
-The XML Reporter writes in an XML format that is specific to Catch. 
+The XML Reporter writes in an XML format that is specific to Catch.
 
 The advantage of this format is that it corresponds well to the way Catch works (especially the more unusual features, such as nested sections) and is a fully streaming format - that is it writes output as it goes, without having to store up all its results before it can start writing.
 

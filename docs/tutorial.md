@@ -100,7 +100,7 @@ before we move on.
   It accepts a boolean expression, and uses expression templates to
   internally decompose it, so that it can be individually stringified
   on test failure.
-  
+
 On the last point, note that there are more testing macros available,
 because not all useful checks can be expressed as a simple boolean
 expression. As an example, checking that an expression throws an exception
@@ -178,7 +178,7 @@ To continue on the vector example above, you could add a check that
     }
 ```
 
-Another way to look at sections is that they are a way to define a tree 
+Another way to look at sections is that they are a way to define a tree
 of paths through the test. Each section represents a node, and the final
 tree is walked in depth-first manner, with each path only visiting only
 one leaf node.

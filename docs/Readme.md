@@ -31,7 +31,7 @@ Once you're up and running consider the following reference material.
 * [CMake integration](cmake-integration.md#top)
 * [CI and other miscellaneous pieces](ci-and-misc.md#top)
 * [Known limitations](limitations.md#top)
- 
+
 **Other:**
 * [Why Catch2?](why-catch.md#top)
 * [Migrating from v2 to v3](migrate-v2-to-v3.md#top)

@@ -130,9 +130,9 @@ struct Template_Foo_2 {
 };
 
 TEMPLATE_PRODUCT_TEST_CASE_METHOD_SIG(
-    Template_Fixture_2, 
-    "A TEMPLATE_PRODUCT_TEST_CASE_METHOD_SIG based test run that succeeds", 
-    "[class][template][product][nttp]", 
+    Template_Fixture_2,
+    "A TEMPLATE_PRODUCT_TEST_CASE_METHOD_SIG based test run that succeeds",
+    "[class][template][product][nttp]",
     ((typename T, size_t S), T, S),
     (std::array, Template_Foo_2),
     ((int,2), (float,6))) {
