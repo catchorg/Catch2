@@ -31,24 +31,42 @@ CHECK( thisReturnsTrue() );
 REQUIRE( i == 42 );
 ```
 
-* **REQUIRE_FALSE(** _expression_ **)** and  
+* **REQUIRE_FALSE(** _expression_ **)** and
 * **CHECK_FALSE(** _expression_ **)**
 
 Evaluates the expression and records the _logical NOT_ of the result. If an exception is thrown it is caught, reported, and counted as a failure.
-(these forms exist as a workaround for the fact that ! prefixed expressions cannot be decomposed).
+(these forms exist as a workaround for the fact that `!` prefixed expressions cannot be decomposed).
 
 Example:
 ```
 REQUIRE_FALSE( thisReturnsFalse() );
 ```
 
-Do note that "overly complex" expressions cannot be decomposed and thus will not compile. This is done partly for practical reasons (to keep the underlying expression template machinery to minimum) and partly for philosophical reasons (assertions should be simple and deterministic).
+Note that expressions containing either of the binary logical operators,
+`&&` or `||`, cannot be decomposed and will not compile. The reason behind
+this is that it is impossible to overload `&&` and `||` in a way that
+keeps their short-circuiting semantics, and expression decomposition
+relies on overloaded operators to work.
 
-Examples:
-* `CHECK(a == 1 && b == 2);`
-This expression is too complex because of the `&&` operator. If you want to check that 2 or more properties hold, you can either put the expression into parenthesis, which stops decomposition from working, or you need to decompose the expression into two assertions: `CHECK( a == 1 ); CHECK( b == 2);`
-* `CHECK( a == 2 || b == 1 );`
-This expression is too complex because of the `||` operator. If you want to check that one of several properties hold, you can put the expression into parenthesis (unlike with `&&`, expression decomposition into several `CHECK`s is not possible).
+Simple example of an issue with overloading binary logical operators
+is a common pointer idiom, `p && p->foo == 2`. Using the built-in `&&`
+operator, `p` is only dereferenced if it is not null. With overloaded
+`&&`, `p` is always dereferenced, thus causing a segfault if
+`p == nullptr`.
+
+If you want to test expression that contains `&&` or `||`, you have two
+options.
+
+1) Enclose it in parentheses. Parentheses force evaluation of the expression
+   before the expression decomposition can touch it, and thus it cannot
+   be used.
+
+2) Rewrite the expression. `REQUIRE(a == 1 && b == 2)` can always be split
+   into `REQUIRE(a == 1); REQUIRE(b == 2);`. Alternatively, if this is a
+   common pattern in your tests, think about using [Matchers](#matcher-expressions).
+   instead. There is no simple rewrite rule for `||`, but I generally
+   believe that if you have `||` in your test expression, you should rethink
+   your tests.
 
 
 ### Floating point comparisons
