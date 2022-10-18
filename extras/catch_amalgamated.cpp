@@ -5,14 +5,36 @@
 
 // SPDX-License-Identifier: BSL-1.0
 
-//  Catch v3.1.0
-//  Generated: 2022-07-17 20:14:05.885021
+//  Catch v3.1.1
+//  Generated: 2022-10-17 18:47:22.400176
 //  ----------------------------------------------------------
 //  This file is an amalgamation of multiple different files.
 //  You probably shouldn't edit it directly.
 //  ----------------------------------------------------------
 
 #include "catch_amalgamated.hpp"
+
+
+#ifndef CATCH_WINDOWS_H_PROXY_HPP_INCLUDED
+#define CATCH_WINDOWS_H_PROXY_HPP_INCLUDED
+
+
+#if defined(CATCH_PLATFORM_WINDOWS)
+
+// We might end up with the define made globally through the compiler,
+// and we don't want to trigger warnings for this
+#if !defined(NOMINMAX)
+#  define NOMINMAX
+#endif
+#if !defined(WIN32_LEAN_AND_MEAN)
+#  define WIN32_LEAN_AND_MEAN
+#endif
+
+#include <windows.h>
+
+#endif // defined(CATCH_PLATFORM_WINDOWS)
+
+#endif // CATCH_WINDOWS_H_PROXY_HPP_INCLUDED
 
 
 
@@ -488,8 +510,11 @@ namespace Catch {
 
 namespace {
     bool provideBazelReporterOutput() {
-#ifdef CATCH_CONFIG_BAZEL_SUPPORT
+#if defined(CATCH_CONFIG_BAZEL_SUPPORT)
         return true;
+#elif defined(CATCH_PLATFORM_WINDOWS_UWP)
+        // UWP does not support environment variables
+        return false;
 #else
 
 #    if defined( _MSC_VER )
@@ -554,6 +579,7 @@ namespace Catch {
             } );
         }
 
+#if !defined(CATCH_PLATFORM_WINDOWS_UWP)
     if(provideBazelReporterOutput()){
             // Register a JUnit reporter for Bazel. Bazel sets an environment
             // variable with the path to XML output. If this file is written to
@@ -575,7 +601,7 @@ namespace Catch {
                     { "junit", std::string( bazelOutputFilePtr ), {}, {} } );
             }
     }
-
+#endif
 
         // We now fixup the reporter specs to handle default output spec,
         // default colour spec, etc
@@ -656,6 +682,16 @@ namespace Catch {
     std::chrono::milliseconds Config::benchmarkWarmupTime() const { return std::chrono::milliseconds(m_data.benchmarkWarmupTime); }
 
 } // end namespace Catch
+
+
+
+
+
+namespace Catch {
+    std::uint32_t getSeed() {
+        return getCurrentContext().getConfig()->rngSeed();
+    }
+}
 
 
 
@@ -882,7 +918,6 @@ namespace Catch {
                 multi->addListener(listener->create(config));
             }
 
-            std::size_t reporterIdx = 0;
             for ( auto const& reporterSpec : config->getProcessedReporterSpecs() ) {
                 multi->addReporter( createReporter(
                     reporterSpec.name,
@@ -890,7 +925,6 @@ namespace Catch {
                                     makeStream( reporterSpec.outputFilename ),
                                     reporterSpec.colourMode,
                                     reporterSpec.customOptions ) ) );
-                reporterIdx++;
             }
 
             return multi;
@@ -1890,7 +1924,7 @@ namespace Catch {
     }
 
     Version const& libraryVersion() {
-        static Version version( 3, 1, 0, "", 0 );
+        static Version version( 3, 1, 1, "", 0 );
         return version;
     }
 
@@ -3957,6 +3991,7 @@ namespace Detail {
             FileStream( std::string const& filename ) {
                 m_ofs.open( filename.c_str() );
                 CATCH_ENFORCE( !m_ofs.fail(), "Unable to open file: '" << filename << '\'' );
+                m_ofs << std::unitbuf;
             }
             ~FileStream() override = default;
         public: // IStream
@@ -7878,7 +7913,7 @@ private:
                          << serializeFilters( m_config->getTestsOrTags() )
                          << '\n';
             }
-            m_stream << "RNG seed: " << m_config->rngSeed() << '\n';
+            m_stream << "RNG seed: " << getSeed() << '\n';
         }
 
         void CompactReporter::assertionEnded( AssertionStats const& _assertionStats ) {
@@ -8399,7 +8434,7 @@ void ConsoleReporter::testRunStarting(TestRunInfo const& _testInfo) {
         m_stream << m_colour->guardColour( Colour::BrightYellow ) << "Filters: "
                  << serializeFilters( m_config->getTestsOrTags() ) << '\n';
     }
-    m_stream << "Randomness seeded to: " << m_config->rngSeed() << '\n';
+    m_stream << "Randomness seeded to: " << getSeed() << '\n';
 }
 
 void ConsoleReporter::lazyPrint() {

@@ -98,7 +98,7 @@ is equivalent with the out-of-the-box experience.
 
 
 ## Bazel support
-When `CATCH_CONFIG_BAZEL_SUPPORT` is defined or when `BAZEL_TEST=1` (which is set by the Bazel inside of a test environment), 
+When `CATCH_CONFIG_BAZEL_SUPPORT` is defined or when `BAZEL_TEST=1` (which is set by the Bazel inside of a test environment),
 Catch2 will register a `JUnit` reporter writing to a path pointed by `XML_OUTPUT_FILE` provided by Bazel.
 
 > `CATCH_CONFIG_BAZEL_SUPPORT` was [introduced](https://github.com/catchorg/Catch2/pull/2399) in Catch2 3.0.1.

@@ -2,6 +2,7 @@
 
 # Release notes
 **Contents**<br>
+[3.1.1](#311)<br>
 [3.1.0](#310)<br>
 [3.0.1](#301)<br>
 [2.13.7](#2137)<br>
@@ -48,6 +49,39 @@
 [2.0.1](#201)<br>
 [Older versions](#older-versions)<br>
 [Even Older versions](#even-older-versions)<br>
+
+
+
+## 3.1.1
+
+### Improvements
+* Added `Catch::getSeed` function that user code can call to retrieve current rng-seed
+* Better detection of compiler support for `-ffile-prefix-map` (#2517)
+* Catch2's shared libraries now have `SOVERSION` set (#2516)
+* `catch2/catch_all.hpp` convenience header no longer transitively includes `windows.h` (#2432, #2526)
+
+
+### Fixes
+* Fixed compilation on Universal Windows Platform
+* Fixed compilation on VxWorks (#2515)
+* Fixed compilation on Cygwin (#2540)
+* Remove unused variable in reporter registration (#2538)
+* Fixed some symbol visibility issues with dynamic library on Windows (#2527)
+* Suppressed `-Wuseless-cast` warnings in `REQUIRE_THROWS*` macros (#2520, #2521)
+  * This was triggered when the potentially throwing expression evaluates to `void`
+* Fixed "warning: storage class is not first" with `nvc++` (#2533)
+* Fixed handling of `DL_PATHS` argument to `catch_discover_tests` on MacOS (#2483)
+* Suppressed `*-avoid-c-arrays` clang-tidy warning in `TEMPLATE_TEST_CASE` (#2095, #2536)
+
+
+### Miscellaneous
+* Fixed CMake install step for Catch2 build as dynamic library (#2485)
+* Raised minimum CMake version to 3.10 (#2523)
+  * Expect the minimum CMake version to increase once more in next few releases.
+* Whole bunch of doc updates and fixes
+  * #1444, #2497, #2547, #2549, and more
+* Added support for building Catch2 with Meson (#2530, #2539)
+
 
 
 ## 3.1.0

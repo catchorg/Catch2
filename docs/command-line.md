@@ -548,7 +548,8 @@ starting at 0. The tests in the set given by
 `--shard-index <#shard index to run>` will be executed. The default shard
 count is `1`, and the default index to run is `0`.
 
-_It is an error to specify a shard index greater than the number of shards._
+_Shard index must be less than number of shards. As the name suggests,
+it is treated as an index of the shard to run._
 
 Sharding is useful when you want to split test execution across multiple
 processes, as is done with the [Bazel test sharding](https://docs.bazel.build/versions/main/test-encyclopedia.html#test-sharding).
