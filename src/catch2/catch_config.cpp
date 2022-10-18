@@ -15,7 +15,7 @@
 #include <catch2/interfaces/catch_interfaces_tag_alias_registry.hpp>
 
 namespace {
-    bool provideBazelReporterOutput() {
+    bool enableBazelEnvSupport() {
 #if defined(CATCH_CONFIG_BAZEL_SUPPORT)
         return true;
 #elif defined(CATCH_PLATFORM_WINDOWS_UWP)
@@ -86,7 +86,7 @@ namespace Catch {
         }
 
 #if !defined(CATCH_PLATFORM_WINDOWS_UWP)
-    if(provideBazelReporterOutput()){
+    if(enableBazelEnvSupport()){
             // Register a JUnit reporter for Bazel. Bazel sets an environment
             // variable with the path to XML output. If this file is written to
             // during test, Bazel will not generate a default XML output.
