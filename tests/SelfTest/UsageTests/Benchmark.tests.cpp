@@ -16,21 +16,23 @@
 
 namespace {
     std::uint64_t Fibonacci(std::uint64_t number) {
-        return number < 2 ? 1 : Fibonacci(number - 1) + Fibonacci(number - 2);
+        return number < 2 ? number : Fibonacci(number - 1) + Fibonacci(number - 2);
     }
 }
 
 TEST_CASE("Benchmark Fibonacci", "[!benchmark]") {
-    CHECK(Fibonacci(0) == 1);
+    CHECK(Fibonacci(0) == 0);
     // some more asserts..
-    CHECK(Fibonacci(5) == 8);
+    CHECK(Fibonacci(5) == 5);
     // some more asserts..
 
-    BENCHMARK("Fibonacci 20") {
+    REQUIRE( Fibonacci( 20 ) == 6'765 );
+    BENCHMARK( "Fibonacci 20" ) {
         return Fibonacci(20);
     };
 
-    BENCHMARK("Fibonacci 25") {
+    REQUIRE( Fibonacci( 25 ) == 75'025 );
+    BENCHMARK( "Fibonacci 25" ) {
         return Fibonacci(25);
     };
 
