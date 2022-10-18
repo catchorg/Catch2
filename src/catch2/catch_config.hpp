@@ -140,6 +140,9 @@ namespace Catch {
         std::chrono::milliseconds benchmarkWarmupTime() const override;
 
     private:
+        // Reads Bazel env vars and applies them to the config
+        void readBazelEnvVars();
+
         ConfigData m_data;
         std::vector<ProcessedReporterSpec> m_processedReporterSpecs;
         TestSpec m_testSpec;

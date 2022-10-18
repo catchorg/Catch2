@@ -150,6 +150,17 @@ set_tests_properties(NO_CATCH_CONFIG_BAZEL_REPORTER-1
     ENVIRONMENT "BAZEL_TEST=1"
 )
 
+add_test(NAME BazelEnv::TESTBRIDGE_TEST_ONLY
+  COMMAND
+      $<TARGET_FILE:BazelReporterNoCatchConfig>
+)
+set_tests_properties(BazelEnv::TESTBRIDGE_TEST_ONLY
+  PROPERTIES
+    ENVIRONMENT "BAZEL_TEST=1;TESTBRIDGE_TEST_ONLY=Passing test case"
+    PASS_REGULAR_EXPRESSION "All tests passed \\(1 assertion in 1 test case\\)"
+)
+
+
 # The default handler on Windows leads to the just-in-time debugger firing,
 # which makes this test unsuitable for CI and headless runs, as it opens
 # up an interactive dialog.

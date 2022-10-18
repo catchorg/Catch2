@@ -15,7 +15,7 @@
 #include <catch2/interfaces/catch_interfaces_tag_alias_registry.hpp>
 
 namespace {
-    bool enableBazelEnvSupport() {
+    static bool enableBazelEnvSupport() {
 #if defined(CATCH_CONFIG_BAZEL_SUPPORT)
         return true;
 #elif defined(CATCH_PLATFORM_WINDOWS_UWP)
@@ -62,17 +62,6 @@ namespace Catch {
             elem = trim(elem);
         }
 
-
-        TestSpecParser parser(ITagAliasRegistry::get());
-        if (!m_data.testsOrTags.empty()) {
-            m_hasTestFilters = true;
-            for (auto const& testOrTags : m_data.testsOrTags) {
-                parser.parse(testOrTags);
-            }
-        }
-        m_testSpec = parser.testSpec();
-
-
         // Insert the default reporter if user hasn't asked for a specfic one
         if ( m_data.reporterSpecifications.empty() ) {
             m_data.reporterSpecifications.push_back( {
@@ -85,29 +74,21 @@ namespace Catch {
             } );
         }
 
-#if !defined(CATCH_PLATFORM_WINDOWS_UWP)
-    if(enableBazelEnvSupport()){
-            // Register a JUnit reporter for Bazel. Bazel sets an environment
-            // variable with the path to XML output. If this file is written to
-            // during test, Bazel will not generate a default XML output.
-            // This allows the XML output file to contain higher level of detail
-            // than what is possible otherwise.
-#    if defined( _MSC_VER )
-            // On Windows getenv throws a warning as there is no input validation,
-            // since the key is hardcoded, this should not be an issue.
-#           pragma warning( push )
-#           pragma warning( disable : 4996 )
-#    endif
-            const auto bazelOutputFilePtr = std::getenv( "XML_OUTPUT_FILE" );
-#    if defined( _MSC_VER )
-#        pragma warning( pop )
-#    endif
-            if ( bazelOutputFilePtr != nullptr ) {
-                m_data.reporterSpecifications.push_back(
-                    { "junit", std::string( bazelOutputFilePtr ), {}, {} } );
+        if ( enableBazelEnvSupport() ) {
+            readBazelEnvVars();
+        }
+
+        // Bazel support can modify the test specs, so parsing has to happen
+        // after reading Bazel env vars.
+        TestSpecParser parser( ITagAliasRegistry::get() );
+        if ( !m_data.testsOrTags.empty() ) {
+            m_hasTestFilters = true;
+            for ( auto const& testOrTags : m_data.testsOrTags ) {
+                parser.parse( testOrTags );
             }
-    }
-#endif
+        }
+        m_testSpec = parser.testSpec();
+
 
         // We now fixup the reporter specs to handle default output spec,
         // default colour spec, etc
@@ -186,5 +167,41 @@ namespace Catch {
     double Config::benchmarkConfidenceInterval() const            { return m_data.benchmarkConfidenceInterval; }
     unsigned int Config::benchmarkResamples() const               { return m_data.benchmarkResamples; }
     std::chrono::milliseconds Config::benchmarkWarmupTime() const { return std::chrono::milliseconds(m_data.benchmarkWarmupTime); }
+
+    void Config::readBazelEnvVars() {
+#if defined( CATCH_PLATFORM_WINDOWS_UWP )
+// We cannot read environment variables on UWP platforms
+#else
+
+#    if defined( _MSC_VER )
+#        pragma warning( push )
+#        pragma warning( disable : 4996 ) // use getenv_s instead of getenv
+#    endif
+
+        // Register a JUnit reporter for Bazel. Bazel sets an environment
+        // variable with the path to XML output. If this file is written to
+        // during test, Bazel will not generate a default XML output.
+        // This allows the XML output file to contain higher level of detail
+        // than what is possible otherwise.
+        const auto bazelOutputFile = std::getenv( "XML_OUTPUT_FILE" );
+        if ( bazelOutputFile ) {
+            m_data.reporterSpecifications.push_back(
+                { "junit", std::string( bazelOutputFile ), {}, {} } );
+        }
+
+        const auto bazelTestSpec = std::getenv( "TESTBRIDGE_TEST_ONLY" );
+        if ( bazelTestSpec ) {
+            // Presumably the test spec from environment should overwrite
+            // the one we got from CLI (if we got any)
+            m_data.testsOrTags.clear();
+            m_data.testsOrTags.push_back( bazelTestSpec );
+        }
+
+#    if defined( _MSC_VER )
+#        pragma warning( pop )
+#    endif
+
+#endif
+    }
 
 } // end namespace Catch
