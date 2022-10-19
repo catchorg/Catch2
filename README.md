@@ -41,6 +41,7 @@ TEST_CASE( "Factorials are computed", "[factorial]" ) {
 
 **Example microbenchmark**
 ```cpp
+#include <catch2/catch_test_macros.hpp>
 #include <catch2/benchmark/catch_benchmark.hpp>
 
 #include <cstdint>
