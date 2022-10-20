@@ -161,6 +161,18 @@ set_tests_properties(BazelEnv::TESTBRIDGE_TEST_ONLY
 )
 
 
+add_test(NAME BazelEnv::Sharding
+  COMMAND
+    "${PYTHON_EXECUTABLE}" "${CATCH_DIR}/tests/TestScripts/testBazelSharding.py"
+      $<TARGET_FILE:BazelReporterNoCatchConfig>
+      "${CMAKE_CURRENT_BINARY_DIR}"
+)
+set_tests_properties(BazelEnv::Sharding
+  PROPERTIES
+    LABELS "uses-python"
+)
+
+
 # The default handler on Windows leads to the just-in-time debugger firing,
 # which makes this test unsuitable for CI and headless runs, as it opens
 # up an interactive dialog.

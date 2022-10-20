@@ -8,38 +8,113 @@
 #include <catch2/catch_config.hpp>
 #include <catch2/catch_user_config.hpp>
 #include <catch2/internal/catch_enforce.hpp>
+#include <catch2/internal/catch_parse_numbers.hpp>
 #include <catch2/internal/catch_platform.hpp>
+#include <catch2/internal/catch_stdstreams.hpp>
 #include <catch2/internal/catch_stringref.hpp>
 #include <catch2/internal/catch_string_manip.hpp>
 #include <catch2/internal/catch_test_spec_parser.hpp>
 #include <catch2/interfaces/catch_interfaces_tag_alias_registry.hpp>
 
-namespace {
-    static bool enableBazelEnvSupport() {
-#if defined(CATCH_CONFIG_BAZEL_SUPPORT)
-        return true;
-#elif defined(CATCH_PLATFORM_WINDOWS_UWP)
-        // UWP does not support environment variables
-        return false;
+#include <fstream>
+
+namespace Catch {
+
+    namespace {
+        static bool enableBazelEnvSupport() {
+#if defined( CATCH_CONFIG_BAZEL_SUPPORT )
+            return true;
+#elif defined( CATCH_PLATFORM_WINDOWS_UWP )
+            // UWP does not support environment variables
+            return false;
 #else
 
 #    if defined( _MSC_VER )
-        // On Windows getenv throws a warning as there is no input validation,
-        // since the switch is hardcoded, this should not be an issue.
+            // On Windows getenv throws a warning as there is no input
+            // validation, since the switch is hardcoded, this should not be an
+            // issue.
 #        pragma warning( push )
 #        pragma warning( disable : 4996 )
 #    endif
 
-        return std::getenv( "BAZEL_TEST" ) != nullptr;
+            return std::getenv( "BAZEL_TEST" ) != nullptr;
 
 #    if defined( _MSC_VER )
 #        pragma warning( pop )
 #    endif
 #endif
-    }
-}
+        }
 
-namespace Catch {
+        struct bazelShardingOptions {
+            unsigned int shardIndex, shardCount;
+            std::string shardFilePath;
+        };
+
+        static Optional<bazelShardingOptions> readBazelShardingOptions() {
+#if defined( CATCH_PLATFORM_WINDOWS_UWP )
+            // We cannot read environment variables on UWP platforms
+            return {}
+#else
+
+#    if defined( _MSC_VER )
+#        pragma warning( push )
+#        pragma warning( disable : 4996 ) // use getenv_s instead of getenv
+#    endif
+
+            const auto bazelShardIndex = std::getenv( "TEST_SHARD_INDEX" );
+            const auto bazelShardTotal = std::getenv( "TEST_TOTAL_SHARDS" );
+            const auto bazelShardInfoFile = std::getenv( "TEST_SHARD_STATUS_FILE" );
+
+#    if defined( _MSC_VER )
+#        pragma warning( pop )
+#    endif
+
+
+            const bool has_all =
+                bazelShardIndex && bazelShardTotal && bazelShardInfoFile;
+            if ( !has_all ) {
+                // We provide nice warning message if the input is
+                // misconfigured.
+                auto warn = []( const char* env_var ) {
+                    Catch::cerr()
+                        << "Warning: Bazel shard configuration is missing '"
+                        << env_var << "'. Shard configuration is skipped.\n";
+                };
+                if ( !bazelShardIndex ) {
+                    warn( "TEST_SHARD_INDEX" );
+                }
+                if ( !bazelShardTotal ) {
+                    warn( "TEST_TOTAL_SHARDS" );
+                }
+                if ( !bazelShardInfoFile ) {
+                    warn( "TEST_SHARD_STATUS_FILE" );
+                }
+                return {};
+            }
+
+            auto shardIndex = parseUInt( bazelShardIndex );
+            if ( !shardIndex ) {
+                Catch::cerr()
+                    << "Warning: could not parse 'TEST_SHARD_INDEX' ('" << bazelShardIndex
+                    << "') as unsigned int.\n";
+                return {};
+            }
+            auto shardTotal = parseUInt( bazelShardTotal );
+            if ( !shardTotal ) {
+                Catch::cerr()
+                    << "Warning: could not parse 'TEST_TOTAL_SHARD' ('"
+                    << bazelShardTotal << "') as unsigned int.\n";
+                return {};
+            }
+
+            return bazelShardingOptions{
+                *shardIndex, *shardTotal, bazelShardInfoFile };
+
+#endif
+
+        }
+    } // end namespace
+
 
     bool operator==( ProcessedReporterSpec const& lhs,
                      ProcessedReporterSpec const& rhs ) {
@@ -184,6 +259,7 @@ namespace Catch {
         // This allows the XML output file to contain higher level of detail
         // than what is possible otherwise.
         const auto bazelOutputFile = std::getenv( "XML_OUTPUT_FILE" );
+
         if ( bazelOutputFile ) {
             m_data.reporterSpecifications.push_back(
                 { "junit", std::string( bazelOutputFile ), {}, {} } );
@@ -196,10 +272,20 @@ namespace Catch {
             m_data.testsOrTags.clear();
             m_data.testsOrTags.push_back( bazelTestSpec );
         }
-
 #    if defined( _MSC_VER )
 #        pragma warning( pop )
 #    endif
+
+        const auto bazelShardOptions = readBazelShardingOptions();
+        if ( bazelShardOptions ) {
+            std::ofstream f( bazelShardOptions->shardFilePath,
+                             std::ios_base::out | std::ios_base::trunc );
+            if ( f.is_open() ) {
+                f << "";
+                m_data.shardIndex = bazelShardOptions->shardIndex;
+                m_data.shardCount = bazelShardOptions->shardCount;
+            }
+        }
 
 #endif
     }
