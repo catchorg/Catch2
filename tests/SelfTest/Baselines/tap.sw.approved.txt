@@ -2383,6 +2383,28 @@ ok {test-number} - !(spec.matches(*fakeTestCase("only foo", "[foo]"))) for: !fal
 ok {test-number} - !(spec.matches(*fakeTestCase("only hidden", "[.]"))) for: !false
 # Parse test names and tags
 ok {test-number} - spec.matches(*fakeTestCase("neither foo nor hidden", "[bar]")) for: true
+# Parse uints
+ok {test-number} - parseUInt( "0" ) == Optional<unsigned int>{ 0 } for: {?} == {?}
+# Parse uints
+ok {test-number} - parseUInt( "100" ) == Optional<unsigned int>{ 100 } for: {?} == {?}
+# Parse uints
+ok {test-number} - parseUInt( "4294967295" ) == Optional<unsigned int>{ 4294967295 } for: {?} == {?}
+# Parse uints
+ok {test-number} - parseUInt( "0x<hex digits>", 16 ) == Optional<unsigned int>{ 255 } for: {?} == {?}
+# Parse uints
+ok {test-number} - !(parseUInt( "" )) for: !{?}
+# Parse uints
+ok {test-number} - !(parseUInt( "!!KJHF*#" )) for: !{?}
+# Parse uints
+ok {test-number} - !(parseUInt( "-1" )) for: !{?}
+# Parse uints
+ok {test-number} - !(parseUInt( "4294967296" )) for: !{?}
+# Parse uints
+ok {test-number} - !(parseUInt( "42949672964294967296429496729642949672964294967296" )) for: !{?}
+# Parse uints
+ok {test-number} - !(parseUInt( "2 4" )) for: !{?}
+# Parse uints
+ok {test-number} - !(parseUInt( "0x<hex digits>", 10 )) for: !{?}
 # Parsed tags are matched case insensitive
 ok {test-number} - spec.hasFilters() for: true
 # Parsed tags are matched case insensitive
@@ -4601,5 +4623,5 @@ ok {test-number} - q3 == 23. for: 23.0 == 23.0
 ok {test-number} -
 # xmlentitycheck
 ok {test-number} -
-1..2299
+1..2310
 

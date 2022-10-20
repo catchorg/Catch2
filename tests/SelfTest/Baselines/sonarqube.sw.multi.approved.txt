@@ -156,6 +156,10 @@
     <testCase name="warmup" duration="{duration}"/>
     <testCase name="weighted_average_quantile" duration="{duration}"/>
   </file>
+  <file path="tests/<exe-name>/IntrospectiveTests/Parse.tests.cpp">
+    <testCase name="Parse uints/proper inputs" duration="{duration}"/>
+    <testCase name="Parse uints/Bad inputs" duration="{duration}"/>
+  </file>
   <file path="tests/<exe-name>/IntrospectiveTests/PartTracker.tests.cpp">
     <testCase name="#1938 - GENERATE after a section/A" duration="{duration}"/>
     <testCase name="#1938 - GENERATE after a section/B" duration="{duration}"/>

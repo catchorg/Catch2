@@ -1268,6 +1268,17 @@ CmdLine.tests.cpp:<line number>: passed: !(spec.matches(*fakeTestCase("hidden an
 CmdLine.tests.cpp:<line number>: passed: !(spec.matches(*fakeTestCase("only foo", "[foo]"))) for: !false
 CmdLine.tests.cpp:<line number>: passed: !(spec.matches(*fakeTestCase("only hidden", "[.]"))) for: !false
 CmdLine.tests.cpp:<line number>: passed: spec.matches(*fakeTestCase("neither foo nor hidden", "[bar]")) for: true
+Parse.tests.cpp:<line number>: passed: parseUInt( "0" ) == Optional<unsigned int>{ 0 } for: {?} == {?}
+Parse.tests.cpp:<line number>: passed: parseUInt( "100" ) == Optional<unsigned int>{ 100 } for: {?} == {?}
+Parse.tests.cpp:<line number>: passed: parseUInt( "4294967295" ) == Optional<unsigned int>{ 4294967295 } for: {?} == {?}
+Parse.tests.cpp:<line number>: passed: parseUInt( "0x<hex digits>", 16 ) == Optional<unsigned int>{ 255 } for: {?} == {?}
+Parse.tests.cpp:<line number>: passed: !(parseUInt( "" )) for: !{?}
+Parse.tests.cpp:<line number>: passed: !(parseUInt( "!!KJHF*#" )) for: !{?}
+Parse.tests.cpp:<line number>: passed: !(parseUInt( "-1" )) for: !{?}
+Parse.tests.cpp:<line number>: passed: !(parseUInt( "4294967296" )) for: !{?}
+Parse.tests.cpp:<line number>: passed: !(parseUInt( "42949672964294967296429496729642949672964294967296" )) for: !{?}
+Parse.tests.cpp:<line number>: passed: !(parseUInt( "2 4" )) for: !{?}
+Parse.tests.cpp:<line number>: passed: !(parseUInt( "0x<hex digits>", 10 )) for: !{?}
 TestSpecParser.tests.cpp:<line number>: passed: spec.hasFilters() for: true
 TestSpecParser.tests.cpp:<line number>: passed: spec.getInvalidSpecs().empty() for: true
 TestSpecParser.tests.cpp:<line number>: passed: spec.matches( testCase ) for: true

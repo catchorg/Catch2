@@ -78,6 +78,7 @@
 #include <catch2/internal/catch_noncopyable.hpp>
 #include <catch2/internal/catch_optional.hpp>
 #include <catch2/internal/catch_output_redirect.hpp>
+#include <catch2/internal/catch_parse_numbers.hpp>
 #include <catch2/internal/catch_platform.hpp>
 #include <catch2/internal/catch_polyfills.hpp>
 #include <catch2/internal/catch_preprocessor.hpp>
