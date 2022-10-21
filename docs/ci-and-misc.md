@@ -1,8 +1,15 @@
 <a id="top"></a>
-# CI and other odd pieces
+# Tooling integration (CI, test runners and so on)
 
-This page talks about how Catch integrates with Continuous Integration
-Build Systems may refer to low-level tools, like CMake, or larger systems that run on servers, like Jenkins or TeamCity. This page will talk about both.
+**Contents**<br>
+[Continuous Integration systems](#continuous-integration-systems)<br>
+[Bazel test runner integration](#bazel-test-runner-integration)<br>
+[Low-level tools](#low-level-tools)<br>
+[CMake](#cmake)<br>
+
+This page talks about Catch2's integration with other related tooling,
+like Continuous Integration and 3rd party test runners.
+
 
 ## Continuous Integration systems
 
@@ -49,6 +56,26 @@ Because of the incremental nature of Catch's test suites and ability to run spec
 ### SonarQube Reporter
 ```-r sonarqube```
 [SonarQube Generic Test Data](https://docs.sonarqube.org/latest/analysis/generic-test/) XML format for tests metrics.
+
+
+## Bazel test runner integration
+
+Catch2 understands some of the environment variables Bazel uses to control
+test execution. Specifically it understands
+
+ * JUnit output path via `XML_OUTPUT_FILE`
+ * Test filtering via `TESTBRIDGE_TEST_ONLY`
+ * Test sharding via `TEST_SHARD_INDEX`, `TEST_TOTAL_SHARDS`, and `TEST_SHARD_STATUS_FILE`
+
+> Support for `XML_OUTPUT_FILE` was [introduced](https://github.com/catchorg/Catch2/pull/2399) in Catch2 3.0.1
+
+> Support for `TESTBRIDGE_TEST_ONLY` and sharding was introduced in Catch2 X.Y.Z
+
+This integration is enabled via either a [compile time configuration
+option](configuration.md#bazel-support), or via `BAZEL_TEST` environment
+variable set to "1".
+
+> Support for `BAZEL_TEST` was [introduced](https://github.com/catchorg/Catch2/pull/2459) in Catch2 3.1.0
 
 
 ## Low-level tools
