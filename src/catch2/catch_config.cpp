@@ -9,12 +9,12 @@
 #include <catch2/catch_user_config.hpp>
 #include <catch2/internal/catch_enforce.hpp>
 #include <catch2/internal/catch_parse_numbers.hpp>
-#include <catch2/internal/catch_platform.hpp>
 #include <catch2/internal/catch_stdstreams.hpp>
 #include <catch2/internal/catch_stringref.hpp>
 #include <catch2/internal/catch_string_manip.hpp>
 #include <catch2/internal/catch_test_spec_parser.hpp>
 #include <catch2/interfaces/catch_interfaces_tag_alias_registry.hpp>
+#include <catch2/internal/catch_getenv.hpp>
 
 #include <fstream>
 
@@ -24,24 +24,8 @@ namespace Catch {
         static bool enableBazelEnvSupport() {
 #if defined( CATCH_CONFIG_BAZEL_SUPPORT )
             return true;
-#elif defined( CATCH_PLATFORM_WINDOWS_UWP )
-            // UWP does not support environment variables
-            return false;
 #else
-
-#    if defined( _MSC_VER )
-            // On Windows getenv throws a warning as there is no input
-            // validation, since the switch is hardcoded, this should not be an
-            // issue.
-#        pragma warning( push )
-#        pragma warning( disable : 4996 )
-#    endif
-
-            return std::getenv( "BAZEL_TEST" ) != nullptr;
-
-#    if defined( _MSC_VER )
-#        pragma warning( pop )
-#    endif
+            return Detail::getEnv( "BAZEL_TEST" ) != nullptr;
 #endif
         }
 
@@ -51,23 +35,9 @@ namespace Catch {
         };
 
         static Optional<bazelShardingOptions> readBazelShardingOptions() {
-#if defined( CATCH_PLATFORM_WINDOWS_UWP )
-            // We cannot read environment variables on UWP platforms
-            return {}
-#else
-
-#    if defined( _MSC_VER )
-#        pragma warning( push )
-#        pragma warning( disable : 4996 ) // use getenv_s instead of getenv
-#    endif
-
-            const auto bazelShardIndex = std::getenv( "TEST_SHARD_INDEX" );
-            const auto bazelShardTotal = std::getenv( "TEST_TOTAL_SHARDS" );
-            const auto bazelShardInfoFile = std::getenv( "TEST_SHARD_STATUS_FILE" );
-
-#    if defined( _MSC_VER )
-#        pragma warning( pop )
-#    endif
+            const auto bazelShardIndex = Detail::getEnv( "TEST_SHARD_INDEX" );
+            const auto bazelShardTotal = Detail::getEnv( "TEST_TOTAL_SHARDS" );
+            const auto bazelShardInfoFile = Detail::getEnv( "TEST_SHARD_STATUS_FILE" );
 
 
             const bool has_all =
@@ -109,8 +79,6 @@ namespace Catch {
 
             return bazelShardingOptions{
                 *shardIndex, *shardTotal, bazelShardInfoFile };
-
-#endif
 
         }
     } // end namespace
@@ -244,37 +212,25 @@ namespace Catch {
     std::chrono::milliseconds Config::benchmarkWarmupTime() const { return std::chrono::milliseconds(m_data.benchmarkWarmupTime); }
 
     void Config::readBazelEnvVars() {
-#if defined( CATCH_PLATFORM_WINDOWS_UWP )
-// We cannot read environment variables on UWP platforms
-#else
-
-#    if defined( _MSC_VER )
-#        pragma warning( push )
-#        pragma warning( disable : 4996 ) // use getenv_s instead of getenv
-#    endif
-
         // Register a JUnit reporter for Bazel. Bazel sets an environment
         // variable with the path to XML output. If this file is written to
         // during test, Bazel will not generate a default XML output.
         // This allows the XML output file to contain higher level of detail
         // than what is possible otherwise.
-        const auto bazelOutputFile = std::getenv( "XML_OUTPUT_FILE" );
+        const auto bazelOutputFile = Detail::getEnv( "XML_OUTPUT_FILE" );
 
         if ( bazelOutputFile ) {
             m_data.reporterSpecifications.push_back(
                 { "junit", std::string( bazelOutputFile ), {}, {} } );
         }
 
-        const auto bazelTestSpec = std::getenv( "TESTBRIDGE_TEST_ONLY" );
+        const auto bazelTestSpec = Detail::getEnv( "TESTBRIDGE_TEST_ONLY" );
         if ( bazelTestSpec ) {
             // Presumably the test spec from environment should overwrite
             // the one we got from CLI (if we got any)
             m_data.testsOrTags.clear();
             m_data.testsOrTags.push_back( bazelTestSpec );
         }
-#    if defined( _MSC_VER )
-#        pragma warning( pop )
-#    endif
 
         const auto bazelShardOptions = readBazelShardingOptions();
         if ( bazelShardOptions ) {
@@ -286,8 +242,6 @@ namespace Catch {
                 m_data.shardCount = bazelShardOptions->shardCount;
             }
         }
-
-#endif
     }
 
 } // end namespace Catch
