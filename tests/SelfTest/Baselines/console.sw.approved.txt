@@ -9175,10 +9175,10 @@ with expansion:
   !{?}
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  REQUIRE_THAT( result.errorMessage(), ContainsSubstring("Shard count must be a positive number") )
+  REQUIRE_THAT( result.errorMessage(), ContainsSubstring( "Could not parse '-1' as shard count" ) )
 with expansion:
-  "Shard count must be a positive number" contains: "Shard count must be a
-  positive number"
+  "Could not parse '-1' as shard count" contains: "Could not parse '-1' as
+  shard count"
 
 -------------------------------------------------------------------------------
 Parsing sharding-related cli flags
@@ -9193,10 +9193,9 @@ with expansion:
   !{?}
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  REQUIRE_THAT( result.errorMessage(), ContainsSubstring("Shard count must be a positive number") )
+  REQUIRE_THAT( result.errorMessage(), ContainsSubstring( "Shard count must be positive" ) )
 with expansion:
-  "Shard count must be a positive number" contains: "Shard count must be a
-  positive number"
+  "Shard count must be positive" contains: "Shard count must be positive"
 
 -------------------------------------------------------------------------------
 Parsing sharding-related cli flags
@@ -9228,10 +9227,10 @@ with expansion:
   !{?}
 
 CmdLine.tests.cpp:<line number>: PASSED:
-  REQUIRE_THAT( result.errorMessage(), ContainsSubstring("Shard index must be a non-negative number") )
+  REQUIRE_THAT( result.errorMessage(), ContainsSubstring( "Could not parse '-12' as shard index" ) )
 with expansion:
-  "Shard index must be a non-negative number" contains: "Shard index must be a
-  non-negative number"
+  "Could not parse '-12' as shard index" contains: "Could not parse '-12' as
+  shard index"
 
 -------------------------------------------------------------------------------
 Parsing sharding-related cli flags

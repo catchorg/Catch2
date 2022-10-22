@@ -2416,11 +2416,11 @@ ok {test-number} - config.shardCount == 8 for: 8 == 8
 # Parsing sharding-related cli flags
 ok {test-number} - !(result) for: !{?}
 # Parsing sharding-related cli flags
-ok {test-number} - result.errorMessage(), ContainsSubstring("Shard count must be a positive number") for: "Shard count must be a positive number" contains: "Shard count must be a positive number"
+ok {test-number} - result.errorMessage(), ContainsSubstring( "Could not parse '-1' as shard count" ) for: "Could not parse '-1' as shard count" contains: "Could not parse '-1' as shard count"
 # Parsing sharding-related cli flags
 ok {test-number} - !(result) for: !{?}
 # Parsing sharding-related cli flags
-ok {test-number} - result.errorMessage(), ContainsSubstring("Shard count must be a positive number") for: "Shard count must be a positive number" contains: "Shard count must be a positive number"
+ok {test-number} - result.errorMessage(), ContainsSubstring( "Shard count must be positive" ) for: "Shard count must be positive" contains: "Shard count must be positive"
 # Parsing sharding-related cli flags
 ok {test-number} - cli.parse({ "test", "--shard-index=2" }) for: {?}
 # Parsing sharding-related cli flags
@@ -2428,7 +2428,7 @@ ok {test-number} - config.shardIndex == 2 for: 2 == 2
 # Parsing sharding-related cli flags
 ok {test-number} - !(result) for: !{?}
 # Parsing sharding-related cli flags
-ok {test-number} - result.errorMessage(), ContainsSubstring("Shard index must be a non-negative number") for: "Shard index must be a non-negative number" contains: "Shard index must be a non-negative number"
+ok {test-number} - result.errorMessage(), ContainsSubstring( "Could not parse '-12' as shard index" ) for: "Could not parse '-12' as shard index" contains: "Could not parse '-12' as shard index"
 # Parsing sharding-related cli flags
 ok {test-number} - cli.parse({ "test", "--shard-index=0" }) for: {?}
 # Parsing sharding-related cli flags

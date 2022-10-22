@@ -649,14 +649,18 @@ TEST_CASE("Parsing sharding-related cli flags", "[sharding]") {
         auto result = cli.parse({ "test", "--shard-count=-1" });
 
         CHECK_FALSE(result);
-        REQUIRE_THAT(result.errorMessage(), ContainsSubstring("Shard count must be a positive number"));
+        REQUIRE_THAT(
+            result.errorMessage(),
+            ContainsSubstring( "Could not parse '-1' as shard count" ) );
     }
 
     SECTION("Zero shard count reports error") {
         auto result = cli.parse({ "test", "--shard-count=0" });
 
         CHECK_FALSE(result);
-        REQUIRE_THAT(result.errorMessage(), ContainsSubstring("Shard count must be a positive number"));
+        REQUIRE_THAT(
+            result.errorMessage(),
+            ContainsSubstring( "Shard count must be positive" ) );
     }
 
     SECTION("shard-index") {
@@ -669,7 +673,9 @@ TEST_CASE("Parsing sharding-related cli flags", "[sharding]") {
         auto result = cli.parse({ "test", "--shard-index=-12" });
 
         CHECK_FALSE(result);
-        REQUIRE_THAT(result.errorMessage(), ContainsSubstring("Shard index must be a non-negative number"));
+        REQUIRE_THAT(
+            result.errorMessage(),
+            ContainsSubstring( "Could not parse '-12' as shard index" ) );
     }
 
     SECTION("Shard index 0 is accepted") {
@@ -677,7 +683,6 @@ TEST_CASE("Parsing sharding-related cli flags", "[sharding]") {
 
         REQUIRE(config.shardIndex == 0);
     }
-
 }
 
 TEST_CASE( "Parsing warnings", "[cli][warnings]" ) {

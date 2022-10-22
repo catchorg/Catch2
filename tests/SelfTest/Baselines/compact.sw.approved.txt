@@ -1287,13 +1287,13 @@ TestSpecParser.tests.cpp:<line number>: passed: spec.matches( testCase ) for: tr
 CmdLine.tests.cpp:<line number>: passed: cli.parse({ "test", "--shard-count=8" }) for: {?}
 CmdLine.tests.cpp:<line number>: passed: config.shardCount == 8 for: 8 == 8
 CmdLine.tests.cpp:<line number>: passed: !(result) for: !{?}
-CmdLine.tests.cpp:<line number>: passed: result.errorMessage(), ContainsSubstring("Shard count must be a positive number") for: "Shard count must be a positive number" contains: "Shard count must be a positive number"
+CmdLine.tests.cpp:<line number>: passed: result.errorMessage(), ContainsSubstring( "Could not parse '-1' as shard count" ) for: "Could not parse '-1' as shard count" contains: "Could not parse '-1' as shard count"
 CmdLine.tests.cpp:<line number>: passed: !(result) for: !{?}
-CmdLine.tests.cpp:<line number>: passed: result.errorMessage(), ContainsSubstring("Shard count must be a positive number") for: "Shard count must be a positive number" contains: "Shard count must be a positive number"
+CmdLine.tests.cpp:<line number>: passed: result.errorMessage(), ContainsSubstring( "Shard count must be positive" ) for: "Shard count must be positive" contains: "Shard count must be positive"
 CmdLine.tests.cpp:<line number>: passed: cli.parse({ "test", "--shard-index=2" }) for: {?}
 CmdLine.tests.cpp:<line number>: passed: config.shardIndex == 2 for: 2 == 2
 CmdLine.tests.cpp:<line number>: passed: !(result) for: !{?}
-CmdLine.tests.cpp:<line number>: passed: result.errorMessage(), ContainsSubstring("Shard index must be a non-negative number") for: "Shard index must be a non-negative number" contains: "Shard index must be a non-negative number"
+CmdLine.tests.cpp:<line number>: passed: result.errorMessage(), ContainsSubstring( "Could not parse '-12' as shard index" ) for: "Could not parse '-12' as shard index" contains: "Could not parse '-12' as shard index"
 CmdLine.tests.cpp:<line number>: passed: cli.parse({ "test", "--shard-index=0" }) for: {?}
 CmdLine.tests.cpp:<line number>: passed: config.shardIndex == 0 for: 0 == 0
 TestSpecParser.tests.cpp:<line number>: passed: spec.hasFilters() for: true with 1 message: 'tagString := "[tag with spaces]"'

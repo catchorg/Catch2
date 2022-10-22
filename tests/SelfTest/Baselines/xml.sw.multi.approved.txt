@@ -11160,10 +11160,10 @@ C
       </Expression>
       <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
         <Original>
-          result.errorMessage(), ContainsSubstring("Shard count must be a positive number")
+          result.errorMessage(), ContainsSubstring( "Could not parse '-1' as shard count" )
         </Original>
         <Expanded>
-          "Shard count must be a positive number" contains: "Shard count must be a positive number"
+          "Could not parse '-1' as shard count" contains: "Could not parse '-1' as shard count"
         </Expanded>
       </Expression>
       <OverallResults successes="2" failures="0" expectedFailures="0"/>
@@ -11179,10 +11179,10 @@ C
       </Expression>
       <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
         <Original>
-          result.errorMessage(), ContainsSubstring("Shard count must be a positive number")
+          result.errorMessage(), ContainsSubstring( "Shard count must be positive" )
         </Original>
         <Expanded>
-          "Shard count must be a positive number" contains: "Shard count must be a positive number"
+          "Shard count must be positive" contains: "Shard count must be positive"
         </Expanded>
       </Expression>
       <OverallResults successes="2" failures="0" expectedFailures="0"/>
@@ -11217,10 +11217,10 @@ C
       </Expression>
       <Expression success="true" type="REQUIRE_THAT" filename="tests/<exe-name>/IntrospectiveTests/CmdLine.tests.cpp" >
         <Original>
-          result.errorMessage(), ContainsSubstring("Shard index must be a non-negative number")
+          result.errorMessage(), ContainsSubstring( "Could not parse '-12' as shard index" )
         </Original>
         <Expanded>
-          "Shard index must be a non-negative number" contains: "Shard index must be a non-negative number"
+          "Could not parse '-12' as shard index" contains: "Could not parse '-12' as shard index"
         </Expanded>
       </Expression>
       <OverallResults successes="2" failures="0" expectedFailures="0"/>

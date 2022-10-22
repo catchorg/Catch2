@@ -7,7 +7,6 @@
 // SPDX-License-Identifier: BSL-1.0
 #include <catch2/internal/catch_commandline.hpp>
 
-#include <catch2/internal/catch_compiler_capabilities.hpp>
 #include <catch2/catch_config.hpp>
 #include <catch2/internal/catch_string_manip.hpp>
 #include <catch2/interfaces/catch_interfaces_registry_hub.hpp>
@@ -177,41 +176,28 @@ namespace Catch {
             return ParserResult::ok( ParseResultType::Matched );
         };
         auto const setShardCount = [&]( std::string const& shardCount ) {
-            CATCH_TRY{
-                std::size_t parsedTo = 0;
-                int64_t parsedCount = std::stoll(shardCount, &parsedTo, 0);
-                if (parsedTo != shardCount.size()) {
-                    return ParserResult::runtimeError("Could not parse '" + shardCount + "' as shard count");
-                }
-                if (parsedCount <= 0) {
-                    return ParserResult::runtimeError("Shard count must be a positive number");
-                }
-
-                config.shardCount = static_cast<unsigned int>(parsedCount);
-                return ParserResult::ok(ParseResultType::Matched);
-            } CATCH_CATCH_ANON(std::exception const&) {
-                return ParserResult::runtimeError("Could not parse '" + shardCount + "' as shard count");
+            auto parsedCount = parseUInt( shardCount );
+            if ( !parsedCount ) {
+                return ParserResult::runtimeError(
+                    "Could not parse '" + shardCount + "' as shard count" );
             }
+            if ( *parsedCount == 0 ) {
+                return ParserResult::runtimeError(
+                    "Shard count must be positive" );
+            }
+            config.shardCount = *parsedCount;
+            return ParserResult::ok( ParseResultType::Matched );
         };
 
         auto const setShardIndex = [&](std::string const& shardIndex) {
-            CATCH_TRY{
-                std::size_t parsedTo = 0;
-                int64_t parsedIndex = std::stoll(shardIndex, &parsedTo, 0);
-                if (parsedTo != shardIndex.size()) {
-                    return ParserResult::runtimeError("Could not parse '" + shardIndex + "' as shard index");
-                }
-                if (parsedIndex < 0) {
-                    return ParserResult::runtimeError("Shard index must be a non-negative number");
-                }
-
-                config.shardIndex = static_cast<unsigned int>(parsedIndex);
-                return ParserResult::ok(ParseResultType::Matched);
-            } CATCH_CATCH_ANON(std::exception const&) {
-                return ParserResult::runtimeError("Could not parse '" + shardIndex + "' as shard index");
+            auto parsedIndex = parseUInt( shardIndex );
+            if ( !parsedIndex ) {
+                return ParserResult::runtimeError(
+                    "Could not parse '" + shardIndex + "' as shard index" );
             }
+            config.shardIndex = *parsedIndex;
+            return ParserResult::ok( ParseResultType::Matched );
         };
-
 
         auto cli
             = ExeName( config.processName )
