@@ -68,6 +68,7 @@
 #include <catch2/internal/catch_exception_translator_registry.hpp>
 #include <catch2/internal/catch_fatal_condition_handler.hpp>
 #include <catch2/internal/catch_floating_point_helpers.hpp>
+#include <catch2/internal/catch_getenv.hpp>
 #include <catch2/internal/catch_istream.hpp>
 #include <catch2/internal/catch_lazy_expr.hpp>
 #include <catch2/internal/catch_leak_detector.hpp>
@@ -78,6 +79,7 @@
 #include <catch2/internal/catch_noncopyable.hpp>
 #include <catch2/internal/catch_optional.hpp>
 #include <catch2/internal/catch_output_redirect.hpp>
+#include <catch2/internal/catch_parse_numbers.hpp>
 #include <catch2/internal/catch_platform.hpp>
 #include <catch2/internal/catch_polyfills.hpp>
 #include <catch2/internal/catch_preprocessor.hpp>

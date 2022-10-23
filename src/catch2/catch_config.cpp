@@ -8,38 +8,81 @@
 #include <catch2/catch_config.hpp>
 #include <catch2/catch_user_config.hpp>
 #include <catch2/internal/catch_enforce.hpp>
-#include <catch2/internal/catch_platform.hpp>
+#include <catch2/internal/catch_parse_numbers.hpp>
+#include <catch2/internal/catch_stdstreams.hpp>
 #include <catch2/internal/catch_stringref.hpp>
 #include <catch2/internal/catch_string_manip.hpp>
 #include <catch2/internal/catch_test_spec_parser.hpp>
 #include <catch2/interfaces/catch_interfaces_tag_alias_registry.hpp>
+#include <catch2/internal/catch_getenv.hpp>
 
-namespace {
-    bool provideBazelReporterOutput() {
-#if defined(CATCH_CONFIG_BAZEL_SUPPORT)
-        return true;
-#elif defined(CATCH_PLATFORM_WINDOWS_UWP)
-        // UWP does not support environment variables
-        return false;
-#else
-
-#    if defined( _MSC_VER )
-        // On Windows getenv throws a warning as there is no input validation,
-        // since the switch is hardcoded, this should not be an issue.
-#        pragma warning( push )
-#        pragma warning( disable : 4996 )
-#    endif
-
-        return std::getenv( "BAZEL_TEST" ) != nullptr;
-
-#    if defined( _MSC_VER )
-#        pragma warning( pop )
-#    endif
-#endif
-    }
-}
+#include <fstream>
 
 namespace Catch {
+
+    namespace {
+        static bool enableBazelEnvSupport() {
+#if defined( CATCH_CONFIG_BAZEL_SUPPORT )
+            return true;
+#else
+            return Detail::getEnv( "BAZEL_TEST" ) != nullptr;
+#endif
+        }
+
+        struct bazelShardingOptions {
+            unsigned int shardIndex, shardCount;
+            std::string shardFilePath;
+        };
+
+        static Optional<bazelShardingOptions> readBazelShardingOptions() {
+            const auto bazelShardIndex = Detail::getEnv( "TEST_SHARD_INDEX" );
+            const auto bazelShardTotal = Detail::getEnv( "TEST_TOTAL_SHARDS" );
+            const auto bazelShardInfoFile = Detail::getEnv( "TEST_SHARD_STATUS_FILE" );
+
+
+            const bool has_all =
+                bazelShardIndex && bazelShardTotal && bazelShardInfoFile;
+            if ( !has_all ) {
+                // We provide nice warning message if the input is
+                // misconfigured.
+                auto warn = []( const char* env_var ) {
+                    Catch::cerr()
+                        << "Warning: Bazel shard configuration is missing '"
+                        << env_var << "'. Shard configuration is skipped.\n";
+                };
+                if ( !bazelShardIndex ) {
+                    warn( "TEST_SHARD_INDEX" );
+                }
+                if ( !bazelShardTotal ) {
+                    warn( "TEST_TOTAL_SHARDS" );
+                }
+                if ( !bazelShardInfoFile ) {
+                    warn( "TEST_SHARD_STATUS_FILE" );
+                }
+                return {};
+            }
+
+            auto shardIndex = parseUInt( bazelShardIndex );
+            if ( !shardIndex ) {
+                Catch::cerr()
+                    << "Warning: could not parse 'TEST_SHARD_INDEX' ('" << bazelShardIndex
+                    << "') as unsigned int.\n";
+                return {};
+            }
+            auto shardTotal = parseUInt( bazelShardTotal );
+            if ( !shardTotal ) {
+                Catch::cerr()
+                    << "Warning: could not parse 'TEST_TOTAL_SHARD' ('"
+                    << bazelShardTotal << "') as unsigned int.\n";
+                return {};
+            }
+
+            return bazelShardingOptions{
+                *shardIndex, *shardTotal, bazelShardInfoFile };
+
+        }
+    } // end namespace
+
 
     bool operator==( ProcessedReporterSpec const& lhs,
                      ProcessedReporterSpec const& rhs ) {
@@ -62,17 +105,6 @@ namespace Catch {
             elem = trim(elem);
         }
 
-
-        TestSpecParser parser(ITagAliasRegistry::get());
-        if (!m_data.testsOrTags.empty()) {
-            m_hasTestFilters = true;
-            for (auto const& testOrTags : m_data.testsOrTags) {
-                parser.parse(testOrTags);
-            }
-        }
-        m_testSpec = parser.testSpec();
-
-
         // Insert the default reporter if user hasn't asked for a specfic one
         if ( m_data.reporterSpecifications.empty() ) {
             m_data.reporterSpecifications.push_back( {
@@ -85,29 +117,21 @@ namespace Catch {
             } );
         }
 
-#if !defined(CATCH_PLATFORM_WINDOWS_UWP)
-    if(provideBazelReporterOutput()){
-            // Register a JUnit reporter for Bazel. Bazel sets an environment
-            // variable with the path to XML output. If this file is written to
-            // during test, Bazel will not generate a default XML output.
-            // This allows the XML output file to contain higher level of detail
-            // than what is possible otherwise.
-#    if defined( _MSC_VER )
-            // On Windows getenv throws a warning as there is no input validation,
-            // since the key is hardcoded, this should not be an issue.
-#           pragma warning( push )
-#           pragma warning( disable : 4996 )
-#    endif
-            const auto bazelOutputFilePtr = std::getenv( "XML_OUTPUT_FILE" );
-#    if defined( _MSC_VER )
-#        pragma warning( pop )
-#    endif
-            if ( bazelOutputFilePtr != nullptr ) {
-                m_data.reporterSpecifications.push_back(
-                    { "junit", std::string( bazelOutputFilePtr ), {}, {} } );
+        if ( enableBazelEnvSupport() ) {
+            readBazelEnvVars();
+        }
+
+        // Bazel support can modify the test specs, so parsing has to happen
+        // after reading Bazel env vars.
+        TestSpecParser parser( ITagAliasRegistry::get() );
+        if ( !m_data.testsOrTags.empty() ) {
+            m_hasTestFilters = true;
+            for ( auto const& testOrTags : m_data.testsOrTags ) {
+                parser.parse( testOrTags );
             }
-    }
-#endif
+        }
+        m_testSpec = parser.testSpec();
+
 
         // We now fixup the reporter specs to handle default output spec,
         // default colour spec, etc
@@ -186,5 +210,38 @@ namespace Catch {
     double Config::benchmarkConfidenceInterval() const            { return m_data.benchmarkConfidenceInterval; }
     unsigned int Config::benchmarkResamples() const               { return m_data.benchmarkResamples; }
     std::chrono::milliseconds Config::benchmarkWarmupTime() const { return std::chrono::milliseconds(m_data.benchmarkWarmupTime); }
+
+    void Config::readBazelEnvVars() {
+        // Register a JUnit reporter for Bazel. Bazel sets an environment
+        // variable with the path to XML output. If this file is written to
+        // during test, Bazel will not generate a default XML output.
+        // This allows the XML output file to contain higher level of detail
+        // than what is possible otherwise.
+        const auto bazelOutputFile = Detail::getEnv( "XML_OUTPUT_FILE" );
+
+        if ( bazelOutputFile ) {
+            m_data.reporterSpecifications.push_back(
+                { "junit", std::string( bazelOutputFile ), {}, {} } );
+        }
+
+        const auto bazelTestSpec = Detail::getEnv( "TESTBRIDGE_TEST_ONLY" );
+        if ( bazelTestSpec ) {
+            // Presumably the test spec from environment should overwrite
+            // the one we got from CLI (if we got any)
+            m_data.testsOrTags.clear();
+            m_data.testsOrTags.push_back( bazelTestSpec );
+        }
+
+        const auto bazelShardOptions = readBazelShardingOptions();
+        if ( bazelShardOptions ) {
+            std::ofstream f( bazelShardOptions->shardFilePath,
+                             std::ios_base::out | std::ios_base::trunc );
+            if ( f.is_open() ) {
+                f << "";
+                m_data.shardIndex = bazelShardOptions->shardIndex;
+                m_data.shardCount = bazelShardOptions->shardCount;
+            }
+        }
+    }
 
 } // end namespace Catch

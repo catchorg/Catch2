@@ -6,7 +6,7 @@ some of them that are willing to share this information.
 
 If you want to add your organisation, please check that there is no issue
 with you sharing this fact.
- 
+
  - Bloomberg
  - [Bloomlife](https://bloomlife.com)
  - [Inscopix Inc.](https://www.inscopix.com/)
@@ -16,7 +16,7 @@ with you sharing this fact.
  - [Nexus Software Systems](https://nexwebsites.com)
  - [UX3D](https://ux3d.io)
  - [King](https://king.com)
- 
+
 
 ---
 

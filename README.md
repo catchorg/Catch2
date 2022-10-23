@@ -11,30 +11,77 @@
 [![Join the chat in Discord: https://discord.gg/4CWS9zD](https://img.shields.io/badge/Discord-Chat!-brightgreen.svg)](https://discord.gg/4CWS9zD)
 
 
-## What's the Catch2?
+## What is Catch2?
 
 Catch2 is mainly a unit testing framework for C++, but it also
 provides basic micro-benchmarking features, and simple BDD macros.
 
 Catch2's main advantage is that using it is both simple and natural.
-Tests autoregister themselves and do not have to be named with valid
-identifiers, assertions look like normal C++ code, and sections provide
-a nice way to share set-up and tear-down code in tests.
+Test names do not have to be valid identifiers, assertions look like
+normal C++ boolean expressions, and sections provide a nice and local way
+to share set-up and tear-down code in tests.
 
+**Example unit test**
+```cpp
+#include <catch2/catch_test_macros.hpp>
 
-## Catch2 v3 is being developed!
+#include <cstdint>
 
-You are on the `devel` branch, where the next major version, v3, of
-Catch2 is being developed. As it is a significant rework, you will
-find that parts of this documentation are likely still stuck on v2.
+uint32_t factorial( uint32_t number ) {
+    return number <= 1 ? number : factorial(number-1) * number;
+}
 
-For stable (and documentation-matching) version of Catch2, [go to the
-`v2.x` branch](https://github.com/catchorg/Catch2/tree/v2.x).
+TEST_CASE( "Factorials are computed", "[factorial]" ) {
+    REQUIRE( factorial( 1) == 1 );
+    REQUIRE( factorial( 2) == 2 );
+    REQUIRE( factorial( 3) == 6 );
+    REQUIRE( factorial(10) == 3'628'800 );
+}
+```
+
+**Example microbenchmark**
+```cpp
+#include <catch2/catch_test_macros.hpp>
+#include <catch2/benchmark/catch_benchmark.hpp>
+
+#include <cstdint>
+
+uint64_t fibonacci(uint64_t number) {
+    return number < 2 ? 1 : fibonacci(number - 1) + fibonacci(number - 2);
+}
+
+TEST_CASE("Benchmark Fibonacci", "[!benchmark]") {
+    REQUIRE(Fibonacci(5) == 5);
+
+    REQUIRE(Fibonacci(20) == 6'765);
+    BENCHMARK("Fibonacci 20") {
+        return Fibonacci(20);
+    };
+
+    REQUIRE(Fibonacci(25) == 75'025);
+    BENCHMARK("Fibonacci 25") {
+        return Fibonacci(25);
+    };
+}
+```
+
+## Catch2 v3 has been released!
+
+You are on the `devel` branch, where the v3 version is being developed.
+v3 brings a bunch of significant changes, the big one being that Catch2
+is no longer a single-header library. Catch2 now behaves as a normal
+library, with multiple headers and separately compiled implementation.
+
+The documentation is slowly being updated to take these changes into
+account, but this work is currently still ongoing.
 
 For migrating from the v2 releases to v3, you should look at [our
 documentation](docs/migrate-v2-to-v3.md#top). It provides a simple
 guidelines on getting started, and collects most common migration
 problems.
+
+For the previous major version of Catch2 [look into the `v2.x` branch
+here on GitHub](https://github.com/catchorg/Catch2/tree/v2.x).
 
 
 ## How to use it

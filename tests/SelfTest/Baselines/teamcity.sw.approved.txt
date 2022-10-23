@@ -483,6 +483,8 @@ Message.tests.cpp:<line number>|nexplicit failure with message:|n  "Message from
 ##teamcity[testFinished name='Overloaded comma or address-of operators are not used' duration="{duration}"]
 ##teamcity[testStarted name='Parse test names and tags']
 ##teamcity[testFinished name='Parse test names and tags' duration="{duration}"]
+##teamcity[testStarted name='Parse uints']
+##teamcity[testFinished name='Parse uints' duration="{duration}"]
 ##teamcity[testStarted name='Parsed tags are matched case insensitive']
 ##teamcity[testFinished name='Parsed tags are matched case insensitive' duration="{duration}"]
 ##teamcity[testStarted name='Parsing sharding-related cli flags']

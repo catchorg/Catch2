@@ -138,7 +138,7 @@ benchmarking itself fails.
 > Introduced in Catch2 3.0.1.
 
 Listings events are events that correspond to the test binary being
-invoked with `--list-foo` flag. 
+invoked with `--list-foo` flag.
 
 There are currently 3 listing events, one for reporters, one for tests,
 and one for tags. Note that they are not exclusive to each other.

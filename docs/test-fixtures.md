@@ -3,7 +3,7 @@
 
 ## Defining test fixtures
 
-Although Catch allows you to group tests together as sections within a test case, it can still be convenient, sometimes, to group them using a more traditional test fixture. Catch fully supports this too. You define the test fixture as a simple structure:
+Although Catch allows you to group tests together as [sections within a test case](test-cases-and-sections.md), it can still be convenient, sometimes, to group them using a more traditional test fixture. Catch fully supports this too. You define the test fixture as a simple structure:
 
 ```c++
 class UniqueTestsFixture {
@@ -130,9 +130,9 @@ struct Template_Foo_2 {
 };
 
 TEMPLATE_PRODUCT_TEST_CASE_METHOD_SIG(
-    Template_Fixture_2, 
-    "A TEMPLATE_PRODUCT_TEST_CASE_METHOD_SIG based test run that succeeds", 
-    "[class][template][product][nttp]", 
+    Template_Fixture_2,
+    "A TEMPLATE_PRODUCT_TEST_CASE_METHOD_SIG based test run that succeeds",
+    "[class][template][product][nttp]",
     ((typename T, size_t S), T, S),
     (std::array, Template_Foo_2),
     ((int,2), (float,6))) {

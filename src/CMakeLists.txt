@@ -78,9 +78,11 @@ set(INTERNAL_HEADERS
     ${SOURCES_DIR}/internal/catch_exception_translator_registry.hpp
     ${SOURCES_DIR}/internal/catch_fatal_condition_handler.hpp
     ${SOURCES_DIR}/internal/catch_floating_point_helpers.hpp
+    ${SOURCES_DIR}/internal/catch_getenv.hpp
     ${SOURCES_DIR}/internal/catch_istream.hpp
     ${SOURCES_DIR}/internal/catch_unique_name.hpp
     ${SOURCES_DIR}/internal/catch_sharding.hpp
+    ${SOURCES_DIR}/internal/catch_parse_numbers.hpp
     ${SOURCES_DIR}/generators/catch_generator_exception.hpp
     ${SOURCES_DIR}/generators/catch_generators.hpp
     ${SOURCES_DIR}/generators/catch_generators_adapters.hpp
@@ -183,7 +185,9 @@ set(IMPL_SOURCES
     ${SOURCES_DIR}/internal/catch_exception_translator_registry.cpp
     ${SOURCES_DIR}/internal/catch_fatal_condition_handler.cpp
     ${SOURCES_DIR}/internal/catch_floating_point_helpers.cpp
+    ${SOURCES_DIR}/internal/catch_getenv.cpp
     ${SOURCES_DIR}/internal/catch_istream.cpp
+    ${SOURCES_DIR}/internal/catch_parse_numbers.cpp
     ${SOURCES_DIR}/interfaces/catch_interfaces_generatortracker.cpp
     ${SOURCES_DIR}/interfaces/catch_interfaces_reporter.cpp
     ${SOURCES_DIR}/internal/catch_list.cpp

@@ -737,3 +737,31 @@ TEST_CASE("Win32 colour implementation is compile-time optional",
     REQUIRE_FALSE( result );
 #endif
 }
+
+TEST_CASE( "Parse rng seed in different formats", "[approvals][cli][rng-seed]" ) {
+    Catch::ConfigData config;
+    auto cli = Catch::makeCommandLineParser( config );
+
+    SECTION("well formed cases") {
+        char const* seed_string;
+        uint32_t seed_value;
+        // GCC-5 workaround
+        using gen_type = std::tuple<char const*, uint32_t>;
+        std::tie( seed_string, seed_value ) = GENERATE( table<char const*, uint32_t>({
+            gen_type{ "0xBEEF", 0xBEEF },
+            gen_type{ "12345678", 12345678 }
+        } ) );
+        CAPTURE( seed_string );
+
+        auto result = cli.parse( { "tests", "--rng-seed", seed_string } );
+
+        REQUIRE( result );
+        REQUIRE( config.rngSeed == seed_value );
+    }
+    SECTION( "Error cases" ) {
+        auto seed_string =
+            GENERATE( "0xSEED", "999999999999", "08888", "BEEF", "123 456" );
+        CAPTURE( seed_string );
+        REQUIRE_FALSE( cli.parse( { "tests", "--rng-seed", seed_string } ) );
+    }
+}

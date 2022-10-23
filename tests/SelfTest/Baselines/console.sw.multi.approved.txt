@@ -9054,6 +9054,75 @@ with expansion:
   true
 
 -------------------------------------------------------------------------------
+Parse uints
+  proper inputs
+-------------------------------------------------------------------------------
+Parse.tests.cpp:<line number>
+...............................................................................
+
+Parse.tests.cpp:<line number>: PASSED:
+  REQUIRE( parseUInt( "0" ) == Optional<unsigned int>{ 0 } )
+with expansion:
+  {?} == {?}
+
+Parse.tests.cpp:<line number>: PASSED:
+  REQUIRE( parseUInt( "100" ) == Optional<unsigned int>{ 100 } )
+with expansion:
+  {?} == {?}
+
+Parse.tests.cpp:<line number>: PASSED:
+  REQUIRE( parseUInt( "4294967295" ) == Optional<unsigned int>{ 4294967295 } )
+with expansion:
+  {?} == {?}
+
+Parse.tests.cpp:<line number>: PASSED:
+  REQUIRE( parseUInt( "0x<hex digits>", 16 ) == Optional<unsigned int>{ 255 } )
+with expansion:
+  {?} == {?}
+
+-------------------------------------------------------------------------------
+Parse uints
+  Bad inputs
+-------------------------------------------------------------------------------
+Parse.tests.cpp:<line number>
+...............................................................................
+
+Parse.tests.cpp:<line number>: PASSED:
+  REQUIRE_FALSE( parseUInt( "" ) )
+with expansion:
+  !{?}
+
+Parse.tests.cpp:<line number>: PASSED:
+  REQUIRE_FALSE( parseUInt( "!!KJHF*#" ) )
+with expansion:
+  !{?}
+
+Parse.tests.cpp:<line number>: PASSED:
+  REQUIRE_FALSE( parseUInt( "-1" ) )
+with expansion:
+  !{?}
+
+Parse.tests.cpp:<line number>: PASSED:
+  REQUIRE_FALSE( parseUInt( "4294967296" ) )
+with expansion:
+  !{?}
+
+Parse.tests.cpp:<line number>: PASSED:
+  REQUIRE_FALSE( parseUInt( "42949672964294967296429496729642949672964294967296" ) )
+with expansion:
+  !{?}
+
+Parse.tests.cpp:<line number>: PASSED:
+  REQUIRE_FALSE( parseUInt( "2 4" ) )
+with expansion:
+  !{?}
+
+Parse.tests.cpp:<line number>: PASSED:
+  REQUIRE_FALSE( parseUInt( "0x<hex digits>", 10 ) )
+with expansion:
+  !{?}
+
+-------------------------------------------------------------------------------
 Parsed tags are matched case insensitive
 -------------------------------------------------------------------------------
 TestSpecParser.tests.cpp:<line number>
@@ -18442,6 +18511,6 @@ Misc.tests.cpp:<line number>
 Misc.tests.cpp:<line number>: PASSED:
 
 ===============================================================================
-test cases:  394 |  304 passed |  83 failed |  7 failed as expected
-assertions: 2299 | 2129 passed | 143 failed | 27 failed as expected
+test cases:  395 |  305 passed |  83 failed |  7 failed as expected
+assertions: 2310 | 2140 passed | 143 failed | 27 failed as expected
 

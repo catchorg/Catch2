@@ -31,7 +31,7 @@ if (CMAKE_BINARY_DIR STREQUAL CMAKE_CURRENT_SOURCE_DIR)
 endif()
 
 project(Catch2
-  VERSION 3.1.0 # CML version placeholder, don't delete
+  VERSION 3.1.1 # CML version placeholder, don't delete
   LANGUAGES CXX
   # HOMEPAGE_URL is not supported until CMake version 3.12, which
   # we do not target yet.

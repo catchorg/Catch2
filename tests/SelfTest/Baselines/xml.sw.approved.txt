@@ -11005,6 +11005,103 @@ C
     </Section>
     <OverallResult success="true"/>
   </TestCase>
+  <TestCase name="Parse uints" tags="[parse-numbers]" filename="tests/<exe-name>/IntrospectiveTests/Parse.tests.cpp" >
+    <Section name="proper inputs" filename="tests/<exe-name>/IntrospectiveTests/Parse.tests.cpp" >
+      <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/Parse.tests.cpp" >
+        <Original>
+          parseUInt( "0" ) == Optional&lt;unsigned int>{ 0 }
+        </Original>
+        <Expanded>
+          {?} == {?}
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/Parse.tests.cpp" >
+        <Original>
+          parseUInt( "100" ) == Optional&lt;unsigned int>{ 100 }
+        </Original>
+        <Expanded>
+          {?} == {?}
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/Parse.tests.cpp" >
+        <Original>
+          parseUInt( "4294967295" ) == Optional&lt;unsigned int>{ 4294967295 }
+        </Original>
+        <Expanded>
+          {?} == {?}
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/Parse.tests.cpp" >
+        <Original>
+          parseUInt( "0x<hex digits>", 16 ) == Optional&lt;unsigned int>{ 255 }
+        </Original>
+        <Expanded>
+          {?} == {?}
+        </Expanded>
+      </Expression>
+      <OverallResults successes="4" failures="0" expectedFailures="0"/>
+    </Section>
+    <Section name="Bad inputs" filename="tests/<exe-name>/IntrospectiveTests/Parse.tests.cpp" >
+      <Expression success="true" type="REQUIRE_FALSE" filename="tests/<exe-name>/IntrospectiveTests/Parse.tests.cpp" >
+        <Original>
+          !(parseUInt( "" ))
+        </Original>
+        <Expanded>
+          !{?}
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE_FALSE" filename="tests/<exe-name>/IntrospectiveTests/Parse.tests.cpp" >
+        <Original>
+          !(parseUInt( "!!KJHF*#" ))
+        </Original>
+        <Expanded>
+          !{?}
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE_FALSE" filename="tests/<exe-name>/IntrospectiveTests/Parse.tests.cpp" >
+        <Original>
+          !(parseUInt( "-1" ))
+        </Original>
+        <Expanded>
+          !{?}
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE_FALSE" filename="tests/<exe-name>/IntrospectiveTests/Parse.tests.cpp" >
+        <Original>
+          !(parseUInt( "4294967296" ))
+        </Original>
+        <Expanded>
+          !{?}
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE_FALSE" filename="tests/<exe-name>/IntrospectiveTests/Parse.tests.cpp" >
+        <Original>
+          !(parseUInt( "42949672964294967296429496729642949672964294967296" ))
+        </Original>
+        <Expanded>
+          !{?}
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE_FALSE" filename="tests/<exe-name>/IntrospectiveTests/Parse.tests.cpp" >
+        <Original>
+          !(parseUInt( "2 4" ))
+        </Original>
+        <Expanded>
+          !{?}
+        </Expanded>
+      </Expression>
+      <Expression success="true" type="REQUIRE_FALSE" filename="tests/<exe-name>/IntrospectiveTests/Parse.tests.cpp" >
+        <Original>
+          !(parseUInt( "0x<hex digits>", 10 ))
+        </Original>
+        <Expanded>
+          !{?}
+        </Expanded>
+      </Expression>
+      <OverallResults successes="7" failures="0" expectedFailures="0"/>
+    </Section>
+    <OverallResult success="true"/>
+  </TestCase>
   <TestCase name="Parsed tags are matched case insensitive" tags="[test-spec][test-spec-parser]" filename="tests/<exe-name>/IntrospectiveTests/TestSpecParser.tests.cpp" >
     <Expression success="true" type="REQUIRE" filename="tests/<exe-name>/IntrospectiveTests/TestSpecParser.tests.cpp" >
       <Original>
@@ -21702,6 +21799,6 @@ loose text artifact
     </Section>
     <OverallResult success="true"/>
   </TestCase>
-  <OverallResults successes="2129" failures="143" expectedFailures="27"/>
-  <OverallResultsCases successes="304" failures="83" expectedFailures="7"/>
+  <OverallResults successes="2140" failures="143" expectedFailures="27"/>
+  <OverallResultsCases successes="305" failures="83" expectedFailures="7"/>
 </Catch2TestRun>

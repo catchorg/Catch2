@@ -57,10 +57,10 @@ except subprocess.SubprocessError as ex:
         test_passing = False
         stdout = ex.stdout
     else:
-        print('Could not run "{}"'.format(args))
+        print('Could not run "{}"'.format(bin_path))
         print("Return code: {}".format(ex.returncode))
         print("stdout: {}".format(ex.stdout))
-        print("stderr: {}".format(ex.stdout))
+        print("stderr: {}".format(ex.stderr))
         raise
 
 # Check for valid XML output
