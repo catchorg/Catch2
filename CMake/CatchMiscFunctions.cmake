@@ -13,7 +13,7 @@ function(add_cxx_flag_if_supported_to_targets flagname targets)
 
     if (HAVE_FLAG_${flag_identifier})
         foreach(target ${targets})
-            target_compile_options(${target} PUBLIC ${flagname})
+            target_compile_options(${target} PRIVATE ${flagname})
         endforeach()
     endif()
 endfunction()
