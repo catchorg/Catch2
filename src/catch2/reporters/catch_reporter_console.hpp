@@ -13,7 +13,6 @@
 
 namespace Catch {
     // Fwd decls
-    struct SummaryColumn;
     class TablePrinter;
 
     class ConsoleReporter final : public StreamingReporterBase {
@@ -57,12 +56,7 @@ namespace Catch {
         // subsequent lines
         void printHeaderString(std::string const& _string, std::size_t indent = 0);
 
-
-        void printTotals(Totals const& totals);
-        void printSummaryRow(StringRef label, std::vector<SummaryColumn> const& cols, std::size_t row);
-
         void printTotalsDivider(Totals const& totals);
-        void printSummaryDivider();
 
         bool m_headerPrinted = false;
         bool m_testRunInfoPrinted = false;

@@ -18,22 +18,6 @@
 
 #include <ostream>
 
-namespace {
-
-    constexpr Catch::StringRef bothOrAll( std::uint64_t count ) {
-        switch (count) {
-        case 1:
-            return Catch::StringRef{};
-        case 2:
-            return "both "_catch_sr;
-        default:
-            return "all "_catch_sr;
-        }
-    }
-
-} // anon namespace
-
-
 namespace Catch {
 namespace {
 
@@ -47,42 +31,6 @@ namespace {
     static constexpr Catch::StringRef compactFailedString = "failed"_sr;
     static constexpr Catch::StringRef compactPassedString = "passed"_sr;
 #endif
-
-// Colour, message variants:
-// - white: No tests ran.
-// -   red: Failed [both/all] N test cases, failed [both/all] M assertions.
-// - white: Passed [both/all] N test cases (no assertions).
-// -   red: Failed N tests cases, failed M assertions.
-// - green: Passed [both/all] N tests cases with M assertions.
-void printTotals(std::ostream& out, const Totals& totals, ColourImpl* colourImpl) {
-    if (totals.testCases.total() == 0) {
-        out << "No tests ran.";
-    } else if (totals.testCases.failed == totals.testCases.total()) {
-        auto guard = colourImpl->guardColour( Colour::ResultError ).engage( out );
-        const StringRef qualify_assertions_failed =
-            totals.assertions.failed == totals.assertions.total() ?
-            bothOrAll(totals.assertions.failed) : StringRef{};
-        out <<
-            "Failed " << bothOrAll(totals.testCases.failed)
-            << pluralise(totals.testCases.failed, "test case"_sr) << ", "
-            "failed " << qualify_assertions_failed <<
-            pluralise(totals.assertions.failed, "assertion"_sr) << '.';
-    } else if (totals.assertions.total() == 0) {
-        out <<
-            "Passed " << bothOrAll(totals.testCases.total())
-            << pluralise(totals.testCases.total(), "test case"_sr)
-            << " (no assertions).";
-    } else if (totals.assertions.failed) {
-        out << colourImpl->guardColour( Colour::ResultError ) <<
-            "Failed " << pluralise(totals.testCases.failed, "test case"_sr) << ", "
-            "failed " << pluralise(totals.assertions.failed, "assertion"_sr) << '.';
-    } else {
-        out << colourImpl->guardColour( Colour::ResultSuccess ) <<
-            "Passed " << bothOrAll(totals.testCases.passed)
-            << pluralise(totals.testCases.passed, "test case"_sr) <<
-            " with " << pluralise(totals.assertions.passed, "assertion"_sr) << '.';
-    }
-}
 
 // Implementation of CompactReporter formatting
 class AssertionPrinter {
@@ -291,7 +239,7 @@ private:
         }
 
         void CompactReporter::testRunEnded( TestRunStats const& _testRunStats ) {
-            printTotals( m_stream, _testRunStats.totals, m_colour.get() );
+            printTestRunTotals( m_stream, *m_colour, _testRunStats.totals );
             m_stream << "\n\n" << std::flush;
             StreamingReporterBase::testRunEnded( _testRunStats );
         }

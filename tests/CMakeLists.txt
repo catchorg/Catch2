@@ -336,7 +336,7 @@ set_tests_properties(ApprovalTests
 )
 
 add_test(NAME RegressionCheck-1670 COMMAND $<TARGET_FILE:SelfTest> "#1670 regression check" -c A -r compact)
-set_tests_properties(RegressionCheck-1670 PROPERTIES PASS_REGULAR_EXPRESSION "Passed 1 test case with 2 assertions.")
+set_tests_properties(RegressionCheck-1670 PROPERTIES PASS_REGULAR_EXPRESSION "All tests passed \\(2 assertions in 1 test case\\)")
 
 add_test(NAME VersionCheck COMMAND $<TARGET_FILE:SelfTest> -h)
 set_tests_properties(VersionCheck PROPERTIES PASS_REGULAR_EXPRESSION "Catch2 v${PROJECT_VERSION}")

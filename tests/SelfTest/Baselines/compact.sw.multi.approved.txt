@@ -2602,5 +2602,7 @@ InternalBenchmark.tests.cpp:<line number>: passed: med == 18. for: 18.0 == 18.0
 InternalBenchmark.tests.cpp:<line number>: passed: q3 == 23. for: 23.0 == 23.0
 Misc.tests.cpp:<line number>: passed:
 Misc.tests.cpp:<line number>: passed:
-Failed 83 test cases, failed 143 assertions.
+test cases:  395 |  305 passed |  83 failed |  7 failed as expected
+assertions: 2310 | 2140 passed | 143 failed | 27 failed as expected
+
 

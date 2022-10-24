@@ -210,7 +210,7 @@ add_test(NAME DeferredStaticChecks COMMAND DeferredStaticChecks -r compact)
 set_tests_properties(
     DeferredStaticChecks
   PROPERTIES
-    PASS_REGULAR_EXPRESSION "Failed 1 test case, failed all 3 assertions."
+    PASS_REGULAR_EXPRESSION "test cases: 1 \\| 1 failed\nassertions: 3 \\| 3 failed"
 )
 
 
