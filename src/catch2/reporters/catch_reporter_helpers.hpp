@@ -14,6 +14,7 @@
 
 #include <catch2/internal/catch_list.hpp>
 #include <catch2/interfaces/catch_interfaces_config.hpp>
+#include <catch2/catch_totals.hpp>
 
 namespace Catch {
 
@@ -79,6 +80,15 @@ namespace Catch {
                            std::vector<TestCaseHandle> const& tests,
                            bool isFiltered,
                            Verbosity verbosity );
+
+    /**
+     * Prints test run totals to the provided stream in user-friendly format
+     *
+     * Used by the console and compact reporters.
+     */
+    void printTestRunTotals( std::ostream& stream,
+                      ColourImpl& streamColour,
+                      Totals const& totals );
 
 } // end namespace Catch
 

@@ -30,15 +30,12 @@ build_dir_path = os.path.join(os.path.abspath(sys.argv[2]), 'CMakeConfigTests', 
 
 configure_and_build(catch2_source_path,
                     build_dir_path,
-                    [("CATCH_CONFIG_DEFAULT_REPORTER", "compact")])
+                    [("CATCH_CONFIG_DEFAULT_REPORTER", "xml")])
 
 stdout, _ = run_and_return_output(os.path.join(build_dir_path, 'tests'), 'SelfTest', ['[approx][custom]'])
 
-
-# This matches the summary line made by compact reporter, console reporter's
-# summary line does not match the regex.
-summary_regex = 'Passed \d+ test case with \d+ assertions.'
-if not re.search(summary_regex, stdout):
-    print("Could not find '{}' in the stdout".format(summary_regex))
+xml_tag = '</Catch2TestRun>'
+if xml_tag not in stdout:
+    print("Could not find '{}' in the stdout".format(xml_tag))
     print('stdout: "{}"'.format(stdout))
     exit(2)
