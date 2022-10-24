@@ -7,13 +7,13 @@
 # SPDX-License-Identifier: BSL-1.0
 
 include(CheckCXXCompilerFlag)
-function(add_cxx_flag_if_supported_to_targets scope flagname targets)
+function(add_cxx_flag_if_supported_to_targets flagname targets)
     string(MAKE_C_IDENTIFIER ${flagname} flag_identifier )
     check_cxx_compiler_flag("${flagname}" HAVE_FLAG_${flag_identifier})
 
     if (HAVE_FLAG_${flag_identifier})
         foreach(target ${targets})
-            target_compile_options(${target} ${scope} ${flagname})
+            target_compile_options(${target} PRIVATE ${flagname})
         endforeach()
     endif()
 endfunction()
@@ -98,7 +98,7 @@ function(add_warnings_to_targets targets)
           # "-Wunused-member-function"
         )
         foreach(warning ${CHECKED_WARNING_FLAGS})
-            add_cxx_flag_if_supported_to_targets(PUBLIC ${warning} "${targets}")
+            add_cxx_flag_if_supported_to_targets(${warning} "${targets}")
         endforeach()
 
         if (CATCH_ENABLE_WERROR)
@@ -115,6 +115,6 @@ endfunction()
 function(add_build_reproducibility_settings target)
   # Make the build reproducible on versions of g++ and clang that supports -ffile-prefix-map
   if((CMAKE_CXX_COMPILER_ID STREQUAL "GNU") OR (CMAKE_CXX_COMPILER_ID MATCHES "Clang"))
-    add_cxx_flag_if_supported_to_targets(PRIVATE "-ffile-prefix-map=${CATCH_DIR}/=" "${target}")
+    add_cxx_flag_if_supported_to_targets("-ffile-prefix-map=${CATCH_DIR}/=" "${target}")
   endif()
 endfunction()
