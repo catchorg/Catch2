@@ -11,15 +11,22 @@
 #include <catch2/catch_test_case_info.hpp>
 #include <catch2/internal/catch_reusable_string_stream.hpp>
 #include <catch2/interfaces/catch_interfaces_config.hpp>
+#include <catch2/catch_test_spec.hpp>
+#include <catch2/reporters/catch_reporter_helpers.hpp>
 
 #include <map>
 
 namespace Catch {
 
     namespace {
-        std::string createRngSeedString(uint32_t seed) {
+        std::string createMetadataString(IConfig const& config) {
             ReusableStringStream sstr;
-            sstr << "rng-seed=" << seed;
+            if ( config.testSpec().hasFilters() ) {
+                sstr << "filters='"
+                         << serializeFilters( config.getTestsOrTags() )
+                         << "' ";
+            }
+            sstr << "rng-seed=" << config.rngSeed();
             return sstr.str();
         }
     }
@@ -27,7 +34,7 @@ namespace Catch {
     void SonarQubeReporter::testRunStarting(TestRunInfo const& testRunInfo) {
         CumulativeReporterBase::testRunStarting(testRunInfo);
 
-        xml.writeComment( createRngSeedString( m_config->rngSeed() ) );
+        xml.writeComment( createMetadataString( *m_config ) );
         xml.startElement("testExecutions");
         xml.writeAttribute("version"_sr, '1');
     }
